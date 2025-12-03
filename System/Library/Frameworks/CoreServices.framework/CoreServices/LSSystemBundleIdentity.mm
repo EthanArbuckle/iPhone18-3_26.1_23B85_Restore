@@ -1,21 +1,21 @@
 @interface LSSystemBundleIdentity
-- (BOOL)isEqual:(id)a3;
-- (LSSystemBundleIdentity)initWithBundleIdentifier:(id)a3;
-- (LSSystemBundleIdentity)initWithCoder:(id)a3;
-- (LSSystemBundleIdentity)initWithIdentityString:(id)a3 parsedIdentityStringDictionary:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (LSSystemBundleIdentity)initWithBundleIdentifier:(id)identifier;
+- (LSSystemBundleIdentity)initWithCoder:(id)coder;
+- (LSSystemBundleIdentity)initWithIdentityString:(id)string parsedIdentityStringDictionary:(id)dictionary error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSSystemBundleIdentity
 
-- (LSSystemBundleIdentity)initWithIdentityString:(id)a3 parsedIdentityStringDictionary:(id)a4 error:(id *)a5
+- (LSSystemBundleIdentity)initWithIdentityString:(id)string parsedIdentityStringDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 objectForKey:@"b"];
+  stringCopy = string;
+  v8 = [dictionary objectForKey:@"b"];
   v13.receiver = self;
   v13.super_class = LSSystemBundleIdentity;
-  v9 = [(LSBundleIdentity *)&v13 initWithIdentityString:v7 personaUniqueString:0 personaType:4];
+  v9 = [(LSBundleIdentity *)&v13 initWithIdentityString:stringCopy personaUniqueString:0 personaType:4];
 
   if (v9)
   {
@@ -27,11 +27,11 @@
   return v9;
 }
 
-- (LSSystemBundleIdentity)initWithBundleIdentifier:(id)a3
+- (LSSystemBundleIdentity)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
-  v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:4 error:&v15];
+  v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:identifierCopy options:4 error:&v15];
   v6 = v15;
   if (v5)
   {
@@ -57,7 +57,7 @@
 
   if (v10)
   {
-    v11 = [v4 copy];
+    v11 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
   }
@@ -65,24 +65,24 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = LSSystemBundleIdentity;
-  v4 = a3;
-  [(LSBundleIdentity *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(LSBundleIdentity *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (LSSystemBundleIdentity)initWithCoder:(id)a3
+- (LSSystemBundleIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = LSSystemBundleIdentity;
-  v5 = [(LSBundleIdentity *)&v9 initWithCoder:v4];
+  v5 = [(LSBundleIdentity *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -97,13 +97,13 @@
   return [(NSString *)self->_bundleIdentifier hash]^ __ROR8__([(LSBundleIdentity *)&v3 hash], 56);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     bundleIdentifier = self->_bundleIdentifier;
-    if (bundleIdentifier == v4[4])
+    if (bundleIdentifier == equalCopy[4])
     {
       v6 = 1;
     }

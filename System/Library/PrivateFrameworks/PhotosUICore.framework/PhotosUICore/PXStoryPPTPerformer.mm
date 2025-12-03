@@ -3,41 +3,41 @@
 - (PXAsyncIterator)configurationIterator;
 - (PXPPTDelegate)delegate;
 - (PXStoryPPTPerformer)init;
-- (PXStoryPPTPerformer)initWithDelegate:(id)a3 testOptions:(id)a4;
+- (PXStoryPPTPerformer)initWithDelegate:(id)delegate testOptions:(id)options;
 - (PXStoryPPTResultsAggregate)resultsAggregate;
 - (double)currentTestTimeout;
-- (id)_configurationSpecificSubtestName:(id)a3;
-- (id)_tungstenViewFromStoryPlayerTestElement:(id)a3;
-- (id)_viewModelForPlayerTestElement:(id)a3;
+- (id)_configurationSpecificSubtestName:(id)name;
+- (id)_tungstenViewFromStoryPlayerTestElement:(id)element;
+- (id)_viewModelForPlayerTestElement:(id)element;
 - (int64_t)currentTestIterations;
 - (void)_callPlaybackEndHandlerIfNeeded;
 - (void)_callPlaybackReadyToPlayHandlerIfNeeded;
-- (void)_exportWithTestElement:(id)a3 atResolution:(CGSize)a4 completion:(id)a5;
+- (void)_exportWithTestElement:(id)element atResolution:(CGSize)resolution completion:(id)completion;
 - (void)_finalize;
-- (void)_installPlaybackEndHandler:(id)a3;
-- (void)_installPlaybackReadyToPlayHandler:(id)a3;
-- (void)_pausePlaybackWithTestElement:(id)a3;
-- (void)_preparePlaybackTestWithElement:(id)a3;
-- (void)_produceTimelineForViewConfiguration:(id)a3 recipeManagerWithProducedRecipe:(id)a4 initialCompletionHandler:(id)a5 finalCompletionHandler:(id)a6;
-- (void)_requestRecipeForViewConfiguration:(id)a3 resultHandler:(id)a4;
-- (void)_runScrollSubtestOnScrollView:(id)a3 containedInTungstenView:(id)a4 completion:(id)a5;
-- (void)_runScrubbingSubtestWithTestElement:(id)a3 direction:(int64_t)a4 subtestName:(id)a5 completion:(id)a6;
-- (void)_runScrubbingSubtestsWithTestElement:(id)a3 completion:(id)a4;
-- (void)_skipToSegmentWithTestElement:(id)a3 direction:(int64_t)a4 completion:(id)a5;
-- (void)enumerateFeedConfigurationsUsingBlock:(id)a3 completion:(id)a4;
-- (void)enumerateStoryConfigurationsUsingBlock:(id)a3 completion:(id)a4;
-- (void)finishSubtestWithName:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)runExportTestWithElement:(id)a3 completion:(id)a4;
-- (void)runFeedScrollingTestWithElement:(id)a3 completion:(id)a4;
-- (void)runPlaybackStartTestWithElement:(id)a3 completion:(id)a4;
-- (void)runPlaybackTestWithElement:(id)a3 completion:(id)a4;
-- (void)runRecipeProductionTestWithViewConfiguration:(id)a3 completion:(id)a4;
-- (void)runScrollingWithTestElement:(id)a3 completion:(id)a4;
-- (void)runScrubbingTestWithElement:(id)a3 completion:(id)a4;
-- (void)runTimelineProductionTestWithViewConfiguration:(id)a3 completion:(id)a4;
-- (void)setObservedModel:(id)a3;
-- (void)startSubtestWithName:(id)a3 metrics:(id)a4;
+- (void)_installPlaybackEndHandler:(id)handler;
+- (void)_installPlaybackReadyToPlayHandler:(id)handler;
+- (void)_pausePlaybackWithTestElement:(id)element;
+- (void)_preparePlaybackTestWithElement:(id)element;
+- (void)_produceTimelineForViewConfiguration:(id)configuration recipeManagerWithProducedRecipe:(id)recipe initialCompletionHandler:(id)handler finalCompletionHandler:(id)completionHandler;
+- (void)_requestRecipeForViewConfiguration:(id)configuration resultHandler:(id)handler;
+- (void)_runScrollSubtestOnScrollView:(id)view containedInTungstenView:(id)tungstenView completion:(id)completion;
+- (void)_runScrubbingSubtestWithTestElement:(id)element direction:(int64_t)direction subtestName:(id)name completion:(id)completion;
+- (void)_runScrubbingSubtestsWithTestElement:(id)element completion:(id)completion;
+- (void)_skipToSegmentWithTestElement:(id)element direction:(int64_t)direction completion:(id)completion;
+- (void)enumerateFeedConfigurationsUsingBlock:(id)block completion:(id)completion;
+- (void)enumerateStoryConfigurationsUsingBlock:(id)block completion:(id)completion;
+- (void)finishSubtestWithName:(id)name;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)runExportTestWithElement:(id)element completion:(id)completion;
+- (void)runFeedScrollingTestWithElement:(id)element completion:(id)completion;
+- (void)runPlaybackStartTestWithElement:(id)element completion:(id)completion;
+- (void)runPlaybackTestWithElement:(id)element completion:(id)completion;
+- (void)runRecipeProductionTestWithViewConfiguration:(id)configuration completion:(id)completion;
+- (void)runScrollingWithTestElement:(id)element completion:(id)completion;
+- (void)runScrubbingTestWithElement:(id)element completion:(id)completion;
+- (void)runTimelineProductionTestWithViewConfiguration:(id)configuration completion:(id)completion;
+- (void)setObservedModel:(id)model;
+- (void)startSubtestWithName:(id)name metrics:(id)metrics;
 @end
 
 @implementation PXStoryPPTPerformer
@@ -56,35 +56,35 @@
   return WeakRetained;
 }
 
-- (void)_runScrollSubtestOnScrollView:(id)a3 containedInTungstenView:(id)a4 completion:(id)a5
+- (void)_runScrollSubtestOnScrollView:(id)view containedInTungstenView:(id)tungstenView completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PXStoryPPTPerformer *)self currentTestName];
-  v12 = [(PXStoryPPTPerformer *)self configurationName];
-  v13 = [(PXStoryPPTPerformer *)self delegate];
-  v14 = [(PXStoryPPTPerformer *)self testOptions];
+  tungstenViewCopy = tungstenView;
+  completionCopy = completion;
+  viewCopy = view;
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  configurationName = [(PXStoryPPTPerformer *)self configurationName];
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
   v15 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:@"Scrolling"];
   [(PXStoryPPTPerformer *)self startSubtestWithName:@"Scrolling" metrics:&unk_1F1911788];
-  [v8 ppt_prepareForTest:v11 withOptions:v14 isScrollTest:1];
+  [tungstenViewCopy ppt_prepareForTest:currentTestName withOptions:testOptions isScrollTest:1];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __88__PXStoryPPTPerformer__runScrollSubtestOnScrollView_containedInTungstenView_completion___block_invoke;
   v21[3] = &unk_1E77428C0;
-  v22 = v8;
-  v23 = v11;
-  v24 = self;
+  v22 = tungstenViewCopy;
+  v23 = currentTestName;
+  selfCopy = self;
   v25 = @"Scrolling";
-  v26 = v12;
-  v27 = v13;
-  v28 = v9;
-  v16 = v9;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v8;
-  [v17 runScrollTestOnScrollView:v10 withOptions:v14 subTestName:v15 completion:v21];
+  v26 = configurationName;
+  v27 = delegate;
+  v28 = completionCopy;
+  v16 = completionCopy;
+  v17 = delegate;
+  v18 = configurationName;
+  v19 = currentTestName;
+  v20 = tungstenViewCopy;
+  [v17 runScrollTestOnScrollView:viewCopy withOptions:testOptions subTestName:v15 completion:v21];
 }
 
 void __88__PXStoryPPTPerformer__runScrollSubtestOnScrollView_containedInTungstenView_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -132,36 +132,36 @@ void __88__PXStoryPPTPerformer__runScrollSubtestOnScrollView_containedInTungsten
   [v8 setObject:v7 forKeyedSubscript:v9];
 }
 
-- (id)_viewModelForPlayerTestElement:(id)a3
+- (id)_viewModelForPlayerTestElement:(id)element
 {
-  v3 = [a3 storyView];
-  v4 = [v3 viewModel];
+  storyView = [element storyView];
+  viewModel = [storyView viewModel];
 
-  return v4;
+  return viewModel;
 }
 
 - (int64_t)currentTestIterations
 {
-  v2 = [(PXStoryPPTPerformer *)self testOptions];
-  v3 = [v2 objectForKeyedSubscript:@"iterations"];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v3 = [testOptions objectForKeyedSubscript:@"iterations"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)currentTestTimeout
 {
-  v2 = [(PXStoryPPTPerformer *)self testOptions];
-  v3 = [v2 objectForKeyedSubscript:@"timeoutInSeconds"];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v3 = [testOptions objectForKeyedSubscript:@"timeoutInSeconds"];
 
   if (!v3)
   {
@@ -176,81 +176,81 @@ void __88__PXStoryPPTPerformer__runScrollSubtestOnScrollView_containedInTungsten
 
 - (NSString)currentTestName
 {
-  v2 = [(PXStoryPPTPerformer *)self testOptions];
-  v3 = [v2 objectForKeyedSubscript:@"testName"];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v3 = [testOptions objectForKeyedSubscript:@"testName"];
 
   return v3;
 }
 
-- (void)_pausePlaybackWithTestElement:(id)a3
+- (void)_pausePlaybackWithTestElement:(id)element
 {
-  v3 = [(PXStoryPPTPerformer *)self _viewModelForPlayerTestElement:a3];
+  v3 = [(PXStoryPPTPerformer *)self _viewModelForPlayerTestElement:element];
   [v3 performChanges:&__block_literal_global_195009];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (ObservedModelObservationContext != a5)
+  observableCopy = observable;
+  if (ObservedModelObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:657 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:657 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((a4 & 0x200000) != 0)
+  v11 = observableCopy;
+  if ((change & 0x200000) != 0)
   {
     [(PXStoryPPTPerformer *)self _callPlaybackReadyToPlayHandlerIfNeeded];
-    v9 = v11;
+    observableCopy = v11;
   }
 
-  if ((a4 & 0x40000000000) != 0)
+  if ((change & 0x40000000000) != 0)
   {
     [(PXStoryPPTPerformer *)self _callPlaybackEndHandlerIfNeeded];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)runFeedScrollingTestWithElement:(id)a3 completion:(id)a4
+- (void)runFeedScrollingTestWithElement:(id)element completion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 ppt_scrollView];
-  v7 = [v8 px_ancestorViewOfClass:objc_opt_class()];
-  [(PXStoryPPTPerformer *)self _runScrollSubtestOnScrollView:v8 containedInTungstenView:v7 completion:v6];
+  completionCopy = completion;
+  ppt_scrollView = [element ppt_scrollView];
+  v7 = [ppt_scrollView px_ancestorViewOfClass:objc_opt_class()];
+  [(PXStoryPPTPerformer *)self _runScrollSubtestOnScrollView:ppt_scrollView containedInTungstenView:v7 completion:completionCopy];
 }
 
-- (void)enumerateFeedConfigurationsUsingBlock:(id)a3 completion:(id)a4
+- (void)enumerateFeedConfigurationsUsingBlock:(id)block completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   +[PXStorySettings sharedInstance];
-  v9 = [objc_claimAutoreleasedReturnValue() currentFeedPPTPreset];
-  v10 = [(PXStoryPPTPerformer *)self testOptions];
-  v11 = [PXFeedPPTConfiguration configurationsForPreset:v9 testOptions:v10];
+  currentFeedPPTPreset = [objc_claimAutoreleasedReturnValue() currentFeedPPTPreset];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v11 = [PXFeedPPTConfiguration configurationsForPreset:currentFeedPPTPreset testOptions:testOptions];
 
-  v12 = [(PXStoryPPTPerformer *)self currentTestName];
-  v13 = [(PXStoryPPTPerformer *)self delegate];
-  [v13 startedTest:v12];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  [delegate startedTest:currentTestName];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 1;
-  v14 = [(PXStoryPPTPerformer *)self configurationIterator];
+  configurationIterator = [(PXStoryPPTPerformer *)self configurationIterator];
 
-  if (v14)
+  if (configurationIterator)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:612 description:@"nested configuration enumeration isn't supported yet"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:612 description:@"nested configuration enumeration isn't supported yet"];
   }
 
   [v11 count];
   v11;
-  v7;
-  v13;
-  v12;
-  v8;
+  blockCopy;
+  delegate;
+  currentTestName;
+  completionCopy;
   PXIterateAsynchronously();
 }
 
@@ -310,18 +310,18 @@ uint64_t __72__PXStoryPPTPerformer_enumerateFeedConfigurationsUsingBlock_complet
   return [*(a1 + 32) stop];
 }
 
-- (void)_produceTimelineForViewConfiguration:(id)a3 recipeManagerWithProducedRecipe:(id)a4 initialCompletionHandler:(id)a5 finalCompletionHandler:(id)a6
+- (void)_produceTimelineForViewConfiguration:(id)configuration recipeManagerWithProducedRecipe:(id)recipe initialCompletionHandler:(id)handler finalCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v31 = a5;
-  v32 = a6;
-  v12 = [v10 configuration];
-  v13 = [v12 timelineProducer];
-  v14 = v13;
-  if (v13)
+  configurationCopy = configuration;
+  recipeCopy = recipe;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  configuration = [configurationCopy configuration];
+  timelineProducer = [configuration timelineProducer];
+  v14 = timelineProducer;
+  if (timelineProducer)
   {
-    v15 = v13;
+    v15 = timelineProducer;
   }
 
   else
@@ -331,18 +331,18 @@ uint64_t __72__PXStoryPPTPerformer_enumerateFeedConfigurationsUsingBlock_complet
 
   v16 = v15;
 
-  v17 = [[PXStoryResourcesDataSourceManager alloc] initWithRecipeManager:v11];
+  v17 = [[PXStoryResourcesDataSourceManager alloc] initWithRecipeManager:recipeCopy];
   v18 = [PXStoryStyleManager alloc];
-  v19 = [v12 errorReporter];
-  v20 = [(PXStoryStyleManager *)v18 initWithRecipeManager:v11 errorReporter:v19];
+  errorReporter = [configuration errorReporter];
+  v20 = [(PXStoryStyleManager *)v18 initWithRecipeManager:recipeCopy errorReporter:errorReporter];
 
   v21 = [PXStoryTimelineSpecManager alloc];
-  v22 = [v10 extendedTraitCollection];
-  v23 = [(PXStoryTimelineSpecManager *)v21 initWithExtendedTraitCollection:v22 configuration:v12];
+  extendedTraitCollection = [configurationCopy extendedTraitCollection];
+  v23 = [(PXStoryTimelineSpecManager *)v21 initWithExtendedTraitCollection:extendedTraitCollection configuration:configuration];
 
   v24 = [PXStoryTimelineManager alloc];
-  v25 = [v12 errorReporter];
-  v26 = [(PXStoryTimelineManager *)v24 initWithTimelineProducer:v16 resourcesDataSourceManager:v17 styleManager:v20 specManager:v23 loadingCoordinator:0 errorReporter:v25 options:0 paperTrailOptions:0];
+  errorReporter2 = [configuration errorReporter];
+  v26 = [(PXStoryTimelineManager *)v24 initWithTimelineProducer:v16 resourcesDataSourceManager:v17 styleManager:v20 specManager:v23 loadingCoordinator:0 errorReporter:errorReporter2 options:0 paperTrailOptions:0];
 
   [(PXStoryPPTPerformer *)self currentTestTimeout];
   v28 = v27;
@@ -359,10 +359,10 @@ uint64_t __72__PXStoryPPTPerformer_enumerateFeedConfigurationsUsingBlock_complet
   v35[2] = __140__PXStoryPPTPerformer__produceTimelineForViewConfiguration_recipeManagerWithProducedRecipe_initialCompletionHandler_finalCompletionHandler___block_invoke;
   v35[3] = &unk_1E7742848;
   v38 = v42;
-  v29 = v31;
+  v29 = handlerCopy;
   v36 = v29;
   v39 = v40;
-  v37 = v32;
+  v37 = completionHandlerCopy;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __140__PXStoryPPTPerformer__produceTimelineForViewConfiguration_recipeManagerWithProducedRecipe_initialCompletionHandler_finalCompletionHandler___block_invoke_2;
@@ -416,10 +416,10 @@ void __140__PXStoryPPTPerformer__produceTimelineForViewConfiguration_recipeManag
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)runTimelineProductionTestWithViewConfiguration:(id)a3 completion:(id)a4
+- (void)runTimelineProductionTestWithViewConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   [(PXStoryPPTPerformer *)self currentTestName];
   objc_claimAutoreleasedReturnValue();
   [(PXStoryPPTPerformer *)self currentTestIterations];
@@ -429,8 +429,8 @@ void __140__PXStoryPPTPerformer__produceTimelineForViewConfiguration_recipeManag
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v8[3] = 0;
-  v6;
-  v7;
+  configurationCopy;
+  completionCopy;
   PXIterateAsynchronously();
 }
 
@@ -551,13 +551,13 @@ uint64_t __81__PXStoryPPTPerformer_runTimelineProductionTestWithViewConfiguratio
   }
 }
 
-- (void)_requestRecipeForViewConfiguration:(id)a3 resultHandler:(id)a4
+- (void)_requestRecipeForViewConfiguration:(id)configuration resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = [PXStoryRecipeManager alloc];
-  v9 = [v6 configuration];
-  v10 = [(PXStoryRecipeManager *)v8 initWithConfiguration:v9];
+  configuration = [configurationCopy configuration];
+  v10 = [(PXStoryRecipeManager *)v8 initWithConfiguration:configuration];
 
   [(PXStoryPPTPerformer *)self currentTestTimeout];
   v12 = v11;
@@ -587,9 +587,9 @@ uint64_t __81__PXStoryPPTPerformer_runTimelineProductionTestWithViewConfiguratio
   v17[2] = __72__PXStoryPPTPerformer__requestRecipeForViewConfiguration_resultHandler___block_invoke_3;
   v17[3] = &unk_1E7744A38;
   v18 = v10;
-  v19 = v7;
+  v19 = handlerCopy;
   v20 = v26;
-  v15 = v7;
+  v15 = handlerCopy;
   v16 = v10;
   dispatch_group_notify(v14, MEMORY[0x1E69E96A0], v17);
 
@@ -627,26 +627,26 @@ void __72__PXStoryPPTPerformer__requestRecipeForViewConfiguration_resultHandler_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)runRecipeProductionTestWithViewConfiguration:(id)a3 completion:(id)a4
+- (void)runRecipeProductionTestWithViewConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXStoryPPTPerformer *)self resultsAggregate];
-  v9 = [(PXStoryPPTPerformer *)self configurationName];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  resultsAggregate = [(PXStoryPPTPerformer *)self resultsAggregate];
+  configurationName = [(PXStoryPPTPerformer *)self configurationName];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PXStoryPPTPerformer_runRecipeProductionTestWithViewConfiguration_completion___block_invoke;
   v14[3] = &unk_1E7742758;
   v19 = v10;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v6;
-  v11 = v6;
-  v12 = v9;
-  v13 = v8;
-  [(PXStoryPPTPerformer *)self _requestRecipeForViewConfiguration:v7 resultHandler:v14];
+  v15 = resultsAggregate;
+  v16 = configurationName;
+  selfCopy = self;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = configurationName;
+  v13 = resultsAggregate;
+  [(PXStoryPPTPerformer *)self _requestRecipeForViewConfiguration:configurationCopy resultHandler:v14];
 }
 
 void __79__PXStoryPPTPerformer_runRecipeProductionTestWithViewConfiguration_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -697,29 +697,29 @@ void __79__PXStoryPPTPerformer_runRecipeProductionTestWithViewConfiguration_comp
   [v8 addValue:1 metric:v11 forMeasure:*(a1 + 40) configuration:v10];
 }
 
-- (void)_exportWithTestElement:(id)a3 atResolution:(CGSize)a4 completion:(id)a5
+- (void)_exportWithTestElement:(id)element atResolution:(CGSize)resolution completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = a3;
+  height = resolution.height;
+  width = resolution.width;
+  completionCopy = completion;
+  elementCopy = element;
   v11 = objc_alloc_init(PXStoryExportVideoOptions);
   [(PXStoryExportVideoOptions *)v11 setFrameRate:30];
   [(PXStoryExportVideoOptions *)v11 setResolution:width, height];
   v12 = objc_alloc_init(PXStoryExportManager);
   [(PXStoryExportManager *)v12 setQualityOfService:25];
-  v13 = [v10 storyView];
+  storyView = [elementCopy storyView];
 
-  v14 = [v13 viewModel];
-  v15 = [v14 mainConfiguration];
-  v16 = [v15 copy];
+  viewModel = [storyView viewModel];
+  mainConfiguration = [viewModel mainConfiguration];
+  v16 = [mainConfiguration copy];
 
   [v16 setSongsProducerKind:1];
   v17 = [[PXStoryExportConfiguration alloc] initWithConfiguration:v16 videoOptions:v11];
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(PXStoryPPTPerformer *)self currentTestName];
-  v20 = [(PXStoryPPTPerformer *)self configurationName];
-  v21 = [v18 stringWithFormat:@"%@-%@.mov", v19, v20];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  configurationName = [(PXStoryPPTPerformer *)self configurationName];
+  v21 = [v18 stringWithFormat:@"%@-%@.mov", currentTestName, configurationName];
 
   v22 = MEMORY[0x1E695DFF8];
   v23 = NSTemporaryDirectory();
@@ -733,8 +733,8 @@ void __79__PXStoryPPTPerformer_runRecipeProductionTestWithViewConfiguration_comp
   v29[3] = &unk_1E774ACE8;
   v29[4] = self;
   v30 = v25;
-  v31 = v9;
-  v26 = v9;
+  v31 = completionCopy;
+  v26 = completionCopy;
   v27 = v25;
   v28 = [(PXStoryExportManager *)v12 requestExportWithDestinationURL:v27 configuration:v17 initialSongResource:0 progressHandler:0 completionHandler:v29];
 }
@@ -792,14 +792,14 @@ LABEL_5:
   [v11 removeItemAtPath:v10 error:0];
 }
 
-- (void)runExportTestWithElement:(id)a3 completion:(id)a4
+- (void)runExportTestWithElement:(id)element completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXStoryPPTPerformer *)self delegate];
-  v9 = [(PXStoryPPTPerformer *)self currentTestName];
-  v10 = [(PXStoryPPTPerformer *)self testOptions];
-  v11 = [v10 objectForKeyedSubscript:@"exportOrientation"];
+  elementCopy = element;
+  completionCopy = completion;
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v11 = [testOptions objectForKeyedSubscript:@"exportOrientation"];
 
   v12 = [v11 isEqualToString:@"landscape"];
   if (v12)
@@ -822,22 +822,22 @@ LABEL_5:
     v14 = 1080.0;
   }
 
-  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:v6];
+  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:elementCopy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__PXStoryPPTPerformer_runExportTestWithElement_completion___block_invoke;
   v19[3] = &unk_1E77426E0;
   v19[4] = self;
-  v20 = v6;
+  v20 = elementCopy;
   v24 = v14;
   v25 = v13;
-  v21 = v8;
-  v22 = v9;
-  v23 = v7;
-  v15 = v7;
-  v16 = v9;
-  v17 = v8;
-  v18 = v6;
+  v21 = delegate;
+  v22 = currentTestName;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = currentTestName;
+  v17 = delegate;
+  v18 = elementCopy;
   [(PXStoryPPTPerformer *)self _installPlaybackReadyToPlayHandler:v19];
 }
 
@@ -881,48 +881,48 @@ void __59__PXStoryPPTPerformer_runExportTestWithElement_completion___block_invok
   }
 }
 
-- (id)_tungstenViewFromStoryPlayerTestElement:(id)a3
+- (id)_tungstenViewFromStoryPlayerTestElement:(id)element
 {
-  v3 = [a3 storyView];
-  v4 = [v3 tungstenView];
+  storyView = [element storyView];
+  tungstenView = [storyView tungstenView];
 
-  return v4;
+  return tungstenView;
 }
 
-- (void)runScrollingWithTestElement:(id)a3 completion:(id)a4
+- (void)runScrollingWithTestElement:(id)element completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PXStoryPPTPerformer *)self _pausePlaybackWithTestElement:v7];
-  v9 = [(PXStoryPPTPerformer *)self _tungstenViewFromStoryPlayerTestElement:v7];
+  completionCopy = completion;
+  elementCopy = element;
+  [(PXStoryPPTPerformer *)self _pausePlaybackWithTestElement:elementCopy];
+  v9 = [(PXStoryPPTPerformer *)self _tungstenViewFromStoryPlayerTestElement:elementCopy];
 
   v8 = [(PXStoryPPTPerformer *)self _mainScrollViewInTungstenView:v9];
-  [(PXStoryPPTPerformer *)self _runScrollSubtestOnScrollView:v8 containedInTungstenView:v9 completion:v6];
+  [(PXStoryPPTPerformer *)self _runScrollSubtestOnScrollView:v8 containedInTungstenView:v9 completion:completionCopy];
 }
 
-- (void)_skipToSegmentWithTestElement:(id)a3 direction:(int64_t)a4 completion:(id)a5
+- (void)_skipToSegmentWithTestElement:(id)element direction:(int64_t)direction completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 0;
-  v10 = [(PXStoryPPTPerformer *)self _viewModelForPlayerTestElement:v8];
+  v10 = [(PXStoryPPTPerformer *)self _viewModelForPlayerTestElement:elementCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__PXStoryPPTPerformer__skipToSegmentWithTestElement_direction_completion___block_invoke;
   v15[3] = &unk_1E77426B8;
   v15[4] = v16;
-  v15[5] = a4;
+  v15[5] = direction;
   [v10 performChanges:v15];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__PXStoryPPTPerformer__skipToSegmentWithTestElement_direction_completion___block_invoke_2;
   v12[3] = &unk_1E77463F8;
-  v13 = v9;
+  v13 = completionCopy;
   v14 = v16;
-  v11 = v9;
+  v11 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
   _Block_object_dispose(v16, 8);
@@ -935,18 +935,18 @@ uint64_t __74__PXStoryPPTPerformer__skipToSegmentWithTestElement_direction_compl
   return result;
 }
 
-- (void)_runScrubbingSubtestWithTestElement:(id)a3 direction:(int64_t)a4 subtestName:(id)a5 completion:(id)a6
+- (void)_runScrubbingSubtestWithTestElement:(id)element direction:(int64_t)direction subtestName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  elementCopy = element;
+  nameCopy = name;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v11[3] = 0;
-  v9;
-  v8;
-  v10;
+  nameCopy;
+  elementCopy;
+  completionCopy;
   PXIterateAsynchronously();
 }
 
@@ -1010,19 +1010,19 @@ uint64_t __92__PXStoryPPTPerformer__runScrubbingSubtestWithTestElement_direction
   }
 }
 
-- (void)_runScrubbingSubtestsWithTestElement:(id)a3 completion:(id)a4
+- (void)_runScrubbingSubtestsWithTestElement:(id)element completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__PXStoryPPTPerformer__runScrubbingSubtestsWithTestElement_completion___block_invoke;
   v10[3] = &unk_1E7742640;
-  v11 = v6;
-  v12 = v7;
+  v11 = elementCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = elementCopy;
+  v9 = completionCopy;
   [(PXStoryPPTPerformer *)self _runScrubbingSubtestWithTestElement:v8 direction:1 subtestName:@"SkipNext-Latency" completion:v10];
 }
 
@@ -1039,32 +1039,32 @@ uint64_t __71__PXStoryPPTPerformer__runScrubbingSubtestsWithTestElement_completi
   }
 }
 
-- (void)runScrubbingTestWithElement:(id)a3 completion:(id)a4
+- (void)runScrubbingTestWithElement:(id)element completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXStoryPPTPerformer *)self delegate];
-  v9 = [(PXStoryPPTPerformer *)self currentTestName];
-  if (v6)
+  elementCopy = element;
+  completionCopy = completion;
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  if (elementCopy)
   {
-    v10 = [(PXStoryPPTPerformer *)self currentTestIterations];
-    [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:v6];
+    currentTestIterations = [(PXStoryPPTPerformer *)self currentTestIterations];
+    [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:elementCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__PXStoryPPTPerformer_runScrubbingTestWithElement_completion___block_invoke;
     v11[3] = &unk_1E7743080;
     v11[4] = self;
-    v12 = v6;
-    v13 = v8;
-    v14 = v9;
-    v16 = v10;
-    v15 = v7;
+    v12 = elementCopy;
+    v13 = delegate;
+    v14 = currentTestName;
+    v16 = currentTestIterations;
+    v15 = completionCopy;
     [(PXStoryPPTPerformer *)self _installPlaybackReadyToPlayHandler:v11];
   }
 
   else
   {
-    [v8 failedTest:v9 withFailureFormat:@"Missing PXStoryPlayerTestElement."];
+    [delegate failedTest:currentTestName withFailureFormat:@"Missing PXStoryPlayerTestElement."];
   }
 }
 
@@ -1156,50 +1156,50 @@ uint64_t __62__PXStoryPPTPerformer_runScrubbingTestWithElement_completion___bloc
   return [*(a1 + 32) stop];
 }
 
-- (void)setObservedModel:(id)a3
+- (void)setObservedModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   observedModel = self->_observedModel;
-  if (observedModel != v5)
+  if (observedModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXStoryModel *)observedModel unregisterChangeObserver:self context:ObservedModelObservationContext];
-    objc_storeStrong(&self->_observedModel, a3);
+    objc_storeStrong(&self->_observedModel, model);
     [(PXStoryModel *)self->_observedModel registerChangeObserver:self context:ObservedModelObservationContext];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
 - (void)_callPlaybackEndHandlerIfNeeded
 {
-  v3 = [(PXStoryPPTPerformer *)self observedModel];
-  v4 = [v3 isAtPlaybackEnd];
+  observedModel = [(PXStoryPPTPerformer *)self observedModel];
+  isAtPlaybackEnd = [observedModel isAtPlaybackEnd];
 
-  if (v4)
+  if (isAtPlaybackEnd)
   {
-    v5 = [(PXStoryPPTPerformer *)self playbackEndHandler];
-    if (v5)
+    playbackEndHandler = [(PXStoryPPTPerformer *)self playbackEndHandler];
+    if (playbackEndHandler)
     {
-      v6 = v5;
+      v6 = playbackEndHandler;
       [(PXStoryPPTPerformer *)self setPlaybackEndHandler:0];
       v6[2](v6);
-      v5 = v6;
+      playbackEndHandler = v6;
     }
   }
 }
 
-- (void)_installPlaybackEndHandler:(id)a3
+- (void)_installPlaybackEndHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXStoryPPTPerformer *)self playbackEndHandler];
+  handlerCopy = handler;
+  playbackEndHandler = [(PXStoryPPTPerformer *)self playbackEndHandler];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __50__PXStoryPPTPerformer__installPlaybackEndHandler___block_invoke;
   v11 = &unk_1E77425C8;
-  v12 = v5;
-  v13 = v4;
-  v6 = v4;
-  v7 = v5;
+  v12 = playbackEndHandler;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = playbackEndHandler;
   [(PXStoryPPTPerformer *)self setPlaybackEndHandler:&v8];
   [(PXStoryPPTPerformer *)self _callPlaybackEndHandlerIfNeeded:v8];
 }
@@ -1219,44 +1219,44 @@ uint64_t __50__PXStoryPPTPerformer__installPlaybackEndHandler___block_invoke(uin
 
 - (void)_callPlaybackReadyToPlayHandlerIfNeeded
 {
-  v3 = [(PXStoryPPTPerformer *)self observedModel];
-  v4 = [v3 readinessStatus];
+  observedModel = [(PXStoryPPTPerformer *)self observedModel];
+  readinessStatus = [observedModel readinessStatus];
 
-  if (v4 == 3)
+  if (readinessStatus == 3)
   {
-    v5 = [(PXStoryPPTPerformer *)self playbackReadyToPlayHandler];
-    if (v5)
+    playbackReadyToPlayHandler = [(PXStoryPPTPerformer *)self playbackReadyToPlayHandler];
+    if (playbackReadyToPlayHandler)
     {
-      v6 = v5;
+      v6 = playbackReadyToPlayHandler;
       [(PXStoryPPTPerformer *)self setPlaybackReadyToPlayHandler:0];
       v6[2](v6);
-      v5 = v6;
+      playbackReadyToPlayHandler = v6;
     }
   }
 }
 
-- (void)_installPlaybackReadyToPlayHandler:(id)a3
+- (void)_installPlaybackReadyToPlayHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PXStoryPPTPerformer *)self testElement];
+  handlerCopy = handler;
+  testElement = [(PXStoryPPTPerformer *)self testElement];
 
-  if (!v6)
+  if (!testElement)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = NSStringFromSelector(a2);
     v11 = NSStringFromSelector(sel__preparePlaybackTestWithElement_);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:228 description:{@"%@ called without previous call to %@", v10, v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:228 description:{@"%@ called without previous call to %@", v10, v11}];
   }
 
-  v7 = [(PXStoryPPTPerformer *)self testElement];
+  testElement2 = [(PXStoryPPTPerformer *)self testElement];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PXStoryPPTPerformer__installPlaybackReadyToPlayHandler___block_invoke;
   v12[3] = &unk_1E774C2F0;
   v12[4] = self;
-  v13 = v5;
-  v8 = v5;
-  [v7 installViewDidLoadHandler:v12];
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  [testElement2 installViewDidLoadHandler:v12];
 }
 
 void __58__PXStoryPPTPerformer__installPlaybackReadyToPlayHandler___block_invoke(uint64_t a1)
@@ -1287,17 +1287,17 @@ uint64_t __58__PXStoryPPTPerformer__installPlaybackReadyToPlayHandler___block_in
   return v3();
 }
 
-- (void)_preparePlaybackTestWithElement:(id)a3
+- (void)_preparePlaybackTestWithElement:(id)element
 {
-  v4 = a3;
-  [(PXStoryPPTPerformer *)self setTestElement:v4];
+  elementCopy = element;
+  [(PXStoryPPTPerformer *)self setTestElement:elementCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PXStoryPPTPerformer__preparePlaybackTestWithElement___block_invoke;
   v6[3] = &unk_1E774C620;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = elementCopy;
+  v5 = elementCopy;
   [v5 installViewDidLoadHandler:v6];
 }
 
@@ -1308,26 +1308,26 @@ void __55__PXStoryPPTPerformer__preparePlaybackTestWithElement___block_invoke(ui
   [*(a1 + 32) setObservedModel:v2];
 }
 
-- (void)runPlaybackTestWithElement:(id)a3 completion:(id)a4
+- (void)runPlaybackTestWithElement:(id)element completion:(id)completion
 {
-  v6 = a4;
-  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:a3];
-  v7 = [(PXStoryPPTPerformer *)self currentTestName];
+  completionCopy = completion;
+  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:element];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
   v8 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:@"Playback"];
-  v9 = [(PXStoryPPTPerformer *)self delegate];
+  delegate = [(PXStoryPPTPerformer *)self delegate];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__PXStoryPPTPerformer_runPlaybackTestWithElement_completion___block_invoke;
   v14[3] = &unk_1E77425A0;
-  v15 = v9;
-  v16 = v7;
-  v17 = self;
+  v15 = delegate;
+  v16 = currentTestName;
+  selfCopy = self;
   v18 = v8;
-  v19 = v6;
-  v10 = v6;
+  v19 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  v12 = v7;
-  v13 = v9;
+  v12 = currentTestName;
+  v13 = delegate;
   [(PXStoryPPTPerformer *)self _installPlaybackReadyToPlayHandler:v14];
 }
 
@@ -1361,13 +1361,13 @@ uint64_t __61__PXStoryPPTPerformer_runPlaybackTestWithElement_completion___block
   return v2();
 }
 
-- (void)runPlaybackStartTestWithElement:(id)a3 completion:(id)a4
+- (void)runPlaybackStartTestWithElement:(id)element completion:(id)completion
 {
-  v6 = a4;
-  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:a3];
-  v7 = [(PXStoryPPTPerformer *)self currentTestName];
-  v8 = [(PXStoryPPTPerformer *)self delegate];
-  [v8 startedTest:v7];
+  completionCopy = completion;
+  [(PXStoryPPTPerformer *)self _preparePlaybackTestWithElement:element];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  [delegate startedTest:currentTestName];
   [(PXStoryPPTPerformer *)self startSubtestWithName:@"PlaybackStart" metrics:&unk_1F19116E0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1375,12 +1375,12 @@ uint64_t __61__PXStoryPPTPerformer_runPlaybackTestWithElement_completion___block
   v12[3] = &unk_1E77425A0;
   v12[4] = self;
   v13 = @"PlaybackStart";
-  v14 = v8;
-  v15 = v7;
-  v16 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = v8;
+  v14 = delegate;
+  v15 = currentTestName;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = currentTestName;
+  v11 = delegate;
   [(PXStoryPPTPerformer *)self _installPlaybackReadyToPlayHandler:v12];
 }
 
@@ -1397,102 +1397,102 @@ void __66__PXStoryPPTPerformer_runPlaybackStartTestWithElement_completion___bloc
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)_configurationSpecificSubtestName:(id)a3
+- (id)_configurationSpecificSubtestName:(id)name
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 alloc];
-  v7 = [(PXStoryPPTPerformer *)self configurationName];
-  v8 = [v6 initWithFormat:@"%@-%@", v5, v7];
+  configurationName = [(PXStoryPPTPerformer *)self configurationName];
+  v8 = [v6 initWithFormat:@"%@-%@", nameCopy, configurationName];
 
   return v8;
 }
 
-- (void)finishSubtestWithName:(id)a3
+- (void)finishSubtestWithName:(id)name
 {
-  v11 = a3;
-  v4 = [(PXStoryPPTPerformer *)self delegate];
-  v5 = [(PXStoryPPTPerformer *)self currentTestName];
-  [v4 finishedSubTest:v11 forTest:v5];
+  nameCopy = name;
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  [delegate finishedSubTest:nameCopy forTest:currentTestName];
 
-  v6 = [(PXStoryPPTPerformer *)self configurationIterator];
-  v7 = [v6 count];
+  configurationIterator = [(PXStoryPPTPerformer *)self configurationIterator];
+  v7 = [configurationIterator count];
 
   if (v7 < 2)
   {
-    v8 = [(PXStoryPPTPerformer *)self delegate];
-    v9 = [(PXStoryPPTPerformer *)self currentTestName];
-    [v8 finishedSubTest:v11 forTest:v9];
+    delegate2 = [(PXStoryPPTPerformer *)self delegate];
+    currentTestName2 = [(PXStoryPPTPerformer *)self currentTestName];
+    [delegate2 finishedSubTest:nameCopy forTest:currentTestName2];
   }
 
   else
   {
-    v8 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:v11];
-    v9 = [(PXStoryPPTPerformer *)self delegate];
-    v10 = [(PXStoryPPTPerformer *)self currentTestName];
-    [v9 finishedSubTest:v8 forTest:v10];
+    delegate2 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:nameCopy];
+    currentTestName2 = [(PXStoryPPTPerformer *)self delegate];
+    currentTestName3 = [(PXStoryPPTPerformer *)self currentTestName];
+    [currentTestName2 finishedSubTest:delegate2 forTest:currentTestName3];
   }
 }
 
-- (void)startSubtestWithName:(id)a3 metrics:(id)a4
+- (void)startSubtestWithName:(id)name metrics:(id)metrics
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(PXStoryPPTPerformer *)self delegate];
-  v8 = [(PXStoryPPTPerformer *)self currentTestName];
-  [v7 startedSubTest:v14 forTest:v8 withMetrics:v6];
+  nameCopy = name;
+  metricsCopy = metrics;
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  [delegate startedSubTest:nameCopy forTest:currentTestName withMetrics:metricsCopy];
 
-  v9 = [(PXStoryPPTPerformer *)self configurationIterator];
-  v10 = [v9 count];
+  configurationIterator = [(PXStoryPPTPerformer *)self configurationIterator];
+  v10 = [configurationIterator count];
 
   if (v10 < 2)
   {
-    v11 = [(PXStoryPPTPerformer *)self delegate];
-    v12 = [(PXStoryPPTPerformer *)self currentTestName];
-    [v11 startedSubTest:v14 forTest:v12 withMetrics:v6];
+    delegate2 = [(PXStoryPPTPerformer *)self delegate];
+    currentTestName2 = [(PXStoryPPTPerformer *)self currentTestName];
+    [delegate2 startedSubTest:nameCopy forTest:currentTestName2 withMetrics:metricsCopy];
   }
 
   else
   {
-    v11 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:v14];
-    v12 = [(PXStoryPPTPerformer *)self delegate];
-    v13 = [(PXStoryPPTPerformer *)self currentTestName];
-    [v12 startedSubTest:v11 forTest:v13 withMetrics:v6];
+    delegate2 = [(PXStoryPPTPerformer *)self _configurationSpecificSubtestName:nameCopy];
+    currentTestName2 = [(PXStoryPPTPerformer *)self delegate];
+    currentTestName3 = [(PXStoryPPTPerformer *)self currentTestName];
+    [currentTestName2 startedSubTest:delegate2 forTest:currentTestName3 withMetrics:metricsCopy];
   }
 }
 
-- (void)enumerateStoryConfigurationsUsingBlock:(id)a3 completion:(id)a4
+- (void)enumerateStoryConfigurationsUsingBlock:(id)block completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 currentPPTPreset];
-  v11 = [v9 currentPPTSubpreset];
-  v12 = [(PXStoryPPTPerformer *)self testOptions];
-  v13 = [PXStoryPPTConfiguration configurationsForPreset:v10 subpreset:v11 testOptions:v12];
+  currentPPTPreset = [v9 currentPPTPreset];
+  currentPPTSubpreset = [v9 currentPPTSubpreset];
+  testOptions = [(PXStoryPPTPerformer *)self testOptions];
+  v13 = [PXStoryPPTConfiguration configurationsForPreset:currentPPTPreset subpreset:currentPPTSubpreset testOptions:testOptions];
 
-  v14 = [(PXStoryPPTPerformer *)self currentTestName];
-  v15 = [(PXStoryPPTPerformer *)self delegate];
-  [v15 startedTest:v14];
+  currentTestName = [(PXStoryPPTPerformer *)self currentTestName];
+  delegate = [(PXStoryPPTPerformer *)self delegate];
+  [delegate startedTest:currentTestName];
 
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = 1;
-  v16 = [(PXStoryPPTPerformer *)self configurationIterator];
+  configurationIterator = [(PXStoryPPTPerformer *)self configurationIterator];
 
-  if (v16)
+  if (configurationIterator)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:115 description:@"nested configuration enumeration isn't supported yet"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:115 description:@"nested configuration enumeration isn't supported yet"];
   }
 
   [v13 count];
   v13;
-  v18 = v14;
-  v7;
+  v18 = currentTestName;
+  blockCopy;
   v18;
-  v8;
+  completionCopy;
   PXIterateAsynchronously();
 }
 
@@ -1591,10 +1591,10 @@ uint64_t __73__PXStoryPPTPerformer_enumerateStoryConfigurationsUsingBlock_comple
   if (resultsAggregate)
   {
     v4 = resultsAggregate;
-    v6 = [(PXStoryPPTPerformer *)self extraResults];
-    v5 = [(PXStoryPPTResultsAggregate *)v4 extraResultsDictionaryRepresentation];
+    extraResults = [(PXStoryPPTPerformer *)self extraResults];
+    extraResultsDictionaryRepresentation = [(PXStoryPPTResultsAggregate *)v4 extraResultsDictionaryRepresentation];
 
-    [v6 addEntriesFromDictionary:v5];
+    [extraResults addEntriesFromDictionary:extraResultsDictionaryRepresentation];
   }
 }
 
@@ -1613,18 +1613,18 @@ uint64_t __73__PXStoryPPTPerformer_enumerateStoryConfigurationsUsingBlock_comple
   return resultsAggregate;
 }
 
-- (PXStoryPPTPerformer)initWithDelegate:(id)a3 testOptions:(id)a4
+- (PXStoryPPTPerformer)initWithDelegate:(id)delegate testOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = PXStoryPPTPerformer;
   v8 = [(PXStoryPPTPerformer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_testOptions, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_testOptions, options);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     extraResults = v9->_extraResults;
     v9->_extraResults = v10;
@@ -1635,8 +1635,8 @@ uint64_t __73__PXStoryPPTPerformer_enumerateStoryConfigurationsUsingBlock_comple
 
 - (PXStoryPPTPerformer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXStoryPPTPerformer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTPerformer.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXStoryPPTPerformer init]"}];
 
   abort();
 }

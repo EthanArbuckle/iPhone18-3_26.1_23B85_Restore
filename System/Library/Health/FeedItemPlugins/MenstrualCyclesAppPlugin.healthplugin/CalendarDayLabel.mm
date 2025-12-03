@@ -1,6 +1,6 @@
 @interface CalendarDayLabel
-- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
@@ -13,26 +13,26 @@
   v9.super_class = type metadata accessor for CalendarDayLabel();
   v2 = v9.receiver;
   [(CalendarDayLabel *)&v9 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [v2 layer];
-    v6 = [v4 screen];
-    [v6 scale];
+    v4 = window;
+    layer = [v2 layer];
+    screen = [v4 screen];
+    [screen scale];
     v8 = v7;
 
-    [v5 setRasterizationScale_];
+    [layer setRasterizationScale_];
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DEAB85C();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16CalendarDayLabel_label;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin16CalendarDayLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

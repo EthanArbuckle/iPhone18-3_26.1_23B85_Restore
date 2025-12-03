@@ -1,23 +1,23 @@
 @interface DADClientGroupExpansionResponseDelegate
-- (DADClientGroupExpansionResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 principalPath:(id)a5;
+- (DADClientGroupExpansionResponseDelegate)initWithAccountID:(id)d client:(id)client principalPath:(id)path;
 - (void)dealloc;
-- (void)finishWithError:(id)a3;
-- (void)groupExpansionFinishedWithResults:(id)a3 error:(id)a4;
+- (void)finishWithError:(id)error;
+- (void)groupExpansionFinishedWithResults:(id)results error:(id)error;
 - (void)performRequest;
 @end
 
 @implementation DADClientGroupExpansionResponseDelegate
 
-- (DADClientGroupExpansionResponseDelegate)initWithAccountID:(id)a3 client:(id)a4 principalPath:(id)a5
+- (DADClientGroupExpansionResponseDelegate)initWithAccountID:(id)d client:(id)client principalPath:(id)path
 {
-  v9 = a5;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = DADClientGroupExpansionResponseDelegate;
-  v10 = [(DADClientDelegate *)&v13 initWithAccountID:a3 client:a4];
+  v10 = [(DADClientDelegate *)&v13 initWithAccountID:d client:client];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_principalPath, a5);
+    objc_storeStrong(&v10->_principalPath, path);
   }
 
   return v11;
@@ -31,10 +31,10 @@
   [(DADClientDelegate *)&v3 dealloc];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
@@ -45,24 +45,24 @@
       *v18 = 138412546;
       *&v18[4] = objc_opt_class();
       *&v18[12] = 2112;
-      *&v18[14] = v4;
+      *&v18[14] = errorCopy;
       v7 = *&v18[4];
       _os_log_impl(&dword_248524000, v5, v6, "[%@] finished with error %@", v18, 0x16u);
     }
 
-    v8 = [(DADClientDelegate *)self client];
-    v9 = [v8 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v9)
+    if (rawConnection)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v10 setObject:*MEMORY[0x277D03C08] forKey:*MEMORY[0x277D03C88]];
-      v11 = [(DADClientDelegate *)self delegateID];
-      [v10 setObject:v11 forKey:*MEMORY[0x277D03C10]];
+      delegateID = [(DADClientDelegate *)self delegateID];
+      [v10 setObject:delegateID forKey:*MEMORY[0x277D03C10]];
 
-      if (v4)
+      if (errorCopy)
       {
-        v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+        v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
         [v10 setObject:v12 forKey:*MEMORY[0x277D03B40]];
       }
 
@@ -73,12 +73,12 @@
       }
 
       v14 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v9, v14);
+      xpc_connection_send_message(rawConnection, v14);
     }
 
     v15 = [(DADClientDelegate *)self client:*v18];
-    v16 = [(DADClientDelegate *)self delegateID];
-    [v15 delegateWithIDIsGoingAway:v16];
+    delegateID2 = [(DADClientDelegate *)self delegateID];
+    [v15 delegateWithIDIsGoingAway:delegateID2];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -90,8 +90,8 @@
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[DADAgentManager sharedManager];
-    v4 = [(DADClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(DADClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -104,9 +104,9 @@
       v7 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v6, v7))
       {
-        v8 = [(DADClientDelegate *)self accountID];
+        accountID2 = [(DADClientDelegate *)self accountID];
         v11 = 138543362;
-        v12 = v8;
+        v12 = accountID2;
         _os_log_impl(&dword_248524000, v6, v7, "Could not get an account with the ID [%{public}@]", &v11, 0xCu);
       }
 
@@ -118,18 +118,18 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)groupExpansionFinishedWithResults:(id)a3 error:(id)a4
+- (void)groupExpansionFinishedWithResults:(id)results error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && !-[DADisableableObject isDisabled](self, "isDisabled") && [v9 count])
+  resultsCopy = results;
+  errorCopy = error;
+  if (resultsCopy && !-[DADisableableObject isDisabled](self, "isDisabled") && [resultsCopy count])
   {
-    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9];
+    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:resultsCopy];
     resultsData = self->_resultsData;
     self->_resultsData = v7;
   }
 
-  [(DADClientGroupExpansionResponseDelegate *)self finishWithError:v6];
+  [(DADClientGroupExpansionResponseDelegate *)self finishWithError:errorCopy];
 }
 
 @end

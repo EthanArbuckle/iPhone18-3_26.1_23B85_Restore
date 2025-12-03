@@ -1,37 +1,37 @@
 @interface MADImageRemoveBackgroundMaskTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (MADImageRemoveBackgroundMaskTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (MADImageRemoveBackgroundMaskTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 @end
 
 @implementation MADImageRemoveBackgroundMaskTask
 
-- (MADImageRemoveBackgroundMaskTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (MADImageRemoveBackgroundMaskTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
+  requestCopy = request;
+  assetCopy = asset;
   v14.receiver = self;
   v14.super_class = MADImageRemoveBackgroundMaskTask;
-  v11 = [(MADImageRemoveBackgroundTask *)&v14 initWithSignpostPayload:a5];
+  v11 = [(MADImageRemoveBackgroundTask *)&v14 initWithSignpostPayload:payload];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_request, a3);
-    objc_storeStrong(&v12->_imageAsset, a4);
+    objc_storeStrong(&v11->_request, request);
+    objc_storeStrong(&v12->_imageAsset, asset);
   }
 
   return v12;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -60,9 +60,9 @@
   v152[1] = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v3 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+    identifier = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = identifier;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[RemoveBackgroundMask][%@] running...", &buf, 0xCu);
   }
 
@@ -72,9 +72,9 @@
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+      identifier2 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = identifier2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[RemoveBackgroundMask][%@] Resetting cached mask state", &buf, 0xCu);
     }
 
@@ -87,9 +87,9 @@ LABEL_12:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v10 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+        identifier3 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v10;
+        *(&buf + 4) = identifier3;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Image loading failed", &buf, 0xCu);
       }
 
@@ -109,9 +109,9 @@ LABEL_12:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v16 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+        identifier4 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v16;
+        *(&buf + 4) = identifier4;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Task request was canceled", &buf, 0xCu);
       }
 
@@ -129,8 +129,8 @@ LABEL_12:
 
     if ((v4 & 1) == 0)
     {
-      v22 = [(VCPMADServiceImageAsset *)self->_imageAsset isSensitive];
-      v23 = v22 == 0;
+      isSensitive = [(VCPMADServiceImageAsset *)self->_imageAsset isSensitive];
+      v23 = isSensitive == 0;
 
       if (v23)
       {
@@ -139,9 +139,9 @@ LABEL_12:
         {
           if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+            identifier5 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v25;
+            *(&buf + 4) = identifier5;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RemoveBackgroundMask][%@] Skipping for ineligible image", &buf, 0xCu);
           }
 
@@ -156,9 +156,9 @@ LABEL_12:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v26 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+        identifier6 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v26;
+        *(&buf + 4) = identifier6;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Task request was canceled", &buf, 0xCu);
       }
 
@@ -179,16 +179,16 @@ LABEL_12:
     __asm { FMOV            V0.2D, #1.0 }
 
     v146 = _Q0;
-    v37 = [(MADRemoveBackgroundMaskRequest *)self->_request imageType];
-    if (v37 && (-[MADRemoveBackgroundMaskRequest imageType](self->_request, "imageType"), v9 = objc_claimAutoreleasedReturnValue(), [v9 integerValue] == 1))
+    imageType = [(MADRemoveBackgroundMaskRequest *)self->_request imageType];
+    if (imageType && (-[MADRemoveBackgroundMaskRequest imageType](self->_request, "imageType"), v9 = objc_claimAutoreleasedReturnValue(), [v9 integerValue] == 1))
     {
     }
 
     else
     {
-      v38 = [(VCPMADServiceImageAsset *)self->_imageAsset isScreenshot];
-      v39 = v38;
-      if (v37)
+      isScreenshot = [(VCPMADServiceImageAsset *)self->_imageAsset isScreenshot];
+      v39 = isScreenshot;
+      if (imageType)
       {
 
         if (!v39)
@@ -197,7 +197,7 @@ LABEL_12:
         }
       }
 
-      else if (!v38)
+      else if (!isScreenshot)
       {
         goto LABEL_50;
       }
@@ -242,25 +242,25 @@ LABEL_50:
     v47 = v46;
     if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
     {
-      v48 = [(MADImageRemoveBackgroundTask *)self signpostPayload];
+      signpostPayload = [(MADImageRemoveBackgroundTask *)self signpostPayload];
       *v126 = 138412290;
-      v127 = v48;
+      v127 = signpostPayload;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v47, OS_SIGNPOST_INTERVAL_BEGIN, v45, "VNImageRequestHandler_init", "%@", v126, 0xCu);
     }
 
     v49 = objc_alloc(MEMORY[0x1E69845B8]);
     v50 = v125;
     v51 = v124;
-    v52 = [v120 session];
-    v118 = [v49 initWithCVPixelBuffer:v50 orientation:v51 options:MEMORY[0x1E695E0F8] session:v52];
+    session = [v120 session];
+    v118 = [v49 initWithCVPixelBuffer:v50 orientation:v51 options:MEMORY[0x1E695E0F8] session:session];
 
     v53 = VCPSignPostLog();
     v54 = v53;
     if (v45 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v53))
     {
-      v55 = [(MADImageRemoveBackgroundTask *)self signpostPayload];
+      signpostPayload2 = [(MADImageRemoveBackgroundTask *)self signpostPayload];
       *v126 = 138412290;
-      v127 = v55;
+      v127 = signpostPayload2;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v54, OS_SIGNPOST_INTERVAL_END, v45, "VNImageRequestHandler_init", "%@", v126, 0xCu);
     }
 
@@ -268,9 +268,9 @@ LABEL_50:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v56 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+        identifier7 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
         *v126 = 138412290;
-        v127 = v56;
+        v127 = identifier7;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Task request was canceled", v126, 0xCu);
       }
 
@@ -288,50 +288,50 @@ LABEL_50:
 
     else
     {
-      v62 = [(MADImageRemoveBackgroundTask *)self generateMaskWithRequestHandler:v118 regionOfInterest:&location error:buf, v146];
-      v63 = v62;
-      if (v62)
+      v146 = [(MADImageRemoveBackgroundTask *)self generateMaskWithRequestHandler:v118 regionOfInterest:&location error:buf, v146];
+      v63 = v146;
+      if (v146)
       {
-        v116 = CVPixelBufferGetIOSurface([v62 instanceMask]);
+        v116 = CVPixelBufferGetIOSurface([v146 instanceMask]);
         if (v116)
         {
-          v117 = [MEMORY[0x1E695DF90] dictionary];
-          v64 = [v63 allInstances];
-          v65 = [v64 firstIndex];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          allInstances = [v63 allInstances];
+          firstIndex = [allInstances firstIndex];
 
-          if (v65 == 0x7FFFFFFFFFFFFFFFLL)
+          if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
           {
 LABEL_64:
             v66 = self->_request;
             v67 = objc_alloc(MEMORY[0x1E69AE3A0]);
-            v68 = [v63 allInstances];
+            allInstances2 = [v63 allInstances];
             v69 = buf;
             v70 = v146;
             [v63 confidence];
             v72 = v71;
-            v73 = [(VCPMADServiceImageAsset *)self->_imageAsset animatedStickerScore];
+            animatedStickerScore = [(VCPMADServiceImageAsset *)self->_imageAsset animatedStickerScore];
             LODWORD(v74) = v72;
-            v75 = [v67 initWithInstances:v68 instanceMaskSurface:v116 perInstanceMaskSurfaces:v117 sourceRegionOfInterest:v73 confidence:v69 animatedStickerScore:{v70, v74}];
+            v75 = [v67 initWithInstances:allInstances2 instanceMaskSurface:v116 perInstanceMaskSurfaces:dictionary sourceRegionOfInterest:animatedStickerScore confidence:v69 animatedStickerScore:{v70, v74}];
             v134 = v75;
             v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134 count:1];
             [(MADRemoveBackgroundMaskRequest *)v66 setResults:v76];
 
             if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
-              v77 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+              identifier8 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
               [(VCPMADServiceImageAsset *)self->_imageAsset resolution];
               v79 = v78;
               [(VCPMADServiceImageAsset *)self->_imageAsset resolution];
               v81 = v80;
-              v82 = [(VCPMADServiceImageAsset *)self->_imageAsset orientation];
+              orientation = [(VCPMADServiceImageAsset *)self->_imageAsset orientation];
               *v126 = 138413058;
-              v127 = v77;
+              v127 = identifier8;
               v128 = 1024;
               v129 = v79;
               v130 = 1024;
               v131 = v81;
               v132 = 1024;
-              v133 = v82;
+              v133 = orientation;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RemoveBackgroundMask][%@] Caching image handler (resolution %dx%d, orientation %d)", v126, 0x1Eu);
             }
 
@@ -342,9 +342,9 @@ LABEL_64:
             [v119 reset];
             if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
             {
-              v85 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+              identifier9 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
               *v126 = 138412290;
-              v127 = v85;
+              v127 = identifier9;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[RemoveBackgroundMask][%@] complete", v126, 0xCu);
             }
           }
@@ -353,7 +353,7 @@ LABEL_64:
           {
             while (![(MADImageRemoveBackgroundTask *)self canceled])
             {
-              v92 = [MEMORY[0x1E696AC90] indexSetWithIndex:v65];
+              v92 = [MEMORY[0x1E696AC90] indexSetWithIndex:firstIndex];
               obj = location;
               v93 = [v63 createMaskForInstances:v92 error:&obj];
               objc_storeStrong(&location, obj);
@@ -363,11 +363,11 @@ LABEL_64:
               {
                 if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
-                  v103 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+                  identifier10 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
                   *v126 = 138412546;
-                  v127 = v103;
+                  v127 = identifier10;
                   v128 = 1024;
-                  v129 = v65;
+                  v129 = firstIndex;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Failed to obtain mask %d from Vision", v126, 0x12u);
                 }
 
@@ -388,11 +388,11 @@ LABEL_64:
               {
                 if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
-                  v109 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+                  identifier11 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
                   *v126 = 138412546;
-                  v127 = v109;
+                  v127 = identifier11;
                   v128 = 1024;
-                  v129 = v65;
+                  v129 = firstIndex;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Failed to obtain mask %d from Vision", v126, 0x12u);
                 }
 
@@ -410,14 +410,14 @@ LABEL_94:
                 goto LABEL_95;
               }
 
-              v95 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v65];
-              [v117 setObject:v94 forKeyedSubscript:v95];
+              v95 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:firstIndex];
+              [dictionary setObject:v94 forKeyedSubscript:v95];
 
-              v96 = [v63 allInstances];
-              v65 = [v96 indexGreaterThanIndex:v65];
+              allInstances3 = [v63 allInstances];
+              firstIndex = [allInstances3 indexGreaterThanIndex:firstIndex];
 
               CF<__CVBuffer *>::~CF(&pixelBuffer);
-              if (v65 == 0x7FFFFFFFFFFFFFFFLL)
+              if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
               {
                 goto LABEL_64;
               }
@@ -425,9 +425,9 @@ LABEL_94:
 
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v97 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+              identifier12 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
               *v126 = 138412290;
-              v127 = v97;
+              v127 = identifier12;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Task request was canceled", v126, 0xCu);
             }
 
@@ -448,17 +448,17 @@ LABEL_94:
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
-            v87 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+            identifier13 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
             *v126 = 138412290;
-            v127 = v87;
+            v127 = identifier13;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[RemoveBackgroundMask][%@] Failed to obtain instance mask from Vision", v126, 0xCu);
           }
 
           v88 = self->_request;
           v89 = MEMORY[0x1E696ABC0];
           v141 = *MEMORY[0x1E696A578];
-          v117 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to obtain image from Vision"];
-          v142 = v117;
+          dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to obtain image from Vision"];
+          v142 = dictionary;
           v90 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
           v91 = [v89 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v90];
           [(MADRemoveBackgroundMaskRequest *)v88 setError:v91];
@@ -485,9 +485,9 @@ LABEL_95:
     goto LABEL_98;
   }
 
-  v5 = [(VCPMADServiceImageAsset *)self->_imageAsset isSensitive];
-  v6 = v5;
-  if (!v5 || ![v5 BOOLValue])
+  isSensitive2 = [(VCPMADServiceImageAsset *)self->_imageAsset isSensitive];
+  v6 = isSensitive2;
+  if (!isSensitive2 || ![isSensitive2 BOOLValue])
   {
 
     goto LABEL_12;
@@ -495,9 +495,9 @@ LABEL_95:
 
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
+    identifier14 = [(VCPMADServiceImageAsset *)self->_imageAsset identifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = identifier14;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[RemoveBackgroundMask][%@] Skipping for ineligible image", &buf, 0xCu);
   }
 

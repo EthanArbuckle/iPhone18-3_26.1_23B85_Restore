@@ -1,16 +1,16 @@
 @interface HDCloudSyncPushReferencesOperation
-- (HDCloudSyncPushReferencesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (uint64_t)_updateReferencesToSynchronizedWithError:(void *)a1;
+- (HDCloudSyncPushReferencesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (uint64_t)_updateReferencesToSynchronizedWithError:(void *)error;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPushReferencesOperation
 
-- (HDCloudSyncPushReferencesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPushReferencesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v12.receiver = self;
   v12.super_class = HDCloudSyncPushReferencesOperation;
-  v4 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:configuration cloudState:state];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -31,14 +31,14 @@
 
 - (void)main
 {
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 cachedCloudState];
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 primaryCKContainer];
-  v8 = [v7 containerIdentifier];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   v45 = 0;
-  v9 = [v4 attachmentZoneForContainerID:v8 error:&v45];
+  v9 = [cachedCloudState attachmentZoneForContainerID:containerIdentifier error:&v45];
   v10 = v45;
   attachmentZone = self->_attachmentZone;
   self->_attachmentZone = v9;
@@ -58,13 +58,13 @@
   {
     if (!v12)
     {
-      v14 = [(HDCloudSyncOperation *)self configuration];
-      v15 = [v14 repository];
-      v16 = [v15 profileType];
+      configuration3 = [(HDCloudSyncOperation *)self configuration];
+      repository2 = [configuration3 repository];
+      profileType = [repository2 profileType];
 
-      if (v16 != 1)
+      if (profileType != 1)
       {
-        v38 = self;
+        selfCopy4 = self;
         v39 = 1;
         v40 = 0;
         goto LABEL_12;
@@ -73,20 +73,20 @@
 
     v44 = 0;
     v17 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-    v18 = [(HDCloudSyncOperation *)self configuration];
-    v19 = [v18 accessibilityAssertion];
-    v20 = [v17 contextWithAccessibilityAssertion:v19];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion = [configuration4 accessibilityAssertion];
+    v20 = [v17 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-    v21 = [(HDCloudSyncOperation *)self configuration];
-    v22 = [v21 repository];
-    v23 = [v22 profile];
-    v24 = [v23 database];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository3 = [configuration5 repository];
+    profile = [repository3 profile];
+    database = [profile database];
     v47 = MEMORY[0x277D85DD0];
     v48 = 3221225472;
     v49 = __86__HDCloudSyncPushReferencesOperation__generateReferenceAndAttachmentRecordsWithError___block_invoke;
     v50 = &unk_278616048;
-    v51 = self;
-    v25 = [v24 performTransactionWithContext:v20 error:&v44 block:&v47 inaccessibilityHandler:0];
+    selfCopy3 = self;
+    v25 = [database performTransactionWithContext:v20 error:&v44 block:&v47 inaccessibilityHandler:0];
 
     v26 = v44;
     if ((v25 & 1) == 0)
@@ -106,24 +106,24 @@ LABEL_20:
     v28 = [(NSMutableArray *)referencesToPush hk_map:v43];
     v29 = [v28 mutableCopy];
 
-    v30 = [(NSMutableSet *)self->_attachmentRecordsToPush allObjects];
-    [v29 addObjectsFromArray:v30];
+    allObjects = [(NSMutableSet *)self->_attachmentRecordsToPush allObjects];
+    [v29 addObjectsFromArray:allObjects];
 
     v31 = v29;
     if ([v31 count])
     {
       v32 = [HDCloudSyncModifyRecordsOperation alloc];
-      v33 = [(HDCloudSyncOperation *)self configuration];
-      v34 = [(HDCloudSyncOperation *)self configuration];
-      v35 = [v34 repository];
-      v36 = [v35 primaryCKContainer];
-      v37 = [(HDCloudSyncModifyRecordsOperation *)v32 initWithConfiguration:v33 container:v36 recordsToSave:v31 recordIDsToDelete:0];
+      configuration6 = [(HDCloudSyncOperation *)self configuration];
+      configuration7 = [(HDCloudSyncOperation *)self configuration];
+      repository4 = [configuration7 repository];
+      primaryCKContainer2 = [repository4 primaryCKContainer];
+      v37 = [(HDCloudSyncModifyRecordsOperation *)v32 initWithConfiguration:configuration6 container:primaryCKContainer2 recordsToSave:v31 recordIDsToDelete:0];
 
       v47 = MEMORY[0x277D85DD0];
       v48 = 3221225472;
       v49 = __73__HDCloudSyncPushReferencesOperation__pushToCloudKitAndFinishForRecords___block_invoke;
       v50 = &unk_278613088;
-      v51 = self;
+      selfCopy3 = self;
       [(HDCloudSyncOperation *)v37 setOnError:&v47];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
@@ -155,11 +155,11 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v38 = self;
+  selfCopy4 = self;
   v39 = 0;
   v40 = v10;
 LABEL_12:
-  [(HDCloudSyncOperation *)v38 finishWithSuccess:v39 error:v40];
+  [(HDCloudSyncOperation *)selfCopy4 finishWithSuccess:v39 error:v40];
 LABEL_21:
 }
 
@@ -420,28 +420,28 @@ uint64_t __86__HDCloudSyncPushReferencesOperation__generateReferenceAndAttachmen
   return v4;
 }
 
-- (uint64_t)_updateReferencesToSynchronizedWithError:(void *)a1
+- (uint64_t)_updateReferencesToSynchronizedWithError:(void *)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
   v4 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-  v5 = [a1 configuration];
-  v6 = [v5 accessibilityAssertion];
-  v7 = [v4 contextWithAccessibilityAssertion:v6];
+  configuration = [error configuration];
+  accessibilityAssertion = [configuration accessibilityAssertion];
+  v7 = [v4 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-  v8 = [a1 configuration];
-  v9 = [v8 repository];
-  v10 = [v9 profile];
-  v11 = [v10 database];
+  configuration2 = [error configuration];
+  repository = [configuration2 repository];
+  profile = [repository profile];
+  database = [profile database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__HDCloudSyncPushReferencesOperation__updateReferencesToSynchronizedWithError___block_invoke;
   v14[3] = &unk_278616048;
-  v14[4] = a1;
-  v12 = [v11 performTransactionWithContext:v7 error:a2 block:v14 inaccessibilityHandler:0];
+  v14[4] = error;
+  v12 = [database performTransactionWithContext:v7 error:a2 block:v14 inaccessibilityHandler:0];
 
   return v12;
 }

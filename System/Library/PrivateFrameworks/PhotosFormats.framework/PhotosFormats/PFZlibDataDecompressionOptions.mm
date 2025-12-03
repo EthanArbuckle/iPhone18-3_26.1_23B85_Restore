@@ -1,21 +1,21 @@
 @interface PFZlibDataDecompressionOptions
 + (id)defaultOptions;
-- (void)setCreateBuffer:(id)a3;
-- (void)setGrowData:(id)a3;
+- (void)setCreateBuffer:(id)buffer;
+- (void)setGrowData:(id)data;
 @end
 
 @implementation PFZlibDataDecompressionOptions
 
-- (void)setGrowData:(id)a3
+- (void)setGrowData:(id)data
 {
-  self->_growData = MEMORY[0x1B8C64C40](a3, a2);
+  self->_growData = MEMORY[0x1B8C64C40](data, a2);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCreateBuffer:(id)a3
+- (void)setCreateBuffer:(id)buffer
 {
-  self->_createBuffer = MEMORY[0x1B8C64C40](a3, a2);
+  self->_createBuffer = MEMORY[0x1B8C64C40](buffer, a2);
 
   MEMORY[0x1EEE66BB8]();
 }

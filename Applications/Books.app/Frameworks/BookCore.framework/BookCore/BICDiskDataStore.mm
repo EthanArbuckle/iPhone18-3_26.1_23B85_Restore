@@ -1,26 +1,26 @@
 @interface BICDiskDataStore
-- (BICDiskDataStore)initWithCachePath:(id)a3;
-- (BOOL)canStoreDescribedImage:(id)a3;
-- (CGImage)_readCachedImageFromPath:(id)a3;
-- (id)_filePathFromEntryLocation:(id)a3;
-- (id)_writeCachedImage:(CGImage *)a3 unprocessed:(BOOL)a4 toRelativePath:(id)a5;
-- (int64_t)costFor:(signed __int16)a3;
-- (void)_clean:(id)a3;
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5;
-- (void)_removeFileAtPath:(id)a3;
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3;
-- (void)deleteImageForEntryLocation:(id)a3;
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4;
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5;
-- (void)setCachePath:(id)a3;
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5;
+- (BICDiskDataStore)initWithCachePath:(id)path;
+- (BOOL)canStoreDescribedImage:(id)image;
+- (CGImage)_readCachedImageFromPath:(id)path;
+- (id)_filePathFromEntryLocation:(id)location;
+- (id)_writeCachedImage:(CGImage *)image unprocessed:(BOOL)unprocessed toRelativePath:(id)path;
+- (int64_t)costFor:(signed __int16)for;
+- (void)_clean:(id)_clean;
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion;
+- (void)_removeFileAtPath:(id)path;
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block;
+- (void)deleteImageForEntryLocation:(id)location;
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler;
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion;
+- (void)setCachePath:(id)path;
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler;
 @end
 
 @implementation BICDiskDataStore
 
-- (BICDiskDataStore)initWithCachePath:(id)a3
+- (BICDiskDataStore)initWithCachePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = BICDiskDataStore;
   v5 = [(BICDiskDataStore *)&v18 init];
@@ -42,7 +42,7 @@
 
     [(BICWorkQueue *)v5->_readWorkQueue setIdentifier:@"DiskDataStore-Read/Write"];
     objc_storeStrong(&v5->_writeWorkQueue, v5->_readWorkQueue);
-    v15 = [v4 stringByAppendingPathComponent:@"BICDiskDataStore"];
+    v15 = [pathCopy stringByAppendingPathComponent:@"BICDiskDataStore"];
     [(BICDiskDataStore *)v5 setCachePath:v15];
     v5->_deviceSupportsASTC = MGGetBoolAnswer();
     v16 = CGImageDestinationCopyTypeIdentifiers();
@@ -52,23 +52,23 @@
   return v5;
 }
 
-- (void)setCachePath:(id)a3
+- (void)setCachePath:(id)path
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
     cachePath = self->_cachePath;
     p_cachePath = &self->_cachePath;
-    if (![(NSString *)cachePath isEqualToString:v5])
+    if (![(NSString *)cachePath isEqualToString:pathCopy])
     {
       v8 = +[NSFileManager defaultManager];
-      v9 = [v8 fileExistsAtPath:v5];
+      v9 = [v8 fileExistsAtPath:pathCopy];
 
       if ((v9 & 1) == 0)
       {
         v10 = +[NSFileManager defaultManager];
         v14 = 0;
-        v11 = [v10 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v14];
+        v11 = [v10 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v14];
         v12 = v14;
 
         if ((v11 & 1) == 0)
@@ -81,27 +81,27 @@
         }
       }
 
-      objc_storeStrong(p_cachePath, a3);
+      objc_storeStrong(p_cachePath, path);
     }
   }
 }
 
-- (BOOL)canStoreDescribedImage:(id)a3
+- (BOOL)canStoreDescribedImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  if (v4)
+  imageCopy = image;
+  identifier = [imageCopy identifier];
+  if (identifier)
   {
-    v5 = [v3 image];
-    if ([v5 CGImage])
+    image = [imageCopy image];
+    if ([image CGImage])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v3 filePath];
-      v6 = [v7 length] != 0;
+      filePath = [imageCopy filePath];
+      v6 = [filePath length] != 0;
     }
   }
 
@@ -113,15 +113,15 @@
   return v6;
 }
 
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  handlerCopy = handler;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = entriesCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -136,17 +136,17 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 imageDescription];
+        imageDescription = [v11 imageDescription];
         objc_initWeak(&location, self);
-        v13 = [(BICDiskDataStore *)self writeWorkQueue];
+        writeWorkQueue = [(BICDiskDataStore *)self writeWorkQueue];
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_17C920;
         v15[3] = &unk_2CEF38;
         objc_copyWeak(&v17, &location);
         v15[4] = v11;
-        v16 = v7;
-        [v13 addWorkItemWithPriority:v12 description:@"DiskDataStore delete removed entries" block:v15];
+        v16 = handlerCopy;
+        [writeWorkQueue addWorkItemWithPriority:imageDescription description:@"DiskDataStore delete removed entries" block:v15];
 
         objc_destroyWeak(&v17);
         objc_destroyWeak(&location);
@@ -159,57 +159,57 @@
   }
 }
 
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [BICDescribedImage describedImageWithPriority:3];
-  v6 = [(BICDiskDataStore *)self writeWorkQueue];
+  writeWorkQueue = [(BICDiskDataStore *)self writeWorkQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_17CB8C;
   v8[3] = &unk_2CEF60;
-  v9 = v4;
-  v7 = v4;
-  [v6 addWorkItemWithPriority:v5 description:@"DiskDataStore after all ops" block:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [writeWorkQueue addWorkItemWithPriority:v5 description:@"DiskDataStore after all ops" block:v8];
 }
 
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [BICDescribedImage describedImageFromImageEntry:v8];
+  entryCopy = entry;
+  requestCopy = request;
+  completionCopy = completion;
+  v11 = [BICDescribedImage describedImageFromImageEntry:entryCopy];
   [v11 setExpiry:0];
-  v12 = [v8 dataStoreInformation];
-  if (v12 && (-[BICDiskDataStore cachePath](self, "cachePath"), v13 = objc_claimAutoreleasedReturnValue(), [v13 stringByAppendingPathComponent:v12], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
+  dataStoreInformation = [entryCopy dataStoreInformation];
+  if (dataStoreInformation && (-[BICDiskDataStore cachePath](self, "cachePath"), v13 = objc_claimAutoreleasedReturnValue(), [v13 stringByAppendingPathComponent:dataStoreInformation], v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
   {
     [v11 imageSize];
     v16 = v15;
     v18 = v17;
-    [v9 imageSize];
+    [requestCopy imageSize];
     v20 = 1;
     if (v16 == v21 && v18 == v19)
     {
-      v22 = [v11 processingOptions];
-      v20 = v22 != [v9 processingOptions];
+      processingOptions = [v11 processingOptions];
+      v20 = processingOptions != [requestCopy processingOptions];
     }
 
-    if (([v9 persistanceOptions] & 2) == 0 || v20)
+    if (([requestCopy persistanceOptions] & 2) == 0 || v20)
     {
-      [BICCacheStats logOperation:BICCacheStatsOperationDiskReadQueueStart[0] forRequest:v9];
+      [BICCacheStats logOperation:BICCacheStatsOperationDiskReadQueueStart[0] forRequest:requestCopy];
       objc_initWeak(&location, self);
-      v27 = [(BICDiskDataStore *)self readWorkQueue];
+      readWorkQueue = [(BICDiskDataStore *)self readWorkQueue];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_17CEF4;
       v29[3] = &unk_2CEF88;
-      v30 = v9;
+      v30 = requestCopy;
       objc_copyWeak(&v34, &location);
       v28 = v14;
       v31 = v28;
       v32 = v11;
-      v33 = v10;
-      [v27 addWorkItemWithPriority:v30 description:@"DiskDataStore read" block:v29];
+      v33 = completionCopy;
+      [readWorkQueue addWorkItemWithPriority:v30 description:@"DiskDataStore read" block:v29];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(&location);
@@ -218,7 +218,7 @@
     else
     {
       [v11 setFilePath:v14];
-      v23 = objc_retainBlock(v10);
+      v23 = objc_retainBlock(completionCopy);
       if (v23)
       {
         v36 = v11;
@@ -230,7 +230,7 @@
 
   else
   {
-    v25 = objc_retainBlock(v10);
+    v25 = objc_retainBlock(completionCopy);
     v26 = v25;
     if (v25)
     {
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)deleteImageForEntryLocation:(id)a3
+- (void)deleteImageForEntryLocation:(id)location
 {
-  v10 = [(BICDiskDataStore *)self _filePathFromEntryLocation:a3];
+  v10 = [(BICDiskDataStore *)self _filePathFromEntryLocation:location];
   v4 = [v10 stringByAppendingPathExtension:@"jpg"];
   v5 = [v10 stringByAppendingPathExtension:@"astc"];
   v6 = [v10 stringByAppendingPathExtension:@"heic"];
@@ -257,29 +257,29 @@
   [(BICDiskDataStore *)self _removeFileAtPath:v9];
 }
 
-- (id)_filePathFromEntryLocation:(id)a3
+- (id)_filePathFromEntryLocation:(id)location
 {
-  v4 = a3;
-  v5 = [BICDescribedImage identifierFromEntryLocation:v4];
-  v6 = [(BICDiskDataStore *)self cachePath];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  locationCopy = location;
+  v5 = [BICDescribedImage identifierFromEntryLocation:locationCopy];
+  cachePath = [(BICDiskDataStore *)self cachePath];
+  v7 = [cachePath stringByAppendingPathComponent:v5];
 
-  v8 = [v7 stringByAppendingPathComponent:v4];
+  v8 = [v7 stringByAppendingPathComponent:locationCopy];
 
   return v8;
 }
 
-- (void)_removeFileAtPath:(id)a3
+- (void)_removeFileAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:pathCopy];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
     v10 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v10];
+    v7 = [v6 removeItemAtPath:pathCopy error:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0)
@@ -298,11 +298,11 @@
   }
 }
 
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler
 {
-  v8 = a3;
-  v25 = a4;
-  v21 = a5;
+  entriesCopy = entries;
+  requestCopy = request;
+  handlerCopy = handler;
   v9 = dispatch_group_create();
   v22 = +[NSMutableArray array];
   v23 = +[NSMutableArray array];
@@ -310,7 +310,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = entriesCopy;
   v10 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v10)
   {
@@ -327,27 +327,27 @@
 
         v13 = *(*(&v40 + 1) + 8 * v12);
         dispatch_group_enter(v9);
-        v14 = [v13 imageDescription];
-        if ([(BICDiskDataStore *)self canStoreDescribedImage:v14])
+        imageDescription = [v13 imageDescription];
+        if ([(BICDiskDataStore *)self canStoreDescribedImage:imageDescription])
         {
           objc_initWeak(&location, self);
-          [v14 setPriority:3];
-          [BICCacheStats logOperation:BICCacheStatsOperationDiskWriteQueueStart[0] forRequest:v25];
-          v15 = [(BICDiskDataStore *)self writeWorkQueue];
+          [imageDescription setPriority:3];
+          [BICCacheStats logOperation:BICCacheStatsOperationDiskWriteQueueStart[0] forRequest:requestCopy];
+          writeWorkQueue = [(BICDiskDataStore *)self writeWorkQueue];
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
           v30[2] = sub_17D80C;
           v30[3] = &unk_2CEFB0;
-          v31 = v25;
-          v32 = self;
-          v16 = v14;
+          v31 = requestCopy;
+          selfCopy = self;
+          v16 = imageDescription;
           v33 = v16;
           v34 = v13;
           v35 = v23;
           v36 = v9;
           objc_copyWeak(&v38, &location);
           v37 = v22;
-          [v15 addWorkItemWithPriority:v16 description:@"DiskDataStore write" block:v30];
+          [writeWorkQueue addWorkItemWithPriority:v16 description:@"DiskDataStore write" block:v30];
 
           objc_destroyWeak(&v38);
           objc_destroyWeak(&location);
@@ -368,30 +368,30 @@
     while (v10);
   }
 
-  v17 = [(BICDiskDataStore *)self readQ];
+  readQ = [(BICDiskDataStore *)self readQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_17DEB8;
   block[3] = &unk_2CB128;
   v27 = v22;
   v28 = v23;
-  v29 = v21;
+  v29 = handlerCopy;
   v18 = v23;
   v19 = v22;
-  v20 = v21;
-  dispatch_group_notify(v9, v17, block);
+  v20 = handlerCopy;
+  dispatch_group_notify(v9, readQ, block);
 }
 
-- (int64_t)costFor:(signed __int16)a3
+- (int64_t)costFor:(signed __int16)for
 {
-  if (a3 != 1)
+  if (for != 1)
   {
     return 0;
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [(BICDiskDataStore *)self cachePath];
-  v6 = [v4 contentsOfDirectoryAtPath:v5 error:0];
+  cachePath = [(BICDiskDataStore *)self cachePath];
+  v6 = [v4 contentsOfDirectoryAtPath:cachePath error:0];
 
   v10 = 0;
   v11 = &v10;
@@ -410,11 +410,11 @@
   return v7;
 }
 
-- (CGImage)_readCachedImageFromPath:(id)a3
+- (CGImage)_readCachedImageFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   kdebug_trace();
-  v4 = [NSURL fileURLWithPath:v3];
+  v4 = [NSURL fileURLWithPath:pathCopy];
 
   if (qword_3461C0 != -1)
   {
@@ -422,8 +422,8 @@
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [v4 path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (!v7)
   {
@@ -437,11 +437,11 @@
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v4 path];
-  v10 = [v8 attributesOfItemAtPath:v9 error:0];
+  path2 = [v4 path];
+  v10 = [v8 attributesOfItemAtPath:path2 error:0];
 
-  v11 = [v10 fileSize];
-  [BICCacheStats addToCounter:kBICCacheStatsCounterDiskBytesRead[0] amount:v11 >> 10];
+  fileSize = [v10 fileSize];
+  [BICCacheStats addToCounter:kBICCacheStatsCounterDiskBytesRead[0] amount:fileSize >> 10];
   v12 = CGImageSourceCreateWithURL(v4, 0);
   if (!v12)
   {
@@ -480,60 +480,60 @@ LABEL_17:
   return v15;
 }
 
-- (id)_writeCachedImage:(CGImage *)a3 unprocessed:(BOOL)a4 toRelativePath:(id)a5
+- (id)_writeCachedImage:(CGImage *)image unprocessed:(BOOL)unprocessed toRelativePath:(id)path
 {
-  v7 = a5;
+  pathCopy = path;
   kdebug_trace();
-  if (a3)
+  if (image)
   {
     if (qword_3461F8 != -1)
     {
       sub_1ED868();
     }
 
-    v8 = [v7 pathExtension];
-    if ([v8 isEqualToString:@"heic"])
+    pathExtension = [pathCopy pathExtension];
+    if ([pathExtension isEqualToString:@"heic"])
     {
-      v9 = qword_3461D0;
+      identifier = qword_3461D0;
       v10 = qword_3461E8;
     }
 
-    else if ([v8 isEqualToString:@"astc"])
+    else if ([pathExtension isEqualToString:@"astc"])
     {
-      v9 = qword_3461C8;
+      identifier = qword_3461C8;
       v10 = qword_3461E0;
     }
 
-    else if ([v8 isEqualToString:@"png"])
+    else if ([pathExtension isEqualToString:@"png"])
     {
-      v9 = [UTTypePNG identifier];
+      identifier = [UTTypePNG identifier];
 
       v10 = 0;
     }
 
     else
     {
-      v9 = qword_3461D8;
+      identifier = qword_3461D8;
       v10 = qword_3461F0;
     }
 
-    v11 = [(BICDiskDataStore *)self cachePath];
-    v12 = [v11 stringByAppendingPathComponent:v7];
+    cachePath = [(BICDiskDataStore *)self cachePath];
+    v12 = [cachePath stringByAppendingPathComponent:pathCopy];
 
     v13 = [NSURL fileURLWithPath:v12];
-    v14 = CGImageDestinationCreateWithURL(v13, v9, 1uLL, 0);
+    v14 = CGImageDestinationCreateWithURL(v13, identifier, 1uLL, 0);
     if (v14)
     {
       v15 = v14;
-      CGImageDestinationAddImage(v14, a3, v10);
+      CGImageDestinationAddImage(v14, image, v10);
       CGImageDestinationFinalize(v15);
       CFRelease(v15);
       v16 = +[NSFileManager defaultManager];
-      v17 = [(__CFURL *)v13 path];
-      v18 = [v16 attributesOfItemAtPath:v17 error:0];
+      path = [(__CFURL *)v13 path];
+      v18 = [v16 attributesOfItemAtPath:path error:0];
 
-      v19 = [v18 fileSize];
-      [BICCacheStats addToCounter:kBICCacheStatsCounterDiskBytesWritten[0] amount:v19 >> 10];
+      fileSize = [v18 fileSize];
+      [BICCacheStats addToCounter:kBICCacheStatsCounterDiskBytesWritten[0] amount:fileSize >> 10];
     }
 
     else
@@ -548,8 +548,8 @@ LABEL_17:
 
   else
   {
-    v8 = BCImageCacheLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    pathExtension = BCImageCacheLog();
+    if (os_log_type_enabled(pathExtension, OS_LOG_TYPE_ERROR))
     {
       sub_1ED8E4();
     }
@@ -557,12 +557,12 @@ LABEL_17:
 
   kdebug_trace();
 
-  return v7;
+  return pathCopy;
 }
 
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -571,18 +571,18 @@ LABEL_17:
   }
 }
 
-- (void)_clean:(id)a3
+- (void)_clean:(id)_clean
 {
-  v4 = a3;
-  v8 = [(BICDiskDataStore *)self cachePath];
+  _cleanCopy = _clean;
+  cachePath = [(BICDiskDataStore *)self cachePath];
   cachePath = self->_cachePath;
   self->_cachePath = &stru_2D2930;
 
   v6 = +[NSFileManager defaultManager];
-  [v6 removeItemAtPath:v8 error:0];
+  [v6 removeItemAtPath:cachePath error:0];
 
-  [(BICDiskDataStore *)self setCachePath:v8];
-  v7 = objc_retainBlock(v4);
+  [(BICDiskDataStore *)self setCachePath:cachePath];
+  v7 = objc_retainBlock(_cleanCopy);
 
   if (v7)
   {

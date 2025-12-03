@@ -1,22 +1,22 @@
 @interface DBClimateOverlayController
 - (BOOL)isDeactivated;
 - (_TtC9DashBoard26DBClimateOverlayController)init;
-- (_TtC9DashBoard26DBClimateOverlayController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 climateScene:(id)a5 layoutEngine:(id)a6 environment:(id)a7;
-- (void)dockDidUpdateHidden:(BOOL)a3;
+- (_TtC9DashBoard26DBClimateOverlayController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame climateScene:(id)climateScene layoutEngine:(id)engine environment:(id)environment;
+- (void)dockDidUpdateHidden:(BOOL)hidden;
 - (void)invalidate;
-- (void)persistentElementsManager:(id)a3 didRequestElements:(id)a4;
-- (void)requestQuickControlWithZone:(id)a3;
+- (void)persistentElementsManager:(id)manager didRequestElements:(id)elements;
+- (void)requestQuickControlWithZone:(id)zone;
 - (void)resetAlwaysVisibleClimateWindowLevel;
 - (void)setAlwaysVisibleClimateWindowLevel;
-- (void)setIsDeactivated:(BOOL)a3;
-- (void)setPersistentElementsManager:(id)a3;
+- (void)setIsDeactivated:(BOOL)deactivated;
+- (void)setPersistentElementsManager:(id)manager;
 - (void)updateLayoutForCurrentViewArea;
-- (void)updatePersistentElements:(id)a3;
+- (void)updatePersistentElements:(id)elements;
 @end
 
 @implementation DBClimateOverlayController
 
-- (void)setPersistentElementsManager:(id)a3
+- (void)setPersistentElementsManager:(id)manager
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
@@ -24,23 +24,23 @@
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    DBPersistentElementsManager.addObserver(_:for:)(v8, 0);
+    managerCopy = manager;
+    selfCopy = self;
+    DBPersistentElementsManager.addObserver(_:for:)(selfCopy, 0);
   }
 }
 
-- (_TtC9DashBoard26DBClimateOverlayController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 climateScene:(id)a5 layoutEngine:(id)a6 environment:(id)a7
+- (_TtC9DashBoard26DBClimateOverlayController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame climateScene:(id)climateScene layoutEngine:(id)engine environment:(id)environment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
+  climateSceneCopy = climateScene;
+  engineCopy = engine;
   swift_unknownObjectRetain();
-  return DBClimateOverlayController.init(windowScene:windowFrame:climateScene:layoutEngine:environment:)(v13, v14, v15, x, y, width, height);
+  return DBClimateOverlayController.init(windowScene:windowFrame:climateScene:layoutEngine:environment:)(sceneCopy, climateSceneCopy, engineCopy, x, y, width, height);
 }
 
 - (BOOL)isDeactivated
@@ -50,13 +50,13 @@
   return *(self + v3);
 }
 
-- (void)setIsDeactivated:(BOOL)a3
+- (void)setIsDeactivated:(BOOL)deactivated
 {
-  v3 = a3;
+  deactivatedCopy = deactivated;
   v5 = OBJC_IVAR____TtC9DashBoard26DBClimateOverlayController_isDeactivated;
   swift_beginAccess();
-  *(self + v5) = v3;
-  if (v3)
+  *(self + v5) = deactivatedCopy;
+  if (deactivatedCopy)
   {
     v6 = 128;
   }
@@ -69,37 +69,37 @@
   [*(self + OBJC_IVAR____TtC9DashBoard26DBClimateOverlayController__climateViewController) updateWithDeactivationReasons_];
 }
 
-- (void)updatePersistentElements:(id)a3
+- (void)updatePersistentElements:(id)elements
 {
   v3 = *(self + OBJC_IVAR____TtC9DashBoard26DBClimateOverlayController__climateViewController);
   if (v3)
   {
-    v6 = a3;
-    v8 = self;
+    elementsCopy = elements;
+    selfCopy = self;
     v7 = v3;
-    v10.value.super.super.isa = a3;
+    v10.value.super.super.isa = elements;
     DBClimateViewController.update(persistentElements:)(v10);
   }
 }
 
 - (void)setAlwaysVisibleClimateWindowLevel
 {
-  v2 = self;
+  selfCopy = self;
   DBClimateOverlayController.setAlwaysVisibleClimateWindowLevel()();
 }
 
 - (void)resetAlwaysVisibleClimateWindowLevel
 {
   v2 = *(self + OBJC_IVAR____TtC9DashBoard26DBClimateOverlayController_climateWindow);
-  v3 = self;
+  selfCopy = self;
   [v2 setWindowLevel_];
 }
 
-- (void)requestQuickControlWithZone:(id)a3
+- (void)requestQuickControlWithZone:(id)zone
 {
   v4 = sub_248383960();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   DBClimateOverlayController.requestQuickControl(zone:)(v8);
@@ -107,7 +107,7 @@
 
 - (void)updateLayoutForCurrentViewArea
 {
-  v2 = self;
+  selfCopy = self;
   DBClimateOverlayController.updateLayoutForCurrentViewArea()();
 }
 
@@ -127,18 +127,18 @@
   }
 }
 
-- (void)dockDidUpdateHidden:(BOOL)a3
+- (void)dockDidUpdateHidden:(BOOL)hidden
 {
   v3 = *(self + OBJC_IVAR____TtC9DashBoard26DBClimateOverlayController__climateViewController);
   if (v3)
   {
-    v4 = a3;
-    v7 = self;
-    v5 = [v3 view];
-    if (v5)
+    hiddenCopy = hidden;
+    selfCopy = self;
+    view = [v3 view];
+    if (view)
     {
-      v6 = v5;
-      [v5 setHidden_];
+      v6 = view;
+      [view setHidden_];
     }
 
     else
@@ -148,12 +148,12 @@
   }
 }
 
-- (void)persistentElementsManager:(id)a3 didRequestElements:(id)a4
+- (void)persistentElementsManager:(id)manager didRequestElements:(id)elements
 {
   v6 = *((*MEMORY[0x277D85000] & *self) + 0x100);
-  v7 = a4;
-  v8 = self;
-  v6(a4);
+  elementsCopy = elements;
+  selfCopy = self;
+  v6(elements);
 }
 
 @end

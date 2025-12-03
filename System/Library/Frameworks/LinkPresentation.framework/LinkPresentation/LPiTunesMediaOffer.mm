@@ -1,25 +1,25 @@
 @interface LPiTunesMediaOffer
-+ (id)previewURLForOffer:(id)a3;
-+ (id)typeForOffer:(id)a3;
-- (LPiTunesMediaOffer)initWithDictionary:(id)a3;
++ (id)previewURLForOffer:(id)offer;
++ (id)typeForOffer:(id)offer;
+- (LPiTunesMediaOffer)initWithDictionary:(id)dictionary;
 @end
 
 @implementation LPiTunesMediaOffer
 
-- (LPiTunesMediaOffer)initWithDictionary:(id)a3
+- (LPiTunesMediaOffer)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = LPiTunesMediaOffer;
   v5 = [(LPiTunesMediaOffer *)&v12 init];
-  if (v5 && ([LPiTunesMediaOffer typeForOffer:v4], v6 = objc_claimAutoreleasedReturnValue(), type = v5->_type, v5->_type = v6, type, v5->_type))
+  if (v5 && ([LPiTunesMediaOffer typeForOffer:dictionaryCopy], v6 = objc_claimAutoreleasedReturnValue(), type = v5->_type, v5->_type = v6, type, v5->_type))
   {
-    v8 = [LPiTunesMediaOffer previewURLForOffer:v4];
+    v8 = [LPiTunesMediaOffer previewURLForOffer:dictionaryCopy];
     previewURL = v5->_previewURL;
     v5->_previewURL = v8;
 
-    v5->_hasAudio = [LPiTunesMediaOffer hasAudioForOffer:v4];
-    v5->_hasVideo = [LPiTunesMediaOffer hasVideoForOffer:v4];
+    v5->_hasAudio = [LPiTunesMediaOffer hasAudioForOffer:dictionaryCopy];
+    v5->_hasVideo = [LPiTunesMediaOffer hasVideoForOffer:dictionaryCopy];
     v10 = v5;
   }
 
@@ -31,11 +31,11 @@
   return v10;
 }
 
-+ (id)previewURLForOffer:(id)a3
++ (id)previewURLForOffer:(id)offer
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v3 = [v20 objectForKeyedSubscript:@"assets"];
+  offerCopy = offer;
+  v3 = [offerCopy objectForKeyedSubscript:@"assets"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 count])
   {
     v21 = 0u;
@@ -123,9 +123,9 @@
   return v18;
 }
 
-+ (id)typeForOffer:(id)a3
++ (id)typeForOffer:(id)offer
 {
-  v3 = [a3 objectForKeyedSubscript:@"type"];
+  v3 = [offer objectForKeyedSubscript:@"type"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = v3;

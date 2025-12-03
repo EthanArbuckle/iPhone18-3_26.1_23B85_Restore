@@ -1,25 +1,25 @@
 @interface SUUISignInSettingsGroupController
-- (id)_keyForSettingDescription:(id)a3;
-- (id)_settingDescriptionForKey:(id)a3;
+- (id)_keyForSettingDescription:(id)description;
+- (id)_settingDescriptionForKey:(id)key;
 - (id)_submitSettingDescription;
-- (id)valueForSettingDescription:(id)a3;
-- (void)_attemptSignInWithAccountName:(id)a3 password:(id)a4;
-- (void)_becomeFirstResponderWithKey:(id)a3;
+- (id)valueForSettingDescription:(id)description;
+- (void)_attemptSignInWithAccountName:(id)name password:(id)password;
+- (void)_becomeFirstResponderWithKey:(id)key;
 - (void)_resignFirstResponder;
-- (void)_signInFailed:(id)a3 error:(id)a4;
-- (void)_signInSuccess:(id)a3;
-- (void)_updateFieldsAuthenticating:(BOOL)a3;
+- (void)_signInFailed:(id)failed error:(id)error;
+- (void)_signInSuccess:(id)success;
+- (void)_updateFieldsAuthenticating:(BOOL)authenticating;
 - (void)_updateValidation;
-- (void)returnInSettingDescription:(id)a3;
-- (void)setValue:(id)a3 forSettingDescription:(id)a4;
-- (void)submitSettingDescription:(id)a3;
+- (void)returnInSettingDescription:(id)description;
+- (void)setValue:(id)value forSettingDescription:(id)description;
+- (void)submitSettingDescription:(id)description;
 @end
 
 @implementation SUUISignInSettingsGroupController
 
-- (void)returnInSettingDescription:(id)a3
+- (void)returnInSettingDescription:(id)description
 {
-  v4 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:a3];
+  v4 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:description];
   if ([v4 isEqualToString:@"accountName"])
   {
     [(SUUISignInSettingsGroupController *)self _becomeFirstResponderWithKey:@"password"];
@@ -35,31 +35,31 @@
   }
 }
 
-- (void)setValue:(id)a3 forSettingDescription:(id)a4
+- (void)setValue:(id)value forSettingDescription:(id)description
 {
-  v7 = a3;
-  v6 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:a4];
+  valueCopy = value;
+  v6 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:description];
   if (v6)
   {
-    [(SUUISignInSettingsGroupController *)self setValue:v7 forKey:v6];
+    [(SUUISignInSettingsGroupController *)self setValue:valueCopy forKey:v6];
   }
 
   [(SUUISignInSettingsGroupController *)self _updateValidation];
 }
 
-- (void)submitSettingDescription:(id)a3
+- (void)submitSettingDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(SUUISignInSettingsGroupController *)self _resignFirstResponder];
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_valid && objc_msgSend(v4, "fieldType") == 1)
+  if ([descriptionCopy isMemberOfClass:objc_opt_class()] && self->_valid && objc_msgSend(descriptionCopy, "fieldType") == 1)
   {
     [(SUUISignInSettingsGroupController *)self _attemptSignInWithAccountName:self->_accountName password:self->_password];
   }
 }
 
-- (id)valueForSettingDescription:(id)a3
+- (id)valueForSettingDescription:(id)description
 {
-  v4 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:a3];
+  v4 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:description];
   if (v4)
   {
     v5 = [(SUUISignInSettingsGroupController *)self valueForKey:v4];
@@ -73,20 +73,20 @@
   return v5;
 }
 
-- (void)_attemptSignInWithAccountName:(id)a3 password:(id)a4
+- (void)_attemptSignInWithAccountName:(id)name password:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  passwordCopy = password;
   [(SUUISignInSettingsGroupController *)self _updateFieldsAuthenticating:1];
   v8 = objc_alloc_init(MEMORY[0x277CF0178]);
   v9 = objc_alloc_init(MEMORY[0x277CF0380]);
   [v9 setServiceType:2];
-  [v9 setUsername:v6];
-  [v9 _setPassword:v7];
+  [v9 setUsername:nameCopy];
+  [v9 _setPassword:passwordCopy];
   [v9 setIsUsernameEditable:0];
   [v9 setShouldAllowAppleIDCreation:0];
-  v10 = [(SUUISettingsGroupController *)self delegate];
-  v11 = [v10 owningViewControllerForSettingsGroupController:self];
+  delegate = [(SUUISettingsGroupController *)self delegate];
+  v11 = [delegate owningViewControllerForSettingsGroupController:self];
   [v9 setPresentingViewController:v11];
 
   objc_initWeak(&location, self);
@@ -95,7 +95,7 @@
   v13[2] = __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_password___block_invoke;
   v13[3] = &unk_2798F6558;
   objc_copyWeak(&v15, &location);
-  v12 = v6;
+  v12 = nameCopy;
   v14 = v12;
   [v8 authenticateWithContext:v9 completion:v13];
 
@@ -222,19 +222,19 @@ void __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_passw
   [v3 _updateFieldsAuthenticating:0];
 }
 
-- (void)_updateFieldsAuthenticating:(BOOL)a3
+- (void)_updateFieldsAuthenticating:(BOOL)authenticating
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_authenticating != a3)
+  if (self->_authenticating != authenticating)
   {
-    v3 = a3;
-    self->_authenticating = a3;
+    authenticatingCopy = authenticating;
+    self->_authenticating = authenticating;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(SUUISettingsGroupController *)self settingDescriptions];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    settingDescriptions = [(SUUISettingsGroupController *)self settingDescriptions];
+    v6 = [settingDescriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -245,18 +245,18 @@ void __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_passw
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(settingDescriptions);
           }
 
           v10 = [(SUUISettingsGroupController *)self _viewForSettingDescription:*(*(&v11 + 1) + 8 * i)];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v10 setEnabled:!v3];
+            [v10 setEnabled:!authenticatingCopy];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [settingDescriptions countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -264,9 +264,9 @@ void __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_passw
   }
 }
 
-- (void)_becomeFirstResponderWithKey:(id)a3
+- (void)_becomeFirstResponderWithKey:(id)key
 {
-  v5 = [(SUUISignInSettingsGroupController *)self _settingDescriptionForKey:a3];
+  v5 = [(SUUISignInSettingsGroupController *)self _settingDescriptionForKey:key];
   v4 = [(SUUISettingsGroupController *)self _viewForSettingDescription:?];
   if ([v4 isMemberOfClass:objc_opt_class()])
   {
@@ -274,10 +274,10 @@ void __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_passw
   }
 }
 
-- (id)_keyForSettingDescription:(id)a3
+- (id)_keyForSettingDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_keyMapping objectForKey:v4];
+  descriptionCopy = description;
+  v5 = [(NSMapTable *)self->_keyMapping objectForKey:descriptionCopy];
   if (!v5)
   {
     if (!self->_keyMapping)
@@ -287,13 +287,13 @@ void __76__SUUISignInSettingsGroupController__attemptSignInWithAccountName_passw
       self->_keyMapping = v6;
     }
 
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([descriptionCopy isMemberOfClass:objc_opt_class()])
     {
-      v8 = v4;
-      v9 = [v8 fieldType];
-      if (v9)
+      v8 = descriptionCopy;
+      fieldType = [v8 fieldType];
+      if (fieldType)
       {
-        if (v9 == 1)
+        if (fieldType == 1)
         {
           v5 = @"valid";
 LABEL_13:
@@ -305,12 +305,12 @@ LABEL_13:
 
       else
       {
-        v10 = [v8 viewElement];
-        v11 = [v10 textInputViewElement];
-        v12 = v11;
-        if (v11)
+        viewElement = [v8 viewElement];
+        textInputViewElement = [viewElement textInputViewElement];
+        v12 = textInputViewElement;
+        if (textInputViewElement)
         {
-          if ([v11 isSecure])
+          if ([textInputViewElement isSecure])
           {
             v5 = @"password";
           }
@@ -340,8 +340,8 @@ LABEL_17:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SUUISettingsGroupController *)self settingDescriptions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  settingDescriptions = [(SUUISettingsGroupController *)self settingDescriptions];
+  v4 = [settingDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -353,7 +353,7 @@ LABEL_17:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(settingDescriptions);
         }
 
         v8 = [(SUUISettingsGroupController *)self _viewForSettingDescription:*(*(&v9 + 1) + 8 * v7)];
@@ -366,17 +366,17 @@ LABEL_17:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [settingDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_settingDescriptionForKey:(id)a3
+- (id)_settingDescriptionForKey:(id)key
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   keyMapping = self->_keyMapping;
   if (keyMapping)
   {
@@ -384,8 +384,8 @@ LABEL_17:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(NSMapTable *)keyMapping keyEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    keyEnumerator = [(NSMapTable *)keyMapping keyEnumerator];
+    v7 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -396,19 +396,19 @@ LABEL_4:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v12 = [(NSMapTable *)self->_keyMapping objectForKey:v11];
-        if ([v4 isEqualToString:v12])
+        if ([keyCopy isEqualToString:v12])
         {
           break;
         }
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v8 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -436,8 +436,8 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [(SUUISettingsGroupController *)self settingDescriptions];
-  v13 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  settingDescriptions = [(SUUISettingsGroupController *)self settingDescriptions];
+  v13 = [settingDescriptions countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v13)
   {
     v15 = *v21;
@@ -447,12 +447,12 @@ LABEL_10:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(settingDescriptions);
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
         v18 = [(SUUISignInSettingsGroupController *)self _keyForSettingDescription:0];
-        if ([v4 isEqualToString:v18])
+        if ([keyCopy isEqualToString:v18])
         {
           v13 = v17;
 
@@ -460,7 +460,7 @@ LABEL_10:
         }
       }
 
-      v13 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v13 = [settingDescriptions countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v13)
       {
         continue;
@@ -477,23 +477,23 @@ LABEL_23:
   return v13;
 }
 
-- (void)_signInFailed:(id)a3 error:(id)a4
+- (void)_signInFailed:(id)failed error:(id)error
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(SUUISettingsGroupController *)self delegate];
-  v8 = [v7 owningViewControllerForSettingsGroupController:self];
+  failedCopy = failed;
+  errorCopy = error;
+  delegate = [(SUUISettingsGroupController *)self delegate];
+  v8 = [delegate owningViewControllerForSettingsGroupController:self];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
-    v10 = [v9 clientContext];
-    v11 = v10;
+    clientContext = [v9 clientContext];
+    v11 = clientContext;
     v12 = MEMORY[0x277D75110];
-    if (v10)
+    if (clientContext)
     {
-      [v10 localizedStringForKey:@"CANNOT_LOGIN_TITLE"];
+      [clientContext localizedStringForKey:@"CANNOT_LOGIN_TITLE"];
     }
 
     else
@@ -501,8 +501,8 @@ LABEL_23:
       [SUUIClientContext localizedStringForKey:@"CANNOT_LOGIN_TITLE" inBundles:0];
     }
     v13 = ;
-    v14 = [v6 localizedDescription];
-    v15 = [v12 alertControllerWithTitle:v13 message:v14 preferredStyle:1];
+    localizedDescription = [errorCopy localizedDescription];
+    v15 = [v12 alertControllerWithTitle:v13 message:localizedDescription preferredStyle:1];
 
     v16 = MEMORY[0x277D750F8];
     if (v11)
@@ -521,29 +521,29 @@ LABEL_23:
     [v9 presentViewController:v15 animated:1 completion:0];
   }
 
-  v19 = [(SUUISettingsGroupController *)self settingsGroupDescription];
-  if (v19)
+  settingsGroupDescription = [(SUUISettingsGroupController *)self settingsGroupDescription];
+  if (settingsGroupDescription)
   {
-    v20 = [v6 description];
-    v21 = [v19 viewElement];
-    v22 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"failed", @"result", v23, @"accountName", v20, @"reason", 0}];
-    [v21 dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v22 completionBlock:0];
+    v20 = [errorCopy description];
+    viewElement = [settingsGroupDescription viewElement];
+    v22 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"failed", @"result", failedCopy, @"accountName", v20, @"reason", 0}];
+    [viewElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v22 completionBlock:0];
   }
 }
 
-- (void)_signInSuccess:(id)a3
+- (void)_signInSuccess:(id)success
 {
-  v10 = a3;
-  v4 = [(SUUISettingsGroupController *)self settingsGroupDescription];
-  v5 = v4;
-  if (v4)
+  successCopy = success;
+  settingsGroupDescription = [(SUUISettingsGroupController *)self settingsGroupDescription];
+  v5 = settingsGroupDescription;
+  if (settingsGroupDescription)
   {
-    v6 = [v4 viewElement];
+    viewElement = [settingsGroupDescription viewElement];
     v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v8 = [v10 accountName];
-    v9 = [v7 initWithObjectsAndKeys:{@"success", @"result", v8, @"accountName", 0}];
+    accountName = [successCopy accountName];
+    v9 = [v7 initWithObjectsAndKeys:{@"success", @"result", accountName, @"accountName", 0}];
 
-    [v6 dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v9 completionBlock:0];
+    [viewElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v9 completionBlock:0];
   }
 }
 
@@ -554,8 +554,8 @@ LABEL_23:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SUUISettingsGroupController *)self settingDescriptions];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  settingDescriptions = [(SUUISettingsGroupController *)self settingDescriptions];
+  v3 = [settingDescriptions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -566,7 +566,7 @@ LABEL_23:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(settingDescriptions);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -580,7 +580,7 @@ LABEL_23:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [settingDescriptions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -605,8 +605,8 @@ LABEL_12:
   }
 
   self->_valid = v3;
-  v4 = [(SUUISignInSettingsGroupController *)self _submitSettingDescription];
-  [(SUUISettingsGroupController *)self _reloadSettingDescription:v4];
+  _submitSettingDescription = [(SUUISignInSettingsGroupController *)self _submitSettingDescription];
+  [(SUUISettingsGroupController *)self _reloadSettingDescription:_submitSettingDescription];
 }
 
 @end

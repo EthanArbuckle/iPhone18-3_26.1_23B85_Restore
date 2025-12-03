@@ -1,24 +1,24 @@
 @interface WFPencilActionConfigurationMetricsProvider
 + (id)sharedProvider;
-- ($38DE1B8188D18052B1D0096D2D7D1570)metricsWithInterfaceOrientation:(SEL)a3;
-- (CGSize)sheetPreferredContentSizeWithMetrics:(id *)a3;
-- (UIEdgeInsets)uiEdgeInsetsFromDirectionalInsets:(NSDirectionalEdgeInsets)a3;
+- ($38DE1B8188D18052B1D0096D2D7D1570)metricsWithInterfaceOrientation:(SEL)orientation;
+- (CGSize)sheetPreferredContentSizeWithMetrics:(id *)metrics;
+- (UIEdgeInsets)uiEdgeInsetsFromDirectionalInsets:(NSDirectionalEdgeInsets)insets;
 - (WFPencilActionConfigurationMetricsProvider)init;
 @end
 
 @implementation WFPencilActionConfigurationMetricsProvider
 
-- (UIEdgeInsets)uiEdgeInsetsFromDirectionalInsets:(NSDirectionalEdgeInsets)a3
+- (UIEdgeInsets)uiEdgeInsetsFromDirectionalInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v8 = [v7 traitCollection];
-  v9 = [v8 layoutDirection];
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v9)
+  if (layoutDirection)
   {
     v10 = trailing;
   }
@@ -28,7 +28,7 @@
     v10 = leading;
   }
 
-  if (v9)
+  if (layoutDirection)
   {
     v11 = leading;
   }
@@ -47,15 +47,15 @@
   return result;
 }
 
-- (CGSize)sheetPreferredContentSizeWithMetrics:(id *)a3
+- (CGSize)sheetPreferredContentSizeWithMetrics:(id *)metrics
 {
-  [(WFPencilActionConfigurationMetricsProvider *)self uiEdgeInsetsFromDirectionalInsets:a3->var3.var2.top, a3->var3.var2.leading, a3->var3.var2.bottom, a3->var3.var2.trailing];
+  [(WFPencilActionConfigurationMetricsProvider *)self uiEdgeInsetsFromDirectionalInsets:metrics->var3.var2.top, metrics->var3.var2.leading, metrics->var3.var2.bottom, metrics->var3.var2.trailing];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v13 = v12 - (v6 + v10);
   v15 = v14 - (v4 + v8);
 
@@ -66,16 +66,16 @@
   return result;
 }
 
-- ($38DE1B8188D18052B1D0096D2D7D1570)metricsWithInterfaceOrientation:(SEL)a3
+- ($38DE1B8188D18052B1D0096D2D7D1570)metricsWithInterfaceOrientation:(SEL)orientation
 {
   v7 = [WFPencilActionConfigurationMetricsCacheKey alloc];
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v11 = [(WFPencilActionConfigurationMetricsCacheKey *)v7 initWithInterfaceOrientation:a4 screenSize:v9, v10];
 
   os_unfair_lock_lock(&self->_cacheLock);
-  v12 = [(WFPencilActionConfigurationMetricsProvider *)self cache];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  cache = [(WFPencilActionConfigurationMetricsProvider *)self cache];
+  v13 = [cache objectForKeyedSubscript:v11];
 
   if (v13)
   {
@@ -85,8 +85,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     _CF = (a4 - 1) >= 2;
     v18 = (a4 - 1) < 2;
     if (_CF)
@@ -191,8 +191,8 @@
     v51 = xmmword_1C841E420;
     v52 = xmmword_1C841E430;
     v14 = [[WFPencilActionConfigurationMetricsCacheValue alloc] initWithValue:&v39];
-    v33 = [(WFPencilActionConfigurationMetricsProvider *)self cache];
-    [v33 setObject:v14 forKeyedSubscript:v11];
+    cache2 = [(WFPencilActionConfigurationMetricsProvider *)self cache];
+    [cache2 setObject:v14 forKeyedSubscript:v11];
 
     os_unfair_lock_unlock(&self->_cacheLock);
     if (!v14)

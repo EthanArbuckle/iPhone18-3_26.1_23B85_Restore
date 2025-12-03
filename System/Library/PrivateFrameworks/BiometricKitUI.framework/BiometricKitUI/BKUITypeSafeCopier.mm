@@ -1,14 +1,14 @@
 @interface BKUITypeSafeCopier
-+ (id)copy:(id)a3;
++ (id)copy:(id)copy;
 @end
 
 @implementation BKUITypeSafeCopier
 
-+ (id)copy:(id)a3
++ (id)copy:(id)copy
 {
   v16 = *MEMORY[0x277D85DE8];
   v13 = 0;
-  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:0 error:&v13];
+  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:copy requiringSecureCoding:0 error:&v13];
   v4 = v13;
   if (!v4)
   {

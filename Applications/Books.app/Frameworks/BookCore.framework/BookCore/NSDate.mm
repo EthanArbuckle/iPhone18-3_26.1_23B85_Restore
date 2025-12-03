@@ -1,30 +1,30 @@
 @interface NSDate
-+ (id)accessibleMailLikeDescriptionFromDate:(id)a3;
++ (id)accessibleMailLikeDescriptionFromDate:(id)date;
 + (id)dateFormatter;
-+ (id)dateStringFromDate:(id)a3 withDateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5 isRelative:(BOOL)a6;
-+ (id)dayOfWeekFromDate:(id)a3;
-+ (id)mailLikeDescriptionFromDate:(id)a3;
-- (BOOL)isEqualToDay:(id)a3;
-- (BOOL)isEqualToWeek:(id)a3;
++ (id)dateStringFromDate:(id)date withDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle isRelative:(BOOL)relative;
++ (id)dayOfWeekFromDate:(id)date;
++ (id)mailLikeDescriptionFromDate:(id)date;
+- (BOOL)isEqualToDay:(id)day;
+- (BOOL)isEqualToWeek:(id)week;
 - (BOOL)isFuture;
 - (BOOL)isToday;
 - (BOOL)wasLessThanAWeekAgo;
 - (BOOL)wasYesterday;
-- (NSDate)dateWithDeltaDays:(int64_t)a3;
-- (NSDate)dateWithDeltaWeeks:(int64_t)a3;
+- (NSDate)dateWithDeltaDays:(int64_t)days;
+- (NSDate)dateWithDeltaWeeks:(int64_t)weeks;
 @end
 
 @implementation NSDate
 
-- (BOOL)isEqualToDay:(id)a3
+- (BOOL)isEqualToDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v5 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v6 = [v5 components:28 fromDate:self];
-  v7 = [v5 components:28 fromDate:v4];
+  v7 = [v5 components:28 fromDate:dayCopy];
 
-  v8 = [v7 year];
-  if (v8 == [v6 year] && (v9 = objc_msgSend(v7, "month"), v9 == objc_msgSend(v6, "month")))
+  year = [v7 year];
+  if (year == [v6 year] && (v9 = objc_msgSend(v7, "month"), v9 == objc_msgSend(v6, "month")))
   {
     v10 = [v7 day];
     v11 = v10 == [v6 day];
@@ -38,18 +38,18 @@
   return v11;
 }
 
-- (BOOL)isEqualToWeek:(id)a3
+- (BOOL)isEqualToWeek:(id)week
 {
-  v4 = a3;
+  weekCopy = week;
   v5 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v6 = [v5 components:8196 fromDate:self];
-  v7 = [v5 components:8196 fromDate:v4];
+  v7 = [v5 components:8196 fromDate:weekCopy];
 
-  v8 = [v7 year];
-  if (v8 == [v6 year])
+  year = [v7 year];
+  if (year == [v6 year])
   {
-    v9 = [v7 weekOfYear];
-    v10 = v9 == [v6 weekOfYear];
+    weekOfYear = [v7 weekOfYear];
+    v10 = weekOfYear == [v6 weekOfYear];
   }
 
   else
@@ -60,21 +60,21 @@
   return v10;
 }
 
-- (NSDate)dateWithDeltaDays:(int64_t)a3
+- (NSDate)dateWithDeltaDays:(int64_t)days
 {
   v5 = +[NSCalendar currentCalendar];
   v6 = objc_alloc_init(NSDateComponents);
-  [v6 setDay:a3];
+  [v6 setDay:days];
   v7 = [v5 dateByAddingComponents:v6 toDate:self options:0];
 
   return v7;
 }
 
-- (NSDate)dateWithDeltaWeeks:(int64_t)a3
+- (NSDate)dateWithDeltaWeeks:(int64_t)weeks
 {
   v5 = +[NSCalendar currentCalendar];
   v6 = objc_alloc_init(NSDateComponents);
-  [v6 setWeekOfYear:a3];
+  [v6 setWeekOfYear:weeks];
   v7 = [v5 dateByAddingComponents:v6 toDate:self options:0];
 
   return v7;
@@ -87,8 +87,8 @@
   v5 = +[NSDate date];
   v6 = [v3 components:28 fromDate:v5];
 
-  v7 = [v6 year];
-  if (v7 == [v4 year] && (v8 = objc_msgSend(v6, "month"), v8 == objc_msgSend(v4, "month")))
+  year = [v6 year];
+  if (year == [v4 year] && (v8 = objc_msgSend(v6, "month"), v8 == objc_msgSend(v4, "month")))
   {
     v9 = [v6 day];
     v10 = v9 == [v4 day];
@@ -136,88 +136,88 @@
 + (id)dateFormatter
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
+  threadDictionary = [v2 threadDictionary];
 
-  v4 = [v3 objectForKey:@"com.apple.itunesmobile.nsdate-imadditions.nsdateformatter"];
+  v4 = [threadDictionary objectForKey:@"com.apple.itunesmobile.nsdate-imadditions.nsdateformatter"];
   if (!v4)
   {
     v4 = objc_alloc_init(NSDateFormatter);
     v5 = +[NSLocale autoupdatingCurrentLocale];
     [v4 setLocale:v5];
 
-    [v3 setObject:v4 forKey:@"com.apple.itunesmobile.nsdate-imadditions.nsdateformatter"];
+    [threadDictionary setObject:v4 forKey:@"com.apple.itunesmobile.nsdate-imadditions.nsdateformatter"];
   }
 
   return v4;
 }
 
-+ (id)dateStringFromDate:(id)a3 withDateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5 isRelative:(BOOL)a6
++ (id)dateStringFromDate:(id)date withDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle isRelative:(BOOL)relative
 {
-  v6 = a6;
-  v9 = a3;
+  relativeCopy = relative;
+  dateCopy = date;
   v10 = +[NSThread currentThread];
-  v11 = [v10 threadDictionary];
+  threadDictionary = [v10 threadDictionary];
 
-  v12 = [v11 objectForKey:@"com.apple.itunesmobile.nsdate-imadditions.datestringformatters"];
+  v12 = [threadDictionary objectForKey:@"com.apple.itunesmobile.nsdate-imadditions.datestringformatters"];
   if (!v12)
   {
     v12 = +[NSMutableDictionary dictionary];
-    [v11 setObject:v12 forKey:@"com.apple.itunesmobile.nsdate-imadditions.datestringformatters"];
+    [threadDictionary setObject:v12 forKey:@"com.apple.itunesmobile.nsdate-imadditions.datestringformatters"];
   }
 
-  v13 = [NSString stringWithFormat:@"%lu-%lu-%d", a4, a5, v6];
-  v14 = [v12 objectForKey:v13];
+  relativeCopy = [NSString stringWithFormat:@"%lu-%lu-%d", style, timeStyle, relativeCopy];
+  v14 = [v12 objectForKey:relativeCopy];
   if (!v14)
   {
     v14 = objc_alloc_init(NSDateFormatter);
     v15 = +[NSLocale autoupdatingCurrentLocale];
     [v14 setLocale:v15];
 
-    [v14 setDateStyle:a4];
-    [v14 setTimeStyle:a5];
-    [v14 setDoesRelativeDateFormatting:v6];
-    [v12 setObject:v14 forKey:v13];
+    [v14 setDateStyle:style];
+    [v14 setTimeStyle:timeStyle];
+    [v14 setDoesRelativeDateFormatting:relativeCopy];
+    [v12 setObject:v14 forKey:relativeCopy];
   }
 
-  v16 = [v14 stringFromDate:v9];
+  v16 = [v14 stringFromDate:dateCopy];
 
   return v16;
 }
 
-+ (id)dayOfWeekFromDate:(id)a3
++ (id)dayOfWeekFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSLocale currentLocale];
   v6 = [NSDateFormatter dateFormatFromTemplate:@"EEEE" options:0 locale:v5];
 
-  v7 = [a1 dateFormatter];
-  [v7 setDateFormat:v6];
-  v8 = [v7 stringFromDate:v4];
+  dateFormatter = [self dateFormatter];
+  [dateFormatter setDateFormat:v6];
+  v8 = [dateFormatter stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)mailLikeDescriptionFromDate:(id)a3
++ (id)mailLikeDescriptionFromDate:(id)date
 {
-  v4 = a3;
-  if ([v4 isFuture])
+  dateCopy = date;
+  if ([dateCopy isFuture])
   {
-    v5 = [NSDate shortDateStringFromDateNoRel:v4];
+    v5 = [NSDate shortDateStringFromDateNoRel:dateCopy];
   }
 
-  else if ([v4 isToday])
+  else if ([dateCopy isToday])
   {
-    v5 = [NSDate shortTimeStringFromDate:v4];
+    v5 = [NSDate shortTimeStringFromDate:dateCopy];
   }
 
-  else if ([v4 wasLessThanAWeekAgo] && (objc_msgSend(v4, "wasYesterday") & 1) == 0)
+  else if ([dateCopy wasLessThanAWeekAgo] && (objc_msgSend(dateCopy, "wasYesterday") & 1) == 0)
   {
-    v5 = [a1 dayOfWeekFromDate:v4];
+    v5 = [self dayOfWeekFromDate:dateCopy];
   }
 
   else
   {
-    v5 = [NSDate shortDateStringFromDate:v4];
+    v5 = [NSDate shortDateStringFromDate:dateCopy];
   }
 
   v6 = v5;
@@ -225,29 +225,29 @@
   return v6;
 }
 
-+ (id)accessibleMailLikeDescriptionFromDate:(id)a3
++ (id)accessibleMailLikeDescriptionFromDate:(id)date
 {
-  v4 = a3;
-  if ([v4 isFuture])
+  dateCopy = date;
+  if ([dateCopy isFuture])
   {
     goto LABEL_2;
   }
 
-  if ([v4 isToday])
+  if ([dateCopy isToday])
   {
-    v5 = [NSDate shortTimeStringFromDate:v4];
+    v5 = [NSDate shortTimeStringFromDate:dateCopy];
   }
 
   else
   {
-    if (![v4 wasLessThanAWeekAgo] || (objc_msgSend(v4, "wasYesterday") & 1) != 0)
+    if (![dateCopy wasLessThanAWeekAgo] || (objc_msgSend(dateCopy, "wasYesterday") & 1) != 0)
     {
 LABEL_2:
-      v5 = [NSDate longDateStringFromDateNoRel:v4];
+      v5 = [NSDate longDateStringFromDateNoRel:dateCopy];
       goto LABEL_5;
     }
 
-    v5 = [a1 dayOfWeekFromDate:v4];
+    v5 = [self dayOfWeekFromDate:dateCopy];
   }
 
 LABEL_5:

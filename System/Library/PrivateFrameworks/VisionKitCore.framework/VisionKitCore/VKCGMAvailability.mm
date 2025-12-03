@@ -10,18 +10,18 @@
 
 + (BOOL)supportsVI
 {
-  v2 = [a1 sharedListener];
-  v3 = [v2 supportsVI];
+  sharedListener = [self sharedListener];
+  supportsVI = [sharedListener supportsVI];
 
-  return v3;
+  return supportsVI;
 }
 
 + (BOOL)deviceIsEligibleForVI
 {
-  v2 = [a1 sharedListener];
-  v3 = [v2 deviceIsEligibleForVI];
+  sharedListener = [self sharedListener];
+  deviceIsEligibleForVI = [sharedListener deviceIsEligibleForVI];
 
-  return v3;
+  return deviceIsEligibleForVI;
 }
 
 - (void)dealloc

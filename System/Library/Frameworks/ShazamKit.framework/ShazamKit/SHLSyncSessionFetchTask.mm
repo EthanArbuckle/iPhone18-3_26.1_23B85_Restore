@@ -1,9 +1,9 @@
 @interface SHLSyncSessionFetchTask
 - (SHLSyncSession)session;
 - (SHLSyncSessionFetchTask)init;
-- (SHLSyncSessionFetchTask)initWithCoder:(id)a3;
+- (SHLSyncSessionFetchTask)initWithCoder:(id)coder;
 - (SHLSyncSessionFetchTaskDelegate)delegate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHLSyncSessionFetchTask
@@ -16,9 +16,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = [NSProgress progressWithTotalUnitCount:1];
     progress = v2->_progress;
@@ -30,32 +30,32 @@
   return v2;
 }
 
-- (SHLSyncSessionFetchTask)initWithCoder:(id)a3
+- (SHLSyncSessionFetchTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SHLSyncSessionFetchTask;
   v5 = [(SHLSyncSessionFetchTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLSyncSessionFetchTaskIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLSyncSessionFetchTaskIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_fetchType = [v4 decodeIntegerForKey:@"SHLSyncSessionFetchTaskFetchType"];
-    v5->_syncStartCondition = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLSyncSessionFetchTaskSyncTrigger"];
+    v5->_fetchType = [coderCopy decodeIntegerForKey:@"SHLSyncSessionFetchTaskFetchType"];
+    v5->_syncStartCondition = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLSyncSessionFetchTaskSyncTrigger"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"SHLSyncSessionFetchTaskIdentifier"];
-  [v5 encodeInteger:self->_fetchType forKey:@"SHLSyncSessionFetchTaskFetchType"];
-  [v5 encodeObject:self->_syncStartCondition forKey:@"SHLSyncSessionFetchTaskSyncTrigger"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"SHLSyncSessionFetchTaskIdentifier"];
+  [coderCopy encodeInteger:self->_fetchType forKey:@"SHLSyncSessionFetchTaskFetchType"];
+  [coderCopy encodeObject:self->_syncStartCondition forKey:@"SHLSyncSessionFetchTaskSyncTrigger"];
 }
 
 - (SHLSyncSession)session

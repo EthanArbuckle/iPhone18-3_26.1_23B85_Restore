@@ -1,15 +1,15 @@
 @interface WidgetRelevanceRequest
 - (_TtC9WidgetKit22WidgetRelevanceRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WidgetRelevanceRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1920EDB98(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1920EDB98(coderCopy);
 }
 
 - (_TtC9WidgetKit22WidgetRelevanceRequest)init

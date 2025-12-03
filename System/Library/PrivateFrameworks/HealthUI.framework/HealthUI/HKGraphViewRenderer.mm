@@ -1,89 +1,89 @@
 @interface HKGraphViewRenderer
-- (BOOL)_lastSeriesInMultiSeriesRow:(id)a3 series:(id)a4;
-- (BOOL)seriesDrawingAsTopOverlay:(id)a3;
+- (BOOL)_lastSeriesInMultiSeriesRow:(id)row series:(id)series;
+- (BOOL)seriesDrawingAsTopOverlay:(id)overlay;
 - (CGAffineTransform)xAxisCoordinateTransform;
 - (CGPoint)contentOffset;
 - (CGRect)fullChartRect;
 - (CGRect)insetChartRect;
 - (CGRect)insetDataArea;
-- (CGRect)screenRectForSeries:(id)a3;
+- (CGRect)screenRectForSeries:(id)series;
 - (CGRect)scrollingAreaRect;
 - (UIEdgeInsets)virtualMarginInsets;
-- (double)_renderXAxisLabelsInContext:(CGContext *)a3;
-- (id)axisAnnotationDelegateForSeries:(id)a3;
-- (id)initWithRendererSeries:(double)a3 renderingView:(double)a4 fullChartRect:(double)a5 insetChartRect:(double)a6 insetDataArea:(double)a7 rightHandInactiveArea:(double)a8 zoomScale:(double)a9 traitResolution:(uint64_t)a10 contentOffset:(void *)a11 xAxisDateZoom:(void *)a12 drawingToTile:(void *)a13 tileColumn:(void *)a14 drawingDuringScrolling:(char)a15 drawingDuringAutoscale:(void *)a16 xAxis:(void *)a17 xAxisCoordinateTransform:(void *)a18 virtualMargins:(void *)a19 outlineColor:(void *)a20 tileBackgroundColor:(void *)a21 topBaselineY:(void *)a22 bottomBaselineY:(void *)a23 selectionLineColor:(void *)a24 selectionLineStyle:(char)a25 disableXAxis:(char)a26 currentXAxisHeight:(void *)a27 gridlineRanges:(__int128 *)a28 effectiveVisibleRangeCadence:(void *)a29 effectiveVisibleRangeActive:(void *)a30 actualVisibleRange:(void *)a31 scrollingAreaRect:(void *)a32 chartMeasuringStartupTime:(void *)a33;
-- (void)_clearBackgroundInContext:(CGContext *)a3;
-- (void)_renderBaselineWithContext:(CGContext *)a3 chartRect:(CGRect)a4;
-- (void)_renderDataAreaDividersWithContext:(CGContext *)a3;
-- (void)_renderSelectionLineWithContext:(CGContext *)a3;
-- (void)_renderSeriesWithContext:(CGContext *)a3 secondaryRenderContext:(id)a4 chartRect:(CGRect)a5;
-- (void)_renderVirtualMarginGridLines:(CGRect)a3 context:(CGContext *)a4;
-- (void)_renderVirtualMarginInRect:(CGRect)a3 context:(CGContext *)a4 marginStyle:(int64_t)a5;
-- (void)_renderVirtualMarginsWithContext:(CGContext *)a3;
-- (void)_renderXAxisGridlinesInContext:(CGContext *)a3 withBlendMode:(int)a4;
-- (void)_renderXAxisLabelAndGridsNeedsNewRendererInContext:(CGContext *)a3;
-- (void)_renderYAxisGridlinesInContext:(CGContext *)a3 renderingView:(id)a4 chartRect:(CGRect)a5 withBlendMode:(int)a6 zoomScale:(double)a7 contentOffset:(CGPoint)a8;
-- (void)renderContentToContext:(CGContext *)a3;
+- (double)_renderXAxisLabelsInContext:(CGContext *)context;
+- (id)axisAnnotationDelegateForSeries:(id)series;
+- (id)initWithRendererSeries:(double)series renderingView:(double)view fullChartRect:(double)rect insetChartRect:(double)chartRect insetDataArea:(double)area rightHandInactiveArea:(double)inactiveArea zoomScale:(double)scale traitResolution:(uint64_t)self0 contentOffset:(void *)self1 xAxisDateZoom:(void *)self2 drawingToTile:(void *)self3 tileColumn:(void *)self4 drawingDuringScrolling:(char)self5 drawingDuringAutoscale:(void *)self6 xAxis:(void *)self7 xAxisCoordinateTransform:(void *)self8 virtualMargins:(void *)self9 outlineColor:(void *)color tileBackgroundColor:(void *)backgroundColor topBaselineY:(void *)y bottomBaselineY:(void *)baselineY selectionLineColor:(void *)lineColor selectionLineStyle:(char)style disableXAxis:(char)xAxis currentXAxisHeight:(void *)height gridlineRanges:(__int128 *)ranges effectiveVisibleRangeCadence:(void *)cadence effectiveVisibleRangeActive:(void *)series0 actualVisibleRange:(void *)series1 scrollingAreaRect:(void *)series2 chartMeasuringStartupTime:(void *)series3;
+- (void)_clearBackgroundInContext:(CGContext *)context;
+- (void)_renderBaselineWithContext:(CGContext *)context chartRect:(CGRect)rect;
+- (void)_renderDataAreaDividersWithContext:(CGContext *)context;
+- (void)_renderSelectionLineWithContext:(CGContext *)context;
+- (void)_renderSeriesWithContext:(CGContext *)context secondaryRenderContext:(id)renderContext chartRect:(CGRect)rect;
+- (void)_renderVirtualMarginGridLines:(CGRect)lines context:(CGContext *)context;
+- (void)_renderVirtualMarginInRect:(CGRect)rect context:(CGContext *)context marginStyle:(int64_t)style;
+- (void)_renderVirtualMarginsWithContext:(CGContext *)context;
+- (void)_renderXAxisGridlinesInContext:(CGContext *)context withBlendMode:(int)mode;
+- (void)_renderXAxisLabelAndGridsNeedsNewRendererInContext:(CGContext *)context;
+- (void)_renderYAxisGridlinesInContext:(CGContext *)context renderingView:(id)view chartRect:(CGRect)rect withBlendMode:(int)mode zoomScale:(double)scale contentOffset:(CGPoint)offset;
+- (void)renderContentToContext:(CGContext *)context;
 @end
 
 @implementation HKGraphViewRenderer
 
-- (id)initWithRendererSeries:(double)a3 renderingView:(double)a4 fullChartRect:(double)a5 insetChartRect:(double)a6 insetDataArea:(double)a7 rightHandInactiveArea:(double)a8 zoomScale:(double)a9 traitResolution:(uint64_t)a10 contentOffset:(void *)a11 xAxisDateZoom:(void *)a12 drawingToTile:(void *)a13 tileColumn:(void *)a14 drawingDuringScrolling:(char)a15 drawingDuringAutoscale:(void *)a16 xAxis:(void *)a17 xAxisCoordinateTransform:(void *)a18 virtualMargins:(void *)a19 outlineColor:(void *)a20 tileBackgroundColor:(void *)a21 topBaselineY:(void *)a22 bottomBaselineY:(void *)a23 selectionLineColor:(void *)a24 selectionLineStyle:(char)a25 disableXAxis:(char)a26 currentXAxisHeight:(void *)a27 gridlineRanges:(__int128 *)a28 effectiveVisibleRangeCadence:(void *)a29 effectiveVisibleRangeActive:(void *)a30 actualVisibleRange:(void *)a31 scrollingAreaRect:(void *)a32 chartMeasuringStartupTime:(void *)a33
+- (id)initWithRendererSeries:(double)series renderingView:(double)view fullChartRect:(double)rect insetChartRect:(double)chartRect insetDataArea:(double)area rightHandInactiveArea:(double)inactiveArea zoomScale:(double)scale traitResolution:(uint64_t)self0 contentOffset:(void *)self1 xAxisDateZoom:(void *)self2 drawingToTile:(void *)self3 tileColumn:(void *)self4 drawingDuringScrolling:(char)self5 drawingDuringAutoscale:(void *)self6 xAxis:(void *)self7 xAxisCoordinateTransform:(void *)self8 virtualMargins:(void *)self9 outlineColor:(void *)color tileBackgroundColor:(void *)backgroundColor topBaselineY:(void *)y bottomBaselineY:(void *)baselineY selectionLineColor:(void *)lineColor selectionLineStyle:(char)style disableXAxis:(char)xAxis currentXAxisHeight:(void *)height gridlineRanges:(__int128 *)ranges effectiveVisibleRangeCadence:(void *)cadence effectiveVisibleRangeActive:(void *)series0 actualVisibleRange:(void *)series1 scrollingAreaRect:(void *)series2 chartMeasuringStartupTime:(void *)series3
 {
-  v78 = a11;
-  v71 = a12;
-  v77 = a12;
-  v85 = a27;
-  v84 = a29;
-  v83 = a30;
-  v82 = a31;
+  offsetCopy = offset;
+  zoomCopy = zoom;
+  zoomCopy2 = zoom;
+  heightCopy = height;
+  cadenceCopy = cadence;
+  activeCopy = active;
+  rangeCopy = range;
   v81 = a34;
   v80 = a35;
   v79 = a38;
   v55 = a39;
   v56 = a40;
   v57 = a41;
-  v86.receiver = a1;
+  v86.receiver = self;
   v86.super_class = HKGraphViewRenderer;
   v58 = objc_msgSendSuper2(&v86, sel_init);
   v59 = v58;
   if (v58)
   {
-    objc_storeStrong(v58 + 6, a11);
-    objc_storeStrong(v59 + 7, v71);
+    objc_storeStrong(v58 + 6, offset);
+    objc_storeStrong(v59 + 7, zoomCopy);
     *(v59 + 28) = a2;
-    *(v59 + 29) = a3;
-    *(v59 + 30) = a4;
-    *(v59 + 31) = a5;
-    *(v59 + 32) = a6;
-    *(v59 + 33) = a7;
-    *(v59 + 34) = a8;
-    *(v59 + 35) = a9;
-    v59[36] = a17;
-    v59[37] = a18;
-    v59[38] = a19;
-    v59[39] = a20;
-    v59[8] = a21;
-    v59[9] = a22;
-    v59[26] = a23;
-    v59[27] = a24;
-    v59[10] = a13;
-    v59[11] = a14;
-    *(v59 + 8) = a15;
-    v59[12] = a16;
-    *(v59 + 9) = a25;
-    *(v59 + 10) = a26;
-    objc_storeStrong(v59 + 13, a27);
-    v60 = *a28;
-    v61 = a28[2];
-    *(v59 + 23) = a28[1];
+    *(v59 + 29) = series;
+    *(v59 + 30) = view;
+    *(v59 + 31) = rect;
+    *(v59 + 32) = chartRect;
+    *(v59 + 33) = area;
+    *(v59 + 34) = inactiveArea;
+    *(v59 + 35) = scale;
+    v59[36] = axis;
+    v59[37] = transform;
+    v59[38] = margins;
+    v59[39] = color;
+    v59[8] = backgroundColor;
+    v59[9] = y;
+    v59[26] = baselineY;
+    v59[27] = lineColor;
+    v59[10] = tile;
+    v59[11] = column;
+    *(v59 + 8) = scrolling;
+    v59[12] = autoscale;
+    *(v59 + 9) = style;
+    *(v59 + 10) = xAxis;
+    objc_storeStrong(v59 + 13, height);
+    v60 = *ranges;
+    v61 = ranges[2];
+    *(v59 + 23) = ranges[1];
     *(v59 + 24) = v61;
     *(v59 + 22) = v60;
-    objc_storeStrong(v59 + 14, a29);
-    objc_storeStrong(v59 + 15, a30);
-    objc_storeStrong(v59 + 16, a31);
-    v59[17] = a32;
-    v59[18] = a33;
+    objc_storeStrong(v59 + 14, cadence);
+    objc_storeStrong(v59 + 15, active);
+    objc_storeStrong(v59 + 16, range);
+    v59[17] = areaRect;
+    v59[18] = time;
     objc_storeStrong(v59 + 19, a34);
     objc_storeStrong(v59 + 20, a35);
     *(v59 + 11) = a36;
@@ -115,19 +115,19 @@
   return v59;
 }
 
-- (void)renderContentToContext:(CGContext *)a3
+- (void)renderContentToContext:(CGContext *)context
 {
-  UIGraphicsPushContext(a3);
+  UIGraphicsPushContext(context);
   if ([(HKGraphViewRenderer *)self drawingToTile])
   {
-    [(HKGraphViewRenderer *)self _clearBackgroundInContext:a3];
+    [(HKGraphViewRenderer *)self _clearBackgroundInContext:context];
   }
 
-  [(HKGraphViewRenderer *)self _renderXAxisLabelAndGridsNeedsNewRendererInContext:a3];
+  [(HKGraphViewRenderer *)self _renderXAxisLabelAndGridsNeedsNewRendererInContext:context];
   if (([(HKGraphViewRenderer *)self postUpdates]& 4) == 0)
   {
     v18 = objc_alloc_init(HKGraphSeriesSecondaryRenderContext);
-    v5 = [(HKGraphViewRenderer *)self renderingView];
+    renderingView = [(HKGraphViewRenderer *)self renderingView];
     [(HKGraphViewRenderer *)self insetChartRect];
     v7 = v6;
     v9 = v8;
@@ -136,35 +136,35 @@
     [(HKGraphViewRenderer *)self zoomScale];
     v15 = v14;
     [(HKGraphViewRenderer *)self contentOffset];
-    [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:a3 renderingView:v5 chartRect:0 withBlendMode:v7 zoomScale:v9 contentOffset:v11, v13, v15, v16, v17];
+    [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:context renderingView:renderingView chartRect:0 withBlendMode:v7 zoomScale:v9 contentOffset:v11, v13, v15, v16, v17];
 
     [(HKGraphViewRenderer *)self insetChartRect];
-    [(HKGraphViewRenderer *)self _renderSeriesWithContext:a3 secondaryRenderContext:v18 chartRect:?];
-    [(HKGraphViewRenderer *)self _renderVirtualMarginsWithContext:a3];
+    [(HKGraphViewRenderer *)self _renderSeriesWithContext:context secondaryRenderContext:v18 chartRect:?];
+    [(HKGraphViewRenderer *)self _renderVirtualMarginsWithContext:context];
     [(HKGraphViewRenderer *)self insetChartRect];
-    [(HKGraphViewRenderer *)self _renderBaselineWithContext:a3 chartRect:?];
-    [(HKGraphViewRenderer *)self _renderDataAreaDividersWithContext:a3];
+    [(HKGraphViewRenderer *)self _renderBaselineWithContext:context chartRect:?];
+    [(HKGraphViewRenderer *)self _renderDataAreaDividersWithContext:context];
     UIGraphicsPopContext();
   }
 }
 
-- (void)_clearBackgroundInContext:(CGContext *)a3
+- (void)_clearBackgroundInContext:(CGContext *)context
 {
-  v5 = [(HKGraphViewRenderer *)self tileBackgroundColor];
-  v6 = [v5 CGColor];
+  tileBackgroundColor = [(HKGraphViewRenderer *)self tileBackgroundColor];
+  cGColor = [tileBackgroundColor CGColor];
 
-  CGContextSetFillColorWithColor(a3, v6);
+  CGContextSetFillColorWithColor(context, cGColor);
   [(HKGraphViewRenderer *)self fullChartRect];
 
-  CGContextFillRect(a3, *&v7);
+  CGContextFillRect(context, *&v7);
 }
 
-- (void)_renderXAxisLabelAndGridsNeedsNewRendererInContext:(CGContext *)a3
+- (void)_renderXAxisLabelAndGridsNeedsNewRendererInContext:(CGContext *)context
 {
-  [(HKGraphViewRenderer *)self _renderXAxisGridlinesInContext:a3 withBlendMode:0];
+  [(HKGraphViewRenderer *)self _renderXAxisGridlinesInContext:context withBlendMode:0];
   if (![(HKGraphViewRenderer *)self disableXAxis])
   {
-    [(HKGraphViewRenderer *)self _renderXAxisLabelsInContext:a3];
+    [(HKGraphViewRenderer *)self _renderXAxisLabelsInContext:context];
     v6 = v5;
     [(HKGraphViewRenderer *)self currentXAxisHeight];
     if (!HKUIEqualCGFloats(v6, v7) && ![(HKGraphViewRenderer *)self drawingToTile])
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)_renderXAxisGridlinesInContext:(CGContext *)a3 withBlendMode:(int)a4
+- (void)_renderXAxisGridlinesInContext:(CGContext *)context withBlendMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   [(HKGraphViewRenderer *)self zoomScale];
   v7 = v6;
   [(HKGraphViewRenderer *)self contentOffset];
@@ -216,13 +216,13 @@
   }
 
   xAxis = self->_xAxis;
-  v27 = [(HKGraphViewRenderer *)self effectiveVisibleRangeCadence];
-  v25 = [(HKGraphViewRenderer *)self gridlineRanges];
-  v26 = [(HKGraphViewRenderer *)self renderingView];
-  [(HKAxis *)xAxis drawGridlinesForModelRange:v27 chartRect:v25 gridlineRanges:v26 zoomScale:v4 contentOffset:v13 renderView:v23 blendMode:v17, v22, v7, v9, v11];
+  effectiveVisibleRangeCadence = [(HKGraphViewRenderer *)self effectiveVisibleRangeCadence];
+  gridlineRanges = [(HKGraphViewRenderer *)self gridlineRanges];
+  renderingView = [(HKGraphViewRenderer *)self renderingView];
+  [(HKAxis *)xAxis drawGridlinesForModelRange:effectiveVisibleRangeCadence chartRect:gridlineRanges gridlineRanges:renderingView zoomScale:v4 contentOffset:v13 renderView:v23 blendMode:v17, v22, v7, v9, v11];
 }
 
-- (double)_renderXAxisLabelsInContext:(CGContext *)a3
+- (double)_renderXAxisLabelsInContext:(CGContext *)context
 {
   [(HKGraphViewRenderer *)self zoomScale];
   v5 = v4;
@@ -232,7 +232,7 @@
   [(HKGraphViewRenderer *)self insetDataArea];
   v11 = v10;
   v13 = v12;
-  v14 = [(HKGraphViewRenderer *)self drawingToTile];
+  drawingToTile = [(HKGraphViewRenderer *)self drawingToTile];
   v22 = 16.0;
   [(HKGraphViewRenderer *)self scrollingAreaRect];
   MinY = CGRectGetMinY(v23);
@@ -240,27 +240,27 @@
   Height = CGRectGetHeight(v24);
   xAxis = self->_xAxis;
   effectiveVisibleRangeCadence = self->_effectiveVisibleRangeCadence;
-  v19 = [(HKGraphViewRenderer *)self renderingView];
-  [(HKAxis *)xAxis drawLabelsWithModelRange:effectiveVisibleRangeCadence chartRect:v19 zoomScale:&v21 contentOffset:!v14 renderView:v11 maximumLabelSize:MinY omitOffscreenLabels:v13, Height, v5, v7, v9];
+  renderingView = [(HKGraphViewRenderer *)self renderingView];
+  [(HKAxis *)xAxis drawLabelsWithModelRange:effectiveVisibleRangeCadence chartRect:renderingView zoomScale:&v21 contentOffset:!drawingToTile renderView:v11 maximumLabelSize:MinY omitOffscreenLabels:v13, Height, v5, v7, v9];
 
   return HKUICeilToScreenScale(v22);
 }
 
-- (void)_renderYAxisGridlinesInContext:(CGContext *)a3 renderingView:(id)a4 chartRect:(CGRect)a5 withBlendMode:(int)a6 zoomScale:(double)a7 contentOffset:(CGPoint)a8
+- (void)_renderYAxisGridlinesInContext:(CGContext *)context renderingView:(id)view chartRect:(CGRect)rect withBlendMode:(int)mode zoomScale:(double)scale contentOffset:(CGPoint)offset
 {
-  y = a8.y;
-  x = a8.x;
-  v11 = *&a6;
+  y = offset.y;
+  x = offset.x;
+  v11 = *&mode;
   v37 = *MEMORY[0x1E69E9840];
-  v13 = a4;
+  viewCopy = view;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v14 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v15 = [v14 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  v16 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v16 = [seriesRows countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v16)
   {
     v17 = v16;
@@ -271,42 +271,42 @@
       {
         if (*v33 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(seriesRows);
         }
 
         v20 = *(*(&v32 + 1) + 8 * i);
-        v21 = [v20 mainSeriesForRow];
+        mainSeriesForRow = [v20 mainSeriesForRow];
         [v20 yAxisRect];
         v23 = v22;
         v25 = v24;
         v27 = v26;
         v29 = v28;
-        v30 = [v21 visibleValueRange];
-        v31 = [v21 yAxis];
-        [v31 drawGridlinesForModelRange:v30 chartRect:0 gridlineRanges:v13 zoomScale:v11 contentOffset:v23 renderView:v25 blendMode:{v27, v29, a7, x, y}];
+        visibleValueRange = [mainSeriesForRow visibleValueRange];
+        yAxis = [mainSeriesForRow yAxis];
+        [yAxis drawGridlinesForModelRange:visibleValueRange chartRect:0 gridlineRanges:viewCopy zoomScale:v11 contentOffset:v23 renderView:v25 blendMode:{v27, v29, scale, x, y}];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v17 = [seriesRows countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)_renderSeriesWithContext:(CGContext *)a3 secondaryRenderContext:(id)a4 chartRect:(CGRect)a5
+- (void)_renderSeriesWithContext:(CGContext *)context secondaryRenderContext:(id)renderContext chartRect:(CGRect)rect
 {
   v92 = *MEMORY[0x1E69E9840];
-  v61 = a4;
+  renderContextCopy = renderContext;
   v60 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:[(HKGraphViewRenderer *)self xAxisDateZoom]];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v6 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v7 = [v6 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v84 objects:v91 count:16];
+  obj = seriesRows;
+  v8 = [seriesRows countByEnumeratingWithState:&v84 objects:v91 count:16];
   if (v8)
   {
     v9 = v8;
@@ -322,15 +322,15 @@
         }
 
         v13 = *(*(&v84 + 1) + 8 * i);
-        v14 = [v13 selectedSeriesForRow];
-        if ([v14 drawSelectionLineBehindAllSeries])
+        selectedSeriesForRow = [v13 selectedSeriesForRow];
+        if ([selectedSeriesForRow drawSelectionLineBehindAllSeries])
         {
           v82 = 0u;
           v83 = 0u;
           v80 = 0u;
           v81 = 0u;
-          v15 = [v13 overlaidSeries];
-          v16 = [v15 countByEnumeratingWithState:&v80 objects:v90 count:16];
+          overlaidSeries = [v13 overlaidSeries];
+          v16 = [overlaidSeries countByEnumeratingWithState:&v80 objects:v90 count:16];
           if (v16)
           {
             v17 = v16;
@@ -341,17 +341,17 @@
               {
                 if (*v81 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(overlaidSeries);
                 }
 
-                if (!((*(*(&v80 + 1) + 8 * j) != v14) | v10 & 1))
+                if (!((*(*(&v80 + 1) + 8 * j) != selectedSeriesForRow) | v10 & 1))
                 {
-                  [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:a3];
+                  [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:context];
                   v10 = 1;
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v80 objects:v90 count:16];
+              v17 = [overlaidSeries countByEnumeratingWithState:&v80 objects:v90 count:16];
             }
 
             while (v17);
@@ -374,11 +374,11 @@
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v20 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v21 = [v20 seriesRows];
+  seriesConfiguration2 = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows2 = [seriesConfiguration2 seriesRows];
 
-  v53 = v21;
-  v55 = [v21 countByEnumeratingWithState:&v76 objects:v89 count:16];
+  v53 = seriesRows2;
+  v55 = [seriesRows2 countByEnumeratingWithState:&v76 objects:v89 count:16];
   v22 = 0;
   if (v55)
   {
@@ -394,14 +394,14 @@
         }
 
         v24 = *(*(&v76 + 1) + 8 * v23);
-        v25 = [v24 selectedSeriesForRow];
+        selectedSeriesForRow2 = [v24 selectedSeriesForRow];
         [v24 yAxisRect];
         v27 = v26;
         v29 = v28;
         v31 = v30;
         v33 = v32;
-        v34 = [v24 axisAnnotationHandler];
-        [v34 startAnnotationSequence];
+        axisAnnotationHandler = [v24 axisAnnotationHandler];
+        [axisAnnotationHandler startAnnotationSequence];
 
         v74 = 0u;
         v75 = 0u;
@@ -425,18 +425,18 @@
               }
 
               v39 = *(*(&v72 + 1) + 8 * k);
-              if (!((v39 != v25) | v10 & 1))
+              if (!((v39 != selectedSeriesForRow2) | v10 & 1))
               {
-                [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:a3];
+                [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:context];
                 v10 = 1;
               }
 
               v40 = [v39 resolutionForTimeScope:-[HKGraphViewRenderer xAxisDateZoom](self traitResolution:{"xAxisDateZoom"), -[HKGraphViewRenderer traitResolution](self, "traitResolution")}];
-              v41 = [(HKGraphViewRenderer *)self xAxis];
+              xAxis = [(HKGraphViewRenderer *)self xAxis];
               [(HKGraphViewRenderer *)self zoomScale];
               v43 = v42;
               [(HKGraphViewRenderer *)self contentOffset];
-              v46 = [v39 seriesCoordinatesWithXAxis:v41 chartRect:v40 zoomScale:v27 contentOffset:v29 resolution:{v31, v33, v43, v44, v45}];
+              v46 = [v39 seriesCoordinatesWithXAxis:xAxis chartRect:v40 zoomScale:v27 contentOffset:v29 resolution:{v31, v33, v43, v44, v45}];
 
               v70 = 0u;
               v71 = 0u;
@@ -456,7 +456,7 @@
               v63 = v66;
               v64 = v67;
               v65 = v68;
-              [v39 drawWithChartRect:v46 seriesCoordinates:v60 zoomLevelConfiguration:&v63 coordinateTransform:a3 inContext:v61 secondaryRenderContext:self seriesRenderingDelegate:{v27, v29, v31, v33}];
+              [v39 drawWithChartRect:v46 seriesCoordinates:v60 zoomLevelConfiguration:&v63 coordinateTransform:context inContext:renderContextCopy secondaryRenderContext:self seriesRenderingDelegate:{v27, v29, v31, v33}];
               if ([v39 overlayType])
               {
                 if (!v22)
@@ -479,9 +479,9 @@
           while (v36);
         }
 
-        v49 = [v56 axisAnnotationHandler];
-        v50 = [v56 overlaidSeries];
-        v51 = [v49 applyAnnotationForSeries:v50];
+        axisAnnotationHandler2 = [v56 axisAnnotationHandler];
+        overlaidSeries2 = [v56 overlaidSeries];
+        v51 = [axisAnnotationHandler2 applyAnnotationForSeries:overlaidSeries2];
 
         if ((v51 - 1) <= 1)
         {
@@ -500,68 +500,68 @@
 
   if ((v10 & 1) == 0)
   {
-    [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:a3];
+    [(HKGraphViewRenderer *)self _renderSelectionLineWithContext:context];
   }
 
   postOverlayData = self->_postOverlayData;
   self->_postOverlayData = v22;
 }
 
-- (void)_renderVirtualMarginsWithContext:(CGContext *)a3
+- (void)_renderVirtualMarginsWithContext:(CGContext *)context
 {
   [(HKGraphViewRenderer *)self insetDataArea];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(HKGraphViewRenderer *)self virtualMargins];
-  [v13 virtualLeftMarginWidth];
+  virtualMargins = [(HKGraphViewRenderer *)self virtualMargins];
+  [virtualMargins virtualLeftMarginWidth];
   if (v14 <= 0.0)
   {
     goto LABEL_4;
   }
 
-  v15 = [(HKGraphViewRenderer *)self virtualMargins];
-  v16 = [v15 virtualLeftMarginStyle];
+  virtualMargins2 = [(HKGraphViewRenderer *)self virtualMargins];
+  virtualLeftMarginStyle = [virtualMargins2 virtualLeftMarginStyle];
 
-  if (v16)
+  if (virtualLeftMarginStyle)
   {
     [(HKGraphViewRenderer *)self insetDataArea];
     v18 = v17;
     [(HKGraphViewRenderer *)self insetDataArea];
     v20 = v19;
-    v21 = [(HKGraphViewRenderer *)self virtualMargins];
-    [v21 virtualLeftMarginWidth];
+    virtualMargins3 = [(HKGraphViewRenderer *)self virtualMargins];
+    [virtualMargins3 virtualLeftMarginWidth];
     v23 = v22 - HKUIOnePixel();
 
-    v13 = [(HKGraphViewRenderer *)self virtualMargins];
-    -[HKGraphViewRenderer _renderVirtualMarginInRect:context:marginStyle:](self, "_renderVirtualMarginInRect:context:marginStyle:", a3, [v13 virtualLeftMarginStyle], v18, v20, v23, v12);
+    virtualMargins = [(HKGraphViewRenderer *)self virtualMargins];
+    -[HKGraphViewRenderer _renderVirtualMarginInRect:context:marginStyle:](self, "_renderVirtualMarginInRect:context:marginStyle:", context, [virtualMargins virtualLeftMarginStyle], v18, v20, v23, v12);
 LABEL_4:
   }
 
-  v24 = [(HKGraphViewRenderer *)self virtualMargins];
-  [v24 virtualRightMarginWidth];
+  virtualMargins4 = [(HKGraphViewRenderer *)self virtualMargins];
+  [virtualMargins4 virtualRightMarginWidth];
   v26 = v25;
   [(HKGraphViewRenderer *)self rightHandInactiveArea];
   v28 = v26 + v27;
 
   if (v28 > 0.0)
   {
-    v29 = [(HKGraphViewRenderer *)self virtualMargins];
-    v30 = [v29 virtualRightMarginStyle];
+    virtualMargins5 = [(HKGraphViewRenderer *)self virtualMargins];
+    virtualRightMarginStyle = [virtualMargins5 virtualRightMarginStyle];
 
-    if (v30)
+    if (virtualRightMarginStyle)
     {
-      v31 = [(HKGraphViewRenderer *)self virtualMargins];
-      -[HKGraphViewRenderer _renderVirtualMarginInRect:context:marginStyle:](self, "_renderVirtualMarginInRect:context:marginStyle:", a3, [v31 virtualRightMarginStyle], v6 + v10 - v28, v8, v28, v12);
+      virtualMargins6 = [(HKGraphViewRenderer *)self virtualMargins];
+      -[HKGraphViewRenderer _renderVirtualMarginInRect:context:marginStyle:](self, "_renderVirtualMarginInRect:context:marginStyle:", context, [virtualMargins6 virtualRightMarginStyle], v6 + v10 - v28, v8, v28, v12);
     }
   }
 }
 
-- (void)_renderBaselineWithContext:(CGContext *)a3 chartRect:(CGRect)a4
+- (void)_renderBaselineWithContext:(CGContext *)context chartRect:(CGRect)rect
 {
   v35 = *MEMORY[0x1E69E9840];
-  [(HKGraphViewRenderer *)self zoomScale:a3];
+  [(HKGraphViewRenderer *)self zoomScale:context];
   v6 = v5;
   [(HKGraphViewRenderer *)self contentOffset];
   v8 = v7;
@@ -570,10 +570,10 @@ LABEL_4:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v12 = [v11 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v13 = [seriesRows countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
     v14 = v13;
@@ -584,35 +584,35 @@ LABEL_4:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(seriesRows);
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 mainSeriesForRow];
+        mainSeriesForRow = [v17 mainSeriesForRow];
         [v17 yAxisRect];
         v20 = v19;
         v22 = v21;
         v24 = v23;
         v26 = v25;
-        v27 = [v18 visibleValueRange];
-        if (v27)
+        visibleValueRange = [mainSeriesForRow visibleValueRange];
+        if (visibleValueRange)
         {
-          v28 = [v18 yAxis];
-          v29 = [(HKGraphViewRenderer *)self renderingView];
-          [v28 drawBaselineForModelRange:v27 chartRect:v29 zoomScale:v20 contentOffset:v22 renderView:{v24, v26, v6, v8, v10}];
+          yAxis = [mainSeriesForRow yAxis];
+          renderingView = [(HKGraphViewRenderer *)self renderingView];
+          [yAxis drawBaselineForModelRange:visibleValueRange chartRect:renderingView zoomScale:v20 contentOffset:v22 renderView:{v24, v26, v6, v8, v10}];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v14 = [seriesRows countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)_renderDataAreaDividersWithContext:(CGContext *)a3
+- (void)_renderDataAreaDividersWithContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(HKGraphViewRenderer *)self insetDataArea];
   v6 = v5;
   v8 = v7;
@@ -622,14 +622,14 @@ LABEL_4:
   if (v13 <= 0.00000011920929)
   {
     v14 = HKUIOnePixel();
-    v15 = [(HKGraphViewRenderer *)self outlineColor];
-    [HKBorderLineView drawBorderLinesInContext:a3 bounds:0 verticalDrawRanges:1 borderEdges:v15 borderLineWidth:v6 borderLineColor:v8 borderInsets:v10, v12, v14, 0x4010000000000000, 0, 0, 0];
+    outlineColor = [(HKGraphViewRenderer *)self outlineColor];
+    [HKBorderLineView drawBorderLinesInContext:context bounds:0 verticalDrawRanges:1 borderEdges:outlineColor borderLineWidth:v6 borderLineColor:v8 borderInsets:v10, v12, v14, 0x4010000000000000, 0, 0, 0];
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)_renderSelectionLineWithContext:(CGContext *)a3
+- (void)_renderSelectionLineWithContext:(CGContext *)context
 {
   v48 = *MEMORY[0x1E69E9840];
   if (![(HKGraphViewRenderer *)self drawingToTile])
@@ -664,12 +664,12 @@ LABEL_4:
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v38 = self;
-    v15 = [(HKGraphViewRenderer *)self seriesConfiguration];
-    v16 = [v15 seriesRows];
+    selfCopy = self;
+    seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+    seriesRows = [seriesConfiguration seriesRows];
 
-    obj = v16;
-    v39 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    obj = seriesRows;
+    v39 = [seriesRows countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v39)
     {
       v37 = *v43;
@@ -686,11 +686,11 @@ LABEL_4:
 
           v40 = v18;
           v19 = *(*(&v42 + 1) + 8 * v18);
-          v20 = [v19 selectedRangeBoundariesXValue];
-          v21 = v20;
-          if (v20)
+          selectedRangeBoundariesXValue = [v19 selectedRangeBoundariesXValue];
+          v21 = selectedRangeBoundariesXValue;
+          if (selectedRangeBoundariesXValue)
           {
-            if ([v20 count])
+            if ([selectedRangeBoundariesXValue count])
             {
               [(NSMutableArray *)v35 addObjectsFromArray:v21];
               if ([v19 selectedTouchPointCount] >= 1)
@@ -703,15 +703,15 @@ LABEL_4:
                   [v23 doubleValue];
                   v25 = HKUIFloorToScreenScale(v24);
 
-                  v26 = [(HKGraphViewRenderer *)v38 renderingView];
-                  v27 = [(HKGraphViewRenderer *)v38 selectionLineStyle];
-                  [v27 selectedPointLineStrokeStyle];
+                  renderingView = [(HKGraphViewRenderer *)selfCopy renderingView];
+                  selectionLineStyle = [(HKGraphViewRenderer *)selfCopy selectionLineStyle];
+                  [selectionLineStyle selectedPointLineStrokeStyle];
                   v29 = v28 = v19;
                   v14[2](v14, v29, v25);
                   v31 = v30 = v17;
-                  v32 = [(HKGraphViewRenderer *)v38 selectionLineColor];
+                  selectionLineColor = [(HKGraphViewRenderer *)selfCopy selectionLineColor];
                   LOBYTE(v34) = 1;
-                  [v26 drawPath:v31 strokeColor:v32 fillColor:0 markerImage:0 useGradientFill:0 blendMode:0 clipToAxes:v34];
+                  [renderingView drawPath:v31 strokeColor:selectionLineColor fillColor:0 markerImage:0 useGradientFill:0 blendMode:0 clipToAxes:v34];
 
                   v17 = v30;
                   v19 = v28;
@@ -735,8 +735,8 @@ LABEL_4:
       while (v39);
     }
 
-    postSelectionPoints = v38->_postSelectionPoints;
-    v38->_postSelectionPoints = v35;
+    postSelectionPoints = selfCopy->_postSelectionPoints;
+    selfCopy->_postSelectionPoints = v35;
   }
 }
 
@@ -754,20 +754,20 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
   return v6;
 }
 
-- (void)_renderVirtualMarginInRect:(CGRect)a3 context:(CGContext *)a4 marginStyle:(int64_t)a5
+- (void)_renderVirtualMarginInRect:(CGRect)rect context:(CGContext *)context marginStyle:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5 == 1)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (style == 1)
   {
     v11 = 0;
   }
 
   else
   {
-    if (a5 != 2)
+    if (style != 2)
     {
       return;
     }
@@ -775,57 +775,57 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
     v11 = 18;
   }
 
-  v15 = [MEMORY[0x1E69DC728] bezierPathWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
-  v12 = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
-  v13 = [(HKGraphViewRenderer *)self renderingView];
+  v15 = [MEMORY[0x1E69DC728] bezierPathWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  hk_chartAxisMajorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
+  renderingView = [(HKGraphViewRenderer *)self renderingView];
   LOBYTE(v14) = 0;
-  [v13 drawPath:v15 strokeColor:0 fillColor:v12 markerImage:0 useGradientFill:0 blendMode:v11 clipToAxes:v14];
+  [renderingView drawPath:v15 strokeColor:0 fillColor:hk_chartAxisMajorGridColor markerImage:0 useGradientFill:0 blendMode:v11 clipToAxes:v14];
 
-  [(HKGraphViewRenderer *)self _renderVirtualMarginGridLines:a4 context:x, y, width, height];
+  [(HKGraphViewRenderer *)self _renderVirtualMarginGridLines:context context:x, y, width, height];
 }
 
-- (void)_renderVirtualMarginGridLines:(CGRect)a3 context:(CGContext *)a4
+- (void)_renderVirtualMarginGridLines:(CGRect)lines context:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = lines.size.height;
+  width = lines.size.width;
+  y = lines.origin.y;
+  x = lines.origin.x;
   [(HKGraphViewRenderer *)self insetDataArea];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
   v29.size.height = height;
-  CGContextAddRect(a4, v29);
-  CGContextClip(a4);
-  v18 = [(HKGraphViewRenderer *)self renderingView];
+  CGContextAddRect(context, v29);
+  CGContextClip(context);
+  renderingView = [(HKGraphViewRenderer *)self renderingView];
   [(HKGraphViewRenderer *)self zoomScale];
   v20 = v19;
   [(HKGraphViewRenderer *)self contentOffset];
-  [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:a4 renderingView:v18 chartRect:17 withBlendMode:v11 zoomScale:v13 contentOffset:v15, v17, v20, v21, v22];
+  [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:context renderingView:renderingView chartRect:17 withBlendMode:v11 zoomScale:v13 contentOffset:v15, v17, v20, v21, v22];
 
-  v23 = [(HKGraphViewRenderer *)self renderingView];
+  renderingView2 = [(HKGraphViewRenderer *)self renderingView];
   [(HKGraphViewRenderer *)self zoomScale];
   v25 = v24;
   [(HKGraphViewRenderer *)self contentOffset];
-  [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:a4 renderingView:v23 chartRect:17 withBlendMode:v11 zoomScale:v13 contentOffset:v15, v17, v25, v26, v27];
+  [(HKGraphViewRenderer *)self _renderYAxisGridlinesInContext:context renderingView:renderingView2 chartRect:17 withBlendMode:v11 zoomScale:v13 contentOffset:v15, v17, v25, v26, v27];
 
-  [(HKGraphViewRenderer *)self _renderXAxisGridlinesInContext:a4 withBlendMode:17];
+  [(HKGraphViewRenderer *)self _renderXAxisGridlinesInContext:context withBlendMode:17];
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (UIEdgeInsets)virtualMarginInsets
 {
-  v3 = [(HKGraphViewRenderer *)self virtualMargins];
-  [v3 virtualLeftMarginWidth];
+  virtualMargins = [(HKGraphViewRenderer *)self virtualMargins];
+  [virtualMargins virtualLeftMarginWidth];
   v5 = v4;
-  v6 = [(HKGraphViewRenderer *)self virtualMargins];
-  [v6 virtualRightMarginWidth];
+  virtualMargins2 = [(HKGraphViewRenderer *)self virtualMargins];
+  [virtualMargins2 virtualRightMarginWidth];
   v8 = v7;
   [(HKGraphViewRenderer *)self rightHandInactiveArea];
   v10 = v8 + v9;
@@ -841,10 +841,10 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
   return result;
 }
 
-- (CGRect)screenRectForSeries:(id)a3
+- (CGRect)screenRectForSeries:(id)series
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  seriesCopy = series;
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
@@ -853,10 +853,10 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v10 = [v9 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v11 = [seriesRows countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v11)
   {
     v12 = v11;
@@ -867,7 +867,7 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(seriesRows);
         }
 
         v15 = *(*(&v33 + 1) + 8 * i);
@@ -875,8 +875,8 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v16 = [v15 overlaidSeries];
-        v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        overlaidSeries = [v15 overlaidSeries];
+        v17 = [overlaidSeries countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v17)
         {
           v18 = v17;
@@ -887,10 +887,10 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
             {
               if (*v30 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(overlaidSeries);
               }
 
-              if (*(*(&v29 + 1) + 8 * j) == v4)
+              if (*(*(&v29 + 1) + 8 * j) == seriesCopy)
               {
                 [v15 yAxisRect];
                 v5 = v21;
@@ -902,7 +902,7 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v18 = [overlaidSeries countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v18)
             {
               continue;
@@ -913,7 +913,7 @@ id __55__HKGraphViewRenderer__renderSelectionLineWithContext___block_invoke(CGRe
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v12 = [seriesRows countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v12);
@@ -932,18 +932,18 @@ LABEL_18:
   return result;
 }
 
-- (id)axisAnnotationDelegateForSeries:(id)a3
+- (id)axisAnnotationDelegateForSeries:(id)series
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  seriesCopy = series;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v6 = [v5 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v7 = [seriesRows countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -954,7 +954,7 @@ LABEL_18:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(seriesRows);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -962,8 +962,8 @@ LABEL_18:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = [v11 overlaidSeries];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        overlaidSeries = [v11 overlaidSeries];
+        v13 = [overlaidSeries countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
           v14 = v13;
@@ -974,18 +974,18 @@ LABEL_18:
             {
               if (*v20 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(overlaidSeries);
               }
 
-              if (*(*(&v19 + 1) + 8 * j) == v4)
+              if (*(*(&v19 + 1) + 8 * j) == seriesCopy)
               {
-                v17 = [v11 axisAnnotationHandler];
+                axisAnnotationHandler = [v11 axisAnnotationHandler];
 
                 goto LABEL_19;
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v14 = [overlaidSeries countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v14)
             {
               continue;
@@ -996,8 +996,8 @@ LABEL_18:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
-      v17 = 0;
+      v8 = [seriesRows countByEnumeratingWithState:&v23 objects:v28 count:16];
+      axisAnnotationHandler = 0;
     }
 
     while (v8);
@@ -1005,26 +1005,26 @@ LABEL_18:
 
   else
   {
-    v17 = 0;
+    axisAnnotationHandler = 0;
   }
 
 LABEL_19:
 
-  return v17;
+  return axisAnnotationHandler;
 }
 
-- (BOOL)seriesDrawingAsTopOverlay:(id)a3
+- (BOOL)seriesDrawingAsTopOverlay:(id)overlay
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overlayCopy = overlay;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(HKGraphViewRenderer *)self seriesConfiguration];
-  v6 = [v5 seriesRows];
+  seriesConfiguration = [(HKGraphViewRenderer *)self seriesConfiguration];
+  seriesRows = [seriesConfiguration seriesRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [seriesRows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1035,17 +1035,17 @@ LABEL_19:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(seriesRows);
         }
 
-        if ([(HKGraphViewRenderer *)self _lastSeriesInMultiSeriesRow:*(*(&v13 + 1) + 8 * i) series:v4])
+        if ([(HKGraphViewRenderer *)self _lastSeriesInMultiSeriesRow:*(*(&v13 + 1) + 8 * i) series:overlayCopy])
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [seriesRows countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -1061,21 +1061,21 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_lastSeriesInMultiSeriesRow:(id)a3 series:(id)a4
+- (BOOL)_lastSeriesInMultiSeriesRow:(id)row series:(id)series
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 overlaidSeries];
-  if ([v7 count] < 2)
+  rowCopy = row;
+  seriesCopy = series;
+  overlaidSeries = [rowCopy overlaidSeries];
+  if ([overlaidSeries count] < 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [v5 overlaidSeries];
-    v9 = [v8 lastObject];
-    v10 = v9 == v6;
+    overlaidSeries2 = [rowCopy overlaidSeries];
+    lastObject = [overlaidSeries2 lastObject];
+    v10 = lastObject == seriesCopy;
   }
 
   return v10;

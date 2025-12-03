@@ -1,6 +1,6 @@
 @interface PBFFocusPosterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axWidgetDescriptorFromLookupInfo:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axWidgetDescriptorFromLookupInfo:(id)info;
 - (id)_axWidgetNames;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -10,22 +10,22 @@
 
 @implementation PBFFocusPosterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRSWidget"];
-  [v3 validateClass:@"PRComplicationDescriptor"];
-  [v3 validateClass:@"PBFGenericComplicationLookupInfo"];
-  [v3 validateClass:@"PBFFocusPosterCell" hasInstanceMethod:@"isCheckboxOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PBFFocusPosterCell" hasInstanceMethod:@"posterPreview" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"galleryLocalizedTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"subtitleComplication" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"suggestedComplications" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PBFFocusPosterCell" hasInstanceVariable:@"_checkboxView" withType:"PBFFocusCheckboxView"];
-  [v3 validateClass:@"PRSWidget" hasClassMethod:@"pbf_PRSWidgetFromComplicationLookupInfo:uniqueIdentifier:intent:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"initWithPRSWidget:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHSWidgetDescriptor" hasProperty:@"displayName" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRSWidget"];
+  [validationsCopy validateClass:@"PRComplicationDescriptor"];
+  [validationsCopy validateClass:@"PBFGenericComplicationLookupInfo"];
+  [validationsCopy validateClass:@"PBFFocusPosterCell" hasInstanceMethod:@"isCheckboxOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PBFFocusPosterCell" hasInstanceMethod:@"posterPreview" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"galleryLocalizedTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"subtitleComplication" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PBFPosterConfigurationGalleryPreview" hasInstanceMethod:@"suggestedComplications" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PBFFocusPosterCell" hasInstanceVariable:@"_checkboxView" withType:"PBFFocusCheckboxView"];
+  [validationsCopy validateClass:@"PRSWidget" hasClassMethod:@"pbf_PRSWidgetFromComplicationLookupInfo:uniqueIdentifier:intent:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"initWithPRSWidget:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHSWidgetDescriptor" hasProperty:@"displayName" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -62,15 +62,15 @@ LABEL_6:
 - (id)accessibilityValue
 {
   v3 = [(PBFFocusPosterCellAccessibility *)self safeValueForKey:@"posterPreview"];
-  v4 = AXMappedLabelOrValueForPosterPreview(v3);
-  if (!v4)
+  accessibilityValue = AXMappedLabelOrValueForPosterPreview(v3);
+  if (!accessibilityValue)
   {
     v8.receiver = self;
     v8.super_class = PBFFocusPosterCellAccessibility;
-    v4 = [(PBFFocusPosterCellAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(PBFFocusPosterCellAccessibility *)&v8 accessibilityValue];
   }
 
-  v7 = [(PBFFocusPosterCellAccessibility *)self _axWidgetNames];
+  _axWidgetNames = [(PBFFocusPosterCellAccessibility *)self _axWidgetNames];
   v5 = __UIAXStringForVariables();
 
   return v5;
@@ -119,8 +119,8 @@ LABEL_6:
   v40 = *MEMORY[0x29EDCA608];
   v3 = [(PBFFocusPosterCellAccessibility *)self safeValueForKey:@"posterPreview"];
   v4 = [v3 safeArrayForKey:@"suggestedComplications"];
-  v5 = [MEMORY[0x29EDB8DE8] array];
-  v6 = [MEMORY[0x29EDB8E00] dictionary];
+  array = [MEMORY[0x29EDB8DE8] array];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v29 = v3;
   v7 = [v3 safeValueForKey:@"subtitleComplication"];
   v8 = [(PBFFocusPosterCellAccessibility *)self _axWidgetDescriptorFromLookupInfo:v7];
@@ -128,7 +128,7 @@ LABEL_6:
   if (v8)
   {
     v9 = AXTopWidgetAndAppName(v8);
-    [v5 axSafelyAddObject:v9];
+    [array axSafelyAddObject:v9];
   }
 
   v28 = v8;
@@ -152,7 +152,7 @@ LABEL_6:
         }
 
         v15 = [(PBFFocusPosterCellAccessibility *)self _axWidgetDescriptorFromLookupInfo:*(*(&v34 + 1) + 8 * i)];
-        AXMapAppNameToWidgets(v15, v6);
+        AXMapAppNameToWidgets(v15, dictionary);
       }
 
       v12 = [v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -167,8 +167,8 @@ LABEL_6:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v16 = [v6 allKeys];
-  v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allKeys = [dictionary allKeys];
+  v17 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v17)
   {
     v18 = v17;
@@ -179,16 +179,16 @@ LABEL_6:
       {
         if (*v31 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
-        v21 = [v6 objectForKey:*(*(&v30 + 1) + 8 * j)];
+        v21 = [dictionary objectForKey:*(*(&v30 + 1) + 8 * j)];
         v22 = AXFormatAndListWithElements();
         v23 = __UIAXStringForVariables();
-        [v5 axSafelyAddObject:{v23, v22, @"__AXStringForVariablesSentinel"}];
+        [array axSafelyAddObject:{v23, v22, @"__AXStringForVariablesSentinel"}];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v18);
@@ -201,9 +201,9 @@ LABEL_6:
   return v24;
 }
 
-- (id)_axWidgetDescriptorFromLookupInfo:(id)a3
+- (id)_axWidgetDescriptorFromLookupInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   MEMORY[0x29C2E7EC0](@"PBFGenericComplicationLookupInfo");
   if (objc_opt_isKindOfClass())
   {
@@ -213,7 +213,7 @@ LABEL_6:
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    v13 = v3;
+    v13 = infoCopy;
     AXPerformSafeBlock();
     v4 = v15[5];
 

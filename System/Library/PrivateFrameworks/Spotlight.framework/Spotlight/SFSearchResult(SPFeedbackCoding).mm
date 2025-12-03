@@ -8,15 +8,15 @@
 {
   if (runningInSpotlight == 1)
   {
-    v1 = [a1 objectForFeedback];
+    selfCopy = [self objectForFeedback];
   }
 
   else
   {
-    v1 = a1;
+    selfCopy = self;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface SUInstallationConstraintMonitorCarplay
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
 - (unint64_t)unsatisfiedConstraints;
 - (void)_queue_carplayDidChange;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation SUInstallationConstraintMonitorCarplay
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
-  v6 = a4;
-  v7 = a3;
+  downloadCopy = download;
+  queueCopy = queue;
   BSDispatchQueueAssert();
   v41.receiver = self;
   v41.super_class = SUInstallationConstraintMonitorCarplay;
-  v8 = [(SUInstallationConstraintMonitorBase *)&v41 initOnQueue:v7 withRepresentedInstallationConstraints:512 andDownload:v6];
+  v8 = [(SUInstallationConstraintMonitorBase *)&v41 initOnQueue:queueCopy withRepresentedInstallationConstraints:512 andDownload:downloadCopy];
 
   if (v8)
   {
@@ -31,16 +31,16 @@
           if (objc_opt_respondsToSelector())
           {
             v26 = v18;
-            v27 = [v26 initAndWaitUntilSessionUpdated];
+            initAndWaitUntilSessionUpdated = [v26 initAndWaitUntilSessionUpdated];
             v28 = *(v8 + 7);
-            *(v8 + 7) = v27;
+            *(v8 + 7) = initAndWaitUntilSessionUpdated;
 
             v29 = *(v8 + 7);
             if (v29)
             {
               [v29 setSessionObserver:v8];
-              v30 = [*(v8 + 7) currentSession];
-              *(v8 + 48) = v30 != 0;
+              currentSession = [*(v8 + 7) currentSession];
+              *(v8 + 48) = currentSession != 0;
 
               return v8;
             }
@@ -100,8 +100,8 @@ LABEL_12:
   queue_carSessionStatus = self->_queue_carSessionStatus;
   if (queue_carSessionStatus)
   {
-    v5 = [(CARSessionStatus *)queue_carSessionStatus currentSession];
-    v6 = v5 != 0;
+    currentSession = [(CARSessionStatus *)queue_carSessionStatus currentSession];
+    v6 = currentSession != 0;
   }
 
   else
@@ -116,12 +116,12 @@ LABEL_12:
     self->_queue_CarplayConnected;
     SULogInfoForSubsystem(v7, @"%@ - carplay constraint changed (satisfied? %@)", v8, v9, v10, v11, v12, v13, self);
 
-    v14 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v14 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -132,7 +132,7 @@ LABEL_12:
   dispatch_async(queue, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];

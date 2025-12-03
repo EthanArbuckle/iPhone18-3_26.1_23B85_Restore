@@ -1,5 +1,5 @@
 @interface HMDFetchedAccessorySettingsControllerKeyPathMapItem
-- (HMDFetchedAccessorySettingsControllerKeyPathMapItem)initWithDriver:(id)a3 keyPaths:(id)a4;
+- (HMDFetchedAccessorySettingsControllerKeyPathMapItem)initWithDriver:(id)driver keyPaths:(id)paths;
 - (NSArray)keyPaths;
 @end
 
@@ -17,18 +17,18 @@
   return v2;
 }
 
-- (HMDFetchedAccessorySettingsControllerKeyPathMapItem)initWithDriver:(id)a3 keyPaths:(id)a4
+- (HMDFetchedAccessorySettingsControllerKeyPathMapItem)initWithDriver:(id)driver keyPaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
+  driverCopy = driver;
+  pathsCopy = paths;
   v14.receiver = self;
   v14.super_class = HMDFetchedAccessorySettingsControllerKeyPathMapItem;
   v9 = [(HMDFetchedAccessorySettingsControllerKeyPathMapItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_driver, a3);
-    v11 = [v8 mutableCopy];
+    objc_storeStrong(&v9->_driver, driver);
+    v11 = [pathsCopy mutableCopy];
     keyPathsInternal = v10->_keyPathsInternal;
     v10->_keyPathsInternal = v11;
   }

@@ -21,25 +21,25 @@
 - (unsigned)fillLevelLabel;
 - (unsigned)fuelLevelState;
 - (unsigned)portSideIndicator;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFFuelLevel
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFFuelLevel;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -52,12 +52,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -73,13 +73,13 @@
 - (CAFMeasurementCharacteristic)fuelLevelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000002"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000002"];
@@ -98,49 +98,49 @@
 
 - (NSMeasurement)fuelLevel
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelCharacteristic];
-  v3 = [v2 measurementValue];
+  fuelLevelCharacteristic = [(CAFFuelLevel *)self fuelLevelCharacteristic];
+  measurementValue = [fuelLevelCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt8Range)fuelLevelRange
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt8Range];
+  fuelLevelCharacteristic = [(CAFFuelLevel *)self fuelLevelCharacteristic];
+  range = [fuelLevelCharacteristic range];
+  uInt8Range = [range uInt8Range];
 
-  return v4;
+  return uInt8Range;
 }
 
 - (CAFMeasurementRange)fuelLevelMeasurementRange
 {
-  v3 = [(CAFFuelLevel *)self fuelLevelRange];
-  v4 = [(CAFFuelLevel *)self fuelLevel];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  fuelLevelRange = [(CAFFuelLevel *)self fuelLevelRange];
+  fuelLevel = [(CAFFuelLevel *)self fuelLevel];
+  unit = [fuelLevel unit];
+  v6 = [fuelLevelRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)fuelLevelInvalid
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelCharacteristic];
-  v3 = [v2 isInvalid];
+  fuelLevelCharacteristic = [(CAFFuelLevel *)self fuelLevelCharacteristic];
+  isInvalid = [fuelLevelCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFFuelLevelStateCharacteristic)fuelLevelStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000017"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000017"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000017"];
@@ -159,22 +159,22 @@
 
 - (unsigned)fuelLevelState
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelStateCharacteristic];
-  v3 = [v2 fuelLevelStateValue];
+  fuelLevelStateCharacteristic = [(CAFFuelLevel *)self fuelLevelStateCharacteristic];
+  fuelLevelStateValue = [fuelLevelStateCharacteristic fuelLevelStateValue];
 
-  return v3;
+  return fuelLevelStateValue;
 }
 
 - (CAFMeasurementCharacteristic)fuelLevelMarkerLowCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000004100001A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004100001A"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000004100001A"];
@@ -193,35 +193,35 @@
 
 - (NSMeasurement)fuelLevelMarkerLow
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
-  v3 = [v2 measurementValue];
+  fuelLevelMarkerLowCharacteristic = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
+  measurementValue = [fuelLevelMarkerLowCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt8Range)fuelLevelMarkerLowRange
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt8Range];
+  fuelLevelMarkerLowCharacteristic = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
+  range = [fuelLevelMarkerLowCharacteristic range];
+  uInt8Range = [range uInt8Range];
 
-  return v4;
+  return uInt8Range;
 }
 
 - (CAFMeasurementRange)fuelLevelMarkerLowMeasurementRange
 {
-  v3 = [(CAFFuelLevel *)self fuelLevelMarkerLowRange];
-  v4 = [(CAFFuelLevel *)self fuelLevelMarkerLow];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  fuelLevelMarkerLowRange = [(CAFFuelLevel *)self fuelLevelMarkerLowRange];
+  fuelLevelMarkerLow = [(CAFFuelLevel *)self fuelLevelMarkerLow];
+  unit = [fuelLevelMarkerLow unit];
+  v6 = [fuelLevelMarkerLowRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasFuelLevelMarkerLow
 {
-  v2 = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
-  v3 = v2 != 0;
+  fuelLevelMarkerLowCharacteristic = [(CAFFuelLevel *)self fuelLevelMarkerLowCharacteristic];
+  v3 = fuelLevelMarkerLowCharacteristic != 0;
 
   return v3;
 }
@@ -229,13 +229,13 @@
 - (CAFFillLevelLabelCharacteristic)fillLevelLabelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000007"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000007"];
@@ -254,22 +254,22 @@
 
 - (unsigned)fillLevelLabel
 {
-  v2 = [(CAFFuelLevel *)self fillLevelLabelCharacteristic];
-  v3 = [v2 fillLevelLabelValue];
+  fillLevelLabelCharacteristic = [(CAFFuelLevel *)self fillLevelLabelCharacteristic];
+  fillLevelLabelValue = [fillLevelLabelCharacteristic fillLevelLabelValue];
 
-  return v3;
+  return fillLevelLabelValue;
 }
 
 - (CAFPortSideIndicatorCharacteristic)portSideIndicatorCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000013"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000013"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000013"];
@@ -288,22 +288,22 @@
 
 - (unsigned)portSideIndicator
 {
-  v2 = [(CAFFuelLevel *)self portSideIndicatorCharacteristic];
-  v3 = [v2 portSideIndicatorValue];
+  portSideIndicatorCharacteristic = [(CAFFuelLevel *)self portSideIndicatorCharacteristic];
+  portSideIndicatorValue = [portSideIndicatorCharacteristic portSideIndicatorValue];
 
-  return v3;
+  return portSideIndicatorValue;
 }
 
 - (BOOL)registeredForFuelLevel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000002"];
 
   return v10;
 }
@@ -311,13 +311,13 @@
 - (BOOL)registeredForFuelLevelState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000017"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000017"];
 
   return v10;
 }
@@ -325,13 +325,13 @@
 - (BOOL)registeredForFuelLevelMarkerLow
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000004100001A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004100001A"];
 
   return v10;
 }
@@ -339,13 +339,13 @@
 - (BOOL)registeredForFillLevelLabel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000007"];
 
   return v10;
 }
@@ -353,13 +353,13 @@
 - (BOOL)registeredForPortSideIndicator
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000013"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000013"];
 
   return v10;
 }

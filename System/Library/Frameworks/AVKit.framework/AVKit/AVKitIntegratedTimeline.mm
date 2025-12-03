@@ -1,75 +1,75 @@
 @interface AVKitIntegratedTimeline
 + (id)keyPathsForValuesAffectingDuration;
-- (AVKitIntegratedTimeline)initWithAVPlayerItemIntegratedTimeline:(id)a3;
-- (AVKitIntegratedTimeline)initWithPlayerItem:(id)a3;
+- (AVKitIntegratedTimeline)initWithAVPlayerItemIntegratedTimeline:(id)timeline;
+- (AVKitIntegratedTimeline)initWithPlayerItem:(id)item;
 - (BOOL)_hasSegmentWithNonZeroDuration;
 - (NSArray)allInterstitialEvents;
 - (double)currentTimeInterval;
-- (id)addBoundaryTimeObserverForDisplayTime:(double)a3 usingMainBlock:(id)a4;
+- (id)addBoundaryTimeObserverForDisplayTime:(double)time usingMainBlock:(id)block;
 - (id)asciiRepresentation;
 - (id)description;
 - (id)interstitialEvent;
-- (id)segmentForDisplayTime:(double)a3 segmentOffset:(double *)a4;
-- (id)timelineSegmentContainingTime:(double)a3 inSegments:(id)a4;
-- (id)timelineSegmentForPlayerInterstitialEvent:(id)a3;
+- (id)segmentForDisplayTime:(double)time segmentOffset:(double *)offset;
+- (id)timelineSegmentContainingTime:(double)time inSegments:(id)segments;
+- (id)timelineSegmentForPlayerInterstitialEvent:(id)event;
 - (int64_t)currentPlayerItemSegmentType;
-- (void)_setPlayerSegments:(id)a3;
+- (void)_setPlayerSegments:(id)segments;
 - (void)_updatePrimaryPlayerItemReadyForInspection;
 - (void)_updatePropertiesFromSnapshot;
 - (void)_updatePropertiesFromSnapshotIfStale;
 - (void)_updateSeekableTimeRangeProperties;
 - (void)dealloc;
-- (void)enumerateInterstitialSegments:(id)a3;
-- (void)enumerateSegments:(id)a3;
-- (void)seekToDate:(id)a3 completionHandler:(id)a4;
-- (void)seekToDisplayTime:(double)a3 completionHandler:(id)a4;
-- (void)seekToDisplayTime:(double)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6;
-- (void)setDurationCached:(id *)a3;
+- (void)enumerateInterstitialSegments:(id)segments;
+- (void)enumerateSegments:(id)segments;
+- (void)seekToDate:(id)date completionHandler:(id)handler;
+- (void)seekToDisplayTime:(double)time completionHandler:(id)handler;
+- (void)seekToDisplayTime:(double)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
+- (void)setDurationCached:(id *)cached;
 @end
 
 @implementation AVKitIntegratedTimeline
 
-- (void)setDurationCached:(id *)a3
+- (void)setDurationCached:(id *)cached
 {
-  v3 = *&a3->var0;
-  self->_durationCached.epoch = a3->var3;
+  v3 = *&cached->var0;
+  self->_durationCached.epoch = cached->var3;
   *&self->_durationCached.value = v3;
 }
 
-- (void)seekToDate:(id)a3 completionHandler:(id)a4
+- (void)seekToDate:(id)date completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   v8 = _AVLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[AVKitIntegratedTimeline seekToDate:completionHandler:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = dateCopy;
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s seeking to date %@", &v10, 0x16u);
   }
 
-  v9 = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
-  [v9 seekToDate:v6 completionHandler:v7];
+  playerItemIntegratedTimeline = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
+  [playerItemIntegratedTimeline seekToDate:dateCopy completionHandler:handlerCopy];
 }
 
-- (void)seekToDisplayTime:(double)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6
+- (void)seekToDisplayTime:(double)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  handlerCopy = handler;
   v11 = _AVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    time = *a4;
+    time = *before;
     Seconds = CMTimeGetSeconds(&time);
-    time = *a5;
+    time = *after;
     v13 = CMTimeGetSeconds(&time);
     LODWORD(time.value) = 136315906;
     *(&time.value + 4) = "[AVKitIntegratedTimeline seekToDisplayTime:toleranceBefore:toleranceAfter:completionHandler:]";
     LOWORD(time.flags) = 2048;
-    *(&time.flags + 2) = a3;
+    *(&time.flags + 2) = time;
     HIWORD(time.epoch) = 2048;
     v21 = Seconds;
     v22 = 2048;
@@ -78,34 +78,34 @@
   }
 
   memset(&time, 0, sizeof(time));
-  CMTimeMakeWithSeconds(&time, a3, 1000);
-  v14 = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
-  v19 = time;
-  v17 = *&a4->var0;
-  var3 = a4->var3;
-  v15 = *&a5->var0;
-  v16 = a5->var3;
-  [v14 seekToTime:&v19 toleranceBefore:&v17 toleranceAfter:&v15 completionHandler:v10];
+  CMTimeMakeWithSeconds(&time, time, 1000);
+  playerItemIntegratedTimeline = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
+  timeCopy = time;
+  v17 = *&before->var0;
+  var3 = before->var3;
+  v15 = *&after->var0;
+  v16 = after->var3;
+  [playerItemIntegratedTimeline seekToTime:&timeCopy toleranceBefore:&v17 toleranceAfter:&v15 completionHandler:handlerCopy];
 }
 
-- (void)seekToDisplayTime:(double)a3 completionHandler:(id)a4
+- (void)seekToDisplayTime:(double)time completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _AVLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.value) = 136315394;
     *(&buf.value + 4) = "[AVKitIntegratedTimeline seekToDisplayTime:completionHandler:]";
     LOWORD(buf.flags) = 2048;
-    *(&buf.flags + 2) = a3;
+    *(&buf.flags + 2) = time;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s seeking to display time %.1f", &buf, 0x16u);
   }
 
   memset(&v16, 0, sizeof(v16));
-  CMTimeMakeWithSeconds(&v16, a3, 1000);
+  CMTimeMakeWithSeconds(&v16, time, 1000);
   [(AVKitIntegratedTimeline *)self duration];
-  if (v8 <= a3)
+  if (v8 <= time)
   {
     v9 = v8;
     v10 = _AVLog();
@@ -114,31 +114,31 @@
       LODWORD(buf.value) = 136315650;
       *(&buf.value + 4) = "[AVKitIntegratedTimeline seekToDisplayTime:completionHandler:]";
       LOWORD(buf.flags) = 2048;
-      *(&buf.flags + 2) = a3;
+      *(&buf.flags + 2) = time;
       HIWORD(buf.epoch) = 2048;
       v18 = v9;
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s requested seek time (%.1f) appears to be >= duration (%.1f)", &buf, 0x20u);
     }
   }
 
-  v11 = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
+  playerItemIntegratedTimeline = [(AVKitIntegratedTimeline *)self playerItemIntegratedTimeline];
   buf = v16;
   v14 = *MEMORY[0x1E6960CC0];
   v15 = *(MEMORY[0x1E6960CC0] + 16);
   v12 = v14;
   v13 = v15;
-  [v11 seekToTime:&buf toleranceBefore:&v14 toleranceAfter:&v12 completionHandler:v6];
+  [playerItemIntegratedTimeline seekToTime:&buf toleranceBefore:&v14 toleranceAfter:&v12 completionHandler:handlerCopy];
 }
 
-- (void)enumerateInterstitialSegments:(id)a3
+- (void)enumerateInterstitialSegments:(id)segments
 {
-  v4 = a3;
+  segmentsCopy = segments;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke;
   v6[3] = &unk_1E72083F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = segmentsCopy;
+  v5 = segmentsCopy;
   [(AVKitIntegratedTimeline *)self enumerateSegments:v6];
 }
 
@@ -151,16 +151,16 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
   }
 }
 
-- (void)enumerateSegments:(id)a3
+- (void)enumerateSegments:(id)segments
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  segmentsCopy = segments;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(AVKitIntegratedTimeline *)self timelineSegments];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  timelineSegments = [(AVKitIntegratedTimeline *)self timelineSegments];
+  v6 = [timelineSegments countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -172,14 +172,14 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(timelineSegments);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        segmentsCopy[2](segmentsCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [timelineSegments countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -189,14 +189,14 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
 - (NSArray)allInterstitialEvents
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVKitIntegratedTimeline *)self _snapshot];
+  array = [MEMORY[0x1E695DF70] array];
+  _snapshot = [(AVKitIntegratedTimeline *)self _snapshot];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 segments];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  segments = [_snapshot segments];
+  v6 = [segments countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -207,42 +207,42 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(segments);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 interstitialEvent];
+        interstitialEvent = [v10 interstitialEvent];
 
-        if (v11)
+        if (interstitialEvent)
         {
-          v12 = [v10 interstitialEvent];
-          [v3 addObject:v12];
+          interstitialEvent2 = [v10 interstitialEvent];
+          [array addObject:interstitialEvent2];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [segments countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)interstitialEvent
 {
-  v2 = [(AVKitIntegratedTimeline *)self currentSegment];
-  v3 = [v2 playerInterstitialEvent];
+  currentSegment = [(AVKitIntegratedTimeline *)self currentSegment];
+  playerInterstitialEvent = [currentSegment playerInterstitialEvent];
 
-  return v3;
+  return playerInterstitialEvent;
 }
 
 - (int64_t)currentPlayerItemSegmentType
 {
-  v2 = [(AVKitIntegratedTimeline *)self currentSegment];
-  v3 = [v2 segmentType];
+  currentSegment = [(AVKitIntegratedTimeline *)self currentSegment];
+  segmentType = [currentSegment segmentType];
 
-  return v3;
+  return segmentType;
 }
 
 - (BOOL)_hasSegmentWithNonZeroDuration
@@ -252,8 +252,8 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AVKitIntegratedTimeline *)self timelineSegments];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  timelineSegments = [(AVKitIntegratedTimeline *)self timelineSegments];
+  v3 = [timelineSegments countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -263,7 +263,7 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(timelineSegments);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -278,7 +278,7 @@ void __57__AVKitIntegratedTimeline_enumerateInterstitialSegments___block_invoke(
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [timelineSegments countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -295,15 +295,15 @@ LABEL_12:
 
 - (void)_updatePrimaryPlayerItemReadyForInspection
 {
-  v3 = [(AVKitIntegratedTimeline *)self _hasSegmentWithNonZeroDuration];
-  if (self->_canSeek != v3)
+  _hasSegmentWithNonZeroDuration = [(AVKitIntegratedTimeline *)self _hasSegmentWithNonZeroDuration];
+  if (self->_canSeek != _hasSegmentWithNonZeroDuration)
   {
-    [(AVKitIntegratedTimeline *)self setCanSeek:v3];
+    [(AVKitIntegratedTimeline *)self setCanSeek:_hasSegmentWithNonZeroDuration];
   }
 
-  if (v3 != [(AVKitIntegratedTimeline *)self isPrimaryPlayerItemReadyForInspection])
+  if (_hasSegmentWithNonZeroDuration != [(AVKitIntegratedTimeline *)self isPrimaryPlayerItemReadyForInspection])
   {
-    [(AVKitIntegratedTimeline *)self _setPrimaryPlayerItemReadyForInspection:v3];
+    [(AVKitIntegratedTimeline *)self _setPrimaryPlayerItemReadyForInspection:_hasSegmentWithNonZeroDuration];
   }
 
   [(AVKitIntegratedTimeline *)self _updateSeekableTimeRangeProperties];
@@ -312,22 +312,22 @@ LABEL_12:
 - (void)_updateSeekableTimeRangeProperties
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVKitIntegratedTimeline *)self timelineSegments];
-  v4 = [v3 count];
+  timelineSegments = [(AVKitIntegratedTimeline *)self timelineSegments];
+  v4 = [timelineSegments count];
 
   if (v4)
   {
-    v5 = [(AVKitIntegratedTimeline *)self timelineSegments];
-    v6 = [v5 firstObject];
+    timelineSegments2 = [(AVKitIntegratedTimeline *)self timelineSegments];
+    firstObject = [timelineSegments2 firstObject];
 
-    v7 = [(AVKitIntegratedTimeline *)self timelineSegments];
-    v8 = [v7 lastObject];
+    timelineSegments3 = [(AVKitIntegratedTimeline *)self timelineSegments];
+    lastObject = [timelineSegments3 lastObject];
 
-    [v6 startTime];
+    [firstObject startTime];
     v10 = v9;
-    [v8 startTime];
+    [lastObject startTime];
     v12 = v11;
-    [v8 duration];
+    [lastObject duration];
     v14 = [[AVTimeRange alloc] initWithStartTime:v10 endTime:v12 + v13];
   }
 
@@ -381,22 +381,22 @@ LABEL_12:
   {
     self->_isSnapshotUpdateInProgress = 1;
     os_unfair_lock_unlock(&self->_unfairLock);
-    v3 = [(AVKitIntegratedTimeline *)self _snapshot];
+    _snapshot = [(AVKitIntegratedTimeline *)self _snapshot];
     v4 = _AVLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 segments];
+      segments = [_snapshot segments];
       LODWORD(buf.value) = 136315394;
       *(&buf.value + 4) = "[AVKitIntegratedTimeline _updatePropertiesFromSnapshot]";
       LOWORD(buf.flags) = 2112;
-      *(&buf.flags + 2) = v5;
+      *(&buf.flags + 2) = segments;
       _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "%s AVKitIntegratedTimeline snapshot segments - %@", &buf, 0x16u);
     }
 
-    if (v3)
+    if (_snapshot)
     {
       memset(&buf, 0, sizeof(buf));
-      [v3 duration];
+      [_snapshot duration];
       time1 = self->_durationCached;
       v14 = buf;
       if (CMTimeCompare(&time1, &v14))
@@ -417,14 +417,14 @@ LABEL_12:
         [(AVKitIntegratedTimeline *)self setDurationCached:&time1];
       }
 
-      v8 = [v3 segments];
-      [(AVKitIntegratedTimeline *)self _setPlayerSegments:v8];
+      segments2 = [_snapshot segments];
+      [(AVKitIntegratedTimeline *)self _setPlayerSegments:segments2];
 
-      v9 = [v3 currentSegment];
-      v10 = [[AVTimelineSegment alloc] initWithSegment:v9];
+      currentSegment = [_snapshot currentSegment];
+      v10 = [[AVTimelineSegment alloc] initWithSegment:currentSegment];
       if (v10 != self->_currentSegment)
       {
-        if (!v9 || ([(AVKitIntegratedTimeline *)self currentSegment], v11 = objc_claimAutoreleasedReturnValue(), v12 = [(AVTimelineSegment *)v10 isEqual:v11], v11, !v12))
+        if (!currentSegment || ([(AVKitIntegratedTimeline *)self currentSegment], v11 = objc_claimAutoreleasedReturnValue(), v12 = [(AVTimelineSegment *)v10 isEqual:v11], v11, !v12))
         {
           [(AVKitIntegratedTimeline *)self setCurrentSegment:v10];
         }
@@ -439,16 +439,16 @@ LABEL_12:
   }
 }
 
-- (void)_setPlayerSegments:(id)a3
+- (void)_setPlayerSegments:(id)segments
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  segmentsCopy = segments;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = segmentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -483,18 +483,18 @@ LABEL_12:
   [(AVKitIntegratedTimeline *)self _updatePrimaryPlayerItemReadyForInspection];
 }
 
-- (id)timelineSegmentContainingTime:(double)a3 inSegments:(id)a4
+- (id)timelineSegmentContainingTime:(double)time inSegments:(id)segments
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 >= 0.0)
+  segmentsCopy = segments;
+  v6 = segmentsCopy;
+  if (time >= 0.0)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v5;
+    v8 = segmentsCopy;
     v7 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -510,14 +510,14 @@ LABEL_12:
 
           v11 = *(*(&v15 + 1) + 8 * i);
           [v11 duration];
-          if (a3 < v12)
+          if (time < v12)
           {
             v7 = v11;
             goto LABEL_13;
           }
 
           [v11 duration];
-          a3 = a3 - v13;
+          time = time - v13;
         }
 
         v7 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -541,12 +541,12 @@ LABEL_13:
   return v7;
 }
 
-- (id)addBoundaryTimeObserverForDisplayTime:(double)a3 usingMainBlock:(id)a4
+- (id)addBoundaryTimeObserverForDisplayTime:(double)time usingMainBlock:(id)block
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   seconds = 0.0;
-  v7 = [(AVKitIntegratedTimeline *)self segmentForDisplayTime:&seconds segmentOffset:a3];
+  v7 = [(AVKitIntegratedTimeline *)self segmentForDisplayTime:&seconds segmentOffset:time];
   if (v7)
   {
     v8 = MEMORY[0x1E696B098];
@@ -554,7 +554,7 @@ LABEL_13:
     v9 = [v8 valueWithCMTime:&v13];
     v15[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    v11 = [(AVKitIntegratedTimeline *)self addBoundaryTimeObserverForSegment:v7 offsetsIntoSegment:v10 queue:MEMORY[0x1E69E96A0] usingBlock:v6];
+    v11 = [(AVKitIntegratedTimeline *)self addBoundaryTimeObserverForSegment:v7 offsetsIntoSegment:v10 queue:MEMORY[0x1E69E96A0] usingBlock:blockCopy];
   }
 
   else
@@ -565,20 +565,20 @@ LABEL_13:
   return v11;
 }
 
-- (id)timelineSegmentForPlayerInterstitialEvent:(id)a3
+- (id)timelineSegmentForPlayerInterstitialEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [eventCopy identifier];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(AVKitIntegratedTimeline *)self timelineSegments];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    timelineSegments = [(AVKitIntegratedTimeline *)self timelineSegments];
+    v8 = [timelineSegments countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = *v16;
@@ -588,31 +588,31 @@ LABEL_13:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(timelineSegments);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 playerInterstitialEvent];
-          v13 = [v12 identifier];
-          if ([v12 isEqual:v5])
+          playerInterstitialEvent = [v11 playerInterstitialEvent];
+          identifier2 = [playerInterstitialEvent identifier];
+          if ([playerInterstitialEvent isEqual:v5])
           {
-            if (!(v6 | v13))
+            if (!(identifier | identifier2))
             {
-              v13 = 0;
+              identifier2 = 0;
 LABEL_17:
               v8 = v11;
 
               goto LABEL_18;
             }
 
-            if ([v6 isEqualToString:v13])
+            if ([identifier isEqualToString:identifier2])
             {
               goto LABEL_17;
             }
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [timelineSegments countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -627,12 +627,12 @@ LABEL_18:
 
   else
   {
-    v6 = _AVLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    identifier = _AVLog();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v21 = "[AVKitIntegratedTimeline timelineSegmentForPlayerInterstitialEvent:]";
-      _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s error: interstitialEvent not specified", buf, 0xCu);
+      _os_log_impl(&dword_18B49C000, identifier, OS_LOG_TYPE_DEFAULT, "%s error: interstitialEvent not specified", buf, 0xCu);
     }
 
     v8 = 0;
@@ -641,20 +641,20 @@ LABEL_18:
   return v8;
 }
 
-- (id)segmentForDisplayTime:(double)a3 segmentOffset:(double *)a4
+- (id)segmentForDisplayTime:(double)time segmentOffset:(double *)offset
 {
   memset(&v12, 0, sizeof(v12));
-  CMTimeMakeWithSeconds(&v12, a3, 1000);
-  v6 = [(AVPlayerItemIntegratedTimeline *)self->_playerItemIntegratedTimeline currentSnapshot];
+  CMTimeMakeWithSeconds(&v12, time, 1000);
+  currentSnapshot = [(AVPlayerItemIntegratedTimeline *)self->_playerItemIntegratedTimeline currentSnapshot];
   v11 = **&MEMORY[0x1E6960CC0];
   v9 = v12;
   v10 = 0;
-  [v6 mapTime:&v9 toSegment:&v10 atSegmentOffset:&v11];
+  [currentSnapshot mapTime:&v9 toSegment:&v10 atSegmentOffset:&v11];
   v7 = v10;
-  if (a4)
+  if (offset)
   {
     v9 = v11;
-    *a4 = CMTimeGetSeconds(&v9);
+    *offset = CMTimeGetSeconds(&v9);
   }
 
   return v7;
@@ -725,7 +725,7 @@ void __48__AVKitIntegratedTimeline__loadMissingDurations__block_invoke(uint64_t 
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(AVKitIntegratedTimeline *)self asciiRepresentation];
+  asciiRepresentation = [(AVKitIntegratedTimeline *)self asciiRepresentation];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __38__AVKitIntegratedTimeline_description__block_invoke;
@@ -749,7 +749,7 @@ void __48__AVKitIntegratedTimeline__loadMissingDurations__block_invoke(uint64_t 
   [(AVKitIntegratedTimeline *)self duration];
   v15 = v14;
   v16 = [v6 componentsJoinedByString:{@", "}];
-  v17 = [v11 stringWithFormat:@"%@ [%@] duration = %.1f (%@) %@", v12, v13, v15, v16, v5];
+  v17 = [v11 stringWithFormat:@"%@ [%@] duration = %.1f (%@) %@", v12, v13, v15, v16, asciiRepresentation];
 
   return v17;
 }
@@ -840,8 +840,8 @@ void __46__AVKitIntegratedTimeline_asciiRepresentation__block_invoke(uint64_t a1
 {
   if (self->_timelineSnapshotNotificationObservation)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_timelineSnapshotNotificationObservation];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_timelineSnapshotNotificationObservation];
   }
 
   v4.receiver = self;
@@ -849,34 +849,34 @@ void __46__AVKitIntegratedTimeline_asciiRepresentation__block_invoke(uint64_t a1
   [(AVKitIntegratedTimeline *)&v4 dealloc];
 }
 
-- (AVKitIntegratedTimeline)initWithPlayerItem:(id)a3
+- (AVKitIntegratedTimeline)initWithPlayerItem:(id)item
 {
-  v4 = [a3 integratedTimeline];
-  if (v4)
+  integratedTimeline = [item integratedTimeline];
+  if (integratedTimeline)
   {
-    self = [(AVKitIntegratedTimeline *)self initWithAVPlayerItemIntegratedTimeline:v4];
-    v5 = self;
+    self = [(AVKitIntegratedTimeline *)self initWithAVPlayerItemIntegratedTimeline:integratedTimeline];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (AVKitIntegratedTimeline)initWithAVPlayerItemIntegratedTimeline:(id)a3
+- (AVKitIntegratedTimeline)initWithAVPlayerItemIntegratedTimeline:(id)timeline
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  timelineCopy = timeline;
   v6 = _AVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[AVKitIntegratedTimeline initWithAVPlayerItemIntegratedTimeline:]";
     v24 = 2112;
-    v25 = v5;
+    v25 = timelineCopy;
     _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s timeline = %@", buf, 0x16u);
   }
 
@@ -891,7 +891,7 @@ void __46__AVKitIntegratedTimeline_asciiRepresentation__block_invoke(uint64_t a1
     observationController = v8->_observationController;
     v8->_observationController = v9;
 
-    objc_storeStrong(&v8->_playerItemIntegratedTimeline, a3);
+    objc_storeStrong(&v8->_playerItemIntegratedTimeline, timeline);
     v11 = MEMORY[0x1E6960C68];
     *&v8->_durationCached.value = *MEMORY[0x1E6960C68];
     v8->_durationCached.epoch = *(v11 + 16);
@@ -903,14 +903,14 @@ void __46__AVKitIntegratedTimeline_asciiRepresentation__block_invoke(uint64_t a1
 
     [(AVKitIntegratedTimeline *)v8 _loadMissingDurations];
     objc_initWeak(buf, v8);
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    v15 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __66__AVKitIntegratedTimeline_initWithAVPlayerItemIntegratedTimeline___block_invoke;
     v19[3] = &unk_1E7208898;
     objc_copyWeak(&v20, buf);
-    v16 = [v14 addObserverForName:*MEMORY[0x1E69879E0] object:v5 queue:v15 usingBlock:v19];
+    v16 = [defaultCenter addObserverForName:*MEMORY[0x1E69879E0] object:timelineCopy queue:mainQueue usingBlock:v19];
     timelineSnapshotNotificationObservation = v8->_timelineSnapshotNotificationObservation;
     v8->_timelineSnapshotNotificationObservation = v16;
 

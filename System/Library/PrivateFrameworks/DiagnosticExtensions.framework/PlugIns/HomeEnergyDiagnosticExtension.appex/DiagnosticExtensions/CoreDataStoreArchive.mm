@@ -1,11 +1,11 @@
 @interface CoreDataStoreArchive
-+ (id)copyCoreDataStoresWithUrl:(id)a3;
++ (id)copyCoreDataStoresWithUrl:(id)url;
 - (CoreDataStoreArchive)init;
 @end
 
 @implementation CoreDataStoreArchive
 
-+ (id)copyCoreDataStoresWithUrl:(id)a3
++ (id)copyCoreDataStoresWithUrl:(id)url
 {
   v3 = sub_1000037FC();
   v4 = *(v3 - 8);

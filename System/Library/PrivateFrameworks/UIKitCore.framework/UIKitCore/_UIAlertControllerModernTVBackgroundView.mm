@@ -1,10 +1,10 @@
 @interface _UIAlertControllerModernTVBackgroundView
 + (CGSize)backgroundInsetAmount;
 + (id)newBackgroundVisualEffectInAlertGroup;
-- (_UIAlertControllerModernTVBackgroundView)initWithFrame:(CGRect)a3;
+- (_UIAlertControllerModernTVBackgroundView)initWithFrame:(CGRect)frame;
 - (void)_configurePlatterHairline;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation _UIAlertControllerModernTVBackgroundView
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (_UIAlertControllerModernTVBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerModernTVBackgroundView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIAlertControllerModernTVBackgroundView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3 && [objc_opt_class() wantsVisualEffectView])
   {
     v4 = objc_alloc_init(UIVisualEffectView);
@@ -80,8 +80,8 @@
 
 - (void)_configurePlatterHairline
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   if (_UIInternalPreferenceUsesDefault_1(&unk_1ED48B638, @"TVAlert_DarkModeBackgroundHairlineAlpha"))
   {
@@ -93,7 +93,7 @@
     v5 = *&qword_1ED48B640;
   }
 
-  v6 = v4 == 1000 || v4 == 2;
+  v6 = userInterfaceStyle == 1000 || userInterfaceStyle == 2;
   if (v6 && v5 > 0.0)
   {
     v7 = _UIInternalPreferenceUsesDefault_1(&_MergedGlobals_956, @"TVAlert_DarkModeBackgroundHairlineWhite");
@@ -104,9 +104,9 @@
     }
 
     v9 = [UIColor colorWithWhite:v8 alpha:v5];
-    v10 = [v9 CGColor];
-    v11 = [(UIView *)self layer];
-    [v11 setBorderColor:v10];
+    cGColor = [v9 CGColor];
+    layer = [(UIView *)self layer];
+    [layer setBorderColor:cGColor];
 
     [objc_opt_class() platterHairlineWidth];
     v13 = v12;
@@ -114,24 +114,24 @@
 
   else
   {
-    v14 = [(UIView *)self layer];
-    [v14 setBorderColor:0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setBorderColor:0];
 
     v13 = 0.0;
   }
 
-  v15 = [(UIView *)self layer];
-  [v15 setBorderWidth:v13];
+  layer3 = [(UIView *)self layer];
+  [layer3 setBorderWidth:v13];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   [(UIView *)self setClipsToBounds:1];
-  v5 = [(UIView *)self layer];
-  [v5 setCornerRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 
-  v6 = [(UIView *)self layer];
-  [v6 setCornerCurve:*MEMORY[0x1E69796E8]];
+  layer2 = [(UIView *)self layer];
+  [layer2 setCornerCurve:*MEMORY[0x1E69796E8]];
 }
 
 @end

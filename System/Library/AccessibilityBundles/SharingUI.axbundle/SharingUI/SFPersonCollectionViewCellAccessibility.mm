@@ -1,18 +1,18 @@
 @interface SFPersonCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation SFPersonCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"cellState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"circleProgressView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"cellState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SFPersonCollectionViewCell" hasInstanceMethod:@"circleProgressView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,16 +21,16 @@
   if ([v3 _accessibilityViewIsVisible])
   {
     v4 = [(SFPersonCollectionViewCellAccessibility *)self safeValueForKey:@"_secondLabel"];
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
   v6 = [(SFPersonCollectionViewCellAccessibility *)self safeValueForKey:@"_nameLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;
@@ -41,17 +41,17 @@
   if ([(SFPersonCollectionViewCellAccessibility *)self safeIntegerForKey:@"cellState"]== 3)
   {
     v3 = [(SFPersonCollectionViewCellAccessibility *)self safeValueForKey:@"circleProgressView"];
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SFPersonCollectionViewCellAccessibility;
-    v4 = [(SFPersonCollectionViewCellAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(SFPersonCollectionViewCellAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 @end

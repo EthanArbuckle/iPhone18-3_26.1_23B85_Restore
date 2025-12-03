@@ -1,16 +1,16 @@
 @interface IDSDSessionKeyValueDelivery
-+ (id)createWithDelegate:(id)a3 session:(id)a4 metricsCollector:(id)a5 pushTokensForCapabilityProvider:(id)a6;
++ (id)createWithDelegate:(id)delegate session:(id)session metricsCollector:(id)collector pushTokensForCapabilityProvider:(id)provider;
 - (NSSet)objcMaterials;
 - (_TtC17identityservicesd27IDSDSessionKeyValueDelivery)init;
-- (id)getAllKeyValueDeliveryLocalMaterialSetForGroupID:(id)a3;
-- (void)addDeliveryHandler:(id)a3 uuid:(id)a4;
-- (void)addMaterialProviderToSession:(id)a3;
+- (id)getAllKeyValueDeliveryLocalMaterialSetForGroupID:(id)d;
+- (void)addDeliveryHandler:(id)handler uuid:(id)uuid;
+- (void)addMaterialProviderToSession:(id)session;
 - (void)dealloc;
-- (void)receiveDictionaryData:(id)a3 forType:(int)a4 fromParticipant:(unint64_t)a5;
-- (void)removeDeliveryHandler:(id)a3;
-- (void)requestDataForKey:(unsigned int)a3 participantID:(unint64_t)a4;
-- (void)sendData:(NSData *)a3 forKey:(unsigned int)a4 encryption:(unsigned int)a5 capability:(NSString *)a6 withCompletion:(id)a7;
-- (void)test_receiveData:(id)a3 forKey:(unsigned int)a4 fromParticipant:(unint64_t)a5;
+- (void)receiveDictionaryData:(id)data forType:(int)type fromParticipant:(unint64_t)participant;
+- (void)removeDeliveryHandler:(id)handler;
+- (void)requestDataForKey:(unsigned int)key participantID:(unint64_t)d;
+- (void)sendData:(NSData *)data forKey:(unsigned int)key encryption:(unsigned int)encryption capability:(NSString *)capability withCompletion:(id)completion;
+- (void)test_receiveData:(id)data forKey:(unsigned int)key fromParticipant:(unint64_t)participant;
 @end
 
 @implementation IDSDSessionKeyValueDelivery
@@ -18,7 +18,7 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd27IDSDSessionKeyValueDelivery_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 48));
   swift_unknownObjectWeakAssign();
@@ -33,12 +33,12 @@
   *(v2 + 40) = v6;
   os_unfair_lock_unlock((v2 + 48));
 
-  v7.receiver = v3;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for IDSDSessionKeyValueDelivery(0);
   [(IDSDSessionKeyValueDelivery *)&v7 dealloc];
 }
 
-- (void)addDeliveryHandler:(id)a3 uuid:(id)a4
+- (void)addDeliveryHandler:(id)handler uuid:(id)uuid
 {
   v6 = sub_1009360A8();
   v7 = *(v6 - 8);
@@ -47,14 +47,14 @@
   sub_100936078();
   v10 = *((swift_isaMask & self->super.isa) + 0xC0);
   swift_unknownObjectRetain();
-  v11 = self;
-  v10(a3, v9);
+  selfCopy = self;
+  v10(handler, v9);
   swift_unknownObjectRelease();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)removeDeliveryHandler:(id)a3
+- (void)removeDeliveryHandler:(id)handler
 {
   v4 = sub_1009360A8();
   v5 = *(v4 - 8);
@@ -62,17 +62,17 @@
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100936078();
   v8 = *((swift_isaMask & self->super.isa) + 0xC8);
-  v9 = self;
+  selfCopy = self;
   v8(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)getAllKeyValueDeliveryLocalMaterialSetForGroupID:(id)a3
+- (id)getAllKeyValueDeliveryLocalMaterialSetForGroupID:(id)d
 {
   v4 = sub_100936B38();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_10071FAE4(v4, v6);
 
   return v8;
@@ -80,44 +80,44 @@
 
 - (NSSet)objcMaterials
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IDSDSessionKeyValueDelivery.objcMaterials.getter();
 
   return v3;
 }
 
-- (void)receiveDictionaryData:(id)a3 forType:(int)a4 fromParticipant:(unint64_t)a5
+- (void)receiveDictionaryData:(id)data forType:(int)type fromParticipant:(unint64_t)participant
 {
-  v6 = *&a4;
+  v6 = *&type;
   v8 = sub_100936A78();
-  v9 = self;
-  IDSDSessionKeyValueDelivery.receive(dictionaryData:forType:fromParticipant:)(v8, v6, a5);
+  selfCopy = self;
+  IDSDSessionKeyValueDelivery.receive(dictionaryData:forType:fromParticipant:)(v8, v6, participant);
 }
 
-- (void)test_receiveData:(id)a3 forKey:(unsigned int)a4 fromParticipant:(unint64_t)a5
+- (void)test_receiveData:(id)data forKey:(unsigned int)key fromParticipant:(unint64_t)participant
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = self;
+  v6 = *&key;
+  dataCopy = data;
+  selfCopy = self;
   v10 = sub_100935EA8();
   v12 = v11;
 
-  (*((swift_isaMask & v9->super.isa) + 0x118))(v10, v12, v6, a5);
+  (*((swift_isaMask & selfCopy->super.isa) + 0x118))(v10, v12, v6, participant);
 
   sub_1007156D8(v10, v12);
 }
 
-- (void)sendData:(NSData *)a3 forKey:(unsigned int)a4 encryption:(unsigned int)a5 capability:(NSString *)a6 withCompletion:(id)a7
+- (void)sendData:(NSData *)data forKey:(unsigned int)key encryption:(unsigned int)encryption capability:(NSString *)capability withCompletion:(id)completion
 {
   v13 = sub_100706B30(&qword_100CB3410);
   __chkstk_darwin(v13 - 8);
   v15 = &v24 - v14;
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(completion);
   v17 = swift_allocObject();
-  *(v17 + 16) = a3;
-  *(v17 + 24) = a4;
-  *(v17 + 28) = a5;
-  *(v17 + 32) = a6;
+  *(v17 + 16) = data;
+  *(v17 + 24) = key;
+  *(v17 + 28) = encryption;
+  *(v17 + 32) = capability;
   *(v17 + 40) = v16;
   *(v17 + 48) = self;
   v18 = sub_100936DB8();
@@ -132,23 +132,23 @@
   v20[3] = 0;
   v20[4] = &unk_1009ACF48;
   v20[5] = v19;
-  v21 = a3;
-  v22 = a6;
-  v23 = self;
+  dataCopy = data;
+  capabilityCopy = capability;
+  selfCopy = self;
   sub_100724A14(0, 0, v15, &unk_1009ACF58, v20);
 }
 
-- (void)requestDataForKey:(unsigned int)a3 participantID:(unint64_t)a4
+- (void)requestDataForKey:(unsigned int)key participantID:(unint64_t)d
 {
-  v5 = *&a3;
+  v5 = *&key;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd27IDSDSessionKeyValueDelivery_state);
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v6 + 12);
   Strong = swift_unknownObjectWeakLoadStrong();
   os_unfair_lock_unlock(v6 + 12);
   if (Strong)
   {
-    [Strong requestKeyValueDeliveryDataForKey:v5 participantID:a4];
+    [Strong requestKeyValueDeliveryDataForKey:v5 participantID:d];
 
     swift_unknownObjectRelease();
   }
@@ -158,13 +158,13 @@
   }
 }
 
-+ (id)createWithDelegate:(id)a3 session:(id)a4 metricsCollector:(id)a5 pushTokensForCapabilityProvider:(id)a6
++ (id)createWithDelegate:(id)delegate session:(id)session metricsCollector:(id)collector pushTokensForCapabilityProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  collectorCopy = collector;
   swift_unknownObjectRetain();
-  v12 = sub_100729DEC(a3, v10, v11, a6);
+  v12 = sub_100729DEC(delegate, sessionCopy, collectorCopy, provider);
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
@@ -172,11 +172,11 @@
   return v12;
 }
 
-- (void)addMaterialProviderToSession:(id)a3
+- (void)addMaterialProviderToSession:(id)session
 {
-  v4 = *((swift_isaMask & *a3) + 0x130);
-  v5 = self;
-  v6 = a3;
+  v4 = *((swift_isaMask & *session) + 0x130);
+  selfCopy = self;
+  sessionCopy = session;
   v7 = v4(v15);
   v9 = v8;
   v10 = *v8;
@@ -198,7 +198,7 @@
 
   v10[2] = v13 + 1;
   v14 = &v10[2 * v13];
-  v14[4] = v5;
+  v14[4] = selfCopy;
   v14[5] = &off_100BE6B00;
   v7(v15, 0);
 }

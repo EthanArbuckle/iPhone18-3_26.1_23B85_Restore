@@ -1,7 +1,7 @@
 @interface HMFTimer
 - (BOOL)isRunning;
 - (HMFTimer)init;
-- (HMFTimer)initWithTimeInterval:(double)a3 options:(unsigned int)a4;
+- (HMFTimer)initWithTimeInterval:(double)interval options:(unsigned int)options;
 - (HMFTimerDelegate)delegate;
 - (NSDate)fireDate;
 - (OS_dispatch_queue)delegateQueue;
@@ -13,8 +13,8 @@
 - (void)fire;
 - (void)kick;
 - (void)resume;
-- (void)setDelegateQueue:(id)a3;
-- (void)setFireDate:(id)a3;
+- (void)setDelegateQueue:(id)queue;
+- (void)setFireDate:(id)date;
 - (void)suspend;
 @end
 
@@ -38,8 +38,8 @@
     [(HMFTimer *)self __fire];
     os_unfair_lock_unlock(&self->_lock);
     dispatch_assert_queue_V2(self->_timerQueue);
-    v5 = [(HMFTimer *)self delegate];
-    [v5 timerDidFire:self];
+    delegate = [(HMFTimer *)self delegate];
+    [delegate timerDidFire:self];
   }
 
   else
@@ -60,9 +60,9 @@
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     fireDate = self->_fireDate;
-    self->_fireDate = v3;
+    self->_fireDate = date;
 
     __suspend(self);
   }
@@ -86,18 +86,18 @@
 - (void)cancel
 {
   os_unfair_lock_lock_with_options();
-  v3 = self;
-  v4 = v3;
-  state = v3->_state;
+  selfCopy = self;
+  v4 = selfCopy;
+  state = selfCopy->_state;
   if (state != 3)
   {
     if (state == 1)
     {
-      __resume(v3);
+      __resume(selfCopy);
     }
 
-    v6 = [(HMFTimer *)v4 timer];
-    dispatch_source_cancel(v6);
+    timer = [(HMFTimer *)v4 timer];
+    dispatch_source_cancel(timer);
 
     v4->_state = 3;
   }
@@ -131,11 +131,11 @@
   objc_exception_throw(v7);
 }
 
-- (HMFTimer)initWithTimeInterval:(double)a3 options:(unsigned int)a4
+- (HMFTimer)initWithTimeInterval:(double)interval options:(unsigned int)options
 {
-  v5 = self;
+  selfCopy = self;
   v22 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     v10 = objc_autoreleasePoolPush();
     v11 = HMFGetOSLogHandle();
@@ -145,7 +145,7 @@
       *buf = 138543618;
       v19 = v12;
       v20 = 2048;
-      v21 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_22ADEC000, v11, OS_LOG_TYPE_ERROR, "%{public}@[HMFTimer] Expiration, %f, must be greater than 0", buf, 0x16u);
     }
 
@@ -161,17 +161,17 @@
     if (v7)
     {
       v7->_state = 1;
-      v7->_timeInterval = a3;
-      v7->_options = a4;
-      if ((a4 & 2) != 0)
+      v7->_timeInterval = interval;
+      v7->_options = options;
+      if ((options & 2) != 0)
       {
         v14 = 1000000;
       }
 
       else
       {
-        v8 = a3 * 1000000000.0;
-        if ((a4 & 8) != 0)
+        v8 = interval * 1000000000.0;
+        if ((options & 8) != 0)
         {
           v9 = v8 * 0.5;
         }
@@ -187,8 +187,8 @@
       v7->_leeway = v14;
     }
 
-    v5 = v7;
-    v13 = v5;
+    selfCopy = v7;
+    v13 = selfCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -232,26 +232,26 @@
   fireDate = self->_fireDate;
   if (fireDate)
   {
-    v4 = fireDate;
+    distantFuture = fireDate;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v5 = v4;
+  v5 = distantFuture;
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
   fireDate = self->_fireDate;
-  self->_fireDate = v4;
+  self->_fireDate = dateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -265,9 +265,9 @@
   return v3;
 }
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
   if (self->_timer)
   {
@@ -275,7 +275,7 @@
   }
 
   delegateQueue = self->_delegateQueue;
-  self->_delegateQueue = v4;
+  self->_delegateQueue = queueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

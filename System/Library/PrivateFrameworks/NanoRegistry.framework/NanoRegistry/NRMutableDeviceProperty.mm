@@ -1,18 +1,18 @@
 @interface NRMutableDeviceProperty
-+ (id)diffFrom:(id)a3 to:(id)a4;
++ (id)diffFrom:(id)from to:(id)to;
 + (id)enclosedClassTypes;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NRMutableDeviceProperty)init;
-- (NRMutableDeviceProperty)initWithCoder:(id)a3;
-- (NRMutableDeviceProperty)initWithProtobuf:(id)a3;
-- (NRMutableDeviceProperty)initWithValue:(id)a3;
+- (NRMutableDeviceProperty)initWithCoder:(id)coder;
+- (NRMutableDeviceProperty)initWithProtobuf:(id)protobuf;
+- (NRMutableDeviceProperty)initWithValue:(id)value;
 - (NRPBMutableDeviceProperty)protobuf;
-- (id)applyDiff:(id)a3 upOnly:(BOOL)a4 notifyParent:(BOOL)a5 unconditional:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)applyDiff:(id)diff upOnly:(BOOL)only notifyParent:(BOOL)parent unconditional:(BOOL)unconditional;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value;
 @end
 
 @implementation NRMutableDeviceProperty
@@ -34,10 +34,10 @@
   return [v14 setWithObjects:{v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v6 = [[NRDevicePropertyDiff alloc] initWithValue:v4];
+  valueCopy = value;
+  v6 = [[NRDevicePropertyDiff alloc] initWithValue:valueCopy];
 
   v5 = [(NRMutableDeviceProperty *)self applyDiff:v6 upOnly:0 notifyParent:1 unconditional:0];
 }
@@ -49,31 +49,31 @@
   return [(NRMutableStateBase *)&v3 init];
 }
 
-- (NRMutableDeviceProperty)initWithValue:(id)a3
+- (NRMutableDeviceProperty)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = NRMutableDeviceProperty;
   v6 = [(NRMutableStateBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v7;
 }
 
-- (NRMutableDeviceProperty)initWithProtobuf:(id)a3
+- (NRMutableDeviceProperty)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = NRMutableDeviceProperty;
   v5 = [(NRMutableStateBase *)&v10 init];
   if (v5)
   {
-    v6 = [v4 value];
-    v7 = [NRDevicePropertyDiff unpackPropertyValue:v6];
+    value = [protobufCopy value];
+    v7 = [NRDevicePropertyDiff unpackPropertyValue:value];
     value = v5->_value;
     v5->_value = v7;
 
@@ -92,9 +92,9 @@
   return v3;
 }
 
-- (NRMutableDeviceProperty)initWithCoder:(id)a3
+- (NRMutableDeviceProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NRMutableDeviceProperty;
   v5 = [(NRMutableStateBase *)&v14 init];
@@ -103,11 +103,11 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
     v10 = +[NRMutableDeviceProperty enclosedClassTypes];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"value"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"value"];
     value = v5->_value;
     v5->_value = v11;
 
@@ -125,26 +125,26 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(NRMutableDeviceProperty *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  protobuf = [(NRMutableDeviceProperty *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-+ (id)diffFrom:(id)a3 to:(id)a4
++ (id)diffFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 == v6 || ([v5 isEqual:v6] & 1) != 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy == toCopy || ([fromCopy isEqual:toCopy] & 1) != 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = v6;
+    v8 = toCopy;
     v9 = [NRDevicePropertyDiff alloc];
     if (v8)
     {
@@ -162,32 +162,32 @@ LABEL_6:
   return v7;
 }
 
-- (id)applyDiff:(id)a3 upOnly:(BOOL)a4 notifyParent:(BOOL)a5 unconditional:(BOOL)a6
+- (id)applyDiff:(id)diff upOnly:(BOOL)only notifyParent:(BOOL)parent unconditional:(BOOL)unconditional
 {
-  v7 = a5;
-  v9 = a3;
+  parentCopy = parent;
+  diffCopy = diff;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
-  v12 = v11;
-  v13 = v11;
-  if (!a6)
+  selfCopy = self;
+  v12 = selfCopy;
+  v13 = selfCopy;
+  if (!unconditional)
   {
-    v13 = [(NRMutableDeviceProperty *)v11 copyWithZone:0];
+    v13 = [(NRMutableDeviceProperty *)selfCopy copyWithZone:0];
   }
 
-  v14 = [v9 value];
+  value = [diffCopy value];
   value = v12->_value;
-  v12->_value = v14;
+  v12->_value = value;
 
-  v16 = v9;
-  if (!a6)
+  v16 = diffCopy;
+  if (!unconditional)
   {
     v16 = [objc_opt_class() diffFrom:v13 to:v12];
   }
 
   if (v16)
   {
-    if (v7)
+    if (parentCopy)
     {
       [(NRMutableStateBase *)v12 notifyParentWithDiff:v16];
     }
@@ -200,9 +200,9 @@ LABEL_6:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   value = self->_value;
 
   return [v4 initWithValue:value];
@@ -215,10 +215,10 @@ LABEL_6:
   return [self->_value hash]- v4 + 32 * v4 + 961;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_5;
   }
@@ -231,7 +231,7 @@ LABEL_6:
   }
 
   value = self->_value;
-  if (v4->_value == value)
+  if (equalCopy->_value == value)
   {
 LABEL_5:
     v6 = 1;

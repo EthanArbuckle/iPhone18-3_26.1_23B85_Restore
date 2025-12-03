@@ -30,8 +30,8 @@
 - (id)ic_pkTiledView
 {
   v14 = *MEMORY[0x1E69E9840];
-  v1 = [a1 subviews];
-  v2 = [v1 copy];
+  subviews = [self subviews];
+  v2 = [subviews copy];
 
   v11 = 0u;
   v12 = 0u;
@@ -77,24 +77,24 @@ LABEL_11:
 
 - (uint64_t)ic_shouldEnableBlockQuoteForAttachmentsOnlySelection
 {
-  v2 = [a1 textStorage];
-  if (!v2)
+  textStorage = [self textStorage];
+  if (!textStorage)
   {
     goto LABEL_7;
   }
 
-  v3 = v2;
-  v4 = [a1 textStorage];
-  if (![v4 length])
+  v3 = textStorage;
+  textStorage2 = [self textStorage];
+  if (![textStorage2 length])
   {
 
     goto LABEL_7;
   }
 
-  v5 = [a1 textStorage];
-  v6 = [v5 string];
-  v7 = [a1 selectedRange];
-  v9 = [v6 ic_rangeIsValid:{v7, v8}];
+  textStorage3 = [self textStorage];
+  string = [textStorage3 string];
+  selectedRange = [self selectedRange];
+  v9 = [string ic_rangeIsValid:{selectedRange, v8}];
 
   if (!v9)
   {
@@ -111,13 +111,13 @@ LABEL_7:
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v10 = [a1 textStorage];
-  v11 = [v10 string];
-  v12 = [a1 selectedRange];
-  v14 = [v11 paragraphRangeForRange:{v12, v13}];
+  textStorage4 = [self textStorage];
+  string2 = [textStorage4 string];
+  selectedRange2 = [self selectedRange];
+  v14 = [string2 paragraphRangeForRange:{selectedRange2, v13}];
   v16 = v15;
 
-  v17 = [a1 textStorage];
+  textStorage5 = [self textStorage];
   v18 = *MEMORY[0x1E69DB5F8];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -125,8 +125,8 @@ LABEL_7:
   v21[3] = &unk_1E846E6A8;
   v21[5] = &v26;
   v21[6] = &v22;
-  v21[4] = a1;
-  [v17 enumerateAttribute:v18 inRange:v14 options:v16 usingBlock:{0, v21}];
+  v21[4] = self;
+  [textStorage5 enumerateAttribute:v18 inRange:v14 options:v16 usingBlock:{0, v21}];
 
   if (*(v27 + 24) == 1)
   {
@@ -147,8 +147,8 @@ LABEL_7:
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v1 = MEMORY[0x1E696B098];
-  v2 = [a1 selectedRange];
-  v4 = [v1 valueWithRange:{v2, v3}];
+  selectedRange = [self selectedRange];
+  v4 = [v1 valueWithRange:{selectedRange, v3}];
   v7[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
@@ -157,32 +157,32 @@ LABEL_7:
 
 - (void)ic_scrollRangeToVisible:()IC consideringInsets:animated:
 {
-  [a1 contentSize];
+  [self contentSize];
   if (v12 <= 0.0 || v11 <= 0.0)
   {
-    [a1 layoutIfNeeded];
+    [self layoutIfNeeded];
   }
 
-  v13 = [a1 ic_textRangeFromCharacterRange:{a3, a4}];
-  [a1 firstRectForRange:v13];
-  [a1 ic_scrollRectToVisible:a6 animated:a5 consideringInsets:?];
+  v13 = [self ic_textRangeFromCharacterRange:{a3, a4}];
+  [self firstRectForRange:v13];
+  [self ic_scrollRectToVisible:a6 animated:a5 consideringInsets:?];
 }
 
 - (void)ic_scrollRangeToTop:()IC
 {
   if (a3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [a1 textStorage];
-    v8 = [v7 length];
+    textStorage = [self textStorage];
+    v8 = [textStorage length];
 
     if (a3 < v8)
     {
-      v9 = [a1 ic_textRangeFromCharacterRange:{a3, a4}];
-      [a1 firstRectForRange:v9];
+      v9 = [self ic_textRangeFromCharacterRange:{a3, a4}];
+      [self firstRectForRange:v9];
       v11 = v10;
       v13 = v12;
 
-      [a1 setContentOffset:{0.0, v11 + v13 + 1.0}];
+      [self setContentOffset:{0.0, v11 + v13 + 1.0}];
     }
   }
 }
@@ -192,19 +192,19 @@ LABEL_7:
   v7 = a3;
   if ([v7 count])
   {
-    v4 = [v7 firstObject];
-    v5 = [v4 rangeValue];
-    [a1 setSelectedRange:{v5, v6}];
+    firstObject = [v7 firstObject];
+    rangeValue = [firstObject rangeValue];
+    [self setSelectedRange:{rangeValue, v6}];
   }
 }
 
 - (uint64_t)ic_markedTextRange
 {
-  v2 = [a1 markedTextRange];
-  if (v2)
+  markedTextRange = [self markedTextRange];
+  if (markedTextRange)
   {
-    v3 = [a1 markedTextRange];
-    v4 = [a1 ic_characterRangeFromTextRange:v3];
+    markedTextRange2 = [self markedTextRange];
+    v4 = [self ic_characterRangeFromTextRange:markedTextRange2];
   }
 
   else
@@ -218,23 +218,23 @@ LABEL_7:
 - (uint64_t)ic_characterRangeFromTextRange:()IC
 {
   v4 = a3;
-  v5 = [a1 beginningOfDocument];
-  v6 = [v4 start];
+  beginningOfDocument = [self beginningOfDocument];
+  start = [v4 start];
   v7 = [v4 end];
 
-  v8 = [a1 offsetFromPosition:v5 toPosition:v6];
-  [a1 offsetFromPosition:v6 toPosition:v7];
+  v8 = [self offsetFromPosition:beginningOfDocument toPosition:start];
+  [self offsetFromPosition:start toPosition:v7];
 
   return v8;
 }
 
 - (id)ic_textRangeFromCharacterRange:()IC
 {
-  v7 = [a1 beginningOfDocument];
-  v8 = [a1 positionFromPosition:v7 offset:a3];
+  beginningOfDocument = [self beginningOfDocument];
+  v8 = [self positionFromPosition:beginningOfDocument offset:a3];
 
-  v9 = [a1 positionFromPosition:v8 offset:a4];
-  v10 = [a1 textRangeFromPosition:v8 toPosition:v9];
+  v9 = [self positionFromPosition:v8 offset:a4];
+  v10 = [self textRangeFromPosition:v8 toPosition:v9];
 
   return v10;
 }
@@ -242,15 +242,15 @@ LABEL_7:
 - (uint64_t)ic_characterRangeFromTextPosition:()IC
 {
   v4 = a3;
-  v5 = [a1 beginningOfDocument];
-  v6 = [a1 offsetFromPosition:v5 toPosition:v4];
+  beginningOfDocument = [self beginningOfDocument];
+  v6 = [self offsetFromPosition:beginningOfDocument toPosition:v4];
 
   return v6;
 }
 
 - (uint64_t)ic_visibleRange
 {
-  [a1 visibleTextRect];
+  [self visibleTextRect];
   x = v15.origin.x;
   y = v15.origin.y;
   width = v15.size.width;
@@ -271,10 +271,10 @@ LABEL_7:
   v18.size.width = width;
   v18.size.height = height;
   MaxY = CGRectGetMaxY(v18);
-  v10 = [a1 closestPositionToPoint:{MidX, MinY}];
-  v11 = [a1 closestPositionToPoint:{v8, MaxY}];
-  v12 = [a1 textRangeFromPosition:v10 toPosition:v11];
-  v13 = [a1 ic_characterRangeFromTextRange:v12];
+  v10 = [self closestPositionToPoint:{MidX, MinY}];
+  v11 = [self closestPositionToPoint:{v8, MaxY}];
+  v12 = [self textRangeFromPosition:v10 toPosition:v11];
+  v13 = [self ic_characterRangeFromTextRange:v12];
 
   return v13;
 }
@@ -297,11 +297,11 @@ LABEL_7:
   v26.size.width = a4;
   v26.size.height = a5;
   MaxY = CGRectGetMaxY(v26);
-  v14 = [a1 characterRangeAtPoint:{MinX, MinY}];
-  v15 = [a1 characterRangeAtPoint:{MaxX, MaxY}];
-  v16 = [a1 ic_characterRangeFromTextRange:v14];
+  v14 = [self characterRangeAtPoint:{MinX, MinY}];
+  v15 = [self characterRangeAtPoint:{MaxX, MaxY}];
+  v16 = [self ic_characterRangeFromTextRange:v14];
   v18 = v17;
-  v23.location = [a1 ic_characterRangeFromTextRange:v15];
+  v23.location = [self ic_characterRangeFromTextRange:v15];
   v23.length = v19;
   v22.location = v16;
   v22.length = v18;
@@ -313,8 +313,8 @@ LABEL_7:
 - (double)ic_rectForRange:()IC
 {
   v7 = a3 + a4;
-  v8 = [a1 textStorage];
-  [v8 ic_range];
+  textStorage = [self textStorage];
+  [textStorage ic_range];
   v10 = v9;
 
   if (v7 > v10)
@@ -322,19 +322,19 @@ LABEL_7:
     return *MEMORY[0x1E695F058];
   }
 
-  if (ICInternalSettingsIsTextKit2Enabled() && ([a1 textLayoutManager], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (ICInternalSettingsIsTextKit2Enabled() && ([self textLayoutManager], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [a1 textLayoutManager];
-    [v13 ic_rectForRange:{a3, a4}];
+    textLayoutManager = [self textLayoutManager];
+    [textLayoutManager ic_rectForRange:{a3, a4}];
     v11 = v14;
   }
 
   else
   {
-    v13 = [a1 textContainer];
-    v15 = [a1 layoutManager];
-    v16 = v15;
-    if (v13 && v15)
+    textLayoutManager = [self textContainer];
+    layoutManager = [self layoutManager];
+    v16 = layoutManager;
+    if (textLayoutManager && layoutManager)
     {
       v27 = 0;
       v28 = &v27;
@@ -343,7 +343,7 @@ LABEL_7:
       v17 = *(MEMORY[0x1E695F058] + 16);
       v31 = *MEMORY[0x1E695F058];
       v32 = v17;
-      v18 = [a1 textStorage];
+      textStorage2 = [self textStorage];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __34__UITextView_IC__ic_rectForRange___block_invoke;
@@ -351,10 +351,10 @@ LABEL_7:
       v25 = a3;
       v26 = a4;
       v21 = v16;
-      v22 = a1;
+      selfCopy = self;
       v24 = &v27;
-      v23 = v13;
-      [v18 coordinateReading:v20];
+      v23 = textLayoutManager;
+      [textStorage2 coordinateReading:v20];
 
       v11 = v28[4];
       _Block_object_dispose(&v27, 8);
@@ -373,9 +373,9 @@ LABEL_7:
 {
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v7 = [a1 textLayoutManager];
+    textLayoutManager = [self textLayoutManager];
 
-    if (v7)
+    if (textLayoutManager)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"-[UITextView(IC) ic_imageForRange:]" simulateCrash:1 showAlert:0 format:@"Unavailable in TextKit 2"];
 LABEL_5:
@@ -384,7 +384,7 @@ LABEL_5:
     }
   }
 
-  [a1 ic_rectForRange:{a3, a4}];
+  [self ic_rectForRange:{a3, a4}];
   x = v28.origin.x;
   y = v28.origin.y;
   width = v28.size.width;
@@ -394,21 +394,21 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = [a1 layoutManager];
-  [a1 convertSize:0 toView:{width, height}];
+  layoutManager = [self layoutManager];
+  [self convertSize:0 toView:{width, height}];
   v16 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{v14, v15}];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __35__UITextView_IC__ic_imageForRange___block_invoke;
   v19[3] = &unk_1E846E680;
-  v20 = v13;
+  v20 = layoutManager;
   v21 = a3;
   v22 = a4;
   v23 = x;
   v24 = y;
   v25 = width;
   v26 = height;
-  v17 = v13;
+  v17 = layoutManager;
   v12 = [v16 imageWithActions:v19];
 
 LABEL_7:
@@ -418,16 +418,16 @@ LABEL_7:
 
 - (id)ic_pkSelectionInteraction
 {
-  v1 = [a1 ic_pkTiledView];
-  v2 = [v1 selectionInteraction];
+  ic_pkTiledView = [self ic_pkTiledView];
+  selectionInteraction = [ic_pkTiledView selectionInteraction];
 
-  return v2;
+  return selectionInteraction;
 }
 
 - (double)ic_textContainerOrigin
 {
-  v1 = [a1 textContainer];
-  [v1 textContainerOrigin];
+  textContainer = [self textContainer];
+  [textContainer textContainerOrigin];
   v3 = v2;
 
   return v3;
@@ -436,7 +436,7 @@ LABEL_7:
 - (id)containerViewForAttachments
 {
   v15 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   if (!containerViewForAttachments_UITextContainerViewClass)
   {
     containerViewForAttachments_UITextContainerViewClass = NSClassFromString(&cfstr_Uitextcontaine.isa);
@@ -446,8 +446,8 @@ LABEL_7:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [v1 subviews];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [selfCopy subviews];
+  v3 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -458,7 +458,7 @@ LABEL_7:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -466,12 +466,12 @@ LABEL_7:
         {
           v8 = v7;
 
-          v1 = v8;
+          selfCopy = v8;
           goto LABEL_13;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -483,20 +483,20 @@ LABEL_7:
 
 LABEL_13:
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)ic_scrollRangeToVisible:()IC animated:completionHandler:
 {
   v10 = a6;
-  [a1 ic_rectForRange:{a3, a4}];
-  [a1 ic_scrollRectToVisible:a5 animated:v10 completionHandler:?];
+  [self ic_rectForRange:{a3, a4}];
+  [self ic_scrollRectToVisible:a5 animated:v10 completionHandler:?];
 }
 
 - (void)ic_scrollRectToVisible:()IC animated:completionHandler:
 {
   v14 = a8;
-  [a1 ic_scrollRectToVisible:a7 animated:1 consideringInsets:{a2, a3, a4, a5}];
+  [self ic_scrollRectToVisible:a7 animated:1 consideringInsets:{a2, a3, a4, a5}];
   if (v14)
   {
     [MEMORY[0x1E6979518] animationDuration];
@@ -506,43 +506,43 @@ LABEL_13:
 
 - (uint64_t)currentBIUSForStyleSelector
 {
-  v2 = [a1 selectedRange];
+  selectedRange = [self selectedRange];
   if (v3)
   {
-    v4 = v2;
+    v4 = selectedRange;
     v5 = v3;
-    v6 = [a1 textStorage];
-    v7 = [v6 attributesAtIndex:v4 longestEffectiveRange:0 inRange:{v4, v5}];
+    textStorage = [self textStorage];
+    typingAttributes = [textStorage attributesAtIndex:v4 longestEffectiveRange:0 inRange:{v4, v5}];
   }
 
   else
   {
-    v7 = [a1 typingAttributes];
+    typingAttributes = [self typingAttributes];
   }
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B75E8]];
-  v10 = [v9 intValue];
+  v8 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  v9 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B75E8]];
+  intValue = [v9 intValue];
 
-  v11 = [v8 fontDescriptor];
-  v12 = [v11 symbolicTraits];
+  fontDescriptor = [v8 fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
 
-  v13 = v10 | (v12 >> 1);
-  v14 = [v8 fontDescriptor];
-  LOBYTE(v12) = [v14 symbolicTraits];
+  v13 = intValue | (symbolicTraits >> 1);
+  fontDescriptor2 = [v8 fontDescriptor];
+  LOBYTE(symbolicTraits) = [fontDescriptor2 symbolicTraits];
 
-  v15 = (v10 | (2 * v12)) & 2 | v13 & 1u;
-  v16 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB758]];
+  v15 = (intValue | (2 * symbolicTraits)) & 2 | v13 & 1u;
+  v16 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB758]];
   if ([v16 integerValue])
   {
   }
 
   else
   {
-    v17 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B7620]];
-    v18 = [v17 BOOLValue];
+    v17 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B7620]];
+    bOOLValue = [v17 BOOLValue];
 
-    if (!v18)
+    if (!bOOLValue)
     {
       goto LABEL_8;
     }
@@ -550,17 +550,17 @@ LABEL_13:
 
   v15 |= 4uLL;
 LABEL_8:
-  v19 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB6B8]];
+  v19 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB6B8]];
   if ([v19 integerValue])
   {
   }
 
   else
   {
-    v20 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B7608]];
-    v21 = [v20 BOOLValue];
+    v20 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B7608]];
+    bOOLValue2 = [v20 BOOLValue];
 
-    if (!v21)
+    if (!bOOLValue2)
     {
       goto LABEL_12;
     }
@@ -569,7 +569,7 @@ LABEL_8:
   v15 |= 8uLL;
 LABEL_12:
   v22 = MEMORY[0x1E69B75D8];
-  v23 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
+  v23 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
   if ([v23 integerValue])
   {
 
@@ -578,10 +578,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v24 = [v7 objectForKeyedSubscript:*v22];
-  v25 = [v24 BOOLValue];
+  v24 = [typingAttributes objectForKeyedSubscript:*v22];
+  bOOLValue3 = [v24 BOOLValue];
 
-  if (v25)
+  if (bOOLValue3)
   {
     goto LABEL_15;
   }
@@ -593,21 +593,21 @@ LABEL_16:
 
 - (id)currentParagraphStyleForStyleSelector
 {
-  v2 = [a1 selectedRange];
-  v3 = [a1 textStorage];
-  v4 = [v3 attribute:*MEMORY[0x1E69B7600] atIndex:v2 effectiveRange:&v8];
+  selectedRange = [self selectedRange];
+  textStorage = [self textStorage];
+  v4 = [textStorage attribute:*MEMORY[0x1E69B7600] atIndex:selectedRange effectiveRange:&v8];
 
   if (v4)
   {
-    v5 = v4;
+    defaultParagraphStyle = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B78C0] defaultParagraphStyle];
+    defaultParagraphStyle = [MEMORY[0x1E69B78C0] defaultParagraphStyle];
   }
 
-  v6 = v5;
+  v6 = defaultParagraphStyle;
 
   return v6;
 }
@@ -615,24 +615,24 @@ LABEL_16:
 - (id)currentEmphasisColorsForStyleSelector
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 selectedRange];
+  selectedRange = [self selectedRange];
   if (v3)
   {
-    v4 = v2;
+    v4 = selectedRange;
     v5 = v3;
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
     v19 = __Block_byref_object_copy__83;
     v20 = __Block_byref_object_dispose__83;
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x3032000000;
     v14[3] = __Block_byref_object_copy__83;
     v14[4] = __Block_byref_object_dispose__83;
     v15 = [MEMORY[0x1E695DFA8] set];
-    v6 = [a1 textStorage];
+    textStorage = [self textStorage];
     v7 = *MEMORY[0x1E69B75D8];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -640,7 +640,7 @@ LABEL_16:
     v13[3] = &unk_1E846A678;
     v13[4] = v14;
     v13[5] = &v16;
-    [v6 enumerateAttribute:v7 inRange:v4 options:v5 usingBlock:{0, v13}];
+    [textStorage enumerateAttribute:v7 inRange:v4 options:v5 usingBlock:{0, v13}];
 
     v8 = [v17[5] copy];
     _Block_object_dispose(v14, 8);
@@ -651,8 +651,8 @@ LABEL_16:
   else
   {
     objc_opt_class();
-    v9 = [a1 typingAttributes];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
+    typingAttributes = [self typingAttributes];
+    v10 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B75D8]];
     v11 = ICDynamicCast();
 
     if (v11)
@@ -673,24 +673,24 @@ LABEL_16:
 - (id)currentListStylesForStyleSelector
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 selectedRange];
+  selectedRange = [self selectedRange];
   if (v3)
   {
-    v4 = v2;
+    v4 = selectedRange;
     v5 = v3;
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
     v19 = __Block_byref_object_copy__83;
     v20 = __Block_byref_object_dispose__83;
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x3032000000;
     v14[3] = __Block_byref_object_copy__83;
     v14[4] = __Block_byref_object_dispose__83;
     v15 = [MEMORY[0x1E695DFA8] set];
-    v6 = [a1 textStorage];
+    textStorage = [self textStorage];
     v7 = *MEMORY[0x1E69B7600];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -698,7 +698,7 @@ LABEL_16:
     v13[3] = &unk_1E846E6D0;
     v13[4] = v14;
     v13[5] = &v16;
-    [v6 enumerateAttribute:v7 inRange:v4 options:v5 usingBlock:{0, v13}];
+    [textStorage enumerateAttribute:v7 inRange:v4 options:v5 usingBlock:{0, v13}];
 
     v8 = [v17[5] copy];
     _Block_object_dispose(v14, 8);
@@ -708,8 +708,8 @@ LABEL_16:
 
   else
   {
-    v9 = [a1 typingAttributes];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
+    typingAttributes = [self typingAttributes];
+    v10 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
 
     if ([v10 isList])
     {
@@ -729,24 +729,24 @@ LABEL_16:
 
 - (BOOL)currentSelectionIsLink
 {
-  v2 = [a1 selectedRange];
+  selectedRange = [self selectedRange];
   v4 = v3;
   v14 = 0;
   v15 = 0;
-  v5 = [a1 textStorage];
-  v6 = [v5 attribute:*MEMORY[0x1E69DB5F8] atIndex:v2 effectiveRange:&v14];
+  textStorage = [self textStorage];
+  v6 = [textStorage attribute:*MEMORY[0x1E69DB5F8] atIndex:selectedRange effectiveRange:&v14];
 
-  if (v6 && (v14 == v2 ? (v7 = v15 == v4) : (v7 = 0), v7 && ([v6 fileType], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69B7558]), v8, (v9 & 1) != 0)))
+  if (v6 && (v14 == selectedRange ? (v7 = v15 == v4) : (v7 = 0), v7 && ([v6 fileType], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69B7558]), v8, (v9 & 1) != 0)))
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [a1 textStorage];
-    v12 = [v11 attribute:*MEMORY[0x1E69DB670] atIndex:v2 effectiveRange:&v14];
+    textStorage2 = [self textStorage];
+    v12 = [textStorage2 attribute:*MEMORY[0x1E69DB670] atIndex:selectedRange effectiveRange:&v14];
 
-    v10 = v12 && v14 == v2 && v15 == v4;
+    v10 = v12 && v14 == selectedRange && v15 == v4;
   }
 
   return v10;

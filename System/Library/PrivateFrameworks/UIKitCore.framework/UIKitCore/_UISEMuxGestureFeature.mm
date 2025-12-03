@@ -1,13 +1,13 @@
 @interface _UISEMuxGestureFeature
-- (_UISEMuxGestureFeature)initWithSettings:(id)a3 createFeatureBlock:(id)a4;
+- (_UISEMuxGestureFeature)initWithSettings:(id)settings createFeatureBlock:(id)block;
 - (id)debugDictionary;
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
-- (void)featureDidChangeState:(id)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
+- (void)featureDidChangeState:(id)state;
 @end
 
 @implementation _UISEMuxGestureFeature
 
-- (_UISEMuxGestureFeature)initWithSettings:(id)a3 createFeatureBlock:(id)a4
+- (_UISEMuxGestureFeature)initWithSettings:(id)settings createFeatureBlock:(id)block
 {
   v13.receiver = self;
   v13.super_class = _UISEMuxGestureFeature;
@@ -15,8 +15,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
-    v8 = _Block_copy(a4);
+    objc_storeStrong(&v6->_settings, settings);
+    v8 = _Block_copy(block);
     createFeatureBlock = v7->_createFeatureBlock;
     v7->_createFeatureBlock = v8;
 
@@ -31,32 +31,32 @@
   return v7;
 }
 
-- (void)featureDidChangeState:(id)a3
+- (void)featureDidChangeState:(id)state
 {
   if (![(_UISEGestureFeature *)self state])
   {
-    v5 = [a3 state];
-    v6 = v5;
-    if (v5 == 1)
+    state = [state state];
+    v6 = state;
+    if (state == 1)
     {
       v7 = self->_recognizes + 1;
       self->_recognizes = v7;
-      v8 = [(_UISEGestureFeatureSettings *)self->_settings minimumNumberOfSubfeatures];
+      minimumNumberOfSubfeatures = [(_UISEGestureFeatureSettings *)self->_settings minimumNumberOfSubfeatures];
     }
 
     else
     {
-      if (v5 != 2)
+      if (state != 2)
       {
         return;
       }
 
       v7 = self->_fails + 1;
       self->_fails = v7;
-      v8 = [(NSMutableDictionary *)self->_subfeatures count];
+      minimumNumberOfSubfeatures = [(NSMutableDictionary *)self->_subfeatures count];
     }
 
-    if (v7 >= v8)
+    if (v7 >= minimumNumberOfSubfeatures)
     {
 
       [(_UISEGestureFeature *)self _setState:v6];
@@ -77,17 +77,17 @@
   [(NSMutableDictionary *)subfeatures enumerateKeysAndObjectsUsingBlock:v10];
   v9.receiver = self;
   v9.super_class = _UISEMuxGestureFeature;
-  v6 = [(_UISEGestureFeature *)&v9 debugDictionary];
-  v7 = [v6 mutableCopy];
+  debugDictionary = [(_UISEGestureFeature *)&v9 debugDictionary];
+  v7 = [debugDictionary mutableCopy];
 
   [v7 setObject:v5 forKeyedSubscript:@"subfeatures"];
 
   return v7;
 }
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3->var4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sample->var4];
   v5 = [(NSMutableDictionary *)self->_subfeatures objectForKeyedSubscript:?];
   if (!v5)
   {
@@ -96,7 +96,7 @@
     [(NSMutableDictionary *)self->_subfeatures setObject:v5 forKeyedSubscript:v6];
   }
 
-  [v5 incorporateSample:a3];
+  [v5 incorporateSample:sample];
 }
 
 @end

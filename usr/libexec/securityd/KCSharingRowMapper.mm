@@ -1,21 +1,21 @@
 @interface KCSharingRowMapper
-- (KCSharingRowMapper)initWithModel:(Class)a3;
-- (id)columnNamesWithTableName:(id)a3;
-- (id)mapResultRow:(sqlite3_stmt *)a3 startingAt:(unint64_t)a4 error:(id *)a5;
+- (KCSharingRowMapper)initWithModel:(Class)model;
+- (id)columnNamesWithTableName:(id)name;
+- (id)mapResultRow:(sqlite3_stmt *)row startingAt:(unint64_t)at error:(id *)error;
 @end
 
 @implementation KCSharingRowMapper
 
-- (id)mapResultRow:(sqlite3_stmt *)a3 startingAt:(unint64_t)a4 error:(id *)a5
+- (id)mapResultRow:(sqlite3_stmt *)row startingAt:(unint64_t)at error:(id *)error
 {
-  v9 = [(objc_class *)self->_model databaseItemClass];
+  databaseItemClass = [(objc_class *)self->_model databaseItemClass];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v23 = sub_100030E04;
   v24 = &unk_100333BF8;
-  v25 = self;
-  v26 = a4;
-  v10 = sub_1000160F4(0, v9, dword_10039E2F8, 0);
+  selfCopy = self;
+  atCopy = at;
+  v10 = sub_1000160F4(0, databaseItemClass, dword_10039E2F8, 0);
   v11 = 0;
   v27 = 0;
   do
@@ -24,7 +24,7 @@
     if (v12)
     {
       v13 = v12;
-      v14 = sub_10001620C(0, a3, v12, v11);
+      v14 = sub_10001620C(0, row, v12, v11);
       if (!v14)
       {
         if (v10)
@@ -46,7 +46,7 @@
   }
 
   while (v27 != 1);
-  v18 = sub_100016514(v9, 9, 0);
+  v18 = sub_100016514(databaseItemClass, 9, 0);
   if (v18)
   {
     if (CFDictionaryGetValue(*(v10 + 48), *v18))
@@ -65,11 +65,11 @@ LABEL_10:
   }
 
 LABEL_16:
-  if (a5)
+  if (error)
   {
     v21 = 0;
     v19 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
   else
@@ -82,9 +82,9 @@ LABEL_11:
   return v19;
 }
 
-- (id)columnNamesWithTableName:(id)a3
+- (id)columnNamesWithTableName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
@@ -106,10 +106,10 @@ LABEL_11:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        if (v4)
+        if (nameCopy)
         {
-          v12 = [v11 pointerValue];
-          v13 = [NSString stringWithFormat:@"%@.%@", v4, *v12, v17];
+          pointerValue = [v11 pointerValue];
+          v13 = [NSString stringWithFormat:@"%@.%@", nameCopy, *pointerValue, v17];
         }
 
         else
@@ -132,7 +132,7 @@ LABEL_11:
   return v15;
 }
 
-- (KCSharingRowMapper)initWithModel:(Class)a3
+- (KCSharingRowMapper)initWithModel:(Class)model
 {
   v19.receiver = self;
   v19.super_class = KCSharingRowMapper;
@@ -140,19 +140,19 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_model, a3);
-    v6 = [(objc_class *)v5->_model requiredAttributeKeys];
+    objc_storeStrong(&v4->_model, model);
+    requiredAttributeKeys = [(objc_class *)v5->_model requiredAttributeKeys];
     v7 = +[NSMutableArray array];
-    v8 = [(objc_class *)a3 databaseItemClass];
-    v9 = v8[2];
+    databaseItemClass = [(objc_class *)model databaseItemClass];
+    v9 = databaseItemClass[2];
     if (v9)
     {
-      v10 = v8 + 3;
+      v10 = databaseItemClass + 3;
       do
       {
         v11 = *(v9 + 8);
         v12 = (v11 - 6) < 4 || v11 == 16;
-        if (v12 || (v15 = *(v9 + 16), (v15 & 2) != 0) && ((v15 & 0x101) != 0 || [v6 containsObject:*v9]))
+        if (v12 || (v15 = *(v9 + 16), (v15 & 2) != 0) && ((v15 & 0x101) != 0 || [requiredAttributeKeys containsObject:*v9]))
         {
           v13 = [NSValue valueWithPointer:v9];
           [v7 addObject:v13];

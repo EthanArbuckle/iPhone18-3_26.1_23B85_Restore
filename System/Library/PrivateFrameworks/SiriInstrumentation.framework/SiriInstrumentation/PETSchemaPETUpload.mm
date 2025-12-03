@@ -1,30 +1,30 @@
 @interface PETSchemaPETUpload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PETSchemaPETUpload)initWithDictionary:(id)a3;
-- (PETSchemaPETUpload)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PETSchemaPETUpload)initWithDictionary:(id)dictionary;
+- (PETSchemaPETUpload)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAggregated_messages:(id)a3;
-- (void)addTrial_messages:(id)a3;
-- (void)addUnaggregated_messages:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAggregated_messages:(id)aggregated_messages;
+- (void)addTrial_messages:(id)trial_messages;
+- (void)addUnaggregated_messages:(id)unaggregated_messages;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETSchemaPETUpload
 
-- (PETSchemaPETUpload)initWithDictionary:(id)a3
+- (PETSchemaPETUpload)initWithDictionary:(id)dictionary
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v56.receiver = self;
   v56.super_class = PETSchemaPETUpload;
   v5 = [(PETSchemaPETUpload *)&v56 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     objc_opt_class();
     v43 = v6;
     if (objc_opt_isKindOfClass())
@@ -33,7 +33,7 @@
       [(PETSchemaPETUpload *)v5 setMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aggregatedMessages"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aggregatedMessages"];
     objc_opt_class();
     v42 = v8;
     if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"unaggregatedMessages"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"unaggregatedMessages"];
     objc_opt_class();
     v41 = v16;
     if (objc_opt_isKindOfClass())
@@ -113,14 +113,14 @@
       }
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isCompressed"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isCompressed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETUpload setIs_compressed:](v5, "setIs_compressed:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"compressedMessages"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"compressedMessages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       [(PETSchemaPETUpload *)v5 setCompressed_messages:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"trialMessages"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"trialMessages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,7 +173,7 @@
       v25 = v39;
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"compressedData"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"compressedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -187,30 +187,30 @@
   return v5;
 }
 
-- (PETSchemaPETUpload)initWithJSON:(id)a3
+- (PETSchemaPETUpload)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PETSchemaPETUpload *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PETSchemaPETUpload *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PETSchemaPETUpload *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -224,10 +224,10 @@
 - (id)dictionaryRepresentation
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_aggregated_messages count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -247,16 +247,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -266,66 +266,66 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"aggregatedMessages"];
+    [dictionary setObject:array forKeyedSubscript:@"aggregatedMessages"];
   }
 
   if (self->_compressed_data)
   {
-    v12 = [(PETSchemaPETUpload *)self compressed_data];
-    v13 = [v12 base64EncodedStringWithOptions:0];
+    compressed_data = [(PETSchemaPETUpload *)self compressed_data];
+    v13 = [compressed_data base64EncodedStringWithOptions:0];
     if (v13)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"compressedData"];
+      [dictionary setObject:v13 forKeyedSubscript:@"compressedData"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"compressedData"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"compressedData"];
     }
   }
 
   if (self->_compressed_messages)
   {
-    v15 = [(PETSchemaPETUpload *)self compressed_messages];
-    v16 = [v15 base64EncodedStringWithOptions:0];
+    compressed_messages = [(PETSchemaPETUpload *)self compressed_messages];
+    v16 = [compressed_messages base64EncodedStringWithOptions:0];
     if (v16)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"compressedMessages"];
+      [dictionary setObject:v16 forKeyedSubscript:@"compressedMessages"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"compressedMessages"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"compressedMessages"];
     }
   }
 
   if (*&self->_has)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETUpload is_compressed](self, "is_compressed")}];
-    [v3 setObject:v18 forKeyedSubscript:@"isCompressed"];
+    [dictionary setObject:v18 forKeyedSubscript:@"isCompressed"];
   }
 
   if (self->_metadata)
   {
-    v19 = [(PETSchemaPETUpload *)self metadata];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    metadata = [(PETSchemaPETUpload *)self metadata];
+    dictionaryRepresentation2 = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"metadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"metadata"];
     }
   }
 
   if ([(NSArray *)self->_trial_messages count])
   {
-    v22 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -345,16 +345,16 @@
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
-          if (v28)
+          dictionaryRepresentation3 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v22 addObject:v28];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v29 = [MEMORY[0x1E695DFB0] null];
-            [v22 addObject:v29];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null5];
           }
         }
 
@@ -364,12 +364,12 @@
       while (v25);
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"trialMessages"];
+    [dictionary setObject:array2 forKeyedSubscript:@"trialMessages"];
   }
 
   if ([(NSArray *)self->_unaggregated_messages count])
   {
-    v30 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -389,16 +389,16 @@
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v39 + 1) + 8 * k) dictionaryRepresentation];
-          if (v36)
+          dictionaryRepresentation4 = [*(*(&v39 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v30 addObject:v36];
+            [array3 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v37 = [MEMORY[0x1E695DFB0] null];
-            [v30 addObject:v37];
+            null6 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null6];
           }
         }
 
@@ -408,12 +408,12 @@
       while (v33);
     }
 
-    [v3 setObject:v30 forKeyedSubscript:@"unaggregatedMessages"];
+    [dictionary setObject:array3 forKeyedSubscript:@"unaggregatedMessages"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v39];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v39];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -437,28 +437,28 @@
   return v7 ^ v9 ^ [(NSData *)self->_compressed_data hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = [(PETSchemaPETUpload *)self metadata];
-  v6 = [v4 metadata];
-  if ((v5 != 0) == (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self metadata];
+  metadata2 = [equalCopy metadata];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_34;
   }
 
-  v7 = [(PETSchemaPETUpload *)self metadata];
-  if (v7)
+  metadata3 = [(PETSchemaPETUpload *)self metadata];
+  if (metadata3)
   {
-    v8 = v7;
-    v9 = [(PETSchemaPETUpload *)self metadata];
-    v10 = [v4 metadata];
-    v11 = [v9 isEqual:v10];
+    v8 = metadata3;
+    metadata4 = [(PETSchemaPETUpload *)self metadata];
+    metadata5 = [equalCopy metadata];
+    v11 = [metadata4 isEqual:metadata5];
 
     if (!v11)
     {
@@ -470,20 +470,20 @@
   {
   }
 
-  v5 = [(PETSchemaPETUpload *)self aggregated_messages];
-  v6 = [v4 aggregated_messages];
-  if ((v5 != 0) == (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self aggregated_messages];
+  metadata2 = [equalCopy aggregated_messages];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(PETSchemaPETUpload *)self aggregated_messages];
-  if (v12)
+  aggregated_messages = [(PETSchemaPETUpload *)self aggregated_messages];
+  if (aggregated_messages)
   {
-    v13 = v12;
-    v14 = [(PETSchemaPETUpload *)self aggregated_messages];
-    v15 = [v4 aggregated_messages];
-    v16 = [v14 isEqual:v15];
+    v13 = aggregated_messages;
+    aggregated_messages2 = [(PETSchemaPETUpload *)self aggregated_messages];
+    aggregated_messages3 = [equalCopy aggregated_messages];
+    v16 = [aggregated_messages2 isEqual:aggregated_messages3];
 
     if (!v16)
     {
@@ -495,20 +495,20 @@
   {
   }
 
-  v5 = [(PETSchemaPETUpload *)self unaggregated_messages];
-  v6 = [v4 unaggregated_messages];
-  if ((v5 != 0) == (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self unaggregated_messages];
+  metadata2 = [equalCopy unaggregated_messages];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_34;
   }
 
-  v17 = [(PETSchemaPETUpload *)self unaggregated_messages];
-  if (v17)
+  unaggregated_messages = [(PETSchemaPETUpload *)self unaggregated_messages];
+  if (unaggregated_messages)
   {
-    v18 = v17;
-    v19 = [(PETSchemaPETUpload *)self unaggregated_messages];
-    v20 = [v4 unaggregated_messages];
-    v21 = [v19 isEqual:v20];
+    v18 = unaggregated_messages;
+    unaggregated_messages2 = [(PETSchemaPETUpload *)self unaggregated_messages];
+    unaggregated_messages3 = [equalCopy unaggregated_messages];
+    v21 = [unaggregated_messages2 isEqual:unaggregated_messages3];
 
     if (!v21)
     {
@@ -520,7 +520,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_35;
   }
@@ -528,26 +528,26 @@
   if (*&self->_has)
   {
     is_compressed = self->_is_compressed;
-    if (is_compressed != [v4 is_compressed])
+    if (is_compressed != [equalCopy is_compressed])
     {
       goto LABEL_35;
     }
   }
 
-  v5 = [(PETSchemaPETUpload *)self compressed_messages];
-  v6 = [v4 compressed_messages];
-  if ((v5 != 0) == (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self compressed_messages];
+  metadata2 = [equalCopy compressed_messages];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_34;
   }
 
-  v23 = [(PETSchemaPETUpload *)self compressed_messages];
-  if (v23)
+  compressed_messages = [(PETSchemaPETUpload *)self compressed_messages];
+  if (compressed_messages)
   {
-    v24 = v23;
-    v25 = [(PETSchemaPETUpload *)self compressed_messages];
-    v26 = [v4 compressed_messages];
-    v27 = [v25 isEqual:v26];
+    v24 = compressed_messages;
+    compressed_messages2 = [(PETSchemaPETUpload *)self compressed_messages];
+    compressed_messages3 = [equalCopy compressed_messages];
+    v27 = [compressed_messages2 isEqual:compressed_messages3];
 
     if (!v27)
     {
@@ -559,20 +559,20 @@
   {
   }
 
-  v5 = [(PETSchemaPETUpload *)self trial_messages];
-  v6 = [v4 trial_messages];
-  if ((v5 != 0) == (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self trial_messages];
+  metadata2 = [equalCopy trial_messages];
+  if ((metadata != 0) == (metadata2 == 0))
   {
     goto LABEL_34;
   }
 
-  v28 = [(PETSchemaPETUpload *)self trial_messages];
-  if (v28)
+  trial_messages = [(PETSchemaPETUpload *)self trial_messages];
+  if (trial_messages)
   {
-    v29 = v28;
-    v30 = [(PETSchemaPETUpload *)self trial_messages];
-    v31 = [v4 trial_messages];
-    v32 = [v30 isEqual:v31];
+    v29 = trial_messages;
+    trial_messages2 = [(PETSchemaPETUpload *)self trial_messages];
+    trial_messages3 = [equalCopy trial_messages];
+    v32 = [trial_messages2 isEqual:trial_messages3];
 
     if (!v32)
     {
@@ -584,12 +584,12 @@
   {
   }
 
-  v5 = [(PETSchemaPETUpload *)self compressed_data];
-  v6 = [v4 compressed_data];
-  if ((v5 != 0) != (v6 == 0))
+  metadata = [(PETSchemaPETUpload *)self compressed_data];
+  metadata2 = [equalCopy compressed_data];
+  if ((metadata != 0) != (metadata2 == 0))
   {
-    v33 = [(PETSchemaPETUpload *)self compressed_data];
-    if (!v33)
+    compressed_data = [(PETSchemaPETUpload *)self compressed_data];
+    if (!compressed_data)
     {
 
 LABEL_38:
@@ -597,10 +597,10 @@ LABEL_38:
       goto LABEL_36;
     }
 
-    v34 = v33;
-    v35 = [(PETSchemaPETUpload *)self compressed_data];
-    v36 = [v4 compressed_data];
-    v37 = [v35 isEqual:v36];
+    v34 = compressed_data;
+    compressed_data2 = [(PETSchemaPETUpload *)self compressed_data];
+    compressed_data3 = [equalCopy compressed_data];
+    v37 = [compressed_data2 isEqual:compressed_data3];
 
     if (v37)
     {
@@ -620,15 +620,15 @@ LABEL_36:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PETSchemaPETUpload *)self metadata];
+  toCopy = to;
+  metadata = [(PETSchemaPETUpload *)self metadata];
 
-  if (v5)
+  if (metadata)
   {
-    v6 = [(PETSchemaPETUpload *)self metadata];
+    metadata2 = [(PETSchemaPETUpload *)self metadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -699,9 +699,9 @@ LABEL_36:
     PBDataWriterWriteBOOLField();
   }
 
-  v17 = [(PETSchemaPETUpload *)self compressed_messages];
+  compressed_messages = [(PETSchemaPETUpload *)self compressed_messages];
 
-  if (v17)
+  if (compressed_messages)
   {
     PBDataWriterWriteDataField();
   }
@@ -737,93 +737,93 @@ LABEL_36:
     while (v20);
   }
 
-  v23 = [(PETSchemaPETUpload *)self compressed_data];
+  compressed_data = [(PETSchemaPETUpload *)self compressed_data];
 
-  if (v23)
+  if (compressed_data)
   {
     PBDataWriterWriteDataField();
   }
 }
 
-- (void)addTrial_messages:(id)a3
+- (void)addTrial_messages:(id)trial_messages
 {
-  v4 = a3;
+  trial_messagesCopy = trial_messages;
   trial_messages = self->_trial_messages;
-  v8 = v4;
+  v8 = trial_messagesCopy;
   if (!trial_messages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_trial_messages;
-    self->_trial_messages = v6;
+    self->_trial_messages = array;
 
-    v4 = v8;
+    trial_messagesCopy = v8;
     trial_messages = self->_trial_messages;
   }
 
-  [(NSArray *)trial_messages addObject:v4];
+  [(NSArray *)trial_messages addObject:trial_messagesCopy];
 }
 
-- (void)addUnaggregated_messages:(id)a3
+- (void)addUnaggregated_messages:(id)unaggregated_messages
 {
-  v4 = a3;
+  unaggregated_messagesCopy = unaggregated_messages;
   unaggregated_messages = self->_unaggregated_messages;
-  v8 = v4;
+  v8 = unaggregated_messagesCopy;
   if (!unaggregated_messages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_unaggregated_messages;
-    self->_unaggregated_messages = v6;
+    self->_unaggregated_messages = array;
 
-    v4 = v8;
+    unaggregated_messagesCopy = v8;
     unaggregated_messages = self->_unaggregated_messages;
   }
 
-  [(NSArray *)unaggregated_messages addObject:v4];
+  [(NSArray *)unaggregated_messages addObject:unaggregated_messagesCopy];
 }
 
-- (void)addAggregated_messages:(id)a3
+- (void)addAggregated_messages:(id)aggregated_messages
 {
-  v4 = a3;
+  aggregated_messagesCopy = aggregated_messages;
   aggregated_messages = self->_aggregated_messages;
-  v8 = v4;
+  v8 = aggregated_messagesCopy;
   if (!aggregated_messages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_aggregated_messages;
-    self->_aggregated_messages = v6;
+    self->_aggregated_messages = array;
 
-    v4 = v8;
+    aggregated_messagesCopy = v8;
     aggregated_messages = self->_aggregated_messages;
   }
 
-  [(NSArray *)aggregated_messages addObject:v4];
+  [(NSArray *)aggregated_messages addObject:aggregated_messagesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PETSchemaPETUpload;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PETSchemaPETUpload *)self metadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  metadata = [(PETSchemaPETUpload *)self metadata];
+  v7 = [metadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PETSchemaPETUpload *)self deleteMetadata];
   }
 
-  v9 = [(PETSchemaPETUpload *)self aggregated_messages];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  aggregated_messages = [(PETSchemaPETUpload *)self aggregated_messages];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:aggregated_messages underConditions:policyCopy];
   [(PETSchemaPETUpload *)self setAggregated_messages:v10];
 
-  v11 = [(PETSchemaPETUpload *)self unaggregated_messages];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  unaggregated_messages = [(PETSchemaPETUpload *)self unaggregated_messages];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:unaggregated_messages underConditions:policyCopy];
   [(PETSchemaPETUpload *)self setUnaggregated_messages:v12];
 
-  v13 = [(PETSchemaPETUpload *)self trial_messages];
-  v14 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v13 underConditions:v4];
+  trial_messages = [(PETSchemaPETUpload *)self trial_messages];
+  v14 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:trial_messages underConditions:policyCopy];
   [(PETSchemaPETUpload *)self setTrial_messages:v14];
 
   return v5;

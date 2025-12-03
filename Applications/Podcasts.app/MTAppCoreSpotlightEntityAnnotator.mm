@@ -1,7 +1,7 @@
 @interface MTAppCoreSpotlightEntityAnnotator
 - (MTAppCoreSpotlightEntityAnnotator)init;
-- (id)annotateItem:(id)a3 withManagedObject:(id)a4;
-- (id)annotateItem:(id)a3 withPlayerItem:(id)a4;
+- (id)annotateItem:(id)item withManagedObject:(id)object;
+- (id)annotateItem:(id)item withPlayerItem:(id)playerItem;
 @end
 
 @implementation MTAppCoreSpotlightEntityAnnotator
@@ -13,12 +13,12 @@
   return [(MTAppCoreSpotlightEntityAnnotator *)&v3 init];
 }
 
-- (id)annotateItem:(id)a3 withManagedObject:(id)a4
+- (id)annotateItem:(id)item withManagedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10034C1F0(v7, &v10);
+  itemCopy = item;
+  objectCopy = object;
+  selfCopy = self;
+  sub_10034C1F0(objectCopy, &v10);
   if (v11)
   {
     sub_1000109E4(&v10, v12);
@@ -34,21 +34,21 @@
     sub_10034C438(&v10);
   }
 
-  return v6;
+  return itemCopy;
 }
 
-- (id)annotateItem:(id)a3 withPlayerItem:(id)a4
+- (id)annotateItem:(id)item withPlayerItem:(id)playerItem
 {
   v6 = type metadata accessor for EpisodeEntity();
   v7 = *(v6 - 8);
   __chkstk_darwin();
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 episode];
-  if (v12)
+  itemCopy = item;
+  playerItemCopy = playerItem;
+  episode = [playerItemCopy episode];
+  if (episode)
   {
-    v13 = v12;
+    v13 = episode;
     EpisodeEntity.init(model:)();
     sub_10034C4A0(&qword_100580AF0, &type metadata accessor for EpisodeEntity);
     CSSearchableItem.associateAppEntity<A>(_:priority:)();
@@ -60,7 +60,7 @@
   {
   }
 
-  return v10;
+  return itemCopy;
 }
 
 @end

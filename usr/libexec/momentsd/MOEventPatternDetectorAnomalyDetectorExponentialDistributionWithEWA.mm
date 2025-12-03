@@ -1,9 +1,9 @@
 @interface MOEventPatternDetectorAnomalyDetectorExponentialDistributionWithEWA
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorAnomalyDetectorExponentialDistributionWithEWA)init;
-- (id)_createAnomalyEventFromEvent:(id)a3 andFeature:(id)a4 andThreshold:(double)a5;
-- (id)extractAnomalyEventsFrom:(id)a3 withFeatures:(id)a4;
-- (void)_updateFeatureGroupEWADict:(id)a3 withCurrentFeature:(id)a4 andCurrentEvent:(id)a5 andCurrentEventTimeStamp:(double)a6;
+- (id)_createAnomalyEventFromEvent:(id)event andFeature:(id)feature andThreshold:(double)threshold;
+- (id)extractAnomalyEventsFrom:(id)from withFeatures:(id)features;
+- (void)_updateFeatureGroupEWADict:(id)dict withCurrentFeature:(id)feature andCurrentEvent:(id)event andCurrentEventTimeStamp:(double)stamp;
 @end
 
 @implementation MOEventPatternDetectorAnomalyDetectorExponentialDistributionWithEWA
@@ -32,10 +32,10 @@
   return v3;
 }
 
-- (id)extractAnomalyEventsFrom:(id)a3 withFeatures:(id)a4
+- (id)extractAnomalyEventsFrom:(id)from withFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  featuresCopy = features;
   v8 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   if (self->_tukeyFactorForExponentialDistributionOutlier == -1.0 || self->_minimumFeatureSizeForPersonalizedThreshold == -1.0 || self->_minimumFeatureNumberForPersonalizedThreshold == -1 || self->_maximumThreshold == -1.0 || self->_minimumThreshold == -1.0 || self->_betaForEWAUpdate == -1.0)
   {
@@ -57,7 +57,7 @@
   v99 = v12;
   v108 = [v12 dateFromComponents:v13];
   v106 = objc_opt_new();
-  if (![v6 count])
+  if (![fromCopy count])
   {
 LABEL_80:
     v96 = [(NSMutableDictionary *)self->_anomalyEWADictionariesForDetector copy];
@@ -69,73 +69,73 @@ LABEL_80:
   }
 
   v14 = 0;
-  v100 = v7;
+  v100 = featuresCopy;
   v101 = v8;
   while (1)
   {
-    v15 = [v6 objectAtIndex:v14];
+    v15 = [fromCopy objectAtIndex:v14];
     v105 = v14;
-    v107 = [v7 objectAtIndex:v14];
-    v16 = [v15 firstObject];
-    v17 = [v16 category];
+    v107 = [featuresCopy objectAtIndex:v14];
+    firstObject = [v15 firstObject];
+    category = [firstObject category];
 
     v109 = v15;
-    v18 = [v15 firstObject];
-    v19 = v18;
-    if (v17 == 2)
+    firstObject2 = [v15 firstObject];
+    firstObject3 = firstObject2;
+    if (category == 2)
     {
-      v20 = [v18 workoutType];
+      workoutType = [firstObject2 workoutType];
       v21 = 1;
       v22 = @"MOEventCategoryWorkout";
     }
 
     else
     {
-      v23 = [v18 category];
+      category2 = [firstObject2 category];
 
-      if (v23 == 16)
+      if (category2 == 16)
       {
-        v19 = [v15 firstObject];
-        v20 = +[MOEventMotionActivity descriptionOfMotionType:](MOEventMotionActivity, "descriptionOfMotionType:", [v19 motionType]);
+        firstObject3 = [v15 firstObject];
+        workoutType = +[MOEventMotionActivity descriptionOfMotionType:](MOEventMotionActivity, "descriptionOfMotionType:", [firstObject3 motionType]);
         v21 = 1;
         v22 = @"MOEventCategoryMotionActivity";
       }
 
       else
       {
-        v24 = [v15 firstObject];
-        v25 = [v24 category];
+        firstObject4 = [v15 firstObject];
+        category3 = [firstObject4 category];
 
-        v26 = [v15 firstObject];
-        v19 = v26;
-        if (v25 == 10)
+        firstObject5 = [v15 firstObject];
+        firstObject3 = firstObject5;
+        if (category3 == 10)
         {
-          v27 = [v26 interactionScoredContact];
-          v28 = [v27 contact];
-          v29 = [v28 identifier];
+          interactionScoredContact = [firstObject5 interactionScoredContact];
+          contact = [interactionScoredContact contact];
+          identifier = [contact identifier];
 
-          v20 = v29;
+          workoutType = identifier;
           v21 = 1;
           v22 = @"MOEventCategorySignificantContact";
         }
 
         else
         {
-          if ([v26 category] == 1 && self->_anomalyFeatureType == 4)
+          if ([firstObject5 category] == 1 && self->_anomalyFeatureType == 4)
           {
-            v30 = [v15 firstObject];
-            v31 = [v30 pCount];
-            v32 = [v31 intValue];
+            firstObject6 = [v15 firstObject];
+            pCount = [firstObject6 pCount];
+            intValue = [pCount intValue];
 
-            if ((v32 & 0x80000000) == 0)
+            if ((intValue & 0x80000000) == 0)
             {
-              v33 = [v15 firstObject];
-              v34 = [v33 startDate];
+              firstObject7 = [v15 firstObject];
+              startDate = [firstObject7 startDate];
               v8 = v101;
-              v19 = [v101 components:512 fromDate:v34];
+              firstObject3 = [v101 components:512 fromDate:startDate];
 
-              v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 weekday]);
-              v20 = [v35 stringValue];
+              v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject3 weekday]);
+              workoutType = [v35 stringValue];
 
               v21 = 1;
               v22 = @"MOEventCategoryProx";
@@ -147,23 +147,23 @@ LABEL_80:
           {
           }
 
-          v36 = [v15 firstObject];
-          if ([v36 category] == 1 && self->_anomalyFeatureType == 4)
+          firstObject8 = [v15 firstObject];
+          if ([firstObject8 category] == 1 && self->_anomalyFeatureType == 4)
           {
-            v37 = [v15 firstObject];
-            v38 = [v37 densityScore];
-            [v38 doubleValue];
+            firstObject9 = [v15 firstObject];
+            densityScore = [firstObject9 densityScore];
+            [densityScore doubleValue];
             v40 = v39;
 
             v8 = v101;
             if (v40 >= 0.0)
             {
-              v41 = [v15 firstObject];
-              v42 = [v41 startDate];
-              v19 = [v101 components:512 fromDate:v42];
+              firstObject10 = [v15 firstObject];
+              startDate2 = [firstObject10 startDate];
+              firstObject3 = [v101 components:512 fromDate:startDate2];
 
-              v43 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 weekday]);
-              v20 = [v43 stringValue];
+              v43 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject3 weekday]);
+              workoutType = [v43 stringValue];
 
               v21 = 1;
               v22 = @"MOEventCategoryPeopleDensityEvent";
@@ -177,26 +177,26 @@ LABEL_80:
             v8 = v101;
           }
 
-          v19 = [v15 firstObject];
-          if ([v19 category] == 1)
+          firstObject3 = [v15 firstObject];
+          if ([firstObject3 category] == 1)
           {
             anomalyFeatureType = self->_anomalyFeatureType;
 
             if (anomalyFeatureType != 5)
             {
-              v20 = 0;
+              workoutType = 0;
               v21 = 0;
               v22 = 0;
               v48 = v106;
               goto LABEL_36;
             }
 
-            v45 = [v15 firstObject];
-            v46 = [v45 startDate];
-            v19 = [v8 components:512 fromDate:v46];
+            firstObject11 = [v15 firstObject];
+            startDate3 = [firstObject11 startDate];
+            firstObject3 = [v8 components:512 fromDate:startDate3];
 
-            v47 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 weekday]);
-            v20 = [v47 stringValue];
+            v47 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject3 weekday]);
+            workoutType = [v47 stringValue];
 
             v21 = 1;
             v22 = @"MOEventTimeAtHomeAnomaly";
@@ -204,7 +204,7 @@ LABEL_80:
 
           else
           {
-            v20 = 0;
+            workoutType = 0;
             v21 = 0;
             v22 = 0;
           }
@@ -222,17 +222,17 @@ LABEL_36:
       break;
     }
 
-    v50 = v20 ? v21 : 0;
+    v50 = workoutType ? v21 : 0;
     if (((0x37u >> v49) & 1) == 0 || !v50)
     {
       break;
     }
 
-    v51 = [NSString stringWithFormat:@"%@_%@_%@", v22, v20, off_100336EB8[v49]];
+    v51 = [NSString stringWithFormat:@"%@_%@_%@", v22, workoutType, off_100336EB8[v49]];
     v52 = objc_opt_new();
     v103 = v51;
     v53 = [(NSMutableDictionary *)self->_anomalyEWADictionariesForDetector objectForKey:v51];
-    v104 = v20;
+    v104 = workoutType;
     v102 = v53;
     if (v53)
     {
@@ -261,8 +261,8 @@ LABEL_36:
           break;
         }
 
-        v58 = [v57 endDate];
-        v59 = [v58 isOnOrBefore:v108];
+        endDate = [v57 endDate];
+        v59 = [endDate isOnOrBefore:v108];
 
         if (v59)
         {
@@ -278,8 +278,8 @@ LABEL_70:
       }
 
       v60 = [v55 objectAtIndex:v56];
-      v61 = [v57 startDate];
-      [v61 timeIntervalSinceReferenceDate];
+      startDate4 = [v57 startDate];
+      [startDate4 timeIntervalSinceReferenceDate];
       v63 = v62;
 
       maximumThreshold = self->_maximumThreshold;
@@ -328,9 +328,9 @@ LABEL_57:
         else
         {
           v78 = [v52 objectForKeyedSubscript:@"EWAForAnomalyFeatureCountMeetsMinimum"];
-          v79 = [v78 BOOLValue];
+          bOOLValue = [v78 BOOLValue];
 
-          if (v79)
+          if (bOOLValue)
           {
             tukeyFactorForExponentialDistributionOutlier = self->_tukeyFactorForExponentialDistributionOutlier;
             v81 = [v52 objectForKeyedSubscript:@"EWAForAnomalyValue"];
@@ -398,9 +398,9 @@ LABEL_75:
     }
 
     v14 = v105 + 1;
-    v7 = v100;
+    featuresCopy = v100;
     v8 = v101;
-    if ([v6 count] <= v105 + 1)
+    if ([fromCopy count] <= v105 + 1)
     {
       goto LABEL_80;
     }
@@ -420,17 +420,17 @@ LABEL_6:
   return v10;
 }
 
-- (id)_createAnomalyEventFromEvent:(id)a3 andFeature:(id)a4 andThreshold:(double)a5
+- (id)_createAnomalyEventFromEvent:(id)event andFeature:(id)feature andThreshold:(double)threshold
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 startDate];
-  v11 = [v8 endDate];
-  if ([v8 timeAtHomeSubType] == 1)
+  eventCopy = event;
+  featureCopy = feature;
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  if ([eventCopy timeAtHomeSubType] == 1)
   {
     cal = self->_cal;
-    v13 = [v8 startDate];
-    v14 = [(NSCalendar *)cal components:28 fromDate:v13];
+    startDate2 = [eventCopy startDate];
+    v14 = [(NSCalendar *)cal components:28 fromDate:startDate2];
 
     [v14 setHour:3];
     v15 = [(NSCalendar *)self->_cal dateFromComponents:v14];
@@ -438,21 +438,21 @@ LABEL_6:
     v16 = [(NSCalendar *)self->_cal dateFromComponents:v14];
     v17 = [v16 dateByAddingTimeInterval:86400.0];
 
-    v11 = v17;
-    v10 = v15;
+    endDate = v17;
+    startDate = v15;
   }
 
   v18 = [MOEvent alloc];
   v19 = +[NSUUID UUID];
   v20 = +[NSDate date];
-  v21 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v18, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v19, v10, v11, v20, 5, [v8 category]);
+  v21 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v18, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v19, startDate, endDate, v20, 5, [eventCopy category]);
 
-  v22 = [v8 expirationDate];
-  [(MOEvent *)v21 setExpirationDate:v22];
+  expirationDate = [eventCopy expirationDate];
+  [(MOEvent *)v21 setExpirationDate:expirationDate];
 
-  if ([v8 timeAtHomeSubType] == 1 || objc_msgSend(v8, "timeAtHomeSubType") == 3)
+  if ([eventCopy timeAtHomeSubType] == 1 || objc_msgSend(eventCopy, "timeAtHomeSubType") == 3)
   {
-    -[MOEvent setTimeAtHomeSubType:](v21, "setTimeAtHomeSubType:", [v8 timeAtHomeSubType]);
+    -[MOEvent setTimeAtHomeSubType:](v21, "setTimeAtHomeSubType:", [eventCopy timeAtHomeSubType]);
   }
 
   v23 = objc_opt_new();
@@ -460,33 +460,33 @@ LABEL_6:
   v24 = [NSNumber numberWithUnsignedInteger:self->_anomalyFeatureType];
   [v23 setObject:v24 forKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
 
-  v25 = [v8 eventIdentifier];
-  v26 = [v25 UUIDString];
-  [v23 setObject:v26 forKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
+  eventIdentifier = [eventCopy eventIdentifier];
+  uUIDString = [eventIdentifier UUIDString];
+  [v23 setObject:uUIDString forKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
 
-  [v9 doubleValue];
+  [featureCopy doubleValue];
   v28 = v27;
 
   v29 = [NSNumber numberWithDouble:v28];
   [v23 setObject:v29 forKeyedSubscript:@"kEventPatternFeatureValue"];
 
-  v30 = [NSNumber numberWithDouble:a5];
+  v30 = [NSNumber numberWithDouble:threshold];
   [v23 setObject:v30 forKeyedSubscript:@"kEventPatternThresholdValue"];
 
-  if ([v8 category] == 10)
+  if ([eventCopy category] == 10)
   {
-    v31 = [v8 interactionScoredContact];
-    v32 = [v31 contact];
-    v33 = [v32 identifier];
-    [v23 setObject:v33 forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
+    interactionScoredContact = [eventCopy interactionScoredContact];
+    contact = [interactionScoredContact contact];
+    identifier = [contact identifier];
+    [v23 setObject:identifier forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
   }
 
-  if ([v8 category] == 2)
+  if ([eventCopy category] == 2)
   {
-    v34 = [v8 workoutType];
-    if (v34)
+    workoutType = [eventCopy workoutType];
+    if (workoutType)
     {
-      [v8 workoutType];
+      [eventCopy workoutType];
     }
 
     else
@@ -497,12 +497,12 @@ LABEL_6:
     [v23 setObject:v35 forKeyedSubscript:@"kEventPatternAnomalyWorkoutType"];
   }
 
-  if ([v8 category] == 16)
+  if ([eventCopy category] == 16)
   {
-    v36 = [v8 workoutType];
-    if (v36)
+    workoutType2 = [eventCopy workoutType];
+    if (workoutType2)
     {
-      [v8 workoutType];
+      [eventCopy workoutType];
     }
 
     else
@@ -512,35 +512,35 @@ LABEL_6:
     v37 = ;
     [v23 setObject:v37 forKeyedSubscript:@"kEventPatternAnomalyWorkoutType"];
 
-    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 motionType]);
+    v38 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [eventCopy motionType]);
     [v23 setObject:v38 forKeyedSubscript:@"kEventPatternAnomalyMotionType"];
   }
 
-  v39 = [v8 pCount];
-  if (v39)
+  pCount = [eventCopy pCount];
+  if (pCount)
   {
-    v40 = v39;
-    v41 = [v8 pCount];
-    v42 = [v41 intValue];
+    v40 = pCount;
+    pCount2 = [eventCopy pCount];
+    intValue = [pCount2 intValue];
 
-    if ((v42 & 0x80000000) == 0)
+    if ((intValue & 0x80000000) == 0)
     {
-      v43 = [v8 pCount];
-      [v23 setObject:v43 forKeyedSubscript:@"kEventPatternAnomalyPcount"];
+      pCount3 = [eventCopy pCount];
+      [v23 setObject:pCount3 forKeyedSubscript:@"kEventPatternAnomalyPcount"];
     }
   }
 
-  v44 = [v8 densityScore];
-  if (v44)
+  densityScore = [eventCopy densityScore];
+  if (densityScore)
   {
-    v45 = v44;
-    v46 = [v8 densityScore];
-    v47 = [v46 intValue];
+    v45 = densityScore;
+    densityScore2 = [eventCopy densityScore];
+    intValue2 = [densityScore2 intValue];
 
-    if ((v47 & 0x80000000) == 0)
+    if ((intValue2 & 0x80000000) == 0)
     {
-      v48 = [v8 densityScore];
-      [v23 setObject:v48 forKeyedSubscript:@"kEventPatternAnomalyDensityScore"];
+      densityScore3 = [eventCopy densityScore];
+      [v23 setObject:densityScore3 forKeyedSubscript:@"kEventPatternAnomalyDensityScore"];
     }
   }
 
@@ -549,98 +549,98 @@ LABEL_6:
   return v21;
 }
 
-- (void)_updateFeatureGroupEWADict:(id)a3 withCurrentFeature:(id)a4 andCurrentEvent:(id)a5 andCurrentEventTimeStamp:(double)a6
+- (void)_updateFeatureGroupEWADict:(id)dict withCurrentFeature:(id)feature andCurrentEvent:(id)event andCurrentEventTimeStamp:(double)stamp
 {
-  v40 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v10 doubleValue];
+  dictCopy = dict;
+  featureCopy = feature;
+  eventCopy = event;
+  [featureCopy doubleValue];
   if (v12 >= self->_minimumFeatureSizeForPersonalizedThreshold)
   {
-    v13 = [v40 objectForKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
+    v13 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
     [v13 doubleValue];
     v15 = v14;
 
-    if (v15 < a6)
+    if (v15 < stamp)
     {
-      if ([v11 category] == 2 || objc_msgSend(v11, "category") == 10 || objc_msgSend(v11, "category") == 16)
+      if ([eventCopy category] == 2 || objc_msgSend(eventCopy, "category") == 10 || objc_msgSend(eventCopy, "category") == 16)
       {
-        v16 = [v11 eventIdentifier];
-        v17 = [v16 UUIDString];
-        [v40 setObject:v17 forKeyedSubscript:@"EWAEventUUID"];
+        eventIdentifier = [eventCopy eventIdentifier];
+        uUIDString = [eventIdentifier UUIDString];
+        [dictCopy setObject:uUIDString forKeyedSubscript:@"EWAEventUUID"];
       }
 
-      if ([v11 category] == 2)
+      if ([eventCopy category] == 2)
       {
-        v18 = [v11 identifierFromProvider];
-        [v40 setObject:v18 forKeyedSubscript:@"EWAEventProviderUUID"];
+        identifierFromProvider = [eventCopy identifierFromProvider];
+        [dictCopy setObject:identifierFromProvider forKeyedSubscript:@"EWAEventProviderUUID"];
       }
 
-      v19 = [v40 objectForKeyedSubscript:@"EWAForAnomalyValue"];
+      v19 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyValue"];
       [v19 doubleValue];
       v21 = v20;
 
       if (v21 == -1.0)
       {
-        [v10 doubleValue];
+        [featureCopy doubleValue];
         v22 = [NSNumber numberWithDouble:?];
-        [v40 setObject:v22 forKeyedSubscript:@"EWAForAnomalyValue"];
+        [dictCopy setObject:v22 forKeyedSubscript:@"EWAForAnomalyValue"];
       }
 
       else
       {
-        v23 = [v40 objectForKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
+        v23 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
         [v23 doubleValue];
-        v25 = (a6 - v24) / 86400.0;
+        v25 = (stamp - v24) / 86400.0;
 
         v26 = pow(self->_betaForEWAUpdate, v25);
-        v22 = [v40 objectForKeyedSubscript:@"EWAForAnomalyValue"];
+        v22 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyValue"];
         [v22 doubleValue];
         v28 = v27;
-        [v10 doubleValue];
+        [featureCopy doubleValue];
         v30 = [NSNumber numberWithDouble:(1.0 - v26) * v29 + v26 * v28];
-        [v40 setObject:v30 forKeyedSubscript:@"EWAForAnomalyValue"];
+        [dictCopy setObject:v30 forKeyedSubscript:@"EWAForAnomalyValue"];
       }
 
-      v31 = [v11 endDate];
-      [v31 timeIntervalSinceReferenceDate];
+      endDate = [eventCopy endDate];
+      [endDate timeIntervalSinceReferenceDate];
       v32 = [NSNumber numberWithDouble:?];
-      [v40 setObject:v32 forKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
+      [dictCopy setObject:v32 forKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
 
-      v33 = [v40 objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
-      LODWORD(v31) = [v33 intValue];
+      v33 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
+      LODWORD(endDate) = [v33 intValue];
       minimumFeatureNumberForPersonalizedThreshold = self->_minimumFeatureNumberForPersonalizedThreshold;
 
-      if (v31 < minimumFeatureNumberForPersonalizedThreshold)
+      if (endDate < minimumFeatureNumberForPersonalizedThreshold)
       {
-        v35 = [v40 objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
+        v35 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
         v36 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v35 intValue] + 1);
-        [v40 setObject:v36 forKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
+        [dictCopy setObject:v36 forKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
       }
 
-      v37 = [v40 objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
-      v38 = [v37 intValue];
+      v37 = [dictCopy objectForKeyedSubscript:@"EWAForAnomalyFeatureCountUntilMinimum"];
+      intValue = [v37 intValue];
       v39 = self->_minimumFeatureNumberForPersonalizedThreshold;
 
-      if (v38 >= v39)
+      if (intValue >= v39)
       {
-        [v40 setObject:&__kCFBooleanTrue forKeyedSubscript:@"EWAForAnomalyFeatureCountMeetsMinimum"];
+        [dictCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"EWAForAnomalyFeatureCountMeetsMinimum"];
       }
     }
   }
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 count];
+  configureCopy = configure;
+  v5 = [configureCopy count];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"TukeyFactorForExponentialDistributionOutlier"];
+    v6 = [configureCopy objectForKey:@"TukeyFactorForExponentialDistributionOutlier"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"TukeyFactorForExponentialDistributionOutlier"];
+      v7 = [configureCopy objectForKeyedSubscript:@"TukeyFactorForExponentialDistributionOutlier"];
       [v7 doubleValue];
       self->_tukeyFactorForExponentialDistributionOutlier = v8;
     }
@@ -654,11 +654,11 @@ LABEL_6:
       }
     }
 
-    v10 = [v4 objectForKey:@"MaximumThreshold"];
+    v10 = [configureCopy objectForKey:@"MaximumThreshold"];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"MaximumThreshold"];
+      v11 = [configureCopy objectForKeyedSubscript:@"MaximumThreshold"];
       [v11 doubleValue];
       self->_maximumThreshold = v12;
     }
@@ -672,11 +672,11 @@ LABEL_6:
       }
     }
 
-    v13 = [v4 objectForKey:@"MinimumThreshold"];
+    v13 = [configureCopy objectForKey:@"MinimumThreshold"];
 
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:@"MinimumThreshold"];
+      v14 = [configureCopy objectForKeyedSubscript:@"MinimumThreshold"];
       [v14 doubleValue];
       self->_minimumThreshold = v15;
     }
@@ -690,11 +690,11 @@ LABEL_6:
       }
     }
 
-    v16 = [v4 objectForKey:@"MinimumFeatureNumberForPersonalizedThreshold"];
+    v16 = [configureCopy objectForKey:@"MinimumFeatureNumberForPersonalizedThreshold"];
 
     if (v16)
     {
-      v17 = [v4 objectForKeyedSubscript:@"MinimumFeatureNumberForPersonalizedThreshold"];
+      v17 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureNumberForPersonalizedThreshold"];
       self->_minimumFeatureNumberForPersonalizedThreshold = [v17 intValue];
     }
 
@@ -707,11 +707,11 @@ LABEL_6:
       }
     }
 
-    v18 = [v4 objectForKey:@"MinimumFeatureSizeForPersonalizedThreshold"];
+    v18 = [configureCopy objectForKey:@"MinimumFeatureSizeForPersonalizedThreshold"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"MinimumFeatureSizeForPersonalizedThreshold"];
+      v19 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureSizeForPersonalizedThreshold"];
       [v19 doubleValue];
       self->_minimumFeatureSizeForPersonalizedThreshold = v20;
     }
@@ -725,11 +725,11 @@ LABEL_6:
       }
     }
 
-    v21 = [v4 objectForKey:@"BetaForEWAUpdate"];
+    v21 = [configureCopy objectForKey:@"BetaForEWAUpdate"];
 
     if (v21)
     {
-      v22 = [v4 objectForKeyedSubscript:@"BetaForEWAUpdate"];
+      v22 = [configureCopy objectForKeyedSubscript:@"BetaForEWAUpdate"];
       [v22 doubleValue];
       self->_betaForEWAUpdate = v23;
     }
@@ -743,11 +743,11 @@ LABEL_6:
       }
     }
 
-    v24 = [v4 objectForKey:@"AnomalyFeatureType"];
+    v24 = [configureCopy objectForKey:@"AnomalyFeatureType"];
 
     if (v24)
     {
-      v25 = [v4 objectForKeyedSubscript:@"AnomalyFeatureType"];
+      v25 = [configureCopy objectForKeyedSubscript:@"AnomalyFeatureType"];
       self->_anomalyFeatureType = [v25 intValue];
     }
 
@@ -760,11 +760,11 @@ LABEL_6:
       }
     }
 
-    v26 = [v4 objectForKey:@"AnomalyEWADictionariesForDetector"];
+    v26 = [configureCopy objectForKey:@"AnomalyEWADictionariesForDetector"];
 
     if (v26)
     {
-      v27 = [v4 objectForKeyedSubscript:@"AnomalyEWADictionariesForDetector"];
+      v27 = [configureCopy objectForKeyedSubscript:@"AnomalyEWADictionariesForDetector"];
       anomalyEWADictionariesForDetector = self->_anomalyEWADictionariesForDetector;
       self->_anomalyEWADictionariesForDetector = v27;
 

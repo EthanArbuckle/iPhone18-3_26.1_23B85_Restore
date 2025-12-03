@@ -1,6 +1,6 @@
 @interface VSSubscriptionRegistrationCenter
 + (VSSubscriptionRegistrationCenter)defaultSubscriptionRegistrationCenter;
-- (BOOL)_shouldAllowAccessToSubscription:(id)a3;
+- (BOOL)_shouldAllowAccessToSubscription:(id)subscription;
 - (BOOL)_shouldRaiseExceptionsForMisuse;
 - (VSLinkedOnOrAfterChecker)linkedOnOrAfterChecker;
 - (VSSecurityTask)currentTask;
@@ -8,18 +8,18 @@
 - (VSSubscriptionPredicateFactory)predicateFactory;
 - (VSSubscriptionRegistrationCenter)init;
 - (VSSubscriptionServiceConnection)connection;
-- (id)_serviceWithErrorHandler:(id)a3;
+- (id)_serviceWithErrorHandler:(id)handler;
 - (void)_refreshCachedSubscriptions;
 - (void)_resetExpirationOperation;
-- (void)_sendLocalNotificationWithUserInfo:(id)a3;
+- (void)_sendLocalNotificationWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)fetchActiveSubscriptionsWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)registerSubscription:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)removeSubscriptions:(id)a3;
+- (void)fetchActiveSubscriptionsWithOptions:(id)options completionHandler:(id)handler;
+- (void)registerSubscription:(id)subscription;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)removeSubscriptions:(id)subscriptions;
 - (void)setCurrentSubscription:(VSSubscription *)currentSubscription;
-- (void)setFetchOptionsValidator:(id)a3;
-- (void)setPredicateFactory:(id)a3;
+- (void)setFetchOptionsValidator:(id)validator;
+- (void)setPredicateFactory:(id)factory;
 @end
 
 @implementation VSSubscriptionRegistrationCenter
@@ -102,11 +102,11 @@ uint64_t __73__VSSubscriptionRegistrationCenter_defaultSubscriptionRegistrationC
     _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v8 = [(VSSubscriptionRegistrationCenter *)self currentTask];
+  currentTask = [(VSSubscriptionRegistrationCenter *)self currentTask];
   v9 = @"com.apple.developer.video-subscription-registration";
-  v10 = [v8 shouldAllowAccessForBooleanEntitlement:v9];
+  v10 = [currentTask shouldAllowAccessForBooleanEntitlement:v9];
   v11 = @"com.apple.smoot.subscriptionservice";
-  if ((v10 & 1) != 0 || [v8 shouldAllowAccessForBooleanEntitlement:v11])
+  if ((v10 & 1) != 0 || [currentTask shouldAllowAccessForBooleanEntitlement:v11])
   {
     if (v5)
     {
@@ -121,16 +121,16 @@ uint64_t __73__VSSubscriptionRegistrationCenter_defaultSubscriptionRegistrationC
 
     else
     {
-      v13 = [(VSSubscriptionRegistrationCenter *)self predicateFactory];
-      v14 = [(VSSubscriptionRegistrationCenter *)self currentTask];
-      v15 = [v13 allowedSubscriptionsPredicateForTask:v14];
+      predicateFactory = [(VSSubscriptionRegistrationCenter *)self predicateFactory];
+      currentTask2 = [(VSSubscriptionRegistrationCenter *)self currentTask];
+      v15 = [predicateFactory allowedSubscriptionsPredicateForTask:currentTask2];
 
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __59__VSSubscriptionRegistrationCenter_setCurrentSubscription___block_invoke;
       v22[3] = &unk_278B74BD8;
       v23 = v15;
-      v24 = self;
+      selfCopy = self;
       v12 = v15;
       [(VSSubscriptionRegistrationCenter *)self fetchActiveSubscriptionsWithOptions:MEMORY[0x277CBEC10] completionHandler:v22];
     }
@@ -206,44 +206,44 @@ void __59__VSSubscriptionRegistrationCenter_setCurrentSubscription___block_invok
   }
 }
 
-- (id)_serviceWithErrorHandler:(id)a3
+- (id)_serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VSSubscriptionRegistrationCenter *)self connection];
-  v6 = [v5 serviceWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(VSSubscriptionRegistrationCenter *)self connection];
+  v6 = [connection serviceWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (BOOL)_shouldAllowAccessToSubscription:(id)a3
+- (BOOL)_shouldAllowAccessToSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(VSSubscriptionRegistrationCenter *)self predicateFactory];
-  v6 = [(VSSubscriptionRegistrationCenter *)self currentTask];
-  v7 = [v5 allowedSubscriptionsPredicateForRequestKind:1 fromTask:v6];
+  subscriptionCopy = subscription;
+  predicateFactory = [(VSSubscriptionRegistrationCenter *)self predicateFactory];
+  currentTask = [(VSSubscriptionRegistrationCenter *)self currentTask];
+  v7 = [predicateFactory allowedSubscriptionsPredicateForRequestKind:1 fromTask:currentTask];
 
-  LOBYTE(v6) = [v7 evaluateWithObject:v4];
-  return v6;
+  LOBYTE(currentTask) = [v7 evaluateWithObject:subscriptionCopy];
+  return currentTask;
 }
 
 - (BOOL)_shouldRaiseExceptionsForMisuse
 {
-  v2 = [(VSSubscriptionRegistrationCenter *)self linkedOnOrAfterChecker];
-  v3 = [v2 shouldPerformBehavior:0];
+  linkedOnOrAfterChecker = [(VSSubscriptionRegistrationCenter *)self linkedOnOrAfterChecker];
+  v3 = [linkedOnOrAfterChecker shouldPerformBehavior:0];
 
   return v3;
 }
 
-- (void)_sendLocalNotificationWithUserInfo:(id)a3
+- (void)_sendLocalNotificationWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__VSSubscriptionRegistrationCenter__sendLocalNotificationWithUserInfo___block_invoke;
   v6[3] = &unk_278B73708;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   VSPerformCompletionHandler(v6);
 }
 
@@ -256,15 +256,15 @@ void __71__VSSubscriptionRegistrationCenter__sendLocalNotificationWithUserInfo__
 - (void)_refreshCachedSubscriptions
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(VSSubscriptionRegistrationCenter *)self subscriptionsByOptions];
-  v5 = [v4 copy];
+  subscriptionsByOptions = [(VSSubscriptionRegistrationCenter *)self subscriptionsByOptions];
+  v5 = [subscriptionsByOptions copy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_invoke;
   v7[3] = &unk_278B74C28;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = subscriptionsByOptions;
+  selfCopy = self;
+  v6 = subscriptionsByOptions;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 
   objc_autoreleasePoolPop(v3);
@@ -350,11 +350,11 @@ void __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_i
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v25 = self;
-  v4 = [(VSSubscriptionRegistrationCenter *)self subscriptionsByOptions];
-  v5 = [v4 allValues];
+  selfCopy = self;
+  subscriptionsByOptions = [(VSSubscriptionRegistrationCenter *)self subscriptionsByOptions];
+  allValues = [subscriptionsByOptions allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v48 objects:v54 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v6)
   {
     v7 = *v49;
@@ -365,7 +365,7 @@ void __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_i
       {
         if (*v49 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v48 + 1) + 8 * v8);
@@ -402,14 +402,14 @@ void __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_i
       }
 
       while (v8 != v6);
-      v6 = [v5 countByEnumeratingWithState:&v48 objects:v54 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v48 objects:v54 count:16];
     }
 
     while (v6);
   }
 
-  v14 = [(VSSubscriptionRegistrationCenter *)v25 expirationOperation];
-  [v14 cancel];
+  expirationOperation = [(VSSubscriptionRegistrationCenter *)selfCopy expirationOperation];
+  [expirationOperation cancel];
 
   if ([v3 count])
   {
@@ -440,14 +440,14 @@ void __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_i
 
           v18 = *(*(&v34 + 1) + 8 * v17);
           v19 = objc_autoreleasePoolPush();
-          v20 = [v18 expirationDate];
+          expirationDate = [v18 expirationDate];
           v21 = v39[5];
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_invoke;
           v31[3] = &unk_278B74C50;
           v33 = &v38;
-          v32 = v20;
+          v32 = expirationDate;
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_invoke_2;
@@ -473,7 +473,7 @@ void __63__VSSubscriptionRegistrationCenter__refreshCachedSubscriptions__block_i
     v27[1] = 3221225472;
     v27[2] = __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_invoke_3;
     v27[3] = &unk_278B74CA0;
-    v27[4] = v25;
+    v27[4] = selfCopy;
     [v23 conditionallyUnwrapObject:v27 otherwise:&__block_literal_global_47];
     _Block_object_dispose(&v38, 8);
   }
@@ -584,16 +584,16 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
 
 - (VSSubscriptionServiceConnection)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_connection;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionServiceConnection);
-    objc_storeStrong(&v2->_connection, v3);
+    objc_storeStrong(&selfCopy->_connection, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -605,16 +605,16 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
 
 - (VSSecurityTask)currentTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentTask;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentTask;
   if (!v3)
   {
     v3 = +[VSSecurityTask currentSecurityTask];
-    objc_storeStrong(&v2->_currentTask, v3);
+    objc_storeStrong(&selfCopy->_currentTask, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -626,16 +626,16 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
 
 - (VSLinkedOnOrAfterChecker)linkedOnOrAfterChecker
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_linkedOnOrAfterChecker;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_linkedOnOrAfterChecker;
   if (!v3)
   {
     v3 = objc_alloc_init(VSLinkedOnOrAfterChecker);
-    objc_storeStrong(&v2->_linkedOnOrAfterChecker, v3);
+    objc_storeStrong(&selfCopy->_linkedOnOrAfterChecker, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -647,16 +647,16 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
 
 - (VSSubscriptionPredicateFactory)predicateFactory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_predicateFactory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_predicateFactory;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionPredicateFactory);
-    objc_storeStrong(&v2->_predicateFactory, v3);
+    objc_storeStrong(&selfCopy->_predicateFactory, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -666,36 +666,36 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
   return v3;
 }
 
-- (void)setPredicateFactory:(id)a3
+- (void)setPredicateFactory:(id)factory
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_predicateFactory != v7)
+  factoryCopy = factory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_predicateFactory != factoryCopy)
   {
-    objc_storeStrong(&v5->_predicateFactory, a3);
-    v6 = [(VSSubscriptionRegistrationCenter *)v5 fetchOptionsValidator];
-    [v6 setPredicateFactory:v7];
+    objc_storeStrong(&selfCopy->_predicateFactory, factory);
+    fetchOptionsValidator = [(VSSubscriptionRegistrationCenter *)selfCopy fetchOptionsValidator];
+    [fetchOptionsValidator setPredicateFactory:factoryCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (VSSubscriptionFetchOptionsValidator)fetchOptionsValidator
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fetchOptionsValidator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fetchOptionsValidator;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionFetchOptionsValidator);
-    v4 = [(VSSubscriptionRegistrationCenter *)v2 predicateFactory];
-    [(VSSubscriptionFetchOptionsValidator *)v3 setPredicateFactory:v4];
+    predicateFactory = [(VSSubscriptionRegistrationCenter *)selfCopy predicateFactory];
+    [(VSSubscriptionFetchOptionsValidator *)v3 setPredicateFactory:predicateFactory];
 
-    objc_storeStrong(&v2->_fetchOptionsValidator, v3);
+    objc_storeStrong(&selfCopy->_fetchOptionsValidator, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -705,24 +705,24 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
   return v3;
 }
 
-- (void)setFetchOptionsValidator:(id)a3
+- (void)setFetchOptionsValidator:(id)validator
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fetchOptionsValidator != v7)
+  validatorCopy = validator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fetchOptionsValidator != validatorCopy)
   {
-    objc_storeStrong(&v5->_fetchOptionsValidator, a3);
-    v6 = [(VSSubscriptionFetchOptionsValidator *)v7 predicateFactory];
-    [(VSSubscriptionRegistrationCenter *)v5 setPredicateFactory:v6];
+    objc_storeStrong(&selfCopy->_fetchOptionsValidator, validator);
+    predicateFactory = [(VSSubscriptionFetchOptionsValidator *)validatorCopy predicateFactory];
+    [(VSSubscriptionRegistrationCenter *)selfCopy setPredicateFactory:predicateFactory];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v5 = [(VSSubscriptionRegistrationCenter *)self privateQueue:a3];
+  v5 = [(VSSubscriptionRegistrationCenter *)self privateQueue:notifier];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __92__VSSubscriptionRegistrationCenter_remoteNotifier_didReceiveRemoteNotificationWithUserInfo___block_invoke;
@@ -731,11 +731,11 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
   [v5 addOperationWithBlock:v6];
 }
 
-- (void)fetchActiveSubscriptionsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)fetchActiveSubscriptionsWithOptions:(id)options completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = VSDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -745,10 +745,10 @@ void __61__VSSubscriptionRegistrationCenter__resetExpirationOperation__block_inv
     _os_log_impl(&dword_23AB8E000, v9, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The options parameter must not be nil."];
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
@@ -758,29 +758,29 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_5:
-  v10 = [(VSSubscriptionRegistrationCenter *)self currentTask];
-  if ([v10 shouldAllowAccessForBooleanEntitlement:@"com.apple.developer.video-subscription-registration"] & 1) != 0 || (objc_msgSend(v10, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.smoot.subscriptionservice") & 1) != 0 || (objc_msgSend(v10, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.internal") & 1) != 0 || (objc_msgSend(v10, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.all-sources.read-only") & 1) != 0 || (objc_msgSend(v10, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.web-sources.read-write"))
+  currentTask = [(VSSubscriptionRegistrationCenter *)self currentTask];
+  if ([currentTask shouldAllowAccessForBooleanEntitlement:@"com.apple.developer.video-subscription-registration"] & 1) != 0 || (objc_msgSend(currentTask, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.smoot.subscriptionservice") & 1) != 0 || (objc_msgSend(currentTask, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.internal") & 1) != 0 || (objc_msgSend(currentTask, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.all-sources.read-only") & 1) != 0 || (objc_msgSend(currentTask, "shouldAllowAccessForBooleanEntitlement:", @"com.apple.private.subscriptionservice.web-sources.read-write"))
   {
-    v11 = [(VSSubscriptionRegistrationCenter *)self fetchOptionsValidator];
-    v12 = [v11 standardizedFetchOptionsFromOptions:v6 withSecurityTask:v10];
+    fetchOptionsValidator = [(VSSubscriptionRegistrationCenter *)self fetchOptionsValidator];
+    v12 = [fetchOptionsValidator standardizedFetchOptionsFromOptions:optionsCopy withSecurityTask:currentTask];
 
-    v13 = [(VSSubscriptionRegistrationCenter *)self privateQueue];
+    privateQueue = [(VSSubscriptionRegistrationCenter *)self privateQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __90__VSSubscriptionRegistrationCenter_fetchActiveSubscriptionsWithOptions_completionHandler___block_invoke;
     v16[3] = &unk_278B74D68;
     v16[4] = self;
-    v6 = v12;
-    v17 = v6;
-    v18 = v13;
-    v19 = v7;
-    v14 = v13;
+    optionsCopy = v12;
+    v17 = optionsCopy;
+    v18 = privateQueue;
+    v19 = handlerCopy;
+    v14 = privateQueue;
     [v14 addOperationWithBlock:v16];
   }
 
@@ -798,7 +798,7 @@ LABEL_5:
       [VSSubscriptionRegistrationCenter fetchActiveSubscriptionsWithOptions:v15 completionHandler:?];
     }
 
-    (*(v7 + 2))(v7, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   objc_autoreleasePoolPop(v8);
@@ -987,10 +987,10 @@ void __90__VSSubscriptionRegistrationCenter_fetchActiveSubscriptionsWithOptions_
   }
 }
 
-- (void)registerSubscription:(id)a3
+- (void)registerSubscription:(id)subscription
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subscriptionCopy = subscription;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -999,40 +999,40 @@ void __90__VSSubscriptionRegistrationCenter_fetchActiveSubscriptionsWithOptions_
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!subscriptionCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The subscription parameter must not be nil."];
   }
 
-  v6 = [(VSSubscriptionRegistrationCenter *)self _shouldRaiseExceptionsForMisuse];
-  if (![(VSSubscriptionRegistrationCenter *)self _shouldAllowAccessToSubscription:v4])
+  _shouldRaiseExceptionsForMisuse = [(VSSubscriptionRegistrationCenter *)self _shouldRaiseExceptionsForMisuse];
+  if (![(VSSubscriptionRegistrationCenter *)self _shouldAllowAccessToSubscription:subscriptionCopy])
   {
-    if (v6)
+    if (_shouldRaiseExceptionsForMisuse)
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Registering this subscription (%@) requires an entitlement.", v4}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Registering this subscription (%@) requires an entitlement.", subscriptionCopy}];
     }
 
     else
     {
-      NSLog(@"Registering this subscription (%@) requires an entitlement.", v4);
+      NSLog(@"Registering this subscription (%@) requires an entitlement.", subscriptionCopy);
     }
 
     goto LABEL_30;
   }
 
-  v7 = [v4 subscriptionInfo];
-  v8 = [v7 length];
+  subscriptionInfo = [subscriptionCopy subscriptionInfo];
+  v8 = [subscriptionInfo length];
 
-  v9 = [v4 accessLevel];
+  accessLevel = [subscriptionCopy accessLevel];
   if (v8)
   {
-    if (v9)
+    if (accessLevel)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Only subscriptions with an unknown access level may be registered with an info string."];
     }
 
-    v10 = [v4 tierIdentifiers];
-    v11 = [v10 count];
+    tierIdentifiers = [subscriptionCopy tierIdentifiers];
+    v11 = [tierIdentifiers count];
 
     if (!v11)
     {
@@ -1046,14 +1046,14 @@ void __90__VSSubscriptionRegistrationCenter_fetchActiveSubscriptionsWithOptions_
 
   else
   {
-    if ((v9 - 1) < 2)
+    if ((accessLevel - 1) < 2)
     {
       goto LABEL_16;
     }
 
-    if (v9)
+    if (accessLevel)
     {
-      if (!v6)
+      if (!_shouldRaiseExceptionsForMisuse)
       {
         goto LABEL_16;
       }
@@ -1063,7 +1063,7 @@ void __90__VSSubscriptionRegistrationCenter_fetchActiveSubscriptionsWithOptions_
 
     else
     {
-      if (!v6)
+      if (!_shouldRaiseExceptionsForMisuse)
       {
         goto LABEL_16;
       }
@@ -1083,9 +1083,9 @@ LABEL_16:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v25 = v4;
-  v15 = [v4 tierIdentifiers];
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v25 = subscriptionCopy;
+  tierIdentifiers2 = [subscriptionCopy tierIdentifiers];
+  v16 = [tierIdentifiers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1097,7 +1097,7 @@ LABEL_16:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(tierIdentifiers2);
         }
 
         v21 = *(*(&v26 + 1) + 8 * i);
@@ -1113,14 +1113,14 @@ LABEL_16:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v17 = [tierIdentifiers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v17);
   }
 
   v22 = VSDefaultLogObject();
-  v4 = v25;
+  subscriptionCopy = v25;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -1144,10 +1144,10 @@ void __57__VSSubscriptionRegistrationCenter_registerSubscription___block_invoke(
   }
 }
 
-- (void)removeSubscriptions:(id)a3
+- (void)removeSubscriptions:(id)subscriptions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1156,12 +1156,12 @@ void __57__VSSubscriptionRegistrationCenter_registerSubscription___block_invoke(
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!subscriptionsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The subscriptions parameter must not be nil."];
   }
 
-  if (![v4 count])
+  if (![subscriptionsCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The subscriptions array must not be empty."];
   }
@@ -1170,7 +1170,7 @@ void __57__VSSubscriptionRegistrationCenter_registerSubscription___block_invoke(
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = subscriptionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

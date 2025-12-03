@@ -1,23 +1,23 @@
 @interface SKUIProductInformationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIProductInformationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIProductInformationView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (double)_keyWidth;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setInformationLines:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setInformationLines:(id)lines;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIProductInformationView
 
-- (SKUIProductInformationView)initWithFrame:(CGRect)a3
+- (SKUIProductInformationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductInformationView initWithFrame:];
@@ -25,23 +25,23 @@
 
   v21.receiver = self;
   v21.super_class = SKUIProductInformationView;
-  v8 = [(SKUIProductInformationView *)&v21 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIProductInformationView *)&v21 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
     __asm { FMOV            V0.2D, #15.0 }
 
-    *&v8->_contentInset.top = _Q0;
-    *&v8->_contentInset.bottom = _Q0;
+    *&height->_contentInset.top = _Q0;
+    *&height->_contentInset.bottom = _Q0;
     v15 = objc_alloc_init(MEMORY[0x277D75D18]);
     separatorView = v9->_separatorView;
     v9->_separatorView = v15;
 
     v17 = v9->_separatorView;
-    v18 = [(SKUIColorScheme *)v9->_colorScheme primaryTextColor];
-    if (v18)
+    primaryTextColor = [(SKUIColorScheme *)v9->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v17 setBackgroundColor:v18];
+      [(UIView *)v17 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -56,14 +56,14 @@
   return v9;
 }
 
-- (void)setInformationLines:(id)a3
+- (void)setInformationLines:(id)lines
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_informationLines != v6)
+  linesCopy = lines;
+  if (self->_informationLines != linesCopy)
   {
-    v49 = v6;
-    objc_storeStrong(&self->_informationLines, a3);
+    v49 = linesCopy;
+    objc_storeStrong(&self->_informationLines, lines);
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
@@ -154,17 +154,17 @@
       while (v17);
     }
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     keyLabels = self->_keyLabels;
-    self->_keyLabels = v21;
+    self->_keyLabels = array;
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     valueLabels = self->_valueLabels;
-    self->_valueLabels = v23;
+    self->_valueLabels = array2;
 
-    v25 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     imageValues = self->_imageValues;
-    self->_imageValues = v25;
+    self->_imageValues = array3;
 
     v57 = 0u;
     v58 = 0u;
@@ -192,16 +192,16 @@
           [v29 setFont:v30];
 
           [v29 setTextAlignment:2];
-          v31 = [(SKUIProductInformationView *)self backgroundColor];
-          [v29 setBackgroundColor:v31];
+          backgroundColor = [(SKUIProductInformationView *)self backgroundColor];
+          [v29 setBackgroundColor:backgroundColor];
 
           v32 = [v28 objectAtIndex:0];
           [v29 setText:v32];
 
-          v33 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-          if (v33)
+          secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+          if (secondaryTextColor)
           {
-            [v29 setTextColor:v33];
+            [v29 setTextColor:secondaryTextColor];
           }
 
           else
@@ -217,9 +217,9 @@
           v71[0] = v52;
           v71[1] = v51;
           v72[0] = v35;
-          v36 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-          v37 = v36;
-          if (!v36)
+          primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+          v37 = primaryTextColor;
+          if (!primaryTextColor)
           {
             i = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
             v37 = i;
@@ -227,7 +227,7 @@
 
           v72[1] = v37;
           v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:2];
-          if (!v36)
+          if (!primaryTextColor)
           {
           }
 
@@ -236,8 +236,8 @@
           [v39 setFont:v40];
 
           [v39 setNumberOfLines:0];
-          v41 = [(SKUIProductInformationView *)self backgroundColor];
-          [v39 setBackgroundColor:v41];
+          backgroundColor2 = [(SKUIProductInformationView *)self backgroundColor];
+          [v39 setBackgroundColor:backgroundColor2];
 
           v42 = objc_alloc(MEMORY[0x277CCA898]);
           v43 = [v28 objectAtIndex:1];
@@ -252,10 +252,10 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v46 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v45];
-              [(SKUIProductInformationView *)self addSubview:v46];
+              null = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v45];
+              [(SKUIProductInformationView *)self addSubview:null];
 
-              if (v46)
+              if (null)
               {
                 v47 = self->_imageValues;
                 goto LABEL_43;
@@ -268,10 +268,10 @@
           }
 
           v48 = self->_imageValues;
-          v46 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
           v47 = v48;
 LABEL_43:
-          [(NSMutableArray *)v47 addObject:v46];
+          [(NSMutableArray *)v47 addObject:null];
         }
 
         v54 = [(NSArray *)obj countByEnumeratingWithState:&v55 objects:v73 count:16];
@@ -281,18 +281,18 @@ LABEL_43:
     }
 
     [(SKUIProductInformationView *)self setNeedsLayout];
-    v6 = v49;
+    linesCopy = v49;
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v28 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v28 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -313,10 +313,10 @@ LABEL_43:
           }
 
           v11 = *(*(&v33 + 1) + 8 * i);
-          v12 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-          if (v12)
+          secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+          if (secondaryTextColor)
           {
-            [v11 setTextColor:v12];
+            [v11 setTextColor:secondaryTextColor];
           }
 
           else
@@ -352,10 +352,10 @@ LABEL_43:
           }
 
           v19 = *(*(&v29 + 1) + 8 * j);
-          v20 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-          if (v20)
+          primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+          if (primaryTextColor)
           {
-            [v19 setTextColor:v20];
+            [v19 setTextColor:primaryTextColor];
           }
 
           else
@@ -372,10 +372,10 @@ LABEL_43:
     }
 
     separatorView = self->_separatorView;
-    v23 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v23)
+    primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor2)
     {
-      [(UIView *)separatorView setBackgroundColor:v23];
+      [(UIView *)separatorView setBackgroundColor:primaryTextColor2];
     }
 
     else
@@ -385,30 +385,30 @@ LABEL_43:
     }
 
     titleLabel = self->_titleLabel;
-    v26 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v26)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)titleLabel setTextColor:v26];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor2];
     }
 
     else
     {
-      v27 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v27];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
 
-    v5 = v28;
+    schemeCopy = v28;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v16)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -417,24 +417,24 @@ LABEL_43:
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SKUIProductInformationView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIProductInformationView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_titleLabel;
-        v13 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v13)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v12 setTextColor:v13];
+          [(UILabel *)v12 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v15 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v12 setTextColor:v15];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v12 setTextColor:blackColor];
         }
 
         [(SKUIProductInformationView *)self addSubview:self->_titleLabel];
@@ -504,10 +504,10 @@ LABEL_43:
       v22 = v21;
       v24 = v23;
       v25 = [(NSMutableArray *)self->_imageValues objectAtIndex:v14];
-      v26 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
       rect = v16;
-      if (v25 == v26)
+      if (v25 == null)
       {
         v27 = 0;
         v37 = -2.0;
@@ -580,8 +580,8 @@ LABEL_43:
   if (separatorView)
   {
     [(UIView *)separatorView frame];
-    v42 = [MEMORY[0x277D759A0] mainScreen];
-    [v42 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
 
     v43 = self->_separatorView;
 
@@ -589,10 +589,10 @@ LABEL_43:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -613,7 +613,7 @@ LABEL_43:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v20 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v20 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -643,7 +643,7 @@ LABEL_43:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) setBackgroundColor:v4];
+        [*(*(&v16 + 1) + 8 * v14++) setBackgroundColor:colorCopy];
       }
 
       while (v12 != v14);
@@ -653,15 +653,15 @@ LABEL_43:
     while (v12);
   }
 
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v15.receiver = self;
   v15.super_class = SKUIProductInformationView;
-  [(SKUIProductInformationView *)&v15 setBackgroundColor:v4];
+  [(SKUIProductInformationView *)&v15 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   p_contentInset = &self->_contentInset;
   v6 = self->_contentInset.top + self->_contentInset.bottom;
   titleLabel = self->_titleLabel;
@@ -705,9 +705,9 @@ LABEL_43:
       if (v24 <= 0.0)
       {
         v25 = [(NSMutableArray *)self->_imageValues objectAtIndex:v13];
-        v26 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v25 != v26)
+        if (v25 != null)
         {
           v27 = [(NSMutableArray *)self->_imageValues objectAtIndex:v13];
           [v27 frame];

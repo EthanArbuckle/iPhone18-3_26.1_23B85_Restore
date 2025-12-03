@@ -1,31 +1,31 @@
 @interface DOCInteractionManager
-+ (id)sharedManagerFor:(id)a3;
-+ (void)clearSharedControllerFor:(id)a3;
-+ (void)setSharedManagerWith:(id)a3 to:(id)a4;
++ (id)sharedManagerFor:(id)for;
++ (void)clearSharedControllerFor:(id)for;
++ (void)setSharedManagerWith:(id)with to:(id)to;
 - (_TtC26DocumentManagerExecutables21DOCInteractionManager)init;
 @end
 
 @implementation DOCInteractionManager
 
-+ (id)sharedManagerFor:(id)a3
++ (id)sharedManagerFor:(id)for
 {
-  v4 = a3;
-  v5 = specialized static DOCInteractionManager.sharedManager(for:)(a3);
+  forCopy = for;
+  v5 = specialized static DOCInteractionManager.sharedManager(for:)(for);
 
   return v5;
 }
 
-+ (void)clearSharedControllerFor:(id)a3
++ (void)clearSharedControllerFor:(id)for
 {
-  v4 = a3;
-  specialized static DOCInteractionManager.clearSharedController(for:)(a3);
+  forCopy = for;
+  specialized static DOCInteractionManager.clearSharedController(for:)(for);
 }
 
-+ (void)setSharedManagerWith:(id)a3 to:(id)a4
++ (void)setSharedManagerWith:(id)with to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  specialized static DOCInteractionManager.setSharedManager(with:to:)(v5);
+  withCopy = with;
+  toCopy = to;
+  specialized static DOCInteractionManager.setSharedManager(with:to:)(withCopy);
 }
 
 - (_TtC26DocumentManagerExecutables21DOCInteractionManager)init

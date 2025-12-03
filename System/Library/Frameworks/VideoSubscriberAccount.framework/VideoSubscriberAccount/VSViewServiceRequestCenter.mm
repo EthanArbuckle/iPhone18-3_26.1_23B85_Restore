@@ -1,8 +1,8 @@
 @interface VSViewServiceRequestCenter
 + (id)sharedViewServiceRequestCenter;
 - (VSViewServiceRequestCenter)init;
-- (id)enqueueCompletionHandlerBlock:(id)a3;
-- (id)enqueueRequest:(id)a3 withAccountManagerDelegate:(id)a4 operationDelegate:(id)a5 completionHandler:(id)a6;
+- (id)enqueueCompletionHandlerBlock:(id)block;
+- (id)enqueueRequest:(id)request withAccountManagerDelegate:(id)delegate operationDelegate:(id)operationDelegate completionHandler:(id)handler;
 @end
 
 @implementation VSViewServiceRequestCenter
@@ -51,64 +51,64 @@ uint64_t __60__VSViewServiceRequestCenter_sharedViewServiceRequestCenter__block_
   return v2;
 }
 
-- (id)enqueueCompletionHandlerBlock:(id)a3
+- (id)enqueueCompletionHandlerBlock:(id)block
 {
-  v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:a3];
-  v5 = [(VSViewServiceRequestCenter *)self completionQueue];
-  [v5 addOperation:v4];
+  v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:block];
+  completionQueue = [(VSViewServiceRequestCenter *)self completionQueue];
+  [completionQueue addOperation:v4];
 
   v6 = [[VSAccountManagerResult alloc] initWithOperation:v4];
 
   return v6;
 }
 
-- (id)enqueueRequest:(id)a3 withAccountManagerDelegate:(id)a4 operationDelegate:(id)a5 completionHandler:(id)a6
+- (id)enqueueRequest:(id)request withAccountManagerDelegate:(id)delegate operationDelegate:(id)operationDelegate completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  requestCopy = request;
+  delegateCopy = delegate;
+  operationDelegateCopy = operationDelegate;
+  handlerCopy = handler;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewServiceRequest parameter must not be nil."];
   }
 
-  v14 = [v10 allowsAuthenticationUI];
-  if (!v11 && v14)
+  allowsAuthenticationUI = [requestCopy allowsAuthenticationUI];
+  if (!delegateCopy && allowsAuthenticationUI)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"This kind of request requires a delegate."];
   }
 
-  v15 = [v10 localizedVideoTitle];
-  if (v15)
+  localizedVideoTitle = [requestCopy localizedVideoTitle];
+  if (localizedVideoTitle)
   {
-    v16 = v15;
-    v17 = [v10 allowsAuthenticationUI];
+    v16 = localizedVideoTitle;
+    allowsAuthenticationUI2 = [requestCopy allowsAuthenticationUI];
 
-    if ((v17 & 1) == 0)
+    if ((allowsAuthenticationUI2 & 1) == 0)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"A localized video title is not appropriate for this kind of request."];
     }
   }
 
-  v18 = [[VSViewServiceRequestOperation alloc] initWithViewServiceRequest:v10];
-  [(VSViewServiceRequestOperation *)v18 setDelegate:v12];
+  v18 = [[VSViewServiceRequestOperation alloc] initWithViewServiceRequest:requestCopy];
+  [(VSViewServiceRequestOperation *)v18 setDelegate:operationDelegateCopy];
   v19 = MEMORY[0x277CCA8C8];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __108__VSViewServiceRequestCenter_enqueueRequest_withAccountManagerDelegate_operationDelegate_completionHandler___block_invoke;
   v30 = &unk_278B73758;
   v31 = v18;
-  v32 = v13;
-  v20 = v13;
+  v32 = handlerCopy;
+  v20 = handlerCopy;
   v21 = v18;
   v22 = [v19 blockOperationWithBlock:&v27];
   [v22 addDependency:{v21, v27, v28, v29, v30}];
-  v23 = [(VSViewServiceRequestCenter *)self completionQueue];
-  [v23 addOperation:v22];
+  completionQueue = [(VSViewServiceRequestCenter *)self completionQueue];
+  [completionQueue addOperation:v22];
 
-  v24 = [(VSViewServiceRequestCenter *)self requestQueue];
-  [v24 addOperation:v21];
+  requestQueue = [(VSViewServiceRequestCenter *)self requestQueue];
+  [requestQueue addOperation:v21];
 
   v25 = [[VSAccountManagerResult alloc] initWithOperation:v21];
 

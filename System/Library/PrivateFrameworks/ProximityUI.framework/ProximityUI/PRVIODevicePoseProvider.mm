@@ -1,14 +1,14 @@
 @interface PRVIODevicePoseProvider
-- (PRVIODevicePoseProvider)initWithARSession:(id)a3;
+- (PRVIODevicePoseProvider)initWithARSession:(id)session;
 - (void)reset;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
+- (void)session:(id)session didUpdateFrame:(id)frame;
 @end
 
 @implementation PRVIODevicePoseProvider
 
-- (PRVIODevicePoseProvider)initWithARSession:(id)a3
+- (PRVIODevicePoseProvider)initWithARSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = PRVIODevicePoseProvider;
   v5 = [(PRVIODevicePoseProvider *)&v9 init];
@@ -18,9 +18,9 @@
     [(PRVIODevicePoseProvider *)v5 setPoseValidator:v6];
 
     [(PRVIODevicePoseProvider *)v5 setTrackingNormal:0];
-    [(PRVIODevicePoseProvider *)v5 setSession:v4];
-    v7 = [(PRVIODevicePoseProvider *)v5 session];
-    [v7 setDelegate:v5];
+    [(PRVIODevicePoseProvider *)v5 setSession:sessionCopy];
+    session = [(PRVIODevicePoseProvider *)v5 session];
+    [session setDelegate:v5];
   }
 
   return v5;
@@ -29,29 +29,29 @@
 - (void)reset
 {
   [(PRVIODevicePoseProvider *)self setTrackingNormal:0];
-  v5 = [(PRVIODevicePoseProvider *)self session];
-  v3 = [(PRVIODevicePoseProvider *)self session];
-  v4 = [v3 configuration];
-  [v5 runWithConfiguration:v4 options:15];
+  session = [(PRVIODevicePoseProvider *)self session];
+  session2 = [(PRVIODevicePoseProvider *)self session];
+  configuration = [session2 configuration];
+  [session runWithConfiguration:configuration options:15];
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v23 = a4;
-  v5 = [v23 camera];
-  v6 = [v5 trackingState];
+  frameCopy = frame;
+  camera = [frameCopy camera];
+  trackingState = [camera trackingState];
 
-  if (v6 == 2)
+  if (trackingState == 2)
   {
     [(PRVIODevicePoseProvider *)self setTrackingNormal:1];
-    v7 = [v23 camera];
-    [v7 transform];
+    camera2 = [frameCopy camera];
+    [camera2 transform];
     v21 = v9;
     v22 = v8;
     v19 = v11;
     v20 = v10;
 
-    [v23 timestamp];
+    [frameCopy timestamp];
     v12 = 0;
     v24[0] = xmmword_2614160D0;
     v24[1] = xmmword_2614160E0;
@@ -65,14 +65,14 @@
 
     while (v12 != 4);
     v13 = [PRPose poseWithTime:"poseWithTime:pose:" pose:?];
-    v14 = [(PRVIODevicePoseProvider *)self poseValidator];
-    v15 = [v14 validatePose:v13];
+    poseValidator = [(PRVIODevicePoseProvider *)self poseValidator];
+    v15 = [poseValidator validatePose:v13];
 
-    v16 = [(PRDevicePoseProvider *)self delegate];
-    v17 = v16;
+    delegate = [(PRDevicePoseProvider *)self delegate];
+    v17 = delegate;
     if (v15)
     {
-      [v16 devicePoseUpdated:v13];
+      [delegate devicePoseUpdated:v13];
     }
 
     else
@@ -87,8 +87,8 @@
     NSLog(&cfstr_CameraTracking.isa);
     if ([(PRVIODevicePoseProvider *)self trackingNormal])
     {
-      v18 = [(PRDevicePoseProvider *)self delegate];
-      [v18 invalidPoseDetected];
+      delegate2 = [(PRDevicePoseProvider *)self delegate];
+      [delegate2 invalidPoseDetected];
 
       [(PRVIODevicePoseProvider *)self setTrackingNormal:0];
     }

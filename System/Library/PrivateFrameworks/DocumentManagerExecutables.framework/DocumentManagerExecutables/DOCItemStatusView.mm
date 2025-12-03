@@ -1,6 +1,6 @@
 @interface DOCItemStatusView
 - (UIColor)tintColor;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation DOCItemStatusView
@@ -9,16 +9,16 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCItemStatusView();
-  v2 = [(DOCItemStatusView *)&v4 tintColor];
+  tintColor = [(DOCItemStatusView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCItemStatusView();
-  [(DOCItemStatusView *)&v4 setTintColor:a3];
+  [(DOCItemStatusView *)&v4 setTintColor:color];
 }
 
 @end

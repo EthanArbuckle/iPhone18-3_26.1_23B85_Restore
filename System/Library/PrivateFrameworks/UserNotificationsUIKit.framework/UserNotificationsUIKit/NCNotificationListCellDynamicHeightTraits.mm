@@ -1,6 +1,6 @@
 @interface NCNotificationListCellDynamicHeightTraits
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,19 +9,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_alignContentToBottom];
-  v5 = [v3 appendBool:self->_showAuxiliaryOptions];
-  v6 = [v3 appendBool:self->_isGroupCollapsed];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_alignContentToBottom];
+  v5 = [builder appendBool:self->_showAuxiliaryOptions];
+  v6 = [builder appendBool:self->_isGroupCollapsed];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
@@ -31,12 +31,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NCNotificationListCellDynamicHeightTraits *)self alignContentToBottom];
-      if (v6 == [(NCNotificationListCellDynamicHeightTraits *)v5 alignContentToBottom]&& (v7 = [(NCNotificationListCellDynamicHeightTraits *)self showAuxiliaryOptions], v7 == [(NCNotificationListCellDynamicHeightTraits *)v5 showAuxiliaryOptions]))
+      v5 = equalCopy;
+      alignContentToBottom = [(NCNotificationListCellDynamicHeightTraits *)self alignContentToBottom];
+      if (alignContentToBottom == [(NCNotificationListCellDynamicHeightTraits *)v5 alignContentToBottom]&& (v7 = [(NCNotificationListCellDynamicHeightTraits *)self showAuxiliaryOptions], v7 == [(NCNotificationListCellDynamicHeightTraits *)v5 showAuxiliaryOptions]))
       {
-        v9 = [(NCNotificationListCellDynamicHeightTraits *)self isGroupCollapsed];
-        v8 = v9 ^ [(NCNotificationListCellDynamicHeightTraits *)v5 isGroupCollapsed]^ 1;
+        isGroupCollapsed = [(NCNotificationListCellDynamicHeightTraits *)self isGroupCollapsed];
+        v8 = isGroupCollapsed ^ [(NCNotificationListCellDynamicHeightTraits *)v5 isGroupCollapsed]^ 1;
       }
 
       else
@@ -60,12 +60,12 @@
   v4 = [v3 appendBool:self->_alignContentToBottom withName:@"alignContentToBottom"];
   v5 = [v3 appendBool:self->_showAuxiliaryOptions withName:@"showAuxiliaryOptions"];
   v6 = [v3 appendBool:self->_isGroupCollapsed withName:@"isGroupCollapsed"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)

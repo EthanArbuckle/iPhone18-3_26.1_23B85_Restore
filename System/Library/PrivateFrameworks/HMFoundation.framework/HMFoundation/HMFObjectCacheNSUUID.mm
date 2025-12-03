@@ -1,16 +1,16 @@
 @interface HMFObjectCacheNSUUID
-+ (id)hmf_cachedInstanceForNSString:(id)a3;
-+ (id)hmf_cachedInstanceForNSUUID:(id)a3;
++ (id)hmf_cachedInstanceForNSString:(id)string;
++ (id)hmf_cachedInstanceForNSUUID:(id)d;
 @end
 
 @implementation HMFObjectCacheNSUUID
 
-+ (id)hmf_cachedInstanceForNSUUID:(id)a3
++ (id)hmf_cachedInstanceForNSUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  if (!v3)
+  if (!dCopy)
   {
     v8 = 0;
     goto LABEL_16;
@@ -29,7 +29,7 @@
       v19 = 138544130;
       v20 = v11;
       v21 = 2112;
-      v22 = v3;
+      v22 = dCopy;
       v23 = 2112;
       v24 = v12;
       v25 = 2112;
@@ -41,7 +41,7 @@
     goto LABEL_15;
   }
 
-  if (([v3 conformsToProtocol:&unk_283ED34A0] & 1) == 0)
+  if (([dCopy conformsToProtocol:&unk_283ED34A0] & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();
@@ -51,7 +51,7 @@
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v3;
+      v22 = dCopy;
       v23 = 2112;
       v24 = objc_opt_class();
       v16 = v24;
@@ -61,7 +61,7 @@
 LABEL_15:
 
     objc_autoreleasePoolPop(v9);
-    v8 = v3;
+    v8 = dCopy;
     goto LABEL_16;
   }
 
@@ -76,10 +76,10 @@ LABEL_15:
     v5 = qword_280AFC628;
   }
 
-  v8 = [v5 member:v3];
+  v8 = [v5 member:dCopy];
   if (!v8)
   {
-    v8 = [v3 copy];
+    v8 = [dCopy copy];
     [qword_280AFC628 addObject:v8];
   }
 
@@ -92,32 +92,32 @@ LABEL_16:
   return v8;
 }
 
-+ (id)hmf_cachedInstanceForNSString:(id)a3
++ (id)hmf_cachedInstanceForNSString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:stringCopy];
     if (!v5)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = HMFGetLogIdentifier(v7);
+        v9 = HMFGetLogIdentifier(selfCopy);
         v13 = 138543618;
         v14 = v9;
         v15 = 2112;
-        v16 = v4;
+        v16 = stringCopy;
         _os_log_impl(&dword_22ADEC000, v8, OS_LOG_TYPE_ERROR, "%{public}@Expecting to be able to convert %@ into a UUID.", &v13, 0x16u);
       }
 
       objc_autoreleasePoolPop(v6);
     }
 
-    v10 = [a1 hmf_cachedInstanceForNSUUID:v5];
+    v10 = [self hmf_cachedInstanceForNSUUID:v5];
   }
 
   else

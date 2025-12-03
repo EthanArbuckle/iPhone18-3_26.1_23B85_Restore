@@ -9,22 +9,22 @@
 - (NSString)value;
 - (double)expires;
 - (int64_t)sameSite;
-- (void)setDomain:(id)a3;
-- (void)setExpires:(double)a3;
-- (void)setName:(id)a3;
-- (void)setPartitionKey:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setSameSite:(int64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setDomain:(id)domain;
+- (void)setExpires:(double)expires;
+- (void)setName:(id)name;
+- (void)setPartitionKey:(id)key;
+- (void)setPath:(id)path;
+- (void)setSameSite:(int64_t)site;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolPageCookie
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setString:value forKey:@"value"];
 }
 
 - (NSString)value
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"domain"];
+  [(RWIProtocolJSONObject *)&v3 setString:domain forKey:@"domain"];
 }
 
 - (NSString)domain
@@ -68,11 +68,11 @@
   return v2;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"path"];
+  [(RWIProtocolJSONObject *)&v3 setString:path forKey:@"path"];
 }
 
 - (NSString)path
@@ -84,11 +84,11 @@
   return v2;
 }
 
-- (void)setExpires:(double)a3
+- (void)setExpires:(double)expires
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"expires" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"expires" forKey:expires];
 }
 
 - (double)expires
@@ -120,7 +120,7 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"secure"];
 }
 
-- (void)setSameSite:(int64_t)a3
+- (void)setSameSite:(int64_t)site
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -188,11 +188,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setPartitionKey:(id)a3
+- (void)setPartitionKey:(id)key
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageCookie;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"partitionKey"];
+  [(RWIProtocolJSONObject *)&v3 setString:key forKey:@"partitionKey"];
 }
 
 - (NSString)partitionKey

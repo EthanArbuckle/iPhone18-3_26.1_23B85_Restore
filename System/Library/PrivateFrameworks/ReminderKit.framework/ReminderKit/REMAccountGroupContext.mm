@@ -1,30 +1,30 @@
 @interface REMAccountGroupContext
-- (REMAccountGroupContext)initWithAccount:(id)a3;
-- (id)fetchGroupsWithError:(id *)a3;
+- (REMAccountGroupContext)initWithAccount:(id)account;
+- (id)fetchGroupsWithError:(id *)error;
 @end
 
 @implementation REMAccountGroupContext
 
-- (REMAccountGroupContext)initWithAccount:(id)a3
+- (REMAccountGroupContext)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = REMAccountGroupContext;
   v6 = [(REMAccountGroupContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)fetchGroupsWithError:(id *)a3
+- (id)fetchGroupsWithError:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(REMAccountGroupContext *)self account];
-  v5 = [v4 fetchListsWithError:a3];
+  account = [(REMAccountGroupContext *)self account];
+  v5 = [account fetchListsWithError:error];
 
   if (v5)
   {

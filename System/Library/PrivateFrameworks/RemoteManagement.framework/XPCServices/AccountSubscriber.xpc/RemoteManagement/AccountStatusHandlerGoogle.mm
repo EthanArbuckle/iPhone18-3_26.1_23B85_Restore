@@ -1,34 +1,34 @@
 @interface AccountStatusHandlerGoogle
-- (id)getStatusInfoFromAccount:(id)a3;
+- (id)getStatusInfoFromAccount:(id)account;
 @end
 
 @implementation AccountStatusHandlerGoogle
 
-- (id)getStatusInfoFromAccount:(id)a3
+- (id)getStatusInfoFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [RMModelStatusAccountListGoogle buildRequiredOnlyWithIdentifier:v4];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v5 = [RMModelStatusAccountListGoogle buildRequiredOnlyWithIdentifier:identifier];
 
-  v6 = [v3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v6 = [accountCopy objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   [v5 setStatusDeclarationIdentifier:v6];
 
-  v7 = [v3 accountDescription];
-  [v5 setStatusVisibleName:v7];
+  accountDescription = [accountCopy accountDescription];
+  [v5 setStatusVisibleName:accountDescription];
 
-  v8 = [v3 username];
-  [v5 setStatusUsername:v8];
+  username = [accountCopy username];
+  [v5 setStatusUsername:username];
 
-  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:ACAccountDataclassMail]);
+  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:ACAccountDataclassMail]);
   [v5 setStatusIsMailEnabled:v9];
 
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:ACAccountDataclassCalendars]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:ACAccountDataclassCalendars]);
   [v5 setStatusAreCalendarsEnabled:v10];
 
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:ACAccountDataclassContacts]);
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:ACAccountDataclassContacts]);
   [v5 setStatusAreContactsEnabled:v11];
 
-  v12 = [v3 isEnabledForDataclass:ACAccountDataclassNotes];
+  v12 = [accountCopy isEnabledForDataclass:ACAccountDataclassNotes];
   v13 = [NSNumber numberWithBool:v12];
   [v5 setStatusAreNotesEnabled:v13];
 

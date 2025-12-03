@@ -21,8 +21,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -33,21 +33,21 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 carrierName];
-        v10 = [v9 length];
+        carrierName = [v8 carrierName];
+        v10 = [carrierName length];
 
         if (v10)
         {
-          v11 = [v8 carrierName];
-          [v2 addObject:v11];
+          carrierName2 = [v8 carrierName];
+          [v2 addObject:carrierName2];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -66,7 +66,7 @@
   v7[3] = &__block_descriptor_40_e25_B24__0_8__NSDictionary_16l;
   v7[4] = a3;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:v7];
-  v5 = [a1 filteredArrayUsingPredicate:v4];
+  v5 = [self filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -85,7 +85,7 @@
     v17 = a4;
     v16 = v7;
     v9 = [v8 predicateWithBlock:&v12];
-    v10 = [a1 filteredArrayUsingPredicate:{v9, v12, v13, v14, v15}];
+    v10 = [self filteredArrayUsingPredicate:{v9, v12, v13, v14, v15}];
   }
 
   else
@@ -104,7 +104,7 @@
     [v2 addObject:&unk_287583A00];
   }
 
-  v3 = [a1 filteredPlansWithTransferCapabilities:v2 restrictionAllowed:1];
+  v3 = [self filteredPlansWithTransferCapabilities:v2 restrictionAllowed:1];
 
   return v3;
 }
@@ -117,7 +117,7 @@
     [v2 addObject:&unk_287583A00];
   }
 
-  v3 = [a1 filteredPlansWithTransferCapabilities:v2 restrictionAllowed:0];
+  v3 = [self filteredPlansWithTransferCapabilities:v2 restrictionAllowed:0];
 
   return v3;
 }
@@ -125,7 +125,7 @@
 - (id)filteredPlansForVisitStoreBucket
 {
   v2 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-  v3 = [a1 filteredArrayUsingPredicate:v2];
+  v3 = [self filteredArrayUsingPredicate:v2];
 
   return v3;
 }
@@ -138,7 +138,7 @@
   v7[3] = &__block_descriptor_33_e25_B24__0_8__NSDictionary_16l;
   v8 = a3;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:v7];
-  v5 = [a1 filteredArrayUsingPredicate:v4];
+  v5 = [self filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -146,7 +146,7 @@
 - (id)getCombinedFooterForNonTransferablePlans
 {
   v44[6] = *MEMORY[0x277D85DE8];
-  v1 = [MEMORY[0x277CBEB38] dictionaryWithPlansByGroupByTransferCapability:a1];
+  v1 = [MEMORY[0x277CBEB38] dictionaryWithPlansByGroupByTransferCapability:self];
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v44[0] = v2;
   v44[1] = &unk_287583928;
@@ -156,7 +156,7 @@
   v44[5] = &unk_2875838E0;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:6];
 
-  v36 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -184,9 +184,9 @@
         v12 = v11;
         if (v11 && [v11 count])
         {
-          v13 = [v10 unsignedIntegerValue];
-          v14 = [v12 carrierNames];
-          v15 = sFormattedCarrierListFromSet(v14);
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
+          carrierNames = [v12 carrierNames];
+          v15 = sFormattedCarrierListFromSet(carrierNames);
           v16 = v15;
           if (!v15 || ![v15 length])
           {
@@ -196,9 +196,9 @@
             v16 = v18;
           }
 
-          if (v13 == 11001)
+          if (unsignedIntegerValue == 11001)
           {
-            v19 = [v14 count];
+            v19 = [carrierNames count];
             v20 = MEMORY[0x277CCACA8];
             v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v22 = v21;
@@ -223,12 +223,12 @@ LABEL_30:
               v32 = [MEMORY[0x277CCAB68] stringWithString:v24];
               v33 = [TSUtilities getStringWithFirstCharacterUppercase:v32];
 
-              if ([v36 length])
+              if ([string length])
               {
-                [v36 appendString:@"\n\n"];
+                [string appendString:@"\n\n"];
               }
 
-              [v36 appendString:v33];
+              [string appendString:v33];
               v24 = v33;
               v5 = v37;
             }
@@ -237,9 +237,9 @@ LABEL_30:
           }
 
           v24 = 0;
-          if (v13 <= 14)
+          if (unsignedIntegerValue <= 14)
           {
-            if (v13 == 12)
+            if (unsignedIntegerValue == 12)
             {
               v26 = MEMORY[0x277CCACA8];
               v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -249,7 +249,7 @@ LABEL_30:
 
             else
             {
-              if (v13 != 14)
+              if (unsignedIntegerValue != 14)
               {
                 goto LABEL_30;
               }
@@ -263,7 +263,7 @@ LABEL_30:
 
           else
           {
-            if (v13 == 15)
+            if (unsignedIntegerValue == 15)
             {
               v29 = MEMORY[0x277CCACA8];
               v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -274,9 +274,9 @@ LABEL_30:
               goto LABEL_29;
             }
 
-            if (v13 != 16)
+            if (unsignedIntegerValue != 16)
             {
-              if (v13 == 19)
+              if (unsignedIntegerValue == 19)
               {
                 v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
                 v24 = [v22 localizedStringForKey:@"TRANSFER_PLAN_LABELS_SECTION_FOOTER_UNKNOWN_LOCATION" value:&stru_28753DF48 table:@"Localizable"];
@@ -310,14 +310,14 @@ LABEL_35:
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v36;
+  return string;
 }
 
 - (void)getCombinedTitleAndDetailsForNonTransferablePlans:()CTDisplayPlan details:
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithPlansByGroupByTransferCapability:a1];
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithPlansByGroupByTransferCapability:self];
   v7 = [v6 mergeByTransferCapabilities:&unk_287583F68];
   v8 = [v6 mergeByTransferCapabilities:&unk_287583F80];
   v31 = 0u;
@@ -345,11 +345,11 @@ LABEL_35:
       }
 
       v14 = *(*(&v31 + 1) + 8 * i);
-      v15 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
       v16 = [v9 objectForKeyedSubscript:v14];
       v29 = 0;
       v30 = 0;
-      [v16 getCombinedTitleAndDetailsForTransferCapability:v15 title:&v30 detail:&v29];
+      [v16 getCombinedTitleAndDetailsForTransferCapability:unsignedIntegerValue title:&v30 detail:&v29];
       v17 = v30;
       v18 = v29;
 
@@ -378,12 +378,12 @@ LABEL_11:
         v21 = [MEMORY[0x277CCAB68] stringWithString:v18];
         v22 = [TSUtilities getStringWithFirstCharacterUppercase:v21];
 
-        if ([v5 length])
+        if ([string length])
         {
-          [v5 appendString:@"\n\n"];
+          [string appendString:@"\n\n"];
         }
 
-        [v5 appendString:v22];
+        [string appendString:v22];
         v18 = v22;
       }
     }
@@ -402,8 +402,8 @@ LABEL_19:
 
   if (a4)
   {
-    v24 = v5;
-    *a4 = v5;
+    v24 = string;
+    *a4 = string;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -411,10 +411,10 @@ LABEL_19:
 
 - (void)getCombinedTitleAndDetailsForTransferCapability:()CTDisplayPlan title:detail:
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v9 = [a1 carrierNames];
-    v10 = sFormattedCarrierListFromSet(v9);
+    carrierNames = [self carrierNames];
+    v10 = sFormattedCarrierListFromSet(carrierNames);
     v11 = v10;
     if (!v10 || ![v10 length])
     {
@@ -432,7 +432,7 @@ LABEL_19:
     {
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       [v17 localizedStringForKey:@"VISIT_STORE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-      v18 = v9;
+      v18 = carrierNames;
       v19 = a4;
       v21 = v20 = a5;
 
@@ -444,7 +444,7 @@ LABEL_19:
       v16 = v21;
       a5 = v20;
       a4 = v19;
-      v9 = v18;
+      carrierNames = v18;
     }
 
     switch(a3)
@@ -476,7 +476,7 @@ LABEL_19:
         v15 = &stru_28753DF48;
         break;
       case 9:
-        v30 = [v9 count];
+        v30 = [carrierNames count];
         v31 = MEMORY[0x277CCACA8];
         v32 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v33 = v32;
@@ -598,7 +598,7 @@ LABEL_28:
       case 20:
         v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         [v46 localizedStringForKey:@"ESIM_COUNT_RESTRICTION_WARNING_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-        v47 = v9;
+        v47 = carrierNames;
         v48 = a4;
         v50 = v49 = a5;
 
@@ -609,7 +609,7 @@ LABEL_28:
         v16 = v50;
         a5 = v49;
         a4 = v48;
-        v9 = v47;
+        carrierNames = v47;
         break;
       default:
         break;

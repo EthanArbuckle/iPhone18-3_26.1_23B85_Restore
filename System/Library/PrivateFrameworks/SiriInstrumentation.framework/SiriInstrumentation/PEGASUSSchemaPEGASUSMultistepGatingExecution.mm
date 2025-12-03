@@ -1,35 +1,35 @@
 @interface PEGASUSSchemaPEGASUSMultistepGatingExecution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)domainsAtIndex:(unint64_t)a3;
+- (int)domainsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addDomains:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addDomains:(int)domains;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSMultistepGatingExecution
 
-- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PEGASUSSchemaPEGASUSMultistepGatingExecution;
   v5 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"loopbackDepth"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"loopbackDepth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSMultistepGatingExecution setLoopbackDepth:](v5, "setLoopbackDepth:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"domains"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"domains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSMultistepGatingExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,23 +113,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_domains count])
   {
-    v4 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"domains"];
+    domains = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
+    v5 = [domains copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"domains"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[PEGASUSSchemaPEGASUSMultistepGatingExecution loopbackDepth](self, "loopbackDepth")}];
-    [v3 setObject:v6 forKeyedSubscript:@"loopbackDepth"];
+    [dictionary setObject:v6 forKeyedSubscript:@"loopbackDepth"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,22 +147,22 @@
   return [(NSArray *)self->_domains hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (loopbackDepth = self->_loopbackDepth, loopbackDepth == [v4 loopbackDepth]))
+      if ((*&self->_has & 1) == 0 || (loopbackDepth = self->_loopbackDepth, loopbackDepth == [equalCopy loopbackDepth]))
       {
-        v6 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
-        v7 = [v4 domains];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        domains = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
+        domains2 = [equalCopy domains];
+        v8 = domains2;
+        if ((domains != 0) != (domains2 == 0))
         {
-          v9 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
-          if (!v9)
+          domains3 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
+          if (!domains3)
           {
 
 LABEL_13:
@@ -170,10 +170,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
-          v12 = [v4 domains];
-          v13 = [v11 isEqual:v12];
+          v10 = domains3;
+          domains4 = [(PEGASUSSchemaPEGASUSMultistepGatingExecution *)self domains];
+          domains5 = [equalCopy domains];
+          v13 = [domains4 isEqual:domains5];
 
           if (v13)
           {
@@ -194,10 +194,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -236,23 +236,23 @@ LABEL_11:
   }
 }
 
-- (int)domainsAtIndex:(unint64_t)a3
+- (int)domainsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_domains objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_domains objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addDomains:(int)a3
+- (void)addDomains:(int)domains
 {
-  v3 = *&a3;
+  v3 = *&domains;
   domains = self->_domains;
   if (!domains)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_domains;
-    self->_domains = v6;
+    self->_domains = array;
 
     domains = self->_domains;
   }

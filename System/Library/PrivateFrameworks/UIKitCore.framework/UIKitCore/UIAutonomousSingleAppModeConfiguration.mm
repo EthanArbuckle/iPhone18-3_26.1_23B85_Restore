@@ -1,26 +1,26 @@
 @interface UIAutonomousSingleAppModeConfiguration
-+ (id)defaultConfigurationForStyle:(unint64_t)a3;
-- (BOOL)_BOOLValueForFeatureKey:(id)a3;
++ (id)defaultConfigurationForStyle:(unint64_t)style;
+- (BOOL)_BOOLValueForFeatureKey:(id)key;
 - (NSDictionary)propertiesAsDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setBoolValue:(BOOL)a3 forFeatureKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setBoolValue:(BOOL)value forFeatureKey:(id)key;
 @end
 
 @implementation UIAutonomousSingleAppModeConfiguration
 
-+ (id)defaultConfigurationForStyle:(unint64_t)a3
++ (id)defaultConfigurationForStyle:(unint64_t)style
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setStyle:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setStyle:style];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   [v5 setStyle:{-[UIAutonomousSingleAppModeConfiguration style](self, "style")}];
-  v6 = [(NSDictionary *)self->_managedConfigurationSettings copyWithZone:a3];
+  v6 = [(NSDictionary *)self->_managedConfigurationSettings copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -38,40 +38,40 @@
   return v2;
 }
 
-- (BOOL)_BOOLValueForFeatureKey:(id)a3
+- (BOOL)_BOOLValueForFeatureKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_propertiesAsDictionary objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_propertiesAsDictionary objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
     +[UIApplication _accessibilityLoadSettingsLoaderIfNeeded];
-    v7 = [(UIAutonomousSingleAppModeConfiguration *)self __gaxTrampoline_defaultBoolValueForFeatureKey:v4];
+    bOOLValue = [(UIAutonomousSingleAppModeConfiguration *)self __gaxTrampoline_defaultBoolValueForFeatureKey:keyCopy];
   }
 
-  v8 = v7;
+  v8 = bOOLValue;
 
   return v8;
 }
 
-- (void)_setBoolValue:(BOOL)a3 forFeatureKey:(id)a4
+- (void)_setBoolValue:(BOOL)value forFeatureKey:(id)key
 {
-  v4 = a3;
-  v9 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (!self->_propertiesAsDictionary)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     propertiesAsDictionary = self->_propertiesAsDictionary;
-    self->_propertiesAsDictionary = v6;
+    self->_propertiesAsDictionary = dictionary;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [(NSMutableDictionary *)self->_propertiesAsDictionary setObject:v8 forKeyedSubscript:v9];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:valueCopy];
+  [(NSMutableDictionary *)self->_propertiesAsDictionary setObject:v8 forKeyedSubscript:keyCopy];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface PSListController
-- (void)hos_insertSpecifier:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5;
-- (void)hos_showError:(id)a3;
+- (void)hos_insertSpecifier:(id)specifier atEndOfGroup:(int64_t)group animated:(BOOL)animated;
+- (void)hos_showError:(id)error;
 @end
 
 @implementation PSListController
 
-- (void)hos_insertSpecifier:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5
+- (void)hos_insertSpecifier:(id)specifier atEndOfGroup:(int64_t)group animated:(BOOL)animated
 {
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (group == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [PSListController insertSpecifier:"insertSpecifier:atIndex:animated:" atIndex:a3 animated:?];
+    [PSListController insertSpecifier:"insertSpecifier:atIndex:animated:" atIndex:specifier animated:?];
   }
 
   else
   {
-    [PSListController insertSpecifier:"insertSpecifier:atEndOfGroup:animated:" atEndOfGroup:a3 animated:?];
+    [PSListController insertSpecifier:"insertSpecifier:atEndOfGroup:animated:" atEndOfGroup:specifier animated:?];
   }
 }
 
-- (void)hos_showError:(id)a3
+- (void)hos_showError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"HOSErrorTitle" value:&stru_108D8 table:@"HOSLocalizable"];
-  v7 = [v4 localizedDescription];
+  localizedDescription = [errorCopy localizedDescription];
 
-  v11 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v11 = [UIAlertController alertControllerWithTitle:v6 message:localizedDescription preferredStyle:1];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"HOSButtonAlertOK" value:&stru_108D8 table:@"HOSLocalizable"];

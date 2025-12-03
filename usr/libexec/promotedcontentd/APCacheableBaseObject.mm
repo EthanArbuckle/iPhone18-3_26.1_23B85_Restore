@@ -1,31 +1,31 @@
 @interface APCacheableBaseObject
-+ (id)cacheKeyForIdentifier:(id)a3;
-+ (id)deserializeFromData:(id)a3 ignoreKeys:(id)a4;
-+ (id)proxyForIdentifier:(id)a3;
-- (APCacheableBaseObject)initWithCoder:(id)a3;
-- (APCacheableBaseObject)initWithIdentifier:(id)a3;
++ (id)cacheKeyForIdentifier:(id)identifier;
++ (id)deserializeFromData:(id)data ignoreKeys:(id)keys;
++ (id)proxyForIdentifier:(id)identifier;
+- (APCacheableBaseObject)initWithCoder:(id)coder;
+- (APCacheableBaseObject)initWithIdentifier:(id)identifier;
 - (NSString)cacheKey;
 - (id)proxy;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APCacheableBaseObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APCacheableBaseObject *)self identifier];
-  [v4 encodeObject:v5 forKey:@"_identifier"];
+  coderCopy = coder;
+  identifier = [(APCacheableBaseObject *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
 }
 
-- (APCacheableBaseObject)initWithCoder:(id)a3
+- (APCacheableBaseObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(APCacheableBaseObject *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -33,13 +33,13 @@
   return v5;
 }
 
-- (APCacheableBaseObject)initWithIdentifier:(id)a3
+- (APCacheableBaseObject)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(APCacheableBaseObject *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -50,17 +50,17 @@
 - (NSString)cacheKey
 {
   v3 = objc_opt_class();
-  v4 = [(APCacheableBaseObject *)self identifier];
-  v5 = [v3 cacheKeyForIdentifier:v4];
+  identifier = [(APCacheableBaseObject *)self identifier];
+  v5 = [v3 cacheKeyForIdentifier:identifier];
 
   return v5;
 }
 
-+ (id)cacheKeyForIdentifier:(id)a3
++ (id)cacheKeyForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 kind];
-  v6 = [v4 stringByAppendingPathExtension:v5];
+  identifierCopy = identifier;
+  kind = [self kind];
+  v6 = [identifierCopy stringByAppendingPathExtension:kind];
 
   return v6;
 }
@@ -77,9 +77,9 @@
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       *buf = 138543619;
-      v11 = v6;
+      v11 = identifier;
       v12 = 2113;
       v13 = v4;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unable to serialize object %{public}@. Error: %{private}@", buf, 0x16u);
@@ -98,19 +98,19 @@
   return v7;
 }
 
-+ (id)deserializeFromData:(id)a3 ignoreKeys:(id)a4
++ (id)deserializeFromData:(id)data ignoreKeys:(id)keys
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v5 count])
+  keysCopy = keys;
+  dataCopy = data;
+  if ([keysCopy count])
   {
     v17 = 0;
-    v7 = [[_APKeyedUnarchiver alloc] initForReadingFromData:v6 error:&v17];
+    v7 = [[_APKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:&v17];
 
     v8 = v17;
     if (v7)
     {
-      [v7 setIgnoreKeys:v5];
+      [v7 setIgnoreKeys:keysCopy];
       [v7 setRequiresSecureCoding:1];
       [v7 setDecodingFailurePolicy:1];
       v9 = [NSSet setWithObject:objc_opt_class()];
@@ -135,7 +135,7 @@
   else
   {
     v15 = 0;
-    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v15];
+    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v15];
 
     v8 = v15;
     if (v8)
@@ -165,21 +165,21 @@ LABEL_13:
   return v12;
 }
 
-+ (id)proxyForIdentifier:(id)a3
++ (id)proxyForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 cacheKeyForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self cacheKeyForIdentifier:identifierCopy];
   v6 = +[APPersistentCacheStoreProvider persistentCacheStore];
-  v7 = [APCacheableObjectProxy proxyWithCacheKey:v5 object:0 identifier:v4 inPersistentStore:v6];
+  v7 = [APCacheableObjectProxy proxyWithCacheKey:v5 object:0 identifier:identifierCopy inPersistentStore:v6];
 
   return v7;
 }
 
 - (id)proxy
 {
-  v3 = [(APCacheableBaseObject *)self cacheKey];
+  cacheKey = [(APCacheableBaseObject *)self cacheKey];
   v4 = +[APPersistentCacheStoreProvider persistentCacheStore];
-  v5 = [APCacheableObjectProxy proxyWithCacheKey:v3 object:self inPersistentStore:v4];
+  v5 = [APCacheableObjectProxy proxyWithCacheKey:cacheKey object:self inPersistentStore:v4];
 
   return v5;
 }

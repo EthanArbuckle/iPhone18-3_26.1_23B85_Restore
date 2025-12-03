@@ -1,22 +1,22 @@
 @interface _DPPrioPlusPlusNoiseGenerator
-+ (id)randomize:(id)a3 dimension:(unint64_t)a4 stddev:(double)a5;
++ (id)randomize:(id)randomize dimension:(unint64_t)dimension stddev:(double)stddev;
 @end
 
 @implementation _DPPrioPlusPlusNoiseGenerator
 
-+ (id)randomize:(id)a3 dimension:(unint64_t)a4 stddev:(double)a5
++ (id)randomize:(id)randomize dimension:(unint64_t)dimension stddev:(double)stddev
 {
-  v7 = a3;
+  randomizeCopy = randomize;
   v8 = +[_DPGaussianPRNG generateSeed];
-  v9 = [_DPGaussianPRNG randomFloatVectorFromSeed:v8 length:a4 mean:0.0 stddev:a5];
+  v9 = [_DPGaussianPRNG randomFloatVectorFromSeed:v8 length:dimension mean:0.0 stddev:stddev];
   if (v9)
   {
-    v10 = [v7 mutableBytes];
-    for (i = [v9 bytes]; a4; --a4)
+    mutableBytes = [randomizeCopy mutableBytes];
+    for (i = [v9 bytes]; dimension; --dimension)
     {
       v12 = *i++;
-      *v10 = *v10 - v12;
-      ++v10;
+      *mutableBytes = *mutableBytes - v12;
+      ++mutableBytes;
     }
 
     v13 = v8;

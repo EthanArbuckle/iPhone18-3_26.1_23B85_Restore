@@ -1,34 +1,34 @@
 @interface SBLockScreenUnlockAndLaunchCaptureApplicationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBLockScreenUnlockAndLaunchCaptureApplicationRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SBLockScreenUnlockAndLaunchCaptureApplicationRequest;
-  v4 = [(SBLockScreenUnlockRequest *)&v7 copyWithZone:a3];
-  v5 = [(SBLockScreenUnlockAndLaunchCaptureApplicationRequest *)self launchActions];
-  [v4 setLaunchActions:v5];
+  v4 = [(SBLockScreenUnlockRequest *)&v7 copyWithZone:zone];
+  launchActions = [(SBLockScreenUnlockAndLaunchCaptureApplicationRequest *)self launchActions];
+  [v4 setLaunchActions:launchActions];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__SBLockScreenUnlockAndLaunchCaptureApplicationRequest_isEqual___block_invoke;
   v14[3] = &unk_2783A94B0;
-  v6 = v4;
+  v6 = equalCopy;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = [v5 appendEqualsBlocks:{v14, 0}];
   launchActions = self->_launchActions;
   v12[0] = MEMORY[0x277D85DD0];
@@ -54,24 +54,24 @@ id __64__SBLockScreenUnlockAndLaunchCaptureApplicationRequest_isEqual___block_in
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   v5 = [v3 appendObject:self->_launchActions withName:@"launchActions" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__SBLockScreenUnlockAndLaunchCaptureApplicationRequest_hash__block_invoke;
   v8[3] = &unk_2783A9500;
   v8[4] = self;
-  v4 = [v3 appendHashingBlocks:{v8, 0}];
-  v5 = [v3 appendObject:self->_launchActions];
-  v6 = [v3 hash];
+  v4 = [builder appendHashingBlocks:{v8, 0}];
+  v5 = [builder appendObject:self->_launchActions];
+  v6 = [builder hash];
 
   return v6;
 }

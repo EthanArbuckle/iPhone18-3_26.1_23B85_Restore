@@ -1,5 +1,5 @@
 @interface BPSSetupPageViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)updateTitleLabel;
 - (void)viewDidLoad;
@@ -7,12 +7,12 @@
 
 @implementation BPSSetupPageViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BPSSetupPageViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BPSSetupPageViewController" hasInstanceMethod:@"updateTitleLabel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BPSSetupPageViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BPSSetupPageViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BPSSetupPageViewController" hasInstanceMethod:@"updateTitleLabel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BPSSetupPageViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

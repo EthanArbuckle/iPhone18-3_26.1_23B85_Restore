@@ -4,26 +4,26 @@
 - (NSDate)localStartDate;
 - (NSDate)universalEndDate;
 - (NSDate)universalStartDate;
-- (id)_prepareFeederWithServiceManager:(id)a3 locationCache:(id)a4 progressBlock:(id)a5;
+- (id)_prepareFeederWithServiceManager:(id)manager locationCache:(id)cache progressBlock:(id)block;
 - (id)allItems;
 - (id)approximateLocation;
-- (id)itemAtIndex:(unint64_t)a3;
+- (id)itemAtIndex:(unint64_t)index;
 - (id)localEndDateComponents;
 - (id)localStartDateComponents;
-- (id)locationClustersWithProgressBlock:(id)a3;
+- (id)locationClustersWithProgressBlock:(id)block;
 - (id)privateItems;
 - (id)sharedItems;
 - (unint64_t)numberOfItems;
-- (unint64_t)numberOfItemsInInvestigation:(id)a3;
-- (void)_enumerateLocationClustersWithGaussians:(id)a3 enumerationBlock:(id)a4;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)enumerateItemsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumeratePersonNames:(id)a3 withGaussiansUsingBlock:(id)a4;
+- (unint64_t)numberOfItemsInInvestigation:(id)investigation;
+- (void)_enumerateLocationClustersWithGaussians:(id)gaussians enumerationBlock:(id)block;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)enumerateItemsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumeratePersonNames:(id)names withGaussiansUsingBlock:(id)block;
 @end
 
 @implementation CLSInvestigationFeeder
 
-- (unint64_t)numberOfItemsInInvestigation:(id)a3
+- (unint64_t)numberOfItemsInInvestigation:(id)investigation
 {
   if (![(CLSInvestigationFeeder *)self allowsInterview])
   {
@@ -33,11 +33,11 @@
   return [(CLSInvestigationFeeder *)self numberOfItems];
 }
 
-- (id)locationClustersWithProgressBlock:(id)a3
+- (id)locationClustersWithProgressBlock:(id)block
 {
   v59 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v4 = _Block_copy(v37);
+  blockCopy = block;
+  v4 = _Block_copy(blockCopy);
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -57,15 +57,15 @@
 
   else
   {
-    v7 = [(CLSInvestigationFeeder *)self allItems];
-    v36 = self;
+    allItems = [(CLSInvestigationFeeder *)self allItems];
+    selfCopy = self;
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(allItems, "count")}];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v10 = v7;
+    v10 = allItems;
     v11 = [v10 countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (v11)
     {
@@ -135,7 +135,7 @@
     }
 
     v27 = MEMORY[0x277D3AD58];
-    v28 = [(CLSInvestigationFeeder *)v36 locationClusteringAlgorithm];
+    locationClusteringAlgorithm = [(CLSInvestigationFeeder *)selfCopy locationClusteringAlgorithm];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __60__CLSInvestigationFeeder_locationClustersWithProgressBlock___block_invoke_2;
@@ -143,7 +143,7 @@
     v29 = v38;
     v43 = v29;
     v44 = &v52;
-    v30 = [v27 performClustering:v28 dataset:v24 progressBlock:v42];
+    v30 = [v27 performClustering:locationClusteringAlgorithm dataset:v24 progressBlock:v42];
     if (v30)
     {
       v31 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v30, "count")}];
@@ -212,13 +212,13 @@ void __60__CLSInvestigationFeeder_locationClustersWithProgressBlock___block_invo
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (id)_prepareFeederWithServiceManager:(id)a3 locationCache:(id)a4 progressBlock:(id)a5
+- (id)_prepareFeederWithServiceManager:(id)manager locationCache:(id)cache progressBlock:(id)block
 {
   v102 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v53 = a4;
-  v9 = a5;
-  v10 = _Block_copy(v9);
+  managerCopy = manager;
+  cacheCopy = cache;
+  blockCopy = block;
+  v10 = _Block_copy(blockCopy);
   v11 = v10;
   v90 = 0;
   v91 = &v90;
@@ -226,19 +226,19 @@ void __60__CLSInvestigationFeeder_locationClustersWithProgressBlock___block_invo
   v93 = 0;
   if (!v10 || (LOBYTE(v96) = 0, (*(v10 + 2))(v10, &v96, 0.0), v12 = *(v91 + 24) | v96, *(v91 + 24) = v12, (v12 & 1) == 0))
   {
-    v52 = [[CLSClueCollection alloc] initWithServiceManager:v8];
+    v52 = [[CLSClueCollection alloc] initWithServiceManager:managerCopy];
     v49 = objc_opt_new();
     v48 = objc_opt_new();
     v44 = objc_opt_new();
     v14 = objc_opt_new();
     v15 = objc_opt_new();
-    v47 = [(CLSInvestigationFeeder *)self allItems];
-    v16 = [(CLSInvestigationFeeder *)self focusPersonLocalIdentifiers];
+    allItems = [(CLSInvestigationFeeder *)self allItems];
+    focusPersonLocalIdentifiers = [(CLSInvestigationFeeder *)self focusPersonLocalIdentifiers];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __87__CLSInvestigationFeeder__prepareFeederWithServiceManager_locationCache_progressBlock___block_invoke;
     aBlock[3] = &unk_2788A7830;
-    v43 = v16;
+    v43 = focusPersonLocalIdentifiers;
     v87 = v43;
     v46 = v14;
     v88 = v46;
@@ -288,8 +288,8 @@ void __60__CLSInvestigationFeeder_locationClustersWithProgressBlock___block_invo
     v42 = v17;
     v79 = v42;
     v81 = &v90;
-    v74 = v53;
-    v41 = v8;
+    v74 = cacheCopy;
+    v41 = managerCopy;
     v75 = v41;
     v20 = v48;
     v76 = v20;
@@ -319,13 +319,13 @@ LABEL_27:
 
     else
     {
-      v25 = [(CLSInvestigationFeeder *)self localStartDateComponents];
-      v26 = [(CLSInvestigationFeeder *)self localEndDateComponents];
-      v27 = v26;
-      if (v25 && v26)
+      localStartDateComponents = [(CLSInvestigationFeeder *)self localStartDateComponents];
+      localEndDateComponents = [(CLSInvestigationFeeder *)self localEndDateComponents];
+      v27 = localEndDateComponents;
+      if (localStartDateComponents && localEndDateComponents)
       {
-        v95[0] = v25;
-        v95[1] = v26;
+        v95[0] = localStartDateComponents;
+        v95[1] = localEndDateComponents;
         v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:2];
         v29 = [CLSInputTimeClue clueWithDates:v28 serviceManager:v41];
 
@@ -344,7 +344,7 @@ LABEL_27:
       v70 = v19;
       v71 = v42;
       v72 = &v90;
-      [v47 enumerateObjectsUsingBlock:v69];
+      [allItems enumerateObjectsUsingBlock:v69];
     }
 
     if (*(v91 + 24) == 1)
@@ -367,31 +367,31 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if ([v47 count])
+    if ([allItems count])
     {
-      v31 = [v47 anyObject];
+      anyObject = [allItems anyObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v31 photoLibrary];
+        photoLibrary = [anyObject photoLibrary];
       }
 
       else
       {
-        v32 = 0;
+        photoLibrary = 0;
       }
     }
 
     else
     {
-      v32 = 0;
+      photoLibrary = 0;
     }
 
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __87__CLSInvestigationFeeder__prepareFeederWithServiceManager_locationCache_progressBlock___block_invoke_235;
     v62[3] = &unk_2788A7920;
-    v40 = v32;
+    v40 = photoLibrary;
     v63 = v40;
     v33 = v41;
     v64 = v33;
@@ -852,12 +852,12 @@ uint64_t __87__CLSInvestigationFeeder__prepareFeederWithServiceManager_locationC
   return result;
 }
 
-- (void)enumeratePersonNames:(id)a3 withGaussiansUsingBlock:(id)a4
+- (void)enumeratePersonNames:(id)names withGaussiansUsingBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  namesCopy = names;
+  blockCopy = block;
+  v7 = [namesCopy count];
   if (v7)
   {
     v8 = v7;
@@ -870,7 +870,7 @@ uint64_t __87__CLSInvestigationFeeder__prepareFeederWithServiceManager_locationC
     v27[2] = __71__CLSInvestigationFeeder_enumeratePersonNames_withGaussiansUsingBlock___block_invoke;
     v27[3] = &unk_2788A77E0;
     v29 = &v30;
-    v9 = v5;
+    v9 = namesCopy;
     v28 = v9;
     [v9 enumerateObjectsUsingBlock:v27];
     v10 = v31[3];
@@ -914,7 +914,7 @@ uint64_t __87__CLSInvestigationFeeder__prepareFeederWithServiceManager_locationC
     v19[1] = 3221225472;
     v19[2] = __71__CLSInvestigationFeeder_enumeratePersonNames_withGaussiansUsingBlock___block_invoke_2;
     v19[3] = &unk_2788A7808;
-    v20 = v6;
+    v20 = blockCopy;
     v21 = sqrt(v16 / v13) * 3.0 * 0.25;
     v22 = v14;
     [v11 enumerateObjectsUsingBlock:v19];
@@ -932,32 +932,32 @@ double __71__CLSInvestigationFeeder_enumeratePersonNames_withGaussiansUsingBlock
   return result;
 }
 
-- (void)_enumerateLocationClustersWithGaussians:(id)a3 enumerationBlock:(id)a4
+- (void)_enumerateLocationClustersWithGaussians:(id)gaussians enumerationBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  gaussiansCopy = gaussians;
+  blockCopy = block;
+  if ([gaussiansCopy count])
   {
     v44 = 0;
     v45 = &v44;
     v46 = 0x2020000000;
     v47 = 0;
-    v7 = [v5 count];
+    v7 = [gaussiansCopy count];
     v40 = 0;
     v41 = &v40;
     v42 = 0x2020000000;
     v43 = 0;
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __83__CLSInvestigationFeeder__enumerateLocationClustersWithGaussians_enumerationBlock___block_invoke;
     v36[3] = &unk_2788A7768;
     v38 = &v44;
     v39 = &v40;
-    v9 = v8;
+    v9 = strongToStrongObjectsMapTable;
     v37 = v9;
-    [v5 enumerateKeysAndObjectsUsingBlock:v36];
+    [gaussiansCopy enumerateKeysAndObjectsUsingBlock:v36];
     v10 = v45[3];
     v11 = v7;
     v32 = 0;
@@ -971,16 +971,16 @@ double __71__CLSInvestigationFeeder_enumeratePersonNames_withGaussiansUsingBlock
     v12 = v10 / v7;
     v31[4] = &v32;
     *&v31[5] = v12;
-    [v5 enumerateKeysAndObjectsUsingBlock:v31];
+    [gaussiansCopy enumerateKeysAndObjectsUsingBlock:v31];
     v13 = v33[3];
-    v14 = [v5 allKeys];
+    allKeys = [gaussiansCopy allKeys];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __83__CLSInvestigationFeeder__enumerateLocationClustersWithGaussians_enumerationBlock___block_invoke_3;
     v29[3] = &unk_2788A77B8;
     v23 = v9;
     v30 = v23;
-    v15 = [v14 sortedArrayUsingComparator:v29];
+    v15 = [allKeys sortedArrayUsingComparator:v29];
 
     v27 = 0u;
     v28 = 0u;
@@ -1003,8 +1003,8 @@ LABEL_4:
 
         v21 = *(*(&v25 + 1) + 8 * v20);
         v24 = 0;
-        v22 = [v5 objectForKeyedSubscript:v21];
-        v6[2](v6, v21, v22, &v24, v18, v12, v41[3]);
+        v22 = [gaussiansCopy objectForKeyedSubscript:v21];
+        blockCopy[2](blockCopy, v21, v22, &v24, v18, v12, v41[3]);
         LOBYTE(v21) = v24;
 
         if (v21)
@@ -1119,21 +1119,21 @@ uint64_t __83__CLSInvestigationFeeder__enumerateLocationClustersWithGaussians_en
   return v9;
 }
 
-- (void)enumerateItemsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = CLSAbstractMethodException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = CLSAbstractMethodException(self, a2);
   objc_exception_throw(v6);
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
   v3 = CLSAbstractMethodException(self, a2);
   objc_exception_throw(v3);

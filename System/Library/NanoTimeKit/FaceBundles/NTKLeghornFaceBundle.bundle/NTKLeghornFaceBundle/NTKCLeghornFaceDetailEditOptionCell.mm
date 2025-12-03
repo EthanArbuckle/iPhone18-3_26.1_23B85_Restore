@@ -1,21 +1,21 @@
 @interface NTKCLeghornFaceDetailEditOptionCell
 - (BOOL)isChecked;
-- (NTKCLeghornFaceDetailEditOptionCell)initWithSection:(id)a3 category:(unint64_t)a4 name:(id)a5 all:(BOOL)a6 filter:(id)a7;
+- (NTKCLeghornFaceDetailEditOptionCell)initWithSection:(id)section category:(unint64_t)category name:(id)name all:(BOOL)all filter:(id)filter;
 - (double)_reservedSizeForImage;
 - (id)_checkmarkImage;
 - (void)_setupSubviews;
-- (void)setFilter:(id)a3;
+- (void)setFilter:(id)filter;
 - (void)setupDetails;
 @end
 
 @implementation NTKCLeghornFaceDetailEditOptionCell
 
-- (NTKCLeghornFaceDetailEditOptionCell)initWithSection:(id)a3 category:(unint64_t)a4 name:(id)a5 all:(BOOL)a6 filter:(id)a7
+- (NTKCLeghornFaceDetailEditOptionCell)initWithSection:(id)section category:(unint64_t)category name:(id)name all:(BOOL)all filter:(id)filter
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  allCopy = all;
+  sectionCopy = section;
+  nameCopy = name;
+  filterCopy = filter;
   v16 = objc_opt_class();
   v19 = objc_msgSend_reuseIdentifier(v16, v17, v18);
   v45.receiver = self;
@@ -24,11 +24,11 @@
 
   if (v20)
   {
-    objc_storeStrong(&v20->_section, a3);
-    v20->_category = a4;
-    objc_storeStrong(&v20->_name, a5);
-    v20->_all = v8;
-    objc_storeStrong(&v20->_filter, a7);
+    objc_storeStrong(&v20->_section, section);
+    v20->_category = category;
+    objc_storeStrong(&v20->_name, name);
+    v20->_all = allCopy;
+    objc_storeStrong(&v20->_filter, filter);
     v21 = objc_opt_new();
     leadingAccessoryView = v20->_leadingAccessoryView;
     v20->_leadingAccessoryView = v21;
@@ -49,8 +49,8 @@
     objc_msgSend_setSelectionStyle_(v20, v31, v32, 3);
     objc_msgSend__setupSubviews(v20, v33, v34);
     objc_msgSend_setupDetails(v20, v35, v36);
-    objc_msgSend_setFilter_(v20, v37, v38, v15);
-    if (v20->_category || v8)
+    objc_msgSend_setFilter_(v20, v37, v38, filterCopy);
+    if (v20->_category || allCopy)
     {
       v41 = objc_msgSend_secondarySystemGroupedBackgroundColor(MEMORY[0x277D75348], v39, v40);
       objc_msgSend_setBackgroundColor_(v20, v42, v43, v41);
@@ -118,10 +118,10 @@
   return v6;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v12 = a3;
-  objc_storeStrong(&self->_filter, a3);
+  filterCopy = filter;
+  objc_storeStrong(&self->_filter, filter);
   if (objc_msgSend_isChecked(self, v5, v6))
   {
     v9 = objc_msgSend__checkmarkImage(self, v7, v8);

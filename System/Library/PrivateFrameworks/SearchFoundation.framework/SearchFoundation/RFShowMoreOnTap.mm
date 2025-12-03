@@ -1,39 +1,39 @@
 @interface RFShowMoreOnTap
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFShowMoreOnTap)initWithCoder:(id)a3;
-- (RFShowMoreOnTap)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFShowMoreOnTap)initWithCoder:(id)coder;
+- (RFShowMoreOnTap)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFShowMoreOnTap
 
-- (RFShowMoreOnTap)initWithProtobuf:(id)a3
+- (RFShowMoreOnTap)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = RFShowMoreOnTap;
   v5 = [(RFShowMoreOnTap *)&v14 init];
   if (v5)
   {
-    v6 = [v4 affordanceLabel];
+    affordanceLabel = [protobufCopy affordanceLabel];
 
-    if (v6)
+    if (affordanceLabel)
     {
-      v7 = [v4 affordanceLabel];
-      [(RFShowMoreOnTap *)v5 setAffordanceLabel:v7];
+      affordanceLabel2 = [protobufCopy affordanceLabel];
+      [(RFShowMoreOnTap *)v5 setAffordanceLabel:affordanceLabel2];
     }
 
-    v8 = [v4 shows_without_truncation];
+    shows_without_truncation = [protobufCopy shows_without_truncation];
 
-    if (v8)
+    if (shows_without_truncation)
     {
       v9 = [RFOptionalBool alloc];
-      v10 = [v4 shows_without_truncation];
-      v11 = [(RFOptionalBool *)v9 initWithProtobuf:v10];
+      shows_without_truncation2 = [protobufCopy shows_without_truncation];
+      v11 = [(RFOptionalBool *)v9 initWithProtobuf:shows_without_truncation2];
       [(RFShowMoreOnTap *)v5 setShows_without_truncation:v11];
     }
 
@@ -45,30 +45,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFShowMoreOnTap *)self affordanceLabel];
-  v4 = [v3 hash];
-  v5 = [(RFShowMoreOnTap *)self shows_without_truncation];
-  v6 = [v5 hash];
+  affordanceLabel = [(RFShowMoreOnTap *)self affordanceLabel];
+  v4 = [affordanceLabel hash];
+  shows_without_truncation = [(RFShowMoreOnTap *)self shows_without_truncation];
+  v6 = [shows_without_truncation hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFShowMoreOnTap *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFShowMoreOnTap *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFShowMoreOnTap *)self affordanceLabel];
-      v8 = [(RFShowMoreOnTap *)v6 affordanceLabel];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      affordanceLabel = [(RFShowMoreOnTap *)self affordanceLabel];
+      affordanceLabel2 = [(RFShowMoreOnTap *)v6 affordanceLabel];
+      if ((affordanceLabel != 0) == (affordanceLabel2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -76,12 +76,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(RFShowMoreOnTap *)self affordanceLabel];
-      if (v9)
+      affordanceLabel3 = [(RFShowMoreOnTap *)self affordanceLabel];
+      if (affordanceLabel3)
       {
-        v3 = [(RFShowMoreOnTap *)self affordanceLabel];
-        v10 = [(RFShowMoreOnTap *)v6 affordanceLabel];
-        if (![v3 isEqual:v10])
+        affordanceLabel4 = [(RFShowMoreOnTap *)self affordanceLabel];
+        affordanceLabel5 = [(RFShowMoreOnTap *)v6 affordanceLabel];
+        if (![affordanceLabel4 isEqual:affordanceLabel5])
         {
           v11 = 0;
 LABEL_17:
@@ -90,13 +90,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = affordanceLabel5;
       }
 
-      v12 = [(RFShowMoreOnTap *)self shows_without_truncation];
-      v13 = [(RFShowMoreOnTap *)v6 shows_without_truncation];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      shows_without_truncation = [(RFShowMoreOnTap *)self shows_without_truncation];
+      shows_without_truncation2 = [(RFShowMoreOnTap *)v6 shows_without_truncation];
+      v14 = shows_without_truncation2;
+      if ((shows_without_truncation != 0) == (shows_without_truncation2 == 0))
       {
 
         v11 = 0;
@@ -104,16 +104,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(RFShowMoreOnTap *)self shows_without_truncation];
-        if (v15)
+        shows_without_truncation3 = [(RFShowMoreOnTap *)self shows_without_truncation];
+        if (shows_without_truncation3)
         {
-          v16 = v15;
-          v19 = [(RFShowMoreOnTap *)self shows_without_truncation];
+          v16 = shows_without_truncation3;
+          shows_without_truncation4 = [(RFShowMoreOnTap *)self shows_without_truncation];
           [(RFShowMoreOnTap *)v6 shows_without_truncation];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = affordanceLabel4;
+          v11 = [shows_without_truncation4 isEqual:v17];
 
-          v3 = v20;
+          affordanceLabel4 = v20;
         }
 
         else
@@ -123,8 +123,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      affordanceLabel5 = v21;
+      if (!affordanceLabel3)
       {
         goto LABEL_18;
       }
@@ -140,15 +140,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFShowMoreOnTap *)self affordanceLabel];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  affordanceLabel = [(RFShowMoreOnTap *)self affordanceLabel];
+  v6 = [affordanceLabel copy];
   [v4 setAffordanceLabel:v6];
 
-  v7 = [(RFShowMoreOnTap *)self shows_without_truncation];
-  v8 = [v7 copy];
+  shows_without_truncation = [(RFShowMoreOnTap *)self shows_without_truncation];
+  v8 = [shows_without_truncation copy];
   [v4 setShows_without_truncation:v8];
 
   return v4;
@@ -157,31 +157,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFShowMoreOnTap alloc] initWithFacade:self];
-  v3 = [(_SFPBRFShowMoreOnTap *)v2 jsonData];
+  jsonData = [(_SFPBRFShowMoreOnTap *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFShowMoreOnTap alloc] initWithFacade:self];
-  v3 = [(_SFPBRFShowMoreOnTap *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFShowMoreOnTap *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFShowMoreOnTap alloc] initWithFacade:self];
-  v5 = [(_SFPBRFShowMoreOnTap *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFShowMoreOnTap *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFShowMoreOnTap)initWithCoder:(id)a3
+- (RFShowMoreOnTap)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFShowMoreOnTap alloc] initWithData:v5];
   v7 = [(RFShowMoreOnTap *)self initWithProtobuf:v6];

@@ -1,18 +1,18 @@
 @interface SKRemoteProductActivityViewController
 - (SKStoreProductActivityViewController)productActivityViewController;
-- (void)didFinishWithResult:(id)a3 error:(id)a4;
+- (void)didFinishWithResult:(id)result error:(id)error;
 @end
 
 @implementation SKRemoteProductActivityViewController
 
-- (void)didFinishWithResult:(id)a3 error:(id)a4
+- (void)didFinishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SKRemoteProductActivityViewController *)self productActivityViewController];
-  v8 = [v7 unsignedIntegerValue];
+  errorCopy = error;
+  resultCopy = result;
+  productActivityViewController = [(SKRemoteProductActivityViewController *)self productActivityViewController];
+  unsignedIntegerValue = [resultCopy unsignedIntegerValue];
 
-  [v9 _didFinishWithResult:v8 error:v6];
+  [productActivityViewController _didFinishWithResult:unsignedIntegerValue error:errorCopy];
 }
 
 - (SKStoreProductActivityViewController)productActivityViewController

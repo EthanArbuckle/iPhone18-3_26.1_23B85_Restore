@@ -1,24 +1,24 @@
 @interface VCPCNNPersonDetector
-- (VCPCNNPersonDetector)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6;
+- (VCPCNNPersonDetector)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config;
 - (id).cxx_construct;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 inputHeight:(int)a5 inputWidth:(int)a6;
-- (int)generatePersonBoxes:(id)a3;
-- (int)generatePersonRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5;
-- (int)personDetection:(__CVBuffer *)a3 personRegions:(id)a4 cancel:(id)a5;
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2];
-- (void)nonMaxSuppression:(id)a3;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer inputHeight:(int)height inputWidth:(int)width;
+- (int)generatePersonBoxes:(id)boxes;
+- (int)generatePersonRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions;
+- (int)personDetection:(__CVBuffer *)detection personRegions:(id)regions cancel:(id)cancel;
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2];
+- (void)nonMaxSuppression:(id)suppression;
 @end
 
 @implementation VCPCNNPersonDetector
 
-- (VCPCNNPersonDetector)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6
+- (VCPCNNPersonDetector)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config
 {
-  v6 = a5;
-  v7 = a4;
+  modelCopy = model;
+  uCopy = u;
   v55[2] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  self->_maxNumRegions = a3;
+  configCopy = config;
+  self->_maxNumRegions = regions;
   outputNames = self->_outputNames;
   self->_outputNames = &unk_1F49BF1A8;
 
@@ -28,17 +28,17 @@
   v12 = [(VCPCNNPersonDetector *)&v53 init];
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v14 = [v13 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v15 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_person_detector.espresso.net" relativeToURL:v14];
+    v15 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_person_detector.espresso.net" relativeToURL:resourceURL];
     v16 = [VCPCNNModelEspresso alloc];
     v17 = v12->_outputNames;
     v54[0] = @"forceCPU";
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
     v55[0] = v18;
     v54[1] = @"sharedContext";
-    v19 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v19 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
     v55[1] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
     v21 = [(VCPCNNModelEspresso *)v16 initWithParameters:v15 inputNames:0 outputNames:v17 properties:v20];
@@ -46,7 +46,7 @@
     v12->_modelEspresso = v21;
 
     v23 = v12->_modelEspresso;
-    if (v23 && ![(VCPCNNModelEspresso *)v23 prepareModelWithConfig:v10]&& ((v27 = v12->_modelEspresso) == 0 ? (v28 = 0, v52 = 0u, v51 = 0) : ([(VCPCNNModelEspresso *)v27 inputBlob], v28 = *(&v52 + 1)), (v29 = v12->_modelEspresso) == 0 ? (v30 = 0, v49 = 0) : ([(VCPCNNModelEspresso *)v29 inputBlob], v30 = v50), (v31 = v12->_modelEspresso) == 0 ? (v32 = 0) : ([(VCPCNNModelEspresso *)v31 inputBlob], v32 = v48), (v33 = v30 * v28 * v32, v33 >> 62) ? (v34 = -1) : (v34 = 4 * v33), (v12->_inputData = operator new[](v34, MEMORY[0x1E69E5398]), (v35 = v12->_modelEspresso) == 0) ? (v36 = 0) : ([(VCPCNNModelEspresso *)v35 inputBlob], v36 = v52), (v12->_inputWidth = v36, (v37 = v12->_modelEspresso) == 0) ? (v38 = 0) : ([(VCPCNNModelEspresso *)v37 inputBlob], v38 = DWORD2(v52)), v12->_inputHeight = v38, v12->_inputData))
+    if (v23 && ![(VCPCNNModelEspresso *)v23 prepareModelWithConfig:configCopy]&& ((v27 = v12->_modelEspresso) == 0 ? (v28 = 0, v52 = 0u, v51 = 0) : ([(VCPCNNModelEspresso *)v27 inputBlob], v28 = *(&v52 + 1)), (v29 = v12->_modelEspresso) == 0 ? (v30 = 0, v49 = 0) : ([(VCPCNNModelEspresso *)v29 inputBlob], v30 = v50), (v31 = v12->_modelEspresso) == 0 ? (v32 = 0) : ([(VCPCNNModelEspresso *)v31 inputBlob], v32 = v48), (v33 = v30 * v28 * v32, v33 >> 62) ? (v34 = -1) : (v34 = 4 * v33), (v12->_inputData = operator new[](v34, MEMORY[0x1E69E5398]), (v35 = v12->_modelEspresso) == 0) ? (v36 = 0) : ([(VCPCNNModelEspresso *)v35 inputBlob], v36 = v52), (v12->_inputWidth = v36, (v37 = v12->_modelEspresso) == 0) ? (v38 = 0) : ([(VCPCNNModelEspresso *)v37 inputBlob], v38 = DWORD2(v52)), v12->_inputHeight = v38, v12->_inputData))
     {
       v39 = 0;
       v40 = 0;
@@ -113,18 +113,18 @@ LABEL_4:
   return v25;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -135,7 +135,7 @@ LABEL_4:
   }
 
   v8 = Height;
-  v9 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v9 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v23 = v9;
   if (v9)
   {
@@ -148,14 +148,14 @@ LABEL_4:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v8);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v8);
     if (v8 >= 1)
     {
       v15 = 0;
-      v16 = &a4[2 * v8 * Width];
-      v17 = &a4[v8 * Width];
+      v16 = &data[2 * v8 * Width];
+      v17 = &data[v8 * Width];
       v18 = 4 * Width;
       do
       {
@@ -168,7 +168,7 @@ LABEL_4:
             LOBYTE(v14) = BaseAddress[(v19 * 4)];
             v21 = *&v14 / 255.0;
             *&v21 = v21;
-            a4[v19] = *&v21;
+            data[v19] = *&v21;
             LOBYTE(v21) = BaseAddress[(v19 * 4) + 1];
             v22 = *&v21 / 255.0;
             *&v22 = v22;
@@ -187,7 +187,7 @@ LABEL_4:
         ++v15;
         v16 = (v16 + v18);
         v17 = (v17 + v18);
-        a4 = (a4 + v18);
+        data = (data + v18);
       }
 
       while (v15 != v8);
@@ -203,19 +203,19 @@ LABEL_4:
   return v10;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 inputHeight:(int)a5 inputWidth:(int)a6
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer inputHeight:(int)height inputWidth:(int)width
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
 
   cf = 0;
-  Scaler::Scale(&self->_scaler, a4, &cf, *&a6, *&a5, 1111970369);
+  Scaler::Scale(&self->_scaler, buffer, &cf, *&width, *&height, 1111970369);
   v9 = v8;
   if (!v8)
   {
-    v9 = [(VCPCNNPersonDetector *)self copyImage:cf toData:a3];
+    v9 = [(VCPCNNPersonDetector *)self copyImage:cf toData:input];
   }
 
   if (cf)
@@ -226,9 +226,9 @@ LABEL_4:
   return v9;
 }
 
-- (int)generatePersonBoxes:(id)a3
+- (int)generatePersonBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   v5 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
   if (!v5)
   {
@@ -245,7 +245,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v5 = [(VCPCNNPersonDetector *)self generatePersonRegions:&__p boxes:v4 maxNumRegions:self->_maxNumRegions];
+    v5 = [(VCPCNNPersonDetector *)self generatePersonRegions:&__p boxes:boxesCopy maxNumRegions:self->_maxNumRegions];
     if (__p)
     {
       v9 = __p;
@@ -256,15 +256,15 @@ LABEL_4:
   return v5;
 }
 
-- (void)nonMaxSuppression:(id)a3
+- (void)nonMaxSuppression:(id)suppression
 {
-  v19 = a3;
-  v3 = [v19 count];
+  suppressionCopy = suppression;
+  v3 = [suppressionCopy count];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v19 objectAtIndexedSubscript:i];
+      v5 = [suppressionCopy objectAtIndexedSubscript:i];
       LODWORD(v6) = 1.0;
       [v5 setFlag:v6];
     }
@@ -273,7 +273,7 @@ LABEL_4:
     v8 = 1;
     do
     {
-      v9 = [v19 objectAtIndexedSubscript:v7];
+      v9 = [suppressionCopy objectAtIndexedSubscript:v7];
       [v9 flag];
       v11 = v10 == 1.0 && v3 > ++v7;
       v12 = v8;
@@ -281,7 +281,7 @@ LABEL_4:
       {
         do
         {
-          v13 = [v19 objectAtIndexedSubscript:v12];
+          v13 = [suppressionCopy objectAtIndexedSubscript:v12];
           [v13 flag];
           if (v14 == 1.0)
           {
@@ -315,21 +315,21 @@ LABEL_4:
   }
 }
 
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2]
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2]
 {
   v52 = a6;
-  if (a4 >= 1)
+  if (height >= 1)
   {
-    v9 = a5 * a4;
-    v48 = a4;
-    v44 = a4;
-    v46 = &a3[4 * a5 * a4];
+    v9 = width * height;
+    heightCopy = height;
+    heightCopy2 = height;
+    v46 = &boxes[4 * width * height];
     v47 = 0;
-    v49 = 6 * a5 * a4;
+    v49 = 6 * width * height;
     v10 = 0.5;
     do
     {
-      if (a5 >= 1)
+      if (width >= 1)
       {
         v11 = 0;
         v12 = v46;
@@ -355,7 +355,7 @@ LABEL_4:
           while (v13 != 3);
           if (v15 > v10)
           {
-            v18 = &a3[v11 + v47 * a5 + v49 * v14];
+            v18 = &boxes[v11 + v47 * width + v49 * v14];
             v19 = *v18;
             v20 = &v18[v9];
             v21 = *v20;
@@ -363,7 +363,7 @@ LABEL_4:
             inputHeight = self->_inputHeight;
             v24 = &v20[v9];
             v25 = *v24;
-            v26 = &(*a7)[2 * v14];
+            v26 = &(*box)[2 * v14];
             v27 = v24[v9];
             v28 = *v26;
             v29 = v26[1];
@@ -376,8 +376,8 @@ LABEL_4:
             v36 = expf(v34);
             *&v37 = v31 * v29;
             *&v38 = v32 * v28;
-            *&v39 = ((v35 + v47) * inputHeight) / v48;
-            *&v40 = (((1.0 / (v36 + 1.0)) + v11) * inputWidth) / a5;
+            *&v39 = ((v35 + v47) * inputHeight) / heightCopy;
+            *&v40 = (((1.0 / (v36 + 1.0)) + v11) * inputWidth) / width;
             *&v41 = v15;
             v42 = [(VCPBoundingBox *)v30 initWithCenterAndSize:v40 y:v39 width:v38 height:v37 confidence:v41];
             [v52 addObject:v42];
@@ -389,61 +389,61 @@ LABEL_4:
           ++v12;
         }
 
-        while (v11 != a5);
+        while (v11 != width);
       }
 
-      v46 += a5;
+      v46 += width;
       ++v47;
     }
 
-    while (v47 != v44);
+    while (v47 != heightCopy2);
   }
 
   return 0;
 }
 
-- (int)generatePersonRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5
+- (int)generatePersonRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions
 {
-  v8 = a4;
-  v9 = *a3;
-  if (*a3 != *(a3 + 1))
+  boxesCopy = boxes;
+  v9 = *regions;
+  if (*regions != *(regions + 1))
   {
     v10 = &kAnchorBoxes;
     do
     {
-      [(VCPCNNPersonDetector *)self retrieveBoxes:*v9 outHeight:*(v9 + 88) outWidth:*(v9 + 80) boxes:v8 anchorBox:v10];
+      [(VCPCNNPersonDetector *)self retrieveBoxes:*v9 outHeight:*(v9 + 88) outWidth:*(v9 + 80) boxes:boxesCopy anchorBox:v10];
       v9 += 168;
       v10 += 24;
     }
 
-    while (v9 != *(a3 + 1));
+    while (v9 != *(regions + 1));
   }
 
-  [(VCPCNNPersonDetector *)self nonMaxSuppression:v8];
-  [v8 sortUsingComparator:&__block_literal_global_88];
-  while ([v8 count] > a5)
+  [(VCPCNNPersonDetector *)self nonMaxSuppression:boxesCopy];
+  [boxesCopy sortUsingComparator:&__block_literal_global_88];
+  while ([boxesCopy count] > numRegions)
   {
-    [v8 removeLastObject];
+    [boxesCopy removeLastObject];
   }
 
-  v11 = [v8 lastObject];
-  if (v11)
+  lastObject = [boxesCopy lastObject];
+  if (lastObject)
   {
     do
     {
-      [v11 flag];
+      [lastObject flag];
       if (v12 != 0.0)
       {
         break;
       }
 
-      [v8 removeLastObject];
-      v13 = [v8 lastObject];
+      [boxesCopy removeLastObject];
+      lastObject2 = [boxesCopy lastObject];
 
-      v11 = v13;
+      lastObject = lastObject2;
     }
 
-    while (v13);
+    while (lastObject2);
   }
 
   return 0;
@@ -504,12 +504,12 @@ uint64_t __66__VCPCNNPersonDetector_generatePersonRegions_boxes_maxNumRegions___
   return v26;
 }
 
-- (int)personDetection:(__CVBuffer *)a3 personRegions:(id)a4 cancel:(id)a5
+- (int)personDetection:(__CVBuffer *)detection personRegions:(id)regions cancel:(id)cancel
 {
-  v9 = a4;
-  v10 = a5;
+  regionsCopy = regions;
+  cancelCopy = cancel;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(VCPCNNPersonDetector *)self createInput:self->_inputData withBuffer:a3 inputHeight:self->_inputHeight inputWidth:self->_inputWidth];
+  v12 = [(VCPCNNPersonDetector *)self createInput:self->_inputData withBuffer:detection inputHeight:self->_inputHeight inputWidth:self->_inputWidth];
   if (v12)
   {
     v13 = 4;
@@ -517,8 +517,8 @@ uint64_t __66__VCPCNNPersonDetector_generatePersonRegions_boxes_maxNumRegions___
 
   else
   {
-    v14 = [MEMORY[0x1E695DF70] array];
-    v5 = [(VCPCNNPersonDetector *)self generatePersonBoxes:v14];
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = [(VCPCNNPersonDetector *)self generatePersonBoxes:array];
     if (v5)
     {
       v13 = 1;
@@ -526,9 +526,9 @@ uint64_t __66__VCPCNNPersonDetector_generatePersonRegions_boxes_maxNumRegions___
 
     else
     {
-      for (i = 0; [v14 count] > i; ++i)
+      for (i = 0; [array count] > i; ++i)
       {
-        v16 = [v14 objectAtIndexedSubscript:i];
+        v16 = [array objectAtIndexedSubscript:i];
         [v16 minX];
         *&v17 = *&v17 / self->_inputWidth;
         if (*&v17 < 0.0)
@@ -561,7 +561,7 @@ uint64_t __66__VCPCNNPersonDetector_generatePersonRegions_boxes_maxNumRegions___
         }
 
         [v16 setMaxY:v20];
-        [v9 addObject:v16];
+        [regionsCopy addObject:v16];
       }
 
       v13 = 0;

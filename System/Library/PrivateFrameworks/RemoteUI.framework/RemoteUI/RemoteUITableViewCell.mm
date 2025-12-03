@@ -1,29 +1,29 @@
 @interface RemoteUITableViewCell
 - (BOOL)_tableIsGrouped;
-- (CGRect)expand:(CGRect)a3 by:(CGSize)a4 anchor:(CGPoint)a5;
+- (CGRect)expand:(CGRect)expand by:(CGSize)by anchor:(CGPoint)anchor;
 - (CGSize)imageSize;
-- (RemoteUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RemoteUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)webViewWidth;
-- (id)_checkmarkImage:(BOOL)a3;
-- (id)_disclosureChevronImage:(BOOL)a3;
-- (id)_paddedImageWithImage:(id)a3 size:(CGSize)a4 insets:(UIEdgeInsets)a5;
+- (id)_checkmarkImage:(BOOL)image;
+- (id)_disclosureChevronImage:(BOOL)image;
+- (id)_paddedImageWithImage:(id)image size:(CGSize)size insets:(UIEdgeInsets)insets;
 - (id)editableTextField;
 - (void)_accessoriesChanged;
 - (void)_detailLinkPressed;
-- (void)_setRemoteUIAccessoryType:(int64_t)a3 withColor:(id)a4;
+- (void)_setRemoteUIAccessoryType:(int64_t)type withColor:(id)color;
 - (void)_showActivityIndicatorAccessory;
-- (void)addDetailLinkButton:(id)a3;
+- (void)addDetailLinkButton:(id)button;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActivityIndicatorVisible:(BOOL)a3;
-- (void)setBadgeImage:(id)a3 tintColor:(id)a4 isCircular:(BOOL)a5;
-- (void)setDetailLinkText:(id)a3 handler:(id)a4;
-- (void)setHTMLData:(id)a3 sourceURL:(id)a4 delegate:(id)a5;
-- (void)setImage:(id)a3 padding:(UIEdgeInsets)a4 tintColor:(id)a5;
-- (void)setRemoteUIAccessoryView:(id)a3;
-- (void)setRowInvalid:(BOOL)a3;
-- (void)setupDatePickerCellWithElement:(id)a3 renderPlaceHolder:(BOOL)a4 date:(id)a5 dateFormatter:(id)a6;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActivityIndicatorVisible:(BOOL)visible;
+- (void)setBadgeImage:(id)image tintColor:(id)color isCircular:(BOOL)circular;
+- (void)setDetailLinkText:(id)text handler:(id)handler;
+- (void)setHTMLData:(id)data sourceURL:(id)l delegate:(id)delegate;
+- (void)setImage:(id)image padding:(UIEdgeInsets)padding tintColor:(id)color;
+- (void)setRemoteUIAccessoryView:(id)view;
+- (void)setRowInvalid:(BOOL)invalid;
+- (void)setupDatePickerCellWithElement:(id)element renderPlaceHolder:(BOOL)holder date:(id)date dateFormatter:(id)formatter;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -38,12 +38,12 @@
   [(RemoteUITableViewCell *)&v3 prepareForReuse];
 }
 
-- (RemoteUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RemoteUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = RemoteUITableViewCell;
-  v4 = [(RemoteUITableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RemoteUITableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -51,17 +51,17 @@
     v4->_badgeImageView = v5;
 
     [(UIImageView *)v4->_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(RemoteUITableViewCell *)v4 contentView];
-    [v7 addSubview:v4->_badgeImageView];
+    contentView = [(RemoteUITableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_badgeImageView];
 
     [(UIImageView *)v4->_badgeImageView setHidden:1];
     [(UIImageView *)v4->_badgeImageView setContentMode:1];
     v8 = MEMORY[0x277CCAAD0];
-    v9 = [(UIImageView *)v4->_badgeImageView widthAnchor];
-    v10 = [v9 constraintEqualToConstant:20.0];
+    widthAnchor = [(UIImageView *)v4->_badgeImageView widthAnchor];
+    v10 = [widthAnchor constraintEqualToConstant:20.0];
     v16[0] = v10;
-    v11 = [(UIImageView *)v4->_badgeImageView heightAnchor];
-    v12 = [v11 constraintEqualToConstant:20.0];
+    heightAnchor = [(UIImageView *)v4->_badgeImageView heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:20.0];
     v16[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     [v8 activateConstraints:v13];
@@ -78,25 +78,25 @@
   v17.receiver = self;
   v17.super_class = RemoteUITableViewCell;
   [(RemoteUITableViewCell *)&v17 updateConstraints];
-  v3 = [(UIImageView *)self->_badgeImageView superview];
-  if (v3)
+  superview = [(UIImageView *)self->_badgeImageView superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(RemoteUITableViewCell *)self imageView];
-    v6 = [v5 superview];
+    v4 = superview;
+    imageView = [(RemoteUITableViewCell *)self imageView];
+    superview2 = [imageView superview];
 
-    if (v6)
+    if (superview2)
     {
       v7 = MEMORY[0x277CCAAD0];
-      v8 = [(UIImageView *)self->_badgeImageView trailingAnchor];
-      v9 = [(RemoteUITableViewCell *)self imageView];
-      v10 = [v9 trailingAnchor];
-      v11 = [v8 constraintEqualToAnchor:v10 constant:8.0];
+      trailingAnchor = [(UIImageView *)self->_badgeImageView trailingAnchor];
+      imageView2 = [(RemoteUITableViewCell *)self imageView];
+      trailingAnchor2 = [imageView2 trailingAnchor];
+      v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:8.0];
       v18[0] = v11;
-      v12 = [(UIImageView *)self->_badgeImageView bottomAnchor];
-      v13 = [(RemoteUITableViewCell *)self imageView];
-      v14 = [v13 bottomAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:6.0];
+      bottomAnchor = [(UIImageView *)self->_badgeImageView bottomAnchor];
+      imageView3 = [(RemoteUITableViewCell *)self imageView];
+      bottomAnchor2 = [imageView3 bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:6.0];
       v18[1] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
       [v7 activateConstraints:v16];
@@ -104,81 +104,81 @@
   }
 }
 
-- (void)setImage:(id)a3 padding:(UIEdgeInsets)a4 tintColor:(id)a5
+- (void)setImage:(id)image padding:(UIEdgeInsets)padding tintColor:(id)color
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = a3;
-  v12 = a5;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  imageCopy = image;
+  colorCopy = color;
   image = self->_image;
-  self->_image = v11;
-  v14 = v11;
+  self->_image = imageCopy;
+  v14 = imageCopy;
 
   self->_imagePadding.top = top;
   self->_imagePadding.left = left;
   self->_imagePadding.bottom = bottom;
   self->_imagePadding.right = right;
   imageTintColor = self->_imageTintColor;
-  self->_imageTintColor = v12;
+  self->_imageTintColor = colorCopy;
 
   [(RemoteUITableViewCell *)self imageSize];
   v17 = [RemoteUITableViewCell _paddedImageWithImage:"_paddedImageWithImage:size:insets:" size:v14 insets:?];
 
-  v16 = [(UITableViewCell *)self ruiImageView];
-  [v16 setImage:v17];
+  ruiImageView = [(UITableViewCell *)self ruiImageView];
+  [ruiImageView setImage:v17];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_image)
   {
-    v11 = v4;
-    v5 = [(RemoteUITableViewCell *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    v7 = [v11 userInterfaceStyle];
+    v11 = changeCopy;
+    traitCollection = [(RemoteUITableViewCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    userInterfaceStyle2 = [v11 userInterfaceStyle];
 
-    v4 = v11;
-    if (v6 != v7)
+    changeCopy = v11;
+    if (userInterfaceStyle != userInterfaceStyle2)
     {
       image = self->_image;
       [(RemoteUITableViewCell *)self imageSize];
       v9 = [RemoteUITableViewCell _paddedImageWithImage:"_paddedImageWithImage:size:insets:" size:image insets:?];
-      v10 = [(UITableViewCell *)self ruiImageView];
-      [v10 setImage:v9];
+      ruiImageView = [(UITableViewCell *)self ruiImageView];
+      [ruiImageView setImage:v9];
 
-      v4 = v11;
+      changeCopy = v11;
     }
   }
 }
 
-- (id)_paddedImageWithImage:(id)a3 size:(CGSize)a4 insets:(UIEdgeInsets)a5
+- (id)_paddedImageWithImage:(id)image size:(CGSize)size insets:(UIEdgeInsets)insets
 {
-  bottom = a5.bottom;
-  right = a5.right;
-  top = a5.top;
-  left = a5.left;
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = v8;
+  bottom = insets.bottom;
+  right = insets.right;
+  top = insets.top;
+  left = insets.left;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  v9 = imageCopy;
   v10.f64[0] = top;
   v10.f64[1] = left;
   v11.f64[0] = bottom;
   v11.f64[1] = right;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v10, *MEMORY[0x277D768C8]), vceqq_f64(v11, *(MEMORY[0x277D768C8] + 16))))))
   {
-    v18 = v8;
+    v18 = imageCopy;
   }
 
   else
   {
     v12 = objc_alloc(MEMORY[0x277D75560]);
     v13 = MEMORY[0x277D75568];
-    v14 = [(RemoteUITableViewCell *)self traitCollection];
-    v15 = [v13 formatForTraitCollection:v14];
+    traitCollection = [(RemoteUITableViewCell *)self traitCollection];
+    v15 = [v13 formatForTraitCollection:traitCollection];
     v16 = [v12 initWithSize:v15 format:{width, height}];
 
     if (self->_imageTintColor)
@@ -273,13 +273,13 @@ LABEL_10:
   [(RemoteUITableViewCell *)self setEditingAccessoryView:v24];
 }
 
-- (id)_checkmarkImage:(BOOL)a3
+- (id)_checkmarkImage:(BOOL)image
 {
   if (self->_accessoryColor)
   {
     v8.receiver = self;
     v8.super_class = RemoteUITableViewCell;
-    v4 = [(RemoteUITableViewCell *)&v8 _checkmarkImage:a3];
+    v4 = [(RemoteUITableViewCell *)&v8 _checkmarkImage:image];
     v5 = [v4 _flatImageWithColor:self->_accessoryColor];
   }
 
@@ -287,19 +287,19 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = RemoteUITableViewCell;
-    v5 = [(RemoteUITableViewCell *)&v7 _checkmarkImage:a3];
+    v5 = [(RemoteUITableViewCell *)&v7 _checkmarkImage:image];
   }
 
   return v5;
 }
 
-- (id)_disclosureChevronImage:(BOOL)a3
+- (id)_disclosureChevronImage:(BOOL)image
 {
   if (self->_accessoryColor)
   {
     v8.receiver = self;
     v8.super_class = RemoteUITableViewCell;
-    v4 = [(RemoteUITableViewCell *)&v8 _disclosureChevronImage:a3];
+    v4 = [(RemoteUITableViewCell *)&v8 _disclosureChevronImage:image];
     v5 = [v4 _flatImageWithColor:self->_accessoryColor];
   }
 
@@ -307,7 +307,7 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = RemoteUITableViewCell;
-    v5 = [(RemoteUITableViewCell *)&v7 _disclosureChevronImage:a3];
+    v5 = [(RemoteUITableViewCell *)&v7 _disclosureChevronImage:image];
   }
 
   return v5;
@@ -317,47 +317,47 @@ LABEL_10:
 {
   v6.receiver = self;
   v6.super_class = RemoteUITableViewCell;
-  v3 = [(RemoteUITableViewCell *)&v6 editableTextField];
+  editableTextField = [(RemoteUITableViewCell *)&v6 editableTextField];
   if (!self->_didSetupEditableTextFieldLargeText)
   {
     v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    [v3 setFont:v4];
+    [editableTextField setFont:v4];
 
-    [v3 setAdjustsFontSizeToFitWidth:1];
+    [editableTextField setAdjustsFontSizeToFitWidth:1];
     self->_didSetupEditableTextFieldLargeText = 1;
   }
 
-  return v3;
+  return editableTextField;
 }
 
-- (void)_setRemoteUIAccessoryType:(int64_t)a3 withColor:(id)a4
+- (void)_setRemoteUIAccessoryType:(int64_t)type withColor:(id)color
 {
-  self->_remoteUIAccessoryType = a3;
-  objc_storeStrong(&self->_accessoryColor, a4);
-  v8 = a4;
-  [(RemoteUITableViewCell *)self setAccessoryType:a3];
+  self->_remoteUIAccessoryType = type;
+  objc_storeStrong(&self->_accessoryColor, color);
+  colorCopy = color;
+  [(RemoteUITableViewCell *)self setAccessoryType:type];
   accessoryColor = self->_accessoryColor;
   self->_accessoryColor = 0;
 }
 
-- (void)setRemoteUIAccessoryView:(id)a3
+- (void)setRemoteUIAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_remoteUIAccessoryView != v5)
+  viewCopy = view;
+  if (self->_remoteUIAccessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_remoteUIAccessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_remoteUIAccessoryView, view);
     [(RemoteUITableViewCell *)self _accessoriesChanged];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setActivityIndicatorVisible:(BOOL)a3
+- (void)setActivityIndicatorVisible:(BOOL)visible
 {
-  if (self->_activityIndicatorVisible != a3)
+  if (self->_activityIndicatorVisible != visible)
   {
-    self->_activityIndicatorVisible = a3;
-    if (a3)
+    self->_activityIndicatorVisible = visible;
+    if (visible)
     {
 
       [(RemoteUITableViewCell *)self _showActivityIndicatorAccessory];
@@ -391,24 +391,24 @@ LABEL_10:
   [(RemoteUITableViewCell *)self setEditingAccessoryView:v6];
 }
 
-- (void)setHTMLData:(id)a3 sourceURL:(id)a4 delegate:(id)a5
+- (void)setHTMLData:(id)data sourceURL:(id)l delegate:(id)delegate
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  lCopy = l;
+  delegateCopy = delegate;
   [(RUIWebContainerView *)self->_webContainerView removeFromSuperview];
   webContainerView = self->_webContainerView;
   self->_webContainerView = 0;
 
-  if (v14)
+  if (dataCopy)
   {
-    v11 = [[RUIWebContainerView alloc] initWithContent:v14 baseURL:v8];
+    v11 = [[RUIWebContainerView alloc] initWithContent:dataCopy baseURL:lCopy];
     v12 = self->_webContainerView;
     self->_webContainerView = v11;
 
-    [(RUIWebContainerView *)self->_webContainerView setDelegate:v9];
-    v13 = [(RemoteUITableViewCell *)self contentView];
-    [v13 addSubview:self->_webContainerView];
+    [(RUIWebContainerView *)self->_webContainerView setDelegate:delegateCopy];
+    contentView = [(RemoteUITableViewCell *)self contentView];
+    [contentView addSubview:self->_webContainerView];
   }
 }
 
@@ -461,19 +461,19 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)addDetailLinkButton:(id)a3
+- (void)addDetailLinkButton:(id)button
 {
-  v4 = [(RemoteUITableViewCell *)self contentView];
-  [v4 addSubview:self->_detailLinkButton];
+  contentView = [(RemoteUITableViewCell *)self contentView];
+  [contentView addSubview:self->_detailLinkButton];
 }
 
-- (void)setDetailLinkText:(id)a3 handler:(id)a4
+- (void)setDetailLinkText:(id)text handler:(id)handler
 {
-  v6 = a3;
-  if (self->_detailLinkHandler != a4)
+  textCopy = text;
+  if (self->_detailLinkHandler != handler)
   {
-    v18 = v6;
-    v7 = [a4 copy];
+    v18 = textCopy;
+    v7 = [handler copy];
     detailLinkHandler = self->_detailLinkHandler;
     self->_detailLinkHandler = v7;
 
@@ -483,29 +483,29 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
       detailLinkButton = self->_detailLinkButton;
       self->_detailLinkButton = v9;
 
-      v11 = [(UITableViewCell *)self ruiDetailTextLabel];
-      [v11 setText:v18];
+      ruiDetailTextLabel = [(UITableViewCell *)self ruiDetailTextLabel];
+      [ruiDetailTextLabel setText:v18];
 
-      v12 = [(UITableViewCell *)self ruiDetailTextLabel];
-      [v12 setHidden:1];
+      ruiDetailTextLabel2 = [(UITableViewCell *)self ruiDetailTextLabel];
+      [ruiDetailTextLabel2 setHidden:1];
 
       [(UIButton *)self->_detailLinkButton setExclusiveTouch:1];
       [(UIButton *)self->_detailLinkButton addTarget:self action:sel__detailLinkPressed forControlEvents:64];
       [(UIButton *)self->_detailLinkButton setTitle:v18 forState:0];
-      v13 = [(UIButton *)self->_detailLinkButton titleLabel];
+      titleLabel = [(UIButton *)self->_detailLinkButton titleLabel];
       v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-      [v13 setFont:v14];
+      [titleLabel setFont:v14];
 
       [(RemoteUITableViewCell *)self addDetailLinkButton:self->_detailLinkButton];
     }
 
     else
     {
-      v15 = [(UITableViewCell *)self ruiDetailTextLabel];
-      [v15 setHidden:0];
+      ruiDetailTextLabel3 = [(UITableViewCell *)self ruiDetailTextLabel];
+      [ruiDetailTextLabel3 setHidden:0];
 
-      v16 = [(UITableViewCell *)self ruiDetailTextLabel];
-      [v16 setText:0];
+      ruiDetailTextLabel4 = [(UITableViewCell *)self ruiDetailTextLabel];
+      [ruiDetailTextLabel4 setText:0];
 
       [(UIButton *)self->_detailLinkButton removeFromSuperview];
       v17 = self->_detailLinkButton;
@@ -513,16 +513,16 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
     }
 
     [(RemoteUITableViewCell *)self setNeedsLayout];
-    v6 = v18;
+    textCopy = v18;
   }
 }
 
-- (CGRect)expand:(CGRect)a3 by:(CGSize)a4 anchor:(CGPoint)a5
+- (CGRect)expand:(CGRect)expand by:(CGSize)by anchor:(CGPoint)anchor
 {
-  v5 = a3.origin.x - a4.width * a5.x;
-  v6 = a3.origin.y - a4.height * a5.y;
-  v7 = a3.size.width + a4.width;
-  v8 = a3.size.height + a4.height;
+  v5 = expand.origin.x - by.width * anchor.x;
+  v6 = expand.origin.y - by.height * anchor.y;
+  v7 = expand.size.width + by.width;
+  v8 = expand.size.height + by.height;
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -532,51 +532,51 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
 
 - (BOOL)_tableIsGrouped
 {
-  v3 = [(RemoteUITableViewCell *)self _tableView];
-  if ([v3 style] == 2)
+  _tableView = [(RemoteUITableViewCell *)self _tableView];
+  if ([_tableView style] == 2)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RemoteUITableViewCell *)self _tableView];
-    v4 = [v5 style] == 1;
+    _tableView2 = [(RemoteUITableViewCell *)self _tableView];
+    v4 = [_tableView2 style] == 1;
   }
 
   return v4;
 }
 
-- (void)setBadgeImage:(id)a3 tintColor:(id)a4 isCircular:(BOOL)a5
+- (void)setBadgeImage:(id)image tintColor:(id)color isCircular:(BOOL)circular
 {
-  v5 = a5;
+  circularCopy = circular;
   badgeImageView = self->_badgeImageView;
-  v9 = a4;
-  [(UIImageView *)badgeImageView setImage:a3];
-  [(UIImageView *)self->_badgeImageView setHidden:a3 == 0];
-  [(UIImageView *)self->_badgeImageView setTintColor:v9];
+  colorCopy = color;
+  [(UIImageView *)badgeImageView setImage:image];
+  [(UIImageView *)self->_badgeImageView setHidden:image == 0];
+  [(UIImageView *)self->_badgeImageView setTintColor:colorCopy];
 
   v10 = self->_badgeImageView;
-  if (v5)
+  if (circularCopy)
   {
     [(UIImageView *)v10 _setCornerRadius:10.0];
     [(UIImageView *)self->_badgeImageView setClipsToBounds:1];
     if ([(RemoteUITableViewCell *)self _tableIsGrouped])
     {
-      v11 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-      v12 = [v11 CGColor];
-      v13 = [(UIImageView *)self->_badgeImageView layer];
-      [v13 setBorderColor:v12];
+      tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+      cGColor = [tableCellGroupedBackgroundColor CGColor];
+      layer = [(UIImageView *)self->_badgeImageView layer];
+      [layer setBorderColor:cGColor];
 
       [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] tableCellPlainBackgroundColor];
-      v17 = [v16 CGColor];
-      v18 = [(UIImageView *)self->_badgeImageView layer];
-      [v18 setBorderColor:v17];
+      tableCellPlainBackgroundColor = [MEMORY[0x277D75348] tableCellPlainBackgroundColor];
+      cGColor2 = [tableCellPlainBackgroundColor CGColor];
+      layer2 = [(UIImageView *)self->_badgeImageView layer];
+      [layer2 setBorderColor:cGColor2];
 
       [MEMORY[0x277D75348] tableCellPlainBackgroundColor];
     }
@@ -588,8 +588,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
   {
     [(UIImageView *)v10 _setCornerRadius:0.0];
     [(UIImageView *)self->_badgeImageView setClipsToBounds:1];
-    v14 = [(UIImageView *)self->_badgeImageView layer];
-    [v14 setBorderColor:0];
+    layer3 = [(UIImageView *)self->_badgeImageView layer];
+    [layer3 setBorderColor:0];
 
     v15 = self->_badgeImageView;
 
@@ -608,28 +608,28 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
     return;
   }
 
-  v3 = [(RemoteUITableViewCell *)self contentView];
-  v4 = [v3 superview];
-  v5 = [(RemoteUITableViewCell *)self contentView];
-  [v4 bringSubviewToFront:v5];
+  contentView = [(RemoteUITableViewCell *)self contentView];
+  superview = [contentView superview];
+  contentView2 = [(RemoteUITableViewCell *)self contentView];
+  [superview bringSubviewToFront:contentView2];
 
-  v6 = [(UIImageView *)self->_badgeImageView superview];
-  [v6 bringSubviewToFront:self->_badgeImageView];
+  superview2 = [(UIImageView *)self->_badgeImageView superview];
+  [superview2 bringSubviewToFront:self->_badgeImageView];
 
-  v7 = [(RemoteUITableViewCell *)self layoutManager];
+  layoutManager = [(RemoteUITableViewCell *)self layoutManager];
   [(RemoteUITableViewCell *)self frame];
-  [v7 textRectForCell:self rowWidth:0 forSizing:CGRectGetWidth(v308)];
+  [layoutManager textRectForCell:self rowWidth:0 forSizing:CGRectGetWidth(v308)];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(RemoteUITableViewCell *)self traitCollection];
-  v17 = [v16 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+  traitCollection = [(RemoteUITableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v19 = [(RemoteUITableViewCell *)self contentView];
-  [v19 bounds];
+  contentView3 = [(RemoteUITableViewCell *)self contentView];
+  [contentView3 bounds];
   v21 = v20;
   v23 = v22;
 
@@ -640,8 +640,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
   v28 = v26 * v27;
   if (v26 * v27 != 0.0)
   {
-    v29 = [(RemoteUITableViewCell *)self imageView];
-    v30 = [v29 image];
+    imageView = [(RemoteUITableViewCell *)self imageView];
+    image = [imageView image];
 
     v31 = objc_alloc(MEMORY[0x277D75560]);
     [(RemoteUITableViewCell *)self imageSize];
@@ -650,12 +650,12 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
     v302[1] = 3221225472;
     v302[2] = __39__RemoteUITableViewCell_layoutSubviews__block_invoke;
     v302[3] = &unk_2782E7F58;
-    v303 = v30;
-    v304 = self;
-    v33 = v30;
+    v303 = image;
+    selfCopy = self;
+    v33 = image;
     v34 = [v32 imageWithActions:v302];
-    v35 = [(RemoteUITableViewCell *)self imageView];
-    [v35 setImage:v34];
+    imageView2 = [(RemoteUITableViewCell *)self imageView];
+    [imageView2 setImage:v34];
 
     v301.receiver = self;
     v301.super_class = RemoteUITableViewCell;
@@ -665,31 +665,31 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
   detailLinkButton = self->_detailLinkButton;
   if (detailLinkButton)
   {
-    v37 = detailLinkButton;
+    detailTextLabel = detailLinkButton;
   }
 
   else
   {
-    v37 = [(RemoteUITableViewCell *)self detailTextLabel];
+    detailTextLabel = [(RemoteUITableViewCell *)self detailTextLabel];
   }
 
-  v38 = v37;
-  v39 = [(UIButton *)self->_detailLinkButton titleLabel];
-  v40 = v39;
-  if (v39)
+  v38 = detailTextLabel;
+  titleLabel = [(UIButton *)self->_detailLinkButton titleLabel];
+  v40 = titleLabel;
+  if (titleLabel)
   {
-    v41 = v39;
+    detailTextLabel2 = titleLabel;
   }
 
   else
   {
-    v41 = [(RemoteUITableViewCell *)self detailTextLabel];
+    detailTextLabel2 = [(RemoteUITableViewCell *)self detailTextLabel];
   }
 
-  v42 = v41;
+  v42 = detailTextLabel2;
 
-  v43 = [(RemoteUITableViewCell *)self detailTextLabel];
-  [v43 frame];
+  detailTextLabel3 = [(RemoteUITableViewCell *)self detailTextLabel];
+  [detailTextLabel3 frame];
   [(UIButton *)v38 setFrame:?];
 
   [v42 setTextAlignment:2 * (v24 == 0)];
@@ -710,15 +710,15 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
   if (!IsAccessibilityCategory)
   {
     v297 = v9;
-    v47 = [(RemoteUITableViewCell *)self editableTextField];
-    [v47 frame];
+    editableTextField = [(RemoteUITableViewCell *)self editableTextField];
+    [editableTextField frame];
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
 
-    v56 = [(RemoteUITableViewCell *)self textLabel];
-    [v56 frame];
+    textLabel = [(RemoteUITableViewCell *)self textLabel];
+    [textLabel frame];
     MidY = CGRectGetMidY(v311);
 
     v312.origin.x = v49;
@@ -740,22 +740,22 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
       v61 = v21 - (MinX + v62) - v299;
     }
 
-    v63 = [(RemoteUITableViewCell *)self editableTextField];
-    [v63 setFrame:{v59, v58, v61, v55}];
+    editableTextField2 = [(RemoteUITableViewCell *)self editableTextField];
+    [editableTextField2 setFrame:{v59, v58, v61, v55}];
 
     v9 = v297;
   }
 
-  v64 = [(RemoteUITableViewCell *)self accessoryView];
-  if (v64)
+  accessoryView = [(RemoteUITableViewCell *)self accessoryView];
+  if (accessoryView)
   {
-    v65 = v64;
-    v66 = [(RemoteUITableViewCell *)self remoteUIAccessoryType];
+    v65 = accessoryView;
+    remoteUIAccessoryType = [(RemoteUITableViewCell *)self remoteUIAccessoryType];
 
-    if (!v66)
+    if (!remoteUIAccessoryType)
     {
-      v67 = [(RemoteUITableViewCell *)self accessoryView];
-      [v67 frame];
+      accessoryView2 = [(RemoteUITableViewCell *)self accessoryView];
+      [accessoryView2 frame];
       v68 = v9;
       v70 = v69;
       v72 = v71;
@@ -769,41 +769,41 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
       }
 
       v78 = v77 + v70;
-      v79 = [(RemoteUITableViewCell *)self accessoryView];
+      accessoryView3 = [(RemoteUITableViewCell *)self accessoryView];
       v80 = v78;
       v9 = v68;
-      [v79 setFrame:{v80, v72, v74, v76}];
+      [accessoryView3 setFrame:{v80, v72, v74, v76}];
     }
   }
 
-  v81 = [(RemoteUITableViewCell *)self textLabel];
-  v82 = [v81 text];
-  v83 = [v82 length];
+  textLabel2 = [(RemoteUITableViewCell *)self textLabel];
+  text = [textLabel2 text];
+  v83 = [text length];
 
-  v84 = [(RemoteUITableViewCell *)self editableTextField];
-  v85 = v84;
+  editableTextField3 = [(RemoteUITableViewCell *)self editableTextField];
+  v85 = editableTextField3;
   if (!v83)
   {
-    [v84 frame];
+    [editableTextField3 frame];
     v141 = v140;
     v143 = v142;
     v145 = v144;
     v147 = v146;
-    v148 = [(RemoteUITableViewCell *)self imageView];
-    [v148 size];
+    imageView3 = [(RemoteUITableViewCell *)self imageView];
+    [imageView3 size];
     v150 = v149;
 
     if (v150 == 0.0)
     {
-      v151 = [(RemoteUITableViewCell *)self contentView];
-      [v151 bounds];
+      contentView4 = [(RemoteUITableViewCell *)self contentView];
+      [contentView4 bounds];
       MaxX = CGRectGetMaxX(v324);
     }
 
     else
     {
-      v151 = [(RemoteUITableViewCell *)self imageView];
-      [v151 frame];
+      contentView4 = [(RemoteUITableViewCell *)self imageView];
+      [contentView4 frame];
       MaxX = CGRectGetMinX(v321);
     }
 
@@ -833,19 +833,19 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
     goto LABEL_48;
   }
 
-  v86 = v84 == 0 || IsAccessibilityCategory;
+  v86 = editableTextField3 == 0 || IsAccessibilityCategory;
 
   if (!v86)
   {
-    v153 = [(RemoteUITableViewCell *)self editableTextField];
-    [v153 frame];
+    editableTextField4 = [(RemoteUITableViewCell *)self editableTextField];
+    [editableTextField4 frame];
     v155 = v154;
     v157 = v156;
     v159 = v158;
     v161 = v160;
 
-    v162 = [(RemoteUITableViewCell *)self textLabel];
-    [v162 frame];
+    textLabel3 = [(RemoteUITableViewCell *)self textLabel];
+    [textLabel3 frame];
     v164 = v163;
     v166 = v165;
     v168 = v167;
@@ -882,8 +882,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
         v176 = v155 + width;
       }
 
-      v177 = [(RemoteUITableViewCell *)self editableTextField];
-      [v177 setFrame:{v176, v157, v159 - width, v161}];
+      editableTextField5 = [(RemoteUITableViewCell *)self editableTextField];
+      [editableTextField5 setFrame:{v176, v157, v159 - width, v161}];
     }
 
     goto LABEL_48;
@@ -915,8 +915,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
       v92 = v91;
       v94 = v93;
       v96 = v95;
-      v97 = [(RemoteUITableViewCell *)self textLabel];
-      [v97 frame];
+      textLabel4 = [(RemoteUITableViewCell *)self textLabel];
+      [textLabel4 frame];
       v99 = v98;
       v101 = v100;
       v103 = v102;
@@ -939,8 +939,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
           v107 = v106;
           v109 = v108;
           v111 = v110;
-          v112 = [(RemoteUITableViewCell *)self textLabel];
-          [v112 frame];
+          textLabel5 = [(RemoteUITableViewCell *)self textLabel];
+          [textLabel5 frame];
           v114 = v113;
           v116 = v115;
           v118 = v117;
@@ -965,8 +965,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
             v317.size.width = v109;
             v317.size.height = v111;
             v128 = CGRectGetMaxX(v317);
-            v129 = [(RemoteUITableViewCell *)self contentView];
-            [v129 bounds];
+            contentView5 = [(RemoteUITableViewCell *)self contentView];
+            [contentView5 bounds];
             v130 = v107;
             v131 = CGRectGetMaxX(v318);
             [(RemoteUITableViewCell *)self textFieldOffset];
@@ -976,8 +976,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
             v135 = v130;
             if (v128 > v133)
             {
-              v136 = [(RemoteUITableViewCell *)self contentView];
-              [v136 bounds];
+              contentView6 = [(RemoteUITableViewCell *)self contentView];
+              [contentView6 bounds];
               v137 = CGRectGetMaxX(v319);
               v320.origin.x = v127;
               v320.origin.y = v130;
@@ -1003,8 +1003,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
             }
           }
 
-          v189 = [(RemoteUITableViewCell *)self contentView];
-          [v189 bounds];
+          contentView7 = [(RemoteUITableViewCell *)self contentView];
+          [contentView7 bounds];
           v190 = CGRectGetMaxX(v327) - v299;
 
           v328.origin.x = v127;
@@ -1015,8 +1015,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
           if (v24)
           {
             v192 = v191;
-            v193 = [(RemoteUITableViewCell *)self contentView];
-            [v193 bounds];
+            contentView8 = [(RemoteUITableViewCell *)self contentView];
+            [contentView8 bounds];
             v194 = CGRectGetMaxX(v329);
             v330.origin.x = v127;
             v330.origin.y = v135;
@@ -1047,8 +1047,8 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
           v287 = v199;
           v201 = v200;
           rectb = v202;
-          v203 = [(RemoteUITableViewCell *)self textLabel];
-          [v203 frame];
+          textLabel6 = [(RemoteUITableViewCell *)self textLabel];
+          [textLabel6 frame];
           v205 = v204;
           v207 = v206;
           v209 = v208;
@@ -1147,21 +1147,21 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
           }
 
           [(UIButton *)v38 setFrame:v233, v234, v214, rectb];
-          v238 = [(RemoteUITableViewCell *)self textLabel];
-          [v238 setFrame:{v228, v231, v235, v285}];
+          textLabel7 = [(RemoteUITableViewCell *)self textLabel];
+          [textLabel7 setFrame:{v228, v231, v235, v285}];
         }
 
         if (!self->_leftAlignDetailLabel && !self->_forceFullSizeDetailLabel)
         {
-          v239 = [(RemoteUITableViewCell *)self textLabel];
-          [v239 frame];
+          textLabel8 = [(RemoteUITableViewCell *)self textLabel];
+          [textLabel8 frame];
           v241 = v240;
           v243 = v242;
           v245 = v244;
           v247 = v246;
 
-          v248 = [(RemoteUITableViewCell *)self detailTextLabel];
-          [v248 frame];
+          detailTextLabel4 = [(RemoteUITableViewCell *)self detailTextLabel];
+          [detailTextLabel4 frame];
           v250 = v249;
           v252 = v251;
           v296 = v253;
@@ -1202,28 +1202,28 @@ void __43__RemoteUITableViewCell__detailLinkPressed__block_invoke_2(uint64_t a1)
               v264 = v282;
               v265 = v250;
 LABEL_81:
-              v279 = [(RemoteUITableViewCell *)self textLabel];
-              [v279 setFrame:{v264, v288, v262, rectc}];
+              textLabel9 = [(RemoteUITableViewCell *)self textLabel];
+              [textLabel9 setFrame:{v264, v288, v262, rectc}];
 
               [(UIButton *)v38 setFrame:v265, v263, v261, v260];
               goto LABEL_48;
             }
 
-            v266 = [(RemoteUITableViewCell *)self detailTextLabel];
-            v267 = [v266 text];
-            v268 = [v267 length];
+            detailTextLabel5 = [(RemoteUITableViewCell *)self detailTextLabel];
+            text2 = [detailTextLabel5 text];
+            v268 = [text2 length];
 
             v265 = v250;
             if (v268)
             {
-              v269 = [(RemoteUITableViewCell *)self detailTextLabel];
-              v270 = [v269 text];
+              detailTextLabel6 = [(RemoteUITableViewCell *)self detailTextLabel];
+              text3 = [detailTextLabel6 text];
               v306 = *MEMORY[0x277D740A8];
-              v271 = [(RemoteUITableViewCell *)self detailTextLabel];
-              v272 = [v271 font];
-              v307[0] = v272;
+              detailTextLabel7 = [(RemoteUITableViewCell *)self detailTextLabel];
+              font = [detailTextLabel7 font];
+              v307[0] = font;
               v273 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v307 forKeys:&v306 count:1];
-              [v270 sizeWithAttributes:v273];
+              [text3 sizeWithAttributes:v273];
               v275 = v274;
 
               v261 = fmin(v275, 40.0);
@@ -1287,27 +1287,27 @@ uint64_t __39__RemoteUITableViewCell_layoutSubviews__block_invoke(uint64_t a1)
 
 - (double)webViewWidth
 {
-  v3 = [(RemoteUITableViewCell *)self layoutManager];
+  layoutManager = [(RemoteUITableViewCell *)self layoutManager];
   [(RemoteUITableViewCell *)self frame];
-  [v3 textRectForCell:self rowWidth:0 forSizing:CGRectGetWidth(v7)];
+  [layoutManager textRectForCell:self rowWidth:0 forSizing:CGRectGetWidth(v7)];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setRowInvalid:(BOOL)a3
+- (void)setRowInvalid:(BOOL)invalid
 {
   invalidRowView = self->_invalidRowView;
-  if (a3)
+  if (invalid)
   {
     if (!invalidRowView)
     {
       v5 = MEMORY[0x277D755B8];
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = [v5 imageNamed:@"NotVerified" inBundle:v6];
-      v10 = [v7 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
 
-      v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v10];
+      v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageFlippedForRightToLeftLayoutDirection];
       v9 = self->_invalidRowView;
       self->_invalidRowView = v8;
 
@@ -1332,13 +1332,13 @@ uint64_t __39__RemoteUITableViewCell_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setupDatePickerCellWithElement:(id)a3 renderPlaceHolder:(BOOL)a4 date:(id)a5 dateFormatter:(id)a6
+- (void)setupDatePickerCellWithElement:(id)element renderPlaceHolder:(BOOL)holder date:(id)date dateFormatter:(id)formatter
 {
-  v8 = a4;
+  holderCopy = holder;
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD9E2F0);
   MEMORY[0x28223BE20](v11 - 8);
   v13 = &v19 - v12;
-  if (a5)
+  if (date)
   {
     sub_21BA8650C();
     v14 = sub_21BA8651C();
@@ -1351,10 +1351,10 @@ uint64_t __39__RemoteUITableViewCell_layoutSubviews__block_invoke(uint64_t a1)
     (*(*(v15 - 8) + 56))(v13, 1, 1, v15);
   }
 
-  v16 = a3;
-  v17 = a6;
-  v18 = self;
-  RemoteUITableViewCell.setupDatePickerCell(element:renderPlaceHolder:date:dateFormatter:)(v16, v8, v13, v17);
+  elementCopy = element;
+  formatterCopy = formatter;
+  selfCopy = self;
+  RemoteUITableViewCell.setupDatePickerCell(element:renderPlaceHolder:date:dateFormatter:)(elementCopy, holderCopy, v13, formatterCopy);
 
   sub_21B9FA910(v13);
 }

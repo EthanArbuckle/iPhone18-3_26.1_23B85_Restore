@@ -1,22 +1,22 @@
 @interface HMDSiriSecureAccessoryAccessController
-- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)a3;
-- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)a3 watchAuthDataSource:(id)a4;
-- (void)isUnsecuringSiriActionAllowedWithCompletion:(id)a3;
+- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)source;
+- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)source watchAuthDataSource:(id)dataSource;
+- (void)isUnsecuringSiriActionAllowedWithCompletion:(id)completion;
 @end
 
 @implementation HMDSiriSecureAccessoryAccessController
 
-- (void)isUnsecuringSiriActionAllowedWithCompletion:(id)a3
+- (void)isUnsecuringSiriActionAllowedWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  completionCopy = completion;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if ([WeakRetained currentDeviceSupportsSiriUnsecuringActionsWithNoPasscodeForSiriSecureAccessoryAccessController:self])
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
@@ -42,7 +42,7 @@
         }
 
         v11 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy2 = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -59,7 +59,7 @@
       else
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = self;
+        selfCopy3 = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
@@ -74,33 +74,33 @@
     }
   }
 
-  v19[2](v19, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)a3 watchAuthDataSource:(id)a4
+- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)source watchAuthDataSource:(id)dataSource
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v11.receiver = self;
   v11.super_class = HMDSiriSecureAccessoryAccessController;
   v8 = [(HMDSiriSecureAccessoryAccessController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeStrong(&v9->_watchAuthDataSource, a4);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeStrong(&v9->_watchAuthDataSource, dataSource);
   }
 
   return v9;
 }
 
-- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)a3
+- (HMDSiriSecureAccessoryAccessController)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(HMDAssistantWatchAuthenticationDataSource);
-  v6 = [(HMDSiriSecureAccessoryAccessController *)self initWithDataSource:v4 watchAuthDataSource:v5];
+  v6 = [(HMDSiriSecureAccessoryAccessController *)self initWithDataSource:sourceCopy watchAuthDataSource:v5];
 
   return v6;
 }

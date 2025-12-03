@@ -1,17 +1,17 @@
 @interface MPMediaQueryMutableSectionInfo
-- (void)addSectionWithHeaderTitle:(id)a3 sectionIndexTitleIndex:(unint64_t)a4 count:(unint64_t)a5;
+- (void)addSectionWithHeaderTitle:(id)title sectionIndexTitleIndex:(unint64_t)index count:(unint64_t)count;
 @end
 
 @implementation MPMediaQueryMutableSectionInfo
 
-- (void)addSectionWithHeaderTitle:(id)a3 sectionIndexTitleIndex:(unint64_t)a4 count:(unint64_t)a5
+- (void)addSectionWithHeaderTitle:(id)title sectionIndexTitleIndex:(unint64_t)index count:(unint64_t)count
 {
-  v8 = a3;
-  v12 = [[MPMediaQuerySection alloc] _init];
-  [v12 setTitle:v8];
+  titleCopy = title;
+  _init = [[MPMediaQuerySection alloc] _init];
+  [_init setTitle:titleCopy];
 
-  [v12 setSectionIndexTitleIndex:a4];
-  [v12 setRange:{-[MPMediaQuerySectionInfo count](self, "count"), a5}];
+  [_init setSectionIndexTitleIndex:index];
+  [_init setRange:{-[MPMediaQuerySectionInfo count](self, "count"), count}];
   sections = self->super._sections;
   if (!sections)
   {
@@ -22,7 +22,7 @@
     sections = self->super._sections;
   }
 
-  [(NSArray *)sections addObject:v12];
+  [(NSArray *)sections addObject:_init];
 }
 
 @end

@@ -9,66 +9,66 @@
 - (id)hasDownloadedMusic;
 - (id)hasStarRatings;
 - (id)homeSharingSignOutButtonLabel;
-- (id)isAutomaticDownloadsEnabled:(id)a3;
-- (id)isDownloadPinsEnabled:(id)a3;
-- (id)isPurchaseHistoryEnabled:(id)a3;
+- (id)isAutomaticDownloadsEnabled:(id)enabled;
+- (id)isDownloadPinsEnabled:(id)enabled;
+- (id)isPurchaseHistoryEnabled:(id)enabled;
 - (id)libraryFooterText;
 - (id)listeningHistoryFooterText;
-- (id)lyricsDescription:(id)a3;
+- (id)lyricsDescription:(id)description;
 - (id)lyricsOptions;
 - (id)mliEntryPointFooter;
 - (id)motionGroupFooterText;
 - (id)musicFooterLinkText;
 - (id)musicFooterText;
-- (id)musicUsageLinkDetailDescription:(id)a3;
+- (id)musicUsageLinkDetailDescription:(id)description;
 - (id)resetMediaLibraryEnabled;
-- (id)sharePlayTogetherDiscoverableEnabled:(id)a3;
-- (id)shouldAddFavoriteSongsToMyMusic:(id)a3;
-- (id)shouldAddPlaylistSongsToMyMusic:(id)a3;
+- (id)sharePlayTogetherDiscoverableEnabled:(id)enabled;
+- (id)shouldAddFavoriteSongsToMyMusic:(id)music;
+- (id)shouldAddPlaylistSongsToMyMusic:(id)music;
 - (id)shouldShowRegulatorySection;
-- (id)songTransitionsDescription:(id)a3;
+- (id)songTransitionsDescription:(id)description;
 - (id)songTransitionsTitle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)useListeningHistory:(id)a3;
-- (id)valueForMusicCapability:(id)a3;
-- (void)_accountStoreChangedNotification:(id)a3;
-- (void)_activeAccountChangedNotification:(id)a3;
-- (void)_areTransitionsEnabledDidChangeNotification:(id)a3;
-- (void)_cellularDownloadsAllowedDidChangeNotification:(id)a3;
-- (void)_cloudAddToPlaylistBehaviorDidChangeNotification:(id)a3;
-- (void)_cloudServiceStatusCloudLibraryEnabledChangedNotification:(id)a3;
-- (void)_cloudServiceStatusMatchStatusDidChangeNotification:(id)a3;
-- (void)_cloudServiceStatusSubscriptionAvailablilityChangedNotification:(id)a3;
-- (void)_cloudServiceStatusSubscriptionStatusChangedNotification:(id)a3;
-- (void)_debugTap:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)useListeningHistory:(id)history;
+- (id)valueForMusicCapability:(id)capability;
+- (void)_accountStoreChangedNotification:(id)notification;
+- (void)_activeAccountChangedNotification:(id)notification;
+- (void)_areTransitionsEnabledDidChangeNotification:(id)notification;
+- (void)_cellularDownloadsAllowedDidChangeNotification:(id)notification;
+- (void)_cloudAddToPlaylistBehaviorDidChangeNotification:(id)notification;
+- (void)_cloudServiceStatusCloudLibraryEnabledChangedNotification:(id)notification;
+- (void)_cloudServiceStatusMatchStatusDidChangeNotification:(id)notification;
+- (void)_cloudServiceStatusSubscriptionAvailablilityChangedNotification:(id)notification;
+- (void)_cloudServiceStatusSubscriptionStatusChangedNotification:(id)notification;
+- (void)_debugTap:(id)tap;
 - (void)_determineMLIStatus;
-- (void)_internalTap:(id)a3;
-- (void)_managedConfigurationEffectiveSettingsDidChangeNotification:(id)a3;
-- (void)_privateListeningEnabledDidChangeNotification:(id)a3;
+- (void)_internalTap:(id)tap;
+- (void)_managedConfigurationEffectiveSettingsDidChangeNotification:(id)notification;
+- (void)_privateListeningEnabledDidChangeNotification:(id)notification;
 - (void)_reloadAccountStatus;
 - (void)_resetMLIStatus;
-- (void)_storefrontDidChangeNotification:(id)a3;
-- (void)appleMusicSubscribe:(id)a3;
+- (void)_storefrontDidChangeNotification:(id)notification;
+- (void)appleMusicSubscribe:(id)subscribe;
 - (void)dealloc;
-- (void)homeSharingSignInButtonAction:(id)a3;
-- (void)homeSharingSignOutButtonAction:(id)a3;
-- (void)mliEntryPointClicked:(id)a3;
-- (void)mliReviewClicked:(id)a3;
-- (void)resetLibrary:(id)a3;
-- (void)setAutomaticDownloadsEnabled:(id)a3 specifier:(id)a4;
-- (void)setCloudLibraryEnabled:(id)a3 specifier:(id)a4;
-- (void)setDownloadPinsEnabled:(id)a3 specifier:(id)a4;
-- (void)setEQ:(id)a3 specifier:(id)a4;
-- (void)setPurchaseHistoryEnabled:(id)a3 specifier:(id)a4;
-- (void)setSharePlayTogetherDiscoverableEnabled:(id)a3 specifier:(id)a4;
-- (void)setShouldAddFavoriteSongsToMyMusic:(id)a3 specifier:(id)a4;
-- (void)setShouldAddPlaylistSongsToMyMusic:(id)a3 specifier:(id)a4;
-- (void)setTransliterationPreference:(id)a3 specifier:(id)a4;
-- (void)setUseListeningHistory:(id)a3 specifier:(id)a4;
-- (void)showPrivacySplashSheet:(id)a3;
-- (void)showRegulatoryWebPage:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)homeSharingSignInButtonAction:(id)action;
+- (void)homeSharingSignOutButtonAction:(id)action;
+- (void)mliEntryPointClicked:(id)clicked;
+- (void)mliReviewClicked:(id)clicked;
+- (void)resetLibrary:(id)library;
+- (void)setAutomaticDownloadsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCloudLibraryEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDownloadPinsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setEQ:(id)q specifier:(id)specifier;
+- (void)setPurchaseHistoryEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSharePlayTogetherDiscoverableEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShouldAddFavoriteSongsToMyMusic:(id)music specifier:(id)specifier;
+- (void)setShouldAddPlaylistSongsToMyMusic:(id)music specifier:(id)specifier;
+- (void)setTransliterationPreference:(id)preference specifier:(id)specifier;
+- (void)setUseListeningHistory:(id)history specifier:(id)specifier;
+- (void)showPrivacySplashSheet:(id)sheet;
+- (void)showRegulatoryWebPage:(id)page;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -148,18 +148,18 @@
 
     if ([(MusicSettingsCellularDataController *)v2->_cellularDataController cellularSettingsAvailable])
     {
-      v27 = [v26 firstObject];
+      firstObject = [v26 firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v29 = [v26 firstObject];
-        v30 = [v29 properties];
-        v31 = [v30 mutableCopy];
+        firstObject2 = [v26 firstObject];
+        properties = [firstObject2 properties];
+        v31 = [properties mutableCopy];
 
         [v31 setValue:@"cellularDataGroupFooterText" forKey:@"musicDynamicFooterText"];
-        [v29 setProperties:v31];
+        [firstObject2 setProperties:v31];
       }
     }
 
@@ -186,10 +186,10 @@
     storageReporter = v2->_storageReporter;
     v2->_storageReporter = v38;
 
-    v40 = [(PSStorageReporting *)v2->_storageReporter usageBundleApps];
-    v41 = [v40 firstObject];
+    usageBundleApps = [(PSStorageReporting *)v2->_storageReporter usageBundleApps];
+    firstObject3 = [usageBundleApps firstObject];
     musicUsageBundle = v2->_musicUsageBundle;
-    v2->_musicUsageBundle = v41;
+    v2->_musicUsageBundle = firstObject3;
 
     [(PSUsageBundleApp *)v2->_musicUsageBundle setUsageBundleStorageReporter:v2->_storageReporter];
     v43 = [v15 specifierForID:@"com.apple.Music:MusicUsageLink"];
@@ -241,9 +241,9 @@
     v2->_onBoardingBundle = v62;
 
     v64 = +[UIDevice currentDevice];
-    v65 = [v64 sf_isInternalInstall];
+    sf_isInternalInstall = [v64 sf_isInternalInstall];
 
-    if (v65)
+    if (sf_isInternalInstall)
     {
       v66 = +[NSMutableArray array];
       v67 = [PSSpecifier groupSpecifierWithID:@"com.apple.Music:InternalGroup" name:@"Apple Internal"];
@@ -339,19 +339,19 @@
   [(MusicSettingsController *)&v5 dealloc];
 }
 
-- (id)valueForMusicCapability:(id)a3
+- (id)valueForMusicCapability:(id)capability
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"userWantsLosslessDownloads"])
+  capabilityCopy = capability;
+  if ([capabilityCopy isEqualToString:@"userWantsLosslessDownloads"])
   {
     v5 = +[MPPlaybackUserDefaults standardUserDefaults];
-    v6 = [v5 preferredMusicDownloadResolution];
+    preferredMusicDownloadResolution = [v5 preferredMusicDownloadResolution];
 
-    v8 = v6 == &loc_BB80 || v6 == 192000;
+    v8 = preferredMusicDownloadResolution == &loc_BB80 || preferredMusicDownloadResolution == 192000;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"showInternalSettings"])
+  if ([capabilityCopy isEqualToString:@"showInternalSettings"])
   {
     showInternalSettings = self->_showInternalSettings;
 LABEL_13:
@@ -359,14 +359,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"atfwatlFeatureOn"])
+  if ([capabilityCopy isEqualToString:@"atfwatlFeatureOn"])
   {
 LABEL_12:
     showInternalSettings = _os_feature_enabled_impl();
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"crossFadeFeatureOn"])
+  if ([capabilityCopy isEqualToString:@"crossFadeFeatureOn"])
   {
     if (_os_feature_enabled_impl())
     {
@@ -385,7 +385,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"crossFadeEnabled"])
+  if ([capabilityCopy isEqualToString:@"crossFadeEnabled"])
   {
     v13 = +[MPPlaybackUserDefaults standardUserDefaults];
     v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 isCrossFadeEnabled]);
@@ -393,12 +393,12 @@ LABEL_14:
 
   else
   {
-    if ([v4 isEqualToString:@"songTransitionsFeatureOn"] || objc_msgSend(v4, "isEqualToString:", @"despacitoFeatureOn"))
+    if ([capabilityCopy isEqualToString:@"songTransitionsFeatureOn"] || objc_msgSend(capabilityCopy, "isEqualToString:", @"despacitoFeatureOn"))
     {
       goto LABEL_12;
     }
 
-    v15 = sub_9668(*&self->_accountStatus.isSignedIn, *&self->_accountStatus.isManagedAppleID | (*&self->_accountStatus.isMLIEnabled << 32), v4);
+    v15 = sub_9668(*&self->_accountStatus.isSignedIn, *&self->_accountStatus.isManagedAppleID | (*&self->_accountStatus.isMLIEnabled << 32), capabilityCopy);
     v13 = v15;
     if (v15)
     {
@@ -409,7 +409,7 @@ LABEL_14:
     {
       v16.receiver = self;
       v16.super_class = MusicSettingsController;
-      v14 = [(MusicSettingsController *)&v16 valueForMusicCapability:v4];
+      v14 = [(MusicSettingsController *)&v16 valueForMusicCapability:capabilityCopy];
     }
   }
 
@@ -424,10 +424,10 @@ LABEL_15:
 {
   v71.receiver = self;
   v71.super_class = MusicSettingsController;
-  v3 = [(MusicSettingsController *)&v71 allSpecifiers];
+  allSpecifiers = [(MusicSettingsController *)&v71 allSpecifiers];
   if (MSVDeviceOSIsInternalInstall() && self->_showInternalSettings)
   {
-    v49 = v3;
+    v49 = allSpecifiers;
     if (qword_2B370[0] != -1)
     {
       sub_168DC();
@@ -436,16 +436,16 @@ LABEL_15:
     v4 = [NSMutableArray arrayWithCapacity:12];
     v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.Music" allowPlaceholder:1 error:0];
     v6 = [PSSpecifier groupSpecifierWithName:@"Versions"];
-    v7 = [v5 exactBundleVersion];
+    exactBundleVersion = [v5 exactBundleVersion];
     v53 = PSFooterTextGroupKey;
-    [v6 setProperty:v7 forKey:?];
+    [v6 setProperty:exactBundleVersion forKey:?];
 
     [v4 addObject:v6];
-    v8 = [v5 machOUUIDs];
-    v9 = [v8 firstObject];
-    v10 = [v9 UUIDString];
+    machOUUIDs = [v5 machOUUIDs];
+    firstObject = [machOUUIDs firstObject];
+    uUIDString = [firstObject UUIDString];
 
-    v11 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:@"Music" set:v10 get:0 detail:0 cell:? edit:?];
+    v11 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:@"Music" set:uUIDString get:0 detail:0 cell:? edit:?];
     v12 = objc_opt_class();
     v58 = PSCellClassKey;
     [v11 setProperty:v12 forKey:?];
@@ -454,7 +454,7 @@ LABEL_15:
     v57 = PSCopyableCellKey;
     [v11 setProperty:&__kCFBooleanTrue forKey:?];
     [v11 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-    [v11 setProperty:v10 forKey:@"UUID"];
+    [v11 setProperty:uUIDString forKey:@"UUID"];
     v13 = v4;
     [v4 addObject:v11];
 
@@ -480,11 +480,11 @@ LABEL_15:
           }
 
           v21 = *(*(&v67 + 1) + 8 * i);
-          v22 = [v21 version];
-          v23 = v22;
-          if (v22)
+          version = [v21 version];
+          v23 = version;
+          if (version)
           {
-            v24 = v22;
+            v24 = version;
           }
 
           else
@@ -511,8 +511,8 @@ LABEL_15:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v27 = [v15 allKeys];
-    v28 = [v27 sortedArrayUsingSelector:"compare:"];
+    allKeys = [v15 allKeys];
+    v28 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     obj = v28;
     v54 = [v28 countByEnumeratingWithState:&v63 objects:v73 count:16];
@@ -560,18 +560,18 @@ LABEL_15:
                 }
 
                 v40 = *(*(&v59 + 1) + 8 * j);
-                v41 = [v40 uuid];
-                v42 = [v41 UUIDString];
+                uuid = [v40 uuid];
+                uUIDString2 = [uuid UUIDString];
 
-                v43 = [v40 name];
-                v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:v42 set:0 get:"lowercaseString" detail:0 cell:-1 edit:0];
+                name = [v40 name];
+                v44 = [PSSpecifier preferenceSpecifierNamed:name target:uUIDString2 set:0 get:"lowercaseString" detail:0 cell:-1 edit:0];
 
                 [v44 setProperty:objc_opt_class() forKey:v58];
                 v45 = [UIImage systemImageNamed:@"square.stack.3d.up.fill"];
                 [v44 setProperty:v45 forKey:v29];
 
                 [v44 setProperty:&__kCFBooleanTrue forKey:v57];
-                [v44 setProperty:v42 forKey:@"UUID"];
+                [v44 setProperty:uUIDString2 forKey:@"UUID"];
                 [v13 addObject:v44];
               }
 
@@ -594,10 +594,10 @@ LABEL_15:
 
     v46 = [v49 arrayByAddingObjectsFromArray:v13];
 
-    v3 = v46;
+    allSpecifiers = v46;
   }
 
-  return v3;
+  return allSpecifiers;
 }
 
 - (id)specifiers
@@ -609,9 +609,9 @@ LABEL_15:
     [(MusicSettingsController *)self _reloadAccountStatus];
     v8.receiver = self;
     v8.super_class = MusicSettingsController;
-    v5 = [(MusicSettingsController *)&v8 specifiers];
+    specifiers = [(MusicSettingsController *)&v8 specifiers];
     v6 = *&self->MusicSettingsListViewController_opaque[v3];
-    *&self->MusicSettingsListViewController_opaque[v3] = v5;
+    *&self->MusicSettingsListViewController_opaque[v3] = specifiers;
 
     [(MusicSettingsController *)self setSpecifierID:@"Music"];
     v4 = *&self->MusicSettingsListViewController_opaque[v3];
@@ -625,38 +625,38 @@ LABEL_15:
   v10.receiver = self;
   v10.super_class = MusicSettingsController;
   [(MusicSettingsController *)&v10 viewDidLoad];
-  v3 = [(MusicSettingsController *)self table];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"com.apple.Music:CrossFadeDurationSlider"];
+  table = [(MusicSettingsController *)self table];
+  [table registerClass:objc_opt_class() forCellReuseIdentifier:@"com.apple.Music:CrossFadeDurationSlider"];
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  sf_isInternalInstall = [v4 sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_internalTap:"];
     [v6 setNumberOfTapsRequired:2];
-    v7 = [(MusicSettingsController *)self view];
-    [v7 addGestureRecognizer:v6];
+    view = [(MusicSettingsController *)self view];
+    [view addGestureRecognizer:v6];
 
     v8 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_debugTap:"];
     [v8 setNumberOfTapsRequired:3];
-    v9 = [(MusicSettingsController *)self view];
-    [v9 addGestureRecognizer:v8];
+    view2 = [(MusicSettingsController *)self view];
+    [view2 addGestureRecognizer:v8];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MusicSettingsController *)self specifierAtIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"com.apple.Music:CrossFadeDurationSlider"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(MusicSettingsController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"com.apple.Music:CrossFadeDurationSlider"];
 
   if (v10)
   {
-    v11 = [v8 identifier];
-    v12 = [v6 dequeueReusableCellWithIdentifier:v11 forIndexPath:v7];
+    identifier2 = [v8 identifier];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:identifier2 forIndexPath:pathCopy];
 
     [v12 setupWithSpeficier:v8];
   }
@@ -665,19 +665,19 @@ LABEL_15:
   {
     v14.receiver = self;
     v14.super_class = MusicSettingsController;
-    v12 = [(MusicSettingsController *)&v14 tableView:v6 cellForRowAtIndexPath:v7];
+    v12 = [(MusicSettingsController *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MusicSettingsController *)self specifierAtIndexPath:v6];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"com.apple.Music:MusicUsageLink"];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(MusicSettingsController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"com.apple.Music:MusicUsageLink"];
 
   if (v10)
   {
@@ -686,46 +686,46 @@ LABEL_15:
 
   v11.receiver = self;
   v11.super_class = MusicSettingsController;
-  [(MusicSettingsController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(MusicSettingsController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)setEQ:(id)a3 specifier:(id)a4
+- (void)setEQ:(id)q specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MusicSettingsController *)self rootController];
-  v9 = v8;
-  if (!v8)
+  specifierCopy = specifier;
+  qCopy = q;
+  selfCopy = [(MusicSettingsController *)self rootController];
+  v9 = selfCopy;
+  if (!selfCopy)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v14 = [v8 readPreferenceValue:v6];
+  v14 = [selfCopy readPreferenceValue:specifierCopy];
 
   v10 = [MPPlaybackEQSetting settingWithName:v14];
-  v11 = [MPPlaybackEQSetting settingWithName:v7];
-  v12 = [(MusicSettingsController *)self rootController];
-  v13 = v12;
-  if (!v12)
+  v11 = [MPPlaybackEQSetting settingWithName:qCopy];
+  selfCopy2 = [(MusicSettingsController *)self rootController];
+  v13 = selfCopy2;
+  if (!selfCopy2)
   {
-    v12 = self;
+    selfCopy2 = self;
   }
 
-  [v12 setPreferenceValue:v7 specifier:v6];
+  [selfCopy2 setPreferenceValue:qCopy specifier:specifierCopy];
 }
 
-- (id)isPurchaseHistoryEnabled:(id)a3
+- (id)isPurchaseHistoryEnabled:(id)enabled
 {
   v3 = [(ICCloudClient *)self->_cloudClient isMediaKindDisabledForJaliscoLibrary:1]^ 1;
 
   return [NSNumber numberWithInt:v3];
 }
 
-- (void)setPurchaseHistoryEnabled:(id)a3 specifier:(id)a4
+- (void)setPurchaseHistoryEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   cloudClient = self->_cloudClient;
-  if (v5)
+  if (bOOLValue)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -746,24 +746,24 @@ LABEL_15:
   }
 }
 
-- (void)setCloudLibraryEnabled:(id)a3 specifier:(id)a4
+- (void)setCloudLibraryEnabled:(id)enabled specifier:(id)specifier
 {
-  v79 = a3;
-  v78 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v6 = +[ICEnvironmentMonitor sharedMonitor];
   [v6 networkType];
 
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v7 sf_isChinaRegionCellularDevice];
 
   cellularDataController = self->_cellularDataController;
-  if (v8)
+  if (sf_isChinaRegionCellularDevice)
   {
-    v10 = [(MusicSettingsCellularDataController *)cellularDataController wifiDataEnabled];
-    v11 = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularDataEnabled];
-    if ((v10 & 1) != 0 || (ICEnvironmentNetworkTypeIsWiFi() & 1) == 0)
+    wifiDataEnabled = [(MusicSettingsCellularDataController *)cellularDataController wifiDataEnabled];
+    cellularDataEnabled = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularDataEnabled];
+    if ((wifiDataEnabled & 1) != 0 || (ICEnvironmentNetworkTypeIsWiFi() & 1) == 0)
     {
-      if ((v11 & 1) != 0 || (ICEnvironmentNetworkTypeIsCellular() & 1) == 0)
+      if ((cellularDataEnabled & 1) != 0 || (ICEnvironmentNetworkTypeIsCellular() & 1) == 0)
       {
         goto LABEL_13;
       }
@@ -813,7 +813,7 @@ LABEL_15:
   }
 
 LABEL_13:
-  if (![v79 BOOLValue])
+  if (![enabledCopy BOOLValue])
   {
     v35 = +[MPMediaQuery songsQuery];
     [v35 setIgnoreSystemFilterPredicates:1];
@@ -876,7 +876,7 @@ LABEL_31:
         v80[2] = sub_BB50;
         v80[3] = &unk_25210;
         v80[4] = self;
-        v81 = v78;
+        v81 = specifierCopy;
         v75 = [UIAlertAction actionWithTitle:v74 style:1 handler:v80];
         [v69 addAction:v75];
 
@@ -900,9 +900,9 @@ LABEL_31:
   }
 
   v21 = +[ICPrivacyInfo sharedPrivacyInfo];
-  v22 = [v21 privacyAcknowledgementRequiredForMusic];
+  privacyAcknowledgementRequiredForMusic = [v21 privacyAcknowledgementRequiredForMusic];
 
-  if (v22)
+  if (privacyAcknowledgementRequiredForMusic)
   {
     v76 = [OBPrivacyLinkController linkWithBundleIdentifier:@"com.apple.onboarding.applemusic"];
     v23 = [NSBundle bundleForClass:objc_opt_class()];
@@ -923,11 +923,11 @@ LABEL_31:
     v90[2] = sub_B714;
     v90[3] = &unk_251C0;
     objc_copyWeak(&v92, &location);
-    v91 = v78;
+    v91 = specifierCopy;
     [v32 setPrimaryButtonCallback:v90];
-    v33 = [v32 view];
+    view = [v32 view];
     v34 = +[UIColor musicTintColor];
-    [v33 setTintColor:v34];
+    [view setTintColor:v34];
 
     [(MusicSettingsController *)self presentViewController:v32 animated:1 completion:0];
     objc_destroyWeak(&v92);
@@ -937,9 +937,9 @@ LABEL_31:
   else
   {
     v48 = +[MPCloudController sharedCloudController];
-    v49 = [v48 isEnablingCloudLibraryDestructive];
+    isEnablingCloudLibraryDestructive = [v48 isEnablingCloudLibraryDestructive];
 
-    v50 = v49 && self->_accountStatus.isMatchSubscribed && !self->_accountStatus.isSubscribed;
+    v50 = isEnablingCloudLibraryDestructive && self->_accountStatus.isMatchSubscribed && !self->_accountStatus.isSubscribed;
     v89[0] = _NSConcreteStackBlock;
     v89[1] = 3221225472;
     v89[2] = sub_B910;
@@ -974,7 +974,7 @@ LABEL_31:
       v85[2] = sub_BA30;
       v85[3] = &unk_25210;
       v85[4] = self;
-      v86 = v78;
+      v86 = specifierCopy;
       v63 = [UIAlertAction actionWithTitle:v62 style:1 handler:v85];
       [v57 addAction:v63];
 
@@ -990,7 +990,7 @@ LABEL_31:
 LABEL_33:
 }
 
-- (id)shouldAddPlaylistSongsToMyMusic:(id)a3
+- (id)shouldAddPlaylistSongsToMyMusic:(id)music
 {
   v3 = +[MPCloudController sharedCloudController];
   v4 = [v3 cloudAddToPlaylistBehavior] != &dword_0 + 2;
@@ -998,13 +998,13 @@ LABEL_33:
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setShouldAddPlaylistSongsToMyMusic:(id)a3 specifier:(id)a4
+- (void)setShouldAddPlaylistSongsToMyMusic:(id)music specifier:(id)specifier
 {
-  v5 = a3;
+  musicCopy = music;
   v6 = +[MPCloudController sharedCloudController];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [musicCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 1;
   }
@@ -1022,7 +1022,7 @@ LABEL_33:
   [v6 setCloudAddToPlaylistBehavior:v8 completionHandler:v9];
 }
 
-- (id)shouldAddFavoriteSongsToMyMusic:(id)a3
+- (id)shouldAddFavoriteSongsToMyMusic:(id)music
 {
   v3 = +[MPCloudController sharedCloudController];
   v4 = [v3 favoriteSongAddToLibraryBehavior] != &dword_0 + 2;
@@ -1030,13 +1030,13 @@ LABEL_33:
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setShouldAddFavoriteSongsToMyMusic:(id)a3 specifier:(id)a4
+- (void)setShouldAddFavoriteSongsToMyMusic:(id)music specifier:(id)specifier
 {
-  v5 = a3;
+  musicCopy = music;
   v6 = +[MPCloudController sharedCloudController];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [musicCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 1;
   }
@@ -1054,41 +1054,41 @@ LABEL_33:
   [v6 setCloudFavoriteSongAddToLibraryBehavior:v8 completionHandler:v9];
 }
 
-- (id)useListeningHistory:(id)a3
+- (id)useListeningHistory:(id)history
 {
   v3 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v4 = [v3 isFocusModePrivateListeningEnabled];
+  isFocusModePrivateListeningEnabled = [v3 isFocusModePrivateListeningEnabled];
 
-  if (v4)
+  if (isFocusModePrivateListeningEnabled)
   {
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 BOOLValue] ^ 1);
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [isFocusModePrivateListeningEnabled BOOLValue] ^ 1);
   }
 
   else
   {
     v6 = +[MPPlaybackUserDefaults standardUserDefaults];
-    v7 = [v6 isPrivateListeningEnabled];
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 BOOLValue] ^ 1);
+    isPrivateListeningEnabled = [v6 isPrivateListeningEnabled];
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [isPrivateListeningEnabled BOOLValue] ^ 1);
   }
 
   return v5;
 }
 
-- (void)setUseListeningHistory:(id)a3 specifier:(id)a4
+- (void)setUseListeningHistory:(id)history specifier:(id)specifier
 {
-  v5 = a3;
+  historyCopy = history;
   v6 = +[MPPlaybackUserDefaults standardUserDefaults];
   [v6 setFocusModePrivateListeningEnabled:0];
 
   v7 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v8 = [v5 BOOLValue];
+  bOOLValue = [historyCopy BOOLValue];
 
-  v9 = [NSNumber numberWithInt:v8 ^ 1];
+  v9 = [NSNumber numberWithInt:bOOLValue ^ 1];
   [v7 setPrivateListeningEnabled:v9];
 
-  v10 = [(MusicSettingsController *)self updateVisibleSpecifiers];
+  updateVisibleSpecifiers = [(MusicSettingsController *)self updateVisibleSpecifiers];
 
-  _ICSiriPostDynamiteClientStateChangedNotification(v10);
+  _ICSiriPostDynamiteClientStateChangedNotification(updateVisibleSpecifiers);
 }
 
 - (id)libraryFooterText
@@ -1119,18 +1119,18 @@ LABEL_33:
   return v6;
 }
 
-- (id)sharePlayTogetherDiscoverableEnabled:(id)a3
+- (id)sharePlayTogetherDiscoverableEnabled:(id)enabled
 {
   v3 = MRGroupSessionNearbyContactDiscoveryEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSharePlayTogetherDiscoverableEnabled:(id)a3 specifier:(id)a4
+- (void)setSharePlayTogetherDiscoverableEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _MRSetGroupSessionNearbyContactDiscoveryEnabled(v4);
+  _MRSetGroupSessionNearbyContactDiscoveryEnabled(bOOLValue);
 }
 
 - (id)motionGroupFooterText
@@ -1155,10 +1155,10 @@ LABEL_33:
   if (v4 == &dword_0 + 1)
   {
     v6 = +[ICDeviceInfo currentDeviceInfo];
-    v8 = [v6 hasWAPICapability];
+    hasWAPICapability = [v6 hasWAPICapability];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = v9;
-    if (v8)
+    if (hasWAPICapability)
     {
       v11 = @"MOTION_FOOTER_WLAN_ONLY";
     }
@@ -1195,14 +1195,14 @@ LABEL_13:
 - (id)cellularDataGroupFooterText
 {
   v3 = +[MPNetworkObserver sharedNetworkObserver];
-  v4 = [v3 isMusicCellularStreamingAllowed];
+  isMusicCellularStreamingAllowed = [v3 isMusicCellularStreamingAllowed];
 
   v5 = +[MPNetworkObserver sharedNetworkObserver];
-  v6 = [v5 isMusicCellularDownloadingAllowed];
+  isMusicCellularDownloadingAllowed = [v5 isMusicCellularDownloadingAllowed];
 
-  if (v4)
+  if (isMusicCellularStreamingAllowed)
   {
-    v7 = v6 == 0;
+    v7 = isMusicCellularDownloadingAllowed == 0;
   }
 
   else
@@ -1218,9 +1218,9 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!isMusicCellularStreamingAllowed)
   {
-    if (!v6)
+    if (!isMusicCellularDownloadingAllowed)
     {
       v9 = [NSBundle bundleForClass:objc_opt_class()];
       v10 = v9;
@@ -1260,14 +1260,14 @@ LABEL_15:
 - (id)listeningHistoryFooterText
 {
   v3 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v4 = [v3 isFocusModePrivateListeningEnabled];
+  isFocusModePrivateListeningEnabled = [v3 isFocusModePrivateListeningEnabled];
 
-  if (v4)
+  if (isFocusModePrivateListeningEnabled)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [isFocusModePrivateListeningEnabled BOOLValue];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = v6;
-    if (v5)
+    if (bOOLValue)
     {
       v8 = @"USE_LISTENING_HISTORY_OFF_FOCUS_ON_FOOTER";
     }
@@ -1282,15 +1282,15 @@ LABEL_15:
 
   else
   {
-    v9 = [(MusicSettingsController *)self allSpecifiers];
-    v7 = [v9 specifierForID:@"com.apple.Music:PrivateListening"];
+    allSpecifiers = [(MusicSettingsController *)self allSpecifiers];
+    v7 = [allSpecifiers specifierForID:@"com.apple.Music:PrivateListening"];
 
     v10 = [(MusicSettingsController *)self useListeningHistory:v7];
-    v11 = [v10 BOOLValue];
+    bOOLValue2 = [v10 BOOLValue];
 
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = v12;
-    if (v11)
+    if (bOOLValue2)
     {
       v14 = @"USE_LISTENING_HISTORY_ON_FOCUS_OFF_FOOTER";
     }
@@ -1306,7 +1306,7 @@ LABEL_15:
   return v15;
 }
 
-- (id)musicUsageLinkDetailDescription:(id)a3
+- (id)musicUsageLinkDetailDescription:(id)description
 {
   [(PSUsageBundleApp *)self->_musicUsageBundle totalSize];
 
@@ -1321,7 +1321,7 @@ LABEL_15:
   return v3;
 }
 
-- (id)songTransitionsDescription:(id)a3
+- (id)songTransitionsDescription:(id)description
 {
   v4 = +[MPPlaybackUserDefaults standardUserDefaults];
   v5 = [v4 areTransitionsEnabledForUserWithCatalogPlaybackCapability:self->_accountStatus.isFullCatalogPlaybackCapable];
@@ -1366,7 +1366,7 @@ LABEL_15:
   return v14;
 }
 
-- (void)_areTransitionsEnabledDidChangeNotification:(id)a3
+- (void)_areTransitionsEnabledDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1387,10 +1387,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)lyricsDescription:(id)a3
+- (id)lyricsDescription:(id)description
 {
-  v3 = [(MusicSettingsController *)self lyricsOptions];
-  if ([v3 containsObject:@"3"])
+  lyricsOptions = [(MusicSettingsController *)self lyricsOptions];
+  if ([lyricsOptions containsObject:@"3"])
   {
     v4 = @"transliteration";
   }
@@ -1403,26 +1403,26 @@ LABEL_15:
   return v4;
 }
 
-- (void)setTransliterationPreference:(id)a3 specifier:(id)a4
+- (void)setTransliterationPreference:(id)preference specifier:(id)specifier
 {
-  v10 = a3;
-  v5 = [(MusicSettingsController *)self lyricsOptions];
-  v6 = [v5 mutableCopy];
+  preferenceCopy = preference;
+  lyricsOptions = [(MusicSettingsController *)self lyricsOptions];
+  v6 = [lyricsOptions mutableCopy];
 
-  if ([v10 isEqualToString:@"default"])
+  if ([preferenceCopy isEqualToString:@"default"])
   {
     [v6 removeObject:@"3"];
   }
 
-  else if ([v10 isEqualToString:@"transliteration"])
+  else if ([preferenceCopy isEqualToString:@"transliteration"])
   {
     [v6 addObject:@"3"];
   }
 
   [v6 addObject:@"8"];
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.Music"];
-  v8 = [v6 allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  allObjects = [v6 allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
 
   [v7 setObject:v9 forKey:@"lyricsOptions"];
 }
@@ -1432,8 +1432,8 @@ LABEL_15:
   v2 = [NSBundle bundleForClass:objc_opt_class()];
   v3 = [v2 localizedStringForKey:@"HOME_SHARING_APPLE_ID_BUTTON" value:&stru_25A88 table:@"MusicSettings"];
   v4 = +[HSAccountStore defaultStore];
-  v5 = [v4 appleID];
-  v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
+  appleID = [v4 appleID];
+  v6 = [NSString stringWithFormat:@"%@ %@", v3, appleID];
 
   return v6;
 }
@@ -1442,19 +1442,19 @@ LABEL_15:
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"APPLE_MUSIC_FOOTER" value:&stru_25A88 table:@"MusicSettings"];
-  v5 = [(OBBundle *)self->_onBoardingBundle privacyFlow];
-  v6 = [v5 localizedTitle];
-  v7 = [NSString stringWithFormat:@"%@ %@", v4, v6];
+  privacyFlow = [(OBBundle *)self->_onBoardingBundle privacyFlow];
+  localizedTitle = [privacyFlow localizedTitle];
+  v7 = [NSString stringWithFormat:@"%@ %@", v4, localizedTitle];
 
   return v7;
 }
 
 - (id)musicFooterLinkText
 {
-  v2 = [(OBBundle *)self->_onBoardingBundle privacyFlow];
-  v3 = [v2 localizedTitle];
+  privacyFlow = [(OBBundle *)self->_onBoardingBundle privacyFlow];
+  localizedTitle = [privacyFlow localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (id)mliEntryPointFooter
@@ -1503,7 +1503,7 @@ LABEL_15:
   return [NSNumber numberWithBool:v3];
 }
 
-- (id)isDownloadPinsEnabled:(id)a3
+- (id)isDownloadPinsEnabled:(id)enabled
 {
   v3 = +[MPCloudController sharedCloudController];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isAutomaticDownloadsEnabledForPinnedLibraryEntities]);
@@ -1511,12 +1511,12 @@ LABEL_15:
   return v4;
 }
 
-- (void)setDownloadPinsEnabled:(id)a3 specifier:(id)a4
+- (void)setDownloadPinsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[MPCloudController sharedCloudController];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     [v5 enableAutomaticDownloadsForPinnedLibraryEntities];
   }
@@ -1527,7 +1527,7 @@ LABEL_15:
   }
 }
 
-- (id)isAutomaticDownloadsEnabled:(id)a3
+- (id)isAutomaticDownloadsEnabled:(id)enabled
 {
   v3 = +[MPCloudController sharedCloudController];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isAutomaticDownloadsEnabled]);
@@ -1535,12 +1535,12 @@ LABEL_15:
   return v4;
 }
 
-- (void)setAutomaticDownloadsEnabled:(id)a3 specifier:(id)a4
+- (void)setAutomaticDownloadsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[MPCloudController sharedCloudController];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     [v5 enableAutomaticDownloadsWithCompletionHandler:0];
   }
@@ -1553,16 +1553,16 @@ LABEL_15:
 
 - (id)cellularDataSettingsEnabled
 {
-  v2 = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularSettingsAvailable];
+  cellularSettingsAvailable = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularSettingsAvailable];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:cellularSettingsAvailable];
 }
 
 - (id)cellularDataEnabled
 {
-  v2 = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularDataEnabled];
+  cellularDataEnabled = [(MusicSettingsCellularDataController *)self->_cellularDataController cellularDataEnabled];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:cellularDataEnabled];
 }
 
 - (id)resetMediaLibraryEnabled
@@ -1599,14 +1599,14 @@ LABEL_15:
   return v4;
 }
 
-- (void)appleMusicSubscribe:(id)a3
+- (void)appleMusicSubscribe:(id)subscribe
 {
   v4 = [NSURL URLWithString:@"music://subscribe"];
   v3 = +[UIApplication sharedApplication];
   [v3 openURL:v4 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)mliEntryPointClicked:(id)a3
+- (void)mliEntryPointClicked:(id)clicked
 {
   v5 = [NSString stringWithFormat:@"music://%@", self->_mliDeepLink];
   v3 = [NSURL URLWithString:v5];
@@ -1614,7 +1614,7 @@ LABEL_15:
   [v4 openURL:v3 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)mliReviewClicked:(id)a3
+- (void)mliReviewClicked:(id)clicked
 {
   v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.Music"];
   v3 = [v6 stringForKey:@"mliReview"];
@@ -1623,7 +1623,7 @@ LABEL_15:
   [v5 openURL:v4 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)homeSharingSignInButtonAction:(id)a3
+- (void)homeSharingSignInButtonAction:(id)action
 {
   v4 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   [v4 setIsEphemeral:1];
@@ -1641,13 +1641,13 @@ LABEL_15:
   [v7 authenticateWithContext:v4 completion:v8];
 }
 
-- (void)homeSharingSignOutButtonAction:(id)a3
+- (void)homeSharingSignOutButtonAction:(id)action
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"HOME_SHARING_APPLE_ID" value:&stru_25A88 table:@"MusicSettings"];
   v6 = +[HSAccountStore defaultStore];
-  v7 = [v6 appleID];
-  v8 = [UIAlertController alertControllerWithTitle:v5 message:v7 preferredStyle:1];
+  appleID = [v6 appleID];
+  v8 = [UIAlertController alertControllerWithTitle:v5 message:appleID preferredStyle:1];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CANCEL" value:&stru_25A88 table:@"MusicSettings"];
@@ -1667,7 +1667,7 @@ LABEL_15:
   [(MusicSettingsController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)resetLibrary:(id)a3
+- (void)resetLibrary:(id)library
 {
   v4 = +[ML3MusicLibrary autoupdatingSharedLibraryPath];
   v5 = +[MLMediaLibraryService sharedMediaLibraryService];
@@ -1679,14 +1679,14 @@ LABEL_15:
   [v5 recreateDatabaseAtPath:v4 withCompletionHandler:v6];
 }
 
-- (void)showPrivacySplashSheet:(id)a3
+- (void)showPrivacySplashSheet:(id)sheet
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.applemusic"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1696,7 +1696,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1706,7 +1706,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudAddToPlaylistBehaviorDidChangeNotification:(id)a3
+- (void)_cloudAddToPlaylistBehaviorDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1716,7 +1716,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudServiceStatusCloudLibraryEnabledChangedNotification:(id)a3
+- (void)_cloudServiceStatusCloudLibraryEnabledChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1726,7 +1726,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudServiceStatusMatchStatusDidChangeNotification:(id)a3
+- (void)_cloudServiceStatusMatchStatusDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1736,7 +1736,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudServiceStatusSubscriptionAvailablilityChangedNotification:(id)a3
+- (void)_cloudServiceStatusSubscriptionAvailablilityChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1746,7 +1746,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cloudServiceStatusSubscriptionStatusChangedNotification:(id)a3
+- (void)_cloudServiceStatusSubscriptionStatusChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1756,7 +1756,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_managedConfigurationEffectiveSettingsDidChangeNotification:(id)a3
+- (void)_managedConfigurationEffectiveSettingsDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1766,7 +1766,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cellularDownloadsAllowedDidChangeNotification:(id)a3
+- (void)_cellularDownloadsAllowedDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1776,7 +1776,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_privateListeningEnabledDidChangeNotification:(id)a3
+- (void)_privateListeningEnabledDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1786,7 +1786,7 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_storefrontDidChangeNotification:(id)a3
+- (void)_storefrontDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1804,22 +1804,22 @@ LABEL_15:
   }
 
   v3 = +[MPCloudServiceStatusController sharedController];
-  v4 = [v3 matchStatus];
+  matchStatus = [v3 matchStatus];
   v5 = +[ICUserIdentityStore defaultIdentityStore];
   v6 = +[ICUserIdentity activeAccount];
   v7 = [v5 DSIDForUserIdentity:v6 outError:0];
 
   isManagedAppleID = self->_accountStatus.isManagedAppleID;
-  v30 = v4;
-  v8 = [v3 musicSubscriptionStatus];
-  v9 = [v8 hasCapability:128];
+  v30 = matchStatus;
+  musicSubscriptionStatus = [v3 musicSubscriptionStatus];
+  v9 = [musicSubscriptionStatus hasCapability:128];
 
-  v10 = v9 | (v4 >> 2) & 1;
-  v25 = [(ICCloudClient *)self->_cloudClient musicPurchasesDisabledForJaliscoLibrary];
-  v11 = [v3 musicSubscriptionStatus];
-  v12 = [v11 hasCapability:1];
+  musicSubscriptionStatus3 = v9 | (matchStatus >> 2) & 1;
+  musicPurchasesDisabledForJaliscoLibrary = [(ICCloudClient *)self->_cloudClient musicPurchasesDisabledForJaliscoLibrary];
+  musicSubscriptionStatus2 = [v3 musicSubscriptionStatus];
+  v12 = [musicSubscriptionStatus2 hasCapability:1];
 
-  if (v10 == 1)
+  if (musicSubscriptionStatus3 == 1)
   {
     v13 = +[MPCloudController sharedCloudController];
     if ([v13 isEnhancedAudioAvailable])
@@ -1844,14 +1844,14 @@ LABEL_15:
   v27 = v7 != 0;
   isMLIReviewEnabled = self->_accountStatus.isMLIReviewEnabled;
   v15 = +[HSAccountStore defaultStore];
-  v16 = [v15 groupID];
-  v26 = [v3 isSubscriptionAvailable];
-  v17 = [v3 isCloudLibraryEnabled];
+  groupID = [v15 groupID];
+  isSubscriptionAvailable = [v3 isSubscriptionAvailable];
+  isCloudLibraryEnabled = [v3 isCloudLibraryEnabled];
   v32 = v7;
-  if (!v10)
+  if (!musicSubscriptionStatus3)
   {
 LABEL_12:
-    v18 = v25 ^ 1;
+    v18 = musicPurchasesDisabledForJaliscoLibrary ^ 1;
     goto LABEL_13;
   }
 
@@ -1870,8 +1870,8 @@ LABEL_12:
 LABEL_13:
   if (v9)
   {
-    v10 = [v3 musicSubscriptionStatus];
-    v19 = [v10 statusType] == &dword_0 + 3;
+    musicSubscriptionStatus3 = [v3 musicSubscriptionStatus];
+    v19 = [musicSubscriptionStatus3 statusType] == &dword_0 + 3;
   }
 
   else
@@ -1880,12 +1880,12 @@ LABEL_13:
   }
 
   self->_accountStatus.isSignedIn = v27;
-  self->_accountStatus.isSignedInToHomeSharing = v16 != 0;
+  self->_accountStatus.isSignedInToHomeSharing = groupID != 0;
   self->_accountStatus.isMatchSubscribed = (v30 & 4) >> 2;
   self->_accountStatus.isSubscribed = v9;
   self->_accountStatus.isFullCatalogPlaybackCapable = BYTE4(v29);
-  self->_accountStatus.isSubscriptionAvailable = v26;
-  self->_accountStatus.isCloudLibraryEnabled = v17;
+  self->_accountStatus.isSubscriptionAvailable = isSubscriptionAvailable;
+  self->_accountStatus.isCloudLibraryEnabled = isCloudLibraryEnabled;
   self->_accountStatus.isShowingCloudLibrary = 1;
   self->_accountStatus.isManagedAppleID = isManagedAppleID;
   self->_accountStatus.isDownloadSectionVisible = v18;
@@ -1907,7 +1907,7 @@ LABEL_13:
   v38 = isManagedAppleID;
   v22 = v32;
   v36 = v22;
-  v37 = self;
+  selfCopy = self;
   [v20 getPropertiesForUserIdentity:v21 completionHandler:v35];
 
   if (v9)
@@ -1927,8 +1927,8 @@ LABEL_13:
 - (void)_determineMLIStatus
 {
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.Music"];
-  v4 = [(MusicSettingsController *)self allSpecifiers];
-  v5 = [v4 specifierForID:@"com.apple.Music:MLI"];
+  allSpecifiers = [(MusicSettingsController *)self allSpecifiers];
+  v5 = [allSpecifiers specifierForID:@"com.apple.Music:MLI"];
 
   [v3 doubleForKey:@"mliSessionStartDate"];
   if (v6 != 0.0 && self->_mliReviewDurationInDays)
@@ -1985,13 +1985,13 @@ LABEL_13:
   [v2 setValue:0 forKey:@"mliDidCompleteTransfer"];
 }
 
-- (void)_debugTap:(id)a3
+- (void)_debugTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 sf_isInternalInstall];
+  sf_isInternalInstall = [v5 sf_isInternalInstall];
 
-  if (v6 && [v4 state] == &dword_0 + 3)
+  if (sf_isInternalInstall && [tapCopy state] == &dword_0 + 3)
   {
     v7 = +[UIDevice currentDevice];
     v8 = +[UIAlertController alertControllerWithTitle:message:preferredStyle:](UIAlertController, "alertControllerWithTitle:message:preferredStyle:", @"Override account status", 0, [v7 sf_isiPad]);
@@ -2122,19 +2122,19 @@ LABEL_13:
   }
 }
 
-- (void)_internalTap:(id)a3
+- (void)_internalTap:(id)tap
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 sf_isInternalInstall];
+  sf_isInternalInstall = [v4 sf_isInternalInstall];
 
-  if (v5)
+  if (sf_isInternalInstall)
   {
     self->_showInternalSettings ^= 1u;
     [(MusicSettingsController *)self updateVisibleSpecifiers];
     if (self->_showInternalSettings)
     {
-      v6 = [(MusicSettingsController *)self specifiers];
-      v7 = [v6 specifierForID:@"com.apple.Music:InternalGroup"];
+      specifiers = [(MusicSettingsController *)self specifiers];
+      v7 = [specifiers specifierForID:@"com.apple.Music:InternalGroup"];
       v8 = [(MusicSettingsController *)self indexPathForSpecifier:v7];
 
       [*&self->MusicSettingsListViewController_opaque[OBJC_IVAR___PSListController__table] scrollToRowAtIndexPath:v8 atScrollPosition:1 animated:1];
@@ -2144,22 +2144,22 @@ LABEL_13:
 
 - (id)shouldShowRegulatorySection
 {
-  v2 = [&off_27A38 allKeys];
+  allKeys = [&off_27A38 allKeys];
   v3 = +[NSLocale currentLocale];
-  v4 = [v3 regionCode];
-  v5 = [v4 lowercaseString];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 containsObject:v5]);
+  regionCode = [v3 regionCode];
+  lowercaseString = [regionCode lowercaseString];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [allKeys containsObject:lowercaseString]);
 
   return v6;
 }
 
-- (void)showRegulatoryWebPage:(id)a3
+- (void)showRegulatoryWebPage:(id)page
 {
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 regionCode];
-  v11 = [v5 lowercaseString];
+  regionCode = [v4 regionCode];
+  lowercaseString = [regionCode lowercaseString];
 
-  v6 = [&off_27A38 objectForKeyedSubscript:v11];
+  v6 = [&off_27A38 objectForKeyedSubscript:lowercaseString];
   if (v6)
   {
     v7 = [NSString stringWithFormat:@"https://www.apple.com/%@/legal/online-safety/", v6];

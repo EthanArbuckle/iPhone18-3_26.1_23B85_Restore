@@ -1,25 +1,25 @@
 @interface HealthAppAnalyticsStore
-- (HealthAppAnalyticsStore)initWithHealthStore:(id)a3;
-- (void)setUserDidAccept:(BOOL)a3 agreement:(id)a4 version:(int64_t)a5 completion:(id)a6;
-- (void)setUserDidAccept:(BOOL)a3 currentAgreement:(id)a4 completion:(id)a5;
+- (HealthAppAnalyticsStore)initWithHealthStore:(id)store;
+- (void)setUserDidAccept:(BOOL)accept agreement:(id)agreement version:(int64_t)version completion:(id)completion;
+- (void)setUserDidAccept:(BOOL)accept currentAgreement:(id)agreement completion:(id)completion;
 @end
 
 @implementation HealthAppAnalyticsStore
 
-- (HealthAppAnalyticsStore)initWithHealthStore:(id)a3
+- (HealthAppAnalyticsStore)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HealthAppAnalyticsStore;
   v6 = [(HealthAppAnalyticsStore *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
     v9 = HealthAppAnalyticsStoreTaskServerIdentifier;
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 initWithHealthStore:v5 taskIdentifier:v9 exportedObject:v7 taskUUID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 initWithHealthStore:storeCopy taskIdentifier:v9 exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v11;
   }
@@ -27,20 +27,20 @@
   return v7;
 }
 
-- (void)setUserDidAccept:(BOOL)a3 agreement:(id)a4 version:(int64_t)a5 completion:(id)a6
+- (void)setUserDidAccept:(BOOL)accept agreement:(id)agreement version:(int64_t)version completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  agreementCopy = agreement;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__HealthAppAnalyticsStore_setUserDidAccept_agreement_version_completion___block_invoke;
   v17[3] = &unk_2796B5130;
-  v22 = a3;
-  v21 = a5;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
+  acceptCopy = accept;
+  versionCopy = version;
+  v18 = agreementCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__HealthAppAnalyticsStore_setUserDidAccept_agreement_version_completion___block_invoke_4;
@@ -48,7 +48,7 @@
   v15[4] = self;
   v16 = v20;
   v13 = v20;
-  v14 = v10;
+  v14 = agreementCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
@@ -98,19 +98,19 @@ void __73__HealthAppAnalyticsStore_setUserDidAccept_agreement_version_completion
   dispatch_async(v4, v7);
 }
 
-- (void)setUserDidAccept:(BOOL)a3 currentAgreement:(id)a4 completion:(id)a5
+- (void)setUserDidAccept:(BOOL)accept currentAgreement:(id)agreement completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  agreementCopy = agreement;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__HealthAppAnalyticsStore_setUserDidAccept_currentAgreement_completion___block_invoke;
   v15[3] = &unk_2796B51A8;
-  v19 = a3;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
+  acceptCopy = accept;
+  v16 = agreementCopy;
+  selfCopy = self;
+  v18 = completionCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HealthAppAnalyticsStore_setUserDidAccept_currentAgreement_completion___block_invoke_4;
@@ -118,7 +118,7 @@ void __73__HealthAppAnalyticsStore_setUserDidAccept_agreement_version_completion
   v13[4] = self;
   v14 = v18;
   v11 = v18;
-  v12 = v8;
+  v12 = agreementCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 

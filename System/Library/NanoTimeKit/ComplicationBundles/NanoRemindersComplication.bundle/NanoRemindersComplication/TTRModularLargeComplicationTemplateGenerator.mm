@@ -2,12 +2,12 @@
 - (CLKComplicationTemplate)lockedTemplate;
 - (CLKComplicationTemplate)privacyTemplate;
 - (CLKComplicationTemplate)templateForNoScheduledReminders;
-- (id)_headerTextProviderForReminder:(id)a3;
-- (id)_templateForOverdueCount:(int64_t)a3;
-- (id)_templateForReminder:(id)a3;
-- (id)_templateWithBody1TextProvider:(id)a3;
-- (id)_templateWithHeaderTextProvider:(id)a3 body1TextProvider:(id)a4;
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)_headerTextProviderForReminder:(id)reminder;
+- (id)_templateForOverdueCount:(int64_t)count;
+- (id)_templateForReminder:(id)reminder;
+- (id)_templateWithBody1TextProvider:(id)provider;
+- (id)_templateWithHeaderTextProvider:(id)provider body1TextProvider:(id)textProvider;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRModularLargeComplicationTemplateGenerator
@@ -32,27 +32,27 @@
   return v6;
 }
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 overdueCount];
-  v6 = [v4 representativeReminder];
+  entryCopy = entry;
+  overdueCount = [entryCopy overdueCount];
+  representativeReminder = [entryCopy representativeReminder];
 
-  if (v6)
+  if (representativeReminder)
   {
-    v7 = [(TTRModularLargeComplicationTemplateGenerator *)self _templateForReminder:v6];
+    v7 = [(TTRModularLargeComplicationTemplateGenerator *)self _templateForReminder:representativeReminder];
   }
 
   else
   {
-    if (v5 < 1)
+    if (overdueCount < 1)
     {
       [(TTRModularLargeComplicationTemplateGenerator *)self templateForNoScheduledReminders];
     }
 
     else
     {
-      [(TTRModularLargeComplicationTemplateGenerator *)self _templateForOverdueCount:v5];
+      [(TTRModularLargeComplicationTemplateGenerator *)self _templateForOverdueCount:overdueCount];
     }
     v7 = ;
   }
@@ -62,11 +62,11 @@
   return v8;
 }
 
-- (id)_templateWithHeaderTextProvider:(id)a3 body1TextProvider:(id)a4
+- (id)_templateWithHeaderTextProvider:(id)provider body1TextProvider:(id)textProvider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CLKComplicationTemplateModularLargeStandardBody alloc] initWithHeaderImageProvider:0 headerTextProvider:v6 body1TextProvider:v5];
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v7 = [[CLKComplicationTemplateModularLargeStandardBody alloc] initWithHeaderImageProvider:0 headerTextProvider:providerCopy body1TextProvider:textProviderCopy];
 
   v8 = +[TTRComplicationAsset tintColor];
   [v7 setTintColor:v8];
@@ -74,55 +74,55 @@
   return v7;
 }
 
-- (id)_templateWithBody1TextProvider:(id)a3
+- (id)_templateWithBody1TextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = +[CLKTextProvider ttr_remindersAppNameTextProvider];
-  v6 = [(TTRModularLargeComplicationTemplateGenerator *)self _templateWithHeaderTextProvider:v5 body1TextProvider:v4];
+  v6 = [(TTRModularLargeComplicationTemplateGenerator *)self _templateWithHeaderTextProvider:v5 body1TextProvider:providerCopy];
 
   return v6;
 }
 
-- (id)_templateForOverdueCount:(int64_t)a3
+- (id)_templateForOverdueCount:(int64_t)count
 {
   v5 = RemindersUICoreBundleGet();
   v6 = [v5 localizedStringForKey:@"COMPLICATION_%@ Overdue" value:@"%@ Overdue" table:@"PluralLocalizable"];
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:count];
   v8 = [CLKTextProvider textProviderWithFormat:v6, v7];
   v9 = [(TTRModularLargeComplicationTemplateGenerator *)self _templateWithBody1TextProvider:v8];
 
   return v9;
 }
 
-- (id)_headerTextProviderForReminder:(id)a3
+- (id)_headerTextProviderForReminder:(id)reminder
 {
-  v3 = a3;
-  v4 = [v3 dueDate];
-  v5 = [v4 precision];
+  reminderCopy = reminder;
+  dueDate = [reminderCopy dueDate];
+  precision = [dueDate precision];
 
-  if (v5 == &dword_0 + 1)
+  if (precision == &dword_0 + 1)
   {
     v6 = TTRComplicationCalendarCreate();
-    v4 = [v3 makeDueTimeTextProviderUsingCalendar:v6 dropMinutesForRoundHours:0];
+    dueDate = [reminderCopy makeDueTimeTextProviderUsingCalendar:v6 dropMinutesForRoundHours:0];
   }
 
-  else if (!v5)
+  else if (!precision)
   {
-    v4 = +[CLKTextProvider ttr_remindersTodayTextProvider];
+    dueDate = +[CLKTextProvider ttr_remindersTodayTextProvider];
   }
 
-  return v4;
+  return dueDate;
 }
 
-- (id)_templateForReminder:(id)a3
+- (id)_templateForReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = [(TTRModularLargeComplicationTemplateGenerator *)self _headerTextProviderForReminder:v4];
-  v6 = [v4 title];
+  reminderCopy = reminder;
+  v5 = [(TTRModularLargeComplicationTemplateGenerator *)self _headerTextProviderForReminder:reminderCopy];
+  title = [reminderCopy title];
 
-  if (v6)
+  if (title)
   {
-    v7 = v6;
+    v7 = title;
   }
 
   else

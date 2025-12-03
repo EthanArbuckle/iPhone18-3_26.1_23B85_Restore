@@ -1,31 +1,31 @@
 @interface CADCompoundFilter
 - (BOOL)validate;
-- (CADCompoundFilter)initWithCoder:(id)a3;
-- (CADCompoundFilter)initWithFilters:(id)a3 operation:(int64_t)a4;
-- (id)extendWhereClause:(id)a3 usingOperation:(int64_t)a4 withValues:(id)a5 andTypes:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (CADCompoundFilter)initWithCoder:(id)coder;
+- (CADCompoundFilter)initWithFilters:(id)filters operation:(int64_t)operation;
+- (id)extendWhereClause:(id)clause usingOperation:(int64_t)operation withValues:(id)values andTypes:(id)types;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADCompoundFilter
 
-- (CADCompoundFilter)initWithFilters:(id)a3 operation:(int64_t)a4
+- (CADCompoundFilter)initWithFilters:(id)filters operation:(int64_t)operation
 {
-  v6 = a3;
+  filtersCopy = filters;
   v11.receiver = self;
   v11.super_class = CADCompoundFilter;
   v7 = [(CADCompoundFilter *)&v11 init];
   if (v7)
   {
-    if (![v6 count])
+    if (![filtersCopy count])
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"filters must contain at least one value"];
     }
 
-    v8 = [v6 copy];
+    v8 = [filtersCopy copy];
     filters = v7->_filters;
     v7->_filters = v8;
 
-    v7->_operation = a4;
+    v7->_operation = operation;
   }
 
   return v7;
@@ -85,18 +85,18 @@ LABEL_12:
   return v8;
 }
 
-- (id)extendWhereClause:(id)a3 usingOperation:(int64_t)a4 withValues:(id)a5 andTypes:(id)a6
+- (id)extendWhereClause:(id)clause usingOperation:(int64_t)operation withValues:(id)values andTypes:(id)types
 {
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  clauseCopy = clause;
+  valuesCopy = values;
+  typesCopy = types;
   if (![(NSArray *)self->_filters count])
   {
     [CADCompoundFilter extendWhereClause:a2 usingOperation:self withValues:? andTypes:?];
   }
 
-  v14 = _CADPropertySearchPredicateExtendWhereClause(v11, a4, @"(");
+  v14 = _CADPropertySearchPredicateExtendWhereClause(clauseCopy, operation, @"(");
 
   v15 = self->_operation != 0;
   v26 = 0u;
@@ -121,7 +121,7 @@ LABEL_12:
           objc_enumerationMutation(v16);
         }
 
-        v14 = [*(*(&v26 + 1) + 8 * v21) extendWhereClause:v22 usingOperation:v20 withValues:v12 andTypes:{v13, v26}];
+        v14 = [*(*(&v26 + 1) + 8 * v21) extendWhereClause:v22 usingOperation:v20 withValues:valuesCopy andTypes:{typesCopy, v26}];
 
         ++v21;
         v20 = v15;
@@ -143,23 +143,23 @@ LABEL_12:
   return v23;
 }
 
-- (CADCompoundFilter)initWithCoder:(id)a3
+- (CADCompoundFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CADCompoundFilter;
-  v5 = [(CADFilter *)&v11 initWithCoder:v4];
+  v5 = [(CADFilter *)&v11 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
   v6 = _CADPropertySearchPredicateGetAllowedFilterTypes();
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"filters"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"filters"];
   filters = v5->_filters;
   v5->_filters = v7;
 
-  v5->_operation = [v4 decodeIntegerForKey:@"operation"];
+  v5->_operation = [coderCopy decodeIntegerForKey:@"operation"];
   if (![(CADCompoundFilter *)v5 validate])
   {
     v9 = 0;
@@ -174,14 +174,14 @@ LABEL_3:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CADCompoundFilter;
-  v4 = a3;
-  [(CADFilter *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_filters forKey:{@"filters", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_operation forKey:@"operation"];
+  coderCopy = coder;
+  [(CADFilter *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_filters forKey:{@"filters", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_operation forKey:@"operation"];
 }
 
 - (void)extendWhereClause:(uint64_t)a1 usingOperation:(uint64_t)a2 withValues:andTypes:.cold.1(uint64_t a1, uint64_t a2)

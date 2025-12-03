@@ -1,34 +1,34 @@
 @interface _UISecureController
-- (BOOL)slotView:(id)a3 shouldSetFinalContentForStyle:(id)a4 tag:(id)a5;
+- (BOOL)slotView:(id)view shouldSetFinalContentForStyle:(id)style tag:(id)tag;
 - (CGSize)intrinsicContentSize;
-- (_UISecureController)initWithCategory:(id)a3 control:(id)a4;
-- (id)_synchronousRemoteObjectProxyWithSelector:(uint64_t)a1;
-- (id)currentTagForSlotView:(id)a3;
-- (id)slotView:(id)a3 replacementForFinalContent:(id)a4 style:(id)a5 tag:(id)a6;
-- (void)_updateSizeSpec:(double)a3 intrinsicContentSize:(double)a4;
+- (_UISecureController)initWithCategory:(id)category control:(id)control;
+- (id)_synchronousRemoteObjectProxyWithSelector:(uint64_t)selector;
+- (id)currentTagForSlotView:(id)view;
+- (id)slotView:(id)view replacementForFinalContent:(id)content style:(id)style tag:(id)tag;
+- (void)_updateSizeSpec:(double)spec intrinsicContentSize:(double)size;
 - (void)dealloc;
-- (void)setBaseBackgroundColor:(CGColor *)a3;
-- (void)setBaseForegroundColor:(CGColor *)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCornerStyle:(int64_t)a3;
-- (void)setImagePlacement:(unint64_t)a3;
+- (void)setBaseBackgroundColor:(CGColor *)color;
+- (void)setBaseForegroundColor:(CGColor *)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setCornerStyle:(int64_t)style;
+- (void)setImagePlacement:(unint64_t)placement;
 - (void)updateSlotView;
 - (void)updateState;
 @end
 
 @implementation _UISecureController
 
-- (_UISecureController)initWithCategory:(id)a3 control:(id)a4
+- (_UISecureController)initWithCategory:(id)category control:(id)control
 {
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  controlCopy = control;
   v14.receiver = self;
   v14.super_class = _UISecureController;
   v9 = [(_UISecureController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_category, a3);
+    objc_storeStrong(&v9->_category, category);
     v10->_cornerStyle = 2;
     v10->_cornerRadius = 0.0;
     v10->_baseForegroundColor = 0;
@@ -36,7 +36,7 @@
     v10->_imagePlacement = 2;
     v10->_enchanted = 0;
     v10->_intrinsicContentSize = *MEMORY[0x1E695F060];
-    objc_storeWeak(&v10->_secureControl, v8);
+    objc_storeWeak(&v10->_secureControl, controlCopy);
     objc_storeWeak(&v10->_slotView, 0);
     lastSizeSpec = v10->_lastSizeSpec;
     v10->_lastSizeSpec = 0;
@@ -90,18 +90,18 @@
       if ([v4 isEnabled])
       {
         v5 = objc_loadWeakRetained(&self->_secureControl);
-        v6 = [v5 isInternallyEnabled];
+        isInternallyEnabled = [v5 isInternallyEnabled];
 
-        if (v6)
+        if (isInternallyEnabled)
         {
           v7 = objc_loadWeakRetained(&self->_secureControl);
-          v8 = [v7 traitCollection];
-          v9 = [v8 userInterfaceStyle] == 2;
+          traitCollection = [v7 traitCollection];
+          v9 = [traitCollection userInterfaceStyle] == 2;
 
           v10 = objc_loadWeakRetained(&self->_secureControl);
-          v11 = [v10 isHighlighted];
+          isHighlighted = [v10 isHighlighted];
           v12 = dbl_18A674F10[v9];
-          if (!v11)
+          if (!isHighlighted)
           {
             v12 = 1.0;
           }
@@ -123,68 +123,68 @@ LABEL_10:
   }
 }
 
-- (void)setCornerStyle:(int64_t)a3
+- (void)setCornerStyle:(int64_t)style
 {
-  if (self->_cornerStyle != a3)
+  if (self->_cornerStyle != style)
   {
-    self->_cornerStyle = a3;
+    self->_cornerStyle = style;
     WeakRetained = objc_loadWeakRetained(&self->_secureControl);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     WeakRetained = objc_loadWeakRetained(&self->_secureControl);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (void)setBaseForegroundColor:(CGColor *)a3
+- (void)setBaseForegroundColor:(CGColor *)color
 {
   baseForegroundColor = self->_baseForegroundColor;
-  if (baseForegroundColor != a3)
+  if (baseForegroundColor != color)
   {
     CGColorRelease(baseForegroundColor);
-    self->_baseForegroundColor = CGColorRetain(a3);
+    self->_baseForegroundColor = CGColorRetain(color);
     WeakRetained = objc_loadWeakRetained(&self->_secureControl);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (void)setBaseBackgroundColor:(CGColor *)a3
+- (void)setBaseBackgroundColor:(CGColor *)color
 {
   baseBackgroundColor = self->_baseBackgroundColor;
-  if (baseBackgroundColor != a3)
+  if (baseBackgroundColor != color)
   {
     CGColorRelease(baseBackgroundColor);
-    self->_baseBackgroundColor = CGColorRetain(a3);
+    self->_baseBackgroundColor = CGColorRetain(color);
     WeakRetained = objc_loadWeakRetained(&self->_secureControl);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (void)setImagePlacement:(unint64_t)a3
+- (void)setImagePlacement:(unint64_t)placement
 {
-  if (self->_imagePlacement != a3)
+  if (self->_imagePlacement != placement)
   {
-    self->_imagePlacement = a3;
+    self->_imagePlacement = placement;
     WeakRetained = objc_loadWeakRetained(&self->_secureControl);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (id)_synchronousRemoteObjectProxyWithSelector:(uint64_t)a1
+- (id)_synchronousRemoteObjectProxyWithSelector:(uint64_t)selector
 {
-  if (a1)
+  if (selector)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v4 = [WeakRetained synchronousSecureControlService];
+    WeakRetained = objc_loadWeakRetained((selector + 8));
+    synchronousSecureControlService = [WeakRetained synchronousSecureControlService];
 
-    v5 = objc_getAssociatedObject(v4, a2);
+    v5 = objc_getAssociatedObject(synchronousSecureControlService, a2);
     v6 = v5;
     if (v5)
     {
@@ -204,8 +204,8 @@ LABEL_10:
       v9[2] = __65___UISecureController__synchronousRemoteObjectProxyWithSelector___block_invoke;
       v9[3] = &unk_1E7100678;
       v9[4] = &v10;
-      [v4 a2];
-      objc_setAssociatedObject(v4, a2, v11[5], 1);
+      [synchronousSecureControlService a2];
+      objc_setAssociatedObject(synchronousSecureControlService, a2, v11[5], 1);
       v7 = v11[5];
       _Block_object_dispose(&v10, 8);
     }
@@ -219,20 +219,20 @@ LABEL_10:
   return v7;
 }
 
-- (void)_updateSizeSpec:(double)a3 intrinsicContentSize:(double)a4
+- (void)_updateSizeSpec:(double)spec intrinsicContentSize:(double)size
 {
   v9 = a2;
-  if (a1)
+  if (self)
   {
-    objc_storeStrong((a1 + 24), a2);
-    *(a1 + 88) = a3;
-    *(a1 + 96) = a4;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    objc_storeStrong((self + 24), a2);
+    *(self + 88) = spec;
+    *(self + 96) = size;
+    WeakRetained = objc_loadWeakRetained((self + 8));
     [WeakRetained invalidateIntrinsicContentSize];
   }
 }
 
-- (id)currentTagForSlotView:(id)a3
+- (id)currentTagForSlotView:(id)view
 {
   v4 = objc_alloc(MEMORY[0x1E69DEC98]);
   cornerStyle = self->_cornerStyle;
@@ -248,14 +248,14 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)slotView:(id)a3 shouldSetFinalContentForStyle:(id)a4 tag:(id)a5
+- (BOOL)slotView:(id)view shouldSetFinalContentForStyle:(id)style tag:(id)tag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([(_UISSecureControlSizeSpec *)self->_lastSizeSpec isEquivalentToStyle:v9 tag:v10]& 1) == 0)
+  viewCopy = view;
+  styleCopy = style;
+  tagCopy = tag;
+  if (([(_UISSecureControlSizeSpec *)self->_lastSizeSpec isEquivalentToStyle:styleCopy tag:tagCopy]& 1) == 0)
   {
-    v11 = [MEMORY[0x1E69DEC90] specWithStyle:v9 tag:v10];
+    v11 = [MEMORY[0x1E69DEC90] specWithStyle:styleCopy tag:tagCopy];
     objc_initWeak(&location, self);
     v12 = [(_UISecureController *)self _synchronousRemoteObjectProxyWithSelector:?];
     if (self->_shouldLayoutSynchronously)
@@ -289,32 +289,32 @@ LABEL_10:
     objc_destroyWeak(&location);
   }
 
-  [v10 size];
+  [tagCopy size];
   v16 = v15 > 0.0 && v14 > 0.0;
 
   return v16;
 }
 
-- (id)slotView:(id)a3 replacementForFinalContent:(id)a4 style:(id)a5 tag:(id)a6
+- (id)slotView:(id)view replacementForFinalContent:(id)content style:(id)style tag:(id)tag
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v9)
+  contentCopy = content;
+  styleCopy = style;
+  tagCopy = tag;
+  if (contentCopy)
   {
     self->_enchanted = 1;
     [(_UISecureController *)self updateState];
-    v12 = v9;
+    v12 = contentCopy;
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x1E69DEC08]);
-    [v11 size];
-    v16 = [v13 initWithRectSize:objc_msgSend(v10 fillColor:{"tintColor"), v14, v15}];
+    [tagCopy size];
+    v16 = [v13 initWithRectSize:objc_msgSend(styleCopy fillColor:{"tintColor"), v14, v15}];
     self->_enchanted = 0;
     [(_UISecureController *)self updateState];
-    v12 = [MEMORY[0x1E69DEC68] contentWithDrawing:v16 style:v10];
+    v12 = [MEMORY[0x1E69DEC68] contentWithDrawing:v16 style:styleCopy];
   }
 
   return v12;

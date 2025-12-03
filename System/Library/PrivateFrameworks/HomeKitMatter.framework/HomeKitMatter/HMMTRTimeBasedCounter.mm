@@ -1,7 +1,7 @@
 @interface HMMTRTimeBasedCounter
-- (BOOL)_startNewCountingPeriod:(double)a3;
+- (BOOL)_startNewCountingPeriod:(double)period;
 - (BOOL)incrementOrReset;
-- (id)initTimeBasedCounter:(unint64_t)a3;
+- (id)initTimeBasedCounter:(unint64_t)counter;
 - (void)resetTimeBasedCounter;
 @end
 
@@ -14,7 +14,7 @@
   [(HMMTRTimeBasedCounter *)self setCount:0];
   [(HMMTRTimeBasedCounter *)self setStartTime:0.0];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -29,11 +29,11 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_startNewCountingPeriod:(double)a3
+- (BOOL)_startNewCountingPeriod:(double)period
 {
   os_unfair_lock_assert_owner(&self->_timeBasedCounterlock);
   [(HMMTRTimeBasedCounter *)self setCount:1];
-  [(HMMTRTimeBasedCounter *)self setStartTime:a3];
+  [(HMMTRTimeBasedCounter *)self setStartTime:period];
   return 1;
 }
 
@@ -48,12 +48,12 @@
   {
     v6 = [(HMMTRTimeBasedCounter *)self _startNewCountingPeriod:v4];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      [(HMMTRTimeBasedCounter *)v8 startTime];
+      [(HMMTRTimeBasedCounter *)selfCopy startTime];
       v28 = 138543618;
       v29 = v10;
       v30 = 2048;
@@ -70,7 +70,7 @@
     if (v4 - v12 >= 86400.0)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -81,7 +81,7 @@
       }
 
       objc_autoreleasePoolPop(v18);
-      v6 = [(HMMTRTimeBasedCounter *)v19 _startNewCountingPeriod:v4];
+      v6 = [(HMMTRTimeBasedCounter *)selfCopy2 _startNewCountingPeriod:v4];
     }
 
     else
@@ -91,7 +91,7 @@
       {
         [(HMMTRTimeBasedCounter *)self setCount:[(HMMTRTimeBasedCounter *)self count]+ 1];
         v22 = objc_autoreleasePoolPush();
-        v23 = self;
+        selfCopy3 = self;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
@@ -99,7 +99,7 @@
           v28 = 138543618;
           v29 = v25;
           v30 = 2048;
-          v31 = [(HMMTRTimeBasedCounter *)v23 count];
+          v31 = [(HMMTRTimeBasedCounter *)selfCopy3 count];
           _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Counter incremented to %ld", &v28, 0x16u);
         }
 
@@ -110,7 +110,7 @@
       else
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy4 = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -118,9 +118,9 @@
           v28 = 138544130;
           v29 = v17;
           v30 = 2048;
-          v31 = [(HMMTRTimeBasedCounter *)v15 count];
+          v31 = [(HMMTRTimeBasedCounter *)selfCopy4 count];
           v32 = 2048;
-          v33 = [(HMMTRTimeBasedCounter *)v15 threshold];
+          threshold = [(HMMTRTimeBasedCounter *)selfCopy4 threshold];
           v34 = 2048;
           v35 = 24;
           _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Counter =  %ld, reached its max (%ld) in last %llu hours", &v28, 0x2Au);
@@ -137,7 +137,7 @@
   return v6;
 }
 
-- (id)initTimeBasedCounter:(unint64_t)a3
+- (id)initTimeBasedCounter:(unint64_t)counter
 {
   v5.receiver = self;
   v5.super_class = HMMTRTimeBasedCounter;
@@ -146,7 +146,7 @@
   {
     *(result + 1) = 0;
     *(result + 2) = 0;
-    *(result + 3) = a3;
+    *(result + 3) = counter;
     *(result + 4) = 0;
   }
 

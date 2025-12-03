@@ -1,5 +1,5 @@
 @interface AALoginAccountRequest
-- (AALoginAccountRequest)initWithAccount:(id)a3 delegates:(id)a4;
+- (AALoginAccountRequest)initWithAccount:(id)account delegates:(id)delegates;
 - (id)urlRequest;
 - (id)urlString;
 @end
@@ -9,23 +9,23 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 loginAccountURL];
+  loginAccountURL = [v2 loginAccountURL];
 
-  return v3;
+  return loginAccountURL;
 }
 
-- (AALoginAccountRequest)initWithAccount:(id)a3 delegates:(id)a4
+- (AALoginAccountRequest)initWithAccount:(id)account delegates:(id)delegates
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  delegatesCopy = delegates;
   v12.receiver = self;
   v12.super_class = AALoginAccountRequest;
   v9 = [(AALoginAccountRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_delegatesInfo, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_delegatesInfo, delegates);
   }
 
   return v10;
@@ -36,14 +36,14 @@
   v28 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = AALoginAccountRequest;
-  v3 = [(AARequest *)&v21 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v21 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v20.receiver = self;
   v20.super_class = AALoginAccountRequest;
-  v5 = [(AARequest *)&v20 bodyDictionary];
-  v6 = [v5 mutableCopy];
+  bodyDictionary = [(AARequest *)&v20 bodyDictionary];
+  v6 = [bodyDictionary mutableCopy];
 
   [v6 setValue:self->_delegatesInfo forKey:@"delegates"];
   serverInfo = self->_serverInfo;
@@ -61,12 +61,12 @@
   [v4 aa_addDeviceProvisioningInfoHeadersWithAccount:self->_account];
   [v4 aa_addMultiUserDeviceHeaderIfEnabled];
   [v4 ak_addDeviceConfigurationModeHeader];
-  v10 = [(ACAccount *)self->_account _aa_appProvidedContext];
+  _aa_appProvidedContext = [(ACAccount *)self->_account _aa_appProvidedContext];
 
-  if (v10)
+  if (_aa_appProvidedContext)
   {
-    v11 = [(ACAccount *)self->_account _aa_appProvidedContext];
-    [v4 ak_addAppProvidedContext:v11];
+    _aa_appProvidedContext2 = [(ACAccount *)self->_account _aa_appProvidedContext];
+    [v4 ak_addAppProvidedContext:_aa_appProvidedContext2];
 
     [(ACAccount *)self->_account _aa_setAppProvidedContext:0];
   }
@@ -76,8 +76,8 @@
   {
     v13 = [v4 description];
     v14 = objc_opt_class();
-    v15 = [v4 allHTTPHeaderFields];
-    v16 = [v14 redactedHeadersFromHTTPHeaders:v15];
+    allHTTPHeaderFields = [v4 allHTTPHeaderFields];
+    v16 = [v14 redactedHeadersFromHTTPHeaders:allHTTPHeaderFields];
     v17 = [(AARequest *)self redactedBodyStringWithPropertyList:v6];
     *buf = 138412802;
     v23 = v13;

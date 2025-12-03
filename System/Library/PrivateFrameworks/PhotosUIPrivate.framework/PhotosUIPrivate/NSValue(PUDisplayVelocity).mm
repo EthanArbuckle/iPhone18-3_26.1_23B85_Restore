@@ -8,11 +8,11 @@
 - (double)pu_displayVelocityValue
 {
   memset(v4, 0, sizeof(v4));
-  v2 = strcmp([a1 objCType], "{PUDisplayVelocity=dddd}");
+  v2 = strcmp([self objCType], "{PUDisplayVelocity=dddd}");
   result = 0.0;
   if (!v2)
   {
-    [a1 getValue:{v4, 0.0, 0.0, 0.0, 0.0}];
+    [self getValue:{v4, 0.0, 0.0, 0.0, 0.0}];
     return *v4;
   }
 
@@ -21,7 +21,7 @@
 
 + (id)pu_valueWithDisplayVelocity:()PUDisplayVelocity
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;

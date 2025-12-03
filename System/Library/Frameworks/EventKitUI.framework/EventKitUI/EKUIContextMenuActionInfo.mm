@@ -1,14 +1,14 @@
 @interface EKUIContextMenuActionInfo
-- (EKUIContextMenuActionInfo)initWithAction:(unint64_t)a3 showsInEditMenu:(BOOL)a4 group:(unint64_t)a5 positionInGroup:(unint64_t)a6 shouldShowBlock:(id)a7 configureUIActionBlock:(id)a8 actionBlock:(id)a9;
-- (id)initCalendarMenuPlaceholderInGroup:(unint64_t)a3 positionInGroup:(unint64_t)a4;
+- (EKUIContextMenuActionInfo)initWithAction:(unint64_t)action showsInEditMenu:(BOOL)menu group:(unint64_t)group positionInGroup:(unint64_t)inGroup shouldShowBlock:(id)block configureUIActionBlock:(id)actionBlock actionBlock:(id)a9;
+- (id)initCalendarMenuPlaceholderInGroup:(unint64_t)group positionInGroup:(unint64_t)inGroup;
 @end
 
 @implementation EKUIContextMenuActionInfo
 
-- (EKUIContextMenuActionInfo)initWithAction:(unint64_t)a3 showsInEditMenu:(BOOL)a4 group:(unint64_t)a5 positionInGroup:(unint64_t)a6 shouldShowBlock:(id)a7 configureUIActionBlock:(id)a8 actionBlock:(id)a9
+- (EKUIContextMenuActionInfo)initWithAction:(unint64_t)action showsInEditMenu:(BOOL)menu group:(unint64_t)group positionInGroup:(unint64_t)inGroup shouldShowBlock:(id)block configureUIActionBlock:(id)actionBlock actionBlock:(id)a9
 {
-  v15 = a7;
-  v16 = a8;
+  blockCopy = block;
+  actionBlockCopy = actionBlock;
   v17 = a9;
   v27.receiver = self;
   v27.super_class = EKUIContextMenuActionInfo;
@@ -16,15 +16,15 @@
   v19 = v18;
   if (v18)
   {
-    v18->_showsInEditMenu = a4;
-    v18->_action = a3;
-    v18->_group = a5;
-    v18->_positionInGroup = a6;
-    v20 = _Block_copy(v15);
+    v18->_showsInEditMenu = menu;
+    v18->_action = action;
+    v18->_group = group;
+    v18->_positionInGroup = inGroup;
+    v20 = _Block_copy(blockCopy);
     shouldShowBlock = v19->_shouldShowBlock;
     v19->_shouldShowBlock = v20;
 
-    v22 = _Block_copy(v16);
+    v22 = _Block_copy(actionBlockCopy);
     configureUIActionBlock = v19->_configureUIActionBlock;
     v19->_configureUIActionBlock = v22;
 
@@ -36,7 +36,7 @@
   return v19;
 }
 
-- (id)initCalendarMenuPlaceholderInGroup:(unint64_t)a3 positionInGroup:(unint64_t)a4
+- (id)initCalendarMenuPlaceholderInGroup:(unint64_t)group positionInGroup:(unint64_t)inGroup
 {
   v7.receiver = self;
   v7.super_class = EKUIContextMenuActionInfo;
@@ -44,8 +44,8 @@
   if (result)
   {
     *(result + 3) = 0x20000;
-    *(result + 4) = a3;
-    *(result + 5) = a4;
+    *(result + 4) = group;
+    *(result + 5) = inGroup;
   }
 
   return result;

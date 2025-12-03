@@ -1,15 +1,15 @@
 @interface HDHealthTopicsTaskServer
 + (NSString)taskIdentifier;
-- (HDHealthTopicsTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDHealthTopicsTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)remote_cancelWithToken:(id)a3 with:(id)a4;
-- (void)remote_executeWithRequest:(id)a3 token:(id)a4 with:(id)a5;
+- (void)remote_cancelWithToken:(id)token with:(id)with;
+- (void)remote_executeWithRequest:(id)request token:(id)token with:(id)with;
 @end
 
 @implementation HDHealthTopicsTaskServer
 
-- (HDHealthTopicsTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHealthTopicsTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   ObjectType = swift_getObjectType();
   v11 = sub_251F63734();
@@ -24,13 +24,13 @@
   *(v16 + 24) = 0;
   *(v16 + 16) = v17;
   *(&self->super.super.isa + OBJC_IVAR___HDHealthTopicsTaskServer_protectedState) = v16;
-  v18 = a4;
-  v19 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
   v20 = sub_251F63714();
   v23.receiver = self;
   v23.super_class = ObjectType;
-  v21 = [(HDStandardTaskServer *)&v23 initWithUUID:v20 configuration:v18 client:v19 delegate:a6];
+  v21 = [(HDStandardTaskServer *)&v23 initWithUUID:v20 configuration:configurationCopy client:clientCopy delegate:delegate];
 
   swift_unknownObjectRelease();
   (*(v12 + 8))(v15, v11);
@@ -47,26 +47,26 @@
 
 - (void)connectionInvalidated
 {
-  v2 = self;
+  selfCopy = self;
   sub_251F5E7B8(MEMORY[0x277D85B38], "%{public}s: connectionInvalidated");
 }
 
 - (void)connectionInterrupted
 {
-  v2 = self;
+  selfCopy = self;
   sub_251F5E7B8(MEMORY[0x277D85B58], "%{public}s: connectionInterrupted");
 }
 
-- (void)remote_executeWithRequest:(id)a3 token:(id)a4 with:(id)a5
+- (void)remote_executeWithRequest:(id)request token:(id)token with:(id)with
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = [(HDStandardTaskServer *)v11 profile];
-  if (v12 && (v13 = v12, v14 = sub_251F61CE0(), v13, v14))
+  v8 = _Block_copy(with);
+  requestCopy = request;
+  tokenCopy = token;
+  selfCopy = self;
+  profile = [(HDStandardTaskServer *)selfCopy profile];
+  if (profile && (v13 = profile, v14 = sub_251F61CE0(), v13, v14))
   {
-    sub_251F5F128(v9, v10, v14);
+    sub_251F5F128(requestCopy, tokenCopy, v14);
     v8[2](v8, 0);
 
     _Block_release(v8);
@@ -87,11 +87,11 @@
   }
 }
 
-- (void)remote_cancelWithToken:(id)a3 with:(id)a4
+- (void)remote_cancelWithToken:(id)token with:(id)with
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
+  v6 = _Block_copy(with);
+  tokenCopy = token;
+  selfCopy = self;
   sub_251F5FFDC();
   v6[2](v6, 0);
 

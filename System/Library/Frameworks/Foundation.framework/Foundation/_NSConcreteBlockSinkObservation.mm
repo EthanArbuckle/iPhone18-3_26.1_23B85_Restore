@@ -1,34 +1,34 @@
 @interface _NSConcreteBlockSinkObservation
-- (BOOL)isEqual:(id)a3;
-- (_NSConcreteBlockSinkObservation)initWithObservable:(id)a3 blockSink:(id)a4 tag:(int)a5;
-- (void)_receiveBox:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_NSConcreteBlockSinkObservation)initWithObservable:(id)observable blockSink:(id)sink tag:(int)tag;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 - (void)remove;
 @end
 
 @implementation _NSConcreteBlockSinkObservation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if ((objc_opt_isKindOfClass() & 1) != 0 && *(a3 + 1) == self->_LHSobservable)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && *(equal + 1) == self->_LHSobservable)
   {
-    return *(a3 + 2) == self->_block;
+    return *(equal + 2) == self->_block;
   }
 
   return 0;
 }
 
-- (_NSConcreteBlockSinkObservation)initWithObservable:(id)a3 blockSink:(id)a4 tag:(int)a5
+- (_NSConcreteBlockSinkObservation)initWithObservable:(id)observable blockSink:(id)sink tag:(int)tag
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -36,9 +36,9 @@
   v8 = [(_NSConcreteBlockSinkObservation *)&v10 init];
   if (v8)
   {
-    v8->_block = [a4 copy];
-    v8->_LHSobservable = a3;
-    v8->_tag = a5;
+    v8->_block = [sink copy];
+    v8->_LHSobservable = observable;
+    v8->_tag = tag;
   }
 
   return v8;
@@ -61,11 +61,11 @@
   }
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
-  if (*(a3 + 2) == self->_LHSobservable)
+  if (*(box + 2) == self->_LHSobservable)
   {
-    v3 = *(a3 + 6);
+    v3 = *(box + 6);
     tag = self->_tag;
     if (v3 != tag || tag == 3)
     {

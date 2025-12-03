@@ -1,5 +1,5 @@
 @interface SBHWidgetContainerViewController
-+ (id)buildGradientBackgroundViewWithFrame:(CGRect)a3 continuousCornerRadius:(double)a4;
++ (id)buildGradientBackgroundViewWithFrame:(CGRect)frame continuousCornerRadius:(double)radius;
 - (BOOL)allowsEdgeAntialiasing;
 - (BOOL)allowsGlassGrouping;
 - (BOOL)containsInteractiveControls;
@@ -8,73 +8,73 @@
 - (BOOL)isPaused;
 - (BOOL)wantsTintedAppearanceBackground;
 - (NSString)description;
-- (SBHWidgetContainerViewController)initWithWidgetViewController:(id)a3 widgetDataSource:(id)a4 gridSizeClass:(id)a5 iconImageInfo:(SBIconImageInfo *)a6 applicationName:(id)a7 delayConfiguration:(BOOL)a8;
+- (SBHWidgetContainerViewController)initWithWidgetViewController:(id)controller widgetDataSource:(id)source gridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info applicationName:(id)name delayConfiguration:(BOOL)configuration;
 - (SBHWidgetContainerViewControllerDelegate)delegate;
 - (SBIconApproximateLayoutPosition)approximateLayoutPosition;
 - (id)_chsWidget;
 - (id)_multiplexedViewController;
 - (id)_widgetExtensionBundleIdentifier;
 - (id)_widgetHostViewController;
-- (id)buildSnapshotResizeCoordinatorForSnapshotSize:(CGSize)a3 expectNewViewController:(BOOL)a4;
+- (id)buildSnapshotResizeCoordinatorForSnapshotSize:(CGSize)size expectNewViewController:(BOOL)controller;
 - (id)cancelTouchesForCurrentEventInHostedContent;
 - (id)effectiveIconImageAppearance;
 - (id)effectiveIconImageStyleConfiguration;
-- (id)snapshotViewExcludingGlassBackgroundEffects:(BOOL)a3;
+- (id)snapshotViewExcludingGlassBackgroundEffects:(BOOL)effects;
 - (id)widgetContextMenuController;
 - (void)_addDeactivationSnapshotViewIfNecessary;
 - (void)_clearDeactivationSnapshotView;
 - (void)_monitorForWidgetReadiness;
-- (void)_setOriginalSize:(CGSize)a3;
+- (void)_setOriginalSize:(CGSize)size;
 - (void)_updateEffectivePresentationMode;
 - (void)_updateWidgetVisibility;
-- (void)addObserver:(id)a3;
-- (void)enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
 - (void)loadView;
-- (void)multiplexingViewControllerDidActivate:(id)a3;
-- (void)multiplexingViewControllerWillDeactivate:(id)a3;
-- (void)performBatchedUpdate:(id)a3;
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3;
-- (void)setBlockedForScreenTimeExpiration:(BOOL)a3;
-- (void)setInteractionDisabled:(BOOL)a3;
-- (void)setOverrideIconImageAppearance:(id)a3;
-- (void)setOverrideIconImageStyleConfiguration:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPresentationMode:(int64_t)a3;
-- (void)setRequiresClippingToBounds:(BOOL)a3;
-- (void)setShowsSnapshotWhenDeactivated:(BOOL)a3;
-- (void)setUserVisibilityStatus:(unint64_t)a3;
+- (void)multiplexingViewControllerDidActivate:(id)activate;
+- (void)multiplexingViewControllerWillDeactivate:(id)deactivate;
+- (void)performBatchedUpdate:(id)update;
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position;
+- (void)setBlockedForScreenTimeExpiration:(BOOL)expiration;
+- (void)setInteractionDisabled:(BOOL)disabled;
+- (void)setOverrideIconImageAppearance:(id)appearance;
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration;
+- (void)setPaused:(BOOL)paused;
+- (void)setPresentationMode:(int64_t)mode;
+- (void)setRequiresClippingToBounds:(BOOL)bounds;
+- (void)setShowsSnapshotWhenDeactivated:(BOOL)deactivated;
+- (void)setUserVisibilityStatus:(unint64_t)status;
 - (void)updateStyleConfiguration;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)widgetStyleManager:(id)a3 needsToAddBackgroundView:(id)a4;
-- (void)widgetStyleManager:(id)a3 needsToAddFilter:(id)a4;
-- (void)widgetStyleManager:(id)a3 needsToRemoveBackgroundView:(id)a4;
-- (void)widgetStyleManager:(id)a3 needsToRemoveFilter:(id)a4;
-- (void)widgetStyleManagerDidUpdateConfiguration:(id)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)widgetStyleManager:(id)manager needsToAddBackgroundView:(id)view;
+- (void)widgetStyleManager:(id)manager needsToAddFilter:(id)filter;
+- (void)widgetStyleManager:(id)manager needsToRemoveBackgroundView:(id)view;
+- (void)widgetStyleManager:(id)manager needsToRemoveFilter:(id)filter;
+- (void)widgetStyleManagerDidUpdateConfiguration:(id)configuration;
 @end
 
 @implementation SBHWidgetContainerViewController
 
 - (id)_widgetExtensionBundleIdentifier
 {
-  v2 = [(SBHWidgetContainerViewController *)self _chsWidget];
-  v3 = [v2 extensionIdentity];
+  _chsWidget = [(SBHWidgetContainerViewController *)self _chsWidget];
+  extensionIdentity = [_chsWidget extensionIdentity];
 
-  v4 = [v3 extensionBundleIdentifier];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-  return v4;
+  return extensionBundleIdentifier;
 }
 
 - (id)_widgetHostViewController
 {
-  v3 = [(SBHWidgetContainerViewController *)self _multiplexedViewController];
+  _multiplexedViewController = [(SBHWidgetContainerViewController *)self _multiplexedViewController];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = _multiplexedViewController;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -128,31 +128,31 @@
 {
   if ([(UIViewController *)self->_widgetViewController sbh_isMultiplexingViewController])
   {
-    v3 = [(UIViewController *)self->_widgetViewController multiplexedViewController];
+    multiplexedViewController = [(UIViewController *)self->_widgetViewController multiplexedViewController];
   }
 
   else
   {
-    v3 = 0;
+    multiplexedViewController = 0;
   }
 
-  return v3;
+  return multiplexedViewController;
 }
 
 - (id)_chsWidget
 {
-  v2 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  v3 = [v2 widget];
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  widget = [_widgetHostViewController widget];
 
-  return v3;
+  return widget;
 }
 
 - (void)_updateWidgetVisibility
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHWidgetContainerViewController *)self userVisibilityStatus];
+  userVisibilityStatus = [(SBHWidgetContainerViewController *)self userVisibilityStatus];
   v4 = "not visible";
-  if (v3 == 2)
+  if (userVisibilityStatus == 2)
   {
     v4 = "visible not settled";
     v5 = 1;
@@ -163,7 +163,7 @@
     v5 = 0;
   }
 
-  if (v3 == 3)
+  if (userVisibilityStatus == 3)
   {
     v6 = "visible settled";
   }
@@ -173,7 +173,7 @@
     v6 = v4;
   }
 
-  if (v3 == 3)
+  if (userVisibilityStatus == 3)
   {
     v7 = 2;
   }
@@ -183,8 +183,8 @@
     v7 = v5;
   }
 
-  v8 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  if ([v8 visibility] != v7)
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  if ([_widgetHostViewController visibility] != v7)
   {
     v9 = SBLogWidgets();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -197,7 +197,7 @@
       _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_DEFAULT, "<%{public}@> Setting visibility to %{public}s", &v11, 0x16u);
     }
 
-    [v8 setVisibility:v7];
+    [_widgetHostViewController setVisibility:v7];
   }
 }
 
@@ -213,8 +213,8 @@
   v4 = [[SBHWidgetContainerView alloc] initWithGridSizeClass:self->_gridSizeClass iconImageInfo:self->_applicationName applicationName:self->_logIdentifier logIdentifier:self->_iconImageInfo.size.width, self->_iconImageInfo.size.height, self->_iconImageInfo.scale, self->_iconImageInfo.continuousCornerRadius];
   [(SBHWidgetContainerViewController *)self setView:v4];
   [(SBHWidgetContainerViewController *)self bs_addChildViewController:self->_widgetViewController withSuperview:v4];
-  v3 = [(UIViewController *)self->_widgetViewController view];
-  [(SBHWidgetContainerView *)v4 setWidgetView:v3];
+  view = [(UIViewController *)self->_widgetViewController view];
+  [(SBHWidgetContainerView *)v4 setWidgetView:view];
 }
 
 - (void)_clearDeactivationSnapshotView
@@ -230,8 +230,8 @@
 
 - (void)_monitorForWidgetReadiness
 {
-  v3 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  if (v3)
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  if (_widgetHostViewController)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -239,7 +239,7 @@
     v4[2] = __62__SBHWidgetContainerViewController__monitorForWidgetReadiness__block_invoke;
     v4[3] = &unk_1E80909F8;
     objc_copyWeak(&v5, &location);
-    [v3 waitForContentReadyWithTimeout:v4 completion:3.0];
+    [_widgetHostViewController waitForContentReadyWithTimeout:v4 completion:3.0];
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
@@ -247,10 +247,10 @@
 
 - (BOOL)containsInteractiveControls
 {
-  v2 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  v3 = [v2 containsInteractiveControls];
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  containsInteractiveControls = [_widgetHostViewController containsInteractiveControls];
 
-  return v3;
+  return containsInteractiveControls;
 }
 
 - (id)cancelTouchesForCurrentEventInHostedContent
@@ -258,32 +258,32 @@
   v2 = self->_widgetViewController;
   if ([(UIViewController *)v2 sbh_isMultiplexingViewController])
   {
-    v3 = [(UIViewController *)v2 multiplexedViewController];
+    multiplexedViewController = [(UIViewController *)v2 multiplexedViewController];
 
-    v2 = v3;
+    v2 = multiplexedViewController;
   }
 
   if ([(UIViewController *)v2 sbh_isWidgetHostViewController]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [(UIViewController *)v2 cancelTouchesForCurrentEventInHostedContent];
+    cancelTouchesForCurrentEventInHostedContent = [(UIViewController *)v2 cancelTouchesForCurrentEventInHostedContent];
   }
 
   else
   {
-    v4 = 0;
+    cancelTouchesForCurrentEventInHostedContent = 0;
   }
 
-  return v4;
+  return cancelTouchesForCurrentEventInHostedContent;
 }
 
 - (void)_addDeactivationSnapshotViewIfNecessary
 {
-  v11 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  v3 = [(SBHWidgetContainerViewController *)self showsSnapshotWhenDeactivated];
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  showsSnapshotWhenDeactivated = [(SBHWidgetContainerViewController *)self showsSnapshotWhenDeactivated];
   if ([(SBHWidgetContainerViewController *)self isWidgetControllerActive])
   {
     v4 = !self->_allowDeactivationSnapshotViewForActiveWidgetController;
-    if (!v3)
+    if (!showsSnapshotWhenDeactivated)
     {
       goto LABEL_12;
     }
@@ -292,27 +292,27 @@
   else
   {
     v4 = 0;
-    if (!v3)
+    if (!showsSnapshotWhenDeactivated)
     {
       goto LABEL_12;
     }
   }
 
-  if (!v4 && !self->_deactivationSnapshotView && v11 != 0)
+  if (!v4 && !self->_deactivationSnapshotView && _widgetHostViewController != 0)
   {
-    v6 = [(SBHWidgetContainerViewController *)self snapshotView];
+    snapshotView = [(SBHWidgetContainerViewController *)self snapshotView];
     deactivationSnapshotView = self->_deactivationSnapshotView;
-    self->_deactivationSnapshotView = v6;
+    self->_deactivationSnapshotView = snapshotView;
 
     [(UIView *)self->_deactivationSnapshotView setClipsToBounds:1];
     v8 = self->_deactivationSnapshotView;
-    v9 = [(SBHWidgetContainerViewController *)self view];
-    [v9 bounds];
+    view = [(SBHWidgetContainerViewController *)self view];
+    [view bounds];
     [(UIView *)v8 setFrame:?];
 
     [(UIView *)self->_deactivationSnapshotView setAutoresizingMask:18];
-    v10 = [(SBHWidgetContainerViewController *)self view];
-    [v10 addSubview:self->_deactivationSnapshotView];
+    view2 = [(SBHWidgetContainerViewController *)self view];
+    [view2 addSubview:self->_deactivationSnapshotView];
 
     if ([(UIViewController *)self->_widgetViewController sbh_isMultiplexingViewController])
     {
@@ -323,81 +323,81 @@
 LABEL_12:
 }
 
-- (SBHWidgetContainerViewController)initWithWidgetViewController:(id)a3 widgetDataSource:(id)a4 gridSizeClass:(id)a5 iconImageInfo:(SBIconImageInfo *)a6 applicationName:(id)a7 delayConfiguration:(BOOL)a8
+- (SBHWidgetContainerViewController)initWithWidgetViewController:(id)controller widgetDataSource:(id)source gridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info applicationName:(id)name delayConfiguration:(BOOL)configuration
 {
-  v12 = a7;
+  nameCopy = name;
   v14 = v11;
   v15 = v10;
   v16 = v9;
   v17 = v8;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
+  controllerCopy = controller;
+  sourceCopy = source;
+  classCopy = class;
+  infoCopy = info;
   v49.receiver = self;
   v49.super_class = SBHWidgetContainerViewController;
   v26 = [(SBHWidgetContainerViewController *)&v49 initWithNibName:0 bundle:0];
   v27 = v26;
   if (v26)
   {
-    v47 = v23;
-    v48 = v22;
+    v47 = sourceCopy;
+    v48 = controllerCopy;
     p_width = &v26->_iconImageInfo.size.width;
     v26->_iconImageInfo.size.width = v17;
     v26->_iconImageInfo.size.height = v16;
     v26->_iconImageInfo.scale = v15;
     v26->_iconImageInfo.continuousCornerRadius = v14;
-    objc_storeStrong(&v26->_widgetViewController, a3);
-    v27->_delayInitialConfiguration = v12;
+    objc_storeStrong(&v26->_widgetViewController, controller);
+    v27->_delayInitialConfiguration = nameCopy;
     if ([(UIViewController *)v27->_widgetViewController sbh_isMultiplexingViewController])
     {
       [(UIViewController *)v27->_widgetViewController addObserver:v27];
     }
 
-    objc_storeStrong(&v27->_widgetDataSource, a4);
-    v29 = [v24 copy];
+    objc_storeStrong(&v27->_widgetDataSource, source);
+    v29 = [classCopy copy];
     gridSizeClass = v27->_gridSizeClass;
     v27->_gridSizeClass = v29;
 
-    v31 = [(SBIconImageInfo *)v25 copy];
+    v31 = [(SBIconImageInfo *)infoCopy copy];
     applicationName = v27->_applicationName;
     v27->_applicationName = v31;
 
     v27->_requiresClippingToBounds = 0;
     v27->_requestedPresentationMode = 2;
     v27->_effectivePresentationMode = 2;
-    v33 = [(SBHWidgetContainerViewController *)v27 _chsWidget];
+    _chsWidget = [(SBHWidgetContainerViewController *)v27 _chsWidget];
     v34 = MEMORY[0x1E696AEC0];
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
-    [v33 extensionIdentity];
-    v46 = v25;
-    v38 = v37 = v24;
-    v39 = [v33 kind];
-    [v33 family];
+    [_chsWidget extensionIdentity];
+    v46 = infoCopy;
+    v38 = v37 = classCopy;
+    kind = [_chsWidget kind];
+    [_chsWidget family];
     v40 = NSStringFromWidgetFamily();
-    v41 = [v34 stringWithFormat:@"%@:%p widget=[%@:%@:%@]", v36, v27, v38, v39, v40];
+    v41 = [v34 stringWithFormat:@"%@:%p widget=[%@:%@:%@]", v36, v27, v38, kind, v40];
     logIdentifier = v27->_logIdentifier;
     v27->_logIdentifier = v41;
 
-    v24 = v37;
-    v25 = v46;
+    classCopy = v37;
+    infoCopy = v46;
 
     v43 = [[SBHWidgetStyleManager alloc] initWithWidgetViewController:v27->_widgetViewController widgetDataSource:v27->_widgetDataSource gridSizeClass:v27->_gridSizeClass iconImageInfo:v27 delegate:*p_width, v27->_iconImageInfo.size.height, v27->_iconImageInfo.scale, v27->_iconImageInfo.continuousCornerRadius];
     widgetStyleManager = v27->_widgetStyleManager;
     v27->_widgetStyleManager = v43;
 
-    v23 = v47;
-    v22 = v48;
+    sourceCopy = v47;
+    controllerCopy = v48;
   }
 
   return v27;
 }
 
-- (void)performBatchedUpdate:(id)a3
+- (void)performBatchedUpdate:(id)update
 {
   ++self->_batchUpdateCount;
-  (*(a3 + 2))(a3, a2);
+  (*(update + 2))(update, a2);
   v4 = self->_batchUpdateCount - 1;
   self->_batchUpdateCount = v4;
   if (!v4 && self->_presentationModeDirty)
@@ -407,12 +407,12 @@ LABEL_12:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = SBHWidgetContainerViewController;
-  [(SBHWidgetContainerViewController *)&v6 viewWillAppear:a3];
+  [(SBHWidgetContainerViewController *)&v6 viewWillAppear:appear];
   v4 = SBLogWidgets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -423,12 +423,12 @@ LABEL_12:
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = SBHWidgetContainerViewController;
-  [(SBHWidgetContainerViewController *)&v6 viewIsAppearing:a3];
+  [(SBHWidgetContainerViewController *)&v6 viewIsAppearing:appearing];
   v4 = SBLogWidgets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -447,12 +447,12 @@ LABEL_12:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = SBHWidgetContainerViewController;
-  [(SBHWidgetContainerViewController *)&v6 viewDidAppear:a3];
+  [(SBHWidgetContainerViewController *)&v6 viewDidAppear:appear];
   v4 = SBLogWidgets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -465,12 +465,12 @@ LABEL_12:
   [(SBHWidgetContainerViewController *)self _updateWidgetVisibility];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = SBHWidgetContainerViewController;
-  [(SBHWidgetContainerViewController *)&v6 viewWillDisappear:a3];
+  [(SBHWidgetContainerViewController *)&v6 viewWillDisappear:disappear];
   v4 = SBLogWidgets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,12 +487,12 @@ LABEL_12:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = SBHWidgetContainerViewController;
-  [(SBHWidgetContainerViewController *)&v6 viewDidDisappear:a3];
+  [(SBHWidgetContainerViewController *)&v6 viewDidDisappear:disappear];
   v4 = SBLogWidgets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -507,75 +507,75 @@ LABEL_12:
 
 - (BOOL)interactionDisabled
 {
-  v2 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  v3 = [v2 isInteractionDisabled];
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  isInteractionDisabled = [_widgetHostViewController isInteractionDisabled];
 
-  return v3;
+  return isInteractionDisabled;
 }
 
-- (void)setInteractionDisabled:(BOOL)a3
+- (void)setInteractionDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  [v4 setInteractionDisabled:v3];
+  disabledCopy = disabled;
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  [_widgetHostViewController setInteractionDisabled:disabledCopy];
 }
 
-- (id)snapshotViewExcludingGlassBackgroundEffects:(BOOL)a3
+- (id)snapshotViewExcludingGlassBackgroundEffects:(BOOL)effects
 {
-  v3 = a3;
+  effectsCopy = effects;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  if (effectsCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v5 rawSnapshotView];
+    rawSnapshotView = [_widgetHostViewController rawSnapshotView];
   }
 
   else
   {
-    v6 = [v5 snapshotView];
+    rawSnapshotView = [_widgetHostViewController snapshotView];
   }
 
-  v7 = v6;
-  if (!v6)
+  snapshotView = rawSnapshotView;
+  if (!rawSnapshotView)
   {
-    v8 = [(UIViewController *)self->_widgetViewController view];
-    v7 = [v8 snapshotView];
+    view = [(UIViewController *)self->_widgetViewController view];
+    snapshotView = [view snapshotView];
   }
 
-  v9 = [(SBHWidgetContainerViewController *)self widgetContainerView];
-  v10 = [v9 screenTimeLockoutView];
+  widgetContainerView = [(SBHWidgetContainerViewController *)self widgetContainerView];
+  screenTimeLockoutView = [widgetContainerView screenTimeLockoutView];
 
   v11 = SBLogWidgets();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     logIdentifier = self->_logIdentifier;
-    v13 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+    _widgetHostViewController2 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
     v19 = 138543618;
     v20 = logIdentifier;
     v21 = 2114;
-    v22 = v13;
+    v22 = _widgetHostViewController2;
     _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@> Snapshot view requested for widget: %{public}@", &v19, 0x16u);
   }
 
-  if (v10)
+  if (screenTimeLockoutView)
   {
-    v14 = [v10 snapshotView];
-    [v7 addSubview:v14];
+    snapshotView2 = [screenTimeLockoutView snapshotView];
+    [snapshotView addSubview:snapshotView2];
 
     v15 = SBLogWidgets();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = self->_logIdentifier;
-      v17 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+      _widgetHostViewController3 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
       v19 = 138543618;
       v20 = v16;
       v21 = 2114;
-      v22 = v17;
+      v22 = _widgetHostViewController3;
       _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@> Snapshot view for screenTimeLockoutView was added to snapshotView's hierarchy: %{public}@", &v19, 0x16u);
     }
   }
 
-  return v7;
+  return snapshotView;
 }
 
 - (id)widgetContextMenuController
@@ -583,9 +583,9 @@ LABEL_12:
   v2 = self->_widgetViewController;
   if ([(UIViewController *)v2 sbh_isMultiplexingViewController])
   {
-    v3 = [(UIViewController *)v2 multiplexedViewController];
+    multiplexedViewController = [(UIViewController *)v2 multiplexedViewController];
 
-    v2 = v3;
+    v2 = multiplexedViewController;
   }
 
   v4 = v2;
@@ -604,74 +604,74 @@ LABEL_12:
   return v5;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v4 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  [v4 setAnimationsPaused:v3];
+  pausedCopy = paused;
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  [_widgetHostViewController setAnimationsPaused:pausedCopy];
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-  v3 = [v2 areAnimationsPaused];
+  _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+  areAnimationsPaused = [_widgetHostViewController areAnimationsPaused];
 
-  return v3;
+  return areAnimationsPaused;
 }
 
-- (void)setBlockedForScreenTimeExpiration:(BOOL)a3
+- (void)setBlockedForScreenTimeExpiration:(BOOL)expiration
 {
-  v3 = a3;
+  expirationCopy = expiration;
   [(SBHWidgetContainerViewController *)self _updateEffectivePresentationMode];
-  v5 = [(SBHWidgetContainerViewController *)self widgetContainerView];
-  [v5 setBlockedForScreenTimeExpiration:v3];
+  widgetContainerView = [(SBHWidgetContainerViewController *)self widgetContainerView];
+  [widgetContainerView setBlockedForScreenTimeExpiration:expirationCopy];
 }
 
 - (BOOL)isBlockedForScreenTimeExpiration
 {
-  v2 = [(SBHWidgetContainerViewController *)self widgetContainerView];
-  v3 = [v2 isBlockedForScreenTimeExpiration];
+  widgetContainerView = [(SBHWidgetContainerViewController *)self widgetContainerView];
+  isBlockedForScreenTimeExpiration = [widgetContainerView isBlockedForScreenTimeExpiration];
 
-  return v3;
+  return isBlockedForScreenTimeExpiration;
 }
 
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
-  v5 = [(SBHWidgetContainerViewController *)self traitCollection];
-  [v5 displayScale];
+  antialiasingCopy = antialiasing;
+  traitCollection = [(SBHWidgetContainerViewController *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
 
-  v8 = [(SBHWidgetContainerViewController *)self view];
-  v9 = [v8 layer];
+  view = [(SBHWidgetContainerViewController *)self view];
+  layer = [view layer];
 
-  [v9 setAllowsEdgeAntialiasing:v3];
-  [v9 setRasterizationScale:v7];
+  [layer setAllowsEdgeAntialiasing:antialiasingCopy];
+  [layer setRasterizationScale:v7];
 }
 
 - (BOOL)allowsEdgeAntialiasing
 {
-  v2 = [(SBHWidgetContainerViewController *)self view];
-  v3 = [v2 layer];
+  view = [(SBHWidgetContainerViewController *)self view];
+  layer = [view layer];
 
-  LOBYTE(v2) = [v3 allowsEdgeAntialiasing];
-  return v2;
+  LOBYTE(view) = [layer allowsEdgeAntialiasing];
+  return view;
 }
 
-- (void)setUserVisibilityStatus:(unint64_t)a3
+- (void)setUserVisibilityStatus:(unint64_t)status
 {
-  if (self->_userVisibilityStatus != a3)
+  if (self->_userVisibilityStatus != status)
   {
-    self->_userVisibilityStatus = a3;
+    self->_userVisibilityStatus = status;
     [(SBHWidgetContainerViewController *)self _updateWidgetVisibility];
   }
 }
 
-- (void)setPresentationMode:(int64_t)a3
+- (void)setPresentationMode:(int64_t)mode
 {
-  if (self->_requestedPresentationMode != a3)
+  if (self->_requestedPresentationMode != mode)
   {
-    self->_requestedPresentationMode = a3;
+    self->_requestedPresentationMode = mode;
     [(SBHWidgetContainerViewController *)self _updateEffectivePresentationMode];
   }
 }
@@ -708,24 +708,24 @@ LABEL_12:
       v5 = 1;
     }
 
-    v6 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-    [v6 setPresentationMode:v5];
+    _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+    [_widgetHostViewController setPresentationMode:v5];
   }
 }
 
-- (void)setRequiresClippingToBounds:(BOOL)a3
+- (void)setRequiresClippingToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v4 = [(SBHWidgetContainerViewController *)self widgetContainerView];
-  [v4 setRequiresClippingToBounds:v3];
+  boundsCopy = bounds;
+  widgetContainerView = [(SBHWidgetContainerViewController *)self widgetContainerView];
+  [widgetContainerView setRequiresClippingToBounds:boundsCopy];
 }
 
-- (void)setShowsSnapshotWhenDeactivated:(BOOL)a3
+- (void)setShowsSnapshotWhenDeactivated:(BOOL)deactivated
 {
-  if (self->_showsSnapshotWhenDeactivated != a3)
+  if (self->_showsSnapshotWhenDeactivated != deactivated)
   {
-    self->_showsSnapshotWhenDeactivated = a3;
-    if (a3)
+    self->_showsSnapshotWhenDeactivated = deactivated;
+    if (deactivated)
     {
       [(SBHWidgetContainerViewController *)self _addDeactivationSnapshotViewIfNecessary];
     }
@@ -737,11 +737,11 @@ LABEL_12:
   }
 }
 
-- (id)buildSnapshotResizeCoordinatorForSnapshotSize:(CGSize)a3 expectNewViewController:(BOOL)a4
+- (id)buildSnapshotResizeCoordinatorForSnapshotSize:(CGSize)size expectNewViewController:(BOOL)controller
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  controllerCopy = controller;
+  height = size.height;
+  width = size.width;
   v8 = self->_widgetViewController;
   if ([(UIViewController *)v8 sbh_isMultiplexingViewController])
   {
@@ -759,31 +759,31 @@ LABEL_12:
     v11 = v8;
     [(SBHWidgetContainerViewController *)self setShowsSnapshotWhenDeactivated:1];
     [(SBHWidgetContainerViewController *)self _addDeactivationSnapshotViewIfNecessary];
-    v12 = [(SBHWidgetContainerViewController *)self view];
-    [v12 bounds];
+    view = [(SBHWidgetContainerViewController *)self view];
+    [view bounds];
     [(SBHWidgetContainerViewController *)self _setOriginalSize:v13, v14];
     v15 = [SBHWidgetContainerViewSnapshotResizeCoordinator alloc];
-    v16 = [(SBHWidgetContainerViewController *)self view];
-    v17 = [(UIViewController *)v11 view];
+    view2 = [(SBHWidgetContainerViewController *)self view];
+    view3 = [(UIViewController *)v11 view];
 
-    v10 = [(SBHWidgetContainerViewSnapshotResizeCoordinator *)v15 initWithResizableView:v16 multiplexingView:v17 newSize:v4 hideMultiplexingViewInitially:v9 showMultiplexingViewWhenFinished:width, height];
-    [(SBHWidgetContainerViewSnapshotResizeCoordinator *)v10 setDelegate:self];
+    height = [(SBHWidgetContainerViewSnapshotResizeCoordinator *)v15 initWithResizableView:view2 multiplexingView:view3 newSize:controllerCopy hideMultiplexingViewInitially:v9 showMultiplexingViewWhenFinished:width, height];
+    [(SBHWidgetContainerViewSnapshotResizeCoordinator *)height setDelegate:self];
   }
 
   else
   {
-    v10 = 0;
+    height = 0;
   }
 
-  return v10;
+  return height;
 }
 
-- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)a3
+- (void)setApproximateLayoutPosition:(SBIconApproximateLayoutPosition)position
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = position.vertical;
+  horizontal = position.horizontal;
   p_approximateLayoutPosition = &self->_approximateLayoutPosition;
-  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, a3.horizontal, a3.vertical))
+  if (!SBIconApproximateLayoutPositionEqualToApproximateLayoutPosition(self->_approximateLayoutPosition.horizontal, self->_approximateLayoutPosition.vertical, position.horizontal, position.vertical))
   {
     p_approximateLayoutPosition->horizontal = horizontal;
     p_approximateLayoutPosition->vertical = vertical;
@@ -795,112 +795,112 @@ LABEL_12:
   }
 }
 
-- (void)setOverrideIconImageAppearance:(id)a3
+- (void)setOverrideIconImageAppearance:(id)appearance
 {
-  v7 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [appearanceCopy copy];
     overrideIconImageAppearance = self->_overrideIconImageAppearance;
     self->_overrideIconImageAppearance = v4;
 
-    v6 = [(SBHWidgetContainerViewController *)self widgetStyleManager];
-    [v6 setOverrideIconImageAppearance:v7];
+    widgetStyleManager = [(SBHWidgetContainerViewController *)self widgetStyleManager];
+    [widgetStyleManager setOverrideIconImageAppearance:appearanceCopy];
   }
 }
 
-- (void)setOverrideIconImageStyleConfiguration:(id)a3
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration
 {
-  v7 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [configurationCopy copy];
     overrideIconImageStyleConfiguration = self->_overrideIconImageStyleConfiguration;
     self->_overrideIconImageStyleConfiguration = v4;
 
-    v6 = [(SBHWidgetContainerViewController *)self widgetStyleManager];
-    [v6 setOverrideIconImageStyleConfiguration:v7];
+    widgetStyleManager = [(SBHWidgetContainerViewController *)self widgetStyleManager];
+    [widgetStyleManager setOverrideIconImageStyleConfiguration:configurationCopy];
   }
 }
 
 - (id)effectiveIconImageAppearance
 {
-  v3 = [(SBHWidgetContainerViewController *)self overrideIconImageAppearance];
-  v4 = [(SBHWidgetContainerViewController *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBHWidgetContainerViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:v5 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
-  v8 = [v7 widgetAppearanceWithUserInterfaceStyle:v6];
+  overrideIconImageAppearance = [(SBHWidgetContainerViewController *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBHWidgetContainerViewController *)self overrideIconImageStyleConfiguration];
+  traitCollection = [(SBHWidgetContainerViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:traitCollection overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
+  v8 = [v7 widgetAppearanceWithUserInterfaceStyle:userInterfaceStyle];
 
   return v8;
 }
 
 - (id)effectiveIconImageStyleConfiguration
 {
-  v3 = [(SBHWidgetContainerViewController *)self overrideIconImageAppearance];
-  v4 = [(SBHWidgetContainerViewController *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBHWidgetContainerViewController *)self traitCollection];
-  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:v5 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
+  overrideIconImageAppearance = [(SBHWidgetContainerViewController *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBHWidgetContainerViewController *)self overrideIconImageStyleConfiguration];
+  traitCollection = [(SBHWidgetContainerViewController *)self traitCollection];
+  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:traitCollection overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
 
   return v6;
 }
 
 - (BOOL)wantsTintedAppearanceBackground
 {
-  v2 = [(SBHWidgetContainerViewController *)self effectiveIconImageAppearance];
-  HasTintColor = SBHIconImageAppearanceTypeHasTintColor([v2 appearanceType]);
+  effectiveIconImageAppearance = [(SBHWidgetContainerViewController *)self effectiveIconImageAppearance];
+  HasTintColor = SBHIconImageAppearanceTypeHasTintColor([effectiveIconImageAppearance appearanceType]);
 
   return HasTintColor;
 }
 
 - (BOOL)allowsGlassGrouping
 {
-  v2 = [(SBHWidgetContainerViewController *)self widgetStyleManager];
-  v3 = [v2 allowsGlassGrouping];
+  widgetStyleManager = [(SBHWidgetContainerViewController *)self widgetStyleManager];
+  allowsGlassGrouping = [widgetStyleManager allowsGlassGrouping];
 
-  return v3;
+  return allowsGlassGrouping;
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  v3 = a3;
-  v4 = [(SBHWidgetContainerViewController *)self widgetStyleManager];
-  [v4 setAllowsGlassGrouping:v3];
+  groupingCopy = grouping;
+  widgetStyleManager = [(SBHWidgetContainerViewController *)self widgetStyleManager];
+  [widgetStyleManager setAllowsGlassGrouping:groupingCopy];
 }
 
 - (void)updateStyleConfiguration
 {
   self->_delayInitialConfiguration = 0;
-  v2 = [(SBHWidgetContainerViewController *)self widgetStyleManager];
-  [v2 updateConfiguration];
+  widgetStyleManager = [(SBHWidgetContainerViewController *)self widgetStyleManager];
+  [widgetStyleManager updateConfiguration];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(SBHWidgetContainerViewController *)self delegate];
-  if (!a3 || (objc_opt_respondsToSelector() & 1) != 0)
+  blockCopy = block;
+  delegate = [(SBHWidgetContainerViewController *)self delegate];
+  if (!selector || (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6[2](v6, v7);
+    blockCopy[2](blockCopy, delegate);
   }
 
   v16 = 0u;
@@ -924,9 +924,9 @@ LABEL_12:
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
-        if (!a3 || (objc_opt_respondsToSelector() & 1) != 0)
+        if (!selector || (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v6[2](v6, v13);
+          blockCopy[2](blockCopy, v13);
         }
 
         ++v12;
@@ -940,7 +940,7 @@ LABEL_12:
   }
 }
 
-- (void)multiplexingViewControllerDidActivate:(id)a3
+- (void)multiplexingViewControllerDidActivate:(id)activate
 {
   [(SBHWidgetContainerViewController *)self setWidgetControllerActive:1];
   [(SBHWidgetContainerViewController *)self _clearDeactivationSnapshotView];
@@ -956,7 +956,7 @@ LABEL_12:
   [(SBHWidgetContainerViewController *)self _monitorForWidgetReadiness];
 }
 
-- (void)multiplexingViewControllerWillDeactivate:(id)a3
+- (void)multiplexingViewControllerWillDeactivate:(id)deactivate
 {
   [(SBHWidgetContainerViewController *)self setWidgetControllerActive:0];
   [(SBHWidgetContainerViewController *)self _addDeactivationSnapshotViewIfNecessary];
@@ -968,42 +968,42 @@ LABEL_12:
   [(SBHWidgetContainerViewController *)self enumerateObserversRespondingToSelector:sel_widgetContainerViewControllerContentViewControllerWillDeactivate_ usingBlock:v4];
 }
 
-- (void)widgetStyleManager:(id)a3 needsToAddBackgroundView:(id)a4
+- (void)widgetStyleManager:(id)manager needsToAddBackgroundView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHWidgetContainerViewController *)self view];
-  [v6 setBackgroundView:v5];
+  viewCopy = view;
+  view = [(SBHWidgetContainerViewController *)self view];
+  [view setBackgroundView:viewCopy];
 }
 
-- (void)widgetStyleManager:(id)a3 needsToRemoveBackgroundView:(id)a4
+- (void)widgetStyleManager:(id)manager needsToRemoveBackgroundView:(id)view
 {
-  v4 = [(SBHWidgetContainerViewController *)self view:a3];
+  v4 = [(SBHWidgetContainerViewController *)self view:manager];
   [v4 setBackgroundView:0];
 }
 
-- (void)widgetStyleManager:(id)a3 needsToAddFilter:(id)a4
+- (void)widgetStyleManager:(id)manager needsToAddFilter:(id)filter
 {
-  v5 = a4;
-  v8 = [(SBHWidgetContainerViewController *)self view];
-  v6 = [v8 widgetView];
-  v7 = [v6 layer];
+  filterCopy = filter;
+  view = [(SBHWidgetContainerViewController *)self view];
+  widgetView = [view widgetView];
+  layer = [widgetView layer];
 
-  [v7 sbh_addFilter:v5];
+  [layer sbh_addFilter:filterCopy];
 }
 
-- (void)widgetStyleManager:(id)a3 needsToRemoveFilter:(id)a4
+- (void)widgetStyleManager:(id)manager needsToRemoveFilter:(id)filter
 {
-  v5 = a4;
-  v9 = [(SBHWidgetContainerViewController *)self view];
-  v6 = [v9 widgetView];
-  v7 = [v6 layer];
+  filterCopy = filter;
+  view = [(SBHWidgetContainerViewController *)self view];
+  widgetView = [view widgetView];
+  layer = [widgetView layer];
 
-  v8 = [v5 name];
+  name = [filterCopy name];
 
-  [v7 sbh_removeFilterWithName:v8];
+  [layer sbh_removeFilterWithName:name];
 }
 
-- (void)widgetStyleManagerDidUpdateConfiguration:(id)a3
+- (void)widgetStyleManagerDidUpdateConfiguration:(id)configuration
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1013,11 +1013,11 @@ LABEL_12:
   [(SBHWidgetContainerViewController *)self enumerateObserversRespondingToSelector:sel_widgetContainerViewControllerContentViewControllerDidUpdateStyleConfiguration_ usingBlock:v3];
 }
 
-- (void)_setOriginalSize:(CGSize)a3
+- (void)_setOriginalSize:(CGSize)size
 {
   if (self->_originalSize.width == *MEMORY[0x1E695F060] && self->_originalSize.height == *(MEMORY[0x1E695F060] + 8))
   {
-    self->_originalSize = a3;
+    self->_originalSize = size;
   }
 }
 
@@ -1038,18 +1038,18 @@ void __62__SBHWidgetContainerViewController__monitorForWidgetReadiness__block_in
   }
 }
 
-+ (id)buildGradientBackgroundViewWithFrame:(CGRect)a3 continuousCornerRadius:(double)a4
++ (id)buildGradientBackgroundViewWithFrame:(CGRect)frame continuousCornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14[2] = *MEMORY[0x1E69E9840];
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.133333333 alpha:1.0];
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.0784313725 alpha:1.0];
   v11 = [objc_alloc(getPUIGradientViewClass()) initWithFrame:{x, y, width, height}];
   [v11 setAutoresizingMask:18];
-  [v11 _setContinuousCornerRadius:a4];
+  [v11 _setContinuousCornerRadius:radius];
   v14[0] = [v9 CGColor];
   v14[1] = [v10 CGColor];
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
@@ -1063,30 +1063,30 @@ void __62__SBHWidgetContainerViewController__monitorForWidgetReadiness__block_in
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_widgetViewController withName:@"widgetViewController"];
   v5 = [v3 appendUnsignedInteger:self->_userVisibilityStatus withName:@"userVisibilityStatus"];
-  v6 = [(SBHWidgetContainerViewController *)self _chsWidget];
+  _chsWidget = [(SBHWidgetContainerViewController *)self _chsWidget];
 
-  if (v6)
+  if (_chsWidget)
   {
-    v7 = [(SBHWidgetContainerViewController *)self _chsWidget];
-    v8 = [v7 intentReference];
-    v9 = [v8 intent];
-    v10 = [v3 appendUnsignedInteger:objc_msgSend(v9 withName:{"_indexingHash"), @"intentIdentifier"}];
+    _chsWidget2 = [(SBHWidgetContainerViewController *)self _chsWidget];
+    intentReference = [_chsWidget2 intentReference];
+    intent = [intentReference intent];
+    v10 = [v3 appendUnsignedInteger:objc_msgSend(intent withName:{"_indexingHash"), @"intentIdentifier"}];
 
-    v11 = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
-    v12 = [v3 appendPointer:v11 withName:@"widgetHostViewController"];
+    _widgetHostViewController = [(SBHWidgetContainerViewController *)self _widgetHostViewController];
+    v12 = [v3 appendPointer:_widgetHostViewController withName:@"widgetHostViewController"];
 
-    v13 = [(SBHWidgetContainerViewController *)self _chsWidget];
-    v14 = [v13 extensionIdentity];
-    v15 = [v3 appendObject:v14 withName:@"extensionIdentity"];
+    _chsWidget3 = [(SBHWidgetContainerViewController *)self _chsWidget];
+    extensionIdentity = [_chsWidget3 extensionIdentity];
+    v15 = [v3 appendObject:extensionIdentity withName:@"extensionIdentity"];
   }
 
-  v16 = [(SBHWidgetContainerViewController *)self view];
-  v17 = [v16 window];
-  v18 = [v3 appendBool:v17 != 0 withName:@"attachedToHierarchy"];
+  view = [(SBHWidgetContainerViewController *)self view];
+  window = [view window];
+  v18 = [v3 appendBool:window != 0 withName:@"attachedToHierarchy"];
 
-  v19 = [v3 build];
+  build = [v3 build];
 
-  return v19;
+  return build;
 }
 
 - (SBIconApproximateLayoutPosition)approximateLayoutPosition

@@ -1,14 +1,14 @@
 @interface CSAudioTimeConverter
 - (CSAudioTimeConverter)init;
 - (id)description;
-- (unint64_t)hostTimeFromSampleCount:(unint64_t)a3;
-- (unint64_t)sampleCountFromHostTime:(unint64_t)a3;
-- (void)processSampleCount:(unint64_t)a3 hostTime:(unint64_t)a4;
+- (unint64_t)hostTimeFromSampleCount:(unint64_t)count;
+- (unint64_t)sampleCountFromHostTime:(unint64_t)time;
+- (void)processSampleCount:(unint64_t)count hostTime:(unint64_t)time;
 @end
 
 @implementation CSAudioTimeConverter
 
-- (unint64_t)sampleCountFromHostTime:(unint64_t)a3
+- (unint64_t)sampleCountFromHostTime:(unint64_t)time
 {
   v7 = 0;
   v8 = &v7;
@@ -20,7 +20,7 @@
   block[2] = __48__CSAudioTimeConverter_sampleCountFromHostTime___block_invoke;
   block[3] = &unk_1E865C920;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = time;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[3];
@@ -40,7 +40,7 @@ unint64_t __48__CSAudioTimeConverter_sampleCountFromHostTime___block_invoke(void
   return result;
 }
 
-- (unint64_t)hostTimeFromSampleCount:(unint64_t)a3
+- (unint64_t)hostTimeFromSampleCount:(unint64_t)count
 {
   v7 = 0;
   v8 = &v7;
@@ -52,7 +52,7 @@ unint64_t __48__CSAudioTimeConverter_sampleCountFromHostTime___block_invoke(void
   block[2] = __48__CSAudioTimeConverter_hostTimeFromSampleCount___block_invoke;
   block[3] = &unk_1E865C920;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = count;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[3];
@@ -72,7 +72,7 @@ unint64_t __48__CSAudioTimeConverter_hostTimeFromSampleCount___block_invoke(void
   return result;
 }
 
-- (void)processSampleCount:(unint64_t)a3 hostTime:(unint64_t)a4
+- (void)processSampleCount:(unint64_t)count hostTime:(unint64_t)time
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -80,8 +80,8 @@ unint64_t __48__CSAudioTimeConverter_hostTimeFromSampleCount___block_invoke(void
   block[2] = __52__CSAudioTimeConverter_processSampleCount_hostTime___block_invoke;
   block[3] = &unk_1E865B1F0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = count;
+  block[6] = time;
   dispatch_async(queue, block);
 }
 
@@ -94,11 +94,11 @@ void *__52__CSAudioTimeConverter_processSampleCount_hostTime___block_invoke(void
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"[anchorHostTime = %llu]", self->_anchorHostTime];
-  [v3 appendFormat:@"[anchorSampleCount = %llu]", self->_anchorSampleCount];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[anchorHostTime = %llu]", self->_anchorHostTime];
+  [string appendFormat:@"[anchorSampleCount = %llu]", self->_anchorSampleCount];
 
-  return v3;
+  return string;
 }
 
 - (CSAudioTimeConverter)init

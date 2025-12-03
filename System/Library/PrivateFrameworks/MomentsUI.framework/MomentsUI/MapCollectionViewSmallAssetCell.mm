@@ -1,10 +1,10 @@
 @interface MapCollectionViewSmallAssetCell
-- (_TtC9MomentsUI31MapCollectionViewSmallAssetCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI31MapCollectionViewSmallAssetCell)initWithCoder:(id)coder;
 @end
 
 @implementation MapCollectionViewSmallAssetCell
 
-- (_TtC9MomentsUI31MapCollectionViewSmallAssetCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI31MapCollectionViewSmallAssetCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI31MapCollectionViewSmallAssetCell_mapView;
   if (one-time initialization token for empty != -1)

@@ -1,23 +1,23 @@
 @interface AWDWRMAntSelPolicyStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasAntConstraint:(BOOL)a3;
-- (void)setHasIsCoexBand:(BOOL)a3;
-- (void)setHasIssueBand:(BOOL)a3;
-- (void)setHasIssueType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasAntConstraint:(BOOL)constraint;
+- (void)setHasIsCoexBand:(BOOL)band;
+- (void)setHasIssueBand:(BOOL)band;
+- (void)setHasIssueType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWRMAntSelPolicyStats
 
-- (void)setHasIssueBand:(BOOL)a3
+- (void)setHasIssueBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIssueType:(BOOL)a3
+- (void)setHasIssueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsCoexBand:(BOOL)a3
+- (void)setHasIsCoexBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHasAntConstraint:(BOOL)a3
+- (void)setHasHasAntConstraint:(BOOL)constraint
 {
-  if (a3)
+  if (constraint)
   {
     v3 = 8;
   }
@@ -84,11 +84,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -107,7 +107,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_issueBand), @"IssueBand"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_issueBand), @"IssueBand"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -118,17 +118,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isCoexBand), @"IsCoexBand"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isCoexBand), @"IsCoexBand"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_issueType), @"IssueType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_issueType), @"IssueType"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -139,13 +139,13 @@ LABEL_5:
   if ((has & 8) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hasAntConstraint), @"hasAntConstraint"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hasAntConstraint), @"hasAntConstraint"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -213,13 +213,13 @@ LABEL_11:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -238,8 +238,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_issueBand;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_issueBand;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -253,8 +253,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 5) = self->_issueType;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_issueType;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -265,23 +265,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 24) = self->_hasAntConstraint;
-    *(a3 + 28) |= 8u;
+    *(to + 24) = self->_hasAntConstraint;
+    *(to + 28) |= 8u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 25) = self->_isCoexBand;
-  *(a3 + 28) |= 0x10u;
+  *(to + 25) = self->_isCoexBand;
+  *(to + 28) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -348,94 +348,94 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_25;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_issueBand != *(a3 + 4))
+      if ((*(equal + 28) & 2) == 0 || self->_issueBand != *(equal + 4))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_25;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_issueType != *(a3 + 5))
+      if ((*(equal + 28) & 4) == 0 || self->_issueType != *(equal + 5))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 4) != 0)
+    else if ((*(equal + 28) & 4) != 0)
     {
       goto LABEL_25;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 28) & 0x10) == 0)
+      if ((*(equal + 28) & 0x10) == 0)
       {
         goto LABEL_25;
       }
 
-      v6 = *(a3 + 25);
+      v6 = *(equal + 25);
       if (self->_isCoexBand)
       {
-        if ((*(a3 + 25) & 1) == 0)
+        if ((*(equal + 25) & 1) == 0)
         {
           goto LABEL_25;
         }
       }
 
-      else if (*(a3 + 25))
+      else if (*(equal + 25))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 28) & 0x10) != 0)
+    else if ((*(equal + 28) & 0x10) != 0)
     {
       goto LABEL_25;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 8) == 0;
     if ((*&self->_has & 8) == 0)
     {
       return v5;
     }
 
-    if ((*(a3 + 28) & 8) != 0)
+    if ((*(equal + 28) & 8) != 0)
     {
       if (self->_hasAntConstraint)
       {
-        if (*(a3 + 24))
+        if (*(equal + 24))
         {
           goto LABEL_33;
         }
       }
 
-      else if (!*(a3 + 24))
+      else if (!*(equal + 24))
       {
 LABEL_33:
         LOBYTE(v5) = 1;
@@ -518,14 +518,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -538,14 +538,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 2) == 0)
+  else if ((*(from + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_issueBand = *(a3 + 4);
+  self->_issueBand = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 4) == 0)
   {
 LABEL_4:
@@ -558,9 +558,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_issueType = *(a3 + 5);
+  self->_issueType = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -570,15 +570,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_hasAntConstraint = *(a3 + 24);
+    self->_hasAntConstraint = *(from + 24);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_10:
-  self->_isCoexBand = *(a3 + 25);
+  self->_isCoexBand = *(from + 25);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 28) & 8) != 0)
+  if ((*(from + 28) & 8) != 0)
   {
     goto LABEL_11;
   }

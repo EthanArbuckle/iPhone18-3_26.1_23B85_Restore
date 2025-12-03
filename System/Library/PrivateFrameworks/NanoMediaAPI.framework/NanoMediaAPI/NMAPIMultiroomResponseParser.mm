@@ -1,25 +1,25 @@
 @interface NMAPIMultiroomResponseParser
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4;
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NMAPIMultiroomResponseParser
 
-- (id)resultsWithDictionary:(id)a3 error:(id *)a4
+- (id)resultsWithDictionary:(id)dictionary error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [v5 objectForKey:@"data"];
-  v8 = NMAPIArrayWithObject(v7, @"data", a4);
+  v7 = [dictionaryCopy objectForKey:@"data"];
+  v8 = NMAPIArrayWithObject(v7, @"data", error);
 
   if (v8)
   {
-    v9 = NMAPIDictionaryInSingleObjectArray(v8, @"multiroom", a4);
+    v9 = NMAPIDictionaryInSingleObjectArray(v8, @"multiroom", error);
     v10 = v9;
     if (v9)
     {
       v11 = [v9 valueForKeyPath:@"relationships.children.data"];
-      v12 = NMAPIArrayWithObject(v11, @"rooms", a4);
+      v12 = NMAPIArrayWithObject(v11, @"rooms", error);
 
       if (v12)
       {
@@ -35,7 +35,7 @@
           v33 = *v36;
           v34 = v6;
           v30 = v10;
-          v31 = v5;
+          v31 = dictionaryCopy;
           v29 = v12;
           while (2)
           {
@@ -46,7 +46,7 @@
                 objc_enumerationMutation(obj);
               }
 
-              v16 = NMAPIDictionaryWithObject(*(*(&v35 + 1) + 8 * i), @"room", a4);
+              v16 = NMAPIDictionaryWithObject(*(*(&v35 + 1) + 8 * i), @"room", error);
               if (!v16)
               {
                 goto LABEL_20;
@@ -54,7 +54,7 @@
 
               v17 = v16;
               v18 = [v16 objectForKey:@"id"];
-              v19 = NMAPIStringWithObject(v18, @"sectionIdentifier", a4);
+              v19 = NMAPIStringWithObject(v18, @"sectionIdentifier", error);
 
               if (!v19)
               {
@@ -62,7 +62,7 @@
               }
 
               v20 = [v17 valueForKeyPath:@"relationships.contents.data"];
-              v21 = NMAPIArrayWithObject(v20, @"items", a4);
+              v21 = NMAPIArrayWithObject(v20, @"items", error);
 
               if (!v21)
               {
@@ -72,7 +72,7 @@ LABEL_20:
 
                 v26 = 0;
                 v10 = v30;
-                v5 = v31;
+                dictionaryCopy = v31;
                 v6 = v34;
                 v12 = v29;
                 goto LABEL_21;
@@ -88,7 +88,7 @@ LABEL_20:
 
             v14 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
             v10 = v30;
-            v5 = v31;
+            dictionaryCopy = v31;
             v6 = v34;
             v12 = v29;
             if (v14)

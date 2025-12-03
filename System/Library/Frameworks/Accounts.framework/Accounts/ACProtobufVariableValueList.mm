@@ -1,39 +1,39 @@
 @interface ACProtobufVariableValueList
-- (ACProtobufVariableValueList)initWithArray:(id)a3;
-- (ACProtobufVariableValueList)initWithSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ACProtobufVariableValueList)initWithArray:(id)array;
+- (ACProtobufVariableValueList)initWithSet:(id)set;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)array;
 - (NSSet)set;
-- (id)_convertArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_convertArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setArray:(id)a3;
-- (void)setSet:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setArray:(id)array;
+- (void)setSet:(id)set;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufVariableValueList
 
-- (void)addValue:(id)a3
+- (void)addValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   values = self->_values;
-  v8 = v4;
+  v8 = valueCopy;
   if (!values)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_values;
     self->_values = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     values = self->_values;
   }
 
-  [(NSMutableArray *)values addObject:v4];
+  [(NSMutableArray *)values addObject:valueCopy];
 }
 
 - (id)description
@@ -42,8 +42,8 @@
   v8.receiver = self;
   v8.super_class = ACProtobufVariableValueList;
   v4 = [(ACProtobufVariableValueList *)&v8 description];
-  v5 = [(ACProtobufVariableValueList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufVariableValueList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -51,7 +51,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_values count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_values, "count")}];
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -84,18 +84,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"value"];
+    [dictionary setObject:v4 forKey:@"value"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -131,29 +131,29 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(ACProtobufVariableValueList *)self valuesCount])
   {
-    [v8 clearValues];
-    v4 = [(ACProtobufVariableValueList *)self valuesCount];
-    if (v4)
+    [toCopy clearValues];
+    valuesCount = [(ACProtobufVariableValueList *)self valuesCount];
+    if (valuesCount)
     {
-      v5 = v4;
+      v5 = valuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ACProtobufVariableValueList *)self valueAtIndex:i];
-        [v8 addValue:v7];
+        [toCopy addValue:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -174,7 +174,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addValue:v11];
 
         ++v10;
@@ -191,13 +191,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     values = self->_values;
-    if (values | v4[1])
+    if (values | equalCopy[1])
     {
       v6 = [(NSMutableArray *)values isEqual:?];
     }
@@ -216,14 +216,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -252,16 +252,16 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (ACProtobufVariableValueList)initWithArray:(id)a3
+- (ACProtobufVariableValueList)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(ACProtobufVariableValueList *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (arrayCopy)
     {
-      v7 = [(ACProtobufVariableValueList *)v5 _convertArray:v4];
+      v7 = [(ACProtobufVariableValueList *)v5 _convertArray:arrayCopy];
       if (v7)
       {
         [(ACProtobufVariableValueList *)v6 setValues:v7];
@@ -288,17 +288,17 @@
   return v8;
 }
 
-- (ACProtobufVariableValueList)initWithSet:(id)a3
+- (ACProtobufVariableValueList)initWithSet:(id)set
 {
-  v4 = [a3 allObjects];
-  v5 = [(ACProtobufVariableValueList *)self initWithArray:v4];
+  allObjects = [set allObjects];
+  v5 = [(ACProtobufVariableValueList *)self initWithArray:allObjects];
 
   return v5;
 }
 
-- (id)_convertArray:(id)a3
+- (id)_convertArray:(id)array
 {
-  v3 = [a3 mutableCopy];
+  v3 = [array mutableCopy];
   v4 = [v3 count];
   if (v4)
   {
@@ -335,9 +335,9 @@ LABEL_5:
   return v10;
 }
 
-- (void)setArray:(id)a3
+- (void)setArray:(id)array
 {
-  if (a3)
+  if (array)
   {
     v4 = [(ACProtobufVariableValueList *)self _convertArray:?];
     if (v4)
@@ -357,8 +357,8 @@ LABEL_5:
 
 - (NSArray)array
 {
-  v2 = [(ACProtobufVariableValueList *)self values];
-  v3 = [v2 mutableCopy];
+  values = [(ACProtobufVariableValueList *)self values];
+  v3 = [values mutableCopy];
 
   v4 = [v3 count];
   if (v4)
@@ -368,14 +368,14 @@ LABEL_5:
     while (1)
     {
       v7 = [v3 objectAtIndexedSubscript:v6];
-      v8 = [v7 object];
+      object = [v7 object];
 
-      if (!v8)
+      if (!object)
       {
         break;
       }
 
-      [v3 replaceObjectAtIndex:v6 withObject:v8];
+      [v3 replaceObjectAtIndex:v6 withObject:object];
 
       if (v5 == ++v6)
       {
@@ -395,12 +395,12 @@ LABEL_5:
   return v9;
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    v4 = [a3 allObjects];
-    v6 = [(ACProtobufVariableValueList *)self _convertArray:v4];
+    allObjects = [set allObjects];
+    v6 = [(ACProtobufVariableValueList *)self _convertArray:allObjects];
 
     v5 = v6;
     if (v6)
@@ -420,8 +420,8 @@ LABEL_5:
 - (NSSet)set
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [(ACProtobufVariableValueList *)self array];
-  v5 = [v3 initWithArray:v4];
+  array = [(ACProtobufVariableValueList *)self array];
+  v5 = [v3 initWithArray:array];
 
   return v5;
 }

@@ -1,39 +1,39 @@
 @interface ATXUserAppPreferenceDataSource
-- (ATXUserAppPreferenceDataSource)initWithDevice:(id)a3;
-- (BOOL)appSupportsParameterCombination:(id)a3 forIntent:(id)a4 forBundleId:(id)a5;
-- (BOOL)parametersExistInValidCombinationsForParameters:(id)a3 andValidCombinations:(id)a4;
-- (void)preferredAppForIntentName:(id)a3 andParameterCombination:(id)a4 skipAppSchemaCheck:(BOOL)a5 callback:(id)a6;
+- (ATXUserAppPreferenceDataSource)initWithDevice:(id)device;
+- (BOOL)appSupportsParameterCombination:(id)combination forIntent:(id)intent forBundleId:(id)id;
+- (BOOL)parametersExistInValidCombinationsForParameters:(id)parameters andValidCombinations:(id)combinations;
+- (void)preferredAppForIntentName:(id)name andParameterCombination:(id)combination skipAppSchemaCheck:(BOOL)check callback:(id)callback;
 @end
 
 @implementation ATXUserAppPreferenceDataSource
 
-- (ATXUserAppPreferenceDataSource)initWithDevice:(id)a3
+- (ATXUserAppPreferenceDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXUserAppPreferenceDataSource;
   v6 = [(ATXUserAppPreferenceDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (BOOL)parametersExistInValidCombinationsForParameters:(id)a3 andValidCombinations:(id)a4
+- (BOOL)parametersExistInValidCombinationsForParameters:(id)parameters andValidCombinations:(id)combinations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
+  parametersCopy = parameters;
+  combinationsCopy = combinations;
+  v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:parametersCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [combinationsCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -43,7 +43,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         if ([*(*(&v14 + 1) + 8 * i) isEqualToSet:v7])
@@ -53,7 +53,7 @@
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -69,25 +69,25 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)appSupportsParameterCombination:(id)a3 forIntent:(id)a4 forBundleId:(id)a5
+- (BOOL)appSupportsParameterCombination:(id)combination forIntent:(id)intent forBundleId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([MEMORY[0x277CEB3B8] isSystemAppForBundleId:v10])
+  combinationCopy = combination;
+  intentCopy = intent;
+  idCopy = id;
+  if ([MEMORY[0x277CEB3B8] isSystemAppForBundleId:idCopy])
   {
-    v11 = [v9 _parameterCombinations];
-    v12 = [(ATXUserAppPreferenceDataSource *)self parametersExistInValidCombinationsForParameters:v8 andValidCombinations:v11];
+    _parameterCombinations = [intentCopy _parameterCombinations];
+    v12 = [(ATXUserAppPreferenceDataSource *)self parametersExistInValidCombinationsForParameters:combinationCopy andValidCombinations:_parameterCombinations];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CEB3B8] schemaWithoutFallbackForBundle:v10];
-    if (v11)
+    _parameterCombinations = [MEMORY[0x277CEB3B8] schemaWithoutFallbackForBundle:idCopy];
+    if (_parameterCombinations)
     {
-      v13 = [v9 _className];
-      v14 = [v11 _parameterCombinationsForClassName:v13];
-      v12 = [(ATXUserAppPreferenceDataSource *)self parametersExistInValidCombinationsForParameters:v8 andValidCombinations:v14];
+      _className = [intentCopy _className];
+      v14 = [_parameterCombinations _parameterCombinationsForClassName:_className];
+      v12 = [(ATXUserAppPreferenceDataSource *)self parametersExistInValidCombinationsForParameters:combinationCopy andValidCombinations:v14];
     }
 
     else
@@ -99,24 +99,24 @@ LABEL_11:
   return v12;
 }
 
-- (void)preferredAppForIntentName:(id)a3 andParameterCombination:(id)a4 skipAppSchemaCheck:(BOOL)a5 callback:(id)a6
+- (void)preferredAppForIntentName:(id)name andParameterCombination:(id)combination skipAppSchemaCheck:(BOOL)check callback:(id)callback
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  combinationCopy = combination;
+  callbackCopy = callback;
   v13 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v10;
+    *&buf[4] = nameCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = combinationCopy;
     _os_log_impl(&dword_23E3EA000, v13, OS_LOG_TYPE_INFO, "Looking for preferred app to handle %@ with parameter combination %@", buf, 0x16u);
   }
 
   v14 = objc_opt_new();
-  v15 = NSClassFromString(v10);
+  v15 = NSClassFromString(nameCopy);
   if (v15 && ([(objc_class *)v15 isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     v16 = objc_opt_new();
@@ -135,24 +135,24 @@ LABEL_11:
     v47 = buf;
     v19 = v17;
     v42 = v19;
-    v48 = a5;
+    checkCopy = check;
     v20 = v14;
     v43 = v20;
-    v44 = self;
-    v45 = v11;
+    selfCopy = self;
+    v45 = combinationCopy;
     v21 = v16;
     v46 = v21;
     [v18 fetchBundleIdsForIntent:v21 completionHandler:v41];
 
     if ([MEMORY[0x277D425A0] waitForSemaphore:v19 timeoutSeconds:1.0] == 1 || !objc_msgSend(v20, "count"))
     {
-      (*(v12 + 2))(v12, 0, *(*&buf[8] + 40));
+      (*(callbackCopy + 2))(callbackCopy, 0, *(*&buf[8] + 40));
     }
 
     else if ([v20 count] == 1)
     {
       v22 = [v20 objectAtIndexedSubscript:0];
-      (*(v12 + 2))(v12, v22, 0);
+      (*(callbackCopy + 2))(callbackCopy, v22, 0);
     }
 
     else
@@ -165,8 +165,8 @@ LABEL_11:
       v40 = 0;
       v31 = BiomeLibrary();
       v24 = [v31 App];
-      v25 = [v24 Intent];
-      v26 = [v25 atx_publisherWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
+      intent = [v24 Intent];
+      v26 = [intent atx_publisherWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __112__ATXUserAppPreferenceDataSource_preferredAppForIntentName_andParameterCombination_skipAppSchemaCheck_callback___block_invoke_25;
@@ -183,7 +183,7 @@ LABEL_11:
         v30 = [v27 objectAtIndexedSubscript:0];
       }
 
-      (*(v12 + 2))(v12, v30, 0);
+      (*(callbackCopy + 2))(callbackCopy, v30, 0);
       if (!v29)
       {
       }
@@ -196,7 +196,7 @@ LABEL_11:
 
   else
   {
-    (*(v12 + 2))(v12, 0, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0, 0);
   }
 
   v23 = *MEMORY[0x277D85DE8];

@@ -77,9 +77,9 @@
 
 - (GEOMapItemIdentifier)mapIdentifier
 {
-  v3 = [(VKVenueFeatureMarker *)self venueFeatureMarker];
-  v4 = *(*v3 + 120) * 6.28318531;
-  v5 = exp(*(*v3 + 128) * 6.28318531 + -3.14159265);
+  venueFeatureMarker = [(VKVenueFeatureMarker *)self venueFeatureMarker];
+  v4 = *(*venueFeatureMarker + 120) * 6.28318531;
+  v5 = exp(*(*venueFeatureMarker + 128) * 6.28318531 + -3.14159265);
   v6 = atan(v5);
   v7 = fmod(v4, 6.28318531);
   v8 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:-[VKVenueFeatureMarker businessID](self coordinate:{"businessID"), v6 * 114.591559 + -90.0, (fmod(v7 + 6.28318531, 6.28318531) * 57.2957795 + -180.0)}];

@@ -1,17 +1,17 @@
 @interface BCMutableGlobalMetadatum
-- (BCMutableGlobalMetadatum)initWithCloudData:(id)a3;
-- (BCMutableGlobalMetadatum)initWithKey:(id)a3;
-- (BCMutableGlobalMetadatum)initWithRecord:(id)a3;
+- (BCMutableGlobalMetadatum)initWithCloudData:(id)data;
+- (BCMutableGlobalMetadatum)initWithKey:(id)key;
+- (BCMutableGlobalMetadatum)initWithRecord:(id)record;
 - (NSString)description;
 - (id)configuredRecordFromAttributes;
 @end
 
 @implementation BCMutableGlobalMetadatum
 
-- (BCMutableGlobalMetadatum)initWithKey:(id)a3
+- (BCMutableGlobalMetadatum)initWithKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v7 = BDSCloudKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keyCopy copy];
     self = *(v5 + 8);
     *(v5 + 8) = v6;
 LABEL_7:
@@ -37,12 +37,12 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableGlobalMetadatum)initWithCloudData:(id)a3
+- (BCMutableGlobalMetadatum)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = BCMutableGlobalMetadatum;
-  v5 = [(BCMutableCloudData *)&v15 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v15 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
@@ -54,8 +54,8 @@ LABEL_7:
       key = v5->_key;
       v5->_key = v9;
 
-      v11 = [v7 value];
-      v12 = [v11 copy];
+      value = [v7 value];
+      v12 = [value copy];
       value = v5->_value;
       v5->_value = v12;
     }
@@ -68,7 +68,7 @@ LABEL_7:
         sub_1E4708FD4();
       }
 
-      v11 = v5;
+      value = v5;
       v5 = 0;
     }
   }
@@ -76,10 +76,10 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableGlobalMetadatum)initWithRecord:(id)a3
+- (BCMutableGlobalMetadatum)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     value = BDSCloudKitLog();
     if (os_log_type_enabled(value, OS_LOG_TYPE_ERROR))
@@ -93,14 +93,14 @@ LABEL_7:
 
   v11.receiver = self;
   v11.super_class = BCMutableGlobalMetadatum;
-  v5 = [(BCMutableCloudData *)&v11 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v11 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     key = v5->_key;
     v5->_key = v6;
 
-    self = [v4 objectForKey:@"value"];
+    self = [recordCopy objectForKey:@"value"];
     v8 = [(BCMutableGlobalMetadatum *)self copy];
     value = v5->_value;
     v5->_value = v8;
@@ -114,8 +114,8 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(BCMutableGlobalMetadatum *)self key];
-  v5 = [(BCMutableGlobalMetadatum *)self value];
-  v6 = [v3 stringWithFormat:@"key: %@, value: %@", v4, v5];
+  value = [(BCMutableGlobalMetadatum *)self value];
+  v6 = [v3 stringWithFormat:@"key: %@, value: %@", v4, value];
 
   return v6;
 }
@@ -124,11 +124,11 @@ LABEL_7:
 {
   v6.receiver = self;
   v6.super_class = BCMutableGlobalMetadatum;
-  v3 = [(BCMutableCloudData *)&v6 configuredRecordFromAttributes];
-  v4 = [(BCMutableGlobalMetadatum *)self value];
-  [v3 setObject:v4 forKey:@"value"];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v6 configuredRecordFromAttributes];
+  value = [(BCMutableGlobalMetadatum *)self value];
+  [configuredRecordFromAttributes setObject:value forKey:@"value"];
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
 @end

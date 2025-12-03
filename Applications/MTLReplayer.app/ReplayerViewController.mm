@@ -1,32 +1,32 @@
 @interface ReplayerViewController
 - (void)loadView;
-- (void)setColorPixelFormat:(unint64_t)a3;
-- (void)setDevice:(id)a3;
-- (void)setDisplayTextureEncoder:(id)a3;
-- (void)setOrientation:(int64_t)a3;
+- (void)setColorPixelFormat:(unint64_t)format;
+- (void)setDevice:(id)device;
+- (void)setDisplayTextureEncoder:(id)encoder;
+- (void)setOrientation:(int64_t)orientation;
 - (void)viewDidLoad;
 @end
 
 @implementation ReplayerViewController
 
-- (void)setColorPixelFormat:(unint64_t)a3
+- (void)setColorPixelFormat:(unint64_t)format
 {
-  v4 = [(ReplayerViewController *)self view];
-  [v4 setColorPixelFormat:a3];
+  view = [(ReplayerViewController *)self view];
+  [view setColorPixelFormat:format];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   if (+[NSThread isMainThread])
   {
-    if ((a3 - 1) > 3)
+    if ((orientation - 1) > 3)
     {
       v5 = 30;
     }
 
     else
     {
-      v5 = qword_10000CCC8[a3 - 1];
+      v5 = qword_10000CCC8[orientation - 1];
     }
 
     self->_orientationMask = v5;
@@ -45,61 +45,61 @@
     block[2] = sub_1000069D8;
     block[3] = &unk_100014B78;
     block[4] = self;
-    block[5] = a3;
+    block[5] = orientation;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)setDisplayTextureEncoder:(id)a3
+- (void)setDisplayTextureEncoder:(id)encoder
 {
-  v4 = a3;
-  v6 = [(ReplayerViewController *)self view];
-  v5 = [v4 device];
-  [v6 setDevice:v5];
+  encoderCopy = encoder;
+  view = [(ReplayerViewController *)self view];
+  device = [encoderCopy device];
+  [view setDevice:device];
 
-  [(Renderer *)self->_renderer setDisplayTextureEncoder:v4];
-  [v6 draw];
+  [(Renderer *)self->_renderer setDisplayTextureEncoder:encoderCopy];
+  [view draw];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (+[NSThread isMainThread])
   {
     [(ReplayerViewController *)self loadView];
-    v5 = [(ReplayerViewController *)self view];
-    [v5 setDevice:v4];
-    [v5 setColorPixelFormat:81];
-    [v5 setPaused:1];
-    [v5 setAutoResizeDrawable:1];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
+    view = [(ReplayerViewController *)self view];
+    [view setDevice:deviceCopy];
+    [view setColorPixelFormat:81];
+    [view setPaused:1];
+    [view setAutoResizeDrawable:1];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    v8 = [v7 effectiveGeometry];
+    effectiveGeometry = [windowScene effectiveGeometry];
     if (objc_opt_respondsToSelector())
     {
-      v9 = v8;
+      v9 = effectiveGeometry;
     }
 
     else
     {
-      v9 = v7;
+      v9 = windowScene;
     }
 
-    v10 = [v9 coordinateSpace];
-    [v10 bounds];
-    [v5 setBounds:?];
+    coordinateSpace = [v9 coordinateSpace];
+    [coordinateSpace bounds];
+    [view setBounds:?];
 
-    v11 = [v5 layer];
-    [v11 setColorspace:CGColorSpaceCreateWithName(kCGColorSpaceSRGB)];
-    v12 = [[Renderer alloc] initWithMetalKitView:v5];
+    layer = [view layer];
+    [layer setColorspace:CGColorSpaceCreateWithName(kCGColorSpaceSRGB)];
+    v12 = [[Renderer alloc] initWithMetalKitView:view];
     renderer = self->_renderer;
     self->_renderer = v12;
 
     v14 = self->_renderer;
-    [v5 drawableSize];
-    [(Renderer *)v14 mtkView:v5 drawableSizeWillChange:?];
-    [v5 setDelegate:self->_renderer];
+    [view drawableSize];
+    [(Renderer *)v14 mtkView:view drawableSizeWillChange:?];
+    [view setDelegate:self->_renderer];
   }
 
   else
@@ -109,7 +109,7 @@
     v15[2] = sub_100006C84;
     v15[3] = &unk_100014B50;
     v15[4] = self;
-    v16 = v4;
+    v16 = deviceCopy;
     dispatch_sync(&_dispatch_main_q, v15);
   }
 }
@@ -119,9 +119,9 @@
   v5.receiver = self;
   v5.super_class = ReplayerViewController;
   [(ReplayerViewController *)&v5 viewDidLoad];
-  v3 = [(ReplayerViewController *)self view];
+  view = [(ReplayerViewController *)self view];
   v4 = +[UIColor blackColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   self->_orientationMask = 30;
 }

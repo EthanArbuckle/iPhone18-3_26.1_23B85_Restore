@@ -1,20 +1,20 @@
 @interface REMotionRelevanceProviderManager
 + (id)_features;
-- (REMotionRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (REMotionRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_prepareForUpdate;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation REMotionRelevanceProviderManager
 
-- (REMotionRelevanceProviderManager)initWithQueue:(id)a3
+- (REMotionRelevanceProviderManager)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = REMotionRelevanceProviderManager;
-  result = [(RERelevanceProviderManager *)&v4 initWithQueue:a3];
+  result = [(RERelevanceProviderManager *)&v4 initWithQueue:queue];
   if (result)
   {
     result->_type = 0;
@@ -35,9 +35,9 @@
   return v3;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v4 = (self->_type & [a3 motionTypes]) != 0;
+  v4 = (self->_type & [provider motionTypes]) != 0;
 
   return [REFeatureValue featureValueWithBool:v4];
 }
@@ -60,7 +60,7 @@
   self->_type = [v3 motionType];
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v4 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];

@@ -1,23 +1,23 @@
 @interface FCTagSettingsEntry
 - (CKRecord)asCKRecord;
-- (FCTagSettingsEntry)initWithEntryID:(id)a3 tagID:(id)a4 fontMultiplier:(id)a5 fontMultiplierMacOS:(id)a6 contentScale:(id)a7 contentScaleMacOS:(id)a8 accessToken:(id)a9 webAccessOptIn:(BOOL)a10;
+- (FCTagSettingsEntry)initWithEntryID:(id)d tagID:(id)iD fontMultiplier:(id)multiplier fontMultiplierMacOS:(id)s contentScale:(id)scale contentScaleMacOS:(id)oS accessToken:(id)token webAccessOptIn:(BOOL)self0;
 - (id)dictionaryRepresentation;
-- (id)initWithEntryID:(void *)a1 dictionaryRepresentation:(void *)a2;
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:(void *)representation;
 @end
 
 @implementation FCTagSettingsEntry
 
-- (FCTagSettingsEntry)initWithEntryID:(id)a3 tagID:(id)a4 fontMultiplier:(id)a5 fontMultiplierMacOS:(id)a6 contentScale:(id)a7 contentScaleMacOS:(id)a8 accessToken:(id)a9 webAccessOptIn:(BOOL)a10
+- (FCTagSettingsEntry)initWithEntryID:(id)d tagID:(id)iD fontMultiplier:(id)multiplier fontMultiplierMacOS:(id)s contentScale:(id)scale contentScaleMacOS:(id)oS accessToken:(id)token webAccessOptIn:(BOOL)self0
 {
   v52 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  iDCopy = iD;
+  multiplierCopy = multiplier;
+  sCopy = s;
+  scaleCopy = scale;
+  oSCopy = oS;
+  tokenCopy = token;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"tag settings list entry must have an identifier"];
     *buf = 136315906;
@@ -30,13 +30,13 @@
     v51 = v41;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v17)
+    if (iDCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (iDCopy)
   {
     goto LABEL_6;
   }
@@ -62,37 +62,37 @@ LABEL_6:
   v24 = v23;
   if (v23)
   {
-    if (v16 && v17)
+    if (dCopy && iDCopy)
     {
-      v25 = [v16 copy];
+      v25 = [dCopy copy];
       identifier = v24->_identifier;
       v24->_identifier = v25;
 
-      v27 = [v17 copy];
+      v27 = [iDCopy copy];
       tagID = v24->_tagID;
       v24->_tagID = v27;
 
-      v29 = [v18 copy];
+      v29 = [multiplierCopy copy];
       fontMultiplier = v24->_fontMultiplier;
       v24->_fontMultiplier = v29;
 
-      v31 = [v19 copy];
+      v31 = [sCopy copy];
       fontMultiplierMacOS = v24->_fontMultiplierMacOS;
       v24->_fontMultiplierMacOS = v31;
 
-      v33 = [v20 copy];
+      v33 = [scaleCopy copy];
       contentScale = v24->_contentScale;
       v24->_contentScale = v33;
 
-      v35 = [v21 copy];
+      v35 = [oSCopy copy];
       contentScaleMacOS = v24->_contentScaleMacOS;
       v24->_contentScaleMacOS = v35;
 
-      v37 = [v22 copy];
+      v37 = [tokenCopy copy];
       accessToken = v24->_accessToken;
       v24->_accessToken = v37;
 
-      v24->_webAccessOptIn = a10;
+      v24->_webAccessOptIn = in;
     }
 
     else
@@ -114,27 +114,27 @@ LABEL_6:
   }
 
   v3 = objc_alloc(MEMORY[0x1E695BA70]);
-  v4 = [(FCTagSettingsEntry *)self identifier];
-  v5 = [v3 initWithRecordName:v4 zoneID:_MergedGlobals_132];
+  identifier = [(FCTagSettingsEntry *)self identifier];
+  v5 = [v3 initWithRecordName:identifier zoneID:_MergedGlobals_132];
 
   v6 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"TagSettings" recordID:v5];
-  v7 = [(FCTagSettingsEntry *)self tagID];
-  [v6 setValue:v7 forKey:@"tagID"];
+  tagID = [(FCTagSettingsEntry *)self tagID];
+  [v6 setValue:tagID forKey:@"tagID"];
 
-  v8 = [(FCTagSettingsEntry *)self fontMultiplier];
-  [v6 setValue:v8 forKey:@"fontMultiplier"];
+  fontMultiplier = [(FCTagSettingsEntry *)self fontMultiplier];
+  [v6 setValue:fontMultiplier forKey:@"fontMultiplier"];
 
-  v9 = [(FCTagSettingsEntry *)self fontMultiplierMacOS];
-  [v6 setValue:v9 forKey:@"fontMultiplierMacOS"];
+  fontMultiplierMacOS = [(FCTagSettingsEntry *)self fontMultiplierMacOS];
+  [v6 setValue:fontMultiplierMacOS forKey:@"fontMultiplierMacOS"];
 
-  v10 = [(FCTagSettingsEntry *)self contentScale];
-  [v6 setValue:v10 forKey:@"contentScale"];
+  contentScale = [(FCTagSettingsEntry *)self contentScale];
+  [v6 setValue:contentScale forKey:@"contentScale"];
 
-  v11 = [(FCTagSettingsEntry *)self contentScaleMacOS];
-  [v6 setValue:v11 forKey:@"contentScaleMacOS"];
+  contentScaleMacOS = [(FCTagSettingsEntry *)self contentScaleMacOS];
+  [v6 setValue:contentScaleMacOS forKey:@"contentScaleMacOS"];
 
-  v12 = [(FCTagSettingsEntry *)self accessToken];
-  [v6 setValue:v12 forKey:@"accessToken"];
+  accessToken = [(FCTagSettingsEntry *)self accessToken];
+  [v6 setValue:accessToken forKey:@"accessToken"];
 
   if ([(FCTagSettingsEntry *)self webAccessOptIn])
   {
@@ -155,81 +155,81 @@ uint64_t __32__FCTagSettingsEntry_asCKRecord__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)initWithEntryID:(void *)a1 dictionaryRepresentation:(void *)a2
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:(void *)representation
 {
-  v2 = a1;
-  if (a1)
+  dCopy = d;
+  if (d)
   {
-    v3 = a2;
-    v4 = [v3 objectForKeyedSubscript:@"tagID"];
-    v5 = [v3 objectForKeyedSubscript:@"fontMultiplier"];
-    v6 = [v3 objectForKeyedSubscript:@"fontMultiplierMacOS"];
-    v7 = [v3 objectForKeyedSubscript:@"contentScale"];
-    v8 = [v3 objectForKeyedSubscript:@"contentScaleMacOS"];
-    v9 = [v3 objectForKeyedSubscript:@"accessToken"];
-    v10 = [v3 objectForKeyedSubscript:@"webAccessOptIn"];
+    representationCopy = representation;
+    v4 = [representationCopy objectForKeyedSubscript:@"tagID"];
+    v5 = [representationCopy objectForKeyedSubscript:@"fontMultiplier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"fontMultiplierMacOS"];
+    v7 = [representationCopy objectForKeyedSubscript:@"contentScale"];
+    v8 = [representationCopy objectForKeyedSubscript:@"contentScaleMacOS"];
+    v9 = [representationCopy objectForKeyedSubscript:@"accessToken"];
+    v10 = [representationCopy objectForKeyedSubscript:@"webAccessOptIn"];
 
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v4];
     LOBYTE(v13) = [v10 BOOLValue];
-    v2 = [v2 initWithEntryID:v11 tagID:v4 fontMultiplier:v5 fontMultiplierMacOS:v6 contentScale:v7 contentScaleMacOS:v8 accessToken:v9 webAccessOptIn:v13];
+    dCopy = [dCopy initWithEntryID:v11 tagID:v4 fontMultiplier:v5 fontMultiplierMacOS:v6 contentScale:v7 contentScaleMacOS:v8 accessToken:v9 webAccessOptIn:v13];
   }
 
-  return v2;
+  return dCopy;
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [a1 tagID];
-  [v2 setObject:v3 forKey:@"tagID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  tagID = [self tagID];
+  [dictionary setObject:tagID forKey:@"tagID"];
 
-  v4 = [a1 fontMultiplier];
+  fontMultiplier = [self fontMultiplier];
 
-  if (v4)
+  if (fontMultiplier)
   {
-    v5 = [a1 fontMultiplier];
-    [v2 setObject:v5 forKey:@"fontMultiplier"];
+    fontMultiplier2 = [self fontMultiplier];
+    [dictionary setObject:fontMultiplier2 forKey:@"fontMultiplier"];
   }
 
-  v6 = [a1 fontMultiplierMacOS];
+  fontMultiplierMacOS = [self fontMultiplierMacOS];
 
-  if (v6)
+  if (fontMultiplierMacOS)
   {
-    v7 = [a1 fontMultiplierMacOS];
-    [v2 setObject:v7 forKey:@"fontMultiplierMacOS"];
+    fontMultiplierMacOS2 = [self fontMultiplierMacOS];
+    [dictionary setObject:fontMultiplierMacOS2 forKey:@"fontMultiplierMacOS"];
   }
 
-  v8 = [a1 contentScale];
+  contentScale = [self contentScale];
 
-  if (v8)
+  if (contentScale)
   {
-    v9 = [a1 contentScale];
-    [v2 setObject:v9 forKey:@"contentScale"];
+    contentScale2 = [self contentScale];
+    [dictionary setObject:contentScale2 forKey:@"contentScale"];
   }
 
-  v10 = [a1 contentScaleMacOS];
+  contentScaleMacOS = [self contentScaleMacOS];
 
-  if (v10)
+  if (contentScaleMacOS)
   {
-    v11 = [a1 contentScaleMacOS];
-    [v2 setObject:v11 forKey:@"contentScaleMacOS"];
+    contentScaleMacOS2 = [self contentScaleMacOS];
+    [dictionary setObject:contentScaleMacOS2 forKey:@"contentScaleMacOS"];
   }
 
-  v12 = [a1 accessToken];
+  accessToken = [self accessToken];
 
-  if (v12)
+  if (accessToken)
   {
-    v13 = [a1 accessToken];
-    [v2 setObject:v13 forKey:@"accessToken"];
+    accessToken2 = [self accessToken];
+    [dictionary setObject:accessToken2 forKey:@"accessToken"];
   }
 
-  if ([a1 webAccessOptIn])
+  if ([self webAccessOptIn])
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "webAccessOptIn")}];
-    [v2 setObject:v14 forKey:@"webAccessOptIn"];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "webAccessOptIn")}];
+    [dictionary setObject:v14 forKey:@"webAccessOptIn"];
   }
 
-  v15 = [v2 copy];
+  v15 = [dictionary copy];
 
   return v15;
 }

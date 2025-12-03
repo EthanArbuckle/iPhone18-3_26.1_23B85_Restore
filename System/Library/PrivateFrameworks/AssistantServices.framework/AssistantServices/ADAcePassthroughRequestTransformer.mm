@@ -1,16 +1,16 @@
 @interface ADAcePassthroughRequestTransformer
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4;
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation ADAcePassthroughRequestTransformer
 
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ADAcePassthroughSiriRequest alloc] initWithClientBoundCommand:v7];
+  handlerCopy = handler;
+  commandCopy = command;
+  v8 = [[ADAcePassthroughSiriRequest alloc] initWithClientBoundCommand:commandCopy];
 
-  (*(a4 + 2))(v6, v8);
+  (*(handler + 2))(handlerCopy, v8);
 }
 
 @end

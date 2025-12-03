@@ -1,17 +1,17 @@
 @interface SUUpdateDiscoveryDateManager
-- (BOOL)containsBuildVersion:(id)a3;
-- (SUUpdateDiscoveryDateManager)initWithDiscoveryDateDictionary:(id)a3;
+- (BOOL)containsBuildVersion:(id)version;
+- (SUUpdateDiscoveryDateManager)initWithDiscoveryDateDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
-- (id)discoveryDateforBuildVersion:(id)a3;
-- (void)removeDiscoveryDateForBuildVersion:(id)a3;
-- (void)setDiscoveryDate:(id)a3 forBuildVersion:(id)a4;
+- (id)discoveryDateforBuildVersion:(id)version;
+- (void)removeDiscoveryDateForBuildVersion:(id)version;
+- (void)setDiscoveryDate:(id)date forBuildVersion:(id)version;
 @end
 
 @implementation SUUpdateDiscoveryDateManager
 
-- (SUUpdateDiscoveryDateManager)initWithDiscoveryDateDictionary:(id)a3
+- (SUUpdateDiscoveryDateManager)initWithDiscoveryDateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = SUUpdateDiscoveryDateManager;
   v5 = [(SUUpdateDiscoveryDateManager *)&v18 init];
@@ -30,14 +30,14 @@
     stateQueue = v5->_stateQueue;
     v5->_stateQueue = v11;
 
-    if (v4)
+    if (dictionaryCopy)
     {
       v13 = v5->_stateQueue;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __64__SUUpdateDiscoveryDateManager_initWithDiscoveryDateDictionary___block_invoke;
       v15[3] = &unk_279CAA7C0;
-      v16 = v4;
+      v16 = dictionaryCopy;
       v17 = v5;
       dispatch_sync(v13, v15);
     }
@@ -139,20 +139,20 @@ LABEL_13:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDiscoveryDate:(id)a3 forBuildVersion:(id)a4
+- (void)setDiscoveryDate:(id)date forBuildVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__SUUpdateDiscoveryDateManager_setDiscoveryDate_forBuildVersion___block_invoke;
   block[3] = &unk_279CAA798;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = versionCopy;
+  v13 = dateCopy;
+  selfCopy = self;
+  v9 = dateCopy;
+  v10 = versionCopy;
   dispatch_sync(stateQueue, block);
 }
 
@@ -194,17 +194,17 @@ void *__65__SUUpdateDiscoveryDateManager_setDiscoveryDate_forBuildVersion___bloc
   return result;
 }
 
-- (void)removeDiscoveryDateForBuildVersion:(id)a3
+- (void)removeDiscoveryDateForBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__SUUpdateDiscoveryDateManager_removeDiscoveryDateForBuildVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = versionCopy;
+  selfCopy = self;
+  v6 = versionCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -227,9 +227,9 @@ unint64_t __67__SUUpdateDiscoveryDateManager_removeDiscoveryDateForBuildVersion_
   return result;
 }
 
-- (id)discoveryDateforBuildVersion:(id)a3
+- (id)discoveryDateforBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -242,9 +242,9 @@ unint64_t __67__SUUpdateDiscoveryDateManager_removeDiscoveryDateForBuildVersion_
   block[2] = __61__SUUpdateDiscoveryDateManager_discoveryDateforBuildVersion___block_invoke;
   block[3] = &unk_279CABAB0;
   block[4] = self;
-  v10 = v4;
+  v10 = versionCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = versionCopy;
   dispatch_sync(stateQueue, block);
   v7 = v13[5];
 
@@ -336,9 +336,9 @@ void __56__SUUpdateDiscoveryDateManager_dictionaryRepresentation__block_invoke(u
   }
 }
 
-- (BOOL)containsBuildVersion:(id)a3
+- (BOOL)containsBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -348,10 +348,10 @@ void __56__SUUpdateDiscoveryDateManager_dictionaryRepresentation__block_invoke(u
   block[1] = 3221225472;
   block[2] = __53__SUUpdateDiscoveryDateManager_containsBuildVersion___block_invoke;
   block[3] = &unk_279CAB740;
-  v9 = v4;
+  v9 = versionCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = versionCopy;
   dispatch_sync(stateQueue, block);
   LOBYTE(stateQueue) = v12[3] != 0;
 

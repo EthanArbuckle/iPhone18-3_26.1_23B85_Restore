@@ -1,25 +1,25 @@
 @interface GKContactsIntegrationState
 + (id)secureCodedPropertyKeys;
-- (id)initCohortStates:(id)a3 controllerState:(unint64_t)a4 idsUpdateIntervalState:(id)a5 settings:(id)a6;
+- (id)initCohortStates:(id)states controllerState:(unint64_t)state idsUpdateIntervalState:(id)intervalState settings:(id)settings;
 @end
 
 @implementation GKContactsIntegrationState
 
-- (id)initCohortStates:(id)a3 controllerState:(unint64_t)a4 idsUpdateIntervalState:(id)a5 settings:(id)a6
+- (id)initCohortStates:(id)states controllerState:(unint64_t)state idsUpdateIntervalState:(id)intervalState settings:(id)settings
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  statesCopy = states;
+  intervalStateCopy = intervalState;
+  settingsCopy = settings;
   v17.receiver = self;
   v17.super_class = GKContactsIntegrationState;
   v14 = [(GKContactsIntegrationState *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_cohortState, a3);
-    v15->_controllerState = a4;
-    objc_storeStrong(&v15->_idsUpdateIntervalState, a5);
-    objc_storeStrong(&v15->_settings, a6);
+    objc_storeStrong(&v14->_cohortState, states);
+    v15->_controllerState = state;
+    objc_storeStrong(&v15->_idsUpdateIntervalState, intervalState);
+    objc_storeStrong(&v15->_settings, settings);
   }
 
   return v15;

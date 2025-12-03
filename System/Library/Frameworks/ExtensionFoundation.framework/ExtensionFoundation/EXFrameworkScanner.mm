@@ -1,22 +1,22 @@
 @interface EXFrameworkScanner
 + (id)frameworkPaths;
 + (id)rootURL;
-- (BOOL)isAppleInternalURL:(id)a3;
-- (BOOL)isCatalystSupportURL:(id)a3;
-- (EXFrameworkScanner)initWithSourceURL:(id)a3;
+- (BOOL)isAppleInternalURL:(id)l;
+- (BOOL)isCatalystSupportURL:(id)l;
+- (EXFrameworkScanner)initWithSourceURL:(id)l;
 - (NSArray)appleInternalExtensionPaths;
 - (NSArray)extensionPaths;
 - (NSDictionary)combinedAppleInternalExtensionSDK;
 - (NSDictionary)combinedExtensionSDK;
-- (void)enumerateAppexptAtURL:(id)a3 block:(id)a4;
-- (void)enumerateBundlesWithPathExtension:(id)a3 atURL:(id)a4 block:(id)a5;
-- (void)enumerateFrameworksBundlesWithFrameworkURL:(id)a3 block:(id)a4;
+- (void)enumerateAppexptAtURL:(id)l block:(id)block;
+- (void)enumerateBundlesWithPathExtension:(id)extension atURL:(id)l block:(id)block;
+- (void)enumerateFrameworksBundlesWithFrameworkURL:(id)l block:(id)block;
 - (void)main;
-- (void)processExtensionSDK:(id)a3 declaringURL:(id)a4;
-- (void)processExtensionSDKFromBundle:(__CFBundle *)a3;
-- (void)processExtensionSDKFromFile:(id)a3;
-- (void)processExtensionsFromBundle:(__CFBundle *)a3;
-- (void)processExtensionsInDirectory:(id)a3;
+- (void)processExtensionSDK:(id)k declaringURL:(id)l;
+- (void)processExtensionSDKFromBundle:(__CFBundle *)bundle;
+- (void)processExtensionSDKFromFile:(id)file;
+- (void)processExtensionsFromBundle:(__CFBundle *)bundle;
+- (void)processExtensionsInDirectory:(id)directory;
 @end
 
 @implementation EXFrameworkScanner
@@ -67,16 +67,16 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EXFrameworkScanner)initWithSourceURL:(id)a3
+- (EXFrameworkScanner)initWithSourceURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = EXFrameworkScanner;
   v6 = [(EXFrameworkScanner *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceURL, a3);
+    objc_storeStrong(&v6->_sourceURL, l);
     v8 = objc_opt_new();
     combinedExtensionSDK = v7->__combinedExtensionSDK;
     v7->__combinedExtensionSDK = v8;
@@ -125,33 +125,33 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
   return v2;
 }
 
-- (BOOL)isCatalystSupportURL:(id)a3
+- (BOOL)isCatalystSupportURL:(id)l
 {
-  v4 = a3;
-  v5 = [(EXFrameworkScanner *)self sourceURL];
-  v6 = [v5 URLByAppendingPathComponent:@"System/iOSSupport"];
+  lCopy = l;
+  sourceURL = [(EXFrameworkScanner *)self sourceURL];
+  v6 = [sourceURL URLByAppendingPathComponent:@"System/iOSSupport"];
 
-  v7 = [v4 path];
+  path = [lCopy path];
 
-  v8 = [v7 lowercaseString];
-  v9 = [v6 path];
-  v10 = [v9 lowercaseString];
-  v11 = [v8 hasPrefix:v10];
+  lowercaseString = [path lowercaseString];
+  path2 = [v6 path];
+  lowercaseString2 = [path2 lowercaseString];
+  v11 = [lowercaseString hasPrefix:lowercaseString2];
 
   return v11;
 }
 
-- (BOOL)isAppleInternalURL:(id)a3
+- (BOOL)isAppleInternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(EXFrameworkScanner *)self sourceURL];
-  v6 = [v5 URLByAppendingPathComponent:@"AppleInternal"];
+  lCopy = l;
+  sourceURL = [(EXFrameworkScanner *)self sourceURL];
+  v6 = [sourceURL URLByAppendingPathComponent:@"AppleInternal"];
 
-  v7 = [v4 path];
-  v8 = [v7 lowercaseString];
-  v9 = [v6 path];
-  v10 = [v9 lowercaseString];
-  v11 = [v8 hasPrefix:v10];
+  path = [lCopy path];
+  lowercaseString = [path lowercaseString];
+  path2 = [v6 path];
+  lowercaseString2 = [path2 lowercaseString];
+  v11 = [lowercaseString hasPrefix:lowercaseString2];
 
   if (v11)
   {
@@ -160,28 +160,28 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
 
   else
   {
-    v13 = [(EXFrameworkScanner *)self sourceURL];
-    v14 = [v13 URLByAppendingPathComponent:@"System/iOSSupport/AppleInternal"];
+    sourceURL2 = [(EXFrameworkScanner *)self sourceURL];
+    v14 = [sourceURL2 URLByAppendingPathComponent:@"System/iOSSupport/AppleInternal"];
 
-    v15 = [v4 path];
-    v16 = [v15 lowercaseString];
-    v17 = [v14 path];
-    v18 = [v17 lowercaseString];
-    v12 = [v16 hasPrefix:v18];
+    path3 = [lCopy path];
+    lowercaseString3 = [path3 lowercaseString];
+    path4 = [v14 path];
+    lowercaseString4 = [path4 lowercaseString];
+    v12 = [lowercaseString3 hasPrefix:lowercaseString4];
   }
 
   return v12;
 }
 
-- (void)enumerateBundlesWithPathExtension:(id)a3 atURL:(id)a4 block:(id)a5
+- (void)enumerateBundlesWithPathExtension:(id)extension atURL:(id)l block:(id)block
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v34 = a5;
+  extensionCopy = extension;
+  lCopy = l;
+  blockCopy = block;
   v42 = 0;
   v9 = *MEMORY[0x1E695DBC8];
-  v10 = [v8 getResourceValue:&v42 forKey:*MEMORY[0x1E695DBC8] error:0];
+  v10 = [lCopy getResourceValue:&v42 forKey:*MEMORY[0x1E695DBC8] error:0];
   v11 = v42;
   if (v10)
   {
@@ -196,19 +196,19 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
   v32 = v11;
   if (!v12 && [v11 BOOLValue])
   {
-    v13 = [v8 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath = [lCopy URLByResolvingSymlinksInPath];
 
-    v8 = v13;
+    lCopy = uRLByResolvingSymlinksInPath;
   }
 
   v35 = *MEMORY[0x1E695DB78];
   v44[0] = *MEMORY[0x1E695DB78];
   v44[1] = v9;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v33 = v8;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v33 = lCopy;
   v31 = v14;
-  v16 = [v15 enumeratorAtURL:v8 includingPropertiesForKeys:v14 options:1 errorHandler:0];
+  v16 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v14 options:1 errorHandler:0];
 
   v40 = 0u;
   v41 = 0u;
@@ -231,10 +231,10 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
 
         v22 = *(*(&v38 + 1) + 8 * i);
         v23 = objc_autoreleasePoolPush();
-        v24 = [v22 lastPathComponent];
-        v25 = [v24 pathExtension];
+        lastPathComponent = [v22 lastPathComponent];
+        pathExtension = [lastPathComponent pathExtension];
 
-        if (v25 && ![v25 caseInsensitiveCompare:v7])
+        if (pathExtension && ![pathExtension caseInsensitiveCompare:extensionCopy])
         {
           v37 = 0;
           v26 = [v22 getResourceValue:&v37 forKey:v35 error:0];
@@ -255,7 +255,7 @@ uint64_t __29__EXFrameworkScanner_rootURL__block_invoke()
             if ([v27 BOOLValue])
             {
               v36 = 0;
-              v34[2](v34, v22, &v36);
+              blockCopy[2](blockCopy, v22, &v36);
               if (v36)
               {
 
@@ -284,14 +284,14 @@ LABEL_25:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateAppexptAtURL:(id)a3 block:(id)a4
+- (void)enumerateAppexptAtURL:(id)l block:(id)block
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
+  lCopy = l;
+  blockCopy = block;
   v39 = 0;
   v6 = *MEMORY[0x1E695DBC8];
-  v7 = [v5 getResourceValue:&v39 forKey:*MEMORY[0x1E695DBC8] error:0];
+  v7 = [lCopy getResourceValue:&v39 forKey:*MEMORY[0x1E695DBC8] error:0];
   v8 = v39;
   if (v7)
   {
@@ -306,19 +306,19 @@ LABEL_25:
   v29 = v8;
   if (!v9 && [v8 BOOLValue])
   {
-    v10 = [v5 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath = [lCopy URLByResolvingSymlinksInPath];
 
-    v5 = v10;
+    lCopy = uRLByResolvingSymlinksInPath;
   }
 
   v32 = *MEMORY[0x1E695DBB8];
   v41[0] = *MEMORY[0x1E695DBB8];
   v41[1] = v6;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v30 = v5;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v30 = lCopy;
   v28 = v11;
-  v13 = [v12 enumeratorAtURL:v5 includingPropertiesForKeys:v11 options:1 errorHandler:0];
+  v13 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v11 options:1 errorHandler:0];
 
   v37 = 0u;
   v38 = 0u;
@@ -341,10 +341,10 @@ LABEL_25:
 
         v19 = *(*(&v35 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 lastPathComponent];
-        v22 = [v21 pathExtension];
+        lastPathComponent = [v19 lastPathComponent];
+        pathExtension = [lastPathComponent pathExtension];
 
-        if (v22 && ![v22 caseInsensitiveCompare:@"appexpt"])
+        if (pathExtension && ![pathExtension caseInsensitiveCompare:@"appexpt"])
         {
           v34 = 0;
           v23 = [v19 getResourceValue:&v34 forKey:v32 error:0];
@@ -365,7 +365,7 @@ LABEL_25:
             if ([v24 BOOLValue])
             {
               v33 = 0;
-              v31[2](v31, v19, &v33);
+              blockCopy[2](blockCopy, v19, &v33);
               if (v33)
               {
 
@@ -394,16 +394,16 @@ LABEL_25:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateFrameworksBundlesWithFrameworkURL:(id)a3 block:(id)a4
+- (void)enumerateFrameworksBundlesWithFrameworkURL:(id)l block:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  blockCopy = block;
   Unique = _CFBundleCreateUnique();
   v21 = 0;
   if (Unique)
   {
     v6 = Unique;
-    v4[2](v4, Unique, &v21);
+    blockCopy[2](blockCopy, Unique, &v21);
     if (v21)
     {
       v7 = MEMORY[0x1E695E0F0];
@@ -446,7 +446,7 @@ LABEL_9:
       if (v14)
       {
         v15 = v14;
-        v4[2](v4, v14, &v21);
+        blockCopy[2](blockCopy, v14, &v21);
         CFRelease(v15);
       }
 
@@ -471,10 +471,10 @@ LABEL_9:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processExtensionSDKFromBundle:(__CFBundle *)a3
+- (void)processExtensionSDKFromBundle:(__CFBundle *)bundle
 {
-  v5 = [(__CFDictionary *)CFBundleGetInfoDictionary(a3) objectForKey:@"NSExtensionSDK"];
-  v6 = CFBundleCopyBundleURL(a3);
+  v5 = [(__CFDictionary *)CFBundleGetInfoDictionary(bundle) objectForKey:@"NSExtensionSDK"];
+  v6 = CFBundleCopyBundleURL(bundle);
   if (v5)
   {
     v7 = _EXRegistrationLog();
@@ -487,12 +487,12 @@ LABEL_9:
   }
 }
 
-- (void)processExtensionSDKFromFile:(id)a3
+- (void)processExtensionSDKFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v10 = 0;
-  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4 options:1 error:&v10];
-  v6 = v10;
+  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileCopy options:1 error:&v10];
+  _EX_parameterError = v10;
   if (!v5)
   {
     v7 = _EXRegistrationLog();
@@ -513,23 +513,23 @@ LABEL_9:
   {
     if (v8 || !v7)
     {
-      v6 = v8;
+      _EX_parameterError = v8;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696ABC0] _EX_parameterError];
+      _EX_parameterError = [MEMORY[0x1E696ABC0] _EX_parameterError];
     }
 
 LABEL_11:
 
-    v8 = v6;
+    v8 = _EX_parameterError;
     goto LABEL_12;
   }
 
   if (v7)
   {
-    [(EXFrameworkScanner *)self processExtensionSDK:v7 declaringURL:v4];
+    [(EXFrameworkScanner *)self processExtensionSDK:v7 declaringURL:fileCopy];
     goto LABEL_14;
   }
 
@@ -543,19 +543,19 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)processExtensionSDK:(id)a3 declaringURL:(id)a4
+- (void)processExtensionSDK:(id)k declaringURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  kCopy = k;
+  lCopy = l;
   active_platform = dyld_get_active_platform();
-  v9 = [(EXFrameworkScanner *)self isCatalystSupportURL:v7];
-  v10 = [(EXFrameworkScanner *)self isAppleInternalURL:v7];
-  v11 = [(EXFrameworkScanner *)self _combinedExtensionSDK];
+  v9 = [(EXFrameworkScanner *)self isCatalystSupportURL:lCopy];
+  v10 = [(EXFrameworkScanner *)self isAppleInternalURL:lCopy];
+  _combinedExtensionSDK = [(EXFrameworkScanner *)self _combinedExtensionSDK];
   if (v10)
   {
-    v12 = [(EXFrameworkScanner *)self _combinedAppleInternalExtensionSDK];
+    _combinedAppleInternalExtensionSDK = [(EXFrameworkScanner *)self _combinedAppleInternalExtensionSDK];
 
-    v11 = v12;
+    _combinedExtensionSDK = _combinedAppleInternalExtensionSDK;
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -572,12 +572,12 @@ LABEL_14:
     v13 = active_platform;
   }
 
-  v17 = v7;
-  v18 = v11;
+  v17 = lCopy;
+  v18 = _combinedExtensionSDK;
   v19 = v13;
-  v14 = v11;
-  v15 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v16];
+  v14 = _combinedExtensionSDK;
+  v15 = lCopy;
+  [kCopy enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 void __55__EXFrameworkScanner_processExtensionSDK_declaringURL___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -682,9 +682,9 @@ LABEL_25:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processExtensionsFromBundle:(__CFBundle *)a3
+- (void)processExtensionsFromBundle:(__CFBundle *)bundle
 {
-  v4 = CFBundleCopyBuiltInPlugInsURL(a3);
+  v4 = CFBundleCopyBuiltInPlugInsURL(bundle);
   v5 = _EXRegistrationLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -694,14 +694,14 @@ LABEL_25:
   [(EXFrameworkScanner *)self processExtensionsInDirectory:v4];
 }
 
-- (void)processExtensionsInDirectory:(id)a3
+- (void)processExtensionsInDirectory:(id)directory
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__EXFrameworkScanner_processExtensionsInDirectory___block_invoke;
   v3[3] = &unk_1E6E4E4A0;
   v3[4] = self;
-  [(EXFrameworkScanner *)self enumerateBundlesWithPathExtension:@"appex" atURL:a3 block:v3];
+  [(EXFrameworkScanner *)self enumerateBundlesWithPathExtension:@"appex" atURL:directory block:v3];
 }
 
 void __51__EXFrameworkScanner_processExtensionsInDirectory___block_invoke(uint64_t a1, void *a2)
@@ -740,10 +740,10 @@ void __51__EXFrameworkScanner_processExtensionsInDirectory___block_invoke(uint64
 
 - (void)main
 {
-  v7 = [a2 path];
-  *a1 = 138543362;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_1847D1000, a4, OS_LOG_TYPE_DEBUG, "Scanning frameworks at '%{public}@'", a1, 0xCu);
+  path = [a2 path];
+  *self = 138543362;
+  *a3 = path;
+  _os_log_debug_impl(&dword_1847D1000, a4, OS_LOG_TYPE_DEBUG, "Scanning frameworks at '%{public}@'", self, 0xCu);
 }
 
 void __26__EXFrameworkScanner_main__block_invoke(uint64_t a1, void *a2)

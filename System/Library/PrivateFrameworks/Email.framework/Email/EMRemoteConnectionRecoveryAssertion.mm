@@ -1,5 +1,5 @@
 @interface EMRemoteConnectionRecoveryAssertion
-- (EMRemoteConnectionRecoveryAssertion)initWithConnection:(id)a3;
+- (EMRemoteConnectionRecoveryAssertion)initWithConnection:(id)connection;
 - (EMRemoteConnectionRecoveryAssertionDelegate)delegate;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,9 +7,9 @@
 
 @implementation EMRemoteConnectionRecoveryAssertion
 
-- (EMRemoteConnectionRecoveryAssertion)initWithConnection:(id)a3
+- (EMRemoteConnectionRecoveryAssertion)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = EMRemoteConnectionRecoveryAssertion;
   v5 = [(EMRemoteConnectionRecoveryAssertion *)&v8 init];
@@ -17,8 +17,8 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
-    [v4 voucherInitialized];
+    objc_storeWeak(&v5->_delegate, connectionCopy);
+    [connectionCopy voucherInitialized];
   }
 
   return v6;

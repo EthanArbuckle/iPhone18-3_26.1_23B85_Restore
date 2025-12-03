@@ -22,7 +22,7 @@
 
 - (id)suggestedInvocationPhrase
 {
-  v1 = [a1 _payloadForIdentifier:@"UAINSuggestedInvocationPhrasePayload"];
+  v1 = [self _payloadForIdentifier:@"UAINSuggestedInvocationPhrasePayload"];
   if ([v1 length])
   {
     v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v1 encoding:4];
@@ -39,7 +39,7 @@
 - (uint64_t)shortcutAvailability
 {
   v4 = 0;
-  v1 = [a1 _payloadForIdentifier:@"UAINShortcutAvailabilityOptionsPayload"];
+  v1 = [self _payloadForIdentifier:@"UAINShortcutAvailabilityOptionsPayload"];
   v2 = 0;
   if ([v1 length] == 8)
   {
@@ -52,7 +52,7 @@
 
 - (id)_intents_copy
 {
-  v1 = INUserActivitySerializeToData(a1);
+  v1 = INUserActivitySerializeToData(self);
   v2 = INUserActivityDeserializeFromData(v1);
 
   return v2;
@@ -61,7 +61,7 @@
 - (uint64_t)_executionContext
 {
   v4 = 0;
-  v1 = [a1 _payloadForIdentifier:@"_UAINExecutionContextPayload"];
+  v1 = [self _payloadForIdentifier:@"_UAINExecutionContextPayload"];
   v2 = 0;
   if ([v1 length] == 8)
   {
@@ -76,35 +76,35 @@
 {
   v5 = a3;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v5 length:8];
-  [a1 _setPayload:v4 object:0 identifier:@"_UAINExecutionContextPayload"];
+  [self _setPayload:v4 object:0 identifier:@"_UAINExecutionContextPayload"];
 }
 
 - (void)_intentsPrepareForEncoding
 {
-  v2 = [a1 _intentsIdentifier];
-  v3 = [a1 interaction];
-  if (v3)
+  _intentsIdentifier = [self _intentsIdentifier];
+  interaction = [self interaction];
+  if (interaction)
   {
-    v5 = v3;
-    [a1 _setInteraction:0 donate:0];
+    v5 = interaction;
+    [self _setInteraction:0 donate:0];
     v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
-    [a1 _setPayload:v4 object:v5 identifier:@"UAINInteractionPayload"];
+    [self _setPayload:v4 object:v5 identifier:@"UAINInteractionPayload"];
 
-    v3 = v5;
+    interaction = v5;
   }
 }
 
 - (id)_intentsIdentifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _payloadForIdentifier:@"UAIntentsIdentifierPayload"];
+  v2 = [self _payloadForIdentifier:@"UAIntentsIdentifierPayload"];
   if (!v2)
   {
     goto LABEL_7;
   }
 
   v13 = 0;
-  v3 = [MEMORY[0x1E696ACD0] _in_safeUnarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v13];
+  uUIDString = [MEMORY[0x1E696ACD0] _in_safeUnarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v13];
   v4 = v13;
   if (v4)
   {
@@ -119,7 +119,7 @@
     }
   }
 
-  if (v3)
+  if (uUIDString)
   {
     v6 = v2;
   }
@@ -127,11 +127,11 @@
   else
   {
 LABEL_7:
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v3 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     v12 = 0;
-    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v12];
+    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:uUIDString requiringSecureCoding:1 error:&v12];
     v8 = v12;
 
     if (v8)
@@ -147,46 +147,46 @@ LABEL_7:
       }
     }
 
-    [a1 _setPayload:v6 object:v3 identifier:@"UAIntentsIdentifierPayload"];
+    [self _setPayload:v6 object:uUIDString identifier:@"UAIntentsIdentifierPayload"];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)setShortcutAvailability:()IntentsAdditions
 {
   v5 = a3;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v5 length:8];
-  [a1 _setPayload:v4 object:0 identifier:@"UAINShortcutAvailabilityOptionsPayload"];
+  [self _setPayload:v4 object:0 identifier:@"UAINShortcutAvailabilityOptionsPayload"];
 }
 
 - (void)setSuggestedInvocationPhrase:()IntentsAdditions
 {
   v4 = a3;
   v5 = [v4 dataUsingEncoding:4];
-  [a1 _setPayload:v5 object:v4 identifier:@"UAINSuggestedInvocationPhrasePayload"];
+  [self _setPayload:v5 object:v4 identifier:@"UAINSuggestedInvocationPhrasePayload"];
 }
 
 - (void)_setAccessedInteraction:()IntentsAdditions
 {
   v2 = _accessedInteractionPropertyKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 - (uint64_t)_accessedInteraction
 {
-  v1 = objc_getAssociatedObject(a1, _accessedInteractionPropertyKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, _accessedInteractionPropertyKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)_hasInteraction
 {
-  v1 = [a1 _payloadForIdentifier:@"UAINInteractionPayload"];
+  v1 = [self _payloadForIdentifier:@"UAINInteractionPayload"];
   v2 = [v1 length] != 0;
 
   return v2;
@@ -198,14 +198,14 @@ LABEL_7:
   v10 = v6;
   if (v6)
   {
-    v7 = [v6 intent];
-    INIssueSandboxExtensionsForFileURLEnumerable(v7);
+    intent = [v6 intent];
+    INIssueSandboxExtensionsForFileURLEnumerable(intent);
 
-    v8 = [v10 intentResponse];
-    v9 = v8;
-    if (v8)
+    intentResponse = [v10 intentResponse];
+    v9 = intentResponse;
+    if (intentResponse)
     {
-      INIssueSandboxExtensionsForFileURLEnumerable(v8);
+      INIssueSandboxExtensionsForFileURLEnumerable(intentResponse);
     }
 
     if (a4)
@@ -213,19 +213,19 @@ LABEL_7:
       [v10 donateInteractionWithCompletion:0];
     }
 
-    [a1 _setPayloadIdentifier:@"UAINInteractionPayload" object:v10 withBlock:&__block_literal_global_21];
+    [self _setPayloadIdentifier:@"UAINInteractionPayload" object:v10 withBlock:&__block_literal_global_21];
   }
 
   else
   {
-    [a1 _setPayload:0 object:0 identifier:@"UAINInteractionPayload"];
+    [self _setPayload:0 object:0 identifier:@"UAINInteractionPayload"];
   }
 }
 
 - (id)interaction
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _objectForIdentifier:@"UAINInteractionPayload"];
+  v2 = [self _objectForIdentifier:@"UAINInteractionPayload"];
   if (v2)
   {
 LABEL_2:
@@ -234,7 +234,7 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v3 = [a1 _payloadForIdentifier:@"UAINInteractionPayload"];
+  v3 = [self _payloadForIdentifier:@"UAINInteractionPayload"];
   if (v3)
   {
     v8 = 0;
@@ -262,7 +262,7 @@ LABEL_2:
   }
 
 LABEL_3:
-  [a1 _setAccessedInteraction:1];
+  [self _setAccessedInteraction:1];
   v4 = *MEMORY[0x1E69E9840];
 
   return v3;
@@ -272,22 +272,22 @@ LABEL_3:
 {
   if (a3)
   {
-    return [a1 _setPayloadIdentifier:@"UAINAppIntentPayload" object:a3 withBlock:&__block_literal_global_18385];
+    return [self _setPayloadIdentifier:@"UAINAppIntentPayload" object:a3 withBlock:&__block_literal_global_18385];
   }
 
   else
   {
-    return [a1 _setPayload:0 object:0 identifier:@"UAINAppIntentPayload"];
+    return [self _setPayload:0 object:0 identifier:@"UAINAppIntentPayload"];
   }
 }
 
 - (id)_appIntent
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _objectForIdentifier:@"UAINAppIntentPayload"];
+  v2 = [self _objectForIdentifier:@"UAINAppIntentPayload"];
   if (!v2)
   {
-    v3 = [a1 _payloadForIdentifier:@"UAINAppIntentPayload"];
+    v3 = [self _payloadForIdentifier:@"UAINAppIntentPayload"];
     if (v3)
     {
       v8 = 0;
@@ -321,8 +321,8 @@ LABEL_3:
 - (void)_initWithIntent:()IntentsAdditions
 {
   v4 = a3;
-  v5 = [v4 _className];
-  v6 = [a1 initWithActivityType:v5];
+  _className = [v4 _className];
+  v6 = [self initWithActivityType:_className];
 
   if (v6)
   {

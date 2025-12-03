@@ -1,15 +1,15 @@
 @interface ATXPBSpotlightSuggestionLayout
-- (BOOL)isEqual:(id)a3;
-- (double)scoresAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)scoresAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCollections:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addCollections:(id)collections;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBSpotlightSuggestionLayout
@@ -22,38 +22,38 @@
   [(ATXPBSpotlightSuggestionLayout *)&v3 dealloc];
 }
 
-- (void)addCollections:(id)a3
+- (void)addCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   collections = self->_collections;
-  v8 = v4;
+  v8 = collectionsCopy;
   if (!collections)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_collections;
     self->_collections = v6;
 
-    v4 = v8;
+    collectionsCopy = v8;
     collections = self->_collections;
   }
 
-  [(NSMutableArray *)collections addObject:v4];
+  [(NSMutableArray *)collections addObject:collectionsCopy];
 }
 
-- (double)scoresAtIndex:(unint64_t)a3
+- (double)scoresAtIndex:(unint64_t)index
 {
   p_scores = &self->_scores;
   count = self->_scores.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_scores->list[a3];
+  return p_scores->list[index];
 }
 
 - (id)description
@@ -62,8 +62,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBSpotlightSuggestionLayout;
   v4 = [(ATXPBSpotlightSuggestionLayout *)&v8 description];
-  v5 = [(ATXPBSpotlightSuggestionLayout *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBSpotlightSuggestionLayout *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -71,12 +71,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   if ([(NSMutableArray *)self->_collections count])
@@ -101,8 +101,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -122,10 +122,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
@@ -180,50 +180,50 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
-    [v11 setUuidString:?];
+    [toCopy setUuidString:?];
   }
 
   if ([(ATXPBSpotlightSuggestionLayout *)self collectionsCount])
   {
-    [v11 clearCollections];
-    v4 = [(ATXPBSpotlightSuggestionLayout *)self collectionsCount];
-    if (v4)
+    [toCopy clearCollections];
+    collectionsCount = [(ATXPBSpotlightSuggestionLayout *)self collectionsCount];
+    if (collectionsCount)
     {
-      v5 = v4;
+      v5 = collectionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBSpotlightSuggestionLayout *)self collectionsAtIndex:i];
-        [v11 addCollections:v7];
+        [toCopy addCollections:v7];
       }
     }
   }
 
   if ([(ATXPBSpotlightSuggestionLayout *)self scoresCount])
   {
-    [v11 clearScores];
-    v8 = [(ATXPBSpotlightSuggestionLayout *)self scoresCount];
-    if (v8)
+    [toCopy clearScores];
+    scoresCount = [(ATXPBSpotlightSuggestionLayout *)self scoresCount];
+    if (scoresCount)
     {
-      v9 = v8;
+      v9 = scoresCount;
       for (j = 0; j != v9; ++j)
       {
         [(ATXPBSpotlightSuggestionLayout *)self scoresAtIndex:j];
-        [v11 addScores:?];
+        [toCopy addScores:?];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
@@ -247,7 +247,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addCollections:v13];
 
         ++v12;
@@ -265,10 +265,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uuidString = self->_uuidString, !(uuidString | v4[5])) || -[NSString isEqual:](uuidString, "isEqual:")) && ((collections = self->_collections, !(collections | v4[4])) || -[NSMutableArray isEqual:](collections, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uuidString = self->_uuidString, !(uuidString | equalCopy[5])) || -[NSString isEqual:](uuidString, "isEqual:")) && ((collections = self->_collections, !(collections | equalCopy[4])) || -[NSMutableArray isEqual:](collections, "isEqual:")))
   {
     IsEqual = PBRepeatedDoubleIsEqual();
   }
@@ -288,11 +288,11 @@
   return v4 ^ PBRepeatedDoubleHash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(ATXPBSpotlightSuggestionLayout *)self setUuidString:?];
   }
@@ -301,7 +301,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -325,13 +325,13 @@
     while (v7);
   }
 
-  v10 = [v4 scoresCount];
-  if (v10)
+  scoresCount = [fromCopy scoresCount];
+  if (scoresCount)
   {
-    v11 = v10;
+    v11 = scoresCount;
     for (j = 0; j != v11; ++j)
     {
-      [v4 scoresAtIndex:{j, v14}];
+      [fromCopy scoresAtIndex:{j, v14}];
       [(ATXPBSpotlightSuggestionLayout *)self addScores:?];
     }
   }

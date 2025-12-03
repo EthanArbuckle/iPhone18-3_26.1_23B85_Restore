@@ -1,14 +1,14 @@
 @interface ATXPredictionJSONScoreLogger
 + (id)sharedInstance;
 - (ATXPredictionJSONScoreLogger)init;
-- (void)flushWithCompletion:(id)a3;
-- (void)flushWithCompletion:(id)a3 filenameSuffix:(id)a4;
-- (void)logInputDict:(id)a3 subscores:(id)a4 forBundleId:(id)a5;
-- (void)logInputs:(id)a3 subscores:(id)a4 forBundleId:(id)a5;
-- (void)setAssetVersion:(unint64_t)a3;
-- (void)setCacheAge:(double)a3;
-- (void)setConsumerSubType:(unsigned __int8)a3;
-- (void)setPredictionClass:(id)a3;
+- (void)flushWithCompletion:(id)completion;
+- (void)flushWithCompletion:(id)completion filenameSuffix:(id)suffix;
+- (void)logInputDict:(id)dict subscores:(id)subscores forBundleId:(id)id;
+- (void)logInputs:(id)inputs subscores:(id)subscores forBundleId:(id)id;
+- (void)setAssetVersion:(unint64_t)version;
+- (void)setCacheAge:(double)age;
+- (void)setConsumerSubType:(unsigned __int8)type;
+- (void)setPredictionClass:(id)class;
 @end
 
 @implementation ATXPredictionJSONScoreLogger
@@ -56,20 +56,20 @@ void __46__ATXPredictionJSONScoreLogger_sharedInstance__block_invoke()
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [v9 stringByAppendingString:@"-fast"];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_UTILITY, 0);
-    v14 = dispatch_queue_create(v11, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     fastQueue = v2->_fastQueue;
     v2->_fastQueue = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = [v17 stringByAppendingString:@"-slow"];
-    v19 = [v18 UTF8String];
+    uTF8String2 = [v18 UTF8String];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_attr_make_with_qos_class(v20, QOS_CLASS_BACKGROUND, 0);
-    v22 = dispatch_queue_create(v19, v21);
+    v22 = dispatch_queue_create(uTF8String2, v21);
     slowQueue = v2->_slowQueue;
     v2->_slowQueue = v22;
   }
@@ -77,31 +77,31 @@ void __46__ATXPredictionJSONScoreLogger_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)logInputs:(id)a3 subscores:(id)a4 forBundleId:(id)a5
+- (void)logInputs:(id)inputs subscores:(id)subscores forBundleId:(id)id
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  inputsCopy = inputs;
+  subscoresCopy = subscores;
+  idCopy = id;
   if ([MEMORY[0x277D42590] shouldIncludePredictionLogs])
   {
-    v10 = [ATXScoreDict scoreDictFromDictionary:v12];
-    v11 = [ATXScoreDict scoreDictFromDictionary:v8];
-    [(ATXPredictionJSONScoreLogger *)self logInputDict:v10 subscores:v11 forBundleId:v9];
+    v10 = [ATXScoreDict scoreDictFromDictionary:inputsCopy];
+    v11 = [ATXScoreDict scoreDictFromDictionary:subscoresCopy];
+    [(ATXPredictionJSONScoreLogger *)self logInputDict:v10 subscores:v11 forBundleId:idCopy];
   }
 }
 
-- (void)logInputDict:(id)a3 subscores:(id)a4 forBundleId:(id)a5
+- (void)logInputDict:(id)dict subscores:(id)subscores forBundleId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  subscoresCopy = subscores;
+  idCopy = id;
   if ([MEMORY[0x277D42590] shouldIncludePredictionLogs])
   {
-    if (v8)
+    if (dictCopy)
     {
-      if (v9)
+      if (subscoresCopy)
       {
-        if (v10)
+        if (idCopy)
         {
           fastQueue = self->_fastQueue;
           v34[0] = MEMORY[0x277D85DD0];
@@ -109,9 +109,9 @@ void __46__ATXPredictionJSONScoreLogger_sharedInstance__block_invoke()
           v34[2] = __67__ATXPredictionJSONScoreLogger_logInputDict_subscores_forBundleId___block_invoke;
           v34[3] = &unk_2785978C0;
           v34[4] = self;
-          v35 = v10;
-          v36 = v8;
-          v37 = v9;
+          v35 = idCopy;
+          v36 = dictCopy;
+          v37 = subscoresCopy;
           dispatch_async(fastQueue, v34);
 
           goto LABEL_13;
@@ -259,7 +259,7 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConsumerSubType:(unsigned __int8)a3
+- (void)setConsumerSubType:(unsigned __int8)type
 {
   fastQueue = self->_fastQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -267,25 +267,25 @@ LABEL_18:
   v4[2] = __51__ATXPredictionJSONScoreLogger_setConsumerSubType___block_invoke;
   v4[3] = &unk_27859AB70;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(fastQueue, v4);
 }
 
-- (void)setPredictionClass:(id)a3
+- (void)setPredictionClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   fastQueue = self->_fastQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ATXPredictionJSONScoreLogger_setPredictionClass___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classCopy;
+  v6 = classCopy;
   dispatch_async(fastQueue, v7);
 }
 
-- (void)setAssetVersion:(unint64_t)a3
+- (void)setAssetVersion:(unint64_t)version
 {
   fastQueue = self->_fastQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -293,7 +293,7 @@ LABEL_18:
   v4[2] = __48__ATXPredictionJSONScoreLogger_setAssetVersion___block_invoke;
   v4[3] = &unk_278598278;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = version;
   dispatch_async(fastQueue, v4);
 }
 
@@ -303,7 +303,7 @@ void __48__ATXPredictionJSONScoreLogger_setAssetVersion___block_invoke(uint64_t 
   [*(*(a1 + 32) + 8) setObject:v2 forKeyedSubscript:@"assetVersion"];
 }
 
-- (void)setCacheAge:(double)a3
+- (void)setCacheAge:(double)age
 {
   fastQueue = self->_fastQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -311,7 +311,7 @@ void __48__ATXPredictionJSONScoreLogger_setAssetVersion___block_invoke(uint64_t 
   v4[2] = __44__ATXPredictionJSONScoreLogger_setCacheAge___block_invoke;
   v4[3] = &unk_278598278;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = age;
   dispatch_async(fastQueue, v4);
 }
 
@@ -321,19 +321,19 @@ void __44__ATXPredictionJSONScoreLogger_setCacheAge___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 8) setObject:v2 forKeyedSubscript:@"PredictionCacheAge"];
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CEBCF0];
   consumerSubType = self->_consumerSubType;
-  v6 = a3;
+  completionCopy = completion;
   v7 = [v4 safeStringForConsumerSubtype:consumerSubType];
-  [(ATXPredictionJSONScoreLogger *)self flushWithCompletion:v6 filenameSuffix:v7];
+  [(ATXPredictionJSONScoreLogger *)self flushWithCompletion:completionCopy filenameSuffix:v7];
 }
 
-- (void)flushWithCompletion:(id)a3 filenameSuffix:(id)a4
+- (void)flushWithCompletion:(id)completion filenameSuffix:(id)suffix
 {
-  v7 = a3;
-  v8 = a4;
+  completionCopy = completion;
+  suffixCopy = suffix;
   if ([MEMORY[0x277D42590] shouldIncludePredictionLogs])
   {
     sel_getName(a2);
@@ -344,16 +344,16 @@ void __44__ATXPredictionJSONScoreLogger_setCacheAge___block_invoke(uint64_t a1)
     v12[2] = __67__ATXPredictionJSONScoreLogger_flushWithCompletion_filenameSuffix___block_invoke;
     v12[3] = &unk_27859AB98;
     v12[4] = self;
-    v15 = v7;
+    v15 = completionCopy;
     v13 = v9;
-    v14 = v8;
+    v14 = suffixCopy;
     v11 = v9;
     dispatch_async(fastQueue, v12);
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

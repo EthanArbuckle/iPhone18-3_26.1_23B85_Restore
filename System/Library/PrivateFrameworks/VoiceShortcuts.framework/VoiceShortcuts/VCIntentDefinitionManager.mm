@@ -1,9 +1,9 @@
 @interface VCIntentDefinitionManager
 + (id)allBundleIdentifiers;
-+ (id)appInfoForBundleID:(id)a3;
-+ (id)intentDefinitionBundleURLForBundleID:(id)a3;
-+ (id)intentDefinitionURLsForBundleID:(id)a3;
-+ (id)intentDefinitionURLsForBundleID:(id)a3 inDirectory:(id)a4;
++ (id)appInfoForBundleID:(id)d;
++ (id)intentDefinitionBundleURLForBundleID:(id)d;
++ (id)intentDefinitionURLsForBundleID:(id)d;
++ (id)intentDefinitionURLsForBundleID:(id)d inDirectory:(id)directory;
 @end
 
 @implementation VCIntentDefinitionManager
@@ -41,8 +41,8 @@
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([v12 wf_fileIsDirectory])
         {
-          v13 = [v12 lastPathComponent];
-          [v6 addObject:v13];
+          lastPathComponent = [v12 lastPathComponent];
+          [v6 addObject:lastPathComponent];
         }
       }
 
@@ -52,11 +52,11 @@
     while (v9);
   }
 
-  v14 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return allObjects;
 }
 
 void *__49__VCIntentDefinitionManager_allBundleIdentifiers__block_invoke(uint64_t a1, void *a2)
@@ -109,12 +109,12 @@ void *__49__VCIntentDefinitionManager_allBundleIdentifiers__block_invoke(uint64_
   return v8;
 }
 
-+ (id)appInfoForBundleID:(id)a3
++ (id)appInfoForBundleID:(id)d
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = WFSyncedDefinitionDirectoryURL();
-  v33 = v3;
+  v33 = dCopy;
   v5 = WFDefinitionDirectoryURLsForBundleIdentifier();
 
   v39 = 0u;
@@ -141,9 +141,9 @@ LABEL_3:
       }
 
       v13 = [*(*(&v37 + 1) + 8 * v12) URLByAppendingPathComponent:{v10, v31}];
-      v14 = [*(v11 + 2560) defaultManager];
-      v15 = [v13 path];
-      v16 = [v14 isReadableFileAtPath:v15];
+      defaultManager = [*(v11 + 2560) defaultManager];
+      path = [v13 path];
+      v16 = [defaultManager isReadableFileAtPath:path];
 
       if ((v16 & 1) == 0)
       {
@@ -259,10 +259,10 @@ LABEL_26:
   return v25;
 }
 
-+ (id)intentDefinitionBundleURLForBundleID:(id)a3
++ (id)intentDefinitionBundleURLForBundleID:(id)d
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = WFSyncedDefinitionDirectoryURL();
   v53[0] = v4;
   v5 = WFBundledDefinitionDirectoryURL();
@@ -294,9 +294,9 @@ LABEL_26:
         }
 
         v12 = *(*(&v41 + 1) + 8 * v11);
-        v13 = [*(v10 + 2560) defaultManager];
+        defaultManager = [*(v10 + 2560) defaultManager];
         v40 = 0;
-        v14 = [v13 contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:0 options:0 error:&v40];
+        v14 = [defaultManager contentsOfDirectoryAtURL:v12 includingPropertiesForKeys:0 options:0 error:&v40];
         v15 = v40;
 
         if (v14)
@@ -345,10 +345,10 @@ LABEL_26:
               }
 
               v23 = *(*(&v36 + 1) + 8 * i);
-              v24 = [v23 lastPathComponent];
-              v25 = v3;
+              lastPathComponent = [v23 lastPathComponent];
+              v25 = dCopy;
               v26 = v25;
-              if (v24 == v25)
+              if (lastPathComponent == v25)
               {
 
 LABEL_31:
@@ -358,9 +358,9 @@ LABEL_31:
                 goto LABEL_33;
               }
 
-              if (v3 && v24)
+              if (dCopy && lastPathComponent)
               {
-                v27 = [v24 isEqualToString:v25];
+                v27 = [lastPathComponent isEqualToString:v25];
 
                 if (v27)
                 {
@@ -409,27 +409,27 @@ LABEL_33:
   return v28;
 }
 
-+ (id)intentDefinitionURLsForBundleID:(id)a3 inDirectory:(id)a4
++ (id)intentDefinitionURLsForBundleID:(id)d inDirectory:(id)directory
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v35 = v7;
-  if (!v7)
+  dCopy = d;
+  directoryCopy = directory;
+  v35 = dCopy;
+  if (!dCopy)
   {
     [MEMORY[0x277CCA890] currentHandler];
-    v29 = v28 = v8;
-    [v29 handleFailureInMethod:a2 object:a1 file:@"VCIntentDefinitionManager.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
+    v29 = v28 = directoryCopy;
+    [v29 handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionManager.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
 
-    v8 = v28;
+    directoryCopy = v28;
   }
 
-  if (!v8)
+  if (!directoryCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"VCIntentDefinitionManager.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"searchDirectory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionManager.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"searchDirectory"}];
 
-    v8 = 0;
+    directoryCopy = 0;
   }
 
   WFDefinitionDirectoryURLsForBundleIdentifier();
@@ -440,7 +440,7 @@ LABEL_33:
   v34 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v34)
   {
-    v31 = v8;
+    v31 = directoryCopy;
     v33 = *v45;
     v9 = *MEMORY[0x277CBE868];
     while (2)
@@ -453,7 +453,7 @@ LABEL_33:
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v49 = v9;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
         v42[0] = MEMORY[0x277D85DD0];
@@ -461,7 +461,7 @@ LABEL_33:
         v42[2] = __73__VCIntentDefinitionManager_intentDefinitionURLsForBundleID_inDirectory___block_invoke;
         v42[3] = &unk_278900080;
         v43 = v35;
-        v14 = [v12 enumeratorAtURL:v11 includingPropertiesForKeys:v13 options:4 errorHandler:v42];
+        v14 = [defaultManager enumeratorAtURL:v11 includingPropertiesForKeys:v13 options:4 errorHandler:v42];
 
         if (v14)
         {
@@ -492,8 +492,8 @@ LABEL_33:
                 v22 = v37;
                 if (([v22 BOOLValue] & 1) == 0)
                 {
-                  v23 = [v21 pathExtension];
-                  if (v23 == @"intentdefinition" || (v24 = v23) != 0 && (v25 = [(__CFString *)v23 isEqualToString:@"intentdefinition"], v24, v24, v25))
+                  pathExtension = [v21 pathExtension];
+                  if (pathExtension == @"intentdefinition" || (v24 = pathExtension) != 0 && (v25 = [(__CFString *)pathExtension isEqualToString:@"intentdefinition"], v24, v24, v25))
                   {
                     [v15 addObject:v21];
                   }
@@ -527,7 +527,7 @@ LABEL_33:
 
     v15 = 0;
 LABEL_29:
-    v8 = v31;
+    directoryCopy = v31;
   }
 
   else
@@ -575,14 +575,14 @@ uint64_t __73__VCIntentDefinitionManager_intentDefinitionURLsForBundleID_inDirec
   return v8;
 }
 
-+ (id)intentDefinitionURLsForBundleID:(id)a3
++ (id)intentDefinitionURLsForBundleID:(id)d
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"VCIntentDefinitionManager.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionManager.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"bundleID"}];
   }
 
   v6 = WFSyncedDefinitionDirectoryURL();
@@ -610,7 +610,7 @@ LABEL_5:
         objc_enumerationMutation(v9);
       }
 
-      v14 = [a1 intentDefinitionURLsForBundleID:v5 inDirectory:*(*(&v18 + 1) + 8 * v13)];
+      v14 = [self intentDefinitionURLsForBundleID:dCopy inDirectory:*(*(&v18 + 1) + 8 * v13)];
       if ([v14 count])
       {
         break;

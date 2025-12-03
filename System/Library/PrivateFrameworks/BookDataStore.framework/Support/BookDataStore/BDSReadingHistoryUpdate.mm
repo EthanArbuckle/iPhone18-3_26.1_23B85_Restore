@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ReadingHistoryUpdate.description.getter();
 
   v3 = sub_1001C5FE8();

@@ -8,19 +8,19 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   MotionDebugView.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MotionDebugView.layoutSubviews()();
 }
 
 - (void)safeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   MotionDebugView.safeAreaInsetsDidChange()();
 }
 

@@ -219,9 +219,9 @@ uint64_t __25__RMDevice_currentDevice__block_invoke()
 - (NSString)operatingSystemMarketingName
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RMDevice *)self operatingSystem];
-  v5 = [(RMDevice *)self operatingSystemVersion];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  operatingSystem = [(RMDevice *)self operatingSystem];
+  operatingSystemVersion = [(RMDevice *)self operatingSystemVersion];
+  v6 = [v3 stringWithFormat:@"%@ %@", operatingSystem, operatingSystemVersion];
 
   return v6;
 }
@@ -339,7 +339,7 @@ uint64_t __25__RMDevice_currentDevice__block_invoke()
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_1E1168000, a2, OS_LOG_TYPE_DEBUG, "Lock state %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

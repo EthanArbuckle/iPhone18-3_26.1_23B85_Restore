@@ -1,6 +1,6 @@
 @interface ARUIMetricColors
 + (id)intervalColors;
-+ (id)metricColorsForWorkout:(id)a3;
++ (id)metricColorsForWorkout:(id)workout;
 + (id)mindfulnessColors;
 + (id)pacerColors;
 + (id)raceBehindColors;
@@ -16,10 +16,10 @@
   return v0;
 }
 
-+ (id)metricColorsForWorkout:(id)a3
++ (id)metricColorsForWorkout:(id)workout
 {
-  v3 = a3;
-  v4 = sub_100433844(v3);
+  workoutCopy = workout;
+  v4 = sub_100433844(workoutCopy);
 
   return v4;
 }

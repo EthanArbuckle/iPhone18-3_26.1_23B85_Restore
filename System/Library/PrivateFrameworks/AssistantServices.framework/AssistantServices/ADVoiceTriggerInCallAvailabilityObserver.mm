@@ -4,10 +4,10 @@
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)_voiceTriggerEnabledDidChange;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
 - (void)notifyDelegates;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation ADVoiceTriggerInCallAvailabilityObserver
@@ -55,31 +55,31 @@
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10031C4B8;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10031C5AC;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 

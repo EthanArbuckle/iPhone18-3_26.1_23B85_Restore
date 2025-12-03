@@ -1,28 +1,28 @@
 @interface SXPastBodyComponentInsertionCondition
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5;
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider;
 - (CGPoint)firstBodyComponentThreshold;
-- (id)findFirstBodyComponentInComponents:(id)a3;
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5;
+- (id)findFirstBodyComponentInComponents:(id)components;
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider;
 @end
 
 @implementation SXPastBodyComponentInsertionCondition
 
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider
 {
-  v8 = a4;
-  v7 = [(SXPastBodyComponentInsertionCondition *)self findFirstBodyComponentInComponents:a3];
+  providerCopy = provider;
+  v7 = [(SXPastBodyComponentInsertionCondition *)self findFirstBodyComponentInComponents:components];
   if (v7)
   {
-    [v8 frameForComponent:v7];
+    [providerCopy frameForComponent:v7];
     [(SXPastBodyComponentInsertionCondition *)self setFirstBodyComponentThreshold:0.0, CGRectGetMaxY(v10)];
     [(SXPastBodyComponentInsertionCondition *)self setFirstBodyComponent:v7];
   }
 }
 
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider
 {
-  v6 = a3;
-  [v6 approximateLocation];
+  markerCopy = marker;
+  [markerCopy approximateLocation];
   v8 = v7;
   [(SXPastBodyComponentInsertionCondition *)self firstBodyComponentThreshold];
   if (v8 >= v9)
@@ -32,25 +32,25 @@
 
   else
   {
-    v10 = [v6 componentAnchor];
-    v11 = [v10 targetComponentIdentifier];
-    v12 = [(SXPastBodyComponentInsertionCondition *)self firstBodyComponent];
-    v13 = [v12 identifier];
-    v14 = [v11 isEqualToString:v13];
+    componentAnchor = [markerCopy componentAnchor];
+    targetComponentIdentifier = [componentAnchor targetComponentIdentifier];
+    firstBodyComponent = [(SXPastBodyComponentInsertionCondition *)self firstBodyComponent];
+    identifier = [firstBodyComponent identifier];
+    v14 = [targetComponentIdentifier isEqualToString:identifier];
   }
 
   return v14;
 }
 
-- (id)findFirstBodyComponentInComponents:(id)a3
+- (id)findFirstBodyComponentInComponents:(id)components
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  componentsCopy = components;
+  v4 = [componentsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -61,7 +61,7 @@ LABEL_3:
     {
       if (*v18 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(componentsCopy);
       }
 
       v8 = *(*(&v17 + 1) + 8 * v7);
@@ -78,9 +78,9 @@ LABEL_3:
       if (objc_opt_isKindOfClass())
       {
         v12 = v8;
-        v13 = [v12 components];
-        v14 = [v13 NSArray];
-        v9 = [(SXPastBodyComponentInsertionCondition *)self findFirstBodyComponentInComponents:v14];
+        components = [v12 components];
+        nSArray = [components NSArray];
+        v9 = [(SXPastBodyComponentInsertionCondition *)self findFirstBodyComponentInComponents:nSArray];
 
         if (v9)
         {
@@ -94,7 +94,7 @@ LABEL_3:
 LABEL_13:
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v5 = [componentsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -105,8 +105,8 @@ LABEL_13:
     }
 
     v9 = v8;
-    v10 = [v9 text];
-    v11 = [v10 length];
+    text = [v9 text];
+    v11 = [text length];
 
     if (v11 >= 0x65)
     {

@@ -1,7 +1,7 @@
 @interface VOTEnabledBannerViewController
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4;
+- (void)hideAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)showAnimated:(BOOL)a3 completion:(id)a4;
+- (void)showAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation VOTEnabledBannerViewController
@@ -14,38 +14,38 @@
   height = CGRectZero.size.height;
   v15 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTEnabledBannerViewController *)self setView:v15];
-  v7 = [[VOTEnabledBannerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(VOTEnabledBannerView *)v7 setAlpha:0.0];
-  [v15 addSubview:v7];
-  [(VOTEnabledBannerViewController *)self setBannerView:v7];
+  height = [[VOTEnabledBannerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(VOTEnabledBannerView *)height setAlpha:0.0];
+  [v15 addSubview:height];
+  [(VOTEnabledBannerViewController *)self setBannerView:height];
   v8 = +[NSMutableArray array];
-  v9 = [(VOTEnabledBannerView *)v7 bottomAnchor];
-  v10 = [v15 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-47.0];
+  bottomAnchor = [(VOTEnabledBannerView *)height bottomAnchor];
+  bottomAnchor2 = [v15 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-47.0];
   [v8 addObject:v11];
 
-  v12 = [(VOTEnabledBannerView *)v7 centerXAnchor];
-  v13 = [v15 centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [(VOTEnabledBannerView *)height centerXAnchor];
+  centerXAnchor2 = [v15 centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v8 addObject:v14];
 
   [NSLayoutConstraint activateConstraints:v8];
 }
 
-- (void)showAnimated:(BOOL)a3 completion:(id)a4
+- (void)showAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(VOTEnabledBannerViewController *)self bannerView];
-  v8 = [(VOTEnabledBannerViewController *)self view];
-  [v8 setNeedsLayout];
+  animatedCopy = animated;
+  completionCopy = completion;
+  bannerView = [(VOTEnabledBannerViewController *)self bannerView];
+  view = [(VOTEnabledBannerViewController *)self view];
+  [view setNeedsLayout];
 
-  v9 = [(VOTEnabledBannerViewController *)self view];
-  [v9 layoutIfNeeded];
+  view2 = [(VOTEnabledBannerViewController *)self view];
+  [view2 layoutIfNeeded];
 
   v10 = 0.0;
-  [v7 setAlpha:0.0];
-  if (v4)
+  [bannerView setAlpha:0.0];
+  if (animatedCopy)
   {
     v10 = 0.3;
   }
@@ -54,24 +54,24 @@
   v15[1] = 3221225472;
   v15[2] = sub_128F0;
   v15[3] = &unk_3D218;
-  v16 = v7;
+  v16 = bannerView;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_128FC;
   v13[3] = &unk_3D498;
-  v14 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = completionCopy;
+  v11 = completionCopy;
+  v12 = bannerView;
   [UIView animateWithDuration:4 delay:v15 options:v13 animations:v10 completion:0.0];
 }
 
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(VOTEnabledBannerViewController *)self bannerView];
-  v8 = v7;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  bannerView = [(VOTEnabledBannerViewController *)self bannerView];
+  v8 = bannerView;
+  if (animatedCopy)
   {
     v9 = 0.3;
   }
@@ -85,13 +85,13 @@
   v14[1] = 3221225472;
   v14[2] = sub_12A50;
   v14[3] = &unk_3D218;
-  v15 = v7;
+  v15 = bannerView;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_12A5C;
   v12[3] = &unk_3D498;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
   [UIView animateWithDuration:4 delay:v14 options:v12 animations:v9 completion:0.0];
 }

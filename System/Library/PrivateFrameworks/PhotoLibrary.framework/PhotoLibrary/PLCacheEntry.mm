@@ -1,7 +1,7 @@
 @interface PLCacheEntry
 - (lruEntry)lruListEntry;
 - (void)dealloc;
-- (void)setObject:(id)a3;
+- (void)setObject:(id)object;
 @end
 
 @implementation PLCacheEntry
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  if (self->_object != a3)
+  if (self->_object != object)
   {
-    v5 = a3;
+    objectCopy = object;
 
-    self->_object = a3;
+    self->_object = object;
   }
 }
 

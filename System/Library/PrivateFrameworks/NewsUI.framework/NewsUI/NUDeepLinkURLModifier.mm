@@ -1,19 +1,19 @@
 @interface NUDeepLinkURLModifier
-- (id)modifyURL:(id)a3;
+- (id)modifyURL:(id)l;
 @end
 
 @implementation NUDeepLinkURLModifier
 
-- (id)modifyURL:(id)a3
+- (id)modifyURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [a3 copy];
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v5 = [v4 URLOverrideForURL:v3];
+    v3 = [l copy];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v5 = [defaultWorkspace URLOverrideForURL:v3];
 
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v7 = [v6 applicationsAvailableForOpeningURL:v5];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v7 = [defaultWorkspace2 applicationsAvailableForOpeningURL:v5];
     v8 = [v7 count];
 
     if (v8)

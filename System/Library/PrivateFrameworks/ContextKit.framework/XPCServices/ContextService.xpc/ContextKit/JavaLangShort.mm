@@ -1,17 +1,17 @@
 @interface JavaLangShort
-+ (int)compareWithShort:(signed __int16)a3 withShort:(signed __int16)a4;
-+ (signed)reverseBytesWithShort:(signed __int16)a3;
++ (int)compareWithShort:(signed __int16)short withShort:(signed __int16)withShort;
++ (signed)reverseBytesWithShort:(signed __int16)short;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation JavaLangShort
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -22,7 +22,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 4);
+  v6 = *(id + 4);
   if ((atomic_load_explicit(JavaLangShort__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100235C38();
@@ -49,16 +49,16 @@
   }
 }
 
-+ (int)compareWithShort:(signed __int16)a3 withShort:(signed __int16)a4
++ (int)compareWithShort:(signed __int16)short withShort:(signed __int16)withShort
 {
-  v4 = a4;
-  v5 = a3;
+  withShortCopy = withShort;
+  shortCopy = short;
   if ((atomic_load_explicit(JavaLangShort__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100235C38();
   }
 
-  if (v5 >= v4)
+  if (shortCopy >= withShortCopy)
   {
     v6 = 0;
   }
@@ -68,7 +68,7 @@
     v6 = -1;
   }
 
-  if (v5 > v4)
+  if (shortCopy > withShortCopy)
   {
     return 1;
   }
@@ -79,7 +79,7 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -88,7 +88,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -98,23 +98,23 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 4) == self->value_;
+  return *(equal + 4) == self->value_;
 }
 
-+ (signed)reverseBytesWithShort:(signed __int16)a3
++ (signed)reverseBytesWithShort:(signed __int16)short
 {
-  v3 = a3;
+  shortCopy = short;
   if ((atomic_load_explicit(JavaLangShort__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100235C38();
   }
 
-  return bswap32(v3) >> 16;
+  return bswap32(shortCopy) >> 16;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass shortClass](IOSClass "shortClass")];
     objc_opt_class();

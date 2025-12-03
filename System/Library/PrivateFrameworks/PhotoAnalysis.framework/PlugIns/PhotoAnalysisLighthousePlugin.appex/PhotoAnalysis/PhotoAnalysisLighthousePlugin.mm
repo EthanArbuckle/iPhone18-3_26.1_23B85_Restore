@@ -1,8 +1,8 @@
 @interface PhotoAnalysisLighthousePlugin
 + (id)photoAnalysisLighthousePluginLog;
 - (PhotoAnalysisLighthousePlugin)init;
-- (id)performTask:(id)a3 outError:(id *)a4;
-- (id)performTrialTask:(id)a3 outError:(id *)a4;
+- (id)performTask:(id)task outError:(id *)error;
+- (id)performTrialTask:(id)task outError:(id *)error;
 - (void)stop;
 @end
 
@@ -17,35 +17,35 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Asked to stop", v5, 2u);
   }
 
-  v4 = [(PhotoAnalysisLighthousePlugin *)self stopLock];
-  objc_sync_enter(v4);
+  stopLock = [(PhotoAnalysisLighthousePlugin *)self stopLock];
+  objc_sync_enter(stopLock);
   [(PhotoAnalysisLighthousePlugin *)self setShouldStop:1];
-  objc_sync_exit(v4);
+  objc_sync_exit(stopLock);
 }
 
-- (id)performTrialTask:(id)a3 outError:(id *)a4
+- (id)performTrialTask:(id)task outError:(id *)error
 {
-  v84 = a3;
-  v79 = a4;
+  taskCopy = task;
+  errorCopy = error;
   v5 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
-  if (a4)
+  if (error)
   {
     v6 = v5;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v84;
+      *&buf[4] = taskCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting task %@", buf, 0xCu);
     }
 
-    [(PhotoAnalysisLighthousePlugin *)self setTask:v84];
-    v83 = [v84 triClient];
-    v81 = [v83 levelForFactor:@"recipe" withNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
-    v7 = [v81 fileValue];
-    v82 = [v7 path];
+    [(PhotoAnalysisLighthousePlugin *)self setTask:taskCopy];
+    triClient = [taskCopy triClient];
+    v81 = [triClient levelForFactor:@"recipe" withNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
+    fileValue = [v81 fileValue];
+    path = [fileValue path];
 
     v99 = 0;
-    v77 = [[NSData alloc] initWithContentsOfFile:v82 options:1 error:&v99];
+    v77 = [[NSData alloc] initWithContentsOfFile:path options:1 error:&v99];
     v8 = v99;
     if (v8)
     {
@@ -54,7 +54,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *&buf[4] = v82;
+        *&buf[4] = path;
         *&buf[12] = 2112;
         *&buf[14] = v9;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Can't load JSON from %@ with error: %@", buf, 0x16u);
@@ -62,7 +62,7 @@
 
       v11 = v9;
       v12 = 0;
-      *v79 = v9;
+      *errorCopy = v9;
       goto LABEL_51;
     }
 
@@ -81,7 +81,7 @@
 
       v48 = v9;
       v12 = 0;
-      *v79 = v9;
+      *errorCopy = v9;
     }
 
     else
@@ -94,10 +94,10 @@
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Loaded JSON recipe: %@", buf, 0xCu);
       }
 
-      v71 = [v83 levelForFactor:@"models" withNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
-      v15 = [v71 directoryValue];
-      v16 = [v15 path];
-      v17 = [NSURL fileURLWithPath:v16];
+      v71 = [triClient levelForFactor:@"models" withNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
+      directoryValue = [v71 directoryValue];
+      path2 = [directoryValue path];
+      v17 = [NSURL fileURLWithPath:path2];
       v72 = [v17 URLByAppendingPathComponent:@"photos_models"];
 
       v18 = +[NSFileManager defaultManager];
@@ -117,7 +117,7 @@
 
         v51 = v9;
         v12 = 0;
-        *v79 = v9;
+        *errorCopy = v9;
       }
 
       else
@@ -144,8 +144,8 @@ LABEL_19:
             v21 = *(*(&v93 + 1) + 8 * v20);
             v100[0] = 0;
             v22 = +[NSFileManager defaultManager];
-            v23 = [v21 path];
-            v24 = [v22 fileExistsAtPath:v23 isDirectory:v100];
+            path3 = [v21 path];
+            v24 = [v22 fileExistsAtPath:path3 isDirectory:v100];
 
             if (v24)
             {
@@ -161,14 +161,14 @@ LABEL_19:
                   v52 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                   {
-                    v68 = [v21 path];
+                    path4 = [v21 path];
                     *buf = 138412290;
-                    *&buf[4] = v68;
+                    *&buf[4] = path4;
                     _os_log_error_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "Failed to get files at %@", buf, 0xCu);
                   }
 
                   v53 = v9;
-                  *v79 = v9;
+                  *errorCopy = v9;
 
                   v12 = 0;
                   goto LABEL_82;
@@ -193,13 +193,13 @@ LABEL_19:
                       }
 
                       v31 = *(*(&v88 + 1) + 8 * i);
-                      v32 = [v31 pathExtension];
-                      v33 = [v32 isEqualToString:@"net"];
+                      pathExtension = [v31 pathExtension];
+                      v33 = [pathExtension isEqualToString:@"net"];
 
                       if (v33)
                       {
-                        v34 = [v31 path];
-                        [v19 addObject:v34];
+                        path5 = [v31 path];
+                        [v19 addObject:path5];
                       }
                     }
 
@@ -215,9 +215,9 @@ LABEL_19:
               v35 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
-                v37 = [v21 path];
+                path6 = [v21 path];
                 *buf = 138412290;
-                *&buf[4] = v37;
+                *&buf[4] = path6;
                 _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Skipped %@ which is not a directory", buf, 0xCu);
               }
             }
@@ -227,9 +227,9 @@ LABEL_19:
               v35 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
-                v36 = [v21 path];
+                path7 = [v21 path];
                 *buf = 138412290;
-                *&buf[4] = v36;
+                *&buf[4] = path7;
                 _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Skipped %@ which was not found in the filesystem", buf, 0xCu);
               }
             }
@@ -261,7 +261,7 @@ LABEL_40:
 
           [NSError errorWithDomain:@"com.apple.PhotoAnalysis.PhotoAnalysisLighthousePlugin.PhotoAnalysisLighthousePlugin" code:0 userInfo:0];
           v9 = 0;
-          *v79 = v12 = 0;
+          *errorCopy = v12 = 0;
         }
 
         else
@@ -273,22 +273,22 @@ LABEL_40:
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "Found models at %@", buf, 0xCu);
           }
 
-          v41 = [v83 experimentIdentifiersWithNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
+          v41 = [triClient experimentIdentifiersWithNamespaceName:@"LIGHTHOUSE_PHOTOS_PHOTO_ANALYSIS"];
           v42 = v41;
           if (v41)
           {
-            v43 = [v41 experimentId];
+            experimentId = [v41 experimentId];
             v44 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v42 deploymentId]);
-            v45 = [v44 stringValue];
+            stringValue = [v44 stringValue];
 
-            v46 = [v42 treatmentId];
+            treatmentId = [v42 treatmentId];
           }
 
           else
           {
-            v46 = @"fail";
-            v45 = @"fail";
-            v43 = @"fail";
+            treatmentId = @"fail";
+            stringValue = @"fail";
+            experimentId = @"fail";
           }
 
           *buf = 0;
@@ -305,11 +305,11 @@ LABEL_40:
           if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
           {
             v58 = +[PHPhotoLibrary systemPhotoLibraryURL];
-            v59 = [v58 absoluteString];
+            absoluteString = [v58 absoluteString];
             *v100 = 138412546;
             v101 = v56;
             v102 = 2112;
-            v103 = v59;
+            v103 = absoluteString;
             _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "Initialized systemPhotoLibrary: %@ with URL: %@", v100, 0x16u);
           }
 
@@ -333,12 +333,12 @@ LABEL_40:
             v86[3] = &unk_100008250;
             v86[4] = self;
             v63 = [[PHACurareShadowEvaluationFacade alloc] initWithPhotosLibrary:v56 graphManagerProgress:v86];
-            v64 = [(PhotoAnalysisLighthousePlugin *)self stopLock];
-            objc_sync_enter(v64);
-            v65 = [(PhotoAnalysisLighthousePlugin *)self shouldStop];
-            objc_sync_exit(v64);
+            stopLock = [(PhotoAnalysisLighthousePlugin *)self stopLock];
+            objc_sync_enter(stopLock);
+            shouldStop = [(PhotoAnalysisLighthousePlugin *)self shouldStop];
+            objc_sync_exit(stopLock);
 
-            if (v65)
+            if (shouldStop)
             {
               v12 = 0;
             }
@@ -350,7 +350,7 @@ LABEL_40:
               v85[2] = sub_100001D60;
               v85[3] = &unk_1000082A0;
               v85[4] = buf;
-              [v63 runPFLRecipeUserInfo:v74 models:v19 trialDeploymentID:v45 trialExperimentID:v43 trialTreatmentID:v46 resultBlock:v85];
+              [v63 runPFLRecipeUserInfo:v74 models:v19 trialDeploymentID:stringValue trialExperimentID:experimentId trialTreatmentID:treatmentId resultBlock:v85];
               if (*(*&buf[8] + 40))
               {
                 v67 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
@@ -363,7 +363,7 @@ LABEL_40:
                 }
 
                 v12 = 0;
-                *v79 = *(*&buf[8] + 40);
+                *errorCopy = *(*&buf[8] + 40);
               }
 
               else
@@ -385,7 +385,7 @@ LABEL_40:
             }
 
             v12 = 0;
-            *v79 = *(*&buf[8] + 40);
+            *errorCopy = *(*&buf[8] + 40);
           }
 
           _Block_object_dispose(buf, 8);
@@ -397,7 +397,7 @@ LABEL_82:
     }
 
 LABEL_51:
-    v13 = v83;
+    v13 = triClient;
     goto LABEL_52;
   }
 
@@ -414,11 +414,11 @@ LABEL_52:
   return v12;
 }
 
-- (id)performTask:(id)a3 outError:(id *)a4
+- (id)performTask:(id)task outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  taskCopy = task;
+  v7 = taskCopy;
+  if (error)
   {
     *v55 = 0;
     v56 = v55;
@@ -438,7 +438,7 @@ LABEL_52:
     v46 = sub_100001CCC;
     v47 = sub_100001CDC;
     v48 = 0;
-    v8 = [v6 parameters];
+    parameters = [taskCopy parameters];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -447,7 +447,7 @@ LABEL_52:
       v74 = @"dictionaryRepresentation API not available";
       v11 = [NSDictionary dictionaryWithObjects:&v74 forKeys:&v73 count:1];
       [NSError errorWithDomain:@"com.apple.PhotoAnalysis.PhotoAnalysisLighthousePlugin.PhotoAnalysisLighthousePlugin" code:101 userInfo:v11];
-      *a4 = v21 = 0;
+      *error = v21 = 0;
 LABEL_23:
 
       _Block_object_dispose(&v43, 8);
@@ -457,8 +457,8 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v10 = [v7 parameters];
-    v11 = [v10 performSelector:"dictionaryRepresentation"];
+    parameters2 = [v7 parameters];
+    v11 = [parameters2 performSelector:"dictionaryRepresentation"];
 
     v12 = [PHPhotoLibrary alloc];
     v13 = +[PHPhotoLibrary systemPhotoLibraryURL];
@@ -476,19 +476,19 @@ LABEL_23:
       v41[3] = &unk_100008250;
       v41[4] = self;
       v17 = [[PHAPrivateFederatedLearningFacade alloc] initWithPhotosLibrary:v14 graphManagerProgress:v41];
-      v18 = [(PhotoAnalysisLighthousePlugin *)self stopLock];
-      objc_sync_enter(v18);
-      v19 = [(PhotoAnalysisLighthousePlugin *)self shouldStop];
-      objc_sync_exit(v18);
+      stopLock = [(PhotoAnalysisLighthousePlugin *)self stopLock];
+      objc_sync_enter(stopLock);
+      shouldStop = [(PhotoAnalysisLighthousePlugin *)self shouldStop];
+      objc_sync_exit(stopLock);
 
-      if (v19)
+      if (shouldStop)
       {
 
         goto LABEL_21;
       }
 
-      v22 = [v7 attachments];
-      v23 = [v22 attachmentURLs];
+      attachments = [v7 attachments];
+      attachmentURLs = [attachments attachmentURLs];
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;
       v40[2] = sub_1000024F0;
@@ -496,7 +496,7 @@ LABEL_23:
       v40[4] = &v49;
       v40[5] = &v43;
       v40[6] = v55;
-      [v17 runPFLWithAttachments:v23 recipeUserInfo:v11 resultBlock:v40];
+      [v17 runPFLWithAttachments:attachmentURLs recipeUserInfo:v11 resultBlock:v40];
     }
 
     if (v50[5])
@@ -524,21 +524,21 @@ LABEL_23:
     v28 = *(v56 + 5);
     if (v28)
     {
-      v29 = [v28 domain];
-      v30 = [*(v56 + 5) code];
+      domain = [v28 domain];
+      code = [*(v56 + 5) code];
       v67 = NSLocalizedDescriptionKey;
       v31 = [*(v56 + 5) description];
       v68 = v31;
       v32 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-      *a4 = [NSError errorWithDomain:v29 code:v30 userInfo:v32];
+      *error = [NSError errorWithDomain:domain code:code userInfo:v32];
     }
 
     else
     {
       v69 = NSLocalizedDescriptionKey;
       v70 = @"Runner returned unknown error";
-      v29 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.PhotoAnalysis.PhotoAnalysisLighthousePlugin.PhotoAnalysisLighthousePlugin" code:100 userInfo:v29];
+      domain = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
+      *error = [NSError errorWithDomain:@"com.apple.PhotoAnalysis.PhotoAnalysisLighthousePlugin.PhotoAnalysisLighthousePlugin" code:100 userInfo:domain];
     }
 
     v33 = +[PhotoAnalysisLighthousePlugin photoAnalysisLighthousePluginLog];
@@ -546,7 +546,7 @@ LABEL_23:
     {
       v35 = v50[5];
       v36 = v44[5];
-      v37 = [*a4 description];
+      v37 = [*error description];
       v38 = v37;
       v39 = @"not nil";
       *buf = 138412802;

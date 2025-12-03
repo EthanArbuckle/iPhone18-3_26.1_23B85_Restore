@@ -1,17 +1,17 @@
 @interface ACCOOBBTPairingFeaturePlugin
 - (NSString)description;
 - (NSString)pluginName;
-- (id)oobBtAccessoryForConnectionID:(unsigned int)a3;
+- (id)oobBtAccessoryForConnectionID:(unsigned int)d;
 - (void)initPlugin;
-- (void)linkKey:(id)a3 deviceMacAddr:(id)a4 accessory:(id)a5;
-- (void)oobBtPairing:(id)a3 accessoryAttached:(id)a4 accInfoDict:(id)a5;
-- (void)oobBtPairing:(id)a3 accessoryDetached:(id)a4;
-- (void)oobBtPairing:(id)a3 accessoryInfo:(id)a4 oobBtPairingUID:(id)a5 accessoryMacAddr:(id)a6 deviceClass:(unsigned int)a7;
-- (void)oobBtPairing:(id)a3 completion:(id)a4 oobBtPairingUID:(id)a5 accessoryMacAddr:(id)a6 result:(unsigned __int8)a7;
-- (void)oobBtPairing:(id)a3 legacyConnectionIDForAccessoryUID:(id)a4 connectionID:(unsigned int)a5;
-- (void)startOOBBTPairing:(id)a3;
+- (void)linkKey:(id)key deviceMacAddr:(id)addr accessory:(id)accessory;
+- (void)oobBtPairing:(id)pairing accessoryAttached:(id)attached accInfoDict:(id)dict;
+- (void)oobBtPairing:(id)pairing accessoryDetached:(id)detached;
+- (void)oobBtPairing:(id)pairing accessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class;
+- (void)oobBtPairing:(id)pairing completion:(id)completion oobBtPairingUID:(id)d accessoryMacAddr:(id)addr result:(unsigned __int8)result;
+- (void)oobBtPairing:(id)pairing legacyConnectionIDForAccessoryUID:(id)d connectionID:(unsigned int)iD;
+- (void)startOOBBTPairing:(id)pairing;
 - (void)startPlugin;
-- (void)stopOOBBTPairing:(id)a3;
+- (void)stopOOBBTPairing:(id)pairing;
 - (void)stopPlugin;
 @end
 
@@ -27,16 +27,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCOOBBTPairingFeaturePlugin *)self pluginName];
+  pluginName = [(ACCOOBBTPairingFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCOOBBTPairingFeaturePlugin *)self isRunning];
+  isRunning = [(ACCOOBBTPairingFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -115,9 +115,9 @@
     _os_log_impl(&dword_23361B000, v6, OS_LOG_TYPE_INFO, "Create/Get shared ACCiAP2ShimServer...", v24, 2u);
   }
 
-  v8 = [MEMORY[0x277CE84E8] sharedInstance];
+  mEMORY[0x277CE84E8] = [MEMORY[0x277CE84E8] sharedInstance];
   iap2server = self->_iap2server;
-  self->_iap2server = v8;
+  self->_iap2server = mEMORY[0x277CE84E8];
 
   [(ACCiAP2ShimServer *)self->_iap2server startServer];
   if (gLogObjects && gNumLogObjects >= 1)
@@ -260,12 +260,12 @@
   }
 }
 
-- (void)oobBtPairing:(id)a3 accessoryAttached:(id)a4 accInfoDict:(id)a5
+- (void)oobBtPairing:(id)pairing accessoryAttached:(id)attached accInfoDict:(id)dict
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairingCopy = pairing;
+  attachedCopy = attached;
+  dictCopy = dict;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -298,9 +298,9 @@
     iap2server = self->_iap2server;
     oobBtPairingProvider = self->_oobBtPairingProvider;
     *buf = 138413314;
-    v26 = v8;
+    v26 = pairingCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = attachedCopy;
     v29 = 2112;
     v30 = oobBtPairingProvider;
     v31 = 2112;
@@ -315,11 +315,11 @@
   block[1] = 3221225472;
   block[2] = __75__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryAttached_accInfoDict___block_invoke;
   block[3] = &unk_2789E5A00;
-  v22 = v10;
-  v23 = v9;
-  v24 = self;
-  v18 = v9;
-  v19 = v10;
+  v22 = dictCopy;
+  v23 = attachedCopy;
+  selfCopy = self;
+  v18 = attachedCopy;
+  v19 = dictCopy;
   dispatch_async(oobBtPairingQueue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -564,11 +564,11 @@ LABEL_62:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)oobBtPairing:(id)a3 accessoryDetached:(id)a4
+- (void)oobBtPairing:(id)pairing accessoryDetached:(id)detached
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pairingCopy = pairing;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -601,9 +601,9 @@ LABEL_62:
     iap2server = self->_iap2server;
     oobBtPairingProvider = self->_oobBtPairingProvider;
     *buf = 138413314;
-    v20 = v6;
+    v20 = pairingCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = detachedCopy;
     v23 = 2112;
     v24 = oobBtPairingProvider;
     v25 = 2112;
@@ -619,8 +619,8 @@ LABEL_62:
   v17[2] = __63__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryDetached___block_invoke;
   v17[3] = &unk_2789E5A28;
   v17[4] = self;
-  v18 = v7;
-  v15 = v7;
+  v18 = detachedCopy;
+  v15 = detachedCopy;
   dispatch_async(oobBtPairingQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -685,13 +685,13 @@ void __63__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryDetached___block_i
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)oobBtPairing:(id)a3 accessoryInfo:(id)a4 oobBtPairingUID:(id)a5 accessoryMacAddr:(id)a6 deviceClass:(unsigned int)a7
+- (void)oobBtPairing:(id)pairing accessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  pairingCopy = pairing;
+  infoCopy = info;
+  dCopy = d;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v16 = gNumLogObjects < 1;
@@ -723,15 +723,15 @@ void __63__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryDetached___block_i
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 138413826;
-    v32 = v12;
+    v32 = pairingCopy;
     v33 = 2112;
-    v34 = v13;
+    v34 = infoCopy;
     v35 = 2112;
-    v36 = v14;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v15;
+    v38 = addrCopy;
     v39 = 1024;
-    v40 = a7;
+    classCopy = class;
     v41 = 2112;
     v42 = oobBtPairingProvider;
     v43 = 2112;
@@ -745,13 +745,13 @@ void __63__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryDetached___block_i
   block[2] = __104__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryInfo_oobBtPairingUID_accessoryMacAddr_deviceClass___block_invoke;
   block[3] = &unk_2789E5A50;
   block[4] = self;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v30 = a7;
-  v22 = v15;
-  v23 = v14;
-  v24 = v13;
+  v27 = infoCopy;
+  v28 = dCopy;
+  v29 = addrCopy;
+  classCopy2 = class;
+  v22 = addrCopy;
+  v23 = dCopy;
+  v24 = infoCopy;
   dispatch_async(oobBtPairingQueue, block);
 
   v25 = *MEMORY[0x277D85DE8];
@@ -782,14 +782,14 @@ uint64_t __104__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryInfo_oobBtPai
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)oobBtPairing:(id)a3 completion:(id)a4 oobBtPairingUID:(id)a5 accessoryMacAddr:(id)a6 result:(unsigned __int8)a7
+- (void)oobBtPairing:(id)pairing completion:(id)completion oobBtPairingUID:(id)d accessoryMacAddr:(id)addr result:(unsigned __int8)result
 {
-  v7 = a7;
+  resultCopy = result;
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  pairingCopy = pairing;
+  completionCopy = completion;
+  dCopy = d;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v16 = gNumLogObjects < 1;
@@ -821,15 +821,15 @@ uint64_t __104__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryInfo_oobBtPai
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 138413826;
-    v32 = v12;
+    v32 = pairingCopy;
     v33 = 2112;
-    v34 = v13;
+    v34 = completionCopy;
     v35 = 2112;
-    v36 = v14;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v15;
+    v38 = addrCopy;
     v39 = 1024;
-    v40 = v7;
+    v40 = resultCopy;
     v41 = 2112;
     v42 = oobBtPairingProvider;
     v43 = 2112;
@@ -843,13 +843,13 @@ uint64_t __104__ACCOOBBTPairingFeaturePlugin_oobBtPairing_accessoryInfo_oobBtPai
   block[2] = __96__ACCOOBBTPairingFeaturePlugin_oobBtPairing_completion_oobBtPairingUID_accessoryMacAddr_result___block_invoke;
   block[3] = &unk_2789E5A78;
   block[4] = self;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v30 = v7;
-  v22 = v15;
-  v23 = v14;
-  v24 = v13;
+  v27 = completionCopy;
+  v28 = dCopy;
+  v29 = addrCopy;
+  v30 = resultCopy;
+  v22 = addrCopy;
+  v23 = dCopy;
+  v24 = completionCopy;
   dispatch_async(oobBtPairingQueue, block);
 
   v25 = *MEMORY[0x277D85DE8];
@@ -893,11 +893,11 @@ uint64_t __96__ACCOOBBTPairingFeaturePlugin_oobBtPairing_completion_oobBtPairing
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)oobBtPairing:(id)a3 legacyConnectionIDForAccessoryUID:(id)a4 connectionID:(unsigned int)a5
+- (void)oobBtPairing:(id)pairing legacyConnectionIDForAccessoryUID:(id)d connectionID:(unsigned int)iD
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  pairingCopy = pairing;
+  dCopy = d;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -929,11 +929,11 @@ uint64_t __96__ACCOOBBTPairingFeaturePlugin_oobBtPairing_completion_oobBtPairing
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 138413314;
-    v22 = v8;
+    v22 = pairingCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = dCopy;
     v25 = 1024;
-    v26 = a5;
+    iDCopy = iD;
     v27 = 2112;
     v28 = oobBtPairingProvider;
     v29 = 2112;
@@ -947,9 +947,9 @@ uint64_t __96__ACCOOBBTPairingFeaturePlugin_oobBtPairing_completion_oobBtPairing
   block[2] = __92__ACCOOBBTPairingFeaturePlugin_oobBtPairing_legacyConnectionIDForAccessoryUID_connectionID___block_invoke;
   block[3] = &unk_2789E5AA0;
   block[4] = self;
-  v19 = v9;
-  v20 = a5;
-  v16 = v9;
+  v19 = dCopy;
+  iDCopy2 = iD;
+  v16 = dCopy;
   dispatch_async(oobBtPairingQueue, block);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -978,7 +978,7 @@ void __92__ACCOOBBTPairingFeaturePlugin_oobBtPairing_legacyConnectionIDForAccess
   }
 }
 
-- (id)oobBtAccessoryForConnectionID:(unsigned int)a3
+- (id)oobBtAccessoryForConnectionID:(unsigned int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -993,7 +993,7 @@ void __92__ACCOOBBTPairingFeaturePlugin_oobBtPairing_legacyConnectionIDForAccess
   block[3] = &unk_2789E5AC8;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(oobBtPairingQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1011,10 +1011,10 @@ void __62__ACCOOBBTPairingFeaturePlugin_oobBtAccessoryForConnectionID___block_in
   *(v4 + 40) = v3;
 }
 
-- (void)startOOBBTPairing:(id)a3
+- (void)startOOBBTPairing:(id)pairing
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairingCopy = pairing;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1046,7 +1046,7 @@ void __62__ACCOOBBTPairingFeaturePlugin_oobBtAccessoryForConnectionID___block_in
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 138412802;
-    v16 = v4;
+    v16 = pairingCopy;
     v17 = 2112;
     v18 = oobBtPairingProvider;
     v19 = 2112;
@@ -1060,8 +1060,8 @@ void __62__ACCOOBBTPairingFeaturePlugin_oobBtAccessoryForConnectionID___block_in
   v13[2] = __50__ACCOOBBTPairingFeaturePlugin_startOOBBTPairing___block_invoke;
   v13[3] = &unk_2789E5A28;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = pairingCopy;
+  v11 = pairingCopy;
   dispatch_async(oobBtPairingQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1124,12 +1124,12 @@ void __50__ACCOOBBTPairingFeaturePlugin_startOOBBTPairing___block_invoke(uint64_
   }
 }
 
-- (void)linkKey:(id)a3 deviceMacAddr:(id)a4 accessory:(id)a5
+- (void)linkKey:(id)key deviceMacAddr:(id)addr accessory:(id)accessory
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  addrCopy = addr;
+  accessoryCopy = accessory;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -1158,15 +1158,15 @@ void __50__ACCOOBBTPairingFeaturePlugin_startOOBBTPairing___block_invoke(uint64_
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v8 length];
+    v14 = [keyCopy length];
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 134219010;
     v27 = v14;
     v28 = 2112;
-    v29 = v9;
+    v29 = addrCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = accessoryCopy;
     v32 = 2112;
     v33 = oobBtPairingProvider;
     v34 = 2112;
@@ -1180,12 +1180,12 @@ void __50__ACCOOBBTPairingFeaturePlugin_startOOBBTPairing___block_invoke(uint64_
   v22[2] = __64__ACCOOBBTPairingFeaturePlugin_linkKey_deviceMacAddr_accessory___block_invoke;
   v22[3] = &unk_2789E5AF0;
   v22[4] = self;
-  v23 = v10;
-  v24 = v8;
-  v25 = v9;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
+  v23 = accessoryCopy;
+  v24 = keyCopy;
+  v25 = addrCopy;
+  v18 = addrCopy;
+  v19 = keyCopy;
+  v20 = accessoryCopy;
   dispatch_async(oobBtPairingQueue, v22);
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1254,10 +1254,10 @@ void __64__ACCOOBBTPairingFeaturePlugin_linkKey_deviceMacAddr_accessory___block_
   }
 }
 
-- (void)stopOOBBTPairing:(id)a3
+- (void)stopOOBBTPairing:(id)pairing
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairingCopy = pairing;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -1289,7 +1289,7 @@ void __64__ACCOOBBTPairingFeaturePlugin_linkKey_deviceMacAddr_accessory___block_
     oobBtPairingProvider = self->_oobBtPairingProvider;
     oobBtPairingShim = self->_oobBtPairingShim;
     *buf = 138412802;
-    v16 = v4;
+    v16 = pairingCopy;
     v17 = 2112;
     v18 = oobBtPairingProvider;
     v19 = 2112;
@@ -1303,8 +1303,8 @@ void __64__ACCOOBBTPairingFeaturePlugin_linkKey_deviceMacAddr_accessory___block_
   v13[2] = __49__ACCOOBBTPairingFeaturePlugin_stopOOBBTPairing___block_invoke;
   v13[3] = &unk_2789E5A28;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = pairingCopy;
+  v11 = pairingCopy;
   dispatch_async(oobBtPairingQueue, v13);
 
   v12 = *MEMORY[0x277D85DE8];

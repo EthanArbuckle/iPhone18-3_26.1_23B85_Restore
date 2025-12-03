@@ -1,11 +1,11 @@
 @interface RTMapItemProviderMapsSupportParameters
-- (RTMapItemProviderMapsSupportParameters)initWithDefaultsManager:(id)a3;
-- (RTMapItemProviderMapsSupportParameters)initWithFavoriteConfidence:(double)a3 historyEntryRouteConfidence:(double)a4 historyEntryPlaceDisplayConfidence:(double)a5;
+- (RTMapItemProviderMapsSupportParameters)initWithDefaultsManager:(id)manager;
+- (RTMapItemProviderMapsSupportParameters)initWithFavoriteConfidence:(double)confidence historyEntryRouteConfidence:(double)routeConfidence historyEntryPlaceDisplayConfidence:(double)displayConfidence;
 @end
 
 @implementation RTMapItemProviderMapsSupportParameters
 
-- (RTMapItemProviderMapsSupportParameters)initWithFavoriteConfidence:(double)a3 historyEntryRouteConfidence:(double)a4 historyEntryPlaceDisplayConfidence:(double)a5
+- (RTMapItemProviderMapsSupportParameters)initWithFavoriteConfidence:(double)confidence historyEntryRouteConfidence:(double)routeConfidence historyEntryPlaceDisplayConfidence:(double)displayConfidence
 {
   if ((RTCommonValidConfidence() & 1) == 0)
   {
@@ -47,7 +47,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -56,25 +56,25 @@ LABEL_14:
   v9 = [(RTMapItemProviderMapsSupportParameters *)&v14 init];
   if (v9)
   {
-    v9->_favoriteConfidence = a3;
-    v9->_historyEntryRouteConfidence = a4;
-    v9->_historyEntryPlaceDisplayConfidence = a5;
+    v9->_favoriteConfidence = confidence;
+    v9->_historyEntryRouteConfidence = routeConfidence;
+    v9->_historyEntryPlaceDisplayConfidence = displayConfidence;
   }
 
   self = v9;
-  v10 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v10;
+  return selfCopy;
 }
 
-- (RTMapItemProviderMapsSupportParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderMapsSupportParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderMapsSupportFavoriteConfidence"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderMapsSupportFavoriteConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@ LABEL_15:
 
     self = [(RTMapItemProviderMapsSupportParameters *)self initWithFavoriteConfidence:v8 historyEntryRouteConfidence:v13 historyEntryPlaceDisplayConfidence:v16];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -127,10 +127,10 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v18, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

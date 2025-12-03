@@ -1,33 +1,33 @@
 @interface TRIAssetPurger
-- (TRIAssetPurger)initWithPaths:(id)a3 assetStore:(id)a4 purgeableNamespacesProvider:(id)a5 purgeableFactorPacksEnumerator:(id)a6 purgeableExperimentAndRolloutProvider:(id)a7 taskQueue:(id)a8 loggingClient:(id)a9;
-- (void)_enumeratePurgeCandidatesForPurgeableConstructs:(id)a3 block:(id)a4;
-- (void)_logDeactivationsMetricWithConcludedInTime:(BOOL)a3;
+- (TRIAssetPurger)initWithPaths:(id)paths assetStore:(id)store purgeableNamespacesProvider:(id)provider purgeableFactorPacksEnumerator:(id)enumerator purgeableExperimentAndRolloutProvider:(id)rolloutProvider taskQueue:(id)queue loggingClient:(id)client;
+- (void)_enumeratePurgeCandidatesForPurgeableConstructs:(id)constructs block:(id)block;
+- (void)_logDeactivationsMetricWithConcludedInTime:(BOOL)time;
 @end
 
 @implementation TRIAssetPurger
 
-- (TRIAssetPurger)initWithPaths:(id)a3 assetStore:(id)a4 purgeableNamespacesProvider:(id)a5 purgeableFactorPacksEnumerator:(id)a6 purgeableExperimentAndRolloutProvider:(id)a7 taskQueue:(id)a8 loggingClient:(id)a9
+- (TRIAssetPurger)initWithPaths:(id)paths assetStore:(id)store purgeableNamespacesProvider:(id)provider purgeableFactorPacksEnumerator:(id)enumerator purgeableExperimentAndRolloutProvider:(id)rolloutProvider taskQueue:(id)queue loggingClient:(id)client
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  pathsCopy = paths;
+  storeCopy = store;
+  providerCopy = provider;
+  enumeratorCopy = enumerator;
+  rolloutProviderCopy = rolloutProvider;
+  queueCopy = queue;
+  clientCopy = client;
   v26.receiver = self;
   v26.super_class = TRIAssetPurger;
   v18 = [(TRIAssetPurger *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_paths, a3);
-    objc_storeStrong(&v19->_assetStore, a4);
-    objc_storeStrong(&v19->_purgeableNamespacesProvider, a5);
-    objc_storeStrong(&v19->_purgeableFactorPacksEnumerator, a6);
-    objc_storeStrong(&v19->_purgeableExperimentAndRolloutProvider, a7);
-    objc_storeStrong(&v19->_taskQueue, a8);
-    objc_storeStrong(&v19->_loggingClient, a9);
+    objc_storeStrong(&v18->_paths, paths);
+    objc_storeStrong(&v19->_assetStore, store);
+    objc_storeStrong(&v19->_purgeableNamespacesProvider, provider);
+    objc_storeStrong(&v19->_purgeableFactorPacksEnumerator, enumerator);
+    objc_storeStrong(&v19->_purgeableExperimentAndRolloutProvider, rolloutProvider);
+    objc_storeStrong(&v19->_taskQueue, queue);
+    objc_storeStrong(&v19->_loggingClient, client);
   }
 
   return v19;
@@ -357,40 +357,40 @@ intptr_t __71__TRIAssetPurger_purgeAssetsForPurgeabilityLevel_requestedPurgeAmou
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_logDeactivationsMetricWithConcludedInTime:(BOOL)a3
+- (void)_logDeactivationsMetricWithConcludedInTime:(BOOL)time
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D73B40] metricWithName:@"cache_delete_deactivations_concluded_in_time" integerValue:a3];
-  v5 = [(TRIClient *)self->_loggingClient logger];
-  v6 = [(TRIClient *)self->_loggingClient trackingId];
+  v4 = [MEMORY[0x277D73B40] metricWithName:@"cache_delete_deactivations_concluded_in_time" integerValue:time];
+  logger = [(TRIClient *)self->_loggingClient logger];
+  trackingId = [(TRIClient *)self->_loggingClient trackingId];
   v9[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v5 logWithTrackingId:v6 metrics:v7 dimensions:0 trialSystemTelemetry:0];
+  [logger logWithTrackingId:trackingId metrics:v7 dimensions:0 trialSystemTelemetry:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumeratePurgeCandidatesForPurgeableConstructs:(id)a3 block:(id)a4
+- (void)_enumeratePurgeCandidatesForPurgeableConstructs:(id)constructs block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  constructsCopy = constructs;
+  blockCopy = block;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __72__TRIAssetPurger__enumeratePurgeCandidatesForPurgeableConstructs_block___block_invoke;
   v26[3] = &unk_279DDFDD8;
-  v27 = v7;
-  v8 = v7;
+  v27 = blockCopy;
+  v8 = blockCopy;
   v9 = MEMORY[0x2743948D0](v26);
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v6 eagerPurgeableFactorsByNamespaceName];
-  v12 = [v11 allKeys];
-  v13 = [v10 setWithArray:v12];
+  eagerPurgeableFactorsByNamespaceName = [constructsCopy eagerPurgeableFactorsByNamespaceName];
+  allKeys = [eagerPurgeableFactorsByNamespaceName allKeys];
+  v13 = [v10 setWithArray:allKeys];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __72__TRIAssetPurger__enumeratePurgeCandidatesForPurgeableConstructs_block___block_invoke_2;
   v24[3] = &unk_279DDFE00;
-  v14 = v6;
+  v14 = constructsCopy;
   v25 = v14;
   v15 = MEMORY[0x2743948D0](v24);
   [(TRIPurgeableOnDemandFactorsEnumerating *)self->_purgeableFactorPacksEnumerator enumerateRolloutOnDemandFactorsPurgeCandidatesFromNamespaceNames:v13 purgeableFactorFilterBlock:v15 block:v9];
@@ -404,12 +404,12 @@ intptr_t __71__TRIAssetPurger_purgeAssetsForPurgeabilityLevel_requestedPurgeAmou
   v16 = v14;
   v17 = MEMORY[0x2743948D0](v22);
   purgeableFactorPacksEnumerator = self->_purgeableFactorPacksEnumerator;
-  v19 = [v16 namespaceNamesPurgeableAtNamespaceLevel];
-  [(TRIPurgeableOnDemandFactorsEnumerating *)purgeableFactorPacksEnumerator enumerateRolloutOnDemandFactorsPurgeCandidatesFromNamespaceNames:v19 purgeableFactorFilterBlock:v17 block:v9];
+  namespaceNamesPurgeableAtNamespaceLevel = [v16 namespaceNamesPurgeableAtNamespaceLevel];
+  [(TRIPurgeableOnDemandFactorsEnumerating *)purgeableFactorPacksEnumerator enumerateRolloutOnDemandFactorsPurgeCandidatesFromNamespaceNames:namespaceNamesPurgeableAtNamespaceLevel purgeableFactorFilterBlock:v17 block:v9];
 
   v20 = self->_purgeableFactorPacksEnumerator;
-  v21 = [v16 namespaceNamesPurgeableAtNamespaceLevel];
-  [(TRIPurgeableOnDemandFactorsEnumerating *)v20 enumerateExperimentOnDemandFactorsPurgeCandidatesFromNamespaceNames:v21 purgeableFactorFilterBlock:v17 block:v9];
+  namespaceNamesPurgeableAtNamespaceLevel2 = [v16 namespaceNamesPurgeableAtNamespaceLevel];
+  [(TRIPurgeableOnDemandFactorsEnumerating *)v20 enumerateExperimentOnDemandFactorsPurgeCandidatesFromNamespaceNames:namespaceNamesPurgeableAtNamespaceLevel2 purgeableFactorFilterBlock:v17 block:v9];
 }
 
 uint64_t __72__TRIAssetPurger__enumeratePurgeCandidatesForPurgeableConstructs_block___block_invoke_2(uint64_t a1, void *a2, void *a3)

@@ -2,29 +2,29 @@
 - (AVTipKitControlsViewController)init;
 - (NSString)didPresentTipNotificationName;
 - (NSString)viewControllerNotificationInfoKey;
-- (id)findViewWithAccessibilityIdentifier:(id)a3;
-- (void)_configureTipsIfNeededWithCompletion:(void *)a1;
+- (id)findViewWithAccessibilityIdentifier:(id)identifier;
+- (void)_configureTipsIfNeededWithCompletion:(void *)completion;
 - (void)cleanUpTips;
-- (void)configureTipsUponNextOverflowControlUpdateWithCompletion:(id)a3;
+- (void)configureTipsUponNextOverflowControlUpdateWithCompletion:(id)completion;
 - (void)dismissTip;
 - (void)displayTips;
-- (void)handleEnhanceDialogueWithSourceViewIdentifier:(id)a3;
+- (void)handleEnhanceDialogueWithSourceViewIdentifier:(id)identifier;
 - (void)handleTipEventDidEnterEnhanceDialogue;
 - (void)handleTipEventDidEnterSubtitlesShortcut;
-- (void)handleTipWithTipId:(id)a3 sourceViewIdentifier:(id)a4 arrowDirection:(unint64_t)a5 priority:(int64_t)a6;
-- (void)scheduleTipsIfNeededWithCompletion:(id)a3;
-- (void)showTipsIfNeededWithCompletion:(id)a3;
+- (void)handleTipWithTipId:(id)id sourceViewIdentifier:(id)identifier arrowDirection:(unint64_t)direction priority:(int64_t)priority;
+- (void)scheduleTipsIfNeededWithCompletion:(id)completion;
+- (void)showTipsIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation AVTipKitControlsViewController
 
-- (id)findViewWithAccessibilityIdentifier:(id)a3
+- (id)findViewWithAccessibilityIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v5 = +[TipsManager shared];
-    v6 = [v5 findViewIn:self withAccessibilityIdentifier:v4];
+    v6 = [v5 findViewIn:self withAccessibilityIdentifier:identifierCopy];
   }
 
   else
@@ -38,9 +38,9 @@
 - (void)displayTips
 {
   v3 = +[AVKitGlobalSettings shared];
-  v4 = [v3 playerTipsEnabled];
+  playerTipsEnabled = [v3 playerTipsEnabled];
 
-  if (v4)
+  if (playerTipsEnabled)
   {
     v5 = +[TipsManager shared];
     [v5 displayTipsIn:self];
@@ -50,9 +50,9 @@
 - (void)dismissTip
 {
   v3 = +[AVKitGlobalSettings shared];
-  v4 = [v3 playerTipsEnabled];
+  playerTipsEnabled = [v3 playerTipsEnabled];
 
-  if (v4)
+  if (playerTipsEnabled)
   {
     v5 = +[TipsManager shared];
     [v5 dismissTipIn:self];
@@ -62,9 +62,9 @@
 - (void)handleTipEventDidEnterSubtitlesShortcut
 {
   v2 = +[AVKitGlobalSettings shared];
-  v3 = [v2 playerTipsEnabled];
+  playerTipsEnabled = [v2 playerTipsEnabled];
 
-  if (v3)
+  if (playerTipsEnabled)
   {
     v4 = +[TipsManager shared];
     [v4 handleTipEventDidEnterSubtitlesShortcut];
@@ -74,48 +74,48 @@
 - (void)handleTipEventDidEnterEnhanceDialogue
 {
   v2 = +[AVKitGlobalSettings shared];
-  v3 = [v2 playerTipsEnabled];
+  playerTipsEnabled = [v2 playerTipsEnabled];
 
-  if (v3)
+  if (playerTipsEnabled)
   {
     v4 = +[TipsManager shared];
     [v4 handleTipEventDidEnterEnhanceDialogue];
   }
 }
 
-- (void)handleEnhanceDialogueWithSourceViewIdentifier:(id)a3
+- (void)handleEnhanceDialogueWithSourceViewIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v4 = +[AVKitGlobalSettings shared];
-  v5 = [v4 playerTipsEnabled];
+  playerTipsEnabled = [v4 playerTipsEnabled];
 
-  if (v5)
+  if (playerTipsEnabled)
   {
     v6 = +[TipsManager shared];
-    [v6 handleEnhanceDialogueTipInViewController:self sourceViewIdentifier:v7];
+    [v6 handleEnhanceDialogueTipInViewController:self sourceViewIdentifier:identifierCopy];
   }
 }
 
-- (void)handleTipWithTipId:(id)a3 sourceViewIdentifier:(id)a4 arrowDirection:(unint64_t)a5 priority:(int64_t)a6
+- (void)handleTipWithTipId:(id)id sourceViewIdentifier:(id)identifier arrowDirection:(unint64_t)direction priority:(int64_t)priority
 {
-  v14 = a3;
-  v10 = a4;
+  idCopy = id;
+  identifierCopy = identifier;
   v11 = +[AVKitGlobalSettings shared];
-  v12 = [v11 playerTipsEnabled];
+  playerTipsEnabled = [v11 playerTipsEnabled];
 
-  if (v12)
+  if (playerTipsEnabled)
   {
     v13 = +[TipsManager shared];
-    [v13 handleTipInViewController:self tipId:v14 sourceViewIdentifier:v10 arrowDirection:a5 priority:a6];
+    [v13 handleTipInViewController:self tipId:idCopy sourceViewIdentifier:identifierCopy arrowDirection:direction priority:priority];
   }
 }
 
 - (void)cleanUpTips
 {
   v3 = +[AVKitGlobalSettings shared];
-  v4 = [v3 playerTipsEnabled];
+  playerTipsEnabled = [v3 playerTipsEnabled];
 
-  if (v4)
+  if (playerTipsEnabled)
   {
     [(NSTimer *)self->_tipTimer invalidate];
     tipTimer = self->_tipTimer;
@@ -129,31 +129,31 @@
   }
 }
 
-- (void)scheduleTipsIfNeededWithCompletion:(id)a3
+- (void)scheduleTipsIfNeededWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = +[AVKitGlobalSettings shared];
-  v5 = [v4 playerTipsEnabled];
+  playerTipsEnabled = [v4 playerTipsEnabled];
 
-  if (v5)
+  if (playerTipsEnabled)
   {
     self->_tipsState = self->_tipsState & 0xFFFFFFFFFFFFFFFALL | 1;
-    [(AVTipKitControlsViewController *)self _configureTipsIfNeededWithCompletion:v6];
+    [(AVTipKitControlsViewController *)self _configureTipsIfNeededWithCompletion:completionCopy];
   }
 }
 
-- (void)_configureTipsIfNeededWithCompletion:(void *)a1
+- (void)_configureTipsIfNeededWithCompletion:(void *)completion
 {
   v5 = a2;
-  if (a1)
+  if (completion)
   {
     v3 = +[AVKitGlobalSettings shared];
-    if ([v3 playerTipsEnabled] && objc_msgSend(a1, "temporarilyVisible") && !a1[146] && (v4 = a1[148], (v4 & 5) == 1))
+    if ([v3 playerTipsEnabled] && objc_msgSend(completion, "temporarilyVisible") && !completion[146] && (v4 = completion[148], (v4 & 5) == 1))
     {
 
       if ((v4 & 2) != 0)
       {
-        a1[148] |= 4uLL;
+        completion[148] |= 4uLL;
         v5[2]();
       }
     }
@@ -167,22 +167,22 @@
 - (NSString)didPresentTipNotificationName
 {
   v2 = +[TipsManager shared];
-  v3 = [v2 didPresentTipNotificationName];
+  didPresentTipNotificationName = [v2 didPresentTipNotificationName];
 
-  return v3;
+  return didPresentTipNotificationName;
 }
 
 - (NSString)viewControllerNotificationInfoKey
 {
   v2 = +[TipsManager shared];
-  v3 = [v2 viewControllerNotificationInfoKey];
+  viewControllerNotificationInfoKey = [v2 viewControllerNotificationInfoKey];
 
-  return v3;
+  return viewControllerNotificationInfoKey;
 }
 
-- (void)configureTipsUponNextOverflowControlUpdateWithCompletion:(id)a3
+- (void)configureTipsUponNextOverflowControlUpdateWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = +[AVKitGlobalSettings shared];
   if ([v4 playerTipsEnabled])
   {
@@ -192,7 +192,7 @@
     {
       self->_configureTipsUponNextOverflowControlUpdate = 0;
       self->_tipsState |= 2uLL;
-      [(AVTipKitControlsViewController *)self _configureTipsIfNeededWithCompletion:v6];
+      [(AVTipKitControlsViewController *)self _configureTipsIfNeededWithCompletion:completionCopy];
     }
   }
 
@@ -201,9 +201,9 @@
   }
 }
 
-- (void)showTipsIfNeededWithCompletion:(id)a3
+- (void)showTipsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[AVKitGlobalSettings shared];
   if (![v5 playerTipsEnabled])
   {
@@ -229,7 +229,7 @@ LABEL_4:
     v10[2] = __65__AVTipKitControlsViewController_showTipsIfNeededWithCompletion___block_invoke;
     v10[3] = &unk_1E72090D8;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = completionCopy;
     v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v10 block:0.5];
     tipTimer = self->_tipTimer;
     self->_tipTimer = v8;

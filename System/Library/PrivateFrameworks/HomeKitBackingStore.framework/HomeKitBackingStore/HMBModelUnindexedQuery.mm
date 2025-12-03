@@ -1,18 +1,18 @@
 @interface HMBModelUnindexedQuery
-+ (id)queryWithSQLPredicate:(id)a3 ascending:(BOOL)a4 arguments:(id)a5;
-- (id)performQueryOn:(id)a3 arguments:(id)a4;
-- (id)sqlSelectStatementForModelType:(id)a3;
++ (id)queryWithSQLPredicate:(id)predicate ascending:(BOOL)ascending arguments:(id)arguments;
+- (id)performQueryOn:(id)on arguments:(id)arguments;
+- (id)sqlSelectStatementForModelType:(id)type;
 @end
 
 @implementation HMBModelUnindexedQuery
 
-- (id)sqlSelectStatementForModelType:(id)a3
+- (id)sqlSelectStatementForModelType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMBModelQuery *)self initialSequence];
-  v6 = [v5 integerValue];
+  typeCopy = type;
+  initialSequence = [(HMBModelQuery *)self initialSequence];
+  integerValue = [initialSequence integerValue];
   v7 = @"DESC";
-  if (!v6)
+  if (!integerValue)
   {
     v7 = @"ASC";
   }
@@ -20,26 +20,26 @@
   v8 = v7;
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(HMBModelQuery *)self sqlPredicate];
-  v11 = [v9 stringWithFormat:@"SELECT _record_id FROM queryable_%@ WHERE _store_id = :_store_id AND _record_id > :_sequence_offset AND %@ ORDER BY _record_id %@ LIMIT %lu", v4, v10, v8, -[HMBModelQuery maximumRowsPerSelect](self, "maximumRowsPerSelect")];
+  sqlPredicate = [(HMBModelQuery *)self sqlPredicate];
+  v11 = [v9 stringWithFormat:@"SELECT _record_id FROM queryable_%@ WHERE _store_id = :_store_id AND _record_id > :_sequence_offset AND %@ ORDER BY _record_id %@ LIMIT %lu", typeCopy, sqlPredicate, v8, -[HMBModelQuery maximumRowsPerSelect](self, "maximumRowsPerSelect")];
 
   return v11;
 }
 
-- (id)performQueryOn:(id)a3 arguments:(id)a4
+- (id)performQueryOn:(id)on arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMBModelQuery *)self preparedQueries];
-  v9 = [v6 sql];
-  v10 = [v8 objectForKey:v9];
+  onCopy = on;
+  argumentsCopy = arguments;
+  preparedQueries = [(HMBModelQuery *)self preparedQueries];
+  v9 = [onCopy sql];
+  v10 = [preparedQueries objectForKey:v9];
 
   if (v10)
   {
-    v11 = __encodeArguments(self, v10, v7);
+    v11 = __encodeArguments(self, v10, argumentsCopy);
     v12 = [HMBLocalZoneQueryResultRecordID alloc];
-    v13 = [(HMBModelQuery *)self initialSequence];
-    v14 = [(HMBLocalZoneQueryResult *)v12 initWithLocalZone:v6 statement:v10 initialSequence:v13 arguments:v11 maximumRowsPerSelect:[(HMBModelQuery *)self maximumRowsPerSelect]];
+    initialSequence = [(HMBModelQuery *)self initialSequence];
+    v14 = [(HMBLocalZoneQueryResult *)v12 initWithLocalZone:onCopy statement:v10 initialSequence:initialSequence arguments:v11 maximumRowsPerSelect:[(HMBModelQuery *)self maximumRowsPerSelect]];
 
     return v14;
   }
@@ -51,19 +51,19 @@
   }
 }
 
-+ (id)queryWithSQLPredicate:(id)a3 ascending:(BOOL)a4 arguments:(id)a5
++ (id)queryWithSQLPredicate:(id)predicate ascending:(BOOL)ascending arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (!v7)
+  ascendingCopy = ascending;
+  predicateCopy = predicate;
+  argumentsCopy = arguments;
+  if (!predicateCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = argumentsCopy;
+  if (!argumentsCopy)
   {
 LABEL_10:
     v14 = _HMFPreconditionFailure();
@@ -72,7 +72,7 @@ LABEL_10:
   }
 
   v10 = +[HMBSQLQueryIterator maximumRowsPerSelect];
-  if (v6)
+  if (ascendingCopy)
   {
     v11 = &unk_283EB9E10;
   }
@@ -82,7 +82,7 @@ LABEL_10:
     v11 = &unk_283EB9E28;
   }
 
-  v12 = [(HMBModelQuery *)[HMBModelUnindexedQuery alloc] initWithSQLPredicate:v7 initialSequence:v11 maximumRowsPerSelect:v10 arguments:v9];
+  v12 = [(HMBModelQuery *)[HMBModelUnindexedQuery alloc] initWithSQLPredicate:predicateCopy initialSequence:v11 maximumRowsPerSelect:v10 arguments:v9];
 
   return v12;
 }

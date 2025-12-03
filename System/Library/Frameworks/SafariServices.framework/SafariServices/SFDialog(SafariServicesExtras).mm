@@ -11,9 +11,9 @@
   v6 = a3;
   v7 = a5;
   v8 = [v6 URL];
-  v9 = [v8 safari_isAppleOneURL];
+  safari_isAppleOneURL = [v8 safari_isAppleOneURL];
 
-  if (v9)
+  if (safari_isAppleOneURL)
   {
     v10 = _WBSLocalizedString();
     v11 = MEMORY[0x1E69B1B00];
@@ -31,13 +31,13 @@
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = _WBSLocalizedString();
-    v17 = [v6 externalApplication];
-    v18 = [v17 localizedName];
-    v10 = [v15 stringWithFormat:v16, v18];
+    externalApplication = [v6 externalApplication];
+    localizedName = [externalApplication localizedName];
+    v10 = [v15 stringWithFormat:v16, localizedName];
 
-    v19 = [v6 appLink];
+    appLink = [v6 appLink];
 
-    if (v19)
+    if (appLink)
     {
       [MEMORY[0x1E69B1B00] _appLinkRedirectDialogWithMessage:v10 completionHandler:v7];
     }
@@ -60,17 +60,17 @@
   v13 = a4;
   v14 = _WBSLocalizedString();
   v15 = _WBSLocalizedString();
-  v16 = [v13 host];
+  host = [v13 host];
 
-  v17 = [v16 safari_stringByRemovingWwwDotPrefix];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
-  if (![v17 length])
+  if (![safari_stringByRemovingWwwDotPrefix length])
   {
     v6 = _WBSLocalizedString();
     goto LABEL_19;
   }
 
-  v18 = v17;
+  v18 = safari_stringByRemovingWwwDotPrefix;
   if (a3 <= 3)
   {
     if (a3 > 1)
@@ -122,7 +122,7 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  v21 = [a1 _dialogWithTitle:0 message:v6 primaryAction:v14 secondaryAction:v15 applicationModal:0 completionHandler:v12];
+  v21 = [self _dialogWithTitle:0 message:v6 primaryAction:v14 secondaryAction:v15 applicationModal:0 completionHandler:v12];
   [v21 setCanceledOnProvisionalNavigation:0];
   if (v11)
   {
@@ -148,70 +148,70 @@ LABEL_19:
   v50 = v12;
   if (v11)
   {
-    v14 = v11;
+    securityOrigin = v11;
   }
 
   else
   {
-    v15 = [v10 wkDownload];
-    v16 = [v15 originatingFrame];
-    v14 = [v16 securityOrigin];
+    wkDownload = [v10 wkDownload];
+    originatingFrame = [wkDownload originatingFrame];
+    securityOrigin = [originatingFrame securityOrigin];
   }
 
-  v48 = v14;
-  v17 = [v14 host];
-  v18 = [v17 safari_stringByRemovingWwwDotPrefix];
+  v48 = securityOrigin;
+  host = [securityOrigin host];
+  safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
 
   v19 = v10;
-  v20 = [v10 wkDownload];
-  v21 = [v20 originatingFrame];
-  v22 = [v21 webView];
-  v23 = [v22 _committedURL];
-  v24 = [v23 host];
-  v25 = [v24 safari_stringByRemovingWwwDotPrefix];
-  v26 = v25;
-  if (v25)
+  wkDownload2 = [v10 wkDownload];
+  originatingFrame2 = [wkDownload2 originatingFrame];
+  webView = [originatingFrame2 webView];
+  _committedURL = [webView _committedURL];
+  host2 = [_committedURL host];
+  safari_stringByRemovingWwwDotPrefix2 = [host2 safari_stringByRemovingWwwDotPrefix];
+  v26 = safari_stringByRemovingWwwDotPrefix2;
+  if (safari_stringByRemovingWwwDotPrefix2)
   {
-    v27 = v25;
+    v27 = safari_stringByRemovingWwwDotPrefix2;
   }
 
   else
   {
-    v27 = v18;
+    v27 = safari_stringByRemovingWwwDotPrefix;
   }
 
   v28 = v27;
 
-  if ([v28 length] && (objc_msgSend(v28, "isEqualToString:", v18) & 1) == 0)
+  if ([v28 length] && (objc_msgSend(v28, "isEqualToString:", safari_stringByRemovingWwwDotPrefix) & 1) == 0)
   {
     v35 = MEMORY[0x1E696AEC0];
     v32 = _WBSLocalizedString();
     v33 = v19;
-    v34 = [v19 filename];
-    v36 = [v35 stringWithFormat:v32, v34, v28, v18];
+    filename = [v19 filename];
+    v36 = [v35 stringWithFormat:v32, filename, v28, safari_stringByRemovingWwwDotPrefix];
     v37 = v50;
     v31 = v13;
   }
 
   else
   {
-    v29 = [v18 length];
+    v29 = [safari_stringByRemovingWwwDotPrefix length];
     v30 = MEMORY[0x1E696AEC0];
     v31 = v13;
     if (v29)
     {
       v32 = _WBSLocalizedString();
       v33 = v19;
-      v34 = [v19 filename];
-      [v30 stringWithFormat:v32, v34, v18];
+      filename = [v19 filename];
+      [v30 stringWithFormat:v32, filename, safari_stringByRemovingWwwDotPrefix];
     }
 
     else
     {
       v32 = _WBSLocalizedString();
       v33 = v19;
-      v34 = [v19 filename];
-      [v30 stringWithFormat:v32, v34, v45];
+      filename = [v19 filename];
+      [v30 stringWithFormat:v32, filename, v45];
     }
     v36 = ;
     v37 = v50;
@@ -226,7 +226,7 @@ LABEL_19:
     v55[3] = &unk_1E8490A88;
     v39 = &v56;
     v56 = v37;
-    v40 = [a1 _dialogWithTitle:0 message:v36 acceptAction:v49 secondaryAction:v52 cancelAction:v38 applicationModal:0 completionHandler:v55];
+    v40 = [self _dialogWithTitle:0 message:v36 acceptAction:v49 secondaryAction:v52 cancelAction:v38 applicationModal:0 completionHandler:v55];
   }
 
   else
@@ -237,7 +237,7 @@ LABEL_19:
     v53[3] = &unk_1E848FA50;
     v39 = &v54;
     v54 = v37;
-    v40 = [a1 _dialogWithTitle:0 message:v36 primaryAction:v49 secondaryAction:v38 applicationModal:0 completionHandler:v53];
+    v40 = [self _dialogWithTitle:0 message:v36 primaryAction:v49 secondaryAction:v38 applicationModal:0 completionHandler:v53];
   }
 
   v41 = v40;

@@ -8,7 +8,7 @@
 
 - (id)hk_extensionPointIdentifier
 {
-  v1 = [a1 objectForInfoDictionaryKey:@"NSExtension"];
+  v1 = [self objectForInfoDictionaryKey:@"NSExtension"];
   v2 = [v1 objectForKey:@"NSExtensionPointIdentifier"];
 
   return v2;
@@ -18,7 +18,7 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 URLsForResourcesWithExtension:@"bundle" subdirectory:0];
+  [self URLsForResourcesWithExtension:@"bundle" subdirectory:0];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -38,8 +38,8 @@ LABEL_3:
       }
 
       v10 = [MEMORY[0x1E696AAE8] bundleWithURL:{*(*(&v15 + 1) + 8 * v9), v15}];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v11 isEqualToString:v4];
+      bundleIdentifier = [v10 bundleIdentifier];
+      v12 = [bundleIdentifier isEqualToString:v4];
 
       if (v12)
       {
@@ -98,14 +98,14 @@ LABEL_9:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v14 isEqualToString:@"bundle"];
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension isEqualToString:@"bundle"];
 
         if (v15)
         {
           v16 = [MEMORY[0x1E696AAE8] bundleWithURL:v13];
-          v17 = [v16 bundleIdentifier];
-          v18 = [v17 isEqualToString:v5];
+          bundleIdentifier = [v16 bundleIdentifier];
+          v18 = [bundleIdentifier isEqualToString:v5];
 
           if (v18)
           {

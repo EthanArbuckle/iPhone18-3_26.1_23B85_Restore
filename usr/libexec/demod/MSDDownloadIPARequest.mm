@@ -1,9 +1,9 @@
 @interface MSDDownloadIPARequest
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getPostData;
 - (id)getQueryItems;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDDownloadIPARequest
@@ -17,11 +17,11 @@
     return 0;
   }
 
-  v3 = [(MSDDownloadIPARequest *)self appID];
-  if (v3)
+  appID = [(MSDDownloadIPARequest *)self appID];
+  if (appID)
   {
-    v4 = [(MSDDownloadIPARequest *)self fileHash];
-    if (v4)
+    fileHash = [(MSDDownloadIPARequest *)self fileHash];
+    if (fileHash)
     {
       v5 = [(MSDDownloadIPARequest *)self uid];
       v6 = v5 != 0;
@@ -46,34 +46,34 @@
   if ([(MSDDownloadIPARequest *)self isValid])
   {
     v3 = [NSMutableArray arrayWithCapacity:0];
-    v4 = [(MSDDownloadIPARequest *)self appID];
-    v5 = [NSURLQueryItem queryItemWithName:@"AppID" value:v4];
+    appID = [(MSDDownloadIPARequest *)self appID];
+    v5 = [NSURLQueryItem queryItemWithName:@"AppID" value:appID];
 
     v6 = [(MSDDownloadIPARequest *)self uid];
     v7 = [NSURLQueryItem queryItemWithName:@"UID" value:v6];
 
-    v8 = [(MSDDownloadIPARequest *)self fileHash];
-    v9 = [NSURLQueryItem queryItemWithName:@"FullIPAHash" value:v8];
+    fileHash = [(MSDDownloadIPARequest *)self fileHash];
+    v9 = [NSURLQueryItem queryItemWithName:@"FullIPAHash" value:fileHash];
 
     [v3 addObject:v5];
     [v3 addObject:v7];
     [v3 addObject:v9];
-    v10 = [(MSDDownloadIPARequest *)self currentUID];
+    currentUID = [(MSDDownloadIPARequest *)self currentUID];
 
-    if (v10)
+    if (currentUID)
     {
-      v11 = [(MSDDownloadIPARequest *)self currentUID];
-      v12 = [NSURLQueryItem queryItemWithName:@"CurrentUID" value:v11];
+      currentUID2 = [(MSDDownloadIPARequest *)self currentUID];
+      v12 = [NSURLQueryItem queryItemWithName:@"CurrentUID" value:currentUID2];
 
       [v3 addObject:v12];
     }
 
-    v13 = [(MSDDownloadIPARequest *)self originServer];
+    originServer = [(MSDDownloadIPARequest *)self originServer];
 
-    if (v13)
+    if (originServer)
     {
-      v14 = [(MSDDownloadIPARequest *)self originServer];
-      v15 = [NSURLQueryItem queryItemWithName:@"OriginServer" value:v14];
+      originServer2 = [(MSDDownloadIPARequest *)self originServer];
+      v15 = [NSURLQueryItem queryItemWithName:@"OriginServer" value:originServer2];
 
       [v3 addObject:v15];
     }
@@ -91,35 +91,35 @@
 {
   if ([(MSDDownloadIPARequest *)self isValid])
   {
-    v3 = [(MSDDownloadIPARequest *)self appID];
+    appID = [(MSDDownloadIPARequest *)self appID];
     v4 = [(MSDDownloadIPARequest *)self uid];
-    v5 = [(MSDDownloadIPARequest *)self fileHash];
-    v6 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v3, @"ApplicationID", v4, @"UID", v5, @"FullIPAHash", 0];
+    fileHash = [(MSDDownloadIPARequest *)self fileHash];
+    v6 = [NSMutableDictionary dictionaryWithObjectsAndKeys:appID, @"ApplicationID", v4, @"UID", fileHash, @"FullIPAHash", 0];
 
-    v7 = [(MSDDownloadIPARequest *)self currentUID];
+    currentUID = [(MSDDownloadIPARequest *)self currentUID];
 
-    if (v7)
+    if (currentUID)
     {
-      v8 = [(MSDDownloadIPARequest *)self currentUID];
-      [v6 setObject:v8 forKey:@"CurrentUID"];
+      currentUID2 = [(MSDDownloadIPARequest *)self currentUID];
+      [v6 setObject:currentUID2 forKey:@"CurrentUID"];
     }
 
-    v9 = [v6 convertToNSData];
+    convertToNSData = [v6 convertToNSData];
   }
 
   else
   {
-    v9 = 0;
+    convertToNSData = 0;
   }
 
-  return v9;
+  return convertToNSData;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MSDDownloadIPARequest;
-  v4 = [(MSDCommandServerRequest *)&v6 copyWithZone:a3];
+  v4 = [(MSDCommandServerRequest *)&v6 copyWithZone:zone];
   [v4 setAppID:self->_appID];
   [v4 setFileHash:self->_fileHash];
   [v4 setUid:self->_uid];
@@ -128,24 +128,24 @@
   return v4;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v23.receiver = self;
   v23.super_class = MSDDownloadIPARequest;
-  v8 = [(MSDServerRequest *)&v23 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v23 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v10 = 0;
   }
 
   else
   {
-    v22 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v22];
+    v22 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v22];
     v11 = v22;
 
     if (v10)
@@ -153,9 +153,9 @@
       v12 = sub_100063A54();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(MSDServerRequest *)self getName];
+        getName = [(MSDServerRequest *)self getName];
         *buf = 138543618;
-        v25 = v13;
+        v25 = getName;
         v26 = 2114;
         v27 = v10;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Details to download files are: %{public}@", buf, 0x16u);
@@ -186,14 +186,14 @@
       }
     }
 
-    v6 = v11;
+    errorCopy = v11;
   }
 
-  v19 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v19)
+  if (!error2)
   {
-    [v8 setError:v6];
+    [v8 setError:errorCopy];
   }
 
   return v8;

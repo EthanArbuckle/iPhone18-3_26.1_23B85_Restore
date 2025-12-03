@@ -1,15 +1,15 @@
 @interface JavaUtilTimeZone
 + (JavaUtilSimpleTimeZone)getDefaultNativeTimeZone;
 + (void)initialize;
-- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)a3;
+- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)zone;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getDisplayName;
-- (id)getDisplayNameWithBoolean:(BOOL)a3 withInt:(int)a4 withJavaUtilLocale:(id)a5;
+- (id)getDisplayNameWithBoolean:(BOOL)boolean withInt:(int)int withJavaUtilLocale:(id)locale;
 - (int)getDSTSavings;
-- (int)getOffsetWithLong:(int64_t)a3;
+- (int)getOffsetWithLong:(int64_t)long;
 - (void)dealloc;
-- (void)setIDWithNSString:(id)a3;
+- (void)setIDWithNSString:(id)string;
 @end
 
 @implementation JavaUtilTimeZone
@@ -28,44 +28,44 @@
   return [(JavaUtilTimeZone *)self getDisplayNameWithBoolean:0 withInt:1 withJavaUtilLocale:Default];
 }
 
-- (id)getDisplayNameWithBoolean:(BOOL)a3 withInt:(int)a4 withJavaUtilLocale:(id)a5
+- (id)getDisplayNameWithBoolean:(BOOL)boolean withInt:(int)int withJavaUtilLocale:(id)locale
 {
-  if (a4 >= 2)
+  if (int >= 2)
   {
     v14 = new_JavaLangIllegalArgumentException_init();
     objc_exception_throw(v14);
   }
 
-  if (a3)
+  if (boolean)
   {
-    v8 = [(JavaUtilTimeZone *)self useDaylightTime];
+    useDaylightTime = [(JavaUtilTimeZone *)self useDaylightTime];
   }
 
   else
   {
-    v8 = 0;
+    useDaylightTime = 0;
   }
 
-  result = sub_100281FC0(self, v8, a4 == 0, a5);
+  result = sub_100281FC0(self, useDaylightTime, int == 0, locale);
   if (!result)
   {
-    v10 = [(JavaUtilTimeZone *)self getRawOffset];
-    if (v8)
+    getRawOffset = [(JavaUtilTimeZone *)self getRawOffset];
+    if (useDaylightTime)
     {
-      v10 += [(JavaUtilTimeZone *)self getDSTSavings];
+      getRawOffset += [(JavaUtilTimeZone *)self getDSTSavings];
     }
 
-    v11 = v10 / 60000;
+    v11 = getRawOffset / 60000;
     v12 = new_JavaLangStringBuilder_initWithInt_(9u);
     [(JavaLangStringBuilder *)v12 appendWithNSString:@"GMT"];
-    if (v10 >= -59999)
+    if (getRawOffset >= -59999)
     {
       v13 = 43;
     }
 
     else
     {
-      v11 = v10 / -60000;
+      v11 = getRawOffset / -60000;
       v13 = 45;
     }
 
@@ -93,39 +93,39 @@
   }
 }
 
-- (int)getOffsetWithLong:(int64_t)a3
+- (int)getOffsetWithLong:(int64_t)long
 {
-  v4 = [(JavaUtilTimeZone *)self inDaylightTimeWithJavaUtilDate:new_JavaUtilDate_initWithLong_(a3)];
-  v5 = [(JavaUtilTimeZone *)self getRawOffset];
+  v4 = [(JavaUtilTimeZone *)self inDaylightTimeWithJavaUtilDate:new_JavaUtilDate_initWithLong_(long)];
+  getRawOffset = [(JavaUtilTimeZone *)self getRawOffset];
   if (v4)
   {
-    v5 += [(JavaUtilTimeZone *)self getDSTSavings];
+    getRawOffset += [(JavaUtilTimeZone *)self getDSTSavings];
   }
 
-  return v5;
+  return getRawOffset;
 }
 
-- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)a3
+- (BOOL)hasSameRulesWithJavaUtilTimeZone:(id)zone
 {
-  if (!a3)
+  if (!zone)
   {
     return 0;
   }
 
-  v4 = [(JavaUtilTimeZone *)self getRawOffset];
-  return v4 == [a3 getRawOffset];
+  getRawOffset = [(JavaUtilTimeZone *)self getRawOffset];
+  return getRawOffset == [zone getRawOffset];
 }
 
-- (void)setIDWithNSString:(id)a3
+- (void)setIDWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     objc_exception_throw(objc_alloc_init(JavaLangNullPointerException));
   }
 
-  JreStrongAssign(&self->ID_, a3);
-  v5 = [NSTimeZone timeZoneWithAbbreviation:a3];
-  if (v5 || (v5 = [NSTimeZone timeZoneWithName:a3]) != 0)
+  JreStrongAssign(&self->ID_, string);
+  v5 = [NSTimeZone timeZoneWithAbbreviation:string];
+  if (v5 || (v5 = [NSTimeZone timeZoneWithName:string]) != 0)
   {
 
     JreStrongAssign(&self->nativeTimeZone_, v5);
@@ -139,16 +139,16 @@
   [(JavaUtilTimeZone *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilTimeZone *)self clone];
+  clone = [(JavaUtilTimeZone *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = JavaUtilRegexPattern_compileWithNSString_(@"^GMT[-+](\\d{1,2})([:.]?(\\d\\d))?$");
     JreStrongAssign(&qword_100557040, v2);

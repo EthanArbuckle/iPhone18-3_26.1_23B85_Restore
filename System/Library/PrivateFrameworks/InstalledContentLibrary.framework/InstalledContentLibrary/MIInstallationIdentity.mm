@@ -1,59 +1,59 @@
 @interface MIInstallationIdentity
-+ (id)identityForUpdateOfBundle:(id)a3 error:(id *)a4;
-+ (id)installationIdentityForBundle:(id)a3 settingIfNotSet:(BOOL)a4 error:(id *)a5;
-+ (id)newIdentityForBundle:(id)a3;
-- (BOOL)_writeToBundle:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToBundle:(id)a3 error:(id *)a4;
-- (MIInstallationIdentity)initWithSessionID:(id)a3 uniqueID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)identityForUpdateOfBundle:(id)bundle error:(id *)error;
++ (id)installationIdentityForBundle:(id)bundle settingIfNotSet:(BOOL)set error:(id *)error;
++ (id)newIdentityForBundle:(id)bundle;
+- (BOOL)_writeToBundle:(id)bundle error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToBundle:(id)bundle error:(id *)error;
+- (MIInstallationIdentity)initWithSessionID:(id)d uniqueID:(id)iD;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation MIInstallationIdentity
 
-+ (id)newIdentityForBundle:(id)a3
++ (id)newIdentityForBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 isStaticContent])
+  bundleCopy = bundle;
+  if ([bundleCopy isStaticContent])
   {
-    v4 = [v3 identifier];
+    identifier = [bundleCopy identifier];
     v5 = objc_alloc(objc_opt_class());
-    v6 = _GenerateBuiltInAppInstallSessionID(v4);
-    v7 = _GenerateBuiltInAppInstallID(v4);
+    v6 = _GenerateBuiltInAppInstallSessionID(identifier);
+    v7 = _GenerateBuiltInAppInstallID(identifier);
     v8 = [v5 initWithSessionID:v6 uniqueID:v7];
   }
 
   else
   {
     v9 = objc_alloc(objc_opt_class());
-    v4 = _UUIDData();
+    identifier = _UUIDData();
     v6 = _UUIDData();
-    v8 = [v9 initWithSessionID:v4 uniqueID:v6];
+    v8 = [v9 initWithSessionID:identifier uniqueID:v6];
   }
 
   return v8;
 }
 
-+ (id)identityForUpdateOfBundle:(id)a3 error:(id *)a4
++ (id)identityForUpdateOfBundle:(id)bundle error:(id *)error
 {
-  v6 = a3;
+  bundleCopy = bundle;
   v18 = 0;
-  v7 = [MIInstallationIdentity installationIdentityForBundle:v6 settingIfNotSet:0 error:&v18];
+  v7 = [MIInstallationIdentity installationIdentityForBundle:bundleCopy settingIfNotSet:0 error:&v18];
   v8 = v18;
   v9 = v8;
   if (!v7)
   {
-    v14 = [v8 domain];
-    if ([v14 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v15 = [v9 code];
+      code = [v9 code];
 
-      if (v15 == 93)
+      if (code == 93)
       {
 
-        v13 = [a1 newIdentityForBundle:v6];
+        v13 = [self newIdentityForBundle:bundleCopy];
         v9 = 0;
         goto LABEL_8;
       }
@@ -68,28 +68,28 @@
   }
 
   v10 = objc_alloc(objc_opt_class());
-  v11 = [v7 installSessionID];
+  installSessionID = [v7 installSessionID];
   v12 = _UUIDData();
-  v13 = [v10 initWithSessionID:v11 uniqueID:v12];
+  v13 = [v10 initWithSessionID:installSessionID uniqueID:v12];
 
 LABEL_8:
-  if (a4 && !v13)
+  if (error && !v13)
   {
     v16 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v13;
 }
 
-+ (id)installationIdentityForBundle:(id)a3 settingIfNotSet:(BOOL)a4 error:(id *)a5
++ (id)installationIdentityForBundle:(id)bundle settingIfNotSet:(BOOL)set error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 bundleType];
-  if ((v9 - 1) >= 6 && v9 != 9)
+  setCopy = set;
+  bundleCopy = bundle;
+  bundleType = [bundleCopy bundleType];
+  if ((bundleType - 1) >= 6 && bundleType != 9)
   {
-    v24 = _CreateAndLogError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 186, @"MIInstallerErrorDomain", 3, 0, 0, @"Install session ID requested for bundle that was not an app or app extension: %@", v10, v8);
+    v24 = _CreateAndLogError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 186, @"MIInstallerErrorDomain", 3, 0, 0, @"Install session ID requested for bundle that was not an app or app extension: %@", v10, bundleCopy);
     v25 = 0;
     v26 = 0;
     v27 = 0;
@@ -98,12 +98,12 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if ([v8 isStaticContent])
+  if ([bundleCopy isStaticContent])
   {
-    v12 = [v8 identifier];
+    identifier = [bundleCopy identifier];
     v13 = objc_alloc(objc_opt_class());
-    v14 = _GenerateBuiltInAppInstallSessionID(v12);
-    v15 = _GenerateBuiltInAppInstallID(v12);
+    v14 = _GenerateBuiltInAppInstallSessionID(identifier);
+    v15 = _GenerateBuiltInAppInstallID(identifier);
     v29 = [v13 initWithSessionID:v14 uniqueID:v15];
 
     v25 = 0;
@@ -113,7 +113,7 @@ LABEL_8:
     v24 = 0;
 LABEL_13:
     LODWORD(v17) = -1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -121,14 +121,14 @@ LABEL_13:
     goto LABEL_26;
   }
 
-  v28 = _IdentifierStorageLocationForBundle(v8);
-  v16 = [v28 fileSystemRepresentation];
-  v17 = open(v16, 256);
+  v28 = _IdentifierStorageLocationForBundle(bundleCopy);
+  fileSystemRepresentation = [v28 fileSystemRepresentation];
+  v17 = open(fileSystemRepresentation, 256);
   if ((v17 & 0x80000000) != 0)
   {
     v20 = __error();
-    v22 = _CreateError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 202, *MEMORY[0x1E696A798], *v20, 0, 0, @"Failed to open %s", v21, v16);
-    v24 = _CreateAndLogError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 202, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to get FD to bundle executable at %s", v23, v16);
+    v22 = _CreateError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 202, *MEMORY[0x1E696A798], *v20, 0, 0, @"Failed to open %s", v21, fileSystemRepresentation);
+    v24 = _CreateAndLogError("+[MIInstallationIdentity installationIdentityForBundle:settingIfNotSet:error:]", 202, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to get FD to bundle executable at %s", v23, fileSystemRepresentation);
 
     v25 = 0;
     v26 = 0;
@@ -158,7 +158,7 @@ LABEL_13:
     }
 
     v24 = v19;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -166,28 +166,28 @@ LABEL_13:
     goto LABEL_26;
   }
 
-  if (!v6)
+  if (!setCopy)
   {
     goto LABEL_24;
   }
 
-  v30 = [v18 domain];
-  if (([v30 isEqualToString:*MEMORY[0x1E696A798]] & 1) == 0)
+  domain = [v18 domain];
+  if (([domain isEqualToString:*MEMORY[0x1E696A798]] & 1) == 0)
   {
 
     goto LABEL_24;
   }
 
-  v31 = [v24 code];
+  code = [v24 code];
 
-  if (v31 != 93)
+  if (code != 93)
   {
 LABEL_24:
     v25 = 0;
     v26 = 0;
 LABEL_25:
     v29 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -195,9 +195,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v32 = [a1 newIdentityForBundle:v8];
+  v32 = [self newIdentityForBundle:bundleCopy];
   v39 = 0;
-  v33 = [v32 _writeToBundle:v8 error:&v39];
+  v33 = [v32 _writeToBundle:bundleCopy error:&v39];
   v34 = v39;
   v24 = v34;
   if (v33)
@@ -214,7 +214,7 @@ LABEL_25:
 
   v25 = 0;
   v26 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_28;
   }
@@ -223,7 +223,7 @@ LABEL_26:
   if (!v29)
   {
     v35 = v24;
-    *a5 = v24;
+    *error = v24;
   }
 
 LABEL_28:
@@ -237,10 +237,10 @@ LABEL_28:
   return v29;
 }
 
-- (MIInstallationIdentity)initWithSessionID:(id)a3 uniqueID:(id)a4
+- (MIInstallationIdentity)initWithSessionID:(id)d uniqueID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = MIInstallationIdentity;
   v8 = [(MIInstallationIdentity *)&v11 init];
@@ -249,7 +249,7 @@ LABEL_28:
     goto LABEL_5;
   }
 
-  if ([v6 length] != 16)
+  if ([dCopy length] != 16)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -263,7 +263,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v7 length] != 16)
+  if ([iDCopy length] != 16)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -273,8 +273,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  [(MIInstallationIdentity *)v8 setInstallSessionID:v6];
-  [(MIInstallationIdentity *)v8 setUniqueInstallID:v7];
+  [(MIInstallationIdentity *)v8 setInstallSessionID:dCopy];
+  [(MIInstallationIdentity *)v8 setUniqueInstallID:iDCopy];
 LABEL_5:
   v9 = v8;
 LABEL_13:
@@ -282,10 +282,10 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -295,20 +295,20 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIInstallationIdentity *)v5 uniqueInstallID];
-      v7 = [(MIInstallationIdentity *)self uniqueInstallID];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      uniqueInstallID = [(MIInstallationIdentity *)v5 uniqueInstallID];
+      uniqueInstallID2 = [(MIInstallationIdentity *)self uniqueInstallID];
+      v8 = uniqueInstallID;
+      v9 = uniqueInstallID2;
       v10 = v9;
       v14 = 0;
       if ((v8 != 0) == (v9 != 0) && (!v8 || !v9 || [v8 isEqual:v9]))
       {
 
-        v11 = [(MIInstallationIdentity *)v5 installSessionID];
-        v12 = [(MIInstallationIdentity *)self installSessionID];
-        v8 = v11;
-        v13 = v12;
+        installSessionID = [(MIInstallationIdentity *)v5 installSessionID];
+        installSessionID2 = [(MIInstallationIdentity *)self installSessionID];
+        v8 = installSessionID;
+        v13 = installSessionID2;
         v10 = v13;
         if ((v8 != 0) == (v13 != 0) && (!v8 || !v13 || [v8 isEqual:v13]))
         {
@@ -328,43 +328,43 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(MIInstallationIdentity *)self installSessionID];
-  v4 = [v3 hash];
-  v5 = [(MIInstallationIdentity *)self uniqueInstallID];
-  v6 = [v5 hash];
+  installSessionID = [(MIInstallationIdentity *)self installSessionID];
+  v4 = [installSessionID hash];
+  uniqueInstallID = [(MIInstallationIdentity *)self uniqueInstallID];
+  v6 = [uniqueInstallID hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MIInstallationIdentity *)self installSessionID];
-  v6 = [(MIInstallationIdentity *)self uniqueInstallID];
-  v7 = [v4 initWithSessionID:v5 uniqueID:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  installSessionID = [(MIInstallationIdentity *)self installSessionID];
+  uniqueInstallID = [(MIInstallationIdentity *)self uniqueInstallID];
+  v7 = [v4 initWithSessionID:installSessionID uniqueID:uniqueInstallID];
 
   return v7;
 }
 
-- (BOOL)_writeToBundle:(id)a3 error:(id *)a4
+- (BOOL)_writeToBundle:(id)bundle error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bundleCopy = bundle;
   v7 = +[MIFileManager defaultManager];
-  v34 = [(MIInstallationIdentity *)self uniqueInstallID];
-  v33 = [(MIInstallationIdentity *)self installSessionID];
+  uniqueInstallID = [(MIInstallationIdentity *)self uniqueInstallID];
+  installSessionID = [(MIInstallationIdentity *)self installSessionID];
   v42 = 0;
-  v8 = [v6 thisBundleAndAllContainedBundlesWithError:&v42];
+  v8 = [bundleCopy thisBundleAndAllContainedBundlesWithError:&v42];
   v9 = v42;
   v10 = v9;
   if (!v8)
   {
     LODWORD(v19) = -1;
-    if (a4)
+    if (error)
     {
 LABEL_17:
       v24 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     goto LABEL_18;
@@ -372,7 +372,7 @@ LABEL_17:
 
   v35 = v9;
   v30 = v8;
-  v31 = v6;
+  v31 = bundleCopy;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -385,7 +385,7 @@ LABEL_15:
 
     v23 = 1;
     v8 = v30;
-    v6 = v31;
+    bundleCopy = v31;
     v10 = v35;
     goto LABEL_21;
   }
@@ -410,20 +410,20 @@ LABEL_4:
     }
 
     v17 = _IdentifierStorageLocationForBundle(v16);
-    v18 = [v17 fileSystemRepresentation];
-    v19 = open(v18, 256);
+    fileSystemRepresentation = [v17 fileSystemRepresentation];
+    v19 = open(fileSystemRepresentation, 256);
     if ((v19 & 0x80000000) != 0)
     {
       v21 = v7;
       v26 = __error();
-      v28 = _CreateError("[MIInstallationIdentity _writeToBundle:error:]", 340, *MEMORY[0x1E696A798], *v26, 0, 0, @"Failed to open %s", v27, v18);
-      v10 = _CreateAndLogError("[MIInstallationIdentity _writeToBundle:error:]", 340, @"MIInstallerErrorDomain", 4, v28, 0, @"Failed to get FD to bundle executable at %s", v29, v18);
+      v28 = _CreateError("[MIInstallationIdentity _writeToBundle:error:]", 340, *MEMORY[0x1E696A798], *v26, 0, 0, @"Failed to open %s", v27, fileSystemRepresentation);
+      v10 = _CreateAndLogError("[MIInstallationIdentity _writeToBundle:error:]", 340, @"MIInstallerErrorDomain", 4, v28, 0, @"Failed to get FD to bundle executable at %s", v29, fileSystemRepresentation);
 
       goto LABEL_25;
     }
 
     v37 = v35;
-    v20 = [v7 setData:v34 forExtendedAttributeNamed:@"com.apple.install_uuid" onFD:v19 fdLocation:v17 error:&v37];
+    v20 = [v7 setData:uniqueInstallID forExtendedAttributeNamed:@"com.apple.install_uuid" onFD:v19 fdLocation:v17 error:&v37];
     v10 = v37;
 
     if (!v20)
@@ -434,7 +434,7 @@ LABEL_4:
 
     v36 = v10;
     v21 = v7;
-    v22 = [v7 setData:v33 forExtendedAttributeNamed:@"com.apple.install_session_uuid" onFD:v19 fdLocation:v17 error:&v36];
+    v22 = [v7 setData:installSessionID forExtendedAttributeNamed:@"com.apple.install_session_uuid" onFD:v19 fdLocation:v17 error:&v36];
     v35 = v36;
 
     if (!v22)
@@ -463,9 +463,9 @@ LABEL_13:
 LABEL_25:
 
   v8 = v30;
-  v6 = v31;
+  bundleCopy = v31;
   v7 = v21;
-  if (a4)
+  if (error)
   {
     goto LABEL_17;
   }
@@ -482,17 +482,17 @@ LABEL_21:
   return v23;
 }
 
-- (BOOL)writeToBundle:(id)a3 error:(id *)a4
+- (BOOL)writeToBundle:(id)bundle error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isAppTypeBundle])
+  bundleCopy = bundle;
+  if ([bundleCopy isAppTypeBundle])
   {
-    if (![v6 isStaticContent])
+    if (![bundleCopy isStaticContent])
     {
       v12 = 0;
-      v10 = [(MIInstallationIdentity *)self _writeToBundle:v6 error:&v12];
+      v10 = [(MIInstallationIdentity *)self _writeToBundle:bundleCopy error:&v12];
       v9 = v12;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -500,16 +500,16 @@ LABEL_21:
       goto LABEL_8;
     }
 
-    _CreateAndLogError("[MIInstallationIdentity writeToBundle:error:]", 380, @"MIInstallerErrorDomain", 3, 0, 0, @"Cannot set installation identity for bundle that uses a static identity: %@", v8, v6);
+    _CreateAndLogError("[MIInstallationIdentity writeToBundle:error:]", 380, @"MIInstallerErrorDomain", 3, 0, 0, @"Cannot set installation identity for bundle that uses a static identity: %@", v8, bundleCopy);
   }
 
   else
   {
-    _CreateAndLogError("[MIInstallationIdentity writeToBundle:error:]", 375, @"MIInstallerErrorDomain", 3, 0, 0, @"Cannot set installation identity for non-app bundle %@", v7, v6);
+    _CreateAndLogError("[MIInstallationIdentity writeToBundle:error:]", 375, @"MIInstallerErrorDomain", 3, 0, 0, @"Cannot set installation identity for non-app bundle %@", v7, bundleCopy);
   }
   v9 = ;
   v10 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -518,7 +518,7 @@ LABEL_8:
   if (!v10)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -531,9 +531,9 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MIInstallationIdentity *)self uniqueInstallID];
-  v7 = [(MIInstallationIdentity *)self installSessionID];
-  v8 = [v3 stringWithFormat:@"<%@ 0x%p uniqueInstallID=%@ installSessionID=%@", v5, self, v6, v7];
+  uniqueInstallID = [(MIInstallationIdentity *)self uniqueInstallID];
+  installSessionID = [(MIInstallationIdentity *)self installSessionID];
+  v8 = [v3 stringWithFormat:@"<%@ 0x%p uniqueInstallID=%@ installSessionID=%@", v5, self, uniqueInstallID, installSessionID];
 
   return v8;
 }

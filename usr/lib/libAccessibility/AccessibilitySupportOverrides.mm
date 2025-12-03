@@ -1,18 +1,18 @@
 @interface AccessibilitySupportOverrides
 + (id)shared;
-- (void)_addFilter:(id)a3;
+- (void)_addFilter:(id)filter;
 - (void)_installGrayscaleFilter;
 - (void)_installInvertColorsFilter;
-- (void)_removeFilterWithName:(id)a3;
-- (void)setBoldText:(id)a3;
-- (void)setButtonShapes:(id)a3;
-- (void)setDifferentiateWithoutColor:(id)a3;
-- (void)setGrayscale:(id)a3;
-- (void)setIncreaseContrast:(id)a3;
-- (void)setOnOffLabels:(id)a3;
-- (void)setReduceMotion:(id)a3;
-- (void)setReduceTransparency:(id)a3;
-- (void)setSmartInvert:(id)a3;
+- (void)_removeFilterWithName:(id)name;
+- (void)setBoldText:(id)text;
+- (void)setButtonShapes:(id)shapes;
+- (void)setDifferentiateWithoutColor:(id)color;
+- (void)setGrayscale:(id)grayscale;
+- (void)setIncreaseContrast:(id)contrast;
+- (void)setOnOffLabels:(id)labels;
+- (void)setReduceMotion:(id)motion;
+- (void)setReduceTransparency:(id)transparency;
+- (void)setSmartInvert:(id)invert;
 @end
 
 @implementation AccessibilitySupportOverrides
@@ -36,16 +36,16 @@ uint64_t __39__AccessibilitySupportOverrides_shared__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBoldText:(id)a3
+- (void)setBoldText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__AccessibilitySupportOverrides_setBoldText___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = textCopy;
+  v5 = textCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -56,16 +56,16 @@ void __45__AccessibilitySupportOverrides_setBoldText___block_invoke(uint64_t a1)
   [v1 postNotificationName:kAXSEnhanceTextLegibilityChangedNotification object:0];
 }
 
-- (void)setReduceMotion:(id)a3
+- (void)setReduceMotion:(id)motion
 {
-  v4 = a3;
+  motionCopy = motion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__AccessibilitySupportOverrides_setReduceMotion___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = motionCopy;
+  v5 = motionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -76,16 +76,16 @@ void __49__AccessibilitySupportOverrides_setReduceMotion___block_invoke(uint64_t
   [v1 postNotificationName:kAXSReduceMotionChangedNotification object:0];
 }
 
-- (void)setReduceTransparency:(id)a3
+- (void)setReduceTransparency:(id)transparency
 {
-  v4 = a3;
+  transparencyCopy = transparency;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__AccessibilitySupportOverrides_setReduceTransparency___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transparencyCopy;
+  v5 = transparencyCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -96,16 +96,16 @@ void __55__AccessibilitySupportOverrides_setReduceTransparency___block_invoke(ui
   [v1 postNotificationName:kAXSEnhanceBackgroundContrastChangedNotification object:0];
 }
 
-- (void)setIncreaseContrast:(id)a3
+- (void)setIncreaseContrast:(id)contrast
 {
-  v4 = a3;
+  contrastCopy = contrast;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__AccessibilitySupportOverrides_setIncreaseContrast___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contrastCopy;
+  v5 = contrastCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -116,16 +116,16 @@ void __53__AccessibilitySupportOverrides_setIncreaseContrast___block_invoke(uint
   [v1 postNotificationName:kAXSDarkenSystemColorsEnabledNotification object:0];
 }
 
-- (void)setOnOffLabels:(id)a3
+- (void)setOnOffLabels:(id)labels
 {
-  v4 = a3;
+  labelsCopy = labels;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__AccessibilitySupportOverrides_setOnOffLabels___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = labelsCopy;
+  v5 = labelsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -136,16 +136,16 @@ void __48__AccessibilitySupportOverrides_setOnOffLabels___block_invoke(uint64_t 
   [v1 postNotificationName:kAXSIncreaseButtonLegibilityNotification object:0];
 }
 
-- (void)setGrayscale:(id)a3
+- (void)setGrayscale:(id)grayscale
 {
-  v4 = a3;
+  grayscaleCopy = grayscale;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__AccessibilitySupportOverrides_setGrayscale___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = grayscaleCopy;
+  v5 = grayscaleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -157,16 +157,16 @@ void __46__AccessibilitySupportOverrides_setGrayscale___block_invoke(uint64_t a1
   [v2 postNotificationName:kAXSGrayscaleEnabledNotification object:0];
 }
 
-- (void)setSmartInvert:(id)a3
+- (void)setSmartInvert:(id)invert
 {
-  v4 = a3;
+  invertCopy = invert;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__AccessibilitySupportOverrides_setSmartInvert___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = invertCopy;
+  v5 = invertCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -178,16 +178,16 @@ void __48__AccessibilitySupportOverrides_setSmartInvert___block_invoke(uint64_t 
   [v2 postNotificationName:kAXSInvertColorsEnabledNotification object:0];
 }
 
-- (void)setButtonShapes:(id)a3
+- (void)setButtonShapes:(id)shapes
 {
-  v4 = a3;
+  shapesCopy = shapes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__AccessibilitySupportOverrides_setButtonShapes___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = shapesCopy;
+  v5 = shapesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -198,16 +198,16 @@ void __49__AccessibilitySupportOverrides_setButtonShapes___block_invoke(uint64_t
   [v1 postNotificationName:kAXSButtonShapesEnabledNotification object:0];
 }
 
-- (void)setDifferentiateWithoutColor:(id)a3
+- (void)setDifferentiateWithoutColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__AccessibilitySupportOverrides_setDifferentiateWithoutColor___block_invoke;
   v6[3] = &unk_1E6F453C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = colorCopy;
+  v5 = colorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -218,23 +218,23 @@ void __62__AccessibilitySupportOverrides_setDifferentiateWithoutColor___block_in
   [v1 postNotificationName:kAXSDifferentiateWithoutColorChangedNotification object:0];
 }
 
-- (void)_addFilter:(id)a3
+- (void)_addFilter:(id)filter
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
-  v5 = [v4 keyWindow];
-  v6 = [v5 layer];
+  filterCopy = filter;
+  nSClassFromString(&cfstr_Uiapplication.isa) = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
+  keyWindow = [nSClassFromString(&cfstr_Uiapplication.isa) keyWindow];
+  layer = [keyWindow layer];
 
-  v7 = [v6 filters];
-  if (v7)
+  filters = [layer filters];
+  if (filters)
   {
-    v8 = v7;
+    v8 = filters;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__AccessibilitySupportOverrides__addFilter___block_invoke;
     v12[3] = &unk_1E6F453E8;
-    v9 = v3;
+    v9 = filterCopy;
     v13 = v9;
     if ([v8 indexOfObjectPassingTest:v12] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -246,11 +246,11 @@ void __62__AccessibilitySupportOverrides_setDifferentiateWithoutColor___block_in
 
   else
   {
-    v14[0] = v3;
+    v14[0] = filterCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   }
 
-  [v6 setValue:v8 forKey:@"filters"];
+  [layer setValue:v8 forKey:@"filters"];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -264,28 +264,28 @@ uint64_t __44__AccessibilitySupportOverrides__addFilter___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)_removeFilterWithName:(id)a3
+- (void)_removeFilterWithName:(id)name
 {
-  v3 = a3;
-  v4 = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
-  v5 = [v4 keyWindow];
-  v6 = [v5 layer];
+  nameCopy = name;
+  nSClassFromString(&cfstr_Uiapplication.isa) = [NSClassFromString(&cfstr_Uiapplication.isa) sharedApplication];
+  keyWindow = [nSClassFromString(&cfstr_Uiapplication.isa) keyWindow];
+  layer = [keyWindow layer];
 
-  v7 = [v6 filters];
-  if (v7)
+  filters = [layer filters];
+  if (filters)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __55__AccessibilitySupportOverrides__removeFilterWithName___block_invoke;
     v11[3] = &unk_1E6F453E8;
-    v12 = v3;
-    v8 = [v7 indexOfObjectPassingTest:v11];
+    v12 = nameCopy;
+    v8 = [filters indexOfObjectPassingTest:v11];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
-      v10 = [v7 mutableCopy];
+      v10 = [filters mutableCopy];
       [v10 removeObjectAtIndex:v9];
-      [v6 setValue:v10 forKey:@"filters"];
+      [layer setValue:v10 forKey:@"filters"];
     }
   }
 }
@@ -300,10 +300,10 @@ uint64_t __55__AccessibilitySupportOverrides__removeFilterWithName___block_invok
 
 - (void)_installInvertColorsFilter
 {
-  v3 = [(AccessibilitySupportOverrides *)self smartInvert];
-  v4 = [v3 BOOLValue];
+  smartInvert = [(AccessibilitySupportOverrides *)self smartInvert];
+  bOOLValue = [smartInvert BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [NSClassFromString(&cfstr_Cafilter.isa) filterWithType:@"colorInvert"];
     [v5 setName:@"colorInvert"];
@@ -320,10 +320,10 @@ uint64_t __55__AccessibilitySupportOverrides__removeFilterWithName___block_invok
 
 - (void)_installGrayscaleFilter
 {
-  v3 = [(AccessibilitySupportOverrides *)self grayscale];
-  v4 = [v3 BOOLValue];
+  grayscale = [(AccessibilitySupportOverrides *)self grayscale];
+  bOOLValue = [grayscale BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = [NSClassFromString(&cfstr_Cafilter.isa) filterWithType:@"colorMonochrome"];
     [v5 setName:@"colorMonochrome"];

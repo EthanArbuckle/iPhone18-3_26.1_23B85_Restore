@@ -1,11 +1,11 @@
 @interface JSAOSFeatureFlags
-+ (BOOL)isEnabled:(id)a3 :(id)a4;
++ (BOOL)isEnabled:(id)enabled :(id)a4;
 - (_TtC5JSApp17JSAOSFeatureFlags)init;
 @end
 
 @implementation JSAOSFeatureFlags
 
-+ (BOOL)isEnabled:(id)a3 :(id)a4
++ (BOOL)isEnabled:(id)enabled :(id)a4
 {
   v5 = sub_843AC();
   v7 = v6;

@@ -1,8 +1,8 @@
 @interface PHImportDeviceAsset
-+ (id)assetFileForFile:(id)a3 source:(id)a4;
-+ (void)validateCameraFile:(id)a3;
++ (id)assetFileForFile:(id)file source:(id)source;
++ (void)validateCameraFile:(id)file;
 - (BOOL)canDelete;
-- (BOOL)containsDateKey:(id)a3;
+- (BOOL)containsDateKey:(id)key;
 - (BOOL)hasAudioAttachment;
 - (BOOL)isBase;
 - (BOOL)isLivePhoto;
@@ -10,13 +10,13 @@
 - (BOOL)isSloMo;
 - (BOOL)isSpatialOverCapture;
 - (BOOL)isViewable;
-- (BOOL)performAdditionalLivePhotoChecksWithImageAsset:(id)a3;
+- (BOOL)performAdditionalLivePhotoChecksWithImageAsset:(id)asset;
 - (CGSize)exifPixelSize;
 - (CGSize)orientedPixelSize;
 - (NSArray)cameraFiles;
-- (PHImportDeviceAsset)initWithSource:(id)a3 cameraFile:(id)a4 type:(id)a5 supportedMediaType:(unsigned __int8)a6;
+- (PHImportDeviceAsset)initWithSource:(id)source cameraFile:(id)file type:(id)type supportedMediaType:(unsigned __int8)mediaType;
 - (id)burstUUID;
-- (id)createMetadataFromProperties:(id)a3;
+- (id)createMetadataFromProperties:(id)properties;
 - (id)creationDate;
 - (id)durationTimeInterval;
 - (id)livePhotoPairingIdentifier;
@@ -27,54 +27,54 @@
 - (id)spatialOverCaptureIdentifier;
 - (int)burstPickType;
 - (unsigned)orientation;
-- (void)copyToURL:(id)a3 completionHandler:(id)a4;
-- (void)loadMetadataAsync:(id)a3;
+- (void)copyToURL:(id)l completionHandler:(id)handler;
+- (void)loadMetadataAsync:(id)async;
 - (void)loadMetadataSync;
-- (void)thumbnailUsingRequest:(id)a3 atEnd:(id)a4;
+- (void)thumbnailUsingRequest:(id)request atEnd:(id)end;
 @end
 
 @implementation PHImportDeviceAsset
 
 - (id)nameKey
 {
-  v3 = [(PHImportAsset *)self createdFileName];
-  v4 = v3;
-  if (v3)
+  createdFileName = [(PHImportAsset *)self createdFileName];
+  v4 = createdFileName;
+  if (createdFileName)
   {
-    v5 = v3;
+    nameKey = createdFileName;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PHImportDeviceAsset;
-    v5 = [(PHImportAsset *)&v8 nameKey];
+    nameKey = [(PHImportAsset *)&v8 nameKey];
   }
 
-  v6 = v5;
+  v6 = nameKey;
 
   return v6;
 }
 
-- (void)copyToURL:(id)a3 completionHandler:(id)a4
+- (void)copyToURL:(id)l completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 URLByDeletingLastPathComponent];
+  handlerCopy = handler;
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
   v27 = *MEMORY[0x1E696D190];
-  v28[0] = v7;
+  v28[0] = uRLByDeletingLastPathComponent;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v9 = PLImportGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(PHImportAsset *)self uuid];
+    uuid = [(PHImportAsset *)self uuid];
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHImportAsset resourceType](self, "resourceType")}];
     v22 = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     v13 = PHDescriptionsForResourceTypes(v12);
     v14 = [v13 componentsJoinedByString:{@", "}];
     *buf = 138412546;
-    v24 = v10;
+    v24 = uuid;
     v25 = 2112;
     v26 = v14;
     _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEBUG, "REQUESTING DOWNLOAD: asset: %@, %@", buf, 0x16u);
@@ -86,10 +86,10 @@
   v19[2] = __51__PHImportDeviceAsset_copyToURL_completionHandler___block_invoke;
   v19[3] = &unk_1E75A7628;
   v19[4] = self;
-  v20 = v7;
-  v21 = v6;
-  v16 = v6;
-  v17 = v7;
+  v20 = uRLByDeletingLastPathComponent;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = uRLByDeletingLastPathComponent;
   v18 = [(ICCameraFile *)cameraFile requestDownloadWithOptions:v8 completion:v19];
 }
 
@@ -161,110 +161,110 @@ LABEL_10:
 - (NSArray)cameraFiles
 {
   v3 = objc_opt_new();
-  v4 = [(PHImportDeviceAsset *)self representedObject];
-  [v3 addObject:v4];
+  representedObject = [(PHImportDeviceAsset *)self representedObject];
+  [v3 addObject:representedObject];
 
-  v5 = [(PHImportAsset *)self largeRender];
+  largeRender = [(PHImportAsset *)self largeRender];
 
-  if (v5)
+  if (largeRender)
   {
-    v6 = [(PHImportAsset *)self largeRender];
-    v7 = [v6 cameraFiles];
-    [v3 addObjectsFromArray:v7];
+    largeRender2 = [(PHImportAsset *)self largeRender];
+    cameraFiles = [largeRender2 cameraFiles];
+    [v3 addObjectsFromArray:cameraFiles];
   }
 
-  v8 = [(PHImportAsset *)self rawAsset];
+  rawAsset = [(PHImportAsset *)self rawAsset];
 
-  if (v8)
+  if (rawAsset)
   {
-    v9 = [(PHImportAsset *)self rawAsset];
+    rawAsset2 = [(PHImportAsset *)self rawAsset];
   }
 
   else
   {
-    v10 = [(PHImportAsset *)self videoComplement];
+    videoComplement = [(PHImportAsset *)self videoComplement];
 
-    if (!v10)
+    if (!videoComplement)
     {
       goto LABEL_8;
     }
 
-    v9 = [(PHImportAsset *)self videoComplement];
+    rawAsset2 = [(PHImportAsset *)self videoComplement];
   }
 
-  v11 = v9;
-  v12 = [v9 cameraFiles];
-  [v3 addObjectsFromArray:v12];
+  v11 = rawAsset2;
+  cameraFiles2 = [rawAsset2 cameraFiles];
+  [v3 addObjectsFromArray:cameraFiles2];
 
 LABEL_8:
-  v13 = [(PHImportAsset *)self audioAsset];
+  audioAsset = [(PHImportAsset *)self audioAsset];
 
-  if (v13)
+  if (audioAsset)
   {
-    v14 = [(PHImportAsset *)self audioAsset];
-    v15 = [v14 cameraFiles];
-    [v3 addObjectsFromArray:v15];
+    audioAsset2 = [(PHImportAsset *)self audioAsset];
+    cameraFiles3 = [audioAsset2 cameraFiles];
+    [v3 addObjectsFromArray:cameraFiles3];
   }
 
-  v16 = [(PHImportAsset *)self adjustmentSidecar];
-  if (v16 || ([(PHImportAsset *)self slmSidecar], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || ([(PHImportAsset *)self xmpSidecar], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  adjustmentSidecar = [(PHImportAsset *)self adjustmentSidecar];
+  if (adjustmentSidecar || ([(PHImportAsset *)self slmSidecar], (adjustmentSidecar = objc_claimAutoreleasedReturnValue()) != 0) || ([(PHImportAsset *)self xmpSidecar], (adjustmentSidecar = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v17 = v16;
-    v18 = [v16 cameraFiles];
-    [v3 addObjectsFromArray:v18];
+    v17 = adjustmentSidecar;
+    cameraFiles4 = [adjustmentSidecar cameraFiles];
+    [v3 addObjectsFromArray:cameraFiles4];
   }
 
-  v19 = [(PHImportAsset *)self originalAdjustmentSidecar];
-  v20 = v19;
-  if (v19)
+  originalAdjustmentSidecar = [(PHImportAsset *)self originalAdjustmentSidecar];
+  v20 = originalAdjustmentSidecar;
+  if (originalAdjustmentSidecar)
   {
-    v21 = [v19 cameraFiles];
-    [v3 addObjectsFromArray:v21];
+    cameraFiles5 = [originalAdjustmentSidecar cameraFiles];
+    [v3 addObjectsFromArray:cameraFiles5];
   }
 
   return v3;
 }
 
-- (void)thumbnailUsingRequest:(id)a3 atEnd:(id)a4
+- (void)thumbnailUsingRequest:(id)request atEnd:(id)end
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  endCopy = end;
   v8 = PLImportGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(PHImportAsset *)self redactedFileNameDescription];
+    redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
     *buf = 136315906;
     v17 = "[PHImportDeviceAsset thumbnailUsingRequest:atEnd:]";
     v18 = 2112;
-    v19 = v9;
+    v19 = redactedFileNameDescription;
     v20 = 2048;
-    v21 = [v6 longestSide];
+    longestSide = [requestCopy longestSide];
     v22 = 2048;
-    v23 = v6;
+    v23 = requestCopy;
     _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_DEBUG, "%s - %@ (%lu), <%p>", buf, 0x2Au);
   }
 
   v10 = [(PHImportAsset *)self url];
-  v11 = [v10 path];
+  path = [v10 path];
 
-  if (v11)
+  if (path)
   {
     v15.receiver = self;
     v15.super_class = PHImportDeviceAsset;
-    [(PHImportAsset *)&v15 thumbnailUsingRequest:v6 atEnd:v7];
+    [(PHImportAsset *)&v15 thumbnailUsingRequest:requestCopy atEnd:endCopy];
   }
 
   else
   {
-    v12 = [(PHImportAsset *)self source];
+    source = [(PHImportAsset *)self source];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __51__PHImportDeviceAsset_thumbnailUsingRequest_atEnd___block_invoke;
     v13[3] = &unk_1E75A7600;
     v13[4] = self;
-    v14 = v7;
-    [v12 fetchThumbnailDataUsingRequest:v6 withCompletion:v13];
+    v14 = endCopy;
+    [source fetchThumbnailDataUsingRequest:requestCopy withCompletion:v13];
   }
 }
 
@@ -381,54 +381,54 @@ LABEL_22:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)loadMetadataAsync:(id)a3
+- (void)loadMetadataAsync:(id)async
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  asyncCopy = async;
   v5 = PLImportGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(PHImportAsset *)self fileName];
+    fileName = [(PHImportAsset *)self fileName];
     *buf = 136315394;
     v16 = "[PHImportDeviceAsset loadMetadataAsync:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = fileName;
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "%s - %@", buf, 0x16u);
   }
 
-  v7 = [(PHImportAsset *)self metadata];
+  metadata = [(PHImportAsset *)self metadata];
 
-  if (v7)
+  if (metadata)
   {
-    if (v4)
+    if (asyncCopy)
     {
-      v4[2](v4);
+      asyncCopy[2](asyncCopy);
     }
   }
 
   else
   {
     v8 = [(PHImportAsset *)self url];
-    v9 = [v8 path];
+    path = [v8 path];
 
-    if (v9)
+    if (path)
     {
       v14.receiver = self;
       v14.super_class = PHImportDeviceAsset;
-      [(PHImportAsset *)&v14 loadMetadataAsync:v4];
+      [(PHImportAsset *)&v14 loadMetadataAsync:asyncCopy];
     }
 
     else
     {
       v10 = [(PHImportAssetDataRequest *)[PHImportAssetMetadataRequest alloc] initWithAsset:self];
       [(PHImportAssetDataRequest *)v10 setAsset:self];
-      v11 = [(PHImportAsset *)self source];
+      source = [(PHImportAsset *)self source];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __41__PHImportDeviceAsset_loadMetadataAsync___block_invoke;
       v12[3] = &unk_1E75A75D8;
-      v13 = v4;
-      [v11 fetchMetadataUsingRequest:v10 withCompletion:v12];
+      v13 = asyncCopy;
+      [source fetchMetadataUsingRequest:v10 withCompletion:v12];
     }
   }
 }
@@ -461,33 +461,33 @@ uint64_t __41__PHImportDeviceAsset_loadMetadataAsync___block_invoke(uint64_t a1)
     v6 = PLImportGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
       *buf = 138543362;
-      v11 = v7;
+      v11 = redactedFileNameDescription;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_ERROR, "Timed out getting metadata for %{public}@ from ImageCapture", buf, 0xCu);
     }
   }
 }
 
-- (id)createMetadataFromProperties:(id)a3
+- (id)createMetadataFromProperties:(id)properties
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (properties)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [properties mutableCopy];
     if (![(PHImportDeviceAsset *)self containsDateKey:v4])
     {
-      v5 = [(ICCameraFile *)self->_cameraFile exifCreationDate];
-      v6 = v5;
-      if (!v5)
+      exifCreationDate = [(ICCameraFile *)self->_cameraFile exifCreationDate];
+      fileCreationDate = exifCreationDate;
+      if (!exifCreationDate)
       {
-        v6 = [(ICCameraFile *)self->_cameraFile fileCreationDate];
+        fileCreationDate = [(ICCameraFile *)self->_cameraFile fileCreationDate];
       }
 
-      v7 = [MEMORY[0x1E695DFE8] localTimeZone];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
       v8 = PFStringFromDateTimeZoneFormat();
 
-      if (!v5)
+      if (!exifCreationDate)
       {
       }
 
@@ -500,10 +500,10 @@ uint64_t __41__PHImportDeviceAsset_loadMetadataAsync___block_invoke(uint64_t a1)
     if ([(PHImportAsset *)self isImage])
     {
       v9 = objc_alloc(MEMORY[0x1E69C0718]);
-      v10 = [(PHImportAsset *)self contentType];
-      v11 = [(PHImportAsset *)self source];
-      v12 = [v11 timeZoneLookup];
-      v13 = [v9 initWithImageProperties:v4 contentType:v10 timeZoneLookup:v12];
+      contentType = [(PHImportAsset *)self contentType];
+      source = [(PHImportAsset *)self source];
+      timeZoneLookup = [source timeZoneLookup];
+      v13 = [v9 initWithImageProperties:v4 contentType:contentType timeZoneLookup:timeZoneLookup];
 LABEL_16:
       v16 = v13;
 
@@ -513,19 +513,19 @@ LABEL_16:
     if ([(PHImportAsset *)self isMovie])
     {
       v15 = objc_alloc(MEMORY[0x1E69C0718]);
-      v10 = [(PHImportAsset *)self contentType];
-      v11 = [(PHImportAsset *)self source];
-      v12 = [v11 timeZoneLookup];
-      v13 = [v15 initWithImageCaptureMovieProperties:v4 contentType:v10 timeZoneLookup:v12];
+      contentType = [(PHImportAsset *)self contentType];
+      source = [(PHImportAsset *)self source];
+      timeZoneLookup = [source timeZoneLookup];
+      v13 = [v15 initWithImageCaptureMovieProperties:v4 contentType:contentType timeZoneLookup:timeZoneLookup];
       goto LABEL_16;
     }
 
     v17 = PLImportGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
       v20 = 138543362;
-      v21 = v18;
+      v21 = redactedFileNameDescription;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "Unexpected asset type for ICC properties (%{public}@)", &v20, 0xCu);
     }
   }
@@ -535,9 +535,9 @@ LABEL_16:
     v4 = PLImportGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription2 = [(PHImportAsset *)self redactedFileNameDescription];
       v20 = 138543362;
-      v21 = v14;
+      v21 = redactedFileNameDescription2;
       _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_ERROR, "Didn't get metadata for %{public}@", &v20, 0xCu);
     }
   }
@@ -555,43 +555,43 @@ LABEL_21:
   {
     v7.receiver = self;
     v7.super_class = PHImportDeviceAsset;
-    v5 = [(PHImportAsset *)&v7 durationTimeInterval];
+    durationTimeInterval = [(PHImportAsset *)&v7 durationTimeInterval];
   }
 
   else
   {
     v4 = MEMORY[0x1E696AD98];
     [(ICCameraFile *)self->_cameraFile duration];
-    v5 = [v4 numberWithDouble:?];
+    durationTimeInterval = [v4 numberWithDouble:?];
   }
 
-  return v5;
+  return durationTimeInterval;
 }
 
 - (id)spatialOverCaptureIdentifier
 {
-  v3 = [(ICCameraFile *)self->_cameraFile spatialOverCaptureGroupID];
-  if (!v3)
+  spatialOverCaptureGroupID = [(ICCameraFile *)self->_cameraFile spatialOverCaptureGroupID];
+  if (!spatialOverCaptureGroupID)
   {
     v5.receiver = self;
     v5.super_class = PHImportDeviceAsset;
-    v3 = [(PHImportAsset *)&v5 spatialOverCaptureIdentifier];
+    spatialOverCaptureGroupID = [(PHImportAsset *)&v5 spatialOverCaptureIdentifier];
   }
 
-  return v3;
+  return spatialOverCaptureGroupID;
 }
 
 - (id)livePhotoPairingIdentifier
 {
-  v3 = [(ICCameraFile *)self->_cameraFile groupUUID];
-  if (!v3)
+  groupUUID = [(ICCameraFile *)self->_cameraFile groupUUID];
+  if (!groupUUID)
   {
     v5.receiver = self;
     v5.super_class = PHImportDeviceAsset;
-    v3 = [(PHImportAsset *)&v5 livePhotoPairingIdentifier];
+    groupUUID = [(PHImportAsset *)&v5 livePhotoPairingIdentifier];
   }
 
-  return v3;
+  return groupUUID;
 }
 
 - (int)burstPickType
@@ -614,9 +614,9 @@ LABEL_21:
       v4 |= 4u;
     }
 
-    v5 = [(ICCameraFile *)self->_cameraFile firstPicked];
+    firstPicked = [(ICCameraFile *)self->_cameraFile firstPicked];
     v6 = v4 | 0x20;
-    if (!v5)
+    if (!firstPicked)
     {
       v6 = v4;
     }
@@ -641,27 +641,27 @@ LABEL_21:
   {
     v5.receiver = self;
     v5.super_class = PHImportDeviceAsset;
-    v3 = [(PHImportAsset *)&v5 burstUUID];
-    if (!v3)
+    burstUUID = [(PHImportAsset *)&v5 burstUUID];
+    if (!burstUUID)
     {
-      v3 = [(ICCameraFile *)self->_cameraFile burstUUID];
+      burstUUID = [(ICCameraFile *)self->_cameraFile burstUUID];
     }
   }
 
   else
   {
-    v3 = 0;
+    burstUUID = 0;
   }
 
-  return v3;
+  return burstUUID;
 }
 
 - (CGSize)orientedPixelSize
 {
-  v3 = [(PHImportDeviceAsset *)self orientation];
+  orientation = [(PHImportDeviceAsset *)self orientation];
   [(PHImportDeviceAsset *)self exifPixelSize];
 
-  MEMORY[0x1EEE29960](v3);
+  MEMORY[0x1EEE29960](orientation);
   result.height = v5;
   result.width = v4;
   return result;
@@ -672,21 +672,21 @@ LABEL_21:
   v15 = *MEMORY[0x1E69E9840];
   if ([(ICCameraFile *)self->_cameraFile width]&& [(ICCameraFile *)self->_cameraFile height])
   {
-    v3 = [(ICCameraFile *)self->_cameraFile orientation];
+    orientation = [(ICCameraFile *)self->_cameraFile orientation];
     cameraFile = self->_cameraFile;
-    if (v3 < ICEXIFOrientation5)
+    if (orientation < ICEXIFOrientation5)
     {
-      v5 = [(ICCameraFile *)cameraFile width];
-      v6 = [(ICCameraFile *)self->_cameraFile height];
+      width = [(ICCameraFile *)cameraFile width];
+      height = [(ICCameraFile *)self->_cameraFile height];
     }
 
     else
     {
-      v5 = [(ICCameraFile *)cameraFile height];
-      v6 = [(ICCameraFile *)self->_cameraFile width];
+      width = [(ICCameraFile *)cameraFile height];
+      height = [(ICCameraFile *)self->_cameraFile width];
     }
 
-    v9 = v6;
+    v9 = height;
   }
 
   else
@@ -694,19 +694,19 @@ LABEL_21:
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PHImportAsset *)self redactedFileNameDescription];
+      redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
       *buf = 138543362;
-      v14 = v8;
+      v14 = redactedFileNameDescription;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "ICCameraFile for %{public}@ has a zero width/height", buf, 0xCu);
     }
 
     v12.receiver = self;
     v12.super_class = PHImportDeviceAsset;
     [(PHImportAsset *)&v12 exifPixelSize];
-    v5 = v10;
+    width = v10;
   }
 
-  v11 = v5;
+  v11 = width;
   result.height = v9;
   result.width = v11;
   return result;
@@ -731,38 +731,38 @@ LABEL_21:
   v3 = PLImportGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PHImportAsset *)self redactedFileNameDescription];
-    v5 = [(PHImportAsset *)self metadata];
+    redactedFileNameDescription = [(PHImportAsset *)self redactedFileNameDescription];
+    metadata = [(PHImportAsset *)self metadata];
     v14.receiver = self;
     v14.super_class = PHImportDeviceAsset;
-    v6 = [(PHImportAsset *)&v14 creationDate];
-    v7 = [(ICCameraFile *)self->_cameraFile creationDate];
+    creationDate = [(PHImportAsset *)&v14 creationDate];
+    creationDate2 = [(ICCameraFile *)self->_cameraFile creationDate];
     *buf = 138413058;
-    v16 = v4;
+    v16 = redactedFileNameDescription;
     v17 = 2048;
-    v18 = v5;
+    v18 = metadata;
     v19 = 2112;
-    v20 = v6;
+    v20 = creationDate;
     v21 = 2112;
-    v22 = v7;
+    v22 = creationDate2;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "Getting creation date from ICCameraFile for '%@': super.creationDate (_metadata == %p): %@, creationDate: %@", buf, 0x2Au);
   }
 
   v13.receiver = self;
   v13.super_class = PHImportDeviceAsset;
-  v8 = [(PHImportAsset *)&v13 creationDate];
-  v9 = v8;
-  if (v8)
+  creationDate3 = [(PHImportAsset *)&v13 creationDate];
+  v9 = creationDate3;
+  if (creationDate3)
   {
-    v10 = v8;
+    creationDate4 = creationDate3;
   }
 
   else
   {
-    v10 = [(ICCameraFile *)self->_cameraFile creationDate];
+    creationDate4 = [(ICCameraFile *)self->_cameraFile creationDate];
   }
 
-  v11 = v10;
+  v11 = creationDate4;
 
   return v11;
 }
@@ -815,7 +815,7 @@ LABEL_21:
     {
       v12 = v20[5];
       *buf = 138412546;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
       v34 = v12;
       _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "Failed to get a security-scoped URL for %@ (Error: %@)", buf, 0x16u);
@@ -857,9 +857,9 @@ void __40__PHImportDeviceAsset_securityScopedURL__block_invoke(uint64_t a1, void
   }
 
   v3 = [(PHImportAsset *)self url];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  if (!v4)
+  if (!path)
   {
     return 1;
   }
@@ -869,26 +869,26 @@ void __40__PHImportDeviceAsset_securityScopedURL__block_invoke(uint64_t a1, void
   return [(PHImportAsset *)&v6 isViewable];
 }
 
-- (BOOL)performAdditionalLivePhotoChecksWithImageAsset:(id)a3
+- (BOOL)performAdditionalLivePhotoChecksWithImageAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(ICCameraFile *)self->_cameraFile device];
-  v6 = [v5 isAppleDevice];
+  assetCopy = asset;
+  device = [(ICCameraFile *)self->_cameraFile device];
+  isAppleDevice = [device isAppleDevice];
 
-  if (v6)
+  if (isAppleDevice)
   {
-    v7 = [v4 representedObject];
-    v8 = [v7 sidecarFiles];
-    if ([v8 containsObject:self->_cameraFile])
+    representedObject = [assetCopy representedObject];
+    sidecarFiles = [representedObject sidecarFiles];
+    if ([sidecarFiles containsObject:self->_cameraFile])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [(ICCameraFile *)self->_cameraFile sidecarFiles];
-      v11 = [v4 representedObject];
-      v9 = [v10 containsObject:v11];
+      sidecarFiles2 = [(ICCameraFile *)self->_cameraFile sidecarFiles];
+      representedObject2 = [assetCopy representedObject];
+      v9 = [sidecarFiles2 containsObject:representedObject2];
     }
   }
 
@@ -909,44 +909,44 @@ void __40__PHImportDeviceAsset_securityScopedURL__block_invoke(uint64_t a1, void
 
 - (BOOL)isSpatialOverCapture
 {
-  v3 = [(ICCameraFile *)self->_cameraFile spatialOverCaptureGroupID];
-  if (v3)
+  spatialOverCaptureGroupID = [(ICCameraFile *)self->_cameraFile spatialOverCaptureGroupID];
+  if (spatialOverCaptureGroupID)
   {
     v6.receiver = self;
     v6.super_class = PHImportDeviceAsset;
-    v4 = [(PHImportAsset *)&v6 isSpatialOverCapture];
+    isSpatialOverCapture = [(PHImportAsset *)&v6 isSpatialOverCapture];
   }
 
   else
   {
-    v4 = 0;
+    isSpatialOverCapture = 0;
   }
 
-  return v4;
+  return isSpatialOverCapture;
 }
 
 - (BOOL)isRender
 {
-  v4 = [(PHImportAsset *)self source];
-  v5 = [v4 isAppleDevice];
-  if (v5 && ([(ICCameraFile *)self->_cameraFile relatedUUID], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  source = [(PHImportAsset *)self source];
+  isAppleDevice = [source isAppleDevice];
+  if (isAppleDevice && ([(ICCameraFile *)self->_cameraFile relatedUUID], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = 0;
+    isRender = 0;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PHImportDeviceAsset;
-    v6 = [(PHImportAsset *)&v8 isRender];
-    if (!v5)
+    isRender = [(PHImportAsset *)&v8 isRender];
+    if (!isAppleDevice)
     {
       goto LABEL_7;
     }
   }
 
 LABEL_7:
-  return v6;
+  return isRender;
 }
 
 - (BOOL)isSloMo
@@ -956,26 +956,26 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(ICCameraFile *)self->_cameraFile highFramerate];
-  v4 = [(ICCameraFile *)self->_cameraFile device];
-  v5 = [v4 productVersion];
+  highFramerate = [(ICCameraFile *)self->_cameraFile highFramerate];
+  device = [(ICCameraFile *)self->_cameraFile device];
+  productVersion = [device productVersion];
 
-  if (!v3 && v5)
+  if (!highFramerate && productVersion)
   {
-    if ([v5 intValue] > 7)
+    if ([productVersion intValue] > 7)
     {
-      v3 = 0;
+      highFramerate = 0;
     }
 
     else
     {
       [(PHImportAsset *)self loadSidecarFiles];
-      v6 = [(PHImportAsset *)self slmSidecar];
-      v3 = v6 != 0;
+      slmSidecar = [(PHImportAsset *)self slmSidecar];
+      highFramerate = slmSidecar != 0;
     }
   }
 
-  return v3;
+  return highFramerate;
 }
 
 - (BOOL)hasAudioAttachment
@@ -1003,8 +1003,8 @@ LABEL_7:
 
   else
   {
-    v4 = [(ICCameraFile *)self->_cameraFile device];
-    v3 = [v4 iCloudPhotosEnabled] ^ 1;
+    device = [(ICCameraFile *)self->_cameraFile device];
+    v3 = [device iCloudPhotosEnabled] ^ 1;
   }
 
   return v3;
@@ -1012,17 +1012,17 @@ LABEL_7:
 
 - (id)parentFolderPath
 {
-  v2 = [(ICCameraFile *)self->_cameraFile parentFolder];
-  v3 = [v2 name];
+  parentFolder = [(ICCameraFile *)self->_cameraFile parentFolder];
+  name = [parentFolder name];
 
-  return v3;
+  return name;
 }
 
-- (BOOL)containsDateKey:(id)a3
+- (BOOL)containsDateKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x1E696D9B0]];
-  v5 = [v3 objectForKey:*MEMORY[0x1E696DF28]];
+  keyCopy = key;
+  v4 = [keyCopy objectForKey:*MEMORY[0x1E696D9B0]];
+  v5 = [keyCopy objectForKey:*MEMORY[0x1E696DF28]];
   v6 = v5;
   v7 = *MEMORY[0x1E696DF20];
   if (v4)
@@ -1088,17 +1088,17 @@ LABEL_20:
 
   else
   {
-    v8 = [v3 objectForKey:*MEMORY[0x1E696DF20]];
+    v8 = [keyCopy objectForKey:*MEMORY[0x1E696DF20]];
     if (!v8)
     {
-      v9 = [v3 objectForKey:v7];
+      v9 = [keyCopy objectForKey:v7];
       if (!v9)
       {
-        v10 = [v3 objectForKey:*MEMORY[0x1E696D998]];
+        v10 = [keyCopy objectForKey:*MEMORY[0x1E696D998]];
         if (!v10)
         {
           v11 = *MEMORY[0x1E696D990];
-          v12 = v3;
+          v12 = keyCopy;
           goto LABEL_18;
         }
 
@@ -1117,86 +1117,86 @@ LABEL_21:
 
 - (id)makeImportIdentifier
 {
-  v3 = [(ICCameraFile *)self->_cameraFile relatedUUID];
-  if (!v3)
+  relatedUUID = [(ICCameraFile *)self->_cameraFile relatedUUID];
+  if (!relatedUUID)
   {
-    v4 = [(PHImportAsset *)self fileName];
-    v3 = [v4 stringByDeletingPathExtension];
+    fileName = [(PHImportAsset *)self fileName];
+    relatedUUID = [fileName stringByDeletingPathExtension];
 
     if ([(PHImportAsset *)self isRepresentation]|| [(PHImportAsset *)self isOriginalAdjustmentData]|| [(PHImportAsset *)self isAdjustmentSecondaryData])
     {
-      v5 = [(PHImportAsset *)self stripMarkerFromName:v3 markerLocation:4];
+      v5 = [(PHImportAsset *)self stripMarkerFromName:relatedUUID markerLocation:4];
 
-      v3 = v5;
+      relatedUUID = v5;
     }
 
-    v6 = [(PHImportDeviceAsset *)self parentFolderPath];
+    parentFolderPath = [(PHImportDeviceAsset *)self parentFolderPath];
 
-    if (v6)
+    if (parentFolderPath)
     {
-      v7 = [(PHImportDeviceAsset *)self parentFolderPath];
-      v8 = [v7 stringByAppendingPathComponent:v3];
+      parentFolderPath2 = [(PHImportDeviceAsset *)self parentFolderPath];
+      v8 = [parentFolderPath2 stringByAppendingPathComponent:relatedUUID];
 
-      v3 = v8;
+      relatedUUID = v8;
     }
   }
 
-  return v3;
+  return relatedUUID;
 }
 
-- (PHImportDeviceAsset)initWithSource:(id)a3 cameraFile:(id)a4 type:(id)a5 supportedMediaType:(unsigned __int8)a6
+- (PHImportDeviceAsset)initWithSource:(id)source cameraFile:(id)file type:(id)type supportedMediaType:(unsigned __int8)mediaType
 {
-  v6 = a6;
-  v11 = a4;
-  v12 = a5;
+  mediaTypeCopy = mediaType;
+  fileCopy = file;
+  typeCopy = type;
   v30.receiver = self;
   v30.super_class = PHImportDeviceAsset;
-  v13 = [(PHImportAsset *)&v30 initWithSource:a3];
+  v13 = [(PHImportAsset *)&v30 initWithSource:source];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_cameraFile, a4);
-    v15 = [v11 name];
-    [(PHImportAsset *)v14 setFileName:v15];
+    objc_storeStrong(&v13->_cameraFile, file);
+    name = [fileCopy name];
+    [(PHImportAsset *)v14 setFileName:name];
 
-    v16 = [v11 createdFilename];
-    [(PHImportAsset *)v14 setCreatedFileName:v16];
+    createdFilename = [fileCopy createdFilename];
+    [(PHImportAsset *)v14 setCreatedFileName:createdFilename];
 
-    -[PHImportAsset setFileSize:](v14, "setFileSize:", [v11 fileSize]);
-    v17 = [v11 fileCreationDate];
-    if (v17)
+    -[PHImportAsset setFileSize:](v14, "setFileSize:", [fileCopy fileSize]);
+    fileCreationDate = [fileCopy fileCreationDate];
+    if (fileCreationDate)
     {
-      [(PHImportAsset *)v14 setFileCreationDate:v17];
+      [(PHImportAsset *)v14 setFileCreationDate:fileCreationDate];
     }
 
     else
     {
-      v18 = [v11 creationDate];
-      [(PHImportAsset *)v14 setFileCreationDate:v18];
+      creationDate = [fileCopy creationDate];
+      [(PHImportAsset *)v14 setFileCreationDate:creationDate];
     }
 
-    v19 = [v11 fileModificationDate];
-    if (v19)
+    fileModificationDate = [fileCopy fileModificationDate];
+    if (fileModificationDate)
     {
-      [(PHImportAsset *)v14 setFileModificationDate:v19];
+      [(PHImportAsset *)v14 setFileModificationDate:fileModificationDate];
     }
 
     else
     {
-      v20 = [v11 modificationDate];
-      [(PHImportAsset *)v14 setFileModificationDate:v20];
+      modificationDate = [fileCopy modificationDate];
+      [(PHImportAsset *)v14 setFileModificationDate:modificationDate];
     }
 
-    v21 = [v11 name];
-    v22 = [v21 pathExtension];
-    [(PHImportAsset *)v14 setFileExtension:v22];
+    name2 = [fileCopy name];
+    pathExtension = [name2 pathExtension];
+    [(PHImportAsset *)v14 setFileExtension:pathExtension];
 
-    v23 = [v11 UTI];
+    v23 = [fileCopy UTI];
     v24 = [MEMORY[0x1E6982C40] typeWithIdentifier:v23];
     v25 = v24;
-    if (v12)
+    if (typeCopy)
     {
-      v26 = v12;
+      v26 = typeCopy;
     }
 
     else
@@ -1204,16 +1204,16 @@ LABEL_21:
       v26 = v24;
     }
 
-    if ([(PHImportAsset *)v14 configureWithContentType:v26 supportedMediaType:v6])
+    if ([(PHImportAsset *)v14 configureWithContentType:v26 supportedMediaType:mediaTypeCopy])
     {
-      v27 = [(PHImportAsset *)v14 uuid];
-      v28 = [v11 userData];
-      [v28 setObject:v27 forKeyedSubscript:@"uuid"];
+      uuid = [(PHImportAsset *)v14 uuid];
+      userData = [fileCopy userData];
+      [userData setObject:uuid forKeyedSubscript:@"uuid"];
     }
 
     else
     {
-      v27 = v14;
+      uuid = v14;
       v14 = 0;
     }
   }
@@ -1221,23 +1221,23 @@ LABEL_21:
   return v14;
 }
 
-+ (void)validateCameraFile:(id)a3
++ (void)validateCameraFile:(id)file
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fileCopy = file;
   v4 = PLImportGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v48 = "+[PHImportDeviceAsset validateCameraFile:]";
     v49 = 2112;
-    v50 = v3;
+    v50 = fileCopy;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_DEBUG, "%s - %@", buf, 0x16u);
   }
 
-  v5 = [v3 name];
+  name = [fileCopy name];
 
-  if (!v5)
+  if (!name)
   {
     v16 = PLImportGetLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1256,12 +1256,12 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v6 = [v3 name];
-  v7 = [PHValidator isSupportedImageAtPath:v6];
+  name2 = [fileCopy name];
+  v7 = [PHValidator isSupportedImageAtPath:name2];
 
   if (v7)
   {
-    if (![v3 width])
+    if (![fileCopy width])
     {
       v8 = PLImportGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1271,7 +1271,7 @@ LABEL_32:
       }
     }
 
-    if (![v3 height])
+    if (![fileCopy height])
     {
       v9 = PLImportGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1282,12 +1282,12 @@ LABEL_32:
     }
   }
 
-  v10 = [v3 name];
-  v11 = [PHValidator isSupportedMovieAtPath:v10];
+  name3 = [fileCopy name];
+  v11 = [PHValidator isSupportedMovieAtPath:name3];
 
   if (v11)
   {
-    if (![v3 width])
+    if (![fileCopy width])
     {
       v12 = PLImportGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1297,7 +1297,7 @@ LABEL_32:
       }
     }
 
-    if (![v3 height])
+    if (![fileCopy height])
     {
       v13 = PLImportGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1307,7 +1307,7 @@ LABEL_32:
       }
     }
 
-    [v3 duration];
+    [fileCopy duration];
     if (v14 == 0.0)
     {
       v15 = PLImportGetLog();
@@ -1324,9 +1324,9 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v17 = [v3 highFramerate];
+    highFramerate = [fileCopy highFramerate];
     v18 = @"NO";
-    if (v17)
+    if (highFramerate)
     {
       v18 = @"YES";
     }
@@ -1340,9 +1340,9 @@ LABEL_32:
   }
 
 LABEL_34:
-  v22 = [v3 originalFilename];
+  originalFilename = [fileCopy originalFilename];
 
-  if (!v22)
+  if (!originalFilename)
   {
     v23 = PLImportGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -1352,9 +1352,9 @@ LABEL_34:
     }
   }
 
-  v24 = [v3 createdFilename];
+  createdFilename = [fileCopy createdFilename];
 
-  if (!v24)
+  if (!createdFilename)
   {
     v25 = PLImportGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1364,7 +1364,7 @@ LABEL_34:
     }
   }
 
-  if (![v3 fileSize])
+  if (![fileCopy fileSize])
   {
     v26 = PLImportGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -1374,9 +1374,9 @@ LABEL_34:
     }
   }
 
-  v27 = [v3 creationDate];
+  creationDate = [fileCopy creationDate];
 
-  if (!v27)
+  if (!creationDate)
   {
     v28 = PLImportGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -1386,9 +1386,9 @@ LABEL_34:
     }
   }
 
-  v29 = [v3 modificationDate];
+  modificationDate = [fileCopy modificationDate];
 
-  if (!v29)
+  if (!modificationDate)
   {
     v30 = PLImportGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -1398,7 +1398,7 @@ LABEL_34:
     }
   }
 
-  v31 = [v3 UTI];
+  v31 = [fileCopy UTI];
 
   if (!v31)
   {
@@ -1410,9 +1410,9 @@ LABEL_34:
     }
   }
 
-  v33 = [v3 parentFolder];
+  parentFolder = [fileCopy parentFolder];
 
-  if (!v33)
+  if (!parentFolder)
   {
     v34 = PLImportGetLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1422,9 +1422,9 @@ LABEL_34:
     }
   }
 
-  v35 = [v3 device];
+  device = [fileCopy device];
 
-  if (!v35)
+  if (!device)
   {
     v36 = PLImportGetLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -1437,9 +1437,9 @@ LABEL_34:
   v37 = PLImportGetLog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
   {
-    v46 = [v3 orientation];
-    v38 = [v3 burstUUID];
-    if ([v3 burstFavorite])
+    orientation = [fileCopy orientation];
+    burstUUID = [fileCopy burstUUID];
+    if ([fileCopy burstFavorite])
     {
       v39 = @"YES";
     }
@@ -1449,7 +1449,7 @@ LABEL_34:
       v39 = @"NO";
     }
 
-    if ([v3 burstPicked])
+    if ([fileCopy burstPicked])
     {
       v40 = @"YES";
     }
@@ -1459,7 +1459,7 @@ LABEL_34:
       v40 = @"NO";
     }
 
-    if ([v3 firstPicked])
+    if ([fileCopy firstPicked])
     {
       v41 = @"YES";
     }
@@ -1469,7 +1469,7 @@ LABEL_34:
       v41 = @"NO";
     }
 
-    if ([v3 timeLapse])
+    if ([fileCopy timeLapse])
     {
       v42 = @"YES";
     }
@@ -1479,13 +1479,13 @@ LABEL_34:
       v42 = @"NO";
     }
 
-    v43 = [v3 originatingAssetID];
-    v44 = [v3 groupUUID];
-    v45 = [v3 relatedUUID];
+    originatingAssetID = [fileCopy originatingAssetID];
+    groupUUID = [fileCopy groupUUID];
+    relatedUUID = [fileCopy relatedUUID];
     *buf = 134220034;
-    v48 = v46;
+    v48 = orientation;
     v49 = 2112;
-    v50 = v38;
+    v50 = burstUUID;
     v51 = 2112;
     v52 = v39;
     v53 = 2112;
@@ -1495,23 +1495,23 @@ LABEL_34:
     v57 = 2112;
     v58 = v42;
     v59 = 2112;
-    v60 = v43;
+    v60 = originatingAssetID;
     v61 = 2112;
-    v62 = v44;
+    v62 = groupUUID;
     v63 = 2112;
-    v64 = v45;
+    v64 = relatedUUID;
     _os_log_impl(&dword_19C86F000, v37, OS_LOG_TYPE_DEBUG, "orientation: %lu, burstUUID: %@, burstFavorite: %@, burstPicked: %@, firstPicked: %@, timeLapse: %@, originatingAssetID: %@, groupUUID: %@, relatedUUID: %@", buf, 0x5Cu);
   }
 }
 
-+ (id)assetFileForFile:(id)a3 source:(id)a4
++ (id)assetFileForFile:(id)file source:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  sourceCopy = source;
   v7 = MEMORY[0x1E69C08F0];
-  v8 = [v5 name];
-  v9 = [v8 pathExtension];
-  v10 = [v7 resourceModelTypeForFilenameExtension:v9];
+  name = [fileCopy name];
+  pathExtension = [name pathExtension];
+  v10 = [v7 resourceModelTypeForFilenameExtension:pathExtension];
 
   v11 = [PHValidator mediaTypeForContentType:v10];
   if (v11 != 1)
@@ -1520,12 +1520,12 @@ LABEL_34:
     if (v11)
     {
 LABEL_5:
-      v15 = [[PHImportDeviceAsset alloc] initWithSource:v6 cameraFile:v5 type:v10 supportedMediaType:v12];
+      v15 = [[PHImportDeviceAsset alloc] initWithSource:sourceCopy cameraFile:fileCopy type:v10 supportedMediaType:v12];
       goto LABEL_7;
     }
 
-    v13 = [v5 name];
-    v14 = [PHImportAsset isValidAsSidecar:v13];
+    name2 = [fileCopy name];
+    v14 = [PHImportAsset isValidAsSidecar:name2];
 
     if (v14)
     {

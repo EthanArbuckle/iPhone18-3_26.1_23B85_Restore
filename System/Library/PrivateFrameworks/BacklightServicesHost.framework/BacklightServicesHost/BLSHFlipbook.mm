@@ -1,6 +1,6 @@
 @interface BLSHFlipbook
-+ (id)createWithPlatformProvider:(id)a3;
-- (BLSHFlipbook)initWithPlatformProvider:(id)a3;
++ (id)createWithPlatformProvider:(id)provider;
+- (BLSHFlipbook)initWithPlatformProvider:(id)provider;
 - (BLSHRenderedFlipbookFrame)captureFrameOnGlass;
 - (BLSHRenderedFlipbookFrame)frameOnGlass;
 - (BLSHRenderedFlipbookFrame)lastRenderedFrame;
@@ -8,36 +8,36 @@
 - (BOOL)is1HzFlipbook;
 - (BOOL)isPowerSavingEnabled;
 - (NSArray)activeFrames;
-- (id)cancelAllFramesWithError:(id *)a3;
+- (id)cancelAllFramesWithError:(id *)error;
 - (unint64_t)memoryUsage;
 - (void)collect;
 - (void)dealloc;
-- (void)flushLogBuffers:(uint64_t)a1;
-- (void)hangDetectorFired:(void *)a1;
-- (void)hangDetectorFor:(void *)a3 block:;
+- (void)flushLogBuffers:(uint64_t)buffers;
+- (void)hangDetectorFired:(void *)fired;
+- (void)hangDetectorFor:(void *)for block:;
 - (void)invalidate;
-- (void)logDiagnostics:(uint64_t)a1;
+- (void)logDiagnostics:(uint64_t)diagnostics;
 - (void)purge;
-- (void)renderFrameForPresentation:(id)a3 dateSpecifier:(id)a4 onRenderBegin:(id)a5 onRenderComplete:(id)a6;
-- (void)set1HzFlipbook:(BOOL)a3;
-- (void)setCachesFramesOnExit:(BOOL)a3;
-- (void)setPowerSavingEnabled:(BOOL)a3;
+- (void)renderFrameForPresentation:(id)presentation dateSpecifier:(id)specifier onRenderBegin:(id)begin onRenderComplete:(id)complete;
+- (void)set1HzFlipbook:(BOOL)flipbook;
+- (void)setCachesFramesOnExit:(BOOL)exit;
+- (void)setPowerSavingEnabled:(BOOL)enabled;
 @end
 
 @implementation BLSHFlipbook
 
-+ (id)createWithPlatformProvider:(id)a3
++ (id)createWithPlatformProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPlatformProvider:v3];
+  providerCopy = provider;
+  v4 = [objc_alloc(objc_opt_class()) initWithPlatformProvider:providerCopy];
 
   return v4;
 }
 
-- (BLSHFlipbook)initWithPlatformProvider:(id)a3
+- (BLSHFlipbook)initWithPlatformProvider:(id)provider
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = BLSHFlipbook;
   v5 = [(BLSHFlipbook *)&v30 init];
@@ -52,23 +52,23 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 flipbookSpecification];
-  v7 = v6;
-  if (!v6)
+  flipbookSpecification = [providerCopy flipbookSpecification];
+  v7 = flipbookSpecification;
+  if (!flipbookSpecification)
   {
 LABEL_6:
     v16 = 0;
     goto LABEL_7;
   }
 
-  v8 = [v6 frameCapacity];
+  frameCapacity = [flipbookSpecification frameCapacity];
   [v7 surfaceAllocationPoolSize];
   v10 = v9;
   [v7 surfaceOverallocationFactor];
   v12 = v11;
   [v7 softMemoryLimit];
   v31[0] = *MEMORY[0x277CDA668];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:frameCapacity];
   v32[0] = v13;
   v31[1] = *MEMORY[0x277CDA660];
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
@@ -79,8 +79,8 @@ LABEL_6:
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
 LABEL_7:
-  v17 = [MEMORY[0x277CD9E40] mainDisplay];
-  v18 = [v17 flipBookWithOptions:v16];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  v18 = [mainDisplay flipBookWithOptions:v16];
   v19 = *(v5 + 5);
   *(v5 + 5) = v18;
 
@@ -125,13 +125,13 @@ LABEL_12:
   [(BLSHFlipbook *)&v3 dealloc];
 }
 
-- (void)hangDetectorFor:(void *)a3 block:
+- (void)hangDetectorFor:(void *)for block:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  forCopy = for;
+  if (self)
   {
-    if (([a1 hangDetected] & 1) == 0)
+    if (([self hangDetected] & 1) == 0)
     {
       v7 = bls_flipbook_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -139,10 +139,10 @@ LABEL_12:
         [BLSHFlipbook hangDetectorFor:block:];
       }
 
-      *(a1 + 32) = mach_continuous_time();
-      objc_initWeak(&location, a1);
-      v8 = *(a1 + 8);
-      v9 = *(a1 + 24);
+      *(self + 32) = mach_continuous_time();
+      objc_initWeak(&location, self);
+      v8 = *(self + 8);
+      v9 = *(self + 24);
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __38__BLSHFlipbook_hangDetectorFor_block___block_invoke;
@@ -155,14 +155,14 @@ LABEL_12:
       objc_destroyWeak(&location);
     }
 
-    v6[2](v6);
+    forCopy[2](forCopy);
     v10 = bls_flipbook_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       [BLSHFlipbook hangDetectorFor:block:];
     }
 
-    [*(a1 + 8) cancel];
+    [*(self + 8) cancel];
   }
 }
 
@@ -386,14 +386,14 @@ uint64_t __36__BLSHFlipbook_isPowerSavingEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPowerSavingEnabled:(BOOL)a3
+- (void)setPowerSavingEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __38__BLSHFlipbook_setPowerSavingEnabled___block_invoke;
   v3[3] = &unk_27841E588;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [(BLSHFlipbook *)self hangDetectorFor:v3 block:?];
 }
 
@@ -422,17 +422,17 @@ uint64_t __29__BLSHFlipbook_is1HzFlipbook__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)set1HzFlipbook:(BOOL)a3
+- (void)set1HzFlipbook:(BOOL)flipbook
 {
-  v3 = a3;
+  flipbookCopy = flipbook;
   v13 = *MEMORY[0x277D85DE8];
   v5 = bls_flipbook_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v3;
+    v12 = flipbookCopy;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_INFO, "%p set1HzFlipbook:%{BOOL}u", buf, 0x12u);
   }
 
@@ -441,7 +441,7 @@ uint64_t __29__BLSHFlipbook_is1HzFlipbook__block_invoke(uint64_t a1)
   v7[2] = __31__BLSHFlipbook_set1HzFlipbook___block_invoke;
   v7[3] = &unk_27841E588;
   v7[4] = self;
-  v8 = v3;
+  v8 = flipbookCopy;
   [(BLSHFlipbook *)self hangDetectorFor:v7 block:?];
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -471,17 +471,17 @@ uint64_t __34__BLSHFlipbook_cachesFramesOnExit__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCachesFramesOnExit:(BOOL)a3
+- (void)setCachesFramesOnExit:(BOOL)exit
 {
-  v3 = a3;
+  exitCopy = exit;
   v13 = *MEMORY[0x277D85DE8];
   v5 = bls_flipbook_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v3;
+    v12 = exitCopy;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_INFO, "%p setCachesFramesOnExit:%{BOOL}u", buf, 0x12u);
   }
 
@@ -490,52 +490,52 @@ uint64_t __34__BLSHFlipbook_cachesFramesOnExit__block_invoke(uint64_t a1)
   v7[2] = __38__BLSHFlipbook_setCachesFramesOnExit___block_invoke;
   v7[3] = &unk_27841E588;
   v7[4] = self;
-  v8 = v3;
+  v8 = exitCopy;
   [(BLSHFlipbook *)self hangDetectorFor:v7 block:?];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)renderFrameForPresentation:(id)a3 dateSpecifier:(id)a4 onRenderBegin:(id)a5 onRenderComplete:(id)a6
+- (void)renderFrameForPresentation:(id)presentation dateSpecifier:(id)specifier onRenderBegin:(id)begin onRenderComplete:(id)complete
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 flipbookContext];
+  specifierCopy = specifier;
+  beginCopy = begin;
+  completeCopy = complete;
+  flipbookContext = [presentation flipbookContext];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __88__BLSHFlipbook_renderFrameForPresentation_dateSpecifier_onRenderBegin_onRenderComplete___block_invoke;
   v34[3] = &unk_27841E538;
   v34[4] = self;
-  v14 = v13;
+  v14 = flipbookContext;
   v35 = v14;
   [(BLSHFlipbook *)self hangDetectorFor:v34 block:?];
-  v15 = [v14 wantsTransform];
-  if (self->_wantsTransform != v15)
+  wantsTransform = [v14 wantsTransform];
+  if (self->_wantsTransform != wantsTransform)
   {
-    self->_wantsTransform = v15;
-    [(CAFlipBook *)self->_flipbook setWantsTransform:v15];
+    self->_wantsTransform = wantsTransform;
+    [(CAFlipBook *)self->_flipbook setWantsTransform:wantsTransform];
   }
 
-  v16 = [v14 isInverted];
-  if (self->_inverted != v16)
+  isInverted = [v14 isInverted];
+  if (self->_inverted != isInverted)
   {
-    self->_inverted = v16;
-    [(CAFlipBook *)self->_flipbook setInverted:v16];
+    self->_inverted = isInverted;
+    [(CAFlipBook *)self->_flipbook setInverted:isInverted];
   }
 
   BSContinuousMachTimeNow();
   v18 = v17;
   v19 = mach_continuous_time();
-  v20 = [v10 presentationDate];
-  v21 = [v20 bls_machContinuousTime];
+  presentationDate = [specifierCopy presentationDate];
+  bls_machContinuousTime = [presentationDate bls_machContinuousTime];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __88__BLSHFlipbook_renderFrameForPresentation_dateSpecifier_onRenderBegin_onRenderComplete___block_invoke_2;
   v28[3] = &unk_27841E600;
-  if (v19 <= v21)
+  if (v19 <= bls_machContinuousTime)
   {
-    v22 = v21;
+    v22 = bls_machContinuousTime;
   }
 
   else
@@ -543,15 +543,15 @@ uint64_t __34__BLSHFlipbook_cachesFramesOnExit__block_invoke(uint64_t a1)
     v22 = v19;
   }
 
-  v31 = v12;
+  v31 = completeCopy;
   v32 = v22;
   v28[4] = self;
-  v29 = v10;
+  v29 = specifierCopy;
   v33 = v18;
-  v30 = v11;
-  v23 = v12;
-  v24 = v11;
-  v25 = v10;
+  v30 = beginCopy;
+  v23 = completeCopy;
+  v24 = beginCopy;
+  v25 = specifierCopy;
   [(BLSHFlipbook *)self hangDetectorFor:v28 block:?];
   BSContinuousMachTimeNow();
   if (v26 - v18 > 1.0)
@@ -641,7 +641,7 @@ void __88__BLSHFlipbook_renderFrameForPresentation_dateSpecifier_onRenderBegin_o
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cancelAllFramesWithError:(id *)a3
+- (id)cancelAllFramesWithError:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
   BSContinuousMachTimeNow();
@@ -673,13 +673,13 @@ void __88__BLSHFlipbook_renderFrameForPresentation_dateSpecifier_onRenderBegin_o
     v10 = bls_flipbook_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v25[5] bls_shortLoggingString];
+      bls_shortLoggingString = [v25[5] bls_shortLoggingString];
       *buf = 134218498;
-      v37 = self;
+      selfCopy = self;
       v38 = 2114;
-      v39 = v14;
+      v39 = bls_shortLoggingString;
       v40 = 2048;
-      v41 = *&v9;
+      selfCopy2 = *&v9;
       _os_log_error_impl(&dword_21FD11000, v10, OS_LOG_TYPE_ERROR, "%p [CAFlipBook cancel] error:%{public}@ (took %.5fs.)", buf, 0x20u);
     }
 
@@ -700,7 +700,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (!a3)
+  if (!error)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"error != nil"];
     v16 = MEMORY[0x277D86220];
@@ -711,11 +711,11 @@ LABEL_5:
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       *buf = 138544642;
-      v37 = v18;
+      selfCopy = v18;
       v38 = 2114;
       v39 = v20;
       v40 = 2048;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2114;
       v43 = @"BLSHFlipbook.m";
       v44 = 1024;
@@ -731,7 +731,7 @@ LABEL_5:
     [BLSHFlipbook cancelAllFramesWithError:v22];
   }
 
-  *a3 = v25[5];
+  *error = v25[5];
   v11 = v31[5];
   _Block_object_dispose(&v24, 8);
 
@@ -784,15 +784,15 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
   self->_flipbook = 0;
 }
 
-- (void)hangDetectorFired:(void *)a1
+- (void)hangDetectorFired:(void *)fired
 {
   v3 = a2;
-  if (a1)
+  if (fired)
   {
-    [a1 setHangDetected:1];
-    [(BLSHFlipbook *)a1 flushLogBuffers:v3];
+    [fired setHangDetected:1];
+    [(BLSHFlipbook *)fired flushLogBuffers:v3];
     v4 = MEMORY[0x277CCACA8];
-    v5 = a1[4];
+    v5 = fired[4];
     mach_continuous_time();
     BSTimeDifferenceFromMachTimeToMachTime();
     v7 = [v4 stringWithFormat:@"CoreAnimation [CAFlipbook %@] hang detected – %.4lfs elapsed", v3, v6];
@@ -803,7 +803,7 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
     v30[3] = &unk_27841E510;
     v8 = v3;
     v31 = v8;
-    v32 = a1;
+    firedCopy = fired;
     v33 = sel_hangDetectorFired_;
     v9 = MEMORY[0x223D70730](v30);
     if (BLSHIsUnitTestRunning())
@@ -817,14 +817,14 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
       dispatch_after(v10, MEMORY[0x277D85CD0], v9);
     }
 
-    [(BLSHFlipbook *)a1 logDiagnostics:v8];
+    [(BLSHFlipbook *)fired logDiagnostics:v8];
     dispatch_time(0, 5000000000);
     OUTLINED_FUNCTION_4_0();
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __34__BLSHFlipbook_hangDetectorFired___block_invoke_21;
     v28[3] = &unk_27841E538;
-    v28[4] = a1;
+    v28[4] = fired;
     v11 = v8;
     v29 = v11;
     OUTLINED_FUNCTION_6(v11, v12, v28);
@@ -834,7 +834,7 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
     v26[1] = 3221225472;
     v26[2] = __34__BLSHFlipbook_hangDetectorFired___block_invoke_2;
     v26[3] = &unk_27841E538;
-    v26[4] = a1;
+    v26[4] = fired;
     v13 = v11;
     v27 = v13;
     OUTLINED_FUNCTION_6(v13, v14, v26);
@@ -844,7 +844,7 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
     v24[1] = 3221225472;
     v24[2] = __34__BLSHFlipbook_hangDetectorFired___block_invoke_3;
     v24[3] = &unk_27841E538;
-    v24[4] = a1;
+    v24[4] = fired;
     v15 = v13;
     v25 = v15;
     OUTLINED_FUNCTION_6(v15, v16, v24);
@@ -854,7 +854,7 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
     v22[1] = 3221225472;
     v22[2] = __34__BLSHFlipbook_hangDetectorFired___block_invoke_4;
     v22[3] = &unk_27841E538;
-    v22[4] = a1;
+    v22[4] = fired;
     v17 = v15;
     v23 = v17;
     OUTLINED_FUNCTION_6(v17, v18, v22);
@@ -864,22 +864,22 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
     v20[1] = 3221225472;
     v20[2] = __34__BLSHFlipbook_hangDetectorFired___block_invoke_5;
     v20[3] = &unk_27841E538;
-    v20[4] = a1;
+    v20[4] = fired;
     v21 = v17;
     OUTLINED_FUNCTION_6(v21, v19, v20);
   }
 }
 
-- (void)flushLogBuffers:(uint64_t)a1
+- (void)flushLogBuffers:(uint64_t)buffers
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (buffers)
   {
     v4 = bls_diagnostics_log();
     if (os_log_type_enabled(v4, 0x90u))
     {
-      v10 = *(a1 + 32);
+      v10 = *(buffers + 32);
       mach_continuous_time();
       BSTimeDifferenceFromMachTimeToMachTime();
       *buf = 138412546;
@@ -916,10 +916,10 @@ void __41__BLSHFlipbook_cancelAllFramesWithError___block_invoke(void *a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDiagnostics:(uint64_t)a1
+- (void)logDiagnostics:(uint64_t)diagnostics
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (diagnostics)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"CoreAnimation flipbook hang detected from : %@", a2];
     WriteStackshotReport_async();

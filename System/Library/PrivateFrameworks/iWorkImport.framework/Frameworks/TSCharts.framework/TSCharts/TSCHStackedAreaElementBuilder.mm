@@ -1,49 +1,49 @@
 @interface TSCHStackedAreaElementBuilder
-- ($5C4A7F080D05DAA414778C98C68F800C)p_createPointArrayForSeries:(id)a3 inAreaFrame:(CGRect)a4 groupIndexSet:(id)a5 outCount:(unint64_t *)a6;
-- ($9E5495ABC9D17321C375100FE022AE0A)p_centerPointsForSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6;
-- (BOOL)p_addBottomStroke:(id *)a3 toPath:(CGPath *)a4 seriesIndex:(unint64_t)a5 withPointsArray:(id *)a6 withCount:(unint64_t)a7;
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8;
+- ($5C4A7F080D05DAA414778C98C68F800C)p_createPointArrayForSeries:(id)series inAreaFrame:(CGRect)frame groupIndexSet:(id)set outCount:(unint64_t *)count;
+- ($9E5495ABC9D17321C375100FE022AE0A)p_centerPointsForSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame;
+- (BOOL)p_addBottomStroke:(id *)stroke toPath:(CGPath *)path seriesIndex:(unint64_t)index withPointsArray:(id *)array withCount:(unint64_t)count;
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings;
 @end
 
 @implementation TSCHStackedAreaElementBuilder
 
-- ($5C4A7F080D05DAA414778C98C68F800C)p_createPointArrayForSeries:(id)a3 inAreaFrame:(CGRect)a4 groupIndexSet:(id)a5 outCount:(unint64_t *)a6
+- ($5C4A7F080D05DAA414778C98C68F800C)p_createPointArrayForSeries:(id)series inAreaFrame:(CGRect)frame groupIndexSet:(id)set outCount:(unint64_t *)count
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  setCopy = set;
   objc_opt_class();
-  v19 = objc_msgSend_axisForAxisType_(v13, v15, v16, v17, v18, 2);
+  v19 = objc_msgSend_axisForAxisType_(seriesCopy, v15, v16, v17, v18, 2);
   v20 = TSUDynamicCast();
 
-  PointArrayForSeries_inAreaFrame_groupIndexSet_cullBadPoints_outCount = objc_msgSend_p_createPointArrayForSeries_inAreaFrame_groupIndexSet_cullBadPoints_outCount_(self, v21, x, y, width, v13, v14, v20 == 0, a6, height);
+  PointArrayForSeries_inAreaFrame_groupIndexSet_cullBadPoints_outCount = objc_msgSend_p_createPointArrayForSeries_inAreaFrame_groupIndexSet_cullBadPoints_outCount_(self, v21, x, y, width, seriesCopy, setCopy, v20 == 0, count, height);
   return PointArrayForSeries_inAreaFrame_groupIndexSet_cullBadPoints_outCount;
 }
 
-- ($9E5495ABC9D17321C375100FE022AE0A)p_centerPointsForSeries:(id)a3 groupIndexSet:(id)a4 nullsUseIntercept:(BOOL)a5 plotAreaFrame:(CGRect)a6
+- ($9E5495ABC9D17321C375100FE022AE0A)p_centerPointsForSeries:(id)series groupIndexSet:(id)set nullsUseIntercept:(BOOL)intercept plotAreaFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a3;
-  v13 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  setCopy = set;
   objc_opt_class();
-  v18 = objc_msgSend_axisForAxisType_(v12, v14, v15, v16, v17, 2);
+  v18 = objc_msgSend_axisForAxisType_(seriesCopy, v14, v15, v16, v17, 2);
   v19 = TSUDynamicCast();
 
   v29.receiver = self;
   v29.super_class = TSCHStackedAreaElementBuilder;
-  v20 = [(TSCHLineAreaScatterElementBuilder *)&v29 p_centerPointsForSeries:v12 groupIndexSet:v13 nullsUseIntercept:v19 != 0 plotAreaFrame:x, y, width, height];
-  v25 = v20;
+  height = [(TSCHLineAreaScatterElementBuilder *)&v29 p_centerPointsForSeries:seriesCopy groupIndexSet:setCopy nullsUseIntercept:v19 != 0 plotAreaFrame:x, y, width, height];
+  v25 = height;
   if (v19)
   {
     v26 = 0;
-    p_var1 = &v20->var1;
-    while (v26 < objc_msgSend_count(v13, v21, v22, v23, v24))
+    p_var1 = &height->var1;
+    while (v26 < objc_msgSend_count(setCopy, v21, v22, v23, v24))
     {
       *p_var1 = 1;
       p_var1 += 24;
@@ -54,10 +54,10 @@
   return v25;
 }
 
-- (BOOL)p_addBottomStroke:(id *)a3 toPath:(CGPath *)a4 seriesIndex:(unint64_t)a5 withPointsArray:(id *)a6 withCount:(unint64_t)a7
+- (BOOL)p_addBottomStroke:(id *)stroke toPath:(CGPath *)path seriesIndex:(unint64_t)index withPointsArray:(id *)array withCount:(unint64_t)count
 {
   v119 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!stroke)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v7, v8, v9, "[TSCHStackedAreaElementBuilder p_addBottomStroke:toPath:seriesIndex:withPointsArray:withCount:]");
@@ -67,24 +67,24 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  if (CGPathIsEmpty(a4))
+  if (CGPathIsEmpty(path))
   {
     return 1;
   }
 
-  if (!a5)
+  if (!index)
   {
     v115.receiver = self;
     v115.super_class = TSCHStackedAreaElementBuilder;
-    return [(TSCHAreaElementBuilder *)&v115 p_addBottomStroke:a3 toPath:a4 seriesIndex:0 withPointsArray:a6 withCount:a7];
+    return [(TSCHAreaElementBuilder *)&v115 p_addBottomStroke:stroke toPath:path seriesIndex:0 withPointsArray:array withCount:count];
   }
 
-  x = a3->var2.origin.x;
-  y = a3->var2.origin.y;
-  width = a3->var2.size.width;
-  height = a3->var2.size.height;
-  var0 = a3->var0;
-  v40 = objc_msgSend_axisIDForAxisType_(a3->var1, v31, v32, v33, v34, 1);
+  x = stroke->var2.origin.x;
+  y = stroke->var2.origin.y;
+  width = stroke->var2.size.width;
+  height = stroke->var2.size.height;
+  var0 = stroke->var0;
+  v40 = objc_msgSend_axisIDForAxisType_(stroke->var1, v31, v32, v33, v34, 1);
   v45 = objc_msgSend_axisForID_(var0, v41, v42, v43, v44, v40);
 
   if (!v45)
@@ -98,8 +98,8 @@
   }
 
   objc_opt_class();
-  v65 = a3->var0;
-  v70 = objc_msgSend_axisIDForAxisType_(a3->var1, v66, v67, v68, v69, 2);
+  v65 = stroke->var0;
+  v70 = objc_msgSend_axisIDForAxisType_(stroke->var1, v66, v67, v68, v69, 2);
   v75 = objc_msgSend_axisForID_(v65, v71, v72, v73, v74, v70);
   v76 = TSUDynamicCast();
 
@@ -115,9 +115,9 @@
 
   objc_msgSend_interceptForAxis_(v76, v77, v78, v79, v80, v45);
   objc_msgSend_unitSpaceValueForDataSpaceValue_(v76, v96, v97, v98, v99);
-  v104 = objc_msgSend_seriesAtIndex_(a3->var0, v100, v101, v102, v103, a5 - 1);
+  v104 = objc_msgSend_seriesAtIndex_(stroke->var0, v100, v101, v102, v103, index - 1);
   v116 = 0;
-  v109 = objc_msgSend_allGroupsIndexSetForSeries_(a3->var0, v105, v106, v107, v108, v104);
+  v109 = objc_msgSend_allGroupsIndexSetForSeries_(stroke->var0, v105, v106, v107, v108, v104);
   v111 = objc_msgSend_p_createPointArrayForSeries_inAreaFrame_groupIndexSet_outCount_(self, v110, x, y, width, v104, v109, &v116, height);
 
   if (v116)
@@ -129,12 +129,12 @@
       *(v117 + 7) = v111[4];
       free(v111);
       v111 = malloc_type_calloc(2uLL, 0x28uLL, 0x100004020A5FE2DuLL);
-      *v111 = CGRectGetMinX(a3->var2);
+      *v111 = CGRectGetMinX(stroke->var2);
       *(v111 + 1) = v118;
       *(v111 + 24) = 1;
       *(v111 + 25) = v117[0];
       v111[4] = *(v117 + 7);
-      v111[5] = CGRectGetMaxX(a3->var2);
+      v111[5] = CGRectGetMaxX(stroke->var2);
       *(v111 + 3) = v118;
       *(v111 + 64) = 1;
       *(v111 + 65) = v117[0];
@@ -164,32 +164,32 @@ LABEL_17:
   return 1;
 }
 
-- (unint64_t)countOfSummaryLabelsForGroups:(id)a3 forBodyLayout:(id)a4 outNewTransforms:(CGAffineTransform *)a5 outNewElementSizes:(CGSize *)a6 outNewClipRects:(CGRect *)a7 outNewStrings:(id *)a8
+- (unint64_t)countOfSummaryLabelsForGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings
 {
-  v12 = a3;
-  v13 = a4;
-  v18 = v13;
-  if (a5)
+  groupsCopy = groups;
+  layoutCopy = layout;
+  v18 = layoutCopy;
+  if (transforms)
   {
-    *a5 = 0;
+    *transforms = 0;
   }
 
-  if (a6)
+  if (sizes)
   {
-    *a6 = 0;
+    *sizes = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (strings)
   {
-    *a8 = 0;
+    *strings = 0;
   }
 
-  if (!v13)
+  if (!layoutCopy)
   {
     v246 = MEMORY[0x277D81150];
     v247 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "[TSCHStackedAreaElementBuilder countOfSummaryLabelsForGroups:forBodyLayout:outNewTransforms:outNewElementSizes:outNewClipRects:outNewStrings:]");
@@ -202,12 +202,12 @@ LABEL_40:
     goto LABEL_71;
   }
 
-  if (!a7 && !a5 && !a8)
+  if (!rects && !transforms && !strings)
   {
     goto LABEL_40;
   }
 
-  v19 = objc_msgSend_chart(v13, v14, v15, v16, v17);
+  v19 = objc_msgSend_chart(layoutCopy, v14, v15, v16, v17);
   v24 = objc_msgSend_model(v19, v20, v21, v22, v23);
 
   v29 = objc_msgSend_chart(v24, v25, v26, v27, v28);
@@ -284,9 +284,9 @@ LABEL_40:
         v289 = v24;
         v109 = objc_msgSend_allGroupsIndexSetForSeries_(v24, v105, v106, v107, v108, v44);
         v110 = v109;
-        if (v12)
+        if (groupsCopy)
         {
-          v111 = v12;
+          v111 = groupsCopy;
         }
 
         else
@@ -433,7 +433,7 @@ LABEL_40:
 
       else
       {
-        v285 = v12;
+        v285 = groupsCopy;
       }
 
       v334 = 0;
@@ -488,16 +488,16 @@ LABEL_40:
       v262 = v290;
       v303 = v262;
       v312 = &v334;
-      v12 = v285;
+      groupsCopy = v285;
       objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v285, v263, v264, v265, v266, 2, v302);
       v271 = v335;
       v50 = v298;
-      if (a5)
+      if (transforms)
       {
         v267 = v335[3];
         if (v267)
         {
-          *a5 = malloc_type_calloc(0x30uLL, v267, 0x1000040EED21634uLL);
+          *transforms = malloc_type_calloc(0x30uLL, v267, 0x1000040EED21634uLL);
           v271 = v335;
           if (v335[3])
           {
@@ -506,7 +506,7 @@ LABEL_40:
             do
             {
               v274 = (*(*&v331.a + 48) + v272 * 48);
-              v275 = &(*a5)[v272];
+              v275 = &(*transforms)[v272];
               v268 = *v274;
               v269 = v274[1];
               v270 = v274[2];
@@ -522,12 +522,12 @@ LABEL_40:
         }
       }
 
-      if (a6)
+      if (sizes)
       {
         v267 = v271[3];
         if (v267)
         {
-          *a6 = malloc_type_calloc(0x10uLL, v267, 0x1000040451B5BE8uLL);
+          *sizes = malloc_type_calloc(0x10uLL, v267, 0x1000040451B5BE8uLL);
           v271 = v335;
           if (v335[3])
           {
@@ -536,7 +536,7 @@ LABEL_40:
             do
             {
               v268 = *(*(*&v326.b + 48) + v276 * 16);
-              (*a6)[v276] = v268;
+              (*sizes)[v276] = v268;
               ++v277;
               v271 = v335;
               ++v276;
@@ -547,12 +547,12 @@ LABEL_40:
         }
       }
 
-      if (a7)
+      if (rects)
       {
         v267 = v271[3];
         if (v267)
         {
-          *a7 = malloc_type_calloc(0x20uLL, v267, 0x1000040E0EAB150uLL);
+          *rects = malloc_type_calloc(0x20uLL, v267, 0x1000040E0EAB150uLL);
           v271 = v335;
           if (v335[3])
           {
@@ -561,7 +561,7 @@ LABEL_40:
             do
             {
               v280 = (*(*(&v319 + 1) + 48) + v278 * 32);
-              v281 = &(*a7)[v278];
+              v281 = &(*rects)[v278];
               v268 = *v280;
               v269 = v280[1];
               v281->origin = *v280;
@@ -576,9 +576,9 @@ LABEL_40:
         }
       }
 
-      if (a8 && v271[3])
+      if (strings && v271[3])
       {
-        *a8 = objc_msgSend_subarrayWithRange_(v314[5], v267, v268.width, v269.width, v270.width, 0);
+        *strings = objc_msgSend_subarrayWithRange_(v314[5], v267, v268.width, v269.width, v270.width, 0);
         v271 = v335;
       }
 

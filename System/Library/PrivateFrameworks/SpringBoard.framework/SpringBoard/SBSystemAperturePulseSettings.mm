@@ -10,11 +10,11 @@
   [(SBSystemAperturePulseSettings *)self setExpandDelay:0.0];
   [(SBSystemAperturePulseSettings *)self setExpandScale:1.0];
   [(SBSystemAperturePulseSettings *)self setExpandDuration:0.0];
-  v3 = [(SBSystemAperturePulseSettings *)self expandBehaviorSettings];
-  [v3 setDefaultValues];
+  expandBehaviorSettings = [(SBSystemAperturePulseSettings *)self expandBehaviorSettings];
+  [expandBehaviorSettings setDefaultValues];
 
-  v4 = [(SBSystemAperturePulseSettings *)self contractBehaviorSettings];
-  [v4 setDefaultValues];
+  contractBehaviorSettings = [(SBSystemAperturePulseSettings *)self contractBehaviorSettings];
+  [contractBehaviorSettings setDefaultValues];
 }
 
 + (id)settingsControllerModule

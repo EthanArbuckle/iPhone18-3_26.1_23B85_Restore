@@ -1,18 +1,18 @@
 @interface FMR1DebugView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSString)description;
-- (_TtC11FMFindingUI13FMR1DebugView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUI13FMR1DebugView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)dotCountSegmentedControlActionWithSender:(id)a3;
+- (void)dotCountSegmentedControlActionWithSender:(id)sender;
 - (void)runTestsAction;
-- (void)showControlsToggleActionWithSender:(id)a3;
+- (void)showControlsToggleActionWithSender:(id)sender;
 @end
 
 @implementation FMR1DebugView
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5100E8();
 
   v3 = sub_24A62EBE4();
@@ -23,7 +23,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11FMFindingUI13FMR1DebugView_debugModeObservation);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = v3;
@@ -35,39 +35,39 @@
   [(FMR1DebugView *)&v6 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
   sub_24A5D9E20(x, y);
   LOBYTE(self) = v9;
 
   return self & 1;
 }
 
-- (void)showControlsToggleActionWithSender:(id)a3
+- (void)showControlsToggleActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_24A5D9FC0();
 }
 
-- (void)dotCountSegmentedControlActionWithSender:(id)a3
+- (void)dotCountSegmentedControlActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A5D93C8(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_24A5D93C8(senderCopy);
 }
 
 - (void)runTestsAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5D95D4();
 }
 
-- (_TtC11FMFindingUI13FMR1DebugView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI13FMR1DebugView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

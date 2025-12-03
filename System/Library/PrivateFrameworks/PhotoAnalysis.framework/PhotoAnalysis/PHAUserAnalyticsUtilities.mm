@@ -1,24 +1,24 @@
 @interface PHAUserAnalyticsUtilities
-- (BOOL)updateUserAnalyticsStreamWithProgressReporter:(id)a3 error:(id *)a4;
+- (BOOL)updateUserAnalyticsStreamWithProgressReporter:(id)reporter error:(id *)error;
 - (PHAUserAnalyticsUtilities)init;
-- (PHAUserAnalyticsUtilities)initWithPhotoLibrary:(id)a3;
+- (PHAUserAnalyticsUtilities)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PHAUserAnalyticsUtilities
 
-- (PHAUserAnalyticsUtilities)initWithPhotoLibrary:(id)a3
+- (PHAUserAnalyticsUtilities)initWithPhotoLibrary:(id)library
 {
-  *(&self->super.isa + OBJC_IVAR___PHAUserAnalyticsUtilities_photoLibrary) = a3;
+  *(&self->super.isa + OBJC_IVAR___PHAUserAnalyticsUtilities_photoLibrary) = library;
   v6.receiver = self;
   v6.super_class = type metadata accessor for UserAnalyticsUtilities();
-  v4 = a3;
+  libraryCopy = library;
   return [(PHAUserAnalyticsUtilities *)&v6 init];
 }
 
-- (BOOL)updateUserAnalyticsStreamWithProgressReporter:(id)a3 error:(id *)a4
+- (BOOL)updateUserAnalyticsStreamWithProgressReporter:(id)reporter error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  reporterCopy = reporter;
+  selfCopy = self;
   sub_22FC2F83C();
 
   return 1;

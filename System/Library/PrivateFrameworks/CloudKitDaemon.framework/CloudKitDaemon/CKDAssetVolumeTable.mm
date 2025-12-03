@@ -1,10 +1,10 @@
 @interface CKDAssetVolumeTable
-- (CKDAssetVolumeTable)initWithLogicalTableName:(id)a3;
+- (CKDAssetVolumeTable)initWithLogicalTableName:(id)name;
 - (id)unmountedAssetVolumes;
-- (id)volumeIndexForVolumeUUID:(id)a3;
-- (id)volumeUUIDWithVolumeIndex:(id)a3;
+- (id)volumeIndexForVolumeUUID:(id)d;
+- (id)volumeUUIDWithVolumeIndex:(id)index;
 - (id)wakeFromDatabase;
-- (void)_lockedSetVolumeIndex:(id)a3 forVolumeUUID:(id)a4;
+- (void)_lockedSetVolumeIndex:(id)index forVolumeUUID:(id)d;
 @end
 
 @implementation CKDAssetVolumeTable
@@ -30,18 +30,18 @@
   v9[3] = &unk_278545D30;
   v4 = v3;
   v10 = v4;
-  v11 = self;
+  selfCopy = self;
   v6 = objc_msgSend_enumerateEntriesWithBlock_(self, v5, v9);
   v7 = v4;
 
   return v4;
 }
 
-- (CKDAssetVolumeTable)initWithLogicalTableName:(id)a3
+- (CKDAssetVolumeTable)initWithLogicalTableName:(id)name
 {
   v9.receiver = self;
   v9.super_class = CKDAssetVolumeTable;
-  v3 = [(CKSQLiteTable *)&v9 initWithLogicalTableName:a3];
+  v3 = [(CKSQLiteTable *)&v9 initWithLogicalTableName:name];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -56,31 +56,31 @@
   return v3;
 }
 
-- (void)_lockedSetVolumeIndex:(id)a3 forVolumeUUID:(id)a4
+- (void)_lockedSetVolumeIndex:(id)index forVolumeUUID:(id)d
 {
   volumeIndexByVolumeUUID = self->_volumeIndexByVolumeUUID;
-  v7 = a4;
-  v10 = a3;
-  objc_msgSend_setObject_forKeyedSubscript_(volumeIndexByVolumeUUID, v8, v10, v7);
-  objc_msgSend_setObject_forKeyedSubscript_(self->_volumeUUIDByVolumeIndex, v9, v7, v10);
+  dCopy = d;
+  indexCopy = index;
+  objc_msgSend_setObject_forKeyedSubscript_(volumeIndexByVolumeUUID, v8, indexCopy, dCopy);
+  objc_msgSend_setObject_forKeyedSubscript_(self->_volumeUUIDByVolumeIndex, v9, dCopy, indexCopy);
 }
 
-- (id)volumeIndexForVolumeUUID:(id)a3
+- (id)volumeIndexForVolumeUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = 0;
     goto LABEL_18;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_volumeIndexByVolumeUUID, v5, v4);
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_volumeIndexByVolumeUUID, v5, dCopy);
   if (!v6)
   {
     v8 = objc_opt_new();
-    objc_msgSend_setVolumeUUID_(v8, v9, v4);
+    objc_msgSend_setVolumeUUID_(v8, v9, dCopy);
     v11 = objc_msgSend_insertObject_(self, v10, v8);
     v14 = MEMORY[0x277CBC880];
     v15 = MEMORY[0x277CBC828];
@@ -105,7 +105,7 @@
     {
       v7 = objc_msgSend_volumeIndex(v8, v12, v13);
       v21 = objc_msgSend_volumeIndex(v8, v19, v20);
-      objc_msgSend__lockedSetVolumeIndex_forVolumeUUID_(self, v22, v21, v4);
+      objc_msgSend__lockedSetVolumeIndex_forVolumeUUID_(self, v22, v21, dCopy);
 
       if (v7)
       {
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(*v15, OS_LOG_TYPE_INFO))
     {
       v25 = 138543362;
-      v26 = v4;
+      v26 = dCopy;
       _os_log_impl(&dword_22506F000, v18, OS_LOG_TYPE_INFO, "volumeIndexForVolumeUUID is returning nil for volumeUUID=%{public}@", &v25, 0xCu);
     }
 
@@ -140,12 +140,12 @@ LABEL_18:
   return v7;
 }
 
-- (id)volumeUUIDWithVolumeIndex:(id)a3
+- (id)volumeUUIDWithVolumeIndex:(id)index
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexCopy = index;
   os_unfair_lock_lock(&self->_lock);
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_volumeUUIDByVolumeIndex, v5, v4);
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_volumeUUIDByVolumeIndex, v5, indexCopy);
   if (!v6)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -157,7 +157,7 @@ LABEL_18:
     if (os_log_type_enabled(*MEMORY[0x277CBC828], OS_LOG_TYPE_INFO))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = indexCopy;
       _os_log_impl(&dword_22506F000, v7, OS_LOG_TYPE_INFO, "volumeUUIDWithVolumeIndex is returning nil for volumeIndex=%{public}@", &v10, 0xCu);
     }
   }

@@ -1,6 +1,6 @@
 @interface ATXFamilyCircleCache
 - (ATXFamilyCircleCache)init;
-- (ATXFamilyCircleCache)initWithCachePath:(id)a3;
+- (ATXFamilyCircleCache)initWithCachePath:(id)path;
 - (BOOL)hasiCloudFamily;
 - (id)_cache;
 - (id)_fetchFamilyCircleFromCache;
@@ -12,22 +12,22 @@
 
 - (ATXFamilyCircleCache)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"familyCircleCache"];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [appPredictionCacheDirectory stringByAppendingPathComponent:@"familyCircleCache"];
 
   v5 = [(ATXFamilyCircleCache *)self initWithCachePath:v4];
   return v5;
 }
 
-- (ATXFamilyCircleCache)initWithCachePath:(id)a3
+- (ATXFamilyCircleCache)initWithCachePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ATXFamilyCircleCache;
   v5 = [(ATXFamilyCircleCache *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
   }
@@ -38,9 +38,9 @@
 - (BOOL)hasiCloudFamily
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(ATXFamilyCircleCache *)self fetchFamilyCircle];
-  v3 = [v2 members];
-  v4 = [v3 count];
+  fetchFamilyCircle = [(ATXFamilyCircleCache *)self fetchFamilyCircle];
+  members = [fetchFamilyCircle members];
+  v4 = [members count];
 
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -106,22 +106,22 @@
 
 - (id)_fetchFamilyCircleFromCache
 {
-  v3 = [(ATXFamilyCircleCache *)self _cache];
+  _cache = [(ATXFamilyCircleCache *)self _cache];
   v4 = objc_autoreleasePoolPush();
   v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v4);
-  v6 = [v3 readSecureCodedObjectWithMaxValidAge:v5 allowableClasses:0 error:86400.0];
+  _requestUpdatedFamilyCircle = [_cache readSecureCodedObjectWithMaxValidAge:v5 allowableClasses:0 error:86400.0];
 
-  if (!v6)
+  if (!_requestUpdatedFamilyCircle)
   {
-    v6 = [(ATXFamilyCircleCache *)self _requestUpdatedFamilyCircle];
-    if (v6)
+    _requestUpdatedFamilyCircle = [(ATXFamilyCircleCache *)self _requestUpdatedFamilyCircle];
+    if (_requestUpdatedFamilyCircle)
     {
-      [v3 storeSecureCodedObject:v6 error:0];
+      [_cache storeSecureCodedObject:_requestUpdatedFamilyCircle error:0];
     }
   }
 
-  v7 = v6;
+  v7 = _requestUpdatedFamilyCircle;
 
   return v7;
 }
@@ -132,7 +132,7 @@
   v2 = 136315394;
   v3 = "[ATXFamilyCircleCache _requestUpdatedFamilyCircle]";
   v4 = 2112;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "%s: Error querying for iCloud family: %@", &v2, 0x16u);
 }
 

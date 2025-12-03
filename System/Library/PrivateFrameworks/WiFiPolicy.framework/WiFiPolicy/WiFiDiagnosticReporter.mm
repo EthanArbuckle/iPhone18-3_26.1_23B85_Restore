@@ -1,9 +1,9 @@
 @interface WiFiDiagnosticReporter
 + (id)sharedWiFiDiagnosticReporter;
-- (BOOL)isWiFiABCSignatureUnblocked:(id)a3;
+- (BOOL)isWiFiABCSignatureUnblocked:(id)unblocked;
 - (WiFiDiagnosticReporter)init;
 - (void)initABCReporter;
-- (void)submitWiFiWatchdogReason:(id)a3 subtypeContext:(id)a4;
+- (void)submitWiFiWatchdogReason:(id)reason subtypeContext:(id)context;
 @end
 
 @implementation WiFiDiagnosticReporter
@@ -29,15 +29,15 @@ uint64_t __54__WiFiDiagnosticReporter_sharedWiFiDiagnosticReporter__block_invoke
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)submitWiFiWatchdogReason:(id)a3 subtypeContext:(id)a4
+- (void)submitWiFiWatchdogReason:(id)reason subtypeContext:(id)context
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  contextCopy = context;
   ABCReporter = self->_ABCReporter;
   if (ABCReporter || ([(WiFiDiagnosticReporter *)self initABCReporter], (ABCReporter = self->_ABCReporter) != 0))
   {
-    v9 = [(SDRDiagnosticReporter *)ABCReporter signatureWithDomain:@"WiFi" type:@"WiFi Watchdog" subType:v6 subtypeContext:v7 detectedProcess:@"wifid" triggerThresholdValues:0];
+    v9 = [(SDRDiagnosticReporter *)ABCReporter signatureWithDomain:@"WiFi" type:@"WiFi Watchdog" subType:reasonCopy subtypeContext:contextCopy detectedProcess:@"wifid" triggerThresholdValues:0];
     v19 = *MEMORY[0x277D6B138];
     v20[0] = &unk_2848BB088;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
@@ -55,13 +55,13 @@ uint64_t __54__WiFiDiagnosticReporter_sharedWiFiDiagnosticReporter__block_invoke
     v13[1] = 3221225472;
     v13[2] = __66__WiFiDiagnosticReporter_submitWiFiWatchdogReason_subtypeContext___block_invoke;
     v13[3] = &unk_2789C6998;
-    v14 = v6;
+    v14 = reasonCopy;
     [(SDRDiagnosticReporter *)v11 snapshotWithSignature:v9 delay:0 events:v10 payload:0 actions:v13 reply:60.0];
   }
 
   else
   {
-    [WiFiDiagnosticReporter submitWiFiWatchdogReason:v6 subtypeContext:?];
+    [WiFiDiagnosticReporter submitWiFiWatchdogReason:reasonCopy subtypeContext:?];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -112,18 +112,18 @@ void __66__WiFiDiagnosticReporter_submitWiFiWatchdogReason_subtypeContext___bloc
   return v3;
 }
 
-- (BOOL)isWiFiABCSignatureUnblocked:(id)a3
+- (BOOL)isWiFiABCSignatureUnblocked:(id)unblocked
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 persistentDomainForName:@"com.apple.wifi.abc"];
+  unblockedCopy = unblocked;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults persistentDomainForName:@"com.apple.wifi.abc"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     OUTLINED_FUNCTION_0_0();
-    v18 = v3;
+    v18 = unblockedCopy;
     v19 = v16;
-    v20 = v4;
+    v20 = standardUserDefaults;
     v21 = v16;
     v22 = v5;
     _os_log_debug_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s: testing for key %@ have %@ and %@", v17, 0x2Au);
@@ -145,7 +145,7 @@ LABEL_15:
   }
 
 LABEL_3:
-  v6 = [v5 objectForKeyedSubscript:v3];
+  v6 = [v5 objectForKeyedSubscript:unblockedCopy];
   if (!v6)
   {
     goto LABEL_15;
@@ -158,8 +158,8 @@ LABEL_3:
   }
 
   v6 = v6;
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 compare:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date compare:v6];
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
   v10 = v8 == -1;
   v11 = v8 != -1;
@@ -178,7 +178,7 @@ LABEL_3:
   else if (v9)
   {
     OUTLINED_FUNCTION_0_0();
-    v18 = v3;
+    v18 = unblockedCopy;
     v12 = MEMORY[0x277D86220];
     v13 = "%s: ABC signature is unblocked: %@";
 LABEL_10:

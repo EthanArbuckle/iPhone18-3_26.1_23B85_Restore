@@ -1,14 +1,14 @@
 @interface FLExtensionViewController
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)finishProcessingWithUserInfo:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)finishProcessingWithUserInfo:(id)info;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation FLExtensionViewController
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,7 +17,7 @@
   }
 
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 }
 
 void __42__FLExtensionViewController_hostInterface__block_invoke(uint64_t a1, void *a2)
@@ -40,9 +40,9 @@ void __46__FLExtensionViewController_syncHostInterface__block_invoke(uint64_t a1
   }
 }
 
-- (void)finishProcessingWithUserInfo:(id)a3
+- (void)finishProcessingWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -56,7 +56,7 @@ void __46__FLExtensionViewController_syncHostInterface__block_invoke(uint64_t a1
   v7[2] = __58__FLExtensionViewController_finishProcessingWithUserInfo___block_invoke_52;
   v7[3] = &unk_278E35920;
   v7[4] = self;
-  [v6 extensionDidFinishWithUserInfo:v4 completionHandler:v7];
+  [v6 extensionDidFinishWithUserInfo:infoCopy completionHandler:v7];
 }
 
 void __58__FLExtensionViewController_finishProcessingWithUserInfo___block_invoke(uint64_t a1, void *a2)
@@ -87,25 +87,25 @@ uint64_t __58__FLExtensionViewController_finishProcessingWithUserInfo___block_in
   return result;
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   v10 = _FLLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = itemCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = actionCopy;
     _os_log_impl(&dword_245383000, v10, OS_LOG_TYPE_DEFAULT, "Extension is processing item: %@ action: %@", &v12, 0x16u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v11 = *MEMORY[0x277D85DE8];

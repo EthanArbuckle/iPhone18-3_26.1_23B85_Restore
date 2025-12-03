@@ -1,48 +1,48 @@
 @interface APAccumulator
-+ (id)_accumulationReasonToString:(int64_t)a3;
-- (APAccumulator)initWithAccumulationTime:(unint64_t)a3 inactivityTime:(unint64_t)a4 itemLimit:(unint64_t)a5;
-- (APAccumulator)initWithCoder:(id)a3;
++ (id)_accumulationReasonToString:(int64_t)string;
+- (APAccumulator)initWithAccumulationTime:(unint64_t)time inactivityTime:(unint64_t)inactivityTime itemLimit:(unint64_t)limit;
+- (APAccumulator)initWithCoder:(id)coder;
 - (NSArray)accumulatedItems;
 - (void)_accumulationEventHandler;
-- (void)_callAccumulationHandlerWithReason:(int64_t)a3;
+- (void)_callAccumulationHandlerWithReason:(int64_t)reason;
 - (void)_inactivityEventHandler;
 - (void)_startAccumulationSource;
 - (void)_startInactivitySource;
 - (void)_stopAccumulationSource;
 - (void)_stopInactivitySource;
-- (void)accumulate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)accumulate:(id)accumulate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APAccumulator
 
-- (APAccumulator)initWithCoder:(id)a3
+- (APAccumulator)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"accumulationTime"];
-  v6 = [v5 unsignedIntegerValue];
-  v7 = [v4 decodeObjectForKey:@"inactivityTime"];
-  v8 = [v7 unsignedIntegerValue];
-  v9 = [v4 decodeObjectForKey:@"itemLimit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"accumulationTime"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  v7 = [coderCopy decodeObjectForKey:@"inactivityTime"];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
+  v9 = [coderCopy decodeObjectForKey:@"itemLimit"];
 
-  v10 = -[APAccumulator initWithAccumulationTime:inactivityTime:itemLimit:](self, "initWithAccumulationTime:inactivityTime:itemLimit:", v6, v8, [v9 unsignedIntegerValue]);
+  v10 = -[APAccumulator initWithAccumulationTime:inactivityTime:itemLimit:](self, "initWithAccumulationTime:inactivityTime:itemLimit:", unsignedIntegerValue, unsignedIntegerValue2, [v9 unsignedIntegerValue]);
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedInteger:[(APAccumulator *)self accumulationTime]];
-  [v4 encodeObject:v5 forKey:@"accumulationTime"];
+  [coderCopy encodeObject:v5 forKey:@"accumulationTime"];
 
   v6 = [NSNumber numberWithUnsignedInteger:[(APAccumulator *)self inactivityTime]];
-  [v4 encodeObject:v6 forKey:@"inactivityTime"];
+  [coderCopy encodeObject:v6 forKey:@"inactivityTime"];
 
   v7 = [NSNumber numberWithUnsignedInteger:[(APAccumulator *)self itemLimit]];
-  [v4 encodeObject:v7 forKey:@"itemLimit"];
+  [coderCopy encodeObject:v7 forKey:@"itemLimit"];
 }
 
-- (APAccumulator)initWithAccumulationTime:(unint64_t)a3 inactivityTime:(unint64_t)a4 itemLimit:(unint64_t)a5
+- (APAccumulator)initWithAccumulationTime:(unint64_t)time inactivityTime:(unint64_t)inactivityTime itemLimit:(unint64_t)limit
 {
   v17.receiver = self;
   v17.super_class = APAccumulator;
@@ -55,18 +55,18 @@
       *buf = 134218752;
       v19 = v8;
       v20 = 2048;
-      v21 = a3;
+      timeCopy = time;
       v22 = 2048;
-      v23 = a4;
+      inactivityTimeCopy = inactivityTime;
       v24 = 2048;
-      v25 = a5;
+      limitCopy = limit;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%p: creating accumulator with time %lu, inactivity %lu, itemLimit %lu", buf, 0x2Au);
     }
 
-    v8->_accumulationTime = a3;
-    v8->_inactivityTime = a4;
-    v8->_itemLimit = a5;
-    v10 = [NSMutableArray arrayWithCapacity:a5];
+    v8->_accumulationTime = time;
+    v8->_inactivityTime = inactivityTime;
+    v8->_itemLimit = limit;
+    v10 = [NSMutableArray arrayWithCapacity:limit];
     items = v8->_items;
     v8->_items = v10;
 
@@ -82,63 +82,63 @@
   return v8;
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
-  v4 = a3;
-  v5 = [(APAccumulator *)self dispatchQueue];
+  accumulateCopy = accumulate;
+  dispatchQueue = [(APAccumulator *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002934B0;
   v7[3] = &unk_10047CC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = accumulateCopy;
+  v6 = accumulateCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (NSArray)accumulatedItems
 {
-  v3 = [(APAccumulator *)self lock];
-  [v3 lock];
+  lock = [(APAccumulator *)self lock];
+  [lock lock];
 
-  v4 = [(APAccumulator *)self items];
-  v5 = [v4 copy];
+  items = [(APAccumulator *)self items];
+  v5 = [items copy];
 
-  v6 = [(APAccumulator *)self lock];
-  [v6 unlock];
+  lock2 = [(APAccumulator *)self lock];
+  [lock2 unlock];
 
   return v5;
 }
 
-+ (id)_accumulationReasonToString:(int64_t)a3
++ (id)_accumulationReasonToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Invalid reason";
   }
 
   else
   {
-    return *(&off_10047CC30 + a3 - 1);
+    return *(&off_10047CC30 + string - 1);
   }
 }
 
 - (void)_stopAccumulationSource
 {
-  v3 = [(APAccumulator *)self dispatchSourceAccumulation];
+  dispatchSourceAccumulation = [(APAccumulator *)self dispatchSourceAccumulation];
 
-  if (v3)
+  if (dispatchSourceAccumulation)
   {
     v4 = APLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%p: stopping accumulation timer.", &v7, 0xCu);
     }
 
-    v5 = [(APAccumulator *)self dispatchSourceAccumulation];
-    dispatch_source_cancel(v5);
+    dispatchSourceAccumulation2 = [(APAccumulator *)self dispatchSourceAccumulation];
+    dispatch_source_cancel(dispatchSourceAccumulation2);
 
     dispatchSourceAccumulation = self->_dispatchSourceAccumulation;
     self->_dispatchSourceAccumulation = 0;
@@ -154,31 +154,31 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134218496;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = [(APAccumulator *)self accumulationTime];
+      accumulationTime = [(APAccumulator *)self accumulationTime];
       v15 = 2048;
       v16 = v3;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%p: starting accumulation timer for %lu mS (%llu nS).", buf, 0x20u);
     }
 
-    v5 = [(APAccumulator *)self dispatchQueue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 1uLL, v5);
+    dispatchQueue = [(APAccumulator *)self dispatchQueue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 1uLL, dispatchQueue);
     [(APAccumulator *)self setDispatchSourceAccumulation:v6];
 
-    v7 = [(APAccumulator *)self dispatchSourceAccumulation];
+    dispatchSourceAccumulation = [(APAccumulator *)self dispatchSourceAccumulation];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100293A80;
     handler[3] = &unk_1004790A8;
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(dispatchSourceAccumulation, handler);
 
-    v8 = [(APAccumulator *)self dispatchSourceAccumulation];
-    dispatch_source_set_timer(v8, v3, 0xFFFFFFFFFFFFFFFFLL, 0x2710uLL);
+    dispatchSourceAccumulation2 = [(APAccumulator *)self dispatchSourceAccumulation];
+    dispatch_source_set_timer(dispatchSourceAccumulation2, v3, 0xFFFFFFFFFFFFFFFFLL, 0x2710uLL);
 
-    v9 = [(APAccumulator *)self dispatchSourceAccumulation];
-    dispatch_resume(v9);
+    dispatchSourceAccumulation3 = [(APAccumulator *)self dispatchSourceAccumulation];
+    dispatch_resume(dispatchSourceAccumulation3);
 
     [(APAccumulator *)self setStartTime:CFAbsoluteTimeGetCurrent()];
   }
@@ -186,20 +186,20 @@
 
 - (void)_stopInactivitySource
 {
-  v3 = [(APAccumulator *)self dispatchSourceInactivity];
+  dispatchSourceInactivity = [(APAccumulator *)self dispatchSourceInactivity];
 
-  if (v3)
+  if (dispatchSourceInactivity)
   {
     v4 = APLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%p: stopping inactivity timer.", &v6, 0xCu);
     }
 
-    v5 = [(APAccumulator *)self dispatchSourceInactivity];
-    dispatch_source_cancel(v5);
+    dispatchSourceInactivity2 = [(APAccumulator *)self dispatchSourceInactivity];
+    dispatch_source_cancel(dispatchSourceInactivity2);
 
     [(APAccumulator *)self setDispatchSourceInactivity:0];
   }
@@ -214,41 +214,41 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134218496;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = [(APAccumulator *)self inactivityTime];
+      inactivityTime = [(APAccumulator *)self inactivityTime];
       v15 = 2048;
       v16 = v3;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%p: starting inactivity timer for %lu mS (%llu nS).", buf, 0x20u);
     }
 
-    v5 = [(APAccumulator *)self dispatchQueue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 1uLL, v5);
+    dispatchQueue = [(APAccumulator *)self dispatchQueue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 1uLL, dispatchQueue);
     [(APAccumulator *)self setDispatchSourceInactivity:v6];
 
-    v7 = [(APAccumulator *)self dispatchSourceInactivity];
+    dispatchSourceInactivity = [(APAccumulator *)self dispatchSourceInactivity];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100293D3C;
     handler[3] = &unk_1004790A8;
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(dispatchSourceInactivity, handler);
 
-    v8 = [(APAccumulator *)self dispatchSourceInactivity];
-    dispatch_source_set_timer(v8, v3, 0xFFFFFFFFFFFFFFFFLL, 0x2710uLL);
+    dispatchSourceInactivity2 = [(APAccumulator *)self dispatchSourceInactivity];
+    dispatch_source_set_timer(dispatchSourceInactivity2, v3, 0xFFFFFFFFFFFFFFFFLL, 0x2710uLL);
 
-    v9 = [(APAccumulator *)self dispatchSourceInactivity];
-    dispatch_resume(v9);
+    dispatchSourceInactivity3 = [(APAccumulator *)self dispatchSourceInactivity];
+    dispatch_resume(dispatchSourceInactivity3);
   }
 }
 
-- (void)_callAccumulationHandlerWithReason:(int64_t)a3
+- (void)_callAccumulationHandlerWithReason:(int64_t)reason
 {
-  v5 = [(APAccumulator *)self items];
-  v6 = [v5 copy];
+  items = [(APAccumulator *)self items];
+  v6 = [items copy];
 
-  v7 = [(APAccumulator *)self items];
-  [v7 removeAllObjects];
+  items2 = [(APAccumulator *)self items];
+  [items2 removeAllObjects];
 
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -256,7 +256,7 @@
     Current = CFAbsoluteTimeGetCurrent();
     [(APAccumulator *)self startTime];
     v11 = (Current - v10) * 1000.0;
-    v12 = [APAccumulator _accumulationReasonToString:a3];
+    v12 = [APAccumulator _accumulationReasonToString:reason];
     v16 = 134218242;
     v17 = v11;
     v18 = 2114;
@@ -264,12 +264,12 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Calling accumulation handler after %.0f mS with reason %{public}@", &v16, 0x16u);
   }
 
-  v13 = [(APAccumulator *)self accumulationHandler];
+  accumulationHandler = [(APAccumulator *)self accumulationHandler];
 
-  if (v13)
+  if (accumulationHandler)
   {
-    v14 = [(APAccumulator *)self accumulationHandler];
-    (v14)[2](v14, v6, a3);
+    accumulationHandler2 = [(APAccumulator *)self accumulationHandler];
+    (accumulationHandler2)[2](accumulationHandler2, v6, reason);
   }
 
   [(APAccumulator *)self setStartTime:0.0];
@@ -287,11 +287,11 @@
   v3 = APLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(APAccumulator *)self accumulatedItems];
+    accumulatedItems = [(APAccumulator *)self accumulatedItems];
     v5 = 134218240;
-    v6 = self;
+    selfCopy = self;
     v7 = 2048;
-    v8 = [v4 count];
+    v8 = [accumulatedItems count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%p: Calling inactivity event handler with %ld items.", &v5, 0x16u);
   }
 
@@ -305,11 +305,11 @@
   v3 = APLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(APAccumulator *)self accumulatedItems];
+    accumulatedItems = [(APAccumulator *)self accumulatedItems];
     v5 = 134218240;
-    v6 = self;
+    selfCopy = self;
     v7 = 2048;
-    v8 = [v4 count];
+    v8 = [accumulatedItems count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%p: Calling accumulation handler with %ld items.", &v5, 0x16u);
   }
 

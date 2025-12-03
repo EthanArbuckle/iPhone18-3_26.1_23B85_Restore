@@ -1,14 +1,14 @@
 @interface PUCropAspect
-+ (id)allAspectsWithOriginalSize:(CGSize)a3 currentSize:(CGSize)a4;
-+ (id)originalAspectForWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCropAspect:(id)a3;
-- (BOOL)isEquivalentToCropAspect:(id)a3;
++ (id)allAspectsWithOriginalSize:(CGSize)size currentSize:(CGSize)currentSize;
++ (id)originalAspectForWidth:(unint64_t)width height:(unint64_t)height;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCropAspect:(id)aspect;
+- (BOOL)isEquivalentToCropAspect:(id)aspect;
 - (BOOL)isFreeformCrop;
-- (CGRect)constrainRect:(CGRect)a3 boundingRect:(CGRect)a4 boundingAngle:(double)a5 minSize:(CGSize)a6;
-- (PUCropAspect)initWithWidth:(double)a3 height:(double)a4;
+- (CGRect)constrainRect:(CGRect)rect boundingRect:(CGRect)boundingRect boundingAngle:(double)angle minSize:(CGSize)size;
+- (PUCropAspect)initWithWidth:(double)width height:(double)height;
 - (double)ratio;
-- (id)_initWithWidth:(double)a3 height:(double)a4 localizedName:(id)a5;
+- (id)_initWithWidth:(double)width height:(double)height localizedName:(id)name;
 - (id)description;
 - (id)inverseAspect;
 - (unint64_t)hash;
@@ -20,19 +20,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PUCropAspect *)self localizedName];
+  localizedName = [(PUCropAspect *)self localizedName];
   [(PUCropAspect *)self width];
   v7 = v6;
   [(PUCropAspect *)self height];
   v9 = v8;
-  v10 = [(PUCropAspect *)self isFreeformCrop];
+  isFreeformCrop = [(PUCropAspect *)self isFreeformCrop];
   v11 = 0;
-  if (!v10)
+  if (!isFreeformCrop)
   {
     [(PUCropAspect *)self ratio];
   }
 
-  v12 = [v3 stringWithFormat:@"<%@ %p: '%@' width: %f height: %f ratio: %f>", v4, self, v5, v7, v9, v11];
+  v12 = [v3 stringWithFormat:@"<%@ %p: '%@' width: %f height: %f ratio: %f>", v4, self, localizedName, v7, v9, v11];
 
   return v12;
 }
@@ -47,18 +47,18 @@
   return v6;
 }
 
-- (CGRect)constrainRect:(CGRect)a3 boundingRect:(CGRect)a4 boundingAngle:(double)a5 minSize:(CGSize)a6
+- (CGRect)constrainRect:(CGRect)rect boundingRect:(CGRect)boundingRect boundingAngle:(double)angle minSize:(CGSize)size
 {
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v43 = a3.size.width;
-  v10 = a4.size.height;
-  if (v53 >= a4.size.width || v54 >= a4.size.height)
+  width = boundingRect.size.width;
+  y = boundingRect.origin.y;
+  x = boundingRect.origin.x;
+  height = rect.size.height;
+  v43 = rect.size.width;
+  v10 = boundingRect.size.height;
+  if (v53 >= boundingRect.size.width || v54 >= boundingRect.size.height)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"minSize.width < boundingRect.size.width && minSize.height < boundingRect.size.height"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"minSize.width < boundingRect.size.width && minSize.height < boundingRect.size.height"}];
   }
 
   PLRectGetCenter();
@@ -66,7 +66,7 @@
   v15 = v14;
   memset(&v52, 0, sizeof(v52));
   CGAffineTransformMakeTranslation(&v52, -v12, -v14);
-  CGAffineTransformMakeRotation(&t2, a5);
+  CGAffineTransformMakeRotation(&t2, angle);
   t1 = v52;
   CGAffineTransformConcat(&v51, &t1, &t2);
   v52 = v51;
@@ -175,12 +175,12 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
   return v12;
 }
 
-- (BOOL)isEquivalentToCropAspect:(id)a3
+- (BOOL)isEquivalentToCropAspect:(id)aspect
 {
-  v4 = a3;
-  if (!-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || (v5 = [v4 isFreeformCrop], v6 = 1, v4) && (v5 & 1) == 0)
+  aspectCopy = aspect;
+  if (!-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || (v5 = [aspectCopy isFreeformCrop], v6 = 1, aspectCopy) && (v5 & 1) == 0)
   {
-    if (-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || ([v4 isFreeformCrop] & 1) != 0)
+    if (-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || ([aspectCopy isFreeformCrop] & 1) != 0)
     {
       v6 = 0;
     }
@@ -189,7 +189,7 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
     {
       [(PUCropAspect *)self ratio];
       v8 = v7;
-      [v4 ratio];
+      [aspectCopy ratio];
       v6 = vabdd_f64(v8, v9) < 0.01;
     }
   }
@@ -197,20 +197,20 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
   return v6;
 }
 
-- (BOOL)isEqualToCropAspect:(id)a3
+- (BOOL)isEqualToCropAspect:(id)aspect
 {
-  v4 = a3;
-  if (!-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || (v5 = [v4 isFreeformCrop], v6 = 1, v4) && (v5 & 1) == 0)
+  aspectCopy = aspect;
+  if (!-[PUCropAspect isFreeformCrop](self, "isFreeformCrop") || (v5 = [aspectCopy isFreeformCrop], v6 = 1, aspectCopy) && (v5 & 1) == 0)
   {
-    v7 = [(PUCropAspect *)self localizedName];
-    v8 = [v4 localizedName];
-    v9 = [v7 isEqualToString:v8];
+    localizedName = [(PUCropAspect *)self localizedName];
+    localizedName2 = [aspectCopy localizedName];
+    v9 = [localizedName isEqualToString:localizedName2];
 
-    if (v9 && (-[PUCropAspect height](self, "height"), v11 = v10, [v4 height], vabdd_f64(v11, v12) < 2.22044605e-16))
+    if (v9 && (-[PUCropAspect height](self, "height"), v11 = v10, [aspectCopy height], vabdd_f64(v11, v12) < 2.22044605e-16))
     {
       [(PUCropAspect *)self width];
       v14 = v13;
-      [v4 width];
+      [aspectCopy width];
       v6 = vabdd_f64(v14, v15) < 2.22044605e-16;
     }
 
@@ -223,10 +223,10 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -234,7 +234,7 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUCropAspect *)self isEqualToCropAspect:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUCropAspect *)self isEqualToCropAspect:equalCopy];
   }
 
   return v5;
@@ -252,9 +252,9 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
 
 - (double)ratio
 {
-  v3 = [(PUCropAspect *)self isFreeformCrop];
+  isFreeformCrop = [(PUCropAspect *)self isFreeformCrop];
   result = 1.0;
-  if (!v3)
+  if (!isFreeformCrop)
   {
     [(PUCropAspect *)self width];
     v6 = v5;
@@ -277,14 +277,14 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
   return v5 == 0.0;
 }
 
-- (id)_initWithWidth:(double)a3 height:(double)a4 localizedName:(id)a5
+- (id)_initWithWidth:(double)width height:(double)height localizedName:(id)name
 {
-  v9 = a5;
-  v10 = v9;
-  if (a3 < 0.0 || a4 < 0.0)
+  nameCopy = name;
+  v10 = nameCopy;
+  if (width < 0.0 || height < 0.0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"width >= 0 && height >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"width >= 0 && height >= 0"}];
 
     if (v10)
     {
@@ -292,13 +292,13 @@ double __65__PUCropAspect_constrainRect_boundingRect_boundingAngle_minSize___blo
     }
   }
 
-  else if (v9)
+  else if (nameCopy)
   {
     goto LABEL_4;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCropAspect.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
 
 LABEL_4:
   v17.receiver = self;
@@ -310,39 +310,39 @@ LABEL_4:
     localizedName = v11->_localizedName;
     v11->_localizedName = v12;
 
-    v11->_width = a3;
-    v11->_height = a4;
-    v11->_allowOrientationChange = a3 != a4;
+    v11->_width = width;
+    v11->_height = height;
+    v11->_allowOrientationChange = width != height;
   }
 
   return v11;
 }
 
-- (PUCropAspect)initWithWidth:(double)a3 height:(double)a4
+- (PUCropAspect)initWithWidth:(double)width height:(double)height
 {
   v7 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_RATIO_TEMPLATE");
   v8 = PXLocalizedStringFromInteger();
   v12 = PXLocalizedStringFromInteger();
   v9 = PUStringWithValidatedFormat();
 
-  v10 = [(PUCropAspect *)self _initWithWidth:v9 height:a3 localizedName:a4, v8, v12];
+  v10 = [(PUCropAspect *)self _initWithWidth:v9 height:width localizedName:height, v8, v12];
   return v10;
 }
 
-+ (id)originalAspectForWidth:(unint64_t)a3 height:(unint64_t)a4
++ (id)originalAspectForWidth:(unint64_t)width height:(unint64_t)height
 {
   v7 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_RATIO_ORIGINAL");
-  v8 = [[a1 alloc] _initWithWidth:v7 height:a3 localizedName:a4];
+  v8 = [[self alloc] _initWithWidth:v7 height:width localizedName:height];
 
   return v8;
 }
 
-+ (id)allAspectsWithOriginalSize:(CGSize)a3 currentSize:(CGSize)a4
++ (id)allAspectsWithOriginalSize:(CGSize)size currentSize:(CGSize)currentSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = currentSize.height;
+  width = currentSize.width;
+  v6 = size.height;
+  v7 = size.width;
   v45 = *MEMORY[0x1E69E9840];
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   if (v7)
@@ -357,16 +357,16 @@ LABEL_4:
 
   if (!v10)
   {
-    v11 = [a1 originalAspectForWidth:? height:?];
+    v11 = [self originalAspectForWidth:? height:?];
     [v9 addObject:v11];
   }
 
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   v13 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_RATIO_FREEFORM");
   v14 = [v12 _initWithWidth:v13 height:0.0 localizedName:0.0];
   [v9 addObject:v14];
 
-  v15 = [a1 alloc];
+  v15 = [self alloc];
   v16 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_RATIO_SQUARE");
   v17 = [v15 _initWithWidth:v16 height:1.0 localizedName:1.0];
   [v9 addObject:v17];
@@ -374,12 +374,12 @@ LABEL_4:
   v18 = MGCopyAnswer();
   if (([v18 isEqualToString:@"iPad"] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v19 bounds];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen bounds];
     v21 = v20;
     v23 = v22;
 
-    v24 = [a1 alloc];
+    v24 = [self alloc];
     v25 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_WALLPAPER");
     v26 = [v24 _initWithWidth:v25 height:v21 localizedName:v23];
 
@@ -407,27 +407,27 @@ LABEL_4:
 
         v31 = *(*(&v40 + 1) + 8 * i);
         v32 = [v31 objectAtIndexedSubscript:0];
-        v33 = [v32 unsignedIntegerValue];
+        unsignedIntegerValue = [v32 unsignedIntegerValue];
 
         v34 = [v31 objectAtIndexedSubscript:1];
-        v35 = [v34 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v34 unsignedIntegerValue];
 
         if (width >= height)
         {
-          v36 = v35;
+          v36 = unsignedIntegerValue2;
         }
 
         else
         {
-          v36 = v33;
+          v36 = unsignedIntegerValue;
         }
 
         if (width >= height)
         {
-          v35 = v33;
+          unsignedIntegerValue2 = unsignedIntegerValue;
         }
 
-        v37 = [[a1 alloc] initWithWidth:v36 height:v35];
+        v37 = [[self alloc] initWithWidth:v36 height:unsignedIntegerValue2];
         [v9 addObject:v37];
       }
 

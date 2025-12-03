@@ -1,18 +1,18 @@
 @interface PKPencilObserverGestureRecognizer
-+ (PKPencilObserverGestureRecognizer)pencilObserverWithDelegate:(uint64_t)a1;
-- (CGPoint)locationInView:(id)a3;
++ (PKPencilObserverGestureRecognizer)pencilObserverWithDelegate:(uint64_t)delegate;
+- (CGPoint)locationInView:(id)view;
 - (void)_endGestureIfNecessary;
-- (void)_inputPointFromTouch:(void *)a3 event:(void *)a4 checkPredicted:(int)a5;
-- (void)setDelegate:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_inputPointFromTouch:(void *)touch event:(void *)event checkPredicted:(int)predicted;
+- (void)setDelegate:(id)delegate;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PKPencilObserverGestureRecognizer
 
-+ (PKPencilObserverGestureRecognizer)pencilObserverWithDelegate:(uint64_t)a1
++ (PKPencilObserverGestureRecognizer)pencilObserverWithDelegate:(uint64_t)delegate
 {
   v2 = a2;
   objc_opt_self();
@@ -32,13 +32,13 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v7.receiver = self;
   v7.super_class = PKPencilObserverGestureRecognizer;
-  [(PKPencilObserverGestureRecognizer *)&v7 setDelegate:v4];
-  v5 = v4;
+  [(PKPencilObserverGestureRecognizer *)&v7 setDelegate:delegateCopy];
+  v5 = delegateCopy;
   self->_delegateRespondsToDidBegin = objc_opt_respondsToSelector() & 1;
   self->_delegateRespondsToDidMove = objc_opt_respondsToSelector() & 1;
   v6 = objc_opt_respondsToSelector();
@@ -46,9 +46,9 @@
   self->_delegateRespondsToDidEnd = v6 & 1;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  if (a3 && self->_drawingTouch)
+  if (view && self->_drawingTouch)
   {
     drawingTouch = self->_drawingTouch;
 
@@ -69,97 +69,97 @@
   return result;
 }
 
-- (void)_inputPointFromTouch:(void *)a3 event:(void *)a4 checkPredicted:(int)a5
+- (void)_inputPointFromTouch:(void *)touch event:(void *)event checkPredicted:(int)predicted
 {
-  v16 = a3;
-  v9 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if (a2)
   {
-    v10 = [a2 view];
-    if (v10)
+    view = [a2 view];
+    if (view)
     {
-      v11 = v16;
-      if (a5)
+      v11 = touchCopy;
+      if (predicted)
       {
-        v12 = [v9 predictedTouchesForTouch:v11];
+        v12 = [eventCopy predictedTouchesForTouch:v11];
         if ([v12 count])
         {
-          v13 = [v12 lastObject];
+          lastObject = [v12 lastObject];
 
-          v11 = v13;
+          v11 = lastObject;
         }
       }
 
-      [v11 PK_locationInView:v10];
-      [(PKInputPointUtility *)v10 drawingInputPoint:v11 view:0 touch:23 predicted:a1 activeInputProperties:v14, v15];
+      [v11 PK_locationInView:view];
+      [(PKInputPointUtility *)view drawingInputPoint:v11 view:0 touch:23 predicted:self activeInputProperties:v14, v15];
     }
 
     else
     {
-      *(a1 + 128) = 0;
-      *(a1 + 96) = 0u;
-      *(a1 + 112) = 0u;
-      *(a1 + 64) = 0u;
-      *(a1 + 80) = 0u;
-      *(a1 + 32) = 0u;
-      *(a1 + 48) = 0u;
-      *a1 = 0u;
-      *(a1 + 16) = 0u;
+      *(self + 128) = 0;
+      *(self + 96) = 0u;
+      *(self + 112) = 0u;
+      *(self + 64) = 0u;
+      *(self + 80) = 0u;
+      *(self + 32) = 0u;
+      *(self + 48) = 0u;
+      *self = 0u;
+      *(self + 16) = 0u;
     }
   }
 
   else
   {
-    *(a1 + 128) = 0;
-    *(a1 + 96) = 0u;
-    *(a1 + 112) = 0u;
-    *(a1 + 64) = 0u;
-    *(a1 + 80) = 0u;
-    *(a1 + 32) = 0u;
-    *(a1 + 48) = 0u;
-    *a1 = 0u;
-    *(a1 + 16) = 0u;
+    *(self + 128) = 0;
+    *(self + 96) = 0u;
+    *(self + 112) = 0u;
+    *(self + 64) = 0u;
+    *(self + 80) = 0u;
+    *(self + 32) = 0u;
+    *(self + 48) = 0u;
+    *self = 0u;
+    *(self + 16) = 0u;
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   if (!self->_drawingTouch)
   {
-    v7 = [a3 objectsPassingTest:&__block_literal_global_40];
-    v8 = [v7 anyObject];
+    v7 = [began objectsPassingTest:&__block_literal_global_40];
+    anyObject = [v7 anyObject];
 
-    if (v8)
+    if (anyObject)
     {
-      objc_storeStrong(&self->_drawingTouch, v8);
+      objc_storeStrong(&self->_drawingTouch, anyObject);
       [(PKPencilObserverGestureRecognizer *)self setState:1];
       if (self->_delegateRespondsToDidBegin)
       {
-        v9 = [(PKPencilObserverGestureRecognizer *)self delegate];
-        [(PKPencilObserverGestureRecognizer *)v10 _inputPointFromTouch:v8 event:v6 checkPredicted:0];
-        [v9 pencilObserver:self didBeginAtPoint:v10];
+        delegate = [(PKPencilObserverGestureRecognizer *)self delegate];
+        [(PKPencilObserverGestureRecognizer *)v10 _inputPointFromTouch:anyObject event:eventCopy checkPredicted:0];
+        [delegate pencilObserver:self didBeginAtPoint:v10];
       }
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  if ([a3 containsObject:self->_drawingTouch] && self->_delegateRespondsToDidMove)
+  eventCopy = event;
+  if ([moved containsObject:self->_drawingTouch] && self->_delegateRespondsToDidMove)
   {
-    v7 = [(PKPencilObserverGestureRecognizer *)self delegate];
-    [(PKPencilObserverGestureRecognizer *)v8 _inputPointFromTouch:self->_drawingTouch event:v6 checkPredicted:1];
-    [v7 pencilObserver:self didMoveToPoint:v8];
+    delegate = [(PKPencilObserverGestureRecognizer *)self delegate];
+    [(PKPencilObserverGestureRecognizer *)v8 _inputPointFromTouch:self->_drawingTouch event:eventCopy checkPredicted:1];
+    [delegate pencilObserver:self didMoveToPoint:v8];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self)
   {
-    if ([(PKPencilObserverGestureRecognizer *)self state:a3])
+    if ([(PKPencilObserverGestureRecognizer *)self state:cancelled])
     {
       v5 = 4;
     }
@@ -175,26 +175,26 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(PKPencilObserverGestureRecognizer *)self setState:3, a4];
+  [(PKPencilObserverGestureRecognizer *)self setState:3, event];
 
   [(PKPencilObserverGestureRecognizer *)self _endGestureIfNecessary];
 }
 
 - (void)_endGestureIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 280);
+    v2 = *(self + 280);
     if (v2)
     {
-      *(a1 + 280) = 0;
+      *(self + 280) = 0;
 
-      if (*(a1 + 290) == 1)
+      if (*(self + 290) == 1)
       {
-        v3 = [a1 delegate];
-        [v3 pencilObserverDidEnd:a1];
+        delegate = [self delegate];
+        [delegate pencilObserverDidEnd:self];
       }
     }
   }

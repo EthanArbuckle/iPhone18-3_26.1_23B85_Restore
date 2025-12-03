@@ -1,55 +1,55 @@
 @interface AXEventPointerInfoRepresentation
-- (AXEventPointerInfoRepresentation)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXEventPointerInfoRepresentation)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)accessibilityEventRepresentationTabularDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXEventPointerInfoRepresentation
 
-- (AXEventPointerInfoRepresentation)initWithCoder:(id)a3
+- (AXEventPointerInfoRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXEventPointerInfoRepresentation;
   v5 = [(AXEventPointerInfoRepresentation *)&v9 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"pointerX"];
+    [coderCopy decodeDoubleForKey:@"pointerX"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerX:?];
-    [v4 decodeDoubleForKey:@"pointerY"];
+    [coderCopy decodeDoubleForKey:@"pointerY"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerY:?];
-    [v4 decodeDoubleForKey:@"pointerZ"];
+    [coderCopy decodeDoubleForKey:@"pointerZ"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerZ:?];
-    [v4 decodeDoubleForKey:@"pointerAccelX"];
+    [coderCopy decodeDoubleForKey:@"pointerAccelX"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerAccelX:?];
-    [v4 decodeDoubleForKey:@"pointerAccelY"];
+    [coderCopy decodeDoubleForKey:@"pointerAccelY"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerAccelY:?];
-    [v4 decodeDoubleForKey:@"pointerAccelZ"];
+    [coderCopy decodeDoubleForKey:@"pointerAccelZ"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerAccelZ:?];
-    -[AXEventPointerInfoRepresentation setIsPointerMove:](v5, "setIsPointerMove:", [v4 decodeBoolForKey:@"isPointerMove"]);
-    [v4 decodeDoubleForKey:@"pointerButtonMask"];
+    -[AXEventPointerInfoRepresentation setIsPointerMove:](v5, "setIsPointerMove:", [coderCopy decodeBoolForKey:@"isPointerMove"]);
+    [coderCopy decodeDoubleForKey:@"pointerButtonMask"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerButtonMask:?];
-    [v4 decodeDoubleForKey:@"pointerButtonNumber"];
+    [coderCopy decodeDoubleForKey:@"pointerButtonNumber"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerButtonNumber:?];
-    [v4 decodeDoubleForKey:@"pointerButtonClickCount"];
+    [coderCopy decodeDoubleForKey:@"pointerButtonClickCount"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerButtonClickCount:?];
-    [v4 decodeDoubleForKey:@"pointerButtonPressure"];
+    [coderCopy decodeDoubleForKey:@"pointerButtonPressure"];
     [(AXEventPointerInfoRepresentation *)v5 setPointerButtonPressure:?];
-    -[AXEventPointerInfoRepresentation setPointerIsAbsolute:](v5, "setPointerIsAbsolute:", [v4 decodeBoolForKey:@"pointerIsAbsolute"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceTypeHint"];
+    -[AXEventPointerInfoRepresentation setPointerIsAbsolute:](v5, "setPointerIsAbsolute:", [coderCopy decodeBoolForKey:@"pointerIsAbsolute"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceTypeHint"];
     [(AXEventPointerInfoRepresentation *)v5 setDeviceTypeHint:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scrollEvent"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scrollEvent"];
     [(AXEventPointerInfoRepresentation *)v5 setScrollEvent:v7];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(AXEventPointerInfoRepresentation);
   [(AXEventPointerInfoRepresentation *)self pointerX];
@@ -74,47 +74,47 @@
   [(AXEventPointerInfoRepresentation *)self pointerButtonPressure];
   [(AXEventPointerInfoRepresentation *)v5 setPointerButtonPressure:?];
   [(AXEventPointerInfoRepresentation *)v5 setPointerIsAbsolute:[(AXEventPointerInfoRepresentation *)self pointerIsAbsolute]];
-  v6 = [(AXEventPointerInfoRepresentation *)self deviceTypeHint];
-  v7 = [v6 copy];
+  deviceTypeHint = [(AXEventPointerInfoRepresentation *)self deviceTypeHint];
+  v7 = [deviceTypeHint copy];
   [(AXEventPointerInfoRepresentation *)v5 setDeviceTypeHint:v7];
 
-  v8 = [(AXEventPointerInfoRepresentation *)self scrollEvent];
-  v9 = [v8 copyWithZone:a3];
+  scrollEvent = [(AXEventPointerInfoRepresentation *)self scrollEvent];
+  v9 = [scrollEvent copyWithZone:zone];
   [(AXEventPointerInfoRepresentation *)v5 setScrollEvent:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AXEventPointerInfoRepresentation *)self pointerX];
-  [v4 encodeDouble:@"pointerX" forKey:?];
+  [coderCopy encodeDouble:@"pointerX" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerY];
-  [v4 encodeDouble:@"pointerY" forKey:?];
+  [coderCopy encodeDouble:@"pointerY" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerZ];
-  [v4 encodeDouble:@"pointerZ" forKey:?];
+  [coderCopy encodeDouble:@"pointerZ" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerAccelX];
-  [v4 encodeDouble:@"pointerAccelX" forKey:?];
+  [coderCopy encodeDouble:@"pointerAccelX" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerAccelY];
-  [v4 encodeDouble:@"pointerAccelY" forKey:?];
+  [coderCopy encodeDouble:@"pointerAccelY" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerAccelZ];
-  [v4 encodeDouble:@"pointerAccelZ" forKey:?];
-  [v4 encodeBool:-[AXEventPointerInfoRepresentation isPointerMove](self forKey:{"isPointerMove"), @"isPointerMove"}];
+  [coderCopy encodeDouble:@"pointerAccelZ" forKey:?];
+  [coderCopy encodeBool:-[AXEventPointerInfoRepresentation isPointerMove](self forKey:{"isPointerMove"), @"isPointerMove"}];
   [(AXEventPointerInfoRepresentation *)self pointerButtonMask];
-  [v4 encodeDouble:@"pointerButtonMask" forKey:?];
+  [coderCopy encodeDouble:@"pointerButtonMask" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerButtonNumber];
-  [v4 encodeDouble:@"pointerButtonNumber" forKey:?];
+  [coderCopy encodeDouble:@"pointerButtonNumber" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerButtonClickCount];
-  [v4 encodeDouble:@"pointerButtonClickCount" forKey:?];
+  [coderCopy encodeDouble:@"pointerButtonClickCount" forKey:?];
   [(AXEventPointerInfoRepresentation *)self pointerButtonPressure];
-  [v4 encodeDouble:@"pointerButtonPressure" forKey:?];
-  [v4 encodeBool:-[AXEventPointerInfoRepresentation pointerIsAbsolute](self forKey:{"pointerIsAbsolute"), @"pointerIsAbsolute"}];
-  v5 = [(AXEventPointerInfoRepresentation *)self deviceTypeHint];
-  [v4 encodeObject:v5 forKey:@"deviceTypeHint"];
+  [coderCopy encodeDouble:@"pointerButtonPressure" forKey:?];
+  [coderCopy encodeBool:-[AXEventPointerInfoRepresentation pointerIsAbsolute](self forKey:{"pointerIsAbsolute"), @"pointerIsAbsolute"}];
+  deviceTypeHint = [(AXEventPointerInfoRepresentation *)self deviceTypeHint];
+  [coderCopy encodeObject:deviceTypeHint forKey:@"deviceTypeHint"];
 
-  v6 = [(AXEventPointerInfoRepresentation *)self scrollEvent];
-  [v4 encodeObject:v6 forKey:@"scrollEvent"];
+  scrollEvent = [(AXEventPointerInfoRepresentation *)self scrollEvent];
+  [coderCopy encodeObject:scrollEvent forKey:@"scrollEvent"];
 }
 
 - (id)accessibilityEventRepresentationTabularDescription
@@ -149,21 +149,21 @@
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(AXEventPointerInfoRepresentation *)self pointerX];
     v7 = v6;
     [v5 pointerX];
     if (v7 == v8 && (-[AXEventPointerInfoRepresentation pointerY](self, "pointerY"), v10 = v9, [v5 pointerY], v10 == v11) && (-[AXEventPointerInfoRepresentation pointerZ](self, "pointerZ"), v13 = v12, objc_msgSend(v5, "pointerZ"), v13 == v14) && (-[AXEventPointerInfoRepresentation pointerAccelX](self, "pointerAccelX"), v16 = v15, objc_msgSend(v5, "pointerAccelX"), v16 == v17) && (-[AXEventPointerInfoRepresentation pointerAccelY](self, "pointerAccelY"), v19 = v18, objc_msgSend(v5, "pointerAccelY"), v19 == v20) && (-[AXEventPointerInfoRepresentation pointerAccelZ](self, "pointerAccelZ"), v22 = v21, objc_msgSend(v5, "pointerAccelZ"), v22 == v23) && (v24 = -[AXEventPointerInfoRepresentation isPointerMove](self, "isPointerMove"), v24 == objc_msgSend(v5, "isPointerMove")) && (-[AXEventPointerInfoRepresentation pointerButtonMask](self, "pointerButtonMask"), v26 = v25, objc_msgSend(v5, "pointerButtonMask"), v26 == v27) && (-[AXEventPointerInfoRepresentation pointerButtonNumber](self, "pointerButtonNumber"), v29 = v28, objc_msgSend(v5, "pointerButtonNumber"), v29 == v30) && (-[AXEventPointerInfoRepresentation pointerButtonClickCount](self, "pointerButtonClickCount"), v32 = v31, objc_msgSend(v5, "pointerButtonClickCount"), v32 == v33) && (-[AXEventPointerInfoRepresentation pointerButtonPressure](self, "pointerButtonPressure"), v35 = v34, objc_msgSend(v5, "pointerButtonPressure"), v35 == v36) && (v37 = -[AXEventPointerInfoRepresentation pointerIsAbsolute](self, "pointerIsAbsolute"), v37 == objc_msgSend(v5, "pointerIsAbsolute")))
     {
-      v40 = [(AXEventPointerInfoRepresentation *)self scrollEvent];
-      v41 = [v5 scrollEvent];
-      v38 = v40 == v41;
+      scrollEvent = [(AXEventPointerInfoRepresentation *)self scrollEvent];
+      scrollEvent2 = [v5 scrollEvent];
+      v38 = scrollEvent == scrollEvent2;
     }
 
     else
@@ -186,8 +186,8 @@
   v8.receiver = self;
   v8.super_class = AXEventPointerInfoRepresentation;
   v4 = [(AXEventPointerInfoRepresentation *)&v8 description];
-  v5 = [(AXEventPointerInfoRepresentation *)self accessibilityEventRepresentationTabularDescription];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  accessibilityEventRepresentationTabularDescription = [(AXEventPointerInfoRepresentation *)self accessibilityEventRepresentationTabularDescription];
+  v6 = [v3 stringWithFormat:@"%@ - %@", v4, accessibilityEventRepresentationTabularDescription];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInSSNSuffix
-- (PKPaymentSetupFieldBuiltInSSNSuffix)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInSSNSuffix)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInSSNSuffix
 
-- (PKPaymentSetupFieldBuiltInSSNSuffix)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInSSNSuffix)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldBuiltInSSNSuffix;
-  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"ssnSuffix" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"ssnSuffix" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_SsnSuffix.isa, 0);

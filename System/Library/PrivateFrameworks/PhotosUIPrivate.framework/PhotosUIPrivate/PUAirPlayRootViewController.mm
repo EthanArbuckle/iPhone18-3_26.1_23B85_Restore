@@ -1,55 +1,55 @@
 @interface PUAirPlayRootViewController
-- (void)setChildViewController:(id)a3 animated:(BOOL)a4;
+- (void)setChildViewController:(id)controller animated:(BOOL)animated;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
 
 @implementation PUAirPlayRootViewController
 
-- (void)setChildViewController:(id)a3 animated:(BOOL)a4
+- (void)setChildViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v8 = self->_childViewController;
-  if (v8 != v7)
+  if (v8 != controllerCopy)
   {
-    objc_storeStrong(&self->_childViewController, a3);
-    v9 = [(UIViewController *)v7 view];
-    v10 = [(UIViewController *)v8 view];
+    objc_storeStrong(&self->_childViewController, controller);
+    view = [(UIViewController *)controllerCopy view];
+    view2 = [(UIViewController *)v8 view];
     [(PUAirPlayRootViewController *)self _setChildViewConstraints:0];
     [(UIViewController *)v8 willMoveToParentViewController:0];
-    if (v7)
+    if (controllerCopy)
     {
-      [(PUAirPlayRootViewController *)self addChildViewController:v7];
-      v11 = [(PUAirPlayRootViewController *)self view];
-      [v11 addSubview:v9];
+      [(PUAirPlayRootViewController *)self addChildViewController:controllerCopy];
+      view3 = [(PUAirPlayRootViewController *)self view];
+      [view3 addSubview:view];
 
-      v12 = [(PUAirPlayRootViewController *)self view];
-      [v12 setNeedsUpdateConstraints];
+      view4 = [(PUAirPlayRootViewController *)self view];
+      [view4 setNeedsUpdateConstraints];
 
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__PUAirPlayRootViewController_setChildViewController_animated___block_invoke;
     aBlock[3] = &unk_1E7B7F1D0;
-    v13 = v10;
+    v13 = view2;
     v23 = v13;
     v24 = v8;
-    v25 = v7;
-    v26 = self;
+    v25 = controllerCopy;
+    selfCopy = self;
     v14 = _Block_copy(aBlock);
     v15 = v14;
-    if (v4)
+    if (animatedCopy)
     {
-      [v9 setAlpha:0.0];
+      [view setAlpha:0.0];
       v16 = MEMORY[0x1E69DD250];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __63__PUAirPlayRootViewController_setChildViewController_animated___block_invoke_2;
       v19[3] = &unk_1E7B80C38;
-      v20 = v9;
+      v20 = view;
       v21 = v13;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -94,29 +94,29 @@ void *__63__PUAirPlayRootViewController_setChildViewController_animated___block_
   v12.receiver = self;
   v12.super_class = PUAirPlayRootViewController;
   [(PUAirPlayRootViewController *)&v12 updateViewConstraints];
-  v3 = [(PUAirPlayRootViewController *)self childViewController];
-  v4 = [v3 view];
+  childViewController = [(PUAirPlayRootViewController *)self childViewController];
+  view = [childViewController view];
 
-  if (v4)
+  if (view)
   {
-    v5 = [v4 superview];
-    if (v5)
+    superview = [view superview];
+    if (superview)
     {
-      v6 = v5;
-      v7 = [(PUAirPlayRootViewController *)self _childViewConstraints];
+      v6 = superview;
+      _childViewConstraints = [(PUAirPlayRootViewController *)self _childViewConstraints];
 
-      if (!v7)
+      if (!_childViewConstraints)
       {
-        v8 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, v4, 0);
-        v9 = [MEMORY[0x1E695DF70] array];
+        v8 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, view, 0);
+        array = [MEMORY[0x1E695DF70] array];
         v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v8];
-        [v9 addObjectsFromArray:v10];
+        [array addObjectsFromArray:v10];
 
         v11 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v8];
-        [v9 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
 
-        [MEMORY[0x1E696ACD8] activateConstraints:v9];
-        [(PUAirPlayRootViewController *)self _setChildViewConstraints:v9];
+        [MEMORY[0x1E696ACD8] activateConstraints:array];
+        [(PUAirPlayRootViewController *)self _setChildViewConstraints:array];
       }
     }
   }
@@ -128,10 +128,10 @@ void *__63__PUAirPlayRootViewController_setChildViewController_animated___block_
   v6.super_class = PUAirPlayRootViewController;
   [(PUAirPlayRootViewController *)&v6 viewDidLoad];
   v3 = +[PUInterfaceManager currentTheme];
-  v4 = [v3 airPlayControllerBackgroundColor];
+  airPlayControllerBackgroundColor = [v3 airPlayControllerBackgroundColor];
 
-  v5 = [(PUAirPlayRootViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(PUAirPlayRootViewController *)self view];
+  [view setBackgroundColor:airPlayControllerBackgroundColor];
 }
 
 @end

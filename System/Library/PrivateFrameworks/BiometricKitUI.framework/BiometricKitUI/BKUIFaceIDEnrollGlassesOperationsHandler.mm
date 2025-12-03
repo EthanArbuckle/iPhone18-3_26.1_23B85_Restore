@@ -1,44 +1,44 @@
 @interface BKUIFaceIDEnrollGlassesOperationsHandler
 - (BOOL)showAddGlassesButton;
-- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)a3;
+- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)action;
 @end
 
 @implementation BKUIFaceIDEnrollGlassesOperationsHandler
 
-- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)a3
+- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)action
 {
-  v4 = a3;
-  [(BKUIFaceIDEnrollOperationsHandler *)self setMatchUserThenDoSingleEnrollmentCompletion:v4];
+  actionCopy = action;
+  [(BKUIFaceIDEnrollOperationsHandler *)self setMatchUserThenDoSingleEnrollmentCompletion:actionCopy];
   v5 = objc_alloc_init(BKUIMatchVerifyPearlOperation);
   [(BKUIFaceIDEnrollOperationsHandler *)self setMatchOperation:v5];
 
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  v7 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-  [v7 setOperationsDelegate:v6];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+  [matchOperation setOperationsDelegate:operationsDelegate];
 
   v19 = 0;
-  LOBYTE(v7) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v19];
+  LOBYTE(matchOperation) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v19];
   v8 = v19;
-  if (v7)
+  if (matchOperation)
   {
     if ([(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration]== 4)
     {
-      v9 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-      [v9 setState:3 animated:1];
+      operationsDelegate2 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+      [operationsDelegate2 setState:3 animated:1];
     }
 
     objc_initWeak(&location, self);
-    v10 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-    v11 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
-    v12 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
-    v13 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
+    matchOperation2 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+    device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+    identity = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+    enrollmentConfiguration = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __121__BKUIFaceIDEnrollGlassesOperationsHandler_matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction___block_invoke;
     v15[3] = &unk_278D09A10;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
-    [v10 startMatchOperationWithDevice:v11 identity:v12 credential:v8 withConfiguration:v13 matchOperationActionBlock:v15];
+    v16 = actionCopy;
+    [matchOperation2 startMatchOperationWithDevice:device identity:identity credential:v8 withConfiguration:enrollmentConfiguration matchOperationActionBlock:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -125,27 +125,27 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
-  if ([v3 canAddPeriocularEnrollment])
+  identity = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+  if ([identity canAddPeriocularEnrollment])
   {
-    v4 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
-    if ([v4 hasPeriocularEnrollment])
+    identity2 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+    if ([identity2 hasPeriocularEnrollment])
     {
-      v5 = [(BKUIFaceIDEnrollOperationsHandler *)self glassesFound];
+      glassesFound = [(BKUIFaceIDEnrollOperationsHandler *)self glassesFound];
     }
 
     else
     {
-      v5 = 0;
+      glassesFound = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    glassesFound = 0;
   }
 
-  return v5;
+  return glassesFound;
 }
 
 @end

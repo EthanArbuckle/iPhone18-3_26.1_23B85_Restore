@@ -1,10 +1,10 @@
 @interface ACUISAddAccountHelper
-+ (id)dataclassConfigurationControllerForAccount:(id)a3 name:(id)a4 completion:(id)a5;
-+ (void)showAlternateSetupControllerForAccount:(id)a3 username:(id)a4 from:(id)a5 completion:(id)a6;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setupViewControllerDidDismiss:(id)a3;
++ (id)dataclassConfigurationControllerForAccount:(id)account name:(id)name completion:(id)completion;
++ (void)showAlternateSetupControllerForAccount:(id)account username:(id)username from:(id)from completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setupViewControllerDidDismiss:(id)dismiss;
 - (void)signInControllerDidCancel;
-- (void)signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation ACUISAddAccountHelper
@@ -85,11 +85,11 @@ void __115__ACUISAddAccountHelper_showAddSheetForAccountType_onController_withAc
   }
 }
 
-- (void)signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = _ACUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -98,7 +98,7 @@ void __115__ACUISAddAccountHelper_showAddSheetForAccountType_onController_withAc
     v14 = 1024;
     v15 = 222;
     *buf = 136315906;
-    if (v4)
+    if (successCopy)
     {
       v8 = @"YES";
     }
@@ -106,7 +106,7 @@ void __115__ACUISAddAccountHelper_showAddSheetForAccountType_onController_withAc
     v16 = 2114;
     v17 = v8;
     v18 = 2112;
-    v19 = v6;
+    v19 = errorCopy;
     _os_log_impl(&dword_23DCDB000, v7, OS_LOG_TYPE_DEFAULT, "%s (%d) ACUISAddAccountHelper: signInControllerDidCompleteWithSuccess: %{public}@ error: %@", buf, 0x26u);
   }
 
@@ -166,7 +166,7 @@ uint64_t __50__ACUISAddAccountHelper_signInControllerDidCancel__block_invoke(uin
   return result;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = _ACUILogSystem();
@@ -188,13 +188,13 @@ uint64_t __50__ACUISAddAccountHelper_signInControllerDidCancel__block_invoke(uin
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)showAlternateSetupControllerForAccount:(id)a3 username:(id)a4 from:(id)a5 completion:(id)a6
++ (void)showAlternateSetupControllerForAccount:(id)account username:(id)username from:(id)from completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  accountCopy = account;
+  completionCopy = completion;
+  fromCopy = from;
+  usernameCopy = username;
   v13 = _ACUILogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,20 +203,20 @@ uint64_t __50__ACUISAddAccountHelper_signInControllerDidCancel__block_invoke(uin
     v17 = 1024;
     v18 = 254;
     v19 = 2112;
-    v20 = v9;
+    v20 = accountCopy;
     _os_log_impl(&dword_23DCDB000, v13, OS_LOG_TYPE_DEFAULT, "%s (%d) ACUISAddAccountHelper: showAlternateSetupControllerForAccount %@", &v15, 0x1Cu);
   }
 
-  [MEMORY[0x277CE8598] showAlternateCreationControllerForAccountType:v9 username:v12 fromViewController:v11 specifier:0 completion:v10];
+  [MEMORY[0x277CE8598] showAlternateCreationControllerForAccountType:accountCopy username:usernameCopy fromViewController:fromCopy specifier:0 completion:completionCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dataclassConfigurationControllerForAccount:(id)a3 name:(id)a4 completion:(id)a5
++ (id)dataclassConfigurationControllerForAccount:(id)account name:(id)name completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  nameCopy = name;
+  accountCopy = account;
   v10 = _ACUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,14 +227,14 @@ uint64_t __50__ACUISAddAccountHelper_signInControllerDidCancel__block_invoke(uin
     _os_log_impl(&dword_23DCDB000, v10, OS_LOG_TYPE_DEFAULT, "%s (%d) ACUISAddAccountHelper: dataclass onfig controller called", &v14, 0x12u);
   }
 
-  v11 = [MEMORY[0x277CE8598] dataclassConfigurationControllerForAccount:v9 name:v8 specifier:0 completion:v7];
+  v11 = [MEMORY[0x277CE8598] dataclassConfigurationControllerForAccount:accountCopy name:nameCopy specifier:0 completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)setupViewControllerDidDismiss:(id)a3
+- (void)setupViewControllerDidDismiss:(id)dismiss
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = _ACUILogSystem();

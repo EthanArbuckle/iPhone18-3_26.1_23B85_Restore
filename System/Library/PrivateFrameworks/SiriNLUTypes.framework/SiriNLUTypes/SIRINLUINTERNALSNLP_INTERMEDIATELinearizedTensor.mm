@@ -1,41 +1,41 @@
 @interface SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)numericalizedFeatureAtIndex:(unint64_t)a3;
-- (unsigned)shapeAtIndex:(unint64_t)a3;
-- (void)addFeature:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)numericalizedFeatureAtIndex:(unint64_t)index;
+- (unsigned)shapeAtIndex:(unint64_t)index;
+- (void)addFeature:(id)feature;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 shapesCount];
-  if (v5)
+  fromCopy = from;
+  shapesCount = [fromCopy shapesCount];
+  if (shapesCount)
   {
-    v6 = v5;
+    v6 = shapesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor addShape:](self, "addShape:", [v4 shapeAtIndex:i]);
+      -[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor addShape:](self, "addShape:", [fromCopy shapeAtIndex:i]);
     }
   }
 
-  v8 = [v4 numericalizedFeaturesCount];
-  if (v8)
+  numericalizedFeaturesCount = [fromCopy numericalizedFeaturesCount];
+  if (numericalizedFeaturesCount)
   {
-    v9 = v8;
+    v9 = numericalizedFeaturesCount;
     for (j = 0; j != v9; ++j)
     {
-      -[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor addNumericalizedFeature:](self, "addNumericalizedFeature:", [v4 numericalizedFeatureAtIndex:j]);
+      -[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor addNumericalizedFeature:](self, "addNumericalizedFeature:", [fromCopy numericalizedFeatureAtIndex:j]);
     }
   }
 
@@ -43,7 +43,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v4[7];
+  v11 = fromCopy[7];
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -79,13 +79,13 @@
   return v4 ^ [(NSMutableArray *)self->_features hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
   {
     features = self->_features;
-    if (features | v4[7])
+    if (features | equalCopy[7])
     {
       v6 = [(NSMutableArray *)features isEqual:?];
     }
@@ -104,10 +104,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
   v16 = 0u;
@@ -130,7 +130,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addFeature:v11];
 
         ++v10;
@@ -147,57 +147,57 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self shapesCount])
   {
-    [v14 clearShapes];
-    v4 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self shapesCount];
-    if (v4)
+    [toCopy clearShapes];
+    shapesCount = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self shapesCount];
+    if (shapesCount)
     {
-      v5 = v4;
+      v5 = shapesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v14 addShape:{-[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor shapeAtIndex:](self, "shapeAtIndex:", i)}];
+        [toCopy addShape:{-[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor shapeAtIndex:](self, "shapeAtIndex:", i)}];
       }
     }
   }
 
   if ([(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self numericalizedFeaturesCount])
   {
-    [v14 clearNumericalizedFeatures];
-    v7 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self numericalizedFeaturesCount];
-    if (v7)
+    [toCopy clearNumericalizedFeatures];
+    numericalizedFeaturesCount = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self numericalizedFeaturesCount];
+    if (numericalizedFeaturesCount)
     {
-      v8 = v7;
+      v8 = numericalizedFeaturesCount;
       for (j = 0; j != v8; ++j)
       {
-        [v14 addNumericalizedFeature:{-[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor numericalizedFeatureAtIndex:](self, "numericalizedFeatureAtIndex:", j)}];
+        [toCopy addNumericalizedFeature:{-[SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor numericalizedFeatureAtIndex:](self, "numericalizedFeatureAtIndex:", j)}];
       }
     }
   }
 
   if ([(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self featuresCount])
   {
-    [v14 clearFeatures];
-    v10 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self featuresCount];
-    if (v10)
+    [toCopy clearFeatures];
+    featuresCount = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self featuresCount];
+    if (featuresCount)
     {
-      v11 = v10;
+      v11 = featuresCount;
       for (k = 0; k != v11; ++k)
       {
         v13 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self featureAtIndex:k];
-        [v14 addFeature:v13];
+        [toCopy addFeature:v13];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_shapes.count)
   {
     v5 = 0;
@@ -258,20 +258,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v4 forKey:@"shape"];
+  [dictionary setObject:v4 forKey:@"shape"];
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"numericalized_feature"];
+  [dictionary setObject:v5 forKey:@"numericalized_feature"];
 
   features = self->_features;
   if (features)
   {
-    [v3 setObject:features forKey:@"feature"];
+    [dictionary setObject:features forKey:@"feature"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -280,60 +280,60 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor;
   v4 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)&v8 description];
-  v5 = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALSNLP_INTERMEDIATELinearizedTensor *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addFeature:(id)a3
+- (void)addFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   features = self->_features;
-  v8 = v4;
+  v8 = featureCopy;
   if (!features)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_features;
     self->_features = v6;
 
-    v4 = v8;
+    featureCopy = v8;
     features = self->_features;
   }
 
-  [(NSMutableArray *)features addObject:v4];
+  [(NSMutableArray *)features addObject:featureCopy];
 }
 
-- (unsigned)numericalizedFeatureAtIndex:(unint64_t)a3
+- (unsigned)numericalizedFeatureAtIndex:(unint64_t)index
 {
   p_numericalizedFeatures = &self->_numericalizedFeatures;
   count = self->_numericalizedFeatures.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_numericalizedFeatures->list[a3];
+  return p_numericalizedFeatures->list[index];
 }
 
-- (unsigned)shapeAtIndex:(unint64_t)a3
+- (unsigned)shapeAtIndex:(unint64_t)index
 {
   p_shapes = &self->_shapes;
   count = self->_shapes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_shapes->list[a3];
+  return p_shapes->list[index];
 }
 
 - (void)dealloc

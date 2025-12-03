@@ -1,17 +1,17 @@
 @interface PFStoryConcreteTransitionTable
-- (PFStoryConcreteTransitionTable)initWithTransitionsByColorGrade:(id)a3 defaultFrequencies:(id)a4;
-- (id)transitionsForColorGrade:(id)a3 songPace:(int64_t)a4;
+- (PFStoryConcreteTransitionTable)initWithTransitionsByColorGrade:(id)grade defaultFrequencies:(id)frequencies;
+- (id)transitionsForColorGrade:(id)grade songPace:(int64_t)pace;
 @end
 
 @implementation PFStoryConcreteTransitionTable
 
-- (id)transitionsForColorGrade:(id)a3 songPace:(int64_t)a4
+- (id)transitionsForColorGrade:(id)grade songPace:(int64_t)pace
 {
   v7 = self->_defaultFrequencies;
-  v8 = [(NSDictionary *)self->_transitionsByColorGrade objectForKeyedSubscript:a3];
+  v8 = [(NSDictionary *)self->_transitionsByColorGrade objectForKeyedSubscript:grade];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:pace];
     v10 = [v8 objectForKeyedSubscript:v9];
 
     if (v10)
@@ -25,15 +25,15 @@
   return v7;
 }
 
-- (PFStoryConcreteTransitionTable)initWithTransitionsByColorGrade:(id)a3 defaultFrequencies:(id)a4
+- (PFStoryConcreteTransitionTable)initWithTransitionsByColorGrade:(id)grade defaultFrequencies:(id)frequencies
 {
-  v7 = a3;
-  v8 = a4;
+  gradeCopy = grade;
+  frequenciesCopy = frequencies;
   v15.receiver = self;
   v15.super_class = PFStoryConcreteTransitionTable;
   v9 = [(PFStoryConcreteTransitionTable *)&v15 init];
-  objc_storeStrong(&v9->_transitionsByColorGrade, a3);
-  objc_storeStrong(&v9->_defaultFrequencies, a4);
+  objc_storeStrong(&v9->_transitionsByColorGrade, grade);
+  objc_storeStrong(&v9->_defaultFrequencies, frequencies);
   if (!v9->_defaultFrequencies)
   {
     v10 = 9;

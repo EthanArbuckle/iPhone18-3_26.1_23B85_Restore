@@ -1,6 +1,6 @@
 @interface FlowSample
 + (id)_cellRelay;
-+ (void)acquireNominalCeilingValuesForCellDL:(double *)a3 andUL:(double *)a4;
++ (void)acquireNominalCeilingValuesForCellDL:(double *)l andUL:(double *)uL;
 - (double)averageCellRxThroughput;
 - (double)averageCellTxThroughput;
 - (double)averageRxThroughput;
@@ -22,8 +22,8 @@
 - (double)minWiFiRxThroughput;
 - (double)minWiFiTxThroughput;
 - (id)description;
-- (void)accumulateFrom:(id)a3;
-- (void)acquireCeilingValuesForCellFlow:(id)a3;
+- (void)accumulateFrom:(id)from;
+- (void)acquireCeilingValuesForCellFlow:(id)flow;
 @end
 
 @implementation FlowSample
@@ -80,10 +80,10 @@
 
 - (double)averageRxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedRxBytes];
+  totalObservedRxBytes = [(FlowSample *)self totalObservedRxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedRxBytes, elapsedTime);
 }
 
 - (double)maxRxThroughput
@@ -136,10 +136,10 @@
 
 - (double)averageTxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedTxBytes];
+  totalObservedTxBytes = [(FlowSample *)self totalObservedTxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedTxBytes, elapsedTime);
 }
 
 - (double)maxTxThroughput
@@ -197,10 +197,10 @@
 
 - (double)averageCellRxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedCellRxBytes];
+  totalObservedCellRxBytes = [(FlowSample *)self totalObservedCellRxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedCellRxBytes, elapsedTime);
 }
 
 - (double)maxCellRxThroughput
@@ -227,10 +227,10 @@
 
 - (double)averageCellTxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedCellTxBytes];
+  totalObservedCellTxBytes = [(FlowSample *)self totalObservedCellTxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedCellTxBytes, elapsedTime);
 }
 
 - (double)maxCellTxThroughput
@@ -257,10 +257,10 @@
 
 - (double)averageWiFiRxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedWiFiRxBytes];
+  totalObservedWiFiRxBytes = [(FlowSample *)self totalObservedWiFiRxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedWiFiRxBytes, elapsedTime);
 }
 
 - (double)maxWiFiRxThroughput
@@ -287,10 +287,10 @@
 
 - (double)averageWiFiTxThroughput
 {
-  v3 = [(FlowSample *)self totalObservedWiFiTxBytes];
+  totalObservedWiFiTxBytes = [(FlowSample *)self totalObservedWiFiTxBytes];
   elapsedTime = self->_elapsedTime;
 
-  return mbpsThroughput(v3, elapsedTime);
+  return mbpsThroughput(totalObservedWiFiTxBytes, elapsedTime);
 }
 
 - (double)maxWiFiTxThroughput
@@ -304,16 +304,16 @@
   return result;
 }
 
-- (void)accumulateFrom:(id)a3
+- (void)accumulateFrom:(id)from
 {
-  v17 = a3;
-  [v17 elapsedTime];
+  fromCopy = from;
+  [fromCopy elapsedTime];
   self->_elapsedTime = v4 + self->_elapsedTime;
-  self->_totalObservedCellRxBytes += [v17 totalObservedCellRxBytes];
-  self->_totalObservedCellTxBytes += [v17 totalObservedCellTxBytes];
-  self->_totalObservedWiFiRxBytes += [v17 totalObservedWiFiRxBytes];
-  self->_totalObservedWiFiTxBytes += [v17 totalObservedWiFiTxBytes];
-  [v17 maxCellRxThroughput];
+  self->_totalObservedCellRxBytes += [fromCopy totalObservedCellRxBytes];
+  self->_totalObservedCellTxBytes += [fromCopy totalObservedCellTxBytes];
+  self->_totalObservedWiFiRxBytes += [fromCopy totalObservedWiFiRxBytes];
+  self->_totalObservedWiFiTxBytes += [fromCopy totalObservedWiFiTxBytes];
+  [fromCopy maxCellRxThroughput];
   if (v5 > self->_maxCellRxThroughput)
   {
     self->_maxCellRxThroughput = v5;
@@ -324,7 +324,7 @@
     self->_minCellRxThroughput = v5;
   }
 
-  [v17 maxWiFiRxThroughput];
+  [fromCopy maxWiFiRxThroughput];
   if (v6 > self->_maxWiFiRxThroughput)
   {
     self->_maxWiFiRxThroughput = v6;
@@ -335,7 +335,7 @@
     self->_minWiFiRxThroughput = v6;
   }
 
-  [v17 maxCellTxThroughput];
+  [fromCopy maxCellTxThroughput];
   if (v7 > self->_maxCellTxThroughput)
   {
     self->_maxCellTxThroughput = v7;
@@ -346,7 +346,7 @@
     self->_minCellTxThroughput = v7;
   }
 
-  [v17 maxWiFiTxThroughput];
+  [fromCopy maxWiFiTxThroughput];
   if (v8 > self->_maxWiFiTxThroughput)
   {
     self->_maxWiFiTxThroughput = v8;
@@ -357,23 +357,23 @@
     self->_minWiFiTxThroughput = v8;
   }
 
-  [v17 elapsedTime];
+  [fromCopy elapsedTime];
   v9 = 1.0;
   if (v10 > 0.0)
   {
     elapsedTime = self->_elapsedTime;
-    [v17 elapsedTime];
+    [fromCopy elapsedTime];
     *&v12 = elapsedTime / v12;
     v9 = *&v12;
   }
 
-  [v17 ceilingCellRxThroughput];
+  [fromCopy ceilingCellRxThroughput];
   self->_ceilingCellRxThroughput = self->_ceilingCellRxThroughput + (v13 - self->_ceilingCellRxThroughput) / v9;
-  [v17 ceilingWiFiRxThroughput];
+  [fromCopy ceilingWiFiRxThroughput];
   self->_ceilingWiFiRxThroughput = self->_ceilingWiFiRxThroughput + (v14 - self->_ceilingWiFiRxThroughput) / v9;
-  [v17 ceilingCellTxThroughput];
+  [fromCopy ceilingCellTxThroughput];
   self->_ceilingCellTxThroughput = self->_ceilingCellTxThroughput + (v15 - self->_ceilingCellTxThroughput) / v9;
-  [v17 ceilingWiFiTxThroughput];
+  [fromCopy ceilingWiFiTxThroughput];
   self->_ceilingWiFiTxThroughput = self->_ceilingWiFiTxThroughput + (v16 - self->_ceilingWiFiTxThroughput) / v9;
 }
 
@@ -392,21 +392,21 @@
   return v2;
 }
 
-+ (void)acquireNominalCeilingValuesForCellDL:(double *)a3 andUL:(double *)a4
++ (void)acquireNominalCeilingValuesForCellDL:(double *)l andUL:(double *)uL
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (l && uL)
   {
     v6 = +[FlowSample _cellRelay];
     if ([v6 nrFrequencyBand] == 2)
     {
-      *a3 = 1549.0;
+      *l = 1549.0;
       v7 = 0x4054800000000000;
     }
 
     else if ([v6 nrFrequencyBand] == 1)
     {
-      *a3 = 114.0;
+      *l = 114.0;
       v7 = 0x4038000000000000;
     }
 
@@ -414,8 +414,8 @@
     {
       if ([v6 radioTechnology] != 2 && objc_msgSend(v6, "radioTechnology") != 11 && objc_msgSend(v6, "radioTechnology") != 10)
       {
-        *a3 = 0.0;
-        *a4 = 0.0;
+        *l = 0.0;
+        *uL = 0.0;
         v10 = flowScrutinyLogHandle;
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
         {
@@ -430,11 +430,11 @@
         goto LABEL_14;
       }
 
-      *a3 = 43.0;
+      *l = 43.0;
       v7 = 0x4022000000000000;
     }
 
-    *a4 = v7;
+    *uL = v7;
 LABEL_14:
 
     goto LABEL_15;
@@ -444,9 +444,9 @@ LABEL_14:
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
   {
     v12 = 134218240;
-    *v13 = a3;
+    *v13 = l;
     *&v13[8] = 2048;
-    v14 = a4;
+    uLCopy = uL;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Wrong input arguments dlTput:%p ulTput:%p", &v12, 0x16u);
   }
 
@@ -454,10 +454,10 @@ LABEL_15:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acquireCeilingValuesForCellFlow:(id)a3
+- (void)acquireCeilingValuesForCellFlow:(id)flow
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flowCopy = flow;
   [FlowSample acquireNominalCeilingValuesForCellDL:&self->_ceilingCellRxThroughput andUL:&self->_ceilingCellTxThroughput];
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
@@ -469,7 +469,7 @@ LABEL_15:
     v11 = 2048;
     v12 = ceilingCellTxThroughput;
     v13 = 2112;
-    v14 = v4;
+    v14 = flowCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Using nominal DL tput %.2f and UL tput %.2f for flow: %@", &v9, 0x20u);
   }
 

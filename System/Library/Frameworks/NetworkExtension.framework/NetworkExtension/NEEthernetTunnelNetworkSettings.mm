@@ -1,33 +1,33 @@
 @interface NEEthernetTunnelNetworkSettings
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEEthernetTunnelNetworkSettings)initWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEEthernetTunnelNetworkSettings)initWithCoder:(id)coder;
 - (NEEthernetTunnelNetworkSettings)initWithTunnelRemoteAddress:(NSString *)address ethernetAddress:(NSString *)ethernetAddress mtu:(NSInteger)mtu;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEEthernetTunnelNetworkSettings
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v13.receiver = self;
   v13.super_class = NEEthernetTunnelNetworkSettings;
-  v5 = [(NEPacketTunnelNetworkSettings *)&v13 checkValidityAndCollectErrors:v4];
-  v6 = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
+  v5 = [(NEPacketTunnelNetworkSettings *)&v13 checkValidityAndCollectErrors:errorsCopy];
+  ethernetAddress = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
 
-  if (!v6)
+  if (!ethernetAddress)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
-  v7 = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
-  v8 = createEthernetAddressFromString(v7);
+  ethernetAddress2 = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
+  v8 = createEthernetAddressFromString(ethernetAddress2);
 
   if (!v8)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
@@ -35,52 +35,52 @@
 
   if (!v9)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
   v10 = [(NEPacketTunnelNetworkSettings *)self MTU];
-  v11 = [v10 unsignedIntValue];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  if (!v11)
+  if (!unsignedIntValue)
   {
-    [NEConfiguration addError:the MTU must be greater than 0"") toList:v4];
+    [NEConfiguration addError:the MTU must be greater than 0"") toList:errorsCopy];
     v5 = 0;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NEEthernetTunnelNetworkSettings;
-  v4 = [(NEPacketTunnelNetworkSettings *)&v7 copyWithZone:a3];
-  v5 = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
-  [v4 setEthernetAddress:v5];
+  v4 = [(NEPacketTunnelNetworkSettings *)&v7 copyWithZone:zone];
+  ethernetAddress = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress];
+  [v4 setEthernetAddress:ethernetAddress];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NEEthernetTunnelNetworkSettings;
-  v4 = a3;
-  [(NEPacketTunnelNetworkSettings *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NEPacketTunnelNetworkSettings *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NEEthernetTunnelNetworkSettings *)self ethernetAddress:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"ethernetAddress"];
+  [coderCopy encodeObject:v5 forKey:@"ethernetAddress"];
 }
 
-- (NEEthernetTunnelNetworkSettings)initWithCoder:(id)a3
+- (NEEthernetTunnelNetworkSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NEEthernetTunnelNetworkSettings;
-  v5 = [(NEPacketTunnelNetworkSettings *)&v9 initWithCoder:v4];
+  v5 = [(NEPacketTunnelNetworkSettings *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ethernetAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ethernetAddress"];
     ethernetAddress = v5->_ethernetAddress;
     v5->_ethernetAddress = v6;
   }

@@ -1,33 +1,33 @@
 @interface PKSimplePrimaryButtonCellView
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSimplePrimaryButtonCellView:(id)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSimplePrimaryButtonCellView)initWithFrame:(CGRect)a3;
-- (void)_updateContentAnimated:(BOOL)a3;
-- (void)_updateWithTraitCollection:(id)a3 previousCollection:(id)a4;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSimplePrimaryButtonCellView:(id)view;
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSimplePrimaryButtonCellView)initWithFrame:(CGRect)frame;
+- (void)_updateContentAnimated:(BOOL)animated;
+- (void)_updateWithTraitCollection:(id)collection previousCollection:(id)previousCollection;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3 animated:(BOOL)a4;
+- (void)performBatchUpdates:(id)updates animated:(BOOL)animated;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3 animated:(BOOL)a4;
-- (void)setTitleColor:(id)a3 animated:(BOOL)a4;
+- (void)setTitle:(id)title animated:(BOOL)animated;
+- (void)setTitleColor:(id)color animated:(BOOL)animated;
 @end
 
 @implementation PKSimplePrimaryButtonCellView
 
-- (PKSimplePrimaryButtonCellView)initWithFrame:(CGRect)a3
+- (PKSimplePrimaryButtonCellView)initWithFrame:(CGRect)frame
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = PKSimplePrimaryButtonCellView;
-  v3 = [(PKSimplePrimaryButtonCellView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSimplePrimaryButtonCellView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 pkui_setMaskType:3];
-    v5 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKSimplePrimaryButtonCellView *)v4 setBackgroundColor:v5];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKSimplePrimaryButtonCellView *)v4 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
     v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -36,8 +36,8 @@
 
     [(UILabel *)v4->_titleView setTextAlignment:1];
     [(PKSimplePrimaryButtonCellView *)v4 addSubview:v4->_titleView];
-    v9 = [(PKSimplePrimaryButtonCellView *)v4 traitCollection];
-    [(PKSimplePrimaryButtonCellView *)v4 _updateWithTraitCollection:v9 previousCollection:0];
+    traitCollection = [(PKSimplePrimaryButtonCellView *)v4 traitCollection];
+    [(PKSimplePrimaryButtonCellView *)v4 _updateWithTraitCollection:traitCollection previousCollection:0];
 
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
@@ -64,8 +64,8 @@ void __47__PKSimplePrimaryButtonCellView_initWithFrame___block_invoke(uint64_t a
   v4[3] = &unk_1E8010970;
   v4[4] = self;
   [(PKSimplePrimaryButtonCellView *)self performBatchUpdates:v4 animated:0];
-  v3 = [(UILabel *)self->_titleView layer];
-  [v3 removeAllAnimations];
+  layer = [(UILabel *)self->_titleView layer];
+  [layer removeAllAnimations];
 }
 
 uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint64_t a1)
@@ -76,9 +76,9 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
   return [v2 setTitleColor:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKSimplePrimaryButtonCellView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKSimplePrimaryButtonCellView *)self _layoutWithBounds:0 applyLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -93,13 +93,13 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
   [(PKSimplePrimaryButtonCellView *)self _layoutWithBounds:1 applyLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 applyLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds applyLayout:(BOOL)layout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  layoutCopy = layout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
   v8 = _UISolariumFeatureFlagEnabled();
   v9 = _UISolariumFeatureFlagEnabled();
   v10 = 32.0;
@@ -138,7 +138,7 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
   v15 = v14;
   CGRectDivide(remainder, &slice, &remainder, v14, CGRectMinYEdge);
   verticalPadding = self->_verticalPadding;
-  if (v4)
+  if (layoutCopy)
   {
     PKSizeAlignedInRect();
     PKRectRoundToPixel(v17, v18, v19, v20, v21);
@@ -152,46 +152,46 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
   return result;
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(PKSimplePrimaryButtonCellView *)self layoutIfNeeded];
   self->_animated = 0;
 }
 
-- (void)performBatchUpdates:(id)a3 animated:(BOOL)a4
+- (void)performBatchUpdates:(id)updates animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  updatesCopy = updates;
+  if (updatesCopy)
   {
-    v8 = v6;
-    if (v4)
+    v8 = updatesCopy;
+    if (animatedCopy)
     {
       [(PKSimplePrimaryButtonCellView *)self layoutIfNeeded];
-      v6 = v8;
+      updatesCopy = v8;
     }
 
     self->_deferringUpdate = 1;
-    v6[2]();
+    updatesCopy[2]();
     self->_deferringUpdate = 0;
     deferredSubviewUpdate = self->_deferredSubviewUpdate;
     self->_deferredSubviewUpdate = 0;
     if (deferredSubviewUpdate)
     {
-      [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:v4];
+      [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:animatedCopy];
     }
 
     else
     {
-      [(PKSimplePrimaryButtonCellView *)self layoutIfNeededAnimated:v4];
+      [(PKSimplePrimaryButtonCellView *)self layoutIfNeededAnimated:animatedCopy];
     }
 
-    v6 = v8;
+    updatesCopy = v8;
   }
 }
 
-- (void)_updateContentAnimated:(BOOL)a3
+- (void)_updateContentAnimated:(BOOL)animated
 {
   if (self->_deferringUpdate)
   {
@@ -200,7 +200,7 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
 
   else
   {
-    if (a3)
+    if (animated)
     {
       [(PKSimplePrimaryButtonCellView *)self layoutIfNeededAnimated:1];
     }
@@ -215,15 +215,15 @@ uint64_t __48__PKSimplePrimaryButtonCellView_prepareForReuse__block_invoke(uint6
 
     else
     {
-      v8 = [MEMORY[0x1E69DC888] labelColor];
-      __56__PKSimplePrimaryButtonCellView__updateContentAnimated___block_invoke(titleView, title, v8);
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      __56__PKSimplePrimaryButtonCellView__updateContentAnimated___block_invoke(titleView, title, labelColor);
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__PKSimplePrimaryButtonCellView__updateContentAnimated___block_invoke_2;
     aBlock[3] = &__block_descriptor_33_e19_v20__0__UIView_8B16l;
-    v11 = a3;
+    animatedCopy = animated;
     v9 = _Block_copy(aBlock);
     v9[2](v9, self->_titleView, self->_title != 0);
     [(PKSimplePrimaryButtonCellView *)self setNeedsLayout];
@@ -259,12 +259,12 @@ void __56__PKSimplePrimaryButtonCellView__updateContentAnimated___block_invoke_2
   }
 }
 
-- (void)setTitle:(id)a3 animated:(BOOL)a4
+- (void)setTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  titleCopy = title;
   v8 = self->_title;
-  v9 = v7;
+  v9 = titleCopy;
   v11 = v9;
   if (v8 == v9)
   {
@@ -283,44 +283,44 @@ void __56__PKSimplePrimaryButtonCellView__updateContentAnimated___block_invoke_2
   if (!v10)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
-    [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:v4];
+    objc_storeStrong(&self->_title, title);
+    [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:animatedCopy];
   }
 
 LABEL_9:
 }
 
-- (void)setTitleColor:(id)a3 animated:(BOOL)a4
+- (void)setTitleColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
-    [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:v4];
+    objc_storeStrong(&self->_titleColor, color);
+    [(PKSimplePrimaryButtonCellView *)self _updateContentAnimated:animatedCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSimplePrimaryButtonCellView *)self isEqualToSimplePrimaryButtonCellView:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSimplePrimaryButtonCellView *)self isEqualToSimplePrimaryButtonCellView:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSimplePrimaryButtonCellView:(id)a3
+- (BOOL)isEqualToSimplePrimaryButtonCellView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (PKEqualObjects())
   {
     v4 = PKEqualObjects();
@@ -334,15 +334,15 @@ LABEL_9:
   return v4;
 }
 
-- (void)_updateWithTraitCollection:(id)a3 previousCollection:(id)a4
+- (void)_updateWithTraitCollection:(id)collection previousCollection:(id)previousCollection
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || ([v6 preferredContentSizeCategory], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "preferredContentSizeCategory"), v9 = objc_claimAutoreleasedReturnValue(), v10 = UIContentSizeCategoryCompareToCategory(v8, v9), v9, v8, v10))
+  collectionCopy = collection;
+  previousCollectionCopy = previousCollection;
+  v7 = previousCollectionCopy;
+  if (!previousCollectionCopy || ([previousCollectionCopy preferredContentSizeCategory], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(collectionCopy, "preferredContentSizeCategory"), v9 = objc_claimAutoreleasedReturnValue(), v10 = UIContentSizeCategoryCompareToCategory(v8, v9), v9, v8, v10))
   {
-    v11 = [v16 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v13 = 4;
     if (IsAccessibilityCategory)

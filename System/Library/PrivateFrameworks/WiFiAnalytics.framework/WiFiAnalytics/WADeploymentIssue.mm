@@ -1,27 +1,27 @@
 @interface WADeploymentIssue
-+ (id)issueWithType:(unint64_t)a3 ssid:(id)a4;
++ (id)issueWithType:(unint64_t)type ssid:(id)ssid;
 - (unint64_t)hash;
 @end
 
 @implementation WADeploymentIssue
 
-+ (id)issueWithType:(unint64_t)a3 ssid:(id)a4
++ (id)issueWithType:(unint64_t)type ssid:(id)ssid
 {
-  v5 = a4;
+  ssidCopy = ssid;
   v6 = objc_alloc_init(WADeploymentIssue);
-  [(WADeploymentIssue *)v6 setType:a3];
-  [(WADeploymentIssue *)v6 setSsid:v5];
+  [(WADeploymentIssue *)v6 setType:type];
+  [(WADeploymentIssue *)v6 setSsid:ssidCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(WADeploymentIssue *)self ssid];
-  v4 = [v3 hash];
-  v5 = [(WADeploymentIssue *)self type];
+  ssid = [(WADeploymentIssue *)self ssid];
+  v4 = [ssid hash];
+  type = [(WADeploymentIssue *)self type];
 
-  return v5 ^ v4;
+  return type ^ v4;
 }
 
 @end

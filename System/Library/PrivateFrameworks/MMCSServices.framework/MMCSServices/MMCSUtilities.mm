@@ -1,16 +1,16 @@
 @interface MMCSUtilities
-+ (id)failReasonStringForMMCSError:(id)a3;
-+ (id)parseMMCSError:(id)a3;
++ (id)failReasonStringForMMCSError:(id)error;
++ (id)parseMMCSError:(id)error;
 @end
 
 @implementation MMCSUtilities
 
-+ (id)parseMMCSError:(id)a3
++ (id)parseMMCSError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CBEB18]);
   v8 = objc_msgSend_initWithCapacity_(v4, v5, 8, v6, v7);
-  if (a3)
+  if (error)
   {
     v9 = MMCSFlattenError();
   }
@@ -28,7 +28,7 @@
       v26 = 138412546;
       v27 = v9;
       v28 = 2112;
-      v29 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_20E3AF000, v14, OS_LOG_TYPE_INFO, "Flattened MMCS Array from MMCS %@ using error %@", &v26, 0x16u);
     }
   }
@@ -83,7 +83,7 @@ LABEL_13:
     while (v21 != 8);
   }
 
-  if (a3)
+  if (error)
   {
     if (IMOSLoggingEnabled())
     {
@@ -102,14 +102,14 @@ LABEL_13:
   return result;
 }
 
-+ (id)failReasonStringForMMCSError:(id)a3
++ (id)failReasonStringForMMCSError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return &stru_28253E3E8;
   }
 
-  v5 = objc_msgSend_parseMMCSError_(MMCSUtilities, a2, a3, v3, v4);
+  v5 = objc_msgSend_parseMMCSError_(MMCSUtilities, a2, error, v3, v4);
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   if (objc_msgSend_count(v5, v7, v8, v9, v10) >= 2)
   {

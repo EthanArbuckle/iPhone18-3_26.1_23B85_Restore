@@ -1,16 +1,16 @@
 @interface _UITabBarGlassBackground
 - (UIView)customBackgroundView;
-- (_UITabBarGlassBackground)initWithCoder:(id)a3;
-- (_UITabBarGlassBackground)initWithFrame:(CGRect)a3;
+- (_UITabBarGlassBackground)initWithCoder:(id)coder;
+- (_UITabBarGlassBackground)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCustomBackgroundView:(id)a3;
+- (void)setCustomBackgroundView:(id)view;
 @end
 
 @implementation _UITabBarGlassBackground
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FCDA54();
 }
 
@@ -18,31 +18,31 @@
 {
   v4.receiver = self;
   v4.super_class = _UITabBarGlassBackground;
-  v2 = [(_UIBarBackground *)&v4 customBackgroundView];
+  customBackgroundView = [(_UIBarBackground *)&v4 customBackgroundView];
 
-  return v2;
+  return customBackgroundView;
 }
 
-- (void)setCustomBackgroundView:(id)a3
+- (void)setCustomBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188FCDE24(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188FCDE24(view);
 }
 
-- (_UITabBarGlassBackground)initWithFrame:(CGRect)a3
+- (_UITabBarGlassBackground)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UITabBarGlassBackground;
-  return [(_UIBarBackground *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_UIBarBackground *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (_UITabBarGlassBackground)initWithCoder:(id)a3
+- (_UITabBarGlassBackground)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UITabBarGlassBackground;
-  v3 = a3;
-  v4 = [(_UIBarBackground *)&v6 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(_UIBarBackground *)&v6 initWithCoder:coderCopy];
 
   if (v4)
   {

@@ -2,28 +2,28 @@
 - (BOOL)getUndoEventAndReset;
 - (_EARRelevantTextContext)init;
 - (void)_unlockedInitContext;
-- (void)_unlockedSetLeftContext:(id)a3 preItnLeftContext:(id)a4;
-- (void)_unlockedSetRightContext:(id)a3 preItnRightContext:(id)a4;
-- (void)appendToLeftContext:(id)a3 preItnLeftContext:(id)a4;
-- (void)getLeftAndRightContextWithCompletion:(id)a3;
+- (void)_unlockedSetLeftContext:(id)context preItnLeftContext:(id)leftContext;
+- (void)_unlockedSetRightContext:(id)context preItnRightContext:(id)rightContext;
+- (void)appendToLeftContext:(id)context preItnLeftContext:(id)leftContext;
+- (void)getLeftAndRightContextWithCompletion:(id)completion;
 - (void)notifyUndoEventFromClient;
 - (void)reset;
-- (void)setLeftContext:(id)a3 preItnLeftContext:(id)a4;
-- (void)setLeftContext:(id)a3 rightContext:(id)a4 preItnLeftContext:(id)a5 preItnRightContext:(id)a6;
-- (void)setRightContext:(id)a3 preItnRightContext:(id)a4;
+- (void)setLeftContext:(id)context preItnLeftContext:(id)leftContext;
+- (void)setLeftContext:(id)context rightContext:(id)rightContext preItnLeftContext:(id)leftContext preItnRightContext:(id)itnRightContext;
+- (void)setRightContext:(id)context preItnRightContext:(id)rightContext;
 @end
 
 @implementation _EARRelevantTextContext
 
 - (void)_unlockedInitContext
 {
-  v3 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   leftContext = self->_leftContext;
-  self->_leftContext = v3;
+  self->_leftContext = string;
 
-  v5 = [MEMORY[0x1E696AEC0] string];
+  string2 = [MEMORY[0x1E696AEC0] string];
   rightContext = self->_rightContext;
-  self->_rightContext = v5;
+  self->_rightContext = string2;
 
   v7 = objc_alloc_init(MEMORY[0x1E695DEC8]);
   preItnLeftContext = self->_preItnLeftContext;
@@ -49,67 +49,67 @@
   return v3;
 }
 
-- (void)_unlockedSetLeftContext:(id)a3 preItnLeftContext:(id)a4
+- (void)_unlockedSetLeftContext:(id)context preItnLeftContext:(id)leftContext
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  contextCopy = context;
+  leftContextCopy = leftContext;
+  if (contextCopy)
   {
-    [v5 ear_toString];
+    [contextCopy ear_toString];
   }
 
   quasar::keepLastNCodePoints();
 }
 
-- (void)_unlockedSetRightContext:(id)a3 preItnRightContext:(id)a4
+- (void)_unlockedSetRightContext:(id)context preItnRightContext:(id)rightContext
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  contextCopy = context;
+  rightContextCopy = rightContext;
+  if (contextCopy)
   {
-    [v5 ear_toString];
+    [contextCopy ear_toString];
   }
 
   quasar::keepFirstNCodePoints();
 }
 
-- (void)setLeftContext:(id)a3 preItnLeftContext:(id)a4
+- (void)setLeftContext:(id)context preItnLeftContext:(id)leftContext
 {
-  v7 = a3;
-  v6 = a4;
+  contextCopy = context;
+  leftContextCopy = leftContext;
   os_unfair_lock_lock(&self->_contextUpdateLock);
-  [(_EARRelevantTextContext *)self _unlockedSetLeftContext:v7 preItnLeftContext:v6];
+  [(_EARRelevantTextContext *)self _unlockedSetLeftContext:contextCopy preItnLeftContext:leftContextCopy];
   os_unfair_lock_unlock(&self->_contextUpdateLock);
   [(_EARRelevantTextContext *)self setLeftContextWasAppended:0];
 }
 
-- (void)setRightContext:(id)a3 preItnRightContext:(id)a4
+- (void)setRightContext:(id)context preItnRightContext:(id)rightContext
 {
-  v7 = a3;
-  v6 = a4;
+  contextCopy = context;
+  rightContextCopy = rightContext;
   os_unfair_lock_lock(&self->_contextUpdateLock);
-  [(_EARRelevantTextContext *)self _unlockedSetRightContext:v7 preItnRightContext:v6];
+  [(_EARRelevantTextContext *)self _unlockedSetRightContext:contextCopy preItnRightContext:rightContextCopy];
   os_unfair_lock_unlock(&self->_contextUpdateLock);
 }
 
-- (void)setLeftContext:(id)a3 rightContext:(id)a4 preItnLeftContext:(id)a5 preItnRightContext:(id)a6
+- (void)setLeftContext:(id)context rightContext:(id)rightContext preItnLeftContext:(id)leftContext preItnRightContext:(id)itnRightContext
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  rightContextCopy = rightContext;
+  leftContextCopy = leftContext;
+  itnRightContextCopy = itnRightContext;
   os_unfair_lock_lock(&self->_contextUpdateLock);
-  [(_EARRelevantTextContext *)self _unlockedSetLeftContext:v13 preItnLeftContext:v11];
-  [(_EARRelevantTextContext *)self _unlockedSetRightContext:v10 preItnRightContext:v12];
+  [(_EARRelevantTextContext *)self _unlockedSetLeftContext:contextCopy preItnLeftContext:leftContextCopy];
+  [(_EARRelevantTextContext *)self _unlockedSetRightContext:rightContextCopy preItnRightContext:itnRightContextCopy];
   os_unfair_lock_unlock(&self->_contextUpdateLock);
   [(_EARRelevantTextContext *)self setLeftContextWasAppended:0];
 }
 
-- (void)appendToLeftContext:(id)a3 preItnLeftContext:(id)a4
+- (void)appendToLeftContext:(id)context preItnLeftContext:(id)leftContext
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  leftContextCopy = leftContext;
   os_unfair_lock_lock(&self->_contextUpdateLock);
   v8 = MEMORY[0x1E696AEC0];
   leftContext = self->_leftContext;
@@ -123,9 +123,9 @@
     memset(v17, 0, 24);
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    [v6 ear_toString];
+    [contextCopy ear_toString];
   }
 
   else
@@ -162,7 +162,7 @@
     }
   }
 
-  v13 = [(NSArray *)self->_preItnLeftContext arrayByAddingObjectsFromArray:v7];
+  v13 = [(NSArray *)self->_preItnLeftContext arrayByAddingObjectsFromArray:leftContextCopy];
   [(_EARRelevantTextContext *)self _unlockedSetLeftContext:v11 preItnLeftContext:v13];
 
   os_unfair_lock_unlock(&self->_contextUpdateLock);
@@ -177,18 +177,18 @@
   os_unfair_lock_unlock(&self->_contextUpdateLock);
 }
 
-- (void)getLeftAndRightContextWithCompletion:(id)a3
+- (void)getLeftAndRightContextWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_contextUpdateLock);
   v4 = [(NSString *)self->_leftContext copy];
   v5 = [(NSString *)self->_rightContext copy];
   v6 = [(NSArray *)self->_preItnLeftContext copy];
   v7 = [(NSArray *)self->_preItnRightContext copy];
   os_unfair_lock_unlock(&self->_contextUpdateLock);
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, v4, v5, v6, v7);
+    completionCopy[2](completionCopy, v4, v5, v6, v7);
   }
 }
 

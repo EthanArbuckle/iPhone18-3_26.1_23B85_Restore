@@ -1,73 +1,73 @@
 @interface SBAmbientPresentationController
-- (BOOL)_evaluatePresentationStateIgnoreLockState:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (BOOL)_isAmbientPresentationAllowedIgnoreLockState:(BOOL)a3;
+- (BOOL)_evaluatePresentationStateIgnoreLockState:(BOOL)state animated:(BOOL)animated withCompletion:(id)completion;
+- (BOOL)_isAmbientPresentationAllowedIgnoreLockState:(BOOL)state;
 - (BOOL)_isNightModeUserSettingEffectivelyEnabled;
 - (BOOL)_isRedModeTriggered;
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)presentIfAllowedAndLockWithCompletion:(id)a3;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)presentIfAllowedAndLockWithCompletion:(id)completion;
 - (BOOL)suppressNotificationPresentation;
-- (BOOL)wakeToContentForWakeDestination:(id)a3 unlockSource:(int)a4;
+- (BOOL)wakeToContentForWakeDestination:(id)destination unlockSource:(int)source;
 - (NSString)coverSheetIdentifier;
-- (SBAmbientPresentationController)initWithWindowScene:(id)a3;
+- (SBAmbientPresentationController)initWithWindowScene:(id)scene;
 - (SBWakeDestinationHandling)wakeDestinationHandler;
 - (SBWindowScene)windowScene;
 - (id)_connectedChargerIdentifier;
-- (id)_connectedWirelessChargerIdentifierForAdapterDetails:(id)a3;
+- (id)_connectedWirelessChargerIdentifierForAdapterDetails:(id)details;
 - (id)_fetchConnectedWirelessChargerIdentifier;
 - (id)_fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails;
-- (id)_widgetDescriptorsForATXStack:(id)a3;
-- (id)timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:(id)a3;
+- (id)_widgetDescriptorsForATXStack:(id)stack;
+- (id)timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:(id)observer;
 - (int64_t)_effectiveAlwaysOnMode;
-- (void)_carPlayPresentationDidChange:(id)a3;
+- (void)_carPlayPresentationDidChange:(id)change;
 - (void)_clearUpcomingAlarmSuppressionsIfNecessary;
 - (void)_dismissAllOtherAmbientTransientOverlays;
-- (void)_displayTransientLockElementIfNecessaryForKeyBagState:(id)a3;
+- (void)_displayTransientLockElementIfNecessaryForKeyBagState:(id)state;
 - (void)_evaluateAuthenticationIdleTimerEnablement;
 - (void)_evaluateBumpToWakeEnablement;
 - (void)_evaluateIdleTimerDisablement;
 - (void)_evaluateIdleTimerEnablement;
 - (void)_evaluateRedModeTriggerDetectionState;
-- (void)_evaluateTriggerDetectionStateIgnoreLockState:(BOOL)a3;
+- (void)_evaluateTriggerDetectionStateIgnoreLockState:(BOOL)state;
 - (void)_fetchDefaultWidgetStacks;
 - (void)_hideLockElement;
 - (void)_invalidateTransientOverlayWindowTraitsArbiterParticipantIfNeeded;
-- (void)_lockStateDidChange:(id)a3;
+- (void)_lockStateDidChange:(id)change;
 - (void)_observeAmbientUserSettingChanges;
-- (void)_presentLockUIAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_presentLockUIAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_resetTransientLockSuppressionFlag;
-- (void)_setAmbientDisplayStyle:(int64_t)a3 forReason:(id)a4;
-- (void)_setAmbientTransientOverlayIsShowingPasscode:(BOOL)a3;
-- (void)_setCoverSheetPresentedByUserGesture:(BOOL)a3;
-- (void)_setPresented:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)_setSystemApertureProudLockElementHidden:(BOOL)a3;
+- (void)_setAmbientDisplayStyle:(int64_t)style forReason:(id)reason;
+- (void)_setAmbientTransientOverlayIsShowingPasscode:(BOOL)passcode;
+- (void)_setCoverSheetPresentedByUserGesture:(BOOL)gesture;
+- (void)_setPresented:(BOOL)presented animated:(BOOL)animated withCompletion:(id)completion;
+- (void)_setSystemApertureProudLockElementHidden:(BOOL)hidden;
 - (void)_setupStateCaptureBlock;
-- (void)_updateAmbientMountState:(int64_t)a3 withReason:(id)a4;
-- (void)_updateAmbientTriggerState:(int64_t)a3 analogousTriggerEvents:(BOOL)a4 withReason:(id)a5;
+- (void)_updateAmbientMountState:(int64_t)state withReason:(id)reason;
+- (void)_updateAmbientTriggerState:(int64_t)state analogousTriggerEvents:(BOOL)events withReason:(id)reason;
 - (void)_updateMotionDetection;
-- (void)_updatePosterBoardWithChargerIdentifier:(id)a3;
-- (void)_updatePresentationPossibleForMountState:(int64_t)a3;
-- (void)_updateScheduledAlarmObserverForPresentationRequested:(BOOL)a3;
+- (void)_updatePosterBoardWithChargerIdentifier:(id)identifier;
+- (void)_updatePresentationPossibleForMountState:(int64_t)state;
+- (void)_updateScheduledAlarmObserverForPresentationRequested:(BOOL)requested;
 - (void)_updateSleepSuppression;
-- (void)_updateTelemetryIsPresented:(BOOL)a3;
-- (void)_updateTraitsArbiterParticipantForPresented:(BOOL)a3;
+- (void)_updateTelemetryIsPresented:(BOOL)presented;
+- (void)_updateTraitsArbiterParticipantForPresented:(BOOL)presented;
 - (void)_updateViewObstructedSuppressionManager;
-- (void)addObserver:(id)a3;
-- (void)ambientIdleTimerController:(id)a3 didChangeIdleTimerBehavior:(id)a4;
-- (void)ambientIdleTimerControllerSuppressionDidEnd:(id)a3;
-- (void)ambientTransientOverlayViewController:(id)a3 viewDidDisappear:(BOOL)a4;
-- (void)ambientTransientOverlayViewControllerWillBeginConfiguration:(id)a3;
-- (void)ambientTransientOverlayViewControllerWillEndConfiguration:(id)a3;
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
+- (void)addObserver:(id)observer;
+- (void)ambientIdleTimerController:(id)controller didChangeIdleTimerBehavior:(id)behavior;
+- (void)ambientIdleTimerControllerSuppressionDidEnd:(id)end;
+- (void)ambientTransientOverlayViewController:(id)controller viewDidDisappear:(BOOL)disappear;
+- (void)ambientTransientOverlayViewControllerWillBeginConfiguration:(id)configuration;
+- (void)ambientTransientOverlayViewControllerWillEndConfiguration:(id)configuration;
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source;
 - (void)dealloc;
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4;
-- (void)liftToWakeController:(id)a3 didIgnoreTransition:(int64_t)a4;
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5;
-- (void)pocketStateMonitor:(id)a3 pocketStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)redModeTriggerManager:(id)a3 didUpdateRedModeTriggeredState:(BOOL)a4;
-- (void)scheduledAlarmObserver:(id)a3 timerFiredForReason:(id)a4;
-- (void)secureAppOfTypeDidBegin:(unint64_t)a3;
-- (void)test_updateAmbientPresentationState:(int64_t)a3 withReason:(id)a4;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change;
+- (void)liftToWakeController:(id)controller didIgnoreTransition:(int64_t)transition;
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation;
+- (void)pocketStateMonitor:(id)monitor pocketStateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)redModeTriggerManager:(id)manager didUpdateRedModeTriggeredState:(BOOL)state;
+- (void)scheduledAlarmObserver:(id)observer timerFiredForReason:(id)reason;
+- (void)secureAppOfTypeDidBegin:(unint64_t)begin;
+- (void)test_updateAmbientPresentationState:(int64_t)state withReason:(id)reason;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
 @end
 
 @implementation SBAmbientPresentationController
@@ -109,18 +109,18 @@
 - (void)_updateViewObstructedSuppressionManager
 {
   v3 = +[SBLockStateAggregator sharedInstance];
-  v4 = [v3 lockState];
+  lockState = [v3 lockState];
 
-  v5 = [(SBAmbientPresentationController *)self _isAmbientModeUserSettingEnabled];
+  _isAmbientModeUserSettingEnabled = [(SBAmbientPresentationController *)self _isAmbientModeUserSettingEnabled];
   v6 = +[SBUIController sharedInstanceIfExists];
-  v7 = [v6 isOnAC];
+  isOnAC = [v6 isOnAC];
 
-  if (v5)
+  if (_isAmbientModeUserSettingEnabled)
   {
-    v9 = (v4 & 4) == 0 && v4 != 0;
-    v10 = v9 & v7;
-    v11 = [MEMORY[0x277CC1D50] isAvailable];
-    if (v10 == 1 && v11 != 0)
+    v9 = (lockState & 4) == 0 && lockState != 0;
+    v10 = v9 & isOnAC;
+    isAvailable = [MEMORY[0x277CC1D50] isAvailable];
+    if (v10 == 1 && isAvailable != 0)
     {
       if (!self->_suppressionManager)
       {
@@ -138,13 +138,13 @@
 
         [(CMSuppressionManager *)self->_suppressionManager startService];
         v16 = self->_suppressionManager;
-        v17 = [MEMORY[0x277CCABD8] mainQueue];
+        mainQueue = [MEMORY[0x277CCABD8] mainQueue];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __74__SBAmbientPresentationController__updateViewObstructedSuppressionManager__block_invoke;
         v20[3] = &unk_2783C1908;
         objc_copyWeak(&v21, location);
-        [(CMSuppressionManager *)v16 startSuppressionUpdatesToQueue:v17 withOptions:1 withHandler:v20];
+        [(CMSuppressionManager *)v16 startSuppressionUpdatesToQueue:mainQueue withOptions:1 withHandler:v20];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(location);
@@ -181,27 +181,27 @@
 {
   if (self->_presentationRequested)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (SBAmbientPresentationController)initWithWindowScene:(id)a3
+- (SBAmbientPresentationController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v61.receiver = self;
   v61.super_class = SBAmbientPresentationController;
   v5 = [(SBAmbientPresentationController *)&v61 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     if (_os_feature_enabled_impl())
     {
       if (__sb__runningInSpringBoard())
@@ -214,10 +214,10 @@
 
       else
       {
-        v7 = [MEMORY[0x277D75418] currentDevice];
-        v8 = [v7 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if (v8 == 1)
+        if (userInterfaceIdiom == 1)
         {
           goto LABEL_15;
         }
@@ -228,7 +228,7 @@
       v6->_ambientDefaults = v9;
 
       [(SBAmbientPresentationController *)v6 _observeAmbientUserSettingChanges];
-      [v4 isMainDisplayWindowScene];
+      [sceneCopy isMainDisplayWindowScene];
       IOPMUpdateDominoState();
       v11 = +[SBAmbientDomain rootSettings];
       ambientSettings = v6->_ambientSettings;
@@ -255,10 +255,10 @@
 
       [(SBAmbientMotionDetectionWakeAttributeMonitor *)v6->_motionDetectionWakeAttributeMonitor addObserver:v6];
       [MEMORY[0x277CEA600] prewarm];
-      v21 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v21 addObserver:v6 selector:sel__lockStateDidChange_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
-      [v21 addObserver:v6 selector:sel__carPlayPresentationDidChange_ name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
-      [v21 addObserver:v6 selector:sel__isOnACDidChange_ name:@"SBUIACStatusChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel__lockStateDidChange_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
+      [defaultCenter addObserver:v6 selector:sel__carPlayPresentationDidChange_ name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
+      [defaultCenter addObserver:v6 selector:sel__isOnACDidChange_ name:@"SBUIACStatusChangedNotification" object:0];
       [(SBAmbientPresentationController *)v6 _evaluateTriggerDetectionState];
       v22 = +[SBLockScreenManager sharedInstance];
       lockScreenManager = v6->_lockScreenManager;
@@ -270,10 +270,10 @@
 
       [(SBSecureAppManager *)v6->_secureAppManager addWakeDestinationProvider:v6];
       [(SBSecureAppManager *)v6->_secureAppManager addObserver:v6];
-      v26 = [SBApp blshService];
-      v27 = [v26 platformProvider];
+      blshService = [SBApp blshService];
+      platformProvider = [blshService platformProvider];
       v28 = objc_opt_class();
-      v29 = v27;
+      v29 = platformProvider;
       if (v28)
       {
         if (objc_opt_isKindOfClass())
@@ -294,27 +294,27 @@
 
       v31 = v30;
 
-      v32 = [v31 alwaysOnPolicyCoordinator];
+      alwaysOnPolicyCoordinator = [v31 alwaysOnPolicyCoordinator];
 
-      [v32 addExternalPolicy:v6];
-      objc_storeWeak(&v6->_alwaysOnPolicyCoordinator, v32);
-      if ([v4 isMainDisplayWindowScene])
+      [alwaysOnPolicyCoordinator addExternalPolicy:v6];
+      objc_storeWeak(&v6->_alwaysOnPolicyCoordinator, alwaysOnPolicyCoordinator);
+      if ([sceneCopy isMainDisplayWindowScene])
       {
         v33 = [[SBAmbientMainDisplayController alloc] initWithAmbientPresentationController:v6];
         mainDisplayController = v6->_mainDisplayController;
         v6->_mainDisplayController = v33;
       }
 
-      v35 = [[SBAmbientIdleTimerController alloc] initWithWindowScene:v4];
+      v35 = [[SBAmbientIdleTimerController alloc] initWithWindowScene:sceneCopy];
       ambientIdleTimerController = v6->_ambientIdleTimerController;
       v6->_ambientIdleTimerController = v35;
 
       [(SBAmbientIdleTimerController *)v6->_ambientIdleTimerController addObserver:v6];
-      v37 = [(SBAmbientPresentationController *)v6 windowScene];
-      v38 = [v37 coverSheetViewController];
+      windowScene = [(SBAmbientPresentationController *)v6 windowScene];
+      coverSheetViewController = [windowScene coverSheetViewController];
 
-      [v38 startObservingAmbientPresentationForController:v6];
-      [v38 registerExternalEventHandler:v6];
+      [coverSheetViewController startObservingAmbientPresentationForController:v6];
+      [coverSheetViewController registerExternalEventHandler:v6];
       v39 = +[SBLiftToWakeController sharedController];
       liftToWakeController = v6->_liftToWakeController;
       v6->_liftToWakeController = v39;
@@ -348,18 +348,18 @@
 
       [(SBAmbientPresentationController *)v6 _setupStateCaptureBlock];
       v52 = [SBAmbientWirelessChargingIdleTimer alloc];
-      v53 = [SBApp screenSleepCoordinator];
+      screenSleepCoordinator = [SBApp screenSleepCoordinator];
       v54 = +[SBUIController sharedInstance];
-      v55 = [(SBAmbientWirelessChargingIdleTimer *)v52 initWithAmbientPresentationController:v6 screenSleepCoordinator:v53 uiController:v54];
+      v55 = [(SBAmbientWirelessChargingIdleTimer *)v52 initWithAmbientPresentationController:v6 screenSleepCoordinator:screenSleepCoordinator uiController:v54];
       wirelessChargingIdleTimer = v6->_wirelessChargingIdleTimer;
       v6->_wirelessChargingIdleTimer = v55;
 
       [(SBAmbientWirelessChargingIdleTimer *)v6->_wirelessChargingIdleTimer setEnabled:1];
-      v57 = [MEMORY[0x277D65ED8] sharedInstance];
-      [v57 addObserver:v6];
-      v58 = [v57 state];
+      mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
+      [mEMORY[0x277D65ED8] addObserver:v6];
+      state = [mEMORY[0x277D65ED8] state];
       lastKeyBagState = v6->_lastKeyBagState;
-      v6->_lastKeyBagState = v58;
+      v6->_lastKeyBagState = state;
 
       [(SBAmbientPresentationController *)v6 _fetchDefaultWidgetStacks];
     }
@@ -390,31 +390,31 @@ LABEL_15:
   [(SBAmbientPresentationController *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (BOOL)presentIfAllowedAndLockWithCompletion:(id)a3
+- (BOOL)presentIfAllowedAndLockWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SBAmbientPresentationController *)self isPresented])
   {
     v5 = 0;
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
@@ -441,7 +441,7 @@ LABEL_15:
   v8 = v6;
   v11 = v8;
   objc_copyWeak(&v13, buf);
-  v12 = v4;
+  v12 = completionCopy;
   v5 = [(SBAmbientPresentationController *)self _evaluatePresentationStateIgnoreLockState:1 animated:1 withCompletion:v10];
   self->_shouldSuppressTransientLockIfKeyBagLocks = v5;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__resetTransientLockSuppressionFlag object:0];
@@ -451,12 +451,12 @@ LABEL_15:
   objc_destroyWeak(buf);
   os_activity_scope_leave(&state);
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_7:
     if (!v5)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -509,30 +509,30 @@ void __73__SBAmbientPresentationController_presentIfAllowedAndLockWithCompletion
   }
 }
 
-- (void)redModeTriggerManager:(id)a3 didUpdateRedModeTriggeredState:(BOOL)a4
+- (void)redModeTriggerManager:(id)manager didUpdateRedModeTriggeredState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v8 = *MEMORY[0x277D85DE8];
   v6 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = stateCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Trigger manager toggling ambient red mode [ enabled : %{BOOL}d ]", v7, 8u);
   }
 
-  [(SBAmbientPresentationController *)self _setAmbientDisplayStyle:v4 forReason:@"Red Mode Trigger"];
+  [(SBAmbientPresentationController *)self _setAmbientDisplayStyle:stateCopy forReason:@"Red Mode Trigger"];
 }
 
-- (void)ambientTransientOverlayViewController:(id)a3 viewDidDisappear:(BOOL)a4
+- (void)ambientTransientOverlayViewController:(id)controller viewDidDisappear:(BOOL)disappear
 {
-  if (self->_transientOverlay == a3)
+  if (self->_transientOverlay == controller)
   {
     [(SBAmbientPresentationController *)self _setPresented:0 animated:0];
   }
 }
 
-- (void)ambientTransientOverlayViewControllerWillBeginConfiguration:(id)a3
+- (void)ambientTransientOverlayViewControllerWillBeginConfiguration:(id)configuration
 {
   if ([(SBAmbientPresentationController *)self ambientDisplayStyle]== 1)
   {
@@ -544,7 +544,7 @@ void __73__SBAmbientPresentationController_presentIfAllowedAndLockWithCompletion
   [(SBAmbientPresentationController *)self _evaluateAuthenticationIdleTimerEnablement];
 }
 
-- (void)ambientTransientOverlayViewControllerWillEndConfiguration:(id)a3
+- (void)ambientTransientOverlayViewControllerWillEndConfiguration:(id)configuration
 {
   [(SBAmbientPresentationController *)self _setAmbientDisplayStyle:[(SBAmbientPresentationController *)self _isRedModeTriggered] forReason:@"Configuration"];
   [(SBAmbientPresentationController *)self _evaluateRedModeTriggerDetectionState];
@@ -552,19 +552,19 @@ void __73__SBAmbientPresentationController_presentIfAllowedAndLockWithCompletion
   [(SBAmbientPresentationController *)self _evaluateAuthenticationIdleTimerEnablement];
 }
 
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
-  [(SBAmbientPresentationController *)self _evaluateBumpToWakeEnablement:a3];
+  [(SBAmbientPresentationController *)self _evaluateBumpToWakeEnablement:controller];
   [(SBAmbientPresentationController *)self _evaluateAuthenticationIdleTimerEnablement];
   telemetryEmitter = self->_telemetryEmitter;
   presented = self->_presented;
-  v9 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfiguration];
-  [(SBAmbientTelemetryEmitter *)telemetryEmitter logTelemetryForAmbientPresented:presented withBacklightState:a4 screenOffWithConfiguration:v9];
+  activeConfiguration = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfiguration];
+  [(SBAmbientTelemetryEmitter *)telemetryEmitter logTelemetryForAmbientPresented:presented withBacklightState:state screenOffWithConfiguration:activeConfiguration];
 }
 
-- (BOOL)wakeToContentForWakeDestination:(id)a3 unlockSource:(int)a4
+- (BOOL)wakeToContentForWakeDestination:(id)destination unlockSource:(int)source
 {
-  if (a4 == 32)
+  if (source == 32)
   {
     return 0;
   }
@@ -574,17 +574,17 @@ void __73__SBAmbientPresentationController_presentIfAllowedAndLockWithCompletion
   return [(SBAmbientPresentationController *)self isPresented];
 }
 
-- (void)ambientIdleTimerController:(id)a3 didChangeIdleTimerBehavior:(id)a4
+- (void)ambientIdleTimerController:(id)controller didChangeIdleTimerBehavior:(id)behavior
 {
-  v6 = a3;
-  [(SBAmbientTransientOverlayViewController *)self->_transientOverlay setAmbientIdleTimerBehaviorProvider:a4];
+  controllerCopy = controller;
+  [(SBAmbientTransientOverlayViewController *)self->_transientOverlay setAmbientIdleTimerBehaviorProvider:behavior];
   if ([(SBAmbientPresentationController *)self isPresented])
   {
-    -[SBAmbientTelemetryEmitter logTelemetryForSleepSuppressionActive:](self->_telemetryEmitter, "logTelemetryForSleepSuppressionActive:", [v6 isAmbientSuppressed]);
+    -[SBAmbientTelemetryEmitter logTelemetryForSleepSuppressionActive:](self->_telemetryEmitter, "logTelemetryForSleepSuppressionActive:", [controllerCopy isAmbientSuppressed]);
   }
 }
 
-- (void)ambientIdleTimerControllerSuppressionDidEnd:(id)a3
+- (void)ambientIdleTimerControllerSuppressionDidEnd:(id)end
 {
   if (self->_presented || self->_presentationRequested)
   {
@@ -592,11 +592,11 @@ void __73__SBAmbientPresentationController_presentIfAllowedAndLockWithCompletion
   }
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v4 = a4;
-  [v4 updateOrientationPreferencesWithBlock:&__block_literal_global_392];
-  [v4 updateZOrderLevelPreferencesWithBlock:&__block_literal_global_102];
+  updaterCopy = updater;
+  [updaterCopy updateOrientationPreferencesWithBlock:&__block_literal_global_392];
+  [updaterCopy updateZOrderLevelPreferencesWithBlock:&__block_literal_global_102];
 }
 
 void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updater___block_invoke(uint64_t a1, void *a2)
@@ -606,7 +606,7 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
   [v2 setCanDetermineActiveOrientation:1];
 }
 
-- (id)timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:(id)a3
+- (id)timeIntervalsWithReasonsForScheduledTimersForAmbientScheduledAlarmObserver:(id)observer
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v5[0] = @"SBAmbientAlarmScheduledTimerReasonRedModeOverride";
@@ -618,10 +618,10 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
   return v3;
 }
 
-- (void)scheduledAlarmObserver:(id)a3 timerFiredForReason:(id)a4
+- (void)scheduledAlarmObserver:(id)observer timerFiredForReason:(id)reason
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"SBAmbientAlarmScheduledTimerReasonRedModeOverride"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"SBAmbientAlarmScheduledTimerReasonRedModeOverride"])
   {
     v6 = SBLogAmbientPresentation();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -635,7 +635,7 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
     [(SBAmbientPresentationController *)self _evaluateRedModeTriggerDetectionState];
   }
 
-  else if ([v5 isEqualToString:@"SBAmbientAlarmScheduledTimerReasonDisplayWake"] && -[SBAmbientSettings enableSuppression](self->_ambientSettings, "enableSuppression"))
+  else if ([reasonCopy isEqualToString:@"SBAmbientAlarmScheduledTimerReasonDisplayWake"] && -[SBAmbientSettings enableSuppression](self->_ambientSettings, "enableSuppression"))
   {
     v7 = SBLogAmbientPresentation();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -654,7 +654,7 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
   }
 }
 
-- (void)secureAppOfTypeDidBegin:(unint64_t)a3
+- (void)secureAppOfTypeDidBegin:(unint64_t)begin
 {
   v8 = *MEMORY[0x277D85DE8];
   if ([(SBAmbientPresentationController *)self isPresented])
@@ -672,25 +672,25 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
   }
 }
 
-- (void)pocketStateMonitor:(id)a3 pocketStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)pocketStateMonitor:(id)monitor pocketStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (!a4 || !a5)
+  if (!from || !to)
   {
     [(SBAmbientPresentationController *)self _evaluatePresentationState];
   }
 }
 
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation
 {
-  if (a4 == 4)
+  if (transition == 4)
   {
-    [(SBAmbientTelemetryEmitter *)self->_telemetryEmitter logTelemetryForBumpEventIgnored:0, 4, a5];
+    [(SBAmbientTelemetryEmitter *)self->_telemetryEmitter logTelemetryForBumpEventIgnored:0, 4, orientation];
   }
 }
 
-- (void)liftToWakeController:(id)a3 didIgnoreTransition:(int64_t)a4
+- (void)liftToWakeController:(id)controller didIgnoreTransition:(int64_t)transition
 {
-  if (a4 == 4)
+  if (transition == 4)
   {
     [(SBAmbientTelemetryEmitter *)self->_telemetryEmitter logTelemetryForBumpEventIgnored:1];
   }
@@ -703,16 +703,16 @@ void __75__SBAmbientPresentationController_updatePreferencesForParticipant_updat
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = [a3 type];
+  type = [event type];
   v5 = 0;
-  if (v4 == 9 || v4 == 25)
+  if (type == 9 || type == 25)
   {
     goto LABEL_5;
   }
 
-  if (v4 == 36)
+  if (type == 36)
   {
     v5 = 1;
 LABEL_5:
@@ -722,20 +722,20 @@ LABEL_5:
   return 0;
 }
 
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change
 {
-  v5 = a4;
-  v4 = v5;
+  changeCopy = change;
+  v4 = changeCopy;
   BSDispatchMain();
 }
 
-- (void)_lockStateDidChange:(id)a3
+- (void)_lockStateDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"SBAggregateLockStateKey"];
-  v6 = [v5 integerValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo valueForKey:@"SBAggregateLockStateKey"];
+  integerValue = [v5 integerValue];
 
-  if (v6 || !self->_presentationRequested)
+  if (integerValue || !self->_presentationRequested)
   {
     [(SBAmbientPresentationController *)self _evaluateTriggerDetectionState];
   }
@@ -743,14 +743,14 @@ LABEL_5:
   [(SBAmbientPresentationController *)self _updateViewObstructedSuppressionManager];
 }
 
-- (void)_carPlayPresentationDidChange:(id)a3
+- (void)_carPlayPresentationDidChange:(id)change
 {
   if ([(SBAmbientPresentationController *)self isPresented])
   {
-    v4 = [SBApp notificationDispatcher];
-    v5 = [v4 isCarDestinationActive];
+    notificationDispatcher = [SBApp notificationDispatcher];
+    isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
-    if (v5)
+    if (isCarDestinationActive)
     {
 
       [(SBAmbientPresentationController *)self _evaluatePresentationState];
@@ -758,86 +758,86 @@ LABEL_5:
   }
 }
 
-- (BOOL)_isAmbientPresentationAllowedIgnoreLockState:(BOOL)a3
+- (BOOL)_isAmbientPresentationAllowedIgnoreLockState:(BOOL)state
 {
-  v36 = a3;
+  stateCopy = state;
   v70 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v37 = [(SBAmbientPresentationController *)self _isAmbientModeUserSettingEnabled];
+  _isAmbientModeUserSettingEnabled = [(SBAmbientPresentationController *)self _isAmbientModeUserSettingEnabled];
   v5 = +[SBLockStateAggregator sharedInstance];
-  v6 = [v5 lockState];
+  lockState = [v5 lockState];
 
-  v8 = (v6 & 4) == 0 && v6 != 0;
+  v8 = (lockState & 4) == 0 && lockState != 0;
   v35 = v8;
-  v9 = [SBApp authenticationController];
-  v34 = [v9 hasAuthenticatedAtLeastOnceSinceBoot];
+  authenticationController = [SBApp authenticationController];
+  hasAuthenticatedAtLeastOnceSinceBoot = [authenticationController hasAuthenticatedAtLeastOnceSinceBoot];
 
-  v10 = [SBApp notificationDispatcher];
-  v11 = [v10 isCarDestinationActive];
+  notificationDispatcher = [SBApp notificationDispatcher];
+  isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
   v12 = +[SBUIController sharedInstanceIfExists];
-  v33 = [v12 isConnectedToWindowedAccessory];
+  isConnectedToWindowedAccessory = [v12 isConnectedToWindowedAccessory];
 
-  v13 = [WeakRetained coverSheetViewController];
+  coverSheetViewController = [WeakRetained coverSheetViewController];
   if ([(SBSecureAppManager *)self->_secureAppManager hasSecureApp])
   {
-    v32 = 1;
+    isHostingAnApp = 1;
   }
 
   else
   {
-    v32 = [v13 isHostingAnApp];
+    isHostingAnApp = [coverSheetViewController isHostingAnApp];
   }
 
   v14 = +[SBSetupManager sharedInstance];
-  v31 = [v14 isInSetupMode];
+  isInSetupMode = [v14 isInSetupMode];
 
-  v15 = [(SBPocketStateMonitor *)self->_pocketStateMonitor pocketState];
+  pocketState = [(SBPocketStateMonitor *)self->_pocketStateMonitor pocketState];
   isViewObstructedSuppressionActive = self->_isViewObstructedSuppressionActive;
   v16 = +[SBCoverSheetPresentationManager sharedInstanceIfExists];
-  v17 = [v16 hasBeenDismissedSinceKeybagLock];
+  hasBeenDismissedSinceKeybagLock = [v16 hasBeenDismissedSinceKeybagLock];
 
-  if (v17)
+  if (hasBeenDismissedSinceKeybagLock)
   {
-    v29 = [v13 isInteractingWithNotificationList];
-    v18 = [(SBAmbientPresentationController *)self _isCoverSheetPresentedByUserGesture];
+    isInteractingWithNotificationList = [coverSheetViewController isInteractingWithNotificationList];
+    _isCoverSheetPresentedByUserGesture = [(SBAmbientPresentationController *)self _isCoverSheetPresentedByUserGesture];
   }
 
   else
   {
-    v29 = 0;
-    v18 = 0;
+    isInteractingWithNotificationList = 0;
+    _isCoverSheetPresentedByUserGesture = 0;
   }
 
-  v19 = [v13 coverSheetSpotlightPresenter];
-  v20 = [v19 isSpotlightPresented];
+  coverSheetSpotlightPresenter = [coverSheetViewController coverSheetSpotlightPresenter];
+  isSpotlightPresented = [coverSheetSpotlightPresenter isSpotlightPresented];
 
-  v21 = [v13 isShowingTodayView];
+  isShowingTodayView = [coverSheetViewController isShowingTodayView];
   v22 = WeakRetained;
   if ([(SBAmbientPresentationController *)self isPresented])
   {
-    v23 = 0;
+    hasActivePresentation = 0;
   }
 
   else
   {
-    v24 = [WeakRetained transientOverlayPresenter];
-    v23 = [v24 hasActivePresentation];
+    transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+    hasActivePresentation = [transientOverlayPresenter hasActivePresentation];
   }
 
-  if (v37)
+  if (_isAmbientModeUserSettingEnabled)
   {
-    v25 = v11;
-    if (!(((v35 || v36) & v34 ^ 1 | v11 | v33 | v32) & 1 | v31 & 1 | (v15 != 0) | isViewObstructedSuppressionActive | v29 & 1 | v18 | v20 & 1))
+    v25 = isCarDestinationActive;
+    if (!(((v35 || stateCopy) & hasAuthenticatedAtLeastOnceSinceBoot ^ 1 | isCarDestinationActive | isConnectedToWindowedAccessory | isHostingAnApp) & 1 | isInSetupMode & 1 | (pocketState != 0) | isViewObstructedSuppressionActive | isInteractingWithNotificationList & 1 | _isCoverSheetPresentedByUserGesture | isSpotlightPresented & 1))
     {
-      v26 = (v21 | v23) ^ 1;
+      v26 = (isShowingTodayView | hasActivePresentation) ^ 1;
       goto LABEL_21;
     }
   }
 
   else
   {
-    v25 = v11;
+    v25 = isCarDestinationActive;
   }
 
   v26 = 0;
@@ -848,46 +848,46 @@ LABEL_21:
     *buf = 67112960;
     v39 = v26 & 1;
     v40 = 1024;
-    v41 = v37;
+    v41 = _isAmbientModeUserSettingEnabled;
     v42 = 1024;
     v43 = v35;
     v44 = 1024;
-    v45 = v36;
+    v45 = stateCopy;
     v46 = 1024;
-    v47 = v34;
+    v47 = hasAuthenticatedAtLeastOnceSinceBoot;
     v48 = 1024;
     v49 = v25;
     v50 = 1024;
-    v51 = v33;
+    v51 = isConnectedToWindowedAccessory;
     v52 = 1024;
-    v53 = v32;
+    v53 = isHostingAnApp;
     v54 = 1024;
-    v55 = v31;
+    v55 = isInSetupMode;
     v56 = 1024;
-    v57 = v15 == 0;
+    v57 = pocketState == 0;
     v58 = 1024;
     v59 = isViewObstructedSuppressionActive;
     v60 = 1024;
-    v61 = v29;
+    v61 = isInteractingWithNotificationList;
     v62 = 1024;
-    v63 = v18;
+    v63 = _isCoverSheetPresentedByUserGesture;
     v64 = 1024;
-    v65 = v20;
+    v65 = isSpotlightPresented;
     v66 = 1024;
-    v67 = v21;
+    v67 = isShowingTodayView;
     v68 = 1024;
-    v69 = v23;
+    v69 = hasActivePresentation;
     _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "Ambient presentation allowed = %{BOOL}d [ enabled:%{BOOL}d ; lockedButNotBlocked:%{BOOL}d ; ignoreLockState:%{BOOL}d ; unlockedSinceBoot:%{BOOL}d ; carplay:%{BOOL}d ; screenOccludingAccessory:%{BOOL}d ; hostingApp:%{BOOL}d ; isInSetupMode:%{BOOL}d ; isOutOfPocket:%{BOOL}d ; isViewObstructed:%{BOOL}d ; listInteraction:%{BOOL}d ; pullDownCoverSheet:%{BOOL}d ; spotlight:%{BOOL}d ; todayView:%{BOOL}d ; transientOverlayPreventsPresentation:%{BOOL}d ]", buf, 0x62u);
   }
 
   return v26 & 1;
 }
 
-- (void)_updateAmbientTriggerState:(int64_t)a3 analogousTriggerEvents:(BOOL)a4 withReason:(id)a5
+- (void)_updateAmbientTriggerState:(int64_t)state analogousTriggerEvents:(BOOL)events withReason:(id)reason
 {
-  v5 = a4;
+  eventsCopy = events;
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  reasonCopy = reason;
   v9 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -895,21 +895,21 @@ LABEL_21:
     v11 = 138543874;
     v12 = v10;
     v13 = 2114;
-    v14 = v8;
+    v14 = reasonCopy;
     v15 = 1024;
-    v16 = v5;
+    v16 = eventsCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Updating ambient presentation trigger state to '%{public}@' with reason: '%{public}@' [ analogousTriggerEvents : %{BOOL}d ]", &v11, 0x1Cu);
   }
 
-  self->_presentationRequested = a3 == 1;
+  self->_presentationRequested = state == 1;
   [(SBAmbientPresentationController *)self _evaluatePresentationState];
   [(SBAmbientPresentationController *)self _updateScheduledAlarmObserverForPresentationRequested:self->_presentationRequested];
 }
 
-- (void)_updateAmbientMountState:(int64_t)a3 withReason:(id)a4
+- (void)_updateAmbientMountState:(int64_t)state withReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   v7 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -917,17 +917,17 @@ LABEL_21:
     v9 = 138543618;
     v10 = v8;
     v11 = 2114;
-    v12 = v6;
+    v12 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Updating ambient presentation mount state to '%{public}@' with reason: '%{public}@'", &v9, 0x16u);
   }
 
-  [(SBAmbientPresentationController *)self _updatePresentationPossibleForMountState:a3];
+  [(SBAmbientPresentationController *)self _updatePresentationPossibleForMountState:state];
 }
 
-- (void)_evaluateTriggerDetectionStateIgnoreLockState:(BOOL)a3
+- (void)_evaluateTriggerDetectionStateIgnoreLockState:(BOOL)state
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [(SBAmbientPresentationController *)self _isAmbientPresentationAllowedIgnoreLockState:a3];
+  v4 = [(SBAmbientPresentationController *)self _isAmbientPresentationAllowedIgnoreLockState:state];
   v5 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -940,22 +940,22 @@ LABEL_21:
   [(SBAmbientPresentationController *)self _evaluateRedModeTriggerDetectionState];
 }
 
-- (BOOL)_evaluatePresentationStateIgnoreLockState:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (BOOL)_evaluatePresentationStateIgnoreLockState:(BOOL)state animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  stateCopy = state;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = self->_presentationRequested && [(SBAmbientPresentationController *)self _isAmbientPresentationAllowedIgnoreLockState:v6];
-  [(SBAmbientPresentationController *)self _setPresented:v9 animated:v5 withCompletion:v8];
+  completionCopy = completion;
+  v9 = self->_presentationRequested && [(SBAmbientPresentationController *)self _isAmbientPresentationAllowedIgnoreLockState:stateCopy];
+  [(SBAmbientPresentationController *)self _setPresented:v9 animated:animatedCopy withCompletion:completionCopy];
   disableAlwaysOnAssertion = self->_disableAlwaysOnAssertion;
   if (self->_presentationRequested)
   {
     if (!disableAlwaysOnAssertion)
     {
       v11 = MEMORY[0x277CF0868];
-      v12 = [MEMORY[0x277CF08F8] disableAlwaysOn];
-      v18[0] = v12;
+      disableAlwaysOn = [MEMORY[0x277CF08F8] disableAlwaysOn];
+      v18[0] = disableAlwaysOn;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
       v14 = [v11 acquireWithExplanation:@"ambient" observer:0 attributes:v13];
       v15 = self->_disableAlwaysOnAssertion;
@@ -974,7 +974,7 @@ LABEL_21:
   [(SBAmbientPresentationController *)self _evaluateBumpToWakeEnablement];
   [(SBAmbientPresentationController *)self _updateMotionDetection];
   [(SBAmbientPresentationController *)self _evaluateIdleTimerEnablement];
-  [(SBAmbientPresentationController *)self _evaluateTriggerDetectionStateIgnoreLockState:v6];
+  [(SBAmbientPresentationController *)self _evaluateTriggerDetectionStateIgnoreLockState:stateCopy];
 
   return v9;
 }
@@ -1038,7 +1038,7 @@ LABEL_21:
   {
     presentationRequested = self->_presentationRequested;
     suppressIdleTimerForUpcomingAlarm = self->_suppressIdleTimerForUpcomingAlarm;
-    v7 = [(SBAmbientPresentationController *)self _isAmbientAlwaysOnUserSettingEnabled];
+    _isAmbientAlwaysOnUserSettingEnabled = [(SBAmbientPresentationController *)self _isAmbientAlwaysOnUserSettingEnabled];
     v8 = self->_enableIdleTimerAssertion != 0;
     *buf = 67110144;
     v17 = v3;
@@ -1047,7 +1047,7 @@ LABEL_21:
     v20 = 1024;
     v21 = suppressIdleTimerForUpcomingAlarm;
     v22 = 1024;
-    v23 = v7;
+    v23 = _isAmbientAlwaysOnUserSettingEnabled;
     v24 = 1024;
     v25 = v8;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Evaluating idle timer enablement - Enable = %{BOOL}d [ presentationRequested:%{BOOL}d ; suppressForAlarm:%{BOOL}d ; userSetting:%{BOOL}d ; assertion=%{BOOL}d ]", buf, 0x20u);
@@ -1062,8 +1062,8 @@ LABEL_21:
     }
 
     v10 = MEMORY[0x277CF0868];
-    v11 = [MEMORY[0x277CEA5C8] allowAmbientIdleTimer];
-    v15 = v11;
+    allowAmbientIdleTimer = [MEMORY[0x277CEA5C8] allowAmbientIdleTimer];
+    v15 = allowAmbientIdleTimer;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
     v13 = [v10 acquireWithExplanation:@"Ambient Always-On Setting" observer:0 attributes:v12];
     v14 = self->_enableIdleTimerAssertion;
@@ -1078,7 +1078,7 @@ LABEL_21:
     }
 
     [(BLSAssertion *)enableIdleTimerAssertion invalidate];
-    v11 = self->_enableIdleTimerAssertion;
+    allowAmbientIdleTimer = self->_enableIdleTimerAssertion;
     self->_enableIdleTimerAssertion = 0;
   }
 }
@@ -1092,7 +1092,7 @@ LABEL_21:
   {
     presentationRequested = self->_presentationRequested;
     suppressIdleTimerForUpcomingAlarm = self->_suppressIdleTimerForUpcomingAlarm;
-    v7 = [(SBAmbientSettings *)self->_ambientSettings enableSuppression];
+    enableSuppression = [(SBAmbientSettings *)self->_ambientSettings enableSuppression];
     v8 = self->_disableIdleTimerAssertion != 0;
     v13[0] = 67110144;
     v13[1] = v3;
@@ -1101,7 +1101,7 @@ LABEL_21:
     v16 = 1024;
     v17 = suppressIdleTimerForUpcomingAlarm;
     v18 = 1024;
-    v19 = v7;
+    v19 = enableSuppression;
     v20 = 1024;
     v21 = v8;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Evaluating idle timer disablement - Disable = %{BOOL}d [ presentationRequested:%{BOOL}d ; suppressForAlarm:%{BOOL}d ; suppressionEnabled:%{BOOL}d ; assertion=%{BOOL}d ]", v13, 0x20u);
@@ -1136,19 +1136,19 @@ LABEL_21:
 
 - (void)_evaluateAuthenticationIdleTimerEnablement
 {
-  v3 = [(SBAmbientPresentationController *)self isPresented];
-  v4 = [(SBBacklightController *)self->_backlightController screenIsOn];
-  v5 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay isConfiguringUIVisible];
-  v6 = (v5 | [(SBAmbientTransientOverlayViewController *)self->_transientOverlay wantsIdleTimerDisabled]) ^ 1;
+  isPresented = [(SBAmbientPresentationController *)self isPresented];
+  screenIsOn = [(SBBacklightController *)self->_backlightController screenIsOn];
+  isConfiguringUIVisible = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay isConfiguringUIVisible];
+  v6 = (isConfiguringUIVisible | [(SBAmbientTransientOverlayViewController *)self->_transientOverlay wantsIdleTimerDisabled]) ^ 1;
   authenticationIdleTimer = self->_authenticationIdleTimer;
 
-  [(SBAmbientAuthenticationIdleTimer *)authenticationIdleTimer setEnabled:(v3 && v4) & v6];
+  [(SBAmbientAuthenticationIdleTimer *)authenticationIdleTimer setEnabled:(isPresented && screenIsOn) & v6];
 }
 
-- (void)_setSystemApertureProudLockElementHidden:(BOOL)a3
+- (void)_setSystemApertureProudLockElementHidden:(BOOL)hidden
 {
   systemApertureLockElementSuppressionAssertion = self->_systemApertureLockElementSuppressionAssertion;
-  if (a3)
+  if (hidden)
   {
     if (systemApertureLockElementSuppressionAssertion)
     {
@@ -1173,12 +1173,12 @@ LABEL_21:
   self->_systemApertureLockElementSuppressionAssertion = v5;
 }
 
-- (void)_displayTransientLockElementIfNecessaryForKeyBagState:(id)a3
+- (void)_displayTransientLockElementIfNecessaryForKeyBagState:(id)state
 {
-  v4 = a3;
-  v5 = [(SBFMobileKeyBagState *)self->_lastKeyBagState isEffectivelyLocked];
-  v6 = [v4 isEffectivelyLocked];
-  if ((v5 & 1) == 0 && v6 && !self->_shouldSuppressTransientLockIfKeyBagLocks)
+  stateCopy = state;
+  isEffectivelyLocked = [(SBFMobileKeyBagState *)self->_lastKeyBagState isEffectivelyLocked];
+  isEffectivelyLocked2 = [stateCopy isEffectivelyLocked];
+  if ((isEffectivelyLocked & 1) == 0 && isEffectivelyLocked2 && !self->_shouldSuppressTransientLockIfKeyBagLocks)
   {
     [(SBAmbientPresentationController *)self _setSystemApertureProudLockElementHidden:0];
     if ((SBUIIsSystemApertureEnabled() & 1) == 0)
@@ -1192,7 +1192,7 @@ LABEL_21:
 
   [(SBAmbientPresentationController *)self _resetTransientLockSuppressionFlag];
   lastKeyBagState = self->_lastKeyBagState;
-  self->_lastKeyBagState = v4;
+  self->_lastKeyBagState = stateCopy;
 }
 
 - (void)_resetTransientLockSuppressionFlag
@@ -1211,43 +1211,43 @@ LABEL_21:
   [(SBAmbientIdleTimerController *)ambientIdleTimerController setSuppressForSleep:v3];
 }
 
-- (void)_setPresented:(BOOL)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)_setPresented:(BOOL)presented animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a3;
+  presentedCopy = presented;
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = v8;
-  if (self->_presented == v6)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_presented == presentedCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
-    v41 = a4;
+    animatedCopy = animated;
     v10 = self->_presentationGeneration + 1;
     self->_presentationGeneration = v10;
-    [(SBAmbientPresentationController *)self _updateTraitsArbiterParticipantForPresented:v6];
-    v11 = [(SBAmbientPresentationController *)self _connectedChargerIdentifier];
+    [(SBAmbientPresentationController *)self _updateTraitsArbiterParticipantForPresented:presentedCopy];
+    _connectedChargerIdentifier = [(SBAmbientPresentationController *)self _connectedChargerIdentifier];
     v12 = SBLogAmbientPresentation();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v68 = v6;
+      v68 = presentedCopy;
       v69 = 2114;
-      v70 = v11;
+      v70 = _connectedChargerIdentifier;
       v71 = 2048;
       v72 = v10;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Setting ambient overlay presented = %{BOOL}d with chargerId = %{public}@ (generation %lu)", buf, 0x1Cu);
     }
 
-    self->_presented = v6;
-    if (v6)
+    self->_presented = presentedCopy;
+    if (presentedCopy)
     {
-      [(SBAmbientPresentationController *)self _updatePosterBoardWithChargerIdentifier:v11];
+      [(SBAmbientPresentationController *)self _updatePosterBoardWithChargerIdentifier:_connectedChargerIdentifier];
     }
 
     else
@@ -1255,11 +1255,11 @@ LABEL_21:
       [(SBAmbientPresentationController *)self _setAmbientTransientOverlayIsShowingPasscode:0];
     }
 
-    v42 = v11;
-    v13 = [(SBAmbientPresentationController *)self windowScene];
-    if ([v13 isMainDisplayWindowScene])
+    v42 = _connectedChargerIdentifier;
+    windowScene = [(SBAmbientPresentationController *)self windowScene];
+    if ([windowScene isMainDisplayWindowScene])
     {
-      [(SBAmbientPresentationController *)self _setSystemApertureProudLockElementHidden:v6];
+      [(SBAmbientPresentationController *)self _setSystemApertureProudLockElementHidden:presentedCopy];
     }
 
     v63 = 0u;
@@ -1305,8 +1305,8 @@ LABEL_21:
 
       [(SBAmbientTransientOverlayViewController *)self->_transientOverlay setDelegate:self];
       v23 = self->_transientOverlay;
-      v24 = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController idleTimerBehaviorProvider];
-      [(SBAmbientTransientOverlayViewController *)v23 setAmbientIdleTimerBehaviorProvider:v24];
+      idleTimerBehaviorProvider = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController idleTimerBehaviorProvider];
+      [(SBAmbientTransientOverlayViewController *)v23 setAmbientIdleTimerBehaviorProvider:idleTimerBehaviorProvider];
 
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
@@ -1316,15 +1316,15 @@ LABEL_21:
       [MEMORY[0x277D75D18] performWithoutAnimation:v60];
       v25 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:self->_transientOverlay];
       v26 = +[SBWorkspace mainWorkspace];
-      v27 = [v13 _sbDisplayConfiguration];
+      _sbDisplayConfiguration = [windowScene _sbDisplayConfiguration];
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __73__SBAmbientPresentationController__setPresented_animated_withCompletion___block_invoke_2;
       v54[3] = &unk_2783C1868;
       v58 = v10;
-      v59 = v41;
+      v59 = animatedCopy;
       v55 = v25;
-      v56 = self;
+      selfCopy = self;
       v57 = v9;
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
@@ -1333,15 +1333,15 @@ LABEL_21:
       v53[4] = self;
       v53[5] = v10;
       v28 = v25;
-      [v26 requestTransitionWithOptions:0 displayConfiguration:v27 builder:v54 validator:v53];
+      [v26 requestTransitionWithOptions:0 displayConfiguration:_sbDisplayConfiguration builder:v54 validator:v53];
     }
 
     else
     {
-      v29 = [v13 controlCenterController];
-      if ([v29 isPresented])
+      controlCenterController = [windowScene controlCenterController];
+      if ([controlCenterController isPresented])
       {
-        [v29 dismissAnimated:1];
+        [controlCenterController dismissAnimated:1];
       }
 
       [(SBAmbientPresentationController *)self _invalidateTransientOverlayWindowTraitsArbiterParticipantIfNeeded];
@@ -1349,14 +1349,14 @@ LABEL_21:
       {
         v30 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:self->_transientOverlay];
         v31 = +[SBWorkspace mainWorkspace];
-        v32 = [v13 _sbDisplayConfiguration];
+        _sbDisplayConfiguration2 = [windowScene _sbDisplayConfiguration];
         v48[0] = MEMORY[0x277D85DD0];
         v48[1] = 3221225472;
         v48[2] = __73__SBAmbientPresentationController__setPresented_animated_withCompletion___block_invoke_142;
         v48[3] = &unk_2783C1890;
         v51 = v10;
         v49 = v30;
-        v52 = v41;
+        v52 = animatedCopy;
         v50 = v9;
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
@@ -1365,7 +1365,7 @@ LABEL_21:
         v47[4] = self;
         v47[5] = v10;
         v33 = v30;
-        [v31 requestTransitionWithOptions:0 displayConfiguration:v32 builder:v48 validator:v47];
+        [v31 requestTransitionWithOptions:0 displayConfiguration:_sbDisplayConfiguration2 builder:v48 validator:v47];
       }
 
       else if (v9)
@@ -1409,7 +1409,7 @@ LABEL_21:
       while (v37);
     }
 
-    [v13 isMainDisplayWindowScene];
+    [windowScene isMainDisplayWindowScene];
     IOPMUpdateDominoState();
     [(SBAmbientPresentationController *)self _updateTelemetryIsPresented:self->_presented];
   }
@@ -1562,30 +1562,30 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
 
 - (void)_dismissAllOtherAmbientTransientOverlays
 {
-  v7 = [a2 succinctDescription];
-  *a1 = 138412290;
-  *a3 = v7;
-  _os_log_fault_impl(&dword_21ED4E000, a4, OS_LOG_TYPE_FAULT, "Found untracked transient overlay instance %@. Dismissing.", a1, 0xCu);
+  succinctDescription = [a2 succinctDescription];
+  *self = 138412290;
+  *a3 = succinctDescription;
+  _os_log_fault_impl(&dword_21ED4E000, a4, OS_LOG_TYPE_FAULT, "Found untracked transient overlay instance %@. Dismissing.", self, 0xCu);
 }
 
 - (BOOL)_isRedModeTriggered
 {
-  v3 = [(SBAmbientPresentationController *)self _isNightModeUserSettingEffectivelyEnabled];
-  if (v3)
+  _isNightModeUserSettingEffectivelyEnabled = [(SBAmbientPresentationController *)self _isNightModeUserSettingEffectivelyEnabled];
+  if (_isNightModeUserSettingEffectivelyEnabled)
   {
     redModeTriggerManager = self->_redModeTriggerManager;
 
-    LOBYTE(v3) = [(AMRedModeTriggerManager *)redModeTriggerManager isRedModeTriggered];
+    LOBYTE(_isNightModeUserSettingEffectivelyEnabled) = [(AMRedModeTriggerManager *)redModeTriggerManager isRedModeTriggered];
   }
 
-  return v3;
+  return _isNightModeUserSettingEffectivelyEnabled;
 }
 
-- (void)_setAmbientDisplayStyle:(int64_t)a3 forReason:(id)a4
+- (void)_setAmbientDisplayStyle:(int64_t)style forReason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (self->_ambientDisplayStyle != a3)
+  reasonCopy = reason;
+  if (self->_ambientDisplayStyle != style)
   {
     v7 = SBLogAmbientPresentation();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1594,11 +1594,11 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
       *buf = 138543618;
       v21 = v8;
       v22 = 2114;
-      v23 = v6;
+      v23 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Setting ambient display style to %{public}@ for reason %{public}@", buf, 0x16u);
     }
 
-    self->_ambientDisplayStyle = a3;
+    self->_ambientDisplayStyle = style;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -1622,7 +1622,7 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
           v14 = *(*(&v15 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            [v14 ambientPresentationController:self didUpdateAmbientDisplayStyle:{a3, v15}];
+            [v14 ambientPresentationController:self didUpdateAmbientDisplayStyle:{style, v15}];
           }
 
           ++v13;
@@ -1642,13 +1642,13 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
   }
 }
 
-- (void)_setAmbientTransientOverlayIsShowingPasscode:(BOOL)a3
+- (void)_setAmbientTransientOverlayIsShowingPasscode:(BOOL)passcode
 {
-  if (self->_ambientTransientOverlayIsShowingPasscode != a3)
+  if (self->_ambientTransientOverlayIsShowingPasscode != passcode)
   {
-    self->_ambientTransientOverlayIsShowingPasscode = a3;
+    self->_ambientTransientOverlayIsShowingPasscode = passcode;
     v5 = @"Dismissed";
-    if (a3)
+    if (passcode)
     {
       v5 = @"Presented";
     }
@@ -1658,22 +1658,22 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
   }
 }
 
-- (void)_setCoverSheetPresentedByUserGesture:(BOOL)a3
+- (void)_setCoverSheetPresentedByUserGesture:(BOOL)gesture
 {
-  if (self->_coverSheetPresentedByUserGesture != a3)
+  if (self->_coverSheetPresentedByUserGesture != gesture)
   {
-    self->_coverSheetPresentedByUserGesture = a3;
+    self->_coverSheetPresentedByUserGesture = gesture;
     [(SBAmbientPresentationController *)self _evaluatePresentationState];
   }
 }
 
-- (void)_updatePresentationPossibleForMountState:(int64_t)a3
+- (void)_updatePresentationPossibleForMountState:(int64_t)state
 {
   v30 = *MEMORY[0x277D85DE8];
   if (self->_presentationPossible)
   {
-    self->_presentationPossible = a3 == 1;
-    if (!a3)
+    self->_presentationPossible = state == 1;
+    if (!state)
     {
       v26 = 0u;
       v27 = 0u;
@@ -1713,7 +1713,7 @@ uint64_t __73__SBAmbientPresentationController__setPresented_animated_withComple
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     self->_presentationPossible = 1;
     v20 = 0u;
@@ -1815,13 +1815,13 @@ void __76__SBAmbientPresentationController__updatePresentationPossibleForMountSt
   }
 }
 
-- (void)_updatePosterBoardWithChargerIdentifier:(id)a3
+- (void)_updatePosterBoardWithChargerIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v5 substringToIndex:7];
+  identifierCopy = identifier;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [uUIDString substringToIndex:7];
 
   v7 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1829,7 +1829,7 @@ void __76__SBAmbientPresentationController__updatePresentationPossibleForMountSt
     *buf = 138543618;
     v14 = v6;
     v15 = 2112;
-    v16 = v3;
+    v16 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Pushing chargerId '%@' to PosterBoard", buf, 0x16u);
   }
 
@@ -1841,7 +1841,7 @@ void __76__SBAmbientPresentationController__updatePresentationPossibleForMountSt
     v10[2] = __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifier___block_invoke;
     v10[3] = &unk_2783B2F80;
     v11 = v6;
-    v12 = v3;
+    v12 = identifierCopy;
     [v8 notifyActiveChargerIdentifierDidUpdate:v12 completion:v10];
 
     v9 = v11;
@@ -1885,9 +1885,9 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
 
 - (void)_updateMotionDetection
 {
-  v3 = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController isUserSleepPredicted];
-  v4 = [(SBAmbientMotionDetectionWakeAttributeMonitor *)self->_motionDetectionWakeAttributeMonitor shouldEnableMotionDetectionWake];
-  if (self->_presentationRequested && (v3 || v4) && [(SBAmbientPresentationController *)self _isMotionToWakePermitted]&& [(SBAmbientPresentationController *)self _isMotionToWakeUserSettingEnabled])
+  isUserSleepPredicted = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController isUserSleepPredicted];
+  shouldEnableMotionDetectionWake = [(SBAmbientMotionDetectionWakeAttributeMonitor *)self->_motionDetectionWakeAttributeMonitor shouldEnableMotionDetectionWake];
+  if (self->_presentationRequested && (isUserSleepPredicted || shouldEnableMotionDetectionWake) && [(SBAmbientPresentationController *)self _isMotionToWakePermitted]&& [(SBAmbientPresentationController *)self _isMotionToWakeUserSettingEnabled])
   {
     if (self->_motionToWakeEnableAssertion)
     {
@@ -1921,10 +1921,10 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
   [(SBAmbientTelemetryEmitter *)telemetryEmitter logTelemetryForMotionToWakeEnabled:v8];
 }
 
-- (void)_updateTraitsArbiterParticipantForPresented:(BOOL)a3
+- (void)_updateTraitsArbiterParticipantForPresented:(BOOL)presented
 {
   traitsArbiterParticipant = self->_traitsArbiterParticipant;
-  if (a3)
+  if (presented)
   {
     if (traitsArbiterParticipant)
     {
@@ -1932,14 +1932,14 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v9 = [WeakRetained traitsArbiter];
+    traitsArbiter = [WeakRetained traitsArbiter];
 
-    v6 = [v9 acquireParticipantWithRole:@"SBTraitsParticipantRoleAmbient" delegate:self];
+    v6 = [traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleAmbient" delegate:self];
     v7 = self->_traitsArbiterParticipant;
     self->_traitsArbiterParticipant = v6;
 
     [(TRAParticipant *)self->_traitsArbiterParticipant setNeedsUpdatePreferencesWithReason:@"Ambient Presented"];
-    v8 = v9;
+    v8 = traitsArbiter;
   }
 
   else
@@ -1957,10 +1957,10 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
 
 - (void)_invalidateTransientOverlayWindowTraitsArbiterParticipantIfNeeded
 {
-  v3 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay viewIfLoaded];
+  window = [viewIfLoaded window];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = window;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -1981,47 +1981,47 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
 
   v11 = v7;
 
-  v8 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay isForegroundActive];
+  isForegroundActive = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay isForegroundActive];
   v9 = v11;
-  if (v11 && v8)
+  if (v11 && isForegroundActive)
   {
-    v10 = [v11 traitsParticipant];
-    [v10 invalidate];
+    traitsParticipant = [v11 traitsParticipant];
+    [traitsParticipant invalidate];
 
     v9 = v11;
   }
 }
 
-- (void)_updateTelemetryIsPresented:(BOOL)a3
+- (void)_updateTelemetryIsPresented:(BOOL)presented
 {
-  v3 = a3;
-  if (a3)
+  presentedCopy = presented;
+  if (presented)
   {
     [(AMAmbientDefaults *)self->_ambientDefaults setLifetimePresentationCounter:[(AMAmbientDefaults *)self->_ambientDefaults lifetimePresentationCounter]+ 1];
   }
 
   [(SBAmbientTelemetryEmitter *)self->_telemetryEmitter logTelemetryForAmbientPresented:self->_presented displayStyle:self->_ambientDisplayStyle];
-  if (v3)
+  if (presentedCopy)
   {
     telemetryEmitter = self->_telemetryEmitter;
-    v6 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfiguration];
-    v7 = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfigurationMetadata];
-    [(SBAmbientTelemetryEmitter *)telemetryEmitter logTelemetryForAmbientConfigurationUpdate:v6 metadata:v7];
+    activeConfiguration = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfiguration];
+    activeConfigurationMetadata = [(SBAmbientTransientOverlayViewController *)self->_transientOverlay activeConfigurationMetadata];
+    [(SBAmbientTelemetryEmitter *)telemetryEmitter logTelemetryForAmbientConfigurationUpdate:activeConfiguration metadata:activeConfigurationMetadata];
 
     v8 = self->_telemetryEmitter;
-    v9 = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController isAmbientSuppressed];
+    isAmbientSuppressed = [(SBAmbientIdleTimerController *)self->_ambientIdleTimerController isAmbientSuppressed];
 
-    [(SBAmbientTelemetryEmitter *)v8 logTelemetryForSleepSuppressionActive:v9];
+    [(SBAmbientTelemetryEmitter *)v8 logTelemetryForSleepSuppressionActive:isAmbientSuppressed];
   }
 }
 
-- (void)_presentLockUIAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_presentLockUIAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v14[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = @"SBUILockOptionsAnimateLockScreenActivationKey";
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:animatedCopy];
   v14[0] = v7;
   v14[1] = MEMORY[0x277CBEC38];
   v13[1] = @"SBUILockOptionsPreserveTransientOverlaysKey";
@@ -2034,8 +2034,8 @@ void __75__SBAmbientPresentationController__updatePosterBoardWithChargerIdentifi
   v11[1] = 3221225472;
   v11[2] = __73__SBAmbientPresentationController__presentLockUIAnimated_withCompletion___block_invoke;
   v11[3] = &unk_2783A9C70;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(SBLockScreenManager *)lockScreenManager lockUIFromSource:13 withOptions:v8 completion:v11];
 }
 
@@ -2055,13 +2055,13 @@ uint64_t __73__SBAmbientPresentationController__presentLockUIAnimated_withComple
 
 - (void)_fetchDefaultWidgetStacks
 {
-  v3 = [MEMORY[0x277D65ED8] sharedInstance];
+  mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__SBAmbientPresentationController__fetchDefaultWidgetStacks__block_invoke;
   v4[3] = &unk_2783A8C18;
   v4[4] = self;
-  [v3 performAfterFirstUnlockSinceBootUsingBlock:v4];
+  [mEMORY[0x277D65ED8] performAfterFirstUnlockSinceBootUsingBlock:v4];
 }
 
 void __60__SBAmbientPresentationController__fetchDefaultWidgetStacks__block_invoke(uint64_t a1)
@@ -2123,13 +2123,13 @@ void __60__SBAmbientPresentationController__fetchDefaultWidgetStacks__block_invo
   }
 }
 
-- (id)_widgetDescriptorsForATXStack:(id)a3
+- (id)_widgetDescriptorsForATXStack:(id)stack
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 smallDefaultStack];
-  v5 = v4;
-  if (!v4 || ![v4 count])
+  stackCopy = stack;
+  smallDefaultStack = [stackCopy smallDefaultStack];
+  v5 = smallDefaultStack;
+  if (!smallDefaultStack || ![smallDefaultStack count])
   {
     v6 = SBLogAmbientPresentation();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2155,7 +2155,7 @@ LABEL_20:
 
   v8 = v7;
   v17 = v5;
-  v18 = v3;
+  v18 = stackCopy;
   v9 = 0;
   v10 = *v20;
   do
@@ -2168,17 +2168,17 @@ LABEL_20:
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
-      v13 = [v12 avocadoDescriptor];
-      v14 = [v13 sanitizedDescriptor];
+      avocadoDescriptor = [v12 avocadoDescriptor];
+      sanitizedDescriptor = [avocadoDescriptor sanitizedDescriptor];
 
-      if (v14)
+      if (sanitizedDescriptor)
       {
         if (!v9)
         {
           v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
         }
 
-        [v9 addObject:v14];
+        [v9 addObject:sanitizedDescriptor];
       }
 
       else
@@ -2198,7 +2198,7 @@ LABEL_20:
 
   while (v8);
   v5 = v17;
-  v3 = v18;
+  stackCopy = v18;
 LABEL_21:
 
   return v9;
@@ -2207,32 +2207,32 @@ LABEL_21:
 - (id)_connectedChargerIdentifier
 {
   v3 = +[SBUIController sharedInstance];
-  v4 = [v3 connectedWirelessChargerIdentifier];
+  connectedWirelessChargerIdentifier = [v3 connectedWirelessChargerIdentifier];
 
-  if (!v4)
+  if (!connectedWirelessChargerIdentifier)
   {
-    v5 = [(SBAmbientPresentationController *)self _fetchConnectedWirelessChargerIdentifier];
-    if (v5)
+    _fetchConnectedWirelessChargerIdentifier = [(SBAmbientPresentationController *)self _fetchConnectedWirelessChargerIdentifier];
+    if (_fetchConnectedWirelessChargerIdentifier)
     {
-      v4 = v5;
+      connectedWirelessChargerIdentifier = _fetchConnectedWirelessChargerIdentifier;
     }
 
     else
     {
-      v6 = [(SBAmbientPresentationController *)self _fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails];
-      if (v6)
+      _fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails = [(SBAmbientPresentationController *)self _fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails];
+      if (_fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails)
       {
-        v4 = v6;
+        connectedWirelessChargerIdentifier = _fetchConnectedWirelessChargerIdentifierFromRawAdapterDetails;
       }
 
       else
       {
-        v4 = @"DefaultChargerIdentifier";
+        connectedWirelessChargerIdentifier = @"DefaultChargerIdentifier";
       }
     }
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"SBAmbientChargerId", v4];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"SBAmbientChargerId", connectedWirelessChargerIdentifier];
 
   return v7;
 }
@@ -2313,13 +2313,13 @@ void __96__SBAmbientPresentationController__fetchConnectedWirelessChargerIdentif
   }
 }
 
-- (id)_connectedWirelessChargerIdentifierForAdapterDetails:(id)a3
+- (id)_connectedWirelessChargerIdentifierForAdapterDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"FamilyCode"];
+  detailsCopy = details;
+  v5 = [detailsCopy objectForKey:@"FamilyCode"];
   if (-[SBAmbientPresentationController _isConnectedChargerInternalWirelessWithFamilyCode:](self, "_isConnectedChargerInternalWirelessWithFamilyCode:", [v5 intValue]))
   {
-    v6 = [v4 objectForKey:@"Source"];
+    v6 = [detailsCopy objectForKey:@"Source"];
     v7 = v6;
     if (v6)
     {
@@ -2471,7 +2471,7 @@ void __68__SBAmbientPresentationController__observeAmbientUserSettingChanges__bl
   return [(SBAmbientPresentationController *)self _isNightModeSettingMandatory];
 }
 
-- (void)_updateScheduledAlarmObserverForPresentationRequested:(BOOL)a3
+- (void)_updateScheduledAlarmObserverForPresentationRequested:(BOOL)requested
 {
   [(SBAmbientScheduledAlarmObserver *)self->_scheduledAlarmObserver setObservationEnabled:self->_presentationRequested];
   if (!self->_presentationRequested)
@@ -2601,17 +2601,17 @@ void __74__SBAmbientPresentationController__updateViewObstructedSuppressionManag
   return WeakRetained;
 }
 
-- (void)test_updateAmbientPresentationState:(int64_t)a3 withReason:(id)a4
+- (void)test_updateAmbientPresentationState:(int64_t)state withReason:(id)reason
 {
-  v6 = a4;
-  if (a3 <= 3)
+  reasonCopy = reason;
+  if (state <= 3)
   {
-    v7 = qword_21F8A8638[a3];
-    v8 = qword_21F8A8658[a3];
-    v9 = v6;
-    [(SBAmbientPresentationController *)self _updateAmbientTriggerState:v7 analogousTriggerEvents:0 withReason:v6];
+    v7 = qword_21F8A8638[state];
+    v8 = qword_21F8A8658[state];
+    v9 = reasonCopy;
+    [(SBAmbientPresentationController *)self _updateAmbientTriggerState:v7 analogousTriggerEvents:0 withReason:reasonCopy];
     [(SBAmbientPresentationController *)self _updateAmbientMountState:v8 withReason:v9];
-    v6 = v9;
+    reasonCopy = v9;
   }
 }
 

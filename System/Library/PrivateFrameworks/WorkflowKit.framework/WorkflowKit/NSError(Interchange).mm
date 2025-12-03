@@ -9,23 +9,23 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v9[0] = @"errorCode";
-  v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "code")}];
+  v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "code")}];
   v10[0] = v2;
   v9[1] = @"errorMessage";
-  v3 = [a1 localizedDescription];
-  v4 = v3;
-  if (!v3)
+  localizedDescription = [self localizedDescription];
+  localizedFailureReason = localizedDescription;
+  if (!localizedDescription)
   {
-    v4 = [a1 localizedFailureReason];
+    localizedFailureReason = [self localizedFailureReason];
   }
 
-  v10[1] = v4;
+  v10[1] = localizedFailureReason;
   v9[2] = @"errorDomain";
-  v5 = [a1 domain];
-  v10[2] = v5;
+  domain = [self domain];
+  v10[2] = domain;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
-  if (!v3)
+  if (!localizedDescription)
   {
   }
 
@@ -38,7 +38,7 @@
 {
   v4 = a3;
   v5 = [v4 objectForKey:@"errorCode"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = [v4 objectForKey:@"errorMessage"];
   v8 = [v4 objectForKey:@"errorDomain"];
@@ -52,7 +52,7 @@
   v10 = v9;
 
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E696A578], 0}];
-  v12 = [a1 errorWithDomain:v10 code:v6 userInfo:v11];
+  v12 = [self errorWithDomain:v10 code:integerValue userInfo:v11];
 
   return v12;
 }

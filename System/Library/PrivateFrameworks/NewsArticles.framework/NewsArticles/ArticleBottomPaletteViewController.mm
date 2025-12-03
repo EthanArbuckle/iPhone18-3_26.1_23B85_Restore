@@ -1,7 +1,7 @@
 @interface ArticleBottomPaletteViewController
 - (_TtC12NewsArticles34ArticleBottomPaletteViewController)init;
-- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
@@ -20,7 +20,7 @@
   return [(ArticleBottomPaletteViewController *)&v5 initWithNibName:0 bundle:0];
 }
 
-- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles34ArticleBottomPaletteViewController_isBeingUsedAsPlugin) = 1;
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC12NewsArticles34ArticleBottomPaletteViewController_pluggableDelegate) = 0;
@@ -48,7 +48,7 @@
   sub_1D7D294EC();
 }
 
-- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles34ArticleBottomPaletteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

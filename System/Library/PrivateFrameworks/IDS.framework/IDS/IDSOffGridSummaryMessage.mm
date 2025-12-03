@@ -1,16 +1,16 @@
 @interface IDSOffGridSummaryMessage
-- (IDSOffGridSummaryMessage)initWithCoder:(id)a3;
-- (IDSOffGridSummaryMessage)initWithSummary:(id)a3 totalPendingMessagesCount:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (IDSOffGridSummaryMessage)initWithCoder:(id)coder;
+- (IDSOffGridSummaryMessage)initWithSummary:(id)summary totalPendingMessagesCount:(id)count;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridSummaryMessage
 
-- (IDSOffGridSummaryMessage)initWithSummary:(id)a3 totalPendingMessagesCount:(id)a4
+- (IDSOffGridSummaryMessage)initWithSummary:(id)summary totalPendingMessagesCount:(id)count
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  summaryCopy = summary;
+  countCopy = count;
+  if (summaryCopy)
   {
     v13.receiver = self;
     v13.super_class = IDSOffGridSummaryMessage;
@@ -18,43 +18,43 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_pendingCounts, a3);
-      objc_storeStrong(p_isa + 1, a4);
+      objc_storeStrong(&v9->_pendingCounts, summary);
+      objc_storeStrong(p_isa + 1, count);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (IDSOffGridSummaryMessage)initWithCoder:(id)a3
+- (IDSOffGridSummaryMessage)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"pc"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"pc"];
 
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"tc"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tc"];
 
   v11 = [[IDSOffGridSummaryMessage alloc] initWithSummary:v9 totalPendingMessagesCount:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pendingCounts = self->_pendingCounts;
-  v5 = a3;
-  [v5 encodeObject:pendingCounts forKey:@"pc"];
-  [v5 encodeObject:self->_totalPendingMessagesCount forKey:@"tc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pendingCounts forKey:@"pc"];
+  [coderCopy encodeObject:self->_totalPendingMessagesCount forKey:@"tc"];
 }
 
 @end

@@ -2,7 +2,7 @@
 - (AKPushTokenKeychainWrapper)init;
 - (id)_descriptor;
 - (id)fetchToken;
-- (void)updateToken:(id)a3;
+- (void)updateToken:(id)token;
 @end
 
 @implementation AKPushTokenKeychainWrapper
@@ -35,12 +35,12 @@
   v17[1] = a2;
   v17[0] = 0;
   keychainManager = self->_keychainManager;
-  v9 = [(AKPushTokenKeychainWrapper *)self _descriptor];
+  _descriptor = [(AKPushTokenKeychainWrapper *)self _descriptor];
   v15 = v17[0];
   v8 = [AAFKeychainManager keychainItemForDescriptor:"keychainItemForDescriptor:error:" error:?];
   objc_storeStrong(v17, v15);
   v16 = v8;
-  _objc_release(v9);
+  _objc_release(_descriptor);
   if (v17[0])
   {
     v14 = _AKLogSystem();
@@ -69,25 +69,25 @@
     objc_storeStrong(&v12, 0);
   }
 
-  v4 = [v16 value];
+  value = [v16 value];
   objc_storeStrong(v3, 0);
   objc_storeStrong(v17, 0);
 
-  return v4;
+  return value;
 }
 
-- (void)updateToken:(id)a3
+- (void)updateToken:(id)token
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v6 = [AAFKeychainItem alloc];
-  v7 = [(AKPushTokenKeychainWrapper *)v17 _descriptor];
+  _descriptor = [(AKPushTokenKeychainWrapper *)selfCopy _descriptor];
   v15 = [v6 initWithDescriptor:? value:?];
-  _objc_release(v7);
+  _objc_release(_descriptor);
   v14 = 0;
-  keychainManager = v17->_keychainManager;
+  keychainManager = selfCopy->_keychainManager;
   v13 = 0;
   [(AAFKeychainManager *)keychainManager addOrUpdateKeychainItem:v15 error:&v13];
   objc_storeStrong(&v14, v13);

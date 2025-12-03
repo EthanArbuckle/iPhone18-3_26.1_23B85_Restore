@@ -1,23 +1,23 @@
 @interface CBGrimaldiModule
 - (BOOL)jasperCoex;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (BOOL)strobeCoex;
-- (CBGrimaldiModule)initWithQueue:(id)a3 andEventSource:(id)a4 andSamplingStrategy:(id)a5;
+- (CBGrimaldiModule)initWithQueue:(id)queue andEventSource:(id)source andSamplingStrategy:(id)strategy;
 - (id)copyGainChanged;
 - (id)copyJasperCoex;
-- (id)copyParam:(id)a3;
-- (id)copyPropertyForKey:(id)a3;
+- (id)copyParam:(id)param;
+- (id)copyPropertyForKey:(id)key;
 - (id)copyRearLux;
 - (id)copyReliableLux;
 - (id)copyStrobeCoex;
 - (void)CBAPDSGetCoex;
 - (void)clearOutput;
 - (void)dealloc;
-- (void)grimaldiLuxReceived:(ApplePhotonDetectorServicesLuxInfo *)a3;
-- (void)registerNotificationBlock:(id)a3;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)grimaldiLuxReceived:(ApplePhotonDetectorServicesLuxInfo *)received;
+- (void)registerNotificationBlock:(id)block;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 - (void)setGrimaldiLux;
-- (void)startWithFrequency:(float)a3 singleSample:(BOOL)a4;
+- (void)startWithFrequency:(float)frequency singleSample:(BOOL)sample;
 - (void)stop;
 - (void)timerCallback;
 - (void)unregisterNotificationBlock;
@@ -67,33 +67,33 @@
 - (void)timerCallback
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   dispatch_assert_queue_V2(self->super._queue);
-  if (v15->_provideLux)
+  if (selfCopy->_provideLux)
   {
-    [(CBGrimaldiModule *)v15 setGrimaldiLux];
+    [(CBGrimaldiModule *)selfCopy setGrimaldiLux];
   }
 
-  if (!v15->_provideLux && v15->_provideCoex)
+  if (!selfCopy->_provideLux && selfCopy->_provideCoex)
   {
-    [(CBGrimaldiModule *)v15 CBAPDSGetCoex];
+    [(CBGrimaldiModule *)selfCopy CBAPDSGetCoex];
   }
 
-  if (v15->_sampleOnce)
+  if (selfCopy->_sampleOnce)
   {
-    v15->_sampleOnce = 0;
+    selfCopy->_sampleOnce = 0;
   }
 
-  if (v15->_sampleMultiple)
+  if (selfCopy->_sampleMultiple)
   {
-    if (v15->_started)
+    if (selfCopy->_started)
     {
-      if (v15->_samplingTime == -1)
+      if (selfCopy->_samplingTime == -1)
       {
-        if (v15->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          logHandle = v15->super._logHandle;
+          logHandle = selfCopy->super._logHandle;
         }
 
         else
@@ -115,34 +115,34 @@
         v12 = OS_LOG_TYPE_FAULT;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
         {
-          __os_log_helper_16_0_2_4_0_4_0(v16, v15->_sampleOnce, v15->_sampleMultiple);
+          __os_log_helper_16_0_2_4_0_4_0(v16, selfCopy->_sampleOnce, selfCopy->_sampleMultiple);
           _os_log_fault_impl(&dword_1DE8E5000, v13, v12, "Timer callback fired after Grimaldi stopped. sampleOnce: %d, sampleMultiple: %d", v16, 0xEu);
         }
       }
 
       else
       {
-        v2 = dispatch_time(0, v15->_samplingTime);
-        queue = v15->super._queue;
+        v2 = dispatch_time(0, selfCopy->_samplingTime);
+        queue = selfCopy->super._queue;
         block = MEMORY[0x1E69E9820];
         v7 = -1073741824;
         v8 = 0;
         v9 = __33__CBGrimaldiModule_timerCallback__block_invoke;
         v10 = &unk_1E867B480;
-        v11 = v15;
+        v11 = selfCopy;
         dispatch_after(v2, queue, &block);
       }
     }
 
     else
     {
-      [(CBGrimaldiModule *)v15 clearOutput];
+      [(CBGrimaldiModule *)selfCopy clearOutput];
     }
   }
 
   else
   {
-    [(CBGrimaldiModule *)v15 stop];
+    [(CBGrimaldiModule *)selfCopy stop];
   }
 
   *MEMORY[0x1E69E9840];
@@ -151,14 +151,14 @@
 - (void)setGrimaldiLux
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
   dispatch_assert_queue_V2(self->super._queue);
   v21 = 0;
-  v20 = os_signpost_id_generate(v23->super._logHandle);
-  if (v23->super._logHandle)
+  v20 = os_signpost_id_generate(selfCopy->super._logHandle);
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v23->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -188,9 +188,9 @@
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, log, type, spid, "Grimaldi APDSCallback", &unk_1DEAD656F, v16, 2u);
   }
 
-  if (v23->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v7 = v23->super._logHandle;
+    v7 = selfCopy->super._logHandle;
   }
 
   else
@@ -218,12 +218,12 @@
     _os_log_debug_impl(&dword_1DE8E5000, v4, v5, "Requesting lux from APDS", v13, 2u);
   }
 
-  v21 = [(CBGrimaldiEventSource *)v23->_eventSource requestEventOn:v23->super._queue withNsamples:v23->_currentNumSamples withCallback:?];
+  v21 = [(CBGrimaldiEventSource *)selfCopy->_eventSource requestEventOn:selfCopy->super._queue withNsamples:selfCopy->_currentNumSamples withCallback:?];
   if (v21)
   {
-    if (v23->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v3 = v23->super._logHandle;
+      v3 = selfCopy->super._logHandle;
     }
 
     else
@@ -314,22 +314,22 @@ void __34__CBGrimaldiModule_setGrimaldiLux__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (CBGrimaldiModule)initWithQueue:(id)a3 andEventSource:(id)a4 andSamplingStrategy:(id)a5
+- (CBGrimaldiModule)initWithQueue:(id)queue andEventSource:(id)source andSamplingStrategy:(id)strategy
 {
   v69 = *MEMORY[0x1E69E9840];
-  v66 = self;
+  selfCopy = self;
   v65 = a2;
-  v64 = a3;
-  v63 = a4;
-  v62 = a5;
+  queueCopy = queue;
+  sourceCopy = source;
+  strategyCopy = strategy;
   v61.receiver = self;
   v61.super_class = CBGrimaldiModule;
-  v66 = [(CBModule *)&v61 initWithQueue:a3];
-  if (v66)
+  selfCopy = [(CBModule *)&v61 initWithQueue:queue];
+  if (selfCopy)
   {
     v5 = os_log_create(CBGrimaldiModuleName, "default");
-    v66->super._logHandle = v5;
-    if (!v66->super._logHandle)
+    selfCopy->super._logHandle = v5;
+    if (!selfCopy->super._logHandle)
     {
       if (_COREBRIGHTNESS_LOG_DEFAULT)
       {
@@ -358,18 +358,18 @@ void __34__CBGrimaldiModule_setGrimaldiLux__block_invoke(uint64_t a1, uint64_t a
     if ((CBU_DeviceHasGrimaldi() & 1) == 0)
     {
 LABEL_50:
-      MEMORY[0x1E69E5920](v66);
+      MEMORY[0x1E69E5920](selfCopy);
       v67 = 0;
       goto LABEL_51;
     }
 
     v6 = dispatch_queue_create(CBGrimaldiModuleName, 0);
-    v66->_workQueue = v6;
-    if (!v66->_workQueue)
+    selfCopy->_workQueue = v6;
+    if (!selfCopy->_workQueue)
     {
-      if (v66->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v66->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -401,12 +401,12 @@ LABEL_50:
       goto LABEL_50;
     }
 
-    v66->_correctionFactor = 1.0;
-    if (!v63)
+    selfCopy->_correctionFactor = 1.0;
+    if (!sourceCopy)
     {
-      if (v66->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v31 = v66->super._logHandle;
+        v31 = selfCopy->super._logHandle;
       }
 
       else
@@ -438,13 +438,13 @@ LABEL_50:
       goto LABEL_50;
     }
 
-    v7 = MEMORY[0x1E69E5928](v63);
-    v66->_eventSource = v7;
-    if (!v62)
+    v7 = MEMORY[0x1E69E5928](sourceCopy);
+    selfCopy->_eventSource = v7;
+    if (!strategyCopy)
     {
-      if (v66->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v26 = v66->super._logHandle;
+        v26 = selfCopy->super._logHandle;
       }
 
       else
@@ -476,11 +476,11 @@ LABEL_50:
       goto LABEL_50;
     }
 
-    v8 = MEMORY[0x1E69E5928](v62);
-    v66->_samplingStrategy = v8;
-    if (v66->super._logHandle)
+    v8 = MEMORY[0x1E69E5928](strategyCopy);
+    selfCopy->_samplingStrategy = v8;
+    if (selfCopy->super._logHandle)
     {
-      v21 = v66->super._logHandle;
+      v21 = selfCopy->super._logHandle;
     }
 
     else
@@ -504,35 +504,35 @@ LABEL_50:
     {
       v17 = v48;
       *v18 = v47;
-      samplingStrategy = v66->_samplingStrategy;
-      eventSource = v66->_eventSource;
+      samplingStrategy = selfCopy->_samplingStrategy;
+      eventSource = selfCopy->_eventSource;
       v19 = v68;
       __os_log_helper_16_2_2_8_64_8_64(v68, samplingStrategy, eventSource);
       _os_log_impl(&dword_1DE8E5000, v48, v47, "Grimaldi init: %@, %@", v68, 0x16u);
     }
 
-    workQueue = v66->_workQueue;
+    workQueue = selfCopy->_workQueue;
     block = MEMORY[0x1E69E9820];
     v42 = -1073741824;
     v43 = 0;
     v44 = __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___block_invoke;
     v45 = &unk_1E867B480;
-    v46 = v66;
+    v46 = selfCopy;
     dispatch_async(workQueue, &block);
-    v66->_samplingTime = -1;
-    v66->_provideLux = 1;
-    v66->_provideCoex = 0;
-    v12 = [v62 getInitialNumberOfSamples];
-    v66->_currentNumSamples = v12;
-    v66->_coexStrobe = 0;
-    v66->_coexJasper = 0;
+    selfCopy->_samplingTime = -1;
+    selfCopy->_provideLux = 1;
+    selfCopy->_provideCoex = 0;
+    getInitialNumberOfSamples = [strategyCopy getInitialNumberOfSamples];
+    selfCopy->_currentNumSamples = getInitialNumberOfSamples;
+    selfCopy->_coexStrobe = 0;
+    selfCopy->_coexJasper = 0;
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v66->_currentRLuxOutputDict = v13;
+    selfCopy->_currentRLuxOutputDict = v13;
     v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"lux", @"gain", @"absoluteTime", @"numSamples", @"StrobeCoex", @"JasperCoex", 0}];
-    v66->_validKeys = v14;
+    selfCopy->_validKeys = v14;
   }
 
-  v67 = v66;
+  v67 = selfCopy;
 LABEL_51:
   v16 = v67;
   *MEMORY[0x1E69E9840];
@@ -596,29 +596,29 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_eventSource);
-  if (v5->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_workQueue);
-  MEMORY[0x1E69E5920](v5->_currentRLuxOutputDict);
-  MEMORY[0x1E69E5920](v5->_lastRLuxOutputDict);
-  MEMORY[0x1E69E5920](v5->_overriddenInput);
-  *&v2 = MEMORY[0x1E69E5920](v5->_validKeys).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_workQueue);
+  MEMORY[0x1E69E5920](selfCopy->_currentRLuxOutputDict);
+  MEMORY[0x1E69E5920](selfCopy->_lastRLuxOutputDict);
+  MEMORY[0x1E69E5920](selfCopy->_overriddenInput);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_validKeys).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBGrimaldiModule;
   [(CBModule *)&v3 dealloc];
 }
 
-- (void)startWithFrequency:(float)a3 singleSample:(BOOL)a4
+- (void)startWithFrequency:(float)frequency singleSample:(BOOL)sample
 {
-  v4 = a3;
-  if (a4)
+  frequencyCopy = frequency;
+  if (sample)
   {
     self->_sampleOnce = 1;
   }
@@ -630,12 +630,12 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
   if (!self->_started)
   {
-    if (a3 <= 0.0)
+    if (frequency <= 0.0)
     {
-      v4 = 1.0;
+      frequencyCopy = 1.0;
     }
 
-    self->_samplingTime = (1000000000.0 / v4);
+    self->_samplingTime = (1000000000.0 / frequencyCopy);
     self->_started = 1;
     [(CBGrimaldiModule *)self timerCallback];
   }
@@ -643,12 +643,12 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
 - (void)clearOutput
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   [(NSMutableDictionary *)self->_currentRLuxOutputDict removeAllObjects];
-  if (v10->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v10->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -676,11 +676,11 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "Grimaldi: cleared output", v6, 2u);
   }
 
-  MEMORY[0x1E69E5920](v10->_lastLux);
-  v10->_lastLux = 0;
+  MEMORY[0x1E69E5920](selfCopy->_lastLux);
+  selfCopy->_lastLux = 0;
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->super._logHandle)
@@ -705,12 +705,12 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v15, a3);
+    __os_log_helper_16_2_1_8_64(v15, key);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "copyPropertyForKey called with key: %@", v15, 0xCu);
   }
 
   v10 = 0;
-  if ([a3 isEqualToString:@"RLuxOutput"])
+  if ([key isEqualToString:@"RLuxOutput"])
   {
     if (self->super._logHandle)
     {
@@ -741,7 +741,7 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     v10 = [(NSMutableDictionary *)self->_currentRLuxOutputDict copy];
   }
 
-  else if (([a3 isEqualToString:@"RLuxOverride"] & 1) != 0 && self->_overriding)
+  else if (([key isEqualToString:@"RLuxOverride"] & 1) != 0 && self->_overriding)
   {
     v10 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:self->_overriddenInput copyItems:1];
     if (self->super._logHandle)
@@ -766,33 +766,33 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
   return v10;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v55 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
-  v47 = a4;
-  if ([a4 isEqualToString:@"RLuxOverride"])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([key isEqualToString:@"RLuxOverride"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v50->_overriding = 1;
+      selfCopy->_overriding = 1;
       context = objc_autoreleasePoolPush();
-      [objc_msgSend(v48 objectForKeyedSubscript:{@"lux", "floatValue"}];
+      [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"lux", "floatValue"}];
       v46 = v4;
-      [objc_msgSend(v48 objectForKeyedSubscript:{@"gain", "floatValue"}];
+      [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"gain", "floatValue"}];
       v45 = v5;
-      v44 = [objc_msgSend(v48 objectForKeyedSubscript:{@"numsamples", "integerValue"}];
-      v43 = [objc_msgSend(v48 objectForKeyedSubscript:{@"absolutetime", "longValue"}];
-      v42 = [objc_msgSend(v48 objectForKeyedSubscript:{@"coexflags", "integerValue"}];
+      v44 = [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"numsamples", "integerValue"}];
+      v43 = [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"absolutetime", "longValue"}];
+      v42 = [objc_msgSend(propertyCopy objectForKeyedSubscript:{@"coexflags", "integerValue"}];
       v41 = (v42 & 1) != 0;
       v40 = (v42 & 2) != 0;
       v39 = (v42 & 4) != 0;
-      if (v50->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v50->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -818,21 +818,21 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
         _os_log_debug_impl(&dword_1DE8E5000, v38, v37, "rLux: %f, gain: %f, numSamples: %d, rLuxAbsoluteTime: %llu, StrobeOn? %d JasperOn? %d GainChange? %d", v54, 0x38u);
       }
 
-      MEMORY[0x1E69E5920](v50->_overriddenInput);
-      v50->_overriddenInput = objc_alloc_init(MEMORY[0x1E695DF90]);
+      MEMORY[0x1E69E5920](selfCopy->_overriddenInput);
+      selfCopy->_overriddenInput = objc_alloc_init(MEMORY[0x1E695DF90]);
       *&v6 = v46;
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v6], @"lux");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v6], @"lux");
       *&v7 = v45;
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v7], @"gain");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v44], @"numsamples");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithLong:v43], @"absolutetime");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v41], @"StrobeCoex");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v40], @"JasperCoex");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v39], @"GainChanged");
-      -[NSMutableDictionary setValue:forKey:](v50->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:0], @"status");
-      if (v50->super._logHandle)
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v7], @"gain");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v44], @"numsamples");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithLong:v43], @"absolutetime");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v41], @"StrobeCoex");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v40], @"JasperCoex");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v39], @"GainChanged");
+      -[NSMutableDictionary setValue:forKey:](selfCopy->_overriddenInput, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:0], @"status");
+      if (selfCopy->super._logHandle)
       {
-        v19 = v50->super._logHandle;
+        v19 = selfCopy->super._logHandle;
       }
 
       else
@@ -854,7 +854,7 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
       v35 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v53, v50->_overriddenInput);
+        __os_log_helper_16_2_1_8_64(v53, selfCopy->_overriddenInput);
         _os_log_impl(&dword_1DE8E5000, v36, v35, "Overridden input dict: %@", v53, 0xCu);
       }
 
@@ -862,12 +862,12 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     }
   }
 
-  else if ([v47 isEqualToString:@"RLuxOverrideEnabled"])
+  else if ([keyCopy isEqualToString:@"RLuxOverrideEnabled"])
   {
-    v50->_overriding = [v48 BOOLValue];
-    if (v50->super._logHandle)
+    selfCopy->_overriding = [propertyCopy BOOLValue];
+    if (selfCopy->super._logHandle)
     {
-      v17 = v50->super._logHandle;
+      v17 = selfCopy->super._logHandle;
     }
 
     else
@@ -889,21 +889,21 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     v33 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v52, v50->_overriding);
+      __os_log_helper_16_0_1_4_0(v52, selfCopy->_overriding);
       _os_log_impl(&dword_1DE8E5000, v34, v33, "Setting rLuxOverride to %d", v52, 8u);
     }
   }
 
-  else if ([v47 isEqualToString:@"RLuxSampleWithMaxAge"])
+  else if ([keyCopy isEqualToString:@"RLuxSampleWithMaxAge"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v48 floatValue];
+      [propertyCopy floatValue];
       v32 = v8;
-      if (v50->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v15 = v50->super._logHandle;
+        v15 = selfCopy->super._logHandle;
       }
 
       else
@@ -930,9 +930,9 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
       }
 
       v29 = 0;
-      if ([(NSDictionary *)v50->_lastRLuxOutputDict objectForKeyedSubscript:@"absolutetime"])
+      if ([(NSDictionary *)selfCopy->_lastRLuxOutputDict objectForKeyedSubscript:@"absolutetime"])
       {
-        v28 = [-[NSDictionary objectForKeyedSubscript:](v50->_lastRLuxOutputDict objectForKeyedSubscript:{@"absolutetime", "longValue"}];
+        v28 = [-[NSDictionary objectForKeyedSubscript:](selfCopy->_lastRLuxOutputDict objectForKeyedSubscript:{@"absolutetime", "longValue"}];
         v27 = mach_absolute_time();
         v26 = convertMachToNanoSeconds(v27 - v28) / 0xF4240uLL;
         v29 = v26 < (v32 * 1000.0);
@@ -940,14 +940,14 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
       if (v29)
       {
-        [(CBGrimaldiModule *)v50 sendNotificationForKey:@"RLuxOutput" withValue:v50->_lastRLuxOutputDict];
+        [(CBGrimaldiModule *)selfCopy sendNotificationForKey:@"RLuxOutput" withValue:selfCopy->_lastRLuxOutputDict];
       }
 
       else
       {
-        if (v50->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          v13 = v50->super._logHandle;
+          v13 = selfCopy->super._logHandle;
         }
 
         else
@@ -975,7 +975,7 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
           _os_log_impl(&dword_1DE8E5000, v10, v11, "Grimaldi: no sample. Sarting single sampling", v23, 2u);
         }
 
-        [(CBGrimaldiModule *)v50 startSingleSample];
+        [(CBGrimaldiModule *)selfCopy startSingleSample];
       }
     }
   }
@@ -984,12 +984,12 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
   return 0;
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
   [(CBGrimaldiModule *)self unregisterNotificationBlock];
-  if (a3)
+  if (block)
   {
-    self->super._notificationBlock = _Block_copy(a3);
+    self->super._notificationBlock = _Block_copy(block);
   }
 }
 
@@ -1002,16 +1002,16 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
   }
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"RLuxOutput"])
+  if ([key isEqualToString:@"RLuxOutput"])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && a4 != self->_lastRLuxOutputDict)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && value != self->_lastRLuxOutputDict)
     {
       MEMORY[0x1E69E5920](self->_lastRLuxOutputDict);
-      self->_lastRLuxOutputDict = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:a4];
+      self->_lastRLuxOutputDict = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:value];
       if (self->super._logHandle)
       {
         logHandle = self->super._logHandle;
@@ -1025,7 +1025,7 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_1_8_64(v8, a4);
+        __os_log_helper_16_2_1_8_64(v8, value);
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "RearLuxOutput %@", v8, 0xCu);
       }
     }
@@ -1039,18 +1039,18 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
   *MEMORY[0x1E69E9840];
 }
 
-- (void)grimaldiLuxReceived:(ApplePhotonDetectorServicesLuxInfo *)a3
+- (void)grimaldiLuxReceived:(ApplePhotonDetectorServicesLuxInfo *)received
 {
   v56 = *MEMORY[0x1E69E9840];
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v50 = a3;
+  receivedCopy = received;
   dispatch_assert_queue_V2(self->super._queue);
-  if (v50->var4)
+  if (receivedCopy->var4)
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v52->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -1072,28 +1072,28 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     v48 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      v3 = mach_error_string(v50->var4);
+      v3 = mach_error_string(receivedCopy->var4);
       __os_log_helper_16_2_1_8_32(v55, v3);
       _os_log_error_impl(&dword_1DE8E5000, v49, v48, "Could not get rLuxSamples: %s", v55, 0xCu);
     }
 
     context = objc_autoreleasePoolPush();
-    [(NSMutableDictionary *)v52->_currentRLuxOutputDict removeAllObjects];
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v50->var4], @"status");
-    v47 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v52->_currentRLuxOutputDict];
-    [(CBGrimaldiModule *)v52 sendNotificationForKey:@"RLuxOutput" withValue:v47];
+    [(NSMutableDictionary *)selfCopy->_currentRLuxOutputDict removeAllObjects];
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:receivedCopy->var4], @"status");
+    v47 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:selfCopy->_currentRLuxOutputDict];
+    [(CBGrimaldiModule *)selfCopy sendNotificationForKey:@"RLuxOutput" withValue:v47];
     MEMORY[0x1E69E5920](v47);
     objc_autoreleasePoolPop(context);
     goto LABEL_61;
   }
 
-  if (v52->_overriding)
+  if (selfCopy->_overriding)
   {
-    [(CBGrimaldiModule *)v52 sendNotificationForKey:@"RLuxOutput" withValue:v52->_overriddenInput];
-    [(CBGrimaldiModule *)v52 sendNotificationForKey:@"RLuxOverride" withValue:v52->_overriddenInput];
-    if (v52->super._logHandle)
+    [(CBGrimaldiModule *)selfCopy sendNotificationForKey:@"RLuxOutput" withValue:selfCopy->_overriddenInput];
+    [(CBGrimaldiModule *)selfCopy sendNotificationForKey:@"RLuxOverride" withValue:selfCopy->_overriddenInput];
+    if (selfCopy->super._logHandle)
     {
-      v28 = v52->super._logHandle;
+      v28 = selfCopy->super._logHandle;
     }
 
     else
@@ -1115,35 +1115,35 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
     v45 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput objectForKeyedSubscript:{@"lux", "floatValue"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput objectForKeyedSubscript:{@"lux", "floatValue"}];
       *&v26 = v4;
-      [-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput objectForKeyedSubscript:{@"gain", "floatValue"}];
-      __os_log_helper_16_0_7_8_0_8_0_4_0_8_0_4_0_4_0_4_0(v54, v26, COERCE__INT64(v5), [-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput objectForKeyedSubscript:{@"numsamples", "intValue"}], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput, "objectForKeyedSubscript:", @"absolutetime"), "longValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput, "objectForKeyedSubscript:", @"StrobeCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput, "objectForKeyedSubscript:", @"JasperCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_overriddenInput, "objectForKeyedSubscript:", @"GainChanged"), "BOOLValue"));
+      [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput objectForKeyedSubscript:{@"gain", "floatValue"}];
+      __os_log_helper_16_0_7_8_0_8_0_4_0_8_0_4_0_4_0_4_0(v54, v26, COERCE__INT64(v5), [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput objectForKeyedSubscript:{@"numsamples", "intValue"}], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput, "objectForKeyedSubscript:", @"absolutetime"), "longValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput, "objectForKeyedSubscript:", @"StrobeCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput, "objectForKeyedSubscript:", @"JasperCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_overriddenInput, "objectForKeyedSubscript:", @"GainChanged"), "BOOLValue"));
       _os_log_debug_impl(&dword_1DE8E5000, v46, v45, "[Overriding] Rear Lux Dictionary: lux = %f, gain = %f, numSamples= %d, absoluteTime = %ld, StrobeCoex = %d, JasperCoex = %d, GainChanged = %d", v54, 0x38u);
     }
 
     goto LABEL_61;
   }
 
-  if (v50->var5)
+  if (receivedCopy->var5)
   {
     v21 = objc_autoreleasePoolPush();
-    if (!v50->var5)
+    if (!receivedCopy->var5)
     {
       __assert_rtn("[CBGrimaldiModule grimaldiLuxReceived:]", "CBGrimaldiModule.m", 717, "luxInfo->numSamples > 0");
     }
 
-    v41 = v50->var5 - 1;
-    v40 = v50->var3[v41];
-    v52->_coexStrobe = (v40 & 1) != 0;
-    v52->_coexJasper = (v40 & 2) != 0;
-    v39 = (v50->var3[v50->var5 - 1] & 4) != 0;
+    v41 = receivedCopy->var5 - 1;
+    v40 = receivedCopy->var3[v41];
+    selfCopy->_coexStrobe = (v40 & 1) != 0;
+    selfCopy->_coexJasper = (v40 & 2) != 0;
+    v39 = (receivedCopy->var3[receivedCopy->var5 - 1] & 4) != 0;
     while (1)
     {
       v20 = 0;
       if (((v41 - 1) & 0x80000000) == 0)
       {
-        v20 = (v50->var3[v41] & 4) != 0;
+        v20 = (receivedCopy->var3[v41] & 4) != 0;
       }
 
       if (!v20)
@@ -1154,18 +1154,18 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
       --v41;
     }
 
-    v6 = v50->var0[v41] * v52->_correctionFactor;
+    v6 = receivedCopy->var0[v41] * selfCopy->_correctionFactor;
     v38 = v6;
-    v37 = v50->var3[v41];
+    v37 = receivedCopy->var3[v41];
     v36 = (v37 & 4) != 0;
     if ((v37 & 4) != 0)
     {
-      v35 = [(CBGrimaldiModule *)v52 copyReliableLux];
-      if (!v35)
+      copyReliableLux = [(CBGrimaldiModule *)selfCopy copyReliableLux];
+      if (!copyReliableLux)
       {
-        if (v52->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          v19 = v52->super._logHandle;
+          v19 = selfCopy->super._logHandle;
         }
 
         else
@@ -1196,24 +1196,24 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
         goto LABEL_60;
       }
 
-      [v35 floatValue];
+      [copyReliableLux floatValue];
       v38 = v7;
     }
 
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v52->_coexStrobe], @"StrobeCoex");
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v52->_coexJasper], @"JasperCoex");
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v50->var4], @"status");
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:v50->var5], @"numsamples");
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v50->var2[v41]], @"absolutetime");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_coexStrobe], @"StrobeCoex");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_coexJasper], @"JasperCoex");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:receivedCopy->var4], @"status");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:receivedCopy->var5], @"numsamples");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:receivedCopy->var2[v41]], @"absolutetime");
     *&v8 = v38;
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v8], @"lux");
-    *&v9 = v50->var1[v41];
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v9], @"gain");
-    -[NSMutableDictionary setValue:forKey:](v52->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v39], @"GainChanged");
-    -[CBGrimaldiModule sendNotificationForKey:withValue:](v52, "sendNotificationForKey:withValue:", @"RLuxOutput", [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v52->_currentRLuxOutputDict]);
-    if (v52->super._logHandle)
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v8], @"lux");
+    *&v9 = receivedCopy->var1[v41];
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v9], @"gain");
+    -[NSMutableDictionary setValue:forKey:](selfCopy->_currentRLuxOutputDict, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithBool:v39], @"GainChanged");
+    -[CBGrimaldiModule sendNotificationForKey:withValue:](selfCopy, "sendNotificationForKey:withValue:", @"RLuxOutput", [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:selfCopy->_currentRLuxOutputDict]);
+    if (selfCopy->super._logHandle)
     {
-      v15 = v52->super._logHandle;
+      v15 = selfCopy->super._logHandle;
     }
 
     else
@@ -1233,23 +1233,23 @@ void __69__CBGrimaldiModule_initWithQueue_andEventSource_andSamplingStrategy___b
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict objectForKeyedSubscript:{@"lux", "floatValue"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict objectForKeyedSubscript:{@"lux", "floatValue"}];
       *&v13 = v11;
-      [-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict objectForKeyedSubscript:{@"gain", "floatValue"}];
-      __os_log_helper_16_0_9_8_0_8_0_4_0_8_0_4_0_4_0_4_0_4_0_4_0(v53, v13, COERCE__INT64(v12), [-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict objectForKeyedSubscript:{@"numsamples", "intValue"}], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"absolutetime"), "longValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"StrobeCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"JasperCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](v52->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"GainChanged"), "BOOLValue"), v41 + 1, v50->var5);
+      [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict objectForKeyedSubscript:{@"gain", "floatValue"}];
+      __os_log_helper_16_0_9_8_0_8_0_4_0_8_0_4_0_4_0_4_0_4_0_4_0(v53, v13, COERCE__INT64(v12), [-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict objectForKeyedSubscript:{@"numsamples", "intValue"}], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"absolutetime"), "longValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"StrobeCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"JasperCoex"), "BOOLValue"), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_currentRLuxOutputDict, "objectForKeyedSubscript:", @"GainChanged"), "BOOLValue"), v41 + 1, receivedCopy->var5);
       _os_log_debug_impl(&dword_1DE8E5000, v15, OS_LOG_TYPE_DEBUG, "Rear Lux Dictionary: lux = %f, gain = %f, numSamples= %d, absoluteTime = %ld, StrobeCoex = %d, JasperCoex = %d, GainChanged = %d (sample %d/%d)", v53, 0x44u);
     }
 
     *&v10 = v38;
-    v52->_currentNumSamples = [(CBGrimaldiSamplingStrategy *)v52->_samplingStrategy getNextNumberOfSamplesFromNewLux:v52->_lastLux withLastLux:v10];
+    selfCopy->_currentNumSamples = [(CBGrimaldiSamplingStrategy *)selfCopy->_samplingStrategy getNextNumberOfSamplesFromNewLux:selfCopy->_lastLux withLastLux:v10];
 LABEL_60:
     objc_autoreleasePoolPop(v21);
     goto LABEL_61;
   }
 
-  if (v52->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v25 = v52->super._logHandle;
+    v25 = selfCopy->super._logHandle;
   }
 
   else
@@ -1284,13 +1284,13 @@ LABEL_61:
 - (void)CBAPDSGetCoex
 {
   v46 = *MEMORY[0x1E69E9840];
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   v41 = 0;
   v40 = os_signpost_id_generate(self->super._logHandle);
-  if (v43->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v43->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -1320,10 +1320,10 @@ LABEL_61:
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, log, type, spid, "Grimaldi GetCoexFlags", &unk_1DEAD656F, v36, 2u);
   }
 
-  v35 = [(CBGrimaldiEventSource *)v43->_eventSource getCoexFlags:&v41];
-  if (v43->super._logHandle)
+  v35 = [(CBGrimaldiEventSource *)selfCopy->_eventSource getCoexFlags:&v41];
+  if (selfCopy->super._logHandle)
   {
-    v18 = v43->super._logHandle;
+    v18 = selfCopy->super._logHandle;
   }
 
   else
@@ -1355,9 +1355,9 @@ LABEL_61:
 
   if (v35)
   {
-    if (v43->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v9 = v43->super._logHandle;
+      v9 = selfCopy->super._logHandle;
     }
 
     else
@@ -1388,12 +1388,12 @@ LABEL_61:
 
   else
   {
-    if (v43->_coexStrobe != (v41 & 1))
+    if (selfCopy->_coexStrobe != (v41 & 1))
     {
-      v43->_coexStrobe = (v41 & 1) != 0;
-      if (v43->super._logHandle)
+      selfCopy->_coexStrobe = (v41 & 1) != 0;
+      if (selfCopy->super._logHandle)
       {
-        v13 = v43->super._logHandle;
+        v13 = selfCopy->super._logHandle;
       }
 
       else
@@ -1431,12 +1431,12 @@ LABEL_61:
       }
     }
 
-    if (v43->_coexJasper != (v41 & 2))
+    if (selfCopy->_coexJasper != (v41 & 2))
     {
-      v43->_coexJasper = (v41 & 2) != 0;
-      if (v43->super._logHandle)
+      selfCopy->_coexJasper = (v41 & 2) != 0;
+      if (selfCopy->super._logHandle)
       {
-        v11 = v43->super._logHandle;
+        v11 = selfCopy->super._logHandle;
       }
 
       else
@@ -1487,34 +1487,34 @@ LABEL_61:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyParam:(id)a3
+- (id)copyParam:(id)param
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  if ([a3 isEqualToString:@"lux"])
+  paramCopy = param;
+  if ([param isEqualToString:@"lux"])
   {
-    return [(CBGrimaldiModule *)v13 copyRearLux];
+    return [(CBGrimaldiModule *)selfCopy copyRearLux];
   }
 
-  if ([v11 isEqualToString:@"GainChanged"])
+  if ([paramCopy isEqualToString:@"GainChanged"])
   {
-    return [(CBGrimaldiModule *)v13 copyGainChanged];
+    return [(CBGrimaldiModule *)selfCopy copyGainChanged];
   }
 
-  if ([v11 isEqualToString:@"StrobeCoex"])
+  if ([paramCopy isEqualToString:@"StrobeCoex"])
   {
-    return [(CBGrimaldiModule *)v13 copyStrobeCoex];
+    return [(CBGrimaldiModule *)selfCopy copyStrobeCoex];
   }
 
-  if ([v11 isEqualToString:@"JasperCoex"])
+  if ([paramCopy isEqualToString:@"JasperCoex"])
   {
-    return [(CBGrimaldiModule *)v13 copyJasperCoex];
+    return [(CBGrimaldiModule *)selfCopy copyJasperCoex];
   }
 
-  if (v13->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v13->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else

@@ -1,12 +1,12 @@
 @interface SOAuthorizationWrapper
 - (SOAuthorizationWrapper)init;
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5;
-- (void)authorizationDidCancel:(id)a3;
-- (void)authorizationDidComplete:(id)a3;
-- (void)authorizationDidNotHandle:(id)a3;
-- (void)beginAuthorizationWithOperation:(id)a3 url:(id)a4 httpHeaders:(id)a5 httpBody:(id)a6 andCompletion:(id)a7;
+- (void)authorization:(id)authorization didCompleteWithError:(id)error;
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers;
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body;
+- (void)authorizationDidCancel:(id)cancel;
+- (void)authorizationDidComplete:(id)complete;
+- (void)authorizationDidNotHandle:(id)handle;
+- (void)beginAuthorizationWithOperation:(id)operation url:(id)url httpHeaders:(id)headers httpBody:(id)body andCompletion:(id)completion;
 @end
 
 @implementation SOAuthorizationWrapper
@@ -31,58 +31,58 @@
   return v2;
 }
 
-- (void)beginAuthorizationWithOperation:(id)a3 url:(id)a4 httpHeaders:(id)a5 httpBody:(id)a6 andCompletion:(id)a7
+- (void)beginAuthorizationWithOperation:(id)operation url:(id)url httpHeaders:(id)headers httpBody:(id)body andCompletion:(id)completion
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v17 = a3;
-  v15 = MEMORY[0x245CB7C20](a7);
+  bodyCopy = body;
+  headersCopy = headers;
+  urlCopy = url;
+  operationCopy = operation;
+  v15 = MEMORY[0x245CB7C20](completion);
   authorizationCompletion = self->_authorizationCompletion;
   self->_authorizationCompletion = v15;
 
-  [(SOAuthorizationCore *)self->_authorization beginAuthorizationWithOperation:v17 url:v14 httpHeaders:v13 httpBody:v12];
+  [(SOAuthorizationCore *)self->_authorization beginAuthorizationWithOperation:operationCopy url:urlCopy httpHeaders:headersCopy httpBody:bodyCopy];
 }
 
-- (void)authorizationDidNotHandle:(id)a3
+- (void)authorizationDidNotHandle:(id)handle
 {
   (*(self->_authorizationCompletion + 2))();
   authorizationCompletion = self->_authorizationCompletion;
   self->_authorizationCompletion = 0;
 }
 
-- (void)authorizationDidCancel:(id)a3
+- (void)authorizationDidCancel:(id)cancel
 {
   (*(self->_authorizationCompletion + 2))();
   authorizationCompletion = self->_authorizationCompletion;
   self->_authorizationCompletion = 0;
 }
 
-- (void)authorizationDidComplete:(id)a3
+- (void)authorizationDidComplete:(id)complete
 {
   (*(self->_authorizationCompletion + 2))();
   authorizationCompletion = self->_authorizationCompletion;
   self->_authorizationCompletion = 0;
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers
 {
   (*(self->_authorizationCompletion + 2))();
   authorizationCompletion = self->_authorizationCompletion;
   self->_authorizationCompletion = 0;
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body
 {
   authorizationCompletion = self->_authorizationCompletion;
-  v7 = [a4 allHeaderFields];
-  authorizationCompletion[2](authorizationCompletion, 1, v7, 0);
+  allHeaderFields = [response allHeaderFields];
+  authorizationCompletion[2](authorizationCompletion, 1, allHeaderFields, 0);
 
   v8 = self->_authorizationCompletion;
   self->_authorizationCompletion = 0;
 }
 
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4
+- (void)authorization:(id)authorization didCompleteWithError:(id)error
 {
   (*(self->_authorizationCompletion + 2))();
   authorizationCompletion = self->_authorizationCompletion;

@@ -1,21 +1,21 @@
 @interface SKUINavigationBarMenusController
-- (SKUINavigationBarMenusController)initWithMenuViewElements:(id)a3;
-- (id)_menuViewElementForView:(id)a3;
+- (SKUINavigationBarMenusController)initWithMenuViewElements:(id)elements;
+- (id)_menuViewElementForView:(id)view;
 - (id)view;
 - (void)_destroyPopover;
-- (void)_menuButtonAction:(id)a3;
+- (void)_menuButtonAction:(id)action;
 - (void)dealloc;
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4;
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5;
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index;
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view;
 - (void)reloadSectionViews;
 - (void)willAppearInNavigationBar;
 @end
 
 @implementation SKUINavigationBarMenusController
 
-- (SKUINavigationBarMenusController)initWithMenuViewElements:(id)a3
+- (SKUINavigationBarMenusController)initWithMenuViewElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUINavigationBarMenusController initWithMenuViewElements:];
@@ -26,7 +26,7 @@
   v5 = [(SKUINavigationBarMenusController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [elementsCopy copy];
     menuViewElements = v5->_menuViewElements;
     v5->_menuViewElements = v6;
   }
@@ -45,14 +45,14 @@
 
 - (void)reloadSectionViews
 {
-  v3 = [(SKUINavigationBarSectionController *)self context];
-  [v3 maximumNavigationBarWidth];
+  context = [(SKUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v5 = v4;
 
   menusView = self->_menusView;
   menuViewElements = self->_menuViewElements;
-  v8 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-  [(SKUINavigationBarMenusView *)menusView reloadWithMenus:menuViewElements width:v5 context:v8];
+  viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+  [(SKUINavigationBarMenusView *)menusView reloadWithMenus:menuViewElements width:v5 context:viewLayoutContext];
 
   v9.receiver = self;
   v9.super_class = SKUINavigationBarMenusController;
@@ -69,8 +69,8 @@
     self->_menusView = v4;
 
     v6 = self->_menusView;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIViewReuseView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIViewReuseView *)v6 setBackgroundColor:clearColor];
 
     [(SKUINavigationBarMenusView *)self->_menusView setButtonTarget:self action:sel__menuButtonAction_];
     [(SKUINavigationBarMenusView *)self->_menusView setContentInset:1.0, 20.0, 0.0, 20.0];
@@ -82,36 +82,36 @@
 
 - (void)willAppearInNavigationBar
 {
-  v3 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-  v4 = [(SKUINavigationBarSectionController *)self context];
-  [v4 maximumNavigationBarWidth];
+  viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+  context = [(SKUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v6 = v5;
 
-  [SKUINavigationBarMenusView requestLayoutWithMenus:self->_menuViewElements width:v6 context:v3];
+  [SKUINavigationBarMenusView requestLayoutWithMenus:self->_menuViewElements width:v6 context:viewLayoutContext];
   v7.receiver = self;
   v7.super_class = SKUINavigationBarMenusController;
   [(SKUINavigationBarSectionController *)&v7 willAppearInNavigationBar];
 }
 
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index
 {
   v6 = [(SKUINavigationBarMenusController *)self _menuViewElementForView:self->_focusedMenuButton];
-  [v6 dispatchEventOfType:2 forItemAtIndex:a4];
+  [v6 dispatchEventOfType:2 forItemAtIndex:index];
   [(SKUINavigationBarMenusController *)self _destroyPopover];
 }
 
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view
 {
-  [(UIControl *)self->_focusedMenuButton frame:a3];
-  a4->origin.x = v6;
-  a4->origin.y = v7;
-  a4->size.width = v8;
-  a4->size.height = v9;
+  [(UIControl *)self->_focusedMenuButton frame:popover];
+  rect->origin.x = v6;
+  rect->origin.y = v7;
+  rect->size.width = v8;
+  rect->size.height = v9;
 }
 
-- (void)_menuButtonAction:(id)a3
+- (void)_menuButtonAction:(id)action
 {
-  v14 = a3;
+  actionCopy = action;
   popoverController = self->_popoverController;
   if (popoverController)
   {
@@ -124,13 +124,13 @@
     self->_popoverController = 0;
   }
 
-  v8 = [(SKUINavigationBarMenusController *)self _menuViewElementForView:v14];
+  v8 = [(SKUINavigationBarMenusController *)self _menuViewElementForView:actionCopy];
   if (v8)
   {
-    objc_storeStrong(&self->_focusedMenuButton, a3);
+    objc_storeStrong(&self->_focusedMenuButton, action);
     v9 = [SKUIMenuPopoverController alloc];
-    v10 = [v8 menuItemTitles];
-    v11 = -[SKUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", v10, [v8 selectedItemIndex]);
+    menuItemTitles = [v8 menuItemTitles];
+    v11 = -[SKUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", menuItemTitles, [v8 selectedItemIndex]);
     v12 = self->_popoverController;
     self->_popoverController = v11;
 
@@ -151,12 +151,12 @@
   self->_popoverController = 0;
 }
 
-- (id)_menuViewElementForView:(id)a3
+- (id)_menuViewElementForView:(id)view
 {
   menusView = self->_menusView;
-  v5 = a3;
-  v6 = [(SKUIViewReuseView *)menusView allExistingViews];
-  v7 = [v6 indexOfObjectIdenticalTo:v5];
+  viewCopy = view;
+  allExistingViews = [(SKUIViewReuseView *)menusView allExistingViews];
+  v7 = [allExistingViews indexOfObjectIdenticalTo:viewCopy];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {

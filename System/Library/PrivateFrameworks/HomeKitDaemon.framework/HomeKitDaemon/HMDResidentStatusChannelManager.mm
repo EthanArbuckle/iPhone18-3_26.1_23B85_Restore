@@ -1,25 +1,25 @@
 @interface HMDResidentStatusChannelManager
 + (id)logCategory;
-- (BOOL)_residentStatusChannelNeededForBundleIdentifier:(id)a3 applicationState:(unint64_t)a4;
+- (BOOL)_residentStatusChannelNeededForBundleIdentifier:(id)identifier applicationState:(unint64_t)state;
 - (BOOL)_shouldAllowChannelManagement;
 - (BOOL)_shouldChannelBeRunning;
 - (HMDIDSServerBag)idsServerBag;
-- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)a3 notificationCenter:(id)a4 queue:(id)a5 timerProvider:(id)a6 idsServerBag:(id)a7 processMonitor:(id)a8;
-- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)a3 queue:(id)a4 idsServerBag:(id)a5;
+- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)channel notificationCenter:(id)center queue:(id)queue timerProvider:(id)provider idsServerBag:(id)bag processMonitor:(id)monitor;
+- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)channel queue:(id)queue idsServerBag:(id)bag;
 - (NSMutableSet)clientIdentifiers;
 - (id)logIdentifier;
-- (void)_configureWithExistingProcesses:(id)a3;
-- (void)_evaluateChannelConnectionStateWithCurrentClientIdentifierCount:(unint64_t)a3 previousClientIdentifierCount:(unint64_t)a4;
-- (void)_handleForegroundStateChangedForBundleIdentifier:(id)a3 applicationState:(unint64_t)a4;
+- (void)_configureWithExistingProcesses:(id)processes;
+- (void)_evaluateChannelConnectionStateWithCurrentClientIdentifierCount:(unint64_t)count previousClientIdentifierCount:(unint64_t)identifierCount;
+- (void)_handleForegroundStateChangedForBundleIdentifier:(id)identifier applicationState:(unint64_t)state;
 - (void)_startUnsubscribeFromChannelDebounceTimer;
 - (void)_stopUnsubscribeFromChannelDebounceTimer;
-- (void)addClientWithIdentifier:(id)a3;
+- (void)addClientWithIdentifier:(id)identifier;
 - (void)configure;
-- (void)handleProcessAdded:(id)a3;
-- (void)handleProcessInfoStateChanged:(id)a3;
-- (void)handleProcessRemoved:(id)a3;
-- (void)removeClientWithIdentifier:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)handleProcessAdded:(id)added;
+- (void)handleProcessInfoStateChanged:(id)changed;
+- (void)handleProcessRemoved:(id)removed;
+- (void)removeClientWithIdentifier:(id)identifier;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentStatusChannelManager
@@ -33,29 +33,29 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  residentStatusChannel = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
+  home = [residentStatusChannel home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatusChannelManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  queue = [(HMDResidentStatusChannelManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
+  unsubscribeFromChannelDebounceTimer = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
 
-  if (v6 == v4)
+  if (unsubscribeFromChannelDebounceTimer == fireCopy)
   {
     [(HMDResidentStatusChannelManager *)self _stopUnsubscribeFromChannelDebounceTimer];
     if (![(HMDResidentStatusChannelManager *)self _shouldChannelBeRunning])
     {
-      v7 = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
-      [v7 stop];
+      residentStatusChannel = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
+      [residentStatusChannel stop];
     }
   }
 }
@@ -63,26 +63,26 @@
 - (BOOL)_shouldAllowChannelManagement
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
-  v4 = [v3 home];
+  residentStatusChannel = [(HMDResidentStatusChannelManager *)self residentStatusChannel];
+  home = [residentStatusChannel home];
 
-  v5 = [v4 currentUser];
-  v6 = v5;
-  if (v5)
+  currentUser = [home currentUser];
+  v6 = currentUser;
+  if (currentUser)
   {
-    if ([v5 isRestrictedGuest])
+    if ([currentUser isRestrictedGuest])
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [v6 shortDescription];
+        shortDescription = [v6 shortDescription];
         v16 = 138543618;
         v17 = v10;
         v18 = 2112;
-        v19 = v11;
+        v19 = shortDescription;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Not allowing channel management on Restricted Guest: %@", &v16, 0x16u);
 
 LABEL_9:
@@ -93,10 +93,10 @@ LABEL_9:
     }
   }
 
-  else if (([v4 isOwnerUser] & 1) == 0)
+  else if (([home isOwnerUser] & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -124,12 +124,12 @@ LABEL_11:
 - (void)_stopUnsubscribeFromChannelDebounceTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
+  unsubscribeFromChannelDebounceTimer = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
 
-  if (v3)
+  if (unsubscribeFromChannelDebounceTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -140,10 +140,10 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDResidentStatusChannelManager *)v5 unsubscribeFromChannelDebounceTimer];
-    [v8 cancel];
+    unsubscribeFromChannelDebounceTimer2 = [(HMDResidentStatusChannelManager *)selfCopy unsubscribeFromChannelDebounceTimer];
+    [unsubscribeFromChannelDebounceTimer2 cancel];
 
-    [(HMDResidentStatusChannelManager *)v5 setUnsubscribeFromChannelDebounceTimer:0];
+    [(HMDResidentStatusChannelManager *)selfCopy setUnsubscribeFromChannelDebounceTimer:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -152,16 +152,16 @@ LABEL_11:
 - (void)_startUnsubscribeFromChannelDebounceTimer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
+  unsubscribeFromChannelDebounceTimer = [(HMDResidentStatusChannelManager *)self unsubscribeFromChannelDebounceTimer];
 
-  if (!v3)
+  if (!unsubscribeFromChannelDebounceTimer)
   {
-    v4 = [(HMDResidentStatusChannelManager *)self idsServerBag];
-    v5 = [v4 statusKitUnsubscribeFromChannelDebounceTimeSec];
+    idsServerBag = [(HMDResidentStatusChannelManager *)self idsServerBag];
+    statusKitUnsubscribeFromChannelDebounceTimeSec = [idsServerBag statusKitUnsubscribeFromChannelDebounceTimeSec];
 
-    if (v5)
+    if (statusKitUnsubscribeFromChannelDebounceTimeSec)
     {
-      [v5 doubleValue];
+      [statusKitUnsubscribeFromChannelDebounceTimeSec doubleValue];
       v7 = v6;
     }
 
@@ -171,7 +171,7 @@ LABEL_11:
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -184,19 +184,19 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMDResidentStatusChannelManager *)v9 timerProvider];
-    v13 = [v12 timerWithTimeInterval:0 options:v7];
-    [(HMDResidentStatusChannelManager *)v9 setUnsubscribeFromChannelDebounceTimer:v13];
+    timerProvider = [(HMDResidentStatusChannelManager *)selfCopy timerProvider];
+    v13 = [timerProvider timerWithTimeInterval:0 options:v7];
+    [(HMDResidentStatusChannelManager *)selfCopy setUnsubscribeFromChannelDebounceTimer:v13];
 
-    v14 = [(HMDResidentStatusChannelManager *)v9 unsubscribeFromChannelDebounceTimer];
-    [v14 setDelegate:v9];
+    unsubscribeFromChannelDebounceTimer2 = [(HMDResidentStatusChannelManager *)selfCopy unsubscribeFromChannelDebounceTimer];
+    [unsubscribeFromChannelDebounceTimer2 setDelegate:selfCopy];
 
-    queue = v9->_queue;
-    v16 = [(HMDResidentStatusChannelManager *)v9 unsubscribeFromChannelDebounceTimer];
-    [v16 setDelegateQueue:queue];
+    queue = selfCopy->_queue;
+    unsubscribeFromChannelDebounceTimer3 = [(HMDResidentStatusChannelManager *)selfCopy unsubscribeFromChannelDebounceTimer];
+    [unsubscribeFromChannelDebounceTimer3 setDelegateQueue:queue];
 
-    v17 = [(HMDResidentStatusChannelManager *)v9 unsubscribeFromChannelDebounceTimer];
-    [v17 resume];
+    unsubscribeFromChannelDebounceTimer4 = [(HMDResidentStatusChannelManager *)selfCopy unsubscribeFromChannelDebounceTimer];
+    [unsubscribeFromChannelDebounceTimer4 resume];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -205,26 +205,26 @@ LABEL_11:
 - (BOOL)_shouldChannelBeRunning
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentStatusChannelManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDResidentStatusChannelManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDResidentStatusChannelManager *)self clientIdentifiers];
-  v5 = [v4 count];
+  clientIdentifiers = [(HMDResidentStatusChannelManager *)self clientIdentifiers];
+  v5 = [clientIdentifiers count];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = HMFGetLogIdentifier();
     v10 = HMFBooleanToString();
-    v11 = [(HMDResidentStatusChannelManager *)v7 clientIdentifiers];
+    clientIdentifiers2 = [(HMDResidentStatusChannelManager *)selfCopy clientIdentifiers];
     v14 = 138543874;
     v15 = v9;
     v16 = 2112;
     v17 = v10;
     v18 = 2112;
-    v19 = v11;
+    v19 = clientIdentifiers2;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Evaluated shouldChannelBeRunning: %@ (clientIdentifiers: %@)", &v14, 0x20u);
   }
 
@@ -233,54 +233,54 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (void)_evaluateChannelConnectionStateWithCurrentClientIdentifierCount:(unint64_t)a3 previousClientIdentifierCount:(unint64_t)a4
+- (void)_evaluateChannelConnectionStateWithCurrentClientIdentifierCount:(unint64_t)count previousClientIdentifierCount:(unint64_t)identifierCount
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [(HMDResidentStatusChannelManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(HMDResidentStatusChannelManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMDResidentStatusChannelManager *)v9 clientIdentifiers];
+    clientIdentifiers = [(HMDResidentStatusChannelManager *)selfCopy clientIdentifiers];
     v15 = 138544130;
     v16 = v11;
     v17 = 2048;
-    v18 = a3;
+    countCopy = count;
     v19 = 2048;
-    v20 = a4;
+    identifierCountCopy = identifierCount;
     v21 = 2112;
-    v22 = v12;
+    v22 = clientIdentifiers;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Evaluating channel connection state (currentCount: %lu previousCount: %lu, clientIdentifiers: %@)", &v15, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  if ((a3 == 0) != (a4 == 0))
+  if ((count == 0) != (identifierCount == 0))
   {
-    if ([(HMDResidentStatusChannelManager *)v9 _shouldChannelBeRunning])
+    if ([(HMDResidentStatusChannelManager *)selfCopy _shouldChannelBeRunning])
     {
-      [(HMDResidentStatusChannelManager *)v9 _stopUnsubscribeFromChannelDebounceTimer];
-      v13 = [(HMDResidentStatusChannelManager *)v9 residentStatusChannel];
-      [v13 start];
+      [(HMDResidentStatusChannelManager *)selfCopy _stopUnsubscribeFromChannelDebounceTimer];
+      residentStatusChannel = [(HMDResidentStatusChannelManager *)selfCopy residentStatusChannel];
+      [residentStatusChannel start];
     }
 
     else
     {
-      [(HMDResidentStatusChannelManager *)v9 _startUnsubscribeFromChannelDebounceTimer];
+      [(HMDResidentStatusChannelManager *)selfCopy _startUnsubscribeFromChannelDebounceTimer];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_residentStatusChannelNeededForBundleIdentifier:(id)a3 applicationState:(unint64_t)a4
+- (BOOL)_residentStatusChannelNeededForBundleIdentifier:(id)identifier applicationState:(unint64_t)state
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ((a4 | 2) == 2)
+  identifierCopy = identifier;
+  if ((state | 2) == 2)
   {
     v6 = *MEMORY[0x277CCFE40];
     v15[0] = *MEMORY[0x277CCFD80];
@@ -299,7 +299,7 @@ LABEL_11:
       v7 = v10;
     }
 
-    v11 = [v7 containsObject:v5];
+    v11 = [v7 containsObject:identifierCopy];
   }
 
   else
@@ -311,29 +311,29 @@ LABEL_11:
   return v11;
 }
 
-- (void)_handleForegroundStateChangedForBundleIdentifier:(id)a3 applicationState:(unint64_t)a4
+- (void)_handleForegroundStateChangedForBundleIdentifier:(id)identifier applicationState:(unint64_t)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(HMDResidentStatusChannelManager *)self _residentStatusChannelNeededForBundleIdentifier:v6 applicationState:a4])
+  identifierCopy = identifier;
+  if ([(HMDResidentStatusChannelManager *)self _residentStatusChannelNeededForBundleIdentifier:identifierCopy applicationState:state])
   {
-    [(HMDResidentStatusChannelManager *)self addClientWithIdentifier:v6];
+    [(HMDResidentStatusChannelManager *)self addClientWithIdentifier:identifierCopy];
   }
 
   else
   {
-    v7 = [(HMDResidentStatusChannelManager *)self clientIdentifiers];
-    v8 = [v7 containsObject:v6];
+    clientIdentifiers = [(HMDResidentStatusChannelManager *)self clientIdentifiers];
+    v8 = [clientIdentifiers containsObject:identifierCopy];
 
     if (v8)
     {
-      [(HMDResidentStatusChannelManager *)self removeClientWithIdentifier:v6];
+      [(HMDResidentStatusChannelManager *)self removeClientWithIdentifier:identifierCopy];
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -343,7 +343,7 @@ LABEL_11:
         v16 = 2160;
         v17 = 1752392040;
         v18 = 2112;
-        v19 = v6;
+        v19 = identifierCopy;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@No changes to resident status channel clients for '%{mask.hash}@'", &v14, 0x20u);
       }
 
@@ -354,14 +354,14 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureWithExistingProcesses:(id)a3
+- (void)_configureWithExistingProcesses:(id)processes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __67__HMDResidentStatusChannelManager__configureWithExistingProcesses___block_invoke;
   v3[3] = &unk_27867E450;
   v3[4] = self;
-  [a3 na_each:v3];
+  [processes na_each:v3];
 }
 
 void __67__HMDResidentStatusChannelManager__configureWithExistingProcesses___block_invoke(uint64_t a1, void *a2)
@@ -413,26 +413,26 @@ void __67__HMDResidentStatusChannelManager__configureWithExistingProcesses___blo
 
 - (NSMutableSet)clientIdentifiers
 {
-  v3 = [(HMDResidentStatusChannelManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDResidentStatusChannelManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   clientIdentifiers = self->_clientIdentifiers;
 
   return clientIdentifiers;
 }
 
-- (void)handleProcessRemoved:(id)a3
+- (void)handleProcessRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatusChannelManager *)self queue];
+  removedCopy = removed;
+  queue = [(HMDResidentStatusChannelManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDResidentStatusChannelManager_handleProcessRemoved___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = removedCopy;
+  selfCopy = self;
+  v6 = removedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __56__HMDResidentStatusChannelManager_handleProcessRemoved___block_invoke(uint64_t a1)
@@ -521,18 +521,18 @@ void __56__HMDResidentStatusChannelManager_handleProcessRemoved___block_invoke(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleProcessAdded:(id)a3
+- (void)handleProcessAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatusChannelManager *)self queue];
+  addedCopy = added;
+  queue = [(HMDResidentStatusChannelManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = addedCopy;
+  selfCopy = self;
+  v6 = addedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke(uint64_t a1)
@@ -621,12 +621,12 @@ void __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke(uin
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleProcessInfoStateChanged:(id)a3
+- (void)handleProcessInfoStateChanged:(id)changed
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"processInfo"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"processInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -643,24 +643,24 @@ void __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke(uin
 
   if (v8)
   {
-    v9 = [v8 bundleIdentifier];
-    if (v9)
+    bundleIdentifier = [v8 bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v10 = [(HMDResidentStatusChannelManager *)self queue];
+      queue = [(HMDResidentStatusChannelManager *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __65__HMDResidentStatusChannelManager_handleProcessInfoStateChanged___block_invoke;
       block[3] = &unk_27868A010;
       block[4] = self;
       v22 = v8;
-      v23 = v9;
-      dispatch_async(v10, block);
+      v23 = bundleIdentifier;
+      dispatch_async(queue, block);
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -668,7 +668,7 @@ void __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke(uin
         *buf = 138543618;
         v25 = v19;
         v26 = 2112;
-        v27 = v4;
+        v27 = changedCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Missing process info application bundle identifier: %@", buf, 0x16u);
       }
 
@@ -679,18 +679,18 @@ void __54__HMDResidentStatusChannelManager_handleProcessAdded___block_invoke(uin
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v4 userInfo];
+      userInfo2 = [changedCopy userInfo];
       *buf = 138543874;
       v25 = v14;
       v26 = 2112;
-      v27 = v4;
+      v27 = changedCopy;
       v28 = 2112;
-      v29 = v15;
+      v29 = userInfo2;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Could not find process info in notification user info for %@: %@", buf, 0x20u);
     }
 
@@ -723,18 +723,18 @@ uint64_t __65__HMDResidentStatusChannelManager_handleProcessInfoStateChanged___b
   return result;
 }
 
-- (void)removeClientWithIdentifier:(id)a3
+- (void)removeClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatusChannelManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(HMDResidentStatusChannelManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HMDResidentStatusChannelManager_removeClientWithIdentifier___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __62__HMDResidentStatusChannelManager_removeClientWithIdentifier___block_invoke(uint64_t a1)
@@ -774,18 +774,18 @@ uint64_t __62__HMDResidentStatusChannelManager_removeClientWithIdentifier___bloc
   return result;
 }
 
-- (void)addClientWithIdentifier:(id)a3
+- (void)addClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatusChannelManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(HMDResidentStatusChannelManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMDResidentStatusChannelManager_addClientWithIdentifier___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __59__HMDResidentStatusChannelManager_addClientWithIdentifier___block_invoke(uint64_t a1)
@@ -827,64 +827,64 @@ uint64_t __59__HMDResidentStatusChannelManager_addClientWithIdentifier___block_i
 
 - (void)configure
 {
-  v3 = [(HMDResidentStatusChannelManager *)self notificationCenter];
-  [v3 addObserver:self selector:sel_handleProcessInfoStateChanged_ name:HMDProcessMonitorProcessStateDidChangeNotification object:0];
+  notificationCenter = [(HMDResidentStatusChannelManager *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleProcessInfoStateChanged_ name:HMDProcessMonitorProcessStateDidChangeNotification object:0];
 
   if (isInternalBuild())
   {
-    v4 = [(HMDResidentStatusChannelManager *)self notificationCenter];
-    [v4 addObserver:self selector:sel_handleProcessAdded_ name:@"HMDProcessMonitorProcessAddedNotification" object:0];
+    notificationCenter2 = [(HMDResidentStatusChannelManager *)self notificationCenter];
+    [notificationCenter2 addObserver:self selector:sel_handleProcessAdded_ name:@"HMDProcessMonitorProcessAddedNotification" object:0];
 
-    v5 = [(HMDResidentStatusChannelManager *)self notificationCenter];
-    [v5 addObserver:self selector:sel_handleProcessRemoved_ name:@"HMDProcessMonitorProcessRemovedNotification" object:0];
+    notificationCenter3 = [(HMDResidentStatusChannelManager *)self notificationCenter];
+    [notificationCenter3 addObserver:self selector:sel_handleProcessRemoved_ name:@"HMDProcessMonitorProcessRemovedNotification" object:0];
   }
 
-  v6 = [(HMDResidentStatusChannelManager *)self processMonitor];
-  v7 = [v6 processes];
+  processMonitor = [(HMDResidentStatusChannelManager *)self processMonitor];
+  processes = [processMonitor processes];
 
-  [(HMDResidentStatusChannelManager *)self _configureWithExistingProcesses:v7];
+  [(HMDResidentStatusChannelManager *)self _configureWithExistingProcesses:processes];
   logAndPostNotification(@"HMDResidentStatusChannelReadyNotification", self, 0);
 }
 
-- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)a3 queue:(id)a4 idsServerBag:(id)a5
+- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)channel queue:(id)queue idsServerBag:(id)bag
 {
   v8 = MEMORY[0x277CCAB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 defaultCenter];
+  bagCopy = bag;
+  queueCopy = queue;
+  channelCopy = channel;
+  defaultCenter = [v8 defaultCenter];
   v13 = objc_opt_new();
   v14 = +[HMDXPCMessageTransport defaultTransport];
-  v15 = [v14 processMonitor];
-  v16 = [(HMDResidentStatusChannelManager *)self initWithResidentStatusChannel:v11 notificationCenter:v12 queue:v10 timerProvider:v13 idsServerBag:v9 processMonitor:v15];
+  processMonitor = [v14 processMonitor];
+  v16 = [(HMDResidentStatusChannelManager *)self initWithResidentStatusChannel:channelCopy notificationCenter:defaultCenter queue:queueCopy timerProvider:v13 idsServerBag:bagCopy processMonitor:processMonitor];
 
   return v16;
 }
 
-- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)a3 notificationCenter:(id)a4 queue:(id)a5 timerProvider:(id)a6 idsServerBag:(id)a7 processMonitor:(id)a8
+- (HMDResidentStatusChannelManager)initWithResidentStatusChannel:(id)channel notificationCenter:(id)center queue:(id)queue timerProvider:(id)provider idsServerBag:(id)bag processMonitor:(id)monitor
 {
-  v25 = a3;
-  v24 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  channelCopy = channel;
+  centerCopy = center;
+  queueCopy = queue;
+  providerCopy = provider;
+  bagCopy = bag;
+  monitorCopy = monitor;
   v26.receiver = self;
   v26.super_class = HMDResidentStatusChannelManager;
   v19 = [(HMDResidentStatusChannelManager *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_residentStatusChannel, a3);
-    objc_storeStrong(&v20->_notificationCenter, a4);
-    objc_storeStrong(&v20->_queue, a5);
-    objc_storeStrong(&v20->_timerProvider, a6);
+    objc_storeStrong(&v19->_residentStatusChannel, channel);
+    objc_storeStrong(&v20->_notificationCenter, center);
+    objc_storeStrong(&v20->_queue, queue);
+    objc_storeStrong(&v20->_timerProvider, provider);
     v21 = [MEMORY[0x277CBEB58] set];
     clientIdentifiers = v20->_clientIdentifiers;
     v20->_clientIdentifiers = v21;
 
-    objc_storeWeak(&v20->_idsServerBag, v17);
-    objc_storeStrong(&v20->_processMonitor, a8);
+    objc_storeWeak(&v20->_idsServerBag, bagCopy);
+    objc_storeStrong(&v20->_processMonitor, monitor);
   }
 
   return v20;

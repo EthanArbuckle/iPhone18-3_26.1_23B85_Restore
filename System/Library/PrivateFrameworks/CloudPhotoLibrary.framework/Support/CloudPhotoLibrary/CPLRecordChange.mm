@@ -1,14 +1,14 @@
 @interface CPLRecordChange
 + (id)assetTransferOptionsByRecordTypeAndKey;
-+ (id)ckValueForRelatedRecord:(id)a3;
-+ (void)setRelatedValueOnRecord:(id)a3 fromRelatedRecord:(id)a4;
-- (BOOL)fillCKRecordBuilderWithResourceChange:(id)a3 resourceCountAndSize:(id)a4 scopeProvider:(id)a5 error:(id *)a6;
-- (BOOL)fillResourcesOfCKRecordBuilder:(id)a3 clearMissing:(BOOL)a4 resourceCountAndSize:(id)a5 scopeProvider:(id)a6 error:(id *)a7;
-- (BOOL)prepareWithCKRecordBuilder:(id)a3 resourceCountAndSize:(id)a4 scopeProvider:(id)a5 error:(id *)a6;
-- (BOOL)shouldUseEncryptedPropertiesIfPossibleWithContext:(id)a3;
-- (void)fillCKRecord:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3 missingResourceProperties:(id *)a4 scopeProvider:(id)a5;
-- (void)prepareWithCKRecord:(id)a3 scopeIdentifier:(id)a4 scopeProvider:(id)a5 currentUserRecordID:(id)a6;
++ (id)ckValueForRelatedRecord:(id)record;
++ (void)setRelatedValueOnRecord:(id)record fromRelatedRecord:(id)relatedRecord;
+- (BOOL)fillCKRecordBuilderWithResourceChange:(id)change resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error;
+- (BOOL)fillResourcesOfCKRecordBuilder:(id)builder clearMissing:(BOOL)missing resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error;
+- (BOOL)prepareWithCKRecordBuilder:(id)builder resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error;
+- (BOOL)shouldUseEncryptedPropertiesIfPossibleWithContext:(id)context;
+- (void)fillCKRecord:(id)record scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record missingResourceProperties:(id *)properties scopeProvider:(id)provider;
+- (void)prepareWithCKRecord:(id)record scopeIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d;
 @end
 
 @implementation CPLRecordChange
@@ -25,19 +25,19 @@
   return v3;
 }
 
-- (BOOL)fillResourcesOfCKRecordBuilder:(id)a3 clearMissing:(BOOL)a4 resourceCountAndSize:(id)a5 scopeProvider:(id)a6 error:(id *)a7
+- (BOOL)fillResourcesOfCKRecordBuilder:(id)builder clearMissing:(BOOL)missing resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
-  v104 = self;
-  v17 = [(CPLRecordChange *)self shouldOnlyUploadNewResources];
-  if (v16)
+  missingCopy = missing;
+  builderCopy = builder;
+  sizeCopy = size;
+  providerCopy = provider;
+  resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self resourceCopyFromScopedIdentifier];
+  selfCopy = self;
+  shouldOnlyUploadNewResources = [(CPLRecordChange *)self shouldOnlyUploadNewResources];
+  if (resourceCopyFromScopedIdentifier)
   {
     v119 = 0;
-    v18 = [v13 recordIDForResourcesOfRecordWithScopedIdentifier:v16 cloudKitScope:&v119 error:a7];
+    v18 = [builderCopy recordIDForResourcesOfRecordWithScopedIdentifier:resourceCopyFromScopedIdentifier cloudKitScope:&v119 error:error];
     v19 = v119;
     if (!v18)
     {
@@ -54,22 +54,22 @@
 
   v84 = v19;
   v82 = a2;
-  v88 = v16;
-  v92 = v17 ^ 1;
-  v87 = v10 & (v17 ^ 1);
+  v88 = resourceCopyFromScopedIdentifier;
+  v92 = shouldOnlyUploadNewResources ^ 1;
+  v87 = missingCopy & (shouldOnlyUploadNewResources ^ 1);
   if (v87)
   {
     bzero(v127, 0x3E9uLL);
   }
 
-  v21 = [(CPLRecordChange *)self resources];
-  v86 = v15;
-  v95 = [v15 fingerprintContext];
+  resources = [(CPLRecordChange *)self resources];
+  v86 = providerCopy;
+  fingerprintContext = [providerCopy fingerprintContext];
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v22 = v21;
+  v22 = resources;
   v23 = [v22 countByEnumeratingWithState:&v115 objects:v126 count:16];
   if (!v23)
   {
@@ -77,8 +77,8 @@
     v20 = 1;
 LABEL_88:
 
-    v15 = v86;
-    v16 = v88;
+    providerCopy = v86;
+    resourceCopyFromScopedIdentifier = v88;
     if ((v20 & v87) == 1)
     {
       v105[0] = _NSConcreteStackBlock;
@@ -86,8 +86,8 @@ LABEL_88:
       v105[2] = sub_10006BB9C;
       v105[3] = &unk_100275460;
       v107 = v127;
-      v105[4] = v104;
-      v106 = v13;
+      v105[4] = selfCopy;
+      v106 = builderCopy;
       [CPLResource enumerateResourceTypesWithBlock:v105];
 
       LOBYTE(v20) = 1;
@@ -97,8 +97,8 @@ LABEL_88:
   }
 
   v24 = v23;
-  v85 = v14;
-  v89 = v13;
+  v85 = sizeCopy;
+  v89 = builderCopy;
   v83 = v18;
   v96 = 0;
   v25 = 0;
@@ -123,15 +123,15 @@ LABEL_9:
 
     if (!v26)
     {
-      v26 = [(CPLRecordChange *)v104 fingerprintSchemeWithContext:v95];
+      v26 = [(CPLRecordChange *)selfCopy fingerprintSchemeWithContext:fingerprintContext];
       v25 = [v26 isForStableHash] ^ 1;
       v96 = _CPLShouldValidateStableHash();
     }
 
-    v31 = [v30 resourceType];
-    if (([v28[131] shouldIgnoreResourceTypeOnUpload:v31] & 1) == 0)
+    resourceType = [v30 resourceType];
+    if (([v28[131] shouldIgnoreResourceTypeOnUpload:resourceType] & 1) == 0)
     {
-      if ([(CPLRecordChange *)v104 supportsResourceType:v31])
+      if ([(CPLRecordChange *)selfCopy supportsResourceType:resourceType])
       {
         break;
       }
@@ -153,18 +153,18 @@ LABEL_37:
     }
   }
 
-  v100 = sub_100084A0C(CPLCloudKitResourceKeys, v31);
+  v100 = sub_100084A0C(CPLCloudKitResourceKeys, resourceType);
   v101 = v26;
   if (v100)
   {
-    v32 = [v30 identity];
-    [v32 imageDimensions];
+    identity = [v30 identity];
+    [identity imageDimensions];
     v34 = v33;
     v36 = v35;
-    v94 = [v32 fileSize];
-    v98 = [v32 fileUTI];
-    v99 = [v32 fingerPrint];
-    v37 = [(CPLRecordChange *)v104 requiresStableHashForResourceType:v31];
+    fileSize = [identity fileSize];
+    fileUTI = [identity fileUTI];
+    fingerPrint = [identity fingerPrint];
+    v37 = [(CPLRecordChange *)selfCopy requiresStableHashForResourceType:resourceType];
     v97 = v25;
     v93 = v37;
     if ((v25 & 1) == 0)
@@ -173,8 +173,8 @@ LABEL_37:
     }
 
     v38 = v37;
-    v102 = [v32 stableHash];
-    if (v102)
+    stableHash = [identity stableHash];
+    if (stableHash)
     {
       v39 = 0;
     }
@@ -191,9 +191,9 @@ LABEL_37:
         v40 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v41 = [CPLResource shortDescriptionForResourceType:v31];
+          v41 = [CPLResource shortDescriptionForResourceType:resourceType];
           *buf = 138412546;
-          v121 = v104;
+          v121 = selfCopy;
           v122 = 2112;
           v123 = v41;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Trying to upload resource type %@ on %@ without a stable hash", buf, 0x16u);
@@ -204,17 +204,17 @@ LABEL_37:
 
       if (v96)
       {
-        if (a7)
+        if (error)
         {
-          v73 = [v28[131] shortDescriptionForResourceType:v31];
-          *a7 = [CPLErrors cplErrorWithCode:150 description:@"Trying to upload resource %@ without a stable hash", v73];
+          v73 = [v28[131] shortDescriptionForResourceType:resourceType];
+          *error = [CPLErrors cplErrorWithCode:150 description:@"Trying to upload resource %@ without a stable hash", v73];
         }
 
         v18 = v83;
-        v16 = v88;
-        v13 = v89;
-        v14 = v85;
-        v15 = v86;
+        resourceCopyFromScopedIdentifier = v88;
+        builderCopy = v89;
+        sizeCopy = v85;
+        providerCopy = v86;
         v72 = v100;
 LABEL_94:
 
@@ -222,21 +222,21 @@ LABEL_94:
       }
 
 LABEL_29:
-      v102 = 0;
+      stableHash = 0;
     }
 
-    v42 = [v32 fileURL];
-    v43 = [v32 isAvailable];
-    if ((v92 | v43 & (v42 != 0)) == 1)
+    fileURL = [identity fileURL];
+    isAvailable = [identity isAvailable];
+    if ((v92 | isAvailable & (fileURL != 0)) == 1)
     {
-      v44 = v43;
+      v44 = isAvailable;
       v45 = 0;
-      if (!v88 || v42 || (v46 = [v30 sourceResourceType], sub_100084A0C(CPLCloudKitResourceKeys, v46), (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (!v88 || fileURL || (v46 = [v30 sourceResourceType], sub_100084A0C(CPLCloudKitResourceKeys, v46), (v45 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         if (v44)
         {
           v91 = v45;
-          v47 = (v42 | v45) != 0;
+          v47 = (fileURL | v45) != 0;
         }
 
         else
@@ -244,41 +244,41 @@ LABEL_29:
           v49 = v45;
 
           v91 = 0;
-          v42 = 0;
-          v47 = ![(CPLRecordChange *)v104 shouldProtectResourceTypeFromClearing:v31];
+          fileURL = 0;
+          v47 = ![(CPLRecordChange *)selfCopy shouldProtectResourceTypeFromClearing:resourceType];
         }
 
         if (v87)
         {
-          v127[v31] = 1;
+          v127[resourceType] = 1;
         }
 
-        v50 = sub_1001ACA54([CPLCloudKitResourceRecordProperties alloc], v100, [(CPLRecordChange *)v104 recordClass], v101);
+        v50 = sub_1001ACA54([CPLCloudKitResourceRecordProperties alloc], v100, [(CPLRecordChange *)selfCopy recordClass], v101);
         v51 = v50;
-        if (v98)
+        if (fileUTI)
         {
           v52 = 1;
         }
 
         else
         {
-          v52 = (v42 == 0) & v47;
+          v52 = (fileURL == 0) & v47;
         }
 
-        sub_1000A3C34(v50, v89, v99, v102, v93, v94, v98, v52, v34, v36);
+        sub_1000A3C34(v50, v89, fingerPrint, stableHash, v93, fileSize, fileUTI, v52, v34, v36);
         v90 = v51;
         if (v47)
         {
-          if (v42)
+          if (fileURL)
           {
             if (v85)
             {
-              v53 = [v32 fileSize];
+              fileSize2 = [identity fileSize];
               v54 = sub_1001941F8(v85);
-              sub_100194204(v85, v53 + v54);
+              sub_100194204(v85, fileSize2 + v54);
             }
 
-            v55 = [[CKAsset alloc] initWithFileURL:v42];
+            v55 = [[CKAsset alloc] initWithFileURL:fileURL];
             [v55 setItemTypeHint:@"fxd"];
             [v101 configureAssetTransferOptionsForCKAsset:v55 scopeProvider:v86];
             v25 = v97;
@@ -287,12 +287,12 @@ LABEL_29:
               v56 = __CPLGenericOSLogDomain();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
               {
-                v57 = [(CPLRecordChange *)v104 scopedIdentifier];
-                v58 = [v55 assetTransferOptions];
+                scopedIdentifier = [(CPLRecordChange *)selfCopy scopedIdentifier];
+                assetTransferOptions = [v55 assetTransferOptions];
                 *buf = 138412546;
-                v121 = v57;
+                v121 = scopedIdentifier;
                 v122 = 2112;
-                v123 = v58;
+                v123 = assetTransferOptions;
                 _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEBUG, "Setting asset transfer options for %@ to %@", buf, 0x16u);
 
                 v25 = v97;
@@ -316,15 +316,15 @@ LABEL_29:
           }
 
           v25 = v97;
-          if (v99)
+          if (fingerPrint)
           {
             if (v85)
             {
               v64 = sub_100194210(v85);
               sub_10019421C(v85, v64 + 1);
-              v65 = [v32 fileSize];
+              fileSize3 = [identity fileSize];
               v66 = sub_100194228(v85);
-              sub_100194234(v85, v65 + v66);
+              sub_100194234(v85, fileSize3 + v66);
             }
 
             if (!v84)
@@ -350,7 +350,7 @@ LABEL_29:
               v79 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/CloudKit/CKRecord+CPL_base.m"];
               v80 = sub_1001A8CE0(v91);
               v81 = sub_1001A8CE0(v100);
-              [v78 handleFailureInMethod:v82 object:v104 file:v79 lineNumber:1068 description:{@"No source scope for %@ to find asset reference %@ for %@", v83, v80, v81}];
+              [v78 handleFailureInMethod:v82 object:selfCopy file:v79 lineNumber:1068 description:{@"No source scope for %@ to find asset reference %@ for %@", v83, v80, v81}];
 
               abort();
             }
@@ -364,7 +364,7 @@ LABEL_29:
             v109 = v68;
             v91 = v91;
             v110 = v91;
-            v111 = v99;
+            v111 = fingerPrint;
             v112 = v100;
             v69 = v84;
             v113 = v69;
@@ -374,9 +374,9 @@ LABEL_29:
             goto LABEL_70;
           }
 
-          if (a7)
+          if (error)
           {
-            *a7 = [CPLErrors cplErrorWithCode:150 description:@"Trying to copy a resource with no fingerprint"];
+            *error = [CPLErrors cplErrorWithCode:150 description:@"Trying to copy a resource with no fingerprint"];
           }
 
           v48 = 1;
@@ -399,8 +399,8 @@ LABEL_73:
               v20 = 0;
 LABEL_87:
               v18 = v83;
-              v13 = v89;
-              v14 = v85;
+              builderCopy = v89;
+              sizeCopy = v85;
               goto LABEL_88;
             }
           }
@@ -421,7 +421,7 @@ LABEL_71:
         if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
         {
           v61 = [CPLResource shortDescriptionForResourceType:v46];
-          v62 = [CPLResource shortDescriptionForResourceType:v31];
+          v62 = [CPLResource shortDescriptionForResourceType:resourceType];
           *buf = 138412546;
           v121 = v61;
           v122 = 2112;
@@ -430,18 +430,18 @@ LABEL_71:
         }
       }
 
-      if (a7)
+      if (error)
       {
         v63 = [CPLResource shortDescriptionForResourceType:v46];
-        v90 = [CPLResource shortDescriptionForResourceType:v31];
+        v90 = [CPLResource shortDescriptionForResourceType:resourceType];
         v91 = v63;
         [CPLErrors cplErrorWithCode:150 description:@"Trying to copy an unsupported resource type %@ to %@", v63, v90];
-        *a7 = v42 = 0;
+        *error = fileURL = 0;
         v48 = 1;
         goto LABEL_71;
       }
 
-      v42 = 0;
+      fileURL = 0;
       v48 = 1;
     }
 
@@ -457,18 +457,18 @@ LABEL_71:
 
   if ((_CPLSilentLogging & 1) == 0)
   {
-    sub_1001A3A10(v31);
+    sub_1001A3A10(resourceType);
   }
 
   v18 = v83;
-  v16 = v88;
-  v13 = v89;
-  v14 = v85;
-  v15 = v86;
-  if (a7)
+  resourceCopyFromScopedIdentifier = v88;
+  builderCopy = v89;
+  sizeCopy = v85;
+  providerCopy = v86;
+  if (error)
   {
-    v72 = [v28[131] shortDescriptionForResourceType:v31];
-    *a7 = [CPLErrors cplErrorWithCode:150 description:@"Trying to upload an unsupported resource type %@", v72];
+    v72 = [v28[131] shortDescriptionForResourceType:resourceType];
+    *error = [CPLErrors cplErrorWithCode:150 description:@"Trying to upload an unsupported resource type %@", v72];
     goto LABEL_94;
   }
 
@@ -485,14 +485,14 @@ LABEL_97:
   return v20;
 }
 
-- (void)fillCKRecord:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecord:(id)record scopeProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  providerCopy = provider;
   v9 = objc_alloc_init(CPLSimpleRecordTargetMapping);
-  v10 = [[CPLSimpleCKRecordBuilder alloc] initWithBaseCKRecord:v7 scopeProvider:0 currentUserRecordID:0 targetMapping:v9];
+  v10 = [[CPLSimpleCKRecordBuilder alloc] initWithBaseCKRecord:recordCopy scopeProvider:0 currentUserRecordID:0 targetMapping:v9];
   v14 = 0;
-  v11 = [(CPLRecordChange *)self prepareWithCKRecordBuilder:v10 resourceCountAndSize:0 scopeProvider:v8 error:&v14];
+  v11 = [(CPLRecordChange *)self prepareWithCKRecordBuilder:v10 resourceCountAndSize:0 scopeProvider:providerCopy error:&v14];
   v12 = v14;
   v13 = v12;
   if ((v11 & 1) == 0)
@@ -501,55 +501,55 @@ LABEL_97:
   }
 }
 
-- (BOOL)shouldUseEncryptedPropertiesIfPossibleWithContext:(id)a3
+- (BOOL)shouldUseEncryptedPropertiesIfPossibleWithContext:(id)context
 {
-  v3 = [(CPLRecordChange *)self fingerprintSchemeWithContext:a3];
-  v4 = [v3 isMMCSv2];
+  v3 = [(CPLRecordChange *)self fingerprintSchemeWithContext:context];
+  isMMCSv2 = [v3 isMMCSv2];
 
-  return v4;
+  return isMMCSv2;
 }
 
-+ (id)ckValueForRelatedRecord:(id)a3
++ (id)ckValueForRelatedRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v6 = +[NSAssertionHandler currentHandler];
   v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/CloudKit/CKRecord+CPL_base.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:a1 file:v7 lineNumber:1175 description:{@"%@ should be implemented by subclasses", v8}];
+  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:1175 description:{@"%@ should be implemented by subclasses", v8}];
 
   abort();
 }
 
-+ (void)setRelatedValueOnRecord:(id)a3 fromRelatedRecord:(id)a4
++ (void)setRelatedValueOnRecord:(id)record fromRelatedRecord:(id)relatedRecord
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 ckPropertyForRelatedIdentifier];
-  if (v7)
+  recordCopy = record;
+  relatedRecordCopy = relatedRecord;
+  ckPropertyForRelatedIdentifier = [self ckPropertyForRelatedIdentifier];
+  if (ckPropertyForRelatedIdentifier)
   {
-    v8 = [a1 ckValueForRelatedRecord:v6];
-    [v9 setObject:v8 forKeyedSubscript:v7];
+    v8 = [self ckValueForRelatedRecord:relatedRecordCopy];
+    [recordCopy setObject:v8 forKeyedSubscript:ckPropertyForRelatedIdentifier];
   }
 }
 
-- (void)prepareWithCKRecord:(id)a3 scopeIdentifier:(id)a4 scopeProvider:(id)a5 currentUserRecordID:(id)a6
+- (void)prepareWithCKRecord:(id)record scopeIdentifier:(id)identifier scopeProvider:(id)provider currentUserRecordID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 recordID];
-  v16 = [v13 scopedIdentifierForCKRecordID:v15];
+  recordCopy = record;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  dCopy = d;
+  recordID = [recordCopy recordID];
+  v16 = [providerCopy scopedIdentifierForCKRecordID:recordID];
   if (!v16)
   {
-    sub_1001ABD60(a2, self, v15, v17, v18, v19, v20, v21, v52, v53, v55, v58, v61, v64, v66, v67, v68, v69, v70);
+    sub_1001ABD60(a2, self, recordID, v17, v18, v19, v20, v21, v52, v53, v55, v58, v61, v64, v66, v67, v68, v69, v70);
   }
 
   v22 = v16;
   [(CPLRecordChange *)self setScopedIdentifier:v16];
   v75 = 0;
-  v23 = [v11 cpl_sharingRecordScopedIdentifierWithScopeProvider:v13 currentUserRecordID:v14 isSparseRecord:&v75];
-  v65 = v13;
+  v23 = [recordCopy cpl_sharingRecordScopedIdentifierWithScopeProvider:providerCopy currentUserRecordID:dCopy isSparseRecord:&v75];
+  v65 = providerCopy;
   if (![(CPLRecordChange *)self supportsSharingScopedIdentifier])
   {
     if (v75 == 1)
@@ -564,7 +564,7 @@ LABEL_97:
   [(CPLRecordChange *)self setSharingRecordScopedIdentifier:v23];
   if (v75 != 1)
   {
-    v25 = [v11 objectForKey:@"contributors"];
+    v25 = [recordCopy objectForKey:@"contributors"];
     if (!v25)
     {
       v30 = 0;
@@ -589,9 +589,9 @@ LABEL_35:
       {
         v28 = v27;
         v54 = v22;
-        v56 = v15;
-        v29 = v14;
-        v57 = v12;
+        v56 = recordID;
+        v29 = dCopy;
+        v57 = identifierCopy;
         v30 = 0;
         v31 = *v72;
         v32 = 1;
@@ -619,9 +619,9 @@ LABEL_12:
             v30 = [[NSMutableArray alloc] initWithCapacity:{-[NSObject count](v26, "count")}];
           }
 
-          v35 = [v34 recordID];
-          v36 = [v35 recordName];
-          [v30 addObject:v36];
+          recordID2 = [v34 recordID];
+          recordName = [recordID2 recordName];
+          [v30 addObject:recordName];
 
           v32 = 0;
           if (v28 == ++v33)
@@ -640,16 +640,16 @@ LABEL_12:
         if (_CPLSilentLogging)
         {
 LABEL_21:
-          v14 = v29;
-          v15 = v56;
-          v12 = v57;
+          dCopy = v29;
+          recordID = v56;
+          identifierCopy = v57;
           v22 = v54;
           goto LABEL_32;
         }
 
         v37 = __CPLGenericOSLogDomain();
-        v12 = v57;
-        v14 = v29;
+        identifierCopy = v57;
+        dCopy = v29;
         v22 = v54;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -660,7 +660,7 @@ LABEL_21:
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Got unexpected value for %@: %@", buf, 0x16u);
         }
 
-        v15 = v56;
+        recordID = v56;
       }
 
       else
@@ -698,80 +698,80 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v24 = [(CPLRecordChange *)self sharingRecordScopedIdentifier];
+  sharingRecordScopedIdentifier = [(CPLRecordChange *)self sharingRecordScopedIdentifier];
 
-  if (!v24)
+  if (!sharingRecordScopedIdentifier)
   {
-    sub_1001ABC1C(self, v11);
+    sub_1001ABC1C(self, recordCopy);
     goto LABEL_42;
   }
 
 LABEL_36:
-  v38 = [v11 objectForKey:@"recordModificationDate"];
+  v38 = [recordCopy objectForKey:@"recordModificationDate"];
   [(CPLRecordChange *)self setRecordModificationDate:v38];
 
-  v39 = [v11 objectForKey:@"isDeleted"];
+  v39 = [recordCopy objectForKey:@"isDeleted"];
   -[CPLRecordChange setInTrash:](self, "setInTrash:", [v39 BOOLValue]);
 
-  v40 = [v11 objectForKey:@"isExpunged"];
+  v40 = [recordCopy objectForKey:@"isExpunged"];
   -[CPLRecordChange setInExpunged:](self, "setInExpunged:", [v40 BOOLValue]);
 
   v66 = _NSConcreteStackBlock;
   v67 = 3221225472;
   v68 = sub_100099C74;
   v69 = &unk_100276870;
-  v41 = v11;
+  v41 = recordCopy;
   v70 = v41;
   v42 = [CPLArchiver archivedDataWithRootObject:v41 usingBlock:&v66];
   [(CPLRecordChange *)self setRecordChangeData:v42];
   v43 = [v41 objectForKey:@"remappedRef"];
   if (v43)
   {
-    v60 = v11;
+    v60 = recordCopy;
     v63 = v23;
     v44 = v22;
-    v45 = v15;
-    v46 = v12;
-    v47 = [(CPLRecordChange *)self sharingContributorUserIdentifiers];
-    if ([v47 count] && (objc_msgSend(v14, "recordName"), v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v47, "containsObject:", v48), v48, (v49 & 1) == 0))
+    v45 = recordID;
+    v46 = identifierCopy;
+    sharingContributorUserIdentifiers = [(CPLRecordChange *)self sharingContributorUserIdentifiers];
+    if ([sharingContributorUserIdentifiers count] && (objc_msgSend(dCopy, "recordName"), v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(sharingContributorUserIdentifiers, "containsObject:", v48), v48, (v49 & 1) == 0))
     {
       sub_1001ABB48(self);
     }
 
     else
     {
-      v50 = [v43 recordID];
-      v51 = [v50 recordName];
-      [(CPLRecordChange *)self setRealIdentifier:v51];
+      recordID3 = [v43 recordID];
+      recordName2 = [recordID3 recordName];
+      [(CPLRecordChange *)self setRealIdentifier:recordName2];
     }
 
-    v12 = v46;
-    v15 = v45;
+    identifierCopy = v46;
+    recordID = v45;
     v22 = v44;
-    v11 = v60;
+    recordCopy = v60;
     v23 = v63;
   }
 
-  v13 = v65;
+  providerCopy = v65;
 LABEL_42:
 }
 
-- (void)fillWithCKRecord:(id)a3 missingResourceProperties:(id *)a4 scopeProvider:(id)a5
+- (void)fillWithCKRecord:(id)record missingResourceProperties:(id *)properties scopeProvider:(id)provider
 {
-  v7 = a3;
-  v29 = self;
-  v30 = a5;
-  v8 = [objc_opt_class() ckAssetProperties];
+  recordCopy = record;
+  selfCopy = self;
+  providerCopy = provider;
+  ckAssetProperties = [objc_opt_class() ckAssetProperties];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v9 = [ckAssetProperties countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = 0;
-    v31 = v7;
+    v31 = recordCopy;
     v32 = 0;
     v12 = &CPCopyBundleIdentifierAndTeamFromAuditToken_ptr;
     v13 = *v36;
@@ -781,21 +781,21 @@ LABEL_42:
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(ckAssetProperties);
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v7 objectForKey:v15];
+        v16 = [recordCopy objectForKey:v15];
         if (v16)
         {
           v17 = v12[458];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v16 assetContent];
-            if (v18)
+            assetContent = [v16 assetContent];
+            if (assetContent)
             {
-              v19 = v18;
+              v19 = assetContent;
               if (!v11)
               {
                 goto LABEL_10;
@@ -806,18 +806,18 @@ LABEL_42:
 
             v20 = v12;
             v33 = v11;
-            v21 = v8;
-            v22 = [v16 fileURL];
-            if (v22 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 cplFileExistsAtURL:v22], v23, (v24 & 1) != 0))
+            v21 = ckAssetProperties;
+            fileURL = [v16 fileURL];
+            if (fileURL && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 cplFileExistsAtURL:fileURL], v23, (v24 & 1) != 0))
             {
-              v19 = [[NSData alloc] initWithContentsOfURL:v22];
+              v19 = [[NSData alloc] initWithContentsOfURL:fileURL];
 
               if (v19)
               {
-                v8 = v21;
+                ckAssetProperties = v21;
                 v11 = v33;
                 v12 = v20;
-                v7 = v31;
+                recordCopy = v31;
                 if (!v33)
                 {
 LABEL_10:
@@ -835,7 +835,7 @@ LABEL_11:
             {
             }
 
-            v8 = v21;
+            ckAssetProperties = v21;
             v25 = v32;
             v12 = v20;
             if (!v32)
@@ -846,14 +846,14 @@ LABEL_11:
             v32 = v25;
             [v25 addObject:v15];
             v11 = v33;
-            v7 = v31;
+            recordCopy = v31;
           }
         }
 
 LABEL_21:
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v10 = [ckAssetProperties countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (!v10)
       {
         goto LABEL_25;
@@ -864,33 +864,33 @@ LABEL_21:
   v11 = 0;
   v32 = 0;
 LABEL_25:
-  *a4 = v32;
-  if ([(CPLRecordChange *)v29 supportsResources])
+  *properties = v32;
+  if ([(CPLRecordChange *)selfCopy supportsResources])
   {
     v34 = 1;
-    v26 = [(CPLRecordChange *)v29 scopedIdentifier];
-    v27 = [v7 cplResourcesWithScopedIdentifier:v26 coherent:&v34 forRecord:v29 scopeProvider:v30];
-    [(CPLRecordChange *)v29 setResources:v27];
+    scopedIdentifier = [(CPLRecordChange *)selfCopy scopedIdentifier];
+    v27 = [recordCopy cplResourcesWithScopedIdentifier:scopedIdentifier coherent:&v34 forRecord:selfCopy scopeProvider:providerCopy];
+    [(CPLRecordChange *)selfCopy setResources:v27];
 
     if ((v34 & 1) == 0)
     {
-      [(CPLRecordChange *)v29 setServerRecordIsCorrupted:1];
+      [(CPLRecordChange *)selfCopy setServerRecordIsCorrupted:1];
     }
   }
 
-  [(CPLRecordChange *)v29 fillWithCKRecord:v7];
+  [(CPLRecordChange *)selfCopy fillWithCKRecord:recordCopy];
   if ([v11 count])
   {
-    [(CPLRecordChange *)v29 fillMissingCKAssetProperties:v11 withCKRecord:v7];
+    [(CPLRecordChange *)selfCopy fillMissingCKAssetProperties:v11 withCKRecord:recordCopy];
   }
 }
 
-- (BOOL)prepareWithCKRecordBuilder:(id)a3 resourceCountAndSize:(id)a4 scopeProvider:(id)a5 error:(id *)a6
+- (BOOL)prepareWithCKRecordBuilder:(id)builder resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(CPLRecordChange *)self supportsResources]&& [(CPLRecordChange *)self hasChangeType:8]&& ![(CPLRecordChange *)self fillCKRecordBuilderWithResourceChange:v10 resourceCountAndSize:v11 scopeProvider:v12 error:a6])
+  builderCopy = builder;
+  sizeCopy = size;
+  providerCopy = provider;
+  if ([(CPLRecordChange *)self supportsResources]&& [(CPLRecordChange *)self hasChangeType:8]&& ![(CPLRecordChange *)self fillCKRecordBuilderWithResourceChange:builderCopy resourceCountAndSize:sizeCopy scopeProvider:providerCopy error:error])
   {
     v17 = 0;
   }
@@ -899,62 +899,62 @@ LABEL_25:
   {
     if ([(CPLRecordChange *)self supportsRecordModificationDate])
     {
-      v13 = [(CPLRecordChange *)self recordModificationDate];
-      if (v13)
+      recordModificationDate = [(CPLRecordChange *)self recordModificationDate];
+      if (recordModificationDate)
       {
-        [v10 setObject:v13 forKey:@"recordModificationDate"];
+        [builderCopy setObject:recordModificationDate forKey:@"recordModificationDate"];
       }
 
       else
       {
         v14 = +[NSDate date];
-        [v10 setObject:v14 forKey:@"recordModificationDate"];
+        [builderCopy setObject:v14 forKey:@"recordModificationDate"];
       }
     }
 
     if ([(CPLRecordChange *)self hasChangeType:2]&& ([(CPLRecordChange *)self isMasterChange]& 1) == 0 && [(CPLRecordChange *)self hasChangeType:2]&& ([(CPLRecordChange *)self supportsDirectDeletion]& 1) == 0)
     {
-      v15 = [(CPLRecordChange *)self attachedDiffTracker];
-      if (!v15 || (-[CPLRecordChange isFullRecord](self, "isFullRecord") & 1) != 0 || ([v15 areObjectsDifferentOnProperty:@"inTrash" changeType:2] & 1) != 0 || -[CPLRecordChange inExpunged](self, "inExpunged"))
+      attachedDiffTracker = [(CPLRecordChange *)self attachedDiffTracker];
+      if (!attachedDiffTracker || (-[CPLRecordChange isFullRecord](self, "isFullRecord") & 1) != 0 || ([attachedDiffTracker areObjectsDifferentOnProperty:@"inTrash" changeType:2] & 1) != 0 || -[CPLRecordChange inExpunged](self, "inExpunged"))
       {
         if (([(CPLRecordChange *)self inTrash]& 1) != 0)
         {
-          v16 = 1;
+          inExpunged = 1;
         }
 
         else
         {
-          v16 = [(CPLRecordChange *)self inExpunged];
+          inExpunged = [(CPLRecordChange *)self inExpunged];
         }
 
-        v18 = [NSNumber numberWithInt:v16];
-        [v10 setObject:v18 forKey:@"isDeleted"];
+        v18 = [NSNumber numberWithInt:inExpunged];
+        [builderCopy setObject:v18 forKey:@"isDeleted"];
 
         v19 = [NSNumber numberWithBool:[(CPLRecordChange *)self inExpunged]];
-        [v10 setObject:v19 forKey:@"isExpunged"];
+        [builderCopy setObject:v19 forKey:@"isExpunged"];
       }
 
       else if ([(CPLRecordChange *)self isFullRecord])
       {
-        [v10 setObject:&__kCFBooleanFalse forKey:@"isExpunged"];
+        [builderCopy setObject:&__kCFBooleanFalse forKey:@"isExpunged"];
       }
     }
 
-    [(CPLRecordChange *)self fillCKRecordBuilder:v10 scopeProvider:v12];
+    [(CPLRecordChange *)self fillCKRecordBuilder:builderCopy scopeProvider:providerCopy];
     v17 = 1;
   }
 
   return v17;
 }
 
-- (BOOL)fillCKRecordBuilderWithResourceChange:(id)a3 resourceCountAndSize:(id)a4 scopeProvider:(id)a5 error:(id *)a6
+- (BOOL)fillCKRecordBuilderWithResourceChange:(id)change resourceCountAndSize:(id)size scopeProvider:(id)provider error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  LOBYTE(a6) = [(CPLRecordChange *)self fillResourcesOfCKRecordBuilder:v12 clearMissing:[(CPLRecordChange *)self shouldClearMissingResourcesInCKRecord] resourceCountAndSize:v11 scopeProvider:v10 error:a6];
+  providerCopy = provider;
+  sizeCopy = size;
+  changeCopy = change;
+  LOBYTE(error) = [(CPLRecordChange *)self fillResourcesOfCKRecordBuilder:changeCopy clearMissing:[(CPLRecordChange *)self shouldClearMissingResourcesInCKRecord] resourceCountAndSize:sizeCopy scopeProvider:providerCopy error:error];
 
-  return a6;
+  return error;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface FigCaptureFlatPlist
-+ (id)flatPlistWithContentsOfFile:(id)a3;
-+ (id)flatPlistWithContentsOfURL:(id)a3;
-- (id)initWithMutableData:(void *)a1;
++ (id)flatPlistWithContentsOfFile:(id)file;
++ (id)flatPlistWithContentsOfURL:(id)l;
+- (id)initWithMutableData:(void *)data;
 - (void)dealloc;
 - (void)objectAtOffset:(void *)result;
 - (void)rootDictionary;
@@ -9,16 +9,16 @@
 
 @implementation FigCaptureFlatPlist
 
-+ (id)flatPlistWithContentsOfFile:(id)a3
++ (id)flatPlistWithContentsOfFile:(id)file
 {
-  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
 
   return [FigCaptureFlatPlist flatPlistWithContentsOfURL:v3];
 }
 
-+ (id)flatPlistWithContentsOfURL:(id)a3
++ (id)flatPlistWithContentsOfURL:(id)l
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DF88]) initWithContentsOfURL:a3];
+  v3 = [objc_alloc(MEMORY[0x1E695DF88]) initWithContentsOfURL:l];
   if ([v3 length] < 8)
   {
     return 0;
@@ -27,9 +27,9 @@
   if (!strncmp([v3 bytes], "bplist00", 8uLL))
   {
     v6 = [[FigCaptureFlatPlist alloc] initWithMutableData:v3];
-    v7 = [(FigCaptureFlatPlist *)v6 rootDictionary];
+    rootDictionary = [(FigCaptureFlatPlist *)v6 rootDictionary];
 
-    return v7;
+    return rootDictionary;
   }
 
   else
@@ -40,14 +40,14 @@
   }
 }
 
-- (id)initWithMutableData:(void *)a1
+- (id)initWithMutableData:(void *)data
 {
   v2 = 0;
-  if (a1)
+  if (data)
   {
     if (a2)
     {
-      v6.receiver = a1;
+      v6.receiver = data;
       v6.super_class = FigCaptureFlatPlist;
       v2 = objc_msgSendSuper2(&v6, sel_self);
       if (v2)

@@ -1,13 +1,13 @@
 @interface BEDocumentExternalLoadApprovalCache
 + (BEDocumentExternalLoadApprovalCache)sharedInstance;
 - (BEDocumentExternalLoadApprovalCache)init;
-- (BOOL)didApproveLoadingExternalContentForBookID:(id)a3;
-- (BOOL)hasCachedLoadExternalContentApprovalForBookID:(id)a3;
-- (id)cachedApprovalForBookID:(id)a3;
-- (void)_accessCacheIvar:(id)a3;
+- (BOOL)didApproveLoadingExternalContentForBookID:(id)d;
+- (BOOL)hasCachedLoadExternalContentApprovalForBookID:(id)d;
+- (id)cachedApprovalForBookID:(id)d;
+- (void)_accessCacheIvar:(id)ivar;
 - (void)_ensureCacheLoaded;
-- (void)cachedApproval:(BOOL)a3 forBookID:(id)a4;
-- (void)removeCachedDisapprovalForBookID:(id)a3;
+- (void)cachedApproval:(BOOL)approval forBookID:(id)d;
+- (void)removeCachedDisapprovalForBookID:(id)d;
 @end
 
 @implementation BEDocumentExternalLoadApprovalCache
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_116B4;
   block[3] = &unk_328680;
-  block[4] = a1;
+  block[4] = self;
   if (qword_36AAE0 != -1)
   {
     dispatch_once(&qword_36AAE0, block);
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (BOOL)hasCachedLoadExternalContentApprovalForBookID:(id)a3
+- (BOOL)hasCachedLoadExternalContentApprovalForBookID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(BEDocumentExternalLoadApprovalCache *)self cachedApprovalForBookID:v4];
+    v5 = [(BEDocumentExternalLoadApprovalCache *)self cachedApprovalForBookID:dCopy];
     v6 = v5 != 0;
   }
 
@@ -59,33 +59,33 @@
   return v6;
 }
 
-- (BOOL)didApproveLoadingExternalContentForBookID:(id)a3
+- (BOOL)didApproveLoadingExternalContentForBookID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(BEDocumentExternalLoadApprovalCache *)self cachedApprovalForBookID:v4];
-    v6 = [v5 BOOLValue];
+    v5 = [(BEDocumentExternalLoadApprovalCache *)self cachedApprovalForBookID:dCopy];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)cachedApprovalForBookID:(id)a3
+- (id)cachedApprovalForBookID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_11964;
   v15 = sub_11974;
   v16 = 0;
-  if ([v4 length])
+  if ([dCopy length])
   {
     [(BEDocumentExternalLoadApprovalCache *)self _ensureCacheLoaded];
     v8[0] = _NSConcreteStackBlock;
@@ -94,7 +94,7 @@
     v8[3] = &unk_3281C0;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     [(BEDocumentExternalLoadApprovalCache *)self _accessCacheIvar:v8];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -110,10 +110,10 @@
   return v6;
 }
 
-- (void)cachedApproval:(BOOL)a3 forBookID:(id)a4
+- (void)cachedApproval:(BOOL)approval forBookID:(id)d
 {
-  v6 = a4;
-  if ([v6 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     [(BEDocumentExternalLoadApprovalCache *)self _ensureCacheLoaded];
     v7[0] = _NSConcreteStackBlock;
@@ -121,16 +121,16 @@
     v7[2] = sub_11A84;
     v7[3] = &unk_3286A8;
     v7[4] = self;
-    v9 = a3;
-    v8 = v6;
+    approvalCopy = approval;
+    v8 = dCopy;
     [(BEDocumentExternalLoadApprovalCache *)self _accessCacheIvar:v7];
   }
 }
 
-- (void)removeCachedDisapprovalForBookID:(id)a3
+- (void)removeCachedDisapprovalForBookID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     [(BEDocumentExternalLoadApprovalCache *)self _ensureCacheLoaded];
     v5[0] = _NSConcreteStackBlock;
@@ -138,7 +138,7 @@
     v5[2] = sub_11BCC;
     v5[3] = &unk_328358;
     v5[4] = self;
-    v6 = v4;
+    v6 = dCopy;
     [(BEDocumentExternalLoadApprovalCache *)self _accessCacheIvar:v5];
   }
 }
@@ -153,13 +153,13 @@
   [(BEDocumentExternalLoadApprovalCache *)self _accessCacheIvar:v2];
 }
 
-- (void)_accessCacheIvar:(id)a3
+- (void)_accessCacheIvar:(id)ivar
 {
-  if (a3)
+  if (ivar)
   {
-    v4 = a3;
+    ivarCopy = ivar;
     os_unfair_lock_lock(&self->_lock);
-    v4[2](v4);
+    ivarCopy[2](ivarCopy);
 
     os_unfair_lock_unlock(&self->_lock);
   }

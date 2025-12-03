@@ -1,46 +1,46 @@
 @interface CalDAVMkcalendarTask
-- (CalDAVMkcalendarTask)initWithPropertiesToSet:(id)a3 atURL:(id)a4;
-- (id)copyDefaultParserForContentType:(id)a3;
+- (CalDAVMkcalendarTask)initWithPropertiesToSet:(id)set atURL:(id)l;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)description;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
-- (void)setSupportForEvents:(BOOL)a3 tasks:(BOOL)a4;
+- (void)finishCoreDAVTaskWithError:(id)error;
+- (void)setSupportForEvents:(BOOL)events tasks:(BOOL)tasks;
 @end
 
 @implementation CalDAVMkcalendarTask
 
-- (CalDAVMkcalendarTask)initWithPropertiesToSet:(id)a3 atURL:(id)a4
+- (CalDAVMkcalendarTask)initWithPropertiesToSet:(id)set atURL:(id)l
 {
-  v6 = a3;
+  setCopy = set;
   v10.receiver = self;
   v10.super_class = CalDAVMkcalendarTask;
-  v7 = [(CalDAVMkcalendarTask *)&v10 initWithURL:a4];
+  v7 = [(CalDAVMkcalendarTask *)&v10 initWithURL:l];
   v8 = v7;
   if (v7)
   {
-    [(CalDAVMkcalendarTask *)v7 setSetElements:v6];
+    [(CalDAVMkcalendarTask *)v7 setSetElements:setCopy];
   }
 
   return v8;
 }
 
-- (void)setSupportForEvents:(BOOL)a3 tasks:(BOOL)a4
+- (void)setSupportForEvents:(BOOL)events tasks:(BOOL)tasks
 {
-  v4 = a3;
+  eventsCopy = events;
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 == a4)
+  if (events == tasks)
   {
-    v14 = a4;
-    v15 = [MEMORY[0x277CFDC18] sharedLogging];
+    tasksCopy = tasks;
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
     WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD38]));
-    v17 = [v15 logHandleForAccountInfoProvider:WeakRetained];
+    v17 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
     if (v17 && os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v21 = v4;
+      v21 = eventsCopy;
       v22 = 1024;
-      v23 = v14;
+      v23 = tasksCopy;
       _os_log_impl(&dword_242742000, v17, OS_LOG_TYPE_INFO, "setSupportForEvents:tasks: called with identical values for supportVEVENT (%d) and supportVTODO (%d), doing nothing", buf, 0xEu);
     }
 
@@ -49,14 +49,14 @@
 
   else
   {
-    v6 = [(CalDAVMkcalendarTask *)self setElements];
-    v19 = [v6 objectsPassingTest:&__block_literal_global];
+    setElements = [(CalDAVMkcalendarTask *)self setElements];
+    v19 = [setElements objectsPassingTest:&__block_literal_global];
 
     v7 = objc_alloc_init(CalDAVSupportedCalendarComponentSet);
     v8 = objc_alloc_init(CalDAVCompItem);
     v9 = v8;
     v10 = cdEventComponentType;
-    if (!v4)
+    if (!eventsCopy)
     {
       v10 = cdTodoComponentType;
     }
@@ -92,11 +92,11 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
 
 - (id)description
 {
-  v3 = [(CalDAVMkcalendarTask *)self setElements];
-  if (v3)
+  setElements = [(CalDAVMkcalendarTask *)self setElements];
+  if (setElements)
   {
-    v4 = [(CalDAVMkcalendarTask *)self setElements];
-    v5 = [v4 count];
+    setElements2 = [(CalDAVMkcalendarTask *)self setElements];
+    v5 = [setElements2 count];
   }
 
   else
@@ -104,8 +104,8 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
     v5 = 0;
   }
 
-  v6 = [(CalDAVMkcalendarTask *)self requestBody];
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(v6 length:"bytes") encoding:{objc_msgSend(v6, "length"), 4}];
+  requestBody = [(CalDAVMkcalendarTask *)self requestBody];
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(requestBody length:"bytes") encoding:{objc_msgSend(requestBody, "length"), 4}];
   v8 = MEMORY[0x277CCACA8];
   v12.receiver = self;
   v12.super_class = CalDAVMkcalendarTask;
@@ -118,17 +118,17 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
 - (id)requestBody
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(CalDAVMkcalendarTask *)self setElements];
-  if (v3 && (v4 = v3, -[CalDAVMkcalendarTask setElements](self, "setElements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  setElements = [(CalDAVMkcalendarTask *)self setElements];
+  if (setElements && (v4 = setElements, -[CalDAVMkcalendarTask setElements](self, "setElements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
     v7 = objc_alloc_init(MEMORY[0x277CFDCA0]);
     [v7 startElement:@"mkcalendar" inNamespace:*MEMORY[0x277CFDDC0] withAttributeNamesAndValues:0];
-    v8 = [(CalDAVMkcalendarTask *)self setElements];
-    if (v8)
+    setElements2 = [(CalDAVMkcalendarTask *)self setElements];
+    if (setElements2)
     {
-      v9 = v8;
-      v10 = [(CalDAVMkcalendarTask *)self setElements];
-      v11 = [v10 count];
+      v9 = setElements2;
+      setElements3 = [(CalDAVMkcalendarTask *)self setElements];
+      v11 = [setElements3 count];
 
       v12 = *MEMORY[0x277CFDEF8];
       if (v11)
@@ -141,8 +141,8 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v15 = [(CalDAVMkcalendarTask *)self setElements];
-        v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        setElements4 = [(CalDAVMkcalendarTask *)self setElements];
+        v16 = [setElements4 countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v16)
         {
           v17 = v16;
@@ -153,13 +153,13 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
             {
               if (*v24 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(setElements4);
               }
 
               [*(*(&v23 + 1) + 8 * i) write:v7];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+            v17 = [setElements4 countByEnumeratingWithState:&v23 objects:v27 count:16];
           }
 
           while (v17);
@@ -176,20 +176,20 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
     }
 
     [v7 endElement:@"mkcalendar" inNamespace:v12];
-    v20 = [v7 data];
+    data = [v7 data];
   }
 
   else
   {
-    v20 = 0;
+    data = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return data;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = objc_alloc(MEMORY[0x277CFDCA8]);
   v5 = *MEMORY[0x277CFDDC0];
@@ -200,19 +200,19 @@ uint64_t __50__CalDAVMkcalendarTask_setSupportForEvents_tasks___block_invoke(uin
   return v8;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
-    v7 = [MEMORY[0x277CFDC18] sharedLogging];
+    code = [errorCopy code];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
     WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277CFDD38]));
-    v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
+    v9 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -258,13 +258,13 @@ LABEL_10:
   }
 
   *(&self->super.super.isa + *MEMORY[0x277CFDD40]) = 0;
-  v17 = [(CalDAVMkcalendarTask *)self delegate];
+  delegate = [(CalDAVMkcalendarTask *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(CalDAVMkcalendarTask *)self delegate];
-    [v19 mkcalendarTask:self error:v5];
+    delegate2 = [(CalDAVMkcalendarTask *)self delegate];
+    [delegate2 mkcalendarTask:self error:v5];
   }
 
   v21.receiver = self;

@@ -1,9 +1,9 @@
 @interface CRKBooksServiceProxy
 - (CRKBooksServiceProxy)init;
-- (void)_fetchBooksWithRequest:(id)a3 completion:(id)a4;
-- (void)_fetchChaptersWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchBooksWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchChaptersWithRequest:(id)a3 completion:(id)a4;
+- (void)_fetchBooksWithRequest:(id)request completion:(id)completion;
+- (void)_fetchChaptersWithRequest:(id)request completion:(id)completion;
+- (void)fetchBooksWithRequest:(id)request completion:(id)completion;
+- (void)fetchChaptersWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation CRKBooksServiceProxy
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (void)fetchBooksWithRequest:(id)a3 completion:(id)a4
+- (void)fetchBooksWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__CRKBooksServiceProxy_fetchBooksWithRequest_completion___block_invoke;
   v8[3] = &unk_278DC1608;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(CRKBooksServiceProxy *)self _fetchBooksWithRequest:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(CRKBooksServiceProxy *)self _fetchBooksWithRequest:request completion:v8];
 }
 
 void __57__CRKBooksServiceProxy_fetchBooksWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -45,19 +45,19 @@ void __57__CRKBooksServiceProxy_fetchBooksWithRequest_completion___block_invoke(
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchBooksWithRequest:(id)a3 completion:(id)a4
+- (void)_fetchBooksWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKBooksServiceProxy *)self connectionProvider];
-  v9 = [v8 connection];
+  completionCopy = completion;
+  requestCopy = request;
+  connectionProvider = [(CRKBooksServiceProxy *)self connectionProvider];
+  connection = [connectionProvider connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__CRKBooksServiceProxy__fetchBooksWithRequest_completion___block_invoke;
   v15[3] = &unk_278DC0FE0;
-  v10 = v6;
+  v10 = completionCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -65,7 +65,7 @@ void __57__CRKBooksServiceProxy_fetchBooksWithRequest_completion___block_invoke(
   v13[3] = &unk_278DC1658;
   v14 = v10;
   v12 = v10;
-  [v11 fetchBooksWithRequest:v7 completion:v13];
+  [v11 fetchBooksWithRequest:requestCopy completion:v13];
 }
 
 void __58__CRKBooksServiceProxy__fetchBooksWithRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -99,17 +99,17 @@ void __58__CRKBooksServiceProxy__fetchBooksWithRequest_completion___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)fetchChaptersWithRequest:(id)a3 completion:(id)a4
+- (void)fetchChaptersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__CRKBooksServiceProxy_fetchChaptersWithRequest_completion___block_invoke;
   v8[3] = &unk_278DC1680;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(CRKBooksServiceProxy *)self _fetchChaptersWithRequest:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(CRKBooksServiceProxy *)self _fetchChaptersWithRequest:request completion:v8];
 }
 
 void __60__CRKBooksServiceProxy_fetchChaptersWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -121,19 +121,19 @@ void __60__CRKBooksServiceProxy_fetchChaptersWithRequest_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchChaptersWithRequest:(id)a3 completion:(id)a4
+- (void)_fetchChaptersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKBooksServiceProxy *)self connectionProvider];
-  v9 = [v8 connection];
+  completionCopy = completion;
+  requestCopy = request;
+  connectionProvider = [(CRKBooksServiceProxy *)self connectionProvider];
+  connection = [connectionProvider connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__CRKBooksServiceProxy__fetchChaptersWithRequest_completion___block_invoke;
   v15[3] = &unk_278DC0FE0;
-  v10 = v6;
+  v10 = completionCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -141,7 +141,7 @@ void __60__CRKBooksServiceProxy_fetchChaptersWithRequest_completion___block_invo
   v13[3] = &unk_278DC16A8;
   v14 = v10;
   v12 = v10;
-  [v11 fetchChaptersWithRequest:v7 completion:v13];
+  [v11 fetchChaptersWithRequest:requestCopy completion:v13];
 }
 
 void __61__CRKBooksServiceProxy__fetchChaptersWithRequest_completion___block_invoke(uint64_t a1, void *a2)

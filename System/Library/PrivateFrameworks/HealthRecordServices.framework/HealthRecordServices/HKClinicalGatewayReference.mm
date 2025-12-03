@@ -1,10 +1,10 @@
 @interface HKClinicalGatewayReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalGatewayReference)init;
-- (HKClinicalGatewayReference)initWithCoder:(id)a3;
-- (HKClinicalGatewayReference)initWithGatewayID:(id)a3 gatewayBatchID:(id)a4 minCompatibleAPIVersion:(int64_t)a5 FHIRVersion:(id)a6;
+- (HKClinicalGatewayReference)initWithCoder:(id)coder;
+- (HKClinicalGatewayReference)initWithGatewayID:(id)d gatewayBatchID:(id)iD minCompatibleAPIVersion:(int64_t)version FHIRVersion:(id)rVersion;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalGatewayReference
@@ -19,26 +19,26 @@
   return 0;
 }
 
-- (HKClinicalGatewayReference)initWithGatewayID:(id)a3 gatewayBatchID:(id)a4 minCompatibleAPIVersion:(int64_t)a5 FHIRVersion:(id)a6
+- (HKClinicalGatewayReference)initWithGatewayID:(id)d gatewayBatchID:(id)iD minCompatibleAPIVersion:(int64_t)version FHIRVersion:(id)rVersion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  rVersionCopy = rVersion;
   v21.receiver = self;
   v21.super_class = HKClinicalGatewayReference;
   v13 = [(HKClinicalGatewayReference *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     gatewayID = v13->_gatewayID;
     v13->_gatewayID = v14;
 
-    v16 = [v11 copy];
+    v16 = [iDCopy copy];
     gatewayBatchID = v13->_gatewayBatchID;
     v13->_gatewayBatchID = v16;
 
-    v13->_minCompatibleAPIVersion = a5;
-    v18 = [v12 copy];
+    v13->_minCompatibleAPIVersion = version;
+    v18 = [rVersionCopy copy];
     FHIRVersion = v13->_FHIRVersion;
     v13->_FHIRVersion = v18;
   }
@@ -46,13 +46,13 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -63,20 +63,20 @@ LABEL_36:
     }
 
     gatewayID = self->_gatewayID;
-    v9 = [(HKClinicalGatewayReference *)v7 gatewayID];
-    if (gatewayID != v9)
+    gatewayID = [(HKClinicalGatewayReference *)v7 gatewayID];
+    if (gatewayID != gatewayID)
     {
-      v10 = [(HKClinicalGatewayReference *)v7 gatewayID];
-      if (!v10)
+      gatewayID2 = [(HKClinicalGatewayReference *)v7 gatewayID];
+      if (!gatewayID2)
       {
         v13 = 0;
         goto LABEL_35;
       }
 
-      v3 = v10;
+      v3 = gatewayID2;
       v11 = self->_gatewayID;
-      v12 = [(HKClinicalGatewayReference *)v7 gatewayID];
-      if (![(NSString *)v11 isEqualToString:v12])
+      gatewayID3 = [(HKClinicalGatewayReference *)v7 gatewayID];
+      if (![(NSString *)v11 isEqualToString:gatewayID3])
       {
         v13 = 0;
 LABEL_34:
@@ -84,12 +84,12 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v33 = v12;
+      v33 = gatewayID3;
     }
 
     gatewayBatchID = self->_gatewayBatchID;
-    v15 = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
-    if (gatewayBatchID == v15)
+    gatewayBatchID = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
+    if (gatewayBatchID == gatewayBatchID)
     {
       minCompatibleAPIVersion = self->_minCompatibleAPIVersion;
       if (minCompatibleAPIVersion != [(HKClinicalGatewayReference *)v7 minCompatibleAPIVersion])
@@ -103,26 +103,26 @@ LABEL_31:
 
     else
     {
-      v16 = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
-      if (!v16)
+      gatewayBatchID2 = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
+      if (!gatewayBatchID2)
       {
         v13 = 0;
         goto LABEL_29;
       }
 
-      v32 = v16;
+      v32 = gatewayBatchID2;
       v17 = self->_gatewayBatchID;
-      v18 = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
-      if (![(NSString *)v17 isEqualToString:v18])
+      gatewayBatchID3 = [(HKClinicalGatewayReference *)v7 gatewayBatchID];
+      if (![(NSString *)v17 isEqualToString:gatewayBatchID3])
       {
 
         v13 = 0;
 LABEL_32:
-        v28 = gatewayID == v9;
+        v28 = gatewayID == gatewayID;
         goto LABEL_33;
       }
 
-      v30 = v18;
+      v30 = gatewayBatchID3;
       v19 = self->_minCompatibleAPIVersion;
       if (v19 != [(HKClinicalGatewayReference *)v7 minCompatibleAPIVersion])
       {
@@ -130,9 +130,9 @@ LABEL_32:
 LABEL_28:
 
 LABEL_29:
-        v12 = v33;
+        gatewayID3 = v33;
 
-        if (gatewayID == v9)
+        if (gatewayID == gatewayID)
         {
           goto LABEL_35;
         }
@@ -143,9 +143,9 @@ LABEL_29:
 
     v31 = v3;
     FHIRVersion = self->_FHIRVersion;
-    v22 = [(HKClinicalGatewayReference *)v7 FHIRVersion];
-    v23 = v22;
-    if (FHIRVersion == v22)
+    fHIRVersion = [(HKClinicalGatewayReference *)v7 FHIRVersion];
+    v23 = fHIRVersion;
+    if (FHIRVersion == fHIRVersion)
     {
 
       v13 = 1;
@@ -153,22 +153,22 @@ LABEL_29:
 
     else
     {
-      v24 = [(HKClinicalGatewayReference *)v7 FHIRVersion];
-      if (v24)
+      fHIRVersion2 = [(HKClinicalGatewayReference *)v7 FHIRVersion];
+      if (fHIRVersion2)
       {
-        v25 = v24;
+        v25 = fHIRVersion2;
         v26 = self->_FHIRVersion;
-        v27 = [(HKClinicalGatewayReference *)v7 FHIRVersion];
-        v13 = [(HKFHIRVersion *)v26 isEqual:v27];
+        fHIRVersion3 = [(HKClinicalGatewayReference *)v7 FHIRVersion];
+        v13 = [(HKFHIRVersion *)v26 isEqual:fHIRVersion3];
 
-        if (gatewayBatchID != v15)
+        if (gatewayBatchID != gatewayBatchID)
         {
         }
 
-        v28 = gatewayID == v9;
+        v28 = gatewayID == gatewayID;
         v3 = v31;
 LABEL_33:
-        v12 = v33;
+        gatewayID3 = v33;
         if (!v28)
         {
           goto LABEL_34;
@@ -182,9 +182,9 @@ LABEL_35:
       v13 = 0;
     }
 
-    v18 = v30;
+    gatewayBatchID3 = v30;
     v3 = v31;
-    if (gatewayBatchID != v15)
+    if (gatewayBatchID != gatewayBatchID)
     {
       goto LABEL_28;
     }
@@ -206,54 +206,54 @@ LABEL_37:
   return v4 ^ minCompatibleAPIVersion ^ [(HKFHIRVersion *)self->_FHIRVersion hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   gatewayID = self->_gatewayID;
-  v5 = a3;
-  [v5 encodeObject:gatewayID forKey:@"gatewayID"];
-  [v5 encodeObject:self->_gatewayBatchID forKey:@"gatewayBatchID"];
-  [v5 encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
-  [v5 encodeObject:self->_FHIRVersion forKey:@"FHIRVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:gatewayID forKey:@"gatewayID"];
+  [coderCopy encodeObject:self->_gatewayBatchID forKey:@"gatewayBatchID"];
+  [coderCopy encodeInteger:self->_minCompatibleAPIVersion forKey:@"minCompatibleAPIVersion"];
+  [coderCopy encodeObject:self->_FHIRVersion forKey:@"FHIRVersion"];
 }
 
-- (HKClinicalGatewayReference)initWithCoder:(id)a3
+- (HKClinicalGatewayReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gatewayID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gatewayID"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gatewayBatchID"];
-    if (v6 && ([v4 containsValueForKey:@"minCompatibleAPIVersion"] & 1) != 0)
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gatewayBatchID"];
+    if (v6 && ([coderCopy containsValueForKey:@"minCompatibleAPIVersion"] & 1) != 0)
     {
-      v7 = [v4 decodeIntegerForKey:@"minCompatibleAPIVersion"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
+      v7 = [coderCopy decodeIntegerForKey:@"minCompatibleAPIVersion"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
       if (v8)
       {
         self = [(HKClinicalGatewayReference *)self initWithGatewayID:v5 gatewayBatchID:v6 minCompatibleAPIVersion:v7 FHIRVersion:v8];
-        v9 = self;
+        selfCopy = self;
       }
 
       else
       {
-        [v4 hrs_failWithCocoaValueNotFoundError];
-        v9 = 0;
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
+        selfCopy = 0;
       }
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v9 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

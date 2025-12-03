@@ -1,10 +1,10 @@
 @interface PXGVisionRecordingFrameEndEventSerializable
-- (PXGVisionRecordingFrameEndEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGVisionRecordingFrameEndEventSerializable)initWithSerializableObject:(id)object;
 @end
 
 @implementation PXGVisionRecordingFrameEndEventSerializable
 
-- (PXGVisionRecordingFrameEndEventSerializable)initWithSerializableObject:(id)a3
+- (PXGVisionRecordingFrameEndEventSerializable)initWithSerializableObject:(id)object
 {
   v4.receiver = self;
   v4.super_class = PXGVisionRecordingFrameEndEventSerializable;

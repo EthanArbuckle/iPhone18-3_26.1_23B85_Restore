@@ -8,18 +8,18 @@
 {
   v6.receiver = self;
   v6.super_class = STStorageButtonHeaderAccessibility;
-  v2 = [(STStorageButtonHeaderAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(STStorageButtonHeaderAccessibility *)&v6 accessibilityLabel];
   if (AXRequestingClient() == 3)
   {
-    v3 = [v2 lowercaseString];
+    lowercaseString = [accessibilityLabel lowercaseString];
   }
 
   else
   {
-    v3 = v2;
+    lowercaseString = accessibilityLabel;
   }
 
-  v4 = v3;
+  v4 = lowercaseString;
 
   return v4;
 }

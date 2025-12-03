@@ -1,33 +1,33 @@
 @interface PDPaymentOffersTransactionProcessorRequest
-- (BOOL)coalesceWithRequest:(id)a3;
-- (PDPaymentOffersTransactionProcessorRequest)initWithPaymentHash:(id)a3 confirmEventType:(unint64_t)a4;
+- (BOOL)coalesceWithRequest:(id)request;
+- (PDPaymentOffersTransactionProcessorRequest)initWithPaymentHash:(id)hash confirmEventType:(unint64_t)type;
 - (id)description;
 @end
 
 @implementation PDPaymentOffersTransactionProcessorRequest
 
-- (PDPaymentOffersTransactionProcessorRequest)initWithPaymentHash:(id)a3 confirmEventType:(unint64_t)a4
+- (PDPaymentOffersTransactionProcessorRequest)initWithPaymentHash:(id)hash confirmEventType:(unint64_t)type
 {
-  v7 = a3;
+  hashCopy = hash;
   v11.receiver = self;
   v11.super_class = PDPaymentOffersTransactionProcessorRequest;
   v8 = [(PDPaymentOffersTransactionProcessorRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_paymentHash, a3);
-    v9->_confirmEventType = a4;
+    objc_storeStrong(&v8->_paymentHash, hash);
+    v9->_confirmEventType = type;
   }
 
   return v9;
 }
 
-- (BOOL)coalesceWithRequest:(id)a3
+- (BOOL)coalesceWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 paymentHash];
+  requestCopy = request;
+  paymentHash = [requestCopy paymentHash];
   paymentHash = self->_paymentHash;
-  v7 = v5;
+  v7 = paymentHash;
   v8 = paymentHash;
   v9 = v8;
   if (v7 == v8)
@@ -52,7 +52,7 @@ LABEL_9:
     }
   }
 
-  v11 = [v4 confirmEventType] == self->_confirmEventType;
+  v11 = [requestCopy confirmEventType] == self->_confirmEventType;
 LABEL_10:
 
   return v11;

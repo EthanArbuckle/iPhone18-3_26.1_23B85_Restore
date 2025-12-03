@@ -1,15 +1,15 @@
 @interface BKHIDEventClient
 - (BKHIDEventClient)init;
-- (BKHIDEventClient)initWithPid:(int)a3 sendRight:(id)a4 queue:(id)a5 processName:(id)a6;
+- (BKHIDEventClient)initWithPid:(int)pid sendRight:(id)right queue:(id)queue processName:(id)name;
 - (BKHIDEventClientDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_queue_invalidate;
-- (void)_queue_performDelegateCallout:(id)a3;
+- (void)_queue_performDelegateCallout:(id)callout;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BKHIDEventClient
@@ -80,7 +80,7 @@
       *&buf[12] = 2114;
       *&buf[14] = v10;
       *&buf[22] = 2048;
-      v18 = self;
+      selfCopy = self;
       LOWORD(v19) = 2114;
       *(&v19 + 2) = @"BKHIDEventClient.m";
       WORD5(v19) = 1024;
@@ -99,7 +99,7 @@
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v18 = sub_10000AFA0;
+  selfCopy = sub_10000AFA0;
   *&v19 = sub_10000B08C;
   v3 = self->_queue;
   *(&v19 + 1) = v3;
@@ -140,33 +140,33 @@
   [(BKHIDEventClient *)&v11 dealloc];
 }
 
-- (void)_queue_performDelegateCallout:(id)a3
+- (void)_queue_performDelegateCallout:(id)callout
 {
-  v4 = a3;
+  calloutCopy = callout;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014328;
   v7[3] = &unk_1000FC300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = calloutCopy;
+  v6 = calloutCopy;
   dispatch_async(v5, v7);
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKHIDEventClient *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(BKHIDEventClient *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   queue_procName = self->_queue_procName;
   if (queue_procName)
   {
-    v7 = [v4 appendObject:queue_procName withName:@"name"];
+    v7 = [succinctDescriptionBuilder appendObject:queue_procName withName:@"name"];
   }
 
   else
   {
-    v8 = [v4 appendInt:self->_queue_pid withName:@"pid"];
+    v8 = [succinctDescriptionBuilder appendInt:self->_queue_pid withName:@"pid"];
   }
 
   queue_sendRight = self->_queue_sendRight;
@@ -181,48 +181,48 @@
   return v10;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKHIDEventClient *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKHIDEventClient *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKHIDEventClient *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKHIDEventClient *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014644;
   v7[3] = &unk_1000FD128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (BKHIDEventClient)initWithPid:(int)a3 sendRight:(id)a4 queue:(id)a5 processName:(id)a6
+- (BKHIDEventClient)initWithPid:(int)pid sendRight:(id)right queue:(id)queue processName:(id)name
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  rightCopy = right;
+  queueCopy = queue;
+  nameCopy = name;
   v38.receiver = self;
   v38.super_class = BKHIDEventClient;
   v14 = [(BKHIDEventClient *)&v38 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a5);
+    objc_storeStrong(&v14->_queue, queue);
     if (!v15->_queue)
     {
       v16 = objc_opt_class();
@@ -233,11 +233,11 @@
       v15->_queue = Serial;
     }
 
-    v15->_queue_pid = a3;
-    objc_storeStrong(&v15->_queue_sendRight, a4);
-    if (a3 >= 1)
+    v15->_queue_pid = pid;
+    objc_storeStrong(&v15->_queue_sendRight, right);
+    if (pid >= 1)
     {
-      v21 = [v13 copy];
+      v21 = [nameCopy copy];
       queue_procName = v15->_queue_procName;
       v15->_queue_procName = v21;
     }
@@ -299,7 +299,7 @@ LABEL_11:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKHIDEventClient.m";
     v17 = 1024;

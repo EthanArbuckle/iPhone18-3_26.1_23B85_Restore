@@ -1,52 +1,52 @@
 @interface VCPFaceProcessingChangeEntry
-+ (id)entryWithAsset:(id)a3 andAnalysis:(id)a4;
-- (VCPFaceProcessingChangeEntry)initWithAsset:(id)a3 andAnalysis:(id)a4;
++ (id)entryWithAsset:(id)asset andAnalysis:(id)analysis;
+- (VCPFaceProcessingChangeEntry)initWithAsset:(id)asset andAnalysis:(id)analysis;
 - (void)publish;
 @end
 
 @implementation VCPFaceProcessingChangeEntry
 
-- (VCPFaceProcessingChangeEntry)initWithAsset:(id)a3 andAnalysis:(id)a4
+- (VCPFaceProcessingChangeEntry)initWithAsset:(id)asset andAnalysis:(id)analysis
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  analysisCopy = analysis;
   v12.receiver = self;
   v12.super_class = VCPFaceProcessingChangeEntry;
   v9 = [(VCPFaceProcessingChangeEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeStrong(&v10->_analysis, a4);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeStrong(&v10->_analysis, analysis);
   }
 
   return v10;
 }
 
-+ (id)entryWithAsset:(id)a3 andAnalysis:(id)a4
++ (id)entryWithAsset:(id)asset andAnalysis:(id)analysis
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithAsset:v5 andAnalysis:v6];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  v7 = [objc_alloc(objc_opt_class()) initWithAsset:assetCopy andAnalysis:analysisCopy];
 
   return v7;
 }
 
 - (void)publish
 {
-  v2 = [(PHAsset *)self->_asset localIdentifier];
-  v68 = [NSString stringWithFormat:@"[FacePersist][%@]", v2];
+  localIdentifier = [(PHAsset *)self->_asset localIdentifier];
+  v68 = [NSString stringWithFormat:@"[FacePersist][%@]", localIdentifier];
 
-  v3 = [(PHAsset *)self->_asset photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PHAsset *)self->_asset photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v73 = v4;
-  [v4 setIncludeNonvisibleFaces:1];
-  [v4 setIncludeTorsoAndFaceDetectionData:1];
-  [v4 setIncludedDetectionTypes:&off_100296218];
+  v73 = librarySpecificFetchOptions;
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&off_100296218];
   v90 = PHFacePropertySetIdentifier;
   v5 = [NSArray arrayWithObjects:&v90 count:1];
-  [v4 setFetchPropertySets:v5];
+  [librarySpecificFetchOptions setFetchPropertySets:v5];
 
   v6 = MediaAnalysisFaceResultsKey;
   v7 = [(NSDictionary *)self->_analysis objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
@@ -135,20 +135,20 @@
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
         {
-          v15 = [v14 localIdentifier];
+          localIdentifier2 = [v14 localIdentifier];
           *buf = 138412546;
           v84 = v68;
           v85 = 2112;
-          *v86 = v15;
+          *v86 = localIdentifier2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Marking asset contains FC face %@", buf, 0x16u);
         }
 
         v66 = 1;
       }
 
-      v16 = [v14 localIdentifier];
+      localIdentifier3 = [v14 localIdentifier];
 
-      if (!v16)
+      if (!localIdentifier3)
       {
         v19 = 0;
         v18 = +[PHFaceChangeRequest creationRequestForFace];
@@ -159,8 +159,8 @@
 
 LABEL_25:
         [VCPFaceUtils assignPropertiesOfVCPPhotosFace:v14 toPHFaceChangeRequest:v18];
-        v20 = [v14 detectionType];
-        if (v20 == 1)
+        detectionType = [v14 detectionType];
+        if (detectionType == 1)
         {
           [v14 centerX];
           if (v21 == 0.0 && ([v14 centerY], v22 == 0.0) && (objc_msgSend(v14, "size"), v23 == 0.0))
@@ -191,7 +191,7 @@ LABEL_25:
             {
               v30 = @"Face";
               v29 = 0;
-              if (!v16)
+              if (!localIdentifier3)
               {
                 goto LABEL_53;
               }
@@ -208,7 +208,7 @@ LABEL_25:
             {
               v29 = 0;
               v30 = @"Face";
-              if (!v16)
+              if (!localIdentifier3)
               {
                 goto LABEL_53;
               }
@@ -221,18 +221,18 @@ LABEL_34:
               [v18 setVuObservationID:0];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
               {
-                v32 = [v19 localIdentifier];
+                localIdentifier4 = [v19 localIdentifier];
                 *buf = 138412802;
                 v84 = v68;
                 v85 = 2112;
                 *v86 = v30;
                 *&v86[8] = 2112;
-                v87 = v32;
+                v87 = localIdentifier4;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Updating %@ %@", buf, 0x20u);
               }
 
 LABEL_57:
-              if (v20 == 1)
+              if (detectionType == 1)
               {
                 if (v28)
                 {
@@ -261,7 +261,7 @@ LABEL_57:
 
           v29 = 1;
           v30 = @"Torso";
-          if (v16)
+          if (localIdentifier3)
           {
             goto LABEL_34;
           }
@@ -272,27 +272,27 @@ LABEL_57:
           v28 = 0;
           v29 = 0;
           v30 = @"Pet";
-          if (v16)
+          if (localIdentifier3)
           {
             goto LABEL_34;
           }
         }
 
 LABEL_53:
-        v40 = [v18 placeholderForCreatedFace];
-        v88 = v40;
+        placeholderForCreatedFace = [v18 placeholderForCreatedFace];
+        v88 = placeholderForCreatedFace;
         v41 = [NSArray arrayWithObjects:&v88 count:1];
         [v70 addFaces:v41];
 
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
         {
-          v42 = [v40 localIdentifier];
+          localIdentifier5 = [placeholderForCreatedFace localIdentifier];
           *buf = 138412802;
           v84 = v68;
           v85 = 2112;
           *v86 = v30;
           *&v86[8] = 2112;
-          v87 = v42;
+          v87 = localIdentifier5;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Adding %@ %@", buf, 0x20u);
         }
 
@@ -332,56 +332,56 @@ LABEL_62:
   while (v12);
 LABEL_73:
 
-  v44 = [(PHAsset *)self->_asset adjustmentVersion];
-  [v70 setFaceAdjustmentVersion:v44];
+  adjustmentVersion = [(PHAsset *)self->_asset adjustmentVersion];
+  [v70 setFaceAdjustmentVersion:adjustmentVersion];
 
   v45 = VCPAnalysisResultWarningImageTooSmallKey;
   v46 = [(NSDictionary *)self->_analysis objectForKeyedSubscript:VCPAnalysisResultWarningImageTooSmallKey];
-  v47 = v46 == 0;
+  photoLibrary2 = v46 == 0;
 
-  if (v47)
+  if (photoLibrary2)
   {
-    v48 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v47 = [(NSDictionary *)self->_analysis objectForKeyedSubscript:v45];
-    v48 = [v47 BOOLValue];
+    photoLibrary2 = [(NSDictionary *)self->_analysis objectForKeyedSubscript:v45];
+    bOOLValue = [photoLibrary2 BOOLValue];
 
     if (MediaAnalysisLogLevel() >= 7)
     {
-      v47 = VCPLogToOSLogType[7];
+      photoLibrary2 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, VCPLogToOSLogType[7]))
       {
         *buf = 138412290;
         v84 = v68;
-        _os_log_impl(&_mh_execute_header, &_os_log_default, v47, "%@ Marking resource is too small", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, &_os_log_default, photoLibrary2, "%@ Marking resource is too small", buf, 0xCu);
       }
     }
   }
 
-  if ((v66 | v48))
+  if ((v66 | bOOLValue))
   {
-    v49 = 14;
+    mad_faceProcessingInternalVersion = 14;
   }
 
   else
   {
-    v47 = [(PHAsset *)self->_asset photoLibrary];
-    v49 = [v47 mad_faceProcessingInternalVersion];
+    photoLibrary2 = [(PHAsset *)self->_asset photoLibrary];
+    mad_faceProcessingInternalVersion = [photoLibrary2 mad_faceProcessingInternalVersion];
   }
 
-  [v70 setFaceAnalysisVersion:v49];
-  if (((v66 | v48) & 1) == 0)
+  [v70 setFaceAnalysisVersion:mad_faceProcessingInternalVersion];
+  if (((v66 | bOOLValue) & 1) == 0)
   {
   }
 
   if ([(PHAsset *)self->_asset mad_isEligibleForComputeSync])
   {
-    v50 = [v70 faceAnalysisVersion];
-    v51 = [(PHAsset *)self->_asset photoLibrary];
-    v52 = [v51 mad_faceProcessingInternalVersion] == v50;
+    faceAnalysisVersion = [v70 faceAnalysisVersion];
+    photoLibrary3 = [(PHAsset *)self->_asset photoLibrary];
+    v52 = [photoLibrary3 mad_faceProcessingInternalVersion] == faceAnalysisVersion;
 
     if (v52)
     {
@@ -398,14 +398,14 @@ LABEL_73:
         v55 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v55))
         {
-          v56 = [(PHAsset *)self->_asset mediaAnalysisProperties];
-          v57 = [v56 localAnalysisStage];
+          mediaAnalysisProperties = [(PHAsset *)self->_asset mediaAnalysisProperties];
+          localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
           *buf = 138412802;
           v84 = v68;
           v85 = 1024;
           *v86 = v53;
           *&v86[4] = 1024;
-          *&v86[6] = v57;
+          *&v86[6] = localAnalysisStage;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v55, "%@ No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
         }
       }

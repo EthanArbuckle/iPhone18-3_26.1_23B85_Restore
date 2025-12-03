@@ -1,12 +1,12 @@
 @interface PSIObject
-- (PSIObject)initWithUUID:(id)a3;
-- (id)_initForCopy:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PSIObject)initWithUUID:(id)d;
+- (id)_initForCopy:(BOOL)copy;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)objectType;
-- (void)addContentString:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningCategory:(signed __int16)a6;
-- (void)addSynonym:(id)a3 lookupIdentifier:(id)a4 category:(signed __int16)a5 originalContentString:(id)a6;
+- (void)addContentString:(id)string identifier:(id)identifier category:(signed __int16)category owningCategory:(signed __int16)owningCategory;
+- (void)addSynonym:(id)synonym lookupIdentifier:(id)identifier category:(signed __int16)category originalContentString:(id)string;
 - (void)clear;
-- (void)enumerateSynonymsForOriginalContentString:(id)a3 orOriginalLookupIdentifier:(id)a4 handler:(id)a5;
+- (void)enumerateSynonymsForOriginalContentString:(id)string orOriginalLookupIdentifier:(id)identifier handler:(id)handler;
 - (void)reverse;
 @end
 
@@ -14,7 +14,7 @@
 
 - (unint64_t)objectType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
@@ -44,12 +44,12 @@
   }
 }
 
-- (void)enumerateSynonymsForOriginalContentString:(id)a3 orOriginalLookupIdentifier:(id)a4 handler:(id)a5
+- (void)enumerateSynonymsForOriginalContentString:(id)string orOriginalLookupIdentifier:(id)identifier handler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_synonymsByOriginalWord objectForKey:a3];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = [(NSMutableDictionary *)self->_synonymsByOriginalWord objectForKey:string];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -69,10 +69,10 @@
         }
 
         v14 = *(*(&v33 + 1) + 8 * i);
-        v15 = [v14 synonym];
-        v16 = [v14 category];
-        v17 = [v14 identifier];
-        v8[2](v8, v15, v16, v17);
+        synonym = [v14 synonym];
+        category = [v14 category];
+        identifier = [v14 identifier];
+        handlerCopy[2](handlerCopy, synonym, category, identifier);
       }
 
       v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -81,10 +81,10 @@
     while (v11);
   }
 
-  v18 = v28;
-  if ([v28 length])
+  v18 = identifierCopy;
+  if ([identifierCopy length])
   {
-    v19 = [(NSMutableDictionary *)self->_synonymsByOriginalLookupIdentifier objectForKey:v28];
+    v19 = [(NSMutableDictionary *)self->_synonymsByOriginalLookupIdentifier objectForKey:identifierCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -104,10 +104,10 @@
           }
 
           v24 = *(*(&v29 + 1) + 8 * j);
-          v25 = [v24 synonym];
-          v26 = [v24 category];
-          v27 = [v24 identifier];
-          v8[2](v8, v25, v26, v27);
+          synonym2 = [v24 synonym];
+          category2 = [v24 category];
+          identifier2 = [v24 identifier];
+          handlerCopy[2](handlerCopy, synonym2, category2, identifier2);
         }
 
         v21 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -116,28 +116,28 @@
       while (v21);
     }
 
-    v18 = v28;
+    v18 = identifierCopy;
   }
 }
 
-- (void)addSynonym:(id)a3 lookupIdentifier:(id)a4 category:(signed __int16)a5 originalContentString:(id)a6
+- (void)addSynonym:(id)synonym lookupIdentifier:(id)identifier category:(signed __int16)category originalContentString:(id)string
 {
-  v7 = a5;
+  categoryCopy = category;
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v7)
+  synonymCopy = synonym;
+  identifierCopy = identifier;
+  stringCopy = string;
+  if (categoryCopy)
   {
-    if ([v10 length] && objc_msgSend(v12, "length"))
+    if ([synonymCopy length] && objc_msgSend(stringCopy, "length"))
     {
-      v13 = [(NSMutableDictionary *)self->_synonymsByOriginalWord objectForKey:v12];
+      v13 = [(NSMutableDictionary *)self->_synonymsByOriginalWord objectForKey:stringCopy];
       if (!v13)
       {
         v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
         synonymsByOriginalWord = self->_synonymsByOriginalWord;
         v15 = v13;
-        v16 = v12;
+        v16 = stringCopy;
 LABEL_10:
         [(NSMutableDictionary *)synonymsByOriginalWord setObject:v15 forKey:v16];
         goto LABEL_11;
@@ -146,20 +146,20 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if ([v10 length] && objc_msgSend(v11, "length"))
+    if ([synonymCopy length] && objc_msgSend(identifierCopy, "length"))
     {
-      v13 = [(NSMutableDictionary *)self->_synonymsByOriginalLookupIdentifier objectForKey:v11];
+      v13 = [(NSMutableDictionary *)self->_synonymsByOriginalLookupIdentifier objectForKey:identifierCopy];
       if (!v13)
       {
         v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
         synonymsByOriginalWord = self->_synonymsByOriginalLookupIdentifier;
         v15 = v13;
-        v16 = v11;
+        v16 = identifierCopy;
         goto LABEL_10;
       }
 
 LABEL_11:
-      v17 = [[PSISynonymRecord alloc] initWithSynonym:v10 category:v7 identifier:v11];
+      v17 = [[PSISynonymRecord alloc] initWithSynonym:synonymCopy category:categoryCopy identifier:identifierCopy];
       [v13 addObject:v17];
     }
   }
@@ -172,28 +172,28 @@ LABEL_11:
       v19[0] = 67109890;
       v19[1] = 0;
       v20 = 2112;
-      v21 = v10;
+      v21 = synonymCopy;
       v22 = 2112;
-      v23 = v11;
+      v23 = identifierCopy;
       v24 = 2112;
-      v25 = v12;
+      v25 = stringCopy;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Invalid category (%hd) for synonym: %@, identifier: %@, originalContentString: %@", v19, 0x26u);
     }
   }
 }
 
-- (void)addContentString:(id)a3 identifier:(id)a4 category:(signed __int16)a5 owningCategory:(signed __int16)a6
+- (void)addContentString:(id)string identifier:(id)identifier category:(signed __int16)category owningCategory:(signed __int16)owningCategory
 {
-  v6 = a6;
-  v7 = a5;
+  owningCategoryCopy = owningCategory;
+  categoryCopy = category;
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (v7)
+  stringCopy = string;
+  identifierCopy = identifier;
+  if (categoryCopy)
   {
-    if ([v10 length] || objc_msgSend(v11, "length"))
+    if ([stringCopy length] || objc_msgSend(identifierCopy, "length"))
     {
-      v12 = [[PSIIndexToken alloc] initWithText:v10 identifier:v11 category:v7 owningCategory:v6];
+      v12 = [[PSIIndexToken alloc] initWithText:stringCopy identifier:identifierCopy category:categoryCopy owningCategory:owningCategoryCopy];
       [(NSArray *)self->_tokens addObject:v12];
     }
   }
@@ -206,17 +206,17 @@ LABEL_11:
       v14[0] = 67109890;
       v14[1] = 0;
       v15 = 2112;
-      v16 = v10;
+      v16 = stringCopy;
       v17 = 2112;
-      v18 = v11;
+      v18 = identifierCopy;
       v19 = 1024;
-      v20 = v6;
+      v20 = owningCategoryCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Invalid category (%hd) for contentString: %@, identifier: %@, owningCategory: %hd", v14, 0x22u);
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) _initForCopy:1];
   v5 = [(NSString *)self->_uuid copy];
@@ -238,13 +238,13 @@ LABEL_11:
   return v4;
 }
 
-- (PSIObject)initWithUUID:(id)a3
+- (PSIObject)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(PSIObject *)self _initForCopy:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -252,12 +252,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)_initForCopy:(BOOL)a3
+- (id)_initForCopy:(BOOL)copy
 {
   v12.receiver = self;
   v12.super_class = PSIObject;
   v4 = [(PSIObject *)&v12 init];
-  if (v4 && !a3)
+  if (v4 && !copy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     tokens = v4->_tokens;

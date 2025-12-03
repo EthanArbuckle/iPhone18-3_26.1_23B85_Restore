@@ -1,15 +1,15 @@
 @interface ABPKPaddingParams
-- (ABPKPaddingParams)initWithInputResolution:(CGSize)a3 andOutputResolution:(CGSize)a4;
+- (ABPKPaddingParams)initWithInputResolution:(CGSize)resolution andOutputResolution:(CGSize)outputResolution;
 @end
 
 @implementation ABPKPaddingParams
 
-- (ABPKPaddingParams)initWithInputResolution:(CGSize)a3 andOutputResolution:(CGSize)a4
+- (ABPKPaddingParams)initWithInputResolution:(CGSize)resolution andOutputResolution:(CGSize)outputResolution
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = outputResolution.height;
+  width = outputResolution.width;
+  v6 = resolution.height;
+  v7 = resolution.width;
   v23.receiver = self;
   v23.super_class = ABPKPaddingParams;
   v8 = [(ABPKPaddingParams *)&v23 init];

@@ -1,7 +1,7 @@
 @interface AVTransportControlsView
-- (AVTransportControlsView)initWithFrame:(CGRect)a3 styleSheet:(id)a4;
+- (AVTransportControlsView)initWithFrame:(CGRect)frame styleSheet:(id)sheet;
 - (AVTransportControlsViewDelegate)delegate;
-- (BOOL)_subviewIsCustomMenuItemView:(id)a3;
+- (BOOL)_subviewIsCustomMenuItemView:(id)view;
 - (BOOL)canShowScrubInstructions;
 - (BOOL)isCollapsedOrExcluded;
 - (CGSize)extrinsicContentSize;
@@ -9,12 +9,12 @@
 - (NSArray)doubleRowViews;
 - (NSArray)singleRowViews;
 - (NSTimer)scrubInstructionsTimer;
-- (double)_doubleRowLayoutSpacingAfterSubview:(id)a3;
-- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)a3;
-- (double)_singeRowLayoutSpacingAfterSubview:(id)a3;
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3;
+- (double)_doubleRowLayoutSpacingAfterSubview:(id)subview;
+- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)row;
+- (double)_singeRowLayoutSpacingAfterSubview:(id)subview;
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row;
 - (id)_scrubInstructionsAttributedText;
-- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)a3;
+- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)subview;
 - (void)_layoutDoubleRowViews;
 - (void)_layoutSingleRowViews;
 - (void)_showScrubInstructions;
@@ -22,26 +22,26 @@
 - (void)_updateFontSizes;
 - (void)_updateScrubInstructionsFrame;
 - (void)_updateScrubInstructionsLabelsText;
-- (void)avkit_reevaluateHiddenStateOfItem:(id)a3;
-- (void)beginScrubbing:(id)a3;
-- (void)endScrubbing:(id)a3;
+- (void)avkit_reevaluateHiddenStateOfItem:(id)item;
+- (void)beginScrubbing:(id)scrubbing;
+- (void)endScrubbing:(id)scrubbing;
 - (void)layoutSubviews;
 - (void)reevaluateHiddenStateOfAllItems;
-- (void)scrubberSlowKnobMovementDetected:(id)a3;
-- (void)scrubberValueChanged:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setCustomContentTransitioningInfoPanel:(id)a3;
-- (void)setCustomItems:(id)a3;
-- (void)setCustomMenuItemsViews:(id)a3;
-- (void)setDoubleRowLayoutEnabled:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)a3;
-- (void)setShowsLiveStreamingControls:(BOOL)a3;
-- (void)setShowsLoadingIndicator:(BOOL)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrubberSlowKnobMovementDetected:(id)detected;
+- (void)scrubberValueChanged:(id)changed;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setCustomContentTransitioningInfoPanel:(id)panel;
+- (void)setCustomItems:(id)items;
+- (void)setCustomMenuItemsViews:(id)views;
+- (void)setDoubleRowLayoutEnabled:(BOOL)enabled;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setIncluded:(BOOL)included;
+- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)scrubber;
+- (void)setShowsLiveStreamingControls:(BOOL)controls;
+- (void)setShowsLoadingIndicator:(BOOL)indicator;
+- (void)setStyleSheet:(id)sheet;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVTransportControlsView
@@ -69,18 +69,18 @@
   return WeakRetained;
 }
 
-- (BOOL)_subviewIsCustomMenuItemView:(id)a3
+- (BOOL)_subviewIsCustomMenuItemView:(id)view
 {
-  v4 = a3;
-  v5 = [(AVTransportControlsView *)self customMenuItemsViews];
+  viewCopy = view;
+  customMenuItemsViews = [(AVTransportControlsView *)self customMenuItemsViews];
 
-  if (v5)
+  if (customMenuItemsViews)
   {
-    v6 = v4;
+    v6 = viewCopy;
     if (v6)
     {
-      v7 = [(AVTransportControlsView *)self customMenuItemsViews];
-      v8 = [v7 containsObject:v6];
+      customMenuItemsViews2 = [(AVTransportControlsView *)self customMenuItemsViews];
+      v8 = [customMenuItemsViews2 containsObject:v6];
     }
 
     else
@@ -99,8 +99,8 @@
 
 - (BOOL)canShowScrubInstructions
 {
-  v2 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-  v3 = v2 == 0;
+  customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  v3 = customContentTransitioningInfoPanel == 0;
 
   return v3;
 }
@@ -140,12 +140,12 @@
   v22[15] = playbackSpeedButton;
   v22[16] = self->_controlOverflowButton;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:17];
-  v18 = [(AVTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVTransportControlsView *)self customMenuItemsViews];
 
-  if (v18)
+  if (customMenuItemsViews)
   {
-    v19 = [(AVTransportControlsView *)self customMenuItemsViews];
-    v20 = [v17 arrayByAddingObjectsFromArray:v19];
+    customMenuItemsViews2 = [(AVTransportControlsView *)self customMenuItemsViews];
+    v20 = [v17 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v17 = v20;
   }
@@ -178,15 +178,15 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v11 = [v8 arrayByAddingObjectsFromArray:v10];
 
-  v12 = [(AVTransportControlsView *)self customItems];
-  v13 = [v11 arrayByAddingObjectsFromArray:v12];
+  customItems = [(AVTransportControlsView *)self customItems];
+  v13 = [v11 arrayByAddingObjectsFromArray:customItems];
 
-  v14 = [(AVTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVTransportControlsView *)self customMenuItemsViews];
 
-  if (v14)
+  if (customMenuItemsViews)
   {
-    v15 = [(AVTransportControlsView *)self customMenuItemsViews];
-    v16 = [v13 arrayByAddingObjectsFromArray:v15];
+    customMenuItemsViews2 = [(AVTransportControlsView *)self customMenuItemsViews];
+    v16 = [v13 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v13 = v16;
   }
@@ -202,48 +202,48 @@
 
 - (void)_updateCustomContentTransitioningInfoPanelLayout
 {
-  v3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
 
-  if (!v3)
+  if (!customContentTransitioningInfoPanel)
   {
     return;
   }
 
-  v4 = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
-  v5 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-  v6 = [v5 superview];
-  if (v4)
+  isDoubleRowLayoutEnabled = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
+  customContentTransitioningInfoPanel2 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  superview = [customContentTransitioningInfoPanel2 superview];
+  if (isDoubleRowLayoutEnabled)
   {
-    v7 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+    embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
 
-    if (v6 != v7)
+    if (superview != embeddedExtraContentContainer)
     {
-      v8 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-      v9 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-      [v8 addSubview:v9];
+      embeddedExtraContentContainer2 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+      customContentTransitioningInfoPanel3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+      [embeddedExtraContentContainer2 addSubview:customContentTransitioningInfoPanel3];
     }
 
-    v10 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    v11 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-    [v11 bounds];
-    [v10 setFrame:?];
+    customContentTransitioningInfoPanel4 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    embeddedExtraContentContainer3 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+    [embeddedExtraContentContainer3 bounds];
+    [customContentTransitioningInfoPanel4 setFrame:?];
     goto LABEL_9;
   }
 
-  v12 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
 
-  if (v6 != v12)
+  if (superview != detachedExtraContentLayoutView)
   {
-    v10 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
-    v11 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    [v10 addSubview:v11];
+    customContentTransitioningInfoPanel4 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+    embeddedExtraContentContainer3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    [customContentTransitioningInfoPanel4 addSubview:embeddedExtraContentContainer3];
 LABEL_9:
   }
 
-  v13 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
-  [v13 setHidden:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
+  detachedExtraContentLayoutView2 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView2 setHidden:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
 
-  v14 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView3 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
   if ([(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
     v15 = 0.0;
@@ -254,15 +254,15 @@ LABEL_9:
     v15 = 1.0;
   }
 
-  [v14 setAlpha:v15];
+  [detachedExtraContentLayoutView3 setAlpha:v15];
 
-  v16 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-  [v16 setCollapsed:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
+  embeddedExtraContentContainer4 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer4 setCollapsed:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
 
-  v17 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-  [v17 setIncluded:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
+  embeddedExtraContentContainer5 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer5 setIncluded:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled")}];
 
-  v19 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  embeddedExtraContentContainer6 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
   if ([(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
     v18 = 1.0;
@@ -273,20 +273,20 @@ LABEL_9:
     v18 = 0.0;
   }
 
-  [v19 setAlpha:v18];
+  [embeddedExtraContentContainer6 setAlpha:v18];
 }
 
 - (id)_scrubInstructionsAttributedText
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v3 = AVLocalizedString(@"PLAYBACK_CONTROLS_VIEW_CONTROLLER_SCRUB_INSTRUCTIONS_SLIDE_UP_TITLE_LABEL_TEXT");
-  v4 = [(AVTransportControlsView *)self scrubber];
-  v5 = [v4 localizedScrubbingSpeedName];
+  scrubber = [(AVTransportControlsView *)self scrubber];
+  localizedScrubbingSpeedName = [scrubber localizedScrubbingSpeedName];
 
   v6 = MEMORY[0x1E69DB878];
   v7 = *MEMORY[0x1E69DDD28];
-  v8 = [(AVTransportControlsView *)self traitCollection];
-  v9 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:v8];
+  traitCollection = [(AVTransportControlsView *)self traitCollection];
+  v9 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:traitCollection];
 
   v10 = MEMORY[0x1E69DB878];
   [v9 pointSize];
@@ -299,7 +299,7 @@ LABEL_9:
   v15 = [v12 initWithString:v3 attributes:v14];
 
   v16 = objc_alloc(MEMORY[0x1E696AD40]);
-  v17 = [v5 stringByAppendingString:@"\n"];
+  v17 = [localizedScrubbingSpeedName stringByAppendingString:@"\n"];
   v22 = v13;
   v23 = v11;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
@@ -315,84 +315,84 @@ LABEL_9:
 {
   [(AVTransportControlsView *)self frame];
   v3 = CGRectGetMinY(v38) + -8.0;
-  v4 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v4 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel intrinsicContentSize];
   v6 = v3 - v5 + -20.0;
 
-  v7 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v7 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel2 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel2 intrinsicContentSize];
   v9 = v8 + 20.0;
 
-  v10 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v10 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel3 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel3 intrinsicContentSize];
   v12 = v11 + 20.0;
 
-  v13 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
-  [v13 setFrame:{0.0, v6, v9, v12}];
+  detachedExtraContentLayoutView = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView setFrame:{0.0, v6, v9, v12}];
 
-  v14 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  v15 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v15 intrinsicContentSize];
+  detachedScrubInstructionsBackdropLabel4 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  detachedScrubInstructionsBackdropLabel5 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel5 intrinsicContentSize];
   v17 = v16;
-  v18 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v18 intrinsicContentSize];
-  [v14 setFrame:{10.0, 10.0, v17, v19}];
+  detachedScrubInstructionsBackdropLabel6 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel6 intrinsicContentSize];
+  [detachedScrubInstructionsBackdropLabel4 setFrame:{10.0, 10.0, v17, v19}];
 
-  v20 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  detachedExtraContentLayoutView2 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
   [(AVTransportControlsView *)self center];
   v22 = v21;
-  v23 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
-  [v23 center];
-  [v20 setCenter:v22];
+  detachedExtraContentLayoutView3 = [(AVTransportControlsView *)self detachedExtraContentLayoutView];
+  [detachedExtraContentLayoutView3 center];
+  [detachedExtraContentLayoutView2 setCenter:v22];
 
-  v24 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  v25 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-  [v25 bounds];
-  [v24 sizeThatFits:{v26, v27}];
+  scrubInstructionsLabel = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer bounds];
+  [scrubInstructionsLabel sizeThatFits:{v26, v27}];
   v29 = v28;
   v31 = v30;
 
-  v32 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  [v32 setFrame:{0.0, 0.0, v29, v31}];
+  scrubInstructionsLabel2 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel2 setFrame:{0.0, 0.0, v29, v31}];
 
-  v36 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  v33 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-  [v33 frame];
+  scrubInstructionsLabel3 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  embeddedExtraContentContainer2 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  [embeddedExtraContentContainer2 frame];
   v34 = CGRectGetWidth(v39) * 0.5;
-  v35 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  [v35 center];
-  [v36 setCenter:v34];
+  scrubInstructionsLabel4 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel4 center];
+  [scrubInstructionsLabel3 setCenter:v34];
 }
 
 - (void)_updateScrubInstructionsLabelsText
 {
-  v3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
 
-  if (v3)
+  if (customContentTransitioningInfoPanel)
   {
-    v4 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-    [v4 setAttributedText:0];
+    detachedScrubInstructionsBackdropLabel = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+    [detachedScrubInstructionsBackdropLabel setAttributedText:0];
 
-    v12 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-    [v12 setAttributedText:0];
+    scrubInstructionsLabel = [(AVTransportControlsView *)self scrubInstructionsLabel];
+    [scrubInstructionsLabel setAttributedText:0];
   }
 
   else
   {
-    v12 = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
-    v5 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-    v6 = [v5 attributedText];
-    v7 = [v12 isEqualToAttributedString:v6];
+    scrubInstructionsLabel = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
+    scrubInstructionsLabel2 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+    attributedText = [scrubInstructionsLabel2 attributedText];
+    v7 = [scrubInstructionsLabel isEqualToAttributedString:attributedText];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-      v9 = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
-      [v8 setAttributedText:v9];
+      detachedScrubInstructionsBackdropLabel2 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+      _scrubInstructionsAttributedText = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
+      [detachedScrubInstructionsBackdropLabel2 setAttributedText:_scrubInstructionsAttributedText];
 
-      v10 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-      v11 = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
-      [v10 setAttributedText:v11];
+      scrubInstructionsLabel3 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+      _scrubInstructionsAttributedText2 = [(AVTransportControlsView *)self _scrubInstructionsAttributedText];
+      [scrubInstructionsLabel3 setAttributedText:_scrubInstructionsAttributedText2];
     }
   }
 }
@@ -411,17 +411,17 @@ LABEL_9:
 
   [(AVTransportControlsView *)self bounds];
   Width = CGRectGetWidth(v12);
-  v5 = [(AVTransportControlsView *)self styleSheet];
-  [v5 doubleRowLayoutMargins];
+  styleSheet = [(AVTransportControlsView *)self styleSheet];
+  [styleSheet doubleRowLayoutMargins];
   if (Width <= v6)
   {
   }
 
   else
   {
-    v7 = [(AVTransportControlsView *)self isShowingScrubInstructions];
+    isShowingScrubInstructions = [(AVTransportControlsView *)self isShowingScrubInstructions];
 
-    if (!v7)
+    if (!isShowingScrubInstructions)
     {
       [(AVTransportControlsView *)self setShowingScrubInstructions:1];
       v10[0] = MEMORY[0x1E69E9820];
@@ -522,135 +522,135 @@ LABEL_6:
 
 - (void)_updateFontSizes
 {
-  v3 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  v4 = [(AVTransportControlsView *)self styleSheet];
-  v5 = [v4 scrubberTimeLabelFont];
-  [v3 setFont:v5];
+  elapsedTimeLabel = [(AVTransportControlsView *)self elapsedTimeLabel];
+  styleSheet = [(AVTransportControlsView *)self styleSheet];
+  scrubberTimeLabelFont = [styleSheet scrubberTimeLabelFont];
+  [elapsedTimeLabel setFont:scrubberTimeLabelFont];
 
-  v6 = [(AVTransportControlsView *)self timeRemainingLabel];
-  v7 = [(AVTransportControlsView *)self styleSheet];
-  v8 = [v7 scrubberTimeLabelFont];
-  [v6 setFont:v8];
+  timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+  styleSheet2 = [(AVTransportControlsView *)self styleSheet];
+  scrubberTimeLabelFont2 = [styleSheet2 scrubberTimeLabelFont];
+  [timeRemainingLabel setFont:scrubberTimeLabelFont2];
 
-  v9 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  v10 = [(AVTransportControlsView *)self styleSheet];
-  v11 = [v10 infoLabelFont];
-  [v9 setFont:v11];
+  liveBroadcastLabel = [(AVTransportControlsView *)self liveBroadcastLabel];
+  styleSheet3 = [(AVTransportControlsView *)self styleSheet];
+  infoLabelFont = [styleSheet3 infoLabelFont];
+  [liveBroadcastLabel setFont:infoLabelFont];
 
-  v12 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
-  v13 = [(AVTransportControlsView *)self styleSheet];
-  v14 = [v13 scrubberInfoLabelFont];
-  [v12 setFont:v14];
+  liveBroadcastScrubberLabel = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
+  styleSheet4 = [(AVTransportControlsView *)self styleSheet];
+  scrubberInfoLabelFont = [styleSheet4 scrubberInfoLabelFont];
+  [liveBroadcastScrubberLabel setFont:scrubberInfoLabelFont];
 
   [(AVTransportControlsView *)self setNeedsLayout];
 }
 
-- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)a3
+- (unint64_t)_layoutItemDisplayPriorityForSubview:(id)subview
 {
-  v4 = a3;
-  [(AVTransportControlsView *)self _subviewIsCustomMenuItemView:v4];
-  v5 = [(AVTransportControlsView *)self standardPlayPauseButton];
-  v6 = v5;
-  if (v5 == v4)
+  subviewCopy = subview;
+  [(AVTransportControlsView *)self _subviewIsCustomMenuItemView:subviewCopy];
+  standardPlayPauseButton = [(AVTransportControlsView *)self standardPlayPauseButton];
+  v6 = standardPlayPauseButton;
+  if (standardPlayPauseButton == subviewCopy)
   {
 
     goto LABEL_16;
   }
 
-  v7 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
 
-  if (v7 == v4)
+  if (embeddedExtraContentContainer == subviewCopy)
   {
 LABEL_16:
     v22 = 4;
     goto LABEL_20;
   }
 
-  v8 = [(AVTransportControlsView *)self scrubber];
-  if (v8 == v4)
+  scrubber = [(AVTransportControlsView *)self scrubber];
+  if (scrubber == subviewCopy)
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v9 = [(AVTransportControlsView *)self timeRemainingLabel];
-  v10 = v9;
-  if (v9 == v4)
+  timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+  v10 = timeRemainingLabel;
+  if (timeRemainingLabel == subviewCopy)
   {
 
     goto LABEL_18;
   }
 
-  v11 = [(AVTransportControlsView *)self controlOverflowButton];
+  controlOverflowButton = [(AVTransportControlsView *)self controlOverflowButton];
 
-  if (v11 == v4)
+  if (controlOverflowButton == subviewCopy)
   {
 LABEL_19:
     v22 = 3;
     goto LABEL_20;
   }
 
-  v12 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  if (v12 == v4)
+  elapsedTimeLabel = [(AVTransportControlsView *)self elapsedTimeLabel];
+  if (elapsedTimeLabel == subviewCopy)
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v13 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  v14 = v13;
-  if (v13 == v4)
+  liveBroadcastLabel = [(AVTransportControlsView *)self liveBroadcastLabel];
+  v14 = liveBroadcastLabel;
+  if (liveBroadcastLabel == subviewCopy)
   {
 
     goto LABEL_22;
   }
 
-  v15 = [(AVTransportControlsView *)self routePickerView];
+  routePickerView = [(AVTransportControlsView *)self routePickerView];
 
-  if (v15 == v4)
+  if (routePickerView == subviewCopy)
   {
 LABEL_23:
     v22 = 2;
     goto LABEL_20;
   }
 
-  v16 = [(AVTransportControlsView *)self skipBackButton];
-  if (v16 == v4)
+  skipBackButton = [(AVTransportControlsView *)self skipBackButton];
+  if (skipBackButton == subviewCopy)
   {
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v17 = [(AVTransportControlsView *)self skipForwardButton];
-  if (v17 == v4)
+  skipForwardButton = [(AVTransportControlsView *)self skipForwardButton];
+  if (skipForwardButton == subviewCopy)
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v18 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
-  if (v18 == v4)
+  startLeftwardContentTransitionButton = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
+  if (startLeftwardContentTransitionButton == subviewCopy)
   {
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v19 = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
-  v20 = v19;
-  if (v19 == v4)
+  startRightwardContentTransitionButton = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
+  v20 = startRightwardContentTransitionButton;
+  if (startRightwardContentTransitionButton == subviewCopy)
   {
 
     goto LABEL_25;
   }
 
-  v21 = [(AVTransportControlsView *)self mediaSelectionButton];
+  mediaSelectionButton = [(AVTransportControlsView *)self mediaSelectionButton];
 
-  if (v21 == v4)
+  if (mediaSelectionButton == subviewCopy)
   {
 LABEL_28:
     v22 = 1;
@@ -663,20 +663,20 @@ LABEL_20:
   return v22;
 }
 
-- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)a3
+- (double)_rowSpacingForDoubleRowLayoutAfterRow:(unint64_t)row
 {
-  v5 = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
+  isDoubleRowLayoutEnabled = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
   v6 = 0.0;
-  if (!a3 && v5)
+  if (!row && isDoubleRowLayoutEnabled)
   {
-    v7 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    if (v7)
+    customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    if (customContentTransitioningInfoPanel)
     {
-      v8 = v7;
-      v9 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-      v10 = [v9 isHiddenOrHasHiddenAncestor];
+      v8 = customContentTransitioningInfoPanel;
+      embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+      isHiddenOrHasHiddenAncestor = [embeddedExtraContentContainer isHiddenOrHasHiddenAncestor];
 
-      if (v10)
+      if (isHiddenOrHasHiddenAncestor)
       {
         v6 = 0.0;
       }
@@ -688,22 +688,22 @@ LABEL_20:
     }
   }
 
-  if (((a3 == 1) & [(AVTransportControlsView *)self isDoubleRowLayoutEnabled]) != 0)
+  if (((row == 1) & [(AVTransportControlsView *)self isDoubleRowLayoutEnabled]) != 0)
   {
     v6 = 4.5;
   }
 
-  v11 = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
-  if (!a3 && v11)
+  isDoubleRowLayoutEnabled2 = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
+  if (!row && isDoubleRowLayoutEnabled2)
   {
-    v12 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-    [v12 alpha];
+    scrubInstructionsLabel = [(AVTransportControlsView *)self scrubInstructionsLabel];
+    [scrubInstructionsLabel alpha];
     v14 = v13;
 
     if (v14 == 1.0)
     {
-      v15 = [(AVTransportControlsView *)self styleSheet];
-      [v15 spacingBetweenScrubInstructionsAndScrubber];
+      styleSheet = [(AVTransportControlsView *)self styleSheet];
+      [styleSheet spacingBetweenScrubInstructionsAndScrubber];
       v6 = v16;
     }
   }
@@ -714,14 +714,14 @@ LABEL_20:
 - (void)_layoutSingleRowViews
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  [v3 setLoadingIndicatorAlignment:1];
+  liveBroadcastLabel = [(AVTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel setLoadingIndicatorAlignment:1];
 
-  v4 = [(AVTransportControlsView *)self controlsLayoutView];
-  v5 = [(AVTransportControlsView *)self singleRowViews];
-  v43[0] = v5;
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
+  singleRowViews = [(AVTransportControlsView *)self singleRowViews];
+  v43[0] = singleRowViews;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-  [v4 setArrangedSubviews:v6];
+  [controlsLayoutView setArrangedSubviews:v6];
 
   v7 = 0.0;
   if (![(AVTransportControlsView *)self isCollapsedOrExcluded])
@@ -737,8 +737,8 @@ LABEL_20:
     }
   }
 
-  v8 = [(AVTransportControlsView *)self controlsLayoutView];
-  [v8 setContentLayoutMargins:{0.0, v7, 0.0, v7}];
+  controlsLayoutView2 = [(AVTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView2 setContentLayoutMargins:{0.0, v7, 0.0, v7}];
 
   [(AVTransportControlsView *)self bounds];
   if (CGRectGetWidth(v44) < 568.0)
@@ -748,41 +748,41 @@ LABEL_20:
 
   else
   {
-    v9 = [(AVTransportControlsView *)self styleSheet];
-    [v9 minimumScrubberSize];
+    styleSheet = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet minimumScrubberSize];
     v11 = v10;
   }
 
-  v12 = [(AVTransportControlsView *)self scrubber];
-  v13 = [v12 layoutAttributes];
-  v14 = [(AVTransportControlsView *)self styleSheet];
-  [v14 minimumScrubberSize];
-  [v13 setMinimumSize:v11];
+  scrubber = [(AVTransportControlsView *)self scrubber];
+  layoutAttributes = [scrubber layoutAttributes];
+  styleSheet2 = [(AVTransportControlsView *)self styleSheet];
+  [styleSheet2 minimumScrubberSize];
+  [layoutAttributes setMinimumSize:v11];
 
-  v15 = [(AVTransportControlsView *)self scrubber];
-  v16 = [v15 layoutAttributes];
-  v17 = [(AVTransportControlsView *)self timeRemainingLabel];
-  v18 = [v17 layoutAttributes];
-  [v16 setDisplayPartnerAttributes:v18];
+  scrubber2 = [(AVTransportControlsView *)self scrubber];
+  layoutAttributes2 = [scrubber2 layoutAttributes];
+  timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+  layoutAttributes3 = [timeRemainingLabel layoutAttributes];
+  [layoutAttributes2 setDisplayPartnerAttributes:layoutAttributes3];
 
-  v19 = [(AVTransportControlsView *)self timeRemainingLabel];
-  v20 = [v19 layoutAttributes];
-  v21 = [(AVTransportControlsView *)self scrubber];
-  v22 = [v21 layoutAttributes];
-  [v20 setDisplayPartnerAttributes:v22];
+  timeRemainingLabel2 = [(AVTransportControlsView *)self timeRemainingLabel];
+  layoutAttributes4 = [timeRemainingLabel2 layoutAttributes];
+  scrubber3 = [(AVTransportControlsView *)self scrubber];
+  layoutAttributes5 = [scrubber3 layoutAttributes];
+  [layoutAttributes4 setDisplayPartnerAttributes:layoutAttributes5];
 
-  v23 = [(AVTransportControlsView *)self skipBackButton];
-  v24 = [v23 layoutAttributes];
-  v25 = [(AVTransportControlsView *)self skipForwardButton];
-  v26 = [v25 layoutAttributes];
-  [v24 setDisplayPartnerAttributes:v26];
+  skipBackButton = [(AVTransportControlsView *)self skipBackButton];
+  layoutAttributes6 = [skipBackButton layoutAttributes];
+  skipForwardButton = [(AVTransportControlsView *)self skipForwardButton];
+  layoutAttributes7 = [skipForwardButton layoutAttributes];
+  [layoutAttributes6 setDisplayPartnerAttributes:layoutAttributes7];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v27 = [(AVTransportControlsView *)self singleRowViews];
-  v28 = [v27 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  singleRowViews2 = [(AVTransportControlsView *)self singleRowViews];
+  v28 = [singleRowViews2 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v28)
   {
     v29 = v28;
@@ -793,32 +793,32 @@ LABEL_20:
       {
         if (*v39 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(singleRowViews2);
         }
 
         v32 = *(*(&v38 + 1) + 8 * i);
-        v33 = [v32 layoutAttributes];
+        layoutAttributes8 = [v32 layoutAttributes];
         [(AVTransportControlsView *)self _singeRowLayoutSpacingAfterSubview:v32];
-        [v33 setTrailingInterItemSpace:?];
+        [layoutAttributes8 setTrailingInterItemSpace:?];
 
-        v34 = [v32 layoutAttributes];
-        [v34 setDisplayPriority:{-[AVTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v32)}];
+        layoutAttributes9 = [v32 layoutAttributes];
+        [layoutAttributes9 setDisplayPriority:{-[AVTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v32)}];
 
-        v35 = [v32 layoutAttributes];
-        v36 = [(AVTransportControlsView *)self scrubber];
-        if (v32 == v36)
+        layoutAttributes10 = [v32 layoutAttributes];
+        scrubber4 = [(AVTransportControlsView *)self scrubber];
+        if (v32 == scrubber4)
         {
-          [v35 setHasFlexibleContentSize:1];
+          [layoutAttributes10 setHasFlexibleContentSize:1];
         }
 
         else
         {
-          v37 = [(AVTransportControlsView *)self liveBroadcastLabel];
-          [v35 setHasFlexibleContentSize:v32 == v37];
+          liveBroadcastLabel2 = [(AVTransportControlsView *)self liveBroadcastLabel];
+          [layoutAttributes10 setHasFlexibleContentSize:v32 == liveBroadcastLabel2];
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v29 = [singleRowViews2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v29);
@@ -828,99 +828,99 @@ LABEL_20:
 - (void)_layoutDoubleRowViews
 {
   v104[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTransportControlsView *)self controlsLayoutView];
-  v4 = [(AVTransportControlsView *)self styleSheet];
-  [v4 doubleRowLayoutMargins];
-  [v3 setContentLayoutMargins:?];
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
+  styleSheet = [(AVTransportControlsView *)self styleSheet];
+  [styleSheet doubleRowLayoutMargins];
+  [controlsLayoutView setContentLayoutMargins:?];
 
-  v5 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  [v5 alpha];
+  scrubInstructionsLabel = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel alpha];
   v7 = v6;
 
   if (v7 == 1.0)
   {
-    v8 = [(AVTransportControlsView *)self controlsLayoutView];
-    v9 = [(AVTransportControlsView *)self styleSheet];
-    [v9 doubleRowLayoutMarginsWhenShowingScrubInstructions];
+    controlsLayoutView2 = [(AVTransportControlsView *)self controlsLayoutView];
+    styleSheet2 = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet2 doubleRowLayoutMarginsWhenShowingScrubInstructions];
   }
 
   else
   {
-    v30 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    if (!v30)
+    customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    if (!customContentTransitioningInfoPanel)
     {
       goto LABEL_4;
     }
 
-    v31 = v30;
-    v32 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    v33 = [v32 isHidden];
+    v31 = customContentTransitioningInfoPanel;
+    customContentTransitioningInfoPanel2 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    isHidden = [customContentTransitioningInfoPanel2 isHidden];
 
-    if (v33)
+    if (isHidden)
     {
       goto LABEL_4;
     }
 
-    v8 = [(AVTransportControlsView *)self controlsLayoutView];
-    v9 = [(AVTransportControlsView *)self styleSheet];
-    [v9 doublerowLayoutMarginsWhenShowingCustomContentInfo];
+    controlsLayoutView2 = [(AVTransportControlsView *)self controlsLayoutView];
+    styleSheet2 = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet2 doublerowLayoutMarginsWhenShowingCustomContentInfo];
   }
 
-  [v8 setContentLayoutMargins:?];
+  [controlsLayoutView2 setContentLayoutMargins:?];
 
 LABEL_4:
-  v10 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  [v10 setLoadingIndicatorAlignment:2];
+  liveBroadcastLabel = [(AVTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel setLoadingIndicatorAlignment:2];
 
-  v93 = [(AVTransportControlsView *)self doubleRowViews];
-  v11 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-  v104[0] = v11;
+  doubleRowViews = [(AVTransportControlsView *)self doubleRowViews];
+  embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  v104[0] = embeddedExtraContentContainer;
   v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:1];
 
-  v12 = [(AVTransportControlsView *)self scrubber];
-  v103[0] = v12;
-  v13 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  v103[1] = v13;
+  scrubber = [(AVTransportControlsView *)self scrubber];
+  v103[0] = scrubber;
+  liveBroadcastLabel2 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  v103[1] = liveBroadcastLabel2;
   v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:2];
 
-  v14 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  v102[0] = v14;
-  v15 = [(AVTransportControlsView *)self timeRemainingLabel];
-  v102[1] = v15;
-  v16 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
-  v102[2] = v16;
+  elapsedTimeLabel = [(AVTransportControlsView *)self elapsedTimeLabel];
+  v102[0] = elapsedTimeLabel;
+  timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+  v102[1] = timeRemainingLabel;
+  liveBroadcastScrubberLabel = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
+  v102[2] = liveBroadcastScrubberLabel;
   v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:3];
 
-  v88 = [(AVTransportControlsView *)self routePickerView];
-  v101[0] = v88;
-  v87 = [(AVTransportControlsView *)self flexibleViewAfterRoutePickerView];
-  v101[1] = v87;
-  v86 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
-  v101[2] = v86;
-  v17 = [(AVTransportControlsView *)self skipBackButton];
-  v101[3] = v17;
-  v18 = [(AVTransportControlsView *)self standardPlayPauseButton];
-  v101[4] = v18;
-  v19 = [(AVTransportControlsView *)self skipForwardButton];
-  v101[5] = v19;
-  v20 = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
-  v101[6] = v20;
-  v21 = [(AVTransportControlsView *)self flexibleViewAfterSkipForwardButtons];
-  v101[7] = v21;
-  v22 = [(AVTransportControlsView *)self mediaSelectionButton];
-  v101[8] = v22;
-  v23 = [(AVTransportControlsView *)self playbackSpeedButton];
-  v101[9] = v23;
-  v24 = [(AVTransportControlsView *)self controlOverflowButton];
-  v101[10] = v24;
+  routePickerView = [(AVTransportControlsView *)self routePickerView];
+  v101[0] = routePickerView;
+  flexibleViewAfterRoutePickerView = [(AVTransportControlsView *)self flexibleViewAfterRoutePickerView];
+  v101[1] = flexibleViewAfterRoutePickerView;
+  startLeftwardContentTransitionButton = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
+  v101[2] = startLeftwardContentTransitionButton;
+  skipBackButton = [(AVTransportControlsView *)self skipBackButton];
+  v101[3] = skipBackButton;
+  standardPlayPauseButton = [(AVTransportControlsView *)self standardPlayPauseButton];
+  v101[4] = standardPlayPauseButton;
+  skipForwardButton = [(AVTransportControlsView *)self skipForwardButton];
+  v101[5] = skipForwardButton;
+  startRightwardContentTransitionButton = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
+  v101[6] = startRightwardContentTransitionButton;
+  flexibleViewAfterSkipForwardButtons = [(AVTransportControlsView *)self flexibleViewAfterSkipForwardButtons];
+  v101[7] = flexibleViewAfterSkipForwardButtons;
+  mediaSelectionButton = [(AVTransportControlsView *)self mediaSelectionButton];
+  v101[8] = mediaSelectionButton;
+  playbackSpeedButton = [(AVTransportControlsView *)self playbackSpeedButton];
+  v101[9] = playbackSpeedButton;
+  controlOverflowButton = [(AVTransportControlsView *)self controlOverflowButton];
+  v101[10] = controlOverflowButton;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:11];
 
-  v26 = [(AVTransportControlsView *)self customMenuItemsViews];
+  customMenuItemsViews = [(AVTransportControlsView *)self customMenuItemsViews];
 
-  if (v26)
+  if (customMenuItemsViews)
   {
-    v27 = [(AVTransportControlsView *)self customMenuItemsViews];
-    v28 = [v25 arrayByAddingObjectsFromArray:v27];
+    customMenuItemsViews2 = [(AVTransportControlsView *)self customMenuItemsViews];
+    v28 = [v25 arrayByAddingObjectsFromArray:customMenuItemsViews2];
 
     v29 = v28;
   }
@@ -930,30 +930,30 @@ LABEL_4:
     v29 = v25;
   }
 
-  v34 = [(AVTransportControlsView *)self flexibleViewAfterSkipForwardButtons];
-  v35 = [v34 layoutAttributes];
+  flexibleViewAfterSkipForwardButtons2 = [(AVTransportControlsView *)self flexibleViewAfterSkipForwardButtons];
+  layoutAttributes = [flexibleViewAfterSkipForwardButtons2 layoutAttributes];
   v36 = *MEMORY[0x1E695F060];
   v37 = *(MEMORY[0x1E695F060] + 8);
-  [v35 setMinimumSize:{*MEMORY[0x1E695F060], v37}];
+  [layoutAttributes setMinimumSize:{*MEMORY[0x1E695F060], v37}];
 
-  v38 = [(AVTransportControlsView *)self flexibleViewAfterRoutePickerView];
-  v39 = [v38 layoutAttributes];
-  [v39 setMinimumSize:{v36, v37}];
+  flexibleViewAfterRoutePickerView2 = [(AVTransportControlsView *)self flexibleViewAfterRoutePickerView];
+  layoutAttributes2 = [flexibleViewAfterRoutePickerView2 layoutAttributes];
+  [layoutAttributes2 setMinimumSize:{v36, v37}];
 
-  v40 = [(AVTransportControlsView *)self controlsLayoutView];
+  controlsLayoutView3 = [(AVTransportControlsView *)self controlsLayoutView];
   v100[0] = v91;
   v100[1] = v90;
   v100[2] = v92;
   v100[3] = v29;
   v89 = v29;
   v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:4];
-  [v40 setArrangedSubviews:v41];
+  [controlsLayoutView3 setArrangedSubviews:v41];
 
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v42 = v93;
+  v42 = doubleRowViews;
   v43 = [v42 countByEnumeratingWithState:&v95 objects:v99 count:16];
   if (v43)
   {
@@ -969,48 +969,48 @@ LABEL_4:
         }
 
         v47 = *(*(&v95 + 1) + 8 * i);
-        v48 = [v47 layoutAttributes];
+        layoutAttributes3 = [v47 layoutAttributes];
         [(AVTransportControlsView *)self _doubleRowLayoutSpacingAfterSubview:v47];
-        [v48 setTrailingInterItemSpace:?];
+        [layoutAttributes3 setTrailingInterItemSpace:?];
 
-        v49 = [v47 layoutAttributes];
-        [v49 setDisplayPriority:{-[AVTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v47)}];
+        layoutAttributes4 = [v47 layoutAttributes];
+        [layoutAttributes4 setDisplayPriority:{-[AVTransportControlsView _layoutItemDisplayPriorityForSubview:](self, "_layoutItemDisplayPriorityForSubview:", v47)}];
 
-        v50 = [(AVTransportControlsView *)self scrubber];
+        scrubber2 = [(AVTransportControlsView *)self scrubber];
 
-        if (v47 == v50)
+        if (v47 == scrubber2)
         {
-          v57 = [v47 layoutAttributes];
-          v58 = [(AVTransportControlsView *)self styleSheet];
-          [v58 minimumScrubberSize];
-          [v57 setMinimumSize:?];
+          layoutAttributes5 = [v47 layoutAttributes];
+          styleSheet3 = [(AVTransportControlsView *)self styleSheet];
+          [styleSheet3 minimumScrubberSize];
+          [layoutAttributes5 setMinimumSize:?];
         }
 
         else
         {
-          v51 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+          embeddedExtraContentContainer2 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
 
-          if (v47 != v51)
+          if (v47 != embeddedExtraContentContainer2)
           {
             continue;
           }
 
-          v52 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+          customContentTransitioningInfoPanel3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
 
-          if (v52)
+          if (customContentTransitioningInfoPanel3)
           {
-            v53 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+            customContentTransitioningInfoPanel4 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
             [(AVTransportControlsView *)self frame];
-            [v53 systemLayoutSizeFittingSize:{v54, v55}];
+            [customContentTransitioningInfoPanel4 systemLayoutSizeFittingSize:{v54, v55}];
             v94 = v56;
           }
 
           else
           {
-            v53 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-            v59 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-            [v59 bounds];
-            [v53 sizeThatFits:{v60, v61}];
+            customContentTransitioningInfoPanel4 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+            embeddedExtraContentContainer3 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+            [embeddedExtraContentContainer3 bounds];
+            [customContentTransitioningInfoPanel4 sizeThatFits:{v60, v61}];
             v94 = v62;
           }
 
@@ -1019,8 +1019,8 @@ LABEL_4:
           v66 = v65;
           v68 = v67;
           v70 = v69;
-          v71 = [(AVTransportControlsView *)self controlsLayoutView];
-          [v71 contentLayoutMargins];
+          controlsLayoutView4 = [(AVTransportControlsView *)self controlsLayoutView];
+          [controlsLayoutView4 contentLayoutMargins];
           v73 = v72;
           v75 = v74;
           v77 = v76;
@@ -1041,8 +1041,8 @@ LABEL_4:
           v105.size.height = v70 - (v73 + v77);
           Width = CGRectGetWidth(v105);
 
-          v57 = [v47 layoutAttributes];
-          [v57 setMinimumSize:{Width, v94}];
+          layoutAttributes5 = [v47 layoutAttributes];
+          [layoutAttributes5 setMinimumSize:{Width, v94}];
         }
       }
 
@@ -1056,39 +1056,39 @@ LABEL_4:
   {
     [(AVTransportControlsView *)self _rowSpacingForDoubleRowLayoutAfterRow:j];
     v84 = v83;
-    v85 = [(AVTransportControlsView *)self controlsLayoutView];
-    [v85 setRowSpacing:j afterRow:v84];
+    controlsLayoutView5 = [(AVTransportControlsView *)self controlsLayoutView];
+    [controlsLayoutView5 setRowSpacing:j afterRow:v84];
   }
 }
 
-- (double)_doubleRowLayoutSpacingAfterSubview:(id)a3
+- (double)_doubleRowLayoutSpacingAfterSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   [(AVTransportControlsView *)self bounds];
   Width = CGRectGetWidth(v35);
-  v6 = [(AVTransportControlsView *)self controlsLayoutView];
-  v7 = [(AVTransportControlsView *)self skipForwardButton];
-  if ([v7 isIncluded])
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
+  skipForwardButton = [(AVTransportControlsView *)self skipForwardButton];
+  if ([skipForwardButton isIncluded])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
-    v10 = [v9 isIncluded];
+    startRightwardContentTransitionButton = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
+    isIncluded = [startRightwardContentTransitionButton isIncluded];
 
-    v8 = v10 ^ 1;
+    v8 = isIncluded ^ 1;
   }
 
-  v11 = [(AVTransportControlsView *)self skipBackButton];
-  if (v11 == v4)
+  skipBackButton = [(AVTransportControlsView *)self skipBackButton];
+  if (skipBackButton == subviewCopy)
   {
     goto LABEL_21;
   }
 
-  v12 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
-  if (v12 == v4)
+  startLeftwardContentTransitionButton = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
+  if (startLeftwardContentTransitionButton == subviewCopy)
   {
 LABEL_20:
 
@@ -1097,87 +1097,87 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v13 = [(AVTransportControlsView *)self mediaSelectionButton];
-  if (v13 == v4)
+  mediaSelectionButton = [(AVTransportControlsView *)self mediaSelectionButton];
+  if (mediaSelectionButton == subviewCopy)
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v14 = [(AVTransportControlsView *)self standardPlayPauseButton];
-  if (!((v14 != v4) | v8 & 1))
+  standardPlayPauseButton = [(AVTransportControlsView *)self standardPlayPauseButton];
+  if (!((standardPlayPauseButton != subviewCopy) | v8 & 1))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v15 = [(AVTransportControlsView *)self playbackSpeedButton];
-  v16 = v15;
-  if (v15 == v4)
+  playbackSpeedButton = [(AVTransportControlsView *)self playbackSpeedButton];
+  v16 = playbackSpeedButton;
+  if (playbackSpeedButton == subviewCopy)
   {
 
     goto LABEL_18;
   }
 
-  v17 = [(AVTransportControlsView *)self controlOverflowButton];
+  controlOverflowButton = [(AVTransportControlsView *)self controlOverflowButton];
 
-  if (v17 == v4)
+  if (controlOverflowButton == subviewCopy)
   {
     v19 = 32.0;
     goto LABEL_23;
   }
 
-  v18 = [(AVTransportControlsView *)self elapsedTimeLabel];
+  elapsedTimeLabel = [(AVTransportControlsView *)self elapsedTimeLabel];
 
-  if (v18 == v4)
+  if (elapsedTimeLabel == subviewCopy)
   {
-    v23 = [(AVTransportControlsView *)self elapsedTimeLabel];
-    [v23 intrinsicContentSize];
+    elapsedTimeLabel2 = [(AVTransportControlsView *)self elapsedTimeLabel];
+    [elapsedTimeLabel2 intrinsicContentSize];
     v25 = Width - v24;
-    [v6 contentLayoutMargins];
+    [controlsLayoutView contentLayoutMargins];
     v27 = v25 - v26;
-    [v6 contentLayoutMargins];
+    [controlsLayoutView contentLayoutMargins];
     v19 = v27 - v28;
 
-    v29 = [(AVTransportControlsView *)self timeRemainingLabel];
-    v30 = [v29 isIncluded];
+    timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+    isIncluded2 = [timeRemainingLabel isIncluded];
 
-    if (v30)
+    if (isIncluded2)
     {
-      v31 = [(AVTransportControlsView *)self timeRemainingLabel];
+      timeRemainingLabel2 = [(AVTransportControlsView *)self timeRemainingLabel];
     }
 
     else
     {
-      v32 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
-      v33 = [v32 isIncluded];
+      liveBroadcastScrubberLabel = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
+      isIncluded3 = [liveBroadcastScrubberLabel isIncluded];
 
-      if (!v33)
+      if (!isIncluded3)
       {
         goto LABEL_23;
       }
 
-      v31 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
+      timeRemainingLabel2 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
     }
 
-    v11 = v31;
-    [v31 intrinsicContentSize];
+    skipBackButton = timeRemainingLabel2;
+    [timeRemainingLabel2 intrinsicContentSize];
     v19 = v19 - v34;
   }
 
   else
   {
-    v11 = [(AVTransportControlsView *)self routePickerView];
+    skipBackButton = [(AVTransportControlsView *)self routePickerView];
     v19 = 0.0;
-    if (v11 != v4)
+    if (skipBackButton != subviewCopy)
     {
-      v20 = [(AVTransportControlsView *)self skipForwardButton];
-      if (v20 != v4)
+      skipForwardButton2 = [(AVTransportControlsView *)self skipForwardButton];
+      if (skipForwardButton2 != subviewCopy)
       {
-        v21 = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
-        if (v21 != v4)
+        startRightwardContentTransitionButton2 = [(AVTransportControlsView *)self startRightwardContentTransitionButton];
+        if (startRightwardContentTransitionButton2 != subviewCopy)
         {
           [(AVTransportControlsView *)self standardPlayPauseButton];
         }
@@ -1191,10 +1191,10 @@ LABEL_23:
   return v19;
 }
 
-- (double)_singeRowLayoutSpacingAfterSubview:(id)a3
+- (double)_singeRowLayoutSpacingAfterSubview:(id)subview
 {
-  v4 = a3;
-  [(AVTransportControlsView *)self _subviewIsCustomMenuItemView:v4];
+  subviewCopy = subview;
+  [(AVTransportControlsView *)self _subviewIsCustomMenuItemView:subviewCopy];
   v5 = 16.0;
   if (![(AVTransportControlsView *)self hasFullScreenAppearance])
   {
@@ -1212,22 +1212,22 @@ LABEL_23:
     v6 = 0;
   }
 
-  v7 = [(AVTransportControlsView *)self skipBackButton];
-  if ([v7 isIncluded])
+  skipBackButton = [(AVTransportControlsView *)self skipBackButton];
+  if ([skipBackButton isIncluded])
   {
   }
 
   else
   {
-    v8 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
-    v9 = [v8 isIncluded];
+    startLeftwardContentTransitionButton = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
+    isIncluded = [startLeftwardContentTransitionButton isIncluded];
 
-    if ((v9 & 1) == 0)
+    if ((isIncluded & 1) == 0)
     {
       v5 = 0.0;
-      if (self->_skipBackButton != v4 && self->_startLeftwardContentTransitionButton != v4 && self->_skipForwardButton != v4)
+      if (self->_skipBackButton != subviewCopy && self->_startLeftwardContentTransitionButton != subviewCopy && self->_skipForwardButton != subviewCopy)
       {
-        if (self->_startRightwardContentTransitionButton == v4)
+        if (self->_startRightwardContentTransitionButton == subviewCopy)
         {
           v5 = 0.0;
         }
@@ -1258,22 +1258,22 @@ LABEL_23:
   }
 
 LABEL_13:
-  v10 = [(AVTransportControlsView *)self customItems];
+  customItems = [(AVTransportControlsView *)self customItems];
 
-  if (v10)
+  if (customItems)
   {
-    if (self->_mediaSelectionButton == v4)
+    if (self->_mediaSelectionButton == subviewCopy)
     {
-      v14 = [(AVTransportControlsView *)self skipBackButton];
-      if ([v14 isIncluded])
+      skipBackButton2 = [(AVTransportControlsView *)self skipBackButton];
+      if ([skipBackButton2 isIncluded])
       {
         v5 = 32.0;
       }
 
       else
       {
-        v15 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
-        if ([v15 isIncluded])
+        startLeftwardContentTransitionButton2 = [(AVTransportControlsView *)self startLeftwardContentTransitionButton];
+        if ([startLeftwardContentTransitionButton2 isIncluded])
         {
           v5 = 32.0;
         }
@@ -1285,11 +1285,11 @@ LABEL_13:
       }
     }
 
-    else if ([(AVButton *)v4 conformsToProtocol:&unk_1EFF1F478])
+    else if ([(AVButton *)subviewCopy conformsToProtocol:&unk_1EFF1F478])
     {
-      v11 = v4;
-      v12 = [(AVTransportControlsView *)self customItems];
-      v13 = [v12 containsObject:v11];
+      v11 = subviewCopy;
+      customItems2 = [(AVTransportControlsView *)self customItems];
+      v13 = [customItems2 containsObject:v11];
 
       if (v13)
       {
@@ -1299,22 +1299,22 @@ LABEL_13:
   }
 
 LABEL_32:
-  if (self->_liveBroadcastLabel == v4)
+  if (self->_liveBroadcastLabel == subviewCopy)
   {
     v5 = 0.0;
   }
 
-  else if (self->_elapsedTimeLabel == v4 || self->_scrubber == v4)
+  else if (self->_elapsedTimeLabel == subviewCopy || self->_scrubber == subviewCopy)
   {
     v5 = 5.0;
   }
 
-  v16 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v17 = [v16 traitCollection];
-  v18 = [v17 userInterfaceIdiom];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v19 = 0.77;
-  if (v18 != 5)
+  if (userInterfaceIdiom != 5)
   {
     v19 = 1.0;
   }
@@ -1324,15 +1324,15 @@ LABEL_32:
   return v20;
 }
 
-- (void)endScrubbing:(id)a3
+- (void)endScrubbing:(id)scrubbing
 {
-  v4 = a3;
+  scrubbingCopy = scrubbing;
   [(AVTransportControlsView *)self setScrubberValueWhenScrubInstructionsTimerBegan:0.0];
-  v5 = [(AVTransportControlsView *)self scrubInstructionsTimer];
-  [v5 invalidate];
+  scrubInstructionsTimer = [(AVTransportControlsView *)self scrubInstructionsTimer];
+  [scrubInstructionsTimer invalidate];
 
-  v6 = [(AVTransportControlsView *)self delegate];
-  [v6 transportControls:self scrubberDidEndScrubbing:v4];
+  delegate = [(AVTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidEndScrubbing:scrubbingCopy];
 
   if ([(AVTransportControlsView *)self canShowScrubInstructions])
   {
@@ -1393,59 +1393,59 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   }
 }
 
-- (void)scrubberValueChanged:(id)a3
+- (void)scrubberValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(AVTransportControlsView *)self _updateScrubInstructionsLabelsText];
   [(AVTransportControlsView *)self _updateScrubInstructionsFrame];
-  v5 = [(AVTransportControlsView *)self delegate];
-  [v5 transportControls:self scrubberDidScrub:v4];
+  delegate = [(AVTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidScrub:changedCopy];
 }
 
-- (void)beginScrubbing:(id)a3
+- (void)beginScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = [(AVTransportControlsView *)self delegate];
-  [v5 transportControls:self scrubberDidBeginScrubbing:v4];
+  scrubbingCopy = scrubbing;
+  delegate = [(AVTransportControlsView *)self delegate];
+  [delegate transportControls:self scrubberDidBeginScrubbing:scrubbingCopy];
 
-  v6 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-  [v6 setHidden:1];
+  scrubInstructionsLabel = [(AVTransportControlsView *)self scrubInstructionsLabel];
+  [scrubInstructionsLabel setHidden:1];
 
-  v7 = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
-  [v7 setHidden:1];
+  detachedScrubInstructionsBackdropLabel = [(AVTransportControlsView *)self detachedScrubInstructionsBackdropLabel];
+  [detachedScrubInstructionsBackdropLabel setHidden:1];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVTransportControlsView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  if (self->_hasFullScreenAppearance != a3)
+  if (self->_hasFullScreenAppearance != appearance)
   {
-    self->_hasFullScreenAppearance = a3;
+    self->_hasFullScreenAppearance = appearance;
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    v3 = a3;
-    self->_collapsed = a3;
+    collapsedCopy = collapsed;
+    self->_collapsed = collapsed;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(AVTransportControlsView *)self singleRowViews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    singleRowViews = [(AVTransportControlsView *)self singleRowViews];
+    v6 = [singleRowViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1456,13 +1456,13 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(singleRowViews);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setCollapsed:v3];
+          [*(*(&v10 + 1) + 8 * i) setCollapsed:collapsedCopy];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [singleRowViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -1473,11 +1473,11 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVTransportControlsView *)self invalidateIntrinsicContentSize];
 
     [(AVTransportControlsView *)self avkit_reevaluateHiddenStateOfItem:self];
@@ -1494,7 +1494,7 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   return [(AVTransportControlsView *)self isRemoved];
 }
 
-- (void)scrubberSlowKnobMovementDetected:(id)a3
+- (void)scrubberSlowKnobMovementDetected:(id)detected
 {
   if ([(AVTransportControlsView *)self canShowScrubInstructions])
   {
@@ -1503,34 +1503,34 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   }
 }
 
-- (void)avkit_reevaluateHiddenStateOfItem:(id)a3
+- (void)avkit_reevaluateHiddenStateOfItem:(id)item
 {
-  v4 = a3;
-  v5 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+  itemCopy = item;
+  embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
 
-  if (v5 == v4)
+  if (embeddedExtraContentContainer == itemCopy)
   {
-    v6 = [v4 isCollapsedOrExcluded];
+    isCollapsedOrExcluded = [itemCopy isCollapsedOrExcluded];
     v7 = 1.0;
-    if (v6)
+    if (isCollapsedOrExcluded)
     {
       v7 = 0.0;
     }
 
-    [v4 setAlpha:v7];
-    v8 = [(AVTransportControlsView *)self isAnimatingScrubInstructions];
-    if ((v6 & 1) != 0 || !v8)
+    [itemCopy setAlpha:v7];
+    isAnimatingScrubInstructions = [(AVTransportControlsView *)self isAnimatingScrubInstructions];
+    if ((isCollapsedOrExcluded & 1) != 0 || !isAnimatingScrubInstructions)
     {
       if (![(AVTransportControlsView *)self isAnimatingScrubInstructions])
       {
-        [v4 setHidden:v6];
-        [v4 setAlpha:1.0];
+        [itemCopy setHidden:isCollapsedOrExcluded];
+        [itemCopy setAlpha:1.0];
       }
     }
 
     else
     {
-      [v4 setHidden:0];
+      [itemCopy setHidden:0];
     }
   }
 
@@ -1538,7 +1538,7 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   {
     v9.receiver = self;
     v9.super_class = AVTransportControlsView;
-    [(UIView *)&v9 avkit_reevaluateHiddenStateOfItem:v4];
+    [(UIView *)&v9 avkit_reevaluateHiddenStateOfItem:itemCopy];
   }
 }
 
@@ -1550,10 +1550,10 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   v56.super_class = AVTransportControlsView;
   [(AVView *)&v56 layoutSubviews];
   [(UIView *)self avkit_makeSubtreeDisallowGroupBlending];
-  v3 = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
-  [v3 setIncluded:{-[AVTransportControlsView liveStreamingControlsIncludeScrubber](self, "liveStreamingControlsIncludeScrubber")}];
+  liveBroadcastScrubberLabel = [(AVTransportControlsView *)self liveBroadcastScrubberLabel];
+  [liveBroadcastScrubberLabel setIncluded:{-[AVTransportControlsView liveStreamingControlsIncludeScrubber](self, "liveStreamingControlsIncludeScrubber")}];
 
-  v4 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  liveBroadcastLabel = [(AVTransportControlsView *)self liveBroadcastLabel];
   if ([(AVTransportControlsView *)self showsLiveStreamingControls])
   {
     v5 = [(AVTransportControlsView *)self liveStreamingControlsIncludeScrubber]^ 1;
@@ -1564,26 +1564,26 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [liveBroadcastLabel setIncluded:v5];
 
   if ([(AVTransportControlsView *)self showsLiveStreamingControls])
   {
-    v6 = [(AVTransportControlsView *)self liveStreamingControlsIncludeScrubber];
+    liveStreamingControlsIncludeScrubber = [(AVTransportControlsView *)self liveStreamingControlsIncludeScrubber];
   }
 
   else
   {
-    v6 = 1;
+    liveStreamingControlsIncludeScrubber = 1;
   }
 
-  v7 = [(AVTransportControlsView *)self scrubber];
-  [v7 setIncluded:v6];
+  scrubber = [(AVTransportControlsView *)self scrubber];
+  [scrubber setIncluded:liveStreamingControlsIncludeScrubber];
 
-  v8 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  [v8 setIncluded:v6];
+  elapsedTimeLabel = [(AVTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel setIncluded:liveStreamingControlsIncludeScrubber];
 
-  v9 = [(AVTransportControlsView *)self timeRemainingLabel];
-  if (v6)
+  timeRemainingLabel = [(AVTransportControlsView *)self timeRemainingLabel];
+  if (liveStreamingControlsIncludeScrubber)
   {
     v10 = [(AVTransportControlsView *)self liveStreamingControlsIncludeScrubber]^ 1;
   }
@@ -1593,20 +1593,20 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
     v10 = 0;
   }
 
-  [v9 setIncluded:v10];
+  [timeRemainingLabel setIncluded:v10];
 
-  v11 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  [v11 setShowsLoadingIndicator:{-[AVTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
+  elapsedTimeLabel2 = [(AVTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel2 setShowsLoadingIndicator:{-[AVTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
 
-  v12 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  [v12 setShowsLoadingIndicator:{-[AVTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
+  liveBroadcastLabel2 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel2 setShowsLoadingIndicator:{-[AVTransportControlsView showsLoadingIndicator](self, "showsLoadingIndicator")}];
 
-  v13 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  [v13 setLoadingIndicatorAlignment:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
+  elapsedTimeLabel3 = [(AVTransportControlsView *)self elapsedTimeLabel];
+  [elapsedTimeLabel3 setLoadingIndicatorAlignment:{-[AVTransportControlsView isDoubleRowLayoutEnabled](self, "isDoubleRowLayoutEnabled") ^ 1}];
 
-  v14 = [(AVTransportControlsView *)self controlsLayoutView];
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
   [(AVTransportControlsView *)self bounds];
-  [v14 setFrame:?];
+  [controlsLayoutView setFrame:?];
 
   [(AVTransportControlsView *)self _updateCustomContentTransitioningInfoPanelLayout];
   if ([(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
@@ -1631,8 +1631,8 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v15 = [(AVTransportControlsView *)self customItems];
-    v16 = [v15 countByEnumeratingWithState:&v48 objects:v57 count:16];
+    customItems = [(AVTransportControlsView *)self customItems];
+    v16 = [customItems countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1643,20 +1643,20 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
         {
           if (*v49 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(customItems);
           }
 
           v20 = *(*(&v48 + 1) + 8 * i);
-          v21 = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
-          if (v21)
+          isDoubleRowLayoutEnabled = [(AVTransportControlsView *)self isDoubleRowLayoutEnabled];
+          if (isDoubleRowLayoutEnabled)
           {
             [v20 setCollapsed:1];
           }
 
-          [v20 setIncluded:!v21];
+          [v20 setIncluded:!isDoubleRowLayoutEnabled];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v48 objects:v57 count:16];
+        v17 = [customItems countByEnumeratingWithState:&v48 objects:v57 count:16];
       }
 
       while (v17);
@@ -1669,8 +1669,8 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v15 = [(AVTransportControlsView *)self customItems];
-    v22 = [v15 countByEnumeratingWithState:&v52 objects:v58 count:16];
+    customItems = [(AVTransportControlsView *)self customItems];
+    v22 = [customItems countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v22)
     {
       v23 = v22;
@@ -1681,7 +1681,7 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
         {
           if (*v53 != v24)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(customItems);
           }
 
           v26 = *(*(&v52 + 1) + 8 * j);
@@ -1701,7 +1701,7 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
           [v26 setCollapsed:v27];
         }
 
-        v23 = [v15 countByEnumeratingWithState:&v52 objects:v58 count:16];
+        v23 = [customItems countByEnumeratingWithState:&v52 objects:v58 count:16];
       }
 
       while (v23);
@@ -1709,10 +1709,10 @@ void __40__AVTransportControlsView_endScrubbing___block_invoke_2(uint64_t a1, in
   }
 
 LABEL_37:
-  v30 = [(AVTransportControlsView *)self elapsedTimeLabel];
-  v31 = [v30 isCollapsedOrExcluded];
+  elapsedTimeLabel4 = [(AVTransportControlsView *)self elapsedTimeLabel];
+  isCollapsedOrExcluded = [elapsedTimeLabel4 isCollapsedOrExcluded];
 
-  if (v31)
+  if (isCollapsedOrExcluded)
   {
     v32 = -16.0;
   }
@@ -1722,55 +1722,55 @@ LABEL_37:
     v32 = -22.0;
   }
 
-  v33 = [(AVTransportControlsView *)self standardPlayPauseButton];
-  [v33 setHitRectInsets:{-16.0, -22.0, -16.0, v32}];
+  standardPlayPauseButton = [(AVTransportControlsView *)self standardPlayPauseButton];
+  [standardPlayPauseButton setHitRectInsets:{-16.0, -22.0, -16.0, v32}];
 
-  v34 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-  if (!v34 || ![(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
+  customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  if (!customContentTransitioningInfoPanel || ![(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
 
     goto LABEL_45;
   }
 
-  v35 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  v36 = [v35 isCollapsedOrExcluded];
+  liveBroadcastLabel3 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  isCollapsedOrExcluded2 = [liveBroadcastLabel3 isCollapsedOrExcluded];
 
-  if (v36)
+  if (isCollapsedOrExcluded2)
   {
 LABEL_45:
-    v43 = [(AVTransportControlsView *)self liveBroadcastLabel];
+    liveBroadcastLabel4 = [(AVTransportControlsView *)self liveBroadcastLabel];
     v46 = *(MEMORY[0x1E695EFD0] + 16);
     *&v47.a = *MEMORY[0x1E695EFD0];
     *&v47.c = v46;
     *&v47.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v43 setTransform:&v47];
+    [liveBroadcastLabel4 setTransform:&v47];
     goto LABEL_46;
   }
 
-  v37 = [(AVTransportControlsView *)self styleSheet];
-  [v37 liveBroadcastLabelTopToBackdropTopDistance];
+  styleSheet = [(AVTransportControlsView *)self styleSheet];
+  [styleSheet liveBroadcastLabelTopToBackdropTopDistance];
   v39 = v38;
 
-  v40 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  [v40 intrinsicContentSize];
+  liveBroadcastLabel5 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  [liveBroadcastLabel5 intrinsicContentSize];
   v42 = v41;
 
-  v43 = [(AVTransportControlsView *)self liveBroadcastLabel];
-  v44 = [(AVTransportControlsView *)self scrubber];
-  [v44 frame];
+  liveBroadcastLabel4 = [(AVTransportControlsView *)self liveBroadcastLabel];
+  scrubber2 = [(AVTransportControlsView *)self scrubber];
+  [scrubber2 frame];
   MaxY = CGRectGetMaxY(v61);
   CGAffineTransformMakeTranslation(&v47, 0.0, MaxY - (v39 + v42 * 0.5));
-  [v43 setTransform:&v47];
+  [liveBroadcastLabel4 setTransform:&v47];
 
 LABEL_46:
   kdebug_trace();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AVTransportControlsView;
-  [(AVTransportControlsView *)&v4 traitCollectionDidChange:a3];
+  [(AVTransportControlsView *)&v4 traitCollectionDidChange:change];
   [(AVTransportControlsView *)self _updateFontSizes];
 }
 
@@ -1781,18 +1781,18 @@ LABEL_46:
   [(AVTransportControlsView *)&v35 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-  if (v7)
+  customContentTransitioningInfoPanel = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+  if (customContentTransitioningInfoPanel)
   {
-    v8 = v7;
-    v9 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
-    v10 = [v9 isHidden];
+    v8 = customContentTransitioningInfoPanel;
+    customContentTransitioningInfoPanel2 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+    isHidden = [customContentTransitioningInfoPanel2 isHidden];
 
-    if ((v10 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v22 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
+      customContentTransitioningInfoPanel3 = [(AVTransportControlsView *)self customContentTransitioningInfoPanel];
       [(AVTransportControlsView *)self frame];
-      [v22 systemLayoutSizeFittingSize:{v27, v28}];
+      [customContentTransitioningInfoPanel3 systemLayoutSizeFittingSize:{v27, v28}];
       v11 = v29;
 LABEL_10:
 
@@ -1803,11 +1803,11 @@ LABEL_10:
   v11 = 0.01;
   if ([(AVTransportControlsView *)self isShowingScrubInstructions]&& [(AVTransportControlsView *)self isDoubleRowLayoutEnabled])
   {
-    v12 = [(AVTransportControlsView *)self styleSheet];
-    [v12 doubleRowLayoutMargins];
+    styleSheet = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet doubleRowLayoutMargins];
     v14 = v13;
-    v15 = [(AVTransportControlsView *)self styleSheet];
-    [v15 doubleRowLayoutMarginsWhenShowingScrubInstructions];
+    styleSheet2 = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet2 doubleRowLayoutMarginsWhenShowingScrubInstructions];
     v17 = v14 - v16;
 
     if (v17 >= 0.0)
@@ -1820,14 +1820,14 @@ LABEL_10:
       v18 = -v17;
     }
 
-    v19 = [(AVTransportControlsView *)self styleSheet];
-    [v19 spacingBetweenScrubInstructionsAndScrubber];
+    styleSheet3 = [(AVTransportControlsView *)self styleSheet];
+    [styleSheet3 spacingBetweenScrubInstructionsAndScrubber];
     v21 = v20;
 
-    v22 = [(AVTransportControlsView *)self scrubInstructionsLabel];
-    v23 = [(AVTransportControlsView *)self embeddedExtraContentContainer];
-    [v23 bounds];
-    [v22 sizeThatFits:{v24, v25}];
+    customContentTransitioningInfoPanel3 = [(AVTransportControlsView *)self scrubInstructionsLabel];
+    embeddedExtraContentContainer = [(AVTransportControlsView *)self embeddedExtraContentContainer];
+    [embeddedExtraContentContainer bounds];
+    [customContentTransitioningInfoPanel3 sizeThatFits:{v24, v25}];
     v11 = v26 - (v18 + v21);
 
     goto LABEL_10;
@@ -1858,10 +1858,10 @@ LABEL_11:
   return result;
 }
 
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row
 {
-  v4 = [(AVTransportControlsView *)self controlsLayoutView];
-  [v4 layoutHeightThatFitsRowsStartingWithRow:a3];
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView layoutHeightThatFitsRowsStartingWithRow:row];
   v6 = v5;
 
   return v6;
@@ -1869,52 +1869,52 @@ LABEL_11:
 
 - (void)reevaluateHiddenStateOfAllItems
 {
-  v2 = [(AVTransportControlsView *)self controlsLayoutView];
-  [v2 reevaluateHiddenStateOfAllItems];
+  controlsLayoutView = [(AVTransportControlsView *)self controlsLayoutView];
+  [controlsLayoutView reevaluateHiddenStateOfAllItems];
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v7 = a3;
-  v5 = [(AVTransportControlsView *)self styleSheet];
-  v6 = [v5 isEqual:v7];
+  sheetCopy = sheet;
+  styleSheet = [(AVTransportControlsView *)self styleSheet];
+  v6 = [styleSheet isEqual:sheetCopy];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_styleSheet, a3);
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVTransportControlsView *)self _updateFontSizes];
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomContentTransitioningInfoPanel:(id)a3
+- (void)setCustomContentTransitioningInfoPanel:(id)panel
 {
-  v5 = a3;
+  panelCopy = panel;
   customContentTransitioningInfoPanel = self->_customContentTransitioningInfoPanel;
-  if (customContentTransitioningInfoPanel != v5)
+  if (customContentTransitioningInfoPanel != panelCopy)
   {
-    v7 = v5;
+    v7 = panelCopy;
     [customContentTransitioningInfoPanel removeFromSuperview];
-    objc_storeStrong(&self->_customContentTransitioningInfoPanel, a3);
+    objc_storeStrong(&self->_customContentTransitioningInfoPanel, panel);
     [(AVTransportControlsView *)self setNeedsLayout];
     customContentTransitioningInfoPanel = [(AVTransportControlsView *)self isHiddenOrHasHiddenAncestor];
-    v5 = v7;
+    panelCopy = v7;
     if ((customContentTransitioningInfoPanel & 1) == 0)
     {
       customContentTransitioningInfoPanel = [(AVTransportControlsView *)self layoutIfNeeded];
-      v5 = v7;
+      panelCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](customContentTransitioningInfoPanel, v5);
+  MEMORY[0x1EEE66BB8](customContentTransitioningInfoPanel, panelCopy);
 }
 
-- (void)setCustomItems:(id)a3
+- (void)setCustomItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (![(NSArray *)self->_customItems isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     customItems = self->_customItems;
     self->_customItems = v4;
 
@@ -1922,49 +1922,49 @@ LABEL_11:
   }
 }
 
-- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)a3
+- (void)setLiveStreamingControlsIncludeScrubber:(BOOL)scrubber
 {
-  if (self->_liveStreamingControlsIncludeScrubber != a3)
+  if (self->_liveStreamingControlsIncludeScrubber != scrubber)
   {
-    self->_liveStreamingControlsIncludeScrubber = a3;
+    self->_liveStreamingControlsIncludeScrubber = scrubber;
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsLiveStreamingControls:(BOOL)a3
+- (void)setShowsLiveStreamingControls:(BOOL)controls
 {
-  if (self->_showsLiveStreamingControls != a3)
+  if (self->_showsLiveStreamingControls != controls)
   {
-    self->_showsLiveStreamingControls = a3;
+    self->_showsLiveStreamingControls = controls;
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsLoadingIndicator:(BOOL)a3
+- (void)setShowsLoadingIndicator:(BOOL)indicator
 {
-  if (self->_showsLoadingIndicator != a3)
+  if (self->_showsLoadingIndicator != indicator)
   {
-    self->_showsLoadingIndicator = a3;
+    self->_showsLoadingIndicator = indicator;
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setDoubleRowLayoutEnabled:(BOOL)a3
+- (void)setDoubleRowLayoutEnabled:(BOOL)enabled
 {
-  if (self->_doubleRowLayoutEnabled != a3)
+  if (self->_doubleRowLayoutEnabled != enabled)
   {
-    self->_doubleRowLayoutEnabled = a3;
+    self->_doubleRowLayoutEnabled = enabled;
     [(AVTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomMenuItemsViews:(id)a3
+- (void)setCustomMenuItemsViews:(id)views
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_customMenuItemsViews != v5)
+  viewsCopy = views;
+  if (self->_customMenuItemsViews != viewsCopy)
   {
-    objc_storeStrong(&self->_customMenuItemsViews, a3);
+    objc_storeStrong(&self->_customMenuItemsViews, views);
     if ([(NSArray *)self->_customMenuItemsViews count])
     {
       v16 = 0u;
@@ -1987,11 +1987,11 @@ LABEL_11:
             }
 
             v11 = *(*(&v14 + 1) + 8 * i);
-            v12 = [v11 layoutAttributes];
-            [v12 setCanOverflowToAuxiliaryMenu:1];
+            layoutAttributes = [v11 layoutAttributes];
+            [layoutAttributes setCanOverflowToAuxiliaryMenu:1];
 
-            v13 = [v11 layoutAttributes];
-            [v13 setCanOnlyAppearInControlOverflowMenu:1];
+            layoutAttributes2 = [v11 layoutAttributes];
+            [layoutAttributes2 setCanOnlyAppearInControlOverflowMenu:1];
 
             [v11 setNeedsLayout];
           }
@@ -2007,14 +2007,14 @@ LABEL_11:
   }
 }
 
-- (AVTransportControlsView)initWithFrame:(CGRect)a3 styleSheet:(id)a4
+- (AVTransportControlsView)initWithFrame:(CGRect)frame styleSheet:(id)sheet
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v93 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  sheetCopy = sheet;
   v11 = _AVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2027,21 +2027,21 @@ LABEL_11:
 
   v86.receiver = self;
   v86.super_class = AVTransportControlsView;
-  v12 = [(AVView *)&v86 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(AVView *)&v86 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    v12->_included = 1;
-    objc_storeStrong(&v12->_styleSheet, a4);
+    height->_included = 1;
+    objc_storeStrong(&height->_styleSheet, sheet);
     v14 = objc_alloc_init(AVScrubber);
     scrubber = v13->_scrubber;
     v13->_scrubber = v14;
 
-    v16 = [(AVScrubber *)v13->_scrubber layoutAttributes];
-    [v16 setAccessibilityIdentifier:@"Scrubber"];
+    layoutAttributes = [(AVScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes setAccessibilityIdentifier:@"Scrubber"];
 
-    v17 = [(AVScrubber *)v13->_scrubber layoutAttributes];
-    [v17 setHasFlexibleContentSize:1];
+    layoutAttributes2 = [(AVScrubber *)v13->_scrubber layoutAttributes];
+    [layoutAttributes2 setHasFlexibleContentSize:1];
 
     [(AVScrubber *)v13->_scrubber setDelegate:v13];
     [(AVScrubber *)v13->_scrubber addTarget:v13 action:sel_beginScrubbing_ forControlEvents:1];
@@ -2060,8 +2060,8 @@ LABEL_11:
     v13->_liveBroadcastLabel = v22;
 
     [(AVChromedLabel *)v13->_liveBroadcastLabel setLoadingIndicatorAlignment:1];
-    v24 = [(AVChromedLabel *)v13->_liveBroadcastLabel layoutAttributes];
-    [v24 setHasFlexibleContentSize:1];
+    layoutAttributes3 = [(AVChromedLabel *)v13->_liveBroadcastLabel layoutAttributes];
+    [layoutAttributes3 setHasFlexibleContentSize:1];
 
     v25 = __52__AVTransportControlsView_initWithFrame_styleSheet___block_invoke(@"PLAYBACK_CONTROLS_VIEW_CONTROLLER_LIVE_LABEL_TEXT", @"Live");
     liveBroadcastScrubberLabel = v13->_liveBroadcastScrubberLabel;
@@ -2074,8 +2074,8 @@ LABEL_11:
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setClipsToBounds:1];
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setCollapsed:1];
     [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer setIncluded:0];
-    v29 = [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer layoutAttributes];
-    [v29 setHasFlexibleContentSize:1];
+    layoutAttributes4 = [(AVTouchIgnoringView *)v13->_embeddedExtraContentContainer layoutAttributes];
+    [layoutAttributes4 setHasFlexibleContentSize:1];
 
     v30 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     scrubInstructionsLabel = v13->_scrubInstructionsLabel;
@@ -2119,25 +2119,25 @@ LABEL_11:
     controlOverflowButton = v13->_controlOverflowButton;
     v13->_controlOverflowButton = v46;
 
-    v48 = [(AVButton *)v13->_controlOverflowButton layoutAttributes];
-    [v48 setCanSubstituteOtherAttributes:1];
+    layoutAttributes5 = [(AVButton *)v13->_controlOverflowButton layoutAttributes];
+    [layoutAttributes5 setCanSubstituteOtherAttributes:1];
 
     v49 = [AVButton buttonWithAccessibilityIdentifier:@"Media Selection" isFirstGeneration:1];
     mediaSelectionButton = v13->_mediaSelectionButton;
     v13->_mediaSelectionButton = v49;
 
-    v51 = [(AVButton *)v13->_mediaSelectionButton layoutAttributes];
-    [v51 setCanOverflowToAuxiliaryMenu:1];
+    layoutAttributes6 = [(AVButton *)v13->_mediaSelectionButton layoutAttributes];
+    [layoutAttributes6 setCanOverflowToAuxiliaryMenu:1];
 
     v52 = [AVButton buttonWithAccessibilityIdentifier:@"Playback Speed" isFirstGeneration:1];
     playbackSpeedButton = v13->_playbackSpeedButton;
     v13->_playbackSpeedButton = v52;
 
-    v54 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
-    [v54 setCanOverflowToAuxiliaryMenu:1];
+    layoutAttributes7 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
+    [layoutAttributes7 setCanOverflowToAuxiliaryMenu:1];
 
-    v55 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
-    [v55 setCanOnlyAppearInControlOverflowMenu:1];
+    layoutAttributes8 = [(AVButton *)v13->_playbackSpeedButton layoutAttributes];
+    [layoutAttributes8 setCanOnlyAppearInControlOverflowMenu:1];
 
     v56 = [AVButton buttonWithAccessibilityIdentifier:@"Play/Pause" isFirstGeneration:1];
     standardPlayPauseButton = v13->_standardPlayPauseButton;
@@ -2165,15 +2165,15 @@ LABEL_11:
 
     [(AVTouchIgnoringView *)v13->_flexibleViewAfterRoutePickerView setIncluded:1];
     [(AVTouchIgnoringView *)v13->_flexibleViewAfterSkipForwardButtons setIncluded:1];
-    v68 = [(AVTouchIgnoringView *)v13->_flexibleViewAfterRoutePickerView layoutAttributes];
-    [v68 setHasFlexibleContentSize:1];
+    layoutAttributes9 = [(AVTouchIgnoringView *)v13->_flexibleViewAfterRoutePickerView layoutAttributes];
+    [layoutAttributes9 setHasFlexibleContentSize:1];
 
-    v69 = [(AVTouchIgnoringView *)v13->_flexibleViewAfterSkipForwardButtons layoutAttributes];
-    [v69 setHasFlexibleContentSize:1];
+    layoutAttributes10 = [(AVTouchIgnoringView *)v13->_flexibleViewAfterSkipForwardButtons layoutAttributes];
+    [layoutAttributes10 setHasFlexibleContentSize:1];
 
     v13->_transportViewIncludesVolumeController = 0;
-    v70 = [(AVTransportControlsView *)v13 effectiveUserInterfaceLayoutDirection];
-    if (v70)
+    effectiveUserInterfaceLayoutDirection = [(AVTransportControlsView *)v13 effectiveUserInterfaceLayoutDirection];
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v71 = @"Skip To Next";
     }
@@ -2183,7 +2183,7 @@ LABEL_11:
       v71 = @"Skip To Previous";
     }
 
-    if (v70)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v72 = @"Skip To Previous";
     }
@@ -2218,14 +2218,14 @@ LABEL_11:
     [(AVTransportControlsView *)v13 setContentCompressionResistancePriority:1 forAxis:v80];
     LODWORD(v81) = 1148846080;
     [(AVTransportControlsView *)v13 setContentHuggingPriority:0 forAxis:v81];
-    v82 = [(AVTransportControlsView *)v13 scrubInstructionsLabel];
-    [v82 setHidden:1];
+    scrubInstructionsLabel = [(AVTransportControlsView *)v13 scrubInstructionsLabel];
+    [scrubInstructionsLabel setHidden:1];
 
-    v83 = [(AVTransportControlsView *)v13 detachedExtraContentLayoutView];
-    [v83 setHidden:1];
+    detachedExtraContentLayoutView = [(AVTransportControlsView *)v13 detachedExtraContentLayoutView];
+    [detachedExtraContentLayoutView setHidden:1];
 
-    v84 = [(AVTransportControlsView *)v13 detachedScrubInstructionsBackdropLabel];
-    [v84 setHidden:1];
+    detachedScrubInstructionsBackdropLabel = [(AVTransportControlsView *)v13 detachedScrubInstructionsBackdropLabel];
+    [detachedScrubInstructionsBackdropLabel setHidden:1];
 
     [(AVTransportControlsView *)v13 _updateFontSizes];
   }

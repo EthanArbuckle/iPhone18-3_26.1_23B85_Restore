@@ -1,8 +1,8 @@
 @interface PXUIWidgetBar
 - (PXUIWidgetBarViewTile)_viewTile;
-- (id)checkOutTileWithKind:(int64_t)a3;
+- (id)checkOutTileWithKind:(int64_t)kind;
 - (id)createTileAnimator;
-- (void)checkInTile:(id)a3;
+- (void)checkInTile:(id)tile;
 - (void)updateView;
 @end
 
@@ -13,9 +13,9 @@
   v5.receiver = self;
   v5.super_class = PXUIWidgetBar;
   [(PXWidgetBar *)&v5 updateView];
-  v3 = [(PXWidgetBar *)self view];
-  v4 = [(PXUIWidgetBar *)self _viewTile];
-  [v4 setView:v3];
+  view = [(PXWidgetBar *)self view];
+  _viewTile = [(PXUIWidgetBar *)self _viewTile];
+  [_viewTile setView:view];
 }
 
 - (PXUIWidgetBarViewTile)_viewTile
@@ -33,43 +33,43 @@
   return viewTile;
 }
 
-- (void)checkInTile:(id)a3
+- (void)checkInTile:(id)tile
 {
-  v3 = [a3 view];
-  [v3 setHidden:1];
+  view = [tile view];
+  [view setHidden:1];
 }
 
-- (id)checkOutTileWithKind:(int64_t)a3
+- (id)checkOutTileWithKind:(int64_t)kind
 {
-  if (a3 == 1)
+  if (kind == 1)
   {
-    v4 = [(PXUIWidgetBar *)self _viewTile];
+    _viewTile = [(PXUIWidgetBar *)self _viewTile];
   }
 
   else
   {
-    if (!a3)
+    if (!kind)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXUIWidgetBar.m" lineNumber:35 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIWidgetBar.m" lineNumber:35 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v4 = 0;
+    _viewTile = 0;
   }
 
-  v5 = [v4 view];
-  [v5 setHidden:0];
-  v6 = [v5 superview];
+  view = [_viewTile view];
+  [view setHidden:0];
+  superview = [view superview];
 
-  if (!v6)
+  if (!superview)
   {
-    v7 = [(PXWidgetBar *)self scrollViewController];
-    [v7 addSubview:v5];
+    scrollViewController = [(PXWidgetBar *)self scrollViewController];
+    [scrollViewController addSubview:view];
   }
 
-  return v4;
+  return _viewTile;
 }
 
 - (id)createTileAnimator

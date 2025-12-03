@@ -1,8 +1,8 @@
 @interface AVSampleCursor
-+ (AVSampleCursor)sampleCursorWithFigSampleCursor:(OpaqueFigSampleCursor *)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByDecodeTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByPresentationTime:(SEL)a3;
-- (AVSampleCursor)initWithFigSampleCursor:(OpaqueFigSampleCursor *)a3;
++ (AVSampleCursor)sampleCursorWithFigSampleCursor:(OpaqueFigSampleCursor *)cursor;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByDecodeTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByPresentationTime:(SEL)time;
+- (AVSampleCursor)initWithFigSampleCursor:(OpaqueFigSampleCursor *)cursor;
 - (AVSampleCursorAudioDependencyInfo)currentSampleAudioDependencyInfo;
 - (AVSampleCursorChunkInfo)currentChunkInfo;
 - (AVSampleCursorDependencyInfo)currentSampleDependencyInfo;
@@ -15,35 +15,35 @@
 - (CMTime)currentSampleDuration;
 - (CMTime)decodeTimeStamp;
 - (CMTime)presentationTimeStamp;
-- (CMTime)stepByDecodeTime:(SEL)a3 wasPinned:(CMTime *)deltaDecodeTime;
-- (CMTime)stepByPresentationTime:(SEL)a3 wasPinned:(CMTime *)deltaPresentationTime;
+- (CMTime)stepByDecodeTime:(SEL)time wasPinned:(CMTime *)deltaDecodeTime;
+- (CMTime)stepByPresentationTime:(SEL)time wasPinned:(CMTime *)deltaPresentationTime;
 - (NSComparisonResult)comparePositionInDecodeOrderWithPositionOfCursor:(AVSampleCursor *)cursor;
 - (NSDictionary)currentSampleDependencyAttachments;
 - (NSInteger)samplesRequiredForDecoderRefresh;
 - (NSURL)currentChunkStorageURL;
 - (const)currentSampleAudioDependencyInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)seamIdentifier;
 - (int64_t)currentSampleIndexInChunk;
 - (int64_t)stepInDecodeOrderByCount:(int64_t)stepCount;
 - (int64_t)stepInPresentationOrderByCount:(int64_t)stepCount;
-- (opaqueCMSampleBuffer)createSampleBufferForCurrentSampleReturningError:(id *)a3;
-- (opaqueCMSampleBuffer)createSampleBufferFromCurrentSampleToEndCursor:(id)a3 error:(id *)a4;
+- (opaqueCMSampleBuffer)createSampleBufferForCurrentSampleReturningError:(id *)error;
+- (opaqueCMSampleBuffer)createSampleBufferFromCurrentSampleToEndCursor:(id)cursor error:(id *)error;
 - (uint64_t)currentChunkStorageURL;
 - (void)dealloc;
 @end
 
 @implementation AVSampleCursor
 
-+ (AVSampleCursor)sampleCursorWithFigSampleCursor:(OpaqueFigSampleCursor *)a3
++ (AVSampleCursor)sampleCursorWithFigSampleCursor:(OpaqueFigSampleCursor *)cursor
 {
-  v3 = [[a1 alloc] initWithFigSampleCursor:a3];
+  v3 = [[self alloc] initWithFigSampleCursor:cursor];
 
   return v3;
 }
 
-- (AVSampleCursor)initWithFigSampleCursor:(OpaqueFigSampleCursor *)a3
+- (AVSampleCursor)initWithFigSampleCursor:(OpaqueFigSampleCursor *)cursor
 {
   v8.receiver = self;
   v8.super_class = AVSampleCursor;
@@ -52,7 +52,7 @@
   {
     v5 = objc_alloc_init(AVSampleCursorInternal);
     v4->_sampleCursor = v5;
-    if (v5 && ((CFRetain(v5), !a3) ? (v6 = 0) : (v6 = CFRetain(a3)), (v4->_sampleCursor->figSampleCursor = v6) != 0))
+    if (v5 && ((CFRetain(v5), !cursor) ? (v6 = 0) : (v6 = CFRetain(cursor)), (v4->_sampleCursor->figSampleCursor = v6) != 0))
     {
       v4->_sampleCursor->implementsGetDecodeTimeStamp = *(*(CMBaseObjectGetVTable() + 16) + 48) != 0;
       v4->_sampleCursor->implementsGetDuration = *(*(CMBaseObjectGetVTable() + 16) + 56) != 0;
@@ -123,7 +123,7 @@
   [(AVSampleCursor *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   cf = 0;
   figSampleCursor = self->_sampleCursor->figSampleCursor;
@@ -156,7 +156,7 @@
     goto LABEL_7;
   }
 
-  v9 = [AVSampleCursor allocWithZone:a3];
+  v9 = [AVSampleCursor allocWithZone:zone];
   v10 = [(AVSampleCursor *)v9 initWithFigSampleCursor:cf];
   v7 = cf;
   if (cf)
@@ -196,7 +196,7 @@ LABEL_7:
   return v7;
 }
 
-- (CMTime)stepByDecodeTime:(SEL)a3 wasPinned:(CMTime *)deltaDecodeTime
+- (CMTime)stepByDecodeTime:(SEL)time wasPinned:(CMTime *)deltaDecodeTime
 {
   v9 = MEMORY[0x1E6960CC0];
   v23 = *MEMORY[0x1E6960CC0];
@@ -250,7 +250,7 @@ LABEL_7:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByDecodeTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByDecodeTime:(SEL)time
 {
   if (self)
   {
@@ -268,7 +268,7 @@ LABEL_7:
   return self;
 }
 
-- (CMTime)stepByPresentationTime:(SEL)a3 wasPinned:(CMTime *)deltaPresentationTime
+- (CMTime)stepByPresentationTime:(SEL)time wasPinned:(CMTime *)deltaPresentationTime
 {
   v9 = MEMORY[0x1E6960CC0];
   v23 = *MEMORY[0x1E6960CC0];
@@ -322,7 +322,7 @@ LABEL_7:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByPresentationTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)stepByPresentationTime:(SEL)time
 {
   if (self)
   {
@@ -395,13 +395,13 @@ LABEL_7:
 
 - (NSComparisonResult)comparePositionInDecodeOrderWithPositionOfCursor:(AVSampleCursor *)cursor
 {
-  v4 = [(AVSampleCursor *)cursor _figSampleCursor];
+  _figSampleCursor = [(AVSampleCursor *)cursor _figSampleCursor];
   figSampleCursor = self->_sampleCursor->figSampleCursor;
   v6 = *(CMBaseObjectGetVTable() + 16);
   if (v6)
   {
     v7 = v6;
-    if (!v4)
+    if (!_figSampleCursor)
     {
       goto LABEL_7;
     }
@@ -410,7 +410,7 @@ LABEL_7:
   else
   {
     v7 = 0;
-    if (!v4)
+    if (!_figSampleCursor)
     {
 LABEL_7:
       v9 = 0;
@@ -433,7 +433,7 @@ LABEL_8:
 
   v11 = *(v9 + 32);
 
-  return v11(figSampleCursor, v4);
+  return v11(figSampleCursor, _figSampleCursor);
 }
 
 - (BOOL)samplesWithEarlierDecodeTimeStampsMayHaveLaterPresentationTimeStampsThanCursor:(AVSampleCursor *)cursor
@@ -443,31 +443,31 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(AVSampleCursor *)cursor _figSampleCursor];
+  _figSampleCursor = [(AVSampleCursor *)cursor _figSampleCursor];
   figSampleCursor = self->_sampleCursor->figSampleCursor;
   v6 = *(CMBaseObjectGetVTable() + 16);
   if (!v6)
   {
     v7 = 0;
-    if (v4)
+    if (_figSampleCursor)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
     v8 = 0;
-    return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, v4, 0) == 0;
+    return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, _figSampleCursor, 0) == 0;
   }
 
   v7 = v6;
-  if (!v4)
+  if (!_figSampleCursor)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   v8 = *(CMBaseObjectGetVTable() + 16);
-  return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, v4, 0) == 0;
+  return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, _figSampleCursor, 0) == 0;
 }
 
 - (BOOL)samplesWithLaterDecodeTimeStampsMayHaveEarlierPresentationTimeStampsThanCursor:(AVSampleCursor *)cursor
@@ -477,34 +477,34 @@ LABEL_4:
     return 0;
   }
 
-  v4 = [(AVSampleCursor *)cursor _figSampleCursor];
+  _figSampleCursor = [(AVSampleCursor *)cursor _figSampleCursor];
   figSampleCursor = self->_sampleCursor->figSampleCursor;
   v6 = *(CMBaseObjectGetVTable() + 16);
   if (!v6)
   {
     v7 = 0;
-    if (v4)
+    if (_figSampleCursor)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
     v8 = 0;
-    return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, v4, 1) == 0;
+    return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, _figSampleCursor, 1) == 0;
   }
 
   v7 = v6;
-  if (!v4)
+  if (!_figSampleCursor)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   v8 = *(CMBaseObjectGetVTable() + 16);
-  return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, v4, 1) == 0;
+  return v7 != v8 || (v10 = *(v7 + 80)) == 0 || v10(figSampleCursor, _figSampleCursor, 1) == 0;
 }
 
-- (opaqueCMSampleBuffer)createSampleBufferForCurrentSampleReturningError:(id *)a3
+- (opaqueCMSampleBuffer)createSampleBufferForCurrentSampleReturningError:(id *)error
 {
   sampleCursor = self->_sampleCursor;
   if (!sampleCursor->implementsCreateSampleBuffer)
@@ -520,7 +520,7 @@ LABEL_4:
   if (v8)
   {
     v9 = v8(figSampleCursor, 0, v11);
-    if (!a3)
+    if (!error)
     {
       return v11[0];
     }
@@ -528,14 +528,14 @@ LABEL_4:
 LABEL_7:
     if (v9)
     {
-      *a3 = AVLocalizedErrorWithUnderlyingOSStatus(v9, 0);
+      *error = AVLocalizedErrorWithUnderlyingOSStatus(v9, 0);
     }
 
     return v11[0];
   }
 
   v9 = -12782;
-  if (a3)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -543,7 +543,7 @@ LABEL_7:
   return v11[0];
 }
 
-- (opaqueCMSampleBuffer)createSampleBufferFromCurrentSampleToEndCursor:(id)a3 error:(id *)a4
+- (opaqueCMSampleBuffer)createSampleBufferFromCurrentSampleToEndCursor:(id)cursor error:(id *)error
 {
   if (!self->_sampleCursor->implementsCreateSampleBuffer)
   {
@@ -552,14 +552,14 @@ LABEL_7:
 
   v13[5] = v4;
   v13[6] = v5;
-  v8 = [a3 _figSampleCursor];
+  _figSampleCursor = [cursor _figSampleCursor];
   v13[0] = 0;
   figSampleCursor = self->_sampleCursor->figSampleCursor;
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 112);
   if (v10)
   {
-    v11 = v10(figSampleCursor, v8, v13);
-    if (!a4)
+    v11 = v10(figSampleCursor, _figSampleCursor, v13);
+    if (!error)
     {
       return v13[0];
     }
@@ -567,14 +567,14 @@ LABEL_7:
 LABEL_7:
     if (v11)
     {
-      *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v11, 0);
+      *error = AVLocalizedErrorWithUnderlyingOSStatus(v11, 0);
     }
 
     return v13[0];
   }
 
   v11 = -12782;
-  if (a4)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -822,12 +822,12 @@ LABEL_14:
       v6 = v5 == 0;
       if (v5)
       {
-        v7 = -1;
+        currentSampleStorageRange = -1;
       }
 
       else
       {
-        v7 = v10;
+        currentSampleStorageRange = v10;
       }
 
       if (v6)
@@ -844,17 +844,17 @@ LABEL_14:
     else
     {
       v8 = 0;
-      v7 = -1;
+      currentSampleStorageRange = -1;
     }
   }
 
   else
   {
-    v7 = [(AVSampleCursor *)self currentSampleStorageRange];
+    currentSampleStorageRange = [(AVSampleCursor *)self currentSampleStorageRange];
   }
 
   result.length = v8;
-  result.offset = v7;
+  result.offset = currentSampleStorageRange;
   return result;
 }
 
@@ -1062,7 +1062,7 @@ LABEL_15:
 
 - (const)currentSampleAudioDependencyInfo
 {
-  v5 = CFGetTypeID(a1);
+  v5 = CFGetTypeID(self);
   result = CFDictionaryGetTypeID();
   if (v5 == result)
   {

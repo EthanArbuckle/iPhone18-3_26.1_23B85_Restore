@@ -1,30 +1,30 @@
 @interface FedStatsCohortGeohash
-+ (id)cohortInstanceWithPrecision:(unint64_t)a3;
-- (FedStatsCohortGeohash)initWithPrecision:(unint64_t)a3;
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4;
++ (id)cohortInstanceWithPrecision:(unint64_t)precision;
+- (FedStatsCohortGeohash)initWithPrecision:(unint64_t)precision;
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error;
 @end
 
 @implementation FedStatsCohortGeohash
 
-- (FedStatsCohortGeohash)initWithPrecision:(unint64_t)a3
+- (FedStatsCohortGeohash)initWithPrecision:(unint64_t)precision
 {
   v5.receiver = self;
   v5.super_class = FedStatsCohortGeohash;
   result = [(FedStatsCohortGeohash *)&v5 init];
   if (result)
   {
-    result->_precision = a3;
+    result->_precision = precision;
   }
 
   return result;
 }
 
-+ (id)cohortInstanceWithPrecision:(unint64_t)a3
++ (id)cohortInstanceWithPrecision:(unint64_t)precision
 {
-  if (a3 < 5)
+  if (precision < 5)
   {
     v4 = [FedStatsCohortGeohash alloc];
-    v5 = a3;
+    precisionCopy = precision;
   }
 
   else
@@ -36,17 +36,17 @@
     }
 
     v4 = [FedStatsCohortGeohash alloc];
-    v5 = 4;
+    precisionCopy = 4;
   }
 
-  v7 = [(FedStatsCohortGeohash *)v4 initWithPrecision:v5];
+  v7 = [(FedStatsCohortGeohash *)v4 initWithPrecision:precisionCopy];
 
   return v7;
 }
 
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error
 {
-  v6 = [a3 objectForKey:@"geohash"];
+  v6 = [parameters objectForKey:@"geohash"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = [v6 substringToIndex:{-[FedStatsCohortGeohash precision](self, "precision")}];
@@ -54,9 +54,9 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [FedStatsPluginError errorWithCode:300 description:@"Parameter has no string value for geohash cohort key"];
+      *error = [FedStatsPluginError errorWithCode:300 description:@"Parameter has no string value for geohash cohort key"];
     }
 
     v7 = @"<null>";

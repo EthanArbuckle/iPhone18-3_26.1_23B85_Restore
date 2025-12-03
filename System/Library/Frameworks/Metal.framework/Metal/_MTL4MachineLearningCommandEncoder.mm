@@ -1,16 +1,16 @@
 @interface _MTL4MachineLearningCommandEncoder
-- (_MTL4MachineLearningCommandEncoder)initWithCommandBuffer:(id)a3 allocator:(id)a4;
-- (_MTL4MachineLearningCommandEncoder)initWithDevice:(id)a3;
+- (_MTL4MachineLearningCommandEncoder)initWithCommandBuffer:(id)buffer allocator:(id)allocator;
+- (_MTL4MachineLearningCommandEncoder)initWithDevice:(id)device;
 - (void)dealloc;
-- (void)encodeToCommandQueue:(id)a3;
+- (void)encodeToCommandQueue:(id)queue;
 - (void)endEncoding;
-- (void)setArgumentTable:(id)a3;
-- (void)setPipelineState:(id)a3;
+- (void)setArgumentTable:(id)table;
+- (void)setPipelineState:(id)state;
 @end
 
 @implementation _MTL4MachineLearningCommandEncoder
 
-- (_MTL4MachineLearningCommandEncoder)initWithDevice:(id)a3
+- (_MTL4MachineLearningCommandEncoder)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = _MTL4MachineLearningCommandEncoder;
@@ -22,11 +22,11 @@
   return 0;
 }
 
-- (_MTL4MachineLearningCommandEncoder)initWithCommandBuffer:(id)a3 allocator:(id)a4
+- (_MTL4MachineLearningCommandEncoder)initWithCommandBuffer:(id)buffer allocator:(id)allocator
 {
   v5.receiver = self;
   v5.super_class = _MTL4MachineLearningCommandEncoder;
-  if ([(_MTL4CommandEncoder *)&v5 initWithCommandAllocator:a4])
+  if ([(_MTL4CommandEncoder *)&v5 initWithCommandAllocator:allocator])
   {
     operator new();
   }
@@ -79,19 +79,19 @@ LABEL_6:
   [(_MTL4CommandEncoder *)&v7 dealloc];
 }
 
-- (void)setPipelineState:(id)a3
+- (void)setPipelineState:(id)state
 {
-  if (self->_currentPipelineState != a3)
+  if (self->_currentPipelineState != state)
   {
-    self->_currentPipelineState = a3;
+    self->_currentPipelineState = state;
   }
 }
 
-- (void)setArgumentTable:(id)a3
+- (void)setArgumentTable:(id)table
 {
-  if (self->_currentArgumentTable != a3)
+  if (self->_currentArgumentTable != table)
   {
-    self->_currentArgumentTable = a3;
+    self->_currentArgumentTable = table;
   }
 }
 
@@ -103,11 +103,11 @@ LABEL_6:
   [(_MTL4CommandEncoder *)&v2 endEncoding];
 }
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
   v52 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v39 = [a3 mlCommandQueue];
+  queueCopy = queue;
+  mlCommandQueue = [queue mlCommandQueue];
   v45 = 80;
   v4 = *(self->_dispatchList + 1) - *self->_dispatchList;
   if (v4)
@@ -115,7 +115,7 @@ LABEL_6:
     v5 = 0;
     v6 = 0;
     v44 = v4 >> 3;
-    v40 = self;
+    selfCopy = self;
     do
     {
       v7 = **(&self->super.super.super.isa + v45);
@@ -130,23 +130,23 @@ LABEL_6:
         v48 = v6;
         MPSGraphClassByName = getMPSGraphClassByName("MPSGraphTensorData");
         v10 = *(v8 + 8);
-        v43 = [v10 executable];
-        v11 = [v10 inputShapes];
+        executable = [v10 executable];
+        inputShapes = [v10 inputShapes];
         v42 = v10;
-        v12 = [v10 outputShapes];
-        v51 = v11;
-        v13 = [v11 count];
-        v50 = v12;
-        v46 = [v12 count];
-        v47 = &v39;
+        outputShapes = [v10 outputShapes];
+        v51 = inputShapes;
+        v13 = [inputShapes count];
+        v50 = outputShapes;
+        v46 = [outputShapes count];
+        v47 = &mlCommandQueue;
         v14 = v46 + v13;
         v15 = 8 * (v46 + v13);
         MEMORY[0x1EEE9AC00](v46);
-        v17 = (&v39 - v16);
-        v18 = [v41 device];
+        v17 = (&mlCommandQueue - v16);
+        device = [queueCopy device];
         if (v14)
         {
-          v19 = v18;
+          v19 = device;
           v20 = 0;
           v49 = -v13;
           do
@@ -164,7 +164,7 @@ LABEL_6:
               v23 = v20;
             }
 
-            v24 = [v22 objectAtIndexedSubscript:{v23, v39}];
+            v24 = [v22 objectAtIndexedSubscript:{v23, mlCommandQueue}];
             v25 = v24;
             if (!v21 && elementCount([v24 shape]))
             {
@@ -178,7 +178,7 @@ LABEL_6:
           while (v14 != v20);
         }
 
-        v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:{v13, v39}];
+        v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:{v13, mlCommandQueue}];
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17[v13] count:v46];
         if (v14)
         {
@@ -193,7 +193,7 @@ LABEL_6:
         }
 
         v36 = objc_alloc_init(getMPSGraphClassByName("MPSGraphExecutableExecutionDescriptor"));
-        self = v40;
+        self = selfCopy;
         v6 = v48;
         if (v36)
         {
@@ -202,7 +202,7 @@ LABEL_6:
           [v37 waitForEvent:self->_event value:v6 + 1];
           [v37 signalEvent:self->_event atExecutionEvent:0 value:v6 + 2];
           [v37 setEntryFunctionName:{objc_msgSend(v42, "functionName")}];
-          [v43 runAsyncWithMTLCommandQueue:v39 inputsArray:v33 resultsArray:v34 executionDescriptor:v37];
+          [executable runAsyncWithMTLCommandQueue:mlCommandQueue inputsArray:v33 resultsArray:v34 executionDescriptor:v37];
         }
       }
 

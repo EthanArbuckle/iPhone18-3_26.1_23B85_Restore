@@ -1,5 +1,5 @@
 @interface AKActiveAnisetteDSIDFetcher
-+ (unint64_t)_activeAnisetteDSIDWithEnvironment:(unint64_t)a3;
++ (unint64_t)_activeAnisetteDSIDWithEnvironment:(unint64_t)environment;
 + (unint64_t)activeAnisettDSIDFromCurrentIDMSEnvironment;
 + (unint64_t)activeAnisettDSIDFromLastKnownIDMSEnvironment;
 @end
@@ -9,30 +9,30 @@
 + (unint64_t)activeAnisettDSIDFromLastKnownIDMSEnvironment
 {
   v3 = [AKURLBag bagForAltDSID:0];
-  v4 = [v3 lastKnownIDMSEnvironment];
+  lastKnownIDMSEnvironment = [v3 lastKnownIDMSEnvironment];
   _objc_release(v3);
-  return [a1 _activeAnisetteDSIDWithEnvironment:v4];
+  return [self _activeAnisetteDSIDWithEnvironment:lastKnownIDMSEnvironment];
 }
 
 + (unint64_t)activeAnisettDSIDFromCurrentIDMSEnvironment
 {
   v3 = [AKURLBag bagForAltDSID:0];
-  v4 = [v3 IDMSEnvironment];
+  iDMSEnvironment = [v3 IDMSEnvironment];
   _objc_release(v3);
-  return [a1 _activeAnisetteDSIDWithEnvironment:v4];
+  return [self _activeAnisetteDSIDWithEnvironment:iDMSEnvironment];
 }
 
-+ (unint64_t)_activeAnisetteDSIDWithEnvironment:(unint64_t)a3
++ (unint64_t)_activeAnisetteDSIDWithEnvironment:(unint64_t)environment
 {
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  if (!a3)
+  environmentCopy = environment;
+  if (!environment)
   {
     return -2;
   }
 
-  if (v14 == 1 || v14 == 2 || v14 == 3)
+  if (environmentCopy == 1 || environmentCopy == 2 || environmentCopy == 3)
   {
     location = _AKTrafficLogSubsystem();
     v12 = 2;

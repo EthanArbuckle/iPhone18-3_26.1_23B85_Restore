@@ -1,32 +1,32 @@
 @interface _ATXActionMetaData
-- (_ATXActionMetaData)initWithCoder:(id)a3;
-- (_ATXActionMetaData)initWithTitle:(id)a3 subtitle:(id)a4 shouldPredict:(BOOL)a5 shouldPredictLockScreen:(BOOL)a6 actionKey:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (_ATXActionMetaData)initWithCoder:(id)coder;
+- (_ATXActionMetaData)initWithTitle:(id)title subtitle:(id)subtitle shouldPredict:(BOOL)predict shouldPredictLockScreen:(BOOL)screen actionKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ATXActionMetaData
 
-- (_ATXActionMetaData)initWithTitle:(id)a3 subtitle:(id)a4 shouldPredict:(BOOL)a5 shouldPredictLockScreen:(BOOL)a6 actionKey:(id)a7
+- (_ATXActionMetaData)initWithTitle:(id)title subtitle:(id)subtitle shouldPredict:(BOOL)predict shouldPredictLockScreen:(BOOL)screen actionKey:(id)key
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  keyCopy = key;
   v23.receiver = self;
   v23.super_class = _ATXActionMetaData;
   v15 = [(_ATXActionMetaData *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v16;
 
-    v18 = [v13 copy];
+    v18 = [subtitleCopy copy];
     subtitle = v15->_subtitle;
     v15->_subtitle = v18;
 
-    v15->_shouldPredict = a5;
-    v15->_shouldPredictLockScreen = a6;
-    v20 = [v14 copy];
+    v15->_shouldPredict = predict;
+    v15->_shouldPredictLockScreen = screen;
+    v20 = [keyCopy copy];
     actionKey = v15->_actionKey;
     v15->_actionKey = v20;
   }
@@ -34,28 +34,28 @@
   return v15;
 }
 
-- (_ATXActionMetaData)initWithCoder:(id)a3
+- (_ATXActionMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v7 = [v4 decodeBoolForKey:@"shouldPredict"];
-  v8 = [v4 decodeBoolForKey:@"shouldPredictLockScreen"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v7 = [coderCopy decodeBoolForKey:@"shouldPredict"];
+  v8 = [coderCopy decodeBoolForKey:@"shouldPredictLockScreen"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionKey"];
 
   v10 = [(_ATXActionMetaData *)self initWithTitle:v5 subtitle:v6 shouldPredict:v7 shouldPredictLockScreen:v8 actionKey:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeBool:self->_shouldPredict forKey:@"shouldPredict"];
-  [v5 encodeBool:self->_shouldPredictLockScreen forKey:@"shouldPredictLockScreen"];
-  [v5 encodeObject:self->_actionKey forKey:@"actionKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeBool:self->_shouldPredict forKey:@"shouldPredict"];
+  [coderCopy encodeBool:self->_shouldPredictLockScreen forKey:@"shouldPredictLockScreen"];
+  [coderCopy encodeObject:self->_actionKey forKey:@"actionKey"];
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface AMMessagesViewController
 + (_TtC22AudioMessagesExtension24AMMessagesViewController)sharedMessagesViewController;
-+ (void)setSharedMessagesViewController:(id)a3;
++ (void)setSharedMessagesViewController:(id)controller;
 - (UIStackView)stackView;
-- (_TtC22AudioMessagesExtension24AMMessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22AudioMessagesExtension24AMMessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)audioMessageDidCancelMessage;
-- (void)audioMessageDidChangeAudioPowerLevel:(float)a3 duration:(double)a4;
-- (void)audioMessageDidChangeCurrentPlaybackTime:(double)a3;
+- (void)audioMessageDidChangeAudioPowerLevel:(float)level duration:(double)duration;
+- (void)audioMessageDidChangeCurrentPlaybackTime:(double)time;
 - (void)audioMessageDidEndPlayback;
 - (void)audioMessageDidSendMessage;
 - (void)audioMessageStartedRecordingFromMessages;
 - (void)audioMessageStoppedRecordingFromMessages;
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didResignActiveWithConversation:(id)a3;
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation;
+- (void)didResignActiveWithConversation:(id)conversation;
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AMMessagesViewController
 
-- (void)audioMessageDidChangeAudioPowerLevel:(float)a3 duration:(double)a4
+- (void)audioMessageDidChangeAudioPowerLevel:(float)level duration:(double)duration
 {
-  v6 = self;
-  sub_2B13C(a3, a4);
+  selfCopy = self;
+  sub_2B13C(level, duration);
 }
 
-- (void)audioMessageDidChangeCurrentPlaybackTime:(double)a3
+- (void)audioMessageDidChangeCurrentPlaybackTime:(double)time
 {
-  v4 = self;
-  sub_2B3E8(a3);
+  selfCopy = self;
+  sub_2B3E8(time);
 }
 
 - (void)audioMessageDidEndPlayback
@@ -42,7 +42,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_36CA0(5u, 1, 0.0);
   }
 
@@ -54,25 +54,25 @@
 
 - (void)audioMessageDidSendMessage
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B614();
 }
 
 - (void)audioMessageDidCancelMessage
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B754();
 }
 
 - (void)audioMessageStartedRecordingFromMessages
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B898();
 }
 
 - (void)audioMessageStoppedRecordingFromMessages
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B960();
 }
 
@@ -95,10 +95,10 @@
   return Strong;
 }
 
-+ (void)setSharedMessagesViewController:(id)a3
++ (void)setSharedMessagesViewController:(id)controller
 {
   v3 = qword_81A58;
-  v4 = a3;
+  controllerCopy = controller;
   if (v3 != -1)
   {
     swift_once();
@@ -109,47 +109,47 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2BF70();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2C184(a3);
+  selfCopy = self;
+  sub_2C184(disappear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_2C2A8(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2C2A8(controller);
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
   v4 = *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_conversation);
-  *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_conversation) = a3;
-  v5 = a3;
-  v8 = self;
+  *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_conversation) = conversation;
+  conversationCopy = conversation;
+  selfCopy = self;
 
   v6 = sub_2B0C4();
-  v7 = [v6 powerLevels];
+  powerLevels = [v6 powerLevels];
 
-  if (v7)
+  if (powerLevels)
   {
 
     sub_2B960();
   }
 }
 
-- (void)didResignActiveWithConversation:(id)a3
+- (void)didResignActiveWithConversation:(id)conversation
 {
   v3 = *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_conversation);
   *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_conversation) = 0;
 }
 
-- (void)didStartSendingMessage:(id)a3 conversation:(id)a4
+- (void)didStartSendingMessage:(id)message conversation:(id)conversation
 {
   sub_2D124(&qword_82010);
   v4 = swift_allocObject();
@@ -160,7 +160,7 @@
   sub_42BF8();
 }
 
-- (void)didCancelSendingMessage:(id)a3 conversation:(id)a4
+- (void)didCancelSendingMessage:(id)message conversation:(id)conversation
 {
   sub_2D124(&qword_82010);
   v4 = swift_allocObject();
@@ -171,36 +171,36 @@
   sub_42BF8();
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_currentPresentationStyle) = a3;
-  v4 = self;
-  sub_2BD54(a3);
+  *(self + OBJC_IVAR____TtC22AudioMessagesExtension24AMMessagesViewController_currentPresentationStyle) = style;
+  selfCopy = self;
+  sub_2BD54(style);
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_2DDC0(v5, v4);
+  selfCopy = self;
+  sub_2DDC0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (_TtC22AudioMessagesExtension24AMMessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AudioMessagesExtension24AMMessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    segueCopy = segue;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_42AA8();
     swift_unknownObjectRelease();
@@ -209,11 +209,11 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    segueCopy2 = segue;
+    selfCopy2 = self;
   }
 
-  sub_2CAB4(a3, v10);
+  sub_2CAB4(segue, v10);
 
   sub_2E3A0(v10, &unk_82040);
 }

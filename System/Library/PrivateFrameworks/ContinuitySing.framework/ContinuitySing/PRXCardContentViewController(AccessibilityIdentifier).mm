@@ -8,14 +8,14 @@
 {
   v20 = a3;
   v6 = a4;
-  v19 = a1;
-  v7 = [a1 bottomTray];
+  selfCopy = self;
+  bottomTray = [self bottomTray];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [v7 actionButtons];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+  actionButtons = [bottomTray actionButtons];
+  v9 = [actionButtons countByEnumeratingWithState:&v30 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -26,13 +26,13 @@
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actionButtons);
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 currentTitle];
-        v15 = [v6 title];
-        v16 = [v14 isEqualToString:v15];
+        currentTitle = [v13 currentTitle];
+        title = [v6 title];
+        v16 = [currentTitle isEqualToString:title];
 
         if (v16)
         {
@@ -56,7 +56,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+      v10 = [actionButtons countByEnumeratingWithState:&v30 objects:v29 count:16];
       if (v10)
       {
         continue;
@@ -66,11 +66,11 @@
     }
   }
 
-  v8 = ContinuitySingLog();
+  actionButtons = ContinuitySingLog();
   v17 = v20;
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(actionButtons, OS_LOG_TYPE_ERROR))
   {
-    [(PRXCardContentViewController(AccessibilityIdentifier) *)v20 setAccessibilityIdentifier:v19 forAction:v8];
+    [(PRXCardContentViewController(AccessibilityIdentifier) *)v20 setAccessibilityIdentifier:selfCopy forAction:actionButtons];
   }
 
 LABEL_14:

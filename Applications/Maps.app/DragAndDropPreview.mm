@@ -1,16 +1,16 @@
 @interface DragAndDropPreview
-- ($873BFAB23BBB6E2F0B0288ED2F935688)presentationMapRectForMapItem:(id)a3;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)presentationMapRectForMapItem:(id)item;
 - (DragAndDropPreview)init;
-- (DragAndDropPreview)initWithDragAndDropMapItem:(id)a3 traitCollection:(id)a4;
+- (DragAndDropPreview)initWithDragAndDropMapItem:(id)item traitCollection:(id)collection;
 - (DragAndDropPreviewContentUpdateDelegate)contentUpdateDelegate;
 - (DragAndDropPreviewImage)renderPreviewImage;
 - (id)dragFeatures;
 - (id)imageRepresentation;
 - (id)mapItem;
 - (void)createSnapshot;
-- (void)dragAndDropAnchorViewCellDidUpdateContent:(id)a3;
-- (void)dragAndDropItem:(id)a3 didResolveMapItem:(id)a4;
-- (void)updateWithSnapshot:(id)a3;
+- (void)dragAndDropAnchorViewCellDidUpdateContent:(id)content;
+- (void)dragAndDropItem:(id)item didResolveMapItem:(id)mapItem;
+- (void)updateWithSnapshot:(id)snapshot;
 @end
 
 @implementation DragAndDropPreview
@@ -22,37 +22,37 @@
   return WeakRetained;
 }
 
-- (void)dragAndDropAnchorViewCellDidUpdateContent:(id)a3
+- (void)dragAndDropAnchorViewCellDidUpdateContent:(id)content
 {
-  v4 = [(DragAndDropPreview *)self contentUpdateDelegate];
-  [v4 dragAndDropPreviewDidUpdate:self];
+  contentUpdateDelegate = [(DragAndDropPreview *)self contentUpdateDelegate];
+  [contentUpdateDelegate dragAndDropPreviewDidUpdate:self];
 }
 
-- (void)dragAndDropItem:(id)a3 didResolveMapItem:(id)a4
+- (void)dragAndDropItem:(id)item didResolveMapItem:(id)mapItem
 {
-  objc_storeStrong(&self->_resolvedMapItem, a4);
-  v6 = a4;
-  [(DragAndDropAnchorView *)self->_anchorView updateWithResolvedMapItem:v6];
+  objc_storeStrong(&self->_resolvedMapItem, mapItem);
+  mapItemCopy = mapItem;
+  [(DragAndDropAnchorView *)self->_anchorView updateWithResolvedMapItem:mapItemCopy];
 
   [(DragAndDropPreview *)self createSnapshot];
 }
 
 - (DragAndDropPreviewImage)renderPreviewImage
 {
-  v2 = [(DragAndDropPreview *)self imageRepresentation];
-  [v2 size];
+  imageRepresentation = [(DragAndDropPreview *)self imageRepresentation];
+  [imageRepresentation size];
   v5 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, v3, v4, 13.0];
   v6 = objc_alloc_init(DragAndDropPreviewImage);
-  [(DragAndDropPreviewImage *)v6 setImage:v2];
+  [(DragAndDropPreviewImage *)v6 setImage:imageRepresentation];
   [(DragAndDropPreviewImage *)v6 setVisiblePath:v5];
   [(DragAndDropPreviewImage *)v6 setCornerRadius:13.0];
 
   return v6;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)presentationMapRectForMapItem:(id)a3
+- ($873BFAB23BBB6E2F0B0288ED2F935688)presentationMapRectForMapItem:(id)item
 {
-  [a3 _coordinate];
+  [item _coordinate];
   MKMapRectMakeWithRadialDistance();
   v7 = [[GEOMapRegion alloc] initWithMapRect:{v3, v4, v5, v6}];
   GEOMapRectForMapRegion();
@@ -124,35 +124,35 @@
   return v10;
 }
 
-- (void)updateWithSnapshot:(id)a3
+- (void)updateWithSnapshot:(id)snapshot
 {
-  objc_storeStrong(&self->_snapshotImage, a3);
-  v4 = [(DragAndDropPreview *)self contentUpdateDelegate];
-  [v4 dragAndDropPreviewDidUpdate:self];
+  objc_storeStrong(&self->_snapshotImage, snapshot);
+  contentUpdateDelegate = [(DragAndDropPreview *)self contentUpdateDelegate];
+  [contentUpdateDelegate dragAndDropPreviewDidUpdate:self];
 }
 
 - (void)createSnapshot
 {
-  v3 = [(DragAndDropPreview *)self mapItem];
-  if (v3 && !self->_snapshotStarted)
+  mapItem = [(DragAndDropPreview *)self mapItem];
+  if (mapItem && !self->_snapshotStarted)
   {
-    v14 = v3;
-    v4 = [(UITraitCollection *)self->_traitCollection userInterfaceIdiom];
+    v14 = mapItem;
+    userInterfaceIdiom = [(UITraitCollection *)self->_traitCollection userInterfaceIdiom];
 
-    if (v4 != UIUserInterfaceIdiomMac)
+    if (userInterfaceIdiom != UIUserInterfaceIdiomMac)
     {
       self->_snapshotStarted = 1;
       kdebug_trace();
       v5 = objc_alloc_init(MKMapSnapshotOptions);
       [v5 setMapType:0];
       [v5 setSize:{206.0, 104.0}];
-      v6 = [(DragAndDropPreview *)self mapItem];
-      [(DragAndDropPreview *)self presentationMapRectForMapItem:v6];
+      mapItem2 = [(DragAndDropPreview *)self mapItem];
+      [(DragAndDropPreview *)self presentationMapRectForMapItem:mapItem2];
       [v5 setMapRect:?];
 
       [v5 _setRendersInBackground:0];
-      v7 = [(DragAndDropPreview *)self dragFeatures];
-      [v5 _setCustomFeatureAnnotations:v7];
+      dragFeatures = [(DragAndDropPreview *)self dragFeatures];
+      [v5 _setCustomFeatureAnnotations:dragFeatures];
 
       v8 = +[MKPointOfInterestFilter filterIncludingAllCategories];
       [v5 setPointOfInterestFilter:v8];
@@ -170,7 +170,7 @@
       block[2] = sub_101012C84;
       block[3] = &unk_101661A90;
       v16 = v9;
-      v17 = self;
+      selfCopy = self;
       v13 = v9;
       dispatch_async(v12, block);
     }
@@ -186,41 +186,41 @@
   resolvedMapItem = self->_resolvedMapItem;
   if (resolvedMapItem)
   {
-    v3 = resolvedMapItem;
+    originalMapItem = resolvedMapItem;
   }
 
   else
   {
-    v3 = [(DragAndDropMapItem *)self->_dragItem originalMapItem];
+    originalMapItem = [(DragAndDropMapItem *)self->_dragItem originalMapItem];
   }
 
-  return v3;
+  return originalMapItem;
 }
 
 - (id)dragFeatures
 {
-  v2 = [(DragAndDropPreview *)self mapItem];
-  v3 = [_DragCustomFeature customFeatureForMapItem:v2];
+  mapItem = [(DragAndDropPreview *)self mapItem];
+  v3 = [_DragCustomFeature customFeatureForMapItem:mapItem];
   v6 = v3;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
 }
 
-- (DragAndDropPreview)initWithDragAndDropMapItem:(id)a3 traitCollection:(id)a4
+- (DragAndDropPreview)initWithDragAndDropMapItem:(id)item traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = DragAndDropPreview;
   v9 = [(DragAndDropPreview *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dragItem, a3);
+    objc_storeStrong(&v9->_dragItem, item);
     [(DragAndDropMapItem *)v10->_dragItem setObserver:v10];
-    objc_storeStrong(&v10->_traitCollection, a4);
-    v11 = [[DragAndDropAnchorView alloc] initWithDragAndDropMapItem:v7 previewTraitCollection:v8];
+    objc_storeStrong(&v10->_traitCollection, collection);
+    v11 = [[DragAndDropAnchorView alloc] initWithDragAndDropMapItem:itemCopy previewTraitCollection:collectionCopy];
     anchorView = v10->_anchorView;
     v10->_anchorView = v11;
 

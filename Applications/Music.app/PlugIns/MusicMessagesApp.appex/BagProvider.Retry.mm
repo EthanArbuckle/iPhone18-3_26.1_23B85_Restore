@@ -1,15 +1,15 @@
 @interface BagProvider.Retry
 - (_TtCC9MusicCore11BagProviderP33_D1F028703756EAFCB4E62A24E619467F5Retry)init;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
 @end
 
 @implementation BagProvider.Retry
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   if (swift_weakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_10011C974(0);
   }
 }

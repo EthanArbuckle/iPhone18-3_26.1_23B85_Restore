@@ -1,16 +1,16 @@
 @interface PLMomentGenerationMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLMomentGenerationMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v6 = [v5 momentGenerationDataManager];
+  transactionCopy = transaction;
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
 
-  [v6 runPeriodicMaintenanceTasks:50 withTransaction:v4 progressReportBlock:0];
+  [momentGenerationDataManager runPeriodicMaintenanceTasks:50 withTransaction:transactionCopy progressReportBlock:0];
   return 1;
 }
 

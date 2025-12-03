@@ -1,5 +1,5 @@
 @interface _UTRuntimeConstantType
-+ (id)typeWithIdentifier:(id)a3 bundle:(id)a4 infoPlistKey:(__CFString *)a5;
++ (id)typeWithIdentifier:(id)identifier bundle:(id)bundle infoPlistKey:(__CFString *)key;
 - (void)dealloc;
 @end
 
@@ -18,22 +18,22 @@
   [(_UTRuntimeConstantType *)&v4 dealloc];
 }
 
-+ (id)typeWithIdentifier:(id)a3 bundle:(id)a4 infoPlistKey:(__CFString *)a5
++ (id)typeWithIdentifier:(id)identifier bundle:(id)bundle infoPlistKey:(__CFString *)key
 {
-  if (!a3)
+  if (!identifier)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UTCoreTypes.mm" lineNumber:685 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTCoreTypes.mm" lineNumber:685 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
   }
 
-  Instance = class_createInstance(a1, 0);
+  Instance = class_createInstance(self, 0);
   if (!Instance)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"UTCoreTypes.mm" lineNumber:688 description:{@"Failed to allocate instance of %@.", a1}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTCoreTypes.mm" lineNumber:688 description:{@"Failed to allocate instance of %@.", self}];
   }
 
-  Instance[2] = [a3 copy];
+  Instance[2] = [identifier copy];
 
   return Instance;
 }

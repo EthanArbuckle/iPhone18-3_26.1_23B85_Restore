@@ -1,33 +1,33 @@
 @interface REIOSurfaceTexturePayload
-- (BOOL)hasSameUnderlyingIOSurface:(id)a3;
-- (REIOSurfaceTexturePayload)initWithCoder:(id)a3;
-- (REIOSurfaceTexturePayload)initWithIOSurface:(id)a3 plane:(unint64_t)a4 pixelFormat:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)hasSameUnderlyingIOSurface:(id)surface;
+- (REIOSurfaceTexturePayload)initWithCoder:(id)coder;
+- (REIOSurfaceTexturePayload)initWithIOSurface:(id)surface plane:(unint64_t)plane pixelFormat:(unint64_t)format;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REIOSurfaceTexturePayload
 
-- (REIOSurfaceTexturePayload)initWithIOSurface:(id)a3 plane:(unint64_t)a4 pixelFormat:(unint64_t)a5
+- (REIOSurfaceTexturePayload)initWithIOSurface:(id)surface plane:(unint64_t)plane pixelFormat:(unint64_t)format
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  surfaceCopy = surface;
   v23.receiver = self;
   v23.super_class = REIOSurfaceTexturePayload;
   v10 = [(RESharedResourcePayload *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ioSurface, a3);
-    v11->_planeIndex = a4;
-    v11->_pixelFormat = a5;
+    objc_storeStrong(&v10->_ioSurface, surface);
+    v11->_planeIndex = plane;
+    v11->_pixelFormat = format;
     ioSurface = v11->_ioSurface;
     if (ioSurface)
     {
-      v13 = [(IOSurface *)ioSurface planeCount];
-      v14 = a4 == 0;
-      if (v13)
+      planeCount = [(IOSurface *)ioSurface planeCount];
+      v14 = plane == 0;
+      if (planeCount)
       {
-        v14 = v13 > a4;
+        v14 = planeCount > plane;
       }
 
       if (v14)
@@ -35,7 +35,7 @@
         goto LABEL_6;
       }
 
-      v20 = *re::assetTypesLogObjects(v13);
+      v20 = *re::assetTypesLogObjects(planeCount);
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
 LABEL_10:
@@ -76,30 +76,30 @@ LABEL_11:
   return v15;
 }
 
-- (REIOSurfaceTexturePayload)initWithCoder:(id)a3
+- (REIOSurfaceTexturePayload)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = REIOSurfaceTexturePayload;
-  v5 = [(RESharedResourcePayload *)&v17 initWithCoder:v4];
+  v5 = [(RESharedResourcePayload *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ioSurface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ioSurface"];
     ioSurface = v5->_ioSurface;
     v5->_ioSurface = v6;
 
-    v5->_planeIndex = [v4 decodeIntegerForKey:@"planeIndex"];
-    v5->_pixelFormat = [v4 decodeIntegerForKey:@"pixelFormat"];
+    v5->_planeIndex = [coderCopy decodeIntegerForKey:@"planeIndex"];
+    v5->_pixelFormat = [coderCopy decodeIntegerForKey:@"pixelFormat"];
     v8 = v5->_ioSurface;
     if (v8)
     {
       planeIndex = v5->_planeIndex;
-      v10 = [(IOSurface *)v8 planeCount];
+      planeCount = [(IOSurface *)v8 planeCount];
       v11 = planeIndex == 0;
-      if (v10)
+      if (planeCount)
       {
-        v11 = v10 > planeIndex;
+        v11 = planeCount > planeIndex;
       }
 
       if (v11)
@@ -107,7 +107,7 @@ LABEL_11:
         goto LABEL_6;
       }
 
-      v13 = *re::assetTypesLogObjects(v10);
+      v13 = *re::assetTypesLogObjects(planeCount);
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
 LABEL_10:
@@ -145,21 +145,21 @@ LABEL_11:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_ioSurface forKey:@"ioSurface"];
-  [v4 encodeInteger:self->_planeIndex forKey:@"planeIndex"];
-  [v4 encodeInteger:self->_pixelFormat forKey:@"pixelFormat"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_ioSurface forKey:@"ioSurface"];
+  [coderCopy encodeInteger:self->_planeIndex forKey:@"planeIndex"];
+  [coderCopy encodeInteger:self->_pixelFormat forKey:@"pixelFormat"];
 }
 
-- (BOOL)hasSameUnderlyingIOSurface:(id)a3
+- (BOOL)hasSameUnderlyingIOSurface:(id)surface
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  surfaceCopy = surface;
+  v5 = surfaceCopy;
+  if (surfaceCopy)
   {
-    v8 = self == v4 || (ioSurface = self->_ioSurface, v7 = v5->_ioSurface, ioSurface == v7) || CFEqual(ioSurface, v7) != 0;
+    v8 = self == surfaceCopy || (ioSurface = self->_ioSurface, v7 = v5->_ioSurface, ioSurface == v7) || CFEqual(ioSurface, v7) != 0;
   }
 
   else

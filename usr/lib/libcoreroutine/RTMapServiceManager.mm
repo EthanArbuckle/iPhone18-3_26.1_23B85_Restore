@@ -1,36 +1,36 @@
 @interface RTMapServiceManager
 - (RTMapServiceManager)init;
-- (id)_proxyForServicingSelector:(SEL)a3 withErrorHandler:(id)a4;
-- (id)mapItemWithIdentifier:(id)a3 geoMapItem:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 error:(id *)a7;
-- (id)mapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 error:(id *)a7;
+- (id)_proxyForServicingSelector:(SEL)selector withErrorHandler:(id)handler;
+- (id)mapItemWithIdentifier:(id)identifier geoMapItem:(id)item source:(unint64_t)source creationDate:(id)date error:(id *)error;
+- (id)mapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date error:(id *)error;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4;
-- (void)computeWithInputSignals:(id)a3 handler:(id)a4;
-- (void)createMapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7;
-- (void)downloadBluePOIMetadataWithHandler:(id)a3;
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)fetchAppClipURLsForMapItem:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchBluePOIMetadataWithHandler:(id)a3;
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4;
-- (void)fetchBuildingPolygonsFromLocation:(id)a3 radius:(double)a4 handler:(id)a5;
-- (void)fetchConfidenceWeightForMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 options:(id)a6 handler:(id)a7;
-- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemWithIdentifier:(id)a3 geoMapItem:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7;
-- (void)fetchMapItemsFromAddressDictionary:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromAddressString:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromIdentifiers:(id)a3 options:(id)a4 source:(unint64_t)a5 handler:(id)a6;
-- (void)fetchMapItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)fetchMapItemsFromNaturalLanguageQuery:(id)a3 location:(id)a4 options:(id)a5 handler:(id)a6;
-- (void)fetchMapItemsRelatedPlacesFromLocation:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 options:(id)a5 handler:(id)a6;
-- (void)fetchPostalAddressForMapItem:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)inferLocalBluePOIWithReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 bluePOITile:(id)a6 signalEnv:(int)a7 refreshAOI:(BOOL)a8 handler:(id)a9;
-- (void)interruptComputeWithError:(id)a3;
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler;
+- (void)computeWithInputSignals:(id)signals handler:(id)handler;
+- (void)createMapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date handler:(id)handler;
+- (void)downloadBluePOIMetadataWithHandler:(id)handler;
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)fetchAppClipURLsForMapItem:(id)item options:(id)options handler:(id)handler;
+- (void)fetchBluePOIMetadataWithHandler:(id)handler;
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler;
+- (void)fetchBuildingPolygonsFromLocation:(id)location radius:(double)radius handler:(id)handler;
+- (void)fetchConfidenceWeightForMapItem:(id)item startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler;
+- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemFromHandle:(id)handle options:(id)options handler:(id)handler;
+- (void)fetchMapItemWithIdentifier:(id)identifier geoMapItem:(id)item source:(unint64_t)source creationDate:(id)date handler:(id)handler;
+- (void)fetchMapItemsFromAddressDictionary:(id)dictionary options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromAddressString:(id)string options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromIdentifiers:(id)identifiers options:(id)options source:(unint64_t)source handler:(id)handler;
+- (void)fetchMapItemsFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler;
+- (void)fetchMapItemsFromNaturalLanguageQuery:(id)query location:(id)location options:(id)options handler:(id)handler;
+- (void)fetchMapItemsRelatedPlacesFromLocation:(id)location options:(id)options handler:(id)handler;
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier options:(id)options handler:(id)handler;
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius options:(id)options handler:(id)handler;
+- (void)fetchPostalAddressForMapItem:(id)item options:(id)options handler:(id)handler;
+- (void)inferLocalBluePOIWithReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points bluePOITile:(id)tile signalEnv:(int)env refreshAOI:(BOOL)i handler:(id)handler;
+- (void)interruptComputeWithError:(id)error;
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler;
 @end
 
 @implementation RTMapServiceManager
@@ -72,103 +72,103 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v45 = [v44 setWithObjects:{v43, v42, v41, v40, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v14 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v14 setClasses:v45 forSelector:sel_fetchMapItemsFromNaturalLanguageQuery_location_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface setClasses:v45 forSelector:sel_fetchMapItemsFromNaturalLanguageQuery_location_options_handler_ argumentIndex:0 ofReply:1];
 
-  v15 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v15 setClasses:v45 forSelector:sel_fetchMapItemsFromLocation_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface2 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface2 setClasses:v45 forSelector:sel_fetchMapItemsFromLocation_options_handler_ argumentIndex:0 ofReply:1];
 
-  v16 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v16 setClasses:v45 forSelector:sel_fetchMapItemsRelatedPlacesFromLocation_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface3 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface3 setClasses:v45 forSelector:sel_fetchMapItemsRelatedPlacesFromLocation_options_handler_ argumentIndex:0 ofReply:1];
 
-  v17 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v17 setClasses:v45 forSelector:sel_fetchMapItemsRelatedPlacesFromLocation_options_handler_ argumentIndex:1 ofReply:1];
+  remoteObjectInterface4 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface4 setClasses:v45 forSelector:sel_fetchMapItemsRelatedPlacesFromLocation_options_handler_ argumentIndex:1 ofReply:1];
 
-  v18 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v18 setClasses:v45 forSelector:sel_fetchMapItemsFromIdentifiers_options_source_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface5 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface5 setClasses:v45 forSelector:sel_fetchMapItemsFromIdentifiers_options_source_handler_ argumentIndex:0 ofReply:1];
 
-  v19 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v19 setClasses:v45 forSelector:sel_fetchMapItemsFromLocations_accessPoints_startDate_endDate_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface6 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface6 setClasses:v45 forSelector:sel_fetchMapItemsFromLocations_accessPoints_startDate_endDate_options_handler_ argumentIndex:0 ofReply:1];
 
-  v20 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v20 setClasses:v45 forSelector:sel_fetchMapItemsFromAddressString_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface7 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface7 setClasses:v45 forSelector:sel_fetchMapItemsFromAddressString_options_handler_ argumentIndex:0 ofReply:1];
 
-  v21 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v21 setClasses:v45 forSelector:sel_fetchMapItemsFromAddressDictionary_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface8 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface8 setClasses:v45 forSelector:sel_fetchMapItemsFromAddressDictionary_options_handler_ argumentIndex:0 ofReply:1];
 
-  v22 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v22 setClasses:v45 forSelector:sel_fetchPostalAddressForMapItem_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface9 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface9 setClasses:v45 forSelector:sel_fetchPostalAddressForMapItem_options_handler_ argumentIndex:0 ofReply:1];
 
-  v23 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v23 setClasses:v45 forSelector:sel_fetchAppClipURLsForMapItem_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface10 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface10 setClasses:v45 forSelector:sel_fetchAppClipURLsForMapItem_options_handler_ argumentIndex:0 ofReply:1];
 
-  v24 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v24 setClasses:v45 forSelector:sel_createMapItemWithIdentifier_geoMapItemStorage_source_creationDate_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface11 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface11 setClasses:v45 forSelector:sel_createMapItemWithIdentifier_geoMapItemStorage_source_creationDate_handler_ argumentIndex:0 ofReply:1];
 
-  v25 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v25 setClasses:v45 forSelector:sel_fetchCountryAndSubdivisionCodesFromLocation_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface12 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface12 setClasses:v45 forSelector:sel_fetchCountryAndSubdivisionCodesFromLocation_options_handler_ argumentIndex:0 ofReply:1];
 
-  v26 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v26 setClasses:v45 forSelector:sel_fetchBuildingPolygonsFromLocation_radius_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface13 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface13 setClasses:v45 forSelector:sel_fetchBuildingPolygonsFromLocation_radius_handler_ argumentIndex:0 ofReply:1];
 
-  v27 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v27 setClasses:v45 forSelector:sel_fetchPointOfInterestAttributesWithIdentifier_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface14 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface14 setClasses:v45 forSelector:sel_fetchPointOfInterestAttributesWithIdentifier_options_handler_ argumentIndex:0 ofReply:1];
 
-  v28 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v28 setClasses:v45 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface15 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface15 setClasses:v45 forSelector:sel_fetchPointOfInterestsAroundCoordinate_radius_options_handler_ argumentIndex:0 ofReply:1];
 
-  v29 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v29 setClasses:v45 forSelector:sel_inferLocalBluePOIWithReferenceLocation_locations_accessPoints_bluePOITile_signalEnv_refreshAOI_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface16 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface16 setClasses:v45 forSelector:sel_inferLocalBluePOIWithReferenceLocation_locations_accessPoints_bluePOITile_signalEnv_refreshAOI_handler_ argumentIndex:0 ofReply:1];
 
-  v30 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v30 setClasses:v45 forSelector:sel_downloadBluePOITilesForDownloadKeys_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface17 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface17 setClasses:v45 forSelector:sel_downloadBluePOITilesForDownloadKeys_handler_ argumentIndex:0 ofReply:1];
 
-  v31 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v31 setClasses:v45 forSelector:sel_downloadBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface18 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface18 setClasses:v45 forSelector:sel_downloadBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
 
-  v32 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v32 setClasses:v45 forSelector:sel_fetchConfidenceWeightForMapItem_startDate_endDate_options_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface19 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface19 setClasses:v45 forSelector:sel_fetchConfidenceWeightForMapItem_startDate_endDate_options_handler_ argumentIndex:0 ofReply:1];
 
-  v33 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v33 setClasses:v45 forSelector:sel_fetchBluePOITilesForDownloadKeys_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface20 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface20 setClasses:v45 forSelector:sel_fetchBluePOITilesForDownloadKeys_handler_ argumentIndex:0 ofReply:1];
 
-  v34 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v34 setClasses:v45 forSelector:sel_loadProtobufTileAtPath_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface21 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface21 setClasses:v45 forSelector:sel_loadProtobufTileAtPath_handler_ argumentIndex:0 ofReply:1];
 
-  v35 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v35 setClasses:v45 forSelector:sel_fetchBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface22 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface22 setClasses:v45 forSelector:sel_fetchBluePOIMetadataWithHandler_ argumentIndex:0 ofReply:1];
 
   v36 = MEMORY[0x277CBEB98];
   v37 = objc_opt_class();
   v38 = [v36 setWithObjects:{v37, objc_opt_class(), 0}];
-  v39 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
-  [v39 setClasses:v38 forSelector:sel_computeWithInputSignals_handler_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface23 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  [remoteObjectInterface23 setClasses:v38 forSelector:sel_computeWithInputSignals_handler_ argumentIndex:0 ofReply:1];
 
   [(NSXPCConnection *)self->_xpcConnection resume];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(NSXPCConnection *)self->_xpcConnection invalidate];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
-- (id)_proxyForServicingSelector:(SEL)a3 withErrorHandler:(id)a4
+- (id)_proxyForServicingSelector:(SEL)selector withErrorHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__RTMapServiceManager__proxyForServicingSelector_withErrorHandler___block_invoke;
   aBlock[3] = &unk_2788C56C0;
   aBlock[4] = self;
-  v24 = a3;
-  v7 = v6;
+  selectorCopy = selector;
+  v7 = handlerCopy;
   v23 = v7;
   v8 = _Block_copy(aBlock);
   v9 = self->_xpcConnection;
@@ -189,7 +189,7 @@
     v18 = @"no xpc connection";
   }
 
-  v19 = RTErrorConnectionCreate(a3, v18, v10, v11, v12, v13, v14, v15, v21);
+  v19 = RTErrorConnectionCreate(selector, v18, v10, v11, v12, v13, v14, v15, v21);
   v8[2](v8, v19);
 
   v17 = 0;
@@ -217,25 +217,25 @@ void __67__RTMapServiceManager__proxyForServicingSelector_withErrorHandler___blo
   }
 }
 
-- (void)fetchMapItemFromHandle:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemFromHandle:(id)handle options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  handleCopy = handle;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RTMapServiceManager_fetchMapItemFromHandle_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = handleCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = handleCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__RTMapServiceManager_fetchMapItemFromHandle_options_handler___block_invoke(uint64_t a1)
@@ -262,28 +262,28 @@ uint64_t __62__RTMapServiceManager_fetchMapItemFromHandle_options_handler___bloc
   return result;
 }
 
-- (void)fetchMapItemsFromNaturalLanguageQuery:(id)a3 location:(id)a4 options:(id)a5 handler:(id)a6
+- (void)fetchMapItemsFromNaturalLanguageQuery:(id)query location:(id)location options:(id)options handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(RTNotifier *)self queue];
+  queryCopy = query;
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __86__RTMapServiceManager_fetchMapItemsFromNaturalLanguageQuery_location_options_handler___block_invoke;
   v20[3] = &unk_2788C6238;
-  v24 = v14;
+  v24 = handlerCopy;
   v25 = a2;
   v20[4] = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v14;
-  dispatch_async(v15, v20);
+  v21 = queryCopy;
+  v22 = locationCopy;
+  v23 = optionsCopy;
+  v16 = optionsCopy;
+  v17 = locationCopy;
+  v18 = queryCopy;
+  v19 = handlerCopy;
+  dispatch_async(queue, v20);
 }
 
 void __86__RTMapServiceManager_fetchMapItemsFromNaturalLanguageQuery_location_options_handler___block_invoke(uint64_t a1)
@@ -310,25 +310,25 @@ uint64_t __86__RTMapServiceManager_fetchMapItemsFromNaturalLanguageQuery_locatio
   return result;
 }
 
-- (void)fetchMapItemsFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__RTMapServiceManager_fetchMapItemsFromLocation_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = locationCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = locationCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__RTMapServiceManager_fetchMapItemsFromLocation_options_handler___block_invoke(uint64_t a1)
@@ -355,25 +355,25 @@ uint64_t __65__RTMapServiceManager_fetchMapItemsFromLocation_options_handler___b
   return result;
 }
 
-- (void)fetchMapItemsRelatedPlacesFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsRelatedPlacesFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__RTMapServiceManager_fetchMapItemsRelatedPlacesFromLocation_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = locationCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = locationCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__RTMapServiceManager_fetchMapItemsRelatedPlacesFromLocation_options_handler___block_invoke(uint64_t a1)
@@ -400,26 +400,26 @@ uint64_t __78__RTMapServiceManager_fetchMapItemsRelatedPlacesFromLocation_option
   return result;
 }
 
-- (void)fetchMapItemsFromIdentifiers:(id)a3 options:(id)a4 source:(unint64_t)a5 handler:(id)a6
+- (void)fetchMapItemsFromIdentifiers:(id)identifiers options:(id)options source:(unint64_t)source handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [(RTNotifier *)self queue];
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __75__RTMapServiceManager_fetchMapItemsFromIdentifiers_options_source_handler___block_invoke;
   v18[3] = &unk_2788C7498;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
+  v19 = identifiersCopy;
+  v20 = optionsCopy;
+  v21 = handlerCopy;
   v22 = a2;
-  v23 = a5;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  sourceCopy = source;
+  v15 = optionsCopy;
+  v16 = identifiersCopy;
+  v17 = handlerCopy;
+  dispatch_async(queue, v18);
 }
 
 void __75__RTMapServiceManager_fetchMapItemsFromIdentifiers_options_source_handler___block_invoke(uint64_t a1)
@@ -446,34 +446,34 @@ uint64_t __75__RTMapServiceManager_fetchMapItemsFromIdentifiers_options_source_h
   return result;
 }
 
-- (void)fetchMapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 handler:(id)a8
+- (void)fetchMapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [(RTNotifier *)self queue];
+  locationsCopy = locations;
+  pointsCopy = points;
+  dateCopy = date;
+  endDateCopy = endDate;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __97__RTMapServiceManager_fetchMapItemsFromLocations_accessPoints_startDate_endDate_options_handler___block_invoke;
   v28[3] = &unk_2788CDE80;
-  v34 = v20;
+  v34 = handlerCopy;
   v35 = a2;
   v28[4] = self;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v20;
-  dispatch_async(v21, v28);
+  v29 = locationsCopy;
+  v30 = pointsCopy;
+  v31 = dateCopy;
+  v32 = endDateCopy;
+  v33 = optionsCopy;
+  v22 = optionsCopy;
+  v23 = endDateCopy;
+  v24 = dateCopy;
+  v25 = pointsCopy;
+  v26 = locationsCopy;
+  v27 = handlerCopy;
+  dispatch_async(queue, v28);
 }
 
 void __97__RTMapServiceManager_fetchMapItemsFromLocations_accessPoints_startDate_endDate_options_handler___block_invoke(uint64_t a1)
@@ -500,25 +500,25 @@ uint64_t __97__RTMapServiceManager_fetchMapItemsFromLocations_accessPoints_start
   return result;
 }
 
-- (void)fetchMapItemsFromAddressString:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromAddressString:(id)string options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  stringCopy = string;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTMapServiceManager_fetchMapItemsFromAddressString_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = stringCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = stringCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__RTMapServiceManager_fetchMapItemsFromAddressString_options_handler___block_invoke(uint64_t a1)
@@ -545,25 +545,25 @@ uint64_t __70__RTMapServiceManager_fetchMapItemsFromAddressString_options_handle
   return result;
 }
 
-- (void)fetchMapItemsFromAddressDictionary:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchMapItemsFromAddressDictionary:(id)dictionary options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__RTMapServiceManager_fetchMapItemsFromAddressDictionary_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = dictionaryCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = dictionaryCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__RTMapServiceManager_fetchMapItemsFromAddressDictionary_options_handler___block_invoke(uint64_t a1)
@@ -590,25 +590,25 @@ uint64_t __74__RTMapServiceManager_fetchMapItemsFromAddressDictionary_options_ha
   return result;
 }
 
-- (void)fetchPostalAddressForMapItem:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchPostalAddressForMapItem:(id)item options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  itemCopy = item;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTMapServiceManager_fetchPostalAddressForMapItem_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = itemCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = itemCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__RTMapServiceManager_fetchPostalAddressForMapItem_options_handler___block_invoke(uint64_t a1)
@@ -635,25 +635,25 @@ uint64_t __68__RTMapServiceManager_fetchPostalAddressForMapItem_options_handler_
   return result;
 }
 
-- (void)fetchAppClipURLsForMapItem:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchAppClipURLsForMapItem:(id)item options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  itemCopy = item;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTMapServiceManager_fetchAppClipURLsForMapItem_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = itemCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = itemCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __66__RTMapServiceManager_fetchAppClipURLsForMapItem_options_handler___block_invoke(uint64_t a1)
@@ -680,29 +680,29 @@ uint64_t __66__RTMapServiceManager_fetchAppClipURLsForMapItem_options_handler___
   return result;
 }
 
-- (void)createMapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7
+- (void)createMapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  storageCopy = storage;
+  dateCopy = date;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__RTMapServiceManager_createMapItemWithIdentifier_geoMapItemStorage_source_creationDate_handler___block_invoke;
   block[3] = &unk_2788CE9C0;
-  v26 = v16;
+  v26 = handlerCopy;
   v27 = a2;
   block[4] = self;
-  v23 = v13;
-  v28 = a5;
-  v24 = v14;
-  v25 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  dispatch_async(v17, block);
+  v23 = identifierCopy;
+  sourceCopy = source;
+  v24 = storageCopy;
+  v25 = dateCopy;
+  v18 = dateCopy;
+  v19 = storageCopy;
+  v20 = identifierCopy;
+  v21 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __97__RTMapServiceManager_createMapItemWithIdentifier_geoMapItemStorage_source_creationDate_handler___block_invoke(uint64_t a1)
@@ -729,12 +729,12 @@ uint64_t __97__RTMapServiceManager_createMapItemWithIdentifier_geoMapItemStorage
   return result;
 }
 
-- (id)mapItemWithIdentifier:(id)a3 geoMapItemStorage:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 error:(id *)a7
+- (id)mapItemWithIdentifier:(id)identifier geoMapItemStorage:(id)storage source:(unint64_t)source creationDate:(id)date error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  storageCopy = storage;
+  dateCopy = date;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -756,8 +756,8 @@ uint64_t __97__RTMapServiceManager_createMapItemWithIdentifier_geoMapItemStorage
   v41 = &v42;
   v15 = v14;
   v39 = v15;
-  v36 = v11;
-  [(RTMapServiceManager *)self createMapItemWithIdentifier:v11 geoMapItemStorage:v12 source:a5 creationDate:v13 handler:v38];
+  v36 = identifierCopy;
+  [(RTMapServiceManager *)self createMapItemWithIdentifier:identifierCopy geoMapItemStorage:storageCopy source:source creationDate:dateCopy handler:v38];
   v16 = v15;
   v17 = [MEMORY[0x277CBEAA8] now];
   v18 = dispatch_time(0, 3600000000000);
@@ -768,11 +768,11 @@ uint64_t __97__RTMapServiceManager_createMapItemWithIdentifier_geoMapItemStorage
     v21 = v20;
     v22 = objc_opt_new();
     v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_122];
-    v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v25 = [v24 filteredArrayUsingPredicate:v23];
-    v26 = [v25 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+    firstObject = [v25 firstObject];
 
-    [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+    [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
@@ -809,9 +809,9 @@ LABEL_8:
     objc_storeStrong(v43 + 5, v30);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v43[5];
+    *error = v43[5];
   }
 
   v34 = v49[5];
@@ -839,29 +839,29 @@ void __89__RTMapServiceManager_mapItemWithIdentifier_geoMapItemStorage_source_cr
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchMapItemWithIdentifier:(id)a3 geoMapItem:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 handler:(id)a7
+- (void)fetchMapItemWithIdentifier:(id)identifier geoMapItem:(id)item source:(unint64_t)source creationDate:(id)date handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  itemCopy = item;
+  dateCopy = date;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__RTMapServiceManager_fetchMapItemWithIdentifier_geoMapItem_source_creationDate_handler___block_invoke;
   block[3] = &unk_2788CFF28;
-  v23 = v14;
-  v24 = self;
-  v27 = v16;
+  v23 = itemCopy;
+  selfCopy = self;
+  v27 = handlerCopy;
   v28 = a2;
-  v29 = a5;
-  v25 = v13;
-  v26 = v15;
-  v18 = v15;
-  v19 = v13;
-  v20 = v16;
-  v21 = v14;
-  dispatch_async(v17, block);
+  sourceCopy = source;
+  v25 = identifierCopy;
+  v26 = dateCopy;
+  v18 = dateCopy;
+  v19 = identifierCopy;
+  v20 = handlerCopy;
+  v21 = itemCopy;
+  dispatch_async(queue, block);
 }
 
 void __89__RTMapServiceManager_fetchMapItemWithIdentifier_geoMapItem_source_creationDate_handler___block_invoke(uint64_t a1)
@@ -889,12 +889,12 @@ uint64_t __89__RTMapServiceManager_fetchMapItemWithIdentifier_geoMapItem_source_
   return result;
 }
 
-- (id)mapItemWithIdentifier:(id)a3 geoMapItem:(id)a4 source:(unint64_t)a5 creationDate:(id)a6 error:(id *)a7
+- (id)mapItemWithIdentifier:(id)identifier geoMapItem:(id)item source:(unint64_t)source creationDate:(id)date error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  itemCopy = item;
+  dateCopy = date;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -916,8 +916,8 @@ uint64_t __89__RTMapServiceManager_fetchMapItemWithIdentifier_geoMapItem_source_
   v41 = &v42;
   v15 = v14;
   v39 = v15;
-  v36 = v11;
-  [(RTMapServiceManager *)self fetchMapItemWithIdentifier:v11 geoMapItem:v12 source:a5 creationDate:v13 handler:v38];
+  v36 = identifierCopy;
+  [(RTMapServiceManager *)self fetchMapItemWithIdentifier:identifierCopy geoMapItem:itemCopy source:source creationDate:dateCopy handler:v38];
   v16 = v15;
   v17 = [MEMORY[0x277CBEAA8] now];
   v18 = dispatch_time(0, 3600000000000);
@@ -928,11 +928,11 @@ uint64_t __89__RTMapServiceManager_fetchMapItemWithIdentifier_geoMapItem_source_
     v21 = v20;
     v22 = objc_opt_new();
     v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_122];
-    v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v25 = [v24 filteredArrayUsingPredicate:v23];
-    v26 = [v25 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+    firstObject = [v25 firstObject];
 
-    [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+    [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
@@ -969,9 +969,9 @@ LABEL_8:
     objc_storeStrong(v43 + 5, v30);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v43[5];
+    *error = v43[5];
   }
 
   v34 = v49[5];
@@ -999,25 +999,25 @@ void __82__RTMapServiceManager_mapItemWithIdentifier_geoMapItem_source_creationD
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchCountryAndSubdivisionCodesFromLocation:(id)location options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__RTMapServiceManager_fetchCountryAndSubdivisionCodesFromLocation_options_handler___block_invoke;
   block[3] = &unk_2788C6530;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = locationCopy;
+  v18 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = locationCopy;
+  v15 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__RTMapServiceManager_fetchCountryAndSubdivisionCodesFromLocation_options_handler___block_invoke(uint64_t a1)
@@ -1044,23 +1044,23 @@ uint64_t __83__RTMapServiceManager_fetchCountryAndSubdivisionCodesFromLocation_o
   return result;
 }
 
-- (void)fetchBuildingPolygonsFromLocation:(id)a3 radius:(double)a4 handler:(id)a5
+- (void)fetchBuildingPolygonsFromLocation:(id)location radius:(double)radius handler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__RTMapServiceManager_fetchBuildingPolygonsFromLocation_radius_handler___block_invoke;
   block[3] = &unk_2788C47A8;
-  v16 = v10;
+  v16 = handlerCopy;
   v17 = a2;
   block[4] = self;
-  v15 = v9;
-  v18 = a4;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = locationCopy;
+  radiusCopy = radius;
+  v12 = locationCopy;
+  v13 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__RTMapServiceManager_fetchBuildingPolygonsFromLocation_radius_handler___block_invoke(uint64_t a1)
@@ -1087,23 +1087,23 @@ uint64_t __72__RTMapServiceManager_fetchBuildingPolygonsFromLocation_radius_hand
   return result;
 }
 
-- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)a3 options:(id)a4 handler:(id)a5
+- (void)fetchPointOfInterestAttributesWithIdentifier:(unint64_t)identifier options:(id)options handler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__RTMapServiceManager_fetchPointOfInterestAttributesWithIdentifier_options_handler___block_invoke;
   block[3] = &unk_2788C47A8;
-  v16 = v10;
+  v16 = handlerCopy;
   v17 = a2;
-  v18 = a3;
+  identifierCopy = identifier;
   block[4] = self;
-  v15 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __84__RTMapServiceManager_fetchPointOfInterestAttributesWithIdentifier_options_handler___block_invoke(uint64_t a1)
@@ -1130,26 +1130,26 @@ uint64_t __84__RTMapServiceManager_fetchPointOfInterestAttributesWithIdentifier_
   return result;
 }
 
-- (void)fetchPointOfInterestsAroundCoordinate:(id)a3 radius:(double)a4 options:(id)a5 handler:(id)a6
+- (void)fetchPointOfInterestsAroundCoordinate:(id)coordinate radius:(double)radius options:(id)options handler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(RTNotifier *)self queue];
+  coordinateCopy = coordinate;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__RTMapServiceManager_fetchPointOfInterestsAroundCoordinate_radius_options_handler___block_invoke;
   v18[3] = &unk_2788C7498;
-  v21 = v13;
+  v21 = handlerCopy;
   v22 = a2;
   v18[4] = self;
-  v19 = v11;
-  v23 = a4;
-  v20 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  v19 = coordinateCopy;
+  radiusCopy = radius;
+  v20 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = coordinateCopy;
+  v17 = handlerCopy;
+  dispatch_async(queue, v18);
 }
 
 void __84__RTMapServiceManager_fetchPointOfInterestsAroundCoordinate_radius_options_handler___block_invoke(uint64_t a1)
@@ -1176,33 +1176,33 @@ uint64_t __84__RTMapServiceManager_fetchPointOfInterestsAroundCoordinate_radius_
   return result;
 }
 
-- (void)inferLocalBluePOIWithReferenceLocation:(id)a3 locations:(id)a4 accessPoints:(id)a5 bluePOITile:(id)a6 signalEnv:(int)a7 refreshAOI:(BOOL)a8 handler:(id)a9
+- (void)inferLocalBluePOIWithReferenceLocation:(id)location locations:(id)locations accessPoints:(id)points bluePOITile:(id)tile signalEnv:(int)env refreshAOI:(BOOL)i handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  locationsCopy = locations;
+  pointsCopy = points;
+  tileCopy = tile;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __126__RTMapServiceManager_inferLocalBluePOIWithReferenceLocation_locations_accessPoints_bluePOITile_signalEnv_refreshAOI_handler___block_invoke;
   block[3] = &unk_2788CFF50;
-  v32 = v19;
+  v32 = handlerCopy;
   v33 = a2;
   block[4] = self;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v34 = a7;
-  v35 = a8;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v19;
-  dispatch_async(v20, block);
+  v28 = locationCopy;
+  v29 = locationsCopy;
+  v30 = pointsCopy;
+  v31 = tileCopy;
+  envCopy = env;
+  iCopy = i;
+  v21 = tileCopy;
+  v22 = pointsCopy;
+  v23 = locationsCopy;
+  v24 = locationCopy;
+  v25 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __126__RTMapServiceManager_inferLocalBluePOIWithReferenceLocation_locations_accessPoints_bluePOITile_signalEnv_refreshAOI_handler___block_invoke(uint64_t a1)
@@ -1229,22 +1229,22 @@ uint64_t __126__RTMapServiceManager_inferLocalBluePOIWithReferenceLocation_locat
   return result;
 }
 
-- (void)compileCoreMLModelAtURL:(id)a3 handler:(id)a4
+- (void)compileCoreMLModelAtURL:(id)l handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  lCopy = l;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__RTMapServiceManager_compileCoreMLModelAtURL_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = lCopy;
+  v10 = lCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __55__RTMapServiceManager_compileCoreMLModelAtURL_handler___block_invoke(uint64_t a1)
@@ -1271,22 +1271,22 @@ uint64_t __55__RTMapServiceManager_compileCoreMLModelAtURL_handler___block_invok
   return result;
 }
 
-- (void)downloadBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)downloadBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__RTMapServiceManager_downloadBluePOITilesForDownloadKeys_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = keysCopy;
+  v10 = keysCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __67__RTMapServiceManager_downloadBluePOITilesForDownloadKeys_handler___block_invoke(uint64_t a1)
@@ -1313,19 +1313,19 @@ uint64_t __67__RTMapServiceManager_downloadBluePOITilesForDownloadKeys_handler__
   return result;
 }
 
-- (void)downloadBluePOIMetadataWithHandler:(id)a3
+- (void)downloadBluePOIMetadataWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTMapServiceManager_downloadBluePOIMetadataWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__RTMapServiceManager_downloadBluePOIMetadataWithHandler___block_invoke(uint64_t a1)
@@ -1352,31 +1352,31 @@ uint64_t __58__RTMapServiceManager_downloadBluePOIMetadataWithHandler___block_in
   return result;
 }
 
-- (void)fetchConfidenceWeightForMapItem:(id)a3 startDate:(id)a4 endDate:(id)a5 options:(id)a6 handler:(id)a7
+- (void)fetchConfidenceWeightForMapItem:(id)item startDate:(id)date endDate:(id)endDate options:(id)options handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(RTNotifier *)self queue];
+  itemCopy = item;
+  dateCopy = date;
+  endDateCopy = endDate;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__RTMapServiceManager_fetchConfidenceWeightForMapItem_startDate_endDate_options_handler___block_invoke;
   block[3] = &unk_2788C6580;
-  v29 = v17;
+  v29 = handlerCopy;
   v30 = a2;
   block[4] = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v17;
-  dispatch_async(v18, block);
+  v25 = itemCopy;
+  v26 = dateCopy;
+  v27 = endDateCopy;
+  v28 = optionsCopy;
+  v19 = optionsCopy;
+  v20 = endDateCopy;
+  v21 = dateCopy;
+  v22 = itemCopy;
+  v23 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __89__RTMapServiceManager_fetchConfidenceWeightForMapItem_startDate_endDate_options_handler___block_invoke(uint64_t a1)
@@ -1403,22 +1403,22 @@ uint64_t __89__RTMapServiceManager_fetchConfidenceWeightForMapItem_startDate_end
   return result;
 }
 
-- (void)fetchBluePOITilesForDownloadKeys:(id)a3 handler:(id)a4
+- (void)fetchBluePOITilesForDownloadKeys:(id)keys handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__RTMapServiceManager_fetchBluePOITilesForDownloadKeys_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = keysCopy;
+  v10 = keysCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __64__RTMapServiceManager_fetchBluePOITilesForDownloadKeys_handler___block_invoke(uint64_t a1)
@@ -1445,22 +1445,22 @@ uint64_t __64__RTMapServiceManager_fetchBluePOITilesForDownloadKeys_handler___bl
   return result;
 }
 
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  pathCopy = path;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__RTMapServiceManager_loadProtobufTileAtPath_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = pathCopy;
+  v10 = pathCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __54__RTMapServiceManager_loadProtobufTileAtPath_handler___block_invoke(uint64_t a1)
@@ -1487,19 +1487,19 @@ uint64_t __54__RTMapServiceManager_loadProtobufTileAtPath_handler___block_invoke
   return result;
 }
 
-- (void)fetchBluePOIMetadataWithHandler:(id)a3
+- (void)fetchBluePOIMetadataWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RTMapServiceManager_fetchBluePOIMetadataWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__RTMapServiceManager_fetchBluePOIMetadataWithHandler___block_invoke(uint64_t a1)
@@ -1526,22 +1526,22 @@ uint64_t __55__RTMapServiceManager_fetchBluePOIMetadataWithHandler___block_invok
   return result;
 }
 
-- (void)computeWithInputSignals:(id)a3 handler:(id)a4
+- (void)computeWithInputSignals:(id)signals handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  signalsCopy = signals;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__RTMapServiceManager_computeWithInputSignals_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = signalsCopy;
+  v10 = signalsCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __55__RTMapServiceManager_computeWithInputSignals_handler___block_invoke(uint64_t a1)
@@ -1568,19 +1568,19 @@ uint64_t __55__RTMapServiceManager_computeWithInputSignals_handler___block_invok
   return result;
 }
 
-- (void)interruptComputeWithError:(id)a3
+- (void)interruptComputeWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  errorCopy = error;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTMapServiceManager_interruptComputeWithError___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = errorCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __49__RTMapServiceManager_interruptComputeWithError___block_invoke(uint64_t a1)

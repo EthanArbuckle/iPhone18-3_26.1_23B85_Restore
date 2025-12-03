@@ -1,42 +1,42 @@
 @interface CRLShapeCollectionDataSource
-- (BOOL)hasUserDefinedItemsInCategoryAtIndex:(unint64_t)a3;
-- (BOOL)hasUserDefinedShapesInCategoryAtIndex:(unint64_t)a3;
-- (CRLShapeCollectionDataSource)initWithBasicShapeLibrary:(id)a3;
-- (CRLShapeCollectionDataSource)initWithShapeLibrary:(id)a3 basicShapeLibrary:(id)a4;
+- (BOOL)hasUserDefinedItemsInCategoryAtIndex:(unint64_t)index;
+- (BOOL)hasUserDefinedShapesInCategoryAtIndex:(unint64_t)index;
+- (CRLShapeCollectionDataSource)initWithBasicShapeLibrary:(id)library;
+- (CRLShapeCollectionDataSource)initWithShapeLibrary:(id)library basicShapeLibrary:(id)shapeLibrary;
 - (NSArray)categoryNames;
-- (id)p_shapeAtIndex:(unint64_t)a3 categoryIndex:(unint64_t)a4;
-- (id)p_shapeCollectionAtIndex:(unint64_t)a3;
-- (id)p_shapeWithIdentifier:(id)a3 categoryIndex:(unint64_t)a4;
-- (unint64_t)numberOfItemsInCategoryAtIndex:(unint64_t)a3;
-- (unint64_t)numberOfShapesInCategoryAtIndex:(unint64_t)a3;
+- (id)p_shapeAtIndex:(unint64_t)index categoryIndex:(unint64_t)categoryIndex;
+- (id)p_shapeCollectionAtIndex:(unint64_t)index;
+- (id)p_shapeWithIdentifier:(id)identifier categoryIndex:(unint64_t)index;
+- (unint64_t)numberOfItemsInCategoryAtIndex:(unint64_t)index;
+- (unint64_t)numberOfShapesInCategoryAtIndex:(unint64_t)index;
 - (unint64_t)p_numberOfCategories;
 - (unint64_t)p_numberOfNonUserDefinedCategories;
 @end
 
 @implementation CRLShapeCollectionDataSource
 
-- (CRLShapeCollectionDataSource)initWithShapeLibrary:(id)a3 basicShapeLibrary:(id)a4
+- (CRLShapeCollectionDataSource)initWithShapeLibrary:(id)library basicShapeLibrary:(id)shapeLibrary
 {
-  v7 = a3;
-  v8 = [(CRLShapeCollectionDataSource *)self initWithBasicShapeLibrary:a4];
+  libraryCopy = library;
+  v8 = [(CRLShapeCollectionDataSource *)self initWithBasicShapeLibrary:shapeLibrary];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shapeLibrary, a3);
+    objc_storeStrong(&v8->_shapeLibrary, library);
   }
 
   return v9;
 }
 
-- (CRLShapeCollectionDataSource)initWithBasicShapeLibrary:(id)a3
+- (CRLShapeCollectionDataSource)initWithBasicShapeLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = CRLShapeCollectionDataSource;
   v5 = [(CRLShapeCollectionDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [[CRLBasicShapeLibraryCollection alloc] initWithBasicShapeLibrary:v4];
+    v6 = [[CRLBasicShapeLibraryCollection alloc] initWithBasicShapeLibrary:libraryCopy];
     basicShapeLibraryCollection = v5->_basicShapeLibraryCollection;
     v5->_basicShapeLibraryCollection = v6;
   }
@@ -46,71 +46,71 @@
 
 - (NSArray)categoryNames
 {
-  v3 = [(CRLShapeCollectionDataSource *)self p_numberOfCategories];
-  v4 = [NSMutableArray arrayWithCapacity:v3];
-  if (v3)
+  p_numberOfCategories = [(CRLShapeCollectionDataSource *)self p_numberOfCategories];
+  v4 = [NSMutableArray arrayWithCapacity:p_numberOfCategories];
+  if (p_numberOfCategories)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != p_numberOfCategories; ++i)
     {
       v6 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:i];
-      v7 = [v6 name];
+      name = [v6 name];
 
-      [v4 addObject:v7];
+      [v4 addObject:name];
     }
   }
 
   return v4;
 }
 
-- (BOOL)hasUserDefinedShapesInCategoryAtIndex:(unint64_t)a3
+- (BOOL)hasUserDefinedShapesInCategoryAtIndex:(unint64_t)index
 {
-  v5 = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
-  if (v5)
+  p_hasUserDefinedShapes = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
+  if (p_hasUserDefinedShapes)
   {
-    LOBYTE(v5) = [(CRLShapeCollectionDataSource *)self indexOfUserDefinedLibraryCategory]== a3;
+    LOBYTE(p_hasUserDefinedShapes) = [(CRLShapeCollectionDataSource *)self indexOfUserDefinedLibraryCategory]== index;
   }
 
-  return v5;
+  return p_hasUserDefinedShapes;
 }
 
-- (unint64_t)numberOfShapesInCategoryAtIndex:(unint64_t)a3
+- (unint64_t)numberOfShapesInCategoryAtIndex:(unint64_t)index
 {
-  v3 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:a3];
-  v4 = [v3 numberOfShapes];
+  v3 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:index];
+  numberOfShapes = [v3 numberOfShapes];
 
-  return v4;
+  return numberOfShapes;
 }
 
 - (unint64_t)p_numberOfNonUserDefinedCategories
 {
-  v2 = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
-  v3 = [v2 categories];
-  v4 = [v3 count];
+  p_shapeLibrary = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
+  categories = [p_shapeLibrary categories];
+  v4 = [categories count];
 
   return v4 + 1;
 }
 
 - (unint64_t)p_numberOfCategories
 {
-  v3 = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
-  v4 = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
-  if (v4)
+  p_hasUserDefinedShapes = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
+  p_shapeLibrary = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
+  if (p_shapeLibrary)
   {
-    v3 += [(CRLShapeCollectionDataSource *)self p_numberOfNonUserDefinedCategories];
+    p_hasUserDefinedShapes += [(CRLShapeCollectionDataSource *)self p_numberOfNonUserDefinedCategories];
   }
 
-  return v3;
+  return p_hasUserDefinedShapes;
 }
 
-- (id)p_shapeCollectionAtIndex:(unint64_t)a3
+- (id)p_shapeCollectionAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
-    v9 = [(CRLShapeCollectionDataSource *)self p_basicShapeLibraryCollection];
+    p_basicShapeLibraryCollection = [(CRLShapeCollectionDataSource *)self p_basicShapeLibraryCollection];
     goto LABEL_16;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -142,54 +142,54 @@
 
   else if (self->_shapeLibrary)
   {
-    v10 = a3 - +[CRLShapeCollectionDataSource p_firstIndexOfShapeLibraryCategories];
+    v10 = index - +[CRLShapeCollectionDataSource p_firstIndexOfShapeLibraryCategories];
     v11 = [CRLShapeLibraryCollection alloc];
-    v12 = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
-    v9 = [(CRLShapeLibraryCollection *)v11 initWithShapeLibrary:v12 categoryIndex:v10];
+    p_shapeLibrary = [(CRLShapeCollectionDataSource *)self p_shapeLibrary];
+    p_basicShapeLibraryCollection = [(CRLShapeLibraryCollection *)v11 initWithShapeLibrary:p_shapeLibrary categoryIndex:v10];
 
     goto LABEL_16;
   }
 
-  v9 = 0;
+  p_basicShapeLibraryCollection = 0;
 LABEL_16:
 
-  return v9;
+  return p_basicShapeLibraryCollection;
 }
 
-- (id)p_shapeAtIndex:(unint64_t)a3 categoryIndex:(unint64_t)a4
+- (id)p_shapeAtIndex:(unint64_t)index categoryIndex:(unint64_t)categoryIndex
 {
-  v5 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:a4];
-  v6 = [v5 shapeAtIndex:a3];
+  v5 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:categoryIndex];
+  v6 = [v5 shapeAtIndex:index];
 
   return v6;
 }
 
-- (id)p_shapeWithIdentifier:(id)a3 categoryIndex:(unint64_t)a4
+- (id)p_shapeWithIdentifier:(id)identifier categoryIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:a4];
-  v8 = [v7 shapeWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:index];
+  v8 = [v7 shapeWithIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (BOOL)hasUserDefinedItemsInCategoryAtIndex:(unint64_t)a3
+- (BOOL)hasUserDefinedItemsInCategoryAtIndex:(unint64_t)index
 {
-  v5 = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
-  if (v5)
+  p_hasUserDefinedShapes = [(CRLShapeCollectionDataSource *)self p_hasUserDefinedShapes];
+  if (p_hasUserDefinedShapes)
   {
-    LOBYTE(v5) = [(CRLShapeCollectionDataSource *)self indexOfUserDefinedLibraryCategory]== a3;
+    LOBYTE(p_hasUserDefinedShapes) = [(CRLShapeCollectionDataSource *)self indexOfUserDefinedLibraryCategory]== index;
   }
 
-  return v5;
+  return p_hasUserDefinedShapes;
 }
 
-- (unint64_t)numberOfItemsInCategoryAtIndex:(unint64_t)a3
+- (unint64_t)numberOfItemsInCategoryAtIndex:(unint64_t)index
 {
-  v3 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:a3];
-  v4 = [v3 numberOfShapes];
+  v3 = [(CRLShapeCollectionDataSource *)self p_shapeCollectionAtIndex:index];
+  numberOfShapes = [v3 numberOfShapes];
 
-  return v4;
+  return numberOfShapes;
 }
 
 @end

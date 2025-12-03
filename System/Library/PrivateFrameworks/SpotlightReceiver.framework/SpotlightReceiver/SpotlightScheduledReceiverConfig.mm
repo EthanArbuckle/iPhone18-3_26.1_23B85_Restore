@@ -1,24 +1,24 @@
 @interface SpotlightScheduledReceiverConfig
 - (NSArray)fetchAttributes;
-- (SpotlightScheduledReceiverConfig)initWithConfigurationValues:(id)a3;
+- (SpotlightScheduledReceiverConfig)initWithConfigurationValues:(id)values;
 - (void)_updateAttributes;
 @end
 
 @implementation SpotlightScheduledReceiverConfig
 
-- (SpotlightScheduledReceiverConfig)initWithConfigurationValues:(id)a3
+- (SpotlightScheduledReceiverConfig)initWithConfigurationValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v68.receiver = self;
   v68.super_class = SpotlightScheduledReceiverConfig;
   v5 = [(SpotlightScheduledReceiverConfig *)&v68 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigName];
+    v6 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigName];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionName];
+    v8 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionName];
     v9 = v8;
     if (v8)
     {
@@ -31,19 +31,19 @@
     {
       v12 = MEMORY[0x277CCACA8];
       versionName = [(NSString *)v5->_name capitalizedString];
-      v13 = [v12 stringWithFormat:@"_kMDItem%@Version", versionName];
+      versionName = [v12 stringWithFormat:@"_kMDItem%@Version", versionName];
       v14 = v5->_versionName;
-      v5->_versionName = v13;
+      v5->_versionName = versionName;
     }
 
-    v15 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
+    v15 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
     if (v15)
     {
-      v16 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
+      v16 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
+        v17 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigVersionValue];
       }
 
       else
@@ -61,27 +61,27 @@
       v5->_versionValue = &unk_284823048;
     }
 
-    v19 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigProcesses];
+    v19 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigProcesses];
     processes = v5->_processes;
     v5->_processes = v19;
 
-    v21 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigPriority];
+    v21 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigPriority];
     priority = v5->_priority;
     v5->_priority = v21;
 
-    v23 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigDonationAttributes];
+    v23 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigDonationAttributes];
     donationAttributes = v5->_donationAttributes;
     v5->_donationAttributes = v23;
 
-    v25 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequiredAttributes];
+    v25 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequiredAttributes];
     requiredAttributes = v5->_requiredAttributes;
     v5->_requiredAttributes = v25;
 
-    v27 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigOptionalAttributes];
+    v27 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigOptionalAttributes];
     optionalAttributes = v5->_optionalAttributes;
     v5->_optionalAttributes = v27;
 
-    v29 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigExcludeAttributes];
+    v29 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigExcludeAttributes];
     excludeAttributes = v5->_excludeAttributes;
     v5->_excludeAttributes = v29;
 
@@ -99,14 +99,14 @@
     }
 
     v32 = &SpotlightScheduledReceiverConfigIncludeLanguage;
-    v33 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigIncludeLanguage];
+    v33 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigIncludeLanguage];
 
-    if (v33 || (v32 = &SpotlightScheduledReceiverConfigNeedsLanguage, [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsLanguage], v34 = objc_claimAutoreleasedReturnValue(), v34, v34))
+    if (v33 || (v32 = &SpotlightScheduledReceiverConfigNeedsLanguage, [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsLanguage], v34 = objc_claimAutoreleasedReturnValue(), v34, v34))
     {
-      v35 = [v4 objectForKeyedSubscript:*v32];
-      v36 = [v35 BOOLValue];
+      v35 = [valuesCopy objectForKeyedSubscript:*v32];
+      bOOLValue = [v35 BOOLValue];
 
-      if (v36)
+      if (bOOLValue)
       {
         v37 = 17;
       }
@@ -122,51 +122,51 @@
       v37 = 1;
     }
 
-    v38 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequirePriorityItems];
+    v38 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequirePriorityItems];
 
     if (v38)
     {
-      v39 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequirePriorityItems];
-      v40 = [v39 BOOLValue];
+      v39 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequirePriorityItems];
+      bOOLValue2 = [v39 BOOLValue];
 
-      if (v40)
+      if (bOOLValue2)
       {
         v37 |= 2uLL;
       }
     }
 
-    v41 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequireBacklogItems];
+    v41 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequireBacklogItems];
 
     if (v41)
     {
-      v42 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequireBacklogItems];
-      v43 = [v42 BOOLValue];
+      v42 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigRequireBacklogItems];
+      bOOLValue3 = [v42 BOOLValue];
 
-      if (v43)
+      if (bOOLValue3)
       {
         v37 |= 4uLL;
       }
     }
 
     v44 = &SpotlightScheduledReceiverConfigIncludeDeletedItems;
-    v45 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigIncludeDeletedItems];
+    v45 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigIncludeDeletedItems];
 
-    if (v45 || (v44 = &SpotlightScheduledReceiverConfigNeedsDeletes, [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsDeletes], v46 = objc_claimAutoreleasedReturnValue(), v46, v46))
+    if (v45 || (v44 = &SpotlightScheduledReceiverConfigNeedsDeletes, [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsDeletes], v46 = objc_claimAutoreleasedReturnValue(), v46, v46))
     {
-      v47 = [v4 objectForKeyedSubscript:*v44];
-      v48 = [v47 BOOLValue];
+      v47 = [valuesCopy objectForKeyedSubscript:*v44];
+      bOOLValue4 = [v47 BOOLValue];
 
-      if (v48)
+      if (bOOLValue4)
       {
         v37 |= 8uLL;
       }
     }
 
     [(SpotlightScheduledReceiverConfig *)v5 setOptions:v37];
-    v49 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsUserActivities];
+    v49 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsUserActivities];
     if (v49)
     {
-      v50 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsUserActivities];
+      v50 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigNeedsUserActivities];
       v5->_needsUserActivities = [v50 BOOLValue];
     }
 
@@ -175,35 +175,35 @@
       v5->_needsUserActivities = 0;
     }
 
-    v51 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedBundles];
+    v51 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedBundles];
     supportedBundles = v5->_supportedBundles;
     v5->_supportedBundles = v51;
 
-    v53 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedBundles];
+    v53 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedBundles];
     unsupportedBundles = v5->_unsupportedBundles;
     v5->_unsupportedBundles = v53;
 
-    v55 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedDomains];
+    v55 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedDomains];
     supportedDomainIdentifiers = v5->_supportedDomainIdentifiers;
     v5->_supportedDomainIdentifiers = v55;
 
-    v57 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedDomains];
+    v57 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedDomains];
     unsupportedDomainIdentifiers = v5->_unsupportedDomainIdentifiers;
     v5->_unsupportedDomainIdentifiers = v57;
 
-    v59 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedContentTypes];
+    v59 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedContentTypes];
     supportedContentTypes = v5->_supportedContentTypes;
     v5->_supportedContentTypes = v59;
 
-    v61 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedContentTypes];
+    v61 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedContentTypes];
     unsupportedContentTypes = v5->_unsupportedContentTypes;
     v5->_unsupportedContentTypes = v61;
 
-    v63 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedQuery];
+    v63 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigSupportedQuery];
     supportedQuery = v5->_supportedQuery;
     v5->_supportedQuery = v63;
 
-    v65 = [v4 objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedQuery];
+    v65 = [valuesCopy objectForKeyedSubscript:SpotlightScheduledReceiverConfigUnsupportedQuery];
     unsupportedQuery = v5->_unsupportedQuery;
     v5->_unsupportedQuery = v65;
 
@@ -259,9 +259,9 @@
     v3 = v24;
   }
 
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   fetchAttributes = self->_fetchAttributes;
-  self->_fetchAttributes = v4;
+  self->_fetchAttributes = allObjects;
 
   processes = self->_processes;
   unsupportedContentTypes = MEMORY[0x277CBEBF8];

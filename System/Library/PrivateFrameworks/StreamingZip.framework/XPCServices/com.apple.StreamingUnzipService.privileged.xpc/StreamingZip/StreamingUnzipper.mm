@@ -1,16 +1,16 @@
 @interface StreamingUnzipper
 - (NSXPCConnection)xpcConnection;
 - (StreamingUnzipDelegateProtocol)inProcessExtractorDelegate;
-- (id)initForClient:(id)a3 connection:(id)a4;
+- (id)initForClient:(id)client connection:(id)connection;
 - (void)dealloc;
-- (void)finishStreamWithReply:(id)a3;
-- (void)getPidForTestingWithReply:(id)a3;
-- (void)setActiveDelegateMethods:(int)a3;
-- (void)setupUnzipperWithOutputPath:(id)a3 sandboxExtensionToken:(char *)a4 options:(id)a5 withReply:(id)a6;
-- (void)streamingFileWriter:(id)a3 didEncounterError:(id)a4;
-- (void)supplyBytes:(id)a3 withReply:(id)a4;
-- (void)suspendStreamWithReply:(id)a3;
-- (void)terminateStreamWithReply:(id)a3;
+- (void)finishStreamWithReply:(id)reply;
+- (void)getPidForTestingWithReply:(id)reply;
+- (void)setActiveDelegateMethods:(int)methods;
+- (void)setupUnzipperWithOutputPath:(id)path sandboxExtensionToken:(char *)token options:(id)options withReply:(id)reply;
+- (void)streamingFileWriter:(id)writer didEncounterError:(id)error;
+- (void)supplyBytes:(id)bytes withReply:(id)reply;
+- (void)suspendStreamWithReply:(id)reply;
+- (void)terminateStreamWithReply:(id)reply;
 @end
 
 @implementation StreamingUnzipper
@@ -29,16 +29,16 @@
   return WeakRetained;
 }
 
-- (void)getPidForTestingWithReply:(id)a3
+- (void)getPidForTestingWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v4 = getpid();
-  (*(a3 + 2))(v5, v4, 0);
+  (*(reply + 2))(replyCopy, v4, 0);
 }
 
-- (void)terminateStreamWithReply:(id)a3
+- (void)terminateStreamWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (!self->_currentState)
   {
     v11 = sub_10000126C();
@@ -54,10 +54,10 @@
     goto LABEL_9;
   }
 
-  v5 = [(StreamingUnzipper *)self teardownInitiated];
+  teardownInitiated = [(StreamingUnzipper *)self teardownInitiated];
   v6 = sub_10000126C();
   v7 = v6;
-  if (v5)
+  if (teardownInitiated)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -70,16 +70,16 @@
     v10 = 2033;
 LABEL_9:
     v12 = sub_1000015F4("[StreamingUnzipper terminateStreamWithReply:]", v10, @"SZExtractorErrorDomain", 3, 0, 0, v9, v8, v14[0]);
-    v4[2](v4, v12);
+    replyCopy[2](replyCopy, v12);
 
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(StreamingUnzipState *)self->_currentState unzipPath];
+    unzipPath = [(StreamingUnzipState *)self->_currentState unzipPath];
     *buf = 138412290;
-    v17 = v13;
+    v17 = unzipPath;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Terminating extraction for %@", buf, 0xCu);
   }
 
@@ -88,15 +88,15 @@ LABEL_9:
   v14[2] = sub_100001DE8;
   v14[3] = &unk_100028918;
   v14[4] = self;
-  v15 = v4;
+  v15 = replyCopy;
   sub_100001E30(self, v14);
 
 LABEL_13:
 }
 
-- (void)finishStreamWithReply:(id)a3
+- (void)finishStreamWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (!self->_currentState)
   {
     v11 = sub_10000126C();
@@ -112,10 +112,10 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v5 = [(StreamingUnzipper *)self teardownInitiated];
+  teardownInitiated = [(StreamingUnzipper *)self teardownInitiated];
   v6 = sub_10000126C();
   v7 = v6;
-  if (v5)
+  if (teardownInitiated)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -128,16 +128,16 @@ LABEL_13:
     v10 = 2001;
 LABEL_9:
     v12 = sub_1000015F4("[StreamingUnzipper finishStreamWithReply:]", v10, @"SZExtractorErrorDomain", 3, 0, 0, v9, v8, v14[0]);
-    v4[2](v4, v12);
+    replyCopy[2](replyCopy, v12);
 
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(StreamingUnzipState *)self->_currentState unzipPath];
+    unzipPath = [(StreamingUnzipState *)self->_currentState unzipPath];
     *buf = 138412290;
-    v17 = v13;
+    v17 = unzipPath;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Finishing extraction for %@", buf, 0xCu);
   }
 
@@ -146,15 +146,15 @@ LABEL_9:
   v14[2] = sub_100002394;
   v14[3] = &unk_100028918;
   v14[4] = self;
-  v15 = v4;
+  v15 = replyCopy;
   sub_100001E30(self, v14);
 
 LABEL_13:
 }
 
-- (void)suspendStreamWithReply:(id)a3
+- (void)suspendStreamWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (!self->_currentState)
   {
     v11 = sub_10000126C();
@@ -170,10 +170,10 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v5 = [(StreamingUnzipper *)self teardownInitiated];
+  teardownInitiated = [(StreamingUnzipper *)self teardownInitiated];
   v6 = sub_10000126C();
   v7 = v6;
-  if (v5)
+  if (teardownInitiated)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -186,19 +186,19 @@ LABEL_13:
     v10 = 1845;
 LABEL_9:
     v12 = sub_1000015F4("[StreamingUnzipper suspendStreamWithReply:]", v10, @"SZExtractorErrorDomain", 3, 0, 0, v9, v8, v15[0]);
-    v4[2](v4, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
 
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(StreamingUnzipState *)self->_currentState currentOffset];
-    v14 = [(StreamingUnzipState *)self->_currentState unzipPath];
+    currentOffset = [(StreamingUnzipState *)self->_currentState currentOffset];
+    unzipPath = [(StreamingUnzipState *)self->_currentState unzipPath];
     *buf = 134218242;
-    v18 = v13;
+    v18 = currentOffset;
     v19 = 2112;
-    v20 = v14;
+    v20 = unzipPath;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Suspending extraction at offset %llu for %@", buf, 0x16u);
   }
 
@@ -207,16 +207,16 @@ LABEL_9:
   v15[2] = sub_10000393C;
   v15[3] = &unk_100028918;
   v15[4] = self;
-  v16 = v4;
+  v16 = replyCopy;
   sub_100001E30(self, v15);
 
 LABEL_13:
 }
 
-- (void)supplyBytes:(id)a3 withReply:(id)a4
+- (void)supplyBytes:(id)bytes withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  bytesCopy = bytes;
+  replyCopy = reply;
   if ([(StreamingUnzipper *)self teardownInitiated])
   {
     v8 = sub_10000126C();
@@ -228,7 +228,7 @@ LABEL_13:
     }
 
     v10 = sub_1000015F4("[StreamingUnzipper supplyBytes:withReply:]", 1781, @"SZExtractorErrorDomain", 3, 0, 0, @"Teardown has been started for this extractor, but the client has made another concurrent call to this extractor while its teardown is pending. Concurrently calling methods on a SZExtractor instance is not supported.", v9, v14[0]);
-    v7[2](v7, v10, 1);
+    replyCopy[2](replyCopy, v10, 1);
   }
 
   else
@@ -243,7 +243,7 @@ LABEL_13:
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v11 = [v6 length];
+    v11 = [bytesCopy length];
     v12 = sub_100001314();
     if (os_signpost_enabled(v12))
     {
@@ -260,7 +260,7 @@ LABEL_13:
     v14[5] = &v21;
     v14[6] = &v15;
     v14[7] = v11;
-    [v6 enumerateByteRangesUsingBlock:v14];
+    [bytesCopy enumerateByteRangesUsingBlock:v14];
     v13 = sub_100001314();
     if (os_signpost_enabled(v13))
     {
@@ -269,7 +269,7 @@ LABEL_13:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SUPPLY_BYTES_UNZIP_SERVICE", "End processing %lu bytes in StreamingUnzipper", buf, 0xCu);
     }
 
-    v7[2](v7, *(*(&v21 + 1) + 40), *(v16 + 24));
+    replyCopy[2](replyCopy, *(*(&v21 + 1) + 40), *(v16 + 24));
     _Block_object_dispose(&v15, 8);
     _Block_object_dispose(&v21, 8);
   }
@@ -280,9 +280,9 @@ LABEL_13:
   v3 = sub_10000126C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(StreamingUnzipState *)self->_currentState unzipPath];
+    unzipPath = [(StreamingUnzipState *)self->_currentState unzipPath];
     *buf = 138412290;
-    v8 = v4;
+    v8 = unzipPath;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deallocating state for extraction to %@", buf, 0xCu);
   }
 
@@ -300,65 +300,65 @@ LABEL_13:
   [(StreamingUnzipper *)&v6 dealloc];
 }
 
-- (void)streamingFileWriter:(id)a3 didEncounterError:(id)a4
+- (void)streamingFileWriter:(id)writer didEncounterError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  writerCopy = writer;
+  errorCopy = error;
   v8 = sub_10000126C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = writerCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "StreamingFileWriter %@ encountered error %@", &v9, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_asyncErrorLock);
   if (!self->_asyncError)
   {
-    objc_storeStrong(&self->_asyncError, a4);
+    objc_storeStrong(&self->_asyncError, error);
   }
 
   os_unfair_lock_unlock(&self->_asyncErrorLock);
 }
 
-- (void)setActiveDelegateMethods:(int)a3
+- (void)setActiveDelegateMethods:(int)methods
 {
   v5 = sub_10000126C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = methods;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set active delegate methods to 0x%x", v6, 8u);
   }
 
-  self->_activeDelegateMethods = a3;
+  self->_activeDelegateMethods = methods;
 }
 
-- (void)setupUnzipperWithOutputPath:(id)a3 sandboxExtensionToken:(char *)a4 options:(id)a5 withReply:(id)a6
+- (void)setupUnzipperWithOutputPath:(id)path sandboxExtensionToken:(char *)token options:(id)options withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 objectForKey:@"SZExtractorOptionsAssertQOS"];
+  pathCopy = path;
+  optionsCopy = options;
+  replyCopy = reply;
+  v13 = [optionsCopy objectForKey:@"SZExtractorOptionsAssertQOS"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [v11 objectForKey:@"SZExtractorOptionsAssertQOS"];
-    v16 = [v15 unsignedIntValue];
+    v15 = [optionsCopy objectForKey:@"SZExtractorOptionsAssertQOS"];
+    unsignedIntValue = [v15 unsignedIntValue];
 
     v17 = qos_class_self();
-    if (v17 != v16)
+    if (v17 != unsignedIntValue)
     {
       v34 = v17;
       v35 = sub_10000126C();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109634;
-        *&buf[4] = v16;
+        *&buf[4] = unsignedIntValue;
         *&buf[8] = 1024;
         *&buf[10] = v34;
         *&buf[14] = 2112;
@@ -366,22 +366,22 @@ LABEL_13:
         _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Streaming Unzipper running with unexpected QOS: expected=0x%x actual=0x%x : %@", buf, 0x18u);
       }
 
-      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 91, NSPOSIXErrorDomain, 22, 0, 0, @"Streaming Unzipper running with unexpected QOS: expected=0x%x actual=0x%x", v36, v16);
+      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 91, NSPOSIXErrorDomain, 22, 0, 0, @"Streaming Unzipper running with unexpected QOS: expected=0x%x actual=0x%x", v36, unsignedIntValue);
       goto LABEL_32;
     }
   }
 
-  v18 = [v11 objectForKey:@"SZExtractorOptionsNoPassthrough"];
+  v18 = [optionsCopy objectForKey:@"SZExtractorOptionsNoPassthrough"];
   objc_opt_class();
   v19 = objc_opt_isKindOfClass();
 
   if (v19)
   {
-    v20 = [v11 objectForKey:@"SZExtractorOptionsNoPassthrough"];
+    v20 = [optionsCopy objectForKey:@"SZExtractorOptionsNoPassthrough"];
     self->_passthroughEnabled = [v20 BOOLValue] ^ 1;
   }
 
-  if (a4)
+  if (token)
   {
     v21 = sandbox_extension_consume();
     self->_sandboxToken = v21;
@@ -392,7 +392,7 @@ LABEL_13:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        *&buf[4] = v10;
+        *&buf[4] = pathCopy;
         *&buf[12] = 2080;
         *&buf[14] = strerror(v37);
         *&buf[22] = 1024;
@@ -403,18 +403,18 @@ LABEL_13:
       }
 
       strerror(v37);
-      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 106, NSPOSIXErrorDomain, v37, 0, 0, @"Failed to consume sandbox extension token for %@ : %s (%d)", v39, v10);
+      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 106, NSPOSIXErrorDomain, v37, 0, 0, @"Failed to consume sandbox extension token for %@ : %s (%d)", v39, pathCopy);
       goto LABEL_32;
     }
   }
 
   if (self->_hasConnection)
   {
-    v22 = [v10 fileSystemRepresentation];
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
     v23 = *&self->_auditToken.val[4];
     *buf = *self->_auditToken.val;
     *&buf[16] = v23;
-    v45 = v22;
+    v45 = fileSystemRepresentation;
     v24 = sandbox_check_by_audit_token();
     if (v24)
     {
@@ -432,7 +432,7 @@ LABEL_13:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        *&buf[4] = v10;
+        *&buf[4] = pathCopy;
         *&buf[12] = 2080;
         *&buf[14] = strerror(v25);
         *&buf[22] = 1024;
@@ -443,9 +443,9 @@ LABEL_13:
       }
 
       strerror(v25);
-      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 118, NSPOSIXErrorDomain, v25, 0, 0, @"Cannot write to path %@ : %s (%d)", v42, v10);
+      sub_1000015F4("[StreamingUnzipper setupUnzipperWithOutputPath:sandboxExtensionToken:options:withReply:]", 118, NSPOSIXErrorDomain, v25, 0, 0, @"Cannot write to path %@ : %s (%d)", v42, pathCopy);
       v31 = LABEL_32:;
-      v12[2](v12, v31, 0);
+      replyCopy[2](replyCopy, v31, 0);
       goto LABEL_33;
     }
   }
@@ -453,20 +453,20 @@ LABEL_13:
   v26 = sub_10000126C();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v11 objectForKey:@"SZExtractorOptionsHashedChunkSize"];
-    v28 = [v27 unsignedLongLongValue];
-    v29 = [v11 objectForKey:@"SZExtractorOptionsHashesArray"];
+    v27 = [optionsCopy objectForKey:@"SZExtractorOptionsHashedChunkSize"];
+    unsignedLongLongValue = [v27 unsignedLongLongValue];
+    v29 = [optionsCopy objectForKey:@"SZExtractorOptionsHashesArray"];
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = pathCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v28;
+    *&buf[14] = unsignedLongLongValue;
     *&buf[22] = 2112;
     *&buf[24] = v29;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Initialized with path %@ ; hashed chunk size %llu ; hashes %@", buf, 0x20u);
   }
 
   v46 = 0;
-  v30 = [StreamingUnzipState unzipStateWithPath:v10 options:v11 error:&v46];
+  v30 = [StreamingUnzipState unzipStateWithPath:pathCopy options:optionsCopy error:&v46];
   v31 = v46;
   currentState = self->_currentState;
   self->_currentState = v30;
@@ -485,7 +485,7 @@ LABEL_13:
   if (v33)
   {
 LABEL_23:
-    if (setxattr([v10 fileSystemRepresentation], "com.apple.streamingzip.incomplete_extraction", "y", 1uLL, 0, 1))
+    if (setxattr([pathCopy fileSystemRepresentation], "com.apple.streamingzip.incomplete_extraction", "y", 1uLL, 0, 1))
     {
       v40 = sub_10000126C();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -493,7 +493,7 @@ LABEL_23:
         v43 = __error();
         v44 = strerror(*v43);
         *buf = 138412546;
-        *&buf[4] = v10;
+        *&buf[4] = pathCopy;
         *&buf[12] = 2080;
         *&buf[14] = v44;
         _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Failed to set incomplete extraction xattr on %@ : %s", buf, 0x16u);
@@ -501,21 +501,21 @@ LABEL_23:
     }
   }
 
-  v12[2](v12, v31, [(StreamingUnzipState *)self->_currentState currentOffset]);
+  replyCopy[2](replyCopy, v31, [(StreamingUnzipState *)self->_currentState currentOffset]);
 LABEL_33:
 }
 
-- (id)initForClient:(id)a3 connection:(id)a4
+- (id)initForClient:(id)client connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = StreamingUnzipper;
   v8 = [(StreamingUnzipper *)&v18 init];
   if (v8)
   {
-    v9 = [NSString stringWithFormat:@"Unzip session on behalf of %@", v6];
-    [v9 UTF8String];
+    clientCopy = [NSString stringWithFormat:@"Unzip session on behalf of %@", clientCopy];
+    [clientCopy UTF8String];
     v10 = os_transaction_create();
     v11 = *(v8 + 9);
     *(v8 + 9) = v10;
@@ -524,11 +524,11 @@ LABEL_33:
     v13 = *(v8 + 12);
     *(v8 + 12) = v12;
 
-    if (v7)
+    if (connectionCopy)
     {
-      objc_storeWeak(v8 + 15, v7);
+      objc_storeWeak(v8 + 15, connectionCopy);
       v8[8] = 1;
-      [v7 auditToken];
+      [connectionCopy auditToken];
       v14 = v16;
       *(v8 + 28) = v17;
     }

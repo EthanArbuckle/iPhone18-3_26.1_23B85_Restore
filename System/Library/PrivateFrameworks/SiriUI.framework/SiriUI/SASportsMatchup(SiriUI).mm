@@ -17,15 +17,15 @@
 
 - (uint64_t)siriui_isInTheFuture
 {
-  v1 = [a1 status];
-  if ([v1 isEqualToString:*MEMORY[0x277D48A18]] & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", *MEMORY[0x277D48A10]))
+  status = [self status];
+  if ([status isEqualToString:*MEMORY[0x277D48A18]] & 1) != 0 || (objc_msgSend(status, "isEqualToString:", *MEMORY[0x277D48A10]))
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqualToString:*MEMORY[0x277D48A00]];
+    v2 = [status isEqualToString:*MEMORY[0x277D48A00]];
   }
 
   return v2;
@@ -34,66 +34,66 @@
 - (id)siriui_localizedScheduleStatusForLeague:()SiriUI sport:showTimeIfToday:
 {
   v7 = a4;
-  v8 = [a1 status];
-  v9 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-  v10 = [v9 assistantUILocale];
+  status = [self status];
+  afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+  assistantUILocale = [afui_assistantUIFrameworkBundle assistantUILocale];
 
-  if ([v8 isEqualToString:*MEMORY[0x277D48A08]])
+  if ([status isEqualToString:*MEMORY[0x277D48A08]])
   {
-    v11 = [a1 timeRemaining];
-    v12 = [a1 periodDescription];
-    if (([v7 isEqualToString:*MEMORY[0x277D48A90]] & 1) == 0 && objc_msgSend(v11, "length"))
+    timeRemaining = [self timeRemaining];
+    periodDescription = [self periodDescription];
+    if (([v7 isEqualToString:*MEMORY[0x277D48A90]] & 1) == 0 && objc_msgSend(timeRemaining, "length"))
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
-      v15 = [v14 siriUILocalizedStringForKey:{@"PERIOD_TIME_REMAINING_PAIR %@, %@"}];
-      v16 = [v13 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@ error:%@", 0, v12, v11];
+      startTime2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
+      v15 = [startTime2 siriUILocalizedStringForKey:{@"PERIOD_TIME_REMAINING_PAIR %@, %@"}];
+      v16 = [v13 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@ error:%@", 0, periodDescription, timeRemaining];
 LABEL_5:
       v17 = v16;
 
 LABEL_10:
 LABEL_27:
 
-      v12 = v17;
+      periodDescription = v17;
       goto LABEL_28;
     }
 
-    v24 = v12;
-    v12 = v24;
+    v24 = periodDescription;
+    periodDescription = v24;
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x277D48A18]])
+  if ([status isEqualToString:*MEMORY[0x277D48A18]])
   {
-    v11 = objc_alloc_init(MEMORY[0x277CCA968]);
-    [v11 setFormattingContext:2];
-    v18 = [a1 timeTBD];
-    v19 = [v18 BOOLValue];
+    timeRemaining = objc_alloc_init(MEMORY[0x277CCA968]);
+    [timeRemaining setFormattingContext:2];
+    timeTBD = [self timeTBD];
+    bOOLValue = [timeTBD BOOLValue];
 
-    v20 = [a1 startTime];
-    v21 = [v20 sruif_isToday];
+    startTime = [self startTime];
+    sruif_isToday = [startTime sruif_isToday];
 
-    if ((a5 & v21) == 1 && (v19 & 1) == 0)
+    if ((a5 & sruif_isToday) == 1 && (bOOLValue & 1) == 0)
     {
       v22 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
-      v12 = [v22 siriUILocalizedStringForKey:@"SCHEDULE_DATE_FORMAT_TEMPLATE"];
+      periodDescription = [v22 siriUILocalizedStringForKey:@"SCHEDULE_DATE_FORMAT_TEMPLATE"];
 
-      v23 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v12 options:0 locale:v10];
-      [v11 setDateFormat:v23];
+      v23 = [MEMORY[0x277CCA968] dateFormatFromTemplate:periodDescription options:0 locale:assistantUILocale];
+      [timeRemaining setDateFormat:v23];
 
-      v14 = [a1 startTime];
-      v17 = [v11 stringFromDate:v14];
+      startTime2 = [self startTime];
+      v17 = [timeRemaining stringFromDate:startTime2];
       goto LABEL_10;
     }
 
-    if ((a5 & v21 & v19) != 1)
+    if ((a5 & sruif_isToday & bOOLValue) != 1)
     {
-      v26 = v21 | v19;
-      v27 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"EEE MMM d y" options:0 locale:v10];
-      [v11 setDateFormat:v27];
+      v26 = sruif_isToday | bOOLValue;
+      v27 = [MEMORY[0x277CCA968] dateFormatFromTemplate:@"EEE MMM d y" options:0 locale:assistantUILocale];
+      [timeRemaining setDateFormat:v27];
 
-      v28 = [a1 startTime];
-      v12 = [v11 stringFromDate:v28];
+      startTime3 = [self startTime];
+      periodDescription = [timeRemaining stringFromDate:startTime3];
 
       if (v26)
       {
@@ -103,43 +103,43 @@ LABEL_28:
       }
 
       v29 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
-      v14 = [v29 siriUILocalizedStringForKey:@"SCHEDULE_DATE_FORMAT_TEMPLATE"];
+      startTime2 = [v29 siriUILocalizedStringForKey:@"SCHEDULE_DATE_FORMAT_TEMPLATE"];
 
-      v30 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v14 options:0 locale:v10];
-      [v11 setDateFormat:v30];
+      v30 = [MEMORY[0x277CCA968] dateFormatFromTemplate:startTime2 options:0 locale:assistantUILocale];
+      [timeRemaining setDateFormat:v30];
 
-      v31 = [a1 startTime];
-      v15 = [v11 stringFromDate:v31];
+      startTime4 = [self startTime];
+      v15 = [timeRemaining stringFromDate:startTime4];
 
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v12, v15];
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", periodDescription, v15];
       goto LABEL_5;
     }
 
-    v12 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
-    v24 = [v12 siriUILocalizedStringForKey:@"TO_BE_DETERMINED"];
+    periodDescription = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
+    v24 = [periodDescription siriUILocalizedStringForKey:@"TO_BE_DETERMINED"];
 LABEL_12:
     v17 = v24;
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x277D489F8]])
+  if ([status isEqualToString:*MEMORY[0x277D489F8]])
   {
     v25 = @"FINAL_SCHEDULE_FORMAT";
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D489F0]])
+  else if ([status isEqualToString:*MEMORY[0x277D489F0]])
   {
     v25 = @"CANCELED_SCHEDULE_FORMAT";
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D48A10]])
+  else if ([status isEqualToString:*MEMORY[0x277D48A10]])
   {
     v25 = @"POSTPONED_SCHEDULE_FORMAT";
   }
 
   else
   {
-    if (![v8 isEqualToString:*MEMORY[0x277D48A00]])
+    if (![status isEqualToString:*MEMORY[0x277D48A00]])
     {
       goto LABEL_32;
     }
@@ -148,68 +148,68 @@ LABEL_12:
   }
 
   v32 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
-  v11 = [v32 siriUILocalizedStringForKey:v25];
+  timeRemaining = [v32 siriUILocalizedStringForKey:v25];
 
-  if (v11)
+  if (timeRemaining)
   {
-    v12 = objc_alloc_init(MEMORY[0x277CCA968]);
-    [v12 setLocale:v10];
-    [v12 setDoesRelativeDateFormatting:1];
-    [v12 setTimeStyle:0];
-    [v12 setDateStyle:2];
-    [v12 setFormattingContext:2];
+    periodDescription = objc_alloc_init(MEMORY[0x277CCA968]);
+    [periodDescription setLocale:assistantUILocale];
+    [periodDescription setDoesRelativeDateFormatting:1];
+    [periodDescription setTimeStyle:0];
+    [periodDescription setDateStyle:2];
+    [periodDescription setFormattingContext:2];
     v33 = objc_alloc(MEMORY[0x277CCACA8]);
-    v34 = [a1 startTime];
-    v35 = [v12 stringFromDate:v34];
-    v17 = [v33 initWithFormat:v11, v35];
+    startTime5 = [self startTime];
+    v35 = [periodDescription stringFromDate:startTime5];
+    v17 = [v33 initWithFormat:timeRemaining, v35];
 
     goto LABEL_27;
   }
 
 LABEL_32:
-  v12 = 0;
+  periodDescription = 0;
 LABEL_29:
 
-  return v12;
+  return periodDescription;
 }
 
 - (id)siriui_venueLocation
 {
-  v2 = [a1 locationName];
-  v3 = [a1 location];
-  if ([v3 length] && objc_msgSend(v2, "length"))
+  locationName = [self locationName];
+  location = [self location];
+  if ([location length] && objc_msgSend(locationName, "length"))
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
     v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
     v6 = [v5 siriUILocalizedStringForKey:@"VENUE_LOCATION_FORMAT %@ %@"];
-    v7 = [v4 initWithFormat:v6, v2, v3];
+    v7 = [v4 initWithFormat:v6, locationName, location];
 
-    v2 = v5;
+    locationName = v5;
 LABEL_7:
 
-    v2 = v7;
+    locationName = v7;
     goto LABEL_8;
   }
 
-  if (![v2 length] && objc_msgSend(v3, "length"))
+  if (![locationName length] && objc_msgSend(location, "length"))
   {
-    v7 = v3;
+    v7 = location;
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  return v2;
+  return locationName;
 }
 
 - (id)siriui_channelsString
 {
-  v1 = [a1 tvChannels];
-  if ([v1 count])
+  tvChannels = [self tvChannels];
+  if ([tvChannels count])
   {
     v2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
     v3 = [v2 siriUILocalizedStringForKey:@"TV_SCHEDULE_LIST_JOINER"];
-    v4 = [v1 componentsJoinedByString:v3];
+    v4 = [tvChannels componentsJoinedByString:v3];
 
     v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
     v6 = [v5 siriUILocalizedStringForKey:@"TV_SCHEDULE_FORMAT %@"];
@@ -227,22 +227,22 @@ LABEL_8:
 
 - (uint64_t)siriui_homeIsFirst
 {
-  v1 = [a1 matchupOrder];
-  v2 = [v1 isEqualToString:*MEMORY[0x277D489E8]];
+  matchupOrder = [self matchupOrder];
+  v2 = [matchupOrder isEqualToString:*MEMORY[0x277D489E8]];
 
   return v2;
 }
 
 - (id)siriui_firstEntity
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 homeEntity];
+    [self homeEntity];
   }
 
   else
   {
-    [a1 awayEntity];
+    [self awayEntity];
   }
   v2 = ;
 
@@ -251,14 +251,14 @@ LABEL_8:
 
 - (id)siriui_firstLineScores
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 homeLineScores];
+    [self homeLineScores];
   }
 
   else
   {
-    [a1 awayLineScores];
+    [self awayLineScores];
   }
   v2 = ;
 
@@ -267,14 +267,14 @@ LABEL_8:
 
 - (id)siriui_firstScore
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 homeScore];
+    [self homeScore];
   }
 
   else
   {
-    [a1 awayScore];
+    [self awayScore];
   }
   v2 = ;
 
@@ -283,14 +283,14 @@ LABEL_8:
 
 - (id)siriui_secondEntity
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 awayEntity];
+    [self awayEntity];
   }
 
   else
   {
-    [a1 homeEntity];
+    [self homeEntity];
   }
   v2 = ;
 
@@ -299,14 +299,14 @@ LABEL_8:
 
 - (id)siriui_secondLineScores
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 awayLineScores];
+    [self awayLineScores];
   }
 
   else
   {
-    [a1 homeLineScores];
+    [self homeLineScores];
   }
   v2 = ;
 
@@ -315,14 +315,14 @@ LABEL_8:
 
 - (id)siriui_secondScore
 {
-  if ([a1 siriui_homeIsFirst])
+  if ([self siriui_homeIsFirst])
   {
-    [a1 awayScore];
+    [self awayScore];
   }
 
   else
   {
-    [a1 homeScore];
+    [self homeScore];
   }
   v2 = ;
 
@@ -331,26 +331,26 @@ LABEL_8:
 
 - (id)siriui_teamVsTeam
 {
-  v2 = [a1 homeEntity];
-  v3 = [v2 siriui_displayName];
+  homeEntity = [self homeEntity];
+  siriui_displayName = [homeEntity siriui_displayName];
 
-  v4 = [a1 awayEntity];
-  v5 = [v4 siriui_displayName];
+  awayEntity = [self awayEntity];
+  siriui_displayName2 = [awayEntity siriui_displayName];
 
-  v6 = [a1 siriui_homeIsFirst];
+  siriui_homeIsFirst = [self siriui_homeIsFirst];
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
   v9 = v8;
-  if (v6)
+  if (siriui_homeIsFirst)
   {
     v10 = [v8 siriUILocalizedStringForKey:@"MATCHUP_VS_TITLE_FORMAT %1$@ %2$@"];
-    [v7 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%1$@ %2$@" error:0, v3, v5];
+    [v7 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%1$@ %2$@" error:0, siriui_displayName, siriui_displayName2];
   }
 
   else
   {
     v10 = [v8 siriUILocalizedStringForKey:@"MATCHUP_AT_TITLE_FORMAT %1$@ %2$@"];
-    [v7 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%1$@ %2$@" error:0, v5, v3];
+    [v7 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%1$@ %2$@" error:0, siriui_displayName2, siriui_displayName];
   }
   v11 = ;
 

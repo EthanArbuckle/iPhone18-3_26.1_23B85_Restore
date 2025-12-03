@@ -3,9 +3,9 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (NUFixedRegionPolicy)init;
-- (NUFixedRegionPolicy)initWithRect:(id *)a3;
-- (NUFixedRegionPolicy)initWithRegion:(id)a3;
-- (id)regionForGeometry:(id)a3;
+- (NUFixedRegionPolicy)initWithRect:(id *)rect;
+- (NUFixedRegionPolicy)initWithRegion:(id)region;
+- (id)regionForGeometry:(id)geometry;
 @end
 
 @implementation NUFixedRegionPolicy
@@ -23,8 +23,8 @@
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUFixedRegionPolicy *)self region];
-  v4 = [v2 stringWithFormat:@"{region=%@}", v3];
+  region = [(NUFixedRegionPolicy *)self region];
+  v4 = [v2 stringWithFormat:@"{region=%@}", region];
 
   return v4;
 }
@@ -33,16 +33,16 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUFixedRegionPolicy *)self region];
-  v6 = [v3 stringWithFormat:@"<%@:%p> region=%@", v4, self, v5];
+  region = [(NUFixedRegionPolicy *)self region];
+  v6 = [v3 stringWithFormat:@"<%@:%p> region=%@", v4, self, region];
 
   return v6;
 }
 
-- (id)regionForGeometry:(id)a3
+- (id)regionForGeometry:(id)geometry
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  geometryCopy = geometry;
   if (self->_scale.numerator < 1 || self->_scale.denominator <= 0)
   {
     v16 = NUAssertLogger_15661();
@@ -66,8 +66,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v25;
         v37 = 2114;
@@ -78,8 +78,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -89,17 +89,17 @@
     _NUAssertFailHandler("[NUFixedRegionPolicy regionForGeometry:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURegionPolicy.m", 51, @"Invalid scale: %@", v31, v32, v33, v34, v30);
   }
 
-  v6 = v4;
-  v7 = [v4 renderScale];
+  v6 = geometryCopy;
+  renderScale = [geometryCopy renderScale];
   v9 = v8;
-  if (NUScaleEqual(v7, v8, self->_scale.numerator, self->_scale.denominator))
+  if (NUScaleEqual(renderScale, v8, self->_scale.numerator, self->_scale.denominator))
   {
     v10 = self->_region;
   }
 
   else
   {
-    v11 = NUScaleDivide(v7, v9, self->_scale.numerator, self->_scale.denominator);
+    v11 = NUScaleDivide(renderScale, v9, self->_scale.numerator, self->_scale.denominator);
     v13 = NUScaleToDouble(v11, v12);
     v10 = -[NURegion regionByScalingBy:withRounding:](self->_region, "regionByScalingBy:withRounding:", [v6 roundingPolicy], v13, v13);
   }
@@ -109,11 +109,11 @@
   return v14;
 }
 
-- (NUFixedRegionPolicy)initWithRegion:(id)a3
+- (NUFixedRegionPolicy)initWithRegion:(id)region
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  regionCopy = region;
+  if (!regionCopy)
   {
     v10 = NUAssertLogger_15661();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -134,8 +134,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -146,8 +146,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -156,7 +156,7 @@
     _NUAssertFailHandler("[NUFixedRegionPolicy initWithRegion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURegionPolicy.m", 39, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "region != nil");
   }
 
-  v5 = v4;
+  v5 = regionCopy;
   v26.receiver = self;
   v26.super_class = NUFixedRegionPolicy;
   v6 = [(NUFixedRegionPolicy *)&v26 init];
@@ -168,10 +168,10 @@
   return v6;
 }
 
-- (NUFixedRegionPolicy)initWithRect:(id *)a3
+- (NUFixedRegionPolicy)initWithRect:(id *)rect
 {
-  var1 = a3->var1;
-  v8[0] = a3->var0;
+  var1 = rect->var1;
+  v8[0] = rect->var0;
   v8[1] = var1;
   v5 = [NURegion regionWithRect:v8];
   v6 = [(NUFixedRegionPolicy *)self initWithRegion:v5];
@@ -225,8 +225,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -242,8 +242,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

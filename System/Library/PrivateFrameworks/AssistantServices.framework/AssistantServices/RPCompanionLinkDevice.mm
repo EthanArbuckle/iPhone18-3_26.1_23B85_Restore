@@ -1,14 +1,14 @@
 @interface RPCompanionLinkDevice
-- (BOOL)checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:(id)a3;
-- (BOOL)checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:(id)a3;
+- (BOOL)checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:(id)device;
+- (BOOL)checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:(id)device;
 - (BOOL)hasAnyDiscoveryFlags;
 - (BOOL)hasIOS;
-- (BOOL)hasValidDiscoveryTypeForLocalDevice:(id)a3;
+- (BOOL)hasValidDiscoveryTypeForLocalDevice:(id)device;
 - (BOOL)hasWatchOS;
 - (BOOL)isCompanionLinkDeviceAnAudioAccessory;
 - (BOOL)isGuestDevice;
 - (BOOL)isMeDevice;
-- (BOOL)willUseProxyCommunicationWithLocalDevice:(id)a3;
+- (BOOL)willUseProxyCommunicationWithLocalDevice:(id)device;
 - (id)_ad_siriSharedData;
 - (id)_ad_siriSharedDataProtobuf;
 - (id)getAceDiscoveryType;
@@ -19,16 +19,16 @@
 
 - (id)_ad_siriSharedData
 {
-  v2 = [(RPCompanionLinkDevice *)self _ad_siriSharedDataProtobuf];
-  v3 = [v2 _ad_data];
+  _ad_siriSharedDataProtobuf = [(RPCompanionLinkDevice *)self _ad_siriSharedDataProtobuf];
+  _ad_data = [_ad_siriSharedDataProtobuf _ad_data];
 
-  return v3;
+  return _ad_data;
 }
 
 - (id)_ad_siriSharedDataProtobuf
 {
-  v2 = [(RPCompanionLinkDevice *)self siriInfo];
-  v3 = [v2 objectForKey:@"sharedDataProtoBuf"];
+  siriInfo = [(RPCompanionLinkDevice *)self siriInfo];
+  v3 = [siriInfo objectForKey:@"sharedDataProtoBuf"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -46,22 +46,22 @@
 
 - (BOOL)hasAnyDiscoveryFlags
 {
-  v3 = [(RPCompanionLinkDevice *)self statusFlags];
-  if (v3)
+  statusFlags = [(RPCompanionLinkDevice *)self statusFlags];
+  if (statusFlags)
   {
     if ([(RPCompanionLinkDevice *)self isDiscoveredOverInfraWifi]|| [(RPCompanionLinkDevice *)self isDiscoveredOverWifiP2P])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(statusFlags) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(RPCompanionLinkDevice *)self isDiscoveredOverBLE];
+      LOBYTE(statusFlags) = [(RPCompanionLinkDevice *)self isDiscoveredOverBLE];
     }
   }
 
-  return v3;
+  return statusFlags;
 }
 
 - (id)getAceDiscoveryType
@@ -78,9 +78,9 @@
 
   else
   {
-    v4 = [(RPCompanionLinkDevice *)self isDiscoveredOverBLE];
+    isDiscoveredOverBLE = [(RPCompanionLinkDevice *)self isDiscoveredOverBLE];
     v3 = &SARemoteDeviceDiscoveryModeUnknownValue;
-    if (v4)
+    if (isDiscoveredOverBLE)
     {
       v3 = &SARemoteDeviceDiscoveryModeBluetoothValue;
     }
@@ -91,11 +91,11 @@
   return v5;
 }
 
-- (BOOL)willUseProxyCommunicationWithLocalDevice:(id)a3
+- (BOOL)willUseProxyCommunicationWithLocalDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(RPCompanionLinkDevice *)self checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:v4];
-  v6 = [(RPCompanionLinkDevice *)self checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:v4];
+  deviceCopy = device;
+  v5 = [(RPCompanionLinkDevice *)self checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:deviceCopy];
+  v6 = [(RPCompanionLinkDevice *)self checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:deviceCopy];
 
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -150,24 +150,24 @@
 
 - (BOOL)hasWatchOS
 {
-  v2 = [(RPCompanionLinkDevice *)self model];
-  v3 = [v2 hasPrefix:@"Watch"];
+  model = [(RPCompanionLinkDevice *)self model];
+  v3 = [model hasPrefix:@"Watch"];
 
   return v3;
 }
 
 - (BOOL)hasIOS
 {
-  v3 = [(RPCompanionLinkDevice *)self model];
-  if ([v3 hasPrefix:@"iPhone"])
+  model = [(RPCompanionLinkDevice *)self model];
+  if ([model hasPrefix:@"iPhone"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RPCompanionLinkDevice *)self model];
-    v4 = [v5 hasPrefix:@"iPad"];
+    model2 = [(RPCompanionLinkDevice *)self model];
+    v4 = [model2 hasPrefix:@"iPad"];
   }
 
   return v4;
@@ -184,9 +184,9 @@
   return v3;
 }
 
-- (BOOL)checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:(id)a3
+- (BOOL)checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([(RPCompanionLinkDevice *)self isCompanionLinkDeviceAProxyHost])
   {
     v5 = AFSiriLogContextDaemon;
@@ -197,14 +197,14 @@
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Target Device has ProxyHost status flag. Return true if local device is HomePod/HHDevice and target device is Sidekick.", &v15, 0xCu);
     }
 
-    v6 = [v4 isCompanionLinkDeviceAnAudioAccessory];
-    v7 = [v4 isCompanionLinkHomeHubDevice];
-    v8 = [(RPCompanionLinkDevice *)self isCompanionLinkHomeHubDevice];
+    isCompanionLinkDeviceAnAudioAccessory = [deviceCopy isCompanionLinkDeviceAnAudioAccessory];
+    isCompanionLinkHomeHubDevice = [deviceCopy isCompanionLinkHomeHubDevice];
+    isCompanionLinkHomeHubDevice2 = [(RPCompanionLinkDevice *)self isCompanionLinkHomeHubDevice];
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v12 = @"NO";
-      if (v6)
+      if (isCompanionLinkDeviceAnAudioAccessory)
       {
         v13 = @"YES";
       }
@@ -216,7 +216,7 @@
 
       v15 = 136315906;
       v16 = "[RPCompanionLinkDevice(AssistantAdditions) checkIfHubIsLookingForAHomeHubDeviceItIsHostingWithLocalDevice:]";
-      if (v7)
+      if (isCompanionLinkHomeHubDevice)
       {
         v14 = @"YES";
       }
@@ -230,7 +230,7 @@
       v17 = 2112;
       v19 = 2112;
       v20 = v14;
-      if (v8)
+      if (isCompanionLinkHomeHubDevice2)
       {
         v12 = @"YES";
       }
@@ -240,7 +240,7 @@
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s isLocalDeviceAnAudioAccessory: %@, isLocalDeviceHomeHubDevice: %@, isTargetDeviceHomeHubDevice: %@", &v15, 0x2Au);
     }
 
-    v10 = (v6 | v7) & v8;
+    v10 = (isCompanionLinkDeviceAnAudioAccessory | isCompanionLinkHomeHubDevice) & isCompanionLinkHomeHubDevice2;
   }
 
   else
@@ -251,9 +251,9 @@
   return v10 & 1;
 }
 
-- (BOOL)checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:(id)a3
+- (BOOL)checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([(RPCompanionLinkDevice *)self hasAnyDiscoveryFlags])
   {
     v5 = 0;
@@ -269,14 +269,14 @@
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s Device does not have any discovery status flags. Return true if local device is sidekick and target device is homehub. ", &v13, 0xCu);
     }
 
-    v7 = [v4 isCompanionLinkHomeHubDevice];
-    v8 = [(RPCompanionLinkDevice *)self isCompanionLinkDeviceAnAudioAccessory];
+    isCompanionLinkHomeHubDevice = [deviceCopy isCompanionLinkHomeHubDevice];
+    isCompanionLinkDeviceAnAudioAccessory = [(RPCompanionLinkDevice *)self isCompanionLinkDeviceAnAudioAccessory];
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
       v14 = "[RPCompanionLinkDevice(AssistantAdditions) checkIfHomeHubDeviceIsLookingForItsHubWithLocalDevice:]";
-      if (v7)
+      if (isCompanionLinkHomeHubDevice)
       {
         v12 = @"YES";
       }
@@ -289,7 +289,7 @@
       v13 = 136315650;
       v16 = v12;
       v15 = 2112;
-      if (v8)
+      if (isCompanionLinkDeviceAnAudioAccessory)
       {
         v11 = @"YES";
       }
@@ -299,15 +299,15 @@
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s isLocalDeviceHomeHubDevice: %@, isTargetDeviceAnAudioAccessory: %@.", &v13, 0x20u);
     }
 
-    v5 = v7 & v8;
+    v5 = isCompanionLinkHomeHubDevice & isCompanionLinkDeviceAnAudioAccessory;
   }
 
   return v5;
 }
 
-- (BOOL)hasValidDiscoveryTypeForLocalDevice:(id)a3
+- (BOOL)hasValidDiscoveryTypeForLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -318,10 +318,10 @@
 
   if ((+[AFFeatureFlags isForceBLEDiscoveryForCompanionLinkEnabled]& 1) != 0)
   {
-    v6 = [(RPCompanionLinkDevice *)self willUseProxyCommunicationWithLocalDevice:v4];
-    v7 = [(RPCompanionLinkDevice *)self isDiscoveredOverInfraWifi];
+    v6 = [(RPCompanionLinkDevice *)self willUseProxyCommunicationWithLocalDevice:deviceCopy];
+    isDiscoveredOverInfraWifi = [(RPCompanionLinkDevice *)self isDiscoveredOverInfraWifi];
     v8 = +[AFFeatureFlags isAWDLFallbackForPersonalRequestsEnabled];
-    if ([v4 isCompanionLinkHomeHubDevice])
+    if ([deviceCopy isCompanionLinkHomeHubDevice])
     {
       v9 = 0;
     }
@@ -356,7 +356,7 @@ LABEL_16:
 
           *buf = 136316418;
           v25 = "[RPCompanionLinkDevice(AssistantAdditions) hasValidDiscoveryTypeForLocalDevice:]";
-          if (v7)
+          if (isDiscoveredOverInfraWifi)
           {
             v19 = @"YES";
           }
@@ -404,7 +404,7 @@ LABEL_16:
           _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s willUseProxyCommunicationWithLocalDevice: %@, isDeviceDiscoveredOverInfraWifi: %@, shouldAllowAWDLFallback: %@, isAWDLFallbackForPersonalRequestsEnabled: %@, meetMinIOSVersion: %@", buf, 0x3Eu);
         }
 
-        v11 = v6 | v7 | v14;
+        v11 = v6 | isDiscoveredOverInfraWifi | v14;
         goto LABEL_18;
       }
 
@@ -437,16 +437,16 @@ LABEL_18:
 
 - (BOOL)isGuestDevice
 {
-  v2 = [(RPCompanionLinkDevice *)self idsDeviceIdentifier];
-  v3 = [v2 length] == 0;
+  idsDeviceIdentifier = [(RPCompanionLinkDevice *)self idsDeviceIdentifier];
+  v3 = [idsDeviceIdentifier length] == 0;
 
   return v3;
 }
 
 - (BOOL)isCompanionLinkDeviceAnAudioAccessory
 {
-  v2 = [(RPCompanionLinkDevice *)self model];
-  v3 = [v2 hasPrefix:@"AudioAccessory"];
+  model = [(RPCompanionLinkDevice *)self model];
+  v3 = [model hasPrefix:@"AudioAccessory"];
 
   return v3;
 }

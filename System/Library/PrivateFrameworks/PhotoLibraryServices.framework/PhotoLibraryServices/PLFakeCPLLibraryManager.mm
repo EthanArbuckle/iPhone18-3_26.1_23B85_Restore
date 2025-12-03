@@ -1,45 +1,45 @@
 @interface PLFakeCPLLibraryManager
-+ (id)fakeCPLStatusBaseURLWithBaseURL:(id)a3;
++ (id)fakeCPLStatusBaseURLWithBaseURL:(id)l;
 - (CPLLibraryManagerDelegate)delegate;
 - (CPLLibraryManagerForceSyncDelegate)forceSyncDelegate;
 - (CPLRecordComputeStateDelegate)recordComputeStateDelegate;
 - (CPLResourceProgressDelegate)resourceProgressDelegate;
-- (PLFakeCPLLibraryManager)initWithClientLibraryBaseURL:(id)a3 cloudLibraryStateStorageURL:(id)a4 cloudLibraryResourceStorageURL:(id)a5 libraryIdentifier:(id)a6 options:(unint64_t)a7;
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4;
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 highPriority:(BOOL)a5 completionHandler:(id)a6;
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5;
-- (void)beginPullChangeSessionWithKnownLibraryVersion:(id)a3 completionHandler:(id)a4;
-- (void)beginPushChangeSessionWithKnownLibraryVersion:(id)a3 completionHandler:(id)a4;
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3;
-- (void)checkResourcesAreSafeToPrune:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- (void)createOwnedLibraryShareScopeWithShare:(id)a3 title:(id)a4 completionHandler:(id)a5;
-- (void)createScope:(id)a3 completionHandler:(id)a4;
-- (void)deactivateWithCompletionHandler:(id)a3;
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- (void)disableMainScopeWithCompletionHandler:(id)a3;
-- (void)enableMainScopeWithCompletionHandler:(id)a3;
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4;
-- (void)forceBackupWithCompletionHandler:(id)a3;
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getCloudCacheForRecordWithScopedIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getCloudIdentifiersForLocalIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getCloudScopedIdentifiersForLocalScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getStatusForComponents:(id)a3 completionHandler:(id)a4;
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5;
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getStreamingURLOrMediaMakerDataForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4;
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7;
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3;
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6;
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4;
+- (PLFakeCPLLibraryManager)initWithClientLibraryBaseURL:(id)l cloudLibraryStateStorageURL:(id)rL cloudLibraryResourceStorageURL:(id)uRL libraryIdentifier:(id)identifier options:(unint64_t)options;
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler;
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d highPriority:(BOOL)priority completionHandler:(id)handler;
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler;
+- (void)beginPullChangeSessionWithKnownLibraryVersion:(id)version completionHandler:(id)handler;
+- (void)beginPushChangeSessionWithKnownLibraryVersion:(id)version completionHandler:(id)handler;
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler;
+- (void)checkResourcesAreSafeToPrune:(id)prune checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)createOwnedLibraryShareScopeWithShare:(id)share title:(id)title completionHandler:(id)handler;
+- (void)createScope:(id)scope completionHandler:(id)handler;
+- (void)deactivateWithCompletionHandler:(id)handler;
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- (void)disableMainScopeWithCompletionHandler:(id)handler;
+- (void)enableMainScopeWithCompletionHandler:(id)handler;
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler;
+- (void)forceBackupWithCompletionHandler:(id)handler;
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getCloudCacheForRecordWithScopedIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getCloudIdentifiersForLocalIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getCloudScopedIdentifiersForLocalScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getStatusForComponents:(id)components completionHandler:(id)handler;
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler;
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getStreamingURLOrMediaMakerDataForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler;
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler;
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler;
 @end
 
 @implementation PLFakeCPLLibraryManager
@@ -72,16 +72,16 @@
   return WeakRetained;
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PLFakeCPLLibraryManager_getSystemBudgetsWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -94,55 +94,55 @@ void __65__PLFakeCPLLibraryManager_getSystemBudgetsWithCompletionHandler___block
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)beginInMemoryDownloadOfResource:(id)a3 clientBundleID:(id)a4 completionHandler:(id)a5
+- (void)beginInMemoryDownloadOfResource:(id)resource clientBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__PLFakeCPLLibraryManager_beginInMemoryDownloadOfResource_clientBundleID_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 highPriority:(BOOL)a5 completionHandler:(id)a6
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d highPriority:(BOOL)priority completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__PLFakeCPLLibraryManager_beginDownloadForResource_clientBundleID_highPriority_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v11 = v7;
-  v9 = v7;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)beginDownloadForResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 completionHandler:(id)a7
+- (void)beginDownloadForResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a7;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __116__PLFakeCPLLibraryManager_beginDownloadForResource_clientBundleID_options_proposedTaskIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getStreamingURLOrMediaMakerDataForResource:(id)a3 intent:(unint64_t)a4 hints:(id)a5 timeRange:(id *)a6 clientBundleID:(id)a7 completionHandler:(id)a8
+- (void)getStreamingURLOrMediaMakerDataForResource:(id)resource intent:(unint64_t)intent hints:(id)hints timeRange:(id *)range clientBundleID:(id)d completionHandler:(id)handler
 {
-  v9 = a8;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __126__PLFakeCPLLibraryManager_getStreamingURLOrMediaMakerDataForResource_intent_hints_timeRange_clientBundleID_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v13 = v9;
-  v11 = v9;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -155,19 +155,19 @@ void __126__PLFakeCPLLibraryManager_getStreamingURLOrMediaMakerDataForResource_i
   (*(v1 + 16))(v1, 0, 0, 0, 0, v3);
 }
 
-- (void)checkResourcesAreSafeToPrune:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5
+- (void)checkResourcesAreSafeToPrune:(id)prune checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  pruneCopy = prune;
+  handlerCopy = handler;
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __97__PLFakeCPLLibraryManager_checkResourcesAreSafeToPrune_checkServerIfNecessary_completionHandler___block_invoke;
   v12[3] = &unk_1E7577C08;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = pruneCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = pruneCopy;
   dispatch_async(queue, v12);
 }
 
@@ -212,19 +212,19 @@ void __97__PLFakeCPLLibraryManager_checkResourcesAreSafeToPrune_checkServerIfNec
   (*(v11 + 16))(v11, 0, v12);
 }
 
-- (void)deleteResources:(id)a3 checkServerIfNecessary:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteResources:(id)resources checkServerIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  resourcesCopy = resources;
+  handlerCopy = handler;
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PLFakeCPLLibraryManager_deleteResources_checkServerIfNecessary_completionHandler___block_invoke;
   v12[3] = &unk_1E7577C08;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = resourcesCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = resourcesCopy;
   dispatch_async(queue, v12);
 }
 
@@ -269,16 +269,16 @@ void __84__PLFakeCPLLibraryManager_deleteResources_checkServerIfNecessary_comple
   (*(v11 + 16))(v11, 0, v12);
 }
 
-- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)a3
+- (void)checkHasBackgroundDownloadOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__PLFakeCPLLibraryManager_checkHasBackgroundDownloadOperationsWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -291,16 +291,16 @@ void __85__PLFakeCPLLibraryManager_checkHasBackgroundDownloadOperationsWithCompl
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)resolveLocalScopedIdentifiersForCloudScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PLFakeCPLLibraryManager_resolveLocalScopedIdentifiersForCloudScopedIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -313,16 +313,16 @@ void __100__PLFakeCPLLibraryManager_resolveLocalScopedIdentifiersForCloudScopedI
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getCloudScopedIdentifiersForLocalScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getCloudScopedIdentifiersForLocalScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__PLFakeCPLLibraryManager_getCloudScopedIdentifiersForLocalScopedIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -335,16 +335,16 @@ void __96__PLFakeCPLLibraryManager_getCloudScopedIdentifiersForLocalScopedIdenti
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getCloudCacheForRecordWithScopedIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getCloudCacheForRecordWithScopedIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__PLFakeCPLLibraryManager_getCloudCacheForRecordWithScopedIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -357,16 +357,16 @@ void __88__PLFakeCPLLibraryManager_getCloudCacheForRecordWithScopedIdentifier_co
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getStatusForComponents:(id)a3 completionHandler:(id)a4
+- (void)getStatusForComponents:(id)components completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__PLFakeCPLLibraryManager_getStatusForComponents_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -379,16 +379,16 @@ void __68__PLFakeCPLLibraryManager_getStatusForComponents_completionHandler___bl
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getCloudIdentifiersForLocalIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getCloudIdentifiersForLocalIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__PLFakeCPLLibraryManager_getCloudIdentifiersForLocalIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -401,19 +401,19 @@ void __84__PLFakeCPLLibraryManager_getCloudIdentifiersForLocalIdentifiers_comple
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getStatusForRecordsWithScopedIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getStatusForRecordsWithScopedIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__PLFakeCPLLibraryManager_getStatusForRecordsWithScopedIdentifiers_completionHandler___block_invoke;
   v11[3] = &unk_1E7577C08;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifiersCopy;
   dispatch_async(queue, v11);
 }
 
@@ -465,30 +465,30 @@ void __86__PLFakeCPLLibraryManager_getStatusForRecordsWithScopedIdentifiers_comp
   (*(v12 + 16))(v12, v13, 0);
 }
 
-- (void)forceBackupWithCompletionHandler:(id)a3
+- (void)forceBackupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PLFakeCPLLibraryManager_forceBackupWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)beginPullChangeSessionWithKnownLibraryVersion:(id)a3 completionHandler:(id)a4
+- (void)beginPullChangeSessionWithKnownLibraryVersion:(id)version completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PLFakeCPLLibraryManager_beginPullChangeSessionWithKnownLibraryVersion_completionHandler___block_invoke;
   v8[3] = &unk_1E7577C08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -498,17 +498,17 @@ void __91__PLFakeCPLLibraryManager_beginPullChangeSessionWithKnownLibraryVersion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)beginPushChangeSessionWithKnownLibraryVersion:(id)a3 completionHandler:(id)a4
+- (void)beginPushChangeSessionWithKnownLibraryVersion:(id)version completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PLFakeCPLLibraryManager_beginPushChangeSessionWithKnownLibraryVersion_completionHandler___block_invoke;
   v8[3] = &unk_1E7577C08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -518,16 +518,16 @@ void __91__PLFakeCPLLibraryManager_beginPushChangeSessionWithKnownLibraryVersion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)queryUserDetailsForShareParticipants:(id)a3 completionHandler:(id)a4
+- (void)queryUserDetailsForShareParticipants:(id)participants completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__PLFakeCPLLibraryManager_queryUserDetailsForShareParticipants_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -540,29 +540,29 @@ void __82__PLFakeCPLLibraryManager_queryUserDetailsForShareParticipants_completi
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)forceSynchronizingScopeWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)forceSynchronizingScopeWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__PLFakeCPLLibraryManager_forceSynchronizingScopeWithIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)boostPriorityForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)boostPriorityForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__PLFakeCPLLibraryManager_boostPriorityForScopeWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -575,16 +575,16 @@ void __81__PLFakeCPLLibraryManager_boostPriorityForScopeWithIdentifier_completio
   (*(v1 + 16))(v1, v3);
 }
 
-- (void)acceptSharedScope:(id)a3 completionHandler:(id)a4
+- (void)acceptSharedScope:(id)scope completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__PLFakeCPLLibraryManager_acceptSharedScope_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -597,16 +597,16 @@ void __63__PLFakeCPLLibraryManager_acceptSharedScope_completionHandler___block_i
   (*(v1 + 16))(v1, v3);
 }
 
-- (void)fetchSharedScopeFromShareURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedScopeFromShareURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__PLFakeCPLLibraryManager_fetchSharedScopeFromShareURL_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -619,16 +619,16 @@ void __74__PLFakeCPLLibraryManager_fetchSharedScopeFromShareURL_completionHandle
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)a3 maximumCount:(unint64_t)a4 completionHandler:(id)a5
+- (void)getStatusForPendingRecordsSharedToScopeWithIdentifier:(id)identifier maximumCount:(unint64_t)count completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __112__PLFakeCPLLibraryManager_getStatusForPendingRecordsSharedToScopeWithIdentifier_maximumCount_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -641,16 +641,16 @@ void __112__PLFakeCPLLibraryManager_getStatusForPendingRecordsSharedToScopeWithI
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)getScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__PLFakeCPLLibraryManager_getScopeStatusCountsForScopeWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -663,16 +663,16 @@ void __88__PLFakeCPLLibraryManager_getScopeStatusCountsForScopeWithIdentifier_co
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)updateShareForScope:(id)a3 completionHandler:(id)a4
+- (void)updateShareForScope:(id)scope completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PLFakeCPLLibraryManager_updateShareForScope_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -685,16 +685,16 @@ void __65__PLFakeCPLLibraryManager_updateShareForScope_completionHandler___block
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)createOwnedLibraryShareScopeWithShare:(id)a3 title:(id)a4 completionHandler:(id)a5
+- (void)createOwnedLibraryShareScopeWithShare:(id)share title:(id)title completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PLFakeCPLLibraryManager_createOwnedLibraryShareScopeWithShare_title_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -707,16 +707,16 @@ void __89__PLFakeCPLLibraryManager_createOwnedLibraryShareScopeWithShare_title_c
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)createScope:(id)a3 completionHandler:(id)a4
+- (void)createScope:(id)scope completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PLFakeCPLLibraryManager_createScope_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -729,29 +729,29 @@ void __57__PLFakeCPLLibraryManager_createScope_completionHandler___block_invoke(
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PLFakeCPLLibraryManager_sharedLibraryRampCheckWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeParticipants:(id)a3 fromSharedScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7
+- (void)removeParticipants:(id)participants fromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v8 = a7;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__PLFakeCPLLibraryManager_removeParticipants_fromSharedScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -764,16 +764,16 @@ void __121__PLFakeCPLLibraryManager_removeParticipants_fromSharedScopeWithIdenti
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)startExitFromSharedScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6
+- (void)startExitFromSharedScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __111__PLFakeCPLLibraryManager_startExitFromSharedScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v11 = v7;
-  v9 = v7;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -786,76 +786,76 @@ void __111__PLFakeCPLLibraryManager_startExitFromSharedScopeWithIdentifier_reten
   (*(v1 + 16))(v1, 0, v3);
 }
 
-- (void)deactivateWithCompletionHandler:(id)a3
+- (void)deactivateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PLFakeCPLLibraryManager_deactivateWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)activateScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)activateScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__PLFakeCPLLibraryManager_activateScopeWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)disableMainScopeWithCompletionHandler:(id)a3
+- (void)disableMainScopeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PLFakeCPLLibraryManager_disableMainScopeWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)enableMainScopeWithCompletionHandler:(id)a3
+- (void)enableMainScopeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PLFakeCPLLibraryManager_enableMainScopeWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PLFakeCPLLibraryManager_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (PLFakeCPLLibraryManager)initWithClientLibraryBaseURL:(id)a3 cloudLibraryStateStorageURL:(id)a4 cloudLibraryResourceStorageURL:(id)a5 libraryIdentifier:(id)a6 options:(unint64_t)a7
+- (PLFakeCPLLibraryManager)initWithClientLibraryBaseURL:(id)l cloudLibraryStateStorageURL:(id)rL cloudLibraryResourceStorageURL:(id)uRL libraryIdentifier:(id)identifier options:(unint64_t)options
 {
-  v9 = a3;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = PLFakeCPLLibraryManager;
   v10 = [(PLFakeCPLLibraryManager *)&v24 init];
@@ -868,19 +868,19 @@ void __111__PLFakeCPLLibraryManager_startExitFromSharedScopeWithIdentifier_reten
     queue = v10->_queue;
     v10->_queue = v13;
 
-    objc_storeStrong(&v10->_baseURL, a3);
-    v15 = [objc_opt_class() fakeCPLStatusBaseURLWithBaseURL:v9];
+    objc_storeStrong(&v10->_baseURL, l);
+    v15 = [objc_opt_class() fakeCPLStatusBaseURLWithBaseURL:lCopy];
     fakeBaseURL = v10->_fakeBaseURL;
     v10->_fakeBaseURL = v15;
 
     v10->_state = 0;
     v17 = objc_alloc(MEMORY[0x1E6994BE8]);
-    v18 = [objc_opt_class() fakeCPLStatusBaseURLWithBaseURL:v9];
+    v18 = [objc_opt_class() fakeCPLStatusBaseURLWithBaseURL:lCopy];
     v19 = [v17 initWithClientLibraryBaseURL:v18];
     syncStatus = v10->_syncStatus;
     v10->_syncStatus = v19;
 
-    v21 = [objc_alloc(MEMORY[0x1E6994AA0]) initWithClientLibraryBaseURL:v9];
+    v21 = [objc_alloc(MEMORY[0x1E6994AA0]) initWithClientLibraryBaseURL:lCopy];
     configuration = v10->_configuration;
     v10->_configuration = v21;
   }
@@ -888,10 +888,10 @@ void __111__PLFakeCPLLibraryManager_startExitFromSharedScopeWithIdentifier_reten
   return v10;
 }
 
-+ (id)fakeCPLStatusBaseURLWithBaseURL:(id)a3
++ (id)fakeCPLStatusBaseURLWithBaseURL:(id)l
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByAppendingPathComponent:@"PLFakeCPLLibraryManager"];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"PLFakeCPLLibraryManager"];
 
   return v4;
 }

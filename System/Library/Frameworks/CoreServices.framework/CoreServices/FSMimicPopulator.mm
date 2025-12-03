@@ -1,25 +1,25 @@
 @interface FSMimicPopulator
-- (BOOL)populateHFSTypeAndCreatorWithError:(id *)a3;
-- (BOOL)populateSimpleSelector:(SEL)a3 error:(id *)a4;
-- (BOOL)populateValueForKey:(id)a3 error:(id *)a4;
-- (FSMimicPopulator)initWithNode:(id)a3;
-- (void)populateHasChildNodeWithRelativePath:(id)a3;
+- (BOOL)populateHFSTypeAndCreatorWithError:(id *)error;
+- (BOOL)populateSimpleSelector:(SEL)selector error:(id *)error;
+- (BOOL)populateValueForKey:(id)key error:(id *)error;
+- (FSMimicPopulator)initWithNode:(id)node;
+- (void)populateHasChildNodeWithRelativePath:(id)path;
 @end
 
 @implementation FSMimicPopulator
 
-- (FSMimicPopulator)initWithNode:(id)a3
+- (FSMimicPopulator)initWithNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = FSMimicPopulator;
   v6 = [(FSMimicPopulator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_node, a3);
+    objc_storeStrong(&v6->_node, node);
     v8 = [FSMimic alloc];
-    v9 = [v5 URL];
+    v9 = [nodeCopy URL];
     v10 = [(FSMimic *)v8 initWithURL:v9];
     mimic = v7->_mimic;
     v7->_mimic = v10;
@@ -28,7 +28,7 @@
   return v7;
 }
 
-- (BOOL)populateSimpleSelector:(SEL)a3 error:(id *)a4
+- (BOOL)populateSimpleSelector:(SEL)selector error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   if ([(FSMimic *)self->_mimic hasObjectValueForSelector:?])
@@ -36,7 +36,7 @@
     goto LABEL_2;
   }
 
-  v10 = categorizeSelector(a3);
+  v10 = categorizeSelector(selector);
   LOBYTE(mimic) = 0;
   if (v10 > 2)
   {
@@ -48,11 +48,11 @@
         v11 = self->_node;
         v12 = mimic;
         v25 = 0.0;
-        LODWORD(mimic) = [v11 a3];
+        LODWORD(mimic) = [v11 selector];
         if (mimic)
         {
           v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*&v25];
-          [v12 setObjectValue:v24 forSelector:a3];
+          [v12 setObjectValue:v24 forSelector:selector];
         }
       }
 
@@ -67,24 +67,24 @@
         v11 = self->_node;
         v12 = mimic;
         v25 = 0.0;
-        LODWORD(mimic) = [v11 a3];
+        LODWORD(mimic) = [v11 selector];
         if (mimic)
         {
           v14 = [MEMORY[0x1E696AD98] numberWithDouble:v25];
-          [v12 setObjectValue:v14 forSelector:a3];
+          [v12 setObjectValue:v14 forSelector:selector];
         }
       }
 
       goto LABEL_26;
     }
 
-    if (a4)
+    if (error)
     {
       v26 = *MEMORY[0x1E696A278];
-      v15 = NSStringFromSelector(a3);
+      v15 = NSStringFromSelector(selector);
       v27[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v16, "[FSMimicPopulator populateSimpleSelector:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSMimic.mm", 487);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v16, "[FSMimicPopulator populateSimpleSelector:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSMimic.mm", 487);
     }
 
     LOBYTE(mimic) = 0;
@@ -97,9 +97,9 @@
       v17 = self->_mimic;
       v18 = self->_node;
       v19 = v17;
-      v20 = [v18 a3];
-      v21 = [MEMORY[0x1E696AD98] numberWithBool:v20];
-      [(FSMimic *)v19 setObjectValue:v21 forSelector:a3];
+      selector = [v18 selector];
+      v21 = [MEMORY[0x1E696AD98] numberWithBool:selector];
+      [(FSMimic *)v19 setObjectValue:v21 forSelector:selector];
 
 LABEL_2:
       LOBYTE(mimic) = 1;
@@ -117,11 +117,11 @@ LABEL_2:
       v11 = self->_node;
       v12 = mimic;
       LODWORD(v25) = 0;
-      LODWORD(mimic) = [v11 a3];
+      LODWORD(mimic) = [v11 selector];
       if (mimic)
       {
         v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v25)];
-        [v12 setObjectValue:v13 forSelector:a3];
+        [v12 setObjectValue:v13 forSelector:selector];
       }
 
 LABEL_26:
@@ -131,11 +131,11 @@ LABEL_26:
 
     mimic = self->_node;
     v22 = self->_mimic;
-    v23 = [mimic a3];
-    LOBYTE(mimic) = v23 != 0;
-    if (v23)
+    selector2 = [mimic selector];
+    LOBYTE(mimic) = selector2 != 0;
+    if (selector2)
     {
-      [(FSMimic *)v22 setObjectValue:v23 forSelector:a3];
+      [(FSMimic *)v22 setObjectValue:selector2 forSelector:selector];
     }
   }
 
@@ -144,11 +144,11 @@ LABEL_3:
   return mimic;
 }
 
-- (BOOL)populateValueForKey:(id)a3 error:(id *)a4
+- (BOOL)populateValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v13 = 0;
-  if ([(FSMimic *)self->_mimic hasResourceValueForKey:v6])
+  if ([(FSMimic *)self->_mimic hasResourceValueForKey:keyCopy])
   {
     v7 = 0;
     v8 = 1;
@@ -156,20 +156,20 @@ LABEL_3:
 
   else
   {
-    v9 = [(FSNode *)self->_node getResourceValue:&v13 forKey:v6 options:3 error:a4];
+    v9 = [(FSNode *)self->_node getResourceValue:&v13 forKey:keyCopy options:3 error:error];
     v7 = v13;
     if (v9)
     {
       if (!v13)
       {
-        v10 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v11 = v13;
-        v13 = v10;
+        v13 = null;
 
         v7 = v13;
       }
 
-      [(FSMimic *)self->_mimic setResourceValue:v7 forKey:v6];
+      [(FSMimic *)self->_mimic setResourceValue:v7 forKey:keyCopy];
       v8 = 1;
       v7 = v13;
     }
@@ -183,16 +183,16 @@ LABEL_3:
   return v8;
 }
 
-- (void)populateHasChildNodeWithRelativePath:(id)a3
+- (void)populateHasChildNodeWithRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(FSNode *)self->_node childNodeWithRelativePathExists:?])
   {
-    [(FSMimic *)self->_mimic noteExtantChildNodeWithRelativePath:v4];
+    [(FSMimic *)self->_mimic noteExtantChildNodeWithRelativePath:pathCopy];
   }
 }
 
-- (BOOL)populateHFSTypeAndCreatorWithError:(id *)a3
+- (BOOL)populateHFSTypeAndCreatorWithError:(id *)error
 {
   v13 = 0;
   v14 = 0;
@@ -207,12 +207,12 @@ LABEL_3:
     goto LABEL_11;
   }
 
-  v9 = [v6 domain];
-  if ([v9 isEqual:*MEMORY[0x1E696A768]])
+  domain = [v6 domain];
+  if ([domain isEqual:*MEMORY[0x1E696A768]])
   {
-    v10 = [v7 code];
+    code = [v7 code];
 
-    if (v10 == -10813)
+    if (code == -10813)
     {
       [(FSMimic *)self->_mimic setHFSTypesUnavailable];
       goto LABEL_3;
@@ -223,11 +223,11 @@ LABEL_3:
   {
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v7;
     v8 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else

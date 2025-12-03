@@ -1,50 +1,50 @@
 @interface _UIFBSSceneSubstrate
-- (_UIFBSSceneSubstrate)initWithScene:(id)a3;
-- (void)attachContext:(id)a3;
-- (void)detachContext:(id)a3;
+- (_UIFBSSceneSubstrate)initWithScene:(id)scene;
+- (void)attachContext:(id)context;
+- (void)detachContext:(id)context;
 @end
 
 @implementation _UIFBSSceneSubstrate
 
-- (_UIFBSSceneSubstrate)initWithScene:(id)a3
+- (_UIFBSSceneSubstrate)initWithScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = _UIFBSSceneSubstrate;
-  v3 = [(_UIContextBinderSubstrate *)&v7 initWithScene:a3];
+  v3 = [(_UIContextBinderSubstrate *)&v7 initWithScene:scene];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     sceneLayerTable = v3->_sceneLayerTable;
-    v3->_sceneLayerTable = v4;
+    v3->_sceneLayerTable = weakToStrongObjectsMapTable;
   }
 
   return v3;
 }
 
-- (void)attachContext:(id)a3
+- (void)attachContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v4 = [(NSMapTable *)self->_sceneLayerTable objectForKey:?];
   if (!v4)
   {
-    v4 = [objc_alloc(MEMORY[0x1E699FAA8]) initWithCAContext:v6];
-    [(NSMapTable *)self->_sceneLayerTable setObject:v4 forKey:v6];
+    v4 = [objc_alloc(MEMORY[0x1E699FAA8]) initWithCAContext:contextCopy];
+    [(NSMapTable *)self->_sceneLayerTable setObject:v4 forKey:contextCopy];
   }
 
-  v5 = [(_UIContextBinderSubstrate *)self scene];
-  [v5 attachLayer:v4];
+  scene = [(_UIContextBinderSubstrate *)self scene];
+  [scene attachLayer:v4];
 }
 
-- (void)detachContext:(id)a3
+- (void)detachContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v4 = [(NSMapTable *)self->_sceneLayerTable objectForKey:?];
   if (v4)
   {
-    v5 = [(_UIContextBinderSubstrate *)self scene];
-    [v5 detachLayer:v4];
+    scene = [(_UIContextBinderSubstrate *)self scene];
+    [scene detachLayer:v4];
 
-    [(NSMapTable *)self->_sceneLayerTable removeObjectForKey:v6];
+    [(NSMapTable *)self->_sceneLayerTable removeObjectForKey:contextCopy];
   }
 }
 

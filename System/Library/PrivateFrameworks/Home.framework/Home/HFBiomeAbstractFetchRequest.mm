@@ -1,23 +1,23 @@
 @interface HFBiomeAbstractFetchRequest
-- (BOOL)publisherFilter:(id)a3;
+- (BOOL)publisherFilter:(id)filter;
 - (HFBiomeAbstractFetchRequest)init;
-- (HFBiomeAbstractFetchRequest)initWithHome:(id)a3;
+- (HFBiomeAbstractFetchRequest)initWithHome:(id)home;
 - (id)fetch;
-- (void)_fetchWithPromise:(id)a3;
+- (void)_fetchWithPromise:(id)promise;
 @end
 
 @implementation HFBiomeAbstractFetchRequest
 
-- (HFBiomeAbstractFetchRequest)initWithHome:(id)a3
+- (HFBiomeAbstractFetchRequest)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HFBiomeAbstractFetchRequest;
   v6 = [(HFBiomeAbstractFetchRequest *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
     v10 = dispatch_queue_create("com.apple.Home.biomefetchrequest", v9);
@@ -34,42 +34,42 @@
 
 - (HFBiomeAbstractFetchRequest)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFBiomeAbstractFetchRequest.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFBiomeAbstractFetchRequest init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFBiomeAbstractFetchRequest.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HFBiomeAbstractFetchRequest init]", v5}];
 
   return 0;
 }
 
-- (BOOL)publisherFilter:(id)a3
+- (BOOL)publisherFilter:(id)filter
 {
-  v4 = [a3 eventBody];
-  if (!v4)
+  eventBody = [filter eventBody];
+  if (!eventBody)
   {
     goto LABEL_11;
   }
 
-  v5 = [(HFBiomeAbstractFetchRequest *)self home];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [v4 base];
-  v9 = [v8 homeUniqueIdentifier];
-  v10 = [v7 isEqualToString:v9];
+  home = [(HFBiomeAbstractFetchRequest *)self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  base = [eventBody base];
+  homeUniqueIdentifier = [base homeUniqueIdentifier];
+  v10 = [uUIDString isEqualToString:homeUniqueIdentifier];
 
   if (!v10)
   {
     goto LABEL_11;
   }
 
-  v11 = [(HFBiomeAbstractFetchRequest *)self room];
-  if (v11)
+  room = [(HFBiomeAbstractFetchRequest *)self room];
+  if (room)
   {
-    v12 = v11;
-    v13 = [(HFBiomeAbstractFetchRequest *)self room];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [v14 UUIDString];
-    v16 = [v4 roomUniqueIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    v12 = room;
+    room2 = [(HFBiomeAbstractFetchRequest *)self room];
+    uniqueIdentifier2 = [room2 uniqueIdentifier];
+    uUIDString2 = [uniqueIdentifier2 UUIDString];
+    roomUniqueIdentifier = [eventBody roomUniqueIdentifier];
+    v17 = [uUIDString2 isEqualToString:roomUniqueIdentifier];
 
     if (!v17)
     {
@@ -81,11 +81,11 @@
   if (v18)
   {
     v19 = v18;
-    v20 = [v4 zoneUniqueIdentifiers];
+    zoneUniqueIdentifiers = [eventBody zoneUniqueIdentifiers];
     v21 = [(HFBiomeAbstractFetchRequest *)self zone];
-    v22 = [v21 uniqueIdentifier];
-    v23 = [v22 UUIDString];
-    v24 = [v20 containsObject:v23];
+    uniqueIdentifier3 = [v21 uniqueIdentifier];
+    uUIDString3 = [uniqueIdentifier3 UUIDString];
+    v24 = [zoneUniqueIdentifiers containsObject:uUIDString3];
 
     if (!v24)
     {
@@ -93,31 +93,31 @@
     }
   }
 
-  v25 = [(HFBiomeAbstractFetchRequest *)self accessory];
-  if (!v25)
+  accessory = [(HFBiomeAbstractFetchRequest *)self accessory];
+  if (!accessory)
   {
     goto LABEL_9;
   }
 
-  v26 = v25;
-  v27 = [(HFBiomeAbstractFetchRequest *)self accessory];
-  v28 = [v27 uniqueIdentifier];
-  v29 = [v28 UUIDString];
-  v30 = [v4 accessoryUniqueIdentifier];
-  v31 = [v29 isEqualToString:v30];
+  v26 = accessory;
+  accessory2 = [(HFBiomeAbstractFetchRequest *)self accessory];
+  uniqueIdentifier4 = [accessory2 uniqueIdentifier];
+  uUIDString4 = [uniqueIdentifier4 UUIDString];
+  accessoryUniqueIdentifier = [eventBody accessoryUniqueIdentifier];
+  v31 = [uUIDString4 isEqualToString:accessoryUniqueIdentifier];
 
   if (v31)
   {
 LABEL_9:
-    v32 = [(HFBiomeAbstractFetchRequest *)self service];
-    if (v32)
+    service = [(HFBiomeAbstractFetchRequest *)self service];
+    if (service)
     {
-      v33 = v32;
-      v34 = [(HFBiomeAbstractFetchRequest *)self service];
-      v35 = [v34 uniqueIdentifier];
-      v36 = [v35 UUIDString];
-      v37 = [v4 serviceUniqueIdentifier];
-      v38 = [v36 isEqualToString:v37];
+      v33 = service;
+      service2 = [(HFBiomeAbstractFetchRequest *)self service];
+      uniqueIdentifier5 = [service2 uniqueIdentifier];
+      uUIDString5 = [uniqueIdentifier5 UUIDString];
+      serviceUniqueIdentifier = [eventBody serviceUniqueIdentifier];
+      v38 = [uUIDString5 isEqualToString:serviceUniqueIdentifier];
     }
 
     else
@@ -135,15 +135,15 @@ LABEL_11:
   return v38 & 1;
 }
 
-- (void)_fetchWithPromise:(id)a3
+- (void)_fetchWithPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  [v5 timeIntervalSinceReferenceDate];
+  promiseCopy = promise;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [(HFBiomeAbstractFetchRequest *)self accessoryControlStream];
-  v9 = [v8 publisherFromStartTime:v7];
+  accessoryControlStream = [(HFBiomeAbstractFetchRequest *)self accessoryControlStream];
+  v9 = [accessoryControlStream publisherFromStartTime:v7];
 
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@ LABEL_11:
   v15[1] = 3221225472;
   v15[2] = __49__HFBiomeAbstractFetchRequest__fetchWithPromise___block_invoke_2;
   v15[3] = &unk_277DFB6F0;
-  v11 = v4;
+  v11 = promiseCopy;
   v16 = v11;
   objc_copyWeak(&v17, &location);
   v13[0] = MEMORY[0x277D85DD0];

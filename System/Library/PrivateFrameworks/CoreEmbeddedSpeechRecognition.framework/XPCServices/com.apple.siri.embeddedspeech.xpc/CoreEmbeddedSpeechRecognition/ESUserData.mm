@@ -1,27 +1,27 @@
 @interface ESUserData
-+ (BOOL)_addVocabWord:(id)a3 vocabularyLabel:(id)a4 toVocabularyWords:(id)a5;
-+ (BOOL)_isEntityInExclusionList:(id)a3 bundleId:(id)a4 type:(id)a5;
-+ (id)_extractedLabelForLabel:(id)a3;
-+ (id)_fetchAppEntityMappingForBundleId:(id)a3 appEntityConfig:(id)a4 assistantSchemas:(id)a5 entityType:(id)a6;
-+ (id)_fetchExtractedEntityMappingsForEntities:(id)a3 extractionVocabLabels:(id)a4 originalInputString:(id)a5;
-+ (id)_normalize:(id)a3;
-+ (id)_sanitizeTextForDatatypes:(id)a3 detector:(id)a4;
-+ (unint64_t)_totalContactComponentsInSet:(id)a3;
-+ (void)_applyContactLimitsToFirstPartyContacts:(id)a3 thirdPartyContacts:(id)a4 groupNames:(id)a5;
-+ (void)_limitVocabularyWords:(id)a3 toApplicableSpeechCategories:(id)a4;
-- (BOOL)_processAppEntity:(id)a3 vocabularyWords:(id)a4;
-- (ESUserData)initWithItems:(id)a3 applicableSpeechCategories:(id)a4;
++ (BOOL)_addVocabWord:(id)word vocabularyLabel:(id)label toVocabularyWords:(id)words;
++ (BOOL)_isEntityInExclusionList:(id)list bundleId:(id)id type:(id)type;
++ (id)_extractedLabelForLabel:(id)label;
++ (id)_fetchAppEntityMappingForBundleId:(id)id appEntityConfig:(id)config assistantSchemas:(id)schemas entityType:(id)type;
++ (id)_fetchExtractedEntityMappingsForEntities:(id)entities extractionVocabLabels:(id)labels originalInputString:(id)string;
++ (id)_normalize:(id)_normalize;
++ (id)_sanitizeTextForDatatypes:(id)datatypes detector:(id)detector;
++ (unint64_t)_totalContactComponentsInSet:(id)set;
++ (void)_applyContactLimitsToFirstPartyContacts:(id)contacts thirdPartyContacts:(id)partyContacts groupNames:(id)names;
++ (void)_limitVocabularyWords:(id)words toApplicableSpeechCategories:(id)categories;
+- (BOOL)_processAppEntity:(id)entity vocabularyWords:(id)words;
+- (ESUserData)initWithItems:(id)items applicableSpeechCategories:(id)categories;
 - (NSSet)codepathIds;
-- (id)_applyEntityCleanup:(id)a3 enableEmojiCleanup:(BOOL)a4 enableSpecialCharacterCleanup:(BOOL)a5 customRegex:(id)a6;
-- (id)_applyEntityCleanupToNonAppEntity:(id)a3;
+- (id)_applyEntityCleanup:(id)cleanup enableEmojiCleanup:(BOOL)emojiCleanup enableSpecialCharacterCleanup:(BOOL)characterCleanup customRegex:(id)regex;
+- (id)_applyEntityCleanupToNonAppEntity:(id)entity;
 - (id)_textDatatypeDetector;
 - (id)description;
-- (void)_performEntityExtractionAndAddToVocabWords:(id)a3 vocabularyWords:(id)a4 extractionVocabLabels:(id)a5;
-- (void)_populateUserDataFromItems:(id)a3 applicableSpeechCategories:(id)a4;
-- (void)_processContactItem:(id)a3 contactWords:(id)a4 vocabularyWords:(id)a5;
-- (void)_processRadioItem:(id)a3 radioWords:(id)a4;
-- (void)_processSingleVocabItem:(unsigned __int16)a3 fieldContent:(id)a4 vocabularyLabel:(id)a5 vocabularyWords:(id)a6;
-- (void)_processVocabularyItem:(id)a3 vocabularyWords:(id)a4;
+- (void)_performEntityExtractionAndAddToVocabWords:(id)words vocabularyWords:(id)vocabularyWords extractionVocabLabels:(id)labels;
+- (void)_populateUserDataFromItems:(id)items applicableSpeechCategories:(id)categories;
+- (void)_processContactItem:(id)item contactWords:(id)words vocabularyWords:(id)vocabularyWords;
+- (void)_processRadioItem:(id)item radioWords:(id)words;
+- (void)_processSingleVocabItem:(unsigned __int16)item fieldContent:(id)content vocabularyLabel:(id)label vocabularyWords:(id)words;
+- (void)_processVocabularyItem:(id)item vocabularyWords:(id)words;
 - (void)logEntityCleanupConfig;
 - (void)logEntityExtractionConfig;
 @end
@@ -32,12 +32,12 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ESUserData *)self firstPartyContactWords];
-  v6 = [(ESUserData *)self thirdPartyContactWords];
-  v7 = [(ESUserData *)self groupNameWords];
-  v8 = [(ESUserData *)self vocabularyWords];
-  v9 = [(ESUserData *)self radioWords];
-  v10 = [NSString stringWithFormat:@"<%@: %p firstPartyContactWords: %@; thirdPartyContactWords: %@; groupNameWords: %@; vocabularyWords: %@; radioWords: %@>", v4, self, v5, v6, v7, v8, v9];;
+  firstPartyContactWords = [(ESUserData *)self firstPartyContactWords];
+  thirdPartyContactWords = [(ESUserData *)self thirdPartyContactWords];
+  groupNameWords = [(ESUserData *)self groupNameWords];
+  vocabularyWords = [(ESUserData *)self vocabularyWords];
+  radioWords = [(ESUserData *)self radioWords];
+  v10 = [NSString stringWithFormat:@"<%@: %p firstPartyContactWords: %@; thirdPartyContactWords: %@; groupNameWords: %@; vocabularyWords: %@; radioWords: %@>", v4, self, firstPartyContactWords, thirdPartyContactWords, groupNameWords, vocabularyWords, radioWords];;
 
   return v10;
 }
@@ -87,19 +87,19 @@
   return v8;
 }
 
-- (void)_processVocabularyItem:(id)a3 vocabularyWords:(id)a4
+- (void)_processVocabularyItem:(id)item vocabularyWords:(id)words
 {
-  v6 = a4;
-  v7 = [a3 content];
+  wordsCopy = words;
+  content = [item content];
   v13 = 0;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000C228;
   v11[3] = &unk_100054DD0;
   v11[4] = self;
-  v8 = v6;
+  v8 = wordsCopy;
   v12 = v8;
-  [v7 recursivelyEnumerateFieldsWithError:&v13 usingBlock:v11];
+  [content recursivelyEnumerateFieldsWithError:&v13 usingBlock:v11];
   v9 = v13;
   if (v9)
   {
@@ -115,16 +115,16 @@
   }
 }
 
-- (void)_processSingleVocabItem:(unsigned __int16)a3 fieldContent:(id)a4 vocabularyLabel:(id)a5 vocabularyWords:(id)a6
+- (void)_processSingleVocabItem:(unsigned __int16)item fieldContent:(id)content vocabularyLabel:(id)label vocabularyWords:(id)words
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v8 == 54389)
+  itemCopy = item;
+  contentCopy = content;
+  labelCopy = label;
+  wordsCopy = words;
+  if (itemCopy == 54389)
   {
-    v13 = [(ESUserData *)self _textDatatypeDetector];
-    v14 = [ESUserData _sanitizeTextForDatatypes:v10 detector:v13];
+    _textDatatypeDetector = [(ESUserData *)self _textDatatypeDetector];
+    v14 = [ESUserData _sanitizeTextForDatatypes:contentCopy detector:_textDatatypeDetector];
 
     if (!v14)
     {
@@ -134,37 +134,37 @@
 
   else
   {
-    v14 = [(ESUserData *)self _applyEntityCleanupToNonAppEntity:v10];
+    v14 = [(ESUserData *)self _applyEntityCleanupToNonAppEntity:contentCopy];
     if (!v14)
     {
       goto LABEL_9;
     }
   }
 
-  [ESUserData _addVocabWord:v14 vocabularyLabel:v11 toVocabularyWords:v12];
-  if (v8 == 26515 || v8 == 54389 || v8 == 53485)
+  [ESUserData _addVocabWord:v14 vocabularyLabel:labelCopy toVocabularyWords:wordsCopy];
+  if (itemCopy == 26515 || itemCopy == 54389 || itemCopy == 53485)
   {
-    v15 = [ESUserData _extractedLabelForLabel:v11];
+    v15 = [ESUserData _extractedLabelForLabel:labelCopy];
     v17 = @"default";
     v18 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    [(ESUserData *)self _performEntityExtractionAndAddToVocabWords:v14 vocabularyWords:v12 extractionVocabLabels:v16];
+    [(ESUserData *)self _performEntityExtractionAndAddToVocabWords:v14 vocabularyWords:wordsCopy extractionVocabLabels:v16];
   }
 
 LABEL_9:
 }
 
-- (void)_performEntityExtractionAndAddToVocabWords:(id)a3 vocabularyWords:(id)a4 extractionVocabLabels:(id)a5
+- (void)_performEntityExtractionAndAddToVocabWords:(id)words vocabularyWords:(id)vocabularyWords extractionVocabLabels:(id)labels
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  wordsCopy = words;
+  vocabularyWordsCopy = vocabularyWords;
+  labelsCopy = labels;
   if ((self->_extractedEntityBudget || [(CESRAppEntityConfig *)self->_appEntityConfig enableEntityExtraction]) && self->_entityTagger)
   {
     [(CESRSpeechProfileMetrics *)self->_metrics setIsExtractionSetupSuccessful:1];
     [(CESRSpeechProfileMetrics *)self->_metrics setNumEntitiesExtractionAttempted:[(CESRSpeechProfileMetrics *)self->_metrics numEntitiesExtractionAttempted]+ 1];
-    v11 = [(_EAREntityTagger *)self->_entityTagger tagEntitiesWithTagNamesIn:v8];
-    v12 = [ESUserData _fetchExtractedEntityMappingsForEntities:v11 extractionVocabLabels:v10 originalInputString:v8];
+    v11 = [(_EAREntityTagger *)self->_entityTagger tagEntitiesWithTagNamesIn:wordsCopy];
+    v12 = [ESUserData _fetchExtractedEntityMappingsForEntities:v11 extractionVocabLabels:labelsCopy originalInputString:wordsCopy];
     if ([v12 count])
     {
       [(NSMutableSet *)self->_codepathIds addObject:@"5d947328-fccf-4c7f-b772-a156ab177a0a"];
@@ -178,29 +178,29 @@ LABEL_9:
       v13[1] = 3221225472;
       v13[2] = sub_10000C714;
       v13[3] = &unk_100054DF8;
-      v14 = v9;
-      v15 = self;
+      v14 = vocabularyWordsCopy;
+      selfCopy = self;
       [v12 enumerateKeysAndObjectsUsingBlock:v13];
     }
   }
 }
 
-- (BOOL)_processAppEntity:(id)a3 vocabularyWords:(id)a4
+- (BOOL)_processAppEntity:(id)entity vocabularyWords:(id)words
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 content];
-  v9 = [v8 displayRepresentation];
-  v34 = [v9 title];
+  wordsCopy = words;
+  entityCopy = entity;
+  content = [entityCopy content];
+  displayRepresentation = [content displayRepresentation];
+  title = [displayRepresentation title];
 
-  v35 = v8;
-  v10 = [v8 typeIdentifier];
-  v11 = [v7 sourceBundleId];
+  v35 = content;
+  typeIdentifier = [content typeIdentifier];
+  sourceBundleId = [entityCopy sourceBundleId];
 
   if ([(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEmojiCleanupFromAppEntities])
   {
-    v12 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig entitiesExcludedFromEmojiCleanup];
-    v13 = [ESUserData _isEntityInExclusionList:v12 bundleId:v11 type:v10]^ 1;
+    entitiesExcludedFromEmojiCleanup = [(CESREntityCleanupConfig *)self->_entityCleanupConfig entitiesExcludedFromEmojiCleanup];
+    v13 = [ESUserData _isEntityInExclusionList:entitiesExcludedFromEmojiCleanup bundleId:sourceBundleId type:typeIdentifier]^ 1;
   }
 
   else
@@ -208,17 +208,17 @@ LABEL_9:
     v13 = 0;
   }
 
-  v33 = v10;
+  v33 = typeIdentifier;
   if ([(CESREntityCleanupConfig *)self->_entityCleanupConfig enableSpecialCharacterCleanupFromAppEntities])
   {
-    v14 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig specialCharactersToRemove];
-    if ([v14 count])
+    specialCharactersToRemove = [(CESREntityCleanupConfig *)self->_entityCleanupConfig specialCharactersToRemove];
+    if ([specialCharactersToRemove count])
     {
       [(CESREntityCleanupConfig *)self->_entityCleanupConfig entitiesExcludedFromSpecialCharacterCleanup];
-      v16 = v15 = v6;
-      v17 = [ESUserData _isEntityInExclusionList:v16 bundleId:v11 type:v10]^ 1;
+      v16 = v15 = wordsCopy;
+      v17 = [ESUserData _isEntityInExclusionList:v16 bundleId:sourceBundleId type:typeIdentifier]^ 1;
 
-      v6 = v15;
+      wordsCopy = v15;
     }
 
     else
@@ -232,10 +232,10 @@ LABEL_9:
     v17 = 0;
   }
 
-  v18 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig applyRegex];
-  v19 = [v18 valueForKey:v11];
+  applyRegex = [(CESREntityCleanupConfig *)self->_entityCleanupConfig applyRegex];
+  v19 = [applyRegex valueForKey:sourceBundleId];
 
-  v20 = v6;
+  v20 = wordsCopy;
   if (v19)
   {
     v21 = v33;
@@ -248,19 +248,19 @@ LABEL_9:
     v21 = v33;
   }
 
-  v23 = [(ESUserData *)self _applyEntityCleanup:v34 enableEmojiCleanup:v13 enableSpecialCharacterCleanup:v17 customRegex:v22, v11];
+  v23 = [(ESUserData *)self _applyEntityCleanup:title enableEmojiCleanup:v13 enableSpecialCharacterCleanup:v17 customRegex:v22, sourceBundleId];
   appEntityConfig = self->_appEntityConfig;
-  v25 = [v35 assistantDefinedSchemas];
-  v26 = [ESUserData _fetchAppEntityMappingForBundleId:v32 appEntityConfig:appEntityConfig assistantSchemas:v25 entityType:v21];
+  assistantDefinedSchemas = [v35 assistantDefinedSchemas];
+  v26 = [ESUserData _fetchAppEntityMappingForBundleId:v32 appEntityConfig:appEntityConfig assistantSchemas:assistantDefinedSchemas entityType:v21];
 
-  v27 = [v26 primaryVocabLabel];
+  primaryVocabLabel = [v26 primaryVocabLabel];
   v28 = v20;
-  v29 = [ESUserData _addVocabWord:v23 vocabularyLabel:v27 toVocabularyWords:v20];
+  v29 = [ESUserData _addVocabWord:v23 vocabularyLabel:primaryVocabLabel toVocabularyWords:v20];
 
   if (v29)
   {
-    v30 = [v26 extractionVocabLabels];
-    [(ESUserData *)self _performEntityExtractionAndAddToVocabWords:v23 vocabularyWords:v20 extractionVocabLabels:v30];
+    extractionVocabLabels = [v26 extractionVocabLabels];
+    [(ESUserData *)self _performEntityExtractionAndAddToVocabWords:v23 vocabularyWords:v20 extractionVocabLabels:extractionVocabLabels];
 
     v28 = v20;
   }
@@ -268,19 +268,19 @@ LABEL_9:
   return v29;
 }
 
-- (void)_processRadioItem:(id)a3 radioWords:(id)a4
+- (void)_processRadioItem:(id)item radioWords:(id)words
 {
-  v6 = a4;
-  v7 = [a3 content];
+  wordsCopy = words;
+  content = [item content];
   v13 = 0;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000CC70;
   v11[3] = &unk_100054DD0;
   v11[4] = self;
-  v8 = v6;
+  v8 = wordsCopy;
   v12 = v8;
-  [v7 recursivelyEnumerateFieldsWithError:&v13 usingBlock:v11];
+  [content recursivelyEnumerateFieldsWithError:&v13 usingBlock:v11];
   v9 = v13;
 
   if (v9)
@@ -297,12 +297,12 @@ LABEL_9:
   }
 }
 
-- (void)_processContactItem:(id)a3 contactWords:(id)a4 vocabularyWords:(id)a5
+- (void)_processContactItem:(id)item contactWords:(id)words vocabularyWords:(id)vocabularyWords
 {
-  v7 = a4;
-  v8 = a3;
+  wordsCopy = words;
+  itemCopy = item;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [v8 content];
+  content = [itemCopy content];
   v19 = 0;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -310,22 +310,22 @@ LABEL_9:
   v16[3] = &unk_100054DD0;
   v11 = v9;
   v17 = v11;
-  v18 = self;
-  [v10 recursivelyEnumerateFieldsWithError:&v19 usingBlock:v16];
+  selfCopy = self;
+  [content recursivelyEnumerateFieldsWithError:&v19 usingBlock:v16];
   v12 = v19;
 
-  LODWORD(v10) = [v8 isBoosted];
+  LODWORD(content) = [itemCopy isBoosted];
   v13 = [ESUserDataContactWord alloc];
-  if (v10)
+  if (content)
   {
     v14 = [(ESUserDataContactWord *)v13 initWithComponents:v11 frequency:2];
-    [v7 insertObject:v14 atIndex:0];
+    [wordsCopy insertObject:v14 atIndex:0];
   }
 
   else
   {
     v14 = [(ESUserDataContactWord *)v13 initWithComponents:v11 frequency:1];
-    [v7 addObject:v14];
+    [wordsCopy addObject:v14];
   }
 
   if (v12)
@@ -342,40 +342,40 @@ LABEL_9:
   }
 }
 
-- (id)_applyEntityCleanupToNonAppEntity:(id)a3
+- (id)_applyEntityCleanupToNonAppEntity:(id)entity
 {
   entityCleanupConfig = self->_entityCleanupConfig;
-  v5 = a3;
-  v6 = [(ESUserData *)self _applyEntityCleanup:v5 enableEmojiCleanup:[(CESREntityCleanupConfig *)entityCleanupConfig enableEmojiCleanupFromNonAppEntities] enableSpecialCharacterCleanup:[(CESREntityCleanupConfig *)self->_entityCleanupConfig enableSpecialCharacterCleanupFromNonAppEntities] customRegex:0];
+  entityCopy = entity;
+  v6 = [(ESUserData *)self _applyEntityCleanup:entityCopy enableEmojiCleanup:[(CESREntityCleanupConfig *)entityCleanupConfig enableEmojiCleanupFromNonAppEntities] enableSpecialCharacterCleanup:[(CESREntityCleanupConfig *)self->_entityCleanupConfig enableSpecialCharacterCleanupFromNonAppEntities] customRegex:0];
 
   return v6;
 }
 
-- (id)_applyEntityCleanup:(id)a3 enableEmojiCleanup:(BOOL)a4 enableSpecialCharacterCleanup:(BOOL)a5 customRegex:(id)a6
+- (id)_applyEntityCleanup:(id)cleanup enableEmojiCleanup:(BOOL)emojiCleanup enableSpecialCharacterCleanup:(BOOL)characterCleanup customRegex:(id)regex
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (v8)
+  characterCleanupCopy = characterCleanup;
+  emojiCleanupCopy = emojiCleanup;
+  cleanupCopy = cleanup;
+  regexCopy = regex;
+  v12 = regexCopy;
+  if (emojiCleanupCopy)
   {
-    v13 = v10;
+    v13 = cleanupCopy;
 LABEL_7:
-    v15 = [(EAREntityCleanup *)self->_entityCleaner removeEmojis:v10];
-    v14 = v10;
+    v15 = [(EAREntityCleanup *)self->_entityCleaner removeEmojis:cleanupCopy];
+    v14 = cleanupCopy;
     if (v15)
     {
       v16 = [ESUserData _normalize:v15];
-      v17 = [ESUserData _normalize:v10];
+      v17 = [ESUserData _normalize:cleanupCopy];
       v18 = [v16 isEqualToString:v17];
 
-      v14 = v10;
+      v14 = cleanupCopy;
       if ((v18 & 1) == 0)
       {
         [(NSMutableSet *)self->_codepathIds addObject:@"7e65308b-bea2-4201-9f02-4ae398303003"];
-        v14 = v10;
-        if (v8)
+        v14 = cleanupCopy;
+        if (emojiCleanupCopy)
         {
           [(CESRSpeechProfileMetrics *)self->_metrics setNumEntitiesContainingEmoji:[(CESRSpeechProfileMetrics *)self->_metrics numEntitiesContainingEmoji]+ 1];
           v14 = v15;
@@ -386,25 +386,25 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  if (!v11 && !v7 && ([(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEntityCleanup]& 1) == 0)
+  if (!regexCopy && !characterCleanupCopy && ([(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEntityCleanup]& 1) == 0)
   {
-    v14 = v10;
+    v14 = cleanupCopy;
     goto LABEL_27;
   }
 
-  v14 = v10;
+  v14 = cleanupCopy;
   if (([(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEntityCleanup]& 1) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_12:
-  if (v7 || [(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEntityCleanup])
+  if (characterCleanupCopy || [(CESREntityCleanupConfig *)self->_entityCleanupConfig enableEntityCleanup])
   {
     entityCleaner = self->_entityCleaner;
-    v20 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig specialCharactersToRemove];
-    v21 = [v20 allObjects];
-    v22 = [(EAREntityCleanup *)entityCleaner removeSpecialCharacters:v21 fromString:v14];
+    specialCharactersToRemove = [(CESREntityCleanupConfig *)self->_entityCleanupConfig specialCharactersToRemove];
+    allObjects = [specialCharactersToRemove allObjects];
+    v22 = [(EAREntityCleanup *)entityCleaner removeSpecialCharacters:allObjects fromString:v14];
 
     if (v22)
     {
@@ -415,7 +415,7 @@ LABEL_12:
       if ((v25 & 1) == 0)
       {
         [(NSMutableSet *)self->_codepathIds addObject:@"4d8033c8-b9f3-4168-ae10-e04ac69ae864"];
-        if (v7)
+        if (characterCleanupCopy)
         {
           [(CESRSpeechProfileMetrics *)self->_metrics setNumEntitiesContainingSpecialCharacters:[(CESRSpeechProfileMetrics *)self->_metrics numEntitiesContainingSpecialCharacters]+ 1];
           v26 = [(EAREntityCleanup *)self->_entityCleaner removeDuplicateWhitespace:v22];
@@ -427,7 +427,7 @@ LABEL_12:
   }
 
   v27 = [ESUserData _normalize:v14];
-  v28 = [ESUserData _normalize:v10];
+  v28 = [ESUserData _normalize:cleanupCopy];
   v29 = [v27 isEqualToString:v28];
 
   if ((v29 & 1) == 0)
@@ -465,16 +465,16 @@ LABEL_27:
   return v14;
 }
 
-- (void)_populateUserDataFromItems:(id)a3 applicableSpeechCategories:(id)a4
+- (void)_populateUserDataFromItems:(id)items applicableSpeechCategories:(id)categories
 {
-  v5 = a3;
-  v62 = a4;
+  itemsCopy = items;
+  categoriesCopy = categories;
   v57 = +[NSMutableOrderedSet orderedSet];
   v54 = +[NSMutableOrderedSet orderedSet];
   v53 = +[NSMutableOrderedSet orderedSet];
   v52 = +[NSMutableOrderedSet orderedSet];
   v59 = +[NSMutableDictionary dictionary];
-  v58 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
+  overallAppEntityLimit = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
   v6 = +[CESRSpeechProfileBuilder appEntityFeatureFlagEnabled];
   [(ESUserData *)self logEntityCleanupConfig];
   [(ESUserData *)self logEntityExtractionConfig];
@@ -505,13 +505,13 @@ LABEL_55:
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v5 count];
+    v12 = [itemsCopy count];
     *buf = 136315650;
     *&buf[4] = "[ESUserData _populateUserDataFromItems:applicableSpeechCategories:]";
     *&buf[12] = 2048;
     *&buf[14] = v12;
     *&buf[22] = 2112;
-    v76 = v62;
+    v76 = categoriesCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Processing %tu items for speech categories: %@.", buf, 0x20u);
   }
 
@@ -519,7 +519,7 @@ LABEL_55:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v13 = [obj countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (!v13)
   {
@@ -540,22 +540,22 @@ LABEL_55:
 
       v16 = *(*(&v64 + 1) + 8 * i);
       v17 = objc_autoreleasePoolPush();
-      v18 = [v16 content];
-      v19 = [objc_opt_class() itemType];
+      content = [v16 content];
+      itemType = [objc_opt_class() itemType];
 
-      if (v19 > 61351)
+      if (itemType > 61351)
       {
-        switch(v19)
+        switch(itemType)
         {
           case 61352:
-            if ([v62 containsObject:@"\\NT-appcontact"])
+            if ([categoriesCopy containsObject:@"\\NT-appcontact"])
             {
               [(ESUserData *)self _processContactItem:v16 contactWords:v54 vocabularyWords:v59];
             }
 
             break;
           case 63369:
-            if ([v62 containsObject:@"\\NT-appcontact"])
+            if ([categoriesCopy containsObject:@"\\NT-appcontact"])
             {
               [(ESUserData *)self _processContactItem:v16 contactWords:v53 vocabularyWords:v59];
             }
@@ -563,7 +563,7 @@ LABEL_55:
             break;
           case 61509:
 LABEL_21:
-            if ([v62 containsObject:@"\\NT-contact"])
+            if ([categoriesCopy containsObject:@"\\NT-contact"])
             {
               [(ESUserData *)self _processContactItem:v16 contactWords:v57 vocabularyWords:v59];
             }
@@ -578,12 +578,12 @@ LABEL_25:
 
       else
       {
-        switch(v19)
+        switch(itemType)
         {
           case 19668:
             goto LABEL_21;
           case 47341:
-            if (v58 > 0)
+            if (overallAppEntityLimit > 0)
             {
               v20 = v55;
             }
@@ -596,12 +596,12 @@ LABEL_25:
             if (v20 == 1)
             {
               v56 = (v56 + 1);
-              v58 -= [(ESUserData *)self _processAppEntity:v16 vocabularyWords:v59];
+              overallAppEntityLimit -= [(ESUserData *)self _processAppEntity:v16 vocabularyWords:v59];
             }
 
             break;
           case 49066:
-            if ([v62 containsObject:@"\\NT-playlist"])
+            if ([categoriesCopy containsObject:@"\\NT-playlist"])
             {
               [(ESUserData *)self _processRadioItem:v16 radioWords:v52];
             }
@@ -621,7 +621,7 @@ LABEL_25:
   while (v13);
 LABEL_37:
 
-  [ESUserData _limitVocabularyWords:v59 toApplicableSpeechCategories:v62];
+  [ESUserData _limitVocabularyWords:v59 toApplicableSpeechCategories:categoriesCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -635,13 +635,13 @@ LABEL_37:
   v21 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v40 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
+    overallAppEntityLimit2 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
     *v68 = 136315650;
     v69 = "[ESUserData _populateUserDataFromItems:applicableSpeechCategories:]";
     v70 = 2048;
     v71 = v56;
     v72 = 2048;
-    v73 = v40 - v58;
+    v73 = overallAppEntityLimit2 - overallAppEntityLimit;
     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s Processed %ld App Entities, enrolled %ld.", v68, 0x20u);
   }
 
@@ -661,8 +661,8 @@ LABEL_37:
     v23 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v46 = [(ESUserData *)self codepathIds];
-      v47 = [v46 containsObject:@"7e65308b-bea2-4201-9f02-4ae398303003"];
+      codepathIds = [(ESUserData *)self codepathIds];
+      v47 = [codepathIds containsObject:@"7e65308b-bea2-4201-9f02-4ae398303003"];
       v48 = @"DOES NOT HAVE";
       if (v47)
       {
@@ -679,8 +679,8 @@ LABEL_37:
     v24 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v49 = [(ESUserData *)self codepathIds];
-      v50 = [v49 containsObject:@"4d8033c8-b9f3-4168-ae10-e04ac69ae864"];
+      codepathIds2 = [(ESUserData *)self codepathIds];
+      v50 = [codepathIds2 containsObject:@"4d8033c8-b9f3-4168-ae10-e04ac69ae864"];
       v51 = @"DOES NOT HAVE";
       if (v50)
       {
@@ -700,8 +700,8 @@ LABEL_37:
     v25 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v43 = [(ESUserData *)self codepathIds];
-      v44 = [v43 containsObject:@"5d947328-fccf-4c7f-b772-a156ab177a0a"];
+      codepathIds3 = [(ESUserData *)self codepathIds];
+      v44 = [codepathIds3 containsObject:@"5d947328-fccf-4c7f-b772-a156ab177a0a"];
       v45 = @"DOES NOT HAVE";
       if (v44)
       {
@@ -765,7 +765,7 @@ LABEL_37:
     v15 = 136315394;
     v16 = "[ESUserData logEntityExtractionConfig]";
     v17 = 2048;
-    v18 = [(CESRAppEntityConfig *)appEntityConfig overallEntityExtractionLimit];
+    overallEntityExtractionLimit = [(CESRAppEntityConfig *)appEntityConfig overallEntityExtractionLimit];
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s Entity Extraction: Entity Extraction Limit is %ld", &v15, 0x16u);
 
     v3 = AFSiriLogContextSpeech;
@@ -775,9 +775,9 @@ LABEL_37:
   {
     v7 = self->_appEntityConfig;
     v8 = v3;
-    v9 = [(CESRAppEntityConfig *)v7 enableEntityExtraction];
+    enableEntityExtraction = [(CESRAppEntityConfig *)v7 enableEntityExtraction];
     v10 = @"IS";
-    if (!v9)
+    if (!enableEntityExtraction)
     {
       v10 = @"IS NOT";
     }
@@ -785,7 +785,7 @@ LABEL_37:
     v15 = 136315394;
     v16 = "[ESUserData logEntityExtractionConfig]";
     v17 = 2112;
-    v18 = v10;
+    overallEntityExtractionLimit = v10;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Entity Extraction: Extraction %@ enabled.", &v15, 0x16u);
   }
 
@@ -795,9 +795,9 @@ LABEL_37:
   {
     metrics = self->_metrics;
     v12 = v4;
-    v13 = [(CESRSpeechProfileMetrics *)metrics isExtractionIngestionEnabled];
+    isExtractionIngestionEnabled = [(CESRSpeechProfileMetrics *)metrics isExtractionIngestionEnabled];
     v14 = @"IS NOT";
-    if (v13)
+    if (isExtractionIngestionEnabled)
     {
       v14 = @"IS";
     }
@@ -805,7 +805,7 @@ LABEL_37:
     v15 = 136315394;
     v16 = "[ESUserData logEntityExtractionConfig]";
     v17 = 2112;
-    v18 = v14;
+    overallEntityExtractionLimit = v14;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s Entity Extraction: Extraction Ingestion %@ enabled.", &v15, 0x16u);
   }
 }
@@ -817,9 +817,9 @@ LABEL_37:
   {
     entityCleanupConfig = self->_entityCleanupConfig;
     v11 = v3;
-    v12 = [(CESREntityCleanupConfig *)entityCleanupConfig enableEmojiCleanupFromAppEntities];
+    enableEmojiCleanupFromAppEntities = [(CESREntityCleanupConfig *)entityCleanupConfig enableEmojiCleanupFromAppEntities];
     v13 = @"IS NOT";
-    if (v12)
+    if (enableEmojiCleanupFromAppEntities)
     {
       v13 = @"IS";
     }
@@ -837,9 +837,9 @@ LABEL_37:
   {
     v14 = self->_entityCleanupConfig;
     v15 = v3;
-    v16 = [(CESREntityCleanupConfig *)v14 enableEmojiCleanupFromNonAppEntities];
+    enableEmojiCleanupFromNonAppEntities = [(CESREntityCleanupConfig *)v14 enableEmojiCleanupFromNonAppEntities];
     v17 = @"IS NOT";
-    if (v16)
+    if (enableEmojiCleanupFromNonAppEntities)
     {
       v17 = @"IS";
     }
@@ -857,9 +857,9 @@ LABEL_37:
   {
     v18 = self->_entityCleanupConfig;
     v19 = v3;
-    v20 = [(CESREntityCleanupConfig *)v18 enableSpecialCharacterCleanupFromAppEntities];
+    enableSpecialCharacterCleanupFromAppEntities = [(CESREntityCleanupConfig *)v18 enableSpecialCharacterCleanupFromAppEntities];
     v21 = @"IS NOT";
-    if (v20)
+    if (enableSpecialCharacterCleanupFromAppEntities)
     {
       v21 = @"IS";
     }
@@ -877,9 +877,9 @@ LABEL_37:
   {
     v22 = self->_entityCleanupConfig;
     v23 = v3;
-    v24 = [(CESREntityCleanupConfig *)v22 enableSpecialCharacterCleanupFromNonAppEntities];
+    enableSpecialCharacterCleanupFromNonAppEntities = [(CESREntityCleanupConfig *)v22 enableSpecialCharacterCleanupFromNonAppEntities];
     v25 = @"IS NOT";
-    if (v24)
+    if (enableSpecialCharacterCleanupFromNonAppEntities)
     {
       v25 = @"IS";
     }
@@ -897,8 +897,8 @@ LABEL_37:
   {
     v26 = self->_entityCleanupConfig;
     v27 = v3;
-    v28 = [(CESREntityCleanupConfig *)v26 applyRegex];
-    v29 = [v28 count];
+    applyRegex = [(CESREntityCleanupConfig *)v26 applyRegex];
+    v29 = [applyRegex count];
     v30 = @"IS";
     if (!v29)
     {
@@ -918,9 +918,9 @@ LABEL_37:
   {
     v31 = self->_entityCleanupConfig;
     v32 = v3;
-    v33 = [(CESREntityCleanupConfig *)v31 enableEntityCleanup];
+    enableEntityCleanup = [(CESREntityCleanupConfig *)v31 enableEntityCleanup];
     v34 = @"IS NOT";
-    if (v33)
+    if (enableEntityCleanup)
     {
       v34 = @"IS";
     }
@@ -941,8 +941,8 @@ LABEL_37:
 
   else
   {
-    v7 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig applyRegex];
-    v8 = [v7 count] != 0;
+    applyRegex2 = [(CESREntityCleanupConfig *)self->_entityCleanupConfig applyRegex];
+    v8 = [applyRegex2 count] != 0;
     v9 = self->_metrics;
     p_metrics = &self->_metrics;
     [(CESRSpeechProfileMetrics *)v9 setIsCleanupIngestionEnabled:v8];
@@ -953,9 +953,9 @@ LABEL_37:
   {
     v35 = *p_metrics;
     v36 = v6;
-    v37 = [(CESRSpeechProfileMetrics *)v35 isCleanupIngestionEnabled];
+    isCleanupIngestionEnabled = [(CESRSpeechProfileMetrics *)v35 isCleanupIngestionEnabled];
     v38 = @"IS NOT";
-    if (v37)
+    if (isCleanupIngestionEnabled)
     {
       v38 = @"IS";
     }
@@ -968,27 +968,27 @@ LABEL_37:
   }
 }
 
-- (ESUserData)initWithItems:(id)a3 applicableSpeechCategories:(id)a4
+- (ESUserData)initWithItems:(id)items applicableSpeechCategories:(id)categories
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  categoriesCopy = categories;
   v27.receiver = self;
   v27.super_class = ESUserData;
   v8 = [(ESUserData *)&v27 init];
   if (v8)
   {
     v9 = objc_alloc_init(CESRSpeechProfileConfig);
-    v10 = [v9 appEntityConfig];
+    appEntityConfig = [v9 appEntityConfig];
     appEntityConfig = v8->_appEntityConfig;
-    v8->_appEntityConfig = v10;
+    v8->_appEntityConfig = appEntityConfig;
 
-    v12 = [v9 directDonationConfig];
+    directDonationConfig = [v9 directDonationConfig];
     directDonationConfig = v8->_directDonationConfig;
-    v8->_directDonationConfig = v12;
+    v8->_directDonationConfig = directDonationConfig;
 
-    v14 = [v9 entityCleanupConfig];
+    entityCleanupConfig = [v9 entityCleanupConfig];
     entityCleanupConfig = v8->_entityCleanupConfig;
-    v8->_entityCleanupConfig = v14;
+    v8->_entityCleanupConfig = entityCleanupConfig;
 
     textDatatypeDetector = v8->_textDatatypeDetector;
     v8->_textDatatypeDetector = 0;
@@ -1010,23 +1010,23 @@ LABEL_37:
     metrics = v8->_metrics;
     v8->_metrics = v23;
 
-    [(ESUserData *)v8 _populateUserDataFromItems:v6 applicableSpeechCategories:v7];
+    [(ESUserData *)v8 _populateUserDataFromItems:itemsCopy applicableSpeechCategories:categoriesCopy];
     v25 = v8;
   }
 
   return v8;
 }
 
-+ (id)_sanitizeTextForDatatypes:(id)a3 detector:(id)a4
++ (id)_sanitizeTextForDatatypes:(id)datatypes detector:(id)detector
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  datatypesCopy = datatypes;
+  detectorCopy = detector;
+  if (detectorCopy)
   {
-    v7 = [NSMutableString stringWithString:v5];
-    v31 = v6;
-    v32 = v5;
-    [v6 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+    v7 = [NSMutableString stringWithString:datatypesCopy];
+    v31 = detectorCopy;
+    v32 = datatypesCopy;
+    [detectorCopy matchesInString:datatypesCopy options:0 range:{0, objc_msgSend(datatypesCopy, "length")}];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -1053,7 +1053,7 @@ LABEL_37:
           if ([v13 resultType] == 16)
           {
             v14 = [NSSet setWithObjects:NSTextCheckingCityKey, NSTextCheckingCountryKey, NSTextCheckingStateKey, NSTextCheckingStreetKey, NSTextCheckingZIPKey, NSTextCheckingPhoneKey, 0];
-            v15 = [v13 addressComponents];
+            addressComponents = [v13 addressComponents];
             v36 = 0u;
             v37 = 0u;
             v38 = 0u;
@@ -1074,11 +1074,11 @@ LABEL_37:
                   }
 
                   v21 = *(*(&v36 + 1) + 8 * i);
-                  v22 = [v15 objectForKeyedSubscript:v21];
+                  v22 = [addressComponents objectForKeyedSubscript:v21];
 
                   if (v22)
                   {
-                    v23 = [v15 objectForKeyedSubscript:v21];
+                    v23 = [addressComponents objectForKeyedSubscript:v21];
                     [v7 replaceOccurrencesOfString:v23 withString:@" " options:0 range:{0, objc_msgSend(v7, "length")}];
                   }
                 }
@@ -1138,8 +1138,8 @@ LABEL_37:
     v29 = v7;
 LABEL_27:
 
-    v6 = v31;
-    v5 = v32;
+    detectorCopy = v31;
+    datatypesCopy = v32;
   }
 
   else
@@ -1150,56 +1150,56 @@ LABEL_27:
   return v29;
 }
 
-+ (id)_extractedLabelForLabel:(id)a3
++ (id)_extractedLabelForLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = [CESRVocabularyLabel alloc];
-  v5 = [v3 lmeTemplate];
-  v6 = [v3 lmeTag];
+  lmeTemplate = [labelCopy lmeTemplate];
+  lmeTag = [labelCopy lmeTag];
 
-  v7 = [v6 stringByAppendingString:@"-extracted"];
-  v8 = [v4 initWithLmeTemplate:v5 lmeTag:v7];
+  v7 = [lmeTag stringByAppendingString:@"-extracted"];
+  v8 = [v4 initWithLmeTemplate:lmeTemplate lmeTag:v7];
 
   return v8;
 }
 
-+ (BOOL)_addVocabWord:(id)a3 vocabularyLabel:(id)a4 toVocabularyWords:(id)a5
++ (BOOL)_addVocabWord:(id)word vocabularyLabel:(id)label toVocabularyWords:(id)words
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  wordCopy = word;
+  labelCopy = label;
+  wordsCopy = words;
+  v10 = wordsCopy;
+  if (labelCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:v8];
+    v11 = [wordsCopy objectForKeyedSubscript:labelCopy];
 
     if (v11)
     {
-      v12 = [v10 objectForKeyedSubscript:v8];
-      [v12 addObject:v7];
+      v12 = [v10 objectForKeyedSubscript:labelCopy];
+      [v12 addObject:wordCopy];
     }
 
     else
     {
-      v12 = [NSMutableOrderedSet orderedSetWithObject:v7];
-      [v10 setObject:v12 forKeyedSubscript:v8];
+      v12 = [NSMutableOrderedSet orderedSetWithObject:wordCopy];
+      [v10 setObject:v12 forKeyedSubscript:labelCopy];
     }
   }
 
-  return v8 != 0;
+  return labelCopy != 0;
 }
 
-+ (id)_fetchExtractedEntityMappingsForEntities:(id)a3 extractionVocabLabels:(id)a4 originalInputString:(id)a5
++ (id)_fetchExtractedEntityMappingsForEntities:(id)entities extractionVocabLabels:(id)labels originalInputString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  entitiesCopy = entities;
+  labelsCopy = labels;
+  stringCopy = string;
   v29 = +[NSMutableDictionary dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v7;
+  v10 = entitiesCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v11)
   {
@@ -1218,9 +1218,9 @@ LABEL_27:
         }
 
         v16 = *(*(&v30 + 1) + 8 * v15);
-        v17 = [v16 entityContent];
-        v18 = [v16 tagName];
-        if ([v17 isEqualToString:v9])
+        entityContent = [v16 entityContent];
+        tagName = [v16 tagName];
+        if ([entityContent isEqualToString:stringCopy])
         {
           v19 = AFSiriLogContextSpeech;
           if (!os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
@@ -1236,13 +1236,13 @@ LABEL_27:
           goto LABEL_9;
         }
 
-        v23 = [v8 objectForKey:v18];
+        v23 = [labelsCopy objectForKey:tagName];
         if (v23)
         {
           goto LABEL_14;
         }
 
-        v23 = [v8 objectForKey:@"default"];
+        v23 = [labelsCopy objectForKey:@"default"];
         v24 = AFSiriLogContextSpeech;
         v25 = os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG);
         if (v23)
@@ -1252,12 +1252,12 @@ LABEL_27:
             *buf = v28;
             v35 = "+[ESUserData _fetchExtractedEntityMappingsForEntities:extractionVocabLabels:originalInputString:]";
             v36 = 2112;
-            v37 = v18;
+            v37 = tagName;
             _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%s Entity Extraction: No mapping found for extracted entity with tagName: %@. Using default mapping.", buf, 0x16u);
           }
 
 LABEL_14:
-          [v29 setObject:v23 forKey:v17];
+          [v29 setObject:v23 forKey:entityContent];
 
           goto LABEL_15;
         }
@@ -1267,7 +1267,7 @@ LABEL_14:
           *buf = v28;
           v35 = "+[ESUserData _fetchExtractedEntityMappingsForEntities:extractionVocabLabels:originalInputString:]";
           v36 = 2112;
-          v37 = v18;
+          v37 = tagName;
           v20 = v24;
           v21 = "%s Entity Extraction: No mapping found for extracted entity with tagName %@. Skipping.";
           v22 = 22;
@@ -1291,20 +1291,20 @@ LABEL_15:
   return v29;
 }
 
-+ (id)_fetchAppEntityMappingForBundleId:(id)a3 appEntityConfig:(id)a4 assistantSchemas:(id)a5 entityType:(id)a6
++ (id)_fetchAppEntityMappingForBundleId:(id)id appEntityConfig:(id)config assistantSchemas:(id)schemas entityType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([CESRUtilities isFirstPartyBundleId:v9])
+  idCopy = id;
+  configCopy = config;
+  schemasCopy = schemas;
+  typeCopy = type;
+  if ([CESRUtilities isFirstPartyBundleId:idCopy])
   {
-    v13 = [v10 appEntityMappingForBundleId:v9 appEntityName:v12];
+    v13 = [configCopy appEntityMappingForBundleId:idCopy appEntityName:typeCopy];
   }
 
   else
   {
-    [NSSet setWithArray:v11];
+    [NSSet setWithArray:schemasCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -1325,7 +1325,7 @@ LABEL_5:
 
         [*(*(&v21 + 1) + 8 * v18) type];
         v19 = CCAssistantSchemaTypeAsString();
-        v13 = [v10 appEntityMappingForAssistantSchemaType:v19];
+        v13 = [configCopy appEntityMappingForAssistantSchemaType:v19];
 
         if (v13)
         {
@@ -1355,24 +1355,24 @@ LABEL_11:
   return v13;
 }
 
-+ (void)_applyContactLimitsToFirstPartyContacts:(id)a3 thirdPartyContacts:(id)a4 groupNames:(id)a5
++ (void)_applyContactLimitsToFirstPartyContacts:(id)contacts thirdPartyContacts:(id)partyContacts groupNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
-  v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
-  if ([v9 count])
+  contactsCopy = contacts;
+  partyContactsCopy = partyContacts;
+  namesCopy = names;
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [contactsCopy count]);
+  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [namesCopy count]);
+  v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [partyContactsCopy count]);
+  if ([namesCopy count])
   {
     v13 = 0;
     do
     {
-      v14 = [v9 objectAtIndex:v13];
+      v14 = [namesCopy objectAtIndex:v13];
       [v11 addObject:v14];
 
       v15 = v13 + 1;
-      v16 = [v9 count];
+      v16 = [namesCopy count];
       if (v13 > 0x62)
       {
         break;
@@ -1390,16 +1390,16 @@ LABEL_11:
     v17 = 5000;
   }
 
-  if ([v7 count])
+  if ([contactsCopy count])
   {
     v18 = 0;
     while (v17)
     {
       --v17;
-      v19 = [v7 objectAtIndex:v18];
+      v19 = [contactsCopy objectAtIndex:v18];
       [v10 addObject:v19];
 
-      if (++v18 >= [v7 count])
+      if (++v18 >= [contactsCopy count])
       {
         goto LABEL_13;
       }
@@ -1409,7 +1409,7 @@ LABEL_11:
   }
 
 LABEL_13:
-  if ([v8 count])
+  if ([partyContactsCopy count])
   {
     v20 = 0;
     v21 = v17 & (v17 >> 63);
@@ -1418,10 +1418,10 @@ LABEL_13:
     while (v20 != v22)
     {
       --v17;
-      v23 = [v8 objectAtIndex:v20];
+      v23 = [partyContactsCopy objectAtIndex:v20];
       [v12 addObject:v23];
 
-      if (++v20 >= [v8 count])
+      if (++v20 >= [partyContactsCopy count])
       {
         goto LABEL_19;
       }
@@ -1431,15 +1431,15 @@ LABEL_13:
   }
 
 LABEL_19:
-  if ([v9 count] >= 0x65 && v17 >= 1)
+  if ([namesCopy count] >= 0x65 && v17 >= 1)
   {
     v24 = 101;
     do
     {
-      v25 = [v9 objectAtIndex:v24 - 1];
+      v25 = [namesCopy objectAtIndex:v24 - 1];
       [v11 addObject:v25];
 
-      if (v24 >= [v9 count])
+      if (v24 >= [namesCopy count])
       {
         break;
       }
@@ -1457,7 +1457,7 @@ LABEL_19:
     *buf = 136315650;
     v37 = "+[ESUserData _applyContactLimitsToFirstPartyContacts:thirdPartyContacts:groupNames:]";
     v38 = 2048;
-    v39 = [v7 count];
+    v39 = [contactsCopy count];
     v40 = 2048;
     v41 = [v10 count];
     _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "%s Processed first party contacts: %tu (accepted=%tu)", buf, 0x20u);
@@ -1468,7 +1468,7 @@ LABEL_19:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     v29 = v27;
-    v30 = [v8 count];
+    v30 = [partyContactsCopy count];
     v31 = [v12 count];
     *buf = 136315650;
     v37 = "+[ESUserData _applyContactLimitsToFirstPartyContacts:thirdPartyContacts:groupNames:]";
@@ -1484,7 +1484,7 @@ LABEL_19:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     v32 = v27;
-    v33 = [v9 count];
+    v33 = [namesCopy count];
     v34 = [v11 count];
     *buf = 136315650;
     v37 = "+[ESUserData _applyContactLimitsToFirstPartyContacts:thirdPartyContacts:groupNames:]";
@@ -1495,42 +1495,42 @@ LABEL_19:
     _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%s Processed group names: %tu (accepted=%tu)", buf, 0x20u);
   }
 
-  [v7 removeAllObjects];
-  [v7 addObjectsFromArray:v10];
-  [v8 removeAllObjects];
-  [v8 addObjectsFromArray:v12];
-  [v9 removeAllObjects];
-  [v9 addObjectsFromArray:v11];
+  [contactsCopy removeAllObjects];
+  [contactsCopy addObjectsFromArray:v10];
+  [partyContactsCopy removeAllObjects];
+  [partyContactsCopy addObjectsFromArray:v12];
+  [namesCopy removeAllObjects];
+  [namesCopy addObjectsFromArray:v11];
 }
 
-+ (id)_normalize:(id)a3
++ (id)_normalize:(id)_normalize
 {
-  v3 = [a3 precomposedStringWithCanonicalMapping];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+  precomposedStringWithCanonicalMapping = [_normalize precomposedStringWithCanonicalMapping];
+  v4 = [precomposedStringWithCanonicalMapping stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
   return v4;
 }
 
-+ (BOOL)_isEntityInExclusionList:(id)a3 bundleId:(id)a4 type:(id)a5
++ (BOOL)_isEntityInExclusionList:(id)list bundleId:(id)id type:(id)type
 {
-  v7 = a5;
-  v8 = [a3 objectForKey:a4];
+  typeCopy = type;
+  v8 = [list objectForKey:id];
   v9 = v8;
-  v10 = v8 && (![v8 count] || v7 && (objc_msgSend(v9, "containsObject:", v7) & 1) != 0);
+  v10 = v8 && (![v8 count] || typeCopy && (objc_msgSend(v9, "containsObject:", typeCopy) & 1) != 0);
 
   return v10;
 }
 
-+ (void)_limitVocabularyWords:(id)a3 toApplicableSpeechCategories:(id)a4
++ (void)_limitVocabularyWords:(id)words toApplicableSpeechCategories:(id)categories
 {
-  v5 = a3;
-  v6 = a4;
+  wordsCopy = words;
+  categoriesCopy = categories;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [wordsCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1541,29 +1541,29 @@ LABEL_19:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 lmeTemplate];
-        v14 = [v6 containsObject:v13];
+        lmeTemplate = [v12 lmeTemplate];
+        v14 = [categoriesCopy containsObject:lmeTemplate];
 
         if ((v14 & 1) == 0)
         {
-          [v5 removeObjectForKey:v12];
+          [wordsCopy removeObjectForKey:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (unint64_t)_totalContactComponentsInSet:(id)a3
++ (unint64_t)_totalContactComponentsInSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -1573,7 +1573,7 @@ LABEL_19:
   v6[2] = sub_100010520;
   v6[3] = &unk_100054DA8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [setCopy enumerateObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 

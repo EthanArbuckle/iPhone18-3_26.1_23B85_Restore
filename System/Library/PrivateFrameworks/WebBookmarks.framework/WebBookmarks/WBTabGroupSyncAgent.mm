@@ -1,19 +1,19 @@
 @interface WBTabGroupSyncAgent
-- (WBTabGroupSyncAgent)initWithConfiguration:(id)a3;
+- (WBTabGroupSyncAgent)initWithConfiguration:(id)configuration;
 @end
 
 @implementation WBTabGroupSyncAgent
 
-- (WBTabGroupSyncAgent)initWithConfiguration:(id)a3
+- (WBTabGroupSyncAgent)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = WBTabGroupSyncAgent;
   v6 = [(WBTabGroupSyncAgent *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 

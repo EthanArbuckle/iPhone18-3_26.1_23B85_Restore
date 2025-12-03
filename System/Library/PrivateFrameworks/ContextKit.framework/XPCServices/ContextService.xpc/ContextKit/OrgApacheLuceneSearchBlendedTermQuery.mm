@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchBlendedTermQuery
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchBlendedTermQuery
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8.receiver = self;
   v8.super_class = OrgApacheLuceneSearchBlendedTermQuery;
@@ -17,7 +17,7 @@
   if (v5)
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_11;
     }
@@ -27,19 +27,19 @@
       JreThrowClassCastException();
     }
 
-    v5 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(*(&self->super.boost_ + 1), *(a3 + 12));
+    v5 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(*(&self->super.boost_ + 1), *(equal + 12));
     if (v5)
     {
-      v5 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(*(&self->boosts_ + 4), *(a3 + 28));
+      v5 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(*(&self->boosts_ + 4), *(equal + 28));
       if (v5)
       {
-        v5 = JavaUtilArrays_equalsWithFloatArray_withFloatArray_(*(&self->terms_ + 4), *(a3 + 20));
+        v5 = JavaUtilArrays_equalsWithFloatArray_withFloatArray_(*(&self->terms_ + 4), *(equal + 20));
         if (v5)
         {
           v6 = *(&self->contexts_ + 4);
           if (v6)
           {
-            LOBYTE(v5) = [v6 isEqual:*(a3 + 36)];
+            LOBYTE(v5) = [v6 isEqual:*(equal + 36)];
             return v5;
           }
 
@@ -70,7 +70,7 @@ LABEL_11:
   return ([*(&self->contexts_ + 4) hash] - (v6 - v7 + 32 * v7) + 32 * (v6 - v7 + 32 * v7));
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v5 = objc_autorelease(new_JavaLangStringBuilder_initWithNSString_(@"Blended("));
   v6 = *(&self->super.boost_ + 1);
@@ -115,7 +115,7 @@ LABEL_16:
 
       LODWORD(v11) = *(v12 + 12 + 4 * v8);
       [(OrgApacheLuceneSearchQuery *)v13 setBoostWithFloat:v11];
-      [(JavaLangStringBuilder *)v7 appendWithNSString:[(OrgApacheLuceneSearchTermQuery *)v13 toStringWithNSString:a3]];
+      [(JavaLangStringBuilder *)v7 appendWithNSString:[(OrgApacheLuceneSearchTermQuery *)v13 toStringWithNSString:string]];
       ++v8;
       v6 = *(&self->super.boost_ + 1);
       if (v6)
@@ -132,9 +132,9 @@ LABEL_16:
   return [(JavaLangStringBuilder *)v7 description];
 }
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
-  v3 = self;
+  selfCopy = self;
   v4 = *(&self->boosts_ + 4);
   if (!v4)
   {
@@ -161,13 +161,13 @@ LABEL_16:
         break;
       }
 
-      if (!a3)
+      if (!reader)
       {
         goto LABEL_62;
       }
 
       v12 = *(v11 + 8);
-      if (v12 != [a3 getContext])
+      if (v12 != [reader getContext])
       {
         goto LABEL_10;
       }
@@ -182,20 +182,20 @@ LABEL_13:
       }
     }
 
-    if (!a3)
+    if (!reader)
     {
       goto LABEL_62;
     }
 
 LABEL_10:
-    v13 = [a3 getContext];
-    v14 = *(&v3->super.boost_ + 1);
+    getContext = [reader getContext];
+    v14 = *(&selfCopy->super.boost_ + 1);
     if (!v14)
     {
       goto LABEL_62;
     }
 
-    v15 = v13;
+    v15 = getContext;
     v16 = *(v14 + 8);
     if (v10 >= v16)
     {
@@ -249,7 +249,7 @@ LABEL_17:
   if (size >= 1)
   {
     v26 = 0;
-    v27 = v3;
+    v27 = selfCopy;
     do
     {
       v28 = *(v7 + 24 + 8 * v26);
@@ -276,10 +276,10 @@ LABEL_17:
         goto LABEL_62;
       }
 
-      v30 = [v29 leaves];
-      if (v30)
+      leaves = [v29 leaves];
+      if (leaves)
       {
-        v31 = [v30 size];
+        v31 = [leaves size];
       }
 
       else
@@ -312,10 +312,10 @@ LABEL_17:
     }
 
     while (v26 < *(v7 + 8));
-    v3 = v27;
+    selfCopy = v27;
   }
 
-  v36 = *(&v3->super.boost_ + 1);
+  v36 = *(&selfCopy->super.boost_ + 1);
   if (!v36)
   {
 LABEL_62:
@@ -323,7 +323,7 @@ LABEL_62:
   }
 
   v37 = [IOSObjectArray arrayWithLength:*(v36 + 8) type:OrgApacheLuceneSearchTermQuery_class_()];
-  v38 = *(&v3->super.boost_ + 1);
+  v38 = *(&selfCopy->super.boost_ + 1);
   if (*(v38 + 8) >= 1)
   {
     v39 = 0;
@@ -349,7 +349,7 @@ LABEL_62:
         goto LABEL_62;
       }
 
-      v45 = *(&v3->terms_ + 4);
+      v45 = *(&selfCopy->terms_ + 4);
       if (!v45)
       {
         goto LABEL_62;
@@ -364,13 +364,13 @@ LABEL_62:
       LODWORD(v42) = *(v45 + 12 + 4 * v39);
       [(IOSClass *)v44 setBoostWithFloat:v42];
       ++v39;
-      v38 = *(&v3->super.boost_ + 1);
+      v38 = *(&selfCopy->super.boost_ + 1);
     }
 
     while (v39 < *(v38 + 8));
   }
 
-  v47 = *(&v3->contexts_ + 4);
+  v47 = *(&selfCopy->contexts_ + 4);
   if (!v47)
   {
     goto LABEL_62;
@@ -383,7 +383,7 @@ LABEL_62:
   }
 
   v49 = v48;
-  [(OrgApacheLuceneSearchQuery *)v3 getBoost];
+  [(OrgApacheLuceneSearchQuery *)selfCopy getBoost];
   [v49 setBoostWithFloat:?];
   return v49;
 }
@@ -397,7 +397,7 @@ LABEL_62:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneSearchBlendedTermQuery_BOOLEAN_REWRITE_, [OrgApacheLuceneSearchBlendedTermQuery__1 alloc]);
     v2 = [OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite alloc];

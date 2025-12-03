@@ -1,29 +1,29 @@
 @interface UISliderDataModel
-- (BOOL)_setValue:(float)a3 minValue:(float)a4 maxValue:(float)a5 minEnabledUsed:(BOOL)a6 minEnabledValue:(float)a7 maxEnabledUsed:(BOOL)a8 maxEnabledValue:(float)a9;
+- (BOOL)_setValue:(float)value minValue:(float)minValue maxValue:(float)maxValue minEnabledUsed:(BOOL)used minEnabledValue:(float)enabledValue maxEnabledUsed:(BOOL)enabledUsed maxEnabledValue:(float)maxEnabledValue;
 - (BOOL)hasAnyThumbImage;
 - (BOOL)hasAnyTrackImage;
-- (BOOL)setMaximumEnabledValue:(float)a3;
-- (BOOL)setMaximumValue:(float)a3;
-- (BOOL)setMinimumEnabledValue:(float)a3;
+- (BOOL)setMaximumEnabledValue:(float)value;
+- (BOOL)setMaximumValue:(float)value;
+- (BOOL)setMinimumEnabledValue:(float)value;
 - (BOOL)setMinimumValue:(float)minEnabledValue;
 - (UISliderDataModel)init;
 - (float)maximumEnabledValue;
 - (float)minimumEnabledValue;
-- (id)_contentForState:(unint64_t)a3;
-- (id)maximumTrackImageForState:(unint64_t)a3;
-- (id)minimumTrackImageForState:(unint64_t)a3;
-- (id)thumbImageForState:(unint64_t)a3;
-- (void)_setContent:(id)a3 forState:(unint64_t)a4;
+- (id)_contentForState:(unint64_t)state;
+- (id)maximumTrackImageForState:(unint64_t)state;
+- (id)minimumTrackImageForState:(unint64_t)state;
+- (id)thumbImageForState:(unint64_t)state;
+- (void)_setContent:(id)content forState:(unint64_t)state;
 - (void)dealloc;
-- (void)setEdgeFeedbackGenerator:(id)a3;
-- (void)setMaximumTrackImage:(id)a3 forState:(unint64_t)a4;
-- (void)setMaximumTrackImage:(id)a3 forStates:(unint64_t)a4;
-- (void)setMinimumTrackImage:(id)a3 forState:(unint64_t)a4;
-- (void)setMinimumTrackImage:(id)a3 forStates:(unint64_t)a4;
-- (void)setModulationFeedbackGenerator:(id)a3;
-- (void)setThumbImage:(id)a3 forState:(unint64_t)a4;
-- (void)setThumbImage:(id)a3 forStates:(unint64_t)a4;
-- (void)setThumbTintColor:(id)a3;
+- (void)setEdgeFeedbackGenerator:(id)generator;
+- (void)setMaximumTrackImage:(id)image forState:(unint64_t)state;
+- (void)setMaximumTrackImage:(id)image forStates:(unint64_t)states;
+- (void)setMinimumTrackImage:(id)image forState:(unint64_t)state;
+- (void)setMinimumTrackImage:(id)image forStates:(unint64_t)states;
+- (void)setModulationFeedbackGenerator:(id)generator;
+- (void)setThumbImage:(id)image forState:(unint64_t)state;
+- (void)setThumbImage:(id)image forStates:(unint64_t)states;
+- (void)setThumbTintColor:(id)color;
 @end
 
 @implementation UISliderDataModel
@@ -83,16 +83,16 @@
         v11 = *v6;
         if (([v11 isEmpty] & 1) == 0)
         {
-          v12 = [v11 minTrack];
+          minTrack = [v11 minTrack];
 
-          if (v12)
+          if (minTrack)
           {
             break;
           }
 
-          v13 = [v11 maxTrack];
+          maxTrack = [v11 maxTrack];
 
-          if (v13)
+          if (maxTrack)
           {
             break;
           }
@@ -151,80 +151,80 @@
   [(UISliderDataModel *)&v4 dealloc];
 }
 
-- (BOOL)_setValue:(float)a3 minValue:(float)a4 maxValue:(float)a5 minEnabledUsed:(BOOL)a6 minEnabledValue:(float)a7 maxEnabledUsed:(BOOL)a8 maxEnabledValue:(float)a9
+- (BOOL)_setValue:(float)value minValue:(float)minValue maxValue:(float)maxValue minEnabledUsed:(BOOL)used minEnabledValue:(float)enabledValue maxEnabledUsed:(BOOL)enabledUsed maxEnabledValue:(float)maxEnabledValue
 {
-  v10 = a8;
-  v12 = a6;
-  if (a4 > a5)
+  enabledUsedCopy = enabledUsed;
+  usedCopy = used;
+  if (minValue > maxValue)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:83 description:{@"Attempting to set a slider's minimumValue (%f) to be larger than the maximumValue (%f)", a4, a5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:83 description:{@"Attempting to set a slider's minimumValue (%f) to be larger than the maximumValue (%f)", minValue, maxValue}];
   }
 
-  if (a7 > a9 && v10 && v12)
+  if (enabledValue > maxEnabledValue && enabledUsedCopy && usedCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:86 description:{@"Attempting to set a slider's minimumEnabledValue (%f) to be larger than the maximumEnabledValue (%f)", a4, a5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:86 description:{@"Attempting to set a slider's minimumEnabledValue (%f) to be larger than the maximumEnabledValue (%f)", minValue, maxValue}];
   }
 
-  if (v10)
+  if (enabledUsedCopy)
   {
-    v20 = a9;
-  }
-
-  else
-  {
-    v20 = a5;
-  }
-
-  if (v12)
-  {
-    v21 = a7;
+    maxValueCopy = maxEnabledValue;
   }
 
   else
   {
-    v21 = a4;
+    maxValueCopy = maxValue;
   }
 
-  if (v21 < a3)
+  if (usedCopy)
   {
-    v21 = a3;
+    valueCopy = enabledValue;
   }
 
-  if (v20 > v21)
+  else
   {
-    v20 = v21;
+    valueCopy = minValue;
   }
 
-  if (v20 == self->_value && self->_minValue == a4 && self->_maxValue == a5)
+  if (valueCopy < value)
   {
-    if (v12 && self->_minEnabledValue != a7)
+    valueCopy = value;
+  }
+
+  if (maxValueCopy > valueCopy)
+  {
+    maxValueCopy = valueCopy;
+  }
+
+  if (maxValueCopy == self->_value && self->_minValue == minValue && self->_maxValue == maxValue)
+  {
+    if (usedCopy && self->_minEnabledValue != enabledValue)
     {
-      self->_value = v20;
-      self->_minValue = a4;
-      self->_maxValue = a5;
+      self->_value = maxValueCopy;
+      self->_minValue = minValue;
+      self->_maxValue = maxValue;
       goto LABEL_25;
     }
 
-    if (!v10 || self->_maxEnabledValue == a9)
+    if (!enabledUsedCopy || self->_maxEnabledValue == maxEnabledValue)
     {
       return 0;
     }
   }
 
-  self->_value = v20;
-  self->_minValue = a4;
-  self->_maxValue = a5;
-  if (v12)
+  self->_value = maxValueCopy;
+  self->_minValue = minValue;
+  self->_maxValue = maxValue;
+  if (usedCopy)
   {
 LABEL_25:
-    self->_minEnabledValue = a7;
+    self->_minEnabledValue = enabledValue;
   }
 
-  if (v10)
+  if (enabledUsedCopy)
   {
-    self->_maxEnabledValue = a9;
+    self->_maxEnabledValue = maxEnabledValue;
   }
 
   return 1;
@@ -288,9 +288,9 @@ LABEL_25:
   return [UISliderDataModel _setValue:"_setValue:minValue:maxValue:minEnabledUsed:minEnabledValue:maxEnabledUsed:maxEnabledValue:" minValue:v7 maxValue:v3 minEnabledUsed:v4 minEnabledValue:v5 maxEnabledUsed:v6 maxEnabledValue:?];
 }
 
-- (BOOL)setMaximumValue:(float)a3
+- (BOOL)setMaximumValue:(float)value
 {
-  if (self->_maxValue == a3)
+  if (self->_maxValue == value)
   {
     return 0;
   }
@@ -299,12 +299,12 @@ LABEL_25:
   return [UISliderDataModel _setValue:"_setValue:minValue:maxValue:minEnabledUsed:minEnabledValue:maxEnabledUsed:maxEnabledValue:" minValue:v3 maxValue:? minEnabledUsed:? minEnabledValue:? maxEnabledUsed:? maxEnabledValue:?];
 }
 
-- (BOOL)setMinimumEnabledValue:(float)a3
+- (BOOL)setMinimumEnabledValue:(float)value
 {
   minValue = self->_minValue;
-  if (minValue == a3 && !self->_overrideMinimumEnabledValue)
+  if (minValue == value && !self->_overrideMinimumEnabledValue)
   {
-    if (minValue <= a3 && self->_maxValue >= a3)
+    if (minValue <= value && self->_maxValue >= value)
     {
       goto LABEL_14;
     }
@@ -312,13 +312,13 @@ LABEL_25:
     return 0;
   }
 
-  v4 = minValue <= a3 && self->_minEnabledValue == a3;
-  if (!v4 || self->_maxValue < a3)
+  v4 = minValue <= value && self->_minEnabledValue == value;
+  if (!v4 || self->_maxValue < value)
   {
     return 0;
   }
 
-  if (minValue == a3)
+  if (minValue == value)
   {
 LABEL_14:
     v5 = 0;
@@ -333,26 +333,26 @@ LABEL_15:
   return [UISliderDataModel _setValue:"_setValue:minValue:maxValue:minEnabledUsed:minEnabledValue:maxEnabledUsed:maxEnabledValue:" minValue:v7 maxValue:? minEnabledUsed:? minEnabledValue:? maxEnabledUsed:? maxEnabledValue:?];
 }
 
-- (BOOL)setMaximumEnabledValue:(float)a3
+- (BOOL)setMaximumEnabledValue:(float)value
 {
   maxValue = self->_maxValue;
-  if (maxValue == a3 && !self->_overrideMaximumEnabledValue)
+  if (maxValue == value && !self->_overrideMaximumEnabledValue)
   {
     return 0;
   }
 
-  if (self->_maxEnabledValue == a3)
+  if (self->_maxEnabledValue == value)
   {
     return 0;
   }
 
   *&v3 = self->_minValue;
-  if (maxValue < a3 || *&v3 > a3)
+  if (maxValue < value || *&v3 > value)
   {
     return 0;
   }
 
-  if (maxValue == a3)
+  if (maxValue == value)
   {
     v7 = 0;
     self->_maxEnabledValue = INFINITY;
@@ -370,224 +370,224 @@ LABEL_15:
   return [UISliderDataModel _setValue:"_setValue:minValue:maxValue:minEnabledUsed:minEnabledValue:maxEnabledUsed:maxEnabledValue:" minValue:overrideMinimumEnabledValue maxValue:v9 minEnabledUsed:v3 minEnabledValue:? maxEnabledUsed:? maxEnabledValue:?];
 }
 
-- (void)_setContent:(id)a3 forState:(unint64_t)a4
+- (void)_setContent:(id)content forState:(unint64_t)state
 {
-  v6 = a3;
+  contentCopy = content;
   contentLookup = self->_contentLookup;
-  value = v6;
+  value = contentCopy;
   if (!contentLookup)
   {
     contentLookup = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, MEMORY[0x1E695E9E8]);
-    v6 = value;
+    contentCopy = value;
     self->_contentLookup = contentLookup;
   }
 
-  if (v6)
+  if (contentCopy)
   {
-    CFDictionarySetValue(contentLookup, a4, v6);
+    CFDictionarySetValue(contentLookup, state, contentCopy);
   }
 
   else
   {
-    CFDictionaryRemoveValue(contentLookup, a4);
+    CFDictionaryRemoveValue(contentLookup, state);
   }
 }
 
-- (id)_contentForState:(unint64_t)a3
+- (id)_contentForState:(unint64_t)state
 {
   contentLookup = self->_contentLookup;
   if (contentLookup)
   {
-    contentLookup = CFDictionaryGetValue(contentLookup, a3);
+    contentLookup = CFDictionaryGetValue(contentLookup, state);
     v3 = vars8;
   }
 
   return contentLookup;
 }
 
-- (void)setThumbImage:(id)a3 forState:(unint64_t)a4
+- (void)setThumbImage:(id)image forState:(unint64_t)state
 {
-  v7 = a3;
-  v6 = [(UISliderDataModel *)self _contentForState:a4];
+  imageCopy = image;
+  v6 = [(UISliderDataModel *)self _contentForState:state];
   if (!v6)
   {
     v6 = objc_alloc_init(_UISliderControlStateContent);
-    [(UISliderDataModel *)self _setContent:v6 forState:a4];
+    [(UISliderDataModel *)self _setContent:v6 forState:state];
   }
 
-  [(_UISliderControlStateContent *)v6 setThumb:v7];
-  if (!v7 && [(_UISliderControlStateContent *)v6 isEmpty])
+  [(_UISliderControlStateContent *)v6 setThumb:imageCopy];
+  if (!imageCopy && [(_UISliderControlStateContent *)v6 isEmpty])
   {
-    [(UISliderDataModel *)self _setContent:0 forState:a4];
+    [(UISliderDataModel *)self _setContent:0 forState:state];
   }
 }
 
-- (void)setThumbImage:(id)a3 forStates:(unint64_t)a4
+- (void)setThumbImage:(id)image forStates:(unint64_t)states
 {
-  v9 = a3;
+  imageCopy = image;
   v6 = objc_autoreleasePoolPush();
   do
   {
-    v7 = -a4;
-    v8 = [(UISliderDataModel *)self _contentForState:a4 & -a4];
+    v7 = -states;
+    v8 = [(UISliderDataModel *)self _contentForState:states & -states];
     if (!v8)
     {
       v8 = objc_alloc_init(_UISliderControlStateContent);
-      [(UISliderDataModel *)self _setContent:v8 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:v8 forState:states & v7];
     }
 
-    [(_UISliderControlStateContent *)v8 setThumb:v9];
-    if (!v9 && [(_UISliderControlStateContent *)v8 isEmpty])
+    [(_UISliderControlStateContent *)v8 setThumb:imageCopy];
+    if (!imageCopy && [(_UISliderControlStateContent *)v8 isEmpty])
     {
-      [(UISliderDataModel *)self _setContent:0 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:0 forState:states & v7];
     }
 
-    a4 &= a4 - 1;
+    states &= states - 1;
   }
 
-  while (a4);
+  while (states);
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setThumbTintColor:(id)a3
+- (void)setThumbTintColor:(id)color
 {
-  v6 = a3;
-  v5 = [(UISliderDataModel *)self thumbTintColor];
+  colorCopy = color;
+  thumbTintColor = [(UISliderDataModel *)self thumbTintColor];
 
-  if (v5 != v6)
+  if (thumbTintColor != colorCopy)
   {
-    objc_storeStrong(&self->_thumbTintColor, a3);
+    objc_storeStrong(&self->_thumbTintColor, color);
   }
 }
 
-- (void)setMinimumTrackImage:(id)a3 forState:(unint64_t)a4
+- (void)setMinimumTrackImage:(id)image forState:(unint64_t)state
 {
-  v7 = a3;
-  v6 = [(UISliderDataModel *)self _contentForState:a4];
+  imageCopy = image;
+  v6 = [(UISliderDataModel *)self _contentForState:state];
   if (!v6)
   {
     v6 = objc_alloc_init(_UISliderControlStateContent);
-    [(UISliderDataModel *)self _setContent:v6 forState:a4];
+    [(UISliderDataModel *)self _setContent:v6 forState:state];
   }
 
-  [(_UISliderControlStateContent *)v6 setMinTrack:v7];
-  if (!v7 && [(_UISliderControlStateContent *)v6 isEmpty])
+  [(_UISliderControlStateContent *)v6 setMinTrack:imageCopy];
+  if (!imageCopy && [(_UISliderControlStateContent *)v6 isEmpty])
   {
-    [(UISliderDataModel *)self _setContent:0 forState:a4];
+    [(UISliderDataModel *)self _setContent:0 forState:state];
   }
 }
 
-- (void)setMinimumTrackImage:(id)a3 forStates:(unint64_t)a4
+- (void)setMinimumTrackImage:(id)image forStates:(unint64_t)states
 {
-  v9 = a3;
+  imageCopy = image;
   v6 = objc_autoreleasePoolPush();
   do
   {
-    v7 = -a4;
-    v8 = [(UISliderDataModel *)self _contentForState:a4 & -a4];
+    v7 = -states;
+    v8 = [(UISliderDataModel *)self _contentForState:states & -states];
     if (!v8)
     {
       v8 = objc_alloc_init(_UISliderControlStateContent);
-      [(UISliderDataModel *)self _setContent:v8 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:v8 forState:states & v7];
     }
 
-    [(_UISliderControlStateContent *)v8 setMinTrack:v9];
-    if (!v9 && [(_UISliderControlStateContent *)v8 isEmpty])
+    [(_UISliderControlStateContent *)v8 setMinTrack:imageCopy];
+    if (!imageCopy && [(_UISliderControlStateContent *)v8 isEmpty])
     {
-      [(UISliderDataModel *)self _setContent:0 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:0 forState:states & v7];
     }
 
-    a4 &= a4 - 1;
+    states &= states - 1;
   }
 
-  while (a4);
+  while (states);
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setMaximumTrackImage:(id)a3 forState:(unint64_t)a4
+- (void)setMaximumTrackImage:(id)image forState:(unint64_t)state
 {
-  v7 = a3;
-  v6 = [(UISliderDataModel *)self _contentForState:a4];
+  imageCopy = image;
+  v6 = [(UISliderDataModel *)self _contentForState:state];
   if (!v6)
   {
     v6 = objc_alloc_init(_UISliderControlStateContent);
-    [(UISliderDataModel *)self _setContent:v6 forState:a4];
+    [(UISliderDataModel *)self _setContent:v6 forState:state];
   }
 
-  [(_UISliderControlStateContent *)v6 setMaxTrack:v7];
-  if (!v7 && [(_UISliderControlStateContent *)v6 isEmpty])
+  [(_UISliderControlStateContent *)v6 setMaxTrack:imageCopy];
+  if (!imageCopy && [(_UISliderControlStateContent *)v6 isEmpty])
   {
-    [(UISliderDataModel *)self _setContent:0 forState:a4];
+    [(UISliderDataModel *)self _setContent:0 forState:state];
   }
 }
 
-- (void)setMaximumTrackImage:(id)a3 forStates:(unint64_t)a4
+- (void)setMaximumTrackImage:(id)image forStates:(unint64_t)states
 {
-  v9 = a3;
+  imageCopy = image;
   v6 = objc_autoreleasePoolPush();
   do
   {
-    v7 = -a4;
-    v8 = [(UISliderDataModel *)self _contentForState:a4 & -a4];
+    v7 = -states;
+    v8 = [(UISliderDataModel *)self _contentForState:states & -states];
     if (!v8)
     {
       v8 = objc_alloc_init(_UISliderControlStateContent);
-      [(UISliderDataModel *)self _setContent:v8 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:v8 forState:states & v7];
     }
 
-    [(_UISliderControlStateContent *)v8 setMaxTrack:v9];
-    if (!v9 && [(_UISliderControlStateContent *)v8 isEmpty])
+    [(_UISliderControlStateContent *)v8 setMaxTrack:imageCopy];
+    if (!imageCopy && [(_UISliderControlStateContent *)v8 isEmpty])
     {
-      [(UISliderDataModel *)self _setContent:0 forState:a4 & v7];
+      [(UISliderDataModel *)self _setContent:0 forState:states & v7];
     }
 
-    a4 &= a4 - 1;
+    states &= states - 1;
   }
 
-  while (a4);
+  while (states);
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)thumbImageForState:(unint64_t)a3
+- (id)thumbImageForState:(unint64_t)state
 {
-  v4 = [(UISliderDataModel *)self _contentForState:a3];
-  v5 = [v4 thumb];
+  v4 = [(UISliderDataModel *)self _contentForState:state];
+  thumb = [v4 thumb];
 
-  if (!v5)
+  if (!thumb)
   {
     v6 = [(UISliderDataModel *)self _contentForState:0];
-    v5 = [v6 thumb];
+    thumb = [v6 thumb];
   }
 
-  return v5;
+  return thumb;
 }
 
-- (id)minimumTrackImageForState:(unint64_t)a3
+- (id)minimumTrackImageForState:(unint64_t)state
 {
-  v4 = [(UISliderDataModel *)self _contentForState:a3];
-  v5 = [v4 minTrack];
+  v4 = [(UISliderDataModel *)self _contentForState:state];
+  minTrack = [v4 minTrack];
 
-  if (!v5)
+  if (!minTrack)
   {
     v6 = [(UISliderDataModel *)self _contentForState:0];
-    v5 = [v6 minTrack];
+    minTrack = [v6 minTrack];
   }
 
-  return v5;
+  return minTrack;
 }
 
-- (id)maximumTrackImageForState:(unint64_t)a3
+- (id)maximumTrackImageForState:(unint64_t)state
 {
-  v4 = [(UISliderDataModel *)self _contentForState:a3];
-  v5 = [v4 maxTrack];
+  v4 = [(UISliderDataModel *)self _contentForState:state];
+  maxTrack = [v4 maxTrack];
 
-  if (!v5)
+  if (!maxTrack)
   {
     v6 = [(UISliderDataModel *)self _contentForState:0];
-    v5 = [v6 maxTrack];
+    maxTrack = [v6 maxTrack];
   }
 
-  return v5;
+  return maxTrack;
 }
 
 - (BOOL)hasAnyThumbImage
@@ -626,9 +626,9 @@ LABEL_15:
         v11 = *v6;
         if (([v11 isEmpty] & 1) == 0)
         {
-          v12 = [v11 thumb];
+          thumb = [v11 thumb];
 
-          if (v12)
+          if (thumb)
           {
             break;
           }
@@ -652,30 +652,30 @@ LABEL_15:
   return v10;
 }
 
-- (void)setEdgeFeedbackGenerator:(id)a3
+- (void)setEdgeFeedbackGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   if ([(UIFeedbackGenerator *)self->_edgeFeedbackGenerator isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:417 description:@"Edge feedback behavior should not be changed while active."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:417 description:@"Edge feedback behavior should not be changed while active."];
   }
 
   edgeFeedbackGenerator = self->_edgeFeedbackGenerator;
-  self->_edgeFeedbackGenerator = v5;
+  self->_edgeFeedbackGenerator = generatorCopy;
 }
 
-- (void)setModulationFeedbackGenerator:(id)a3
+- (void)setModulationFeedbackGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   if ([(UIFeedbackGenerator *)self->_modulationFeedbackGenerator isActive])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:428 description:@"Modulation feedback behavior should not be changed while active."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISliderDataModel.m" lineNumber:428 description:@"Modulation feedback behavior should not be changed while active."];
   }
 
   modulationFeedbackGenerator = self->_modulationFeedbackGenerator;
-  self->_modulationFeedbackGenerator = v5;
+  self->_modulationFeedbackGenerator = generatorCopy;
 }
 
 @end

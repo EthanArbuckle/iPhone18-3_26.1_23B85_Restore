@@ -1,32 +1,32 @@
 @interface CAFASCTree
-+ (id)_nodesOfType:(unsigned __int8)a3 fromDict:(id)a4;
-- (BOOL)_hasAccessory:(id)a3 service:(id)a4 characteristicOrControl:(id)a5;
-- (BOOL)hasAccessory:(id)a3;
-- (BOOL)hasAccessory:(id)a3 service:(id)a4;
-- (CAFASCTree)initWithContentsOfFile:(id)a3;
-- (CAFASCTree)initWithDictionary:(id)a3;
-- (id)nodeForAccessory:(id)a3 serviceType:(id)a4;
++ (id)_nodesOfType:(unsigned __int8)type fromDict:(id)dict;
+- (BOOL)_hasAccessory:(id)accessory service:(id)service characteristicOrControl:(id)control;
+- (BOOL)hasAccessory:(id)accessory;
+- (BOOL)hasAccessory:(id)accessory service:(id)service;
+- (CAFASCTree)initWithContentsOfFile:(id)file;
+- (CAFASCTree)initWithDictionary:(id)dictionary;
+- (id)nodeForAccessory:(id)accessory serviceType:(id)type;
 - (id)treeLogLines;
-- (void)logErrorIfNeededForMissingRegistration:(id)a3;
-- (void)validateRegisteredForAccessory:(id)a3;
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4;
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4 characteristic:(id)a5;
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4 control:(id)a5;
+- (void)logErrorIfNeededForMissingRegistration:(id)registration;
+- (void)validateRegisteredForAccessory:(id)accessory;
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service;
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service characteristic:(id)characteristic;
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service control:(id)control;
 @end
 
 @implementation CAFASCTree
 
-- (CAFASCTree)initWithContentsOfFile:(id)a3
+- (CAFASCTree)initWithContentsOfFile:(id)file
 {
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:a3];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:file];
   v5 = [(CAFASCTree *)self initWithDictionary:v4];
 
   return v5;
 }
 
-- (CAFASCTree)initWithDictionary:(id)a3
+- (CAFASCTree)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CAFASCTree;
   v5 = [(CAFASCTree *)&v11 init];
@@ -36,7 +36,7 @@
     missingRegistrations = v5->_missingRegistrations;
     v5->_missingRegistrations = v6;
 
-    v8 = [CAFASCTree _nodesOfType:0 fromDict:v4];
+    v8 = [CAFASCTree _nodesOfType:0 fromDict:dictionaryCopy];
     accessories = v5->_accessories;
     v5->_accessories = v8;
   }
@@ -44,18 +44,18 @@
   return v5;
 }
 
-+ (id)_nodesOfType:(unsigned __int8)a3 fromDict:(id)a4
++ (id)_nodesOfType:(unsigned __int8)type fromDict:(id)dict
 {
-  v5 = a4;
+  dictCopy = dict;
   v6 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__CAFASCTree__nodesOfType_fromDict___block_invoke;
   v9[3] = &unk_27890F448;
-  v11 = a3;
+  typeCopy = type;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -90,14 +90,14 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (BOOL)hasAccessory:(id)a3
+- (BOOL)hasAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(CAFASCTree *)self accessories];
-  if ([v5 count])
+  accessoryCopy = accessory;
+  accessories = [(CAFASCTree *)self accessories];
+  if ([accessories count])
   {
-    v6 = [(CAFASCTree *)self accessories];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    accessories2 = [(CAFASCTree *)self accessories];
+    v7 = [accessories2 objectForKeyedSubscript:accessoryCopy];
     v8 = v7 != 0;
   }
 
@@ -109,20 +109,20 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   return v8;
 }
 
-- (BOOL)hasAccessory:(id)a3 service:(id)a4
+- (BOOL)hasAccessory:(id)accessory service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CAFASCTree *)self hasAccessory:v6])
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  if ([(CAFASCTree *)self hasAccessory:accessoryCopy])
   {
-    v8 = [(CAFASCTree *)self accessories];
-    v9 = [v8 objectForKeyedSubscript:v6];
-    v10 = [v9 children];
-    v11 = [v10 count];
+    accessories = [(CAFASCTree *)self accessories];
+    v9 = [accessories objectForKeyedSubscript:accessoryCopy];
+    children = [v9 children];
+    v11 = [children count];
 
     if (v11)
     {
-      v12 = [(CAFASCTree *)self nodeForAccessory:v6 serviceType:v7];
+      v12 = [(CAFASCTree *)self nodeForAccessory:accessoryCopy serviceType:serviceCopy];
       v13 = v12 != 0;
     }
 
@@ -140,37 +140,37 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   return v13;
 }
 
-- (BOOL)_hasAccessory:(id)a3 service:(id)a4 characteristicOrControl:(id)a5
+- (BOOL)_hasAccessory:(id)accessory service:(id)service characteristicOrControl:(id)control
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CAFASCTree *)self hasAccessory:v8]&& [(CAFASCTree *)self hasAccessory:v8 service:v9])
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  controlCopy = control;
+  if ([(CAFASCTree *)self hasAccessory:accessoryCopy]&& [(CAFASCTree *)self hasAccessory:accessoryCopy service:serviceCopy])
   {
-    v11 = [(CAFASCTree *)self accessories];
-    v12 = [v11 objectForKeyedSubscript:v8];
-    v13 = [v12 children];
-    v14 = [v13 objectForKeyedSubscript:v9];
-    v15 = [v14 children];
-    if ([v15 count])
+    accessories = [(CAFASCTree *)self accessories];
+    v12 = [accessories objectForKeyedSubscript:accessoryCopy];
+    children = [v12 children];
+    v14 = [children objectForKeyedSubscript:serviceCopy];
+    children2 = [v14 children];
+    if ([children2 count])
     {
-      v25 = [(CAFASCTree *)self accessories];
-      [v25 objectForKeyedSubscript:v8];
-      v24 = v27 = v11;
+      accessories2 = [(CAFASCTree *)self accessories];
+      [accessories2 objectForKeyedSubscript:accessoryCopy];
+      v24 = v27 = accessories;
       [v24 children];
       v16 = v26 = v12;
-      v17 = [v16 objectForKeyedSubscript:v9];
+      v17 = [v16 objectForKeyedSubscript:serviceCopy];
       [v17 children];
       v18 = v14;
-      v20 = v19 = v13;
-      v21 = [v20 objectForKeyedSubscript:v10];
+      v20 = v19 = children;
+      v21 = [v20 objectForKeyedSubscript:controlCopy];
       v22 = v21 != 0;
 
-      v13 = v19;
+      children = v19;
       v14 = v18;
 
       v12 = v26;
-      v11 = v27;
+      accessories = v27;
     }
 
     else
@@ -187,14 +187,14 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   return v22;
 }
 
-- (id)nodeForAccessory:(id)a3 serviceType:(id)a4
+- (id)nodeForAccessory:(id)accessory serviceType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFASCTree *)self accessories];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  typeCopy = type;
+  accessoryCopy = accessory;
+  accessories = [(CAFASCTree *)self accessories];
+  v9 = [accessories objectForKeyedSubscript:accessoryCopy];
 
-  v10 = [v9 _childNodeMatchingType:v6];
+  v10 = [v9 _childNodeMatchingType:typeCopy];
 
   return v10;
 }
@@ -207,10 +207,10 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CAFASCTree *)self accessories];
-  v5 = [v4 allValues];
+  accessories = [(CAFASCTree *)self accessories];
+  allValues = [accessories allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -221,14 +221,14 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) treeLogLinesIndent:0];
         [v3 addObjectsFromArray:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -239,85 +239,85 @@ void __36__CAFASCTree__nodesOfType_fromDict___block_invoke(uint64_t a1, uint64_t
   return v3;
 }
 
-- (void)validateRegisteredForAccessory:(id)a3
+- (void)validateRegisteredForAccessory:(id)accessory
 {
-  v7 = a3;
+  accessoryCopy = accessory;
   if (![(CAFASCTree *)self hasAccessory:?])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [CAFAccessoryTypes accessoryNameForType:v7];
+    v5 = [CAFAccessoryTypes accessoryNameForType:accessoryCopy];
     v6 = [v4 stringWithFormat:@"%@", v5];
     [(CAFASCTree *)self logErrorIfNeededForMissingRegistration:v6];
   }
 }
 
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service
 {
-  v11 = a3;
-  v6 = a4;
-  if (![(CAFASCTree *)self hasAccessory:v11 service:v6])
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  if (![(CAFASCTree *)self hasAccessory:accessoryCopy service:serviceCopy])
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [CAFAccessoryTypes accessoryNameForType:v11];
-    v9 = [CAFServiceTypes serviceNameForType:v6];
+    v8 = [CAFAccessoryTypes accessoryNameForType:accessoryCopy];
+    v9 = [CAFServiceTypes serviceNameForType:serviceCopy];
     v10 = [v7 stringWithFormat:@"%@.%@", v8, v9];
     [(CAFASCTree *)self logErrorIfNeededForMissingRegistration:v10];
   }
 }
 
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4 characteristic:(id)a5
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service characteristic:(id)characteristic
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![(CAFASCTree *)self hasAccessory:v15 service:v8 characteristic:v9])
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
+  if (![(CAFASCTree *)self hasAccessory:accessoryCopy service:serviceCopy characteristic:characteristicCopy])
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [CAFAccessoryTypes accessoryNameForType:v15];
-    v12 = [CAFServiceTypes serviceNameForType:v8];
-    v13 = [CAFCharacteristicTypes characteristicNameForType:v9];
+    v11 = [CAFAccessoryTypes accessoryNameForType:accessoryCopy];
+    v12 = [CAFServiceTypes serviceNameForType:serviceCopy];
+    v13 = [CAFCharacteristicTypes characteristicNameForType:characteristicCopy];
     v14 = [v10 stringWithFormat:@"%@.%@.%@", v11, v12, v13];
     [(CAFASCTree *)self logErrorIfNeededForMissingRegistration:v14];
   }
 }
 
-- (void)validateRegisteredForAccessory:(id)a3 service:(id)a4 control:(id)a5
+- (void)validateRegisteredForAccessory:(id)accessory service:(id)service control:(id)control
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![(CAFASCTree *)self hasAccessory:v15 service:v8 control:v9])
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  controlCopy = control;
+  if (![(CAFASCTree *)self hasAccessory:accessoryCopy service:serviceCopy control:controlCopy])
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [CAFAccessoryTypes accessoryNameForType:v15];
-    v12 = [CAFServiceTypes serviceNameForType:v8];
-    v13 = [CAFControlTypes controlNameForType:v9];
+    v11 = [CAFAccessoryTypes accessoryNameForType:accessoryCopy];
+    v12 = [CAFServiceTypes serviceNameForType:serviceCopy];
+    v13 = [CAFControlTypes controlNameForType:controlCopy];
     v14 = [v10 stringWithFormat:@"%@.%@.%@", v11, v12, v13];
     [(CAFASCTree *)self logErrorIfNeededForMissingRegistration:v14];
   }
 }
 
-- (void)logErrorIfNeededForMissingRegistration:(id)a3
+- (void)logErrorIfNeededForMissingRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [(CAFASCTree *)self missingRegistrations];
-  objc_sync_enter(v5);
-  v6 = [(CAFASCTree *)self missingRegistrations];
-  v7 = [v6 containsObject:v4];
+  registrationCopy = registration;
+  missingRegistrations = [(CAFASCTree *)self missingRegistrations];
+  objc_sync_enter(missingRegistrations);
+  missingRegistrations2 = [(CAFASCTree *)self missingRegistrations];
+  v7 = [missingRegistrations2 containsObject:registrationCopy];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(CAFASCTree *)self missingRegistrations];
-    [v8 addObject:v4];
+    missingRegistrations3 = [(CAFASCTree *)self missingRegistrations];
+    [missingRegistrations3 addObject:registrationCopy];
 
     v9 = CAFRegistrationLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(CAFASCTree *)v4 logErrorIfNeededForMissingRegistration:v9];
+      [(CAFASCTree *)registrationCopy logErrorIfNeededForMissingRegistration:v9];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(missingRegistrations);
 }
 
 - (void)logErrorIfNeededForMissingRegistration:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

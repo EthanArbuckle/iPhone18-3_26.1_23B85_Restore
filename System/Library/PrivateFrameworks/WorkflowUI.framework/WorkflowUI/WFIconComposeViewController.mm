@@ -4,13 +4,13 @@
 - (WFColorPicker)colorPicker;
 - (WFGlyphPicker)glyphPicker;
 - (WFIconComposePreviewView)iconView;
-- (WFIconComposeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)colorPicker:(id)a3 didSelectColor:(id)a4;
-- (void)glyphPicker:(id)a3 didSelectGlyphWithCharacter:(unsigned __int16)a4;
+- (WFIconComposeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)colorPicker:(id)picker didSelectColor:(id)color;
+- (void)glyphPicker:(id)picker didSelectGlyphWithCharacter:(unsigned __int16)character;
 - (void)loadView;
-- (void)pickedSegment:(id)a3;
-- (void)saveIcon:(id)a3;
-- (void)setWorkflow:(id)a3;
+- (void)pickedSegment:(id)segment;
+- (void)saveIcon:(id)icon;
+- (void)setWorkflow:(id)workflow;
 - (void)updateAccessibilityValue;
 @end
 
@@ -51,36 +51,36 @@
   return WeakRetained;
 }
 
-- (void)colorPicker:(id)a3 didSelectColor:(id)a4
+- (void)colorPicker:(id)picker didSelectColor:(id)color
 {
   v5 = MEMORY[0x277D7A1E0];
-  v6 = a4;
+  colorCopy = color;
   v7 = [v5 alloc];
-  v8 = [v6 RGBAValue];
+  rGBAValue = [colorCopy RGBAValue];
 
-  v9 = v8;
-  v10 = [(WFIconComposeViewController *)self workflow];
-  v11 = [v10 icon];
-  v12 = [v11 glyphCharacter];
-  v13 = [(WFIconComposeViewController *)self workflow];
-  v14 = [v13 icon];
-  v15 = [v14 customImageData];
-  v16 = [v7 initWithBackgroundColorValue:v9 glyphCharacter:v12 customImageData:v15];
+  v9 = rGBAValue;
+  workflow = [(WFIconComposeViewController *)self workflow];
+  icon = [workflow icon];
+  glyphCharacter = [icon glyphCharacter];
+  workflow2 = [(WFIconComposeViewController *)self workflow];
+  icon2 = [workflow2 icon];
+  customImageData = [icon2 customImageData];
+  v16 = [v7 initWithBackgroundColorValue:v9 glyphCharacter:glyphCharacter customImageData:customImageData];
 
   [(WFIconComposeViewController *)self saveIcon:v16];
 }
 
-- (void)glyphPicker:(id)a3 didSelectGlyphWithCharacter:(unsigned __int16)a4
+- (void)glyphPicker:(id)picker didSelectGlyphWithCharacter:(unsigned __int16)character
 {
-  v4 = a4;
+  characterCopy = character;
   v6 = objc_alloc(MEMORY[0x277D7A1E0]);
-  v7 = [(WFIconComposeViewController *)self workflow];
-  v8 = [v7 icon];
-  v9 = [v8 backgroundColorValue];
-  v10 = [(WFIconComposeViewController *)self workflow];
-  v11 = [v10 icon];
-  v12 = [v11 customImageData];
-  v13 = [v6 initWithBackgroundColorValue:v9 glyphCharacter:v4 customImageData:v12];
+  workflow = [(WFIconComposeViewController *)self workflow];
+  icon = [workflow icon];
+  backgroundColorValue = [icon backgroundColorValue];
+  workflow2 = [(WFIconComposeViewController *)self workflow];
+  icon2 = [workflow2 icon];
+  customImageData = [icon2 customImageData];
+  v13 = [v6 initWithBackgroundColorValue:backgroundColorValue glyphCharacter:characterCopy customImageData:customImageData];
 
   [(WFIconComposeViewController *)self saveIcon:v13];
 }
@@ -89,57 +89,57 @@
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [MEMORY[0x277D79E20] workflowPalette];
-    v4 = [(WFIconComposeViewController *)self workflow];
-    v5 = [v4 icon];
-    v6 = [v5 backgroundColor];
-    v7 = [v3 indexOfObject:v6];
+    workflowPalette = [MEMORY[0x277D79E20] workflowPalette];
+    workflow = [(WFIconComposeViewController *)self workflow];
+    icon = [workflow icon];
+    backgroundColor = [icon backgroundColor];
+    v7 = [workflowPalette indexOfObject:backgroundColor];
 
-    v8 = [MEMORY[0x277D79E20] workflowPaletteNames];
-    v16 = [v8 objectAtIndex:v7];
+    workflowPaletteNames = [MEMORY[0x277D79E20] workflowPaletteNames];
+    v16 = [workflowPaletteNames objectAtIndex:v7];
 
-    v9 = [(WFIconComposeViewController *)self workflow];
-    v10 = [v9 icon];
-    [v10 glyphCharacter];
+    workflow2 = [(WFIconComposeViewController *)self workflow];
+    icon2 = [workflow2 icon];
+    [icon2 glyphCharacter];
     v11 = WFNameForGlyphCharacter();
 
     v12 = MEMORY[0x277CCACA8];
     v13 = WFLocalizedString(@"%1$@ glyph, %2$@ background color");
     v14 = [v12 localizedStringWithFormat:v13, v11, v16];
-    v15 = [(WFIconComposeViewController *)self iconView];
-    [v15 setAccessibilityValue:v14];
+    iconView = [(WFIconComposeViewController *)self iconView];
+    [iconView setAccessibilityValue:v14];
   }
 }
 
-- (void)saveIcon:(id)a3
+- (void)saveIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(WFIconComposeViewController *)self workflow];
-  [v5 setIcon:v4];
+  iconCopy = icon;
+  workflow = [(WFIconComposeViewController *)self workflow];
+  [workflow setIcon:iconCopy];
 
-  v6 = [(WFIconComposeViewController *)self iconView];
-  [v6 setIcon:v4];
+  iconView = [(WFIconComposeViewController *)self iconView];
+  [iconView setIcon:iconCopy];
 
   [(WFIconComposeViewController *)self updateAccessibilityValue];
-  v7 = [(WFIconComposeViewController *)self workflow];
-  [v7 save];
+  workflow2 = [(WFIconComposeViewController *)self workflow];
+  [workflow2 save];
 }
 
-- (void)pickedSegment:(id)a3
+- (void)pickedSegment:(id)segment
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFIconComposeViewController *)self colorPicker];
-  v11[0] = v5;
-  v6 = [(WFIconComposeViewController *)self glyphPicker];
-  v11[1] = v6;
+  segmentCopy = segment;
+  colorPicker = [(WFIconComposeViewController *)self colorPicker];
+  v11[0] = colorPicker;
+  glyphPicker = [(WFIconComposeViewController *)self glyphPicker];
+  v11[1] = glyphPicker;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__WFIconComposeViewController_pickedSegment___block_invoke;
   v9[3] = &unk_279EE7FB8;
-  v10 = v4;
-  v8 = v4;
+  v10 = segmentCopy;
+  v8 = segmentCopy;
   [v7 enumerateObjectsUsingBlock:v9];
 }
 
@@ -150,9 +150,9 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [v5 setHidden:{objc_msgSend(v4, "selectedSegmentIndex") != a3}];
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeStrong(&self->_workflow, a3);
+  objc_storeStrong(&self->_workflow, workflow);
 
   [(WFIconComposeViewController *)self updateAccessibilityValue];
 }
@@ -163,15 +163,15 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   v77.receiver = self;
   v77.super_class = WFIconComposeViewController;
   [(WFIconComposeViewController *)&v77 loadView];
-  v3 = [MEMORY[0x277D75348] wf_settingsBackgroundColor];
-  v4 = [(WFIconComposeViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  wf_settingsBackgroundColor = [MEMORY[0x277D75348] wf_settingsBackgroundColor];
+  view = [(WFIconComposeViewController *)self view];
+  [view setBackgroundColor:wf_settingsBackgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(WFIconComposeViewController *)self view];
+  view2 = [(WFIconComposeViewController *)self view];
   firstValue = v5;
-  [v6 addSubview:v5];
+  [view2 addSubview:v5];
 
   v7 = objc_alloc_init(WFIconComposePreviewView);
   [(WFIconComposePreviewView *)v7 setIsAccessibilityElement:1];
@@ -180,9 +180,9 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [(WFIconComposePreviewView *)v7 setAccessibilityLabel:v8];
 
   [(WFIconComposePreviewView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(WFIconComposeViewController *)self workflow];
-  v10 = [v9 icon];
-  [(WFIconComposePreviewView *)v7 setIcon:v10];
+  workflow = [(WFIconComposeViewController *)self workflow];
+  icon = [workflow icon];
+  [(WFIconComposePreviewView *)v7 setIcon:icon];
 
   v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:7 relatedBy:0 toItem:v7 attribute:8 multiplier:1.0 constant:0.0];
   [(WFIconComposePreviewView *)v7 addConstraint:v11];
@@ -194,16 +194,16 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [(WFIconComposeViewController *)self setIconView:v7];
   v13 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v13 setBackgroundColor:v14];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v13 setBackgroundColor:systemBackgroundColor];
 
-  v15 = [(WFIconComposeViewController *)self view];
-  [v15 addSubview:v13];
+  view3 = [(WFIconComposeViewController *)self view];
+  [view3 addSubview:v13];
 
   v76 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v76 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [MEMORY[0x277D75348] separatorColor];
-  [v76 setBackgroundColor:v16];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  [v76 setBackgroundColor:separatorColor];
 
   [v13 addSubview:v76];
   [(WFIconComposeViewController *)self setTopSeperator:v76];
@@ -222,8 +222,8 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [v13 addSubview:v21];
   v22 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [MEMORY[0x277D75348] separatorColor];
-  [v22 setBackgroundColor:v23];
+  separatorColor2 = [MEMORY[0x277D75348] separatorColor];
+  [v22 setBackgroundColor:separatorColor2];
 
   [v13 addSubview:v22];
   v24 = v22;
@@ -231,19 +231,19 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [(WFIconComposeViewController *)self setBottomSeparator:v22];
   v25 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v25 setBackgroundColor:v26];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v25 setBackgroundColor:systemBackgroundColor2];
 
-  v27 = [(WFIconComposeViewController *)self view];
-  [v27 addSubview:v25];
+  view4 = [(WFIconComposeViewController *)self view];
+  [view4 addSubview:v25];
 
   v28 = [[WFGlyphPicker alloc] initWithControl:0 glyphDimension:36.0 sectionInset:15.0, 15.0, 15.0, 15.0];
   [(WFGlyphPicker *)v28 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(WFGlyphPicker *)v28 setHidden:1];
   [(WFGlyphPicker *)v28 setDelegate:self];
-  v29 = [(WFIconComposeViewController *)self workflow];
-  v30 = [v29 icon];
-  -[WFGlyphPicker setSelectedGlyphCharacter:](v28, "setSelectedGlyphCharacter:", [v30 glyphCharacter]);
+  workflow2 = [(WFIconComposeViewController *)self workflow];
+  icon2 = [workflow2 icon];
+  -[WFGlyphPicker setSelectedGlyphCharacter:](v28, "setSelectedGlyphCharacter:", [icon2 glyphCharacter]);
 
   [v25 addSubview:v28];
   v70 = v28;
@@ -252,43 +252,43 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [(WFColorPicker *)v31 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(WFColorPicker *)v31 setHidden:0];
   [(WFColorPicker *)v31 setDelegate:self];
-  v32 = [(WFIconComposeViewController *)self workflow];
-  v33 = [v32 icon];
-  v34 = [v33 backgroundColor];
-  [(WFColorPicker *)v31 setSelectedColor:v34];
+  workflow3 = [(WFIconComposeViewController *)self workflow];
+  icon3 = [workflow3 icon];
+  backgroundColor = [icon3 backgroundColor];
+  [(WFColorPicker *)v31 setSelectedColor:backgroundColor];
 
   [v25 addSubview:v31];
   [(WFIconComposeViewController *)self setColorPicker:v31];
   [(WFIconComposeViewController *)self updateAccessibilityValue];
-  v35 = [(WFIconComposeViewController *)self view];
-  v75 = [v35 safeAreaLayoutGuide];
+  view5 = [(WFIconComposeViewController *)self view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
 
-  v36 = _NSDictionaryOfVariableBindings(&cfstr_PreviewviewCon.isa, firstValue, v13, v76, v21, v24, v25, v28, v31, v75, 0);
+  v36 = _NSDictionaryOfVariableBindings(&cfstr_PreviewviewCon.isa, firstValue, v13, v76, v21, v24, v25, v28, v31, safeAreaLayoutGuide, 0);
   v78 = @"separator";
   v37 = MEMORY[0x277CCABB0];
-  v38 = [MEMORY[0x277D759A0] mainScreen];
-  [v38 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v40 = [v37 numberWithDouble:1.0 / v39];
   v79 = v40;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
 
-  v42 = [(WFIconComposeViewController *)self view];
+  view6 = [(WFIconComposeViewController *)self view];
   v43 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[previewView]|" options:0 metrics:0 views:v36];
-  [v42 addConstraints:v43];
+  [view6 addConstraints:v43];
 
-  v44 = [(WFIconComposeViewController *)self view];
+  view7 = [(WFIconComposeViewController *)self view];
   v45 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[previewView(>=50)][controlView(44)][pickerView]|" options:6 metrics:v41 views:v36];
-  [v44 addConstraints:v45];
+  [view7 addConstraints:v45];
 
-  v46 = [(WFIconComposeViewController *)self view];
-  v47 = [MEMORY[0x277CCAAD0] constraintWithItem:firstValue attribute:3 relatedBy:0 toItem:v75 attribute:3 multiplier:1.0 constant:0.0];
-  [v46 addConstraint:v47];
+  view8 = [(WFIconComposeViewController *)self view];
+  v47 = [MEMORY[0x277CCAAD0] constraintWithItem:firstValue attribute:3 relatedBy:0 toItem:safeAreaLayoutGuide attribute:3 multiplier:1.0 constant:0.0];
+  [view8 addConstraint:v47];
 
-  v48 = [(WFIconComposeViewController *)self view];
-  v49 = [v25 topAnchor];
-  v50 = [v75 bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50 constant:-205.0];
-  [v48 addConstraint:v51];
+  view9 = [(WFIconComposeViewController *)self view];
+  topAnchor = [v25 topAnchor];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+  v51 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-205.0];
+  [view9 addConstraint:v51];
 
   v52 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[glyphPicker]|" options:0 metrics:v41 views:v36];
   [v25 addConstraints:v52];
@@ -336,24 +336,24 @@ void __45__WFIconComposeViewController_pickedSegment___block_invoke(uint64_t a1,
   [firstValue addConstraint:v66];
 
   v67 = MEMORY[0x277CCAAD0];
-  v68 = [(WFIconComposeViewController *)self glyphPicker];
-  v69 = [v67 constraintWithItem:v68 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:205.0];
+  glyphPicker = [(WFIconComposeViewController *)self glyphPicker];
+  v69 = [v67 constraintWithItem:glyphPicker attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:205.0];
   [(WFGlyphPicker *)v70 addConstraint:v69];
 }
 
-- (WFIconComposeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFIconComposeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = WFIconComposeViewController;
-  v4 = [(WFIconComposeViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(WFIconComposeViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = WFLocalizedString(@"Icon");
     [(WFIconComposeViewController *)v4 setTitle:v5];
 
     v6 = WFLocalizedString(@"Shortcut icon editor");
-    v7 = [(WFIconComposeViewController *)v4 navigationItem];
-    [v7 setAccessibilityLabel:v6];
+    navigationItem = [(WFIconComposeViewController *)v4 navigationItem];
+    [navigationItem setAccessibilityLabel:v6];
 
     v8 = v4;
   }

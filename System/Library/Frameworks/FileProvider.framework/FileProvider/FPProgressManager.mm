@@ -1,16 +1,16 @@
 @interface FPProgressManager
 + (id)defaultManager;
 - (FPProgressManager)init;
-- (id)_progressForItem:(id)a3 usingProgressMap:(id)a4;
-- (id)copyProgressForItem:(id)a3;
-- (id)downloadProgressForItem:(id)a3;
-- (id)removeCopyProgress:(id)a3;
-- (id)uploadProgressForItem:(id)a3;
-- (void)_resolveURLForItem:(id)a3 completionHandler:(id)a4;
-- (void)attachProgressToItemsIfNeeded:(id)a3;
-- (void)registerCopyProgress:(id)a3 forItemID:(id)a4;
-- (void)removeCopyProgressForItemID:(id)a3;
-- (void)removeDownloadProgressForItemID:(id)a3;
+- (id)_progressForItem:(id)item usingProgressMap:(id)map;
+- (id)copyProgressForItem:(id)item;
+- (id)downloadProgressForItem:(id)item;
+- (id)removeCopyProgress:(id)progress;
+- (id)uploadProgressForItem:(id)item;
+- (void)_resolveURLForItem:(id)item completionHandler:(id)handler;
+- (void)attachProgressToItemsIfNeeded:(id)needed;
+- (void)registerCopyProgress:(id)progress forItemID:(id)d;
+- (void)removeCopyProgressForItemID:(id)d;
+- (void)removeDownloadProgressForItemID:(id)d;
 @end
 
 @implementation FPProgressManager
@@ -46,13 +46,13 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     downloadProgressPerItemIDs = v2->_downloadProgressPerItemIDs;
-    v2->_downloadProgressPerItemIDs = v6;
+    v2->_downloadProgressPerItemIDs = strongToWeakObjectsMapTable;
 
-    v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     uploadProgressPerItemIDs = v2->_uploadProgressPerItemIDs;
-    v2->_uploadProgressPerItemIDs = v8;
+    v2->_uploadProgressPerItemIDs = strongToWeakObjectsMapTable2;
 
     v10 = objc_alloc_init(FPOneToManyWeakMap);
     copyProgressPerItemIDs = v2->_copyProgressPerItemIDs;
@@ -62,15 +62,15 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
   return v2;
 }
 
-- (void)attachProgressToItemsIfNeeded:(id)a3
+- (void)attachProgressToItemsIfNeeded:(id)needed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  neededCopy = needed;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  v4 = [neededCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v4)
   {
     v6 = v4;
@@ -83,14 +83,14 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(neededCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if (([v9 isDownloading] & 1) != 0 || objc_msgSend(v9, "isUploading"))
         {
-          v10 = [v9 progress];
-          if (v10)
+          progress = [v9 progress];
+          if (progress)
           {
             v11 = fp_current_or_default_log();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -99,7 +99,7 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
               *buf = v14;
               v20 = v12;
               v21 = 2048;
-              v22 = v10;
+              v22 = progress;
               v23 = 2112;
               v24 = v9;
               _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] progress <%@:%p> attached to %@", buf, 0x20u);
@@ -108,7 +108,7 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v6 = [neededCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v6);
@@ -117,28 +117,28 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerCopyProgress:(id)a3 forItemID:(id)a4
+- (void)registerCopyProgress:(id)progress forItemID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__FPProgressManager_registerCopyProgress_forItemID___block_invoke;
   block[3] = &unk_1E7939090;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = progressCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = progressCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)removeCopyProgressForItemID:(id)a3
+- (void)removeCopyProgressForItemID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -146,16 +146,16 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
     v7[2] = __49__FPProgressManager_removeCopyProgressForItemID___block_invoke;
     v7[3] = &unk_1E79390B8;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)removeDownloadProgressForItemID:(id)a3
+- (void)removeDownloadProgressForItemID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -163,14 +163,14 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
     v7[2] = __53__FPProgressManager_removeDownloadProgressForItemID___block_invoke;
     v7[3] = &unk_1E79390B8;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (id)removeCopyProgress:(id)a3
+- (id)removeCopyProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -184,14 +184,14 @@ uint64_t __35__FPProgressManager_defaultManager__block_invoke()
   block[3] = &unk_1E793A190;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = progressCopy;
   v10 = v6;
   dispatch_sync(queue, block);
-  v7 = [v13[5] firstObject];
+  firstObject = [v13[5] firstObject];
 
   _Block_object_dispose(&v12, 8);
 
-  return v7;
+  return firstObject;
 }
 
 uint64_t __40__FPProgressManager_removeCopyProgress___block_invoke(void *a1)
@@ -204,9 +204,9 @@ uint64_t __40__FPProgressManager_removeCopyProgress___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyProgressForItem:(id)a3
+- (id)copyProgressForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -218,10 +218,10 @@ uint64_t __40__FPProgressManager_removeCopyProgress___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __41__FPProgressManager_copyProgressForItem___block_invoke;
   block[3] = &unk_1E793A190;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -239,16 +239,16 @@ void __41__FPProgressManager_copyProgressForItem___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)downloadProgressForItem:(id)a3
+- (id)downloadProgressForItem:(id)item
 {
-  v3 = [(FPProgressManager *)self _progressForItem:a3 usingProgressMap:self->_downloadProgressPerItemIDs];
+  v3 = [(FPProgressManager *)self _progressForItem:item usingProgressMap:self->_downloadProgressPerItemIDs];
   v4 = v3;
   if (v3)
   {
     v5 = *MEMORY[0x1E696A848];
     if (([v3 fp_isOfFileOperationKind:*MEMORY[0x1E696A848]] & 1) == 0)
     {
-      v15 = [v4 fp_fileOperationKind];
+      fp_fileOperationKind = [v4 fp_fileOperationKind];
       fp_simulate_crash(@"[Progress] Progress kind %@ should be downloading but instead it's %@", v6, v7, v8, v9, v10, v11, v12, v4);
 
       v13 = fp_current_or_default_log();
@@ -264,16 +264,16 @@ void __41__FPProgressManager_copyProgressForItem___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)uploadProgressForItem:(id)a3
+- (id)uploadProgressForItem:(id)item
 {
-  v3 = [(FPProgressManager *)self _progressForItem:a3 usingProgressMap:self->_uploadProgressPerItemIDs];
+  v3 = [(FPProgressManager *)self _progressForItem:item usingProgressMap:self->_uploadProgressPerItemIDs];
   v4 = v3;
   if (v3)
   {
     v5 = *MEMORY[0x1E696A870];
     if (([v3 fp_isOfFileOperationKind:*MEMORY[0x1E696A870]] & 1) == 0)
     {
-      v15 = [v4 fp_fileOperationKind];
+      fp_fileOperationKind = [v4 fp_fileOperationKind];
       fp_simulate_crash(@"[Progress] Progress kind %@ should be uploading but instead it's %@", v6, v7, v8, v9, v10, v11, v12, v4);
 
       v13 = fp_current_or_default_log();
@@ -289,43 +289,43 @@ void __41__FPProgressManager_copyProgressForItem___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_resolveURLForItem:(id)a3 completionHandler:(id)a4
+- (void)_resolveURLForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 fileURL];
+  fileURL = [itemCopy fileURL];
 
-  if (!v8)
+  if (!fileURL)
   {
     goto LABEL_7;
   }
 
-  v9 = [v6 fileURL];
-  v10 = [v9 startAccessingSecurityScopedResource];
-  v11 = [v9 fp_checkSandboxFileMetadataRead];
-  if (v10)
+  fileURL2 = [itemCopy fileURL];
+  startAccessingSecurityScopedResource = [fileURL2 startAccessingSecurityScopedResource];
+  fp_checkSandboxFileMetadataRead = [fileURL2 fp_checkSandboxFileMetadataRead];
+  if (startAccessingSecurityScopedResource)
   {
-    [v9 stopAccessingSecurityScopedResource];
+    [fileURL2 stopAccessingSecurityScopedResource];
   }
 
-  if (!v11)
+  if (!fp_checkSandboxFileMetadataRead)
   {
 
 LABEL_7:
-    v9 = +[FPItemManager defaultManager];
+    fileURL2 = +[FPItemManager defaultManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __58__FPProgressManager__resolveURLForItem_completionHandler___block_invoke;
     v12[3] = &unk_1E793A1E0;
     v12[4] = self;
-    v13 = v7;
-    [v9 fetchURLForItem:v6 creatingPlaceholderIfMissing:1 completionHandler:v12];
+    v13 = handlerCopy;
+    [fileURL2 fetchURLForItem:itemCopy creatingPlaceholderIfMissing:1 completionHandler:v12];
 
     goto LABEL_8;
   }
 
-  (*(v7 + 2))(v7, v9, 0);
+  (*(handlerCopy + 2))(handlerCopy, fileURL2, 0);
 LABEL_8:
 }
 
@@ -347,10 +347,10 @@ void __58__FPProgressManager__resolveURLForItem_completionHandler___block_invoke
   dispatch_async(v7, block);
 }
 
-- (id)_progressForItem:(id)a3 usingProgressMap:(id)a4
+- (id)_progressForItem:(id)item usingProgressMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  mapCopy = map;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -362,13 +362,13 @@ void __58__FPProgressManager__resolveURLForItem_completionHandler___block_invoke
   block[1] = 3221225472;
   block[2] = __55__FPProgressManager__progressForItem_usingProgressMap___block_invoke;
   block[3] = &unk_1E793A280;
-  v15 = v8;
-  v16 = self;
-  v17 = v7;
+  v15 = mapCopy;
+  selfCopy = self;
+  v17 = itemCopy;
   v18 = &v20;
   v19 = a2;
-  v10 = v7;
-  v11 = v8;
+  v10 = itemCopy;
+  v11 = mapCopy;
   dispatch_sync(queue, block);
   v12 = v21[5];
 

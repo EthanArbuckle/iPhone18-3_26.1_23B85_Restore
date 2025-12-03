@@ -1,41 +1,41 @@
 @interface NTKWorldClockHighlightedMapLocationView
-- (NTKWorldClockHighlightedMapLocationView)initWithFrame:(CGRect)a3 fillColor:(id)a4 strokeColor:(id)a5 strokeWidth:(double)a6;
-- (void)drawRect:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (NTKWorldClockHighlightedMapLocationView)initWithFrame:(CGRect)frame fillColor:(id)color strokeColor:(id)strokeColor strokeWidth:(double)width;
+- (void)drawRect:(CGRect)rect;
+- (void)setFillColor:(id)color;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation NTKWorldClockHighlightedMapLocationView
 
-- (NTKWorldClockHighlightedMapLocationView)initWithFrame:(CGRect)a3 fillColor:(id)a4 strokeColor:(id)a5 strokeWidth:(double)a6
+- (NTKWorldClockHighlightedMapLocationView)initWithFrame:(CGRect)frame fillColor:(id)color strokeColor:(id)strokeColor strokeWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  strokeColorCopy = strokeColor;
   v19.receiver = self;
   v19.super_class = NTKWorldClockHighlightedMapLocationView;
-  v16 = [(NTKWorldClockMapLocationView *)&v19 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(NTKWorldClockMapLocationView *)&v19 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_fillColor, a4);
-    objc_storeStrong(&v17->_strokeColor, a5);
-    v17->_strokeWidth = a6;
+    objc_storeStrong(&height->_fillColor, color);
+    objc_storeStrong(&v17->_strokeColor, strokeColor);
+    v17->_strokeWidth = width;
     [(NTKWorldClockHighlightedMapLocationView *)v17 setOpaque:0];
   }
 
   return v17;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(NTKWorldClockHighlightedMapLocationView *)self strokeWidth];
   v9 = v8 * 0.5;
   [(NTKWorldClockHighlightedMapLocationView *)self strokeWidth];
@@ -50,11 +50,11 @@
   v14 = v22.size.width;
   v15 = v22.size.height;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v17 = [(NTKWorldClockHighlightedMapLocationView *)self fillColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v17 CGColor]);
+  fillColor = [(NTKWorldClockHighlightedMapLocationView *)self fillColor];
+  CGContextSetFillColorWithColor(CurrentContext, [fillColor CGColor]);
 
-  v18 = [(NTKWorldClockHighlightedMapLocationView *)self strokeColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v18 CGColor]);
+  strokeColor = [(NTKWorldClockHighlightedMapLocationView *)self strokeColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [strokeColor CGColor]);
 
   [(NTKWorldClockHighlightedMapLocationView *)self strokeWidth];
   CGContextSetLineWidth(CurrentContext, v19);
@@ -72,22 +72,22 @@
   CGContextFillPath(CurrentContext);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_fillColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(NTKWorldClockHighlightedMapLocationView *)self setNeedsDisplay];
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_strokeColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_strokeColor, a3);
+    objc_storeStrong(&self->_strokeColor, color);
     [(NTKWorldClockHighlightedMapLocationView *)self setNeedsDisplay];
   }
 }

@@ -1,45 +1,45 @@
 @interface PDSharingProximityMessage
-- (PDSharingProximityMessage)initWithReceivedDictionary:(id)a3;
-- (PDSharingProximityMessage)initWithSessionIdentifier:(id)a3 underlyingMessageData:(id)a4;
-- (id)_initWithType:(unint64_t)a3 sessionIdentifier:(id)a4;
+- (PDSharingProximityMessage)initWithReceivedDictionary:(id)dictionary;
+- (PDSharingProximityMessage)initWithSessionIdentifier:(id)identifier underlyingMessageData:(id)data;
+- (id)_initWithType:(unint64_t)type sessionIdentifier:(id)identifier;
 - (id)sendingDictionary;
 @end
 
 @implementation PDSharingProximityMessage
 
-- (id)_initWithType:(unint64_t)a3 sessionIdentifier:(id)a4
+- (id)_initWithType:(unint64_t)type sessionIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PDSharingProximityMessage;
   v8 = [(PDSharingProximityMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_sessionIdentifier, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_sessionIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (PDSharingProximityMessage)initWithSessionIdentifier:(id)a3 underlyingMessageData:(id)a4
+- (PDSharingProximityMessage)initWithSessionIdentifier:(id)identifier underlyingMessageData:(id)data
 {
-  v7 = a4;
-  v8 = [(PDSharingProximityMessage *)self _initWithType:1 sessionIdentifier:a3];
+  dataCopy = data;
+  v8 = [(PDSharingProximityMessage *)self _initWithType:1 sessionIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 3, a4);
+    objc_storeStrong(v8 + 3, data);
   }
 
   return v9;
 }
 
-- (PDSharingProximityMessage)initWithReceivedDictionary:(id)a3
+- (PDSharingProximityMessage)initWithReceivedDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"type"];
   v6 = v5;
   if (v5 == @"wrapped_content")
   {
@@ -93,8 +93,8 @@ LABEL_13:
   v8 = 1;
 LABEL_14:
 
-  v17 = [v4 PKStringForKey:@"sessionIdentifier"];
-  v18 = [v4 PKStringForKey:@"underlyingMessageData"];
+  v17 = [dictionaryCopy PKStringForKey:@"sessionIdentifier"];
+  v18 = [dictionaryCopy PKStringForKey:@"underlyingMessageData"];
 
   if (v18)
   {
@@ -106,7 +106,7 @@ LABEL_14:
     v19 = 0;
   }
 
-  v20 = 0;
+  selfCopy = 0;
   if (v17)
   {
     v21 = v10;
@@ -141,10 +141,10 @@ LABEL_14:
     }
 
     self = p_isa;
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (id)sendingDictionary

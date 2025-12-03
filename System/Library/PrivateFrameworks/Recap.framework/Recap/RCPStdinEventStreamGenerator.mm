@@ -52,9 +52,9 @@
       ;
     }
 
-    v4 = [(NSInputStream *)self->_stdin streamStatus];
-    v3 = v4 == 2;
-    if (v4 != 2)
+    streamStatus = [(NSInputStream *)self->_stdin streamStatus];
+    v3 = streamStatus == 2;
+    if (streamStatus != 2)
     {
       break;
     }
@@ -127,18 +127,18 @@ void __46__RCPStdinEventStreamGenerator__processBuffer__block_invoke(uint64_t a1
   v11 = *MEMORY[0x277D85DE8];
   if ([(RCPStdinEventStreamGenerator *)self _processBuffer])
   {
-    v3 = [(NSMutableArray *)self->_commandBuffer firstObject];
+    firstObject = [(NSMutableArray *)self->_commandBuffer firstObject];
     [(NSMutableArray *)self->_commandBuffer removeObjectAtIndex:0];
     v4 = RCPLogPlayback();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v3;
+      v10 = firstObject;
       _os_log_impl(&dword_2619DE000, v4, OS_LOG_TYPE_DEFAULT, "Generating event stream for command: %{public}@", &v9, 0xCu);
     }
 
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v3 componentsSeparatedByCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [firstObject componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v7 = [RCPSyntheticEventStream eventStreamWithCLIArguments:v6];
   }

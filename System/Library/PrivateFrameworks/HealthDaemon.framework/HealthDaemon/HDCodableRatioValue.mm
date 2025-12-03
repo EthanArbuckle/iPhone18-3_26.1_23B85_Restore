@@ -1,11 +1,11 @@
 @interface HDCodableRatioValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRatioValue
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = HDCodableRatioValue;
   v4 = [(HDCodableRatioValue *)&v8 description];
-  v5 = [(HDCodableRatioValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRatioValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   numerator = self->_numerator;
   if (numerator)
   {
-    v5 = [(HDCodableCodedQuantity *)numerator dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"numerator"];
+    dictionaryRepresentation = [(HDCodableCodedQuantity *)numerator dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"numerator"];
   }
 
   denominator = self->_denominator;
   if (denominator)
   {
-    v7 = [(HDCodableCodedQuantity *)denominator dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"denominator"];
+    dictionaryRepresentation2 = [(HDCodableCodedQuantity *)denominator dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"denominator"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_numerator)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_denominator)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_numerator)
   {
-    [v4 setNumerator:?];
-    v4 = v5;
+    [toCopy setNumerator:?];
+    toCopy = v5;
   }
 
   if (self->_denominator)
   {
     [v5 setDenominator:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableCodedQuantity *)self->_numerator copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableCodedQuantity *)self->_numerator copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(HDCodableCodedQuantity *)self->_denominator copyWithZone:a3];
+  v8 = [(HDCodableCodedQuantity *)self->_denominator copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((numerator = self->_numerator, !(numerator | v4[2])) || -[HDCodableCodedQuantity isEqual:](numerator, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((numerator = self->_numerator, !(numerator | equalCopy[2])) || -[HDCodableCodedQuantity isEqual:](numerator, "isEqual:")))
   {
     denominator = self->_denominator;
-    if (denominator | v4[1])
+    if (denominator | equalCopy[1])
     {
       v7 = [(HDCodableCodedQuantity *)denominator isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   numerator = self->_numerator;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (numerator)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(HDCodableRatioValue *)self setNumerator:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   denominator = self->_denominator;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (denominator)
   {
     if (v8)

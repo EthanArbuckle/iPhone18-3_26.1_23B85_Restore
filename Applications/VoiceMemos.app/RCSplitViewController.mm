@@ -1,6 +1,6 @@
 @interface RCSplitViewController
-- (BOOL)_canHandleCustomAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)_willSidebarExceedMaximumAllowedWidthForTotalViewWidth:(double)a3;
+- (BOOL)_canHandleCustomAction:(SEL)action withSender:(id)sender;
+- (BOOL)_willSidebarExceedMaximumAllowedWidthForTotalViewWidth:(double)width;
 - (BOOL)areAllColumnsVisible;
 - (BOOL)canDelete;
 - (BOOL)canDuplicateRecording;
@@ -9,7 +9,7 @@
 - (BOOL)canHandleDone;
 - (BOOL)canJumpBackward;
 - (BOOL)canJumpForward;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canPlayRecording;
 - (BOOL)canRenameRecording;
 - (BOOL)canShareRecording;
@@ -31,34 +31,34 @@
 - (id)playbackViewNavigationItem;
 - (int64_t)_displayModeForPrimaryColumnVisible;
 - (void)_doRestyle;
-- (void)_setPreferredSplitBehaviorForViewWidth:(double)a3 needsRestyle:(BOOL)a4;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)delete:(id)a3;
-- (void)duplicateRecording:(id)a3;
-- (void)editRecording:(id)a3;
-- (void)handleCancel:(id)a3;
-- (void)handleDone:(id)a3;
+- (void)_setPreferredSplitBehaviorForViewWidth:(double)width needsRestyle:(BOOL)restyle;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)delete:(id)delete;
+- (void)duplicateRecording:(id)recording;
+- (void)editRecording:(id)recording;
+- (void)handleCancel:(id)cancel;
+- (void)handleDone:(id)done;
 - (void)hidePrimaryColumnForEnteringEditModeIfNeeded;
 - (void)hidePrimaryColumnIfNeeded;
-- (void)jumpSelectionBackward:(id)a3;
-- (void)jumpSelectionForward:(id)a3;
+- (void)jumpSelectionBackward:(id)backward;
+- (void)jumpSelectionForward:(id)forward;
 - (void)loadView;
-- (void)playRecording:(id)a3;
+- (void)playRecording:(id)recording;
 - (void)registerAppIntentsInteractions;
-- (void)renameRecording:(id)a3;
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4;
-- (void)shareRecording:(id)a3;
+- (void)renameRecording:(id)recording;
+- (void)setViewController:(id)controller forColumn:(int64_t)column;
+- (void)shareRecording:(id)recording;
 - (void)showPrimaryColumnForExitingEditModeIfNeeded;
-- (void)startNewRecording:(id)a3;
-- (void)toggleEnhance:(id)a3;
-- (void)toggleFavorite:(id)a3;
-- (void)toggleRemoveSilence:(id)a3;
-- (void)toggleSpeechIsolator:(id)a3;
-- (void)trimRecording:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)startNewRecording:(id)recording;
+- (void)toggleEnhance:(id)enhance;
+- (void)toggleFavorite:(id)favorite;
+- (void)toggleRemoveSilence:(id)silence;
+- (void)toggleSpeechIsolator:(id)isolator;
+- (void)trimRecording:(id)recording;
+- (void)validateCommand:(id)command;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RCSplitViewController
@@ -76,8 +76,8 @@
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"currentLocaleDidChange:" name:NSCurrentLocaleDidChangeNotification object:0];
 
-  v6 = [(RCSplitViewController *)self traitCollection];
-  [v3 setSplitViewHorizontalSizeClass:{objc_msgSend(v6, "horizontalSizeClass")}];
+  traitCollection = [(RCSplitViewController *)self traitCollection];
+  [v3 setSplitViewHorizontalSizeClass:{objc_msgSend(traitCollection, "horizontalSizeClass")}];
 
   [(RCSplitViewController *)self setPreferredDisplayMode:2];
   [(RCSplitViewController *)self _totalViewWidth];
@@ -86,8 +86,8 @@
 
 - (double)_totalViewWidth
 {
-  v2 = [(RCSplitViewController *)self view];
-  [v2 frame];
+  view = [(RCSplitViewController *)self view];
+  [view frame];
   v4 = v3;
 
   return v4;
@@ -112,18 +112,18 @@
 
 - (void)registerAppIntentsInteractions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000125B4();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = RCSplitViewController;
-  v7 = a4;
-  [(RCSplitViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(RCSplitViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000B2470;
@@ -131,29 +131,29 @@
   v8[4] = self;
   *&v8[5] = width;
   *&v8[6] = height;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = RCSplitViewController;
-  [(RCSplitViewController *)&v16 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  v8 = [(RCSplitViewController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  [(RCSplitViewController *)&v16 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  traitCollection = [(RCSplitViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v10 = [v6 horizontalSizeClass];
-  if (v9 != v10)
+  horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
-    v11 = v10;
-    v12 = [(RCSplitViewController *)self resizingDelegate];
-    [v12 splitViewController:self willTransitionFromHorizontalSizeClass:v9 toHorizontalSizeClass:v11];
+    v11 = horizontalSizeClass2;
+    resizingDelegate = [(RCSplitViewController *)self resizingDelegate];
+    [resizingDelegate splitViewController:self willTransitionFromHorizontalSizeClass:horizontalSizeClass toHorizontalSizeClass:v11];
   }
 
   v13 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v14 = [v13 setSplitViewHorizontalSizeClass:{objc_msgSend(v6, "horizontalSizeClass")}];
+  v14 = [v13 setSplitViewHorizontalSizeClass:{objc_msgSend(collectionCopy, "horizontalSizeClass")}];
 
   if (v14)
   {
@@ -162,17 +162,17 @@
     v15[2] = sub_1000B25DC;
     v15[3] = &unk_10028A488;
     v15[4] = self;
-    [v7 animateAlongsideTransition:v15 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:0];
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(RCSplitViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(RCSplitViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(RCSplitViewController *)self _doRestyle];
@@ -181,25 +181,25 @@
 
 - (void)_doRestyle
 {
-  v3 = [(RCSplitViewController *)self resizingDelegate];
-  [v3 handleRestyleRequest];
+  resizingDelegate = [(RCSplitViewController *)self resizingDelegate];
+  [resizingDelegate handleRestyleRequest];
 
   [(RCSplitViewController *)self restyle];
 }
 
-- (BOOL)_canHandleCustomAction:(SEL)a3 withSender:(id)a4
+- (BOOL)_canHandleCustomAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  LOBYTE(a3) = [WeakRetained canHandleCustomAction:a3 withSender:v6];
+  LOBYTE(action) = [WeakRetained canHandleCustomAction:action withSender:senderCopy];
 
-  return a3;
+  return action;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("startNewRecording:" == a3)
+  senderCopy = sender;
+  if ("startNewRecording:" == action)
   {
     if ([(RCSplitViewController *)self canStartNewRecording])
     {
@@ -211,7 +211,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ("duplicateRecording:" == a3)
+  if ("duplicateRecording:" == action)
   {
     if ([(RCSplitViewController *)self canDuplicateRecording])
     {
@@ -221,7 +221,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("editRecording:" == a3)
+  if ("editRecording:" == action)
   {
     if ([(RCSplitViewController *)self canEditRecording])
     {
@@ -231,7 +231,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("trimRecording:" == a3)
+  if ("trimRecording:" == action)
   {
     if ([(RCSplitViewController *)self canTrimRecording])
     {
@@ -241,12 +241,12 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("toggleFavorite:" == a3 || "toggleEnhance:" == a3 || "toggleRemoveSilence:" == a3 || "toggleSpeechIsolator:" == a3)
+  if ("toggleFavorite:" == action || "toggleEnhance:" == action || "toggleRemoveSilence:" == action || "toggleSpeechIsolator:" == action)
   {
     goto LABEL_21;
   }
 
-  if ("renameRecording:" == a3)
+  if ("renameRecording:" == action)
   {
     if ([(RCSplitViewController *)self canRenameRecording])
     {
@@ -256,7 +256,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("playRecording:" == a3)
+  if ("playRecording:" == action)
   {
     if ([(RCSplitViewController *)self canPlayRecording])
     {
@@ -266,7 +266,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("jumpSelectionBackward:" == a3)
+  if ("jumpSelectionBackward:" == action)
   {
     if ([(RCSplitViewController *)self canJumpBackward])
     {
@@ -276,7 +276,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("jumpSelectionForward:" == a3)
+  if ("jumpSelectionForward:" == action)
   {
     if ([(RCSplitViewController *)self canJumpForward])
     {
@@ -286,7 +286,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("delete:" == a3)
+  if ("delete:" == action)
   {
     if ([(RCSplitViewController *)self canDelete])
     {
@@ -296,7 +296,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("handleDone:" == a3)
+  if ("handleDone:" == action)
   {
     if ([(RCSplitViewController *)self canHandleDone])
     {
@@ -306,7 +306,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("handleCancel:" == a3)
+  if ("handleCancel:" == action)
   {
     if ([(RCSplitViewController *)self canHandleCancel])
     {
@@ -316,7 +316,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ("shareRecording:" == a3)
+  if ("shareRecording:" == action)
   {
     if (![(RCSplitViewController *)self canShareRecording])
     {
@@ -324,18 +324,18 @@ LABEL_24:
     }
 
 LABEL_21:
-    v7 = [(RCSplitViewController *)self _canHandleCustomAction:a3 withSender:v6];
+    v7 = [(RCSplitViewController *)self _canHandleCustomAction:action withSender:senderCopy];
     goto LABEL_22;
   }
 
-  if ("toggleSidebar:" != a3 || ![(RCSplitViewController *)self canToggleSidebar])
+  if ("toggleSidebar:" != action || ![(RCSplitViewController *)self canToggleSidebar])
   {
     goto LABEL_24;
   }
 
   v10.receiver = self;
   v10.super_class = RCSplitViewController;
-  v7 = [(RCSplitViewController *)&v10 canPerformAction:a3 withSender:v6];
+  v7 = [(RCSplitViewController *)&v10 canPerformAction:action withSender:senderCopy];
 LABEL_22:
   v8 = v7;
 LABEL_25:
@@ -343,33 +343,33 @@ LABEL_25:
   return v8;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 action] == "toggleFavorite:")
+  commandCopy = command;
+  if ([commandCopy action] == "toggleFavorite:")
   {
     WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-    v6 = [WeakRetained currentSelectionIsFavorite];
+    currentSelectionIsFavorite = [WeakRetained currentSelectionIsFavorite];
 
-    [v4 setState:v6];
+    [commandCopy setState:currentSelectionIsFavorite];
     if ([(RCSplitViewController *)self canToggleFavorite])
     {
       goto LABEL_13;
     }
 
-    v7 = v4;
+    v7 = commandCopy;
     v8 = 1;
 LABEL_12:
     [v7 setAttributes:v8];
     goto LABEL_13;
   }
 
-  if ([v4 action] == "toggleEnhance:")
+  if ([commandCopy action] == "toggleEnhance:")
   {
     v9 = objc_loadWeakRetained(&self->_mainViewController);
-    v10 = [v9 currentSelectionIsEnhanced];
+    currentSelectionIsEnhanced = [v9 currentSelectionIsEnhanced];
 
-    [v4 setState:v10];
+    [commandCopy setState:currentSelectionIsEnhanced];
     if ([(RCSplitViewController *)self canToggleEnhance])
     {
       goto LABEL_10;
@@ -378,12 +378,12 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if ([v4 action] == "toggleRemoveSilence:")
+  if ([commandCopy action] == "toggleRemoveSilence:")
   {
     v11 = objc_loadWeakRetained(&self->_mainViewController);
-    v12 = [v11 currentSelectionHasSilenceRemoved];
+    currentSelectionHasSilenceRemoved = [v11 currentSelectionHasSilenceRemoved];
 
-    [v4 setState:v12];
+    [commandCopy setState:currentSelectionHasSilenceRemoved];
     if ([(RCSplitViewController *)self canToggleRemoveSilence])
     {
 LABEL_10:
@@ -393,31 +393,31 @@ LABEL_10:
       }
 
 LABEL_11:
-      v7 = v4;
+      v7 = commandCopy;
       v8 = 4;
       goto LABEL_12;
     }
 
 LABEL_9:
-    [v4 setAttributes:1];
+    [commandCopy setAttributes:1];
     goto LABEL_10;
   }
 
-  if ([v4 action] != "toggleSpeechIsolator:")
+  if ([commandCopy action] != "toggleSpeechIsolator:")
   {
     v15.receiver = self;
     v15.super_class = RCSplitViewController;
-    [(RCSplitViewController *)&v15 validateCommand:v4];
+    [(RCSplitViewController *)&v15 validateCommand:commandCopy];
     goto LABEL_13;
   }
 
   v13 = objc_loadWeakRetained(&self->_mainViewController);
-  v14 = [v13 currentSelectionHasSpeechIsolatorEnabled];
+  currentSelectionHasSpeechIsolatorEnabled = [v13 currentSelectionHasSpeechIsolatorEnabled];
 
-  [v4 setState:v14];
+  [commandCopy setState:currentSelectionHasSpeechIsolatorEnabled];
   if (![(RCSplitViewController *)self canToggleSpeechIsolator])
   {
-    [v4 setAttributes:1];
+    [commandCopy setAttributes:1];
   }
 
   if (![(RCSplitViewController *)self currentSelectionHasSpatialRecording])
@@ -431,12 +431,12 @@ LABEL_13:
 - (BOOL)canStartNewRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canStartNewRecording];
+  canStartNewRecording = [WeakRetained canStartNewRecording];
 
-  return v3;
+  return canStartNewRecording;
 }
 
-- (void)startNewRecording:(id)a3
+- (void)startNewRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained startNewRecordingAction];
@@ -445,12 +445,12 @@ LABEL_13:
 - (BOOL)canPlayRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canPlayRecording];
+  canPlayRecording = [WeakRetained canPlayRecording];
 
-  return v3;
+  return canPlayRecording;
 }
 
-- (void)playRecording:(id)a3
+- (void)playRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained playRecording];
@@ -459,12 +459,12 @@ LABEL_13:
 - (BOOL)canDuplicateRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canDuplicateRecording];
+  canDuplicateRecording = [WeakRetained canDuplicateRecording];
 
-  return v3;
+  return canDuplicateRecording;
 }
 
-- (void)duplicateRecording:(id)a3
+- (void)duplicateRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained duplicateRecording];
@@ -473,12 +473,12 @@ LABEL_13:
 - (BOOL)canRenameRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canRenameRecording];
+  canRenameRecording = [WeakRetained canRenameRecording];
 
-  return v3;
+  return canRenameRecording;
 }
 
-- (void)renameRecording:(id)a3
+- (void)renameRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained renameRecording];
@@ -487,12 +487,12 @@ LABEL_13:
 - (BOOL)canEditRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canEditRecording];
+  canEditRecording = [WeakRetained canEditRecording];
 
-  return v3;
+  return canEditRecording;
 }
 
-- (void)editRecording:(id)a3
+- (void)editRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained editRecording];
@@ -501,12 +501,12 @@ LABEL_13:
 - (BOOL)canTrimRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canTrimRecording];
+  canTrimRecording = [WeakRetained canTrimRecording];
 
-  return v3;
+  return canTrimRecording;
 }
 
-- (void)trimRecording:(id)a3
+- (void)trimRecording:(id)recording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained trimRecording];
@@ -515,12 +515,12 @@ LABEL_13:
 - (BOOL)canToggleFavorite
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canToggleFavoriteRecording];
+  canToggleFavoriteRecording = [WeakRetained canToggleFavoriteRecording];
 
-  return v3;
+  return canToggleFavoriteRecording;
 }
 
-- (void)toggleFavorite:(id)a3
+- (void)toggleFavorite:(id)favorite
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained toggleFavoriteRecording];
@@ -529,12 +529,12 @@ LABEL_13:
 - (BOOL)canToggleEnhance
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canToggleEnhanceRecording];
+  canToggleEnhanceRecording = [WeakRetained canToggleEnhanceRecording];
 
-  return v3;
+  return canToggleEnhanceRecording;
 }
 
-- (void)toggleEnhance:(id)a3
+- (void)toggleEnhance:(id)enhance
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained toggleEnhanceRecording];
@@ -543,12 +543,12 @@ LABEL_13:
 - (BOOL)canToggleRemoveSilence
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canToggleRemoveSilence];
+  canToggleRemoveSilence = [WeakRetained canToggleRemoveSilence];
 
-  return v3;
+  return canToggleRemoveSilence;
 }
 
-- (void)toggleRemoveSilence:(id)a3
+- (void)toggleRemoveSilence:(id)silence
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained toggleRemoveSilence];
@@ -557,20 +557,20 @@ LABEL_13:
 - (BOOL)currentSelectionHasSpatialRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained currentSelectionHasSpatialRecording];
+  currentSelectionHasSpatialRecording = [WeakRetained currentSelectionHasSpatialRecording];
 
-  return v3;
+  return currentSelectionHasSpatialRecording;
 }
 
 - (BOOL)canToggleSpeechIsolator
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canToggleSpeechIsolator];
+  canToggleSpeechIsolator = [WeakRetained canToggleSpeechIsolator];
 
-  return v3;
+  return canToggleSpeechIsolator;
 }
 
-- (void)toggleSpeechIsolator:(id)a3
+- (void)toggleSpeechIsolator:(id)isolator
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained toggleSpeechIsolator];
@@ -579,27 +579,27 @@ LABEL_13:
 - (BOOL)canDelete
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canDelete];
+  canDelete = [WeakRetained canDelete];
 
-  return v3;
+  return canDelete;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  [WeakRetained delete:v4];
+  [WeakRetained delete:deleteCopy];
 }
 
 - (BOOL)canJumpForward
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canJumpForward];
+  canJumpForward = [WeakRetained canJumpForward];
 
-  return v3;
+  return canJumpForward;
 }
 
-- (void)jumpSelectionForward:(id)a3
+- (void)jumpSelectionForward:(id)forward
 {
   if ([(RCSplitViewController *)self canJumpForward])
   {
@@ -611,12 +611,12 @@ LABEL_13:
 - (BOOL)canJumpBackward
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canJumpBackward];
+  canJumpBackward = [WeakRetained canJumpBackward];
 
-  return v3;
+  return canJumpBackward;
 }
 
-- (void)jumpSelectionBackward:(id)a3
+- (void)jumpSelectionBackward:(id)backward
 {
   if ([(RCSplitViewController *)self canJumpBackward])
   {
@@ -628,27 +628,27 @@ LABEL_13:
 - (BOOL)canShareRecording
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canShareRecording];
+  canShareRecording = [WeakRetained canShareRecording];
 
-  return v3;
+  return canShareRecording;
 }
 
-- (void)shareRecording:(id)a3
+- (void)shareRecording:(id)recording
 {
-  v4 = a3;
+  recordingCopy = recording;
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  [WeakRetained shareRecording:v4];
+  [WeakRetained shareRecording:recordingCopy];
 }
 
 - (BOOL)canHandleDone
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canHandleDone];
+  canHandleDone = [WeakRetained canHandleDone];
 
-  return v3;
+  return canHandleDone;
 }
 
-- (void)handleDone:(id)a3
+- (void)handleDone:(id)done
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained handleDone];
@@ -657,12 +657,12 @@ LABEL_13:
 - (BOOL)canHandleCancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canHandleCancel];
+  canHandleCancel = [WeakRetained canHandleCancel];
 
-  return v3;
+  return canHandleCancel;
 }
 
-- (void)handleCancel:(id)a3
+- (void)handleCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
   [WeakRetained handleCancel];
@@ -671,15 +671,15 @@ LABEL_13:
 - (BOOL)canToggleSidebar
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainViewController);
-  v3 = [WeakRetained canToggleSidebar];
+  canToggleSidebar = [WeakRetained canToggleSidebar];
 
-  return v3;
+  return canToggleSidebar;
 }
 
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4
+- (void)setViewController:(id)controller forColumn:(int64_t)column
 {
-  v6 = a3;
-  if (a4 == 1)
+  controllerCopy = controller;
+  if (column == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -694,14 +694,14 @@ LABEL_13:
     v8 = [(RCSplitViewController *)self viewControllerForColumn:1];
     if (-[RCSplitViewController isCollapsed](self, "isCollapsed") && (-[RCSplitViewController viewControllers](self, "viewControllers"), v9 = objc_claimAutoreleasedReturnValue(), [v9 firstObject], v10 = objc_claimAutoreleasedReturnValue(), v9, objc_msgSend(v10, "viewControllers"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v8), v11, v10, v12))
     {
-      v16 = v6;
+      v16 = controllerCopy;
       v13 = [NSArray arrayWithObjects:&v16 count:1];
       [v8 setViewControllers:v13 animated:0];
     }
 
     else
     {
-      v13 = [[UINavigationController alloc] initWithRootViewController:v6];
+      v13 = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
       v15.receiver = self;
       v15.super_class = RCSplitViewController;
       [(RCSplitViewController *)&v15 setViewController:v13 forColumn:1];
@@ -712,7 +712,7 @@ LABEL_13:
   {
     v14.receiver = self;
     v14.super_class = RCSplitViewController;
-    [(RCSplitViewController *)&v14 setViewController:v6 forColumn:a4];
+    [(RCSplitViewController *)&v14 setViewController:controllerCopy forColumn:column];
   }
 }
 
@@ -737,9 +737,9 @@ LABEL_13:
   v4 = [(RCSplitViewController *)self viewControllerForColumn:1];
   if ([v4 isViewLoaded])
   {
-    v5 = [v4 view];
-    v6 = [v5 window];
-    v3 = v6 == 0;
+    view = [v4 view];
+    window = [view window];
+    v3 = window == 0;
   }
 
   return v3;
@@ -747,9 +747,9 @@ LABEL_13:
 
 - (void)hidePrimaryColumnIfNeeded
 {
-  v3 = [(RCSplitViewController *)self _isPrimaryColumnVisible];
-  v4 = [(RCSplitViewController *)self splitBehavior];
-  if (v3 && v4 == 3)
+  _isPrimaryColumnVisible = [(RCSplitViewController *)self _isPrimaryColumnVisible];
+  splitBehavior = [(RCSplitViewController *)self splitBehavior];
+  if (_isPrimaryColumnVisible && splitBehavior == 3)
   {
 
     [(RCSplitViewController *)self hideColumn:0];
@@ -780,32 +780,32 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 viewControllers];
-    v4 = [v3 firstObject];
+    viewControllers = [v2 viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    v5 = [v4 navigationItem];
+    navigationItem = [firstObject navigationItem];
   }
 
   else
   {
-    v5 = 0;
+    navigationItem = 0;
   }
 
-  return v5;
+  return navigationItem;
 }
 
-- (void)_setPreferredSplitBehaviorForViewWidth:(double)a3 needsRestyle:(BOOL)a4
+- (void)_setPreferredSplitBehaviorForViewWidth:(double)width needsRestyle:(BOOL)restyle
 {
-  v4 = a4;
+  restyleCopy = restyle;
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v9 usesSplitBehavior])
   {
-    v7 = [(RCSplitViewController *)self _willSidebarExceedMaximumAllowedWidthForTotalViewWidth:a3];
+    v7 = [(RCSplitViewController *)self _willSidebarExceedMaximumAllowedWidthForTotalViewWidth:width];
     v8 = (([v9 supportsDisplaceSplitBehavior] & v7) != 0 ? 3 : 1);
     if ([(RCSplitViewController *)self preferredSplitBehavior]!= v8)
     {
       [(RCSplitViewController *)self setPreferredSplitBehavior:v8];
-      if (v4)
+      if (restyleCopy)
       {
         [(RCSplitViewController *)self _doRestyle];
       }
@@ -813,10 +813,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)_willSidebarExceedMaximumAllowedWidthForTotalViewWidth:(double)a3
+- (BOOL)_willSidebarExceedMaximumAllowedWidthForTotalViewWidth:(double)width
 {
   [(RCSplitViewController *)self _totalSidebarWidth];
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     return 0;
   }
@@ -826,7 +826,7 @@ LABEL_13:
   [v6 minimumSecondaryColumnWidth];
   v8 = v7;
 
-  return a3 - v5 < v8;
+  return width - v5 < v8;
 }
 
 - (int64_t)_displayModeForPrimaryColumnVisible
@@ -853,9 +853,9 @@ LABEL_13:
 - (double)_primaryColumnWidth
 {
   v3 = [(RCSplitViewController *)self viewControllerForColumn:0];
-  v4 = [v3 view];
-  v5 = [v4 window];
-  if (v5)
+  view = [v3 view];
+  window = [view window];
+  if (window)
   {
     v6 = ![(RCSplitViewController *)self _isPrimaryColumnVisible];
   }
@@ -894,11 +894,11 @@ LABEL_13:
 - (double)_supplementaryColumnWidth
 {
   v3 = [(RCSplitViewController *)self viewControllerForColumn:1];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  view = [v3 view];
+  window = [view window];
 
   [(RCSplitViewController *)self supplementaryColumnWidth];
-  if (v5)
+  if (window)
   {
     v7 = v6;
   }

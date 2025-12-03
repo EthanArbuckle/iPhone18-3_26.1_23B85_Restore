@@ -1,7 +1,7 @@
 @interface WKLayeredAnimationWallpaperInput
-- (BOOL)isEqual:(id)a3;
-- (WKLayeredAnimationWallpaperInput)initWithBackgroundAnimationFileURL:(id)a3 foregroundAnimationFileURL:(id)a4 floatingAnimationFileURL:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WKLayeredAnimationWallpaperInput)initWithBackgroundAnimationFileURL:(id)l foregroundAnimationFileURL:(id)rL floatingAnimationFileURL:(id)uRL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionBuilderBlock;
 - (id)wk_descriptionBuilder;
@@ -10,25 +10,25 @@
 
 @implementation WKLayeredAnimationWallpaperInput
 
-- (WKLayeredAnimationWallpaperInput)initWithBackgroundAnimationFileURL:(id)a3 foregroundAnimationFileURL:(id)a4 floatingAnimationFileURL:(id)a5
+- (WKLayeredAnimationWallpaperInput)initWithBackgroundAnimationFileURL:(id)l foregroundAnimationFileURL:(id)rL floatingAnimationFileURL:(id)uRL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v19.receiver = self;
   v19.super_class = WKLayeredAnimationWallpaperInput;
   v11 = [(WKLayeredAnimationWallpaperInput *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     backgroundAnimationFileURL = v11->_backgroundAnimationFileURL;
     v11->_backgroundAnimationFileURL = v12;
 
-    v14 = [v9 copy];
+    v14 = [rLCopy copy];
     foregroundAnimationFileURL = v11->_foregroundAnimationFileURL;
     v11->_foregroundAnimationFileURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [uRLCopy copy];
     floatingAnimationFileURL = v11->_floatingAnimationFileURL;
     v11->_floatingAnimationFileURL = v16;
   }
@@ -36,13 +36,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKLayeredAnimationWallpaperInput *)self backgroundAnimationFileURL];
-  v6 = [(WKLayeredAnimationWallpaperInput *)self foregroundAnimationFileURL];
-  v7 = [(WKLayeredAnimationWallpaperInput *)self floatingAnimationFileURL];
-  v8 = [v4 initWithBackgroundAnimationFileURL:v5 foregroundAnimationFileURL:v6 floatingAnimationFileURL:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  backgroundAnimationFileURL = [(WKLayeredAnimationWallpaperInput *)self backgroundAnimationFileURL];
+  foregroundAnimationFileURL = [(WKLayeredAnimationWallpaperInput *)self foregroundAnimationFileURL];
+  floatingAnimationFileURL = [(WKLayeredAnimationWallpaperInput *)self floatingAnimationFileURL];
+  v8 = [v4 initWithBackgroundAnimationFileURL:backgroundAnimationFileURL foregroundAnimationFileURL:foregroundAnimationFileURL floatingAnimationFileURL:floatingAnimationFileURL];
 
   return v8;
 }
@@ -77,19 +77,19 @@ id __47__WKLayeredAnimationWallpaperInput_na_identity__block_invoke_3()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -98,7 +98,7 @@ id __47__WKLayeredAnimationWallpaperInput_na_identity__block_invoke_3()
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__WKLayeredAnimationWallpaperInput_wk_descriptionBuilder__block_invoke;
@@ -106,7 +106,7 @@ id __47__WKLayeredAnimationWallpaperInput_na_identity__block_invoke_3()
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -123,10 +123,10 @@ void __57__WKLayeredAnimationWallpaperInput_wk_descriptionBuilder__block_invoke(
 
 - (id)description
 {
-  v2 = [(WKLayeredAnimationWallpaperInput *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKLayeredAnimationWallpaperInput *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock

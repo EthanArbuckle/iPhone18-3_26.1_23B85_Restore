@@ -1,27 +1,27 @@
 @interface SKUIViewElementHorizontalLayout
-- (id)layoutViewElements:(id)a3 usingSizingBlock:(id)a4;
+- (id)layoutViewElements:(id)elements usingSizingBlock:(id)block;
 @end
 
 @implementation SKUIViewElementHorizontalLayout
 
-- (id)layoutViewElements:(id)a3 usingSizingBlock:(id)a4
+- (id)layoutViewElements:(id)elements usingSizingBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementsCopy = elements;
+  blockCopy = block;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIViewElementHorizontalLayout layoutViewElements:usingSizingBlock:];
   }
 
-  v23 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   layoutWidth = self->_layoutWidth;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = elementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -38,7 +38,7 @@
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = v7[2](v7, v15);
+        v16 = blockCopy[2](blockCopy, v15);
         if ([v15 elementType] == 127)
         {
           [v9 addObject:v15];
@@ -46,7 +46,7 @@
 
         else if (v16 > 0.00000011920929)
         {
-          if (v16 <= layoutWidth || (maximumLines = self->_maximumLines, maximumLines >= 1) && maximumLines >= [v23 count])
+          if (v16 <= layoutWidth || (maximumLines = self->_maximumLines, maximumLines >= 1) && maximumLines >= [array count])
           {
             layoutWidth = layoutWidth - (v16 + self->_elementSpacing);
             [v9 addObject:{v15, v22}];
@@ -54,7 +54,7 @@
 
           else if ([v9 count])
           {
-            [v23 addObject:v9];
+            [array addObject:v9];
             v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
             layoutWidth = self->_layoutWidth - v16 - self->_elementSpacing;
@@ -67,7 +67,7 @@
             else
             {
               layoutWidth = self->_layoutWidth;
-              [v23 addObject:v18];
+              [array addObject:v18];
               v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
             }
 
@@ -77,7 +77,7 @@
           else
           {
             [v9 addObject:v15];
-            [v23 addObject:v9];
+            [array addObject:v9];
             v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
             v9 = v19;
@@ -86,7 +86,7 @@
           if (self->_maximumElementsPerLine >= 1 && [v9 count] == self->_maximumElementsPerLine)
           {
             layoutWidth = self->_layoutWidth;
-            [v23 addObject:v9];
+            [array addObject:v9];
             v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
             v9 = v20;
@@ -102,10 +102,10 @@
 
   if ([v9 count])
   {
-    [v23 addObject:v9];
+    [array addObject:v9];
   }
 
-  return v23;
+  return array;
 }
 
 - (void)layoutViewElements:usingSizingBlock:.cold.1()

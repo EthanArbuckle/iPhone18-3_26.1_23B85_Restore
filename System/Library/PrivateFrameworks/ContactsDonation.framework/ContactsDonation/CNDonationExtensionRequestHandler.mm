@@ -1,50 +1,50 @@
 @interface CNDonationExtensionRequestHandler
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)redonateAllValuesWithReason:(unint64_t)a3;
-- (void)renewExpirationDateForDonatedValue:(id)a3 acknowledgementHandler:(id)a4;
-- (void)userDidRejectDonatedValue:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)redonateAllValuesWithReason:(unint64_t)reason;
+- (void)renewExpirationDateForDonatedValue:(id)value acknowledgementHandler:(id)handler;
+- (void)userDidRejectDonatedValue:(id)value;
 @end
 
 @implementation CNDonationExtensionRequestHandler
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setRequestHandler:self];
+    [contextCopy setRequestHandler:self];
   }
 
   else
   {
     v4 = objc_opt_class();
 
-    v5 = NSStringFromClass(v4);
-    NSLog(&cfstr_RemoteContextW.isa, v5);
+    contextCopy = NSStringFromClass(v4);
+    NSLog(&cfstr_RemoteContextW.isa, contextCopy);
   }
 }
 
-- (void)renewExpirationDateForDonatedValue:(id)a3 acknowledgementHandler:(id)a4
+- (void)renewExpirationDateForDonatedValue:(id)value acknowledgementHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  valueCopy = value;
+  handlerCopy = handler;
+  selfCopy = self;
   v9 = CNAbstractMethodException();
   objc_exception_throw(v9);
 }
 
-- (void)userDidRejectDonatedValue:(id)a3
+- (void)userDidRejectDonatedValue:(id)value
 {
-  v4 = a3;
-  v5 = self;
+  valueCopy = value;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
-- (void)redonateAllValuesWithReason:(unint64_t)a3
+- (void)redonateAllValuesWithReason:(unint64_t)reason
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }

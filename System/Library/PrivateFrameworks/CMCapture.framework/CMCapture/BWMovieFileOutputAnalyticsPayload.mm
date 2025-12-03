@@ -5,8 +5,8 @@
 - (id)eventName;
 - (void)dealloc;
 - (void)reset;
-- (void)setCinematicAudioRemixStats:(BWCoreAnalyticsMovieRecordingCinematicAudioRemixStatistics *)a3;
-- (void)setCinematicVideoMovieRecordingStats:(BWCoreAnalyticsMovieRecordingCinematicVideoStatistics *)a3;
+- (void)setCinematicAudioRemixStats:(BWCoreAnalyticsMovieRecordingCinematicAudioRemixStatistics *)stats;
+- (void)setCinematicVideoMovieRecordingStats:(BWCoreAnalyticsMovieRecordingCinematicVideoStatistics *)stats;
 @end
 
 @implementation BWMovieFileOutputAnalyticsPayload
@@ -108,147 +108,147 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
-  [v3 setObject:self->_clientApplicationID forKeyedSubscript:@"clientApplicationID"];
-  [v3 setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_videoMirrored), @"videoMirrored"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
+  [dictionary setObject:self->_clientApplicationID forKeyedSubscript:@"clientApplicationID"];
+  [dictionary setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_videoMirrored), @"videoMirrored"}];
   if (self->_activeDeviceMask)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"activeDeviceMask"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"activeDeviceMask"}];
   }
 
   if (self->_devicePosition)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"devicePosition"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"devicePosition"}];
   }
 
   if (self->_videoOrientation)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"videoOrientation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"videoOrientation"}];
   }
 
   if (self->_cameraPosture)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"cameraPosture"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"cameraPosture"}];
   }
 
   if (self->_deviceType)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"deviceType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"deviceType"}];
   }
 
   if (self->_numberOfTimesRecordingWasPaused)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"numberOfTimesRecordingWasPaused"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"numberOfTimesRecordingWasPaused"}];
   }
 
   if (self->_duration != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"duration"}];
   }
 
   if (self->_durationFront != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationFront"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationFront"}];
   }
 
   if (self->_durationFrontSuperWide != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_durationFront), @"durationFrontSuperWide"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_durationFront), @"durationFrontSuperWide"}];
   }
 
   if (self->_durationRearWide != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearWide"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearWide"}];
   }
 
   if (self->_durationRearTele != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearTele"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearTele"}];
   }
 
   durationRearSuperWide = self->_durationRearSuperWide;
   if (durationRearSuperWide != 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearSuperWide"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"durationRearSuperWide"}];
   }
 
   if (self->_nominalFramerate != 3.4028e38)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"nominalFramerate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"nominalFramerate"}];
   }
 
   if (self->_height != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"height"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"height"}];
   }
 
   if (self->_width != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"width"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"width"}];
   }
 
   if (self->_startingUIZoom != 3.4028e38)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"startingUIZoom"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"startingUIZoom"}];
   }
 
   if (self->_minUIZoomDuringVideoRecording != 3.4028e38)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"minUIZoomDuringVideoRecording"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"minUIZoomDuringVideoRecording"}];
   }
 
   if (self->_maxUIZoomDuringVideoRecording != 1.1755e-38)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"maxUIZoomDuringVideoRecording"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:"), @"maxUIZoomDuringVideoRecording"}];
   }
 
   *&durationRearSuperWide = self->_averageSystemPressureLevel;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", durationRearSuperWide), @"averageSystemPressureLevel"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSystemPressureLevel), @"maxSystemPressureLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", durationRearSuperWide), @"averageSystemPressureLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSystemPressureLevel), @"maxSystemPressureLevel"}];
   if ((self->_timeToCriticalSystemPressureInMS & 0x8000000000000000) == 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:"), @"timeToCriticalSystemPressure"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:"), @"timeToCriticalSystemPressure"}];
   }
 
   if (self->_systemPressureFactors)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:"), @"systemPressureFactors"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:"), @"systemPressureFactors"}];
   }
 
   sphereAFStatistics = self->_sphereAFStatistics;
   if (sphereAFStatistics)
   {
     *&v5 = sphereAFStatistics->accelStandardDeviation;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"accelStd"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"accelStd"}];
     *&v7 = self->_sphereAFStatistics->gyroStandardDeviation;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v7), @"gyroStd"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v7), @"gyroStd"}];
     v9 = self->_sphereAFStatistics;
     if (v9->numberOfSamplesWide)
     {
       v8.i32[0] = LODWORD(v9->sphereMaxTrackErrorWide);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxTrackErrorWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxTrackErrorWide"}];
       *&v10 = self->_sphereAFStatistics->afMaxTrackErrorWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v10), @"afMaxTrackErrorWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v10), @"afMaxTrackErrorWide"}];
       *&v11 = sqrtf(self->_sphereAFStatistics->sphereStdTrackErrorSumXXWide / self->_sphereAFStatistics->numberOfSamplesWide);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v11), @"oisStdTrackErrorWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v11), @"oisStdTrackErrorWide"}];
       *&v12 = sqrtf(self->_sphereAFStatistics->afStdTrackErrorSumXXWide / self->_sphereAFStatistics->numberOfSamplesWide);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v12), @"afStdTrackErrorWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v12), @"afStdTrackErrorWide"}];
       *&v13 = self->_sphereAFStatistics->sphereMinDistanceFromEndStopWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v13), @"oisMinDistFromEndStopWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v13), @"oisMinDistFromEndStopWide"}];
       *&v14 = self->_sphereAFStatistics->spherePowerWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v14), @"oisPowerWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v14), @"oisPowerWide"}];
       *&v15 = self->_sphereAFStatistics->afPowerWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v15), @"afPowerWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v15), @"afPowerWide"}];
       *&v16 = self->_sphereAFStatistics->sphereMaxPeakCurrentWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v16), @"oisMaxPeakCurrentWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v16), @"oisMaxPeakCurrentWide"}];
       *&v17 = self->_sphereAFStatistics->afMaxPeakCurrentWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v17), @"afMaxPeakCurrentWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v17), @"afMaxPeakCurrentWide"}];
       *&v18 = self->_sphereAFStatistics->afAndSphereMaxPeakCurrentWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v18), @"afAndOisMaxPeakCurrentWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v18), @"afAndOisMaxPeakCurrentWide"}];
       *&v19 = self->_sphereAFStatistics->recenteringOccurredWide / self->_sphereAFStatistics->numberOfSamplesWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v19), @"oisRecenteringOccurredPercentageWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v19), @"oisRecenteringOccurredPercentageWide"}];
       v20 = self->_sphereAFStatistics;
       v8 = *&v20->range_0_90umBinWide;
       v21 = vaddvq_s32(vaddq_s32(v8, *&v20->range_150_175umBinWide));
@@ -256,21 +256,21 @@
       {
         v22 = v21;
         *v8.i32 = v8.u32[0] / v21;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisPos0to90micronsWide"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisPos0to90micronsWide"}];
         *&v23 = self->_sphereAFStatistics->range_90_110umBinWide / v22;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"oisPos90to110micronsWide"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"oisPos90to110micronsWide"}];
         *&v24 = self->_sphereAFStatistics->range_110_130umBinWide / v22;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v24), @"oisPos110to130micronsWide"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v24), @"oisPos110to130micronsWide"}];
         *&v25 = self->_sphereAFStatistics->range_130_150umBinWide / v22;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v25), @"oisPos130to150micronsWide"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v25), @"oisPos130to150micronsWide"}];
         *&v26 = self->_sphereAFStatistics->range_150_175umBinWide / v22;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v26), @"oisPos150to175micronsWide"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v26), @"oisPos150to175micronsWide"}];
         v28 = self->_sphereAFStatistics;
         v29 = MEMORY[0x1E696AD98];
         if (v28->sphereTravelRangeHistogramExtended)
         {
           *&v27 = v28->range_175_220umBinWide / v22;
-          [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v27), @"oisPos175to220micronsWide"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v27), @"oisPos175to220micronsWide"}];
           v29 = MEMORY[0x1E696AD98];
           p_range_220_infinityBinWide = &self->_sphereAFStatistics->range_220_infinityBinWide;
           v31 = @"oisPos220toInfmicronsWide";
@@ -283,7 +283,7 @@
         }
 
         *&v27 = *p_range_220_infinityBinWide / v22;
-        [v3 setObject:objc_msgSend(v29 forKeyedSubscript:{"numberWithFloat:", v27), v31}];
+        [dictionary setObject:objc_msgSend(v29 forKeyedSubscript:{"numberWithFloat:", v27), v31}];
       }
     }
 
@@ -291,27 +291,27 @@
     if (v32->numberOfSamplesTele)
     {
       v8.i32[0] = LODWORD(v32->sphereMaxTrackErrorTele);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxTrackErrorTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxTrackErrorTele"}];
       *&v33 = self->_sphereAFStatistics->afMaxTrackErrorTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v33), @"afMaxTrackErrorTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v33), @"afMaxTrackErrorTele"}];
       *&v34 = sqrtf(self->_sphereAFStatistics->sphereStdTrackErrorSumXXTele / self->_sphereAFStatistics->numberOfSamplesTele);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v34), @"oisStdTrackErrorTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v34), @"oisStdTrackErrorTele"}];
       *&v35 = sqrtf(self->_sphereAFStatistics->afStdTrackErrorSumXXTele / self->_sphereAFStatistics->numberOfSamplesTele);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v35), @"afStdTrackErrorTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v35), @"afStdTrackErrorTele"}];
       *&v36 = self->_sphereAFStatistics->sphereMinDistanceFromEndStopTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v36), @"oisMinDistFromEndStopTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v36), @"oisMinDistFromEndStopTele"}];
       *&v37 = self->_sphereAFStatistics->spherePowerTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v37), @"oisPowerTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v37), @"oisPowerTele"}];
       *&v38 = self->_sphereAFStatistics->afPowerTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v38), @"afPowerTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v38), @"afPowerTele"}];
       *&v39 = self->_sphereAFStatistics->sphereMaxPeakCurrentTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v39), @"oisMaxPeakCurrentTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v39), @"oisMaxPeakCurrentTele"}];
       *&v40 = self->_sphereAFStatistics->afMaxPeakCurrentTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v40), @"afMaxPeakCurrentTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v40), @"afMaxPeakCurrentTele"}];
       *&v41 = self->_sphereAFStatistics->afAndSphereMaxPeakCurrentTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v41), @"afAndOisMaxPeakCurrentTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v41), @"afAndOisMaxPeakCurrentTele"}];
       *&v42 = self->_sphereAFStatistics->recenteringOccurredTele / self->_sphereAFStatistics->numberOfSamplesTele;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v42), @"oisRecenteringOccurredPercentageTele"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v42), @"oisRecenteringOccurredPercentageTele"}];
       v43 = self->_sphereAFStatistics;
       v8 = *&v43->range_0_90umBinTele;
       v44 = vaddvq_s32(vaddq_s32(v8, *&v43->range_150_175umBinTele));
@@ -319,21 +319,21 @@
       {
         v45 = v44;
         *v8.i32 = v8.u32[0] / v44;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisPos0to90micronsTele"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisPos0to90micronsTele"}];
         *&v46 = self->_sphereAFStatistics->range_90_110umBinTele / v45;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v46), @"oisPos90to110micronsTele"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v46), @"oisPos90to110micronsTele"}];
         *&v47 = self->_sphereAFStatistics->range_110_130umBinTele / v45;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v47), @"oisPos110to130micronsTele"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v47), @"oisPos110to130micronsTele"}];
         *&v48 = self->_sphereAFStatistics->range_130_150umBinTele / v45;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v48), @"oisPos130to150micronsTele"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v48), @"oisPos130to150micronsTele"}];
         *&v49 = self->_sphereAFStatistics->range_150_175umBinTele / v45;
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v49), @"oisPos150to175micronsTele"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v49), @"oisPos150to175micronsTele"}];
         v51 = self->_sphereAFStatistics;
         v52 = MEMORY[0x1E696AD98];
         if (v51->sphereTravelRangeHistogramExtended)
         {
           *&v50 = v51->range_175_220umBinTele / v45;
-          [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v50), @"oisPos175to220micronsTele"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v50), @"oisPos175to220micronsTele"}];
           v52 = MEMORY[0x1E696AD98];
           p_range_220_infinityBinTele = &self->_sphereAFStatistics->range_220_infinityBinTele;
           v54 = @"oisPos220toInfmicronsTele";
@@ -346,7 +346,7 @@
         }
 
         *&v50 = *p_range_220_infinityBinTele / v45;
-        [v3 setObject:objc_msgSend(v52 forKeyedSubscript:{"numberWithFloat:", v50), v54}];
+        [dictionary setObject:objc_msgSend(v52 forKeyedSubscript:{"numberWithFloat:", v50), v54}];
       }
     }
 
@@ -354,216 +354,216 @@
     if (v55->numberOfSamplesSuperWide)
     {
       v8.i32[0] = LODWORD(v55->afMaxTrackErrorSuperWide);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"afMaxTrackErrorSuperWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"afMaxTrackErrorSuperWide"}];
       *&v56 = sqrtf(self->_sphereAFStatistics->afStdTrackErrorSumXXSuperWide / self->_sphereAFStatistics->numberOfSamplesSuperWide);
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v56), @"afStdTrackErrorSuperWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v56), @"afStdTrackErrorSuperWide"}];
       *&v57 = self->_sphereAFStatistics->afPowerSuperWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v57), @"afPowerSuperWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v57), @"afPowerSuperWide"}];
       *&v58 = self->_sphereAFStatistics->afMaxPeakCurrentSuperWide;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v58), @"afMaxPeakCurrentSuperWide"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v58), @"afMaxPeakCurrentSuperWide"}];
       v55 = self->_sphereAFStatistics;
     }
 
     v8.i32[0] = LODWORD(v55->sphereMaxPeakCurrentAllChannels);
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxPeakCurrentAllChannels"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", *v8.i64), @"oisMaxPeakCurrentAllChannels"}];
     *&v59 = self->_sphereAFStatistics->afMaxPeakCurrentAllChannels;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v59), @"afMaxPeakCurrentAllChannels"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v59), @"afMaxPeakCurrentAllChannels"}];
     *&v60 = self->_sphereAFStatistics->afAndSphereMaxPeakCurrentAllChannels;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v60), @"afAndOisMaxPeakCurrentAllChannels"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v60), @"afAndOisMaxPeakCurrentAllChannels"}];
   }
 
   sphereModeByPortType = self->_sphereModeByPortType;
   if (sphereModeByPortType)
   {
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](sphereModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0C0), @"sphereModeWide"}];
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](self->_sphereModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D8), @"sphereModeTele"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](sphereModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0C0), @"sphereModeWide"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](self->_sphereModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D8), @"sphereModeTele"}];
   }
 
   APSModeByPortType = self->_APSModeByPortType;
   if (APSModeByPortType)
   {
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0C0), @"apsModeWide"}];
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](self->_APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D8), @"apsModeTele"}];
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](self->_APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D0), @"apsModeSuperWide"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0C0), @"apsModeWide"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](self->_APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D8), @"apsModeTele"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](self->_APSModeByPortType forKeyedSubscript:{"objectForKeyedSubscript:", *off_1E798A0D0), @"apsModeSuperWide"}];
   }
 
   variableFrameRateStatistics = self->_variableFrameRateStatistics;
   if (variableFrameRateStatistics)
   {
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](variableFrameRateStatistics forKeyedSubscript:{"objectForKeyedSubscript:", 0x1F21AA150), @"vfrEnabled"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](variableFrameRateStatistics forKeyedSubscript:{"objectForKeyedSubscript:", 0x1F21AA150), @"vfrEnabled"}];
     v64 = [(NSDictionary *)self->_variableFrameRateStatistics objectForKeyedSubscript:0x1F21AA170];
     v65 = [v64 objectForKeyedSubscript:&unk_1F2245508];
     v66 = MEMORY[0x1E696AD98];
     if (v65)
     {
-      v67 = [v65 intValue];
+      intValue = [v65 intValue];
     }
 
     else
     {
-      v67 = 0;
+      intValue = 0;
     }
 
-    [v3 setObject:objc_msgSend(v66 forKeyedSubscript:{"numberWithInt:", v67), @"countOfFrameRateChangesDueToInitialization"}];
+    [dictionary setObject:objc_msgSend(v66 forKeyedSubscript:{"numberWithInt:", intValue), @"countOfFrameRateChangesDueToInitialization"}];
     v68 = [v64 objectForKeyedSubscript:&unk_1F2245520];
     v69 = MEMORY[0x1E696AD98];
     if (v68)
     {
-      v70 = [v68 intValue];
+      intValue2 = [v68 intValue];
     }
 
     else
     {
-      v70 = 0;
+      intValue2 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v69 forKeyedSubscript:{"numberWithInt:", v70), @"countOfFrameRateChangesDueToHighLightStable"}];
+    [dictionary setObject:objc_msgSend(v69 forKeyedSubscript:{"numberWithInt:", intValue2), @"countOfFrameRateChangesDueToHighLightStable"}];
     v71 = [v64 objectForKeyedSubscript:&unk_1F2245538];
     v72 = MEMORY[0x1E696AD98];
     if (v71)
     {
-      v73 = [v71 intValue];
+      intValue3 = [v71 intValue];
     }
 
     else
     {
-      v73 = 0;
+      intValue3 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v72 forKeyedSubscript:{"numberWithInt:", v73), @"countOfFrameRateChangesDueToHighLightUnstable"}];
+    [dictionary setObject:objc_msgSend(v72 forKeyedSubscript:{"numberWithInt:", intValue3), @"countOfFrameRateChangesDueToHighLightUnstable"}];
     v74 = [v64 objectForKeyedSubscript:&unk_1F2245550];
     v75 = MEMORY[0x1E696AD98];
     if (v74)
     {
-      v76 = [v74 intValue];
+      intValue4 = [v74 intValue];
     }
 
     else
     {
-      v76 = 0;
+      intValue4 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v75 forKeyedSubscript:{"numberWithInt:", v76), @"countOfFrameRateChangesDueToHighLightAELimitsReached"}];
+    [dictionary setObject:objc_msgSend(v75 forKeyedSubscript:{"numberWithInt:", intValue4), @"countOfFrameRateChangesDueToHighLightAELimitsReached"}];
     v77 = [v64 objectForKeyedSubscript:&unk_1F2245568];
     v78 = MEMORY[0x1E696AD98];
     if (v77)
     {
-      v79 = [v77 intValue];
+      intValue5 = [v77 intValue];
     }
 
     else
     {
-      v79 = 0;
+      intValue5 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v78 forKeyedSubscript:{"numberWithInt:", v79), @"countOfFrameRateChangesDueToHighLightFlickerDetected"}];
+    [dictionary setObject:objc_msgSend(v78 forKeyedSubscript:{"numberWithInt:", intValue5), @"countOfFrameRateChangesDueToHighLightFlickerDetected"}];
     v80 = [v64 objectForKeyedSubscript:&unk_1F2245580];
     v81 = MEMORY[0x1E696AD98];
     if (v80)
     {
-      v82 = [v80 intValue];
+      intValue6 = [v80 intValue];
     }
 
     else
     {
-      v82 = 0;
+      intValue6 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v81 forKeyedSubscript:{"numberWithInt:", v82), @"countOfFrameRateChangesDueToMediumLight"}];
+    [dictionary setObject:objc_msgSend(v81 forKeyedSubscript:{"numberWithInt:", intValue6), @"countOfFrameRateChangesDueToMediumLight"}];
     v83 = [v64 objectForKeyedSubscript:&unk_1F2245598];
     v84 = MEMORY[0x1E696AD98];
     if (v83)
     {
-      v85 = [v83 intValue];
+      intValue7 = [v83 intValue];
     }
 
     else
     {
-      v85 = 0;
+      intValue7 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v84 forKeyedSubscript:{"numberWithInt:", v85), @"countOfFrameRateChangesDueToMediumLightAELimitsReached"}];
+    [dictionary setObject:objc_msgSend(v84 forKeyedSubscript:{"numberWithInt:", intValue7), @"countOfFrameRateChangesDueToMediumLightAELimitsReached"}];
     v86 = [v64 objectForKeyedSubscript:&unk_1F22455B0];
     v87 = MEMORY[0x1E696AD98];
     if (v86)
     {
-      v88 = [v86 intValue];
+      intValue8 = [v86 intValue];
     }
 
     else
     {
-      v88 = 0;
+      intValue8 = 0;
     }
 
-    [v3 setObject:objc_msgSend(v87 forKeyedSubscript:{"numberWithInt:", v88), @"countOfFrameRateChangesDueToLowLightToHighLightStopOver"}];
+    [dictionary setObject:objc_msgSend(v87 forKeyedSubscript:{"numberWithInt:", intValue8), @"countOfFrameRateChangesDueToLowLightToHighLightStopOver"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_afDriverShortOccurred), @"afDriverShortOccurred"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_totalNumberOfFramesDropped), @"totalNumberOfFramesDropped"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfFramesDroppedDueToFormatWriterQueueFull), @"numberOfFramesDroppedDueToFormatWriterQueueFull"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfISPFrames), @"numberOfISPFrames"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfISPFramesDropped), @"numberOfISPFramesDropped"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_hdrVideo), @"hdrVideo"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_afDriverShortOccurred), @"afDriverShortOccurred"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_totalNumberOfFramesDropped), @"totalNumberOfFramesDropped"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfFramesDroppedDueToFormatWriterQueueFull), @"numberOfFramesDroppedDueToFormatWriterQueueFull"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfISPFrames), @"numberOfISPFrames"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_numberOfISPFramesDropped), @"numberOfISPFramesDropped"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_hdrVideo), @"hdrVideo"}];
   videoSTFStatistics = self->_videoSTFStatistics;
   if (videoSTFStatistics)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", videoSTFStatistics->videoSTFEnabled), @"videoSTFEnabled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", videoSTFStatistics->videoSTFEnabled), @"videoSTFEnabled"}];
     v90 = self->_videoSTFStatistics;
     if (v90->videoSTFEnabled)
     {
-      [v3 setObject:v90->cancelReason forKeyedSubscript:@"videoSTFCancelReason"];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_videoSTFStatistics->version), @"videoSTFVersion"}];
+      [dictionary setObject:v90->cancelReason forKeyedSubscript:@"videoSTFCancelReason"];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_videoSTFStatistics->version), @"videoSTFVersion"}];
       *&v91 = self->_videoSTFStatistics->videoSTFAppliedFrameCountPercentage;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v91), @"videoSTFAppliedFrameCountPercentage"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_videoSTFStatistics->videoSTFAppliedFrameCountPercentage > 0.0), @"videoSTFApplied"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->lowMeanCorrectionLevelFrameCount), @"videoSTFLowMeanCorrectionLevelFrameCount"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->moderateMeanCorrectionLevelFrameCount), @"videoSTFModerateMeanCorrectionLevelFrameCount"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->highMeanCorrectionLevelFrameCount), @"videoSTFHighMeanCorrectionLevelFrameCount"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->veryHighMeanCorrectionLevelFrameCount), @"videoSTFVeryHighMeanCorrectionLevelFrameCount"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->extremeMeanCorrectionLevelFrameCount), @"videoSTFExtremeMeanCorrectionLevelFrameCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v91), @"videoSTFAppliedFrameCountPercentage"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_videoSTFStatistics->videoSTFAppliedFrameCountPercentage > 0.0), @"videoSTFApplied"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->lowMeanCorrectionLevelFrameCount), @"videoSTFLowMeanCorrectionLevelFrameCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->moderateMeanCorrectionLevelFrameCount), @"videoSTFModerateMeanCorrectionLevelFrameCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->highMeanCorrectionLevelFrameCount), @"videoSTFHighMeanCorrectionLevelFrameCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->veryHighMeanCorrectionLevelFrameCount), @"videoSTFVeryHighMeanCorrectionLevelFrameCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_videoSTFStatistics->extremeMeanCorrectionLevelFrameCount), @"videoSTFExtremeMeanCorrectionLevelFrameCount"}];
       *&v92 = self->_videoSTFStatistics->largestMaxCorrectionLevel;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v92), @"videoSTFLargestMaxCorrectionLevel"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v92), @"videoSTFLargestMaxCorrectionLevel"}];
     }
   }
 
   videoDeghostingStatistics = self->_videoDeghostingStatistics;
   if (videoDeghostingStatistics)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", videoDeghostingStatistics->enabled), @"videoDeghostingEnabled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", videoDeghostingStatistics->enabled), @"videoDeghostingEnabled"}];
     v94 = self->_videoDeghostingStatistics;
     if (v94->enabled)
     {
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v94->version), @"videoDeghostingVersion"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoDeghostingStatistics->averageGhostCount), @"videoDeghostingAverageGhostCount"}];
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoDeghostingStatistics->averageGhostArea), @"videoDeghostingAverageGhostArea"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v94->version), @"videoDeghostingVersion"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoDeghostingStatistics->averageGhostCount), @"videoDeghostingAverageGhostCount"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoDeghostingStatistics->averageGhostArea), @"videoDeghostingAverageGhostArea"}];
       *&v95 = self->_videoDeghostingStatistics->opticalCenterOffsetMag;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v95), @"videoDeghostingOpticalCenterOffsetMag"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v95), @"videoDeghostingOpticalCenterOffsetMag"}];
       *&v96 = self->_videoDeghostingStatistics->opticalCenterOffsetX;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v96), @"videoDeghostingOpticalCenterOffsetX"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v96), @"videoDeghostingOpticalCenterOffsetX"}];
       *&v97 = self->_videoDeghostingStatistics->opticalCenterOffsetY;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v97), @"videoDeghostingOpticalCenterOffsetY"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v97), @"videoDeghostingOpticalCenterOffsetY"}];
       *&v98 = self->_videoDeghostingStatistics->opticalCenterEstConfidence;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v98), @"videoDeghostingOpticalCenterEstConfidence"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v98), @"videoDeghostingOpticalCenterEstConfidence"}];
       *&v99 = self->_videoDeghostingStatistics->lightweightDetector1Precision;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v99), @"videoDeghostingLightweightDetector1Precision"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v99), @"videoDeghostingLightweightDetector1Precision"}];
       *&v100 = self->_videoDeghostingStatistics->lightweightDetector1Recall;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v100), @"videoDeghostingLightweightDetector1Recall"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v100), @"videoDeghostingLightweightDetector1Recall"}];
       *&v101 = self->_videoDeghostingStatistics->lightweightDetector2Precision;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v101), @"videoDeghostingLightweightDetector2Precision"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v101), @"videoDeghostingLightweightDetector2Precision"}];
       *&v102 = self->_videoDeghostingStatistics->lightweightDetector2Recall;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v102), @"videoDeghostingLightweightDetector2Recall"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v102), @"videoDeghostingLightweightDetector2Recall"}];
       *&v103 = self->_videoDeghostingStatistics->lightweightDetector3Precision;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v103), @"videoDeghostingLightweightDetector3Precision"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v103), @"videoDeghostingLightweightDetector3Precision"}];
       *&v104 = self->_videoDeghostingStatistics->lightweightDetector3Recall;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v104), @"videoDeghostingLightweightDetector3Recall"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v104), @"videoDeghostingLightweightDetector3Recall"}];
       *&v105 = self->_videoDeghostingStatistics->lightweightDetector4Precision;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v105), @"videoDeghostingLightweightDetector4Precision"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v105), @"videoDeghostingLightweightDetector4Precision"}];
       *&v106 = self->_videoDeghostingStatistics->lightweightDetector4Recall;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v106), @"videoDeghostingLightweightDetector4Recall"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v106), @"videoDeghostingLightweightDetector4Recall"}];
       *&v107 = self->_videoDeghostingStatistics->lightweightDetector5Precision;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v107), @"videoDeghostingLightweightDetector5Precision"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v107), @"videoDeghostingLightweightDetector5Precision"}];
       *&v108 = self->_videoDeghostingStatistics->lightweightDetector5Recall;
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v108), @"videoDeghostingLightweightDetector5Recall"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v108), @"videoDeghostingLightweightDetector5Recall"}];
     }
   }
 
@@ -581,7 +581,7 @@
     v113 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v113 forKeyedSubscript:@"countOfWideToSuperWide"];
+  [dictionary setObject:v113 forKeyedSubscript:@"countOfWideToSuperWide"];
   v114 = [-[NSDictionary objectForKeyedSubscript:](self->_cameraSwitchStatistics objectForKeyedSubscript:{v111), "objectForKeyedSubscript:", v109}];
   if (v114)
   {
@@ -593,7 +593,7 @@
     v115 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v115 forKeyedSubscript:@"countOfSuperWideToWide"];
+  [dictionary setObject:v115 forKeyedSubscript:@"countOfSuperWideToWide"];
   v116 = [(NSDictionary *)self->_cameraSwitchStatistics objectForKeyedSubscript:v111];
   v117 = *off_1E798A0D8;
   v118 = [v116 objectForKeyedSubscript:*off_1E798A0D8];
@@ -607,7 +607,7 @@
     v119 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v119 forKeyedSubscript:@"countOfSuperWideToTele"];
+  [dictionary setObject:v119 forKeyedSubscript:@"countOfSuperWideToTele"];
   v120 = [-[NSDictionary objectForKeyedSubscript:](self->_cameraSwitchStatistics objectForKeyedSubscript:{v117), "objectForKeyedSubscript:", v111}];
   if (v120)
   {
@@ -619,7 +619,7 @@
     v121 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v121 forKeyedSubscript:@"countOfTeleToSuperWide"];
+  [dictionary setObject:v121 forKeyedSubscript:@"countOfTeleToSuperWide"];
   v122 = [-[NSDictionary objectForKeyedSubscript:](self->_cameraSwitchStatistics objectForKeyedSubscript:{v109), "objectForKeyedSubscript:", v117}];
   if (v122)
   {
@@ -631,7 +631,7 @@
     v123 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v123 forKeyedSubscript:@"countOfWideToTele"];
+  [dictionary setObject:v123 forKeyedSubscript:@"countOfWideToTele"];
   v124 = [-[NSDictionary objectForKeyedSubscript:](self->_cameraSwitchStatistics objectForKeyedSubscript:{v117), "objectForKeyedSubscript:", v109}];
   if (v124)
   {
@@ -643,106 +643,106 @@
     v125 = &unk_1F22455C8;
   }
 
-  [v3 setObject:v125 forKeyedSubscript:@"countOfTeleToWide"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_cinematicVideoEnabled), @"cinematicVideoEnabled"}];
+  [dictionary setObject:v125 forKeyedSubscript:@"countOfTeleToWide"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_cinematicVideoEnabled), @"cinematicVideoEnabled"}];
   if (self->_cinematicVideoEnabled)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfSoftFocusRequests), @"cinematicVideoCountOfSoftFocusRequests"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfHardFocusRequests), @"cinematicVideoCountOfHardFocusRequests"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfFixedPlaneFocusRequests), @"cinematicVideoCountOfFixedPlaneFocusRequests"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfTapToTrackFailures), @"cinematicVideoCountOfTapToTrackFailures"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfFixedTaxonomyFocusDecisions), @"cinematicVideoCountOfFixedTaxonomyFocusDecisions"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfNonTaxonomyFocusDecisions), @"cinematicVideoCountOfNonTaxonomyFocusDecisions"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfCustomFocusDecisions), @"cinematicVideoCountOfCustomFocusDecisions"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfAutoFocusDecisions), @"cinematicVideoCountOfAutoFocusDecisions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfSoftFocusRequests), @"cinematicVideoCountOfSoftFocusRequests"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfHardFocusRequests), @"cinematicVideoCountOfHardFocusRequests"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfFixedPlaneFocusRequests), @"cinematicVideoCountOfFixedPlaneFocusRequests"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfTapToTrackFailures), @"cinematicVideoCountOfTapToTrackFailures"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfFixedTaxonomyFocusDecisions), @"cinematicVideoCountOfFixedTaxonomyFocusDecisions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfNonTaxonomyFocusDecisions), @"cinematicVideoCountOfNonTaxonomyFocusDecisions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfCustomFocusDecisions), @"cinematicVideoCountOfCustomFocusDecisions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_cinematicVideoMovieRecordingStats.countOfAutoFocusDecisions), @"cinematicVideoCountOfAutoFocusDecisions"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_cinematicAudioEnabled), @"cinematicAudioEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_cinematicAudioEnabled), @"cinematicAudioEnabled"}];
   if (self->_cinematicAudioEnabled)
   {
     *&v126 = self->_cinematicAudioRemixStats.ambienceGain;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v126), 0x1F21A9990}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v126), 0x1F21A9990}];
     *&v127 = self->_cinematicAudioRemixStats.ambienceLoudness;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v127), 0x1F21A99B0}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v127), 0x1F21A99B0}];
     *&v128 = self->_cinematicAudioRemixStats.dialogueGain;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v128), 0x1F21A99D0}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v128), 0x1F21A99D0}];
     *&v129 = self->_cinematicAudioRemixStats.dialogueLoudness;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v129), 0x1F21A99F0}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v129), 0x1F21A99F0}];
     *&v130 = self->_cinematicAudioRemixStats.recordingLoudness;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v130), 0x1F21A9A10}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v130), 0x1F21A9A10}];
   }
 
-  [v3 setObject:self->_videoCodec forKeyedSubscript:@"videoCodec"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_movieFileSize), @"fileSize"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_movieFileSize * 0.000000953674316), @"fileSizeInMB"}];
+  [dictionary setObject:self->_videoCodec forKeyedSubscript:@"videoCodec"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_movieFileSize), @"fileSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_movieFileSize * 0.000000953674316), @"fileSizeInMB"}];
   *&v131 = self->_percentageOfAvailableDataStorageAfterWritingMovie;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v131), @"percentageOfAvailableDataStorageAfterWritingMovie"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v131), @"percentageOfAvailableDataStorageAfterWritingMovie"}];
   totalNANDReadBytesDuringRecording = self->_totalNANDReadBytesDuringRecording;
   if ((totalNANDReadBytesDuringRecording & 0x8000000000000000) == 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", vcvtd_n_f64_u64(totalNANDReadBytesDuringRecording, 0x14uLL)), @"totalNANDReadSizeDuringRecordingInMB"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", vcvtd_n_f64_u64(totalNANDReadBytesDuringRecording, 0x14uLL)), @"totalNANDReadSizeDuringRecordingInMB"}];
   }
 
   totalNANDWriteBytesDuringRecording = self->_totalNANDWriteBytesDuringRecording;
   if ((totalNANDWriteBytesDuringRecording & 0x8000000000000000) == 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", vcvtd_n_f64_s64(totalNANDWriteBytesDuringRecording - self->_movieFileSize, 0x14uLL)), @"totalNANDWriteSizeAndFileSizeDifferenceInMB"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", vcvtd_n_f64_s64(totalNANDWriteBytesDuringRecording - self->_movieFileSize, 0x14uLL)), @"totalNANDWriteSizeAndFileSizeDifferenceInMB"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_capturingOntoExternalStorageDevice), @"capturingOntoExternalStorageDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_capturingOntoExternalStorageDevice), @"capturingOntoExternalStorageDevice"}];
   externalStorageDeviceProductName = self->_externalStorageDeviceProductName;
   if (externalStorageDeviceProductName)
   {
-    [v3 setObject:externalStorageDeviceProductName forKeyedSubscript:@"externalStorageDeviceProductName"];
+    [dictionary setObject:externalStorageDeviceProductName forKeyedSubscript:@"externalStorageDeviceProductName"];
   }
 
   externalStorageDeviceVendorName = self->_externalStorageDeviceVendorName;
   if (externalStorageDeviceVendorName)
   {
-    [v3 setObject:externalStorageDeviceVendorName forKeyedSubscript:@"externalStorageDeviceVendorName"];
+    [dictionary setObject:externalStorageDeviceVendorName forKeyedSubscript:@"externalStorageDeviceVendorName"];
   }
 
   if (self->_externalStorageDeviceTotalSize)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:"), @"externalStorageDeviceTotalSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:"), @"externalStorageDeviceTotalSize"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_externalStorageDeviceBaseOffset), @"externalStorageDeviceBaseOffset"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_colorSpace), @"colorSpace"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_stereoVideoCaptureEnabled), @"stereoVideoCaptureEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", self->_externalStorageDeviceBaseOffset), @"externalStorageDeviceBaseOffset"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_colorSpace), @"colorSpace"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_stereoVideoCaptureEnabled), @"stereoVideoCaptureEnabled"}];
   if (self->_stereoVideoCaptureEnabled)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stereoVideoCaptureStatus), @"stereoVideoCaptureStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stereoVideoCaptureStatus), @"stereoVideoCaptureStatus"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_audioWasPlayingDuringCapture), @"audioWasPlayingDuringCapture"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_audioMixWithOthersEnabled), @"audioMixWithOthersEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_audioWasPlayingDuringCapture), @"audioWasPlayingDuringCapture"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_audioMixWithOthersEnabled), @"audioMixWithOthersEnabled"}];
   if (self->_calibrationValidationStatusCmCl != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusCmCl"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusCmCl"}];
   }
 
   if (self->_calibrationValidationStatusCmPM != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusCmPM"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusCmPM"}];
   }
 
   if (self->_calibrationValidationStatusFCCl != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusFCCl"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"calibrationValidationStatusFCCl"}];
   }
 
   if (self->_coreRepairStatusRearCameraAssembly != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"coreRepairStatusRearCameraAssembly"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"coreRepairStatusRearCameraAssembly"}];
   }
 
   if (self->_coreRepairStatusFrontCameraAssembly != 0x7FFFFFFF)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"coreRepairStatusFrontCameraAssembly"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"coreRepairStatusFrontCameraAssembly"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (BWCoreAnalyticsMovieRecordingCinematicVideoStatistics)cinematicVideoMovieRecordingStats
@@ -753,17 +753,17 @@
   return self;
 }
 
-- (void)setCinematicVideoMovieRecordingStats:(BWCoreAnalyticsMovieRecordingCinematicVideoStatistics *)a3
+- (void)setCinematicVideoMovieRecordingStats:(BWCoreAnalyticsMovieRecordingCinematicVideoStatistics *)stats
 {
-  v3 = *&a3->countOfFixedTaxonomyFocusDecisions;
-  *&self->_cinematicVideoMovieRecordingStats.countOfSoftFocusRequests = *&a3->countOfSoftFocusRequests;
+  v3 = *&stats->countOfFixedTaxonomyFocusDecisions;
+  *&self->_cinematicVideoMovieRecordingStats.countOfSoftFocusRequests = *&stats->countOfSoftFocusRequests;
   *&self->_cinematicVideoMovieRecordingStats.countOfFixedTaxonomyFocusDecisions = v3;
 }
 
-- (void)setCinematicAudioRemixStats:(BWCoreAnalyticsMovieRecordingCinematicAudioRemixStatistics *)a3
+- (void)setCinematicAudioRemixStats:(BWCoreAnalyticsMovieRecordingCinematicAudioRemixStatistics *)stats
 {
-  v3 = *&a3->dialogueGain;
-  self->_cinematicAudioRemixStats.recordingLoudness = a3->recordingLoudness;
+  v3 = *&stats->dialogueGain;
+  self->_cinematicAudioRemixStats.recordingLoudness = stats->recordingLoudness;
   *&self->_cinematicAudioRemixStats.dialogueGain = v3;
 }
 

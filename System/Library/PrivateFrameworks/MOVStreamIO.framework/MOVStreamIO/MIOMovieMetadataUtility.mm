@@ -1,33 +1,33 @@
 @interface MIOMovieMetadataUtility
-+ (BOOL)isTrack:(id)a3 forStreamId:(id)a4 mediaType:(id)a5;
-+ (id)attachmentsTrackInAsset:(id)a3 forTrack:(id)a4;
-+ (id)findAllAssociatedMetadataTracksInAsset:(id)a3 forTrack:(id)a4;
-+ (id)findStreamIdFromQTTagsOfTrack:(id)a3;
-- (BOOL)addMovieMetadataItem:(id)a3;
-- (BOOL)applyChangesError:(id *)a3;
-- (BOOL)setCustomTrackMetadataForStream:(id)a3 mediaType:(int64_t)a4 metadata:(id)a5 error:(id *)a6;
-- (BOOL)setMovieMetadata:(id)a3;
-- (MIOMovieMetadataUtility)initWithURL:(id)a3 error:(id *)a4;
-- (id)customTrackMetadataForStream:(id)a3 mediaType:(int64_t)a4 error:(id *)a5;
++ (BOOL)isTrack:(id)track forStreamId:(id)id mediaType:(id)type;
++ (id)attachmentsTrackInAsset:(id)asset forTrack:(id)track;
++ (id)findAllAssociatedMetadataTracksInAsset:(id)asset forTrack:(id)track;
++ (id)findStreamIdFromQTTagsOfTrack:(id)track;
+- (BOOL)addMovieMetadataItem:(id)item;
+- (BOOL)applyChangesError:(id *)error;
+- (BOOL)setCustomTrackMetadataForStream:(id)stream mediaType:(int64_t)type metadata:(id)metadata error:(id *)error;
+- (BOOL)setMovieMetadata:(id)metadata;
+- (MIOMovieMetadataUtility)initWithURL:(id)l error:(id *)error;
+- (id)customTrackMetadataForStream:(id)stream mediaType:(int64_t)type error:(id *)error;
 - (id)metadataForMovie;
-- (id)trackForStreamId:(id)a3 mediaType:(int64_t)a4 error:(id *)a5;
+- (id)trackForStreamId:(id)id mediaType:(int64_t)type error:(id *)error;
 @end
 
 @implementation MIOMovieMetadataUtility
 
-+ (BOOL)isTrack:(id)a3 forStreamId:(id)a4 mediaType:(id)a5
++ (BOOL)isTrack:(id)track forStreamId:(id)id mediaType:(id)type
 {
-  v23 = a1;
+  selfCopy = self;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = a4;
-  v8 = a5;
-  v9 = [v7 mediaType];
-  v10 = [v9 isEqualToString:v8];
+  trackCopy = track;
+  idCopy = id;
+  typeCopy = type;
+  mediaType = [trackCopy mediaType];
+  v10 = [mediaType isEqualToString:typeCopy];
 
   if (v10)
   {
-    [v7 metadata];
+    [trackCopy metadata];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -46,13 +46,13 @@
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 identifier];
-          v17 = [@"mdta/com.apple.track_kind" isEqualToString:v16];
+          identifier = [v15 identifier];
+          v17 = [@"mdta/com.apple.track_kind" isEqualToString:identifier];
 
           if (v17)
           {
-            v21 = [v15 value];
-            v20 = [v21 isEqualToString:v24];
+            value = [v15 value];
+            v20 = [value isEqualToString:idCopy];
 
             v19 = v11;
             goto LABEL_14;
@@ -69,11 +69,11 @@
       }
     }
 
-    v18 = [objc_opt_class() findStreamIdFromQTTagsOfTrack:v7];
+    v18 = [objc_opt_class() findStreamIdFromQTTagsOfTrack:trackCopy];
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 isEqualToString:v24];
+      v20 = [v18 isEqualToString:idCopy];
     }
 
     else
@@ -92,13 +92,13 @@ LABEL_14:
   return v20;
 }
 
-+ (id)findAllAssociatedMetadataTracksInAsset:(id)a3 forTrack:(id)a4
++ (id)findAllAssociatedMetadataTracksInAsset:(id)asset forTrack:(id)track
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  trackCopy = track;
   v7 = objc_opt_new();
-  [v5 tracksWithMediaType:*MEMORY[0x277CE5E70]];
+  [assetCopy tracksWithMediaType:*MEMORY[0x277CE5E70]];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -119,7 +119,7 @@ LABEL_14:
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = [v13 associatedTracksOfType:{v11, v17}];
-        if ([v14 containsObject:v6])
+        if ([v14 containsObject:trackCopy])
         {
           [v7 addObject:v13];
         }
@@ -136,12 +136,12 @@ LABEL_14:
   return v15;
 }
 
-+ (id)attachmentsTrackInAsset:(id)a3 forTrack:(id)a4
++ (id)attachmentsTrackInAsset:(id)asset forTrack:(id)track
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() findAllAssociatedMetadataTracksInAsset:v5 forTrack:v6];
+  assetCopy = asset;
+  trackCopy = track;
+  v7 = [objc_opt_class() findAllAssociatedMetadataTracksInAsset:assetCopy forTrack:trackCopy];
   v8 = [@"mdta/com.apple.stream_sample_attachments" componentsSeparatedByString:@"/"];
   v9 = [v8 objectAtIndexedSubscript:1];
 
@@ -189,44 +189,44 @@ LABEL_11:
   return v16;
 }
 
-+ (id)findStreamIdFromQTTagsOfTrack:(id)a3
++ (id)findStreamIdFromQTTagsOfTrack:(id)track
 {
-  v3 = [a3 metadataForFormat:*MEMORY[0x277CE5F48]];
+  v3 = [track metadataForFormat:*MEMORY[0x277CE5F48]];
   v4 = *MEMORY[0x277CE5FB0];
   v5 = [MEMORY[0x277CE6520] metadataItemsFromArray:v3 withKey:*MEMORY[0x277CE5FF0] keySpace:*MEMORY[0x277CE5FB0]];
-  v6 = [v5 firstObject];
-  v7 = v6;
-  if (v6)
+  firstObject = [v5 firstObject];
+  v7 = firstObject;
+  if (firstObject)
   {
-    v8 = [v6 stringValue];
+    stringValue = [firstObject stringValue];
   }
 
   else
   {
     v9 = [MEMORY[0x277CE6520] metadataItemsFromArray:v3 withKey:*MEMORY[0x277CE5FF8] keySpace:v4];
-    v10 = [v9 firstObject];
-    v7 = v10;
-    if (v10)
+    firstObject2 = [v9 firstObject];
+    v7 = firstObject2;
+    if (firstObject2)
     {
-      v8 = [v10 stringValue];
+      stringValue = [firstObject2 stringValue];
     }
 
     else
     {
-      v8 = 0;
+      stringValue = 0;
     }
   }
 
-  return v8;
+  return stringValue;
 }
 
-- (MIOMovieMetadataUtility)initWithURL:(id)a3 error:(id *)a4
+- (MIOMovieMetadataUtility)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = MIOMovieMetadataUtility;
   v7 = [(MIOMovieMetadataUtility *)&v11 init];
-  if (!v7 || (v8 = [objc_alloc(MEMORY[0x277CE6560]) initWithURL:v6 options:0 error:a4], -[MIOMovieMetadataUtility setMovie:](v7, "setMovie:", v8), v8, -[MIOMovieMetadataUtility movie](v7, "movie"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if (!v7 || (v8 = [objc_alloc(MEMORY[0x277CE6560]) initWithURL:lCopy options:0 error:error], -[MIOMovieMetadataUtility setMovie:](v7, "setMovie:", v8), v8, -[MIOMovieMetadataUtility movie](v7, "movie"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     v9 = v7;
   }
@@ -234,19 +234,19 @@ LABEL_11:
   return v9;
 }
 
-- (id)trackForStreamId:(id)a3 mediaType:(int64_t)a4 error:(id *)a5
+- (id)trackForStreamId:(id)id mediaType:(int64_t)type error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MIOMediaTypeUtility matchingAVMediaTypeFromMIOMediaType:a4];
+  idCopy = id;
+  v9 = [MIOMediaTypeUtility matchingAVMediaTypeFromMIOMediaType:type];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(MIOMovieMetadataUtility *)self movie];
-  v11 = [v10 tracksWithMediaType:v9];
+  movie = [(MIOMovieMetadataUtility *)self movie];
+  idCopy = [movie tracksWithMediaType:v9];
 
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v12 = [idCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = *v19;
@@ -256,18 +256,18 @@ LABEL_11:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(idCopy);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        if ([objc_opt_class() isTrack:v15 forStreamId:v8 mediaType:v9])
+        if ([objc_opt_class() isTrack:v15 forStreamId:idCopy mediaType:v9])
         {
           v16 = v15;
           goto LABEL_11;
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [idCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         continue;
@@ -277,22 +277,22 @@ LABEL_11:
     }
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream '%@'.", v8];
-  [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v11 code:7];
+  idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track for stream '%@'.", idCopy];
+  [MEMORY[0x277CCA9B8] populateReaderError:error message:idCopy code:7];
   v16 = 0;
 LABEL_11:
 
   return v16;
 }
 
-- (id)customTrackMetadataForStream:(id)a3 mediaType:(int64_t)a4 error:(id *)a5
+- (id)customTrackMetadataForStream:(id)stream mediaType:(int64_t)type error:(id *)error
 {
-  v5 = [(MIOMovieMetadataUtility *)self trackForStreamId:a3 mediaType:a4 error:a5];
+  v5 = [(MIOMovieMetadataUtility *)self trackForStreamId:stream mediaType:type error:error];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 metadata];
-    v8 = [MOVStreamIOUtility nonMIOTrackMetadataItemsInMetadataItems:v7];
+    metadata = [v5 metadata];
+    v8 = [MOVStreamIOUtility nonMIOTrackMetadataItemsInMetadataItems:metadata];
   }
 
   else
@@ -303,11 +303,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)setCustomTrackMetadataForStream:(id)a3 mediaType:(int64_t)a4 metadata:(id)a5 error:(id *)a6
+- (BOOL)setCustomTrackMetadataForStream:(id)stream mediaType:(int64_t)type metadata:(id)metadata error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a5;
-  v21 = [(MIOMovieMetadataUtility *)self trackForStreamId:a3 mediaType:a4 error:a6];
+  metadataCopy = metadata;
+  v21 = [(MIOMovieMetadataUtility *)self trackForStreamId:stream mediaType:type error:error];
   if (v21)
   {
     v10 = objc_opt_new();
@@ -330,9 +330,9 @@ LABEL_11:
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 identifier];
+          identifier = [v15 identifier];
           v17 = +[MOVStreamIOUtility reservedMIOTrackMetadataKeys];
-          v18 = [v17 containsObject:v16];
+          v18 = [v17 containsObject:identifier];
 
           if (v18)
           {
@@ -346,9 +346,9 @@ LABEL_11:
       while (v12);
     }
 
-    if ([v20 count])
+    if ([metadataCopy count])
     {
-      [v10 addObjectsFromArray:v20];
+      [v10 addObjectsFromArray:metadataCopy];
     }
 
     [v21 setMetadata:v10];
@@ -360,15 +360,15 @@ LABEL_11:
 - (id)metadataForMovie
 {
   v3 = objc_opt_new();
-  v4 = [(MIOMovieMetadataUtility *)self movie];
-  v5 = [v4 metadata];
+  movie = [(MIOMovieMetadataUtility *)self movie];
+  metadata = [movie metadata];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__MIOMovieMetadataUtility_metadataForMovie__block_invoke;
   v10[3] = &unk_279848398;
   v6 = v3;
   v11 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [metadata enumerateObjectsUsingBlock:v10];
 
   if ([v6 count])
   {
@@ -397,27 +397,27 @@ void __43__MIOMovieMetadataUtility_metadataForMovie__block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)setMovieMetadata:(id)a3
+- (BOOL)setMovieMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_opt_new();
-  v6 = [(MIOMovieMetadataUtility *)self movie];
-  v7 = [v6 metadata];
+  movie = [(MIOMovieMetadataUtility *)self movie];
+  metadata = [movie metadata];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__MIOMovieMetadataUtility_setMovieMetadata___block_invoke;
   v11[3] = &unk_279848398;
   v8 = v5;
   v12 = v8;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [metadata enumerateObjectsUsingBlock:v11];
 
-  if ([v4 count])
+  if ([metadataCopy count])
   {
-    [v8 addObjectsFromArray:v4];
+    [v8 addObjectsFromArray:metadataCopy];
   }
 
-  v9 = [(MIOMovieMetadataUtility *)self movie];
-  [v9 setMetadata:v8];
+  movie2 = [(MIOMovieMetadataUtility *)self movie];
+  [movie2 setMetadata:v8];
 
   return 1;
 }
@@ -434,28 +434,28 @@ void __44__MIOMovieMetadataUtility_setMovieMetadata___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)addMovieMetadataItem:(id)a3
+- (BOOL)addMovieMetadataItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MIOMovieMetadataUtility *)self movie];
-  v6 = [v5 metadata];
-  v7 = [v6 mutableCopy];
+  itemCopy = item;
+  movie = [(MIOMovieMetadataUtility *)self movie];
+  metadata = [movie metadata];
+  v7 = [metadata mutableCopy];
 
-  [v7 addObject:v4];
-  v8 = [(MIOMovieMetadataUtility *)self movie];
-  [v8 setMetadata:v7];
+  [v7 addObject:itemCopy];
+  movie2 = [(MIOMovieMetadataUtility *)self movie];
+  [movie2 setMetadata:v7];
 
   return 1;
 }
 
-- (BOOL)applyChangesError:(id *)a3
+- (BOOL)applyChangesError:(id *)error
 {
-  v5 = [(MIOMovieMetadataUtility *)self movie];
-  v6 = [(MIOMovieMetadataUtility *)self movie];
-  v7 = [v6 URL];
-  LOBYTE(a3) = [v5 writeMovieHeaderToURL:v7 fileType:*MEMORY[0x277CE5DA8] options:0 error:a3];
+  movie = [(MIOMovieMetadataUtility *)self movie];
+  movie2 = [(MIOMovieMetadataUtility *)self movie];
+  v7 = [movie2 URL];
+  LOBYTE(error) = [movie writeMovieHeaderToURL:v7 fileType:*MEMORY[0x277CE5DA8] options:0 error:error];
 
-  return a3;
+  return error;
 }
 
 @end

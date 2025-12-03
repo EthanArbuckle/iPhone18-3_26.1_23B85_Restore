@@ -1,24 +1,24 @@
 @interface CKImageBalloonPluginDatasource
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKImageBalloonPluginDatasource)initWithPluginPayload:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKImageBalloonPluginDatasource)initWithPluginPayload:(id)payload;
 - (id)imageBalloon;
-- (void)previewDidChange:(id)a3;
+- (void)previewDidChange:(id)change;
 @end
 
 @implementation CKImageBalloonPluginDatasource
 
-- (CKImageBalloonPluginDatasource)initWithPluginPayload:(id)a3
+- (CKImageBalloonPluginDatasource)initWithPluginPayload:(id)payload
 {
   v9.receiver = self;
   v9.super_class = CKImageBalloonPluginDatasource;
-  v3 = [(CKImageBalloonPluginDatasource *)&v9 initWithPluginPayload:a3];
+  v3 = [(CKImageBalloonPluginDatasource *)&v9 initWithPluginPayload:payload];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKImageBalloonPluginDatasource *)v3 pluginPayload];
-    v6 = [v5 mediaObjectFromPayload];
+    pluginPayload = [(CKImageBalloonPluginDatasource *)v3 pluginPayload];
+    mediaObjectFromPayload = [pluginPayload mediaObjectFromPayload];
     mediaObject = v4->_mediaObject;
-    v4->_mediaObject = v6;
+    v4->_mediaObject = mediaObjectFromPayload;
   }
 
   return v4;
@@ -26,8 +26,8 @@
 
 - (id)imageBalloon
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_previewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_previewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
 
   mediaObject = self->_mediaObject;
   v5 = +[CKUIBehavior sharedBehaviors];
@@ -51,10 +51,10 @@
   v10 = objc_opt_class();
   if ([v10 __ck_isKindOfClass:objc_opt_class()])
   {
-    v11 = [(CKImageBalloonPluginDatasource *)self mediaObject];
-    v12 = [v11 transfer];
-    v13 = [v12 attributionInfo];
-    v14 = [v13 objectForKey:*MEMORY[0x1E69A6F98]];
+    mediaObject = [(CKImageBalloonPluginDatasource *)self mediaObject];
+    transfer = [mediaObject transfer];
+    attributionInfo = [transfer attributionInfo];
+    v14 = [attributionInfo objectForKey:*MEMORY[0x1E69A6F98]];
 
     if ([v14 length])
     {
@@ -67,20 +67,20 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CKImageBalloonPluginDatasource *)self mediaObject];
-  v7 = [v6 transfer];
-  v8 = [v7 isSticker];
+  height = fits.height;
+  width = fits.width;
+  mediaObject = [(CKImageBalloonPluginDatasource *)self mediaObject];
+  transfer = [mediaObject transfer];
+  isSticker = [transfer isSticker];
 
-  if (v8)
+  if (isSticker)
   {
-    v9 = [(CKImageBalloonPluginDatasource *)self mediaObject];
+    mediaObject2 = [(CKImageBalloonPluginDatasource *)self mediaObject];
     v10 = +[CKUIBehavior sharedBehaviors];
     [v10 previewMaxWidth];
-    v11 = [v9 previewForWidth:0 orientation:?];
+    v11 = [mediaObject2 previewForWidth:0 orientation:?];
 
     objc_opt_class();
     LOBYTE(v10) = objc_opt_isKindOfClass();
@@ -88,12 +88,12 @@
     v13 = v12;
     if (v10)
     {
-      v14 = [v12 image];
-      [v14 size];
+      image = [v12 image];
+      [image size];
       v16 = v15;
       v18 = v17;
 
-      v19 = [v13 image];
+      image2 = [v13 image];
     }
 
     else
@@ -101,10 +101,10 @@
       [v12 size];
       v16 = v23;
       v18 = v24;
-      v19 = v13;
+      image2 = v13;
     }
 
-    [v19 scale];
+    [image2 scale];
     v26 = v25;
 
     v27 = +[CKUIBehavior sharedBehaviors];
@@ -129,20 +129,20 @@
   return result;
 }
 
-- (void)previewDidChange:(id)a3
+- (void)previewDidChange:(id)change
 {
-  v14 = a3;
-  v4 = [v14 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v14;
+  v6 = changeCopy;
   if (isKindOfClass)
   {
-    v7 = [v14 object];
-    v8 = [(CKMediaObject *)self->_mediaObject transferGUID];
-    v9 = [v7 transferGUID];
-    v10 = [v8 isEqualToString:v9];
+    object2 = [changeCopy object];
+    transferGUID = [(CKMediaObject *)self->_mediaObject transferGUID];
+    transferGUID2 = [object2 transferGUID];
+    v10 = [transferGUID isEqualToString:transferGUID2];
 
     if (v10)
     {
@@ -153,7 +153,7 @@
       [(CKBalloonView *)balloonView configureForMediaObject:mediaObject previewWidth:1 orientation:?];
     }
 
-    v6 = v14;
+    v6 = changeCopy;
   }
 }
 

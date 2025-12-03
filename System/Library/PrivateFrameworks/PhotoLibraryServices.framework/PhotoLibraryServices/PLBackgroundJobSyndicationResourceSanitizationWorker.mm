@@ -1,33 +1,33 @@
 @interface PLBackgroundJobSyndicationResourceSanitizationWorker
-- (PLBackgroundJobSyndicationResourceSanitizationWorker)initWithLibraryBundle:(id)a3;
-- (id)downloadThrottlingDateForPrefetchManager:(id)a3;
-- (id)requestLocalAvailabilityChangeForPrefetchManager:(id)a3 resource:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)resourceIDsForPrefetchWithLibrary:(id)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performTransactionForPrefetchManager:(id)a3 synchronous:(BOOL)a4 block:(id)a5;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
+- (PLBackgroundJobSyndicationResourceSanitizationWorker)initWithLibraryBundle:(id)bundle;
+- (id)downloadThrottlingDateForPrefetchManager:(id)manager;
+- (id)requestLocalAvailabilityChangeForPrefetchManager:(id)manager resource:(id)resource options:(id)options completion:(id)completion;
+- (id)resourceIDsForPrefetchWithLibrary:(id)library;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performTransactionForPrefetchManager:(id)manager synchronous:(BOOL)synchronous block:(id)block;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
 @end
 
 @implementation PLBackgroundJobSyndicationResourceSanitizationWorker
 
-- (id)requestLocalAvailabilityChangeForPrefetchManager:(id)a3 resource:(id)a4 options:(id)a5 completion:(id)a6
+- (id)requestLocalAvailabilityChangeForPrefetchManager:(id)manager resource:(id)resource options:(id)options completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 dataStore];
-  v12 = [v11 requestLocalAvailabilityChange:1 forResource:v10 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  resourceCopy = resource;
+  dataStore = [resourceCopy dataStore];
+  v12 = [dataStore requestLocalAvailabilityChange:1 forResource:resourceCopy options:optionsCopy completion:completionCopy];
 
   return v12;
 }
 
-- (void)performTransactionForPrefetchManager:(id)a3 synchronous:(BOOL)a4 block:(id)a5
+- (void)performTransactionForPrefetchManager:(id)manager synchronous:(BOOL)synchronous block:(id)block
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = v7;
+  synchronousCopy = synchronous;
+  blockCopy = block;
+  v8 = blockCopy;
   currentLibrary = self->_currentLibrary;
-  if (v5)
+  if (synchronousCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -35,7 +35,7 @@
     v13[3] = &unk_1E7577C08;
     v10 = &v14;
     v13[4] = self;
-    v14 = v7;
+    v14 = blockCopy;
     [(PLPhotoLibrary *)currentLibrary performTransactionAndWait:v13];
   }
 
@@ -47,7 +47,7 @@
     v11[3] = &unk_1E7577C08;
     v10 = &v12;
     v11[4] = self;
-    v12 = v7;
+    v12 = blockCopy;
     [(PLPhotoLibrary *)currentLibrary performTransaction:v11];
   }
 }
@@ -66,29 +66,29 @@ void __111__PLBackgroundJobSyndicationResourceSanitizationWorker_performTransact
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)downloadThrottlingDateForPrefetchManager:(id)a3
+- (id)downloadThrottlingDateForPrefetchManager:(id)manager
 {
-  v3 = [(PLPhotoLibrary *)self->_currentLibrary globalValues];
-  v4 = [v3 syndicationPrefetchDownloadThrottlingDate];
+  globalValues = [(PLPhotoLibrary *)self->_currentLibrary globalValues];
+  syndicationPrefetchDownloadThrottlingDate = [globalValues syndicationPrefetchDownloadThrottlingDate];
 
-  return v4;
+  return syndicationPrefetchDownloadThrottlingDate;
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   if (![(PLBackgroundJobSyndicationResourceSanitizationWorker *)self batchSize])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationResourceSanitizationWorker.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"self.batchSize > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationResourceSanitizationWorker.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"self.batchSize > 0"}];
   }
 
-  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:v11])
+  if ([(PLBackgroundJobWorker *)self hasEnoughDiskSpaceToContinue:completionCopy])
   {
-    objc_storeStrong(&self->_currentLibrary, a4);
+    objc_storeStrong(&self->_currentLibrary, library);
     if ([(PLBackgroundJobSyndicationResourceSanitizationWorker *)self batchSize]== 1)
     {
       prefetchManager = self->_prefetchManager;
@@ -97,19 +97,19 @@ void __111__PLBackgroundJobSyndicationResourceSanitizationWorker_performTransact
       v20[2] = __95__PLBackgroundJobSyndicationResourceSanitizationWorker_performWorkOnItem_inLibrary_completion___block_invoke;
       v20[3] = &unk_1E7576050;
       v20[4] = self;
-      v21 = v11;
-      [(PLSyndicationResourcePrefetchEngine *)prefetchManager prefetchResourceWithObjectID:v9 completion:v20];
+      v21 = completionCopy;
+      [(PLSyndicationResourcePrefetchEngine *)prefetchManager prefetchResourceWithObjectID:itemCopy completion:v20];
     }
 
     else
     {
-      v13 = v9;
+      v13 = itemCopy;
       v14 = PLSyndicationGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(PLBackgroundJobWorker *)self workerName];
+        workerName = [(PLBackgroundJobWorker *)self workerName];
         *buf = 138412546;
-        v23 = v15;
+        v23 = workerName;
         v24 = 2048;
         v25 = [v13 count];
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "[resource.sync] %@ prefetching %lu items", buf, 0x16u);
@@ -121,7 +121,7 @@ void __111__PLBackgroundJobSyndicationResourceSanitizationWorker_performTransact
       v18[2] = __95__PLBackgroundJobSyndicationResourceSanitizationWorker_performWorkOnItem_inLibrary_completion___block_invoke_40;
       v18[3] = &unk_1E7576050;
       v18[4] = self;
-      v19 = v11;
+      v19 = completionCopy;
       [(PLSyndicationResourcePrefetchEngine *)v16 prefetchResourceWithObjectIDs:v13 completion:v18];
     }
   }
@@ -176,21 +176,21 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v3, v11, v12);
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v48 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v29 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   if (![(PLBackgroundJobSyndicationResourceSanitizationWorker *)self batchSize])
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationResourceSanitizationWorker.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"self.batchSize > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSyndicationResourceSanitizationWorker.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"self.batchSize > 0"}];
   }
 
-  v7 = [objc_opt_class() syndicationWorkerCriteria];
-  if (([v29 containsObject:v7] & 1) == 0)
+  syndicationWorkerCriteria = [objc_opt_class() syndicationWorkerCriteria];
+  if (([criteriasCopy containsObject:syndicationWorkerCriteria] & 1) == 0)
   {
-    v12 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
     goto LABEL_29;
   }
 
@@ -206,7 +206,7 @@ LABEL_6:
   v34[3] = &unk_1E7578820;
   v36 = &v37;
   v34[4] = self;
-  v8 = v28;
+  v8 = libraryCopy;
   v35 = v8;
   [v8 performBlockAndWait:v34];
   if ([v38[5] count])
@@ -223,7 +223,7 @@ LABEL_6:
       }
 
       v11 = [PLBackgroundJobWorkerPendingWorkItems alloc];
-      v12 = [(PLBackgroundJobWorkerPendingWorkItems *)v11 initWithCriteria:v7 workItemsNeedingProcessing:v38[5]];
+      initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v11 initWithCriteria:syndicationWorkerCriteria workItemsNeedingProcessing:v38[5]];
       goto LABEL_28;
     }
 
@@ -284,7 +284,7 @@ LABEL_6:
 
     v24 = [PLBackgroundJobWorkerPendingWorkItems alloc];
     v25 = [v13 copy];
-    v12 = [(PLBackgroundJobWorkerPendingWorkItems *)v24 initWithCriteria:v7 workItemsNeedingProcessing:v25];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v24 initWithCriteria:syndicationWorkerCriteria workItemsNeedingProcessing:v25];
   }
 
   else
@@ -292,12 +292,12 @@ LABEL_6:
     v13 = [(PLBackgroundJobSyndicationResourceSanitizationWorker *)self signalAgainDateWithLibrary:v8];
     if (v13)
     {
-      v12 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithSignalAgainDate:v13];
+      initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithSignalAgainDate:v13];
     }
 
     else
     {
-      v12 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+      initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
       v13 = 0;
     }
   }
@@ -307,7 +307,7 @@ LABEL_28:
 
 LABEL_29:
 
-  return v12;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 void __107__PLBackgroundJobSyndicationResourceSanitizationWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -318,11 +318,11 @@ void __107__PLBackgroundJobSyndicationResourceSanitizationWorker_workItemsNeedin
   *(v3 + 40) = v2;
 }
 
-- (PLBackgroundJobSyndicationResourceSanitizationWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobSyndicationResourceSanitizationWorker)initWithLibraryBundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PLBackgroundJobSyndicationResourceSanitizationWorker;
-  v3 = [(PLBackgroundJobWorker *)&v7 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v7 initWithLibraryBundle:bundle];
   if (v3)
   {
     v4 = [[PLSyndicationResourcePrefetchEngine alloc] initWithDelegate:v3];
@@ -333,11 +333,11 @@ void __107__PLBackgroundJobSyndicationResourceSanitizationWorker_workItemsNeedin
   return v3;
 }
 
-- (id)resourceIDsForPrefetchWithLibrary:(id)a3
+- (id)resourceIDsForPrefetchWithLibrary:(id)library
 {
   prefetchManager = self->_prefetchManager;
-  v4 = [a3 managedObjectContext];
-  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager highPriorityResourcesForPrefetchWithManagedObjectContext:v4];
+  managedObjectContext = [library managedObjectContext];
+  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager highPriorityResourcesForPrefetchWithManagedObjectContext:managedObjectContext];
 
   return v5;
 }

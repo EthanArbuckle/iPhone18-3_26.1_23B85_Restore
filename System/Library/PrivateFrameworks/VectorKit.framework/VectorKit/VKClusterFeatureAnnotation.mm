@@ -1,6 +1,6 @@
 @interface VKClusterFeatureAnnotation
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (VKClusterFeatureAnnotation)initWithClusterNode:(void *)a3 clusterTree:(const void *)a4 baseStyle:(const void *)a5 imageText:(id)a6 annotationText:(id)a7 annotationLocale:(id)a8;
+- (VKClusterFeatureAnnotation)initWithClusterNode:(void *)node clusterTree:(const void *)tree baseStyle:(const void *)style imageText:(id)text annotationText:(id)annotationText annotationLocale:(id)locale;
 @end
 
 @implementation VKClusterFeatureAnnotation
@@ -14,15 +14,15 @@
   return result;
 }
 
-- (VKClusterFeatureAnnotation)initWithClusterNode:(void *)a3 clusterTree:(const void *)a4 baseStyle:(const void *)a5 imageText:(id)a6 annotationText:(id)a7 annotationLocale:(id)a8
+- (VKClusterFeatureAnnotation)initWithClusterNode:(void *)node clusterTree:(const void *)tree baseStyle:(const void *)style imageText:(id)text annotationText:(id)annotationText annotationLocale:(id)locale
 {
   v185[1] = *MEMORY[0x1E69E9840];
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  textCopy = text;
+  annotationTextCopy = annotationText;
+  localeCopy = locale;
   v181.receiver = self;
   v181.super_class = VKClusterFeatureAnnotation;
-  v169 = v16;
+  v169 = localeCopy;
   v17 = [(VKClusterFeatureAnnotation *)&v181 init];
 
   if (!v17)
@@ -30,32 +30,32 @@
     goto LABEL_177;
   }
 
-  md::LabelPoint::coordinate(&v179, a3 + 16);
+  md::LabelPoint::coordinate(&v179, node + 16);
   v18 = v179;
   v17->_coordinate = v179;
-  v168 = v14;
-  v19 = [[VKCustomFeature alloc] _initInternalFeatureWithCoordinate:*&v18, v180];
+  v168 = textCopy;
+  v180 = [[VKCustomFeature alloc] _initInternalFeatureWithCoordinate:*&v18, v180];
   customFeature = v17->_customFeature;
-  v17->_customFeature = v19;
+  v17->_customFeature = v180;
 
-  v21 = [(VKCustomFeature *)v17->_customFeature pointFeature];
-  v22 = v21;
-  v23 = *a4;
-  v24 = *(a4 + 1);
+  pointFeature = [(VKCustomFeature *)v17->_customFeature pointFeature];
+  v22 = pointFeature;
+  v23 = *tree;
+  v24 = *(tree + 1);
   if (v24)
   {
     atomic_fetch_add_explicit(&v24->__shared_owners_, 1uLL, memory_order_relaxed);
     atomic_fetch_add_explicit(&v24->__shared_weak_owners_, 1uLL, memory_order_relaxed);
-    *(v21 + 288) = a3;
+    *(pointFeature + 288) = node;
     atomic_fetch_add_explicit(&v24->__shared_weak_owners_, 1uLL, memory_order_relaxed);
   }
 
   else
   {
-    *(v21 + 288) = a3;
+    *(pointFeature + 288) = node;
   }
 
-  v25 = *(v21 + 304);
+  v25 = *(pointFeature + 304);
   *(v22 + 296) = v23;
   *(v22 + 304) = v24;
   if (v25)
@@ -69,15 +69,15 @@
     std::__shared_weak_count::__release_shared[abi:nn200100](v24);
   }
 
-  if (*(a3 + 68) == 1)
+  if (*(node + 68) == 1)
   {
-    *(v22 + 216) = *(a3 + 16);
+    *(v22 + 216) = *(node + 16);
     *(v22 + 220) = 1;
   }
 
-  v26 = *(a3 + 20);
-  v27 = *a5;
-  v28 = *(a5 + 1);
+  v26 = *(node + 20);
+  v27 = *style;
+  v28 = *(style + 1);
   if (v28)
   {
     atomic_fetch_add_explicit(&v28->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -492,7 +492,7 @@
   }
 
   v183 = v92;
-  v103 = *(a3 + 44);
+  v103 = *(node + 44);
   if (v103 >= 6)
   {
     v104 = 6;
@@ -532,12 +532,12 @@
     {
       v109 = mdm::zone_mallocator::instance(v36);
       v110 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v109, v108);
-      v111 = v15;
+      v111 = annotationTextCopy;
     }
 
     else
     {
-      v111 = v15;
+      v111 = annotationTextCopy;
       v110 = 0;
     }
 
@@ -557,7 +557,7 @@
     v170 = v115;
     v171[0] = v115;
     v36 = std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v170);
-    v15 = v111;
+    annotationTextCopy = v111;
   }
 
   else
@@ -567,7 +567,7 @@
   }
 
   v183 = v105;
-  v117 = *(a3 + 181);
+  v117 = *(node + 181);
   if (v105 >= v184)
   {
     v119 = (v105 - v182) >> 3;
@@ -597,12 +597,12 @@
     {
       v122 = mdm::zone_mallocator::instance(v36);
       v123 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v122, v121);
-      v124 = v15;
+      v124 = annotationTextCopy;
     }
 
     else
     {
-      v124 = v15;
+      v124 = annotationTextCopy;
       v123 = 0;
     }
 
@@ -622,7 +622,7 @@
     v170 = v128;
     v171[0] = v128;
     v36 = std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v170);
-    v15 = v124;
+    annotationTextCopy = v124;
   }
 
   else
@@ -718,14 +718,14 @@
       if (v144)
       {
         v145 = mdm::zone_mallocator::instance(v36);
-        v14 = v168;
+        textCopy = v168;
         v146 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v145, v144);
       }
 
       else
       {
         v146 = 0;
-        v14 = v168;
+        textCopy = v168;
       }
 
       v147 = &v146[8 * v142];
@@ -753,7 +753,7 @@ LABEL_178:
 
   *v130 = 65584;
   v141 = (v130 + 8);
-  v14 = v168;
+  textCopy = v168;
 LABEL_145:
   v183 = v141;
   v152 = v177;
@@ -778,25 +778,25 @@ LABEL_145:
     std::__shared_weak_count::__release_shared[abi:nn200100](v153);
   }
 
-  *(v22 + 72) = *(a3 + 2);
-  *(v22 + 80) = *(a3 + 3);
-  if (*(a3 + 112) == 1)
+  *(v22 + 72) = *(node + 2);
+  *(v22 + 80) = *(node + 3);
+  if (*(node + 112) == 1)
   {
     *(v22 + 237) = 1;
-    *(v22 + 256) = *(a3 + 13);
+    *(v22 + 256) = *(node + 13);
   }
 
-  v155 = v14;
-  v16 = v169;
-  md::LabelExternalFeature::addTextForZoom(v22, 0, 3, [v14 UTF8String], 0);
+  v155 = textCopy;
+  localeCopy = v169;
+  md::LabelExternalFeature::addTextForZoom(v22, 0, 3, [textCopy UTF8String], 0);
   if (v26)
   {
     *(v22 + 84) = v26[24];
     v156 = (*(*v26 + 88))(v26);
-    v157 = [v156 feature];
-    v158 = [v157 pointFeature];
+    feature = [v156 feature];
+    pointFeature2 = [feature pointFeature];
 
-    if (v158)
+    if (pointFeature2)
     {
       LOWORD(v170) = 0;
       v176 = 0u;
@@ -805,8 +805,8 @@ LABEL_145:
       v173 = 0u;
       *v171 = 0u;
       *v172 = 0u;
-      v160 = *(v158 + 48);
-      v159 = *(v158 + 56);
+      v160 = *(pointFeature2 + 48);
+      v159 = *(pointFeature2 + 56);
       if (v160 != v159)
       {
         while (*(v160 + 1))
@@ -868,12 +868,12 @@ LABEL_167:
     }
   }
 
-  if ([v15 length])
+  if ([annotationTextCopy length])
   {
-    v163 = v15;
-    v164 = [v15 UTF8String];
+    v163 = annotationTextCopy;
+    uTF8String = [annotationTextCopy UTF8String];
     v165 = v169;
-    md::LabelExternalFeature::addTextForZoom(v22, 0, 2, v164, [v169 UTF8String]);
+    md::LabelExternalFeature::addTextForZoom(v22, 0, 2, uTF8String, [v169 UTF8String]);
   }
 
   v166 = v17;

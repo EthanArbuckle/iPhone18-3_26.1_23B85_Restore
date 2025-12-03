@@ -1,47 +1,47 @@
 @interface VUIDownloadEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)numberOfMediaItemsDownloading;
-- (VUIDownloadEntity)initWithMediaEntities:(id)a3 withDownloadType:(int64_t)a4;
-- (VUIDownloadEntity)initWithMediaEntity:(id)a3 withDownloadType:(int64_t)a4;
+- (VUIDownloadEntity)initWithMediaEntities:(id)entities withDownloadType:(int64_t)type;
+- (VUIDownloadEntity)initWithMediaEntity:(id)entity withDownloadType:(int64_t)type;
 - (VUIDownloadEntityDelegate)delegate;
 - (VUIMediaEntityIdentifier)identifier;
 - (VUIMediaEntityIdentifier)showIdentifier;
 - (unint64_t)hash;
-- (void)_assetControllerStateDidChange:(id)a3;
-- (void)_configureWithMediaEntities:(id)a3;
+- (void)_assetControllerStateDidChange:(id)change;
+- (void)_configureWithMediaEntities:(id)entities;
 - (void)_removeDeletedMediaItemInShowPageIfNeeded;
-- (void)setMediaEntities:(id)a3;
+- (void)setMediaEntities:(id)entities;
 @end
 
 @implementation VUIDownloadEntity
 
-- (VUIDownloadEntity)initWithMediaEntity:(id)a3 withDownloadType:(int64_t)a4
+- (VUIDownloadEntity)initWithMediaEntity:(id)entity withDownloadType:(int64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  entityCopy = entity;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v11 count:1];
+  entityCopy2 = entity;
+  v8 = [v6 arrayWithObjects:&entityCopy count:1];
 
-  v9 = [(VUIDownloadEntity *)self initWithMediaEntities:v8 withDownloadType:a4, v11, v12];
+  v9 = [(VUIDownloadEntity *)self initWithMediaEntities:v8 withDownloadType:type, entityCopy, v12];
   return v9;
 }
 
-- (VUIDownloadEntity)initWithMediaEntities:(id)a3 withDownloadType:(int64_t)a4
+- (VUIDownloadEntity)initWithMediaEntities:(id)entities withDownloadType:(int64_t)type
 {
-  v6 = a3;
+  entitiesCopy = entities;
   v12.receiver = self;
   v12.super_class = VUIDownloadEntity;
   v7 = [(VUIDownloadEntity *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_downloadType = a4;
+    v7->_downloadType = type;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     assetControllers = v8->_assetControllers;
     v8->_assetControllers = v9;
 
-    [(VUIDownloadEntity *)v8 _configureWithMediaEntities:v6];
+    [(VUIDownloadEntity *)v8 _configureWithMediaEntities:entitiesCopy];
   }
 
   return v8;
@@ -74,18 +74,18 @@
         objc_enumerationMutation(v3);
       }
 
-      v9 = [*(*(&v17 + 1) + 8 * i) assetController];
-      v10 = [v9 state];
-      if ([v10 status] == 2)
+      assetController = [*(*(&v17 + 1) + 8 * i) assetController];
+      state = [assetController state];
+      if ([state status] == 2)
       {
       }
 
       else
       {
-        v11 = [v9 state];
-        v12 = [v11 status];
+        state2 = [assetController state];
+        status = [state2 status];
 
-        if (v12 != 1)
+        if (status != 1)
         {
           goto LABEL_10;
         }
@@ -110,21 +110,21 @@ LABEL_14:
   return v15;
 }
 
-- (void)setMediaEntities:(id)a3
+- (void)setMediaEntities:(id)entities
 {
-  v4 = a3;
-  v5 = [(VUIDownloadEntity *)self mediaEntities];
-  v6 = [v5 count];
+  entitiesCopy = entities;
+  mediaEntities = [(VUIDownloadEntity *)self mediaEntities];
+  v6 = [mediaEntities count];
 
-  v7 = [v4 count];
-  [(VUIDownloadEntity *)self _configureWithMediaEntities:v4];
+  v7 = [entitiesCopy count];
+  [(VUIDownloadEntity *)self _configureWithMediaEntities:entitiesCopy];
 
   if (v6 != v7)
   {
-    v8 = [(VUIDownloadEntity *)self delegate];
+    delegate = [(VUIDownloadEntity *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 downloadEntity:self numberOfItemsDidChange:v7];
+      [delegate downloadEntity:self numberOfItemsDidChange:v7];
     }
   }
 }
@@ -136,19 +136,19 @@ LABEL_14:
   {
     if ([(VUIDownloadEntity *)self downloadType])
     {
-      v4 = [(VUIDownloadEntity *)self showIdentifier];
-      v5 = self->_identifier;
-      self->_identifier = v4;
+      showIdentifier = [(VUIDownloadEntity *)self showIdentifier];
+      firstObject = self->_identifier;
+      self->_identifier = showIdentifier;
     }
 
     else
     {
-      v6 = [(VUIDownloadEntity *)self mediaEntities];
-      v5 = [v6 firstObject];
+      mediaEntities = [(VUIDownloadEntity *)self mediaEntities];
+      firstObject = [mediaEntities firstObject];
 
-      v7 = [v5 identifier];
+      identifier = [firstObject identifier];
       v8 = self->_identifier;
-      self->_identifier = v7;
+      self->_identifier = identifier;
     }
 
     identifier = self->_identifier;
@@ -169,12 +169,12 @@ LABEL_14:
 
   if ([(VUIDownloadEntity *)self downloadType]== 1 || [(VUIDownloadEntity *)self downloadType]== 2)
   {
-    v4 = [(VUIDownloadEntity *)self mediaEntities];
-    v5 = [v4 firstObject];
+    mediaEntities = [(VUIDownloadEntity *)self mediaEntities];
+    firstObject = [mediaEntities firstObject];
 
-    v6 = [v5 showIdentifier];
+    showIdentifier = [firstObject showIdentifier];
     v7 = self->_showIdentifier;
-    self->_showIdentifier = v6;
+    self->_showIdentifier = showIdentifier;
 
     showIdentifier = self->_showIdentifier;
 LABEL_5:
@@ -188,27 +188,27 @@ LABEL_6:
   return v8;
 }
 
-- (void)_configureWithMediaEntities:(id)a3
+- (void)_configureWithMediaEntities:(id)entities
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:0];
+  entitiesCopy = entities;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:0];
 
   if ([(NSMutableArray *)self->_assetControllers count])
   {
     [(NSMutableArray *)self->_assetControllers removeAllObjects];
   }
 
-  objc_storeStrong(&self->_mediaEntities, a3);
-  v7 = [v5 firstObject];
-  v8 = v7;
+  objc_storeStrong(&self->_mediaEntities, entities);
+  firstObject = [entitiesCopy firstObject];
+  v8 = firstObject;
   downloadType = self->_downloadType;
   if (downloadType > 1)
   {
     if (downloadType == 2)
     {
-      v11 = [v7 showTitle];
+      showTitle = [firstObject showTitle];
     }
 
     else
@@ -218,48 +218,48 @@ LABEL_6:
         goto LABEL_14;
       }
 
-      v11 = [v7 title];
+      showTitle = [firstObject title];
     }
 
-    v15 = v11;
-    [(VUIDownloadEntity *)self setTitle:v11];
+    v15 = showTitle;
+    [(VUIDownloadEntity *)self setTitle:showTitle];
 
     v16 = v8;
-    v17 = [v16 episodeNumber];
-    [(VUIDownloadEntity *)self setEpisodeNumber:v17];
+    episodeNumber = [v16 episodeNumber];
+    [(VUIDownloadEntity *)self setEpisodeNumber:episodeNumber];
 
-    v18 = [v16 fractionalEpisodeNumber];
-    [(VUIDownloadEntity *)self setFractionalEpisodeNumber:v18];
+    fractionalEpisodeNumber = [v16 fractionalEpisodeNumber];
+    [(VUIDownloadEntity *)self setFractionalEpisodeNumber:fractionalEpisodeNumber];
 
-    v19 = [v16 duration];
+    duration = [v16 duration];
 
-    [(VUIDownloadEntity *)self setDuration:v19];
+    [(VUIDownloadEntity *)self setDuration:duration];
     goto LABEL_13;
   }
 
   if (!downloadType)
   {
-    v12 = [v7 title];
-    [(VUIDownloadEntity *)self setTitle:v12];
+    title = [firstObject title];
+    [(VUIDownloadEntity *)self setTitle:title];
 
     [(VUIDownloadEntity *)self setDownloadType:0];
-    v13 = [v8 releaseYear];
-    [(VUIDownloadEntity *)self setReleaseYear:v13];
+    releaseYear = [v8 releaseYear];
+    [(VUIDownloadEntity *)self setReleaseYear:releaseYear];
 
-    v14 = [v8 duration];
-    [(VUIDownloadEntity *)self setDuration:v14];
+    duration2 = [v8 duration];
+    [(VUIDownloadEntity *)self setDuration:duration2];
 
     goto LABEL_13;
   }
 
   if (downloadType == 1)
   {
-    v10 = [v7 showTitle];
-    [(VUIDownloadEntity *)self setTitle:v10];
+    showTitle2 = [firstObject showTitle];
+    [(VUIDownloadEntity *)self setTitle:showTitle2];
 
     [(VUIDownloadEntity *)self setDownloadType:1];
 LABEL_13:
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(entitiesCopy, "count")}];
     [(VUIDownloadEntity *)self setNumberOfMediaItems:v20];
   }
 
@@ -286,12 +286,12 @@ LABEL_14:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v30 + 1) + 8 * v25) assetController];
-          if (v26)
+          assetController = [*(*(&v30 + 1) + 8 * v25) assetController];
+          if (assetController)
           {
-            [(NSMutableArray *)self->_assetControllers addObject:v26];
-            v27 = [MEMORY[0x1E696AD88] defaultCenter];
-            [v27 addObserver:self selector:sel__assetControllerStateDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v26];
+            [(NSMutableArray *)self->_assetControllers addObject:assetController];
+            defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+            [defaultCenter2 addObserver:self selector:sel__assetControllerStateDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:assetController];
           }
 
           ++v25;
@@ -305,7 +305,7 @@ LABEL_14:
     }
 
     v8 = v28;
-    v5 = v29;
+    entitiesCopy = v29;
   }
 }
 
@@ -319,7 +319,7 @@ LABEL_14:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v15 = self;
+    selfCopy = self;
     v4 = self->_mediaEntities;
     v5 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v5)
@@ -339,11 +339,11 @@ LABEL_14:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 assetController];
-        v11 = [v10 state];
-        v12 = [v11 status];
+        assetController = [v9 assetController];
+        state = [assetController state];
+        status = [state status];
 
-        if (v12)
+        if (status)
         {
 LABEL_9:
           [v3 addObject:v9];
@@ -360,9 +360,9 @@ LABEL_9:
 
           else
           {
-            v14 = [v13 downloadExpirationDate];
+            downloadExpirationDate = [v13 downloadExpirationDate];
 
-            if (v14)
+            if (downloadExpirationDate)
             {
               goto LABEL_9;
             }
@@ -377,68 +377,68 @@ LABEL_14:
       {
 LABEL_16:
 
-        [(VUIDownloadEntity *)v15 setMediaEntities:v3];
+        [(VUIDownloadEntity *)selfCopy setMediaEntities:v3];
         return;
       }
     }
   }
 }
 
-- (void)_assetControllerStateDidChange:(id)a3
+- (void)_assetControllerStateDidChange:(id)change
 {
-  v8 = [a3 object];
-  v4 = [v8 state];
-  v5 = [v4 status];
+  object = [change object];
+  state = [object state];
+  status = [state status];
 
-  if (!v5)
+  if (!status)
   {
     [(VUIDownloadEntity *)self _removeDeletedMediaItemInShowPageIfNeeded];
   }
 
-  v6 = [(VUIDownloadEntity *)self delegate];
+  delegate = [(VUIDownloadEntity *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(VUIDownloadEntity *)self numberOfMediaItemsDownloading];
-    if (![v7 intValue])
+    numberOfMediaItemsDownloading = [(VUIDownloadEntity *)self numberOfMediaItemsDownloading];
+    if (![numberOfMediaItemsDownloading intValue])
     {
       [(VUIDownloadEntity *)self setDownloadType:1];
     }
 
-    [v6 downloadEntity:self numberOfItemsDownloadingDidChange:v7];
+    [delegate downloadEntity:self numberOfItemsDownloadingDidChange:numberOfMediaItemsDownloading];
   }
 }
 
 - (unint64_t)hash
 {
-  v3 = [(VUIDownloadEntity *)self downloadType];
-  v4 = [(VUIDownloadEntity *)self identifier];
-  v5 = v3 ^ (2 * [v4 hash]);
+  downloadType = [(VUIDownloadEntity *)self downloadType];
+  identifier = [(VUIDownloadEntity *)self identifier];
+  v5 = downloadType ^ (2 * [identifier hash]);
 
-  v6 = [(VUIDownloadEntity *)self mediaEntities];
-  v7 = v5 ^ (8 * [v6 count]);
+  mediaEntities = [(VUIDownloadEntity *)self mediaEntities];
+  v7 = v5 ^ (8 * [mediaEntities count]);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIDownloadEntity *)self downloadType];
-    if (v7 == -[VUIDownloadEntity downloadType](v6, "downloadType") && (-[VUIDownloadEntity identifier](self, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[VUIDownloadEntity identifier](v6, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqual:v9], v9, v8, v10))
+    downloadType = [(VUIDownloadEntity *)self downloadType];
+    if (downloadType == -[VUIDownloadEntity downloadType](v6, "downloadType") && (-[VUIDownloadEntity identifier](self, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[VUIDownloadEntity identifier](v6, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqual:v9], v9, v8, v10))
     {
-      v11 = [(VUIDownloadEntity *)self mediaEntities];
-      v12 = [v11 count];
-      v13 = [(VUIDownloadEntity *)v6 mediaEntities];
-      v14 = v12 == [v13 count];
+      mediaEntities = [(VUIDownloadEntity *)self mediaEntities];
+      v12 = [mediaEntities count];
+      mediaEntities2 = [(VUIDownloadEntity *)v6 mediaEntities];
+      v14 = v12 == [mediaEntities2 count];
     }
 
     else

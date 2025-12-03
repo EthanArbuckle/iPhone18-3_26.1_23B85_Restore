@@ -1,20 +1,20 @@
 @interface STGroupFetchedResultsController
-- (STGroupFetchedResultsController)initWithResultsRequests:(id)a3 cacheName:(id)a4 managedObjectContext:(id)a5;
+- (STGroupFetchedResultsController)initWithResultsRequests:(id)requests cacheName:(id)name managedObjectContext:(id)context;
 - (STGroupFetchedResultsControllerDelegate)delegate;
 - (void)_evaluateCounter;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
 @end
 
 @implementation STGroupFetchedResultsController
 
-- (STGroupFetchedResultsController)initWithResultsRequests:(id)a3 cacheName:(id)a4 managedObjectContext:(id)a5
+- (STGroupFetchedResultsController)initWithResultsRequests:(id)requests cacheName:(id)name managedObjectContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v30 = a5;
+  requestsCopy = requests;
+  nameCopy = name;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = STGroupFetchedResultsController;
   v9 = [(STGroupFetchedResultsController *)&v37 init];
@@ -26,8 +26,8 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v8;
-    obj = v8;
+    v28 = requestsCopy;
+    obj = requestsCopy;
     v12 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v12)
     {
@@ -44,14 +44,14 @@
 
           v16 = *(*(&v33 + 1) + 8 * i);
           v17 = objc_alloc(MEMORY[0x1E695D600]);
-          v18 = [v16 fetchRequest];
-          v19 = [v17 initWithFetchRequest:v18 managedObjectContext:v30 sectionNameKeyPath:0 cacheName:v31];
+          fetchRequest = [v16 fetchRequest];
+          v19 = [v17 initWithFetchRequest:fetchRequest managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:nameCopy];
 
           [v19 setDelegate:v9];
           v32 = 0;
-          LOBYTE(v18) = [v19 performFetch:&v32];
+          LOBYTE(fetchRequest) = [v19 performFetch:&v32];
           v20 = v32;
-          if ((v18 & 1) == 0)
+          if ((fetchRequest & 1) == 0)
           {
             v21 = +[STLog persistence];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -87,46 +87,46 @@ LABEL_14:
     v9->_resultsRequests = v24;
 
     v9->_changeCounter = 0;
-    v8 = v28;
+    requestsCopy = v28;
   }
 
   v26 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v10 = a3;
-  v11 = a4;
+  controllerCopy = controller;
+  objectCopy = object;
   v12 = +[STLog persistence];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [STGroupFetchedResultsController controller:v10 didChangeObject:v11 atIndexPath:v12 forChangeType:? newIndexPath:?];
+    [STGroupFetchedResultsController controller:controllerCopy didChangeObject:objectCopy atIndexPath:v12 forChangeType:? newIndexPath:?];
   }
 
-  v13 = [(STGroupFetchedResultsController *)self delegate];
+  delegate = [(STGroupFetchedResultsController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(STGroupFetchedResultsController *)self resultsControllers];
-    v15 = [v14 indexOfObject:v10];
+    resultsControllers = [(STGroupFetchedResultsController *)self resultsControllers];
+    v15 = [resultsControllers indexOfObject:controllerCopy];
 
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [(STGroupFetchedResultsController *)self resultsRequests];
-      v17 = [v16 objectAtIndexedSubscript:v15];
+      resultsRequests = [(STGroupFetchedResultsController *)self resultsRequests];
+      v17 = [resultsRequests objectAtIndexedSubscript:v15];
 
-      v18 = [v10 managedObjectContext];
+      managedObjectContext = [controllerCopy managedObjectContext];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __101__STGroupFetchedResultsController_controller_didChangeObject_atIndexPath_forChangeType_newIndexPath___block_invoke;
       v20[3] = &unk_1E7CE76B8;
-      v21 = v11;
-      v22 = v13;
-      v23 = self;
+      v21 = objectCopy;
+      v22 = delegate;
+      selfCopy = self;
       v24 = v17;
-      v25 = a6;
+      typeCopy = type;
       v19 = v17;
-      [v18 performBlock:v20];
+      [managedObjectContext performBlock:v20];
     }
   }
 }
@@ -137,7 +137,7 @@ void __101__STGroupFetchedResultsController_controller_didChangeObject_atIndexPa
   [*(a1 + 40) groupResultsController:*(a1 + 48) didChangeResultsForRequest:*(a1 + 56) objectID:v2 changeType:*(a1 + 64)];
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
   [(STGroupFetchedResultsController *)self setChangeCounter:[(STGroupFetchedResultsController *)self changeCounter]+ 1];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__evaluateCounter object:self];
@@ -145,7 +145,7 @@ void __101__STGroupFetchedResultsController_controller_didChangeObject_atIndexPa
   [(STGroupFetchedResultsController *)self performSelector:sel__evaluateCounter withObject:self afterDelay:1.0];
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   [(STGroupFetchedResultsController *)self setChangeCounter:[(STGroupFetchedResultsController *)self changeCounter]- 1];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__evaluateCounter object:self];
@@ -157,10 +157,10 @@ void __101__STGroupFetchedResultsController_controller_didChangeObject_atIndexPa
 {
   if (![(STGroupFetchedResultsController *)self changeCounter])
   {
-    v3 = [(STGroupFetchedResultsController *)self delegate];
+    delegate = [(STGroupFetchedResultsController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 groupResultsControllerDidChangeContents:self];
+      [delegate groupResultsControllerDidChangeContents:self];
     }
   }
 }

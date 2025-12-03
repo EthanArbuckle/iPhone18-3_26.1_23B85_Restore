@@ -1,26 +1,26 @@
 @interface VUIMPShowMediaCollection
-- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)a3 mediaItemCollection:(id)a4 identifier:(id)a5 requestedProperties:(id)a6 kind:(id)a7;
-- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)a3 mediaItemCollection:(id)a4 requestedProperties:(id)a5;
+- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)library mediaItemCollection:(id)collection identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind;
+- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)library mediaItemCollection:(id)collection requestedProperties:(id)properties;
 - (id)seasonCount;
 @end
 
 @implementation VUIMPShowMediaCollection
 
-- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)a3 mediaItemCollection:(id)a4 requestedProperties:(id)a5
+- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)library mediaItemCollection:(id)collection requestedProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  libraryCopy = library;
+  collectionCopy = collection;
+  propertiesCopy = properties;
+  if (libraryCopy)
   {
-    if (v9)
+    if (collectionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaItemCollection"}];
-    if (v10)
+    if (propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -29,13 +29,13 @@ LABEL_7:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
-  if (!v9)
+  if (!collectionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (v10)
+  if (propertiesCopy)
   {
     goto LABEL_4;
   }
@@ -43,28 +43,28 @@ LABEL_3:
 LABEL_8:
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"requestedProperties"}];
 LABEL_4:
-  v11 = [v9 representativeItem];
-  v12 = [VUIMPMediaEntityIdentifier showIdentifierWithMediaItem:v11];
+  representativeItem = [collectionCopy representativeItem];
+  v12 = [VUIMPMediaEntityIdentifier showIdentifierWithMediaItem:representativeItem];
   if (v12)
   {
     v13 = VUIMPShowMediaCollectionKind();
     v17.receiver = self;
     v17.super_class = VUIMPShowMediaCollection;
-    v14 = [(VUIMPMediaCollection *)&v17 initWithMediaLibrary:v8 mediaItemCollection:v9 identifier:v12 requestedProperties:v10 kind:v13];
+    v14 = [(VUIMPMediaCollection *)&v17 initWithMediaLibrary:libraryCopy mediaItemCollection:collectionCopy identifier:v12 requestedProperties:propertiesCopy kind:v13];
 
     self = v14;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)a3 mediaItemCollection:(id)a4 identifier:(id)a5 requestedProperties:(id)a6 kind:(id)a7
+- (VUIMPShowMediaCollection)initWithMediaLibrary:(id)library mediaItemCollection:(id)collection identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind
 {
   v8 = MEMORY[0x1E695DF30];
   v9 = *MEMORY[0x1E695D940];

@@ -1,18 +1,18 @@
 @interface BSXPCServiceConnectionListener
-+ (id)listenerForSpecification:(uint64_t)a1;
++ (id)listenerForSpecification:(uint64_t)specification;
 - (BOOL)_isClientInvalidated;
 - (BOOL)_isInvalidated;
 - (BSXPCServiceConnectionListener)init;
 - (id)endpoint;
-- (void)_invalidateWithLockBlock:(uint64_t)a1;
-- (void)_noteChildConnectionDidInvalidate:(id)a3;
-- (void)configure:(uint64_t)a1;
+- (void)_invalidateWithLockBlock:(uint64_t)block;
+- (void)_noteChildConnectionDidInvalidate:(id)invalidate;
+- (void)configure:(uint64_t)configure;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)setConnectionHandler:(id)a3;
-- (void)setErrorHandler:(id)a3;
-- (void)suspendWithCompletion:(uint64_t)a1;
+- (void)setConnectionHandler:(id)handler;
+- (void)setErrorHandler:(id)handler;
+- (void)suspendWithCompletion:(uint64_t)completion;
 @end
 
 @implementation BSXPCServiceConnectionListener
@@ -20,10 +20,10 @@
 - (void)resume
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 98) == 1)
+    os_unfair_lock_lock((self + 88));
+    if (*(self + 98) == 1)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot resume after invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
         v26 = 2114;
         v27 = v12;
         v28 = 2048;
-        v29 = a1;
+        selfCopy3 = self;
         v30 = 2114;
         v31 = @"BSXPCServiceConnectionListener.m";
         v32 = 1024;
@@ -53,7 +53,7 @@
       JUMPOUT(0x19A82D63CLL);
     }
 
-    if ((*(a1 + 94) & 1) == 0)
+    if ((*(self + 94) & 1) == 0)
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must be configured before resume"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@
         v26 = 2114;
         v27 = v17;
         v28 = 2048;
-        v29 = a1;
+        selfCopy3 = self;
         v30 = 2114;
         v31 = @"BSXPCServiceConnectionListener.m";
         v32 = 1024;
@@ -83,7 +83,7 @@
       JUMPOUT(0x19A82D734);
     }
 
-    if (*(a1 + 96) == 1)
+    if (*(self + 96) == 1)
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call suspend before calling resume a second time"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -96,7 +96,7 @@
         v26 = 2114;
         v27 = v22;
         v28 = 2048;
-        v29 = a1;
+        selfCopy3 = self;
         v30 = 2114;
         v31 = @"BSXPCServiceConnectionListener.m";
         v32 = 1024;
@@ -113,16 +113,16 @@
       JUMPOUT(0x19A82D82CLL);
     }
 
-    *(a1 + 96) = 1;
-    if ((*(a1 + 97) & 1) == 0)
+    *(self + 96) = 1;
+    if ((*(self + 97) & 1) == 0)
     {
-      if (*(a1 + 95) == 1)
+      if (*(self + 95) == 1)
       {
         v2 = BSServiceXPCLog();
         if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
         {
-          v3 = *(a1 + 16);
-          v4 = *(a1 + 32);
+          v3 = *(self + 16);
+          v4 = *(self + 32);
           v24 = 138543618;
           v25 = v3;
           v26 = 2112;
@@ -130,17 +130,17 @@
           _os_log_impl(&dword_19A821000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@ Resumed %@", &v24, 0x16u);
         }
 
-        xpc_connection_resume(*(a1 + 64));
+        xpc_connection_resume(*(self + 64));
       }
 
       else
       {
-        *(a1 + 95) = 1;
+        *(self + 95) = 1;
         v5 = BSServiceXPCLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = *(a1 + 16);
-          v7 = *(a1 + 32);
+          v6 = *(self + 16);
+          v7 = *(self + 32);
           v24 = 138543618;
           v25 = v6;
           v26 = 2112;
@@ -148,14 +148,14 @@
           _os_log_impl(&dword_19A821000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Activated %@", &v24, 0x16u);
         }
 
-        if ((*(a1 + 93) & 1) == 0)
+        if ((*(self + 93) & 1) == 0)
         {
-          xpc_connection_activate(*(a1 + 64));
+          xpc_connection_activate(*(self + 64));
         }
       }
     }
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -164,12 +164,12 @@
 - (id)endpoint
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 94) != 1)
+    os_unfair_lock_lock((self + 88));
+    if (*(self + 94) != 1)
     {
-      os_unfair_lock_unlock((a1 + 88));
+      os_unfair_lock_unlock((self + 88));
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"asked for endpoint before sealing the listener configuration"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -181,7 +181,7 @@
         v12 = 2114;
         v13 = v8;
         v14 = 2048;
-        v15 = a1;
+        selfCopy = self;
         v16 = 2114;
         v17 = @"BSXPCServiceConnectionListener.m";
         v18 = 1024;
@@ -198,9 +198,9 @@
       JUMPOUT(0x19A82F6A4);
     }
 
-    v2 = *(a1 + 80);
-    os_unfair_lock_unlock((a1 + 88));
-    os_unfair_lock_assert_not_owner((a1 + 88));
+    v2 = *(self + 80);
+    os_unfair_lock_unlock((self + 88));
+    os_unfair_lock_assert_not_owner((self + 88));
   }
 
   else
@@ -227,7 +227,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSXPCServiceConnectionListener.m";
     v18 = 1024;
@@ -272,7 +272,7 @@
       v16 = 2114;
       v17 = v11;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BSXPCServiceConnectionListener.m";
       v22 = 1024;
@@ -295,7 +295,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)listenerForSpecification:(uint64_t)a1
++ (id)listenerForSpecification:(uint64_t)specification
 {
   v66 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
@@ -338,13 +338,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v43 = MEMORY[0x1E696AEC0];
-    v44 = [v4 classForCoder];
-    if (!v44)
+    classForCoder = [v4 classForCoder];
+    if (!classForCoder)
     {
-      v44 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v45 = NSStringFromClass(v44);
+    v45 = NSStringFromClass(classForCoder);
     v46 = objc_opt_class();
     v47 = NSStringFromClass(v46);
     v48 = [v43 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"specification", v45, v47];
@@ -392,8 +392,8 @@
       *(v8 + 2) = v9;
 
       objc_storeStrong(v8 + 3, a2);
-      v11 = [v4 machName];
-      v12 = v11;
+      machName = [v4 machName];
+      v12 = machName;
       if (v4[9] == 4)
       {
         v13 = __xpcInstance();
@@ -404,17 +404,17 @@
         *(v8 + 93) = 1;
       }
 
-      else if (v11)
+      else if (machName)
       {
-        v16 = BSServiceConnectionEndpointTargetDescriptionForMachName(v11, 0);
+        v16 = BSServiceConnectionEndpointTargetDescriptionForMachName(machName, 0);
         v17 = *(v8 + 4);
         *(v8 + 4) = v16;
       }
 
       else
       {
-        v18 = [v4 identifier];
-        v19 = BSServiceConnectionEndpointTargetDescriptionForAnonymousDomain(v18);
+        identifier = [v4 identifier];
+        v19 = BSServiceConnectionEndpointTargetDescriptionForAnonymousDomain(identifier);
         v20 = *(v8 + 4);
         *(v8 + 4) = v19;
 
@@ -468,10 +468,10 @@
   return v8;
 }
 
-- (void)configure:(uint64_t)a1
+- (void)configure:(uint64_t)configure
 {
   v104 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (configure)
   {
     if (!a2)
     {
@@ -486,7 +486,7 @@
         v94 = 2114;
         v95 = v49;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -503,8 +503,8 @@
       JUMPOUT(0x19A8680FCLL);
     }
 
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 94) == 1)
+    os_unfair_lock_lock((configure + 88));
+    if (*(configure + 94) == 1)
     {
       v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot configure after sealing"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -517,7 +517,7 @@
         v94 = 2114;
         v95 = v54;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -534,7 +534,7 @@
       JUMPOUT(0x19A8681F4);
     }
 
-    if (*(a1 + 98) == 1)
+    if (*(configure + 98) == 1)
     {
       v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot configure after invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -547,7 +547,7 @@
         v94 = 2114;
         v95 = v59;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -564,7 +564,7 @@
       JUMPOUT(0x19A8682ECLL);
     }
 
-    if (*(a1 + 97) == 1)
+    if (*(configure + 97) == 1)
     {
       v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sanity - this shouldn't be possible"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -577,7 +577,7 @@
         v94 = 2114;
         v95 = v64;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -594,8 +594,8 @@
       JUMPOUT(0x19A8683E4);
     }
 
-    (*(a2 + 16))(a2, a1);
-    if (*(a1 + 95) == 1)
+    (*(a2 + 16))(a2, configure);
+    if (*(configure + 95) == 1)
     {
       v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot seal after activation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -608,7 +608,7 @@
         v94 = 2114;
         v95 = v69;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -625,7 +625,7 @@
       JUMPOUT(0x19A8684DCLL);
     }
 
-    if (*(a1 + 98) == 1)
+    if (*(configure + 98) == 1)
     {
       v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot seal after invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -638,7 +638,7 @@
         v94 = 2114;
         v95 = v74;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -655,7 +655,7 @@
       JUMPOUT(0x19A8685D4);
     }
 
-    if (*(a1 + 94) == 1)
+    if (*(configure + 94) == 1)
     {
       v76 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot seal twice"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -668,7 +668,7 @@
         v94 = 2114;
         v95 = v79;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -685,7 +685,7 @@
       JUMPOUT(0x19A8686CCLL);
     }
 
-    if (!*(a1 + 48))
+    if (!*(configure + 48))
     {
       v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"connection handler must be set before sealing"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -698,7 +698,7 @@
         v94 = 2114;
         v95 = v84;
         v96 = 2048;
-        v97 = a1;
+        configureCopy8 = configure;
         v98 = 2114;
         v99 = @"BSXPCServiceConnectionListener.m";
         v100 = 1024;
@@ -715,12 +715,12 @@
       JUMPOUT(0x19A8687C4);
     }
 
-    *(a1 + 94) = 1;
+    *(configure + 94) = 1;
     v4 = BSServiceXPCLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = *(a1 + 16);
-      v6 = *(a1 + 32);
+      v5 = *(configure + 16);
+      v6 = *(configure + 32);
       *buf = 138543618;
       v93 = v5;
       v94 = 2112;
@@ -728,8 +728,8 @@
       _os_log_impl(&dword_19A821000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Sealed %@", buf, 0x16u);
     }
 
-    v7 = *(a1 + 24);
-    if (*(a1 + 93) == 1)
+    v7 = *(configure + 24);
+    if (*(configure + 93) == 1)
     {
       if (v7)
       {
@@ -744,12 +744,12 @@
       v9 = v8;
       v10 = v9;
       [v9 UTF8String];
-      v11 = [*(a1 + 40) queue];
+      queue = [*(configure + 40) queue];
       bs_service_listener = xpc_connection_create_bs_service_listener();
-      v13 = *(a1 + 64);
-      *(a1 + 64) = bs_service_listener;
+      v13 = *(configure + 64);
+      *(configure + 64) = bs_service_listener;
 
-      v14 = *(a1 + 64);
+      v14 = *(configure + 64);
       xpc_connection_set_bs_type();
       v15 = __xpcInstance();
       v16 = 0;
@@ -757,30 +757,30 @@
 
     else
     {
-      v17 = [v7 machName];
-      v18 = v17;
-      if (v17)
+      machName = [v7 machName];
+      v18 = machName;
+      if (machName)
       {
-        v19 = v17;
-        v20 = [v18 UTF8String];
-        v21 = [*(a1 + 40) queue];
-        mach_service = xpc_connection_create_mach_service(v20, v21, 1uLL);
-        v23 = *(a1 + 64);
-        *(a1 + 64) = mach_service;
+        v19 = machName;
+        uTF8String = [v18 UTF8String];
+        queue2 = [*(configure + 40) queue];
+        mach_service = xpc_connection_create_mach_service(uTF8String, queue2, 1uLL);
+        v23 = *(configure + 64);
+        *(configure + 64) = mach_service;
 
-        v24 = *(a1 + 64);
+        v24 = *(configure + 64);
         xpc_connection_set_bs_type();
         v16 = 0;
       }
 
       else
       {
-        v25 = [*(a1 + 40) queue];
-        v26 = xpc_connection_create(0, v25);
-        v27 = *(a1 + 64);
-        *(a1 + 64) = v26;
+        queue3 = [*(configure + 40) queue];
+        v26 = xpc_connection_create(0, queue3);
+        v27 = *(configure + 64);
+        *(configure + 64) = v26;
 
-        v28 = *(a1 + 64);
+        v28 = *(configure + 64);
         xpc_connection_set_bs_type();
         v16 = getpid();
       }
@@ -788,12 +788,12 @@
       v15 = 0;
     }
 
-    objc_initWeak(buf, a1);
-    v29 = *(a1 + 16);
-    v30 = MEMORY[0x19A908200](*(a1 + 48));
-    v31 = MEMORY[0x19A908200](*(a1 + 56));
-    v32 = *(a1 + 92);
-    v33 = *(a1 + 64);
+    objc_initWeak(buf, configure);
+    v29 = *(configure + 16);
+    v30 = MEMORY[0x19A908200](*(configure + 48));
+    v31 = MEMORY[0x19A908200](*(configure + 56));
+    v32 = *(configure + 92);
+    v33 = *(configure + 64);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __44__BSXPCServiceConnectionListener_configure___block_invoke;
@@ -807,21 +807,21 @@
     v89 = v36;
     v91 = v32;
     xpc_connection_set_event_handler(v33, handler);
-    v37 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v37 = *(configure + 48);
+    *(configure + 48) = 0;
 
-    v38 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    v38 = *(configure + 56);
+    *(configure + 56) = 0;
 
-    v39 = *(a1 + 64);
+    v39 = *(configure + 64);
     v40 = xpc_connection_bs_seal_listener();
-    v41 = *(a1 + 64);
+    v41 = *(configure + 64);
     bs_type = xpc_connection_get_bs_type();
-    v43 = [[BSXPCServiceConnectionEndpoint alloc] initWithXPCEndpoint:v40 oneshot:v15 nonLaunching:bs_type == 3 targetPID:v16 targetDescription:*(a1 + 32)];
-    v44 = *(a1 + 80);
-    *(a1 + 80) = v43;
+    v43 = [[BSXPCServiceConnectionEndpoint alloc] initWithXPCEndpoint:v40 oneshot:v15 nonLaunching:bs_type == 3 targetPID:v16 targetDescription:*(configure + 32)];
+    v44 = *(configure + 80);
+    *(configure + 80) = v43;
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((configure + 88));
     objc_destroyWeak(&v90);
 
     objc_destroyWeak(buf);
@@ -952,12 +952,12 @@ LABEL_26:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)suspendWithCompletion:(uint64_t)a1
+- (void)suspendWithCompletion:(uint64_t)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (completion)
   {
-    if (*(a1 + 93) == 1)
+    if (*(completion + 93) == 1)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xpc services cannot be suspended"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -970,7 +970,7 @@ LABEL_26:
         v37 = 2114;
         v38 = v12;
         v39 = 2048;
-        v40 = a1;
+        completionCopy5 = completion;
         v41 = 2114;
         v42 = @"BSXPCServiceConnectionListener.m";
         v43 = 1024;
@@ -987,8 +987,8 @@ LABEL_26:
       JUMPOUT(0x19A868F20);
     }
 
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 98) == 1)
+    os_unfair_lock_lock((completion + 88));
+    if (*(completion + 98) == 1)
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot suspend after invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1001,7 +1001,7 @@ LABEL_26:
         v37 = 2114;
         v38 = v17;
         v39 = 2048;
-        v40 = a1;
+        completionCopy5 = completion;
         v41 = 2114;
         v42 = @"BSXPCServiceConnectionListener.m";
         v43 = 1024;
@@ -1018,7 +1018,7 @@ LABEL_26:
       JUMPOUT(0x19A869018);
     }
 
-    if ((*(a1 + 96) & 1) == 0)
+    if ((*(completion + 96) & 1) == 0)
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call resume before calling suspend"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1031,7 +1031,7 @@ LABEL_26:
         v37 = 2114;
         v38 = v22;
         v39 = 2048;
-        v40 = a1;
+        completionCopy5 = completion;
         v41 = 2114;
         v42 = @"BSXPCServiceConnectionListener.m";
         v43 = 1024;
@@ -1048,7 +1048,7 @@ LABEL_26:
       JUMPOUT(0x19A869110);
     }
 
-    if ((*(a1 + 94) & 1) == 0)
+    if ((*(completion + 94) & 1) == 0)
     {
       v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sanity - this shouldn't be possible"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1061,7 +1061,7 @@ LABEL_26:
         v37 = 2114;
         v38 = v27;
         v39 = 2048;
-        v40 = a1;
+        completionCopy5 = completion;
         v41 = 2114;
         v42 = @"BSXPCServiceConnectionListener.m";
         v43 = 1024;
@@ -1078,7 +1078,7 @@ LABEL_26:
       JUMPOUT(0x19A869208);
     }
 
-    if ((*(a1 + 95) & 1) == 0)
+    if ((*(completion + 95) & 1) == 0)
     {
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sanity - this shouldn't be possible"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1091,7 +1091,7 @@ LABEL_26:
         v37 = 2114;
         v38 = v32;
         v39 = 2048;
-        v40 = a1;
+        completionCopy5 = completion;
         v41 = 2114;
         v42 = @"BSXPCServiceConnectionListener.m";
         v43 = 1024;
@@ -1108,15 +1108,15 @@ LABEL_26:
       JUMPOUT(0x19A869300);
     }
 
-    *(a1 + 96) = 0;
-    if ((*(a1 + 97) & 1) == 0)
+    *(completion + 96) = 0;
+    if ((*(completion + 97) & 1) == 0)
     {
-      xpc_connection_suspend(*(a1 + 64));
+      xpc_connection_suspend(*(completion + 64));
       v4 = BSServiceXPCLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = *(a1 + 16);
-        v6 = *(a1 + 32);
+        v5 = *(completion + 16);
+        v6 = *(completion + 32);
         *buf = 138543618;
         v36 = v5;
         v37 = 2112;
@@ -1125,15 +1125,15 @@ LABEL_26:
       }
     }
 
-    v7 = *(a1 + 40);
+    v7 = *(completion + 40);
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __56__BSXPCServiceConnectionListener_suspendWithCompletion___block_invoke;
     v34[3] = &unk_1E7520648;
-    v34[4] = a1;
+    v34[4] = completion;
     v34[5] = a2;
     [v7 performAsync:v34];
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((completion + 88));
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1248,7 +1248,7 @@ void __56__BSXPCServiceConnectionListener_suspendWithCompletion___block_invoke(u
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSXPCServiceConnectionListener.m";
       v19 = 1024;
@@ -1317,14 +1317,14 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
   return result;
 }
 
-- (void)_invalidateWithLockBlock:(uint64_t)a1
+- (void)_invalidateWithLockBlock:(uint64_t)block
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 88));
-    (*(a2 + 16))(a2, a1);
-    if (*(a1 + 97))
+    os_unfair_lock_lock((block + 88));
+    (*(a2 + 16))(a2, block);
+    if (*(block + 97))
     {
       v4 = 0;
       v5 = 0;
@@ -1334,29 +1334,29 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
 
     else
     {
-      *(a1 + 97) = 1;
-      v7 = *(a1 + 72);
-      v8 = *(a1 + 72);
-      *(a1 + 72) = 0;
+      *(block + 97) = 1;
+      v7 = *(block + 72);
+      v8 = *(block + 72);
+      *(block + 72) = 0;
 
-      v6 = *(a1 + 64);
-      if ((*(a1 + 93) & 1) == 0)
+      v6 = *(block + 64);
+      if ((*(block + 93) & 1) == 0)
       {
-        v9 = *(a1 + 64);
-        *(a1 + 64) = 0;
+        v9 = *(block + 64);
+        *(block + 64) = 0;
       }
 
-      v10 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v10 = *(block + 48);
+      *(block + 48) = 0;
 
-      v11 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v11 = *(block + 56);
+      *(block + 56) = 0;
 
-      v4 = *(a1 + 96);
-      v5 = *(a1 + 95);
+      v4 = *(block + 96);
+      v5 = *(block + 95);
     }
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((block + 88));
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -1380,7 +1380,7 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
           }
 
           v18 = *(*(&v37 + 1) + 8 * v16);
-          if (*(a1 + 92))
+          if (*(block + 92))
           {
             v19 = 1;
           }
@@ -1407,20 +1407,20 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
 
     if (v6)
     {
-      v20 = *(a1 + 92);
+      v20 = *(block + 92);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __59__BSXPCServiceConnectionListener__invalidateWithLockBlock___block_invoke;
       handler[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
       v35 = v20;
       xpc_connection_set_event_handler(v6, handler);
-      if (*(a1 + 93) == 1)
+      if (*(block + 93) == 1)
       {
         v21 = BSServiceXPCErrorsLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = *(a1 + 16);
-          v23 = *(a1 + 32);
+          v22 = *(block + 16);
+          v23 = *(block + 32);
           *buf = 138543618;
           v43 = v22;
           v44 = 2114;
@@ -1478,10 +1478,10 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnectionHandler:(id)a3
+- (void)setConnectionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1494,7 +1494,7 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BSXPCServiceConnectionListener.m";
       v22 = 1024;
@@ -1512,16 +1512,16 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = MEMORY[0x19A908200](a3);
+  v5 = MEMORY[0x19A908200](handler);
   lock_connectionHandler = self->_lock_connectionHandler;
   self->_lock_connectionHandler = v5;
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1534,7 +1534,7 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BSXPCServiceConnectionListener.m";
       v22 = 1024;
@@ -1552,7 +1552,7 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = MEMORY[0x19A908200](a3);
+  v5 = MEMORY[0x19A908200](handler);
   lock_errorHandler = self->_lock_errorHandler;
   self->_lock_errorHandler = v5;
   v7 = *MEMORY[0x1E69E9840];
@@ -1574,17 +1574,17 @@ uint64_t __44__BSXPCServiceConnectionListener_invalidate__block_invoke(uint64_t 
   return lock_clientInvalidated;
 }
 
-- (void)_noteChildConnectionDidInvalidate:(id)a3
+- (void)_noteChildConnectionDidInvalidate:(id)invalidate
 {
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSHashTable *)self->_lock_childConnections containsObject:a3])
+  if ([(NSHashTable *)self->_lock_childConnections containsObject:invalidate])
   {
-    [(NSHashTable *)self->_lock_childConnections removeObject:a3];
+    [(NSHashTable *)self->_lock_childConnections removeObject:invalidate];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  [(BSXPCServiceConnection *)a3 _setParent:?];
+  [(BSXPCServiceConnection *)invalidate _setParent:?];
 }
 
 void __59__BSXPCServiceConnectionListener__invalidateWithLockBlock___block_invoke(uint64_t a1, void *a2)

@@ -1,7 +1,7 @@
 @interface CRLiOSTapGestureRecognizer
 - (CGPoint)firstTapLocation;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CRLiOSTapGestureRecognizer
@@ -17,49 +17,49 @@
   [(CRLiOSTapGestureRecognizer *)&v2 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 allTouches];
-  v9 = [v8 count];
-  v10 = [(CRLiOSTapGestureRecognizer *)self numberOfTouchesRequired];
+  beganCopy = began;
+  eventCopy = event;
+  allTouches = [eventCopy allTouches];
+  v9 = [allTouches count];
+  numberOfTouchesRequired = [(CRLiOSTapGestureRecognizer *)self numberOfTouchesRequired];
 
-  if (v9 <= v10)
+  if (v9 <= numberOfTouchesRequired)
   {
     v17.receiver = self;
     v17.super_class = CRLiOSTapGestureRecognizer;
-    [(CRLiOSTapGestureRecognizer *)&v17 touchesBegan:v6 withEvent:v7];
-    v13 = [v6 anyObject];
+    [(CRLiOSTapGestureRecognizer *)&v17 touchesBegan:beganCopy withEvent:eventCopy];
+    anyObject = [beganCopy anyObject];
     if (!self->_savedFirstTapLocation)
     {
-      v14 = [(CRLiOSTapGestureRecognizer *)self view];
-      [(CRLiOSTapGestureRecognizer *)self locationInView:v14];
+      view = [(CRLiOSTapGestureRecognizer *)self view];
+      [(CRLiOSTapGestureRecognizer *)self locationInView:view];
       self->_firstTapLocation.x = v15;
       self->_firstTapLocation.y = v16;
 
       self->_savedFirstTapLocation = 1;
     }
 
-    self->_tapCount = [v13 tapCount];
-    self->_touchTypeForTap = [v13 type];
+    self->_tapCount = [anyObject tapCount];
+    self->_touchTypeForTap = [anyObject type];
   }
 
   else
   {
     if ([(CRLiOSTapGestureRecognizer *)self state])
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 4;
     }
 
     else
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 5;
     }
 
-    [(CRLiOSTapGestureRecognizer *)v11 setState:v12];
+    [(CRLiOSTapGestureRecognizer *)selfCopy2 setState:v12];
   }
 }
 

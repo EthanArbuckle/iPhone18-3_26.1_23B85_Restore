@@ -1,11 +1,11 @@
 @interface BKHexadecimalIntegerEventStatistic
-+ (id)statisticWithLabel:(id)a3 hexFormatModifier:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)statisticWithLabel:(id)label hexFormatModifier:(int64_t)modifier;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)reset;
-- (void)setValue:(unint64_t)a3;
+- (void)setValue:(unint64_t)value;
 @end
 
 @implementation BKHexadecimalIntegerEventStatistic
@@ -18,35 +18,35 @@
   self->_value = 0;
 }
 
-+ (id)statisticWithLabel:(id)a3 hexFormatModifier:(int64_t)a4
++ (id)statisticWithLabel:(id)label hexFormatModifier:(int64_t)modifier
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___BKHexadecimalIntegerEventStatistic;
-  v5 = objc_msgSendSuper2(&v7, "statisticWithLabel:", a3);
+  v5 = objc_msgSendSuper2(&v7, "statisticWithLabel:", label);
   if (v5)
   {
-    v5[5] = a4;
+    v5[5] = modifier;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = BKHexadecimalIntegerEventStatistic;
-  result = [(BKEventStatistic *)&v5 copyWithZone:a3];
+  result = [(BKEventStatistic *)&v5 copyWithZone:zone];
   *(result + 4) = self->_value;
   return result;
 }
 
-- (void)setValue:(unint64_t)a3
+- (void)setValue:(unint64_t)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     v6 = ![(BKEventStatistic *)self automaticResetDisabled];
-    if (a3)
+    if (value)
     {
       v7 = 1;
     }
@@ -60,14 +60,14 @@
   }
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   value = self->_value;
   if (value)
   {
     hexFormatModifier = self->_hexFormatModifier;
-    v7 = [(BKEventStatistic *)self label];
+    label = [(BKEventStatistic *)self label];
     if (hexFormatModifier)
     {
       v10[0] = _NSConcreteStackBlock;
@@ -75,25 +75,25 @@
       v10[2] = sub_100070E24;
       v10[3] = &unk_1000FCF28;
       v10[4] = self;
-      [v4 appendCustomFormatWithName:v7 block:v10];
+      [formatterCopy appendCustomFormatWithName:label block:v10];
     }
 
     else
     {
-      v8 = [v4 appendUnsignedInteger:value withName:v7 format:1];
+      v8 = [formatterCopy appendUnsignedInteger:value withName:label format:1];
     }
 
     v9.receiver = self;
     v9.super_class = BKHexadecimalIntegerEventStatistic;
-    [(BKEventStatistic *)&v9 appendDescriptionToFormatter:v4];
+    [(BKEventStatistic *)&v9 appendDescriptionToFormatter:formatterCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -114,8 +114,8 @@
 
   v8 = v7;
 
-  v9 = [v8 value];
-  v10 = v9 == self->_value;
+  value = [v8 value];
+  v10 = value == self->_value;
 
   return v10;
 }

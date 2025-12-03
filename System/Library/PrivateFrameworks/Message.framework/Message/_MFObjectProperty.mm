@@ -1,16 +1,16 @@
 @interface _MFObjectProperty
-+ (id)objectPropertyWithClass:(Class)a3 property:(SEL)a4;
++ (id)objectPropertyWithClass:(Class)class property:(SEL)property;
 - (SEL)property;
-- (void)setProperty:(SEL)a3;
+- (void)setProperty:(SEL)property;
 @end
 
 @implementation _MFObjectProperty
 
-+ (id)objectPropertyWithClass:(Class)a3 property:(SEL)a4
++ (id)objectPropertyWithClass:(Class)class property:(SEL)property
 {
   v6 = objc_alloc_init(_MFObjectProperty);
-  [(_MFObjectProperty *)v6 setClass:a3];
-  [(_MFObjectProperty *)v6 setProperty:a4];
+  [(_MFObjectProperty *)v6 setClass:class];
+  [(_MFObjectProperty *)v6 setProperty:property];
 
   return v6;
 }
@@ -28,19 +28,19 @@
   }
 }
 
-- (void)setProperty:(SEL)a3
+- (void)setProperty:(SEL)property
 {
-  if (a3)
+  if (property)
   {
-    v3 = a3;
+    propertyCopy = property;
   }
 
   else
   {
-    v3 = 0;
+    propertyCopy = 0;
   }
 
-  self->_property = v3;
+  self->_property = propertyCopy;
 }
 
 @end

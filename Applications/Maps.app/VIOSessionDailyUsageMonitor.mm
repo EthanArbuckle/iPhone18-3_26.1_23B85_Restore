@@ -1,33 +1,33 @@
 @interface VIOSessionDailyUsageMonitor
 - (BOOL)shouldDisableVIOSession;
 - (NSString)description;
-- (VIOSessionDailyUsageMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
-- (void)calendarDayChangedNotification:(id)a3;
+- (VIOSessionDailyUsageMonitor)initWithStateManager:(id)manager platformController:(id)controller;
+- (void)calendarDayChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 - (void)startUsageLimitTimer;
 - (void)stopUsageLimitTimer;
 @end
 
 @implementation VIOSessionDailyUsageMonitor
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BF8778;
   block[3] = &unk_10165FBC0;
-  v6[1] = a4;
+  v6[1] = state;
   objc_copyWeak(v6, &location);
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
 }
 
-- (void)calendarDayChangedNotification:(id)a3
+- (void)calendarDayChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label == v6 || (label ? (v7 = v6 == 0) : (v7 = 1), !v7 && !strcmp(label, v6)))
@@ -115,50 +115,50 @@
   }
 
   [(VIOSessionDailyUsageMonitor *)self setUsageLimitTimer:0];
-  v6 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  v7 = [v6 lastStartDate];
+  currentEntry = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  lastStartDate = [currentEntry lastStartDate];
 
-  if (v7)
+  if (lastStartDate)
   {
-    v8 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    currentEntry2 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
     v9 = +[NSDate date];
-    v10 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    v11 = [v10 lastStartDate];
-    [v9 timeIntervalSinceDate:v11];
+    currentEntry3 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    lastStartDate2 = [currentEntry3 lastStartDate];
+    [v9 timeIntervalSinceDate:lastStartDate2];
     v13 = v12;
-    v14 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v14 timeMultiplier];
+    currentEntry4 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry4 timeMultiplier];
     v16 = v15;
-    [v8 currentUsage];
-    [v8 setCurrentUsage:v17 + v16 * v13];
+    [currentEntry2 currentUsage];
+    [currentEntry2 setCurrentUsage:v17 + v16 * v13];
 
-    v18 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v18 currentUsage];
+    currentEntry5 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry5 currentUsage];
     v19 = 0.0;
     if (v20 > 0.0)
     {
-      v21 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-      [v21 currentUsage];
+      currentEntry6 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+      [currentEntry6 currentUsage];
       v19 = v22;
     }
 
-    v23 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v23 dailyUsageLimit];
+    currentEntry7 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry7 dailyUsageLimit];
     if (v19 >= v24)
     {
-      v25 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-      [v25 dailyUsageLimit];
+      currentEntry8 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+      [currentEntry8 dailyUsageLimit];
       v19 = v26;
     }
 
-    v27 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v27 setCurrentUsage:v19];
+    currentEntry9 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry9 setCurrentUsage:v19];
 
-    v28 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v28 setLastStartDate:0];
+    currentEntry10 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry10 setLastStartDate:0];
 
-    v29 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v29 save];
+    currentEntry11 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry11 save];
   }
 }
 
@@ -203,16 +203,16 @@
     }
   }
 
-  v6 = [(VIOSessionMonitor *)self session];
-  v7 = [v6 isVIORunning];
-  v8 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  [v8 setIsRunningVIO:v7];
+  session = [(VIOSessionMonitor *)self session];
+  isVIORunning = [session isVIORunning];
+  currentEntry = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  [currentEntry setIsRunningVIO:isVIORunning];
 
-  v9 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  [v9 timeRemaining];
+  currentEntry2 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  [currentEntry2 timeRemaining];
   v11 = v10;
-  v12 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  [v12 timeMultiplier];
+  currentEntry3 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  [currentEntry3 timeMultiplier];
   v14 = v13;
 
   v15 = v11 / v14;
@@ -226,18 +226,18 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] Daily usage limit reached; disabling VIO session for the rest of the day", location, 0xCu);
     }
 
-    v21 = [(VIOSessionMonitor *)self stateManager];
-    [v21 recordSessionDisableEvent:2];
+    stateManager = [(VIOSessionMonitor *)self stateManager];
+    [stateManager recordSessionDisableEvent:2];
   }
 
   else
   {
     v16 = +[NSDate date];
-    v17 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v17 setLastStartDate:v16];
+    currentEntry4 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry4 setLastStartDate:v16];
 
-    v18 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-    [v18 save];
+    currentEntry5 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+    [currentEntry5 save];
 
     objc_initWeak(location, self);
     v25[0] = _NSConcreteStackBlock;
@@ -294,8 +294,8 @@
     }
   }
 
-  v6 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  [v6 timeRemaining];
+  currentEntry = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  [currentEntry timeRemaining];
   v8 = v7 == 0.0;
 
   return v8;
@@ -305,8 +305,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(VIOSessionDailyUsageMonitor *)self currentEntry];
-  v6 = [NSString stringWithFormat:@"<%@ %p currentEntry: %@>", v4, self, v5];
+  currentEntry = [(VIOSessionDailyUsageMonitor *)self currentEntry];
+  v6 = [NSString stringWithFormat:@"<%@ %p currentEntry: %@>", v4, self, currentEntry];
 
   return v6;
 }
@@ -319,14 +319,14 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
   }
 
-  v6 = [(VIOSessionMonitor *)self session];
-  [v6 _removeObserver:self];
+  session = [(VIOSessionMonitor *)self session];
+  [session _removeObserver:self];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 removeObserver:self];
@@ -337,11 +337,11 @@
   [(VIOSessionDailyUsageMonitor *)&v8 dealloc];
 }
 
-- (VIOSessionDailyUsageMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionDailyUsageMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v21.receiver = self;
   v21.super_class = VIOSessionDailyUsageMonitor;
-  v4 = [(VIOSessionMonitor *)&v21 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v21 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100BF8B74();
@@ -374,27 +374,27 @@
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:v4 selector:"calendarDayChangedNotification:" name:NSCalendarDayChangedNotification object:0];
 
-    v13 = [(VIOSessionMonitor *)v4 session];
-    [v13 _addObserver:v4];
+    session = [(VIOSessionMonitor *)v4 session];
+    [session _addObserver:v4];
 
-    v14 = [(VIOSessionMonitor *)v4 session];
-    v15 = [v14 state];
+    session2 = [(VIOSessionMonitor *)v4 session];
+    state = [session2 state];
 
-    if (v15 == 1)
+    if (state == 1)
     {
       [(VIOSessionDailyUsageMonitor *)v4 startUsageLimitTimer];
     }
 
     else
     {
-      v16 = [(VIOSessionDailyUsageMonitor *)v4 currentEntry];
-      [v16 timeRemaining];
+      currentEntry = [(VIOSessionDailyUsageMonitor *)v4 currentEntry];
+      [currentEntry timeRemaining];
       v18 = v17;
 
       if (v18 == 0.0)
       {
-        v19 = [(VIOSessionMonitor *)v4 stateManager];
-        [v19 recordSessionDisableEvent:2];
+        stateManager = [(VIOSessionMonitor *)v4 stateManager];
+        [stateManager recordSessionDisableEvent:2];
       }
     }
   }

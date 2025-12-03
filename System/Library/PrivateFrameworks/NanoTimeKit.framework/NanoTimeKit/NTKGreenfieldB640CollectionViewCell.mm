@@ -1,9 +1,9 @@
 @interface NTKGreenfieldB640CollectionViewCell
-+ (CGSize)cellSizeForWatchBandImage:(id)a3 watchFaceName:(id)a4;
-- (void)_populateWithDecodedRecipe:(id)a3 bandImage:(id)a4 shouldPresentFaceName:(BOOL)a5 shouldPresentCheckmark:(BOOL)a6 isSelected:(BOOL)a7;
++ (CGSize)cellSizeForWatchBandImage:(id)image watchFaceName:(id)name;
+- (void)_populateWithDecodedRecipe:(id)recipe bandImage:(id)image shouldPresentFaceName:(BOOL)name shouldPresentCheckmark:(BOOL)checkmark isSelected:(BOOL)selected;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)updateSeletedState:(BOOL)a3;
+- (void)updateSeletedState:(BOOL)state;
 @end
 
 @implementation NTKGreenfieldB640CollectionViewCell
@@ -16,15 +16,15 @@
   v43 = 0;
   memset(v42, 0, sizeof(v42));
   [(UIImageView *)self->_watchBandImageView frame];
-  v3 = [(UIImageView *)self->_watchBandImageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_watchBandImageView image];
+  [image size];
   v5 = v4;
-  v6 = [(UIImageView *)self->_watchBandImageView image];
-  [v6 size];
+  image2 = [(UIImageView *)self->_watchBandImageView image];
+  [image2 size];
   v8 = v7;
 
-  v9 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-  [v9 bounds];
+  contentView = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+  [contentView bounds];
   v11 = (v10 - v5) * 0.5;
 
   [(UIImageView *)self->_watchBandImageView setFrame:v11, 0.0, v5, v8];
@@ -39,35 +39,35 @@
   [(UIView *)self->_faceView setFrame:v13, v15, v17];
   v18 = v8 + *v42 + 0.0;
   [(UILabel *)self->_faceNameLabel frame];
-  v19 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-  [v19 bounds];
+  contentView2 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v21 = v20;
 
   [(UILabel *)self->_faceNameLabel sizeThatFits:v21, 1.79769313e308];
   v23 = v22;
-  v24 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-  [v24 bounds];
+  contentView3 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+  [contentView3 bounds];
   v26 = (v25 - v21) * 0.5;
 
   [(UILabel *)self->_faceNameLabel setFrame:v26, v18, v21, v23];
   [(UIImageView *)self->_selectedCheckImageView frame];
-  v27 = [(UIImageView *)self->_selectedCheckImageView image];
-  [v27 size];
+  image3 = [(UIImageView *)self->_selectedCheckImageView image];
+  [image3 size];
   v29 = v28;
 
-  v30 = [(UIImageView *)self->_selectedCheckImageView image];
-  [v30 size];
+  image4 = [(UIImageView *)self->_selectedCheckImageView image];
+  [image4 size];
   v32 = v31;
 
-  v33 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-  [v33 bounds];
+  contentView4 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+  [contentView4 bounds];
   v35 = v34;
-  v36 = [(UIImageView *)self->_selectedCheckImageView image];
-  [v36 size];
+  image5 = [(UIImageView *)self->_selectedCheckImageView image];
+  [image5 size];
   v38 = (v35 - v37) * 0.5;
 
-  v39 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-  [v39 bounds];
+  contentView5 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+  [contentView5 bounds];
   v41 = v40 - v32 - *(v42 + 1);
 
   [(UIImageView *)self->_selectedCheckImageView setFrame:v38, v41, v29, v32];
@@ -81,12 +81,12 @@
   [(UIView *)self->_faceView removeFromSuperview];
 }
 
-- (void)_populateWithDecodedRecipe:(id)a3 bandImage:(id)a4 shouldPresentFaceName:(BOOL)a5 shouldPresentCheckmark:(BOOL)a6 isSelected:(BOOL)a7
+- (void)_populateWithDecodedRecipe:(id)recipe bandImage:(id)image shouldPresentFaceName:(BOOL)name shouldPresentCheckmark:(BOOL)checkmark isSelected:(BOOL)selected
 {
-  v38 = a7;
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
+  selectedCopy = selected;
+  nameCopy = name;
+  recipeCopy = recipe;
+  imageCopy = image;
   v52 = 0;
   v50 = 0u;
   v51 = 0u;
@@ -102,20 +102,20 @@
     v16 = BPSBackgroundColor();
     [(UIImageView *)self->_watchBandImageView setBackgroundColor:v16];
 
-    v17 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-    [v17 addSubview:self->_watchBandImageView];
+    contentView = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+    [contentView addSubview:self->_watchBandImageView];
 
-    [(UIImageView *)self->_watchBandImageView setImage:v12];
+    [(UIImageView *)self->_watchBandImageView setImage:imageCopy];
     [(UIImageView *)self->_watchBandImageView setContentMode:1];
   }
 
-  v18 = [v11 watchFace];
+  watchFace = [recipeCopy watchFace];
   v19 = [NTKFaceViewController alloc];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandImage_shouldPresentFaceName_shouldPresentCheckmark_isSelected___block_invoke;
   v41[3] = &unk_278787278;
-  v20 = v18;
+  v20 = watchFace;
   v44 = v49;
   v45 = v50;
   v46 = v51;
@@ -123,23 +123,23 @@
   v47 = v52;
   v43 = v48;
   v21 = [(NTKFaceViewController *)v19 initWithFace:v20 configuration:v41];
-  v22 = [(NTKFaceViewController *)v21 faceView];
+  faceView = [(NTKFaceViewController *)v21 faceView];
   faceView = self->_faceView;
-  self->_faceView = v22;
+  self->_faceView = faceView;
 
   [(UIImageView *)self->_watchBandImageView addSubview:self->_faceView];
-  v24 = [(UIImageView *)self->_watchBandImageView image];
-  [v24 size];
+  image = [(UIImageView *)self->_watchBandImageView image];
+  [image size];
   v25 = *(&v49 + 1);
   v27 = v26 / *(&v49 + 1);
-  v28 = [(UIImageView *)self->_watchBandImageView image];
-  [v28 size];
+  image2 = [(UIImageView *)self->_watchBandImageView image];
+  [image2 size];
   CGAffineTransformMakeScale(&v40, v27, v29 / v25);
   v30 = self->_faceView;
   v39 = v40;
   [(UIView *)v30 setTransform:&v39];
 
-  if (v8)
+  if (nameCopy)
   {
     if (!self->_faceNameLabel)
     {
@@ -148,24 +148,24 @@
       self->_faceNameLabel = v31;
 
       [(UILabel *)self->_faceNameLabel setTextAlignment:1];
-      v33 = [MEMORY[0x277D75348] systemWhiteColor];
-      [(UILabel *)self->_faceNameLabel setTextColor:v33];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      [(UILabel *)self->_faceNameLabel setTextColor:systemWhiteColor];
 
       v34 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
       [(UILabel *)self->_faceNameLabel setFont:v34];
 
       [(UILabel *)self->_faceNameLabel setNumberOfLines:0];
-      v35 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-      [v35 addSubview:self->_faceNameLabel];
+      contentView2 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_faceNameLabel];
     }
 
-    v36 = [v11 watchFace];
-    v37 = [v36 faceSharingName];
-    [(UILabel *)self->_faceNameLabel setText:v37];
+    watchFace2 = [recipeCopy watchFace];
+    faceSharingName = [watchFace2 faceSharingName];
+    [(UILabel *)self->_faceNameLabel setText:faceSharingName];
   }
 
-  self->_shouldPresentCheckmark = a6;
-  [(NTKGreenfieldB640CollectionViewCell *)self updateSeletedState:v38];
+  self->_shouldPresentCheckmark = checkmark;
+  [(NTKGreenfieldB640CollectionViewCell *)self updateSeletedState:selectedCopy];
 }
 
 void __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandImage_shouldPresentFaceName_shouldPresentCheckmark_isSelected___block_invoke(uint64_t a1, void *a2)
@@ -191,7 +191,7 @@ void __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandI
   [v6 _setContinuousCornerRadius:v5];
 }
 
-- (void)updateSeletedState:(BOOL)a3
+- (void)updateSeletedState:(BOOL)state
 {
   if (self->_shouldPresentCheckmark)
   {
@@ -203,8 +203,8 @@ void __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandI
       selectedCheckImageView = self->_selectedCheckImageView;
       self->_selectedCheckImageView = v7;
 
-      v9 = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
-      [v9 addSubview:self->_selectedCheckImageView];
+      contentView = [(NTKGreenfieldB640CollectionViewCell *)self contentView];
+      [contentView addSubview:self->_selectedCheckImageView];
 
       [(UIImageView *)self->_selectedCheckImageView setContentMode:0];
     }
@@ -215,37 +215,37 @@ void __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandI
     v14 = 0u;
     v15 = 0u;
     _LayoutConstants_13(&v14);
-    if (a3)
+    if (state)
     {
       v10 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:*&v15];
-      v11 = [MEMORY[0x277D75348] systemOrangeColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
       v12 = @"checkmark.circle.fill";
     }
 
     else
     {
       v10 = [MEMORY[0x277D755D0] configurationWithPointSize:2 weight:*&v15];
-      v11 = [MEMORY[0x277D75348] systemGrayColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemGrayColor];
       v12 = @"circle";
     }
 
     v13 = [MEMORY[0x277D755B8] systemImageNamed:v12 withConfiguration:v10];
     [(UIImageView *)self->_selectedCheckImageView setImage:v13];
 
-    [(UIImageView *)self->_selectedCheckImageView setTintColor:v11];
+    [(UIImageView *)self->_selectedCheckImageView setTintColor:systemOrangeColor];
   }
 }
 
-+ (CGSize)cellSizeForWatchBandImage:(id)a3 watchFaceName:(id)a4
++ (CGSize)cellSizeForWatchBandImage:(id)image watchFaceName:(id)name
 {
   v26 = 0;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = a4;
-  v6 = a3;
-  [v6 size];
+  nameCopy = name;
+  imageCopy = image;
+  [imageCopy size];
   v8 = v7;
   v9 = [MEMORY[0x277D755D0] configurationWithPointSize:2 weight:*&v23];
   v10 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill" withConfiguration:v9];
@@ -253,19 +253,19 @@ void __132__NTKGreenfieldB640CollectionViewCell__populateWithDecodedRecipe_bandI
   v12 = v11;
   v13 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v13 setTextAlignment:1];
-  v14 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v13 setTextColor:v14];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v13 setTextColor:systemWhiteColor];
 
   v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v13 setFont:v15];
 
   [v13 setNumberOfLines:0];
-  [v13 setText:v5];
+  [v13 setText:nameCopy];
 
-  [v6 size];
+  [imageCopy size];
   [v13 sizeThatFits:?];
   v17 = *(&v22 + 1) + v12 + *(&v22 + 1) + v16 + v8 + *&v22;
-  [v6 size];
+  [imageCopy size];
   v19 = v18;
 
   v20 = v19;

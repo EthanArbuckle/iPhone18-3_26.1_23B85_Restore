@@ -1,28 +1,28 @@
 @interface PerformActionExecutorDelegate
-- (void)executor:(LNActionExecutor *)a3 environmentForViewSnippetWithCompletion:(id)a4;
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5;
+- (void)executor:(LNActionExecutor *)executor environmentForViewSnippetWithCompletion:(id)completion;
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error;
 @end
 
 @implementation PerformActionExecutorDelegate
 
-- (void)executor:(id)a3 didCompleteExecutionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didCompleteExecutionWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_26A51FAF4(v11, a4, a5);
+  executorCopy = executor;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_26A51FAF4(errorCopy, result, error);
 }
 
-- (void)executor:(LNActionExecutor *)a3 environmentForViewSnippetWithCompletion:(id)a4
+- (void)executor:(LNActionExecutor *)executor environmentForViewSnippetWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = executor;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  executorCopy = executor;
+  selfCopy = self;
 
   sub_26A520278(&unk_26A85A688, v7);
 }

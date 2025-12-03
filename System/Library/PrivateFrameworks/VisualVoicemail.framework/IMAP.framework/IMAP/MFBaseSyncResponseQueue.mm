@@ -1,7 +1,7 @@
 @interface MFBaseSyncResponseQueue
-- (BOOL)handleItems:(id)a3;
+- (BOOL)handleItems:(id)items;
 - (MFBaseSyncResponseQueue)init;
-- (id)sequenceIdentifierForItem:(id)a3;
+- (id)sequenceIdentifierForItem:(id)item;
 - (void)dealloc;
 @end
 
@@ -39,13 +39,13 @@
   return v3;
 }
 
-- (BOOL)handleItems:(id)a3
+- (BOOL)handleItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   currentUID = self->_currentUID;
-  v42 = v4;
-  v6 = [v4 lastObject];
-  v7 = [(MFBaseSyncResponseQueue *)self uidForItem:v6];
+  v42 = itemsCopy;
+  lastObject = [itemsCopy lastObject];
+  v7 = [(MFBaseSyncResponseQueue *)self uidForItem:lastObject];
   v8 = currentUID + 1;
 
   if (v8 >= v7)
@@ -62,15 +62,15 @@
 
   else
   {
-    v11 = [(MFLibraryStore *)self->_store library];
-    v10 = [v11 getDetailsForMessagesWithRemoteIDInRange:v8 fromMailbox:{v7 - v8, self->_url}];
+    library = [(MFLibraryStore *)self->_store library];
+    v10 = [library getDetailsForMessagesWithRemoteIDInRange:v8 fromMailbox:{v7 - v8, self->_url}];
   }
 
-  v12 = [v4 count];
+  v12 = [itemsCopy count];
   v44 = [(NSArray *)v10 count];
   if (v12)
   {
-    v13 = [v4 objectAtIndex:0];
+    v13 = [itemsCopy objectAtIndex:0];
   }
 
   else
@@ -134,7 +134,7 @@
 
           else
           {
-            v26 = [v4 objectAtIndex:?];
+            v26 = [itemsCopy objectAtIndex:?];
           }
 
           v35 = v13;
@@ -144,18 +144,18 @@
 LABEL_34:
         if (self->_shouldCompact)
         {
-          v31 = [(MFLibraryStore *)self->_store library];
-          v32 = [v31 messageWithLibraryID:*(v14 + 16) options:0 inMailbox:0];
+          library2 = [(MFLibraryStore *)self->_store library];
+          v32 = [library2 messageWithLibraryID:*(v14 + 16) options:0 inMailbox:0];
 
           if (v32)
           {
-            v33 = v39;
+            array = v39;
             if (!v39)
             {
-              v33 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
             }
 
-            [v33 addObject:{v32, v33}];
+            [array addObject:{v32, array}];
           }
         }
 
@@ -189,8 +189,8 @@ LABEL_53:
       {
         if (v39)
         {
-          v37 = [(MFLibraryStore *)self->_store library];
-          [v37 compactMessages:v39];
+          library3 = [(MFLibraryStore *)self->_store library];
+          [library3 compactMessages:v39];
         }
 
         goto LABEL_56;
@@ -213,7 +213,7 @@ LABEL_53:
       _syncFlags(store, v19, v21, v22, connection, isSearching, v47);
 
       v10 = v41;
-      v4 = v42;
+      itemsCopy = v42;
     }
 
     objc_opt_class();
@@ -222,8 +222,8 @@ LABEL_53:
       v24 = [(MFBaseSyncResponseQueue *)self sequenceIdentifierForItem:v13];
       if ([v24 length])
       {
-        v25 = [(MFLibraryStore *)self->_store library];
-        [v25 setSequenceIdentifier:v24 forMessageWithLibraryID:*(v14 + 16)];
+        library4 = [(MFLibraryStore *)self->_store library];
+        [library4 setSequenceIdentifier:v24 forMessageWithLibraryID:*(v14 + 16)];
       }
     }
 
@@ -234,7 +234,7 @@ LABEL_53:
 
     else
     {
-      v26 = [v4 objectAtIndex:?];
+      v26 = [itemsCopy objectAtIndex:?];
     }
 
     v36 = v46 + 1;
@@ -268,10 +268,10 @@ id __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)sequenceIdentifierForItem:(id)a3
+- (id)sequenceIdentifierForItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -282,7 +282,7 @@ id __39__MFBaseSyncResponseQueue_handleItems___block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = itemCopy;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -314,14 +314,14 @@ LABEL_4:
       }
     }
 
-    v9 = [v8 modSequenceNumber];
+    modSequenceNumber = [v8 modSequenceNumber];
 
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    if (modSequenceNumber == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_12;
     }
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", modSequenceNumber];
   }
 
   else

@@ -1,22 +1,22 @@
 @interface EFNSSetDifference
 - (BOOL)hasChanges;
-- (EFNSSetDifference)initWithInsertedObjects:(id)a3 removedObjects:(id)a4;
+- (EFNSSetDifference)initWithInsertedObjects:(id)objects removedObjects:(id)removedObjects;
 @end
 
 @implementation EFNSSetDifference
 
-- (EFNSSetDifference)initWithInsertedObjects:(id)a3 removedObjects:(id)a4
+- (EFNSSetDifference)initWithInsertedObjects:(id)objects removedObjects:(id)removedObjects
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  removedObjectsCopy = removedObjects;
   v14.receiver = self;
   v14.super_class = EFNSSetDifference;
   v8 = [(EFNSSetDifference *)&v14 init];
   if (v8)
   {
-    if (v6)
+    if (objectsCopy)
     {
-      v9 = v6;
+      v9 = objectsCopy;
     }
 
     else
@@ -27,9 +27,9 @@
     insertions = v8->_insertions;
     v8->_insertions = v9;
 
-    if (v7)
+    if (removedObjectsCopy)
     {
-      v11 = v7;
+      v11 = removedObjectsCopy;
     }
 
     else
@@ -46,16 +46,16 @@
 
 - (BOOL)hasChanges
 {
-  v3 = [(EFNSSetDifference *)self insertions];
-  if ([v3 count])
+  insertions = [(EFNSSetDifference *)self insertions];
+  if ([insertions count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EFNSSetDifference *)self removals];
-    v4 = [v5 count] != 0;
+    removals = [(EFNSSetDifference *)self removals];
+    v4 = [removals count] != 0;
   }
 
   return v4;

@@ -1,22 +1,22 @@
 @interface STTimeTitleDetailCell
-- (STTimeTitleDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STTimeTitleDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation STTimeTitleDetailCell
 
-- (STTimeTitleDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STTimeTitleDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = STTimeTitleDetailCell;
-  v5 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4, a5];
-  if (v5)
+  specifier = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier, specifier];
+  if (specifier)
   {
-    v6 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v7 = [(STTimeTitleDetailCell *)v5 detailTextLabel];
-    [v7 setTextColor:v6];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel = [(STTimeTitleDetailCell *)specifier detailTextLabel];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
   }
 
-  return v5;
+  return specifier;
 }
 
 @end

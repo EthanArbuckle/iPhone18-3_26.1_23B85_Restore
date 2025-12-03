@@ -1,9 +1,9 @@
 @interface SBWindowSceneAccessorySceneProvider
 + (id)sceneWorkspace;
-- (SBWindowSceneAccessorySceneProvider)initWithSBWindowScene:(id)a3;
-- (id)createAccessoryWindowSceneWithSpecification:(id)a3;
-- (id)fbSceneForAccessoryWindowScene:(id)a3;
-- (void)destroyAccessoryWindowScene:(id)a3;
+- (SBWindowSceneAccessorySceneProvider)initWithSBWindowScene:(id)scene;
+- (id)createAccessoryWindowSceneWithSpecification:(id)specification;
+- (id)fbSceneForAccessoryWindowScene:(id)scene;
+- (void)destroyAccessoryWindowScene:(id)scene;
 @end
 
 @implementation SBWindowSceneAccessorySceneProvider
@@ -28,36 +28,36 @@ void __53__SBWindowSceneAccessorySceneProvider_sceneWorkspace__block_invoke()
   sceneWorkspace_sceneWorkspace = v0;
 }
 
-- (SBWindowSceneAccessorySceneProvider)initWithSBWindowScene:(id)a3
+- (SBWindowSceneAccessorySceneProvider)initWithSBWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v10.receiver = self;
   v10.super_class = SBWindowSceneAccessorySceneProvider;
   v5 = [(SBWindowSceneAccessorySceneProvider *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sbWindowScene, v4);
-    v7 = [objc_opt_class() sceneWorkspace];
+    objc_storeWeak(&v5->_sbWindowScene, sceneCopy);
+    sceneWorkspace = [objc_opt_class() sceneWorkspace];
     sceneWorkspace = v6->_sceneWorkspace;
-    v6->_sceneWorkspace = v7;
+    v6->_sceneWorkspace = sceneWorkspace;
   }
 
   return v6;
 }
 
-- (id)createAccessoryWindowSceneWithSpecification:(id)a3
+- (id)createAccessoryWindowSceneWithSpecification:(id)specification
 {
-  v4 = a3;
+  specificationCopy = specification;
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
   sceneWorkspace = self->_sceneWorkspace;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __83__SBWindowSceneAccessorySceneProvider_createAccessoryWindowSceneWithSpecification___block_invoke;
   v20[3] = &unk_2783BEAE0;
-  v7 = v4;
+  v7 = specificationCopy;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v8 = [(FBSceneWorkspace *)sceneWorkspace createScene:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -67,11 +67,11 @@ void __53__SBWindowSceneAccessorySceneProvider_sceneWorkspace__block_invoke()
   v19 = v9;
   [v8 configureParameters:v18];
   [v8 activateWithTransitionContext:0];
-  v10 = [v8 _localComponent];
-  v11 = [v10 associatedClientScene];
-  v12 = [v11 delegate];
+  _localComponent = [v8 _localComponent];
+  associatedClientScene = [_localComponent associatedClientScene];
+  delegate = [associatedClientScene delegate];
   v13 = objc_opt_class();
-  v14 = v12;
+  v14 = delegate;
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -161,18 +161,18 @@ void __83__SBWindowSceneAccessorySceneProvider_createAccessoryWindowSceneWithSpe
   [v6 setInterfaceOrientationMode:100];
 }
 
-- (id)fbSceneForAccessoryWindowScene:(id)a3
+- (id)fbSceneForAccessoryWindowScene:(id)scene
 {
-  v3 = [a3 _FBSScene];
-  v4 = [v3 _localComponent];
-  v5 = [v4 associatedHostScene];
+  _FBSScene = [scene _FBSScene];
+  _localComponent = [_FBSScene _localComponent];
+  associatedHostScene = [_localComponent associatedHostScene];
 
-  return v5;
+  return associatedHostScene;
 }
 
-- (void)destroyAccessoryWindowScene:(id)a3
+- (void)destroyAccessoryWindowScene:(id)scene
 {
-  v3 = [(SBWindowSceneAccessorySceneProvider *)self fbSceneForAccessoryWindowScene:a3];
+  v3 = [(SBWindowSceneAccessorySceneProvider *)self fbSceneForAccessoryWindowScene:scene];
   [v3 updateSettingsWithBlock:&__block_literal_global_42_5];
   [v3 invalidate];
 }

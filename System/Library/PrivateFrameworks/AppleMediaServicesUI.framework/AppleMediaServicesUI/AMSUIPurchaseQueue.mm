@@ -1,82 +1,82 @@
 @interface AMSUIPurchaseQueue
-- (id)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 error:(id *)a5;
-- (id)purchase:(id)a3 handleWindowRequest:(id)a4 error:(id *)a5;
-- (void)purchase:(id)a3 handleSceneBundleIdentifierRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleWindowRequest:(id)a4 completion:(id)a5;
+- (id)purchase:(id)purchase handleSceneIdentifierRequest:(id)request error:(id *)error;
+- (id)purchase:(id)purchase handleWindowRequest:(id)request error:(id *)error;
+- (void)purchase:(id)purchase handleSceneBundleIdentifierRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleSceneIdentifierRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleWindowRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIPurchaseQueue
 
-- (void)purchase:(id)a3 handleSceneBundleIdentifierRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleSceneBundleIdentifierRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 purchase:v15 handleSceneBundleIdentifierRequest:v8 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 purchase:purchaseCopy handleSceneBundleIdentifierRequest:requestCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError();
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError();
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 
-- (void)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleSceneIdentifierRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 purchase:v15 handleSceneIdentifierRequest:v8 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 purchase:purchaseCopy handleSceneIdentifierRequest:requestCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError();
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError();
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 
-- (id)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 error:(id *)a5
+- (id)purchase:(id)purchase handleSceneIdentifierRequest:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    v15 = [v14 purchase:v8 handleSceneIdentifierRequest:v9 purchaseQueue:self error:a5];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    v15 = [delegate2 purchase:purchaseCopy handleSceneIdentifierRequest:requestCopy purchaseQueue:self error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     AMSError();
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -87,50 +87,50 @@
   return v15;
 }
 
-- (void)purchase:(id)a3 handleWindowRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleWindowRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  completionCopy = completion;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    [v14 purchase:v15 handleWindowRequest:v8 purchaseQueue:self completion:v9];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    [delegate2 purchase:purchaseCopy handleWindowRequest:requestCopy purchaseQueue:self completion:completionCopy];
 
-    v9 = v14;
+    completionCopy = delegate2;
   }
 
   else
   {
-    v13 = AMSError();
-    (*(v9 + 2))(v9, 0, v13);
+    config2 = AMSError();
+    (*(completionCopy + 2))(completionCopy, 0, config2);
   }
 }
 
-- (id)purchase:(id)a3 handleWindowRequest:(id)a4 error:(id *)a5
+- (id)purchase:(id)purchase handleWindowRequest:(id)request error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AMSPurchaseQueue *)self config];
-  v11 = [v10 delegate];
+  purchaseCopy = purchase;
+  requestCopy = request;
+  config = [(AMSPurchaseQueue *)self config];
+  delegate = [config delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSPurchaseQueue *)self config];
-    v14 = [v13 delegate];
-    v15 = [v14 purchase:v8 handleWindowRequest:v9 purchaseQueue:self error:a5];
+    config2 = [(AMSPurchaseQueue *)self config];
+    delegate2 = [config2 delegate];
+    v15 = [delegate2 purchase:purchaseCopy handleWindowRequest:requestCopy purchaseQueue:self error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     AMSError();
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else

@@ -1,33 +1,33 @@
 @interface KVFieldMatch
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFieldMatch:(id)a3;
-- (KVFieldMatch)initWithFieldMatch:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFieldMatch:(id)match;
+- (KVFieldMatch)initWithFieldMatch:(id)match;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fieldSpanInfo;
 - (int64_t)fieldType;
 @end
 
 @implementation KVFieldMatch
 
-- (BOOL)isEqualToFieldMatch:(id)a3
+- (BOOL)isEqualToFieldMatch:(id)match
 {
   fieldMatch = self->_fieldMatch;
-  v7 = objc_msgSend_fieldMatch(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_fieldMatch(match, a2, match, v3, v4, v5);
   LOBYTE(fieldMatch) = objc_msgSend_isEqual_(fieldMatch, v8, v7, v9, v10, v11);
 
   return fieldMatch;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToFieldMatch = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToFieldMatch = objc_msgSend_isEqualToFieldMatch_(self, v6, v5, v7, v8, v9);
   }
@@ -40,11 +40,11 @@
   return isEqualToFieldMatch;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_copyWithZone_(self->_fieldMatch, v11, a3, v12, v13, v14);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
+  v15 = objc_msgSend_copyWithZone_(self->_fieldMatch, v11, zone, v12, v13, v14);
   v16 = v10[1];
   v10[1] = v15;
 
@@ -88,15 +88,15 @@
   return v14;
 }
 
-- (KVFieldMatch)initWithFieldMatch:(id)a3
+- (KVFieldMatch)initWithFieldMatch:(id)match
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  matchCopy = match;
   v33.receiver = self;
   v33.super_class = KVFieldMatch;
   v6 = [(KVFieldMatch *)&v33 init];
   p_isa = &v6->super.isa;
-  if (v6 && (objc_storeStrong(&v6->_fieldMatch, a3), objc_msgSend_entityFieldInfo(p_isa[1], v8, v9, v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend_entityType(v13, v14, v15, v16, v17, v18), v13, v19 != 1))
+  if (v6 && (objc_storeStrong(&v6->_fieldMatch, match), objc_msgSend_entityFieldInfo(p_isa[1], v8, v9, v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend_entityType(v13, v14, v15, v16, v17, v18), v13, v19 != 1))
   {
     v21 = qword_28106B3C0;
     if (os_log_type_enabled(qword_28106B3C0, OS_LOG_TYPE_ERROR))

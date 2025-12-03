@@ -1,23 +1,23 @@
 @interface WFChooseFromMenuItemParameterState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldSerializeAsPlainString;
-- (WFChooseFromMenuItemParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)a3 userInputInsertionIndex:(int64_t)a4;
-- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)a3 userInputInsertionIndex:(int64_t)a4 synonyms:(id)a5 subtitle:(id)a6;
+- (WFChooseFromMenuItemParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)string userInputInsertionIndex:(int64_t)index;
+- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)string userInputInsertionIndex:(int64_t)index synonyms:(id)synonyms subtitle:(id)subtitle;
 - (id)containedVariables;
-- (id)rewrittenWithStrings:(id)a3;
+- (id)rewrittenWithStrings:(id)strings;
 - (id)serializedRepresentation;
-- (id)userVisibleStringsForUseCase:(unint64_t)a3;
+- (id)userVisibleStringsForUseCase:(unint64_t)case;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFChooseFromMenuItemParameterState
 
-- (id)userVisibleStringsForUseCase:(unint64_t)a3
+- (id)userVisibleStringsForUseCase:(unint64_t)case
 {
-  v4 = self;
-  sub_1CA5540DC(a3);
+  selfCopy = self;
+  sub_1CA5540DC(case);
 
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
@@ -26,42 +26,42 @@
   return v5;
 }
 
-- (id)rewrittenWithStrings:(id)a3
+- (id)rewrittenWithStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   sub_1CA94C1C8();
-  v4 = self;
+  selfCopy = self;
   sub_1CA554258();
   v6 = v5;
 
   return v6;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFVariableStringParameterState *)self variableString];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  variableString = [(WFVariableStringParameterState *)self variableString];
 
-  if (v11)
+  if (variableString)
   {
-    v12 = [(WFVariableStringParameterState *)self variableString];
+    variableString2 = [(WFVariableStringParameterState *)self variableString];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
     v13[3] = &unk_1E8376D08;
-    v15 = v9;
+    v15 = handlerCopy;
     v13[4] = self;
-    v16 = v10;
-    v14 = v8;
-    [v12 processWithContext:v14 completionHandler:v13];
+    v16 = valueHandlerCopy;
+    v14 = contextCopy;
+    [variableString2 processWithContext:v14 completionHandler:v13];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, 0, 0);
   }
 }
 
@@ -174,16 +174,16 @@ void __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequir
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(WFVariableStringParameterState *)self variableString];
-  v5 = [v4 variables];
-  [v3 addObjectsFromArray:v5];
+  variableString = [(WFVariableStringParameterState *)self variableString];
+  variables = [variableString variables];
+  [v3 addObjectsFromArray:variables];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  synonyms = [(WFChooseFromMenuItemParameterState *)self synonyms];
+  v7 = [synonyms countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -194,23 +194,23 @@ void __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequir
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(synonyms);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * i) synonym];
-        v12 = [v11 variables];
-        [v3 addObjectsFromArray:v12];
+        synonym = [*(*(&v17 + 1) + 8 * i) synonym];
+        variables2 = [synonym variables];
+        [v3 addObjectsFromArray:variables2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [synonyms countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(WFChooseFromMenuItemParameterState *)self subtitle];
-  v14 = [v13 variables];
-  [v3 addObjectsFromArray:v14];
+  subtitle = [(WFChooseFromMenuItemParameterState *)self subtitle];
+  variables3 = [subtitle variables];
+  [v3 addObjectsFromArray:variables3];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -219,21 +219,21 @@ void __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequir
 
 - (unint64_t)hash
 {
-  v3 = [(WFVariableStringParameterState *)self variableString];
-  v4 = [v3 hash];
-  v5 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-  v6 = [v5 hash];
-  v7 = [(WFChooseFromMenuItemParameterState *)self subtitle];
+  variableString = [(WFVariableStringParameterState *)self variableString];
+  v4 = [variableString hash];
+  synonyms = [(WFChooseFromMenuItemParameterState *)self synonyms];
+  v6 = [synonyms hash];
+  subtitle = [(WFChooseFromMenuItemParameterState *)self subtitle];
   v8 = v4 ^ v6;
-  v9 = [v7 hash] ^ 0x5068BE73;
+  v9 = [subtitle hash] ^ 0x5068BE73;
 
   return v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -243,17 +243,17 @@ void __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequir
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariableStringParameterState *)v4 variableString];
-      v6 = [(WFVariableStringParameterState *)self variableString];
-      if ([v5 isEqual:v6])
+      variableString = [(WFVariableStringParameterState *)equalCopy variableString];
+      variableString2 = [(WFVariableStringParameterState *)self variableString];
+      if ([variableString isEqual:variableString2])
       {
-        v7 = [(WFChooseFromMenuItemParameterState *)v4 synonyms];
-        v8 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-        if ([v7 isEqual:v8])
+        synonyms = [(WFChooseFromMenuItemParameterState *)equalCopy synonyms];
+        synonyms2 = [(WFChooseFromMenuItemParameterState *)self synonyms];
+        if ([synonyms isEqual:synonyms2])
         {
-          v9 = [(WFChooseFromMenuItemParameterState *)v4 subtitle];
-          v10 = [(WFChooseFromMenuItemParameterState *)self subtitle];
-          v11 = [v9 isEqual:v10];
+          subtitle = [(WFChooseFromMenuItemParameterState *)equalCopy subtitle];
+          subtitle2 = [(WFChooseFromMenuItemParameterState *)self subtitle];
+          v11 = [subtitle isEqual:subtitle2];
         }
 
         else
@@ -286,45 +286,45 @@ void __95__WFChooseFromMenuItemParameterState_processWithContext_userInputRequir
     return 0;
   }
 
-  v3 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-  if ([v3 count])
+  synonyms = [(WFChooseFromMenuItemParameterState *)self synonyms];
+  if ([synonyms count])
   {
-    v4 = 0;
+    isEmpty = 0;
   }
 
   else
   {
-    v5 = [(WFChooseFromMenuItemParameterState *)self subtitle];
-    v4 = [v5 isEmpty];
+    subtitle = [(WFChooseFromMenuItemParameterState *)self subtitle];
+    isEmpty = [subtitle isEmpty];
   }
 
-  return v4;
+  return isEmpty;
 }
 
 - (id)serializedRepresentation
 {
-  v3 = [(WFVariableStringParameterState *)self variableString];
-  v4 = WFSerializedVariableObject(v3);
+  variableString = [(WFVariableStringParameterState *)self variableString];
+  v4 = WFSerializedVariableObject(variableString);
   v5 = [v4 mutableCopy];
 
-  v6 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-  v7 = [v6 count];
+  synonyms = [(WFChooseFromMenuItemParameterState *)self synonyms];
+  v7 = [synonyms count];
 
   if (v7)
   {
-    v8 = [(WFChooseFromMenuItemParameterState *)self synonyms];
-    v9 = [v8 if_map:&__block_literal_global_22580];
+    synonyms2 = [(WFChooseFromMenuItemParameterState *)self synonyms];
+    v9 = [synonyms2 if_map:&__block_literal_global_22580];
     [v5 setObject:v9 forKeyedSubscript:@"Synonyms"];
   }
 
-  v10 = [(WFChooseFromMenuItemParameterState *)self subtitle];
-  v11 = [v10 isEmpty];
+  subtitle = [(WFChooseFromMenuItemParameterState *)self subtitle];
+  isEmpty = [subtitle isEmpty];
 
-  if ((v11 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
-    v12 = [(WFChooseFromMenuItemParameterState *)self subtitle];
-    v13 = [v12 serializedRepresentation];
-    [v5 setObject:v13 forKeyedSubscript:@"Subtitle"];
+    subtitle2 = [(WFChooseFromMenuItemParameterState *)self subtitle];
+    serializedRepresentation = [subtitle2 serializedRepresentation];
+    [v5 setObject:serializedRepresentation forKeyedSubscript:@"Subtitle"];
   }
 
   return v5;
@@ -338,19 +338,19 @@ id __62__WFChooseFromMenuItemParameterState_serializedRepresentation__block_invo
   return v3;
 }
 
-- (WFChooseFromMenuItemParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFChooseFromMenuItemParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v8;
-      v13 = WFDeserializedVariableObject(v11, v9, v10);
+      v11 = representationCopy;
+      v13 = WFDeserializedVariableObject(v11, providerCopy, parameterCopy);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -365,8 +365,8 @@ id __62__WFChooseFromMenuItemParameterState_serializedRepresentation__block_invo
           v24 = 3221225472;
           v25 = __98__WFChooseFromMenuItemParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke;
           v26 = &unk_1E8376C70;
-          v27 = v9;
-          v28 = v10;
+          v27 = providerCopy;
+          v28 = parameterCopy;
           v17 = [v16 if_map:&v23];
         }
 
@@ -379,7 +379,7 @@ id __62__WFChooseFromMenuItemParameterState_serializedRepresentation__block_invo
         v20 = objc_opt_class();
         v21 = WFEnforceClass_1501(v19, v20);
 
-        if (!v21 || (v22 = [[WFVariableString alloc] initWithSerializedRepresentation:v21 variableProvider:v9 parameter:v10]) == 0)
+        if (!v21 || (v22 = [[WFVariableString alloc] initWithSerializedRepresentation:v21 variableProvider:providerCopy parameter:parameterCopy]) == 0)
         {
           v22 = objc_alloc_init(WFVariableString);
         }
@@ -390,18 +390,18 @@ id __62__WFChooseFromMenuItemParameterState_serializedRepresentation__block_invo
       }
     }
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v11 = [[WFVariableString alloc] initWithString:v8];
+  v11 = [[WFVariableString alloc] initWithString:representationCopy];
   self = [(WFVariableStringParameterState *)self initWithVariableString:v11];
 LABEL_3:
 
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
 WFChooseFromMenuItemSynonym *__98__WFChooseFromMenuItemParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke(uint64_t a1, void *a2)
@@ -416,24 +416,24 @@ WFChooseFromMenuItemSynonym *__98__WFChooseFromMenuItemParameterState_initWithSe
   return v7;
 }
 
-- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)a3 userInputInsertionIndex:(int64_t)a4
+- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)string userInputInsertionIndex:(int64_t)index
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = objc_alloc_init(WFVariableString);
-  v8 = [(WFChooseFromMenuItemParameterState *)self initWithVariableString:v6 userInputInsertionIndex:a4 synonyms:MEMORY[0x1E695E0F0] subtitle:v7];
+  v8 = [(WFChooseFromMenuItemParameterState *)self initWithVariableString:stringCopy userInputInsertionIndex:index synonyms:MEMORY[0x1E695E0F0] subtitle:v7];
 
   return v8;
 }
 
-- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)a3 userInputInsertionIndex:(int64_t)a4 synonyms:(id)a5 subtitle:(id)a6
+- (WFChooseFromMenuItemParameterState)initWithVariableString:(id)string userInputInsertionIndex:(int64_t)index synonyms:(id)synonyms subtitle:(id)subtitle
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v12)
+  stringCopy = string;
+  synonymsCopy = synonyms;
+  subtitleCopy = subtitle;
+  v14 = subtitleCopy;
+  if (synonymsCopy)
   {
-    if (v13)
+    if (subtitleCopy)
     {
       goto LABEL_3;
     }
@@ -441,8 +441,8 @@ WFChooseFromMenuItemSynonym *__98__WFChooseFromMenuItemParameterState_initWithSe
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFChooseFromMenuItemParameterState.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"synonyms"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFChooseFromMenuItemParameterState.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"synonyms"}];
 
     if (v14)
     {
@@ -450,20 +450,20 @@ WFChooseFromMenuItemSynonym *__98__WFChooseFromMenuItemParameterState_initWithSe
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"WFChooseFromMenuItemParameterState.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFChooseFromMenuItemParameterState.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
 
 LABEL_3:
   v22.receiver = self;
   v22.super_class = WFChooseFromMenuItemParameterState;
-  v15 = [(WFVariableStringParameterState *)&v22 initWithVariableString:v11 userInputInsertionIndex:a4];
+  v15 = [(WFVariableStringParameterState *)&v22 initWithVariableString:stringCopy userInputInsertionIndex:index];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [synonymsCopy copy];
     synonyms = v15->_synonyms;
     v15->_synonyms = v16;
 
-    objc_storeStrong(&v15->_subtitle, a6);
+    objc_storeStrong(&v15->_subtitle, subtitle);
     v18 = v15;
   }
 

@@ -1,7 +1,7 @@
 @interface LockScreenMotionReplicatorLayer
 - (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)init;
-- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithCoder:(id)a3;
-- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithLayer:(id)a3;
+- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithCoder:(id)coder;
+- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -18,7 +18,7 @@
   return [(CAReplicatorLayer *)&v3 init];
 }
 
-- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithLayer:(id)a3
+- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1C5BCB8D4();
@@ -37,7 +37,7 @@
   return v5;
 }
 
-- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithCoder:(id)a3
+- (_TtC11MediaCoreUI31LockScreenMotionReplicatorLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MediaCoreUI31LockScreenMotionReplicatorLayer_innerReplicator) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MediaCoreUI31LockScreenMotionReplicatorLayer_originalContent) = 0;
@@ -50,7 +50,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5ACC850();
 }
 

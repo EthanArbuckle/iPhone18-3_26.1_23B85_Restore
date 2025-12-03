@@ -1,20 +1,20 @@
 @interface PasteHelper.ConfigurationSupport
-- (BOOL)canPasteItemProviders:(id)a3;
+- (BOOL)canPasteItemProviders:(id)providers;
 - (_TtCV7SwiftUI11PasteHelper20ConfigurationSupport)init;
-- (void)pasteItemProviders:(id)a3;
-- (void)setPasteConfiguration:(id)a3;
+- (void)pasteItemProviders:(id)providers;
+- (void)setPasteConfiguration:(id)configuration;
 @end
 
 @implementation PasteHelper.ConfigurationSupport
 
-- (void)setPasteConfiguration:(id)a3
+- (void)setPasteConfiguration:(id)configuration
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV7SwiftUI11PasteHelper20ConfigurationSupport_pasteConfiguration);
-  *(&self->super.isa + OBJC_IVAR____TtCV7SwiftUI11PasteHelper20ConfigurationSupport_pasteConfiguration) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtCV7SwiftUI11PasteHelper20ConfigurationSupport_pasteConfiguration) = configuration;
+  configurationCopy = configuration;
 }
 
-- (BOOL)canPasteItemProviders:(id)a3
+- (BOOL)canPasteItemProviders:(id)providers
 {
   type metadata accessor for NSItemProvider();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -22,7 +22,7 @@
   if (v5)
   {
     v6 = v4;
-    v7 = self;
+    selfCopy = self;
     outlined copy of PasteHelper?(v5);
     v10.value._rawValue = v6;
     v10.is_nil = v5;
@@ -39,7 +39,7 @@
   return v4;
 }
 
-- (void)pasteItemProviders:(id)a3
+- (void)pasteItemProviders:(id)providers
 {
   type metadata accessor for NSItemProvider();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -47,7 +47,7 @@
   {
     v5 = v4;
     v6 = *(&self->pasteConfiguration + OBJC_IVAR____TtCV7SwiftUI11PasteHelper20ConfigurationSupport_pasteHelper);
-    v9 = self;
+    selfCopy = self;
 
     v7 = v6(v5);
 

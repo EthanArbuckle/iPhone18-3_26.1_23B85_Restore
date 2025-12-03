@@ -1,56 +1,56 @@
 @interface AXValidationManager
 + (id)sharedInstance;
 - (AXValidationManager)init;
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasClassMethod:(id)a5 withFullSignature:(const char *)a6 argList:(char *)a7;
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasMethod:(id)a5 methodType:(int)a6 returnType:(id)a7 arguments:(id)a8;
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasSwiftField:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7;
-- (BOOL)_client:(id)a3 validateStruct:(id)a4 hasSwiftField:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7;
-- (BOOL)_client:(id)a3 validateSwiftEnum:(id)a4 hasCase:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7;
-- (BOOL)_client:(id)a3 validateType:(id)a4 hasSwiftField:(id)a5 handleSwiftValidationProblems:(id)a6;
-- (BOOL)client:(id)a3 validateClass:(id)a4;
-- (BOOL)client:(id)a3 validateClass:(id)a4 conformsToProtocol:(id)a5;
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasInstanceMethod:(id)a5 withFullSignature:(const char *)a6 argList:(char *)a7;
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasInstanceVariable:(id)a5 withType:(const char *)a6;
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasProperty:(id)a5 customGetter:(id)a6 customSetter:(id)a7 withType:(const char *)a8;
-- (BOOL)client:(id)a3 validateClass:(id)a4 isKindOfClass:(id)a5;
-- (BOOL)client:(id)a3 validateProtocol:(id)a4 conformsToProtocol:(id)a5;
-- (BOOL)client:(id)a3 validateProtocol:(id)a4 hasMethod:(id)a5 isInstanceMethod:(BOOL)a6 isRequired:(BOOL)a7;
-- (BOOL)client:(id)a3 validateSwiftEnum:(id)a4;
-- (BOOL)client:(id)a3 validateSwiftEnum:(id)a4 hasCase:(id)a5;
-- (BOOL)client:(id)a3 validateSwiftStruct:(id)a4;
-- (BOOL)client:(id)a3 validateSwiftStruct:(id)a4 hasSize:(int64_t)a5;
-- (BOOL)installSafeCategory:(id)a3 canInteractWithTargetClass:(BOOL)a4;
-- (BOOL)installSwiftDynamicReplacementUnit:(id)a3 inBundle:(id)a4 withPrecondition:(id)a5;
-- (BOOL)validateClass:(id)a3 hasClassMethod:(id)a4 withReturnType:(id)a5 args:(id)a6;
-- (BOOL)validateClass:(id)a3 hasInstanceMethod:(id)a4 withReturnType:(id)a5 args:(id)a6;
-- (id)_nameForMethod:(objc_method *)a3;
+- (BOOL)_client:(id)_client validateClass:(id)class hasClassMethod:(id)method withFullSignature:(const char *)signature argList:(char *)list;
+- (BOOL)_client:(id)_client validateClass:(id)class hasMethod:(id)method methodType:(int)type returnType:(id)returnType arguments:(id)arguments;
+- (BOOL)_client:(id)_client validateClass:(id)class hasSwiftField:(id)field withTypeString:(const char *)string isAnyClass:(BOOL)anyClass;
+- (BOOL)_client:(id)_client validateStruct:(id)struct hasSwiftField:(id)field withTypeString:(const char *)string isAnyClass:(BOOL)class;
+- (BOOL)_client:(id)_client validateSwiftEnum:(id)enum hasCase:(id)case withTypeString:(const char *)string isAnyClass:(BOOL)class;
+- (BOOL)_client:(id)_client validateType:(id)type hasSwiftField:(id)field handleSwiftValidationProblems:(id)problems;
+- (BOOL)client:(id)client validateClass:(id)class;
+- (BOOL)client:(id)client validateClass:(id)class conformsToProtocol:(id)protocol;
+- (BOOL)client:(id)client validateClass:(id)class hasInstanceMethod:(id)method withFullSignature:(const char *)signature argList:(char *)list;
+- (BOOL)client:(id)client validateClass:(id)class hasInstanceVariable:(id)variable withType:(const char *)type;
+- (BOOL)client:(id)client validateClass:(id)class hasProperty:(id)property customGetter:(id)getter customSetter:(id)setter withType:(const char *)type;
+- (BOOL)client:(id)client validateClass:(id)class isKindOfClass:(id)ofClass;
+- (BOOL)client:(id)client validateProtocol:(id)protocol conformsToProtocol:(id)toProtocol;
+- (BOOL)client:(id)client validateProtocol:(id)protocol hasMethod:(id)method isInstanceMethod:(BOOL)instanceMethod isRequired:(BOOL)required;
+- (BOOL)client:(id)client validateSwiftEnum:(id)enum;
+- (BOOL)client:(id)client validateSwiftEnum:(id)enum hasCase:(id)case;
+- (BOOL)client:(id)client validateSwiftStruct:(id)struct;
+- (BOOL)client:(id)client validateSwiftStruct:(id)struct hasSize:(int64_t)size;
+- (BOOL)installSafeCategory:(id)category canInteractWithTargetClass:(BOOL)class;
+- (BOOL)installSwiftDynamicReplacementUnit:(id)unit inBundle:(id)bundle withPrecondition:(id)precondition;
+- (BOOL)validateClass:(id)class hasClassMethod:(id)method withReturnType:(id)type args:(id)args;
+- (BOOL)validateClass:(id)class hasInstanceMethod:(id)method withReturnType:(id)type args:(id)args;
+- (id)_nameForMethod:(objc_method *)method;
 - (void)_clearState;
-- (void)_generateWarningsForMethodType:(int)a3 onClass:(Class)a4 superclassMethods:(objc_method *)a5 numberOfSuperclassMethods:(unsigned int)a6;
-- (void)_generateWarningsForPrefixedMethodNames:(id)a3 client:(id)a4 methodType:(int)a5 methodName:(id)a6 className:(id)a7;
-- (void)_generateWarningsOnSafeCategoryClass:(Class)a3;
-- (void)_iterateMethodsOfType:(int)a3 onClass:(Class)Class block:(id)a5;
+- (void)_generateWarningsForMethodType:(int)type onClass:(Class)class superclassMethods:(objc_method *)methods numberOfSuperclassMethods:(unsigned int)superclassMethods;
+- (void)_generateWarningsForPrefixedMethodNames:(id)names client:(id)client methodType:(int)type methodName:(id)name className:(id)className;
+- (void)_generateWarningsOnSafeCategoryClass:(Class)class;
+- (void)_iterateMethodsOfType:(int)type onClass:(Class)Class block:(id)block;
 - (void)_resetState;
-- (void)installSafeCategories:(id)a3 afterDelay:(double)a4 validationTargetName:(id)a5 overrideProcessName:(id)a6;
-- (void)performValidations:(id)a3 withPreValidationHandler:(id)a4 postValidationHandler:(id)a5 safeCategoryInstallationHandler:(id)a6;
-- (void)sendExceptionForInstallingSafeCategory:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5;
-- (void)sendExceptionForSafeBlock:(id)a3 overrideProcessName:(id)a4;
-- (void)sendExceptionForSafeCategoryOnWrongTarget:(id)a3 targetBundle:(id)a4 expectedBundle:(id)a5 overrideProcessName:(id)a6;
-- (void)sendExceptionForSafeIVarKey:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5;
-- (void)sendExceptionForSafeValueKey:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5;
-- (void)sendFailedAssertionWithErrorMessage:(id)a3 overrideProcessName:(id)a4;
-- (void)sendFailedTestCase:(id)a3 withTag:(id)a4 overrideProcessName:(id)a5;
-- (void)sendGenericReport:(id)a3 withTag:(id)a4 overrideProcessName:(id)a5;
-- (void)sendValidateExceptionForClass:(id)a3 conformsToProtocol:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForClass:(id)a3 errorMessage:(id)a4 overrideProcessName:(id)a5;
-- (void)sendValidateExceptionForClass:(id)a3 hasClassMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForClass:(id)a3 hasInstanceMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForClass:(id)a3 hasInstanceVariable:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForClass:(id)a3 hasProperty:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForClass:(id)a3 isKindOfClass:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForProtocol:(id)a3 conformsToProtocol:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForProtocol:(id)a3 hasMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidateExceptionForProtocol:(id)a3 hasProperty:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6;
-- (void)sendValidationSuccessForProcessName:(id)a3;
+- (void)installSafeCategories:(id)categories afterDelay:(double)delay validationTargetName:(id)name overrideProcessName:(id)processName;
+- (void)performValidations:(id)validations withPreValidationHandler:(id)handler postValidationHandler:(id)validationHandler safeCategoryInstallationHandler:(id)installationHandler;
+- (void)sendExceptionForInstallingSafeCategory:(id)category onTarget:(id)target overrideProcessName:(id)name;
+- (void)sendExceptionForSafeBlock:(id)block overrideProcessName:(id)name;
+- (void)sendExceptionForSafeCategoryOnWrongTarget:(id)target targetBundle:(id)bundle expectedBundle:(id)expectedBundle overrideProcessName:(id)name;
+- (void)sendExceptionForSafeIVarKey:(id)key onTarget:(id)target overrideProcessName:(id)name;
+- (void)sendExceptionForSafeValueKey:(id)key onTarget:(id)target overrideProcessName:(id)name;
+- (void)sendFailedAssertionWithErrorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendFailedTestCase:(id)case withTag:(id)tag overrideProcessName:(id)name;
+- (void)sendGenericReport:(id)report withTag:(id)tag overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class conformsToProtocol:(id)protocol errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class hasClassMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class hasInstanceMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class hasInstanceVariable:(id)variable errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class hasProperty:(id)property errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForClass:(id)class isKindOfClass:(id)ofClass errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForProtocol:(id)protocol conformsToProtocol:(id)toProtocol errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForProtocol:(id)protocol hasMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidateExceptionForProtocol:(id)protocol hasProperty:(id)property errorMessage:(id)message overrideProcessName:(id)name;
+- (void)sendValidationSuccessForProcessName:(id)name;
 @end
 
 @implementation AXValidationManager
@@ -94,12 +94,12 @@ uint64_t __37__AXValidationManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)performValidations:(id)a3 withPreValidationHandler:(id)a4 postValidationHandler:(id)a5 safeCategoryInstallationHandler:(id)a6
+- (void)performValidations:(id)validations withPreValidationHandler:(id)handler postValidationHandler:(id)validationHandler safeCategoryInstallationHandler:(id)installationHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  validationsCopy = validations;
+  handlerCopy = handler;
+  validationHandlerCopy = validationHandler;
+  installationHandlerCopy = installationHandler;
   if ([(AXValidationManager *)self installSafeCategoriesOffMainThread])
   {
     v14 = +[AXAccessQueue backgroundAccessQueue];
@@ -121,14 +121,14 @@ uint64_t __37__AXValidationManager_sharedInstance__block_invoke()
   v20[2] = __121__AXValidationManager_performValidations_withPreValidationHandler_postValidationHandler_safeCategoryInstallationHandler___block_invoke;
   v20[3] = &unk_1E735BD98;
   v20[4] = self;
-  v21 = v11;
-  v22 = v10;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
+  v21 = handlerCopy;
+  v22 = validationsCopy;
+  v23 = validationHandlerCopy;
+  v24 = installationHandlerCopy;
+  v16 = installationHandlerCopy;
+  v17 = validationHandlerCopy;
+  v18 = validationsCopy;
+  v19 = handlerCopy;
   [v14 performSynchronousWritingBlock:v20];
 }
 
@@ -234,12 +234,12 @@ uint64_t __121__AXValidationManager_performValidations_withPreValidationHandler_
   return result;
 }
 
-- (void)installSafeCategories:(id)a3 afterDelay:(double)a4 validationTargetName:(id)a5 overrideProcessName:(id)a6
+- (void)installSafeCategories:(id)categories afterDelay:(double)delay validationTargetName:(id)name overrideProcessName:(id)processName
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  categoriesCopy = categories;
+  nameCopy = name;
+  processNameCopy = processName;
+  if (categoriesCopy)
   {
     v13 = +[AXAccessQueue mainAccessQueue];
     v14[0] = MEMORY[0x1E69E9820];
@@ -247,10 +247,10 @@ uint64_t __121__AXValidationManager_performValidations_withPreValidationHandler_
     v14[2] = __97__AXValidationManager_installSafeCategories_afterDelay_validationTargetName_overrideProcessName___block_invoke;
     v14[3] = &unk_1E735BDC0;
     v14[4] = self;
-    v15 = v12;
-    v16 = v11;
-    v17 = v10;
-    [v13 afterDelay:v14 processWritingBlock:a4];
+    v15 = processNameCopy;
+    v16 = nameCopy;
+    v17 = categoriesCopy;
+    [v13 afterDelay:v14 processWritingBlock:delay];
   }
 }
 
@@ -315,11 +315,11 @@ uint64_t __97__AXValidationManager_installSafeCategories_afterDelay_validationTa
   [(AXValidationManager *)self setShouldLogToConsole:AXShouldLogValidationErrors()];
   [(AXValidationManager *)self setShouldCrashOnError:AXShouldCrashOnValidationErrors()];
   [(AXValidationManager *)self setShouldReportToServer:AXShouldReportValidationErrors()];
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(AXValidationManager *)self setConsoleErrorMessages:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [(AXValidationManager *)self setConsoleErrorMessages:array];
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  [(AXValidationManager *)self setConsoleWarningMessages:v4];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [(AXValidationManager *)self setConsoleWarningMessages:array2];
 }
 
 - (void)_clearState
@@ -329,28 +329,28 @@ uint64_t __97__AXValidationManager_installSafeCategories_afterDelay_validationTa
   [(AXValidationManager *)self setConsoleWarningMessages:0];
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4
+- (BOOL)client:(id)client validateClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  classCopy = class;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v8 = _AXClassFromStringWithFallback(v7);
+  v8 = _AXClassFromStringWithFallback(classCopy);
   Name = class_getName(v8);
   v10 = strcmp(Name, "nil");
   if (!v10)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Class Not Present: %@", v7];
+    classCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Class Not Present: %@", classCopy];
     if (self->_shouldLogToConsole)
     {
-      v12 = [(AXValidationManager *)self consoleErrorMessages];
-      [v12 addObject:v11];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:classCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v13 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v7 errorMessage:v11 overrideProcessName:v13];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:classCopy errorMessage:classCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -362,13 +362,13 @@ uint64_t __97__AXValidationManager_installSafeCategories_afterDelay_validationTa
   return v10 != 0;
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4 isKindOfClass:(id)a5
+- (BOOL)client:(id)client validateClass:(id)class isKindOfClass:(id)ofClass
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  Superclass = _AXClassFromStringWithFallback(v9);
-  v12 = _AXClassFromStringWithFallback(v10);
+  clientCopy = client;
+  classCopy = class;
+  ofClassCopy = ofClass;
+  Superclass = _AXClassFromStringWithFallback(classCopy);
+  v12 = _AXClassFromStringWithFallback(ofClassCopy);
   while (1)
   {
     v13 = Superclass;
@@ -387,17 +387,17 @@ uint64_t __97__AXValidationManager_installSafeCategories_afterDelay_validationTa
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
   [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ is not a kind of %@", v8, v9, v10];
+  ofClassCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ is not a kind of %@", clientCopy, classCopy, ofClassCopy];
   if (self->_shouldLogToConsole)
   {
-    v15 = [(AXValidationManager *)self consoleErrorMessages];
-    [v15 addObject:v14];
+    consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+    [consoleErrorMessages addObject:ofClassCopy];
   }
 
   if (self->_shouldReportToServer && !self->_forceDoNotReport)
   {
-    v16 = [(AXValidationManager *)self overrideProcessName];
-    [(AXValidationManager *)self sendValidateExceptionForClass:v9 isKindOfClass:v10 errorMessage:v14 overrideProcessName:v16];
+    overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+    [(AXValidationManager *)self sendValidateExceptionForClass:classCopy isKindOfClass:ofClassCopy errorMessage:ofClassCopy overrideProcessName:overrideProcessName];
   }
 
   if (self->_shouldCrashOnError)
@@ -409,26 +409,26 @@ LABEL_12:
   return v13 != 0;
 }
 
-- (BOOL)client:(id)a3 validateSwiftStruct:(id)a4
+- (BOOL)client:(id)client validateSwiftStruct:(id)struct
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  structCopy = struct;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v8 = _AXSwiftValidateStruct(v7);
+  v8 = _AXSwiftValidateStruct(structCopy);
   if ((v8 & 1) == 0)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Struct Not Present: %@", v7];
+    structCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Struct Not Present: %@", structCopy];
     if (self->_shouldLogToConsole)
     {
-      v10 = [(AXValidationManager *)self consoleErrorMessages];
-      [v10 addObject:v9];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:structCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v11 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v7 errorMessage:v9 overrideProcessName:v11];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:structCopy errorMessage:structCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -440,36 +440,36 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)client:(id)a3 validateSwiftStruct:(id)a4 hasSize:(int64_t)a5
+- (BOOL)client:(id)client validateSwiftStruct:(id)struct hasSize:(int64_t)size
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  structCopy = struct;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v10 = [MEMORY[0x1E695DF70] array];
-  if ((_AXSwiftValidateStruct(v9) & 1) == 0)
+  array = [MEMORY[0x1E695DF70] array];
+  if ((_AXSwiftValidateStruct(structCopy) & 1) == 0)
   {
-    [v10 addObject:@"Swift field doesn't exist"];
-    if (!_AXSwiftValidateStructHasSize(v9, a5))
+    [array addObject:@"Swift field doesn't exist"];
+    if (!_AXSwiftValidateStructHasSize(structCopy, size))
     {
-      [v10 addObject:@"Swift field isn't class type"];
+      [array addObject:@"Swift field isn't class type"];
     }
   }
 
-  v11 = [v10 count];
+  v11 = [array count];
   if (v11)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
     v12 = MEMORY[0x1E696AD60];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-    v24 = v8;
-    v14 = [v12 stringWithFormat:@"%@: Swift enum %@ doesn't match size: %@", v8, v9, v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+    v24 = clientCopy;
+    v14 = [v12 stringWithFormat:@"%@: Swift enum %@ doesn't match size: %@", clientCopy, structCopy, v13];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v10;
+    v15 = array;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v16)
     {
@@ -497,17 +497,17 @@ LABEL_12:
 
     if (self->_shouldLogToConsole)
     {
-      v20 = [(AXValidationManager *)self consoleErrorMessages];
-      [v20 addObject:v14];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:v14];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v21 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v9 errorMessage:v14 overrideProcessName:v21];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:structCopy errorMessage:v14 overrideProcessName:overrideProcessName];
     }
 
-    v8 = v24;
+    clientCopy = v24;
     if (self->_shouldCrashOnError)
     {
       abort();
@@ -518,67 +518,67 @@ LABEL_12:
   return v11 == 0;
 }
 
-- (BOOL)_client:(id)a3 validateStruct:(id)a4 hasSwiftField:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7
+- (BOOL)_client:(id)_client validateStruct:(id)struct hasSwiftField:(id)field withTypeString:(const char *)string isAnyClass:(BOOL)class
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
+  classCopy = class;
+  structCopy = struct;
+  fieldCopy = field;
   v14 = MEMORY[0x1E695DF70];
-  v15 = a3;
-  v16 = [v14 array];
-  if ((_AXSwiftValidateStructHasField(v12, v13) & 1) == 0)
+  _clientCopy = _client;
+  array = [v14 array];
+  if ((_AXSwiftValidateStructHasField(structCopy, fieldCopy) & 1) == 0)
   {
     v17 = @"Swift field doesn't exist";
     goto LABEL_6;
   }
 
-  if (v7)
+  if (classCopy)
   {
-    if ((_AXSwiftValidateStructHasFieldOfAnyClass(v12, v13) & 1) == 0)
+    if ((_AXSwiftValidateStructHasFieldOfAnyClass(structCopy, fieldCopy) & 1) == 0)
     {
       v17 = @"Swift field isn't class type";
 LABEL_6:
-      [v16 addObject:v17];
+      [array addObject:v17];
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-    if ((_AXSwiftValidateStructHasFieldWithTypeString(v12, v13, v18) & 1) == 0)
+    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
+    if ((_AXSwiftValidateStructHasFieldWithTypeString(structCopy, fieldCopy, v18) & 1) == 0)
     {
       v19 = MEMORY[0x1E696AEC0];
-      v20 = _AXSwiftValidateStructGetFieldTypeString(v12, v13);
+      v20 = _AXSwiftValidateStructGetFieldTypeString(structCopy, fieldCopy);
       v21 = [v19 stringWithFormat:@"Swift field doesn't match: (%@) expected: (%@)", v18, v20];
-      [v16 addObject:v21];
+      [array addObject:v21];
     }
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v22 = [(AXValidationManager *)self _client:v15 validateType:v12 hasSwiftField:v13 handleSwiftValidationProblems:v16];
+  v22 = [(AXValidationManager *)self _client:_clientCopy validateType:structCopy hasSwiftField:fieldCopy handleSwiftValidationProblems:array];
 
   return v22;
 }
 
-- (BOOL)client:(id)a3 validateSwiftEnum:(id)a4
+- (BOOL)client:(id)client validateSwiftEnum:(id)enum
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  enumCopy = enum;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v8 = _AXSwiftValidateEnum(v7);
+  v8 = _AXSwiftValidateEnum(enumCopy);
   if ((v8 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Enum Not Present: %@", v7];
+    enumCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Enum Not Present: %@", enumCopy];
     if (self->_shouldLogToConsole)
     {
-      v10 = [(AXValidationManager *)self consoleErrorMessages];
-      [v10 addObject:v9];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:enumCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v11 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v7 errorMessage:v9 overrideProcessName:v11];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:enumCopy errorMessage:enumCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -590,75 +590,75 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)client:(id)a3 validateSwiftEnum:(id)a4 hasCase:(id)a5
+- (BOOL)client:(id)client validateSwiftEnum:(id)enum hasCase:(id)case
 {
-  v8 = a4;
-  v9 = a5;
+  enumCopy = enum;
+  caseCopy = case;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a3;
-  v12 = [v10 array];
-  if ((_AXSwiftValidateEnumHasCase(v8, v9) & 1) == 0)
+  clientCopy = client;
+  array = [v10 array];
+  if ((_AXSwiftValidateEnumHasCase(enumCopy, caseCopy) & 1) == 0)
   {
-    [v12 addObject:@"Swift case doesn't exist"];
+    [array addObject:@"Swift case doesn't exist"];
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v13 = [(AXValidationManager *)self _client:v11 validateType:v8 hasSwiftField:v9 handleSwiftValidationProblems:v12];
+  v13 = [(AXValidationManager *)self _client:clientCopy validateType:enumCopy hasSwiftField:caseCopy handleSwiftValidationProblems:array];
 
   return v13;
 }
 
-- (BOOL)_client:(id)a3 validateSwiftEnum:(id)a4 hasCase:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7
+- (BOOL)_client:(id)_client validateSwiftEnum:(id)enum hasCase:(id)case withTypeString:(const char *)string isAnyClass:(BOOL)class
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
+  classCopy = class;
+  enumCopy = enum;
+  caseCopy = case;
   v14 = MEMORY[0x1E695DF70];
-  v15 = a3;
-  v16 = [v14 array];
-  if ((_AXSwiftValidateEnumHasCase(v12, v13) & 1) == 0)
+  _clientCopy = _client;
+  array = [v14 array];
+  if ((_AXSwiftValidateEnumHasCase(enumCopy, caseCopy) & 1) == 0)
   {
     v17 = @"Swift case doesn't exist";
     goto LABEL_6;
   }
 
-  if (v7)
+  if (classCopy)
   {
-    if ((_AXSwiftValidateEnumHasCaseOfAnyClass(v12, v13) & 1) == 0)
+    if ((_AXSwiftValidateEnumHasCaseOfAnyClass(enumCopy, caseCopy) & 1) == 0)
     {
       v17 = @"Swift case isn't class type";
 LABEL_6:
-      [v16 addObject:v17];
+      [array addObject:v17];
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-    if ((_AXSwiftValidateEnumHasCaseWithTypeString(v12, v13, v18) & 1) == 0)
+    v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
+    if ((_AXSwiftValidateEnumHasCaseWithTypeString(enumCopy, caseCopy, v18) & 1) == 0)
     {
       v19 = MEMORY[0x1E696AEC0];
-      v20 = _AXSwiftValidateEnumGetCaseTypeString(v12, v13);
+      v20 = _AXSwiftValidateEnumGetCaseTypeString(enumCopy, caseCopy);
       v21 = [v19 stringWithFormat:@"Swift case doesn't match: (%@) expected: (%@)", v18, v20];
-      [v16 addObject:v21];
+      [array addObject:v21];
     }
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v22 = [(AXValidationManager *)self _client:v15 validateType:v12 hasSwiftField:v13 handleSwiftValidationProblems:v16];
+  v22 = [(AXValidationManager *)self _client:_clientCopy validateType:enumCopy hasSwiftField:caseCopy handleSwiftValidationProblems:array];
 
   return v22;
 }
 
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasSwiftField:(id)a5 withTypeString:(const char *)a6 isAnyClass:(BOOL)a7
+- (BOOL)_client:(id)_client validateClass:(id)class hasSwiftField:(id)field withTypeString:(const char *)string isAnyClass:(BOOL)anyClass
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
+  anyClassCopy = anyClass;
+  classCopy = class;
+  fieldCopy = field;
   v14 = MEMORY[0x1E695DF70];
-  v15 = a3;
-  v16 = [v14 array];
-  v17 = _AXClassFromStringWithFallback(v12);
+  _clientCopy = _client;
+  array = [v14 array];
+  v17 = _AXClassFromStringWithFallback(classCopy);
   if (!v17)
   {
     v19 = @"Class doesn't exist";
@@ -666,60 +666,60 @@ LABEL_6:
   }
 
   v18 = v17;
-  if ((_AXSwiftValidateClassHasField(v17, v13) & 1) == 0)
+  if ((_AXSwiftValidateClassHasField(v17, fieldCopy) & 1) == 0)
   {
     v19 = @"Swift field doesn't exist";
     goto LABEL_8;
   }
 
-  if (v7)
+  if (anyClassCopy)
   {
-    if ((_AXSwiftValidateClassHasFieldOfAnyClass(v18, v13) & 1) == 0)
+    if ((_AXSwiftValidateClassHasFieldOfAnyClass(v18, fieldCopy) & 1) == 0)
     {
       v19 = @"Swift field isn't class type";
 LABEL_8:
-      [v16 addObject:v19];
+      [array addObject:v19];
     }
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
+    v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
     if ((_AXSwiftValidateClassHasFieldWithTypeString() & 1) == 0)
     {
       v23 = MEMORY[0x1E696AEC0];
       v24 = _AXSwiftValidateClassGetFieldTypeString();
       v25 = [v23 stringWithFormat:@"Swift field doesn't match: (%@) expected: (%@)", v22, v24];
-      [v16 addObject:v25];
+      [array addObject:v25];
     }
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v20 = [(AXValidationManager *)self _client:v15 validateType:v12 hasSwiftField:v13 handleSwiftValidationProblems:v16];
+  v20 = [(AXValidationManager *)self _client:_clientCopy validateType:classCopy hasSwiftField:fieldCopy handleSwiftValidationProblems:array];
 
   return v20;
 }
 
-- (BOOL)_client:(id)a3 validateType:(id)a4 hasSwiftField:(id)a5 handleSwiftValidationProblems:(id)a6
+- (BOOL)_client:(id)_client validateType:(id)type hasSwiftField:(id)field handleSwiftValidationProblems:(id)problems
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  _clientCopy = _client;
+  typeCopy = type;
+  fieldCopy = field;
+  problemsCopy = problems;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v14 = [v13 count];
+  v14 = [problemsCopy count];
   if (v14)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v25 = v10;
-    v26 = v11;
-    v15 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@: Swift field: (%@) on type: %@.", v10, v12, v11];
+    v25 = _clientCopy;
+    v26 = typeCopy;
+    typeCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"%@: Swift field: (%@) on type: %@.", _clientCopy, fieldCopy, typeCopy];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = v13;
+    v16 = problemsCopy;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
@@ -734,7 +734,7 @@ LABEL_8:
             objc_enumerationMutation(v16);
           }
 
-          [v15 appendFormat:@" %@", *(*(&v27 + 1) + 8 * i)];
+          [typeCopy appendFormat:@" %@", *(*(&v27 + 1) + 8 * i)];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -745,15 +745,15 @@ LABEL_8:
 
     if (self->_shouldLogToConsole)
     {
-      v21 = [(AXValidationManager *)self consoleErrorMessages];
-      [v21 addObject:v15];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:typeCopy];
     }
 
-    v11 = v26;
+    typeCopy = v26;
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v22 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v26 hasInstanceVariable:v12 errorMessage:v15 overrideProcessName:v22];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:v26 hasInstanceVariable:fieldCopy errorMessage:typeCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -761,77 +761,77 @@ LABEL_8:
       abort();
     }
 
-    v10 = v25;
+    _clientCopy = v25;
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v14 == 0;
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasInstanceVariable:(id)a5 withType:(const char *)a6
+- (BOOL)client:(id)client validateClass:(id)class hasInstanceVariable:(id)variable withType:(const char *)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = _AXClassFromStringWithFallback(v11);
-  InstanceVariable = class_getInstanceVariable(v13, [v12 UTF8String]);
+  clientCopy = client;
+  classCopy = class;
+  variableCopy = variable;
+  v13 = _AXClassFromStringWithFallback(classCopy);
+  InstanceVariable = class_getInstanceVariable(v13, [variableCopy UTF8String]);
   TypeEncoding = ivar_getTypeEncoding(InstanceVariable);
-  if (!a6)
+  if (!type)
   {
     v18 = 0;
     goto LABEL_24;
   }
 
   v16 = TypeEncoding;
-  if (strlen(a6) >= 2)
+  if (strlen(type) >= 2)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
+    v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:type];
     if ([v17 isEqualToString:@"NSInteger"])
     {
-      a6 = "q";
+      type = "q";
     }
 
     else if ([v17 isEqualToString:@"NSUInteger"])
     {
-      a6 = "Q";
+      type = "Q";
     }
 
     else if ([v17 isEqualToString:@"int"])
     {
-      a6 = "i";
+      type = "i";
     }
 
     else if ([v17 isEqualToString:@"BOOL"])
     {
-      a6 = "B";
+      type = "B";
     }
 
     else if ([v17 isEqualToString:@"CGFloat"])
     {
-      a6 = "d";
+      type = "d";
     }
   }
 
-  v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
+  v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:type];
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@%@", v19];
 
-  v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-  a6 = v20;
+  v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:type];
+  type = v20;
   if (v16 && *v16 == 66 && !v16[1] && [v20 isEqualToString:@"c"])
   {
 
-    a6 = @"B";
+    type = @"B";
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
   if (!v16)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ : Ivar does not exist: %@", v10, v11, v12, v26, v27];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ : Ivar does not exist: %@", clientCopy, classCopy, variableCopy, v26, v27];
     goto LABEL_26;
   }
 
-  if (!strcmp(v16, [v18 UTF8String]) || !strcmp(v16, objc_msgSend(a6, "UTF8String")))
+  if (!strcmp(v16, [v18 UTF8String]) || !strcmp(v16, objc_msgSend(type, "UTF8String")))
   {
 LABEL_24:
     v21 = 1;
@@ -839,18 +839,18 @@ LABEL_24:
   }
 
   [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ : Ivar is not the right type: %@ [AX: %@ MAINLINE: %s]", v10, v11, v12, v18, v16];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ : Ivar is not the right type: %@ [AX: %@ MAINLINE: %s]", clientCopy, classCopy, variableCopy, v18, v16];
   v22 = LABEL_26:;
   if (self->_shouldLogToConsole)
   {
-    v23 = [(AXValidationManager *)self consoleErrorMessages];
-    [v23 addObject:v22];
+    consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+    [consoleErrorMessages addObject:v22];
   }
 
   if (self->_shouldReportToServer && !self->_forceDoNotReport)
   {
-    v24 = [(AXValidationManager *)self overrideProcessName];
-    [(AXValidationManager *)self sendValidateExceptionForClass:v11 hasInstanceVariable:v12 errorMessage:v22 overrideProcessName:v24];
+    overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+    [(AXValidationManager *)self sendValidateExceptionForClass:classCopy hasInstanceVariable:variableCopy errorMessage:v22 overrideProcessName:overrideProcessName];
   }
 
   if (self->_shouldCrashOnError)
@@ -874,21 +874,21 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
   return result;
 }
 
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasMethod:(id)a5 methodType:(int)a6 returnType:(id)a7 arguments:(id)a8
+- (BOOL)_client:(id)_client validateClass:(id)class hasMethod:(id)method methodType:(int)type returnType:(id)returnType arguments:(id)arguments
 {
   v58 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v43 = a4;
-  v40 = a7;
-  v41 = a8;
+  _clientCopy = _client;
+  classCopy = class;
+  returnTypeCopy = returnType;
+  argumentsCopy = arguments;
   v14 = MEMORY[0x1E695DF70];
-  v15 = a5;
-  v16 = [v14 array];
-  v17 = _AXClassFromStringWithFallback(v43);
-  aSelectorName = [v15 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F0579798];
+  methodCopy = method;
+  array = [v14 array];
+  v17 = _AXClassFromStringWithFallback(classCopy);
+  aSelectorName = [methodCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_1F0579798];
 
   v18 = NSSelectorFromString(aSelectorName);
-  if (a6)
+  if (type)
   {
     InstanceMethod = class_getInstanceMethod(v17, v18);
   }
@@ -909,17 +909,17 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
   v52[3] = &unk_1E735BDE8;
   v52[4] = &v53;
   v52[5] = InstanceMethod;
-  [(AXValidationManager *)self _iterateMethodsOfType:a6 onClass:v17 block:v52];
+  [(AXValidationManager *)self _iterateMethodsOfType:type onClass:v17 block:v52];
   if (v54[3])
   {
     v21 = method_copyReturnType(v20);
     if (v21)
     {
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v21];
-      if (([v22 isEqualToString:v40] & 1) == 0)
+      if (([v22 isEqualToString:returnTypeCopy] & 1) == 0)
       {
-        v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Incorrect return type: expected:%@ actual:%@", v40, v22];
-        [v16 addObject:v23];
+        v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Incorrect return type: expected:%@ actual:%@", returnTypeCopy, v22];
+        [array addObject:v23];
       }
 
       free(v21);
@@ -927,17 +927,17 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
 
     else
     {
-      [v16 addObject:@"Unable to determine return type."];
+      [array addObject:@"Unable to determine return type."];
     }
 
     v24 = method_getNumberOfArguments(v20) - 2;
-    if (v24 != [v41 count])
+    if (v24 != [argumentsCopy count])
     {
       v25 = MEMORY[0x1E696AEC0];
-      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v41, "count")}];
+      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(argumentsCopy, "count")}];
       v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
       v28 = [v25 stringWithFormat:@"Incorrect argument count: expected:%@ actual:%@", v26, v27];
-      [v16 addObject:v28];
+      [array addObject:v28];
     }
 
     v49[0] = MEMORY[0x1E69E9820];
@@ -945,32 +945,32 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
     v49[2] = __87__AXValidationManager__client_validateClass_hasMethod_methodType_returnType_arguments___block_invoke_2;
     v49[3] = &unk_1E735BE10;
     v51 = v20;
-    v50 = v16;
-    [v41 enumerateObjectsUsingBlock:v49];
+    v50 = array;
+    [argumentsCopy enumerateObjectsUsingBlock:v49];
   }
 
   else
   {
-    [v16 addObject:@"Method does not exist"];
+    [array addObject:@"Method does not exist"];
   }
 
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v29 = [v16 count];
+  v29 = [array count];
   if (v29)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
     v30 = @"Instance";
-    if (!a6)
+    if (!type)
     {
       v30 = @"Class";
     }
 
-    v31 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@: %@ method: (%@) on class: %@.", v13, v30, aSelectorName, v43];
+    classCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"%@: %@ method: (%@) on class: %@.", _clientCopy, v30, aSelectorName, classCopy];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v32 = v16;
+    v32 = array;
     v33 = [v32 countByEnumeratingWithState:&v45 objects:v57 count:16];
     if (v33)
     {
@@ -984,7 +984,7 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
             objc_enumerationMutation(v32);
           }
 
-          [v31 appendFormat:@" %@", *(*(&v45 + 1) + 8 * i)];
+          [classCopy appendFormat:@" %@", *(*(&v45 + 1) + 8 * i)];
         }
 
         v33 = [v32 countByEnumeratingWithState:&v45 objects:v57 count:16];
@@ -995,21 +995,21 @@ uint64_t __66__AXValidationManager__client_validateClass_hasMethod_methodType___
 
     if (self->_shouldLogToConsole)
     {
-      v36 = [(AXValidationManager *)self consoleErrorMessages];
-      [v36 addObject:v31];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:classCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v37 = [(AXValidationManager *)self overrideProcessName];
-      if (a6)
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      if (type)
       {
-        [(AXValidationManager *)self sendValidateExceptionForClass:v43 hasInstanceMethod:aSelectorName errorMessage:v31 overrideProcessName:v37];
+        [(AXValidationManager *)self sendValidateExceptionForClass:classCopy hasInstanceMethod:aSelectorName errorMessage:classCopy overrideProcessName:overrideProcessName];
       }
 
       else
       {
-        [(AXValidationManager *)self sendValidateExceptionForClass:v43 hasClassMethod:aSelectorName errorMessage:v31 overrideProcessName:v37];
+        [(AXValidationManager *)self sendValidateExceptionForClass:classCopy hasClassMethod:aSelectorName errorMessage:classCopy overrideProcessName:overrideProcessName];
       }
     }
 
@@ -1066,103 +1066,103 @@ void __87__AXValidationManager__client_validateClass_hasMethod_methodType_return
   }
 }
 
-- (BOOL)validateClass:(id)a3 hasClassMethod:(id)a4 withReturnType:(id)a5 args:(id)a6
+- (BOOL)validateClass:(id)class hasClassMethod:(id)method withReturnType:(id)type args:(id)args
 {
-  if (a6)
+  if (args)
   {
-    v10 = a6;
+    argsCopy = args;
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    argsCopy = MEMORY[0x1E695E0F0];
   }
 
   v11 = AXValidationClientAccessibility;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self _client:v11 validateClass:a3 hasMethod:a4 methodType:0 returnType:a5 arguments:v10];
+  argsCopy2 = args;
+  v13 = [(AXValidationManager *)self _client:v11 validateClass:class hasMethod:method methodType:0 returnType:type arguments:argsCopy];
 
   return v13;
 }
 
-- (BOOL)_client:(id)a3 validateClass:(id)a4 hasClassMethod:(id)a5 withFullSignature:(const char *)a6 argList:(char *)a7
+- (BOOL)_client:(id)_client validateClass:(id)class hasClassMethod:(id)method withFullSignature:(const char *)signature argList:(char *)list
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v21 = a7;
-  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-  v16 = [MEMORY[0x1E695DF70] array];
+  _clientCopy = _client;
+  classCopy = class;
+  methodCopy = method;
+  listCopy = list;
+  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:signature];
+  array = [MEMORY[0x1E695DF70] array];
   while (1)
   {
-    v17 = v21;
-    v21 += 8;
+    v17 = listCopy;
+    listCopy += 8;
     if (!*v17)
     {
       break;
     }
 
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
-    [v16 addObject:v18];
+    [array addObject:v18];
   }
 
-  v19 = [(AXValidationManager *)self _client:v12 validateClass:v13 hasMethod:v14 methodType:0 returnType:v15 arguments:v16];
+  v19 = [(AXValidationManager *)self _client:_clientCopy validateClass:classCopy hasMethod:methodCopy methodType:0 returnType:v15 arguments:array];
 
   return v19;
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasInstanceMethod:(id)a5 withFullSignature:(const char *)a6 argList:(char *)a7
+- (BOOL)client:(id)client validateClass:(id)class hasInstanceMethod:(id)method withFullSignature:(const char *)signature argList:(char *)list
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v21 = a7;
-  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a6];
-  v16 = [MEMORY[0x1E695DF70] array];
+  clientCopy = client;
+  classCopy = class;
+  methodCopy = method;
+  listCopy = list;
+  v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:signature];
+  array = [MEMORY[0x1E695DF70] array];
   while (1)
   {
-    v17 = v21;
-    v21 += 8;
+    v17 = listCopy;
+    listCopy += 8;
     if (!*v17)
     {
       break;
     }
 
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
-    [v16 addObject:v18];
+    [array addObject:v18];
   }
 
-  v19 = [(AXValidationManager *)self _client:v12 validateClass:v13 hasMethod:v14 methodType:1 returnType:v15 arguments:v16];
+  v19 = [(AXValidationManager *)self _client:clientCopy validateClass:classCopy hasMethod:methodCopy methodType:1 returnType:v15 arguments:array];
 
   return v19;
 }
 
-- (BOOL)validateClass:(id)a3 hasInstanceMethod:(id)a4 withReturnType:(id)a5 args:(id)a6
+- (BOOL)validateClass:(id)class hasInstanceMethod:(id)method withReturnType:(id)type args:(id)args
 {
-  if (a6)
+  if (args)
   {
-    v10 = a6;
+    argsCopy = args;
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    argsCopy = MEMORY[0x1E695E0F0];
   }
 
   v11 = AXValidationClientAccessibility;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self _client:v11 validateClass:a3 hasMethod:a4 methodType:1 returnType:a5 arguments:v10];
+  argsCopy2 = args;
+  v13 = [(AXValidationManager *)self _client:v11 validateClass:class hasMethod:method methodType:1 returnType:type arguments:argsCopy];
 
   return v13;
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4 hasProperty:(id)a5 customGetter:(id)a6 customSetter:(id)a7 withType:(const char *)a8
+- (BOOL)client:(id)client validateClass:(id)class hasProperty:(id)property customGetter:(id)getter customSetter:(id)setter withType:(const char *)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  clientCopy = client;
+  classCopy = class;
+  propertyCopy = property;
+  getterCopy = getter;
+  setterCopy = setter;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1172,9 +1172,9 @@ void __87__AXValidationManager__client_validateClass_hasMethod_methodType_return
   aBlock[2] = __91__AXValidationManager_client_validateClass_hasProperty_customGetter_customSetter_withType___block_invoke;
   aBlock[3] = &unk_1E735BE38;
   aBlock[4] = self;
-  v19 = v15;
+  v19 = classCopy;
   v38 = v19;
-  v20 = v16;
+  v20 = propertyCopy;
   v39 = v20;
   v40 = &v41;
   v21 = _Block_copy(aBlock);
@@ -1184,16 +1184,16 @@ void __87__AXValidationManager__client_validateClass_hasMethod_methodType_return
   v24 = Property;
   if (Property)
   {
-    if (a8)
+    if (type)
     {
       v25 = property_copyAttributeValue(Property, "T");
       v26 = v25;
       if (v25)
       {
-        if (strcmp(v25, a8) && (*v26 != 64 || *a8 != 64))
+        if (strcmp(v25, type) && (*v26 != 64 || *type != 64))
         {
-          v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) had wrong type:(%s) expected: (%s)", v14, v19, v20, v26, a8];
-          v21[2](v21, v33);
+          type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) had wrong type:(%s) expected: (%s)", clientCopy, v19, v20, v26, type];
+          v21[2](v21, type);
 
 LABEL_33:
           free(v26);
@@ -1202,52 +1202,52 @@ LABEL_33:
 
         v27 = property_copyAttributeValue(v24, "G");
         v28 = property_copyAttributeValue(v24, "S");
-        if (!v17 && v27)
+        if (!getterCopy && v27)
         {
-          v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom getter: (%s)", v14, v19, v20, v27];
+          v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom getter: (%s)", clientCopy, v19, v20, v27];
           v21[2](v21, v29);
         }
 
-        if (!v18 && v28)
+        if (!setterCopy && v28)
         {
-          v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom setter: (%s)", v14, v19, v20, v28];
+          v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom setter: (%s)", clientCopy, v19, v20, v28];
           v21[2](v21, v30);
         }
 
-        if (v17)
+        if (getterCopy)
         {
           if (v27)
           {
-            if (!strcmp(v27, [v17 UTF8String]))
+            if (!strcmp(v27, [getterCopy UTF8String]))
             {
               goto LABEL_23;
             }
 
-            v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom getter: (%s) expected:(%@)", v14, v19, v20, v27, v17];
-            v21[2](v21, v31);
+            getterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom getter: (%s) expected:(%@)", clientCopy, v19, v20, v27, getterCopy];
+            v21[2](v21, getterCopy);
           }
 
           else
           {
-            v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) does not have custom getter: (%@)", v14, v19, v20, v17];
-            v21[2](v21, v31);
+            getterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) does not have custom getter: (%@)", clientCopy, v19, v20, getterCopy];
+            v21[2](v21, getterCopy);
           }
         }
 
 LABEL_23:
-        if (v18)
+        if (setterCopy)
         {
           if (!v28)
           {
-            v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) does not have custom setter: (%@)", v14, v19, v20, v18];
-            v21[2](v21, v34);
+            setterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) does not have custom setter: (%@)", clientCopy, v19, v20, setterCopy];
+            v21[2](v21, setterCopy);
             goto LABEL_28;
           }
 
-          if (strcmp(v28, [v18 UTF8String]))
+          if (strcmp(v28, [setterCopy UTF8String]))
           {
-            v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom setter: (%s) expected:(%@)", v14, v19, v20, v28, v18];
-            v21[2](v21, v34);
+            setterCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property: (%@) has unexpected custom setter: (%s) expected:(%@)", clientCopy, v19, v20, v28, setterCopy];
+            v21[2](v21, setterCopy);
 LABEL_28:
           }
         }
@@ -1266,14 +1266,14 @@ LABEL_28:
       }
     }
 
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property missing type information: %@", v14, v19, v20];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property missing type information: %@", clientCopy, v19, v20];
     v21[2](v21, v32);
   }
 
   else
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property not present: %@", v14, v19, v20];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Property not present: %@", clientCopy, v19, v20];
     v21[2](v21, v32);
   }
 
@@ -1315,30 +1315,30 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   *(*(*(a1 + 56) + 8) + 24) = 1;
 }
 
-- (BOOL)client:(id)a3 validateClass:(id)a4 conformsToProtocol:(id)a5
+- (BOOL)client:(id)client validateClass:(id)class conformsToProtocol:(id)protocol
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  classCopy = class;
+  protocolCopy = protocol;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v11 = _AXClassFromStringWithFallback(v9);
-  v12 = NSProtocolFromString(v10);
+  v11 = _AXClassFromStringWithFallback(classCopy);
+  v12 = NSProtocolFromString(protocolCopy);
   v13 = class_conformsToProtocol(v11, v12);
 
   if (!v13)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: Class:%@ Does not conform to Protocol:%@", v8, v9, v10];
+    protocolCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: Class:%@ Does not conform to Protocol:%@", clientCopy, classCopy, protocolCopy];
     if (self->_shouldLogToConsole)
     {
-      v15 = [(AXValidationManager *)self consoleErrorMessages];
-      [v15 addObject:v14];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:protocolCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v16 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForClass:v9 conformsToProtocol:v10 errorMessage:v14 overrideProcessName:v16];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForClass:classCopy conformsToProtocol:protocolCopy errorMessage:protocolCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -1350,29 +1350,29 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   return v13;
 }
 
-- (BOOL)client:(id)a3 validateProtocol:(id)a4 conformsToProtocol:(id)a5
+- (BOOL)client:(id)client validateProtocol:(id)protocol conformsToProtocol:(id)toProtocol
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = NSProtocolFromString(v9);
-  v12 = NSProtocolFromString(v10);
+  clientCopy = client;
+  protocolCopy = protocol;
+  toProtocolCopy = toProtocol;
+  v11 = NSProtocolFromString(protocolCopy);
+  v12 = NSProtocolFromString(toProtocolCopy);
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
   v13 = protocol_conformsToProtocol(v11, v12);
   if (!v13)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Protocol does not conform to protocol: %@", v8, v9, v10];
+    toProtocolCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Protocol does not conform to protocol: %@", clientCopy, protocolCopy, toProtocolCopy];
     if (self->_shouldLogToConsole)
     {
-      v15 = [(AXValidationManager *)self consoleErrorMessages];
-      [v15 addObject:v14];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:toProtocolCopy];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v16 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForProtocol:v9 conformsToProtocol:v10 errorMessage:v14 overrideProcessName:v16];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForProtocol:protocolCopy conformsToProtocol:toProtocolCopy errorMessage:toProtocolCopy overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -1384,45 +1384,45 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   return v13;
 }
 
-- (BOOL)client:(id)a3 validateProtocol:(id)a4 hasMethod:(id)a5 isInstanceMethod:(BOOL)a6 isRequired:(BOOL)a7
+- (BOOL)client:(id)client validateProtocol:(id)protocol hasMethod:(id)method isInstanceMethod:(BOOL)instanceMethod isRequired:(BOOL)required
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  requiredCopy = required;
+  instanceMethodCopy = instanceMethod;
+  clientCopy = client;
+  protocolCopy = protocol;
+  methodCopy = method;
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  v15 = NSProtocolFromString(v13);
-  v16 = [v14 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F0579798];
+  v15 = NSProtocolFromString(protocolCopy);
+  v16 = [methodCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_1F0579798];
 
   v17 = NSSelectorFromString(v16);
-  name = protocol_getMethodDescription(v15, v17, v7, v8).name;
+  name = protocol_getMethodDescription(v15, v17, requiredCopy, instanceMethodCopy).name;
   if (!name)
   {
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
     v19 = @"optional";
-    if (v7)
+    if (requiredCopy)
     {
       v19 = @"required";
     }
 
     v20 = @"class";
-    if (v8)
+    if (instanceMethodCopy)
     {
       v20 = @"instance";
     }
 
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Protocol %@ %@ method not present: %@", v12, v13, v19, v20, v16];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ Protocol %@ %@ method not present: %@", clientCopy, protocolCopy, v19, v20, v16];
     if (self->_shouldLogToConsole)
     {
-      v22 = [(AXValidationManager *)self consoleErrorMessages];
-      [v22 addObject:v21];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:v21];
     }
 
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v23 = [(AXValidationManager *)self overrideProcessName];
-      [(AXValidationManager *)self sendValidateExceptionForProtocol:v13 hasMethod:v16 errorMessage:v21 overrideProcessName:v23];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+      [(AXValidationManager *)self sendValidateExceptionForProtocol:protocolCopy hasMethod:v16 errorMessage:v21 overrideProcessName:overrideProcessName];
     }
 
     if (self->_shouldCrashOnError)
@@ -1434,10 +1434,10 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   return name != 0;
 }
 
-- (void)_iterateMethodsOfType:(int)a3 onClass:(Class)Class block:(id)a5
+- (void)_iterateMethodsOfType:(int)type onClass:(Class)Class block:(id)block
 {
-  v7 = a5;
-  if (!a3)
+  blockCopy = block;
+  if (!type)
   {
     Class = object_getClass(Class);
   }
@@ -1451,7 +1451,7 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
     v11 = 0;
     do
     {
-      v7[2](v7, v9[v10], &v11);
+      blockCopy[2](blockCopy, v9[v10], &v11);
       if (v11 == 1)
       {
         break;
@@ -1465,11 +1465,11 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   }
 }
 
-- (id)_nameForMethod:(objc_method *)a3
+- (id)_nameForMethod:(objc_method *)method
 {
-  if (a3)
+  if (method)
   {
-    Name = method_getName(a3);
+    Name = method_getName(method);
     if (Name && (v5 = sel_getName(Name)) != 0)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
@@ -1489,33 +1489,33 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   return v6;
 }
 
-- (void)_generateWarningsForPrefixedMethodNames:(id)a3 client:(id)a4 methodType:(int)a5 methodName:(id)a6 className:(id)a7
+- (void)_generateWarningsForPrefixedMethodNames:(id)names client:(id)client methodType:(int)type methodName:(id)name className:(id)className
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 count])
+  namesCopy = names;
+  clientCopy = client;
+  nameCopy = name;
+  classNameCopy = className;
+  if ([namesCopy count])
   {
     [(AXValidationManager *)self setNumberOfValidationWarnings:[(AXValidationManager *)self numberOfValidationWarnings]+ 1];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = @"Instance";
-    if (!a5)
+    if (!type)
     {
       v17 = @"Class";
     }
 
-    v27 = v15;
-    v28 = v14;
-    v29 = v13;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ method: (%@) on class: %@ has the following more specific variants:", v13, v17, v14, v15];
-    [v16 addObject:?];
+    v27 = classNameCopy;
+    v28 = nameCopy;
+    v29 = clientCopy;
+    classNameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@ method: (%@) on class: %@ has the following more specific variants:", clientCopy, v17, nameCopy, classNameCopy];
+    [array addObject:?];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v12;
+    v18 = namesCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v19)
     {
@@ -1531,7 +1531,7 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
           }
 
           v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\t%@", *(*(&v30 + 1) + 8 * i)];
-          [v16 addObject:v23];
+          [array addObject:v23];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -1542,25 +1542,25 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
 
     if (self->_shouldLogToConsole)
     {
-      v24 = [(AXValidationManager *)self consoleWarningMessages];
-      [v24 addObjectsFromArray:v16];
+      consoleWarningMessages = [(AXValidationManager *)self consoleWarningMessages];
+      [consoleWarningMessages addObjectsFromArray:array];
     }
 
-    v14 = v28;
-    v13 = v29;
-    v15 = v27;
+    nameCopy = v28;
+    clientCopy = v29;
+    classNameCopy = v27;
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_generateWarningsOnSafeCategoryClass:(Class)a3
+- (void)_generateWarningsOnSafeCategoryClass:(Class)class
 {
-  Superclass = class_getSuperclass(a3);
+  Superclass = class_getSuperclass(class);
   Class = object_getClass(Superclass);
   outCount = 0;
   v7 = class_copyMethodList(Class, &outCount);
-  [(AXValidationManager *)self _generateWarningsForMethodType:0 onClass:a3 superclassMethods:v7 numberOfSuperclassMethods:outCount];
+  [(AXValidationManager *)self _generateWarningsForMethodType:0 onClass:class superclassMethods:v7 numberOfSuperclassMethods:outCount];
   if (v7 && outCount)
   {
     free(v7);
@@ -1568,7 +1568,7 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
 
   v9 = 0;
   v8 = class_copyMethodList(Superclass, &v9);
-  [(AXValidationManager *)self _generateWarningsForMethodType:1 onClass:a3 superclassMethods:v8 numberOfSuperclassMethods:v9];
+  [(AXValidationManager *)self _generateWarningsForMethodType:1 onClass:class superclassMethods:v8 numberOfSuperclassMethods:v9];
   if (v8)
   {
     if (v9)
@@ -1578,25 +1578,25 @@ void __91__AXValidationManager_client_validateClass_hasProperty_customGetter_cus
   }
 }
 
-- (void)_generateWarningsForMethodType:(int)a3 onClass:(Class)a4 superclassMethods:(objc_method *)a5 numberOfSuperclassMethods:(unsigned int)a6
+- (void)_generateWarningsForMethodType:(int)type onClass:(Class)class superclassMethods:(objc_method *)methods numberOfSuperclassMethods:(unsigned int)superclassMethods
 {
-  if (a5)
+  if (methods)
   {
-    if (a6)
+    if (superclassMethods)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:class_getName(a4)];
+      v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:class_getName(class)];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __106__AXValidationManager__generateWarningsForMethodType_onClass_superclassMethods_numberOfSuperclassMethods___block_invoke_2;
       v13[3] = &unk_1E735BE80;
       v15 = &__block_literal_global_274_0;
-      v16 = a5;
-      v17 = a6;
-      v18 = a3;
+      methodsCopy = methods;
+      superclassMethodsCopy = superclassMethods;
+      typeCopy = type;
       v13[4] = self;
       v14 = v11;
       v12 = v11;
-      [(AXValidationManager *)self _iterateMethodsOfType:0 onClass:a4 block:v13];
+      [(AXValidationManager *)self _iterateMethodsOfType:0 onClass:class block:v13];
     }
   }
 }
@@ -1650,13 +1650,13 @@ void __106__AXValidationManager__generateWarningsForMethodType_onClass_superclas
   [*(a1 + 32) _generateWarningsForPrefixedMethodNames:v3 client:AXValidationClientAccessibility methodType:*(a1 + 68) methodName:v6 className:*(a1 + 40)];
 }
 
-- (BOOL)installSafeCategory:(id)a3 canInteractWithTargetClass:(BOOL)a4
+- (BOOL)installSafeCategory:(id)category canInteractWithTargetClass:(BOOL)class
 {
-  v4 = a4;
+  classCopy = class;
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  categoryCopy = category;
   v7 = objc_autoreleasePoolPush();
-  v8 = NSClassFromString(v6);
+  v8 = NSClassFromString(categoryCopy);
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
   if (!v8)
   {
@@ -1667,22 +1667,22 @@ void __106__AXValidationManager__generateWarningsForMethodType_onClass_superclas
     }
 
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Safe Category class not found: %@", v6];
+    categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Safe Category class not found: %@", categoryCopy];
     v49 = 0;
-    v20 = 0;
-    v10 = 0;
+    bundlePath4 = 0;
+    bundlePath3 = 0;
     v9 = 0;
     LOBYTE(v23) = 0;
     goto LABEL_35;
   }
 
-  if (!v4 || (objc_opt_respondsToSelector() & 1) == 0)
+  if (!classCopy || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v17 = v6;
+    v17 = categoryCopy;
     v18 = v7;
     v19 = 0;
-    v10 = 0;
-    v20 = 0;
+    bundlePath3 = 0;
+    bundlePath4 = 0;
     v49 = 0;
     v9 = 0;
 LABEL_28:
@@ -1695,9 +1695,9 @@ LABEL_28:
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not an accessibility class!", v8];
     }
-    v22 = ;
+    categoryCopy = ;
 
-    if (v22)
+    if (categoryCopy)
     {
       [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
       LOBYTE(v23) = 0;
@@ -1709,30 +1709,30 @@ LABEL_28:
     }
 
     v7 = v18;
-    v6 = v17;
+    categoryCopy = v17;
     goto LABEL_35;
   }
 
   v9 = [(objc_class *)v8 performSelector:sel_safeCategoryTargetClassName];
-  v10 = NSClassFromString(v9);
-  if (!v10)
+  bundlePath3 = NSClassFromString(v9);
+  if (!bundlePath3)
   {
-    v17 = v6;
+    v17 = categoryCopy;
     v18 = v7;
     v19 = 0;
 LABEL_27:
-    v20 = 0;
+    bundlePath4 = 0;
     v49 = 0;
     goto LABEL_28;
   }
 
   if (![(AXValidationManager *)self shouldPerformValidationChecks])
   {
-    v17 = v6;
+    v17 = categoryCopy;
     v18 = v7;
 LABEL_26:
     v19 = 0;
-    v10 = 0;
+    bundlePath3 = 0;
     goto LABEL_27;
   }
 
@@ -1740,7 +1740,7 @@ LABEL_26:
   if (os_signpost_enabled(v11))
   {
     v12 = MEMORY[0x1E696AEC0];
-    NSStringFromClass(v10);
+    NSStringFromClass(bundlePath3);
     v14 = v13 = v7;
     v15 = [v12 stringWithFormat:@"Class=%@", v14];
     *buf = 138412290;
@@ -1755,13 +1755,13 @@ LABEL_26:
   {
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(objc_class *)v10 axTrampolineForClass:v10];
+      v16 = [(objc_class *)bundlePath3 axTrampolineForClass:bundlePath3];
       [v16 _accessibilityPerformValidations:self];
     }
 
     else
     {
-      [(objc_class *)v10 _accessibilityPerformValidations:self];
+      [(objc_class *)bundlePath3 _accessibilityPerformValidations:self];
     }
   }
 
@@ -1773,53 +1773,53 @@ LABEL_26:
   }
 
   v25 = [MEMORY[0x1E696AAE8] bundleForClass:v8];
-  v26 = [v25 bundlePath];
-  v27 = [v26 hasSuffix:@"axbundle"];
+  bundlePath = [v25 bundlePath];
+  v27 = [bundlePath hasSuffix:@"axbundle"];
 
   if ((v27 & 1) == 0)
   {
     v38 = v25;
-    v17 = v6;
+    v17 = categoryCopy;
     v18 = v7;
 
     goto LABEL_26;
   }
 
-  v28 = [MEMORY[0x1E696AAE8] bundleForClass:v10];
+  v28 = [MEMORY[0x1E696AAE8] bundleForClass:bundlePath3];
   v29 = +[AXCodeLoader defaultLoader];
   v30 = [v29 codeItemForBundle:v28];
 
   v47 = v30;
-  v31 = [v30 associatedAccessibilityCodeItem];
-  v45 = v31;
+  associatedAccessibilityCodeItem = [v30 associatedAccessibilityCodeItem];
+  v45 = associatedAccessibilityCodeItem;
   v46 = v28;
-  if (v31)
+  if (associatedAccessibilityCodeItem)
   {
-    v32 = v31;
+    v32 = associatedAccessibilityCodeItem;
     v44 = v7;
-    v33 = [v25 bundlePath];
-    v34 = [v32 path];
-    v35 = [v34 stringByDeletingLastPathComponent];
-    LOBYTE(v32) = [v33 isEqualToString:v35];
+    bundlePath2 = [v25 bundlePath];
+    path = [v32 path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    LOBYTE(v32) = [bundlePath2 isEqualToString:stringByDeletingLastPathComponent];
 
-    if ((v32 & 1) != 0 || ([v47 name], v36 = objc_claimAutoreleasedReturnValue(), v37 = -[NSString hasSuffix:](v6, "hasSuffix:", v36), v36, v37))
+    if ((v32 & 1) != 0 || ([v47 name], v36 = objc_claimAutoreleasedReturnValue(), v37 = -[NSString hasSuffix:](categoryCopy, "hasSuffix:", v36), v36, v37))
     {
       v49 = 0;
-      v20 = 0;
-      v10 = 0;
-      v22 = 0;
+      bundlePath4 = 0;
+      bundlePath3 = 0;
+      categoryCopy = 0;
       v23 = 1;
     }
 
     else
     {
-      v10 = [v25 bundlePath];
-      v20 = [v28 bundlePath];
+      bundlePath3 = [v25 bundlePath];
+      bundlePath4 = [v28 bundlePath];
       v43 = AXLogValidations();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v51 = v6;
+        v51 = categoryCopy;
         v52 = 2112;
         v53 = v25;
         v54 = 2112;
@@ -1828,7 +1828,7 @@ LABEL_26:
       }
 
       [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Safe category class:%@ in wrong AX bundle '%@' should be with '%@'", v6, v25, v28];
+      categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Safe category class:%@ in wrong AX bundle '%@' should be with '%@'", categoryCopy, v25, v28];
       v23 = 0;
       v49 = 1;
     }
@@ -1839,17 +1839,17 @@ LABEL_26:
   else
   {
     v49 = 0;
-    v20 = 0;
-    v10 = 0;
-    v22 = 0;
+    bundlePath4 = 0;
+    bundlePath3 = 0;
+    categoryCopy = 0;
     v23 = 1;
   }
 
   if (v23)
   {
-    v17 = v6;
+    v17 = categoryCopy;
     v18 = v7;
-    v19 = v22;
+    v19 = categoryCopy;
     goto LABEL_28;
   }
 
@@ -1863,22 +1863,22 @@ LABEL_35:
   {
     if (self->_shouldReportToServer && !self->_forceDoNotReport)
     {
-      v39 = [(AXValidationManager *)self overrideProcessName];
+      overrideProcessName = [(AXValidationManager *)self overrideProcessName];
       if (v49)
       {
-        [(AXValidationManager *)self sendExceptionForSafeCategoryOnWrongTarget:v6 targetBundle:v10 expectedBundle:v20 overrideProcessName:v39];
+        [(AXValidationManager *)self sendExceptionForSafeCategoryOnWrongTarget:categoryCopy targetBundle:bundlePath3 expectedBundle:bundlePath4 overrideProcessName:overrideProcessName];
       }
 
       else
       {
-        [(AXValidationManager *)self sendExceptionForInstallingSafeCategory:v6 onTarget:v9 overrideProcessName:v39];
+        [(AXValidationManager *)self sendExceptionForInstallingSafeCategory:categoryCopy onTarget:v9 overrideProcessName:overrideProcessName];
       }
     }
 
     if (self->_shouldLogToConsole)
     {
-      v40 = [(AXValidationManager *)self consoleErrorMessages];
-      [v40 addObject:v22];
+      consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+      [consoleErrorMessages addObject:categoryCopy];
     }
   }
 
@@ -1887,15 +1887,15 @@ LABEL_35:
   return v23;
 }
 
-- (BOOL)installSwiftDynamicReplacementUnit:(id)a3 inBundle:(id)a4 withPrecondition:(id)a5
+- (BOOL)installSwiftDynamicReplacementUnit:(id)unit inBundle:(id)bundle withPrecondition:(id)precondition
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  unitCopy = unit;
+  bundleCopy = bundle;
+  preconditionCopy = precondition;
   v11 = objc_autoreleasePoolPush();
   [(AXValidationManager *)self setNumberOfValidations:[(AXValidationManager *)self numberOfValidations]+ 1];
-  if (!v9)
+  if (!bundleCopy)
   {
     v19 = AXLogValidations();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1904,11 +1904,11 @@ LABEL_35:
     }
 
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Container bundle was not found when installing Swift dynamic replacement unit %@", v8];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Container bundle was not found when installing Swift dynamic replacement unit %@", unitCopy];
     goto LABEL_17;
   }
 
-  if (![v8 length])
+  if (![unitCopy length])
   {
     v20 = AXLogValidations();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1922,7 +1922,7 @@ LABEL_35:
     goto LABEL_16;
   }
 
-  if ((v10[2](v10) & 1) == 0)
+  if ((preconditionCopy[2](preconditionCopy) & 1) == 0)
   {
     v23 = AXLogValidations();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1932,7 +1932,7 @@ LABEL_35:
 
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
     v21 = MEMORY[0x1E696AEC0];
-    v32 = v8;
+    v32 = unitCopy;
     v22 = @"AX Swift dynamic replacement %@ installation's condition not met";
 LABEL_16:
     [v21 stringWithFormat:v22, v32];
@@ -1940,12 +1940,12 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v12 = [v9 builtInPlugInsPath];
-  v13 = [v8 stringByAppendingPathExtension:@"axbundlefile"];
-  v14 = [v12 stringByAppendingPathComponent:v13];
+  builtInPlugInsPath = [bundleCopy builtInPlugInsPath];
+  v13 = [unitCopy stringByAppendingPathExtension:@"axbundlefile"];
+  v14 = [builtInPlugInsPath stringByAppendingPathComponent:v13];
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v15 fileExistsAtPath:v14 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v16 = [defaultManager fileExistsAtPath:v14 isDirectory:0];
 
   if (v16)
   {
@@ -1962,16 +1962,16 @@ LABEL_16:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v36 = v8;
+      v36 = unitCopy;
       v37 = 2112;
-      v38 = v9;
+      v38 = bundleCopy;
       v39 = 2080;
       v40 = v30;
       _os_log_error_impl(&dword_19159B000, v31, OS_LOG_TYPE_ERROR, "AX Swift dynamic replacement %@ from bundle %@ not successfully installed: %s", buf, 0x20u);
     }
 
     [(AXValidationManager *)self setNumberOfValidationErrors:[(AXValidationManager *)self numberOfValidationErrors]+ 1];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Swift dynamic replacement %@ from bundle %@ not successfully installed: %s", v8, v9, v30];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"AX Swift dynamic replacement %@ from bundle %@ not successfully installed: %s", unitCopy, bundleCopy, v30];
   }
 
   else
@@ -1990,15 +1990,15 @@ LABEL_16:
 LABEL_18:
   if (self->_shouldReportToServer && !self->_forceDoNotReport)
   {
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Swift Dynamic Replacement: %@", v8];
-    v25 = [(AXValidationManager *)self overrideProcessName];
-    [(AXValidationManager *)self sendExceptionForInstallingSafeCategory:v24 onTarget:&stru_1F0579798 overrideProcessName:v25];
+    unitCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Swift Dynamic Replacement: %@", unitCopy];
+    overrideProcessName = [(AXValidationManager *)self overrideProcessName];
+    [(AXValidationManager *)self sendExceptionForInstallingSafeCategory:unitCopy onTarget:&stru_1F0579798 overrideProcessName:overrideProcessName];
   }
 
   if (self->_shouldLogToConsole)
   {
-    v26 = [(AXValidationManager *)self consoleErrorMessages];
-    [v26 addObject:v17];
+    consoleErrorMessages = [(AXValidationManager *)self consoleErrorMessages];
+    [consoleErrorMessages addObject:v17];
   }
 
   v18 = 0;
@@ -2009,366 +2009,366 @@ LABEL_24:
   return v18;
 }
 
-- (void)sendExceptionForInstallingSafeCategory:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5
+- (void)sendExceptionForInstallingSafeCategory:(id)category onTarget:(id)target overrideProcessName:(id)name
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v10;
-  if (v9)
+  categoryCopy = category;
+  targetCopy = target;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = validationReportingServices;
+  if (nameCopy)
   {
-    [v10 sendExceptionForInstallingSafeCategory:v13 onTarget:v8 overrideProcessName:v9];
+    [validationReportingServices sendExceptionForInstallingSafeCategory:categoryCopy onTarget:targetCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v12 = AXProcessGetName();
-    [v11 sendExceptionForInstallingSafeCategory:v13 onTarget:v8 overrideProcessName:v12];
+    [v11 sendExceptionForInstallingSafeCategory:categoryCopy onTarget:targetCopy overrideProcessName:v12];
   }
 }
 
-- (void)sendExceptionForSafeCategoryOnWrongTarget:(id)a3 targetBundle:(id)a4 expectedBundle:(id)a5 overrideProcessName:(id)a6
+- (void)sendExceptionForSafeCategoryOnWrongTarget:(id)target targetBundle:(id)bundle expectedBundle:(id)expectedBundle overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  targetCopy = target;
+  bundleCopy = bundle;
+  expectedBundleCopy = expectedBundle;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendExceptionForSafeCategoryOnWrongTarget:v16 targetBundle:v10 expectedBundle:v11 overrideProcessName:v12];
+    [validationReportingServices sendExceptionForSafeCategoryOnWrongTarget:targetCopy targetBundle:bundleCopy expectedBundle:expectedBundleCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendExceptionForSafeCategoryOnWrongTarget:v16 targetBundle:v10 expectedBundle:v11 overrideProcessName:v15];
+    [v14 sendExceptionForSafeCategoryOnWrongTarget:targetCopy targetBundle:bundleCopy expectedBundle:expectedBundleCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendExceptionForSafeValueKey:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5
+- (void)sendExceptionForSafeValueKey:(id)key onTarget:(id)target overrideProcessName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v8;
-  if (!v8)
+  nameCopy = name;
+  targetCopy = target;
+  keyCopy = key;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = nameCopy;
+  if (!nameCopy)
   {
     v11 = AXProcessGetName();
   }
 
-  v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v13 = [v12 componentsJoinedByString:@"\n"];
-  [v14 sendExceptionForSafeValueKey:v10 onTarget:v9 overrideProcessName:v11 backtrace:v13];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  v13 = [callStackSymbols componentsJoinedByString:@"\n"];
+  [validationReportingServices sendExceptionForSafeValueKey:keyCopy onTarget:targetCopy overrideProcessName:v11 backtrace:v13];
 
-  if (!v8)
+  if (!nameCopy)
   {
   }
 }
 
-- (void)sendExceptionForSafeIVarKey:(id)a3 onTarget:(id)a4 overrideProcessName:(id)a5
+- (void)sendExceptionForSafeIVarKey:(id)key onTarget:(id)target overrideProcessName:(id)name
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v10;
-  if (v9)
+  keyCopy = key;
+  targetCopy = target;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = validationReportingServices;
+  if (nameCopy)
   {
-    [v10 sendExceptionForSafeIVarKey:v13 onTarget:v8 overrideProcessName:v9];
+    [validationReportingServices sendExceptionForSafeIVarKey:keyCopy onTarget:targetCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v12 = AXProcessGetName();
-    [v11 sendExceptionForSafeIVarKey:v13 onTarget:v8 overrideProcessName:v12];
+    [v11 sendExceptionForSafeIVarKey:keyCopy onTarget:targetCopy overrideProcessName:v12];
   }
 }
 
-- (void)sendExceptionForSafeBlock:(id)a3 overrideProcessName:(id)a4
+- (void)sendExceptionForSafeBlock:(id)block overrideProcessName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(AXValidationManager *)self validationReportingServices];
-  v8 = v7;
-  if (v6)
+  blockCopy = block;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v8 = validationReportingServices;
+  if (nameCopy)
   {
-    [v7 sendExceptionForSafeBlock:v10 overrideProcessName:v6];
+    [validationReportingServices sendExceptionForSafeBlock:blockCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v9 = AXProcessGetName();
-    [v8 sendExceptionForSafeBlock:v10 overrideProcessName:v9];
+    [v8 sendExceptionForSafeBlock:blockCopy overrideProcessName:v9];
   }
 }
 
-- (void)sendGenericReport:(id)a3 withTag:(id)a4 overrideProcessName:(id)a5
+- (void)sendGenericReport:(id)report withTag:(id)tag overrideProcessName:(id)name
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v10;
-  if (v9)
+  reportCopy = report;
+  tagCopy = tag;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = validationReportingServices;
+  if (nameCopy)
   {
-    [v10 sendGenericReport:v13 withTag:v8 overrideProcessName:v9];
+    [validationReportingServices sendGenericReport:reportCopy withTag:tagCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v12 = AXProcessGetName();
-    [v11 sendGenericReport:v13 withTag:v8 overrideProcessName:v12];
+    [v11 sendGenericReport:reportCopy withTag:tagCopy overrideProcessName:v12];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 errorMessage:(id)a4 overrideProcessName:(id)a5
+- (void)sendValidateExceptionForClass:(id)class errorMessage:(id)message overrideProcessName:(id)name
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v10;
-  if (v9)
+  classCopy = class;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = validationReportingServices;
+  if (nameCopy)
   {
-    [v10 sendValidateExceptionForClass:v13 errorMessage:v8 overrideProcessName:v9];
+    [validationReportingServices sendValidateExceptionForClass:classCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v12 = AXProcessGetName();
-    [v11 sendValidateExceptionForClass:v13 errorMessage:v8 overrideProcessName:v12];
+    [v11 sendValidateExceptionForClass:classCopy errorMessage:messageCopy overrideProcessName:v12];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 isKindOfClass:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class isKindOfClass:(id)ofClass errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  ofClassCopy = ofClass;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 isKindOfClass:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy isKindOfClass:ofClassCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 isKindOfClass:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy isKindOfClass:ofClassCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 conformsToProtocol:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class conformsToProtocol:(id)protocol errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  protocolCopy = protocol;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 conformsToProtocol:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy conformsToProtocol:protocolCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 conformsToProtocol:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy conformsToProtocol:protocolCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 hasInstanceVariable:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class hasInstanceVariable:(id)variable errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  variableCopy = variable;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 hasInstanceVariable:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy hasInstanceVariable:variableCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 hasInstanceVariable:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy hasInstanceVariable:variableCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 hasInstanceMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class hasInstanceMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  methodCopy = method;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 hasInstanceMethod:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy hasInstanceMethod:methodCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 hasInstanceMethod:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy hasInstanceMethod:methodCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 hasClassMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class hasClassMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  methodCopy = method;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 hasClassMethod:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy hasClassMethod:methodCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 hasClassMethod:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy hasClassMethod:methodCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForClass:(id)a3 hasProperty:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForClass:(id)class hasProperty:(id)property errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  classCopy = class;
+  propertyCopy = property;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForClass:v16 hasProperty:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForClass:classCopy hasProperty:propertyCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForClass:v16 hasProperty:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForClass:classCopy hasProperty:propertyCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForProtocol:(id)a3 conformsToProtocol:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForProtocol:(id)protocol conformsToProtocol:(id)toProtocol errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  protocolCopy = protocol;
+  toProtocolCopy = toProtocol;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForProtocol:v16 conformsToProtocol:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForProtocol:protocolCopy conformsToProtocol:toProtocolCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForProtocol:v16 conformsToProtocol:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForProtocol:protocolCopy conformsToProtocol:toProtocolCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForProtocol:(id)a3 hasMethod:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForProtocol:(id)protocol hasMethod:(id)method errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  protocolCopy = protocol;
+  methodCopy = method;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForProtocol:v16 hasMethod:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForProtocol:protocolCopy hasMethod:methodCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForProtocol:v16 hasMethod:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForProtocol:protocolCopy hasMethod:methodCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendValidateExceptionForProtocol:(id)a3 hasProperty:(id)a4 errorMessage:(id)a5 overrideProcessName:(id)a6
+- (void)sendValidateExceptionForProtocol:(id)protocol hasProperty:(id)property errorMessage:(id)message overrideProcessName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AXValidationManager *)self validationReportingServices];
-  v14 = v13;
-  if (v12)
+  protocolCopy = protocol;
+  propertyCopy = property;
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v14 = validationReportingServices;
+  if (nameCopy)
   {
-    [v13 sendValidateExceptionForProtocol:v16 hasProperty:v10 errorMessage:v11 overrideProcessName:v12];
+    [validationReportingServices sendValidateExceptionForProtocol:protocolCopy hasProperty:propertyCopy errorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v15 = AXProcessGetName();
-    [v14 sendValidateExceptionForProtocol:v16 hasProperty:v10 errorMessage:v11 overrideProcessName:v15];
+    [v14 sendValidateExceptionForProtocol:protocolCopy hasProperty:propertyCopy errorMessage:messageCopy overrideProcessName:v15];
   }
 }
 
-- (void)sendFailedAssertionWithErrorMessage:(id)a3 overrideProcessName:(id)a4
+- (void)sendFailedAssertionWithErrorMessage:(id)message overrideProcessName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(AXValidationManager *)self validationReportingServices];
-  v8 = v7;
-  if (v6)
+  messageCopy = message;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v8 = validationReportingServices;
+  if (nameCopy)
   {
-    [v7 sendFailedAssertionWithErrorMessage:v10 overrideProcessName:v6];
+    [validationReportingServices sendFailedAssertionWithErrorMessage:messageCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v9 = AXProcessGetName();
-    [v8 sendFailedAssertionWithErrorMessage:v10 overrideProcessName:v9];
+    [v8 sendFailedAssertionWithErrorMessage:messageCopy overrideProcessName:v9];
   }
 }
 
-- (void)sendFailedTestCase:(id)a3 withTag:(id)a4 overrideProcessName:(id)a5
+- (void)sendFailedTestCase:(id)case withTag:(id)tag overrideProcessName:(id)name
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AXValidationManager *)self validationReportingServices];
-  v11 = v10;
-  if (v9)
+  caseCopy = case;
+  tagCopy = tag;
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v11 = validationReportingServices;
+  if (nameCopy)
   {
-    [v10 sendFailedTestCase:v13 withTag:v8 overrideProcessName:v9];
+    [validationReportingServices sendFailedTestCase:caseCopy withTag:tagCopy overrideProcessName:nameCopy];
   }
 
   else
   {
     v12 = AXProcessGetName();
-    [v11 sendFailedTestCase:v13 withTag:v8 overrideProcessName:v12];
+    [v11 sendFailedTestCase:caseCopy withTag:tagCopy overrideProcessName:v12];
   }
 }
 
-- (void)sendValidationSuccessForProcessName:(id)a3
+- (void)sendValidationSuccessForProcessName:(id)name
 {
-  v7 = a3;
-  v4 = [(AXValidationManager *)self validationReportingServices];
-  v5 = v4;
-  if (v7)
+  nameCopy = name;
+  validationReportingServices = [(AXValidationManager *)self validationReportingServices];
+  v5 = validationReportingServices;
+  if (nameCopy)
   {
-    [v4 sendValidationSuccessForProcessName:v7];
+    [validationReportingServices sendValidationSuccessForProcessName:nameCopy];
   }
 
   else

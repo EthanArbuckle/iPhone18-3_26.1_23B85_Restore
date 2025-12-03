@@ -2,16 +2,16 @@
 - (NSAttributedString)attributedSubtitle;
 - (id)disclosureAction;
 - (void)_pressedDisclosureCell;
-- (void)setDisclosureAction:(id)a3;
+- (void)setDisclosureAction:(id)action;
 @end
 
 @implementation EmptyStateView
 
 - (NSAttributedString)attributedSubtitle
 {
-  v2 = [*(self + OBJC_IVAR____TtC4Maps14EmptyStateView_subtitleLabel) attributedText];
+  attributedText = [*(self + OBJC_IVAR____TtC4Maps14EmptyStateView_subtitleLabel) attributedText];
 
-  return v2;
+  return attributedText;
 }
 
 - (id)disclosureAction
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (void)setDisclosureAction:(id)a3
+- (void)setDisclosureAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   if (v4)
   {
     v5 = v4;
@@ -57,7 +57,7 @@
   v9 = *(self + OBJC_IVAR____TtC4Maps14EmptyStateView_disclosureAction + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1000D3B90(v8, v9);
 }
 
@@ -67,7 +67,7 @@
   if (v2)
   {
     v3 = *(self + OBJC_IVAR____TtC4Maps14EmptyStateView_disclosureAction + 8);
-    v4 = self;
+    selfCopy = self;
     v5 = sub_1000CD9D4(v2);
     v2(v5);
 

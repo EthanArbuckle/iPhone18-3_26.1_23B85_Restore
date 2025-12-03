@@ -1,7 +1,7 @@
 @interface GKCurveNoiseModifier
 - (GKCurveNoiseModifier)init;
-- (GKCurveNoiseModifier)initWithControlPoints:(id)a3;
-- (GKCurveNoiseModifier)initWithInputModuleCount:(unint64_t)a3;
+- (GKCurveNoiseModifier)initWithControlPoints:(id)points;
+- (GKCurveNoiseModifier)initWithInputModuleCount:(unint64_t)count;
 - (double)valueAt:(GKCurveNoiseModifier *)self;
 - (id)cloneModule;
 - (void)dealloc;
@@ -27,7 +27,7 @@
   return v4;
 }
 
-- (GKCurveNoiseModifier)initWithInputModuleCount:(unint64_t)a3
+- (GKCurveNoiseModifier)initWithInputModuleCount:(unint64_t)count
 {
   v9[4] = *MEMORY[0x277D85DE8];
   v8[0] = &unk_284B58770;
@@ -45,25 +45,25 @@
   return v5;
 }
 
-- (GKCurveNoiseModifier)initWithControlPoints:(id)a3
+- (GKCurveNoiseModifier)initWithControlPoints:(id)points
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pointsCopy = points;
   v21.receiver = self;
   v21.super_class = GKCurveNoiseModifier;
   v5 = [(GKNoiseModifier *)&v21 initWithInputModuleCount:1];
   if (v5)
   {
-    if (v4 && [v4 count])
+    if (pointsCopy && [pointsCopy count])
     {
-      v6 = [v4 count];
+      v6 = [pointsCopy count];
       v5->_count = v6;
       v5->_controlPoints = malloc_type_malloc(8 * v6, 0x100004000313F17uLL);
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = v4;
+      v7 = pointsCopy;
       v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {

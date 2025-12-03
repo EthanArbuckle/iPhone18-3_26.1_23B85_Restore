@@ -1,11 +1,11 @@
 @interface ArticleMessageLabel
-- (_TtC12NewsArticles19ArticleMessageLabel)initWithCoder:(id)a3;
-- (_TtC12NewsArticles19ArticleMessageLabel)initWithFrame:(CGRect)a3;
+- (_TtC12NewsArticles19ArticleMessageLabel)initWithCoder:(id)coder;
+- (_TtC12NewsArticles19ArticleMessageLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ArticleMessageLabel
 
-- (_TtC12NewsArticles19ArticleMessageLabel)initWithCoder:(id)a3
+- (_TtC12NewsArticles19ArticleMessageLabel)initWithCoder:(id)coder
 {
   v4 = sub_1D7D2B4AC();
   v5 = *(v4 - 8);
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles19ArticleMessageLabel)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticles19ArticleMessageLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

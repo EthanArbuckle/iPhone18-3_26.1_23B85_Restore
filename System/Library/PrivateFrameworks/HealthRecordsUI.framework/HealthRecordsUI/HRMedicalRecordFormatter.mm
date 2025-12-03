@@ -1,22 +1,22 @@
 @interface HRMedicalRecordFormatter
 - (HRMedicalRecordFormatter)init;
-- (HRMedicalRecordFormatter)initWithConceptStore:(id)a3 context:(int64_t)a4;
-- (id)attachmentItemsFromRecord:(id)a3;
+- (HRMedicalRecordFormatter)initWithConceptStore:(id)store context:(int64_t)context;
+- (id)attachmentItemsFromRecord:(id)record;
 @end
 
 @implementation HRMedicalRecordFormatter
 
-- (HRMedicalRecordFormatter)initWithConceptStore:(id)a3 context:(int64_t)a4
+- (HRMedicalRecordFormatter)initWithConceptStore:(id)store context:(int64_t)context
 {
-  *(&self->super.isa + OBJC_IVAR___HRMedicalRecordFormatter_store) = a3;
-  *(&self->super.isa + OBJC_IVAR___HRMedicalRecordFormatter_context) = a4;
+  *(&self->super.isa + OBJC_IVAR___HRMedicalRecordFormatter_store) = store;
+  *(&self->super.isa + OBJC_IVAR___HRMedicalRecordFormatter_context) = context;
   v7.receiver = self;
   v7.super_class = type metadata accessor for MedicalRecordFormatter();
-  v5 = a3;
+  storeCopy = store;
   return [(HRMedicalRecordFormatter *)&v7 init];
 }
 
-- (id)attachmentItemsFromRecord:(id)a3
+- (id)attachmentItemsFromRecord:(id)record
 {
   sub_1D118F960(0, &qword_1EC60AD10, MEMORY[0x1E69E62F8]);
   v3 = sub_1D139044C();

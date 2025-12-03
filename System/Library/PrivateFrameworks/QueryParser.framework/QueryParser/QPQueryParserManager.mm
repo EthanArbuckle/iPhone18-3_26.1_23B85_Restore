@@ -7,21 +7,21 @@
 + (id)spotlightManager;
 + (id)visualGenerationManager;
 - (BOOL)available;
-- (QPQueryParserManager)initWithOptions:(id)a3;
-- (id)dateFromParseAttributes:(id)a3;
-- (id)embeddingForString:(id)a3 extendedContextLength:(BOOL)a4;
+- (QPQueryParserManager)initWithOptions:(id)options;
+- (id)dateFromParseAttributes:(id)attributes;
+- (id)embeddingForString:(id)string extendedContextLength:(BOOL)length;
 - (id)locale;
 - (id)resourcesInfo;
 - (void)cooldown;
 - (void)dealloc;
-- (void)enumerateDateParseResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5;
-- (void)enumerateParseResultsForStartDateString:(id)a3 startDateContext:(id)a4 endDateString:(id)a5 endDateContext:(id)a6 options:(id)a7 withBlock:(id)a8;
-- (void)enumerateParseResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5;
-- (void)enumerateSpotlightResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5;
+- (void)enumerateDateParseResultsForString:(id)string options:(id)options withBlock:(id)block;
+- (void)enumerateParseResultsForStartDateString:(id)string startDateContext:(id)context endDateString:(id)dateString endDateContext:(id)dateContext options:(id)options withBlock:(id)block;
+- (void)enumerateParseResultsForString:(id)string options:(id)options withBlock:(id)block;
+- (void)enumerateSpotlightResultsForString:(id)string options:(id)options withBlock:(id)block;
 - (void)preheat;
 - (void)reset;
-- (void)setOptions:(id)a3;
-- (void)updateWithOptions:(id)a3;
+- (void)setOptions:(id)options;
+- (void)updateWithOptions:(id)options;
 @end
 
 @implementation QPQueryParserManager
@@ -190,10 +190,10 @@ void __47__QPQueryParserManager_visualGenerationManager__block_invoke()
   +[QPQueryParserManager visualGenerationManager]::__VisualGenerationManager = v2;
 }
 
-- (QPQueryParserManager)initWithOptions:(id)a3
+- (QPQueryParserManager)initWithOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = QPQueryParserManager;
   v5 = [(QPQueryParserManager *)&v8 init];
@@ -244,11 +244,11 @@ void __31__QPQueryParserManager_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (optionsCopy && [optionsCopy count])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -297,8 +297,8 @@ void __30__QPQueryParserManager_locale__block_invoke(uint64_t a1)
   if (!self->_modelIsLoaded)
   {
     v4 = self->_currentLocale;
-    v5 = [(NSLocale *)v4 languageCode];
-    if (v5 && ([objc_opt_class() availableLanguages], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", v5), v6, (v7 & 1) != 0))
+    languageCode = [(NSLocale *)v4 languageCode];
+    if (languageCode && ([objc_opt_class() availableLanguages], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", languageCode), v6, (v7 & 1) != 0))
     {
       if (QPQueryParserAvailableForLocale(v4))
       {
@@ -329,7 +329,7 @@ LABEL_12:
       }
 
       v12 = 138412290;
-      v13 = v5;
+      v13 = languageCode;
       v9 = "QueryParserManager: resources unavailable for %@";
     }
 
@@ -347,7 +347,7 @@ LABEL_12:
       }
 
       v12 = 138412290;
-      v13 = v5;
+      v13 = languageCode;
       v9 = "QueryParserManager: unknown language %@";
     }
 
@@ -361,12 +361,12 @@ LABEL_14:
   return v2;
 }
 
-- (void)updateWithOptions:(id)a3
+- (void)updateWithOptions:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"locale"];
-  v6 = [v4 objectForKeyedSubscript:kQPQueryParserOptionPreferredLanguagesKey];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"locale"];
+  v6 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionPreferredLanguagesKey];
   if (v5)
   {
     v7 = QPQueryParserGetLocale(self->_parser);
@@ -409,7 +409,7 @@ LABEL_14:
     self->_modelIsLoaded = 0;
   }
 
-  v16 = [v4 objectForKeyedSubscript:kQPQueryParserOptionCustomResourceDirectoryKey];
+  v16 = [optionsCopy objectForKeyedSubscript:kQPQueryParserOptionCustomResourceDirectoryKey];
   if (v16)
   {
     v17 = QPQueryParserGetCustomResourceDirectory(self->_parser);
@@ -432,7 +432,7 @@ LABEL_14:
     QPQueryParserSetCustomResourceDirectory(self->_parser, v16);
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"referenceDate"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"referenceDate"];
   if (v20)
   {
     v21 = QPQueryParserGetReferenceDate(self->_parser);
@@ -455,7 +455,7 @@ LABEL_14:
     QPQueryParserSetReferenceDate(self->_parser, v20);
   }
 
-  QPQueryParserSetOptions(self->_parser, v4);
+  QPQueryParserSetOptions(self->_parser, optionsCopy);
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -492,19 +492,19 @@ LABEL_14:
   }
 }
 
-- (id)dateFromParseAttributes:(id)a3
+- (id)dateFromParseAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = objc_opt_new();
-  if (v3)
+  if (attributesCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"kQPDateDisplay"];
-    v6 = [v3 objectForKeyedSubscript:@"kQPDateType"];
-    v7 = [v3 objectForKeyedSubscript:@"kQPDateModifier"];
-    v8 = [v3 objectForKeyedSubscript:@"kQPDateComponents"];
-    v9 = [v3 objectForKeyedSubscript:@"kQPStartDateComponents"];
-    v10 = [v3 objectForKeyedSubscript:@"kQPEndDateComponents"];
-    v11 = [v3 objectForKeyedSubscript:@"kQPFrequencyDateComponents"];
+    v5 = [attributesCopy objectForKeyedSubscript:@"kQPDateDisplay"];
+    v6 = [attributesCopy objectForKeyedSubscript:@"kQPDateType"];
+    v7 = [attributesCopy objectForKeyedSubscript:@"kQPDateModifier"];
+    v8 = [attributesCopy objectForKeyedSubscript:@"kQPDateComponents"];
+    v9 = [attributesCopy objectForKeyedSubscript:@"kQPStartDateComponents"];
+    v10 = [attributesCopy objectForKeyedSubscript:@"kQPEndDateComponents"];
+    v11 = [attributesCopy objectForKeyedSubscript:@"kQPFrequencyDateComponents"];
     if (v5)
     {
       [v4 setObject:v5 forKey:@"kQPDateDisplay"];
@@ -548,17 +548,17 @@ LABEL_14:
   return v4;
 }
 
-- (void)enumerateDateParseResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateDateParseResultsForString:(id)string options:(id)options withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__13;
   v18 = __Block_byref_object_dispose__13;
-  v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
+  v19 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy];
   dateParser = self->_dateParser;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -566,9 +566,9 @@ LABEL_14:
   v13[3] = &unk_1E82675F8;
   v13[4] = self;
   v13[5] = &v14;
-  [(QPDataDetectorsParser *)dateParser enumerateDatesInString:v8 options:v9 withBlock:v13];
+  [(QPDataDetectorsParser *)dateParser enumerateDatesInString:stringCopy options:optionsCopy withBlock:v13];
   v12 = 0;
-  v10[2](v10, v15[5], MEMORY[0x1E695E0F8], &v12);
+  blockCopy[2](blockCopy, v15[5], MEMORY[0x1E695E0F8], &v12);
   _Block_object_dispose(&v14, 8);
 }
 
@@ -586,12 +586,12 @@ void __77__QPQueryParserManager_enumerateDateParseResultsForString_options_withB
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateParseResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateParseResultsForString:(id)string options:(id)options withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && self->_parser && [v8 length])
+  stringCopy = string;
+  optionsCopy = options;
+  blockCopy = block;
+  if (stringCopy && self->_parser && [stringCopy length])
   {
     v36 = 0;
     v37 = &v36;
@@ -614,11 +614,11 @@ void __77__QPQueryParserManager_enumerateDateParseResultsForString_options_withB
     block[1] = 3221225472;
     block[2] = __73__QPQueryParserManager_enumerateParseResultsForString_options_withBlock___block_invoke;
     block[3] = &unk_1E8267648;
-    v19 = v9;
-    v20 = self;
+    v19 = optionsCopy;
+    selfCopy = self;
     v23 = &v26;
-    v21 = v8;
-    v12 = v10;
+    v21 = stringCopy;
+    v12 = blockCopy;
     v22 = v12;
     v24 = &v36;
     v25 = &v30;
@@ -772,12 +772,12 @@ void __73__QPQueryParserManager_enumerateParseResultsForString_options_withBlock
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateSpotlightResultsForString:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateSpotlightResultsForString:(id)string options:(id)options withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && self->_parser && [v8 length])
+  stringCopy = string;
+  optionsCopy = options;
+  blockCopy = block;
+  if (stringCopy && self->_parser && [stringCopy length])
   {
     v18[0] = 0;
     v18[1] = v18;
@@ -788,11 +788,11 @@ void __73__QPQueryParserManager_enumerateParseResultsForString_options_withBlock
     block[1] = 3221225472;
     block[2] = __77__QPQueryParserManager_enumerateSpotlightResultsForString_options_withBlock___block_invoke;
     block[3] = &unk_1E8267698;
-    v13 = v9;
-    v14 = self;
+    v13 = optionsCopy;
+    selfCopy = self;
     v17 = v18;
-    v15 = v8;
-    v16 = v10;
+    v15 = stringCopy;
+    v16 = blockCopy;
     dispatch_sync(queue, block);
 
     _Block_object_dispose(v18, 8);
@@ -846,22 +846,22 @@ uint64_t __77__QPQueryParserManager_enumerateSpotlightResultsForString_options_w
   return result;
 }
 
-- (void)enumerateParseResultsForStartDateString:(id)a3 startDateContext:(id)a4 endDateString:(id)a5 endDateContext:(id)a6 options:(id)a7 withBlock:(id)a8
+- (void)enumerateParseResultsForStartDateString:(id)string startDateContext:(id)context endDateString:(id)dateString endDateContext:(id)dateContext options:(id)options withBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14)
+  stringCopy = string;
+  contextCopy = context;
+  dateStringCopy = dateString;
+  dateContextCopy = dateContext;
+  optionsCopy = options;
+  blockCopy = block;
+  if (stringCopy)
   {
     if (self->_parser)
     {
-      v20 = [v14 length];
-      if (v16)
+      v20 = [stringCopy length];
+      if (dateStringCopy)
       {
-        if (v20 && [v16 length])
+        if (v20 && [dateStringCopy length])
         {
           v48 = 0;
           v49 = &v48;
@@ -884,19 +884,19 @@ uint64_t __77__QPQueryParserManager_enumerateSpotlightResultsForString_options_w
           block[1] = 3221225472;
           block[2] = __128__QPQueryParserManager_enumerateParseResultsForStartDateString_startDateContext_endDateString_endDateContext_options_withBlock___block_invoke;
           block[3] = &unk_1E82676C0;
-          v29 = v18;
-          v30 = self;
+          v29 = optionsCopy;
+          selfCopy = self;
           v35 = &v38;
-          v31 = v14;
-          v32 = v15;
-          v33 = v16;
-          v34 = v17;
+          v31 = stringCopy;
+          v32 = contextCopy;
+          v33 = dateStringCopy;
+          v34 = dateContextCopy;
           v36 = &v48;
           v37 = &v42;
           dispatch_sync(queue, block);
           if (*(v39 + 24) == 1)
           {
-            v26 = v17;
+            v26 = dateContextCopy;
             v22 = 0;
             v27 = 0;
             do
@@ -908,14 +908,14 @@ uint64_t __77__QPQueryParserManager_enumerateSpotlightResultsForString_options_w
 
               v23 = [v49[5] objectAtIndexedSubscript:v22];
               v24 = [v43[5] objectAtIndexedSubscript:v22];
-              v19[2](v19, v23, v24, &v27);
+              blockCopy[2](blockCopy, v23, v24, &v27);
               v25 = v27;
 
               ++v22;
             }
 
             while ((v25 & 1) == 0);
-            v17 = v26;
+            dateContextCopy = v26;
           }
 
           _Block_object_dispose(&v38, 8);
@@ -1022,12 +1022,12 @@ void __128__QPQueryParserManager_enumerateParseResultsForStartDateString_startDa
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)embeddingForString:(id)a3 extendedContextLength:(BOOL)a4
+- (id)embeddingForString:(id)string extendedContextLength:(BOOL)length
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  valuePtr = a4;
-  if (![(__CFString *)v6 length])
+  stringCopy = string;
+  valuePtr = length;
+  if (![(__CFString *)stringCopy length])
   {
     goto LABEL_11;
   }
@@ -1037,7 +1037,7 @@ void __128__QPQueryParserManager_enumerateParseResultsForStartDateString_startDa
   values = v8;
   keys[0] = @"extendedContext";
   v9 = CFDictionaryCreate(v7, keys, &values, 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v10 = QPQueryParserCopyInputAttributes(self->_parser, v6, v9);
+  v10 = QPQueryParserCopyInputAttributes(self->_parser, stringCopy, v9);
   CFRelease(v8);
   CFRelease(v9);
   if (v10)

@@ -1,12 +1,12 @@
 @interface SXJSONLinearGradient
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
++ (id)valueClassBlockForPropertyWithName:(id)name;
 @end
 
 @implementation SXJSONLinearGradient
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  if ([a3 isEqualToString:@"colorStops"])
+  if ([name isEqualToString:@"colorStops"])
   {
     return &__block_literal_global_88;
   }

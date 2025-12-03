@@ -1,8 +1,8 @@
 @interface AVPlayerControllerWebKitData
-- (AVPlayerControllerWebKitData)initWithPlayerController:(id)a3;
+- (AVPlayerControllerWebKitData)initWithPlayerController:(id)controller;
 - (AVPlayerControllerWebKitDelegate)delegate;
-- (void)setScrubbing:(BOOL)a3;
-- (void)setSeekToTime:(double)a3;
+- (void)setScrubbing:(BOOL)scrubbing;
+- (void)setSeekToTime:(double)time;
 @end
 
 @implementation AVPlayerControllerWebKitData
@@ -14,45 +14,45 @@
   return WeakRetained;
 }
 
-- (void)setSeekToTime:(double)a3
+- (void)setSeekToTime:(double)time
 {
-  if (self->_seekToTime != a3)
+  if (self->_seekToTime != time)
   {
-    self->_seekToTime = a3;
-    v6 = [(AVPlayerControllerWebKitData *)self delegate];
+    self->_seekToTime = time;
+    delegate = [(AVPlayerControllerWebKitData *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       WeakRetained = objc_loadWeakRetained(&self->_playerController);
-      [v6 webkitPlayerController:WeakRetained didUpdateSeekToTime:a3];
+      [delegate webkitPlayerController:WeakRetained didUpdateSeekToTime:time];
     }
   }
 }
 
-- (void)setScrubbing:(BOOL)a3
+- (void)setScrubbing:(BOOL)scrubbing
 {
-  if (self->_scrubbing != a3)
+  if (self->_scrubbing != scrubbing)
   {
-    v4 = a3;
-    self->_scrubbing = a3;
-    v7 = [(AVPlayerControllerWebKitData *)self delegate];
+    scrubbingCopy = scrubbing;
+    self->_scrubbing = scrubbing;
+    delegate = [(AVPlayerControllerWebKitData *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       WeakRetained = objc_loadWeakRetained(&self->_playerController);
-      [v7 webkitPlayerController:WeakRetained didChangeScrubbingStateTo:v4];
+      [delegate webkitPlayerController:WeakRetained didChangeScrubbingStateTo:scrubbingCopy];
     }
   }
 }
 
-- (AVPlayerControllerWebKitData)initWithPlayerController:(id)a3
+- (AVPlayerControllerWebKitData)initWithPlayerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AVPlayerControllerWebKitData;
   v5 = [(AVPlayerControllerWebKitData *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerController, v4);
+    objc_storeWeak(&v5->_playerController, controllerCopy);
     v6->_scrubbing = 0;
     v6->_seekToTime = NAN;
     objc_storeWeak(&v6->_delegate, 0);

@@ -1,12 +1,12 @@
 @interface JSTabViewController
 - (_TtC16MusicApplication19JSTabViewController)init;
-- (_TtC16MusicApplication19JSTabViewController)initWithCoder:(id)a3;
+- (_TtC16MusicApplication19JSTabViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation JSTabViewController
 
-- (_TtC16MusicApplication19JSTabViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication19JSTabViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication19JSTabViewController____lazy_storage___accountButton) = 0;
   result = sub_ABAFD0();
@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSTabViewController.viewDidLoad()();
 }
 

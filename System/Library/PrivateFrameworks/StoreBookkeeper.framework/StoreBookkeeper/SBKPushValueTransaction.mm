@@ -1,28 +1,28 @@
 @interface SBKPushValueTransaction
-- (SBKPushValueTransaction)initWithStoreBagContext:(id)a3 clientItemPayloadPair:(id)a4 clientItemVersionAnchor:(id)a5;
-- (id)_resolveConflictBetweenClientPayloadPair:(id)a3 andServerPayloadPair:(id)a4;
+- (SBKPushValueTransaction)initWithStoreBagContext:(id)context clientItemPayloadPair:(id)pair clientItemVersionAnchor:(id)anchor;
+- (id)_resolveConflictBetweenClientPayloadPair:(id)pair andServerPayloadPair:(id)payloadPair;
 - (id)clampsKey;
 - (id)description;
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4;
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation SBKPushValueTransaction
 
-- (id)_resolveConflictBetweenClientPayloadPair:(id)a3 andServerPayloadPair:(id)a4
+- (id)_resolveConflictBetweenClientPayloadPair:(id)pair andServerPayloadPair:(id)payloadPair
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 timestamp];
+  pairCopy = pair;
+  payloadPairCopy = payloadPair;
+  [payloadPairCopy timestamp];
   v8 = v7;
-  [v5 timestamp];
+  [pairCopy timestamp];
   if (v8 >= v9)
   {
-    v10 = v6;
+    v10 = payloadPairCopy;
   }
 
   else
   {
-    v10 = v5;
+    v10 = pairCopy;
   }
 
   v11 = v10;
@@ -30,47 +30,47 @@
   return v10;
 }
 
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   isRechedulable = self->_isRechedulable;
   self->_isRechedulable = 0;
-  v21 = v6;
+  v21 = responseCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v21 conflictItemValuePayload];
+    conflictItemValuePayload = [v21 conflictItemValuePayload];
 
-    if (v9)
+    if (conflictItemValuePayload)
     {
       clientItemPayloadPair = self->_clientItemPayloadPair;
       v11 = objc_opt_class();
-      v12 = [v21 conflictItemKey];
-      v13 = [v21 conflictItemValuePayload];
-      v14 = SBKKeyValuePayloadPairWithPreferredClass(v11, v12, v13);
+      conflictItemKey = [v21 conflictItemKey];
+      conflictItemValuePayload2 = [v21 conflictItemValuePayload];
+      v14 = SBKKeyValuePayloadPairWithPreferredClass(v11, conflictItemKey, conflictItemValuePayload2);
 
       v15 = [(SBKPushValueTransaction *)self _resolveConflictBetweenClientPayloadPair:self->_clientItemPayloadPair andServerPayloadPair:v14];
       requestItemPayloadPair = self->_requestItemPayloadPair;
       self->_requestItemPayloadPair = v15;
 
-      v17 = [v21 conflictItemVersionAnchor];
+      conflictItemVersionAnchor = [v21 conflictItemVersionAnchor];
       requestItemVersionAnchor = self->_requestItemVersionAnchor;
-      self->_requestItemVersionAnchor = v17;
+      self->_requestItemVersionAnchor = conflictItemVersionAnchor;
 
-      v7[2](v7, isRechedulable);
+      handlerCopy[2](handlerCopy, isRechedulable);
       goto LABEL_6;
     }
 
     self->_success = [v21 isSuccess];
     objc_storeStrong(&self->_resultItemPayloadPair, self->_requestItemPayloadPair);
     objc_storeStrong(&self->_resultItemVersionAnchor, self->_requestItemVersionAnchor);
-    v19 = [v21 domainVersion];
+    domainVersion = [v21 domainVersion];
     resultDomainVersion = self->_resultDomainVersion;
-    self->_resultDomainVersion = v19;
+    self->_resultDomainVersion = domainVersion;
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_6:
 }
 
@@ -79,8 +79,8 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SBKKeyValuePayloadPair *)self->_clientItemPayloadPair kvsKey];
-  v7 = [v3 stringWithFormat:@"%@-%@", v5, v6];
+  kvsKey = [(SBKKeyValuePayloadPair *)self->_clientItemPayloadPair kvsKey];
+  v7 = [v3 stringWithFormat:@"%@-%@", v5, kvsKey];
 
   return v7;
 }
@@ -94,7 +94,7 @@ LABEL_6:
     clientItemVersionAnchor = @"*unversioned*";
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[client: payload-pair=%@, anchor=%@]", self->_clientItemPayloadPair, clientItemVersionAnchor];
+  clientItemVersionAnchor = [MEMORY[0x277CCACA8] stringWithFormat:@"[client: payload-pair=%@, anchor=%@]", self->_clientItemPayloadPair, clientItemVersionAnchor];
   resultItemPayloadPair = self->_resultItemPayloadPair;
   resultItemVersionAnchor = self->_resultItemVersionAnchor;
   if (!resultItemVersionAnchor)
@@ -102,7 +102,7 @@ LABEL_6:
     resultItemVersionAnchor = @"*unversioned*";
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[result: payload-pair=%@, anchor=%@]", self->_resultItemPayloadPair, resultItemVersionAnchor];
+  resultItemVersionAnchor = [MEMORY[0x277CCACA8] stringWithFormat:@"[result: payload-pair=%@, anchor=%@]", self->_resultItemPayloadPair, resultItemVersionAnchor];
   requestItemPayloadPair = self->_requestItemPayloadPair;
   requestItemVersionAnchor = self->_requestItemVersionAnchor;
   if (!requestItemVersionAnchor)
@@ -110,35 +110,35 @@ LABEL_6:
     requestItemVersionAnchor = @"*unversioned*";
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"[request: payload-pair=%@, anchor=%@]", self->_requestItemPayloadPair, requestItemVersionAnchor];
+  requestItemVersionAnchor = [MEMORY[0x277CCACA8] stringWithFormat:@"[request: payload-pair=%@, anchor=%@]", self->_requestItemPayloadPair, requestItemVersionAnchor];
   v12 = MEMORY[0x277CCACA8];
   v17.receiver = self;
   v17.super_class = SBKPushValueTransaction;
   v13 = [(SBKPushValueTransaction *)&v17 description];
-  v14 = [(SBKTransaction *)self domain];
-  v15 = [v12 stringWithFormat:@"%@ domain = %@, PUT: %@, %@, %@", v13, v14, v5, v11, v8];
+  domain = [(SBKTransaction *)self domain];
+  v15 = [v12 stringWithFormat:@"%@ domain = %@, PUT: %@, %@, %@", v13, domain, clientItemVersionAnchor, requestItemVersionAnchor, resultItemVersionAnchor];
 
   return v15;
 }
 
-- (SBKPushValueTransaction)initWithStoreBagContext:(id)a3 clientItemPayloadPair:(id)a4 clientItemVersionAnchor:(id)a5
+- (SBKPushValueTransaction)initWithStoreBagContext:(id)context clientItemPayloadPair:(id)pair clientItemVersionAnchor:(id)anchor
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 domain];
-  v13 = [v11 pushKeyValueRequestURL];
+  pairCopy = pair;
+  anchorCopy = anchor;
+  contextCopy = context;
+  domain = [contextCopy domain];
+  pushKeyValueRequestURL = [contextCopy pushKeyValueRequestURL];
 
   v16.receiver = self;
   v16.super_class = SBKPushValueTransaction;
-  v14 = [(SBKTransaction *)&v16 initWithDomain:v12 requestURL:v13];
+  v14 = [(SBKTransaction *)&v16 initWithDomain:domain requestURL:pushKeyValueRequestURL];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_clientItemPayloadPair, a4);
-    objc_storeStrong(&v14->_clientItemVersionAnchor, a5);
-    objc_storeStrong(&v14->_requestItemPayloadPair, a4);
-    objc_storeStrong(&v14->_requestItemVersionAnchor, a5);
+    objc_storeStrong(&v14->_clientItemPayloadPair, pair);
+    objc_storeStrong(&v14->_clientItemVersionAnchor, anchor);
+    objc_storeStrong(&v14->_requestItemPayloadPair, pair);
+    objc_storeStrong(&v14->_requestItemVersionAnchor, anchor);
     v14->_isRechedulable = 1;
   }
 

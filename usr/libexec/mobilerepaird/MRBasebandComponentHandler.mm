@@ -32,8 +32,8 @@
 
     [(MRBaseComponentHandler *)v3 setComponentId:5];
     [(MRBaseComponentHandler *)v3 setPopUpNotificationTitle:@"CELLULAR_FOLLOWUP_TITLE"];
-    v5 = [(MRBaseComponentHandler *)v3 deviceClass];
-    if (v5 == 3)
+    deviceClass = [(MRBaseComponentHandler *)v3 deviceClass];
+    if (deviceClass == 3)
     {
       v6 = @"BASEBAND_POPUP_INFO_IPAD";
     }
@@ -43,7 +43,7 @@
       v6 = @"BASEBAND_POPUP_INFO";
     }
 
-    if (v5 == 3)
+    if (deviceClass == 3)
     {
       v7 = @"BASEBAND_FOLLOWUP_INFO_IPAD";
     }
@@ -70,7 +70,7 @@
   block[1] = 3221225472;
   block[2] = sub_100008AE8;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EB38 != -1)
   {
     dispatch_once(&qword_10001EB38, block);
@@ -84,7 +84,7 @@
 + (void)handleSUCase
 {
   v3 = objc_opt_new();
-  [a1 handleComponentSUCase:@"hasDisplayedFollowupForSHCBaseband" lastAUthCheckBuildVersion:@"LastBasebandAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BasebandRepair" queryString:@"Baseband" suCasekey:@"SUcaseForBaseband" startBuildVersion:@"19F1" componentAuth:v3];
+  [self handleComponentSUCase:@"hasDisplayedFollowupForSHCBaseband" lastAUthCheckBuildVersion:@"LastBasebandAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BasebandRepair" queryString:@"Baseband" suCasekey:@"SUcaseForBaseband" startBuildVersion:@"19F1" componentAuth:v3];
 }
 
 @end

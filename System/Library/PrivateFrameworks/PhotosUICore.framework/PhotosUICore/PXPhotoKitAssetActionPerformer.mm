@@ -1,23 +1,23 @@
 @interface PXPhotoKitAssetActionPerformer
-+ (BOOL)_canPerformWithActionManager:(id)a3 error:(id *)a4;
-+ (BOOL)_canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6;
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6 error:(id *)a7;
-+ (BOOL)canPerformWithActionManager:(id)a3;
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6;
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
-+ (id)createStandardActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
-- (BOOL)shouldExitSelectModeForState:(unint64_t)a3;
++ (BOOL)_canPerformWithActionManager:(id)manager error:(id *)error;
++ (BOOL)_canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group error:(id *)error;
++ (BOOL)canPerformWithActionManager:(id)manager;
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error;
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler;
++ (id)createStandardActionWithTitle:(id)title image:(id)image handler:(id)handler;
+- (BOOL)shouldExitSelectModeForState:(unint64_t)state;
 - (NSArray)assets;
 - (NSDictionary)assetsByAssetCollection;
 - (NSDictionary)dataSourceUserInfo;
 - (PHFetchResult)assetsFetchResult;
 - (PXPhotosDataSource)photosDataSourceSnapshot;
-- (id)_indexPathsInPhotosDataSource:(id)a3;
-- (id)createPerformerWithClass:(Class)a3 actionType:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (id)_indexPathsInPhotosDataSource:(id)source;
+- (id)createPerformerWithClass:(Class)class actionType:(id)type;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (void)forceIncludeAssetsInDataSource;
 - (void)instantlyExcludeAssetsFromDataSource;
 - (void)stopExcludingAssetsFromDataSource;
@@ -25,40 +25,40 @@
 
 @implementation PXPhotoKitAssetActionPerformer
 
-- (BOOL)shouldExitSelectModeForState:(unint64_t)a3
+- (BOOL)shouldExitSelectModeForState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = PXPhotoKitAssetActionPerformer;
-  if (![(PXAssetActionPerformer *)&v7 shouldExitSelectModeForState:a3])
+  if (![(PXAssetActionPerformer *)&v7 shouldExitSelectModeForState:state])
   {
     return 0;
   }
 
-  v4 = [(PXPhotoKitAssetActionPerformer *)self objectReference];
-  v5 = v4 == 0;
+  objectReference = [(PXPhotoKitAssetActionPerformer *)self objectReference];
+  v5 = objectReference == 0;
 
   return v5;
 }
 
-- (id)createPerformerWithClass:(Class)a3 actionType:(id)a4
+- (id)createPerformerWithClass:(Class)class actionType:(id)type
 {
-  v6 = a4;
-  v7 = [[a3 alloc] initWithActionType:v6];
+  typeCopy = type;
+  v7 = [[class alloc] initWithActionType:typeCopy];
 
-  v8 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  [v7 setSelectionSnapshot:v8];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  [v7 setSelectionSnapshot:selectionSnapshot];
 
-  v9 = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
-  [v7 setPhotoKitDataSourceManager:v9];
+  photoKitDataSourceManager = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
+  [v7 setPhotoKitDataSourceManager:photoKitDataSourceManager];
 
-  v10 = [(PXPhotoKitAssetActionPerformer *)self person];
-  [v7 setPerson:v10];
+  person = [(PXPhotoKitAssetActionPerformer *)self person];
+  [v7 setPerson:person];
 
-  v11 = [(PXActionPerformer *)self sender];
-  [v7 setSender:v11];
+  sender = [(PXActionPerformer *)self sender];
+  [v7 setSender:sender];
 
-  v12 = [(PXActionPerformer *)self delegate];
-  [v7 setDelegate:v12];
+  delegate = [(PXActionPerformer *)self delegate];
+  [v7 setDelegate:delegate];
 
   return v7;
 }
@@ -68,20 +68,20 @@
   assetsByAssetCollection = self->_assetsByAssetCollection;
   if (!assetsByAssetCollection)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [(PXAssetActionPerformer *)self selectionSnapshot];
-    v6 = [v5 selectedIndexPaths];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-    v7 = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
+    photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __57__PXPhotoKitAssetActionPerformer_assetsByAssetCollection__block_invoke;
     v13[3] = &unk_1E773DC70;
-    v14 = v7;
-    v8 = v4;
+    v14 = photosDataSourceSnapshot;
+    v8 = dictionary;
     v15 = v8;
-    v9 = v7;
-    [v6 enumerateItemIndexSetsUsingBlock:v13];
+    v9 = photosDataSourceSnapshot;
+    [selectedIndexPaths enumerateItemIndexSetsUsingBlock:v13];
     v10 = self->_assetsByAssetCollection;
     self->_assetsByAssetCollection = v8;
     v11 = v8;
@@ -108,10 +108,10 @@ void __57__PXPhotoKitAssetActionPerformer_assetsByAssetCollection__block_invoke(
   assets = self->_assets;
   if (!assets)
   {
-    v4 = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
-    v5 = [v4 fetchedObjects];
+    assetsFetchResult = [(PXPhotoKitAssetActionPerformer *)self assetsFetchResult];
+    fetchedObjects = [assetsFetchResult fetchedObjects];
     v6 = self->_assets;
-    self->_assets = v5;
+    self->_assets = fetchedObjects;
 
     assets = self->_assets;
   }
@@ -124,11 +124,11 @@ void __57__PXPhotoKitAssetActionPerformer_assetsByAssetCollection__block_invoke(
   assetsFetchResult = self->_assetsFetchResult;
   if (!assetsFetchResult)
   {
-    v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-    v5 = [v4 selectedIndexPaths];
+    selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-    v6 = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
-    v7 = [v6 fetchResultWithAssetsAtIndexPaths:v5];
+    photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
+    v7 = [photosDataSourceSnapshot fetchResultWithAssetsAtIndexPaths:selectedIndexPaths];
     v8 = self->_assetsFetchResult;
     self->_assetsFetchResult = v7;
 
@@ -138,23 +138,23 @@ void __57__PXPhotoKitAssetActionPerformer_assetsByAssetCollection__block_invoke(
   return assetsFetchResult;
 }
 
-- (id)_indexPathsInPhotosDataSource:(id)a3
+- (id)_indexPathsInPhotosDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(assets, "count")}];
 
-  v8 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__PXPhotoKitAssetActionPerformer__indexPathsInPhotosDataSource___block_invoke;
   v14[3] = &unk_1E773DC48;
-  v15 = v4;
+  v15 = sourceCopy;
   v9 = v7;
   v16 = v9;
-  v10 = v4;
-  [v8 enumerateKeysAndObjectsUsingBlock:v14];
+  v10 = sourceCopy;
+  [assetsByAssetCollection enumerateKeysAndObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -205,37 +205,37 @@ void __64__PXPhotoKitAssetActionPerformer__indexPathsInPhotosDataSource___block_
 
 - (void)forceIncludeAssetsInDataSource
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
-  v5 = [v3 photosDataSource];
+  photoKitDataSourceManager = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
+  photosDataSource = [photoKitDataSourceManager photosDataSource];
 
-  v4 = [(PXPhotoKitAssetActionPerformer *)self _indexPathsInPhotosDataSource:v5];
-  [v5 forceIncludeAssetsAtIndexPaths:v4];
+  v4 = [(PXPhotoKitAssetActionPerformer *)self _indexPathsInPhotosDataSource:photosDataSource];
+  [photosDataSource forceIncludeAssetsAtIndexPaths:v4];
 }
 
 - (void)stopExcludingAssetsFromDataSource
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
-  v5 = [v3 photosDataSource];
+  photoKitDataSourceManager = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
+  photosDataSource = [photoKitDataSourceManager photosDataSource];
 
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  [v5 stopExcludingAssets:v4];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  [photosDataSource stopExcludingAssets:assets];
 }
 
 - (void)instantlyExcludeAssetsFromDataSource
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
-  v5 = [v3 photosDataSource];
+  photoKitDataSourceManager = [(PXPhotoKitAssetActionPerformer *)self photoKitDataSourceManager];
+  photosDataSource = [photoKitDataSourceManager photosDataSource];
 
-  v4 = [(PXPhotoKitAssetActionPerformer *)self _indexPathsInPhotosDataSource:v5];
-  [v5 forceExcludeAssetsAtIndexPaths:v4];
+  v4 = [(PXPhotoKitAssetActionPerformer *)self _indexPathsInPhotosDataSource:photosDataSource];
+  [photosDataSource forceExcludeAssetsAtIndexPaths:v4];
 }
 
 - (NSDictionary)dataSourceUserInfo
 {
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v5 = [v4 dataSource];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
 
-  if (v5)
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -243,40 +243,40 @@ void __64__PXPhotoKitAssetActionPerformer__indexPathsInPhotosDataSource___block_
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v5 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:918 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionSnapshot.dataSource", v10, v12}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:918 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionSnapshot.dataSource", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:918 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionSnapshot.dataSource", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:918 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionSnapshot.dataSource", v10}];
   }
 
 LABEL_3:
-  v6 = [v5 userInfo];
+  userInfo = [dataSource userInfo];
 
-  return v6;
+  return userInfo;
 }
 
 - (PXPhotosDataSource)photosDataSourceSnapshot
 {
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v5 = [v4 dataSource];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
 
-  v6 = v5;
+  v6 = dataSource;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
 
     if (v7)
     {
-      v8 = [v7 photosDataSource];
+      photosDataSource = [v7 photosDataSource];
       goto LABEL_9;
     }
   }
@@ -288,28 +288,28 @@ LABEL_3:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"[dataSource isKindOfClass:[PXPhotoKitAssetsDataSource class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:911 description:{@"Invalid parameter not satisfying: %@", @"[dataSource isKindOfClass:[PXPhotoKitAssetsDataSource class]]"}];
   }
 
-  v8 = [v6 photosDataSource];
+  photosDataSource = [v6 photosDataSource];
   v7 = 0;
 LABEL_9:
 
-  return v8;
+  return photosDataSource;
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
   v4 = objc_opt_class();
 
-  return [v4 localizedTitleForUseCase:a3 actionManager:0];
+  return [v4 localizedTitleForUseCase:case actionManager:0];
 }
 
-+ (id)createStandardActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createStandardActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v6 = [MEMORY[0x1E69DC628] actionWithTitle:a3 image:a4 identifier:0 handler:a5];
-  if ([a1 isActionDestructive])
+  v6 = [MEMORY[0x1E69DC628] actionWithTitle:title image:image identifier:0 handler:handler];
+  if ([self isActionDestructive])
   {
     [v6 setAttributes:2];
   }
@@ -317,10 +317,10 @@ LABEL_9:
   return v6;
 }
 
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v6 = [MEMORY[0x1E69DC628] actionWithTitle:a3 image:a4 identifier:0 handler:a5];
-  if ([a1 isActionDestructive])
+  v6 = [MEMORY[0x1E69DC628] actionWithTitle:title image:image identifier:0 handler:handler];
+  if ([self isActionDestructive])
   {
     [v6 setAttributes:2];
   }
@@ -328,15 +328,15 @@ LABEL_9:
   return v6;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6 error:(id *)a7
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group error:(id *)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (([a1 providesCanPerformError] & 1) == 0)
+  if (([self providesCanPerformError] & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  if (([a1 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  if (([self isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     PXAssertGetLog();
   }
@@ -344,15 +344,15 @@ LABEL_9:
   return 0;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([a1 providesCanPerformError])
+  if ([self providesCanPerformError])
   {
     PXAssertGetLog();
   }
 
-  if (([a1 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  if (([self isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     PXAssertGetLog();
   }
@@ -360,18 +360,18 @@ LABEL_9:
   return 0;
 }
 
-+ (BOOL)_canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6
++ (BOOL)_canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 dataSource];
-  if (!v14)
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  dataSource = [snapshotCopy dataSource];
+  if (!dataSource)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetActionManager.m" lineNumber:767 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:767 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v25}];
 LABEL_14:
 
     goto LABEL_3;
@@ -380,19 +380,19 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = objc_opt_class();
     v25 = NSStringFromClass(v26);
-    v27 = [v14 px_descriptionForAssertionMessage];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetActionManager.m" lineNumber:767 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v25, v27}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetActionManager.m" lineNumber:767 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v25, px_descriptionForAssertionMessage}];
 
     goto LABEL_14;
   }
 
 LABEL_3:
-  v15 = [v14 photosDataSource];
-  v16 = [v11 selectedIndexPaths];
-  v17 = v16;
+  photosDataSource = [dataSource photosDataSource];
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v17 = selectedIndexPaths;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -403,36 +403,36 @@ LABEL_3:
   v39 = __Block_byref_object_copy__150797;
   v40 = __Block_byref_object_dispose__150798;
   v41 = 0;
-  if (v15 && [v16 itemCount] >= 1)
+  if (photosDataSource && [selectedIndexPaths itemCount] >= 1)
   {
-    v18 = [a1 canPerformOnSubsetOfSelection];
-    *(v43 + 24) = v18 ^ 1;
+    canPerformOnSubsetOfSelection = [self canPerformOnSubsetOfSelection];
+    *(v43 + 24) = canPerformOnSubsetOfSelection ^ 1;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __92__PXPhotoKitAssetActionPerformer__canPerformWithSelectionSnapshot_person_socialGroup_error___block_invoke;
     v28[3] = &unk_1E773DC20;
-    v29 = v15;
+    v29 = photosDataSource;
     v32 = &v42;
-    v34 = a1;
-    v30 = v12;
-    v31 = v13;
+    selfCopy = self;
+    v30 = personCopy;
+    v31 = groupCopy;
     v33 = &v36;
-    v35 = v18;
+    v35 = canPerformOnSubsetOfSelection;
     [v17 enumerateItemIndexSetsUsingBlock:v28];
   }
 
-  if (a6 && (v43[3] & 1) == 0)
+  if (error && (v43[3] & 1) == 0)
   {
     v19 = v37[5];
     if (v19)
     {
-      *a6 = v19;
+      *error = v19;
     }
 
     else
     {
       v20 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXPhotoKitActionManagerErrorDomain" code:-2000 debugDescription:@"Cannot perform action"];
-      *a6 = v20;
+      *error = v20;
     }
   }
 
@@ -524,53 +524,53 @@ LABEL_9:
   }
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([a1 providesCanPerformError] & 1) == 0)
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  if (([self providesCanPerformError] & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v13 = [a1 _canPerformWithSelectionSnapshot:v10 person:v11 socialGroup:v12 error:{a6, v15}];
+  v13 = [self _canPerformWithSelectionSnapshot:snapshotCopy person:personCopy socialGroup:groupCopy error:{error, v15}];
 
   return v13;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 providesCanPerformError])
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  if ([self providesCanPerformError])
   {
     PXAssertGetLog();
   }
 
-  v11 = [a1 _canPerformWithSelectionSnapshot:v8 person:v9 socialGroup:v10 error:{0, v13}];
+  v11 = [self _canPerformWithSelectionSnapshot:snapshotCopy person:personCopy socialGroup:groupCopy error:{0, v13}];
 
   return v11;
 }
 
-+ (BOOL)_canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)_canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 _selectionSnapshotForPerformerClass:a1 applySubsetIfNeeded:0];
-  v8 = [v6 person];
-  v9 = [v6 socialGroup];
+  managerCopy = manager;
+  v7 = [managerCopy _selectionSnapshotForPerformerClass:self applySubsetIfNeeded:0];
+  person = [managerCopy person];
+  socialGroup = [managerCopy socialGroup];
 
   if (v7)
   {
-    if ([a1 providesCanPerformError])
+    if ([self providesCanPerformError])
     {
-      v10 = [a1 canPerformWithSelectionSnapshot:v7 person:v8 socialGroup:v9 error:a4];
+      v10 = [self canPerformWithSelectionSnapshot:v7 person:person socialGroup:socialGroup error:error];
     }
 
     else
     {
-      v10 = [a1 canPerformWithSelectionSnapshot:v7 person:v8 socialGroup:v9];
+      v10 = [self canPerformWithSelectionSnapshot:v7 person:person socialGroup:socialGroup];
     }
 
     v11 = v10;
@@ -584,28 +584,28 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v6 = a3;
-  if (([a1 providesCanPerformError] & 1) == 0)
+  managerCopy = manager;
+  if (([self providesCanPerformError] & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v7 = [a1 _canPerformWithActionManager:v6 error:{a4, v9}];
+  v7 = [self _canPerformWithActionManager:managerCopy error:{error, v9}];
 
   return v7;
 }
 
-+ (BOOL)canPerformWithActionManager:(id)a3
++ (BOOL)canPerformWithActionManager:(id)manager
 {
-  v4 = a3;
-  if ([a1 providesCanPerformError])
+  managerCopy = manager;
+  if ([self providesCanPerformError])
   {
     PXAssertGetLog();
   }
 
-  v5 = [a1 _canPerformWithActionManager:v4 error:{0, v7}];
+  v5 = [self _canPerformWithActionManager:managerCopy error:{0, v7}];
 
   return v5;
 }

@@ -1,12 +1,12 @@
 @interface _HDDataProvenanceKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _HDDataProvenanceKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -14,21 +14,21 @@
   }
 
   dataProvenance = self->_dataProvenance;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (dataProvenance != v6 && (!v6 || ![(HDDataOriginProvenance *)dataProvenance isEqual:?]))
   {
     goto LABEL_11;
   }
 
   localProductType = self->_localProductType;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (localProductType != v8 && (!v8 || ![(NSString *)localProductType isEqualToString:?]))
   {
     goto LABEL_11;
   }
 
   localSystemBuild = self->_localSystemBuild;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (localSystemBuild == v10)
   {
     v11 = 1;

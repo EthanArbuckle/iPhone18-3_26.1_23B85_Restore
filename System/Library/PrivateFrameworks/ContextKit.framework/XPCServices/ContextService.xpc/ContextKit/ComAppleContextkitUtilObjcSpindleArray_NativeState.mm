@@ -1,6 +1,6 @@
 @interface ComAppleContextkitUtilObjcSpindleArray_NativeState
 - (ComAppleContextkitUtilObjcSpindleArray_NativeState)init;
-- (int)decodeWithInt:(int)a3 withByteArray:(id)a4 withByteArray:(id)a5;
+- (int)decodeWithInt:(int)int withByteArray:(id)array withByteArray:(id)byteArray;
 - (void)dealloc;
 @end
 
@@ -22,27 +22,27 @@
   return self;
 }
 
-- (int)decodeWithInt:(int)a3 withByteArray:(id)a4 withByteArray:(id)a5
+- (int)decodeWithInt:(int)int withByteArray:(id)array withByteArray:(id)byteArray
 {
-  if (!a4)
+  if (!array)
   {
     goto LABEL_6;
   }
 
-  if (!*(a4 + 2))
+  if (!*(array + 2))
   {
     v7 = @"Empty buffer";
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!byteArray)
   {
 LABEL_6:
     JreThrowNullPointerException();
   }
 
-  v5 = *(a5 + 2);
-  if (v5 < a3)
+  v5 = *(byteArray + 2);
+  if (v5 < int)
   {
     v7 = @"OutBuf too small";
 LABEL_9:
@@ -50,7 +50,7 @@ LABEL_9:
     objc_exception_throw(v8);
   }
 
-  return compression_decode_buffer(a5 + 12, v5, a4 + 12, *(a4 + 2), self->_scratchBuffer, COMPRESSION_LZFSE);
+  return compression_decode_buffer(byteArray + 12, v5, array + 12, *(array + 2), self->_scratchBuffer, COMPRESSION_LZFSE);
 }
 
 @end

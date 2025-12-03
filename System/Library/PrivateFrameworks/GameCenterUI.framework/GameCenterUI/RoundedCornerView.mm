@@ -1,21 +1,21 @@
 @interface RoundedCornerView
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoundedCornerView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0988E4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0989A4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E0989A4(change);
 }
 
 @end

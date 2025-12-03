@@ -1,37 +1,37 @@
 @interface CNMultiValueRemoveUpdate
-- (BOOL)applyToABPerson:(void *)a3 abmultivalue:(void *)a4 propertyDescription:(id)a5 isUnified:(BOOL)a6 logger:(id)a7 error:(id *)a8;
-- (void)applyToMutableMultiValue:(id)a3 withIdentifierMap:(id)a4;
+- (BOOL)applyToABPerson:(void *)person abmultivalue:(void *)abmultivalue propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error;
+- (void)applyToMutableMultiValue:(id)value withIdentifierMap:(id)map;
 @end
 
 @implementation CNMultiValueRemoveUpdate
 
-- (void)applyToMutableMultiValue:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableMultiValue:(id)value withIdentifierMap:(id)map
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CNMultiValueSingleUpdate *)self value];
-  v8 = [v7 identifier];
-  v9 = [CN indexOfUnifiedIdentifier:v8 onNonUnifiedMultiValue:v10 withIdentifierMap:v6];
+  valueCopy = value;
+  mapCopy = map;
+  value = [(CNMultiValueSingleUpdate *)self value];
+  identifier = [value identifier];
+  v9 = [CN indexOfUnifiedIdentifier:identifier onNonUnifiedMultiValue:valueCopy withIdentifierMap:mapCopy];
 
-  if (v9 < [v10 count])
+  if (v9 < [valueCopy count])
   {
-    [v10 removeObjectAtIndex:v9];
+    [valueCopy removeObjectAtIndex:v9];
   }
 }
 
-- (BOOL)applyToABPerson:(void *)a3 abmultivalue:(void *)a4 propertyDescription:(id)a5 isUnified:(BOOL)a6 logger:(id)a7 error:(id *)a8
+- (BOOL)applyToABPerson:(void *)person abmultivalue:(void *)abmultivalue propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a7;
-  v15 = [(CNMultiValueSingleUpdate *)self value];
-  v16 = [v13 key];
-  [v14 applyContactUpdateOfKind:"multi value remove" value:v15 property:v16];
+  descriptionCopy = description;
+  loggerCopy = logger;
+  value = [(CNMultiValueSingleUpdate *)self value];
+  v16 = [descriptionCopy key];
+  [loggerCopy applyContactUpdateOfKind:"multi value remove" value:value property:v16];
 
-  v17 = [(CNMultiValueSingleUpdate *)self value];
-  v18 = [(CNMultiValueUpdate *)self multiValueIndexForValue:v17 inMultiValue:a4 identifier:0];
+  value2 = [(CNMultiValueSingleUpdate *)self value];
+  v18 = [(CNMultiValueUpdate *)self multiValueIndexForValue:value2 inMultiValue:abmultivalue identifier:0];
 
-  if (v18 == -1 && a6)
+  if (v18 == -1 && unified)
   {
     v19 = 1;
   }
@@ -41,7 +41,7 @@
     if (v18 == -1)
     {
       v19 = 0;
-      if (!a8)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -49,8 +49,8 @@
 
     else
     {
-      v19 = ABMultiValueRemoveValueAndLabelAtIndex(a4, v18);
-      if (!a8)
+      v19 = ABMultiValueRemoveValueAndLabelAtIndex(abmultivalue, v18);
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -59,13 +59,13 @@
     if (!v19)
     {
       v26 = @"CNKeyPaths";
-      v20 = [v13 key];
+      v20 = [descriptionCopy key];
       v25 = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       v27[0] = v21;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       v23 = +[CNErrorFactory genericiOSABError];
-      *a8 = [CNErrorFactory errorByAddingUserInfoEntries:v22 toError:v23];
+      *error = [CNErrorFactory errorByAddingUserInfoEntries:v22 toError:v23];
 
       v19 = 0;
     }

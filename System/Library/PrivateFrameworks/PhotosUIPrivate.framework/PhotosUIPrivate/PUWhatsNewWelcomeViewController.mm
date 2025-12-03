@@ -1,27 +1,27 @@
 @interface PUWhatsNewWelcomeViewController
-+ (void)presentIfNecessaryFromViewController:(id)a3 presentationHandler:(id)a4 completionHandler:(id)a5;
++ (void)presentIfNecessaryFromViewController:(id)controller presentationHandler:(id)handler completionHandler:(id)completionHandler;
 + (void)resetLastPresentationInfo;
-- (PUWhatsNewWelcomeViewController)initWithCompletionHandler:(id)a3;
+- (PUWhatsNewWelcomeViewController)initWithCompletionHandler:(id)handler;
 - (void)_presentPrivacyOverview;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation PUWhatsNewWelcomeViewController
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_1E7B80B48;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = PUWhatsNewWelcomeViewController;
-  v7 = v6;
-  [(PUWhatsNewWelcomeViewController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(PUWhatsNewWelcomeViewController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 void __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -55,9 +55,9 @@ void __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_complet
   [v3 present];
 }
 
-- (PUWhatsNewWelcomeViewController)initWithCompletionHandler:(id)a3
+- (PUWhatsNewWelcomeViewController)initWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = PULocalizedString(@"WHATS_NEW_WELCOME_TITLE");
   v44.receiver = self;
   v44.super_class = PUWhatsNewWelcomeViewController;
@@ -103,17 +103,17 @@ void __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_complet
     {
       v35 = v16;
       v36 = v7;
-      v37 = v4;
+      v37 = handlerCopy;
       v38 = PULocalizedString(@"WHATS_NEW_VISUAL_SEARCH_TITLE");
       v20 = PULocalizedString(@"WHATS_NEW_VISUAL_SEARCH_CONTENT");
       v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"mappin.and.ellipse"];
       v22 = [v21 imageWithRenderingMode:2];
 
-      v23 = [MEMORY[0x1E69B7D08] linkButton];
-      v24 = [v23 configuration];
+      linkButton = [MEMORY[0x1E69B7D08] linkButton];
+      configuration = [linkButton configuration];
 
       v25 = PULocalizedString(@"WHATS_NEW_VISUAL_SEARCH_LINK_TITLE");
-      [v24 setTitle:v25];
+      [configuration setTitle:v25];
 
       objc_initWeak(&location, v6);
       v26 = MEMORY[0x1E69DC628];
@@ -123,7 +123,7 @@ void __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_complet
       v41[3] = &unk_1E7B80890;
       objc_copyWeak(&v42, &location);
       v27 = [v26 actionWithHandler:v41];
-      v28 = [MEMORY[0x1E69B7D08] buttonWithConfiguration:v24 primaryAction:v27];
+      v28 = [MEMORY[0x1E69B7D08] buttonWithConfiguration:configuration primaryAction:v27];
       [(PUWhatsNewWelcomeViewController *)v6 addBulletedListItemWithTitle:v38 description:v20 image:v22 tintColor:0 linkButton:v28];
 
       objc_destroyWeak(&v42);
@@ -132,21 +132,21 @@ void __76__PUWhatsNewWelcomeViewController_dismissViewControllerAnimated_complet
       v7 = v36;
     }
 
-    v29 = [MEMORY[0x1E69B7D00] boldButton];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
+    [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = PULocalizedString(@"WHATS_NEW_WELCOME_CONTINUE");
-    [v29 setTitle:v30 forState:0];
+    [boldButton setTitle:v30 forState:0];
 
-    [v29 addTarget:v6 action:sel__handleContinueButton_ forControlEvents:0x2000];
-    v31 = [(PUWhatsNewWelcomeViewController *)v6 buttonTray];
-    [v31 addButton:v29];
+    [boldButton addTarget:v6 action:sel__handleContinueButton_ forControlEvents:0x2000];
+    buttonTray = [(PUWhatsNewWelcomeViewController *)v6 buttonTray];
+    [buttonTray addButton:boldButton];
 
     v32 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel__handleContinueButton_];
     [(PUWhatsNewWelcomeViewController *)v6 addKeyCommand:v32];
 
     [(PUWhatsNewWelcomeViewController *)v6 setModalPresentationStyle:2];
     [(PUWhatsNewWelcomeViewController *)v6 setModalInPresentation:1];
-    v33 = [v4 copy];
+    v33 = [handlerCopy copy];
     [(PUWhatsNewWelcomeViewController *)v6 _setCompletionHandler:v33];
   }
 
@@ -161,31 +161,31 @@ void __61__PUWhatsNewWelcomeViewController_initWithCompletionHandler___block_inv
 
 + (void)resetLastPresentationInfo
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 removeObjectForKey:@"LastWhatsNewShown"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"LastWhatsNewShown"];
 }
 
-+ (void)presentIfNecessaryFromViewController:(id)a3 presentationHandler:(id)a4 completionHandler:(id)a5
++ (void)presentIfNecessaryFromViewController:(id)controller presentationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v10 = [v9 integerForKey:@"LastWhatsNewShown"];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v10 = [standardUserDefaults integerForKey:@"LastWhatsNewShown"];
 
   v11 = +[PUWelcomeSettings sharedInstance];
-  v12 = [v11 whatsNewBehavior];
+  whatsNewBehavior = [v11 whatsNewBehavior];
 
-  if (!v12 || (v12 != 1 ? (v13 = v10 <= 12) : (v13 = 0), v13))
+  if (!whatsNewBehavior || (whatsNewBehavior != 1 ? (v13 = v10 <= 12) : (v13 = 0), v13))
   {
-    v14 = [[PUWhatsNewWelcomeViewController alloc] initWithCompletionHandler:v8];
-    [v15 presentViewController:v14 animated:1 completion:0];
-    v7[2](v7);
+    v14 = [[PUWhatsNewWelcomeViewController alloc] initWithCompletionHandler:completionHandlerCopy];
+    [controllerCopy presentViewController:v14 animated:1 completion:0];
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v8[2](v8, 0);
+    completionHandlerCopy[2](completionHandlerCopy, 0);
   }
 }
 

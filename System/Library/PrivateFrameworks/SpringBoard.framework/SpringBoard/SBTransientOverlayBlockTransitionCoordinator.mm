@@ -1,16 +1,16 @@
 @interface SBTransientOverlayBlockTransitionCoordinator
-- (void)finalizeTransitionWithContextProvider:(id)a3;
-- (void)startTransitionWithContextProvider:(id)a3;
+- (void)finalizeTransitionWithContextProvider:(id)provider;
+- (void)startTransitionWithContextProvider:(id)provider;
 @end
 
 @implementation SBTransientOverlayBlockTransitionCoordinator
 
-- (void)startTransitionWithContextProvider:(id)a3
+- (void)startTransitionWithContextProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   p_startTransitionHandler = &self->_startTransitionHandler;
   startTransitionHandler = self->_startTransitionHandler;
-  v9 = v5;
+  v9 = providerCopy;
   if (!startTransitionHandler)
   {
     [(SBTransientOverlayBlockTransitionCoordinator *)a2 startTransitionWithContextProvider:&self->_startTransitionHandler, &v10];
@@ -22,12 +22,12 @@
   *p_startTransitionHandler = 0;
 }
 
-- (void)finalizeTransitionWithContextProvider:(id)a3
+- (void)finalizeTransitionWithContextProvider:(id)provider
 {
   finalizeTransitionHandler = self->_finalizeTransitionHandler;
   if (finalizeTransitionHandler)
   {
-    finalizeTransitionHandler[2](finalizeTransitionHandler, a3);
+    finalizeTransitionHandler[2](finalizeTransitionHandler, provider);
     v5 = self->_finalizeTransitionHandler;
     self->_finalizeTransitionHandler = 0;
   }

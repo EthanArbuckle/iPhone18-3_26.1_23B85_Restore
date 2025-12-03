@@ -1,12 +1,12 @@
 @interface PKSelectedPaymentOfferPaymentPassDetails
-- (BOOL)isEqual:(id)a3;
-- (PKSelectedPaymentOfferPaymentPassDetails)initWithCoder:(id)a3;
-- (PKSelectedPaymentOfferPaymentPassDetails)initWithPaymentPass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSelectedPaymentOfferPaymentPassDetails)initWithCoder:(id)coder;
+- (PKSelectedPaymentOfferPaymentPassDetails)initWithPaymentPass:(id)pass;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSelectedPaymentOfferPaymentPassDetails
@@ -18,62 +18,62 @@
   return [(PKSelectedPaymentOfferPaymentPassDetails *)&v3 init];
 }
 
-- (PKSelectedPaymentOfferPaymentPassDetails)initWithPaymentPass:(id)a3
+- (PKSelectedPaymentOfferPaymentPassDetails)initWithPaymentPass:(id)pass
 {
-  v4 = a3;
-  if (v4)
+  passCopy = pass;
+  if (passCopy)
   {
     v19.receiver = self;
     v19.super_class = PKSelectedPaymentOfferPaymentPassDetails;
     v5 = [(PKSelectedPaymentOfferPaymentPassDetails *)&v19 init];
     if (v5)
     {
-      v6 = [v4 uniqueID];
+      uniqueID = [passCopy uniqueID];
       passUniqueID = v5->_passUniqueID;
-      v5->_passUniqueID = v6;
+      v5->_passUniqueID = uniqueID;
 
-      v8 = [v4 passTypeIdentifier];
+      passTypeIdentifier = [passCopy passTypeIdentifier];
       passTypeIdentifier = v5->_passTypeIdentifier;
-      v5->_passTypeIdentifier = v8;
+      v5->_passTypeIdentifier = passTypeIdentifier;
 
-      v10 = [v4 serialNumber];
+      serialNumber = [passCopy serialNumber];
       passSerialNumber = v5->_passSerialNumber;
-      v5->_passSerialNumber = v10;
+      v5->_passSerialNumber = serialNumber;
 
-      v12 = [v4 devicePrimaryPaymentApplication];
-      v13 = [v12 dpanIdentifier];
+      devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+      dpanIdentifier = [devicePrimaryPaymentApplication dpanIdentifier];
       dpanIdentifier = v5->_dpanIdentifier;
-      v5->_dpanIdentifier = v13;
+      v5->_dpanIdentifier = dpanIdentifier;
 
-      v15 = [v4 primaryAccountIdentifier];
+      primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
       primaryAccountIdentifier = v5->_primaryAccountIdentifier;
-      v5->_primaryAccountIdentifier = v15;
+      v5->_primaryAccountIdentifier = primaryAccountIdentifier;
     }
 
     self = v5;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -236,31 +236,31 @@ LABEL_37:
   return v3;
 }
 
-- (PKSelectedPaymentOfferPaymentPassDetails)initWithCoder:(id)a3
+- (PKSelectedPaymentOfferPaymentPassDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKSelectedPaymentOfferPaymentPassDetails;
   v5 = [(PKSelectedPaymentOfferPaymentPassDetails *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     passUniqueID = v5->_passUniqueID;
     v5->_passUniqueID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
     primaryAccountIdentifier = v5->_primaryAccountIdentifier;
     v5->_primaryAccountIdentifier = v14;
   }
@@ -268,37 +268,37 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueID = self->_passUniqueID;
-  v5 = a3;
-  [v5 encodeObject:passUniqueID forKey:@"passUniqueID"];
-  [v5 encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
-  [v5 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v5 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueID forKey:@"passUniqueID"];
+  [coderCopy encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passUniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passUniqueID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_dpanIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_dpanIdentifier copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_passSerialNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_passSerialNumber copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 

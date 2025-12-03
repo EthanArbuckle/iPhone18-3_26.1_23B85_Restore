@@ -3,8 +3,8 @@
 - (STUIStatusBarStringView)pillTimeView;
 - (STUIStatusBarStringView)shortTimeView;
 - (STUIStatusBarStringView)timeView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_dateView;
 - (void)_create_pillTimeView;
 - (void)_create_shortTimeView;
@@ -111,45 +111,45 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v41.receiver = self;
   v41.super_class = STUIStatusBarTimeItem;
-  v8 = [(STUIStatusBarItem *)&v41 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(STUIStatusBarItem *)&v41 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v7 identifier];
-    v10 = [objc_opt_class() timeDisplayIdentifier];
-    v11 = v10;
-    if (v9 == v10)
+    identifier = [itemCopy identifier];
+    timeDisplayIdentifier = [objc_opt_class() timeDisplayIdentifier];
+    v11 = timeDisplayIdentifier;
+    if (identifier == timeDisplayIdentifier)
     {
-      v24 = [v6 data];
-      v25 = [v24 timeEntry];
+      data = [updateCopy data];
+      timeEntry = [data timeEntry];
 
-      if (v25)
+      if (timeEntry)
       {
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v26 = [v6 data];
-          v27 = [v26 timeEntry];
-          [v7 setEnabled:{objc_msgSend(v27, "isEnabled")}];
+          data2 = [updateCopy data];
+          timeEntry2 = [data2 timeEntry];
+          [itemCopy setEnabled:{objc_msgSend(timeEntry2, "isEnabled")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if (![v7 isEnabled])
+        if (![itemCopy isEnabled])
         {
           goto LABEL_34;
         }
 
-        v18 = [(STUIStatusBarTimeItem *)self timeView];
-        v19 = [v6 data];
-        v36 = [v19 timeEntry];
+        timeView = [(STUIStatusBarTimeItem *)self timeView];
+        data3 = [updateCopy data];
+        timeEntry3 = [data3 timeEntry];
         goto LABEL_31;
       }
     }
@@ -158,42 +158,42 @@
     {
     }
 
-    v12 = [v7 identifier];
-    v13 = [objc_opt_class() shortTimeDisplayIdentifier];
-    v14 = v13;
-    if (v12 == v13)
+    identifier2 = [itemCopy identifier];
+    shortTimeDisplayIdentifier = [objc_opt_class() shortTimeDisplayIdentifier];
+    v14 = shortTimeDisplayIdentifier;
+    if (identifier2 == shortTimeDisplayIdentifier)
     {
-      v28 = [v6 data];
-      v29 = [v28 shortTimeEntry];
+      data4 = [updateCopy data];
+      shortTimeEntry = [data4 shortTimeEntry];
 
-      if (v29)
+      if (shortTimeEntry)
       {
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v30 = [v6 data];
-          v31 = [v30 shortTimeEntry];
-          [v7 setEnabled:{objc_msgSend(v31, "isEnabled")}];
+          data5 = [updateCopy data];
+          shortTimeEntry2 = [data5 shortTimeEntry];
+          [itemCopy setEnabled:{objc_msgSend(shortTimeEntry2, "isEnabled")}];
         }
 
         else
         {
-          [v7 setEnabled:0];
+          [itemCopy setEnabled:0];
         }
 
-        if (![v7 isEnabled])
+        if (![itemCopy isEnabled])
         {
           goto LABEL_34;
         }
 
-        v37 = [(STUIStatusBarTimeItem *)self shortTimeView];
+        shortTimeView = [(STUIStatusBarTimeItem *)self shortTimeView];
 LABEL_30:
-        v18 = v37;
-        v19 = [v6 data];
-        v36 = [v19 shortTimeEntry];
+        timeView = shortTimeView;
+        data3 = [updateCopy data];
+        timeEntry3 = [data3 shortTimeEntry];
 LABEL_31:
-        v38 = v36;
-        v39 = [v36 stringValue];
-        __51__STUIStatusBarTimeItem_applyUpdate_toDisplayItem___block_invoke(v18, v39);
+        stringValue2 = timeEntry3;
+        stringValue = [timeEntry3 stringValue];
+        __51__STUIStatusBarTimeItem_applyUpdate_toDisplayItem___block_invoke(timeView, stringValue);
         goto LABEL_32;
       }
     }
@@ -202,83 +202,83 @@ LABEL_31:
     {
     }
 
-    v15 = [v7 identifier];
-    v16 = [objc_opt_class() pillTimeDisplayIdentifier];
-    v17 = v16;
-    if (v15 != v16)
+    identifier3 = [itemCopy identifier];
+    pillTimeDisplayIdentifier = [objc_opt_class() pillTimeDisplayIdentifier];
+    v17 = pillTimeDisplayIdentifier;
+    if (identifier3 != pillTimeDisplayIdentifier)
     {
 
 LABEL_8:
-      v18 = [v7 identifier];
-      v19 = [objc_opt_class() dateDisplayIdentifier];
-      if (v18 != v19)
+      timeView = [itemCopy identifier];
+      data3 = [objc_opt_class() dateDisplayIdentifier];
+      if (timeView != data3)
       {
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      v20 = [v6 data];
-      v21 = [v20 dateEntry];
+      data6 = [updateCopy data];
+      dateEntry = [data6 dateEntry];
 
-      if (!v21)
+      if (!dateEntry)
       {
         goto LABEL_34;
       }
 
-      if ([v7 isEnabled])
+      if ([itemCopy isEnabled])
       {
-        v22 = [v6 data];
-        v23 = [v22 dateEntry];
-        [v7 setEnabled:{objc_msgSend(v23, "isEnabled")}];
+        data7 = [updateCopy data];
+        dateEntry2 = [data7 dateEntry];
+        [itemCopy setEnabled:{objc_msgSend(dateEntry2, "isEnabled")}];
       }
 
       else
       {
-        [v7 setEnabled:0];
+        [itemCopy setEnabled:0];
       }
 
-      if (![v7 isEnabled])
+      if (![itemCopy isEnabled])
       {
         goto LABEL_34;
       }
 
-      v18 = [v6 data];
-      v19 = [v18 dateEntry];
-      v38 = [v19 stringValue];
-      v39 = [(STUIStatusBarTimeItem *)self dateView];
-      [v39 setText:v38];
+      timeView = [updateCopy data];
+      data3 = [timeView dateEntry];
+      stringValue2 = [data3 stringValue];
+      stringValue = [(STUIStatusBarTimeItem *)self dateView];
+      [stringValue setText:stringValue2];
 LABEL_32:
 
       goto LABEL_33;
     }
 
-    v32 = [v6 data];
-    v33 = [v32 shortTimeEntry];
+    data8 = [updateCopy data];
+    shortTimeEntry3 = [data8 shortTimeEntry];
 
-    if (!v33)
+    if (!shortTimeEntry3)
     {
       goto LABEL_8;
     }
 
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v34 = [v6 data];
-      v35 = [v34 shortTimeEntry];
-      [v7 setEnabled:{objc_msgSend(v35, "isEnabled")}];
+      data9 = [updateCopy data];
+      shortTimeEntry4 = [data9 shortTimeEntry];
+      [itemCopy setEnabled:{objc_msgSend(shortTimeEntry4, "isEnabled")}];
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
 
-    if (![v7 isEnabled])
+    if (![itemCopy isEnabled])
     {
       goto LABEL_34;
     }
 
-    v37 = [(STUIStatusBarTimeItem *)self pillTimeView];
+    shortTimeView = [(STUIStatusBarTimeItem *)self pillTimeView];
     goto LABEL_30;
   }
 
@@ -303,54 +303,54 @@ void __51__STUIStatusBarTimeItem_applyUpdate_toDisplayItem___block_invoke(void *
   }
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() timeDisplayIdentifier];
+  identifierCopy = identifier;
+  timeDisplayIdentifier = [objc_opt_class() timeDisplayIdentifier];
 
-  if (v5 == v4)
+  if (timeDisplayIdentifier == identifierCopy)
   {
-    v9 = [(STUIStatusBarTimeItem *)self timeView];
+    timeView = [(STUIStatusBarTimeItem *)self timeView];
   }
 
   else
   {
-    v6 = [objc_opt_class() shortTimeDisplayIdentifier];
+    shortTimeDisplayIdentifier = [objc_opt_class() shortTimeDisplayIdentifier];
 
-    if (v6 == v4)
+    if (shortTimeDisplayIdentifier == identifierCopy)
     {
-      v9 = [(STUIStatusBarTimeItem *)self shortTimeView];
+      timeView = [(STUIStatusBarTimeItem *)self shortTimeView];
     }
 
     else
     {
-      v7 = [objc_opt_class() pillTimeDisplayIdentifier];
+      pillTimeDisplayIdentifier = [objc_opt_class() pillTimeDisplayIdentifier];
 
-      if (v7 == v4)
+      if (pillTimeDisplayIdentifier == identifierCopy)
       {
-        v9 = [(STUIStatusBarTimeItem *)self pillTimeView];
+        timeView = [(STUIStatusBarTimeItem *)self pillTimeView];
       }
 
       else
       {
-        v8 = [objc_opt_class() dateDisplayIdentifier];
+        dateDisplayIdentifier = [objc_opt_class() dateDisplayIdentifier];
 
-        if (v8 == v4)
+        if (dateDisplayIdentifier == identifierCopy)
         {
-          v9 = [(STUIStatusBarTimeItem *)self dateView];
+          timeView = [(STUIStatusBarTimeItem *)self dateView];
         }
 
         else
         {
           v12.receiver = self;
           v12.super_class = STUIStatusBarTimeItem;
-          v9 = [(STUIStatusBarItem *)&v12 viewForIdentifier:v4];
+          timeView = [(STUIStatusBarItem *)&v12 viewForIdentifier:identifierCopy];
         }
       }
     }
   }
 
-  v10 = v9;
+  v10 = timeView;
 
   return v10;
 }

@@ -1,23 +1,23 @@
 @interface MFOutgoingMessageDelivery
 + (id)log;
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6;
-+ (id)newWithMessage:(id)a3;
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other;
++ (id)newWithMessage:(id)message;
 - (MFDeliveryDelegate)delegate;
 - (MFOutgoingMessageDelivery)init;
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6;
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5;
-- (MFOutgoingMessageDelivery)initWithMessage:(id)a3;
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other;
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l;
+- (MFOutgoingMessageDelivery)initWithMessage:(id)message;
 - (id)_currentDeliveryObject;
-- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)a3;
+- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)settings;
 - (id)_deliveryAccountForInitializers;
 - (id)account;
-- (id)deliverSynchronouslyWithCompletion:(id)a3;
+- (id)deliverSynchronouslyWithCompletion:(id)completion;
 - (id)message;
 - (id)originalHeaders;
 - (int64_t)deliveryStatus;
-- (void)setAccount:(id)a3;
-- (void)setArchiveAccount:(id)a3;
-- (void)setCompositionSpecification:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setArchiveAccount:(id)account;
+- (void)setCompositionSpecification:(id)specification;
 @end
 
 @implementation MFOutgoingMessageDelivery
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __32__MFOutgoingMessageDelivery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_26 != -1)
   {
     dispatch_once(&log_onceToken_26, block);
@@ -54,69 +54,69 @@ void __32__MFOutgoingMessageDelivery_log__block_invoke(uint64_t a1)
   return [(MFOutgoingMessageDelivery *)&v3 init];
 }
 
-- (MFOutgoingMessageDelivery)initWithMessage:(id)a3
+- (MFOutgoingMessageDelivery)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [(MFOutgoingMessageDelivery *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
 }
 
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l
 {
-  v9 = a3;
-  v10 = a4;
+  headersCopy = headers;
+  contentCopy = content;
   v11 = [(MFOutgoingMessageDelivery *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_headers, a3);
-    objc_storeStrong(&v12->_mixedContent, a4);
-    v12->_textPartsAreHTML = a5;
+    objc_storeStrong(&v11->_headers, headers);
+    objc_storeStrong(&v12->_mixedContent, content);
+    v12->_textPartsAreHTML = l;
   }
 
   return v12;
 }
 
-- (MFOutgoingMessageDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6
+- (MFOutgoingMessageDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  headersCopy = headers;
+  lCopy = l;
+  alternativeCopy = alternative;
+  otherCopy = other;
   v15 = [(MFOutgoingMessageDelivery *)self init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_headers, a3);
-    objc_storeStrong(&v16->_htmlBody, a4);
-    objc_storeStrong(&v16->_plainTextAlternative, a5);
-    objc_storeStrong(&v16->_otherHTMLAndAttachments, a6);
+    objc_storeStrong(&v15->_headers, headers);
+    objc_storeStrong(&v16->_htmlBody, l);
+    objc_storeStrong(&v16->_plainTextAlternative, alternative);
+    objc_storeStrong(&v16->_otherHTMLAndAttachments, other);
   }
 
   return v16;
 }
 
-+ (id)newWithMessage:(id)a3
++ (id)newWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMessage:v4];
+  messageCopy = message;
+  v5 = [[self alloc] initWithMessage:messageCopy];
 
   return v5;
 }
 
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[a1 alloc] initWithHeaders:v10 HTML:v11 plainTextAlternative:v12 other:v13];
+  headersCopy = headers;
+  lCopy = l;
+  alternativeCopy = alternative;
+  otherCopy = other;
+  v14 = [[self alloc] initWithHeaders:headersCopy HTML:lCopy plainTextAlternative:alternativeCopy other:otherCopy];
 
   return v14;
 }
@@ -129,10 +129,10 @@ void __32__MFOutgoingMessageDelivery_log__block_invoke(uint64_t a1)
     goto LABEL_21;
   }
 
-  v4 = [(MFOutgoingMessageDelivery *)self account];
+  account = [(MFOutgoingMessageDelivery *)self account];
 
   message = self->_message;
-  if (!v4)
+  if (!account)
   {
     if (message)
     {
@@ -167,8 +167,8 @@ void __32__MFOutgoingMessageDelivery_log__block_invoke(uint64_t a1)
 
   if (message)
   {
-    v6 = [(MFOutgoingMessageDelivery *)self account];
-    v7 = [v6 newDeliveryWithMessage:self->_message];
+    account2 = [(MFOutgoingMessageDelivery *)self account];
+    v7 = [account2 newDeliveryWithMessage:self->_message];
     v8 = self->_currentDeliveryObject;
     self->_currentDeliveryObject = v7;
 
@@ -177,8 +177,8 @@ void __32__MFOutgoingMessageDelivery_log__block_invoke(uint64_t a1)
 
   if (self->_mixedContent)
   {
-    v11 = [(MFOutgoingMessageDelivery *)self account];
-    v12 = [v11 newDeliveryWithHeaders:self->_headers mixedContent:self->_mixedContent textPartsAreHTML:self->_textPartsAreHTML];
+    account3 = [(MFOutgoingMessageDelivery *)self account];
+    v12 = [account3 newDeliveryWithHeaders:self->_headers mixedContent:self->_mixedContent textPartsAreHTML:self->_textPartsAreHTML];
 LABEL_14:
     v14 = self->_currentDeliveryObject;
     self->_currentDeliveryObject = v12;
@@ -192,8 +192,8 @@ LABEL_14:
 
   if (self->_htmlBody || self->_plainTextAlternative)
   {
-    v11 = [(MFOutgoingMessageDelivery *)self account];
-    v12 = [v11 newDeliveryWithHeaders:self->_headers HTML:self->_htmlBody plainTextAlternative:self->_plainTextAlternative other:self->_otherHTMLAndAttachments];
+    account3 = [(MFOutgoingMessageDelivery *)self account];
+    v12 = [account3 newDeliveryWithHeaders:self->_headers HTML:self->_htmlBody plainTextAlternative:self->_plainTextAlternative other:self->_otherHTMLAndAttachments];
     goto LABEL_14;
   }
 
@@ -201,8 +201,8 @@ LABEL_19:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(MFMailDelivery *)self->_currentDeliveryObject setDelegate:WeakRetained];
 
-  v17 = [(MFOutgoingMessageDelivery *)self compositionSpecification];
-  [(MFMailDelivery *)self->_currentDeliveryObject setCompositionSpecification:v17];
+  compositionSpecification = [(MFOutgoingMessageDelivery *)self compositionSpecification];
+  [(MFMailDelivery *)self->_currentDeliveryObject setCompositionSpecification:compositionSpecification];
 
   currentDeliveryObject = self->_currentDeliveryObject;
   if (self->_archiveAccount)
@@ -216,37 +216,37 @@ LABEL_21:
   return currentDeliveryObject;
 }
 
-- (void)setCompositionSpecification:(id)a3
+- (void)setCompositionSpecification:(id)specification
 {
-  v5 = a3;
-  if (self->_compositionSpecification != v5)
+  specificationCopy = specification;
+  if (self->_compositionSpecification != specificationCopy)
   {
-    objc_storeStrong(&self->_compositionSpecification, a3);
-    [(MFMailDelivery *)self->_currentDeliveryObject setCompositionSpecification:v5];
+    objc_storeStrong(&self->_compositionSpecification, specification);
+    [(MFMailDelivery *)self->_currentDeliveryObject setCompositionSpecification:specificationCopy];
   }
 }
 
 - (id)originalHeaders
 {
-  v3 = self->_headers;
-  if (!v3)
+  headers = self->_headers;
+  if (!headers)
   {
-    v3 = [(MFMailMessage *)self->_message headers];
+    headers = [(MFMailMessage *)self->_message headers];
   }
 
-  return v3;
+  return headers;
 }
 
-- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)a3
+- (id)_deliverSynchronouslyWithCurrentSettings:(BOOL)settings
 {
-  v3 = a3;
-  v5 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-  v6 = v5;
-  if (v5)
+  settingsCopy = settings;
+  _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+  v6 = _currentDeliveryObject;
+  if (_currentDeliveryObject)
   {
-    if (v3)
+    if (settingsCopy)
     {
-      [v5 setCellDataOnly:1];
+      [_currentDeliveryObject setCellDataOnly:1];
     }
 
     [v6 setArchiveAccount:self->_archiveAccount];
@@ -255,16 +255,16 @@ LABEL_21:
     [v6 setAction:{-[MFOutgoingMessageDelivery action](self, "action")}];
     [v6 setShouldSign:{-[MFOutgoingMessageDelivery shouldSign](self, "shouldSign")}];
     [v6 setShouldEncrypt:{-[MFOutgoingMessageDelivery shouldEncrypt](self, "shouldEncrypt")}];
-    v7 = [(MFOutgoingMessageDelivery *)self originalMessageObjectID];
-    [v6 setOriginalMessageObjectID:v7];
+    originalMessageObjectID = [(MFOutgoingMessageDelivery *)self originalMessageObjectID];
+    [v6 setOriginalMessageObjectID:originalMessageObjectID];
 
-    v8 = [(MFOutgoingMessageDelivery *)self originalMessage];
-    [v6 setOriginalMessage:v8];
+    originalMessage = [(MFOutgoingMessageDelivery *)self originalMessage];
+    [v6 setOriginalMessage:originalMessage];
 
-    v9 = [v6 deliverSynchronously];
-    if ([(MFDeliveryResult *)v9 status])
+    deliverSynchronously = [v6 deliverSynchronously];
+    if ([(MFDeliveryResult *)deliverSynchronously status])
     {
-      if (v9)
+      if (deliverSynchronously)
       {
         goto LABEL_13;
       }
@@ -272,11 +272,11 @@ LABEL_21:
 
     else
     {
-      v12 = [MEMORY[0x1E698B678] sharedAggregateDictionary];
-      v13 = [v6 message];
-      [v12 pushValue:@"com.apple.mobilemail.sentMessageSize" forKey:{objc_msgSend(v13, "messageSize")}];
+      mEMORY[0x1E698B678] = [MEMORY[0x1E698B678] sharedAggregateDictionary];
+      message = [v6 message];
+      [mEMORY[0x1E698B678] pushValue:@"com.apple.mobilemail.sentMessageSize" forKey:{objc_msgSend(message, "messageSize")}];
 
-      if (v9)
+      if (deliverSynchronously)
       {
         goto LABEL_13;
       }
@@ -296,34 +296,34 @@ LABEL_21:
     v11 = 5;
   }
 
-  v9 = [[MFDeliveryResult alloc] initWithStatus:v11];
+  deliverSynchronously = [[MFDeliveryResult alloc] initWithStatus:v11];
 LABEL_13:
 
-  return v9;
+  return deliverSynchronously;
 }
 
-- (id)deliverSynchronouslyWithCompletion:(id)a3
+- (id)deliverSynchronouslyWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (!-[MailAccount isPrimaryDeliveryAccountDisabled](self->_archiveAccount, "isPrimaryDeliveryAccountDisabled") && (-[MFOutgoingMessageDelivery account](self, "account"), (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (-[MailAccount deliveryAccountAlternates](self->_archiveAccount, "deliveryAccountAlternates"), v5 = objc_claimAutoreleasedReturnValue(), [v5 count]))
   {
 
     goto LABEL_5;
   }
 
-  v10 = [(MailAccount *)self->_archiveAccount canUseCarrierDeliveryFallback];
+  canUseCarrierDeliveryFallback = [(MailAccount *)self->_archiveAccount canUseCarrierDeliveryFallback];
 
-  if (v10)
+  if (canUseCarrierDeliveryFallback)
   {
 LABEL_5:
     v6 = [[MFDeliveryResult alloc] initWithStatus:2];
-    v7 = [(MFOutgoingMessageDelivery *)self account];
-    if ([v7 isActive])
+    account = [(MFOutgoingMessageDelivery *)self account];
+    if ([account isActive])
     {
-      v8 = [(MailAccount *)self->_archiveAccount isPrimaryDeliveryAccountDisabled];
+      isPrimaryDeliveryAccountDisabled = [(MailAccount *)self->_archiveAccount isPrimaryDeliveryAccountDisabled];
 
-      if (v8)
+      if (isPrimaryDeliveryAccountDisabled)
       {
         v40 = 0;
         v9 = v6;
@@ -336,17 +336,17 @@ LABEL_16:
         if ([(MFDeliveryResult *)v9 status]== 1)
         {
           v34 = +[MFActivityMonitor currentMonitor];
-          v35 = [v34 error];
+          error = [v34 error];
 
-          if (v35)
+          if (error)
           {
-            v36 = [v35 domain];
-            v37 = v36;
-            if (@"MFMessageErrorDomain" == v36)
+            domain = [error domain];
+            v37 = domain;
+            if (@"MFMessageErrorDomain" == domain)
             {
-              v39 = [v35 code];
+              code = [error code];
 
-              if (v39 == 1047)
+              if (code == 1047)
               {
 LABEL_18:
                 [(MailAccount *)self->_archiveAccount deliveryAccountAlternates];
@@ -434,13 +434,13 @@ LABEL_20:
 
         if ([(MFDeliveryResult *)v9 status]== 0 && !v40)
         {
-          v31 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-          [v31 archive];
+          _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+          [_currentDeliveryObject archive];
         }
 
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, [(MFDeliveryResult *)v9 status]);
+          completionCopy[2](completionCopy, [(MFDeliveryResult *)v9 status]);
         }
 
         goto LABEL_43;
@@ -448,11 +448,11 @@ LABEL_20:
 
       v9 = [(MFOutgoingMessageDelivery *)self _deliverSynchronouslyWithCurrentSettings:0];
 
-      v15 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-      v16 = [v15 account];
-      v17 = [v16 supportsOutboxCopy];
+      _currentDeliveryObject2 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+      account2 = [_currentDeliveryObject2 account];
+      supportsOutboxCopy = [account2 supportsOutboxCopy];
 
-      if ([(MFDeliveryResult *)v9 status]|| (v17 & 1) == 0 && [(MailAccount *)self->_archiveAccount mustArchiveSentMessages])
+      if ([(MFDeliveryResult *)v9 status]|| (supportsOutboxCopy & 1) == 0 && [(MailAccount *)self->_archiveAccount mustArchiveSentMessages])
       {
         v40 = 0;
         goto LABEL_16;
@@ -464,9 +464,9 @@ LABEL_20:
         goto LABEL_16;
       }
 
-      v7 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-      v38 = [v7 followUpWarning];
-      v40 = v38 == 0;
+      account = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+      followUpWarning = [account followUpWarning];
+      v40 = followUpWarning == 0;
     }
 
     else
@@ -485,8 +485,8 @@ LABEL_20:
   v13 = +[MFOutgoingMessageDelivery log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v11 ef_publicDescription];
-    [(MFOutgoingMessageDelivery *)v14 deliverSynchronouslyWithCompletion:buf, v13];
+    ef_publicDescription = [v11 ef_publicDescription];
+    [(MFOutgoingMessageDelivery *)ef_publicDescription deliverSynchronouslyWithCompletion:buf, v13];
   }
 
   v9 = [[MFDeliveryResult alloc] initWithStatus:5];
@@ -499,41 +499,41 @@ LABEL_43:
 
 - (int64_t)deliveryStatus
 {
-  v3 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-  if (v3)
+  _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+  if (_currentDeliveryObject)
   {
-    v4 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-    v5 = [v4 deliveryStatus];
+    _currentDeliveryObject2 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+    deliveryStatus = [_currentDeliveryObject2 deliveryStatus];
   }
 
   else
   {
-    v5 = 5;
+    deliveryStatus = 5;
   }
 
-  return v5;
+  return deliveryStatus;
 }
 
 - (id)message
 {
-  v3 = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
-  v4 = [v3 message];
+  _currentDeliveryObject = [(MFOutgoingMessageDelivery *)self _currentDeliveryObject];
+  message = [_currentDeliveryObject message];
 
-  if (!v4)
+  if (!message)
   {
-    v5 = [(MFOutgoingMessageDelivery *)self account];
+    account = [(MFOutgoingMessageDelivery *)self account];
 
-    if (v5)
+    if (account)
     {
 LABEL_3:
-      v4 = 0;
+      message = 0;
       goto LABEL_12;
     }
 
     message = self->_message;
     if (message)
     {
-      v4 = message;
+      message = message;
     }
 
     else
@@ -541,7 +541,7 @@ LABEL_3:
       if (self->_mixedContent)
       {
         v7 = [[MFMailDelivery alloc] initWithHeaders:self->_headers mixedContent:self->_mixedContent textPartsAreHTML:self->_textPartsAreHTML];
-        v8 = [(MFMailDelivery *)v7 message];
+        message2 = [(MFMailDelivery *)v7 message];
       }
 
       else
@@ -552,24 +552,24 @@ LABEL_3:
         }
 
         v7 = [[MFMailDelivery alloc] initWithHeaders:self->_headers HTML:self->_htmlBody plainTextAlternative:self->_plainTextAlternative other:self->_otherHTMLAndAttachments];
-        v8 = [(MFMailDelivery *)v7 message];
+        message2 = [(MFMailDelivery *)v7 message];
       }
 
-      v4 = v8;
+      message = message2;
     }
   }
 
 LABEL_12:
 
-  return v4;
+  return message;
 }
 
 - (id)_deliveryAccountForInitializers
 {
   if (self->_message)
   {
-    v2 = [MailAccount accountThatMessageIsFrom:?];
-    v3 = [v2 deliveryAccount];
+    firstSenderAddress = [MailAccount accountThatMessageIsFrom:?];
+    deliveryAccount = [firstSenderAddress deliveryAccount];
 LABEL_5:
 
     goto LABEL_6;
@@ -578,9 +578,9 @@ LABEL_5:
   headers = self->_headers;
   if (headers)
   {
-    v2 = [(MFMutableMessageHeaders *)headers firstSenderAddress];
-    v5 = [MailAccount accountContainingEmailAddress:v2];
-    v3 = [v5 deliveryAccount];
+    firstSenderAddress = [(MFMutableMessageHeaders *)headers firstSenderAddress];
+    v5 = [MailAccount accountContainingEmailAddress:firstSenderAddress];
+    deliveryAccount = [v5 deliveryAccount];
 
     goto LABEL_5;
   }
@@ -591,10 +591,10 @@ LABEL_5:
     [(MFOutgoingMessageDelivery *)v7 _deliveryAccountForInitializers];
   }
 
-  v3 = 0;
+  deliveryAccount = 0;
 LABEL_6:
 
-  return v3;
+  return deliveryAccount;
 }
 
 - (id)account
@@ -602,9 +602,9 @@ LABEL_6:
   deliveryAccount = self->_deliveryAccount;
   if (!deliveryAccount)
   {
-    v4 = [(MFOutgoingMessageDelivery *)self _deliveryAccountForInitializers];
+    _deliveryAccountForInitializers = [(MFOutgoingMessageDelivery *)self _deliveryAccountForInitializers];
     v5 = self->_deliveryAccount;
-    self->_deliveryAccount = v4;
+    self->_deliveryAccount = _deliveryAccountForInitializers;
 
     deliveryAccount = self->_deliveryAccount;
   }
@@ -612,20 +612,20 @@ LABEL_6:
   return deliveryAccount;
 }
 
-- (void)setArchiveAccount:(id)a3
+- (void)setArchiveAccount:(id)account
 {
-  objc_storeStrong(&self->_archiveAccount, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_archiveAccount, account);
+  accountCopy = account;
   [(MFMailDelivery *)self->_currentDeliveryObject setArchiveAccount:self->_archiveAccount];
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   p_deliveryAccount = &self->_deliveryAccount;
-  v8 = a3;
-  if (*p_deliveryAccount != v8)
+  accountCopy = account;
+  if (*p_deliveryAccount != accountCopy)
   {
-    objc_storeStrong(&self->_deliveryAccount, a3);
+    objc_storeStrong(&self->_deliveryAccount, account);
     [(DeliveryAccount *)*p_deliveryAccount deliveryClass];
     if (self->_currentDeliveryObject)
     {

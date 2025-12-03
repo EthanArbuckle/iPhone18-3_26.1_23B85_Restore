@@ -1,19 +1,19 @@
 @interface HMDAppProtectionGuard
-- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 completion:(id)a5;
+- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)identifier onBehalfOfProcessWithAuditToken:(id *)token completion:(id)completion;
 @end
 
 @implementation HMDAppProtectionGuard
 
-- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)a3 onBehalfOfProcessWithAuditToken:(id *)a4 completion:(id)a5
+- (void)initiateAuthenticationForApplicationWithBundleIdentifier:(id)identifier onBehalfOfProcessWithAuditToken:(id *)token completion:(id)completion
 {
   v7 = MEMORY[0x277CEBE80];
-  v8 = a5;
-  v9 = [v7 applicationWithBundleIdentifier:a3];
-  v10 = [MEMORY[0x277CEBE98] sharedGuard];
-  v11 = *&a4->var0[4];
-  v12[0] = *a4->var0;
+  completionCopy = completion;
+  v9 = [v7 applicationWithBundleIdentifier:identifier];
+  mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
+  v11 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v11;
-  [v10 initiateAuthenticationWithShieldingForSubject:v9 onBehalfOfProcessWithAuditToken:v12 accessGrantReason:1 completion:v8];
+  [mEMORY[0x277CEBE98] initiateAuthenticationWithShieldingForSubject:v9 onBehalfOfProcessWithAuditToken:v12 accessGrantReason:1 completion:completionCopy];
 }
 
 @end

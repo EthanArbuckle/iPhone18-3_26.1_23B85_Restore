@@ -1,25 +1,25 @@
 @interface AKAuthorizationNameFormatter
 + (id)validNameCharacterSet;
-+ (void)_addSymbolModifiersToCharacterSet:(id)a3;
-- (BOOL)_isOnlyWhitespace:(id)a3;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7;
-- (id)_cleanNameString:(id)a3;
-- (id)stringForObjectValue:(id)a3;
++ (void)_addSymbolModifiersToCharacterSet:(id)set;
+- (BOOL)_isOnlyWhitespace:(id)whitespace;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description;
+- (id)_cleanNameString:(id)string;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation AKAuthorizationNameFormatter
 
 + (id)validNameCharacterSet
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &validNameCharacterSet_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -61,12 +61,12 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
   objc_storeStrong(v10, 0);
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -84,18 +84,18 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
   return v3;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  valueCopy = value;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v9)
+  objc_storeStrong(&location, string);
+  if (valueCopy)
   {
     v7 = location;
     v5 = location;
-    *v9 = v7;
+    *valueCopy = v7;
     v12 = 1;
   }
 
@@ -108,38 +108,38 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
   return v12 & 1;
 }
 
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description
 {
-  v22 = a6;
-  v21 = self;
+  selectedRangeCopy = selectedRange;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
+  validCopy = valid;
+  rangeCopy = range;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v16[1] = a7;
-  v16[0] = MEMORY[0x277D82BE0](*v19);
+  objc_storeStrong(&location, string);
+  v16[1] = description;
+  v16[0] = MEMORY[0x277D82BE0](*validCopy);
   if ([v16[0] length] <= 0x20)
   {
     if ([v16[0] length])
     {
-      if ([(AKAuthorizationNameFormatter *)v21 _isOnlyWhitespace:v16[0]])
+      if ([(AKAuthorizationNameFormatter *)selfCopy _isOnlyWhitespace:v16[0]])
       {
         v7 = &stru_28358EF68;
-        *v19 = &stru_28358EF68;
+        *validCopy = &stru_28358EF68;
         v25 = 0;
         v24 = 0;
         v26 = 0;
         v27 = 0;
         v14 = 0uLL;
-        *v18 = 0uLL;
+        *rangeCopy = 0uLL;
         v23 = 0;
         v15 = 1;
       }
 
       else
       {
-        v13 = [(AKAuthorizationNameFormatter *)v21 _cleanNameString:v16[0]];
+        v13 = [(AKAuthorizationNameFormatter *)selfCopy _cleanNameString:v16[0]];
         if ([v13 length] <= 0x20)
         {
           if ([v13 isEqualToString:v16[0]])
@@ -154,9 +154,9 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
             {
               v10 = [v16[0] length];
               v12 = v10 - [v13 length];
-              v18->location -= v12;
+              rangeCopy->location -= v12;
               v8 = v13;
-              *v19 = v13;
+              *validCopy = v13;
             }
 
             v23 = 0;
@@ -192,37 +192,37 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
   return v23 & 1;
 }
 
-- (BOOL)_isOnlyWhitespace:(id)a3
+- (BOOL)_isOnlyWhitespace:(id)whitespace
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v7 = [v5 invertedSet];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v6 = [location[0] rangeOfCharacterFromSet:{v7, v3}];
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(location, whitespace);
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  invertedSet = [whitespaceCharacterSet invertedSet];
+  *&v3 = MEMORY[0x277D82BD8](whitespaceCharacterSet).n128_u64[0];
+  v6 = [location[0] rangeOfCharacterFromSet:{invertedSet, v3}];
+  objc_storeStrong(&invertedSet, 0);
   objc_storeStrong(location, 0);
   return v6 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)_cleanNameString:(id)a3
+- (id)_cleanNameString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v24 = [v25 invertedSet];
-  v16 = [objc_opt_class() validNameCharacterSet];
-  v23 = [v16 invertedSet];
-  *&v3 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  v17 = [location[0] componentsSeparatedByCharactersInSet:{v23, v3}];
+  objc_storeStrong(location, string);
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  invertedSet = [whitespaceCharacterSet invertedSet];
+  validNameCharacterSet = [objc_opt_class() validNameCharacterSet];
+  invertedSet2 = [validNameCharacterSet invertedSet];
+  *&v3 = MEMORY[0x277D82BD8](validNameCharacterSet).n128_u64[0];
+  v17 = [location[0] componentsSeparatedByCharactersInSet:{invertedSet2, v3}];
   v22 = [v17 componentsJoinedByString:?];
   MEMORY[0x277D82BD8](v17);
   v21 = MEMORY[0x277D82BE0](&stru_28358EF68);
-  v19 = [v22 rangeOfCharacterFromSet:v24 options:4];
+  v19 = [v22 rangeOfCharacterFromSet:invertedSet options:4];
   v20 = v4;
   if (v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -238,7 +238,7 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
     }
   }
 
-  v9 = [v22 stringByTrimmingCharactersInSet:{v25, v5}];
+  v9 = [v22 stringByTrimmingCharactersInSet:{whitespaceCharacterSet, v5}];
   v10 = v22;
   v22 = v9;
   *&v11 = MEMORY[0x277D82BD8](v10).n128_u64[0];
@@ -249,20 +249,20 @@ void __53__AKAuthorizationNameFormatter_validNameCharacterSet__block_invoke(id *
   v15 = MEMORY[0x277D82BE0](v22);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v24, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&invertedSet2, 0);
+  objc_storeStrong(&invertedSet, 0);
+  objc_storeStrong(&whitespaceCharacterSet, 0);
   objc_storeStrong(location, 0);
 
   return v15;
 }
 
-+ (void)_addSymbolModifiersToCharacterSet:(id)a3
++ (void)_addSymbolModifiersToCharacterSet:(id)set
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, set);
   location[112] = 94;
   location[111] = 95;
   location[113] = 94;

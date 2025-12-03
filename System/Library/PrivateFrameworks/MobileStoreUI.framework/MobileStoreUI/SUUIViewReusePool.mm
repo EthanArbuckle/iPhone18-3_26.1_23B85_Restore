@@ -1,17 +1,17 @@
 @interface SUUIViewReusePool
-- (Class)viewClassWithReuseIdentifier:(id)a3;
-- (SUUIViewReusePool)initWithParentView:(id)a3;
-- (id)dequeueReusableViewWithReuseIdentifier:(id)a3;
+- (Class)viewClassWithReuseIdentifier:(id)identifier;
+- (SUUIViewReusePool)initWithParentView:(id)view;
+- (id)dequeueReusableViewWithReuseIdentifier:(id)identifier;
 - (void)hideUnusedViews;
-- (void)recycleReusableViews:(id)a3;
-- (void)registerClass:(Class)a3 forViewWithReuseIdentifier:(id)a4;
+- (void)recycleReusableViews:(id)views;
+- (void)registerClass:(Class)class forViewWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation SUUIViewReusePool
 
-- (SUUIViewReusePool)initWithParentView:(id)a3
+- (SUUIViewReusePool)initWithParentView:(id)view
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, view);
   v9.receiver = self;
   v9.super_class = SUUIViewReusePool;
   v4 = [(SUUIViewReusePool *)&v9 init];
@@ -29,15 +29,15 @@
   return v4;
 }
 
-- (id)dequeueReusableViewWithReuseIdentifier:(id)a3
+- (id)dequeueReusableViewWithReuseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   viewPool = self->_viewPool;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__SUUIViewReusePool_dequeueReusableViewWithReuseIdentifier___block_invoke;
   v12[3] = &unk_2798FBCC8;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
   v7 = [(NSMutableArray *)viewPool indexOfObjectPassingTest:v12];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -116,15 +116,15 @@ uint64_t __60__SUUIViewReusePool_dequeueReusableViewWithReuseIdentifier___block_
   }
 }
 
-- (void)recycleReusableViews:(id)a3
+- (void)recycleReusableViews:(id)views
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -136,7 +136,7 @@ uint64_t __60__SUUIViewReusePool_dequeueReusableViewWithReuseIdentifier___block_
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -164,43 +164,43 @@ uint64_t __60__SUUIViewReusePool_dequeueReusableViewWithReuseIdentifier___block_
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)registerClass:(Class)a3 forViewWithReuseIdentifier:(id)a4
+- (void)registerClass:(Class)class forViewWithReuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   reuseClasses = self->_reuseClasses;
-  v10 = v6;
+  v10 = identifierCopy;
   if (!reuseClasses)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
     v9 = self->_reuseClasses;
     self->_reuseClasses = v8;
 
-    v6 = v10;
+    identifierCopy = v10;
     reuseClasses = self->_reuseClasses;
   }
 
-  [(NSMutableDictionary *)reuseClasses setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)reuseClasses setObject:class forKeyedSubscript:identifierCopy];
 }
 
-- (Class)viewClassWithReuseIdentifier:(id)a3
+- (Class)viewClassWithReuseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_SUUIViewReusePoolGetCommonReuseClasses_onceToken != -1)
   {
     [SUUIViewReusePool viewClassWithReuseIdentifier:];
   }
 
-  v5 = [_SUUIViewReusePoolGetCommonReuseClasses_commonReuseClasses objectForKeyedSubscript:v4];
+  v5 = [_SUUIViewReusePoolGetCommonReuseClasses_commonReuseClasses objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [(NSMutableDictionary *)self->_reuseClasses objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_reuseClasses objectForKeyedSubscript:identifierCopy];
   }
 
   v6 = v5;

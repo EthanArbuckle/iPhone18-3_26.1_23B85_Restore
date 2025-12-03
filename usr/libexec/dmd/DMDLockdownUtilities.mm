@@ -1,5 +1,5 @@
 @interface DMDLockdownUtilities
-+ (BOOL)setDeviceName:(id)a3 outError:(id *)a4;
++ (BOOL)setDeviceName:(id)name outError:(id *)error;
 + (NSDate)deviceLastCloudBackupDate;
 @end
 
@@ -38,14 +38,14 @@ LABEL_9:
   return v2;
 }
 
-+ (BOOL)setDeviceName:(id)a3 outError:(id *)a4
++ (BOOL)setDeviceName:(id)name outError:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004E31C;
   v10[3] = &unk_1000CF388;
-  v10[4] = a4;
+  v10[4] = error;
   v6 = objc_retainBlock(v10);
   if (lockdown_connect())
   {

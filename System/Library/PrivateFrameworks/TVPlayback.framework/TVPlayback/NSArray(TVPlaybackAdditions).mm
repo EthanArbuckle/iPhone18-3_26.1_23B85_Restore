@@ -9,11 +9,11 @@
 
 - (id)tvp_randomizedArray
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x277CBEB18] arrayWithArray:a1];
+    v4 = [MEMORY[0x277CBEB18] arrayWithArray:self];
     if (v4)
     {
       v5 = v3 - 1;
@@ -40,27 +40,27 @@
         while (v5);
       }
 
-      v10 = [MEMORY[0x277CBEA60] arrayWithArray:v4];
+      array = [MEMORY[0x277CBEA60] arrayWithArray:v4];
     }
 
     else
     {
-      v10 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v10;
+  return array;
 }
 
 - (id)tvp_arrayByMappingObjectsUsingBlock:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __68__NSArray_TVPlaybackAdditions__tvp_arrayByMappingObjectsUsingBlock___block_invoke;
@@ -69,7 +69,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [MEMORY[0x277CBEA60] arrayWithArray:{v7, v10, v11, v12, v13}];
 
   return v8;
@@ -77,8 +77,8 @@
 
 - (id)tvp_objectsPassingTest:()TVPlaybackAdditions
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }
@@ -88,7 +88,7 @@
   v26 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = v4;
-  if (v4 == a1)
+  if (v4 == self)
   {
     v17 = 1;
   }
@@ -111,14 +111,14 @@
     }
 
     v8 = [v5 count];
-    if (v8 == [a1 count])
+    if (v8 == [self count])
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = a1;
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      selfCopy = self;
+      v10 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
         v11 = v10;
@@ -130,7 +130,7 @@
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(selfCopy);
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
@@ -145,7 +145,7 @@
             ++v12;
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v11 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v11)
           {
             continue;

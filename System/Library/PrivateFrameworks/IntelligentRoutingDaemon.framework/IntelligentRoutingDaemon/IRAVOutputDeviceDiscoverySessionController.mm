@@ -1,22 +1,22 @@
 @interface IRAVOutputDeviceDiscoverySessionController
-- (IRAVOutputDeviceDiscoverySessionController)initWithAVOutputDeviceProvider:(id)a3;
+- (IRAVOutputDeviceDiscoverySessionController)initWithAVOutputDeviceProvider:(id)provider;
 - (IRAVOutputDeviceProvider)avOutputDeviceProvider;
-- (void)_didUpdateAVOutputDevices:(id)a3;
+- (void)_didUpdateAVOutputDevices:(id)devices;
 - (void)dealloc;
 @end
 
 @implementation IRAVOutputDeviceDiscoverySessionController
 
-- (IRAVOutputDeviceDiscoverySessionController)initWithAVOutputDeviceProvider:(id)a3
+- (IRAVOutputDeviceDiscoverySessionController)initWithAVOutputDeviceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = IRAVOutputDeviceDiscoverySessionController;
   v5 = [(IRAVOutputDeviceDiscoverySessionController *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_avOutputDeviceProvider, v4);
+    objc_storeWeak(&v5->_avOutputDeviceProvider, providerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.intelligentroutingd.IRAVOutputDeviceDiscoverySessionController", v7);
     queue = v6->_queue;
@@ -26,9 +26,9 @@
     session = v6->_session;
     v6->_session = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v6->_notificationCenter;
-    v6->_notificationCenter = v12;
+    v6->_notificationCenter = defaultCenter;
   }
 
   return v6;
@@ -43,7 +43,7 @@
   [(IRAVOutputDeviceDiscoverySessionController *)&v3 dealloc];
 }
 
-- (void)_didUpdateAVOutputDevices:(id)a3
+- (void)_didUpdateAVOutputDevices:(id)devices
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

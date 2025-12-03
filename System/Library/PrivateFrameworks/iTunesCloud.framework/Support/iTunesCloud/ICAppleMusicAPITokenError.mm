@@ -1,60 +1,60 @@
 @interface ICAppleMusicAPITokenError
-- (BOOL)isEqual:(id)a3;
-- (ICAppleMusicAPITokenError)initWithNSError:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICAppleMusicAPITokenError)initWithNSError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)phase;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPhase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPhase:(BOOL)phase;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICAppleMusicAPITokenError
 
-- (ICAppleMusicAPITokenError)initWithNSError:(id)a3
+- (ICAppleMusicAPITokenError)initWithNSError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(ICAppleMusicAPITokenError *)self init];
   if (v5)
   {
-    v6 = [v4 domain];
-    [(ICAppleMusicAPITokenError *)v5 setDomain:v6];
+    domain = [errorCopy domain];
+    [(ICAppleMusicAPITokenError *)v5 setDomain:domain];
 
-    -[ICAppleMusicAPITokenError setCode:](v5, "setCode:", [v4 code]);
-    v7 = [v4 localizedDescription];
-    [(ICAppleMusicAPITokenError *)v5 setLocalizedDescription:v7];
+    -[ICAppleMusicAPITokenError setCode:](v5, "setCode:", [errorCopy code]);
+    localizedDescription = [errorCopy localizedDescription];
+    [(ICAppleMusicAPITokenError *)v5 setLocalizedDescription:localizedDescription];
   }
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ICAppleMusicAPITokenError *)self setDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_code = *(v4 + 1);
+    self->_code = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ICAppleMusicAPITokenError *)self setLocalizedDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
-    self->_phase = *(v4 + 8);
+    self->_phase = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 }
@@ -86,16 +86,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 2))
+  if (domain | *(equalCopy + 2))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -104,22 +104,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_code != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_code != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
   localizedDescription = self->_localizedDescription;
-  if (localizedDescription | *(v4 + 3))
+  if (localizedDescription | *(equalCopy + 3))
   {
     if (![(NSString *)localizedDescription isEqual:?])
     {
@@ -129,13 +129,13 @@ LABEL_16:
     }
 
     has = self->_has;
-    v7 = *(v4 + 36);
+    v7 = *(equalCopy + 36);
   }
 
   v9 = (v7 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_phase != *(v4 + 8))
+    if ((v7 & 2) == 0 || self->_phase != *(equalCopy + 8))
     {
       goto LABEL_16;
     }
@@ -148,10 +148,10 @@ LABEL_17:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -161,7 +161,7 @@ LABEL_17:
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -174,34 +174,34 @@ LABEL_17:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     code = self->_code;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_localizedDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     phase = self->_phase;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
@@ -241,15 +241,15 @@ LABEL_17:
   v7.receiver = self;
   v7.super_class = ICAppleMusicAPITokenError;
   v3 = [(ICAppleMusicAPITokenError *)&v7 description];
-  v4 = [(ICAppleMusicAPITokenError *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ICAppleMusicAPITokenError *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasPhase:(BOOL)a3
+- (void)setHasPhase:(BOOL)phase
 {
-  if (a3)
+  if (phase)
   {
     v3 = 2;
   }

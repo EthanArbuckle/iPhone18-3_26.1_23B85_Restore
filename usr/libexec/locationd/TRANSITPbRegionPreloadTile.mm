@@ -1,24 +1,24 @@
 @interface TRANSITPbRegionPreloadTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unint64_t)secKey;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsAllowOverCellular:(BOOL)a3;
-- (void)setHasTileType:(BOOL)a3;
-- (void)setHasTileX:(BOOL)a3;
-- (void)setHasTileY:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsAllowOverCellular:(BOOL)cellular;
+- (void)setHasTileType:(BOOL)type;
+- (void)setHasTileX:(BOOL)x;
+- (void)setHasTileY:(BOOL)y;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbRegionPreloadTile
 
-- (void)setHasTileType:(BOOL)a3
+- (void)setHasTileType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTileX:(BOOL)a3
+- (void)setHasTileX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTileY:(BOOL)a3
+- (void)setHasTileY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 8;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsAllowOverCellular:(BOOL)a3
+- (void)setHasIsAllowOverCellular:(BOOL)cellular
 {
-  if (a3)
+  if (cellular)
   {
     v3 = 16;
   }
@@ -159,7 +159,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -222,13 +222,13 @@ LABEL_11:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_tileType;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_tileType;
+    *(to + 32) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -247,8 +247,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_tileX;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_tileX;
+  *(to + 32) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -262,8 +262,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 6) = self->_tileY;
-  *(a3 + 32) |= 8u;
+  *(to + 6) = self->_tileY;
+  *(to + 32) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -274,23 +274,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 1) = self->_secKey;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_secKey;
+    *(to + 32) |= 1u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 28) = self->_isAllowOverCellular;
-  *(a3 + 32) |= 0x10u;
+  *(to + 28) = self->_isAllowOverCellular;
+  *(to + 32) |= 0x10u;
   if (*&self->_has)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -357,20 +357,20 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_tileType != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_tileType != *(equal + 4))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -379,47 +379,47 @@ LABEL_26:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_tileX != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_tileX != *(equal + 5))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 32) & 8) == 0 || self->_tileY != *(a3 + 6))
+      if ((*(equal + 32) & 8) == 0 || self->_tileY != *(equal + 6))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 8) != 0)
+    else if ((*(equal + 32) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 32) & 0x10) == 0 || self->_isAllowOverCellular != *(a3 + 28))
+      if ((*(equal + 32) & 0x10) == 0 || self->_isAllowOverCellular != *(equal + 28))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 0x10) != 0)
+    else if ((*(equal + 32) & 0x10) != 0)
     {
       goto LABEL_26;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_secKey != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_secKey != *(equal + 1))
       {
         goto LABEL_26;
       }
@@ -499,14 +499,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 2) != 0)
   {
-    self->_tileType = *(a3 + 4);
+    self->_tileType = *(from + 4);
     *&self->_has |= 2u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -519,14 +519,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 4) == 0)
+  else if ((*(from + 32) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_tileX = *(a3 + 5);
+  self->_tileX = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -539,9 +539,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_tileY = *(a3 + 6);
+  self->_tileY = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -551,15 +551,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_secKey = *(a3 + 1);
+    self->_secKey = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_10:
-  self->_isAllowOverCellular = *(a3 + 28);
+  self->_isAllowOverCellular = *(from + 28);
   *&self->_has |= 0x10u;
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
     goto LABEL_11;
   }

@@ -1,24 +1,24 @@
 @interface FCFeedTransformationSortBlock
-+ (id)transformationWithSortBlock:(id)a3;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithSortBlock:(id)block;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationSortBlock
 
-+ (id)transformationWithSortBlock:(id)a3
++ (id)transformationWithSortBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(FCFeedTransformationSortBlock);
-  [(FCFeedTransformationSortBlock *)v4 setSortBlock:v3];
+  [(FCFeedTransformationSortBlock *)v4 setSortBlock:blockCopy];
 
   return v4;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(FCFeedTransformationSortBlock *)self sortBlock];
-  v6 = [v4 sortedArrayUsingComparator:v5];
+  itemsCopy = items;
+  sortBlock = [(FCFeedTransformationSortBlock *)self sortBlock];
+  v6 = [itemsCopy sortedArrayUsingComparator:sortBlock];
 
   return v6;
 }

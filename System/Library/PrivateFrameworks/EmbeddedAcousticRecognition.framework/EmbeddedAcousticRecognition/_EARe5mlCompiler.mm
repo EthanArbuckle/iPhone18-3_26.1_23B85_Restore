@@ -1,23 +1,23 @@
 @interface _EARe5mlCompiler
-+ (unint64_t)getMilPathWithModelConfig:(id)a3 files:(void *)a4;
-+ (void)compileWithModelConfig:(id)a3 completion:(id)a4;
-+ (void)compileWithModelMilPath:(id)a3 computePlatform:(id)a4 completion:(id)a5;
-+ (void)compileWithModelMilPath:(id)a3 computePlatforms:(id)a4 completion:(id)a5;
++ (unint64_t)getMilPathWithModelConfig:(id)config files:(void *)files;
++ (void)compileWithModelConfig:(id)config completion:(id)completion;
++ (void)compileWithModelMilPath:(id)path computePlatform:(id)platform completion:(id)completion;
++ (void)compileWithModelMilPath:(id)path computePlatforms:(id)platforms completion:(id)completion;
 @end
 
 @implementation _EARe5mlCompiler
 
-+ (void)compileWithModelMilPath:(id)a3 computePlatform:(id)a4 completion:(id)a5
++ (void)compileWithModelMilPath:(id)path computePlatform:(id)platform completion:(id)completion
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  pathCopy = path;
+  platformCopy = platform;
+  completionCopy = completion;
+  if (platformCopy)
   {
-    v15 = v9;
+    v15 = platformCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-    [a1 compileWithModelMilPath:v8 computePlatforms:v11 completion:v10];
+    [self compileWithModelMilPath:pathCopy computePlatforms:v11 completion:completionCopy];
   }
 
   else
@@ -28,20 +28,20 @@
     v17[0] = v11;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v14 = [v12 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:4 userInfo:v13];
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
-+ (void)compileWithModelMilPath:(id)a3 computePlatforms:(id)a4 completion:(id)a5
++ (void)compileWithModelMilPath:(id)path computePlatforms:(id)platforms completion:(id)completion
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v60 = a4;
-  v58 = v7;
-  v59 = a5;
-  if (v7)
+  pathCopy = path;
+  platformsCopy = platforms;
+  v58 = pathCopy;
+  completionCopy = completion;
+  if (pathCopy)
   {
-    [v7 ear_toString];
+    [pathCopy ear_toString];
   }
 
   else
@@ -62,11 +62,11 @@
 LABEL_35:
     v25 = MEMORY[0x1E696ABC0];
     v78 = *MEMORY[0x1E696A578];
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mil path is invalid: %@", v7];
-    v79[0] = v26;
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"mil path is invalid: %@", pathCopy];
+    v79[0] = pathCopy;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
     v28 = [v25 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:3 userInfo:v27];
-    v59[2](v59, v28);
+    completionCopy[2](completionCopy, v28);
 
     goto LABEL_70;
   }
@@ -77,7 +77,7 @@ LABEL_35:
   }
 
 LABEL_6:
-  if (v60 && [v60 count])
+  if (platformsCopy && [platformsCopy count])
   {
     v69 = 0;
     v70 = 0;
@@ -86,7 +86,7 @@ LABEL_6:
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = v60;
+    obj = platformsCopy;
     v10 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
     if (v10)
     {
@@ -308,7 +308,7 @@ LABEL_6:
         kaldi::KaldiLogMessage::~KaldiLogMessage(&v64);
       }
 
-      v59[2](v59, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -371,7 +371,7 @@ LABEL_6:
       v74 = v49;
       v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
       v51 = [v48 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:0 userInfo:v50];
-      v59[2](v59, v51);
+      completionCopy[2](completionCopy, v51);
     }
 
     v64.__first_ = &v69;
@@ -386,30 +386,30 @@ LABEL_6:
     v77 = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
     v32 = [v29 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:4 userInfo:v31];
-    v59[2](v59, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
 LABEL_70:
 }
 
-+ (void)compileWithModelConfig:(id)a3 completion:(id)a4
++ (void)compileWithModelConfig:(id)config completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
+  configCopy = config;
+  completionCopy = completion;
+  v16 = configCopy;
   std::string::basic_string[abi:ne200100]<0>(&v19, "");
   memset(v18, 0, sizeof(v18));
-  v8 = [a1 getMilPathWithModelConfig:v6 files:v18];
+  v8 = [self getMilPathWithModelConfig:configCopy files:v18];
   if (v8 == 1)
   {
     v13 = MEMORY[0x1E696ABC0];
     v21 = *MEMORY[0x1E696A578];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mil file not found in: %@", v6];
-    v22 = v10;
+    configCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"mil file not found in: %@", configCopy];
+    v22 = configCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v15 = [v13 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:2 userInfo:v14];
-    v7[2](v7, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
   else
@@ -418,9 +418,9 @@ LABEL_70:
     {
       [MEMORY[0x1E696AC08] defaultManager];
       objc_claimAutoreleasedReturnValue();
-      if (v6)
+      if (configCopy)
       {
-        [v6 ear_toString];
+        [configCopy ear_toString];
       }
 
       quasar::SystemConfig::SystemConfig(v17);
@@ -428,11 +428,11 @@ LABEL_70:
 
     v9 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"config file invalid: %@", v6];
-    v24[0] = v10;
+    configCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"config file invalid: %@", configCopy];
+    v24[0] = configCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v12 = [v9 errorWithDomain:@"com.apple.siri.quasar.espressoV2compilation" code:1 userInfo:v11];
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   v17[0] = v18;
@@ -443,13 +443,13 @@ LABEL_70:
   }
 }
 
-+ (unint64_t)getMilPathWithModelConfig:(id)a3 files:(void *)a4
++ (unint64_t)getMilPathWithModelConfig:(id)config files:(void *)files
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    [v4 ear_toString];
+    [configCopy ear_toString];
     if ((kaldi::g_kaldi_verbose_level & 0x80000000) == 0)
     {
       kaldi::KaldiWarnMessage::KaldiWarnMessage(v9);

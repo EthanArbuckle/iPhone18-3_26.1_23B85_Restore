@@ -1,28 +1,28 @@
 @interface AWDWifiCallingCallEndReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)frameErasureRateHistogramAtIndex:(unint64_t)a3;
-- (unsigned)jitterBufferResidencyTimeHistogramAtIndex:(unint64_t)a3;
-- (unsigned)jitterBufferUnderflowRateHistogramAtIndex:(unint64_t)a3;
-- (unsigned)rtpPacketLossRateHistogramAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)frameErasureRateHistogramAtIndex:(unint64_t)index;
+- (unsigned)jitterBufferResidencyTimeHistogramAtIndex:(unint64_t)index;
+- (unsigned)jitterBufferUnderflowRateHistogramAtIndex:(unint64_t)index;
+- (unsigned)rtpPacketLossRateHistogramAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDlVocoderBitRate:(BOOL)a3;
-- (void)setHasFrameErasureRateMean:(BOOL)a3;
-- (void)setHasJitterBufferResidencyTime95Percentile:(BOOL)a3;
-- (void)setHasJitterBufferResidencyTimeMean:(BOOL)a3;
-- (void)setHasJitterBufferResidencyTimeMedian:(BOOL)a3;
-- (void)setHasJitterBufferUnderflowRateMean:(BOOL)a3;
-- (void)setHasRatType:(BOOL)a3;
-- (void)setHasRtpPacketLossRateMean:(BOOL)a3;
-- (void)setHasUlVocoderBitRate:(BOOL)a3;
-- (void)setHasVocoderSampleRate:(BOOL)a3;
-- (void)setHasVocoderType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDlVocoderBitRate:(BOOL)rate;
+- (void)setHasFrameErasureRateMean:(BOOL)mean;
+- (void)setHasJitterBufferResidencyTime95Percentile:(BOOL)percentile;
+- (void)setHasJitterBufferResidencyTimeMean:(BOOL)mean;
+- (void)setHasJitterBufferResidencyTimeMedian:(BOOL)median;
+- (void)setHasJitterBufferUnderflowRateMean:(BOOL)mean;
+- (void)setHasRatType:(BOOL)type;
+- (void)setHasRtpPacketLossRateMean:(BOOL)mean;
+- (void)setHasUlVocoderBitRate:(BOOL)rate;
+- (void)setHasVocoderSampleRate:(BOOL)rate;
+- (void)setHasVocoderType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiCallingCallEndReport
@@ -39,57 +39,57 @@
   [(AWDWifiCallingCallEndReport *)&v3 dealloc];
 }
 
-- (unsigned)rtpPacketLossRateHistogramAtIndex:(unint64_t)a3
+- (unsigned)rtpPacketLossRateHistogramAtIndex:(unint64_t)index
 {
   p_rtpPacketLossRateHistograms = &self->_rtpPacketLossRateHistograms;
   count = self->_rtpPacketLossRateHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rtpPacketLossRateHistograms->list[a3];
+  return p_rtpPacketLossRateHistograms->list[index];
 }
 
-- (unsigned)jitterBufferUnderflowRateHistogramAtIndex:(unint64_t)a3
+- (unsigned)jitterBufferUnderflowRateHistogramAtIndex:(unint64_t)index
 {
   p_jitterBufferUnderflowRateHistograms = &self->_jitterBufferUnderflowRateHistograms;
   count = self->_jitterBufferUnderflowRateHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_jitterBufferUnderflowRateHistograms->list[a3];
+  return p_jitterBufferUnderflowRateHistograms->list[index];
 }
 
-- (unsigned)frameErasureRateHistogramAtIndex:(unint64_t)a3
+- (unsigned)frameErasureRateHistogramAtIndex:(unint64_t)index
 {
   p_frameErasureRateHistograms = &self->_frameErasureRateHistograms;
   count = self->_frameErasureRateHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_frameErasureRateHistograms->list[a3];
+  return p_frameErasureRateHistograms->list[index];
 }
 
-- (unsigned)jitterBufferResidencyTimeHistogramAtIndex:(unint64_t)a3
+- (unsigned)jitterBufferResidencyTimeHistogramAtIndex:(unint64_t)index
 {
   p_jitterBufferResidencyTimeHistograms = &self->_jitterBufferResidencyTimeHistograms;
   count = self->_jitterBufferResidencyTimeHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_jitterBufferResidencyTimeHistograms->list[a3];
+  return p_jitterBufferResidencyTimeHistograms->list[index];
 }
 
-- (void)setHasRtpPacketLossRateMean:(BOOL)a3
+- (void)setHasRtpPacketLossRateMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 256;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasJitterBufferUnderflowRateMean:(BOOL)a3
+- (void)setHasJitterBufferUnderflowRateMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 64;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFrameErasureRateMean:(BOOL)a3
+- (void)setHasFrameErasureRateMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 4;
   }
@@ -132,9 +132,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasJitterBufferResidencyTimeMean:(BOOL)a3
+- (void)setHasJitterBufferResidencyTimeMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 16;
   }
@@ -147,9 +147,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasJitterBufferResidencyTimeMedian:(BOOL)a3
+- (void)setHasJitterBufferResidencyTimeMedian:(BOOL)median
 {
-  if (a3)
+  if (median)
   {
     v3 = 32;
   }
@@ -162,9 +162,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasJitterBufferResidencyTime95Percentile:(BOOL)a3
+- (void)setHasJitterBufferResidencyTime95Percentile:(BOOL)percentile
 {
-  if (a3)
+  if (percentile)
   {
     v3 = 8;
   }
@@ -177,9 +177,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRatType:(BOOL)a3
+- (void)setHasRatType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -192,9 +192,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasVocoderType:(BOOL)a3
+- (void)setHasVocoderType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -207,9 +207,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasVocoderSampleRate:(BOOL)a3
+- (void)setHasVocoderSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 1024;
   }
@@ -222,9 +222,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasUlVocoderBitRate:(BOOL)a3
+- (void)setHasUlVocoderBitRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 512;
   }
@@ -237,9 +237,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDlVocoderBitRate:(BOOL)a3
+- (void)setHasDlVocoderBitRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 2;
   }
@@ -261,26 +261,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   callID = self->_callID;
   if (callID)
   {
-    [v3 setObject:callID forKey:@"callID"];
+    [dictionary setObject:callID forKey:@"callID"];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"rtpPacketLossRateHistogram"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"jitterBufferUnderflowRateHistogram"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"frameErasureRateHistogram"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"jitterBufferResidencyTimeHistogram"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"rtpPacketLossRateHistogram"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"jitterBufferUnderflowRateHistogram"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"frameErasureRateHistogram"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"jitterBufferResidencyTimeHistogram"];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rtpPacketLossRateMean), @"rtpPacketLossRateMean"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rtpPacketLossRateMean), @"rtpPacketLossRateMean"}];
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -299,7 +299,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferUnderflowRateMean), @"jitterBufferUnderflowRateMean"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferUnderflowRateMean), @"jitterBufferUnderflowRateMean"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -313,7 +313,7 @@ LABEL_8:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameErasureRateMean), @"frameErasureRateMean"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_frameErasureRateMean), @"frameErasureRateMean"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -327,7 +327,7 @@ LABEL_9:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTimeMean), @"jitterBufferResidencyTimeMean"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTimeMean), @"jitterBufferResidencyTimeMean"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -341,7 +341,7 @@ LABEL_10:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTimeMedian), @"jitterBufferResidencyTimeMedian"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTimeMedian), @"jitterBufferResidencyTimeMedian"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -355,7 +355,7 @@ LABEL_11:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTime95Percentile), @"jitterBufferResidencyTime95Percentile"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_jitterBufferResidencyTime95Percentile), @"jitterBufferResidencyTime95Percentile"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -369,7 +369,7 @@ LABEL_12:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ratType), @"ratType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ratType), @"ratType"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -383,7 +383,7 @@ LABEL_13:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vocoderType), @"vocoderType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vocoderType), @"vocoderType"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -394,17 +394,17 @@ LABEL_14:
     }
 
 LABEL_27:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ulVocoderBitRate), @"ulVocoderBitRate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ulVocoderBitRate), @"ulVocoderBitRate"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_16;
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vocoderSampleRate), @"vocoderSampleRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vocoderSampleRate), @"vocoderSampleRate"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -415,13 +415,13 @@ LABEL_15:
   if ((has & 2) != 0)
   {
 LABEL_16:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dlVocoderBitRate), @"dlVocoderBitRate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dlVocoderBitRate), @"dlVocoderBitRate"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -642,71 +642,71 @@ LABEL_39:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 13) = self->_timestamp;
-    *(a3 + 82) |= 1u;
+    *(to + 13) = self->_timestamp;
+    *(to + 82) |= 1u;
   }
 
   if (self->_callID)
   {
-    [a3 setCallID:?];
+    [to setCallID:?];
   }
 
   if ([(AWDWifiCallingCallEndReport *)self rtpPacketLossRateHistogramsCount])
   {
-    [a3 clearRtpPacketLossRateHistograms];
-    v5 = [(AWDWifiCallingCallEndReport *)self rtpPacketLossRateHistogramsCount];
-    if (v5)
+    [to clearRtpPacketLossRateHistograms];
+    rtpPacketLossRateHistogramsCount = [(AWDWifiCallingCallEndReport *)self rtpPacketLossRateHistogramsCount];
+    if (rtpPacketLossRateHistogramsCount)
     {
-      v6 = v5;
+      v6 = rtpPacketLossRateHistogramsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addRtpPacketLossRateHistogram:{-[AWDWifiCallingCallEndReport rtpPacketLossRateHistogramAtIndex:](self, "rtpPacketLossRateHistogramAtIndex:", i)}];
+        [to addRtpPacketLossRateHistogram:{-[AWDWifiCallingCallEndReport rtpPacketLossRateHistogramAtIndex:](self, "rtpPacketLossRateHistogramAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWifiCallingCallEndReport *)self jitterBufferUnderflowRateHistogramsCount])
   {
-    [a3 clearJitterBufferUnderflowRateHistograms];
-    v8 = [(AWDWifiCallingCallEndReport *)self jitterBufferUnderflowRateHistogramsCount];
-    if (v8)
+    [to clearJitterBufferUnderflowRateHistograms];
+    jitterBufferUnderflowRateHistogramsCount = [(AWDWifiCallingCallEndReport *)self jitterBufferUnderflowRateHistogramsCount];
+    if (jitterBufferUnderflowRateHistogramsCount)
     {
-      v9 = v8;
+      v9 = jitterBufferUnderflowRateHistogramsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addJitterBufferUnderflowRateHistogram:{-[AWDWifiCallingCallEndReport jitterBufferUnderflowRateHistogramAtIndex:](self, "jitterBufferUnderflowRateHistogramAtIndex:", j)}];
+        [to addJitterBufferUnderflowRateHistogram:{-[AWDWifiCallingCallEndReport jitterBufferUnderflowRateHistogramAtIndex:](self, "jitterBufferUnderflowRateHistogramAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWifiCallingCallEndReport *)self frameErasureRateHistogramsCount])
   {
-    [a3 clearFrameErasureRateHistograms];
-    v11 = [(AWDWifiCallingCallEndReport *)self frameErasureRateHistogramsCount];
-    if (v11)
+    [to clearFrameErasureRateHistograms];
+    frameErasureRateHistogramsCount = [(AWDWifiCallingCallEndReport *)self frameErasureRateHistogramsCount];
+    if (frameErasureRateHistogramsCount)
     {
-      v12 = v11;
+      v12 = frameErasureRateHistogramsCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addFrameErasureRateHistogram:{-[AWDWifiCallingCallEndReport frameErasureRateHistogramAtIndex:](self, "frameErasureRateHistogramAtIndex:", k)}];
+        [to addFrameErasureRateHistogram:{-[AWDWifiCallingCallEndReport frameErasureRateHistogramAtIndex:](self, "frameErasureRateHistogramAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWifiCallingCallEndReport *)self jitterBufferResidencyTimeHistogramsCount])
   {
-    [a3 clearJitterBufferResidencyTimeHistograms];
-    v14 = [(AWDWifiCallingCallEndReport *)self jitterBufferResidencyTimeHistogramsCount];
-    if (v14)
+    [to clearJitterBufferResidencyTimeHistograms];
+    jitterBufferResidencyTimeHistogramsCount = [(AWDWifiCallingCallEndReport *)self jitterBufferResidencyTimeHistogramsCount];
+    if (jitterBufferResidencyTimeHistogramsCount)
     {
-      v15 = v14;
+      v15 = jitterBufferResidencyTimeHistogramsCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addJitterBufferResidencyTimeHistogram:{-[AWDWifiCallingCallEndReport jitterBufferResidencyTimeHistogramAtIndex:](self, "jitterBufferResidencyTimeHistogramAtIndex:", m)}];
+        [to addJitterBufferResidencyTimeHistogram:{-[AWDWifiCallingCallEndReport jitterBufferResidencyTimeHistogramAtIndex:](self, "jitterBufferResidencyTimeHistogramAtIndex:", m)}];
       }
     }
   }
@@ -714,8 +714,8 @@ LABEL_39:
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 37) = self->_rtpPacketLossRateMean;
-    *(a3 + 82) |= 0x100u;
+    *(to + 37) = self->_rtpPacketLossRateMean;
+    *(to + 82) |= 0x100u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -734,8 +734,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(a3 + 35) = self->_jitterBufferUnderflowRateMean;
-  *(a3 + 82) |= 0x40u;
+  *(to + 35) = self->_jitterBufferUnderflowRateMean;
+  *(to + 82) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -749,8 +749,8 @@ LABEL_24:
   }
 
 LABEL_36:
-  *(a3 + 31) = self->_frameErasureRateMean;
-  *(a3 + 82) |= 4u;
+  *(to + 31) = self->_frameErasureRateMean;
+  *(to + 82) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -764,8 +764,8 @@ LABEL_25:
   }
 
 LABEL_37:
-  *(a3 + 33) = self->_jitterBufferResidencyTimeMean;
-  *(a3 + 82) |= 0x10u;
+  *(to + 33) = self->_jitterBufferResidencyTimeMean;
+  *(to + 82) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -779,8 +779,8 @@ LABEL_26:
   }
 
 LABEL_38:
-  *(a3 + 34) = self->_jitterBufferResidencyTimeMedian;
-  *(a3 + 82) |= 0x20u;
+  *(to + 34) = self->_jitterBufferResidencyTimeMedian;
+  *(to + 82) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -794,8 +794,8 @@ LABEL_27:
   }
 
 LABEL_39:
-  *(a3 + 32) = self->_jitterBufferResidencyTime95Percentile;
-  *(a3 + 82) |= 8u;
+  *(to + 32) = self->_jitterBufferResidencyTime95Percentile;
+  *(to + 82) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -809,8 +809,8 @@ LABEL_28:
   }
 
 LABEL_40:
-  *(a3 + 36) = self->_ratType;
-  *(a3 + 82) |= 0x80u;
+  *(to + 36) = self->_ratType;
+  *(to + 82) |= 0x80u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -824,8 +824,8 @@ LABEL_29:
   }
 
 LABEL_41:
-  *(a3 + 40) = self->_vocoderType;
-  *(a3 + 82) |= 0x800u;
+  *(to + 40) = self->_vocoderType;
+  *(to + 82) |= 0x800u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -839,8 +839,8 @@ LABEL_30:
   }
 
 LABEL_42:
-  *(a3 + 39) = self->_vocoderSampleRate;
-  *(a3 + 82) |= 0x400u;
+  *(to + 39) = self->_vocoderSampleRate;
+  *(to + 82) |= 0x400u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -854,21 +854,21 @@ LABEL_31:
   }
 
 LABEL_43:
-  *(a3 + 38) = self->_ulVocoderBitRate;
-  *(a3 + 82) |= 0x200u;
+  *(to + 38) = self->_ulVocoderBitRate;
+  *(to + 82) |= 0x200u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_32:
-  *(a3 + 30) = self->_dlVocoderBitRate;
-  *(a3 + 82) |= 2u;
+  *(to + 30) = self->_dlVocoderBitRate;
+  *(to + 82) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -876,7 +876,7 @@ LABEL_32:
     *(v5 + 164) |= 1u;
   }
 
-  *(v6 + 112) = [(NSString *)self->_callID copyWithZone:a3];
+  *(v6 + 112) = [(NSString *)self->_callID copyWithZone:zone];
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
@@ -1036,15 +1036,15 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 82);
+    v6 = *(equal + 82);
     if (*&self->_has)
     {
-      if ((v6 & 1) == 0 || self->_timestamp != *(a3 + 13))
+      if ((v6 & 1) == 0 || self->_timestamp != *(equal + 13))
       {
         goto LABEL_67;
       }
@@ -1058,7 +1058,7 @@ LABEL_67:
     }
 
     callID = self->_callID;
-    if (!(callID | *(a3 + 14)) || (IsEqual = [(NSString *)callID isEqual:?]) != 0)
+    if (!(callID | *(equal + 14)) || (IsEqual = [(NSString *)callID isEqual:?]) != 0)
     {
       IsEqual = PBRepeatedUInt32IsEqual();
       if (IsEqual)
@@ -1073,23 +1073,23 @@ LABEL_67:
             if (IsEqual)
             {
               has = self->_has;
-              v9 = *(a3 + 82);
+              v9 = *(equal + 82);
               if ((has & 0x100) != 0)
               {
-                if ((*(a3 + 82) & 0x100) == 0 || self->_rtpPacketLossRateMean != *(a3 + 37))
+                if ((*(equal + 82) & 0x100) == 0 || self->_rtpPacketLossRateMean != *(equal + 37))
                 {
                   goto LABEL_67;
                 }
               }
 
-              else if ((*(a3 + 82) & 0x100) != 0)
+              else if ((*(equal + 82) & 0x100) != 0)
               {
                 goto LABEL_67;
               }
 
               if ((has & 0x40) != 0)
               {
-                if ((v9 & 0x40) == 0 || self->_jitterBufferUnderflowRateMean != *(a3 + 35))
+                if ((v9 & 0x40) == 0 || self->_jitterBufferUnderflowRateMean != *(equal + 35))
                 {
                   goto LABEL_67;
                 }
@@ -1102,7 +1102,7 @@ LABEL_67:
 
               if ((has & 4) != 0)
               {
-                if ((v9 & 4) == 0 || self->_frameErasureRateMean != *(a3 + 31))
+                if ((v9 & 4) == 0 || self->_frameErasureRateMean != *(equal + 31))
                 {
                   goto LABEL_67;
                 }
@@ -1115,7 +1115,7 @@ LABEL_67:
 
               if ((has & 0x10) != 0)
               {
-                if ((v9 & 0x10) == 0 || self->_jitterBufferResidencyTimeMean != *(a3 + 33))
+                if ((v9 & 0x10) == 0 || self->_jitterBufferResidencyTimeMean != *(equal + 33))
                 {
                   goto LABEL_67;
                 }
@@ -1128,7 +1128,7 @@ LABEL_67:
 
               if ((has & 0x20) != 0)
               {
-                if ((v9 & 0x20) == 0 || self->_jitterBufferResidencyTimeMedian != *(a3 + 34))
+                if ((v9 & 0x20) == 0 || self->_jitterBufferResidencyTimeMedian != *(equal + 34))
                 {
                   goto LABEL_67;
                 }
@@ -1141,7 +1141,7 @@ LABEL_67:
 
               if ((has & 8) != 0)
               {
-                if ((v9 & 8) == 0 || self->_jitterBufferResidencyTime95Percentile != *(a3 + 32))
+                if ((v9 & 8) == 0 || self->_jitterBufferResidencyTime95Percentile != *(equal + 32))
                 {
                   goto LABEL_67;
                 }
@@ -1154,7 +1154,7 @@ LABEL_67:
 
               if ((has & 0x80) != 0)
               {
-                if ((v9 & 0x80) == 0 || self->_ratType != *(a3 + 36))
+                if ((v9 & 0x80) == 0 || self->_ratType != *(equal + 36))
                 {
                   goto LABEL_67;
                 }
@@ -1167,39 +1167,39 @@ LABEL_67:
 
               if ((*&self->_has & 0x800) != 0)
               {
-                if ((*(a3 + 82) & 0x800) == 0 || self->_vocoderType != *(a3 + 40))
+                if ((*(equal + 82) & 0x800) == 0 || self->_vocoderType != *(equal + 40))
                 {
                   goto LABEL_67;
                 }
               }
 
-              else if ((*(a3 + 82) & 0x800) != 0)
+              else if ((*(equal + 82) & 0x800) != 0)
               {
                 goto LABEL_67;
               }
 
               if ((*&self->_has & 0x400) != 0)
               {
-                if ((*(a3 + 82) & 0x400) == 0 || self->_vocoderSampleRate != *(a3 + 39))
+                if ((*(equal + 82) & 0x400) == 0 || self->_vocoderSampleRate != *(equal + 39))
                 {
                   goto LABEL_67;
                 }
               }
 
-              else if ((*(a3 + 82) & 0x400) != 0)
+              else if ((*(equal + 82) & 0x400) != 0)
               {
                 goto LABEL_67;
               }
 
               if ((*&self->_has & 0x200) != 0)
               {
-                if ((*(a3 + 82) & 0x200) == 0 || self->_ulVocoderBitRate != *(a3 + 38))
+                if ((*(equal + 82) & 0x200) == 0 || self->_ulVocoderBitRate != *(equal + 38))
                 {
                   goto LABEL_67;
                 }
               }
 
-              else if ((*(a3 + 82) & 0x200) != 0)
+              else if ((*(equal + 82) & 0x200) != 0)
               {
                 goto LABEL_67;
               }
@@ -1207,7 +1207,7 @@ LABEL_67:
               LOBYTE(IsEqual) = (v9 & 2) == 0;
               if ((has & 2) != 0)
               {
-                if ((v9 & 2) == 0 || self->_dlVocoderBitRate != *(a3 + 30))
+                if ((v9 & 2) == 0 || self->_dlVocoderBitRate != *(equal + 30))
                 {
                   goto LABEL_67;
                 }
@@ -1392,65 +1392,65 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 82))
+  if (*(from + 82))
   {
-    self->_timestamp = *(a3 + 13);
+    self->_timestamp = *(from + 13);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 14))
+  if (*(from + 14))
   {
     [(AWDWifiCallingCallEndReport *)self setCallID:?];
   }
 
-  v5 = [a3 rtpPacketLossRateHistogramsCount];
-  if (v5)
+  rtpPacketLossRateHistogramsCount = [from rtpPacketLossRateHistogramsCount];
+  if (rtpPacketLossRateHistogramsCount)
   {
-    v6 = v5;
+    v6 = rtpPacketLossRateHistogramsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWifiCallingCallEndReport addRtpPacketLossRateHistogram:](self, "addRtpPacketLossRateHistogram:", [a3 rtpPacketLossRateHistogramAtIndex:i]);
+      -[AWDWifiCallingCallEndReport addRtpPacketLossRateHistogram:](self, "addRtpPacketLossRateHistogram:", [from rtpPacketLossRateHistogramAtIndex:i]);
     }
   }
 
-  v8 = [a3 jitterBufferUnderflowRateHistogramsCount];
-  if (v8)
+  jitterBufferUnderflowRateHistogramsCount = [from jitterBufferUnderflowRateHistogramsCount];
+  if (jitterBufferUnderflowRateHistogramsCount)
   {
-    v9 = v8;
+    v9 = jitterBufferUnderflowRateHistogramsCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWifiCallingCallEndReport addJitterBufferUnderflowRateHistogram:](self, "addJitterBufferUnderflowRateHistogram:", [a3 jitterBufferUnderflowRateHistogramAtIndex:j]);
+      -[AWDWifiCallingCallEndReport addJitterBufferUnderflowRateHistogram:](self, "addJitterBufferUnderflowRateHistogram:", [from jitterBufferUnderflowRateHistogramAtIndex:j]);
     }
   }
 
-  v11 = [a3 frameErasureRateHistogramsCount];
-  if (v11)
+  frameErasureRateHistogramsCount = [from frameErasureRateHistogramsCount];
+  if (frameErasureRateHistogramsCount)
   {
-    v12 = v11;
+    v12 = frameErasureRateHistogramsCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDWifiCallingCallEndReport addFrameErasureRateHistogram:](self, "addFrameErasureRateHistogram:", [a3 frameErasureRateHistogramAtIndex:k]);
+      -[AWDWifiCallingCallEndReport addFrameErasureRateHistogram:](self, "addFrameErasureRateHistogram:", [from frameErasureRateHistogramAtIndex:k]);
     }
   }
 
-  v14 = [a3 jitterBufferResidencyTimeHistogramsCount];
-  if (v14)
+  jitterBufferResidencyTimeHistogramsCount = [from jitterBufferResidencyTimeHistogramsCount];
+  if (jitterBufferResidencyTimeHistogramsCount)
   {
-    v15 = v14;
+    v15 = jitterBufferResidencyTimeHistogramsCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDWifiCallingCallEndReport addJitterBufferResidencyTimeHistogram:](self, "addJitterBufferResidencyTimeHistogram:", [a3 jitterBufferResidencyTimeHistogramAtIndex:m]);
+      -[AWDWifiCallingCallEndReport addJitterBufferResidencyTimeHistogram:](self, "addJitterBufferResidencyTimeHistogram:", [from jitterBufferResidencyTimeHistogramAtIndex:m]);
     }
   }
 
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x100) != 0)
   {
-    self->_rtpPacketLossRateMean = *(a3 + 37);
+    self->_rtpPacketLossRateMean = *(from + 37);
     *&self->_has |= 0x100u;
-    v17 = *(a3 + 82);
+    v17 = *(from + 82);
     if ((v17 & 0x40) == 0)
     {
 LABEL_19:
@@ -1468,9 +1468,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_jitterBufferUnderflowRateMean = *(a3 + 35);
+  self->_jitterBufferUnderflowRateMean = *(from + 35);
   *&self->_has |= 0x40u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 4) == 0)
   {
 LABEL_20:
@@ -1483,9 +1483,9 @@ LABEL_20:
   }
 
 LABEL_32:
-  self->_frameErasureRateMean = *(a3 + 31);
+  self->_frameErasureRateMean = *(from + 31);
   *&self->_has |= 4u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x10) == 0)
   {
 LABEL_21:
@@ -1498,9 +1498,9 @@ LABEL_21:
   }
 
 LABEL_33:
-  self->_jitterBufferResidencyTimeMean = *(a3 + 33);
+  self->_jitterBufferResidencyTimeMean = *(from + 33);
   *&self->_has |= 0x10u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x20) == 0)
   {
 LABEL_22:
@@ -1513,9 +1513,9 @@ LABEL_22:
   }
 
 LABEL_34:
-  self->_jitterBufferResidencyTimeMedian = *(a3 + 34);
+  self->_jitterBufferResidencyTimeMedian = *(from + 34);
   *&self->_has |= 0x20u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 8) == 0)
   {
 LABEL_23:
@@ -1528,9 +1528,9 @@ LABEL_23:
   }
 
 LABEL_35:
-  self->_jitterBufferResidencyTime95Percentile = *(a3 + 32);
+  self->_jitterBufferResidencyTime95Percentile = *(from + 32);
   *&self->_has |= 8u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x80) == 0)
   {
 LABEL_24:
@@ -1543,9 +1543,9 @@ LABEL_24:
   }
 
 LABEL_36:
-  self->_ratType = *(a3 + 36);
+  self->_ratType = *(from + 36);
   *&self->_has |= 0x80u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x800) == 0)
   {
 LABEL_25:
@@ -1558,9 +1558,9 @@ LABEL_25:
   }
 
 LABEL_37:
-  self->_vocoderType = *(a3 + 40);
+  self->_vocoderType = *(from + 40);
   *&self->_has |= 0x800u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x400) == 0)
   {
 LABEL_26:
@@ -1573,9 +1573,9 @@ LABEL_26:
   }
 
 LABEL_38:
-  self->_vocoderSampleRate = *(a3 + 39);
+  self->_vocoderSampleRate = *(from + 39);
   *&self->_has |= 0x400u;
-  v17 = *(a3 + 82);
+  v17 = *(from + 82);
   if ((v17 & 0x200) == 0)
   {
 LABEL_27:
@@ -1588,15 +1588,15 @@ LABEL_27:
   }
 
 LABEL_39:
-  self->_ulVocoderBitRate = *(a3 + 38);
+  self->_ulVocoderBitRate = *(from + 38);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 82) & 2) == 0)
+  if ((*(from + 82) & 2) == 0)
   {
     return;
   }
 
 LABEL_28:
-  self->_dlVocoderBitRate = *(a3 + 30);
+  self->_dlVocoderBitRate = *(from + 30);
   *&self->_has |= 2u;
 }
 

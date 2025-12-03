@@ -2,102 +2,102 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)gradientInsets;
 - (BOOL)_isUsingTransparentGradients;
 - (BOOL)isSectioned;
-- (CEKWheelScrubberView)initWithFrame:(CGRect)a3;
+- (CEKWheelScrubberView)initWithFrame:(CGRect)frame;
 - (CEKWheelScrubberViewDelegate)delegate;
-- (CGPoint)_contentOffsetForItemIndex:(int64_t)a3;
-- (CGRect)_centerDotIndicatorFrameForCollectionViewAlignmentRect:(CGRect)a3;
-- (CGRect)_centeredCellFrameForCollectionViewAlignmentRect:(CGRect)a3;
-- (CGRect)_collectionViewAlignmentRectForBounds:(CGRect)a3;
+- (CGPoint)_contentOffsetForItemIndex:(int64_t)index;
+- (CGRect)_centerDotIndicatorFrameForCollectionViewAlignmentRect:(CGRect)rect;
+- (CGRect)_centeredCellFrameForCollectionViewAlignmentRect:(CGRect)rect;
+- (CGRect)_collectionViewAlignmentRectForBounds:(CGRect)bounds;
 - (CGRect)centeredThumbnailContentFrame;
 - (CGSize)_defaultItemSize;
 - (CGSize)thumbnailSize;
 - (NSString)selectionText;
 - (UIEdgeInsets)thumbnailEdgeInsets;
-- (double)_alphaForVisibility:(int64_t)a3;
-- (double)_contentOffsetAmountForItemIndex:(int64_t)a3;
-- (double)_contentOffsetIgnoringSectionHeaders:(double)a3;
+- (double)_alphaForVisibility:(int64_t)visibility;
+- (double)_contentOffsetAmountForItemIndex:(int64_t)index;
+- (double)_contentOffsetIgnoringSectionHeaders:(double)headers;
 - (double)_defaultItemLength;
-- (double)_fractionalItemOffsetForContentOffset:(CGPoint)a3;
-- (double)_fractionalItemOffsetForContentOffsetAmount:(double)a3;
+- (double)_fractionalItemOffsetForContentOffset:(CGPoint)offset;
+- (double)_fractionalItemOffsetForContentOffsetAmount:(double)amount;
 - (double)thumbnailCornerRadius;
-- (id)cellOverlayAtIndex:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)cellOverlayAtIndex:(unint64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)newCenterDotIndicatorView;
-- (int64_t)_itemIndexUsingHysteresisForScrollingToContentOffset:(CGPoint)a3;
+- (int64_t)_itemIndexUsingHysteresisForScrollingToContentOffset:(CGPoint)offset;
 - (int64_t)cellEffect;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)layoutDirection;
 - (int64_t)layoutOrder;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (unint64_t)_outermostCornerMaskForItemIndex:(int64_t)a3;
-- (unint64_t)globalIndexForIndexPath:(id)a3;
-- (unint64_t)numberOfSectionsBeforeItemIndex:(unint64_t)a3;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (unint64_t)_outermostCornerMaskForItemIndex:(int64_t)index;
+- (unint64_t)globalIndexForIndexPath:(id)path;
+- (unint64_t)numberOfSectionsBeforeItemIndex:(unint64_t)index;
 - (unint64_t)totalNumberOfItems;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_performFeedback;
 - (void)_prepareFeedback;
-- (void)_scrollToIndex:(int64_t)a3 animated:(BOOL)a4 shouldOvershoot:(BOOL)a5;
-- (void)_scrollViewDidInterruptDecelerating:(id)a3;
-- (void)_setDragging:(BOOL)a3;
-- (void)_setSelectedIndex:(unint64_t)a3 shouldNotify:(BOOL)a4 shouldSuppressHaptic:(BOOL)a5;
-- (void)_setShowTextOverlay:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_switchToIndex:(int64_t)a3 shouldOvershoot:(BOOL)a4 shouldSuppressHaptic:(BOOL)a5;
-- (void)_switchToItemAtIndexOffset:(int64_t)a3 shouldOvershoot:(BOOL)a4;
-- (void)_updateCollectionViewForMarkedIndexAnimated:(BOOL)a3;
-- (void)_updateCornerMaskForCell:(id)a3 withItemIndex:(int64_t)a4;
-- (void)_updateCustomThumbnailAlphaAnimated:(BOOL)a3;
-- (void)_updateLayoutForCell:(id)a3;
+- (void)_scrollToIndex:(int64_t)index animated:(BOOL)animated shouldOvershoot:(BOOL)overshoot;
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating;
+- (void)_setDragging:(BOOL)dragging;
+- (void)_setSelectedIndex:(unint64_t)index shouldNotify:(BOOL)notify shouldSuppressHaptic:(BOOL)haptic;
+- (void)_setShowTextOverlay:(BOOL)overlay animated:(BOOL)animated completion:(id)completion;
+- (void)_switchToIndex:(int64_t)index shouldOvershoot:(BOOL)overshoot shouldSuppressHaptic:(BOOL)haptic;
+- (void)_switchToItemAtIndexOffset:(int64_t)offset shouldOvershoot:(BOOL)overshoot;
+- (void)_updateCollectionViewForMarkedIndexAnimated:(BOOL)animated;
+- (void)_updateCornerMaskForCell:(id)cell withItemIndex:(int64_t)index;
+- (void)_updateCustomThumbnailAlphaAnimated:(BOOL)animated;
+- (void)_updateLayoutForCell:(id)cell;
 - (void)_updateLayoutForVisibleCells;
-- (void)_updateOverlayVisibilityAnimated:(BOOL)a3;
-- (void)_updateSelectionLoupeAlphaAnimated:(BOOL)a3;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_updateOverlayVisibilityAnimated:(BOOL)animated;
+- (void)_updateSelectionLoupeAlphaAnimated:(BOOL)animated;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCellEffect:(int64_t)a3;
-- (void)setCornerStyle:(int64_t)a3;
-- (void)setCustomCenteredThumbnailOverlayView:(id)a3;
-- (void)setCustomThumbailHiddenIndices:(id)a3;
-- (void)setCustomThumbnailVisibility:(int64_t)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDotIndicatorBehavior:(int64_t)a3;
-- (void)setDotPlacement:(int64_t)a3;
-- (void)setGradientInsets:(id)a3;
-- (void)setItemCount:(unint64_t)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setLayoutOrder:(int64_t)a3;
-- (void)setMarkedIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setOpaqueGradientsWithColor:(id)a3;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)setSelectedThumbnailBorderColor:(id)a3;
-- (void)setSelectedThumbnailBorderWidth:(double)a3;
-- (void)setSelectionDotCenterTopSpacing:(double)a3;
-- (void)setSelectionLoupeVisibility:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSelectionText:(id)a3 animated:(BOOL)a4;
-- (void)setSuspended:(BOOL)a3;
-- (void)setThumbnailEdgeInsets:(UIEdgeInsets)a3;
-- (void)setThumbnailSize:(CGSize)a3;
-- (void)setThumbnailSpacing:(double)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCellEffect:(int64_t)effect;
+- (void)setCornerStyle:(int64_t)style;
+- (void)setCustomCenteredThumbnailOverlayView:(id)view;
+- (void)setCustomThumbailHiddenIndices:(id)indices;
+- (void)setCustomThumbnailVisibility:(int64_t)visibility animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setDotIndicatorBehavior:(int64_t)behavior;
+- (void)setDotPlacement:(int64_t)placement;
+- (void)setGradientInsets:(id)insets;
+- (void)setItemCount:(unint64_t)count;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setLayoutOrder:(int64_t)order;
+- (void)setMarkedIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setOpaqueGradientsWithColor:(id)color;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)setSelectedThumbnailBorderColor:(id)color;
+- (void)setSelectedThumbnailBorderWidth:(double)width;
+- (void)setSelectionDotCenterTopSpacing:(double)spacing;
+- (void)setSelectionLoupeVisibility:(int64_t)visibility animated:(BOOL)animated;
+- (void)setSelectionText:(id)text animated:(BOOL)animated;
+- (void)setSuspended:(BOOL)suspended;
+- (void)setThumbnailEdgeInsets:(UIEdgeInsets)insets;
+- (void)setThumbnailSize:(CGSize)size;
+- (void)setThumbnailSpacing:(double)spacing;
 - (void)setTransparentGradients;
-- (void)setUseSelectionLoupeShadow:(BOOL)a3;
-- (void)updateCell:(id)a3 forItemAtIndex:(unint64_t)a4;
+- (void)setUseSelectionLoupeShadow:(BOOL)shadow;
+- (void)updateCell:(id)cell forItemAtIndex:(unint64_t)index;
 - (void)updateItems;
 @end
 
 @implementation CEKWheelScrubberView
 
-- (CEKWheelScrubberView)initWithFrame:(CGRect)a3
+- (CEKWheelScrubberView)initWithFrame:(CGRect)frame
 {
   v42.receiver = self;
   v42.super_class = CEKWheelScrubberView;
-  v3 = [(CEKWheelScrubberView *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKWheelScrubberView *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -108,9 +108,9 @@
     +[CEKWheelScrubberViewCell defaultContentInsetWidth];
     v4->_thumbnailSpacing = v8 + v8;
     v4->_selectedThumbnailBorderWidth = 3.0;
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     selectedThumbnailBorderColor = v4->_selectedThumbnailBorderColor;
-    v4->_selectedThumbnailBorderColor = v9;
+    v4->_selectedThumbnailBorderColor = whiteColor;
 
     v4->_dotIndicatorBehavior = 0;
     v4->_dotPlacement = 0;
@@ -137,8 +137,8 @@
     [(UICollectionView *)v4->__collectionView setDataSource:v4];
     [(UICollectionView *)v4->__collectionView setDelegate:v4];
     v20 = v4->__collectionView;
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v20 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v20 setBackgroundColor:clearColor];
 
     [(UICollectionView *)v4->__collectionView setAllowsSelection:1];
     [(UICollectionView *)v4->__collectionView setAllowsMultipleSelection:1];
@@ -154,27 +154,27 @@
     v4->__selectedItemLoupe = v23;
 
     v25 = v4->__selectedItemLoupe;
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v25 setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v25 setBackgroundColor:clearColor2];
 
-    v27 = [(UIView *)v4->__selectedItemLoupe layer];
-    v28 = [(CEKWheelScrubberView *)v4 selectedThumbnailBorderColor];
-    [v27 setBorderColor:{objc_msgSend(v28, "CGColor")}];
+    layer = [(UIView *)v4->__selectedItemLoupe layer];
+    selectedThumbnailBorderColor = [(CEKWheelScrubberView *)v4 selectedThumbnailBorderColor];
+    [layer setBorderColor:{objc_msgSend(selectedThumbnailBorderColor, "CGColor")}];
 
-    v29 = [(UIView *)v4->__selectedItemLoupe layer];
+    layer2 = [(UIView *)v4->__selectedItemLoupe layer];
     [(CEKWheelScrubberView *)v4 selectedThumbnailBorderWidth];
-    [v29 setBorderWidth:?];
+    [layer2 setBorderWidth:?];
 
-    v30 = [(UIView *)v4->__selectedItemLoupe layer];
-    [v30 setCornerRadius:8.0];
+    layer3 = [(UIView *)v4->__selectedItemLoupe layer];
+    [layer3 setCornerRadius:8.0];
 
     [(UIView *)v4->__selectedItemLoupe setUserInteractionEnabled:0];
     [(CEKWheelScrubberView *)v4 addSubview:v4->__selectedItemLoupe];
     if (v4->_dotIndicatorBehavior == 1)
     {
-      v31 = [(CEKWheelScrubberView *)v4 newCenterDotIndicatorView];
+      newCenterDotIndicatorView = [(CEKWheelScrubberView *)v4 newCenterDotIndicatorView];
       centerDotIndicatorView = v4->__centerDotIndicatorView;
-      v4->__centerDotIndicatorView = v31;
+      v4->__centerDotIndicatorView = newCenterDotIndicatorView;
 
       [(CEKWheelScrubberView *)v4 addSubview:v4->__centerDotIndicatorView];
     }
@@ -190,8 +190,8 @@
     edgeGradientView = v4->__edgeGradientView;
     v4->__edgeGradientView = v35;
 
-    v37 = [MEMORY[0x1E69DC888] blackColor];
-    [(CEKWheelScrubberView *)v4 setOpaqueGradientsWithColor:v37];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CEKWheelScrubberView *)v4 setOpaqueGradientsWithColor:blackColor];
 
     if (CEKHapticsAllowed())
     {
@@ -215,17 +215,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CEKWheelScrubberView;
   [(CEKWheelScrubberView *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -245,23 +245,23 @@
   }
 }
 
-- (void)_setDragging:(BOOL)a3
+- (void)_setDragging:(BOOL)dragging
 {
-  if (self->_dragging != a3)
+  if (self->_dragging != dragging)
   {
-    v3 = a3;
-    self->_dragging = a3;
+    draggingCopy = dragging;
+    self->_dragging = dragging;
     [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:1];
     [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:1];
-    if (v3)
+    if (draggingCopy)
     {
       if (!self->_delegateFlags.respondsToWillBeginDragging)
       {
         return;
       }
 
-      v5 = [(CEKWheelScrubberView *)self delegate];
-      [v5 wheelScrubberViewWillBeginDragging:self];
+      delegate = [(CEKWheelScrubberView *)self delegate];
+      [delegate wheelScrubberViewWillBeginDragging:self];
     }
 
     else
@@ -271,32 +271,32 @@
         return;
       }
 
-      v5 = [(CEKWheelScrubberView *)self delegate];
-      [v5 wheelScrubberViewDidEndDragging:self];
+      delegate = [(CEKWheelScrubberView *)self delegate];
+      [delegate wheelScrubberViewDidEndDragging:self];
     }
   }
 }
 
 - (void)updateItems
 {
-  v3 = [(CEKWheelScrubberView *)self _collectionView];
-  v4 = [v3 numberOfSections];
+  _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+  numberOfSections = [_collectionView numberOfSections];
 
-  if (v4)
+  if (numberOfSections)
   {
     v5 = 0;
     do
     {
-      v6 = [(CEKWheelScrubberView *)self _collectionView];
-      v7 = [v6 numberOfItemsInSection:v5];
+      _collectionView2 = [(CEKWheelScrubberView *)self _collectionView];
+      v7 = [_collectionView2 numberOfItemsInSection:v5];
 
       if (v7)
       {
         for (i = 0; i != v7; ++i)
         {
           v9 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:v5];
-          v10 = [(CEKWheelScrubberView *)self _collectionView];
-          v11 = [v10 cellForItemAtIndexPath:v9];
+          _collectionView3 = [(CEKWheelScrubberView *)self _collectionView];
+          v11 = [_collectionView3 cellForItemAtIndexPath:v9];
 
           if (v11)
           {
@@ -306,48 +306,48 @@
       }
 
       ++v5;
-      v12 = [(CEKWheelScrubberView *)self _collectionView];
-      v13 = [v12 numberOfSections];
+      _collectionView4 = [(CEKWheelScrubberView *)self _collectionView];
+      numberOfSections2 = [_collectionView4 numberOfSections];
     }
 
-    while (v5 < v13);
+    while (v5 < numberOfSections2);
   }
 }
 
-- (void)setItemCount:(unint64_t)a3
+- (void)setItemCount:(unint64_t)count
 {
-  if (self->_itemCount != a3)
+  if (self->_itemCount != count)
   {
-    self->_itemCount = a3;
-    v5 = [(CEKWheelScrubberView *)self _collectionView];
-    [v5 reloadData];
+    self->_itemCount = count;
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    [_collectionView reloadData];
 
     [(CEKWheelScrubberView *)self _updateCollectionViewForMarkedIndexAnimated:0];
   }
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  [(CEKWheelScrubberView *)self _setSelectedIndex:a3 shouldNotify:0 shouldSuppressHaptic:1];
+  [(CEKWheelScrubberView *)self _setSelectedIndex:index shouldNotify:0 shouldSuppressHaptic:1];
 
-  [(CEKWheelScrubberView *)self _scrollToIndex:a3 animated:0 shouldOvershoot:0];
+  [(CEKWheelScrubberView *)self _scrollToIndex:index animated:0 shouldOvershoot:0];
 }
 
-- (void)_setSelectedIndex:(unint64_t)a3 shouldNotify:(BOOL)a4 shouldSuppressHaptic:(BOOL)a5
+- (void)_setSelectedIndex:(unint64_t)index shouldNotify:(BOOL)notify shouldSuppressHaptic:(BOOL)haptic
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    v6 = a4;
-    self->_selectedIndex = a3;
-    if ([(CEKWheelScrubberView *)self _decelerationTargetIndex]== a3)
+    notifyCopy = notify;
+    self->_selectedIndex = index;
+    if ([(CEKWheelScrubberView *)self _decelerationTargetIndex]== index)
     {
       [(CEKWheelScrubberView *)self set_decelerationTargetIndex:0x7FFFFFFFFFFFFFFFLL];
     }
 
-    [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:v6];
-    [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:v6];
-    [(CEKWheelScrubberView *)self _updateOverlayVisibilityAnimated:v6];
-    if (v6)
+    [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:notifyCopy];
+    [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:notifyCopy];
+    [(CEKWheelScrubberView *)self _updateOverlayVisibilityAnimated:notifyCopy];
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained wheelScrubberViewDidChangeSelectedIndex:self];
@@ -355,7 +355,7 @@
       [(CEKWheelScrubberView *)self sendActionsForControlEvents:4096];
     }
 
-    if (!a5 && [(CEKWheelScrubberView *)self _shouldPerformFeedback])
+    if (!haptic && [(CEKWheelScrubberView *)self _shouldPerformFeedback])
     {
       [(CEKWheelScrubberView *)self _performFeedback];
 
@@ -364,37 +364,37 @@
   }
 }
 
-- (void)setMarkedIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setMarkedIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  if (![(CEKWheelScrubberView *)self dotIndicatorBehavior]&& self->_markedIndex != a3)
+  animatedCopy = animated;
+  if (![(CEKWheelScrubberView *)self dotIndicatorBehavior]&& self->_markedIndex != index)
   {
-    self->_markedIndex = a3;
+    self->_markedIndex = index;
 
-    [(CEKWheelScrubberView *)self _updateCollectionViewForMarkedIndexAnimated:v4];
+    [(CEKWheelScrubberView *)self _updateCollectionViewForMarkedIndexAnimated:animatedCopy];
   }
 }
 
 - (NSString)selectionText
 {
-  v2 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
-  v3 = [v2 text];
+  _selectedItemTextOverlay = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
+  text = [_selectedItemTextOverlay text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSelectionText:(id)a3 animated:(BOOL)a4
+- (void)setSelectionText:(id)text animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v45[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
-  v8 = [v7 text];
-  if (v6 | v8 && ([v6 isEqualToString:v8] & 1) == 0)
+  textCopy = text;
+  _selectedItemTextOverlay = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
+  text = [_selectedItemTextOverlay text];
+  if (textCopy | text && ([textCopy isEqualToString:text] & 1) == 0)
   {
-    v9 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
+    _selectedItemTextOverlay2 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
 
-    if (!v9)
+    if (!_selectedItemTextOverlay2)
     {
       v10 = objc_alloc(MEMORY[0x1E69DCC10]);
       v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -402,24 +402,24 @@
       self->__selectedItemTextOverlay = v11;
 
       [MEMORY[0x1E69DC888] blackColor];
-      v13 = v32 = v4;
+      v13 = v32 = animatedCopy;
       v31 = [v13 colorWithAlphaComponent:0.5];
 
-      v14 = [(UILabel *)self->__selectedItemTextOverlay layer];
-      [v14 setBackgroundColor:{objc_msgSend(v31, "CGColor")}];
+      layer = [(UILabel *)self->__selectedItemTextOverlay layer];
+      [layer setBackgroundColor:{objc_msgSend(v31, "CGColor")}];
 
-      v15 = [(UILabel *)self->__selectedItemTextOverlay layer];
-      [v15 setCornerRadius:8.0];
+      layer2 = [(UILabel *)self->__selectedItemTextOverlay layer];
+      [layer2 setCornerRadius:8.0];
 
       [(UILabel *)self->__selectedItemTextOverlay setUserInteractionEnabled:0];
       [(UILabel *)self->__selectedItemTextOverlay setTextAlignment:1];
       v16 = self->__selectedItemTextOverlay;
-      v17 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [(UILabel *)v16 setTextColor:v17];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [(UILabel *)v16 setTextColor:systemWhiteColor];
 
       self->__showSelectedItemTextOverlay = 0;
       v30 = [MEMORY[0x1E69DB878] systemFontOfSize:*MEMORY[0x1E69DB920] weight:13.0 design:*MEMORY[0x1E69DB978]];
-      v29 = [v30 fontDescriptor];
+      fontDescriptor = [v30 fontDescriptor];
       v19 = *MEMORY[0x1E69DB900];
       v43[0] = *MEMORY[0x1E69DB908];
       v18 = v43[0];
@@ -445,26 +445,26 @@
       v37 = *MEMORY[0x1E69DB8B0];
       v38 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      v25 = [v29 fontDescriptorByAddingAttributes:v24];
+      v25 = [fontDescriptor fontDescriptorByAddingAttributes:v24];
 
       v26 = [MEMORY[0x1E69DB878] fontWithDescriptor:v25 size:13.0];
 
       [(UILabel *)self->__selectedItemTextOverlay setFont:v26];
-      v4 = v32;
+      animatedCopy = v32;
     }
 
-    v27 = [v7 superview];
+    superview = [_selectedItemTextOverlay superview];
 
-    if (v6)
+    if (textCopy)
     {
-      if (!v27)
+      if (!superview)
       {
-        v28 = [(CEKWheelScrubberView *)self _selectedItemLoupe];
-        [(CEKWheelScrubberView *)self insertSubview:v7 belowSubview:v28];
+        _selectedItemLoupe = [(CEKWheelScrubberView *)self _selectedItemLoupe];
+        [(CEKWheelScrubberView *)self insertSubview:_selectedItemTextOverlay belowSubview:_selectedItemLoupe];
       }
 
-      [v7 setText:v6];
-      [(CEKWheelScrubberView *)self _setShowTextOverlay:1 animated:v4 completion:0];
+      [_selectedItemTextOverlay setText:textCopy];
+      [(CEKWheelScrubberView *)self _setShowTextOverlay:1 animated:animatedCopy completion:0];
     }
 
     else
@@ -473,10 +473,10 @@
       v33[1] = 3221225472;
       v33[2] = __50__CEKWheelScrubberView_setSelectionText_animated___block_invoke;
       v33[3] = &unk_1E7CC6750;
-      v34 = v7;
+      v34 = _selectedItemTextOverlay;
       v35 = 0;
-      v36 = v27 != 0;
-      [(CEKWheelScrubberView *)self _setShowTextOverlay:0 animated:v4 completion:v33];
+      v36 = superview != 0;
+      [(CEKWheelScrubberView *)self _setShowTextOverlay:0 animated:animatedCopy completion:v33];
     }
   }
 }
@@ -494,25 +494,25 @@ uint64_t __50__CEKWheelScrubberView_setSelectionText_animated___block_invoke(uin
   return result;
 }
 
-- (void)_setShowTextOverlay:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setShowTextOverlay:(BOOL)overlay animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ([(CEKWheelScrubberView *)self _showSelectedItemTextOverlay]== v6)
+  animatedCopy = animated;
+  overlayCopy = overlay;
+  completionCopy = completion;
+  if ([(CEKWheelScrubberView *)self _showSelectedItemTextOverlay]== overlayCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    [(CEKWheelScrubberView *)self set_showSelectedItemTextOverlay:v6];
-    v9 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
+    [(CEKWheelScrubberView *)self set_showSelectedItemTextOverlay:overlayCopy];
+    _selectedItemTextOverlay = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
     v10 = 0.0;
-    if (v6)
+    if (overlayCopy)
     {
       v11 = 1.0;
     }
@@ -526,14 +526,14 @@ uint64_t __50__CEKWheelScrubberView_setSelectionText_animated___block_invoke(uin
     v17 = 3221225472;
     v18 = __64__CEKWheelScrubberView__setShowTextOverlay_animated_completion___block_invoke;
     v19 = &unk_1E7CC6660;
-    v12 = v9;
+    v12 = _selectedItemTextOverlay;
     v20 = v12;
     v21 = v11;
     v13 = _Block_copy(&v16);
     v14 = v13;
-    if (v5)
+    if (animatedCopy)
     {
-      if (v6)
+      if (overlayCopy)
       {
         v15 = 0.0;
       }
@@ -543,125 +543,125 @@ uint64_t __50__CEKWheelScrubberView_setSelectionText_animated___block_invoke(uin
         v15 = 1.0;
       }
 
-      if (!v6)
+      if (!overlayCopy)
       {
         v10 = 0.33;
       }
 
       [v12 setAlpha:{v15, v16, v17, v18, v19}];
-      [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:v8 animations:0.33 completion:v10];
+      [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:completionCopy animations:0.33 completion:v10];
     }
 
     else
     {
       (*(v13 + 2))(v13);
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
   }
 }
 
-- (void)setCornerStyle:(int64_t)a3
+- (void)setCornerStyle:(int64_t)style
 {
-  if (self->_cornerStyle != a3)
+  if (self->_cornerStyle != style)
   {
-    self->_cornerStyle = a3;
-    v4 = [(CEKWheelScrubberView *)self _collectionView];
-    [v4 reloadData];
+    self->_cornerStyle = style;
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    [_collectionView reloadData];
   }
 }
 
-- (void)setSelectionLoupeVisibility:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectionLoupeVisibility:(int64_t)visibility animated:(BOOL)animated
 {
-  if (self->_selectionLoupeVisibility != a3)
+  if (self->_selectionLoupeVisibility != visibility)
   {
-    self->_selectionLoupeVisibility = a3;
-    [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:a4];
+    self->_selectionLoupeVisibility = visibility;
+    [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:animated];
   }
 }
 
-- (void)setUseSelectionLoupeShadow:(BOOL)a3
+- (void)setUseSelectionLoupeShadow:(BOOL)shadow
 {
-  v3 = a3;
-  self->_useSelectionLoupeShadow = a3;
-  v5 = [(UIView *)self->__selectedItemLoupe layer];
-  v6 = v5;
+  shadowCopy = shadow;
+  self->_useSelectionLoupeShadow = shadow;
+  layer = [(UIView *)self->__selectedItemLoupe layer];
+  v6 = layer;
   LODWORD(v7) = 1058642330;
-  if (!v3)
+  if (!shadowCopy)
   {
     *&v7 = 0.0;
   }
 
-  [v5 setShadowOpacity:v7];
+  [layer setShadowOpacity:v7];
 
-  v8 = [(UIView *)self->__selectedItemLoupe layer];
-  [v8 setShadowOffset:{0.0, 0.0}];
+  layer2 = [(UIView *)self->__selectedItemLoupe layer];
+  [layer2 setShadowOffset:{0.0, 0.0}];
 }
 
-- (void)setCustomCenteredThumbnailOverlayView:(id)a3
+- (void)setCustomCenteredThumbnailOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customCenteredThumbnailOverlayView = self->_customCenteredThumbnailOverlayView;
-  if (customCenteredThumbnailOverlayView != v5)
+  if (customCenteredThumbnailOverlayView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(UIView *)customCenteredThumbnailOverlayView superview];
+    v8 = viewCopy;
+    superview = [(UIView *)customCenteredThumbnailOverlayView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_customCenteredThumbnailOverlayView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_customCenteredThumbnailOverlayView, a3);
+    objc_storeStrong(&self->_customCenteredThumbnailOverlayView, view);
     [(CEKWheelScrubberView *)self addSubview:v8];
     customCenteredThumbnailOverlayView = [(CEKWheelScrubberView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](customCenteredThumbnailOverlayView, v5);
+  MEMORY[0x1EEE66BB8](customCenteredThumbnailOverlayView, viewCopy);
 }
 
-- (void)setCustomThumbnailVisibility:(int64_t)a3 animated:(BOOL)a4
+- (void)setCustomThumbnailVisibility:(int64_t)visibility animated:(BOOL)animated
 {
-  if (self->_customThumbnailVisibility != a3)
+  if (self->_customThumbnailVisibility != visibility)
   {
-    self->_customThumbnailVisibility = a3;
-    [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:a4];
+    self->_customThumbnailVisibility = visibility;
+    [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:animated];
   }
 }
 
-- (void)setCustomThumbailHiddenIndices:(id)a3
+- (void)setCustomThumbailHiddenIndices:(id)indices
 {
-  v5 = a3;
+  indicesCopy = indices;
   customThumbailHiddenIndices = self->_customThumbailHiddenIndices;
-  if (customThumbailHiddenIndices != v5)
+  if (customThumbailHiddenIndices != indicesCopy)
   {
-    v7 = v5;
-    customThumbailHiddenIndices = [customThumbailHiddenIndices isEqual:v5];
-    v5 = v7;
+    v7 = indicesCopy;
+    customThumbailHiddenIndices = [customThumbailHiddenIndices isEqual:indicesCopy];
+    indicesCopy = v7;
     if ((customThumbailHiddenIndices & 1) == 0)
     {
-      objc_storeStrong(&self->_customThumbailHiddenIndices, a3);
+      objc_storeStrong(&self->_customThumbailHiddenIndices, indices);
       customThumbailHiddenIndices = [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:0];
-      v5 = v7;
+      indicesCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](customThumbailHiddenIndices, v5);
+  MEMORY[0x1EEE66BB8](customThumbailHiddenIndices, indicesCopy);
 }
 
-- (void)_updateCollectionViewForMarkedIndexAnimated:(BOOL)a3
+- (void)_updateCollectionViewForMarkedIndexAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(CEKWheelScrubberView *)self dotIndicatorBehavior])
   {
-    v5 = [(CEKWheelScrubberView *)self markedIndex];
-    v6 = [(CEKWheelScrubberView *)self _collectionView];
-    v7 = [v6 indexPathsForSelectedItems];
-    v8 = [(CEKWheelScrubberView *)self itemCount];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL || v5 >= v8)
+    markedIndex = [(CEKWheelScrubberView *)self markedIndex];
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    indexPathsForSelectedItems = [_collectionView indexPathsForSelectedItems];
+    itemCount = [(CEKWheelScrubberView *)self itemCount];
+    if (markedIndex == 0x7FFFFFFFFFFFFFFFLL || markedIndex >= itemCount)
     {
       if (![(CEKWheelScrubberView *)self itemCount])
       {
@@ -672,33 +672,33 @@ LABEL_12:
         v13[2] = __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated___block_invoke;
         v13[3] = &unk_1E7CC6778;
         v14 = v10;
-        v15 = v6;
-        v16 = v3;
-        v11 = v6;
+        v15 = _collectionView;
+        v16 = animatedCopy;
+        v11 = _collectionView;
         v12 = v10;
-        [v7 enumerateObjectsUsingBlock:v13];
+        [indexPathsForSelectedItems enumerateObjectsUsingBlock:v13];
 
         return;
       }
 
-      v9 = [(CEKWheelScrubberView *)self defaultIndex];
-      if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+      defaultIndex = [(CEKWheelScrubberView *)self defaultIndex];
+      if (defaultIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v5 = 0;
+        markedIndex = 0;
       }
 
       else
       {
-        v5 = v9;
+        markedIndex = defaultIndex;
       }
     }
 
-    v10 = [MEMORY[0x1E696AC88] indexPathForItem:v5 inSection:0];
+    v10 = [MEMORY[0x1E696AC88] indexPathForItem:markedIndex inSection:0];
     if (v10)
     {
-      if (([v7 containsObject:v10] & 1) == 0)
+      if (([indexPathsForSelectedItems containsObject:v10] & 1) == 0)
       {
-        [v6 selectItemAtIndexPath:v10 animated:v3 scrollPosition:0];
+        [_collectionView selectItemAtIndexPath:v10 animated:animatedCopy scrollPosition:0];
       }
     }
 
@@ -716,23 +716,23 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return result;
 }
 
-- (id)cellOverlayAtIndex:(unint64_t)a3
+- (id)cellOverlayAtIndex:(unint64_t)index
 {
   if (self->_cellOverlayMode == 1)
   {
     v4 = [MEMORY[0x1E696AC88] indexPathForItem:self->_selectedIndex inSection:0];
-    v5 = [(CEKWheelScrubberView *)self _collectionView];
-    v6 = [v5 cellForItemAtIndexPath:v4];
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    v6 = [_collectionView cellForItemAtIndexPath:v4];
 
-    v7 = [v6 overlayView];
+    overlayView = [v6 overlayView];
   }
 
   else
   {
-    v7 = 0;
+    overlayView = 0;
   }
 
-  return v7;
+  return overlayView;
 }
 
 - (BOOL)isSectioned
@@ -766,10 +766,10 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return v4;
 }
 
-- (unint64_t)globalIndexForIndexPath:(id)a3
+- (unint64_t)globalIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v5 = 0;
     v6 = 0;
@@ -778,7 +778,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
       v6 += [(UICollectionView *)self->__collectionView numberOfItemsInSection:v5++];
     }
 
-    while (v5 < [v4 section]);
+    while (v5 < [pathCopy section]);
   }
 
   else
@@ -786,74 +786,74 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
     v6 = 0;
   }
 
-  v7 = [v4 row];
+  v7 = [pathCopy row];
 
   return v7 + v6;
 }
 
 - (void)setTransparentGradients
 {
-  v3 = [(CEKWheelScrubberView *)self _edgeGradientView];
-  [v3 setEdgeGradientStyleMask];
-  [(CEKWheelScrubberView *)self setMaskView:v3];
+  _edgeGradientView = [(CEKWheelScrubberView *)self _edgeGradientView];
+  [_edgeGradientView setEdgeGradientStyleMask];
+  [(CEKWheelScrubberView *)self setMaskView:_edgeGradientView];
 }
 
 - (BOOL)_isUsingTransparentGradients
 {
-  v2 = [(CEKWheelScrubberView *)self maskView];
-  v3 = v2 != 0;
+  maskView = [(CEKWheelScrubberView *)self maskView];
+  v3 = maskView != 0;
 
   return v3;
 }
 
-- (void)setOpaqueGradientsWithColor:(id)a3
+- (void)setOpaqueGradientsWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CEKWheelScrubberView *)self _edgeGradientView];
-  [v5 setCustomEdgeGradientStyleWithColor:v4];
+  colorCopy = color;
+  _edgeGradientView = [(CEKWheelScrubberView *)self _edgeGradientView];
+  [_edgeGradientView setCustomEdgeGradientStyleWithColor:colorCopy];
 
   [(CEKWheelScrubberView *)self setMaskView:0];
-  [(CEKWheelScrubberView *)self addSubview:v5];
+  [(CEKWheelScrubberView *)self addSubview:_edgeGradientView];
 }
 
 - (int64_t)layoutOrder
 {
-  v2 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  v3 = [v2 layoutOrder];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  layoutOrder = [_collectionViewLayout layoutOrder];
 
-  return v3;
+  return layoutOrder;
 }
 
-- (void)setLayoutOrder:(int64_t)a3
+- (void)setLayoutOrder:(int64_t)order
 {
-  v4 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  [v4 setLayoutOrder:a3];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  [_collectionViewLayout setLayoutOrder:order];
 }
 
 - (int64_t)layoutDirection
 {
-  v2 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  v3 = [v2 layoutDirection];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  layoutDirection = [_collectionViewLayout layoutDirection];
 
-  return v3;
+  return layoutDirection;
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  v4 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  [v4 setLayoutDirection:a3];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  [_collectionViewLayout setLayoutDirection:direction];
 }
 
-- (void)setDotIndicatorBehavior:(int64_t)a3
+- (void)setDotIndicatorBehavior:(int64_t)behavior
 {
-  if (self->_dotIndicatorBehavior != a3)
+  if (self->_dotIndicatorBehavior != behavior)
   {
-    self->_dotIndicatorBehavior = a3;
-    if (a3 == 1)
+    self->_dotIndicatorBehavior = behavior;
+    if (behavior == 1)
     {
-      v5 = [(CEKWheelScrubberView *)self newCenterDotIndicatorView];
+      newCenterDotIndicatorView = [(CEKWheelScrubberView *)self newCenterDotIndicatorView];
       centerDotIndicatorView = self->__centerDotIndicatorView;
-      self->__centerDotIndicatorView = v5;
+      self->__centerDotIndicatorView = newCenterDotIndicatorView;
 
       [(CEKWheelScrubberView *)self addSubview:self->__centerDotIndicatorView];
     }
@@ -877,17 +877,17 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   v5 = v4;
   v6 = +[CEKWheelScrubberUtilities dotIndicatorBackgroundColor];
   [v3 setBackgroundColor:v6];
-  v7 = [v3 layer];
-  [v7 setCornerRadius:v5 * 0.5];
+  layer = [v3 layer];
+  [layer setCornerRadius:v5 * 0.5];
 
   return v3;
 }
 
-- (void)setDotPlacement:(int64_t)a3
+- (void)setDotPlacement:(int64_t)placement
 {
-  if (self->_dotPlacement != a3)
+  if (self->_dotPlacement != placement)
   {
-    self->_dotPlacement = a3;
+    self->_dotPlacement = placement;
     [(CEKWheelScrubberView *)self setNeedsLayout];
   }
 }
@@ -895,14 +895,14 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
 - (void)_updateLayoutForVisibleCells
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CEKWheelScrubberView *)self _collectionView];
-  v4 = [v3 visibleCells];
+  _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+  visibleCells = [_collectionView visibleCells];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = visibleCells;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -929,47 +929,47 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   }
 }
 
-- (void)_updateLayoutForCell:(id)a3
+- (void)_updateLayoutForCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   [(CEKWheelScrubberView *)self thumbnailSpacing];
-  [v5 setContentInsetWidth:v4 * 0.5];
+  [cellCopy setContentInsetWidth:v4 * 0.5];
   [(CEKWheelScrubberView *)self selectionDotCenterTopSpacing];
-  [v5 setSelectionDotCenterTopSpacing:?];
-  [v5 setDotPlacement:{-[CEKWheelScrubberView dotPlacement](self, "dotPlacement")}];
+  [cellCopy setSelectionDotCenterTopSpacing:?];
+  [cellCopy setDotPlacement:{-[CEKWheelScrubberView dotPlacement](self, "dotPlacement")}];
 }
 
-- (void)setSelectedThumbnailBorderWidth:(double)a3
+- (void)setSelectedThumbnailBorderWidth:(double)width
 {
-  if (self->_selectedThumbnailBorderWidth != a3)
+  if (self->_selectedThumbnailBorderWidth != width)
   {
-    self->_selectedThumbnailBorderWidth = a3;
-    v5 = [(CEKWheelScrubberView *)self _selectedItemLoupe];
-    v6 = [v5 layer];
-    [v6 setBorderWidth:a3];
+    self->_selectedThumbnailBorderWidth = width;
+    _selectedItemLoupe = [(CEKWheelScrubberView *)self _selectedItemLoupe];
+    layer = [_selectedItemLoupe layer];
+    [layer setBorderWidth:width];
 
     [(CEKWheelScrubberView *)self setNeedsLayout];
   }
 }
 
-- (void)setSelectedThumbnailBorderColor:(id)a3
+- (void)setSelectedThumbnailBorderColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_selectedThumbnailBorderColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_selectedThumbnailBorderColor, a3);
-    v5 = [v8 CGColor];
-    v6 = [(CEKWheelScrubberView *)self _selectedItemLoupe];
-    v7 = [v6 layer];
-    [v7 setBorderColor:v5];
+    objc_storeStrong(&self->_selectedThumbnailBorderColor, color);
+    cGColor = [colorCopy CGColor];
+    _selectedItemLoupe = [(CEKWheelScrubberView *)self _selectedItemLoupe];
+    layer = [_selectedItemLoupe layer];
+    [layer setBorderColor:cGColor];
   }
 }
 
-- (void)setThumbnailSize:(CGSize)a3
+- (void)setThumbnailSize:(CGSize)size
 {
-  if (self->_thumbnailSize.width != a3.width || self->_thumbnailSize.height != a3.height)
+  if (self->_thumbnailSize.width != size.width || self->_thumbnailSize.height != size.height)
   {
-    self->_thumbnailSize = a3;
+    self->_thumbnailSize = size;
     [(CEKWheelScrubberView *)self setNeedsLayout];
     collectionViewLayout = self->__collectionViewLayout;
 
@@ -977,11 +977,11 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   }
 }
 
-- (void)setThumbnailSpacing:(double)a3
+- (void)setThumbnailSpacing:(double)spacing
 {
-  if (self->_thumbnailSpacing != a3)
+  if (self->_thumbnailSpacing != spacing)
   {
-    self->_thumbnailSpacing = a3;
+    self->_thumbnailSpacing = spacing;
     [(CEKWheelScrubberView *)self setNeedsLayout];
     collectionViewLayout = self->__collectionViewLayout;
 
@@ -989,23 +989,23 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   }
 }
 
-- (void)setThumbnailEdgeInsets:(UIEdgeInsets)a3
+- (void)setThumbnailEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_thumbnailEdgeInsets.top, v3), vceqq_f64(*&self->_thumbnailEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_thumbnailEdgeInsets = a3;
+    self->_thumbnailEdgeInsets = insets;
     [(CEKWheelScrubberView *)self setNeedsLayout];
   }
 }
 
 - (double)thumbnailCornerRadius
 {
-  v3 = [(CEKWheelScrubberView *)self cornerStyle];
-  if (v3 == 2)
+  cornerStyle = [(CEKWheelScrubberView *)self cornerStyle];
+  if (cornerStyle == 2)
   {
     [(CEKWheelScrubberView *)self desiredThumbnailCornerRadius];
     if (v6 == 0.0)
@@ -1017,7 +1017,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   else
   {
     result = 0.0;
-    if (v3 != 1)
+    if (cornerStyle != 1)
     {
       return result;
     }
@@ -1033,12 +1033,12 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return result;
 }
 
-- (void)setGradientInsets:(id)a3
+- (void)setGradientInsets:(id)insets
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = insets.var1;
+  var0 = insets.var0;
   p_gradientInsets = &self->_gradientInsets;
-  if (!CEKEdgeInsetsEqualToInsets(a3.var0, a3.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
+  if (!CEKEdgeInsetsEqualToInsets(insets.var0, insets.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
   {
     p_gradientInsets->startInset = var0;
     p_gradientInsets->endInset = var1;
@@ -1047,27 +1047,27 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   }
 }
 
-- (void)setSelectionDotCenterTopSpacing:(double)a3
+- (void)setSelectionDotCenterTopSpacing:(double)spacing
 {
-  if (self->_selectionDotCenterTopSpacing != a3)
+  if (self->_selectionDotCenterTopSpacing != spacing)
   {
-    self->_selectionDotCenterTopSpacing = a3;
+    self->_selectionDotCenterTopSpacing = spacing;
     [(CEKWheelScrubberView *)self _updateLayoutForVisibleCells];
   }
 }
 
 - (int64_t)cellEffect
 {
-  v2 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  v3 = [v2 cellEffect];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  cellEffect = [_collectionViewLayout cellEffect];
 
-  return v3;
+  return cellEffect;
 }
 
-- (void)setCellEffect:(int64_t)a3
+- (void)setCellEffect:(int64_t)effect
 {
-  v4 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  [v4 setCellEffect:a3];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  [_collectionViewLayout setCellEffect:effect];
 }
 
 - (CGRect)centeredThumbnailContentFrame
@@ -1089,9 +1089,9 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return CGRectInset(*&v13, v12, v12);
 }
 
-- (CGRect)_collectionViewAlignmentRectForBounds:(CGRect)a3
+- (CGRect)_collectionViewAlignmentRectForBounds:(CGRect)bounds
 {
-  [(CEKWheelScrubberView *)self alignmentRectForFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CEKWheelScrubberView *)self alignmentRectForFrame:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1099,7 +1099,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   [(CEKWheelScrubberView *)self _defaultItemSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
+  _isDirectionHorizontal = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
   v29.origin.x = v5;
   v29.origin.y = v7;
   v29.size.width = v9;
@@ -1109,7 +1109,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   v19 = v7;
   v20 = v9;
   v21 = v11;
-  if (v16)
+  if (_isDirectionHorizontal)
   {
     MinY = CGRectGetMinY(*&v18);
     v30.origin.x = v5;
@@ -1145,12 +1145,12 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return result;
 }
 
-- (CGRect)_centeredCellFrameForCollectionViewAlignmentRect:(CGRect)a3
+- (CGRect)_centeredCellFrameForCollectionViewAlignmentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CEKWheelScrubberView *)self _defaultItemSize];
   v8 = v7;
   v10 = v9;
@@ -1178,16 +1178,16 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
   return result;
 }
 
-- (CGRect)_centerDotIndicatorFrameForCollectionViewAlignmentRect:(CGRect)a3
+- (CGRect)_centerDotIndicatorFrameForCollectionViewAlignmentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   +[CEKWheelScrubberUtilities dotIndicatorDiameter];
   v9 = v8;
-  v10 = [(CEKWheelScrubberView *)self dotPlacement];
-  if (v10 == 2)
+  dotPlacement = [(CEKWheelScrubberView *)self dotPlacement];
+  if (dotPlacement == 2)
   {
     v24.origin.x = x;
     v24.origin.y = y;
@@ -1206,7 +1206,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
     goto LABEL_7;
   }
 
-  if (v10 == 1)
+  if (dotPlacement == 1)
   {
     v22.origin.x = x;
     v22.origin.y = y;
@@ -1227,7 +1227,7 @@ uint64_t __68__CEKWheelScrubberView__updateCollectionViewForMarkedIndexAnimated_
 
   v11 = 0.0;
   v12 = 0.0;
-  if (!v10)
+  if (!dotPlacement)
   {
     v20.origin.x = x;
     v20.origin.y = y;
@@ -1270,10 +1270,10 @@ LABEL_7:
   height = v100.size.height;
   if (!CGRectIsEmpty(v100))
   {
-    v7 = [(CEKWheelScrubberView *)self _collectionView];
-    v8 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-    v9 = [(CEKWheelScrubberView *)self _selectedItemLoupe];
-    v10 = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+    _selectedItemLoupe = [(CEKWheelScrubberView *)self _selectedItemLoupe];
+    _selectedItemTextOverlay = [(CEKWheelScrubberView *)self _selectedItemTextOverlay];
     [(CEKWheelScrubberView *)self alignmentRectForFrame:x, y, width, height];
     v12 = v11;
     v14 = v13;
@@ -1344,8 +1344,8 @@ LABEL_7:
       v108.size.width = v97;
       v108.size.height = rect;
       v33 = v37 - CGRectGetMaxY(v108);
-      v38 = [(CEKWheelScrubberView *)self dotPlacement];
-      if (v38 == 1)
+      dotPlacement = [(CEKWheelScrubberView *)self dotPlacement];
+      if (dotPlacement == 1)
       {
         v31 = 19.0;
       }
@@ -1355,7 +1355,7 @@ LABEL_7:
         v31 = self->_selectionDotCenterTopSpacing + 5.0;
       }
 
-      if (v38 == 1)
+      if (dotPlacement == 1)
       {
         v29 = self->_selectionDotCenterTopSpacing + 5.0;
       }
@@ -1375,23 +1375,23 @@ LABEL_7:
     v40 = v94 + v32;
     v41 = v93 - (v35 + v36);
     v42 = v92 - (v32 + v34);
-    [v7 bounds];
+    [_collectionView bounds];
     v44 = v43;
-    [v7 setFrame:{v39, v40, v41, v42}];
-    [v8 setContentInsets:{v90, v29, v33, v31}];
-    v45 = [(CEKWheelScrubberView *)self _edgeGradientView];
-    [v45 setFrame:{v39, v40, v41, v42}];
+    [_collectionView setFrame:{v39, v40, v41, v42}];
+    [_collectionViewLayout setContentInsets:{v90, v29, v33, v31}];
+    _edgeGradientView = [(CEKWheelScrubberView *)self _edgeGradientView];
+    [_edgeGradientView setFrame:{v39, v40, v41, v42}];
 
-    LODWORD(v45) = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
-    v46 = [(CEKWheelScrubberView *)self _edgeGradientView];
-    [v46 setGradientDirection:v45 ^ 1];
+    LODWORD(_edgeGradientView) = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
+    _edgeGradientView2 = [(CEKWheelScrubberView *)self _edgeGradientView];
+    [_edgeGradientView2 setGradientDirection:_edgeGradientView ^ 1];
 
-    v47 = [(CEKWheelScrubberView *)self _edgeGradientView];
-    [v47 frame];
+    _edgeGradientView3 = [(CEKWheelScrubberView *)self _edgeGradientView];
+    [_edgeGradientView3 frame];
     v49 = v48;
     v51 = v50;
 
-    if (v45)
+    if (_edgeGradientView)
     {
       v51 = v49;
     }
@@ -1400,8 +1400,8 @@ LABEL_7:
     v53 = v52;
     [(CEKWheelScrubberView *)self gradientInsets];
     v55 = v54;
-    v56 = [(CEKWheelScrubberView *)self _edgeGradientView];
-    [v56 setGradientDimensions:{v53, v51 * 0.07, v51 * 0.07, v55}];
+    _edgeGradientView4 = [(CEKWheelScrubberView *)self _edgeGradientView];
+    [_edgeGradientView4 setGradientDimensions:{v53, v51 * 0.07, v51 * 0.07, v55}];
 
     [(CEKWheelScrubberView *)self thumbnailSpacing];
     v58 = v57 * 0.5;
@@ -1418,32 +1418,32 @@ LABEL_7:
     v64 = v110.origin.y;
     v65 = v110.size.width;
     v66 = v110.size.height;
-    [v9 setFrame:?];
-    [v10 setFrame:{v63, v64, v65, v66}];
-    v67 = [(CEKWheelScrubberView *)self customCenteredThumbnailOverlayView];
+    [_selectedItemLoupe setFrame:?];
+    [_selectedItemTextOverlay setFrame:{v63, v64, v65, v66}];
+    customCenteredThumbnailOverlayView = [(CEKWheelScrubberView *)self customCenteredThumbnailOverlayView];
 
-    if (v67)
+    if (customCenteredThumbnailOverlayView)
     {
       [(CEKWheelScrubberView *)self centeredThumbnailContentFrame];
       v69 = v68;
       v71 = v70;
       v73 = v72;
       v75 = v74;
-      v76 = [(CEKWheelScrubberView *)self customCenteredThumbnailOverlayView];
-      [v76 setFrame:{v69, v71, v73, v75}];
+      customCenteredThumbnailOverlayView2 = [(CEKWheelScrubberView *)self customCenteredThumbnailOverlayView];
+      [customCenteredThumbnailOverlayView2 setFrame:{v69, v71, v73, v75}];
     }
 
-    v77 = [(CEKWheelScrubberView *)self _centerDotIndicatorView];
+    _centerDotIndicatorView = [(CEKWheelScrubberView *)self _centerDotIndicatorView];
 
-    if (v77)
+    if (_centerDotIndicatorView)
     {
       [(CEKWheelScrubberView *)self _centerDotIndicatorFrameForCollectionViewAlignmentRect:v95, v94, v93, v92];
       v79 = v78;
       v81 = v80;
       v83 = v82;
       v85 = v84;
-      v86 = [(CEKWheelScrubberView *)self _centerDotIndicatorView];
-      [v86 setFrame:{v79, v81, v83, v85}];
+      _centerDotIndicatorView2 = [(CEKWheelScrubberView *)self _centerDotIndicatorView];
+      [_centerDotIndicatorView2 setFrame:{v79, v81, v83, v85}];
     }
 
     if (v44 <= 0.0)
@@ -1453,29 +1453,29 @@ LABEL_7:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23.receiver = self;
   v23.super_class = CEKWheelScrubberView;
-  v7 = [(CEKWheelScrubberView *)&v23 hitTest:a4 withEvent:?];
-  v8 = [(CEKWheelScrubberView *)self _edgeGradientView];
+  v7 = [(CEKWheelScrubberView *)&v23 hitTest:event withEvent:?];
+  _edgeGradientView = [(CEKWheelScrubberView *)self _edgeGradientView];
   if ([(CEKWheelScrubberView *)self passThroughTouchesInFullyTransparentAreas]&& [(CEKWheelScrubberView *)self _isUsingTransparentGradients])
   {
-    [v8 gradientDimensions];
+    [_edgeGradientView gradientDimensions];
     v10 = v9;
     v12 = v11;
-    [(CEKWheelScrubberView *)self convertPoint:v8 toView:x, y];
+    [(CEKWheelScrubberView *)self convertPoint:_edgeGradientView toView:x, y];
     v14 = v13;
     v16 = v15;
-    [v8 bounds];
+    [_edgeGradientView bounds];
     v18 = v17;
     v20 = v19;
-    v21 = [v8 gradientDirection];
-    if (v21)
+    gradientDirection = [_edgeGradientView gradientDirection];
+    if (gradientDirection)
     {
-      if (v21 == 1 && (v16 <= v10 || v16 >= v20 - v12))
+      if (gradientDirection == 1 && (v16 <= v10 || v16 >= v20 - v12))
       {
 LABEL_10:
 
@@ -1492,14 +1492,14 @@ LABEL_10:
   return v7;
 }
 
-- (void)updateCell:(id)a3 forItemAtIndex:(unint64_t)a4
+- (void)updateCell:(id)cell forItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CEKWheelScrubberView *)self delegate];
-  [v7 wheelScrubberView:self updateCell:v6 forItemAtIndex:a4];
+  cellCopy = cell;
+  delegate = [(CEKWheelScrubberView *)self delegate];
+  [delegate wheelScrubberView:self updateCell:cellCopy forItemAtIndex:index];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if (![(CEKWheelScrubberView *)self isSectioned])
   {
@@ -1512,12 +1512,12 @@ LABEL_10:
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if ([(CEKWheelScrubberView *)self isSectioned]&& self->_delegateFlags.respondsToNumberOfItemsInSection)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [WeakRetained wheelScrubberView:self numberOfItemsInSection:a4];
+    v7 = [WeakRetained wheelScrubberView:self numberOfItemsInSection:section];
 
     return v7;
   }
@@ -1529,11 +1529,11 @@ LABEL_10:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"CEKWheelScrubberViewCellReuseIdentifier" forIndexPath:v6];
-  v8 = [(CEKWheelScrubberView *)self globalIndexForIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"CEKWheelScrubberViewCellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [(CEKWheelScrubberView *)self globalIndexForIndexPath:pathCopy];
 
   [(CEKWheelScrubberView *)self updateCell:v7 forItemAtIndex:v8];
   [(CEKWheelScrubberView *)self _updateLayoutForCell:v7];
@@ -1542,14 +1542,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v9 = *MEMORY[0x1E69DDC08];
-  if ([a4 isEqualToString:*MEMORY[0x1E69DDC08]])
+  if ([kind isEqualToString:*MEMORY[0x1E69DDC08]])
   {
-    v10 = [v7 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"CEKWheelScrubberSectionHeaderReuseIdentifier" forIndexPath:v8];
+    v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"CEKWheelScrubberSectionHeaderReuseIdentifier" forIndexPath:pathCopy];
   }
 
   else
@@ -1560,16 +1560,16 @@ LABEL_10:
   return v10;
 }
 
-- (void)_updateCornerMaskForCell:(id)a3 withItemIndex:(int64_t)a4
+- (void)_updateCornerMaskForCell:(id)cell withItemIndex:(int64_t)index
 {
-  v11 = a3;
-  v6 = [(CEKWheelScrubberView *)self cornerStyle];
-  if (v6 == 1)
+  cellCopy = cell;
+  cornerStyle = [(CEKWheelScrubberView *)self cornerStyle];
+  if (cornerStyle == 1)
   {
-    v7 = [(CEKWheelScrubberView *)self _outermostCornerMaskForItemIndex:a4];
+    v7 = [(CEKWheelScrubberView *)self _outermostCornerMaskForItemIndex:index];
   }
 
-  else if (v6 == 2)
+  else if (cornerStyle == 2)
   {
     v7 = 15;
   }
@@ -1579,8 +1579,8 @@ LABEL_10:
     v7 = 0;
   }
 
-  v8 = [v11 itemView];
-  v9 = [v8 layer];
+  itemView = [cellCopy itemView];
+  layer = [itemView layer];
 
   if (v7)
   {
@@ -1592,15 +1592,15 @@ LABEL_10:
     v10 = 0.0;
   }
 
-  [v9 setCornerRadius:v10];
-  [v9 setMaskedCorners:v7];
+  [layer setCornerRadius:v10];
+  [layer setMaskedCorners:v7];
 }
 
-- (unint64_t)_outermostCornerMaskForItemIndex:(int64_t)a3
+- (unint64_t)_outermostCornerMaskForItemIndex:(int64_t)index
 {
-  v5 = [(CEKWheelScrubberView *)self layoutDirection];
-  v6 = v5;
-  if (a3)
+  layoutDirection = [(CEKWheelScrubberView *)self layoutDirection];
+  v6 = layoutDirection;
+  if (index)
   {
     v7 = [(CEKWheelScrubberView *)self itemCount]- 1;
     v8 = 12;
@@ -1609,7 +1609,7 @@ LABEL_10:
       v8 = 10;
     }
 
-    if (v7 == a3)
+    if (v7 == index)
     {
       return v8;
     }
@@ -1620,7 +1620,7 @@ LABEL_10:
     }
   }
 
-  else if (v5)
+  else if (layoutDirection)
   {
     return 3;
   }
@@ -1631,68 +1631,68 @@ LABEL_10:
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v16 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   if ([(CEKWheelScrubberView *)self cellOverlayMode]== 1)
   {
-    v8 = [(CEKWheelScrubberView *)self globalIndexForIndexPath:v7];
+    v8 = [(CEKWheelScrubberView *)self globalIndexForIndexPath:pathCopy];
     if (v8 == [(CEKWheelScrubberView *)self selectedIndex])
     {
-      v9 = v16;
-      v10 = [v9 overlayView];
-      if (v10)
+      v9 = cellCopy;
+      overlayView = [v9 overlayView];
+      if (overlayView)
       {
-        v11 = v10;
-        v12 = [v9 overlayView];
-        [v12 alpha];
+        v11 = overlayView;
+        overlayView2 = [v9 overlayView];
+        [overlayView2 alpha];
         v14 = v13;
 
         if (v14 == 0.0)
         {
-          v15 = [v9 overlayView];
-          [v15 setAlpha:1.0];
+          overlayView3 = [v9 overlayView];
+          [overlayView3 setAlpha:1.0];
         }
       }
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(CEKWheelScrubberView *)self _prepareFeedback];
   [(CEKWheelScrubberView *)self _setDragging:1];
   if (self->_delegateFlags.respondsToWillBeginScrolling)
   {
-    v4 = [(CEKWheelScrubberView *)self delegate];
-    [v4 wheelScrubberViewWillBeginScrolling:self];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewWillBeginScrolling:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
+  scrollCopy = scroll;
   if (self->_delegateFlags.respondsToDidScroll)
   {
-    v4 = [(CEKWheelScrubberView *)self delegate];
-    [v4 wheelScrubberViewDidScroll:self];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewDidScroll:self];
   }
 
-  v5 = [v8 isDragging];
-  v6 = [v8 isDecelerating];
-  v7 = [v8 isScrollAnimating];
-  [v8 contentOffset];
-  if (((v5 | v6) & 1) != 0 && (v7 & 1) == 0)
+  isDragging = [scrollCopy isDragging];
+  isDecelerating = [scrollCopy isDecelerating];
+  isScrollAnimating = [scrollCopy isScrollAnimating];
+  [scrollCopy contentOffset];
+  if (((isDragging | isDecelerating) & 1) != 0 && (isScrollAnimating & 1) == 0)
   {
     [(CEKWheelScrubberView *)self _setSelectedIndex:[(CEKWheelScrubberView *)self _itemIndexUsingHysteresisForScrollingToContentOffset:?] shouldNotify:1 shouldSuppressHaptic:0];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   if ([(CEKWheelScrubberView *)self _isDirectionHorizontal])
   {
     v9 = x;
@@ -1705,35 +1705,35 @@ LABEL_10:
 
   if (fabs(v9) >= 0.05)
   {
-    v10 = [(CEKWheelScrubberView *)self _itemIndexUsingHysteresisForScrollingToContentOffset:a5->x, a5->y];
+    selectedIndex = [(CEKWheelScrubberView *)self _itemIndexUsingHysteresisForScrollingToContentOffset:offset->x, offset->y];
   }
 
   else
   {
-    v10 = [(CEKWheelScrubberView *)self selectedIndex];
+    selectedIndex = [(CEKWheelScrubberView *)self selectedIndex];
   }
 
-  v11 = v10;
-  v12 = [(CEKWheelScrubberView *)self totalNumberOfItems];
-  v13 = [(CEKWheelScrubberView *)self _isOrderReverse];
-  if ((v11 - v12 + 1) >= 0)
+  v11 = selectedIndex;
+  totalNumberOfItems = [(CEKWheelScrubberView *)self totalNumberOfItems];
+  _isOrderReverse = [(CEKWheelScrubberView *)self _isOrderReverse];
+  if ((v11 - totalNumberOfItems + 1) >= 0)
   {
-    v14 = v11 - v12 + 1;
+    v14 = v11 - totalNumberOfItems + 1;
   }
 
   else
   {
-    v14 = ~(v11 - v12);
+    v14 = ~(v11 - totalNumberOfItems);
   }
 
-  if (v13)
+  if (_isOrderReverse)
   {
     v11 = v14;
   }
 
   [(CEKWheelScrubberView *)self _contentOffsetForItemIndex:v11];
-  a5->x = v15;
-  a5->y = v16;
+  offset->x = v15;
+  offset->y = v16;
   if (v11 != [(CEKWheelScrubberView *)self selectedIndex])
   {
     [(CEKWheelScrubberView *)self set_decelerationTargetIndex:v11];
@@ -1741,14 +1741,14 @@ LABEL_10:
 
   if (self->_delegateFlags.respondsToWillEndScrolling)
   {
-    v17 = [(CEKWheelScrubberView *)self delegate];
-    [v17 wheelScrubberViewWillEndScrolling:self withVelocity:a5 targetContentOffset:{x, y}];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewWillEndScrolling:self withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(CEKWheelScrubberView *)self set_decelerationTargetIndex:0x7FFFFFFFFFFFFFFFLL];
   }
@@ -1756,34 +1756,34 @@ LABEL_10:
   [(CEKWheelScrubberView *)self _setDragging:0];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   if (self->_delegateFlags.respondsToDidEndScrolling)
   {
-    v4 = [(CEKWheelScrubberView *)self delegate];
-    [v4 wheelScrubberViewDidEndScrolling:self];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewDidEndScrolling:self];
   }
 
-  if (([v5 isDragging] & 1) == 0)
+  if (([animationCopy isDragging] & 1) == 0)
   {
     [(CEKWheelScrubberView *)self _scrollToIndex:[(CEKWheelScrubberView *)self selectedIndex] animated:1 shouldOvershoot:0];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(CEKWheelScrubberView *)self set_decelerationTargetIndex:0x7FFFFFFFFFFFFFFFLL];
   [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:1];
   [(CEKWheelScrubberView *)self _updateCustomThumbnailAlphaAnimated:1];
   if (self->_delegateFlags.respondsToDidEndScrolling)
   {
-    v4 = [(CEKWheelScrubberView *)self delegate];
-    [v4 wheelScrubberViewDidEndScrolling:self];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewDidEndScrolling:self];
   }
 }
 
-- (void)_scrollViewDidInterruptDecelerating:(id)a3
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating
 {
   [(CEKWheelScrubberView *)self set_decelerationTargetIndex:0x7FFFFFFFFFFFFFFFLL];
   [(CEKWheelScrubberView *)self _updateSelectionLoupeAlphaAnimated:1];
@@ -1822,14 +1822,14 @@ LABEL_10:
   }
 }
 
-- (CGPoint)_contentOffsetForItemIndex:(int64_t)a3
+- (CGPoint)_contentOffsetForItemIndex:(int64_t)index
 {
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
-  [(CEKWheelScrubberView *)self _contentOffsetAmountForItemIndex:a3];
+  [(CEKWheelScrubberView *)self _contentOffsetAmountForItemIndex:index];
   v7 = v6;
-  v8 = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
-  if (v8)
+  _isDirectionHorizontal = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
+  if (_isDirectionHorizontal)
   {
     v9 = v5;
   }
@@ -1839,7 +1839,7 @@ LABEL_10:
     v9 = v7;
   }
 
-  if (v8)
+  if (_isDirectionHorizontal)
   {
     v10 = v7;
   }
@@ -1854,19 +1854,19 @@ LABEL_10:
   return result;
 }
 
-- (double)_contentOffsetAmountForItemIndex:(int64_t)a3
+- (double)_contentOffsetAmountForItemIndex:(int64_t)index
 {
   [(CEKWheelScrubberView *)self _defaultItemLength];
   v6 = v5;
-  v7 = [(CEKWheelScrubberView *)self numberOfSectionsBeforeItemIndex:a3];
+  v7 = [(CEKWheelScrubberView *)self numberOfSectionsBeforeItemIndex:index];
   +[CEKWheelScrubberSectionDividerView dividerViewWidth];
-  return v8 * v7 + a3 * v6;
+  return v8 * v7 + index * v6;
 }
 
-- (double)_fractionalItemOffsetForContentOffset:(CGPoint)a3
+- (double)_fractionalItemOffsetForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if ([(CEKWheelScrubberView *)self _isDirectionHorizontal])
   {
     v6 = x;
@@ -1881,18 +1881,18 @@ LABEL_10:
   return result;
 }
 
-- (double)_fractionalItemOffsetForContentOffsetAmount:(double)a3
+- (double)_fractionalItemOffsetForContentOffsetAmount:(double)amount
 {
   [(CEKWheelScrubberView *)self _defaultItemLength];
   v6 = v5;
-  [(CEKWheelScrubberView *)self _contentOffsetIgnoringSectionHeaders:a3];
+  [(CEKWheelScrubberView *)self _contentOffsetIgnoringSectionHeaders:amount];
   v8 = v7 / v6;
   v9 = ([(CEKWheelScrubberView *)self totalNumberOfItems]- 1);
 
   return CEKClamp(v8, 0.0, v9);
 }
 
-- (unint64_t)numberOfSectionsBeforeItemIndex:(unint64_t)a3
+- (unint64_t)numberOfSectionsBeforeItemIndex:(unint64_t)index
 {
   if (![(UICollectionView *)self->__collectionView numberOfSections])
   {
@@ -1904,7 +1904,7 @@ LABEL_10:
   while (1)
   {
     v6 += [(UICollectionView *)self->__collectionView numberOfItemsInSection:v5];
-    if (v6 > a3)
+    if (v6 > index)
     {
       break;
     }
@@ -1918,7 +1918,7 @@ LABEL_10:
   return v5;
 }
 
-- (double)_contentOffsetIgnoringSectionHeaders:(double)a3
+- (double)_contentOffsetIgnoringSectionHeaders:(double)headers
 {
   [(CEKWheelScrubberView *)self _defaultItemLength];
   v6 = v5;
@@ -1926,70 +1926,70 @@ LABEL_10:
   v8 = v7;
   if (![(UICollectionView *)self->__collectionView numberOfSections])
   {
-    return a3;
+    return headers;
   }
 
   v9 = 0;
   v10 = v6 * -0.5;
   v11 = v8 * 0.5;
-  v12 = a3;
+  headersCopy = headers;
   do
   {
     v13 = v10 + v6 * [(UICollectionView *)self->__collectionView numberOfItemsInSection:v9];
-    if (v13 > a3)
+    if (v13 > headers)
     {
       break;
     }
 
     v14 = v11 + v13;
-    if (v14 > a3)
+    if (v14 > headers)
     {
-      return v12 - (a3 - (v14 - v11));
+      return headersCopy - (headers - (v14 - v11));
     }
 
     v10 = v11 + v14;
-    if (v11 + v14 > a3)
+    if (v11 + v14 > headers)
     {
-      return v12 + v10 - a3;
+      return headersCopy + v10 - headers;
     }
 
-    v12 = v12 - v8;
+    headersCopy = headersCopy - v8;
     ++v9;
   }
 
   while (v9 < [(UICollectionView *)self->__collectionView numberOfSections]);
-  return v12;
+  return headersCopy;
 }
 
-- (int64_t)_itemIndexUsingHysteresisForScrollingToContentOffset:(CGPoint)a3
+- (int64_t)_itemIndexUsingHysteresisForScrollingToContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CEKWheelScrubberView *)self selectedIndex];
+  y = offset.y;
+  x = offset.x;
+  selectedIndex = [(CEKWheelScrubberView *)self selectedIndex];
   [(CEKWheelScrubberView *)self _fractionalItemOffsetForContentOffset:x, y];
-  v8 = [(CEKWheelScrubberView *)self _nominalItemIndexForFractionalItemOffset:v7 + dbl_1B7EDA480[v7 > v6]];
-  v9 = [(CEKWheelScrubberView *)self totalNumberOfItems];
+  v8 = [(CEKWheelScrubberView *)self _nominalItemIndexForFractionalItemOffset:v7 + dbl_1B7EDA480[v7 > selectedIndex]];
+  totalNumberOfItems = [(CEKWheelScrubberView *)self totalNumberOfItems];
   if (![(CEKWheelScrubberView *)self _isOrderReverse])
   {
     return v8;
   }
 
-  if ((v8 - v9 + 1) >= 0)
+  if ((v8 - totalNumberOfItems + 1) >= 0)
   {
-    return v8 - v9 + 1;
+    return v8 - totalNumberOfItems + 1;
   }
 
-  return ~(v8 - v9);
+  return ~(v8 - totalNumberOfItems);
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v28 = a3;
-  if ([v28 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
-    v4 = [(CEKWheelScrubberView *)self _collectionView];
-    [v28 locationInView:v4];
-    v5 = [v4 indexPathForItemAtPoint:?];
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    [recognizerCopy locationInView:_collectionView];
+    v5 = [_collectionView indexPathForItemAtPoint:?];
     if (v5)
     {
       v6 = [(CEKWheelScrubberView *)self globalIndexForIndexPath:v5];
@@ -1997,8 +1997,8 @@ LABEL_10:
       {
         if (self->_delegateFlags.respondsToDidTapOnSelectedCell || self->_delegateFlags.respondsToDidTapOnSelectedCellWithFrame)
         {
-          v7 = [(CEKWheelScrubberView *)self _collectionView];
-          v8 = [v7 layoutAttributesForItemAtIndexPath:v5];
+          _collectionView2 = [(CEKWheelScrubberView *)self _collectionView];
+          v8 = [_collectionView2 layoutAttributesForItemAtIndexPath:v5];
 
           [(CEKWheelScrubberView *)self thumbnailSpacing];
           v10 = v9 * 0.5;
@@ -2008,8 +2008,8 @@ LABEL_10:
           y = v31.origin.y;
           width = v31.size.width;
           height = v31.size.height;
-          v15 = [(CEKWheelScrubberView *)self _collectionView];
-          [v15 convertRect:self toView:{x, y, width, height}];
+          _collectionView3 = [(CEKWheelScrubberView *)self _collectionView];
+          [_collectionView3 convertRect:self toView:{x, y, width, height}];
           v17 = v16;
           v19 = v18;
           v21 = v20;
@@ -2017,17 +2017,17 @@ LABEL_10:
 
           if (self->_delegateFlags.respondsToDidTapOnSelectedCellWithFrame)
           {
-            v24 = [(CEKWheelScrubberView *)self delegate];
-            [v24 wheelScrubberView:self didTapOnSelectedCellWithFrame:{v17, v19, v21, v23}];
+            delegate = [(CEKWheelScrubberView *)self delegate];
+            [delegate wheelScrubberView:self didTapOnSelectedCellWithFrame:{v17, v19, v21, v23}];
           }
 
           if (self->_delegateFlags.respondsToDidTapOnSelectedCell)
           {
-            v25 = [(CEKWheelScrubberView *)self _collectionView];
-            v26 = [v25 cellForItemAtIndexPath:v5];
+            _collectionView4 = [(CEKWheelScrubberView *)self _collectionView];
+            v26 = [_collectionView4 cellForItemAtIndexPath:v5];
 
-            v27 = [(CEKWheelScrubberView *)self delegate];
-            [v27 wheelScrubberView:self didTapOnSelectedCell:v26 withFrame:{v17, v19, v21, v23}];
+            delegate2 = [(CEKWheelScrubberView *)self delegate];
+            [delegate2 wheelScrubberView:self didTapOnSelectedCell:v26 withFrame:{v17, v19, v21, v23}];
           }
         }
       }
@@ -2040,51 +2040,51 @@ LABEL_10:
   }
 }
 
-- (void)_switchToIndex:(int64_t)a3 shouldOvershoot:(BOOL)a4 shouldSuppressHaptic:(BOOL)a5
+- (void)_switchToIndex:(int64_t)index shouldOvershoot:(BOOL)overshoot shouldSuppressHaptic:(BOOL)haptic
 {
-  v5 = a5;
-  v6 = a4;
+  hapticCopy = haptic;
+  overshootCopy = overshoot;
   [(CEKWheelScrubberView *)self _prepareFeedback];
-  [(CEKWheelScrubberView *)self _setSelectedIndex:a3 shouldNotify:1 shouldSuppressHaptic:v5];
+  [(CEKWheelScrubberView *)self _setSelectedIndex:index shouldNotify:1 shouldSuppressHaptic:hapticCopy];
 
-  [(CEKWheelScrubberView *)self _scrollToIndex:a3 animated:1 shouldOvershoot:v6];
+  [(CEKWheelScrubberView *)self _scrollToIndex:index animated:1 shouldOvershoot:overshootCopy];
 }
 
-- (void)_scrollToIndex:(int64_t)a3 animated:(BOOL)a4 shouldOvershoot:(BOOL)a5
+- (void)_scrollToIndex:(int64_t)index animated:(BOOL)animated shouldOvershoot:(BOOL)overshoot
 {
-  v5 = a5;
-  v6 = a4;
-  v29 = [(CEKWheelScrubberView *)self _collectionView];
-  v9 = [(CEKWheelScrubberView *)self _collectionViewLayout];
-  v10 = [v9 layoutOrder];
+  overshootCopy = overshoot;
+  animatedCopy = animated;
+  _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+  _collectionViewLayout = [(CEKWheelScrubberView *)self _collectionViewLayout];
+  layoutOrder = [_collectionViewLayout layoutOrder];
 
-  v11 = [(CEKWheelScrubberView *)self totalNumberOfItems];
-  if ((a3 - v11 + 1) >= 0)
+  totalNumberOfItems = [(CEKWheelScrubberView *)self totalNumberOfItems];
+  if ((index - totalNumberOfItems + 1) >= 0)
   {
-    v12 = a3 - v11 + 1;
+    v12 = index - totalNumberOfItems + 1;
   }
 
   else
   {
-    v12 = ~(a3 - v11);
+    v12 = ~(index - totalNumberOfItems);
   }
 
-  if (v10 == 1)
+  if (layoutOrder == 1)
   {
-    v13 = v12;
+    indexCopy = v12;
   }
 
   else
   {
-    v13 = a3;
+    indexCopy = index;
   }
 
-  [(CEKWheelScrubberView *)self _contentOffsetForItemIndex:v13];
+  [(CEKWheelScrubberView *)self _contentOffsetForItemIndex:indexCopy];
   v15 = v14;
   v17 = v16;
-  if (v6 && v5)
+  if (animatedCopy && overshootCopy)
   {
-    [v29 contentOffset];
+    [_collectionView contentOffset];
     v19 = v18;
     v21 = v20;
     [(CEKWheelScrubberView *)self _defaultItemLength];
@@ -2120,32 +2120,32 @@ LABEL_10:
     }
   }
 
-  v25 = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
-  [v29 contentOffset];
-  if (v25)
+  _isDirectionHorizontal = [(CEKWheelScrubberView *)self _isDirectionHorizontal];
+  [_collectionView contentOffset];
+  if (_isDirectionHorizontal)
   {
     if (v26 == v15)
     {
       goto LABEL_27;
     }
 
-    [v29 setContentOffset:v6 animated:{v15, v17}];
-    if (!v6 || !self->_delegateFlags.respondsToWillBeginScrolling)
+    [_collectionView setContentOffset:animatedCopy animated:{v15, v17}];
+    if (!animatedCopy || !self->_delegateFlags.respondsToWillBeginScrolling)
     {
       goto LABEL_27;
     }
 
 LABEL_26:
-    v28 = [(CEKWheelScrubberView *)self delegate];
-    [v28 wheelScrubberViewWillBeginScrolling:self];
+    delegate = [(CEKWheelScrubberView *)self delegate];
+    [delegate wheelScrubberViewWillBeginScrolling:self];
 
     goto LABEL_27;
   }
 
   if (v27 != v17)
   {
-    [v29 setContentOffset:v6 animated:{v15, v17}];
-    if (v6 && self->_delegateFlags.respondsToWillBeginScrolling)
+    [_collectionView setContentOffset:animatedCopy animated:{v15, v17}];
+    if (animatedCopy && self->_delegateFlags.respondsToWillBeginScrolling)
     {
       goto LABEL_26;
     }
@@ -2154,16 +2154,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
     v27 = v3;
     v28 = v4;
-    v5 = a3;
-    self->_suspended = a3;
-    v7 = [(CEKWheelScrubberView *)self _collectionView];
-    if (v5)
+    suspendedCopy = suspended;
+    self->_suspended = suspended;
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    if (suspendedCopy)
     {
       [(CEKWheelScrubberView *)self setSelectedIndex:[(CEKWheelScrubberView *)self selectedIndex]];
       block[0] = MEMORY[0x1E69E9820];
@@ -2171,29 +2171,29 @@ LABEL_27:
       block[2] = __37__CEKWheelScrubberView_setSuspended___block_invoke;
       block[3] = &unk_1E7CC6688;
       block[4] = self;
-      v26 = v7;
+      v26 = _collectionView;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
     else
     {
-      v8 = [(CEKWheelScrubberView *)self _collectionViewSnapshot];
+      _collectionViewSnapshot = [(CEKWheelScrubberView *)self _collectionViewSnapshot];
       [(CEKWheelScrubberView *)self _setCollectionViewSnapshot:0];
-      v9 = [(CEKWheelScrubberView *)self _collectionView];
-      [v9 setHidden:0];
+      _collectionView2 = [(CEKWheelScrubberView *)self _collectionView];
+      [_collectionView2 setHidden:0];
 
-      if (v8)
+      if (_collectionViewSnapshot)
       {
-        [v7 setUserInteractionEnabled:0];
+        [_collectionView setUserInteractionEnabled:0];
         [MEMORY[0x1E6979518] begin];
         v10 = MEMORY[0x1E6979518];
         v19 = MEMORY[0x1E69E9820];
         v20 = 3221225472;
         v21 = __37__CEKWheelScrubberView_setSuspended___block_invoke_2;
         v22 = &unk_1E7CC6688;
-        v11 = v8;
+        v11 = _collectionViewSnapshot;
         v23 = v11;
-        v24 = v7;
+        v24 = _collectionView;
         [v10 setCompletionBlock:&v19];
         v12 = [MEMORY[0x1E6979318] animationWithKeyPath:{@"opacity", v19, v20, v21, v22}];
         LODWORD(v13) = 1.0;
@@ -2205,11 +2205,11 @@ LABEL_27:
         [v12 setDuration:0.33];
         [v12 setFromValue:&unk_1F2FDFD60];
         [v12 setToValue:&unk_1F2FDFD00];
-        v17 = [v11 layer];
-        [v17 addAnimation:v12 forKey:@"fadeOutAnimation"];
+        layer = [v11 layer];
+        [layer addAnimation:v12 forKey:@"fadeOutAnimation"];
 
-        v18 = [v11 layer];
-        [v18 setOpacity:0.0];
+        layer2 = [v11 layer];
+        [layer2 setOpacity:0.0];
 
         [MEMORY[0x1E6979518] commit];
       }
@@ -2242,11 +2242,11 @@ uint64_t __37__CEKWheelScrubberView_setSuspended___block_invoke_2(uint64_t a1)
   return [v2 setUserInteractionEnabled:1];
 }
 
-- (void)_switchToItemAtIndexOffset:(int64_t)a3 shouldOvershoot:(BOOL)a4
+- (void)_switchToItemAtIndexOffset:(int64_t)offset shouldOvershoot:(BOOL)overshoot
 {
-  v6 = [(CEKWheelScrubberView *)self totalNumberOfItems];
-  v7 = [(CEKWheelScrubberView *)self selectedIndex]+ a3;
-  if (v7 >= 0 && v7 < v6)
+  totalNumberOfItems = [(CEKWheelScrubberView *)self totalNumberOfItems];
+  v7 = [(CEKWheelScrubberView *)self selectedIndex]+ offset;
+  if (v7 >= 0 && v7 < totalNumberOfItems)
   {
 
     [CEKWheelScrubberView _switchToIndex:"_switchToIndex:shouldOvershoot:shouldSuppressHaptic:" shouldOvershoot:? shouldSuppressHaptic:?];
@@ -2273,9 +2273,9 @@ uint64_t __37__CEKWheelScrubberView_setSuspended___block_invoke_2(uint64_t a1)
   }
 }
 
-- (double)_alphaForVisibility:(int64_t)a3
+- (double)_alphaForVisibility:(int64_t)visibility
 {
-  if (a3 == 3)
+  if (visibility == 3)
   {
     v4 = ![(CEKWheelScrubberView *)self isDragging];
     result = 1.0;
@@ -2288,16 +2288,16 @@ LABEL_8:
     return result;
   }
 
-  if (a3 != 2)
+  if (visibility != 2)
   {
     result = 1.0;
-    v4 = a3 == 0;
+    v4 = visibility == 0;
     goto LABEL_8;
   }
 
-  v5 = [(CEKWheelScrubberView *)self isDragging];
+  isDragging = [(CEKWheelScrubberView *)self isDragging];
   result = 0.0;
-  if (v5)
+  if (isDragging)
   {
     return 1.0;
   }
@@ -2305,7 +2305,7 @@ LABEL_8:
   return result;
 }
 
-- (void)_updateSelectionLoupeAlphaAnimated:(BOOL)a3
+- (void)_updateSelectionLoupeAlphaAnimated:(BOOL)animated
 {
   if ([(CEKWheelScrubberView *)self _decelerationTargetIndex]== 0x7FFFFFFFFFFFFFFFLL || (v5 = 1.0, [(CEKWheelScrubberView *)self selectionLoupeVisibility]!= 2))
   {
@@ -2321,7 +2321,7 @@ LABEL_8:
   *&v10[5] = v5;
   v7 = _Block_copy(v10);
   v8 = v7;
-  if (a3)
+  if (animated)
   {
     v9 = 0.5;
     if (v5 > 0.0)
@@ -2345,10 +2345,10 @@ void __59__CEKWheelScrubberView__updateSelectionLoupeAlphaAnimated___block_invok
   [v2 setAlpha:v1];
 }
 
-- (void)_updateCustomThumbnailAlphaAnimated:(BOOL)a3
+- (void)_updateCustomThumbnailAlphaAnimated:(BOOL)animated
 {
-  v5 = [(CEKWheelScrubberView *)self customThumbailHiddenIndices];
-  v6 = [v5 containsIndex:{-[CEKWheelScrubberView selectedIndex](self, "selectedIndex")}];
+  customThumbailHiddenIndices = [(CEKWheelScrubberView *)self customThumbailHiddenIndices];
+  v6 = [customThumbailHiddenIndices containsIndex:{-[CEKWheelScrubberView selectedIndex](self, "selectedIndex")}];
 
   v7 = 0;
   if ((v6 & 1) == 0 && ([(CEKWheelScrubberView *)self _decelerationTargetIndex]== 0x7FFFFFFFFFFFFFFFLL || [(CEKWheelScrubberView *)self customThumbnailVisibility]!= 3))
@@ -2365,7 +2365,7 @@ void __59__CEKWheelScrubberView__updateSelectionLoupeAlphaAnimated___block_invok
   v11[5] = v7;
   v9 = _Block_copy(v11);
   v10 = v9;
-  if (a3)
+  if (animated)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v9 animations:0.25];
   }
@@ -2383,12 +2383,12 @@ void __60__CEKWheelScrubberView__updateCustomThumbnailAlphaAnimated___block_invo
   [v2 setAlpha:v1];
 }
 
-- (void)_updateOverlayVisibilityAnimated:(BOOL)a3
+- (void)_updateOverlayVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CEKWheelScrubberView *)self cellOverlayMode]== 1)
   {
-    if (v3)
+    if (animatedCopy)
     {
       v5 = 0.25;
     }
@@ -2398,15 +2398,15 @@ void __60__CEKWheelScrubberView__updateCustomThumbnailAlphaAnimated___block_invo
       v5 = 0.0;
     }
 
-    v6 = [(CEKWheelScrubberView *)self _collectionView];
-    v7 = [v6 indexPathsForVisibleItems];
+    _collectionView = [(CEKWheelScrubberView *)self _collectionView];
+    indexPathsForVisibleItems = [_collectionView indexPathsForVisibleItems];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__CEKWheelScrubberView__updateOverlayVisibilityAnimated___block_invoke;
     v8[3] = &unk_1E7CC67A0;
     v8[4] = self;
     *&v8[5] = v5;
-    [v7 enumerateObjectsUsingBlock:v8];
+    [indexPathsForVisibleItems enumerateObjectsUsingBlock:v8];
   }
 }
 

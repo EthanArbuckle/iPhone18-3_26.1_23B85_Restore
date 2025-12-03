@@ -9,14 +9,14 @@
 
 - (UIDOMHTMLOptionSelectedItem)createSelectedItem
 {
-  v1 = [[UIDOMHTMLOptionSelectedItem alloc] initWithHTMLOptionNode:a1];
+  v1 = [[UIDOMHTMLOptionSelectedItem alloc] initWithHTMLOptionNode:self];
 
   return v1;
 }
 
 - (UIDOMHTMLOptionPickerCell)createPickerCell
 {
-  v1 = [[UIDOMHTMLOptionPickerCell alloc] initWithHTMLOptionNode:a1];
+  v1 = [[UIDOMHTMLOptionPickerCell alloc] initWithHTMLOptionNode:self];
 
   return v1;
 }
@@ -25,8 +25,8 @@
 {
   [objc_msgSend(a3 "textLabel")];
   [objc_msgSend(a3 "textLabel")];
-  [a3 setSelectionStyle:{objc_msgSend(a1, "disabled") ^ 1}];
-  if ([a1 selected])
+  [a3 setSelectionStyle:{objc_msgSend(self, "disabled") ^ 1}];
+  if ([self selected])
   {
     v5 = 3;
   }
@@ -41,10 +41,10 @@
 
 - (uint64_t)itemTitle
 {
-  v2 = [objc_msgSend(a1 "text")];
+  v2 = [objc_msgSend(self "text")];
   v5 = 0;
   v4 = 0;
-  [a1 getTextWritingDirection:&v5 override:&v4];
+  [self getTextWritingDirection:&v5 override:&v4];
   return [v2 _uikit_stringWithWritingDirection:v5 asOverride:v4];
 }
 

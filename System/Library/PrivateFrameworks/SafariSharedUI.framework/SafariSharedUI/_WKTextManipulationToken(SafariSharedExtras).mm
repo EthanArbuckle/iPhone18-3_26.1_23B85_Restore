@@ -18,11 +18,11 @@
   if (get_LTAlignmentClass())
   {
     v4 = objc_alloc_init(MEMORY[0x1E6985420]);
-    v5 = [v3 identifier];
-    [v4 setIdentifier:v5];
+    identifier = [v3 identifier];
+    [v4 setIdentifier:identifier];
 
-    v6 = [v3 text];
-    [v4 setContent:v6];
+    text = [v3 text];
+    [v4 setContent:text];
 
     [v4 setExcluded:{objc_msgSend(v3, "shouldTranslate") ^ 1}];
   }
@@ -38,12 +38,12 @@
 - (id)safari_translationRangeRepresentation
 {
   v2 = objc_alloc(get_LTTranslationRangeClass());
-  v3 = [a1 identifier];
-  v4 = v3;
+  identifier = [self identifier];
+  v4 = identifier;
   v5 = &stru_1F4646D10;
-  if (v3)
+  if (identifier)
   {
-    v6 = v3;
+    v6 = identifier;
   }
 
   else
@@ -51,19 +51,19 @@
     v6 = &stru_1F4646D10;
   }
 
-  v7 = [a1 content];
-  v8 = v7;
-  if (v7)
+  content = [self content];
+  v8 = content;
+  if (content)
   {
-    v5 = v7;
+    v5 = content;
   }
 
-  v9 = [v2 initWithIdentifier:v6 text:v5 shouldTranslate:{objc_msgSend(a1, "isExcluded") ^ 1}];
+  v9 = [v2 initWithIdentifier:v6 text:v5 shouldTranslate:{objc_msgSend(self, "isExcluded") ^ 1}];
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [a1 safari_privacyPreservingMetadata];
-    [v9 setMetaInfo:v10];
+    safari_privacyPreservingMetadata = [self safari_privacyPreservingMetadata];
+    [v9 setMetaInfo:safari_privacyPreservingMetadata];
   }
 
   return v9;
@@ -74,21 +74,21 @@
   v6 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [a1 isEqualToTextManipulationToken:v6 includingContentEquality:a4];
+    v7 = [self isEqualToTextManipulationToken:v6 includingContentEquality:a4];
   }
 
   else if (v6)
   {
-    v8 = [a1 identifier];
-    v9 = [v6 identifier];
+    identifier = [self identifier];
+    identifier2 = [v6 identifier];
     v10 = WBSIsEqual();
 
-    LODWORD(v8) = [a1 isExcluded];
-    v11 = v8 ^ [v6 isExcluded];
+    LODWORD(identifier) = [self isExcluded];
+    v11 = identifier ^ [v6 isExcluded];
     if (a4)
     {
-      v12 = [a1 content];
-      v13 = [v6 content];
+      content = [self content];
+      content2 = [v6 content];
       v14 = WBSIsEqual();
     }
 
@@ -112,12 +112,12 @@
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v2 = [a1 debugDescription];
+    v2 = [self debugDescription];
   }
 
   else
   {
-    v2 = [a1 _safari_descriptionPreservingPrivacy:0];
+    v2 = [self _safari_descriptionPreservingPrivacy:0];
   }
 
   return v2;
@@ -127,12 +127,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 description];
+    [self description];
   }
 
   else
   {
-    [a1 _safari_descriptionPreservingPrivacy:1];
+    [self _safari_descriptionPreservingPrivacy:1];
   }
   v2 = ;
 
@@ -143,19 +143,19 @@
 {
   v5 = MEMORY[0x1E696AD60];
   v6 = objc_opt_class();
-  v7 = [a1 identifier];
-  v8 = [v5 stringWithFormat:@"<%@: %p identifier = %@; isExcluded = %i", v6, a1, v7, objc_msgSend(a1, "isExcluded")];;
+  identifier = [self identifier];
+  v8 = [v5 stringWithFormat:@"<%@: %p identifier = %@; isExcluded = %i", v6, self, identifier, objc_msgSend(self, "isExcluded")];;
 
-  v9 = [a1 content];
-  v10 = v9;
+  content = [self content];
+  v10 = content;
   if (a3)
   {
-    [v8 appendFormat:@"; content length = %lu", objc_msgSend(v9, "length")];
+    [v8 appendFormat:@"; content length = %lu", objc_msgSend(content, "length")];
   }
 
   else
   {
-    [v8 appendFormat:@"; content = %@", v9];
+    [v8 appendFormat:@"; content = %@", content];
   }
 
   [v8 appendString:@">"];
@@ -169,7 +169,7 @@
   v13[2] = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 userInfo];
+    userInfo = [self userInfo];
     v12[0] = @"_WKTextManipulationTokenUserInfoTagNameKey";
     v12[1] = @"_WKTextManipulationTokenUserInfoRoleAttributeKey";
     v13[0] = @"tagName";
@@ -180,10 +180,10 @@
     v9[1] = 3221225472;
     v9[2] = __80___WKTextManipulationToken_SafariSharedExtras__safari_privacyPreservingMetadata__block_invoke;
     v9[3] = &unk_1E8289AB8;
-    v10 = v2;
+    v10 = userInfo;
     v11 = v4;
     v5 = v4;
-    v6 = v2;
+    v6 = userInfo;
     [v3 enumerateKeysAndObjectsUsingBlock:v9];
     v7 = [v5 copy];
   }
@@ -201,11 +201,11 @@
   v17[3] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF90];
   v16[0] = @"identifier";
-  v3 = [a1 identifier];
-  v4 = v3;
-  if (v3)
+  identifier = [self identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = v3;
+    v5 = identifier;
   }
 
   else
@@ -215,20 +215,20 @@
 
   v17[0] = v5;
   v16[1] = @"shouldTranslate";
-  v6 = [a1 isExcluded];
+  isExcluded = [self isExcluded];
   v7 = MEMORY[0x1E695E118];
-  if (v6)
+  if (isExcluded)
   {
     v7 = MEMORY[0x1E695E110];
   }
 
   v17[1] = v7;
   v16[2] = @"text";
-  v8 = [a1 content];
-  v9 = v8;
-  if (v8)
+  content = [self content];
+  v9 = content;
+  if (content)
   {
-    v10 = v8;
+    v10 = content;
   }
 
   else
@@ -240,10 +240,10 @@
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   v12 = [v2 dictionaryWithDictionary:v11];
 
-  v13 = [a1 safari_privacyPreservingMetadata];
-  if ([v13 count])
+  safari_privacyPreservingMetadata = [self safari_privacyPreservingMetadata];
+  if ([safari_privacyPreservingMetadata count])
   {
-    [v12 setObject:v13 forKeyedSubscript:@"metadata"];
+    [v12 setObject:safari_privacyPreservingMetadata forKeyedSubscript:@"metadata"];
   }
 
   v14 = [v12 copy];
@@ -254,9 +254,9 @@
 - (__CFString)safari_jsonRepresentation
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [a1 safari_dictionaryRepresentation];
+  safari_dictionaryRepresentation = [self safari_dictionaryRepresentation];
   v9 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:3 error:&v9];
+  v4 = [v2 dataWithJSONObject:safari_dictionaryRepresentation options:3 error:&v9];
   v5 = v9;
 
   if (v4)

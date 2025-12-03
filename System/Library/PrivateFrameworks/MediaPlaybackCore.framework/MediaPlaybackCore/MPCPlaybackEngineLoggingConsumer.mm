@@ -1,18 +1,18 @@
 @interface MPCPlaybackEngineLoggingConsumer
-- (BOOL)_logAccountEvent:(id)a3 subscription:(id)a4 cursor:(id)a5;
+- (BOOL)_logAccountEvent:(id)event subscription:(id)subscription cursor:(id)cursor;
 - (__CFString)_symbolForCommand:(__CFString *)result;
-- (id)_playbackBarWithElapsedTime:(double)a3 duration:(double)a4;
-- (void)_chartWithLevel:(void *)a1 type:;
-- (void)_updateChartWithEvent:(uint64_t)a1;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (id)_playbackBarWithElapsedTime:(double)time duration:(double)duration;
+- (void)_chartWithLevel:(void *)level type:;
+- (void)_updateChartWithEvent:(uint64_t)event;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation MPCPlaybackEngineLoggingConsumer
 
-- (id)_playbackBarWithElapsedTime:(double)a3 duration:(double)a4
+- (id)_playbackBarWithElapsedTime:(double)time duration:(double)duration
 {
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     v8 = 0;
   }
@@ -28,21 +28,21 @@
     v7 = [@" " stringByPaddingToLength:29 withString:@"━" startingAtIndex:0];
     v8 = [v6 stringWithString:v7];
 
-    if (a3 >= a4)
+    if (time >= duration)
     {
-      v9 = a4;
+      timeCopy = duration;
     }
 
     else
     {
-      v9 = a3;
+      timeCopy = time;
     }
 
-    [v8 insertString:@"●" atIndex:(round(v9 / a4 * 28.0) + 1.0)];
+    [v8 insertString:@"●" atIndex:(round(timeCopy / duration * 28.0) + 1.0)];
     [v8 appendString:@" -"];
-    if (a4 - a3 >= 0.0)
+    if (duration - time >= 0.0)
     {
-      v10 = a4 - a3;
+      v10 = duration - time;
     }
 
     else
@@ -50,7 +50,7 @@
       v10 = 0.0;
     }
 
-    v11 = [_playbackBarWithElapsedTime_duration____elapsedTimeFormatter stringFromSeconds:a3];
+    v11 = [_playbackBarWithElapsedTime_duration____elapsedTimeFormatter stringFromSeconds:time];
     [v8 insertString:v11 atIndex:0];
 
     v12 = [_playbackBarWithElapsedTime_duration____remainingTimeFormatter stringFromSeconds:v10];
@@ -76,45 +76,45 @@ uint64_t __73__MPCPlaybackEngineLoggingConsumer__playbackBarWithElapsedTime_dura
   return [v4 setStyle:3];
 }
 
-- (BOOL)_logAccountEvent:(id)a3 subscription:(id)a4 cursor:(id)a5
+- (BOOL)_logAccountEvent:(id)event subscription:(id)subscription cursor:(id)cursor
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 payload];
-  v10 = [v9 objectForKeyedSubscript:@"account-id"];
+  eventCopy = event;
+  subscriptionCopy = subscription;
+  payload = [eventCopy payload];
+  v10 = [payload objectForKeyedSubscript:@"account-id"];
 
-  v11 = [v7 payload];
-  v12 = [v11 objectForKeyedSubscript:@"account-metadata"];
+  payload2 = [eventCopy payload];
+  v12 = [payload2 objectForKeyedSubscript:@"account-metadata"];
 
   v13 = [v12 objectForKeyedSubscript:@"store-account-id"];
   v53 = [v12 objectForKeyedSubscript:@"store-front-id"];
   v14 = [v12 objectForKeyedSubscript:@"delegated"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v16 = [v12 objectForKeyedSubscript:@"private-listening-enabled"];
-  v52 = [v16 BOOLValue];
+  bOOLValue2 = [v16 BOOLValue];
 
   v17 = MSVLogDateFormatter();
-  v18 = [v7 date];
-  v54 = [v17 stringFromDate:v18];
+  date = [eventCopy date];
+  v54 = [v17 stringFromDate:date];
 
-  v19 = [v7 type];
-  LODWORD(v18) = [v19 isEqualToString:@"account-begin"];
+  type = [eventCopy type];
+  LODWORD(date) = [type isEqualToString:@"account-begin"];
 
-  if (v18)
+  if (date)
   {
     v20 = [MPCPlaybackEngineLoggingConsumer _chartWithLevel:? type:?];
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v8 streamID];
+      streamID = [subscriptionCopy streamID];
       *buf = 138544386;
       v56 = v54;
       v57 = 2114;
-      v58 = v22;
+      v58 = streamID;
       v59 = 1024;
-      v60 = [v7 threadPriority];
+      threadPriority = [eventCopy threadPriority];
       v61 = 2114;
       v62 = v20;
       v63 = 2114;
@@ -127,8 +127,8 @@ LABEL_7:
 
   else
   {
-    v24 = [v7 type];
-    v25 = [v24 isEqualToString:@"account-update"];
+    type2 = [eventCopy type];
+    v25 = [type2 isEqualToString:@"account-update"];
 
     if (!v25)
     {
@@ -139,13 +139,13 @@ LABEL_7:
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v8 streamID];
+      streamID = [subscriptionCopy streamID];
       *buf = 138544386;
       v56 = v54;
       v57 = 2114;
-      v58 = v22;
+      v58 = streamID;
       v59 = 1024;
-      v60 = [v7 threadPriority];
+      threadPriority = [eventCopy threadPriority];
       v61 = 2114;
       v62 = v20;
       v63 = 2114;
@@ -160,23 +160,23 @@ LABEL_9:
   v27 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v8 streamID];
-    v29 = [v7 threadPriority];
-    v30 = [v13 unsignedLongLongValue];
+    streamID2 = [subscriptionCopy streamID];
+    threadPriority2 = [eventCopy threadPriority];
+    unsignedLongLongValue = [v13 unsignedLongLongValue];
     *buf = 138544899;
     v56 = v54;
     v57 = 2114;
-    v58 = v28;
+    v58 = streamID2;
     v59 = 1024;
-    v60 = v29;
+    threadPriority = threadPriority2;
     v61 = 2114;
     v62 = v26;
     v63 = 2049;
-    *v64 = v30;
+    *v64 = unsignedLongLongValue;
     *&v64[8] = 2114;
     v65 = v53;
     v66 = 1024;
-    v67 = v15;
+    v67 = bOOLValue;
     _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_DEFAULT, "|%{public}@ %{public}@ %2i %{public}@ ╲╭ store-id: %{private}llu; storefront: %{public}@; delegated: %{BOOL}u", buf, 0x40u);
   }
 
@@ -186,14 +186,14 @@ LABEL_9:
     v32 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v8 streamID];
-      v34 = [v7 threadPriority];
+      streamID3 = [subscriptionCopy streamID];
+      threadPriority3 = [eventCopy threadPriority];
       *buf = 138544386;
       v56 = v54;
       v57 = 2114;
-      v58 = v33;
+      v58 = streamID3;
       v59 = 1024;
-      v60 = v34;
+      threadPriority = threadPriority3;
       v61 = 2114;
       v62 = v26;
       v63 = 2114;
@@ -204,25 +204,25 @@ LABEL_9:
 
   v35 = [v12 objectForKeyedSubscript:@"subscription-status"];
   v36 = [v12 objectForKeyedSubscript:@"explicit-allowed"];
-  v51 = [v36 BOOLValue];
+  bOOLValue3 = [v36 BOOLValue];
 
   if (v35)
   {
     v37 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      [v8 streamID];
+      [subscriptionCopy streamID];
       v38 = v26;
       v39 = v13;
-      v40 = v8;
+      v40 = subscriptionCopy;
       v42 = v41 = v10;
-      v43 = [v7 threadPriority];
+      threadPriority4 = [eventCopy threadPriority];
       *buf = 138544386;
       v56 = v54;
       v57 = 2114;
       v58 = v42;
       v59 = 1024;
-      v60 = v43;
+      threadPriority = threadPriority4;
       v61 = 2114;
       v62 = v38;
       v63 = 2114;
@@ -230,7 +230,7 @@ LABEL_9:
       _os_log_impl(&dword_1C5C61000, v37, OS_LOG_TYPE_DEFAULT, "|%{public}@ %{public}@ %2i %{public}@  │ subscription: %{public}@", buf, 0x30u);
 
       v10 = v41;
-      v8 = v40;
+      subscriptionCopy = v40;
       v13 = v39;
       v26 = v38;
     }
@@ -239,40 +239,40 @@ LABEL_9:
   v44 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEvents");
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
-    [v8 streamID];
+    [subscriptionCopy streamID];
     v45 = v13;
-    v46 = v8;
+    v46 = subscriptionCopy;
     v48 = v47 = v10;
-    v49 = [v7 threadPriority];
+    threadPriority5 = [eventCopy threadPriority];
     *buf = 138544642;
     v56 = v54;
     v57 = 2114;
     v58 = v48;
     v59 = 1024;
-    v60 = v49;
+    threadPriority = threadPriority5;
     v61 = 2114;
     v62 = v26;
     v63 = 1024;
-    *v64 = v52;
+    *v64 = bOOLValue2;
     *&v64[4] = 1024;
-    *&v64[6] = v51;
+    *&v64[6] = bOOLValue3;
     _os_log_impl(&dword_1C5C61000, v44, OS_LOG_TYPE_DEFAULT, "|%{public}@ %{public}@ %2i %{public}@  ╰ private-listening: %{BOOL}u; explicitContentAllowed: %{BOOL}u", buf, 0x32u);
 
     v10 = v47;
-    v8 = v46;
+    subscriptionCopy = v46;
     v13 = v45;
   }
 
   return 1;
 }
 
-- (void)_chartWithLevel:(void *)a1 type:
+- (void)_chartWithLevel:(void *)level type:
 {
-  v1 = a1;
-  if (a1)
+  levelCopy = level;
+  if (level)
   {
     v2 = MSVTimelineChartPrefix();
-    v3 = v1[8];
+    v3 = levelCopy[8];
     if (v3 == 2)
     {
       v4 = @"🟧";
@@ -300,7 +300,7 @@ LABEL_9:
       v5 = @"🟥";
     }
 
-    if (*(v1 + 56))
+    if (*(levelCopy + 56))
     {
       v6 = v5;
     }
@@ -311,16 +311,16 @@ LABEL_9:
     }
 
     v7 = v6;
-    v1 = [(__CFString *)v7 stringByAppendingString:v2];
+    levelCopy = [(__CFString *)v7 stringByAppendingString:v2];
   }
 
-  return v1;
+  return levelCopy;
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  streamCopy = stream;
   subscription = self->_subscription;
   self->_subscription = 0;
 
@@ -335,14 +335,14 @@ LABEL_9:
     MSVGetProcessLaunchTime();
     v10 = [v9 dateWithTimeIntervalSince1970:?];
     v11 = [v8 stringFromDate:v10];
-    v12 = [v4 streamID];
-    v13 = [MEMORY[0x1E696AAE8] mainBundle];
-    v14 = [v13 infoDictionary];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
+    streamID = [streamCopy streamID];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v15 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
     v16 = 138544130;
     v17 = v11;
     v18 = 2114;
-    v19 = v12;
+    v19 = streamID;
     v20 = 2114;
     v21 = v15;
     v22 = 1024;
@@ -351,7 +351,7 @@ LABEL_9:
   }
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
   v3 = MEMORY[0x1EEE9AC00](self);
   v5 = v4;
@@ -368,14 +368,14 @@ LABEL_9:
     MSVGetProcessLaunchTime();
     v11 = [v10 dateWithTimeIntervalSince1970:?];
     v12 = [v9 stringFromDate:v11];
-    v13 = [v7 streamID];
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 infoDictionary];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
+    streamID = [v7 streamID];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v16 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
     *buf = 138544130;
     v401 = v12;
     v402 = 2114;
-    v403 = v13;
+    v403 = streamID;
     v404 = 2114;
     v405 = v16;
     v406 = 1024;
@@ -14217,18 +14217,18 @@ LABEL_16:
   return 1;
 }
 
-- (void)_updateChartWithEvent:(uint64_t)a1
+- (void)_updateChartWithEvent:(uint64_t)event
 {
   v62[2] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (event)
   {
-    v5 = [v3 type];
+    type = [v3 type];
     v62[0] = @"remote-control-begin";
     v62[1] = @"shared-session-synchronization-begin";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
-    v7 = [v6 containsObject:v5];
+    v7 = [v6 containsObject:type];
 
     if (v7)
     {
@@ -14240,27 +14240,27 @@ LABEL_16:
       v61[0] = @"remote-control-end";
       v61[1] = @"shared-session-synchronization-end";
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
-      v10 = [v9 containsObject:v5];
+      v10 = [v9 containsObject:type];
 
       if ((v10 & 1) == 0)
       {
         v60 = @"session-begin";
         v8 = 1;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v60 count:1];
-        v23 = [v22 containsObject:v5];
+        v23 = [v22 containsObject:type];
 
         if ((v23 & 1) == 0)
         {
           v59 = @"session-end";
           v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
-          v25 = [v24 containsObject:v5];
+          v25 = [v24 containsObject:type];
 
           if ((v25 & 1) == 0)
           {
             v58[0] = @"container-begin";
             v58[1] = @"item-placeholder-begin";
             v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-            v30 = [v29 containsObject:v5];
+            v30 = [v29 containsObject:type];
 
             if (v30)
             {
@@ -14272,73 +14272,73 @@ LABEL_16:
               v57[0] = @"container-end";
               v57[1] = @"item-placeholder-end";
               v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
-              v32 = [v31 containsObject:v5];
+              v32 = [v31 containsObject:type];
 
               if ((v32 & 1) == 0)
               {
                 v56 = @"item-begin";
                 v8 = 1;
                 v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-                v36 = [v35 containsObject:v5];
+                v36 = [v35 containsObject:type];
 
                 if ((v36 & 1) == 0)
                 {
                   v55 = @"item-end";
                   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
-                  v38 = [v37 containsObject:v5];
+                  v38 = [v37 containsObject:type];
 
                   if ((v38 & 1) == 0)
                   {
                     v54 = @"asset-load-begin";
                     v8 = 1;
                     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
-                    v43 = [v42 containsObject:v5];
+                    v43 = [v42 containsObject:type];
 
                     if ((v43 & 1) == 0)
                     {
                       v53 = @"asset-load-end";
                       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-                      v45 = [v44 containsObject:v5];
+                      v45 = [v44 containsObject:type];
 
                       if ((v45 & 1) == 0)
                       {
                         v52 = @"network-task-begin";
                         v8 = 1;
                         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
-                        v47 = [v46 containsObject:v5];
+                        v47 = [v46 containsObject:type];
 
                         if ((v47 & 1) == 0)
                         {
                           v51 = @"network-task-end";
                           v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
-                          v49 = [v48 containsObject:v5];
+                          v49 = [v48 containsObject:type];
 
                           if (!v49)
                           {
 LABEL_8:
-                            v12 = [v4 payload];
-                            v13 = [v12 objectForKeyedSubscript:@"time-control-status"];
+                            payload = [v4 payload];
+                            v13 = [payload objectForKeyedSubscript:@"time-control-status"];
 
                             if (v13)
                             {
-                              v14 = [v4 payload];
-                              v15 = [v14 objectForKeyedSubscript:@"time-control-status"];
-                              *(a1 + 64) = [v15 integerValue];
+                              payload2 = [v4 payload];
+                              v15 = [payload2 objectForKeyedSubscript:@"time-control-status"];
+                              *(event + 64) = [v15 integerValue];
                             }
 
-                            if (v5 == @"remote-control-begin" || [(__CFString *)v5 isEqual:@"remote-control-begin"])
+                            if (type == @"remote-control-begin" || [(__CFString *)type isEqual:@"remote-control-begin"])
                             {
-                              v16 = [v4 payload];
-                              v17 = [v16 objectForKeyedSubscript:@"remote-control-type"];
-                              v18 = [v17 integerValue];
+                              payload3 = [v4 payload];
+                              v17 = [payload3 objectForKeyedSubscript:@"remote-control-type"];
+                              integerValue = [v17 integerValue];
 
-                              if (v18 <= 120)
+                              if (integerValue <= 120)
                               {
-                                if (v18 <= 1)
+                                if (integerValue <= 1)
                                 {
-                                  if (v18)
+                                  if (integerValue)
                                   {
-                                    if (v18 != 1)
+                                    if (integerValue != 1)
                                     {
                                       goto LABEL_43;
                                     }
@@ -14347,13 +14347,13 @@ LABEL_8:
                                   }
 
 LABEL_34:
-                                  *(a1 + 56) = 1;
+                                  *(event + 56) = 1;
                                   goto LABEL_43;
                                 }
 
-                                if (v18 != 2)
+                                if (integerValue != 2)
                                 {
-                                  if (v18 != 3)
+                                  if (integerValue != 3)
                                   {
 LABEL_43:
 
@@ -14361,21 +14361,21 @@ LABEL_43:
                                   }
 
 LABEL_31:
-                                  *(a1 + 56) = 0;
+                                  *(event + 56) = 0;
                                   goto LABEL_43;
                                 }
 
-                                *(a1 + 56) ^= 1u;
+                                *(event + 56) ^= 1u;
 LABEL_42:
-                                *(a1 + 57) = 0;
+                                *(event + 57) = 0;
                                 goto LABEL_43;
                               }
 
-                              if (v18 > 130)
+                              if (integerValue > 130)
                               {
-                                if (v18 != 133)
+                                if (integerValue != 133)
                                 {
-                                  if (v18 != 131)
+                                  if (integerValue != 131)
                                   {
                                     goto LABEL_43;
                                   }
@@ -14386,31 +14386,31 @@ LABEL_42:
 
                               else
                               {
-                                if (v18 == 121)
+                                if (integerValue == 121)
                                 {
                                   goto LABEL_34;
                                 }
 
-                                if (v18 != 122)
+                                if (integerValue != 122)
                                 {
                                   goto LABEL_43;
                                 }
                               }
 
-                              v26 = [v4 payload];
-                              v27 = [v26 objectForKeyedSubscript:@"remote-control-queue-start"];
-                              *(a1 + 56) = [v27 BOOLValue];
+                              payload4 = [v4 payload];
+                              v27 = [payload4 objectForKeyedSubscript:@"remote-control-queue-start"];
+                              *(event + 56) = [v27 BOOLValue];
                             }
 
                             else
                             {
-                              if (v5 == @"audio-route-changed" || [(__CFString *)v5 isEqual:@"audio-route-changed"])
+                              if (type == @"audio-route-changed" || [(__CFString *)type isEqual:@"audio-route-changed"])
                               {
-                                v19 = [v4 payload];
-                                v20 = [v19 objectForKeyedSubscript:@"route-should-pause"];
-                                v21 = [v20 BOOLValue];
+                                payload5 = [v4 payload];
+                                v20 = [payload5 objectForKeyedSubscript:@"route-should-pause"];
+                                bOOLValue = [v20 BOOLValue];
 
-                                if (!v21)
+                                if (!bOOLValue)
                                 {
                                   goto LABEL_43;
                                 }
@@ -14418,43 +14418,43 @@ LABEL_42:
                                 goto LABEL_31;
                               }
 
-                              if (v5 != @"item-rate-changed" && ![(__CFString *)v5 isEqual:@"item-rate-changed"])
+                              if (type != @"item-rate-changed" && ![(__CFString *)type isEqual:@"item-rate-changed"])
                               {
                                 v50[0] = @"session-reset";
                                 v50[1] = @"media-server-died";
                                 v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
-                                v34 = [v33 containsObject:v5];
+                                v34 = [v33 containsObject:type];
 
                                 if (v34)
                                 {
                                   goto LABEL_31;
                                 }
 
-                                if ((v5 == @"interrupt-begin" || [(__CFString *)v5 isEqual:@"interrupt-begin"]) && *(a1 + 56) == 1)
+                                if ((type == @"interrupt-begin" || [(__CFString *)type isEqual:@"interrupt-begin"]) && *(event + 56) == 1)
                                 {
-                                  *(a1 + 56) = 256;
+                                  *(event + 56) = 256;
                                   goto LABEL_43;
                                 }
 
-                                if (v5 != @"interrupt-end" && ![(__CFString *)v5 isEqual:@"interrupt-end"]|| *(a1 + 57) != 1)
+                                if (type != @"interrupt-end" && ![(__CFString *)type isEqual:@"interrupt-end"]|| *(event + 57) != 1)
                                 {
                                   goto LABEL_43;
                                 }
 
-                                v39 = [v4 payload];
-                                v40 = [v39 objectForKeyedSubscript:@"interrupt-should-resume"];
-                                v41 = [v40 BOOLValue];
+                                payload6 = [v4 payload];
+                                v40 = [payload6 objectForKeyedSubscript:@"interrupt-should-resume"];
+                                bOOLValue2 = [v40 BOOLValue];
 
-                                *(a1 + 56) = v41;
+                                *(event + 56) = bOOLValue2;
                                 goto LABEL_42;
                               }
 
-                              v28 = [v4 payload];
-                              v26 = [v28 objectForKeyedSubscript:@"item-rate-change-participant-id"];
+                              payload7 = [v4 payload];
+                              payload4 = [payload7 objectForKeyedSubscript:@"item-rate-change-participant-id"];
 
-                              if ([v26 length])
+                              if ([payload4 length])
                               {
-                                *(a1 + 56) = 0;
+                                *(event + 56) = 0;
                               }
                             }
 
@@ -14466,7 +14466,7 @@ LABEL_42:
 
                         v11 = 48;
 LABEL_7:
-                        *(a1 + v11) += v8;
+                        *(event + v11) += v8;
                         goto LABEL_8;
                       }
 

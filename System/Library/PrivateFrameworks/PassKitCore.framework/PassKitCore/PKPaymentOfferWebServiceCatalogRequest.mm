@@ -1,18 +1,18 @@
 @interface PKPaymentOfferWebServiceCatalogRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentOfferWebServiceCatalogRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (baseURL)
   {
-    if (v4)
+    if (informationCopy)
     {
       v15 = @"paymentOfferCatalog";
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];

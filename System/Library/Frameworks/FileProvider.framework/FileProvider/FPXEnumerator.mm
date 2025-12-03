@@ -1,16 +1,16 @@
 @interface FPXEnumerator
-- (FPXEnumerator)initWithObservedItemID:(id)a3 domainContext:(id)a4 vendorEnumerator:(id)a5 nsFileProviderRequest:(id)a6 observer:(id)a7 isWorkingSetEnum:(BOOL)a8 queue:(id)a9;
+- (FPXEnumerator)initWithObservedItemID:(id)d domainContext:(id)context vendorEnumerator:(id)enumerator nsFileProviderRequest:(id)request observer:(id)observer isWorkingSetEnum:(BOOL)enum queue:(id)queue;
 - (NSString)description;
 - (id)vendorEnumerator;
 - (void)_invalidate;
-- (void)alternateContentsWereUpdatedAtURL:(id)a3 forItem:(id)a4;
-- (void)currentSyncAnchorWithCompletion:(id)a3;
+- (void)alternateContentsWereUpdatedAtURL:(id)l forItem:(id)item;
+- (void)currentSyncAnchorWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)enumerateChangesFromToken:(id)a3 suggestedBatchSize:(int64_t)a4 reply:(id)a5;
-- (void)enumerateItemsFromPage:(id)a3 suggestedPageSize:(int64_t)a4 reply:(id)a5;
-- (void)enumerateItemsFromPage:(id)a3 suggestedPageSize:(int64_t)a4 upTo:(int64_t)a5 reply:(id)a6;
-- (void)forceAddFileURLsForItems:(id)a3;
-- (void)forceItemUpdate:(id)a3;
+- (void)enumerateChangesFromToken:(id)token suggestedBatchSize:(int64_t)size reply:(id)reply;
+- (void)enumerateItemsFromPage:(id)page suggestedPageSize:(int64_t)size reply:(id)reply;
+- (void)enumerateItemsFromPage:(id)page suggestedPageSize:(int64_t)size upTo:(int64_t)to reply:(id)reply;
+- (void)forceAddFileURLsForItems:(id)items;
+- (void)forceItemUpdate:(id)update;
 - (void)invalidate;
 - (void)invalidateVendorEnumeration;
 @end
@@ -27,10 +27,10 @@
 
 - (id)vendorEnumerator
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_vendorEnumerator;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_vendorEnumerator;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -41,25 +41,25 @@
   v3 = [(FPXDomainContext *)self->_domainContext log];
   v4 = fpfs_adopt_log(v3);
 
-  v5 = [(FPXDomainContext *)self->_domainContext domain];
-  v6 = [v5 personaIdentifier];
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v8 = [v7 currentPersona];
-  v9 = [v8 userPersonaUniqueString];
-  if ([v6 isEqualToString:v9])
+  domain = [(FPXDomainContext *)self->_domainContext domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
     [MEMORY[0x1E69DF068] sharedManager];
-    v10 = v17 = v5;
-    v11 = [v10 currentPersona];
-    v16 = [v11 userPersonaUniqueString];
-    v12 = [(FPXDomainContext *)self->_domainContext domain];
-    v13 = [v12 personaIdentifier];
+    v10 = v17 = domain;
+    currentPersona2 = [v10 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [(FPXDomainContext *)self->_domainContext domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
 
-    if (v16 != v13)
+    if (userPersonaUniqueString2 != personaIdentifier2)
     {
       v15 = fp_current_or_default_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -71,8 +71,8 @@
     }
   }
 
-  v14 = [(FPXDomainContext *)self->_domainContext extensionContext];
-  [v14 enumeratorWasInvalidated:self];
+  extensionContext = [(FPXDomainContext *)self->_domainContext extensionContext];
+  [extensionContext enumeratorWasInvalidated:self];
 
   [(FPXEnumerator *)self invalidateVendorEnumeration];
 }
@@ -80,33 +80,33 @@
 - (void)invalidateVendorEnumeration
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_vendorEnumerator)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_vendorEnumerator)
   {
     section = __fp_create_section();
     v8 = section;
     v4 = fp_current_or_default_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      vendorEnumerator = v2->_vendorEnumerator;
+      vendorEnumerator = selfCopy->_vendorEnumerator;
       *buf = 134218498;
       v10 = section;
       v11 = 2112;
-      v12 = v2;
+      v12 = selfCopy;
       v13 = 2112;
       v14 = vendorEnumerator;
       _os_log_debug_impl(&dword_1AAAE1000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@: invalidating vendor enumeration: %@", buf, 0x20u);
     }
 
-    [(NSFileProviderEnumerator *)v2->_vendorEnumerator invalidate];
-    v5 = v2->_vendorEnumerator;
-    v2->_vendorEnumerator = 0;
+    [(NSFileProviderEnumerator *)selfCopy->_vendorEnumerator invalidate];
+    v5 = selfCopy->_vendorEnumerator;
+    selfCopy->_vendorEnumerator = 0;
 
     __fp_leave_section_Debug(&v8);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -130,62 +130,62 @@
   dispatch_async(queue, block);
 }
 
-- (FPXEnumerator)initWithObservedItemID:(id)a3 domainContext:(id)a4 vendorEnumerator:(id)a5 nsFileProviderRequest:(id)a6 observer:(id)a7 isWorkingSetEnum:(BOOL)a8 queue:(id)a9
+- (FPXEnumerator)initWithObservedItemID:(id)d domainContext:(id)context vendorEnumerator:(id)enumerator nsFileProviderRequest:(id)request observer:(id)observer isWorkingSetEnum:(BOOL)enum queue:(id)queue
 {
-  v15 = a3;
-  v16 = a4;
-  obj = a5;
-  v17 = a5;
-  v60 = a6;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  dCopy = d;
+  contextCopy = context;
+  obj = enumerator;
+  enumeratorCopy = enumerator;
+  requestCopy = request;
+  requestCopy2 = request;
+  observerCopy = observer;
+  queueCopy = queue;
   v65.receiver = self;
   v65.super_class = FPXEnumerator;
   v21 = [(FPXEnumerator *)&v65 init];
   v22 = v21;
   if (v21)
   {
-    v55 = a3;
-    v56 = v20;
-    v57 = v18;
-    v58 = v17;
-    v54 = v15;
-    objc_storeStrong(&v21->_domainContext, a4);
+    dCopy2 = d;
+    v56 = queueCopy;
+    v57 = requestCopy2;
+    v58 = enumeratorCopy;
+    v54 = dCopy;
+    objc_storeStrong(&v21->_domainContext, context);
     v23 = [(FPXDomainContext *)v22->_domainContext log];
     v24 = fpfs_adopt_log(v23);
 
-    v25 = [(FPXDomainContext *)v22->_domainContext domain];
-    v26 = [v25 personaIdentifier];
-    if (v26)
+    domain = [(FPXDomainContext *)v22->_domainContext domain];
+    personaIdentifier = [domain personaIdentifier];
+    if (personaIdentifier)
     {
-      v27 = v26;
+      v27 = personaIdentifier;
       [(FPXDomainContext *)v22->_domainContext domain];
-      v28 = v52 = a7;
+      v28 = v52 = observer;
       [v28 personaIdentifier];
-      v29 = v53 = v19;
+      v29 = v53 = observerCopy;
       [MEMORY[0x1E69DF068] sharedManager];
-      v31 = v30 = v16;
-      v32 = [v31 currentPersona];
-      v33 = [v32 userPersonaUniqueString];
-      v34 = [v29 isEqualToString:v33];
+      v31 = v30 = contextCopy;
+      currentPersona = [v31 currentPersona];
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+      v34 = [v29 isEqualToString:userPersonaUniqueString];
 
-      v16 = v30;
-      v19 = v53;
+      contextCopy = v30;
+      observerCopy = v53;
 
-      a7 = v52;
+      observer = v52;
       if ((v34 & 1) == 0)
       {
         v35 = MEMORY[0x1E696AEC0];
-        v36 = [MEMORY[0x1E69DF068] sharedManager];
-        v37 = [v36 currentPersona];
-        v38 = [v37 userPersonaUniqueString];
-        v39 = [MEMORY[0x1E69DF068] sharedManager];
-        v40 = [v39 currentPersona];
-        v41 = [v40 uid];
-        v42 = [(FPXDomainContext *)v22->_domainContext domain];
-        v43 = [v42 personaIdentifier];
-        v44 = [v35 stringWithFormat:@"unexpected persona %@ (%i) instead of expected %@", v38, v41, v43];
+        mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona2 = [mEMORY[0x1E69DF068] currentPersona];
+        userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+        mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona3 = [mEMORY[0x1E69DF068]2 currentPersona];
+        v41 = [currentPersona3 uid];
+        domain2 = [(FPXDomainContext *)v22->_domainContext domain];
+        personaIdentifier2 = [domain2 personaIdentifier];
+        v44 = [v35 stringWithFormat:@"unexpected persona %@ (%i) instead of expected %@", userPersonaUniqueString2, v41, personaIdentifier2];
 
         v45 = fp_current_or_default_log();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
@@ -202,25 +202,25 @@
     }
 
     objc_storeStrong(&v22->_vendorEnumerator, obj);
-    objc_storeStrong(&v22->_nsFileProviderRequest, v60);
-    v22->_isWorkingSetEnum = a8;
-    objc_storeStrong(&v22->_queue, a9);
-    v46 = [v16 log];
+    objc_storeStrong(&v22->_nsFileProviderRequest, requestCopy);
+    v22->_isWorkingSetEnum = enum;
+    objc_storeStrong(&v22->_queue, queue);
+    v46 = [contextCopy log];
     log = v22->_log;
     v22->_log = v46;
 
     objc_initWeak(&location, v22);
-    v18 = v57;
-    v17 = v58;
-    v20 = v56;
-    if ([v19 conformsToProtocol:&unk_1F1FEBA40])
+    requestCopy2 = v57;
+    enumeratorCopy = v58;
+    queueCopy = v56;
+    if ([observerCopy conformsToProtocol:&unk_1F1FEBA40])
     {
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __125__FPXEnumerator_initWithObservedItemID_domainContext_vendorEnumerator_nsFileProviderRequest_observer_isWorkingSetEnum_queue___block_invoke;
       v62[3] = &unk_1E793BC58;
       objc_copyWeak(&v63, &location);
-      v48 = [v19 remoteObjectProxyWithErrorHandler:v62];
+      v48 = [observerCopy remoteObjectProxyWithErrorHandler:v62];
       observer = v22->_observer;
       v22->_observer = v48;
 
@@ -229,10 +229,10 @@
 
     else
     {
-      objc_storeStrong(&v22->_observer, a7);
+      objc_storeStrong(&v22->_observer, observer);
     }
 
-    objc_storeStrong(&v22->_observedItemID, v55);
+    objc_storeStrong(&v22->_observedItemID, dCopy2);
     v50 = fp_current_or_default_log();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
     {
@@ -240,7 +240,7 @@
     }
 
     objc_destroyWeak(&location);
-    v15 = v54;
+    dCopy = v54;
   }
 
   return v22;
@@ -258,25 +258,25 @@ void __125__FPXEnumerator_initWithObservedItemID_domainContext_vendorEnumerator_
   [WeakRetained invalidate];
 }
 
-- (void)forceItemUpdate:(id)a3
+- (void)forceItemUpdate:(id)update
 {
-  v4 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:a3];
+  v4 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:update];
   [(FPXEnumeratorObserver *)self->_observer didUpdateItem:v4];
 }
 
-- (void)forceAddFileURLsForItems:(id)a3
+- (void)forceAddFileURLsForItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FPXDomainContext *)self->_domainContext v2Instance];
-  v6 = v5;
-  if (self->_isWorkingSetEnum && v5 != 0)
+  itemsCopy = items;
+  v2Instance = [(FPXDomainContext *)self->_domainContext v2Instance];
+  v6 = v2Instance;
+  if (self->_isWorkingSetEnum && v2Instance != 0)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v4;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -292,12 +292,12 @@ void __125__FPXEnumerator_initWithObservedItemID_domainContext_vendorEnumerator_
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 fileURL];
+          fileURL = [v13 fileURL];
 
-          if (!v14)
+          if (!fileURL)
           {
-            v15 = [v13 itemIdentifier];
-            v16 = [v6 URLForItemWithPersistentIdentifier:v15];
+            itemIdentifier = [v13 itemIdentifier];
+            v16 = [v6 URLForItemWithPersistentIdentifier:itemIdentifier];
             [v13 setFileURL:v16];
           }
         }
@@ -312,17 +312,17 @@ void __125__FPXEnumerator_initWithObservedItemID_domainContext_vendorEnumerator_
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentSyncAnchorWithCompletion:(id)a3
+- (void)currentSyncAnchorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FPXEnumerator_currentSyncAnchorWithCompletion___block_invoke;
   v7[3] = &unk_1E7939128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   fp_dispatch_async_with_logs(queue, v7);
 }
 
@@ -486,21 +486,21 @@ void __49__FPXEnumerator_currentSyncAnchorWithCompletion___block_invoke_175(uint
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateItemsFromPage:(id)a3 suggestedPageSize:(int64_t)a4 reply:(id)a5
+- (void)enumerateItemsFromPage:(id)page suggestedPageSize:(int64_t)size reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  pageCopy = page;
+  replyCopy = reply;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__FPXEnumerator_enumerateItemsFromPage_suggestedPageSize_reply___block_invoke;
   v13[3] = &unk_1E7939968;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = pageCopy;
+  v15 = replyCopy;
+  sizeCopy = size;
+  v11 = replyCopy;
+  v12 = pageCopy;
   fp_dispatch_async_with_logs(queue, v13);
 }
 
@@ -818,22 +818,22 @@ void __64__FPXEnumerator_enumerateItemsFromPage_suggestedPageSize_reply___block_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateItemsFromPage:(id)a3 suggestedPageSize:(int64_t)a4 upTo:(int64_t)a5 reply:(id)a6
+- (void)enumerateItemsFromPage:(id)page suggestedPageSize:(int64_t)size upTo:(int64_t)to reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  pageCopy = page;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__FPXEnumerator_enumerateItemsFromPage_suggestedPageSize_upTo_reply___block_invoke;
   v14[3] = &unk_1E793BD20;
-  v16 = v11;
-  v17 = a5;
+  v16 = replyCopy;
+  toCopy = to;
   v14[4] = self;
-  v15 = v10;
-  v18 = a4;
-  v12 = v10;
-  v13 = v11;
-  [(FPXEnumerator *)self enumerateItemsFromPage:v12 suggestedPageSize:a4 reply:v14];
+  v15 = pageCopy;
+  sizeCopy = size;
+  v12 = pageCopy;
+  v13 = replyCopy;
+  [(FPXEnumerator *)self enumerateItemsFromPage:v12 suggestedPageSize:size reply:v14];
 }
 
 void __69__FPXEnumerator_enumerateItemsFromPage_suggestedPageSize_upTo_reply___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6)
@@ -906,22 +906,22 @@ void __69__FPXEnumerator_enumerateItemsFromPage_suggestedPageSize_upTo_reply___b
   (*(v4 + 16))(v4, v7, v6);
 }
 
-- (void)enumerateChangesFromToken:(id)a3 suggestedBatchSize:(int64_t)a4 reply:(id)a5
+- (void)enumerateChangesFromToken:(id)token suggestedBatchSize:(int64_t)size reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
+  tokenCopy = token;
+  replyCopy = reply;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__FPXEnumerator_enumerateChangesFromToken_suggestedBatchSize_reply___block_invoke;
   v14[3] = &unk_1E793BD70;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
+  v15 = tokenCopy;
+  selfCopy = self;
+  v17 = replyCopy;
   v18 = a2;
-  v19 = a4;
-  v12 = v10;
-  v13 = v9;
+  sizeCopy = size;
+  v12 = replyCopy;
+  v13 = tokenCopy;
   fp_dispatch_async_with_logs(queue, v14);
 }
 
@@ -1111,11 +1111,11 @@ void __68__FPXEnumerator_enumerateChangesFromToken_suggestedBatchSize_reply___bl
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)alternateContentsWereUpdatedAtURL:(id)a3 forItem:(id)a4
+- (void)alternateContentsWereUpdatedAtURL:(id)l forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[FPXEnumeratorAlternateContentsItem alloc] initWithOriginalDocumentItem:v7 alternateContentsURL:v6];
+  lCopy = l;
+  itemCopy = item;
+  v8 = [[FPXEnumeratorAlternateContentsItem alloc] initWithOriginalDocumentItem:itemCopy alternateContentsURL:lCopy];
 
   v9 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:v8];
   if (v9)

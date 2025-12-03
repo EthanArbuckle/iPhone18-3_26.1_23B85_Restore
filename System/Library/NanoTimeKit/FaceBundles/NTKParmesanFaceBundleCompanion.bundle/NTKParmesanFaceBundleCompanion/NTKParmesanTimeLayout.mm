@@ -1,13 +1,13 @@
 @interface NTKParmesanTimeLayout
 + (NTKParmesanTimeLayout)default;
-+ (void)setDefault:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)setDefault:(id)default;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedTimeRectWithoutComplications;
 - (NSString)localizedAlignmentDisplayString;
 - (NSString)localizedScaleDisplayString;
 - (NTKParmesanTimeLayout)init;
-- (NTKParmesanTimeLayout)initWithAlignment:(int64_t)a3 scale:(int64_t)a4;
-- (id)copyWithZone:(void *)a3;
+- (NTKParmesanTimeLayout)initWithAlignment:(int64_t)alignment scale:(int64_t)scale;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)_complicationAlignment;
 - (int64_t)hash;
 - (int64_t)textAlignment;
@@ -49,25 +49,25 @@
   return v3;
 }
 
-+ (void)setDefault:(id)a3
++ (void)setDefault:(id)default
 {
   v3 = qword_27E1DFD78;
-  v4 = a3;
+  defaultCopy = default;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = defaultCopy;
     swift_once();
-    v4 = v6;
+    defaultCopy = v6;
   }
 
   v5 = qword_27E1EB458;
-  qword_27E1EB458 = v4;
+  qword_27E1EB458 = defaultCopy;
 }
 
-- (NTKParmesanTimeLayout)initWithAlignment:(int64_t)a3 scale:(int64_t)a4
+- (NTKParmesanTimeLayout)initWithAlignment:(int64_t)alignment scale:(int64_t)scale
 {
-  *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_alignment) = a3;
-  *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_scale) = a4;
+  *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_alignment) = alignment;
+  *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_scale) = scale;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ParmesanTimeLayout();
   return [(NTKParmesanTimeLayout *)&v5 init];
@@ -75,7 +75,7 @@
 
 - (int64_t)textAlignment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BF6C3F4();
 
   return v3;
@@ -88,11 +88,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -101,7 +101,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23BF6CB64(v8);
@@ -118,7 +118,7 @@
   return sub_23BFFADE0();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_alignment);
   v4 = *(&self->super.isa + OBJC_IVAR___NTKParmesanTimeLayout_scale);
@@ -141,7 +141,7 @@
 
 - (NSString)localizedAlignmentDisplayString
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF86794();
 
   v3 = sub_23BFFA2C0();
@@ -151,7 +151,7 @@
 
 - (CGRect)normalizedTimeRectWithoutComplications
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFE57F4();
   v4 = v3;
   v6 = v5;

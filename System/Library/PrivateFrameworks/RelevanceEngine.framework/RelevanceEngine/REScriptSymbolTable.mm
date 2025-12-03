@@ -1,26 +1,26 @@
 @interface REScriptSymbolTable
-- (BOOL)define:(id)a3 type:(unint64_t)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)setNodeValue:(id)a3 forDefinition:(id)a4 error:(id *)a5;
-- (BOOL)setObjectValue:(id)a3 forDefinition:(id)a4 error:(id *)a5;
-- (BOOL)typeForDefinition:(id)a3 type:(unint64_t *)a4;
-- (REScriptSymbolTable)initWithParentScope:(id)a3;
-- (id)nodeValueForDefinition:(id)a3;
-- (id)objectValueForDefinition:(id)a3;
-- (void)_enumerateObjectsOfType:(unint64_t)a3 usingBlock:(id)a4;
+- (BOOL)define:(id)define type:(unint64_t)type options:(id)options error:(id *)error;
+- (BOOL)setNodeValue:(id)value forDefinition:(id)definition error:(id *)error;
+- (BOOL)setObjectValue:(id)value forDefinition:(id)definition error:(id *)error;
+- (BOOL)typeForDefinition:(id)definition type:(unint64_t *)type;
+- (REScriptSymbolTable)initWithParentScope:(id)scope;
+- (id)nodeValueForDefinition:(id)definition;
+- (id)objectValueForDefinition:(id)definition;
+- (void)_enumerateObjectsOfType:(unint64_t)type usingBlock:(id)block;
 @end
 
 @implementation REScriptSymbolTable
 
-- (REScriptSymbolTable)initWithParentScope:(id)a3
+- (REScriptSymbolTable)initWithParentScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v18.receiver = self;
   v18.super_class = REScriptSymbolTable;
   v5 = [(REScriptSymbolTable *)&v18 init];
   if (v5)
   {
-    v6 = v4;
-    v4 = v6;
+    v6 = scopeCopy;
+    scopeCopy = v6;
     if (v6)
     {
       v13 = v6;
@@ -37,7 +37,7 @@
 
       RERaiseInternalException(*MEMORY[0x277CBE660], @"Table cannot be it's own parent", v7, v8, v9, v10, v11, v12, v18.receiver);
 
-      v4 = 0;
+      scopeCopy = 0;
     }
 
     else
@@ -46,42 +46,42 @@
     }
 
 LABEL_9:
-    objc_storeStrong(&v5->_parentTable, v4);
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v5->_parentTable, scopeCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     definitions = v5->_definitions;
-    v5->_definitions = v15;
+    v5->_definitions = dictionary;
   }
 
   return v5;
 }
 
-- (BOOL)define:(id)a3 type:(unint64_t)a4 options:(id)a5 error:(id *)a6
+- (BOOL)define:(id)define type:(unint64_t)type options:(id)options error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = MEMORY[0x277CBEC10];
-  if (a5)
+  defineCopy = define;
+  optionsCopy = MEMORY[0x277CBEC10];
+  if (options)
   {
-    v11 = a5;
+    optionsCopy = options;
   }
 
-  v12 = v11;
-  v13 = [v10 value];
-  v14 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v13];
+  v12 = optionsCopy;
+  value = [defineCopy value];
+  v14 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:value];
   v15 = v14;
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(_RESymbolDefinition *)v14 name];
-      v18 = [v16 stringWithFormat:@"Symbol %@ already defined.", v17];
+      name = [(_RESymbolDefinition *)v14 name];
+      v18 = [v16 stringWithFormat:@"Symbol %@ already defined.", name];
 
       v24 = @"REErrorTokenKey";
-      v19 = [(_RESymbolDefinition *)v15 token];
-      v25[0] = v19;
+      token = [(_RESymbolDefinition *)v15 token];
+      v25[0] = token;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-      *a6 = RECreateErrorWithCodeMessageAndUseInfo(206, v18, v20);
+      *error = RECreateErrorWithCodeMessageAndUseInfo(206, v18, v20);
     }
 
     v21 = v15;
@@ -89,114 +89,114 @@ LABEL_9:
 
   else
   {
-    v21 = [[_RESymbolDefinition alloc] initWithToken:v10 type:a4 options:v12];
-    [(NSMutableDictionary *)self->_definitions setObject:v21 forKeyedSubscript:v13];
+    v21 = [[_RESymbolDefinition alloc] initWithToken:defineCopy type:type options:v12];
+    [(NSMutableDictionary *)self->_definitions setObject:v21 forKeyedSubscript:value];
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return v15 == 0;
 }
 
-- (BOOL)setNodeValue:(id)a3 forDefinition:(id)a4 error:(id *)a5
+- (BOOL)setNodeValue:(id)value forDefinition:(id)definition error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v9];
+  valueCopy = value;
+  definitionCopy = definition;
+  v10 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:definitionCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 value];
+    value = [v10 value];
 
-    if (!v12)
+    if (!value)
     {
-      [v11 setValue:v8];
-      LOBYTE(a5) = 1;
+      [v11 setValue:valueCopy];
+      LOBYTE(error) = 1;
       goto LABEL_9;
     }
 
-    if (a5)
+    if (error)
     {
       v18 = @"REErrorTokenKey";
-      v13 = [v11 value];
-      v14 = [v13 token];
-      v19[0] = v14;
+      value2 = [v11 value];
+      token = [value2 token];
+      v19[0] = token;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a5 = RECreateErrorWithCodeAndUseInfo(208, v15);
+      *error = RECreateErrorWithCodeAndUseInfo(208, v15);
 
 LABEL_7:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Symbol %@ not defined.", v9];
-    *a5 = RECreateErrorWithCodeAndMessage(207, v13);
+    value2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Symbol %@ not defined.", definitionCopy];
+    *error = RECreateErrorWithCodeAndMessage(207, value2);
     goto LABEL_7;
   }
 
 LABEL_9:
 
   v16 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)setObjectValue:(id)a3 forDefinition:(id)a4 error:(id *)a5
+- (BOOL)setObjectValue:(id)value forDefinition:(id)definition error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v9];
+  valueCopy = value;
+  definitionCopy = definition;
+  v10 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:definitionCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 objectValue];
+    objectValue = [v10 objectValue];
 
-    if (!v12)
+    if (!objectValue)
     {
-      [v11 setObjectValue:v8];
-      LOBYTE(a5) = 1;
+      [v11 setObjectValue:valueCopy];
+      LOBYTE(error) = 1;
       goto LABEL_9;
     }
 
-    if (a5)
+    if (error)
     {
       v18 = @"REErrorTokenKey";
-      v13 = [v11 value];
-      v14 = [v13 token];
-      v19[0] = v14;
+      value = [v11 value];
+      token = [value token];
+      v19[0] = token;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a5 = RECreateErrorWithCodeAndUseInfo(208, v15);
+      *error = RECreateErrorWithCodeAndUseInfo(208, v15);
 
 LABEL_7:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Symbol %@ not defined.", v9];
-    *a5 = RECreateErrorWithCodeAndMessage(207, v13);
+    value = [MEMORY[0x277CCACA8] stringWithFormat:@"Symbol %@ not defined.", definitionCopy];
+    *error = RECreateErrorWithCodeAndMessage(207, value);
     goto LABEL_7;
   }
 
 LABEL_9:
 
   v16 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)typeForDefinition:(id)a3 type:(unint64_t *)a4
+- (BOOL)typeForDefinition:(id)definition type:(unint64_t *)type
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v6];
+  definitionCopy = definition;
+  v7 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:definitionCopy];
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (type)
     {
-      *a4 = [v7 type];
+      *type = [v7 type];
     }
 
     v9 = 1;
@@ -207,7 +207,7 @@ LABEL_9:
     parentTable = self->_parentTable;
     if (parentTable)
     {
-      v9 = [(REScriptSymbolTable *)parentTable typeForDefinition:v6 type:a4];
+      v9 = [(REScriptSymbolTable *)parentTable typeForDefinition:definitionCopy type:type];
     }
 
     else
@@ -219,23 +219,23 @@ LABEL_9:
   return v9;
 }
 
-- (id)objectValueForDefinition:(id)a3
+- (id)objectValueForDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v4];
+  definitionCopy = definition;
+  v5 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:definitionCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectValue];
+    objectValue = [v5 objectValue];
 LABEL_5:
-    v9 = v7;
+    v9 = objectValue;
     goto LABEL_6;
   }
 
   parentTable = self->_parentTable;
   if (parentTable)
   {
-    v7 = [(REScriptSymbolTable *)parentTable objectValueForDefinition:v4];
+    objectValue = [(REScriptSymbolTable *)parentTable objectValueForDefinition:definitionCopy];
     goto LABEL_5;
   }
 
@@ -245,23 +245,23 @@ LABEL_6:
   return v9;
 }
 
-- (id)nodeValueForDefinition:(id)a3
+- (id)nodeValueForDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:v4];
+  definitionCopy = definition;
+  v5 = [(NSMutableDictionary *)self->_definitions objectForKeyedSubscript:definitionCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 value];
+    value = [v5 value];
 LABEL_5:
-    v9 = v7;
+    v9 = value;
     goto LABEL_6;
   }
 
   parentTable = self->_parentTable;
   if (parentTable)
   {
-    v7 = [(REScriptSymbolTable *)parentTable nodeValueForDefinition:v4];
+    value = [(REScriptSymbolTable *)parentTable nodeValueForDefinition:definitionCopy];
     goto LABEL_5;
   }
 
@@ -271,11 +271,11 @@ LABEL_6:
   return v9;
 }
 
-- (void)_enumerateObjectsOfType:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateObjectsOfType:(unint64_t)type usingBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v7 = objc_alloc_init(REDependencyGraph);
     definitions = self->_definitions;
@@ -296,12 +296,12 @@ LABEL_6:
     v28 = v11;
     [(NSMutableDictionary *)v10 enumerateKeysAndObjectsUsingBlock:v27];
     v22 = v11;
-    v12 = [(REDependencyGraph *)v11 topologicalSortedItems];
+    topologicalSortedItems = [(REDependencyGraph *)v11 topologicalSortedItems];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v13 = [topologicalSortedItems countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v13)
     {
       v14 = v13;
@@ -312,20 +312,20 @@ LABEL_6:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(topologicalSortedItems);
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          if ([v17 type] == a3)
+          if ([v17 type] == type)
           {
-            v18 = [v17 name];
-            v19 = [v17 options];
-            v20 = [v17 value];
-            v6[2](v6, v18, v19, v20);
+            name = [v17 name];
+            options = [v17 options];
+            value = [v17 value];
+            blockCopy[2](blockCopy, name, options, value);
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v14 = [topologicalSortedItems countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v14);

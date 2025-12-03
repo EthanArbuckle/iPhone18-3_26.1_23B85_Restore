@@ -1,12 +1,12 @@
 @interface AFConnectionUserInteractionAssertion
-- (AFConnectionUserInteractionAssertion)initWithCompletion:(id)a3;
+- (AFConnectionUserInteractionAssertion)initWithCompletion:(id)completion;
 @end
 
 @implementation AFConnectionUserInteractionAssertion
 
-- (AFConnectionUserInteractionAssertion)initWithCompletion:(id)a3
+- (AFConnectionUserInteractionAssertion)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12.receiver = self;
   v12.super_class = AFConnectionUserInteractionAssertion;
   v5 = [(AFConnectionUserInteractionAssertion *)&v12 init];
@@ -17,7 +17,7 @@
     v10[1] = 3221225472;
     v10[2] = __59__AFConnectionUserInteractionAssertion_initWithCompletion___block_invoke;
     v10[3] = &unk_1E73456A8;
-    v11 = v4;
+    v11 = completionCopy;
     v7 = [(AFSafetyBlock *)v6 initWithBlock:v10];
     safetyBlock = v5->_safetyBlock;
     v5->_safetyBlock = v7;

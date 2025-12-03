@@ -1,20 +1,20 @@
 @interface HFAnalyticsEnergyCategoryViewDurationEvent
-- (HFAnalyticsEnergyCategoryViewDurationEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyCategoryViewDurationEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyCategoryViewDurationEvent
 
-- (HFAnalyticsEnergyCategoryViewDurationEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyCategoryViewDurationEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"energyViewDuration"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"energyViewDuration"];
   if (!v5)
   {
     NSLog(&cfstr_Hfanalyticsene.isa);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"userHasAccessories"];
+  v6 = [dataCopy objectForKeyedSubscript:@"userHasAccessories"];
   if (!v6)
   {
     NSLog(&cfstr_Hfanalyticsene_0.isa);
@@ -44,11 +44,11 @@
   {
     v8.receiver = self;
     v8.super_class = HFAnalyticsEnergyCategoryViewDurationEvent;
-    v3 = [(HFAnalyticsEvent *)&v8 payload];
-    v4 = [v3 mutableCopy];
+    payload = [(HFAnalyticsEvent *)&v8 payload];
+    v4 = [payload mutableCopy];
 
-    v5 = [(HFAnalyticsEnergyCategoryViewDurationEvent *)self energyViewDuration];
-    [v4 setObject:v5 forKeyedSubscript:@"energyViewDuration"];
+    energyViewDuration = [(HFAnalyticsEnergyCategoryViewDurationEvent *)self energyViewDuration];
+    [v4 setObject:energyViewDuration forKeyedSubscript:@"energyViewDuration"];
 
     v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsEnergyCategoryViewDurationEvent userHasAccessories](self, "userHasAccessories")}];
     [v4 setObject:v6 forKeyedSubscript:@"energyViewUserHasAccessories"];

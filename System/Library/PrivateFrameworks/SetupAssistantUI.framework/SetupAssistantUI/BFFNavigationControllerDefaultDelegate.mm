@@ -1,38 +1,38 @@
 @interface BFFNavigationControllerDefaultDelegate
 - (BFFNavigationController)navigationController;
-- (BFFNavigationControllerDefaultDelegate)initWithNavigationController:(id)a3 stateContainer:(id)a4;
+- (BFFNavigationControllerDefaultDelegate)initWithNavigationController:(id)controller stateContainer:(id)container;
 - (HandlesNavigationControllerState)stateHandler;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation BFFNavigationControllerDefaultDelegate
 
-- (BFFNavigationControllerDefaultDelegate)initWithNavigationController:(id)a3 stateContainer:(id)a4
+- (BFFNavigationControllerDefaultDelegate)initWithNavigationController:(id)controller stateContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = BFFNavigationControllerDefaultDelegate;
   v8 = [(BFFNavigationControllerDefaultDelegate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_navigationController, v6);
-    objc_storeWeak(&v9->_stateHandler, v7);
+    objc_storeWeak(&v8->_navigationController, controllerCopy);
+    objc_storeWeak(&v9->_stateHandler, containerCopy);
   }
 
   return v9;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v32 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v26 = a4;
-  v8 = v5;
-  if (v5)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v8 = animatedCopy;
+  if (animatedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_stateHandler);
     [WeakRetained setAnimating:1];
@@ -46,10 +46,10 @@
   v27 = 0u;
   v28 = 0u;
   v11 = objc_loadWeakRetained(&self->_stateHandler);
-  v12 = [v11 observers];
+  observers = [v11 observers];
 
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = observers;
+  v13 = [observers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -64,15 +64,15 @@
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [v17 observer];
+        observer = [v17 observer];
         v19 = objc_opt_respondsToSelector();
 
-        v20 = [v17 observer];
+        observer2 = [v17 observer];
         if (v19)
         {
-          v21 = [(BFFNavigationControllerDefaultDelegate *)self navigationController];
+          navigationController = [(BFFNavigationControllerDefaultDelegate *)self navigationController];
           v22 = objc_loadWeakRetained(&self->_stateHandler);
-          [v20 navigationController:v21 willShowViewController:v26 operation:objc_msgSend(v22 animated:{"pendingShowOperation"), v8}];
+          [observer2 navigationController:navigationController willShowViewController:viewControllerCopy operation:objc_msgSend(v22 animated:{"pendingShowOperation"), v8}];
         }
 
         else
@@ -84,8 +84,8 @@
             continue;
           }
 
-          v20 = [v17 observer];
-          [v20 navigationController:v24 willShowViewController:v26 animated:v8];
+          observer2 = [v17 observer];
+          [observer2 navigationController:controllerCopy willShowViewController:viewControllerCopy animated:v8];
         }
       }
 
@@ -96,14 +96,14 @@
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v37 = a5;
+  animatedCopy = animated;
   v44 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_stateHandler);
-  v36 = [WeakRetained pendingShowOperation];
+  pendingShowOperation = [WeakRetained pendingShowOperation];
 
   v9 = objc_loadWeakRetained(&self->_stateHandler);
   [v9 setPendingShowOperation:0];
@@ -111,22 +111,22 @@
   v10 = objc_loadWeakRetained(&self->_stateHandler);
   [v10 setAnimating:0];
 
-  v38 = v7;
-  v11 = [MEMORY[0x277CCAE60] valueWithPointer:v7];
+  v38 = viewControllerCopy;
+  v11 = [MEMORY[0x277CCAE60] valueWithPointer:viewControllerCopy];
   v12 = objc_loadWeakRetained(&self->_stateHandler);
-  v13 = [v12 appearanceHandlers];
-  v14 = [v13 objectForKeyedSubscript:v11];
+  appearanceHandlers = [v12 appearanceHandlers];
+  v14 = [appearanceHandlers objectForKeyedSubscript:v11];
 
   if (v14)
   {
     v15 = objc_loadWeakRetained(&self->_stateHandler);
-    v16 = [v15 appearanceHandlers];
-    v17 = [v16 objectForKeyedSubscript:v11];
+    appearanceHandlers2 = [v15 appearanceHandlers];
+    v17 = [appearanceHandlers2 objectForKeyedSubscript:v11];
     v17[2]();
 
     v18 = objc_loadWeakRetained(&self->_stateHandler);
-    v19 = [v18 appearanceHandlers];
-    [v19 removeObjectForKey:v11];
+    appearanceHandlers3 = [v18 appearanceHandlers];
+    [appearanceHandlers3 removeObjectForKey:v11];
   }
 
   v34 = v11;
@@ -137,11 +137,11 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v21 = self;
+  selfCopy = self;
   v22 = objc_loadWeakRetained(&self->_stateHandler);
-  v23 = [v22 observers];
+  observers = [v22 observers];
 
-  v24 = [v23 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v24 = [observers countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v24)
   {
     v25 = v24;
@@ -152,18 +152,18 @@
       {
         if (*v40 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(observers);
         }
 
         v28 = *(*(&v39 + 1) + 8 * i);
-        v29 = [v28 observer];
+        observer = [v28 observer];
         v30 = objc_opt_respondsToSelector();
 
-        v31 = [v28 observer];
+        observer2 = [v28 observer];
         if (v30)
         {
-          v32 = [(BFFNavigationControllerDefaultDelegate *)v21 navigationController];
-          [v31 navigationController:v32 didShowViewController:v38 operation:v36 animated:v37];
+          navigationController = [(BFFNavigationControllerDefaultDelegate *)selfCopy navigationController];
+          [observer2 navigationController:navigationController didShowViewController:v38 operation:pendingShowOperation animated:animatedCopy];
         }
 
         else
@@ -175,12 +175,12 @@
             continue;
           }
 
-          v31 = [v28 observer];
-          [v31 navigationController:v35 didShowViewController:v38 animated:v37];
+          observer2 = [v28 observer];
+          [observer2 navigationController:controllerCopy didShowViewController:v38 animated:animatedCopy];
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v25 = [observers countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v25);

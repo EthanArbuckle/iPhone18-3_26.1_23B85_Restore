@@ -1,9 +1,9 @@
 @interface NIBluetoothAdvertisementCache
-- (BOOL)isSampleInCache:(id)a3;
+- (BOOL)isSampleInCache:(id)cache;
 - (NIBluetoothAdvertisementCache)init;
 - (NSArray)allSamples;
-- (id)cachedSamplesForIdentifier:(id)a3;
-- (void)addSample:(id)a3;
+- (id)cachedSamplesForIdentifier:(id)identifier;
+- (void)addSample:(id)sample;
 - (void)manageCacheSize;
 - (void)removeStaleSamples;
 @end
@@ -120,30 +120,30 @@
   return v5;
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  sampleCopy = sample;
+  identifier = [sampleCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     cache = self->_cache;
-    v7 = [v4 identifier];
-    v8 = [(NSMutableDictionary *)cache objectForKey:v7];
+    identifier2 = [sampleCopy identifier];
+    v8 = [(NSMutableDictionary *)cache objectForKey:identifier2];
 
     if (!v8)
     {
       v9 = self->_cache;
       v10 = +[NSMutableArray array];
-      v11 = [v4 identifier];
-      [(NSMutableDictionary *)v9 setObject:v10 forKey:v11];
+      identifier3 = [sampleCopy identifier];
+      [(NSMutableDictionary *)v9 setObject:v10 forKey:identifier3];
     }
 
     v12 = self->_cache;
-    v13 = [v4 identifier];
-    v14 = [(NSMutableDictionary *)v12 objectForKey:v13];
+    identifier4 = [sampleCopy identifier];
+    v14 = [(NSMutableDictionary *)v12 objectForKey:identifier4];
 
-    [v14 addObject:v4];
+    [v14 addObject:sampleCopy];
     [(NIBluetoothAdvertisementCache *)self removeStaleSamples];
     if ([v14 count] > self->_maximumSampleCount)
     {
@@ -161,29 +161,29 @@
   }
 }
 
-- (BOOL)isSampleInCache:(id)a3
+- (BOOL)isSampleInCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  cacheCopy = cache;
+  identifier = [cacheCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     cache = self->_cache;
-    v7 = [v4 identifier];
-    v8 = [(NSMutableDictionary *)cache objectForKey:v7];
+    identifier2 = [cacheCopy identifier];
+    v8 = [(NSMutableDictionary *)cache objectForKey:identifier2];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
     v9 = v8;
-    v5 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
-    if (v5)
+    identifier = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    if (identifier)
     {
       v10 = *v22;
       while (2)
       {
-        for (i = 0; i != v5; i = i + 1)
+        for (i = 0; i != identifier; i = i + 1)
         {
           if (*v22 != v10)
           {
@@ -191,28 +191,28 @@
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v4 channel];
-          if (v13 == [v12 channel])
+          channel = [cacheCopy channel];
+          if (channel == [v12 channel])
           {
-            [v4 rssi];
+            [cacheCopy rssi];
             v15 = v14;
             [v12 rssi];
             if (v15 == v16)
             {
-              [v4 machContinuousTimeSeconds];
+              [cacheCopy machContinuousTimeSeconds];
               v18 = v17;
               [v12 machContinuousTimeSeconds];
               if (vabdd_f64(v18, v19) < 0.001)
               {
-                LOBYTE(v5) = 1;
+                LOBYTE(identifier) = 1;
                 goto LABEL_14;
               }
             }
           }
         }
 
-        v5 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
-        if (v5)
+        identifier = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        if (identifier)
         {
           continue;
         }
@@ -224,7 +224,7 @@
 LABEL_14:
   }
 
-  return v5;
+  return identifier;
 }
 
 - (void)manageCacheSize
@@ -254,9 +254,9 @@ LABEL_14:
   }
 }
 
-- (id)cachedSamplesForIdentifier:(id)a3
+- (id)cachedSamplesForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_cache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_cache objectForKey:identifier];
   v4 = [v3 copy];
 
   return v4;

@@ -3,7 +3,7 @@
 + (BOOL)canInflectPreferredLocalization;
 + (NSInflectionRule)automaticRule;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSInflectionRule
@@ -33,7 +33,7 @@ id __33__NSInflectionRule_automaticRule__block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_opt_class();
 
@@ -46,7 +46,7 @@ id __33__NSInflectionRule_automaticRule__block_invoke()
   if (v3)
   {
 
-    LOBYTE(v3) = [a1 canInflectLanguage:v3];
+    LOBYTE(v3) = [self canInflectLanguage:v3];
   }
 
   return v3;

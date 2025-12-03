@@ -1,18 +1,18 @@
 @interface AFSiriActivationHandlerFrontendProcess
-- (AFSiriActivationHandlerFrontendProcess)initWithConnection:(id)a3;
-- (BOOL)handleContext:(id)a3 completion:(id)a4;
-- (void)_waitUntilListeningForContext:(id)a3 timeoutInterval:(double)a4 completion:(id)a5;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (AFSiriActivationHandlerFrontendProcess)initWithConnection:(id)connection;
+- (BOOL)handleContext:(id)context completion:(id)completion;
+- (void)_waitUntilListeningForContext:(id)context timeoutInterval:(double)interval completion:(id)completion;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation AFSiriActivationHandlerFrontendProcess
 
-- (void)_waitUntilListeningForContext:(id)a3 timeoutInterval:(double)a4 completion:(id)a5
+- (void)_waitUntilListeningForContext:(id)context timeoutInterval:(double)interval completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -20,16 +20,16 @@
       *buf = 136315650;
       *&buf[4] = "[AFSiriActivationHandlerFrontendProcess _waitUntilListeningForContext:timeoutInterval:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = contextCopy;
       *&buf[22] = 2048;
-      v28 = a4;
+      intervalCopy = interval;
       _os_log_impl(&dword_1912FE000, v10, OS_LOG_TYPE_INFO, "%s context = %@, timeoutInterval = %f", buf, 0x20u);
     }
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v28 = COERCE_DOUBLE(__Block_byref_object_copy__23035);
+    intervalCopy = COERCE_DOUBLE(__Block_byref_object_copy__23035);
     v29 = __Block_byref_object_dispose__23036;
     v30 = 0;
     v11 = [AFSafetyBlock alloc];
@@ -37,9 +37,9 @@
     v23[1] = 3221225472;
     v23[2] = __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_timeoutInterval_completion___block_invoke;
     v23[3] = &unk_1E7345878;
-    v25 = v9;
+    v25 = completionCopy;
     v23[4] = self;
-    v12 = v8;
+    v12 = contextCopy;
     v24 = v12;
     v26 = buf;
     v13 = [(AFSafetyBlock *)v11 initWithBlock:v23];
@@ -47,7 +47,7 @@
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v12, "timestamp")}];
     [(NSMutableDictionary *)clientStateTransitionHandlersByTimestamp setObject:v13 forKey:v15];
 
-    if (a4 > 0.0)
+    if (interval > 0.0)
     {
       v16 = [AFWatchdogTimer alloc];
       queue = self->_queue;
@@ -56,7 +56,7 @@
       v21[2] = __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_timeoutInterval_completion___block_invoke_2;
       v21[3] = &unk_1E73497C8;
       v22 = v13;
-      v18 = [(AFWatchdogTimer *)v16 initWithTimeoutInterval:queue onQueue:v21 timeoutHandler:a4];
+      v18 = [(AFWatchdogTimer *)v16 initWithTimeoutInterval:queue onQueue:v21 timeoutHandler:interval];
       v19 = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v18;
 
@@ -122,11 +122,11 @@ void __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_
   *(v4 + 40) = 0;
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (self->_clientStateObserver == v8)
+  observerCopy = observer;
+  if (self->_clientStateObserver == observerCopy)
   {
     v9 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -134,13 +134,13 @@ void __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_
       v11 = 136315650;
       v12 = "[AFSiriActivationHandlerFrontendProcess notifyObserver:didChangeStateFrom:to:]";
       v13 = 2048;
-      v14 = a4;
+      fromCopy = from;
       v15 = 2048;
-      v16 = a5;
+      toCopy = to;
       _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s state: %llu -> %llu", &v11, 0x20u);
     }
 
-    if ((a5 & ~a4 & 4) != 0)
+    if ((to & ~from & 4) != 0)
     {
       [(NSMutableDictionary *)self->_clientStateTransitionHandlersByTimestamp enumerateKeysAndObjectsUsingBlock:&__block_literal_global_15_23045];
     }
@@ -149,18 +149,18 @@ void __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleContext:(id)a3 completion:(id)a4
+- (BOOL)handleContext:(id)context completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v18 = "[AFSiriActivationHandlerFrontendProcess handleContext:completion:]";
     v19 = 2048;
-    v20 = v6;
+    v20 = contextCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s context = %p", buf, 0x16u);
   }
 
@@ -170,10 +170,10 @@ void __99__AFSiriActivationHandlerFrontendProcess__waitUntilListeningForContext_
   block[2] = __67__AFSiriActivationHandlerFrontendProcess_handleContext_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = contextCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = contextCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -384,9 +384,9 @@ void __67__AFSiriActivationHandlerFrontendProcess_handleContext_completion___blo
   [v2 setError:v3];
 }
 
-- (AFSiriActivationHandlerFrontendProcess)initWithConnection:(id)a3
+- (AFSiriActivationHandlerFrontendProcess)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = AFSiriActivationHandlerFrontendProcess;
   v6 = [(AFSiriActivationHandlerFrontendProcess *)&v18 init];
@@ -399,7 +399,7 @@ void __67__AFSiriActivationHandlerFrontendProcess_handleContext_completion___blo
     queue = v6->_queue;
     v6->_queue = v9;
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v11 = [AFNotifyObserver alloc];
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:"com.apple.siri.client-state-changed"];
     v13 = [(AFNotifyObserver *)v11 initWithName:v12 options:1 queue:v6->_queue delegate:v6];

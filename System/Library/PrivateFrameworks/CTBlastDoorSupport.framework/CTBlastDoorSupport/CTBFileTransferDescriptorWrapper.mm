@@ -1,11 +1,11 @@
 @interface CTBFileTransferDescriptorWrapper
-- (CTBFileTransferDescriptorWrapper)initWithWrapped:(optional<ctb:()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> FileTransferDescriptor> *)a3;
+- (CTBFileTransferDescriptorWrapper)initWithWrapped:(optional<ctb:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> FileTransferDescriptor> *)a3;
 - (id).cxx_construct;
 @end
 
 @implementation CTBFileTransferDescriptorWrapper
 
-- (CTBFileTransferDescriptorWrapper)initWithWrapped:(optional<ctb:()basic_string<char :()std:(std::allocator<char>> *)a4 :char_traits<char> FileTransferDescriptor> *)a3
+- (CTBFileTransferDescriptorWrapper)initWithWrapped:(optional<ctb:()basic_string<char :()std:(std::allocator<char>> *)std :char_traits<char> FileTransferDescriptor> *)a3
 {
   v8.receiver = self;
   v8.super_class = CTBFileTransferDescriptorWrapper;

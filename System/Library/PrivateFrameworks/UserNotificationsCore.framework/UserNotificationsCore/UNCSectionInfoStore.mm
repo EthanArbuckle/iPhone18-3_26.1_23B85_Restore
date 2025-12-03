@@ -1,43 +1,43 @@
 @interface UNCSectionInfoStore
-- (UNCSectionInfoStore)initWithEffectiveSettings:(id)a3 persistence:(id)a4;
-- (id)_queue_effectiveSectionInfoForSectionInfo:(id)a3;
-- (id)_queue_sectionInfoForSectionID:(id)a3 effective:(BOOL)a4;
+- (UNCSectionInfoStore)initWithEffectiveSettings:(id)settings persistence:(id)persistence;
+- (id)_queue_effectiveSectionInfoForSectionInfo:(id)info;
+- (id)_queue_sectionInfoForSectionID:(id)d effective:(BOOL)effective;
 - (id)activeSectionIDs;
-- (id)allSortedActiveSections:(BOOL)a3;
-- (id)allSortedSectionInfo:(BOOL)a3;
+- (id)allSortedActiveSections:(BOOL)sections;
+- (id)allSortedSectionInfo:(BOOL)info;
 - (id)allUnsortedSectionInfoIDs;
-- (id)clearedInfoForSectionID:(id)a3;
+- (id)clearedInfoForSectionID:(id)d;
 - (id)clearedSectionsByID;
-- (id)effectiveSectionInfoForSectionInfo:(id)a3;
+- (id)effectiveSectionInfoForSectionInfo:(id)info;
 - (id)sectionInfoByID;
-- (id)sectionInfoForSectionID:(id)a3 effective:(BOOL)a4;
-- (id)sectionInfosByIDForSectionIDs:(id)a3 effective:(BOOL)a4;
+- (id)sectionInfoForSectionID:(id)d effective:(BOOL)effective;
+- (id)sectionInfosByIDForSectionIDs:(id)ds effective:(BOOL)effective;
 - (id)sortedSectionIDs;
-- (id)sortedSectionInfoForSectionIDs:(id)a3 effective:(BOOL)a4;
-- (void)_queue_removeSectionWithID:(id)a3;
-- (void)_queue_sortSectionIDs:(id)a3 usingGuideArray:(id)a4;
-- (void)addActiveSectionID:(id)a3;
-- (void)removeSectionWithID:(id)a3;
-- (void)setClearedInfo:(id)a3 forSectionID:(id)a4;
-- (void)setClearedSectionsByID:(id)a3;
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4;
-- (void)setSectionInfoByID:(id)a3;
+- (id)sortedSectionInfoForSectionIDs:(id)ds effective:(BOOL)effective;
+- (void)_queue_removeSectionWithID:(id)d;
+- (void)_queue_sortSectionIDs:(id)ds usingGuideArray:(id)array;
+- (void)addActiveSectionID:(id)d;
+- (void)removeSectionWithID:(id)d;
+- (void)setClearedInfo:(id)info forSectionID:(id)d;
+- (void)setClearedSectionsByID:(id)d;
+- (void)setSectionInfo:(id)info forSectionID:(id)d;
+- (void)setSectionInfoByID:(id)d;
 @end
 
 @implementation UNCSectionInfoStore
 
-- (UNCSectionInfoStore)initWithEffectiveSettings:(id)a3 persistence:(id)a4
+- (UNCSectionInfoStore)initWithEffectiveSettings:(id)settings persistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  persistenceCopy = persistence;
   v30.receiver = self;
   v30.super_class = UNCSectionInfoStore;
   v9 = [(UNCSectionInfoStore *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settings, a3);
-    objc_storeStrong(&v10->_persistence, a4);
+    objc_storeStrong(&v9->_settings, settings);
+    objc_storeStrong(&v10->_persistence, persistence);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.usernotificationserver.SectionInfoStore", v11);
     queue = v10->_queue;
@@ -60,13 +60,13 @@
     v20 = v10;
     v29 = v20;
     dispatch_async(v19, block);
-    v21 = [(UNCNotificationSettingsPersistentStore *)v10->_persistence readSectionInfo];
-    v22 = [v21 mutableCopy];
+    readSectionInfo = [(UNCNotificationSettingsPersistentStore *)v10->_persistence readSectionInfo];
+    v22 = [readSectionInfo mutableCopy];
     queue_sectionInfoByID = v20->_queue_sectionInfoByID;
     v20->_queue_sectionInfoByID = v22;
 
-    v24 = [(UNCNotificationSettingsPersistentStore *)v10->_persistence readClearedSections];
-    v25 = [v24 mutableCopy];
+    readClearedSections = [(UNCNotificationSettingsPersistentStore *)v10->_persistence readClearedSections];
+    v25 = [readClearedSections mutableCopy];
     queue_clearedSectionsByID = v20->_queue_clearedSectionsByID;
     v20->_queue_clearedSectionsByID = v25;
   }
@@ -114,13 +114,13 @@ void __61__UNCSectionInfoStore_initWithEffectiveSettings_persistence___block_inv
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_sectionInfoForSectionID:(id)a3 effective:(BOOL)a4
+- (id)_queue_sectionInfoForSectionID:(id)d effective:(BOOL)effective
 {
-  v4 = a4;
-  v6 = a3;
+  effectiveCopy = effective;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_queue_sectionInfoByID objectForKey:v6];
-  if (v4)
+  v7 = [(NSMutableDictionary *)self->_queue_sectionInfoByID objectForKey:dCopy];
+  if (effectiveCopy)
   {
     v8 = [(UNCSectionInfoStore *)self _queue_effectiveSectionInfoForSectionInfo:v7];
 
@@ -132,10 +132,10 @@ void __61__UNCSectionInfoStore_initWithEffectiveSettings_persistence___block_inv
     v11 = *MEMORY[0x1E69833A0];
     if (os_log_type_enabled(*MEMORY[0x1E69833A0], OS_LOG_TYPE_ERROR))
     {
-      [(UNCSectionInfoStore *)v6 _queue_sectionInfoForSectionID:v7 effective:v11];
+      [(UNCSectionInfoStore *)dCopy _queue_sectionInfoForSectionID:v7 effective:v11];
     }
 
-    [(UNCSectionInfoStore *)self _queue_removeSectionWithID:v6];
+    [(UNCSectionInfoStore *)self _queue_removeSectionWithID:dCopy];
     v10 = 0;
   }
 
@@ -147,9 +147,9 @@ void __61__UNCSectionInfoStore_initWithEffectiveSettings_persistence___block_inv
   return v10;
 }
 
-- (id)sectionInfoForSectionID:(id)a3 effective:(BOOL)a4
+- (id)sectionInfoForSectionID:(id)d effective:(BOOL)effective
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -161,11 +161,11 @@ void __61__UNCSectionInfoStore_initWithEffectiveSettings_persistence___block_inv
   v11[1] = 3221225472;
   v11[2] = __57__UNCSectionInfoStore_sectionInfoForSectionID_effective___block_invoke;
   v11[3] = &unk_1E85D7E68;
-  v12 = v6;
+  v12 = dCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  effectiveCopy = effective;
+  v8 = dCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -184,25 +184,25 @@ uint64_t __57__UNCSectionInfoStore_sectionInfoForSectionID_effective___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)sortedSectionInfoForSectionIDs:(id)a3 effective:(BOOL)a4
+- (id)sortedSectionInfoForSectionIDs:(id)ds effective:(BOOL)effective
 {
-  v6 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__14;
   v19 = __Block_byref_object_dispose__14;
-  v20 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__UNCSectionInfoStore_sortedSectionInfoForSectionIDs_effective___block_invoke;
   v11[3] = &unk_1E85D7E68;
-  v12 = v6;
+  v12 = dsCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  effectiveCopy = effective;
+  v8 = dsCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -221,21 +221,21 @@ uint64_t __64__UNCSectionInfoStore_sortedSectionInfoForSectionIDs_effective___bl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)sectionInfosByIDForSectionIDs:(id)a3 effective:(BOOL)a4
+- (id)sectionInfosByIDForSectionIDs:(id)ds effective:(BOOL)effective
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__UNCSectionInfoStore_sectionInfosByIDForSectionIDs_effective___block_invoke;
   v14[3] = &unk_1E85D7E90;
-  v15 = v6;
-  v16 = self;
-  v18 = a4;
-  v9 = v7;
+  v15 = dsCopy;
+  selfCopy = self;
+  effectiveCopy = effective;
+  v9 = dictionary;
   v17 = v9;
-  v10 = v6;
+  v10 = dsCopy;
   dispatch_sync(queue, v14);
   v11 = v17;
   v12 = v9;
@@ -282,16 +282,16 @@ void __63__UNCSectionInfoStore_sectionInfosByIDForSectionIDs_effective___block_i
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_effectiveSectionInfoForSectionInfo:(id)a3
+- (id)_queue_effectiveSectionInfoForSectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (infoCopy)
   {
-    v5 = [v4 factorySectionID];
-    if (!v5 || (-[UNCSectionInfoStore _queue_sectionInfoForSectionID:effective:](self, "_queue_sectionInfoForSectionID:effective:", v5, 0), (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, [v4 effectiveSectionInfoWithFactoryInfo:v6 defaultContentPreviewSetting:-[UNCEffectiveSettings effectiveGlobalContentPreviewSetting](self->_settings globalAnnounceSetting:"effectiveGlobalContentPreviewSetting") globalScheduledDeliverySetting:-[UNCEffectiveSettings effectiveGlobalAnnounceSetting](self->_settings hasPairedVehiclesForCarPlay:"effectiveGlobalAnnounceSetting") hasDestinationForRemoteNotifications:{-[UNCEffectiveSettings effectiveGlobalScheduledDeliverySetting](self->_settings, "effectiveGlobalScheduledDeliverySetting"), -[UNCEffectiveSettings hasPairedVehiclesForCarPlay](self->_settings, "hasPairedVehiclesForCarPlay"), 1}], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+    factorySectionID = [infoCopy factorySectionID];
+    if (!factorySectionID || (-[UNCSectionInfoStore _queue_sectionInfoForSectionID:effective:](self, "_queue_sectionInfoForSectionID:effective:", factorySectionID, 0), (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, [infoCopy effectiveSectionInfoWithFactoryInfo:v6 defaultContentPreviewSetting:-[UNCEffectiveSettings effectiveGlobalContentPreviewSetting](self->_settings globalAnnounceSetting:"effectiveGlobalContentPreviewSetting") globalScheduledDeliverySetting:-[UNCEffectiveSettings effectiveGlobalAnnounceSetting](self->_settings hasPairedVehiclesForCarPlay:"effectiveGlobalAnnounceSetting") hasDestinationForRemoteNotifications:{-[UNCEffectiveSettings effectiveGlobalScheduledDeliverySetting](self->_settings, "effectiveGlobalScheduledDeliverySetting"), -[UNCEffectiveSettings hasPairedVehiclesForCarPlay](self->_settings, "hasPairedVehiclesForCarPlay"), 1}], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
     {
-      v8 = [v4 effectiveSectionInfoWithDefaultContentPreviewSetting:-[UNCEffectiveSettings effectiveGlobalContentPreviewSetting](self->_settings globalAnnounceSetting:"effectiveGlobalContentPreviewSetting") globalScheduledDeliverySetting:-[UNCEffectiveSettings effectiveGlobalAnnounceSetting](self->_settings hasPairedVehiclesForCarPlay:"effectiveGlobalAnnounceSetting") hasDestinationForRemoteNotifications:{-[UNCEffectiveSettings effectiveGlobalScheduledDeliverySetting](self->_settings, "effectiveGlobalScheduledDeliverySetting"), -[UNCEffectiveSettings hasPairedVehiclesForCarPlay](self->_settings, "hasPairedVehiclesForCarPlay"), 1}];
+      v8 = [infoCopy effectiveSectionInfoWithDefaultContentPreviewSetting:-[UNCEffectiveSettings effectiveGlobalContentPreviewSetting](self->_settings globalAnnounceSetting:"effectiveGlobalContentPreviewSetting") globalScheduledDeliverySetting:-[UNCEffectiveSettings effectiveGlobalAnnounceSetting](self->_settings hasPairedVehiclesForCarPlay:"effectiveGlobalAnnounceSetting") hasDestinationForRemoteNotifications:{-[UNCEffectiveSettings effectiveGlobalScheduledDeliverySetting](self->_settings, "effectiveGlobalScheduledDeliverySetting"), -[UNCEffectiveSettings hasPairedVehiclesForCarPlay](self->_settings, "hasPairedVehiclesForCarPlay"), 1}];
     }
   }
 
@@ -303,11 +303,11 @@ void __63__UNCSectionInfoStore_sectionInfosByIDForSectionIDs_effective___block_i
   return v8;
 }
 
-- (id)effectiveSectionInfoForSectionInfo:(id)a3
+- (id)effectiveSectionInfoForSectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -322,7 +322,7 @@ void __63__UNCSectionInfoStore_sectionInfosByIDForSectionIDs_effective___block_i
     block[3] = &unk_1E85D6F48;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = infoCopy;
     dispatch_sync(queue, block);
     v7 = v13[5];
 
@@ -347,20 +347,20 @@ uint64_t __58__UNCSectionInfoStore_effectiveSectionInfoForSectionInfo___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4
+- (void)setSectionInfo:(id)info forSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__UNCSectionInfoStore_setSectionInfo_forSectionID___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = infoCopy;
   dispatch_sync(queue, block);
 }
 
@@ -374,13 +374,13 @@ uint64_t __51__UNCSectionInfoStore_setSectionInfo_forSectionID___block_invoke(vo
   return [v2 refreshSectionInfoForID:v3];
 }
 
-- (void)_queue_removeSectionWithID:(id)a3
+- (void)_queue_removeSectionWithID:(id)d
 {
   queue_sectionInfoByID = self->_queue_sectionInfoByID;
-  v5 = a3;
-  [(NSMutableDictionary *)queue_sectionInfoByID removeObjectForKey:v5];
-  [(NSMutableSet *)self->_queue_activeSectionIDs removeObject:v5];
-  [(NSMutableArray *)self->_queue_sortedSectionIDs removeObject:v5];
+  dCopy = d;
+  [(NSMutableDictionary *)queue_sectionInfoByID removeObjectForKey:dCopy];
+  [(NSMutableSet *)self->_queue_activeSectionIDs removeObject:dCopy];
+  [(NSMutableArray *)self->_queue_sortedSectionIDs removeObject:dCopy];
 
   [(UNCNotificationSettingsPersistentStore *)self->_persistence writeSectionInfo:self->_queue_sectionInfoByID];
   persistence = self->_persistence;
@@ -389,31 +389,31 @@ uint64_t __51__UNCSectionInfoStore_setSectionInfo_forSectionID___block_invoke(vo
   [(UNCNotificationSettingsPersistentStore *)persistence writeClearedSections:queue_clearedSectionsByID];
 }
 
-- (void)removeSectionWithID:(id)a3
+- (void)removeSectionWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__UNCSectionInfoStore_removeSectionWithID___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addActiveSectionID:(id)a3
+- (void)addActiveSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__UNCSectionInfoStore_addActiveSectionID___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -454,7 +454,7 @@ uint64_t __42__UNCSectionInfoStore_addActiveSectionID___block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)allSortedActiveSections:(BOOL)a3
+- (id)allSortedActiveSections:(BOOL)sections
 {
   v8 = 0;
   v9 = &v8;
@@ -469,7 +469,7 @@ uint64_t __42__UNCSectionInfoStore_addActiveSectionID___block_invoke(uint64_t a1
   block[3] = &unk_1E85D7EB8;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  sectionsCopy = sections;
   dispatch_sync(queue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -509,31 +509,31 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
   return v3;
 }
 
-- (void)_queue_sortSectionIDs:(id)a3 usingGuideArray:(id)a4
+- (void)_queue_sortSectionIDs:(id)ds usingGuideArray:(id)array
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v38 = self;
+  dsCopy = ds;
+  arrayCopy = array;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v6 count])
+  if ([dsCopy count])
   {
-    v8 = [v7 count];
-    if (v6 != v7)
+    v8 = [arrayCopy count];
+    if (dsCopy != arrayCopy)
     {
       if (v8)
       {
-        v35 = v7;
-        v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-        v10 = [MEMORY[0x1E695DFD8] setWithArray:v6];
-        v39 = [MEMORY[0x1E695DF90] dictionary];
-        v44 = [v6 mutableCopy];
+        v35 = arrayCopy;
+        v9 = [MEMORY[0x1E695DFD8] setWithArray:arrayCopy];
+        v10 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v44 = [dsCopy mutableCopy];
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v34 = v6;
-        obj = v6;
+        v34 = dsCopy;
+        obj = dsCopy;
         v40 = [obj countByEnumeratingWithState:&v56 objects:v66 count:16];
         if (v40)
         {
@@ -549,19 +549,19 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
               }
 
               v45 = *(*(&v56 + 1) + 8 * i);
-              v13 = [UNCSectionInfoStore _queue_sectionInfoForSectionID:v38 effective:"_queue_sectionInfoForSectionID:effective:"];
-              v14 = [v13 dataProviderIDs];
-              if ([v14 count])
+              v13 = [UNCSectionInfoStore _queue_sectionInfoForSectionID:selfCopy effective:"_queue_sectionInfoForSectionID:effective:"];
+              dataProviderIDs = [v13 dataProviderIDs];
+              if ([dataProviderIDs count])
               {
                 v42 = v13;
                 v43 = i;
-                v15 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
                 v52 = 0u;
                 v53 = 0u;
                 v54 = 0u;
                 v55 = 0u;
-                v41 = v14;
-                v16 = v14;
+                v41 = dataProviderIDs;
+                v16 = dataProviderIDs;
                 v17 = [v16 countByEnumeratingWithState:&v52 objects:v65 count:16];
                 if (v17)
                 {
@@ -581,7 +581,7 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
                       {
                         if (([v9 containsObject:v21] & 1) == 0)
                         {
-                          [v15 addObject:v21];
+                          [array addObject:v21];
                         }
                       }
 
@@ -605,15 +605,15 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
                   while (v18);
                 }
 
-                if ([v15 count])
+                if ([array count])
                 {
-                  [v39 setObject:v15 forKey:v45];
-                  [v44 removeObjectsInArray:v15];
+                  [dictionary setObject:array forKey:v45];
+                  [v44 removeObjectsInArray:array];
                 }
 
                 v13 = v42;
                 i = v43;
-                v14 = v41;
+                dataProviderIDs = v41;
               }
             }
 
@@ -629,15 +629,15 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
         v50[3] = &unk_1E85D7EE0;
         v51 = v35;
         [v44 sortUsingComparator:v50];
-        v23 = v39;
-        if ([v39 count])
+        v23 = dictionary;
+        if ([dictionary count])
         {
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v24 = [v39 allKeys];
-          v25 = [v24 countByEnumeratingWithState:&v46 objects:v60 count:16];
+          allKeys = [dictionary allKeys];
+          v25 = [allKeys countByEnumeratingWithState:&v46 objects:v60 count:16];
           if (v25)
           {
             v26 = v25;
@@ -648,11 +648,11 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
               {
                 if (*v47 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v29 = *(*(&v46 + 1) + 8 * k);
-                v30 = [v39 objectForKey:v29];
+                v30 = [dictionary objectForKey:v29];
                 v31 = [v44 indexOfObject:v29];
                 if (v31 != 0x7FFFFFFFFFFFFFFFLL)
                 {
@@ -661,20 +661,20 @@ uint64_t __47__UNCSectionInfoStore_allSortedActiveSections___block_invoke(uint64
                 }
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v46 objects:v60 count:16];
+              v26 = [allKeys countByEnumeratingWithState:&v46 objects:v60 count:16];
             }
 
             while (v26);
           }
 
-          v23 = v39;
+          v23 = dictionary;
         }
 
         [obj removeAllObjects];
         [obj addObjectsFromArray:v44];
 
-        v6 = v34;
-        v7 = v35;
+        dsCopy = v34;
+        arrayCopy = v35;
       }
     }
   }
@@ -782,7 +782,7 @@ uint64_t __48__UNCSectionInfoStore_allUnsortedSectionInfoIDs__block_invoke(uint6
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)allSortedSectionInfo:(BOOL)a3
+- (id)allSortedSectionInfo:(BOOL)info
 {
   v8 = 0;
   v9 = &v8;
@@ -797,7 +797,7 @@ uint64_t __48__UNCSectionInfoStore_allUnsortedSectionInfoIDs__block_invoke(uint6
   block[3] = &unk_1E85D7F08;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  infoCopy = info;
   dispatch_sync(queue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -846,17 +846,17 @@ uint64_t __38__UNCSectionInfoStore_sectionInfoByID__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSectionInfoByID:(id)a3
+- (void)setSectionInfoByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__UNCSectionInfoStore_setSectionInfoByID___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -870,9 +870,9 @@ uint64_t __42__UNCSectionInfoStore_setSectionInfoByID___block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)clearedInfoForSectionID:(id)a3
+- (id)clearedInfoForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -884,10 +884,10 @@ uint64_t __42__UNCSectionInfoStore_setSectionInfoByID___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __47__UNCSectionInfoStore_clearedInfoForSectionID___block_invoke;
   block[3] = &unk_1E85D6F48;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -928,20 +928,20 @@ uint64_t __47__UNCSectionInfoStore_clearedInfoForSectionID___block_invoke(void *
   return v3;
 }
 
-- (void)setClearedInfo:(id)a3 forSectionID:(id)a4
+- (void)setClearedInfo:(id)info forSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__UNCSectionInfoStore_setClearedInfo_forSectionID___block_invoke;
   block[3] = &unk_1E85D6F20;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = infoCopy;
   dispatch_sync(queue, block);
 }
 
@@ -965,17 +965,17 @@ uint64_t __51__UNCSectionInfoStore_setClearedInfo_forSectionID___block_invoke(vo
   }
 }
 
-- (void)setClearedSectionsByID:(id)a3
+- (void)setClearedSectionsByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__UNCSectionInfoStore_setClearedSectionsByID___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 

@@ -1,7 +1,7 @@
 @interface EngagementEventProvider
 - (_TtC14NewsEngagement23EngagementEventProvider)init;
-- (void)engagement:(id)a3 didUpdateEngagementRequest:(id)a4 placement:(id)a5 serviceType:(id)a6 completion:(id)a7;
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
+- (void)engagement:(id)engagement didUpdateEngagementRequest:(id)request placement:(id)placement serviceType:(id)type completion:(id)completion;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
 @end
 
 @implementation EngagementEventProvider
@@ -17,30 +17,30 @@
   return [(EngagementEventProvider *)&v6 init];
 }
 
-- (void)engagement:(id)a3 didUpdateEngagementRequest:(id)a4 placement:(id)a5 serviceType:(id)a6 completion:(id)a7
+- (void)engagement:(id)engagement didUpdateEngagementRequest:(id)request placement:(id)placement serviceType:(id)type completion:(id)completion
 {
-  v10 = _Block_copy(a7);
+  v10 = _Block_copy(completion);
   v11 = sub_25BEB4884();
   v13 = v12;
   v14 = sub_25BEB4884();
   v16 = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
-  sub_25BE97080(a4, v11, v13, v14, v16);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_25BE97080(request, v11, v13, v14, v16);
   _Block_release(v10);
 }
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
   v9 = sub_25BEB4884();
   v11 = v10;
   v12 = sub_25BEB4884();
   v14 = v13;
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  sub_25BE973D4(a4, v9, v11, v12, v14);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_25BE973D4(request, v9, v11, v12, v14);
 }
 
 @end

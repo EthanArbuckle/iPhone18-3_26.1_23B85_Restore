@@ -1,28 +1,28 @@
 @interface CRLShapeRenderingOperation
 - (BOOL)needsPressedStateBackground;
-- (CRLShapeRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 shapeType:(int64_t)a5 shapePathSource:(id)a6 angle:(double)a7 editingCoordinator:(id)a8 swatchCacheRenderingContext:(id)a9;
+- (CRLShapeRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale shapeType:(int64_t)type shapePathSource:(id)source angle:(double)angle editingCoordinator:(id)coordinator swatchCacheRenderingContext:(id)context;
 - (UIEdgeInsets)swatchEdgeInsets;
 - (void)doWorkWithReadLock;
 @end
 
 @implementation CRLShapeRenderingOperation
 
-- (CRLShapeRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 shapeType:(int64_t)a5 shapePathSource:(id)a6 angle:(double)a7 editingCoordinator:(id)a8 swatchCacheRenderingContext:(id)a9
+- (CRLShapeRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale shapeType:(int64_t)type shapePathSource:(id)source angle:(double)angle editingCoordinator:(id)coordinator swatchCacheRenderingContext:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v18 = a6;
-  v19 = a9;
+  height = size.height;
+  width = size.width;
+  sourceCopy = source;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = CRLShapeRenderingOperation;
-  v20 = [(CRLSwatchRenderingOperation *)&v23 initWithImageSize:a8 imageScale:width swatchFrame:height editingCoordinator:a4, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  v20 = [(CRLSwatchRenderingOperation *)&v23 initWithImageSize:coordinator imageScale:width swatchFrame:height editingCoordinator:scale, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v21 = v20;
   if (v20)
   {
-    v20->_shapeType = a5;
-    objc_storeStrong(&v20->_shapePathSource, a6);
-    v21->_angle = a7;
-    objc_storeStrong(&v21->_swatchRenderingContext, a9);
+    v20->_shapeType = type;
+    objc_storeStrong(&v20->_shapePathSource, source);
+    v21->_angle = angle;
+    objc_storeStrong(&v21->_swatchRenderingContext, context);
   }
 
   return v21;
@@ -50,7 +50,7 @@
 {
   if (self->_shapeType == 3)
   {
-    v2 = [(CRLSwatchRenderingOperation *)self view];
+    view = [(CRLSwatchRenderingOperation *)self view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -75,8 +75,8 @@
   shapeType = self->_shapeType;
   shapePathSource = self->_shapePathSource;
   angle = self->_angle;
-  v13 = [(CRLSwatchRenderingOperation *)self editingCoordinator];
-  v14 = [v3 imageForShapeWithSize:shapeType imageScale:shapePathSource shapeType:v13 shapePathSource:self->_swatchRenderingContext angle:v5 editingCoordinator:v7 renderingContext:{v9, angle}];
+  editingCoordinator = [(CRLSwatchRenderingOperation *)self editingCoordinator];
+  v14 = [v3 imageForShapeWithSize:shapeType imageScale:shapePathSource shapeType:editingCoordinator shapePathSource:self->_swatchRenderingContext angle:v5 editingCoordinator:v7 renderingContext:{v9, angle}];
 
   if ([(CRLSwatchRenderingOperation *)self deliversImageAutomatically])
   {

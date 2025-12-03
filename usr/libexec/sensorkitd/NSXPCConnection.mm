@@ -1,30 +1,30 @@
 @interface NSXPCConnection
-- (BOOL)_sr_hasEntitlement:(id)a3 sensor:(id)a4 valueProvider:(id)a5;
-- (BOOL)sr_hasHoldingPeriodBypassEntitlement:(id)a3;
+- (BOOL)_sr_hasEntitlement:(id)entitlement sensor:(id)sensor valueProvider:(id)provider;
+- (BOOL)sr_hasHoldingPeriodBypassEntitlement:(id)entitlement;
 @end
 
 @implementation NSXPCConnection
 
-- (BOOL)_sr_hasEntitlement:(id)a3 sensor:(id)a4 valueProvider:(id)a5
+- (BOOL)_sr_hasEntitlement:(id)entitlement sensor:(id)sensor valueProvider:(id)provider
 {
-  if (a3)
+  if (entitlement)
   {
     v9 = objc_autoreleasePoolPush();
-    if ([a3 isEqualToString:@"com.apple.sensorkit.reader.allow"] && objc_msgSend(a5, "valueForEntitlement:connection:", @"com.apple.private.sensorkit.reader.wildcard.allow", self) || objc_msgSend(a3, "isEqualToString:", @"com.apple.sensorkit.pruner.allow") && objc_msgSend(a5, "valueForEntitlement:connection:", @"com.apple.private.sensorkit.pruner.power", self))
+    if ([entitlement isEqualToString:@"com.apple.sensorkit.reader.allow"] && objc_msgSend(provider, "valueForEntitlement:connection:", @"com.apple.private.sensorkit.reader.wildcard.allow", self) || objc_msgSend(entitlement, "isEqualToString:", @"com.apple.sensorkit.pruner.allow") && objc_msgSend(provider, "valueForEntitlement:connection:", @"com.apple.private.sensorkit.pruner.power", self))
     {
       goto LABEL_6;
     }
 
     v11 = @"com.apple.private.sensorkit.debugging.allow";
-    if ([a3 isEqualToString:@"com.apple.private.sensorkit.debugging.allow"] || (v11 = @"com.apple.private.sensorkit.export.allow-all", objc_msgSend(a3, "isEqualToString:", @"com.apple.private.sensorkit.export.allow-all")) || (v11 = @"com.apple.private.sensorkit.auth.request.arbitrary_bundle", objc_msgSend(a3, "isEqualToString:", @"com.apple.private.sensorkit.auth.request.arbitrary_bundle")))
+    if ([entitlement isEqualToString:@"com.apple.private.sensorkit.debugging.allow"] || (v11 = @"com.apple.private.sensorkit.export.allow-all", objc_msgSend(entitlement, "isEqualToString:", @"com.apple.private.sensorkit.export.allow-all")) || (v11 = @"com.apple.private.sensorkit.auth.request.arbitrary_bundle", objc_msgSend(entitlement, "isEqualToString:", @"com.apple.private.sensorkit.auth.request.arbitrary_bundle")))
     {
-      v12 = [a5 valueForEntitlement:v11 connection:self];
+      v12 = [provider valueForEntitlement:v11 connection:self];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 LABEL_13:
-        v10 = v13;
+        v10 = bOOLValue;
         goto LABEL_23;
       }
 
@@ -33,7 +33,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (!a4)
+    if (!sensor)
     {
 LABEL_6:
       v10 = 1;
@@ -42,8 +42,8 @@ LABEL_23:
       return v10;
     }
 
-    v14 = [a5 valueForEntitlement:a3 connection:self];
-    v15 = [SRSensorDescription sensorDescriptionForSensor:a4];
+    v14 = [provider valueForEntitlement:entitlement connection:self];
+    v15 = [SRSensorDescription sensorDescriptionForSensor:sensor];
     if (!v15)
     {
       if (qword_100071AF8 == -1)
@@ -66,22 +66,22 @@ LABEL_23:
       }
 
       v20 = 138543362;
-      v21 = a4;
+      sensorCopy = sensor;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to find sensor description for %{public}@", &v20, 0xCu);
     }
 
 LABEL_18:
-    v17 = [v15 publicEntitlementValue];
-    v18 = [v15 legacyName];
+    publicEntitlementValue = [v15 publicEntitlementValue];
+    legacyName = [v15 legacyName];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_22;
     }
 
-    if (([v14 containsObject:a4] & 1) == 0 && (objc_msgSend(v14, "containsObject:", v18) & 1) == 0)
+    if (([v14 containsObject:sensor] & 1) == 0 && (objc_msgSend(v14, "containsObject:", legacyName) & 1) == 0)
     {
-      v13 = [v14 containsObject:v17];
+      bOOLValue = [v14 containsObject:publicEntitlementValue];
       goto LABEL_13;
     }
 
@@ -91,23 +91,23 @@ LABEL_18:
   return 0;
 }
 
-- (BOOL)sr_hasHoldingPeriodBypassEntitlement:(id)a3
+- (BOOL)sr_hasHoldingPeriodBypassEntitlement:(id)entitlement
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 valueForEntitlement:@"com.apple.private.sensorkit.reader.holdingperiod.bypass" connection:self];
+  v6 = [entitlement valueForEntitlement:@"com.apple.private.sensorkit.reader.holdingperiod.bypass" connection:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   objc_autoreleasePoolPop(v5);
-  return v7;
+  return bOOLValue;
 }
 
 @end

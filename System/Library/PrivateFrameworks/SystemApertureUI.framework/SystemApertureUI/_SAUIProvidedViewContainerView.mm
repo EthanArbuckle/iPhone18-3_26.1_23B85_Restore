@@ -1,22 +1,22 @@
 @interface _SAUIProvidedViewContainerView
 - (SAUIElementView)elementView;
-- (_SAUIProvidedViewContainerView)initWithFrame:(CGRect)a3;
+- (_SAUIProvidedViewContainerView)initWithFrame:(CGRect)frame;
 - (id)_contentView;
 - (void)_createPortalView;
 - (void)_recreatePortalViewIfNeeded;
 - (void)_removePortalView;
 - (void)layoutSubviews;
-- (void)setProvidedView:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setProvidedView:(id)view;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _SAUIProvidedViewContainerView
 
-- (_SAUIProvidedViewContainerView)initWithFrame:(CGRect)a3
+- (_SAUIProvidedViewContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _SAUIProvidedViewContainerView;
-  v3 = [(_SAUIProvidedViewContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SAUIProvidedViewContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,8 +50,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_SAUIProvidedViewContainerView *)self _contentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _contentView = [(_SAUIProvidedViewContainerView *)self _contentView];
+  [_contentView setFrame:{v4, v6, v8, v10}];
 
   if (self->_lastSize.width != v8 || self->_lastSize.height != v10)
   {
@@ -62,26 +62,26 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(_SAUIProvidedViewContainerView *)self window];
+  windowCopy = window;
+  window = [(_SAUIProvidedViewContainerView *)self window];
   v6.receiver = self;
   v6.super_class = _SAUIProvidedViewContainerView;
-  [(_SAUIProvidedViewContainerView *)&v6 willMoveToWindow:v4];
+  [(_SAUIProvidedViewContainerView *)&v6 willMoveToWindow:windowCopy];
 
-  if (v5 != v4 && v4 && v5)
+  if (window != windowCopy && windowCopy && window)
   {
     [(_SAUIProvidedViewContainerView *)self _recreatePortalViewIfNeeded];
   }
 }
 
-- (void)setProvidedView:(id)a3
+- (void)setProvidedView:(id)view
 {
-  v5 = a3;
-  if (self->_providedView != v5)
+  viewCopy = view;
+  if (self->_providedView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (objc_opt_respondsToSelector())
     {
       v6 = [(UIView *)v7 allowsReparentingByLayoutHost]^ 1;
@@ -99,8 +99,8 @@
     }
 
     [(_SAUIProvidedViewContainerView *)self _removePortalView];
-    objc_storeStrong(&self->_providedView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_providedView, view);
+    viewCopy = v7;
     if (v7)
     {
       if (self->_portalsProvidedView)
@@ -116,7 +116,7 @@
       }
 
       [(_SAUIProvidedViewContainerView *)self setNeedsLayout];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 }

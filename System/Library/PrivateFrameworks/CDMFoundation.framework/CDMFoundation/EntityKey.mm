@@ -4,9 +4,9 @@
 + (id)group;
 + (id)personEntity;
 + (id)userEntity;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntityKey:(id)a3;
-- (EntityKey)initWithElementId:(int)a3 edgeElementId:(int)a4 parentElementId:(int)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntityKey:(id)key;
+- (EntityKey)initWithElementId:(int)id edgeElementId:(int)elementId parentElementId:(int)parentElementId;
 - (unint64_t)hash;
 @end
 
@@ -14,15 +14,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(EntityKey *)self elementId];
-  v4 = 31 * ([(EntityKey *)self edgeElementId]+ 961 * v3);
+  elementId = [(EntityKey *)self elementId];
+  v4 = 31 * ([(EntityKey *)self edgeElementId]+ 961 * elementId);
   return v4 + [(EntityKey *)self parentElementId];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -30,20 +30,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(EntityKey *)self isEqualToEntityKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(EntityKey *)self isEqualToEntityKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToEntityKey:(id)a3
+- (BOOL)isEqualToEntityKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EntityKey *)self elementId];
-  if (v5 == [v4 elementId] && (v6 = -[EntityKey edgeElementId](self, "edgeElementId"), v6 == objc_msgSend(v4, "edgeElementId")))
+  keyCopy = key;
+  elementId = [(EntityKey *)self elementId];
+  if (elementId == [keyCopy elementId] && (v6 = -[EntityKey edgeElementId](self, "edgeElementId"), v6 == objc_msgSend(keyCopy, "edgeElementId")))
   {
-    v7 = [(EntityKey *)self parentElementId];
-    v8 = v7 == [v4 parentElementId];
+    parentElementId = [(EntityKey *)self parentElementId];
+    v8 = parentElementId == [keyCopy parentElementId];
   }
 
   else
@@ -54,16 +54,16 @@
   return v8;
 }
 
-- (EntityKey)initWithElementId:(int)a3 edgeElementId:(int)a4 parentElementId:(int)a5
+- (EntityKey)initWithElementId:(int)id edgeElementId:(int)elementId parentElementId:(int)parentElementId
 {
   v9.receiver = self;
   v9.super_class = EntityKey;
   result = [(EntityKey *)&v9 init];
   if (result)
   {
-    result->_elementId = a3;
-    result->_edgeElementId = a4;
-    result->_parentElementId = a5;
+    result->_elementId = id;
+    result->_edgeElementId = elementId;
+    result->_parentElementId = parentElementId;
   }
 
   return result;

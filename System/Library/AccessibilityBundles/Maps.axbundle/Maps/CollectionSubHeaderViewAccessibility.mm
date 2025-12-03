@@ -1,5 +1,5 @@
 @interface CollectionSubHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)createEditContent;
 - (void)createSaveContent;
@@ -7,14 +7,14 @@
 
 @implementation CollectionSubHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_contentView" withType:"UIView"];
-  [v3 validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_sortButton" withType:"UIButton"];
-  [v3 validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_saveButton" withType:"UIButton"];
-  [v3 validateClass:@"CollectionSubHeaderView" hasInstanceMethod:@"createEditContent" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CollectionSubHeaderView" hasInstanceMethod:@"createSaveContent" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_contentView" withType:"UIView"];
+  [validationsCopy validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_sortButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CollectionSubHeaderView" hasInstanceVariable:@"_saveButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CollectionSubHeaderView" hasInstanceMethod:@"createEditContent" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CollectionSubHeaderView" hasInstanceMethod:@"createSaveContent" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

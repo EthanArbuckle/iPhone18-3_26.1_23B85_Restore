@@ -2,52 +2,52 @@
 - (PXSettingsMeaningsTableViewController)init;
 - (id)_meaningDataContainerByMeaningLabels;
 - (id)_momentIdentifiersByMeaningLabel;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PXSettingsMeaningsTableViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PXSettingsMeaningsTableViewCellId" forIndexPath:v6];
-  v8 = [(PXSettingsMeaningsTableViewController *)self meaningLabels];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PXSettingsMeaningsTableViewCellId" forIndexPath:pathCopy];
+  meaningLabels = [(PXSettingsMeaningsTableViewController *)self meaningLabels];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [meaningLabels objectAtIndexedSubscript:v9];
 
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PXSettingsMeaningsTableViewController *)self meaningLabels];
-  v7 = [v5 row];
+  pathCopy = path;
+  meaningLabels = [(PXSettingsMeaningsTableViewController *)self meaningLabels];
+  v7 = [pathCopy row];
 
-  v15 = [v6 objectAtIndexedSubscript:v7];
+  v15 = [meaningLabels objectAtIndexedSubscript:v7];
 
-  v8 = [(PXSettingsMeaningsTableViewController *)self meaningDataContainerByMeaningLabels];
-  v9 = [v8 objectForKeyedSubscript:v15];
+  meaningDataContainerByMeaningLabels = [(PXSettingsMeaningsTableViewController *)self meaningDataContainerByMeaningLabels];
+  v9 = [meaningDataContainerByMeaningLabels objectForKeyedSubscript:v15];
 
-  v10 = [v9 assetCollection];
-  v11 = [v9 curatedAssets];
-  v12 = PXPhotosViewConfigurationForAssetCollectionWithExistingAssetsFetchResult(v10, v11, 0, 0, 1);
+  assetCollection = [v9 assetCollection];
+  curatedAssets = [v9 curatedAssets];
+  v12 = PXPhotosViewConfigurationForAssetCollectionWithExistingAssetsFetchResult(assetCollection, curatedAssets, 0, 0, 1);
 
   v13 = [[PXPhotosUIViewController alloc] initWithConfiguration:v12];
-  v14 = [(PXSettingsMeaningsTableViewController *)self navigationController];
-  [v14 pushViewController:v13 animated:1];
+  navigationController = [(PXSettingsMeaningsTableViewController *)self navigationController];
+  [navigationController pushViewController:v13 animated:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PXSettingsMeaningsTableViewController *)self meaningLabels:a3];
+  v4 = [(PXSettingsMeaningsTableViewController *)self meaningLabels:view];
   v5 = [v4 count];
 
   return v5;
@@ -65,7 +65,7 @@
 
   if (v8)
   {
-    v38 = self;
+    selfCopy = self;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v37 = v8;
     v10 = [v8 componentsSeparatedByString:@"\n"];
@@ -97,8 +97,8 @@
           v17 = [*(*(&v46 + 1) + 8 * v16) componentsSeparatedByString:{@", "}];
           v18 = [v17 subarrayWithRange:{1, objc_msgSend(v17, "count") - 1}];
           v44 = v17;
-          v45 = [v17 firstObject];
-          if (([v45 isEqualToString:&stru_1F1741150] & 1) == 0)
+          firstObject = [v17 firstObject];
+          if (([firstObject isEqualToString:&stru_1F1741150] & 1) == 0)
           {
             if (v13)
             {
@@ -109,7 +109,7 @@
 
             else
             {
-              v43 = v45;
+              v43 = firstObject;
               if ([v18 count])
               {
                 v21 = 0;
@@ -122,9 +122,9 @@
                     v24 = v15;
                     v25 = [v23 stringByReplacingOccurrencesOfString:v15 withString:&stru_1F1741150];
                     v26 = [v18 objectAtIndexedSubscript:v21];
-                    v27 = [v26 BOOLValue];
+                    bOOLValue = [v26 BOOLValue];
 
-                    if (v27)
+                    if (bOOLValue)
                     {
                       v28 = [v9 valueForKey:v25];
                       v29 = v28;
@@ -181,9 +181,9 @@
       v42 = 0;
     }
 
-    v34 = [v9 allKeys];
-    meaningLabels = v38->_meaningLabels;
-    v38->_meaningLabels = v34;
+    allKeys = [v9 allKeys];
+    meaningLabels = selfCopy->_meaningLabels;
+    selfCopy->_meaningLabels = allKeys;
 
     v8 = v37;
   }
@@ -198,9 +198,9 @@
 
 - (id)_meaningDataContainerByMeaningLabels
 {
-  v2 = [(PXSettingsMeaningsTableViewController *)self _momentIdentifiersByMeaningLabel];
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  _momentIdentifiersByMeaningLabel = [(PXSettingsMeaningsTableViewController *)self _momentIdentifiersByMeaningLabel];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
   v11 = 0;
   v12 = &v11;
@@ -212,10 +212,10 @@
   v8[1] = 3221225472;
   v8[2] = __77__PXSettingsMeaningsTableViewController__meaningDataContainerByMeaningLabels__block_invoke;
   v8[3] = &unk_1E7733170;
-  v5 = v4;
+  v5 = librarySpecificFetchOptions;
   v9 = v5;
   v10 = &v11;
-  [v2 enumerateKeysAndObjectsUsingBlock:v8];
+  [_momentIdentifiersByMeaningLabel enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -241,15 +241,15 @@ void __77__PXSettingsMeaningsTableViewController__meaningDataContainerByMeaningL
   v7.receiver = self;
   v7.super_class = PXSettingsMeaningsTableViewController;
   [(PXSettingsMeaningsTableViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(PXSettingsMeaningsTableViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(PXSettingsMeaningsTableViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PXSettingsMeaningsTableViewController *)self tableView];
-  [v5 setAllowsMultipleSelection:0];
+  tableView = [(PXSettingsMeaningsTableViewController *)self tableView];
+  [tableView setAllowsMultipleSelection:0];
 
-  v6 = [(PXSettingsMeaningsTableViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXSettingsMeaningsTableViewCellId"];
+  tableView2 = [(PXSettingsMeaningsTableViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXSettingsMeaningsTableViewCellId"];
 }
 
 - (PXSettingsMeaningsTableViewController)init
@@ -260,11 +260,11 @@ void __77__PXSettingsMeaningsTableViewController__meaningDataContainerByMeaningL
   v3 = v2;
   if (v2)
   {
-    v4 = [(PXSettingsMeaningsTableViewController *)v2 _meaningDataContainerByMeaningLabels];
-    [(PXSettingsMeaningsTableViewController *)v3 setMeaningDataContainerByMeaningLabels:v4];
+    _meaningDataContainerByMeaningLabels = [(PXSettingsMeaningsTableViewController *)v2 _meaningDataContainerByMeaningLabels];
+    [(PXSettingsMeaningsTableViewController *)v3 setMeaningDataContainerByMeaningLabels:_meaningDataContainerByMeaningLabels];
 
-    v5 = [(PXSettingsMeaningsTableViewController *)v3 meaningDataContainerByMeaningLabels];
-    v6 = [v5 count];
+    meaningDataContainerByMeaningLabels = [(PXSettingsMeaningsTableViewController *)v3 meaningDataContainerByMeaningLabels];
+    v6 = [meaningDataContainerByMeaningLabels count];
 
     if (!v6)
     {

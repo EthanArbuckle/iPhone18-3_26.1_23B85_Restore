@@ -1,8 +1,8 @@
 @interface BluetoothUIServiceBanner
 + (id)_bundleID;
 - (BOOL)checkifVideoAssetExists;
-- (BluetoothUIServiceBanner)initWithXPCObject:(id)a3 error:(id *)a4;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (BluetoothUIServiceBanner)initWithXPCObject:(id)object error:(id *)error;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (SBUISystemApertureAccessoryView)leadingView;
@@ -12,10 +12,10 @@
 - (id)_systemApertureLeadingAccessoryView;
 - (id)_systemApertureTrailingAccessoryView;
 - (id)createInUseConnectButton;
-- (id)createMuteUnmuteButton:(id)a3;
+- (id)createMuteUnmuteButton:(id)button;
 - (id)createReverseButton;
-- (id)getAppIcon:(id)a3;
-- (id)removedAccessoryColorCode:(id)a3;
+- (id)getAppIcon:(id)icon;
+- (id)removedAccessoryColorCode:(id)code;
 - (id)userInfoForPosting;
 - (int64_t)preferredLayoutMode;
 - (void)_activateConstraintsForBatteryLevelIndicator;
@@ -24,51 +24,51 @@
 - (void)_createConstraintsForInUseBannerIfNeeded;
 - (void)_createConstraintsForReverseBannerIfNeeded;
 - (void)_createConstraintsIfNeeded;
-- (void)_createInUseBannerTextLabel:(id)a3 bottomLabel:(id)a4;
-- (void)_createccBottomViewLabel:(id)a3;
-- (void)_createccBottomViewLabel:(id)a3 labelString:(id)a4;
-- (void)_createccTopViewLabel:(id)a3 labelString:(id)a4;
+- (void)_createInUseBannerTextLabel:(id)label bottomLabel:(id)bottomLabel;
+- (void)_createccBottomViewLabel:(id)label;
+- (void)_createccBottomViewLabel:(id)label labelString:(id)string;
+- (void)_createccTopViewLabel:(id)label labelString:(id)string;
 - (void)_fillBatteryPercentage;
 - (void)_showHIDConnectedBanner;
 - (void)_showInUseBanner;
 - (void)_showMuteBanner;
 - (void)_stopPlayback;
-- (void)activateWithActionHandler:(id)a3;
-- (void)bannerDidDismiss:(id)a3;
-- (void)createCustomAVPlayerLayerView:(id)a3 WithCustomIconName:(id)a4;
-- (void)createCustomStaticImageView:(id)a3 WithCustomIconName:(id)a4;
-- (void)createCustomStaticImageView:(id)a3 withIcon:(id)a4;
-- (void)createCustomView:(id)a3 WithCustomIconName:(id)a4;
-- (void)createCustomView:(id)a3 WithCustomIconPath:(id)a4;
-- (void)createCustomView:(id)a3 WithImage:(id)a4;
-- (void)createCustomView:(id)a3 WithImage:(id)a4 WithMode:(int64_t)a5;
-- (void)createCustomViewForNativeReverseSymbol:(id)a3;
-- (void)createCustomViewFromUILabel:(id)a3 WithStr:(id)a4;
-- (void)createGenericHeadphoneView:(id)a3;
-- (void)createGenericSpeakerView:(id)a3;
+- (void)activateWithActionHandler:(id)handler;
+- (void)bannerDidDismiss:(id)dismiss;
+- (void)createCustomAVPlayerLayerView:(id)view WithCustomIconName:(id)name;
+- (void)createCustomStaticImageView:(id)view WithCustomIconName:(id)name;
+- (void)createCustomStaticImageView:(id)view withIcon:(id)icon;
+- (void)createCustomView:(id)view WithCustomIconName:(id)name;
+- (void)createCustomView:(id)view WithCustomIconPath:(id)path;
+- (void)createCustomView:(id)view WithImage:(id)image;
+- (void)createCustomView:(id)view WithImage:(id)image WithMode:(int64_t)mode;
+- (void)createCustomViewForNativeReverseSymbol:(id)symbol;
+- (void)createCustomViewFromUILabel:(id)label WithStr:(id)str;
+- (void)createGenericHeadphoneView:(id)view;
+- (void)createGenericSpeakerView:(id)view;
 - (void)dismissBanner;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)invalidate;
-- (void)setActiveLayoutMode:(int64_t)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
 - (void)setBannerTimer;
-- (void)setCanRequestAlertingAssertion:(BOOL)a3;
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BluetoothUIServiceBanner
 
-- (void)setCanRequestAlertingAssertion:(BOOL)a3
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion
 {
-  if (self->_canRequestAlertingAssertion != a3)
+  if (self->_canRequestAlertingAssertion != assertion)
   {
-    self->_canRequestAlertingAssertion = a3;
-    if (a3 && (self->_isReverseRouteBanner || self->_isInUseBanner))
+    self->_canRequestAlertingAssertion = assertion;
+    if (assertion && (self->_isReverseRouteBanner || self->_isInUseBanner))
     {
-      v4 = [(BluetoothUIServiceBanner *)self systemApertureElementContext];
-      v5 = [v4 requestAlertingAssertion];
-      [v5 setAutomaticallyInvalidatable:0];
+      systemApertureElementContext = [(BluetoothUIServiceBanner *)self systemApertureElementContext];
+      requestAlertingAssertion = [systemApertureElementContext requestAlertingAssertion];
+      [requestAlertingAssertion setAutomaticallyInvalidatable:0];
 
       if (dword_10001EA10 <= 50 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
       {
@@ -190,10 +190,10 @@
   return 3;
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  self->_activeLayoutMode = a3;
-  if (a3 == -1)
+  self->_activeLayoutMode = mode;
+  if (mode == -1)
   {
     [(BluetoothUIServiceBanner *)self _stopPlayback];
     self->_bannerActive = 0;
@@ -258,27 +258,27 @@
 
     if (SBUIIsSystemApertureEnabled())
     {
-      v13 = [(BluetoothUIServiceBanner *)self createInUseConnectButton];
-      [(UIView *)self->_trailingAccessoryView addSubview:v13];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v14 = [v13 widthAnchor];
-      v15 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      createInUseConnectButton = [(BluetoothUIServiceBanner *)self createInUseConnectButton];
+      [(UIView *)self->_trailingAccessoryView addSubview:createInUseConnectButton];
+      [createInUseConnectButton setTranslatesAutoresizingMaskIntoConstraints:0];
+      widthAnchor = [createInUseConnectButton widthAnchor];
+      widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+      v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v16 setActive:1];
 
-      v17 = [v13 heightAnchor];
-      v18 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      heightAnchor = [createInUseConnectButton heightAnchor];
+      heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+      v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       [v19 setActive:1];
 
-      v20 = [v13 centerXAnchor];
-      v21 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      centerXAnchor = [createInUseConnectButton centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+      v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v22 setActive:1];
 
-      v23 = [v13 centerYAnchor];
-      v24 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      centerYAnchor = [createInUseConnectButton centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+      v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v25 setActive:1];
     }
 
@@ -312,9 +312,9 @@
     }
 
     [(BluetoothUIServiceBanner *)self createCustomView:self->_leadingAccessoryView WithCustomIconName:self->_leadingAccessoryIconName];
-    v11 = [(BluetoothUIServiceBanner *)self createInUseConnectButton];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [[PLPillView alloc] initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:v11];
+    createInUseConnectButton2 = [(BluetoothUIServiceBanner *)self createInUseConnectButton];
+    [createInUseConnectButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    v12 = [[PLPillView alloc] initWithLeadingAccessoryView:self->_leadingAccessoryView trailingAccessoryView:createInUseConnectButton2];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_storeStrong(&self->_pillView, v12);
     if (self->_centerContentItems)
@@ -398,24 +398,24 @@ LABEL_12:
 
       [(UIView *)self->_trailingAccessoryView addSubview:self->_muteUnmuteButton];
       [(UIButton *)self->_muteUnmuteButton setTranslatesAutoresizingMaskIntoConstraints:0];
-      v21 = [(UIButton *)self->_muteUnmuteButton widthAnchor];
-      v22 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      widthAnchor = [(UIButton *)self->_muteUnmuteButton widthAnchor];
+      widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+      v23 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v23 setActive:1];
 
-      v24 = [(UIButton *)self->_muteUnmuteButton heightAnchor];
-      v25 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25];
+      heightAnchor = [(UIButton *)self->_muteUnmuteButton heightAnchor];
+      heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+      v26 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       [v26 setActive:1];
 
-      v27 = [(UIButton *)self->_muteUnmuteButton centerXAnchor];
-      v28 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-      v29 = [v27 constraintEqualToAnchor:v28];
+      centerXAnchor = [(UIButton *)self->_muteUnmuteButton centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+      v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v29 setActive:1];
 
-      v30 = [(UIButton *)self->_muteUnmuteButton centerYAnchor];
-      v31 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      centerYAnchor = [(UIButton *)self->_muteUnmuteButton centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+      v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v32 setActive:1];
     }
 
@@ -462,24 +462,24 @@ LABEL_12:
       v41 = [(BluetoothUIServiceBanner *)self createMuteUnmuteButton:self->_receivedMuteAction];
       [(UIView *)self->_trailingAccessoryView addSubview:v41];
       [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v42 = [v41 widthAnchor];
-      v43 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      widthAnchor3 = [v41 widthAnchor];
+      widthAnchor4 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+      v44 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       [v44 setActive:1];
 
-      v45 = [v41 heightAnchor];
-      v46 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-      v47 = [v45 constraintEqualToAnchor:v46];
+      heightAnchor3 = [v41 heightAnchor];
+      heightAnchor4 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+      v47 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
       [v47 setActive:1];
 
-      v48 = [v41 centerXAnchor];
-      v49 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-      v50 = [v48 constraintEqualToAnchor:v49];
+      centerXAnchor3 = [v41 centerXAnchor];
+      centerXAnchor4 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+      v50 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       [v50 setActive:1];
 
-      v51 = [v41 centerYAnchor];
-      v52 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-      v53 = [v51 constraintEqualToAnchor:v52];
+      centerYAnchor3 = [v41 centerYAnchor];
+      centerYAnchor4 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+      v53 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       [v53 setActive:1];
 
       [v41 addTarget:self action:"handleTap:" forControlEvents:64];
@@ -534,18 +534,18 @@ LABEL_12:
       v12 = [NSString stringWithFormat:@"%.2f", *&self->_batteryLevel];
       [v12 doubleValue];
       v14 = v13;
-      v15 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-      [v15 setPercentageLevel:v14];
+      batteryLevelIndicator = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+      [batteryLevelIndicator setPercentageLevel:v14];
 
       [(BluetoothUIServiceBanner *)self _checkValidBatteryRange];
       [(BluetoothUIServiceBanner *)self _fillBatteryPercentage];
       v16 = [UIColor colorWithRed:0.2728 green:0.9028 blue:0.4567 alpha:1.0];
-      v17 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-      [v17 percentageLevel];
+      batteryLevelIndicator2 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+      [batteryLevelIndicator2 percentageLevel];
       v19 = v18;
 
-      v20 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-      v21 = v20;
+      batteryLevelIndicator3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+      v21 = batteryLevelIndicator3;
       if (v19 <= 0.2)
       {
         v22 = +[UIColor systemRedColor];
@@ -554,11 +554,11 @@ LABEL_12:
 
       else
       {
-        [v20 setColorforPercentageLabel:v16];
+        [batteryLevelIndicator3 setColorforPercentageLabel:v16];
       }
 
-      v23 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-      [v23 setShowsPercentageLabel:0];
+      batteryLevelIndicator4 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+      [batteryLevelIndicator4 setShowsPercentageLabel:0];
 
       [(BluetoothUIServiceBanner *)self createCustomView:self->_minimalAccessoryView WithImage:v5 WithMode:1];
       objc_storeStrong(&self->_leadingView, self->_leadingAccessoryView);
@@ -578,11 +578,11 @@ LABEL_12:
   }
 }
 
-- (void)_createccBottomViewLabel:(id)a3
+- (void)_createccBottomViewLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v7 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v7 setText:v4];
+  [v7 setText:labelCopy];
 
   v5 = +[UIColor whiteColor];
   [v7 setTextColor:v5];
@@ -594,16 +594,16 @@ LABEL_12:
   [(BluetoothUIServiceBanner *)self setCcBottomViewLabel:v7];
 }
 
-- (void)_createccBottomViewLabel:(id)a3 labelString:(id)a4
+- (void)_createccBottomViewLabel:(id)label labelString:(id)string
 {
-  v10 = a3;
-  v6 = a4;
+  labelCopy = label;
+  stringCopy = string;
   v7 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v7 setText:v6];
+  [v7 setText:stringCopy];
 
-  if (v10)
+  if (labelCopy)
   {
-    [v7 setTextColor:v10];
+    [v7 setTextColor:labelCopy];
   }
 
   else
@@ -624,14 +624,14 @@ LABEL_12:
   [(BluetoothUIServiceBanner *)self setCcBottomViewLabel:v7];
 }
 
-- (void)_createccTopViewLabel:(id)a3 labelString:(id)a4
+- (void)_createccTopViewLabel:(id)label labelString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  labelCopy = label;
   v9 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v9 setText:v6];
+  [v9 setText:stringCopy];
 
-  [v9 setTextColor:v7];
+  [v9 setTextColor:labelCopy];
   [v9 setAlpha:0.8];
   v8 = [UIFont systemFontOfSize:13.0 weight:UIFontWeightMedium];
   [v9 setFont:v8];
@@ -639,12 +639,12 @@ LABEL_12:
   [(BluetoothUIServiceBanner *)self setCcTopViewLabel:v9];
 }
 
-- (void)_createInUseBannerTextLabel:(id)a3 bottomLabel:(id)a4
+- (void)_createInUseBannerTextLabel:(id)label bottomLabel:(id)bottomLabel
 {
-  v6 = a4;
-  v7 = a3;
+  bottomLabelCopy = bottomLabel;
+  labelCopy = label;
   v13 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 20.0, 20.0}];
-  [v13 setText:v7];
+  [v13 setText:labelCopy];
 
   v8 = +[UIColor systemGrayColor];
   [v13 setTextColor:v8];
@@ -656,7 +656,7 @@ LABEL_12:
   [v13 setMarqueeEnabled:1];
   [(BluetoothUIServiceBanner *)self setCcTopViewLabel:v13];
   v10 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  [v10 setText:v6];
+  [v10 setText:bottomLabelCopy];
 
   v11 = +[UIColor whiteColor];
   [v10 setTextColor:v11];
@@ -674,16 +674,16 @@ LABEL_12:
   [(BluetoothUIServiceBanner *)self setBatteryLevelIndicator:v3];
 
   trailingAccessoryView = self->_trailingAccessoryView;
-  v5 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [(UIView *)trailingAccessoryView addSubview:v5];
+  batteryLevelIndicator = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [(UIView *)trailingAccessoryView addSubview:batteryLevelIndicator];
 
   [(BluetoothUIServiceBanner *)self _activateConstraintsForBatteryLevelIndicator];
 }
 
 - (void)_checkValidBatteryRange
 {
-  v3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v3 percentageLevel];
+  batteryLevelIndicator = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator percentageLevel];
   if (v4 < 0.0)
   {
 
@@ -693,13 +693,13 @@ LABEL_6:
       sub_10000D794(self);
     }
 
-    v11 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-    [v11 setPercentageLevel:0.0];
+    batteryLevelIndicator2 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+    [batteryLevelIndicator2 setPercentageLevel:0.0];
     goto LABEL_10;
   }
 
-  v5 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v5 percentageLevel];
+  batteryLevelIndicator3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator3 percentageLevel];
   v7 = v6;
 
   if (v7 > 1.0)
@@ -707,8 +707,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v8 percentageLevel];
+  batteryLevelIndicator4 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator4 percentageLevel];
   v10 = v9;
 
   if (v10 != 0.0)
@@ -716,64 +716,64 @@ LABEL_6:
     return;
   }
 
-  v11 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v11 setAlpha:0.0];
+  batteryLevelIndicator2 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator2 setAlpha:0.0];
 LABEL_10:
 }
 
 - (void)_activateConstraintsForBatteryLevelIndicator
 {
-  v3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  batteryLevelIndicator = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  v5 = [v4 widthAnchor];
-  v6 = [(UIView *)self->_trailingAccessoryView widthAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  batteryLevelIndicator2 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  widthAnchor = [batteryLevelIndicator2 widthAnchor];
+  widthAnchor2 = [(UIView *)self->_trailingAccessoryView widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v7 setActive:1];
 
-  v8 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  v9 = [v8 heightAnchor];
-  v10 = [(UIView *)self->_trailingAccessoryView heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  batteryLevelIndicator3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  heightAnchor = [batteryLevelIndicator3 heightAnchor];
+  heightAnchor2 = [(UIView *)self->_trailingAccessoryView heightAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v11 setActive:1];
 
-  v12 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  v13 = [v12 centerXAnchor];
-  v14 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  batteryLevelIndicator4 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  centerXAnchor = [batteryLevelIndicator4 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_trailingAccessoryView centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v15 setActive:1];
 
-  v19 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  v16 = [v19 centerYAnchor];
-  v17 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  batteryLevelIndicator5 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  centerYAnchor = [batteryLevelIndicator5 centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 }
 
 - (void)_fillBatteryPercentage
 {
-  v3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  v4 = [v3 micaRootLayer];
-  v8 = [v4 publishedObjectWithName:@"progress fill"];
+  batteryLevelIndicator = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  micaRootLayer = [batteryLevelIndicator micaRootLayer];
+  v8 = [micaRootLayer publishedObjectWithName:@"progress fill"];
 
-  v5 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v5 percentageLevel];
+  batteryLevelIndicator2 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator2 percentageLevel];
   [v8 setStrokeStart:1.0 - v6 + 0.001];
 
-  v7 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
-  [v7 setMicaProgressFill:v8];
+  batteryLevelIndicator3 = [(BluetoothUIServiceBanner *)self batteryLevelIndicator];
+  [batteryLevelIndicator3 setMicaProgressFill:v8];
 }
 
 - (void)_createConstraintsForInUseBannerIfNeeded
 {
-  v3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-  if (v3)
+  ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  if (ccTopViewLabel)
   {
-    v4 = v3;
-    v5 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    v4 = ccTopViewLabel;
+    ccBottomViewLabel = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
 
-    if (v5)
+    if (ccBottomViewLabel)
     {
       v6 = [(NSMutableDictionary *)self->_constraintsForLayoutMode objectForKeyedSubscript:&off_100019370];
 
@@ -786,111 +786,111 @@ LABEL_10:
           self->_constraintsForLayoutMode = v7;
         }
 
-        v96 = [(SBUISystemApertureAccessoryView *)self->_leadingView widthAnchor];
-        v95 = [v96 constraintEqualToConstant:48.0];
+        widthAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView widthAnchor];
+        v95 = [widthAnchor constraintEqualToConstant:48.0];
         v97[0] = v95;
-        v94 = [(SBUISystemApertureAccessoryView *)self->_leadingView heightAnchor];
-        v93 = [v94 constraintEqualToConstant:48.0];
+        heightAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView heightAnchor];
+        v93 = [heightAnchor constraintEqualToConstant:48.0];
         v97[1] = v93;
-        v91 = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
-        v92 = [(BluetoothUIServiceBanner *)self view];
-        v90 = [v92 leadingAnchor];
-        v89 = [v91 constraintEqualToAnchor:v90 constant:16.0];
+        leadingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
+        view = [(BluetoothUIServiceBanner *)self view];
+        leadingAnchor2 = [view leadingAnchor];
+        v89 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
         v97[2] = v89;
-        v87 = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
-        v88 = [(BluetoothUIServiceBanner *)self view];
-        v86 = [v88 centerYAnchor];
-        v85 = [v87 constraintEqualToAnchor:v86];
+        centerYAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
+        view2 = [(BluetoothUIServiceBanner *)self view];
+        centerYAnchor2 = [view2 centerYAnchor];
+        v85 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v97[3] = v85;
-        v84 = [(BluetoothUIServiceBanner *)self view];
-        v82 = [v84 widthAnchor];
-        v83 = [(BluetoothUIServiceBanner *)self view];
-        v81 = [v83 window];
-        v80 = [v81 widthAnchor];
-        v79 = [v82 constraintEqualToAnchor:v80];
+        view3 = [(BluetoothUIServiceBanner *)self view];
+        widthAnchor2 = [view3 widthAnchor];
+        view4 = [(BluetoothUIServiceBanner *)self view];
+        window = [view4 window];
+        widthAnchor3 = [window widthAnchor];
+        v79 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
         v97[4] = v79;
-        v78 = [(BluetoothUIServiceBanner *)self view];
-        v76 = [v78 heightAnchor];
-        v77 = [(BluetoothUIServiceBanner *)self view];
-        v75 = [v77 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-        v74 = [v75 heightAnchor];
-        v73 = [v76 constraintEqualToAnchor:v74];
+        view5 = [(BluetoothUIServiceBanner *)self view];
+        heightAnchor2 = [view5 heightAnchor];
+        view6 = [(BluetoothUIServiceBanner *)self view];
+        sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [view6 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+        heightAnchor3 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide heightAnchor];
+        v73 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
         v97[5] = v73;
-        v71 = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
-        v72 = [(BluetoothUIServiceBanner *)self view];
-        v70 = [v72 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v69 = [v70 leadingAnchor];
-        v68 = [v71 constraintLessThanOrEqualToAnchor:v69];
+        trailingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
+        view7 = [(BluetoothUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide = [view7 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+        v68 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
         v97[6] = v68;
-        v67 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
-        v66 = [v67 constraintEqualToConstant:35.0];
+        heightAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
+        v66 = [heightAnchor4 constraintEqualToConstant:35.0];
         v97[7] = v66;
-        v65 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
-        v64 = [v65 constraintGreaterThanOrEqualToConstant:100.0];
+        widthAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
+        v64 = [widthAnchor4 constraintGreaterThanOrEqualToConstant:100.0];
         v97[8] = v64;
-        v62 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
-        v63 = [(BluetoothUIServiceBanner *)self view];
-        v61 = [v63 centerYAnchor];
-        v60 = [v62 constraintEqualToAnchor:v61];
+        centerYAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
+        view8 = [(BluetoothUIServiceBanner *)self view];
+        centerYAnchor4 = [view8 centerYAnchor];
+        v60 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v97[9] = v60;
-        v58 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v59 = [(BluetoothUIServiceBanner *)self view];
-        v57 = [v59 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v56 = [v57 trailingAnchor];
-        v55 = [v58 constraintGreaterThanOrEqualToAnchor:v56];
+        leadingAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view9 = [(BluetoothUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view9 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        trailingAnchor2 = [sBUISA_systemApertureObstructedAreaLayoutGuide2 trailingAnchor];
+        v55 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
         v97[10] = v55;
-        v53 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
-        v54 = [(BluetoothUIServiceBanner *)self view];
-        v52 = [v54 trailingAnchor];
-        v51 = [v53 constraintEqualToAnchor:v52 constant:-16.0];
+        trailingAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
+        view10 = [(BluetoothUIServiceBanner *)self view];
+        trailingAnchor4 = [view10 trailingAnchor];
+        v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
         v97[11] = v51;
-        v50 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-        v48 = [v50 leadingAnchor];
-        v49 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-        v47 = [v49 leadingAnchor];
-        v46 = [v48 constraintEqualToAnchor:v47];
+        ccTopViewLabel2 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+        leadingAnchor5 = [ccTopViewLabel2 leadingAnchor];
+        ccBottomViewLabel2 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor6 = [ccBottomViewLabel2 leadingAnchor];
+        v46 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
         v97[12] = v46;
-        v45 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-        v44 = [v45 _tightBoundingBoxLayoutGuide];
-        v42 = [v44 topAnchor];
-        v43 = [(BluetoothUIServiceBanner *)self view];
-        v41 = [v43 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        v40 = [v41 bottomAnchor];
-        v39 = [v42 constraintEqualToAnchor:v40];
+        ccTopViewLabel3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+        _tightBoundingBoxLayoutGuide = [ccTopViewLabel3 _tightBoundingBoxLayoutGuide];
+        topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+        view11 = [(BluetoothUIServiceBanner *)self view];
+        sBUISA_systemApertureObstructedAreaLayoutGuide3 = [view11 SBUISA_systemApertureObstructedAreaLayoutGuide];
+        bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide3 bottomAnchor];
+        v39 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         v97[13] = v39;
-        v38 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-        v37 = [v38 trailingAnchor];
-        v35 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v36 = [(BluetoothUIServiceBanner *)self view];
-        [v36 SBUISA_standardInteritemPadding];
-        v34 = [v37 constraintEqualToAnchor:v35 constant:-v9];
+        ccTopViewLabel4 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+        trailingAnchor5 = [ccTopViewLabel4 trailingAnchor];
+        leadingAnchor7 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view12 = [(BluetoothUIServiceBanner *)self view];
+        [view12 SBUISA_standardInteritemPadding];
+        v34 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor7 constant:-v9];
         v97[14] = v34;
-        v33 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-        v31 = [v33 firstBaselineAnchor];
-        v32 = [(BluetoothUIServiceBanner *)self view];
-        v30 = [v32 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-        v29 = [v30 bottomAnchor];
-        v28 = [v31 constraintEqualToAnchor:v29 constant:2.0];
+        ccBottomViewLabel3 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+        firstBaselineAnchor = [ccBottomViewLabel3 firstBaselineAnchor];
+        view13 = [(BluetoothUIServiceBanner *)self view];
+        sBUISA_systemApertureLegibleContentLayoutMarginsGuide = [view13 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+        bottomAnchor2 = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide bottomAnchor];
+        v28 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:2.0];
         v97[15] = v28;
-        v27 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-        v25 = [v27 leadingAnchor];
-        v26 = [(BluetoothUIServiceBanner *)self view];
-        v24 = [v26 leadingAnchor];
-        v23 = [v25 constraintEqualToAnchor:v24 constant:78.0];
+        ccBottomViewLabel4 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+        leadingAnchor8 = [ccBottomViewLabel4 leadingAnchor];
+        view14 = [(BluetoothUIServiceBanner *)self view];
+        leadingAnchor9 = [view14 leadingAnchor];
+        v23 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:78.0];
         v97[16] = v23;
-        v22 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-        v21 = [v22 _tightBoundingBoxLayoutGuide];
-        v20 = [v21 topAnchor];
-        v10 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-        v11 = [v10 bottomAnchor];
-        v12 = [v20 constraintEqualToAnchor:v11];
+        ccBottomViewLabel5 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+        _tightBoundingBoxLayoutGuide2 = [ccBottomViewLabel5 _tightBoundingBoxLayoutGuide];
+        topAnchor2 = [_tightBoundingBoxLayoutGuide2 topAnchor];
+        ccTopViewLabel5 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+        bottomAnchor3 = [ccTopViewLabel5 bottomAnchor];
+        v12 = [topAnchor2 constraintEqualToAnchor:bottomAnchor3];
         v97[17] = v12;
-        v13 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-        v14 = [v13 trailingAnchor];
-        v15 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-        v16 = [(BluetoothUIServiceBanner *)self view];
-        [v16 SBUISA_standardInteritemPadding];
-        v18 = [v14 constraintEqualToAnchor:v15 constant:-v17];
+        ccBottomViewLabel6 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+        trailingAnchor6 = [ccBottomViewLabel6 trailingAnchor];
+        leadingAnchor10 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+        view15 = [(BluetoothUIServiceBanner *)self view];
+        [view15 SBUISA_standardInteritemPadding];
+        v18 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor10 constant:-v17];
         v97[18] = v18;
         v19 = [NSArray arrayWithObjects:v97 count:19];
         [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v19 forKeyedSubscript:&off_100019370];
@@ -901,9 +901,9 @@ LABEL_10:
 
 - (void)_createConstraintsForReverseBannerIfNeeded
 {
-  v3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
 
-  if (v3)
+  if (ccTopViewLabel)
   {
     v4 = [(NSMutableDictionary *)self->_constraintsForLayoutMode objectForKeyedSubscript:&off_100019370];
 
@@ -916,74 +916,74 @@ LABEL_10:
         self->_constraintsForLayoutMode = v5;
       }
 
-      v62 = [(SBUISystemApertureAccessoryView *)self->_leadingView widthAnchor];
-      v61 = [v62 constraintEqualToConstant:118.0];
+      widthAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView widthAnchor];
+      v61 = [widthAnchor constraintEqualToConstant:118.0];
       v63[0] = v61;
-      v60 = [(SBUISystemApertureAccessoryView *)self->_leadingView heightAnchor];
-      v59 = [v60 constraintEqualToConstant:48.0];
+      heightAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView heightAnchor];
+      v59 = [heightAnchor constraintEqualToConstant:48.0];
       v63[1] = v59;
-      v57 = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
-      v58 = [(BluetoothUIServiceBanner *)self view];
-      v56 = [v58 leadingAnchor];
-      v55 = [v57 constraintEqualToAnchor:v56 constant:-15.0];
+      leadingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView leadingAnchor];
+      view = [(BluetoothUIServiceBanner *)self view];
+      leadingAnchor2 = [view leadingAnchor];
+      v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-15.0];
       v63[2] = v55;
-      v53 = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
-      v54 = [(BluetoothUIServiceBanner *)self view];
-      v52 = [v54 centerYAnchor];
-      v51 = [v53 constraintEqualToAnchor:v52];
+      centerYAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView centerYAnchor];
+      view2 = [(BluetoothUIServiceBanner *)self view];
+      centerYAnchor2 = [view2 centerYAnchor];
+      v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v63[3] = v51;
-      v50 = [(BluetoothUIServiceBanner *)self view];
-      v49 = [v50 heightAnchor];
-      v48 = [v49 constraintEqualToConstant:65.33];
+      view3 = [(BluetoothUIServiceBanner *)self view];
+      heightAnchor2 = [view3 heightAnchor];
+      v48 = [heightAnchor2 constraintEqualToConstant:65.33];
       v63[4] = v48;
-      v46 = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
-      v47 = [(BluetoothUIServiceBanner *)self view];
-      v45 = [v47 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v44 = [v45 leadingAnchor];
-      v43 = [v46 constraintLessThanOrEqualToAnchor:v44];
+      trailingAnchor = [(SBUISystemApertureAccessoryView *)self->_leadingView trailingAnchor];
+      view4 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [view4 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      leadingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+      v43 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
       v63[5] = v43;
-      v42 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v40 = [v42 leadingAnchor];
-      v41 = [(BluetoothUIServiceBanner *)self view];
-      v39 = [v41 leadingAnchor];
-      v38 = [v40 constraintEqualToAnchor:v39 constant:78.0];
+      ccTopViewLabel2 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      leadingAnchor4 = [ccTopViewLabel2 leadingAnchor];
+      view5 = [(BluetoothUIServiceBanner *)self view];
+      leadingAnchor5 = [view5 leadingAnchor];
+      v38 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:78.0];
       v63[6] = v38;
-      v37 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v36 = [v37 _tightBoundingBoxLayoutGuide];
-      v34 = [v36 topAnchor];
-      v35 = [(BluetoothUIServiceBanner *)self view];
-      v33 = [v35 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v32 = [v33 bottomAnchor];
-      v31 = [v34 constraintEqualToAnchor:v32];
+      ccTopViewLabel3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      _tightBoundingBoxLayoutGuide = [ccTopViewLabel3 _tightBoundingBoxLayoutGuide];
+      topAnchor = [_tightBoundingBoxLayoutGuide topAnchor];
+      view6 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view6 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      bottomAnchor = [sBUISA_systemApertureObstructedAreaLayoutGuide2 bottomAnchor];
+      v31 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       v63[7] = v31;
-      v30 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v29 = [v30 trailingAnchor];
-      v27 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-      v28 = [(BluetoothUIServiceBanner *)self view];
-      [v28 SBUISA_standardInteritemPadding];
-      v26 = [v29 constraintEqualToAnchor:v27 constant:-v7];
+      ccTopViewLabel4 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      trailingAnchor2 = [ccTopViewLabel4 trailingAnchor];
+      leadingAnchor6 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+      view7 = [(BluetoothUIServiceBanner *)self view];
+      [view7 SBUISA_standardInteritemPadding];
+      v26 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6 constant:-v7];
       v63[8] = v26;
-      v25 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
-      v24 = [v25 constraintEqualToConstant:30.0];
+      heightAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView heightAnchor];
+      v24 = [heightAnchor3 constraintEqualToConstant:30.0];
       v63[9] = v24;
-      v23 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
-      v22 = [v23 constraintEqualToConstant:64.0];
+      widthAnchor2 = [(SBUISystemApertureAccessoryView *)self->_trailingView widthAnchor];
+      v22 = [widthAnchor2 constraintEqualToConstant:64.0];
       v63[10] = v22;
-      v20 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
-      v21 = [(BluetoothUIServiceBanner *)self view];
-      v19 = [v21 centerYAnchor];
-      v18 = [v20 constraintEqualToAnchor:v19];
+      centerYAnchor3 = [(SBUISystemApertureAccessoryView *)self->_trailingView centerYAnchor];
+      view8 = [(BluetoothUIServiceBanner *)self view];
+      centerYAnchor4 = [view8 centerYAnchor];
+      v18 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v63[11] = v18;
-      v17 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
-      v8 = [(BluetoothUIServiceBanner *)self view];
-      v9 = [v8 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v10 = [v9 trailingAnchor];
-      v11 = [v17 constraintGreaterThanOrEqualToAnchor:v10];
+      leadingAnchor7 = [(SBUISystemApertureAccessoryView *)self->_trailingView leadingAnchor];
+      view9 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureObstructedAreaLayoutGuide3 = [view9 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      trailingAnchor3 = [sBUISA_systemApertureObstructedAreaLayoutGuide3 trailingAnchor];
+      v11 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:trailingAnchor3];
       v63[12] = v11;
-      v12 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
-      v13 = [(BluetoothUIServiceBanner *)self view];
-      v14 = [v13 trailingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:-16.0];
+      trailingAnchor4 = [(SBUISystemApertureAccessoryView *)self->_trailingView trailingAnchor];
+      view10 = [(BluetoothUIServiceBanner *)self view];
+      trailingAnchor5 = [view10 trailingAnchor];
+      v15 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
       v63[13] = v15;
       v16 = [NSArray arrayWithObjects:v63 count:14];
       [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v16 forKeyedSubscript:&off_100019370];
@@ -993,23 +993,23 @@ LABEL_10:
 
 - (void)_createConstraintsIfNeeded
 {
-  v3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-  if (v3)
+  ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  if (ccTopViewLabel)
   {
-    v4 = v3;
-    v5 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    v4 = ccTopViewLabel;
+    ccBottomViewLabel = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
 
-    if (v5)
+    if (ccBottomViewLabel)
     {
-      v6 = [(BluetoothUIServiceBanner *)self trailingView];
-      v7 = [v6 widthAnchor];
-      v8 = [v7 constraintEqualToConstant:20.0];
+      trailingView = [(BluetoothUIServiceBanner *)self trailingView];
+      widthAnchor = [trailingView widthAnchor];
+      v8 = [widthAnchor constraintEqualToConstant:20.0];
       trailingViewWidth = self->_trailingViewWidth;
       self->_trailingViewWidth = v8;
 
-      v10 = [(BluetoothUIServiceBanner *)self trailingView];
-      v11 = [v10 heightAnchor];
-      v12 = [v11 constraintEqualToConstant:20.0];
+      trailingView2 = [(BluetoothUIServiceBanner *)self trailingView];
+      heightAnchor = [trailingView2 heightAnchor];
+      v12 = [heightAnchor constraintEqualToConstant:20.0];
       trailingViewHeight = self->_trailingViewHeight;
       self->_trailingViewHeight = v12;
 
@@ -1059,79 +1059,79 @@ LABEL_10:
         v21 = 30.0;
       }
 
-      v22 = [(BluetoothUIServiceBanner *)self minimalView];
-      v23 = [v22 widthAnchor];
-      v24 = [v23 constraintEqualToConstant:v21];
+      minimalView = [(BluetoothUIServiceBanner *)self minimalView];
+      widthAnchor2 = [minimalView widthAnchor];
+      v24 = [widthAnchor2 constraintEqualToConstant:v21];
       v161[0] = v24;
-      v25 = [(BluetoothUIServiceBanner *)self minimalView];
-      v26 = [v25 heightAnchor];
-      v27 = [v26 constraintEqualToConstant:v21];
+      minimalView2 = [(BluetoothUIServiceBanner *)self minimalView];
+      heightAnchor2 = [minimalView2 heightAnchor];
+      v27 = [heightAnchor2 constraintEqualToConstant:v21];
       v161[1] = v27;
       v28 = [NSArray arrayWithObjects:v161 count:2];
       [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v28 forKeyedSubscript:&off_100019388];
 
-      v156 = [(BluetoothUIServiceBanner *)self leadingView];
-      v154 = [v156 widthAnchor];
-      v152 = [v154 constraintEqualToConstant:v21];
+      leadingView = [(BluetoothUIServiceBanner *)self leadingView];
+      widthAnchor3 = [leadingView widthAnchor];
+      v152 = [widthAnchor3 constraintEqualToConstant:v21];
       v160[0] = v152;
-      v150 = [(BluetoothUIServiceBanner *)self leadingView];
-      v148 = [v150 heightAnchor];
-      v146 = [v148 constraintEqualToConstant:v21];
+      leadingView2 = [(BluetoothUIServiceBanner *)self leadingView];
+      heightAnchor3 = [leadingView2 heightAnchor];
+      v146 = [heightAnchor3 constraintEqualToConstant:v21];
       v160[1] = v146;
-      v144 = [(BluetoothUIServiceBanner *)self leadingView];
-      v140 = [v144 leadingAnchor];
-      v142 = [(BluetoothUIServiceBanner *)self view];
-      v138 = [v142 leadingAnchor];
-      v136 = [v140 constraintEqualToAnchor:v138 constant:8.0];
+      leadingView3 = [(BluetoothUIServiceBanner *)self leadingView];
+      leadingAnchor = [leadingView3 leadingAnchor];
+      view = [(BluetoothUIServiceBanner *)self view];
+      leadingAnchor2 = [view leadingAnchor];
+      v136 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
       v160[2] = v136;
-      v134 = [(BluetoothUIServiceBanner *)self leadingView];
-      v130 = [v134 centerYAnchor];
-      v132 = [(BluetoothUIServiceBanner *)self view];
-      v128 = [v132 centerYAnchor];
-      v126 = [v130 constraintEqualToAnchor:v128];
+      leadingView4 = [(BluetoothUIServiceBanner *)self leadingView];
+      centerYAnchor = [leadingView4 centerYAnchor];
+      view2 = [(BluetoothUIServiceBanner *)self view];
+      centerYAnchor2 = [view2 centerYAnchor];
+      v126 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v29 = self->_trailingViewWidth;
       v160[3] = v126;
       v160[4] = v29;
       v160[5] = self->_trailingViewHeight;
-      v124 = [(BluetoothUIServiceBanner *)self trailingView];
-      v120 = [v124 centerXAnchor];
-      v122 = [(BluetoothUIServiceBanner *)self view];
-      v118 = [v122 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v116 = [v118 centerXAnchor];
-      v114 = [v120 constraintEqualToAnchor:v116];
+      trailingView3 = [(BluetoothUIServiceBanner *)self trailingView];
+      centerXAnchor = [trailingView3 centerXAnchor];
+      view3 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide = [view3 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      centerXAnchor2 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide centerXAnchor];
+      v114 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v160[6] = v114;
-      v112 = [(BluetoothUIServiceBanner *)self trailingView];
-      v108 = [v112 centerYAnchor];
-      v110 = [(BluetoothUIServiceBanner *)self view];
-      v106 = [v110 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v104 = [v106 centerYAnchor];
-      v102 = [v108 constraintEqualToAnchor:v104];
+      trailingView4 = [(BluetoothUIServiceBanner *)self trailingView];
+      centerYAnchor3 = [trailingView4 centerYAnchor];
+      view4 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide2 = [view4 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      centerYAnchor4 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide2 centerYAnchor];
+      v102 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v160[7] = v102;
-      v100 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v96 = [v100 leadingAnchor];
-      v98 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v94 = [v98 leadingAnchor];
-      v92 = [v96 constraintEqualToAnchor:v94];
+      ccTopViewLabel2 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      leadingAnchor3 = [ccTopViewLabel2 leadingAnchor];
+      ccBottomViewLabel2 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      leadingAnchor4 = [ccBottomViewLabel2 leadingAnchor];
+      v92 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v160[8] = v92;
-      v90 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v86 = [v90 firstBaselineAnchor];
-      v88 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v84 = [v88 topAnchor];
-      v82 = [v86 constraintEqualToAnchor:v84];
+      ccTopViewLabel3 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      firstBaselineAnchor = [ccTopViewLabel3 firstBaselineAnchor];
+      ccBottomViewLabel3 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      topAnchor = [ccBottomViewLabel3 topAnchor];
+      v82 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
       v160[9] = v82;
-      v80 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v76 = [v80 firstBaselineAnchor];
-      v78 = [(BluetoothUIServiceBanner *)self view];
-      v74 = [v78 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-      v30 = [v74 bottomAnchor];
-      v31 = [v76 constraintEqualToAnchor:v30];
+      ccBottomViewLabel4 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      firstBaselineAnchor2 = [ccBottomViewLabel4 firstBaselineAnchor];
+      view5 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureLegibleContentLayoutMarginsGuide = [view5 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+      bottomAnchor = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide bottomAnchor];
+      v31 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor];
       v160[10] = v31;
-      v32 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v33 = [v32 leadingAnchor];
-      v34 = [(BluetoothUIServiceBanner *)self view];
-      v35 = [v34 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v36 = [v35 leadingAnchor];
-      v37 = [v33 constraintEqualToAnchor:v36];
+      ccBottomViewLabel5 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      leadingAnchor5 = [ccBottomViewLabel5 leadingAnchor];
+      view6 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [view6 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      leadingAnchor6 = [sBUISA_systemApertureObstructedAreaLayoutGuide leadingAnchor];
+      v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v160[11] = v37;
       v38 = [NSArray arrayWithObjects:v160 count:12];
       [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v38 forKeyedSubscript:&off_1000193A0];
@@ -1154,96 +1154,96 @@ LABEL_10:
         v39 = 60.0;
       }
 
-      v158 = [(BluetoothUIServiceBanner *)self leadingView];
-      v157 = [v158 widthAnchor];
-      v155 = [v157 constraintEqualToConstant:v39];
+      leadingView5 = [(BluetoothUIServiceBanner *)self leadingView];
+      widthAnchor4 = [leadingView5 widthAnchor];
+      v155 = [widthAnchor4 constraintEqualToConstant:v39];
       v159[0] = v155;
-      v153 = [(BluetoothUIServiceBanner *)self leadingView];
-      v151 = [v153 heightAnchor];
-      v149 = [v151 constraintEqualToConstant:v39];
+      leadingView6 = [(BluetoothUIServiceBanner *)self leadingView];
+      heightAnchor4 = [leadingView6 heightAnchor];
+      v149 = [heightAnchor4 constraintEqualToConstant:v39];
       v159[1] = v149;
-      v147 = [(BluetoothUIServiceBanner *)self trailingView];
-      v145 = [v147 widthAnchor];
-      v143 = [v145 constraintEqualToConstant:49.5];
+      trailingView5 = [(BluetoothUIServiceBanner *)self trailingView];
+      widthAnchor5 = [trailingView5 widthAnchor];
+      v143 = [widthAnchor5 constraintEqualToConstant:49.5];
       v159[2] = v143;
-      v141 = [(BluetoothUIServiceBanner *)self trailingView];
-      v139 = [v141 heightAnchor];
-      v137 = [v139 constraintEqualToConstant:49.5];
+      trailingView6 = [(BluetoothUIServiceBanner *)self trailingView];
+      heightAnchor5 = [trailingView6 heightAnchor];
+      v137 = [heightAnchor5 constraintEqualToConstant:49.5];
       v159[3] = v137;
-      v135 = [(BluetoothUIServiceBanner *)self view];
-      v131 = [v135 widthAnchor];
-      v133 = [(BluetoothUIServiceBanner *)self view];
-      v129 = [v133 window];
-      v127 = [v129 widthAnchor];
-      v125 = [v131 constraintEqualToAnchor:v127];
+      view7 = [(BluetoothUIServiceBanner *)self view];
+      widthAnchor6 = [view7 widthAnchor];
+      view8 = [(BluetoothUIServiceBanner *)self view];
+      window = [view8 window];
+      widthAnchor7 = [window widthAnchor];
+      v125 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
       v159[4] = v125;
-      v123 = [(BluetoothUIServiceBanner *)self view];
-      v119 = [v123 heightAnchor];
-      v121 = [(BluetoothUIServiceBanner *)self view];
-      v117 = [v121 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v115 = [v117 heightAnchor];
-      v113 = [v119 constraintEqualToAnchor:v115];
+      view9 = [(BluetoothUIServiceBanner *)self view];
+      heightAnchor6 = [view9 heightAnchor];
+      view10 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide3 = [view10 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      heightAnchor7 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide3 heightAnchor];
+      v113 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7];
       v159[5] = v113;
-      v111 = [(BluetoothUIServiceBanner *)self leadingView];
-      v107 = [v111 leadingAnchor];
-      v109 = [(BluetoothUIServiceBanner *)self view];
-      v105 = [v109 leadingAnchor];
-      v103 = [v107 constraintEqualToAnchor:v105 constant:20.0];
+      leadingView7 = [(BluetoothUIServiceBanner *)self leadingView];
+      leadingAnchor7 = [leadingView7 leadingAnchor];
+      view11 = [(BluetoothUIServiceBanner *)self view];
+      leadingAnchor8 = [view11 leadingAnchor];
+      v103 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:20.0];
       v159[6] = v103;
-      v101 = [(BluetoothUIServiceBanner *)self leadingView];
-      v97 = [v101 centerYAnchor];
-      v99 = [(BluetoothUIServiceBanner *)self view];
-      v95 = [v99 centerYAnchor];
-      v93 = [v97 constraintEqualToAnchor:v95];
+      leadingView8 = [(BluetoothUIServiceBanner *)self leadingView];
+      centerYAnchor5 = [leadingView8 centerYAnchor];
+      view12 = [(BluetoothUIServiceBanner *)self view];
+      centerYAnchor6 = [view12 centerYAnchor];
+      v93 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       v159[7] = v93;
-      v91 = [(BluetoothUIServiceBanner *)self trailingView];
-      v87 = [v91 centerXAnchor];
-      v89 = [(BluetoothUIServiceBanner *)self view];
-      v85 = [v89 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v83 = [v85 centerXAnchor];
-      v81 = [v87 constraintEqualToAnchor:v83];
+      trailingView7 = [(BluetoothUIServiceBanner *)self trailingView];
+      centerXAnchor3 = [trailingView7 centerXAnchor];
+      view13 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide4 = [view13 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      centerXAnchor4 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide4 centerXAnchor];
+      v81 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v159[8] = v81;
-      v79 = [(BluetoothUIServiceBanner *)self trailingView];
-      v75 = [v79 centerYAnchor];
-      v77 = [(BluetoothUIServiceBanner *)self view];
-      v73 = [v77 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
-      v72 = [v73 centerYAnchor];
-      v71 = [v75 constraintEqualToAnchor:v72];
+      trailingView8 = [(BluetoothUIServiceBanner *)self trailingView];
+      centerYAnchor7 = [trailingView8 centerYAnchor];
+      view14 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureTrailingConcentricContentLayoutGuide5 = [view14 SBUISA_systemApertureTrailingConcentricContentLayoutGuide];
+      centerYAnchor8 = [sBUISA_systemApertureTrailingConcentricContentLayoutGuide5 centerYAnchor];
+      v71 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
       v159[9] = v71;
-      v70 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v68 = [v70 leadingAnchor];
-      v69 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v67 = [v69 leadingAnchor];
-      v66 = [v68 constraintEqualToAnchor:v67];
+      ccTopViewLabel4 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      leadingAnchor9 = [ccTopViewLabel4 leadingAnchor];
+      ccBottomViewLabel6 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      leadingAnchor10 = [ccBottomViewLabel6 leadingAnchor];
+      v66 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
       v159[10] = v66;
-      v65 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-      v64 = [v65 _tightBoundingBoxLayoutGuide];
-      v62 = [v64 topAnchor];
-      v63 = [(BluetoothUIServiceBanner *)self view];
-      v61 = [v63 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v60 = [v61 bottomAnchor];
-      v59 = [v62 constraintEqualToAnchor:v60];
+      ccTopViewLabel5 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+      _tightBoundingBoxLayoutGuide = [ccTopViewLabel5 _tightBoundingBoxLayoutGuide];
+      topAnchor2 = [_tightBoundingBoxLayoutGuide topAnchor];
+      view15 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureObstructedAreaLayoutGuide2 = [view15 SBUISA_systemApertureObstructedAreaLayoutGuide];
+      bottomAnchor2 = [sBUISA_systemApertureObstructedAreaLayoutGuide2 bottomAnchor];
+      v59 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
       v159[11] = v59;
-      v58 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v56 = [v58 firstBaselineAnchor];
-      v57 = [(BluetoothUIServiceBanner *)self view];
-      v55 = [v57 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
-      v54 = [v55 bottomAnchor];
-      v53 = [v56 constraintEqualToAnchor:v54 constant:-2.5];
+      ccBottomViewLabel7 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      firstBaselineAnchor3 = [ccBottomViewLabel7 firstBaselineAnchor];
+      view16 = [(BluetoothUIServiceBanner *)self view];
+      sBUISA_systemApertureLegibleContentLayoutMarginsGuide2 = [view16 SBUISA_systemApertureLegibleContentLayoutMarginsGuide];
+      bottomAnchor3 = [sBUISA_systemApertureLegibleContentLayoutMarginsGuide2 bottomAnchor];
+      v53 = [firstBaselineAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:-2.5];
       v159[12] = v53;
-      v52 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v50 = [v52 trailingAnchor];
-      v51 = [(BluetoothUIServiceBanner *)self trailingView];
-      v40 = [v51 leadingAnchor];
-      v41 = [(BluetoothUIServiceBanner *)self view];
-      [v41 SBUISA_standardInteritemPadding];
-      v43 = [v50 constraintLessThanOrEqualToAnchor:v40 constant:-v42];
+      ccBottomViewLabel8 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      trailingAnchor = [ccBottomViewLabel8 trailingAnchor];
+      trailingView9 = [(BluetoothUIServiceBanner *)self trailingView];
+      leadingAnchor11 = [trailingView9 leadingAnchor];
+      view17 = [(BluetoothUIServiceBanner *)self view];
+      [view17 SBUISA_standardInteritemPadding];
+      v43 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor11 constant:-v42];
       v159[13] = v43;
-      v44 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-      v45 = [v44 leadingAnchor];
-      v46 = [(BluetoothUIServiceBanner *)self leadingView];
-      v47 = [v46 trailingAnchor];
-      v48 = [v45 constraintEqualToAnchor:v47 constant:13.0];
+      ccBottomViewLabel9 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+      leadingAnchor12 = [ccBottomViewLabel9 leadingAnchor];
+      leadingView9 = [(BluetoothUIServiceBanner *)self leadingView];
+      trailingAnchor2 = [leadingView9 trailingAnchor];
+      v48 = [leadingAnchor12 constraintEqualToAnchor:trailingAnchor2 constant:13.0];
       v159[14] = v48;
       v49 = [NSArray arrayWithObjects:v159 count:15];
       [(NSMutableDictionary *)self->_constraintsForLayoutMode setObject:v49 forKeyedSubscript:&off_100019370];
@@ -1251,24 +1251,24 @@ LABEL_10:
   }
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(BluetoothUIServiceBanner *)self minimalView];
-  [v5 setHidden:0];
+  coordinatorCopy = coordinator;
+  minimalView = [(BluetoothUIServiceBanner *)self minimalView];
+  [minimalView setHidden:0];
 
-  v6 = [(BluetoothUIServiceBanner *)self view];
-  [v6 addSubview:self->_leadingAccessoryView];
+  view = [(BluetoothUIServiceBanner *)self view];
+  [view addSubview:self->_leadingAccessoryView];
 
-  v7 = [(BluetoothUIServiceBanner *)self view];
-  [v7 addSubview:self->_minimalAccessoryView];
+  view2 = [(BluetoothUIServiceBanner *)self view];
+  [view2 addSubview:self->_minimalAccessoryView];
 
-  v8 = [(BluetoothUIServiceBanner *)self view];
-  [v8 addSubview:self->_trailingAccessoryView];
+  view3 = [(BluetoothUIServiceBanner *)self view];
+  [view3 addSubview:self->_trailingAccessoryView];
 
-  v9 = [(BluetoothUIServiceBanner *)self view];
-  v10 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-  [v9 addSubview:v10];
+  view4 = [(BluetoothUIServiceBanner *)self view];
+  ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  [view4 addSubview:ccTopViewLabel];
 
   if (self->_isReverseRouteBanner || self->_isInUseBanner)
   {
@@ -1278,38 +1278,38 @@ LABEL_10:
 
   else
   {
-    v11 = [(BluetoothUIServiceBanner *)self leadingView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingView = [(BluetoothUIServiceBanner *)self leadingView];
+    [leadingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(BluetoothUIServiceBanner *)self trailingView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    trailingView = [(BluetoothUIServiceBanner *)self trailingView];
+    [trailingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(BluetoothUIServiceBanner *)self minimalView];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    minimalView2 = [(BluetoothUIServiceBanner *)self minimalView];
+    [minimalView2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v14 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  ccTopViewLabel2 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  [ccTopViewLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (self->_isInUseBanner)
   {
-    v15 = [(BluetoothUIServiceBanner *)self view];
-    v16 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-    [v15 addSubview:v16];
+    view5 = [(BluetoothUIServiceBanner *)self view];
+    ccBottomViewLabel = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    [view5 addSubview:ccBottomViewLabel];
 
     [(BluetoothUIServiceBanner *)self _createConstraintsForInUseBannerIfNeeded];
 LABEL_10:
-    v19 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+    ccBottomViewLabel2 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    [ccBottomViewLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     goto LABEL_11;
   }
 
   if (!self->_isReverseRouteBanner)
   {
-    v17 = [(BluetoothUIServiceBanner *)self view];
-    v18 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-    [v17 addSubview:v18];
+    view6 = [(BluetoothUIServiceBanner *)self view];
+    ccBottomViewLabel3 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    [view6 addSubview:ccBottomViewLabel3];
 
     [(BluetoothUIServiceBanner *)self _createConstraintsIfNeeded];
     goto LABEL_10;
@@ -1322,12 +1322,12 @@ LABEL_11:
   v20[2] = sub_100007D84;
   v20[3] = &unk_1000185F0;
   v20[4] = self;
-  [v4 animateAlongsideTransition:v20 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v20 completion:0];
 }
 
-- (void)activateWithActionHandler:(id)a3
+- (void)activateWithActionHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   actionHandler = self->_actionHandler;
   self->_actionHandler = v4;
 
@@ -1336,8 +1336,8 @@ LABEL_11:
   self->_bannerTransaction = v6;
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleIdentifier];
-  v10 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:v9];
+  bundleIdentifier = [v8 bundleIdentifier];
+  v10 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:bundleIdentifier];
   bannerSource = self->_bannerSource;
   self->_bannerSource = v10;
 
@@ -1501,9 +1501,9 @@ LABEL_11:
   }
 }
 
-- (id)getAppIcon:(id)a3
+- (id)getAppIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   if (dword_10001EA10 <= 30 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
   {
     sub_10000D860();
@@ -1511,15 +1511,15 @@ LABEL_11:
 
   v4 = +[UIScreen mainScreen];
   [v4 scale];
-  v5 = [UIImage _applicationIconImageForBundleIdentifier:v3 format:0 scale:?];
+  v5 = [UIImage _applicationIconImageForBundleIdentifier:iconCopy format:0 scale:?];
 
   return v5;
 }
 
-- (void)createCustomViewFromUILabel:(id)a3 WithStr:(id)a4
+- (void)createCustomViewFromUILabel:(id)label WithStr:(id)str
 {
-  v5 = a4;
-  v6 = a3;
+  strCopy = str;
+  labelCopy = label;
   v11 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 40.0, 40.0}];
   v7 = +[UIColor clearColor];
   [v11 setBackgroundColor:v7];
@@ -1532,29 +1532,29 @@ LABEL_11:
   [v11 setFont:v10];
 
   [v11 setTextAlignment:1];
-  [v11 setText:v5];
+  [v11 setText:strCopy];
 
-  [v6 addSubview:v11];
+  [labelCopy addSubview:v11];
 }
 
-- (void)createCustomViewForNativeReverseSymbol:(id)a3
+- (void)createCustomViewForNativeReverseSymbol:(id)symbol
 {
-  v3 = a3;
+  symbolCopy = symbol;
   v8 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:12.0];
   v4 = [UIImage systemImageNamed:@"arrow.uturn.backward.circle.fill"];
   v5 = [v4 imageWithSymbolConfiguration:v8];
   v6 = [v5 imageWithRenderingMode:2];
 
   v7 = [[UIImageView alloc] initWithImage:v6];
-  [v3 bounds];
+  [symbolCopy bounds];
   [v7 setFrame:?];
   [v7 setAutoresizingMask:18];
-  [v3 addSubview:v7];
+  [symbolCopy addSubview:v7];
 }
 
-- (void)createGenericSpeakerView:(id)a3
+- (void)createGenericSpeakerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v8 = [UIImage _systemImageNamed:@"speaker.bluetooth.fill"];
   v4 = [[UIImageView alloc] initWithImage:v8];
   v5 = +[UIColor systemGrayColor];
@@ -1565,15 +1565,15 @@ LABEL_11:
   [v4 setPreferredSymbolConfiguration:v7];
 
   [v4 setContentMode:4];
-  [v3 bounds];
+  [viewCopy bounds];
   [v4 setFrame:?];
   [v4 setAutoresizingMask:18];
-  [v3 addSubview:v4];
+  [viewCopy addSubview:v4];
 }
 
-- (void)createGenericHeadphoneView:(id)a3
+- (void)createGenericHeadphoneView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v8 = [UIImage _systemImageNamed:@"headphones"];
   v4 = [[UIImageView alloc] initWithImage:v8];
   v5 = +[UIColor systemGrayColor];
@@ -1584,70 +1584,70 @@ LABEL_11:
   [v4 setPreferredSymbolConfiguration:v7];
 
   [v4 setContentMode:4];
-  [v3 bounds];
+  [viewCopy bounds];
   [v4 setFrame:?];
   [v4 setAutoresizingMask:18];
-  [v3 addSubview:v4];
+  [viewCopy addSubview:v4];
 }
 
-- (void)createCustomView:(id)a3 WithCustomIconName:(id)a4
+- (void)createCustomView:(id)view WithCustomIconName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  viewCopy = view;
   v7 = [UIImageView alloc];
-  v8 = [UIImage imageNamed:v5];
+  v8 = [UIImage imageNamed:nameCopy];
 
   v9 = [v7 initWithImage:v8];
   [v9 setContentMode:2];
-  [v6 bounds];
+  [viewCopy bounds];
   [v9 setFrame:?];
   [v9 setAutoresizingMask:18];
-  [v6 addSubview:v9];
+  [viewCopy addSubview:v9];
 }
 
-- (void)createCustomView:(id)a3 WithCustomIconPath:(id)a4
+- (void)createCustomView:(id)view WithCustomIconPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [[UIImage alloc] initWithContentsOfFile:v5];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [[UIImage alloc] initWithContentsOfFile:pathCopy];
 
   v7 = [[UIImageView alloc] initWithImage:v8];
   [v7 setContentMode:2];
-  [v6 bounds];
+  [viewCopy bounds];
   [v7 setFrame:?];
   [v7 setAutoresizingMask:18];
-  [v6 addSubview:v7];
+  [viewCopy addSubview:v7];
 }
 
-- (void)createCustomView:(id)a3 WithImage:(id)a4
+- (void)createCustomView:(id)view WithImage:(id)image
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[UIImageView alloc] initWithImage:v5];
+  imageCopy = image;
+  viewCopy = view;
+  v7 = [[UIImageView alloc] initWithImage:imageCopy];
 
   [v7 setContentMode:2];
-  [v6 bounds];
+  [viewCopy bounds];
   [v7 setFrame:?];
   [v7 setAutoresizingMask:18];
-  [v6 addSubview:v7];
+  [viewCopy addSubview:v7];
 }
 
-- (void)createCustomView:(id)a3 WithImage:(id)a4 WithMode:(int64_t)a5
+- (void)createCustomView:(id)view WithImage:(id)image WithMode:(int64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UIImageView alloc] initWithImage:v7];
+  imageCopy = image;
+  viewCopy = view;
+  v9 = [[UIImageView alloc] initWithImage:imageCopy];
 
-  [v9 setContentMode:a5];
-  [v8 bounds];
+  [v9 setContentMode:mode];
+  [viewCopy bounds];
   [v9 setFrame:?];
   [v9 setAutoresizingMask:18];
-  [v8 addSubview:v9];
+  [viewCopy addSubview:v9];
 }
 
-- (void)createCustomAVPlayerLayerView:(id)a3 WithCustomIconName:(id)a4
+- (void)createCustomAVPlayerLayerView:(id)view WithCustomIconName:(id)name
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_alloc_init(SRBannerMediaPlayerView);
   v7 = objc_alloc_init(AVPlayer);
   [v7 setAllowsExternalPlayback:0];
@@ -1658,7 +1658,7 @@ LABEL_11:
   v38 = v6;
   objc_storeStrong(&self->_mediaPlayerView, v6);
   [(SRBannerMediaPlayerView *)self->_mediaPlayerView setBackgroundColor:0];
-  [v5 addSubview:self->_mediaPlayerView];
+  [viewCopy addSubview:self->_mediaPlayerView];
   [(SRBannerMediaPlayerView *)self->_mediaPlayerView setTranslatesAutoresizingMaskIntoConstraints:0];
   if (self->_isFirstInstance)
   {
@@ -1666,22 +1666,22 @@ LABEL_11:
     self->_isFirstInstance = 0;
   }
 
-  v36 = [(SRBannerMediaPlayerView *)self->_mediaPlayerView centerXAnchor];
-  v35 = [v5 centerXAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  centerXAnchor = [(SRBannerMediaPlayerView *)self->_mediaPlayerView centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v40[0] = v34;
-  v33 = [(SRBannerMediaPlayerView *)self->_mediaPlayerView centerYAnchor];
-  v8 = [v5 centerYAnchor];
-  v9 = [v33 constraintEqualToAnchor:v8];
+  centerYAnchor = [(SRBannerMediaPlayerView *)self->_mediaPlayerView centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v40[1] = v9;
-  v10 = [(SRBannerMediaPlayerView *)self->_mediaPlayerView widthAnchor];
-  v11 = [v5 widthAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  widthAnchor = [(SRBannerMediaPlayerView *)self->_mediaPlayerView widthAnchor];
+  widthAnchor2 = [viewCopy widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v40[2] = v12;
-  v13 = [(SRBannerMediaPlayerView *)self->_mediaPlayerView heightAnchor];
-  v39 = v5;
-  v14 = [v5 heightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  heightAnchor = [(SRBannerMediaPlayerView *)self->_mediaPlayerView heightAnchor];
+  v39 = viewCopy;
+  heightAnchor2 = [viewCopy heightAnchor];
+  v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v40[3] = v15;
   v16 = [NSArray arrayWithObjects:v40 count:4];
 
@@ -1726,11 +1726,11 @@ LABEL_11:
   }
 }
 
-- (void)createCustomStaticImageView:(id)a3 WithCustomIconName:(id)a4
+- (void)createCustomStaticImageView:(id)view WithCustomIconName:(id)name
 {
-  v5 = a3;
+  viewCopy = view;
   v31 = objc_alloc_init(UIImageView);
-  [v5 addSubview:v31];
+  [viewCopy addSubview:v31];
   [v31 setBackgroundColor:0];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_storeStrong(&self->_imageView, v31);
@@ -1758,57 +1758,57 @@ LABEL_11:
   v13 = [UIImage imageWithContentsOfFile:v28];
   [(UIImageView *)self->_imageView setImage:v13];
 
-  v27 = [(UIImageView *)self->_imageView centerXAnchor];
-  v26 = [v5 centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v32[0] = v25;
-  v14 = [(UIImageView *)self->_imageView centerYAnchor];
-  v15 = [v5 centerYAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[1] = v16;
-  v17 = [(UIImageView *)self->_imageView widthAnchor];
-  v24 = v5;
-  v18 = [v5 widthAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v24 = viewCopy;
+  widthAnchor2 = [viewCopy widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v32[2] = v19;
-  v20 = [(UIImageView *)self->_imageView heightAnchor];
-  v21 = [v5 heightAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  heightAnchor2 = [viewCopy heightAnchor];
+  v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v32[3] = v22;
   v23 = [NSArray arrayWithObjects:v32 count:4];
 
   [NSLayoutConstraint activateConstraints:v23];
 }
 
-- (void)createCustomStaticImageView:(id)a3 withIcon:(id)a4
+- (void)createCustomStaticImageView:(id)view withIcon:(id)icon
 {
-  v6 = a4;
-  v7 = a3;
+  iconCopy = icon;
+  viewCopy = view;
   v8 = objc_alloc_init(UIImageView);
-  [v7 addSubview:v8];
+  [viewCopy addSubview:v8];
   [(UIImageView *)v8 setBackgroundColor:0];
   [(UIImageView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   imageView = self->_imageView;
   self->_imageView = v8;
   v23 = v8;
 
-  [(UIImageView *)self->_imageView setImage:v6];
-  v22 = [(UIImageView *)self->_imageView centerXAnchor];
-  v21 = [v7 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  [(UIImageView *)self->_imageView setImage:iconCopy];
+  centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v24[0] = v20;
-  v10 = [(UIImageView *)self->_imageView centerYAnchor];
-  v11 = [v7 centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v24[1] = v12;
-  v13 = [(UIImageView *)self->_imageView widthAnchor];
-  v14 = [v7 widthAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  widthAnchor2 = [viewCopy widthAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v24[2] = v15;
-  v16 = [(UIImageView *)self->_imageView heightAnchor];
-  v17 = [v7 heightAnchor];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  heightAnchor2 = [viewCopy heightAnchor];
 
-  v18 = [v16 constraintEqualToAnchor:v17];
+  v18 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v24[3] = v18;
   v19 = [NSArray arrayWithObjects:v24 count:4];
 
@@ -1829,16 +1829,16 @@ LABEL_11:
   v6 = [UIButton buttonWithType:1];
   [v6 setTitle:v4 forState:0];
   v7 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline variant:1024];
-  v8 = [v6 titleLabel];
-  [v8 setFont:v7];
+  titleLabel = [v6 titleLabel];
+  [titleLabel setFont:v7];
 
   if (v5)
   {
-    v9 = [v6 titleLabel];
-    [v9 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [v6 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v10 = [v6 titleLabel];
-    [v10 setMinimumScaleFactor:0.5];
+    titleLabel3 = [v6 titleLabel];
+    [titleLabel3 setMinimumScaleFactor:0.5];
 
     v11 = +[UIColor systemBlueColor];
     v12 = [v11 colorWithAlphaComponent:0.4];
@@ -1848,9 +1848,9 @@ LABEL_11:
     [v6 setUserInteractionEnabled:1];
     [v6 setContentEdgeInsets:{8.0, 16.0, 8.0, 16.0}];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [v6 widthAnchor];
+    widthAnchor = [v6 widthAnchor];
     [v6 intrinsicContentSize];
-    v14 = [v13 constraintEqualToConstant:?];
+    v14 = [widthAnchor constraintEqualToConstant:?];
     v21 = v14;
     v15 = &v21;
   }
@@ -1867,9 +1867,9 @@ LABEL_11:
     [v6 setUserInteractionEnabled:1];
     [v6 setContentEdgeInsets:{8.0, 16.0, 8.0, 16.0}];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [v6 widthAnchor];
+    widthAnchor = [v6 widthAnchor];
     [v6 intrinsicContentSize];
-    v14 = [v13 constraintEqualToConstant:?];
+    v14 = [widthAnchor constraintEqualToConstant:?];
     v20 = v14;
     v15 = &v20;
   }
@@ -1893,19 +1893,19 @@ LABEL_11:
   [v3 setPreferredSymbolConfigurationForImage:v4];
   v7 = +[UIColor systemBlueColor];
   v8 = [v7 colorWithAlphaComponent:0.4];
-  v9 = [v3 background];
-  [v9 setBackgroundColor:v8];
+  background = [v3 background];
+  [background setBackgroundColor:v8];
 
-  v10 = [v3 background];
-  [v10 setCornerRadius:15.0];
+  background2 = [v3 background];
+  [background2 setCornerRadius:15.0];
 
   v11 = [SBUISystemApertureButton buttonWithConfiguration:v3 primaryAction:0];
   [v11 setConfiguration:v3];
   [v11 setUserInteractionEnabled:1];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [v11 widthAnchor];
+  widthAnchor = [v11 widthAnchor];
   [v11 intrinsicContentSize];
-  v14 = [v12 constraintEqualToConstant:v13 + 30.0];
+  v14 = [widthAnchor constraintEqualToConstant:v13 + 30.0];
   v17 = v14;
   v15 = [NSArray arrayWithObjects:&v17 count:1];
   [NSLayoutConstraint activateConstraints:v15];
@@ -1915,26 +1915,26 @@ LABEL_11:
   return v11;
 }
 
-- (id)removedAccessoryColorCode:(id)a3
+- (id)removedAccessoryColorCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_alloc_init(NSString);
-  v5 = [v3 componentsSeparatedByString:@"-"];
+  v5 = [codeCopy componentsSeparatedByString:@"-"];
   v6 = [NSMutableArray arrayWithArray:v5];
-  v7 = [v5 lastObject];
-  if ([v7 length] <= 3)
+  lastObject = [v5 lastObject];
+  if ([lastObject length] <= 3)
   {
   }
 
   else
   {
-    v8 = [v5 lastObject];
-    v9 = [v8 containsString:@"default"];
+    lastObject2 = [v5 lastObject];
+    v9 = [lastObject2 containsString:@"default"];
 
     if (!v9)
     {
-      v10 = [v5 lastObject];
-      if ([v10 containsString:@"Case"])
+      lastObject3 = [v5 lastObject];
+      if ([lastObject3 containsString:@"Case"])
       {
         v11 = [v6 objectAtIndex:{objc_msgSend(v6, "count") - 2}];
         v12 = [v11 length];
@@ -1957,7 +1957,7 @@ LABEL_11:
       {
       }
 
-      v13 = v3;
+      v13 = codeCopy;
 
       goto LABEL_16;
     }
@@ -1987,11 +1987,11 @@ LABEL_16:
   return leadingAccessoryIconName;
 }
 
-- (id)createMuteUnmuteButton:(id)a3
+- (id)createMuteUnmuteButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = +[UIButtonConfiguration tintedButtonConfiguration];
-  v5 = [v3 isEqualToString:@"mute"];
+  v5 = [buttonCopy isEqualToString:@"mute"];
 
   if (v5)
   {
@@ -2013,8 +2013,8 @@ LABEL_16:
   if (SBUIIsSystemApertureEnabled())
   {
     v13 = +[UIColor systemGray6Color];
-    v14 = [v4 background];
-    [v14 setBackgroundColor:v13];
+    background = [v4 background];
+    [background setBackgroundColor:v13];
 
     [v4 setCornerStyle:4];
     v15 = +[UIColor whiteColor];
@@ -2036,14 +2036,14 @@ LABEL_16:
     v16 = [UIVibrancyEffect effectForBlurEffect:v21 style:6];
 
     v22 = +[UIColor systemGray6Color];
-    v23 = [v4 background];
-    [v23 setBackgroundColor:v22];
+    background2 = [v4 background];
+    [background2 setBackgroundColor:v22];
 
-    v24 = [v4 background];
-    [v24 setVisualEffect:v16];
+    background3 = [v4 background];
+    [background3 setVisualEffect:v16];
 
-    v25 = [v4 background];
-    [v25 setCornerRadius:15.0];
+    background4 = [v4 background];
+    [background4 setCornerRadius:15.0];
 
     v26 = +[UIColor blackColor];
     v18 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:v26];
@@ -2061,9 +2061,9 @@ LABEL_16:
   [v29 setConfiguration:v4];
   [v29 setUserInteractionEnabled:1];
   [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [v29 widthAnchor];
+  widthAnchor = [v29 widthAnchor];
   [v29 intrinsicContentSize];
-  v32 = [v30 constraintEqualToConstant:v31 + 30.0];
+  v32 = [widthAnchor constraintEqualToConstant:v31 + 30.0];
   v35 = v32;
   v33 = [NSArray arrayWithObjects:&v35 count:1];
   [NSLayoutConstraint activateConstraints:v33];
@@ -2076,28 +2076,28 @@ LABEL_16:
   v23.receiver = self;
   v23.super_class = BluetoothUIServiceBanner;
   [(BluetoothUIServiceBanner *)&v23 viewDidLoad];
-  v3 = [(BluetoothUIServiceBanner *)self view];
+  view = [(BluetoothUIServiceBanner *)self view];
   if ((SBUIIsSystemApertureEnabled() & 1) == 0)
   {
-    [v3 addSubview:self->_pillView];
-    v4 = [(PLPillView *)self->_pillView leadingAnchor];
-    v5 = [v3 leadingAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    [view addSubview:self->_pillView];
+    leadingAnchor = [(PLPillView *)self->_pillView leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v6 setActive:1];
 
-    v7 = [(PLPillView *)self->_pillView trailingAnchor];
-    v8 = [v3 trailingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    trailingAnchor = [(PLPillView *)self->_pillView trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v9 setActive:1];
 
-    v10 = [(PLPillView *)self->_pillView topAnchor];
-    v11 = [v3 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    topAnchor = [(PLPillView *)self->_pillView topAnchor];
+    topAnchor2 = [view topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v12 setActive:1];
 
-    v13 = [(PLPillView *)self->_pillView bottomAnchor];
-    v14 = [v3 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(PLPillView *)self->_pillView bottomAnchor];
+    bottomAnchor2 = [view bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v15 setActive:1];
   }
 
@@ -2117,14 +2117,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-  [v17 setMarqueeRunning:1];
+  ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+  [ccTopViewLabel setMarqueeRunning:1];
 
-  v18 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-  [v18 setMarqueeRunning:1];
+  ccBottomViewLabel = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+  [ccBottomViewLabel setMarqueeRunning:1];
 
-  v19 = [(BluetoothUIServiceBanner *)self view];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(BluetoothUIServiceBanner *)self view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v20 = os_transaction_create();
   bannerAssetTransaction = self->_bannerAssetTransaction;
@@ -2133,7 +2133,7 @@ LABEL_10:
   [(SRBannerMediaPlayerView *)self->_mediaPlayerView setHidden:0];
   if (!self->_isReverseRouteBanner && !self->_isInUseBanner)
   {
-    pillView = v3;
+    pillView = view;
     if (self->_bannerType != 2)
     {
       goto LABEL_10;
@@ -2155,9 +2155,9 @@ LABEL_11:
   [(BluetoothUIServiceBanner *)&v3 viewWillLayoutSubviews];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if (dword_10001EA10 <= 50 && (dword_10001EA10 != -1 || _LogCategory_Initialize()))
   {
     sub_10000DA5C();
@@ -2183,21 +2183,21 @@ LABEL_11:
   _objc_release_x1();
 }
 
-- (void)bannerDidDismiss:(id)a3
+- (void)bannerDidDismiss:(id)dismiss
 {
-  v3 = a3;
-  v4 = v3;
+  dismissCopy = dismiss;
+  v4 = dismissCopy;
   if (dword_10001EA10 <= 50)
   {
-    v5 = v3;
-    if (dword_10001EA10 != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = dismissCopy;
+    if (dword_10001EA10 != -1 || (dismissCopy = _LogCategory_Initialize(), v4 = v5, dismissCopy))
     {
-      v3 = sub_10000DA78();
+      dismissCopy = sub_10000DA78();
       v4 = v5;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(dismissCopy, v4);
 }
 
 - (void)dismissBanner
@@ -2205,17 +2205,17 @@ LABEL_11:
   if (self->_bannerActive)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 bundleIdentifier];
-    v5 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:v4];
+    bundleIdentifier = [v3 bundleIdentifier];
+    v5 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:bundleIdentifier];
 
-    v6 = [(BluetoothUIServiceBanner *)self requestIdentifier];
+    requestIdentifier = [(BluetoothUIServiceBanner *)self requestIdentifier];
     v17 = @"Key";
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v18 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v16 = 0;
-    [v5 revokePresentableWithRequestIdentifier:v6 animated:1 reason:@"_BUISScheduledTimeout" userInfo:v9 error:&v16];
+    [v5 revokePresentableWithRequestIdentifier:requestIdentifier animated:1 reason:@"_BUISScheduledTimeout" userInfo:v9 error:&v16];
     v10 = v16;
 
     if (v10)
@@ -2318,11 +2318,11 @@ LABEL_11:
       [(SRBannerMediaPlayerView *)mediaPlayerViewFirstInstance stop];
     }
 
-    v4 = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
-    [v4 setMarqueeRunning:0];
+    ccTopViewLabel = [(BluetoothUIServiceBanner *)self ccTopViewLabel];
+    [ccTopViewLabel setMarqueeRunning:0];
 
-    v5 = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
-    [v5 setMarqueeRunning:0];
+    ccBottomViewLabel = [(BluetoothUIServiceBanner *)self ccBottomViewLabel];
+    [ccBottomViewLabel setMarqueeRunning:0];
 
     bannerAssetTransaction = self->_bannerAssetTransaction;
     self->_bannerAssetTransaction = 0;
@@ -2342,9 +2342,9 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [(PLPillView *)self->_pillView intrinsicContentSize:a3.width];
+  [(PLPillView *)self->_pillView intrinsicContentSize:size.width];
   result.height = v5;
   result.width = v4;
   return result;
@@ -2356,7 +2356,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_10000B3C0;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EDE8 != -1)
   {
     dispatch_once(&qword_10001EDE8, block);
@@ -2389,9 +2389,9 @@ LABEL_11:
     else
     {
       requestIdentifier = +[NSUUID UUID];
-      v6 = [requestIdentifier UUIDString];
+      uUIDString = [requestIdentifier UUIDString];
       v7 = self->_requestIdentifier;
-      self->_requestIdentifier = v6;
+      self->_requestIdentifier = uUIDString;
     }
   }
 
@@ -2405,9 +2405,9 @@ LABEL_11:
   return v8;
 }
 
-- (BluetoothUIServiceBanner)initWithXPCObject:(id)a3 error:(id *)a4
+- (BluetoothUIServiceBanner)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v213.receiver = self;
   v213.super_class = BluetoothUIServiceBanner;
   v7 = [(BluetoothUIServiceBanner *)&v213 initWithNibName:0 bundle:0];
@@ -2426,12 +2426,12 @@ LABEL_182:
     goto LABEL_183;
   }
 
-  if (xpc_get_type(v6) != &_xpc_type_dictionary)
+  if (xpc_get_type(objectCopy) != &_xpc_type_dictionary)
   {
-    if (a4)
+    if (error)
     {
       NSErrorF();
-      *a4 = v32 = 0;
+      *error = v32 = 0;
       goto LABEL_183;
     }
 
@@ -2501,7 +2501,7 @@ LABEL_182:
     LODWORD(v208) = 280;
   }
 
-  v23 = 320;
+  batteryLevelIndicator2 = 320;
   v214 = 0;
   v24 = CUXPCDecodeUInt64RangedEx();
   if (v24 == 6)
@@ -2692,7 +2692,7 @@ LABEL_62:
         if (v43)
         {
           v27 = &off_100011000;
-          v23 = &NSStringFromClass_ptr;
+          batteryLevelIndicator2 = &NSStringFromClass_ptr;
           if ([v42 isEqualToString:@"LowBattery"])
           {
             v44 = [[_UIStaticBatteryView alloc] initWithSizeCategory:0];
@@ -2716,14 +2716,14 @@ LABEL_62:
               [v7 _createBatteryView];
               [*(v7 + 13) doubleValue];
               v49 = v48 / 100.0;
-              v50 = [v7 batteryLevelIndicator];
-              [v50 setPercentageLevel:v49];
+              batteryLevelIndicator = [v7 batteryLevelIndicator];
+              [batteryLevelIndicator setPercentageLevel:v49];
 
               [v7 _checkValidBatteryRange];
               [v7 _fillBatteryPercentage];
-              v23 = [v7 batteryLevelIndicator];
+              batteryLevelIndicator2 = [v7 batteryLevelIndicator];
               v51 = +[UIColor systemRedColor];
-              [v23 setColorforPercentageLabel:v51];
+              [batteryLevelIndicator2 setColorforPercentageLabel:v51];
 
               [v7 batteryLevelIndicator];
               objc_claimAutoreleasedReturnValue();
@@ -2812,10 +2812,10 @@ LABEL_148:
               {
                 if (SBUIIsSystemApertureEnabled())
                 {
-                  v138 = [v7 createReverseButton];
-                  [*(v7 + v208) addSubview:v138];
-                  [v138 setTranslatesAutoresizingMaskIntoConstraints:0];
-                  [v138 widthAnchor];
+                  createReverseButton = [v7 createReverseButton];
+                  [*(v7 + v208) addSubview:createReverseButton];
+                  [createReverseButton setTranslatesAutoresizingMaskIntoConstraints:0];
+                  [createReverseButton widthAnchor];
                   objc_claimAutoreleasedReturnValue();
                   [sub_10000BA94() widthAnchor];
                   objc_claimAutoreleasedReturnValue();
@@ -2824,7 +2824,7 @@ LABEL_148:
                   sub_10000BA7C();
                   [v139 setActive:?];
 
-                  [v138 heightAnchor];
+                  [createReverseButton heightAnchor];
                   objc_claimAutoreleasedReturnValue();
                   [sub_10000BA94() heightAnchor];
                   objc_claimAutoreleasedReturnValue();
@@ -2833,7 +2833,7 @@ LABEL_148:
                   sub_10000BA7C();
                   [v140 setActive:?];
 
-                  [v138 centerXAnchor];
+                  [createReverseButton centerXAnchor];
                   objc_claimAutoreleasedReturnValue();
                   [sub_10000BA94() centerXAnchor];
                   objc_claimAutoreleasedReturnValue();
@@ -2842,7 +2842,7 @@ LABEL_148:
                   sub_10000BA7C();
                   [v141 setActive:?];
 
-                  [v138 centerYAnchor];
+                  [createReverseButton centerYAnchor];
                   objc_claimAutoreleasedReturnValue();
                   [sub_10000BA94() centerYAnchor];
                   objc_claimAutoreleasedReturnValue();
@@ -2923,8 +2923,8 @@ LABEL_148:
           {
             v66 = +[UIColor systemWhiteColor];
             v27 = +[NSBundle mainBundle];
-            v23 = [v27 localizedStringForKey:v44 value:&stru_1000188D8 table:0];
-            [v7 _createccTopViewLabel:v66 labelString:v23];
+            batteryLevelIndicator2 = [v27 localizedStringForKey:v44 value:&stru_1000188D8 table:0];
+            [v7 _createccTopViewLabel:v66 labelString:batteryLevelIndicator2];
           }
 
           else
@@ -2933,7 +2933,7 @@ LABEL_148:
             v66 = +[NSBundle mainBundle];
             v27 = [v66 localizedStringForKey:v44 value:&stru_1000188D8 table:0];
             v69 = [v68 initWithText:v27 style:2 accessoryView:*(v7 + 21)];
-            v23 = *(v7 + 20);
+            batteryLevelIndicator2 = *(v7 + 20);
             *(v7 + 20) = v69;
           }
 
@@ -2963,8 +2963,8 @@ LABEL_147:
           v71 = v70;
           v72 = @"CONNECTED_EARBUDS";
 LABEL_139:
-          v23 = [(__CFString *)v70 localizedStringForKey:v72 value:&stru_1000188D8 table:0];
-          v44 = [NSString stringWithFormat:v23, *(v7 + 13)];
+          batteryLevelIndicator2 = [(__CFString *)v70 localizedStringForKey:v72 value:&stru_1000188D8 table:0];
+          v44 = [NSString stringWithFormat:batteryLevelIndicator2, *(v7 + 13)];
 LABEL_140:
 
           if (SBUIIsSystemApertureEnabled())
@@ -2976,18 +2976,18 @@ LABEL_140:
             v123 = [NSString stringWithFormat:@"%.2f", *(v7 + 10)];
             [v123 doubleValue];
             v125 = v124;
-            v126 = [v7 batteryLevelIndicator];
-            [v126 setPercentageLevel:v125];
+            batteryLevelIndicator3 = [v7 batteryLevelIndicator];
+            [batteryLevelIndicator3 setPercentageLevel:v125];
 
             [v7 _checkValidBatteryRange];
             [v7 _fillBatteryPercentage];
             v27 = [UIColor colorWithRed:0.2728 green:0.9028 blue:0.4567 alpha:1.0];
-            v127 = [v7 batteryLevelIndicator];
-            [v127 percentageLevel];
+            batteryLevelIndicator4 = [v7 batteryLevelIndicator];
+            [batteryLevelIndicator4 percentageLevel];
             v129 = v128;
 
-            v130 = [v7 batteryLevelIndicator];
-            v131 = v130;
+            batteryLevelIndicator5 = [v7 batteryLevelIndicator];
+            v131 = batteryLevelIndicator5;
             if (v129 <= 0.2)
             {
               v133 = +[UIColor systemRedColor];
@@ -2996,11 +2996,11 @@ LABEL_140:
 
             else
             {
-              [v130 setColorforPercentageLabel:v27];
+              [batteryLevelIndicator5 setColorforPercentageLabel:v27];
             }
 
-            v23 = [v7 batteryLevelIndicator];
-            [v23 setShowsPercentageLabel:0];
+            batteryLevelIndicator2 = [v7 batteryLevelIndicator];
+            [batteryLevelIndicator2 setShowsPercentageLabel:0];
           }
 
           else
@@ -3030,8 +3030,8 @@ LABEL_140:
               LogPrintF();
             }
 
-            v23 = +[NSBundle mainBundle];
-            v147 = [v23 localizedStringForKey:v71 value:&stru_1000188D8 table:0];
+            batteryLevelIndicator2 = +[NSBundle mainBundle];
+            v147 = [batteryLevelIndicator2 localizedStringForKey:v71 value:&stru_1000188D8 table:0];
             v44 = [NSString stringWithFormat:v147, *(v7 + 13)];
 
             goto LABEL_140;

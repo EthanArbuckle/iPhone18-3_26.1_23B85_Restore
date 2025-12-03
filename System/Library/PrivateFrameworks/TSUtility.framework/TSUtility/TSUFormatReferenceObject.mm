@@ -1,8 +1,8 @@
 @interface TSUFormatReferenceObject
 - ($ECB5568EE2D6808D4932FEEA0574138F)getFormatStruct;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSUFormatReferenceObject)init;
-- (TSUFormatReferenceObject)initWithTSUFormatFormatStruct:(id *)a3;
+- (TSUFormatReferenceObject)initWithTSUFormatFormatStruct:(id *)struct;
 - (void)dealloc;
 @end
 
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (TSUFormatReferenceObject)initWithTSUFormatFormatStruct:(id *)a3
+- (TSUFormatReferenceObject)initWithTSUFormatFormatStruct:(id *)struct
 {
-  v5 = *&a3->var1.var7.var2;
-  v9[0] = *&a3->var0;
+  v5 = *&struct->var1.var7.var2;
+  v9[0] = *&struct->var0;
   v9[1] = v5;
-  v10 = *(&a3->var1.var7 + 3);
+  v10 = *(&struct->var1.var7 + 3);
   TSUFormatStructRetain(v9);
-  v6 = *&a3->var0;
-  v7 = *&a3->var1.var7.var2;
-  *(&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct + 3) = *(&a3->var1.var7 + 3);
+  v6 = *&struct->var0;
+  v7 = *&struct->var1.var7.var2;
+  *(&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct + 3) = *(&struct->var1.var7 + 3);
   *&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct.mData = v7;
   *&self->mFormatStruct.mFormatType = v6;
   return self;
@@ -40,11 +40,11 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    [a3 getFormatStruct];
+    [equal getFormatStruct];
     v4 = v14[0];
   }
 

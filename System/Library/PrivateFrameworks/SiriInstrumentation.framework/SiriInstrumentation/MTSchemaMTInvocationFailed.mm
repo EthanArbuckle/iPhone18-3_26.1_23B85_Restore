@@ -1,26 +1,26 @@
 @interface MTSchemaMTInvocationFailed
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTInvocationFailed)initWithDictionary:(id)a3;
-- (MTSchemaMTInvocationFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTInvocationFailed)initWithDictionary:(id)dictionary;
+- (MTSchemaMTInvocationFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTInvocationFailed
 
-- (MTSchemaMTInvocationFailed)initWithDictionary:(id)a3
+- (MTSchemaMTInvocationFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = MTSchemaMTInvocationFailed;
   v5 = [(MTSchemaMTInvocationFailed *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"error"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(MTSchemaMTInvocationFailed *)v5 setError:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"qssSessionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"qssSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(MTSchemaMTInvocationFailed *)v5 setQssSessionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"localePair"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"localePair"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (MTSchemaMTInvocationFailed)initWithJSON:(id)a3
+- (MTSchemaMTInvocationFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTInvocationFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTInvocationFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTInvocationFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(MTSchemaMTInvocationFailed *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(MTSchemaMTInvocationFailed *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
   if (self->_localePair)
   {
-    v7 = [(MTSchemaMTInvocationFailed *)self localePair];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    localePair = [(MTSchemaMTInvocationFailed *)self localePair];
+    dictionaryRepresentation2 = [localePair dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"localePair"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"localePair"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"localePair"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"localePair"];
     }
   }
 
   if (self->_qssSessionId)
   {
-    v10 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    qssSessionId = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+    dictionaryRepresentation3 = [qssSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"qssSessionId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"qssSessionId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"qssSessionId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"qssSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(MTSchemaMTLocalePair *)self->_localePair hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(MTSchemaMTInvocationFailed *)self error];
-  v6 = [v4 error];
-  if ((v5 != 0) == (v6 == 0))
+  error = [(MTSchemaMTInvocationFailed *)self error];
+  error2 = [equalCopy error];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(MTSchemaMTInvocationFailed *)self error];
-  if (v7)
+  error3 = [(MTSchemaMTInvocationFailed *)self error];
+  if (error3)
   {
-    v8 = v7;
-    v9 = [(MTSchemaMTInvocationFailed *)self error];
-    v10 = [v4 error];
-    v11 = [v9 isEqual:v10];
+    v8 = error3;
+    error4 = [(MTSchemaMTInvocationFailed *)self error];
+    error5 = [equalCopy error];
+    v11 = [error4 isEqual:error5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
-  v6 = [v4 qssSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  error = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+  error2 = [equalCopy qssSessionId];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
-  if (v12)
+  qssSessionId = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+  if (qssSessionId)
   {
-    v13 = v12;
-    v14 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
-    v15 = [v4 qssSessionId];
-    v16 = [v14 isEqual:v15];
+    v13 = qssSessionId;
+    qssSessionId2 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+    qssSessionId3 = [equalCopy qssSessionId];
+    v16 = [qssSessionId2 isEqual:qssSessionId3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(MTSchemaMTInvocationFailed *)self localePair];
-  v6 = [v4 localePair];
-  if ((v5 != 0) != (v6 == 0))
+  error = [(MTSchemaMTInvocationFailed *)self localePair];
+  error2 = [equalCopy localePair];
+  if ((error != 0) != (error2 == 0))
   {
-    v17 = [(MTSchemaMTInvocationFailed *)self localePair];
-    if (!v17)
+    localePair = [(MTSchemaMTInvocationFailed *)self localePair];
+    if (!localePair)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(MTSchemaMTInvocationFailed *)self localePair];
-    v20 = [v4 localePair];
-    v21 = [v19 isEqual:v20];
+    v18 = localePair;
+    localePair2 = [(MTSchemaMTInvocationFailed *)self localePair];
+    localePair3 = [equalCopy localePair];
+    v21 = [localePair2 isEqual:localePair3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(MTSchemaMTInvocationFailed *)self error];
+  toCopy = to;
+  error = [(MTSchemaMTInvocationFailed *)self error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [(MTSchemaMTInvocationFailed *)self error];
+    error2 = [(MTSchemaMTInvocationFailed *)self error];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+  qssSessionId = [(MTSchemaMTInvocationFailed *)self qssSessionId];
 
-  if (v6)
+  if (qssSessionId)
   {
-    v7 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+    qssSessionId2 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MTSchemaMTInvocationFailed *)self localePair];
+  localePair = [(MTSchemaMTInvocationFailed *)self localePair];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (localePair)
   {
-    v10 = [(MTSchemaMTInvocationFailed *)self localePair];
+    localePair2 = [(MTSchemaMTInvocationFailed *)self localePair];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = MTSchemaMTInvocationFailed;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(MTSchemaMTInvocationFailed *)self error];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  error = [(MTSchemaMTInvocationFailed *)self error];
+  v7 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MTSchemaMTInvocationFailed *)self deleteError];
   }
 
-  v9 = [(MTSchemaMTInvocationFailed *)self qssSessionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  qssSessionId = [(MTSchemaMTInvocationFailed *)self qssSessionId];
+  v10 = [qssSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MTSchemaMTInvocationFailed *)self deleteQssSessionId];
   }
 
-  v12 = [(MTSchemaMTInvocationFailed *)self localePair];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  localePair = [(MTSchemaMTInvocationFailed *)self localePair];
+  v13 = [localePair applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MTSchemaMTInvocationFailed *)self deleteLocalePair];
   }

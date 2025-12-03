@@ -1,21 +1,21 @@
 @interface AudioResult
 - (NSString)description;
 - (_TtC21SiriInformationSearch11AudioResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AudioResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AudioResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AudioResult.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudioResult.description.getter();
   v5 = v4;
 

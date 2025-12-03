@@ -1,14 +1,14 @@
 @interface CKDMarkAssetBrokenOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDMarkAssetBrokenOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDMarkAssetBrokenOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)assetOrPackageForFetchedRecord;
 - (id)checkPreconditions;
 - (id)repairContainer;
 - (void)_breakAsset;
 - (void)_fetchRecord;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_markAssetBroken;
 - (void)_touchCreateRepairZone;
 - (void)_touchFetchRepairZone;
@@ -16,28 +16,28 @@
 
 @implementation CKDMarkAssetBrokenOperation
 
-- (CKDMarkAssetBrokenOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDMarkAssetBrokenOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v31.receiver = self;
   v31.super_class = CKDMarkAssetBrokenOperation;
-  v9 = [(CKDDatabaseOperation *)&v31 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v31 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordID(v6, v7, v8);
+    v10 = objc_msgSend_recordID(infoCopy, v7, v8);
     recordID = v9->_recordID;
     v9->_recordID = v10;
 
-    v14 = objc_msgSend_field(v6, v12, v13);
+    v14 = objc_msgSend_field(infoCopy, v12, v13);
     field = v9->_field;
     v9->_field = v14;
 
-    v9->_listIndex = objc_msgSend_listIndex(v6, v16, v17);
-    v9->_touchRepairZone = objc_msgSend_touchRepairZone(v6, v18, v19);
-    v9->_bypassPCSEncryptionForTouchRepairZone = objc_msgSend_bypassPCSEncryptionForTouchRepairZone(v6, v20, v21);
-    v9->_simulateCorruptAsset = objc_msgSend_simulateCorruptAsset(v6, v22, v23);
-    v9->_writeRepairRecord = objc_msgSend_writeRepairRecord(v6, v24, v25);
-    v28 = objc_msgSend_uploadRequestConfiguration(v6, v26, v27);
+    v9->_listIndex = objc_msgSend_listIndex(infoCopy, v16, v17);
+    v9->_touchRepairZone = objc_msgSend_touchRepairZone(infoCopy, v18, v19);
+    v9->_bypassPCSEncryptionForTouchRepairZone = objc_msgSend_bypassPCSEncryptionForTouchRepairZone(infoCopy, v20, v21);
+    v9->_simulateCorruptAsset = objc_msgSend_simulateCorruptAsset(infoCopy, v22, v23);
+    v9->_writeRepairRecord = objc_msgSend_writeRepairRecord(infoCopy, v24, v25);
+    v28 = objc_msgSend_uploadRequestConfiguration(infoCopy, v26, v27);
     uploadRequestConfiguration = v9->_uploadRequestConfiguration;
     v9->_uploadRequestConfiguration = v28;
   }
@@ -98,7 +98,7 @@ LABEL_25:
               v53 = 138544130;
               v54 = v22;
               v55 = 2048;
-              v56 = self;
+              selfCopy = self;
               v57 = 2114;
               v58 = v25;
               v59 = 2112;
@@ -188,20 +188,20 @@ LABEL_31:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 5)
+  if (state - 2 >= 5)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDMarkAssetBrokenOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548C68[a3 - 2];
+    v5 = off_278548C68[state - 2];
   }
 
   return v5;
@@ -503,7 +503,7 @@ LABEL_22:
         v163[2] = sub_2251B27D4;
         v163[3] = &unk_278548C48;
         v164 = v160;
-        v165 = self;
+        selfCopy = self;
         v135 = v160;
         objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_container_operationConfigurationBlock_(self, v136, v130, v131, 0, v134, v163);
 
@@ -707,14 +707,14 @@ LABEL_10:
   return v9;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setAssetOrPackageMarkedBrokenBlock_(self, v5, 0);
   objc_msgSend_setRecord_(self, v6, 0);
   v7.receiver = self;
   v7.super_class = CKDMarkAssetBrokenOperation;
-  [(CKDOperation *)&v7 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v7 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

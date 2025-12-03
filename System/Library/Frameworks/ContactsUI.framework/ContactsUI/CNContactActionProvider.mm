@@ -1,23 +1,23 @@
 @interface CNContactActionProvider
 - (CNContactAction)shareWithFamilyAction;
-- (CNContactActionProvider)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5;
-- (CNContactActionProvider)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5 propertyGroupsDataSource:(id)a6 actionsDataSource:(id)a7 capabilities:(id)a8 environment:(id)a9;
+- (CNContactActionProvider)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store;
+- (CNContactActionProvider)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store propertyGroupsDataSource:(id)source actionsDataSource:(id)dataSource capabilities:(id)capabilities environment:(id)environment;
 - (CNPropertyActionDelegate)actionDelegate;
 - (id)_addCreateNewContactAction;
-- (id)_addFavoriteActionWithConferencing:(BOOL)a3 telephony:(BOOL)a4;
+- (id)_addFavoriteActionWithConferencing:(BOOL)conferencing telephony:(BOOL)telephony;
 - (id)_addLinkedCardAction;
 - (id)_addToExistingContactAction;
 - (id)_faceTimeAction;
 - (id)_faceTimeAudioAction;
 - (id)_linkedCardsAction;
-- (id)_sendMessageActionAllowingEmailIDs:(BOOL)a3;
+- (id)_sendMessageActionAllowingEmailIDs:(BOOL)ds;
 - (id)_shareContactAction;
-- (id)appropriateLocationSharingActionWhenSharing:(BOOL)a3;
+- (id)appropriateLocationSharingActionWhenSharing:(BOOL)sharing;
 - (void)buildAddContactActions;
 - (void)buildCommunicationLimitsActions;
 - (void)buildContainerSelectionAction;
 - (void)buildLinkedContactActions;
-- (void)buildSharingLocationActionsWithShareLocationController:(id)a3;
+- (void)buildSharingLocationActionsWithShareLocationController:(id)controller;
 - (void)buildStandardActions;
 - (void)buildStaticIdentityActions;
 @end
@@ -49,11 +49,11 @@
 - (id)_addLinkedCardAction
 {
   v3 = [CNContactAddLinkedCardAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNContactAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNContactAction *)v3 initWithContact:contact];
 
-  v6 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v5 setDelegate:v6];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v5 setDelegate:actionDelegate];
 
   return v5;
 }
@@ -61,45 +61,45 @@
 - (id)_linkedCardsAction
 {
   v3 = [CNPropertyLinkedCardsAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNPropertyLinkedCardsAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNPropertyLinkedCardsAction *)v3 initWithContact:contact];
 
-  v6 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v5 setDelegate:v6];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v5 setDelegate:actionDelegate];
 
   return v5;
 }
 
 - (id)_shareContactAction
 {
-  v3 = [(CNContactActionProvider *)self contact];
-  v4 = [v3 isSuggested];
+  contact = [(CNContactActionProvider *)self contact];
+  isSuggested = [contact isSuggested];
 
-  if (v4)
+  if (isSuggested)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(CNContactActionProvider *)self contact];
-    v7 = [v6 mainStoreLinkedContacts];
-    if ([v6 isUnified])
+    contact2 = [(CNContactActionProvider *)self contact];
+    mainStoreLinkedContacts = [contact2 mainStoreLinkedContacts];
+    if ([contact2 isUnified])
     {
-      v8 = [v6 linkedContacts];
-      v9 = [v8 isEqual:v7];
+      linkedContacts = [contact2 linkedContacts];
+      v9 = [linkedContacts isEqual:mainStoreLinkedContacts];
 
       if ((v9 & 1) == 0)
       {
-        v10 = [MEMORY[0x1E695CD58] unifyContacts:v7];
+        v10 = [MEMORY[0x1E695CD58] unifyContacts:mainStoreLinkedContacts];
 
-        v6 = v10;
+        contact2 = v10;
       }
     }
 
-    v5 = [(CNContactAction *)[CNContactShareContactAction alloc] initWithContact:v6];
-    v11 = [(CNContactActionProvider *)self actionDelegate];
-    [(CNContactAction *)v5 setDelegate:v11];
+    v5 = [(CNContactAction *)[CNContactShareContactAction alloc] initWithContact:contact2];
+    actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+    [(CNContactAction *)v5 setDelegate:actionDelegate];
   }
 
   return v5;
@@ -108,20 +108,20 @@
 - (id)_faceTimeAudioAction
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactActionProvider *)self propertyGroupsDataSource];
+  propertyGroupsDataSource = [(CNContactActionProvider *)self propertyGroupsDataSource];
   v4 = *MEMORY[0x1E695C208];
   v12[0] = *MEMORY[0x1E695C330];
   v12[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  v6 = [v3 allDisplayPropertyItemsForPropertyKeys:v5];
+  v6 = [propertyGroupsDataSource allDisplayPropertyItemsForPropertyKeys:v5];
 
   v7 = [CNPropertyFaceTimeAction alloc];
-  v8 = [(CNContactActionProvider *)self contact];
-  v9 = [(CNPropertyFaceTimeAction *)v7 initWithContact:v8 propertyItems:v6];
+  contact = [(CNContactActionProvider *)self contact];
+  v9 = [(CNPropertyFaceTimeAction *)v7 initWithContact:contact propertyItems:v6];
 
   [(CNPropertyFaceTimeAction *)v9 setType:1];
-  v10 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v9 setDelegate:v10];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v9 setDelegate:actionDelegate];
 
   return v9;
 }
@@ -129,27 +129,27 @@
 - (id)_faceTimeAction
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactActionProvider *)self propertyGroupsDataSource];
+  propertyGroupsDataSource = [(CNContactActionProvider *)self propertyGroupsDataSource];
   v4 = *MEMORY[0x1E695C208];
   v12[0] = *MEMORY[0x1E695C330];
   v12[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  v6 = [v3 allDisplayPropertyItemsForPropertyKeys:v5];
+  v6 = [propertyGroupsDataSource allDisplayPropertyItemsForPropertyKeys:v5];
 
   v7 = [CNPropertyFaceTimeAction alloc];
-  v8 = [(CNContactActionProvider *)self contact];
-  v9 = [(CNPropertyFaceTimeAction *)v7 initWithContact:v8 propertyItems:v6];
+  contact = [(CNContactActionProvider *)self contact];
+  v9 = [(CNPropertyFaceTimeAction *)v7 initWithContact:contact propertyItems:v6];
 
-  v10 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v9 setDelegate:v10];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v9 setDelegate:actionDelegate];
 
   return v9;
 }
 
-- (id)_addFavoriteActionWithConferencing:(BOOL)a3 telephony:(BOOL)a4
+- (id)_addFavoriteActionWithConferencing:(BOOL)conferencing telephony:(BOOL)telephony
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v5 = [(CNContactActionProvider *)self propertyGroupsDataSource:a3];
+  v5 = [(CNContactActionProvider *)self propertyGroupsDataSource:conferencing];
   v6 = *MEMORY[0x1E695C208];
   v17[0] = *MEMORY[0x1E695C330];
   v17[1] = v6;
@@ -160,23 +160,23 @@
   v9 = [v5 allDisplayPropertyItemsForPropertyKeys:v8];
 
   v10 = [CNContactAddFavoriteAction alloc];
-  v11 = [(CNContactActionProvider *)self contact];
-  v12 = [(CNContactActionProvider *)self environment];
-  v13 = [v12 inProcessFavorites];
-  v14 = [(CNContactAddFavoriteAction *)v10 initWithContact:v11 propertyItems:v9 favorites:v13];
+  contact = [(CNContactActionProvider *)self contact];
+  environment = [(CNContactActionProvider *)self environment];
+  inProcessFavorites = [environment inProcessFavorites];
+  v14 = [(CNContactAddFavoriteAction *)v10 initWithContact:contact propertyItems:v9 favorites:inProcessFavorites];
 
-  v15 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v14 setDelegate:v15];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v14 setDelegate:actionDelegate];
 
   return v14;
 }
 
-- (id)_sendMessageActionAllowingEmailIDs:(BOOL)a3
+- (id)_sendMessageActionAllowingEmailIDs:(BOOL)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(CNContactActionProvider *)self propertyGroupsDataSource];
-  if (v3)
+  propertyGroupsDataSource = [(CNContactActionProvider *)self propertyGroupsDataSource];
+  if (dsCopy)
   {
     v6 = *MEMORY[0x1E695C208];
     v19 = *MEMORY[0x1E695C330];
@@ -195,15 +195,15 @@
   }
 
   v10 = [v7 arrayWithObjects:v8 count:{v9, v18, v19, v20}];
-  v11 = [v5 allDisplayPropertyItemsForPropertyKeys:v10];
+  v11 = [propertyGroupsDataSource allDisplayPropertyItemsForPropertyKeys:v10];
 
   v12 = [CNPropertySendMessageAction alloc];
-  v13 = [(CNContactActionProvider *)self contact];
-  v14 = [(CNContactActionProvider *)self actionsDataSource];
-  v15 = [(CNPropertySendMessageAction *)v12 initWithContact:v13 propertyItems:v11 actionDataSource:v14];
+  contact = [(CNContactActionProvider *)self contact];
+  actionsDataSource = [(CNContactActionProvider *)self actionsDataSource];
+  v15 = [(CNPropertySendMessageAction *)v12 initWithContact:contact propertyItems:v11 actionDataSource:actionsDataSource];
 
-  v16 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)v15 setDelegate:v16];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)v15 setDelegate:actionDelegate];
 
   return v15;
 }
@@ -211,8 +211,8 @@
 - (id)_addToExistingContactAction
 {
   v3 = [CNContactAddToExistingContactAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNContactAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNContactAction *)v3 initWithContact:contact];
 
   return v5;
 }
@@ -220,15 +220,15 @@
 - (id)_addCreateNewContactAction
 {
   v3 = [CNContactCreateNewContactAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNContactAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNContactAction *)v3 initWithContact:contact];
 
   return v5;
 }
 
-- (id)appropriateLocationSharingActionWhenSharing:(BOOL)a3
+- (id)appropriateLocationSharingActionWhenSharing:(BOOL)sharing
 {
-  if (a3)
+  if (sharing)
   {
     [(CNContactActionProvider *)self stopSharingLocationAction];
   }
@@ -245,22 +245,22 @@
 - (void)buildStaticIdentityActions
 {
   v3 = [CNPropertyStaticIdentityAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNPropertyAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNPropertyAction *)v3 initWithContact:contact];
   staticIdentityAction = self->_staticIdentityAction;
   self->_staticIdentityAction = v5;
 
-  v7 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)self->_staticIdentityAction setDelegate:v7];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)self->_staticIdentityAction setDelegate:actionDelegate];
 
   v8 = [CNContactAddStaticIdentityAction alloc];
-  v9 = [(CNContactActionProvider *)self contact];
-  v10 = [(CNContactAction *)v8 initWithContact:v9];
+  contact2 = [(CNContactActionProvider *)self contact];
+  v10 = [(CNContactAction *)v8 initWithContact:contact2];
   addStaticIdentityAction = self->_addStaticIdentityAction;
   self->_addStaticIdentityAction = v10;
 
-  v12 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)self->_addStaticIdentityAction setDelegate:v12];
+  actionDelegate2 = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)self->_addStaticIdentityAction setDelegate:actionDelegate2];
 }
 
 - (void)buildContainerSelectionAction
@@ -269,89 +269,89 @@
   containerSelectionAction = self->_containerSelectionAction;
   self->_containerSelectionAction = v3;
 
-  v5 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)self->_containerSelectionAction setDelegate:v5];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)self->_containerSelectionAction setDelegate:actionDelegate];
 }
 
 - (void)buildCommunicationLimitsActions
 {
   v3 = [CNContactShareWithFamilyAction alloc];
-  v4 = [(CNContactActionProvider *)self contact];
-  v5 = [(CNContactAction *)v3 initWithContact:v4];
+  contact = [(CNContactActionProvider *)self contact];
+  v5 = [(CNContactAction *)v3 initWithContact:contact];
   shareWithFamilyAction = self->_shareWithFamilyAction;
   self->_shareWithFamilyAction = v5;
 
-  v7 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)self->_shareWithFamilyAction setDelegate:v7];
+  actionDelegate = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)self->_shareWithFamilyAction setDelegate:actionDelegate];
 
   v8 = [CNContactStopSharingWithFamily alloc];
-  v9 = [(CNContactActionProvider *)self contact];
-  v10 = [(CNContactAction *)v8 initWithContact:v9];
+  contact2 = [(CNContactActionProvider *)self contact];
+  v10 = [(CNContactAction *)v8 initWithContact:contact2];
   stopSharingWithFamilyAction = self->_stopSharingWithFamilyAction;
   self->_stopSharingWithFamilyAction = v10;
 
-  v12 = [(CNContactActionProvider *)self actionDelegate];
-  [(CNContactAction *)self->_stopSharingWithFamilyAction setDelegate:v12];
+  actionDelegate2 = [(CNContactActionProvider *)self actionDelegate];
+  [(CNContactAction *)self->_stopSharingWithFamilyAction setDelegate:actionDelegate2];
 
   v13 = [CNContactEnableGuardianRestrictionsAction alloc];
-  v14 = [(CNContactActionProvider *)self contact];
-  v15 = [(CNContactActionProvider *)self container];
-  v16 = [(CNContactActionProvider *)self contactStore];
-  v17 = [(CNContactEnableGuardianRestrictionsAction *)v13 initWithContact:v14 inContainer:v15 contactStore:v16];
+  contact3 = [(CNContactActionProvider *)self contact];
+  container = [(CNContactActionProvider *)self container];
+  contactStore = [(CNContactActionProvider *)self contactStore];
+  v17 = [(CNContactEnableGuardianRestrictionsAction *)v13 initWithContact:contact3 inContainer:container contactStore:contactStore];
   enableGuardianRestrictionsAction = self->_enableGuardianRestrictionsAction;
   self->_enableGuardianRestrictionsAction = v17;
 
   v19 = [CNContactDisableGuardianRestrictionsAction alloc];
-  v24 = [(CNContactActionProvider *)self contact];
-  v20 = [(CNContactActionProvider *)self container];
-  v21 = [(CNContactActionProvider *)self contactStore];
-  v22 = [(CNContactDisableGuardianRestrictionsAction *)v19 initWithContact:v24 inContainer:v20 contactStore:v21];
+  contact4 = [(CNContactActionProvider *)self contact];
+  container2 = [(CNContactActionProvider *)self container];
+  contactStore2 = [(CNContactActionProvider *)self contactStore];
+  v22 = [(CNContactDisableGuardianRestrictionsAction *)v19 initWithContact:contact4 inContainer:container2 contactStore:contactStore2];
   disableGuardianRestrictionsAction = self->_disableGuardianRestrictionsAction;
   self->_disableGuardianRestrictionsAction = v22;
 }
 
 - (void)buildAddContactActions
 {
-  v3 = [(CNContactActionProvider *)self contact];
-  v4 = [v3 isUnknown];
+  contact = [(CNContactActionProvider *)self contact];
+  isUnknown = [contact isUnknown];
 
-  if (v4)
+  if (isUnknown)
   {
-    v5 = [(CNContactActionProvider *)self _addCreateNewContactAction];
+    _addCreateNewContactAction = [(CNContactActionProvider *)self _addCreateNewContactAction];
     createNewContactAction = self->_createNewContactAction;
-    self->_createNewContactAction = v5;
+    self->_createNewContactAction = _addCreateNewContactAction;
 
-    v7 = [(CNContactActionProvider *)self _addToExistingContactAction];
+    _addToExistingContactAction = [(CNContactActionProvider *)self _addToExistingContactAction];
     addToExistingContactAction = self->_addToExistingContactAction;
-    self->_addToExistingContactAction = v7;
+    self->_addToExistingContactAction = _addToExistingContactAction;
 
-    MEMORY[0x1EEE66BB8](v7, addToExistingContactAction);
+    MEMORY[0x1EEE66BB8](_addToExistingContactAction, addToExistingContactAction);
   }
 }
 
 - (void)buildLinkedContactActions
 {
-  v3 = [(CNContactActionProvider *)self _linkedCardsAction];
+  _linkedCardsAction = [(CNContactActionProvider *)self _linkedCardsAction];
   linkedCardsAction = self->_linkedCardsAction;
-  self->_linkedCardsAction = v3;
+  self->_linkedCardsAction = _linkedCardsAction;
 
-  v5 = [(CNContactActionProvider *)self _addLinkedCardAction];
+  _addLinkedCardAction = [(CNContactActionProvider *)self _addLinkedCardAction];
   addLinkedCardAction = self->_addLinkedCardAction;
-  self->_addLinkedCardAction = v5;
+  self->_addLinkedCardAction = _addLinkedCardAction;
 
-  MEMORY[0x1EEE66BB8](v5, addLinkedCardAction);
+  MEMORY[0x1EEE66BB8](_addLinkedCardAction, addLinkedCardAction);
 }
 
-- (void)buildSharingLocationActionsWithShareLocationController:(id)a3
+- (void)buildSharingLocationActionsWithShareLocationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__CNContactActionProvider_buildSharingLocationActionsWithShareLocationController___block_invoke;
   v6[3] = &unk_1E74E4D98;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = controllerCopy;
   v7 = v5;
   [v5 canShareWithCompletion:v6];
 
@@ -394,84 +394,84 @@ void __82__CNContactActionProvider_buildSharingLocationActionsWithShareLocationC
 
 - (void)buildStandardActions
 {
-  v3 = [(CNContactActionProvider *)self propertyGroupsDataSource];
+  propertyGroupsDataSource = [(CNContactActionProvider *)self propertyGroupsDataSource];
 
-  if (!v3)
+  if (!propertyGroupsDataSource)
   {
     return;
   }
 
-  v4 = [(CNContactActionProvider *)self actionsDataSource];
+  actionsDataSource = [(CNContactActionProvider *)self actionsDataSource];
 
-  if (!v4)
+  if (!actionsDataSource)
   {
     return;
   }
 
-  v5 = [(CNContactActionProvider *)self capabilities];
+  capabilities = [(CNContactActionProvider *)self capabilities];
 
-  if (!v5)
+  if (!capabilities)
   {
     return;
   }
 
-  v37 = [(CNContactActionProvider *)self capabilities];
-  v35 = [v37 hasCellularTelephonyCapability];
-  v36 = [v37 areFavoritesAvailable];
-  v6 = [v37 isMMSConfigured];
-  v7 = [v37 isMadridConfigured];
-  v8 = [v37 isConferencingAvailable];
-  v33 = [v37 isFaceTimeAudioAvailable];
-  v9 = [v37 isMessagesAppAvailable];
-  v34 = [v37 isPhoneAppAvailable];
-  v10 = [v37 isFaceTimeAppAvailable];
-  v11 = [(CNContactActionProvider *)self contact];
-  v12 = [v11 phoneNumbers];
-  v13 = [v12 count];
+  capabilities2 = [(CNContactActionProvider *)self capabilities];
+  hasCellularTelephonyCapability = [capabilities2 hasCellularTelephonyCapability];
+  areFavoritesAvailable = [capabilities2 areFavoritesAvailable];
+  isMMSConfigured = [capabilities2 isMMSConfigured];
+  isMadridConfigured = [capabilities2 isMadridConfigured];
+  isConferencingAvailable = [capabilities2 isConferencingAvailable];
+  isFaceTimeAudioAvailable = [capabilities2 isFaceTimeAudioAvailable];
+  isMessagesAppAvailable = [capabilities2 isMessagesAppAvailable];
+  isPhoneAppAvailable = [capabilities2 isPhoneAppAvailable];
+  isFaceTimeAppAvailable = [capabilities2 isFaceTimeAppAvailable];
+  contact = [(CNContactActionProvider *)self contact];
+  phoneNumbers = [contact phoneNumbers];
+  v13 = [phoneNumbers count];
 
-  v14 = [(CNContactActionProvider *)self contact];
-  v15 = [v14 emailAddresses];
-  v16 = [v15 count];
+  contact2 = [(CNContactActionProvider *)self contact];
+  emailAddresses = [contact2 emailAddresses];
+  v16 = [emailAddresses count];
 
-  v17 = [(CNContactActionProvider *)self contact];
-  v18 = [v17 socialProfiles];
-  *(&v32 + 1) = [v18 count];
+  contact3 = [(CNContactActionProvider *)self contact];
+  socialProfiles = [contact3 socialProfiles];
+  *(&v32 + 1) = [socialProfiles count];
 
-  v19 = [(CNContactActionProvider *)self contact];
-  v20 = [v19 instantMessageAddresses];
-  *&v32 = [v20 count];
+  contact4 = [(CNContactActionProvider *)self contact];
+  instantMessageAddresses = [contact4 instantMessageAddresses];
+  *&v32 = [instantMessageAddresses count];
 
-  if (([MEMORY[0x1E695CD58] quickActionsEnabled] & 1) == 0 && v9 && (((v13 != 0) & (v35 | v7)) != 0 || ((v16 != 0) & (v6 | v7)) != 0))
+  if (([MEMORY[0x1E695CD58] quickActionsEnabled] & 1) == 0 && isMessagesAppAvailable && (((v13 != 0) & (hasCellularTelephonyCapability | isMadridConfigured)) != 0 || ((v16 != 0) & (isMMSConfigured | isMadridConfigured)) != 0))
   {
-    v21 = [(CNContactActionProvider *)self _sendMessageActionAllowingEmailIDs:(v6 | v7) & 1];
+    v21 = [(CNContactActionProvider *)self _sendMessageActionAllowingEmailIDs:(isMMSConfigured | isMadridConfigured) & 1];
     sendMessageAction = self->_sendMessageAction;
     self->_sendMessageAction = v21;
   }
 
-  if (((self->_faceTimeAction == 0) & v8) == 1 && v13 | v16 && ((v10 ^ 1) & 1) == 0)
+  if (((self->_faceTimeAction == 0) & isConferencingAvailable) == 1 && v13 | v16 && ((isFaceTimeAppAvailable ^ 1) & 1) == 0)
   {
-    v23 = [(CNContactActionProvider *)self _faceTimeAction];
+    _faceTimeAction = [(CNContactActionProvider *)self _faceTimeAction];
     faceTimeAction = self->_faceTimeAction;
-    self->_faceTimeAction = v23;
+    self->_faceTimeAction = _faceTimeAction;
   }
 
-  if (((self->_faceTimeAudioAction == 0) & v8) == 1 && v13 | v16 && ((v10 ^ 1) & 1) == 0 && ((v33 ^ 1) & 1) == 0)
+  if (((self->_faceTimeAudioAction == 0) & isConferencingAvailable) == 1 && v13 | v16 && ((isFaceTimeAppAvailable ^ 1) & 1) == 0 && ((isFaceTimeAudioAvailable ^ 1) & 1) == 0)
   {
-    v25 = [(CNContactActionProvider *)self _faceTimeAudioAction];
+    _faceTimeAudioAction = [(CNContactActionProvider *)self _faceTimeAudioAction];
     faceTimeAudioAction = self->_faceTimeAudioAction;
-    self->_faceTimeAudioAction = v25;
+    self->_faceTimeAudioAction = _faceTimeAudioAction;
   }
 
-  v27 = [(CNContactActionProvider *)self _shareContactAction];
+  _shareContactAction = [(CNContactActionProvider *)self _shareContactAction];
   shareContactAction = self->_shareContactAction;
-  self->_shareContactAction = v27;
+  self->_shareContactAction = _shareContactAction;
 
-  if (v36)
+  if (areFavoritesAvailable)
   {
     addFavoriteAction = [(CNContactActionProvider *)self contact];
     if (([addFavoriteAction isUnknown] & 1) == 0)
     {
-      if (v34 && v13 || (v13 | v16 ? (v30 = v10) : (v30 = 0), v30 == 1))
+      if (isPhoneAppAvailable && v13 || (v13 | v16 ? (v30 = isFaceTimeAppAvailable) : (v30 = 0), v30 == 1))
       {
       }
 
@@ -484,7 +484,7 @@ void __82__CNContactActionProvider_buildSharingLocationActionsWithShareLocationC
         }
       }
 
-      v31 = [(CNContactActionProvider *)self _addFavoriteActionWithConferencing:v10 & v8 telephony:v34 & v35];
+      v31 = [(CNContactActionProvider *)self _addFavoriteActionWithConferencing:isFaceTimeAppAvailable & isConferencingAvailable telephony:isPhoneAppAvailable & hasCellularTelephonyCapability];
       addFavoriteAction = self->_addFavoriteAction;
       self->_addFavoriteAction = v31;
     }
@@ -493,41 +493,41 @@ void __82__CNContactActionProvider_buildSharingLocationActionsWithShareLocationC
 LABEL_29:
 }
 
-- (CNContactActionProvider)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5 propertyGroupsDataSource:(id)a6 actionsDataSource:(id)a7 capabilities:(id)a8 environment:(id)a9
+- (CNContactActionProvider)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store propertyGroupsDataSource:(id)source actionsDataSource:(id)dataSource capabilities:(id)capabilities environment:(id)environment
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v16 = a8;
-  v17 = a9;
+  contactCopy = contact;
+  containerCopy = container;
+  storeCopy = store;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  capabilitiesCopy = capabilities;
+  environmentCopy = environment;
   v27.receiver = self;
   v27.super_class = CNContactActionProvider;
   v18 = [(CNContactActionProvider *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_contact, a3);
-    objc_storeStrong(&v19->_container, a4);
-    objc_storeStrong(&v19->_contactStore, a5);
-    objc_storeStrong(&v19->_propertyGroupsDataSource, a6);
-    objc_storeStrong(&v19->_actionsDataSource, a7);
-    objc_storeStrong(&v19->_capabilities, a8);
-    objc_storeStrong(&v19->_environment, a9);
+    objc_storeStrong(&v18->_contact, contact);
+    objc_storeStrong(&v19->_container, container);
+    objc_storeStrong(&v19->_contactStore, store);
+    objc_storeStrong(&v19->_propertyGroupsDataSource, source);
+    objc_storeStrong(&v19->_actionsDataSource, dataSource);
+    objc_storeStrong(&v19->_capabilities, capabilities);
+    objc_storeStrong(&v19->_environment, environment);
     v20 = v19;
   }
 
   return v19;
 }
 
-- (CNContactActionProvider)initWithContact:(id)a3 inContainer:(id)a4 contactStore:(id)a5
+- (CNContactActionProvider)initWithContact:(id)contact inContainer:(id)container contactStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  storeCopy = store;
+  containerCopy = container;
+  contactCopy = contact;
   v11 = +[CNUIContactsEnvironment currentEnvironment];
-  v12 = [(CNContactActionProvider *)self initWithContact:v10 inContainer:v9 contactStore:v8 propertyGroupsDataSource:0 actionsDataSource:0 capabilities:0 environment:v11];
+  v12 = [(CNContactActionProvider *)self initWithContact:contactCopy inContainer:containerCopy contactStore:storeCopy propertyGroupsDataSource:0 actionsDataSource:0 capabilities:0 environment:v11];
 
   return v12;
 }

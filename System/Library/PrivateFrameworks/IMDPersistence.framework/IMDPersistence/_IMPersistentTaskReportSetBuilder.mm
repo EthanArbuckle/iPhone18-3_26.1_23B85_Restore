@@ -1,8 +1,8 @@
 @interface _IMPersistentTaskReportSetBuilder
 - (_IMPersistentTaskReportSetBuilder)init;
-- (id)_reportForFlag:(unint64_t)a3 lane:(unint64_t)a4 reason:(int64_t)a5;
+- (id)_reportForFlag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason;
 - (id)reset;
-- (void)recordFlag:(unint64_t)a3 lane:(unint64_t)a4 reason:(int64_t)a5 count:(int64_t)a6;
+- (void)recordFlag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason count:(int64_t)count;
 @end
 
 @implementation _IMPersistentTaskReportSetBuilder
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (id)_reportForFlag:(unint64_t)a3 lane:(unint64_t)a4 reason:(int64_t)a5
+- (id)_reportForFlag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason
 {
-  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"f%lul%lur%lu", a3, a4, a5);
+  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"f%lul%lur%lu", flag, lane, reason);
   v12 = objc_msgSend_reportSetHashMap(self, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v12, v13, v9);
 
   if (!v14)
   {
     v15 = objc_alloc(MEMORY[0x1E69A81D0]);
-    v14 = objc_msgSend_initWithTaskFlag_lane_reason_(v15, v16, a3, a4, a5);
+    v14 = objc_msgSend_initWithTaskFlag_lane_reason_(v15, v16, flag, lane, reason);
     v19 = objc_msgSend_reportSetHashMap(self, v17, v18);
     objc_msgSend_setObject_forKeyedSubscript_(v19, v20, v14, v9);
 
@@ -48,10 +48,10 @@
   return v25;
 }
 
-- (void)recordFlag:(unint64_t)a3 lane:(unint64_t)a4 reason:(int64_t)a5 count:(int64_t)a6
+- (void)recordFlag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason count:(int64_t)count
 {
-  v8 = objc_msgSend__reportForFlag_lane_reason_(self, a2, a3, a4, a5);
-  objc_msgSend_incrementCount_(v8, v7, a6);
+  v8 = objc_msgSend__reportForFlag_lane_reason_(self, a2, flag, lane, reason);
+  objc_msgSend_incrementCount_(v8, v7, count);
 }
 
 - (id)reset

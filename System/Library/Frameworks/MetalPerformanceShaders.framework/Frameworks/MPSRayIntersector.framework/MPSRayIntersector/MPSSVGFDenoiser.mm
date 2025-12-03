@@ -3,7 +3,7 @@
 - (MPSSVGFDenoiser)initWithSVGF:(MPSSVGF *)svgf textureAllocator:(id)textureAllocator;
 - (id)encodeToCommandBuffer:(id)commandBuffer sourceTexture:(id)sourceTexture motionVectorTexture:(id)motionVectorTexture depthNormalTexture:(id)depthNormalTexture previousDepthNormalTexture:(id)previousDepthNormalTexture;
 - (void)dealloc;
-- (void)encodeClearToCommandBuffer:(id)a3;
+- (void)encodeClearToCommandBuffer:(id)buffer;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceTexture:(id)sourceTexture destinationTexture:(id *)destinationTexture sourceTexture2:(id)sourceTexture2 destinationTexture2:(id *)destinationTexture2 motionVectorTexture:(id)motionVectorTexture depthNormalTexture:(id)depthNormalTexture previousDepthNormalTexture:(id)previousDepthNormalTexture;
 - (void)releaseTemporaryTextures;
 - (void)setBilateralFilterIterations:(NSUInteger)bilateralFilterIterations;
@@ -101,9 +101,9 @@
   }
 }
 
-- (void)encodeClearToCommandBuffer:(id)a3
+- (void)encodeClearToCommandBuffer:(id)buffer
 {
-  v6 = objc_msgSend_computeCommandEncoder(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_computeCommandEncoder(buffer, a2, buffer, v3, v4);
   v7 = *(&self->_svgf->super.super.isa + *MEMORY[0x277CD7370]);
   ComputeState = MPSLibrary::GetComputeState();
   objc_msgSend_setComputePipelineState_(v6, v9, ComputeState, v10, v11);

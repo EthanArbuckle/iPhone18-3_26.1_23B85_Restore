@@ -1,43 +1,43 @@
 @interface MSMessageExtensionBalloonLiveView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKTranscriptPluginViewDelegate)pluginViewDelegate;
-- (MSMessageExtensionBalloonLiveView)initWithFrame:(CGRect)a3 dataSource:(id)a4 fromMe:(BOOL)a5;
+- (MSMessageExtensionBalloonLiveView)initWithFrame:(CGRect)frame dataSource:(id)source fromMe:(BOOL)me;
 - (MSMessageExtensionBalloonLiveViewDelegate)delegate;
 - (id)interactiveViews;
 - (id)payload;
 - (void)configureForDisplay;
-- (void)dataSourcePluginPayloadDidChange:(id)a3 didUpdateData:(BOOL)a4;
-- (void)iconViewTapped:(id)a3;
+- (void)dataSourcePluginPayloadDidChange:(id)change didUpdateData:(BOOL)data;
+- (void)iconViewTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setForceHideAppIcon:(BOOL)a3;
-- (void)setIsInShelf:(BOOL)a3;
-- (void)setRemoteBalloonView:(id)a3;
-- (void)setStaticView:(id)a3;
-- (void)updateIconForPlugin:(id)a3;
+- (void)setForceHideAppIcon:(BOOL)icon;
+- (void)setIsInShelf:(BOOL)shelf;
+- (void)setRemoteBalloonView:(id)view;
+- (void)setStaticView:(id)view;
+- (void)updateIconForPlugin:(id)plugin;
 @end
 
 @implementation MSMessageExtensionBalloonLiveView
 
-- (MSMessageExtensionBalloonLiveView)initWithFrame:(CGRect)a3 dataSource:(id)a4 fromMe:(BOOL)a5
+- (MSMessageExtensionBalloonLiveView)initWithFrame:(CGRect)frame dataSource:(id)source fromMe:(BOOL)me
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  meCopy = me;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = MSMessageExtensionBalloonLiveView;
-  v13 = [(MSMessageExtensionBalloonLiveView *)&v34 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(MSMessageExtensionBalloonLiveView *)&v34 initWithFrame:x, y, width, height];
+  if (height)
   {
     v14 = ms_defaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 pluginPayload];
-      v16 = [v15 isFromMe];
+      pluginPayload = [sourceCopy pluginPayload];
+      isFromMe = [pluginPayload isFromMe];
       v17 = @"NO";
-      if (v16)
+      if (isFromMe)
       {
         v18 = @"YES";
       }
@@ -48,10 +48,10 @@
       }
 
       *buf = 138412802;
-      v36 = v13;
+      v36 = height;
       v38 = v18;
       v37 = 2112;
-      if (v5)
+      if (meCopy)
       {
         v17 = @"YES";
       }
@@ -61,18 +61,18 @@
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "MSMessageExtensionBalloonView init self %@ payload from me %@ from me %@", buf, 0x20u);
     }
 
-    v13->_fromMe = v5;
-    objc_storeStrong(&v13->_dataSource, a4);
-    [(MSMessageExtensionBalloonLiveView *)v13 setClipsToBounds:1];
+    height->_fromMe = meCopy;
+    objc_storeStrong(&height->_dataSource, source);
+    [(MSMessageExtensionBalloonLiveView *)height setClipsToBounds:1];
     v19 = +[IMBalloonPluginManager sharedInstance];
-    v20 = [(MSMessageExtensionBalloonLiveView *)v13 payload];
-    v21 = [v20 pluginBundleID];
-    v22 = [v19 balloonPluginForBundleID:v21];
+    payload = [(MSMessageExtensionBalloonLiveView *)height payload];
+    pluginBundleID = [payload pluginBundleID];
+    v22 = [v19 balloonPluginForBundleID:pluginBundleID];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ([v22 shouldBalloonHideAppIcon] & 1) == 0)
     {
-      if (v5)
+      if (meCopy)
       {
         v23 = 6.0;
       }
@@ -90,51 +90,51 @@
       v29 = [[UIImageView alloc] initWithFrame:{v23, 6.0, v26, v28}];
       [(UIImageView *)v29 setAutoresizingMask:36];
       [(UIImageView *)v29 setUserInteractionEnabled:1];
-      v30 = [[UITapGestureRecognizer alloc] initWithTarget:v13 action:"iconViewTapped:"];
+      v30 = [[UITapGestureRecognizer alloc] initWithTarget:height action:"iconViewTapped:"];
       [(UIImageView *)v29 addGestureRecognizer:v30];
 
-      iconView = v13->_iconView;
-      v13->_iconView = v29;
+      iconView = height->_iconView;
+      height->_iconView = v29;
       v32 = v29;
 
-      [(MSMessageExtensionBalloonLiveView *)v13 addSubview:v32];
+      [(MSMessageExtensionBalloonLiveView *)height addSubview:v32];
     }
   }
 
-  return v13;
+  return height;
 }
 
-- (void)setForceHideAppIcon:(BOOL)a3
+- (void)setForceHideAppIcon:(BOOL)icon
 {
-  if (self->_forceHideAppIcon != a3)
+  if (self->_forceHideAppIcon != icon)
   {
-    v3 = a3;
-    v5 = [(MSMessageExtensionBalloonLiveView *)self iconView];
+    iconCopy = icon;
+    iconView = [(MSMessageExtensionBalloonLiveView *)self iconView];
 
-    if (v5)
+    if (iconView)
     {
-      self->_forceHideAppIcon = v3;
-      v6 = [(MSMessageExtensionBalloonLiveView *)self iconView];
-      [v6 setHidden:v3];
+      self->_forceHideAppIcon = iconCopy;
+      iconView2 = [(MSMessageExtensionBalloonLiveView *)self iconView];
+      [iconView2 setHidden:iconCopy];
     }
   }
 }
 
 - (id)payload
 {
-  v2 = [(MSMessageExtensionBalloonLiveView *)self dataSource];
-  v3 = [v2 pluginPayload];
+  dataSource = [(MSMessageExtensionBalloonLiveView *)self dataSource];
+  pluginPayload = [dataSource pluginPayload];
 
-  return v3;
+  return pluginPayload;
 }
 
-- (void)updateIconForPlugin:(id)a3
+- (void)updateIconForPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   if (self->_iconView)
   {
-    v5 = [(MSMessageExtensionBalloonLiveView *)self payload];
-    v6 = [v5 pluginBundleID];
+    payload = [(MSMessageExtensionBalloonLiveView *)self payload];
+    pluginBundleID = [payload pluginBundleID];
 
     objc_initWeak(&location, self);
     v8[0] = _NSConcreteStackBlock;
@@ -142,9 +142,9 @@
     v8[2] = sub_13190;
     v8[3] = &unk_4D498;
     objc_copyWeak(&v10, &location);
-    v7 = v6;
+    v7 = pluginBundleID;
     v9 = v7;
-    [v4 __ck_generateStatusImage:v8];
+    [pluginCopy __ck_generateStatusImage:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -157,13 +157,13 @@
   v18.super_class = MSMessageExtensionBalloonLiveView;
   [(MSMessageExtensionBalloonLiveView *)&v18 layoutSubviews];
   fromMe = self->_fromMe;
-  v4 = [(MSMessageExtensionBalloonLiveView *)self remoteBalloonView];
+  remoteBalloonView = [(MSMessageExtensionBalloonLiveView *)self remoteBalloonView];
   [(MSMessageExtensionBalloonLiveView *)self bounds];
-  [v4 setFrame:?];
+  [remoteBalloonView setFrame:?];
 
-  v5 = [(MSMessageExtensionBalloonLiveView *)self iconView];
+  iconView = [(MSMessageExtensionBalloonLiveView *)self iconView];
 
-  if (v5)
+  if (iconView)
   {
     v6 = +[CKUIBehavior sharedBehaviors];
     v7 = v6;
@@ -183,17 +183,17 @@
     v14 = v13;
     v16 = v15;
 
-    v17 = [(MSMessageExtensionBalloonLiveView *)self iconView];
-    [v17 setFrame:{v10, v12, v14, v16}];
+    iconView2 = [(MSMessageExtensionBalloonLiveView *)self iconView];
+    [iconView2 setFrame:{v10, v12, v14, v16}];
   }
 }
 
-- (void)setIsInShelf:(BOOL)a3
+- (void)setIsInShelf:(BOOL)shelf
 {
-  if (self->_isInShelf != a3)
+  if (self->_isInShelf != shelf)
   {
-    self->_isInShelf = a3;
-    if (a3)
+    self->_isInShelf = shelf;
+    if (shelf)
     {
       [(MSMessageExtensionBalloonLiveView *)self configureForDisplay];
     }
@@ -204,25 +204,25 @@
 
 - (void)configureForDisplay
 {
-  v3 = [(MSMessageExtensionBalloonLiveView *)self delegate];
-  [v3 configureLiveViewForDisplay:self];
+  delegate = [(MSMessageExtensionBalloonLiveView *)self delegate];
+  [delegate configureLiveViewForDisplay:self];
 }
 
-- (void)setRemoteBalloonView:(id)a3
+- (void)setRemoteBalloonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   remoteBalloonView = self->_remoteBalloonView;
-  if (remoteBalloonView != v5)
+  if (remoteBalloonView != viewCopy)
   {
-    v11 = v5;
+    v11 = viewCopy;
     [(UIView *)remoteBalloonView removeFromSuperview];
-    objc_storeStrong(&self->_remoteBalloonView, a3);
+    objc_storeStrong(&self->_remoteBalloonView, view);
     if (self->_remoteBalloonView)
     {
       v7 = 48;
-      v8 = [(UIView *)self->_staticView superview];
+      superview = [(UIView *)self->_staticView superview];
 
-      if (v8 == self)
+      if (superview == self)
       {
         v10 = self->_remoteBalloonView;
       }
@@ -230,10 +230,10 @@
       else
       {
         v7 = 56;
-        v9 = [(UIImageView *)self->_iconView superview];
+        superview2 = [(UIImageView *)self->_iconView superview];
 
         v10 = self->_remoteBalloonView;
-        if (v9 != self)
+        if (superview2 != self)
         {
           [(MSMessageExtensionBalloonLiveView *)self addSubview:v10];
           goto LABEL_8;
@@ -245,33 +245,33 @@
 
 LABEL_8:
     remoteBalloonView = [(MSMessageExtensionBalloonLiveView *)self setNeedsLayout];
-    v5 = v11;
+    viewCopy = v11;
   }
 
-  _objc_release_x1(remoteBalloonView, v5);
+  _objc_release_x1(remoteBalloonView, viewCopy);
 }
 
-- (void)setStaticView:(id)a3
+- (void)setStaticView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   staticView = self->_staticView;
-  if (staticView != v5)
+  if (staticView != viewCopy)
   {
-    v12 = v5;
+    v12 = viewCopy;
     [(UIView *)staticView removeFromSuperview];
-    objc_storeStrong(&self->_staticView, a3);
+    objc_storeStrong(&self->_staticView, view);
     v7 = +[IMBalloonPluginManager sharedInstance];
-    v8 = [(MSMessageExtensionBalloonLiveView *)self payload];
-    v9 = [v8 pluginBundleID];
-    v10 = [v7 balloonPluginForBundleID:v9];
+    payload = [(MSMessageExtensionBalloonLiveView *)self payload];
+    pluginBundleID = [payload pluginBundleID];
+    v10 = [v7 balloonPluginForBundleID:pluginBundleID];
 
     if ([v10 wantsLoadingView])
     {
       if (self->_staticView)
       {
-        v11 = [(UIImageView *)self->_iconView superview];
+        superview = [(UIImageView *)self->_iconView superview];
 
-        if (v11 == self)
+        if (superview == self)
         {
           [(MSMessageExtensionBalloonLiveView *)self insertSubview:v12 belowSubview:self->_iconView];
         }
@@ -290,47 +290,47 @@ LABEL_8:
       [(MSMessageExtensionBalloonLiveView *)self setNeedsLayout];
     }
 
-    v5 = v12;
+    viewCopy = v12;
   }
 
-  _objc_release_x1(staticView, v5);
+  _objc_release_x1(staticView, viewCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MSMessageExtensionBalloonLiveView *)self dataSource];
-  v7 = [v6 message];
+  height = fits.height;
+  width = fits.width;
+  dataSource = [(MSMessageExtensionBalloonLiveView *)self dataSource];
+  message = [dataSource message];
 
   v8 = +[IMBalloonPluginManager sharedInstance];
-  v9 = [(MSMessageExtensionBalloonLiveView *)self payload];
-  v10 = [v9 pluginBundleID];
-  v11 = [v8 balloonPluginForBundleID:v10];
+  payload = [(MSMessageExtensionBalloonLiveView *)self payload];
+  pluginBundleID = [payload pluginBundleID];
+  v11 = [v8 balloonPluginForBundleID:pluginBundleID];
 
-  v12 = [(MSMessageExtensionBalloonLiveView *)self staticView];
-  if (v12 && (v13 = v12, v14 = [v11 wantsLoadingView], v13, v14))
+  staticView = [(MSMessageExtensionBalloonLiveView *)self staticView];
+  if (staticView && (v13 = staticView, v14 = [v11 wantsLoadingView], v13, v14))
   {
-    v15 = [(MSMessageExtensionBalloonLiveView *)self staticView];
-    [v15 bounds];
+    staticView2 = [(MSMessageExtensionBalloonLiveView *)self staticView];
+    [staticView2 bounds];
   }
 
   else
   {
-    v16 = [v7 layout];
+    layout = [message layout];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [(MSMessageExtensionBalloonLiveView *)self delegate];
-      [v15 liveView:self sizeThatFits:{width, height}];
+      staticView2 = [(MSMessageExtensionBalloonLiveView *)self delegate];
+      [staticView2 liveView:self sizeThatFits:{width, height}];
     }
 
     else
     {
-      v15 = +[CKUIBehavior sharedBehaviors];
-      [v15 extensionBalloonMaximumHeight];
+      staticView2 = +[CKUIBehavior sharedBehaviors];
+      [staticView2 extensionBalloonMaximumHeight];
     }
   }
 
@@ -346,28 +346,28 @@ LABEL_8:
   return result;
 }
 
-- (void)dataSourcePluginPayloadDidChange:(id)a3 didUpdateData:(BOOL)a4
+- (void)dataSourcePluginPayloadDidChange:(id)change didUpdateData:(BOOL)data
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(MSMessageExtensionBalloonLiveView *)self dataSource];
+  dataCopy = data;
+  changeCopy = change;
+  dataSource = [(MSMessageExtensionBalloonLiveView *)self dataSource];
 
-  v8 = v11;
-  if (v6 != v11)
+  v8 = changeCopy;
+  if (dataSource != changeCopy)
   {
-    [(MSMessageExtensionBalloonLiveView *)self setDataSource:v11];
-    v9 = [(MSMessageExtensionBalloonLiveView *)self delegate];
-    [v9 pluginPayloadDidChangeForLiveView:self];
+    [(MSMessageExtensionBalloonLiveView *)self setDataSource:changeCopy];
+    delegate = [(MSMessageExtensionBalloonLiveView *)self delegate];
+    [delegate pluginPayloadDidChangeForLiveView:self];
 
-    v8 = v11;
+    v8 = changeCopy;
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v10 = [(MSMessageExtensionBalloonLiveView *)self delegate];
-    [v10 pluginPayloadDataDidChangeForLiveView:self];
+    delegate2 = [(MSMessageExtensionBalloonLiveView *)self delegate];
+    [delegate2 pluginPayloadDataDidChangeForLiveView:self];
 
-    v8 = v11;
+    v8 = changeCopy;
   }
 
   _objc_release_x1(v7, v8);
@@ -375,16 +375,16 @@ LABEL_8:
 
 - (id)interactiveViews
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
 
-- (void)iconViewTapped:(id)a3
+- (void)iconViewTapped:(id)tapped
 {
-  v4 = [(MSMessageExtensionBalloonLiveView *)self pluginViewDelegate];
-  [v4 pluginViewRequestsPresentationAction:self];
+  pluginViewDelegate = [(MSMessageExtensionBalloonLiveView *)self pluginViewDelegate];
+  [pluginViewDelegate pluginViewRequestsPresentationAction:self];
 }
 
 - (CKTranscriptPluginViewDelegate)pluginViewDelegate

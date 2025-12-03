@@ -1,5 +1,5 @@
 @interface STStorageTipCellInvertColorsAccessibility
-- (STStorageTipCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STStorageTipCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_accessibilityLoadInvertColors;
 @end
 
@@ -11,11 +11,11 @@
   [v2 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (STStorageTipCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STStorageTipCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = STStorageTipCellInvertColorsAccessibility;
-  v5 = [(STStorageTipCellInvertColorsAccessibility *)&v7 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STStorageTipCellInvertColorsAccessibility *)&v7 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   [(STStorageTipCellInvertColorsAccessibility *)v5 _accessibilityLoadInvertColors];
 
   return v5;

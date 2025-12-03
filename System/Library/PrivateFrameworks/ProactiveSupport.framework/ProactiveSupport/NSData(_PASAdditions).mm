@@ -6,13 +6,13 @@
 
 - (id)_pas_dataWithNonnullBytes
 {
-  v1 = a1;
-  if (![a1 bytes] && !objc_msgSend(v1, "length"))
+  selfCopy = self;
+  if (![self bytes] && !objc_msgSend(selfCopy, "length"))
   {
-    v1 = &unk_1EE71B5D8;
+    selfCopy = &unk_1EE71B5D8;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

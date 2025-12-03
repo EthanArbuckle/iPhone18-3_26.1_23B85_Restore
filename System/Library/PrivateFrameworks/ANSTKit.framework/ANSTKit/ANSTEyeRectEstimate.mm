@@ -1,12 +1,12 @@
 @interface ANSTEyeRectEstimate
 + (id)new;
 - (ANSTEyeRectEstimate)init;
-- (ANSTEyeRectEstimate)initWithCoder:(id)a3;
-- (ANSTEyeRectEstimate)initWithEyeRectLeft:(CGRect)a3 eyeRectRight:(CGRect)a4;
+- (ANSTEyeRectEstimate)initWithCoder:(id)coder;
+- (ANSTEyeRectEstimate)initWithEyeRectLeft:(CGRect)left eyeRectRight:(CGRect)right;
 - (CGRect)eyeRectLeft;
 - (CGRect)eyeRectRight;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTEyeRectEstimate
@@ -20,21 +20,21 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTEyeRectEstimate)initWithEyeRectLeft:(CGRect)a3 eyeRectRight:(CGRect)a4
+- (ANSTEyeRectEstimate)initWithEyeRectLeft:(CGRect)left eyeRectRight:(CGRect)right
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = right.size.height;
+  width = right.size.width;
+  y = right.origin.y;
+  x = right.origin.x;
+  v8 = left.size.height;
+  v9 = left.size.width;
+  v10 = left.origin.y;
+  v11 = left.origin.x;
   v13.receiver = self;
   v13.super_class = ANSTEyeRectEstimate;
   result = [(ANSTEyeRectEstimate *)&v13 init];
@@ -49,13 +49,13 @@
   return result;
 }
 
-- (ANSTEyeRectEstimate)initWithCoder:(id)a3
+- (ANSTEyeRectEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ANSTEyeRectEstimate;
   v5 = [(ANSTEyeRectEstimate *)&v8 init];
-  if (sub_22E5FDB44(v4, &v5->_eyeRectLeft.origin.x, sel_eyeRectLeft) && sub_22E5FDB44(v4, &v5->_eyeRectRight.origin.x, sel_eyeRectRight))
+  if (sub_22E5FDB44(coderCopy, &v5->_eyeRectLeft.origin.x, sel_eyeRectLeft) && sub_22E5FDB44(coderCopy, &v5->_eyeRectRight.origin.x, sel_eyeRectRight))
   {
     v6 = v5;
   }
@@ -68,15 +68,15 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_eyeRectLeft.origin.x;
   y = self->_eyeRectLeft.origin.y;
   width = self->_eyeRectLeft.size.width;
   height = self->_eyeRectLeft.size.height;
-  v8 = a3;
-  sub_22E5FDE8C(v8, sel_eyeRectLeft, x, y, width, height);
-  sub_22E5FDE8C(v8, sel_eyeRectRight, self->_eyeRectRight.origin.x, self->_eyeRectRight.origin.y, self->_eyeRectRight.size.width, self->_eyeRectRight.size.height);
+  coderCopy = coder;
+  sub_22E5FDE8C(coderCopy, sel_eyeRectLeft, x, y, width, height);
+  sub_22E5FDE8C(coderCopy, sel_eyeRectRight, self->_eyeRectRight.origin.x, self->_eyeRectRight.origin.y, self->_eyeRectRight.size.width, self->_eyeRectRight.size.height);
 }
 
 - (id)description

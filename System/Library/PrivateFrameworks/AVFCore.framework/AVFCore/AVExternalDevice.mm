@@ -1,7 +1,7 @@
 @interface AVExternalDevice
 + (id)sharedLocalDevice;
 - (AVExternalDevice)init;
-- (AVExternalDevice)initWithFigEndpoint:(OpaqueFigEndpoint *)a3;
+- (AVExternalDevice)initWithFigEndpoint:(OpaqueFigEndpoint *)endpoint;
 - (BOOL)OEMIconVisible;
 - (BOOL)limitedUI;
 - (BOOL)nightMode;
@@ -20,21 +20,21 @@
 - (NSDictionary)screenSafeAreas;
 - (NSDictionary)screenViewAreas;
 - (NSString)name;
-- (id)_figEndpointPropertyValueForKey:(__CFString *)a3;
+- (id)_figEndpointPropertyValueForKey:(__CFString *)key;
 - (id)_screenInfo;
-- (id)borrowScreenForClient:(id)a3 reason:(id)a4;
-- (id)externalDeviceHIDWithUUID:(id)a3;
+- (id)borrowScreenForClient:(id)client reason:(id)reason;
+- (id)externalDeviceHIDWithUUID:(id)d;
 - (id)requestTurnByTurnNavigationOwnership;
 - (int64_t)electronicTollCollection;
 - (int64_t)navigationAidedDriving;
 - (int64_t)transportType;
-- (void)_triggerFakeNotificationNamed:(id)a3 withPayload:(id)a4;
+- (void)_triggerFakeNotificationNamed:(id)named withPayload:(id)payload;
 - (void)dealloc;
-- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4;
-- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4;
-- (void)sendCommand:(id)a3 withParameters:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)takeScreenForClient:(id)a3 reason:(id)a4;
+- (void)requestCarUIForURL:(id)l withUUID:(id)d;
+- (void)requestViewArea:(int64_t)area forScreenID:(id)d;
+- (void)sendCommand:(id)command withParameters:(id)parameters;
+- (void)setDelegate:(id)delegate;
+- (void)takeScreenForClient:(id)client reason:(id)reason;
 - (void)takeScreenForConnection;
 @end
 
@@ -70,13 +70,13 @@ void *__31__AVExternalDevice__screenInfo__block_invoke(uint64_t a1)
 - (NSArray)screenIDs
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVExternalDevice *)self _screenInfo];
+  array = [MEMORY[0x1E695DF70] array];
+  _screenInfo = [(AVExternalDevice *)self _screenInfo];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [_screenInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -89,26 +89,26 @@ void *__31__AVExternalDevice__screenInfo__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_screenInfo);
         }
 
         v10 = [*(*(&v12 + 1) + 8 * v9) objectForKey:v8];
         if (v10)
         {
-          [(NSArray *)v3 addObject:v10];
+          [(NSArray *)array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_screenInfo countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_screenInfo
@@ -265,16 +265,16 @@ void *__31__AVExternalDevice__screenInfo__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (AVExternalDevice)initWithFigEndpoint:(OpaqueFigEndpoint *)a3
+- (AVExternalDevice)initWithFigEndpoint:(OpaqueFigEndpoint *)endpoint
 {
   v4 = [(AVExternalDevice *)self init];
   if (v4)
   {
     v4->_externalDevice->_makeHIDsOnlyOnce = objc_alloc_init(AVDispatchOnce);
     v4->_externalDevice->_makeIconsOnlyOnce = objc_alloc_init(AVDispatchOnce);
-    if (a3)
+    if (endpoint)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(endpoint);
     }
 
     else
@@ -357,21 +357,21 @@ void __40__AVExternalDevice_initWithFigEndpoint___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   externalDevice = self->_externalDevice;
-  if (externalDevice->_delegate != a3)
+  if (externalDevice->_delegate != delegate)
   {
     v10[8] = v3;
     v10[9] = v4;
-    externalDevice->_delegate = a3;
-    v8 = self;
+    externalDevice->_delegate = delegate;
+    selfCopy = self;
     viewAreasQueue = self->_externalDevice->_viewAreasQueue;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __32__AVExternalDevice_setDelegate___block_invoke;
     v10[3] = &unk_1E7460DF0;
-    v10[4] = a3;
+    v10[4] = delegate;
     v10[5] = self;
     dispatch_async(viewAreasQueue, v10);
   }
@@ -420,7 +420,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_figEndpointPropertyValueForKey:(__CFString *)a3
+- (id)_figEndpointPropertyValueForKey:(__CFString *)key
 {
   v8 = 0;
   figEndpoint = self->_externalDevice->_figEndpoint;
@@ -430,7 +430,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v6)
     {
-      v6(CMBaseObject, a3, *MEMORY[0x1E695E480], &v8);
+      v6(CMBaseObject, key, *MEMORY[0x1E695E480], &v8);
       figEndpoint = v8;
     }
 
@@ -446,7 +446,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
 - (NSDictionary)screenViewAreas
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -473,7 +473,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
         if (v7)
         {
           v8 = v7;
-          -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] array], v7);
+          -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] array], v7);
           v25 = 0u;
           v26 = 0u;
           v23 = 0u;
@@ -496,7 +496,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
                 v14 = *(*(&v23 + 1) + 8 * j);
                 memset(&rect, 0, sizeof(rect));
                 CGRectMakeWithDictionaryRepresentation([v14 objectForKeyedSubscript:v4], &rect);
-                v15 = [(NSDictionary *)v3 objectForKeyedSubscript:v8];
+                v15 = [(NSDictionary *)dictionary objectForKeyedSubscript:v8];
                 [v15 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRect:", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)}];
               }
 
@@ -514,13 +514,13 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
     while (v21);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSDictionary)screenSafeAreas
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -547,7 +547,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
         if (v7)
         {
           v8 = v7;
-          -[NSDictionary setObject:forKeyedSubscript:](v3, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] array], v7);
+          -[NSDictionary setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF70] array], v7);
           v25 = 0u;
           v26 = 0u;
           v23 = 0u;
@@ -570,7 +570,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
                 v14 = *(*(&v23 + 1) + 8 * j);
                 memset(&rect, 0, sizeof(rect));
                 CGRectMakeWithDictionaryRepresentation([v14 objectForKeyedSubscript:v4], &rect);
-                v15 = [(NSDictionary *)v3 objectForKeyedSubscript:v8];
+                v15 = [(NSDictionary *)dictionary objectForKeyedSubscript:v8];
                 [v15 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRect:", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)}];
               }
 
@@ -588,19 +588,19 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
     while (v21);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSDictionary)screenInputCapabilities
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AVExternalDevice *)self _screenInfo];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _screenInfo = [(AVExternalDevice *)self _screenInfo];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [_screenInfo countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -613,7 +613,7 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_screenInfo);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -631,29 +631,29 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
 
         if (!v14)
         {
-          [(NSDictionary *)v3 setObject:v13 forKey:v12];
+          [(NSDictionary *)dictionary setObject:v13 forKey:v12];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [_screenInfo countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSDictionary)screenPrimaryInputDevices
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AVExternalDevice *)self _screenInfo];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _screenInfo = [(AVExternalDevice *)self _screenInfo];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [_screenInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -666,24 +666,24 @@ void __32__AVExternalDevice_setDelegate___block_invoke(uint64_t a1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_screenInfo);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [v11 objectForKey:v8];
         if (v12)
         {
-          -[NSDictionary setObject:forKey:](v3, "setObject:forKey:", v12, [v11 objectForKey:v9]);
+          -[NSDictionary setObject:forKey:](dictionary, "setObject:forKey:", v12, [v11 objectForKey:v9]);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_screenInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSArray)externalDeviceHIDs
@@ -744,21 +744,21 @@ uint64_t __38__AVExternalDevice_externalDeviceHIDs__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)externalDeviceHIDWithUUID:(id)a3
+- (id)externalDeviceHIDWithUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(AVExternalDevice *)self externalDeviceHIDs];
-  if (!v4)
+  externalDeviceHIDs = [(AVExternalDevice *)self externalDeviceHIDs];
+  if (!externalDeviceHIDs)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = externalDeviceHIDs;
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [(NSArray *)externalDeviceHIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -798,12 +798,12 @@ LABEL_4:
 - (NSData)OEMIcon
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(AVExternalDevice *)self OEMIcons];
+  oEMIcons = [(AVExternalDevice *)self OEMIcons];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  result = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  result = [(NSArray *)oEMIcons countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (result)
   {
     v4 = result;
@@ -815,7 +815,7 @@ LABEL_4:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(oEMIcons);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -828,7 +828,7 @@ LABEL_4:
       }
 
       while (v4 != v6);
-      result = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      result = [(NSArray *)oEMIcons countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = result;
       if (result)
       {
@@ -971,14 +971,14 @@ uint64_t __28__AVExternalDevice_OEMIcons__block_invoke(uint64_t a1)
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(queue, v6);
-  v3 = v8[5];
-  if (!v3)
+  data = v8[5];
+  if (!data)
   {
-    v3 = [MEMORY[0x1E695DEF0] data];
-    v8[5] = v3;
+    data = [MEMORY[0x1E695DEF0] data];
+    v8[5] = data;
   }
 
-  v4 = v3;
+  v4 = data;
   _Block_object_dispose(&v7, 8);
   return v4;
 }
@@ -1024,7 +1024,7 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4
+- (void)requestCarUIForURL:(id)l withUUID:(id)d
 {
   figEndpoint = self->_externalDevice->_figEndpoint;
   if (figEndpoint)
@@ -1036,13 +1036,13 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
       if (v7)
       {
 
-        v7(figEndpoint, a4, a3);
+        v7(figEndpoint, d, l);
       }
     }
   }
 }
 
-- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4
+- (void)requestViewArea:(int64_t)area forScreenID:(id)d
 {
   figEndpoint = self->_externalDevice->_figEndpoint;
   if (figEndpoint)
@@ -1054,7 +1054,7 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
       if (v7)
       {
 
-        v7(figEndpoint, a4, a3);
+        v7(figEndpoint, d, area);
       }
     }
   }
@@ -1067,14 +1067,14 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)borrowScreenForClient:(id)a3 reason:(id)a4
+- (id)borrowScreenForClient:(id)client reason:(id)reason
 {
-  v4 = [[AVExternalDeviceScreenBorrowToken alloc] initWithExternalDevice:self client:a3 reason:a4];
+  v4 = [[AVExternalDeviceScreenBorrowToken alloc] initWithExternalDevice:self client:client reason:reason];
 
   return v4;
 }
 
-- (void)takeScreenForClient:(id)a3 reason:(id)a4
+- (void)takeScreenForClient:(id)client reason:(id)reason
 {
   figEndpoint = self->_externalDevice->_figEndpoint;
   if (figEndpoint)
@@ -1086,7 +1086,7 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
       if (v7)
       {
 
-        v7(figEndpoint, a3, a4);
+        v7(figEndpoint, client, reason);
       }
     }
   }
@@ -1110,7 +1110,7 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendCommand:(id)a3 withParameters:(id)a4
+- (void)sendCommand:(id)command withParameters:(id)parameters
 {
   figEndpoint = self->_externalDevice->_figEndpoint;
   if (figEndpoint)
@@ -1122,15 +1122,15 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
       if (v7)
       {
 
-        v7(figEndpoint, a3, a4, 0, 0);
+        v7(figEndpoint, command, parameters, 0, 0);
       }
     }
   }
 }
 
-- (void)_triggerFakeNotificationNamed:(id)a3 withPayload:(id)a4
+- (void)_triggerFakeNotificationNamed:(id)named withPayload:(id)payload
 {
-  if ([a3 isEqualToString:@"ExternalDevice_ScreenBecameUnavailable"])
+  if ([named isEqualToString:@"ExternalDevice_ScreenBecameUnavailable"])
   {
     CMBaseObject = FigEndpointGetCMBaseObject();
     v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -1146,12 +1146,12 @@ id __46__AVExternalDevice_MFiCertificateSerialNumber__block_invoke(uint64_t a1)
   }
 
   v11 = MEMORY[0x1E695DF20];
-  if (!a4)
+  if (!payload)
   {
-    a4 = [MEMORY[0x1E695DF20] dictionary];
+    payload = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v12 = [v11 dictionaryWithObjectsAndKeys:{a3, @"name", a4, @"payload", 0}];
+  v12 = [v11 dictionaryWithObjectsAndKeys:{named, @"name", payload, @"payload", 0}];
   v13 = FigEndpointGetCMBaseObject();
   v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v7)

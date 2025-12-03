@@ -1,22 +1,22 @@
 @interface PXDeleteCollectionsAction
-- (PXDeleteCollectionsAction)initWithCollection:(id)a3;
-- (PXDeleteCollectionsAction)initWithCollections:(id)a3;
+- (PXDeleteCollectionsAction)initWithCollection:(id)collection;
+- (PXDeleteCollectionsAction)initWithCollections:(id)collections;
 - (id)actionNameLocalizationKey;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXDeleteCollectionsAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__PXDeleteCollectionsAction_performRedo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:redo];
 }
 
 uint64_t __41__PXDeleteCollectionsAction_performRedo___block_invoke(uint64_t a1)
@@ -28,14 +28,14 @@ uint64_t __41__PXDeleteCollectionsAction_performRedo___block_invoke(uint64_t a1)
   return [v2 deleteCollectionLists:v3];
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__PXDeleteCollectionsAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 uint64_t __41__PXDeleteCollectionsAction_performUndo___block_invoke(uint64_t a1)
@@ -47,19 +47,19 @@ uint64_t __41__PXDeleteCollectionsAction_performUndo___block_invoke(uint64_t a1)
   return [v2 undeleteCollectionLists:v3];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v33 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
+  actionCopy = action;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [(PXDeleteCollectionsAction *)self collections];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  collections = [(PXDeleteCollectionsAction *)self collections];
+  v8 = [collections countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -70,7 +70,7 @@ uint64_t __41__PXDeleteCollectionsAction_performUndo___block_invoke(uint64_t a1)
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(collections);
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
@@ -81,20 +81,20 @@ uint64_t __41__PXDeleteCollectionsAction_performUndo___block_invoke(uint64_t a1)
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v13 = v5;
+              v13 = array2;
             }
 
             else
             {
-              v13 = v4;
+              v13 = array;
             }
           }
 
           else
           {
-            v14 = [v12 canContainCollections];
-            v13 = v6;
-            if (!v14)
+            canContainCollections = [v12 canContainCollections];
+            v13 = array3;
+            if (!canContainCollections)
             {
               continue;
             }
@@ -104,50 +104,50 @@ uint64_t __41__PXDeleteCollectionsAction_performUndo___block_invoke(uint64_t a1)
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v9 = [collections countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v4 copy];
+  v15 = [array copy];
   assetCollections = self->_assetCollections;
   self->_assetCollections = v15;
 
-  v17 = [v6 copy];
+  v17 = [array3 copy];
   collectionLists = self->_collectionLists;
   self->_collectionLists = v17;
 
-  if ([v4 count] || objc_msgSend(v6, "count"))
+  if ([array count] || objc_msgSend(array3, "count"))
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __43__PXDeleteCollectionsAction_performAction___block_invoke;
     v25[3] = &unk_1E774C620;
-    v26 = v4;
-    v27 = v6;
+    v26 = array;
+    v27 = array3;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __43__PXDeleteCollectionsAction_performAction___block_invoke_2;
     v22[3] = &unk_1E774BD88;
-    v23 = v5;
-    v19 = v21;
-    v24 = v21;
+    v23 = array2;
+    v19 = actionCopy;
+    v24 = actionCopy;
     [(PXPhotosAction *)self performChanges:v25 completionHandler:v22];
   }
 
   else
   {
-    v19 = v21;
-    if ([v5 count])
+    v19 = actionCopy;
+    if ([array2 count])
     {
-      [PXSharedCollectionsUtilities deleteAlbums:v5 completionHandler:v21];
+      [PXSharedCollectionsUtilities deleteAlbums:array2 completionHandler:actionCopy];
     }
 
-    else if (v21)
+    else if (actionCopy)
     {
       v20 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"Nothing to delete, or that can be deleted"}];
-      (*(v21 + 2))(v21, 0, v20);
+      (*(actionCopy + 2))(actionCopy, 0, v20);
     }
   }
 }
@@ -181,15 +181,15 @@ void __43__PXDeleteCollectionsAction_performAction___block_invoke_2(uint64_t a1,
 
 - (id)actionNameLocalizationKey
 {
-  v2 = [(PXDeleteCollectionsAction *)self collections];
-  if ([v2 count] == 1)
+  collections = [(PXDeleteCollectionsAction *)self collections];
+  if ([collections count] == 1)
   {
-    v3 = [v2 firstObject];
-    v4 = v3;
+    firstObject = [collections firstObject];
+    v4 = firstObject;
     v5 = @"PXDeleteActionName";
-    if (v3)
+    if (firstObject)
     {
-      if ([v3 canContainAssets])
+      if ([firstObject canContainAssets])
       {
         v5 = @"PXDeleteAlbumActionName";
       }
@@ -210,47 +210,47 @@ void __43__PXDeleteCollectionsAction_performAction___block_invoke_2(uint64_t a1,
   return v5;
 }
 
-- (PXDeleteCollectionsAction)initWithCollection:(id)a3
+- (PXDeleteCollectionsAction)initWithCollection:(id)collection
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  collectionCopy = collection;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  collectionCopy2 = collection;
+  v6 = [v4 arrayWithObjects:&collectionCopy count:1];
 
-  v7 = [(PXDeleteCollectionsAction *)self initWithCollections:v6, v9, v10];
+  v7 = [(PXDeleteCollectionsAction *)self initWithCollections:v6, collectionCopy, v10];
   return v7;
 }
 
-- (PXDeleteCollectionsAction)initWithCollections:(id)a3
+- (PXDeleteCollectionsAction)initWithCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  collectionsCopy = collections;
+  firstObject = [collectionsCopy firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = [v5 photoLibrary];
+    photoLibrary = [firstObject photoLibrary];
     v13.receiver = self;
     v13.super_class = PXDeleteCollectionsAction;
-    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:v7];
+    v8 = [(PXPhotosAction *)&v13 initWithPhotoLibrary:photoLibrary];
 
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [collectionsCopy copy];
       collections = v8->_collections;
       v8->_collections = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

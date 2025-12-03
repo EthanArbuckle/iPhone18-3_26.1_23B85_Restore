@@ -1,11 +1,11 @@
 @interface MapsRadarAttachment
-+ (MapsRadarAttachment)attachmentWithFileName:(id)a3;
-- (MapsRadarAttachment)initWithFileName:(id)a3;
++ (MapsRadarAttachment)attachmentWithFileName:(id)name;
+- (MapsRadarAttachment)initWithFileName:(id)name;
 - (MapsRadarDraft)radarDraft;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSURL)temporaryFileURL;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 - (void)writeToTemporaryFolder;
 @end
 
@@ -18,20 +18,20 @@
   return WeakRetained;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
   [(NSDate *)self->_creationDate timeIntervalSinceReferenceDate];
   v7 = [NSNumber numberWithDouble:?];
-  (*v4)(v6, @"creation date", v7);
+  (*v4)(blockCopy, @"creation date", v7);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0D7D0;
@@ -39,8 +39,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -74,7 +74,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0DA20;
@@ -82,8 +82,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -117,9 +117,9 @@ LABEL_9:
 
 - (NSURL)temporaryFileURL
 {
-  v3 = [(MapsRadarAttachment *)self radarDraft];
+  radarDraft = [(MapsRadarAttachment *)self radarDraft];
 
-  if (!v3)
+  if (!radarDraft)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -148,19 +148,19 @@ LABEL_9:
     }
   }
 
-  v4 = [(MapsRadarAttachment *)self radarDraft];
-  v5 = [v4 temporaryAttachmentsFolderURL];
-  v6 = [(MapsRadarAttachment *)self fileName];
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  radarDraft2 = [(MapsRadarAttachment *)self radarDraft];
+  temporaryAttachmentsFolderURL = [radarDraft2 temporaryAttachmentsFolderURL];
+  fileName = [(MapsRadarAttachment *)self fileName];
+  v7 = [temporaryAttachmentsFolderURL URLByAppendingPathComponent:fileName];
 
   return v7;
 }
 
 - (void)writeToTemporaryFolder
 {
-  v3 = [(MapsRadarAttachment *)self radarDraft];
+  radarDraft = [(MapsRadarAttachment *)self radarDraft];
 
-  if (!v3)
+  if (!radarDraft)
   {
     v10 = sub_10006D178();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -189,12 +189,12 @@ LABEL_9:
     }
   }
 
-  v4 = [(MapsRadarAttachment *)self temporaryFileURL];
-  v5 = [v4 URLByDeletingLastPathComponent];
+  temporaryFileURL = [(MapsRadarAttachment *)self temporaryFileURL];
+  uRLByDeletingLastPathComponent = [temporaryFileURL URLByDeletingLastPathComponent];
 
   v6 = +[NSFileManager defaultManager];
   v13 = 0;
-  v7 = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v13];
+  v7 = [v6 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v13];
   v8 = v13;
 
   if ((v7 & 1) == 0)
@@ -203,7 +203,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = v5;
+      v15 = uRLByDeletingLastPathComponent;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error creating temporary folder: %@: %@", buf, 0x16u);
@@ -211,10 +211,10 @@ LABEL_9:
   }
 }
 
-- (MapsRadarAttachment)initWithFileName:(id)a3
+- (MapsRadarAttachment)initWithFileName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_9:
   v5 = [(MapsRadarAttachment *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     fileName = v5->_fileName;
     v5->_fileName = v6;
 
@@ -260,10 +260,10 @@ LABEL_9:
   return v5;
 }
 
-+ (MapsRadarAttachment)attachmentWithFileName:(id)a3
++ (MapsRadarAttachment)attachmentWithFileName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFileName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithFileName:nameCopy];
 
   return v5;
 }

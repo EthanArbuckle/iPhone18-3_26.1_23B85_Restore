@@ -9,12 +9,12 @@
   v3 = MEMORY[0x277CCD7F0];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 datumIdentifier];
-  v7 = [v4 dateInterval];
-  v8 = [v4 quantity];
-  v9 = [v4 resumeContext];
+  datumIdentifier = [v4 datumIdentifier];
+  dateInterval = [v4 dateInterval];
+  quantity = [v4 quantity];
+  resumeContext = [v4 resumeContext];
 
-  v10 = [v5 initWithIdentifier:v6 dateInterval:v7 quantity:v8 resumeContext:v9];
+  v10 = [v5 initWithIdentifier:datumIdentifier dateInterval:dateInterval quantity:quantity resumeContext:resumeContext];
 
   return v10;
 }

@@ -1,5 +1,5 @@
 @interface NRBabelSourceLocal
-- (NRBabelSourceLocal)initWithPrefix:(id)a3 instance:(id)a4;
+- (NRBabelSourceLocal)initWithPrefix:(id)prefix instance:(id)instance;
 - (id)description;
 - (unsigned)seqno;
 @end
@@ -8,28 +8,28 @@
 
 - (unsigned)seqno
 {
-  v2 = [(NRBabelSource *)self instance];
-  v3 = [v2 nodeSeqno];
+  instance = [(NRBabelSource *)self instance];
+  nodeSeqno = [instance nodeSeqno];
 
-  return v3;
+  return nodeSeqno;
 }
 
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(NRBabelSource *)self bPrefix];
-  v5 = [v3 initWithFormat:@"%@ (local)", v4];
+  bPrefix = [(NRBabelSource *)self bPrefix];
+  v5 = [v3 initWithFormat:@"%@ (local)", bPrefix];
 
   return v5;
 }
 
-- (NRBabelSourceLocal)initWithPrefix:(id)a3 instance:(id)a4
+- (NRBabelSourceLocal)initWithPrefix:(id)prefix instance:(id)instance
 {
-  v6 = a4;
-  v7 = a3;
+  instanceCopy = instance;
+  prefixCopy = prefix;
   v10.receiver = self;
   v10.super_class = NRBabelSourceLocal;
-  v8 = -[NRBabelSource initWithPrefix:routerID:seqno:metric:instance:](&v10, "initWithPrefix:routerID:seqno:metric:instance:", v7, [v6 routerID], objc_msgSend(v6, "nodeSeqno"), 0, v6);
+  v8 = -[NRBabelSource initWithPrefix:routerID:seqno:metric:instance:](&v10, "initWithPrefix:routerID:seqno:metric:instance:", prefixCopy, [instanceCopy routerID], objc_msgSend(instanceCopy, "nodeSeqno"), 0, instanceCopy);
 
   return v8;
 }

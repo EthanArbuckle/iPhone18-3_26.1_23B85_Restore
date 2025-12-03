@@ -1,15 +1,15 @@
 @interface SwitchAppOwnerURLRequestEncoder
-- (SwitchAppOwnerURLRequestEncoder)initWithBag:(id)a3;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4;
+- (SwitchAppOwnerURLRequestEncoder)initWithBag:(id)bag;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters;
 @end
 
 @implementation SwitchAppOwnerURLRequestEncoder
 
-- (SwitchAppOwnerURLRequestEncoder)initWithBag:(id)a3
+- (SwitchAppOwnerURLRequestEncoder)initWithBag:(id)bag
 {
   v6.receiver = self;
   v6.super_class = SwitchAppOwnerURLRequestEncoder;
-  v3 = [(SwitchAppOwnerURLRequestEncoder *)&v6 initWithBag:a3];
+  v3 = [(SwitchAppOwnerURLRequestEncoder *)&v6 initWithBag:bag];
   v4 = v3;
   if (v3)
   {
@@ -19,15 +19,15 @@
   return v4;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setCachePolicy:1];
-  [v7 setHTTPContentType:@"text/xml"];
+  parametersCopy = parameters;
+  requestCopy = request;
+  [requestCopy setCachePolicy:1];
+  [requestCopy setHTTPContentType:@"text/xml"];
   v10.receiver = self;
   v10.super_class = SwitchAppOwnerURLRequestEncoder;
-  v8 = [(SwitchAppOwnerURLRequestEncoder *)&v10 requestByEncodingRequest:v7 parameters:v6];
+  v8 = [(SwitchAppOwnerURLRequestEncoder *)&v10 requestByEncodingRequest:requestCopy parameters:parametersCopy];
 
   return v8;
 }

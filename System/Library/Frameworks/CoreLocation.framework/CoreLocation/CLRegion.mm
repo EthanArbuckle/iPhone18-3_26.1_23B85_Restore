@@ -1,16 +1,16 @@
 @interface CLRegion
 - (BOOL)containsCoordinate:(CLLocationCoordinate2D)coordinate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)center;
 - (CLRegion)initCircularRegionWithCenter:(CLLocationCoordinate2D)center radius:(CLLocationDistance)radius identifier:(NSString *)identifier;
-- (CLRegion)initWithClientRegion:(id *)a3;
-- (CLRegion)initWithCoder:(id)a3;
-- (CLRegion)initWithIdentifier:(id)a3;
-- (CLRegion)initWithIdentifier:(id)a3 onBehalfOf:(id)a4 regionType:(int)a5 notifyOnEntry:(BOOL)a6 notifyOnExit:(BOOL)a7 conservativeEntry:(BOOL)a8 emergency:(BOOL)a9 deviceId:(id)a10 handoffTag:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLRegion)initWithClientRegion:(id *)region;
+- (CLRegion)initWithCoder:(id)coder;
+- (CLRegion)initWithIdentifier:(id)identifier;
+- (CLRegion)initWithIdentifier:(id)identifier onBehalfOf:(id)of regionType:(int)type notifyOnEntry:(BOOL)entry notifyOnExit:(BOOL)exit conservativeEntry:(BOOL)conservativeEntry emergency:(BOOL)emergency deviceId:(id)self0 handoffTag:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLRegion
@@ -24,7 +24,7 @@
   [(CLRegion *)&v3 dealloc];
 }
 
-- (CLRegion)initWithClientRegion:(id *)a3
+- (CLRegion)initWithClientRegion:(id *)region
 {
   v9.receiver = self;
   v9.super_class = CLRegion;
@@ -32,10 +32,10 @@
   if (result)
   {
     v5 = result;
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var1];
-    LOBYTE(v8) = a3->var7;
-    return [(CLRegion *)v5 initWithIdentifier:v6 onBehalfOf:v7 regionType:a3->var3 notifyOnEntry:a3->var4 notifyOnExit:a3->var5 conservativeEntry:a3->var6 emergency:v8];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:region];
+    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:region->var1];
+    LOBYTE(v8) = region->var7;
+    return [(CLRegion *)v5 initWithIdentifier:v6 onBehalfOf:v7 regionType:region->var3 notifyOnEntry:region->var4 notifyOnExit:region->var5 conservativeEntry:region->var6 emergency:v8];
   }
 
   return result;
@@ -51,7 +51,7 @@
   return [(CLCircularRegion *)v9 initWithCenter:identifier radius:latitude identifier:longitude, radius];
 }
 
-- (CLRegion)initWithIdentifier:(id)a3
+- (CLRegion)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CLRegion;
@@ -59,16 +59,16 @@
   if (result)
   {
     LOBYTE(v5) = 0;
-    return [(CLRegion *)result initWithIdentifier:a3 onBehalfOf:0 regionType:1 notifyOnEntry:1 notifyOnExit:1 conservativeEntry:0 emergency:v5];
+    return [(CLRegion *)result initWithIdentifier:identifier onBehalfOf:0 regionType:1 notifyOnEntry:1 notifyOnExit:1 conservativeEntry:0 emergency:v5];
   }
 
   return result;
 }
 
-- (CLRegion)initWithIdentifier:(id)a3 onBehalfOf:(id)a4 regionType:(int)a5 notifyOnEntry:(BOOL)a6 notifyOnExit:(BOOL)a7 conservativeEntry:(BOOL)a8 emergency:(BOOL)a9 deviceId:(id)a10 handoffTag:(id)a11
+- (CLRegion)initWithIdentifier:(id)identifier onBehalfOf:(id)of regionType:(int)type notifyOnEntry:(BOOL)entry notifyOnExit:(BOOL)exit conservativeEntry:(BOOL)conservativeEntry emergency:(BOOL)emergency deviceId:(id)self0 handoffTag:(id)self1
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     if (qword_1ED519088 != -1)
     {
@@ -109,7 +109,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([a3 lengthOfBytesUsingEncoding:4] >= 0x201)
+  if ([identifier lengthOfBytesUsingEncoding:4] >= 0x201)
   {
     if (qword_1ED519088 != -1)
     {
@@ -145,7 +145,7 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (a10 && !a11)
+  if (id && !tag)
   {
     goto LABEL_20;
   }
@@ -155,15 +155,15 @@ LABEL_20:
   v23 = [(CLRegion *)&v26 init];
   if (v23)
   {
-    v23->_identifier = [a3 copy];
-    v23->_notifyOnEntry = a6;
-    v23->_notifyOnExit = a7;
-    v23->_onBehalfOfBundleId = [a4 copy];
-    v23->_type = a5;
-    v23->_conservativeEntry = a8;
-    v23->_emergency = a9;
-    v23->_deviceId = [a10 copy];
-    v23->_handoffTag = [a11 copy];
+    v23->_identifier = [identifier copy];
+    v23->_notifyOnEntry = entry;
+    v23->_notifyOnExit = exit;
+    v23->_onBehalfOfBundleId = [of copy];
+    v23->_type = type;
+    v23->_conservativeEntry = conservativeEntry;
+    v23->_emergency = emergency;
+    v23->_deviceId = [id copy];
+    v23->_handoffTag = [tag copy];
   }
 
 LABEL_21:
@@ -171,7 +171,7 @@ LABEL_21:
   return v23;
 }
 
-- (CLRegion)initWithCoder:(id)a3
+- (CLRegion)initWithCoder:(id)coder
 {
   if ([(CLRegion *)self isMemberOfClass:objc_opt_class()])
   {
@@ -184,21 +184,21 @@ LABEL_21:
   else
   {
     v17 = 0;
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyIdentifier"];
-      v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyOnBehalfOfBundleId"];
-      v8 = [a3 decodeBoolForKey:@"kCLRegionCodingKeyNotifyOnEntry"];
+      decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyIdentifier"];
+      decodeObject2 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyOnBehalfOfBundleId"];
+      v8 = [coder decodeBoolForKey:@"kCLRegionCodingKeyNotifyOnEntry"];
       HIBYTE(v17) = v8;
-      v9 = [a3 decodeBoolForKey:@"kCLRegionCodingKeyNotifyOnExit"];
+      v9 = [coder decodeBoolForKey:@"kCLRegionCodingKeyNotifyOnExit"];
       BYTE2(v17) = v9;
-      v10 = [a3 decodeBoolForKey:@"kCLRegionCodingKeyConservativeEntry"];
+      v10 = [coder decodeBoolForKey:@"kCLRegionCodingKeyConservativeEntry"];
       BYTE1(v17) = v10;
-      v11 = [a3 decodeBoolForKey:@"kCLRegionCodingKeyEmergency"];
+      v11 = [coder decodeBoolForKey:@"kCLRegionCodingKeyEmergency"];
       LOBYTE(v17) = v11;
-      if ([a3 containsValueForKey:@"kCLRegionCodingKeyRegionType"])
+      if ([coder containsValueForKey:@"kCLRegionCodingKeyRegionType"])
       {
-        v12 = [a3 decodeIntForKey:@"kCLRegionCodingKeyRegionType"];
+        v12 = [coder decodeIntForKey:@"kCLRegionCodingKeyRegionType"];
       }
 
       else
@@ -206,20 +206,20 @@ LABEL_21:
         v12 = 1;
       }
 
-      v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyDeviceId"];
-      v14 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyHandoffTag"];
+      decodeObject3 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyDeviceId"];
+      decodeObject4 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLRegionCodingKeyHandoffTag"];
     }
 
     else
     {
-      v6 = [a3 decodeObject];
-      v7 = [a3 decodeObject];
-      [a3 decodeValueOfObjCType:"B" at:&v17 + 3];
-      [a3 decodeValueOfObjCType:"B" at:&v17 + 2];
-      [a3 decodeValueOfObjCType:"B" at:&v17 + 1];
-      [a3 decodeValueOfObjCType:"B" at:&v17];
-      v13 = [a3 decodeObject];
-      v14 = [a3 decodeObject];
+      decodeObject = [coder decodeObject];
+      decodeObject2 = [coder decodeObject];
+      [coder decodeValueOfObjCType:"B" at:&v17 + 3];
+      [coder decodeValueOfObjCType:"B" at:&v17 + 2];
+      [coder decodeValueOfObjCType:"B" at:&v17 + 1];
+      [coder decodeValueOfObjCType:"B" at:&v17];
+      decodeObject3 = [coder decodeObject];
+      decodeObject4 = [coder decodeObject];
       v11 = v17;
       v10 = BYTE1(v17);
       v9 = BYTE2(v17);
@@ -228,72 +228,72 @@ LABEL_21:
     }
 
     LOBYTE(v16) = v11 & 1;
-    return [(CLRegion *)self initWithIdentifier:v6 onBehalfOf:v7 regionType:v12 notifyOnEntry:v8 & 1 notifyOnExit:v9 & 1 conservativeEntry:v10 & 1 emergency:v16 deviceId:v13 handoffTag:v14];
+    return [(CLRegion *)self initWithIdentifier:decodeObject onBehalfOf:decodeObject2 regionType:v12 notifyOnEntry:v8 & 1 notifyOnExit:v9 & 1 conservativeEntry:v10 & 1 emergency:v16 deviceId:decodeObject3 handoffTag:decodeObject4];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ([(CLRegion *)self isMemberOfClass:objc_opt_class()])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-    [v6 handleFailureInMethod:a2 object:self file:@"CLRegion.m" lineNumber:263 description:@"CLRegion is an abstract class. Use one of the derived classes"];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CLRegion.m" lineNumber:263 description:@"CLRegion is an abstract class. Use one of the derived classes"];
   }
 
   else
   {
-    v7 = [(CLRegion *)self notifyOnEntry];
-    v18 = v7;
-    v8 = [(CLRegion *)self notifyOnExit];
-    v17 = v8;
-    v9 = [(CLRegion *)self conservativeEntry];
-    v16 = v9;
-    v10 = [(CLRegion *)self emergency];
-    v15 = v10;
-    v11 = [(CLRegion *)self type];
-    v12 = [a3 allowsKeyedCoding];
+    notifyOnEntry = [(CLRegion *)self notifyOnEntry];
+    v18 = notifyOnEntry;
+    notifyOnExit = [(CLRegion *)self notifyOnExit];
+    v17 = notifyOnExit;
+    conservativeEntry = [(CLRegion *)self conservativeEntry];
+    v16 = conservativeEntry;
+    emergency = [(CLRegion *)self emergency];
+    v15 = emergency;
+    type = [(CLRegion *)self type];
+    allowsKeyedCoding = [coder allowsKeyedCoding];
     identifier = self->_identifier;
-    if (v12)
+    if (allowsKeyedCoding)
     {
-      [a3 encodeObject:identifier forKey:@"kCLRegionCodingKeyIdentifier"];
-      [a3 encodeObject:self->_onBehalfOfBundleId forKey:@"kCLRegionCodingKeyOnBehalfOfBundleId"];
-      [a3 encodeBool:v7 forKey:@"kCLRegionCodingKeyNotifyOnEntry"];
-      [a3 encodeBool:v8 forKey:@"kCLRegionCodingKeyNotifyOnExit"];
-      [a3 encodeBool:v9 forKey:@"kCLRegionCodingKeyConservativeEntry"];
-      [a3 encodeBool:v10 forKey:@"kCLRegionCodingKeyEmergency"];
-      [a3 encodeInt:v11 forKey:@"kCLRegionCodingKeyRegionType"];
-      [a3 encodeObject:self->_deviceId forKey:@"kCLRegionCodingKeyDeviceId"];
+      [coder encodeObject:identifier forKey:@"kCLRegionCodingKeyIdentifier"];
+      [coder encodeObject:self->_onBehalfOfBundleId forKey:@"kCLRegionCodingKeyOnBehalfOfBundleId"];
+      [coder encodeBool:notifyOnEntry forKey:@"kCLRegionCodingKeyNotifyOnEntry"];
+      [coder encodeBool:notifyOnExit forKey:@"kCLRegionCodingKeyNotifyOnExit"];
+      [coder encodeBool:conservativeEntry forKey:@"kCLRegionCodingKeyConservativeEntry"];
+      [coder encodeBool:emergency forKey:@"kCLRegionCodingKeyEmergency"];
+      [coder encodeInt:type forKey:@"kCLRegionCodingKeyRegionType"];
+      [coder encodeObject:self->_deviceId forKey:@"kCLRegionCodingKeyDeviceId"];
       handoffTag = self->_handoffTag;
 
-      [a3 encodeObject:handoffTag forKey:@"kCLRegionCodingKeyHandoffTag"];
+      [coder encodeObject:handoffTag forKey:@"kCLRegionCodingKeyHandoffTag"];
     }
 
     else
     {
-      [a3 encodeObject:identifier];
-      [a3 encodeObject:self->_onBehalfOfBundleId];
-      [a3 encodeValueOfObjCType:"B" at:&v18];
-      [a3 encodeValueOfObjCType:"B" at:&v17];
-      [a3 encodeValueOfObjCType:"B" at:&v16];
-      [a3 encodeValueOfObjCType:"B" at:&v15];
-      [a3 encodeObject:self->_deviceId];
-      [a3 encodeObject:self->_handoffTag];
+      [coder encodeObject:identifier];
+      [coder encodeObject:self->_onBehalfOfBundleId];
+      [coder encodeValueOfObjCType:"B" at:&v18];
+      [coder encodeValueOfObjCType:"B" at:&v17];
+      [coder encodeValueOfObjCType:"B" at:&v16];
+      [coder encodeValueOfObjCType:"B" at:&v15];
+      [coder encodeObject:self->_deviceId];
+      [coder encodeObject:self->_handoffTag];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   deviceId = self->_deviceId;
   LOBYTE(v7) = self->_emergency;
   return [v4 initWithIdentifier:self->_identifier onBehalfOf:self->_onBehalfOfBundleId regionType:self->_type notifyOnEntry:self->_notifyOnEntry notifyOnExit:self->_notifyOnExit conservativeEntry:self->_conservativeEntry emergency:v7 deviceId:deviceId handoffTag:self->_handoffTag];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v12) = 1;
   }
@@ -302,11 +302,11 @@ LABEL_21:
   {
     v14 = v4;
     v15 = v3;
-    if (([a3 isMemberOfClass:objc_opt_class()] & 1) != 0 || -[CLRegion isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && (objc_msgSend(a3, "isMemberOfClass:", objc_opt_class()) & 1) != 0 || (v12 = -[CLRegion isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class())) != 0 && (v12 = objc_msgSend(a3, "isMemberOfClass:", objc_opt_class())) != 0)
+    if (([equal isMemberOfClass:objc_opt_class()] & 1) != 0 || -[CLRegion isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class()) && (objc_msgSend(equal, "isMemberOfClass:", objc_opt_class()) & 1) != 0 || (v12 = -[CLRegion isMemberOfClass:](self, "isMemberOfClass:", objc_opt_class())) != 0 && (v12 = objc_msgSend(equal, "isMemberOfClass:", objc_opt_class())) != 0)
     {
-      if (-[CLRegion onBehalfOfBundleId](self, "onBehalfOfBundleId", v6, v5, v14, v15, v7, v8) || [a3 onBehalfOfBundleId])
+      if (-[CLRegion onBehalfOfBundleId](self, "onBehalfOfBundleId", v6, v5, v14, v15, v7, v8) || [equal onBehalfOfBundleId])
       {
-        v11 = -[NSString isEqual:](-[CLRegion onBehalfOfBundleId](self, "onBehalfOfBundleId"), "isEqual:", [a3 onBehalfOfBundleId]);
+        v11 = -[NSString isEqual:](-[CLRegion onBehalfOfBundleId](self, "onBehalfOfBundleId"), "isEqual:", [equal onBehalfOfBundleId]);
       }
 
       else
@@ -314,7 +314,7 @@ LABEL_21:
         v11 = 1;
       }
 
-      LOBYTE(v12) = -[NSString isEqualToString:](-[CLRegion identifier](self, "identifier"), "isEqualToString:", [a3 identifier]) & v11;
+      LOBYTE(v12) = -[NSString isEqualToString:](-[CLRegion identifier](self, "identifier"), "isEqualToString:", [equal identifier]) & v11;
     }
   }
 
@@ -323,9 +323,9 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v2 = [(CLRegion *)self identifier];
+  identifier = [(CLRegion *)self identifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)identifier hash];
 }
 
 - (BOOL)containsCoordinate:(CLLocationCoordinate2D)coordinate

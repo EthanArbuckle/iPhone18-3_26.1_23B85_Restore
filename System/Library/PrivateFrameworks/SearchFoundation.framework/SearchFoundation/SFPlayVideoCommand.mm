@@ -1,12 +1,12 @@
 @interface SFPlayVideoCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPlayVideoCommand)initWithCoder:(id)a3;
-- (SFPlayVideoCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPlayVideoCommand)initWithCoder:(id)coder;
+- (SFPlayVideoCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPlayVideoCommand
@@ -22,17 +22,17 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFPlayVideoCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFPlayVideoCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFPlayVideoCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFPlayVideoCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(SFPlayVideoCommand *)self url];
     v7 = [(SFPlayVideoCommand *)v5 url];
     if ((v6 != 0) == (v7 == 0))
@@ -65,11 +65,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFPlayVideoCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
   v5 = [(SFPlayVideoCommand *)self url];
   v6 = [v5 copy];
   [v4 setUrl:v6];
@@ -80,31 +80,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBPlayVideoCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPlayVideoCommand *)v2 jsonData];
+  jsonData = [(_SFPBPlayVideoCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPlayVideoCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPlayVideoCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPlayVideoCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFPlayVideoCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFPlayVideoCommand)initWithCoder:(id)a3
+- (SFPlayVideoCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFPlayVideoCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
@@ -114,35 +114,35 @@
     v9 = [(SFCommand *)v8 url];
     [(SFPlayVideoCommand *)v5 setUrl:v9];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFPlayVideoCommand)initWithProtobuf:(id)a3
+- (SFPlayVideoCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = SFPlayVideoCommand;
   v5 = [(SFPlayVideoCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [protobufCopy url];
 
     if (v6)
     {
-      v7 = [v4 url];
+      v7 = [protobufCopy url];
       v8 = _SFPBURLHandwrittenTranslator(v7);
       [(SFPlayVideoCommand *)v5 setUrl:v8];
     }

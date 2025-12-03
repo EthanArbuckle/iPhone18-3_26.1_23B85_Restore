@@ -1,35 +1,35 @@
 @interface ENExposureSummaryItem
-- (ENExposureSummaryItem)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureSummaryItem)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)roundDurations;
 @end
 
 @implementation ENExposureSummaryItem
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   maximumScore = self->_maximumScore;
-  xdict = v4;
+  xdict = objectCopy;
   if (maximumScore != 0.0)
   {
-    xpc_dictionary_set_double(v4, "mxSc", maximumScore);
-    v4 = xdict;
+    xpc_dictionary_set_double(objectCopy, "mxSc", maximumScore);
+    objectCopy = xdict;
   }
 
   scoreSum = self->_scoreSum;
   if (scoreSum != 0.0)
   {
     xpc_dictionary_set_double(xdict, "scoreSum", scoreSum);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   weightedDurationSum = self->_weightedDurationSum;
   if (weightedDurationSum != 0.0)
   {
     xpc_dictionary_set_double(xdict, "wds", weightedDurationSum);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
@@ -47,13 +47,13 @@
   self->_weightedDurationSum = ceil(self->_weightedDurationSum / 60.0) * 60.0;
 }
 
-- (ENExposureSummaryItem)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureSummaryItem)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureSummaryItem *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -61,13 +61,13 @@
     goto LABEL_12;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
 LABEL_11:
       ENErrorF(2);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_7;
     }
 

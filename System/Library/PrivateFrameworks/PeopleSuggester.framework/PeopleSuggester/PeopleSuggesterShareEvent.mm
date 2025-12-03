@@ -1,28 +1,28 @@
 @interface PeopleSuggesterShareEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAppSharedFrom:(id)a3;
-- (int)StringAsMadResponseStatus:(id)a3;
-- (int)StringAsTypeOfContents:(id)a3;
+- (int)StringAsAppSharedFrom:(id)from;
+- (int)StringAsMadResponseStatus:(id)status;
+- (int)StringAsTypeOfContents:(id)contents;
 - (int)appSharedFrom;
 - (int)madResponseStatus;
-- (int)typeOfContentAtIndex:(unint64_t)a3;
+- (int)typeOfContentAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addCandidates:(id)a3;
-- (void)addFeedbackEvents:(id)a3;
-- (void)addPhotoFeatures:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addCandidates:(id)candidates;
+- (void)addFeedbackEvents:(id)events;
+- (void)addPhotoFeatures:(id)features;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsFallbackFetch:(BOOL)a3;
-- (void)setHasIsInPhoneCall:(BOOL)a3;
-- (void)setHasIsScreenShot:(BOOL)a3;
-- (void)setHasIsSharePlayAvailable:(BOOL)a3;
-- (void)setHasMadResponseStatus:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsFallbackFetch:(BOOL)fetch;
+- (void)setHasIsInPhoneCall:(BOOL)call;
+- (void)setHasIsScreenShot:(BOOL)shot;
+- (void)setHasIsSharePlayAvailable:(BOOL)available;
+- (void)setHasMadResponseStatus:(BOOL)status;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PeopleSuggesterShareEvent
@@ -35,9 +35,9 @@
   [(PeopleSuggesterShareEvent *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -50,22 +50,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addCandidates:(id)a3
+- (void)addCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   candidates = self->_candidates;
-  v8 = v4;
+  v8 = candidatesCopy;
   if (!candidates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_candidates;
     self->_candidates = v6;
 
-    v4 = v8;
+    candidatesCopy = v8;
     candidates = self->_candidates;
   }
 
-  [(NSMutableArray *)candidates addObject:v4];
+  [(NSMutableArray *)candidates addObject:candidatesCopy];
 }
 
 - (int)madResponseStatus
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)setHasMadResponseStatus:(BOOL)a3
+- (void)setHasMadResponseStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -96,25 +96,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMadResponseStatus:(id)a3
+- (int)StringAsMadResponseStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NO_REQUEST_TO_MAD"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"NO_REQUEST_TO_MAD"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SUCCESS"])
+  else if ([statusCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TIMED_OUT"])
+  else if ([statusCopy isEqualToString:@"TIMED_OUT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ERROR"])
+  else if ([statusCopy isEqualToString:@"ERROR"])
   {
     v4 = 4;
   }
@@ -127,9 +127,9 @@
   return v4;
 }
 
-- (void)setHasIsFallbackFetch:(BOOL)a3
+- (void)setHasIsFallbackFetch:(BOOL)fetch
 {
-  if (a3)
+  if (fetch)
   {
     v3 = 8;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsSharePlayAvailable:(BOOL)a3
+- (void)setHasIsSharePlayAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 64;
   }
@@ -170,30 +170,30 @@
   }
 }
 
-- (int)StringAsAppSharedFrom:(id)a3
+- (int)StringAsAppSharedFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OTHER"])
+  fromCopy = from;
+  if ([fromCopy isEqualToString:@"OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PHOTOS"])
+  else if ([fromCopy isEqualToString:@"PHOTOS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCREENSHOTS"])
+  else if ([fromCopy isEqualToString:@"SCREENSHOTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CAMERA"])
+  else if ([fromCopy isEqualToString:@"CAMERA"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI"])
+  else if ([fromCopy isEqualToString:@"SAFARI"])
   {
     v4 = 4;
   }
@@ -206,109 +206,109 @@
   return v4;
 }
 
-- (void)addFeedbackEvents:(id)a3
+- (void)addFeedbackEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   feedbackEvents = self->_feedbackEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!feedbackEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_feedbackEvents;
     self->_feedbackEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     feedbackEvents = self->_feedbackEvents;
   }
 
-  [(NSMutableArray *)feedbackEvents addObject:v4];
+  [(NSMutableArray *)feedbackEvents addObject:eventsCopy];
 }
 
-- (int)typeOfContentAtIndex:(unint64_t)a3
+- (int)typeOfContentAtIndex:(unint64_t)index
 {
   p_typeOfContents = &self->_typeOfContents;
   count = self->_typeOfContents.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_typeOfContents->list[a3];
+  return p_typeOfContents->list[index];
 }
 
-- (int)StringAsTypeOfContents:(id)a3
+- (int)StringAsTypeOfContents:(id)contents
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PUBLIC_URL"])
+  contentsCopy = contents;
+  if ([contentsCopy isEqualToString:@"PUBLIC_URL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_IMAGE"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_IMAGE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_JPEG"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_JPEG"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_HEIC"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_HEIC"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LIVE_PHOTO"])
+  else if ([contentsCopy isEqualToString:@"LIVE_PHOTO"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_MOVIE"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_MOVIE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_MPEG4"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_MPEG4"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"QUICKTIME_MOVIE"])
+  else if ([contentsCopy isEqualToString:@"QUICKTIME_MOVIE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_PLAIN_TEXT"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_PLAIN_TEXT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_FILE_URL"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_FILE_URL"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PDF"])
+  else if ([contentsCopy isEqualToString:@"PDF"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_PNG"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_PNG"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC_VCARD"])
+  else if ([contentsCopy isEqualToString:@"PUBLIC_VCARD"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN"])
+  else if ([contentsCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 13;
   }
@@ -321,9 +321,9 @@
   return v4;
 }
 
-- (void)setHasIsInPhoneCall:(BOOL)a3
+- (void)setHasIsInPhoneCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 16;
   }
@@ -336,9 +336,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsScreenShot:(BOOL)a3
+- (void)setHasIsScreenShot:(BOOL)shot
 {
-  if (a3)
+  if (shot)
   {
     v3 = 32;
   }
@@ -351,22 +351,22 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addPhotoFeatures:(id)a3
+- (void)addPhotoFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   photoFeatures = self->_photoFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!photoFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_photoFeatures;
     self->_photoFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     photoFeatures = self->_photoFeatures;
   }
 
-  [(NSMutableArray *)photoFeatures addObject:v4];
+  [(NSMutableArray *)photoFeatures addObject:featuresCopy];
 }
 
 - (id)description
@@ -375,8 +375,8 @@
   v8.receiver = self;
   v8.super_class = PeopleSuggesterShareEvent;
   v4 = [(PeopleSuggesterShareEvent *)&v8 description];
-  v5 = [(PeopleSuggesterShareEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PeopleSuggesterShareEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -384,12 +384,12 @@
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   deviceIdentifier = self->_deviceIdentifier;
   if (deviceIdentifier)
   {
-    [v3 setObject:deviceIdentifier forKey:@"deviceIdentifier"];
+    [dictionary setObject:deviceIdentifier forKey:@"deviceIdentifier"];
   }
 
   sessionId = self->_sessionId;
@@ -401,8 +401,8 @@
   trialIdentifier = self->_trialIdentifier;
   if (trialIdentifier)
   {
-    v8 = [(PeopleSuggesterTrialIdentifier *)trialIdentifier dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"trialIdentifier"];
+    dictionaryRepresentation = [(PeopleSuggesterTrialIdentifier *)trialIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"trialIdentifier"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -433,8 +433,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v58 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v58 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v58 objects:v64 count:16];
@@ -547,8 +547,8 @@ LABEL_35:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v54 + 1) + 8 * j) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation3 = [*(*(&v54 + 1) + 8 * j) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation3];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v54 objects:v63 count:16];
@@ -600,8 +600,8 @@ LABEL_35:
   timeSinceLastShare = self->_timeSinceLastShare;
   if (timeSinceLastShare)
   {
-    v39 = [(PeopleSuggesterFeatureDouble *)timeSinceLastShare dictionaryRepresentation];
-    [v4 setObject:v39 forKey:@"timeSinceLastShare"];
+    dictionaryRepresentation4 = [(PeopleSuggesterFeatureDouble *)timeSinceLastShare dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"timeSinceLastShare"];
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -632,8 +632,8 @@ LABEL_35:
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v50 + 1) + 8 * k) dictionaryRepresentation];
-          [v41 addObject:v47];
+          dictionaryRepresentation5 = [*(*(&v50 + 1) + 8 * k) dictionaryRepresentation];
+          [v41 addObject:dictionaryRepresentation5];
         }
 
         v44 = [(NSMutableArray *)v42 countByEnumeratingWithState:&v50 objects:v62 count:16];
@@ -650,10 +650,10 @@ LABEL_35:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_deviceIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -848,41 +848,41 @@ LABEL_23:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v22 = v4;
+  toCopy = to;
+  v22 = toCopy;
   if (self->_deviceIdentifier)
   {
-    [v4 setDeviceIdentifier:?];
-    v4 = v22;
+    [toCopy setDeviceIdentifier:?];
+    toCopy = v22;
   }
 
   if (self->_sessionId)
   {
     [v22 setSessionId:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_trialIdentifier)
   {
     [v22 setTrialIdentifier:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 28) = self->_version;
-    *(v4 + 120) |= 4u;
+    *(toCopy + 28) = self->_version;
+    *(toCopy + 120) |= 4u;
   }
 
   if ([(PeopleSuggesterShareEvent *)self candidatesCount])
   {
     [v22 clearCandidates];
-    v5 = [(PeopleSuggesterShareEvent *)self candidatesCount];
-    if (v5)
+    candidatesCount = [(PeopleSuggesterShareEvent *)self candidatesCount];
+    if (candidatesCount)
     {
-      v6 = v5;
+      v6 = candidatesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PeopleSuggesterShareEvent *)self candidatesAtIndex:i];
@@ -947,10 +947,10 @@ LABEL_20:
   if ([(PeopleSuggesterShareEvent *)self feedbackEventsCount])
   {
     [v22 clearFeedbackEvents];
-    v10 = [(PeopleSuggesterShareEvent *)self feedbackEventsCount];
-    if (v10)
+    feedbackEventsCount = [(PeopleSuggesterShareEvent *)self feedbackEventsCount];
+    if (feedbackEventsCount)
     {
-      v11 = v10;
+      v11 = feedbackEventsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PeopleSuggesterShareEvent *)self feedbackEventsAtIndex:j];
@@ -962,10 +962,10 @@ LABEL_20:
   if ([(PeopleSuggesterShareEvent *)self typeOfContentsCount])
   {
     [v22 clearTypeOfContents];
-    v14 = [(PeopleSuggesterShareEvent *)self typeOfContentsCount];
-    if (v14)
+    typeOfContentsCount = [(PeopleSuggesterShareEvent *)self typeOfContentsCount];
+    if (typeOfContentsCount)
     {
-      v15 = v14;
+      v15 = typeOfContentsCount;
       for (k = 0; k != v15; ++k)
       {
         [v22 addTypeOfContent:{-[PeopleSuggesterShareEvent typeOfContentAtIndex:](self, "typeOfContentAtIndex:", k)}];
@@ -995,10 +995,10 @@ LABEL_20:
   if ([(PeopleSuggesterShareEvent *)self photoFeaturesCount])
   {
     [v22 clearPhotoFeatures];
-    v18 = [(PeopleSuggesterShareEvent *)self photoFeaturesCount];
-    if (v18)
+    photoFeaturesCount = [(PeopleSuggesterShareEvent *)self photoFeaturesCount];
+    if (photoFeaturesCount)
     {
-      v19 = v18;
+      v19 = photoFeaturesCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(PeopleSuggesterShareEvent *)self photoFeaturesAtIndex:m];
@@ -1008,19 +1008,19 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceIdentifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionId copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
-  v10 = [(PeopleSuggesterTrialIdentifier *)self->_trialIdentifier copyWithZone:a3];
+  v10 = [(PeopleSuggesterTrialIdentifier *)self->_trialIdentifier copyWithZone:zone];
   v11 = *(v5 + 104);
   *(v5 + 104) = v10;
 
@@ -1049,7 +1049,7 @@ LABEL_20:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v45 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v45 + 1) + 8 * i) copyWithZone:zone];
         [v5 addCandidates:v17];
       }
 
@@ -1059,7 +1059,7 @@ LABEL_20:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_testKey copyWithZone:a3];
+  v18 = [(NSString *)self->_testKey copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
@@ -1130,7 +1130,7 @@ LABEL_15:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v41 + 1) + 8 * j) copyWithZone:a3];
+        v26 = [*(*(&v41 + 1) + 8 * j) copyWithZone:zone];
         [v5 addFeedbackEvents:v26];
       }
 
@@ -1147,7 +1147,7 @@ LABEL_15:
     *(v5 + 120) |= 0x10u;
   }
 
-  v27 = [(PeopleSuggesterFeatureDouble *)self->_timeSinceLastShare copyWithZone:a3];
+  v27 = [(PeopleSuggesterFeatureDouble *)self->_timeSinceLastShare copyWithZone:zone];
   v28 = *(v5 + 96);
   *(v5 + 96) = v27;
 
@@ -1176,7 +1176,7 @@ LABEL_15:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v37 + 1) + 8 * k) copyWithZone:{a3, v37}];
+        v34 = [*(*(&v37 + 1) + 8 * k) copyWithZone:{zone, v37}];
         [v5 addPhotoFeatures:v34];
       }
 
@@ -1190,16 +1190,16 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  if (deviceIdentifier | *(v4 + 6))
+  if (deviceIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)deviceIdentifier isEqual:?])
     {
@@ -1208,7 +1208,7 @@ LABEL_15:
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 10))
+  if (sessionId | *(equalCopy + 10))
   {
     if (![(NSString *)sessionId isEqual:?])
     {
@@ -1217,7 +1217,7 @@ LABEL_15:
   }
 
   trialIdentifier = self->_trialIdentifier;
-  if (trialIdentifier | *(v4 + 13))
+  if (trialIdentifier | *(equalCopy + 13))
   {
     if (![(PeopleSuggesterTrialIdentifier *)trialIdentifier isEqual:?])
     {
@@ -1225,28 +1225,28 @@ LABEL_15:
     }
   }
 
-  v8 = *(v4 + 120);
+  v8 = *(equalCopy + 120);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 120) & 4) == 0 || self->_version != *(v4 + 28))
+    if ((*(equalCopy + 120) & 4) == 0 || self->_version != *(equalCopy + 28))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 120) & 4) != 0)
+  else if ((*(equalCopy + 120) & 4) != 0)
   {
     goto LABEL_54;
   }
 
   candidates = self->_candidates;
-  if (candidates | *(v4 + 5) && ![(NSMutableArray *)candidates isEqual:?])
+  if (candidates | *(equalCopy + 5) && ![(NSMutableArray *)candidates isEqual:?])
   {
     goto LABEL_54;
   }
 
   testKey = self->_testKey;
-  if (testKey | *(v4 + 11))
+  if (testKey | *(equalCopy + 11))
   {
     if (![(NSString *)testKey isEqual:?])
     {
@@ -1254,124 +1254,124 @@ LABEL_15:
     }
   }
 
-  v11 = *(v4 + 120);
+  v11 = *(equalCopy + 120);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_madResponseStatus != *(v4 + 16))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_madResponseStatus != *(equalCopy + 16))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 120) & 2) != 0)
+  else if ((*(equalCopy + 120) & 2) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 120) & 8) == 0)
+    if ((*(equalCopy + 120) & 8) == 0)
     {
       goto LABEL_54;
     }
 
-    v12 = *(v4 + 116);
+    v12 = *(equalCopy + 116);
     if (self->_isFallbackFetch)
     {
-      if ((*(v4 + 116) & 1) == 0)
+      if ((*(equalCopy + 116) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 116))
+    else if (*(equalCopy + 116))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 120) & 8) != 0)
+  else if ((*(equalCopy + 120) & 8) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 120) & 0x40) == 0)
+    if ((*(equalCopy + 120) & 0x40) == 0)
     {
       goto LABEL_54;
     }
 
-    v13 = *(v4 + 119);
+    v13 = *(equalCopy + 119);
     if (self->_isSharePlayAvailable)
     {
-      if ((*(v4 + 119) & 1) == 0)
+      if ((*(equalCopy + 119) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 119))
+    else if (*(equalCopy + 119))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 120) & 0x40) != 0)
+  else if ((*(equalCopy + 120) & 0x40) != 0)
   {
     goto LABEL_54;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_appSharedFrom != *(v4 + 8))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_appSharedFrom != *(equalCopy + 8))
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_54;
   }
 
   feedbackEvents = self->_feedbackEvents;
-  if (feedbackEvents | *(v4 + 7) && ![(NSMutableArray *)feedbackEvents isEqual:?]|| !PBRepeatedInt32IsEqual())
+  if (feedbackEvents | *(equalCopy + 7) && ![(NSMutableArray *)feedbackEvents isEqual:?]|| !PBRepeatedInt32IsEqual())
   {
     goto LABEL_54;
   }
 
   has = self->_has;
-  v16 = *(v4 + 120);
+  v16 = *(equalCopy + 120);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 120) & 0x10) == 0)
+    if ((*(equalCopy + 120) & 0x10) == 0)
     {
       goto LABEL_54;
     }
 
-    v22 = *(v4 + 117);
+    v22 = *(equalCopy + 117);
     if (self->_isInPhoneCall)
     {
-      if ((*(v4 + 117) & 1) == 0)
+      if ((*(equalCopy + 117) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 117))
+    else if (*(equalCopy + 117))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 120) & 0x10) != 0)
+  else if ((*(equalCopy + 120) & 0x10) != 0)
   {
     goto LABEL_54;
   }
 
   timeSinceLastShare = self->_timeSinceLastShare;
-  if (timeSinceLastShare | *(v4 + 12))
+  if (timeSinceLastShare | *(equalCopy + 12))
   {
     if (![(PeopleSuggesterFeatureDouble *)timeSinceLastShare isEqual:?])
     {
@@ -1381,10 +1381,10 @@ LABEL_15:
     has = self->_has;
   }
 
-  v18 = *(v4 + 120);
+  v18 = *(equalCopy + 120);
   if ((has & 0x20) == 0)
   {
-    if ((*(v4 + 120) & 0x20) == 0)
+    if ((*(equalCopy + 120) & 0x20) == 0)
     {
       goto LABEL_51;
     }
@@ -1394,28 +1394,28 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if ((*(v4 + 120) & 0x20) == 0)
+  if ((*(equalCopy + 120) & 0x20) == 0)
   {
     goto LABEL_54;
   }
 
-  v23 = *(v4 + 118);
+  v23 = *(equalCopy + 118);
   if (self->_isScreenShot)
   {
-    if ((*(v4 + 118) & 1) == 0)
+    if ((*(equalCopy + 118) & 1) == 0)
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 118))
+  else if (*(equalCopy + 118))
   {
     goto LABEL_54;
   }
 
 LABEL_51:
   photoFeatures = self->_photoFeatures;
-  if (photoFeatures | *(v4 + 9))
+  if (photoFeatures | *(equalCopy + 9))
   {
     v20 = [(NSMutableArray *)photoFeatures isEqual:?];
   }
@@ -1523,22 +1523,22 @@ LABEL_13:
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSMutableArray *)self->_photoFeatures hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(PeopleSuggesterShareEvent *)self setDeviceIdentifier:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PeopleSuggesterShareEvent *)self setSessionId:?];
   }
 
   trialIdentifier = self->_trialIdentifier;
-  v6 = *(v4 + 13);
+  v6 = *(fromCopy + 13);
   if (trialIdentifier)
   {
     if (v6)
@@ -1552,9 +1552,9 @@ LABEL_13:
     [(PeopleSuggesterShareEvent *)self setTrialIdentifier:?];
   }
 
-  if ((*(v4 + 120) & 4) != 0)
+  if ((*(fromCopy + 120) & 4) != 0)
   {
-    self->_version = *(v4 + 28);
+    self->_version = *(fromCopy + 28);
     *&self->_has |= 4u;
   }
 
@@ -1562,7 +1562,7 @@ LABEL_13:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v8)
   {
@@ -1586,17 +1586,17 @@ LABEL_13:
     while (v9);
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PeopleSuggesterShareEvent *)self setTestKey:?];
   }
 
-  v12 = *(v4 + 120);
+  v12 = *(fromCopy + 120);
   if ((v12 & 2) != 0)
   {
-    self->_madResponseStatus = *(v4 + 16);
+    self->_madResponseStatus = *(fromCopy + 16);
     *&self->_has |= 2u;
-    v12 = *(v4 + 120);
+    v12 = *(fromCopy + 120);
     if ((v12 & 8) == 0)
     {
 LABEL_23:
@@ -1609,14 +1609,14 @@ LABEL_23:
     }
   }
 
-  else if ((*(v4 + 120) & 8) == 0)
+  else if ((*(fromCopy + 120) & 8) == 0)
   {
     goto LABEL_23;
   }
 
-  self->_isFallbackFetch = *(v4 + 116);
+  self->_isFallbackFetch = *(fromCopy + 116);
   *&self->_has |= 8u;
-  v12 = *(v4 + 120);
+  v12 = *(fromCopy + 120);
   if ((v12 & 0x40) == 0)
   {
 LABEL_24:
@@ -1629,12 +1629,12 @@ LABEL_24:
   }
 
 LABEL_43:
-  self->_isSharePlayAvailable = *(v4 + 119);
+  self->_isSharePlayAvailable = *(fromCopy + 119);
   *&self->_has |= 0x40u;
-  if (*(v4 + 120))
+  if (*(fromCopy + 120))
   {
 LABEL_25:
-    self->_appSharedFrom = *(v4 + 8);
+    self->_appSharedFrom = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -1643,7 +1643,7 @@ LABEL_26:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   v14 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v14)
   {
@@ -1667,24 +1667,24 @@ LABEL_26:
     while (v15);
   }
 
-  v18 = [v4 typeOfContentsCount];
-  if (v18)
+  typeOfContentsCount = [fromCopy typeOfContentsCount];
+  if (typeOfContentsCount)
   {
-    v19 = v18;
+    v19 = typeOfContentsCount;
     for (k = 0; k != v19; ++k)
     {
-      -[PeopleSuggesterShareEvent addTypeOfContent:](self, "addTypeOfContent:", [v4 typeOfContentAtIndex:k]);
+      -[PeopleSuggesterShareEvent addTypeOfContent:](self, "addTypeOfContent:", [fromCopy typeOfContentAtIndex:k]);
     }
   }
 
-  if ((*(v4 + 120) & 0x10) != 0)
+  if ((*(fromCopy + 120) & 0x10) != 0)
   {
-    self->_isInPhoneCall = *(v4 + 117);
+    self->_isInPhoneCall = *(fromCopy + 117);
     *&self->_has |= 0x10u;
   }
 
   timeSinceLastShare = self->_timeSinceLastShare;
-  v22 = *(v4 + 12);
+  v22 = *(fromCopy + 12);
   if (timeSinceLastShare)
   {
     if (v22)
@@ -1698,9 +1698,9 @@ LABEL_26:
     [(PeopleSuggesterShareEvent *)self setTimeSinceLastShare:?];
   }
 
-  if ((*(v4 + 120) & 0x20) != 0)
+  if ((*(fromCopy + 120) & 0x20) != 0)
   {
-    self->_isScreenShot = *(v4 + 118);
+    self->_isScreenShot = *(fromCopy + 118);
     *&self->_has |= 0x20u;
   }
 
@@ -1708,7 +1708,7 @@ LABEL_26:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = *(v4 + 9);
+  v23 = *(fromCopy + 9);
   v24 = [v23 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v24)
   {

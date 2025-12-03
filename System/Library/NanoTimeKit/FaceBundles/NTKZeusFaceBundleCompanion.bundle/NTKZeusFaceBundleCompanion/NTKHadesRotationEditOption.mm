@@ -1,13 +1,13 @@
 @interface NTKHadesRotationEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKHadesRotationEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   if (qword_58B48 != -1)
   {
@@ -19,15 +19,15 @@
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"rotation2";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -38,15 +38,15 @@
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"EDIT_OPTION_LABEL_HADES_ROTATION_2";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     v5 = v4;
   }
@@ -56,10 +56,10 @@
     v5 = @"EDIT_OPTION_LABEL_HADES_ROTATION_1";
   }
 
-  v6 = [(__CFString *)v5 stringByAppendingString:@"_COMPANION", a4];
-  if (v6)
+  device = [(__CFString *)v5 stringByAppendingString:@"_COMPANION", device];
+  if (device)
   {
-    v7 = [NTKHadesFaceBundle localizedStringForKey:v6 comment:&stru_45510];
+    v7 = [NTKHadesFaceBundle localizedStringForKey:device comment:&stru_45510];
   }
 
   else

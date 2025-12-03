@@ -1,5 +1,5 @@
 @interface geo_reentrant_isolater
-- (geo_reentrant_isolater)initWithName:(const char *)a3;
+- (geo_reentrant_isolater)initWithName:(const char *)name;
 - (id)description;
 - (void)dealloc;
 @end
@@ -29,15 +29,15 @@
   return v6;
 }
 
-- (geo_reentrant_isolater)initWithName:(const char *)a3
+- (geo_reentrant_isolater)initWithName:(const char *)name
 {
   v7.receiver = self;
   v7.super_class = geo_reentrant_isolater;
   v4 = [(geo_reentrant_isolater *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (name && v4)
   {
-    v4->_name = strndup(a3, 0x1EuLL);
+    v4->_name = strndup(name, 0x1EuLL);
     v5->_lock = 0;
   }
 

@@ -1,6 +1,6 @@
 @interface MPCAssetLoadPropertiesLocalFileEvaluation
 - (BOOL)fileShouldBeUpdated;
-- (MPCAssetLoadPropertiesLocalFileEvaluation)initWithFileAsset:(id)a3;
+- (MPCAssetLoadPropertiesLocalFileEvaluation)initWithFileAsset:(id)asset;
 - (id)description;
 - (id)humanDescription;
 @end
@@ -66,8 +66,8 @@
 
   [v3 addObject:v5];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self fileQualityType];
-  if (v7 == 1)
+  fileQualityType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self fileQualityType];
+  if (fileQualityType == 1)
   {
     v8 = @"Low";
   }
@@ -77,7 +77,7 @@
     v8 = @"Unknown";
   }
 
-  if (v7 == 2)
+  if (fileQualityType == 2)
   {
     v8 = @"High";
   }
@@ -86,35 +86,35 @@
   [v3 addObject:v9];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self fileAssetType];
-  if ((v11 - 1) > 4)
+  fileAssetType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self fileAssetType];
+  if ((fileAssetType - 1) > 4)
   {
     v12 = @"Unspecified";
   }
 
   else
   {
-    v12 = off_1E8233348[v11 - 1];
+    v12 = off_1E8233348[fileAssetType - 1];
   }
 
   v13 = [v10 stringWithFormat:@"%@ audio", v12];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self filePath];
-  v16 = [v14 stringWithFormat:@"[url: %@]", v15];
+  filePath = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self filePath];
+  v16 = [v14 stringWithFormat:@"[url: %@]", filePath];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self HLSContentPolicy];
-  if (v18 > 3)
+  hLSContentPolicy = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self HLSContentPolicy];
+  if (hLSContentPolicy > 3)
   {
     v19 = @"Unspecified";
   }
 
   else
   {
-    v19 = off_1E8233328[v18];
+    v19 = off_1E8233328[hLSContentPolicy];
   }
 
   v20 = [v17 stringWithFormat:@"[HLSContentPolicy: %@]", v19];
@@ -126,8 +126,8 @@
 
   [v3 removeAllObjects];
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self expectedQualityType];
-  if (v25 == 1)
+  expectedQualityType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self expectedQualityType];
+  if (expectedQualityType == 1)
   {
     v26 = @"Low";
   }
@@ -137,7 +137,7 @@
     v26 = @"Unknown";
   }
 
-  if (v25 == 2)
+  if (expectedQualityType == 2)
   {
     v26 = @"High";
   }
@@ -146,15 +146,15 @@
   [v3 addObject:v27];
 
   v28 = MEMORY[0x1E696AEC0];
-  v29 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self expectedAssetType];
-  if ((v29 - 1) > 4)
+  expectedAssetType = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self expectedAssetType];
+  if ((expectedAssetType - 1) > 4)
   {
     v30 = @"Unspecified";
   }
 
   else
   {
-    v30 = off_1E8233348[v29 - 1];
+    v30 = off_1E8233348[expectedAssetType - 1];
   }
 
   v31 = [v28 stringWithFormat:@"%@ audio", v30];
@@ -203,21 +203,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self humanDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  humanDescription = [(MPCAssetLoadPropertiesLocalFileEvaluation *)self humanDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, humanDescription];
 
   return v6;
 }
 
-- (MPCAssetLoadPropertiesLocalFileEvaluation)initWithFileAsset:(id)a3
+- (MPCAssetLoadPropertiesLocalFileEvaluation)initWithFileAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = MPCAssetLoadPropertiesLocalFileEvaluation;
   v5 = [(MPCAssetLoadPropertiesLocalFileEvaluation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assetCopy copy];
     fileAsset = v5->_fileAsset;
     v5->_fileAsset = v6;
   }

@@ -1,35 +1,35 @@
 @interface SXComponentExposureEvent
-- (SXComponentExposureEvent)initWithComponent:(id)a3;
+- (SXComponentExposureEvent)initWithComponent:(id)component;
 - (id)description;
 @end
 
 @implementation SXComponentExposureEvent
 
-- (SXComponentExposureEvent)initWithComponent:(id)a3
+- (SXComponentExposureEvent)initWithComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v17.receiver = self;
   v17.super_class = SXComponentExposureEvent;
   v5 = [(SXAnalyticsEvent *)&v17 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [componentCopy identifier];
     componentIdentifier = v5->_componentIdentifier;
-    v5->_componentIdentifier = v6;
+    v5->_componentIdentifier = identifier;
 
-    v8 = [v4 classification];
-    v9 = [objc_opt_class() roleString];
+    classification = [componentCopy classification];
+    roleString = [objc_opt_class() roleString];
     componentRole = v5->_componentRole;
-    v5->_componentRole = v9;
+    v5->_componentRole = roleString;
 
-    v11 = [v4 type];
+    type = [componentCopy type];
     componentType = v5->_componentType;
-    v5->_componentType = v11;
+    v5->_componentType = type;
 
-    v13 = [v4 analytics];
-    v14 = [v13 jsonDictionary];
+    analytics = [componentCopy analytics];
+    jsonDictionary = [analytics jsonDictionary];
     metaData = v5->_metaData;
-    v5->_metaData = v14;
+    v5->_metaData = jsonDictionary;
   }
 
   return v5;
@@ -38,21 +38,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(SXComponentExposureEvent *)self componentType];
-  [v3 appendFormat:@"; type: %@", v4];
+  componentType = [(SXComponentExposureEvent *)self componentType];
+  [v3 appendFormat:@"; type: %@", componentType];
 
-  v5 = [(SXComponentExposureEvent *)self componentIdentifier];
-  [v3 appendFormat:@"; identifier: %@", v5];
+  componentIdentifier = [(SXComponentExposureEvent *)self componentIdentifier];
+  [v3 appendFormat:@"; identifier: %@", componentIdentifier];
 
-  v6 = [(SXAnalyticsEvent *)self endDate];
+  endDate = [(SXAnalyticsEvent *)self endDate];
 
-  if (v6)
+  if (endDate)
   {
-    v7 = [(SXAnalyticsEvent *)self endDate];
-    [v7 timeIntervalSinceReferenceDate];
+    endDate2 = [(SXAnalyticsEvent *)self endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     v9 = v8;
-    v10 = [(SXAnalyticsEvent *)self startDate];
-    [v10 timeIntervalSinceReferenceDate];
+    startDate = [(SXAnalyticsEvent *)self startDate];
+    [startDate timeIntervalSinceReferenceDate];
     [v3 appendFormat:@"; duration: %f", v9 - v11];
   }
 

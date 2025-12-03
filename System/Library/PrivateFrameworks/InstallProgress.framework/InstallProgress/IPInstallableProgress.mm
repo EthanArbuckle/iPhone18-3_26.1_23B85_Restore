@@ -1,25 +1,25 @@
 @interface IPInstallableProgress
-- (IPInstallableProgress)initWithSource:(id)a3 progressSnapshot:(id)a4;
+- (IPInstallableProgress)initWithSource:(id)source progressSnapshot:(id)snapshot;
 - (double)phaseFractionCompleted;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)phaseCompletedUnitCount;
 - (unint64_t)phaseTotalUnitCount;
 @end
 
 @implementation IPInstallableProgress
 
-- (IPInstallableProgress)initWithSource:(id)a3 progressSnapshot:(id)a4
+- (IPInstallableProgress)initWithSource:(id)source progressSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  snapshotCopy = snapshot;
   v14.receiver = self;
   v14.super_class = IPInstallableProgress;
   v9 = [(IPInstallableProgress *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_source, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_source, source);
+    v11 = [snapshotCopy copy];
     data = v10->_data;
     v10->_data = v11;
   }
@@ -27,7 +27,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   data = self->_data;
@@ -39,17 +39,17 @@
 - (unint64_t)phaseTotalUnitCount
 {
   data = self->_data;
-  v3 = [(IPInstallableProgressData *)data installPhase];
+  installPhase = [(IPInstallableProgressData *)data installPhase];
 
-  return [(IPInstallableProgressData *)data totalUnitCountForPhase:v3];
+  return [(IPInstallableProgressData *)data totalUnitCountForPhase:installPhase];
 }
 
 - (unint64_t)phaseCompletedUnitCount
 {
   data = self->_data;
-  v3 = [(IPInstallableProgressData *)data installPhase];
+  installPhase = [(IPInstallableProgressData *)data installPhase];
 
-  return [(IPInstallableProgressData *)data completedUnitCountForPhase:v3];
+  return [(IPInstallableProgressData *)data completedUnitCountForPhase:installPhase];
 }
 
 - (double)phaseFractionCompleted

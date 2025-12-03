@@ -1,11 +1,11 @@
 @interface OSDCameraFrame
 - (void)dealloc;
-- (void)setBuffer:(__CVBuffer *)a3;
+- (void)setBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation OSDCameraFrame
 
-- (void)setBuffer:(__CVBuffer *)a3
+- (void)setBuffer:(__CVBuffer *)buffer
 {
   buffer = self->_buffer;
   if (buffer)
@@ -14,10 +14,10 @@
     self->_buffer = 0;
   }
 
-  if (a3)
+  if (buffer)
   {
-    CVPixelBufferRetain(a3);
-    self->_buffer = a3;
+    CVPixelBufferRetain(buffer);
+    self->_buffer = buffer;
   }
 }
 

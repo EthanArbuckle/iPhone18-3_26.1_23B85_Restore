@@ -13,23 +13,23 @@
 - (UIVisualEffectView)nearbyIconVisualEffectView;
 - (_TtP12GameCenterUI22GKPickerGroupCellProxy_)groupCellDelegate;
 - (void)awakeFromNib;
-- (void)configureWithPlayers:(id)a3 title:(id)a4 subtitle:(id)a5 messagesGroupIdentifier:(id)a6 source:(int64_t)a7 playerSelectionProxy:(id)a8;
-- (void)handleLongPressWithSender:(id)a3;
+- (void)configureWithPlayers:(id)players title:(id)title subtitle:(id)subtitle messagesGroupIdentifier:(id)identifier source:(int64_t)source playerSelectionProxy:(id)proxy;
+- (void)handleLongPressWithSender:(id)sender;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContainer:(id)a3;
-- (void)setGroupCellDelegate:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconContainer:(id)a3;
-- (void)setMessageIcon:(id)a3;
-- (void)setNearbyIcon:(id)a3;
-- (void)setNearbyIconContainer:(id)a3;
-- (void)setNearbyIconVisualEffectView:(id)a3;
-- (void)setRingView:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContainer:(id)container;
+- (void)setGroupCellDelegate:(id)delegate;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconContainer:(id)container;
+- (void)setMessageIcon:(id)icon;
+- (void)setNearbyIcon:(id)icon;
+- (void)setNearbyIconContainer:(id)container;
+- (void)setNearbyIconVisualEffectView:(id)view;
+- (void)setRingView:(id)view;
+- (void)setSelected:(BOOL)selected;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKPickerGroupCell
@@ -41,10 +41,10 @@
   return v2;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_24DFF7E74();
 }
 
@@ -55,10 +55,10 @@
   return v2;
 }
 
-- (void)setMessageIcon:(id)a3
+- (void)setMessageIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
+  iconCopy = icon;
+  selfCopy = self;
   sub_24DFF7F54();
 }
 
@@ -69,10 +69,10 @@
   return v2;
 }
 
-- (void)setIconContainer:(id)a3
+- (void)setIconContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_24DFF8034();
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (void)setRingView:(id)a3
+- (void)setRingView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24DFF8114();
 }
 
@@ -97,10 +97,10 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
+  labelCopy = label;
+  selfCopy = self;
   sub_24DFF81F4();
 }
 
@@ -111,10 +111,10 @@
   return v2;
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
+  labelCopy = label;
+  selfCopy = self;
   sub_24DFF82D4();
 }
 
@@ -125,10 +125,10 @@
   return v2;
 }
 
-- (void)setNearbyIconContainer:(id)a3
+- (void)setNearbyIconContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_24DFF83B4();
 }
 
@@ -139,10 +139,10 @@
   return v2;
 }
 
-- (void)setNearbyIconVisualEffectView:(id)a3
+- (void)setNearbyIconVisualEffectView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_24DFF8494();
 }
 
@@ -153,10 +153,10 @@
   return v2;
 }
 
-- (void)setNearbyIcon:(id)a3
+- (void)setNearbyIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
+  iconCopy = icon;
+  selfCopy = self;
   sub_24DFF8574();
 }
 
@@ -167,34 +167,34 @@
   return v2;
 }
 
-- (void)setGroupCellDelegate:(id)a3
+- (void)setGroupCellDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_24DFF8694();
 }
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFF8858();
 }
 
-- (void)configureWithPlayers:(id)a3 title:(id)a4 subtitle:(id)a5 messagesGroupIdentifier:(id)a6 source:(int64_t)a7 playerSelectionProxy:(id)a8
+- (void)configureWithPlayers:(id)players title:(id)title subtitle:(id)subtitle messagesGroupIdentifier:(id)identifier source:(int64_t)source playerSelectionProxy:(id)proxy
 {
   sub_24DF95978();
   v13 = sub_24E347F08();
   v14 = sub_24E347CF8();
   v16 = v15;
-  if (a5)
+  if (subtitle)
   {
     v17 = sub_24E347CF8();
-    a5 = v18;
-    if (a6)
+    subtitle = v18;
+    if (identifier)
     {
 LABEL_3:
       v19 = sub_24E347CF8();
-      a6 = v20;
+      identifier = v20;
       goto LABEL_6;
     }
   }
@@ -202,7 +202,7 @@ LABEL_3:
   else
   {
     v17 = 0;
-    if (a6)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -211,57 +211,57 @@ LABEL_3:
   v19 = 0;
 LABEL_6:
   swift_unknownObjectRetain();
-  v21 = self;
-  sub_24DFF8FD8(v13, v14, v16, v17, a5, v19, a6, a7, a8);
+  selfCopy = self;
+  sub_24DFF8FD8(v13, v14, v16, v17, subtitle, v19, identifier, source, proxy);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24DFF94E0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24DFF94E0(change);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFF95D4();
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24DFF9A7C(&selRef_isHighlighted);
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_24DFF9B48(a3, &selRef_setHighlighted_, sub_24DFF97D4);
+  selfCopy = self;
+  sub_24DFF9B48(highlighted, &selRef_setHighlighted_, sub_24DFF97D4);
 }
 
-- (void)handleLongPressWithSender:(id)a3
+- (void)handleLongPressWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_24DFF9944(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_24DFF9944(senderCopy);
 }
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24DFF9A7C(&selRef_isSelected);
 
   return v3 & 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_24DFF9B48(a3, &selRef_setSelected_, sub_24DFFA030);
+  selfCopy = self;
+  sub_24DFF9B48(selected, &selRef_setSelected_, sub_24DFFA030);
 }
 
 - (UILabel)accessibilityTitleLabel
@@ -273,7 +273,7 @@ LABEL_6:
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFF9C00();
 }
 

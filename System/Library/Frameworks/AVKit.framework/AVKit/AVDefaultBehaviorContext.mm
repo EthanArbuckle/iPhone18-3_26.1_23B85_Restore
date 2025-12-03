@@ -1,5 +1,5 @@
 @interface AVDefaultBehaviorContext
-- (AVDefaultBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVDefaultBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVPlayerViewController)playerViewController;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (AVDefaultBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVDefaultBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = AVDefaultBehaviorContext;
   v5 = [(AVDefaultBehaviorContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, ownerCopy);
   }
 
   return v6;

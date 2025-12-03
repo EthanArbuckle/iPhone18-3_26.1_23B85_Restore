@@ -8,7 +8,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   Transcript.text.getter();
   v3 = objc_allocWithZone(NSAttributedString);
   v4 = String._bridgeToObjectiveC()();
@@ -20,7 +20,7 @@
 
 - (NSString)text
 {
-  v2 = self;
+  selfCopy = self;
   Transcript.text.getter();
 
   v3 = String._bridgeToObjectiveC()();

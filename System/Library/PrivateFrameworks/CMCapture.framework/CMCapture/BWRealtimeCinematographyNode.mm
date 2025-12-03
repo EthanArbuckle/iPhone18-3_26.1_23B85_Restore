@@ -1,33 +1,33 @@
 @interface BWRealtimeCinematographyNode
-- (BWRealtimeCinematographyNode)initWithObjectMetadataIdentifiers:(id)a3 cachedSimulatedAperture:(float)a4 captureDevice:(id)a5 tuningParameters:(id)a6 videoDepthConfiguration:(id)a7 smartStyleLearningEnabled:(BOOL)a8 highResolutionInputEnabled:(BOOL)a9 transformCinematographyDetectionsForMovieFileOutput:(BOOL)a10;
+- (BWRealtimeCinematographyNode)initWithObjectMetadataIdentifiers:(id)identifiers cachedSimulatedAperture:(float)aperture captureDevice:(id)device tuningParameters:(id)parameters videoDepthConfiguration:(id)configuration smartStyleLearningEnabled:(BOOL)enabled highResolutionInputEnabled:(BOOL)inputEnabled transformCinematographyDetectionsForMovieFileOutput:(BOOL)self0;
 - (NSData)globalMetadata;
 - (const)_convertSampleBufferDetectedObjectsFromSensorToBufferCoordinateSpace:(const void *)result;
-- (double)_frameCaptureIDAndPTSForSampleBuffer:(_DWORD *)a3 captureIDOut:(CMTime *)a4 bufferPTSOut:;
+- (double)_frameCaptureIDAndPTSForSampleBuffer:(_DWORD *)buffer captureIDOut:(CMTime *)out bufferPTSOut:;
 - (id)copyCinematicVideoFocusDetections;
 - (uint64_t)_dropFrame:(uint64_t)result;
-- (uint64_t)_findCaptureSampleBuffer:(void *)a3 matchingPreviewSampleBuffer:;
-- (uint64_t)_sendDropAndRemoveSampleBuffer:(uint64_t)result fromQueue:(CMSampleBufferRef)sbuf withCaptureID:(void *)a3;
-- (uint64_t)_updateAlphaLowLightWithMetadata:(const void *)a3 imageSampleBuffer:;
-- (uint64_t)_updateAutoFocus:(double)a3 finalCropRect:(double)a4;
-- (uint64_t)_updateFromQueue:(void *)a3 sampleBufferOut:(_DWORD *)a4 captureID:(CMTime *)a5 bufferPTS:;
+- (uint64_t)_findCaptureSampleBuffer:(void *)buffer matchingPreviewSampleBuffer:;
+- (uint64_t)_sendDropAndRemoveSampleBuffer:(uint64_t)result fromQueue:(CMSampleBufferRef)sbuf withCaptureID:(void *)d;
+- (uint64_t)_updateAlphaLowLightWithMetadata:(const void *)metadata imageSampleBuffer:;
+- (uint64_t)_updateAutoFocus:(double)focus finalCropRect:(double)rect;
+- (uint64_t)_updateFromQueue:(void *)queue sampleBufferOut:(_DWORD *)out captureID:(CMTime *)d bufferPTS:;
 - (uint64_t)_updateGlobalMetadata:(uint64_t)result;
 - (void)_emitMovieFileDropForPreviousSampleBuffer;
-- (void)_emitSampleBufferOnMetadataOutput:(void *)a3 cinematographyFrame:;
-- (void)_tryToEmit:(void *)a3 captureBuffer:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_emitSampleBufferOnMetadataOutput:(void *)output cinematographyFrame:;
+- (void)_tryToEmit:(void *)emit captureBuffer:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setFocusDetectionProviderEnabled:(BOOL)a3;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setFocusDetectionProviderEnabled:(BOOL)enabled;
 @end
 
 @implementation BWRealtimeCinematographyNode
 
-- (BWRealtimeCinematographyNode)initWithObjectMetadataIdentifiers:(id)a3 cachedSimulatedAperture:(float)a4 captureDevice:(id)a5 tuningParameters:(id)a6 videoDepthConfiguration:(id)a7 smartStyleLearningEnabled:(BOOL)a8 highResolutionInputEnabled:(BOOL)a9 transformCinematographyDetectionsForMovieFileOutput:(BOOL)a10
+- (BWRealtimeCinematographyNode)initWithObjectMetadataIdentifiers:(id)identifiers cachedSimulatedAperture:(float)aperture captureDevice:(id)device tuningParameters:(id)parameters videoDepthConfiguration:(id)configuration smartStyleLearningEnabled:(BOOL)enabled highResolutionInputEnabled:(BOOL)inputEnabled transformCinematographyDetectionsForMovieFileOutput:(BOOL)self0
 {
-  v11 = a8;
+  enabledCopy = enabled;
   v77.receiver = self;
   v77.super_class = BWRealtimeCinematographyNode;
   v17 = [(BWNode *)&v77 init];
@@ -36,12 +36,12 @@
     return v17;
   }
 
-  v65 = a3;
-  v66 = a5;
-  v64 = a6;
-  v17[232] = [a7 videoDepthAlgorithm] == 4;
-  v17[317] = a9;
-  v17[469] = a10;
+  identifiersCopy = identifiers;
+  deviceCopy = device;
+  parametersCopy = parameters;
+  v17[232] = [configuration videoDepthAlgorithm] == 4;
+  v17[317] = inputEnabled;
+  v17[469] = output;
   v18 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v17];
   [(BWNodeInput *)v18 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
   [(BWNodeInput *)v18 setPassthroughMode:1];
@@ -50,8 +50,8 @@
   [(BWVideoFormatRequirements *)v20 setSupportedPixelFormats:&unk_1F2247F38];
   [(BWNodeInputMediaConfiguration *)v19 setFormatRequirements:v20];
   [(BWNodeInputMediaConfiguration *)v19 setPassthroughMode:1];
-  -[BWNodeInputMediaConfiguration setDelayedBufferCount:](v19, "setDelayedBufferCount:", [a7 concurrencyWidth]);
-  -[BWNodeInput setDelayedBufferCount:](v18, "setDelayedBufferCount:", [a7 concurrencyWidth]);
+  -[BWNodeInputMediaConfiguration setDelayedBufferCount:](v19, "setDelayedBufferCount:", [configuration concurrencyWidth]);
+  -[BWNodeInput setDelayedBufferCount:](v18, "setDelayedBufferCount:", [configuration concurrencyWidth]);
   [(BWNodeInput *)v18 setMediaConfiguration:v19 forAttachedMediaKey:@"Depth"];
   [v17 addInput:v18];
   if (v17[317] == 1)
@@ -59,17 +59,17 @@
     *(v17 + 47) = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v17 index:1];
     [*(v17 + 47) setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [*(v17 + 47) setPassthroughMode:1];
-    v21 = [*(v17 + 47) primaryMediaConfiguration];
-    [v21 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-    [v21 setPassthroughMode:1];
-    [*(v17 + 47) setDelayedBufferCount:{objc_msgSend(a7, "concurrencyWidth")}];
+    primaryMediaConfiguration = [*(v17 + 47) primaryMediaConfiguration];
+    [primaryMediaConfiguration setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+    [primaryMediaConfiguration setPassthroughMode:1];
+    [*(v17 + 47) setDelayedBufferCount:{objc_msgSend(configuration, "concurrencyWidth")}];
     [v17 addInput:*(v17 + 47)];
     *(v17 + 44) = objc_alloc_init(MEMORY[0x1E695DF70]);
     *(v17 + 45) = objc_alloc_init(MEMORY[0x1E695DF70]);
     *(v17 + 86) = 0;
   }
 
-  v62 = a7;
+  configurationCopy = configuration;
   v22 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v17];
   *(v17 + 19) = v22;
   [(BWNodeOutput *)v22 setPassthroughMode:1];
@@ -88,8 +88,8 @@
     [(BWNodeOutputMediaConfiguration *)v24 setPassthroughMode:1];
     [*(v17 + 18) setMediaConfiguration:v24 forAttachedMediaKey:@"Depth"];
     [*(v17 + 18) setIndexOfInputWhichDrivesThisOutput:1];
-    v17[448] = v11;
-    if (v11)
+    v17[448] = enabledCopy;
+    if (enabledCopy)
     {
       v26 = BWAttachedMediaKeysRequiredBySmartStyleRenderingPipelines(1, 0);
       v73 = 0u;
@@ -127,11 +127,11 @@
     }
   }
 
-  [v17 addOutput:{*(v17 + 18), v62}];
-  if (v65)
+  [v17 addOutput:{*(v17 + 18), configurationCopy}];
+  if (identifiersCopy)
   {
     *(v17 + 20) = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:v17];
-    [*(v17 + 20) setFormat:+[BWMetadataObjectFormat formatWithMetadataIdentifiers:](BWMetadataObjectFormat, "formatWithMetadataIdentifiers:", v65)];
+    [*(v17 + 20) setFormat:+[BWMetadataObjectFormat formatWithMetadataIdentifiers:](BWMetadataObjectFormat, "formatWithMetadataIdentifiers:", identifiersCopy)];
     [v17 addOutput:*(v17 + 20)];
   }
 
@@ -139,9 +139,9 @@
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v33 = a5;
-  v34 = [a5 activePortTypes];
-  v35 = [v34 countByEnumeratingWithState:&v68 objects:v67 count:16];
+  deviceCopy2 = device;
+  activePortTypes = [device activePortTypes];
+  v35 = [activePortTypes countByEnumeratingWithState:&v68 objects:v67 count:16];
   if (!v35)
   {
     v44 = 0;
@@ -160,7 +160,7 @@
     {
       if (*v69 != v37)
       {
-        objc_enumerationMutation(v34);
+        objc_enumerationMutation(activePortTypes);
       }
 
       v43 = *(*(&v68 + 1) + 8 * j);
@@ -168,7 +168,7 @@
       {
         v44 = v38;
 LABEL_32:
-        v33 = v66;
+        deviceCopy2 = deviceCopy;
         goto LABEL_33;
       }
 
@@ -191,9 +191,9 @@ LABEL_32:
       }
     }
 
-    v36 = [v34 countByEnumeratingWithState:&v68 objects:v67 count:16];
+    v36 = [activePortTypes countByEnumeratingWithState:&v68 objects:v67 count:16];
     v44 = 0;
-    v33 = v66;
+    deviceCopy2 = deviceCopy;
     if (v36)
     {
       continue;
@@ -203,7 +203,7 @@ LABEL_32:
   }
 
 LABEL_33:
-  v45 = [objc_msgSend(v33 "sensorIDDictionaryByPortType")];
+  v45 = [objc_msgSend(deviceCopy2 "sensorIDDictionaryByPortType")];
   if (!v45)
   {
     [BWRealtimeCinematographyNode initWithObjectMetadataIdentifiers:cachedSimulatedAperture:captureDevice:tuningParameters:videoDepthConfiguration:smartStyleLearningEnabled:highResolutionInputEnabled:transformCinematographyDetectionsForMovieFileOutput:];
@@ -221,29 +221,29 @@ LABEL_52:
 
   v47 = v46;
   v48 = [objc_alloc(getPTCinematographyStreamOptionsClass()) init];
-  [v33 defaultAutoFocusTapWindowSize];
+  [deviceCopy2 defaultAutoFocusTapWindowSize];
   [v48 setFixedFocusNormalizedRectSize:?];
   [v48 setCinematographyParameters:{objc_msgSend(v47, "objectForKeyedSubscript:", @"CinematographyParameters"}];
   v49 = [objc_alloc(getPTCinematographyStreamClass()) initWithOptions:v48];
   *(v17 + 16) = v49;
   [v49 setDelegate:v17];
-  v17[233] = [objc_msgSend(v33 "captureStream")];
-  *(v17 + 21) = v33;
+  v17[233] = [objc_msgSend(deviceCopy2 "captureStream")];
+  *(v17 + 21) = deviceCopy2;
   [objc_msgSend(v47 objectForKeyedSubscript:{@"simulatedVideoAperture", "floatValue"}];
   v51 = v50;
   v52 = [v47 objectForKeyedSubscript:@"RenderVersion"];
   if (v52)
   {
-    v53 = [v52 intValue];
+    intValue = [v52 intValue];
     v54 = 1;
-    if (v53 != 2)
+    if (intValue != 2)
     {
       v54 = 2;
     }
 
     *(v17 + 54) = v54;
-    v55 = v64;
-    if (v53 == 2)
+    v55 = parametersCopy;
+    if (intValue == 2)
     {
       v56 = [objc_alloc(getPTGlobalRenderingMetadataVersion1Class()) initWithMinorVersion:6];
       [objc_msgSend(v47 objectForKeyedSubscript:{@"minimumSimulatedVideoAperture", "floatValue"}];
@@ -261,7 +261,7 @@ LABEL_52:
   else
   {
     *(v17 + 54) = 2;
-    v55 = v64;
+    v55 = parametersCopy;
   }
 
   v56 = [objc_alloc(getPTGlobalRenderingMetadataVersion2Class()) initWithMinorVersion:1];
@@ -269,17 +269,17 @@ LABEL_42:
   *(v17 + 49) = v56;
   *(v17 + 51) = [objc_alloc(getPTGlobalVideoHeaderMetadataVersion1Class()) initWithMinorVersion:1];
   *(v17 + 48) = [objc_alloc(getPTGlobalCinematographyMetadataVersion1Class()) initWithMinorVersion:1];
-  if (a4 == 0.0)
+  if (aperture == 0.0)
   {
-    v58 = v51;
+    apertureCopy = v51;
   }
 
   else
   {
-    v58 = a4;
+    apertureCopy = aperture;
   }
 
-  *(v17 + 80) = v58;
+  *(v17 + 80) = apertureCopy;
   [*(v17 + 16) setUserAperture:?];
   *(v17 + 50) = [objc_alloc(getPTGlobalStabilizationMetadataVersion1Class()) initWithMinorVersion:1];
   *(v17 + 52) = [objc_alloc(getPTGlobalVideoMetadataClass()) init];
@@ -330,42 +330,42 @@ LABEL_42:
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   captureInput = self->_captureInput;
-  if (captureInput == a4 || !self->_highResolutionInputEnabled)
+  if (captureInput == input || !self->_highResolutionInputEnabled)
   {
-    [(BWNodeOutput *)self->_movieFileOutput setFormat:a3];
+    [(BWNodeOutput *)self->_movieFileOutput setFormat:format];
     captureInput = self->_captureInput;
   }
 
-  if (captureInput != a4)
+  if (captureInput != input)
   {
     previewOutput = self->_previewOutput;
 
-    [(BWNodeOutput *)previewOutput setFormat:a3];
+    [(BWNodeOutput *)previewOutput setFormat:format];
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   captureInput = self->_captureInput;
-  if (captureInput == a5 || !self->_highResolutionInputEnabled)
+  if (captureInput == input || !self->_highResolutionInputEnabled)
   {
-    [(BWNodeOutput *)self->_movieFileOutput makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->_movieFileOutput makeConfiguredFormatLive:d];
     captureInput = self->_captureInput;
   }
 
-  if (captureInput != a5)
+  if (captureInput != input)
   {
-    [(BWNodeOutput *)self->_previewOutput makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->_previewOutput makeConfiguredFormatLive:d];
     detectedObjectsOutput = self->_detectedObjectsOutput;
 
     [(BWNodeOutput *)detectedObjectsOutput makeConfiguredFormatLive];
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if (self->_highResolutionInputEnabled)
   {
@@ -391,20 +391,20 @@ LABEL_42:
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (!self->_highResolutionInputEnabled)
   {
-    [(BWRealtimeCinematographyNode *)self _dropFrame:a3];
+    [(BWRealtimeCinematographyNode *)self _dropFrame:sample];
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (self->_highResolutionInputEnabled)
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    if (self->_captureInput == a4)
+    if (self->_captureInput == input)
     {
       v7 = &OBJC_IVAR___BWRealtimeCinematographyNode__videoCaptureSampleBufferQueue;
     }
@@ -414,7 +414,7 @@ LABEL_42:
       v7 = &OBJC_IVAR___BWRealtimeCinematographyNode__previewSampleBufferQueue;
     }
 
-    [*(&self->super.super.isa + *v7) addObject:a3];
+    [*(&self->super.super.isa + *v7) addObject:buffer];
     v47 = 0;
     v48[0] = 0;
     v46 = 0;
@@ -542,7 +542,7 @@ LABEL_42:
   else
   {
 
-    [(BWRealtimeCinematographyNode *)self _tryToEmit:a3 captureBuffer:a3];
+    [(BWRealtimeCinematographyNode *)self _tryToEmit:buffer captureBuffer:buffer];
   }
 }
 
@@ -566,10 +566,10 @@ LABEL_42:
   return v3;
 }
 
-- (void)setFocusDetectionProviderEnabled:(BOOL)a3
+- (void)setFocusDetectionProviderEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_focusDetectionsLock);
-  self->_focusDetectionProviderEnabled = a3;
+  self->_focusDetectionProviderEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_focusDetectionsLock);
 }
@@ -601,16 +601,16 @@ LABEL_42:
 
 - (void)_emitMovieFileDropForPreviousSampleBuffer
 {
-  if (a1)
+  if (self)
   {
     memset(&v11, 0, sizeof(v11));
-    CMSampleBufferGetPresentationTimeStamp(&v11, *(a1 + 328));
+    CMSampleBufferGetPresentationTimeStamp(&v11, *(self + 328));
     v8 = OUTLINED_FUNCTION_12_2(BWDroppedSample, v2, 0x1F219C0B0, v3, v4, v5, v6, v7, v9, v10, *&v11.value, v11.epoch);
-    [*(a1 + 144) emitDroppedSample:v8];
+    [*(self + 144) emitDroppedSample:v8];
   }
 }
 
-- (uint64_t)_updateAlphaLowLightWithMetadata:(const void *)a3 imageSampleBuffer:
+- (uint64_t)_updateAlphaLowLightWithMetadata:(const void *)metadata imageSampleBuffer:
 {
   if (!result)
   {
@@ -655,7 +655,7 @@ LABEL_42:
   *(v4 + 212) = v8;
 LABEL_15:
   v13 = 1.0 / *(v4 + 224);
-  result = [CMGetAttachment(a3 *off_1E798D2B0];
+  result = [CMGetAttachment(metadata *off_1E798D2B0];
   if (result)
   {
     *(v4 + 216) = *(v4 + 216) - v13;
@@ -695,7 +695,7 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)_updateFromQueue:(void *)a3 sampleBufferOut:(_DWORD *)a4 captureID:(CMTime *)a5 bufferPTS:
+- (uint64_t)_updateFromQueue:(void *)queue sampleBufferOut:(_DWORD *)out captureID:(CMTime *)d bufferPTS:
 {
   if (result)
   {
@@ -704,8 +704,8 @@ LABEL_15:
     if (result)
     {
       v10 = [a2 objectAtIndexedSubscript:0];
-      *a3 = v10;
-      [(BWRealtimeCinematographyNode *)v9 _frameCaptureIDAndPTSForSampleBuffer:v10 captureIDOut:a4 bufferPTSOut:a5];
+      *queue = v10;
+      [(BWRealtimeCinematographyNode *)v9 _frameCaptureIDAndPTSForSampleBuffer:v10 captureIDOut:out bufferPTSOut:d];
       return 1;
     }
   }
@@ -713,12 +713,12 @@ LABEL_15:
   return result;
 }
 
-- (double)_frameCaptureIDAndPTSForSampleBuffer:(_DWORD *)a3 captureIDOut:(CMTime *)a4 bufferPTSOut:
+- (double)_frameCaptureIDAndPTSForSampleBuffer:(_DWORD *)buffer captureIDOut:(CMTime *)out bufferPTSOut:
 {
-  if (a1)
+  if (self)
   {
     v7 = CMGetAttachment(target, *off_1E798A3C8, 0);
-    *a3 = [objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B708), "intValue"}];
+    *buffer = [objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B708), "intValue"}];
     v8 = [v7 objectForKeyedSubscript:*off_1E798A420];
     if (v8)
     {
@@ -731,13 +731,13 @@ LABEL_15:
     }
 
     result = *&v10.value;
-    *a4 = v10;
+    *out = v10;
   }
 
   return result;
 }
 
-- (uint64_t)_sendDropAndRemoveSampleBuffer:(uint64_t)result fromQueue:(CMSampleBufferRef)sbuf withCaptureID:(void *)a3
+- (uint64_t)_sendDropAndRemoveSampleBuffer:(uint64_t)result fromQueue:(CMSampleBufferRef)sbuf withCaptureID:(void *)d
 {
   if (result)
   {
@@ -747,13 +747,13 @@ LABEL_15:
     v12 = OUTLINED_FUNCTION_12_2(BWDroppedSample, v6, 0x1F219C0B0, v7, v8, v9, v10, v11, v13, v14, *&v15.value, v15.epoch);
     [(BWRealtimeCinematographyNode *)v5 _dropFrame:v12];
 
-    return [a3 removeObject:sbuf];
+    return [d removeObject:sbuf];
   }
 
   return result;
 }
 
-- (uint64_t)_findCaptureSampleBuffer:(void *)a3 matchingPreviewSampleBuffer:
+- (uint64_t)_findCaptureSampleBuffer:(void *)buffer matchingPreviewSampleBuffer:
 {
   if (result)
   {
@@ -852,7 +852,7 @@ LABEL_15:
 LABEL_28:
             v38 = v57;
             *a2 = v58;
-            *a3 = v38;
+            *buffer = v38;
             return 1;
           }
         }
@@ -898,9 +898,9 @@ LABEL_28:
   return result;
 }
 
-- (void)_tryToEmit:(void *)a3 captureBuffer:
+- (void)_tryToEmit:(void *)emit captureBuffer:
 {
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
@@ -909,8 +909,8 @@ LABEL_28:
     }
 
     sampleBufferOut[0] = 0;
-    [(BWRealtimeCinematographyNode *)a1 _updateGlobalMetadata:a3];
-    v7 = *(a1 + 328);
+    [(BWRealtimeCinematographyNode *)self _updateGlobalMetadata:emit];
+    v7 = *(self + 328);
     if (!v7 || (v8 = a2, v9 = *off_1E798A3C8, (v10 = CMGetAttachment(v7, *off_1E798A3C8, 0)) == 0))
     {
       fig_log_get_emitter();
@@ -933,9 +933,9 @@ LABEL_28:
     v199 = 0.0;
     v200 = *value;
     FigCFDictionaryGetCGRectIfPresent();
-    [(BWRealtimeCinematographyNode *)a1 _updateAlphaLowLightWithMetadata:v11 imageSampleBuffer:a3];
+    [(BWRealtimeCinematographyNode *)self _updateAlphaLowLightWithMetadata:v11 imageSampleBuffer:emit];
     v156 = v11;
-    if (*(a1 + 432) == 1)
+    if (*(self + 432) == 1)
     {
       v16 = [objc_alloc(getPTTimedRenderingMetadataVersion1Class()) initWithMinorVersion:6];
       [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B0B8), "intValue"}];
@@ -963,10 +963,10 @@ LABEL_28:
       [v16 setTotalSensorCropRectSize:*&v197[16]];
     }
 
-    LODWORD(v17) = *(a1 + 216);
+    LODWORD(v17) = *(self + 216);
     valuea = v16;
     [v16 setAlphaLowLight:v17];
-    AttachedMedia = BWSampleBufferGetAttachedMedia(*(a1 + 328), @"Depth");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(*(self + 328), @"Depth");
     a2 = v8;
     if (!AttachedMedia)
     {
@@ -978,19 +978,19 @@ LABEL_28:
 
     sbuf = AttachedMedia;
     target = v8;
-    *(a1 + 316) = 1;
+    *(self + 316) = 1;
     v155 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v20 = *off_1E798B220;
     v21 = [v156 objectForKeyedSubscript:*off_1E798B220];
     v22 = *off_1E798B218;
     v23 = OUTLINED_FUNCTION_11_3();
     v157 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v24 = *(a1 + 136);
+    v24 = *(self + 136);
     if (v21)
     {
 
       v24 = v21;
-      *(a1 + 136) = v24;
+      *(self + 136) = v24;
     }
 
     if (v24)
@@ -1003,13 +1003,13 @@ LABEL_28:
       [v157 setObject:v23 forKeyedSubscript:v22];
     }
 
-    v25 = OUTLINED_FUNCTION_22(a3);
-    v153 = a3;
+    v25 = OUTLINED_FUNCTION_22(emit);
+    emitCopy = emit;
     if (!v25)
     {
 LABEL_60:
-      AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(*(a1 + 328), 151);
-      v66 = [CMGetAttachment(a3 @"FusionTrackerInput"];
+      AttachedInferenceResult = BWInferenceGetAttachedInferenceResult(*(self + 328), 151);
+      v66 = [CMGetAttachment(emit @"FusionTrackerInput"];
       v67 = 0;
       if ([AttachedInferenceResult inferences] && v66)
       {
@@ -1068,7 +1068,7 @@ LABEL_60:
       v75 = OUTLINED_FUNCTION_11_3();
       OUTLINED_FUNCTION_6_5([v75 lastObject]);
       [v157 setObject:v75 forKeyedSubscript:@"FocusRegionArray"];
-      [v157 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", *(a1 + 312)), @"FocusMode"}];
+      [v157 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", *(self + 312)), @"FocusMode"}];
       v76 = OUTLINED_FUNCTION_11_3();
       OUTLINED_FUNCTION_6_5(v76);
       v77 = OUTLINED_FUNCTION_11_3();
@@ -1078,7 +1078,7 @@ LABEL_60:
       v79 = OUTLINED_FUNCTION_11_3();
       OUTLINED_FUNCTION_6_5(v79);
       ImageBuffer = CMSampleBufferGetImageBuffer(sbuf);
-      v81 = *(a1 + 128);
+      v81 = *(self + 128);
       CMSampleBufferGetPresentationTimeStamp(v197, sbuf);
       v82 = [v81 processColorBuffer:0 disparityBuffer:ImageBuffer metadataDictionary:v157 presentationTime:v197];
 
@@ -1087,8 +1087,8 @@ LABEL_60:
       v181 = 0u;
       v182 = 0u;
       v183 = 0u;
-      v84 = [v82 allDetections];
-      v85 = [v84 countByEnumeratingWithState:&v180 objects:v179 count:16];
+      allDetections = [v82 allDetections];
+      v85 = [allDetections countByEnumeratingWithState:&v180 objects:v179 count:16];
       if (v85)
       {
         v86 = v85;
@@ -1099,14 +1099,14 @@ LABEL_60:
           {
             if (*v181 != v87)
             {
-              objc_enumerationMutation(v84);
+              objc_enumerationMutation(allDetections);
             }
 
             v89 = *(*(&v180 + 1) + 8 * j);
             if ([v89 detectionType] == 102)
             {
-              v90 = [v89 trackIdentifier];
-              if (v90 != [objc_msgSend(v82 "focusDetection")])
+              trackIdentifier = [v89 trackIdentifier];
+              if (trackIdentifier != [objc_msgSend(v82 "focusDetection")])
               {
                 continue;
               }
@@ -1115,7 +1115,7 @@ LABEL_60:
             [v83 addObject:v89];
           }
 
-          v86 = [v84 countByEnumeratingWithState:&v180 objects:v179 count:16];
+          v86 = [allDetections countByEnumeratingWithState:&v180 objects:v179 count:16];
         }
 
         while (v86);
@@ -1130,7 +1130,7 @@ LABEL_60:
       [v82 aperture];
       v178[0] = [v92 numberWithFloat:?];
       v177[1] = 0x1F21A9910;
-      LODWORD(v93) = *(a1 + 216);
+      LODWORD(v93) = *(self + 216);
       v178[1] = [MEMORY[0x1E696AD98] numberWithFloat:v93];
       v177[2] = 0x1F21A9930;
       v94 = MEMORY[0x1E696AD98];
@@ -1158,7 +1158,7 @@ LABEL_60:
         v99 = v98;
         [v97 setAllDetections:v98];
         objc_setAssociatedObject(v97, @"CinematicVideoTimedRenderingMetadata", valuea, 1);
-        BWPixelBufferDimensionsFromSampleBuffer(*(a1 + 328));
+        BWPixelBufferDimensionsFromSampleBuffer(*(self + 328));
         v100 = OUTLINED_FUNCTION_13_4();
         *&v175 = FigCaptureMetadataUtilitiesRectNormalizedToRect(v100, v101, v102, v103, 0.0, 0.0, v104);
         *(&v175 + 1) = v105;
@@ -1168,8 +1168,8 @@ LABEL_60:
         v172 = 0u;
         v173 = 0u;
         v174 = 0u;
-        v108 = [v97 allDetections];
-        v109 = [v108 countByEnumeratingWithState:&v171 objects:v170 count:16];
+        allDetections2 = [v97 allDetections];
+        v109 = [allDetections2 countByEnumeratingWithState:&v171 objects:v170 count:16];
         if (v109)
         {
           v110 = v109;
@@ -1180,7 +1180,7 @@ LABEL_60:
             {
               if (*v172 != v111)
               {
-                objc_enumerationMutation(v108);
+                objc_enumerationMutation(allDetections2);
               }
 
               v113 = *(*(&v171 + 1) + 8 * k);
@@ -1188,7 +1188,7 @@ LABEL_60:
               [v113 setRect:{FigCaptureTransformNormalizedRectFromCoordinateSpaceOfNormalizedRect(v114, v115, v116, v117, *&v175, *(&v175 + 1), *&v176)}];
             }
 
-            v110 = [v108 countByEnumeratingWithState:&v171 objects:v170 count:16];
+            v110 = [allDetections2 countByEnumeratingWithState:&v171 objects:v170 count:16];
           }
 
           while (v110);
@@ -1199,7 +1199,7 @@ LABEL_60:
         [v82 aperture];
         v169[0] = [v118 numberWithFloat:?];
         v168[1] = 0x1F21A9910;
-        LODWORD(v119) = *(a1 + 216);
+        LODWORD(v119) = *(self + 216);
         v169[1] = [MEMORY[0x1E696AD98] numberWithFloat:v119];
         v168[2] = 0x1F21A9930;
         v120 = MEMORY[0x1E696AD98];
@@ -1211,59 +1211,59 @@ LABEL_60:
 
         a2 = target;
 LABEL_98:
-        CMSetAttachment(*(a1 + 328), @"CinematicVideoCinematographyMetadata", v95, 1u);
-        if (*(a1 + 468) == 1 && [v82 focusDetection])
+        CMSetAttachment(*(self + 328), @"CinematicVideoCinematographyMetadata", v95, 1u);
+        if (*(self + 468) == 1 && [v82 focusDetection])
         {
-          os_unfair_lock_lock((a1 + 464));
-          [*(a1 + 456) removeAllObjects];
+          os_unfair_lock_lock((self + 464));
+          [*(self + 456) removeAllObjects];
           v121 = [BWDockKitFocusDetection alloc];
           v122 = [objc_msgSend(v82 "focusDetection")];
           [objc_msgSend(v82 "focusDetection")];
-          [*(a1 + 456) addObject:{-[BWDockKitFocusDetection initWithIdentifier:rect:userFocusStrong:](v121, "initWithIdentifier:rect:userFocusStrong:", v122, objc_msgSend(v82, "isUserFocusStrong"), v123, v124, v125, v126)}];
-          os_unfair_lock_unlock((a1 + 464));
+          [*(self + 456) addObject:{-[BWDockKitFocusDetection initWithIdentifier:rect:userFocusStrong:](v121, "initWithIdentifier:rect:userFocusStrong:", v122, objc_msgSend(v82, "isUserFocusStrong"), v123, v124, v125, v126)}];
+          os_unfair_lock_unlock((self + 464));
         }
 
-        [(BWRealtimeCinematographyNode *)a1 _updateAutoFocus:v82 finalCropRect:v198, v199, *&v200, *(&v200 + 1)];
+        [(BWRealtimeCinematographyNode *)self _updateAutoFocus:v82 finalCropRect:v198, v199, *&v200, *(&v200 + 1)];
         if ([v82 focusDetection])
         {
-          v127 = [v82 focusDetection];
-          v128 = [v127 detectionType];
-          v129 = [v127 trackIdentifier];
-          v130 = (v128 - 1) < 0xC && (v129 != *(a1 + 440));
-          v131 = v128 == 100 && v129 != *(a1 + 440);
+          focusDetection = [v82 focusDetection];
+          detectionType = [focusDetection detectionType];
+          trackIdentifier2 = [focusDetection trackIdentifier];
+          v130 = (detectionType - 1) < 0xC && (trackIdentifier2 != *(self + 440));
+          v131 = detectionType == 100 && trackIdentifier2 != *(self + 440);
           v158 = v131;
-          v132 = (v128 - 100) < 3 && (v129 != *(a1 + 440));
-          v133 = v128 == 102 && (v129 != *(a1 + 440));
+          v132 = (detectionType - 100) < 3 && (trackIdentifier2 != *(self + 440));
+          v133 = detectionType == 102 && (trackIdentifier2 != *(self + 440));
           [v155 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v130), 0x1F21A9B50}];
           [v155 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v132), 0x1F21A9B70}];
           [v155 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v133), 0x1F21A9B90}];
           [v155 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v158), 0x1F21A9BB0}];
-          if (v129 != *(a1 + 440))
+          if (trackIdentifier2 != *(self + 440))
           {
-            *(a1 + 440) = v129;
+            *(self + 440) = trackIdentifier2;
           }
         }
 
         if ([v155 count])
         {
-          CMSetAttachment(v153, @"CinematicVideoMovieFileRecordingStats", v155, 1u);
+          CMSetAttachment(emitCopy, @"CinematicVideoMovieFileRecordingStats", v155, 1u);
         }
 
-        BWCMSampleBufferCreateCopyIncludingMetadata(v153, sampleBufferOut);
-        if ([*(a1 + 168) depthType] != 3 || ((v134 = objc_msgSend(objc_msgSend(*(a1 + 168), "masterCaptureStream"), "videoCaptureDimensions"), v135 = HIDWORD(v134), v134 != 3840) || (v136 = a2, v135 != 2160)) && (v134 != 2160 || (v136 = a2, v135 != 3840)))
+        BWCMSampleBufferCreateCopyIncludingMetadata(emitCopy, sampleBufferOut);
+        if ([*(self + 168) depthType] != 3 || ((v134 = objc_msgSend(objc_msgSend(*(self + 168), "masterCaptureStream"), "videoCaptureDimensions"), v135 = HIDWORD(v134), v134 != 3840) || (v136 = a2, v135 != 2160)) && (v134 != 2160 || (v136 = a2, v135 != 3840)))
         {
-          v136 = v153;
+          v136 = emitCopy;
         }
 
-        [(BWRealtimeCinematographyNode *)a1 _emitSampleBufferOnMetadataOutput:v136 cinematographyFrame:v82];
-        if (*(a1 + 469) == 1)
+        [(BWRealtimeCinematographyNode *)self _emitSampleBufferOnMetadataOutput:v136 cinematographyFrame:v82];
+        if (*(self + 469) == 1)
         {
           v166 = 0u;
           v167 = 0u;
           v164 = 0u;
           v165 = 0u;
-          v137 = [v82 allDetections];
-          v138 = [v137 countByEnumeratingWithState:&v164 objects:v163 count:16];
+          allDetections3 = [v82 allDetections];
+          v138 = [allDetections3 countByEnumeratingWithState:&v164 objects:v163 count:16];
           if (v138)
           {
             v139 = v138;
@@ -1274,7 +1274,7 @@ LABEL_98:
               {
                 if (*v165 != v140)
                 {
-                  objc_enumerationMutation(v137);
+                  objc_enumerationMutation(allDetections3);
                 }
 
                 v142 = *(*(&v164 + 1) + 8 * m);
@@ -1294,21 +1294,21 @@ LABEL_98:
                 [v142 setRect:{FigCaptureTransformRectToCoordinateSpaceOfRect(v146, v147, v148, v149, v201, v202, v203.f64[0])}];
               }
 
-              v139 = [v137 countByEnumeratingWithState:&v164 objects:v163 count:16];
+              v139 = [allDetections3 countByEnumeratingWithState:&v164 objects:v163 count:16];
             }
 
             while (v139);
           }
         }
 
-        [*(a1 + 144) emitSampleBuffer:*(a1 + 328)];
-        [*(a1 + 152) emitSampleBuffer:a2];
-        v150 = *(a1 + 328);
+        [*(self + 144) emitSampleBuffer:*(self + 328)];
+        [*(self + 152) emitSampleBuffer:a2];
+        v150 = *(self + 328);
         if (!v150)
         {
           v6 = MEMORY[0x1E695FF58];
 LABEL_143:
-          *(a1 + 328) = sampleBufferOut[0];
+          *(self + 328) = sampleBufferOut[0];
 
           if (*v6 == 1)
           {
@@ -1328,30 +1328,30 @@ LABEL_141:
       OUTLINED_FUNCTION_0();
       FigDebugAssert3();
       v6 = MEMORY[0x1E695FF58];
-      a3 = v153;
+      emit = emitCopy;
 LABEL_151:
-      BWCMSampleBufferCreateCopyIncludingMetadata(a3, sampleBufferOut);
-      if (*(a1 + 328))
+      BWCMSampleBufferCreateCopyIncludingMetadata(emit, sampleBufferOut);
+      if (*(self + 328))
       {
-        [(BWRealtimeCinematographyNode *)a1 _emitMovieFileDropForPreviousSampleBuffer];
+        [(BWRealtimeCinematographyNode *)self _emitMovieFileDropForPreviousSampleBuffer];
       }
 
-      if (*(a1 + 316))
+      if (*(self + 316))
       {
         memset(v197, 0, 24);
         CMSampleBufferGetPresentationTimeStamp(v197, a2);
         v161 = *v197;
         v162 = *&v197[16];
         v151 = [BWDroppedSample newDroppedSampleWithReason:0x1F219C0B0 pts:&v161];
-        [*(a1 + 152) emitDroppedSample:v151];
+        [*(self + 152) emitDroppedSample:v151];
       }
 
       else
       {
-        [*(a1 + 152) emitSampleBuffer:a2];
+        [*(self + 152) emitSampleBuffer:a2];
       }
 
-      v150 = *(a1 + 328);
+      v150 = *(self + 328);
       if (!v150)
       {
         goto LABEL_143;
@@ -1361,7 +1361,7 @@ LABEL_151:
     }
 
     v26 = v25;
-    v27 = CMGetAttachment(a3, @"CinematicVideoFocusRequest", 0);
+    v27 = CMGetAttachment(emit, @"CinematicVideoFocusRequest", 0);
     if (v27)
     {
       v28 = v27;
@@ -1380,7 +1380,7 @@ LABEL_151:
       }
     }
 
-    v31 = OUTLINED_FUNCTION_22(*(a1 + 328));
+    v31 = OUTLINED_FUNCTION_22(*(self + 328));
     if (!v31)
     {
 LABEL_59:
@@ -1411,7 +1411,7 @@ LABEL_24:
     {
       if ([objc_msgSend(v32 "tapResponse")])
       {
-        v38 = a3;
+        emitCopy2 = emit;
         v39 = [objc_msgSend(objc_msgSend(v32 "tapResponse")];
         v193 = 0u;
         v194 = 0u;
@@ -1464,7 +1464,7 @@ LABEL_38:
           [objc_msgSend(v32 "tapResponse")];
         }
 
-        a3 = v38;
+        emit = emitCopy2;
         goto LABEL_42;
       }
 
@@ -1499,8 +1499,8 @@ LABEL_42:
     v191 = 0u;
     v190 = 0u;
     v189 = 0u;
-    v47 = [v32 tracks];
-    v48 = [v47 countByEnumeratingWithState:&v189 objects:v188 count:16];
+    tracks = [v32 tracks];
+    v48 = [tracks countByEnumeratingWithState:&v189 objects:v188 count:16];
     if (v48)
     {
       v49 = v48;
@@ -1512,7 +1512,7 @@ LABEL_42:
         {
           if (*v190 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(tracks);
           }
 
           v53 = *(*(&v189 + 1) + 8 * n);
@@ -1541,12 +1541,12 @@ LABEL_42:
           }
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v189 objects:v188 count:{16, v62}];
+        v49 = [tracks countByEnumeratingWithState:&v189 objects:v188 count:{16, v62}];
       }
 
       while (v49);
       v26 = v32;
-      a3 = v153;
+      emit = emitCopy;
     }
 
     else
@@ -1657,7 +1657,7 @@ LABEL_16:
   return result;
 }
 
-- (uint64_t)_updateAutoFocus:(double)a3 finalCropRect:(double)a4
+- (uint64_t)_updateAutoFocus:(double)focus finalCropRect:(double)rect
 {
   if (result)
   {
@@ -1700,8 +1700,8 @@ LABEL_7:
             *(v6 + 256) = v15;
             *(v6 + 264) = v17;
             *(v6 + 272) = v19;
-            *(v6 + 280) = a3;
-            *(v6 + 288) = a4;
+            *(v6 + 280) = focus;
+            *(v6 + 288) = rect;
             *(v6 + 296) = a5;
             *(v6 + 304) = a6;
             v28 = OUTLINED_FUNCTION_3_1();
@@ -1735,11 +1735,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_emitSampleBufferOnMetadataOutput:(void *)a3 cinematographyFrame:
+- (void)_emitSampleBufferOnMetadataOutput:(void *)output cinematographyFrame:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1;
+    selfCopy = self;
     memset(&sampleTimingArray.presentationTimeStamp, 0, 48);
     *&sampleTimingArray.duration.value = *MEMORY[0x1E6960C70];
     sampleTimingArray.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
@@ -1749,30 +1749,30 @@ LABEL_7:
     v7 = OUTLINED_FUNCTION_22(sbuf);
     if (([objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798A0B0), "BOOLValue"}] & 1) == 0)
     {
-      [(BWRealtimeCinematographyNode *)v5 _convertSampleBufferDetectedObjectsFromSensorToBufferCoordinateSpace:?];
+      [(BWRealtimeCinematographyNode *)selfCopy _convertSampleBufferDetectedObjectsFromSensorToBufferCoordinateSpace:?];
       v7 = OUTLINED_FUNCTION_22(sbuf);
     }
 
     v8 = [v7 mutableCopy];
     v9 = v8;
-    if (a3)
+    if (output)
     {
       v71 = *off_1E798B220;
       v10 = [v8 objectForKeyedSubscript:?];
       if (v10)
       {
         v11 = v10;
-        v83 = a3;
+        outputCopy = output;
         v68 = v9;
         v69 = v6;
         __asm { FMOV            V0.2D, #1.0 }
 
         v85 = *&_Q0;
         FigCFDictionaryGetCGRectIfPresent();
-        v70 = v5;
-        v17 = *(v5 + 280);
-        v18 = *(v5 + 288);
-        v19 = *(v5 + 296);
+        v70 = selfCopy;
+        v17 = *(selfCopy + 280);
+        v18 = *(selfCopy + 288);
+        v19 = *(selfCopy + 296);
         v81 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v108 = 0u;
         v109 = 0u;
@@ -1799,11 +1799,11 @@ LABEL_7:
               v27 = *(*(&v108 + 1) + 8 * i);
               v105[0] = v23;
               v28 = MEMORY[0x1E696AD98];
-              [a3 time];
+              [output time];
               v106[0] = [v28 numberWithLongLong:v104];
               v105[1] = v24;
               v29 = MEMORY[0x1E696AD98];
-              [a3 time];
+              [output time];
               v106[1] = [v29 numberWithLongLong:v103];
               v105[2] = v25;
               v106[2] = [MEMORY[0x1E695DF70] array];
@@ -1820,10 +1820,10 @@ LABEL_7:
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v30 = a3;
-        v76 = [a3 allDetections];
+        outputCopy2 = output;
+        allDetections = [output allDetections];
         v31 = v11;
-        v80 = [v76 countByEnumeratingWithState:&v99 objects:v98 count:16];
+        v80 = [allDetections countByEnumeratingWithState:&v99 objects:v98 count:16];
         if (v80)
         {
           v79 = *v100;
@@ -1840,13 +1840,13 @@ LABEL_7:
             {
               if (*v100 != v79)
               {
-                objc_enumerationMutation(v76);
+                objc_enumerationMutation(allDetections);
               }
 
               v34 = *(*(&v99 + 1) + 8 * j);
-              v35 = [v34 detectionType];
+              detectionType = [v34 detectionType];
               v36 = off_1E798ACB8;
-              switch(v35)
+              switch(detectionType)
               {
                 case 1:
                   goto LABEL_27;
@@ -1875,7 +1875,7 @@ LABEL_7:
                 case 11:
                   goto LABEL_21;
                 default:
-                  if ((v35 - 101) >= 2)
+                  if ((detectionType - 101) >= 2)
                   {
                     continue;
                   }
@@ -1925,8 +1925,8 @@ LABEL_31:
                 if (v44 || (v44 = [v43 objectForKeyedSubscript:v84]) != 0)
                 {
                   v45 = v44;
-                  v46 = [v34 trackIdentifier];
-                  if (v46 == [v45 unsignedIntegerValue])
+                  trackIdentifier = [v34 trackIdentifier];
+                  if (trackIdentifier == [v45 unsignedIntegerValue])
                   {
                     break;
                   }
@@ -1936,7 +1936,7 @@ LABEL_31:
                 {
                   v40 = [v38 countByEnumeratingWithState:&v94 objects:v93 count:16];
                   v37 = v82;
-                  v30 = v83;
+                  outputCopy2 = outputCopy;
                   v31 = obj;
                   if (v40)
                   {
@@ -1949,7 +1949,7 @@ LABEL_31:
 
               v47 = [v43 mutableCopy];
               v37 = v82;
-              v30 = v83;
+              outputCopy2 = outputCopy;
               v31 = obj;
               if (v47)
               {
@@ -1978,22 +1978,22 @@ LABEL_41:
 
               v37 = v82;
 LABEL_45:
-              if ([v30 focusDetection])
+              if ([outputCopy2 focusDetection])
               {
-                v51 = [v34 trackIdentifier];
-                _ZF = v51 == [objc_msgSend(v30 "focusDetection")];
+                trackIdentifier2 = [v34 trackIdentifier];
+                _ZF = trackIdentifier2 == [objc_msgSend(outputCopy2 "focusDetection")];
                 v37 = v82;
                 if (_ZF)
                 {
-                  [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v30, "isFocusStrong")}];
+                  [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(outputCopy2, "isFocusStrong")}];
                   [OUTLINED_FUNCTION_15() setObject:? forKeyedSubscript:?];
                   v52 = MEMORY[0x1E696AD98];
-                  v53 = [objc_msgSend(v30 "focusDetection")] == 101;
+                  v53 = [objc_msgSend(outputCopy2 "focusDetection")] == 101;
                   v54 = v52;
                   v37 = v82;
                   [v54 numberWithInt:v53];
                   [OUTLINED_FUNCTION_15() setObject:? forKeyedSubscript:?];
-                  if ([objc_msgSend(v30 "focusDetection")] == 101)
+                  if ([objc_msgSend(outputCopy2 "focusDetection")] == 101)
                   {
                     [v34 rect];
                     v59 = FigCaptureTransformRectToCoordinateSpaceOfRect(v55, v56, v57, v58, v17, v18, v19);
@@ -2009,11 +2009,11 @@ LABEL_45:
               {
                 v89[0] = v73;
                 v65 = MEMORY[0x1E696AD98];
-                [v30 time];
+                [outputCopy2 time];
                 v90[0] = [v65 numberWithLongLong:v88];
                 v89[1] = v72;
                 v66 = MEMORY[0x1E696AD98];
-                [v30 time];
+                [outputCopy2 time];
                 v67 = v66;
                 v64 = v81;
                 v90[1] = [v67 numberWithLongLong:v87];
@@ -2025,7 +2025,7 @@ LABEL_45:
               [objc_msgSend(objc_msgSend(v64 objectForKeyedSubscript:{v37), "objectForKeyedSubscript:", v77), "addObject:", v47}];
             }
 
-            v80 = [v76 countByEnumeratingWithState:&v99 objects:v98 count:16];
+            v80 = [allDetections countByEnumeratingWithState:&v99 objects:v98 count:16];
           }
 
           while (v80);
@@ -2035,7 +2035,7 @@ LABEL_45:
         [v68 setObject:v81 forKeyedSubscript:v71];
 
         v6 = v69;
-        v5 = v70;
+        selfCopy = v70;
       }
 
       [v9 setObject:0 forKeyedSubscript:*off_1E798B218];
@@ -2045,7 +2045,7 @@ LABEL_45:
     if (!CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, 0, 0, 1, &sampleTimingArray, 0, 0, target) && target[0])
     {
       CMSetAttachment(target[0], v6, v9, 1u);
-      [*(v5 + 160) emitSampleBuffer:target[0]];
+      [*(selfCopy + 160) emitSampleBuffer:target[0]];
     }
 
     if (target[0])

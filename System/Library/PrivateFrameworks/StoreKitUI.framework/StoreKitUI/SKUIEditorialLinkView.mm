@@ -1,26 +1,26 @@
 @interface SKUIEditorialLinkView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SKUIEditorialLinkView)initWithFrame:(CGRect)a3;
+- (SKUIEditorialLinkView)initWithFrame:(CGRect)frame;
 - (SKUIEditorialLinkViewDelegate)delegate;
 - (id)_newButton;
-- (void)_linkButtonAction:(id)a3;
+- (void)_linkButtonAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setHorizontalAlignment:(int64_t)a3;
-- (void)setLinkLayout:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setHorizontalAlignment:(int64_t)alignment;
+- (void)setLinkLayout:(id)layout;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIEditorialLinkView
 
-- (SKUIEditorialLinkView)initWithFrame:(CGRect)a3
+- (SKUIEditorialLinkView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialLinkView initWithFrame:];
@@ -28,23 +28,23 @@
 
   v14.receiver = self;
   v14.super_class = SKUIEditorialLinkView;
-  v8 = [(SKUIEditorialLinkView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIEditorialLinkView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    buttons = v8->_buttons;
-    v8->_buttons = v9;
+    buttons = height->_buttons;
+    height->_buttons = v9;
 
-    v11 = [(SKUIEditorialLinkView *)v8 _newButton];
-    [(SKUIEditorialLinkView *)v8 addSubview:v11];
-    [(NSMutableArray *)v8->_buttons addObject:v11];
+    _newButton = [(SKUIEditorialLinkView *)height _newButton];
+    [(SKUIEditorialLinkView *)height addSubview:_newButton];
+    [(NSMutableArray *)height->_buttons addObject:_newButton];
 
-    v12 = [(SKUIEditorialLinkView *)v8 _newButton];
-    [(SKUIEditorialLinkView *)v8 addSubview:v12];
-    [(NSMutableArray *)v8->_buttons addObject:v12];
+    _newButton2 = [(SKUIEditorialLinkView *)height _newButton];
+    [(SKUIEditorialLinkView *)height addSubview:_newButton2];
+    [(NSMutableArray *)height->_buttons addObject:_newButton2];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -85,34 +85,34 @@
   [(SKUIEditorialLinkView *)&v8 dealloc];
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  schemeCopy = scheme;
+  v5 = schemeCopy;
+  if (schemeCopy)
   {
-    v6 = [v4 highlightedTextColor];
+    highlightedTextColor = [schemeCopy highlightedTextColor];
   }
 
   else
   {
-    v6 = 0;
+    highlightedTextColor = 0;
   }
 
-  objc_storeStrong(&self->_highlightedTextColor, v6);
+  objc_storeStrong(&self->_highlightedTextColor, highlightedTextColor);
   if (v5)
   {
 
-    v7 = [v5 secondaryTextColor];
+    secondaryTextColor = [v5 secondaryTextColor];
   }
 
   else
   {
-    v7 = 0;
+    secondaryTextColor = 0;
   }
 
-  objc_storeStrong(&self->_textColor, v7);
+  objc_storeStrong(&self->_textColor, secondaryTextColor);
   if (v5)
   {
   }
@@ -145,8 +145,8 @@
 
         else
         {
-          v15 = [(SKUIEditorialLinkView *)self tintColor];
-          [v13 setTitleColor:v15 forState:0];
+          tintColor = [(SKUIEditorialLinkView *)self tintColor];
+          [v13 setTitleColor:tintColor forState:0];
         }
 
         highlightedTextColor = self->_highlightedTextColor;
@@ -157,8 +157,8 @@
 
         else
         {
-          v17 = [(SKUIEditorialLinkView *)self tintColor];
-          [v13 setTitleColor:v17 forState:1];
+          tintColor2 = [(SKUIEditorialLinkView *)self tintColor];
+          [v13 setTitleColor:tintColor2 forState:1];
         }
       }
 
@@ -169,23 +169,23 @@
   }
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
-  if (self->_horizontalAlignment != a3)
+  if (self->_horizontalAlignment != alignment)
   {
-    self->_horizontalAlignment = a3;
+    self->_horizontalAlignment = alignment;
   }
 }
 
-- (void)setLinkLayout:(id)a3
+- (void)setLinkLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_layout != v5)
+  layoutCopy = layout;
+  if (self->_layout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_layout, layout);
     [(SKUIEditorialLinkView *)self setNeedsLayout];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
@@ -198,7 +198,7 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SKUIEditorialLinkLayout *)self->_layout links];
+    links = [(SKUIEditorialLinkLayout *)self->_layout links];
     v24[0] = 0;
     v24[1] = v24;
     v24[2] = 0x2020000000;
@@ -214,7 +214,7 @@
     v23 = v10;
     v17[4] = self;
     v19 = v24;
-    v13 = v11;
+    v13 = links;
     v18 = v13;
     [(SKUIEditorialLinkLayout *)layout enumerateLinesUsingBlock:v17];
     v14 = [(NSMutableArray *)self->_buttons count];
@@ -338,14 +338,14 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   buttons = self->_buttons;
-  v5 = a3;
-  [(NSMutableArray *)buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v5];
+  colorCopy = color;
+  [(NSMutableArray *)buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIEditorialLinkView;
-  [(SKUIEditorialLinkView *)&v6 setBackgroundColor:v5];
+  [(SKUIEditorialLinkView *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -393,8 +393,8 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
 
         else
         {
-          v10 = [(SKUIEditorialLinkView *)self tintColor];
-          [v8 setTitleColor:v10 forState:0];
+          tintColor = [(SKUIEditorialLinkView *)self tintColor];
+          [v8 setTitleColor:tintColor forState:0];
         }
 
         highlightedTextColor = self->_highlightedTextColor;
@@ -405,8 +405,8 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
 
         else
         {
-          v12 = [(SKUIEditorialLinkView *)self tintColor];
-          [v8 setTitleColor:v12 forState:1];
+          tintColor2 = [(SKUIEditorialLinkView *)self tintColor];
+          [v8 setTitleColor:tintColor2 forState:1];
         }
       }
 
@@ -417,20 +417,20 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
   }
 }
 
-- (void)_linkButtonAction:(id)a3
+- (void)_linkButtonAction:(id)action
 {
-  v11 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NSMutableArray *)self->_buttons indexOfObjectIdenticalTo:v11];
+    v6 = [(NSMutableArray *)self->_buttons indexOfObjectIdenticalTo:actionCopy];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v6;
-      v8 = [(SKUIEditorialLinkLayout *)self->_layout links];
-      v9 = [v8 objectAtIndex:v7];
+      links = [(SKUIEditorialLinkLayout *)self->_layout links];
+      v9 = [links objectAtIndex:v7];
 
       v10 = objc_loadWeakRetained(&self->_delegate);
       [v10 editorialLinkView:self didSelectLink:v9];
@@ -452,8 +452,8 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
 
   else
   {
-    v6 = [(SKUIEditorialLinkView *)self tintColor];
-    [(SKUILinkButton *)v3 setTitleColor:v6 forState:0];
+    tintColor = [(SKUIEditorialLinkView *)self tintColor];
+    [(SKUILinkButton *)v3 setTitleColor:tintColor forState:0];
   }
 
   highlightedTextColor = self->_highlightedTextColor;
@@ -464,13 +464,13 @@ double __39__SKUIEditorialLinkView_layoutSubviews__block_invoke(uint64_t a1, uni
 
   else
   {
-    v8 = [(SKUIEditorialLinkView *)self tintColor];
-    [(SKUILinkButton *)v3 setTitleColor:v8 forState:1];
+    tintColor2 = [(SKUIEditorialLinkView *)self tintColor];
+    [(SKUILinkButton *)v3 setTitleColor:tintColor2 forState:1];
   }
 
-  v9 = [(SKUILinkButton *)v3 titleLabel];
+  titleLabel = [(SKUILinkButton *)v3 titleLabel];
   v10 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  [v9 setFont:v10];
+  [titleLabel setFont:v10];
 
   return v3;
 }

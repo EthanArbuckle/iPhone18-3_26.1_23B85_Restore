@@ -1,54 +1,54 @@
 @interface TSTConditionalStyleRule
-+ (id)conditionalStyleRuleWithRule:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForInspector:(id)a3;
++ (id)conditionalStyleRuleWithRule:(id)rule;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForInspector:(id)inspector;
 - (TSTCellStyle)cellStyle;
-- (TSTConditionalStyleRule)initWithPredicate:(id)a3 cellStyle:(id)a4 textStyle:(id)a5;
+- (TSTConditionalStyleRule)initWithPredicate:(id)predicate cellStyle:(id)style textStyle:(id)textStyle;
 - (TSTFormulaPredicate)predicate;
 - (TSWPParagraphStyle)textStyle;
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4;
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3;
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5;
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4;
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5;
-- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)a3;
-- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)a3;
-- (id)copyToUidFormForTableInfo:(id)a3 inCellCoordinate:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d;
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset;
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error;
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block;
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate;
+- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)ref;
+- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)ref;
+- (id)copyToUidFormForTableInfo:(id)info inCellCoordinate:(TSUCellCoord)coordinate preserveHostCell:(BOOL)cell;
+- (id)copyWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)predicateType;
-- (void)setCellStyle:(id)a3 textStyle:(id)a4;
+- (void)setCellStyle:(id)style textStyle:(id)textStyle;
 @end
 
 @implementation TSTConditionalStyleRule
 
-+ (id)conditionalStyleRuleWithRule:(id)a3
++ (id)conditionalStyleRuleWithRule:(id)rule
 {
-  v3 = a3;
+  ruleCopy = rule;
   v4 = [TSTConditionalStyleRule alloc];
-  v9 = objc_msgSend_predicate(v3, v5, v6, v7, v8);
-  v14 = objc_msgSend_cellStyle(v3, v10, v11, v12, v13);
-  v19 = objc_msgSend_textStyle(v3, v15, v16, v17, v18);
+  v9 = objc_msgSend_predicate(ruleCopy, v5, v6, v7, v8);
+  v14 = objc_msgSend_cellStyle(ruleCopy, v10, v11, v12, v13);
+  v19 = objc_msgSend_textStyle(ruleCopy, v15, v16, v17, v18);
   v21 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v4, v20, v9, v14, v19);
 
   return v21;
 }
 
-- (TSTConditionalStyleRule)initWithPredicate:(id)a3 cellStyle:(id)a4 textStyle:(id)a5
+- (TSTConditionalStyleRule)initWithPredicate:(id)predicate cellStyle:(id)style textStyle:(id)textStyle
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  predicateCopy = predicate;
+  styleCopy = style;
+  textStyleCopy = textStyle;
   v15.receiver = self;
   v15.super_class = TSTConditionalStyleRule;
   v12 = [(TSTConditionalStyleRule *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_predicate, a3);
-    objc_storeStrong(&v13->_cellStyle, a4);
-    objc_storeStrong(&v13->_textStyle, a5);
+    objc_storeStrong(&v12->_predicate, predicate);
+    objc_storeStrong(&v13->_cellStyle, style);
+    objc_storeStrong(&v13->_textStyle, textStyle);
   }
 
   return v13;
@@ -71,19 +71,19 @@
   return objc_msgSend_predicateType(predicate, a2, v2, v3, v4);
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_copy(self->_predicate, v6, v7, v8, v9);
-  v14 = objc_msgSend_copyWithContext_(self->_cellStyle, v11, v4, v12, v13);
-  v18 = objc_msgSend_copyWithContext_(self->_textStyle, v15, v4, v16, v17);
+  v14 = objc_msgSend_copyWithContext_(self->_cellStyle, v11, contextCopy, v12, v13);
+  v18 = objc_msgSend_copyWithContext_(self->_textStyle, v15, contextCopy, v16, v17);
   v20 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v5, v19, v10, v14, v18);
 
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_copy(self->_predicate, v5, v6, v7, v8);
@@ -94,12 +94,12 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ((objc_msgSend_isEqual_(self->_predicate, v5, v4[1], v6, v7) & 1) != 0 && objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_cellStyle, v8, v4[3], 1, v9))
+  equalCopy = equal;
+  if ((objc_msgSend_isEqual_(self->_predicate, v5, equalCopy[1], v6, v7) & 1) != 0 && objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_cellStyle, v8, equalCopy[3], 1, v9))
   {
-    isEqualToStyle_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_textStyle, v10, v4[2], 1, v11);
+    isEqualToStyle_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_textStyle, v10, equalCopy[2], 1, v11);
   }
 
   else
@@ -110,12 +110,12 @@
   return isEqualToStyle_ignoreObjectUUID;
 }
 
-- (BOOL)isEqualForInspector:(id)a3
+- (BOOL)isEqualForInspector:(id)inspector
 {
-  v4 = a3;
-  if ((objc_msgSend_isEqualForInspector_atHostCoordinate_(self->_predicate, v5, v4[1], 0, v6) & 1) != 0 && objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_cellStyle, v7, v4[3], 1, v8))
+  inspectorCopy = inspector;
+  if ((objc_msgSend_isEqualForInspector_atHostCoordinate_(self->_predicate, v5, inspectorCopy[1], 0, v6) & 1) != 0 && objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_cellStyle, v7, inspectorCopy[3], 1, v8))
   {
-    isEqualToStyle_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_textStyle, v9, v4[2], 1, v10);
+    isEqualToStyle_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectUUID_(self->_textStyle, v9, inspectorCopy[2], 1, v10);
   }
 
   else
@@ -140,10 +140,10 @@
   return v5;
 }
 
-- (void)setCellStyle:(id)a3 textStyle:(id)a4
+- (void)setCellStyle:(id)style textStyle:(id)textStyle
 {
-  v6 = a3;
-  v10 = a4;
+  styleCopy = style;
+  textStyleCopy = textStyle;
   if (*&self->_textStyle != 0)
   {
     v11 = MEMORY[0x277D81150];
@@ -155,11 +155,11 @@
   }
 
   cellStyle = self->_cellStyle;
-  self->_cellStyle = v6;
-  v24 = v6;
+  self->_cellStyle = styleCopy;
+  v24 = styleCopy;
 
   textStyle = self->_textStyle;
-  self->_textStyle = v10;
+  self->_textStyle = textStyleCopy;
 }
 
 - (TSTFormulaPredicate)predicate
@@ -169,25 +169,25 @@
   return v5;
 }
 
-- (id)copyByRemappingOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
-  v6 = objc_msgSend_copyByRemappingOwnerUIDsWithMap_rewriteContext_error_(self->_predicate, a2, a3, a4, a5);
+  v6 = objc_msgSend_copyByRemappingOwnerUIDsWithMap_rewriteContext_error_(self->_predicate, a2, map, context, error);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 
   return v9;
 }
 
-- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 error:(BOOL *)a5
+- (id)copyByRemappingHostCellAgnosticOwnerUIDsWithMap:(const void *)map rewriteContext:(TSCEFormulaRewriteContext *)context error:(BOOL *)error
 {
   v12 = 0;
-  v7 = objc_msgSend_copyByRemappingHostCellAgnosticOwnerUIDsWithMap_rewriteContext_error_(self->_predicate, a2, a3, a4, &v12);
+  v7 = objc_msgSend_copyByRemappingHostCellAgnosticOwnerUIDsWithMap_rewriteContext_error_(self->_predicate, a2, map, context, &v12);
   if (v12 == 1)
   {
     v8 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 1;
+      *error = 1;
     }
   }
 
@@ -200,81 +200,81 @@
   return v8;
 }
 
-- (id)copyByRewritingWithSpec:(id)a3 inOwner:(id)a4 inCellCoordinate:(TSUCellCoord)a5
+- (id)copyByRewritingWithSpec:(id)spec inOwner:(id)owner inCellCoordinate:(TSUCellCoord)coordinate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = objc_msgSend_copyByConvertingBaseToChrome_inOwner_inCellCoordinate_(self->_predicate, v10, v8, v9, *&a5);
-  v13 = objc_msgSend_copyByRewritingWithSpec_inOwner_inCellCoordinate_(v11, v12, v8, v9, *&a5);
-  v15 = objc_msgSend_copyByConvertingChromeToBase_inOwner_inCellCoordinate_(v13, v14, v8, v9, *&a5);
+  specCopy = spec;
+  ownerCopy = owner;
+  v11 = objc_msgSend_copyByConvertingBaseToChrome_inOwner_inCellCoordinate_(self->_predicate, v10, specCopy, ownerCopy, *&coordinate);
+  v13 = objc_msgSend_copyByRewritingWithSpec_inOwner_inCellCoordinate_(v11, v12, specCopy, ownerCopy, *&coordinate);
+  v15 = objc_msgSend_copyByConvertingChromeToBase_inOwner_inCellCoordinate_(v13, v14, specCopy, ownerCopy, *&coordinate);
   v16 = objc_alloc(objc_opt_class());
   v18 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v16, v17, v15, self->_cellStyle, self->_textStyle);
 
   return v18;
 }
 
-- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)a3
+- (id)copyByOffsettingRelativeReferencesWithOffset:(TSUColumnRowOffset)offset
 {
-  v6 = objc_msgSend_copyByOffsettingRelativeReferencesWithOffset_(self->_predicate, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_copyByOffsettingRelativeReferencesWithOffset_(self->_predicate, a2, *&offset, v3, v4);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 
   return v9;
 }
 
-- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)a3
+- (id)copyByUpgradingToLinkedRefAtHostCellRef:(const TSCECellRef *)ref
 {
   predicate = self->_predicate;
-  tableUID = a3->_tableUID;
-  v6 = objc_msgSend_copyByUpgradingToLinkedRefForTable_hostCell_(predicate, a2, &tableUID, *&a3->coordinate, v3);
+  tableUID = ref->_tableUID;
+  v6 = objc_msgSend_copyByUpgradingToLinkedRefForTable_hostCell_(predicate, a2, &tableUID, *&ref->coordinate, v3);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 
   return v9;
 }
 
-- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)a3
+- (id)copyByUpdatingHostCellRef:(const TSCECellRef *)ref
 {
   predicate = self->_predicate;
-  tableUID = a3->_tableUID;
-  v6 = objc_msgSend_copyByUpdatingLinkedTable_hostCell_(predicate, a2, &tableUID, *&a3->coordinate, v3);
+  tableUID = ref->_tableUID;
+  v6 = objc_msgSend_copyByUpdatingLinkedTable_hostCell_(predicate, a2, &tableUID, *&ref->coordinate, v3);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 
   return v9;
 }
 
-- (id)copyToUidFormForTableInfo:(id)a3 inCellCoordinate:(TSUCellCoord)a4 preserveHostCell:(BOOL)a5
+- (id)copyToUidFormForTableInfo:(id)info inCellCoordinate:(TSUCellCoord)coordinate preserveHostCell:(BOOL)cell
 {
-  v6 = objc_msgSend_copyToUidFormForConditionalStylesWithTableInfo_containingCell_preserveHostCell_(self->_predicate, a2, a3, *&a4, a5);
+  v6 = objc_msgSend_copyToUidFormForConditionalStylesWithTableInfo_containingCell_preserveHostCell_(self->_predicate, a2, info, *&coordinate, cell);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 
   return v9;
 }
 
-- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)a3 rewriteBlock:(id)a4
+- (id)copyByRewritingWithContext:(TSCEFormulaRewriteContext *)context rewriteBlock:(id)block
 {
-  v6 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self->_predicate, a2, a3, a4, v4);
+  v6 = objc_msgSend_copyByRewritingWithContext_rewriteBlock_(self->_predicate, a2, context, block, v4);
   if (v6 == self->_predicate)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     v7 = objc_alloc(objc_opt_class());
-    v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
+    selfCopy = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (id)copyByClearingUids:(id)a3 containingTableUID:(const TSKUIDStruct *)a4
+- (id)copyByClearingUids:(id)uids containingTableUID:(const TSKUIDStruct *)d
 {
-  v6 = objc_msgSend_copyByClearingUids_containingTableUID_(self->_predicate, a2, a3, a4, v4);
+  v6 = objc_msgSend_copyByClearingUids_containingTableUID_(self->_predicate, a2, uids, d, v4);
   v7 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_initWithPredicate_cellStyle_textStyle_(v7, v8, v6, self->_cellStyle, self->_textStyle);
 

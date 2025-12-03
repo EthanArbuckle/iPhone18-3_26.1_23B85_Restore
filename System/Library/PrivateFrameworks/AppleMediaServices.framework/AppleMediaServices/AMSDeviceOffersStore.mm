@@ -1,18 +1,18 @@
 @interface AMSDeviceOffersStore
-+ (id)serialsBySubtractingAGroups:(id)a3 fromBGroups:(id)a4;
-+ (id)serialsFromGroups:(id)a3;
-+ (id)splitGroups:(id)a3 byItem:(id)a4;
++ (id)serialsBySubtractingAGroups:(id)groups fromBGroups:(id)bGroups;
++ (id)serialsFromGroups:(id)groups;
++ (id)splitGroups:(id)groups byItem:(id)item;
 - (NSArray)cachedRegistrationGroups;
 - (NSArray)companionSerialNumbers;
 - (NSArray)deviceOffers;
 - (NSArray)deviceRegistrationDenyList;
 - (NSDictionary)deviceOfferEligibility;
-- (void)_dbSetNullableValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (void)removeCachedRegistrationItem:(id)a3;
-- (void)setCachedRegistrationGroups:(id)a3;
-- (void)setDeviceOfferEligibility:(id)a3;
-- (void)setDeviceOffers:(id)a3;
-- (void)setDeviceRegistrationDenyList:(id)a3;
+- (void)_dbSetNullableValue:(id)value forKey:(id)key error:(id *)error;
+- (void)removeCachedRegistrationItem:(id)item;
+- (void)setCachedRegistrationGroups:(id)groups;
+- (void)setDeviceOfferEligibility:(id)eligibility;
+- (void)setDeviceOffers:(id)offers;
+- (void)setDeviceRegistrationDenyList:(id)list;
 @end
 
 @implementation AMSDeviceOffersStore
@@ -45,8 +45,8 @@ LABEL_3:
         v6 = +[AMSLogConfig sharedConfig];
       }
 
-      v7 = [v6 OSLogObject];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v6 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v8 = objc_opt_class();
         v9 = AMSLogKey();
@@ -57,7 +57,7 @@ LABEL_3:
         v16 = v9;
         v17 = 2114;
         v18 = v10;
-        _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error fetching cached device groups: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error fetching cached device groups: %{public}@", buf, 0x20u);
       }
     }
 
@@ -83,8 +83,8 @@ AMSDeviceOfferRegistrationGroup *__48__AMSDeviceOffersStore_cachedRegistrationGr
 
 - (NSArray)companionSerialNumbers
 {
-  v2 = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
-  v3 = [v2 objectForKeyedSubscript:@"companionSerialNumbers"];
+  deviceOfferEligibility = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
+  v3 = [deviceOfferEligibility objectForKeyedSubscript:@"companionSerialNumbers"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -109,15 +109,15 @@ AMSDeviceOfferRegistrationGroup *__48__AMSDeviceOffersStore_cachedRegistrationGr
     v3 = off_1E73B0B88;
   }
 
-  v4 = [(__objc2_class *)*v3 deviceOfferEligibility];
+  deviceOfferEligibility = [(__objc2_class *)*v3 deviceOfferEligibility];
 
-  return v4;
+  return deviceOfferEligibility;
 }
 
 - (NSArray)deviceOffers
 {
-  v2 = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
-  v3 = [v2 objectForKeyedSubscript:@"deviceOffers"];
+  deviceOfferEligibility = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
+  v3 = [deviceOfferEligibility objectForKeyedSubscript:@"deviceOffers"];
 
   return v3;
 }
@@ -139,8 +139,8 @@ AMSDeviceOfferRegistrationGroup *__48__AMSDeviceOffersStore_cachedRegistrationGr
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v9 = objc_opt_class();
         v10 = AMSLogKey();
@@ -151,7 +151,7 @@ AMSDeviceOfferRegistrationGroup *__48__AMSDeviceOffersStore_cachedRegistrationGr
         v21 = v10;
         v22 = 2114;
         v23 = v11;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error fetching denylist: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error fetching denylist: %{public}@", buf, 0x20u);
       }
     }
 
@@ -191,8 +191,8 @@ LABEL_15:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = AMSLogKey();
@@ -202,16 +202,16 @@ LABEL_15:
     v21 = v15;
     v22 = 2114;
     v23 = v4;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up denylist: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up denylist: %{public}@", buf, 0x20u);
   }
 
   return v4;
 }
 
-- (void)setCachedRegistrationGroups:(id)a3
+- (void)setCachedRegistrationGroups:(id)groups
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 ams_mapWithTransformIgnoresNil:&__block_literal_global_21_1];
+  v4 = [groups ams_mapWithTransformIgnoresNil:&__block_literal_global_21_1];
   if (+[AMSDefaults migratedStorageToDefaultsForNonAMSInternal])
   {
     [AMSDefaults setDeviceGroups:v4];
@@ -230,8 +230,8 @@ LABEL_15:
         v6 = +[AMSLogConfig sharedConfig];
       }
 
-      v7 = [v6 OSLogObject];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v6 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v8 = objc_opt_class();
         v9 = AMSLogKey();
@@ -242,15 +242,15 @@ LABEL_15:
         v15 = v9;
         v16 = 2114;
         v17 = v10;
-        _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error writing device groups to db: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error writing device groups to db: %{public}@", buf, 0x20u);
       }
     }
   }
 }
 
-- (void)setDeviceOfferEligibility:(id)a3
+- (void)setDeviceOfferEligibility:(id)eligibility
 {
-  v5 = a3;
+  eligibilityCopy = eligibility;
   v3 = +[AMSDefaults migratedStorageToDefaultsForNonAMSInternal];
   v4 = off_1E73B10E0;
   if (v3)
@@ -258,18 +258,18 @@ LABEL_15:
     v4 = off_1E73B0B88;
   }
 
-  [(__objc2_class *)*v4 setDeviceOfferEligibility:v5];
+  [(__objc2_class *)*v4 setDeviceOfferEligibility:eligibilityCopy];
 }
 
-- (void)setDeviceOffers:(id)a3
+- (void)setDeviceOffers:(id)offers
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
-  v7 = v6;
-  if (v6)
+  offersCopy = offers;
+  deviceOfferEligibility = [(AMSDeviceOffersStore *)self deviceOfferEligibility];
+  v7 = deviceOfferEligibility;
+  if (deviceOfferEligibility)
   {
-    v8 = v6;
+    v8 = deviceOfferEligibility;
   }
 
   else
@@ -279,23 +279,23 @@ LABEL_15:
 
   v10 = [v4 dictionaryWithDictionary:v8];
 
-  [v10 setObject:v5 forKeyedSubscript:@"deviceOffers"];
+  [v10 setObject:offersCopy forKeyedSubscript:@"deviceOffers"];
   v9 = [v10 copy];
   [(AMSDeviceOffersStore *)self setDeviceOfferEligibility:v9];
 }
 
-- (void)setDeviceRegistrationDenyList:(id)a3
+- (void)setDeviceRegistrationDenyList:(id)list
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v5 = +[AMSLogConfig sharedDeviceOffersConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -306,13 +306,13 @@ LABEL_15:
     v21 = 1024;
     LODWORD(v22[0]) = +[AMSDefaults migratedStorageToDefaultsForNonAMSInternal];
     WORD2(v22[0]) = 2114;
-    *(v22 + 6) = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Updating device offer denylist (%d): %{public}@", buf, 0x26u);
+    *(v22 + 6) = listCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Updating device offer denylist (%d): %{public}@", buf, 0x26u);
   }
 
   if (+[AMSDefaults migratedStorageToDefaultsForNonAMSInternal])
   {
-    v9 = v4;
+    v9 = listCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -330,7 +330,7 @@ LABEL_15:
   else
   {
     v16 = 0;
-    [(AMSDeviceOffersStore *)self _dbSetNullableValue:v4 forKey:@"deviceRegistrationBlacklist" error:&v16];
+    [(AMSDeviceOffersStore *)self _dbSetNullableValue:listCopy forKey:@"deviceRegistrationBlacklist" error:&v16];
     v10 = v16;
     if (v10)
     {
@@ -340,8 +340,8 @@ LABEL_15:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v13 = objc_opt_class();
         v14 = AMSLogKey();
@@ -352,46 +352,46 @@ LABEL_15:
         v20 = v14;
         v21 = 2114;
         v22[0] = v15;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error writing the device registration denylist to db: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] There was an error writing the device registration denylist to db: %{public}@", buf, 0x20u);
       }
     }
   }
 }
 
-- (void)_dbSetNullableValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)_dbSetNullableValue:(id)value forKey:(id)key error:(id *)error
 {
-  v10 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v8 = [[AMSStorageDatabase alloc] initWithDomain:@"com.apple.AppleMediaServices"];
   v9 = v8;
-  if (v10)
+  if (valueCopy)
   {
-    [(AMSStorageDatabase *)v8 setValue:v10 forKey:v7 error:a5];
+    [(AMSStorageDatabase *)v8 setValue:valueCopy forKey:keyCopy error:error];
   }
 
   else
   {
-    [(AMSStorageDatabase *)v8 deleteForKey:v7 error:a5];
+    [(AMSStorageDatabase *)v8 deleteForKey:keyCopy error:error];
   }
 }
 
-- (void)removeCachedRegistrationItem:(id)a3
+- (void)removeCachedRegistrationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
-  v6 = [(AMSDeviceOffersStore *)self cachedRegistrationGroups];
-  v7 = [v5 splitGroups:v6 byItem:v4];
+  cachedRegistrationGroups = [(AMSDeviceOffersStore *)self cachedRegistrationGroups];
+  v7 = [v5 splitGroups:cachedRegistrationGroups byItem:itemCopy];
 
-  v8 = [v7 first];
-  v16 = [v7 second];
-  [(AMSDeviceOffersStore *)self setCachedRegistrationGroups:v16];
-  v9 = [objc_opt_class() serialsBySubtractingAGroups:v16 fromBGroups:v8];
+  first = [v7 first];
+  second = [v7 second];
+  [(AMSDeviceOffersStore *)self setCachedRegistrationGroups:second];
+  v9 = [objc_opt_class() serialsBySubtractingAGroups:second fromBGroups:first];
   v10 = MEMORY[0x1E695DFA8];
-  v11 = [(AMSDeviceOffersStore *)self deviceRegistrationDenyList];
-  v12 = v11;
-  if (v11)
+  deviceRegistrationDenyList = [(AMSDeviceOffersStore *)self deviceRegistrationDenyList];
+  v12 = deviceRegistrationDenyList;
+  if (deviceRegistrationDenyList)
   {
-    v13 = v11;
+    v13 = deviceRegistrationDenyList;
   }
 
   else
@@ -402,22 +402,22 @@ LABEL_15:
   v14 = [v10 setWithArray:v13];
 
   [v14 minusSet:v9];
-  v15 = [v14 allObjects];
-  [(AMSDeviceOffersStore *)self setDeviceRegistrationDenyList:v15];
+  allObjects = [v14 allObjects];
+  [(AMSDeviceOffersStore *)self setDeviceRegistrationDenyList:allObjects];
 }
 
-+ (id)splitGroups:(id)a3 byItem:(id)a4
++ (id)splitGroups:(id)groups byItem:(id)item
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  itemCopy = item;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = groupsCopy;
   v9 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -433,13 +433,13 @@ LABEL_15:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 registrationItems];
+        registrationItems = [v13 registrationItems];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __43__AMSDeviceOffersStore_splitGroups_byItem___block_invoke;
         v20[3] = &unk_1E73B6F68;
-        v21 = v6;
-        v15 = [v14 ams_anyWithTest:v20];
+        v21 = itemCopy;
+        v15 = [registrationItems ams_anyWithTest:v20];
 
         if (v15)
         {
@@ -476,12 +476,12 @@ uint64_t __43__AMSDeviceOffersStore_splitGroups_byItem___block_invoke(uint64_t a
   return v6;
 }
 
-+ (id)serialsBySubtractingAGroups:(id)a3 fromBGroups:(id)a4
++ (id)serialsBySubtractingAGroups:(id)groups fromBGroups:(id)bGroups
 {
-  v6 = a4;
-  v7 = [a1 serialsFromGroups:a3];
+  bGroupsCopy = bGroups;
+  v7 = [self serialsFromGroups:groups];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [a1 serialsFromGroups:v6];
+  v9 = [self serialsFromGroups:bGroupsCopy];
 
   v10 = [v8 setWithSet:v9];
 
@@ -491,16 +491,16 @@ uint64_t __43__AMSDeviceOffersStore_splitGroups_byItem___block_invoke(uint64_t a
   return v11;
 }
 
-+ (id)serialsFromGroups:(id)a3
++ (id)serialsFromGroups:(id)groups
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = groupsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -515,8 +515,8 @@ uint64_t __43__AMSDeviceOffersStore_splitGroups_byItem___block_invoke(uint64_t a
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) registrationItems];
-        v11 = [v10 ams_mapWithTransform:&__block_literal_global_29_0];
+        registrationItems = [*(*(&v14 + 1) + 8 * i) registrationItems];
+        v11 = [registrationItems ams_mapWithTransform:&__block_literal_global_29_0];
 
         [v4 addObjectsFromArray:v11];
       }

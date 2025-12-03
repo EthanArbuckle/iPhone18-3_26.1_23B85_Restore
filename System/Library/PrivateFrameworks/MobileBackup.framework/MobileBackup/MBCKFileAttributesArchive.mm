@@ -1,32 +1,32 @@
 @interface MBCKFileAttributesArchive
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBirth:(BOOL)a3;
-- (void)setHasContentCompressionMethod:(BOOL)a3;
-- (void)setHasContentEncodingMethod:(BOOL)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)setHasGroupID:(BOOL)a3;
-- (void)setHasIsMMCSEncryptedOnly:(BOOL)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasModified:(BOOL)a3;
-- (void)setHasSizeBeforeCopy:(BOOL)a3;
-- (void)setHasSourceDeviceInode:(BOOL)a3;
-- (void)setHasStatusChanged:(BOOL)a3;
-- (void)setHasUserID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBirth:(BOOL)birth;
+- (void)setHasContentCompressionMethod:(BOOL)method;
+- (void)setHasContentEncodingMethod:(BOOL)method;
+- (void)setHasFlags:(BOOL)flags;
+- (void)setHasGroupID:(BOOL)d;
+- (void)setHasIsMMCSEncryptedOnly:(BOOL)only;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasModified:(BOOL)modified;
+- (void)setHasSizeBeforeCopy:(BOOL)copy;
+- (void)setHasSourceDeviceInode:(BOOL)inode;
+- (void)setHasStatusChanged:(BOOL)changed;
+- (void)setHasUserID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBCKFileAttributesArchive
 
-- (void)setHasBirth:(BOOL)a3
+- (void)setHasBirth:(BOOL)birth
 {
-  if (a3)
+  if (birth)
   {
     v3 = 8;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasModified:(BOOL)a3
+- (void)setHasModified:(BOOL)modified
 {
-  if (a3)
+  if (modified)
   {
     v3 = 512;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasStatusChanged:(BOOL)a3
+- (void)setHasStatusChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 1024;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasGroupID:(BOOL)a3
+- (void)setHasGroupID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 128;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasUserID:(BOOL)a3
+- (void)setHasUserID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2048;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 256;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSizeBeforeCopy:(BOOL)a3
+- (void)setHasSizeBeforeCopy:(BOOL)copy
 {
-  if (a3)
+  if (copy)
   {
     v3 = 2;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 64;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasContentEncodingMethod:(BOOL)a3
+- (void)setHasContentEncodingMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 32;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasContentCompressionMethod:(BOOL)a3
+- (void)setHasContentCompressionMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 16;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsMMCSEncryptedOnly:(BOOL)a3
+- (void)setHasIsMMCSEncryptedOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 4096;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSourceDeviceInode:(BOOL)a3
+- (void)setHasSourceDeviceInode:(BOOL)inode
 {
-  if (a3)
+  if (inode)
   {
     v3 = 4;
   }
@@ -209,8 +209,8 @@
   v7.receiver = self;
   v7.super_class = MBCKFileAttributesArchive;
   v3 = [(MBCKFileAttributesArchive *)&v7 description];
-  v4 = [(MBCKFileAttributesArchive *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(MBCKFileAttributesArchive *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -429,14 +429,14 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -447,18 +447,18 @@ LABEL_24:
       while (1)
       {
         v103 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v103 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v103 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v103 & 0x7F) << v6;
@@ -476,9 +476,9 @@ LABEL_24:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -497,18 +497,18 @@ LABEL_15:
           while (1)
           {
             v111 = 0;
-            v39 = [a3 position] + 1;
-            if (v39 >= [a3 position] && (v40 = objc_msgSend(a3, "position") + 1, v40 <= objc_msgSend(a3, "length")))
+            v39 = [from position] + 1;
+            if (v39 >= [from position] && (v40 = objc_msgSend(from, "position") + 1, v40 <= objc_msgSend(from, "length")))
             {
-              v41 = [a3 data];
-              [v41 getBytes:&v111 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v111 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v38 |= (v111 & 0x7F) << v36;
@@ -526,7 +526,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -547,18 +547,18 @@ LABEL_157:
           while (1)
           {
             v110 = 0;
-            v58 = [a3 position] + 1;
-            if (v58 >= [a3 position] && (v59 = objc_msgSend(a3, "position") + 1, v59 <= objc_msgSend(a3, "length")))
+            v58 = [from position] + 1;
+            if (v58 >= [from position] && (v59 = objc_msgSend(from, "position") + 1, v59 <= objc_msgSend(from, "length")))
             {
-              v60 = [a3 data];
-              [v60 getBytes:&v110 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v110 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v57 |= (v110 & 0x7F) << v55;
@@ -576,7 +576,7 @@ LABEL_157:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -597,18 +597,18 @@ LABEL_169:
           while (1)
           {
             v109 = 0;
-            v51 = [a3 position] + 1;
-            if (v51 >= [a3 position] && (v52 = objc_msgSend(a3, "position") + 1, v52 <= objc_msgSend(a3, "length")))
+            v51 = [from position] + 1;
+            if (v51 >= [from position] && (v52 = objc_msgSend(from, "position") + 1, v52 <= objc_msgSend(from, "length")))
             {
-              v53 = [a3 data];
-              [v53 getBytes:&v109 range:{objc_msgSend(a3, "position"), 1}];
+              data4 = [from data];
+              [data4 getBytes:&v109 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v50 |= (v109 & 0x7F) << v48;
@@ -626,7 +626,7 @@ LABEL_169:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -647,18 +647,18 @@ LABEL_165:
           while (1)
           {
             v114 = 0;
-            v26 = [a3 position] + 1;
-            if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+            v26 = [from position] + 1;
+            if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
             {
-              v28 = [a3 data];
-              [v28 getBytes:&v114 range:{objc_msgSend(a3, "position"), 1}];
+              data5 = [from data];
+              [data5 getBytes:&v114 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v25 |= (v114 & 0x7F) << v23;
@@ -676,7 +676,7 @@ LABEL_165:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v29 = 0;
           }
@@ -697,18 +697,18 @@ LABEL_149:
           while (1)
           {
             v108 = 0;
-            v45 = [a3 position] + 1;
-            if (v45 >= [a3 position] && (v46 = objc_msgSend(a3, "position") + 1, v46 <= objc_msgSend(a3, "length")))
+            v45 = [from position] + 1;
+            if (v45 >= [from position] && (v46 = objc_msgSend(from, "position") + 1, v46 <= objc_msgSend(from, "length")))
             {
-              v47 = [a3 data];
-              [v47 getBytes:&v108 range:{objc_msgSend(a3, "position"), 1}];
+              data6 = [from data];
+              [data6 getBytes:&v108 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v44 |= (v108 & 0x7F) << v42;
@@ -726,7 +726,7 @@ LABEL_149:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -747,18 +747,18 @@ LABEL_161:
           while (1)
           {
             v107 = 0;
-            v64 = [a3 position] + 1;
-            if (v64 >= [a3 position] && (v65 = objc_msgSend(a3, "position") + 1, v65 <= objc_msgSend(a3, "length")))
+            v64 = [from position] + 1;
+            if (v64 >= [from position] && (v65 = objc_msgSend(from, "position") + 1, v65 <= objc_msgSend(from, "length")))
             {
-              v66 = [a3 data];
-              [v66 getBytes:&v107 range:{objc_msgSend(a3, "position"), 1}];
+              data7 = [from data];
+              [data7 getBytes:&v107 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v63 |= (v107 & 0x7F) << v61;
@@ -776,7 +776,7 @@ LABEL_161:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -797,18 +797,18 @@ LABEL_173:
           while (1)
           {
             v106 = 0;
-            v70 = [a3 position] + 1;
-            if (v70 >= [a3 position] && (v71 = objc_msgSend(a3, "position") + 1, v71 <= objc_msgSend(a3, "length")))
+            v70 = [from position] + 1;
+            if (v70 >= [from position] && (v71 = objc_msgSend(from, "position") + 1, v71 <= objc_msgSend(from, "length")))
             {
-              v72 = [a3 data];
-              [v72 getBytes:&v106 range:{objc_msgSend(a3, "position"), 1}];
+              data8 = [from data];
+              [data8 getBytes:&v106 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v69 |= (v106 & 0x7F) << v67;
@@ -826,7 +826,7 @@ LABEL_173:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -847,18 +847,18 @@ LABEL_177:
           while (1)
           {
             v113 = 0;
-            v90 = [a3 position] + 1;
-            if (v90 >= [a3 position] && (v91 = objc_msgSend(a3, "position") + 1, v91 <= objc_msgSend(a3, "length")))
+            v90 = [from position] + 1;
+            if (v90 >= [from position] && (v91 = objc_msgSend(from, "position") + 1, v91 <= objc_msgSend(from, "length")))
             {
-              v92 = [a3 data];
-              [v92 getBytes:&v113 range:{objc_msgSend(a3, "position"), 1}];
+              data9 = [from data];
+              [data9 getBytes:&v113 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v89 |= (v113 & 0x7F) << v87;
@@ -876,7 +876,7 @@ LABEL_177:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v29 = 0;
           }
@@ -913,18 +913,18 @@ LABEL_123:
           while (1)
           {
             v115 = 0;
-            v33 = [a3 position] + 1;
-            if (v33 >= [a3 position] && (v34 = objc_msgSend(a3, "position") + 1, v34 <= objc_msgSend(a3, "length")))
+            v33 = [from position] + 1;
+            if (v33 >= [from position] && (v34 = objc_msgSend(from, "position") + 1, v34 <= objc_msgSend(from, "length")))
             {
-              v35 = [a3 data];
-              [v35 getBytes:&v115 range:{objc_msgSend(a3, "position"), 1}];
+              data10 = [from data];
+              [data10 getBytes:&v115 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v32 |= (v115 & 0x7F) << v30;
@@ -942,7 +942,7 @@ LABEL_123:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -963,18 +963,18 @@ LABEL_153:
           while (1)
           {
             v105 = 0;
-            v19 = [a3 position] + 1;
-            if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+            v19 = [from position] + 1;
+            if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
             {
-              v21 = [a3 data];
-              [v21 getBytes:&v105 range:{objc_msgSend(a3, "position"), 1}];
+              data11 = [from data];
+              [data11 getBytes:&v105 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v18 |= (v105 & 0x7F) << v16;
@@ -992,7 +992,7 @@ LABEL_153:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -1013,18 +1013,18 @@ LABEL_145:
           while (1)
           {
             v104 = 0;
-            v76 = [a3 position] + 1;
-            if (v76 >= [a3 position] && (v77 = objc_msgSend(a3, "position") + 1, v77 <= objc_msgSend(a3, "length")))
+            v76 = [from position] + 1;
+            if (v76 >= [from position] && (v77 = objc_msgSend(from, "position") + 1, v77 <= objc_msgSend(from, "length")))
             {
-              v78 = [a3 data];
-              [v78 getBytes:&v104 range:{objc_msgSend(a3, "position"), 1}];
+              data12 = [from data];
+              [data12 getBytes:&v104 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v75 |= (v104 & 0x7F) << v73;
@@ -1042,7 +1042,7 @@ LABEL_145:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -1065,18 +1065,18 @@ LABEL_182:
           while (1)
           {
             v116 = 0;
-            v82 = [a3 position] + 1;
-            if (v82 >= [a3 position] && (v83 = objc_msgSend(a3, "position") + 1, v83 <= objc_msgSend(a3, "length")))
+            v82 = [from position] + 1;
+            if (v82 >= [from position] && (v83 = objc_msgSend(from, "position") + 1, v83 <= objc_msgSend(from, "length")))
             {
-              v84 = [a3 data];
-              [v84 getBytes:&v116 range:{objc_msgSend(a3, "position"), 1}];
+              data13 = [from data];
+              [data13 getBytes:&v116 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v81 |= (v116 & 0x7F) << v79;
@@ -1094,7 +1094,7 @@ LABEL_182:
             }
           }
 
-          v85 = (v81 != 0) & ~[a3 hasError];
+          v85 = (v81 != 0) & ~[from hasError];
 LABEL_184:
           self->_isMMCSEncryptedOnly = v85;
           goto LABEL_194;
@@ -1117,18 +1117,18 @@ LABEL_184:
       while (1)
       {
         v112 = 0;
-        v96 = [a3 position] + 1;
-        if (v96 >= [a3 position] && (v97 = objc_msgSend(a3, "position") + 1, v97 <= objc_msgSend(a3, "length")))
+        v96 = [from position] + 1;
+        if (v96 >= [from position] && (v97 = objc_msgSend(from, "position") + 1, v97 <= objc_msgSend(from, "length")))
         {
-          v98 = [a3 data];
-          [v98 getBytes:&v112 range:{objc_msgSend(a3, "position"), 1}];
+          data14 = [from data];
+          [data14 getBytes:&v112 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v95 |= (v112 & 0x7F) << v93;
@@ -1146,30 +1146,30 @@ LABEL_184:
         }
       }
 
-      v29 = [a3 hasError] ? 0 : v95;
+      v29 = [from hasError] ? 0 : v95;
 LABEL_192:
       v100 = 24;
 LABEL_193:
       *&self->PBCodable_opaque[v100] = v29;
 LABEL_194:
-      v101 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v101 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v54) = [a3 hasError] ^ 1;
+  LOBYTE(v54) = [from hasError] ^ 1;
   return v54;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v20 = v4;
+  toCopy = to;
+  v20 = toCopy;
   if (self->_relativePath)
   {
     PBDataWriterWriteStringField();
-    v4 = v20;
+    toCopy = v20;
   }
 
   has = self->_has;
@@ -1177,7 +1177,7 @@ LABEL_194:
   {
     birth = self->_birth;
     PBDataWriterWriteInt32Field();
-    v4 = v20;
+    toCopy = v20;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -1198,7 +1198,7 @@ LABEL_5:
 
   modified = self->_modified;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1214,7 +1214,7 @@ LABEL_6:
 LABEL_29:
   statusChanged = self->_statusChanged;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1230,7 +1230,7 @@ LABEL_7:
 LABEL_30:
   size = self->_size;
   PBDataWriterWriteInt64Field();
-  v4 = v20;
+  toCopy = v20;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1246,7 +1246,7 @@ LABEL_8:
 LABEL_31:
   groupID = self->_groupID;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1262,7 +1262,7 @@ LABEL_9:
 LABEL_32:
   userID = self->_userID;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1278,32 +1278,32 @@ LABEL_10:
 LABEL_33:
   mode = self->_mode;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_11:
     sizeBeforeCopy = self->_sizeBeforeCopy;
     PBDataWriterWriteInt64Field();
-    v4 = v20;
+    toCopy = v20;
   }
 
 LABEL_12:
   if (self->_linkTarget)
   {
     PBDataWriterWriteStringField();
-    v4 = v20;
+    toCopy = v20;
   }
 
   if (self->_encryptionKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v20;
+    toCopy = v20;
   }
 
   if (self->_sha256Signature)
   {
     PBDataWriterWriteDataField();
-    v4 = v20;
+    toCopy = v20;
   }
 
   v7 = self->_has;
@@ -1311,7 +1311,7 @@ LABEL_12:
   {
     flags = self->_flags;
     PBDataWriterWriteUint32Field();
-    v4 = v20;
+    toCopy = v20;
     v7 = self->_has;
     if ((v7 & 0x20) == 0)
     {
@@ -1332,7 +1332,7 @@ LABEL_20:
 
   contentEncodingMethod = self->_contentEncodingMethod;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   v7 = self->_has;
   if ((v7 & 0x10) == 0)
   {
@@ -1348,7 +1348,7 @@ LABEL_21:
 LABEL_37:
   contentCompressionMethod = self->_contentCompressionMethod;
   PBDataWriterWriteInt32Field();
-  v4 = v20;
+  toCopy = v20;
   v7 = self->_has;
   if ((v7 & 0x1000) == 0)
   {
@@ -1364,33 +1364,33 @@ LABEL_22:
 LABEL_38:
   isMMCSEncryptedOnly = self->_isMMCSEncryptedOnly;
   PBDataWriterWriteBOOLField();
-  v4 = v20;
+  toCopy = v20;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_23:
     sourceDeviceInode = self->_sourceDeviceInode;
     PBDataWriterWriteInt64Field();
-    v4 = v20;
+    toCopy = v20;
   }
 
 LABEL_24:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_relativePath)
   {
-    [v4 setRelativePath:?];
-    v4 = v7;
+    [toCopy setRelativePath:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 8) = self->_birth;
-    *(v4 + 54) |= 8u;
+    *(toCopy + 8) = self->_birth;
+    *(toCopy + 54) |= 8u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -1409,8 +1409,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 19) = self->_modified;
-  *(v4 + 54) |= 0x200u;
+  *(toCopy + 19) = self->_modified;
+  *(toCopy + 54) |= 0x200u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1424,8 +1424,8 @@ LABEL_6:
   }
 
 LABEL_29:
-  *(v4 + 24) = self->_statusChanged;
-  *(v4 + 54) |= 0x400u;
+  *(toCopy + 24) = self->_statusChanged;
+  *(toCopy + 54) |= 0x400u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1439,8 +1439,8 @@ LABEL_7:
   }
 
 LABEL_30:
-  *(v4 + 1) = self->_size;
-  *(v4 + 54) |= 1u;
+  *(toCopy + 1) = self->_size;
+  *(toCopy + 54) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1454,8 +1454,8 @@ LABEL_8:
   }
 
 LABEL_31:
-  *(v4 + 15) = self->_groupID;
-  *(v4 + 54) |= 0x80u;
+  *(toCopy + 15) = self->_groupID;
+  *(toCopy + 54) |= 0x80u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1469,8 +1469,8 @@ LABEL_9:
   }
 
 LABEL_32:
-  *(v4 + 25) = self->_userID;
-  *(v4 + 54) |= 0x800u;
+  *(toCopy + 25) = self->_userID;
+  *(toCopy + 54) |= 0x800u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1484,39 +1484,39 @@ LABEL_10:
   }
 
 LABEL_33:
-  *(v4 + 18) = self->_mode;
-  *(v4 + 54) |= 0x100u;
+  *(toCopy + 18) = self->_mode;
+  *(toCopy + 54) |= 0x100u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_11:
-    *(v4 + 2) = self->_sizeBeforeCopy;
-    *(v4 + 54) |= 2u;
+    *(toCopy + 2) = self->_sizeBeforeCopy;
+    *(toCopy + 54) |= 2u;
   }
 
 LABEL_12:
   if (self->_linkTarget)
   {
     [v7 setLinkTarget:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_encryptionKey)
   {
     [v7 setEncryptionKey:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sha256Signature)
   {
     [v7 setSha256Signature:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 14) = self->_flags;
-    *(v4 + 54) |= 0x40u;
+    *(toCopy + 14) = self->_flags;
+    *(toCopy + 54) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 0x20) == 0)
     {
@@ -1535,8 +1535,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *(v4 + 10) = self->_contentEncodingMethod;
-  *(v4 + 54) |= 0x20u;
+  *(toCopy + 10) = self->_contentEncodingMethod;
+  *(toCopy + 54) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -1550,8 +1550,8 @@ LABEL_21:
   }
 
 LABEL_37:
-  *(v4 + 9) = self->_contentCompressionMethod;
-  *(v4 + 54) |= 0x10u;
+  *(toCopy + 9) = self->_contentCompressionMethod;
+  *(toCopy + 54) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x1000) == 0)
   {
@@ -1565,22 +1565,22 @@ LABEL_22:
   }
 
 LABEL_38:
-  *(v4 + 104) = self->_isMMCSEncryptedOnly;
-  *(v4 + 54) |= 0x1000u;
+  *(toCopy + 104) = self->_isMMCSEncryptedOnly;
+  *(toCopy + 54) |= 0x1000u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_23:
-    *(v4 + 3) = self->_sourceDeviceInode;
-    *(v4 + 54) |= 4u;
+    *(toCopy + 3) = self->_sourceDeviceInode;
+    *(toCopy + 54) |= 4u;
   }
 
 LABEL_24:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_relativePath copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_relativePath copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
@@ -1692,15 +1692,15 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = [(NSString *)self->_linkTarget copyWithZone:a3];
+  v9 = [(NSString *)self->_linkTarget copyWithZone:zone];
   v10 = v5[8];
   v5[8] = v9;
 
-  v11 = [(NSData *)self->_encryptionKey copyWithZone:a3];
+  v11 = [(NSData *)self->_encryptionKey copyWithZone:zone];
   v12 = v5[6];
   v5[6] = v11;
 
-  v13 = [(NSData *)self->_sha256Signature copyWithZone:a3];
+  v13 = [(NSData *)self->_sha256Signature copyWithZone:zone];
   v14 = v5[11];
   v5[11] = v13;
 
@@ -1769,16 +1769,16 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   relativePath = self->_relativePath;
-  if (relativePath | *(v4 + 10))
+  if (relativePath | *(equalCopy + 10))
   {
     if (![(NSString *)relativePath isEqual:?])
     {
@@ -1787,10 +1787,10 @@ LABEL_15:
   }
 
   has = self->_has;
-  v7 = *(v4 + 54);
+  v7 = *(equalCopy + 54);
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_birth != *(v4 + 8))
+    if ((v7 & 8) == 0 || self->_birth != *(equalCopy + 8))
     {
       goto LABEL_77;
     }
@@ -1803,33 +1803,33 @@ LABEL_15:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 54) & 0x200) == 0 || self->_modified != *(v4 + 19))
+    if ((*(equalCopy + 54) & 0x200) == 0 || self->_modified != *(equalCopy + 19))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 54) & 0x200) != 0)
+  else if ((*(equalCopy + 54) & 0x200) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 54) & 0x400) == 0 || self->_statusChanged != *(v4 + 24))
+    if ((*(equalCopy + 54) & 0x400) == 0 || self->_statusChanged != *(equalCopy + 24))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 54) & 0x400) != 0)
+  else if ((*(equalCopy + 54) & 0x400) != 0)
   {
     goto LABEL_77;
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_size != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_size != *(equalCopy + 1))
     {
       goto LABEL_77;
     }
@@ -1842,7 +1842,7 @@ LABEL_15:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_groupID != *(v4 + 15))
+    if ((v7 & 0x80) == 0 || self->_groupID != *(equalCopy + 15))
     {
       goto LABEL_77;
     }
@@ -1855,33 +1855,33 @@ LABEL_15:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 54) & 0x800) == 0 || self->_userID != *(v4 + 25))
+    if ((*(equalCopy + 54) & 0x800) == 0 || self->_userID != *(equalCopy + 25))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 54) & 0x800) != 0)
+  else if ((*(equalCopy + 54) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 54) & 0x100) == 0 || self->_mode != *(v4 + 18))
+    if ((*(equalCopy + 54) & 0x100) == 0 || self->_mode != *(equalCopy + 18))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 54) & 0x100) != 0)
+  else if ((*(equalCopy + 54) & 0x100) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_sizeBeforeCopy != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_sizeBeforeCopy != *(equalCopy + 2))
     {
       goto LABEL_77;
     }
@@ -1893,13 +1893,13 @@ LABEL_15:
   }
 
   linkTarget = self->_linkTarget;
-  if (linkTarget | *(v4 + 8) && ![(NSString *)linkTarget isEqual:?])
+  if (linkTarget | *(equalCopy + 8) && ![(NSString *)linkTarget isEqual:?])
   {
     goto LABEL_77;
   }
 
   encryptionKey = self->_encryptionKey;
-  if (encryptionKey | *(v4 + 6))
+  if (encryptionKey | *(equalCopy + 6))
   {
     if (![(NSData *)encryptionKey isEqual:?])
     {
@@ -1908,7 +1908,7 @@ LABEL_15:
   }
 
   sha256Signature = self->_sha256Signature;
-  if (sha256Signature | *(v4 + 11))
+  if (sha256Signature | *(equalCopy + 11))
   {
     if (![(NSData *)sha256Signature isEqual:?])
     {
@@ -1917,10 +1917,10 @@ LABEL_15:
   }
 
   v11 = self->_has;
-  v12 = *(v4 + 54);
+  v12 = *(equalCopy + 54);
   if ((v11 & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_flags != *(v4 + 14))
+    if ((v12 & 0x40) == 0 || self->_flags != *(equalCopy + 14))
     {
       goto LABEL_77;
     }
@@ -1933,7 +1933,7 @@ LABEL_15:
 
   if ((v11 & 0x20) != 0)
   {
-    if ((v12 & 0x20) == 0 || self->_contentEncodingMethod != *(v4 + 10))
+    if ((v12 & 0x20) == 0 || self->_contentEncodingMethod != *(equalCopy + 10))
     {
       goto LABEL_77;
     }
@@ -1946,7 +1946,7 @@ LABEL_15:
 
   if ((v11 & 0x10) != 0)
   {
-    if ((v12 & 0x10) == 0 || self->_contentCompressionMethod != *(v4 + 9))
+    if ((v12 & 0x10) == 0 || self->_contentCompressionMethod != *(equalCopy + 9))
     {
       goto LABEL_77;
     }
@@ -1959,7 +1959,7 @@ LABEL_15:
 
   if ((*&self->_has & 0x1000) == 0)
   {
-    if ((*(v4 + 54) & 0x1000) == 0)
+    if ((*(equalCopy + 54) & 0x1000) == 0)
     {
       goto LABEL_67;
     }
@@ -1969,21 +1969,21 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  if ((*(v4 + 54) & 0x1000) == 0)
+  if ((*(equalCopy + 54) & 0x1000) == 0)
   {
     goto LABEL_77;
   }
 
-  v14 = *(v4 + 104);
+  v14 = *(equalCopy + 104);
   if (self->_isMMCSEncryptedOnly)
   {
-    if ((*(v4 + 104) & 1) == 0)
+    if ((*(equalCopy + 104) & 1) == 0)
     {
       goto LABEL_77;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_77;
   }
@@ -1991,7 +1991,7 @@ LABEL_77:
 LABEL_67:
   if ((v11 & 4) != 0)
   {
-    if ((v12 & 4) == 0 || self->_sourceDeviceInode != *(v4 + 3))
+    if ((v12 & 4) == 0 || self->_sourceDeviceInode != *(equalCopy + 3))
     {
       goto LABEL_77;
     }
@@ -2189,22 +2189,22 @@ LABEL_23:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(MBCKFileAttributesArchive *)self setRelativePath:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 8) != 0)
   {
-    self->_birth = *(v4 + 8);
+    self->_birth = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v5 = *(v4 + 54);
+    v5 = *(fromCopy + 54);
     if ((v5 & 0x200) == 0)
     {
 LABEL_5:
@@ -2217,14 +2217,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 54) & 0x200) == 0)
+  else if ((*(fromCopy + 54) & 0x200) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_modified = *(v4 + 19);
+  self->_modified = *(fromCopy + 19);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x400) == 0)
   {
 LABEL_6:
@@ -2237,9 +2237,9 @@ LABEL_6:
   }
 
 LABEL_29:
-  self->_statusChanged = *(v4 + 24);
+  self->_statusChanged = *(fromCopy + 24);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -2252,9 +2252,9 @@ LABEL_7:
   }
 
 LABEL_30:
-  self->_size = *(v4 + 1);
+  self->_size = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -2267,9 +2267,9 @@ LABEL_8:
   }
 
 LABEL_31:
-  self->_groupID = *(v4 + 15);
+  self->_groupID = *(fromCopy + 15);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x800) == 0)
   {
 LABEL_9:
@@ -2282,9 +2282,9 @@ LABEL_9:
   }
 
 LABEL_32:
-  self->_userID = *(v4 + 25);
+  self->_userID = *(fromCopy + 25);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x100) == 0)
   {
 LABEL_10:
@@ -2297,40 +2297,40 @@ LABEL_10:
   }
 
 LABEL_33:
-  self->_mode = *(v4 + 18);
+  self->_mode = *(fromCopy + 18);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 54) & 2) != 0)
+  if ((*(fromCopy + 54) & 2) != 0)
   {
 LABEL_11:
-    self->_sizeBeforeCopy = *(v4 + 2);
+    self->_sizeBeforeCopy = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_12:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(MBCKFileAttributesArchive *)self setLinkTarget:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MBCKFileAttributesArchive *)self setEncryptionKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(MBCKFileAttributesArchive *)self setSha256Signature:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 54);
+  v6 = *(fromCopy + 54);
   if ((v6 & 0x40) != 0)
   {
-    self->_flags = *(v4 + 14);
+    self->_flags = *(fromCopy + 14);
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 54);
+    v6 = *(fromCopy + 54);
     if ((v6 & 0x20) == 0)
     {
 LABEL_20:
@@ -2348,9 +2348,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_contentEncodingMethod = *(v4 + 10);
+  self->_contentEncodingMethod = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 54);
+  v6 = *(fromCopy + 54);
   if ((v6 & 0x10) == 0)
   {
 LABEL_21:
@@ -2363,9 +2363,9 @@ LABEL_21:
   }
 
 LABEL_37:
-  self->_contentCompressionMethod = *(v4 + 9);
+  self->_contentCompressionMethod = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 54);
+  v6 = *(fromCopy + 54);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_22:
@@ -2378,12 +2378,12 @@ LABEL_22:
   }
 
 LABEL_38:
-  self->_isMMCSEncryptedOnly = *(v4 + 104);
+  self->_isMMCSEncryptedOnly = *(fromCopy + 104);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 54) & 4) != 0)
+  if ((*(fromCopy + 54) & 4) != 0)
   {
 LABEL_23:
-    self->_sourceDeviceInode = *(v4 + 3);
+    self->_sourceDeviceInode = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

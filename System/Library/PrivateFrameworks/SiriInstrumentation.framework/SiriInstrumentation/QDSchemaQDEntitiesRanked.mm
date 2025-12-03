@@ -1,30 +1,30 @@
 @interface QDSchemaQDEntitiesRanked
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDEntitiesRanked)initWithDictionary:(id)a3;
-- (QDSchemaQDEntitiesRanked)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDEntitiesRanked)initWithDictionary:(id)dictionary;
+- (QDSchemaQDEntitiesRanked)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRetrievedTools:(id)a3;
-- (void)addSpanMatchedEntities:(id)a3;
-- (void)addUtteranceContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRetrievedTools:(id)tools;
+- (void)addSpanMatchedEntities:(id)entities;
+- (void)addUtteranceContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDEntitiesRanked
 
-- (QDSchemaQDEntitiesRanked)initWithDictionary:(id)a3
+- (QDSchemaQDEntitiesRanked)initWithDictionary:(id)dictionary
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = QDSchemaQDEntitiesRanked;
   v5 = [(QDSchemaQDEntitiesRanked *)&v47 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"retrievedTools"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"retrievedTools"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       v6 = v7;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"spanMatchedEntities"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"spanMatchedEntities"];
     objc_opt_class();
     v34 = v15;
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
       v15 = v34;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"utteranceContext"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"utteranceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,30 +169,30 @@
   return v5;
 }
 
-- (QDSchemaQDEntitiesRanked)initWithJSON:(id)a3
+- (QDSchemaQDEntitiesRanked)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDEntitiesRanked *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDEntitiesRanked *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDEntitiesRanked *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -206,10 +206,10 @@
 - (id)dictionaryRepresentation
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_retrievedTools count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -229,16 +229,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -248,12 +248,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"retrievedTools"];
+    [dictionary setObject:array forKeyedSubscript:@"retrievedTools"];
   }
 
   if ([(NSArray *)self->_spanMatchedEntities count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -273,16 +273,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -292,12 +292,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"spanMatchedEntities"];
+    [dictionary setObject:array2 forKeyedSubscript:@"spanMatchedEntities"];
   }
 
   if ([(NSArray *)self->_utteranceContexts count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -317,16 +317,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -336,12 +336,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"utteranceContext"];
+    [dictionary setObject:array3 forKeyedSubscript:@"utteranceContext"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v29];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v29];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -351,28 +351,28 @@
   return v4 ^ [(NSArray *)self->_utteranceContexts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
-  v6 = [v4 retrievedTools];
-  if ((v5 != 0) == (v6 == 0))
+  retrievedTools = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
+  retrievedTools2 = [equalCopy retrievedTools];
+  if ((retrievedTools != 0) == (retrievedTools2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
-  if (v7)
+  retrievedTools3 = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
+  if (retrievedTools3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
-    v10 = [v4 retrievedTools];
-    v11 = [v9 isEqual:v10];
+    v8 = retrievedTools3;
+    retrievedTools4 = [(QDSchemaQDEntitiesRanked *)self retrievedTools];
+    retrievedTools5 = [equalCopy retrievedTools];
+    v11 = [retrievedTools4 isEqual:retrievedTools5];
 
     if (!v11)
     {
@@ -384,20 +384,20 @@
   {
   }
 
-  v5 = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
-  v6 = [v4 spanMatchedEntities];
-  if ((v5 != 0) == (v6 == 0))
+  retrievedTools = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
+  retrievedTools2 = [equalCopy spanMatchedEntities];
+  if ((retrievedTools != 0) == (retrievedTools2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
-  if (v12)
+  spanMatchedEntities = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
+  if (spanMatchedEntities)
   {
-    v13 = v12;
-    v14 = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
-    v15 = [v4 spanMatchedEntities];
-    v16 = [v14 isEqual:v15];
+    v13 = spanMatchedEntities;
+    spanMatchedEntities2 = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
+    spanMatchedEntities3 = [equalCopy spanMatchedEntities];
+    v16 = [spanMatchedEntities2 isEqual:spanMatchedEntities3];
 
     if (!v16)
     {
@@ -409,12 +409,12 @@
   {
   }
 
-  v5 = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
-  v6 = [v4 utteranceContexts];
-  if ((v5 != 0) != (v6 == 0))
+  retrievedTools = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
+  retrievedTools2 = [equalCopy utteranceContexts];
+  if ((retrievedTools != 0) != (retrievedTools2 == 0))
   {
-    v17 = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
-    if (!v17)
+    utteranceContexts = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
+    if (!utteranceContexts)
     {
 
 LABEL_20:
@@ -422,10 +422,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
-    v20 = [v4 utteranceContexts];
-    v21 = [v19 isEqual:v20];
+    v18 = utteranceContexts;
+    utteranceContexts2 = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
+    utteranceContexts3 = [equalCopy utteranceContexts];
+    v21 = [utteranceContexts2 isEqual:utteranceContexts3];
 
     if (v21)
     {
@@ -445,10 +445,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -543,76 +543,76 @@ LABEL_18:
   }
 }
 
-- (void)addUtteranceContext:(id)a3
+- (void)addUtteranceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   utteranceContexts = self->_utteranceContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!utteranceContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_utteranceContexts;
-    self->_utteranceContexts = v6;
+    self->_utteranceContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     utteranceContexts = self->_utteranceContexts;
   }
 
-  [(NSArray *)utteranceContexts addObject:v4];
+  [(NSArray *)utteranceContexts addObject:contextCopy];
 }
 
-- (void)addSpanMatchedEntities:(id)a3
+- (void)addSpanMatchedEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   spanMatchedEntities = self->_spanMatchedEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!spanMatchedEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_spanMatchedEntities;
-    self->_spanMatchedEntities = v6;
+    self->_spanMatchedEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     spanMatchedEntities = self->_spanMatchedEntities;
   }
 
-  [(NSArray *)spanMatchedEntities addObject:v4];
+  [(NSArray *)spanMatchedEntities addObject:entitiesCopy];
 }
 
-- (void)addRetrievedTools:(id)a3
+- (void)addRetrievedTools:(id)tools
 {
-  v4 = a3;
+  toolsCopy = tools;
   retrievedTools = self->_retrievedTools;
-  v8 = v4;
+  v8 = toolsCopy;
   if (!retrievedTools)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_retrievedTools;
-    self->_retrievedTools = v6;
+    self->_retrievedTools = array;
 
-    v4 = v8;
+    toolsCopy = v8;
     retrievedTools = self->_retrievedTools;
   }
 
-  [(NSArray *)retrievedTools addObject:v4];
+  [(NSArray *)retrievedTools addObject:toolsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v13.receiver = self;
   v13.super_class = QDSchemaQDEntitiesRanked;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(QDSchemaQDEntitiesRanked *)self retrievedTools:v13.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(QDSchemaQDEntitiesRanked *)self setRetrievedTools:v7];
 
-  v8 = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  spanMatchedEntities = [(QDSchemaQDEntitiesRanked *)self spanMatchedEntities];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:spanMatchedEntities underConditions:policyCopy];
   [(QDSchemaQDEntitiesRanked *)self setSpanMatchedEntities:v9];
 
-  v10 = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
-  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v10 underConditions:v4];
+  utteranceContexts = [(QDSchemaQDEntitiesRanked *)self utteranceContexts];
+  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:utteranceContexts underConditions:policyCopy];
 
   [(QDSchemaQDEntitiesRanked *)self setUtteranceContexts:v11];
 

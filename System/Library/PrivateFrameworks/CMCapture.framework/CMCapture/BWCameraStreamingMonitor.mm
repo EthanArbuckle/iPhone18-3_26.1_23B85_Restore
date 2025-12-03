@@ -1,21 +1,21 @@
 @interface BWCameraStreamingMonitor
 + (id)sharedCameraStreamingMonitor;
 + (void)initialize;
-- (BWCameraStreamingMonitor)initWithMediaStatusDomainPublisher:(id)a3 msnReportingEnabled:(BOOL)a4 systemStatusReportingEnabled:(BOOL)a5 privacyAccountingAccessLogger:(id)a6;
-- (uint64_t)_getClientInfoForTCCIdentity:(uint64_t)a3 clientPID:(int)a4 sessionIsPrewarming:;
+- (BWCameraStreamingMonitor)initWithMediaStatusDomainPublisher:(id)publisher msnReportingEnabled:(BOOL)enabled systemStatusReportingEnabled:(BOOL)reportingEnabled privacyAccountingAccessLogger:(id)logger;
+- (uint64_t)_getClientInfoForTCCIdentity:(uint64_t)identity clientPID:(int)d sessionIsPrewarming:;
 - (uint64_t)_handleClientDeath:(uint64_t)result;
-- (uint64_t)_informSystemStatusWithIsStreaming:(__int128 *)a3 clientAuditToken:(uint64_t)a4 mediaEnvironment:;
-- (uint64_t)_updateCameraStreamingMonitorInfoWithStreaming:(char)a3 cameraAccessGranted:(uint64_t)a4 clientAuditToken:(uint64_t)a5 tccIdentity:(int)a6 updateStreamingStatus:(int)a7 updateAccessStatus:;
-- (void)_informMediaSafetyNetWithIsStreaming:(uint64_t)a1 clientAuditToken:(int)a2;
-- (void)_informPrivacyAccountingWithIsStreaming:(uint64_t)a3 clientInfo:(__int128 *)a4 clientAuditToken:(uint64_t)a5 tccIdentity:;
-- (void)_updateActiveClientSessionsForSessionID:(uint64_t)a3 clientSession:(_OWORD *)a4 clientAuditToken:(uint64_t)a5 tccIdentity:(uint64_t)a6 mediaEnvironment:;
-- (void)_updateClientInfoFromSetStreaming:(_OWORD *)a3 clientAuditToken:(uint64_t)a4 tccIdentity:;
-- (void)_updateMicrophoneInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)a1 deviceType:(unsigned int)a2 maxFrameRate:(float)a3 streamUniqueID:(uint64_t)a4 clientAuditToken:(void *)a5;
-- (void)_updateSpeakerInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)a1 deviceType:(unsigned int)a2 streamUniqueID:(int)a3 clientAuditToken:(void *)a4;
+- (uint64_t)_informSystemStatusWithIsStreaming:(__int128 *)streaming clientAuditToken:(uint64_t)token mediaEnvironment:;
+- (uint64_t)_updateCameraStreamingMonitorInfoWithStreaming:(char)streaming cameraAccessGranted:(uint64_t)granted clientAuditToken:(uint64_t)token tccIdentity:(int)identity updateStreamingStatus:(int)status updateAccessStatus:;
+- (void)_informMediaSafetyNetWithIsStreaming:(uint64_t)streaming clientAuditToken:(int)token;
+- (void)_informPrivacyAccountingWithIsStreaming:(uint64_t)streaming clientInfo:(__int128 *)info clientAuditToken:(uint64_t)token tccIdentity:;
+- (void)_updateActiveClientSessionsForSessionID:(uint64_t)d clientSession:(_OWORD *)session clientAuditToken:(uint64_t)token tccIdentity:(uint64_t)identity mediaEnvironment:;
+- (void)_updateClientInfoFromSetStreaming:(_OWORD *)streaming clientAuditToken:(uint64_t)token tccIdentity:;
+- (void)_updateMicrophoneInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)streaming deviceType:(unsigned int)type maxFrameRate:(float)rate streamUniqueID:(uint64_t)d clientAuditToken:(void *)token;
+- (void)_updateSpeakerInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)streaming deviceType:(unsigned int)type streamUniqueID:(int)d clientAuditToken:(void *)token;
 - (void)dealloc;
-- (void)setCameraAccess:(BOOL)a3 deviceType:(int)a4 clientAuditToken:(id *)a5 tccIdentity:(id)a6 mediaEnvironment:(id)a7 completionHandler:(id)a8;
-- (void)setSessionStateForSessionID:(id)a3 running:(BOOL)a4 containsVideoSource:(BOOL)a5 clientAuditToken:(id *)a6 tccIdentity:(id)a7 mediaEnvironment:(id)a8 sessionIsPrewarming:(BOOL)a9 completionHandler:(id)a10;
-- (void)setStreaming:(BOOL)a3 deviceType:(int)a4 maxFrameRate:(float)a5 streamUniqueID:(id)a6 clientAuditToken:(id *)a7 tccIdentity:(id)a8 mediaEnvironment:(id)a9 completionHandler:(id)a10;
+- (void)setCameraAccess:(BOOL)access deviceType:(int)type clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment completionHandler:(id)handler;
+- (void)setSessionStateForSessionID:(id)d running:(BOOL)running containsVideoSource:(BOOL)source clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment sessionIsPrewarming:(BOOL)prewarming completionHandler:(id)self0;
+- (void)setStreaming:(BOOL)streaming deviceType:(int)type maxFrameRate:(float)rate streamUniqueID:(id)d clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment completionHandler:(id)self0;
 @end
 
 @implementation BWCameraStreamingMonitor
@@ -32,7 +32,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -41,20 +41,20 @@
   }
 }
 
-- (BWCameraStreamingMonitor)initWithMediaStatusDomainPublisher:(id)a3 msnReportingEnabled:(BOOL)a4 systemStatusReportingEnabled:(BOOL)a5 privacyAccountingAccessLogger:(id)a6
+- (BWCameraStreamingMonitor)initWithMediaStatusDomainPublisher:(id)publisher msnReportingEnabled:(BOOL)enabled systemStatusReportingEnabled:(BOOL)reportingEnabled privacyAccountingAccessLogger:(id)logger
 {
-  v7 = a5;
-  v8 = a4;
+  reportingEnabledCopy = reportingEnabled;
+  enabledCopy = enabled;
   v14.receiver = self;
   v14.super_class = BWCameraStreamingMonitor;
   v10 = [(BWCameraStreamingMonitor *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    if (v7)
+    if (reportingEnabledCopy)
     {
-      v10->_systemStatusReportingEnabled = v7;
-      v10->_mediaStatusDomainPublisher = a3;
+      v10->_systemStatusReportingEnabled = reportingEnabledCopy;
+      v10->_mediaStatusDomainPublisher = publisher;
       FigCaptureGetCurrentProcessAuditToken(&v16);
       if (FigCaptureClientHasEntitlement(&v16, @"com.apple.systemstatus.activityattribution"))
       {
@@ -81,16 +81,16 @@
       }
     }
 
-    if (v8)
+    if (enabledCopy)
     {
-      v11->_msnReportingEnabled = v8;
+      v11->_msnReportingEnabled = enabledCopy;
     }
 
     v11->_activeStreamUniqueIDsByClientPID = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     v11->_cameraStreamingMonitorQueue = FigDispatchQueueCreateWithPriority();
     v11->_clientInfoByPID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11->_managedClientInfoByBundleID = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11->_privacyAccountingAccessLogger = a6;
+    v11->_privacyAccountingAccessLogger = logger;
     v11->_clientSessionsBySessionID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11->_activeClientSessionIDs = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -309,25 +309,25 @@ void __165__BWCameraStreamingMonitor__updateCameraStreamingMonitorInfoWithStream
   dispatch_async(v3, v4);
 }
 
-- (void)setStreaming:(BOOL)a3 deviceType:(int)a4 maxFrameRate:(float)a5 streamUniqueID:(id)a6 clientAuditToken:(id *)a7 tccIdentity:(id)a8 mediaEnvironment:(id)a9 completionHandler:(id)a10
+- (void)setStreaming:(BOOL)streaming deviceType:(int)type maxFrameRate:(float)rate streamUniqueID:(id)d clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment completionHandler:(id)self0
 {
-  if ((a4 - 17) > 3)
+  if ((type - 17) > 3)
   {
     cameraStreamingMonitorQueue = self->_cameraStreamingMonitorQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __144__BWCameraStreamingMonitor_setStreaming_deviceType_maxFrameRate_streamUniqueID_clientAuditToken_tccIdentity_mediaEnvironment_completionHandler___block_invoke;
     block[3] = &unk_1E799B828;
-    v12 = *&a7->var0[4];
-    v14 = *a7->var0;
+    v12 = *&token->var0[4];
+    v14 = *token->var0;
     v15 = v12;
-    v18 = a3;
+    streamingCopy = streaming;
     block[4] = self;
-    block[5] = a6;
-    v16 = a4;
-    v17 = a5;
-    block[6] = a8;
-    block[7] = a10;
+    block[5] = d;
+    typeCopy = type;
+    rateCopy = rate;
+    block[6] = identity;
+    block[7] = handler;
     dispatch_async(cameraStreamingMonitorQueue, block);
   }
 
@@ -342,49 +342,49 @@ void __165__BWCameraStreamingMonitor__updateCameraStreamingMonitorInfoWithStream
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    if (a10)
+    if (handler)
     {
-      (*(a10 + 2))(a10, a2, *&a5);
+      (*(handler + 2))(handler, a2, *&rate);
     }
   }
 }
 
-- (void)setCameraAccess:(BOOL)a3 deviceType:(int)a4 clientAuditToken:(id *)a5 tccIdentity:(id)a6 mediaEnvironment:(id)a7 completionHandler:(id)a8
+- (void)setCameraAccess:(BOOL)access deviceType:(int)type clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment completionHandler:(id)handler
 {
   cameraStreamingMonitorQueue = self->_cameraStreamingMonitorQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __119__BWCameraStreamingMonitor_setCameraAccess_deviceType_clientAuditToken_tccIdentity_mediaEnvironment_completionHandler___block_invoke;
   block[3] = &unk_1E799B850;
-  v9 = *&a5->var0[4];
-  v11 = *a5->var0;
+  v9 = *&token->var0[4];
+  v11 = *token->var0;
   v12 = v9;
-  v13 = a3;
+  accessCopy = access;
   block[4] = self;
-  block[5] = a6;
-  block[6] = a7;
-  block[7] = a8;
+  block[5] = identity;
+  block[6] = environment;
+  block[7] = handler;
   dispatch_async(cameraStreamingMonitorQueue, block);
 }
 
-- (void)setSessionStateForSessionID:(id)a3 running:(BOOL)a4 containsVideoSource:(BOOL)a5 clientAuditToken:(id *)a6 tccIdentity:(id)a7 mediaEnvironment:(id)a8 sessionIsPrewarming:(BOOL)a9 completionHandler:(id)a10
+- (void)setSessionStateForSessionID:(id)d running:(BOOL)running containsVideoSource:(BOOL)source clientAuditToken:(id *)token tccIdentity:(id)identity mediaEnvironment:(id)environment sessionIsPrewarming:(BOOL)prewarming completionHandler:(id)self0
 {
   cameraStreamingMonitorQueue = self->_cameraStreamingMonitorQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
-  v11 = *&a6->var0[4];
-  v13 = *a6->var0;
+  v11 = *&token->var0[4];
+  v13 = *token->var0;
   v12[2] = __168__BWCameraStreamingMonitor_setSessionStateForSessionID_running_containsVideoSource_clientAuditToken_tccIdentity_mediaEnvironment_sessionIsPrewarming_completionHandler___block_invoke;
   v12[3] = &unk_1E799B878;
   v14 = v11;
   v12[4] = self;
-  v12[5] = a3;
-  v15 = a9;
-  v16 = a4;
-  v17 = a5;
-  v12[6] = a7;
-  v12[7] = a8;
-  v12[8] = a10;
+  v12[5] = d;
+  prewarmingCopy = prewarming;
+  runningCopy = running;
+  sourceCopy = source;
+  v12[6] = identity;
+  v12[7] = environment;
+  v12[8] = handler;
   dispatch_async(cameraStreamingMonitorQueue, v12);
 }
 
@@ -498,7 +498,7 @@ LABEL_16:
   return result;
 }
 
-- (uint64_t)_informSystemStatusWithIsStreaming:(__int128 *)a3 clientAuditToken:(uint64_t)a4 mediaEnvironment:
+- (uint64_t)_informSystemStatusWithIsStreaming:(__int128 *)streaming clientAuditToken:(uint64_t)token mediaEnvironment:
 {
   if (!result)
   {
@@ -555,11 +555,11 @@ LABEL_16:
 
     v19 = *(v4 + 16);
     v18 = &__block_literal_global_56;
-    return [v19 updateVolatileDataWithBlock:{v18, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29}];
+    return [v19 updateVolatileDataWithBlock:{v18, v20, v21, v22, v23, v24, v25, tokenCopy, v27, v28, v29}];
   }
 
-  v8 = a3[1];
-  v34 = *a3;
+  v8 = streaming[1];
+  v34 = *streaming;
   v35 = v8;
   if (!FigCaptureAuditTokenIsValid(&v34))
   {
@@ -567,8 +567,8 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v9 = a3[1];
-  v34 = *a3;
+  v9 = streaming[1];
+  v34 = *streaming;
   v35 = v9;
   v10 = [FigCaptureProcessHandle handleForAuditToken:&v34 error:0];
   if (v10)
@@ -579,14 +579,14 @@ LABEL_21:
     v23 = 3221225472;
     v24 = __97__BWCameraStreamingMonitor__informSystemStatusWithIsStreaming_clientAuditToken_mediaEnvironment___block_invoke;
     v25 = &unk_1E799B7B8;
-    v26 = a4;
+    tokenCopy = token;
     v27 = v10;
-    v17 = a3[1];
-    v28 = *a3;
+    v17 = streaming[1];
+    v28 = *streaming;
     v29 = v17;
     v18 = &v22;
     v19 = v16;
-    return [v19 updateVolatileDataWithBlock:{v18, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29}];
+    return [v19 updateVolatileDataWithBlock:{v18, v20, v21, v22, v23, v24, v25, tokenCopy, v27, v28, v29}];
   }
 
   OUTLINED_FUNCTION_18_27();
@@ -599,8 +599,8 @@ LABEL_21:
 
   if (v12)
   {
-    v13 = a3[1];
-    v34 = *a3;
+    v13 = streaming[1];
+    v34 = *streaming;
     v35 = v13;
     v30 = 136315394;
     v31 = "[BWCameraStreamingMonitor _informSystemStatusWithIsStreaming:clientAuditToken:mediaEnvironment:]";
@@ -613,9 +613,9 @@ LABEL_21:
   return fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-- (void)_informMediaSafetyNetWithIsStreaming:(uint64_t)a1 clientAuditToken:(int)a2
+- (void)_informMediaSafetyNetWithIsStreaming:(uint64_t)streaming clientAuditToken:(int)token
 {
-  if (a1 && *(a1 + 32) == 1)
+  if (streaming && *(streaming + 32) == 1)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -626,7 +626,7 @@ LABEL_21:
 
     OUTLINED_FUNCTION_4_79();
     FigCaptureGetPIDFromAuditToken(v3);
-    if (a2)
+    if (token)
     {
       OUTLINED_FUNCTION_4_79();
       if (FigCaptureAuditTokenIsValid(v4))
@@ -726,29 +726,29 @@ LABEL_23:
   }
 }
 
-- (void)_informPrivacyAccountingWithIsStreaming:(uint64_t)a3 clientInfo:(__int128 *)a4 clientAuditToken:(uint64_t)a5 tccIdentity:
+- (void)_informPrivacyAccountingWithIsStreaming:(uint64_t)streaming clientInfo:(__int128 *)info clientAuditToken:(uint64_t)token tccIdentity:
 {
-  if (a1)
+  if (self)
   {
-    v11 = a4[1];
-    v40 = *a4;
+    v11 = info[1];
+    v40 = *info;
     v41 = v11;
     FigCaptureGetPIDFromAuditToken(&v40);
     if (a2)
     {
-      if (!a3)
+      if (!streaming)
       {
         goto LABEL_13;
       }
 
-      v12 = *(a3 + 24);
+      v12 = *(streaming + 24);
       if (v12)
       {
         [v12 end];
-        objc_setProperty_nonatomic(a3, v13, 0, 24);
+        objc_setProperty_nonatomic(streaming, v13, 0, 24);
       }
 
-      v14 = *(a3 + 16);
+      v14 = *(streaming + 16);
       if (v14)
       {
         [v14 auditToken];
@@ -768,13 +768,13 @@ LABEL_13:
           goto LABEL_26;
         }
 
-        if (!a3)
+        if (!streaming)
         {
           goto LABEL_24;
         }
       }
 
-      v17 = *(a3 + 16);
+      v17 = *(streaming + 16);
       if (v17)
       {
         [v17 auditToken];
@@ -787,10 +787,10 @@ LABEL_24:
 LABEL_25:
       if (!FigCaptureClientIsAVConferenced(&v40))
       {
-        if (!a5)
+        if (!token)
         {
-          v32 = a4[1];
-          v40 = *a4;
+          v32 = info[1];
+          v40 = *info;
           v41 = v32;
           if (!FigCaptureAuditTokenIsValid(&v40))
           {
@@ -842,7 +842,7 @@ LABEL_25:
           }
 
           v38 = getPATCCAccessClass();
-          if (a3 && (v39 = *(a3 + 16)) != 0)
+          if (streaming && (v39 = *(streaming + 16)) != 0)
           {
             [v39 auditToken];
           }
@@ -857,14 +857,14 @@ LABEL_25:
 LABEL_32:
           v28 = v27;
 LABEL_33:
-          v29 = [*(a1 + 56) beginIntervalForAccess:v28];
-          if (!a3)
+          v29 = [*(self + 56) beginIntervalForAccess:v28];
+          if (!streaming)
           {
             return;
           }
 
           v22 = v29;
-          v21 = a3;
+          streamingCopy2 = streaming;
           goto LABEL_35;
         }
 
@@ -896,7 +896,7 @@ LABEL_33:
         }
 
         v25 = getPATCCAccessClass();
-        v26 = [objc_alloc(getPAApplicationClass()) initWithTCCIdentity:a5];
+        v26 = [objc_alloc(getPAApplicationClass()) initWithTCCIdentity:token];
 LABEL_31:
         v27 = [v25 accessWithAccessor:v26 forService:*MEMORY[0x1E69D5520]];
         goto LABEL_32;
@@ -925,7 +925,7 @@ LABEL_26:
       goto LABEL_31;
     }
 
-    if (a5)
+    if (token)
     {
       [MEMORY[0x1E696AEC0] stringWithUTF8String:tcc_identity_get_identifier()];
       if (dword_1ED8443D0)
@@ -965,21 +965,21 @@ LABEL_21:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    if (!a3)
+    if (!streaming)
     {
       [0 end];
       return;
     }
 
-    [*(a3 + 24) end];
-    v21 = a3;
+    [*(streaming + 24) end];
+    streamingCopy2 = streaming;
     v22 = 0;
 LABEL_35:
-    objc_setProperty_nonatomic(v21, v20, v22, 24);
+    objc_setProperty_nonatomic(streamingCopy2, v20, v22, 24);
   }
 }
 
-- (uint64_t)_updateCameraStreamingMonitorInfoWithStreaming:(char)a3 cameraAccessGranted:(uint64_t)a4 clientAuditToken:(uint64_t)a5 tccIdentity:(int)a6 updateStreamingStatus:(int)a7 updateAccessStatus:
+- (uint64_t)_updateCameraStreamingMonitorInfoWithStreaming:(char)streaming cameraAccessGranted:(uint64_t)granted clientAuditToken:(uint64_t)token tccIdentity:(int)identity updateStreamingStatus:(int)status updateAccessStatus:
 {
   if (!result)
   {
@@ -1000,7 +1000,7 @@ LABEL_35:
   OUTLINED_FUNCTION_20_23();
   PIDVersionFromAuditToken = FigCaptureGetPIDVersionFromAuditToken(v15);
   v17 = [MEMORY[0x1E69C75D0] handleForIdentifier:objc_msgSend(MEMORY[0x1E69C75E0] error:{"identifierWithPid:", PIDFromAuditToken), &v28}];
-  if (a5)
+  if (token)
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:tcc_identity_get_identifier()];
     result = [*(v12 + 48) objectForKeyedSubscript:v18];
@@ -1054,14 +1054,14 @@ LABEL_35:
     v21 = v25;
 LABEL_25:
     result = [v20 monitorForDeath:v21];
-    if (!a6)
+    if (!identity)
     {
 LABEL_18:
-      if (a7)
+      if (status)
       {
         if (v19)
         {
-          *(v19 + 9) = a3;
+          *(v19 + 9) = streaming;
         }
       }
 
@@ -1101,7 +1101,7 @@ LABEL_16:
   if (PIDVersionFromAuditToken == result)
   {
 LABEL_15:
-    if (!a6)
+    if (!identity)
     {
       goto LABEL_18;
     }
@@ -1112,9 +1112,9 @@ LABEL_15:
   return result;
 }
 
-- (void)_updateClientInfoFromSetStreaming:(_OWORD *)a3 clientAuditToken:(uint64_t)a4 tccIdentity:
+- (void)_updateClientInfoFromSetStreaming:(_OWORD *)streaming clientAuditToken:(uint64_t)token tccIdentity:
 {
-  if (a1)
+  if (self)
   {
     if (!OUTLINED_FUNCTION_30_12())
     {
@@ -1123,11 +1123,11 @@ LABEL_15:
       FigDebugAssert3();
     }
 
-    v8 = a3[1];
-    v19[0] = *a3;
+    v8 = streaming[1];
+    v19[0] = *streaming;
     v19[1] = v8;
     PIDFromAuditToken = FigCaptureGetPIDFromAuditToken(v19);
-    if (a4)
+    if (token)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:tcc_identity_get_identifier()];
       v11 = *(v4 + 48);
@@ -1145,7 +1145,7 @@ LABEL_15:
     {
       if ((*(v13 + 8) & 1) == 0 && *(v13 + 9) & 1 | (PIDFromAuditToken == -1) && a2)
       {
-        if (a4)
+        if (token)
         {
           tcc_identity_get_identifier();
           v14 = [OUTLINED_FUNCTION_8() stringWithUTF8String:?];
@@ -1183,44 +1183,44 @@ LABEL_20:
   }
 }
 
-- (void)_updateSpeakerInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)a1 deviceType:(unsigned int)a2 streamUniqueID:(int)a3 clientAuditToken:(void *)a4
+- (void)_updateSpeakerInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)streaming deviceType:(unsigned int)type streamUniqueID:(int)d clientAuditToken:(void *)token
 {
-  if (a1)
+  if (streaming)
   {
     if (FigCaptureSpeakerInterferenceMitigationIsSupported())
     {
-      v7 = [a4 isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:1"];
-      if ((a3 - 21) <= 0xFFFFFFFB)
+      v7 = [token isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:1"];
+      if ((d - 21) <= 0xFFFFFFFB)
       {
         if (v7)
         {
 
-          FigCaptureSpeakerSetInterferenceMitigationIsRequired(a2, 0);
+          FigCaptureSpeakerSetInterferenceMitigationIsRequired(type, 0);
         }
       }
     }
   }
 }
 
-- (void)_updateMicrophoneInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)a1 deviceType:(unsigned int)a2 maxFrameRate:(float)a3 streamUniqueID:(uint64_t)a4 clientAuditToken:(void *)a5
+- (void)_updateMicrophoneInterferenceMitigationRequirementIfNeededWithIsStreaming:(uint64_t)streaming deviceType:(unsigned int)type maxFrameRate:(float)rate streamUniqueID:(uint64_t)d clientAuditToken:(void *)token
 {
-  if (a1 && FigCaptureMicrophoneInterferenceMitigationIsSupported() && [a5 isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"])
+  if (streaming && FigCaptureMicrophoneInterferenceMitigationIsSupported() && [token isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"])
   {
-    if (a3 >= 120.0)
+    if (rate >= 120.0)
     {
-      v8 = a2;
+      typeCopy = type;
     }
 
     else
     {
-      v8 = 0;
+      typeCopy = 0;
     }
 
-    FigCaptureMicrophoneSetInterferenceMitigationIsRequired(v8, 0);
+    FigCaptureMicrophoneSetInterferenceMitigationIsRequired(typeCopy, 0);
   }
 }
 
-- (uint64_t)_getClientInfoForTCCIdentity:(uint64_t)a3 clientPID:(int)a4 sessionIsPrewarming:
+- (uint64_t)_getClientInfoForTCCIdentity:(uint64_t)identity clientPID:(int)d sessionIsPrewarming:
 {
   if (!result)
   {
@@ -1238,9 +1238,9 @@ LABEL_20:
     }
 
 LABEL_6:
-    [MEMORY[0x1E696AD98] numberWithInt:a3];
+    [MEMORY[0x1E696AD98] numberWithInt:identity];
     result = [OUTLINED_FUNCTION_7() objectForKeyedSubscript:?];
-    if (result || !a4)
+    if (result || !d)
     {
       return result;
     }
@@ -1263,9 +1263,9 @@ LABEL_9:
   return [v9 objectForKeyedSubscript:v8];
 }
 
-- (void)_updateActiveClientSessionsForSessionID:(uint64_t)a3 clientSession:(_OWORD *)a4 clientAuditToken:(uint64_t)a5 tccIdentity:(uint64_t)a6 mediaEnvironment:
+- (void)_updateActiveClientSessionsForSessionID:(uint64_t)d clientSession:(_OWORD *)session clientAuditToken:(uint64_t)token tccIdentity:(uint64_t)identity mediaEnvironment:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -1277,8 +1277,8 @@ LABEL_9:
     FigDebugAssert3();
   }
 
-  v10 = a4[1];
-  v50[0] = *a4;
+  v10 = session[1];
+  v50[0] = *session;
   v50[1] = v10;
   PIDFromAuditToken = FigCaptureGetPIDFromAuditToken(v50);
   if (dword_1ED8443D0)
@@ -1299,11 +1299,11 @@ LABEL_9:
 
     if (v13)
     {
-      if (a3)
+      if (d)
       {
-        v14 = *(a3 + 28);
-        v15 = *(a3 + 29);
-        v16 = *(a3 + 8);
+        v14 = *(d + 28);
+        v15 = *(d + 29);
+        v16 = *(d + 8);
         if (v16)
         {
           LODWORD(v16) = *(v16 + 9);
@@ -1335,7 +1335,7 @@ LABEL_9:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (!a3 || *(a3 + 28) != 1)
+  if (!d || *(d + 28) != 1)
   {
 LABEL_24:
     if (![OUTLINED_FUNCTION_23_21() containsObject:?])
@@ -1343,7 +1343,7 @@ LABEL_24:
       goto LABEL_27;
     }
 
-    v19 = a3;
+    dCopy = d;
     [OUTLINED_FUNCTION_23_21() removeObject:?];
     if ([*(v6 + 72) count])
     {
@@ -1351,12 +1351,12 @@ LABEL_24:
     }
 
     v24 = OUTLINED_FUNCTION_5_73();
-    [(BWCameraStreamingMonitor *)v24 _informSystemStatusWithIsStreaming:v25 clientAuditToken:a6 mediaEnvironment:?];
+    [(BWCameraStreamingMonitor *)v24 _informSystemStatusWithIsStreaming:v25 clientAuditToken:identity mediaEnvironment:?];
     v26 = OUTLINED_FUNCTION_22_22();
-    [(BWCameraStreamingMonitor *)v26 _informPrivacyAccountingWithIsStreaming:v27 clientInfo:v28 clientAuditToken:a5 tccIdentity:?];
+    [(BWCameraStreamingMonitor *)v26 _informPrivacyAccountingWithIsStreaming:v27 clientInfo:v28 clientAuditToken:token tccIdentity:?];
     v29 = OUTLINED_FUNCTION_5_73();
     [BWCameraStreamingMonitor _informMediaSafetyNetWithIsStreaming:v29 clientAuditToken:0];
-    if (a5)
+    if (token)
     {
       tcc_identity_get_identifier();
       v30 = [OUTLINED_FUNCTION_7() stringWithUTF8String:?];
@@ -1399,9 +1399,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (*(a3 + 29) == 1)
+  if (*(d + 29) == 1)
   {
-    v17 = *(a3 + 8);
+    v17 = *(d + 8);
     if (v17)
     {
       if (*(v17 + 9) == 1)
@@ -1410,15 +1410,15 @@ LABEL_26:
         {
           [OUTLINED_FUNCTION_23_21() addObject:?];
           v34 = OUTLINED_FUNCTION_5_73();
-          [(BWCameraStreamingMonitor *)v34 _informSystemStatusWithIsStreaming:v35 clientAuditToken:a6 mediaEnvironment:?];
+          [(BWCameraStreamingMonitor *)v34 _informSystemStatusWithIsStreaming:v35 clientAuditToken:identity mediaEnvironment:?];
           v36 = OUTLINED_FUNCTION_22_22();
-          [(BWCameraStreamingMonitor *)v36 _informPrivacyAccountingWithIsStreaming:v37 clientInfo:v38 clientAuditToken:a5 tccIdentity:?];
+          [(BWCameraStreamingMonitor *)v36 _informPrivacyAccountingWithIsStreaming:v37 clientInfo:v38 clientAuditToken:token tccIdentity:?];
           v39 = OUTLINED_FUNCTION_5_73();
           [BWCameraStreamingMonitor _informMediaSafetyNetWithIsStreaming:v39 clientAuditToken:1];
           goto LABEL_27;
         }
 
-        if ((*(a3 + 28) & 1) == 0)
+        if ((*(d + 28) & 1) == 0)
         {
           goto LABEL_24;
         }
@@ -1426,12 +1426,12 @@ LABEL_26:
     }
   }
 
-  if (*(a3 + 29) != 1)
+  if (*(d + 29) != 1)
   {
     goto LABEL_24;
   }
 
-  v18 = *(a3 + 8);
+  v18 = *(d + 8);
   if (!v18 || (*(v18 + 9) & 1) == 0)
   {
     goto LABEL_24;

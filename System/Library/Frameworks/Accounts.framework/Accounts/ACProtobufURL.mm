@@ -1,47 +1,47 @@
 @interface ACProtobufURL
-- (ACProtobufURL)initWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ACProtobufURL)initWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)url;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setUrl:(id)url;
 @end
 
 @implementation ACProtobufURL
 
-- (ACProtobufURL)initWithURL:(id)a3
+- (ACProtobufURL)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4 && (self = [(ACProtobufURL *)self init]) != 0)
+  lCopy = l;
+  if (lCopy && (self = [(ACProtobufURL *)self init]) != 0)
   {
-    v5 = [v4 absoluteString];
-    [(ACProtobufURL *)self setValue:v5];
+    absoluteString = [lCopy absoluteString];
+    [(ACProtobufURL *)self setValue:absoluteString];
 
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = [a3 absoluteString];
-  [(ACProtobufURL *)self setValue:v4];
+  absoluteString = [url absoluteString];
+  [(ACProtobufURL *)self setValue:absoluteString];
 }
 
 - (NSURL)url
 {
   v3 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v4 = [(ACProtobufURL *)self value];
-  v5 = [v3 initWithString:v4];
+  value = [(ACProtobufURL *)self value];
+  v5 = [v3 initWithString:value];
 
   return v5;
 }
@@ -52,42 +52,42 @@
   v8.receiver = self;
   v8.super_class = ACProtobufURL;
   v4 = [(ACProtobufURL *)&v8 description];
-  v5 = [(ACProtobufURL *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufURL *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   value = self->_value;
   if (value)
   {
-    [v3 setObject:value forKey:@"value"];
+    [dictionary setObject:value forKey:@"value"];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_value copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     value = self->_value;
-    if (value | v4[1])
+    if (value | equalCopy[1])
     {
       v6 = [(NSString *)value isEqual:?];
     }
@@ -106,9 +106,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(ACProtobufURL *)self setValue:?];
   }

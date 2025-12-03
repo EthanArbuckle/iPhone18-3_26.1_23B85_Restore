@@ -1,5 +1,5 @@
 @interface HSPCSiriVoiceTrainingViewController
-- (HSPCSiriVoiceTrainingViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSiriVoiceTrainingViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (void)_continueSetup;
 - (void)_disableVoiceRecognition;
 - (void)_dismissSetup;
@@ -11,18 +11,18 @@
 
 @implementation HSPCSiriVoiceTrainingViewController
 
-- (HSPCSiriVoiceTrainingViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSiriVoiceTrainingViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = HSPCSiriVoiceTrainingViewController;
   v9 = [(HSPCSiriVoiceTrainingViewController *)&v12 initWithEnrollmentMode:5];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
     [(HSPCSiriVoiceTrainingViewController *)v10 setDelegate:v10];
   }
 
@@ -82,10 +82,10 @@
 
 - (void)_continueSetup
 {
-  v4 = [(HSPCSiriVoiceTrainingViewController *)self config];
-  v5 = [v4 delegate];
-  v6 = [(HSPCSiriVoiceTrainingViewController *)self config];
-  v7 = [v5 stateMachineConfigurationGetLaunchReason:v6];
+  config = [(HSPCSiriVoiceTrainingViewController *)self config];
+  delegate = [config delegate];
+  config2 = [(HSPCSiriVoiceTrainingViewController *)self config];
+  v7 = [delegate stateMachineConfigurationGetLaunchReason:config2];
 
   v8 = HFLogForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -95,7 +95,7 @@
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ We are launched for Siri Endpoint setup only so must actually dismiss now", buf, 0x16u);
@@ -110,21 +110,21 @@
     {
       v11 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ Continuing setup", buf, 0x16u);
     }
 
-    v12 = [(HSPCSiriVoiceTrainingViewController *)self coordinator];
-    v13 = [v12 nextViewController];
+    coordinator = [(HSPCSiriVoiceTrainingViewController *)self coordinator];
+    nextViewController = [coordinator nextViewController];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100005D18;
     v15[3] = &unk_1000C5790;
     v15[4] = self;
-    v14 = [v13 addSuccessBlock:v15];
+    v14 = [nextViewController addSuccessBlock:v15];
   }
 }
 
@@ -135,7 +135,7 @@
   {
     v5 = NSStringFromSelector(a2);
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ Dismissing setup", &v6, 0x16u);
@@ -147,12 +147,12 @@
 
 - (void)_disableVoiceRecognition
 {
-  v4 = [(HSPCSiriVoiceTrainingViewController *)self config];
-  v5 = [v4 home];
+  config = [(HSPCSiriVoiceTrainingViewController *)self config];
+  home = [config home];
 
   v6 = [HFUserItem alloc];
-  v7 = [v5 currentUser];
-  v8 = [v6 initWithHome:v5 user:v7 nameStyle:0];
+  currentUser = [home currentUser];
+  v8 = [v6 initWithHome:home user:currentUser nameStyle:0];
 
   v9 = [v8 setEnableIdentifyVoice:0];
   v10 = HFLogForCategory();
@@ -164,8 +164,8 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Disabling voice recognition", &v15, 0xCu);
   }
 
-  v12 = [(HSPCSiriVoiceTrainingViewController *)self config];
-  [v12 setShouldSkipVoiceProfileSetup:1];
+  config2 = [(HSPCSiriVoiceTrainingViewController *)self config];
+  [config2 setShouldSkipVoiceProfileSetup:1];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))

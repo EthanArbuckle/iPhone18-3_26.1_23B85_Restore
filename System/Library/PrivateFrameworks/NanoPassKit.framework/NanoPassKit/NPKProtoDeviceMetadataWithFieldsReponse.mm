@@ -1,12 +1,12 @@
 @interface NPKProtoDeviceMetadataWithFieldsReponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoDeviceMetadataWithFieldsReponse
@@ -17,68 +17,68 @@
   v8.receiver = self;
   v8.super_class = NPKProtoDeviceMetadataWithFieldsReponse;
   v4 = [(NPKProtoDeviceMetadataWithFieldsReponse *)&v8 description];
-  v5 = [(NPKProtoDeviceMetadataWithFieldsReponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoDeviceMetadataWithFieldsReponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v4 forKey:@"pending"];
+    [dictionary setObject:v4 forKey:@"pending"];
   }
 
   deviceMetadata = self->_deviceMetadata;
   if (deviceMetadata)
   {
-    [v3 setObject:deviceMetadata forKey:@"deviceMetadata"];
+    [dictionary setObject:deviceMetadata forKey:@"deviceMetadata"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceMetadata)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_pending;
-    v4[20] |= 1u;
+    toCopy[16] = self->_pending;
+    toCopy[20] |= 1u;
   }
 
   if (self->_deviceMetadata)
   {
-    v5 = v4;
-    [v4 setDeviceMetadata:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setDeviceMetadata:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -86,33 +86,33 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSData *)self->_deviceMetadata copyWithZone:a3];
+  v7 = [(NSData *)self->_deviceMetadata copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_7;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (!self->_pending)
   {
 LABEL_3:
@@ -126,14 +126,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((*(v4 + 16) & 1) == 0)
+  if ((*(equalCopy + 16) & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   deviceMetadata = self->_deviceMetadata;
-  if (deviceMetadata | *(v4 + 1))
+  if (deviceMetadata | *(equalCopy + 1))
   {
     v7 = [(NSData *)deviceMetadata isEqual:?];
   }
@@ -163,20 +163,20 @@ LABEL_8:
   return [(NSData *)self->_deviceMetadata hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[20])
+  fromCopy = from;
+  if (fromCopy[20])
   {
-    self->_pending = v4[16];
+    self->_pending = fromCopy[16];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NPKProtoDeviceMetadataWithFieldsReponse *)self setDeviceMetadata:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

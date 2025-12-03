@@ -1,33 +1,33 @@
 @interface AKTextField
-- (AKTextField)initWithCoder:(id)a3;
-- (AKTextField)initWithFrame:(CGRect)a3;
+- (AKTextField)initWithCoder:(id)coder;
+- (AKTextField)initWithFrame:(CGRect)frame;
 - (id)_fieldTextColor;
 - (id)_setupBackgroundViewConstriants;
 - (id)backgroundImage;
-- (id)cachedImageUsingBlock:(id)a3;
+- (id)cachedImageUsingBlock:(id)block;
 - (void)_commonInit;
-- (void)_drawBackgroundForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5 pathSegments:(int)a6;
+- (void)_drawBackgroundForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius pathSegments:(int)segments;
 - (void)_setupInlineEntryStyleViews;
 - (void)_setupLabelAndFieldStyles;
-- (void)_updateFonts:(id)a3;
+- (void)_updateFonts:(id)fonts;
 - (void)dealloc;
-- (void)drawFillForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5;
-- (void)drawStrokeForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5 pathSegments:(int)a6;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFieldBackgroundColor:(id)a3;
-- (void)setRowIdentifier:(int64_t)a3;
+- (void)drawFillForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius;
+- (void)drawStrokeForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius pathSegments:(int)segments;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFieldBackgroundColor:(id)color;
+- (void)setRowIdentifier:(int64_t)identifier;
 @end
 
 @implementation AKTextField
 
-- (AKTextField)initWithFrame:(CGRect)a3
+- (AKTextField)initWithFrame:(CGRect)frame
 {
-  v9 = a3;
+  frameCopy = frame;
   v7 = a2;
   v8 = 0;
   v6.receiver = self;
   v6.super_class = AKTextField;
-  v5 = [(AKTextField *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AKTextField *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v5;
   objc_storeStrong(&v8, v5);
   if (v5)
@@ -40,38 +40,38 @@
   return v4;
 }
 
-- (AKTextField)initWithCoder:(id)a3
+- (AKTextField)initWithCoder:(id)coder
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKTextField;
   v6 = [(AKTextField *)&v7 initWithCoder:location[0]];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    [(AKTextField *)v9 _commonInit];
+    [(AKTextField *)selfCopy _commonInit];
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:v6 name:*MEMORY[0x277D76810] object:0];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D76810] object:0];
+  *&v2 = MEMORY[0x277D82BD8](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = AKTextField;
   [(AKTextField *)&v4 dealloc];
 }
@@ -79,33 +79,33 @@
 - (void)_commonInit
 {
   [(AKTextField *)self _setupInlineEntryStyleViews];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 addObserver:self selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
-  MEMORY[0x277D82BD8](v2);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
+  MEMORY[0x277D82BD8](defaultCenter);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  [(UITextField *)self->_entryField setEnabled:a3];
-  v3 = [(AKTextField *)self _fieldTextColor];
+  [(UITextField *)self->_entryField setEnabled:enabled];
+  _fieldTextColor = [(AKTextField *)self _fieldTextColor];
   [(UITextField *)self->_entryField setTextColor:?];
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](_fieldTextColor);
 }
 
 - (id)_setupBackgroundViewConstriants
 {
-  v58 = self;
+  selfCopy = self;
   v57[1] = a2;
   v57[0] = [MEMORY[0x277CBEB18] array];
-  v44 = v58;
+  v44 = selfCopy;
   v43 = v54;
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __46__AKTextField__setupBackgroundViewConstriants__block_invoke;
   v54[3] = &unk_2784A6B60;
-  v55 = MEMORY[0x277D82BE0](v58);
+  v55 = MEMORY[0x277D82BE0](selfCopy);
   v56 = [(AKTextField *)v44 cachedImageUsingBlock:v54];
-  if ([(AKTextField *)v58 usesVibrancy])
+  if ([(AKTextField *)selfCopy usesVibrancy])
   {
     v2 = [v56 imageWithRenderingMode:2];
     v3 = v56;
@@ -116,30 +116,30 @@
   v4 = objc_alloc(MEMORY[0x277D755E8]);
   v41 = [v4 initWithImage:v56];
   v42 = 0x27D00C000uLL;
-  backgroundImageView = v58->_backgroundImageView;
-  v58->_backgroundImageView = v41;
+  backgroundImageView = selfCopy->_backgroundImageView;
+  selfCopy->_backgroundImageView = v41;
   MEMORY[0x277D82BD8](backgroundImageView);
   location = MEMORY[0x277D82BE0](v41);
-  [*(&v58->super.super.super.isa + *(v42 + 1148)) setTranslatesAutoresizingMaskIntoConstraints:0];
-  if ([(AKTextField *)v58 usesVibrancy])
+  [*(&selfCopy->super.super.super.isa + *(v42 + 1148)) setTranslatesAutoresizingMaskIntoConstraints:0];
+  if ([(AKTextField *)selfCopy usesVibrancy])
   {
     v29 = MEMORY[0x277D75210];
     v39 = &v52;
-    v52 = [MEMORY[0x277D75210] effectWithStyle:{-[AKTextField blurEffectStyle](v58, "blurEffectStyle")}];
+    v52 = [MEMORY[0x277D75210] effectWithStyle:{-[AKTextField blurEffectStyle](selfCopy, "blurEffectStyle")}];
     v38 = &v51;
     v51 = [MEMORY[0x277D75D00] effectForBlurEffect:v52];
     v6 = objc_alloc(MEMORY[0x277D75D68]);
     v7 = [v6 initWithEffect:v51];
     v34 = 0x27D00C000uLL;
-    visualEffectView = v58->_visualEffectView;
-    v58->_visualEffectView = v7;
+    visualEffectView = selfCopy->_visualEffectView;
+    selfCopy->_visualEffectView = v7;
     *&v9 = MEMORY[0x277D82BD8](visualEffectView).n128_u64[0];
-    [*(&v58->super.super.super.isa + *(v34 + 1152)) setTranslatesAutoresizingMaskIntoConstraints:{0, v9}];
-    v30 = [*(&v58->super.super.super.isa + *(v34 + 1152)) contentView];
+    [*(&selfCopy->super.super.super.isa + *(v34 + 1152)) setTranslatesAutoresizingMaskIntoConstraints:{0, v9}];
+    contentView = [*(&selfCopy->super.super.super.isa + *(v34 + 1152)) contentView];
     v31 = 0x27D00C000uLL;
-    [v30 addSubview:v58->_backgroundImageView];
-    *&v10 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-    v11 = v58->_backgroundImageView;
+    [contentView addSubview:selfCopy->_backgroundImageView];
+    *&v10 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+    v11 = selfCopy->_backgroundImageView;
     obj = 0;
     v12 = _NSDictionaryOfVariableBindings(&cfstr_Backgroundimag.isa, v11, v10, 0);
     v37 = &v50;
@@ -154,7 +154,7 @@
     v48 = v14;
     [v57[0] addObjectsFromArray:v49];
     [v57[0] addObjectsFromArray:v48];
-    objc_storeStrong(&location, *(&v58->super.super.super.isa + *(v34 + 1152)));
+    objc_storeStrong(&location, *(&selfCopy->super.super.super.isa + *(v34 + 1152)));
     objc_storeStrong(v35, obj);
     objc_storeStrong(v36, obj);
     objc_storeStrong(v37, obj);
@@ -164,7 +164,7 @@
 
   p_location = &location;
   v21 = 0;
-  [(AKTextField *)v58 insertSubview:location atIndex:?];
+  [(AKTextField *)selfCopy insertSubview:location atIndex:?];
   v27 = 0;
   v15 = _NSDictionaryOfVariableBindings(&cfstr_Backgroundview.isa, location, 0);
   v24 = &v47;
@@ -192,63 +192,63 @@
   return v18;
 }
 
-- (void)_updateFonts:(id)a3
+- (void)_updateFonts:(id)fonts
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKTextField *)v4 _setupLabelAndFieldStyles];
-  [(AKTextField *)v4 setNeedsUpdateConstraints];
+  objc_storeStrong(location, fonts);
+  [(AKTextField *)selfCopy _setupLabelAndFieldStyles];
+  [(AKTextField *)selfCopy setNeedsUpdateConstraints];
   objc_storeStrong(location, 0);
 }
 
 - (id)_fieldTextColor
 {
-  v4 = [(AKTextField *)self entryFieldTextColor];
+  entryFieldTextColor = [(AKTextField *)self entryFieldTextColor];
   v5 = 0;
-  if (v4)
+  if (entryFieldTextColor)
   {
-    v2 = MEMORY[0x277D82BE0](v4);
+    v2 = MEMORY[0x277D82BE0](entryFieldTextColor);
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v5 = 1;
-    v2 = MEMORY[0x277D82BE0](v6);
+    v2 = MEMORY[0x277D82BE0](labelColor);
   }
 
   v7 = v2;
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](labelColor);
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](entryFieldTextColor);
 
   return v7;
 }
 
 - (void)_setupLabelAndFieldStyles
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76968] addingSymbolicTraits:0 options:2];
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v10[0] size:0.0];
-  v4 = [(AKTextField *)v11 _fieldTextColor];
-  [(UITextField *)v11->_entryField setTextColor:?];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  [(UITextField *)v11->_entryField setFont:v9, v2];
+  _fieldTextColor = [(AKTextField *)selfCopy _fieldTextColor];
+  [(UITextField *)selfCopy->_entryField setTextColor:?];
+  *&v2 = MEMORY[0x277D82BD8](_fieldTextColor).n128_u64[0];
+  [(UITextField *)selfCopy->_entryField setFont:v9, v2];
   v5 = v9;
-  v6 = [(UITextField *)v11->_entryField _placeholderLabel];
-  [v6 setFont:v5];
-  v8 = [MEMORY[0x277D75348] placeholderTextColor];
-  v7 = [(UITextField *)v11->_entryField _placeholderLabel];
-  [v7 setTextColor:v8];
-  MEMORY[0x277D82BD8](v7);
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  [(UITextField *)v11->_entryField setKeyboardAppearance:0, v3];
+  _placeholderLabel = [(UITextField *)selfCopy->_entryField _placeholderLabel];
+  [_placeholderLabel setFont:v5];
+  placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+  _placeholderLabel2 = [(UITextField *)selfCopy->_entryField _placeholderLabel];
+  [_placeholderLabel2 setTextColor:placeholderTextColor];
+  MEMORY[0x277D82BD8](_placeholderLabel2);
+  *&v3 = MEMORY[0x277D82BD8](placeholderTextColor).n128_u64[0];
+  [(UITextField *)selfCopy->_entryField setKeyboardAppearance:0, v3];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(v10, 0);
 }
@@ -256,23 +256,23 @@
 - (void)_setupInlineEntryStyleViews
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
   [(UIImageView *)self->_backgroundImageView removeFromSuperview];
-  objc_storeStrong(&v29->_backgroundImageView, 0);
-  [(UIVisualEffectView *)v29->_visualEffectView removeFromSuperview];
-  objc_storeStrong(&v29->_visualEffectView, 0);
-  [(UITextField *)v29->_entryField removeFromSuperview];
-  if (v29->_constraints)
+  objc_storeStrong(&selfCopy->_backgroundImageView, 0);
+  [(UIVisualEffectView *)selfCopy->_visualEffectView removeFromSuperview];
+  objc_storeStrong(&selfCopy->_visualEffectView, 0);
+  [(UITextField *)selfCopy->_entryField removeFromSuperview];
+  if (selfCopy->_constraints)
   {
-    [MEMORY[0x277CCAAD0] deactivateConstraints:v29->_constraints];
+    [MEMORY[0x277CCAAD0] deactivateConstraints:selfCopy->_constraints];
   }
 
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  constraints = v29->_constraints;
-  v29->_constraints = v2;
+  constraints = selfCopy->_constraints;
+  selfCopy->_constraints = v2;
   MEMORY[0x277D82BD8](constraints);
-  v28[0] = MEMORY[0x277D82BE0](v29);
+  v28[0] = MEMORY[0x277D82BE0](selfCopy);
   [v28[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   [v28[0] setContentCompressionResistancePriority:? forAxis:?];
   LODWORD(v4) = 1144750080;
@@ -280,52 +280,52 @@
   v27 = [MEMORY[0x277CCAAD0] constraintWithItem:v28[0] attribute:8 relatedBy:? toItem:? attribute:? multiplier:? constant:?];
   LODWORD(v5) = 1148846080;
   [v27 setPriority:v5];
-  [(NSMutableArray *)v29->_constraints addObject:v27];
+  [(NSMutableArray *)selfCopy->_constraints addObject:v27];
   v26 = [MEMORY[0x277CCAAD0] constraintWithItem:v28[0] attribute:7 relatedBy:0 toItem:0 attribute:1.0 multiplier:288.0 constant:?];
   LODWORD(v6) = 1148846080;
   [v26 setPriority:v6];
-  [(NSMutableArray *)v29->_constraints addObject:v26];
-  if (!v29->_entryField)
+  [(NSMutableArray *)selfCopy->_constraints addObject:v26];
+  if (!selfCopy->_entryField)
   {
     v7 = objc_alloc(MEMORY[0x277D75BB8]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    entryField = v29->_entryField;
-    v29->_entryField = v8;
-    [(UITextField *)v29->_entryField setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](entryField).n128_f64[0]];
+    entryField = selfCopy->_entryField;
+    selfCopy->_entryField = v8;
+    [(UITextField *)selfCopy->_entryField setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](entryField).n128_f64[0]];
     LODWORD(v10) = 1132068864;
-    [(UITextField *)v29->_entryField setContentHuggingPriority:0 forAxis:v10];
+    [(UITextField *)selfCopy->_entryField setContentHuggingPriority:0 forAxis:v10];
   }
 
-  [v28[0] addSubview:{v29->_entryField, 0x27D00C000uLL}];
-  [(AKTextField *)v29 _setupLabelAndFieldStyles];
-  v22 = [*(&v29->super.super.super.isa + *(v13 + 1144)) leadingAnchor];
-  v21 = [(AKTextField *)v29 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:16.0 constant:?];
+  [v28[0] addSubview:{selfCopy->_entryField, 0x27D00C000uLL}];
+  [(AKTextField *)selfCopy _setupLabelAndFieldStyles];
+  leadingAnchor = [*(&selfCopy->super.super.super.isa + *(v13 + 1144)) leadingAnchor];
+  leadingAnchor2 = [(AKTextField *)selfCopy leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:16.0 constant:?];
   v30[0] = v20;
-  v19 = [*(&v29->super.super.super.isa + *(v13 + 1144)) trailingAnchor];
-  v18 = [(AKTextField *)v29 trailingAnchor];
-  v17 = [v19 constraintEqualToAnchor:-16.0 constant:?];
+  trailingAnchor = [*(&selfCopy->super.super.super.isa + *(v13 + 1144)) trailingAnchor];
+  trailingAnchor2 = [(AKTextField *)selfCopy trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:-16.0 constant:?];
   v30[1] = v17;
-  v16 = [*(&v29->super.super.super.isa + *(v13 + 1144)) centerYAnchor];
-  v15 = [(AKTextField *)v29 centerYAnchor];
-  v14 = [v16 constraintEqualToAnchor:?];
+  centerYAnchor = [*(&selfCopy->super.super.super.isa + *(v13 + 1144)) centerYAnchor];
+  centerYAnchor2 = [(AKTextField *)selfCopy centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:?];
   v30[2] = v14;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](centerYAnchor2);
+  MEMORY[0x277D82BD8](centerYAnchor);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  *&v11 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-  [(NSMutableArray *)v29->_constraints addObjectsFromArray:v25, v11];
-  v23 = v29->_constraints;
-  v24 = [(AKTextField *)v29 _setupBackgroundViewConstriants];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  *&v11 = MEMORY[0x277D82BD8](leadingAnchor).n128_u64[0];
+  [(NSMutableArray *)selfCopy->_constraints addObjectsFromArray:v25, v11];
+  v23 = selfCopy->_constraints;
+  _setupBackgroundViewConstriants = [(AKTextField *)selfCopy _setupBackgroundViewConstriants];
   [(NSMutableArray *)v23 addObjectsFromArray:?];
-  *&v12 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  [MEMORY[0x277CCAAD0] activateConstraints:{v29->_constraints, v12}];
+  *&v12 = MEMORY[0x277D82BD8](_setupBackgroundViewConstriants).n128_u64[0];
+  [MEMORY[0x277CCAAD0] activateConstraints:{selfCopy->_constraints, v12}];
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
@@ -333,31 +333,31 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setFieldBackgroundColor:(id)a3
+- (void)setFieldBackgroundColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_fieldBackgroundColor, location[0]);
-  [(AKTextField *)v4 _commonInit];
+  objc_storeStrong(location, color);
+  objc_storeStrong(&selfCopy->_fieldBackgroundColor, location[0]);
+  [(AKTextField *)selfCopy _commonInit];
   objc_storeStrong(location, 0);
 }
 
-- (void)setRowIdentifier:(int64_t)a3
+- (void)setRowIdentifier:(int64_t)identifier
 {
-  self->_rowIdentifier = a3;
+  self->_rowIdentifier = identifier;
   [(UIImageView *)self->_backgroundImageView removeFromSuperview];
   objc_storeStrong(&self->_backgroundImageView, 0);
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(AKTextField *)self _setupBackgroundViewConstriants];
+  _setupBackgroundViewConstriants = [(AKTextField *)self _setupBackgroundViewConstriants];
   [v3 activateConstraints:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_setupBackgroundViewConstriants);
 }
 
 - (id)backgroundImage
 {
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
   v47 = CGCeiling_0(11.0 * 1.528665);
   v46 = 2.0 * v47 + 1.0;
@@ -373,7 +373,7 @@
   v48 = 11.0 - 0.5;
   v43 = 16;
   v42 = 0;
-  rowIdentifier = v50->_rowIdentifier;
+  rowIdentifier = selfCopy->_rowIdentifier;
   if (rowIdentifier)
   {
     switch(rowIdentifier)
@@ -426,7 +426,7 @@
     v45 = v39;
   }
 
-  [(AKTextField *)v50 _drawBackgroundForPathRect:v42 roundedCorners:v43 cornerRadius:v44 pathSegments:v45, v48];
+  [(AKTextField *)selfCopy _drawBackgroundForPathRect:v42 roundedCorners:v43 cornerRadius:v44 pathSegments:v45, v48];
   v33 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v30 = v33;
@@ -441,62 +441,62 @@
   return v31;
 }
 
-- (void)_drawBackgroundForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5 pathSegments:(int)a6
+- (void)_drawBackgroundForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius pathSegments:(int)segments
 {
   if (self->_blurEffectStyle == 4 && self->_fieldBackgroundColor)
   {
     if (self->_usesVibrancy)
     {
-      [(AKTextField *)self drawFillForPathRect:a4 roundedCorners:a3.origin.x cornerRadius:a3.origin.y, a3.size.width, a3.size.height, a5];
+      [(AKTextField *)self drawFillForPathRect:corners roundedCorners:rect.origin.x cornerRadius:rect.origin.y, rect.size.width, rect.size.height, radius];
     }
 
-    [(AKTextField *)self drawStrokeForPathRect:a4 roundedCorners:a6 cornerRadius:a3.origin.x pathSegments:a3.origin.y, a3.size.width, a3.size.height, a5];
+    [(AKTextField *)self drawStrokeForPathRect:corners roundedCorners:segments cornerRadius:rect.origin.x pathSegments:rect.origin.y, rect.size.width, rect.size.height, radius];
   }
 
   else
   {
-    [(AKTextField *)self drawStrokeForPathRect:a4 roundedCorners:a6 cornerRadius:a3.origin.x pathSegments:a3.origin.y, a3.size.width, a3.size.height, a5];
+    [(AKTextField *)self drawStrokeForPathRect:corners roundedCorners:segments cornerRadius:rect.origin.x pathSegments:rect.origin.y, rect.size.width, rect.size.height, radius];
     if (self->_usesVibrancy)
     {
-      [(AKTextField *)self drawFillForPathRect:a4 roundedCorners:a3.origin.x cornerRadius:a3.origin.y, a3.size.width, a3.size.height, a5];
+      [(AKTextField *)self drawFillForPathRect:corners roundedCorners:rect.origin.x cornerRadius:rect.origin.y, rect.size.width, rect.size.height, radius];
     }
   }
 }
 
-- (void)drawStrokeForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5 pathSegments:(int)a6
+- (void)drawStrokeForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius pathSegments:(int)segments
 {
-  v17 = a3;
-  v16 = self;
+  rectCopy = rect;
+  selfCopy = self;
   v15 = a2;
-  v14 = a4;
-  v13 = a5;
-  v12 = a6;
-  v11 = [MEMORY[0x277D75208] _roundedRectBezierPath:a4 withRoundedCorners:a6 cornerRadius:0 segments:a3.origin.x legacyCorners:{a3.origin.y, a3.size.width, a3.size.height, a5}];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  cornersCopy = corners;
+  radiusCopy = radius;
+  segmentsCopy = segments;
+  v11 = [MEMORY[0x277D75208] _roundedRectBezierPath:corners withRoundedCorners:segments cornerRadius:0 segments:rect.origin.x legacyCorners:{rect.origin.y, rect.size.width, rect.size.height, radius}];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v11 setLineWidth:1.5 / v6];
-  *&v7 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  *&v7 = MEMORY[0x277D82BD8](mainScreen).n128_u64[0];
   [v11 setUsesEvenOddFillRule:{1, v7}];
-  v10 = [MEMORY[0x277D75348] opaqueSeparatorColor];
-  [v10 set];
-  *&v8 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  opaqueSeparatorColor = [MEMORY[0x277D75348] opaqueSeparatorColor];
+  [opaqueSeparatorColor set];
+  *&v8 = MEMORY[0x277D82BD8](opaqueSeparatorColor).n128_u64[0];
   [v11 stroke];
   objc_storeStrong(&v11, 0);
 }
 
-- (void)drawFillForPathRect:(CGRect)a3 roundedCorners:(unint64_t)a4 cornerRadius:(double)a5
+- (void)drawFillForPathRect:(CGRect)rect roundedCorners:(unint64_t)corners cornerRadius:(double)radius
 {
-  v15 = a3;
-  v14 = self;
+  rectCopy = rect;
+  selfCopy = self;
   v13[3] = a2;
-  v13[2] = a4;
-  v13[1] = *&a5;
-  v13[0] = [MEMORY[0x277D75208] _roundedRectBezierPath:a4 withRoundedCorners:16 cornerRadius:0 segments:a3.origin.x legacyCorners:{a3.origin.y, a3.size.width, a3.size.height, a5}];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  v13[2] = corners;
+  v13[1] = *&radius;
+  v13[0] = [MEMORY[0x277D75208] _roundedRectBezierPath:corners withRoundedCorners:16 cornerRadius:0 segments:rect.origin.x legacyCorners:{rect.origin.y, rect.size.width, rect.size.height, radius}];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v13[0] setLineWidth:1.0 / v5];
-  [v13[0] setUsesEvenOddFillRule:{1, MEMORY[0x277D82BD8](v8).n128_f64[0]}];
-  fieldBackgroundColor = v14->_fieldBackgroundColor;
+  [v13[0] setUsesEvenOddFillRule:{1, MEMORY[0x277D82BD8](mainScreen).n128_f64[0]}];
+  fieldBackgroundColor = selfCopy->_fieldBackgroundColor;
   v10 = 0;
   if (fieldBackgroundColor)
   {
@@ -505,15 +505,15 @@
 
   else
   {
-    v11 = [MEMORY[0x277D75348] tertiarySystemFillColor];
+    tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
     v10 = 1;
-    v6 = MEMORY[0x277D82BE0](v11);
+    v6 = MEMORY[0x277D82BE0](tertiarySystemFillColor);
   }
 
   v12 = v6;
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](tertiarySystemFillColor);
   }
 
   [v12 set];
@@ -522,12 +522,12 @@
   objc_storeStrong(v13, 0);
 }
 
-- (id)cachedImageUsingBlock:(id)a3
+- (id)cachedImageUsingBlock:(id)block
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v19 = &cachedImageUsingBlock__onceToken;
   v18 = 0;
   objc_storeStrong(&v18, &__block_literal_global_3);
@@ -538,19 +538,19 @@
 
   objc_storeStrong(&v18, 0);
   v11 = MEMORY[0x277CCACA8];
-  rowIdentifier = v17->_rowIdentifier;
-  blurEffectStyle = v17->_blurEffectStyle;
-  usesVibrancy = v17->_usesVibrancy;
-  v13 = [(AKTextField *)v17 traitCollection];
-  v10 = [v13 userInterfaceStyle];
-  v12 = [(UIColor *)v17->_fieldBackgroundColor description];
-  v15 = [v11 stringWithFormat:@"%llu-%llu-%llu-%llu-%@", rowIdentifier, blurEffectStyle, usesVibrancy, v10, v12];
+  rowIdentifier = selfCopy->_rowIdentifier;
+  blurEffectStyle = selfCopy->_blurEffectStyle;
+  usesVibrancy = selfCopy->_usesVibrancy;
+  traitCollection = [(AKTextField *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  v12 = [(UIColor *)selfCopy->_fieldBackgroundColor description];
+  v15 = [v11 stringWithFormat:@"%llu-%llu-%llu-%llu-%@", rowIdentifier, blurEffectStyle, usesVibrancy, userInterfaceStyle, v12];
   MEMORY[0x277D82BD8](v12);
-  v14 = [cachedImageUsingBlock__imageCache objectForKeyedSubscript:{v15, MEMORY[0x277D82BD8](v13).n128_f64[0]}];
+  v14 = [cachedImageUsingBlock__imageCache objectForKeyedSubscript:{v15, MEMORY[0x277D82BD8](traitCollection).n128_f64[0]}];
   v3 = MEMORY[0x277D82BD8](v14);
   if (!v14)
   {
-    v6 = (*(location[0] + 2))(location[0], v17->_rowIdentifier, v17->_blurEffectStyle, v3);
+    v6 = (*(location[0] + 2))(location[0], selfCopy->_rowIdentifier, selfCopy->_blurEffectStyle, v3);
     [cachedImageUsingBlock__imageCache setObject:? forKeyedSubscript:?];
     v3.n128_u64[0] = MEMORY[0x277D82BD8](v6).n128_u64[0];
   }

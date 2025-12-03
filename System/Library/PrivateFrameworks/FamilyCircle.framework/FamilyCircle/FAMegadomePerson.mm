@@ -1,38 +1,38 @@
 @interface FAMegadomePerson
-- (FAMegadomePerson)initWithEmails:(id)a3 phoneNumbers:(id)a4 names:(id)a5 contactIdentifiers:(id)a6;
-- (FAMegadomePerson)initWithVisualIdentifierViewPerson:(id)a3;
+- (FAMegadomePerson)initWithEmails:(id)emails phoneNumbers:(id)numbers names:(id)names contactIdentifiers:(id)identifiers;
+- (FAMegadomePerson)initWithVisualIdentifierViewPerson:(id)person;
 @end
 
 @implementation FAMegadomePerson
 
-- (FAMegadomePerson)initWithVisualIdentifierViewPerson:(id)a3
+- (FAMegadomePerson)initWithVisualIdentifierViewPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 emails];
-  v6 = [v4 phoneNumbers];
-  v7 = [v4 names];
-  v8 = [v4 contactIdentifiers];
+  personCopy = person;
+  emails = [personCopy emails];
+  phoneNumbers = [personCopy phoneNumbers];
+  names = [personCopy names];
+  contactIdentifiers = [personCopy contactIdentifiers];
 
-  v9 = [(FAMegadomePerson *)self initWithEmails:v5 phoneNumbers:v6 names:v7 contactIdentifiers:v8];
+  v9 = [(FAMegadomePerson *)self initWithEmails:emails phoneNumbers:phoneNumbers names:names contactIdentifiers:contactIdentifiers];
   return v9;
 }
 
-- (FAMegadomePerson)initWithEmails:(id)a3 phoneNumbers:(id)a4 names:(id)a5 contactIdentifiers:(id)a6
+- (FAMegadomePerson)initWithEmails:(id)emails phoneNumbers:(id)numbers names:(id)names contactIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  namesCopy = names;
+  identifiersCopy = identifiers;
   v18.receiver = self;
   v18.super_class = FAMegadomePerson;
   v15 = [(FAMegadomePerson *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_emails, a3);
-    objc_storeStrong(&v16->_phoneNumbers, a4);
-    objc_storeStrong(&v16->_names, a5);
-    objc_storeStrong(&v16->_contactIdentifiers, a6);
+    objc_storeStrong(&v15->_emails, emails);
+    objc_storeStrong(&v16->_phoneNumbers, numbers);
+    objc_storeStrong(&v16->_names, names);
+    objc_storeStrong(&v16->_contactIdentifiers, identifiers);
   }
 
   return v16;

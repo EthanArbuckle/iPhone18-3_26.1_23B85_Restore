@@ -1,53 +1,53 @@
 @interface NCToggleControlPair
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCToggleControlPair)initWithLeadingToggleControl:(id)a3 trailingToggleControl:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCToggleControlPair)initWithLeadingToggleControl:(id)control trailingToggleControl:(id)toggleControl;
 - (NSString)clearAllText;
 - (double)_effectiveInterControlPadding;
-- (double)_effectiveValueForMinValue:(double)a3 withFont:(id)a4;
-- (void)_handleTouchUpInside:(id)a3 withEvent:(id)a4;
+- (double)_effectiveValueForMinValue:(double)value withFont:(id)font;
+- (void)_handleTouchUpInside:(id)inside withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setClearAllText:(id)a3;
-- (void)setLeadingControlExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setMaterialGroupNameBase:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setClearAllText:(id)text;
+- (void)setLeadingControlExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setMaterialGroupNameBase:(id)base;
 @end
 
 @implementation NCToggleControlPair
 
-- (NCToggleControlPair)initWithLeadingToggleControl:(id)a3 trailingToggleControl:(id)a4
+- (NCToggleControlPair)initWithLeadingToggleControl:(id)control trailingToggleControl:(id)toggleControl
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  toggleControlCopy = toggleControl;
   v12.receiver = self;
   v12.super_class = NCToggleControlPair;
   v8 = [(NCToggleControlPair *)&v12 init];
   if (v8)
   {
-    v13[0] = v6;
-    v13[1] = v7;
+    v13[0] = controlCopy;
+    v13[1] = toggleControlCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     toggleControls = v8->_toggleControls;
     v8->_toggleControls = v9;
 
-    [v7 setExpanded:{objc_msgSend(v6, "isExpanded") ^ 1}];
-    [(NCToggleControlPair *)v8 addSubview:v6];
-    [(NCToggleControlPair *)v8 addSubview:v7];
-    [v6 _setManagingPair:v8];
-    [v7 _setManagingPair:v8];
+    [toggleControlCopy setExpanded:{objc_msgSend(controlCopy, "isExpanded") ^ 1}];
+    [(NCToggleControlPair *)v8 addSubview:controlCopy];
+    [(NCToggleControlPair *)v8 addSubview:toggleControlCopy];
+    [controlCopy _setManagingPair:v8];
+    [toggleControlCopy _setManagingPair:v8];
   }
 
   return v8;
 }
 
-- (void)setLeadingControlExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setLeadingControlExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(NCToggleControlPair *)self _leadingToggleControl:a3];
-  v7 = [(NCToggleControlPair *)self _trailingToggleControl];
-  if ([v6 isExpanded] != v4)
+  expandedCopy = expanded;
+  v6 = [(NCToggleControlPair *)self _leadingToggleControl:expanded];
+  _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+  if ([v6 isExpanded] != expandedCopy)
   {
     v8 = objc_opt_class();
     v9[0] = MEMORY[0x277D85DD0];
@@ -55,8 +55,8 @@
     v9[2] = __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_invoke;
     v9[3] = &unk_278371F30;
     v10 = v6;
-    v12 = v4;
-    v11 = v7;
+    v12 = expandedCopy;
+    v11 = _trailingToggleControl;
     [v8 performWithDefaultExpansionAnimation:v9 completion:0];
   }
 }
@@ -70,42 +70,42 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
   return [v2 setExpanded:v3];
 }
 
-- (void)setClearAllText:(id)a3
+- (void)setClearAllText:(id)text
 {
-  v4 = a3;
-  v5 = [(NCToggleControlPair *)self _leadingToggleControl];
-  [v5 setClearAllText:v4];
+  textCopy = text;
+  _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+  [_leadingToggleControl setClearAllText:textCopy];
 
-  v6 = [(NCToggleControlPair *)self _trailingToggleControl];
-  [v6 setClearAllText:v4];
+  _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+  [_trailingToggleControl setClearAllText:textCopy];
 }
 
 - (NSString)clearAllText
 {
-  v3 = [(NCToggleControlPair *)self _leadingToggleControl];
-  v4 = [v3 clearAllText];
-  v5 = v4;
-  if (v4)
+  _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+  clearAllText = [_leadingToggleControl clearAllText];
+  v5 = clearAllText;
+  if (clearAllText)
   {
-    v6 = v4;
+    clearAllText2 = clearAllText;
   }
 
   else
   {
-    v7 = [(NCToggleControlPair *)self _trailingToggleControl];
-    v6 = [v7 clearAllText];
+    _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+    clearAllText2 = [_trailingToggleControl clearAllText];
   }
 
-  return v6;
+  return clearAllText2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(NCToggleControlPair *)self _leadingToggleControl:a3.width];
+  v4 = [(NCToggleControlPair *)self _leadingToggleControl:fits.width];
   if (v4)
   {
-    v5 = [(NCToggleControlPair *)self _leadingToggleControl];
-    [v5 _cachedEffectiveMaxUnexpandedSize];
+    _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+    [_leadingToggleControl _cachedEffectiveMaxUnexpandedSize];
   }
 
   else
@@ -113,11 +113,11 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
     [NCToggleControl effectiveHeight:[(NCToggleControlPair *)self adjustsFontForContentSizeCategory]];
   }
 
-  v6 = [(NCToggleControlPair *)self _trailingToggleControl];
-  if (v6)
+  _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+  if (_trailingToggleControl)
   {
-    v7 = [(NCToggleControlPair *)self _trailingToggleControl];
-    [v7 _cachedEffectiveMaxExpandedSize];
+    _trailingToggleControl2 = [(NCToggleControlPair *)self _trailingToggleControl];
+    [_trailingToggleControl2 _cachedEffectiveMaxExpandedSize];
   }
 
   else
@@ -144,16 +144,16 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NCToggleControlPair *)self _shouldReverseLayoutDirection];
-  v12 = [(NCToggleControlPair *)self _leadingToggleControl];
-  [v12 _effectiveExpandedSize];
+  _shouldReverseLayoutDirection = [(NCToggleControlPair *)self _shouldReverseLayoutDirection];
+  _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+  [_leadingToggleControl _effectiveExpandedSize];
   BSRectWithSize();
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v32 = v4;
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v36.origin.x = v4;
     v36.origin.y = v6;
@@ -167,15 +167,15 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
     v14 = Width - CGRectGetWidth(v37);
   }
 
-  [v12 setFrame:{v14, v16, v18, v20, *&v32, *&v6}];
-  v22 = [(NCToggleControlPair *)self _trailingToggleControl];
-  [v22 _effectiveExpandedSize];
+  [_leadingToggleControl setFrame:{v14, v16, v18, v20, *&v32, *&v6}];
+  _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+  [_trailingToggleControl _effectiveExpandedSize];
   BSRectWithSize();
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  if ((v11 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v38.origin.x = v33;
     v38.origin.y = v34;
@@ -189,31 +189,31 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
     v24 = v31 - CGRectGetWidth(v39);
   }
 
-  [v22 setFrame:{v24, v26, v28, v30}];
+  [_trailingToggleControl setFrame:{v24, v26, v28, v30}];
 }
 
 - (BOOL)adjustsFontForContentSizeCategory
 {
-  v3 = [(NCToggleControlPair *)self _leadingToggleControl];
-  if ([v3 adjustsFontForContentSizeCategory])
+  _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+  if ([_leadingToggleControl adjustsFontForContentSizeCategory])
   {
-    v4 = [(NCToggleControlPair *)self _trailingToggleControl];
-    v5 = [v4 adjustsFontForContentSizeCategory];
+    _trailingToggleControl = [(NCToggleControlPair *)self _trailingToggleControl];
+    adjustsFontForContentSizeCategory = [_trailingToggleControl adjustsFontForContentSizeCategory];
   }
 
   else
   {
-    v5 = 0;
+    adjustsFontForContentSizeCategory = 0;
   }
 
-  return v5;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(NCToggleControlPair *)self adjustsFontForContentSizeCategory];
+  adjustsFontForContentSizeCategory = [(NCToggleControlPair *)self adjustsFontForContentSizeCategory];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -234,7 +234,7 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setAdjustsFontForContentSizeCategory:{v3, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) setAdjustsFontForContentSizeCategory:{categoryCopy, v11}];
       }
 
       while (v8 != v10);
@@ -244,7 +244,7 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
     while (v8);
   }
 
-  if (v5 != [(NCToggleControlPair *)self adjustsFontForContentSizeCategory])
+  if (adjustsFontForContentSizeCategory != [(NCToggleControlPair *)self adjustsFontForContentSizeCategory])
   {
     [(NCToggleControlPair *)self adjustForContentSizeCategoryChange];
   }
@@ -295,13 +295,13 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
   return 0;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSString *)self->_materialGroupNameBase isEqualToString:v4])
+  baseCopy = base;
+  if (![(NSString *)self->_materialGroupNameBase isEqualToString:baseCopy])
   {
-    v5 = [v4 copy];
+    v5 = [baseCopy copy];
     materialGroupNameBase = self->_materialGroupNameBase;
     self->_materialGroupNameBase = v5;
 
@@ -337,12 +337,12 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
   }
 }
 
-- (double)_effectiveValueForMinValue:(double)a3 withFont:(id)a4
+- (double)_effectiveValueForMinValue:(double)value withFont:(id)font
 {
-  [a4 _scaledValueForValue:?];
-  if (result <= a3)
+  [font _scaledValueForValue:?];
+  if (result <= value)
   {
-    return a3;
+    return value;
   }
 
   return result;
@@ -350,9 +350,9 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
 
 - (double)_effectiveInterControlPadding
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   if (IsAX)
   {
@@ -364,7 +364,7 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
     v6 = 8.0;
   }
 
-  v7 = [(NCToggleControlPair *)self _leadingToggleControl];
+  _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
   v8 = [objc_opt_class() _labelFont:{-[NCToggleControlPair adjustsFontForContentSizeCategory](self, "adjustsFontForContentSizeCategory")}];
   [(NCToggleControlPair *)self _effectiveValueForMinValue:v8 withFont:v6];
   v10 = v9;
@@ -372,13 +372,13 @@ uint64_t __58__NCToggleControlPair_setLeadingControlExpanded_animated___block_in
   return v10;
 }
 
-- (void)_handleTouchUpInside:(id)a3 withEvent:(id)a4
+- (void)_handleTouchUpInside:(id)inside withEvent:(id)event
 {
-  v7 = a3;
-  if (([v7 _wasExpandedPriorToControlEvent] & 1) == 0)
+  insideCopy = inside;
+  if (([insideCopy _wasExpandedPriorToControlEvent] & 1) == 0)
   {
-    v5 = [(NCToggleControlPair *)self _leadingToggleControl];
-    v6 = v5 == v7;
+    _leadingToggleControl = [(NCToggleControlPair *)self _leadingToggleControl];
+    v6 = _leadingToggleControl == insideCopy;
 
     [(NCToggleControlPair *)self setLeadingControlExpanded:v6 animated:1];
   }

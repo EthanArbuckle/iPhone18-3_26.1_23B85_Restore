@@ -1,35 +1,35 @@
 @interface PPRankableSocialHighlight
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)featureNames;
 - (NSString)description;
-- (id)calculatedFeatureValueForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)calculatedFeatureValueForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (id)features;
 - (id)json;
-- (int)StringAsHighlightType:(id)a3;
+- (int)StringAsHighlightType:(id)type;
 - (int)highlightType;
 - (unint64_t)hash;
-- (void)addApplicationIdentifiers:(id)a3;
-- (void)addCalculatedFeatures:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCalculatedFeaturesFromDictionary:(id)a3;
-- (void)setHasFirstPassScore:(BOOL)a3;
-- (void)setHasFromMeEntitlementOverrideIsPresent:(BOOL)a3;
-- (void)setHasHighlightType:(BOOL)a3;
-- (void)setHasIsCollaboration:(BOOL)a3;
-- (void)setHasIsConversationAutoDonating:(BOOL)a3;
-- (void)setHasIsPrimary:(BOOL)a3;
-- (void)setHasIsTopKResult:(BOOL)a3;
-- (void)setHasRank:(BOOL)a3;
-- (void)setHasRankingSecondsSinceReferenceDate:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)setHasSyndicationSecondsSinceReferenceDate:(BOOL)a3;
-- (void)setHasTopKScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addApplicationIdentifiers:(id)identifiers;
+- (void)addCalculatedFeatures:(id)features;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCalculatedFeaturesFromDictionary:(id)dictionary;
+- (void)setHasFirstPassScore:(BOOL)score;
+- (void)setHasFromMeEntitlementOverrideIsPresent:(BOOL)present;
+- (void)setHasHighlightType:(BOOL)type;
+- (void)setHasIsCollaboration:(BOOL)collaboration;
+- (void)setHasIsConversationAutoDonating:(BOOL)donating;
+- (void)setHasIsPrimary:(BOOL)primary;
+- (void)setHasIsTopKResult:(BOOL)result;
+- (void)setHasRank:(BOOL)rank;
+- (void)setHasRankingSecondsSinceReferenceDate:(BOOL)date;
+- (void)setHasScore:(BOOL)score;
+- (void)setHasSyndicationSecondsSinceReferenceDate:(BOOL)date;
+- (void)setHasTopKScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPRankableSocialHighlight
@@ -47,30 +47,30 @@
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 20))
+  fromCopy = from;
+  if (*(fromCopy + 20))
   {
     [(PPRankableSocialHighlight *)self setHighlightIdentifier:?];
   }
 
-  v5 = *(v4 + 128);
+  v5 = *(fromCopy + 128);
   if ((v5 & 0x40) != 0)
   {
-    self->_highlightType = *(v4 + 42);
+    self->_highlightType = *(fromCopy + 42);
     *&self->_has |= 0x40u;
-    v5 = *(v4 + 128);
+    v5 = *(fromCopy + 128);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    self->_syndicationSecondsSinceReferenceDate = *(v4 + 5);
+    self->_syndicationSecondsSinceReferenceDate = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 29))
+  if (*(fromCopy + 29))
   {
     [(PPRankableSocialHighlight *)self setSourceBundleId:?];
   }
@@ -79,7 +79,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -103,13 +103,13 @@
     while (v8);
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(PPRankableSocialHighlight *)self setResourceUrl:?];
   }
 
   sender = self->_sender;
-  v12 = *(v4 + 28);
+  v12 = *(fromCopy + 28);
   if (sender)
   {
     if (v12)
@@ -123,12 +123,12 @@
     [(PPRankableSocialHighlight *)self setSender:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PPRankableSocialHighlight *)self setDomainIdentifier:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PPRankableSocialHighlight *)self setBatchIdentifier:?];
   }
@@ -137,7 +137,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = *(v4 + 10);
+  v13 = *(fromCopy + 10);
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
@@ -161,44 +161,44 @@
     while (v15);
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PPRankableSocialHighlight *)self setClientIdentifier:?];
   }
 
-  if (*(v4 + 128))
+  if (*(fromCopy + 128))
   {
-    self->_contentCreationSecondsSinceReferenceDate = *(v4 + 1);
+    self->_contentCreationSecondsSinceReferenceDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PPRankableSocialHighlight *)self setGroupPhotoPathDigest:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(PPRankableSocialHighlight *)self setDisplayName:?];
   }
 
-  if ((*(v4 + 128) & 0x800) != 0)
+  if ((*(fromCopy + 128) & 0x800) != 0)
   {
-    self->_isPrimary = *(v4 + 251);
+    self->_isPrimary = *(fromCopy + 251);
     *&self->_has |= 0x800u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PPRankableSocialHighlight *)self setAttributionIdentifier:?];
   }
 
-  v18 = *(v4 + 128);
+  v18 = *(fromCopy + 128);
   if ((v18 & 0x80) != 0)
   {
-    self->_rank = *(v4 + 50);
+    self->_rank = *(fromCopy + 50);
     *&self->_has |= 0x80u;
-    v18 = *(v4 + 128);
+    v18 = *(fromCopy + 128);
     if ((v18 & 8) == 0)
     {
 LABEL_48:
@@ -216,43 +216,43 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  self->_score = *(v4 + 4);
+  self->_score = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 128) & 0x400) != 0)
+  if ((*(fromCopy + 128) & 0x400) != 0)
   {
 LABEL_49:
-    self->_isConversationAutoDonating = *(v4 + 250);
+    self->_isConversationAutoDonating = *(fromCopy + 250);
     *&self->_has |= 0x400u;
   }
 
 LABEL_50:
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(PPRankableSocialHighlight *)self setOriginatingDeviceId:?];
   }
 
-  if ((*(v4 + 128) & 4) != 0)
+  if ((*(fromCopy + 128) & 4) != 0)
   {
-    self->_rankingSecondsSinceReferenceDate = *(v4 + 3);
+    self->_rankingSecondsSinceReferenceDate = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(PPRankableSocialHighlight *)self setResolvedUrl:?];
   }
 
-  if (*(v4 + 30))
+  if (*(fromCopy + 30))
   {
     [(PPRankableSocialHighlight *)self setVariant:?];
   }
 
-  v19 = *(v4 + 128);
+  v19 = *(fromCopy + 128);
   if ((v19 & 0x1000) != 0)
   {
-    self->_isTopKResult = *(v4 + 252);
+    self->_isTopKResult = *(fromCopy + 252);
     *&self->_has |= 0x1000u;
-    v19 = *(v4 + 128);
+    v19 = *(fromCopy + 128);
     if ((v19 & 0x20) == 0)
     {
 LABEL_60:
@@ -270,9 +270,9 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  self->_topKScore = *(v4 + 6);
+  self->_topKScore = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v19 = *(v4 + 128);
+  v19 = *(fromCopy + 128);
   if ((v19 & 2) == 0)
   {
 LABEL_61:
@@ -285,54 +285,54 @@ LABEL_61:
   }
 
 LABEL_85:
-  self->_firstPassScore = *(v4 + 2);
+  self->_firstPassScore = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 128) & 0x200) != 0)
+  if ((*(fromCopy + 128) & 0x200) != 0)
   {
 LABEL_62:
-    self->_isCollaboration = *(v4 + 249);
+    self->_isCollaboration = *(fromCopy + 249);
     *&self->_has |= 0x200u;
   }
 
 LABEL_63:
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PPRankableSocialHighlight *)self setCollaborationIdentifier:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PPRankableSocialHighlight *)self setContentType:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(PPRankableSocialHighlight *)self setContentDisplayName:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PPRankableSocialHighlight *)self setFileProviderId:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(PPRankableSocialHighlight *)self setLocalIdentity:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(PPRankableSocialHighlight *)self setLocalIdentityProof:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(PPRankableSocialHighlight *)self setHandleToIdentityMap:?];
   }
 
-  if ((*(v4 + 128) & 0x100) != 0)
+  if ((*(fromCopy + 128) & 0x100) != 0)
   {
-    self->_fromMeEntitlementOverrideIsPresent = *(v4 + 248);
+    self->_fromMeEntitlementOverrideIsPresent = *(fromCopy + 248);
     *&self->_has |= 0x100u;
   }
 
@@ -652,16 +652,16 @@ LABEL_53:
   return v77 ^ v78 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v40 ^ v44 ^ v45 ^ v46 ^ v47 ^ v48 ^ v49 ^ v50 ^ v51 ^ v52;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_123;
   }
 
   highlightIdentifier = self->_highlightIdentifier;
-  if (highlightIdentifier | *(v4 + 20))
+  if (highlightIdentifier | *(equalCopy + 20))
   {
     if (![(NSString *)highlightIdentifier isEqual:?])
     {
@@ -670,10 +670,10 @@ LABEL_53:
   }
 
   has = self->_has;
-  v7 = *(v4 + 128);
+  v7 = *(equalCopy + 128);
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_highlightType != *(v4 + 42))
+    if ((v7 & 0x40) == 0 || self->_highlightType != *(equalCopy + 42))
     {
       goto LABEL_123;
     }
@@ -686,7 +686,7 @@ LABEL_53:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_syndicationSecondsSinceReferenceDate != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_syndicationSecondsSinceReferenceDate != *(equalCopy + 5))
     {
       goto LABEL_123;
     }
@@ -698,13 +698,13 @@ LABEL_53:
   }
 
   sourceBundleId = self->_sourceBundleId;
-  if (sourceBundleId | *(v4 + 29) && ![(NSString *)sourceBundleId isEqual:?])
+  if (sourceBundleId | *(equalCopy + 29) && ![(NSString *)sourceBundleId isEqual:?])
   {
     goto LABEL_123;
   }
 
   applicationIdentifiers = self->_applicationIdentifiers;
-  if (applicationIdentifiers | *(v4 + 7))
+  if (applicationIdentifiers | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)applicationIdentifiers isEqual:?])
     {
@@ -713,7 +713,7 @@ LABEL_53:
   }
 
   resourceUrl = self->_resourceUrl;
-  if (resourceUrl | *(v4 + 27))
+  if (resourceUrl | *(equalCopy + 27))
   {
     if (![(NSString *)resourceUrl isEqual:?])
     {
@@ -722,7 +722,7 @@ LABEL_53:
   }
 
   sender = self->_sender;
-  if (sender | *(v4 + 28))
+  if (sender | *(equalCopy + 28))
   {
     if (![(PPSocialHighlightContact *)sender isEqual:?])
     {
@@ -731,7 +731,7 @@ LABEL_53:
   }
 
   domainIdentifier = self->_domainIdentifier;
-  if (domainIdentifier | *(v4 + 16))
+  if (domainIdentifier | *(equalCopy + 16))
   {
     if (![(NSString *)domainIdentifier isEqual:?])
     {
@@ -740,7 +740,7 @@ LABEL_53:
   }
 
   batchIdentifier = self->_batchIdentifier;
-  if (batchIdentifier | *(v4 + 9))
+  if (batchIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)batchIdentifier isEqual:?])
     {
@@ -749,7 +749,7 @@ LABEL_53:
   }
 
   calculatedFeatures = self->_calculatedFeatures;
-  if (calculatedFeatures | *(v4 + 10))
+  if (calculatedFeatures | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)calculatedFeatures isEqual:?])
     {
@@ -758,7 +758,7 @@ LABEL_53:
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 11))
+  if (clientIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)clientIdentifier isEqual:?])
     {
@@ -766,10 +766,10 @@ LABEL_53:
     }
   }
 
-  v16 = *(v4 + 128);
+  v16 = *(equalCopy + 128);
   if (*&self->_has)
   {
-    if ((v16 & 1) == 0 || self->_contentCreationSecondsSinceReferenceDate != *(v4 + 1))
+    if ((v16 & 1) == 0 || self->_contentCreationSecondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_123;
     }
@@ -781,13 +781,13 @@ LABEL_53:
   }
 
   groupPhotoPathDigest = self->_groupPhotoPathDigest;
-  if (groupPhotoPathDigest | *(v4 + 18) && ![(NSString *)groupPhotoPathDigest isEqual:?])
+  if (groupPhotoPathDigest | *(equalCopy + 18) && ![(NSString *)groupPhotoPathDigest isEqual:?])
   {
     goto LABEL_123;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 15))
+  if (displayName | *(equalCopy + 15))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -796,36 +796,36 @@ LABEL_53:
   }
 
   v19 = self->_has;
-  v20 = *(v4 + 128);
+  v20 = *(equalCopy + 128);
   if ((v19 & 0x800) != 0)
   {
-    if ((*(v4 + 128) & 0x800) == 0)
+    if ((*(equalCopy + 128) & 0x800) == 0)
     {
       goto LABEL_123;
     }
 
-    v22 = *(v4 + 251);
+    v22 = *(equalCopy + 251);
     if (self->_isPrimary)
     {
-      if ((*(v4 + 251) & 1) == 0)
+      if ((*(equalCopy + 251) & 1) == 0)
       {
         goto LABEL_123;
       }
     }
 
-    else if (*(v4 + 251))
+    else if (*(equalCopy + 251))
     {
       goto LABEL_123;
     }
   }
 
-  else if ((*(v4 + 128) & 0x800) != 0)
+  else if ((*(equalCopy + 128) & 0x800) != 0)
   {
     goto LABEL_123;
   }
 
   attributionIdentifier = self->_attributionIdentifier;
-  if (attributionIdentifier | *(v4 + 8))
+  if (attributionIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)attributionIdentifier isEqual:?])
     {
@@ -833,12 +833,12 @@ LABEL_53:
     }
 
     v19 = self->_has;
-    v20 = *(v4 + 128);
+    v20 = *(equalCopy + 128);
   }
 
   if ((v19 & 0x80) != 0)
   {
-    if ((v20 & 0x80) == 0 || self->_rank != *(v4 + 50))
+    if ((v20 & 0x80) == 0 || self->_rank != *(equalCopy + 50))
     {
       goto LABEL_123;
     }
@@ -851,7 +851,7 @@ LABEL_53:
 
   if ((v19 & 8) != 0)
   {
-    if ((v20 & 8) == 0 || self->_score != *(v4 + 4))
+    if ((v20 & 8) == 0 || self->_score != *(equalCopy + 4))
     {
       goto LABEL_123;
     }
@@ -869,16 +869,16 @@ LABEL_53:
       goto LABEL_123;
     }
 
-    v24 = *(v4 + 250);
+    v24 = *(equalCopy + 250);
     if (self->_isConversationAutoDonating)
     {
-      if ((*(v4 + 250) & 1) == 0)
+      if ((*(equalCopy + 250) & 1) == 0)
       {
         goto LABEL_123;
       }
     }
 
-    else if (*(v4 + 250))
+    else if (*(equalCopy + 250))
     {
       goto LABEL_123;
     }
@@ -890,7 +890,7 @@ LABEL_53:
   }
 
   originatingDeviceId = self->_originatingDeviceId;
-  if (originatingDeviceId | *(v4 + 24))
+  if (originatingDeviceId | *(equalCopy + 24))
   {
     if (![(NSString *)originatingDeviceId isEqual:?])
     {
@@ -898,12 +898,12 @@ LABEL_53:
     }
 
     v19 = self->_has;
-    v20 = *(v4 + 128);
+    v20 = *(equalCopy + 128);
   }
 
   if ((v19 & 4) != 0)
   {
-    if ((v20 & 4) == 0 || self->_rankingSecondsSinceReferenceDate != *(v4 + 3))
+    if ((v20 & 4) == 0 || self->_rankingSecondsSinceReferenceDate != *(equalCopy + 3))
     {
       goto LABEL_123;
     }
@@ -915,13 +915,13 @@ LABEL_53:
   }
 
   resolvedUrl = self->_resolvedUrl;
-  if (resolvedUrl | *(v4 + 26) && ![(NSString *)resolvedUrl isEqual:?])
+  if (resolvedUrl | *(equalCopy + 26) && ![(NSString *)resolvedUrl isEqual:?])
   {
     goto LABEL_123;
   }
 
   variant = self->_variant;
-  if (variant | *(v4 + 30))
+  if (variant | *(equalCopy + 30))
   {
     if (![(NSString *)variant isEqual:?])
     {
@@ -930,37 +930,37 @@ LABEL_53:
   }
 
   v27 = self->_has;
-  v28 = *(v4 + 128);
+  v28 = *(equalCopy + 128);
   if ((v27 & 0x1000) != 0)
   {
-    if ((*(v4 + 128) & 0x1000) == 0)
+    if ((*(equalCopy + 128) & 0x1000) == 0)
     {
       goto LABEL_123;
     }
 
-    v29 = *(v4 + 252);
+    v29 = *(equalCopy + 252);
     if (self->_isTopKResult)
     {
-      if ((*(v4 + 252) & 1) == 0)
+      if ((*(equalCopy + 252) & 1) == 0)
       {
         goto LABEL_123;
       }
     }
 
-    else if (*(v4 + 252))
+    else if (*(equalCopy + 252))
     {
       goto LABEL_123;
     }
   }
 
-  else if ((*(v4 + 128) & 0x1000) != 0)
+  else if ((*(equalCopy + 128) & 0x1000) != 0)
   {
     goto LABEL_123;
   }
 
   if ((v27 & 0x20) != 0)
   {
-    if ((v28 & 0x20) == 0 || self->_topKScore != *(v4 + 6))
+    if ((v28 & 0x20) == 0 || self->_topKScore != *(equalCopy + 6))
     {
       goto LABEL_123;
     }
@@ -973,7 +973,7 @@ LABEL_53:
 
   if ((v27 & 2) != 0)
   {
-    if ((v28 & 2) == 0 || self->_firstPassScore != *(v4 + 2))
+    if ((v28 & 2) == 0 || self->_firstPassScore != *(equalCopy + 2))
     {
       goto LABEL_123;
     }
@@ -986,39 +986,39 @@ LABEL_53:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 128) & 0x200) == 0)
+    if ((*(equalCopy + 128) & 0x200) == 0)
     {
       goto LABEL_123;
     }
 
-    v30 = *(v4 + 249);
+    v30 = *(equalCopy + 249);
     if (self->_isCollaboration)
     {
-      if ((*(v4 + 249) & 1) == 0)
+      if ((*(equalCopy + 249) & 1) == 0)
       {
         goto LABEL_123;
       }
     }
 
-    else if (*(v4 + 249))
+    else if (*(equalCopy + 249))
     {
       goto LABEL_123;
     }
   }
 
-  else if ((*(v4 + 128) & 0x200) != 0)
+  else if ((*(equalCopy + 128) & 0x200) != 0)
   {
     goto LABEL_123;
   }
 
   collaborationIdentifier = self->_collaborationIdentifier;
-  if (collaborationIdentifier | *(v4 + 12) && ![(NSString *)collaborationIdentifier isEqual:?])
+  if (collaborationIdentifier | *(equalCopy + 12) && ![(NSString *)collaborationIdentifier isEqual:?])
   {
     goto LABEL_123;
   }
 
   contentType = self->_contentType;
-  if (contentType | *(v4 + 14))
+  if (contentType | *(equalCopy + 14))
   {
     if (![(NSString *)contentType isEqual:?])
     {
@@ -1027,7 +1027,7 @@ LABEL_53:
   }
 
   contentDisplayName = self->_contentDisplayName;
-  if (contentDisplayName | *(v4 + 13))
+  if (contentDisplayName | *(equalCopy + 13))
   {
     if (![(NSString *)contentDisplayName isEqual:?])
     {
@@ -1036,7 +1036,7 @@ LABEL_53:
   }
 
   fileProviderId = self->_fileProviderId;
-  if (fileProviderId | *(v4 + 17))
+  if (fileProviderId | *(equalCopy + 17))
   {
     if (![(NSString *)fileProviderId isEqual:?])
     {
@@ -1045,7 +1045,7 @@ LABEL_53:
   }
 
   localIdentity = self->_localIdentity;
-  if (localIdentity | *(v4 + 22))
+  if (localIdentity | *(equalCopy + 22))
   {
     if (![(NSData *)localIdentity isEqual:?])
     {
@@ -1054,7 +1054,7 @@ LABEL_53:
   }
 
   localIdentityProof = self->_localIdentityProof;
-  if (localIdentityProof | *(v4 + 23))
+  if (localIdentityProof | *(equalCopy + 23))
   {
     if (![(NSData *)localIdentityProof isEqual:?])
     {
@@ -1063,7 +1063,7 @@ LABEL_53:
   }
 
   handleToIdentityMap = self->_handleToIdentityMap;
-  if (handleToIdentityMap | *(v4 + 19))
+  if (handleToIdentityMap | *(equalCopy + 19))
   {
     if (![(NSData *)handleToIdentityMap isEqual:?])
     {
@@ -1073,17 +1073,17 @@ LABEL_53:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 128) & 0x100) != 0)
+    if ((*(equalCopy + 128) & 0x100) != 0)
     {
       if (self->_fromMeEntitlementOverrideIsPresent)
       {
-        if ((*(v4 + 248) & 1) == 0)
+        if ((*(equalCopy + 248) & 1) == 0)
         {
           goto LABEL_123;
         }
       }
 
-      else if (*(v4 + 248))
+      else if (*(equalCopy + 248))
       {
         goto LABEL_123;
       }
@@ -1097,17 +1097,17 @@ LABEL_123:
     goto LABEL_124;
   }
 
-  v38 = (*(v4 + 128) & 0x100) == 0;
+  v38 = (*(equalCopy + 128) & 0x100) == 0;
 LABEL_124:
 
   return v38;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_highlightIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_highlightIdentifier copyWithZone:zone];
   v7 = *(v5 + 160);
   *(v5 + 160) = v6;
 
@@ -1125,7 +1125,7 @@ LABEL_124:
     *(v5 + 256) |= 0x10u;
   }
 
-  v9 = [(NSString *)self->_sourceBundleId copyWithZone:a3];
+  v9 = [(NSString *)self->_sourceBundleId copyWithZone:zone];
   v10 = *(v5 + 232);
   *(v5 + 232) = v9;
 
@@ -1148,7 +1148,7 @@ LABEL_124:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v67 + 1) + 8 * i) copyWithZone:a3];
+        v16 = [*(*(&v67 + 1) + 8 * i) copyWithZone:zone];
         [v5 addApplicationIdentifiers:v16];
       }
 
@@ -1158,19 +1158,19 @@ LABEL_124:
     while (v13);
   }
 
-  v17 = [(NSString *)self->_resourceUrl copyWithZone:a3];
+  v17 = [(NSString *)self->_resourceUrl copyWithZone:zone];
   v18 = *(v5 + 216);
   *(v5 + 216) = v17;
 
-  v19 = [(PPSocialHighlightContact *)self->_sender copyWithZone:a3];
+  v19 = [(PPSocialHighlightContact *)self->_sender copyWithZone:zone];
   v20 = *(v5 + 224);
   *(v5 + 224) = v19;
 
-  v21 = [(NSString *)self->_domainIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_domainIdentifier copyWithZone:zone];
   v22 = *(v5 + 128);
   *(v5 + 128) = v21;
 
-  v23 = [(NSString *)self->_batchIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_batchIdentifier copyWithZone:zone];
   v24 = *(v5 + 72);
   *(v5 + 72) = v23;
 
@@ -1193,7 +1193,7 @@ LABEL_124:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v63 + 1) + 8 * j) copyWithZone:{a3, v63}];
+        v30 = [*(*(&v63 + 1) + 8 * j) copyWithZone:{zone, v63}];
         [v5 addCalculatedFeatures:v30];
       }
 
@@ -1203,7 +1203,7 @@ LABEL_124:
     while (v27);
   }
 
-  v31 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v31 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v32 = *(v5 + 88);
   *(v5 + 88) = v31;
 
@@ -1213,11 +1213,11 @@ LABEL_124:
     *(v5 + 256) |= 1u;
   }
 
-  v33 = [(NSString *)self->_groupPhotoPathDigest copyWithZone:a3, v63];
+  v33 = [(NSString *)self->_groupPhotoPathDigest copyWithZone:zone, v63];
   v34 = *(v5 + 144);
   *(v5 + 144) = v33;
 
-  v35 = [(NSString *)self->_displayName copyWithZone:a3];
+  v35 = [(NSString *)self->_displayName copyWithZone:zone];
   v36 = *(v5 + 120);
   *(v5 + 120) = v35;
 
@@ -1227,7 +1227,7 @@ LABEL_124:
     *(v5 + 256) |= 0x800u;
   }
 
-  v37 = [(NSString *)self->_attributionIdentifier copyWithZone:a3];
+  v37 = [(NSString *)self->_attributionIdentifier copyWithZone:zone];
   v38 = *(v5 + 64);
   *(v5 + 64) = v37;
 
@@ -1264,7 +1264,7 @@ LABEL_26:
   }
 
 LABEL_27:
-  v40 = [(NSString *)self->_originatingDeviceId copyWithZone:a3];
+  v40 = [(NSString *)self->_originatingDeviceId copyWithZone:zone];
   v41 = *(v5 + 192);
   *(v5 + 192) = v40;
 
@@ -1274,11 +1274,11 @@ LABEL_27:
     *(v5 + 256) |= 4u;
   }
 
-  v42 = [(NSString *)self->_resolvedUrl copyWithZone:a3];
+  v42 = [(NSString *)self->_resolvedUrl copyWithZone:zone];
   v43 = *(v5 + 208);
   *(v5 + 208) = v42;
 
-  v44 = [(NSString *)self->_variant copyWithZone:a3];
+  v44 = [(NSString *)self->_variant copyWithZone:zone];
   v45 = *(v5 + 240);
   *(v5 + 240) = v44;
 
@@ -1330,31 +1330,31 @@ LABEL_33:
   }
 
 LABEL_34:
-  v47 = [(NSString *)self->_collaborationIdentifier copyWithZone:a3];
+  v47 = [(NSString *)self->_collaborationIdentifier copyWithZone:zone];
   v48 = *(v5 + 96);
   *(v5 + 96) = v47;
 
-  v49 = [(NSString *)self->_contentType copyWithZone:a3];
+  v49 = [(NSString *)self->_contentType copyWithZone:zone];
   v50 = *(v5 + 112);
   *(v5 + 112) = v49;
 
-  v51 = [(NSString *)self->_contentDisplayName copyWithZone:a3];
+  v51 = [(NSString *)self->_contentDisplayName copyWithZone:zone];
   v52 = *(v5 + 104);
   *(v5 + 104) = v51;
 
-  v53 = [(NSString *)self->_fileProviderId copyWithZone:a3];
+  v53 = [(NSString *)self->_fileProviderId copyWithZone:zone];
   v54 = *(v5 + 136);
   *(v5 + 136) = v53;
 
-  v55 = [(NSData *)self->_localIdentity copyWithZone:a3];
+  v55 = [(NSData *)self->_localIdentity copyWithZone:zone];
   v56 = *(v5 + 176);
   *(v5 + 176) = v55;
 
-  v57 = [(NSData *)self->_localIdentityProof copyWithZone:a3];
+  v57 = [(NSData *)self->_localIdentityProof copyWithZone:zone];
   v58 = *(v5 + 184);
   *(v5 + 184) = v57;
 
-  v59 = [(NSData *)self->_handleToIdentityMap copyWithZone:a3];
+  v59 = [(NSData *)self->_handleToIdentityMap copyWithZone:zone];
   v60 = *(v5 + 152);
   *(v5 + 152) = v59;
 
@@ -1368,28 +1368,28 @@ LABEL_34:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v17 = v4;
+  toCopy = to;
+  v17 = toCopy;
   if (self->_highlightIdentifier)
   {
-    [v4 setHighlightIdentifier:?];
-    v4 = v17;
+    [toCopy setHighlightIdentifier:?];
+    toCopy = v17;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 42) = self->_highlightType;
-    *(v4 + 128) |= 0x40u;
+    *(toCopy + 42) = self->_highlightType;
+    *(toCopy + 128) |= 0x40u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_syndicationSecondsSinceReferenceDate;
-    *(v4 + 128) |= 0x10u;
+    *(toCopy + 5) = *&self->_syndicationSecondsSinceReferenceDate;
+    *(toCopy + 128) |= 0x10u;
   }
 
   if (self->_sourceBundleId)
@@ -1400,10 +1400,10 @@ LABEL_34:
   if ([(PPRankableSocialHighlight *)self applicationIdentifiersCount])
   {
     [v17 clearApplicationIdentifiers];
-    v6 = [(PPRankableSocialHighlight *)self applicationIdentifiersCount];
-    if (v6)
+    applicationIdentifiersCount = [(PPRankableSocialHighlight *)self applicationIdentifiersCount];
+    if (applicationIdentifiersCount)
     {
-      v7 = v6;
+      v7 = applicationIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PPRankableSocialHighlight *)self applicationIdentifiersAtIndex:i];
@@ -1435,10 +1435,10 @@ LABEL_34:
   if ([(PPRankableSocialHighlight *)self calculatedFeaturesCount])
   {
     [v17 clearCalculatedFeatures];
-    v10 = [(PPRankableSocialHighlight *)self calculatedFeaturesCount];
-    if (v10)
+    calculatedFeaturesCount = [(PPRankableSocialHighlight *)self calculatedFeaturesCount];
+    if (calculatedFeaturesCount)
     {
-      v11 = v10;
+      v11 = calculatedFeaturesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PPRankableSocialHighlight *)self calculatedFeaturesAtIndex:j];
@@ -1637,10 +1637,10 @@ LABEL_54:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_highlightIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -1924,12 +1924,12 @@ LABEL_60:
 - (id)dictionaryRepresentation
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   highlightIdentifier = self->_highlightIdentifier;
   if (highlightIdentifier)
   {
-    [v3 setObject:highlightIdentifier forKey:@"highlightIdentifier"];
+    [dictionary setObject:highlightIdentifier forKey:@"highlightIdentifier"];
   }
 
   has = self->_has;
@@ -1978,8 +1978,8 @@ LABEL_60:
   sender = self->_sender;
   if (sender)
   {
-    v14 = [(PPSocialHighlightContact *)sender dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"sender"];
+    dictionaryRepresentation = [(PPSocialHighlightContact *)sender dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"sender"];
   }
 
   domainIdentifier = self->_domainIdentifier;
@@ -2016,8 +2016,8 @@ LABEL_60:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v54 + 1) + 8 * i) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v54 + 1) + 8 * i) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v54 objects:v58 count:16];
@@ -2235,15 +2235,15 @@ LABEL_60:
   v8.receiver = self;
   v8.super_class = PPRankableSocialHighlight;
   v4 = [(PPRankableSocialHighlight *)&v8 description];
-  v5 = [(PPRankableSocialHighlight *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPRankableSocialHighlight *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasFromMeEntitlementOverrideIsPresent:(BOOL)a3
+- (void)setHasFromMeEntitlementOverrideIsPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 256;
   }
@@ -2256,9 +2256,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsCollaboration:(BOOL)a3
+- (void)setHasIsCollaboration:(BOOL)collaboration
 {
-  if (a3)
+  if (collaboration)
   {
     v3 = 512;
   }
@@ -2271,9 +2271,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFirstPassScore:(BOOL)a3
+- (void)setHasFirstPassScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -2286,9 +2286,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTopKScore:(BOOL)a3
+- (void)setHasTopKScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -2301,9 +2301,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsTopKResult:(BOOL)a3
+- (void)setHasIsTopKResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 4096;
   }
@@ -2316,9 +2316,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasRankingSecondsSinceReferenceDate:(BOOL)a3
+- (void)setHasRankingSecondsSinceReferenceDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -2331,9 +2331,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsConversationAutoDonating:(BOOL)a3
+- (void)setHasIsConversationAutoDonating:(BOOL)donating
 {
-  if (a3)
+  if (donating)
   {
     v3 = 1024;
   }
@@ -2346,9 +2346,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -2361,9 +2361,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRank:(BOOL)a3
+- (void)setHasRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 128;
   }
@@ -2376,9 +2376,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsPrimary:(BOOL)a3
+- (void)setHasIsPrimary:(BOOL)primary
 {
-  if (a3)
+  if (primary)
   {
     v3 = 2048;
   }
@@ -2391,45 +2391,45 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)addCalculatedFeatures:(id)a3
+- (void)addCalculatedFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   calculatedFeatures = self->_calculatedFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!calculatedFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_calculatedFeatures;
     self->_calculatedFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     calculatedFeatures = self->_calculatedFeatures;
   }
 
-  [(NSMutableArray *)calculatedFeatures addObject:v4];
+  [(NSMutableArray *)calculatedFeatures addObject:featuresCopy];
 }
 
-- (void)addApplicationIdentifiers:(id)a3
+- (void)addApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   applicationIdentifiers = self->_applicationIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!applicationIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_applicationIdentifiers;
     self->_applicationIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     applicationIdentifiers = self->_applicationIdentifiers;
   }
 
-  [(NSMutableArray *)applicationIdentifiers addObject:v4];
+  [(NSMutableArray *)applicationIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasSyndicationSecondsSinceReferenceDate:(BOOL)a3
+- (void)setHasSyndicationSecondsSinceReferenceDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -2442,25 +2442,25 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsHighlightType:(id)a3
+- (int)StringAsHighlightType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Automatic"])
+  else if ([typeCopy isEqualToString:@"Automatic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Starred"])
+  else if ([typeCopy isEqualToString:@"Starred"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ManualAndAutomatic"])
+  else if ([typeCopy isEqualToString:@"ManualAndAutomatic"])
   {
     v4 = 3;
   }
@@ -2473,9 +2473,9 @@ LABEL_60:
   return v4;
 }
 
-- (void)setHasHighlightType:(BOOL)a3
+- (void)setHasHighlightType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -2516,19 +2516,19 @@ LABEL_60:
           v9 = *(*(&v18 + 1) + 8 * i);
           if ([v9 hasName])
           {
-            v10 = [v9 name];
-            if (v10)
+            name = [v9 name];
+            if (name)
             {
-              v11 = v10;
-              v12 = [v9 hasValue];
+              v11 = name;
+              hasValue = [v9 hasValue];
 
-              if (v12)
+              if (hasValue)
               {
                 v13 = MEMORY[0x277CCABB0];
                 [v9 value];
                 v14 = [v13 numberWithDouble:?];
-                v15 = [v9 name];
-                [v3 setObject:v14 forKeyedSubscript:v15];
+                name2 = [v9 name];
+                [v3 setObject:v14 forKeyedSubscript:name2];
               }
             }
           }
@@ -2551,18 +2551,18 @@ LABEL_60:
   return v3;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PPRankableSocialHighlight *)self calculatedFeatureValueForKey:v5];
+  nameCopy = name;
+  v6 = [(PPRankableSocialHighlight *)self calculatedFeatureValueForKey:nameCopy];
   if (!v6)
   {
     v7 = pp_default_log_handle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v16 = v5;
+      v16 = nameCopy;
       _os_log_fault_impl(&dword_23224A000, v7, OS_LOG_TYPE_FAULT, "Social Highlight Scorer fetched feature %@, which was not precomputed.", buf, 0xCu);
     }
 
@@ -2575,8 +2575,8 @@ LABEL_60:
   v9 = [v8 initWithShape:&unk_284785310 dataType:65600 error:&v14];
   if (!v9)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PPRankableSocialHighlight+FeatureRanks.m" lineNumber:63 description:@"Could not allocate memory for array"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPRankableSocialHighlight+FeatureRanks.m" lineNumber:63 description:@"Could not allocate memory for array"];
   }
 
   [v9 setObject:v6 atIndexedSubscript:0];
@@ -2613,12 +2613,12 @@ LABEL_60:
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 hasName])
         {
-          v10 = [v9 name];
+          name = [v9 name];
 
-          if (v10)
+          if (name)
           {
-            v11 = [v9 name];
-            [v3 addObject:v11];
+            name2 = [v9 name];
+            [v3 addObject:name2];
           }
         }
       }
@@ -2634,17 +2634,17 @@ LABEL_60:
   return v3;
 }
 
-- (void)setCalculatedFeaturesFromDictionary:(id)a3
+- (void)setCalculatedFeaturesFromDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2656,13 +2656,13 @@ LABEL_60:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
         v12 = objc_opt_new();
         [v12 setName:v11];
-        v13 = [v4 objectForKeyedSubscript:v11];
+        v13 = [dictionaryCopy objectForKeyedSubscript:v11];
         [v13 doubleValue];
         [v12 setValue:?];
 
@@ -2671,7 +2671,7 @@ LABEL_60:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -2683,10 +2683,10 @@ LABEL_60:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)calculatedFeatureValueForKey:(id)a3
+- (id)calculatedFeatureValueForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2706,8 +2706,8 @@ LABEL_60:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:keyCopy];
 
         if (v11)
         {
@@ -2739,8 +2739,8 @@ LABEL_11:
 {
   v10 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(PPRankableSocialHighlight *)self dictionaryRepresentation];
-  v4 = [v2 dataWithJSONObject:v3 options:8 error:0];
+  dictionaryRepresentation = [(PPRankableSocialHighlight *)self dictionaryRepresentation];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:8 error:0];
 
   if (!v4)
   {
@@ -2758,12 +2758,12 @@ LABEL_11:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v4 = a3;
-    v5 = [[PPRankableSocialHighlight alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[PPRankableSocialHighlight alloc] initWithData:dataCopy];
   }
 
   else

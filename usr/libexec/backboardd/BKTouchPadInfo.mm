@@ -1,5 +1,5 @@
 @interface BKTouchPadInfo
-- (BKTouchPadInfo)initWithService:(id)a3;
+- (BKTouchPadInfo)initWithService:(id)service;
 - (CGSize)digitizerSurfaceDimensions;
 - (id)description;
 - (void)resetForCancel;
@@ -39,22 +39,22 @@
   v8 = [v3 appendObject:self->_senderInfo withName:@"senderInfo"];
   v9 = [v3 appendObject:self->_overrideSenderDescriptor withName:@"overrideSenderDescriptor" skipIfNil:1];
   v10 = [v3 appendObject:self->_eventDispatcher withName:@"dispatcher"];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (BKTouchPadInfo)initWithService:(id)a3
+- (BKTouchPadInfo)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v24.receiver = self;
   v24.super_class = BKTouchPadInfo;
   v6 = [(BKTouchPadInfo *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_senderInfo, a3);
-    v8 = [v5 propertyOfClass:objc_opt_class() forKey:@"SurfaceDimensions"];
+    objc_storeStrong(&v6->_senderInfo, service);
+    v8 = [serviceCopy propertyOfClass:objc_opt_class() forKey:@"SurfaceDimensions"];
     v9 = v8;
     if (v8)
     {
@@ -105,12 +105,12 @@
       v19 = v18;
 
       v7->_digitizerSurfaceDimensions.width = vcvtd_n_f64_s64([v14 integerValue], 0x10uLL);
-      v20 = [v19 integerValue];
+      integerValue = [v19 integerValue];
 
-      v7->_digitizerSurfaceDimensions.height = vcvtd_n_f64_s64(v20, 0x10uLL);
+      v7->_digitizerSurfaceDimensions.height = vcvtd_n_f64_s64(integerValue, 0x10uLL);
     }
 
-    v21 = [v5 propertyOfClass:objc_opt_class() forKey:@"AccurateMaxDigitizerPressureValue"];
+    v21 = [serviceCopy propertyOfClass:objc_opt_class() forKey:@"AccurateMaxDigitizerPressureValue"];
     [v21 floatValue];
     v7->_maxForce = v22;
   }

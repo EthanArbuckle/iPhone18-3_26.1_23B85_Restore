@@ -34,12 +34,12 @@
 - (UIColor)topAccentColor;
 - (UIColor)topApproximateBackgroundColor;
 - (id)_starlightBackgroundColors;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 - (int64_t)curatedNumber;
 - (void)_setApproximateComplicationBackgroundColors;
-- (void)configurationDidChange:(id)a3;
+- (void)configurationDidChange:(id)change;
 - (void)invalidateCachedValues;
 - (void)resolveColorsIfNeeded;
 @end
@@ -77,8 +77,8 @@
     v5 = MEMORY[0x277CCACA8];
     v10.receiver = self;
     v10.super_class = NTKGossamerColorPalette;
-    v6 = [(NTKFaceColorPalette *)&v10 identifier];
-    v7 = [v5 stringWithFormat:@"%@-%lu-%lu-%@", v6, self->_backgroundStyle, self->_isEditingComplications, v4];
+    identifier = [(NTKFaceColorPalette *)&v10 identifier];
+    v7 = [v5 stringWithFormat:@"%@-%lu-%lu-%@", identifier, self->_backgroundStyle, self->_isEditingComplications, v4];
     v8 = self->_cachedIdentifier;
     self->_cachedIdentifier = v7;
 
@@ -88,11 +88,11 @@
   return cachedIdentifier;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NTKGossamerColorPalette;
-  v4 = [(NTKFaceColorPalette *)&v7 copyWithZone:a3];
+  v4 = [(NTKFaceColorPalette *)&v7 copyWithZone:zone];
   [v4 setBackgroundStyle:self->_backgroundStyle];
   [v4 setIsEditingComplications:self->_isEditingComplications];
   bottom = self->_approximateComplicationPositions.bottom;
@@ -102,10 +102,10 @@
   return v4;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKGossamerColorPalette *)self isCuratedColor])
   {
     if (swatchImageForSize__onceToken != -1)
@@ -114,20 +114,20 @@
     }
 
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NTKFaceColorPalette *)self configuration];
-    v8 = [v7 uniqueId];
+    configuration = [(NTKFaceColorPalette *)self configuration];
+    uniqueId = [configuration uniqueId];
     v17.width = width;
     v17.height = height;
     v9 = NSStringFromCGSize(v17);
-    v10 = [v6 stringWithFormat:@"%@-%@", v8, v9];
+    v10 = [v6 stringWithFormat:@"%@-%@", uniqueId, v9];
 
-    v11 = [swatchImageForSize__swatches objectForKey:v10];
-    if (!v11)
+    height = [swatchImageForSize__swatches objectForKey:v10];
+    if (!height)
     {
-      v12 = [(NTKGossamerColorPalette *)self gradientTopColor];
-      v13 = [(NTKGossamerColorPalette *)self gradientBottomColor];
-      v11 = NTKSwatchTwoColorGradientImage(v12, v13, 0, 0.0, 1.0, width, height);
-      [swatchImageForSize__swatches setObject:v11 forKey:v10];
+      gradientTopColor = [(NTKGossamerColorPalette *)self gradientTopColor];
+      gradientBottomColor = [(NTKGossamerColorPalette *)self gradientBottomColor];
+      height = NTKSwatchTwoColorGradientImage(gradientTopColor, gradientBottomColor, 0, 0.0, 1.0, width, height);
+      [swatchImageForSize__swatches setObject:height forKey:v10];
     }
   }
 
@@ -135,10 +135,10 @@
   {
     v15.receiver = self;
     v15.super_class = NTKGossamerColorPalette;
-    v11 = [(NTKFaceColorPalette *)&v15 swatchImageForSize:width, height];
+    height = [(NTKFaceColorPalette *)&v15 swatchImageForSize:width, height];
   }
 
-  return v11;
+  return height;
 }
 
 void __46__NTKGossamerColorPalette_swatchImageForSize___block_invoke()
@@ -150,22 +150,22 @@ void __46__NTKGossamerColorPalette_swatchImageForSize___block_invoke()
 
 - (BOOL)isCuratedColor
 {
-  v2 = [(NTKFaceColorPalette *)self configuration];
-  v3 = [v2 collectionName];
-  v4 = [v3 hasPrefix:@"gossamer"];
+  configuration = [(NTKFaceColorPalette *)self configuration];
+  collectionName = [configuration collectionName];
+  v4 = [collectionName hasPrefix:@"gossamer"];
 
   return v4;
 }
 
 - (BOOL)isSeasonalGradientColor
 {
-  v3 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v4 = [v3 collectionName];
-  if ([v4 isEqualToString:@"seasons.fall2023"])
+  pigmentEditOption = [(NTKFaceColorPalette *)self pigmentEditOption];
+  collectionName = [pigmentEditOption collectionName];
+  if ([collectionName isEqualToString:@"seasons.fall2023"])
   {
-    v5 = [(NTKFaceColorPalette *)self pigmentEditOption];
-    v6 = [v5 fullname];
-    v7 = [v6 containsString:@"seasons.fall2019.alaskanBlue"] ^ 1;
+    pigmentEditOption2 = [(NTKFaceColorPalette *)self pigmentEditOption];
+    fullname = [pigmentEditOption2 fullname];
+    v7 = [fullname containsString:@"seasons.fall2019.alaskanBlue"] ^ 1;
   }
 
   else
@@ -185,31 +185,31 @@ void __46__NTKGossamerColorPalette_swatchImageForSize___block_invoke()
     curatedNumber_formatter = v3;
   }
 
-  v5 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v6 = [v5 identifier];
+  pigmentEditOption = [(NTKFaceColorPalette *)self pigmentEditOption];
+  identifier = [pigmentEditOption identifier];
 
-  if ([v6 hasPrefix:@"gossamer.color"])
+  if ([identifier hasPrefix:@"gossamer.color"])
   {
-    v7 = [v6 substringFromIndex:{objc_msgSend(@"gossamer.color", "length")}];
+    v7 = [identifier substringFromIndex:{objc_msgSend(@"gossamer.color", "length")}];
     v8 = [curatedNumber_formatter numberFromString:v7];
     if (v8)
     {
       v9 = v8;
-      v10 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v10 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  return v10;
+  return integerValue;
 }
 
 - (id)_starlightBackgroundColors
@@ -240,11 +240,11 @@ void __53__NTKGossamerColorPalette__starlightBackgroundColors__block_invoke()
   _starlightBackgroundColors___colors = v4;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NTKGossamerColorPalette;
-  [(NTKFaceColorPalette *)&v4 configurationDidChange:a3];
+  [(NTKFaceColorPalette *)&v4 configurationDidChange:change];
   [(NTKGossamerColorPalette *)self invalidateCachedValues];
 }
 
@@ -257,12 +257,12 @@ void __53__NTKGossamerColorPalette__starlightBackgroundColors__block_invoke()
   }
 
   self->_isDirty = 0;
-  v3 = [(NTKFaceColorPalette *)self isTritium];
+  isTritium = [(NTKFaceColorPalette *)self isTritium];
   backgroundStyle = self->_backgroundStyle;
-  v120 = v3;
+  v120 = isTritium;
   if (backgroundStyle)
   {
-    v5 = v3;
+    v5 = isTritium;
   }
 
   else
@@ -271,21 +271,21 @@ void __53__NTKGossamerColorPalette__starlightBackgroundColors__block_invoke()
   }
 
   isEditingComplications = self->_isEditingComplications;
-  v6 = [(NTKGossamerColorPalette *)self isCuratedColor];
-  v125 = [(NTKGossamerColorPalette *)self isSeasonalGradientColor];
-  v128 = v6;
-  if (v6)
+  isCuratedColor = [(NTKGossamerColorPalette *)self isCuratedColor];
+  isSeasonalGradientColor = [(NTKGossamerColorPalette *)self isSeasonalGradientColor];
+  v128 = isCuratedColor;
+  if (isCuratedColor)
   {
-    v118 = [(NTKGossamerColorPalette *)self curatedNumber];
+    curatedNumber = [(NTKGossamerColorPalette *)self curatedNumber];
   }
 
   else
   {
-    v118 = 0;
+    curatedNumber = 0;
   }
 
-  v127 = [(NTKFaceColorPalette *)self isMulticolor];
-  v7 = [(NTKFaceColorPalette *)self hasPrimaryColorRange];
+  isMulticolor = [(NTKFaceColorPalette *)self isMulticolor];
+  hasPrimaryColorRange = [(NTKFaceColorPalette *)self hasPrimaryColorRange];
   if (v5)
   {
     v8 = &unk_284189998;
@@ -297,12 +297,12 @@ void __53__NTKGossamerColorPalette__starlightBackgroundColors__block_invoke()
   }
 
   objc_storeStrong(&self->_tintedFraction, v8);
-  v9 = [(NTKGossamerColorPalette *)self inputColor];
-  if (!v7)
+  inputColor = [(NTKGossamerColorPalette *)self inputColor];
+  if (!hasPrimaryColorRange)
   {
     if (!isEditingComplications)
     {
-      v15 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       CLKContrastRatioForColors();
       v12 = v16;
 
@@ -319,9 +319,9 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v10 = [(NTKGossamerColorPalette *)self rangeLightColor];
+  rangeLightColor = [(NTKGossamerColorPalette *)self rangeLightColor];
   [(NTKGossamerColorPalette *)self rangeDarkColor];
-  v124 = v122 = v10;
+  v124 = v122 = rangeLightColor;
   if (isEditingComplications)
   {
     goto LABEL_16;
@@ -359,27 +359,27 @@ LABEL_19:
 
     else
     {
-      if (!v125 && !v127)
+      if (!isSeasonalGradientColor && !isMulticolor)
       {
-        v22 = v9;
+        whiteColor2 = inputColor;
         goto LABEL_32;
       }
 
       v21 = MEMORY[0x277D75348];
     }
 
-    v22 = [v21 whiteColor];
+    whiteColor2 = [v21 whiteColor];
 LABEL_32:
     accentColor = self->_accentColor;
-    self->_accentColor = v22;
+    self->_accentColor = whiteColor2;
     v24 = 0.05;
     goto LABEL_44;
   }
 
-  objc_storeStrong(&self->_backgroundColor, v9);
-  if (v128 || v127 || v125)
+  objc_storeStrong(&self->_backgroundColor, inputColor);
+  if (v128 || isMulticolor || isSeasonalGradientColor)
   {
-    v17 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
@@ -394,13 +394,13 @@ LABEL_32:
       v25 = 0.1;
     }
 
-    v17 = [MEMORY[0x277D75348] colorWithWhite:v25 alpha:1.0];
+    whiteColor3 = [MEMORY[0x277D75348] colorWithWhite:v25 alpha:1.0];
   }
 
   v26 = self->_foregroundColor;
-  self->_foregroundColor = v17;
+  self->_foregroundColor = whiteColor3;
 
-  if (v127)
+  if (isMulticolor)
   {
     v27 = [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
 LABEL_43:
@@ -410,13 +410,13 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (v128 || v125)
+  if (v128 || isSeasonalGradientColor)
   {
-    v27 = v9;
+    v27 = inputColor;
     goto LABEL_43;
   }
 
-  if (!v7)
+  if (!hasPrimaryColorRange)
   {
     v27 = NTKInterpolateBetweenColors();
     goto LABEL_43;
@@ -459,7 +459,7 @@ LABEL_44:
       scaleFactor = self->_scaleFactor;
       self->_scaleFactor = v33;
 
-      v35 = !v127;
+      v35 = !isMulticolor;
       goto LABEL_53;
     }
 
@@ -469,8 +469,8 @@ LABEL_44:
   v36 = self->_scaleFactor;
   self->_scaleFactor = v31;
 
-  v37 = v127;
-  v35 = !v127;
+  v37 = isMulticolor;
+  v35 = !isMulticolor;
   if (backgroundStyle)
   {
     v37 = 0;
@@ -514,7 +514,7 @@ LABEL_54:
   }
 
   objc_storeStrong(&self->_editingComplicationsFraction, v42);
-  v121 = v9;
+  v121 = inputColor;
   if ((v128 & v5) == 1)
   {
     foregroundGradientFraction = self->_foregroundGradientFraction;
@@ -524,7 +524,7 @@ LABEL_63:
   }
 
   foregroundGradientFraction = self->_foregroundGradientFraction;
-  if ((v125 & v5) == 1)
+  if ((isSeasonalGradientColor & v5) == 1)
   {
     goto LABEL_63;
   }
@@ -544,21 +544,21 @@ LABEL_65:
   {
     if ((v5 & 1) == 0)
     {
-      if (v118 == 2)
+      if (curatedNumber == 2)
       {
-        v46 = [(NTKGossamerColorPalette *)self _starlightBackgroundColors];
-        v47 = self->_backgroundGradientColors;
-        self->_backgroundGradientColors = v46;
+        _starlightBackgroundColors = [(NTKGossamerColorPalette *)self _starlightBackgroundColors];
+        gradientTopColor = self->_backgroundGradientColors;
+        self->_backgroundGradientColors = _starlightBackgroundColors;
       }
 
       else
       {
-        v47 = [(NTKGossamerColorPalette *)self gradientTopColor];
-        v131[0] = v47;
-        v54 = [(NTKGossamerColorPalette *)self gradientMidColor];
-        v131[1] = v54;
-        v55 = [(NTKGossamerColorPalette *)self gradientBottomColor];
-        v131[2] = v55;
+        gradientTopColor = [(NTKGossamerColorPalette *)self gradientTopColor];
+        v131[0] = gradientTopColor;
+        gradientMidColor = [(NTKGossamerColorPalette *)self gradientMidColor];
+        v131[1] = gradientMidColor;
+        gradientBottomColor = [(NTKGossamerColorPalette *)self gradientBottomColor];
+        v131[2] = gradientBottomColor;
         v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v131 count:3];
         v57 = self->_backgroundGradientColors;
         self->_backgroundGradientColors = v56;
@@ -568,27 +568,27 @@ LABEL_65:
     }
 
 LABEL_71:
-    v48 = [(NTKGossamerColorPalette *)self backgroundOffGradientTopColor];
+    backgroundOffGradientTopColor = [(NTKGossamerColorPalette *)self backgroundOffGradientTopColor];
     topAccentColor = self->_topAccentColor;
-    self->_topAccentColor = v48;
+    self->_topAccentColor = backgroundOffGradientTopColor;
 
-    v50 = [(NTKGossamerColorPalette *)self backgroundOffGradientMidColor];
+    backgroundOffGradientMidColor = [(NTKGossamerColorPalette *)self backgroundOffGradientMidColor];
     centerAccentColor = self->_centerAccentColor;
-    self->_centerAccentColor = v50;
+    self->_centerAccentColor = backgroundOffGradientMidColor;
 
-    v52 = [(NTKGossamerColorPalette *)self backgroundOffGradientBottomColor];
+    backgroundOffGradientBottomColor = [(NTKGossamerColorPalette *)self backgroundOffGradientBottomColor];
     bottomAccentColor = self->_bottomAccentColor;
-    self->_bottomAccentColor = v52;
+    self->_bottomAccentColor = backgroundOffGradientBottomColor;
 
 LABEL_85:
     [(NTKGossamerColorPalette *)self _setApproximateComplicationBackgroundColors];
-    v69 = v9;
+    v69 = inputColor;
     v70 = v122;
     v71 = 0x277D75000;
     goto LABEL_87;
   }
 
-  if (!v125)
+  if (!isSeasonalGradientColor)
   {
     goto LABEL_84;
   }
@@ -598,26 +598,26 @@ LABEL_85:
     goto LABEL_71;
   }
 
-  v58 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v59 = [v58 fullname];
-  if ([v59 isEqualToString:@"seasons.fall2023.mulberry"])
+  pigmentEditOption = [(NTKFaceColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  if ([fullname isEqualToString:@"seasons.fall2023.mulberry"])
   {
   }
 
   else
   {
-    v61 = [(NTKFaceColorPalette *)self pigmentEditOption];
-    v62 = [v61 fullname];
-    v117 = [v62 isEqualToString:@"seasons.fall2023.winterBlue"];
+    pigmentEditOption2 = [(NTKFaceColorPalette *)self pigmentEditOption];
+    fullname2 = [pigmentEditOption2 fullname];
+    v117 = [fullname2 isEqualToString:@"seasons.fall2023.winterBlue"];
 
     if (!v117)
     {
-      v47 = [(NTKGossamerColorPalette *)self gradientTopColor];
-      v129[0] = v47;
-      v63 = [(NTKGossamerColorPalette *)self gradientMidColor];
-      v129[1] = v63;
-      v66 = [(NTKGossamerColorPalette *)self gradientBottomColor];
-      v129[2] = v66;
+      gradientTopColor = [(NTKGossamerColorPalette *)self gradientTopColor];
+      v129[0] = gradientTopColor;
+      gradientMidColor2 = [(NTKGossamerColorPalette *)self gradientMidColor];
+      v129[1] = gradientMidColor2;
+      gradientBottomColor2 = [(NTKGossamerColorPalette *)self gradientBottomColor];
+      v129[2] = gradientBottomColor2;
       v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v129 count:3];
       v68 = self->_backgroundGradientColors;
       self->_backgroundGradientColors = v67;
@@ -626,10 +626,10 @@ LABEL_85:
     }
   }
 
-  v47 = [(NTKGossamerColorPalette *)self gradientTopColor];
-  v130[0] = v47;
-  v63 = [(NTKGossamerColorPalette *)self gradientBottomColor];
-  v130[1] = v63;
+  gradientTopColor = [(NTKGossamerColorPalette *)self gradientTopColor];
+  v130[0] = gradientTopColor;
+  gradientMidColor2 = [(NTKGossamerColorPalette *)self gradientBottomColor];
+  v130[1] = gradientMidColor2;
   v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v130 count:2];
   v65 = self->_backgroundGradientColors;
   self->_backgroundGradientColors = v64;
@@ -644,40 +644,40 @@ LABEL_84:
   }
 
   v71 = 0x277D75000uLL;
-  v72 = [MEMORY[0x277D75348] grayColor];
+  grayColor = [MEMORY[0x277D75348] grayColor];
   topApproximateBackgroundColor = self->_topApproximateBackgroundColor;
-  self->_topApproximateBackgroundColor = v72;
+  self->_topApproximateBackgroundColor = grayColor;
 
-  v74 = [MEMORY[0x277D75348] grayColor];
+  grayColor2 = [MEMORY[0x277D75348] grayColor];
   centerApproximateBackgroundColor = self->_centerApproximateBackgroundColor;
-  self->_centerApproximateBackgroundColor = v74;
+  self->_centerApproximateBackgroundColor = grayColor2;
 
-  v76 = [MEMORY[0x277D75348] grayColor];
+  grayColor3 = [MEMORY[0x277D75348] grayColor];
   bottomApproximateBackgroundColor = self->_bottomApproximateBackgroundColor;
-  self->_bottomApproximateBackgroundColor = v76;
+  self->_bottomApproximateBackgroundColor = grayColor3;
 
   v69 = v121;
   v70 = v122;
 LABEL_87:
   if (!(v5 & 1 | !isEditingComplications))
   {
-    v78 = [*(v71 + 840) blackColor];
+    blackColor = [*(v71 + 840) blackColor];
     v79 = NTKInterpolateBetweenColors();
     v80 = self->_topApproximateBackgroundColor;
     self->_topApproximateBackgroundColor = v79;
 
-    v81 = [*(v71 + 840) blackColor];
+    blackColor2 = [*(v71 + 840) blackColor];
     v82 = NTKInterpolateBetweenColors();
     v83 = self->_centerApproximateBackgroundColor;
     self->_centerApproximateBackgroundColor = v82;
 
-    v84 = [*(v71 + 840) blackColor];
+    blackColor3 = [*(v71 + 840) blackColor];
     v85 = NTKInterpolateBetweenColors();
     v86 = self->_bottomApproximateBackgroundColor;
     self->_bottomApproximateBackgroundColor = v85;
   }
 
-  if (v5 & 1 | !v7)
+  if (v5 & 1 | !hasPrimaryColorRange)
   {
     v87 = [(UIColor *)self->_foregroundColor colorWithAlphaComponent:0.2];
     modularCompactDialBackgroundColor = self->_modularCompactDialBackgroundColor;
@@ -747,31 +747,31 @@ LABEL_87:
   self->_modularCompactSecondTickActiveColor = v97;
 
   objc_storeStrong(&self->_modularCompactSecondTickInactiveColor, *p_modularCompactDialForegroundSecondaryColor);
-  if (v127)
+  if (isMulticolor)
   {
-    v99 = [*(v71 + 840) systemOrangeColor];
+    systemOrangeColor = [*(v71 + 840) systemOrangeColor];
   }
 
   else
   {
-    v99 = self->_accentColor;
+    systemOrangeColor = self->_accentColor;
   }
 
   modularCompactDialSecondHandColor = self->_modularCompactDialSecondHandColor;
-  self->_modularCompactDialSecondHandColor = v99;
+  self->_modularCompactDialSecondHandColor = systemOrangeColor;
 
   if ((v119 & 1) == 0)
   {
-    v101 = [*(v71 + 840) systemRedColor];
+    systemRedColor = [*(v71 + 840) systemRedColor];
     goto LABEL_112;
   }
 
-  if (!(v5 & 1 | !v128) && (v118 | 4) == 6)
+  if (!(v5 & 1 | !v128) && (curatedNumber | 4) == 6)
   {
-    v101 = [*(v71 + 840) whiteColor];
+    systemRedColor = [*(v71 + 840) whiteColor];
 LABEL_112:
     infographModularDateLabelColor = self->_infographModularDateLabelColor;
-    self->_infographModularDateLabelColor = v101;
+    self->_infographModularDateLabelColor = systemRedColor;
     goto LABEL_114;
   }
 
@@ -780,7 +780,7 @@ LABEL_112:
   self->_infographModularDateLabelColor = v103;
 LABEL_114:
 
-  if (v125)
+  if (isSeasonalGradientColor)
   {
     v104 = *(v71 + 840);
   }
@@ -788,34 +788,34 @@ LABEL_114:
   else
   {
     v104 = *(v71 + 840);
-    if (((v5 | (v128 || v127 || v123)) & 1) == 0)
+    if (((v5 | (v128 || isMulticolor || v123)) & 1) == 0)
     {
-      v105 = [v104 blackColor];
+      blackColor4 = [v104 blackColor];
       goto LABEL_119;
     }
   }
 
-  v105 = [v104 whiteColor];
+  blackColor4 = [v104 whiteColor];
 LABEL_119:
   infographModularTimeLabelColor = self->_infographModularTimeLabelColor;
-  self->_infographModularTimeLabelColor = v105;
+  self->_infographModularTimeLabelColor = blackColor4;
 
   if (isEditingComplications)
   {
-    v107 = [*(v71 + 840) blackColor];
+    blackColor5 = [*(v71 + 840) blackColor];
     v108 = NTKInterpolateBetweenColors();
     v109 = self->_infographModularTimeLabelColor;
     self->_infographModularTimeLabelColor = v108;
   }
 
   objc_storeStrong(&self->_infographModularDateAccentColor, self->_foregroundColor);
-  v110 = [*(v71 + 840) whiteColor];
+  whiteColor4 = [*(v71 + 840) whiteColor];
   v111 = NTKInterpolateBetweenColors();
   xLargeSmallTimeTritiumOutlineColor = self->_xLargeSmallTimeTritiumOutlineColor;
   self->_xLargeSmallTimeTritiumOutlineColor = v111;
 
   objc_storeStrong(&self->_xLargeLargeTimeTritiumOutlineColor, self->_accentColor);
-  v113 = [*(v71 + 840) blackColor];
+  blackColor6 = [*(v71 + 840) blackColor];
   v114 = NTKInterpolateBetweenColors();
   xLargeLargeTimeTritiumFillColor = self->_xLargeLargeTimeTritiumFillColor;
   self->_xLargeLargeTimeTritiumFillColor = v114;
@@ -826,11 +826,11 @@ LABEL_119:
   v3 = [(NSArray *)self->_backgroundGradientColors count];
   if (v3 == 1)
   {
-    v4 = [(NSArray *)self->_backgroundGradientColors firstObject];
-    objc_storeStrong(&self->_topApproximateBackgroundColor, v4);
-    objc_storeStrong(&self->_centerApproximateBackgroundColor, v4);
+    firstObject = [(NSArray *)self->_backgroundGradientColors firstObject];
+    objc_storeStrong(&self->_topApproximateBackgroundColor, firstObject);
+    objc_storeStrong(&self->_centerApproximateBackgroundColor, firstObject);
     bottomApproximateBackgroundColor = self->_bottomApproximateBackgroundColor;
-    self->_bottomApproximateBackgroundColor = v4;
+    self->_bottomApproximateBackgroundColor = firstObject;
   }
 
   else

@@ -16,33 +16,33 @@
 - (NSString)title;
 - (NSString)titleDisplayString;
 - (id)autocapitalize;
-- (id)insertAdjacentElement:(id)a3 element:(id)a4;
+- (id)insertAdjacentElement:(id)element element:(id)a4;
 - (id)webkitdropzone;
 - (int)scrollXOffset;
 - (int)scrollYOffset;
 - (int)structuralComplexityContribution;
 - (int)tabIndex;
-- (void)absolutePosition:(int *)a3 :(int *)a4 :(int *)a5 :(int *)a6;
+- (void)absolutePosition:(int *)position :(int *)a4 :(int *)a5 :(int *)a6;
 - (void)click;
-- (void)insertAdjacentHTML:(id)a3 html:(id)a4;
-- (void)insertAdjacentText:(id)a3 text:(id)a4;
+- (void)insertAdjacentHTML:(id)l html:(id)html;
+- (void)insertAdjacentText:(id)text text:(id)a4;
 - (void)setAccessKey:(NSString *)accessKey;
-- (void)setAutocapitalize:(id)a3;
-- (void)setAutocorrect:(BOOL)a3;
+- (void)setAutocapitalize:(id)autocapitalize;
+- (void)setAutocorrect:(BOOL)autocorrect;
 - (void)setContentEditable:(NSString *)contentEditable;
 - (void)setDir:(NSString *)dir;
-- (void)setDraggable:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setDraggable:(BOOL)draggable;
+- (void)setHidden:(BOOL)hidden;
 - (void)setIdName:(NSString *)idName;
 - (void)setInnerText:(NSString *)innerText;
 - (void)setLang:(NSString *)lang;
 - (void)setOuterText:(NSString *)outerText;
-- (void)setScrollXOffset:(int)a3 scrollYOffset:(int)a4 adjustForIOSCaret:(BOOL)a5;
-- (void)setSpellcheck:(BOOL)a3;
+- (void)setScrollXOffset:(int)offset scrollYOffset:(int)yOffset adjustForIOSCaret:(BOOL)caret;
+- (void)setSpellcheck:(BOOL)spellcheck;
 - (void)setTabIndex:(int)tabIndex;
 - (void)setTitle:(NSString *)title;
-- (void)setTranslate:(BOOL)a3;
-- (void)setWebkitdropzone:(id)a3;
+- (void)setTranslate:(BOOL)translate;
+- (void)setWebkitdropzone:(id)webkitdropzone;
 @end
 
 @implementation DOMHTMLElement
@@ -149,7 +149,7 @@
   return v2;
 }
 
-- (void)setScrollXOffset:(int)a3 scrollYOffset:(int)a4 adjustForIOSCaret:(BOOL)a5
+- (void)setScrollXOffset:(int)offset scrollYOffset:(int)yOffset adjustForIOSCaret:(BOOL)caret
 {
   v5 = *(self->super.super.super._internal + 9);
   if (v5)
@@ -179,7 +179,7 @@
   }
 }
 
-- (void)absolutePosition:(int *)a3 :(int *)a4 :(int *)a5 :(int *)a6
+- (void)absolutePosition:(int *)position :(int *)a4 :(int *)a5 :(int *)a6
 {
   v6 = *(self->super.super.super._internal + 9);
   if (v6 && (*(v6 + 45) & 4) != 0)
@@ -194,9 +194,9 @@
       *a6 = *(v6 + 160) / 64;
     }
 
-    if (a3 && a4)
+    if (position && a4)
     {
-      v14 = *a3;
+      v14 = *position;
       v15 = *a4;
       WebCore::RenderObject::localToAbsolute();
       v9 = roundf(v14);
@@ -236,7 +236,7 @@
         v13 = v12;
       }
 
-      *a3 = v11;
+      *position = v11;
       *a4 = v13;
     }
   }
@@ -350,7 +350,7 @@
   return self;
 }
 
-- (void)setTranslate:(BOOL)a3
+- (void)setTranslate:(BOOL)translate
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLElement::setTranslate(self->super.super.super._internal);
@@ -430,7 +430,7 @@
   return self;
 }
 
-- (void)setDraggable:(BOOL)a3
+- (void)setDraggable:(BOOL)draggable
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLElement::setDraggable(self->super.super.super._internal);
@@ -473,10 +473,10 @@
   return v4;
 }
 
-- (void)setWebkitdropzone:(id)a3
+- (void)setWebkitdropzone:(id)webkitdropzone
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, webkitdropzone, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -544,7 +544,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();
@@ -822,7 +822,7 @@ LABEL_13:
   return self;
 }
 
-- (void)setSpellcheck:(BOOL)a3
+- (void)setSpellcheck:(BOOL)spellcheck
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLElement::setSpellcheck(self->super.super.super._internal);
@@ -1015,7 +1015,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)insertAdjacentElement:(id)a3 element:(id)a4
+- (id)insertAdjacentElement:(id)element element:(id)a4
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v20);
   if (!a4)
@@ -1024,7 +1024,7 @@ LABEL_9:
   }
 
   internal = self->super.super.super._internal;
-  MEMORY[0x1CCA63A40](&v16, a3);
+  MEMORY[0x1CCA63A40](&v16, element);
   v8 = core(a4);
   inserted = WebCore::Element::insertAdjacentElement(&v17, internal, &v16, v8);
   if (v19)
@@ -1070,11 +1070,11 @@ LABEL_9:
   return v11;
 }
 
-- (void)insertAdjacentHTML:(id)a3 html:(id)a4
+- (void)insertAdjacentHTML:(id)l html:(id)html
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v15);
-  MEMORY[0x1CCA63A40](&v11, a3);
-  MEMORY[0x1CCA63A40](v10, a4);
+  MEMORY[0x1CCA63A40](&v11, l);
+  MEMORY[0x1CCA63A40](v10, html);
   v10[8] = 1;
   WebCore::Element::insertAdjacentHTML();
   if (v14 == 1)
@@ -1097,10 +1097,10 @@ LABEL_9:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v15, v7);
 }
 
-- (void)insertAdjacentText:(id)a3 text:(id)a4
+- (void)insertAdjacentText:(id)text text:(id)a4
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v15);
-  MEMORY[0x1CCA63A40](&v11, a3);
+  MEMORY[0x1CCA63A40](&v11, text);
   MEMORY[0x1CCA63A40](&v10, a4);
   WebCore::Element::insertAdjacentText();
   if (v14 == 1)
@@ -1144,7 +1144,7 @@ LABEL_9:
   return self;
 }
 
-- (void)setAutocorrect:(BOOL)a3
+- (void)setAutocorrect:(BOOL)autocorrect
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLElement::setAutocorrect(self->super.super.super._internal);
@@ -1187,10 +1187,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)setAutocapitalize:(id)a3
+- (void)setAutocapitalize:(id)autocapitalize
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, autocapitalize, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)

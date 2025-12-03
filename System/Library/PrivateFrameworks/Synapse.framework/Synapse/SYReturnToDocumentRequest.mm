@@ -1,16 +1,16 @@
 @interface SYReturnToDocumentRequest
 - (BOOL)verifyParameters;
 - (NSString)documentIndexKey;
-- (void)performWithServiceProxy:(id)a3 completion:(id)a4;
+- (void)performWithServiceProxy:(id)proxy completion:(id)completion;
 @end
 
 @implementation SYReturnToDocumentRequest
 
 - (BOOL)verifyParameters
 {
-  v2 = [(SYReturnToDocumentRequest *)self documentAttributes];
+  documentAttributes = [(SYReturnToDocumentRequest *)self documentAttributes];
 
-  if (!v2)
+  if (!documentAttributes)
   {
     v3 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -20,29 +20,29 @@
     }
   }
 
-  return v2 != 0;
+  return documentAttributes != 0;
 }
 
 - (NSString)documentIndexKey
 {
-  v2 = [(SYReturnToDocumentRequest *)self documentAttributes];
-  v3 = [v2 indexKey];
+  documentAttributes = [(SYReturnToDocumentRequest *)self documentAttributes];
+  indexKey = [documentAttributes indexKey];
 
-  return v3;
+  return indexKey;
 }
 
-- (void)performWithServiceProxy:(id)a3 completion:(id)a4
+- (void)performWithServiceProxy:(id)proxy completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SYReturnToDocumentRequest *)self documentAttributes];
+  completionCopy = completion;
+  proxyCopy = proxy;
+  documentAttributes = [(SYReturnToDocumentRequest *)self documentAttributes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__SYReturnToDocumentRequest_performWithServiceProxy_completion___block_invoke;
   v10[3] = &unk_27856B738;
-  v11 = v6;
-  v9 = v6;
-  [v7 returnToSenderDocument:0 withAttributes:v8 shouldCreateNewMessage:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [proxyCopy returnToSenderDocument:0 withAttributes:documentAttributes shouldCreateNewMessage:0 completion:v10];
 }
 
 uint64_t __64__SYReturnToDocumentRequest_performWithServiceProxy_completion___block_invoke(uint64_t a1)

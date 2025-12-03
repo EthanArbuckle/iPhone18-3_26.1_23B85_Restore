@@ -1,19 +1,19 @@
 @interface UserGuideViewController
 - (MapModificationDelegate)mapModificationDelegate;
 - (ShareDelegate)shareDelegate;
-- (_TtC4Maps23UserGuideViewController)initWithCollectionHandler:(id)a3;
-- (_TtC4Maps23UserGuideViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps23UserGuideViewController)initWithCollectionHandler:(id)handler;
+- (_TtC4Maps23UserGuideViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps24SortOptionPickerDelegate_)sortOptionPickerDelegate;
 - (_TtP4Maps31UserGuideViewControllerDelegate_)actionDelegate;
 - (id)updateContentInjection;
 - (void)addContentToMapView;
-- (void)collectionPickerClosed:(id)a3;
-- (void)collectionPickerNewCollection:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
+- (void)collectionPickerClosed:(id)closed;
+- (void)collectionPickerNewCollection:(id)collection;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
 - (void)removeContentFromMapView;
-- (void)setUpdateContentInjection:(id)a3;
+- (void)setUpdateContentInjection:(id)injection;
 - (void)updateCardPresentationConfigIfNeeded;
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
 - (void)viewDidLoad;
 @end
 
@@ -69,9 +69,9 @@
   return v3;
 }
 
-- (void)setUpdateContentInjection:(id)a3
+- (void)setUpdateContentInjection:(id)injection
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(injection);
   if (v4)
   {
     v5 = v4;
@@ -90,7 +90,7 @@
   v9 = *(self + OBJC_IVAR____TtC4Maps23UserGuideViewController_updateContentInjection);
   *v8 = v7;
   v8[1] = v6;
-  v10 = self;
+  selfCopy = self;
   sub_1000CD9D4(v7);
   sub_1000588AC(v9);
   sub_100235F58();
@@ -98,27 +98,27 @@
   sub_1000588AC(v7);
 }
 
-- (_TtC4Maps23UserGuideViewController)initWithCollectionHandler:(id)a3
+- (_TtC4Maps23UserGuideViewController)initWithCollectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = sub_10023A230(v3);
+  handlerCopy = handler;
+  v4 = sub_10023A230(handlerCopy);
 
   return v4;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023618C();
 }
 
 - (void)updateCardPresentationConfigIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002368D0();
 }
 
-- (_TtC4Maps23UserGuideViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps23UserGuideViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -127,58 +127,58 @@
 
 - (void)addContentToMapView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002381F4();
 }
 
 - (void)removeContentFromMapView
 {
-  v3 = self;
+  selfCopy = self;
   if (sub_1002383E4())
   {
     Strong = swift_unknownObjectWeakLoadStrong();
     if (Strong)
     {
-      [Strong viewControllerClearInjectedSearchPins:v3];
+      [Strong viewControllerClearInjectedSearchPins:selfCopy];
       swift_unknownObjectRelease();
     }
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_10023AD4C(&qword_101908700, type metadata accessor for InfoKey);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_1002387C8(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1002387C8(controllerCopy, v6);
 }
 
-- (void)collectionPickerClosed:(id)a3
+- (void)collectionPickerClosed:(id)closed
 {
-  v4 = a3;
-  v5 = self;
+  closedCopy = closed;
+  selfCopy = self;
   sub_10023A8B0();
 }
 
-- (void)collectionPickerNewCollection:(id)a3
+- (void)collectionPickerNewCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002389DC(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1002389DC(collectionCopy);
 }
 
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(cancelHandler);
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_10023ABCC(v14, sub_10023A334, v12);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_10023ABCC(itemCopy, sub_10023A334, v12);
   _Block_release(v11);
 }
 

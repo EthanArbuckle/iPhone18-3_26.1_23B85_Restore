@@ -1,34 +1,34 @@
 @interface NTKCompanionUltraCubePhotosEditor
-- (BOOL)_ensurePreviewEditSessionIsLoadedForPhotoAtIndex:(int64_t)a3 computeCrop:(BOOL)a4;
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4;
-- (BOOL)addPhotosFromUIImagePicker:(id)a3;
-- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)a3;
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4;
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3;
-- (NTKCompanionUltraCubePhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4;
-- (id)_copyOrTranscodePhotosTo:(id)a3;
-- (id)_createPreviewEditSessionForPhoto:(id)a3;
-- (id)_fetchAssetsForNewPhotos:(id)a3;
+- (BOOL)_ensurePreviewEditSessionIsLoadedForPhotoAtIndex:(int64_t)index computeCrop:(BOOL)crop;
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count;
+- (BOOL)addPhotosFromUIImagePicker:(id)picker;
+- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)index;
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index;
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index;
+- (NTKCompanionUltraCubePhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device;
+- (id)_copyOrTranscodePhotosTo:(id)to;
+- (id)_createPreviewEditSessionForPhoto:(id)photo;
+- (id)_fetchAssetsForNewPhotos:(id)photos;
 - (void)_fetchAssetsForResourceDirectoryPhotos;
-- (void)_readResourceDirectoryPhotosFrom:(id)a3;
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4;
-- (void)deletePhotoAtIndex:(int64_t)a3;
-- (void)finalizeWithCompletion:(id)a3;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)purgeResourcesForPreviewAtIndex:(int64_t)a3;
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)thumbnailImageForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
+- (void)_readResourceDirectoryPhotosFrom:(id)from;
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory;
+- (void)deletePhotoAtIndex:(int64_t)index;
+- (void)finalizeWithCompletion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)purgeResourcesForPreviewAtIndex:(int64_t)index;
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)thumbnailImageForPhotoAtIndex:(int64_t)index completion:(id)completion;
 @end
 
 @implementation NTKCompanionUltraCubePhotosEditor
 
-- (NTKCompanionUltraCubePhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4
+- (NTKCompanionUltraCubePhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device
 {
   v14.receiver = self;
   v14.super_class = NTKCompanionUltraCubePhotosEditor;
-  v4 = [(NTKCompanionUltraCubePhotosEditor *)&v14 initWithResourceDirectory:a3 forDevice:a4];
+  v4 = [(NTKCompanionUltraCubePhotosEditor *)&v14 initWithResourceDirectory:directory forDevice:device];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -45,12 +45,12 @@
 
     v4->_galleryPreviewIsValid = 0;
     v4->_editedIndex = -1;
-    v11 = [(NTKCompanionUltraCubePhotosEditor *)v4 resourceDirectory];
+    resourceDirectory = [(NTKCompanionUltraCubePhotosEditor *)v4 resourceDirectory];
 
-    if (v11)
+    if (resourceDirectory)
     {
-      v12 = [(NTKCompanionUltraCubePhotosEditor *)v4 resourceDirectory];
-      [(NTKCompanionUltraCubePhotosEditor *)v4 _readResourceDirectoryPhotosFrom:v12];
+      resourceDirectory2 = [(NTKCompanionUltraCubePhotosEditor *)v4 resourceDirectory];
+      [(NTKCompanionUltraCubePhotosEditor *)v4 _readResourceDirectoryPhotosFrom:resourceDirectory2];
     }
 
     [(NTKCompanionUltraCubePhotosEditor *)v4 setState:1];
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,16 +80,16 @@
   v15[2] = sub_1BB40;
   v15[3] = &unk_49248;
   v17 = buf;
-  v18 = [(NTKCompanionUltraCubePhotosEditor *)self state];
+  state = [(NTKCompanionUltraCubePhotosEditor *)self state];
   v15[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = objc_retainBlock(v15);
   if ([(NTKCompanionUltraCubePhotosEditor *)self state]&& [(NTKCompanionUltraCubePhotosEditor *)self state]<= 2)
   {
     if ([(NTKCompanionUltraCubePhotosEditor *)self state]== &dword_0 + 1)
     {
-      v9 = [(NTKCompanionUltraCubePhotosEditor *)self resourceDirectory];
+      resourceDirectory = [(NTKCompanionUltraCubePhotosEditor *)self resourceDirectory];
     }
 
     else
@@ -110,11 +110,11 @@
         goto LABEL_12;
       }
 
-      v9 = [(NTKCompanionUltraCubePhotosEditor *)self galleryPreviewResourceDirectory];
+      resourceDirectory = [(NTKCompanionUltraCubePhotosEditor *)self galleryPreviewResourceDirectory];
     }
 
     v10 = *(v20 + 5);
-    *(v20 + 5) = v9;
+    *(v20 + 5) = resourceDirectory;
 
     v8 = 1;
   }
@@ -130,9 +130,9 @@ LABEL_12:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)finalizeWithCompletion:(id)a3
+- (void)finalizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -149,7 +149,7 @@ LABEL_12:
       v10[2] = sub_1DA80;
       v10[3] = &unk_492C0;
       v10[4] = self;
-      v11 = v4;
+      v11 = completionCopy;
       dispatch_async(&_dispatch_main_q, v10);
       v6 = v11;
     }
@@ -163,7 +163,7 @@ LABEL_12:
       v8[2] = sub_1DADC;
       v8[3] = &unk_49338;
       v8[4] = self;
-      v9 = v4;
+      v9 = completionCopy;
       dispatch_async(v7, v8);
 
       v6 = v9;
@@ -176,37 +176,37 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_1DA6C;
     block[3] = &unk_49298;
-    v13 = v4;
+    v13 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
     v6 = v13;
   }
 }
 
-- (BOOL)addPhotosFromUIImagePicker:(id)a3
+- (BOOL)addPhotosFromUIImagePicker:(id)picker
 {
-  v3 = self;
-  v4 = [(NTKCompanionUltraCubePhotosEditor *)self _fetchAssetsForNewPhotos:a3];
-  LOBYTE(v3) = [(NTKCompanionUltraCubePhotosEditor *)v3 addAssetsFromAssetList:v4 maxPhotosCount:24];
+  selfCopy = self;
+  v4 = [(NTKCompanionUltraCubePhotosEditor *)self _fetchAssetsForNewPhotos:picker];
+  LOBYTE(selfCopy) = [(NTKCompanionUltraCubePhotosEditor *)selfCopy addAssetsFromAssetList:v4 maxPhotosCount:24];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count
 {
-  v6 = a3;
-  if (!-[NTKCompanionUltraCubePhotosEditor state](self, "state") || -[NTKCompanionUltraCubePhotosEditor state](self, "state") > 2 || (v7 = -[NTKCompanionUltraCubePhotosEditor photosCount](self, "photosCount"), [v6 count] + v7 > a4))
+  listCopy = list;
+  if (!-[NTKCompanionUltraCubePhotosEditor state](self, "state") || -[NTKCompanionUltraCubePhotosEditor state](self, "state") > 2 || (v7 = -[NTKCompanionUltraCubePhotosEditor photosCount](self, "photosCount"), [listCopy count] + v7 > count))
   {
     v8 = 0;
     goto LABEL_5;
   }
 
-  v38 = [(NSMutableArray *)self->_orderList firstObject];
-  v39 = v6;
+  firstObject = [(NSMutableArray *)self->_orderList firstObject];
+  v39 = listCopy;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v6;
+  obj = listCopy;
   v10 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (!v10)
   {
@@ -225,7 +225,7 @@ LABEL_12:
       }
 
       v13 = *(*(&v42 + 1) + 8 * i);
-      v14 = [v13 localIdentifier];
+      localIdentifier = [v13 localIdentifier];
       v15 = objc_opt_new();
       [v15 setAsset:v13];
       [v15 setSubsampleFactor:sub_1E2B4(v13)];
@@ -233,18 +233,18 @@ LABEL_12:
       v16 = objc_alloc_init(_NTKLayoutDescriptor);
       [v15 setLayout:v16];
 
-      v17 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v14];
+      v17 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:localIdentifier];
       v18 = v17;
       if (v17)
       {
         if ([v17 isInResourceDirectory])
         {
-          v19 = [v18 photo];
-          v20 = [v19 modificationDate];
-          v21 = [v13 ntk_modificationDate];
-          [v20 timeIntervalSince1970];
+          photo = [v18 photo];
+          modificationDate = [photo modificationDate];
+          ntk_modificationDate = [v13 ntk_modificationDate];
+          [modificationDate timeIntervalSince1970];
           v23 = v22;
-          [v21 timeIntervalSince1970];
+          [ntk_modificationDate timeIntervalSince1970];
           v25 = vabdd_f64(v23, v24);
 
           v26 = _NTKLoggingObjectForDomain();
@@ -253,23 +253,23 @@ LABEL_12:
           {
             if (v27)
             {
-              v28 = [v18 photo];
-              v29 = [v28 baseImageURL];
+              photo2 = [v18 photo];
+              baseImageURL = [photo2 baseImageURL];
               *buf = 138412290;
-              v47 = v29;
+              v47 = baseImageURL;
               _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "addAssetsFromAssetList: replacing existing photo %@ because it was modified", buf, 0xCu);
             }
 
-            [(NSMutableDictionary *)self->_photos setObject:v15 forKeyedSubscript:v14];
+            [(NSMutableDictionary *)self->_photos setObject:v15 forKeyedSubscript:localIdentifier];
             goto LABEL_26;
           }
 
           if (v27)
           {
-            v33 = [v18 photo];
-            v34 = [v33 baseImageURL];
+            photo3 = [v18 photo];
+            baseImageURL2 = [photo3 baseImageURL];
             *buf = 138412290;
-            v47 = v34;
+            v47 = baseImageURL2;
             v35 = v26;
             v36 = "addAssetsFromAssetList: not adding existing photo %@";
 LABEL_24:
@@ -282,10 +282,10 @@ LABEL_24:
           v26 = _NTKLoggingObjectForDomain();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v15 asset];
-            v34 = [v33 localIdentifier];
+            photo3 = [v15 asset];
+            baseImageURL2 = [photo3 localIdentifier];
             *buf = 138412290;
-            v47 = v34;
+            v47 = baseImageURL2;
             v35 = v26;
             v36 = "addAssetsFromAssetList: not adding new asset again %@";
             goto LABEL_24;
@@ -298,15 +298,15 @@ LABEL_24:
       v30 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v15 asset];
-        v32 = [v31 localIdentifier];
+        asset = [v15 asset];
+        localIdentifier2 = [asset localIdentifier];
         *buf = 138412290;
-        v47 = v32;
+        v47 = localIdentifier2;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "addAssetsFromAssetList: adding new asset %@", buf, 0xCu);
       }
 
-      [(NSMutableDictionary *)self->_photos setObject:v15 forKeyedSubscript:v14];
-      [(NSMutableArray *)self->_orderList addObject:v14];
+      [(NSMutableDictionary *)self->_photos setObject:v15 forKeyedSubscript:localIdentifier];
+      [(NSMutableArray *)self->_orderList addObject:localIdentifier];
 LABEL_26:
     }
 
@@ -318,33 +318,33 @@ LABEL_28:
 
   if (self->_galleryPreviewIsValid)
   {
-    v37 = [(NSMutableArray *)self->_orderList firstObject];
+    firstObject2 = [(NSMutableArray *)self->_orderList firstObject];
     self->_galleryPreviewIsValid = NTKEqualStrings();
   }
 
   [(NTKCompanionUltraCubePhotosEditor *)self setState:2];
 
   v8 = 1;
-  v6 = v39;
+  listCopy = v39;
 LABEL_5:
 
   return v8;
 }
 
-- (void)deletePhotoAtIndex:(int64_t)a3
+- (void)deletePhotoAtIndex:(int64_t)index
 {
   if (![(NTKCompanionUltraCubePhotosEditor *)self state])
   {
     return;
   }
 
-  v5 = [(NTKCompanionUltraCubePhotosEditor *)self state];
-  if (a3 < 0 || v5 > 2 || [(NSMutableArray *)self->_orderList count]<= a3)
+  state = [(NTKCompanionUltraCubePhotosEditor *)self state];
+  if (index < 0 || state > 2 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     return;
   }
 
-  v6 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+  v6 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
   [(NSMutableArray *)self->_orderList removeObject:v6];
   v7 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v6];
   if ([v7 isInResourceDirectory])
@@ -352,12 +352,12 @@ LABEL_5:
     v8 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 photo];
-      v10 = [v9 baseImageURL];
+      photo = [v7 photo];
+      baseImageURL = [photo baseImageURL];
       *v15 = 138412546;
-      *&v15[4] = v10;
+      *&v15[4] = baseImageURL;
       *&v15[12] = 2048;
-      *&v15[14] = a3;
+      *&v15[14] = index;
       v11 = "deletePhotoAtIndex: deleting existing photo %@ at index %ld";
 LABEL_10:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, v11, v15, 0x16u);
@@ -367,19 +367,19 @@ LABEL_10:
   else
   {
     scaledImageCache = self->_scaledImageCache;
-    v13 = [v7 asset];
-    v14 = [v13 localIdentifier];
-    [(NSCache *)scaledImageCache removeObjectForKey:v14];
+    asset = [v7 asset];
+    localIdentifier = [asset localIdentifier];
+    [(NSCache *)scaledImageCache removeObjectForKey:localIdentifier];
 
     v8 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 asset];
-      v10 = [v9 localIdentifier];
+      photo = [v7 asset];
+      baseImageURL = [photo localIdentifier];
       *v15 = 138412546;
-      *&v15[4] = v10;
+      *&v15[4] = baseImageURL;
       *&v15[12] = 2048;
-      *&v15[14] = a3;
+      *&v15[14] = index;
       v11 = "deletePhotoAtIndex: deleting new asset id %@ at index %ld";
       goto LABEL_10;
     }
@@ -388,40 +388,40 @@ LABEL_10:
   [(NSMutableDictionary *)self->_photos removeObjectForKey:v6];
   if (self->_galleryPreviewIsValid)
   {
-    self->_galleryPreviewIsValid = a3 != 0;
+    self->_galleryPreviewIsValid = index != 0;
   }
 
   [(NTKCompanionUltraCubePhotosEditor *)self setState:2, *v15, *&v15[16]];
 }
 
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   if ([(NTKCompanionUltraCubePhotosEditor *)self state])
   {
-    v7 = [(NTKCompanionUltraCubePhotosEditor *)self state];
-    if ((a3 & 0x8000000000000000) == 0 && v7 <= 2)
+    state = [(NTKCompanionUltraCubePhotosEditor *)self state];
+    if ((index & 0x8000000000000000) == 0 && state <= 2)
     {
       v8 = [(NSMutableArray *)self->_orderList count];
-      if ((a4 & 0x8000000000000000) == 0 && v8 > a3 && [(NSMutableArray *)self->_orderList count]> a4)
+      if ((toIndex & 0x8000000000000000) == 0 && v8 > index && [(NSMutableArray *)self->_orderList count]> toIndex)
       {
-        v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+        v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
         v10 = _NTKLoggingObjectForDomain();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 134218240;
-          v15 = a3;
+          indexCopy = index;
           v16 = 2048;
-          v17 = a4;
+          toIndexCopy = toIndex;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "movePhotoAtIndex: moving photo from index %ld to index %ld", &v14, 0x16u);
         }
 
-        [(NSMutableArray *)self->_orderList removeObjectAtIndex:a3];
-        [(NSMutableArray *)self->_orderList insertObject:v9 atIndex:a4];
+        [(NSMutableArray *)self->_orderList removeObjectAtIndex:index];
+        [(NSMutableArray *)self->_orderList insertObject:v9 atIndex:toIndex];
         if (self->_galleryPreviewIsValid)
         {
-          if (a3)
+          if (index)
           {
-            v11 = a4 == 0;
+            v11 = toIndex == 0;
           }
 
           else
@@ -429,7 +429,7 @@ LABEL_10:
             v11 = 1;
           }
 
-          v13 = !v11 || a3 == a4;
+          v13 = !v11 || index == toIndex;
           self->_galleryPreviewIsValid = v13;
         }
 
@@ -439,28 +439,28 @@ LABEL_10:
   }
 }
 
-- (void)thumbnailImageForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)thumbnailImageForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  completionCopy = completion;
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_1EB1C;
     v44[3] = &unk_49298;
-    v45 = v6;
+    v45 = completionCopy;
     dispatch_async(&_dispatch_main_q, v44);
     v7 = v45;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
     v8 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v7];
     if ([v8 isInResourceDirectory])
     {
-      v9 = [v8 photo];
-      v10 = [v9 baseImageURL];
+      photo = [v8 photo];
+      baseImageURL = [photo baseImageURL];
       v11 = NTKPhotosImageForURL();
 
       block[0] = _NSConcreteStackBlock;
@@ -468,7 +468,7 @@ LABEL_10:
       block[2] = sub_1EB30;
       block[3] = &unk_492C0;
       v42 = v11;
-      v43 = v6;
+      v43 = completionCopy;
       v12 = v11;
       dispatch_async(&_dispatch_main_q, block);
 
@@ -478,9 +478,9 @@ LABEL_10:
     else
     {
       scaledImageCache = self->_scaledImageCache;
-      v15 = [v8 asset];
-      v16 = [v15 localIdentifier];
-      v12 = [(NSCache *)scaledImageCache objectForKey:v16];
+      asset = [v8 asset];
+      localIdentifier = [asset localIdentifier];
+      v12 = [(NSCache *)scaledImageCache objectForKey:localIdentifier];
 
       if (v12)
       {
@@ -488,7 +488,7 @@ LABEL_10:
         v38[1] = 3221225472;
         v38[2] = sub_1EB44;
         v38[3] = &unk_492C0;
-        v40 = v6;
+        v40 = completionCopy;
         v12 = v12;
         v39 = v12;
         dispatch_async(&_dispatch_main_q, v38);
@@ -498,8 +498,8 @@ LABEL_10:
 
       else
       {
-        v17 = [v8 layout];
-        [v17 crop];
+        layout = [v8 layout];
+        [layout crop];
         v19 = v18;
         v21 = v20;
         v23 = v22;
@@ -509,10 +509,10 @@ LABEL_10:
         v32 = 3221225472;
         v33 = sub_1EB58;
         v34 = &unk_49360;
-        v35 = self;
+        selfCopy = self;
         v26 = v8;
         v36 = v26;
-        v37 = v6;
+        v37 = completionCopy;
         v27 = objc_retainBlock(&v31);
         v53.origin.x = v19;
         v53.origin.y = v21;
@@ -520,13 +520,13 @@ LABEL_10:
         v53.size.height = v25;
         if (CGRectIsEmpty(v53))
         {
-          v28 = [v26 asset];
-          [NTKCompanionUltraCubePhotosEditor _imageForAsset:v28 forSize:v27 completion:480.0, 600.0];
+          asset2 = [v26 asset];
+          [NTKCompanionUltraCubePhotosEditor _imageForAsset:asset2 forSize:v27 completion:480.0, 600.0];
         }
 
         else
         {
-          v29 = [v26 asset];
+          asset3 = [v26 asset];
           v30 = v27;
           v46[0] = _NSConcreteStackBlock;
           v46[1] = 3221225472;
@@ -536,10 +536,10 @@ LABEL_10:
           v50 = v21;
           v51 = v23;
           v52 = v25;
-          v47 = v29;
+          v47 = asset3;
           v48 = v30;
-          v28 = v29;
-          [NTKCompanionUltraCubePhotosEditor _imageDataForAsset:v28 completion:v46];
+          asset2 = asset3;
+          [NTKCompanionUltraCubePhotosEditor _imageDataForAsset:asset2 completion:v46];
         }
 
         v13 = v36;
@@ -548,55 +548,55 @@ LABEL_10:
   }
 }
 
-- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)a3
+- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
   v6 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v5];
-  v7 = [v6 asset];
-  v8 = v7 != 0;
+  asset = [v6 asset];
+  v8 = asset != 0;
 
   return v8;
 }
 
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1EDCC;
   block[3] = &unk_49388;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1F198;
   block[3] = &unk_49388;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index
 {
   v3 = 1.0;
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 1.0;
   }
@@ -604,22 +604,22 @@ LABEL_10:
   else
   {
     v6 = 1.0;
-    if ([(NSMutableArray *)self->_orderList count]> a3)
+    if ([(NSMutableArray *)self->_orderList count]> index)
     {
-      v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+      v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
       v8 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v7];
-      v9 = [v8 asset];
+      asset = [v8 asset];
 
       v10 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v7];
-      v11 = [v10 subsampleFactor];
+      subsampleFactor = [v10 subsampleFactor];
 
-      if (v9)
+      if (asset)
       {
-        v12 = [v9 pixelWidth];
-        v13 = [v9 pixelHeight];
-        if (v11 * 480.0 / v12 <= 1.0)
+        pixelWidth = [asset pixelWidth];
+        pixelHeight = [asset pixelHeight];
+        if (subsampleFactor * 480.0 / pixelWidth <= 1.0)
         {
-          v6 = v11 * 480.0 / v12;
+          v6 = subsampleFactor * 480.0 / pixelWidth;
         }
 
         else
@@ -627,9 +627,9 @@ LABEL_10:
           v6 = 1.0;
         }
 
-        if (v11 * 600.0 / v13 <= 1.0)
+        if (subsampleFactor * 600.0 / pixelHeight <= 1.0)
         {
-          v3 = v11 * 600.0 / v13;
+          v3 = subsampleFactor * 600.0 / pixelHeight;
         }
 
         else
@@ -647,31 +647,31 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index
 {
-  v6 = a3;
+  previewCopy = preview;
   if (![(NTKCompanionUltraCubePhotosEditor *)self state])
   {
     goto LABEL_16;
   }
 
-  v7 = [(NTKCompanionUltraCubePhotosEditor *)self state];
+  state = [(NTKCompanionUltraCubePhotosEditor *)self state];
   v8 = 0;
-  if (a4 < 0 || v7 > 2)
+  if (index < 0 || state > 2)
   {
     goto LABEL_17;
   }
 
-  if ([(NSMutableArray *)self->_orderList count]<= a4 || ![(NTKCompanionUltraCubePhotosEditor *)self canChangeOriginalCropOfPhotoAtIndex:a4])
+  if ([(NSMutableArray *)self->_orderList count]<= index || ![(NTKCompanionUltraCubePhotosEditor *)self canChangeOriginalCropOfPhotoAtIndex:index])
   {
 LABEL_16:
     v8 = 0;
     goto LABEL_17;
   }
 
-  v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a4];
+  v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
   v10 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v9];
-  [v6 crop];
+  [previewCopy crop];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -703,17 +703,17 @@ LABEL_16:
   v28 = fmax(v27, 0.0);
   if ([v10 isInResourceDirectory])
   {
-    v29 = [v10 layout];
-    v30 = [v29 position];
-    v31 = [v6 timeLabelPosition];
+    layout = [v10 layout];
+    position = [layout position];
+    timeLabelPosition = [previewCopy timeLabelPosition];
 
-    v32 = [v10 layout];
-    [v32 crop];
+    layout2 = [v10 layout];
+    [layout2 crop];
     v33 = CLKRectEqualsRect();
 
     if (v33)
     {
-      v34 = v30 == v31;
+      v34 = position == timeLabelPosition;
     }
 
     else
@@ -728,8 +728,8 @@ LABEL_16:
     }
 
     v35 = objc_opt_new();
-    v36 = [v10 asset];
-    [v35 setAsset:v36];
+    asset = [v10 asset];
+    [v35 setAsset:asset];
 
     [v35 setSubsampleFactor:{objc_msgSend(v10, "subsampleFactor")}];
     [v35 setPhoto:0];
@@ -752,25 +752,25 @@ LABEL_22:
   }
 
   scaledImageCache = self->_scaledImageCache;
-  v40 = [v35 asset];
-  v41 = [v40 localIdentifier];
-  [(NSCache *)scaledImageCache removeObjectForKey:v41];
+  asset2 = [v35 asset];
+  localIdentifier = [asset2 localIdentifier];
+  [(NSCache *)scaledImageCache removeObjectForKey:localIdentifier];
 
-  v42 = [v35 layout];
-  [v42 setCrop:{v26, v28, width, height}];
+  layout3 = [v35 layout];
+  [layout3 setCrop:{v26, v28, width, height}];
 
-  v43 = [v6 timeLabelPosition];
-  v44 = [v35 layout];
-  [v44 setPosition:v43];
+  timeLabelPosition2 = [previewCopy timeLabelPosition];
+  layout4 = [v35 layout];
+  [layout4 setPosition:timeLabelPosition2];
 
-  [v35 setUserAdjusted:{objc_msgSend(v6, "isRevertable")}];
+  [v35 setUserAdjusted:{objc_msgSend(previewCopy, "isRevertable")}];
   [(NSMutableDictionary *)self->_photos setObject:v35 forKeyedSubscript:v9];
   v45 = 0;
 LABEL_23:
-  [(NTKCompanionUltraCubePhotosEditor *)self purgeResourcesForPreviewAtIndex:a4];
+  [(NTKCompanionUltraCubePhotosEditor *)self purgeResourcesForPreviewAtIndex:index];
   if (self->_galleryPreviewIsValid)
   {
-    if (a4)
+    if (index)
     {
       v46 = 0;
     }
@@ -791,17 +791,17 @@ LABEL_17:
   return v8;
 }
 
-- (void)purgeResourcesForPreviewAtIndex:(int64_t)a3
+- (void)purgeResourcesForPreviewAtIndex:(int64_t)index
 {
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "purgeResourcesForPreviewAtIndex: %ld", &v7, 0xCu);
   }
 
-  if (self->_editedIndex == a3)
+  if (self->_editedIndex == index)
   {
     self->_editedIndex = -1;
     previewEditSession = self->_previewEditSession;
@@ -809,9 +809,9 @@ LABEL_17:
   }
 }
 
-- (void)_readResourceDirectoryPhotosFrom:(id)a3
+- (void)_readResourceDirectoryPhotosFrom:(id)from
 {
-  [NTKUltraCubePhotosReader readerForResourceDirectory:a3];
+  [NTKUltraCubePhotosReader readerForResourceDirectory:from];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -831,7 +831,7 @@ LABEL_17:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 localIdentifier];
+        localIdentifier = [v8 localIdentifier];
         v10 = objc_opt_new();
         [v10 setAsset:0];
         [v10 setSubsampleFactor:1];
@@ -847,8 +847,8 @@ LABEL_17:
         [v8 maskedImageZorder];
         [(_NTKLayoutDescriptor *)v11 setMaskedImageZorder:?];
         [v10 setLayout:v11];
-        [(NSMutableDictionary *)self->_photos setObject:v10 forKeyedSubscript:v9];
-        [(NSMutableArray *)self->_orderList addObject:v9];
+        [(NSMutableDictionary *)self->_photos setObject:v10 forKeyedSubscript:localIdentifier];
+        [(NSMutableArray *)self->_orderList addObject:localIdentifier];
       }
 
       v5 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -867,8 +867,8 @@ LABEL_17:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(NSMutableDictionary *)self->_photos allValues];
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  allValues = [(NSMutableDictionary *)self->_photos allValues];
+  v5 = [allValues countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v5)
   {
     v6 = v5;
@@ -879,23 +879,23 @@ LABEL_17:
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
         if ([v9 isInResourceDirectory])
         {
-          v10 = [v9 photo];
-          v11 = [v10 localIdentifier];
+          photo = [v9 photo];
+          localIdentifier = [photo localIdentifier];
 
-          if (v11)
+          if (localIdentifier)
           {
-            [v3 addObject:v11];
+            [v3 addObject:localIdentifier];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v38 objects:v44 count:16];
     }
 
     while (v6);
@@ -923,8 +923,8 @@ LABEL_17:
         }
 
         v19 = *(*(&v34 + 1) + 8 * j);
-        v20 = [v19 localIdentifier];
-        [v13 setObject:v19 forKeyedSubscript:v20];
+        localIdentifier2 = [v19 localIdentifier];
+        [v13 setObject:v19 forKeyedSubscript:localIdentifier2];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v34 objects:v43 count:16];
@@ -937,8 +937,8 @@ LABEL_17:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v21 = [(NSMutableDictionary *)self->_photos allValues];
-  v22 = [v21 countByEnumeratingWithState:&v30 objects:v42 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_photos allValues];
+  v22 = [allValues2 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v22)
   {
     v23 = v22;
@@ -949,40 +949,40 @@ LABEL_17:
       {
         if (*v31 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allValues2);
         }
 
         v26 = *(*(&v30 + 1) + 8 * k);
         if ([v26 isInResourceDirectory])
         {
-          v27 = [v26 photo];
-          v28 = [v27 localIdentifier];
+          photo2 = [v26 photo];
+          localIdentifier3 = [photo2 localIdentifier];
 
-          if (v28)
+          if (localIdentifier3)
           {
-            v29 = [v13 objectForKeyedSubscript:v28];
+            v29 = [v13 objectForKeyedSubscript:localIdentifier3];
             [v26 setAsset:v29];
             [v26 setSubsampleFactor:sub_1E2B4(v29)];
           }
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v30 objects:v42 count:16];
+      v23 = [allValues2 countByEnumeratingWithState:&v30 objects:v42 count:16];
     }
 
     while (v23);
   }
 }
 
-- (id)_fetchAssetsForNewPhotos:(id)a3
+- (id)_fetchAssetsForNewPhotos:(id)photos
 {
-  v3 = a3;
+  photosCopy = photos;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = photosCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -1002,8 +1002,8 @@ LABEL_17:
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 localIdentifier];
-          [v4 addObject:v12];
+          localIdentifier = [v10 localIdentifier];
+          [v4 addObject:localIdentifier];
         }
 
         v9 = v9 + 1;
@@ -1042,9 +1042,9 @@ LABEL_17:
   return v16;
 }
 
-- (id)_copyOrTranscodePhotosTo:(id)a3
+- (id)_copyOrTranscodePhotosTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1057,7 +1057,7 @@ LABEL_17:
   v9[2] = sub_20B28;
   v9[3] = &unk_493B0;
   v9[4] = self;
-  v6 = v4;
+  v6 = toCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)orderList enumerateObjectsUsingBlock:v9];
@@ -1067,17 +1067,17 @@ LABEL_17:
   return v7;
 }
 
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory
 {
-  v5 = a3;
-  v22 = a4;
+  listCopy = list;
+  directoryCopy = directory;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = listCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -1093,14 +1093,14 @@ LABEL_17:
           objc_enumerationMutation(obj);
         }
 
-        v12 = [NTKUltraCubePhoto decodeFromDictionary:*(*(&v24 + 1) + 8 * v11) forResourceDirectory:v22];
-        v13 = [v12 localIdentifier];
-        v14 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v13];
-        v15 = [v14 asset];
+        v12 = [NTKUltraCubePhoto decodeFromDictionary:*(*(&v24 + 1) + 8 * v11) forResourceDirectory:directoryCopy];
+        localIdentifier = [v12 localIdentifier];
+        v14 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:localIdentifier];
+        asset = [v14 asset];
 
         v16 = objc_opt_new();
-        [v16 setAsset:v15];
-        [v16 setSubsampleFactor:sub_1E2B4(v15)];
+        [v16 setAsset:asset];
+        [v16 setSubsampleFactor:sub_1E2B4(asset)];
         [v16 setPhoto:v12];
         [v16 setUserAdjusted:{objc_msgSend(v12, "isUserAdjusted")}];
         v17 = objc_alloc_init(_NTKLayoutDescriptor);
@@ -1113,8 +1113,8 @@ LABEL_17:
         [v12 maskedImageZorder];
         [(_NTKLayoutDescriptor *)v17 setMaskedImageZorder:?];
         [v16 setLayout:v17];
-        [(NSMutableDictionary *)v6 setObject:v16 forKeyedSubscript:v13];
-        [(NSMutableArray *)v7 addObject:v13];
+        [(NSMutableDictionary *)v6 setObject:v16 forKeyedSubscript:localIdentifier];
+        [(NSMutableArray *)v7 addObject:localIdentifier];
 
         v11 = v11 + 1;
       }
@@ -1134,37 +1134,37 @@ LABEL_17:
   self->_photos = v6;
 }
 
-- (BOOL)_ensurePreviewEditSessionIsLoadedForPhotoAtIndex:(int64_t)a3 computeCrop:(BOOL)a4
+- (BOOL)_ensurePreviewEditSessionIsLoadedForPhotoAtIndex:(int64_t)index computeCrop:(BOOL)crop
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
-  v4 = a4;
-  if ([(NSMutableArray *)self->_orderList count]<= a3)
+  cropCopy = crop;
+  if ([(NSMutableArray *)self->_orderList count]<= index)
   {
     return 0;
   }
 
-  if (!self->_previewEditSession || self->_editedIndex != a3)
+  if (!self->_previewEditSession || self->_editedIndex != index)
   {
-    v8 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+    v8 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
     v9 = [(NSMutableDictionary *)self->_photos objectForKeyedSubscript:v8];
-    v10 = [v9 asset];
-    v7 = v10 != 0;
+    asset = [v9 asset];
+    v7 = asset != 0;
 
-    if (v10)
+    if (asset)
     {
       v11 = [(NTKCompanionUltraCubePhotosEditor *)self _createPreviewEditSessionForPhoto:v9];
       previewEditSession = self->_previewEditSession;
       self->_previewEditSession = v11;
 
-      self->_editedIndex = a3;
-      v13 = [v9 photo];
-      if (v13 && (v14 = v13, [v9 asset], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "modificationDate"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16) && (objc_msgSend(v9, "asset"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "ntk_modificationDate"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "photo"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "modificationDate"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "timeIntervalSinceDate:", v20), v22 = v21, v20, v19, v18, v17, v22 > 1.0))
+      self->_editedIndex = index;
+      photo = [v9 photo];
+      if (photo && (v14 = photo, [v9 asset], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "modificationDate"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v16) && (objc_msgSend(v9, "asset"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "ntk_modificationDate"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "photo"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "modificationDate"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "timeIntervalSinceDate:", v20), v22 = v21, v20, v19, v18, v17, v22 > 1.0))
       {
-        if (!v4)
+        if (!cropCopy)
         {
           goto LABEL_16;
         }
@@ -1172,13 +1172,13 @@ LABEL_17:
 
       else
       {
-        if (!v4)
+        if (!cropCopy)
         {
           goto LABEL_16;
         }
 
-        v23 = [(_NTKPreviewEditSession *)self->_previewEditSession layout];
-        [v23 crop];
+        layout = [(_NTKPreviewEditSession *)self->_previewEditSession layout];
+        [layout crop];
         IsEmpty = CGRectIsEmpty(v34);
 
         if (!IsEmpty)
@@ -1188,13 +1188,13 @@ LABEL_17:
       }
 
       v25 = self->_previewEditSession;
-      v26 = [(_NTKPreviewEditSession *)v25 photoImageMasked];
-      v27 = v26 != 0;
+      photoImageMasked = [(_NTKPreviewEditSession *)v25 photoImageMasked];
+      v27 = photoImageMasked != 0;
 
-      v28 = [(_NTKPreviewEditSession *)v25 faceRects];
-      v29 = [(_NTKPreviewEditSession *)v25 previewValidator];
+      faceRects = [(_NTKPreviewEditSession *)v25 faceRects];
+      previewValidator = [(_NTKPreviewEditSession *)v25 previewValidator];
       [(_NTKPreviewEditSession *)v25 presentationSize];
-      v32 = sub_1F52C(v28, v27, v29, v30, v31);
+      v32 = sub_1F52C(faceRects, v27, previewValidator, v30, v31);
       [(_NTKPreviewEditSession *)v25 setLayout:v32];
     }
 
@@ -1206,23 +1206,23 @@ LABEL_16:
   return 1;
 }
 
-- (id)_createPreviewEditSessionForPhoto:(id)a3
+- (id)_createPreviewEditSessionForPhoto:(id)photo
 {
-  v3 = a3;
+  photoCopy = photo;
   v4 = objc_alloc_init(_NTKPreviewEditSession);
   v5 = [NTKCompanionUltraCubeImageDataDescriptor alloc];
-  v6 = [v3 asset];
-  v7 = [(NTKCompanionUltraCubeImageDataDescriptor *)v5 initWithAsset:v6];
+  asset = [photoCopy asset];
+  v7 = [(NTKCompanionUltraCubeImageDataDescriptor *)v5 initWithAsset:asset];
 
   if ([(NTKCompanionUltraCubeImageDataDescriptor *)v7 isValid])
   {
     [(NTKCompanionUltraCubeImageDataDescriptor *)v7 orientation];
     v8 = NTKCGImagePropertyOrientationToUIImageOrientation();
-    v9 = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 data];
-    v10 = +[NTKCompanionResourceDirectoryEditor _subsampledImageWithData:orientation:subsampleFactor:](NTKCompanionResourceDirectoryEditor, "_subsampledImageWithData:orientation:subsampleFactor:", v9, v8, [v3 subsampleFactor]);
+    data = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 data];
+    v10 = +[NTKCompanionResourceDirectoryEditor _subsampledImageWithData:orientation:subsampleFactor:](NTKCompanionResourceDirectoryEditor, "_subsampledImageWithData:orientation:subsampleFactor:", data, v8, [photoCopy subsampleFactor]);
 
-    v11 = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 segmentation];
-    if ([v11 hasAuxiliaryDictionary] && (v12 = objc_msgSend(v11, "auxiliaryMaskImage")) != 0)
+    segmentation = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 segmentation];
+    if ([segmentation hasAuxiliaryDictionary] && (v12 = objc_msgSend(segmentation, "auxiliaryMaskImage")) != 0)
     {
       v13 = v12;
       v14 = sub_213BC([v10 CGImage], v12);
@@ -1238,11 +1238,11 @@ LABEL_16:
       v15 = 0;
     }
 
-    v18 = [v11 auxiliaryDictionary];
-    [(_NTKPreviewEditSession *)v4 setAuxiliaryDict:v18];
+    auxiliaryDictionary = [segmentation auxiliaryDictionary];
+    [(_NTKPreviewEditSession *)v4 setAuxiliaryDict:auxiliaryDictionary];
 
-    v19 = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 faceRects];
-    [(_NTKPreviewEditSession *)v4 setFaceRects:v19];
+    faceRects = [(NTKCompanionUltraCubeImageDataDescriptor *)v7 faceRects];
+    [(_NTKPreviewEditSession *)v4 setFaceRects:faceRects];
 
     [(_NTKPreviewEditSession *)v4 setOrientation:[(NTKCompanionUltraCubeImageDataDescriptor *)v7 orientation]];
     [(NTKCompanionUltraCubeImageDataDescriptor *)v7 presentationSize];
@@ -1250,11 +1250,11 @@ LABEL_16:
     [(_NTKPreviewEditSession *)v4 setPhotoImage:v10];
     [(_NTKPreviewEditSession *)v4 setPhotoImageMasked:v15];
     [(_NTKPreviewEditSession *)v4 setPreviewValidator:v16];
-    v20 = [v3 layout];
-    v21 = [v20 copy];
+    layout = [photoCopy layout];
+    v21 = [layout copy];
     [(_NTKPreviewEditSession *)v4 setLayout:v21];
 
-    -[_NTKPreviewEditSession setUserAdjusted:](v4, "setUserAdjusted:", [v3 isUserAdjusted]);
+    -[_NTKPreviewEditSession setUserAdjusted:](v4, "setUserAdjusted:", [photoCopy isUserAdjusted]);
     v17 = v4;
   }
 

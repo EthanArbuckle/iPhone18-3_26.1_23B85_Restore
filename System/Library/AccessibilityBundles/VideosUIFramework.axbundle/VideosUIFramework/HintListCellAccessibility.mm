@@ -1,16 +1,16 @@
 @interface HintListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HintListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.HintListCell" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.HintListCell" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,9 +26,9 @@
   v3 = [(HintListCellAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

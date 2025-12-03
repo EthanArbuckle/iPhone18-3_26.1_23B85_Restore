@@ -1,20 +1,20 @@
 @interface _UISharingViewPresentationController
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 @end
 
 @implementation _UISharingViewPresentationController
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   if ([(UIPresentationController *)self dismissing]&& (!self->_suppressDismissalHandlerUnlessDimmingViewTapped || [(UIPopoverPresentationController *)self _popoverIsDismissingBecauseDismissInteractionOccurred]))
   {
-    v5 = [(_UISharingViewPresentationController *)self dismissalHandler];
+    dismissalHandler = [(_UISharingViewPresentationController *)self dismissalHandler];
 
-    if (v5)
+    if (dismissalHandler)
     {
-      v6 = [(_UISharingViewPresentationController *)self dismissalHandler];
-      v6[2]();
+      dismissalHandler2 = [(_UISharingViewPresentationController *)self dismissalHandler];
+      dismissalHandler2[2]();
 
       [(_UISharingViewPresentationController *)self setDismissalHandler:0];
     }
@@ -22,7 +22,7 @@
 
   v7.receiver = self;
   v7.super_class = _UISharingViewPresentationController;
-  [(UIPopoverPresentationController *)&v7 dismissalTransitionDidEnd:v3];
+  [(UIPopoverPresentationController *)&v7 dismissalTransitionDidEnd:endCopy];
 }
 
 @end

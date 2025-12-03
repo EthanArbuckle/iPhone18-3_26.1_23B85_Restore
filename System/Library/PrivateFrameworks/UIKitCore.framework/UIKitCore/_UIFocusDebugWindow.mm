@@ -1,20 +1,20 @@
 @interface _UIFocusDebugWindow
 + (BOOL)hasAnyModules;
 + (id)moduleClasses;
-- (_UIFocusDebugWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_update:(id)a3;
+- (_UIFocusDebugWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_update:(id)_update;
 - (void)_updateTimer;
-- (void)drag:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)drag:(id)drag;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation _UIFocusDebugWindow
 
 + (BOOL)hasAnyModules
 {
-  v2 = [a1 moduleClasses];
-  v3 = [v2 count] != 0;
+  moduleClasses = [self moduleClasses];
+  v3 = [moduleClasses count] != 0;
 
   return v3;
 }
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (_UIFocusDebugWindow)initWithWindowScene:(id)a3
+- (_UIFocusDebugWindow)initWithWindowScene:(id)scene
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   v64.receiver = self;
   v64.super_class = _UIFocusDebugWindow;
-  v5 = [(UIWindow *)&v64 initWithWindowScene:v4];
+  v5 = [(UIWindow *)&v64 initWithWindowScene:sceneCopy];
   v6 = v5;
   if (v5)
   {
-    v42 = v4;
+    v42 = sceneCopy;
     [(UIWindow *)v5 setWindowLevel:16000000.0];
     [(_UIFocusDebugWindow *)v6 _updateTimer];
     v7 = objc_opt_new();
@@ -75,41 +75,41 @@
           v10 = [[_UIFocusDebugModuleContainer alloc] initWithModule:v59];
           [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v7 addSubview:v10];
-          v11 = [(UIView *)v10 widthAnchor];
-          v12 = [v7 widthAnchor];
-          v13 = [v11 constraintEqualToAnchor:v12];
+          widthAnchor = [(UIView *)v10 widthAnchor];
+          widthAnchor2 = [v7 widthAnchor];
+          v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
           LODWORD(v14) = 1140457472;
           [v13 setPriority:v14];
           v49 = MEMORY[0x1E69977A0];
           v58 = v13;
           v66[0] = v13;
-          v15 = [(UIView *)v10 leadingAnchor];
-          v56 = [v7 contentLayoutGuide];
-          [v56 leadingAnchor];
-          v55 = v57 = v15;
-          v54 = [v15 constraintEqualToAnchor:?];
+          leadingAnchor = [(UIView *)v10 leadingAnchor];
+          contentLayoutGuide = [v7 contentLayoutGuide];
+          [contentLayoutGuide leadingAnchor];
+          v55 = v57 = leadingAnchor;
+          v54 = [leadingAnchor constraintEqualToAnchor:?];
           v66[1] = v54;
-          v16 = [(UIView *)v10 trailingAnchor];
-          v52 = [v7 contentLayoutGuide];
-          [v52 trailingAnchor];
-          v51 = v53 = v16;
-          v50 = [v16 constraintEqualToAnchor:?];
+          trailingAnchor = [(UIView *)v10 trailingAnchor];
+          contentLayoutGuide2 = [v7 contentLayoutGuide];
+          [contentLayoutGuide2 trailingAnchor];
+          v51 = v53 = trailingAnchor;
+          v50 = [trailingAnchor constraintEqualToAnchor:?];
           v66[2] = v50;
-          v17 = [(UIView *)v10 topAnchor];
-          v18 = [v8 lastObject];
-          v19 = [v18 superview];
-          v20 = [v19 bottomAnchor];
-          v21 = v20;
-          if (!v20)
+          topAnchor = [(UIView *)v10 topAnchor];
+          lastObject = [v8 lastObject];
+          superview = [lastObject superview];
+          bottomAnchor = [superview bottomAnchor];
+          topAnchor2 = bottomAnchor;
+          if (!bottomAnchor)
           {
-            v45 = [v7 contentLayoutGuide];
-            v21 = [v45 topAnchor];
-            v44 = v21;
+            contentLayoutGuide3 = [v7 contentLayoutGuide];
+            topAnchor2 = [contentLayoutGuide3 topAnchor];
+            v44 = topAnchor2;
           }
 
-          v22 = [v8 lastObject];
-          if (v22)
+          lastObject2 = [v8 lastObject];
+          if (lastObject2)
           {
             v23 = 10.0;
           }
@@ -119,13 +119,13 @@
             v23 = 0.0;
           }
 
-          v24 = [v17 constraintEqualToAnchor:v21 constant:v23];
+          v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v23];
           v66[3] = v24;
           [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:4];
           v26 = v25 = v8;
           [v49 activateConstraints:v26];
 
-          if (!v20)
+          if (!bottomAnchor)
           {
           }
 
@@ -144,12 +144,12 @@
     {
       v27 = v8;
       v28 = MEMORY[0x1E69977A0];
-      v29 = [v27 lastObject];
-      v30 = [v29 superview];
-      v31 = [v30 bottomAnchor];
-      v32 = [v7 contentLayoutGuide];
-      v33 = [v32 bottomAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      lastObject3 = [v27 lastObject];
+      superview2 = [lastObject3 superview];
+      bottomAnchor2 = [superview2 bottomAnchor];
+      contentLayoutGuide4 = [v7 contentLayoutGuide];
+      bottomAnchor3 = [contentLayoutGuide4 bottomAnchor];
+      v34 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v65 = v34;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
       v36 = v28;
@@ -169,21 +169,21 @@
     [(UILongPressGestureRecognizer *)v39 setMinimumPressDuration:0.2];
     [(UIView *)v41 addGestureRecognizer:v39];
 
-    v4 = v42;
+    sceneCopy = v42;
   }
 
   return v6;
 }
 
-- (void)drag:(id)a3
+- (void)drag:(id)drag
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  dragCopy = drag;
+  [dragCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 state];
+  state = [dragCopy state];
 
-  if (v9 == 2)
+  if (state == 2)
   {
     v10 = v6 - self->_lastDragPoint.x;
     v11 = v8 - self->_lastDragPoint.y;
@@ -195,19 +195,19 @@
   self->_lastDragPoint.y = v8;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = _UIFocusDebugWindow;
-  [(UIWindow *)&v4 setHidden:a3];
+  [(UIWindow *)&v4 setHidden:hidden];
   [(_UIFocusDebugWindow *)self _updateTimer];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = _UIFocusDebugWindow;
-  v5 = [(UIView *)&v13 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v13 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -229,10 +229,10 @@
           break;
         }
 
-        v10 = [v9 superview];
+        superview = [v9 superview];
 
-        v9 = v10;
-        if (!v10)
+        v9 = superview;
+        if (!superview)
         {
           v8 = 0;
           break;
@@ -266,7 +266,7 @@
   }
 }
 
-- (void)_update:(id)a3
+- (void)_update:(id)_update
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = _UIKitProcessIsBeingDebugged() ^ 1;

@@ -6,17 +6,17 @@
 
 - (id)description
 {
-  v3 = [(FMDAVRoute *)self routeID];
-  v4 = [(FMDAVRoute *)self routeType];
-  v5 = [(FMDAVRoute *)self routeSubType];
-  v6 = [(FMDAVRoute *)self currentlyPicked];
+  routeID = [(FMDAVRoute *)self routeID];
+  routeType = [(FMDAVRoute *)self routeType];
+  routeSubType = [(FMDAVRoute *)self routeSubType];
+  currentlyPicked = [(FMDAVRoute *)self currentlyPicked];
   v7 = @"NO";
-  if (v6)
+  if (currentlyPicked)
   {
     v7 = @"YES";
   }
 
-  v8 = [NSString stringWithFormat:@"Route ID: %@, Type: %@, Subtype: %@, CurrentlyPicked:%@", v3, v4, v5, v7];
+  v8 = [NSString stringWithFormat:@"Route ID: %@, Type: %@, Subtype: %@, CurrentlyPicked:%@", routeID, routeType, routeSubType, v7];
 
   return v8;
 }

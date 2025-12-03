@@ -1,28 +1,28 @@
 @interface ICLStashedAppRecord
-- (BOOL)isEqual:(id)a3;
-- (ICLStashedAppRecord)initWithCoder:(id)a3;
-- (ICLStashedAppRecord)initWithLegacyRecordDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLStashedAppRecord)initWithCoder:(id)coder;
+- (ICLStashedAppRecord)initWithLegacyRecordDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)legacyRecordDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLStashedAppRecord
 
-- (ICLStashedAppRecord)initWithCoder:(id)a3
+- (ICLStashedAppRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICLStashedAppRecord;
-  v5 = [(ICLAppRecord *)&v11 initWithCoder:v4];
+  v5 = [(ICLAppRecord *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stashedAtTimestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stashedAtTimestamp"];
     stashedAtTimestamp = v5->_stashedAtTimestamp;
     v5->_stashedAtTimestamp = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stashOriginalInstallTimestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stashOriginalInstallTimestamp"];
     stashOriginalInstallTimestamp = v5->_stashOriginalInstallTimestamp;
     v5->_stashOriginalInstallTimestamp = v8;
   }
@@ -30,28 +30,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ICLStashedAppRecord;
-  v4 = a3;
-  [(ICLAppRecord *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ICLAppRecord *)&v7 encodeWithCoder:coderCopy];
   v5 = [(ICLStashedAppRecord *)self stashedAtTimestamp:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"stashedAtTimestamp"];
+  [coderCopy encodeObject:v5 forKey:@"stashedAtTimestamp"];
 
-  v6 = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
-  [v4 encodeObject:v6 forKey:@"stashOriginalInstallTimestamp"];
+  stashOriginalInstallTimestamp = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
+  [coderCopy encodeObject:stashOriginalInstallTimestamp forKey:@"stashOriginalInstallTimestamp"];
 }
 
-- (ICLStashedAppRecord)initWithLegacyRecordDictionary:(id)a3
+- (ICLStashedAppRecord)initWithLegacyRecordDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ICLStashedAppRecord;
-  v5 = [(ICLAppRecord *)&v13 initWithLegacyRecordDictionary:v4];
+  v5 = [(ICLAppRecord *)&v13 initWithLegacyRecordDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"StashedAtTimestamp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"StashedAtTimestamp"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -65,7 +65,7 @@
     }
 
     [(ICLStashedAppRecord *)v5 setStashedAtTimestamp:v8];
-    v9 = [v4 objectForKeyedSubscript:@"StashOriginalInstallTimestamp"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"StashOriginalInstallTimestamp"];
     objc_opt_class();
     v10 = v9;
     if (objc_opt_isKindOfClass())
@@ -84,17 +84,17 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = ICLStashedAppRecord;
   v5 = [(ICLAppRecord *)&v11 copyWithZone:?];
-  v6 = [(ICLStashedAppRecord *)self stashedAtTimestamp];
-  v7 = [v6 copyWithZone:a3];
+  stashedAtTimestamp = [(ICLStashedAppRecord *)self stashedAtTimestamp];
+  v7 = [stashedAtTimestamp copyWithZone:zone];
   [v5 setStashedAtTimestamp:v7];
 
-  v8 = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
-  v9 = [v8 copyWithZone:a3];
+  stashOriginalInstallTimestamp = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
+  v9 = [stashOriginalInstallTimestamp copyWithZone:zone];
   [v5 setStashOriginalInstallTimestamp:v9];
 
   return v5;
@@ -105,19 +105,19 @@
   v3 = objc_opt_new();
   v9.receiver = self;
   v9.super_class = ICLStashedAppRecord;
-  v4 = [(ICLAppRecord *)&v9 legacyRecordDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  legacyRecordDictionary = [(ICLAppRecord *)&v9 legacyRecordDictionary];
+  [v3 addEntriesFromDictionary:legacyRecordDictionary];
 
-  v5 = [(ICLStashedAppRecord *)self stashedAtTimestamp];
-  if (v5)
+  stashedAtTimestamp = [(ICLStashedAppRecord *)self stashedAtTimestamp];
+  if (stashedAtTimestamp)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"StashedAtTimestamp"];
+    [v3 setObject:stashedAtTimestamp forKeyedSubscript:@"StashedAtTimestamp"];
   }
 
-  v6 = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
-  if (v6)
+  stashOriginalInstallTimestamp = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
+  if (stashOriginalInstallTimestamp)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"StashOriginalInstallTimestamp"];
+    [v3 setObject:stashOriginalInstallTimestamp forKeyedSubscript:@"StashOriginalInstallTimestamp"];
   }
 
   v7 = [v3 copy];
@@ -125,10 +125,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -140,18 +140,18 @@
     {
       v14.receiver = self;
       v14.super_class = ICLStashedAppRecord;
-      if ([(ICLAppRecord *)&v14 isEqual:v4])
+      if ([(ICLAppRecord *)&v14 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(ICLStashedAppRecord *)self stashedAtTimestamp];
-        v7 = [(ICLStashedAppRecord *)v5 stashedAtTimestamp];
-        v8 = MICompareObjects(v6, v7);
+        v5 = equalCopy;
+        stashedAtTimestamp = [(ICLStashedAppRecord *)self stashedAtTimestamp];
+        stashedAtTimestamp2 = [(ICLStashedAppRecord *)v5 stashedAtTimestamp];
+        v8 = MICompareObjects(stashedAtTimestamp, stashedAtTimestamp2);
 
         if (v8)
         {
-          v9 = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
-          v10 = [(ICLStashedAppRecord *)v5 stashOriginalInstallTimestamp];
-          v11 = MICompareObjects(v9, v10);
+          stashOriginalInstallTimestamp = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
+          stashOriginalInstallTimestamp2 = [(ICLStashedAppRecord *)v5 stashOriginalInstallTimestamp];
+          v11 = MICompareObjects(stashOriginalInstallTimestamp, stashOriginalInstallTimestamp2);
 
           if (v11)
           {
@@ -189,11 +189,11 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLStashedAppRecord *)self stashedAtTimestamp];
-  v4 = [v3 hash];
+  stashedAtTimestamp = [(ICLStashedAppRecord *)self stashedAtTimestamp];
+  v4 = [stashedAtTimestamp hash];
 
-  v5 = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
-  v6 = [v5 hash] ^ v4;
+  stashOriginalInstallTimestamp = [(ICLStashedAppRecord *)self stashOriginalInstallTimestamp];
+  v6 = [stashOriginalInstallTimestamp hash] ^ v4;
 
   v8.receiver = self;
   v8.super_class = ICLStashedAppRecord;

@@ -2,47 +2,47 @@
 + (id)sharedProxy;
 - (WBSSafariBookmarksSyncAgentProxy)init;
 - (void)beginMigrationFromDAV;
-- (void)clearServerChangeTokenWithCompletionHandler:(id)a3;
-- (void)collectDiagnosticsDataWithCompletionHandler:(id)a3;
+- (void)clearServerChangeTokenWithCompletionHandler:(id)handler;
+- (void)collectDiagnosticsDataWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)deleteBackgroundImageDirectory;
-- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)a3;
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)a3;
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
+- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)handler;
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)handler;
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
 - (void)deletePerSiteSettingsSyncData;
-- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
+- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)strings completionHandler:(id)handler;
 - (void)fetchCloudSettingsChangesImmediately;
 - (void)fetchCloudTabDevicesAndCloseRequests;
-- (void)fetchProfileEntitiesWithCompletion:(id)a3;
-- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)a3;
-- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3;
-- (void)fetchTabGroupEntitiesWithCompletion:(id)a3;
-- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3;
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3;
-- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3;
-- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)a3;
-- (void)getCloudTabDevicesWithCompletionHandler:(id)a3;
-- (void)migrateToCloudKitWithCompletionHandler:(id)a3;
+- (void)fetchProfileEntitiesWithCompletion:(id)completion;
+- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)handler;
+- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler;
+- (void)fetchTabGroupEntitiesWithCompletion:(id)completion;
+- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler;
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler;
+- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler;
+- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)handler;
+- (void)getCloudTabDevicesWithCompletionHandler:(id)handler;
+- (void)migrateToCloudKitWithCompletionHandler:(id)handler;
 - (void)observeRemoteMigrationStateForSecondaryMigration;
 - (void)registerForPushNotificationsIfNeeded;
-- (void)resetToDAVDatabaseWithCompletionHandler:(id)a3;
-- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4;
-- (void)saveCloudSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4;
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4;
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5;
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)a3;
-- (void)syncDownSafariSettingsSyncWithCompletion:(id)a3;
-- (void)syncScribbleFeedbackUp:(id)a3 withCompletion:(id)a4;
-- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)a3;
-- (void)syncUpSafariSettingsSyncWithCompletion:(id)a3;
-- (void)syncWebCompatibilityFeedbackUp:(id)a3 withCompletion:(id)a4;
+- (void)resetToDAVDatabaseWithCompletionHandler:(id)handler;
+- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler;
+- (void)saveCloudSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler;
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler;
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler;
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler;
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler;
+- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)completion;
+- (void)syncDownSafariSettingsSyncWithCompletion:(id)completion;
+- (void)syncScribbleFeedbackUp:(id)up withCompletion:(id)completion;
+- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)completion;
+- (void)syncUpSafariSettingsSyncWithCompletion:(id)completion;
+- (void)syncWebCompatibilityFeedbackUp:(id)up withCompletion:(id)completion;
 - (void)triggerImmediateBackgroundImageSaveIfApplicable;
 - (void)triggerSafariTabGroupSync;
-- (void)userAccountDidChange:(int64_t)a3;
+- (void)userAccountDidChange:(int64_t)change;
 - (void)userDidUpdateBookmarkDatabase;
 @end
 
@@ -109,16 +109,16 @@ void __47__WBSSafariBookmarksSyncAgentProxy_sharedProxy__block_invoke()
 
 - (void)fetchCloudSettingsChangesImmediately
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 fetchCloudSettingsChangesImmediately];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchCloudSettingsChangesImmediately];
 }
 
 - (void)observeRemoteMigrationStateForSecondaryMigration
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 observeRemoteMigrationStateForSecondaryMigration];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy observeRemoteMigrationStateForSecondaryMigration];
 }
 
 void __40__WBSSafariBookmarksSyncAgentProxy_init__block_invoke(uint64_t a1)
@@ -137,8 +137,8 @@ void __40__WBSSafariBookmarksSyncAgentProxy_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  [v3 invalidate];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  [_safariBookmarksSyncAgentConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = WBSSafariBookmarksSyncAgentProxy;
@@ -147,70 +147,70 @@ void __40__WBSSafariBookmarksSyncAgentProxy_init__block_invoke(uint64_t a1)
 
 - (void)registerForPushNotificationsIfNeeded
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 registerForPushNotificationsIfNeeded];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy registerForPushNotificationsIfNeeded];
 }
 
-- (void)userAccountDidChange:(int64_t)a3
+- (void)userAccountDidChange:(int64_t)change
 {
-  v5 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v4 = [v5 remoteObjectProxy];
-  [v4 userAccountDidChange:a3];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy userAccountDidChange:change];
 }
 
-- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)a3
+- (void)getCloudSettingsContainerManateeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 getCloudSettingsContainerManateeStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy getCloudSettingsContainerManateeStateWithCompletionHandler:handlerCopy];
 }
 
 - (void)userDidUpdateBookmarkDatabase
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 userDidUpdateBookmarkDatabase];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy userDidUpdateBookmarkDatabase];
 }
 
-- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)a3
+- (void)fetchRemoteMigrationStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchRemoteMigrationStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchRemoteMigrationStateWithCompletionHandler:handlerCopy];
 }
 
 - (void)beginMigrationFromDAV
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 beginMigrationFromDAV];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy beginMigrationFromDAV];
 }
 
-- (void)collectDiagnosticsDataWithCompletionHandler:(id)a3
+- (void)collectDiagnosticsDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 collectDiagnosticsDataWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy collectDiagnosticsDataWithCompletionHandler:handlerCopy];
 }
 
-- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)a3 deviceUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveTabsForCurrentDeviceWithDictionaryRepresentation:(id)representation deviceUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v12 = [v11 remoteObjectProxy];
+  handlerCopy = handler;
+  stringCopy = string;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __124__WBSSafariBookmarksSyncAgentProxy_saveTabsForCurrentDeviceWithDictionaryRepresentation_deviceUUIDString_completionHandler___block_invoke;
   v14[3] = &unk_1E7CF2CC0;
-  v15 = v8;
-  v13 = v8;
-  [v12 saveTabsForCurrentDeviceWithDictionaryRepresentation:v10 deviceUUIDString:v9 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [remoteObjectProxy saveTabsForCurrentDeviceWithDictionaryRepresentation:representationCopy deviceUUIDString:stringCopy completionHandler:v14];
 }
 
 uint64_t __124__WBSSafariBookmarksSyncAgentProxy_saveTabsForCurrentDeviceWithDictionaryRepresentation_deviceUUIDString_completionHandler___block_invoke(uint64_t a1)
@@ -224,268 +224,268 @@ uint64_t __124__WBSSafariBookmarksSyncAgentProxy_saveTabsForCurrentDeviceWithDic
   return result;
 }
 
-- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)a3 closeRequestUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveCloudTabCloseRequestWithDictionaryRepresentation:(id)representation closeRequestUUIDString:(id)string completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v11 = [v12 remoteObjectProxy];
-  [v11 saveCloudTabCloseRequestWithDictionaryRepresentation:v10 closeRequestUUIDString:v9 completionHandler:v8];
+  handlerCopy = handler;
+  stringCopy = string;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy saveCloudTabCloseRequestWithDictionaryRepresentation:representationCopy closeRequestUUIDString:stringCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 deleteDevicesWithUUIDStrings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  stringsCopy = strings;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteDevicesWithUUIDStrings:stringsCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudTabCloseRequestsWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 deleteCloudTabCloseRequestsWithUUIDStrings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  stringsCopy = strings;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteCloudTabCloseRequestsWithUUIDStrings:stringsCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)a3
+- (void)fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchSyncedCloudTabDevicesAndCloseRequestsWithCompletionHandler:handlerCopy];
 }
 
-- (void)getCloudTabDevicesWithCompletionHandler:(id)a3
+- (void)getCloudTabDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 getCloudTabDevicesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy getCloudTabDevicesWithCompletionHandler:handlerCopy];
 }
 
-- (void)clearServerChangeTokenWithCompletionHandler:(id)a3
+- (void)clearServerChangeTokenWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 clearServerChangeTokenWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy clearServerChangeTokenWithCompletionHandler:handlerCopy];
 }
 
 - (void)triggerSafariTabGroupSync
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 triggerSafariTabGroupSync];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy triggerSafariTabGroupSync];
 }
 
-- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)a3
+- (void)getCloudTabContainerManateeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 getCloudTabContainerManateeStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy getCloudTabContainerManateeStateWithCompletionHandler:handlerCopy];
 }
 
 - (void)fetchCloudTabDevicesAndCloseRequests
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 fetchCloudTabDevicesAndCloseRequests];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchCloudTabDevicesAndCloseRequests];
 }
 
-- (void)syncScribbleFeedbackUp:(id)a3 withCompletion:(id)a4
+- (void)syncScribbleFeedbackUp:(id)up withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 syncScribbleFeedbackUp:v7 withCompletion:v6];
+  completionCopy = completion;
+  upCopy = up;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncScribbleFeedbackUp:upCopy withCompletion:completionCopy];
 }
 
-- (void)syncWebCompatibilityFeedbackUp:(id)a3 withCompletion:(id)a4
+- (void)syncWebCompatibilityFeedbackUp:(id)up withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 syncWebCompatibilityFeedbackUp:v7 withCompletion:v6];
+  completionCopy = completion;
+  upCopy = up;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncWebCompatibilityFeedbackUp:upCopy withCompletion:completionCopy];
 }
 
-- (void)saveCloudSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4
+- (void)saveCloudSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 saveCloudSettingWithDictionaryRepresentation:v7 successCompletionHandler:v6];
+  handlerCopy = handler;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy saveCloudSettingWithDictionaryRepresentation:representationCopy successCompletionHandler:handlerCopy];
 }
 
-- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)a3
+- (void)deleteBackgroundImageFromCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 deleteBackgroundImageFromCloudKitWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteBackgroundImageFromCloudKitWithCompletionHandler:handlerCopy];
 }
 
 - (void)triggerImmediateBackgroundImageSaveIfApplicable
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 triggerImmediateBackgroundImageSaveIfApplicable];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy triggerImmediateBackgroundImageSaveIfApplicable];
 }
 
-- (void)syncDownSafariSettingsSyncWithCompletion:(id)a3
+- (void)syncDownSafariSettingsSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 syncDownSafariSettingsSyncWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncDownSafariSettingsSyncWithCompletion:completionCopy];
 }
 
-- (void)syncUpSafariSettingsSyncWithCompletion:(id)a3
+- (void)syncUpSafariSettingsSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 syncUpSafariSettingsSyncWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncUpSafariSettingsSyncWithCompletion:completionCopy];
 }
 
 - (void)deleteBackgroundImageDirectory
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 deleteBackgroundImageDirectory];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteBackgroundImageDirectory];
 }
 
-- (void)fetchProfileEntitiesWithCompletion:(id)a3
+- (void)fetchProfileEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchProfileEntitiesWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchProfileEntitiesWithCompletion:completionCopy];
 }
 
-- (void)fetchTabGroupEntitiesWithCompletion:(id)a3
+- (void)fetchTabGroupEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchTabGroupEntitiesWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy fetchTabGroupEntitiesWithCompletion:completionCopy];
 }
 
-- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteTabGroupEntitiesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 deleteTabGroupEntitiesWithUUIDStrings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  stringsCopy = strings;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteTabGroupEntitiesWithUUIDStrings:stringsCopy completionHandler:handlerCopy];
 }
 
-- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)a3
+- (void)syncDownSafariPerSiteSettingsSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 syncDownSafariPerSiteSettingsSyncWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncDownSafariPerSiteSettingsSyncWithCompletion:completionCopy];
 }
 
-- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)a3
+- (void)syncUpSafariPerSiteSettingsSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 syncUpSafariPerSiteSettingsSyncWithCompletion:v4];
+  completionCopy = completion;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy syncUpSafariPerSiteSettingsSyncWithCompletion:completionCopy];
 }
 
-- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)a3 successCompletionHandler:(id)a4
+- (void)saveCloudPerSiteSettingWithDictionaryRepresentation:(id)representation successCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 saveCloudPerSiteSettingWithDictionaryRepresentation:v7 successCompletionHandler:v6];
+  handlerCopy = handler;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy saveCloudPerSiteSettingWithDictionaryRepresentation:representationCopy successCompletionHandler:handlerCopy];
 }
 
 - (void)deletePerSiteSettingsSyncData
 {
-  v3 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 deletePerSiteSettingsSyncData];
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deletePerSiteSettingsSyncData];
 }
 
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v11 = [v12 remoteObjectProxy];
-  [v11 saveExtensionStatesWithDictionaryRepresentation:v10 forDevice:v9 completionHandler:v8];
+  handlerCopy = handler;
+  deviceCopy = device;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy saveExtensionStatesWithDictionaryRepresentation:representationCopy forDevice:deviceCopy completionHandler:handlerCopy];
 }
 
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 saveExtensionDeviceWithDictionaryRepresentation:v7 completionHandler:v6];
+  handlerCopy = handler;
+  representationCopy = representation;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy saveExtensionDeviceWithDictionaryRepresentation:representationCopy completionHandler:handlerCopy];
 }
 
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 getCloudExtensionStatesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy getCloudExtensionStatesWithCompletionHandler:handlerCopy];
 }
 
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 deleteCloudExtensionDevicesWithUUIDStrings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  stringsCopy = strings;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteCloudExtensionDevicesWithUUIDStrings:stringsCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)a3
+- (void)deleteCloudExtensionStatesDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 deleteCloudExtensionStatesDatabaseWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy deleteCloudExtensionStatesDatabaseWithCompletionHandler:handlerCopy];
 }
 
-- (void)resetToDAVDatabaseWithCompletionHandler:(id)a3
+- (void)resetToDAVDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 resetToDAVDatabaseWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy resetToDAVDatabaseWithCompletionHandler:handlerCopy];
 }
 
-- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3
+- (void)generateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 generateDAVServerIDsForExistingBookmarksWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy generateDAVServerIDsForExistingBookmarksWithCompletionHandler:handlerCopy];
 }
 
-- (void)migrateToCloudKitWithCompletionHandler:(id)a3
+- (void)migrateToCloudKitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 migrateToCloudKitWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _safariBookmarksSyncAgentConnection = [(WBSSafariBookmarksSyncAgentProxy *)self _safariBookmarksSyncAgentConnection];
+  remoteObjectProxy = [_safariBookmarksSyncAgentConnection remoteObjectProxy];
+  [remoteObjectProxy migrateToCloudKitWithCompletionHandler:handlerCopy];
 }
 
 @end

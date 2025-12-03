@@ -1,9 +1,9 @@
 @interface AudiogramGraphDetectorResult
 + (_TtC18AudiogramIngestion28AudiogramGraphDetectorResult)defaultResult;
 - (CGRect)box;
-- (CGRect)scaledBoxWithSize:(CGSize)a3;
+- (CGRect)scaledBoxWithSize:(CGSize)size;
 - (_TtC18AudiogramIngestion28AudiogramGraphDetectorResult)init;
-- (void)setBox:(CGRect)a3;
+- (void)setBox:(CGRect)box;
 @end
 
 @implementation AudiogramGraphDetectorResult
@@ -23,12 +23,12 @@
   return result;
 }
 
-- (void)setBox:(CGRect)a3
+- (void)setBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v7 = (self + OBJC_IVAR____TtC18AudiogramIngestion28AudiogramGraphDetectorResult_box);
   swift_beginAccess();
   *v7 = x;
@@ -37,10 +37,10 @@
   v7[3] = height;
 }
 
-- (CGRect)scaledBoxWithSize:(CGSize)a3
+- (CGRect)scaledBoxWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = (self + OBJC_IVAR____TtC18AudiogramIngestion28AudiogramGraphDetectorResult_box);
   swift_beginAccess();
   v7 = *v6;
@@ -72,7 +72,7 @@
   v16 = v33.origin.y;
   v17 = v33.size.width;
   v18 = v33.size.height;
-  v19 = self;
+  selfCopy = self;
   v34.origin.x = v15;
   v34.origin.y = v16;
   v34.size.width = v17;

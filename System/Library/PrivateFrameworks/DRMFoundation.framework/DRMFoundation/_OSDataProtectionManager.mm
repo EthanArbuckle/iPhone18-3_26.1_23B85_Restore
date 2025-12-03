@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)deviceIsLocked;
 - (BOOL)deviceIsPasswordConfigured;
-- (BOOL)isDataAvailableFor:(id)a3;
+- (BOOL)isDataAvailableFor:(id)for;
 - (BOOL)isDataAvailableForClassA;
 - (BOOL)isDataAvailableForClassC;
 - (_OSDataProtectionManager)init;
-- (id)registerStateChangeHandler:(id)a3;
-- (void)deregisterStateChangeHandler:(id)a3;
+- (id)registerStateChangeHandler:(id)handler;
+- (void)deregisterStateChangeHandler:(id)handler;
 - (void)handleKeyBagLockNotification;
 @end
 
@@ -37,7 +37,7 @@
   block[5] = v35;
   block[6] = &v29;
   dispatch_sync(stateQueue, block);
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = self->_stateQueue;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -45,7 +45,7 @@
   v25[3] = &unk_278EEDC70;
   v27 = v35;
   v25[4] = self;
-  v6 = v4;
+  v6 = dictionary;
   v26 = v6;
   dispatch_sync(v5, v25);
   v23 = 0u;
@@ -160,7 +160,7 @@
   block[1] = 3221225472;
   block[2] = __42___OSDataProtectionManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -183,13 +183,13 @@
     v2->_stateQueue = v3;
 
     v2->_deviceFormatedForContentProtection = 0;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     handlers = v2->_handlers;
-    v2->_handlers = v5;
+    v2->_handlers = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     availableState = v2->_availableState;
-    v2->_availableState = v7;
+    v2->_availableState = dictionary2;
 
     v9 = v2->_availableState;
     v10 = +[_OSDataProtectionStateMonitor dataProtectionClassA];
@@ -257,10 +257,10 @@
   return v3 == v4;
 }
 
-- (BOOL)isDataAvailableFor:(id)a3
+- (BOOL)isDataAvailableFor:(id)for
 {
-  v4 = a3;
-  v5 = v4;
+  forCopy = for;
+  v5 = forCopy;
   if (self->_deviceFormatedForContentProtection)
   {
     v12 = 0;
@@ -273,7 +273,7 @@
     block[2] = __47___OSDataProtectionManager_isDataAvailableFor___block_invoke;
     block[3] = &unk_278EEDC98;
     block[4] = self;
-    v10 = v4;
+    v10 = forCopy;
     v11 = &v12;
     dispatch_sync(stateQueue, block);
     v7 = *(v13 + 24);
@@ -289,21 +289,21 @@
   return v7 & 1;
 }
 
-- (id)registerStateChangeHandler:(id)a3
+- (id)registerStateChangeHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55___OSDataProtectionManager_registerStateChangeHandler___block_invoke;
     block[3] = &unk_278EEDCC0;
     block[4] = self;
-    v7 = v5;
+    v7 = uUID;
     v12 = v7;
-    v13 = v4;
+    v13 = handlerCopy;
     dispatch_sync(stateQueue, block);
     v8 = v13;
     v9 = v7;
@@ -317,17 +317,17 @@
   return v9;
 }
 
-- (void)deregisterStateChangeHandler:(id)a3
+- (void)deregisterStateChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57___OSDataProtectionManager_deregisterStateChangeHandler___block_invoke;
   v7[3] = &unk_278EEDCE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(stateQueue, v7);
 }
 

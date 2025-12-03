@@ -1,18 +1,18 @@
 @interface ResourceManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ResourceManager)init;
-- (void)createResourceHint:(id)a3 withReply:(id)a4;
+- (void)createResourceHint:(id)hint withReply:(id)reply;
 - (void)evaluatePowerController;
 - (void)evaluatePowerModes;
-- (void)handleProcessExit:(id)a3;
-- (void)removeResourceHint:(id)a3;
-- (void)removeState:(id)a3;
-- (void)restoreResourceHints:(id)a3;
+- (void)handleProcessExit:(id)exit;
+- (void)removeResourceHint:(id)hint;
+- (void)removeState:(id)state;
+- (void)restoreResourceHints:(id)hints;
 - (void)restoreState;
-- (void)saveState:(id)a3;
+- (void)saveState:(id)state;
 - (void)start;
-- (void)updateResourceHint:(id)a3 withReply:(id)a4;
+- (void)updateResourceHint:(id)hint withReply:(id)reply;
 @end
 
 @implementation ResourceManager
@@ -32,91 +32,91 @@
   [v2 evaluateChargingPolicy];
 }
 
-- (void)restoreResourceHints:(id)a3
+- (void)restoreResourceHints:(id)hints
 {
-  v4 = a3;
-  v5 = [(ResourceManager *)self mainQueue];
+  hintsCopy = hints;
+  mainQueue = [(ResourceManager *)self mainQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006FD8;
   v7[3] = &unk_10002C698;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = hintsCopy;
+  v6 = hintsCopy;
+  dispatch_async(mainQueue, v7);
 }
 
-- (void)createResourceHint:(id)a3 withReply:(id)a4
+- (void)createResourceHint:(id)hint withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  hintCopy = hint;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = os_transaction_create();
   [(ResourceManager *)self setTransaction:v9];
 
   v10 = +[NSUUID UUID];
-  [v6 setUuid:v10];
-  v7[2](v7, v10);
+  [hintCopy setUuid:v10];
+  replyCopy[2](replyCopy, v10);
 
-  v11 = [(ResourceManager *)self mainQueue];
+  mainQueue = [(ResourceManager *)self mainQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007380;
   v15[3] = &unk_10002C6C0;
   v16 = v8;
-  v17 = v6;
-  v18 = self;
+  v17 = hintCopy;
+  selfCopy = self;
   v19 = v10;
   v12 = v10;
-  v13 = v6;
+  v13 = hintCopy;
   v14 = v8;
-  dispatch_async(v11, v15);
+  dispatch_async(mainQueue, v15);
 }
 
-- (void)updateResourceHint:(id)a3 withReply:(id)a4
+- (void)updateResourceHint:(id)hint withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  hintCopy = hint;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
-  v9 = [(ResourceManager *)self mainQueue];
+  mainQueue = [(ResourceManager *)self mainQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100007670;
   v13[3] = &unk_10002C6E8;
   v13[4] = self;
-  v14 = v6;
+  v14 = hintCopy;
   v15 = v8;
-  v16 = v7;
-  v10 = v7;
+  v16 = replyCopy;
+  v10 = replyCopy;
   v11 = v8;
-  v12 = v6;
-  dispatch_async(v9, v13);
+  v12 = hintCopy;
+  dispatch_async(mainQueue, v13);
 }
 
-- (void)removeResourceHint:(id)a3
+- (void)removeResourceHint:(id)hint
 {
-  v4 = a3;
+  hintCopy = hint;
   v5 = qword_100036B38;
   if (os_log_type_enabled(qword_100036B38, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000187F0(v4, v5);
+    sub_1000187F0(hintCopy, v5);
   }
 
-  v6 = [(ResourceManager *)self resourceHints];
-  [v6 removeObjectForKey:v4];
+  resourceHints = [(ResourceManager *)self resourceHints];
+  [resourceHints removeObjectForKey:hintCopy];
 
   [(ResourceManager *)self evaluatePowerModes];
-  [(ResourceManager *)self removeState:v4];
+  [(ResourceManager *)self removeState:hintCopy];
 }
 
-- (void)handleProcessExit:(id)a3
+- (void)handleProcessExit:(id)exit
 {
-  v4 = a3;
+  exitCopy = exit;
   v5 = qword_100036B38;
   if (os_log_type_enabled(qword_100036B38, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v37 = v4;
+    v37 = exitCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "process %@ exiting. Releasing resouce hints for this process", buf, 0xCu);
   }
 
@@ -125,8 +125,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(ResourceManager *)self resourceHints];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  resourceHints = [(ResourceManager *)self resourceHints];
+  v8 = [resourceHints countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -138,16 +138,16 @@
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resourceHints);
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [(ResourceManager *)self resourceHints];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        resourceHints2 = [(ResourceManager *)self resourceHints];
+        v14 = [resourceHints2 objectForKeyedSubscript:v12];
 
         v15 = [v14 pid];
 
-        if (v15 == v4)
+        if (v15 == exitCopy)
         {
           [v6 addObject:v12];
         }
@@ -156,7 +156,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v9 = [resourceHints countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v9);
@@ -204,34 +204,34 @@
     while (v19);
   }
 
-  v24 = [(ResourceManager *)self processMonitors];
-  [v24 removeObjectForKey:v4];
+  processMonitors = [(ResourceManager *)self processMonitors];
+  [processMonitors removeObjectForKey:exitCopy];
 
   [(ResourceManager *)self evaluatePowerModes];
 }
 
-- (void)saveState:(id)a3
+- (void)saveState:(id)state
 {
-  v4 = a3;
-  v5 = [(ResourceManager *)self mainQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  mainQueue = [(ResourceManager *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v4 uuid];
-  v8 = [v7 UUIDString];
-  [v6 setObject:v8 forKeyedSubscript:@"uuid"];
+  uuid = [stateCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [v6 setObject:uUIDString forKeyedSubscript:@"uuid"];
 
-  v9 = [v4 pid];
+  v9 = [stateCopy pid];
   [v6 setObject:v9 forKeyedSubscript:@"pid"];
 
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 state]);
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [stateCopy state]);
   [v6 setObject:v10 forKeyedSubscript:@"state"];
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 resourceType]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [stateCopy resourceType]);
   [v6 setObject:v11 forKeyedSubscript:@"type"];
 
-  v12 = [(ResourceManager *)self defaults];
-  v13 = [v12 objectForKey:@"resources"];
+  defaults = [(ResourceManager *)self defaults];
+  v13 = [defaults objectForKey:@"resources"];
 
   v14 = [v13 mutableCopy];
   if (!v14)
@@ -239,7 +239,7 @@
     v14 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v15 = [v4 description];
+  v15 = [stateCopy description];
   [v14 setObject:v6 forKeyedSubscript:v15];
 
   v16 = qword_100036B38;
@@ -248,21 +248,21 @@
     sub_100018868(v14, v16);
   }
 
-  v17 = [(ResourceManager *)self defaults];
-  [v17 setValue:v14 forKey:@"resources"];
+  defaults2 = [(ResourceManager *)self defaults];
+  [defaults2 setValue:v14 forKey:@"resources"];
 }
 
-- (void)removeState:(id)a3
+- (void)removeState:(id)state
 {
-  v4 = a3;
-  v5 = [(ResourceManager *)self defaults];
-  v8 = [v5 objectForKey:@"resources"];
+  stateCopy = state;
+  defaults = [(ResourceManager *)self defaults];
+  v8 = [defaults objectForKey:@"resources"];
 
   v6 = [v8 mutableCopy];
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:stateCopy];
 
-  v7 = [(ResourceManager *)self defaults];
-  [v7 setValue:v6 forKey:@"resources"];
+  defaults2 = [(ResourceManager *)self defaults];
+  [defaults2 setValue:v6 forKey:@"resources"];
 }
 
 - (void)restoreState
@@ -275,8 +275,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "restoring state on init", buf, 2u);
   }
 
-  v4 = [(ResourceManager *)self defaults];
-  v5 = [v4 objectForKey:@"resources"];
+  defaults = [(ResourceManager *)self defaults];
+  v5 = [defaults objectForKey:@"resources"];
 
   v6 = qword_100036B38;
   if (v5)
@@ -370,13 +370,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "no resources to restore", buf, 2u);
   }
 
-  v24 = [(ResourceManager *)self mainQueue];
+  mainQueue = [(ResourceManager *)self mainQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008540;
   block[3] = &unk_10002C738;
   block[4] = self;
-  dispatch_async(v24, block);
+  dispatch_async(mainQueue, block);
 }
 
 - (ResourceManager)init
@@ -433,9 +433,9 @@
     if (os_log_type_enabled(qword_100036B38, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(ResourceManager *)v2 mainQueue];
+      mainQueue = [(ResourceManager *)v2 mainQueue];
       *buf = 138412290;
-      v24 = v19;
+      v24 = mainQueue;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Initialized ResourceManager with queue %@", buf, 0xCu);
     }
   }
@@ -476,23 +476,23 @@
   [(ResourceManager *)self activate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____ResourceManagerProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = qword_100036B38;
   if (os_log_type_enabled(qword_100036B38, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
     v10[0] = 67109120;
-    v10[1] = [v5 processIdentifier];
+    v10[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "ResourceManager: listener: accepted new connection from pid %d", v10, 8u);
   }
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }

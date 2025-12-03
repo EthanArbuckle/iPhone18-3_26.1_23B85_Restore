@@ -1,18 +1,18 @@
 @interface BKVerticalLabel
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation BKVerticalLabel
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(BKVerticalLabel *)self text:a3.origin.x];
+  v4 = [(BKVerticalLabel *)self text:rect.origin.x];
   v5 = [v4 length];
 
   if (v5)
   {
-    v6 = [(BKVerticalLabel *)self text];
-    v7 = [NSMutableString stringWithString:v6];
+    text = [(BKVerticalLabel *)self text];
+    v7 = [NSMutableString stringWithString:text];
 
     for (i = 0; i != v5; ++i)
     {
@@ -35,13 +35,13 @@
     v48.location = 0;
     v48.length = 0;
     CFAttributedStringReplaceString(Mutable, v48, v7);
-    v13 = [(BKVerticalLabel *)self font];
-    [v13 pointSize];
+    font = [(BKVerticalLabel *)self font];
+    [font pointSize];
     v15 = v14;
 
-    v16 = [(BKVerticalLabel *)self font];
-    v17 = [v16 fontName];
-    v18 = CTFontCreateWithName(v17, v15, 0);
+    font2 = [(BKVerticalLabel *)self font];
+    fontName = [font2 fontName];
+    v18 = CTFontCreateWithName(fontName, v15, 0);
 
     if (!v18)
     {
@@ -56,11 +56,11 @@ LABEL_22:
     v49.length = v5;
     value = v18;
     CFAttributedStringSetAttribute(v12, v49, kCTFontAttributeName, v18);
-    v19 = [(BKVerticalLabel *)self textColor];
-    v20 = [v19 CGColor];
+    textColor = [(BKVerticalLabel *)self textColor];
+    cGColor = [textColor CGColor];
     v50.location = 0;
     v50.length = v5;
-    CFAttributedStringSetAttribute(v12, v50, kCTForegroundColorAttributeName, v20);
+    CFAttributedStringSetAttribute(v12, v50, kCTForegroundColorAttributeName, cGColor);
 
     v51.location = 0;
     v51.length = v5;
@@ -121,11 +121,11 @@ LABEL_19:
       v54.location = 0;
       v54.length = 1;
       CFAttributedStringSetAttribute(v33, v54, kCTFontAttributeName, value);
-      v34 = [(BKVerticalLabel *)self textColor];
-      v35 = [v34 CGColor];
+      textColor2 = [(BKVerticalLabel *)self textColor];
+      cGColor2 = [textColor2 CGColor];
       v55.location = 0;
       v55.length = 1;
-      CFAttributedStringSetAttribute(v33, v55, kCTForegroundColorAttributeName, v35);
+      CFAttributedStringSetAttribute(v33, v55, kCTForegroundColorAttributeName, cGColor2);
 
       v56.location = 0;
       v56.length = 1;

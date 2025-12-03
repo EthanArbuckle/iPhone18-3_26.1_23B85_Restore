@@ -10,22 +10,22 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
-  v4 = [v3 accessibilityLabel];
+  aeHighlightedTextLabel = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
+  accessibilityLabel = [aeHighlightedTextLabel accessibilityLabel];
 
-  v5 = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightStyleName];
-  if ([v5 length])
+  aeHighlightStyleName = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightStyleName];
+  if ([aeHighlightStyleName length])
   {
     v10.receiver = self;
     v10.super_class = BKTOCRangeAnnotationTableCellAccessibility;
-    v6 = [(BKTOCRangeAnnotationTableCellAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel2 = [(BKTOCRangeAnnotationTableCellAccessibility *)&v10 accessibilityLabel];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = BKTOCRangeAnnotationTableCellAccessibility;
-    v6 = [(BKTOCRangeAnnotationTableCellAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel2 = [(BKTOCRangeAnnotationTableCellAccessibility *)&v9 accessibilityLabel];
   }
 
   v7 = __IMAccessibilityStringForVariables();
@@ -36,30 +36,30 @@
 - (id)accessibilityUserInputLabels
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
-  v5 = [v4 accessibilityLabel];
+  aeHighlightedTextLabel = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
+  accessibilityLabel = [aeHighlightedTextLabel accessibilityLabel];
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
-    [v3 addObject:v5];
+    [v3 addObject:accessibilityLabel];
   }
 
   v11 = 0;
   objc_opt_class();
   v6 = __IMAccessibilityCastAsSafeCategory();
-  v7 = [v6 bkaxNoteLabelText];
+  bkaxNoteLabelText = [v6 bkaxNoteLabelText];
 
-  if ([v7 length])
+  if ([bkaxNoteLabelText length])
   {
-    [v3 addObject:v7];
+    [v3 addObject:bkaxNoteLabelText];
   }
 
   v10.receiver = self;
   v10.super_class = BKTOCRangeAnnotationTableCellAccessibility;
-  v8 = [(BKTOCRangeAnnotationTableCellAccessibility *)&v10 accessibilityUserInputLabels];
-  if (v8)
+  accessibilityUserInputLabels = [(BKTOCRangeAnnotationTableCellAccessibility *)&v10 accessibilityUserInputLabels];
+  if (accessibilityUserInputLabels)
   {
-    [v3 addObjectsFromArray:v8];
+    [v3 addObjectsFromArray:accessibilityUserInputLabels];
   }
 
   return v3;
@@ -69,9 +69,9 @@
 {
   v3 = objc_opt_new();
   v4 = [NSMutableAttributedString alloc];
-  v5 = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
-  v6 = [v5 annotationAttributedString];
-  v7 = [v4 initWithAttributedString:v6];
+  aeHighlightedTextLabel = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
+  annotationAttributedString = [aeHighlightedTextLabel annotationAttributedString];
+  v7 = [v4 initWithAttributedString:annotationAttributedString];
 
   if ([v7 length])
   {
@@ -107,13 +107,13 @@
 - (id)aeHighlightStyleName
 {
   objc_opt_class();
-  v3 = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
-  v4 = [v3 annotation];
+  aeHighlightedTextLabel = [(BKTOCRangeAnnotationTableCellAccessibility *)self aeHighlightedTextLabel];
+  annotation = [aeHighlightedTextLabel annotation];
   v5 = __IMAccessibilityCastAsSafeCategory();
 
-  v6 = [v5 imaxWholeAnnotationDescription];
+  imaxWholeAnnotationDescription = [v5 imaxWholeAnnotationDescription];
 
-  return v6;
+  return imaxWholeAnnotationDescription;
 }
 
 @end

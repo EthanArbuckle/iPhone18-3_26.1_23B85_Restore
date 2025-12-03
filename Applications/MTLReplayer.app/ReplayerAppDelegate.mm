@@ -44,7 +44,7 @@
   v14 = [GTDisplayService alloc];
   v15 = [(GTDisplayService *)v14 initWithDelegate:v8 connection:qword_10001CC48];
   v16 = [[GTServiceProperties alloc] initWithProtocol:&OBJC_PROTOCOL___GTDisplayService];
-  v17 = [qword_10001CC48 connection];
+  connection = [qword_10001CC48 connection];
   v18 = registerService();
 
   if (v18)

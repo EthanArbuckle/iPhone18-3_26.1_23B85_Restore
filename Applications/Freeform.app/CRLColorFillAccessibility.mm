@@ -1,5 +1,5 @@
 @interface CRLColorFillAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CRLColorAccessibility)crlaxColor;
 - (NSString)crlaxColorFillName;
 - (NSString)crlaxColorFillNameWithOpacity;
@@ -7,68 +7,68 @@
 
 @implementation CRLColorFillAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSString)crlaxColorFillName
 {
-  v2 = [(CRLColorFillAccessibility *)self crlaxColor];
-  v3 = [v2 crlaxStyleInfoDescription];
+  crlaxColor = [(CRLColorFillAccessibility *)self crlaxColor];
+  crlaxStyleInfoDescription = [crlaxColor crlaxStyleInfoDescription];
 
-  return v3;
+  return crlaxStyleInfoDescription;
 }
 
 - (NSString)crlaxColorFillNameWithOpacity
 {
-  v3 = [(CRLColorFillAccessibility *)self crlaxColor];
-  v4 = [v3 crlaxTarget];
-  v5 = [v4 isClear];
+  crlaxColor = [(CRLColorFillAccessibility *)self crlaxColor];
+  crlaxTarget = [crlaxColor crlaxTarget];
+  isClear = [crlaxTarget isClear];
 
-  if (v5)
+  if (isClear)
   {
-    v6 = +[NSBundle mainBundle];
-    v7 = [v6 localizedStringForKey:@"Clear" value:0 table:0];
+    crlaxColorFillName = +[NSBundle mainBundle];
+    v7 = [crlaxColorFillName localizedStringForKey:@"Clear" value:0 table:0];
   }
 
   else
   {
-    v8 = [(CRLColorFillAccessibility *)self crlaxColor];
-    v9 = [v8 crlaxTarget];
-    v10 = [v9 isOpaque];
+    crlaxColor2 = [(CRLColorFillAccessibility *)self crlaxColor];
+    crlaxTarget2 = [crlaxColor2 crlaxTarget];
+    isOpaque = [crlaxTarget2 isOpaque];
 
-    v6 = [(CRLColorFillAccessibility *)self crlaxColorFillName];
-    if (v10)
+    crlaxColorFillName = [(CRLColorFillAccessibility *)self crlaxColorFillName];
+    if (isOpaque)
     {
       goto LABEL_6;
     }
 
-    v11 = [(CRLColorFillAccessibility *)self crlaxColor];
-    v12 = [v11 crlaxTarget];
-    [v12 alphaComponent];
+    crlaxColor3 = [(CRLColorFillAccessibility *)self crlaxColor];
+    crlaxTarget3 = [crlaxColor3 crlaxTarget];
+    [crlaxTarget3 alphaComponent];
     v13 = [CRLColorAccessibility crlaxOpacityDescriptionStringForAlphaComponent:?];
-    v7 = __CRLAccessibilityStringForVariables(1, v6, v14, v15, v16, v17, v18, v19, v13);
+    v7 = __CRLAccessibilityStringForVariables(1, crlaxColorFillName, v14, v15, v16, v17, v18, v19, v13);
   }
 
-  v6 = v7;
+  crlaxColorFillName = v7;
 LABEL_6:
 
-  return v6;
+  return crlaxColorFillName;
 }
 
 - (CRLColorAccessibility)crlaxColor
 {
   v8 = 0;
-  v2 = [(CRLColorFillAccessibility *)self crlaxTarget];
-  v3 = [v2 color];
+  crlaxTarget = [(CRLColorFillAccessibility *)self crlaxTarget];
+  color = [crlaxTarget color];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, color, 1, &v8);
   if (v8 == 1)
   {
     abort();

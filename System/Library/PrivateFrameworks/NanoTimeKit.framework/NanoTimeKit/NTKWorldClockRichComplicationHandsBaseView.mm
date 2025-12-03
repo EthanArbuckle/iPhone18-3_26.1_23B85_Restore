@@ -3,29 +3,29 @@
 - (UIColor)pegDotColor;
 - (id)createSecondHandView;
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
 - (int64_t)complicationFamily;
 - (int64_t)displayedHour;
 - (void)layoutHandViews;
-- (void)setFilterProvider:(id)a3;
-- (void)setPegDotColor:(id)a3;
+- (void)setFilterProvider:(id)provider;
+- (void)setPegDotColor:(id)color;
 @end
 
 @implementation NTKWorldClockRichComplicationHandsBaseView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = NTKWorldClockRichComplicationHandsBaseView;
-  v5 = [(NTKAnalogHandsView *)&v20 initForDevice:v4];
+  v5 = [(NTKAnalogHandsView *)&v20 initForDevice:deviceCopy];
   v6 = v5;
   if (v5)
   {
     v7 = v5 + 78;
-    _LayoutConstants_10(v4, [v5 complicationFamily], &v17);
+    _LayoutConstants_10(deviceCopy, [v5 complicationFamily], &v17);
     *v7 = v17;
     v8 = v18;
     v18 = 0;
@@ -38,16 +38,16 @@
     *(v6 + 80) = v10;
 
     [v6 setMinuteHandDotDiameter:*v7];
-    v12 = [v6 minuteHandDot];
+    minuteHandDot = [v6 minuteHandDot];
     v13 = [MEMORY[0x277D75348] colorWithRed:0.898039222 green:0.427450985 blue:0.0 alpha:1.0];
-    [v12 setBackgroundColor:v13];
+    [minuteHandDot setBackgroundColor:v13];
 
-    *(v6 + 648) = NTKShowGossamerUI(v4);
-    v14 = [v6 minuteHandDot];
-    [v14 setHidden:*(v6 + 648)];
+    *(v6 + 648) = NTKShowGossamerUI(deviceCopy);
+    minuteHandDot2 = [v6 minuteHandDot];
+    [minuteHandDot2 setHidden:*(v6 + 648)];
 
-    v15 = [v6 secondHandDot];
-    [v15 setHidden:*(v6 + 648)];
+    secondHandDot = [v6 secondHandDot];
+    [secondHandDot setHidden:*(v6 + 648)];
   }
 
   return v6;
@@ -55,8 +55,8 @@
 
 - (id)hourHandConfiguration
 {
-  v3 = [(CLKUIAnalogHandsView *)self device];
-  _LayoutConstants_10(v3, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], v7);
+  device = [(CLKUIAnalogHandsView *)self device];
+  _LayoutConstants_10(device, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], v7);
   v4 = v8;
   v5 = v8;
 
@@ -65,8 +65,8 @@
 
 - (id)minuteHandConfiguration
 {
-  v3 = [(CLKUIAnalogHandsView *)self device];
-  _LayoutConstants_10(v3, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], v7);
+  device = [(CLKUIAnalogHandsView *)self device];
+  _LayoutConstants_10(device, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], v7);
   v4 = v9;
   v5 = v9;
 
@@ -75,15 +75,15 @@
 
 - (id)secondHandConfiguration
 {
-  v3 = [(CLKUIAnalogHandsView *)self device];
+  device = [(CLKUIAnalogHandsView *)self device];
   v11 = 0.0;
   v12 = 0;
   v13 = 0;
-  _LayoutConstants_10(v3, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], &v11);
+  _LayoutConstants_10(device, [(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily], &v11);
   if ([(NTKWorldClockRichComplicationHandsBaseView *)self complicationFamily]== 10)
   {
-    v4 = [(CLKUIAnalogHandsView *)self device];
-    v5 = [off_27877BEE0 defaultSubdialConfigurationForDevice:v4];
+    device2 = [(CLKUIAnalogHandsView *)self device];
+    v5 = [off_27877BEE0 defaultSubdialConfigurationForDevice:device2];
 
     [v5 setExcludePeg:0];
     [v13 handLength];
@@ -116,15 +116,15 @@
   {
     v5.receiver = self;
     v5.super_class = NTKWorldClockRichComplicationHandsBaseView;
-    v3 = [(CLKUIAnalogHandsView *)&v5 createSecondHandView];
+    createSecondHandView = [(CLKUIAnalogHandsView *)&v5 createSecondHandView];
   }
 
   else
   {
-    v3 = 0;
+    createSecondHandView = 0;
   }
 
-  return v3;
+  return createSecondHandView;
 }
 
 - (void)layoutHandViews
@@ -136,20 +136,20 @@
   v4 = v3 * 0.5;
   [(NTKWorldClockRichComplicationHandsBaseView *)self bounds];
   v6 = v5 * 0.5;
-  v7 = [(CLKUIAnalogHandsView *)self hourHandView];
-  [v7 setCenter:{v4, v6}];
+  hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+  [hourHandView setCenter:{v4, v6}];
 
-  v8 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v8 setCenter:{v4, v6}];
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setCenter:{v4, v6}];
 
-  v9 = [(CLKUIAnalogHandsView *)self secondHandView];
-  [v9 setCenter:{v4, v6}];
+  secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+  [secondHandView setCenter:{v4, v6}];
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_filterProvider, v4);
+  providerCopy = provider;
+  objc_storeWeak(&self->_filterProvider, providerCopy);
   if ([objc_opt_class() showsSecondHand])
   {
     [(CLKUIAnalogHandsView *)self secondHandView];
@@ -157,50 +157,50 @@
 
   else
   {
-    v5 = [(CLKUIAnalogHandsView *)self hourHandView];
-    [v5 setFilterProvider:v4];
+    hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+    [hourHandView setFilterProvider:providerCopy];
 
     [(CLKUIAnalogHandsView *)self minuteHandView];
   }
   v6 = ;
-  [v6 setFilterProvider:v4];
+  [v6 setFilterProvider:providerCopy];
 }
 
 - (int64_t)displayedHour
 {
-  v3 = [(NTKAnalogHandsView *)self overrideDate];
-  v4 = v3;
-  if (v3)
+  overrideDate = [(NTKAnalogHandsView *)self overrideDate];
+  v4 = overrideDate;
+  if (overrideDate)
   {
-    v5 = v3;
+    displayTime = overrideDate;
   }
 
   else
   {
-    v5 = [(NTKAnalogHandsView *)self displayTime];
+    displayTime = [(NTKAnalogHandsView *)self displayTime];
   }
 
-  v6 = v5;
+  v6 = displayTime;
 
-  v7 = [(CLKUIAnalogHandsView *)self calendar];
-  v8 = [v7 component:32 fromDate:v6];
+  calendar = [(CLKUIAnalogHandsView *)self calendar];
+  v8 = [calendar component:32 fromDate:v6];
 
   return v8;
 }
 
 - (UIColor)pegDotColor
 {
-  v2 = [(CLKUIAnalogHandsView *)self minuteHandDot];
-  v3 = [v2 backgroundColor];
+  minuteHandDot = [(CLKUIAnalogHandsView *)self minuteHandDot];
+  backgroundColor = [minuteHandDot backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setPegDotColor:(id)a3
+- (void)setPegDotColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CLKUIAnalogHandsView *)self minuteHandDot];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  minuteHandDot = [(CLKUIAnalogHandsView *)self minuteHandDot];
+  [minuteHandDot setBackgroundColor:colorCopy];
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

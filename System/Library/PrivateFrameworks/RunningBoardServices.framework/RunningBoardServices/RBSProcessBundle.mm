@@ -1,46 +1,46 @@
 @interface RBSProcessBundle
-+ (id)bundleWithDataSource:(id)a3;
++ (id)bundleWithDataSource:(id)source;
 - (NSString)debugDescription;
 - (NSString)description;
-- (RBSProcessBundle)initWithRBSXPCCoder:(id)a3;
-- (id)bundleInfoValueForKey:(id)a3;
-- (id)bundleInfoValuesForKeys:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSProcessBundle)initWithRBSXPCCoder:(id)coder;
+- (id)bundleInfoValueForKey:(id)key;
+- (id)bundleInfoValuesForKeys:(id)keys;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessBundle
 
-+ (id)bundleWithDataSource:(id)a3
++ (id)bundleWithDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_alloc_init(RBSProcessBundle);
-  objc_storeWeak(&v4->_dataSource, v3);
-  v5 = [v3 bundleIdentifier];
+  objc_storeWeak(&v4->_dataSource, sourceCopy);
+  bundleIdentifier = [sourceCopy bundleIdentifier];
   identifier = v4->_identifier;
-  v4->_identifier = v5;
+  v4->_identifier = bundleIdentifier;
 
-  v7 = [v3 bundlePath];
+  bundlePath = [sourceCopy bundlePath];
   path = v4->_path;
-  v4->_path = v7;
+  v4->_path = bundlePath;
 
-  v9 = [v3 executablePath];
+  executablePath = [sourceCopy executablePath];
   executablePath = v4->_executablePath;
-  v4->_executablePath = v9;
+  v4->_executablePath = executablePath;
 
-  v11 = [v3 extensionPointIdentifier];
+  extensionPointIdentifier = [sourceCopy extensionPointIdentifier];
 
   extensionPointIdentifier = v4->_extensionPointIdentifier;
-  v4->_extensionPointIdentifier = v11;
+  v4->_extensionPointIdentifier = extensionPointIdentifier;
 
   return v4;
 }
 
-- (id)bundleInfoValueForKey:(id)a3
+- (id)bundleInfoValueForKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!keyCopy)
   {
     [(RBSProcessBundle *)a2 bundleInfoValueForKey:?];
   }
@@ -50,46 +50,46 @@
     [(RBSProcessBundle *)a2 bundleInfoValueForKey:?];
   }
 
-  v11[0] = v5;
+  v11[0] = keyCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [(RBSProcessBundle *)self bundleInfoValuesForKeys:v6];
-  v8 = [v7 objectForKey:v5];
+  v8 = [v7 objectForKey:keyCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)bundleInfoValuesForKeys:(id)a3
+- (id)bundleInfoValuesForKeys:(id)keys
 {
   v49 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  if ([v36 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v35 = WeakRetained;
     if (WeakRetained)
     {
-      v5 = [WeakRetained bundleInfoValuesForKeys:v36];
+      v5 = [WeakRetained bundleInfoValuesForKeys:keysCopy];
     }
 
     else if (self->_instance)
     {
-      v6 = self;
-      objc_sync_enter(v6);
-      v33 = [MEMORY[0x1E695DFD8] setWithArray:v36];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v33 = [MEMORY[0x1E695DFD8] setWithArray:keysCopy];
       v34 = [v33 mutableCopy];
       v7 = MEMORY[0x1E695DFD8];
-      v8 = [(NSDictionary *)v6->_plistValues allKeys];
-      v9 = [v7 setWithArray:v8];
+      allKeys = [(NSDictionary *)selfCopy->_plistValues allKeys];
+      v9 = [v7 setWithArray:allKeys];
       [v34 minusSet:v9];
 
       if ([v34 count])
       {
         v10 = +[RBSConnection sharedInstance];
-        v11 = [v10 infoPlistResultForInstance:self->_instance forKeys:v36 error:0];
+        v11 = [v10 infoPlistResultForInstance:self->_instance forKeys:keysCopy error:0];
 
-        v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6->_plistValues];
+        v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:selfCopy->_plistValues];
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
@@ -117,8 +117,8 @@
 
               else
               {
-                v19 = [MEMORY[0x1E695DFB0] null];
-                [v12 setObject:v19 forKey:v17];
+                null = [MEMORY[0x1E695DFB0] null];
+                [v12 setObject:null forKey:v17];
               }
             }
 
@@ -129,8 +129,8 @@
         }
 
         v20 = [v12 copy];
-        plistValues = v6->_plistValues;
-        v6->_plistValues = v20;
+        plistValues = selfCopy->_plistValues;
+        selfCopy->_plistValues = v20;
       }
 
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -153,11 +153,11 @@
             }
 
             v26 = *(*(&v37 + 1) + 8 * j);
-            v27 = [(NSDictionary *)v6->_plistValues objectForKey:v26];
+            v27 = [(NSDictionary *)selfCopy->_plistValues objectForKey:v26];
             if (v27)
             {
-              v28 = [MEMORY[0x1E695DFB0] null];
-              v29 = v27 == v28;
+              null2 = [MEMORY[0x1E695DFB0] null];
+              v29 = v27 == null2;
 
               if (!v29)
               {
@@ -172,7 +172,7 @@
         while (v23);
       }
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -181,7 +181,7 @@
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v46 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_18E8AD000, v30, OS_LOG_TYPE_DEFAULT, "Cannot fetch info.plist values: no data source found for bundle: %{public}@", buf, 0xCu);
       }
 
@@ -221,60 +221,60 @@
   return v8;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v9 = v4;
+  v9 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"_identifier"];
-    v4 = v9;
+    [coderCopy encodeObject:identifier forKey:@"_identifier"];
+    coderCopy = v9;
   }
 
   path = self->_path;
   if (path)
   {
     [v9 encodeObject:path forKey:@"_path"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   executablePath = self->_executablePath;
   if (executablePath)
   {
     [v9 encodeObject:executablePath forKey:@"_executablePath"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   extensionPointIdentifier = self->_extensionPointIdentifier;
   if (extensionPointIdentifier)
   {
     [v9 encodeObject:extensionPointIdentifier forKey:@"_extensionPointIdentifier"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (RBSProcessBundle)initWithRBSXPCCoder:(id)a3
+- (RBSProcessBundle)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = RBSProcessBundle;
   v5 = [(RBSProcessBundle *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"_identifier"];
+    v6 = [coderCopy decodeStringForKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeStringForKey:@"_path"];
+    v8 = [coderCopy decodeStringForKey:@"_path"];
     path = v5->_path;
     v5->_path = v8;
 
-    v10 = [v4 decodeStringForKey:@"_executablePath"];
+    v10 = [coderCopy decodeStringForKey:@"_executablePath"];
     executablePath = v5->_executablePath;
     v5->_executablePath = v10;
 
-    v12 = [v4 decodeStringForKey:@"_extensionPointIdentifier"];
+    v12 = [coderCopy decodeStringForKey:@"_extensionPointIdentifier"];
     extensionPointIdentifier = v5->_extensionPointIdentifier;
     v5->_extensionPointIdentifier = v12;
   }

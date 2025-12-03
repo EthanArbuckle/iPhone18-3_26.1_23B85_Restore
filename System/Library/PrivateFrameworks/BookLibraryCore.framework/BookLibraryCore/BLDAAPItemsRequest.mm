@@ -1,37 +1,37 @@
 @interface BLDAAPItemsRequest
-- (BLDAAPItemsRequest)initWithDSID:(id)a3 reason:(int64_t)a4 databaseID:(id)a5 body:(id)a6;
-- (id)createDaapURL:(id)a3;
+- (BLDAAPItemsRequest)initWithDSID:(id)d reason:(int64_t)reason databaseID:(id)iD body:(id)body;
+- (id)createDaapURL:(id)l;
 @end
 
 @implementation BLDAAPItemsRequest
 
-- (BLDAAPItemsRequest)initWithDSID:(id)a3 reason:(int64_t)a4 databaseID:(id)a5 body:(id)a6
+- (BLDAAPItemsRequest)initWithDSID:(id)d reason:(int64_t)reason databaseID:(id)iD body:(id)body
 {
-  v10 = a5;
-  v11 = a6;
+  iDCopy = iD;
+  bodyCopy = body;
   v15.receiver = self;
   v15.super_class = BLDAAPItemsRequest;
-  v12 = [(BLDAAPURLRequest *)&v15 initWithDSID:a3 reason:a4];
+  v12 = [(BLDAAPURLRequest *)&v15 initWithDSID:d reason:reason];
   v13 = v12;
   if (v12)
   {
     [(BLDAAPURLRequest *)v12 setContentType:0];
-    [(BLDAAPItemsRequest *)v13 setBagDatabaseID:v10];
-    [(BLDAAPURLRequest *)v13 setBody:v11];
+    [(BLDAAPItemsRequest *)v13 setBagDatabaseID:iDCopy];
+    [(BLDAAPURLRequest *)v13 setBody:bodyCopy];
     [(BLDAAPURLRequest *)v13 setDataEncoding:1];
   }
 
   return v13;
 }
 
-- (id)createDaapURL:(id)a3
+- (id)createDaapURL:(id)l
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(BLDAAPItemsRequest *)self bagDatabaseID];
-  v7 = [v4 stringWithFormat:@"databases/%@/items", v6];
-  v8 = [v5 URLByAppendingPathComponent:v7];
+  lCopy = l;
+  bagDatabaseID = [(BLDAAPItemsRequest *)self bagDatabaseID];
+  v7 = [v4 stringWithFormat:@"databases/%@/items", bagDatabaseID];
+  v8 = [lCopy URLByAppendingPathComponent:v7];
 
   v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"includeApplePubBooks" value:@"1"];
   v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"includeItemFlavors" value:@"1"];

@@ -1,24 +1,24 @@
 @interface _KSTextReplacementServer
 + (id)textReplacementServer;
-- (BOOL)_cancelPendingUpdateForClient:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_cancelPendingUpdateForClient:(id)client;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_KSTextReplacementManager)textReplacementManager;
 - (_KSTextReplacementServer)init;
-- (_KSTextReplacementServer)initWithDatabaseDirectoryPath:(id)a3;
-- (id)textReplacementEntriesForClient:(id)a3;
+- (_KSTextReplacementServer)initWithDatabaseDirectoryPath:(id)path;
+- (id)textReplacementEntriesForClient:(id)client;
 - (void)_performCleanup;
-- (void)addEntries:(id)a3 removeEntries:(id)a4 forClient:(id)a5 withCompletionHandler:(id)a6;
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries forClient:(id)client withCompletionHandler:(id)handler;
 - (void)buddySetupDidFinish;
 - (void)cleanup;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
 - (void)dealloc;
-- (void)queryTextReplacementsWithCallback:(id)a3;
-- (void)queryTextReplacementsWithPredicate:(id)a3 callback:(id)a4;
+- (void)queryTextReplacementsWithCallback:(id)callback;
+- (void)queryTextReplacementsWithPredicate:(id)predicate callback:(id)callback;
 - (void)registerForPushNotifications;
 - (void)removeAllEntries;
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4;
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block;
 - (void)scheduleSyncTask;
-- (void)setTextReplacementManager:(id)a3;
+- (void)setTextReplacementManager:(id)manager;
 - (void)shutdown;
 - (void)start;
 @end
@@ -48,8 +48,8 @@
     if (!textReplacementManager)
     {
       v6 = [_KSTextReplacementManager alloc];
-      v7 = [(_KSTextReplacementServer *)self directoryPath];
-      v8 = [(_KSTextReplacementManager *)v6 initWithDirectoryPath:v7];
+      directoryPath = [(_KSTextReplacementServer *)self directoryPath];
+      v8 = [(_KSTextReplacementManager *)v6 initWithDirectoryPath:directoryPath];
       v9 = self->_textReplacementManager;
       self->_textReplacementManager = v8;
 
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (_KSTextReplacementServer)initWithDatabaseDirectoryPath:(id)a3
+- (_KSTextReplacementServer)initWithDatabaseDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = _KSTextReplacementServer;
   v6 = [(_KSTextReplacementServer *)&v20 init];
@@ -101,7 +101,7 @@
     daemonClient = v6->_daemonClient;
     v6->_daemonClient = v10;
 
-    objc_storeStrong(&v6->_directoryPath, a3);
+    objc_storeStrong(&v6->_directoryPath, path);
     v12 = objc_alloc(MEMORY[0x277CCAE98]);
     v13 = +[_KSUtilities machServiceNameTextReplacement];
     v14 = [v12 initWithMachServiceName:v13];
@@ -123,8 +123,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -146,17 +146,17 @@
   }
 }
 
-- (void)setTextReplacementManager:(id)a3
+- (void)setTextReplacementManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54___KSTextReplacementServer_setTextReplacementManager___block_invoke;
   v7[3] = &unk_2797F71B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = managerCopy;
+  v6 = managerCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -183,8 +183,8 @@
     _os_log_impl(&dword_2557E2000, v3, OS_LOG_TYPE_INFO, "%s  Cleaning up all resources", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"_KSTRShouldCleanupResources" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"_KSTRShouldCleanupResources" object:0];
 
   [(_KSTextReplacementServer *)self setTextReplacementManager:0];
   v5 = *MEMORY[0x277D85DE8];
@@ -217,26 +217,26 @@
   [(NSXPCListener *)self->_listener invalidate];
 }
 
-- (void)addEntries:(id)a3 removeEntries:(id)a4 forClient:(id)a5 withCompletionHandler:(id)a6
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries forClient:(id)client withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  entriesCopy = entries;
+  removeEntriesCopy = removeEntries;
+  clientCopy = client;
+  handlerCopy = handler;
+  if (clientCopy)
   {
-    v14 = [v12 generation];
+    generation = [clientCopy generation];
     workQueue = self->_workQueue;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __85___KSTextReplacementServer_addEntries_removeEntries_forClient_withCompletionHandler___block_invoke;
     v16[3] = &unk_2797F7558;
-    v17 = v10;
-    v18 = v11;
-    v22 = v14;
-    v19 = v12;
-    v20 = self;
-    v21 = v13;
+    v17 = entriesCopy;
+    v18 = removeEntriesCopy;
+    v22 = generation;
+    v19 = clientCopy;
+    selfCopy = self;
+    v21 = handlerCopy;
     dispatch_async(workQueue, v16);
   }
 }
@@ -260,48 +260,48 @@
   _Block_object_dispose(v5, 8);
 }
 
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60___KSTextReplacementServer_requestSync_withCompletionBlock___block_invoke;
   block[3] = &unk_2797F6750;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  syncCopy = sync;
   block[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   dispatch_async(workQueue, block);
 }
 
-- (BOOL)_cancelPendingUpdateForClient:(id)a3
+- (BOOL)_cancelPendingUpdateForClient:(id)client
 {
-  if (a3)
+  if (client)
   {
-    [a3 cancel];
+    [client cancel];
   }
 
-  return a3 != 0;
+  return client != 0;
 }
 
-- (id)textReplacementEntriesForClient:(id)a3
+- (id)textReplacementEntriesForClient:(id)client
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  clientCopy = client;
   dispatch_assert_queue_not_V2(workQueue);
-  LODWORD(workQueue) = [v5 hasReadAccess];
+  LODWORD(workQueue) = [clientCopy hasReadAccess];
 
   if (workQueue)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_workQueue;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60___KSTextReplacementServer_textReplacementEntriesForClient___block_invoke;
     v12[3] = &unk_2797F71B8;
     v12[4] = self;
-    v8 = v6;
+    v8 = array;
     v13 = v8;
     dispatch_sync(v7, v12);
     v9 = v13;
@@ -316,62 +316,62 @@
   return v10;
 }
 
-- (void)queryTextReplacementsWithCallback:(id)a3
+- (void)queryTextReplacementsWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62___KSTextReplacementServer_queryTextReplacementsWithCallback___block_invoke;
   v7[3] = &unk_2797F66D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)queryTextReplacementsWithPredicate:(id)a3 callback:(id)a4
+- (void)queryTextReplacementsWithPredicate:(id)predicate callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72___KSTextReplacementServer_queryTextReplacementsWithPredicate_callback___block_invoke;
   block[3] = &unk_2797F67C8;
-  v12 = v6;
-  v13 = v7;
+  v12 = predicateCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = predicateCopy;
+  v10 = callbackCopy;
   dispatch_async(workQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() isBlackListed:{objc_msgSend(v7, "effectiveUserIdentifier")}];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [objc_opt_class() isBlackListed:{objc_msgSend(connectionCopy, "effectiveUserIdentifier")}];
   if (v8)
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 
   else
   {
-    v9 = [[_KSTRClient alloc] initWithOwner:self forConnection:v7];
+    v9 = [[_KSTRClient alloc] initWithOwner:self forConnection:connectionCopy];
     v10 = _KSTextReplacementServerInterface();
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v7 setExportedObject:v9];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedObject:v9];
+    objc_initWeak(&location, connectionCopy);
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __63___KSTextReplacementServer_listener_shouldAcceptNewConnection___block_invoke;
     v15 = &unk_2797F7140;
     objc_copyWeak(&v16, &location);
-    [v7 setInvalidationHandler:&v12];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v12];
+    [connectionCopy resume];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -390,19 +390,19 @@
   self->_pushConnection = v6;
 
   [(APSConnection *)self->_pushConnection setDelegate:self];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![v9 length])
+  if (![bundleIdentifier length])
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 executablePath];
-    v12 = [v11 lastPathComponent];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    executablePath = [mainBundle2 executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
 
-    v9 = v12;
+    bundleIdentifier = lastPathComponent;
   }
 
-  v13 = [@"com.apple.icloud-container." stringByAppendingString:v9];
+  v13 = [@"com.apple.icloud-container." stringByAppendingString:bundleIdentifier];
   v14 = self->_pushConnection;
   v17[0] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -412,14 +412,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v8 = [v5 userInfo];
-  v6 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v8];
-  v7 = [v5 topic];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:userInfo];
+  topic = [messageCopy topic];
 
-  NSLog(&cfstr_ApsPushReceive.isa, v7, v6);
+  NSLog(&cfstr_ApsPushReceive.isa, topic, v6);
   [(_KSTextReplacementServer *)self requestSync:1 withCompletionBlock:&__block_literal_global_81];
 }
 

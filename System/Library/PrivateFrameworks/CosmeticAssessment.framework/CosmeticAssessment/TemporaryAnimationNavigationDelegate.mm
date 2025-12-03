@@ -1,18 +1,18 @@
 @interface TemporaryAnimationNavigationDelegate
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (_TtC18CosmeticAssessmentP33_6B9104B5AA470470A66128F22B73BA0036TemporaryAnimationNavigationDelegate)init;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 @end
 
 @implementation TemporaryAnimationNavigationDelegate
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  if ([(TemporaryAnimationNavigationDelegate *)&v9 respondsToSelector:a3])
+  if ([(TemporaryAnimationNavigationDelegate *)&v9 respondsToSelector:selector])
   {
 
     v5 = 1;
@@ -29,18 +29,18 @@
     v6 = sub_247D1FEA8();
     MEMORY[0x28223BE20](v6);
     v8[2] = v4;
-    v8[3] = a3;
+    v8[3] = selector;
     v5 = sub_247C75F08(sub_247C768F0, v8, "CosmeticAssessment/UINavigationController+ForcedTransition.swift");
   }
 
   return v5 & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   sub_247D1FEA8();
   v9[2] = self;
-  v4 = self;
+  selfCopy = self;
   v5 = sub_247C760C0(sub_247C76880, v9, "CosmeticAssessment/UINavigationController+ForcedTransition.swift", 64);
   if (v5)
   {
@@ -61,7 +61,7 @@
   return v7;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -71,7 +71,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = (*(*&self->transitionType[OBJC_IVAR____TtC18CosmeticAssessmentP33_6B9104B5AA470470A66128F22B73BA0036TemporaryAnimationNavigationDelegate_transitionType] + 8))(a4);
+  v8 = (*(*&self->transitionType[OBJC_IVAR____TtC18CosmeticAssessmentP33_6B9104B5AA470470A66128F22B73BA0036TemporaryAnimationNavigationDelegate_transitionType] + 8))(operation);
 
   return v8;
 }

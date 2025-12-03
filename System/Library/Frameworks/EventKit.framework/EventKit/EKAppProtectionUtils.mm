@@ -7,10 +7,10 @@
 
 + (BOOL)isReminderAppLocked
 {
-  v2 = [a1 reminderApApp];
-  v3 = [v2 isLocked];
+  reminderApApp = [self reminderApApp];
+  isLocked = [reminderApApp isLocked];
 
-  return v3;
+  return isLocked;
 }
 
 uint64_t __37__EKAppProtectionUtils_reminderApApp__block_invoke()

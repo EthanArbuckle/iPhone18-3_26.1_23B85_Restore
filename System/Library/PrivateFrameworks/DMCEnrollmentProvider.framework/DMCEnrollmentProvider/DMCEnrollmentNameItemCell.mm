@@ -1,17 +1,17 @@
 @interface DMCEnrollmentNameItemCell
 + (id)_titleFont;
-- (DMCEnrollmentNameItemCell)initWithFrame:(CGRect)a3;
+- (DMCEnrollmentNameItemCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DMCEnrollmentNameItemCell
 
-- (DMCEnrollmentNameItemCell)initWithFrame:(CGRect)a3
+- (DMCEnrollmentNameItemCell)initWithFrame:(CGRect)frame
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = DMCEnrollmentNameItemCell;
-  v3 = [(DMCEnrollmentNameItemCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DMCEnrollmentNameItemCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -23,8 +23,8 @@
     v6 = +[DMCEnrollmentNameItemCell _titleFont];
     [(UILabel *)v3->_textLabel setFont:v6];
 
-    v7 = [(DMCEnrollmentNameItemCell *)v3 contentView];
-    [v7 addSubview:v3->_textLabel];
+    contentView = [(DMCEnrollmentNameItemCell *)v3 contentView];
+    [contentView addSubview:v3->_textLabel];
 
     objc_initWeak(&location, v3);
     v15[0] = objc_opt_class();
@@ -56,14 +56,14 @@ void __43__DMCEnrollmentNameItemCell_initWithFrame___block_invoke(uint64_t a1)
   v13.receiver = self;
   v13.super_class = DMCEnrollmentNameItemCell;
   [(DMCEnrollmentNameItemCell *)&v13 layoutSubviews];
-  v3 = [(DMCEnrollmentNameItemCell *)self contentView];
-  [v3 bounds];
+  contentView = [(DMCEnrollmentNameItemCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(DMCEnrollmentNameItemCell *)self textLabel];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  textLabel = [(DMCEnrollmentNameItemCell *)self textLabel];
+  [textLabel setFrame:{v5, v7, v9, v11}];
 }
 
 + (id)_titleFont

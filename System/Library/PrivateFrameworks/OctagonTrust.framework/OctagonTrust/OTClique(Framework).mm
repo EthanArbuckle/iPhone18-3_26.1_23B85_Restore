@@ -70,14 +70,14 @@
   if (v10 == 1)
   {
     v29[0] = 0;
-    [a1 removeRecoveryKeyFromSOSWhenInCircle:v6 error:v29];
+    [self removeRecoveryKeyFromSOSWhenInCircle:v6 error:v29];
     v11 = v29;
   }
 
   else
   {
     v28 = 0;
-    [a1 removeRecoveryKeyFromSOSWhenNOTInCircle:v6 error:&v28];
+    [self removeRecoveryKeyFromSOSWhenNOTInCircle:v6 error:&v28];
     v11 = &v28;
   }
 
@@ -415,7 +415,7 @@ LABEL_35:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [a1 ctx];
+    v7 = [self ctx];
     v10 = 138412290;
     v11 = v7;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "Unimplemented deliverAKDeviceListDelta for context:%@", &v10, 0xCu);
@@ -437,7 +437,7 @@ LABEL_35:
   v7 = secLogObjForScope();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a1 ctx];
+    v8 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
     _os_log_impl(&dword_1C9430000, v7, OS_LOG_TYPE_DEFAULT, "tlkRecoverabiltyForEscrowRecord invoked for context:%@", &buf, 0xCu);
@@ -449,7 +449,7 @@ LABEL_35:
   v39 = __Block_byref_object_copy_;
   v40 = __Block_byref_object_dispose_;
   v41 = 0;
-  v9 = [a1 ctx];
+  v9 = [self ctx];
   v10 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v11 = [v9 makeOTControl:&obj];
@@ -464,18 +464,18 @@ LABEL_35:
     v35 = __Block_byref_object_dispose_;
     v36 = 0;
     v12 = objc_alloc(MEMORY[0x1E697AA90]);
-    v13 = [a1 ctx];
+    v13 = [self ctx];
     v14 = [v12 initWithConfiguration:v13];
-    v15 = [v6 data];
-    v16 = [a1 ctx];
-    v17 = [v16 escrowFetchSource];
+    data = [v6 data];
+    v16 = [self ctx];
+    escrowFetchSource = [v16 escrowFetchSource];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __62__OTClique_Framework__tlkRecoverabilityForEscrowRecord_error___block_invoke;
     v26[3] = &unk_1E833E828;
     v26[4] = &v32;
     v26[5] = &buf;
-    [v11 tlkRecoverabilityForEscrowRecordData:v14 recordData:v15 source:v17 reply:v26];
+    [v11 tlkRecoverabilityForEscrowRecordData:v14 recordData:data source:escrowFetchSource reply:v26];
 
     if (a4)
     {
@@ -531,7 +531,7 @@ LABEL_35:
   v5 = secLogObjForScope();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 ctx];
+    v6 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v6;
     _os_log_impl(&dword_1C9430000, v5, OS_LOG_TYPE_DEFAULT, "waitForPriorityViewKeychainDataRecovery invoked for context:%@", &buf, 0xCu);
@@ -543,7 +543,7 @@ LABEL_35:
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v7 = [a1 ctx];
+  v7 = [self ctx];
   v8 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v9 = [v7 makeOTControl:&obj];
@@ -552,7 +552,7 @@ LABEL_35:
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E697AA90]);
-    v11 = [a1 ctx];
+    v11 = [self ctx];
     v12 = [v10 initWithConfiguration:v11];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -604,7 +604,7 @@ LABEL_35:
   v5 = secLogObjForScope();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 ctx];
+    v6 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v6;
     _os_log_impl(&dword_1C9430000, v5, OS_LOG_TYPE_DEFAULT, "fetchAccountSettings invoked for context:%@", &buf, 0xCu);
@@ -616,7 +616,7 @@ LABEL_35:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v7 = [a1 ctx];
+  v7 = [self ctx];
   v8 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v9 = [v7 makeOTControl:&obj];
@@ -631,7 +631,7 @@ LABEL_35:
     v24 = __Block_byref_object_dispose_;
     v25 = 0;
     v10 = objc_alloc(MEMORY[0x1E697AA90]);
-    v11 = [a1 ctx];
+    v11 = [self ctx];
     v12 = [v10 initWithConfiguration:v11];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -685,7 +685,7 @@ LABEL_35:
   v7 = secLogObjForScope();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a1 ctx];
+    v8 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
     _os_log_impl(&dword_1C9430000, v7, OS_LOG_TYPE_DEFAULT, "setAccountSetting invoked for context:%@", &buf, 0xCu);
@@ -697,7 +697,7 @@ LABEL_35:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v9 = [a1 ctx];
+  v9 = [self ctx];
   v10 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v11 = [v9 makeOTControl:&obj];
@@ -706,7 +706,7 @@ LABEL_35:
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x1E697AA90]);
-    v13 = [a1 ctx];
+    v13 = [self ctx];
     v14 = [v12 initWithConfiguration:v13];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -758,7 +758,7 @@ LABEL_35:
   v5 = secLogObjForScope();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 ctx];
+    v6 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v6;
     _os_log_impl(&dword_1C9430000, v5, OS_LOG_TYPE_DEFAULT, "fetchTrustedSecureElementIdentities invoked for context:%@", &buf, 0xCu);
@@ -770,7 +770,7 @@ LABEL_35:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v7 = [a1 ctx];
+  v7 = [self ctx];
   v8 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v9 = [v7 makeOTControl:&obj];
@@ -785,7 +785,7 @@ LABEL_35:
     v24 = __Block_byref_object_dispose_;
     v25 = 0;
     v10 = objc_alloc(MEMORY[0x1E697AA90]);
-    v11 = [a1 ctx];
+    v11 = [self ctx];
     v12 = [v10 initWithConfiguration:v11];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -839,7 +839,7 @@ LABEL_35:
   v7 = secLogObjForScope();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a1 ctx];
+    v8 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
     _os_log_impl(&dword_1C9430000, v7, OS_LOG_TYPE_DEFAULT, "removeLocalSecureElementIdentityPeerID invoked for context:%@", &buf, 0xCu);
@@ -851,7 +851,7 @@ LABEL_35:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v9 = [a1 ctx];
+  v9 = [self ctx];
   v10 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v11 = [v9 makeOTControl:&obj];
@@ -860,7 +860,7 @@ LABEL_35:
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x1E697AA90]);
-    v13 = [a1 ctx];
+    v13 = [self ctx];
     v14 = [v12 initWithConfiguration:v13];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -913,7 +913,7 @@ LABEL_35:
   v7 = secLogObjForScope();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [a1 ctx];
+    v8 = [self ctx];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
     _os_log_impl(&dword_1C9430000, v7, OS_LOG_TYPE_DEFAULT, "setLocalSecureElementIdentity invoked for context:%@", &buf, 0xCu);
@@ -925,7 +925,7 @@ LABEL_35:
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v9 = [a1 ctx];
+  v9 = [self ctx];
   v10 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
   v11 = [v9 makeOTControl:&obj];
@@ -934,7 +934,7 @@ LABEL_35:
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x1E697AA90]);
-    v13 = [a1 ctx];
+    v13 = [self ctx];
     v14 = [v12 initWithConfiguration:v13];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -987,9 +987,9 @@ LABEL_35:
   v8 = secLogObjForScope();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 context];
+    context = [v7 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v8, OS_LOG_TYPE_DEFAULT, "escrowCheck invoked for context: %@", &buf, 0xCu);
   }
 
@@ -1074,9 +1074,9 @@ LABEL_35:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
+    context = [v5 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "areRecoveryKeysDistrusted invoked for context: %@", &buf, 0xCu);
   }
 
@@ -1175,9 +1175,9 @@ LABEL_35:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
+    context = [v5 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "trustedFullPeers invoked for context: %@", &buf, 0xCu);
   }
 
@@ -1271,9 +1271,9 @@ LABEL_35:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
+    context = [v5 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "totalTrustedPeers invoked for context: %@", &buf, 0xCu);
   }
 
@@ -1487,8 +1487,8 @@ LABEL_19:
     v62 = v74;
     if (v62)
     {
-      v13 = [v62 domain];
-      if (![v13 isEqualToString:*MEMORY[0x1E697AB20]])
+      domain = [v62 domain];
+      if (![domain isEqualToString:*MEMORY[0x1E697AB20]])
       {
         goto LABEL_27;
       }
@@ -1497,31 +1497,31 @@ LABEL_19:
 
       if (v14)
       {
-        v15 = [v62 userInfo];
+        userInfo = [v62 userInfo];
         v16 = *MEMORY[0x1E696AA08];
-        v13 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+        domain = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-        if (v13)
+        if (domain)
         {
-          v17 = [v13 domain];
-          if (![v17 isEqualToString:*MEMORY[0x1E697AB28]])
+          v13Domain = [domain domain];
+          if (![v13Domain isEqualToString:*MEMORY[0x1E697AB28]])
           {
 LABEL_26:
 
             goto LABEL_27;
           }
 
-          v18 = [v13 code] == 3;
+          v18 = [domain code] == 3;
 
           if (v18)
           {
-            v19 = [v13 userInfo];
-            v20 = [v19 objectForKeyedSubscript:v16];
+            userInfo2 = [domain userInfo];
+            v20 = [userInfo2 objectForKeyedSubscript:v16];
 
             if (v20)
             {
-              v21 = [v20 domain];
-              if ([v21 isEqualToString:*MEMORY[0x1E696A768]])
+              domain2 = [v20 domain];
+              if ([domain2 isEqualToString:*MEMORY[0x1E696A768]])
               {
                 v22 = [v20 code] == -25308;
 
@@ -1551,12 +1551,12 @@ LABEL_26:
               {
               }
 
-              v17 = v20;
+              v13Domain = v20;
             }
 
             else
             {
-              v17 = 0;
+              v13Domain = 0;
             }
 
             goto LABEL_26;
@@ -1770,16 +1770,16 @@ LABEL_72:
         [v48 fetchAccountWideSettingsWithForceFetch:1 arguments:v49 reply:v69];
         if ([*(*(&v77 + 1) + 40) hasWalrus])
         {
-          v50 = [*(*(&v77 + 1) + 40) walrus];
-          v51 = [v50 enabled];
+          walrus = [*(*(&v77 + 1) + 40) walrus];
+          enabled = [walrus enabled];
         }
 
         else
         {
-          v51 = 0;
+          enabled = 0;
         }
 
-        v56 = [v7 isGuitarfish];
+        isGuitarfish = [v7 isGuitarfish];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __64__OTClique_Framework__recoverWithRecoveryKey_recoveryKey_error___block_invoke_2;
@@ -1788,8 +1788,8 @@ LABEL_72:
         v65 = v48;
         v66 = v7;
         v67 = v8;
-        BYTE1(v60) = v51;
-        LOBYTE(v60) = v56;
+        BYTE1(v60) = enabled;
+        LOBYTE(v60) = isGuitarfish;
         [v65 resetAndEstablish:v49 resetReason:5 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:0 isGuitarfish:v60 accountIsW:v64 reply:?];
 
         _Block_object_dispose(v70, 8);
@@ -2313,9 +2313,9 @@ LABEL_104:
   v9 = secLogObjForScope();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 context];
+    context = [v7 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v9, OS_LOG_TYPE_DEFAULT, "setRecoveryKeyWithContext invoked for context: %@", &buf, 0xCu);
   }
 
@@ -2382,9 +2382,9 @@ LABEL_104:
   v7 = secLogObjForScope();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 context];
+    context = [v6 context];
     *buf = 138412290;
-    v24 = v8;
+    v24 = context;
     _os_log_impl(&dword_1C9430000, v7, OS_LOG_TYPE_DEFAULT, "createAndSetRecoveryKeyWithContext invoked for context: %@", buf, 0xCu);
   }
 
@@ -2418,7 +2418,7 @@ LABEL_104:
   else
   {
     v22[0] = 0;
-    v12 = [a1 registerRecoveryKeyWithContext:v6 recoveryKey:v9 error:v22];
+    v12 = [self registerRecoveryKeyWithContext:v6 recoveryKey:v9 error:v22];
     v13 = v22[0];
     v14 = v13;
     if (!v12 || v13)
@@ -2459,9 +2459,9 @@ LABEL_104:
   v9 = secLogObjForScope();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 context];
+    context = [v7 context];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = context;
     _os_log_impl(&dword_1C9430000, v9, OS_LOG_TYPE_DEFAULT, "registerRecoveryKeyWithContext invoked for context: %@", &buf, 0xCu);
   }
 
@@ -2693,9 +2693,9 @@ LABEL_36:
       _os_log_impl(&dword_1C9430000, v22, OS_LOG_TYPE_DEFAULT, "octagon-register-recovery-key, SecRKCreateRecoveryKeyWithError() failed: %@", buf, 0xCu);
     }
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
-    [v23 setObject:@"SecRKCreateRecoveryKeyWithError() failed" forKeyedSubscript:*MEMORY[0x1E696A578]];
-    [v23 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"SecRKCreateRecoveryKeyWithError() failed" forKeyedSubscript:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v14 forKeyedSubscript:*MEMORY[0x1E696AA08]];
     [MEMORY[0x1E697AA80] isCloudServicesAvailable];
     Helper_x10__kSecureBackupErrorDomain = gotLoadHelper_x10__kSecureBackupErrorDomain(v24);
     v29 = *(v28 + 3704);
@@ -2710,7 +2710,7 @@ LABEL_36:
       v31 = -4;
     }
 
-    v32 = [v25 errorWithDomain:*v26 code:v31 userInfo:{v23, Helper_x10__kSecureBackupErrorDomain}];
+    v32 = [v25 errorWithDomain:*v26 code:v31 userInfo:{dictionary, Helper_x10__kSecureBackupErrorDomain}];
     if (a5)
     {
       v32 = v32;
@@ -2908,12 +2908,12 @@ LABEL_29:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
-    v8 = [v5 altDSID];
+    context = [v5 context];
+    altDSID = [v5 altDSID];
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = context;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = altDSID;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "invalidateEscrowCache invoked for context:%@, altdsid:%@", buf, 0x16u);
   }
 
@@ -2993,27 +2993,27 @@ LABEL_29:
   v11 = secLogObjForScope();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 context];
+    context = [v9 context];
     [v9 altDSID];
     v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     *buf = 138412546;
-    v125 = v12;
+    v125 = context;
     v126 = 2112;
     v127 = v13;
     _os_log_impl(&dword_1C9430000, v11, OS_LOG_TYPE_DEFAULT, "performSilentEscrowRecovery invoked for context:%@, altdsid:%@", buf, 0x16u);
   }
 
   v14 = objc_alloc(MEMORY[0x1E69ABBD8]);
-  v15 = [v9 altDSID];
-  v16 = [v9 flowID];
-  v17 = [v9 deviceSessionID];
+  altDSID = [v9 altDSID];
+  flowID = [v9 flowID];
+  deviceSessionID = [v9 deviceSessionID];
   v18 = *MEMORY[0x1E69ABC10];
   v19 = MetricsOverrideTestsAreEnabled();
   v20 = *MEMORY[0x1E69ABBF0];
   LOBYTE(v110) = 1;
-  v21 = [v14 initWithKeychainCircleMetrics:0 altDSID:v15 flowID:v16 deviceSessionID:v17 eventName:v18 testsAreEnabled:v19 canSendMetrics:v110 category:*MEMORY[0x1E69ABBF0]];
+  v21 = [v14 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v18 testsAreEnabled:v19 canSendMetrics:v110 category:*MEMORY[0x1E69ABBF0]];
 
-  if ([a1 isCloudServicesAvailable])
+  if ([self isCloudServicesAvailable])
   {
     v22 = _OctagonSignpostLogSystem();
     v23 = _OctagonSignpostCreate();
@@ -3088,17 +3088,17 @@ LABEL_29:
       }
 
       v44 = objc_alloc(MEMORY[0x1E69ABBD8]);
-      v45 = [v117 altDSID];
-      v46 = [v117 flowID];
-      v47 = [v117 deviceSessionID];
+      altDSID2 = [v117 altDSID];
+      flowID2 = [v117 flowID];
+      deviceSessionID2 = [v117 deviceSessionID];
       LOBYTE(v111) = 1;
-      v48 = [v44 initWithKeychainCircleMetrics:0 altDSID:v45 flowID:v46 deviceSessionID:v47 eventName:*MEMORY[0x1E69ABC18] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v111 category:v20];
+      v48 = [v44 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:*MEMORY[0x1E69ABC18] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v111 category:v20];
 
-      v49 = [v117 altDSID];
-      v50 = [v117 flowID];
-      v51 = [v117 deviceSessionID];
+      altDSID3 = [v117 altDSID];
+      flowID3 = [v117 flowID];
+      deviceSessionID3 = [v117 deviceSessionID];
       v123 = 0;
-      v115 = [v118 recoverSilentWithCDPContext:v120 allRecords:v116 altDSID:v49 flowID:v50 deviceSessionID:v51 error:&v123];
+      v115 = [v118 recoverSilentWithCDPContext:v120 allRecords:v116 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 error:&v123];
       v52 = v123;
 
       if (v52)
@@ -3227,11 +3227,11 @@ LABEL_89:
       }
 
       v69 = objc_alloc(MEMORY[0x1E69ABBD8]);
-      v70 = [v9 altDSID];
-      v71 = [v9 flowID];
-      v72 = [v9 deviceSessionID];
+      altDSID4 = [v9 altDSID];
+      flowID4 = [v9 flowID];
+      deviceSessionID4 = [v9 deviceSessionID];
       LOBYTE(v111) = 1;
-      v73 = [v69 initWithKeychainCircleMetrics:0 altDSID:v70 flowID:v71 deviceSessionID:v72 eventName:*MEMORY[0x1E69ABC28] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v111 category:v20];
+      v73 = [v69 initWithKeychainCircleMetrics:0 altDSID:altDSID4 flowID:flowID4 deviceSessionID:deviceSessionID4 eventName:*MEMORY[0x1E69ABC28] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v111 category:v20];
 
       v122 = 0;
       v48 = v112;
@@ -3456,8 +3456,8 @@ LABEL_90:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 label];
-        v12 = [v11 isEqualToString:v5];
+        label = [v10 label];
+        v12 = [label isEqualToString:v5];
 
         if (v12)
         {
@@ -3492,27 +3492,27 @@ LABEL_11:
   v11 = secLogObjForScope();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 context];
+    context = [v9 context];
     [v9 altDSID];
     v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     *buf = 138412546;
-    v130 = v12;
+    v130 = context;
     v131 = 2112;
     v132 = v13;
     _os_log_impl(&dword_1C9430000, v11, OS_LOG_TYPE_DEFAULT, "performEscrowRecovery invoked for context:%@, altdsid:%@", buf, 0x16u);
   }
 
   v14 = objc_alloc(MEMORY[0x1E69ABBD8]);
-  v15 = [v9 altDSID];
-  v16 = [v9 flowID];
-  v17 = [v9 deviceSessionID];
+  altDSID = [v9 altDSID];
+  flowID = [v9 flowID];
+  deviceSessionID = [v9 deviceSessionID];
   v18 = *MEMORY[0x1E69ABC08];
   v19 = MetricsOverrideTestsAreEnabled();
   v20 = *MEMORY[0x1E69ABBF0];
   LOBYTE(v113) = 1;
-  v21 = [v14 initWithKeychainCircleMetrics:0 altDSID:v15 flowID:v16 deviceSessionID:v17 eventName:v18 testsAreEnabled:v19 canSendMetrics:v113 category:*MEMORY[0x1E69ABBF0]];
+  v21 = [v14 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v18 testsAreEnabled:v19 canSendMetrics:v113 category:*MEMORY[0x1E69ABBF0]];
 
-  if ([a1 isCloudServicesAvailable])
+  if ([self isCloudServicesAvailable])
   {
     v22 = _OctagonSignpostLogSystem();
     v23 = _OctagonSignpostCreate();
@@ -3586,18 +3586,18 @@ LABEL_11:
       }
 
       v44 = objc_alloc(MEMORY[0x1E69ABBD8]);
-      v45 = [v9 altDSID];
-      v46 = [v9 flowID];
-      v47 = [v9 deviceSessionID];
+      altDSID2 = [v9 altDSID];
+      flowID2 = [v9 flowID];
+      deviceSessionID2 = [v9 deviceSessionID];
       LOBYTE(v114) = 1;
-      v115 = [v44 initWithKeychainCircleMetrics:0 altDSID:v45 flowID:v46 deviceSessionID:v47 eventName:*MEMORY[0x1E69ABC20] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v114 category:v20];
+      v115 = [v44 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:*MEMORY[0x1E69ABC20] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v114 category:v20];
 
-      v48 = [v9 altDSID];
-      v49 = [v9 flowID];
-      v50 = [v9 deviceSessionID];
+      altDSID3 = [v9 altDSID];
+      flowID3 = [v9 flowID];
+      deviceSessionID3 = [v9 deviceSessionID];
       v128 = 0;
       v32 = v121;
-      v51 = [v121 recoverWithCDPContext:v125 escrowRecord:v123 altDSID:v48 flowID:v49 deviceSessionID:v50 error:&v128];
+      v51 = [v121 recoverWithCDPContext:v125 escrowRecord:v123 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 error:&v128];
       v52 = v128;
 
       v53 = _OctagonSignpostGetNanoseconds() / 1000000000.0;
@@ -3699,15 +3699,15 @@ LABEL_11:
       v61 = [OTEscrowTranslation CDPRecordContextToDictionary:v125];
       v59 = [v61 mutableCopy];
 
-      v62 = [v10 escrowInformationMetadata];
-      v63 = [OTEscrowTranslation metadataToDictionary:v62];
+      escrowInformationMetadata = [v10 escrowInformationMetadata];
+      v63 = [OTEscrowTranslation metadataToDictionary:escrowInformationMetadata];
 
       Helper_x8__kSecureBackupMetadataKey = gotLoadHelper_x8__kSecureBackupMetadataKey(v64);
       v118 = v63;
       [v59 setObject:v63 forKeyedSubscript:{**(v66 + 3816), Helper_x8__kSecureBackupMetadataKey}];
-      v67 = [v123 recordId];
+      recordId = [v123 recordId];
       Helper_x8__kSecureBackupRecordIDKey = gotLoadHelper_x8__kSecureBackupRecordIDKey(v68);
-      [v59 setObject:v67 forKeyedSubscript:{**(v70 + 3872), Helper_x8__kSecureBackupRecordIDKey}];
+      [v59 setObject:recordId forKeyedSubscript:{**(v70 + 3872), Helper_x8__kSecureBackupRecordIDKey}];
 
       v71 = secLogObjForScope();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
@@ -3718,11 +3718,11 @@ LABEL_11:
       }
 
       v72 = objc_alloc(MEMORY[0x1E69ABBD8]);
-      v73 = [v9 altDSID];
-      v74 = [v9 flowID];
-      v75 = [v9 deviceSessionID];
+      altDSID4 = [v9 altDSID];
+      flowID4 = [v9 flowID];
+      deviceSessionID4 = [v9 deviceSessionID];
       LOBYTE(v114) = 1;
-      v116 = [v72 initWithKeychainCircleMetrics:0 altDSID:v73 flowID:v74 deviceSessionID:v75 eventName:*MEMORY[0x1E69ABC28] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v114 category:v20];
+      v116 = [v72 initWithKeychainCircleMetrics:0 altDSID:altDSID4 flowID:flowID4 deviceSessionID:deviceSessionID4 eventName:*MEMORY[0x1E69ABC28] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v114 category:v20];
 
       v76 = _OctagonSignpostLogSystem();
       v77 = _OctagonSignpostCreate();
@@ -3946,36 +3946,36 @@ LABEL_95:
   v124 = a4;
   v123 = a5;
   v13 = objc_alloc(MEMORY[0x1E69ABBD8]);
-  v14 = [v12 altDSID];
-  v15 = [v12 flowID];
-  v16 = [v12 deviceSessionID];
+  altDSID = [v12 altDSID];
+  flowID = [v12 flowID];
+  deviceSessionID = [v12 deviceSessionID];
   v17 = *MEMORY[0x1E69ABBF8];
   v18 = MetricsOverrideTestsAreEnabled();
   v19 = *MEMORY[0x1E69ABBF0];
   LOBYTE(v107) = 1;
-  v20 = [v13 initWithKeychainCircleMetrics:0 altDSID:v14 flowID:v15 deviceSessionID:v16 eventName:v17 testsAreEnabled:v18 canSendMetrics:v107 category:*MEMORY[0x1E69ABBF0]];
+  v20 = [v13 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:v17 testsAreEnabled:v18 canSendMetrics:v107 category:*MEMORY[0x1E69ABBF0]];
 
-  if ([a1 isCloudServicesAvailable])
+  if ([self isCloudServicesAvailable])
   {
     v117 = v19;
     v121 = [objc_alloc(MEMORY[0x1E697AA80]) initWithContextData:v12];
-    v21 = [v12 otControl];
+    otControl = [v12 otControl];
 
-    if (v21)
+    if (otControl)
     {
-      v122 = [v12 otControl];
+      otControl2 = [v12 otControl];
       v22 = 0;
     }
 
     else
     {
       v134 = 0;
-      v122 = [v12 makeOTControl:&v134];
+      otControl2 = [v12 makeOTControl:&v134];
       v22 = v134;
     }
 
     v120 = v22;
-    if (!v122)
+    if (!otControl2)
     {
       v48 = secLogObjForScope();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -4026,11 +4026,11 @@ LABEL_95:
       }
 
       v40 = objc_alloc(MEMORY[0x1E69ABBD8]);
-      v41 = [v12 altDSID];
-      v42 = [v12 flowID];
-      v43 = [v12 deviceSessionID];
+      altDSID2 = [v12 altDSID];
+      flowID2 = [v12 flowID];
+      deviceSessionID2 = [v12 deviceSessionID];
       LOBYTE(v108) = 1;
-      v44 = [v40 initWithKeychainCircleMetrics:0 altDSID:v41 flowID:v42 deviceSessionID:v43 eventName:*MEMORY[0x1E69ABC00] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v108 category:v19];
+      v44 = [v40 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:*MEMORY[0x1E69ABC00] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v108 category:v19];
 
       v45 = [objc_alloc(MEMORY[0x1E697AA90]) initWithConfiguration:v12];
       *&buf = 0;
@@ -4051,26 +4051,26 @@ LABEL_95:
       v127[3] = &unk_1E833E760;
       v127[4] = &buf;
       v127[5] = &v143;
-      [v122 fetchAccountWideSettingsWithForceFetch:1 arguments:v45 reply:v127];
+      [otControl2 fetchAccountWideSettingsWithForceFetch:1 arguments:v45 reply:v127];
       if ([*(*(&buf + 1) + 40) hasWalrus])
       {
-        v46 = [*(*(&buf + 1) + 40) walrus];
-        v47 = [v46 enabled];
+        walrus = [*(*(&buf + 1) + 40) walrus];
+        enabled = [walrus enabled];
       }
 
       else
       {
-        v47 = 0;
+        enabled = 0;
       }
 
-      v51 = [v12 isGuitarfish];
-      v52 = [v12 altDSID];
-      v53 = [v12 flowID];
-      v54 = [v12 deviceSessionID];
+      isGuitarfish = [v12 isGuitarfish];
+      altDSID3 = [v12 altDSID];
+      flowID3 = [v12 flowID];
+      deviceSessionID3 = [v12 deviceSessionID];
       v126 = 0;
       LOBYTE(v111) = 1;
-      LOBYTE(v109) = v47;
-      [v121 resetAndEstablish:3 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:0 isGuitarfish:v51 accountIsW:v109 altDSID:v52 flowID:v53 deviceSessionID:v54 canSendMetrics:v111 error:&v126];
+      LOBYTE(v109) = enabled;
+      [v121 resetAndEstablish:3 idmsTargetContext:0 idmsCuttlefishPassword:0 notifyIdMS:0 accountSettings:0 isGuitarfish:isGuitarfish accountIsW:v109 altDSID:altDSID3 flowID:flowID3 deviceSessionID:deviceSessionID3 canSendMetrics:v111 error:&v126];
       v55 = v126;
 
       if (v55)
@@ -4187,11 +4187,11 @@ LABEL_95:
 LABEL_52:
 
     v64 = objc_alloc(MEMORY[0x1E69ABBD8]);
-    v65 = [v12 altDSID];
-    v66 = [v12 flowID];
-    v67 = [v12 deviceSessionID];
+    altDSID4 = [v12 altDSID];
+    flowID4 = [v12 flowID];
+    deviceSessionID4 = [v12 deviceSessionID];
     LOBYTE(v108) = 1;
-    v68 = [v64 initWithKeychainCircleMetrics:0 altDSID:v65 flowID:v66 deviceSessionID:v67 eventName:*MEMORY[0x1E69ABC30] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v108 category:v117];
+    v68 = [v64 initWithKeychainCircleMetrics:0 altDSID:altDSID4 flowID:flowID4 deviceSessionID:deviceSessionID4 eventName:*MEMORY[0x1E69ABC30] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v108 category:v117];
 
     v69 = [objc_alloc(MEMORY[0x1E697AA90]) initWithConfiguration:v12];
     v128[0] = MEMORY[0x1E69E9820];
@@ -4204,7 +4204,7 @@ LABEL_52:
     v133 = a6;
     v131 = v34;
     v132 = v113;
-    [v122 restoreFromBottle:v69 entropy:v118 bottleID:v119 reply:v128];
+    [otControl2 restoreFromBottle:v69 entropy:v118 bottleID:v119 reply:v128];
 
     v71 = *(*(&buf + 1) + 40);
     if (v71)
@@ -4265,11 +4265,11 @@ LABEL_58:
         }
 
         v91 = objc_alloc(MEMORY[0x1E69ABBD8]);
-        v92 = [v12 altDSID];
-        v93 = [v12 flowID];
-        v94 = [v12 deviceSessionID];
+        altDSID5 = [v12 altDSID];
+        flowID5 = [v12 flowID];
+        deviceSessionID5 = [v12 deviceSessionID];
         LOBYTE(v110) = 1;
-        v95 = [v91 initWithKeychainCircleMetrics:0 altDSID:v92 flowID:v93 deviceSessionID:v94 eventName:*MEMORY[0x1E69ABC38] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v110 category:v117];
+        v95 = [v91 initWithKeychainCircleMetrics:0 altDSID:altDSID5 flowID:flowID5 deviceSessionID:deviceSessionID5 eventName:*MEMORY[0x1E69ABC38] testsAreEnabled:MetricsOverrideTestsAreEnabled() canSendMetrics:v110 category:v117];
 
         v125 = 0;
         [v78 restoreKeychainAsyncWithPassword:v114 keybagDigest:v87 haveBottledPeer:v112 viewsNotToBeRestored:v79 error:&v125];
@@ -4373,12 +4373,12 @@ LABEL_86:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
-    v8 = [v5 altDSID];
+    context = [v5 context];
+    altDSID = [v5 altDSID];
     v12 = 138412546;
-    v13 = v7;
+    v13 = context;
     v14 = 2112;
-    v15 = v8;
+    v15 = altDSID;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "fetching filtered escrow records for context:%@, altdsid:%@", &v12, 0x16u);
   }
 
@@ -4396,12 +4396,12 @@ LABEL_86:
   v6 = secLogObjForScope();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 context];
-    v8 = [v5 altDSID];
+    context = [v5 context];
+    altDSID = [v5 altDSID];
     v12 = 138412546;
-    v13 = v7;
+    v13 = context;
     v14 = 2112;
-    v15 = v8;
+    v15 = altDSID;
     _os_log_impl(&dword_1C9430000, v6, OS_LOG_TYPE_DEFAULT, "fetching all escrow records for context :%@, altdsid:%@", &v12, 0x16u);
   }
 
@@ -4428,16 +4428,16 @@ LABEL_86:
     _os_signpost_emit_with_name_impl(&dword_1C9430000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "FetchEscrowRecords", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v11 = _OctagonSignpostLogSystem();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  serialNumber2 = _OctagonSignpostLogSystem();
+  if (os_log_type_enabled(serialNumber2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
     *&buf[4] = v8;
-    _os_log_impl(&dword_1C9430000, v11, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: FetchEscrowRecords  enableTelemetry=YES ", buf, 0xCu);
+    _os_log_impl(&dword_1C9430000, serialNumber2, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: FetchEscrowRecords  enableTelemetry=YES ", buf, 0xCu);
   }
 
   v85 = 0;
-  v12 = [MEMORY[0x1E697AA80] fetchEscrowRecordsInternal:v6 error:&v85];
+  serialNumber5 = [MEMORY[0x1E697AA80] fetchEscrowRecordsInternal:v6 error:&v85];
   v75 = v85;
   if (v75)
   {
@@ -4463,8 +4463,8 @@ LABEL_86:
       _os_signpost_emit_with_name_impl(&dword_1C9430000, v16, OS_SIGNPOST_INTERVAL_END, v8, "FetchEscrowRecords", " OctagonSignpostNameFetchEscrowRecords=%{public,signpost.telemetry:number1,name=OctagonSignpostNameFetchEscrowRecords}d ", buf, 8u);
     }
 
-    v17 = _OctagonSignpostLogSystem();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    array = _OctagonSignpostLogSystem();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
       *&buf[4] = v8;
@@ -4472,7 +4472,7 @@ LABEL_86:
       v89 = Nanoseconds / 1000000000.0;
       v90 = 1026;
       v91 = 0;
-      _os_log_impl(&dword_1C9430000, v17, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: FetchEscrowRecords  OctagonSignpostNameFetchEscrowRecords=%{public,signpost.telemetry:number1,name=OctagonSignpostNameFetchEscrowRecords}d ", buf, 0x1Cu);
+      _os_log_impl(&dword_1C9430000, array, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: FetchEscrowRecords  OctagonSignpostNameFetchEscrowRecords=%{public,signpost.telemetry:number1,name=OctagonSignpostNameFetchEscrowRecords}d ", buf, 0x1Cu);
     }
 
     v18 = 0;
@@ -4481,19 +4481,19 @@ LABEL_86:
 
   v71 = v8;
   v72 = v6;
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v70 = v12;
-  obj = v12;
+  v70 = serialNumber5;
+  obj = serialNumber5;
   v80 = [obj countByEnumeratingWithState:&v81 objects:v86 count:16];
   if (v80)
   {
     v79 = *v82;
     v76 = *MEMORY[0x1E695E480];
-    v78 = v17;
+    v78 = array;
     do
     {
       for (i = 0; i != v80; ++i)
@@ -4504,14 +4504,14 @@ LABEL_86:
         }
 
         v20 = [[OTEscrowRecord alloc] initWithData:*(*(&v81 + 1) + 8 * i)];
-        v21 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-        v22 = [v21 bottleValidity];
-        if (v22)
+        escrowInformationMetadata = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+        bottleValidity = [escrowInformationMetadata bottleValidity];
+        if (bottleValidity)
         {
-          v23 = v22;
-          v24 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-          v25 = [v24 bottleValidity];
-          v26 = [v25 isEqualToString:&stru_1F48F2A78];
+          v23 = bottleValidity;
+          escrowInformationMetadata2 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+          bottleValidity2 = [escrowInformationMetadata2 bottleValidity];
+          v26 = [bottleValidity2 isEqualToString:&stru_1F48F2A78];
 
           if (!v26)
           {
@@ -4523,40 +4523,40 @@ LABEL_86:
         {
         }
 
-        v27 = [(OTEscrowRecord *)v20 recordViability];
-        if (v27 <= 2)
+        recordViability = [(OTEscrowRecord *)v20 recordViability];
+        if (recordViability <= 2)
         {
-          v28 = off_1E833E910[v27];
-          v29 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-          [v29 setBottleValidity:v28];
+          v28 = off_1E833E910[recordViability];
+          escrowInformationMetadata3 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+          [escrowInformationMetadata3 setBottleValidity:v28];
         }
 
 LABEL_28:
-        v30 = [(OTEscrowRecord *)v20 recordId];
-        if (!v30 || (v31 = v30, -[OTEscrowRecord recordId](v20, "recordId"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 isEqualToString:&stru_1F48F2A78], v32, v31, v33))
+        recordId = [(OTEscrowRecord *)v20 recordId];
+        if (!recordId || (v31 = recordId, -[OTEscrowRecord recordId](v20, "recordId"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 isEqualToString:&stru_1F48F2A78], v32, v31, v33))
         {
-          v34 = [(OTEscrowRecord *)v20 label];
-          v35 = [v34 stringByReplacingOccurrencesOfString:*MEMORY[0x1E697AAD8] withString:&stru_1F48F2A78];
+          label = [(OTEscrowRecord *)v20 label];
+          v35 = [label stringByReplacingOccurrencesOfString:*MEMORY[0x1E697AAD8] withString:&stru_1F48F2A78];
           v36 = [v35 mutableCopy];
           [(OTEscrowRecord *)v20 setRecordId:v36];
         }
 
-        v37 = [(OTEscrowRecord *)v20 serialNumber];
-        if (v37)
+        serialNumber = [(OTEscrowRecord *)v20 serialNumber];
+        if (serialNumber)
         {
-          v11 = [(OTEscrowRecord *)v20 serialNumber];
-          if (![v11 isEqualToString:&stru_1F48F2A78])
+          serialNumber2 = [(OTEscrowRecord *)v20 serialNumber];
+          if (![serialNumber2 isEqualToString:&stru_1F48F2A78])
           {
             goto LABEL_39;
           }
         }
 
-        v38 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-        v39 = [v38 peerInfo];
-        if (!v39)
+        escrowInformationMetadata4 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+        peerInfo = [escrowInformationMetadata4 peerInfo];
+        if (!peerInfo)
         {
 
-          if (!v37)
+          if (!serialNumber)
           {
             goto LABEL_40;
           }
@@ -4566,27 +4566,27 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        v40 = v39;
-        v41 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-        v42 = [v41 peerInfo];
-        v43 = [v42 length];
+        v40 = peerInfo;
+        escrowInformationMetadata5 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+        peerInfo2 = [escrowInformationMetadata5 peerInfo];
+        v43 = [peerInfo2 length];
 
-        if (v37)
+        if (serialNumber)
         {
         }
 
-        v17 = v78;
+        array = v78;
         if (v43)
         {
-          v44 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-          v45 = [v44 peerInfo];
+          escrowInformationMetadata6 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+          peerInfo3 = [escrowInformationMetadata6 peerInfo];
           v46 = SOSPeerInfoCreateFromData();
 
           v55 = SOSPeerInfoCopySerialNumber();
           [(OTEscrowRecord *)v20 setSerialNumber:v55];
 
-          v56 = [(OTEscrowRecord *)v20 serialNumber];
-          if (!v56 || (v57 = v56, -[OTEscrowRecord serialNumber](v20, "serialNumber"), v58 = objc_claimAutoreleasedReturnValue(), v59 = [v58 isEqualToString:&stru_1F48F2A78], v58, v57, v59))
+          serialNumber3 = [(OTEscrowRecord *)v20 serialNumber];
+          if (!serialNumber3 || (v57 = serialNumber3, -[OTEscrowRecord serialNumber](v20, "serialNumber"), v58 = objc_claimAutoreleasedReturnValue(), v59 = [v58 isEqualToString:&stru_1F48F2A78], v58, v57, v59))
           {
             v60 = secLogObjForScope();
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -4595,9 +4595,9 @@ LABEL_39:
               _os_log_impl(&dword_1C9430000, v60, OS_LOG_TYPE_DEFAULT, "attempted to use peer info's serial number and failed, using metadata", buf, 2u);
             }
 
-            v61 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-            v62 = [v61 serial];
-            [(OTEscrowRecord *)v20 setSerialNumber:v62];
+            escrowInformationMetadata7 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+            serial = [escrowInformationMetadata7 serial];
+            [(OTEscrowRecord *)v20 setSerialNumber:serial];
           }
 
           if (v46)
@@ -4609,22 +4609,22 @@ LABEL_39:
         }
 
 LABEL_40:
-        v47 = [(OTEscrowRecord *)v20 serialNumber];
-        if (v47)
+        serialNumber4 = [(OTEscrowRecord *)v20 serialNumber];
+        if (serialNumber4)
         {
-          v12 = [(OTEscrowRecord *)v20 serialNumber];
-          if (([v12 isEqualToString:&stru_1F48F2A78] & 1) == 0)
+          serialNumber5 = [(OTEscrowRecord *)v20 serialNumber];
+          if (([serialNumber5 isEqualToString:&stru_1F48F2A78] & 1) == 0)
           {
             goto LABEL_48;
           }
         }
 
-        v48 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-        v49 = [v48 serial];
-        if (!v49)
+        escrowInformationMetadata8 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+        serial2 = [escrowInformationMetadata8 serial];
+        if (!serial2)
         {
 
-          if (!v47)
+          if (!serialNumber4)
           {
             goto LABEL_57;
           }
@@ -4635,27 +4635,27 @@ LABEL_49:
           goto LABEL_57;
         }
 
-        v50 = v49;
-        v51 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-        v52 = [v51 serial];
-        v53 = [v52 isEqualToString:&stru_1F48F2A78];
+        v50 = serial2;
+        escrowInformationMetadata9 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+        serial3 = [escrowInformationMetadata9 serial];
+        v53 = [serial3 isEqualToString:&stru_1F48F2A78];
 
-        if (v47)
+        if (serialNumber4)
         {
         }
 
-        v17 = v78;
+        array = v78;
         if ((v53 & 1) == 0)
         {
-          v47 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
-          v54 = [v47 serial];
-          [(OTEscrowRecord *)v20 setSerialNumber:v54];
+          serialNumber4 = [(OTEscrowRecord *)v20 escrowInformationMetadata];
+          serial4 = [serialNumber4 serial];
+          [(OTEscrowRecord *)v20 setSerialNumber:serial4];
 
           goto LABEL_49;
         }
 
 LABEL_57:
-        [v17 addObject:v20];
+        [array addObject:v20];
       }
 
       v80 = [obj countByEnumeratingWithState:&v81 objects:v86 count:16];
@@ -4687,16 +4687,16 @@ LABEL_57:
   }
 
   v6 = v72;
-  v12 = v70;
+  serialNumber5 = v70;
   if (a4)
   {
-    v67 = [MEMORY[0x1E697AA80] filterRecords:v17];
+    v67 = [MEMORY[0x1E697AA80] filterRecords:array];
   }
 
   else
   {
-    v67 = v17;
-    v17 = v67;
+    v67 = array;
+    array = v67;
   }
 
   v18 = v67;
@@ -4709,12 +4709,12 @@ LABEL_68:
 
 + (id)filterRecords:()Framework
 {
-  v75 = a1;
+  selfCopy = self;
   v113 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v76 = [MEMORY[0x1E695DF70] array];
-  v83 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
@@ -4738,16 +4738,16 @@ LABEL_68:
         v9 = *(*(&v97 + 1) + 8 * v8);
         if (![v9 recordViability])
         {
-          v17 = [v9 escrowInformationMetadata];
-          v18 = [v17 bottleId];
-          if (v18)
+          escrowInformationMetadata = [v9 escrowInformationMetadata];
+          bottleId = [escrowInformationMetadata bottleId];
+          if (bottleId)
           {
-            v19 = v18;
-            v20 = [v9 escrowInformationMetadata];
-            v21 = [v20 bottleId];
-            v22 = [v21 length];
+            v19 = bottleId;
+            escrowInformationMetadata2 = [v9 escrowInformationMetadata];
+            bottleId2 = [escrowInformationMetadata2 bottleId];
+            v22 = [bottleId2 length];
 
-            v16 = v4;
+            v16 = array;
             if (v22)
             {
               goto LABEL_16;
@@ -4761,16 +4761,16 @@ LABEL_68:
 
         if ([v9 recordViability] == 1)
         {
-          v10 = [v9 escrowInformationMetadata];
-          v11 = [v10 bottleId];
-          if (v11)
+          escrowInformationMetadata3 = [v9 escrowInformationMetadata];
+          bottleId3 = [escrowInformationMetadata3 bottleId];
+          if (bottleId3)
           {
-            v12 = v11;
-            v13 = [v9 escrowInformationMetadata];
-            v14 = [v13 bottleId];
-            v15 = [v14 length];
+            v12 = bottleId3;
+            escrowInformationMetadata4 = [v9 escrowInformationMetadata];
+            bottleId4 = [escrowInformationMetadata4 bottleId];
+            v15 = [bottleId4 length];
 
-            v16 = v76;
+            v16 = array2;
             if (v15)
             {
               goto LABEL_16;
@@ -4782,7 +4782,7 @@ LABEL_68:
           }
         }
 
-        v16 = v83;
+        v16 = array3;
 LABEL_16:
         [v16 addObject:v9];
         ++v8;
@@ -4800,7 +4800,7 @@ LABEL_16:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v24 = v4;
+  v24 = array;
   v25 = [v24 countByEnumeratingWithState:&v93 objects:v111 count:16];
   v79 = v24;
   if (v25)
@@ -4821,20 +4821,20 @@ LABEL_16:
         v30 = secLogObjForScope();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v29 label];
-          v32 = [v29 escrowInformationMetadata];
-          v33 = [v32 serial];
-          v34 = [v29 escrowInformationMetadata];
-          v35 = [v34 bottleId];
-          v36 = [v29 silentAttemptAllowed];
+          label = [v29 label];
+          escrowInformationMetadata5 = [v29 escrowInformationMetadata];
+          serial = [escrowInformationMetadata5 serial];
+          escrowInformationMetadata6 = [v29 escrowInformationMetadata];
+          bottleId5 = [escrowInformationMetadata6 bottleId];
+          silentAttemptAllowed = [v29 silentAttemptAllowed];
           *buf = 138413058;
-          v104 = v31;
+          v104 = label;
           v105 = 2112;
-          v106 = v33;
+          v106 = serial;
           v107 = 2112;
-          v108 = v35;
+          v108 = bottleId5;
           v109 = 1024;
-          v110 = v36;
+          v110 = silentAttemptAllowed;
           _os_log_impl(&dword_1C9430000, v30, OS_LOG_TYPE_DEFAULT, "viable record: %@ serial:%@ bottleID:%@ silent allowed:%{BOOL}d", buf, 0x26u);
 
           v24 = v79;
@@ -4852,7 +4852,7 @@ LABEL_16:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v82 = v76;
+  v82 = array2;
   v37 = [v82 countByEnumeratingWithState:&v89 objects:v102 count:16];
   if (v37)
   {
@@ -4872,20 +4872,20 @@ LABEL_16:
         v42 = secLogObjForScope();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v41 label];
-          v44 = [v41 escrowInformationMetadata];
-          v45 = [v44 serial];
-          v46 = [v41 escrowInformationMetadata];
-          v47 = [v46 bottleId];
-          v48 = [v41 silentAttemptAllowed];
+          label2 = [v41 label];
+          escrowInformationMetadata7 = [v41 escrowInformationMetadata];
+          serial2 = [escrowInformationMetadata7 serial];
+          escrowInformationMetadata8 = [v41 escrowInformationMetadata];
+          bottleId6 = [escrowInformationMetadata8 bottleId];
+          silentAttemptAllowed2 = [v41 silentAttemptAllowed];
           *buf = 138413058;
-          v104 = v43;
+          v104 = label2;
           v105 = 2112;
-          v106 = v45;
+          v106 = serial2;
           v107 = 2112;
-          v108 = v47;
+          v108 = bottleId6;
           v109 = 1024;
-          v110 = v48;
+          v110 = silentAttemptAllowed2;
           _os_log_impl(&dword_1C9430000, v42, OS_LOG_TYPE_DEFAULT, "partially viable record: %@ serial:%@ bottleID:%@ silent allowed:%{BOOL}d", buf, 0x26u);
 
           v39 = v77;
@@ -4902,7 +4902,7 @@ LABEL_16:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v84 = v83;
+  v84 = array3;
   v49 = [v84 countByEnumeratingWithState:&v85 objects:v101 count:16];
   if (v49)
   {
@@ -4922,20 +4922,20 @@ LABEL_16:
         v54 = secLogObjForScope();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [v53 label];
-          v56 = [v53 escrowInformationMetadata];
-          v57 = [v56 serial];
-          v58 = [v53 escrowInformationMetadata];
-          v59 = [v58 bottleId];
-          v60 = [v53 silentAttemptAllowed];
+          label3 = [v53 label];
+          escrowInformationMetadata9 = [v53 escrowInformationMetadata];
+          serial3 = [escrowInformationMetadata9 serial];
+          escrowInformationMetadata10 = [v53 escrowInformationMetadata];
+          bottleId7 = [escrowInformationMetadata10 bottleId];
+          silentAttemptAllowed3 = [v53 silentAttemptAllowed];
           *buf = 138413058;
-          v104 = v55;
+          v104 = label3;
           v105 = 2112;
-          v106 = v57;
+          v106 = serial3;
           v107 = 2112;
-          v108 = v59;
+          v108 = bottleId7;
           v109 = 1024;
-          v110 = v60;
+          v110 = silentAttemptAllowed3;
           _os_log_impl(&dword_1C9430000, v54, OS_LOG_TYPE_DEFAULT, "nonviable record: %@ serial:%@ bottleID:%@ silent allowed:%{BOOL}d", buf, 0x26u);
 
           v51 = v78;
@@ -4959,12 +4959,12 @@ LABEL_16:
       _os_log_impl(&dword_1C9430000, v61, OS_LOG_TYPE_DEFAULT, "Returning %d viable records", buf, 8u);
     }
 
-    v63 = v75;
+    v63 = selfCopy;
     v64 = v79;
 LABEL_55:
-    v67 = [v63 sortListPrioritizingiOSRecords:{v64, v75}];
+    array4 = [v63 sortListPrioritizingiOSRecords:{v64, selfCopy}];
 LABEL_56:
-    v68 = v67;
+    v68 = array4;
     goto LABEL_57;
   }
 
@@ -4979,7 +4979,7 @@ LABEL_56:
       _os_log_impl(&dword_1C9430000, v65, OS_LOG_TYPE_DEFAULT, "Returning %d partially viable records", buf, 8u);
     }
 
-    v63 = v75;
+    v63 = selfCopy;
     v64 = v82;
     goto LABEL_55;
   }
@@ -4993,11 +4993,11 @@ LABEL_56:
       _os_log_impl(&dword_1C9430000, v74, OS_LOG_TYPE_DEFAULT, "no viable records!", buf, 2u);
     }
 
-    v67 = [MEMORY[0x1E695DEC8] array];
+    array4 = [MEMORY[0x1E695DEC8] array];
     goto LABEL_56;
   }
 
-  v71 = [v75 filterViableSOSRecords:v84];
+  v71 = [selfCopy filterViableSOSRecords:v84];
   v72 = secLogObjForScope();
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
   {
@@ -5007,7 +5007,7 @@ LABEL_56:
     _os_log_impl(&dword_1C9430000, v72, OS_LOG_TYPE_DEFAULT, "Returning %d sos viable records", buf, 8u);
   }
 
-  v68 = [v75 sortListPrioritizingiOSRecords:v71];
+  v68 = [selfCopy sortListPrioritizingiOSRecords:v71];
 
 LABEL_57:
   v69 = *MEMORY[0x1E69E9840];
@@ -5019,8 +5019,8 @@ LABEL_57:
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -5041,18 +5041,18 @@ LABEL_57:
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 escrowInformationMetadata];
-        v11 = [v10 clientMetadata];
-        if ([v11 hasSecureBackupUsesNumericPassphrase])
+        escrowInformationMetadata = [v9 escrowInformationMetadata];
+        clientMetadata = [escrowInformationMetadata clientMetadata];
+        if ([clientMetadata hasSecureBackupUsesNumericPassphrase])
         {
           [v9 escrowInformationMetadata];
-          v13 = v12 = v4;
-          v14 = [v13 clientMetadata];
-          v15 = [v14 secureBackupUsesNumericPassphrase];
+          v13 = v12 = array;
+          clientMetadata2 = [v13 clientMetadata];
+          secureBackupUsesNumericPassphrase = [clientMetadata2 secureBackupUsesNumericPassphrase];
 
-          v4 = v12;
+          array = v12;
           v16 = v12;
-          if (v15)
+          if (secureBackupUsesNumericPassphrase)
           {
             goto LABEL_11;
           }
@@ -5062,7 +5062,7 @@ LABEL_57:
         {
         }
 
-        v16 = v20;
+        v16 = array2;
 LABEL_11:
         [v16 addObject:v9];
       }
@@ -5073,17 +5073,17 @@ LABEL_11:
     while (v6);
   }
 
-  [v4 addObjectsFromArray:v20];
+  [array addObjectsFromArray:array2];
   v17 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
 + (id)filterViableSOSRecords:()Framework
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -5106,7 +5106,7 @@ LABEL_11:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 viabilityStatus] == 1)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -5118,7 +5118,7 @@ LABEL_11:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
 @end

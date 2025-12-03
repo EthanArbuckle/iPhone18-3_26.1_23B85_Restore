@@ -2,22 +2,22 @@
 - (BOOL)isConnected;
 - (TRConnection)connection;
 - (TRSession)init;
-- (TRSession)initWithNearbyDevice:(id)a3;
-- (id)_messageHandlerForMessageClass:(Class)a3;
-- (void)_handleEvent:(id)a3;
-- (void)_handleHeartbeatWithResponseHandler:(id)a3;
-- (void)_handleRequest:(id)a3;
-- (void)_respondToRequest:(id)a3 withError:(id)a4;
+- (TRSession)initWithNearbyDevice:(id)device;
+- (id)_messageHandlerForMessageClass:(Class)class;
+- (void)_handleEvent:(id)event;
+- (void)_handleHeartbeatWithResponseHandler:(id)handler;
+- (void)_handleRequest:(id)request;
+- (void)_respondToRequest:(id)request withError:(id)error;
 - (void)_sendHeartbeats;
-- (void)_sendResponse:(id)a3 forRequest:(id)a4;
-- (void)_setMessageHandler:(id)a3 forMessageClass:(Class)a4;
+- (void)_sendResponse:(id)response forRequest:(id)request;
+- (void)_setMessageHandler:(id)handler forMessageClass:(Class)class;
 - (void)disconnect;
-- (void)sendEvent:(id)a3;
-- (void)sendHeartbeatWithResponseHandler:(id)a3;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)setConnection:(id)a3;
-- (void)setEventHandler:(id)a3 forEventClass:(Class)a4;
-- (void)setRequestHandler:(id)a3 forRequestClass:(Class)a4;
+- (void)sendEvent:(id)event;
+- (void)sendHeartbeatWithResponseHandler:(id)handler;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
+- (void)setConnection:(id)connection;
+- (void)setEventHandler:(id)handler forEventClass:(Class)class;
+- (void)setRequestHandler:(id)handler forRequestClass:(Class)class;
 @end
 
 @implementation TRSession
@@ -33,19 +33,19 @@
   objc_exception_throw(v6);
 }
 
-- (TRSession)initWithNearbyDevice:(id)a3
+- (TRSession)initWithNearbyDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = TRSession;
   v6 = [(TRSession *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nearbyDevice, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_nearbyDevice, device);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     messageHandlerMap = v7->_messageHandlerMap;
-    v7->_messageHandlerMap = v8;
+    v7->_messageHandlerMap = dictionary;
 
     v10 = MEMORY[0x277D85CD8];
     v11 = dispatch_queue_create("com.apple.TRSession.messageHandlerMapQ", MEMORY[0x277D85CD8]);
@@ -66,17 +66,17 @@
   return v7;
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   connectionQ = self->_connectionQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__TRSession_setConnection___block_invoke;
   v7[3] = &unk_279DCEC20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_barrier_async(connectionQ, v7);
 }
 
@@ -228,8 +228,8 @@ void __27__TRSession_setConnection___block_invoke_2_11(uint64_t a1, void *a2)
 
 - (BOOL)isConnected
 {
-  v2 = [(TRSession *)self connection];
-  v3 = v2 != 0;
+  connection = [(TRSession *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
@@ -242,12 +242,12 @@ void __27__TRSession_setConnection___block_invoke_2_11(uint64_t a1, void *a2)
     v3 = TRLogHandle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(TRSession *)self nearbyDevice];
-      v5 = [v4 identifier];
+      nearbyDevice = [(TRSession *)self nearbyDevice];
+      identifier = [nearbyDevice identifier];
       *buf = 136315394;
       v11 = "[TRSession disconnect]";
       v12 = 2112;
-      v13 = v5;
+      v13 = identifier;
       _os_log_impl(&dword_26F2A2000, v3, OS_LOG_TYPE_DEFAULT, "%s Disconnect from device %@", buf, 0x16u);
     }
   }
@@ -259,8 +259,8 @@ void __27__TRSession_setConnection___block_invoke_2_11(uint64_t a1, void *a2)
   block[3] = &unk_279DCEBF8;
   block[4] = self;
   dispatch_barrier_async(messageHandlerMapQ, block);
-  v7 = [(TRSession *)self connection];
-  [v7 invalidate];
+  connection = [(TRSession *)self connection];
+  [connection invalidate];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -272,11 +272,11 @@ void __23__TRSession_disconnect__block_invoke(uint64_t a1)
   *(v1 + 32) = 0;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [TRMessageEncoder encodeMessage:v4];
+  eventCopy = event;
+  v5 = [TRMessageEncoder encodeMessage:eventCopy];
   if (_TRLogEnabled == 1)
   {
     v6 = TRLogHandle();
@@ -294,16 +294,16 @@ void __23__TRSession_disconnect__block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [(TRSession *)self connection];
-  if (v9)
+  connection = [(TRSession *)self connection];
+  if (connection)
   {
     v10 = objc_alloc_init(MEMORY[0x277D54CA8]);
     [v10 setBodyData:v5];
-    v11 = [(TRSession *)self nearbyDevice];
-    v12 = [v11 representedDevice];
-    [v10 setPeerDevice:v12];
+    nearbyDevice = [(TRSession *)self nearbyDevice];
+    representedDevice = [nearbyDevice representedDevice];
+    [v10 setPeerDevice:representedDevice];
 
-    [v9 sendEvent:v10];
+    [connection sendEvent:v10];
   }
 
   else
@@ -326,12 +326,12 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [TRMessageEncoder encodeMessage:v6];
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = [TRMessageEncoder encodeMessage:requestCopy];
   if (_TRLogEnabled == 1)
   {
     v9 = TRLogHandle();
@@ -353,20 +353,20 @@ LABEL_8:
   v22[1] = 3221225472;
   v22[2] = __45__TRSession_sendRequest_withResponseHandler___block_invoke;
   v22[3] = &unk_279DCF5A0;
-  v12 = v7;
+  v12 = handlerCopy;
   v23 = v12;
   v13 = MEMORY[0x27438C490](v22);
-  v14 = [(TRSession *)self connection];
-  if (v14)
+  connection = [(TRSession *)self connection];
+  if (connection)
   {
     v15 = objc_alloc_init(MEMORY[0x277D54CD0]);
     [v15 setBodyData:v8];
     [v15 setResponseHandler:v13];
-    v16 = [(TRSession *)self nearbyDevice];
-    v17 = [v16 representedDevice];
-    [v15 setPeerDevice:v17];
+    nearbyDevice = [(TRSession *)self nearbyDevice];
+    representedDevice = [nearbyDevice representedDevice];
+    [v15 setPeerDevice:representedDevice];
 
-    [v14 sendRequest:v15];
+    [connection sendRequest:v15];
   }
 
   else
@@ -544,12 +544,12 @@ LABEL_31:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendResponse:(id)a3 forRequest:(id)a4
+- (void)_sendResponse:(id)response forRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [TRMessageEncoder encodeMessage:v6];
+  responseCopy = response;
+  requestCopy = request;
+  v8 = [TRMessageEncoder encodeMessage:responseCopy];
   if (_TRLogEnabled == 1)
   {
     v9 = TRLogHandle();
@@ -567,32 +567,32 @@ LABEL_31:
     }
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D54CD8]) initWithRequestMessage:v7];
+  v12 = [objc_alloc(MEMORY[0x277D54CD8]) initWithRequestMessage:requestCopy];
 
   [v12 setBodyData:v8];
-  v13 = [(TRSession *)self connection];
-  [v13 sendResponse:v12];
+  connection = [(TRSession *)self connection];
+  [connection sendResponse:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_respondToRequest:(id)a3 withError:(id)a4
+- (void)_respondToRequest:(id)request withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  requestCopy = request;
   v8 = objc_alloc_init(TRErrorResponse);
-  [(TRErrorResponse *)v8 setError:v6];
+  [(TRErrorResponse *)v8 setError:errorCopy];
 
-  [(TRSession *)self _sendResponse:v8 forRequest:v7];
+  [(TRSession *)self _sendResponse:v8 forRequest:requestCopy];
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bodyData];
+  eventCopy = event;
+  bodyData = [eventCopy bodyData];
   v20 = 0;
-  v6 = [TRMessageDecoder decodeMessage:v5 error:&v20];
+  v6 = [TRMessageDecoder decodeMessage:bodyData error:&v20];
   v7 = v20;
 
   if (v6)
@@ -607,8 +607,8 @@ LABEL_31:
         {
           v9 = objc_opt_class();
           v10 = NSStringFromClass(v9);
-          v11 = [v4 bodyData];
-          v12 = [v11 length];
+          bodyData2 = [eventCopy bodyData];
+          v12 = [bodyData2 length];
           *buf = 136315650;
           v22 = "[TRSession _handleEvent:]";
           v23 = 2112;
@@ -692,13 +692,13 @@ LABEL_20:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequest:(id)a3
+- (void)_handleRequest:(id)request
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bodyData];
+  requestCopy = request;
+  bodyData = [requestCopy bodyData];
   v39 = 0;
-  v6 = [TRMessageDecoder decodeMessage:v5 error:&v39];
+  v6 = [TRMessageDecoder decodeMessage:bodyData error:&v39];
   v7 = v39;
 
   if (v6)
@@ -713,8 +713,8 @@ LABEL_20:
         {
           v9 = objc_opt_class();
           v10 = NSStringFromClass(v9);
-          v11 = [v4 bodyData];
-          v12 = [v11 length];
+          bodyData2 = [requestCopy bodyData];
+          v12 = [bodyData2 length];
           *buf = 136315650;
           v43 = "[TRSession _handleRequest:]";
           v44 = 2112;
@@ -733,7 +733,7 @@ LABEL_20:
         v37[2] = __28__TRSession__handleRequest___block_invoke;
         v37[3] = &unk_279DCF5C8;
         v37[4] = self;
-        v38 = v4;
+        v38 = requestCopy;
         [(TRSession *)self _handleHeartbeatWithResponseHandler:v37];
       }
 
@@ -747,7 +747,7 @@ LABEL_20:
           v35[2] = __28__TRSession__handleRequest___block_invoke_48;
           v35[3] = &unk_279DCF5C8;
           v35[4] = self;
-          v36 = v4;
+          v36 = requestCopy;
           (v29)[2](v29, v6, v35);
         }
 
@@ -769,7 +769,7 @@ LABEL_20:
           }
 
           v33 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9001 userInfo:0];
-          [(TRSession *)self _respondToRequest:v4 withError:v33];
+          [(TRSession *)self _respondToRequest:requestCopy withError:v33];
         }
       }
     }
@@ -811,7 +811,7 @@ LABEL_20:
 
       v28 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9200 userInfo:v27];
 
-      [(TRSession *)self _respondToRequest:v4 withError:v28];
+      [(TRSession *)self _respondToRequest:requestCopy withError:v28];
       v7 = v28;
     }
   }
@@ -831,7 +831,7 @@ LABEL_20:
       }
     }
 
-    [(TRSession *)self _respondToRequest:v4 withError:v7];
+    [(TRSession *)self _respondToRequest:requestCopy withError:v7];
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -865,10 +865,10 @@ uint64_t __28__TRSession__handleRequest___block_invoke_48(uint64_t a1, uint64_t 
   }
 }
 
-- (void)setEventHandler:(id)a3 forEventClass:(Class)a4
+- (void)setEventHandler:(id)handler forEventClass:(Class)class
 {
-  v12 = a3;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  handlerCopy = handler;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
@@ -879,14 +879,14 @@ uint64_t __28__TRSession__handleRequest___block_invoke_48(uint64_t a1, uint64_t 
     objc_exception_throw(v11);
   }
 
-  v6 = MEMORY[0x27438C490](v12);
-  [(TRSession *)self _setMessageHandler:v6 forMessageClass:a4];
+  v6 = MEMORY[0x27438C490](handlerCopy);
+  [(TRSession *)self _setMessageHandler:v6 forMessageClass:class];
 }
 
-- (void)setRequestHandler:(id)a3 forRequestClass:(Class)a4
+- (void)setRequestHandler:(id)handler forRequestClass:(Class)class
 {
-  v12 = a3;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  handlerCopy = handler;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
@@ -897,22 +897,22 @@ uint64_t __28__TRSession__handleRequest___block_invoke_48(uint64_t a1, uint64_t 
     objc_exception_throw(v11);
   }
 
-  v6 = MEMORY[0x27438C490](v12);
-  [(TRSession *)self _setMessageHandler:v6 forMessageClass:a4];
+  v6 = MEMORY[0x27438C490](handlerCopy);
+  [(TRSession *)self _setMessageHandler:v6 forMessageClass:class];
 }
 
-- (void)_setMessageHandler:(id)a3 forMessageClass:(Class)a4
+- (void)_setMessageHandler:(id)handler forMessageClass:(Class)class
 {
-  v6 = a3;
+  handlerCopy = handler;
   messageHandlerMapQ = self->_messageHandlerMapQ;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__TRSession__setMessageHandler_forMessageClass___block_invoke;
   block[3] = &unk_279DCF5F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = handlerCopy;
+  classCopy = class;
+  v8 = handlerCopy;
   dispatch_barrier_async(messageHandlerMapQ, block);
 }
 
@@ -924,7 +924,7 @@ void __48__TRSession__setMessageHandler_forMessageClass___block_invoke(uint64_t 
   [v2 setObject:v4 forKey:v3];
 }
 
-- (id)_messageHandlerForMessageClass:(Class)a3
+- (id)_messageHandlerForMessageClass:(Class)class
 {
   v7 = 0;
   v8 = &v7;
@@ -939,7 +939,7 @@ void __48__TRSession__setMessageHandler_forMessageClass___block_invoke(uint64_t 
   block[3] = &unk_279DCF618;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   dispatch_sync(messageHandlerMapQ, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1010,9 +1010,9 @@ void __28__TRSession__sendHeartbeats__block_invoke_2(uint64_t a1)
   [WeakRetained _sendHeartbeats];
 }
 
-- (void)sendHeartbeatWithResponseHandler:(id)a3
+- (void)sendHeartbeatWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5);
 
@@ -1026,7 +1026,7 @@ void __28__TRSession__sendHeartbeats__block_invoke_2(uint64_t a1)
   v8 = v6;
   v17 = v8;
   objc_copyWeak(&v19, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v18 = v9;
   dispatch_source_set_event_handler(v8, handler);
   dispatch_resume(v8);
@@ -1109,19 +1109,19 @@ void __46__TRSession_sendHeartbeatWithResponseHandler___block_invoke_54(uint64_t
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleHeartbeatWithResponseHandler:(id)a3
+- (void)_handleHeartbeatWithResponseHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TRSession *)self heartbeatRequestTimer];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  heartbeatRequestTimer = [(TRSession *)self heartbeatRequestTimer];
+  v6 = heartbeatRequestTimer;
+  if (heartbeatRequestTimer)
   {
-    dispatch_source_cancel(v5);
+    dispatch_source_cancel(heartbeatRequestTimer);
     [(TRSession *)self setHeartbeatRequestTimer:0];
   }
 
   v7 = objc_alloc_init(TRHeartbeatResponse);
-  v4[2](v4, 0, v7);
+  handlerCopy[2](handlerCopy, 0, v7);
   v8 = dispatch_get_global_queue(0, 0);
   v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8);
 

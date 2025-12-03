@@ -1,27 +1,27 @@
 @interface _EFSQLInsertStatementFollowUpValue
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation _EFSQLInsertStatementFollowUpValue
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v17 = a3;
-  v7 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   v8 = objc_opt_respondsToSelector();
   v9 = objc_opt_respondsToSelector();
   v10 = v9;
   if ((v8 | v9))
   {
-    if (v7)
+    if (subscriptCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_19:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"columnName != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"columnName != nil"}];
 
     if (self)
     {
@@ -31,10 +31,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:85 description:@"Value must conform to either EFSQLBindable or EFSQLValueExpressable"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:85 description:@"Value must conform to either EFSQLBindable or EFSQLValueExpressable"];
 
-  if (!v7)
+  if (!subscriptCopy)
   {
     goto LABEL_19;
   }
@@ -50,9 +50,9 @@ LABEL_4:
 LABEL_20:
   requiredColumns = 0;
 LABEL_5:
-  if (![(NSMutableOrderedSet *)requiredColumns containsObject:v7])
+  if (![(NSMutableOrderedSet *)requiredColumns containsObject:subscriptCopy])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"column: %@ was not defined for the initial value, can't define it for a follow-up value", v7];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"column: %@ was not defined for the initial value, can't define it for a follow-up value", subscriptCopy];
     v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v16);
   }
@@ -87,7 +87,7 @@ LABEL_5:
       v13 = 0;
     }
 
-    [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:subscriptCopy];
     if (self)
     {
       bindables = self->super._expressables;
@@ -99,13 +99,13 @@ LABEL_5:
     }
   }
 
-  [(NSMutableDictionary *)bindables setObject:v17 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)bindables setObject:objectCopy forKeyedSubscript:subscriptCopy];
 LABEL_15:
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   if (self)
   {
     bindables = self->super._bindables;
@@ -117,7 +117,7 @@ LABEL_15:
   }
 
   v6 = bindables;
-  v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:subscriptCopy];
   v8 = v7;
   if (v7)
   {
@@ -136,7 +136,7 @@ LABEL_15:
       expressables = 0;
     }
 
-    v9 = [(NSMutableDictionary *)expressables objectForKeyedSubscript:v4];
+    v9 = [(NSMutableDictionary *)expressables objectForKeyedSubscript:subscriptCopy];
   }
 
   v11 = v9;

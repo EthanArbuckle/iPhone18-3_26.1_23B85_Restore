@@ -1,11 +1,11 @@
 @interface BKUpgradeViewController
-- (BKUpgradeViewController)initWithCoder:(id)a3;
-- (BKUpgradeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKUpgradeViewController)initWithCoder:(id)coder;
+- (BKUpgradeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)_computedUserInterfaceStyle;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_setupSmartInvert;
-- (void)_smartInvertDidChange:(id)a3;
+- (void)_smartInvertDidChange:(id)change;
 - (void)_startAnimating;
 - (void)dealloc;
 - (void)viewDidLoad;
@@ -18,9 +18,9 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"_smartInvertDidChange:" name:UIAccessibilityInvertColorsStatusDidChangeNotification object:0];
 
-  v4 = [(BKUpgradeViewController *)self _computedUserInterfaceStyle];
+  _computedUserInterfaceStyle = [(BKUpgradeViewController *)self _computedUserInterfaceStyle];
 
-  [(BKUpgradeViewController *)self setOverrideUserInterfaceStyle:v4];
+  [(BKUpgradeViewController *)self setOverrideUserInterfaceStyle:_computedUserInterfaceStyle];
 }
 
 - (int64_t)_computedUserInterfaceStyle
@@ -43,8 +43,8 @@
   [(BKUpgradeViewController *)&v17 viewDidLoad];
   [(BKUpgradeViewController *)self setNeedsStatusBarAppearanceUpdate];
   v3 = +[UIColor bc_booksBackground];
-  v4 = [(BKUpgradeViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BKUpgradeViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   activityView = self->_activityView;
@@ -52,18 +52,18 @@
 
   [(UIActivityIndicatorView *)self->_activityView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)self->_activityView setHidden:1];
-  v7 = [(BKUpgradeViewController *)self view];
-  [v7 addSubview:self->_activityView];
+  view2 = [(BKUpgradeViewController *)self view];
+  [view2 addSubview:self->_activityView];
 
-  v8 = [(UIActivityIndicatorView *)self->_activityView centerXAnchor];
-  v9 = [(BKUpgradeViewController *)self view];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_activityView centerXAnchor];
+  view3 = [(BKUpgradeViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18[0] = v11;
-  v12 = [(UIActivityIndicatorView *)self->_activityView centerYAnchor];
-  v13 = [(BKUpgradeViewController *)self view];
-  v14 = [v13 centerYAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_activityView centerYAnchor];
+  view4 = [(BKUpgradeViewController *)self view];
+  centerYAnchor2 = [view4 centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v18[1] = v15;
   v16 = [NSArray arrayWithObjects:v18 count:2];
   [NSLayoutConstraint activateConstraints:v16];
@@ -73,8 +73,8 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(BKUpgradeViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(BKUpgradeViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }
@@ -92,11 +92,11 @@
   }
 }
 
-- (BKUpgradeViewController)initWithCoder:(id)a3
+- (BKUpgradeViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKUpgradeViewController;
-  v3 = [(BKUpgradeViewController *)&v6 initWithCoder:a3];
+  v3 = [(BKUpgradeViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -106,11 +106,11 @@
   return v4;
 }
 
-- (BKUpgradeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKUpgradeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = BKUpgradeViewController;
-  v4 = [(BKUpgradeViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(BKUpgradeViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -139,9 +139,9 @@
   [(UIActivityIndicatorView *)activityView startAnimating];
 }
 
-- (void)_smartInvertDidChange:(id)a3
+- (void)_smartInvertDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if (+[NSThread isMainThread])
   {
     [(BKUpgradeViewController *)self setOverrideUserInterfaceStyle:[(BKUpgradeViewController *)self _computedUserInterfaceStyle]];
@@ -149,7 +149,7 @@
 
   else
   {
-    [(BKUpgradeViewController *)self performSelectorOnMainThread:a2 withObject:v5 waitUntilDone:0];
+    [(BKUpgradeViewController *)self performSelectorOnMainThread:a2 withObject:changeCopy waitUntilDone:0];
   }
 }
 

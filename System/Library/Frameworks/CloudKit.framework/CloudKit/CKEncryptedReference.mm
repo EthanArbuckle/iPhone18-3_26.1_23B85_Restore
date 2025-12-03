@@ -1,18 +1,18 @@
 @interface CKEncryptedReference
-- (CKEncryptedReference)initWithReference:(id)a3;
+- (CKEncryptedReference)initWithReference:(id)reference;
 - (CKReference)reference;
-- (id)_pReferenceFromReference:(id)a3;
-- (id)_recordIDFromPRecordIdentifier:(id)a3;
-- (id)_referenceFromPReference:(id)a3;
+- (id)_pReferenceFromReference:(id)reference;
+- (id)_recordIDFromPRecordIdentifier:(id)identifier;
+- (id)_referenceFromPReference:(id)reference;
 @end
 
 @implementation CKEncryptedReference
 
-- (CKEncryptedReference)initWithReference:(id)a3
+- (CKEncryptedReference)initWithReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v28 = 0;
-  v5 = _CKCheckArgument("reference", v4, 0, 0, 0, &v28);
+  v5 = _CKCheckArgument("reference", referenceCopy, 0, 0, 0, &v28);
   v6 = v28;
   if ((v5 & 1) == 0)
   {
@@ -27,7 +27,7 @@
   }
 
   v7 = objc_opt_new();
-  v9 = objc_msgSend__pReferenceFromReference_(self, v8, v4);
+  v9 = objc_msgSend__pReferenceFromReference_(self, v8, referenceCopy);
   objc_msgSend_setReferenceValue_(v7, v10, v9);
 
   v13 = objc_msgSend_data(v7, v11, v12);
@@ -57,11 +57,11 @@
   return v12;
 }
 
-- (id)_pReferenceFromReference:(id)a3
+- (id)_pReferenceFromReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_opt_new();
-  v7 = objc_msgSend_recordID(v3, v5, v6);
+  v7 = objc_msgSend_recordID(referenceCopy, v5, v6);
   v10 = objc_msgSend_zoneID(v7, v8, v9);
 
   v11 = objc_opt_new();
@@ -74,14 +74,14 @@
   objc_msgSend_setOwnerIdentifier_(v11, v25, v24);
 
   v26 = objc_opt_new();
-  v29 = objc_msgSend_recordID(v3, v27, v28);
+  v29 = objc_msgSend_recordID(referenceCopy, v27, v28);
   v32 = objc_msgSend_recordName(v29, v30, v31);
   v35 = objc_msgSend_CKDPIdentifier_Record(v32, v33, v34);
   objc_msgSend_setValue_(v26, v36, v35);
 
   objc_msgSend_setZoneIdentifier_(v26, v37, v11);
   objc_msgSend_setRecordIdentifier_(v4, v38, v26);
-  v41 = objc_msgSend_referenceAction(v3, v39, v40);
+  v41 = objc_msgSend_referenceAction(referenceCopy, v39, v40);
 
   v43 = objc_msgSend_ckdpReferenceTypeForCKReferenceAction_(CKReference, v42, v41);
   objc_msgSend_setType_(v4, v44, v43);
@@ -89,17 +89,17 @@
   return v4;
 }
 
-- (id)_referenceFromPReference:(id)a3
+- (id)_referenceFromPReference:(id)reference
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_recordIdentifier(v4, v5, v6);
+  referenceCopy = reference;
+  v7 = objc_msgSend_recordIdentifier(referenceCopy, v5, v6);
   v11 = objc_msgSend__recordIDFromPRecordIdentifier_(self, v8, v7);
   if (v11)
   {
-    if (objc_msgSend_hasType(v4, v9, v10))
+    if (objc_msgSend_hasType(referenceCopy, v9, v10))
     {
-      v14 = objc_msgSend_type(v4, v12, v13);
+      v14 = objc_msgSend_type(referenceCopy, v12, v13);
       v16 = objc_msgSend_ckReferenceActionForCKDPRecordReferenceType_(CKReference, v15, v14);
     }
 
@@ -123,7 +123,7 @@
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       v23 = 138412290;
-      v24 = v4;
+      v24 = referenceCopy;
       _os_log_error_impl(&dword_1883EA000, v17, OS_LOG_TYPE_ERROR, "Invalid record identifier from server %@", &v23, 0xCu);
     }
 
@@ -135,10 +135,10 @@
   return v18;
 }
 
-- (id)_recordIDFromPRecordIdentifier:(id)a3
+- (id)_recordIDFromPRecordIdentifier:(id)identifier
 {
-  v3 = a3;
-  v6 = objc_msgSend_zoneIdentifier(v3, v4, v5);
+  identifierCopy = identifier;
+  v6 = objc_msgSend_zoneIdentifier(identifierCopy, v4, v5);
   v7 = [CKRecordZoneID alloc];
   v10 = objc_msgSend_value(v6, v8, v9);
   v13 = objc_msgSend_name(v10, v11, v12);
@@ -147,7 +147,7 @@
   v21 = objc_msgSend_initWithZoneName_ownerName_(v7, v20, v13, v19);
 
   v22 = [CKRecordID alloc];
-  v25 = objc_msgSend_value(v3, v23, v24);
+  v25 = objc_msgSend_value(identifierCopy, v23, v24);
 
   v28 = objc_msgSend_name(v25, v26, v27);
   v30 = objc_msgSend_initWithRecordName_zoneID_(v22, v29, v28, v21);

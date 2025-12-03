@@ -1,20 +1,20 @@
 @interface MSASCloudKitPlugin
-+ (id)_decryptedObjectForRecord:(id)a3 forKey:(id)a4 validateClass:(Class)a5;
++ (id)_decryptedObjectForRecord:(id)record forKey:(id)key validateClass:(Class)class;
 + (id)fetchMigrationCtag;
-+ (void)_fetchRecordWithRecordID:(id)a3 zoneName:(id)a4 fieldName:(id)a5 ownerUserID:(id)a6 isOwned:(BOOL)a7 completionHandler:(id)a8;
++ (void)_fetchRecordWithRecordID:(id)d zoneName:(id)name fieldName:(id)fieldName ownerUserID:(id)iD isOwned:(BOOL)owned completionHandler:(id)handler;
 @end
 
 @implementation MSASCloudKitPlugin
 
-+ (id)_decryptedObjectForRecord:(id)a3 forKey:(id)a4 validateClass:(Class)a5
++ (id)_decryptedObjectForRecord:(id)record forKey:(id)key validateClass:(Class)class
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 encryptedValues];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  recordCopy = record;
+  keyCopy = key;
+  encryptedValues = [recordCopy encryptedValues];
+  v10 = [encryptedValues objectForKeyedSubscript:keyCopy];
 
-  if (!v10 && ([v7 objectForKeyedSubscript:v8], (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_opt_isKindOfClass() & 1) != 0)
+  if (!v10 && ([recordCopy objectForKeyedSubscript:keyCopy], (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
     v10 = v11;
@@ -26,7 +26,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(objc_class *)a5 isSubclassOfClass:objc_opt_class()])
+    if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
     {
       v11 = [v10 base64EncodedStringWithOptions:0];
       goto LABEL_5;
@@ -35,13 +35,13 @@ LABEL_5:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v15 = [v7 recordType];
-    v16 = [v7 recordID];
-    v17 = [v16 recordName];
+    recordType = [recordCopy recordType];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
     v19 = 138543874;
-    v20 = v15;
+    v20 = recordType;
     v21 = 2114;
-    v22 = v17;
+    v22 = recordName;
     v23 = 2114;
     v24 = objc_opt_class();
     v18 = v24;
@@ -56,18 +56,18 @@ LABEL_12:
   return v12;
 }
 
-+ (void)_fetchRecordWithRecordID:(id)a3 zoneName:(id)a4 fieldName:(id)a5 ownerUserID:(id)a6 isOwned:(BOOL)a7 completionHandler:(id)a8
++ (void)_fetchRecordWithRecordID:(id)d zoneName:(id)name fieldName:(id)fieldName ownerUserID:(id)iD isOwned:(BOOL)owned completionHandler:(id)handler
 {
-  v9 = a7;
+  ownedCopy = owned;
   v53[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v32 = a5;
-  v15 = a6;
-  v16 = a8;
-  v30 = v15;
-  v31 = v14;
-  v17 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:v14 ownerName:v15];
+  dCopy = d;
+  nameCopy = name;
+  fieldNameCopy = fieldName;
+  iDCopy = iD;
+  handlerCopy = handler;
+  v30 = iDCopy;
+  v31 = nameCopy;
+  v17 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:nameCopy ownerName:iDCopy];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -82,7 +82,7 @@ LABEL_12:
   v43 = 0;
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v13 zoneID:v17];
+    v18 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:dCopy zoneID:v17];
     v29 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:@"com.apple.icloud-photos.fdb" environment:1];
     v19 = objc_alloc_init(MEMORY[0x277CBC230]);
     [v19 setApplicationBundleIdentifierOverrideForContainerAccess:@"com.apple.photos.cloud"];
@@ -97,7 +97,7 @@ LABEL_12:
     v24 = [v22 initWithRecordIDs:v23];
 
     [v24 setConfiguration:v21];
-    v52 = v32;
+    v52 = fieldNameCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
     [v24 setDesiredKeys:v25];
 
@@ -109,9 +109,9 @@ LABEL_12:
     v37 = &v44;
     v26 = v18;
     v34 = v26;
-    v35 = v13;
+    v35 = dCopy;
     [v24 setFetchRecordsCompletionBlock:v33];
-    if (v9)
+    if (ownedCopy)
     {
       [v20 privateCloudDatabase];
     }
@@ -132,7 +132,7 @@ LABEL_12:
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Invalid zoneID for zoneName: %@", buf, 0xCu);
   }
 
-  v16[2](v16, v45[5], v39[5]);
+  handlerCopy[2](handlerCopy, v45[5], v39[5]);
   _Block_object_dispose(&v38, 8);
 
   _Block_object_dispose(&v44, 8);
@@ -205,7 +205,7 @@ LABEL_3:
     v9 = __Block_byref_object_copy__2001;
     v10 = __Block_byref_object_dispose__2002;
     v11 = 0;
-    [a1 _fetchRecordWithRecordID:@"DBRMetadata" zoneName:@"SharedAlbumsInfo" fieldName:? ownerUserID:? isOwned:? completionHandler:?];
+    [self _fetchRecordWithRecordID:@"DBRMetadata" zoneName:@"SharedAlbumsInfo" fieldName:? ownerUserID:? isOwned:? completionHandler:?];
     v4 = v7[5];
 
     _Block_object_dispose(&v6, 8);

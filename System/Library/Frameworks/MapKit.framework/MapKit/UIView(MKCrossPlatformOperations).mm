@@ -11,14 +11,14 @@
 
 - (uint64_t)_mapkit_YCoordinate:()MKCrossPlatformOperations liesInDirection:startingFromYCoordinate:
 {
-  if (a1 == a2)
+  if (self == a2)
   {
     return 0;
   }
 
   else
   {
-    return (a5 != 0) ^ (a1 < a2);
+    return (a5 != 0) ^ (self < a2);
   }
 }
 
@@ -26,15 +26,15 @@
 {
   if (a5 != 1)
   {
-    a1 = -a1;
+    self = -self;
   }
 
-  return a1 + a2;
+  return self + a2;
 }
 
 - (uint64_t)_mapkit_YCoordinateAtDistance:()MKCrossPlatformOperations inDirection:fromEdge:
 {
-  [a1 bounds];
+  [self bounds];
   if (a5 == 3 || a5 == 1)
   {
     MaxY = CGRectGetMaxY(*&v9);
@@ -54,29 +54,29 @@
   v13 = MaxY;
 LABEL_7:
 
-  return [a1 _mapkit_YCoordinateAtDistance:a4 inDirection:a2 fromYCoordinate:v13];
+  return [self _mapkit_YCoordinateAtDistance:a4 inDirection:a2 fromYCoordinate:v13];
 }
 
 - (id)_mapkit_constraintsPinningSubviewToBounds:()MKCrossPlatformOperations
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v18 = [a1 leadingAnchor];
-  v17 = [v4 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leadingAnchor = [self leadingAnchor];
+  leadingAnchor2 = [v4 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[0] = v16;
-  v5 = [a1 trailingAnchor];
-  v6 = [v4 trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [v4 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[1] = v7;
-  v8 = [a1 topAnchor];
-  v9 = [v4 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [self topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[2] = v10;
-  v11 = [a1 bottomAnchor];
-  v12 = [v4 bottomAnchor];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [v4 bottomAnchor];
 
-  v13 = [v11 constraintEqualToAnchor:v12];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
 
@@ -93,7 +93,7 @@ LABEL_7:
   v12 = a2;
   v11 = v8;
   v9 = v8;
-  [a1 animateWithDuration:4 delay:v10 options:a5 animations:a2 completion:0.0];
+  [self animateWithDuration:4 delay:v10 options:a5 animations:a2 completion:0.0];
 }
 
 + (void)_mapkit_animateWithDuration:()MKCrossPlatformOperations animations:completion:
@@ -106,7 +106,7 @@ LABEL_7:
   v12 = a2;
   v11 = v8;
   v9 = v8;
-  [a1 animateWithDuration:v10 animations:a5 completion:a2];
+  [self animateWithDuration:v10 animations:a5 completion:a2];
 }
 
 @end

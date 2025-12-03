@@ -1,19 +1,19 @@
 @interface STStorageUsageDetailController
-- (id)dataSize:(id)a3;
+- (id)dataSize:(id)size;
 - (id)specifiers;
 @end
 
 @implementation STStorageUsageDetailController
 
-- (id)dataSize:(id)a3
+- (id)dataSize:(id)size
 {
-  v3 = [a3 propertyForKey:STStorageAppKey];
-  v4 = [v3 usageBundle];
+  v3 = [size propertyForKey:STStorageAppKey];
+  usageBundle = [v3 usageBundle];
 
-  if (v4)
+  if (usageBundle)
   {
-    v5 = [v3 appSize];
-    [v5 userTotal];
+    appSize = [v3 appSize];
+    [appSize userTotal];
 
     v6 = STFormattedSize();
   }
@@ -46,45 +46,45 @@
 
     [v11 setProperty:self->_storageApp forKey:v5];
     [v8 addObject:v11];
-    v12 = [(STStorageApp *)self->_storageApp usageBundle];
-    v13 = [v12 usageBundleStorageReporter];
+    usageBundle = [(STStorageApp *)self->_storageApp usageBundle];
+    usageBundleStorageReporter = [usageBundle usageBundleStorageReporter];
     v14 = objc_opt_class();
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 usageDetailControllerClassForUsageBundleApp:v12];
+      v14 = [usageBundleStorageReporter usageDetailControllerClassForUsageBundleApp:usageBundle];
     }
 
     v15 = [PSSpecifier preferenceSpecifierNamed:&stru_2D2D0 target:0 set:0 get:0 detail:v14 cell:-1 edit:0];
 
     [PSUsageBundleDetailController setupSpecifier:v15 forMediaGroups:0];
-    [v15 setProperty:v12 forKey:PSUsageBundleAppKey];
+    [v15 setProperty:usageBundle forKey:PSUsageBundleAppKey];
     [v15 setProperty:self->_storageApp forKey:v5];
     [v15 setProperty:self->_storageApp forKey:@"USAGE_APP"];
-    v16 = v12;
+    v16 = usageBundle;
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(STStorageApp *)self->_storageApp usageBundle];
+      usageBundle2 = [(STStorageApp *)self->_storageApp usageBundle];
       v26 = v15;
-      [v13 usageBundleApp:v17 willDisplaySpecifier:&v26];
+      [usageBundleStorageReporter usageBundleApp:usageBundle2 willDisplaySpecifier:&v26];
       v18 = v26;
 
       v15 = v18;
-      v16 = v12;
+      v16 = usageBundle;
     }
 
     v19 = objc_alloc_init(v14);
     usageDetailController = self->_usageDetailController;
     self->_usageDetailController = v19;
 
-    v21 = [(STStorageUsageDetailController *)self rootController];
-    [(PSUsageBundleDetailController *)self->_usageDetailController setRootController:v21];
+    rootController = [(STStorageUsageDetailController *)self rootController];
+    [(PSUsageBundleDetailController *)self->_usageDetailController setRootController:rootController];
 
     [(PSUsageBundleDetailController *)self->_usageDetailController setParentController:self];
     [(PSUsageBundleDetailController *)self->_usageDetailController setSpecifier:v15];
     [(PSUsageBundleDetailController *)self->_usageDetailController viewDidLoad];
     [(STStorageUsageDetailController *)self addChildViewController:self->_usageDetailController];
-    v22 = [(PSUsageBundleDetailController *)self->_usageDetailController specifiers];
-    [v8 addObjectsFromArray:v22];
+    specifiers = [(PSUsageBundleDetailController *)self->_usageDetailController specifiers];
+    [v8 addObjectsFromArray:specifiers];
 
     v23 = *&self->super.PSListController_opaque[v3];
     *&self->super.PSListController_opaque[v3] = v8;

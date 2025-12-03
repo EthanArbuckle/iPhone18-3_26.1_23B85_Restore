@@ -1,11 +1,11 @@
 @interface HMDHouseholdDataEventCounterGroupSpecifier
-+ (id)specifierWithGroupName:(id)a3 homeUUID:(id)a4 date:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (HMDHouseholdDataEventCounterGroupSpecifier)initWithCoder:(id)a3;
-- (HMDHouseholdDataEventCounterGroupSpecifier)initWithGroupName:(id)a3 homeUUID:(id)a4 date:(id)a5;
++ (id)specifierWithGroupName:(id)name homeUUID:(id)d date:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (HMDHouseholdDataEventCounterGroupSpecifier)initWithCoder:(id)coder;
+- (HMDHouseholdDataEventCounterGroupSpecifier)initWithGroupName:(id)name homeUUID:(id)d date:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDHouseholdDataEventCounterGroupSpecifier
@@ -13,48 +13,48 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  v5 = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
-  v6 = [(HMDDateCounterGroupSpecifier *)self date];
-  v7 = [v3 stringWithFormat:@"%@/%@/%@", v4, v5, v6];
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  homeUUID = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
+  date = [(HMDDateCounterGroupSpecifier *)self date];
+  v7 = [v3 stringWithFormat:@"%@/%@/%@", groupName, homeUUID, date];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-  v4 = [v3 hash];
-  v5 = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMDDateCounterGroupSpecifier *)self date];
-  v8 = [v7 hash];
+  groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+  v4 = [groupName hash];
+  homeUUID = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
+  v6 = [homeUUID hash] ^ v4;
+  date = [(HMDDateCounterGroupSpecifier *)self date];
+  v8 = [date hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if ([(HMDHouseholdDataEventCounterGroupSpecifier *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HMDHouseholdDataEventCounterGroupSpecifier *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(HMDEventCounterGroupNameSpecifier *)self groupName];
-    v7 = [(HMDEventCounterGroupNameSpecifier *)v5 groupName];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    groupName = [(HMDEventCounterGroupNameSpecifier *)self groupName];
+    groupName2 = [(HMDEventCounterGroupNameSpecifier *)v5 groupName];
+    if ([groupName isEqualToString:groupName2])
     {
-      v8 = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
-      v9 = [(HMDHouseholdDataEventCounterGroupSpecifier *)v5 homeUUID];
-      if ([v8 hmf_isEqualToUUID:v9])
+      homeUUID = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID];
+      homeUUID2 = [(HMDHouseholdDataEventCounterGroupSpecifier *)v5 homeUUID];
+      if ([homeUUID hmf_isEqualToUUID:homeUUID2])
       {
-        v10 = [(HMDDateCounterGroupSpecifier *)self date];
-        v11 = [(HMDDateCounterGroupSpecifier *)v5 date];
-        v12 = [v10 isEqualToDate:v11];
+        date = [(HMDDateCounterGroupSpecifier *)self date];
+        date2 = [(HMDDateCounterGroupSpecifier *)v5 date];
+        v12 = [date isEqualToDate:date2];
       }
 
       else
@@ -77,25 +77,25 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDHouseholdDataEventCounterGroupSpecifier;
-  v4 = a3;
-  [(HMDDateCounterGroupSpecifier *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDDateCounterGroupSpecifier *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMDHouseholdDataEventCounterGroupSpecifier *)self homeUUID:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"homeUUID"];
+  [coderCopy encodeObject:v5 forKey:@"homeUUID"];
 }
 
-- (HMDHouseholdDataEventCounterGroupSpecifier)initWithCoder:(id)a3
+- (HMDHouseholdDataEventCounterGroupSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMDHouseholdDataEventCounterGroupSpecifier;
-  v5 = [(HMDDateCounterGroupSpecifier *)&v9 initWithCoder:v4];
+  v5 = [(HMDDateCounterGroupSpecifier *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeUUID"];
     homeUUID = v5->_homeUUID;
     v5->_homeUUID = v6;
   }
@@ -103,27 +103,27 @@
   return v5;
 }
 
-- (HMDHouseholdDataEventCounterGroupSpecifier)initWithGroupName:(id)a3 homeUUID:(id)a4 date:(id)a5
+- (HMDHouseholdDataEventCounterGroupSpecifier)initWithGroupName:(id)name homeUUID:(id)d date:(id)date
 {
-  v9 = a4;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = HMDHouseholdDataEventCounterGroupSpecifier;
-  v10 = [(HMDDateCounterGroupSpecifier *)&v13 initWithGroupName:a3 date:a5];
+  v10 = [(HMDDateCounterGroupSpecifier *)&v13 initWithGroupName:name date:date];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeUUID, a4);
+    objc_storeStrong(&v10->_homeUUID, d);
   }
 
   return v11;
 }
 
-+ (id)specifierWithGroupName:(id)a3 homeUUID:(id)a4 date:(id)a5
++ (id)specifierWithGroupName:(id)name homeUUID:(id)d date:(id)date
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDHouseholdDataEventCounterGroupSpecifier alloc] initWithGroupName:v9 homeUUID:v8 date:v7];
+  dateCopy = date;
+  dCopy = d;
+  nameCopy = name;
+  v10 = [[HMDHouseholdDataEventCounterGroupSpecifier alloc] initWithGroupName:nameCopy homeUUID:dCopy date:dateCopy];
 
   return v10;
 }

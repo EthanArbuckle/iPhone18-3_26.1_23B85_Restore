@@ -6,14 +6,14 @@
 - (double)cornerRadius;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRichTitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseCompactMode:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRichTitle:(id)title;
+- (void)setTitle:(id)title;
+- (void)setUseCompactMode:(BOOL)mode;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKStoreButton
@@ -41,11 +41,11 @@
   return v2;
 }
 
-- (void)setUseCompactMode:(BOOL)a3
+- (void)setUseCompactMode:(BOOL)mode
 {
-  self->_useCompactMode = a3;
+  self->_useCompactMode = mode;
   v4 = 15.0;
-  if (a3)
+  if (mode)
   {
     v4 = 12.0;
   }
@@ -58,85 +58,85 @@
 
 - (UIFont)font
 {
-  v2 = [(TLKStoreButton *)self label];
-  v3 = [v2 font];
+  label = [(TLKStoreButton *)self label];
+  font = [label font];
 
-  return v3;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TLKStoreButton *)self label];
-  [v5 setFont:v4];
+  fontCopy = font;
+  label = [(TLKStoreButton *)self label];
+  [label setFont:fontCopy];
 
   [(TLKStoreButton *)self invalidateIntrinsicContentSize];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(TLKStoreButton *)self backgroundView];
-  v3 = [v2 layer];
-  [v3 cornerRadius];
+  backgroundView = [(TLKStoreButton *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer cornerRadius];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v5 = a3;
-  if (a3 == 0.0)
+  radiusCopy = radius;
+  if (radius == 0.0)
   {
     [(TLKStoreButton *)self effectiveLayoutSizeFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-    v5 = v6 * 0.5;
+    radiusCopy = v6 * 0.5;
   }
 
-  v7 = [(TLKStoreButton *)self backgroundView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v5];
+  backgroundView = [(TLKStoreButton *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer setCornerRadius:radiusCopy];
 
   v9 = MEMORY[0x1E69796E8];
-  if (a3 == 0.0)
+  if (radius == 0.0)
   {
     v9 = MEMORY[0x1E69796E0];
   }
 
   v10 = *v9;
-  v12 = [(TLKStoreButton *)self backgroundView];
-  v11 = [v12 layer];
-  [v11 setCornerCurve:v10];
+  backgroundView2 = [(TLKStoreButton *)self backgroundView];
+  layer2 = [backgroundView2 layer];
+  [layer2 setCornerCurve:v10];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v5 = [(TLKStoreButton *)self highlightView];
+  highlightView = [(TLKStoreButton *)self highlightView];
 
-  if (!v5)
+  if (!highlightView)
   {
     v6 = [TLKProminenceView viewWithProminence:2];
     [(TLKStoreButton *)self setHighlightView:v6];
 
-    v7 = [(TLKStoreButton *)self backgroundView];
-    v8 = [v7 layer];
-    [v8 cornerRadius];
+    backgroundView = [(TLKStoreButton *)self backgroundView];
+    layer = [backgroundView layer];
+    [layer cornerRadius];
     v10 = v9;
-    v11 = [(TLKStoreButton *)self highlightView];
-    v12 = [v11 layer];
-    [v12 setCornerRadius:v10];
+    highlightView2 = [(TLKStoreButton *)self highlightView];
+    layer2 = [highlightView2 layer];
+    [layer2 setCornerRadius:v10];
 
-    v13 = [(TLKStoreButton *)self backgroundView];
-    v14 = [v13 layer];
-    v15 = [v14 cornerCurve];
-    v16 = [(TLKStoreButton *)self highlightView];
-    v17 = [v16 layer];
-    [v17 setCornerCurve:v15];
+    backgroundView2 = [(TLKStoreButton *)self backgroundView];
+    layer3 = [backgroundView2 layer];
+    cornerCurve = [layer3 cornerCurve];
+    highlightView3 = [(TLKStoreButton *)self highlightView];
+    layer4 = [highlightView3 layer];
+    [layer4 setCornerCurve:cornerCurve];
 
-    v18 = [(TLKStoreButton *)self highlightView];
-    [v18 setAlpha:0.0];
+    highlightView4 = [(TLKStoreButton *)self highlightView];
+    [highlightView4 setAlpha:0.0];
 
-    v19 = [(TLKStoreButton *)self highlightView];
-    [(TLKStoreButton *)self addSubview:v19];
+    highlightView5 = [(TLKStoreButton *)self highlightView];
+    [(TLKStoreButton *)self addSubview:highlightView5];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
@@ -144,7 +144,7 @@
   v20[2] = __33__TLKStoreButton_setHighlighted___block_invoke;
   v20[3] = &unk_1E7FD8F38;
   v20[4] = self;
-  v21 = a3;
+  highlightedCopy = highlighted;
   [TLKUtilities performAnimatableChanges:v20];
 }
 
@@ -180,8 +180,8 @@ void __33__TLKStoreButton_setHighlighted___block_invoke(uint64_t a1, double a2)
   v12 = v11;
   [(TLKStoreButton *)self bounds];
   Height = CGRectGetHeight(v50);
-  v14 = [(TLKStoreButton *)self label];
-  [v14 intrinsicContentSize];
+  label = [(TLKStoreButton *)self label];
+  [label intrinsicContentSize];
   v16 = (Height - v15) * 0.5;
   v51.origin.x = v6;
   v51.origin.y = v8;
@@ -198,40 +198,40 @@ void __33__TLKStoreButton_setHighlighted___block_invoke(uint64_t a1, double a2)
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(TLKStoreButton *)self label];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  label2 = [(TLKStoreButton *)self label];
+  [label2 setFrame:{v22, v24, v26, v28}];
 
   [(TLKStoreButton *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(TLKStoreButton *)self backgroundView];
-  [v38 setFrame:{v31, v33, v35, v37}];
+  backgroundView = [(TLKStoreButton *)self backgroundView];
+  [backgroundView setFrame:{v31, v33, v35, v37}];
 
   [(TLKStoreButton *)self bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(TLKStoreButton *)self highlightView];
-  [v47 setFrame:{v40, v42, v44, v46}];
+  highlightView = [(TLKStoreButton *)self highlightView];
+  [highlightView setFrame:{v40, v42, v44, v46}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(TLKStoreButton *)self label];
-  [v3 intrinsicContentSize];
+  label = [(TLKStoreButton *)self label];
+  [label intrinsicContentSize];
   v5 = v4;
 
-  v6 = [(TLKStoreButton *)self backgroundView];
-  v7 = [v6 layer];
-  [v7 cornerRadius];
+  backgroundView = [(TLKStoreButton *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer cornerRadius];
   v9 = v5 + v8 * 2.0;
 
-  v10 = [(TLKStoreButton *)self useCompactMode];
+  useCompactMode = [(TLKStoreButton *)self useCompactMode];
   v11 = 74.0;
-  if (v10)
+  if (useCompactMode)
   {
     v11 = 59.0;
   }
@@ -241,9 +241,9 @@ void __33__TLKStoreButton_setHighlighted___block_invoke(uint64_t a1, double a2)
     v9 = v11;
   }
 
-  v12 = [(TLKStoreButton *)self useCompactMode];
+  useCompactMode2 = [(TLKStoreButton *)self useCompactMode];
   v13 = 24.0;
-  if (!v12)
+  if (!useCompactMode2)
   {
     v13 = 30.0;
   }
@@ -256,36 +256,36 @@ void __33__TLKStoreButton_setHighlighted___block_invoke(uint64_t a1, double a2)
 
 - (NSString)title
 {
-  v2 = [(TLKStoreButton *)self richTitle];
-  v3 = [v2 text];
+  richTitle = [(TLKStoreButton *)self richTitle];
+  text = [richTitle text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [(TLKMultilineText *)TLKRichText textWithString:a3];
+  v4 = [(TLKMultilineText *)TLKRichText textWithString:title];
   [v4 setMaxLines:1];
   [(TLKStoreButton *)self setRichTitle:v4];
   [(TLKStoreButton *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setRichTitle:(id)a3
+- (void)setRichTitle:(id)title
 {
-  objc_storeStrong(&self->_richTitle, a3);
-  v5 = a3;
-  v6 = [(TLKStoreButton *)self label];
-  [v6 setRichText:v5];
+  objc_storeStrong(&self->_richTitle, title);
+  titleCopy = title;
+  label = [(TLKStoreButton *)self label];
+  [label setRichText:titleCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKStoreButton;
-  [(TLKStoreButton *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKStoreButton *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKStoreButton *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKStoreButton *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -293,11 +293,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKStoreButton *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKStoreButton *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -313,44 +313,44 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v12.receiver = self;
   v12.super_class = TLKStoreButton;
-  [(UIView *)&v12 tlk_updateForAppearance:v4];
-  if (([v4 isVibrant] & 1) != 0 || -[TLKStoreButton isEmphasized](self, "isEmphasized"))
+  [(UIView *)&v12 tlk_updateForAppearance:appearanceCopy];
+  if (([appearanceCopy isVibrant] & 1) != 0 || -[TLKStoreButton isEmphasized](self, "isEmphasized"))
   {
     v5 = 0;
-    v6 = 0;
+    secondaryButtonColor = 0;
   }
 
   else
   {
-    v6 = [v4 secondaryButtonColor];
+    secondaryButtonColor = [appearanceCopy secondaryButtonColor];
     v5 = 1;
   }
 
-  v7 = [(TLKStoreButton *)self label];
-  [v7 setTextColor:v6];
+  label = [(TLKStoreButton *)self label];
+  [label setTextColor:secondaryButtonColor];
 
   if (v5)
   {
   }
 
-  v8 = [v4 quaternaryColor];
-  if (([v4 isVibrant] & 1) == 0)
+  quaternaryColor = [appearanceCopy quaternaryColor];
+  if (([appearanceCopy isVibrant] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
 
-    v8 = v9;
+    quaternaryColor = tertiarySystemFillColor;
   }
 
-  v10 = [(TLKStoreButton *)self backgroundView];
-  [v10 setBackgroundColor:v8];
+  backgroundView = [(TLKStoreButton *)self backgroundView];
+  [backgroundView setBackgroundColor:quaternaryColor];
 
-  v11 = [(TLKStoreButton *)self backgroundView];
-  [v4 enableAppearanceForView:v11];
+  backgroundView2 = [(TLKStoreButton *)self backgroundView];
+  [appearanceCopy enableAppearanceForView:backgroundView2];
 }
 
 @end

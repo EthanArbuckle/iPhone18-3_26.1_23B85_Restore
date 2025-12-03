@@ -1,56 +1,56 @@
 @interface VoiceOverController
-+ (void)setVoiceOverEnabled:(BOOL)a3;
++ (void)setVoiceOverEnabled:(BOOL)enabled;
 - (BOOL)_shouldEnableVoiceOverSwitch;
-- (BOOL)cachedBrailleDisplayIsPaired:(id)a3;
+- (BOOL)cachedBrailleDisplayIsPaired:(id)paired;
 - (VOSCommandManager)commandManager;
 - (VoiceOverController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_generateVOPracticeSpecifiers;
 - (id)_generateVOTutorialSpecifiers;
-- (id)brailleDisplayNameForSpecifier:(id)a3;
-- (id)captionPanelForSpecifier:(id)a3;
-- (id)cursorStyleForSpecifier:(id)a3;
-- (id)doubleTapInterval:(id)a3;
-- (id)navigateImagesPreferenceForSpecifier:(id)a3;
-- (id)navigationStyle:(id)a3;
-- (id)screenCurtainEnabled:(id)a3;
-- (id)soundEffectsEnabled:(id)a3;
-- (id)speakingRate:(id)a3;
-- (id)speakingRateInRotor:(id)a3;
+- (id)brailleDisplayNameForSpecifier:(id)specifier;
+- (id)captionPanelForSpecifier:(id)specifier;
+- (id)cursorStyleForSpecifier:(id)specifier;
+- (id)doubleTapInterval:(id)interval;
+- (id)navigateImagesPreferenceForSpecifier:(id)specifier;
+- (id)navigationStyle:(id)style;
+- (id)screenCurtainEnabled:(id)enabled;
+- (id)soundEffectsEnabled:(id)enabled;
+- (id)speakingRate:(id)rate;
+- (id)speakingRateInRotor:(id)rotor;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)voiceOverCursorOptionDescription:(id)a3;
-- (id)voiceOverDelayUntilSpeakInterval:(id)a3;
-- (id)voiceOverIgnoreTrackpad:(id)a3;
-- (id)voiceOverSpeakUnderPointerDescription:(id)a3;
-- (id)voiceOverTouchEnabled:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)voiceOverCursorOptionDescription:(id)description;
+- (id)voiceOverDelayUntilSpeakInterval:(id)interval;
+- (id)voiceOverIgnoreTrackpad:(id)trackpad;
+- (id)voiceOverSpeakUnderPointerDescription:(id)description;
+- (id)voiceOverTouchEnabled:(id)enabled;
 - (void)_bluetoothBrailleDisplayChange;
-- (void)_changeVOActivationSpecifierIntoButtonCell:(id)a3;
-- (void)_changeVOActivationSpecifierIntoSwitchCell:(id)a3;
-- (void)_handleEnablingVoiceOverWithActivationBlock:(id)a3 cancelBlock:(id)a4;
+- (void)_changeVOActivationSpecifierIntoButtonCell:(id)cell;
+- (void)_changeVOActivationSpecifierIntoSwitchCell:(id)cell;
+- (void)_handleEnablingVoiceOverWithActivationBlock:(id)block cancelBlock:(id)cancelBlock;
 - (void)_manageGestureHelpButton;
-- (void)_tipLoaded:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3;
-- (void)_updateSpecifierItemInfo:(id)a3 parentInfo:(id)a4 index:(int64_t)a5;
+- (void)_tipLoaded:(id)loaded;
+- (void)_traitCollectionDidChange:(id)change;
+- (void)_updateSpecifierItemInfo:(id)info parentInfo:(id)parentInfo index:(int64_t)index;
 - (void)_updateTutorialButtonForOneness;
-- (void)_updateVOTTutorialSpecifier:(id)a3;
-- (void)cursorStyleSetPreference:(id)a3 specifier:(id)a4;
+- (void)_updateVOTTutorialSpecifier:(id)specifier;
+- (void)cursorStyleSetPreference:(id)preference specifier:(id)specifier;
 - (void)dealloc;
 - (void)displayVoiceOverTutorialView;
 - (void)reload;
-- (void)resetVoiceOverSettings:(id)a3;
-- (void)setCaptionPanel:(id)a3 specifier:(id)a4;
-- (void)setScreenCurtainEnabled:(id)a3 specifier:(id)a4;
-- (void)setSoundEffectsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpeakingRate:(id)a3 specifier:(id)a4;
-- (void)setSpeakingRateInRotor:(id)a3 specifier:(id)a4;
-- (void)setVoiceOverIgnoreTrackpad:(id)a3 specifier:(id)a4;
-- (void)setVoiceOverTouchEnabled:(id)a3 specifier:(id)a4;
-- (void)startGestureHelp:(id)a3;
-- (void)startVoiceOverTutorial:(id)a3;
+- (void)resetVoiceOverSettings:(id)settings;
+- (void)setCaptionPanel:(id)panel specifier:(id)specifier;
+- (void)setScreenCurtainEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSoundEffectsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpeakingRate:(id)rate specifier:(id)specifier;
+- (void)setSpeakingRateInRotor:(id)rotor specifier:(id)specifier;
+- (void)setVoiceOverIgnoreTrackpad:(id)trackpad specifier:(id)specifier;
+- (void)setVoiceOverTouchEnabled:(id)enabled specifier:(id)specifier;
+- (void)startGestureHelp:(id)help;
+- (void)startVoiceOverTutorial:(id)tutorial;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)voiceOverActivateWorkaround:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)voiceOverActivateWorkaround:(id)workaround;
 @end
 
 @implementation VoiceOverController
@@ -60,9 +60,9 @@
   commandManager = self->_commandManager;
   if (!commandManager)
   {
-    v4 = [[VOSCommandManager alloc] initPreferringUserProfile];
+    initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
     v5 = self->_commandManager;
-    self->_commandManager = v4;
+    self->_commandManager = initPreferringUserProfile;
 
     commandManager = self->_commandManager;
   }
@@ -212,9 +212,9 @@
     LocalCenter = CFNotificationCenterGetLocalCenter();
     CFNotificationCenterAddObserver(LocalCenter, v2, _reloadSettings, kAXSAssistiveTouchScannerEnabledNotification, 0, 1028);
     v23 = [AXSettings sharedInstance:v28];
-    v24 = [v23 laserEnabled];
+    laserEnabled = [v23 laserEnabled];
 
-    if (v24)
+    if (laserEnabled)
     {
       v25 = +[AXPointerDeviceManager sharedInstance];
       [v25 addObserver:v2];
@@ -346,7 +346,7 @@ void __34__VoiceOverController_viewDidLoad__block_invoke(uint64_t a1, uint64_t a
   [WeakRetained _traitCollectionDidChange:v4];
 }
 
-- (void)_tipLoaded:(id)a3
+- (void)_tipLoaded:(id)loaded
 {
   if (!self->_tipLoaded)
   {
@@ -374,22 +374,22 @@ void __34__VoiceOverController__tipLoaded___block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VoiceOverController;
-  [(VoiceOverController *)&v4 viewWillAppear:a3];
+  [(VoiceOverController *)&v4 viewWillAppear:appear];
   [(VoiceOverController *)self _updateSpecifiers];
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VoiceOverController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  traitCollection = [(VoiceOverController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
     [(VoiceOverController *)self _updateSpecifiers];
@@ -405,8 +405,8 @@ void __34__VoiceOverController__tipLoaded___block_invoke(uint64_t a1)
     if (!v3)
     {
       [(VoiceOverController *)self beginUpdates];
-      v4 = [(VoiceOverController *)self _generateVOPracticeSpecifiers];
-      [(VoiceOverController *)self insertContiguousSpecifiers:v4 afterSpecifierID:@"VoiceOverTouchEnabled"];
+      _generateVOPracticeSpecifiers = [(VoiceOverController *)self _generateVOPracticeSpecifiers];
+      [(VoiceOverController *)self insertContiguousSpecifiers:_generateVOPracticeSpecifiers afterSpecifierID:@"VoiceOverTouchEnabled"];
 
       [(VoiceOverController *)self endUpdates];
     }
@@ -458,9 +458,9 @@ void __34__VoiceOverController__tipLoaded___block_invoke(uint64_t a1)
   [v6 setProperty:@"VoiceOverTouchTutorialEnabled" forKey:v4];
   [v6 setButtonAction:"startVoiceOverTutorial:"];
   v7 = +[AXSpringBoardServer server];
-  v8 = [v7 isContinuitySessionActive];
+  isContinuitySessionActive = [v7 isContinuitySessionActive];
 
-  v9 = [NSNumber numberWithBool:v8 ^ 1];
+  v9 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v6 setProperty:v9 forKey:PSEnabledKey];
 
   v12[0] = v3;
@@ -495,9 +495,9 @@ void __34__VoiceOverController__tipLoaded___block_invoke(uint64_t a1)
   else
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverActivationWorkaround];
+    voiceOverActivationWorkaround = [v3 voiceOverActivationWorkaround];
 
-    if ((v4 - 1) <= 1)
+    if ((voiceOverActivationWorkaround - 1) <= 1)
     {
       v5 = _AXSVoiceOverTouchEnabled();
       v6 = [(VoiceOverController *)self specifierForID:@"VoiceOverTouchEnabled"];
@@ -665,16 +665,16 @@ LABEL_28:
                 if (v25)
                 {
                   v26 = +[VOSCommandResolver resolverForCurrentHost];
-                  v27 = [[VOSCommandManager alloc] initPreferringUserProfile];
+                  initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
                   v28 = +[VOSCommand ToggleSettingsHUD];
-                  v29 = [v27 gestureBindingsForCommand:v28 withResolver:v26];
-                  v30 = [v29 anyObject];
+                  v29 = [initPreferringUserProfile gestureBindingsForCommand:v28 withResolver:v26];
+                  anyObject = [v29 anyObject];
 
-                  if (v30)
+                  if (anyObject)
                   {
                     v31 = settingsLocString(@"QUICK_SETTINGS_USAGE_HINT", @"VoiceOverSettings");
-                    v32 = [v30 localizedName];
-                    v33 = [NSString localizedStringWithFormat:v31, v32];
+                    localizedName = [anyObject localizedName];
+                    v33 = [NSString localizedStringWithFormat:v31, localizedName];
 
                     [v7 setProperty:v33 forKey:v86];
                   }
@@ -695,11 +695,11 @@ LABEL_28:
                     [v7 setProperty:v38 forKey:v87];
 
                     v39 = +[AXSettings sharedInstance];
-                    v40 = [v39 voiceOverActivationWorkaround];
+                    voiceOverActivationWorkaround = [v39 voiceOverActivationWorkaround];
 
-                    if ((v40 - 1) > 1)
+                    if ((voiceOverActivationWorkaround - 1) > 1)
                     {
-                      if (v40 == &dword_0 + 3)
+                      if (voiceOverActivationWorkaround == &dword_0 + 3)
                       {
                         v41 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
                         v42 = settingsLocString(@"VOICEOVER_ACTIVATION_DISABLED", @"VoiceOverSettings");
@@ -746,9 +746,9 @@ LABEL_28:
                   v49 = [v7 propertyForKey:v5];
                   if ([v49 isEqualToString:@"Braille"])
                   {
-                    v50 = [(VoiceOverController *)val inSetup];
+                    inSetup = [(VoiceOverController *)val inSetup];
 
-                    if (v50)
+                    if (inSetup)
                     {
                       [v7 setProperty:objc_opt_class() forKey:v78];
                     }
@@ -770,30 +770,30 @@ LABEL_28:
     }
 
     v51 = +[AXSettings sharedInstance];
-    v52 = [v51 laserEnabled];
+    laserEnabled = [v51 laserEnabled];
 
-    if (v52)
+    if (laserEnabled)
     {
       v53 = +[AXPointerDeviceManager sharedInstance];
-      v54 = [v53 connectedDevices];
-      v55 = [v54 count] == 0;
+      connectedDevices = [v53 connectedDevices];
+      v55 = [connectedDevices count] == 0;
 
       if (!v55)
       {
-        v56 = [v88 lastObject];
-        v57 = [v56 cellType];
+        lastObject = [v88 lastObject];
+        cellType = [lastObject cellType];
 
-        if (v57)
+        if (cellType)
         {
           v58 = +[PSSpecifier emptyGroupSpecifier];
           [v58 setProperty:@"pointerGroup" forKey:PSIDKey];
           [v88 addObject:v58];
         }
 
-        v59 = v57 == 0;
-        v60 = [v88 lastObject];
+        v59 = cellType == 0;
+        lastObject2 = [v88 lastObject];
         v61 = settingsLocString(@"VoiceOverPointerSectionTitle", @"Accessibility-hello");
-        [v60 setName:v61];
+        [lastObject2 setName:v61];
 
         v62 = settingsLocString(@"VoiceOverCursorOption", @"Accessibility-hello");
         v63 = [PSSpecifier preferenceSpecifierNamed:v62 target:val set:0 get:"voiceOverCursorOptionDescription:" detail:objc_opt_class() cell:2 edit:0];
@@ -818,13 +818,13 @@ LABEL_28:
 
     [(VoiceOverController *)val filterBuddy:v88];
     v69 = [v88 indexOfSpecifierWithID:@"VoiceOverTouchEnabled"];
-    v70 = [(VoiceOverController *)val _generateVOTutorialSpecifiers];
-    [v88 insertObjects:v70 atIndex:v69 + 1];
+    _generateVOTutorialSpecifiers = [(VoiceOverController *)val _generateVOTutorialSpecifiers];
+    [v88 insertObjects:_generateVOTutorialSpecifiers atIndex:v69 + 1];
 
     if (_AXSVoiceOverTouchEnabled())
     {
-      v71 = [(VoiceOverController *)val _generateVOPracticeSpecifiers];
-      [v88 insertObjects:v71 atIndex:v69 + 1];
+      _generateVOPracticeSpecifiers = [(VoiceOverController *)val _generateVOPracticeSpecifiers];
+      [v88 insertObjects:_generateVOPracticeSpecifiers atIndex:v69 + 1];
     }
 
     v72 = settingsLocString(@"VOICEOVER_RESET_SETTINGS_BUTTON", @"VoiceOverSettings");
@@ -875,22 +875,22 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
 {
   v6 = [(VoiceOverController *)self specifierForID:@"VoiceOverTouchTutorialEnabled"];
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isContinuitySessionActive];
+  isContinuitySessionActive = [v3 isContinuitySessionActive];
 
-  v5 = [NSNumber numberWithBool:v4 ^ 1];
+  v5 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v6 setProperty:v5 forKey:PSEnabledKey];
 
   [(VoiceOverController *)self reloadSpecifier:v6];
 }
 
-- (void)setVoiceOverIgnoreTrackpad:(id)a3 specifier:(id)a4
+- (void)setVoiceOverIgnoreTrackpad:(id)trackpad specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [trackpad BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverIgnoreTrackpad:v4];
+  [v5 setVoiceOverIgnoreTrackpad:bOOLValue];
 }
 
-- (id)voiceOverIgnoreTrackpad:(id)a3
+- (id)voiceOverIgnoreTrackpad:(id)trackpad
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverIgnoreTrackpad]);
@@ -898,14 +898,14 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
   return v4;
 }
 
-- (id)voiceOverCursorOptionDescription:(id)a3
+- (id)voiceOverCursorOptionDescription:(id)description
 {
   v3 = _AXSPointerVoiceOverCursorOption();
 
   return [AXPointerControllerVoiceOverCursorOptions localizedNameForVoiceOverCursorOption:v3];
 }
 
-- (id)voiceOverSpeakUnderPointerDescription:(id)a3
+- (id)voiceOverSpeakUnderPointerDescription:(id)description
 {
   if (_AXSVoiceOverSpeakUnderPointerEnabled())
   {
@@ -922,10 +922,10 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
   return v3;
 }
 
-- (void)_updateSpecifierItemInfo:(id)a3 parentInfo:(id)a4 index:(int64_t)a5
+- (void)_updateSpecifierItemInfo:(id)info parentInfo:(id)parentInfo index:(int64_t)index
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  parentInfoCopy = parentInfo;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -946,10 +946,10 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v6 objectForKey:v12];
+        v13 = [infoCopy objectForKey:v12];
         if ([&off_27C9C8 containsObject:v13])
         {
-          v14 = [v6 mutableCopy];
+          v14 = [infoCopy mutableCopy];
           v15 = [NSString stringWithFormat:@"%@_IPAD", v13, v19];
           [v14 setObject:v15 forKey:v12];
         }
@@ -959,7 +959,7 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
           v14 = 0;
         }
 
-        v16 = [v6 objectForKeyedSubscript:@"additionalContent"];
+        v16 = [infoCopy objectForKeyedSubscript:@"additionalContent"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -974,7 +974,7 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
           [v18 enumerateObjectsUsingBlock:v22];
           if (!v14)
           {
-            v14 = [v6 mutableCopy];
+            v14 = [infoCopy mutableCopy];
           }
 
           [v14 setObject:v18 forKey:@"additionalContent"];
@@ -982,7 +982,7 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
 
         if (v14)
         {
-          [v7 replaceObjectAtIndex:a5 withObject:v14];
+          [parentInfoCopy replaceObjectAtIndex:index withObject:v14];
         }
       }
 
@@ -993,10 +993,10 @@ void __33__VoiceOverController_specifiers__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)_updateVOTTutorialSpecifier:(id)a3
+- (void)_updateVOTTutorialSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"content"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"content"];
   v6 = [v5 mutableCopy];
 
   if (AXDeviceIsPad())
@@ -1036,7 +1036,7 @@ LABEL_10:
   if ([v6 count] == &dword_4)
   {
     v39 = v6;
-    v40 = v4;
+    v40 = specifierCopy;
     v10 = AXTeachableFeatureVoiceOver;
     v11 = [AXTeachableMomentsManager teachableItemsForFeature:AXTeachableFeatureVoiceOver];
     v12 = AXTeachableFeatureBraille;
@@ -1074,12 +1074,12 @@ LABEL_10:
 
             v22 = *(*(&v45 + 1) + 8 * i);
             v58[0] = @"headerLabel";
-            v23 = [v22 itemTitle];
-            v59[0] = v23;
+            itemTitle = [v22 itemTitle];
+            v59[0] = itemTitle;
             v58[1] = @"contentLabel";
-            v24 = [v22 itemDescription];
+            itemDescription = [v22 itemDescription];
             v58[2] = @"alreadyLocalized";
-            v59[1] = v24;
+            v59[1] = itemDescription;
             v59[2] = &__kCFBooleanTrue;
             v25 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:3];
             [v14 addObject:v25];
@@ -1125,12 +1125,12 @@ LABEL_10:
 
             v33 = *(*(&v41 + 1) + 8 * j);
             v53[0] = @"headerLabel";
-            v34 = [v33 itemTitle];
-            v54[0] = v34;
+            itemTitle2 = [v33 itemTitle];
+            v54[0] = itemTitle2;
             v53[1] = @"contentLabel";
-            v35 = [v33 itemDescription];
+            itemDescription2 = [v33 itemDescription];
             v53[2] = @"alreadyLocalized";
-            v54[1] = v35;
+            v54[1] = itemDescription2;
             v54[2] = &__kCFBooleanTrue;
             v36 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:3];
             [v14 addObject:v36];
@@ -1158,10 +1158,10 @@ LABEL_10:
       [v39 addObject:v37];
     }
 
-    v4 = v40;
+    specifierCopy = v40;
   }
 
-  [v4 setProperty:v6 forKey:@"content"];
+  [specifierCopy setProperty:v6 forKey:@"content"];
 }
 
 BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_2(id a1, NSDictionary *a2, unint64_t a3, BOOL *a4)
@@ -1196,53 +1196,53 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
   return v5;
 }
 
-- (void)_changeVOActivationSpecifierIntoButtonCell:(id)a3
+- (void)_changeVOActivationSpecifierIntoButtonCell:(id)cell
 {
-  if (*(a3 + OBJC_IVAR___PSSpecifier_cellType) != 13)
+  if (*(cell + OBJC_IVAR___PSSpecifier_cellType) != 13)
   {
-    *(a3 + OBJC_IVAR___PSSpecifier_cellType) = 13;
-    v4 = a3;
-    [v4 setButtonAction:"voiceOverActivateWorkaround:"];
-    [v4 setProperty:@"PSButtonCell" forKey:PSTableCellClassKey];
-    [v4 setProperty:&off_279948 forKey:@"mode"];
-    [v4 removePropertyForKey:PSGetterKey];
-    [v4 removePropertyForKey:PSSetterKey];
-    v5 = NSStringFromSelector([v4 buttonAction]);
-    [v4 setProperty:v5 forKey:PSButtonActionKey];
+    *(cell + OBJC_IVAR___PSSpecifier_cellType) = 13;
+    cellCopy = cell;
+    [cellCopy setButtonAction:"voiceOverActivateWorkaround:"];
+    [cellCopy setProperty:@"PSButtonCell" forKey:PSTableCellClassKey];
+    [cellCopy setProperty:&off_279948 forKey:@"mode"];
+    [cellCopy removePropertyForKey:PSGetterKey];
+    [cellCopy removePropertyForKey:PSSetterKey];
+    v5 = NSStringFromSelector([cellCopy buttonAction]);
+    [cellCopy setProperty:v5 forKey:PSButtonActionKey];
   }
 }
 
-- (void)_changeVOActivationSpecifierIntoSwitchCell:(id)a3
+- (void)_changeVOActivationSpecifierIntoSwitchCell:(id)cell
 {
-  if (*(a3 + OBJC_IVAR___PSSpecifier_cellType) != 6)
+  if (*(cell + OBJC_IVAR___PSSpecifier_cellType) != 6)
   {
-    *(a3 + OBJC_IVAR___PSSpecifier_cellType) = 6;
-    *(a3 + OBJC_IVAR___PSSpecifier_getter) = "voiceOverTouchEnabled:";
-    *(a3 + OBJC_IVAR___PSSpecifier_setter) = "setVoiceOverTouchEnabled:specifier:";
-    v5 = a3;
-    [v5 setTarget:self];
-    [v5 setProperty:@"PSSwitchCell" forKey:PSTableCellClassKey];
-    v6 = NSStringFromSelector(*&v5[OBJC_IVAR___PSSpecifier_getter]);
-    [v5 setProperty:v6 forKey:PSGetterKey];
+    *(cell + OBJC_IVAR___PSSpecifier_cellType) = 6;
+    *(cell + OBJC_IVAR___PSSpecifier_getter) = "voiceOverTouchEnabled:";
+    *(cell + OBJC_IVAR___PSSpecifier_setter) = "setVoiceOverTouchEnabled:specifier:";
+    cellCopy = cell;
+    [cellCopy setTarget:self];
+    [cellCopy setProperty:@"PSSwitchCell" forKey:PSTableCellClassKey];
+    v6 = NSStringFromSelector(*&cellCopy[OBJC_IVAR___PSSpecifier_getter]);
+    [cellCopy setProperty:v6 forKey:PSGetterKey];
 
-    v7 = NSStringFromSelector(*&v5[OBJC_IVAR___PSSpecifier_setter]);
-    [v5 setProperty:v7 forKey:PSSetterKey];
+    v7 = NSStringFromSelector(*&cellCopy[OBJC_IVAR___PSSpecifier_setter]);
+    [cellCopy setProperty:v7 forKey:PSSetterKey];
   }
 }
 
-- (void)voiceOverActivateWorkaround:(id)a3
+- (void)voiceOverActivateWorkaround:(id)workaround
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverActivationWorkaround];
+  voiceOverActivationWorkaround = [v3 voiceOverActivationWorkaround];
 
-  if (v4 == &dword_0 + 2)
+  if (voiceOverActivationWorkaround == &dword_0 + 2)
   {
     v5 = &AXStartListeningForVoiceOverVibrationActivationNotification;
   }
 
   else
   {
-    if (v4 != &dword_0 + 1)
+    if (voiceOverActivationWorkaround != &dword_0 + 1)
     {
       return;
     }
@@ -1256,11 +1256,11 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v7, 0, 0, 1u);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VoiceOverController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(VoiceOverController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSCellClassKey];
   v10 = [v9 isEqual:objc_opt_class()];
 
@@ -1273,17 +1273,17 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
   {
     v14.receiver = self;
     v14.super_class = VoiceOverController;
-    [(VoiceOverController *)&v14 tableView:v6 heightForRowAtIndexPath:v7];
+    [(VoiceOverController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     tipHeight = v12;
   }
 
   return tipHeight;
 }
 
-+ (void)setVoiceOverEnabled:(BOOL)a3
++ (void)setVoiceOverEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     if (+[UIApplication isRunningInStoreDemoMode])
     {
@@ -1305,16 +1305,16 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
     }
   }
 
-  __AXSApplicationAccessibilitySetEnabled(v3);
+  __AXSApplicationAccessibilitySetEnabled(enabledCopy);
 }
 
-- (void)_handleEnablingVoiceOverWithActivationBlock:(id)a3 cancelBlock:(id)a4
+- (void)_handleEnablingVoiceOverWithActivationBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   if ((+[AXLanguageManager voiceOverSupportedInCurrentLanguage]& 1) != 0 || _AXSVoiceOverTouchUsageConfirmed())
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   else
@@ -1322,9 +1322,9 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
     v8 = settingsLocString(@"VoiceOverNotSupportedInLanguageTitle", @"VoiceOverSettings");
     v9 = settingsLocString(@"VoiceOverNotSupportedInLanguageMessage", @"VoiceOverSettings");
     v10 = +[AXLanguageManager sharedInstance];
-    v11 = [v10 dialectForSystemLanguage];
-    v12 = [v11 languageNameInNativeLocale];
-    v13 = [NSString stringWithFormat:v9, v12];
+    dialectForSystemLanguage = [v10 dialectForSystemLanguage];
+    languageNameInNativeLocale = [dialectForSystemLanguage languageNameInNativeLocale];
+    v13 = [NSString stringWithFormat:v9, languageNameInNativeLocale];
     v14 = [UIAlertController alertControllerWithTitle:v8 message:v13 preferredStyle:1];
 
     v15 = settingsLocString(@"CANCEL", @"Accessibility");
@@ -1332,7 +1332,7 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
     v24[1] = 3221225472;
     v24[2] = __79__VoiceOverController__handleEnablingVoiceOverWithActivationBlock_cancelBlock___block_invoke;
     v24[3] = &unk_2554C0;
-    v25 = v7;
+    v25 = cancelBlockCopy;
     v16 = [UIAlertAction actionWithTitle:v15 style:1 handler:v24];
 
     [v14 addAction:v16];
@@ -1341,32 +1341,32 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
     v22[1] = 3221225472;
     v22[2] = __79__VoiceOverController__handleEnablingVoiceOverWithActivationBlock_cancelBlock___block_invoke_2;
     v22[3] = &unk_2554C0;
-    v23 = v6;
+    v23 = blockCopy;
     v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:v22];
 
     [v14 addAction:v18];
-    v19 = [(VoiceOverController *)self view];
-    v20 = [v19 window];
-    v21 = [v20 rootViewController];
-    [v21 presentViewController:v14 animated:1 completion:0];
+    view = [(VoiceOverController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v14 animated:1 completion:0];
   }
 }
 
-- (void)setVoiceOverTouchEnabled:(id)a3 specifier:(id)a4
+- (void)setVoiceOverTouchEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke;
   v15[3] = &unk_2554E8;
   v15[4] = self;
-  v16 = v5;
+  v16 = bOOLValue;
   v6 = objc_retainBlock(v15);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke_2;
   v13[3] = &__block_descriptor_33_e5_v8__0l;
-  v14 = v5;
+  v14 = bOOLValue;
   v7 = objc_retainBlock(v13);
   if (([(VoiceOverController *)self inSetup]& 1) != 0)
   {
@@ -1375,12 +1375,12 @@ BOOL __51__VoiceOverController__updateVOTTutorialSpecifier___block_invoke_4(id a
 
   else
   {
-    v8 = [(VoiceOverController *)self parentController];
+    parentController = [(VoiceOverController *)self parentController];
     v9 = settingsLocString(@"CONFIRM_VOT_REMOVAL", @"Accessibility");
     v10 = kAXSVoiceOverTouchEnabledByiTunesPreference;
-    v11 = [(VoiceOverController *)self view];
-    v12 = [v11 window];
-    [v8 confirmDisablingWithString:v9 forKey:v10 confirmedBlock:v7 canceledBlock:v6 inWindow:v12];
+    view = [(VoiceOverController *)self view];
+    window = [view window];
+    [parentController confirmDisablingWithString:v9 forKey:v10 confirmedBlock:v7 canceledBlock:v6 inWindow:window];
   }
 }
 
@@ -1393,7 +1393,7 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   [*(a1 + 32) reloadSpecifier:v3];
 }
 
-- (void)startGestureHelp:(id)a3
+- (void)startGestureHelp:(id)help
 {
   if (!self->_gestureHelpViewController)
   {
@@ -1415,7 +1415,7 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
   }
 }
 
-- (void)startVoiceOverTutorial:(id)a3
+- (void)startVoiceOverTutorial:(id)tutorial
 {
   if (_AXSVoiceOverTouchEnabled() || AXProcessIsSetup())
   {
@@ -1451,10 +1451,10 @@ void __58__VoiceOverController_setVoiceOverTouchEnabled_specifier___block_invoke
     v12 = [UIAlertAction actionWithTitle:v11 style:1 handler:0];
 
     [v6 addAction:v12];
-    v13 = [(VoiceOverController *)self view];
-    v14 = [v13 window];
-    v15 = [v14 rootViewController];
-    [v15 presentViewController:v6 animated:1 completion:0];
+    view = [(VoiceOverController *)self view];
+    window = [view window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v6 animated:1 completion:0];
   }
 }
 
@@ -1468,7 +1468,7 @@ id __46__VoiceOverController_startVoiceOverTutorial___block_invoke(uint64_t a1)
   return [v2 displayVoiceOverTutorialView];
 }
 
-- (void)resetVoiceOverSettings:(id)a3
+- (void)resetVoiceOverSettings:(id)settings
 {
   v4 = settingsLocString(@"VOICEOVER_RESET_SETTINGS_POPUP_TITLE", @"VoiceOverSettings");
   v5 = settingsLocString(@"VOICEOVER_RESET_SETTINGS_ALERT_TEXT", @"VoiceOverSettings");
@@ -1487,10 +1487,10 @@ id __46__VoiceOverController_startVoiceOverTutorial___block_invoke(uint64_t a1)
   v10 = [UIAlertAction actionWithTitle:v9 style:1 handler:0];
 
   [v6 addAction:v10];
-  v11 = [(VoiceOverController *)self view];
-  v12 = [v11 window];
-  v13 = [v12 rootViewController];
-  [v13 presentViewController:v6 animated:1 completion:0];
+  view = [(VoiceOverController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:v6 animated:1 completion:0];
 }
 
 void __46__VoiceOverController_resetVoiceOverSettings___block_invoke(uint64_t a1)
@@ -1502,19 +1502,19 @@ void __46__VoiceOverController_resetVoiceOverSettings___block_invoke(uint64_t a1
   [v3 restoreDefaultProfile];
 }
 
-- (id)voiceOverTouchEnabled:(id)a3
+- (id)voiceOverTouchEnabled:(id)enabled
 {
   v3 = _AXSVoiceOverTouchEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setSpeakingRate:(id)a3 specifier:(id)a4
+- (void)setSpeakingRate:(id)rate specifier:(id)specifier
 {
   self->_ignoreNextReload = 1;
-  v5 = a3;
+  rateCopy = rate;
   [(VoiceOverController *)self setLastSpeechRateAdjustmentTime:CFAbsoluteTimeGetCurrent()];
-  [v5 floatValue];
+  [rateCopy floatValue];
   v7 = v6;
 
   v9 = +[AXSettings sharedInstance];
@@ -1522,7 +1522,7 @@ void __46__VoiceOverController_resetVoiceOverSettings___block_invoke(uint64_t a1
   [v9 setVoiceOverEffectiveSpeakingRate:v8];
 }
 
-- (id)speakingRate:(id)a3
+- (id)speakingRate:(id)rate
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverEffectiveSpeakingRate];
@@ -1531,14 +1531,14 @@ void __46__VoiceOverController_resetVoiceOverSettings___block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)setSoundEffectsEnabled:(id)a3 specifier:(id)a4
+- (void)setSoundEffectsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSoundEffectsEnabled:v4];
+  [v5 setVoiceOverSoundEffectsEnabled:bOOLValue];
 }
 
-- (id)soundEffectsEnabled:(id)a3
+- (id)soundEffectsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSoundEffectsEnabled]);
@@ -1546,24 +1546,24 @@ void __46__VoiceOverController_resetVoiceOverSettings___block_invoke(uint64_t a1
   return v4;
 }
 
-- (BOOL)cachedBrailleDisplayIsPaired:(id)a3
+- (BOOL)cachedBrailleDisplayIsPaired:(id)paired
 {
-  v3 = a3;
+  pairedCopy = paired;
   v4 = objc_opt_new();
   v5 = +[VOSBluetoothManager sharedInstance];
-  v6 = [v5 pairedDevices];
-  [v4 axSafelyAddObjectsFromArray:v6];
+  pairedDevices = [v5 pairedDevices];
+  [v4 axSafelyAddObjectsFromArray:pairedDevices];
 
   v7 = +[VOSBluetoothManager sharedInstance];
-  v8 = [v7 pairedBTLEDevices];
-  [v4 axSafelyAddObjectsFromArray:v8];
+  pairedBTLEDevices = [v7 pairedBTLEDevices];
+  [v4 axSafelyAddObjectsFromArray:pairedBTLEDevices];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke;
   v11[3] = &unk_2557D0;
-  v12 = v3;
-  v9 = v3;
+  v12 = pairedCopy;
+  v9 = pairedCopy;
   LOBYTE(v7) = [v4 ax_containsObjectUsingBlock:v11];
 
   return v7;
@@ -1578,7 +1578,7 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v5;
 }
 
-- (id)brailleDisplayNameForSpecifier:(id)a3
+- (id)brailleDisplayNameForSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
   v34 = 0u;
@@ -1586,9 +1586,9 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   v36 = 0u;
   v37 = 0u;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverBrailleDisplays];
+  voiceOverBrailleDisplays = [v5 voiceOverBrailleDisplays];
 
-  v7 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v7 = [voiceOverBrailleDisplays countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1599,7 +1599,7 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(voiceOverBrailleDisplays);
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
@@ -1611,7 +1611,7 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v8 = [voiceOverBrailleDisplays countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v8);
@@ -1624,10 +1624,10 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
     if (v14)
     {
       v15 = +[VOSBluetoothManager sharedInstance];
-      v16 = [v15 centralManager];
+      centralManager = [v15 centralManager];
       v39 = v14;
       v17 = [NSArray arrayWithObjects:&v39 count:1];
-      v18 = [v16 retrievePeripheralsWithIdentifiers:v17];
+      v18 = [centralManager retrievePeripheralsWithIdentifiers:v17];
 
       v32 = 0u;
       v33 = 0u;
@@ -1649,13 +1649,13 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
             }
 
             v24 = *(*(&v30 + 1) + 8 * j);
-            v25 = [v24 name];
-            v26 = [v4 containsObject:v25];
+            name = [v24 name];
+            v26 = [v4 containsObject:name];
 
             if ((v26 & 1) == 0)
             {
-              v27 = [v24 name];
-              [v4 addObject:v27];
+              name2 = [v24 name];
+              [v4 addObject:name2];
             }
           }
 
@@ -1672,14 +1672,14 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v28;
 }
 
-- (void)setCaptionPanel:(id)a3 specifier:(id)a4
+- (void)setCaptionPanel:(id)panel specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [panel BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setEnableVoiceOverCaptions:v4];
+  [v5 setEnableVoiceOverCaptions:bOOLValue];
 }
 
-- (id)captionPanelForSpecifier:(id)a3
+- (id)captionPanelForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 enableVoiceOverCaptions]);
@@ -1687,28 +1687,28 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v4;
 }
 
-- (void)setScreenCurtainEnabled:(id)a3 specifier:(id)a4
+- (void)setScreenCurtainEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSVoiceOverTouchSetScreenCurtainEnabled(v4);
+  __AXSVoiceOverTouchSetScreenCurtainEnabled(bOOLValue);
 }
 
-- (id)screenCurtainEnabled:(id)a3
+- (id)screenCurtainEnabled:(id)enabled
 {
   v3 = _AXSVoiceOverTouchScreenCurtainEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)cursorStyleSetPreference:(id)a3 specifier:(id)a4
+- (void)cursorStyleSetPreference:(id)preference specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [preference BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverLargeCursorEnabled:v4];
+  [v5 setVoiceOverLargeCursorEnabled:bOOLValue];
 }
 
-- (id)cursorStyleForSpecifier:(id)a3
+- (id)cursorStyleForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverLargeCursorEnabled]);
@@ -1716,18 +1716,18 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v4;
 }
 
-- (id)navigateImagesPreferenceForSpecifier:(id)a3
+- (id)navigateImagesPreferenceForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverNavigateImagesOption];
+  voiceOverNavigateImagesOption = [v3 voiceOverNavigateImagesOption];
 
   v5 = @"NAV_IMG_NEVER";
-  if (v4 == &dword_0 + 2)
+  if (voiceOverNavigateImagesOption == &dword_0 + 2)
   {
     v5 = @"NAV_IMG_W_DESCRIPTIONS_SHORT";
   }
 
-  if (v4 == &dword_0 + 1)
+  if (voiceOverNavigateImagesOption == &dword_0 + 1)
   {
     v6 = @"NAV_IMG_ALWAYS";
   }
@@ -1742,14 +1742,14 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v7;
 }
 
-- (void)setSpeakingRateInRotor:(id)a3 specifier:(id)a4
+- (void)setSpeakingRateInRotor:(id)rotor specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [rotor BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeakingRateInRotorEnabled:v4];
+  [v5 setVoiceOverSpeakingRateInRotorEnabled:bOOLValue];
 }
 
-- (id)speakingRateInRotor:(id)a3
+- (id)speakingRateInRotor:(id)rotor
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeakingRateInRotorEnabled]);
@@ -1757,7 +1757,7 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v4;
 }
 
-- (id)voiceOverDelayUntilSpeakInterval:(id)a3
+- (id)voiceOverDelayUntilSpeakInterval:(id)interval
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverDelayUntilSpeakUnderTouch];
@@ -1766,7 +1766,7 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v4;
 }
 
-- (id)doubleTapInterval:(id)a3
+- (id)doubleTapInterval:(id)interval
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverDoubleTapInterval];
@@ -1775,18 +1775,18 @@ id __52__VoiceOverController_cachedBrailleDisplayIsPaired___block_invoke(uint64_
   return v4;
 }
 
-- (id)navigationStyle:(id)a3
+- (id)navigationStyle:(id)style
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverNavigationStyle];
+  voiceOverNavigationStyle = [v3 voiceOverNavigationStyle];
 
-  if (!v4)
+  if (!voiceOverNavigationStyle)
   {
     v5 = @"NAVIGATION_STYLE_FLAT";
     goto LABEL_5;
   }
 
-  if (v4 == &dword_0 + 1)
+  if (voiceOverNavigationStyle == &dword_0 + 1)
   {
     v5 = @"NAVIGATION_STYLE_GROUPS";
 LABEL_5:
@@ -1800,13 +1800,13 @@ LABEL_7:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = VoiceOverController;
-  v4 = [(VoiceOverController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(VoiceOverController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }

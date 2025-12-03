@@ -10,16 +10,16 @@
 - (id)convertToColorTheme
 {
   v2 = objc_opt_new();
-  v3 = [a1 backgroundColor];
-  [v2 setBackgroundColor:v3];
+  backgroundColor = [self backgroundColor];
+  [v2 setBackgroundColor:backgroundColor];
 
-  v4 = [a1 primaryTextColor];
-  [v2 setPrimaryTextColor:v4];
+  primaryTextColor = [self primaryTextColor];
+  [v2 setPrimaryTextColor:primaryTextColor];
 
-  v5 = [a1 secondaryTextColor];
-  [v2 setSecondaryTextColor:v5];
+  secondaryTextColor = [self secondaryTextColor];
+  [v2 setSecondaryTextColor:secondaryTextColor];
 
-  [v2 setIsBackgroundLight:{objc_msgSend(a1, "isBackgroundLight")}];
+  [v2 setIsBackgroundLight:{objc_msgSend(self, "isBackgroundLight")}];
 
   return v2;
 }
@@ -39,8 +39,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [v10 convertToColorTheme];
-  v13 = [v12 isEqual:v7];
+  convertToColorTheme = [v10 convertToColorTheme];
+  v13 = [convertToColorTheme isEqual:v7];
 
   if ((v13 & 1) == 0)
   {
@@ -70,18 +70,18 @@ LABEL_7:
 - (uint64_t)populateWithColorTheme:()Library
 {
   v4 = a3;
-  v5 = [v4 backgroundColor];
-  [a1 setBackgroundColor:v5];
+  backgroundColor = [v4 backgroundColor];
+  [self setBackgroundColor:backgroundColor];
 
-  v6 = [v4 primaryTextColor];
-  [a1 setPrimaryTextColor:v6];
+  primaryTextColor = [v4 primaryTextColor];
+  [self setPrimaryTextColor:primaryTextColor];
 
-  v7 = [v4 secondaryTextColor];
-  [a1 setSecondaryTextColor:v7];
+  secondaryTextColor = [v4 secondaryTextColor];
+  [self setSecondaryTextColor:secondaryTextColor];
 
-  v8 = [v4 isBackgroundLight];
+  isBackgroundLight = [v4 isBackgroundLight];
 
-  return [a1 setIsBackgroundLight:v8];
+  return [self setIsBackgroundLight:isBackgroundLight];
 }
 
 @end

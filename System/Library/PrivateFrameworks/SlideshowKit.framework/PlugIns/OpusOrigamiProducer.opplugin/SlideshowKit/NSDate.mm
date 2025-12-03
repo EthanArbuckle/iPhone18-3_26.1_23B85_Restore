@@ -1,5 +1,5 @@
 @interface NSDate
-- (id)descriptionWithFormat:(id)a3;
+- (id)descriptionWithFormat:(id)format;
 - (id)roundMinuteToNearstFifteen;
 - (id)roundMinuteToNearstFive;
 - (id)storedCalendar;
@@ -8,12 +8,12 @@
 
 @implementation NSDate
 
-- (id)descriptionWithFormat:(id)a3
+- (id)descriptionWithFormat:(id)format
 {
-  v5 = [(NSDate *)self storedFormatter];
-  [v5 setDateFormat:a3];
+  storedFormatter = [(NSDate *)self storedFormatter];
+  [storedFormatter setDateFormat:format];
 
-  return [v5 stringFromDate:self];
+  return [storedFormatter stringFromDate:self];
 }
 
 - (id)storedFormatter

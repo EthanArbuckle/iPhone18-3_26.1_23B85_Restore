@@ -1,10 +1,10 @@
 @interface HKMedicationDisplayNameComponents
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationDisplayNameComponents)init;
-- (HKMedicationDisplayNameComponents)initWithCoder:(id)a3;
-- (HKMedicationDisplayNameComponents)initWithFullDisplayName:(id)a3 medicationDisplayName:(id)a4 displayStrength:(id)a5;
+- (HKMedicationDisplayNameComponents)initWithCoder:(id)coder;
+- (HKMedicationDisplayNameComponents)initWithFullDisplayName:(id)name medicationDisplayName:(id)displayName displayStrength:(id)strength;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationDisplayNameComponents
@@ -19,25 +19,25 @@
   return 0;
 }
 
-- (HKMedicationDisplayNameComponents)initWithFullDisplayName:(id)a3 medicationDisplayName:(id)a4 displayStrength:(id)a5
+- (HKMedicationDisplayNameComponents)initWithFullDisplayName:(id)name medicationDisplayName:(id)displayName displayStrength:(id)strength
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  strengthCopy = strength;
   v19.receiver = self;
   v19.super_class = HKMedicationDisplayNameComponents;
   v11 = [(HKMedicationDisplayNameComponents *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     fullDisplayName = v11->_fullDisplayName;
     v11->_fullDisplayName = v12;
 
-    v14 = [v9 copy];
+    v14 = [displayNameCopy copy];
     medicationDisplayName = v11->_medicationDisplayName;
     v11->_medicationDisplayName = v14;
 
-    v16 = [v10 copy];
+    v16 = [strengthCopy copy];
     displayStrength = v11->_displayStrength;
     v11->_displayStrength = v16;
   }
@@ -45,10 +45,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -58,26 +58,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationDisplayNameComponents *)v5 fullDisplayName];
-      v7 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      fullDisplayName = [(HKMedicationDisplayNameComponents *)v5 fullDisplayName];
+      fullDisplayName2 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
+      v8 = fullDisplayName2;
+      if (fullDisplayName == fullDisplayName2)
       {
       }
 
       else
       {
-        v9 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
-        if (!v9)
+        fullDisplayName3 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
+        if (!fullDisplayName3)
         {
           goto LABEL_19;
         }
 
-        v10 = v9;
-        v11 = [(HKMedicationDisplayNameComponents *)v5 fullDisplayName];
-        v12 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
-        v13 = [v11 isEqualToString:v12];
+        v10 = fullDisplayName3;
+        fullDisplayName4 = [(HKMedicationDisplayNameComponents *)v5 fullDisplayName];
+        fullDisplayName5 = [(HKMedicationDisplayNameComponents *)self fullDisplayName];
+        v13 = [fullDisplayName4 isEqualToString:fullDisplayName5];
 
         if (!v13)
         {
@@ -85,25 +85,25 @@
         }
       }
 
-      v6 = [(HKMedicationDisplayNameComponents *)v5 medicationDisplayName];
-      v15 = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
-      v8 = v15;
-      if (v6 == v15)
+      fullDisplayName = [(HKMedicationDisplayNameComponents *)v5 medicationDisplayName];
+      medicationDisplayName = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
+      v8 = medicationDisplayName;
+      if (fullDisplayName == medicationDisplayName)
       {
       }
 
       else
       {
-        v16 = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
-        if (!v16)
+        medicationDisplayName2 = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
+        if (!medicationDisplayName2)
         {
           goto LABEL_19;
         }
 
-        v17 = v16;
-        v18 = [(HKMedicationDisplayNameComponents *)v5 medicationDisplayName];
-        v19 = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
-        v20 = [v18 isEqualToString:v19];
+        v17 = medicationDisplayName2;
+        medicationDisplayName3 = [(HKMedicationDisplayNameComponents *)v5 medicationDisplayName];
+        medicationDisplayName4 = [(HKMedicationDisplayNameComponents *)self medicationDisplayName];
+        v20 = [medicationDisplayName3 isEqualToString:medicationDisplayName4];
 
         if (!v20)
         {
@@ -111,10 +111,10 @@
         }
       }
 
-      v6 = [(HKMedicationDisplayNameComponents *)v5 displayStrength];
-      v21 = [(HKMedicationDisplayNameComponents *)self displayStrength];
-      v8 = v21;
-      if (v6 == v21)
+      fullDisplayName = [(HKMedicationDisplayNameComponents *)v5 displayStrength];
+      displayStrength = [(HKMedicationDisplayNameComponents *)self displayStrength];
+      v8 = displayStrength;
+      if (fullDisplayName == displayStrength)
       {
 
 LABEL_24:
@@ -122,13 +122,13 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      v22 = [(HKMedicationDisplayNameComponents *)self displayStrength];
-      if (v22)
+      displayStrength2 = [(HKMedicationDisplayNameComponents *)self displayStrength];
+      if (displayStrength2)
       {
-        v23 = v22;
-        v24 = [(HKMedicationDisplayNameComponents *)v5 displayStrength];
-        v25 = [(HKMedicationDisplayNameComponents *)self displayStrength];
-        v26 = [v24 isEqualToString:v25];
+        v23 = displayStrength2;
+        displayStrength3 = [(HKMedicationDisplayNameComponents *)v5 displayStrength];
+        displayStrength4 = [(HKMedicationDisplayNameComponents *)self displayStrength];
+        v26 = [displayStrength3 isEqualToString:displayStrength4];
 
         if (v26)
         {
@@ -162,23 +162,23 @@ LABEL_22:
   return v4 ^ [(NSString *)self->_displayStrength hash];
 }
 
-- (HKMedicationDisplayNameComponents)initWithCoder:(id)a3
+- (HKMedicationDisplayNameComponents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKMedicationDisplayNameComponents;
   v5 = [(HKMedicationDisplayNameComponents *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FullDisplayNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FullDisplayNameKey"];
     fullDisplayName = v5->_fullDisplayName;
     v5->_fullDisplayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationDisplayNameKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationDisplayNameKey"];
     medicationDisplayName = v5->_medicationDisplayName;
     v5->_medicationDisplayName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayStrengthKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayStrengthKey"];
     displayStrength = v5->_displayStrength;
     v5->_displayStrength = v10;
   }
@@ -186,13 +186,13 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fullDisplayName = self->_fullDisplayName;
-  v5 = a3;
-  [v5 encodeObject:fullDisplayName forKey:@"FullDisplayNameKey"];
-  [v5 encodeObject:self->_medicationDisplayName forKey:@"MedicationDisplayNameKey"];
-  [v5 encodeObject:self->_displayStrength forKey:@"DisplayStrengthKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fullDisplayName forKey:@"FullDisplayNameKey"];
+  [coderCopy encodeObject:self->_medicationDisplayName forKey:@"MedicationDisplayNameKey"];
+  [coderCopy encodeObject:self->_displayStrength forKey:@"DisplayStrengthKey"];
 }
 
 @end

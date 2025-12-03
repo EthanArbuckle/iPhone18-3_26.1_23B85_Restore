@@ -1,23 +1,23 @@
 @interface Synchronize
 + (OS_dispatch_queue)queue;
-+ (void)async:(id)a3;
-+ (void)sync:(id)a3;
-- (Synchronize)initWithQueueName:(id)a3;
-- (void)async:(id)a3;
-- (void)sync:(id)a3;
++ (void)async:(id)async;
++ (void)sync:(id)sync;
+- (Synchronize)initWithQueueName:(id)name;
+- (void)async:(id)async;
+- (void)sync:(id)sync;
 @end
 
 @implementation Synchronize
 
-- (Synchronize)initWithQueueName:(id)a3
+- (Synchronize)initWithQueueName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = Synchronize;
   v5 = [(Synchronize *)&v9 init];
   if (v5)
   {
-    v6 = dispatch_queue_create([v4 UTF8String], 0);
+    v6 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v5->_queue;
     v5->_queue = v6;
   }
@@ -37,56 +37,56 @@
   return v3;
 }
 
-+ (void)sync:(id)a3
++ (void)sync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = +[Synchronize queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B58C;
   block[3] = &unk_1000248A0;
-  v7 = v3;
-  v5 = v3;
+  v7 = syncCopy;
+  v5 = syncCopy;
   dispatch_sync(v4, block);
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = a3;
-  v5 = [(Synchronize *)self queue];
+  syncCopy = sync;
+  queue = [(Synchronize *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B648;
   block[3] = &unk_1000248A0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = syncCopy;
+  v6 = syncCopy;
+  dispatch_sync(queue, block);
 }
 
-+ (void)async:(id)a3
++ (void)async:(id)async
 {
-  v3 = a3;
+  asyncCopy = async;
   v4 = +[Synchronize queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B704;
   block[3] = &unk_1000248A0;
-  v7 = v3;
-  v5 = v3;
+  v7 = asyncCopy;
+  v5 = asyncCopy;
   dispatch_async(v4, block);
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = a3;
-  v5 = [(Synchronize *)self queue];
+  asyncCopy = async;
+  queue = [(Synchronize *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B7C0;
   block[3] = &unk_1000248A0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  dispatch_sync(queue, block);
 }
 
 @end

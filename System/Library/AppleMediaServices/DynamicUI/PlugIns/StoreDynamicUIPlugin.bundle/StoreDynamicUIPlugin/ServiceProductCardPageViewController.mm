@@ -1,66 +1,66 @@
 @interface ServiceProductCardPageViewController
-- (_TtC20StoreDynamicUIPlugin36ServiceProductCardPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20StoreDynamicUIPlugin36ServiceProductCardPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ServiceProductCardPageViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_102D8C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_103240(&selRef_viewDidLoad, &ViewControllerPresenter.viewDidLoad());
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_102EE4(a3);
+  selfCopy = self;
+  sub_102EE4(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10300C(a3, &selRef_viewDidDisappear_, &ViewControllerPresenter.viewDidDisappear());
+  selfCopy = self;
+  sub_10300C(disappear, &selRef_viewDidDisappear_, &ViewControllerPresenter.viewDidDisappear());
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10300C(a3, &selRef_viewWillAppear_, &ViewControllerPresenter.viewWillAppear());
+  selfCopy = self;
+  sub_10300C(appear, &selRef_viewWillAppear_, &ViewControllerPresenter.viewWillAppear());
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1030F4(a3);
+  selfCopy = self;
+  sub_1030F4(disappear);
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_103240(&selRef_didReceiveMemoryWarning, &ViewControllerPresenter.viewDidReceiveMemoryWarning());
 }
 
-- (_TtC20StoreDynamicUIPlugin36ServiceProductCardPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20StoreDynamicUIPlugin36ServiceProductCardPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_13BB84();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_103B50();
 }
 

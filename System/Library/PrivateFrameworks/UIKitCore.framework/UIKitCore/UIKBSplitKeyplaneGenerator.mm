@@ -1,17 +1,17 @@
 @interface UIKBSplitKeyplaneGenerator
 - (UIKBSplitKeyplaneGenerator)init;
 - (id)finalizeSplitKeyplane;
-- (id)generateRivenKeyplaneFromKeyplane:(id)a3 forKeyboard:(id)a4;
-- (id)hintsForRow:(id)a3;
+- (id)generateRivenKeyplaneFromKeyplane:(id)keyplane forKeyboard:(id)keyboard;
+- (id)hintsForRow:(id)row;
 - (id)keysOrderedByPosition;
-- (void)addKey:(id)a3 withShape:(id)a4 forRow:(id)a5 attribs:(id)a6 left:(BOOL)a7 force:(BOOL)a8 isDefaultWidth:(BOOL)a9;
-- (void)addSliceStart:(CGRect)a3 end:(CGRect)a4 startToken:(id)a5 endToken:(id)a6 left:(BOOL)a7 normalization:(int)a8 isDefaultWidth:(BOOL)a9 row:(int)a10;
+- (void)addKey:(id)key withShape:(id)shape forRow:(id)row attribs:(id)attribs left:(BOOL)left force:(BOOL)force isDefaultWidth:(BOOL)width;
+- (void)addSliceStart:(CGRect)start end:(CGRect)end startToken:(id)token endToken:(id)endToken left:(BOOL)left normalization:(int)normalization isDefaultWidth:(BOOL)width row:(int)self0;
 - (void)alignSpaceKeyEdges;
 - (void)commitUncommittedSlices;
-- (void)initializeGeneratorForKeyplane:(id)a3 name:(id)a4;
+- (void)initializeGeneratorForKeyplane:(id)keyplane name:(id)name;
 - (void)organizeKeyplaneIntoRows;
-- (void)splitRow:(id)a3;
-- (void)splitSpaceKey:(id)a3 leftSpace:(id)a4 left:(CGRect)a5 right:(CGRect)a6;
+- (void)splitRow:(id)row;
+- (void)splitSpaceKey:(id)key leftSpace:(id)space left:(CGRect)left right:(CGRect)right;
 @end
 
 @implementation UIKBSplitKeyplaneGenerator
@@ -28,8 +28,8 @@
     v2->_rows = v3;
 
     v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v6 = [v5 preferencesActions];
-    [v6 rivenSizeFactor:1.0];
+    preferencesActions = [v5 preferencesActions];
+    [preferencesActions rivenSizeFactor:1.0];
     v8 = v7;
 
     v2->_splitKeySizeFactor.width = v8;
@@ -44,32 +44,32 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIKBTree *)self->_sourceKeyplane keysOrderedByPosition];
+    keysOrderedByPosition = [(UIKBTree *)self->_sourceKeyplane keysOrderedByPosition];
   }
 
   else
   {
-    v3 = 0;
+    keysOrderedByPosition = 0;
   }
 
-  return v3;
+  return keysOrderedByPosition;
 }
 
-- (void)addSliceStart:(CGRect)a3 end:(CGRect)a4 startToken:(id)a5 endToken:(id)a6 left:(BOOL)a7 normalization:(int)a8 isDefaultWidth:(BOOL)a9 row:(int)a10
+- (void)addSliceStart:(CGRect)start end:(CGRect)end startToken:(id)token endToken:(id)endToken left:(BOOL)left normalization:(int)normalization isDefaultWidth:(BOOL)width row:(int)self0
 {
-  v10 = *&a10;
-  v11 = *&a8;
-  v12 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3.size.height;
-  v19 = a3.size.width;
-  v20 = a3.origin.y;
-  v21 = a3.origin.x;
-  v53 = a5;
-  v23 = a6;
+  v10 = *&row;
+  v11 = *&normalization;
+  leftCopy = left;
+  height = end.size.height;
+  width = end.size.width;
+  y = end.origin.y;
+  x = end.origin.x;
+  v18 = start.size.height;
+  v19 = start.size.width;
+  v20 = start.origin.y;
+  v21 = start.origin.x;
+  tokenCopy = token;
+  endTokenCopy = endToken;
   p_leftSlice = &self->_leftSlice;
   if (!self->_leftSlice)
   {
@@ -86,7 +86,7 @@
     *p_rightSlice = v28;
   }
 
-  if (v12)
+  if (leftCopy)
   {
     v30 = 104;
   }
@@ -96,7 +96,7 @@
     v30 = 112;
   }
 
-  if (v12)
+  if (leftCopy)
   {
     v31 = &self->_leftSlice;
   }
@@ -107,10 +107,10 @@
   }
 
   v32 = *v31;
-  v33 = [(UIKeyboardTransitionSlice *)v32 hasGeometry];
-  if (v53)
+  hasGeometry = [(UIKeyboardTransitionSlice *)v32 hasGeometry];
+  if (tokenCopy)
   {
-    v34 = v23 == 0;
+    v34 = endTokenCopy == 0;
   }
 
   else
@@ -119,11 +119,11 @@
   }
 
   v35 = !v34;
-  if (!v34 && !v33)
+  if (!v34 && !hasGeometry)
   {
     [(UIKeyboardTransitionSlice *)v32 setStartRect:v21, v20, v19, v18];
     [(UIKeyboardTransitionSlice *)v32 setEndRect:x, y, width, height];
-    v33 = [(UIKeyboardTransitionSlice *)v32 hasGeometry];
+    hasGeometry = [(UIKeyboardTransitionSlice *)v32 hasGeometry];
   }
 
   v55.origin.x = v21;
@@ -135,7 +135,7 @@
   v55.size.height = v18;
   v38 = x;
   v39 = y;
-  v40 = width;
+  widthCopy = width;
   v41 = height;
   MinY = CGRectGetMinY(v55);
   [(UIKeyboardTransitionSlice *)v32 startRect];
@@ -149,7 +149,7 @@
     v43 = 1;
   }
 
-  if (v33)
+  if (hasGeometry)
   {
     v44 = v43;
   }
@@ -161,23 +161,23 @@
 
   if (v35)
   {
-    v45 = [UIKeyboardTransitionSlice sliceWithStart:v21 end:v52, v36, v37, v38, v39, v40, v41];
-    [v53 setRowHint:v10];
-    [v23 setRowHint:v10];
-    [v45 setStartToken:v53];
-    [v45 setEndToken:v23];
+    v45 = [UIKeyboardTransitionSlice sliceWithStart:v21 end:v52, v36, v37, v38, v39, widthCopy, v41];
+    [tokenCopy setRowHint:v10];
+    [endTokenCopy setRowHint:v10];
+    [v45 setStartToken:tokenCopy];
+    [v45 setEndToken:endTokenCopy];
     [v45 setNormalization:v11];
     [v45 setDelayCrossfade:1];
     [(UIKeyboardSliceSet *)self->_sliceSet addSlice:v45];
     if (v11 != 2)
     {
-      v46 = [v23 name];
+      name = [endTokenCopy name];
 
-      if (v46)
+      if (name)
       {
-        v47 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-        v48 = [v23 name];
-        [v47 setObject:v45 forKey:v48];
+        controlKeys = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+        name2 = [endTokenCopy name];
+        [controlKeys setObject:v45 forKey:name2];
       }
     }
 
@@ -208,24 +208,24 @@ LABEL_28:
   if ((v35 & 1) == 0)
   {
 LABEL_29:
-    [(UIKeyboardTransitionSlice *)v32 addStartRect:v21 end:v52, v36, v37, v38, v39, v40, v41, *&v52];
+    [(UIKeyboardTransitionSlice *)v32 addStartRect:v21 end:v52, v36, v37, v38, v39, widthCopy, v41, *&v52];
   }
 
 LABEL_30:
 }
 
-- (void)splitSpaceKey:(id)a3 leftSpace:(id)a4 left:(CGRect)a5 right:(CGRect)a6
+- (void)splitSpaceKey:(id)key leftSpace:(id)space left:(CGRect)left right:(CGRect)right
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.size.height;
-  v11 = a5.size.width;
-  v12 = a5.origin.y;
-  v13 = a5.origin.x;
-  v56 = a3;
-  v16 = a4;
+  height = right.size.height;
+  width = right.size.width;
+  y = right.origin.y;
+  x = right.origin.x;
+  v10 = left.size.height;
+  v11 = left.size.width;
+  v12 = left.origin.y;
+  v13 = left.origin.x;
+  keyCopy = key;
+  spaceCopy = space;
   v58.origin.x = v13;
   v51 = v12;
   v58.origin.y = v12;
@@ -240,13 +240,13 @@ LABEL_30:
   v59.size.width = width;
   v59.size.height = height;
   v18 = CGRectIsNull(v59);
-  [v56 paddedFrame];
+  [keyCopy paddedFrame];
   v20 = v19;
   v53 = v21;
   v23 = v22;
   v25 = v24;
   v26 = +[UIKeyboardImpl activeInstance];
-  v27 = [v26 _inheritedRenderConfig];
+  _inheritedRenderConfig = [v26 _inheritedRenderConfig];
 
   if (IsNull || v18)
   {
@@ -267,11 +267,11 @@ LABEL_30:
       v10 = v55;
     }
 
-    v34 = [UIKBCacheToken tokenTemplateForKey:v56 style:102 renderConfig:v27 size:v23, v25];
-    v35 = [UIKBCacheToken tokenTemplateForKey:v56 style:106 renderConfig:v27 size:v11, v10];
+    v34 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:102 renderConfig:_inheritedRenderConfig size:v23, v25];
+    v35 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:106 renderConfig:_inheritedRenderConfig size:v11, v10];
     v36 = [(NSMutableArray *)self->_rows count];
     v48 = !IsNull;
-    v37 = self;
+    selfCopy2 = self;
     v38 = v20;
     v39 = v53;
     v40 = v23;
@@ -289,19 +289,19 @@ LABEL_30:
   {
     [(UIKBTree *)self->_sourceKeyplane frame];
     v29 = v28 * 0.5 - v20;
-    v30 = [v16 name];
-    v31 = [UIKBCacheToken tokenTemplateForKey:v56 name:v30 style:102 renderConfig:v27 size:v23, v25];
+    name = [spaceCopy name];
+    v31 = [UIKBCacheToken tokenTemplateForKey:keyCopy name:name style:102 renderConfig:_inheritedRenderConfig size:v23, v25];
 
-    v32 = [v16 name];
-    v33 = [UIKBCacheToken tokenTemplateForKey:v56 name:v32 style:106 renderConfig:v27 size:v11, v10];
+    name2 = [spaceCopy name];
+    v33 = [UIKBCacheToken tokenTemplateForKey:keyCopy name:name2 style:106 renderConfig:_inheritedRenderConfig size:v11, v10];
 
     [(UIKBSplitKeyplaneGenerator *)self addSliceStart:v31 end:v33 startToken:1 endToken:1 left:0 normalization:[(NSMutableArray *)self->_rows count] isDefaultWidth:v20 row:v53, v29, v25, v13, v51, v11, v10];
-    v34 = [UIKBCacheToken tokenTemplateForKey:v56 style:102 renderConfig:v27 size:v23, v25];
+    v34 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:102 renderConfig:_inheritedRenderConfig size:v23, v25];
 
-    v35 = [UIKBCacheToken tokenTemplateForKey:v56 style:106 renderConfig:v27 size:v54, v55];
+    v35 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:106 renderConfig:_inheritedRenderConfig size:v54, v55];
 
     v36 = [(NSMutableArray *)self->_rows count];
-    v37 = self;
+    selfCopy2 = self;
     v38 = v20 + v29;
     v39 = v53;
     v41 = y;
@@ -316,15 +316,15 @@ LABEL_30:
     v49 = 2;
   }
 
-  [(UIKBSplitKeyplaneGenerator *)v37 addSliceStart:v43 end:v47 startToken:v48 endToken:v49 left:0 normalization:v36 isDefaultWidth:v38 row:v39, v40, v42, v44, v41, v45, v46];
+  [(UIKBSplitKeyplaneGenerator *)selfCopy2 addSliceStart:v43 end:v47 startToken:v48 endToken:v49 left:0 normalization:v36 isDefaultWidth:v38 row:v39, v40, v42, v44, v41, v45, v46];
 }
 
 - (void)commitUncommittedSlices
 {
   if ([(UIKeyboardTransitionSlice *)self->_leftSlice hasGeometry])
   {
-    v3 = [(UIKeyboardSliceSet *)self->_sliceSet slices];
-    v4 = [v3 containsObject:self->_leftSlice];
+    slices = [(UIKeyboardSliceSet *)self->_sliceSet slices];
+    v4 = [slices containsObject:self->_leftSlice];
 
     if ((v4 & 1) == 0)
     {
@@ -336,8 +336,8 @@ LABEL_30:
 
   if ([(UIKeyboardTransitionSlice *)self->_rightSlice hasGeometry])
   {
-    v6 = [(UIKeyboardSliceSet *)self->_sliceSet slices];
-    v7 = [v6 containsObject:self->_rightSlice];
+    slices2 = [(UIKeyboardSliceSet *)self->_sliceSet slices];
+    v7 = [slices2 containsObject:self->_rightSlice];
 
     if ((v7 & 1) == 0)
     {
@@ -348,105 +348,105 @@ LABEL_30:
   }
 }
 
-- (void)addKey:(id)a3 withShape:(id)a4 forRow:(id)a5 attribs:(id)a6 left:(BOOL)a7 force:(BOOL)a8 isDefaultWidth:(BOOL)a9
+- (void)addKey:(id)key withShape:(id)shape forRow:(id)row attribs:(id)attribs left:(BOOL)left force:(BOOL)force isDefaultWidth:(BOOL)width
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a9;
-  v60 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = [v60 interactionType];
-  v20 = [v18 valueForKey:@"KBghost"];
-  v21 = [v20 BOOLValue];
+  forceCopy = force;
+  leftCopy = left;
+  widthCopy2 = width;
+  keyCopy = key;
+  shapeCopy = shape;
+  rowCopy = row;
+  attribsCopy = attribs;
+  interactionType = [keyCopy interactionType];
+  v20 = [attribsCopy valueForKey:@"KBghost"];
+  bOOLValue = [v20 BOOLValue];
 
-  if (v9 || !((v19 == 15) | v21 & 1))
+  if (forceCopy || !((interactionType == 15) | bOOLValue & 1))
   {
-    if ([v60 renderKeyInKeyplane:self->_sourceKeyplane])
+    if ([keyCopy renderKeyInKeyplane:self->_sourceKeyplane])
     {
       v22 = 0;
       v23 = 0;
 LABEL_11:
-      [v60 paddedFrame];
+      [keyCopy paddedFrame];
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
-      [v16 paddedFrame];
-      -[UIKBSplitKeyplaneGenerator addSliceStart:end:startToken:endToken:left:normalization:isDefaultWidth:row:](self, "addSliceStart:end:startToken:endToken:left:normalization:isDefaultWidth:row:", v23, v22, v10, 0, v15, [v17 rowIndex] + 1, v40, v42, v44, v46, v47, v48, v49, v50);
+      [shapeCopy paddedFrame];
+      -[UIKBSplitKeyplaneGenerator addSliceStart:end:startToken:endToken:left:normalization:isDefaultWidth:row:](self, "addSliceStart:end:startToken:endToken:left:normalization:isDefaultWidth:row:", v23, v22, leftCopy, 0, widthCopy2, [rowCopy rowIndex] + 1, v40, v42, v44, v46, v47, v48, v49, v50);
 
       goto LABEL_12;
     }
 
     v24 = +[UIKeyboardImpl activeInstance];
-    v25 = [v24 _inheritedRenderConfig];
+    _inheritedRenderConfig = [v24 _inheritedRenderConfig];
 
-    [v60 paddedFrame];
-    v23 = [UIKBCacheToken tokenTemplateForKey:v60 style:102 renderConfig:v25 size:v26, v27];
-    [v16 paddedFrame];
-    v22 = [UIKBCacheToken tokenTemplateForKey:v60 style:106 renderConfig:v25 size:v28, v29];
-    v30 = [(NSMutableArray *)self->_rows lastObject];
-    if (v30 == v17 && v10)
+    [keyCopy paddedFrame];
+    v23 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:102 renderConfig:_inheritedRenderConfig size:v26, v27];
+    [shapeCopy paddedFrame];
+    v22 = [UIKBCacheToken tokenTemplateForKey:keyCopy style:106 renderConfig:_inheritedRenderConfig size:v28, v29];
+    lastObject = [(NSMutableArray *)self->_rows lastObject];
+    if (lastObject == rowCopy && leftCopy)
     {
-      v31 = [v60 displayType];
+      displayType = [keyCopy displayType];
 
-      if (!v31)
+      if (!displayType)
       {
 LABEL_10:
 
-        v15 = a9;
+        widthCopy2 = width;
         goto LABEL_11;
       }
 
-      [v60 name];
-      v32 = v59 = v25;
-      v30 = [UIKBTree mergeStringForKeyName:v32];
+      [keyCopy name];
+      v32 = v59 = _inheritedRenderConfig;
+      lastObject = [UIKBTree mergeStringForKeyName:v32];
 
-      v33 = [v60 name];
-      v57 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v34 = [v57 objectForKeyedSubscript:@"MoreIntlNames"];
-      [v34 setObject:v33 forKeyedSubscript:v30];
+      name = [keyCopy name];
+      controlKeys = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v34 = [controlKeys objectForKeyedSubscript:@"MoreIntlNames"];
+      [v34 setObject:name forKeyedSubscript:lastObject];
 
-      v35 = [v60 shape];
-      v58 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v36 = [v58 objectForKeyedSubscript:@"MoreIntlStarts"];
-      [v36 setObject:v35 forKeyedSubscript:v30];
+      shape = [keyCopy shape];
+      controlKeys2 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v36 = [controlKeys2 objectForKeyedSubscript:@"MoreIntlStarts"];
+      [v36 setObject:shape forKeyedSubscript:lastObject];
 
-      v37 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v38 = [v37 objectForKeyedSubscript:@"MoreIntlEnds"];
-      [v38 setObject:v16 forKeyedSubscript:v30];
+      controlKeys3 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v38 = [controlKeys3 objectForKeyedSubscript:@"MoreIntlEnds"];
+      [v38 setObject:shapeCopy forKeyedSubscript:lastObject];
 
-      v25 = v59;
+      _inheritedRenderConfig = v59;
     }
 
     goto LABEL_10;
   }
 
 LABEL_12:
-  v51 = [v17 listOfType:0 left:v10];
-  v52 = [v17 listOfType:1 left:v10];
-  v53 = [v17 listOfType:2 left:v10];
-  if (v60)
+  v51 = [rowCopy listOfType:0 left:leftCopy];
+  v52 = [rowCopy listOfType:1 left:leftCopy];
+  v53 = [rowCopy listOfType:2 left:leftCopy];
+  if (keyCopy)
   {
-    v54 = [v51 subtrees];
-    [v54 addObject:v60];
+    subtrees = [v51 subtrees];
+    [subtrees addObject:keyCopy];
   }
 
-  v55 = [v52 subtrees];
-  [v55 addObject:v16];
+  subtrees2 = [v52 subtrees];
+  [subtrees2 addObject:shapeCopy];
 
-  v56 = [v53 subtrees];
-  [v56 addObject:v18];
+  subtrees3 = [v53 subtrees];
+  [subtrees3 addObject:attribsCopy];
 }
 
 - (void)alignSpaceKeyEdges
 {
-  v106 = [(NSMutableArray *)self->_rows lastObject];
-  v3 = [v106 listOfType:0 left:1];
-  v4 = [v106 listOfType:0 left:0];
-  v5 = [v106 listOfType:1 left:1];
-  v105 = [v106 listOfType:1 left:0];
+  lastObject = [(NSMutableArray *)self->_rows lastObject];
+  v3 = [lastObject listOfType:0 left:1];
+  v4 = [lastObject listOfType:0 left:0];
+  v5 = [lastObject listOfType:1 left:1];
+  v105 = [lastObject listOfType:1 left:0];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:15];
   v7 = [v3 subtreesWithProperty:@"KBinteractionType" value:v6];
 
@@ -459,16 +459,16 @@ LABEL_12:
   }
 
   v101 = v7;
-  v10 = [v7 lastObject];
+  lastObject2 = [v7 lastObject];
   v104 = v5;
-  if (v10)
+  if (lastObject2)
   {
-    v11 = [v3 subtrees];
-    v12 = [v11 indexOfObject:v10];
+    subtrees = [v3 subtrees];
+    v12 = [subtrees indexOfObject:lastObject2];
 
-    v13 = [v5 subtrees];
+    subtrees2 = [v5 subtrees];
     v98 = v12;
-    v14 = [v13 objectAtIndex:v12];
+    v14 = [subtrees2 objectAtIndex:v12];
   }
 
   else
@@ -477,18 +477,18 @@ LABEL_12:
     v98 = 0;
   }
 
-  v15 = [v9 lastObject];
+  lastObject3 = [v9 lastObject];
   v103 = v14;
   v100 = v9;
-  if (v15)
+  if (lastObject3)
   {
-    v16 = v15;
-    v17 = [v4 subtrees];
-    v18 = [v17 indexOfObject:v16];
+    v16 = lastObject3;
+    subtrees3 = [v4 subtrees];
+    v18 = [subtrees3 indexOfObject:v16];
 
-    v19 = [v105 subtrees];
+    subtrees4 = [v105 subtrees];
     v96 = v18;
-    v20 = [v19 objectAtIndex:v18];
+    v20 = [subtrees4 objectAtIndex:v18];
 
     v21 = v20 != 0;
     if (v14 && v20)
@@ -502,7 +502,7 @@ LABEL_12:
       v27 = *(MEMORY[0x1E695F050] + 24);
       if (v23 <= v24)
       {
-        v29 = v10;
+        v29 = lastObject2;
       }
 
       else
@@ -512,11 +512,11 @@ LABEL_12:
 
       if (v23 > v24)
       {
-        v16 = v10;
+        v16 = lastObject2;
       }
 
       v21 = 1;
-      v10 = v29;
+      lastObject2 = v29;
     }
 
     else
@@ -589,7 +589,7 @@ LABEL_22:
   v44 = v43 + 0.0;
   v46 = v45 - v40;
   v48 = v47 + 0.0;
-  v49 = [v104 subtrees];
+  subtrees5 = [v104 subtrees];
   v50 = [UIKBShape alloc];
   v51 = v44;
   v52 = v42;
@@ -599,7 +599,7 @@ LABEL_22:
   rect = v48;
   v55 = v46;
   v56 = [(UIKBShape *)v50 initWithGeometry:0 frame:v51 paddedFrame:v48, v46, v52, v53, v48, v46, v54];
-  [v49 replaceObjectAtIndex:v98 withObject:v56];
+  [subtrees5 replaceObjectAtIndex:v98 withObject:v56];
 
   v20 = v31;
   v30 = v26;
@@ -619,8 +619,8 @@ LABEL_23:
   [v20 frame];
   v64 = rightSideWidestRow - (v61 - v63);
   v65 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v66 = [v65 preferencesActions];
-  [v66 rivenSizeFactor:3.0];
+  preferencesActions = [v65 preferencesActions];
+  [preferencesActions rivenSizeFactor:3.0];
   v68 = v67;
 
   if (vabdd_f64(v64, v68) <= 0.00000011920929)
@@ -639,16 +639,16 @@ LABEL_23:
     v25 = v71 - v69;
     v28 = v69 + v72;
     v30 = v73 + 0.0;
-    v74 = [v105 subtrees];
+    subtrees6 = [v105 subtrees];
     v75 = [[UIKBShape alloc] initWithGeometry:0 frame:v25 paddedFrame:v30, v28, v27, v25, v30, v28, v27];
-    [v74 replaceObjectAtIndex:v96 withObject:v75];
+    [subtrees6 replaceObjectAtIndex:v96 withObject:v75];
   }
 
 LABEL_27:
   sourceKeyplane = self->_sourceKeyplane;
-  if (v10)
+  if (lastObject2)
   {
-    v77 = v10;
+    v77 = lastObject2;
   }
 
   else
@@ -656,25 +656,25 @@ LABEL_27:
     v77 = v16;
   }
 
-  v78 = [v77 name];
-  v79 = [(UIKBTree *)sourceKeyplane keysByKeyName:v78];
+  name = [v77 name];
+  v79 = [(UIKBTree *)sourceKeyplane keysByKeyName:name];
 
   v80 = v103;
   if ([v79 count])
   {
-    v81 = [v79 lastObject];
-    [(UIKBSplitKeyplaneGenerator *)self splitSpaceKey:v81 leftSpace:v10 left:v99 right:rect, v55, v54, v25, v30, v28, v27];
-    if (v10)
+    lastObject4 = [v79 lastObject];
+    [(UIKBSplitKeyplaneGenerator *)self splitSpaceKey:lastObject4 leftSpace:lastObject2 left:v99 right:rect, v55, v54, v25, v30, v28, v27];
+    if (lastObject2)
     {
       v95 = v20;
       v97 = v4;
-      v82 = [v10 name];
-      v83 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v84 = [v83 objectForKeyedSubscript:@"MoreIntlNames"];
-      [v84 setObject:v82 forKeyedSubscript:@"Space"];
+      name2 = [lastObject2 name];
+      controlKeys = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v84 = [controlKeys objectForKeyedSubscript:@"MoreIntlNames"];
+      [v84 setObject:name2 forKeyedSubscript:@"Space"];
 
-      v85 = [v10 shape];
-      v86 = [v85 copy];
+      shape = [lastObject2 shape];
+      v86 = [shape copy];
 
       v108.origin.x = v99;
       v108.origin.y = rect;
@@ -692,14 +692,14 @@ LABEL_27:
         }
       }
 
-      v87 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v88 = [v87 objectForKeyedSubscript:@"MoreIntlStarts"];
+      controlKeys2 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v88 = [controlKeys2 objectForKeyedSubscript:@"MoreIntlStarts"];
       [v88 setObject:v86 forKeyedSubscript:@"Space"];
 
-      v89 = [v104 subtrees];
-      v90 = [v89 objectAtIndexedSubscript:v98];
-      v91 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
-      v92 = [v91 objectForKeyedSubscript:@"MoreIntlEnds"];
+      subtrees7 = [v104 subtrees];
+      v90 = [subtrees7 objectAtIndexedSubscript:v98];
+      controlKeys3 = [(UIKeyboardSliceSet *)self->_sliceSet controlKeys];
+      v92 = [controlKeys3 objectForKeyedSubscript:@"MoreIntlEnds"];
       [v92 setObject:v90 forKeyedSubscript:@"Space"];
 
       v20 = v95;
@@ -714,15 +714,15 @@ LABEL_27:
 LABEL_38:
 }
 
-- (void)splitRow:(id)a3
+- (void)splitRow:(id)row
 {
-  rect_16 = a3;
-  v4 = [rect_16 hints];
-  if (v4)
+  rect_16 = row;
+  hints = [rect_16 hints];
+  if (hints)
   {
-    v5 = self;
-    v6 = v4;
-    v7 = [v4 valueForKey:@"LeftMargin"];
+    selfCopy = self;
+    v6 = hints;
+    v7 = [hints valueForKey:@"LeftMargin"];
     [v7 floatValue];
     v9 = v8;
 
@@ -731,50 +731,50 @@ LABEL_38:
     v12 = v11;
 
     v13 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v14 = [v13 preferencesActions];
-    [v14 rivenSizeFactor:v9];
+    preferencesActions = [v13 preferencesActions];
+    [preferencesActions rivenSizeFactor:v9];
     rect = v15;
 
     v16 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v17 = [v16 preferencesActions];
-    [v17 rivenSizeFactor:v12];
+    preferencesActions2 = [v16 preferencesActions];
+    [preferencesActions2 rivenSizeFactor:v12];
     v128 = v18;
 
     v19 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v20 = [v19 preferencesActions];
-    [v20 rivenSizeFactor:3.0];
+    preferencesActions3 = [v19 preferencesActions];
+    [preferencesActions3 rivenSizeFactor:3.0];
     v22 = v21;
 
     v23 = MEMORY[0x1E695F058];
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v122 = [v6 valueForKey:@"WidthFactors"];
     v25 = [v6 valueForKey:@"LeftCount"];
-    v26 = [v25 intValue];
+    intValue = [v25 intValue];
 
     v120 = v6;
     v27 = [v6 valueForKey:@"RightCount"];
     LODWORD(v6) = [v27 intValue];
 
     v119 = v6;
-    v28 = [rect_16 keys];
-    v29 = [v28 count];
+    keys = [rect_16 keys];
+    v29 = [keys count];
 
-    v125 = v6 + v26;
-    if (v29 < v6 + v26)
+    v125 = v6 + intValue;
+    if (v29 < v6 + intValue)
     {
-      v30 = [rect_16 keyAtIndex:(v26 - 1)];
+      v30 = [rect_16 keyAtIndex:(intValue - 1)];
       v31 = [v30 copy];
       v32 = MEMORY[0x1E695DF90];
-      v33 = [v30 cache];
-      v34 = [v32 dictionaryWithDictionary:v33];
+      cache = [v30 cache];
+      v34 = [v32 dictionaryWithDictionary:cache];
 
       v35 = [MEMORY[0x1E696AD98] numberWithInt:3];
       [v34 setObject:v35 forKey:@"KBsplitMode"];
 
       [v31 setCache:v34];
       [v31 setSplitMode:3];
-      v36 = [rect_16 keys];
-      [v36 insertObject:v31 atIndex:v26];
+      keys2 = [rect_16 keys];
+      [keys2 insertObject:v31 atIndex:intValue];
     }
 
     v37 = *v23;
@@ -782,12 +782,12 @@ LABEL_38:
     v39 = 0x1E70E9000uLL;
     v40 = v23[2];
     height = v23[3];
-    v42 = (v26 - 1);
-    v43 = v5;
+    v42 = (intValue - 1);
+    v43 = selfCopy;
     v127 = v22;
-    v121 = v26;
+    v121 = intValue;
     v123 = height;
-    if (v26 < 1)
+    if (intValue < 1)
     {
       v46 = 0;
       width = v23[2];
@@ -800,7 +800,7 @@ LABEL_38:
       v44 = v23[1];
       v45 = 0;
       v46 = 0;
-      v47 = v5;
+      v47 = selfCopy;
       do
       {
         v48 = [rect_16 keyAtIndex:v45];
@@ -829,17 +829,17 @@ LABEL_38:
         y = v133.origin.y;
         width = v133.size.width;
         height = v133.size.height;
-        v65 = [[UIKBShape alloc] initWithGeometry:0 frame:x paddedFrame:y, width, height, x, y, width, height];
-        v66 = [v48 cache];
-        v67 = v66;
-        if (v66)
+        height = [[UIKBShape alloc] initWithGeometry:0 frame:x paddedFrame:y, width, height, x, y, width, height];
+        cache2 = [v48 cache];
+        v67 = cache2;
+        if (cache2)
         {
-          v68 = v66;
+          v68 = cache2;
         }
 
         else
         {
-          v68 = v24;
+          v68 = dictionary;
         }
 
         v69 = v56 == 1.0;
@@ -848,7 +848,7 @@ LABEL_38:
         LOBYTE(v114) = v70;
         v71 = v53;
         v42 = v52;
-        [(UIKBSplitKeyplaneGenerator *)v47 addKey:v48 withShape:v65 forRow:rect_16 attribs:v68 left:1 force:v71 isDefaultWidth:v114];
+        [(UIKBSplitKeyplaneGenerator *)v47 addKey:v48 withShape:height forRow:rect_16 attribs:v68 left:1 force:v71 isDefaultWidth:v114];
 
         *(&v72 + 1) = *(&rect + 1);
         *&v72 = *&rect + v127 + width;
@@ -857,7 +857,7 @@ LABEL_38:
         ++v45;
       }
 
-      while (v26 != v45);
+      while (intValue != v45);
       v39 = 0x1E70E9000;
       v43 = v47;
     }
@@ -867,10 +867,10 @@ LABEL_38:
       v117 = height;
       v118 = v42;
       v73 = v125;
-      v124 = v26;
+      v124 = intValue;
       v126 = v43;
       v74 = 1 - v119;
-      v75 = (v119 + v26 - 1);
+      v75 = (v119 + intValue - 1);
       v76 = v39;
       do
       {
@@ -921,16 +921,16 @@ LABEL_38:
         v40 = v135.size.width;
         v94 = v135.size.height;
         v95 = [objc_alloc(*(v76 + 3712)) initWithGeometry:0 frame:v93 paddedFrame:{v44, v40, v94, v93, v44, v40, v94}];
-        v96 = [v77 cache];
-        v97 = v96;
-        if (v96)
+        cache3 = [v77 cache];
+        v97 = cache3;
+        if (cache3)
         {
-          v98 = v96;
+          v98 = cache3;
         }
 
         else
         {
-          v98 = v24;
+          v98 = dictionary;
         }
 
         v69 = v84 == 1.0;
@@ -950,7 +950,7 @@ LABEL_38:
       while (v73 > v124);
       v123 = v94;
       v43 = v126;
-      v26 = v121;
+      intValue = v121;
       v39 = v76;
       v42 = v118;
       v37 = v93;
@@ -972,14 +972,14 @@ LABEL_38:
       [(UIKBSplitKeyplaneGenerator *)v43 commitUncommittedSlices];
     }
 
-    v103 = [(NSMutableArray *)v43->_rows lastObject];
+    lastObject = [(NSMutableArray *)v43->_rows lastObject];
 
-    if (v103 != rect_16)
+    if (lastObject != rect_16)
     {
       v104 = MEMORY[0x1E695DF90];
       v105 = [MEMORY[0x1E696AD98] numberWithBool:1];
       [v104 dictionaryWithObjectsAndKeys:{v105, @"KBghost", 0}];
-      v107 = v106 = v26;
+      v107 = v106 = intValue;
 
       v108 = [rect_16 keyAtIndex:v106];
       v109 = [rect_16 keyAtIndex:v42];
@@ -995,37 +995,37 @@ LABEL_38:
       [(UIKBSplitKeyplaneGenerator *)v43 addKey:v113 withShape:v112 forRow:rect_16 attribs:v107 left:0 force:0 isDefaultWidth:v116];
     }
 
-    v4 = v120;
+    hints = v120;
   }
 }
 
-- (id)hintsForRow:(id)a3
+- (id)hintsForRow:(id)row
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 keys];
-  v5 = [v4 objectAtIndex:0];
+  rowCopy = row;
+  keys = [rowCopy keys];
+  v5 = [keys objectAtIndex:0];
 
   v39 = v5;
-  v6 = [v5 shape];
-  v7 = [v6 originalShape];
+  shape = [v5 shape];
+  originalShape = [shape originalShape];
 
-  if (v7)
+  if (originalShape)
   {
-    v8 = [v6 originalShape];
+    originalShape2 = [shape originalShape];
 
-    v6 = v8;
+    shape = originalShape2;
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  [v6 frame];
+  [shape frame];
   v11 = [v9 stringWithFormat:@"%d-", v10];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v12 = [v3 keys];
-  v13 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  keys2 = [rowCopy keys];
+  v13 = [keys2 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1038,20 +1038,20 @@ LABEL_38:
       {
         if (*v41 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keys2);
         }
 
-        v18 = [*(*(&v40 + 1) + 8 * v16) shape];
-        v19 = [v18 originalShape];
+        shape2 = [*(*(&v40 + 1) + 8 * v16) shape];
+        originalShape3 = [shape2 originalShape];
 
-        if (v19)
+        if (originalShape3)
         {
-          v20 = [v18 originalShape];
+          originalShape4 = [shape2 originalShape];
 
-          v18 = v20;
+          shape2 = originalShape4;
         }
 
-        [v18 frame];
+        [shape2 frame];
         v11 = [v17 stringByAppendingFormat:@"%d:", v21];
 
         ++v16;
@@ -1059,7 +1059,7 @@ LABEL_38:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v14 = [keys2 countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v14);
@@ -1071,7 +1071,7 @@ LABEL_38:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [(NSDictionary *)self->_splitLayoutHints valueForKey:v23];
+    dictionary = [(NSDictionary *)self->_splitLayoutHints valueForKey:v23];
   }
 
   else
@@ -1081,42 +1081,42 @@ LABEL_38:
       goto LABEL_20;
     }
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
-    v25 = [v3 keys];
-    v26 = [v25 count] >> 1;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    keys3 = [rowCopy keys];
+    v26 = [keys3 count] >> 1;
 
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v26];
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [v3 keys];
-    v29 = [v27 stringWithFormat:@"%d", objc_msgSend(v28, "count") - v26];
+    keys4 = [rowCopy keys];
+    v29 = [v27 stringWithFormat:@"%d", objc_msgSend(keys4, "count") - v26];
 
-    [v24 setObject:v23 forKeyedSubscript:@"LeftCount"];
+    [dictionary setObject:v23 forKeyedSubscript:@"LeftCount"];
     v38 = v29;
-    [v24 setObject:v29 forKeyedSubscript:@"RightCount"];
-    [v24 setObject:@"10" forKeyedSubscript:@"LeftMargin"];
-    [v24 setObject:@"10" forKeyedSubscript:@"RightMargin"];
-    v30 = [MEMORY[0x1E695DF70] array];
-    v31 = [v3 keys];
-    v32 = [v31 count];
+    [dictionary setObject:v29 forKeyedSubscript:@"RightCount"];
+    [dictionary setObject:@"10" forKeyedSubscript:@"LeftMargin"];
+    [dictionary setObject:@"10" forKeyedSubscript:@"RightMargin"];
+    array = [MEMORY[0x1E695DF70] array];
+    keys5 = [rowCopy keys];
+    v32 = [keys5 count];
 
     if (v32)
     {
       v33 = 0;
       do
       {
-        [v30 addObject:@"1"];
+        [array addObject:@"1"];
         ++v33;
-        v34 = [v3 keys];
-        v35 = [v34 count];
+        keys6 = [rowCopy keys];
+        v35 = [keys6 count];
       }
 
       while (v35 > v33);
     }
 
-    [v24 setObject:v30 forKeyedSubscript:@"WidthFactors"];
+    [dictionary setObject:array forKeyedSubscript:@"WidthFactors"];
   }
 
-  v23 = v24;
+  v23 = dictionary;
 LABEL_20:
 
   return v23;
@@ -1142,8 +1142,8 @@ LABEL_20:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(UIKBSplitKeyplaneGenerator *)self keysOrderedByPosition];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  keysOrderedByPosition = [(UIKBSplitKeyplaneGenerator *)self keysOrderedByPosition];
+  v7 = [keysOrderedByPosition countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v7)
   {
 
@@ -1166,7 +1166,7 @@ LABEL_20:
     {
       if (*v24 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keysOrderedByPosition);
       }
 
       v18 = *(*(&v23 + 1) + 8 * i);
@@ -1202,7 +1202,7 @@ LABEL_20:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v8 = [keysOrderedByPosition countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v8);
@@ -1218,15 +1218,15 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)initializeGeneratorForKeyplane:(id)a3 name:(id)a4
+- (void)initializeGeneratorForKeyplane:(id)keyplane name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  keyplaneCopy = keyplane;
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 textInputTraits];
-  self->_keyboardType = [v9 keyboardType];
+  textInputTraits = [v8 textInputTraits];
+  self->_keyboardType = [textInputTraits keyboardType];
 
-  [v7 frame];
+  [keyplaneCopy frame];
   v11 = v10;
   v13 = v12;
 
@@ -1263,7 +1263,7 @@ LABEL_21:
     v20 = 4;
   }
 
-  v23 = [UIKeyboardSliceStore sliceSetIDForKeyplaneName:v6 type:self->_keyboardType orientation:v20];
+  v23 = [UIKeyboardSliceStore sliceSetIDForKeyplaneName:nameCopy type:self->_keyboardType orientation:v20];
 
   v21 = [[UIKeyboardSliceSet alloc] initWithSliceID:v23];
   sliceSet = self->_sliceSet;
@@ -1273,8 +1273,8 @@ LABEL_21:
 - (id)finalizeSplitKeyplane
 {
   v3 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v4 = [v3 preferencesActions];
-  [v4 rivenSizeFactor:7.0];
+  preferencesActions = [v3 preferencesActions];
+  [preferencesActions rivenSizeFactor:7.0];
   v6 = v5;
 
   rightSideWidestRow = self->_rightSideWidestRow;
@@ -1284,23 +1284,23 @@ LABEL_21:
   v11 = v6 + rightSideWidestRow;
   v60 = [UIKBTree treeOfType:2];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(UIKBTree *)self->_sourceKeyplane name];
-  v14 = [v12 stringWithFormat:@"%@-split", v13];
+  name = [(UIKBTree *)self->_sourceKeyplane name];
+  v14 = [v12 stringWithFormat:@"%@-split", name];
   [v60 setName:v14];
 
   v58 = [UIKBTree treeOfType:3];
   [v58 setName:@"split-left"];
   v15 = [UIKBShape alloc];
-  v16 = [UIKBGeometry geometryWithRect:0.0, 0.0, v8, height];
-  v17 = [(UIKBShape *)v15 initWithGeometry:v16 frame:0.0 paddedFrame:0.0, v8, height, 0.0, 0.0, v8, height];
-  [v58 setShape:v17];
+  height = [UIKBGeometry geometryWithRect:0.0, 0.0, v8, height];
+  height2 = [(UIKBShape *)v15 initWithGeometry:height frame:0.0 paddedFrame:0.0, v8, height, 0.0, 0.0, v8, height];
+  [v58 setShape:height2];
 
   v57 = [UIKBTree treeOfType:3];
   [v57 setName:@"split-right"];
   v18 = [UIKBShape alloc];
-  v19 = [UIKBGeometry geometryWithRect:v10, 0.0, v11, height];
-  v20 = [(UIKBShape *)v18 initWithGeometry:v19 frame:v10 paddedFrame:0.0, v11, height, v10, 0.0, v11, height];
-  [v57 setShape:v20];
+  height3 = [UIKBGeometry geometryWithRect:v10, 0.0, v11, height];
+  height4 = [(UIKBShape *)v18 initWithGeometry:height3 frame:v10 paddedFrame:0.0, v11, height, v10, 0.0, v11, height];
+  [v57 setShape:height4];
 
   v21 = [UIKBTree treeOfType:4];
   v22 = [UIKBTree treeOfType:5];
@@ -1328,36 +1328,36 @@ LABEL_21:
   v30 = v22;
   v31 = v21;
   [(NSMutableArray *)rows enumerateObjectsUsingBlock:v62];
-  v32 = [v58 subtrees];
-  [v32 addObject:v31];
+  subtrees = [v58 subtrees];
+  [subtrees addObject:v31];
 
-  v33 = [v58 subtrees];
-  [v33 addObject:v30];
+  subtrees2 = [v58 subtrees];
+  [subtrees2 addObject:v30];
 
-  v34 = [v58 subtrees];
-  [v34 addObject:v59];
+  subtrees3 = [v58 subtrees];
+  [subtrees3 addObject:v59];
 
-  v35 = [v57 subtrees];
-  [v35 addObject:v29];
+  subtrees4 = [v57 subtrees];
+  [subtrees4 addObject:v29];
 
-  v36 = [v57 subtrees];
-  [v36 addObject:v28];
+  subtrees5 = [v57 subtrees];
+  [subtrees5 addObject:v28];
 
-  v37 = [v57 subtrees];
-  [v37 addObject:v61];
+  subtrees6 = [v57 subtrees];
+  [subtrees6 addObject:v61];
 
   v38 = [MEMORY[0x1E695DF70] arrayWithObjects:{v58, v57, 0}];
   [v56 setSubtrees:v38];
 
-  v39 = [(UIKBTree *)self->_sourceKeyplane properties];
-  [v56 setProperties:v39];
+  properties = [(UIKBTree *)self->_sourceKeyplane properties];
+  [v56 setProperties:properties];
 
-  v40 = [v56 subtrees];
+  subtrees7 = [v56 subtrees];
   v41 = [(UIKBTree *)self->_sourceKeyplane subtreeWithType:11];
-  [v40 addObject:v41];
+  [subtrees7 addObject:v41];
 
-  v42 = [(UIKBTree *)self->_sourceKeyplane subtrees];
-  v43 = [v42 objectAtIndex:0];
+  subtrees8 = [(UIKBTree *)self->_sourceKeyplane subtrees];
+  v43 = [subtrees8 objectAtIndex:0];
   [v43 frame];
   v45 = v44;
   v47 = v46;
@@ -1450,31 +1450,31 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
   }
 }
 
-- (id)generateRivenKeyplaneFromKeyplane:(id)a3 forKeyboard:(id)a4
+- (id)generateRivenKeyplaneFromKeyplane:(id)keyplane forKeyboard:(id)keyboard
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  keyplaneCopy = keyplane;
+  keyboardCopy = keyboard;
+  if (keyplaneCopy)
   {
-    objc_storeStrong(&self->_sourceKeyplane, a3);
-    objc_storeStrong(&self->_sourceKeyboard, a4);
-    v9 = [v7 name];
-    v52 = v8;
-    if ([v7 looksLikeShiftAlternate] && objc_msgSend(v7, "isShiftKeyplane"))
+    objc_storeStrong(&self->_sourceKeyplane, keyplane);
+    objc_storeStrong(&self->_sourceKeyboard, keyboard);
+    name = [keyplaneCopy name];
+    v52 = keyboardCopy;
+    if ([keyplaneCopy looksLikeShiftAlternate] && objc_msgSend(keyplaneCopy, "isShiftKeyplane"))
     {
-      v10 = [v7 shiftAlternateKeyplaneName];
-      v11 = [v8 subtreeWithName:v10];
-      v12 = [v11 name];
+      shiftAlternateKeyplaneName = [keyplaneCopy shiftAlternateKeyplaneName];
+      v11 = [keyboardCopy subtreeWithName:shiftAlternateKeyplaneName];
+      name2 = [v11 name];
 
-      v9 = v12;
+      name = name2;
     }
 
-    [(UIKBSplitKeyplaneGenerator *)self initializeGeneratorForKeyplane:v7 name:v9];
+    [(UIKBSplitKeyplaneGenerator *)self initializeGeneratorForKeyplane:keyplaneCopy name:name];
     [(UIKBSplitKeyplaneGenerator *)self organizeKeyplaneIntoRows];
     v13 = [(NSMutableArray *)self->_rows objectAtIndex:0];
-    v14 = [v13 hints];
-    v15 = [v14 valueForKey:@"RowPadding"];
+    hints = [v13 hints];
+    v15 = [hints valueForKey:@"RowPadding"];
 
     if (v15)
     {
@@ -1485,12 +1485,12 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
     else
     {
       v19 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v20 = [v19 preferencesActions];
-      [v20 rivenSizeFactor:5.0];
+      preferencesActions = [v19 preferencesActions];
+      [preferencesActions rivenSizeFactor:5.0];
       v17 = v21;
     }
 
-    v53 = v7;
+    v53 = keyplaneCopy;
     if ([(NSMutableArray *)self->_rows count]<= 4)
     {
       v22 = v17;
@@ -1502,8 +1502,8 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
     }
 
     v23 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v24 = [v23 preferencesActions];
-    [v24 rivenSizeFactor:9.0];
+    preferencesActions2 = [v23 preferencesActions];
+    [preferencesActions2 rivenSizeFactor:9.0];
     v26 = v25;
 
     v57 = 0u;
@@ -1513,7 +1513,7 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
     obj = self->_rows;
     v27 = [(NSMutableArray *)obj countByEnumeratingWithState:&v55 objects:v59 count:16];
     v50 = v15;
-    v51 = v9;
+    v51 = name;
     if (v27)
     {
       v28 = v27;
@@ -1528,8 +1528,8 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
           }
 
           v31 = *(*(&v55 + 1) + 8 * i);
-          v32 = [v31 hints];
-          v33 = [v32 valueForKey:@"KeySize"];
+          hints2 = [v31 hints];
+          v33 = [hints2 valueForKey:@"KeySize"];
 
           if (v33)
           {
@@ -1545,13 +1545,13 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
           }
 
           v37 = +[UIKeyboardPreferencesController sharedPreferencesController];
-          v38 = [v37 preferencesActions];
-          [v38 rivenSizeFactor:width];
+          preferencesActions3 = [v37 preferencesActions];
+          [preferencesActions3 rivenSizeFactor:width];
           v40 = v39;
 
           v41 = +[UIKeyboardPreferencesController sharedPreferencesController];
-          v42 = [v41 preferencesActions];
-          [v42 rivenSizeFactor:height];
+          preferencesActions4 = [v41 preferencesActions];
+          [preferencesActions4 rivenSizeFactor:height];
           v44 = v43;
 
           [v31 setRowOffset:v26];
@@ -1569,22 +1569,22 @@ void __51__UIKBSplitKeyplaneGenerator_finalizeSplitKeyplane__block_invoke(id *a1
     }
 
     v46 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v47 = [v46 preferencesActions];
-    [v47 rivenSizeFactor:3.0];
+    preferencesActions5 = [v46 preferencesActions];
+    [preferencesActions5 rivenSizeFactor:3.0];
     self->_keyboardSize.height = v26 + v48;
 
-    v18 = [(UIKBSplitKeyplaneGenerator *)self finalizeSplitKeyplane];
+    finalizeSplitKeyplane = [(UIKBSplitKeyplaneGenerator *)self finalizeSplitKeyplane];
 
-    v8 = v52;
-    v7 = v53;
+    keyboardCopy = v52;
+    keyplaneCopy = v53;
   }
 
   else
   {
-    v18 = 0;
+    finalizeSplitKeyplane = 0;
   }
 
-  return v18;
+  return finalizeSplitKeyplane;
 }
 
 @end

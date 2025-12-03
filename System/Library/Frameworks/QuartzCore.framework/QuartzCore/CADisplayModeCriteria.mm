@@ -3,26 +3,26 @@
 - (CGSize)resolution;
 - (NSString)hdrMode;
 - (void)dealloc;
-- (void)setHdrMode:(id)a3;
+- (void)setHdrMode:(id)mode;
 @end
 
 @implementation CADisplayModeCriteria
 
-- (void)setHdrMode:(id)a3
+- (void)setHdrMode:(id)mode
 {
-  if ([a3 isEqualToString:@"Dolby"])
+  if ([mode isEqualToString:@"Dolby"])
   {
     v5 = 5;
   }
 
-  else if ([a3 isEqualToString:@"HDR10"])
+  else if ([mode isEqualToString:@"HDR10"])
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = [a3 isEqualToString:@"SDR"];
+    v5 = [mode isEqualToString:@"SDR"];
   }
 
   self->_priv->var2 = v5;

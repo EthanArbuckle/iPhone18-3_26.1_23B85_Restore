@@ -1,57 +1,57 @@
 @interface CHXDataValue
-+ (id)chdDataValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)chdNumberValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)chdStringValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdDataValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state;
++ (id)chdNumberValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state;
++ (id)chdStringValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXDataValue
 
-+ (id)chdStringValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdStringValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = [EXString readStringWithAsciiCodeFromXmlStringElement:OCXFindRequiredChild(a3, v8, "v")];
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = [EXString readStringWithAsciiCodeFromXmlStringElement:OCXFindRequiredChild(element, oAXChartNamespace, "v")];
 
   EDValue::makeWithNSString(v9, &v12);
-  v10 = [a1 chdDataValueFromXmlDataValueElement:a3 state:v6];
+  v10 = [self chdDataValueFromXmlDataValueElement:element state:stateCopy];
   [v10 setValue:&v12];
   EDValue::~EDValue(&v12);
 
   return v10;
 }
 
-+ (id)chdNumberValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdNumberValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = [EXString readStringWithAsciiCodeFromXmlStringElement:OCXFindRequiredChild(a3, v8, "v")];
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = [EXString readStringWithAsciiCodeFromXmlStringElement:OCXFindRequiredChild(element, oAXChartNamespace, "v")];
 
-  v10 = [v9 doubleValue];
-  EDValue::makeWithNumber(v10, v11, &v14);
-  v12 = [a1 chdDataValueFromXmlDataValueElement:a3 state:v6];
+  doubleValue = [v9 doubleValue];
+  EDValue::makeWithNumber(doubleValue, v11, &v14);
+  v12 = [self chdDataValueFromXmlDataValueElement:element state:stateCopy];
   [v12 setValue:&v14];
   EDValue::~EDValue(&v14);
 
   return v12;
 }
 
-+ (id)chdDataValueFromXmlDataValueElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdDataValueFromXmlDataValueElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = +[CHDDataValue dataValue];
-  [v6 setIndex:{CXRequiredUnsignedLongAttribute(a3, CXNoNamespace, "idx")}];
+  [v6 setIndex:{CXRequiredUnsignedLongAttribute(element, CXNoNamespace, "idx")}];
   v13 = 0;
-  v7 = CXOptionalStringAttribute(a3, CXNoNamespace, "formatCode", &v13);
+  v7 = CXOptionalStringAttribute(element, CXNoNamespace, "formatCode", &v13);
   v8 = v13;
   if (v7)
   {
     v9 = [EDString edStringWithString:v8];
     v10 = [EDContentFormat contentFormatWithFormatString:v9];
 
-    v11 = [v5 resources];
-    [v6 setContentFormatWithResources:v10 resources:v11];
+    resources = [stateCopy resources];
+    [v6 setContentFormatWithResources:v10 resources:resources];
   }
 
   return v6;

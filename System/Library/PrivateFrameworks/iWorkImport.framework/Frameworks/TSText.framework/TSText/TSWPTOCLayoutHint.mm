@@ -1,18 +1,18 @@
 @interface TSWPTOCLayoutHint
 - (TSWPTOCLayoutHint)init;
-- (TSWPTOCLayoutHint)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSWPTOCLayoutHint)initWithRange:(_NSRange)a3;
+- (TSWPTOCLayoutHint)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSWPTOCLayoutHint)initWithRange:(_NSRange)range;
 - (_NSRange)charRange;
 - (id)copyForArchiving;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSWPTOCLayoutHint
 
-- (TSWPTOCLayoutHint)initWithRange:(_NSRange)a3
+- (TSWPTOCLayoutHint)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6.receiver = self;
   v6.super_class = TSWPTOCLayoutHint;
   result = [(TSWPTOCLayoutHint *)&v6 init];
@@ -58,10 +58,10 @@
   return v6;
 }
 
-- (TSWPTOCLayoutHint)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSWPTOCLayoutHint)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16))
   {
     v9 = TSPNSRangeFromMessage();
     v8 = objc_msgSend_initWithRange_(self, v10, v9, v10);
@@ -77,19 +77,19 @@
   return v11;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  if (!*(a3 + 3))
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  if (!*(archive + 3))
   {
-    v5 = *(a3 + 1);
+    v5 = *(archive + 1);
     if (v5)
     {
       v5 = *(v5 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 3) = MEMORY[0x277CA3230](v5);
+    *(archive + 3) = MEMORY[0x277CA3230](v5);
   }
 
   TSPNSRangeCopyToMessage();

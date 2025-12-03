@@ -1,6 +1,6 @@
 @interface SLWeeAppButtonBackgroundViewAccessibility
 - (BOOL)_accessibilityIsFacebookButton;
-- (SLWeeAppButtonBackgroundViewAccessibility)initWithFrame:(CGRect)a3;
+- (SLWeeAppButtonBackgroundViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
@@ -29,8 +29,8 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v12 + 1) + 8 * i) accessibilityIdentifier];
-        v8 = [v7 isEqualToString:@"facebookglyph"];
+        accessibilityIdentifier = [*(*(&v12 + 1) + 8 * i) accessibilityIdentifier];
+        v8 = [accessibilityIdentifier isEqualToString:@"facebookglyph"];
 
         if (v8)
         {
@@ -56,11 +56,11 @@ LABEL_11:
   return v9;
 }
 
-- (SLWeeAppButtonBackgroundViewAccessibility)initWithFrame:(CGRect)a3
+- (SLWeeAppButtonBackgroundViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SLWeeAppButtonBackgroundViewAccessibility;
-  v3 = [(SLWeeAppButtonBackgroundViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SLWeeAppButtonBackgroundViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [(SLWeeAppButtonBackgroundViewAccessibility *)v3 safeValueForKey:@"_labelView"];
   [v4 setIsAccessibilityElement:0];
 

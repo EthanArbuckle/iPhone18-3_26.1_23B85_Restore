@@ -1,6 +1,6 @@
 @interface _BKMousePointerServerClientRecord
 - (_BKMousePointerServerClientRecord)init;
-- (id)infoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)infoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed;
 @end
 
 @implementation _BKMousePointerServerClientRecord
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (id)infoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)infoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_perDisplayUUIDInfo objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_perDisplayUUIDInfo objectForKeyedSubscript:dCopy];
   v8 = v7;
-  if (v4 && !v7)
+  if (neededCopy && !v7)
   {
     v8 = objc_alloc_init(_BKMousePointerServerClientPerDisplay);
-    [(NSMutableDictionary *)self->_perDisplayUUIDInfo setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_perDisplayUUIDInfo setObject:v8 forKeyedSubscript:dCopy];
   }
 
   return v8;

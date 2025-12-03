@@ -1,20 +1,20 @@
 @interface PendingReadingListItem
-+ (id)itemWithBookmark:(id)a3 provider:(id)a4;
++ (id)itemWithBookmark:(id)bookmark provider:(id)provider;
 @end
 
 @implementation PendingReadingListItem
 
-+ (id)itemWithBookmark:(id)a3 provider:(id)a4
++ (id)itemWithBookmark:(id)bookmark provider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  bookmarkCopy = bookmark;
+  providerCopy = provider;
   v7 = objc_alloc_init(PendingReadingListItem);
   bookmark = v7->_bookmark;
-  v7->_bookmark = v5;
-  v9 = v5;
+  v7->_bookmark = bookmarkCopy;
+  v9 = bookmarkCopy;
 
   provider = v7->_provider;
-  v7->_provider = v6;
+  v7->_provider = providerCopy;
 
   return v7;
 }

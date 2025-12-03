@@ -1,27 +1,27 @@
 @interface BWRedEyeReductionController
-+ (id)_newRedEyeRepairSessionWithMetalCommandQueue:(uint64_t)a1;
++ (id)_newRedEyeRepairSessionWithMetalCommandQueue:(uint64_t)queue;
 + (void)initialize;
 + (void)prewarm;
-- (BOOL)_receivedRequiredFramesForRequest:(uint64_t)a1;
-- (BWRedEyeReductionController)initWithConfiguration:(id)a3;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4;
+- (BOOL)_receivedRequiredFramesForRequest:(uint64_t)request;
+- (BWRedEyeReductionController)initWithConfiguration:(id)configuration;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate;
 - (uint64_t)_clearRequest:(uint64_t)result;
-- (uint64_t)_configureRedEyeReductionSessionWithConfiguration:(void *)a1;
-- (uint64_t)_processRedEyeReductionWhenNecessaryForRequest:(int)a3 skipProcessing:;
+- (uint64_t)_configureRedEyeReductionSessionWithConfiguration:(void *)configuration;
+- (uint64_t)_processRedEyeReductionWhenNecessaryForRequest:(int)request skipProcessing:;
 - (uint64_t)_serviceRequests;
-- (void)_propagateSensorInterfaceRawFromAuxImage:(uint64_t)a1 toPrimaryImage:(const void *)a2;
-- (void)_requestForInput:(uint64_t)a1;
+- (void)_propagateSensorInterfaceRawFromAuxImage:(uint64_t)image toPrimaryImage:(const void *)primaryImage;
+- (void)_requestForInput:(uint64_t)input;
 - (void)cancelProcessing;
 - (void)dealloc;
-- (void)didReceiveAllFramesForInput:(id)a3;
-- (void)didReceiveFrameForInput:(id)a3;
+- (void)didReceiveAllFramesForInput:(id)input;
+- (void)didReceiveFrameForInput:(id)input;
 @end
 
 @implementation BWRedEyeReductionController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -30,13 +30,13 @@
   }
 }
 
-- (BWRedEyeReductionController)initWithConfiguration:(id)a3
+- (BWRedEyeReductionController)initWithConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = BWRedEyeReductionController;
   v4 = [(BWRedEyeReductionController *)&v7 init];
   v5 = v4;
-  if (v4 && [(BWRedEyeReductionController *)v4 _configureRedEyeReductionSessionWithConfiguration:a3])
+  if (v4 && [(BWRedEyeReductionController *)v4 _configureRedEyeReductionSessionWithConfiguration:configuration])
   {
 
     return 0;
@@ -45,7 +45,7 @@
   return v5;
 }
 
-+ (id)_newRedEyeRepairSessionWithMetalCommandQueue:(uint64_t)a1
++ (id)_newRedEyeRepairSessionWithMetalCommandQueue:(uint64_t)queue
 {
   objc_opt_self();
   v3 = MEMORY[0x1E695F620];
@@ -95,12 +95,12 @@
   [(BWStillImageProcessorController *)&v4 dealloc];
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate
 {
-  v7 = [[BWRedEyeReductionRequest alloc] initWithInput:a3 delegate:a4];
+  v7 = [[BWRedEyeReductionRequest alloc] initWithInput:processing delegate:delegate];
   [(BWRedEyeReductionRequest *)v7 setMode:0];
-  [a3 setInputDelegate:self];
-  [a3 setProcessorControllerDelegate:a4];
+  [processing setInputDelegate:self];
+  [processing setProcessorControllerDelegate:delegate];
   [(NSMutableArray *)self->_requestQueue addObject:v7];
 
   [(BWRedEyeReductionController *)self _serviceRequests];
@@ -117,8 +117,8 @@
 
 + (void)prewarm
 {
-  v2 = [MEMORY[0x1E6991778] metalDevice];
-  if (!v2)
+  metalDevice = [MEMORY[0x1E6991778] metalDevice];
+  if (!metalDevice)
   {
     +[BWRedEyeReductionController prewarm];
 LABEL_11:
@@ -127,15 +127,15 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v3 = [v2 newCommandQueue];
-  if (!v3)
+  newCommandQueue = [metalDevice newCommandQueue];
+  if (!newCommandQueue)
   {
     +[BWRedEyeReductionController prewarm];
     goto LABEL_11;
   }
 
-  v6 = v3;
-  v4 = [BWRedEyeReductionController _newRedEyeRepairSessionWithMetalCommandQueue:v3];
+  v6 = newCommandQueue;
+  v4 = [BWRedEyeReductionController _newRedEyeRepairSessionWithMetalCommandQueue:newCommandQueue];
   v5 = v4;
   if (v4)
   {
@@ -153,9 +153,9 @@ LABEL_11:
 LABEL_6:
 }
 
-- (void)didReceiveFrameForInput:(id)a3
+- (void)didReceiveFrameForInput:(id)input
 {
-  v4 = [(BWRedEyeReductionController *)self _requestForInput:a3];
+  v4 = [(BWRedEyeReductionController *)self _requestForInput:input];
   if (self && v4 && v4 == [(NSMutableArray *)self->_requestQueue firstObject])
   {
 
@@ -163,9 +163,9 @@ LABEL_6:
   }
 }
 
-- (uint64_t)_configureRedEyeReductionSessionWithConfiguration:(void *)a1
+- (uint64_t)_configureRedEyeReductionSessionWithConfiguration:(void *)configuration
 {
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }
@@ -175,8 +175,8 @@ LABEL_6:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a2 sensorConfigurationsByPortType];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  sensorConfigurationsByPortType = [a2 sensorConfigurationsByPortType];
+  v6 = [sensorConfigurationsByPortType countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -188,7 +188,7 @@ LABEL_6:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sensorConfigurationsByPortType);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -203,7 +203,7 @@ LABEL_6:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v7 = [sensorConfigurationsByPortType countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -213,10 +213,10 @@ LABEL_6:
     }
   }
 
-  a1[8] = v4;
+  configuration[8] = v4;
   v12 = +[BWRedEyeReductionController _newRedEyeRepairSessionWithMetalCommandQueue:](BWRedEyeReductionController, [a2 metalCommandQueue]);
-  a1[9] = v12;
-  if (v12 && ([v12 prepareRepair] & 1) != 0 && (v13 = objc_alloc_init(MEMORY[0x1E695DF70]), (a1[11] = v13) != 0))
+  configuration[9] = v12;
+  if (v12 && ([v12 prepareRepair] & 1) != 0 && (v13 = objc_alloc_init(MEMORY[0x1E695DF70]), (configuration[11] = v13) != 0))
   {
     v14 = 0;
   }
@@ -266,17 +266,17 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)_processRedEyeReductionWhenNecessaryForRequest:(int)a3 skipProcessing:
+- (uint64_t)_processRedEyeReductionWhenNecessaryForRequest:(int)request skipProcessing:
 {
   if (result)
   {
     v5 = result;
-    v6 = [a2 input];
-    v7 = [v6 primaryImage];
+    input = [a2 input];
+    primaryImage = [input primaryImage];
     v8 = *off_1E798A3C8;
-    v9 = CMGetAttachment(v7, *off_1E798A3C8, 0);
-    v10 = [v6 auxImage];
-    if (a3)
+    v9 = CMGetAttachment(primaryImage, *off_1E798A3C8, 0);
+    auxImage = [input auxImage];
+    if (request)
     {
 LABEL_26:
       v30 = 0;
@@ -285,11 +285,11 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v11 = v10;
-    if (v7 && ![a2 mode])
+    v11 = auxImage;
+    if (primaryImage && ![a2 mode])
     {
       v47 = v11;
-      ImageBuffer = CMSampleBufferGetImageBuffer(v7);
+      ImageBuffer = CMSampleBufferGetImageBuffer(primaryImage);
       v12 = [v9 objectForKeyedSubscript:*off_1E798B540];
       if (!v12 || (v13 = v12, (v14 = [v9 objectForKeyedSubscript:*off_1E798A5B0]) == 0))
       {
@@ -304,13 +304,13 @@ LABEL_27:
       if (v15)
       {
         v16 = v15;
-        v42 = v7;
-        v17 = [objc_msgSend(v6 "captureSettings")];
+        v42 = primaryImage;
+        v17 = [objc_msgSend(input "captureSettings")];
         ModelSpecificName = FigCaptureGetModelSpecificName();
         if (ModelSpecificName)
         {
           v19 = ModelSpecificName;
-          v46 = a3;
+          requestCopy = request;
           v41 = v9;
           v20 = [*(v5 + 64) objectForKeyedSubscript:v13];
           if (v20)
@@ -325,10 +325,10 @@ LABEL_27:
             v21 = 0;
           }
 
-          v22 = [v6 faceObservations];
+          faceObservations = [input faceObservations];
           v23 = MEMORY[0x1E695DF20];
           v24 = [MEMORY[0x1E696AD98] numberWithBool:(v17 >> 5) & 1];
-          if ([*(v5 + 72) setPrimary:ImageBuffer observations:v22 metadata:{objc_msgSend(v23, "dictionaryWithObjectsAndKeys:", v24, *MEMORY[0x1E695F5F0], v43, *MEMORY[0x1E695F5D0], v13, *MEMORY[0x1E695F5E0], v16, *MEMORY[0x1E695F5D8], v19, *MEMORY[0x1E695F5C8], v21, *MEMORY[0x1E695F5E8], 0)}])
+          if ([*(v5 + 72) setPrimary:ImageBuffer observations:faceObservations metadata:{objc_msgSend(v23, "dictionaryWithObjectsAndKeys:", v24, *MEMORY[0x1E695F5F0], v43, *MEMORY[0x1E695F5D0], v13, *MEMORY[0x1E695F5E0], v16, *MEMORY[0x1E695F5D8], v19, *MEMORY[0x1E695F5C8], v21, *MEMORY[0x1E695F5E8], 0)}])
           {
             v25 = 2;
           }
@@ -340,9 +340,9 @@ LABEL_27:
 
           [a2 setMode:v25];
           v9 = v41;
-          v7 = v42;
+          primaryImage = v42;
           v8 = v44;
-          a3 = v46;
+          request = requestCopy;
           v11 = v47;
           if (dword_1EB58E000)
           {
@@ -351,7 +351,7 @@ LABEL_27:
             os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
             os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
             fig_log_call_emit_and_clean_up_after_send_and_compose();
-            a3 = v46;
+            request = requestCopy;
             v11 = v47;
           }
 
@@ -360,7 +360,7 @@ LABEL_27:
 
         v30 = FigSignalErrorAtGM();
         v31 = 1;
-        v7 = v42;
+        primaryImage = v42;
       }
 
       else
@@ -378,18 +378,18 @@ LABEL_17:
     v27 = OUTLINED_FUNCTION_3_19();
     if ([(BWRedEyeReductionController *)v27 _receivedRequiredFramesForRequest:v28])
     {
-      v29 = [a2 mode];
-      if (v29 == 1)
+      mode = [a2 mode];
+      if (mode == 1)
       {
-        if ([v6 requiresSensorInterfaceRawPropagation])
+        if ([input requiresSensorInterfaceRawPropagation])
         {
           [BWRedEyeReductionController _propagateSensorInterfaceRawFromAuxImage:v5 toPrimaryImage:v11];
         }
       }
 
-      else if (v29 == 2)
+      else if (mode == 2)
       {
-        if ([v6 requiresSensorInterfaceRawPropagation])
+        if ([input requiresSensorInterfaceRawPropagation])
         {
           [BWRedEyeReductionController _propagateSensorInterfaceRawFromAuxImage:v5 toPrimaryImage:v11];
         }
@@ -409,7 +409,7 @@ LABEL_17:
 
 LABEL_28:
         v32 = OUTLINED_FUNCTION_3_19();
-        if (![(BWRedEyeReductionController *)v32 _receivedRequiredFramesForRequest:v33]&& !v30 && !a3)
+        if (![(BWRedEyeReductionController *)v32 _receivedRequiredFramesForRequest:v33]&& !v30 && !request)
         {
           result = [a2 mode];
           if (result == 2)
@@ -422,16 +422,16 @@ LABEL_28:
 
         if (v30)
         {
-          if (!v7)
+          if (!primaryImage)
           {
             goto LABEL_40;
           }
         }
 
-        else if (!v7 || (a3 & 1) == 0)
+        else if (!primaryImage || (request & 1) == 0)
         {
 LABEL_40:
-          if (((v7 == 0) & a3) != 0)
+          if (((primaryImage == 0) & request) != 0)
           {
             v34 = 4294954516;
           }
@@ -450,7 +450,7 @@ LABEL_40:
 LABEL_44:
         v36 = [v9 mutableCopy];
         [v36 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v31), *off_1E798A828}];
-        CMSetAttachment(v7, v8, v36, 1u);
+        CMSetAttachment(primaryImage, v8, v36, 1u);
 
         [objc_msgSend(a2 "delegate")];
         v37 = OUTLINED_FUNCTION_3_19();
@@ -464,9 +464,9 @@ LABEL_44:
   return result;
 }
 
-- (void)_requestForInput:(uint64_t)a1
+- (void)_requestForInput:(uint64_t)input
 {
-  if (!a1)
+  if (!input)
   {
     return 0;
   }
@@ -478,8 +478,8 @@ LABEL_44:
     return 0;
   }
 
-  v3 = *(a1 + 88);
-  v4 = OUTLINED_FUNCTION_4_23(a1, a2);
+  v3 = *(input + 88);
+  v4 = OUTLINED_FUNCTION_4_23(input, a2);
   if (!v4)
   {
     return 0;
@@ -497,15 +497,15 @@ LABEL_5:
     }
 
     v8 = *(8 * v7);
-    v9 = [v8 input];
-    if (v9 == a2)
+    input = [v8 input];
+    if (input == a2)
     {
       return v8;
     }
 
     if (v5 == ++v7)
     {
-      v5 = OUTLINED_FUNCTION_4_23(v9, v10);
+      v5 = OUTLINED_FUNCTION_4_23(input, v10);
       if (v5)
       {
         goto LABEL_5;
@@ -516,17 +516,17 @@ LABEL_5:
   }
 }
 
-- (void)didReceiveAllFramesForInput:(id)a3
+- (void)didReceiveAllFramesForInput:(id)input
 {
-  v5 = [(BWRedEyeReductionController *)self _requestForInput:a3];
-  if (![a3 primaryImage] || !objc_msgSend(a3, "auxImage") && objc_msgSend(v5, "mode") != 1)
+  v5 = [(BWRedEyeReductionController *)self _requestForInput:input];
+  if (![input primaryImage] || !objc_msgSend(input, "auxImage") && objc_msgSend(v5, "mode") != 1)
   {
     [(BWRedEyeReductionController *)self _processRedEyeReductionWhenNecessaryForRequest:v5 skipProcessing:1];
   }
 
-  v6 = [a3 processorControllerDelegate];
+  processorControllerDelegate = [input processorControllerDelegate];
 
-  [v6 processorController:self didFinishProcessingInput:a3 err:0];
+  [processorControllerDelegate processorController:self didFinishProcessingInput:input err:0];
 }
 
 - (uint64_t)_clearRequest:(uint64_t)result
@@ -551,37 +551,37 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_receivedRequiredFramesForRequest:(uint64_t)a1
+- (BOOL)_receivedRequiredFramesForRequest:(uint64_t)request
 {
-  if (!a1)
+  if (!request)
   {
     return 0;
   }
 
-  v3 = [a2 input];
-  v4 = [a2 mode];
-  if (v4 != 2)
+  input = [a2 input];
+  mode = [a2 mode];
+  if (mode != 2)
   {
-    if (v4 == 1)
+    if (mode == 1)
     {
-      if (![v3 requiresSensorInterfaceRawPropagation])
+      if (![input requiresSensorInterfaceRawPropagation])
       {
         return 1;
       }
     }
 
-    else if (v4)
+    else if (mode)
     {
       return v5;
     }
   }
 
-  return [v3 primaryImage] && objc_msgSend(v3, "auxImage") != 0;
+  return [input primaryImage] && objc_msgSend(input, "auxImage") != 0;
 }
 
-- (void)_propagateSensorInterfaceRawFromAuxImage:(uint64_t)a1 toPrimaryImage:(const void *)a2
+- (void)_propagateSensorInterfaceRawFromAuxImage:(uint64_t)image toPrimaryImage:(const void *)primaryImage
 {
-  if (a1 && BWSampleBufferGetAttachedMedia(a2, 0x1F21AAAF0))
+  if (image && BWSampleBufferGetAttachedMedia(primaryImage, 0x1F21AAAF0))
   {
     v2 = OUTLINED_FUNCTION_3_19();
 

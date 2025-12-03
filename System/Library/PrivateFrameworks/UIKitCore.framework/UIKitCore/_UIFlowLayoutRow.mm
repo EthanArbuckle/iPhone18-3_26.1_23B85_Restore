@@ -1,7 +1,7 @@
 @interface _UIFlowLayoutRow
 - (_UIFlowLayoutRow)init;
-- (uint64_t)indexOfNearestItemAtPoint:(double)a3;
-- (void)addItem:(int)a3 atEnd:;
+- (uint64_t)indexOfNearestItemAtPoint:(double)point;
+- (void)addItem:(int)item atEnd:;
 - (void)layoutRow;
 @end
 
@@ -27,9 +27,9 @@
 - (void)layoutRow
 {
   v76 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v3 = WeakRetained;
     v4 = 0.0;
     if (WeakRetained)
@@ -98,7 +98,7 @@
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v16 = *(a1 + 40);
+    v16 = *(self + 40);
     v17 = [v16 countByEnumeratingWithState:&v70 objects:v75 count:16];
     v18 = 0.0;
     if (v17)
@@ -180,8 +180,8 @@
       v28 = v11;
     }
 
-    *(a1 + 56) = v28;
-    *(a1 + 64) = v27;
+    *(self + 56) = v28;
+    *(self + 64) = v27;
     if (v3)
     {
       v29 = *(v3 + 29);
@@ -193,7 +193,7 @@
     }
 
     v30 = HIDWORD(v29);
-    if (*(a1 + 9))
+    if (*(self + 9))
     {
       v31 = v29;
     }
@@ -203,7 +203,7 @@
       v31 = HIDWORD(v29);
     }
 
-    v32 = *(a1 + 40);
+    v32 = *(self + 40);
     v33 = v32;
     switch(v31)
     {
@@ -226,10 +226,10 @@
 
           v65 = 0.0;
 LABEL_49:
-          if ((*(a1 + 9) & 1) != 0 || *(a1 + 20) != 1 || v29 != 3 || v30 && v30 != 2)
+          if ((*(self + 9) & 1) != 0 || *(self + 20) != 1 || v29 != 3 || v30 && v30 != 2)
           {
 LABEL_50:
-            v64 = *(a1 + 56);
+            v64 = *(self + 56);
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
@@ -276,7 +276,7 @@ LABEL_50:
                   v44 = v42;
                 }
 
-                v45 = *(a1 + 12);
+                v45 = *(self + 12);
                 if (v12)
                 {
                   v46 = v42;
@@ -395,12 +395,12 @@ LABEL_94:
           }
 
           v58 = v54 - v55;
-          v59 = [*(a1 + 40) lastObject];
+          lastObject = [*(self + 40) lastObject];
           v60 = 0.0;
           v65 = 0.0;
-          if (v59)
+          if (lastObject)
           {
-            v60 = *&v59[v56];
+            v60 = *&lastObject[v56];
           }
 
           if (v60 <= v58)
@@ -435,14 +435,14 @@ LABEL_94:
   }
 }
 
-- (void)addItem:(int)a3 atEnd:
+- (void)addItem:(int)item atEnd:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = a1[5];
+    v6 = self[5];
     v7 = v5;
-    if (a3)
+    if (item)
     {
       [v6 addObject:v5];
     }
@@ -455,18 +455,18 @@ LABEL_94:
     v5 = v7;
     if (v7)
     {
-      objc_storeWeak(v7 + 3, a1);
+      objc_storeWeak(v7 + 3, self);
       v5 = v7;
     }
   }
 }
 
-- (uint64_t)indexOfNearestItemAtPoint:(double)a3
+- (uint64_t)indexOfNearestItemAtPoint:(double)point
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v7 = WeakRetained;
     if (WeakRetained && (v8 = objc_loadWeakRetained(WeakRetained + 18)) != 0)
     {
@@ -482,22 +482,22 @@ LABEL_94:
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v10 = *(v3 + 40);
+    v10 = *(selfCopy + 40);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __46___UIFlowLayoutRow_indexOfNearestItemAtPoint___block_invoke;
     v12[3] = &unk_1E7100310;
     v13 = v9 & 1;
     *&v12[6] = a2;
-    *&v12[7] = a3;
-    v12[4] = v3;
+    *&v12[7] = point;
+    v12[4] = selfCopy;
     v12[5] = &v14;
     [v10 enumerateObjectsUsingBlock:v12];
-    v3 = v15[3];
+    selfCopy = v15[3];
     _Block_object_dispose(&v14, 8);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

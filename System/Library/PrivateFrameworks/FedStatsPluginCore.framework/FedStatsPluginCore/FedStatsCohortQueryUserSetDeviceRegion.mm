@@ -12,9 +12,9 @@
   v2 = [(FedStatsCohortQueryUserSetDeviceRegion *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D08468] getDeviceRegion];
+    getDeviceRegion = [MEMORY[0x277D08468] getDeviceRegion];
     userSetDeviceRegion = v2->_userSetDeviceRegion;
-    v2->_userSetDeviceRegion = v3;
+    v2->_userSetDeviceRegion = getDeviceRegion;
   }
 
   return v2;

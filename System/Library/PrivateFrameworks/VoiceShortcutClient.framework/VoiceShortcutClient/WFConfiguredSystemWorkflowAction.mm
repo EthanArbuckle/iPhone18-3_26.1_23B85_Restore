@@ -1,49 +1,49 @@
 @interface WFConfiguredSystemWorkflowAction
-- (BOOL)isEqual:(id)a3;
-- (WFConfiguredSystemWorkflowAction)initWithCoder:(id)a3;
-- (WFConfiguredSystemWorkflowAction)initWithName:(id)a3 workflowIdentifier:(id)a4 workflowIcon:(id)a5 associatedBundleIdentifier:(id)a6 shortcutsMetadata:(id)a7 colorScheme:(id)a8;
-- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)a3 shortcutsMetadata:(id)a4;
-- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)a3 shortcutsMetadata:(id)a4 colorScheme:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFConfiguredSystemWorkflowAction)initWithCoder:(id)coder;
+- (WFConfiguredSystemWorkflowAction)initWithName:(id)name workflowIdentifier:(id)identifier workflowIcon:(id)icon associatedBundleIdentifier:(id)bundleIdentifier shortcutsMetadata:(id)metadata colorScheme:(id)scheme;
+- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)workflow shortcutsMetadata:(id)metadata;
+- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)workflow shortcutsMetadata:(id)metadata colorScheme:(id)scheme;
 - (id)description;
 - (id)previewIcon;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConfiguredSystemWorkflowAction
 
 - (id)previewIcon
 {
-  v3 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.shortcuts"];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v4 = [associatedBundleIdentifier isEqualToString:@"com.apple.shortcuts"];
 
   if (v4)
   {
-    v5 = [(WFConfiguredSystemWorkflowAction *)self workflowIcon];
-    v6 = [v5 icon];
+    workflowIcon = [(WFConfiguredSystemWorkflowAction *)self workflowIcon];
+    icon = [workflowIcon icon];
 
-    if (v6)
+    if (icon)
     {
-      v7 = [(WFConfiguredSystemWorkflowAction *)self workflowIcon];
-      v8 = [v7 icon];
+      workflowIcon2 = [(WFConfiguredSystemWorkflowAction *)self workflowIcon];
+      icon2 = [workflowIcon2 icon];
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = WFConfiguredSystemWorkflowAction;
-      v8 = [(WFConfiguredStaccatoAction *)&v12 previewIcon];
+      icon2 = [(WFConfiguredStaccatoAction *)&v12 previewIcon];
     }
   }
 
   else
   {
     v9 = [WFAppIcon alloc];
-    v10 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-    v8 = [(WFAppIcon *)v9 initWithBundleIdentifier:v10];
+    associatedBundleIdentifier2 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+    icon2 = [(WFAppIcon *)v9 initWithBundleIdentifier:associatedBundleIdentifier2];
   }
 
-  return v8;
+  return icon2;
 }
 
 - (unint64_t)hash
@@ -52,29 +52,29 @@
   v9.receiver = self;
   v9.super_class = WFConfiguredSystemWorkflowAction;
   v4 = [v3 combineInteger:{-[WFConfiguredStaccatoAction hash](&v9, sel_hash)}];
-  v5 = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
-  v6 = [v3 combine:v5];
+  workflowIdentifier = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
+  v6 = [v3 combine:workflowIdentifier];
 
   v7 = [v3 finalize];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14.receiver = self, v14.super_class = WFConfiguredSystemWorkflowAction, [(WFConfiguredStaccatoAction *)&v14 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14.receiver = self, v14.super_class = WFConfiguredSystemWorkflowAction, [(WFConfiguredStaccatoAction *)&v14 isEqual:v5]))
   {
     v6 = v5;
-    v7 = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
-    v8 = [(WFConfiguredSystemWorkflowAction *)v6 workflowIdentifier];
-    v9 = v7;
-    v10 = v8;
+    workflowIdentifier = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
+    workflowIdentifier2 = [(WFConfiguredSystemWorkflowAction *)v6 workflowIdentifier];
+    v9 = workflowIdentifier;
+    v10 = workflowIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -103,59 +103,59 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFConfiguredStaccatoAction *)self identifier];
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  v7 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v8 = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@, workflow: %@>", v4, self, v5, v6, v7, v8];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  workflowIdentifier = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@, workflow: %@>", v4, self, identifier, name, associatedBundleIdentifier, workflowIdentifier];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFConfiguredSystemWorkflowAction;
-  v4 = a3;
-  [(WFConfiguredStaccatoAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFConfiguredStaccatoAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFConfiguredSystemWorkflowAction *)self workflowIcon:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"workflowIcon"];
+  [coderCopy encodeObject:v5 forKey:@"workflowIcon"];
 
-  v6 = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
-  [v4 encodeObject:v6 forKey:@"workflowIdentifier"];
+  workflowIdentifier = [(WFConfiguredSystemWorkflowAction *)self workflowIdentifier];
+  [coderCopy encodeObject:workflowIdentifier forKey:@"workflowIdentifier"];
 }
 
-- (WFConfiguredSystemWorkflowAction)initWithCoder:(id)a3
+- (WFConfiguredSystemWorkflowAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowIcon"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowIcon"];
 
-  v11 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     self = [(WFConfiguredSystemWorkflowAction *)self initWithName:v5 workflowIdentifier:v6 workflowIcon:v10 associatedBundleIdentifier:v7 shortcutsMetadata:v8 colorScheme:v9];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (WFConfiguredSystemWorkflowAction)initWithName:(id)a3 workflowIdentifier:(id)a4 workflowIcon:(id)a5 associatedBundleIdentifier:(id)a6 shortcutsMetadata:(id)a7 colorScheme:(id)a8
+- (WFConfiguredSystemWorkflowAction)initWithName:(id)name workflowIdentifier:(id)identifier workflowIcon:(id)icon associatedBundleIdentifier:(id)bundleIdentifier shortcutsMetadata:(id)metadata colorScheme:(id)scheme
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  nameCopy = name;
+  identifierCopy = identifier;
+  iconCopy = icon;
+  bundleIdentifierCopy = bundleIdentifier;
+  metadataCopy = metadata;
+  schemeCopy = scheme;
+  if (nameCopy)
   {
-    if (v16)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -163,13 +163,13 @@
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v16)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v18)
+      if (bundleIdentifierCopy)
       {
         goto LABEL_5;
       }
@@ -178,67 +178,67 @@ LABEL_3:
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"workflowIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"workflowIdentifier"}];
 
-  if (!v18)
+  if (!bundleIdentifierCopy)
   {
 LABEL_4:
-    v18 = @"com.apple.shortcuts";
+    bundleIdentifierCopy = @"com.apple.shortcuts";
     v21 = @"com.apple.shortcuts";
   }
 
 LABEL_5:
-  v22 = [v17 icon];
+  icon = [iconCopy icon];
   v30.receiver = self;
   v30.super_class = WFConfiguredSystemWorkflowAction;
-  v23 = [(WFConfiguredStaccatoAction *)&v30 initWithIdentifier:v16 associatedBundleIdentifier:v18 name:v15 previewIcon:v22 shortcutsMetadata:v19 colorScheme:v20];
+  v23 = [(WFConfiguredStaccatoAction *)&v30 initWithIdentifier:identifierCopy associatedBundleIdentifier:bundleIdentifierCopy name:nameCopy previewIcon:icon shortcutsMetadata:metadataCopy colorScheme:schemeCopy];
 
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     workflowIdentifier = v23->_workflowIdentifier;
     v23->_workflowIdentifier = v24;
 
-    objc_storeStrong(&v23->_workflowIcon, a5);
+    objc_storeStrong(&v23->_workflowIcon, icon);
     v26 = v23;
   }
 
   return v23;
 }
 
-- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)a3 shortcutsMetadata:(id)a4 colorScheme:(id)a5
+- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)workflow shortcutsMetadata:(id)metadata colorScheme:(id)scheme
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  workflowCopy = workflow;
+  metadataCopy = metadata;
+  schemeCopy = scheme;
+  if (!workflowCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"workflowDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"workflowDescriptor"}];
   }
 
-  v12 = [v9 name];
-  v13 = [v9 identifier];
-  v14 = -[WFWorkflowIcon initWithBackgroundColorValue:glyphCharacter:customImageData:]([WFWorkflowIcon alloc], "initWithBackgroundColorValue:glyphCharacter:customImageData:", [v9 color], objc_msgSend(v9, "glyphCharacter"), 0);
-  v15 = [v9 associatedAppBundleIdentifier];
-  v16 = [(WFConfiguredSystemWorkflowAction *)self initWithName:v12 workflowIdentifier:v13 workflowIcon:v14 associatedBundleIdentifier:v15 shortcutsMetadata:v10 colorScheme:v11];
+  name = [workflowCopy name];
+  identifier = [workflowCopy identifier];
+  v14 = -[WFWorkflowIcon initWithBackgroundColorValue:glyphCharacter:customImageData:]([WFWorkflowIcon alloc], "initWithBackgroundColorValue:glyphCharacter:customImageData:", [workflowCopy color], objc_msgSend(workflowCopy, "glyphCharacter"), 0);
+  associatedAppBundleIdentifier = [workflowCopy associatedAppBundleIdentifier];
+  v16 = [(WFConfiguredSystemWorkflowAction *)self initWithName:name workflowIdentifier:identifier workflowIcon:v14 associatedBundleIdentifier:associatedAppBundleIdentifier shortcutsMetadata:metadataCopy colorScheme:schemeCopy];
 
   return v16;
 }
 
-- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)a3 shortcutsMetadata:(id)a4
+- (WFConfiguredSystemWorkflowAction)initWithWorkflow:(id)workflow shortcutsMetadata:(id)metadata
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  workflowCopy = workflow;
+  metadataCopy = metadata;
+  if (!workflowCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"workflowDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemWorkflowAction.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"workflowDescriptor"}];
   }
 
-  v9 = [(WFConfiguredSystemWorkflowAction *)self initWithWorkflow:v7 shortcutsMetadata:v8 colorScheme:0];
+  v9 = [(WFConfiguredSystemWorkflowAction *)self initWithWorkflow:workflowCopy shortcutsMetadata:metadataCopy colorScheme:0];
   if (!v9)
   {
     v10 = getWFControlMigrationLogObject();

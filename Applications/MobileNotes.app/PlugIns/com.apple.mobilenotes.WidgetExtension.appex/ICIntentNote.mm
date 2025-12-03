@@ -1,28 +1,28 @@
 @interface ICIntentNote
-- (ICIntentNote)initWithIdentifier:(id)a3 title:(id)a4 date:(id)a5 contentInfo:(id)a6 isLocked:(BOOL)a7 isShared:(BOOL)a8 isUnread:(BOOL)a9;
-- (ICIntentNote)initWithObject:(id)a3 folderNoteSortType:(id)a4;
+- (ICIntentNote)initWithIdentifier:(id)identifier title:(id)title date:(id)date contentInfo:(id)info isLocked:(BOOL)locked isShared:(BOOL)shared isUnread:(BOOL)unread;
+- (ICIntentNote)initWithObject:(id)object folderNoteSortType:(id)type;
 @end
 
 @implementation ICIntentNote
 
-- (ICIntentNote)initWithObject:(id)a3 folderNoteSortType:(id)a4
+- (ICIntentNote)initWithObject:(id)object folderNoteSortType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  typeCopy = type;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_100002B0C;
   v35 = sub_100002B1C;
   v36 = 0;
-  v8 = [v6 objectID];
-  v9 = [v8 ic_isModernNoteType];
+  objectID = [objectCopy objectID];
+  ic_isModernNoteType = [objectID ic_isModernNoteType];
 
-  if (v9)
+  if (ic_isModernNoteType)
   {
     objc_opt_class();
     v10 = ICDynamicCast();
-    v11 = [v10 managedObjectContext];
+    managedObjectContext = [v10 managedObjectContext];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100002B24;
@@ -30,23 +30,23 @@
     v12 = v10;
     v27 = v12;
     v30 = &v31;
-    v28 = self;
-    v29 = v7;
-    [v11 performBlockAndWait:v26];
+    selfCopy = self;
+    v29 = typeCopy;
+    [managedObjectContext performBlockAndWait:v26];
 
     v13 = v27;
   }
 
   else
   {
-    v14 = [v6 objectID];
-    v15 = [v14 ic_isLegacyNoteType];
+    objectID2 = [objectCopy objectID];
+    ic_isLegacyNoteType = [objectID2 ic_isLegacyNoteType];
 
-    if (v15)
+    if (ic_isLegacyNoteType)
     {
       objc_opt_class();
       v16 = ICClassAndProtocolCast();
-      v17 = [v16 managedObjectContext];
+      managedObjectContext2 = [v16 managedObjectContext];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100002CAC;
@@ -54,9 +54,9 @@
       v12 = v16;
       v22 = v12;
       v25 = &v31;
-      v23 = self;
-      v24 = v7;
-      [v17 performBlockAndWait:v21];
+      selfCopy2 = self;
+      v24 = typeCopy;
+      [managedObjectContext2 performBlockAndWait:v21];
 
       v13 = v22;
     }
@@ -66,8 +66,8 @@
       v13 = os_log_create("com.apple.notes", "Intents");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 objectID];
-        sub_100069F88(v18, buf, v13);
+        objectID3 = [objectCopy objectID];
+        sub_100069F88(objectID3, buf, v13);
       }
 
       v12 = v13;
@@ -80,30 +80,30 @@
   return v19;
 }
 
-- (ICIntentNote)initWithIdentifier:(id)a3 title:(id)a4 date:(id)a5 contentInfo:(id)a6 isLocked:(BOOL)a7 isShared:(BOOL)a8 isUnread:(BOOL)a9
+- (ICIntentNote)initWithIdentifier:(id)identifier title:(id)title date:(id)date contentInfo:(id)info isLocked:(BOOL)locked isShared:(BOOL)shared isUnread:(BOOL)unread
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a5;
-  v16 = a6;
+  sharedCopy = shared;
+  lockedCopy = locked;
+  dateCopy = date;
+  infoCopy = info;
   v28.receiver = self;
   v28.super_class = ICIntentNote;
-  v17 = [(ICIntentNote *)&v28 initWithIdentifier:a3 displayString:a4];
+  v17 = [(ICIntentNote *)&v28 initWithIdentifier:identifier displayString:title];
   if (v17)
   {
-    v18 = [v15 ic_briefFormattedDate];
-    v19 = [NSString localizedStringWithFormat:@"%@  %@", v18, v16];
-    [(ICIntentNote *)v17 setSubtitleString:v19];
+    ic_briefFormattedDate = [dateCopy ic_briefFormattedDate];
+    infoCopy = [NSString localizedStringWithFormat:@"%@  %@", ic_briefFormattedDate, infoCopy];
+    [(ICIntentNote *)v17 setSubtitleString:infoCopy];
 
     v20 = [UIImageSymbolConfiguration configurationWithScale:3];
-    if (v9)
+    if (sharedCopy)
     {
       v21 = @"person.crop.circle";
     }
 
     else
     {
-      if (!v10)
+      if (!lockedCopy)
       {
         v22 = [UIImage systemImageNamed:@"circle.fill" withConfiguration:v20];
         v23 = +[UIColor clearColor];

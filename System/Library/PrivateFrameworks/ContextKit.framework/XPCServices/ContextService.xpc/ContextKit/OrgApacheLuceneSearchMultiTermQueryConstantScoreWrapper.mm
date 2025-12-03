@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper)initWithOrgApacheLuceneSearchMultiTermQuery:(id)a3;
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper)initWithOrgApacheLuceneSearchMultiTermQuery:(id)query;
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean;
 - (id)getField;
-- (id)toStringWithNSString:(id)a3;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper
 
-- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper)initWithOrgApacheLuceneSearchMultiTermQuery:(id)a3
+- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper)initWithOrgApacheLuceneSearchMultiTermQuery:(id)query
 {
   OrgApacheLuceneSearchQuery_init(self);
-  JreStrongAssign((&self->super.boost_ + 1), a3);
+  JreStrongAssign((&self->super.boost_ + 1), query);
   return self;
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v4 = *(&self->super.boost_ + 1);
   if (!v4)
@@ -25,10 +25,10 @@
     JreThrowNullPointerException();
   }
 
-  return [v4 toStringWithNSString:a3];
+  return [v4 toStringWithNSString:string];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12.receiver = self;
   v12.super_class = OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper;
@@ -39,7 +39,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     v10 = *(&self->super.boost_ + 1);
     goto LABEL_10;
@@ -57,12 +57,12 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v5 = [v6 isEqual:*(a3 + 12)];
+  v5 = [v6 isEqual:*(equal + 12)];
   if (v5)
   {
     [(OrgApacheLuceneSearchQuery *)self getBoost];
     v8 = v7;
-    [a3 getBoost];
+    [equal getBoost];
     LOBYTE(v5) = v8 == v9;
   }
 
@@ -94,10 +94,10 @@ LABEL_10:
   return [v3 getField];
 }
 
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean
 {
   v7 = [OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper__1 alloc];
-  sub_100025F30(v7, self, a3, a4, self);
+  sub_100025F30(v7, self, searcher, boolean, self);
 
   return v7;
 }

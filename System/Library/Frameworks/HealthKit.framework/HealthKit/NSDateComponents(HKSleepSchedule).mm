@@ -9,7 +9,7 @@
 
 + (id)hk_componentsWithHour:()HKSleepSchedule minute:
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setHour:a3];
   [v6 setMinute:a4];
 
@@ -18,14 +18,14 @@
 
 - (id)hk_hourNumber
 {
-  if ([a1 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "hour")}];
+    v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "hour")}];
   }
 
   return v2;
@@ -33,14 +33,14 @@
 
 - (id)hk_minuteNumber
 {
-  if ([a1 minute] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self minute] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "minute")}];
+    v2 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "minute")}];
   }
 
   return v2;
@@ -48,14 +48,14 @@
 
 - (id)hk_dateOptionalDescription
 {
-  if ([a1 day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "year") == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "year") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%02lu:%02lu", objc_msgSend(a1, "hour"), objc_msgSend(a1, "minute"), v4, v5, v6];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%02lu:%02lu", objc_msgSend(self, "hour"), objc_msgSend(self, "minute"), v4, v5, v6];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu-%lu-%lu %02lu:%02lu", objc_msgSend(a1, "month"), objc_msgSend(a1, "day"), objc_msgSend(a1, "year"), objc_msgSend(a1, "hour"), objc_msgSend(a1, "minute")];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu-%lu-%lu %02lu:%02lu", objc_msgSend(self, "month"), objc_msgSend(self, "day"), objc_msgSend(self, "year"), objc_msgSend(self, "hour"), objc_msgSend(self, "minute")];
   }
   v2 = ;
 

@@ -1,12 +1,12 @@
 @interface CNContactsDaemon
 - (CNContactsDaemon)init;
 - (id)_distnotedListenersByName;
-- (id)_listenersByName:(id)a3;
+- (id)_listenersByName:(id)name;
 - (id)_notifydListenersByName;
-- (void)_subscribeForXPCEventStream:(const char *)a3 listenersByName:(id)a4;
+- (void)_subscribeForXPCEventStream:(const char *)stream listenersByName:(id)name;
 - (void)registerBackgroundSystemTasks;
 - (void)registerXPCActivities;
-- (void)runOnRunLoop:(id)a3;
+- (void)runOnRunLoop:(id)loop;
 - (void)subscribeApplicationUnregisteredListeners;
 - (void)subscribeDistnotedListeners;
 - (void)subscribeNotifydListeners;
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)runOnRunLoop:(id)a3
+- (void)runOnRunLoop:(id)loop
 {
-  v9 = a3;
+  loopCopy = loop;
   [(CNContactsDaemon *)self logEnvironment];
   [(CNContactsDaemon *)self wakeXPCListeners];
   [(CNContactsDaemon *)self wakeXPCServices];
@@ -45,8 +45,8 @@
   [(CNContactsDaemon *)self registerXPCActivities];
   [(CNContactsDaemon *)self registerBackgroundSystemTasks];
   v4 = +[CNEnvironment currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:24];
+  featureFlags = [v4 featureFlags];
+  v6 = [featureFlags isFeatureEnabled:24];
 
   if (v6)
   {
@@ -56,20 +56,20 @@
   v8 = +[CNCommLimitsAskToController shared];
   [v8 registerAllTopics];
 
-  [v9 run];
+  [loopCopy run];
 }
 
 - (void)wakeXPCListeners
 {
-  v3 = [(CNContactsDaemon *)self XPCListenerPairs];
-  [v3 _cn_each:&stru_100045AE0];
-  [(CNContactsDaemon *)self setActiveXPCListenerPairs:v3];
+  xPCListenerPairs = [(CNContactsDaemon *)self XPCListenerPairs];
+  [xPCListenerPairs _cn_each:&stru_100045AE0];
+  [(CNContactsDaemon *)self setActiveXPCListenerPairs:xPCListenerPairs];
 }
 
 - (void)wakeXPCServices
 {
-  v3 = [(CNContactsDaemon *)self XPCServices];
-  v4 = [v3 _cn_filter:&stru_100045B20];
+  xPCServices = [(CNContactsDaemon *)self XPCServices];
+  v4 = [xPCServices _cn_filter:&stru_100045B20];
 
   [(CNContactsDaemon *)self setActiveXPCServices:v4];
 }
@@ -82,8 +82,8 @@
     sub_10002CE7C();
   }
 
-  v4 = [(CNContactsDaemon *)self _notifydListenersByName];
-  [(CNContactsDaemon *)self _subscribeForXPCEventStream:"com.apple.notifyd.matching" listenersByName:v4];
+  _notifydListenersByName = [(CNContactsDaemon *)self _notifydListenersByName];
+  [(CNContactsDaemon *)self _subscribeForXPCEventStream:"com.apple.notifyd.matching" listenersByName:_notifydListenersByName];
 }
 
 - (void)subscribeDistnotedListeners
@@ -94,22 +94,22 @@
     sub_10002CEB0();
   }
 
-  v4 = [(CNContactsDaemon *)self _distnotedListenersByName];
-  [(CNContactsDaemon *)self _subscribeForXPCEventStream:"com.apple.distnoted.matching" listenersByName:v4];
+  _distnotedListenersByName = [(CNContactsDaemon *)self _distnotedListenersByName];
+  [(CNContactsDaemon *)self _subscribeForXPCEventStream:"com.apple.distnoted.matching" listenersByName:_distnotedListenersByName];
 }
 
-- (void)_subscribeForXPCEventStream:(const char *)a3 listenersByName:(id)a4
+- (void)_subscribeForXPCEventStream:(const char *)stream listenersByName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   notificationQueue = self->_notificationQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F990;
   v9[3] = &unk_100045B48;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  xpc_set_event_stream_handler(a3, notificationQueue, v9);
+  v10 = nameCopy;
+  streamCopy = stream;
+  v8 = nameCopy;
+  xpc_set_event_stream_handler(stream, notificationQueue, v9);
 }
 
 - (void)subscribeApplicationUnregisteredListeners
@@ -131,29 +131,29 @@
 
 - (id)_notifydListenersByName
 {
-  v3 = [(CNContactsDaemon *)self notifydListeners];
-  v4 = [(CNContactsDaemon *)self _listenersByName:v3];
+  notifydListeners = [(CNContactsDaemon *)self notifydListeners];
+  v4 = [(CNContactsDaemon *)self _listenersByName:notifydListeners];
 
   return v4;
 }
 
 - (id)_distnotedListenersByName
 {
-  v3 = [(CNContactsDaemon *)self distnotedListeners];
-  v4 = [(CNContactsDaemon *)self _listenersByName:v3];
+  distnotedListeners = [(CNContactsDaemon *)self distnotedListeners];
+  v4 = [(CNContactsDaemon *)self _listenersByName:distnotedListeners];
 
   return v4;
 }
 
-- (id)_listenersByName:(id)a3
+- (id)_listenersByName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSMutableDictionary dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = nameCopy;
   v17 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v17)
   {
@@ -168,12 +168,12 @@
         }
 
         v6 = *(*(&v22 + 1) + 8 * i);
-        v7 = [v6 interestedNotifications];
+        interestedNotifications = [v6 interestedNotifications];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v8 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v8 = [interestedNotifications countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v8)
         {
           v9 = v8;
@@ -184,7 +184,7 @@
             {
               if (*v19 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(interestedNotifications);
               }
 
               v12 = *(*(&v18 + 1) + 8 * j);
@@ -198,7 +198,7 @@
               [v13 addObject:v6];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v9 = [interestedNotifications countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v9);
@@ -216,12 +216,12 @@
 
 - (void)registerXPCActivities
 {
-  v2 = [(CNContactsDaemon *)self XPCActivities];
+  xPCActivities = [(CNContactsDaemon *)self XPCActivities];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [xPCActivities countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -233,7 +233,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(xPCActivities);
         }
 
         [*(*(&v7 + 1) + 8 * v6) registerActivity];
@@ -241,19 +241,19 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [xPCActivities countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 
-  [v2 _cn_each:&stru_100045BB0];
+  [xPCActivities _cn_each:&stru_100045BB0];
 }
 
 - (void)registerBackgroundSystemTasks
 {
-  v2 = [(CNContactsDaemon *)self backgroundSystemTasks];
-  [v2 _cn_each:&stru_100045BF0];
+  backgroundSystemTasks = [(CNContactsDaemon *)self backgroundSystemTasks];
+  [backgroundSystemTasks _cn_each:&stru_100045BF0];
 }
 
 @end

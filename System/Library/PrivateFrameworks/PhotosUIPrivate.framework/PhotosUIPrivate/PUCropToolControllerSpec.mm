@@ -13,8 +13,8 @@
 
 - (UIColor)cropAspectButtonColor
 {
-  v2 = [MEMORY[0x1E69DC888] labelColor];
-  v3 = [v2 colorWithAlphaComponent:0.6];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v3 = [labelColor colorWithAlphaComponent:0.6];
 
   return v3;
 }
@@ -47,9 +47,9 @@
 
 - (double)cropAspectRatioScrollHeight
 {
-  v2 = [(PUPhotoEditToolControllerSpec *)self isiPadLayout];
+  isiPadLayout = [(PUPhotoEditToolControllerSpec *)self isiPadLayout];
   result = 105.0;
-  if (!v2)
+  if (!isiPadLayout)
   {
     return 21.0;
   }
@@ -63,8 +63,8 @@
   v3 = PXFontWithTextStyle();
   [v2 setFont:v3];
 
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [v2 setTextColor:v4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v2 setTextColor:labelColor];
 
   return v2;
 }

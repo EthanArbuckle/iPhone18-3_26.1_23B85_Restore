@@ -14,7 +14,7 @@
   if (v7 && v8)
   {
     v10 = [v6 mutableCopy];
-    v9 = objc_alloc_init(a1);
+    v9 = objc_alloc_init(self);
     [v9 setValue:0.0];
     objc_initWeak(&location, v9);
     v11 = MEMORY[0x1E69DD250];

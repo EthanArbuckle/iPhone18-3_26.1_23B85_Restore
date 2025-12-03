@@ -1,22 +1,22 @@
 @interface JavaUtilConcurrentLocksAbstractQueuedSynchronizer
 + (void)initialize;
 - (BOOL)apparentlyFirstQueuedIsExclusive;
-- (BOOL)compareAndSetHeadWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3;
-- (BOOL)compareAndSetTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3 withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a4;
-- (BOOL)findNodeFromTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3;
+- (BOOL)compareAndSetHeadWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node;
+- (BOOL)compareAndSetTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)synchronizer_Node;
+- (BOOL)findNodeFromTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node;
 - (BOOL)hasQueuedPredecessors;
 - (BOOL)hasQueuedThreads;
-- (BOOL)hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3;
-- (BOOL)isQueuedWithJavaLangThread:(id)a3;
+- (BOOL)hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object;
+- (BOOL)isQueuedWithJavaLangThread:(id)thread;
 - (BOOL)parkAndCheckInterrupt;
 - (NSString)description;
 - (id)getExclusiveQueuedThreads;
 - (id)getFirstQueuedThread;
 - (id)getQueuedThreads;
 - (id)getSharedQueuedThreads;
-- (id)getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3;
+- (id)getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object;
 - (int)getQueueLength;
-- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3;
+- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object;
 - (unint64_t)fullGetFirstQueuedThread;
 - (void)__javaClone;
 - (void)dealloc;
@@ -55,19 +55,19 @@
 
 - (unint64_t)fullGetFirstQueuedThread
 {
-  v1 = atomic_load((a1 + 16));
-  if (!v1 || (v2 = atomic_load((v1 + 24))) == 0 || (v3 = atomic_load((v2 + 16)), v4 = atomic_load((a1 + 16)), v3 != v4) || (v5 = atomic_load((v2 + 32))) == 0)
+  v1 = atomic_load((self + 16));
+  if (!v1 || (v2 = atomic_load((v1 + 24))) == 0 || (v3 = atomic_load((v2 + 16)), v4 = atomic_load((self + 16)), v3 != v4) || (v5 = atomic_load((v2 + 32))) == 0)
   {
-    v6 = atomic_load((a1 + 16));
-    if (!v6 || (v7 = atomic_load((v6 + 24))) == 0 || (v8 = atomic_load((v7 + 16)), v9 = atomic_load((a1 + 16)), v8 != v9) || (v5 = atomic_load((v7 + 32))) == 0)
+    v6 = atomic_load((self + 16));
+    if (!v6 || (v7 = atomic_load((v6 + 24))) == 0 || (v8 = atomic_load((v7 + 16)), v9 = atomic_load((self + 16)), v8 != v9) || (v5 = atomic_load((v7 + 32))) == 0)
     {
-      v10 = atomic_load((a1 + 24));
+      v10 = atomic_load((self + 24));
       if (v10)
       {
         v5 = 0;
         do
         {
-          v11 = atomic_load((a1 + 16));
+          v11 = atomic_load((self + 16));
           if (v10 == v11)
           {
             break;
@@ -95,9 +95,9 @@
   return v5;
 }
 
-- (BOOL)isQueuedWithJavaLangThread:(id)a3
+- (BOOL)isQueuedWithJavaLangThread:(id)thread
 {
-  if (!a3)
+  if (!thread)
   {
     v6 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v6);
@@ -112,8 +112,8 @@
   do
   {
     v4 = atomic_load((v3 + 32));
-    result = v4 == a3;
-    if (v4 == a3)
+    result = v4 == thread;
+    if (v4 == thread)
     {
       break;
     }
@@ -255,13 +255,13 @@
   return JreStrcat("$$I$$$", v3, v4, v5, v6, v7, v8, v9, v2);
 }
 
-- (BOOL)findNodeFromTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3
+- (BOOL)findNodeFromTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node
 {
   for (i = &self->tail_; ; i = (v4 + 16))
   {
     v4 = atomic_load(i);
-    result = v4 == a3;
-    if (!v4 || v4 == a3)
+    result = v4 == node;
+    if (!v4 || v4 == node)
     {
       break;
     }
@@ -270,55 +270,55 @@
   return result;
 }
 
-- (BOOL)hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3
+- (BOOL)hasWaitersWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object
 {
-  if (!sub_10022CA80(self, a3))
+  if (!sub_10022CA80(self, object))
   {
     v5 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Not owner");
     objc_exception_throw(v5);
   }
 
-  if (!a3)
+  if (!object)
   {
     JreThrowNullPointerException();
   }
 
-  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject hasWaiters]_0(a3);
+  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject hasWaiters]_0(object);
 }
 
-- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3
+- (int)getWaitQueueLengthWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object
 {
-  if (!sub_10022CA80(self, a3))
+  if (!sub_10022CA80(self, object))
   {
     v5 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Not owner");
     objc_exception_throw(v5);
   }
 
-  if (!a3)
+  if (!object)
   {
     JreThrowNullPointerException();
   }
 
-  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject getWaitQueueLength]_0(a3);
+  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject getWaitQueueLength]_0(object);
 }
 
-- (id)getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)a3
+- (id)getWaitingThreadsWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject:(id)object
 {
-  if (!sub_10022CA80(self, a3))
+  if (!sub_10022CA80(self, object))
   {
     v5 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Not owner");
     objc_exception_throw(v5);
   }
 
-  if (!a3)
+  if (!object)
   {
     JreThrowNullPointerException();
   }
 
-  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject getWaitingThreads]_0(a3);
+  return [JavaUtilConcurrentLocksAbstractQueuedSynchronizer_ConditionObject getWaitingThreads]_0(object);
 }
 
-- (BOOL)compareAndSetHeadWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3
+- (BOOL)compareAndSetHeadWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node
 {
   v6 = qword_100555250;
   if (!qword_100555250)
@@ -328,10 +328,10 @@
 
   v7 = qword_100555260;
 
-  return [v6 compareAndSwapObjectWithId:self withLong:v7 withId:0 withId:a3];
+  return [v6 compareAndSwapObjectWithId:self withLong:v7 withId:0 withId:node];
 }
 
-- (BOOL)compareAndSetTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a3 withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)a4
+- (BOOL)compareAndSetTailWithJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)node withJavaUtilConcurrentLocksAbstractQueuedSynchronizer_Node:(id)synchronizer_Node
 {
   v7 = qword_100555250;
   if (!qword_100555250)
@@ -341,7 +341,7 @@
 
   v9 = qword_100555268;
 
-  return [v7 compareAndSwapObjectWithId:self withLong:v9 withId:a3 withId:a4];
+  return [v7 compareAndSwapObjectWithId:self withLong:v9 withId:node withId:synchronizer_Node];
 }
 
 - (void)dealloc
@@ -364,7 +364,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     Unsafe = SunMiscUnsafe_getUnsafe();
     JreStrongAssign(&qword_100555250, Unsafe);

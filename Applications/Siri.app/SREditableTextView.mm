@@ -1,39 +1,39 @@
 @interface SREditableTextView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)resignFirstResponder;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SREditableTextView)initWithFrame:(CGRect)a3 presentationStyle:(int64_t)a4;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SREditableTextView)initWithFrame:(CGRect)frame presentationStyle:(int64_t)style;
 - (SREditableTextViewDelegate)delegate;
 - (double)_indentWidth;
 - (double)baselineOffsetFromBottom;
 - (double)firstLineBaselineOffsetFromTop;
-- (id)_createVisualEffectBackgroundViewForTextView:(id)a3 topOffset:(double *)a4;
+- (id)_createVisualEffectBackgroundViewForTextView:(id)view topOffset:(double *)offset;
 - (void)_adjustLineSpacing;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_requestKeyboardFocusAndBecomeFirstResponder;
-- (void)endEditingAndCorrect:(BOOL)a3;
+- (void)endEditingAndCorrect:(BOOL)correct;
 - (void)layoutSubviews;
-- (void)setDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)utteranceTextDidReceiveReturnKey:(id)a3;
-- (void)utteranceTextDidResignFirstResponder:(id)a3;
+- (void)setDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)utteranceTextDidReceiveReturnKey:(id)key;
+- (void)utteranceTextDidResignFirstResponder:(id)responder;
 @end
 
 @implementation SREditableTextView
 
-- (SREditableTextView)initWithFrame:(CGRect)a3 presentationStyle:(int64_t)a4
+- (SREditableTextView)initWithFrame:(CGRect)frame presentationStyle:(int64_t)style
 {
   v30.receiver = self;
   v30.super_class = SREditableTextView;
-  v5 = [(SREditableTextView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SREditableTextView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_presentationStyle = a4;
+    v5->_presentationStyle = style;
     IsRTL = SiriLanguageIsRTL();
     v8 = 2;
     if (!IsRTL)
@@ -46,9 +46,9 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v13 = [(SRSpeechRecognizedCorrectionTextView *)v9 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(SRSpeechRecognizedCorrectionTextView *)v9 initWithFrame:CGRectZero.origin.x, y, width, height];
     textView = v6->_textView;
-    v6->_textView = v13;
+    v6->_textView = height;
 
     [(SRSpeechRecognizedCorrectionTextView *)v6->_textView setDelegate:v6];
     v15 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody variant:256];
@@ -90,8 +90,8 @@
     [(UIView *)v6->_backgroundView _setContinuousCornerRadius:10.0];
     [(UIView *)v6->_backgroundView setUserInteractionEnabled:0];
     [(SREditableTextView *)v6 insertSubview:v6->_backgroundView below:v6->_textView];
-    v25 = [(SRSpeechRecognizedCorrectionTextView *)v6->_textView font];
-    [v25 _scaledValueForValue:8.0];
+    font = [(SRSpeechRecognizedCorrectionTextView *)v6->_textView font];
+    [font _scaledValueForValue:8.0];
     v6->_heightOffsetForTextView = v26 + v6->_topOffsetForTextView;
 
     [(SREditableTextView *)v6 addSubview:v6->_textView];
@@ -125,12 +125,12 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v5 = v4;
+    v5 = textCopy;
   }
 
   else
@@ -144,17 +144,17 @@
   [(SREditableTextView *)self setNeedsLayout];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  self->_textAlignment = a3;
+  self->_textAlignment = alignment;
   [(SRSpeechRecognizedCorrectionTextView *)self->_textView setTextAlignment:?];
 
   [(SREditableTextView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = -88.0;
   if (self->_presentationStyle == 1)
   {
@@ -169,10 +169,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SREditableTextView *)self bounds];
   v10 = x;
   v11 = y;
@@ -236,9 +236,9 @@
   return [(SRSpeechRecognizedCorrectionTextView *)self->_textView resignFirstResponder];
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(SREditableTextView *)self _requestKeyboardFocusAndBecomeFirstResponder];
@@ -248,31 +248,31 @@
 - (void)_requestKeyboardFocusAndBecomeFirstResponder
 {
   objc_initWeak(&location, self);
-  v3 = [(SREditableTextView *)self delegate];
+  delegate = [(SREditableTextView *)self delegate];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100034928;
   v4[3] = &unk_1001677D8;
   objc_copyWeak(&v5, &location);
-  [v3 editableTextViewRequestKeyboardForTapToEditWithCompletion:v4];
+  [delegate editableTextViewRequestKeyboardForTapToEditWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)endEditingAndCorrect:(BOOL)a3
+- (void)endEditingAndCorrect:(BOOL)correct
 {
-  v3 = a3;
+  correctCopy = correct;
   [(SRSpeechRecognizedCorrectionTextView *)self->_textView resignFirstResponder];
-  if (v3)
+  if (correctCopy)
   {
-    v5 = [(SREditableTextView *)self delegate];
+    delegate = [(SREditableTextView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SREditableTextView *)self delegate];
-      [v7 editableTextViewTextDidFinishCorrecting:self];
+      delegate2 = [(SREditableTextView *)self delegate];
+      [delegate2 editableTextViewTextDidFinishCorrecting:self];
     }
   }
 }
@@ -280,30 +280,30 @@
 - (void)_adjustLineSpacing
 {
   v6 = objc_alloc_init(NSMutableParagraphStyle);
-  v3 = [(SRSpeechRecognizedCorrectionTextView *)self->_textView font];
-  [v3 _scaledValueForValue:1.0];
+  font = [(SRSpeechRecognizedCorrectionTextView *)self->_textView font];
+  [font _scaledValueForValue:1.0];
   [v6 setLineSpacing:?];
 
-  v4 = [(SRSpeechRecognizedCorrectionTextView *)self->_textView attributedText];
-  v5 = [v4 mutableCopy];
+  attributedText = [(SRSpeechRecognizedCorrectionTextView *)self->_textView attributedText];
+  v5 = [attributedText mutableCopy];
 
   [v5 addAttribute:NSParagraphStyleAttributeName value:v6 range:{0, objc_msgSend(v5, "length")}];
   [(SRSpeechRecognizedCorrectionTextView *)self->_textView setAttributedText:v5];
 }
 
-- (void)setDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)setDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  [(SRSpeechRecognizedCorrectionTextView *)self->_textView _setDictationResult:a3 withCorrectionIdentifier:a4];
+  [(SRSpeechRecognizedCorrectionTextView *)self->_textView _setDictationResult:result withCorrectionIdentifier:identifier];
   [(SREditableTextView *)self _adjustLineSpacing];
   textView = self->_textView;
 
   [(SRSpeechRecognizedCorrectionTextView *)textView setNeedsLayout];
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = [(SREditableTextView *)self delegate];
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v4 editableTextViewTextShouldPreventCorrection:self])
+  delegate = [(SREditableTextView *)self delegate];
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate editableTextViewTextShouldPreventCorrection:self])
   {
     v5 = 0;
   }
@@ -312,7 +312,7 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 editableTextViewTextWillBeginCorrecting:self];
+      [delegate editableTextViewTextWillBeginCorrecting:self];
     }
 
     v5 = 1;
@@ -321,7 +321,7 @@
   return v5;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   if (self->_didCorrect)
   {
@@ -334,16 +334,16 @@
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = [a3 window];
+  window = [change window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(SREditableTextView *)self delegate];
+    delegate = [(SREditableTextView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 editableTextViewTextDidChange:self];
+      [delegate editableTextViewTextDidChange:self];
     }
   }
 }
@@ -367,50 +367,50 @@
   return v2;
 }
 
-- (void)utteranceTextDidResignFirstResponder:(id)a3
+- (void)utteranceTextDidResignFirstResponder:(id)responder
 {
-  v4 = [(SREditableTextView *)self delegate];
-  [v4 editableTextViewTextDidResignFirstResponder:self];
+  delegate = [(SREditableTextView *)self delegate];
+  [delegate editableTextViewTextDidResignFirstResponder:self];
 
   [(SREditableTextView *)self setNeedsLayout];
 }
 
-- (void)utteranceTextDidReceiveReturnKey:(id)a3
+- (void)utteranceTextDidReceiveReturnKey:(id)key
 {
   self->_didCorrect = 1;
   [(SREditableTextView *)self endEditingAndCorrect:1];
-  v4 = [(SREditableTextView *)self delegate];
+  delegate = [(SREditableTextView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SREditableTextView *)self delegate];
-    [v6 editableTextViewTextDidReceiveReturnKey:self];
+    delegate2 = [(SREditableTextView *)self delegate];
+    [delegate2 editableTextViewTextDidReceiveReturnKey:self];
   }
 }
 
-- (id)_createVisualEffectBackgroundViewForTextView:(id)a3 topOffset:(double *)a4
+- (id)_createVisualEffectBackgroundViewForTextView:(id)view topOffset:(double *)offset
 {
-  v5 = a3;
-  v6 = [v5 font];
-  v7 = [v5 font];
-  [v7 ascender];
-  [v6 _scaledValueForValue:29.0 - v8];
-  *a4 = v9;
+  viewCopy = view;
+  font = [viewCopy font];
+  font2 = [viewCopy font];
+  [font2 ascender];
+  [font _scaledValueForValue:29.0 - v8];
+  *offset = v9;
 
   v10 = +[UIColor whiteColor];
-  [v5 setTextColor:v10];
+  [viewCopy setTextColor:v10];
 
   v11 = [UIVisualEffectView alloc];
   v12 = +[UIVibrancyEffect siriui_userUtteranceEditModeVibrancyEffect];
   v13 = [v11 initWithEffect:v12];
 
-  v14 = [v13 contentView];
-  [v14 _setContinuousCornerRadius:10.0];
+  contentView = [v13 contentView];
+  [contentView _setContinuousCornerRadius:10.0];
 
-  v15 = [v13 contentView];
+  contentView2 = [v13 contentView];
   v16 = +[UIColor whiteColor];
-  [v15 setBackgroundColor:v16];
+  [contentView2 setBackgroundColor:v16];
 
   return v13;
 }

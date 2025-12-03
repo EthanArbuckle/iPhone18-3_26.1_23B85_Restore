@@ -1,35 +1,35 @@
 @interface SensorLEDState
 - (_TtC11DockKitCore14SensorLEDState)init;
-- (_TtC11DockKitCore14SensorLEDState)initWithCoder:(id)a3;
-- (_TtC11DockKitCore14SensorLEDState)initWithState:(int64_t)a3 brightness:(double)a4 color:(double)a5;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC11DockKitCore14SensorLEDState)initWithCoder:(id)coder;
+- (_TtC11DockKitCore14SensorLEDState)initWithState:(int64_t)state brightness:(double)brightness color:(double)color;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SensorLEDState
 
-- (_TtC11DockKitCore14SensorLEDState)initWithState:(int64_t)a3 brightness:(double)a4 color:(double)a5
+- (_TtC11DockKitCore14SensorLEDState)initWithState:(int64_t)state brightness:(double)brightness color:(double)color
 {
   v5 = OBJC_IVAR____TtC11DockKitCore14SensorLEDState_brightness;
   v6 = OBJC_IVAR____TtC11DockKitCore14SensorLEDState_color;
-  *(&self->super.super.isa + OBJC_IVAR____TtC11DockKitCore14SensorLEDState_state) = a3;
-  *(&self->super.super.isa + v5) = a4;
-  *(&self->super.super.isa + v6) = a5;
+  *(&self->super.super.isa + OBJC_IVAR____TtC11DockKitCore14SensorLEDState_state) = state;
+  *(&self->super.super.isa + v5) = brightness;
+  *(&self->super.super.isa + v6) = color;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SensorLEDState();
   return [(SensorData *)&v8 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2245B2A38(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2245B2A38(coderCopy);
 }
 
-- (_TtC11DockKitCore14SensorLEDState)initWithCoder:(id)a3
+- (_TtC11DockKitCore14SensorLEDState)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2245B342C(v3);
+  coderCopy = coder;
+  v4 = sub_2245B342C(coderCopy);
 
   return v4;
 }

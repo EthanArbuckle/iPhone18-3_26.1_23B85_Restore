@@ -1,30 +1,30 @@
 @interface HMFMutableOrderedDictionary
-- (HMFMutableOrderedDictionary)initWithCapacity:(unint64_t)a3;
-- (HMFMutableOrderedDictionary)initWithObjects:(id)a3 orderedKeySet:(id)a4;
+- (HMFMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity;
+- (HMFMutableOrderedDictionary)initWithObjects:(id)objects orderedKeySet:(id)set;
 - (NSArray)allKeys;
 - (NSArray)allValues;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setBySortingDictionary:(id)a3 keyComparator:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setOrderedDictionary:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setBySortingDictionary:(id)dictionary keyComparator:(id)comparator;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setOrderedDictionary:(id)dictionary;
 @end
 
 @implementation HMFMutableOrderedDictionary
 
-- (HMFMutableOrderedDictionary)initWithObjects:(id)a3 orderedKeySet:(id)a4
+- (HMFMutableOrderedDictionary)initWithObjects:(id)objects orderedKeySet:(id)set
 {
   v5.receiver = self;
   v5.super_class = HMFMutableOrderedDictionary;
-  return [(HMFOrderedDictionary *)&v5 initWithObjects:a3 orderedKeySet:a4];
+  return [(HMFOrderedDictionary *)&v5 initWithObjects:objects orderedKeySet:set];
 }
 
-- (HMFMutableOrderedDictionary)initWithCapacity:(unint64_t)a3
+- (HMFMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity
 {
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
-  v6 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:a3];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:capacity];
+  v6 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:capacity];
   v7 = [(HMFMutableOrderedDictionary *)self initWithObjects:v5 orderedKeySet:v6];
 
   return v7;
@@ -32,8 +32,8 @@
 
 - (NSArray)allKeys
 {
-  v2 = [(NSOrderedSet *)self->super._keys array];
-  v3 = [v2 copy];
+  array = [(NSOrderedSet *)self->super._keys array];
+  v3 = [array copy];
 
   return v3;
 }
@@ -45,44 +45,44 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v11 = a4;
+  keyCopy = key;
   keys = self->super._keys;
-  v7 = a3;
-  v8 = [(NSOrderedSet *)keys indexOfObject:v11];
+  objectCopy = object;
+  v8 = [(NSOrderedSet *)keys indexOfObject:keyCopy];
   objects = self->super._objects;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSArray *)objects addObject:v7];
+    [(NSArray *)objects addObject:objectCopy];
 
     v10 = self->super._keys;
-    v7 = [v11 copyWithZone:0];
-    [(NSOrderedSet *)v10 addObject:v7];
+    objectCopy = [keyCopy copyWithZone:0];
+    [(NSOrderedSet *)v10 addObject:objectCopy];
   }
 
   else
   {
-    [(NSArray *)objects replaceObjectAtIndex:v8 withObject:v7];
+    [(NSArray *)objects replaceObjectAtIndex:v8 withObject:objectCopy];
   }
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a3)
+  if (object)
   {
-    [(HMFMutableOrderedDictionary *)self setObject:a3 forKey:a4];
+    [(HMFMutableOrderedDictionary *)self setObject:object forKey:subscript];
   }
 
   else
   {
-    [(HMFMutableOrderedDictionary *)self removeObjectForKey:a4];
+    [(HMFMutableOrderedDictionary *)self removeObjectForKey:subscript];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [(NSOrderedSet *)self->super._keys indexOfObject:a3];
+  v4 = [(NSOrderedSet *)self->super._keys indexOfObject:key];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -93,19 +93,19 @@
   }
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  keysCopy = keys;
+  v5 = [keysCopy count];
   if (v5 >= 2)
   {
-    v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
+    firstObject = objc_alloc_init(MEMORY[0x277CCAB58]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v4;
+    v7 = keysCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -124,7 +124,7 @@
           v12 = [(NSOrderedSet *)self->super._keys indexOfObject:*(*(&v14 + 1) + 8 * v11), v14];
           if (v12 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v6 addIndex:v12];
+            [firstObject addIndex:v12];
           }
 
           ++v11;
@@ -137,39 +137,39 @@
       while (v9);
     }
 
-    [(NSArray *)self->super._objects removeObjectsAtIndexes:v6];
-    [(NSOrderedSet *)self->super._keys removeObjectsAtIndexes:v6];
+    [(NSArray *)self->super._objects removeObjectsAtIndexes:firstObject];
+    [(NSOrderedSet *)self->super._keys removeObjectsAtIndexes:firstObject];
     goto LABEL_14;
   }
 
   if (v5)
   {
-    v6 = [v4 firstObject];
-    [(HMFMutableOrderedDictionary *)self removeObjectForKey:v6];
+    firstObject = [keysCopy firstObject];
+    [(HMFMutableOrderedDictionary *)self removeObjectForKey:firstObject];
 LABEL_14:
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOrderedDictionary:(id)a3
+- (void)setOrderedDictionary:(id)dictionary
 {
   objects = self->super._objects;
-  v5 = *(a3 + 1);
-  v6 = a3;
+  v5 = *(dictionary + 1);
+  dictionaryCopy = dictionary;
   [(NSArray *)objects setArray:v5];
   [(NSOrderedSet *)self->super._keys removeAllObjects];
   keys = self->super._keys;
-  v8 = v6[2];
+  v8 = dictionaryCopy[2];
 
   [(NSOrderedSet *)keys unionOrderedSet:v8];
 }
 
-- (void)setBySortingDictionary:(id)a3 keyComparator:(id)a4
+- (void)setBySortingDictionary:(id)dictionary keyComparator:(id)comparator
 {
   v7 = 0;
   v8 = 0;
-  sortKeysAndValuesOfDictionary(a3, a4, &v8, &v7);
+  sortKeysAndValuesOfDictionary(dictionary, comparator, &v8, &v7);
   v5 = v7;
   [(NSArray *)self->super._objects setArray:v7];
   [(NSOrderedSet *)self->super._keys removeAllObjects];
@@ -177,7 +177,7 @@ LABEL_14:
   [(NSOrderedSet *)self->super._keys addObjectsFromArray:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMFOrderedDictionary alloc];
   v5 = [(NSArray *)self->super._objects copy];

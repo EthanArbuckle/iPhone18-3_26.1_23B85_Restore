@@ -1,33 +1,33 @@
 @interface HFSelectableRoomTransformItem
-- (HFSelectableRoomTransformItem)initWithRoomItem:(id)a3 accessoryVendor:(id)a4;
-- (HFSelectableRoomTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsTransformBlock:(id)a5;
+- (HFSelectableRoomTransformItem)initWithRoomItem:(id)item accessoryVendor:(id)vendor;
+- (HFSelectableRoomTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsTransformBlock:(id)transformBlock;
 @end
 
 @implementation HFSelectableRoomTransformItem
 
-- (HFSelectableRoomTransformItem)initWithSourceItem:(id)a3 updateOptionsTransformBlock:(id)a4 resultsTransformBlock:(id)a5
+- (HFSelectableRoomTransformItem)initWithSourceItem:(id)item updateOptionsTransformBlock:(id)block resultsTransformBlock:(id)transformBlock
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithRoomItem_accessoryVendor_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFSelectableRoomTransformItem.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HFSelectableRoomTransformItem initWithSourceItem:updateOptionsTransformBlock:resultsTransformBlock:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFSelectableRoomTransformItem.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HFSelectableRoomTransformItem initWithSourceItem:updateOptionsTransformBlock:resultsTransformBlock:]", v8}];
 
   return 0;
 }
 
-- (HFSelectableRoomTransformItem)initWithRoomItem:(id)a3 accessoryVendor:(id)a4
+- (HFSelectableRoomTransformItem)initWithRoomItem:(id)item accessoryVendor:(id)vendor
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  vendorCopy = vendor;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__HFSelectableRoomTransformItem_initWithRoomItem_accessoryVendor___block_invoke;
   v13[3] = &unk_277DFA7A0;
-  v14 = v7;
-  v15 = v6;
+  v14 = vendorCopy;
+  v15 = itemCopy;
   v12.receiver = self;
   v12.super_class = HFSelectableRoomTransformItem;
-  v8 = v6;
-  v9 = v7;
+  v8 = itemCopy;
+  v9 = vendorCopy;
   v10 = [(HFTransformItem *)&v12 initWithSourceItem:v8 updateOptionsTransformBlock:0 resultsTransformBlock:v13];
 
   return v10;

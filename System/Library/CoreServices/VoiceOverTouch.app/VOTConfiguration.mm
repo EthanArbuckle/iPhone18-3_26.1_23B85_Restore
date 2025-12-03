@@ -1,15 +1,15 @@
 @interface VOTConfiguration
 + (void)initialize;
-- (id)preferenceForKey:(id)a3;
-- (void)setPreference:(id)a3 forKey:(id)a4;
-- (void)setPreferenceSync:(id)a3 forKey:(id)a4;
+- (id)preferenceForKey:(id)key;
+- (void)setPreference:(id)preference forKey:(id)key;
+- (void)setPreferenceSync:(id)sync forKey:(id)key;
 @end
 
 @implementation VOTConfiguration
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     CFPreferencesAppSynchronize(kAXSAccessibilityPreferenceDomain);
     v2 = [objc_allocWithZone(VOTConfiguration) init];
@@ -22,11 +22,11 @@
   }
 }
 
-- (id)preferenceForKey:(id)a3
+- (id)preferenceForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = CFPreferencesCopyAppValue(a3, kAXSAccessibilityPreferenceDomain);
+    v4 = CFPreferencesCopyAppValue(key, kAXSAccessibilityPreferenceDomain);
   }
 
   else
@@ -37,42 +37,42 @@
   return v4;
 }
 
-- (void)setPreference:(id)a3 forKey:(id)a4
+- (void)setPreference:(id)preference forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  preferenceCopy = preference;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 copyWithZone:0];
+    v7 = [preferenceCopy copyWithZone:0];
 
     v8 = qword_1001FE9F8;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100010AF0;
     v9[3] = &unk_1001C7778;
-    v10 = v6;
-    v5 = v7;
-    v11 = v5;
+    v10 = keyCopy;
+    preferenceCopy = v7;
+    v11 = preferenceCopy;
     dispatch_async(v8, v9);
   }
 }
 
-- (void)setPreferenceSync:(id)a3 forKey:(id)a4
+- (void)setPreferenceSync:(id)sync forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  syncCopy = sync;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 copyWithZone:0];
+    v7 = [syncCopy copyWithZone:0];
 
     v8 = qword_1001FE9F8;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100010C14;
     v9[3] = &unk_1001C7778;
-    v10 = v6;
-    v5 = v7;
-    v11 = v5;
+    v10 = keyCopy;
+    syncCopy = v7;
+    v11 = syncCopy;
     dispatch_sync(v8, v9);
   }
 }

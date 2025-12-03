@@ -6,14 +6,14 @@
 
 - (__CFString)PKSanitizedBundleIdentifier
 {
-  v1 = [a1 bundleIdentifier];
-  if (([(__CFString *)v1 hasPrefix:@"com.apple."]& 1) == 0)
+  bundleIdentifier = [self bundleIdentifier];
+  if (([(__CFString *)bundleIdentifier hasPrefix:@"com.apple."]& 1) == 0)
   {
 
-    v1 = @"thirdparty";
+    bundleIdentifier = @"thirdparty";
   }
 
-  return v1;
+  return bundleIdentifier;
 }
 
 @end

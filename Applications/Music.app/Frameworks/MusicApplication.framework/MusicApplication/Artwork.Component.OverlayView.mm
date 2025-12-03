@@ -1,8 +1,8 @@
 @interface Artwork.Component.OverlayView
 - (UIColor)backgroundColor;
-- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithCoder:(id)a3;
-- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
+- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithCoder:(id)coder;
+- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation Artwork.Component.OverlayView
@@ -11,47 +11,47 @@
 {
   v4.receiver = self;
   v4.super_class = _s9ComponentC11OverlayViewCMa();
-  v2 = [(Artwork.Component.OverlayView *)&v4 backgroundColor];
+  backgroundColor = [(Artwork.Component.OverlayView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView_enforcedBackgroundColor);
-  v5 = v4;
+  colorCopy = v4;
   if (!v4)
   {
-    v5 = a3;
-    v6 = a3;
+    colorCopy = color;
+    colorCopy2 = color;
   }
 
   v9.receiver = self;
   v9.super_class = _s9ComponentC11OverlayViewCMa();
-  v7 = self;
+  selfCopy = self;
   v8 = v4;
-  [(Artwork.Component.OverlayView *)&v9 setBackgroundColor:v5];
+  [(Artwork.Component.OverlayView *)&v9 setBackgroundColor:colorCopy];
 }
 
-- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithFrame:(CGRect)a3
+- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView_enforcedBackgroundColor) = 0;
   v8.receiver = self;
   v8.super_class = _s9ComponentC11OverlayViewCMa();
   return [(Artwork.Component.OverlayView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithCoder:(id)a3
+- (_TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCCE16MusicApplicationV11MusicCoreUI7Artwork9ComponentP33_D3E2C4694A53E203D54C2C75409DDB7B11OverlayView_enforcedBackgroundColor) = 0;
   v7.receiver = self;
   v7.super_class = _s9ComponentC11OverlayViewCMa();
-  v4 = a3;
-  v5 = [(Artwork.Component.OverlayView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(Artwork.Component.OverlayView *)&v7 initWithCoder:coderCopy];
 
   return v5;
 }

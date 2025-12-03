@@ -1,5 +1,5 @@
 @interface SBPIPFadeInOutSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - ($1AB5FA073B851C12C2339EC22442E995)fadeInInitialValues;
 - ($1AB5FA073B851C12C2339EC22442E995)fadeOutFinalValues;
@@ -47,17 +47,17 @@
   return result;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"fadeInInitialValues"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"fadeInInitialValues"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"fadeOutFinalValues"];
+    v4 = [keyCopy isEqualToString:@"fadeOutFinalValues"];
   }
 
   return v4;

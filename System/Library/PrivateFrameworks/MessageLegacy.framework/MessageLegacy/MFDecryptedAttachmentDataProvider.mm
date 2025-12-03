@@ -1,19 +1,19 @@
 @interface MFDecryptedAttachmentDataProvider
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3;
-- (id)fetchLocalDataForAttachment:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message;
+- (id)fetchLocalDataForAttachment:(id)attachment;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
 - (void)dealloc;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFDecryptedAttachmentDataProvider
 
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message
 {
   v4 = [(MFDecryptedAttachmentDataProvider *)self init];
   if (v4)
   {
-    v4->_message = a3;
+    v4->_message = message;
   }
 
   return v4;
@@ -26,41 +26,41 @@
   [(MFDecryptedAttachmentDataProvider *)&v3 dealloc];
 }
 
-- (id)fetchLocalDataForAttachment:(id)a3
+- (id)fetchLocalDataForAttachment:(id)attachment
 {
-  v5 = [(MFMailMessage *)self->_message messageStore];
-  [objc_msgSend(a3 "part")];
-  result = [a3 readFromDisk];
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  [objc_msgSend(attachment "part")];
+  result = [attachment readFromDisk];
   if (result)
   {
-    v7 = [a3 part];
-    [objc_msgSend(a3 "part")];
+    part = [attachment part];
+    [objc_msgSend(attachment "part")];
 
-    return [v5 dataForMimePart:v7 inRange:0 isComplete:v8 downloadIfNecessary:0 didDownload:{0, 0}];
+    return [messageStore dataForMimePart:part inRange:0 isComplete:v8 downloadIfNecessary:0 didDownload:{0, 0}];
   }
 
   return result;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer_progress_completion___block_invoke;
   v24[3] = &unk_2798B7298;
-  v24[4] = a5;
-  v11 = [(MFMailMessage *)self->_message messageStore];
-  v12 = [a3 part];
-  [v12 setMimeBody:{-[MFMailMessage messageBody](self->_message, "messageBody")}];
-  v13 = [a3 readFromDisk];
-  if (v13)
+  v24[4] = progress;
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  part = [attachment part];
+  [part setMimeBody:{-[MFMailMessage messageBody](self->_message, "messageBody")}];
+  readFromDisk = [attachment readFromDisk];
+  if (readFromDisk)
   {
-    v14 = v13;
-    [a4 appendData:v13];
+    v14 = readFromDisk;
+    [consumer appendData:readFromDisk];
     v15 = [v14 length];
-    [a5 setCompletedUnitCount:v15];
-    [a5 setTotalUnitCount:v15];
+    [progress setCompletedUnitCount:v15];
+    [progress setTotalUnitCount:v15];
     v16 = 0;
     v17 = 0;
     v18 = 0;
@@ -69,14 +69,14 @@
 
   else
   {
-    v20 = [a3 decodeFilterWithDataConsumer:a4];
+    v20 = [attachment decodeFilterWithDataConsumer:consumer];
     v21 = objc_alloc(MEMORY[0x277D24F88]);
     v27[0] = v20;
     v19 = 1;
-    v17 = [v21 initWithConsumers:objc_msgSend(MEMORY[0x277CBEA60] expectedSize:{"arrayWithObjects:count:", v27, 1), objc_msgSend(a3, "encodedFileSize")}];
+    v17 = [v21 initWithConsumers:objc_msgSend(MEMORY[0x277CBEA60] expectedSize:{"arrayWithObjects:count:", v27, 1), objc_msgSend(attachment, "encodedFileSize")}];
     [v17 setProgressBlock:v24];
-    [v12 range];
-    if ([v11 dataForMimePart:v12 inRange:0 withConsumer:v22 downloadIfNecessary:{v17, 1}])
+    [part range];
+    if ([messageStore dataForMimePart:part inRange:0 withConsumer:v22 downloadIfNecessary:{v17, 1}])
     {
       v18 = 0;
       v16 = 1;
@@ -93,8 +93,8 @@
   }
 
   [v17 done];
-  [a4 done];
-  (*(a6 + 2))(a6, v19, v18, v16);
+  [consumer done];
+  (*(completion + 2))(completion, v19, v18, v16);
   v23 = *MEMORY[0x277D85DE8];
 }
 
@@ -106,15 +106,15 @@ uint64_t __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer
   return [v6 setCompletedUnitCount:a2];
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  result = [a4 attachmentStorageLocation];
+  result = [message attachmentStorageLocation];
   if (result)
   {
-    v6 = [result stringByAppendingPathComponent:{objc_msgSend(objc_msgSend(a3, "part"), "partNumber")}];
-    v7 = [a3 fileName];
+    v6 = [result stringByAppendingPathComponent:{objc_msgSend(objc_msgSend(attachment, "part"), "partNumber")}];
+    fileName = [attachment fileName];
 
-    return [v6 stringByAppendingPathComponent:v7];
+    return [v6 stringByAppendingPathComponent:fileName];
   }
 
   return result;

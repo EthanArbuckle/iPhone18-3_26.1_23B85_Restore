@@ -1,6 +1,6 @@
 @interface MBPersona
 + (id)allPersonae;
-+ (id)personalPersonaWithError:(id *)a3;
++ (id)personalPersonaWithError:(id *)error;
 + (void)removeBackupSnapshotsForAllPersonae;
 + (void)removeBackupSnapshotsForPersonalPersona;
 + (void)removeTemporaryDirectoriesForAllPersonae;
@@ -9,9 +9,9 @@
 
 @implementation MBPersona
 
-+ (id)personalPersonaWithError:(id *)a3
++ (id)personalPersonaWithError:(id *)error
 {
-  v4 = [UMUserPersonaAttributes personaAttributesForPersonaType:0 withError:a3];
+  v4 = [UMUserPersonaAttributes personaAttributesForPersonaType:0 withError:error];
   if (v4)
   {
     v5 = [MBPersona personaWithAttributes:v4 volumeMountPoint:@"/private/var/mobile"];
@@ -28,10 +28,10 @@
       _MBLog();
     }
 
-    if (a3)
+    if (error)
     {
       [MBError errorWithCode:1 format:@"nil personaAttributes"];
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -58,12 +58,12 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 personaLayoutPathURL];
-    v8 = [v7 path];
+    personaLayoutPathURL = [v5 personaLayoutPathURL];
+    path = [personaLayoutPathURL path];
 
-    if (v8)
+    if (path)
     {
-      v9 = [MBPersona personaWithAttributes:v6 volumeMountPoint:v8];
+      v9 = [MBPersona personaWithAttributes:v6 volumeMountPoint:path];
       [v2 addObject:v9];
     }
 
@@ -72,14 +72,14 @@
       v9 = MBGetDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 userPersonaUniqueString];
+        userPersonaUniqueString = [v6 userPersonaUniqueString];
         *buf = 134218242;
         v15 = 2;
         v16 = 2114;
-        v17 = v10;
+        v17 = userPersonaUniqueString;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "nil volumeMountPoint for %ld persona (%{public}@)", buf, 0x16u);
 
-        v12 = [v6 userPersonaUniqueString];
+        userPersonaUniqueString2 = [v6 userPersonaUniqueString];
         _MBLog();
       }
     }
@@ -174,8 +174,8 @@
 
         v17 = *(*(&v20 + 1) + 8 * v16);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 volumesToBackUp];
-        [MBFileSystemManager deleteAllSnapshotsAcrossVolumes:v19 withPrefix:@"com.apple.mobilebackup" error:0];
+        volumesToBackUp = [v17 volumesToBackUp];
+        [MBFileSystemManager deleteAllSnapshotsAcrossVolumes:volumesToBackUp withPrefix:@"com.apple.mobilebackup" error:0];
 
         objc_autoreleasePoolPop(v18);
         v16 = v16 + 1;
@@ -267,21 +267,21 @@
 
   else
   {
-    v3 = [(MBPersona *)self volumeMountPoint];
-    if (!v3)
+    volumeMountPoint = [(MBPersona *)self volumeMountPoint];
+    if (!volumeMountPoint)
     {
       sub_ABB4();
     }
 
-    v17 = v3;
-    v4 = [v3 stringByAppendingPathComponent:@"tmp"];
+    v17 = volumeMountPoint;
+    v4 = [volumeMountPoint stringByAppendingPathComponent:@"tmp"];
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 enumeratorAtPath:v4];
 
-    v7 = [v6 nextObject];
-    if (v7)
+    nextObject = [v6 nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      v8 = nextObject;
       do
       {
         v9 = objc_autoreleasePoolPush();
@@ -318,12 +318,12 @@
         }
 
         objc_autoreleasePoolPop(v9);
-        v16 = [v6 nextObject];
+        nextObject2 = [v6 nextObject];
 
-        v8 = v16;
+        v8 = nextObject2;
       }
 
-      while (v16);
+      while (nextObject2);
     }
   }
 }

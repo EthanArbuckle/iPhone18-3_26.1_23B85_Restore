@@ -1,28 +1,28 @@
 @interface EKReminderEditViewControllerCreator
-- (id)integrationViewControllerForEvent:(id)a3 eventEditViewDelegate:(id)a4;
+- (id)integrationViewControllerForEvent:(id)event eventEditViewDelegate:(id)delegate;
 @end
 
 @implementation EKReminderEditViewControllerCreator
 
-- (id)integrationViewControllerForEvent:(id)a3 eventEditViewDelegate:(id)a4
+- (id)integrationViewControllerForEvent:(id)event eventEditViewDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 calendarModel], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegateCopy = delegate;
+  eventCopy = event;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegateCopy calendarModel], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_FAULT))
     {
-      sub_1001703DC(v5, v8);
+      sub_1001703DC(delegateCopy, v8);
     }
 
     v7 = 0;
   }
 
   v9 = [[_TtC9MobileCal28EKReminderEditViewController alloc] initWithModel:v7];
-  [(EKReminderEditViewController *)v9 setEvent:v6];
+  [(EKReminderEditViewController *)v9 setEvent:eventCopy];
 
-  [(EKReminderEditViewController *)v9 setInternalEditViewDelegate:v5];
+  [(EKReminderEditViewController *)v9 setInternalEditViewDelegate:delegateCopy];
 
   return v9;
 }

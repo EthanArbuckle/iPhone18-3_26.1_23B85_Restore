@@ -1,44 +1,44 @@
 @interface TBNetworkMO
-+ (id)generateNewNetworkObjectFromMOC:(id)a3;
-+ (void)removeAllNetworksInMOC:(id)a3;
-+ (void)removeNetworksUsingPredicate:(id)a3 moc:(id)a4;
++ (id)generateNewNetworkObjectFromMOC:(id)c;
++ (void)removeAllNetworksInMOC:(id)c;
++ (void)removeNetworksUsingPredicate:(id)predicate moc:(id)moc;
 - (NSString)attributesDescription;
 - (NSString)authDescription;
-- (TBNetworkMO)initWithCoder:(id)a3;
+- (TBNetworkMO)initWithCoder:(id)coder;
 - (TBScore)popularityScore;
 - (TBScore)qualityScore;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TBNetworkMO
 
 - (NSString)authDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if (([(TBNetworkMO *)self authMask]& 1) != 0)
   {
-    [v3 appendString:@"OPEN "];
+    [string appendString:@"OPEN "];
   }
 
   if (([(TBNetworkMO *)self authMask]& 2) != 0)
   {
-    [v3 appendString:@"WEP "];
+    [string appendString:@"WEP "];
   }
 
   if (([(TBNetworkMO *)self authMask]& 4) != 0)
   {
-    [v3 appendString:@"WPA "];
+    [string appendString:@"WPA "];
   }
 
   if (([(TBNetworkMO *)self authMask]& 8) != 0)
   {
-    [v3 appendString:@"EAP "];
+    [string appendString:@"EAP "];
   }
 
-  if ([v3 length])
+  if ([string length])
   {
-    v4 = v3;
+    v4 = string;
   }
 
   else
@@ -53,35 +53,35 @@
 
 - (NSString)attributesDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if ([(TBNetworkMO *)self isPublic])
   {
-    [v3 appendString:@"isPublic "];
+    [string appendString:@"isPublic "];
   }
 
   if ([(TBNetworkMO *)self isMoving])
   {
-    [v3 appendString:@"isMoving "];
+    [string appendString:@"isMoving "];
   }
 
   if ([(TBNetworkMO *)self isSuspicious])
   {
-    [v3 appendString:@"isSuspicious "];
+    [string appendString:@"isSuspicious "];
   }
 
   if ([(TBNetworkMO *)self isCaptive])
   {
-    [v3 appendString:@"isCaptive "];
+    [string appendString:@"isCaptive "];
   }
 
   if ([(TBNetworkMO *)self isLowQuality])
   {
-    [v3 appendString:@"isLowQuality "];
+    [string appendString:@"isLowQuality "];
   }
 
-  if ([v3 length])
+  if ([string length])
   {
-    v4 = v3;
+    v4 = string;
   }
 
   else
@@ -96,93 +96,93 @@
 
 - (TBScore)qualityScore
 {
-  v2 = [(TBNetworkMO *)self qualityScoreValue];
+  qualityScoreValue = [(TBNetworkMO *)self qualityScoreValue];
 
-  return [TBQualityScore qualityScoreWithValue:v2];
+  return [TBQualityScore qualityScoreWithValue:qualityScoreValue];
 }
 
 - (TBScore)popularityScore
 {
-  v2 = [(TBNetworkMO *)self popularityScoreValue];
+  popularityScoreValue = [(TBNetworkMO *)self popularityScoreValue];
 
-  return [TBPopularityScore popularityScoreWithValue:v2];
+  return [TBPopularityScore popularityScoreWithValue:popularityScoreValue];
 }
 
 - (id)dictionaryRepresentation
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBNetworkMO moving](self, "moving")}];
-  [v3 setObject:v4 forKey:@"moving"];
+  [dictionary setObject:v4 forKey:@"moving"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBNetworkMO suspicious](self, "suspicious")}];
-  [v3 setObject:v5 forKey:@"suspicious"];
+  [dictionary setObject:v5 forKey:@"suspicious"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBNetworkMO captive](self, "captive")}];
-  [v3 setObject:v6 forKey:@"captive"];
+  [dictionary setObject:v6 forKey:@"captive"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBNetworkMO public](self, "public")}];
-  [v3 setObject:v7 forKey:@"public"];
+  [dictionary setObject:v7 forKey:@"public"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBNetworkMO lowQuality](self, "lowQuality")}];
-  [v3 setObject:v8 forKey:@"lowQuality"];
+  [dictionary setObject:v8 forKey:@"lowQuality"];
 
-  v9 = [(TBNetworkMO *)self name];
+  name = [(TBNetworkMO *)self name];
 
-  if (v9)
+  if (name)
   {
-    v10 = [(TBNetworkMO *)self name];
-    [v3 setObject:v10 forKey:@"name"];
+    name2 = [(TBNetworkMO *)self name];
+    [dictionary setObject:name2 forKey:@"name"];
   }
 
-  v11 = [(TBNetworkMO *)self identifier];
+  identifier = [(TBNetworkMO *)self identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [(TBNetworkMO *)self identifier];
-    [v3 setObject:v12 forKey:@"identifier"];
+    identifier2 = [(TBNetworkMO *)self identifier];
+    [dictionary setObject:identifier2 forKey:@"identifier"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[TBNetworkMO authMask](self, "authMask")}];
-  [v3 setObject:v13 forKey:@"authMask"];
+  [dictionary setObject:v13 forKey:@"authMask"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[TBNetworkMO tileKey](self, "tileKey")}];
-  [v3 setObject:v14 forKey:@"tileKey"];
+  [dictionary setObject:v14 forKey:@"tileKey"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[TBNetworkMO timestamp](self, "timestamp")}];
-  [v3 setObject:v15 forKey:@"timestamp"];
+  [dictionary setObject:v15 forKey:@"timestamp"];
 
-  v16 = [(TBNetworkMO *)self popularityScore];
+  popularityScore = [(TBNetworkMO *)self popularityScore];
 
-  if (v16)
+  if (popularityScore)
   {
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(TBNetworkMO *)self popularityScore];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "score")}];
-    [v3 setObject:v19 forKey:@"popularityScoreValue"];
+    popularityScore2 = [(TBNetworkMO *)self popularityScore];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(popularityScore2, "score")}];
+    [dictionary setObject:v19 forKey:@"popularityScoreValue"];
   }
 
-  v20 = [(TBNetworkMO *)self qualityScore];
+  qualityScore = [(TBNetworkMO *)self qualityScore];
 
-  if (v20)
+  if (qualityScore)
   {
     v21 = MEMORY[0x277CCABB0];
-    v22 = [(TBNetworkMO *)self qualityScore];
-    v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "score")}];
-    [v3 setObject:v23 forKey:@"qualityScoreValue"];
+    qualityScore2 = [(TBNetworkMO *)self qualityScore];
+    v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(qualityScore2, "score")}];
+    [dictionary setObject:v23 forKey:@"qualityScoreValue"];
   }
 
-  v24 = [(TBNetworkMO *)self accessPoints];
+  accessPoints = [(TBNetworkMO *)self accessPoints];
 
-  if (v24)
+  if (accessPoints)
   {
-    v25 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = [(TBNetworkMO *)self accessPoints];
-    v27 = [v26 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    accessPoints2 = [(TBNetworkMO *)self accessPoints];
+    v27 = [accessPoints2 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v27)
     {
       v28 = v27;
@@ -193,75 +193,75 @@
         {
           if (*v37 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(accessPoints2);
           }
 
-          v31 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v28 = [accessPoints2 countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"accessPoints"];
+    [dictionary setObject:array forKey:@"accessPoints"];
   }
 
-  v32 = [(TBNetworkMO *)self ownerIdentifiers];
+  ownerIdentifiers = [(TBNetworkMO *)self ownerIdentifiers];
 
-  if (v32)
+  if (ownerIdentifiers)
   {
-    v33 = [(TBNetworkMO *)self ownerIdentifiers];
-    [v3 setObject:v33 forKey:@"ownerIdentifiers"];
+    ownerIdentifiers2 = [(TBNetworkMO *)self ownerIdentifiers];
+    [dictionary setObject:ownerIdentifiers2 forKey:@"ownerIdentifiers"];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (TBNetworkMO)initWithCoder:(id)a3
+- (TBNetworkMO)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TBNetworkMO;
   return [(TBNetworkMO *)&v4 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeBool:-[TBNetworkMO moving](self forKey:{"moving"), @"moving"}];
-  [v8 encodeBool:-[TBNetworkMO captive](self forKey:{"captive"), @"captive"}];
-  [v8 encodeBool:-[TBNetworkMO suspicious](self forKey:{"suspicious"), @"suspicious"}];
-  [v8 encodeBool:-[TBNetworkMO public](self forKey:{"public"), @"public"}];
-  [v8 encodeBool:-[TBNetworkMO lowQuality](self forKey:{"lowQuality"), @"lowQuality"}];
-  v4 = [(TBNetworkMO *)self name];
-  [v8 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[TBNetworkMO moving](self forKey:{"moving"), @"moving"}];
+  [coderCopy encodeBool:-[TBNetworkMO captive](self forKey:{"captive"), @"captive"}];
+  [coderCopy encodeBool:-[TBNetworkMO suspicious](self forKey:{"suspicious"), @"suspicious"}];
+  [coderCopy encodeBool:-[TBNetworkMO public](self forKey:{"public"), @"public"}];
+  [coderCopy encodeBool:-[TBNetworkMO lowQuality](self forKey:{"lowQuality"), @"lowQuality"}];
+  name = [(TBNetworkMO *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(TBNetworkMO *)self identifier];
-  [v8 encodeObject:v5 forKey:@"identifier"];
+  identifier = [(TBNetworkMO *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v8 encodeInt64:-[TBNetworkMO authMask](self forKey:{"authMask"), @"authMask"}];
-  [v8 encodeInt64:-[TBNetworkMO tileKey](self forKey:{"tileKey"), @"tileKey"}];
-  [v8 encodeInt64:-[TBNetworkMO timestamp](self forKey:{"timestamp"), @"timestamp"}];
-  [v8 encodeInt32:-[TBNetworkMO popularityScoreValue](self forKey:{"popularityScoreValue"), @"popularityScoreValue"}];
-  [v8 encodeInt32:-[TBNetworkMO qualityScoreValue](self forKey:{"qualityScoreValue"), @"qualityScoreValue"}];
-  v6 = [(TBNetworkMO *)self accessPoints];
-  [v8 encodeObject:v6 forKey:@"accessPoints"];
+  [coderCopy encodeInt64:-[TBNetworkMO authMask](self forKey:{"authMask"), @"authMask"}];
+  [coderCopy encodeInt64:-[TBNetworkMO tileKey](self forKey:{"tileKey"), @"tileKey"}];
+  [coderCopy encodeInt64:-[TBNetworkMO timestamp](self forKey:{"timestamp"), @"timestamp"}];
+  [coderCopy encodeInt32:-[TBNetworkMO popularityScoreValue](self forKey:{"popularityScoreValue"), @"popularityScoreValue"}];
+  [coderCopy encodeInt32:-[TBNetworkMO qualityScoreValue](self forKey:{"qualityScoreValue"), @"qualityScoreValue"}];
+  accessPoints = [(TBNetworkMO *)self accessPoints];
+  [coderCopy encodeObject:accessPoints forKey:@"accessPoints"];
 
-  v7 = [(TBNetworkMO *)self ownerIdentifiers];
-  [v8 encodeObject:v7 forKey:@"ownerIdentifiers"];
+  ownerIdentifiers = [(TBNetworkMO *)self ownerIdentifiers];
+  [coderCopy encodeObject:ownerIdentifiers forKey:@"ownerIdentifiers"];
 
-  [v8 encodeInt64:-[TBNetworkMO type](self forKey:{"type"), @"type"}];
-  [v8 encodeInt64:-[TBNetworkMO venueGroup](self forKey:{"venueGroup"), @"venueGroup"}];
-  [v8 encodeInt64:-[TBNetworkMO venueType](self forKey:{"venueType"), @"venueType"}];
+  [coderCopy encodeInt64:-[TBNetworkMO type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInt64:-[TBNetworkMO venueGroup](self forKey:{"venueGroup"), @"venueGroup"}];
+  [coderCopy encodeInt64:-[TBNetworkMO venueType](self forKey:{"venueType"), @"venueType"}];
 }
 
-+ (id)generateNewNetworkObjectFromMOC:(id)a3
++ (id)generateNewNetworkObjectFromMOC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   v4 = objc_autoreleasePoolPush();
   v11 = 0;
   v12 = &v11;
@@ -274,7 +274,7 @@
   v8[2] = __47__TBNetworkMO_generateNewNetworkObjectFromMOC___block_invoke;
   v8[3] = &unk_2789C7350;
   v10 = &v11;
-  v5 = v3;
+  v5 = cCopy;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = v12[5];
@@ -295,22 +295,22 @@ void __47__TBNetworkMO_generateNewNetworkObjectFromMOC___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-+ (void)removeNetworksUsingPredicate:(id)a3 moc:(id)a4
++ (void)removeNetworksUsingPredicate:(id)predicate moc:(id)moc
 {
-  v5 = a3;
-  v6 = a4;
+  predicateCopy = predicate;
+  mocCopy = moc;
   v7 = objc_autoreleasePoolPush();
   v8 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"Network"];
-  [v8 setPredicate:v5];
+  [v8 setPredicate:predicateCopy];
   v9 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v8];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__TBNetworkMO_removeNetworksUsingPredicate_moc___block_invoke;
   v13[3] = &unk_2789C6C70;
-  v10 = v6;
+  v10 = mocCopy;
   v14 = v10;
   v15 = v9;
-  v11 = v5;
+  v11 = predicateCopy;
   v16 = v11;
   v12 = v9;
   [v10 performBlockAndWait:v13];
@@ -340,9 +340,9 @@ void __48__TBNetworkMO_removeNetworksUsingPredicate_moc___block_invoke(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)removeAllNetworksInMOC:(id)a3
++ (void)removeAllNetworksInMOC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x277CBE360]);
   v6 = +[TBNetworkMO fetchRequest];
@@ -352,7 +352,7 @@ void __48__TBNetworkMO_removeNetworksUsingPredicate_moc___block_invoke(void *a1)
   v10[1] = 3221225472;
   v10[2] = __38__TBNetworkMO_removeAllNetworksInMOC___block_invoke;
   v10[3] = &unk_2789C6608;
-  v8 = v3;
+  v8 = cCopy;
   v11 = v8;
   v12 = v7;
   v9 = v7;

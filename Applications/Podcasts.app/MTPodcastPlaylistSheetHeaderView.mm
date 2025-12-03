@@ -1,17 +1,17 @@
 @interface MTPodcastPlaylistSheetHeaderView
-- (MTPodcastPlaylistSheetHeaderView)initWithFrame:(CGRect)a3;
-- (void)buttonTapped:(id)a3;
+- (MTPodcastPlaylistSheetHeaderView)initWithFrame:(CGRect)frame;
+- (void)buttonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setOn:(BOOL)a3;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation MTPodcastPlaylistSheetHeaderView
 
-- (MTPodcastPlaylistSheetHeaderView)initWithFrame:(CGRect)a3
+- (MTPodcastPlaylistSheetHeaderView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = MTPodcastPlaylistSheetHeaderView;
-  v3 = [(MTPodcastPlaylistSheetHeaderView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTPodcastPlaylistSheetHeaderView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UISwitch alloc];
@@ -125,9 +125,9 @@
   [(UILabel *)self->_title setFrame:v21, v26];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  self->_on = [a3 isOn];
+  self->_on = [tapped isOn];
   action = self->_action;
   if (action)
   {
@@ -137,9 +137,9 @@
   }
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  self->_on = a3;
+  self->_on = on;
   [(UISwitch *)self->_switch setOn:?];
   action = self->_action;
   if (action)

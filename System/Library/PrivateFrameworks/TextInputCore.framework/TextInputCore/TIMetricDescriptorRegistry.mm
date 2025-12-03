@@ -1,26 +1,26 @@
 @interface TIMetricDescriptorRegistry
-+ (TIMetricDescriptorRegistry)registryWithConfig:(id)a3;
-+ (TIMetricDescriptorRegistry)registryWithDescriptors:(id)a3 andInvalidMetricNames:(id)a4;
++ (TIMetricDescriptorRegistry)registryWithConfig:(id)config;
++ (TIMetricDescriptorRegistry)registryWithDescriptors:(id)descriptors andInvalidMetricNames:(id)names;
 + (id)registry;
 - (NSDictionary)metricDescriptors;
 - (NSSet)invalidMetricNames;
-- (TIMetricDescriptorRegistry)initWithConfig:(id)a3;
-- (TIMetricDescriptorRegistry)initWithDescriptors:(id)a3 andInvalidMetricNames:(id)a4;
+- (TIMetricDescriptorRegistry)initWithConfig:(id)config;
+- (TIMetricDescriptorRegistry)initWithDescriptors:(id)descriptors andInvalidMetricNames:(id)names;
 - (id)allMetricDescriptors;
-- (id)contextFromError:(id)a3;
-- (id)metricDescriptorWithName:(id)a3;
-- (id)valueFromError:(id)a3 forKey:(id)a4;
+- (id)contextFromError:(id)error;
+- (id)metricDescriptorWithName:(id)name;
+- (id)valueFromError:(id)error forKey:(id)key;
 - (void)_loadMetricDescriptors;
 - (void)loadMetricDescriptorsIfNecessary;
 @end
 
 @implementation TIMetricDescriptorRegistry
 
-- (id)valueFromError:(id)a3 forKey:(id)a4
+- (id)valueFromError:(id)error forKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  userInfo = [error userInfo];
+  v7 = [userInfo objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -43,9 +43,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)contextFromError:(id)a3
+- (id)contextFromError:(id)error
 {
-  v3 = [(TIMetricDescriptorRegistry *)self valueFromError:a3 forKey:@"metric"];
+  v3 = [(TIMetricDescriptorRegistry *)self valueFromError:error forKey:@"metric"];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Metric %@ ", v3];
@@ -62,9 +62,9 @@ LABEL_7:
 - (void)_loadMetricDescriptors
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(TIMetricDescriptorRegistry *)self config];
+  config = [(TIMetricDescriptorRegistry *)self config];
 
-  if (!v3)
+  if (!config)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 URLForResource:@"MetricDescriptors" withExtension:@"plist"];
@@ -80,9 +80,9 @@ LABEL_7:
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5];
     [(TIMetricDescriptorRegistry *)self setConfig:v8];
 
-    v9 = [(TIMetricDescriptorRegistry *)self config];
+    config2 = [(TIMetricDescriptorRegistry *)self config];
 
-    if (!v9)
+    if (!config2)
     {
       v10 = IXADefaultLogFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -95,9 +95,9 @@ LABEL_7:
     }
   }
 
-  v11 = [(TIMetricDescriptorRegistry *)self config];
+  config3 = [(TIMetricDescriptorRegistry *)self config];
 
-  if (v11)
+  if (config3)
   {
     v12 = IXADefaultLogFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -112,8 +112,8 @@ LABEL_7:
     v15 = objc_opt_new();
     metricDescriptors = self->_metricDescriptors;
     invalidMetricNames = self->_invalidMetricNames;
-    v18 = [(TIMetricDescriptorRegistry *)self config];
-    [v14 parseMetricDescriptors:metricDescriptors andInvalidMetricNames:invalidMetricNames fromConfig:v18 errors:v15];
+    config4 = [(TIMetricDescriptorRegistry *)self config];
+    [v14 parseMetricDescriptors:metricDescriptors andInvalidMetricNames:invalidMetricNames fromConfig:config4 errors:v15];
 
     if ([v15 count])
     {
@@ -188,11 +188,11 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
   return metricDescriptors;
 }
 
-- (id)metricDescriptorWithName:(id)a3
+- (id)metricDescriptorWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TIMetricDescriptorRegistry *)self invalidMetricNames];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  invalidMetricNames = [(TIMetricDescriptorRegistry *)self invalidMetricNames];
+  v6 = [invalidMetricNames containsObject:nameCopy];
 
   if (v6)
   {
@@ -201,12 +201,12 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
 
   else
   {
-    v8 = [(TIMetricDescriptorRegistry *)self metricDescriptors];
-    v7 = [v8 objectForKey:v4];
+    metricDescriptors = [(TIMetricDescriptorRegistry *)self metricDescriptors];
+    v7 = [metricDescriptors objectForKey:nameCopy];
 
     if (!v7)
     {
-      v7 = [TINumericValueDescriptor numericValueDescriptorWithMetricName:v4 calculationExpression:0 calculationPrecondition:0 calculationDefaultValue:0 calculationDependencies:0 bucketThresholds:0 bucketValues:0];
+      v7 = [TINumericValueDescriptor numericValueDescriptorWithMetricName:nameCopy calculationExpression:0 calculationPrecondition:0 calculationDefaultValue:0 calculationDependencies:0 bucketThresholds:0 bucketValues:0];
     }
   }
 
@@ -215,17 +215,17 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
 
 - (id)allMetricDescriptors
 {
-  v2 = [(TIMetricDescriptorRegistry *)self metricDescriptors];
-  v3 = [v2 allValues];
+  metricDescriptors = [(TIMetricDescriptorRegistry *)self metricDescriptors];
+  allValues = [metricDescriptors allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (TIMetricDescriptorRegistry)initWithDescriptors:(id)a3 andInvalidMetricNames:(id)a4
+- (TIMetricDescriptorRegistry)initWithDescriptors:(id)descriptors andInvalidMetricNames:(id)names
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  namesCopy = names;
   v8 = [(TIMetricDescriptorRegistry *)self initWithConfig:MEMORY[0x277CBEC10]];
   if (v8)
   {
@@ -233,7 +233,7 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = v6;
+    v9 = descriptorsCopy;
     v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
@@ -250,8 +250,8 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
 
           v14 = *(*(&v30 + 1) + 8 * i);
           metricDescriptors = v8->_metricDescriptors;
-          v16 = [v14 metricName];
-          [(NSMutableDictionary *)metricDescriptors setObject:v14 forKey:v16];
+          metricName = [v14 metricName];
+          [(NSMutableDictionary *)metricDescriptors setObject:v14 forKey:metricName];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -264,7 +264,7 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = v7;
+    v17 = namesCopy;
     v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
@@ -298,16 +298,16 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
   return v8;
 }
 
-- (TIMetricDescriptorRegistry)initWithConfig:(id)a3
+- (TIMetricDescriptorRegistry)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = TIMetricDescriptorRegistry;
   v6 = [(TIMetricDescriptorRegistry *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_opt_new();
     metricDescriptors = v7->_metricDescriptors;
     v7->_metricDescriptors = v8;
@@ -325,19 +325,19 @@ void __52__TIMetricDescriptorRegistry__loadMetricDescriptors__block_invoke(uint6
   return v7;
 }
 
-+ (TIMetricDescriptorRegistry)registryWithDescriptors:(id)a3 andInvalidMetricNames:(id)a4
++ (TIMetricDescriptorRegistry)registryWithDescriptors:(id)descriptors andInvalidMetricNames:(id)names
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TIMetricDescriptorRegistry alloc] initWithDescriptors:v6 andInvalidMetricNames:v5];
+  namesCopy = names;
+  descriptorsCopy = descriptors;
+  v7 = [[TIMetricDescriptorRegistry alloc] initWithDescriptors:descriptorsCopy andInvalidMetricNames:namesCopy];
 
   return v7;
 }
 
-+ (TIMetricDescriptorRegistry)registryWithConfig:(id)a3
++ (TIMetricDescriptorRegistry)registryWithConfig:(id)config
 {
-  v3 = a3;
-  v4 = [[TIMetricDescriptorRegistry alloc] initWithConfig:v3];
+  configCopy = config;
+  v4 = [[TIMetricDescriptorRegistry alloc] initWithConfig:configCopy];
 
   return v4;
 }

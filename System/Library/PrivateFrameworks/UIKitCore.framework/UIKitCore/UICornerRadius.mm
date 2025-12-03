@@ -1,21 +1,21 @@
 @interface UICornerRadius
 + (id)containerConcentricRadius;
-+ (id)containerConcentricRadiusWithMinimum:(double)a3;
-+ (id)fixedRadius:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)containerConcentricRadiusWithMinimum:(double)minimum;
++ (id)fixedRadius:(double)radius;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UICornerRadius)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICornerRadius
 
-+ (id)fixedRadius:(double)a3
++ (id)fixedRadius:(double)radius
 {
   swift_getObjCClassMetadata();
-  v4 = sub_188E6A624(0, a3);
+  v4 = sub_188E6A624(0, radius);
 
   return v4;
 }
@@ -28,10 +28,10 @@
   return v2;
 }
 
-+ (id)containerConcentricRadiusWithMinimum:(double)a3
++ (id)containerConcentricRadiusWithMinimum:(double)minimum
 {
   swift_getObjCClassMetadata();
-  v4 = sub_188E6A624(1, a3);
+  v4 = sub_188E6A624(1, minimum);
 
   return v4;
 }
@@ -46,7 +46,7 @@
   return [(UICornerRadius *)&v4 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR___UICornerRadius_impl);
   v4 = self->impl[OBJC_IVAR___UICornerRadius_impl];
@@ -57,11 +57,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_188E6A958(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_188E6A958(coderCopy);
 }
 
 - (int64_t)hash
@@ -71,11 +71,11 @@
   return sub_18A4A88E8();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -84,7 +84,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UICornerRadius.isEqual(_:)(v8);
@@ -95,7 +95,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UICornerRadius.description.getter();
 
   v3 = sub_18A4A7258();

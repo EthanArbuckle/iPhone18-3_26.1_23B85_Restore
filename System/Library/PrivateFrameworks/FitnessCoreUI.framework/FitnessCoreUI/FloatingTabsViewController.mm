@@ -1,13 +1,13 @@
 @interface FloatingTabsViewController
-- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)expandTabBarButtonTapped:(id)a3;
+- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)expandTabBarButtonTapped:(id)tapped;
 - (void)viewLayoutMarginsDidChange;
 @end
 
 @implementation FloatingTabsViewController
 
-- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -17,10 +17,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_20C3E8C2C();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -28,14 +28,14 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  FloatingTabsViewController.init(nibName:bundle:)(v6, a3, a4);
+  bundleCopy = bundle;
+  FloatingTabsViewController.init(nibName:bundle:)(v6, name, bundle);
   v10 = v9;
 
   return v10;
 }
 
-- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI26FloatingTabsViewController)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -45,7 +45,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20C3D5088();
 }
 
@@ -59,11 +59,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20C3D2030();
 }
 
-- (void)expandTabBarButtonTapped:(id)a3
+- (void)expandTabBarButtonTapped:(id)tapped
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -73,7 +73,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   FloatingTabsViewController.expandTabBar(animated:)(1);
 }
 

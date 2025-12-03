@@ -1,34 +1,34 @@
 @interface CKVideoCancelActionMenuItem
-- (void)updateForState:(int64_t)a3 touchInside:(BOOL)a4;
+- (void)updateForState:(int64_t)state touchInside:(BOOL)inside;
 @end
 
 @implementation CKVideoCancelActionMenuItem
 
-- (void)updateForState:(int64_t)a3 touchInside:(BOOL)a4
+- (void)updateForState:(int64_t)state touchInside:(BOOL)inside
 {
-  v4 = a4;
-  v5 = self;
-  if (a3 <= 2)
+  insideCopy = inside;
+  selfCopy = self;
+  if (state <= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       [(CKVideoCancelActionMenuItem *)self setTouchDownCount:[(CKVideoCancelActionMenuItem *)self touchDownCount]+ 1];
     }
 
-    else if (a3 != 2)
+    else if (state != 2)
     {
       return;
     }
 
-    self = v5;
-    v6 = v4;
+    self = selfCopy;
+    v6 = insideCopy;
     v7 = 1;
     goto LABEL_10;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
       return;
     }
@@ -42,10 +42,10 @@ LABEL_10:
   }
 
   [(CKActionMenuItem *)self setHighlighted:0 animated:1];
-  if (v4 && [(CKVideoCancelActionMenuItem *)v5 touchDownCount]>= 2)
+  if (insideCopy && [(CKVideoCancelActionMenuItem *)selfCopy touchDownCount]>= 2)
   {
 
-    [(CKActionMenuItem *)v5 sendAction];
+    [(CKActionMenuItem *)selfCopy sendAction];
   }
 }
 

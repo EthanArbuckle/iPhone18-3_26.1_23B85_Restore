@@ -12,8 +12,8 @@
   }
 
   v4 = a3;
-  v5 = [a1 payloadHostnames];
-  v6 = [v5 containsObject:v4];
+  payloadHostnames = [self payloadHostnames];
+  v6 = [payloadHostnames containsObject:v4];
 
   return v6;
 }

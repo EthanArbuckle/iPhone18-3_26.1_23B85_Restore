@@ -1,13 +1,13 @@
 @interface BMStoreSource
 + (id)_processPendingWritesQueue;
-- (BMStoreSource)initWithIdentifier:(id)a3 storeConfig:(id)a4 accessClient:(id)a5 eventDataClass:(Class)a6;
-- (BOOL)_writeEvent:(id)a3 timestamp:(double)a4 signpostID:(unint64_t)a5 notifyCompute:(BOOL)a6;
+- (BMStoreSource)initWithIdentifier:(id)identifier storeConfig:(id)config accessClient:(id)client eventDataClass:(Class)class;
+- (BOOL)_writeEvent:(id)event timestamp:(double)timestamp signpostID:(unint64_t)d notifyCompute:(BOOL)compute;
 - (BOOL)outOfProcess;
 - (void)_processPendingWrites;
 - (void)dealloc;
-- (void)sendEvent:(id)a3;
-- (void)sendEvent:(id)a3 timestamp:(double)a4;
-- (void)setOutOfProcess:(BOOL)a3;
+- (void)sendEvent:(id)event;
+- (void)sendEvent:(id)event timestamp:(double)timestamp;
+- (void)setOutOfProcess:(BOOL)process;
 @end
 
 @implementation BMStoreSource
@@ -26,14 +26,14 @@
   [(BMStoreSource *)&v4 dealloc];
 }
 
-- (BMStoreSource)initWithIdentifier:(id)a3 storeConfig:(id)a4 accessClient:(id)a5 eventDataClass:(Class)a6
+- (BMStoreSource)initWithIdentifier:(id)identifier storeConfig:(id)config accessClient:(id)client eventDataClass:(Class)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  configCopy = config;
+  clientCopy = client;
   v34.receiver = self;
   v34.super_class = BMStoreSource;
-  v13 = [(BMSource *)&v34 initWithIdentifier:v10];
+  v13 = [(BMSource *)&v34 initWithIdentifier:identifierCopy];
   v14 = v13;
   if (!v13)
   {
@@ -41,23 +41,23 @@
   }
 
   v13->_lock._os_unfair_lock_opaque = 0;
-  objc_storeStrong(&v13->_config, a4);
-  v14->_eventDataClass = a6;
-  if (![v11 isManaged])
+  objc_storeStrong(&v13->_config, config);
+  v14->_eventDataClass = class;
+  if (![configCopy isManaged])
   {
     LOBYTE(v18) = 3;
     goto LABEL_6;
   }
 
   v15 = MEMORY[0x1E698E970];
-  v16 = [MEMORY[0x1E698E9D8] current];
-  v17 = [v15 policyForProcess:v16 connectionFlags:0 useCase:*MEMORY[0x1E698E960]];
+  current = [MEMORY[0x1E698E9D8] current];
+  v17 = [v15 policyForProcess:current connectionFlags:0 useCase:*MEMORY[0x1E698E960]];
 
-  v18 = [v17 allowedModeForStream:v10];
+  v18 = [v17 allowedModeForStream:identifierCopy];
   if (v18 != 2)
   {
 LABEL_6:
-    v22 = [objc_alloc(MEMORY[0x1E698F158]) initWithStream:v10 config:v11 eventDataClass:a6];
+    v22 = [objc_alloc(MEMORY[0x1E698F158]) initWithStream:identifierCopy config:configCopy eventDataClass:class];
     writer = v14->_writer;
     v14->_writer = v22;
 
@@ -65,29 +65,29 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v19 = [MEMORY[0x1E698F158] outOfProcessWriterForStream:v10 user:objc_msgSend(v11 eventDataClass:{"uid"), a6}];
+  v19 = [MEMORY[0x1E698F158] outOfProcessWriterForStream:identifierCopy user:objc_msgSend(configCopy eventDataClass:{"uid"), class}];
   v20 = v14->_writer;
   v14->_writer = v19;
 
   v21 = 0;
 LABEL_7:
-  v24 = [v11 isManaged];
-  if (!v21 && v24)
+  isManaged = [configCopy isManaged];
+  if (!v21 && isManaged)
   {
-    v25 = v10;
-    if (([v11 storeLocationOption] & 4) != 0)
+    v25 = identifierCopy;
+    if (([configCopy storeLocationOption] & 4) != 0)
     {
       v26 = @":subscriptions";
     }
 
     else
     {
-      if (([v11 storeLocationOption] & 2) == 0)
+      if (([configCopy storeLocationOption] & 2) == 0)
       {
 LABEL_14:
         v28 = [BMComputeSourceClient alloc];
-        v29 = [v11 domain];
-        v30 = -[BMComputeSourceClient initWithStreamIdentifier:domain:useCase:user:](v28, "initWithStreamIdentifier:domain:useCase:user:", v25, v29, *MEMORY[0x1E698E960], [v11 uid]);
+        domain = [configCopy domain];
+        v30 = -[BMComputeSourceClient initWithStreamIdentifier:domain:useCase:user:](v28, "initWithStreamIdentifier:domain:useCase:user:", v25, domain, *MEMORY[0x1E698E960], [configCopy uid]);
         computeSource = v14->_computeSource;
         v14->_computeSource = v30;
 
@@ -104,7 +104,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  objc_storeStrong(&v14->_accessClient, a5);
+  objc_storeStrong(&v14->_accessClient, client);
   if ([(BMStoreConfig *)v14->_config isManaged])
   {
     v32 = [MEMORY[0x1E698E9C8] isTestPathOverridden] ^ 1;
@@ -131,9 +131,9 @@ LABEL_19:
   return v5;
 }
 
-- (void)setOutOfProcess:(BOOL)a3
+- (void)setOutOfProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     v4 = __biome_log_for_category();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -144,8 +144,8 @@ LABEL_19:
     if (![(BMStoreSource *)self outOfProcess])
     {
       v5 = MEMORY[0x1E698F158];
-      v6 = [(BMSource *)self identifier];
-      v7 = [v5 outOfProcessWriterForStream:v6 user:-[BMStoreConfig uid](self->_config eventDataClass:{"uid"), self->_eventDataClass}];
+      identifier = [(BMSource *)self identifier];
+      v7 = [v5 outOfProcessWriterForStream:identifier user:-[BMStoreConfig uid](self->_config eventDataClass:{"uid"), self->_eventDataClass}];
       writer = self->_writer;
       self->_writer = v7;
     }
@@ -154,8 +154,8 @@ LABEL_19:
   else if ([(BMStoreSource *)self outOfProcess])
   {
     v9 = objc_alloc(MEMORY[0x1E698F158]);
-    v12 = [(BMSource *)self identifier];
-    v10 = [v9 initWithStream:v12 config:self->_config eventDataClass:self->_eventDataClass];
+    identifier2 = [(BMSource *)self identifier];
+    v10 = [v9 initWithStream:identifier2 config:self->_config eventDataClass:self->_eventDataClass];
     v11 = self->_writer;
     self->_writer = v10;
   }
@@ -181,28 +181,28 @@ void __43__BMStoreSource__processPendingWritesQueue__block_invoke()
   _processPendingWritesQueue_queue = v0;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  [(BMStoreSource *)self sendEvent:v4 timestamp:CFAbsoluteTimeGetCurrent()];
+  eventCopy = event;
+  [(BMStoreSource *)self sendEvent:eventCopy timestamp:CFAbsoluteTimeGetCurrent()];
 }
 
-- (void)sendEvent:(id)a3 timestamp:(double)a4
+- (void)sendEvent:(id)event timestamp:(double)timestamp
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
   context = objc_autoreleasePoolPush();
   v7 = _os_activity_create(&dword_1848EE000, "BMStoreSource.sendEvent", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  v8 = [(BMSource *)self identifier];
-  v9 = v8;
+  identifier = [(BMSource *)self identifier];
+  v9 = identifier;
   v10 = @"unknown";
-  if (v8)
+  if (identifier)
   {
-    v10 = v8;
+    v10 = identifier;
   }
 
   v11 = v10;
@@ -223,18 +223,18 @@ void __43__BMStoreSource__processPendingWritesQueue__block_invoke()
   v17 = __biome_log_for_category();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(BMSource *)self identifier];
-    [(BMStoreSource *)v18 sendEvent:buf timestamp:v17, a4];
+    identifier2 = [(BMSource *)self identifier];
+    [(BMStoreSource *)identifier2 sendEvent:buf timestamp:v17, timestamp];
   }
 
-  if (([v6 conformsToProtocol:&unk_1EF30B8F0] & 1) == 0)
+  if (([eventCopy conformsToProtocol:&unk_1EF30B8F0] & 1) == 0)
   {
     v21 = __biome_log_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(BMSource *)self identifier];
+      identifier3 = [(BMSource *)self identifier];
       v23 = NSStringFromProtocol(&unk_1EF30B8F0);
-      [(BMStoreSource *)v22 sendEvent:v23 timestamp:v50, v21];
+      [(BMStoreSource *)identifier3 sendEvent:v23 timestamp:v50, v21];
     }
 
     v24 = __biome_log_for_category();
@@ -254,10 +254,10 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v19 = [MEMORY[0x1E698E9D8] current];
-  v20 = [v19 canAccessAppleKeyStore];
+  current = [MEMORY[0x1E698E9D8] current];
+  canAccessAppleKeyStore = [current canAccessAppleKeyStore];
 
-  if ((v20 & 1) == 0)
+  if ((canAccessAppleKeyStore & 1) == 0)
   {
     v27 = __biome_log_for_category();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -288,7 +288,7 @@ LABEL_36:
       _os_log_impl(&dword_1848EE000, v29, OS_LOG_TYPE_DEFAULT, "Unable to access data, storing donation to %@ in memory until device unlocks", v50, 0xCu);
     }
 
-    v25 = [BMPendingWrite pendingWriteWithEvent:v6 timestamp:a4];
+    v25 = [BMPendingWrite pendingWriteWithEvent:eventCopy timestamp:timestamp];
     pendingWrites = self->_pendingWrites;
     if (pendingWrites)
     {
@@ -323,32 +323,32 @@ LABEL_36:
       }
     }
 
-    v39 = [(BMStoreSource *)self computeSource];
+    computeSource = [(BMStoreSource *)self computeSource];
 
-    if (v39)
+    if (computeSource)
     {
-      v40 = [(BMStoreSource *)self computeSource];
-      v41 = [(BMStoreConfig *)self->_config account];
-      v42 = [(BMStoreConfig *)self->_config remoteName];
-      [v40 sendEvent:v6 account:v41 remoteName:v42 timestamp:v13 signpostID:1 sendFullEvent:a4];
+      computeSource2 = [(BMStoreSource *)self computeSource];
+      account = [(BMStoreConfig *)self->_config account];
+      remoteName = [(BMStoreConfig *)self->_config remoteName];
+      [computeSource2 sendEvent:eventCopy account:account remoteName:remoteName timestamp:v13 signpostID:1 sendFullEvent:timestamp];
     }
 
     else
     {
       v43 = __biome_log_for_category();
-      v40 = v43;
+      computeSource2 = v43;
       if (v16 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
       {
         *v50 = 138412290;
         v51 = v11;
-        _os_signpost_emit_with_name_impl(&dword_1848EE000, v40, OS_SIGNPOST_INTERVAL_END, v13, "SendEvent", "StreamIdentifier=%@", v50, 0xCu);
+        _os_signpost_emit_with_name_impl(&dword_1848EE000, computeSource2, OS_SIGNPOST_INTERVAL_END, v13, "SendEvent", "StreamIdentifier=%@", v50, 0xCu);
       }
     }
 
     goto LABEL_36;
   }
 
-  [(BMStoreSource *)self _writeEvent:v6 timestamp:v13 signpostID:1 notifyCompute:a4];
+  [(BMStoreSource *)self _writeEvent:eventCopy timestamp:v13 signpostID:1 notifyCompute:timestamp];
 LABEL_37:
 
   os_activity_scope_leave(&state);
@@ -394,11 +394,11 @@ void __37__BMStoreSource_sendEvent_timestamp___block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = [(NSMutableArray *)self->_pendingWrites count];
-      v5 = [(BMSource *)self identifier];
+      identifier = [(BMSource *)self identifier];
       *buf = 134218242;
       v26 = v4;
       v27 = 2112;
-      v28 = v5;
+      v28 = identifier;
       _os_log_impl(&dword_1848EE000, v3, OS_LOG_TYPE_DEFAULT, "Device has unlocked, proceeding with %lu queued writes to stream %@", buf, 0x16u);
     }
 
@@ -422,13 +422,13 @@ LABEL_6:
         }
 
         v11 = *(*(&v20 + 1) + 8 * v10);
-        v12 = [v11 event];
+        event = [v11 event];
         [v11 timestamp];
-        v13 = [(BMStoreSource *)self _writeEvent:v12 timestamp:0 signpostID:0 notifyCompute:?];
+        v13 = [(BMStoreSource *)self _writeEvent:event timestamp:0 signpostID:0 notifyCompute:?];
 
-        v14 = [(BMStreamDatastoreWriter *)self->_writer isDataAccessible];
-        v15 = v14;
-        if (v13 || v14)
+        isDataAccessible = [(BMStreamDatastoreWriter *)self->_writer isDataAccessible];
+        v15 = isDataAccessible;
+        if (v13 || isDataAccessible)
         {
           [(NSMutableArray *)self->_pendingWrites removeObject:v11];
         }
@@ -468,35 +468,35 @@ LABEL_6:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_writeEvent:(id)a3 timestamp:(double)a4 signpostID:(unint64_t)a5 notifyCompute:(BOOL)a6
+- (BOOL)_writeEvent:(id)event timestamp:(double)timestamp signpostID:(unint64_t)d notifyCompute:(BOOL)compute
 {
-  v6 = a6;
+  computeCopy = compute;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  eventCopy = event;
   os_unfair_lock_assert_owner(&self->_lock);
   v11 = objc_autoreleasePoolPush();
-  v12 = [(BMSource *)self identifier];
-  v13 = v12;
+  identifier = [(BMSource *)self identifier];
+  v13 = identifier;
   v14 = @"unknown";
-  if (v12)
+  if (identifier)
   {
-    v14 = v12;
+    v14 = identifier;
   }
 
   v15 = v14;
 
   v27 = 0;
-  v16 = [(BMStreamDatastoreWriter *)self->_writer writeEventWithEventBody:v10 timestamp:&v27 outEventSize:a4];
+  v16 = [(BMStreamDatastoreWriter *)self->_writer writeEventWithEventBody:eventCopy timestamp:&v27 outEventSize:timestamp];
   if (v16)
   {
-    v17 = [(BMStoreSource *)self computeSource];
+    computeSource = [(BMStoreSource *)self computeSource];
 
-    if (v17 && v6)
+    if (computeSource && computeCopy)
     {
-      v18 = [(BMStoreSource *)self computeSource];
-      v19 = [(BMStoreConfig *)self->_config account];
-      v20 = [(BMStoreConfig *)self->_config remoteName];
-      [v18 sendEvent:v10 account:v19 remoteName:v20 timestamp:a5 signpostID:0 sendFullEvent:a4];
+      computeSource2 = [(BMStoreSource *)self computeSource];
+      account = [(BMStoreConfig *)self->_config account];
+      remoteName = [(BMStoreConfig *)self->_config remoteName];
+      [computeSource2 sendEvent:eventCopy account:account remoteName:remoteName timestamp:d signpostID:0 sendFullEvent:timestamp];
 
 LABEL_16:
       goto LABEL_17;
@@ -518,15 +518,15 @@ LABEL_16:
     [BMStoreSource _writeEvent:v15 timestamp:v22 signpostID:? notifyCompute:?];
   }
 
-  if (a5)
+  if (d)
   {
     v23 = __biome_log_for_category();
-    v18 = v23;
-    if (a5 != -1 && os_signpost_enabled(v23))
+    computeSource2 = v23;
+    if (d != -1 && os_signpost_enabled(v23))
     {
       *buf = 138412290;
       v29 = v15;
-      _os_signpost_emit_with_name_impl(&dword_1848EE000, v18, OS_SIGNPOST_INTERVAL_END, a5, "SendEvent", "StreamIdentifier=%@", buf, 0xCu);
+      _os_signpost_emit_with_name_impl(&dword_1848EE000, computeSource2, OS_SIGNPOST_INTERVAL_END, d, "SendEvent", "StreamIdentifier=%@", buf, 0xCu);
     }
 
     goto LABEL_16;

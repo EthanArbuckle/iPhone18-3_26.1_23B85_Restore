@@ -1,15 +1,15 @@
 @interface TUJoinConversationRequest
-- (void)nph_logWithReason:(id)a3 indented:(BOOL)a4;
+- (void)nph_logWithReason:(id)reason indented:(BOOL)indented;
 @end
 
 @implementation TUJoinConversationRequest
 
-- (void)nph_logWithReason:(id)a3 indented:(BOOL)a4
+- (void)nph_logWithReason:(id)reason indented:(BOOL)indented
 {
-  v4 = a4;
-  v6 = a3;
+  indentedCopy = indented;
+  reasonCopy = reason;
   v7 = &stru_100014D40;
-  if (v4)
+  if (indentedCopy)
   {
     v7 = @"\t";
   }
@@ -21,11 +21,11 @@
     v10 = 138413058;
     v11 = v8;
     v12 = 2112;
-    v13 = v6;
+    v13 = reasonCopy;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@%@ TUJoinConversationRequest %p: %@", &v10, 0x2Au);
   }
 }

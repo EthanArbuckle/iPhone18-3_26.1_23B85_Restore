@@ -1,65 +1,65 @@
 @interface RCPlatterMinimalViewContainer
-- (RCPlatterMinimalViewContainer)initWithFrame:(CGRect)a3 childView:(id)a4;
-- (void)_setupChildView:(id)a3;
-- (void)setChildView:(id)a3;
+- (RCPlatterMinimalViewContainer)initWithFrame:(CGRect)frame childView:(id)view;
+- (void)_setupChildView:(id)view;
+- (void)setChildView:(id)view;
 @end
 
 @implementation RCPlatterMinimalViewContainer
 
-- (RCPlatterMinimalViewContainer)initWithFrame:(CGRect)a3 childView:(id)a4
+- (RCPlatterMinimalViewContainer)initWithFrame:(CGRect)frame childView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = RCPlatterMinimalViewContainer;
-  v11 = [(RCPlatterMinimalViewContainer *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(RCPlatterMinimalViewContainer *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_childView, a4);
-    [(RCPlatterMinimalViewContainer *)v12 _setupChildView:v10];
+    objc_storeStrong(&height->_childView, view);
+    [(RCPlatterMinimalViewContainer *)v12 _setupChildView:viewCopy];
   }
 
   return v12;
 }
 
-- (void)setChildView:(id)a3
+- (void)setChildView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childView = self->_childView;
-  if (childView != v5)
+  if (childView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(SBUISystemApertureAccessoryView *)childView superview];
+    v8 = viewCopy;
+    superview = [(SBUISystemApertureAccessoryView *)childView superview];
 
-    if (v7)
+    if (superview)
     {
       [(SBUISystemApertureAccessoryView *)self->_childView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_childView, a3);
+    objc_storeStrong(&self->_childView, view);
     [(RCPlatterMinimalViewContainer *)self _setupChildView:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)_setupChildView:(id)a3
+- (void)_setupChildView:(id)view
 {
-  v4 = a3;
-  [(RCPlatterMinimalViewContainer *)self addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [v4 heightAnchor];
-  v6 = [(RCPlatterMinimalViewContainer *)self heightAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  viewCopy = view;
+  [(RCPlatterMinimalViewContainer *)self addSubview:viewCopy];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  heightAnchor = [viewCopy heightAnchor];
+  heightAnchor2 = [(RCPlatterMinimalViewContainer *)self heightAnchor];
+  v7 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v7 setActive:1];
 
-  v10 = [v4 centerXAnchor];
+  centerXAnchor = [viewCopy centerXAnchor];
 
-  v8 = [(RCPlatterMinimalViewContainer *)self centerXAnchor];
-  v9 = [v10 constraintEqualToAnchor:v8];
+  centerXAnchor2 = [(RCPlatterMinimalViewContainer *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v9 setActive:1];
 }
 

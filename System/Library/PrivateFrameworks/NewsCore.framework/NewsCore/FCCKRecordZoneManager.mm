@@ -1,28 +1,28 @@
 @interface FCCKRecordZoneManager
-- (id)initWithDatabase:(void *)a3 recordZoneNames:;
-- (id)recordZoneWithName:(id *)a1;
-- (void)ensureRecordZoneExistsWithID:(id)a3 completionHandler:(id)a4;
-- (void)prepareRecordZonesForUseWithCompletionHandler:(uint64_t)a1;
+- (id)initWithDatabase:(void *)database recordZoneNames:;
+- (id)recordZoneWithName:(id *)name;
+- (void)ensureRecordZoneExistsWithID:(id)d completionHandler:(id)handler;
+- (void)prepareRecordZonesForUseWithCompletionHandler:(uint64_t)handler;
 @end
 
 @implementation FCCKRecordZoneManager
 
-- (id)initWithDatabase:(void *)a3 recordZoneNames:
+- (id)initWithDatabase:(void *)database recordZoneNames:
 {
   v36 = *MEMORY[0x1E69E9840];
   v28 = a2;
-  v6 = a3;
-  if (a1 && (v34.receiver = a1, v34.super_class = FCCKRecordZoneManager, (v29 = objc_msgSendSuper2(&v34, sel_init)) != 0))
+  databaseCopy = database;
+  if (self && (v34.receiver = self, v34.super_class = FCCKRecordZoneManager, (v29 = objc_msgSendSuper2(&v34, sel_init)) != 0))
   {
     v25 = a2;
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v26 = v6;
-    obj = v6;
+    v26 = databaseCopy;
+    obj = databaseCopy;
     v9 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v9)
     {
@@ -41,9 +41,9 @@
 
           v14 = *(*(&v30 + 1) + 8 * v13);
           v15 = [objc_alloc(MEMORY[0x1E695BA90]) initWithZoneName:v14 ownerName:v12];
-          [v7 addObject:v15];
+          [array addObject:v15];
           v16 = [[FCCKRecordZone alloc] initWithDatabase:v28 delegate:v29 recordZoneID:v15];
-          [v8 setObject:v16 forKey:v14];
+          [dictionary setObject:v16 forKey:v14];
 
           ++v13;
         }
@@ -57,18 +57,18 @@
 
     objc_storeStrong(v29 + 1, v25);
     v17 = v29[2];
-    v29[2] = v7;
-    v18 = v7;
+    v29[2] = array;
+    v18 = array;
 
     v19 = v29[3];
-    v29[3] = v8;
-    v20 = v8;
+    v29[3] = dictionary;
+    v20 = dictionary;
 
     v21 = [[FCAsyncSerialQueue alloc] initWithQualityOfService:25];
     v22 = v29[5];
     v29[5] = v21;
 
-    v6 = v26;
+    databaseCopy = v26;
   }
 
   else
@@ -80,29 +80,29 @@
   return v29;
 }
 
-- (id)recordZoneWithName:(id *)a1
+- (id)recordZoneWithName:(id *)name
 {
-  if (a1)
+  if (name)
   {
-    a1 = [a1[3] objectForKey:a2];
+    name = [name[3] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return name;
 }
 
-- (void)prepareRecordZonesForUseWithCompletionHandler:(uint64_t)a1
+- (void)prepareRecordZonesForUseWithCompletionHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
-    v5 = *(a1 + 40);
+    v5 = *(handler + 40);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __71__FCCKRecordZoneManager_prepareRecordZonesForUseWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7C466B0;
-    v6[4] = a1;
+    v6[4] = handler;
     v7 = v3;
     [v5 enqueueBlock:v6];
   }
@@ -290,19 +290,19 @@ void __71__FCCKRecordZoneManager_prepareRecordZonesForUseWithCompletionHandler__
   (*(a1[6] + 16))();
 }
 
-- (void)ensureRecordZoneExistsWithID:(id)a3 completionHandler:(id)a4
+- (void)ensureRecordZoneExistsWithID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__FCCKRecordZoneManager_ensureRecordZoneExistsWithID_completionHandler___block_invoke;
   v10[3] = &unk_1E7C40A48;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dCopy;
   [(FCCKRecordZoneManager *)self prepareRecordZonesForUseWithCompletionHandler:v10];
 }
 

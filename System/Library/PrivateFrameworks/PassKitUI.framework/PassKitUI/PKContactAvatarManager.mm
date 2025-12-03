@@ -1,33 +1,33 @@
 @interface PKContactAvatarManager
-- (PKContactAvatarManager)initWithContactResolver:(id)a3 paymentDataProvider:(id)a4;
-- (id)cachedAvatarForAltDSID:(id)a3;
-- (void)_avatarForAltDSID:(id)a3 dsid:(id)a4 handles:(id)a5 contact:(id)a6 completion:(id)a7;
-- (void)avatarForFamilyMember:(id)a3 accountUser:(id)a4 invitation:(id)a5 completion:(id)a6;
-- (void)avatarForFamilyMember:(id)a3 completion:(id)a4;
-- (void)avatarForFamilyMember:(id)a3 peerPaymentAccount:(id)a4 invitation:(id)a5 completion:(id)a6;
+- (PKContactAvatarManager)initWithContactResolver:(id)resolver paymentDataProvider:(id)provider;
+- (id)cachedAvatarForAltDSID:(id)d;
+- (void)_avatarForAltDSID:(id)d dsid:(id)dsid handles:(id)handles contact:(id)contact completion:(id)completion;
+- (void)avatarForFamilyMember:(id)member accountUser:(id)user invitation:(id)invitation completion:(id)completion;
+- (void)avatarForFamilyMember:(id)member completion:(id)completion;
+- (void)avatarForFamilyMember:(id)member peerPaymentAccount:(id)account invitation:(id)invitation completion:(id)completion;
 @end
 
 @implementation PKContactAvatarManager
 
-- (PKContactAvatarManager)initWithContactResolver:(id)a3 paymentDataProvider:(id)a4
+- (PKContactAvatarManager)initWithContactResolver:(id)resolver paymentDataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  resolverCopy = resolver;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = PKContactAvatarManager;
   v9 = [(PKContactAvatarManager *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paymentDataProvider, a4);
-    objc_storeStrong(&v10->_contactResolver, a3);
+    objc_storeStrong(&v9->_paymentDataProvider, provider);
+    objc_storeStrong(&v10->_contactResolver, resolver);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     dictionaryAvatars = v10->_dictionaryAvatars;
     v10->_dictionaryAvatars = v11;
 
     v13 = objc_alloc(_MergedGlobals_620());
-    v14 = [(objc_class *)off_1EE98A688() defaultSettings];
-    v15 = [v13 initWithSettings:v14];
+    defaultSettings = [(objc_class *)off_1EE98A688() defaultSettings];
+    v15 = [v13 initWithSettings:defaultSettings];
     renderer = v10->_renderer;
     v10->_renderer = v15;
 
@@ -40,158 +40,158 @@
   return v10;
 }
 
-- (id)cachedAvatarForAltDSID:(id)a3
+- (id)cachedAvatarForAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lockAvatars);
-  v5 = [(NSMutableDictionary *)self->_dictionaryAvatars objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_dictionaryAvatars objectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lockAvatars);
 
   return v5;
 }
 
-- (void)avatarForFamilyMember:(id)a3 peerPaymentAccount:(id)a4 invitation:(id)a5 completion:(id)a6
+- (void)avatarForFamilyMember:(id)member peerPaymentAccount:(id)account invitation:(id)invitation completion:(id)completion
 {
-  v19 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v19 altDSID];
-  v12 = v11;
-  if (v11)
+  memberCopy = member;
+  invitationCopy = invitation;
+  completionCopy = completion;
+  altDSID = [memberCopy altDSID];
+  v12 = altDSID;
+  if (altDSID)
   {
-    v13 = v11;
+    altDSID2 = altDSID;
   }
 
   else
   {
-    v13 = [v9 altDSID];
+    altDSID2 = [invitationCopy altDSID];
   }
 
-  v14 = v13;
+  v14 = altDSID2;
 
-  v15 = [v19 dsid];
+  dsid = [memberCopy dsid];
   v16 = objc_alloc_init(MEMORY[0x1E695CF18]);
   [v16 setContactType:0];
-  if (v19)
+  if (memberCopy)
   {
-    v17 = [v19 firstName];
-    [v16 setGivenName:v17];
+    firstName = [memberCopy firstName];
+    [v16 setGivenName:firstName];
 
-    v18 = [v19 lastName];
-    [v16 setFamilyName:v18];
+    lastName = [memberCopy lastName];
+    [v16 setFamilyName:lastName];
   }
 
-  [(PKContactAvatarManager *)self _avatarForAltDSID:v14 dsid:v15 handles:0 contact:v16 completion:v10];
+  [(PKContactAvatarManager *)self _avatarForAltDSID:v14 dsid:dsid handles:0 contact:v16 completion:completionCopy];
 }
 
-- (void)avatarForFamilyMember:(id)a3 completion:(id)a4
+- (void)avatarForFamilyMember:(id)member completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 altDSID];
-  v8 = [v12 dsid];
+  memberCopy = member;
+  completionCopy = completion;
+  altDSID = [memberCopy altDSID];
+  dsid = [memberCopy dsid];
   v9 = objc_alloc_init(MEMORY[0x1E695CF18]);
   [v9 setContactType:0];
-  if (v12)
+  if (memberCopy)
   {
-    v10 = [v12 firstName];
-    [v9 setGivenName:v10];
+    firstName = [memberCopy firstName];
+    [v9 setGivenName:firstName];
 
-    v11 = [v12 lastName];
-    [v9 setFamilyName:v11];
+    lastName = [memberCopy lastName];
+    [v9 setFamilyName:lastName];
   }
 
-  [(PKContactAvatarManager *)self _avatarForAltDSID:v7 dsid:v8 handles:0 contact:v9 completion:v6];
+  [(PKContactAvatarManager *)self _avatarForAltDSID:altDSID dsid:dsid handles:0 contact:v9 completion:completionCopy];
 }
 
-- (void)avatarForFamilyMember:(id)a3 accountUser:(id)a4 invitation:(id)a5 completion:(id)a6
+- (void)avatarForFamilyMember:(id)member accountUser:(id)user invitation:(id)invitation completion:(id)completion
 {
-  v29 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 altDSID];
-  v13 = v12;
-  if (v12)
+  memberCopy = member;
+  userCopy = user;
+  invitationCopy = invitation;
+  completionCopy = completion;
+  altDSID = [userCopy altDSID];
+  v13 = altDSID;
+  if (altDSID)
   {
-    v14 = v12;
+    accountUserAltDSID = altDSID;
   }
 
   else
   {
-    v15 = [v10 invitationDetails];
-    v14 = [v15 accountUserAltDSID];
+    invitationDetails = [invitationCopy invitationDetails];
+    accountUserAltDSID = [invitationDetails accountUserAltDSID];
   }
 
-  v16 = [v29 dsid];
+  dsid = [memberCopy dsid];
   v17 = objc_alloc_init(MEMORY[0x1E695CF18]);
   [v17 setContactType:0];
-  if (v29)
+  if (memberCopy)
   {
-    v18 = [v29 firstName];
-    [v17 setGivenName:v18];
+    firstName = [memberCopy firstName];
+    [v17 setGivenName:firstName];
 
-    v19 = [v29 lastName];
-    [v17 setFamilyName:v19];
+    lastName = [memberCopy lastName];
+    [v17 setFamilyName:lastName];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (v9)
+  if (userCopy)
   {
-    v19 = [v9 nameComponents];
-    v20 = [v19 givenName];
-    [v17 setGivenName:v20];
+    lastName = [userCopy nameComponents];
+    givenName = [lastName givenName];
+    [v17 setGivenName:givenName];
 
-    v21 = [v19 familyName];
-    [v17 setFamilyName:v21];
+    familyName = [lastName familyName];
+    [v17 setFamilyName:familyName];
 
     goto LABEL_8;
   }
 
 LABEL_9:
-  v22 = [v9 addressableHandles];
-  v23 = [v22 mutableCopy];
+  addressableHandles = [userCopy addressableHandles];
+  v23 = [addressableHandles mutableCopy];
 
-  v24 = [v9 appleID];
-  if (v24 && ([v23 containsObject:v24] & 1) == 0)
+  appleID = [userCopy appleID];
+  if (appleID && ([v23 containsObject:appleID] & 1) == 0)
   {
-    [v23 addObject:v24];
+    [v23 addObject:appleID];
   }
 
   v25 = [v23 copy];
   v26 = [v17 copy];
-  [v28 _avatarForAltDSID:v14 dsid:v16 handles:v25 contact:v26 completion:v11];
+  [v28 _avatarForAltDSID:accountUserAltDSID dsid:dsid handles:v25 contact:v26 completion:completionCopy];
 }
 
-- (void)_avatarForAltDSID:(id)a3 dsid:(id)a4 handles:(id)a5 contact:(id)a6 completion:(id)a7
+- (void)_avatarForAltDSID:(id)d dsid:(id)dsid handles:(id)handles contact:(id)contact completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v27 = a4;
-  v24 = a5;
-  v26 = a6;
-  v29 = a7;
+  dCopy = d;
+  dsidCopy = dsid;
+  handlesCopy = handles;
+  contactCopy = contact;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lockAvatars);
-  v28 = v12;
-  v25 = [(NSMutableDictionary *)self->_dictionaryAvatars objectForKey:v12];
+  v28 = dCopy;
+  v25 = [(NSMutableDictionary *)self->_dictionaryAvatars objectForKey:dCopy];
   os_unfair_lock_unlock(&self->_lockAvatars);
   v13 = v25;
   if (v25)
   {
-    v29[2](v29, v25);
+    completionCopy[2](completionCopy, v25);
   }
 
   else
   {
-    v14 = [(CNAvatarImageRenderer *)self->_renderer placeholderImageProvider];
-    v23 = [v14 imageForSize:100.0 scale:{100.0, PKUIScreenScale()}];
+    placeholderImageProvider = [(CNAvatarImageRenderer *)self->_renderer placeholderImageProvider];
+    v23 = [placeholderImageProvider imageForSize:100.0 scale:{100.0, PKUIScreenScale()}];
 
     if (v23)
     {
-      (v29[2])();
+      (completionCopy[2])();
     }
 
     v50[0] = 0;
@@ -201,14 +201,14 @@ LABEL_9:
     v50[4] = __Block_byref_object_dispose__29;
     v51 = 0;
     v15 = objc_alloc_init(MEMORY[0x1E69B8658]);
-    if (v27)
+    if (dsidCopy)
     {
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __76__PKContactAvatarManager__avatarForAltDSID_dsid_handles_contact_completion___block_invoke;
       v47[3] = &unk_1E8012D58;
       v47[4] = self;
-      v48 = v27;
+      v48 = dsidCopy;
       v49 = v50;
       [v15 addOperation:v47];
     }
@@ -217,7 +217,7 @@ LABEL_9:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v16 = v24;
+    v16 = handlesCopy;
     v17 = [v16 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v17)
     {
@@ -240,7 +240,7 @@ LABEL_9:
           v39[5] = v20;
           v42 = v50;
           v40 = v28;
-          v41 = v29;
+          v41 = completionCopy;
           [v15 addOperation:v39];
         }
 
@@ -250,21 +250,21 @@ LABEL_9:
       while (v17);
     }
 
-    if (v26)
+    if (contactCopy)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __76__PKContactAvatarManager__avatarForAltDSID_dsid_handles_contact_completion___block_invoke_7;
       v34[3] = &unk_1E801A740;
       v34[4] = self;
-      v35 = v26;
+      v35 = contactCopy;
       v38 = v50;
       v36 = v28;
-      v37 = v29;
+      v37 = completionCopy;
       [v15 addOperation:v34];
     }
 
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __76__PKContactAvatarManager__avatarForAltDSID_dsid_handles_contact_completion___block_invoke_9;
@@ -272,8 +272,8 @@ LABEL_9:
     v33 = v50;
     v30[4] = self;
     v31 = v28;
-    v32 = v29;
-    v22 = [v15 evaluateWithInput:v21 completion:v30];
+    v32 = completionCopy;
+    v22 = [v15 evaluateWithInput:null completion:v30];
 
     _Block_object_dispose(v50, 8);
     v13 = 0;

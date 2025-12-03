@@ -1,17 +1,17 @@
 @interface MRDataArtwork
 - (CGSize)dimensions;
-- (MRDataArtwork)initWithImageData:(id)a3;
-- (MRDataArtwork)initWithProtobuf:(id)a3;
+- (MRDataArtwork)initWithImageData:(id)data;
+- (MRDataArtwork)initWithProtobuf:(id)protobuf;
 - (id)description;
 @end
 
 @implementation MRDataArtwork
 
-- (MRDataArtwork)initWithImageData:(id)a3
+- (MRDataArtwork)initWithImageData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     v16 = 0;
     [MRImageUtilities imageDimensionsForImageData:v4 error:&v16];
     v6 = v5;
@@ -25,7 +25,7 @@
         [MRArtwork setImageData:v10];
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -42,46 +42,46 @@
       }
 
       self = v13;
-      v11 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRDataArtwork *)self imageData];
+  imageData = [(MRDataArtwork *)self imageData];
   [(MRDataArtwork *)self dimensions];
   v7 = v6;
   [(MRDataArtwork *)self dimensions];
-  v9 = [v3 initWithFormat:@"<%@: data=%@, dim={%g, %g}", v4, v5, v7, v8];
+  v9 = [v3 initWithFormat:@"<%@: data=%@, dim={%g, %g}", v4, imageData, v7, v8];
 
   return v9;
 }
 
-- (MRDataArtwork)initWithProtobuf:(id)a3
+- (MRDataArtwork)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = [v4 imageData];
+  protobufCopy = protobuf;
+  selfCopy = [protobufCopy imageData];
 
-  if (v5)
+  if (selfCopy)
   {
-    v6 = [v4 imageData];
-    v7 = [(MRDataArtwork *)self initWithImageData:v6];
+    imageData = [protobufCopy imageData];
+    v7 = [(MRDataArtwork *)self initWithImageData:imageData];
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (CGSize)dimensions

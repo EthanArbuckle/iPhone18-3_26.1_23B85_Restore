@@ -1,24 +1,24 @@
 @interface MTRPluginPBMDeviceControllerMessage
-+ (id)deviceControllerMessageFromMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceControllerMessageFromMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceControllerMessage
 
-+ (id)deviceControllerMessageFromMessage:(id)a3
++ (id)deviceControllerMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceControllerMessage alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceControllerMessage *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceControllerMessage *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceControllerMessage *)v6 isValid])
   {
     v7 = v6;
@@ -34,16 +34,16 @@
 
 - (BOOL)isValid
 {
-  v3 = [(MTRPluginPBMDeviceControllerMessage *)self hasHeader];
-  if (v3)
+  hasHeader = [(MTRPluginPBMDeviceControllerMessage *)self hasHeader];
+  if (hasHeader)
   {
-    v4 = [(MTRPluginPBMDeviceControllerMessage *)self header];
-    v5 = [v4 isValid];
+    header = [(MTRPluginPBMDeviceControllerMessage *)self header];
+    isValid = [header isValid];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(hasHeader) = isValid;
   }
 
-  return v3;
+  return hasHeader;
 }
 
 - (id)description
@@ -52,87 +52,87 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMDeviceControllerMessage;
   v4 = [(MTRPluginPBMDeviceControllerMessage *)&v8 description];
-  v5 = [(MTRPluginPBMDeviceControllerMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceControllerMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation2 = [(MTRPluginPBMVariableValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     [v5 setValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:a3];
+  v8 = [(MTRPluginPBMVariableValue *)self->_value copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[1])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[1])) || -[MTRPluginPBMHeader isEqual:](header, "isEqual:")))
   {
     value = self->_value;
-    if (value | v4[2])
+    if (value | equalCopy[2])
     {
       v7 = [(MTRPluginPBMVariableValue *)value isEqual:?];
     }
@@ -151,12 +151,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -177,10 +177,10 @@
     [(MTRPluginPBMDeviceControllerMessage *)self setHeader:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   value = self->_value;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (value)
   {
     if (v8)

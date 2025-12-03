@@ -1,41 +1,41 @@
 @interface CKColoredBalloonView
 + (Class)layerClass;
-- (BOOL)_shouldApplySendLaterStyleForComposition:(id)a3;
+- (BOOL)_shouldApplySendLaterStyleForComposition:(id)composition;
 - (BOOL)needsGlassPlatter;
 - (BOOL)needsGroupOpacity;
 - (CGRect)gradientOverrideFrame;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (CKBalloonImageView)effectViewMask;
 - (CKBalloonImageView)mask;
-- (CKColoredBalloonView)initWithFrame:(CGRect)a3;
+- (CKColoredBalloonView)initWithFrame:(CGRect)frame;
 - (CKGradientReferenceView)gradientReferenceView;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
 - (UIEdgeInsets)balloonTypePillContentInsets;
 - (id)description;
 - (id)highlightOverlayColor;
 - (id)resolvedGlassBalloonColor;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMessagePart:(id)part;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setAnimationDelegate:(id)a3;
-- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCanUseOpaqueMask:(BOOL)a3;
-- (void)setColor:(char)a3;
-- (void)setEffectViewMaskImage:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGradientOverrideFrame:(CGRect)a3;
-- (void)setGradientReferenceView:(id)a3;
-- (void)setHasTail:(BOOL)a3;
-- (void)setIsBeingUsedForSnapshot:(BOOL)a3;
-- (void)setIsBeingUsedInThrowAnimation:(BOOL)a3;
-- (void)setWantsGradient:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAnimationDelegate:(id)delegate;
+- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCanUseOpaqueMask:(BOOL)mask;
+- (void)setColor:(char)color;
+- (void)setEffectViewMaskImage:(id)image;
+- (void)setFrame:(CGRect)frame;
+- (void)setGradientOverrideFrame:(CGRect)frame;
+- (void)setGradientReferenceView:(id)view;
+- (void)setHasTail:(BOOL)tail;
+- (void)setIsBeingUsedForSnapshot:(BOOL)snapshot;
+- (void)setIsBeingUsedInThrowAnimation:(BOOL)animation;
+- (void)setWantsGradient:(BOOL)gradient;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateWantsGradient;
 @end
 
@@ -43,17 +43,17 @@
 
 + (Class)layerClass
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isCAShapeLayerBalloonsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-  if (v4)
+  if (isCAShapeLayerBalloonsEnabled)
   {
     v5 = objc_opt_class();
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKColoredBalloonView;
     v5 = objc_msgSendSuper2(&v7, sel_layerClass);
   }
@@ -64,13 +64,13 @@
 - (void)updateWantsGradient
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 shouldUseDynamicGradient];
+  shouldUseDynamicGradient = [v3 shouldUseDynamicGradient];
 
-  if (v4)
+  if (shouldUseDynamicGradient)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v8 = [v6 balloonColorsForColorType:{-[CKBalloonView color](self, "color")}];
+    theme = [v5 theme];
+    v8 = [theme balloonColorsForColorType:{-[CKBalloonView color](self, "color")}];
 
     if ([v8 count] <= 1)
     {
@@ -79,8 +79,8 @@
 
     else
     {
-      v7 = [(CKColoredBalloonView *)self gradientReferenceView];
-      [(CKColoredBalloonView *)self setWantsGradient:v7 != 0];
+      gradientReferenceView = [(CKColoredBalloonView *)self gradientReferenceView];
+      [(CKColoredBalloonView *)self setWantsGradient:gradientReferenceView != 0];
     }
   }
 }
@@ -104,10 +104,10 @@
   v52 = 0u;
   v53 = 0u;
   [(CKColoredBalloonView *)self balloonDescriptor];
-  v11 = [(CKColoredBalloonView *)self gradientView];
+  gradientView = [(CKColoredBalloonView *)self gradientView];
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [v13 balloonColorsForColorType:SBYTE8(v53)];
+  theme = [v12 theme];
+  v14 = [theme balloonColorsForColorType:SBYTE8(v53)];
 
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -116,9 +116,9 @@
   v51[4] = self;
   v15 = [v14 __imArrayByApplyingBlock:v51];
   v16 = +[CKPrintController sharedInstance];
-  v17 = [v16 isPrinting];
+  isPrinting = [v16 isPrinting];
 
-  if (v17)
+  if (isPrinting)
   {
     v50 = v15;
     [CKPrintController printResolvedColors:&v50 balloonDescriptor:&v52 coloredBalloonView:self];
@@ -127,20 +127,20 @@
     v15 = v18;
   }
 
-  v19 = [(CKColoredBalloonView *)self mask];
-  v20 = [v11 superview];
+  mask = [(CKColoredBalloonView *)self mask];
+  superview = [gradientView superview];
 
-  if (v20)
+  if (superview)
   {
-    [v11 removeFromSuperview];
+    [gradientView removeFromSuperview];
   }
 
   if (BYTE8(v59) == 1 && [(CKColoredBalloonView *)self wantsInvisibleInkEffectMask]&& [(CKColoredBalloonView *)self hasBackground])
   {
     [(CKColoredBalloonView *)self setEffectViewMaskImage:0];
     [(CKBalloonImageView *)self setImage:0];
-    v21 = [v15 lastObject];
-    [(CKColoredBalloonView *)self setBackgroundColor:v21];
+    lastObject = [v15 lastObject];
+    [(CKColoredBalloonView *)self setBackgroundColor:lastObject];
 
     v46 = v56;
     v47 = v57;
@@ -151,19 +151,19 @@
     v44 = v54;
     v45 = v55;
     v22 = CKResizableBalloonPunchout(&v42);
-    [v19 setImage:v22];
+    [mask setImage:v22];
 
-    v23 = [v19 superview];
+    superview2 = [mask superview];
 
-    if (!v23)
+    if (!superview2)
     {
-      [(CKColoredBalloonView *)self addSubview:v19];
+      [(CKColoredBalloonView *)self addSubview:mask];
     }
   }
 
   else
   {
-    v24 = [(CKColoredBalloonView *)self balloonLayer];
+    balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -207,7 +207,7 @@
       [(CKBalloonView *)self balloonDescriptorForAbsentBalloonShape];
     }
 
-    v27 = [(CKColoredBalloonView *)self traitCollection];
+    traitCollection = [(CKColoredBalloonView *)self traitCollection];
     v38 = v46;
     v39 = v47;
     v40 = v48;
@@ -216,12 +216,12 @@
     v35 = v43;
     v36 = v44;
     v37 = v45;
-    [v24 updateDescriptor:&v34 traitCollection:v27];
-    v28 = [(CKColoredBalloonView *)self gradientReferenceView];
-    [v24 setGradientReferenceView:v28];
+    [balloonLayer updateDescriptor:&v34 traitCollection:traitCollection];
+    gradientReferenceView = [(CKColoredBalloonView *)self gradientReferenceView];
+    [balloonLayer setGradientReferenceView:gradientReferenceView];
 
     [(CKColoredBalloonView *)self updateGlassPlatterForDisplay];
-    [v19 removeFromSuperview];
+    [mask removeFromSuperview];
     if ([(CKColoredBalloonView *)self wantsInvisibleInkEffectMask]&& [(CKColoredBalloonView *)self hasBackground])
     {
       v38 = v56;
@@ -264,8 +264,8 @@
   [(CKBalloonDescriptor_t *)&v14 balloonDescriptor];
   if (!retstr->var10)
   {
-    v5 = [(CKColoredBalloonView *)self traitCollection];
-    retstr->var10 = [v5 userInterfaceStyle];
+    traitCollection = [(CKColoredBalloonView *)self traitCollection];
+    retstr->var10 = [traitCollection userInterfaceStyle];
   }
 
   retstr->var2 = [(CKBalloonView *)self balloonStyle];
@@ -283,10 +283,10 @@
       v11 = *(MEMORY[0x1E69A6E08] + 16);
       *&retstr->var8.red = *MEMORY[0x1E69A6E08];
       *&retstr->var8.blue = v11;
-      v12 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-      v13 = [v12 userInterfaceStyle];
+      currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+      userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
-      if (v13 == 2)
+      if (userInterfaceStyle == 2)
       {
         retstr->var6 = -1;
       }
@@ -344,8 +344,8 @@ id __41__CKColoredBalloonView_prepareForDisplay__block_invoke(uint64_t a1, void 
 
 - (BOOL)needsGlassPlatter
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  [v2 isTranscriptPortalEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  [mEMORY[0x1E69A8070] isTranscriptPortalEnabled];
 
   return 0;
 }
@@ -357,13 +357,13 @@ id __41__CKColoredBalloonView_prepareForDisplay__block_invoke(uint64_t a1, void 
   return WeakRetained;
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
   v7.receiver = self;
   v7.super_class = CKColoredBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v7 configureForComposition:v4];
-  v5 = [(CKColoredBalloonView *)self _shouldApplySendLaterStyleForComposition:v4, v7.receiver, v7.super_class];
+  compositionCopy = composition;
+  [(CKBalloonView *)&v7 configureForComposition:compositionCopy];
+  v5 = [(CKColoredBalloonView *)self _shouldApplySendLaterStyleForComposition:compositionCopy, v7.receiver, v7.super_class];
 
   if (v5)
   {
@@ -378,44 +378,44 @@ id __41__CKColoredBalloonView_prepareForDisplay__block_invoke(uint64_t a1, void 
   [(CKColoredBalloonView *)self setColor:v6];
 }
 
-- (BOOL)_shouldApplySendLaterStyleForComposition:(id)a3
+- (BOOL)_shouldApplySendLaterStyleForComposition:(id)composition
 {
-  v3 = [a3 sendLaterPluginInfo];
-  v4 = v3 != 0;
+  sendLaterPluginInfo = [composition sendLaterPluginInfo];
+  v4 = sendLaterPluginInfo != 0;
 
   return v4;
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
   v6.receiver = self;
   v6.super_class = CKColoredBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v6 configureForMessagePart:v4];
-  v5 = [v4 color];
+  partCopy = part;
+  [(CKBalloonView *)&v6 configureForMessagePart:partCopy];
+  color = [partCopy color];
 
-  [(CKColoredBalloonView *)self setColor:v5];
+  [(CKColoredBalloonView *)self setColor:color];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKBalloonView *)self color];
-  v5 = [(CKColoredBalloonView *)self wantsGradient];
+  color = [(CKBalloonView *)self color];
+  wantsGradient = [(CKColoredBalloonView *)self wantsGradient];
   v9.receiver = self;
   v9.super_class = CKColoredBalloonView;
   v6 = [(CKBalloonView *)&v9 description];
-  v7 = [v3 stringWithFormat:@"[CKColoredBalloonView color:%ld wantsGradient:%d %@]", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"[CKColoredBalloonView color:%ld wantsGradient:%d %@]", color, wantsGradient, v6];
 
   return v7;
 }
 
-- (CKColoredBalloonView)initWithFrame:(CGRect)a3
+- (CKColoredBalloonView)initWithFrame:(CGRect)frame
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = CKColoredBalloonView;
-  v3 = [(CKBalloonView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBalloonView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (!v3)
   {
@@ -430,10 +430,10 @@ id __41__CKColoredBalloonView_prepareForDisplay__block_invoke(uint64_t a1, void 
   v13 = +[CKUIBehavior sharedBehaviors];
   if ([(CKGradientView *)v13 shouldUseDynamicGradient])
   {
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v15 = [v14 isCAShapeLayerBalloonsEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-    if (v15)
+    if (isCAShapeLayerBalloonsEnabled)
     {
       goto LABEL_6;
     }
@@ -445,10 +445,10 @@ id __41__CKColoredBalloonView_prepareForDisplay__block_invoke(uint64_t a1, void 
 LABEL_6:
   [(CKColoredBalloonView *)v4 setColor:0xFFFFFFFFLL];
   v16 = [(UIView *)v4 registerForBalloonBackdropGroupTraitChangesWithTarget:v4 action:sel_balloonBackdropGroupDidChange];
-  v17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v18 = [v17 isTranscriptBackgroundsEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x1E69A8070]2 isTranscriptBackgroundsEnabled];
 
-  if (v18)
+  if (isTranscriptBackgroundsEnabled)
   {
     v23[0] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
@@ -463,22 +463,22 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = CKColoredBalloonView;
   [(CKBalloonView *)&v7 layoutSubviews];
-  v3 = [(CKColoredBalloonView *)self gradientView];
+  gradientView = [(CKColoredBalloonView *)self gradientView];
   [(CKColoredBalloonView *)self bounds];
-  [v3 setFrame:?];
+  [gradientView setFrame:?];
   if ([(CKColoredBalloonView *)self wantsInvisibleInkEffectMask])
   {
     effectViewMask = self->_effectViewMask;
-    v5 = [(CKBalloonView *)self invisibleInkEffectController];
-    v6 = [v5 effectView];
-    [v6 bounds];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    effectView = [invisibleInkEffectController effectView];
+    [effectView bounds];
     [(CKBalloonImageView *)effectViewMask setFrame:?];
   }
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
-  [(CKBalloonView *)self tailInsetsForViewSize:a3.width, a3.height];
+  [(CKBalloonView *)self tailInsetsForViewSize:size.width, size.height];
   [(CKColoredBalloonView *)self balloonTypePillContentInsets];
 
   UIEdgeInsetsAdd();
@@ -489,12 +489,12 @@ LABEL_6:
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CKColoredBalloonView *)self bounds];
   v9 = v8;
   v10.receiver = self;
@@ -506,12 +506,12 @@ LABEL_6:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKColoredBalloonView *)self frame];
   v9 = v8;
   v10.receiver = self;
@@ -528,13 +528,13 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = CKColoredBalloonView;
   [(CKColoredBalloonView *)&v6 didMoveToWindow];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isCAShapeLayerBalloonsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-  if (v4)
+  if (isCAShapeLayerBalloonsEnabled)
   {
-    v5 = [(CKColoredBalloonView *)self balloonLayer];
-    [v5 viewDidMoveToWindow];
+    balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+    [balloonLayer viewDidMoveToWindow];
   }
 }
 
@@ -547,24 +547,24 @@ LABEL_6:
   [(CKColoredBalloonView *)self setGradientOverrideFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (void)setIsBeingUsedInThrowAnimation:(BOOL)a3
+- (void)setIsBeingUsedInThrowAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v6.receiver = self;
   v6.super_class = CKColoredBalloonView;
   [(CKBalloonView *)&v6 setIsBeingUsedInThrowAnimation:?];
-  v5 = [(CKColoredBalloonView *)self balloonLayer];
-  [v5 setIsBeingUsedInThrowAnimation:v3];
+  balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+  [balloonLayer setIsBeingUsedInThrowAnimation:animationCopy];
 }
 
-- (void)setIsBeingUsedForSnapshot:(BOOL)a3
+- (void)setIsBeingUsedForSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v6.receiver = self;
   v6.super_class = CKColoredBalloonView;
   [(CKBalloonView *)&v6 setIsBeingUsedForSnapshot:?];
-  v5 = [(CKColoredBalloonView *)self balloonLayer];
-  [v5 setIsBeingUsedForSnapshot:v3];
+  balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+  [balloonLayer setIsBeingUsedForSnapshot:snapshotCopy];
 }
 
 - (id)resolvedGlassBalloonColor
@@ -581,8 +581,8 @@ LABEL_6:
   if (IMColorComponentsIsZero())
   {
     v3 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v3 theme];
-    v5 = [v4 balloonColorsForColorType:SBYTE8(v11)];
+    theme = [v3 theme];
+    v5 = [theme balloonColorsForColorType:SBYTE8(v11)];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -590,15 +590,15 @@ LABEL_6:
     v9[3] = &unk_1E72F57D8;
     v9[4] = self;
     v6 = [v5 __imArrayByApplyingBlock:v9];
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] ck_colorWithIMColorComponents:{0.0, 0.0, 0.0, 0.0}];
+    lastObject = [MEMORY[0x1E69DC888] ck_colorWithIMColorComponents:{0.0, 0.0, 0.0, 0.0}];
   }
 
-  return v7;
+  return lastObject;
 }
 
 id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a1, void *a2)
@@ -611,26 +611,26 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setHasTail:(BOOL)a3
+- (void)setHasTail:(BOOL)tail
 {
-  v3 = a3;
-  if ([(CKBalloonView *)self hasTail]!= a3)
+  tailCopy = tail;
+  if ([(CKBalloonView *)self hasTail]!= tail)
   {
     v5.receiver = self;
     v5.super_class = CKColoredBalloonView;
-    [(CKBalloonView *)&v5 setHasTail:v3];
+    [(CKBalloonView *)&v5 setHasTail:tailCopy];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setCanUseOpaqueMask:(BOOL)a3
+- (void)setCanUseOpaqueMask:(BOOL)mask
 {
-  v3 = a3;
-  if ([(CKBalloonView *)self canUseOpaqueMask]!= a3)
+  maskCopy = mask;
+  if ([(CKBalloonView *)self canUseOpaqueMask]!= mask)
   {
     v5.receiver = self;
     v5.super_class = CKColoredBalloonView;
-    [(CKBalloonView *)&v5 setCanUseOpaqueMask:v3];
+    [(CKBalloonView *)&v5 setCanUseOpaqueMask:maskCopy];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
     [(CKColoredBalloonView *)self setNeedsLayout];
   }
@@ -638,56 +638,56 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
 
 - (BOOL)needsGroupOpacity
 {
-  v3 = [(CKColoredBalloonView *)self wantsGradient];
-  if (v3)
+  wantsGradient = [(CKColoredBalloonView *)self wantsGradient];
+  if (wantsGradient)
   {
 
-    LOBYTE(v3) = [(CKBalloonView *)self canUseOpaqueMask];
+    LOBYTE(wantsGradient) = [(CKBalloonView *)self canUseOpaqueMask];
   }
 
-  return v3;
+  return wantsGradient;
 }
 
 - (id)highlightOverlayColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 balloonOverlayColorForColorType:{-[CKBalloonView color](self, "color")}];
+  theme = [v3 theme];
+  v5 = [theme balloonOverlayColorForColorType:{-[CKBalloonView color](self, "color")}];
 
   return v5;
 }
 
-- (void)setColor:(char)a3
+- (void)setColor:(char)color
 {
   v4.receiver = self;
   v4.super_class = CKColoredBalloonView;
-  [(CKBalloonView *)&v4 setColor:a3];
+  [(CKBalloonView *)&v4 setColor:color];
   [(CKColoredBalloonView *)self updateWantsGradient];
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
 }
 
-- (void)setGradientReferenceView:(id)a3
+- (void)setGradientReferenceView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_gradientReferenceView);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_gradientReferenceView, obj);
-    v6 = [(CKColoredBalloonView *)self balloonLayer];
+    balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(CKColoredBalloonView *)self balloonLayer];
+      balloonLayer2 = [(CKColoredBalloonView *)self balloonLayer];
       v9 = objc_loadWeakRetained(&self->_gradientReferenceView);
-      [v8 setGradientReferenceView:v9];
+      [balloonLayer2 setGradientReferenceView:v9];
     }
 
-    v10 = [(CKColoredBalloonView *)self gradientView];
-    [v10 setReferenceView:obj];
+    gradientView = [(CKColoredBalloonView *)self gradientView];
+    [gradientView setReferenceView:obj];
 
     [(CKColoredBalloonView *)self updateWantsGradient];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
@@ -695,71 +695,71 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
   }
 }
 
-- (void)setWantsGradient:(BOOL)a3
+- (void)setWantsGradient:(BOOL)gradient
 {
-  if (self->_wantsGradient != a3)
+  if (self->_wantsGradient != gradient)
   {
-    self->_wantsGradient = a3;
+    self->_wantsGradient = gradient;
     [(CKColoredBalloonView *)self setNeedsLayout];
   }
 }
 
-- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)a3
+- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
   v10.receiver = self;
   v10.super_class = CKColoredBalloonView;
-  v5 = *&a3->var8.blue;
-  v9[4] = *&a3->var8.red;
+  v5 = *&descriptor->var8.blue;
+  v9[4] = *&descriptor->var8.red;
   v9[5] = v5;
-  v6 = *&a3->var11;
-  v9[6] = *&a3->var9;
+  v6 = *&descriptor->var11;
+  v9[6] = *&descriptor->var9;
   v9[7] = v6;
-  v7 = *&a3->var5;
-  v9[0] = *&a3->var0;
+  v7 = *&descriptor->var5;
+  v9[0] = *&descriptor->var0;
   v9[1] = v7;
-  v8 = *&a3->var7.blue;
-  v9[2] = *&a3->var7.red;
+  v8 = *&descriptor->var7.blue;
+  v9[2] = *&descriptor->var7.red;
   v9[3] = v8;
   [(CKBalloonView *)&v10 setBalloonDescriptor:v9];
-  [(CKColoredBalloonView *)self setColor:a3->var6];
-  [(CKBalloonView *)self setStrokeColor:a3->var8.red, a3->var8.green, a3->var8.blue, a3->var8.alpha];
+  [(CKColoredBalloonView *)self setColor:descriptor->var6];
+  [(CKBalloonView *)self setStrokeColor:descriptor->var8.red, descriptor->var8.green, descriptor->var8.blue, descriptor->var8.alpha];
   [(CKColoredBalloonView *)self updateWantsGradient];
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
 }
 
-- (void)setAnimationDelegate:(id)a3
+- (void)setAnimationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKBalloonView *)self animationDelegate];
+  delegateCopy = delegate;
+  animationDelegate = [(CKBalloonView *)self animationDelegate];
 
-  if (v5 != v4)
+  if (animationDelegate != delegateCopy)
   {
     v7.receiver = self;
     v7.super_class = CKColoredBalloonView;
-    [(CKBalloonView *)&v7 setAnimationDelegate:v4];
-    v6 = [(CKColoredBalloonView *)self balloonLayer];
-    [v6 setAnimationDelegate:v4];
+    [(CKBalloonView *)&v7 setAnimationDelegate:delegateCopy];
+    balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+    [balloonLayer setAnimationDelegate:delegateCopy];
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [v4 balloonBackdropFilters];
-  v6 = [v5 count];
+  filterCopy = filter;
+  balloonBackdropFilters = [filterCopy balloonBackdropFilters];
+  v6 = [balloonBackdropFilters count];
 
   if (v6)
   {
-    v7 = [(CKColoredBalloonView *)self layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(CKColoredBalloonView *)self layer];
+    [layer setAllowsGroupBlending:0];
 
-    v8 = [(CKBalloonView *)self backdropFilterLayer];
-    if (!v8)
+    backdropFilterLayer = [(CKBalloonView *)self backdropFilterLayer];
+    if (!backdropFilterLayer)
     {
-      v8 = objc_alloc_init(MEMORY[0x1E6979310]);
-      [v8 setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-      [v8 setGroupName:@"FSMBackdropGroup"];
-      [v8 setScale:0.25];
+      backdropFilterLayer = objc_alloc_init(MEMORY[0x1E6979310]);
+      [backdropFilterLayer setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+      [backdropFilterLayer setGroupName:@"FSMBackdropGroup"];
+      [backdropFilterLayer setScale:0.25];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -779,35 +779,35 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
       v19[2] = v22;
       v19[3] = v23;
       v10 = [(CKBalloonMaskLayer *)v9 initWithDescriptor:v19];
-      [v8 setMask:v10];
+      [backdropFilterLayer setMask:v10];
       [(CKColoredBalloonView *)self bounds];
-      [v8 setFrame:?];
+      [backdropFilterLayer setFrame:?];
       [(CKColoredBalloonView *)self bounds];
       [(CKBalloonMaskLayer *)v10 setFrame:?];
-      v11 = [(CKColoredBalloonView *)self layer];
-      [v11 insertSublayer:v8 atIndex:0];
+      layer2 = [(CKColoredBalloonView *)self layer];
+      [layer2 insertSublayer:backdropFilterLayer atIndex:0];
 
-      [(CKBalloonView *)self setBackdropFilterLayer:v8];
+      [(CKBalloonView *)self setBackdropFilterLayer:backdropFilterLayer];
       [(CKBalloonImageView *)self setImageHidden:1];
-      v12 = [(CKColoredBalloonView *)self balloonLayer];
-      [v12 setBalloonHidden:1];
+      balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+      [balloonLayer setBalloonHidden:1];
     }
 
-    v13 = [v4 balloonBackdropFilters];
-    [v8 setFilters:v13];
+    balloonBackdropFilters2 = [filterCopy balloonBackdropFilters];
+    [backdropFilterLayer setFilters:balloonBackdropFilters2];
   }
 
-  v14 = [(CKColoredBalloonView *)self layer];
-  v15 = [v4 balloonFilters];
-  [v14 setFilters:v15];
+  layer3 = [(CKColoredBalloonView *)self layer];
+  balloonFilters = [filterCopy balloonFilters];
+  [layer3 setFilters:balloonFilters];
 
-  v16 = [(CKColoredBalloonView *)self layer];
-  v17 = [v4 balloonCompositingFilter];
-  [v16 setCompositingFilter:v17];
+  layer4 = [(CKColoredBalloonView *)self layer];
+  balloonCompositingFilter = [filterCopy balloonCompositingFilter];
+  [layer4 setCompositingFilter:balloonCompositingFilter];
 
   v18.receiver = self;
   v18.super_class = CKColoredBalloonView;
-  [(CKBalloonView *)&v18 addFilter:v4];
+  [(CKBalloonView *)&v18 addFilter:filterCopy];
 }
 
 - (void)clearFilters
@@ -817,8 +817,8 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(CKBalloonView *)self filters];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  filters = [(CKBalloonView *)self filters];
+  v4 = [filters countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -829,26 +829,26 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filters);
         }
 
-        v8 = [*(*(&v17 + 1) + 8 * i) balloonBackdropFilters];
-        v9 = [v8 count];
+        balloonBackdropFilters = [*(*(&v17 + 1) + 8 * i) balloonBackdropFilters];
+        v9 = [balloonBackdropFilters count];
 
         if (v9)
         {
-          v10 = [(CKColoredBalloonView *)self gradientView];
-          [v10 setHidden:0];
+          gradientView = [(CKColoredBalloonView *)self gradientView];
+          [gradientView setHidden:0];
 
           [(CKBalloonImageView *)self setImageHidden:0];
-          v11 = [(CKColoredBalloonView *)self balloonLayer];
-          [v11 setBalloonHidden:0];
+          balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+          [balloonLayer setBalloonHidden:0];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [filters countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -860,17 +860,17 @@ id __49__CKColoredBalloonView_resolvedGlassBalloonColor__block_invoke(uint64_t a
 
 LABEL_11:
 
-  v12 = [(CKColoredBalloonView *)self layer];
-  [v12 setAllowsGroupBlending:1];
+  layer = [(CKColoredBalloonView *)self layer];
+  [layer setAllowsGroupBlending:1];
 
-  v13 = [(CKColoredBalloonView *)self layer];
-  [v13 setFilters:0];
+  layer2 = [(CKColoredBalloonView *)self layer];
+  [layer2 setFilters:0];
 
-  v14 = [(CKColoredBalloonView *)self layer];
-  [v14 setCompositingFilter:0];
+  layer3 = [(CKColoredBalloonView *)self layer];
+  [layer3 setCompositingFilter:0];
 
-  v15 = [(CKBalloonView *)self backdropFilterLayer];
-  [v15 removeFromSuperlayer];
+  backdropFilterLayer = [(CKBalloonView *)self backdropFilterLayer];
+  [backdropFilterLayer removeFromSuperlayer];
 
   [(CKBalloonView *)self setBackdropFilterLayer:0];
   v16.receiver = self;
@@ -878,24 +878,24 @@ LABEL_11:
   [(CKBalloonView *)&v16 clearFilters];
 }
 
-- (void)setEffectViewMaskImage:(id)a3
+- (void)setEffectViewMaskImage:(id)image
 {
-  v7 = a3;
-  v4 = [(CKBalloonView *)self invisibleInkEffectController];
-  v5 = [v4 effectView];
+  imageCopy = image;
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  if (v5)
+  if (effectView)
   {
-    if (v7)
+    if (imageCopy)
     {
-      v6 = [(CKColoredBalloonView *)self effectViewMask];
-      [v6 setImage:v7];
-      [v5 setMaskView:v6];
+      effectViewMask = [(CKColoredBalloonView *)self effectViewMask];
+      [effectViewMask setImage:imageCopy];
+      [effectView setMaskView:effectViewMask];
     }
 
     else
     {
-      [v5 setMaskView:0];
+      [effectView setMaskView:0];
     }
   }
 }
@@ -915,45 +915,45 @@ LABEL_11:
   return effectViewMask;
 }
 
-- (void)setGradientOverrideFrame:(CGRect)a3
+- (void)setGradientOverrideFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_gradientOverrideFrame = &self->_gradientOverrideFrame;
-  if (!CGRectEqualToRect(self->_gradientOverrideFrame, a3))
+  if (!CGRectEqualToRect(self->_gradientOverrideFrame, frame))
   {
     p_gradientOverrideFrame->origin.x = x;
     p_gradientOverrideFrame->origin.y = y;
     p_gradientOverrideFrame->size.width = width;
     p_gradientOverrideFrame->size.height = height;
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isCAShapeLayerBalloonsEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-    if (v10)
+    if (isCAShapeLayerBalloonsEnabled)
     {
-      v20 = [(CKColoredBalloonView *)self balloonLayer];
-      [v20 setGradientOverrideFrame:{x, y, width, height}];
+      balloonLayer = [(CKColoredBalloonView *)self balloonLayer];
+      [balloonLayer setGradientOverrideFrame:{x, y, width, height}];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E6979398] layer];
-      v11 = [(CKColoredBalloonView *)self gradientView];
-      v12 = [v11 gradient];
-      [v20 setContents:{objc_msgSend(v12, "CGImage")}];
+      balloonLayer = [MEMORY[0x1E6979398] layer];
+      gradientView = [(CKColoredBalloonView *)self gradientView];
+      gradient = [gradientView gradient];
+      [balloonLayer setContents:{objc_msgSend(gradient, "CGImage")}];
 
-      [v20 setFrame:{x, y, width, height}];
-      v13 = [(CKColoredBalloonView *)self layer];
-      v14 = [(CKColoredBalloonView *)self gradientView];
-      v15 = [v14 layer];
-      [v13 insertSublayer:v20 above:v15];
+      [balloonLayer setFrame:{x, y, width, height}];
+      layer = [(CKColoredBalloonView *)self layer];
+      gradientView2 = [(CKColoredBalloonView *)self gradientView];
+      layer2 = [gradientView2 layer];
+      [layer insertSublayer:balloonLayer above:layer2];
 
       v16 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      v17 = [(CKColoredBalloonView *)self gradientView];
-      v18 = [v17 maskImage];
-      v19 = [v16 initWithImage:v18];
+      gradientView3 = [(CKColoredBalloonView *)self gradientView];
+      maskImage = [gradientView3 maskImage];
+      v19 = [v16 initWithImage:maskImage];
 
       [(CKColoredBalloonView *)self bounds];
       [v19 setFrame:?];
@@ -962,14 +962,14 @@ LABEL_11:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = CKColoredBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CKBalloonView *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(CKColoredBalloonView *)self traitCollection:v7.receiver];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v6)
   {

@@ -80,7 +80,7 @@ LABEL_16:
 - (id)tc_initialsFromAuthorName
 {
   v15 = *MEMORY[0x277D85DE8];
-  v1 = [a1 componentsSeparatedByString:@" "];
+  v1 = [self componentsSeparatedByString:@" "];
   v2 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:3];
   v12 = 0u;
   v13 = 0u;
@@ -120,11 +120,11 @@ LABEL_16:
 - (uint64_t)tc_languageTypeAtIndex:()OCStringAdditions effectiveRange:
 {
   v17 = 0;
-  v7 = OCLanguageTypeForCharacter([a1 characterAtIndex:?], &v17);
+  v7 = OCLanguageTypeForCharacter([self characterAtIndex:?], &v17);
   if (a4)
   {
     *a4 = a3;
-    v8 = [a1 length];
+    v8 = [self length];
     v9 = a3 + 1;
     if (v9 >= v8)
     {
@@ -139,7 +139,7 @@ LABEL_16:
       {
         v12 = v7;
         v16 = 0;
-        v13 = OCLanguageTypeForCharacter([a1 characterAtIndex:v9], &v16);
+        v13 = OCLanguageTypeForCharacter([self characterAtIndex:v9], &v16);
         v14 = v16 & v11;
         if (v16)
         {
@@ -181,16 +181,16 @@ LABEL_14:
 
 - (id)tc_escapedPath
 {
-  v2 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
   return v3;
 }
 
 - (id)tc_escapedFragment
 {
-  v2 = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  uRLFragmentAllowedCharacterSet = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
 
   return v3;
 }

@@ -30,7 +30,7 @@
   v12[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v11 = 0;
-  v5 = [a1 __is_resourceValuesForKeys:v4 error:&v11];
+  v5 = [self __is_resourceValuesForKeys:v4 error:&v11];
 
   v6 = [v5 _IF_stringForKey:v2];
   v7 = [v5 _IF_BOOLForKey:v3];
@@ -52,13 +52,13 @@
 - (id)__is__contentModifiedDate
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DA98] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DA98] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v3 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-    v2 = v3;
+    v2 = distantPast;
   }
 
   return v2;
@@ -67,13 +67,13 @@
 - (id)__is__attributeModifiedDate
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DA80] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DA80] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v3 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-    v2 = v3;
+    v2 = distantPast;
   }
 
   return v2;
@@ -81,16 +81,16 @@
 
 - (void)__is__modifiedDate
 {
-  v2 = [a1 __is__attributeModifiedDate];
-  v3 = [a1 __is__contentModifiedDate];
-  if ([v3 compare:v2] == -1)
+  __is__attributeModifiedDate = [self __is__attributeModifiedDate];
+  __is__contentModifiedDate = [self __is__contentModifiedDate];
+  if ([__is__contentModifiedDate compare:__is__attributeModifiedDate] == -1)
   {
-    v4 = v2;
+    v4 = __is__attributeModifiedDate;
   }
 
   else
   {
-    v4 = v3;
+    v4 = __is__contentModifiedDate;
   }
 
   v5 = v4;

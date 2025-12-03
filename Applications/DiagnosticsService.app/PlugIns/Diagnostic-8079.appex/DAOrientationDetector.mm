@@ -1,21 +1,21 @@
 @interface DAOrientationDetector
-- (DAOrientationDetector)initWithxThreshold:(id)a3 zThreshold:(id)a4;
+- (DAOrientationDetector)initWithxThreshold:(id)threshold zThreshold:(id)zThreshold;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DAOrientationDetector
 
-- (DAOrientationDetector)initWithxThreshold:(id)a3 zThreshold:(id)a4
+- (DAOrientationDetector)initWithxThreshold:(id)threshold zThreshold:(id)zThreshold
 {
-  v6 = a3;
-  v7 = a4;
+  thresholdCopy = threshold;
+  zThresholdCopy = zThreshold;
   v16.receiver = self;
   v16.super_class = DAOrientationDetector;
   v8 = [(DAOrientationDetector *)&v16 init];
   if (v8)
   {
-    [v6 doubleValue];
+    [thresholdCopy doubleValue];
     if (v9 == 0.0)
     {
       v10 = [NSNumber numberWithDouble:0.4];
@@ -23,13 +23,13 @@
 
     else
     {
-      v10 = v6;
+      v10 = thresholdCopy;
     }
 
     xThreshold = v8->_xThreshold;
     v8->_xThreshold = v10;
 
-    [v7 doubleValue];
+    [zThresholdCopy doubleValue];
     if (v12 == 0.0)
     {
       v13 = [NSNumber numberWithDouble:0.4];
@@ -37,7 +37,7 @@
 
     else
     {
-      v13 = v7;
+      v13 = zThresholdCopy;
     }
 
     zThreshold = v8->_zThreshold;
@@ -52,38 +52,38 @@
   v3 = objc_alloc_init(CMMotionManager);
   [(DAOrientationDetector *)self setMotionManager:v3];
 
-  v4 = [(DAOrientationDetector *)self motionManager];
-  v5 = [v4 isAccelerometerAvailable];
+  motionManager = [(DAOrientationDetector *)self motionManager];
+  isAccelerometerAvailable = [motionManager isAccelerometerAvailable];
 
-  if (v5)
+  if (isAccelerometerAvailable)
   {
-    v6 = [(DAOrientationDetector *)self motionManager];
-    [v6 setAccelerometerUpdateInterval:0.01];
+    motionManager2 = [(DAOrientationDetector *)self motionManager];
+    [motionManager2 setAccelerometerUpdateInterval:0.01];
 
-    v7 = [(DAOrientationDetector *)self motionManager];
+    motionManager3 = [(DAOrientationDetector *)self motionManager];
     v8 = objc_alloc_init(NSOperationQueue);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000261C;
     v9[3] = &unk_1000144B8;
     v9[4] = self;
-    [v7 startAccelerometerUpdatesToQueue:v8 withHandler:v9];
+    [motionManager3 startAccelerometerUpdatesToQueue:v8 withHandler:v9];
   }
 }
 
 - (void)stop
 {
-  v3 = [(DAOrientationDetector *)self motionManager];
+  motionManager = [(DAOrientationDetector *)self motionManager];
 
-  if (v3)
+  if (motionManager)
   {
-    v4 = [(DAOrientationDetector *)self motionManager];
-    v5 = [v4 isAccelerometerActive];
+    motionManager2 = [(DAOrientationDetector *)self motionManager];
+    isAccelerometerActive = [motionManager2 isAccelerometerActive];
 
-    if (v5)
+    if (isAccelerometerActive)
     {
-      v6 = [(DAOrientationDetector *)self motionManager];
-      [v6 stopAccelerometerUpdates];
+      motionManager3 = [(DAOrientationDetector *)self motionManager];
+      [motionManager3 stopAccelerometerUpdates];
     }
 
     [(DAOrientationDetector *)self setMotionManager:0];

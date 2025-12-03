@@ -1,28 +1,28 @@
 @interface CMCalorieUserInfo
-+ (id)genderString:(int64_t)a3;
-- (CMCalorieUserInfo)initWithAge:(double)a3 gender:(int64_t)a4 height:(double)a5 weight:(double)a6 condition:(int64_t)a7 betaBlockerUse:(BOOL)a8;
-- (CMCalorieUserInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)genderString:(int64_t)string;
+- (CMCalorieUserInfo)initWithAge:(double)age gender:(int64_t)gender height:(double)height weight:(double)weight condition:(int64_t)condition betaBlockerUse:(BOOL)use;
+- (CMCalorieUserInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMCalorieUserInfo
 
-- (CMCalorieUserInfo)initWithAge:(double)a3 gender:(int64_t)a4 height:(double)a5 weight:(double)a6 condition:(int64_t)a7 betaBlockerUse:(BOOL)a8
+- (CMCalorieUserInfo)initWithAge:(double)age gender:(int64_t)gender height:(double)height weight:(double)weight condition:(int64_t)condition betaBlockerUse:(BOOL)use
 {
   v15.receiver = self;
   v15.super_class = CMCalorieUserInfo;
   result = [(CMCalorieUserInfo *)&v15 init];
   if (result)
   {
-    result->fAge = a3;
-    result->fGender = a4;
-    result->fHeight = a5;
-    result->fWeight = a6;
-    result->fCondition = a7;
-    result->fBetaBlockerUse = a8;
+    result->fAge = age;
+    result->fGender = gender;
+    result->fHeight = height;
+    result->fWeight = weight;
+    result->fCondition = condition;
+    result->fBetaBlockerUse = use;
   }
 
   return result;
@@ -35,31 +35,31 @@
   [(CMLogItem *)&v2 dealloc];
 }
 
-- (CMCalorieUserInfo)initWithCoder:(id)a3
+- (CMCalorieUserInfo)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = CMCalorieUserInfo;
   v5 = [(CMLogItem *)&v15 initWithCoder:?];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kCalorieUserInfoCodingKeyAge");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kCalorieUserInfoCodingKeyAge");
     v5->fAge = v6;
-    v5->fGender = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCalorieUserInfoCodingKeyGender");
-    objc_msgSend_decodeDoubleForKey_(a3, v8, @"kCalorieUserInfoCodingKeyHeight");
+    v5->fGender = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCalorieUserInfoCodingKeyGender");
+    objc_msgSend_decodeDoubleForKey_(coder, v8, @"kCalorieUserInfoCodingKeyHeight");
     v5->fHeight = v9;
-    objc_msgSend_decodeDoubleForKey_(a3, v10, @"kCalorieUserInfoCodingKeyWeight");
+    objc_msgSend_decodeDoubleForKey_(coder, v10, @"kCalorieUserInfoCodingKeyWeight");
     v5->fWeight = v11;
-    v5->fCondition = objc_msgSend_decodeIntegerForKey_(a3, v12, @"kCalorieUserInfoCodingKeyCondition");
-    v5->fBetaBlockerUse = objc_msgSend_decodeBoolForKey_(a3, v13, @"kCalorieUserInfoCodingKeyBetaBlockerUse");
+    v5->fCondition = objc_msgSend_decodeIntegerForKey_(coder, v12, @"kCalorieUserInfoCodingKeyCondition");
+    v5->fBetaBlockerUse = objc_msgSend_decodeBoolForKey_(coder, v13, @"kCalorieUserInfoCodingKeyBetaBlockerUse");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fAge = self->fAge;
   fHeight = self->fHeight;
   fGender = self->fGender;
@@ -70,28 +70,28 @@
   return objc_msgSend_initWithAge_gender_height_weight_condition_betaBlockerUse_(v7, v8, fGender, fCondition, fBetaBlockerUse, fAge, fHeight, fWeight);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMCalorieUserInfo;
   [(CMLogItem *)&v11 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCalorieUserInfoCodingKeyAge", self->fAge);
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->fGender, @"kCalorieUserInfoCodingKeyGender");
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCalorieUserInfoCodingKeyHeight", self->fHeight);
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCalorieUserInfoCodingKeyWeight", self->fWeight);
-  objc_msgSend_encodeInteger_forKey_(a3, v9, self->fCondition, @"kCalorieUserInfoCodingKeyCondition");
-  objc_msgSend_encodeBool_forKey_(a3, v10, self->fBetaBlockerUse, @"kCalorieUserInfoCodingKeyBetaBlockerUse");
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCalorieUserInfoCodingKeyAge", self->fAge);
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->fGender, @"kCalorieUserInfoCodingKeyGender");
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCalorieUserInfoCodingKeyHeight", self->fHeight);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCalorieUserInfoCodingKeyWeight", self->fWeight);
+  objc_msgSend_encodeInteger_forKey_(coder, v9, self->fCondition, @"kCalorieUserInfoCodingKeyCondition");
+  objc_msgSend_encodeBool_forKey_(coder, v10, self->fBetaBlockerUse, @"kCalorieUserInfoCodingKeyBetaBlockerUse");
 }
 
-+ (id)genderString:(int64_t)a3
++ (id)genderString:(int64_t)string
 {
   v3 = @"Female";
-  if (a3 != 1)
+  if (string != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }

@@ -1,16 +1,16 @@
 @interface CESRRawSpeechProfileItemConverterAppInfo
 - (CESRRawSpeechProfileItemConverterAppInfo)init;
-- (id)vocabularyItemFromSpeechWords:(id)a3 speechNamespace:(id)a4 error:(id *)a5;
+- (id)vocabularyItemFromSpeechWords:(id)words speechNamespace:(id)namespace error:(id *)error;
 @end
 
 @implementation CESRRawSpeechProfileItemConverterAppInfo
 
-- (id)vocabularyItemFromSpeechWords:(id)a3 speechNamespace:(id)a4 error:(id *)a5
+- (id)vocabularyItemFromSpeechWords:(id)words speechNamespace:(id)namespace error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8 || ![v8 count])
+  wordsCopy = words;
+  namespaceCopy = namespace;
+  if (!wordsCopy || ![wordsCopy count])
   {
     v26 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -23,33 +23,33 @@
     goto LABEL_20;
   }
 
-  if ([v8 count] != 1)
+  if ([wordsCopy count] != 1)
   {
     v27 = MEMORY[0x277CCA9B8];
     v43 = *MEMORY[0x277CCA068];
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"rawSpeechProfile contains an AppInfo item with an unexpected number of speech words (expected only 1): %@", v8];
-    v44 = v28;
+    wordsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"rawSpeechProfile contains an AppInfo item with an unexpected number of speech words (expected only 1): %@", wordsCopy];
+    v44 = wordsCopy;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     v30 = v27;
     v31 = 1;
     goto LABEL_16;
   }
 
-  if (([v9 isEqualToString:@"appname"] & 1) == 0)
+  if (([namespaceCopy isEqualToString:@"appname"] & 1) == 0)
   {
     v32 = MEMORY[0x277CCA9B8];
     v41 = *MEMORY[0x277CCA068];
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected namespace: %@ expected: %@", v9, @"appname"];
-    v42 = v28;
+    wordsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected namespace: %@ expected: %@", namespaceCopy, @"appname"];
+    v42 = wordsCopy;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v30 = v32;
     v31 = 3;
 LABEL_16:
     v33 = [v30 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:v31 userInfo:v29];
-    if (a5 && v33)
+    if (error && v33)
     {
       v33 = v33;
-      *a5 = v33;
+      *error = v33;
     }
 
 LABEL_20:
@@ -58,8 +58,8 @@ LABEL_20:
   }
 
   v10 = [CESRRawSpeechProfileTools placeholderItemIdWithCategoryName:@"appinfo"];
-  v11 = [v8 firstObject];
-  v12 = [v11 orthography];
+  firstObject = [wordsCopy firstObject];
+  orthography = [firstObject orthography];
 
   builder = self->_builder;
   v38 = 0;
@@ -67,7 +67,7 @@ LABEL_20:
   v15 = v38;
   v16 = self->_builder;
   v37 = v15;
-  v17 = [(KVItemBuilder *)v16 addFieldWithType:102 value:v12 error:&v37];
+  v17 = [(KVItemBuilder *)v16 addFieldWithType:102 value:orthography error:&v37];
   v18 = v37;
 
   if (!v17)
@@ -86,16 +86,16 @@ LABEL_20:
 LABEL_7:
     v22 = MEMORY[0x277CCA9B8];
     v39[0] = *MEMORY[0x277CCA068];
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to process word: %@ due to builder error.", v12];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to process word: %@ due to builder error.", orthography];
     v39[1] = *MEMORY[0x277CCA7E8];
     v40[0] = v23;
     v40[1] = v18;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
     v25 = [v22 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:6 userInfo:v24];
-    if (a5 && v25)
+    if (error && v25)
     {
       v25 = v25;
-      *a5 = v25;
+      *error = v25;
     }
 
     v20 = 0;

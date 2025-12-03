@@ -1,57 +1,57 @@
 @interface CBAnalytics
-+ (void)aliasingMitigationsCount:(unint64_t)a3;
-+ (void)alsOcclusionsByProx:(int64_t)a3 andByTouch:(int64_t)a4 touchProx:(int64_t)a5 none:(int64_t)a6;
-+ (void)alsSelectionDeltas:(const double *)a3 count:(unint64_t)a4;
-+ (void)alsSelectionLuxTimeHistogram:(id)a3 forALSIndex:(int64_t)a4;
-+ (void)alsSelectionSwaps:(unint64_t)a3;
-+ (void)alsSelectionTimes:(const double *)a3 count:(unint64_t)a4;
-+ (void)autoBrightnessEnabled:(BOOL)a3 byUser:(BOOL)a4;
-+ (void)autoBrightnessUserChange:(BOOL)a3 lowPower:(BOOL)a4;
-+ (void)autoDimLeave:(double)a3;
-+ (void)cltmBudgetUpdated:(float)a3 currentSDRBrightness:(float)a4;
-+ (void)harmonyColor:(const ColorReport *)a3;
-+ (void)harmonyEnabled:(BOOL)a3 byUser:(BOOL)a4;
-+ (void)hdrSession:(BOOL)a3;
-+ (void)illuminanceHistogram:(id)a3;
-+ (void)luminanceHistogram:(id)a3 withName:(id)a4;
-+ (void)nightShiftEnabled:(BOOL)a3 withOption:(int)a4;
-+ (void)rtplcTriggeredWithLength:(unint64_t)a3 maxAPCE:(float)a4 durationInSeconds:(float)a5 sdrBrightness:(float)a6 referenceModeEnabled:(BOOL)a7;
-+ (void)sbimMitigationTriggeredWithBrightness:(float)a3;
-+ (void)send:(id)a3 withBlock:(id)a4;
-+ (void)sendBool:(id)a3 withField:(const char *)a4 andValue:(BOOL)a5;
-+ (void)sendInt:(id)a3 withField:(const char *)a4 andValue:(int64_t)a5;
-+ (void)sendSparseBins:(const double *)a3 count:(int64_t)a4 withName:(id)a5;
-+ (void)touchOcclusionElapsedDelay:(float)a3;
-+ (void)userBrightnessChangeAfterSnapping:(float)a3;
-+ (void)userSliderCommit:(const CBSliderCommitInfo *)a3;
++ (void)aliasingMitigationsCount:(unint64_t)count;
++ (void)alsOcclusionsByProx:(int64_t)prox andByTouch:(int64_t)touch touchProx:(int64_t)touchProx none:(int64_t)none;
++ (void)alsSelectionDeltas:(const double *)deltas count:(unint64_t)count;
++ (void)alsSelectionLuxTimeHistogram:(id)histogram forALSIndex:(int64_t)index;
++ (void)alsSelectionSwaps:(unint64_t)swaps;
++ (void)alsSelectionTimes:(const double *)times count:(unint64_t)count;
++ (void)autoBrightnessEnabled:(BOOL)enabled byUser:(BOOL)user;
++ (void)autoBrightnessUserChange:(BOOL)change lowPower:(BOOL)power;
++ (void)autoDimLeave:(double)leave;
++ (void)cltmBudgetUpdated:(float)updated currentSDRBrightness:(float)brightness;
++ (void)harmonyColor:(const ColorReport *)color;
++ (void)harmonyEnabled:(BOOL)enabled byUser:(BOOL)user;
++ (void)hdrSession:(BOOL)session;
++ (void)illuminanceHistogram:(id)histogram;
++ (void)luminanceHistogram:(id)histogram withName:(id)name;
++ (void)nightShiftEnabled:(BOOL)enabled withOption:(int)option;
++ (void)rtplcTriggeredWithLength:(unint64_t)length maxAPCE:(float)e durationInSeconds:(float)seconds sdrBrightness:(float)brightness referenceModeEnabled:(BOOL)enabled;
++ (void)sbimMitigationTriggeredWithBrightness:(float)brightness;
++ (void)send:(id)send withBlock:(id)block;
++ (void)sendBool:(id)bool withField:(const char *)field andValue:(BOOL)value;
++ (void)sendInt:(id)int withField:(const char *)field andValue:(int64_t)value;
++ (void)sendSparseBins:(const double *)bins count:(int64_t)count withName:(id)name;
++ (void)touchOcclusionElapsedDelay:(float)delay;
++ (void)userBrightnessChangeAfterSnapping:(float)snapping;
++ (void)userSliderCommit:(const CBSliderCommitInfo *)commit;
 @end
 
 @implementation CBAnalytics
 
-+ (void)send:(id)a3 withBlock:(id)a4
++ (void)send:(id)send withBlock:(id)block
 {
   context = objc_autoreleasePoolPush();
-  [@"com.apple.CoreBrightness" stringByAppendingString:a3];
+  [@"com.apple.CoreBrightness" stringByAppendingString:send];
   AnalyticsSendEventLazy();
   objc_autoreleasePoolPop(context);
 }
 
-+ (void)sendInt:(id)a3 withField:(const char *)a4 andValue:(int64_t)a5
++ (void)sendInt:(id)int withField:(const char *)field andValue:(int64_t)value
 {
-  v17 = a1;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
-  v13 = a5;
+  intCopy = int;
+  fieldCopy = field;
+  valueCopy = value;
   context = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __42__CBAnalytics_sendInt_withField_andValue___block_invoke;
   v10 = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  v11 = v14;
-  v12 = v13;
-  [v17 send:v15 withBlock:?];
+  v11 = fieldCopy;
+  v12 = valueCopy;
+  [selfCopy send:intCopy withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -65,22 +65,22 @@ uint64_t __42__CBAnalytics_sendInt_withField_andValue___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (void)sendBool:(id)a3 withField:(const char *)a4 andValue:(BOOL)a5
++ (void)sendBool:(id)bool withField:(const char *)field andValue:(BOOL)value
 {
-  v17 = a1;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
-  v13 = a5;
+  boolCopy = bool;
+  fieldCopy = field;
+  valueCopy = value;
   context = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __43__CBAnalytics_sendBool_withField_andValue___block_invoke;
   v10 = &__block_descriptor_41_e19___NSDictionary_8__0l;
-  v11 = v14;
-  v12 = v13;
-  [v17 send:v15 withBlock:?];
+  v11 = fieldCopy;
+  v12 = valueCopy;
+  [selfCopy send:boolCopy withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -94,14 +94,14 @@ uint64_t __43__CBAnalytics_sendBool_withField_andValue___block_invoke(uint64_t a
   return v3;
 }
 
-+ (void)sendSparseBins:(const double *)a3 count:(int64_t)a4 withName:(id)a5
++ (void)sendSparseBins:(const double *)bins count:(int64_t)count withName:(id)name
 {
   context = objc_autoreleasePoolPush();
-  for (i = 0; i < a4; ++i)
+  for (i = 0; i < count; ++i)
   {
-    if (a3[i] != 0.0)
+    if (bins[i] != 0.0)
     {
-      [a1 send:a5 withBlock:?];
+      [self send:name withBlock:?];
     }
   }
 
@@ -120,29 +120,29 @@ uint64_t __45__CBAnalytics_sendSparseBins_count_withName___block_invoke(uint64_t
   return v3;
 }
 
-+ (void)alsSelectionSwaps:(unint64_t)a3
++ (void)alsSelectionSwaps:(unint64_t)swaps
 {
-  if (a3 <= 0x7FFFFFFFFFFFFFFFLL)
+  if (swaps <= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a3;
+    swapsCopy = swaps;
   }
 
   else
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    swapsCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [a1 sendInt:@".ALS.Swaps" withField:"swaps" andValue:v3];
+  [self sendInt:@".ALS.Swaps" withField:"swaps" andValue:swapsCopy];
 }
 
-+ (void)alsSelectionTimes:(const double *)a3 count:(unint64_t)a4
++ (void)alsSelectionTimes:(const double *)times count:(unint64_t)count
 {
   context = objc_autoreleasePoolPush();
-  for (i = 0; i < a4; ++i)
+  for (i = 0; i < count; ++i)
   {
-    if (a3[i] > 0.0)
+    if (times[i] > 0.0)
     {
-      [a1 send:@".ALS.Times" withBlock:?];
+      [self send:@".ALS.Times" withBlock:?];
     }
   }
 
@@ -161,45 +161,45 @@ uint64_t __39__CBAnalytics_alsSelectionTimes_count___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (void)alsSelectionDeltas:(const double *)a3 count:(unint64_t)a4
++ (void)alsSelectionDeltas:(const double *)deltas count:(unint64_t)count
 {
-  v21 = a1;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
+  deltasCopy = deltas;
+  countCopy = count;
   context = objc_autoreleasePoolPush();
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
   v14 = __40__CBAnalytics_alsSelectionDeltas_count___block_invoke;
   v15 = &__block_descriptor_40_e18___NSNumber_16__0Q8l;
-  v16 = v19;
-  v17 = dumpCArrayIntoDictionary(v18, &v11);
+  v16 = deltasCopy;
+  v17 = dumpCArrayIntoDictionary(countCopy, &v11);
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __40__CBAnalytics_alsSelectionDeltas_count___block_invoke_2;
   v9 = &unk_1E867B058;
   v10 = v17;
-  [v21 send:@".ALS.Deltas" withBlock:?];
+  [selfCopy send:@".ALS.Deltas" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
-+ (void)alsSelectionLuxTimeHistogram:(id)a3 forALSIndex:(int64_t)a4
++ (void)alsSelectionLuxTimeHistogram:(id)histogram forALSIndex:(int64_t)index
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  histogramCopy = histogram;
+  indexCopy = index;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __56__CBAnalytics_alsSelectionLuxTimeHistogram_forALSIndex___block_invoke;
   v9 = &unk_1E867B0A8;
-  v10 = v15;
-  v11 = v12;
-  [v13 enumerateBinsUsingBlock:?];
+  v10 = selfCopy;
+  v11 = indexCopy;
+  [histogramCopy enumerateBinsUsingBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -247,21 +247,21 @@ uint64_t __56__CBAnalytics_alsSelectionLuxTimeHistogram_forALSIndex___block_invo
   return v5;
 }
 
-+ (void)autoBrightnessEnabled:(BOOL)a3 byUser:(BOOL)a4
++ (void)autoBrightnessEnabled:(BOOL)enabled byUser:(BOOL)user
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  enabledCopy = enabled;
+  userCopy = user;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __44__CBAnalytics_autoBrightnessEnabled_byUser___block_invoke;
   v9 = &__block_descriptor_34_e19___NSDictionary_8__0l;
-  v10 = v13;
-  v11 = v12;
-  [v15 send:@".Auto.Enabled" withBlock:?];
+  v10 = enabledCopy;
+  v11 = userCopy;
+  [selfCopy send:@".Auto.Enabled" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -277,19 +277,19 @@ uint64_t __44__CBAnalytics_autoBrightnessEnabled_byUser___block_invoke(uint64_t 
   return v3;
 }
 
-+ (void)hdrSession:(BOOL)a3
++ (void)hdrSession:(BOOL)session
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  sessionCopy = session;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __26__CBAnalytics_hdrSession___block_invoke;
   v8 = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".HDR.CPMSConstrained" withBlock:?];
+  v9 = sessionCopy;
+  [selfCopy send:@".HDR.CPMSConstrained" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -303,21 +303,21 @@ uint64_t __26__CBAnalytics_hdrSession___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)autoBrightnessUserChange:(BOOL)a3 lowPower:(BOOL)a4
++ (void)autoBrightnessUserChange:(BOOL)change lowPower:(BOOL)power
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  changeCopy = change;
+  powerCopy = power;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __49__CBAnalytics_autoBrightnessUserChange_lowPower___block_invoke;
   v9 = &__block_descriptor_34_e19___NSDictionary_8__0l;
-  v10 = v13;
-  v11 = v12;
-  [v15 send:@".Auto.UserChange" withBlock:?];
+  v10 = changeCopy;
+  v11 = powerCopy;
+  [selfCopy send:@".Auto.UserChange" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -333,21 +333,21 @@ uint64_t __49__CBAnalytics_autoBrightnessUserChange_lowPower___block_invoke(uint
   return v3;
 }
 
-+ (void)nightShiftEnabled:(BOOL)a3 withOption:(int)a4
++ (void)nightShiftEnabled:(BOOL)enabled withOption:(int)option
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  enabledCopy = enabled;
+  optionCopy = option;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __44__CBAnalytics_nightShiftEnabled_withOption___block_invoke;
   v9 = &__block_descriptor_37_e19___NSDictionary_8__0l;
-  v11 = v13;
-  v10 = v12;
-  [v15 send:@".NightShift.Enabled" withBlock:?];
+  v11 = enabledCopy;
+  v10 = optionCopy;
+  [selfCopy send:@".NightShift.Enabled" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -363,33 +363,33 @@ uint64_t __44__CBAnalytics_nightShiftEnabled_withOption___block_invoke(uint64_t 
   return v3;
 }
 
-+ (void)harmonyColor:(const ColorReport *)a3
++ (void)harmonyColor:(const ColorReport *)color
 {
-  v6 = a1;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  colorCopy = color;
   bzero(v3, 0x200uLL);
-  memcpy(v3, v4, sizeof(v3));
-  [v6 sendSparseBins:&v3[848] count:10 withName:@".Harmony.Strength"];
-  [v6 sendSparseBins:&v3[432] count:46 withName:@".Harmony.Ambient"];
-  [v6 sendSparseBins:&v3[216] count:17 withName:@".Harmony.Display"];
+  memcpy(v3, colorCopy, sizeof(v3));
+  [selfCopy sendSparseBins:&v3[848] count:10 withName:@".Harmony.Strength"];
+  [selfCopy sendSparseBins:&v3[432] count:46 withName:@".Harmony.Ambient"];
+  [selfCopy sendSparseBins:&v3[216] count:17 withName:@".Harmony.Display"];
 }
 
-+ (void)harmonyEnabled:(BOOL)a3 byUser:(BOOL)a4
++ (void)harmonyEnabled:(BOOL)enabled byUser:(BOOL)user
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  enabledCopy = enabled;
+  userCopy = user;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __37__CBAnalytics_harmonyEnabled_byUser___block_invoke;
   v9 = &__block_descriptor_34_e19___NSDictionary_8__0l;
-  v10 = v13;
-  v11 = v12;
-  [v15 send:@".Harmony.Enabled" withBlock:?];
+  v10 = enabledCopy;
+  v11 = userCopy;
+  [selfCopy send:@".Harmony.Enabled" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -405,19 +405,19 @@ uint64_t __37__CBAnalytics_harmonyEnabled_byUser___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (void)autoDimLeave:(double)a3
++ (void)autoDimLeave:(double)leave
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  leaveCopy = leave;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __28__CBAnalytics_autoDimLeave___block_invoke;
   v8 = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".AutoDim.Leave" withBlock:?];
+  v9 = leaveCopy;
+  [selfCopy send:@".AutoDim.Leave" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -431,19 +431,19 @@ uint64_t __28__CBAnalytics_autoDimLeave___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)sbimMitigationTriggeredWithBrightness:(float)a3
++ (void)sbimMitigationTriggeredWithBrightness:(float)brightness
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  brightnessCopy = brightness;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __53__CBAnalytics_sbimMitigationTriggeredWithBrightness___block_invoke;
   v8 = &__block_descriptor_36_e19___NSDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".SBIM.CapsHeadroom" withBlock:?];
+  v9 = brightnessCopy;
+  [selfCopy send:@".SBIM.CapsHeadroom" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -458,21 +458,21 @@ uint64_t __53__CBAnalytics_sbimMitigationTriggeredWithBrightness___block_invoke(
   return v3;
 }
 
-+ (void)cltmBudgetUpdated:(float)a3 currentSDRBrightness:(float)a4
++ (void)cltmBudgetUpdated:(float)updated currentSDRBrightness:(float)brightness
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  updatedCopy = updated;
+  brightnessCopy = brightness;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __54__CBAnalytics_cltmBudgetUpdated_currentSDRBrightness___block_invoke;
   v9 = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v10 = v12;
-  v11 = v13;
-  [v15 send:@".cltm.capsBrightness" withBlock:?];
+  v10 = brightnessCopy;
+  v11 = updatedCopy;
+  [selfCopy send:@".cltm.capsBrightness" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -490,19 +490,19 @@ uint64_t __54__CBAnalytics_cltmBudgetUpdated_currentSDRBrightness___block_invoke
   return v5;
 }
 
-+ (void)illuminanceHistogram:(id)a3
++ (void)illuminanceHistogram:(id)histogram
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  histogramCopy = histogram;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __36__CBAnalytics_illuminanceHistogram___block_invoke;
   v8 = &unk_1E867B198;
-  v9 = v12;
-  [v10 enumerateBinsUsingBlock:?];
+  v9 = selfCopy;
+  [histogramCopy enumerateBinsUsingBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -547,11 +547,11 @@ uint64_t __36__CBAnalytics_illuminanceHistogram___block_invoke_2(uint64_t a1)
   return v5;
 }
 
-+ (void)rtplcTriggeredWithLength:(unint64_t)a3 maxAPCE:(float)a4 durationInSeconds:(float)a5 sdrBrightness:(float)a6 referenceModeEnabled:(BOOL)a7
++ (void)rtplcTriggeredWithLength:(unint64_t)length maxAPCE:(float)e durationInSeconds:(float)seconds sdrBrightness:(float)brightness referenceModeEnabled:(BOOL)enabled
 {
-  *&v7 = a6;
-  BYTE4(v7) = a7;
-  [a1 send:@".rtplc.Burst" withBlock:{MEMORY[0x1E69E9820], 3221225472, __101__CBAnalytics_rtplcTriggeredWithLength_maxAPCE_durationInSeconds_sdrBrightness_referenceModeEnabled___block_invoke, &__block_descriptor_53_e19___NSDictionary_8__0l, a3, __PAIR64__(LODWORD(a5), LODWORD(a4)), v7}];
+  *&v7 = brightness;
+  BYTE4(v7) = enabled;
+  [self send:@".rtplc.Burst" withBlock:{MEMORY[0x1E69E9820], 3221225472, __101__CBAnalytics_rtplcTriggeredWithLength_maxAPCE_durationInSeconds_sdrBrightness_referenceModeEnabled___block_invoke, &__block_descriptor_53_e19___NSDictionary_8__0l, length, __PAIR64__(LODWORD(seconds), LODWORD(e)), v7}];
 }
 
 uint64_t __101__CBAnalytics_rtplcTriggeredWithLength_maxAPCE_durationInSeconds_sdrBrightness_referenceModeEnabled___block_invoke(uint64_t a1)
@@ -575,21 +575,21 @@ uint64_t __101__CBAnalytics_rtplcTriggeredWithLength_maxAPCE_durationInSeconds_s
   return v6;
 }
 
-+ (void)luminanceHistogram:(id)a3 withName:(id)a4
++ (void)luminanceHistogram:(id)histogram withName:(id)name
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  histogramCopy = histogram;
+  nameCopy = name;
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __43__CBAnalytics_luminanceHistogram_withName___block_invoke;
   v9 = &unk_1E867B208;
-  v10 = v15;
-  v11 = v12;
-  [v13 enumerateBinsUsingBlock:?];
+  v10 = selfCopy;
+  v11 = nameCopy;
+  [histogramCopy enumerateBinsUsingBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -637,19 +637,19 @@ uint64_t __43__CBAnalytics_luminanceHistogram_withName___block_invoke_2(uint64_t
   return v5;
 }
 
-+ (void)userSliderCommit:(const CBSliderCommitInfo *)a3
++ (void)userSliderCommit:(const CBSliderCommitInfo *)commit
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  commitCopy = commit;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __32__CBAnalytics_userSliderCommit___block_invoke;
   v8 = &__block_descriptor_40_e26___NSMutableDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".UserSliderCommit_v4" withBlock:?];
+  v9 = commitCopy;
+  [selfCopy send:@".UserSliderCommit_v4" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -793,25 +793,25 @@ void *__32__CBAnalytics_userSliderCommit___block_invoke(uint64_t a1)
   return v36;
 }
 
-+ (void)alsOcclusionsByProx:(int64_t)a3 andByTouch:(int64_t)a4 touchProx:(int64_t)a5 none:(int64_t)a6
++ (void)alsOcclusionsByProx:(int64_t)prox andByTouch:(int64_t)touch touchProx:(int64_t)touchProx none:(int64_t)none
 {
-  v21 = a1;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
-  v17 = a5;
-  v16 = a6;
+  proxCopy = prox;
+  touchCopy = touch;
+  touchProxCopy = touchProx;
+  noneCopy = none;
   context = objc_autoreleasePoolPush();
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
   v10 = __61__CBAnalytics_alsOcclusionsByProx_andByTouch_touchProx_none___block_invoke;
   v11 = &__block_descriptor_64_e19___NSDictionary_8__0l;
-  v12 = v19;
-  v13 = v18;
-  v14 = v17;
-  v15 = v16;
-  [v21 send:@".ALSOcclusion" withBlock:?];
+  v12 = proxCopy;
+  v13 = touchCopy;
+  v14 = touchProxCopy;
+  v15 = noneCopy;
+  [selfCopy send:@".ALSOcclusion" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -831,19 +831,19 @@ uint64_t __61__CBAnalytics_alsOcclusionsByProx_andByTouch_touchProx_none___block
   return v3;
 }
 
-+ (void)touchOcclusionElapsedDelay:(float)a3
++ (void)touchOcclusionElapsedDelay:(float)delay
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  delayCopy = delay;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __42__CBAnalytics_touchOcclusionElapsedDelay___block_invoke;
   v8 = &__block_descriptor_36_e19___NSDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".TouchOcclusionDelay" withBlock:?];
+  v9 = delayCopy;
+  [selfCopy send:@".TouchOcclusionDelay" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 
@@ -858,34 +858,34 @@ uint64_t __42__CBAnalytics_touchOcclusionElapsedDelay___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (void)aliasingMitigationsCount:(unint64_t)a3
++ (void)aliasingMitigationsCount:(unint64_t)count
 {
-  if (a3 <= 0x7FFFFFFFFFFFFFFFLL)
+  if (count <= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    countCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [a1 sendInt:@".AliasingMitigationsCount" withField:"mitigations" andValue:v3];
+  [self sendInt:@".AliasingMitigationsCount" withField:"mitigations" andValue:countCopy];
 }
 
-+ (void)userBrightnessChangeAfterSnapping:(float)a3
++ (void)userBrightnessChangeAfterSnapping:(float)snapping
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  snappingCopy = snapping;
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __49__CBAnalytics_userBrightnessChangeAfterSnapping___block_invoke;
   v8 = &__block_descriptor_36_e19___NSDictionary_8__0l;
-  v9 = v10;
-  [v12 send:@".UserBrightnessAfterSnapping" withBlock:?];
+  v9 = snappingCopy;
+  [selfCopy send:@".UserBrightnessAfterSnapping" withBlock:?];
   objc_autoreleasePoolPop(context);
 }
 

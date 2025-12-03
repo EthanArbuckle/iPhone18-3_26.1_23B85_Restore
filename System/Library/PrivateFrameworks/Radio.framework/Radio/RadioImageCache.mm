@@ -3,29 +3,29 @@
 + (__CFURLStorageSession)_newSharedCacheStorageSession;
 + (id)sharedCache;
 - (RadioImageCache)init;
-- (id)_cachedResponseForRequest:(id)a3;
+- (id)_cachedResponseForRequest:(id)request;
 - (id)_init;
-- (id)_requestForRadioArtwork:(id)a3;
-- (id)cachedImageDataForRadioArtwork:(id)a3 MIMEType:(id *)a4;
-- (id)cachedImageDataForStation:(id)a3 withExactSize:(CGSize)a4 MIMEType:(id *)a5;
+- (id)_requestForRadioArtwork:(id)artwork;
+- (id)cachedImageDataForRadioArtwork:(id)artwork MIMEType:(id *)type;
+- (id)cachedImageDataForStation:(id)station withExactSize:(CGSize)size MIMEType:(id *)type;
 - (void)_removeAllCachedImages;
 - (void)dealloc;
-- (void)loadImageForRadioArtwork:(id)a3 withCompletionHandler:(id)a4;
-- (void)loadImageForStation:(id)a3 withSize:(CGSize)a4 completionHandler:(id)a5;
+- (void)loadImageForRadioArtwork:(id)artwork withCompletionHandler:(id)handler;
+- (void)loadImageForStation:(id)station withSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation RadioImageCache
 
-- (id)_requestForRadioArtwork:(id)a3
+- (id)_requestForRadioArtwork:(id)artwork
 {
-  v3 = [a3 URL];
+  v3 = [artwork URL];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v3];
-    v5 = [objc_opt_class() _newSharedCacheStorageSession];
-    if (v5)
+    _newSharedCacheStorageSession = [objc_opt_class() _newSharedCacheStorageSession];
+    if (_newSharedCacheStorageSession)
     {
-      v6 = v5;
+      v6 = _newSharedCacheStorageSession;
       [v4 _CFURLRequest];
       _CFURLRequestSetStorageSession();
       CFRelease(v6);
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (id)_cachedResponseForRequest:(id)a3
+- (id)_cachedResponseForRequest:(id)request
 {
-  v4 = a3;
-  [a3 _CFURLRequest];
+  requestCopy = request;
+  [request _CFURLRequest];
   if ([objc_opt_class() _sharedCFURLCache] && (v5 = CFURLCacheCopyResponseForRequest()) != 0)
   {
     v6 = v5;
@@ -68,22 +68,22 @@
   }
 }
 
-- (void)loadImageForStation:(id)a3 withSize:(CGSize)a4 completionHandler:(id)a5
+- (void)loadImageForStation:(id)station withSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = [a3 artworkCollection];
-  v11 = [v10 bestArtworkForPointSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  artworkCollection = [station artworkCollection];
+  v11 = [artworkCollection bestArtworkForPointSize:{width, height}];
 
-  [(RadioImageCache *)self loadImageForRadioArtwork:v11 withCompletionHandler:v9];
+  [(RadioImageCache *)self loadImageForRadioArtwork:v11 withCompletionHandler:handlerCopy];
 }
 
-- (void)loadImageForRadioArtwork:(id)a3 withCompletionHandler:(id)a4
+- (void)loadImageForRadioArtwork:(id)artwork withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RadioImageCache *)self _requestForRadioArtwork:v6];
+  artworkCopy = artwork;
+  handlerCopy = handler;
+  v8 = [(RadioImageCache *)self _requestForRadioArtwork:artworkCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CCA8C8]);
@@ -93,7 +93,7 @@
     v11[2] = __66__RadioImageCache_loadImageForRadioArtwork_withCompletionHandler___block_invoke_2;
     v11[3] = &unk_279AEA7C8;
     objc_copyWeak(&v14, &location);
-    v13 = v7;
+    v13 = handlerCopy;
     v12 = v8;
     [v9 addExecutionBlock:v11];
     [(NSOperationQueue *)self->_imageRequestQueue addOperation:v9];
@@ -105,14 +105,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v10 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__RadioImageCache_loadImageForRadioArtwork_withCompletionHandler___block_invoke;
     block[3] = &unk_279AEA750;
-    v17 = v7;
+    v17 = handlerCopy;
     dispatch_async(v10, block);
 
     v9 = v17;
@@ -269,17 +269,17 @@ void __66__RadioImageCache_loadImageForRadioArtwork_withCompletionHandler___bloc
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)cachedImageDataForStation:(id)a3 withExactSize:(CGSize)a4 MIMEType:(id *)a5
+- (id)cachedImageDataForStation:(id)station withExactSize:(CGSize)size MIMEType:(id *)type
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = [a3 artworkCollection];
-  v10 = [v9 bestArtworkForPointSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  artworkCollection = [station artworkCollection];
+  v10 = [artworkCollection bestArtworkForPointSize:{width, height}];
 
   [v10 pointSize];
   if (width == v12 && height == v11)
   {
-    v14 = [(RadioImageCache *)self cachedImageDataForRadioArtwork:v10 MIMEType:a5];
+    v14 = [(RadioImageCache *)self cachedImageDataForRadioArtwork:v10 MIMEType:type];
   }
 
   else
@@ -290,28 +290,28 @@ void __66__RadioImageCache_loadImageForRadioArtwork_withCompletionHandler___bloc
   return v14;
 }
 
-- (id)cachedImageDataForRadioArtwork:(id)a3 MIMEType:(id *)a4
+- (id)cachedImageDataForRadioArtwork:(id)artwork MIMEType:(id *)type
 {
-  v6 = [(RadioImageCache *)self _requestForRadioArtwork:a3];
+  v6 = [(RadioImageCache *)self _requestForRadioArtwork:artwork];
   if (v6)
   {
     v7 = [(RadioImageCache *)self _cachedResponseForRequest:v6];
     v8 = v7;
-    if (a4)
+    if (type)
     {
-      v9 = [v7 response];
-      *a4 = [v9 MIMEType];
+      response = [v7 response];
+      *type = [response MIMEType];
     }
 
-    v10 = [v8 data];
+    data = [v8 data];
   }
 
   else
   {
-    v10 = objc_alloc_init(MEMORY[0x277CBEA90]);
+    data = objc_alloc_init(MEMORY[0x277CBEA90]);
   }
 
-  return v10;
+  return data;
 }
 
 - (void)dealloc
@@ -381,7 +381,7 @@ void __48__RadioImageCache__newSharedCacheStorageSession__block_invoke()
   block[1] = 3221225472;
   block[2] = __36__RadioImageCache__sharedCFURLCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedCFURLCache_sOnce != -1)
   {
     dispatch_once(&_sharedCFURLCache_sOnce, block);
@@ -416,7 +416,7 @@ void __36__RadioImageCache__sharedCFURLCache__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__RadioImageCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_onceToken != -1)
   {
     dispatch_once(&sharedCache_onceToken, block);

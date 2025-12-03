@@ -1,35 +1,35 @@
 @interface IFTSchemaASTFlatExprResolveToolVariant
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaASTFlatExprResolveToolVariant)initWithDictionary:(id)a3;
-- (IFTSchemaASTFlatExprResolveToolVariant)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaASTFlatExprResolveToolVariant)initWithDictionary:(id)dictionary;
+- (IFTSchemaASTFlatExprResolveToolVariant)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addToolIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addToolIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaASTFlatExprResolveToolVariant
 
-- (IFTSchemaASTFlatExprResolveToolVariant)initWithDictionary:(id)a3
+- (IFTSchemaASTFlatExprResolveToolVariant)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = IFTSchemaASTFlatExprResolveToolVariant;
   v5 = [(IFTSchemaASTFlatExprResolveToolVariant *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaASTFlatExprResolveToolVariant setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"toolIds"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"toolIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (IFTSchemaASTFlatExprResolveToolVariant)initWithJSON:(id)a3
+- (IFTSchemaASTFlatExprResolveToolVariant)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaASTFlatExprResolveToolVariant *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaASTFlatExprResolveToolVariant *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaASTFlatExprResolveToolVariant *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,23 +114,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaASTFlatExprResolveToolVariant exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_toolIds)
   {
-    v5 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"toolIds"];
+    toolIds = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
+    v6 = [toolIds copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"toolIds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,22 +148,22 @@
   return [(NSArray *)self->_toolIds hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [v4 exists]))
+      if ((*&self->_has & 1) == 0 || (exists = self->_exists, exists == [equalCopy exists]))
       {
-        v6 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
-        v7 = [v4 toolIds];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        toolIds = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
+        toolIds2 = [equalCopy toolIds];
+        v8 = toolIds2;
+        if ((toolIds != 0) != (toolIds2 == 0))
         {
-          v9 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
-          if (!v9)
+          toolIds3 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
+          if (!toolIds3)
           {
 
 LABEL_13:
@@ -171,10 +171,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
-          v12 = [v4 toolIds];
-          v13 = [v11 isEqual:v12];
+          v10 = toolIds3;
+          toolIds4 = [(IFTSchemaASTFlatExprResolveToolVariant *)self toolIds];
+          toolIds5 = [equalCopy toolIds];
+          v13 = [toolIds4 isEqual:toolIds5];
 
           if (v13)
           {
@@ -195,10 +195,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -236,31 +236,31 @@ LABEL_11:
   }
 }
 
-- (void)addToolIds:(id)a3
+- (void)addToolIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   toolIds = self->_toolIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!toolIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_toolIds;
-    self->_toolIds = v6;
+    self->_toolIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     toolIds = self->_toolIds;
   }
 
-  [(NSArray *)toolIds addObject:v4];
+  [(NSArray *)toolIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = IFTSchemaASTFlatExprResolveToolVariant;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

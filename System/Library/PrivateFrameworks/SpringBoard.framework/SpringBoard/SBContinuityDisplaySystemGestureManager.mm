@@ -1,21 +1,21 @@
 @interface SBContinuityDisplaySystemGestureManager
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3;
-- (SBContinuityDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3;
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type;
+- (SBContinuityDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity;
 @end
 
 @implementation SBContinuityDisplaySystemGestureManager
 
-- (SBContinuityDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3
+- (SBContinuityDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity
 {
-  v5 = a3;
-  if (!v5)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [(SBContinuityDisplaySystemGestureManager *)a2 initWithDisplayIdentity:?];
   }
 
   v10.receiver = self;
   v10.super_class = SBContinuityDisplaySystemGestureManager;
-  v6 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:v5];
+  v6 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:identityCopy];
   if (v6)
   {
     v7 = objc_alloc_init(SBFailingSystemGestureRecognizer);
@@ -29,10 +29,10 @@
   return v6;
 }
 
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type
 {
-  v3 = a3 - 99;
-  if (a3 - 99 > 0x2D)
+  v3 = type - 99;
+  if (type - 99 > 0x2D)
   {
     return 0;
   }

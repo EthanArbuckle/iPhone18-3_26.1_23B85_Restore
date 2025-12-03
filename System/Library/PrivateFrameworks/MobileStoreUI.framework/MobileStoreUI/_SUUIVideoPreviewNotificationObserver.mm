@@ -1,19 +1,19 @@
 @interface _SUUIVideoPreviewNotificationObserver
-- (_SUUIVideoPreviewNotificationObserver)initWithObservers:(id)a3;
+- (_SUUIVideoPreviewNotificationObserver)initWithObservers:(id)observers;
 - (void)dealloc;
 @end
 
 @implementation _SUUIVideoPreviewNotificationObserver
 
-- (_SUUIVideoPreviewNotificationObserver)initWithObservers:(id)a3
+- (_SUUIVideoPreviewNotificationObserver)initWithObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v9.receiver = self;
   v9.super_class = _SUUIVideoPreviewNotificationObserver;
   v5 = [(_SUUIVideoPreviewNotificationObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [observersCopy copy];
     observers = v5->_observers;
     v5->_observers = v6;
   }
@@ -24,7 +24,7 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -45,7 +45,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:*(*(&v10 + 1) + 8 * v8++)];
+        [defaultCenter removeObserver:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

@@ -1,51 +1,51 @@
 @interface IdentityManagementUIClient
 - (_TtC13CoreIDVShared26IdentityManagementUIClient)init;
-- (void)clearDataAfterTerminalProofingStateWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)deleteBoundACLWithCompletionHandler:(id)a3;
-- (void)fetchAnalyticsSessionIDWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)fetchBioBindingDetailsWithCompletionHandler:(id)a3;
-- (void)fetchBiomeFedStatsUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4;
-- (void)fetchExtendedReviewDisplayInfoWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)fetchImageQualitySettingsWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4;
-- (void)fetchLivenessConsentOptinUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4;
-- (void)fetchTermsAndConditionsWithCompletionHandler:(id)a3;
-- (void)getLivenessConfigWithCompletionHandler:(id)a3;
-- (void)getPendingCommandsStatusWithCompletionHandler:(id)a3;
-- (void)getPendingCommandsWithResponseAPDUs:(_TtC13CoreIDVShared18NFCPendingCommands *)a3 completionHandler:(id)a4;
-- (void)globalAuthACLInfoWithCompletionHandler:(id)a3;
-- (void)initiatePartialProofingWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingSessionID:(NSString *)a5 completionHandler:(id)a6;
+- (void)clearDataAfterTerminalProofingStateWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)deleteBoundACLWithCompletionHandler:(id)handler;
+- (void)fetchAnalyticsSessionIDWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)fetchBioBindingDetailsWithCompletionHandler:(id)handler;
+- (void)fetchBiomeFedStatsUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler;
+- (void)fetchExtendedReviewDisplayInfoWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)fetchImageQualitySettingsWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler;
+- (void)fetchLivenessConsentOptinUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler;
+- (void)fetchTermsAndConditionsWithCompletionHandler:(id)handler;
+- (void)getLivenessConfigWithCompletionHandler:(id)handler;
+- (void)getPendingCommandsStatusWithCompletionHandler:(id)handler;
+- (void)getPendingCommandsWithResponseAPDUs:(_TtC13CoreIDVShared18NFCPendingCommands *)us completionHandler:(id)handler;
+- (void)globalAuthACLInfoWithCompletionHandler:(id)handler;
+- (void)initiatePartialProofingWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingSessionID:(NSString *)d completionHandler:(id)handler;
 - (void)invalidate;
-- (void)isWatchPairedWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4;
-- (void)prepareForProofingDisplayWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)prepareForProofingIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingSessionID:(NSString *)a5 completionHandler:(id)a6;
-- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 authCode:(NSString *)a4 proofingOptions:(unint64_t)a5 completionHandler:(id)a6;
-- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingOptions:(unint64_t)a5 shouldScheduleUploads:(BOOL)a6 totalUploadAssetsFileSizeInBytes:(int64_t)a7 completionHandler:(id)a8;
-- (void)proofingCancelledWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5;
-- (void)proofingFlowAvailabilityWithCompletionHandler:(id)a3;
-- (void)proofingStatusFor:(NSString *)a3 country:(NSString *)a4 completionHandler:(id)a5;
-- (void)provisionIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 sessionLookupIdentifier:(NSString *)a4 proofingOptions:(unint64_t)a5 completionHandler:(id)a6;
-- (void)retrieveBioBindingUnboundACLWithCompletionHandler:(id)a3;
-- (void)retrieveBoundACLWithCompletionHandler:(id)a3;
-- (void)retrievePasscodeBindingUnboundACLWithCompletionHandler:(id)a3;
-- (void)saveIdentityProofingDataSharingUserConsentWithDocumentType:(int64_t)a3 axSettings:(NSArray *)a4 consent:(BOOL)a5 consentType:(int64_t)a6 proofingOptions:(unint64_t)a7 completionHandler:(id)a8;
-- (void)setGlobalBoundACLWithData:(NSData *)a3 type:(int64_t)a4 completionHandler:(id)a5;
-- (void)setModifiedGlobalBoundACLWithData:(NSData *)a3 externalizedLAContext:(NSData *)a4 completionHandler:(id)a5;
-- (void)triggerAssetsUploadWithProofingOptions:(unint64_t)a3 canUploadOnExpensiveNetwork:(BOOL)a4 completionHandler:(id)a5;
-- (void)uploadLivenessVideoWithLivenessVideoURL:(_TtC13CoreIDVShared32IdentityProofingLivenessVideoURL *)a3 shouldScheduleUploads:(BOOL)a4 completionHandler:(id)a5;
-- (void)watchIdentityPassesCountWithCompletionHandler:(id)a3;
+- (void)isWatchPairedWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler;
+- (void)prepareForProofingDisplayWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)prepareForProofingIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingSessionID:(NSString *)d completionHandler:(id)handler;
+- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration authCode:(NSString *)code proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingOptions:(unint64_t)options shouldScheduleUploads:(BOOL)uploads totalUploadAssetsFileSizeInBytes:(int64_t)bytes completionHandler:(id)handler;
+- (void)proofingCancelledWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)proofingFlowAvailabilityWithCompletionHandler:(id)handler;
+- (void)proofingStatusFor:(NSString *)for country:(NSString *)country completionHandler:(id)handler;
+- (void)provisionIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration sessionLookupIdentifier:(NSString *)identifier proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)retrieveBioBindingUnboundACLWithCompletionHandler:(id)handler;
+- (void)retrieveBoundACLWithCompletionHandler:(id)handler;
+- (void)retrievePasscodeBindingUnboundACLWithCompletionHandler:(id)handler;
+- (void)saveIdentityProofingDataSharingUserConsentWithDocumentType:(int64_t)type axSettings:(NSArray *)settings consent:(BOOL)consent consentType:(int64_t)consentType proofingOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)setGlobalBoundACLWithData:(NSData *)data type:(int64_t)type completionHandler:(id)handler;
+- (void)setModifiedGlobalBoundACLWithData:(NSData *)data externalizedLAContext:(NSData *)context completionHandler:(id)handler;
+- (void)triggerAssetsUploadWithProofingOptions:(unint64_t)options canUploadOnExpensiveNetwork:(BOOL)network completionHandler:(id)handler;
+- (void)uploadLivenessVideoWithLivenessVideoURL:(_TtC13CoreIDVShared32IdentityProofingLivenessVideoURL *)l shouldScheduleUploads:(BOOL)uploads completionHandler:(id)handler;
+- (void)watchIdentityPassesCountWithCompletionHandler:(id)handler;
 @end
 
 @implementation IdentityManagementUIClient
 
-- (void)triggerAssetsUploadWithProofingOptions:(unint64_t)a3 canUploadOnExpensiveNetwork:(BOOL)a4 completionHandler:(id)a5
+- (void)triggerAssetsUploadWithProofingOptions:(unint64_t)options canUploadOnExpensiveNetwork:(BOOL)network completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = options;
+  *(v14 + 24) = network;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_225CCE994();
@@ -60,19 +60,19 @@
   v17[3] = 0;
   v17[4] = &unk_225D02A50;
   v17[5] = v16;
-  v18 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02A58, v17);
 }
 
-- (void)prepareForProofingDisplayWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)prepareForProofingDisplayWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -87,21 +87,21 @@
   v17[3] = 0;
   v17[4] = &unk_225D02A30;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02A38, v17);
 }
 
-- (void)prepareForProofingIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingSessionID:(NSString *)a5 completionHandler:(id)a6
+- (void)prepareForProofingIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingSessionID:(NSString *)d completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v11 - 8, v12);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = configuration;
+  v16[3] = documents;
+  v16[4] = d;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_225CCE994();
@@ -116,23 +116,23 @@
   v19[3] = 0;
   v19[4] = &unk_225D02A10;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  configurationCopy = configuration;
+  documentsCopy = documents;
+  dCopy = d;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v14, &unk_225D02A18, v19);
 }
 
-- (void)provisionIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 sessionLookupIdentifier:(NSString *)a4 proofingOptions:(unint64_t)a5 completionHandler:(id)a6
+- (void)provisionIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration sessionLookupIdentifier:(NSString *)identifier proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v11 - 8, v12);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = configuration;
+  v16[3] = identifier;
+  v16[4] = options;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_225CCE994();
@@ -147,20 +147,20 @@
   v19[3] = 0;
   v19[4] = &unk_225D029F0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = self;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v14, &unk_225D029F8, v19);
 }
 
-- (void)fetchImageQualitySettingsWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4
+- (void)fetchImageQualitySettingsWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = configuration;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -175,23 +175,23 @@
   v15[3] = 0;
   v15[4] = &unk_225D029D0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v10, &unk_225D029D8, v15);
 }
 
-- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingOptions:(unint64_t)a5 shouldScheduleUploads:(BOOL)a6 totalUploadAssetsFileSizeInBytes:(int64_t)a7 completionHandler:(id)a8
+- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingOptions:(unint64_t)options shouldScheduleUploads:(BOOL)uploads totalUploadAssetsFileSizeInBytes:(int64_t)bytes completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v15 - 8, v16);
   v18 = &v27 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
+  *(v20 + 16) = configuration;
+  *(v20 + 24) = documents;
+  *(v20 + 32) = options;
+  *(v20 + 40) = uploads;
+  *(v20 + 48) = bytes;
   *(v20 + 56) = v19;
   *(v20 + 64) = self;
   v21 = sub_225CCE994();
@@ -206,22 +206,22 @@
   v23[3] = 0;
   v23[4] = &unk_225D029B0;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = self;
+  configurationCopy = configuration;
+  documentsCopy = documents;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v18, &unk_225D029B8, v23);
 }
 
-- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 authCode:(NSString *)a4 proofingOptions:(unint64_t)a5 completionHandler:(id)a6
+- (void)proofIdentityWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration authCode:(NSString *)code proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v11 - 8, v12);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = configuration;
+  v16[3] = code;
+  v16[4] = options;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_225CCE994();
@@ -236,22 +236,22 @@
   v19[3] = 0;
   v19[4] = &unk_225D02990;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = self;
+  configurationCopy = configuration;
+  codeCopy = code;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v14, &unk_225D02998, v19);
 }
 
-- (void)initiatePartialProofingWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)a4 proofingSessionID:(NSString *)a5 completionHandler:(id)a6
+- (void)initiatePartialProofingWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration documents:(_TtC13CoreIDVShared25IdentityProofingDocuments *)documents proofingSessionID:(NSString *)d completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v11 - 8, v12);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = configuration;
+  v16[3] = documents;
+  v16[4] = d;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_225CCE994();
@@ -266,19 +266,19 @@
   v19[3] = 0;
   v19[4] = &unk_225D02970;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  configurationCopy = configuration;
+  documentsCopy = documents;
+  dCopy = d;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v14, &unk_225D02978, v19);
 }
 
-- (void)getPendingCommandsStatusWithCompletionHandler:(id)a3
+- (void)getPendingCommandsStatusWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -294,18 +294,18 @@
   v13[3] = 0;
   v13[4] = &unk_225D02950;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02958, v13);
 }
 
-- (void)getPendingCommandsWithResponseAPDUs:(_TtC13CoreIDVShared18NFCPendingCommands *)a3 completionHandler:(id)a4
+- (void)getPendingCommandsWithResponseAPDUs:(_TtC13CoreIDVShared18NFCPendingCommands *)us completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = us;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -320,17 +320,17 @@
   v15[3] = 0;
   v15[4] = &unk_225D02930;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  usCopy = us;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v10, &unk_225D02938, v15);
 }
 
-- (void)proofingFlowAvailabilityWithCompletionHandler:(id)a3
+- (void)proofingFlowAvailabilityWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -346,19 +346,19 @@
   v13[3] = 0;
   v13[4] = &unk_225D02910;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02918, v13);
 }
 
-- (void)proofingStatusFor:(NSString *)a3 country:(NSString *)a4 completionHandler:(id)a5
+- (void)proofingStatusFor:(NSString *)for country:(NSString *)country completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = for;
+  v14[3] = country;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -373,20 +373,20 @@
   v17[3] = 0;
   v17[4] = &unk_225D028F0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  forCopy = for;
+  countryCopy = country;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D028F8, v17);
 }
 
-- (void)isWatchPairedWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4
+- (void)isWatchPairedWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = configuration;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -401,17 +401,17 @@
   v15[3] = 0;
   v15[4] = &unk_225D028D0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v10, &unk_225D028D8, v15);
 }
 
-- (void)watchIdentityPassesCountWithCompletionHandler:(id)a3
+- (void)watchIdentityPassesCountWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -427,19 +427,19 @@
   v13[3] = 0;
   v13[4] = &unk_225D028B0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D028B8, v13);
 }
 
-- (void)proofingCancelledWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)proofingCancelledWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -454,20 +454,20 @@
   v17[3] = 0;
   v17[4] = &unk_225D02890;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02898, v17);
 }
 
-- (void)setGlobalBoundACLWithData:(NSData *)a3 type:(int64_t)a4 completionHandler:(id)a5
+- (void)setGlobalBoundACLWithData:(NSData *)data type:(int64_t)type completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = type;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -482,20 +482,20 @@
   v17[3] = 0;
   v17[4] = &unk_225D02870;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  dataCopy = data;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02878, v17);
 }
 
-- (void)setModifiedGlobalBoundACLWithData:(NSData *)a3 externalizedLAContext:(NSData *)a4 completionHandler:(id)a5
+- (void)setModifiedGlobalBoundACLWithData:(NSData *)data externalizedLAContext:(NSData *)context completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = data;
+  v14[3] = context;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -510,18 +510,18 @@
   v17[3] = 0;
   v17[4] = &unk_225D02850;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  dataCopy = data;
+  contextCopy = context;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02858, v17);
 }
 
-- (void)retrieveBioBindingUnboundACLWithCompletionHandler:(id)a3
+- (void)retrieveBioBindingUnboundACLWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -537,16 +537,16 @@
   v13[3] = 0;
   v13[4] = &unk_225D02830;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02838, v13);
 }
 
-- (void)retrievePasscodeBindingUnboundACLWithCompletionHandler:(id)a3
+- (void)retrievePasscodeBindingUnboundACLWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -562,16 +562,16 @@
   v13[3] = 0;
   v13[4] = &unk_225D02810;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02818, v13);
 }
 
-- (void)retrieveBoundACLWithCompletionHandler:(id)a3
+- (void)retrieveBoundACLWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -587,16 +587,16 @@
   v13[3] = 0;
   v13[4] = &unk_225D027F0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D027F8, v13);
 }
 
-- (void)deleteBoundACLWithCompletionHandler:(id)a3
+- (void)deleteBoundACLWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -612,16 +612,16 @@
   v13[3] = 0;
   v13[4] = &unk_225D027D0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D027D8, v13);
 }
 
-- (void)fetchBioBindingDetailsWithCompletionHandler:(id)a3
+- (void)fetchBioBindingDetailsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -637,16 +637,16 @@
   v13[3] = 0;
   v13[4] = &unk_225D027B0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D027B8, v13);
 }
 
-- (void)fetchTermsAndConditionsWithCompletionHandler:(id)a3
+- (void)fetchTermsAndConditionsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -662,19 +662,19 @@
   v13[3] = 0;
   v13[4] = &unk_225D02790;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02798, v13);
 }
 
-- (void)uploadLivenessVideoWithLivenessVideoURL:(_TtC13CoreIDVShared32IdentityProofingLivenessVideoURL *)a3 shouldScheduleUploads:(BOOL)a4 completionHandler:(id)a5
+- (void)uploadLivenessVideoWithLivenessVideoURL:(_TtC13CoreIDVShared32IdentityProofingLivenessVideoURL *)l shouldScheduleUploads:(BOOL)uploads completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = l;
+  *(v14 + 24) = uploads;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_225CCE994();
@@ -689,17 +689,17 @@
   v17[3] = 0;
   v17[4] = &unk_225D02770;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  lCopy = l;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02778, v17);
 }
 
-- (void)getLivenessConfigWithCompletionHandler:(id)a3
+- (void)getLivenessConfigWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -715,19 +715,19 @@
   v13[3] = 0;
   v13[4] = &unk_225D02750;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02758, v13);
 }
 
-- (void)fetchExtendedReviewDisplayInfoWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchExtendedReviewDisplayInfoWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -742,19 +742,19 @@
   v17[3] = 0;
   v17[4] = &unk_225D02730;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02738, v17);
 }
 
-- (void)fetchBiomeFedStatsUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4
+- (void)fetchBiomeFedStatsUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = configuration;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -769,19 +769,19 @@
   v15[3] = 0;
   v15[4] = &unk_225D02710;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v10, &unk_225D02718, v15);
 }
 
-- (void)fetchLivenessConsentOptinUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 completionHandler:(id)a4
+- (void)fetchLivenessConsentOptinUIWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = configuration;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -796,23 +796,23 @@
   v15[3] = 0;
   v15[4] = &unk_225D026F0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v10, &unk_225D026F8, v15);
 }
 
-- (void)saveIdentityProofingDataSharingUserConsentWithDocumentType:(int64_t)a3 axSettings:(NSArray *)a4 consent:(BOOL)a5 consentType:(int64_t)a6 proofingOptions:(unint64_t)a7 completionHandler:(id)a8
+- (void)saveIdentityProofingDataSharingUserConsentWithDocumentType:(int64_t)type axSettings:(NSArray *)settings consent:(BOOL)consent consentType:(int64_t)consentType proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v15 - 8, v16);
   v18 = &v26 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
+  *(v20 + 16) = type;
+  *(v20 + 24) = settings;
+  *(v20 + 32) = consent;
+  *(v20 + 40) = consentType;
+  *(v20 + 48) = options;
   *(v20 + 56) = v19;
   *(v20 + 64) = self;
   v21 = sub_225CCE994();
@@ -827,20 +827,20 @@
   v23[3] = 0;
   v23[4] = &unk_225D026D0;
   v23[5] = v22;
-  v24 = a4;
-  v25 = self;
+  settingsCopy = settings;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v18, &unk_225D026D8, v23);
 }
 
-- (void)clearDataAfterTerminalProofingStateWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)clearDataAfterTerminalProofingStateWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -855,23 +855,23 @@
   v17[3] = 0;
   v17[4] = &unk_225D026B0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D026B8, v17);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_225CAEDAC();
 }
 
-- (void)globalAuthACLInfoWithCompletionHandler:(id)a3
+- (void)globalAuthACLInfoWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -887,19 +887,19 @@
   v13[3] = 0;
   v13[4] = &unk_225D02690;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v8, &unk_225D02698, v13);
 }
 
-- (void)fetchAnalyticsSessionIDWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)a3 proofingOptions:(unint64_t)a4 completionHandler:(id)a5
+- (void)fetchAnalyticsSessionIDWithConfiguration:(_TtC13CoreIDVShared29IdentityProofingConfiguration *)configuration proofingOptions:(unint64_t)options completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v9 - 8, v10);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_225CCE994();
@@ -914,8 +914,8 @@
   v17[3] = 0;
   v17[4] = &unk_225CF9CD0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_225CBCC70(0, 0, v12, &unk_225D02030, v17);
 }
 

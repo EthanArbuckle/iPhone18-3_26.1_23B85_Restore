@@ -1,14 +1,14 @@
 @interface IdentityUISceneDelegate
 - (_TtC22ProximityReaderSceneUI23IdentityUISceneDelegate)init;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation IdentityUISceneDelegate
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_100009CF0();
 }
 

@@ -1,6 +1,6 @@
 @interface ICCollaborationJoinRequest
 - (id)_requestBody;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICCollaborationJoinRequest
@@ -12,13 +12,13 @@
   return v2;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICCollaborationJoinResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  if ([v4 length])
+  v3 = [(ICDResponse *)ICCollaborationJoinResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  if ([responseData length])
   {
-    v5 = [NSInputStream inputStreamWithData:v4];
+    v5 = [NSInputStream inputStreamWithData:responseData];
     v6 = [[DKDAAPParser alloc] initWithStream:v5];
     v7 = [[ICCollaborationJoinResponseParserDelegate alloc] initWithResponse:v3];
     [v6 setDelegate:v7];

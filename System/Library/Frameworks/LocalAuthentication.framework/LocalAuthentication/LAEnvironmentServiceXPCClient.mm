@@ -1,8 +1,8 @@
 @interface LAEnvironmentServiceXPCClient
 - (id)_createConnectionToDaemon;
-- (void)_bootstrapServiceType:(id)a3 completion:(id)a4;
-- (void)_synchronousProxyToEnvironmentServiceWithEndpoint:(id)a3 completion:(id)a4;
-- (void)synchronousProxyToEnvironmentServiceWithCompletion:(id)a3;
+- (void)_bootstrapServiceType:(id)type completion:(id)completion;
+- (void)_synchronousProxyToEnvironmentServiceWithEndpoint:(id)endpoint completion:(id)completion;
+- (void)synchronousProxyToEnvironmentServiceWithCompletion:(id)completion;
 @end
 
 @implementation LAEnvironmentServiceXPCClient
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (void)synchronousProxyToEnvironmentServiceWithCompletion:(id)a3
+- (void)synchronousProxyToEnvironmentServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -43,12 +43,12 @@
   v5 = v14[5];
   if (v5)
   {
-    [(LAEnvironmentServiceXPCClient *)self _synchronousProxyToEnvironmentServiceWithEndpoint:v5 completion:v4];
+    [(LAEnvironmentServiceXPCClient *)self _synchronousProxyToEnvironmentServiceWithEndpoint:v5 completion:completionCopy];
   }
 
   else
   {
-    v4[2](v4, 0, v8[5]);
+    completionCopy[2](completionCopy, 0, v8[5]);
   }
 
   _Block_object_dispose(&v7, 8);
@@ -70,12 +70,12 @@ void __84__LAEnvironmentServiceXPCClient_synchronousProxyToEnvironmentServiceWit
   *(v9 + 40) = v6;
 }
 
-- (void)_synchronousProxyToEnvironmentServiceWithEndpoint:(id)a3 completion:(id)a4
+- (void)_synchronousProxyToEnvironmentServiceWithEndpoint:(id)endpoint completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E696B0B8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithListenerEndpoint:v7];
+  endpointCopy = endpoint;
+  v8 = [[v6 alloc] initWithListenerEndpoint:endpointCopy];
 
   v9 = [MEMORY[0x1E69AD2C8] interfaceForXPCProtocol:&unk_1F1A78D50];
   [v8 setRemoteObjectInterface:v9];
@@ -85,7 +85,7 @@ void __84__LAEnvironmentServiceXPCClient_synchronousProxyToEnvironmentServiceWit
   v12[1] = 3221225472;
   v12[2] = __94__LAEnvironmentServiceXPCClient__synchronousProxyToEnvironmentServiceWithEndpoint_completion___block_invoke;
   v12[3] = &unk_1E77CBFB0;
-  v10 = v5;
+  v10 = completionCopy;
   v13 = v10;
   v11 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
   if (v11)
@@ -96,25 +96,25 @@ void __84__LAEnvironmentServiceXPCClient_synchronousProxyToEnvironmentServiceWit
   [v8 invalidate];
 }
 
-- (void)_bootstrapServiceType:(id)a3 completion:(id)a4
+- (void)_bootstrapServiceType:(id)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LAEnvironmentServiceXPCClient *)self _createConnectionToDaemon];
+  completionCopy = completion;
+  typeCopy = type;
+  _createConnectionToDaemon = [(LAEnvironmentServiceXPCClient *)self _createConnectionToDaemon];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __66__LAEnvironmentServiceXPCClient__bootstrapServiceType_completion___block_invoke;
   v18 = &unk_1E77CBFB0;
-  v19 = v6;
-  v9 = v6;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&v15];
+  v19 = completionCopy;
+  v9 = completionCopy;
+  v10 = [_createConnectionToDaemon synchronousRemoteObjectProxyWithErrorHandler:&v15];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 processIdentifier];
-  v14 = [v11 stringWithFormat:@"%d", v13, v15, v16, v17, v18];
-  [v10 bootstrapSessionServiceType:v7 serviceClientID:v14 completionHandler:v9];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processIdentifier = [processInfo processIdentifier];
+  v14 = [v11 stringWithFormat:@"%d", processIdentifier, v15, v16, v17, v18];
+  [v10 bootstrapSessionServiceType:typeCopy serviceClientID:v14 completionHandler:v9];
 
-  [v8 invalidate];
+  [_createConnectionToDaemon invalidate];
 }
 
 @end

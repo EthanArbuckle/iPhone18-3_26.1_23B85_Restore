@@ -1,76 +1,76 @@
 @interface SPCompanionAppServer
 - (BOOL)_checkUnlockedSinceBoot;
-- (BOOL)_isApplicationViewControllerActivate:(id)a3;
+- (BOOL)_isApplicationViewControllerActivate:(id)activate;
 - (BOOL)_unlockedSinceBoot;
-- (BOOL)connection:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)isExtensionDoingSnapshot:(id)a3;
+- (BOOL)connection:(id)connection hasEntitlement:(id)entitlement;
+- (BOOL)isExtensionDoingSnapshot:(id)snapshot;
 - (BOOL)isPaired;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldKillExtensionOnError:(id)a3;
-- (BOOL)showUserNotificationWithTitle:(id)a3 message:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldKillExtensionOnError:(id)error;
+- (BOOL)showUserNotificationWithTitle:(id)title message:(id)message;
 - (SPCompanionAppServer)init;
-- (id)_setupSignal:(int)a3 handler:(id)a4;
+- (id)_setupSignal:(int)signal handler:(id)handler;
 - (id)_textSize;
 - (id)_textSizeChanged;
-- (id)appBundleIDFromPlist:(id)a3;
-- (id)applicationIdentifierFromXPCConnection:(id)a3;
-- (id)decodeInData:(id)a3;
-- (id)decodeOutData:(id)a3;
-- (id)decodeProtoData:(id)a3;
-- (id)logDictionary:(id)a3;
-- (id)logStringArray:(id)a3;
-- (id)transactionDictForID:(id)a3 removeFromOutstanding:(BOOL)a4;
-- (void)_applicationActivated:(id)a3;
-- (void)_applicationDeactivated:(id)a3;
+- (id)appBundleIDFromPlist:(id)plist;
+- (id)applicationIdentifierFromXPCConnection:(id)connection;
+- (id)decodeInData:(id)data;
+- (id)decodeOutData:(id)data;
+- (id)decodeProtoData:(id)data;
+- (id)logDictionary:(id)dictionary;
+- (id)logStringArray:(id)array;
+- (id)transactionDictForID:(id)d removeFromOutstanding:(BOOL)outstanding;
+- (void)_applicationActivated:(id)activated;
+- (void)_applicationDeactivated:(id)deactivated;
 - (void)_cancelLaunchSockPuppetAppTimeout;
 - (void)_saveReceiveTime;
-- (void)_saveSendTimeAndSize:(unint64_t)a3;
-- (void)_sendTextSizeToApplication:(id)a3 onlyIfChanged:(BOOL)a4;
+- (void)_saveSendTimeAndSize:(unint64_t)size;
+- (void)_sendTextSizeToApplication:(id)application onlyIfChanged:(BOOL)changed;
 - (void)_setupSignalHandlers;
-- (void)_sockPuppetAppListUpdatedToLaunchSockPuppetAppForCompanionAppWithIdentifier:(id)a3 options:(id)a4 acxRetryGeneration:(unint64_t)a5 completion:(id)a6;
-- (void)activeComplicationsWithCompletion:(id)a3;
+- (void)_sockPuppetAppListUpdatedToLaunchSockPuppetAppForCompanionAppWithIdentifier:(id)identifier options:(id)options acxRetryGeneration:(unint64_t)generation completion:(id)completion;
+- (void)activeComplicationsWithCompletion:(id)completion;
 - (void)cancelGizmoApplicationsUpdateTimer;
-- (void)clearLastResetDateForPluginIdentifier:(id)a3;
-- (void)extensionDidBeginSnapshot:(id)a3;
-- (void)extensionDidEndSnapshot:(id)a3;
-- (void)extensionWithIdentifier:(id)a3 gotUnknownInterfaceController:(id)a4;
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3;
-- (void)fetchNotificationForNotificationID:(id)a3 completion:(id)a4;
-- (void)getCompanionExtensionPIDForCompanionAppWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getSockPuppetAppRunningStatusForCompanionAppWithIdentifier:(id)a3 completion:(id)a4;
-- (void)handleIncomingData:(id)a3;
-- (void)handleIncomingPlist:(id)a3;
-- (void)handleIncomingProtoPlist:(id)a3;
+- (void)clearLastResetDateForPluginIdentifier:(id)identifier;
+- (void)extensionDidBeginSnapshot:(id)snapshot;
+- (void)extensionDidEndSnapshot:(id)snapshot;
+- (void)extensionWithIdentifier:(id)identifier gotUnknownInterfaceController:(id)controller;
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion;
+- (void)fetchNotificationForNotificationID:(id)d completion:(id)completion;
+- (void)getCompanionExtensionPIDForCompanionAppWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getSockPuppetAppRunningStatusForCompanionAppWithIdentifier:(id)identifier completion:(id)completion;
+- (void)handleIncomingData:(id)data;
+- (void)handleIncomingPlist:(id)plist;
+- (void)handleIncomingProtoPlist:(id)plist;
 - (void)hideUserNotification;
-- (void)incomingData:(id)a3;
-- (void)incomingProtobuf:(id)a3;
-- (void)killExtensionForAppIdentifier:(id)a3;
-- (void)launchSockPuppetAppForCompanionAppWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)logDataSent:(unint64_t)a3 application:(id)a4;
-- (void)nanoRegistryChanged:(id)a3;
-- (void)releaseProcessAssertion:(id)a3;
+- (void)incomingData:(id)data;
+- (void)incomingProtobuf:(id)protobuf;
+- (void)killExtensionForAppIdentifier:(id)identifier;
+- (void)launchSockPuppetAppForCompanionAppWithIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (void)logDataSent:(unint64_t)sent application:(id)application;
+- (void)nanoRegistryChanged:(id)changed;
+- (void)releaseProcessAssertion:(id)assertion;
 - (void)releaseProcessAssertionForXcode;
-- (void)releaseRemoteInterfaceAssertionsForPluginIdentifer:(id)a3;
-- (void)requestTimingData:(id)a3 timingMetaData:(id)a4;
-- (void)sendAndTrackTransactionDict:(id)a3 withCompletion:(id)a4;
-- (void)sendCacheRequest:(id)a3 identifier:(id)a4;
-- (void)sendData:(id)a3 identifier:(id)a4 clientIdentifiers:(id)a5;
-- (void)sendData:(id)a3 identifier:(id)a4 clientIdentifiers:(id)a5 reply:(id)a6;
-- (void)sendData:(id)a3 toApplication:(id)a4;
-- (void)sendData:(id)a3 toCompanionApplication:(id)a4 fromIdentifier:(id)a5;
+- (void)releaseRemoteInterfaceAssertionsForPluginIdentifer:(id)identifer;
+- (void)requestTimingData:(id)data timingMetaData:(id)metaData;
+- (void)sendAndTrackTransactionDict:(id)dict withCompletion:(id)completion;
+- (void)sendCacheRequest:(id)request identifier:(id)identifier;
+- (void)sendData:(id)data identifier:(id)identifier clientIdentifiers:(id)identifiers;
+- (void)sendData:(id)data identifier:(id)identifier clientIdentifiers:(id)identifiers reply:(id)reply;
+- (void)sendData:(id)data toApplication:(id)application;
+- (void)sendData:(id)data toCompanionApplication:(id)application fromIdentifier:(id)identifier;
 - (void)sendFirstUnlockStatusToGizmo;
-- (void)sendPlist:(id)a3 timeOut:(double)a4 securityType:(int64_t)a5;
-- (void)sendProtoData:(id)a3 toCompanionApplication:(id)a4 fromIdentifier:(id)a5;
-- (void)sendProtobuf:(id)a3 sender:(id)a4 timeOut:(double)a5 securityType:(int64_t)a6;
-- (void)sendToRemoteInterface:(id)a3 call:(id)a4;
-- (void)setApplicationIDForXcodeProcessAssertion:(id)a3;
-- (void)setLastExtensionKilledDateForPluginIdentifier:(id)a3;
+- (void)sendPlist:(id)plist timeOut:(double)out securityType:(int64_t)type;
+- (void)sendProtoData:(id)data toCompanionApplication:(id)application fromIdentifier:(id)identifier;
+- (void)sendProtobuf:(id)protobuf sender:(id)sender timeOut:(double)out securityType:(int64_t)type;
+- (void)sendToRemoteInterface:(id)interface call:(id)call;
+- (void)setApplicationIDForXcodeProcessAssertion:(id)assertion;
+- (void)setLastExtensionKilledDateForPluginIdentifier:(id)identifier;
 - (void)setup;
-- (void)showUserNotification:(int64_t)a3 applicationName:(id)a4;
-- (void)takeProcessAssertionForXcode:(id)a3;
-- (void)terminateSockPuppetAppForCompanionAppWithIdentifier:(id)a3 completion:(id)a4;
-- (void)wakeExtensionForWatchApp:(id)a3;
-- (void)xcodeWillInstallSockPuppetAppWithCompanionAppIdentifier:(id)a3 completion:(id)a4;
+- (void)showUserNotification:(int64_t)notification applicationName:(id)name;
+- (void)takeProcessAssertionForXcode:(id)xcode;
+- (void)terminateSockPuppetAppForCompanionAppWithIdentifier:(id)identifier completion:(id)completion;
+- (void)wakeExtensionForWatchApp:(id)app;
+- (void)xcodeWillInstallSockPuppetAppWithCompanionAppIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SPCompanionAppServer
@@ -97,8 +97,8 @@
   v6 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.companionappd"];
   [(SPCompanionAppServer *)v4 setLocalListener:v6];
 
-  v7 = [(SPCompanionAppServer *)v4 localListener];
-  [v7 setDelegate:v4];
+  localListener = [(SPCompanionAppServer *)v4 localListener];
+  [localListener setDelegate:v4];
 
   v8 = +[NSMutableDictionary dictionary];
   [(SPCompanionAppServer *)v4 setLocalConnections:v8];
@@ -223,20 +223,20 @@
   qword_100051CD8 = v2;
 }
 
-- (id)_setupSignal:(int)a3 handler:(id)a4
+- (id)_setupSignal:(int)signal handler:(id)handler
 {
-  v5 = a4;
-  v6 = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, &_dispatch_main_q);
+  handlerCopy = handler;
+  v6 = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, &_dispatch_main_q);
   if (v6)
   {
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100009A34;
     handler[3] = &unk_1000454E8;
-    v10 = v5;
+    v10 = handlerCopy;
     dispatch_source_set_event_handler(v6, handler);
     dispatch_resume(v6);
-    signal(a3, 1);
+    signal(signal, 1);
     v7 = v10;
   }
 
@@ -252,18 +252,18 @@
   return v6;
 }
 
-- (void)logDataSent:(unint64_t)a3 application:(id)a4
+- (void)logDataSent:(unint64_t)sent application:(id)application
 {
-  v6 = a4;
-  [(SPCompanionAppServer *)self _saveSendTimeAndSize:a3];
-  v7 = [(SPCompanionAppServer *)self usageTrack];
-  [v7 dataSentToGizmo:a3 application:v6];
+  applicationCopy = application;
+  [(SPCompanionAppServer *)self _saveSendTimeAndSize:sent];
+  usageTrack = [(SPCompanionAppServer *)self usageTrack];
+  [usageTrack dataSentToGizmo:sent application:applicationCopy];
 }
 
 - (void)setup
 {
-  v2 = [(SPCompanionAppServer *)self localListener];
-  [v2 resume];
+  localListener = [(SPCompanionAppServer *)self localListener];
+  [localListener resume];
 }
 
 - (void)cancelGizmoApplicationsUpdateTimer
@@ -302,7 +302,7 @@
 
 - (void)sendFirstUnlockStatusToGizmo
 {
-  v3 = [(SPCompanionAppServer *)self _unlockedSinceBoot];
+  _unlockedSinceBoot = [(SPCompanionAppServer *)self _unlockedSinceBoot];
   v4 = wk_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,12 +311,12 @@
     v11 = 1024;
     v12 = 628;
     v13 = 1024;
-    v14 = v3;
+    v14 = _unlockedSinceBoot;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: unlocked=%d", buf, 0x18u);
   }
 
   v8[0] = @"pd";
-  v5 = [NSNumber numberWithBool:v3, @"c", @"pl"];
+  v5 = [NSNumber numberWithBool:_unlockedSinceBoot, @"c", @"pl"];
   v7[2] = @"bg";
   v8[1] = v5;
   v8[2] = &__kCFBooleanTrue;
@@ -324,14 +324,14 @@
   [(SPCompanionAppServer *)self sendPlist:v6 securityType:1];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -350,14 +350,14 @@
   v11 = SecTaskCopyValueForEntitlement(v9, @"com.apple.companionappd.connect.allow", &error);
   if (error)
   {
-    v12 = [v8 _xpcConnection];
-    v13 = sub_10000A0F0(v12);
+    _xpcConnection = [v8 _xpcConnection];
+    v13 = sub_10000A0F0(_xpcConnection);
 
     v14 = wk_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v27 = error;
-      v28 = [v8 processIdentifier];
+      processIdentifier = [v8 processIdentifier];
       *token = 136447234;
       *&token[4] = "[SPCompanionAppServer listener:shouldAcceptNewConnection:]";
       *&token[12] = 1024;
@@ -367,7 +367,7 @@
       *&token[28] = 2114;
       *&token[30] = v13;
       v35 = 1024;
-      v36 = v28;
+      v36 = processIdentifier;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}s:%d: Got error %{public}@ while checking entitlement for process %{public}@ with pid %d", token, 0x2Cu);
     }
 
@@ -382,9 +382,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v15 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   CFRelease(v10);
-  if (v15)
+  if (bOOLValue)
   {
 
 LABEL_12:
@@ -397,8 +397,8 @@ LABEL_12:
     [v8 setExportedObject:self];
     [v8 resume];
     v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v8 processIdentifier]);
-    v19 = [(SPCompanionAppServer *)self localConnections];
-    [v19 setObject:v8 forKey:v18];
+    localConnections = [(SPCompanionAppServer *)self localConnections];
+    [localConnections setObject:v8 forKey:v18];
 
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -422,8 +422,8 @@ LABEL_12:
   }
 
 LABEL_14:
-  v23 = [v8 _xpcConnection];
-  v24 = sub_10000A0F0(v23);
+  _xpcConnection2 = [v8 _xpcConnection];
+  v24 = sub_10000A0F0(_xpcConnection2);
 
   v25 = wk_default_log();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -437,16 +437,16 @@ LABEL_17:
   return v22;
 }
 
-- (void)sendPlist:(id)a3 timeOut:(double)a4 securityType:(int64_t)a5
+- (void)sendPlist:(id)plist timeOut:(double)out securityType:(int64_t)type
 {
-  v8 = a3;
-  v9 = [SPProtoSerializer spPlistWithDictionary:v8];
+  plistCopy = plist;
+  v9 = [SPProtoSerializer spPlistWithDictionary:plistCopy];
   if (v9)
   {
     kdebug_trace();
-    v10 = [v8 objectForKeyedSubscript:@"i"];
+    v10 = [plistCopy objectForKeyedSubscript:@"i"];
     v11 = [SPIDSProtobuf protobufWithSPPlist:v9 identifier:v10];
-    [(SPCompanionAppServer *)self sendProtobuf:v11 sender:v10 timeOut:a5 securityType:a4];
+    [(SPCompanionAppServer *)self sendProtobuf:v11 sender:v10 timeOut:type securityType:out];
   }
 
   else
@@ -459,25 +459,25 @@ LABEL_17:
   }
 }
 
-- (void)sendProtobuf:(id)a3 sender:(id)a4 timeOut:(double)a5 securityType:(int64_t)a6
+- (void)sendProtobuf:(id)protobuf sender:(id)sender timeOut:(double)out securityType:(int64_t)type
 {
-  v10 = a4;
-  v11 = a3;
+  senderCopy = sender;
+  protobufCopy = protobuf;
   v12 = +[SPTransport sharedInstance];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000A494;
   v14[3] = &unk_100045510;
-  v15 = v10;
-  v16 = self;
-  v13 = v10;
-  [v12 sendProtobuf:v11 sender:v13 timeOut:a6 securityType:v14 withCompletion:a5];
+  v15 = senderCopy;
+  selfCopy = self;
+  v13 = senderCopy;
+  [v12 sendProtobuf:protobufCopy sender:v13 timeOut:type securityType:v14 withCompletion:out];
 }
 
-- (void)setLastExtensionKilledDateForPluginIdentifier:(id)a3
+- (void)setLastExtensionKilledDateForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = +[NSDate date];
     lastExtensionKilledDatesQueue = self->_lastExtensionKilledDatesQueue;
@@ -486,18 +486,18 @@ LABEL_17:
     block[2] = sub_10000A808;
     block[3] = &unk_100045538;
     block[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = v5;
     v7 = v5;
     dispatch_async(lastExtensionKilledDatesQueue, block);
   }
 }
 
-- (void)clearLastResetDateForPluginIdentifier:(id)a3
+- (void)clearLastResetDateForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     lastExtensionKilledDatesQueue = self->_lastExtensionKilledDatesQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -505,16 +505,16 @@ LABEL_17:
     v7[2] = sub_10000A90C;
     v7[3] = &unk_1000447A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(lastExtensionKilledDatesQueue, v7);
   }
 }
 
-- (BOOL)shouldKillExtensionOnError:(id)a3
+- (BOOL)shouldKillExtensionOnError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -526,7 +526,7 @@ LABEL_17:
     block[2] = sub_10000AA40;
     block[3] = &unk_100045560;
     block[4] = self;
-    v10 = v4;
+    v10 = errorCopy;
     v11 = &v12;
     dispatch_sync(lastExtensionKilledDatesQueue, block);
     v7 = *(v13 + 24);
@@ -542,41 +542,41 @@ LABEL_17:
   return v7 & 1;
 }
 
-- (void)sendToRemoteInterface:(id)a3 call:(id)a4
+- (void)sendToRemoteInterface:(id)interface call:(id)call
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SPCompanionAppServer *)self queueRemote];
+  interfaceCopy = interface;
+  callCopy = call;
+  queueRemote = [(SPCompanionAppServer *)self queueRemote];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000ABB0;
   block[3] = &unk_100045600;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = interfaceCopy;
+  selfCopy = self;
+  v14 = callCopy;
+  v9 = callCopy;
+  v10 = interfaceCopy;
+  dispatch_async(queueRemote, block);
 }
 
-- (void)sendData:(id)a3 toCompanionApplication:(id)a4 fromIdentifier:(id)a5
+- (void)sendData:(id)data toCompanionApplication:(id)application fromIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 length];
+  dataCopy = data;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  v11 = [dataCopy length];
   v12 = wk_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SPCompanionAppServer *)self decodeOutData:v8];
+    v13 = [(SPCompanionAppServer *)self decodeOutData:dataCopy];
     *buf = 136447491;
     v20 = "[SPCompanionAppServer sendData:toCompanionApplication:fromIdentifier:]";
     v21 = 1024;
     v22 = 834;
     v23 = 2114;
-    v24 = v9;
+    v24 = applicationCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = identifierCopy;
     v27 = 2048;
     v28 = v11;
     v29 = 2113;
@@ -588,31 +588,31 @@ LABEL_17:
   v16[1] = 3221225472;
   v16[2] = sub_10000B508;
   v16[3] = &unk_100045628;
-  v17 = v8;
-  v18 = v10;
-  v14 = v10;
-  v15 = v8;
-  [(SPCompanionAppServer *)self sendToRemoteInterface:v9 call:v16];
+  v17 = dataCopy;
+  v18 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = dataCopy;
+  [(SPCompanionAppServer *)self sendToRemoteInterface:applicationCopy call:v16];
 }
 
-- (void)sendProtoData:(id)a3 toCompanionApplication:(id)a4 fromIdentifier:(id)a5
+- (void)sendProtoData:(id)data toCompanionApplication:(id)application fromIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 length];
+  dataCopy = data;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  v11 = [dataCopy length];
   v12 = wk_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SPCompanionAppServer *)self decodeProtoData:v8];
+    v13 = [(SPCompanionAppServer *)self decodeProtoData:dataCopy];
     *buf = 136447490;
     v20 = "[SPCompanionAppServer sendProtoData:toCompanionApplication:fromIdentifier:]";
     v21 = 1024;
     v22 = 846;
     v23 = 2114;
-    v24 = v9;
+    v24 = applicationCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = identifierCopy;
     v27 = 2048;
     v28 = v11;
     v29 = 2114;
@@ -624,18 +624,18 @@ LABEL_17:
   v16[1] = 3221225472;
   v16[2] = sub_10000B7B4;
   v16[3] = &unk_100045628;
-  v17 = v8;
-  v18 = v10;
-  v14 = v10;
-  v15 = v8;
-  [(SPCompanionAppServer *)self sendToRemoteInterface:v9 call:v16];
+  v17 = dataCopy;
+  v18 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = dataCopy;
+  [(SPCompanionAppServer *)self sendToRemoteInterface:applicationCopy call:v16];
 }
 
-- (void)sendData:(id)a3 toApplication:(id)a4
+- (void)sendData:(id)data toApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(__CFString *)v6 length];
+  dataCopy = data;
+  applicationCopy = application;
+  v8 = [(__CFString *)dataCopy length];
   v9 = wk_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -646,11 +646,11 @@ LABEL_17:
     v31 = 858;
     if (v8 < 0x10)
     {
-      v10 = v6;
+      v10 = dataCopy;
     }
 
     v32 = 2114;
-    v33 = v7;
+    v33 = applicationCopy;
     v34 = 2048;
     v35 = v8;
     v36 = 2114;
@@ -658,9 +658,9 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: ComD:->ComF application=%{public}@ len=%lu data=%{public}@", buf, 0x30u);
   }
 
-  v11 = [(SPCompanionAppServer *)self localConnections];
-  v12 = [v11 allKeys];
-  v13 = [v12 copy];
+  localConnections = [(SPCompanionAppServer *)self localConnections];
+  allKeys = [localConnections allKeys];
+  v13 = [allKeys copy];
 
   v25 = 0u;
   v26 = 0u;
@@ -683,13 +683,13 @@ LABEL_17:
         }
 
         v19 = *(*(&v23 + 1) + 8 * v18);
-        v20 = [(SPCompanionAppServer *)self localConnections];
-        v21 = [v20 objectForKeyedSubscript:v19];
+        localConnections2 = [(SPCompanionAppServer *)self localConnections];
+        v21 = [localConnections2 objectForKeyedSubscript:v19];
 
         if (v21)
         {
-          v22 = [v21 remoteObjectProxy];
-          [v22 receiveData:v6];
+          remoteObjectProxy = [v21 remoteObjectProxy];
+          [remoteObjectProxy receiveData:dataCopy];
         }
 
         v18 = v18 + 1;
@@ -703,11 +703,11 @@ LABEL_17:
   }
 }
 
-- (void)killExtensionForAppIdentifier:(id)a3
+- (void)killExtensionForAppIdentifier:(id)identifier
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v3 = +[SPApplicationManager sharedInstance];
-  v4 = [v3 pluginIdentifierForProtocolIdentifier:v10];
+  v4 = [v3 pluginIdentifierForProtocolIdentifier:identifierCopy];
 
   if (v4)
   {
@@ -716,32 +716,32 @@ LABEL_17:
 
     if (v6)
     {
-      v7 = [v6 pluginConnection];
-      v8 = [v7 processIdentifier];
+      pluginConnection = [v6 pluginConnection];
+      processIdentifier = [pluginConnection processIdentifier];
 
-      if (v8)
+      if (processIdentifier)
       {
         v9 = +[SPApplicationManager sharedInstance];
-        [v9 setExtension:v10 wasKilledDueToAppDeath:1];
+        [v9 setExtension:identifierCopy wasKilledDueToAppDeath:1];
 
-        kill(v8, 9);
+        kill(processIdentifier, 9);
       }
     }
   }
 }
 
-- (void)fetchInstalledApplicationsWithCompletion:(id)a3
+- (void)fetchInstalledApplicationsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SPApplicationManager sharedInstance];
-  [v4 fetchInstalledApplicationsWithCompletion:v3];
+  [v4 fetchInstalledApplicationsWithCompletion:completionCopy];
 }
 
-- (void)launchSockPuppetAppForCompanionAppWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5
+- (void)launchSockPuppetAppForCompanionAppWithIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = wk_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -750,9 +750,9 @@ LABEL_17:
     v23 = 1024;
     v24 = 895;
     v25 = 2114;
-    v26 = v8;
+    v26 = identifierCopy;
     v27 = 2114;
-    v28 = v9;
+    v28 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: companionAppIdentifier=%{public}@, options is %{public}@", buf, 0x26u);
   }
 
@@ -762,29 +762,29 @@ LABEL_17:
   }
 
   v12 = dispatch_time(0, 500000000);
-  v13 = [(SPCompanionAppServer *)self launchSockPuppetAppQueue];
+  launchSockPuppetAppQueue = [(SPCompanionAppServer *)self launchSockPuppetAppQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000BFAC;
   v17[3] = &unk_100045670;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  dispatch_after(v12, v13, v17);
+  v18 = identifierCopy;
+  v19 = optionsCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = optionsCopy;
+  v16 = identifierCopy;
+  dispatch_after(v12, launchSockPuppetAppQueue, v17);
 }
 
-- (void)_sockPuppetAppListUpdatedToLaunchSockPuppetAppForCompanionAppWithIdentifier:(id)a3 options:(id)a4 acxRetryGeneration:(unint64_t)a5 completion:(id)a6
+- (void)_sockPuppetAppListUpdatedToLaunchSockPuppetAppForCompanionAppWithIdentifier:(id)identifier options:(id)options acxRetryGeneration:(unint64_t)generation completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v13 = wk_default_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (identifierCopy)
   {
     if (v14)
     {
@@ -793,7 +793,7 @@ LABEL_17:
       v25 = 1024;
       v26 = 953;
       v27 = 2114;
-      v28 = v10;
+      v28 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: companionAppIdentifier=%{public}@", buf, 0x1Cu);
     }
 
@@ -802,11 +802,11 @@ LABEL_17:
     v18[2] = sub_10000C540;
     v18[3] = &unk_100045760;
     v18[4] = self;
-    v22 = a5;
-    v21 = v12;
-    v15 = v10;
+    generationCopy = generation;
+    v21 = completionCopy;
+    v15 = identifierCopy;
     v19 = v15;
-    v20 = v11;
+    v20 = optionsCopy;
     v16 = objc_retainBlock(v18);
     v17 = +[ACXDeviceConnection sharedDeviceConnection];
     [v17 fetchApplicationWithContainingApplicationBundleID:v15 completion:v16];
@@ -861,10 +861,10 @@ LABEL_17:
   }
 }
 
-- (void)terminateSockPuppetAppForCompanionAppWithIdentifier:(id)a3 completion:(id)a4
+- (void)terminateSockPuppetAppForCompanionAppWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = wk_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -873,44 +873,44 @@ LABEL_17:
     v22 = 1024;
     v23 = 1087;
     v24 = 2114;
-    v25 = v6;
+    v25 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: companionAppIdentifier=%{public}@", buf, 0x1Cu);
   }
 
-  v9 = [(SPCompanionAppServer *)self processAssertionForXcodeQueue];
+  processAssertionForXcodeQueue = [(SPCompanionAppServer *)self processAssertionForXcodeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D620;
   block[3] = &unk_100044778;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(processAssertionForXcodeQueue, block);
 
-  v10 = [(SPCompanionAppServer *)self launchSockPuppetAppQueue];
+  launchSockPuppetAppQueue = [(SPCompanionAppServer *)self launchSockPuppetAppQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000D628;
   v18[3] = &unk_100044778;
   v18[4] = self;
-  dispatch_sync(v10, v18);
+  dispatch_sync(launchSockPuppetAppQueue, v18);
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000D630;
   v15[3] = &unk_100045788;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
   v13 = objc_retainBlock(v15);
   v14 = +[ACXDeviceConnection sharedDeviceConnection];
   [v14 fetchApplicationWithContainingApplicationBundleID:v12 completion:v13];
 }
 
-- (void)getSockPuppetAppRunningStatusForCompanionAppWithIdentifier:(id)a3 completion:(id)a4
+- (void)getSockPuppetAppRunningStatusForCompanionAppWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = wk_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -919,7 +919,7 @@ LABEL_17:
     v18 = 1024;
     v19 = 1134;
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: companionAppIdentifier=%{public}@", buf, 0x1Cu);
   }
 
@@ -928,18 +928,18 @@ LABEL_17:
   v12[1] = 3221225472;
   v12[2] = sub_10000DCE0;
   v12[3] = &unk_1000457B0;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = identifierCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   [v9 fetchInstalledApplicationsWithCompletion:v12];
 }
 
-- (void)getCompanionExtensionPIDForCompanionAppWithIdentifier:(id)a3 completion:(id)a4
+- (void)getCompanionExtensionPIDForCompanionAppWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = wk_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -948,7 +948,7 @@ LABEL_17:
     v16 = 1024;
     v17 = 1157;
     v18 = 2114;
-    v19 = v5;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: companionAppIdentifier=%{public}@", buf, 0x1Cu);
   }
 
@@ -957,21 +957,21 @@ LABEL_17:
   v11[1] = 3221225472;
   v11[2] = sub_10000E070;
   v11[3] = &unk_1000457D8;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   [v8 fetchInstalledApplicationsWithCompletion:v11];
 }
 
-- (void)xcodeWillInstallSockPuppetAppWithCompanionAppIdentifier:(id)a3 completion:(id)a4
+- (void)xcodeWillInstallSockPuppetAppWithCompanionAppIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 length])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
     v6 = +[SPApplicationManager sharedInstance];
-    [v6 xcodeWillInstallSockPuppetAppWithCompanionAppID:v8];
+    [v6 xcodeWillInstallSockPuppetAppWithCompanionAppID:identifierCopy];
 
     v7 = 0;
   }
@@ -981,19 +981,19 @@ LABEL_17:
     v7 = [SPError errorWithCode:6];
   }
 
-  v5[2](v5, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)showUserNotification:(int64_t)a3 applicationName:(id)a4
+- (void)showUserNotification:(int64_t)notification applicationName:(id)name
 {
   v10[0] = @"ns";
   v9[0] = @"c";
   v9[1] = @"nt";
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
+  nameCopy = name;
+  v7 = [NSNumber numberWithInteger:notification];
   v9[2] = @"n";
   v10[1] = v7;
-  v10[2] = v6;
+  v10[2] = nameCopy;
   v8 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   [(SPCompanionAppServer *)self sendPlist:v8 securityType:1];
@@ -1007,9 +1007,9 @@ LABEL_17:
   [(SPCompanionAppServer *)self sendPlist:v3 securityType:1];
 }
 
-- (void)wakeExtensionForWatchApp:(id)a3
+- (void)wakeExtensionForWatchApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1018,47 +1018,47 @@ LABEL_17:
     v8 = 1024;
     v9 = 1202;
     v10 = 2114;
-    v11 = v4;
+    v11 = appCopy;
     v12 = 2114;
-    v13 = v4;
+    v13 = appCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: called for %{public}@. This should be done sparingly. If you're seeing this very often, please write a radar against the app that owns %{public}@", &v6, 0x26u);
   }
 
-  [(SPCompanionAppServer *)self sendToRemoteInterface:v4 call:&stru_100045818];
+  [(SPCompanionAppServer *)self sendToRemoteInterface:appCopy call:&stru_100045818];
 }
 
-- (void)extensionWithIdentifier:(id)a3 gotUnknownInterfaceController:(id)a4
+- (void)extensionWithIdentifier:(id)identifier gotUnknownInterfaceController:(id)controller
 {
   v9[0] = @"c";
   v9[1] = @"i";
   v10[0] = @"uIC";
-  v10[1] = a3;
+  v10[1] = identifier;
   v9[2] = @"IC";
-  v10[2] = a4;
-  v6 = a4;
-  v7 = a3;
+  v10[2] = controller;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v8 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   [(SPCompanionAppServer *)self sendPlist:v8 securityType:0];
 }
 
-- (void)sendData:(id)a3 identifier:(id)a4 clientIdentifiers:(id)a5
+- (void)sendData:(id)data identifier:(id)identifier clientIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 length];
+  dataCopy = data;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  v11 = [dataCopy length];
   v12 = wk_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SPCompanionAppServer *)self logStringArray:v10];
-    v14 = [(SPCompanionAppServer *)self decodeInData:v8];
+    v13 = [(SPCompanionAppServer *)self logStringArray:identifiersCopy];
+    v14 = [(SPCompanionAppServer *)self decodeInData:dataCopy];
     v17 = 136447491;
     v18 = "[SPCompanionAppServer sendData:identifier:clientIdentifiers:]";
     v19 = 1024;
     v20 = 1224;
     v21 = 2114;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
     v24 = v13;
     v25 = 2048;
@@ -1070,30 +1070,30 @@ LABEL_17:
 
   v15 = [NSMutableDictionary dictionaryWithCapacity:0];
   v16 = v15;
-  if (v9)
+  if (identifierCopy)
   {
-    [v15 setObject:v9 forKey:@"i"];
+    [v15 setObject:identifierCopy forKey:@"i"];
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    [v16 setObject:v8 forKey:@"d"];
+    [v16 setObject:dataCopy forKey:@"d"];
   }
 
-  if (v10)
+  if (identifiersCopy)
   {
-    [v16 setObject:v10 forKey:@"ci"];
+    [v16 setObject:identifiersCopy forKey:@"ci"];
   }
 
   [(SPCompanionAppServer *)self sendPlist:v16 securityType:0];
 }
 
-- (void)sendData:(id)a3 identifier:(id)a4 clientIdentifiers:(id)a5 reply:(id)a6
+- (void)sendData:(id)data identifier:(id)identifier clientIdentifiers:(id)identifiers reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6)
+  dataCopy = data;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  if (reply)
   {
     v14 = wk_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1102,20 +1102,20 @@ LABEL_17:
     }
   }
 
-  [(SPCompanionAppServer *)self sendData:v11 identifier:v12 clientIdentifiers:v13];
+  [(SPCompanionAppServer *)self sendData:dataCopy identifier:identifierCopy clientIdentifiers:identifiersCopy];
 }
 
-- (void)sendCacheRequest:(id)a3 identifier:(id)a4
+- (void)sendCacheRequest:(id)request identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [SPIDSProtobuf cacheRequestWithProtoData:a3 identifier:v6];
-  [(SPCompanionAppServer *)self sendProtobuf:v7 sender:v6 timeOut:0 securityType:60.0];
+  identifierCopy = identifier;
+  v7 = [SPIDSProtobuf cacheRequestWithProtoData:request identifier:identifierCopy];
+  [(SPCompanionAppServer *)self sendProtobuf:v7 sender:identifierCopy timeOut:0 securityType:60.0];
 }
 
-- (void)requestTimingData:(id)a3 timingMetaData:(id)a4
+- (void)requestTimingData:(id)data timingMetaData:(id)metaData
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
+  dataCopy = data;
+  v7 = [metaData mutableCopy];
   timingTest_queue = self->_timingTest_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1123,7 +1123,7 @@ LABEL_17:
   block[3] = &unk_1000447A0;
   v9 = v7;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   dispatch_sync(timingTest_queue, block);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1131,12 +1131,12 @@ LABEL_17:
   v11[3] = &unk_100045840;
   v12 = v9;
   v10 = v9;
-  [(SPCompanionAppServer *)self sendToRemoteInterface:v6 call:v11];
+  [(SPCompanionAppServer *)self sendToRemoteInterface:dataCopy call:v11];
 }
 
-- (void)fetchNotificationForNotificationID:(id)a3 completion:(id)a4
+- (void)fetchNotificationForNotificationID:(id)d completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1144,43 +1144,43 @@ LABEL_17:
   }
 
   v6 = [SPError errorWithCode:28];
-  (*(v4 + 2))(v4, 0, 0, 0, v6);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, v6);
 }
 
-- (void)incomingProtobuf:(id)a3
+- (void)incomingProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [SPProtoSockPuppetIDSObject alloc];
-  v6 = [v4 data];
+  data = [protobufCopy data];
 
-  v12 = [(SPProtoSockPuppetIDSObject *)v5 initWithData:v6];
-  v7 = [(SPProtoSockPuppetIDSObject *)v12 type];
-  if (v7 == 3)
+  v12 = [(SPProtoSockPuppetIDSObject *)v5 initWithData:data];
+  type = [(SPProtoSockPuppetIDSObject *)v12 type];
+  if (type == 3)
   {
     [(SPCompanionAppServer *)self handleIncomingProtoPlist:v12];
     goto LABEL_6;
   }
 
-  v8 = v7 == 2;
+  v8 = type == 2;
   v9 = v12;
   if (v8)
   {
-    v10 = [(SPProtoSockPuppetIDSObject *)v12 objectData];
-    v11 = [(SPProtoSockPuppetIDSObject *)v12 receiver];
-    [(SPCompanionAppServer *)self sendProtoData:v10 toCompanionApplication:v11 fromIdentifier:0];
+    objectData = [(SPProtoSockPuppetIDSObject *)v12 objectData];
+    receiver = [(SPProtoSockPuppetIDSObject *)v12 receiver];
+    [(SPCompanionAppServer *)self sendProtoData:objectData toCompanionApplication:receiver fromIdentifier:0];
 
 LABEL_6:
     v9 = v12;
   }
 }
 
-- (void)handleIncomingProtoPlist:(id)a3
+- (void)handleIncomingProtoPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   [(SPCompanionAppServer *)self _saveReceiveTime];
   v5 = [SPProtoSockPuppetPlist alloc];
-  v6 = [v4 objectData];
-  v7 = [(SPProtoSockPuppetPlist *)v5 initWithData:v6];
+  objectData = [plistCopy objectData];
+  v7 = [(SPProtoSockPuppetPlist *)v5 initWithData:objectData];
 
   if (v7)
   {
@@ -1188,17 +1188,17 @@ LABEL_6:
     if (v8)
     {
       v9 = [(SPCompanionAppServer *)self appBundleIDFromPlist:v8];
-      v10 = [(SPCompanionAppServer *)self usageTrack];
-      v11 = [v4 objectData];
-      [v10 dataReceiedFromGizmo:objc_msgSend(v11 application:{"length"), v9}];
+      usageTrack = [(SPCompanionAppServer *)self usageTrack];
+      objectData2 = [plistCopy objectData];
+      [usageTrack dataReceiedFromGizmo:objc_msgSend(objectData2 application:{"length"), v9}];
 
       v16[0] = @"action";
       v16[1] = @"application";
       v17[0] = @"incomingData";
       v17[1] = v9;
       v16[2] = @"length";
-      v12 = [v4 objectData];
-      v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 length]);
+      objectData3 = [plistCopy objectData];
+      v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [objectData3 length]);
       v17[2] = v13;
       v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
@@ -1228,7 +1228,7 @@ LABEL_6:
   }
 }
 
-- (void)_saveSendTimeAndSize:(unint64_t)a3
+- (void)_saveSendTimeAndSize:(unint64_t)size
 {
   +[NSDate timeIntervalSinceReferenceDate];
   timingTest_queue = self->_timingTest_queue;
@@ -1238,7 +1238,7 @@ LABEL_6:
   block[3] = &unk_100045868;
   block[4] = self;
   block[5] = v6;
-  block[6] = a3;
+  block[6] = size;
   dispatch_async(timingTest_queue, block);
 }
 
@@ -1255,19 +1255,19 @@ LABEL_6:
   dispatch_async(timingTest_queue, v5);
 }
 
-- (void)incomingData:(id)a3
+- (void)incomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   kdebug_trace();
   [(SPCompanionAppServer *)self _saveReceiveTime];
-  [(SPCompanionAppServer *)self handleIncomingData:v4];
+  [(SPCompanionAppServer *)self handleIncomingData:dataCopy];
 }
 
-- (void)handleIncomingData:(id)a3
+- (void)handleIncomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14 = 0;
-  v5 = [NSPropertyListSerialization propertyListWithData:v4 options:0 format:0 error:&v14];
+  v5 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v14];
   v6 = v14;
   v7 = wk_default_log();
   v8 = v7;
@@ -1289,15 +1289,15 @@ LABEL_6:
     }
 
     v8 = [(SPCompanionAppServer *)self appBundleIDFromPlist:v5];
-    v10 = [(SPCompanionAppServer *)self usageTrack];
-    [v10 dataReceiedFromGizmo:objc_msgSend(v4 application:{"length"), v8}];
+    usageTrack = [(SPCompanionAppServer *)self usageTrack];
+    [usageTrack dataReceiedFromGizmo:objc_msgSend(dataCopy application:{"length"), v8}];
 
     v15[0] = @"action";
     v15[1] = @"application";
     v16[0] = @"incomingData";
     v16[1] = v8;
     v15[2] = @"length";
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 length]);
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy length]);
     v16[2] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
 
@@ -1313,9 +1313,9 @@ LABEL_6:
   }
 }
 
-- (id)appBundleIDFromPlist:(id)a3
+- (id)appBundleIDFromPlist:(id)plist
 {
-  v3 = [a3 objectForKeyedSubscript:@"i"];
+  v3 = [plist objectForKeyedSubscript:@"i"];
   if (!v3)
   {
     v3 = @"com.apple.companionappd";
@@ -1324,10 +1324,10 @@ LABEL_6:
   return v3;
 }
 
-- (void)handleIncomingPlist:(id)a3
+- (void)handleIncomingPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"i"];
+  plistCopy = plist;
+  v5 = [plistCopy objectForKeyedSubscript:@"i"];
   if (v5)
   {
     v6 = v5;
@@ -1338,21 +1338,21 @@ LABEL_6:
     v6 = @"companionappd";
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"c"];
-  v8 = [v4 objectForKeyedSubscript:@"ci"];
+  v7 = [plistCopy objectForKeyedSubscript:@"c"];
+  v8 = [plistCopy objectForKeyedSubscript:@"ci"];
   if (![v7 length])
   {
-    v12 = [v4 objectForKeyedSubscript:@"p"];
+    v12 = [plistCopy objectForKeyedSubscript:@"p"];
 
     if (v12)
     {
-      v13 = [v4 objectForKeyedSubscript:@"p"];
+      v13 = [plistCopy objectForKeyedSubscript:@"p"];
       [(SPCompanionAppServer *)self sendProtoData:v13 toCompanionApplication:v6 fromIdentifier:v8];
     }
 
     else
     {
-      v13 = [v4 objectForKeyedSubscript:@"d"];
+      v13 = [plistCopy objectForKeyedSubscript:@"d"];
       [(SPCompanionAppServer *)self sendData:v13 toCompanionApplication:v6 fromIdentifier:v8];
     }
 
@@ -1361,7 +1361,7 @@ LABEL_6:
     v32[2] = sub_100010A3C;
     v32[3] = &unk_100045538;
     v32[4] = self;
-    v33 = v4;
+    v33 = plistCopy;
     v34 = v6;
     dispatch_async(&_dispatch_main_q, v32);
 
@@ -1371,7 +1371,7 @@ LABEL_6:
 
   if ([v7 isEqualToString:@"at"])
   {
-    v9 = [(SPCompanionAppServer *)self processAssertionQueue];
+    processAssertionQueue = [(SPCompanionAppServer *)self processAssertionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000101A0;
@@ -1379,7 +1379,7 @@ LABEL_6:
     block[4] = self;
     v10 = v6;
     v58 = v10;
-    dispatch_async(v9, block);
+    dispatch_async(processAssertionQueue, block);
 
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
@@ -1457,7 +1457,7 @@ LABEL_17:
     v45[2] = sub_10001051C;
     v45[3] = &unk_1000458B8;
     v46 = v8;
-    v47 = self;
+    selfCopy = self;
     v48 = v6;
     [(SPCompanionAppServer *)self sendToRemoteInterface:v48 call:v45];
 
@@ -1531,7 +1531,7 @@ LABEL_32:
 
   if ([v7 isEqualToString:@"lg"])
   {
-    v17 = [v4 objectForKeyedSubscript:@"tid"];
+    v17 = [plistCopy objectForKeyedSubscript:@"tid"];
     v15 = [(SPCompanionAppServer *)self transactionDictForID:v17 removeFromOutstanding:1];
 
     v18 = [v15 objectForKeyedSubscript:@"completion"];
@@ -1542,11 +1542,11 @@ LABEL_44:
       goto LABEL_32;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"d"];
+    v19 = [plistCopy objectForKeyedSubscript:@"d"];
     if ([v19 code])
     {
-      v20 = [v19 domain];
-      v21 = [v20 isEqualToString:@"com.apple.watchkit.errors"];
+      domain = [v19 domain];
+      v21 = [domain isEqualToString:@"com.apple.watchkit.errors"];
 
       if (v21)
       {
@@ -1564,7 +1564,7 @@ LABEL_43:
 
   if ([v7 isEqualToString:@"kg"])
   {
-    v23 = [v4 objectForKeyedSubscript:@"tid"];
+    v23 = [plistCopy objectForKeyedSubscript:@"tid"];
     v15 = [(SPCompanionAppServer *)self transactionDictForID:v23 removeFromOutstanding:1];
 
     v18 = [v15 objectForKeyedSubscript:@"completion"];
@@ -1573,10 +1573,10 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"d"];
-    v25 = [v24 BOOLValue];
+    v24 = [plistCopy objectForKeyedSubscript:@"d"];
+    bOOLValue = [v24 BOOLValue];
 
-    if (v25)
+    if (bOOLValue)
     {
       (*(v18 + 16))(v18, 0);
       goto LABEL_44;
@@ -1589,16 +1589,16 @@ LABEL_43:
 
   if ([v7 isEqualToString:@"gs"])
   {
-    v26 = [v4 objectForKeyedSubscript:@"tid"];
+    v26 = [plistCopy objectForKeyedSubscript:@"tid"];
     v15 = [(SPCompanionAppServer *)self transactionDictForID:v26 removeFromOutstanding:1];
 
     v18 = [v15 objectForKeyedSubscript:@"completion"];
     if (v18)
     {
-      v27 = [v4 objectForKeyedSubscript:@"d"];
-      v28 = [v27 BOOLValue];
+      v27 = [plistCopy objectForKeyedSubscript:@"d"];
+      bOOLValue2 = [v27 BOOLValue];
 
-      (*(v18 + 16))(v18, 0, v28);
+      (*(v18 + 16))(v18, 0, bOOLValue2);
     }
 
     goto LABEL_44;
@@ -1607,7 +1607,7 @@ LABEL_43:
   if ([v7 isEqualToString:@"cds"])
   {
     v15 = +[SPApplicationManager sharedInstance];
-    [v15 updateCoreDuetSession:v4];
+    [v15 updateCoreDuetSession:plistCopy];
     goto LABEL_32;
   }
 
@@ -1619,7 +1619,7 @@ LABEL_43:
 
   if ([v7 isEqualToString:@"slk"])
   {
-    v15 = [v4 objectForKeyedSubscript:@"slm"];
+    v15 = [plistCopy objectForKeyedSubscript:@"slm"];
     v18 = wk_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -1643,7 +1643,7 @@ LABEL_43:
       goto LABEL_32;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"activeComplications"];
+    v18 = [plistCopy objectForKeyedSubscript:@"activeComplications"];
     *buf = 136446978;
     v60 = "[SPCompanionAppServer handleIncomingPlist:]";
     v61 = 1024;
@@ -1666,10 +1666,10 @@ LABEL_43:
     v35[1] = 3221225472;
     v35[2] = sub_100010884;
     v35[3] = &unk_100045900;
-    v36 = v4;
+    v36 = plistCopy;
     v37 = v6;
     v38 = v8;
-    v39 = self;
+    selfCopy2 = self;
     v40 = v30;
     v31 = v30;
     [(SPCompanionAppServer *)self sendToRemoteInterface:v37 call:v35];
@@ -1678,30 +1678,30 @@ LABEL_43:
 LABEL_18:
 }
 
-- (void)_applicationActivated:(id)a3
+- (void)_applicationActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithString:v4];
+  activatedCopy = activated;
+  v5 = [[NSString alloc] initWithString:activatedCopy];
 
   activeApplication = self->_activeApplication;
   self->_activeApplication = v5;
 }
 
-- (void)_applicationDeactivated:(id)a3
+- (void)_applicationDeactivated:(id)deactivated
 {
-  v4 = a3;
+  deactivatedCopy = deactivated;
   activeApplication = self->_activeApplication;
   self->_activeApplication = 0;
 
-  v6 = [(SPCompanionAppServer *)self processAssertionQueue];
+  processAssertionQueue = [(SPCompanionAppServer *)self processAssertionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010CAC;
   block[3] = &unk_1000447A0;
   block[4] = self;
-  v7 = v4;
+  v7 = deactivatedCopy;
   v14 = v7;
-  dispatch_async(v6, block);
+  dispatch_async(processAssertionQueue, block);
 
   v8 = +[SPApplicationManager sharedInstance];
   v9 = [v8 pluginIdentifierForProtocolIdentifier:v7];
@@ -1719,31 +1719,31 @@ LABEL_18:
   }
 }
 
-- (void)releaseProcessAssertion:(id)a3
+- (void)releaseProcessAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKSProcessAssertion *)self->_processAssertion name];
+    name = [(BKSProcessAssertion *)self->_processAssertion name];
     *buf = 136446978;
     v18 = "[SPCompanionAppServer releaseProcessAssertion:]";
     v19 = 1024;
     v20 = 1547;
     v21 = 2114;
-    v22 = v4;
+    v22 = assertionCopy;
     v23 = 2114;
-    v24 = v6;
+    v24 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: releaseProcessAssertion for application %{public}@, current assertion:%{public}@", buf, 0x26u);
   }
 
-  v7 = [(BKSProcessAssertion *)self->_processAssertion name];
-  v8 = [v7 isEqualToString:v4];
+  name2 = [(BKSProcessAssertion *)self->_processAssertion name];
+  v8 = [name2 isEqualToString:assertionCopy];
 
   if (v8 && !self->_activeApplication)
   {
     v9 = +[SPApplicationManager sharedInstance];
-    v10 = [v9 pluginIdentifierForProtocolIdentifier:v4];
+    v10 = [v9 pluginIdentifierForProtocolIdentifier:assertionCopy];
 
     v11 = self->_processAssertion;
     v12 = +[SPApplicationManager sharedInstance];
@@ -1760,9 +1760,9 @@ LABEL_18:
   }
 }
 
-- (void)setApplicationIDForXcodeProcessAssertion:(id)a3
+- (void)setApplicationIDForXcodeProcessAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1771,12 +1771,12 @@ LABEL_18:
     v17 = 1024;
     v18 = 1565;
     v19 = 2114;
-    v20 = v4;
+    v20 = assertionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: application %{public}@", buf, 0x1Cu);
   }
 
   v6 = +[SPApplicationManager sharedInstance];
-  v7 = [v6 pluginIdentifierForProtocolIdentifier:v4];
+  v7 = [v6 pluginIdentifierForProtocolIdentifier:assertionCopy];
 
   v8 = +[SPApplicationManager sharedInstance];
   [v8 setCurrentXcodeControlledPlugin:v7];
@@ -1789,7 +1789,7 @@ LABEL_18:
   v11[3] = &unk_100045950;
   v10 = v7;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   objc_copyWeak(&v14, buf);
   [v9 waitForPreviousPluginToFinishEnding:v10 toComplete:v11];
 
@@ -1797,26 +1797,26 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)takeProcessAssertionForXcode:(id)a3
+- (void)takeProcessAssertionForXcode:(id)xcode
 {
-  v4 = a3;
+  xcodeCopy = xcode;
   v5 = wk_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
+    name = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
     *buf = 136446978;
     v17 = "[SPCompanionAppServer takeProcessAssertionForXcode:]";
     v18 = 1024;
     v19 = 1589;
     v20 = 2114;
-    v21 = v4;
+    v21 = xcodeCopy;
     v22 = 2114;
-    v23 = v6;
+    v23 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: pluginIdentifier %{public}@, current assertion:%{public}@", buf, 0x26u);
   }
 
-  v7 = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
-  v8 = [v7 isEqualToString:v4];
+  name2 = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
+  v8 = [name2 isEqualToString:xcodeCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -1824,7 +1824,7 @@ LABEL_18:
     processAssertionForXcode = self->_processAssertionForXcode;
     self->_processAssertionForXcode = 0;
 
-    if (v4)
+    if (xcodeCopy)
     {
       objc_initWeak(buf, self);
       v10 = +[SPApplicationManager sharedInstance];
@@ -1832,8 +1832,8 @@ LABEL_18:
       v12[1] = 3221225472;
       v12[2] = sub_100011514;
       v12[3] = &unk_100045950;
-      v13 = v4;
-      v14 = self;
+      v13 = xcodeCopy;
+      selfCopy = self;
       objc_copyWeak(&v15, buf);
       [v10 waitForPreviousPluginToFinishEnding:v13 toComplete:v12];
 
@@ -1857,13 +1857,13 @@ LABEL_18:
   v3 = wk_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
+    name = [(BKSProcessAssertion *)self->_processAssertionForXcode name];
     *buf = 136446722;
     v9 = "[SPCompanionAppServer releaseProcessAssertionForXcode]";
     v10 = 1024;
     v11 = 1654;
     v12 = 2114;
-    v13 = v4;
+    v13 = name;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: current assertion:%{public}@", buf, 0x1Cu);
   }
 
@@ -1882,29 +1882,29 @@ LABEL_18:
   self->_processAssertionForXcode = 0;
 }
 
-- (void)releaseRemoteInterfaceAssertionsForPluginIdentifer:(id)a3
+- (void)releaseRemoteInterfaceAssertionsForPluginIdentifer:(id)identifer
 {
-  v4 = a3;
-  v5 = [(SPCompanionAppServer *)self remoteInterfaceProcessAssertionsQueue];
+  identiferCopy = identifer;
+  remoteInterfaceProcessAssertionsQueue = [(SPCompanionAppServer *)self remoteInterfaceProcessAssertionsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011FC8;
   v7[3] = &unk_1000447A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identiferCopy;
+  selfCopy = self;
+  v6 = identiferCopy;
+  dispatch_sync(remoteInterfaceProcessAssertionsQueue, v7);
 }
 
-- (BOOL)showUserNotificationWithTitle:(id)a3 message:(id)a4
+- (BOOL)showUserNotificationWithTitle:(id)title message:(id)message
 {
   v13[0] = kCFUserNotificationAlertHeaderKey;
   v13[1] = kCFUserNotificationAlertMessageKey;
-  v14[0] = a3;
-  v14[1] = a4;
+  v14[0] = title;
+  v14[1] = message;
   v13[2] = kCFUserNotificationAlertTopMostKey;
-  v5 = a4;
-  v6 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v7 = [NSNumber numberWithBool:1];
   v13[3] = kCFUserNotificationAlternateButtonTitleKey;
   v14[2] = v7;
@@ -1924,7 +1924,7 @@ LABEL_18:
   return v10;
 }
 
-- (void)nanoRegistryChanged:(id)a3
+- (void)nanoRegistryChanged:(id)changed
 {
   [(SPCompanionAppServer *)self setPaired:[(SPCompanionAppServer *)self isPaired]];
   v4 = wk_default_log();
@@ -1935,7 +1935,7 @@ LABEL_18:
     v7 = 1024;
     v8 = 1720;
     v9 = 1024;
-    v10 = [(SPCompanionAppServer *)self paired];
+    paired = [(SPCompanionAppServer *)self paired];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: nanoRegistryChanged, paired: %d", &v5, 0x18u);
   }
 }
@@ -1943,48 +1943,48 @@ LABEL_18:
 - (BOOL)isPaired
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 isPaired];
+  isPaired = [v2 isPaired];
 
-  return v3;
+  return isPaired;
 }
 
-- (void)sendAndTrackTransactionDict:(id)a3 withCompletion:(id)a4
+- (void)sendAndTrackTransactionDict:(id)dict withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SPCompanionAppServer *)self transactionQueue];
+  dictCopy = dict;
+  completionCopy = completion;
+  transactionQueue = [(SPCompanionAppServer *)self transactionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012544;
   block[3] = &unk_100045538;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dictCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dictCopy;
+  dispatch_async(transactionQueue, block);
 }
 
-- (id)transactionDictForID:(id)a3 removeFromOutstanding:(BOOL)a4
+- (id)transactionDictForID:(id)d removeFromOutstanding:(BOOL)outstanding
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_10001299C;
   v19 = sub_1000129AC;
   v20 = 0;
-  v7 = [(SPCompanionAppServer *)self transactionQueue];
+  transactionQueue = [(SPCompanionAppServer *)self transactionQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000129B4;
   v11[3] = &unk_100045A18;
-  v12 = v6;
+  v12 = dCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  outstandingCopy = outstanding;
+  v8 = dCopy;
+  dispatch_sync(transactionQueue, v11);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -1992,15 +1992,15 @@ LABEL_18:
   return v9;
 }
 
-- (id)decodeProtoData:(id)a3
+- (id)decodeProtoData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = wk_default_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
   if (v5)
   {
-    v6 = [SPProtoSerializer objectWithData:v3];
+    v6 = [SPProtoSerializer objectWithData:dataCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2027,9 +2027,9 @@ LABEL_18:
   return v7;
 }
 
-- (id)decodeOutData:(id)a3
+- (id)decodeOutData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = wk_default_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -2039,7 +2039,7 @@ LABEL_18:
     goto LABEL_41;
   }
 
-  v6 = [[SPProtoSockPuppetPlist alloc] initWithData:v3];
+  v6 = [[SPProtoSockPuppetPlist alloc] initWithData:dataCopy];
   if (v6)
   {
     v7 = [SPProtoSerializer dictionaryWithSPPlist:v6];
@@ -2224,28 +2224,28 @@ LABEL_41:
   return v13;
 }
 
-- (id)decodeInData:(id)a3
+- (id)decodeInData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = wk_default_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
   if (v5)
   {
-    v6 = [[SPProtoSockPuppetPlist alloc] initWithData:v3];
+    v6 = [[SPProtoSockPuppetPlist alloc] initWithData:dataCopy];
     if (v6)
     {
       v7 = [SPProtoSerializer dictionaryWithSPPlist:v6];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 allKeys];
+        allKeys = [v7 allKeys];
         v10 = [NSMutableString stringWithString:@"keys:"];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v11 = v9;
+        v11 = allKeys;
         v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v12)
         {
@@ -2290,21 +2290,21 @@ LABEL_41:
   return v10;
 }
 
-- (id)logDictionary:(id)a3
+- (id)logDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = wk_default_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
   if (v5)
   {
-    v6 = [v3 allKeys];
+    allKeys = [dictionaryCopy allKeys];
     v7 = [NSMutableString stringWithString:@"keys:"];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = v6;
+    obj = allKeys;
     v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v8)
     {
@@ -2325,7 +2325,7 @@ LABEL_41:
         v12 = *(*(&v21 + 1) + 8 * i);
         if ([v12 isEqualToString:@"d"])
         {
-          v13 = [v3 objectForKeyedSubscript:v12];
+          v13 = [dictionaryCopy objectForKeyedSubscript:v12];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -2342,13 +2342,13 @@ LABEL_10:
         {
           if ([v12 isEqualToString:@"p"])
           {
-            v13 = [v3 objectForKeyedSubscript:v12];
+            v13 = [dictionaryCopy objectForKeyedSubscript:v12];
             -[__CFString appendFormat:](v7, "appendFormat:", @"proto data, len: %lu", [v13 length], v18);
             goto LABEL_17;
           }
 
           v16 = [v12 isEqualToString:@"ci"];
-          v13 = [v3 objectForKeyedSubscript:v12];
+          v13 = [dictionaryCopy objectForKeyedSubscript:v12];
           if (v16)
           {
             objc_opt_class();
@@ -2381,15 +2381,15 @@ LABEL_21:
   return v7;
 }
 
-- (id)logStringArray:(id)a3
+- (id)logStringArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = wk_default_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
   if (v5)
   {
-    v6 = [v3 componentsJoinedByString:{@", "}];
+    v6 = [arrayCopy componentsJoinedByString:{@", "}];
   }
 
   else
@@ -2400,11 +2400,11 @@ LABEL_21:
   return v6;
 }
 
-- (void)extensionDidBeginSnapshot:(id)a3
+- (void)extensionDidBeginSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  snapshotCopy = snapshot;
+  v5 = snapshotCopy;
+  if (snapshotCopy)
   {
     extensionsDoingSnapshotQueue = self->_extensionsDoingSnapshotQueue;
     block[0] = _NSConcreteStackBlock;
@@ -2412,7 +2412,7 @@ LABEL_21:
     block[2] = sub_100013890;
     block[3] = &unk_1000447A0;
     block[4] = self;
-    v7 = v4;
+    v7 = snapshotCopy;
     v13 = v7;
     dispatch_barrier_sync(extensionsDoingSnapshotQueue, block);
     v8 = dispatch_time(0, 25000000000);
@@ -2427,11 +2427,11 @@ LABEL_21:
   }
 }
 
-- (void)extensionDidEndSnapshot:(id)a3
+- (void)extensionDidEndSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  snapshotCopy = snapshot;
+  v5 = snapshotCopy;
+  if (snapshotCopy)
   {
     extensionsDoingSnapshotQueue = self->_extensionsDoingSnapshotQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -2439,16 +2439,16 @@ LABEL_21:
     v7[2] = sub_100013B84;
     v7[3] = &unk_1000447A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = snapshotCopy;
     dispatch_barrier_sync(extensionsDoingSnapshotQueue, v7);
   }
 }
 
-- (BOOL)isExtensionDoingSnapshot:(id)a3
+- (BOOL)isExtensionDoingSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  snapshotCopy = snapshot;
+  v5 = snapshotCopy;
+  if (snapshotCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -2461,7 +2461,7 @@ LABEL_21:
     block[3] = &unk_100045A40;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = snapshotCopy;
     dispatch_sync(extensionsDoingSnapshotQueue, block);
     v7 = *(v13 + 24);
 
@@ -2478,9 +2478,9 @@ LABEL_21:
 
 - (id)_textSizeChanged
 {
-  v2 = [(SPCompanionAppServer *)self _textSize];
-  v3 = v2;
-  if (qword_100051CF8 && ![v2 compare:?])
+  _textSize = [(SPCompanionAppServer *)self _textSize];
+  v3 = _textSize;
+  if (qword_100051CF8 && ![_textSize compare:?])
   {
     v4 = 0;
   }
@@ -2501,7 +2501,7 @@ LABEL_21:
     sub_10002977C();
   }
 
-  v2 = [qword_100051D00 synchronize];
+  synchronize = [qword_100051D00 synchronize];
   v3 = [qword_100051D00 objectForKey:@"UIPreferredContentSizeCategoryName"];
   if (!v3)
   {
@@ -2511,23 +2511,23 @@ LABEL_21:
   return v3;
 }
 
-- (void)_sendTextSizeToApplication:(id)a3 onlyIfChanged:(BOOL)a4
+- (void)_sendTextSizeToApplication:(id)application onlyIfChanged:(BOOL)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014010;
   block[3] = &unk_100045A88;
-  v7 = a4;
+  changedCopy = changed;
   block[4] = self;
-  v6 = a3;
-  v4 = v6;
+  applicationCopy = application;
+  v4 = applicationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)_isApplicationViewControllerActivate:(id)a3
+- (BOOL)_isApplicationViewControllerActivate:(id)activate
 {
-  v3 = a3;
-  v4 = [[SPProtoSockPuppetPlist alloc] initWithData:v3];
+  activateCopy = activate;
+  v4 = [[SPProtoSockPuppetPlist alloc] initWithData:activateCopy];
 
   if (!v4)
   {
@@ -2578,13 +2578,13 @@ LABEL_13:
   return v7;
 }
 
-- (void)activeComplicationsWithCompletion:(id)a3
+- (void)activeComplicationsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v3 = a3;
+    completionCopy = completion;
     v4 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.sockpuppet.activeComplications"];
-    v5 = [v4 synchronize];
+    synchronize = [v4 synchronize];
     v6 = [v4 arrayForKey:@"activeComplications"];
     v7 = [v6 copy];
 
@@ -2604,17 +2604,17 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: %{public}@ fetching domain %{public}@ returned bundleIDs %{public}@", &v9, 0x30u);
     }
 
-    v3[2](v3, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-- (id)applicationIdentifierFromXPCConnection:(id)a3
+- (id)applicationIdentifierFromXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -2644,13 +2644,13 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)connection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)connection:(id)connection hasEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  connectionCopy = connection;
+  entitlementCopy = entitlement;
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -2663,15 +2663,15 @@ LABEL_13:
   {
     v8 = v7;
     *cf.val = 0;
-    v9 = SecTaskCopyValueForEntitlement(v7, v6, &cf);
+    v9 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &cf);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
 
     if (*cf.val)
@@ -2684,10 +2684,10 @@ LABEL_13:
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
 @end

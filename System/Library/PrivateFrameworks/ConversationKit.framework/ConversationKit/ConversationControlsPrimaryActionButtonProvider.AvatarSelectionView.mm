@@ -6,7 +6,7 @@
 
 - (void)onTap
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsPrimaryActionButtonProvider.AvatarSelectionView.onTap()();
 }
 

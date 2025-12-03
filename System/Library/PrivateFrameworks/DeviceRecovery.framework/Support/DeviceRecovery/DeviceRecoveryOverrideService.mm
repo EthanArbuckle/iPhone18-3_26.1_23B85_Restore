@@ -1,6 +1,6 @@
 @interface DeviceRecoveryOverrideService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DeviceRecoveryOverrideService)initWithQueue:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DeviceRecoveryOverrideService)initWithQueue:(id)queue;
 - (id)startService;
 - (int)brainLoadResult;
 - (int)brainType;
@@ -8,19 +8,19 @@
 - (int)networkAvailableResult;
 - (int)recoveryResult;
 - (int)userAuthResult;
-- (void)fetchOverride:(id)a3 callback:(id)a4;
-- (void)removeAllOverrides:(id)a3;
-- (void)removeOverride:(id)a3 callback:(id)a4;
-- (void)setOverride:(id)a3 value:(id)a4 callback:(id)a5;
+- (void)fetchOverride:(id)override callback:(id)callback;
+- (void)removeAllOverrides:(id)overrides;
+- (void)removeOverride:(id)override callback:(id)callback;
+- (void)setOverride:(id)override value:(id)value callback:(id)callback;
 - (void)writeOverrideFile;
 @end
 
 @implementation DeviceRecoveryOverrideService
 
-- (DeviceRecoveryOverrideService)initWithQueue:(id)a3
+- (DeviceRecoveryOverrideService)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     p_super = sub_1000118BC();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceQueue, a3);
+    objc_storeStrong(&v6->_serviceQueue, queue);
     v8 = +[NSUserDefaults standardUserDefaults];
     self = [v8 persistentDomainForName:@"com.apple.DeviceRecovery.Overrides"];
 
@@ -80,8 +80,8 @@ LABEL_7:
   if (v3)
   {
     [v3 setDelegate:self];
-    v5 = [(DeviceRecoveryOverrideService *)self serviceQueue];
-    [v4 _setQueue:v5];
+    serviceQueue = [(DeviceRecoveryOverrideService *)self serviceQueue];
+    [v4 _setQueue:serviceQueue];
 
     [v4 resume];
     v6 = 0;
@@ -96,11 +96,11 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  connectionCopy = connection;
+  v6 = connectionCopy;
+  if (!connectionCopy)
   {
     sub_100018D54(buf, &v24);
     v7 = *buf;
@@ -108,7 +108,7 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  [v5 processIdentifier];
+  [connectionCopy processIdentifier];
   v7 = sub_10000EDB8();
   v8 = sub_1000118BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -163,9 +163,9 @@ LABEL_7:
   v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DeviceRecoveryOverrideServiceInterface];
   [v6 setExportedInterface:v13];
 
-  v14 = [v6 exportedInterface];
+  exportedInterface = [v6 exportedInterface];
 
-  if (!v14)
+  if (!exportedInterface)
   {
     sub_100018C8C();
 LABEL_20:
@@ -173,8 +173,8 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  v15 = [(DeviceRecoveryOverrideService *)self serviceQueue];
-  [v6 _setQueue:v15];
+  serviceQueue = [(DeviceRecoveryOverrideService *)self serviceQueue];
+  [v6 _setQueue:serviceQueue];
 
   [v6 setExportedObject:self];
   v22[0] = _NSConcreteStackBlock;
@@ -199,12 +199,12 @@ LABEL_11:
   return v17;
 }
 
-- (void)fetchOverride:(id)a3 callback:(id)a4
+- (void)fetchOverride:(id)override callback:(id)callback
 {
   overrides = self->overrides;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)overrides objectForKey:a3];
-  (*(a4 + 2))(v7, v8);
+  callbackCopy = callback;
+  v8 = [(NSMutableDictionary *)overrides objectForKey:override];
+  (*(callback + 2))(callbackCopy, v8);
 }
 
 - (void)writeOverrideFile
@@ -213,12 +213,12 @@ LABEL_11:
   [v3 setPersistentDomain:self->overrides forName:@"com.apple.DeviceRecovery.Overrides"];
 }
 
-- (void)setOverride:(id)a3 value:(id)a4 callback:(id)a5
+- (void)setOverride:(id)override value:(id)value callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_10000FC9C(v8, v9);
+  overrideCopy = override;
+  valueCopy = value;
+  callbackCopy = callback;
+  v11 = sub_10000FC9C(overrideCopy, valueCopy);
   v12 = sub_1000118BC();
   v13 = v12;
   if (v11)
@@ -230,45 +230,45 @@ LABEL_11:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = sub_10000F87C(v8, v9);
+      v14 = sub_10000F87C(overrideCopy, valueCopy);
       v15 = 136446722;
       v16 = "[DeviceRecoveryOverrideService setOverride:value:callback:]";
       v17 = 2114;
-      v18 = v8;
+      v18 = overrideCopy;
       v19 = 2114;
       v20 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s: Setting override '%{public}@' -> %{public}@", &v15, 0x20u);
     }
 
-    [(NSMutableDictionary *)self->overrides setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)self->overrides setObject:valueCopy forKey:overrideCopy];
     [(DeviceRecoveryOverrideService *)self writeOverrideFile];
   }
 
-  v10[2](v10, v11);
+  callbackCopy[2](callbackCopy, v11);
 }
 
-- (void)removeOverride:(id)a3 callback:(id)a4
+- (void)removeOverride:(id)override callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  callbackCopy = callback;
   v8 = sub_1000118BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
     v10 = "[DeviceRecoveryOverrideService removeOverride:callback:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = overrideCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing override '%{public}@'", &v9, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->overrides removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->overrides removeObjectForKey:overrideCopy];
   [(DeviceRecoveryOverrideService *)self writeOverrideFile];
-  v7[2](v7, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
-- (void)removeAllOverrides:(id)a3
+- (void)removeAllOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   v5 = sub_1000118BC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -279,7 +279,7 @@ LABEL_11:
 
   [(NSMutableDictionary *)self->overrides removeAllObjects];
   [(DeviceRecoveryOverrideService *)self writeOverrideFile];
-  v4[2](v4, 0);
+  overridesCopy[2](overridesCopy, 0);
 }
 
 - (int)brainType

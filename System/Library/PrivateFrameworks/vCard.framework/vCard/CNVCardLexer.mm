@@ -8,44 +8,44 @@
 - (BOOL)advanceToEOL;
 - (BOOL)advanceToEOLSingle;
 - (BOOL)advanceToEOLUnicode;
-- (BOOL)advanceToToken:(int)a3 throughTypes:(int64_t)a4;
-- (BOOL)advancedPastToken:(int)a3;
-- (CNVCardLexer)initWithData:(id)a3;
+- (BOOL)advanceToToken:(int)token throughTypes:(int64_t)types;
+- (BOOL)advancedPastToken:(int)token;
+- (CNVCardLexer)initWithData:(id)data;
 - (_NSRange)emptyRangeStartingAtCursor;
-- (_NSRange)expandRange:(_NSRange)a3 untilNextByteIs:(id)a4;
-- (_NSRange)rangeWithLength:(unint64_t)a3 lTrim:(unint64_t)a4 rTrim:(unint64_t)a5;
-- (id)clipAtGraphemeClusters:(id)a3 maximumValueLength:(unint64_t)a4 addEllipsisIfClipped:(BOOL)a5;
-- (id)dataWithRange:(_NSRange)a3;
-- (id)nextArraySeperatedByToken:(int)a3 stoppingAt:(int)a4 inEncoding:(unint64_t)a5 maximumValueLength:(unint64_t)a6;
+- (_NSRange)expandRange:(_NSRange)range untilNextByteIs:(id)is;
+- (_NSRange)rangeWithLength:(unint64_t)length lTrim:(unint64_t)trim rTrim:(unint64_t)rTrim;
+- (id)clipAtGraphemeClusters:(id)clusters maximumValueLength:(unint64_t)length addEllipsisIfClipped:(BOOL)clipped;
+- (id)dataWithRange:(_NSRange)range;
+- (id)nextArraySeperatedByToken:(int)token stoppingAt:(int)at inEncoding:(unint64_t)encoding maximumValueLength:(unint64_t)length;
 - (id)nextBase64Data;
-- (id)nextBase64Line:(BOOL *)a3;
+- (id)nextBase64Line:(BOOL *)line;
 - (id)nextEscapedCharacter;
 - (id)nextQuotedPrintableData;
-- (id)nextQuotedStringValueInEncoding:(unint64_t)a3;
-- (id)nextSingleByteBase64Line:(BOOL *)a3;
-- (id)nextSingleByteStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6 maximumValueLength:(unint64_t)a7;
-- (id)nextUnicodeBase64Line:(BOOL *)a3;
-- (id)nextUnicodeStringStopTokens:(int)a3 quotedPrintable:(BOOL)a4 trim:(BOOL)a5 maximumValueLength:(unint64_t)a6;
+- (id)nextQuotedStringValueInEncoding:(unint64_t)encoding;
+- (id)nextSingleByteBase64Line:(BOOL *)line;
+- (id)nextSingleByteStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim maximumValueLength:(unint64_t)length;
+- (id)nextUnicodeBase64Line:(BOOL *)line;
+- (id)nextUnicodeStringStopTokens:(int)tokens quotedPrintable:(BOOL)printable trim:(BOOL)trim maximumValueLength:(unint64_t)length;
 - (id)os_log;
-- (id)stringByRoundingData:(id)a3 toNextWholeCharacterUsingEncoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6 maximumValueLength:(unint64_t)a7;
-- (id)stringFromData:(id)a3 encoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6;
-- (id)stringFromSubData:(id)a3 encoding:(unint64_t)a4;
-- (id)stringWithRange:(_NSRange)a3 encoding:(unint64_t)a4;
-- (id)tokenSetForLength:(int64_t)a3;
-- (id)trimData:(id)a3 withPrefixLength:(unint64_t)a4 suffixLength:(unint64_t)a5;
-- (id)unicodeStringByRoundingData:(id)a3 toNextWholeCharacterUsingEncoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6 maximumValueLength:(unint64_t)a7;
-- (int)nextTokenPeekSingle:(BOOL)a3 length:(int64_t)a4;
-- (int)nextTokenPeekUnicode:(BOOL)a3 length:(int64_t)a4;
+- (id)stringByRoundingData:(id)data toNextWholeCharacterUsingEncoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength maximumValueLength:(unint64_t)valueLength;
+- (id)stringFromData:(id)data encoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength;
+- (id)stringFromSubData:(id)data encoding:(unint64_t)encoding;
+- (id)stringWithRange:(_NSRange)range encoding:(unint64_t)encoding;
+- (id)tokenSetForLength:(int64_t)length;
+- (id)trimData:(id)data withPrefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength;
+- (id)unicodeStringByRoundingData:(id)data toNextWholeCharacterUsingEncoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength maximumValueLength:(unint64_t)valueLength;
+- (int)nextTokenPeekSingle:(BOOL)single length:(int64_t)length;
+- (int)nextTokenPeekUnicode:(BOOL)unicode length:(int64_t)length;
 - (int)tokenAtCursor;
 - (int)tokenAtCursorIgnoringLineFolding;
 - (int64_t)advanceToSingleByteString;
 - (int64_t)advanceToString;
 - (int64_t)advanceToUnicodeString;
-- (unsigned)charAtPosition:(unint64_t)a3 withOffset:(int64_t)a4;
-- (void)appendNextEscapedCharacterToData:(id)a3;
-- (void)appendNextQuotedPrintableDataToData:(id)a3;
-- (void)skipToStopTokens:(int)a3;
-- (void)unicodeSkipToStopTokens:(int)a3;
+- (unsigned)charAtPosition:(unint64_t)position withOffset:(int64_t)offset;
+- (void)appendNextEscapedCharacterToData:(id)data;
+- (void)appendNextQuotedPrintableDataToData:(id)data;
+- (void)skipToStopTokens:(int)tokens;
+- (void)unicodeSkipToStopTokens:(int)tokens;
 @end
 
 @implementation CNVCardLexer
@@ -126,21 +126,21 @@ uint64_t __22__CNVCardLexer_os_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CNVCardLexer)initWithData:(id)a3
+- (CNVCardLexer)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = CNVCardLexer;
   v5 = [(CNVCardLexer *)&v18 init];
-  if (v5 && (v6 = [v4 length], v5->_length = v6, v6 >= 0xB))
+  if (v5 && (v6 = [dataCopy length], v5->_length = v6, v6 >= 0xB))
   {
-    v8 = [v4 mutableCopy];
+    v8 = [dataCopy mutableCopy];
     data = v5->_data;
     v5->_data = v8;
 
     v5->_bytes = [(NSMutableData *)v5->_data mutableBytes];
     v5->_unicode = 0;
-    v10 = [CNVCardDataAnalyzer analyzeData:v4];
+    v10 = [CNVCardDataAnalyzer analyzeData:dataCopy];
     if ((v10 | 0x4000000) == 0x94000100)
     {
       v5->_unicode = 1;
@@ -192,10 +192,10 @@ uint64_t __22__CNVCardLexer_os_log__block_invoke()
   return v7;
 }
 
-- (id)tokenSetForLength:(int64_t)a3
+- (id)tokenSetForLength:(int64_t)length
 {
-  v5 = a3 - 1;
-  if (a3 - 1) <= 6 && ((0x55u >> v5))
+  v5 = length - 1;
+  if (length - 1) <= 6 && ((0x55u >> v5))
   {
     v6 = [(NSArray *)self->_activeTokenSets objectAtIndex:qword_27721EF70[v5], v3];
   }
@@ -208,21 +208,21 @@ uint64_t __22__CNVCardLexer_os_log__block_invoke()
   return v6;
 }
 
-- (int)nextTokenPeekSingle:(BOOL)a3 length:(int64_t)a4
+- (int)nextTokenPeekSingle:(BOOL)single length:(int64_t)length
 {
   v40 = *MEMORY[0x277D85DE8];
   p_cursor = &self->_cursor;
   cursor = self->_cursor;
   self->_peekedPoint = cursor;
   length = self->_length;
-  if (a4 <= 0)
+  if (length <= 0)
   {
-    v8 = 7;
+    lengthCopy = 7;
   }
 
   else
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
   v9 = cursor >= length;
@@ -241,7 +241,7 @@ uint64_t __22__CNVCardLexer_os_log__block_invoke()
   {
     v10 = 1;
     v13 = 90;
-    if (a3)
+    if (single)
     {
       goto LABEL_39;
     }
@@ -249,7 +249,7 @@ uint64_t __22__CNVCardLexer_os_log__block_invoke()
     goto LABEL_38;
   }
 
-  v37 = a4;
+  lengthCopy2 = length;
   v38 = &self->_cursor;
   v12 = 1;
   do
@@ -318,22 +318,22 @@ LABEL_27:
       break;
     }
 
-    v9 = v12++ >= v8;
+    v9 = v12++ >= lengthCopy;
     v29 = !v9 && v11 == 0;
     v10 = v29;
   }
 
   while (v29);
-  a4 = v37;
+  length = lengthCopy2;
   p_cursor = v38;
-  if (!a3)
+  if (!single)
   {
 LABEL_38:
     *p_cursor = cursor;
   }
 
 LABEL_39:
-  if (a4)
+  if (length)
   {
     v30 = 0;
   }
@@ -357,10 +357,10 @@ LABEL_39:
 
   if ((v32 & 1) == 0)
   {
-    v34 = [(CNVCardLexer *)self os_log];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    os_log = [(CNVCardLexer *)self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNVCardLexer *)p_cursor nextTokenPeekSingle:v13 length:v34];
+      [(CNVCardLexer *)p_cursor nextTokenPeekSingle:v13 length:os_log];
     }
 
     ++self->_errorCount;
@@ -371,19 +371,19 @@ LABEL_39:
   return result;
 }
 
-- (int)nextTokenPeekUnicode:(BOOL)a3 length:(int64_t)a4
+- (int)nextTokenPeekUnicode:(BOOL)unicode length:(int64_t)length
 {
   v46 = *MEMORY[0x277D85DE8];
   cursor = self->_cursor;
   self->_peekedPoint = cursor;
-  if (a4 <= 0)
+  if (length <= 0)
   {
-    v6 = 7;
+    lengthCopy = 7;
   }
 
   else
   {
-    v6 = a4;
+    lengthCopy = length;
   }
 
   length = self->_length;
@@ -404,7 +404,7 @@ LABEL_39:
     v15 = 0;
     v31 = 0;
     v9 = 1;
-    if (a3)
+    if (unicode)
     {
       goto LABEL_35;
     }
@@ -412,7 +412,7 @@ LABEL_39:
     goto LABEL_34;
   }
 
-  v40 = a4;
+  lengthCopy2 = length;
   v11 = 1;
   do
   {
@@ -492,22 +492,22 @@ LABEL_23:
       break;
     }
 
-    v8 = v11++ >= v6;
+    v8 = v11++ >= lengthCopy;
     v30 = !v8 && v10 == 0;
     v9 = v30;
   }
 
   while (v30);
   v31 = v13 << 8;
-  a4 = v40;
-  if (!a3)
+  length = lengthCopy2;
+  if (!unicode)
   {
 LABEL_34:
     self->_cursor = cursor;
   }
 
 LABEL_35:
-  if (a4)
+  if (length)
   {
     v32 = 0;
   }
@@ -531,15 +531,15 @@ LABEL_35:
 
   if ((v34 & 1) == 0)
   {
-    v36 = [(CNVCardLexer *)self os_log];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    os_log = [(CNVCardLexer *)self os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       v38 = self->_cursor;
       *buf = 134218240;
       v42 = v38;
       v43 = 1024;
       v44 = v31 | v15;
-      _os_log_error_impl(&dword_2771F5000, v36, OS_LOG_TYPE_ERROR, "vCard Syntax Error, character %ld : %C", buf, 0x12u);
+      _os_log_error_impl(&dword_2771F5000, os_log, OS_LOG_TYPE_ERROR, "vCard Syntax Error, character %ld : %C", buf, 0x12u);
     }
 
     ++self->_errorCount;
@@ -733,17 +733,17 @@ LABEL_13:
   return v11;
 }
 
-- (id)nextSingleByteStringInEncoding:(unint64_t)a3 quotedPrintable:(BOOL)a4 stopTokens:(int)a5 trim:(BOOL)a6 maximumValueLength:(unint64_t)a7
+- (id)nextSingleByteStringInEncoding:(unint64_t)encoding quotedPrintable:(BOOL)printable stopTokens:(int)tokens trim:(BOOL)trim maximumValueLength:(unint64_t)length
 {
-  v43 = a4;
-  v44 = a6;
-  if ((a5 & 0x80) != 0 && self->_bytes[self->_cursor] == 34)
+  printableCopy = printable;
+  trimCopy = trim;
+  if ((tokens & 0x80) != 0 && self->_bytes[self->_cursor] == 34)
   {
-    v8 = [(CNVCardLexer *)self nextQuotedStringValueInEncoding:a3];
+    v8 = [(CNVCardLexer *)self nextQuotedStringValueInEncoding:encoding];
     goto LABEL_44;
   }
 
-  v9 = [(CNVCardLexer *)self emptyRangeStartingAtCursor];
+  emptyRangeStartingAtCursor = [(CNVCardLexer *)self emptyRangeStartingAtCursor];
   v11 = v10;
   v12 = [(CNVCardLexer *)self tokenSetForLength:1];
   v13 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -812,15 +812,15 @@ LABEL_22:
 
     v29 = 0;
 LABEL_23:
-    if (v44)
+    if (trimCopy)
     {
       break;
     }
 
 LABEL_27:
-    if (v43 && v29 == 1025)
+    if (printableCopy && v29 == 1025)
     {
-      [(CNVCardLexer *)self appendDataInRange:v9 toData:v11, v13];
+      [(CNVCardLexer *)self appendDataInRange:emptyRangeStartingAtCursor toData:v11, v13];
       [(CNVCardLexer *)self appendNextQuotedPrintableDataToData:v13];
     }
 
@@ -831,11 +831,11 @@ LABEL_27:
         goto LABEL_37;
       }
 
-      [(CNVCardLexer *)self appendDataInRange:v9 toData:v11, v13];
+      [(CNVCardLexer *)self appendDataInRange:emptyRangeStartingAtCursor toData:v11, v13];
       [(CNVCardLexer *)self appendNextEscapedCharacterToData:v13];
     }
 
-    v9 = [(CNVCardLexer *)self emptyRangeStartingAtCursor];
+    emptyRangeStartingAtCursor = [(CNVCardLexer *)self emptyRangeStartingAtCursor];
     v11 = v30;
 LABEL_41:
     cursor = self->_cursor;
@@ -847,8 +847,8 @@ LABEL_41:
 
   if ((v29 & 0x4000) == 0)
   {
-    v16 &= (v29 & a5) != 0;
-    if ((v29 & a5) == 0)
+    v16 &= (v29 & tokens) != 0;
+    if ((v29 & tokens) == 0)
     {
       v15 = 0;
     }
@@ -871,24 +871,24 @@ LABEL_41:
   }
 
 LABEL_37:
-  if ((v29 & a5) != 0)
+  if ((v29 & tokens) != 0)
   {
-    [(CNVCardLexer *)self appendDataInRange:v9 toData:v11, v13];
+    [(CNVCardLexer *)self appendDataInRange:emptyRangeStartingAtCursor toData:v11, v13];
     v34 = [(CNVCardLexer *)self stringFromData:v13 encoding:v39 prefixLength:v40 suffixLength:v15];
-    v8 = [(CNVCardLexer *)self clipAtGraphemeClusters:v34 maximumValueLength:a7 addEllipsisIfClipped:1];
+    v8 = [(CNVCardLexer *)self clipAtGraphemeClusters:v34 maximumValueLength:length addEllipsisIfClipped:1];
 
     goto LABEL_43;
   }
 
-  if (a7 == -1 || v11 < a7 + 20)
+  if (length == -1 || v11 < length + 20)
   {
     ++v11;
     ++self->_cursor;
     goto LABEL_41;
   }
 
-  [(CNVCardLexer *)self appendDataInRange:v9 toData:v11, v13];
-  v35 = [(CNVCardLexer *)self stringByRoundingData:v13 toNextWholeCharacterUsingEncoding:v39 prefixLength:v40 suffixLength:v15 maximumValueLength:a7];
+  [(CNVCardLexer *)self appendDataInRange:emptyRangeStartingAtCursor toData:v11, v13];
+  v35 = [(CNVCardLexer *)self stringByRoundingData:v13 toNextWholeCharacterUsingEncoding:v39 prefixLength:v40 suffixLength:v15 maximumValueLength:length];
   v36 = [v35 stringByAppendingString:@"…"];
   v37 = v36;
   if (v36)
@@ -904,7 +904,7 @@ LABEL_37:
   v8 = v38;
 
   ++self->_cursor;
-  [(CNVCardLexer *)self skipToStopTokens:a5];
+  [(CNVCardLexer *)self skipToStopTokens:tokens];
 LABEL_43:
 
 LABEL_44:
@@ -912,7 +912,7 @@ LABEL_44:
   return v8;
 }
 
-- (void)skipToStopTokens:(int)a3
+- (void)skipToStopTokens:(int)tokens
 {
   theArray = [(CNVCardLexer *)self tokenSetForLength:1];
   v20[1] = 0;
@@ -968,7 +968,7 @@ LABEL_18:
 
     v18 = 0;
 LABEL_19:
-    if ((v18 & a3) != 0)
+    if ((v18 & tokens) != 0)
     {
       break;
     }
@@ -977,20 +977,20 @@ LABEL_19:
   }
 }
 
-- (void)appendNextQuotedPrintableDataToData:(id)a3
+- (void)appendNextQuotedPrintableDataToData:(id)data
 {
   ++self->_cursor;
-  v4 = a3;
-  v5 = [(CNVCardLexer *)self nextQuotedPrintableData];
-  [v4 appendData:v5];
+  dataCopy = data;
+  nextQuotedPrintableData = [(CNVCardLexer *)self nextQuotedPrintableData];
+  [dataCopy appendData:nextQuotedPrintableData];
 }
 
-- (void)appendNextEscapedCharacterToData:(id)a3
+- (void)appendNextEscapedCharacterToData:(id)data
 {
   ++self->_cursor;
-  v4 = a3;
-  v5 = [(CNVCardLexer *)self nextEscapedCharacter];
-  [v4 appendData:v5];
+  dataCopy = data;
+  nextEscapedCharacter = [(CNVCardLexer *)self nextEscapedCharacter];
+  [dataCopy appendData:nextEscapedCharacter];
 }
 
 - (_NSRange)emptyRangeStartingAtCursor
@@ -1002,20 +1002,20 @@ LABEL_19:
   return result;
 }
 
-- (id)stringByRoundingData:(id)a3 toNextWholeCharacterUsingEncoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6 maximumValueLength:(unint64_t)a7
+- (id)stringByRoundingData:(id)data toNextWholeCharacterUsingEncoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength maximumValueLength:(unint64_t)valueLength
 {
-  v12 = a3;
-  v13 = [(CNVCardLexer *)self stringFromData:v12 encoding:a4 prefixLength:a5 suffixLength:a6];
+  dataCopy = data;
+  v13 = [(CNVCardLexer *)self stringFromData:dataCopy encoding:encoding prefixLength:length suffixLength:suffixLength];
   if (!v13)
   {
-    v16 = [v12 length];
+    v16 = [dataCopy length];
     if (v16)
     {
       v17 = v16 - 1;
       do
       {
-        v18 = [v12 subdataWithRange:{0, v17}];
-        v13 = [(CNVCardLexer *)self stringFromData:v18 encoding:a4 prefixLength:a5 suffixLength:a6];
+        v18 = [dataCopy subdataWithRange:{0, v17}];
+        v13 = [(CNVCardLexer *)self stringFromData:v18 encoding:encoding prefixLength:length suffixLength:suffixLength];
 
         v20 = v17-- != 0;
       }
@@ -1029,27 +1029,27 @@ LABEL_19:
     }
   }
 
-  v14 = [(CNVCardLexer *)self clipAtGraphemeClusters:v13 maximumValueLength:a7 addEllipsisIfClipped:0];
+  v14 = [(CNVCardLexer *)self clipAtGraphemeClusters:v13 maximumValueLength:valueLength addEllipsisIfClipped:0];
 
   return v14;
 }
 
-- (id)clipAtGraphemeClusters:(id)a3 maximumValueLength:(unint64_t)a4 addEllipsisIfClipped:(BOOL)a5
+- (id)clipAtGraphemeClusters:(id)clusters maximumValueLength:(unint64_t)length addEllipsisIfClipped:(BOOL)clipped
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (a4 == -1 || [v7 length] <= a4)
+  clippedCopy = clipped;
+  clustersCopy = clusters;
+  v8 = clustersCopy;
+  if (length == -1 || [clustersCopy length] <= length)
   {
     v12 = v8;
   }
 
   else
   {
-    v9 = [v8 rangeOfComposedCharacterSequencesForRange:{0, a4}];
+    v9 = [v8 rangeOfComposedCharacterSequencesForRange:{0, length}];
     v11 = [v8 substringWithRange:{v9, v10}];
     v12 = v11;
-    if (v5)
+    if (clippedCopy)
     {
       v13 = [v11 stringByAppendingString:@"…"];
 
@@ -1060,35 +1060,35 @@ LABEL_19:
   return v12;
 }
 
-- (id)unicodeStringByRoundingData:(id)a3 toNextWholeCharacterUsingEncoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6 maximumValueLength:(unint64_t)a7
+- (id)unicodeStringByRoundingData:(id)data toNextWholeCharacterUsingEncoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength maximumValueLength:(unint64_t)valueLength
 {
-  v9 = [(CNVCardLexer *)self stringFromData:a3 encoding:a4 prefixLength:a5 suffixLength:a6];
-  v10 = [(CNVCardLexer *)self clipAtGraphemeClusters:v9 maximumValueLength:a7 addEllipsisIfClipped:0];
+  v9 = [(CNVCardLexer *)self stringFromData:data encoding:encoding prefixLength:length suffixLength:suffixLength];
+  v10 = [(CNVCardLexer *)self clipAtGraphemeClusters:v9 maximumValueLength:valueLength addEllipsisIfClipped:0];
 
   return v10;
 }
 
-- (id)stringFromData:(id)a3 encoding:(unint64_t)a4 prefixLength:(unint64_t)a5 suffixLength:(unint64_t)a6
+- (id)stringFromData:(id)data encoding:(unint64_t)encoding prefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength
 {
-  v8 = [(CNVCardLexer *)self trimData:a3 withPrefixLength:a5 suffixLength:a6];
-  v9 = [(CNVCardLexer *)self stringFromSubData:v8 encoding:a4];
+  v8 = [(CNVCardLexer *)self trimData:data withPrefixLength:length suffixLength:suffixLength];
+  v9 = [(CNVCardLexer *)self stringFromSubData:v8 encoding:encoding];
 
   return v9;
 }
 
-- (id)trimData:(id)a3 withPrefixLength:(unint64_t)a4 suffixLength:(unint64_t)a5
+- (id)trimData:(id)data withPrefixLength:(unint64_t)length suffixLength:(unint64_t)suffixLength
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5 | a4)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (suffixLength | length)
   {
-    v10 = -[CNVCardLexer rangeWithLength:lTrim:rTrim:](self, "rangeWithLength:lTrim:rTrim:", [v8 length], a4, a5);
+    v10 = -[CNVCardLexer rangeWithLength:lTrim:rTrim:](self, "rangeWithLength:lTrim:rTrim:", [dataCopy length], length, suffixLength);
     v12 = [v9 subdataWithRange:{v10, v11}];
   }
 
   else
   {
-    v12 = v8;
+    v12 = dataCopy;
   }
 
   v13 = v12;
@@ -1096,27 +1096,27 @@ LABEL_19:
   return v13;
 }
 
-- (_NSRange)rangeWithLength:(unint64_t)a3 lTrim:(unint64_t)a4 rTrim:(unint64_t)a5
+- (_NSRange)rangeWithLength:(unint64_t)length lTrim:(unint64_t)trim rTrim:(unint64_t)rTrim
 {
-  v6 = a3 - (a4 + a5);
+  v6 = length - (trim + rTrim);
   result.length = v6;
-  result.location = a4;
+  result.location = trim;
   return result;
 }
 
-- (id)stringFromSubData:(id)a3 encoding:(unint64_t)a4
+- (id)stringFromSubData:(id)data encoding:(unint64_t)encoding
 {
-  if (a4 == 4000100)
+  if (encoding == 4000100)
   {
-    v4 = a3;
-    v5 = [CNVCardData stringFromUTF7Data:v4];
+    dataCopy2 = data;
+    v5 = [CNVCardData stringFromUTF7Data:dataCopy2];
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v4 = a3;
-    v5 = [[v7 alloc] initWithData:v4 encoding:a4];
+    dataCopy2 = data;
+    v5 = [[v7 alloc] initWithData:dataCopy2 encoding:encoding];
   }
 
   v8 = v5;
@@ -1124,29 +1124,29 @@ LABEL_19:
   return v8;
 }
 
-- (id)nextQuotedStringValueInEncoding:(unint64_t)a3
+- (id)nextQuotedStringValueInEncoding:(unint64_t)encoding
 {
   v5 = [@"" dataUsingEncoding:?];
   v6 = -[CNVCardLexer expandRange:untilNextByteIs:](self, "expandRange:untilNextByteIs:", [v5 length] + self->_cursor, 0, v5);
   v8 = v7;
-  v9 = [MEMORY[0x277CBEB28] data];
-  [(CNVCardLexer *)self appendDataInRange:v6 toData:v8, v9];
+  data = [MEMORY[0x277CBEB28] data];
+  [(CNVCardLexer *)self appendDataInRange:v6 toData:v8, data];
   self->_cursor = v6 + v8 + [v5 length];
-  v10 = [(CNVCardLexer *)self stringFromSubData:v9 encoding:a3];
+  v10 = [(CNVCardLexer *)self stringFromSubData:data encoding:encoding];
 
   return v10;
 }
 
-- (_NSRange)expandRange:(_NSRange)a3 untilNextByteIs:(id)a4
+- (_NSRange)expandRange:(_NSRange)range untilNextByteIs:(id)is
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [v7 length];
+  length = range.length;
+  location = range.location;
+  isCopy = is;
+  v8 = [isCopy length];
   v9 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&self->_bytes[location + length] length:v8 freeWhenDone:0];
   if (location + length < self->_length)
   {
-    while (([v9 isEqualToData:v7] & 1) == 0)
+    while (([v9 isEqualToData:isCopy] & 1) == 0)
     {
       v11 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&self->_bytes[location + v8 + length] length:v8 freeWhenDone:0];
 
@@ -1171,11 +1171,11 @@ LABEL_6:
   return result;
 }
 
-- (id)nextUnicodeStringStopTokens:(int)a3 quotedPrintable:(BOOL)a4 trim:(BOOL)a5 maximumValueLength:(unint64_t)a6
+- (id)nextUnicodeStringStopTokens:(int)tokens quotedPrintable:(BOOL)printable trim:(BOOL)trim maximumValueLength:(unint64_t)length
 {
-  v41 = a4;
-  v42 = a5;
-  if ((a3 & 0x80) != 0)
+  printableCopy = printable;
+  trimCopy = trim;
+  if ((tokens & 0x80) != 0)
   {
     cursor = self->_cursor;
     v8 = &self->_bytes[cursor];
@@ -1192,7 +1192,7 @@ LABEL_6:
   }
 
   v10 = [(CNVCardLexer *)self tokenSetForLength:1];
-  v11 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v44 = 0;
   v12 = self->_cursor;
   if (v12 >= self->_length)
@@ -1205,7 +1205,7 @@ LABEL_39:
 
   v13 = 0;
   v14 = 0;
-  v37 = 2 * a6 + 20;
+  v37 = 2 * length + 20;
   v38 = 0;
   v15 = 1;
   while (2)
@@ -1273,14 +1273,14 @@ LABEL_17:
 LABEL_18:
     v27 = 0;
 LABEL_20:
-    if (!v42)
+    if (!trimCopy)
     {
 LABEL_24:
-      if (v41 && v27 == 1025)
+      if (printableCopy && v27 == 1025)
       {
         ++self->_cursor;
-        [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, v11];
-        [(CNVCardLexer *)self appendNextQuotedPrintableDataToData:v11];
+        [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, data];
+        [(CNVCardLexer *)self appendNextQuotedPrintableDataToData:data];
       }
 
       else
@@ -1291,8 +1291,8 @@ LABEL_24:
         }
 
         ++self->_cursor;
-        [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, v11];
-        [(CNVCardLexer *)self appendNextEscapedCharacterToData:v11];
+        [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, data];
+        [(CNVCardLexer *)self appendNextEscapedCharacterToData:data];
       }
 
       cursor = [(CNVCardLexer *)self emptyRangeStartingAtCursor];
@@ -1312,8 +1312,8 @@ LABEL_38:
 
   if ((v27 & 0x4000) == 0)
   {
-    v15 &= (v27 & a3) != 0;
-    if ((v27 & a3) == 0)
+    v15 &= (v27 & tokens) != 0;
+    if ((v27 & tokens) == 0)
     {
       v14 = 0;
     }
@@ -1336,24 +1336,24 @@ LABEL_38:
   }
 
 LABEL_34:
-  if ((v27 & a3) != 0)
+  if ((v27 & tokens) != 0)
   {
-    [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, v11];
-    v32 = [(CNVCardLexer *)self stringFromData:v11 encoding:2415919360 prefixLength:v38 suffixLength:v14];
-    v9 = [(CNVCardLexer *)self clipAtGraphemeClusters:v32 maximumValueLength:a6 addEllipsisIfClipped:1];
+    [(CNVCardLexer *)self appendDataInRange:cursor toData:v13, data];
+    v32 = [(CNVCardLexer *)self stringFromData:data encoding:2415919360 prefixLength:v38 suffixLength:v14];
+    v9 = [(CNVCardLexer *)self clipAtGraphemeClusters:v32 maximumValueLength:length addEllipsisIfClipped:1];
   }
 
   else
   {
-    if (a6 == -1 || v13 != v37)
+    if (length == -1 || v13 != v37)
     {
       v13 += 2;
       self->_cursor += 2;
       goto LABEL_38;
     }
 
-    [(CNVCardLexer *)self appendDataInRange:cursor toData:v37, v11];
-    v33 = [(CNVCardLexer *)self unicodeStringByRoundingData:v11 toNextWholeCharacterUsingEncoding:2415919360 prefixLength:v38 suffixLength:v14 maximumValueLength:a6];
+    [(CNVCardLexer *)self appendDataInRange:cursor toData:v37, data];
+    v33 = [(CNVCardLexer *)self unicodeStringByRoundingData:data toNextWholeCharacterUsingEncoding:2415919360 prefixLength:v38 suffixLength:v14 maximumValueLength:length];
     v34 = [v33 stringByAppendingString:@"…"];
     v35 = v34;
     if (v34)
@@ -1369,7 +1369,7 @@ LABEL_34:
     v9 = v36;
 
     self->_cursor += 2;
-    [(CNVCardLexer *)self unicodeSkipToStopTokens:a3];
+    [(CNVCardLexer *)self unicodeSkipToStopTokens:tokens];
   }
 
 LABEL_40:
@@ -1379,7 +1379,7 @@ LABEL_41:
   return v9;
 }
 
-- (void)unicodeSkipToStopTokens:(int)a3
+- (void)unicodeSkipToStopTokens:(int)tokens
 {
   theArray = [(CNVCardLexer *)self tokenSetForLength:1];
   v20 = 0;
@@ -1454,7 +1454,7 @@ LABEL_11:
 LABEL_12:
     v17 = 0;
 LABEL_14:
-    if ((v17 & a3) != 0)
+    if ((v17 & tokens) != 0)
     {
       break;
     }
@@ -1585,56 +1585,56 @@ LABEL_30:
   return v7;
 }
 
-- (unsigned)charAtPosition:(unint64_t)a3 withOffset:(int64_t)a4
+- (unsigned)charAtPosition:(unint64_t)position withOffset:(int64_t)offset
 {
   bytes = self->_bytes;
   if (self->_unicode)
   {
-    return bswap32(*&bytes[2 * a4 + a3]) >> 16;
+    return bswap32(*&bytes[2 * offset + position]) >> 16;
   }
 
   else
   {
-    LOWORD(v5) = bytes[a3 + a4];
+    LOWORD(v5) = bytes[position + offset];
   }
 
   return v5;
 }
 
-- (id)stringWithRange:(_NSRange)a3 encoding:(unint64_t)a4
+- (id)stringWithRange:(_NSRange)range encoding:(unint64_t)encoding
 {
-  v5 = [(CNVCardLexer *)self dataWithRange:a3.location, a3.length];
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:a4];
+  v5 = [(CNVCardLexer *)self dataWithRange:range.location, range.length];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:encoding];
 
   return v6;
 }
 
-- (id)dataWithRange:(_NSRange)a3
+- (id)dataWithRange:(_NSRange)range
 {
-  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:&self->_bytes[a3.location] length:a3.length freeWhenDone:0];
+  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:&self->_bytes[range.location] length:range.length freeWhenDone:0];
 
   return v3;
 }
 
-- (id)nextArraySeperatedByToken:(int)a3 stoppingAt:(int)a4 inEncoding:(unint64_t)a5 maximumValueLength:(unint64_t)a6
+- (id)nextArraySeperatedByToken:(int)token stoppingAt:(int)at inEncoding:(unint64_t)encoding maximumValueLength:(unint64_t)length
 {
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
   [v11 removeAllObjects];
-  while (([(CNVCardLexer *)self tokenAtCursorIgnoringLineFolding]& a4) == 0)
+  while (([(CNVCardLexer *)self tokenAtCursorIgnoringLineFolding]& at) == 0)
   {
     if (self->_cursor >= self->_length)
     {
       break;
     }
 
-    v12 = [(CNVCardLexer *)self nextStringInEncoding:a5 quotedPrintable:0 stopTokens:a4 | a3 trim:1 maximumValueLength:a6];
+    v12 = [(CNVCardLexer *)self nextStringInEncoding:encoding quotedPrintable:0 stopTokens:at | token trim:1 maximumValueLength:length];
     v13 = v12;
     if (v12 && [v12 length])
     {
       [v11 addObject:v13];
     }
 
-    if (([(CNVCardLexer *)self tokenAtCursor]& a3) != 0)
+    if (([(CNVCardLexer *)self tokenAtCursor]& token) != 0)
     {
       if (self->_unicode)
       {
@@ -1676,9 +1676,9 @@ LABEL_30:
   return result;
 }
 
-- (id)nextUnicodeBase64Line:(BOOL *)a3
+- (id)nextUnicodeBase64Line:(BOOL *)line
 {
-  v5 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v6 = [(CNVCardLexer *)self tokenSetForLength:1];
   v23 = 0;
   cursor = self->_cursor;
@@ -1698,7 +1698,7 @@ LABEL_30:
     if (!Count)
     {
 LABEL_15:
-      [v5 appendBytes:v22 length:1];
+      [data appendBytes:v22 length:1];
       goto LABEL_18;
     }
 
@@ -1755,7 +1755,7 @@ LABEL_13:
     v20 = *ValueAtIndex;
     if (*ValueAtIndex == 1025)
     {
-      *a3 = 1;
+      *line = 1;
       goto LABEL_18;
     }
 
@@ -1778,12 +1778,12 @@ LABEL_18:
   while (cursor < self->_length);
 LABEL_19:
 
-  return v5;
+  return data;
 }
 
-- (id)nextSingleByteBase64Line:(BOOL *)a3
+- (id)nextSingleByteBase64Line:(BOOL *)line
 {
-  v5 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v6 = [(CNVCardLexer *)self tokenSetForLength:1];
   v22[1] = 0;
   for (i = self->_cursor; i < self->_length; self->_cursor = i)
@@ -1793,7 +1793,7 @@ LABEL_19:
     if (Count < 1)
     {
 LABEL_20:
-      [v5 appendBytes:v22 length:1];
+      [data appendBytes:v22 length:1];
     }
 
     else
@@ -1843,7 +1843,7 @@ LABEL_18:
       v20 = *ValueAtIndex;
       if (*ValueAtIndex == 1025)
       {
-        *a3 = 1;
+        *line = 1;
         goto LABEL_23;
       }
 
@@ -1862,19 +1862,19 @@ LABEL_23:
     i = self->_cursor + 1;
   }
 
-  return v5;
+  return data;
 }
 
-- (id)nextBase64Line:(BOOL *)a3
+- (id)nextBase64Line:(BOOL *)line
 {
   if (self->_unicode)
   {
-    [(CNVCardLexer *)self nextUnicodeBase64Line:a3];
+    [(CNVCardLexer *)self nextUnicodeBase64Line:line];
   }
 
   else
   {
-    [(CNVCardLexer *)self nextSingleByteBase64Line:a3];
+    [(CNVCardLexer *)self nextSingleByteBase64Line:line];
   }
   v3 = ;
 
@@ -1884,7 +1884,7 @@ LABEL_23:
 - (id)nextBase64Data
 {
   v9 = 0;
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v4 = 0;
   do
   {
@@ -1896,9 +1896,9 @@ LABEL_23:
       break;
     }
 
-    [v3 appendData:v4];
+    [data appendData:v4];
     v6 = +[CNVCardLexer returnDelimiterData];
-    [v3 appendData:v6];
+    [data appendData:v6];
 
     cursor = self->_cursor;
     [(CNVCardLexer *)self advanceToEOL];
@@ -1913,7 +1913,7 @@ LABEL_23:
 
   while ((v9 & 1) == 0);
 
-  return v3;
+  return data;
 }
 
 - (int64_t)advanceToUnicodeString
@@ -2117,20 +2117,20 @@ LABEL_22:
   }
 }
 
-- (BOOL)advanceToToken:(int)a3 throughTypes:(int64_t)a4
+- (BOOL)advanceToToken:(int)token throughTypes:(int64_t)types
 {
   v7 = 0;
-  while (v7 != a3)
+  while (v7 != token)
   {
-    v8 = [(CNVCardLexer *)self readNextToken];
-    if (v8 == a3)
+    readNextToken = [(CNVCardLexer *)self readNextToken];
+    if (readNextToken == token)
     {
       break;
     }
 
-    v7 = v8;
+    v7 = readNextToken;
     result = 0;
-    v11 = (v7 & a4) == 0 && a4 != 0;
+    v11 = (v7 & types) == 0 && types != 0;
     if ((v7 - 65537) < 2 || v11)
     {
       return result;
@@ -2417,13 +2417,13 @@ LABEL_21:
   }
 }
 
-- (BOOL)advancedPastToken:(int)a3
+- (BOOL)advancedPastToken:(int)token
 {
   cursor = self->_cursor;
   v4 = cursor;
   if (cursor < self->_length)
   {
-    while (([(CNVCardLexer *)self tokenAtCursor]& a3) != 0)
+    while (([(CNVCardLexer *)self tokenAtCursor]& token) != 0)
     {
       if (self->_unicode)
       {

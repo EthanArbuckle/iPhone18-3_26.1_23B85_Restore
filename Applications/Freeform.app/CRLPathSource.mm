@@ -1,8 +1,8 @@
 @interface CRLPathSource
-+ (id)pathSourceForShapeType:(int64_t)a3 naturalSize:(CGSize)a4;
++ (id)pathSourceForShapeType:(int64_t)type naturalSize:(CGSize)size;
 - (BOOL)canUseToChangeShape;
 - (BOOL)isCircular;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
 - (CGAffineTransform)pathFlipTransform;
 - (CGSize)naturalSize;
@@ -10,39 +10,39 @@
 - (CRLBezierPath)bezierPathWithoutFlips;
 - (CRLBezierPath)interiorWrapPath;
 - (NSString)inferredAccessibilityDescription;
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)interiorWrapPathForInset:(double)a3 joinStyle:(unint64_t)a4;
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)interiorWrapPathForInset:(double)inset joinStyle:(unint64_t)style;
 - (unint64_t)hash;
-- (void)setNaturalSize:(CGSize)a3;
+- (void)setNaturalSize:(CGSize)size;
 @end
 
 @implementation CRLPathSource
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setHasHorizontalFlip:{-[CRLPathSource hasHorizontalFlip](self, "hasHorizontalFlip")}];
     [v4 setHasVerticalFlip:{-[CRLPathSource hasVerticalFlip](self, "hasVerticalFlip")}];
-    v5 = [(CRLPathSource *)self localizationKey];
-    [v4 setLocalizationKey:v5];
+    localizationKey = [(CRLPathSource *)self localizationKey];
+    [v4 setLocalizationKey:localizationKey];
 
-    v6 = [(CRLPathSource *)self userDefinedIdentifier];
-    [v4 setUserDefinedIdentifier:v6];
+    userDefinedIdentifier = [(CRLPathSource *)self userDefinedIdentifier];
+    [v4 setUserDefinedIdentifier:userDefinedIdentifier];
 
-    v7 = [(CRLPathSource *)self userDefinedName];
-    [v4 setUserDefinedName:v7];
+    userDefinedName = [(CRLPathSource *)self userDefinedName];
+    [v4 setUserDefinedName:userDefinedName];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 0;
     LOBYTE(v6) = 1;
@@ -53,12 +53,12 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(CRLPathSource *)self hasHorizontalFlip];
-      if (v8 == [(CRLPathSource *)v7 hasHorizontalFlip])
+      v7 = equalCopy;
+      hasHorizontalFlip = [(CRLPathSource *)self hasHorizontalFlip];
+      if (hasHorizontalFlip == [(CRLPathSource *)v7 hasHorizontalFlip])
       {
-        v9 = [(CRLPathSource *)self hasVerticalFlip];
-        v6 = v9 ^ [(CRLPathSource *)v7 hasVerticalFlip]^ 1;
+        hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
+        v6 = hasVerticalFlip ^ [(CRLPathSource *)v7 hasVerticalFlip]^ 1;
       }
 
       else
@@ -79,10 +79,10 @@
 
 - (unint64_t)hash
 {
-  v6 = [(CRLPathSource *)self hasHorizontalFlip];
-  v5 = [(CRLPathSource *)self hasVerticalFlip];
-  v3 = sub_1001821F8(&v6, 1);
-  return sub_100083B3C(&v5, 1, v3);
+  hasHorizontalFlip = [(CRLPathSource *)self hasHorizontalFlip];
+  hasVerticalFlip = [(CRLPathSource *)self hasVerticalFlip];
+  v3 = sub_1001821F8(&hasHorizontalFlip, 1);
+  return sub_100083B3C(&hasVerticalFlip, 1, v3);
 }
 
 - (BOOL)isRectangular
@@ -205,11 +205,11 @@
 
 - (CRLBezierPath)bezierPath
 {
-  v3 = [(CRLPathSource *)self bezierPathWithoutFlips];
+  bezierPathWithoutFlips = [(CRLPathSource *)self bezierPathWithoutFlips];
   [(CRLPathSource *)self pathFlipTransform];
-  [v3 transformUsingAffineTransform:&v5];
+  [bezierPathWithoutFlips transformUsingAffineTransform:&v5];
 
-  return v3;
+  return bezierPathWithoutFlips;
 }
 
 - (CRLBezierPath)bezierPathWithoutFlips
@@ -273,28 +273,28 @@
 
 - (CRLBezierPath)interiorWrapPath
 {
-  v3 = [(CRLPathSource *)self bezierPath];
-  if ([v3 elementCount] >= 5001)
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  if ([bezierPath elementCount] >= 5001)
   {
     [(CRLPathSource *)self naturalSize];
     v4 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
 
-    v3 = v4;
+    bezierPath = v4;
   }
 
-  return v3;
+  return bezierPath;
 }
 
-- (id)interiorWrapPathForInset:(double)a3 joinStyle:(unint64_t)a4
+- (id)interiorWrapPathForInset:(double)inset joinStyle:(unint64_t)style
 {
-  v6 = [(CRLPathSource *)self interiorWrapPath];
-  v7 = [v6 bezierPathByRemovingSmallSubpathsForInteriorWrapsForInset:a3];
+  interiorWrapPath = [(CRLPathSource *)self interiorWrapPath];
+  v7 = [interiorWrapPath bezierPathByRemovingSmallSubpathsForInteriorWrapsForInset:inset];
 
   [v7 bounds];
-  v10 = a3 + a3;
-  if (a3 > 0.0 && v8 > v10 && v9 > v10)
+  v10 = inset + inset;
+  if (inset > 0.0 && v8 > v10 && v9 > v10)
   {
-    v13 = [v7 bezierPathByOffsettingPath:a4 joinStyle:-a3];
+    v13 = [v7 bezierPathByOffsettingPath:style joinStyle:-inset];
 
     v7 = v13;
   }
@@ -361,9 +361,9 @@
   objc_exception_throw(v17);
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:a3.width];
+  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:size.width];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_101870178);
@@ -420,10 +420,10 @@
   objc_exception_throw(v18);
 }
 
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLPathSource *)self naturalSize];
   v7 = 1.0;
   if (v5 <= 1.0 || v6 <= 1.0)
@@ -456,12 +456,12 @@
   *&retstr->c = v22;
   v21 = *&CGAffineTransformIdentity.tx;
   *&retstr->tx = v21;
-  v5 = [(CRLPathSource *)self hasHorizontalFlip];
+  hasHorizontalFlip = [(CRLPathSource *)self hasHorizontalFlip];
   result = [(CRLPathSource *)self hasVerticalFlip];
   v7 = result;
-  if ((v5 & 1) != 0 || result)
+  if ((hasHorizontalFlip & 1) != 0 || result)
   {
-    if (v5)
+    if (hasHorizontalFlip)
     {
       v8 = -1.0;
     }
@@ -522,12 +522,12 @@
   return result;
 }
 
-+ (id)pathSourceForShapeType:(int64_t)a3 naturalSize:(CGSize)a4
++ (id)pathSourceForShapeType:(int64_t)type naturalSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a4.height / 100.0;
-  switch(a3)
+  height = size.height;
+  width = size.width;
+  v8 = size.height / 100.0;
+  switch(type)
   {
     case 0:
     case 3:
@@ -539,24 +539,24 @@
     case 15:
     case 16:
     case 20:
-      v9 = [CRLBezierPath bezierPathWithStart:CGPointZero.x end:CGPointZero.y, sqrt(width * width + a4.height * a4.height), 0.0];
+      v9 = [CRLBezierPath bezierPathWithStart:CGPointZero.x end:CGPointZero.y, sqrt(width * width + size.height * size.height), 0.0];
       goto LABEL_22;
     case 2:
     case 18:
     case 19:
-      v10 = [CRLConnectionLinePathSource pathSourceAtAngleOfSize:a3 == 18 forType:width, a4.height];
+      v10 = [CRLConnectionLinePathSource pathSourceAtAngleOfSize:type == 18 forType:width, size.height];
       v4 = v10;
-      if (a3 == 2)
+      if (type == 2)
       {
         [(CRLEditableBezierPathSource *)v10 bend];
       }
 
       break;
     case 4:
-      v14 = [CRLScalarPathSource roundedRectangleWithScalar:1 naturalSize:15.0 continuousCurve:width, a4.height];
+      v14 = [CRLScalarPathSource roundedRectangleWithScalar:1 naturalSize:15.0 continuousCurve:width, size.height];
       goto LABEL_16;
     case 5:
-      v15 = [CRLBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, a4.height];
+      v15 = [CRLBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, size.height];
       v9 = v15;
       goto LABEL_21;
     case 6:
@@ -576,10 +576,10 @@ LABEL_18:
       v11 = height;
       goto LABEL_19;
     case 8:
-      v14 = [CRLPointPathSource rightSingleArrowWithPoint:v8 * 64.0 naturalSize:0.34, width, a4.height];
+      v14 = [CRLPointPathSource rightSingleArrowWithPoint:v8 * 64.0 naturalSize:0.34, width, size.height];
       goto LABEL_16;
     case 9:
-      v14 = [CRLPointPathSource doubleArrowWithPoint:v8 * 44.0 naturalSize:0.34, width, a4.height];
+      v14 = [CRLPointPathSource doubleArrowWithPoint:v8 * 44.0 naturalSize:0.34, width, size.height];
       goto LABEL_16;
     case 10:
       v9 = +[CRLBezierPath bezierPath];
@@ -598,16 +598,16 @@ LABEL_22:
       v4 = [CRLBezierPathSource pathSourceWithBezierPath:v9];
       goto LABEL_23;
     case 11:
-      v14 = [CRLCalloutPathSource quoteBubbleWithTailPosition:v8 tailSize:v8 * 96.0 naturalSize:v8 * 10.0, width, a4.height * 0.8];
+      v14 = [CRLCalloutPathSource quoteBubbleWithTailPosition:v8 tailSize:v8 * 96.0 naturalSize:v8 * 10.0, width, size.height * 0.8];
       goto LABEL_16;
     case 12:
-      v14 = [CRLCalloutPathSource calloutWithCornerRadius:5.0 tailPosition:v8 * -20.0 tailSize:v8 * 50.0 naturalSize:v8 * 10.0, width, a4.height];
+      v14 = [CRLCalloutPathSource calloutWithCornerRadius:5.0 tailPosition:v8 * -20.0 tailSize:v8 * 50.0 naturalSize:v8 * 10.0, width, size.height];
       goto LABEL_16;
     case 13:
-      v14 = [CRLScalarPathSource regularPolygonWithScalar:5.0 naturalSize:width, a4.height];
+      v14 = [CRLScalarPathSource regularPolygonWithScalar:5.0 naturalSize:width, size.height];
       goto LABEL_16;
     case 14:
-      v14 = [CRLPointPathSource starWithPoint:5.0 naturalSize:0.382, width, a4.height];
+      v14 = [CRLPointPathSource starWithPoint:5.0 naturalSize:0.382, width, size.height];
 LABEL_16:
       v4 = v14;
       break;
@@ -658,16 +658,16 @@ LABEL_23:
 
 - (BOOL)canUseToChangeShape
 {
-  v3 = [(CRLPathSource *)self bezierPath];
-  if ([v3 isEmpty])
+  bezierPath = [(CRLPathSource *)self bezierPath];
+  if ([bezierPath isEmpty])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(CRLPathSource *)self bezierPath];
-    v4 = [v5 isLineSegment] ^ 1;
+    bezierPath2 = [(CRLPathSource *)self bezierPath];
+    v4 = [bezierPath2 isLineSegment] ^ 1;
   }
 
   return v4;

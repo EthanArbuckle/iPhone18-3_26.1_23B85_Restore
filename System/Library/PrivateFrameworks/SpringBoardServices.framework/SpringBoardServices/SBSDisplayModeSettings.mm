@@ -1,30 +1,30 @@
 @interface SBSDisplayModeSettings
-+ (id)fromDefaultsRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBSDisplayModeSettings)initWithCoder:(id)a3;
-- (SBSDisplayModeSettings)initWithScale:(unint64_t)a3 overscanCompensation:(int64_t)a4;
-- (SBSDisplayModeSettings)initWithSettings:(id)a3;
++ (id)fromDefaultsRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (SBSDisplayModeSettings)initWithCoder:(id)coder;
+- (SBSDisplayModeSettings)initWithScale:(unint64_t)scale overscanCompensation:(int64_t)compensation;
+- (SBSDisplayModeSettings)initWithSettings:(id)settings;
 - (id)defaultsRepresentation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSDisplayModeSettings
 
-- (SBSDisplayModeSettings)initWithSettings:(id)a3
+- (SBSDisplayModeSettings)initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 scale];
-  v6 = [v4 overscanCompensation];
+  settingsCopy = settings;
+  scale = [settingsCopy scale];
+  overscanCompensation = [settingsCopy overscanCompensation];
 
-  return [(SBSDisplayModeSettings *)self initWithScale:v5 overscanCompensation:v6];
+  return [(SBSDisplayModeSettings *)self initWithScale:scale overscanCompensation:overscanCompensation];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -32,7 +32,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_scale == v4->_scale && self->_overscanCompensation == v4->_overscanCompensation;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_scale == equalCopy->_scale && self->_overscanCompensation == equalCopy->_overscanCompensation;
   }
 
   return v5;
@@ -47,48 +47,48 @@
   v5 = SBSDisplayOverscanCompensationDescription(self->_overscanCompensation);
   [v3 appendString:v5 withName:@"overscan"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [SBSMutableDisplayModeSettings allocWithZone:a3];
+  v4 = [SBSMutableDisplayModeSettings allocWithZone:zone];
 
   return [(SBSDisplayModeSettings *)v4 initWithSettings:self];
 }
 
-- (SBSDisplayModeSettings)initWithCoder:(id)a3
+- (SBSDisplayModeSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"scale"];
-  v6 = [v4 decodeIntegerForKey:@"overscanCompensation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"scale"];
+  v6 = [coderCopy decodeIntegerForKey:@"overscanCompensation"];
 
   return [(SBSDisplayModeSettings *)self initWithScale:v5 overscanCompensation:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scale = self->_scale;
-  v5 = a3;
-  [v5 encodeInteger:scale forKey:@"scale"];
-  [v5 encodeInteger:self->_overscanCompensation forKey:@"overscanCompensation"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:scale forKey:@"scale"];
+  [coderCopy encodeInteger:self->_overscanCompensation forKey:@"overscanCompensation"];
 }
 
-+ (id)fromDefaultsRepresentation:(id)a3
++ (id)fromDefaultsRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"scale"];
-  v6 = [v5 integerValue];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"scale"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 objectForKey:@"overscanCompensation"];
+  v7 = [representationCopy objectForKey:@"overscanCompensation"];
 
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
   v9 = 0;
-  if (v6 <= 2 && v8 <= 2)
+  if (integerValue <= 2 && integerValue2 <= 2)
   {
-    v9 = [[a1 alloc] initWithScale:v6 overscanCompensation:v8];
+    v9 = [[self alloc] initWithScale:integerValue overscanCompensation:integerValue2];
   }
 
   return v9;
@@ -108,17 +108,17 @@
   return v5;
 }
 
-- (SBSDisplayModeSettings)initWithScale:(unint64_t)a3 overscanCompensation:(int64_t)a4
+- (SBSDisplayModeSettings)initWithScale:(unint64_t)scale overscanCompensation:(int64_t)compensation
 {
-  if (a3 >= 3)
+  if (scale >= 3)
   {
     [SBSDisplayModeSettings initWithScale:a2 overscanCompensation:self];
   }
 
-  if (a4 >= 3)
+  if (compensation >= 3)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SBSDisplayModeSettings.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"SBValidateOverscanCompensation(overscanCompensation)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSDisplayModeSettings.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"SBValidateOverscanCompensation(overscanCompensation)"}];
   }
 
   v10.receiver = self;
@@ -126,8 +126,8 @@
   result = [(SBSDisplayModeSettings *)&v10 init];
   if (result)
   {
-    result->_scale = a3;
-    result->_overscanCompensation = a4;
+    result->_scale = scale;
+    result->_overscanCompensation = compensation;
   }
 
   return result;

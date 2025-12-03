@@ -1,44 +1,44 @@
 @interface FHAmountAggregateFeature
-- (BOOL)isEqual:(id)a3;
-- (FHAmountAggregateFeature)initWithAmount:(unint64_t)a3 comparator:(id)a4;
-- (FHAmountAggregateFeature)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FHAmountAggregateFeature)initWithAmount:(unint64_t)amount comparator:(id)comparator;
+- (FHAmountAggregateFeature)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHAmountAggregateFeature
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FHAmountAggregateFeature;
-  v4 = a3;
-  [(FHAggregateFeature *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[FHAmountAggregateFeature amount](self forKey:{"amount", v6.receiver, v6.super_class), @"amount"}];
-  v5 = [(FHAmountAggregateFeature *)self comparator];
-  [v4 encodeObject:v5 forKey:@"comparator"];
+  coderCopy = coder;
+  [(FHAggregateFeature *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[FHAmountAggregateFeature amount](self forKey:{"amount", v6.receiver, v6.super_class), @"amount"}];
+  comparator = [(FHAmountAggregateFeature *)self comparator];
+  [coderCopy encodeObject:comparator forKey:@"comparator"];
 }
 
-- (FHAmountAggregateFeature)initWithCoder:(id)a3
+- (FHAmountAggregateFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = FHAmountAggregateFeature;
   v5 = [(FHAmountAggregateFeature *)&v8 init];
   if (v5)
   {
-    -[FHAmountAggregateFeature setAmount:](v5, "setAmount:", [v4 decodeIntegerForKey:@"amount"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"comparator"];
+    -[FHAmountAggregateFeature setAmount:](v5, "setAmount:", [coderCopy decodeIntegerForKey:@"amount"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"comparator"];
     [(FHAmountAggregateFeature *)v5 setComparator:v6];
   }
 
   return v5;
 }
 
-- (FHAmountAggregateFeature)initWithAmount:(unint64_t)a3 comparator:(id)a4
+- (FHAmountAggregateFeature)initWithAmount:(unint64_t)amount comparator:(id)comparator
 {
-  v7 = a4;
+  comparatorCopy = comparator;
   v11.receiver = self;
   v11.super_class = FHAmountAggregateFeature;
   v8 = [(FHAmountAggregateFeature *)&v11 init];
@@ -46,8 +46,8 @@
   if (v8)
   {
     [(FHAggregateFeature *)v8 setType:1];
-    v9->_amount = a3;
-    objc_storeStrong(&v9->_comparator, a4);
+    v9->_amount = amount;
+    objc_storeStrong(&v9->_comparator, comparator);
   }
 
   return v9;
@@ -69,26 +69,26 @@
   v8.super_class = FHAmountAggregateFeature;
   v3 = [(FHAggregateFeature *)&v8 hash];
   v4 = [(FHAmountAggregateFeature *)self amount]- v3 + 32 * v3;
-  v5 = [(FHAmountAggregateFeature *)self comparator];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  comparator = [(FHAmountAggregateFeature *)self comparator];
+  v6 = [comparator hash] - v4 + 32 * v4;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v11.receiver = self, v11.super_class = FHAmountAggregateFeature, [(FHAggregateFeature *)&v11 isEqual:v5]) && (v6 = [(FHAmountAggregateFeature *)self amount], v6 == [(FHAmountAggregateFeature *)v5 amount]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v11.receiver = self, v11.super_class = FHAmountAggregateFeature, [(FHAggregateFeature *)&v11 isEqual:v5]) && (v6 = [(FHAmountAggregateFeature *)self amount], v6 == [(FHAmountAggregateFeature *)v5 amount]))
   {
-    v7 = [(FHAmountAggregateFeature *)self comparator];
-    v8 = [(FHAmountAggregateFeature *)v5 comparator];
-    v9 = v7 == v8;
+    comparator = [(FHAmountAggregateFeature *)self comparator];
+    comparator2 = [(FHAmountAggregateFeature *)v5 comparator];
+    v9 = comparator == comparator2;
   }
 
   else

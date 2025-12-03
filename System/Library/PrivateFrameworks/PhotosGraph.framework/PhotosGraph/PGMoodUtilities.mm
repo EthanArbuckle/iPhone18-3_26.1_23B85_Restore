@@ -1,47 +1,47 @@
 @interface PGMoodUtilities
-+ (id)_momentNodesForAssetCollection:(id)a3 inGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodGraphContextIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodGraphContextIdentifiersForMomentNodes:(id)a3 inGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodGraphNodeIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodGraphNodeIdentifiersForMomentNodes:(id)a3;
-+ (id)moodMeaningIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodMeaningIdentifiersForMomentNodes:(id)a3;
-+ (id)moodSceneIdentifiersByMomentForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5;
-+ (id)moodSceneIdentifiersByMomentForMomentNodes:(id)a3;
++ (id)_momentNodesForAssetCollection:(id)collection inGraph:(id)graph moodOptions:(id)options;
++ (id)moodGraphContextIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options;
++ (id)moodGraphContextIdentifiersForMomentNodes:(id)nodes inGraph:(id)graph moodOptions:(id)options;
++ (id)moodGraphNodeIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options;
++ (id)moodGraphNodeIdentifiersForMomentNodes:(id)nodes;
++ (id)moodMeaningIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options;
++ (id)moodMeaningIdentifiersForMomentNodes:(id)nodes;
++ (id)moodSceneIdentifiersByMomentForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options;
++ (id)moodSceneIdentifiersByMomentForMomentNodes:(id)nodes;
 @end
 
 @implementation PGMoodUtilities
 
-+ (id)_momentNodesForAssetCollection:(id)a3 inGraph:(id)a4 moodOptions:(id)a5
++ (id)_momentNodesForAssetCollection:(id)collection inGraph:(id)graph moodOptions:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 momentIDs];
-  if ([v9 count])
+  collectionCopy = collection;
+  graphCopy = graph;
+  momentIDs = [options momentIDs];
+  if ([momentIDs count])
   {
-    v10 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v9 inGraph:v8];
+    momentNodes = [PGGraphMomentNodeCollection momentNodesForUUIDs:momentIDs inGraph:graphCopy];
     goto LABEL_16;
   }
 
-  if ([v7 assetCollectionType] == 6)
+  if ([collectionCopy assetCollectionType] == 6)
   {
-    v11 = [v7 uuid];
-    v12 = [PGGraphHighlightNodeCollection highlightNodeForUUID:v11 inGraph:v8];
-    v10 = [v12 momentNodes];
+    uuid = [collectionCopy uuid];
+    v12 = [PGGraphHighlightNodeCollection highlightNodeForUUID:uuid inGraph:graphCopy];
+    momentNodes = [v12 momentNodes];
 
 LABEL_7:
     goto LABEL_16;
   }
 
-  if ([v7 assetCollectionType] == 3)
+  if ([collectionCopy assetCollectionType] == 3)
   {
-    v11 = [v7 uuid];
-    v10 = [PGGraphMomentNodeCollection momentNodeForUUID:v11 inGraph:v8];
+    uuid = [collectionCopy uuid];
+    momentNodes = [PGGraphMomentNodeCollection momentNodeForUUID:uuid inGraph:graphCopy];
     goto LABEL_7;
   }
 
-  v13 = PGMomentsForAssetCollection(v7);
+  v13 = PGMomentsForAssetCollection(collectionCopy);
   v14 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v13, "count")}];
   v23 = 0u;
   v24 = 0u;
@@ -62,8 +62,8 @@ LABEL_7:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * i) uuid];
-        [v14 addObject:v20];
+        uuid2 = [*(*(&v23 + 1) + 8 * i) uuid];
+        [v14 addObject:uuid2];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -72,31 +72,31 @@ LABEL_7:
     while (v17);
   }
 
-  v10 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v14 inGraph:v8];
+  momentNodes = [PGGraphMomentNodeCollection momentNodesForUUIDs:v14 inGraph:graphCopy];
 
 LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return momentNodes;
 }
 
-+ (id)moodGraphContextIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5
++ (id)moodGraphContextIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _momentNodesForAssetCollection:a3 inGraph:v9 moodOptions:v8];
-  v11 = [a1 moodGraphContextIdentifiersForMomentNodes:v10 inGraph:v9 moodOptions:v8];
+  optionsCopy = options;
+  graphCopy = graph;
+  v10 = [self _momentNodesForAssetCollection:collection inGraph:graphCopy moodOptions:optionsCopy];
+  v11 = [self moodGraphContextIdentifiersForMomentNodes:v10 inGraph:graphCopy moodOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)moodGraphContextIdentifiersForMomentNodes:(id)a3 inGraph:(id)a4 moodOptions:(id)a5
++ (id)moodGraphContextIdentifiersForMomentNodes:(id)nodes inGraph:(id)graph moodOptions:(id)options
 {
   v162 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v7 = a4;
-  v50 = a5;
-  v8 = [MEMORY[0x277CBEB18] array];
+  nodesCopy = nodes;
+  graphCopy = graph;
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
   v155 = 0;
   v156 = &v155;
   v157 = 0x2020000000;
@@ -145,29 +145,29 @@ LABEL_16:
   v112 = &v111;
   v113 = 0x2020000000;
   v114 = 1;
-  v9 = [v50 moodGenerationContext];
-  v10 = v9;
-  if (v9)
+  moodGenerationContext = [optionsCopy moodGenerationContext];
+  v10 = moodGenerationContext;
+  if (moodGenerationContext)
   {
-    v11 = v9;
+    v11 = moodGenerationContext;
   }
 
   else
   {
     v12 = [PGMoodGenerationContext alloc];
-    v13 = [v50 referenceDate];
-    v11 = [(PGMoodGenerationContext *)v12 initWithReferenceDate:v13];
+    referenceDate = [optionsCopy referenceDate];
+    v11 = [(PGMoodGenerationContext *)v12 initWithReferenceDate:referenceDate];
   }
 
-  v14 = [v7 meNode];
-  v15 = v14;
+  meNode = [graphCopy meNode];
+  v15 = meNode;
   v105 = 0;
   v106 = &v105;
   v107 = 0x3032000000;
   v108 = __Block_byref_object_copy__65086;
   v109 = __Block_byref_object_dispose__65087;
   v110 = 0;
-  if (v14)
+  if (meNode)
   {
     v99 = 0;
     v100 = &v99;
@@ -180,18 +180,18 @@ LABEL_16:
     v98[2] = __81__PGMoodUtilities_moodGraphContextIdentifiersForMomentNodes_inGraph_moodOptions___block_invoke;
     v98[3] = &unk_278888DB0;
     v98[4] = &v99;
-    [v14 enumeratePersonNodesWithRelationship:13 matchingQuery:3 usingBlock:v98];
+    [meNode enumeratePersonNodesWithRelationship:13 matchingQuery:3 usingBlock:v98];
     v16 = v100[5];
     if (v16)
     {
-      v17 = [v16 collection];
-      v18 = [v17 socialGroupNodes];
+      collection = [v16 collection];
+      socialGroupNodes = [collection socialGroupNodes];
       v97[0] = MEMORY[0x277D85DD0];
       v97[1] = 3221225472;
       v97[2] = __81__PGMoodUtilities_moodGraphContextIdentifiersForMomentNodes_inGraph_moodOptions___block_invoke_2;
       v97[3] = &unk_278888DE0;
       v97[4] = &v105;
-      [v18 enumerateNodesUsingBlock:v97];
+      [socialGroupNodes enumerateNodesUsingBlock:v97];
     }
 
     _Block_object_dispose(&v99, 8);
@@ -203,8 +203,8 @@ LABEL_16:
     *(v152 + 24) = 0;
   }
 
-  v19 = [v7 supersetCityNodes];
-  if (![v19 count])
+  supersetCityNodes = [graphCopy supersetCityNodes];
+  if (![supersetCityNodes count])
   {
     *(v148 + 24) = 0;
     *(v144 + 24) = 0;
@@ -212,8 +212,8 @@ LABEL_16:
   }
 
   v20 = MEMORY[0x277CBEB98];
-  v21 = [v7 bestSocialGroupNodes];
-  v22 = [v20 setWithArray:v21];
+  bestSocialGroupNodes = [graphCopy bestSocialGroupNodes];
+  v22 = [v20 setWithArray:bestSocialGroupNodes];
 
   if (![v22 count])
   {
@@ -259,7 +259,7 @@ LABEL_16:
   v75 = &v139;
   v47 = v15;
   v65 = v47;
-  v48 = v19;
+  v48 = supersetCityNodes;
   v66 = v48;
   v76 = &v85;
   v77 = &v135;
@@ -270,11 +270,11 @@ LABEL_16:
   v80 = &v127;
   v81 = &v123;
   v82 = &v119;
-  v25 = v7;
+  v25 = graphCopy;
   v68 = v25;
   v83 = &v91;
   v84 = &v99;
-  [v49 enumerateNodesUsingBlock:v63];
+  [nodesCopy enumerateNodesUsingBlock:v63];
   if (*(v116 + 24) == 1)
   {
     v61 = 0u;
@@ -370,7 +370,7 @@ LABEL_37:
     v52 = 0u;
     v35 = v86[5];
     v36 = [v35 countByEnumeratingWithState:&v51 objects:v159 count:16];
-    v37 = v8;
+    v37 = array;
     v38 = 0;
     if (v36)
     {
@@ -408,7 +408,7 @@ LABEL_37:
 
 LABEL_50:
 
-    v8 = v37;
+    array = v37;
   }
 
   else
@@ -446,7 +446,7 @@ LABEL_50:
     v42 = @"NoSuperset";
   }
 
-  [v8 addObject:{v42, v47}];
+  [array addObject:{v42, v47}];
 LABEL_62:
   if (v136[3])
   {
@@ -463,7 +463,7 @@ LABEL_62:
     v43 = @"Crowd";
   }
 
-  [v8 addObject:{v43, v47}];
+  [array addObject:{v43, v47}];
 LABEL_67:
   if (v128[3])
   {
@@ -485,16 +485,16 @@ LABEL_67:
     v44 = @"OtherSocialGroups";
   }
 
-  [v8 addObject:{v44, v47}];
+  [array addObject:{v44, v47}];
 LABEL_74:
   if (v27)
   {
-    [v8 addObject:@"LongTimeNoSeePeople"];
+    [array addObject:@"LongTimeNoSeePeople"];
   }
 
   if (v38)
   {
-    [v8 addObject:@"LongTimeNoSeeLocation"];
+    [array addObject:@"LongTimeNoSeeLocation"];
   }
 
   _Block_object_dispose(&v85, 8);
@@ -518,7 +518,7 @@ LABEL_74:
 
   v45 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 void __81__PGMoodUtilities_moodGraphContextIdentifiersForMomentNodes_inGraph_moodOptions___block_invoke_2(uint64_t a1, void *a2, _BYTE *a3)
@@ -781,26 +781,26 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)moodSceneIdentifiersByMomentForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5
++ (id)moodSceneIdentifiersByMomentForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options
 {
-  v6 = [a1 _momentNodesForAssetCollection:a3 inGraph:a4 moodOptions:a5];
-  v7 = [a1 moodSceneIdentifiersByMomentForMomentNodes:v6];
+  v6 = [self _momentNodesForAssetCollection:collection inGraph:graph moodOptions:options];
+  v7 = [self moodSceneIdentifiersByMomentForMomentNodes:v6];
 
   return v7;
 }
 
-+ (id)moodSceneIdentifiersByMomentForMomentNodes:(id)a3
++ (id)moodSceneIdentifiersByMomentForMomentNodes:(id)nodes
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  nodesCopy = nodes;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__PGMoodUtilities_moodSceneIdentifiersByMomentForMomentNodes___block_invoke;
   v8[3] = &unk_278889290;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateNodesUsingBlock:v8];
+  [nodesCopy enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -844,35 +844,35 @@ void __62__PGMoodUtilities_moodSceneIdentifiersByMomentForMomentNodes___block_in
   }
 }
 
-+ (id)moodMeaningIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5
++ (id)moodMeaningIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options
 {
-  v6 = [a1 _momentNodesForAssetCollection:a3 inGraph:a4 moodOptions:a5];
-  v7 = [a1 moodMeaningIdentifiersForMomentNodes:v6];
+  v6 = [self _momentNodesForAssetCollection:collection inGraph:graph moodOptions:options];
+  v7 = [self moodMeaningIdentifiersForMomentNodes:v6];
 
   return v7;
 }
 
-+ (id)moodMeaningIdentifiersForMomentNodes:(id)a3
++ (id)moodMeaningIdentifiersForMomentNodes:(id)nodes
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 meaningNodes];
-  v6 = [v5 meaningLabels];
+  nodesCopy = nodes;
+  array = [MEMORY[0x277CBEB18] array];
+  meaningNodes = [nodesCopy meaningNodes];
+  meaningLabels = [meaningNodes meaningLabels];
 
-  if ([v6 count])
+  if ([meaningLabels count])
   {
-    v7 = [v6 allObjects];
-    [v4 addObjectsFromArray:v7];
+    allObjects = [meaningLabels allObjects];
+    [array addObjectsFromArray:allObjects];
   }
 
-  v8 = [v3 celebratedHolidayNodes];
+  celebratedHolidayNodes = [nodesCopy celebratedHolidayNodes];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__PGMoodUtilities_moodMeaningIdentifiersForMomentNodes___block_invoke;
   v11[3] = &unk_278888D00;
-  v9 = v4;
+  v9 = array;
   v12 = v9;
-  [v8 enumerateNodesUsingBlock:v11];
+  [celebratedHolidayNodes enumerateNodesUsingBlock:v11];
 
   return v9;
 }
@@ -884,26 +884,26 @@ void __56__PGMoodUtilities_moodMeaningIdentifiersForMomentNodes___block_invoke(u
   [v2 addObject:v3];
 }
 
-+ (id)moodGraphNodeIdentifiersForAssetCollection:(id)a3 withGraph:(id)a4 moodOptions:(id)a5
++ (id)moodGraphNodeIdentifiersForAssetCollection:(id)collection withGraph:(id)graph moodOptions:(id)options
 {
-  v6 = [a1 _momentNodesForAssetCollection:a3 inGraph:a4 moodOptions:a5];
-  v7 = [a1 moodGraphNodeIdentifiersForMomentNodes:v6];
+  v6 = [self _momentNodesForAssetCollection:collection inGraph:graph moodOptions:options];
+  v7 = [self moodGraphNodeIdentifiersForMomentNodes:v6];
 
   return v7;
 }
 
-+ (id)moodGraphNodeIdentifiersForMomentNodes:(id)a3
++ (id)moodGraphNodeIdentifiersForMomentNodes:(id)nodes
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  nodesCopy = nodes;
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__PGMoodUtilities_moodGraphNodeIdentifiersForMomentNodes___block_invoke;
   v8[3] = &unk_278889290;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateNodesUsingBlock:v8];
+  [nodesCopy enumerateNodesUsingBlock:v8];
 
   return v6;
 }

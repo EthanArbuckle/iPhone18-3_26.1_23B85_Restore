@@ -1,23 +1,23 @@
 @interface SBUILegibilityContainerView
 + (id)legibilityImageDisposalQueue;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)_updateFilters;
-- (BOOL)updateOptions:(int64_t)a3;
+- (BOOL)updateOptions:(int64_t)options;
 - (SBUILegibilityEngine)legibilityEngine;
 - (id)_contentColor;
 - (id)_drawView;
 - (id)buildDrawView;
 - (void)_applyStrength;
 - (void)_resetImages;
-- (void)_setDrawImage:(id)a3;
-- (void)applySettingsForLegibilityStyle:(int64_t)a3;
+- (void)_setDrawImage:(id)image;
+- (void)applySettingsForLegibilityStyle:(int64_t)style;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 strengthenedImage:(id)a4 strength:(double)a5;
-- (void)setLegibilityEngine:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setStrength:(double)a3;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image strengthenedImage:(id)strengthenedImage strength:(double)strength;
+- (void)setLegibilityEngine:(id)engine;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setStrength:(double)strength;
 - (void)sizeToFit;
 @end
 
@@ -61,35 +61,35 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBUILegibilityContainerView *)self _drawView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _drawView = [(SBUILegibilityContainerView *)self _drawView];
+  [_drawView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)applySettingsForLegibilityStyle:(int64_t)a3
+- (void)applySettingsForLegibilityStyle:(int64_t)style
 {
-  v4 = [SBUILegibilitySettings sharedInstanceForStyle:a3];
+  v4 = [SBUILegibilitySettings sharedInstanceForStyle:style];
   [(SBUILegibilityContainerView *)self setLegibilitySettings:v4];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if ((SBUILegibilitySettingsAreEqual(v5, self->_legibilitySettings) & 1) == 0)
+  settingsCopy = settings;
+  if ((SBUILegibilitySettingsAreEqual(settingsCopy, self->_legibilitySettings) & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     self->_dirty = 1;
     [(SBUILegibilityContainerView *)self _updateFilters];
     [(SBUILegibilityContainerView *)self _applyStrength];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v7 = a3;
+  imageCopy = image;
   if (([(UIImage *)self->_image isEqual:?]& 1) == 0)
   {
     [(SBUILegibilityContainerView *)self _resetImages];
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     processedImage = self->_processedImage;
     self->_processedImage = 0;
 
@@ -103,47 +103,47 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
   }
 }
 
-- (void)setImage:(id)a3 strengthenedImage:(id)a4 strength:(double)a5
+- (void)setImage:(id)image strengthenedImage:(id)strengthenedImage strength:(double)strength
 {
-  v11 = a3;
-  v9 = a4;
-  if (![(UIImage *)self->_image isEqual:v11]|| ![(UIImage *)self->_strengthenedImage isEqual:v9]|| self->_strength != a5)
+  imageCopy = image;
+  strengthenedImageCopy = strengthenedImage;
+  if (![(UIImage *)self->_image isEqual:imageCopy]|| ![(UIImage *)self->_strengthenedImage isEqual:strengthenedImageCopy]|| self->_strength != strength)
   {
     [(SBUILegibilityContainerView *)self _resetImages];
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     processedImage = self->_processedImage;
     self->_processedImage = 0;
 
-    objc_storeStrong(&self->_strengthenedImage, a4);
-    self->_strength = a5;
-    [(SBUILegibilityContainerView *)self _setDrawImage:v9];
+    objc_storeStrong(&self->_strengthenedImage, strengthenedImage);
+    self->_strength = strength;
+    [(SBUILegibilityContainerView *)self _setDrawImage:strengthenedImageCopy];
     [(SBUILegibilityContainerView *)self _updateFilters];
     self->_dirty = 0;
   }
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  if (self->_strength != a3)
+  if (self->_strength != strength)
   {
-    self->_strength = a3;
+    self->_strength = strength;
     self->_dirty = 1;
     [(SBUILegibilityContainerView *)self _applyStrength];
   }
 }
 
-- (BOOL)updateOptions:(int64_t)a3
+- (BOOL)updateOptions:(int64_t)options
 {
   options = self->_options;
-  if (options != a3)
+  if (options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     [(SBUILegibilityContainerView *)self _updateFilters];
     self->_dirty = 1;
     [(SBUILegibilityContainerView *)self _applyStrength];
   }
 
-  return options != a3;
+  return options != options;
 }
 
 - (id)_drawView
@@ -151,9 +151,9 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
   drawView = self->_drawView;
   if (!drawView)
   {
-    v4 = [(SBUILegibilityContainerView *)self buildDrawView];
+    buildDrawView = [(SBUILegibilityContainerView *)self buildDrawView];
     v5 = self->_drawView;
-    self->_drawView = v4;
+    self->_drawView = buildDrawView;
 
     [(SBUILegibilityContainerView *)self addSubview:self->_drawView];
     drawView = self->_drawView;
@@ -172,24 +172,24 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
   return v2;
 }
 
-- (void)_setDrawImage:(id)a3
+- (void)_setDrawImage:(id)image
 {
-  v9 = a3;
+  imageCopy = image;
   if (![(SBUILegibilityContainerView *)self _usesColorFilters]&& [(SBUILegibilityContainerView *)self _usesSecondaryColor])
   {
-    v4 = [(SBUILegibilityContainerView *)self _contentColor];
-    v5 = [(UIImage *)v9 imageWithTintColor:v4];
+    _contentColor = [(SBUILegibilityContainerView *)self _contentColor];
+    v5 = [(UIImage *)imageCopy imageWithTintColor:_contentColor];
     processedImage = self->_processedImage;
     self->_processedImage = v5;
 
     v7 = v5;
-    v9 = v7;
+    imageCopy = v7;
   }
 
-  v8 = [(SBUILegibilityContainerView *)self _drawView];
-  [v8 setImage:v9];
+  _drawView = [(SBUILegibilityContainerView *)self _drawView];
+  [_drawView setImage:imageCopy];
   [(SBUILegibilityContainerView *)self bounds];
-  [v8 setFrame:?];
+  [_drawView setFrame:?];
 }
 
 - (void)sizeToFit
@@ -199,9 +199,9 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
   v6 = v5;
   [(UIImage *)self->_image size];
   [(SBUILegibilityContainerView *)self setFrame:v4, v6, v7, v8];
-  v9 = [(SBUILegibilityContainerView *)self _drawView];
+  _drawView = [(SBUILegibilityContainerView *)self _drawView];
   [(SBUILegibilityContainerView *)self bounds];
-  [v9 setFrame:?];
+  [_drawView setFrame:?];
 }
 
 - (void)_applyStrength
@@ -211,10 +211,10 @@ void __59__SBUILegibilityContainerView_legibilityImageDisposalQueue__block_invok
     return;
   }
 
-  v3 = [(SBUILegibilityContainerView *)self legibilityEngine];
+  legibilityEngine = [(SBUILegibilityContainerView *)self legibilityEngine];
   strength = self->_strength;
-  v9 = v3;
-  if (!v3 && strength == 0.0)
+  v9 = legibilityEngine;
+  if (!legibilityEngine && strength == 0.0)
   {
     image = self->_image;
 LABEL_9:
@@ -228,7 +228,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [v3 applyStrength:image toImage:self->_legibilitySettings settings:?];
+  v6 = [legibilityEngine applyStrength:image toImage:self->_legibilitySettings settings:?];
   strengthenedImage = self->_strengthenedImage;
   self->_strengthenedImage = v6;
   v8 = v6;
@@ -238,9 +238,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setLegibilityEngine:(id)a3
+- (void)setLegibilityEngine:(id)engine
 {
-  obj = a3;
+  obj = engine;
   WeakRetained = objc_loadWeakRetained(&self->_legibilityEngine);
 
   v5 = obj;
@@ -253,10 +253,10 @@ LABEL_10:
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
   {
     v5 = 1;
   }
@@ -265,7 +265,7 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = SBUILegibilityContainerView;
-    v5 = [(SBUILegibilityContainerView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBUILegibilityContainerView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -273,9 +273,9 @@ LABEL_10:
 
 - (id)_contentColor
 {
-  v3 = [(SBUILegibilityContainerView *)self _usesSecondaryColor];
+  _usesSecondaryColor = [(SBUILegibilityContainerView *)self _usesSecondaryColor];
   legibilitySettings = self->_legibilitySettings;
-  if (v3)
+  if (_usesSecondaryColor)
   {
     [(SBUILegibilitySettings *)legibilitySettings secondaryColor];
   }
@@ -294,21 +294,21 @@ LABEL_10:
   v14[1] = *MEMORY[0x1E69E9840];
   if (self->_legibilitySettings)
   {
-    v2 = self;
-    v3 = [(SBUILegibilityContainerView *)self _contentColor];
-    v4 = [v3 CGColor];
-    v5 = [(SBUILegibilityContainerView *)v2 layer];
-    LODWORD(v2) = [(SBUILegibilityContainerView *)v2 _usesColorFilters];
-    v6 = [v5 filters];
-    v7 = v6;
-    if (v2)
+    selfCopy = self;
+    _contentColor = [(SBUILegibilityContainerView *)self _contentColor];
+    cGColor = [_contentColor CGColor];
+    layer = [(SBUILegibilityContainerView *)selfCopy layer];
+    LODWORD(selfCopy) = [(SBUILegibilityContainerView *)selfCopy _usesColorFilters];
+    filters = [layer filters];
+    v7 = filters;
+    if (selfCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __45__SBUILegibilityContainerView__updateFilters__block_invoke;
       v13[3] = &__block_descriptor_40_e18_B16__0__CAFilter_8l;
-      v13[4] = v4;
-      v8 = [v6 bs_firstObjectPassingTest:v13];
+      v13[4] = cGColor;
+      v8 = [filters bs_firstObjectPassingTest:v13];
 
       LOBYTE(v9) = v8 == 0;
       if (!v8)
@@ -316,21 +316,21 @@ LABEL_10:
         v10 = *MEMORY[0x1E6979CB0];
         v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
         [v8 setName:v10];
-        [v8 setValue:v4 forKey:@"inputColor"];
+        [v8 setValue:cGColor forKey:@"inputColor"];
         v14[0] = v8;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-        [v5 setFilters:v11];
+        [layer setFilters:v11];
       }
     }
 
     else
     {
-      v9 = [v6 count] != 0;
+      v9 = [filters count] != 0;
 
-      [v5 setFilters:0];
+      [layer setFilters:0];
     }
 
-    [v5 setAllowsGroupBlending:0];
+    [layer setAllowsGroupBlending:0];
   }
 
   else
@@ -391,7 +391,7 @@ BOOL __45__SBUILegibilityContainerView__updateFilters__block_invoke(uint64_t a1,
 
   if (v21[5] || v15[5] || v9[5])
   {
-    v6 = [objc_opt_class() legibilityImageDisposalQueue];
+    legibilityImageDisposalQueue = [objc_opt_class() legibilityImageDisposalQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__SBUILegibilityContainerView__resetImages__block_invoke;
@@ -399,7 +399,7 @@ BOOL __45__SBUILegibilityContainerView__updateFilters__block_invoke(uint64_t a1,
     block[4] = &v20;
     block[5] = &v14;
     block[6] = &v8;
-    dispatch_async(v6, block);
+    dispatch_async(legibilityImageDisposalQueue, block);
   }
 
   _Block_object_dispose(&v8, 8);

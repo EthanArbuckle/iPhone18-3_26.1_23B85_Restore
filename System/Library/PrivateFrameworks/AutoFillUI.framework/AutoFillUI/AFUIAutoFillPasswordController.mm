@@ -1,39 +1,39 @@
 @interface AFUIAutoFillPasswordController
-- (AFUIAutoFillPasswordController)initWithDocumentTraits:(id)a3 presentingViewController:(id)a4 textOperationsHandler:(id)a5;
+- (AFUIAutoFillPasswordController)initWithDocumentTraits:(id)traits presentingViewController:(id)controller textOperationsHandler:(id)handler;
 - (AFUIModalUIDelegate)modalUIDelegate;
 - (UIViewController)presentingViewController;
-- (id)_keyboardDictionaryWithCredential:(id)a3;
-- (id)_menuItemImageForOneTimeCodeSuggestion:(id)a3;
-- (void)_loadAccountSuggestions:(id)a3;
-- (void)_loadOneTimeCodeSuggestions:(id)a3;
-- (void)_performTextOperationsWithAccountSuggestion:(id)a3;
-- (void)_performTextOperationsWithCredential:(id)a3;
-- (void)_performTextOperationsWithOneTimeCodeSuggestion:(id)a3;
-- (void)_performTextOperationsWithStringValue:(id)a3;
+- (id)_keyboardDictionaryWithCredential:(id)credential;
+- (id)_menuItemImageForOneTimeCodeSuggestion:(id)suggestion;
+- (void)_loadAccountSuggestions:(id)suggestions;
+- (void)_loadOneTimeCodeSuggestions:(id)suggestions;
+- (void)_performTextOperationsWithAccountSuggestion:(id)suggestion;
+- (void)_performTextOperationsWithCredential:(id)credential;
+- (void)_performTextOperationsWithOneTimeCodeSuggestion:(id)suggestion;
+- (void)_performTextOperationsWithStringValue:(id)value;
 - (void)_reloadOneTimeCodeSuggestions;
 - (void)_showAllPasswordsView;
-- (void)generateInitialMenu:(id)a3 menuChanged:(id)a4;
-- (void)passwordsControllerDidFinish:(id)a3;
+- (void)generateInitialMenu:(id)menu menuChanged:(id)changed;
+- (void)passwordsControllerDidFinish:(id)finish;
 @end
 
 @implementation AFUIAutoFillPasswordController
 
-- (AFUIAutoFillPasswordController)initWithDocumentTraits:(id)a3 presentingViewController:(id)a4 textOperationsHandler:(id)a5
+- (AFUIAutoFillPasswordController)initWithDocumentTraits:(id)traits presentingViewController:(id)controller textOperationsHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = AFUIAutoFillPasswordController;
   v11 = [(AFUIAutoFillPasswordController *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [traitsCopy copy];
     documentTraits = v11->_documentTraits;
     v11->_documentTraits = v12;
 
-    objc_storeWeak(&v11->_presentingViewController, v9);
-    v14 = MEMORY[0x1D38AFC90](v10);
+    objc_storeWeak(&v11->_presentingViewController, controllerCopy);
+    v14 = MEMORY[0x1D38AFC90](handlerCopy);
     textOperationsHandler = v11->_textOperationsHandler;
     v11->_textOperationsHandler = v14;
 
@@ -43,47 +43,47 @@
   return v11;
 }
 
-- (void)generateInitialMenu:(id)a3 menuChanged:(id)a4
+- (void)generateInitialMenu:(id)menu menuChanged:(id)changed
 {
-  v8 = a3;
-  v6 = MEMORY[0x1D38AFC90](a4);
+  menuCopy = menu;
+  v6 = MEMORY[0x1D38AFC90](changed);
   menuChanged = self->_menuChanged;
   self->_menuChanged = v6;
 
   if ([(RTIDocumentTraits *)self->_documentTraits autofillMode]== 1)
   {
-    [(AFUIAutoFillPasswordController *)self _loadAccountSuggestions:v8];
+    [(AFUIAutoFillPasswordController *)self _loadAccountSuggestions:menuCopy];
   }
 
   else
   {
-    [(AFUIAutoFillPasswordController *)self _loadOneTimeCodeSuggestions:v8];
+    [(AFUIAutoFillPasswordController *)self _loadOneTimeCodeSuggestions:menuCopy];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel__reloadOneTimeCodeSuggestions name:@"com.apple.AutoFillCore.AFOneTimeCodeSuggestionsDidChangeNotification" object:0];
+    menuCopy = [MEMORY[0x1E696AD88] defaultCenter];
+    [menuCopy addObserver:self selector:sel__reloadOneTimeCodeSuggestions name:@"com.apple.AutoFillCore.AFOneTimeCodeSuggestionsDidChangeNotification" object:0];
   }
 }
 
-- (void)_loadAccountSuggestions:(id)a3
+- (void)_loadAccountSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  suggestionsCopy = suggestions;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E698E1C0] sharedInstance];
+  mEMORY[0x1E698E1C0] = [MEMORY[0x1E698E1C0] sharedInstance];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E698E1C0] sharedInstance];
+    mEMORY[0x1E698E1C0]2 = [MEMORY[0x1E698E1C0] sharedInstance];
     documentTraits = self->_documentTraits;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__AFUIAutoFillPasswordController__loadAccountSuggestions___block_invoke;
     v10[3] = &unk_1E8424508;
     objc_copyWeak(&v13, &location);
-    v11 = v5;
-    v12 = v4;
-    [v8 generateAutoFillSuggestionsWithAutoFillMode:1 textPrefix:0 documentTraits:documentTraits externalizedContext:0 completionHandler:v10];
+    v11 = array;
+    v12 = suggestionsCopy;
+    [mEMORY[0x1E698E1C0]2 generateAutoFillSuggestionsWithAutoFillMode:1 textPrefix:0 documentTraits:documentTraits externalizedContext:0 completionHandler:v10];
 
     objc_destroyWeak(&v13);
   }
@@ -218,17 +218,17 @@ void __58__AFUIAutoFillPasswordController__loadAccountSuggestions___block_invoke
   [WeakRetained _showAllPasswordsView];
 }
 
-- (void)_loadOneTimeCodeSuggestions:(id)a3
+- (void)_loadOneTimeCodeSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  suggestionsCopy = suggestions;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E698E1C0] sharedInstance];
+  mEMORY[0x1E698E1C0] = [MEMORY[0x1E698E1C0] sharedInstance];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E698E1C0] sharedInstance];
+    mEMORY[0x1E698E1C0]2 = [MEMORY[0x1E698E1C0] sharedInstance];
     documentTraits = self->_documentTraits;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -236,9 +236,9 @@ void __58__AFUIAutoFillPasswordController__loadAccountSuggestions___block_invoke
     v10[3] = &unk_1E8424530;
     objc_copyWeak(&v13, &location);
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
-    [v8 generateAutoFillSuggestionsWithAutoFillMode:8 textPrefix:0 documentTraits:documentTraits externalizedContext:0 completionHandler:v10];
+    v11 = array;
+    v12 = suggestionsCopy;
+    [mEMORY[0x1E698E1C0]2 generateAutoFillSuggestionsWithAutoFillMode:8 textPrefix:0 documentTraits:documentTraits externalizedContext:0 completionHandler:v10];
 
     objc_destroyWeak(&v13);
   }
@@ -399,27 +399,27 @@ void __63__AFUIAutoFillPasswordController__reloadOneTimeCodeSuggestions__block_i
     [(AFUIPasswordsController *)self->_passwordsController setPasswordPickerDelegate:self];
   }
 
-  v5 = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
-  [v5 passwordsUIWillBeginForSessionUUID:0 completion:0];
+  modalUIDelegate = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
+  [modalUIDelegate passwordsUIWillBeginForSessionUUID:0 completion:0];
 
   v6 = self->_passwordsController;
-  v7 = [(AFUIAutoFillPasswordController *)self presentingViewController];
-  [(AFUIPasswordsController *)v6 presentPasswordPickerFromViewController:v7 didFinishAuthenticationBlock:0];
+  presentingViewController = [(AFUIAutoFillPasswordController *)self presentingViewController];
+  [(AFUIPasswordsController *)v6 presentPasswordPickerFromViewController:presentingViewController didFinishAuthenticationBlock:0];
 }
 
-- (void)_performTextOperationsWithAccountSuggestion:(id)a3
+- (void)_performTextOperationsWithAccountSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__AFUIAutoFillPasswordController__performTextOperationsWithAccountSuggestion___block_invoke;
   v16[3] = &unk_1E84245A8;
   v16[4] = self;
-  v5 = v4;
+  v5 = suggestionCopy;
   v17 = v5;
   v6 = MEMORY[0x1D38AFC90](v16);
   v7 = self->_documentTraits;
-  v8 = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
+  modalUIDelegate = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__AFUIAutoFillPasswordController__performTextOperationsWithAccountSuggestion___block_invoke_3;
@@ -430,7 +430,7 @@ void __63__AFUIAutoFillPasswordController__reloadOneTimeCodeSuggestions__block_i
   v9 = v6;
   v10 = v7;
   v11 = v5;
-  [v8 authenticationWillBeginForSessionUUID:0 completion:v12];
+  [modalUIDelegate authenticationWillBeginForSessionUUID:0 completion:v12];
 }
 
 void __78__AFUIAutoFillPasswordController__performTextOperationsWithAccountSuggestion___block_invoke(uint64_t a1, char a2)
@@ -474,32 +474,32 @@ void __78__AFUIAutoFillPasswordController__performTextOperationsWithAccountSugge
   }
 }
 
-- (void)_performTextOperationsWithCredential:(id)a3
+- (void)_performTextOperationsWithCredential:(id)credential
 {
   v4 = MEMORY[0x1E69C6FA8];
-  v5 = a3;
+  credentialCopy = credential;
   v8 = objc_alloc_init(v4);
-  v6 = [(AFUIAutoFillPasswordController *)self _keyboardDictionaryWithCredential:v5];
+  v6 = [(AFUIAutoFillPasswordController *)self _keyboardDictionaryWithCredential:credentialCopy];
 
-  v7 = [v8 keyboardOutput];
-  [v7 setCustomInfo:v6];
+  keyboardOutput = [v8 keyboardOutput];
+  [keyboardOutput setCustomInfo:v6];
 
   (*(self->_textOperationsHandler + 2))();
 }
 
-- (void)_performTextOperationsWithOneTimeCodeSuggestion:(id)a3
+- (void)_performTextOperationsWithOneTimeCodeSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82__AFUIAutoFillPasswordController__performTextOperationsWithOneTimeCodeSuggestion___block_invoke;
   v16[3] = &unk_1E84245A8;
   v16[4] = self;
-  v5 = v4;
+  v5 = suggestionCopy;
   v17 = v5;
   v6 = MEMORY[0x1D38AFC90](v16);
   v7 = self->_documentTraits;
-  v8 = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
+  modalUIDelegate = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__AFUIAutoFillPasswordController__performTextOperationsWithOneTimeCodeSuggestion___block_invoke_3;
@@ -510,7 +510,7 @@ void __78__AFUIAutoFillPasswordController__performTextOperationsWithAccountSugge
   v9 = v6;
   v10 = v7;
   v11 = v5;
-  [v8 authenticationWillBeginForSessionUUID:0 completion:v12];
+  [modalUIDelegate authenticationWillBeginForSessionUUID:0 completion:v12];
 }
 
 void __82__AFUIAutoFillPasswordController__performTextOperationsWithOneTimeCodeSuggestion___block_invoke(uint64_t a1, char a2)
@@ -562,13 +562,13 @@ void __82__AFUIAutoFillPasswordController__performTextOperationsWithOneTimeCodeS
   }
 }
 
-- (id)_menuItemImageForOneTimeCodeSuggestion:(id)a3
+- (id)_menuItemImageForOneTimeCodeSuggestion:(id)suggestion
 {
-  v3 = [a3 oneTimeCodePayload];
-  v4 = [v3 objectForKeyedSubscript:@"OneTimeCode"];
+  oneTimeCodePayload = [suggestion oneTimeCodePayload];
+  v4 = [oneTimeCodePayload objectForKeyedSubscript:@"OneTimeCode"];
 
-  v5 = [v4 source];
-  switch(v5)
+  source = [v4 source];
+  switch(source)
   {
     case 0:
       v6 = @"message.fill";
@@ -589,16 +589,16 @@ LABEL_9:
   return v7;
 }
 
-- (id)_keyboardDictionaryWithCredential:(id)a3
+- (id)_keyboardDictionaryWithCredential:(id)credential
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 user];
-  v7 = v6;
-  if (v6)
+  credentialCopy = credential;
+  dictionary = [v3 dictionary];
+  user = [credentialCopy user];
+  v7 = user;
+  if (user)
   {
-    v8 = v6;
+    v8 = user;
   }
 
   else
@@ -606,13 +606,13 @@ LABEL_9:
     v8 = &stru_1F4E9A028;
   }
 
-  [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69D98A0]];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E69D98A0]];
 
-  v9 = [v4 password];
+  password = [credentialCopy password];
 
-  if (v9)
+  if (password)
   {
-    v10 = v9;
+    v10 = password;
   }
 
   else
@@ -620,25 +620,25 @@ LABEL_9:
     v10 = &stru_1F4E9A028;
   }
 
-  [v5 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69D9888]];
+  [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E69D9888]];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_performTextOperationsWithStringValue:(id)a3
+- (void)_performTextOperationsWithStringValue:(id)value
 {
   v4 = MEMORY[0x1E69C6FA8];
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_alloc_init(v4);
-  [v6 _assertOrInsertText:v5 documentTraits:self->_documentTraits];
+  [v6 _assertOrInsertText:valueCopy documentTraits:self->_documentTraits];
 
   (*(self->_textOperationsHandler + 2))();
 }
 
-- (void)passwordsControllerDidFinish:(id)a3
+- (void)passwordsControllerDidFinish:(id)finish
 {
-  v3 = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
-  [v3 passwordsUIDidEndForSessionUUID:0 completion:0];
+  modalUIDelegate = [(AFUIAutoFillPasswordController *)self modalUIDelegate];
+  [modalUIDelegate passwordsUIDidEndForSessionUUID:0 completion:0];
 }
 
 - (AFUIModalUIDelegate)modalUIDelegate

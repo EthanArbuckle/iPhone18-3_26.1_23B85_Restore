@@ -1,24 +1,24 @@
 @interface HKInfographicLinkedTextViewCell
-- (HKInfographicLinkedTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKInfographicLinkedTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)didTapDescriptionLabel;
-- (void)updateAutomationIdentifiersWith:(id)a3;
+- (void)updateAutomationIdentifiersWith:(id)with;
 @end
 
 @implementation HKInfographicLinkedTextViewCell
 
-- (HKInfographicLinkedTextViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKInfographicLinkedTextViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = HKInfographicLinkedTextViewCell;
-  v4 = [(HKInfographicTextViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKInfographicTextViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel_didTapDescriptionLabel];
-    v6 = [(HKInfographicTextViewCell *)v4 descriptionLabel];
-    [v6 addGestureRecognizer:v5];
+    descriptionLabel = [(HKInfographicTextViewCell *)v4 descriptionLabel];
+    [descriptionLabel addGestureRecognizer:v5];
 
-    v7 = [(HKInfographicTextViewCell *)v4 descriptionLabel];
-    [v7 setUserInteractionEnabled:1];
+    descriptionLabel2 = [(HKInfographicTextViewCell *)v4 descriptionLabel];
+    [descriptionLabel2 setUserInteractionEnabled:1];
   }
 
   return v4;
@@ -26,18 +26,18 @@
 
 - (void)didTapDescriptionLabel
 {
-  v2 = [(HKInfographicLinkedTextViewCell *)self didTapLinkedText];
-  v2[2]();
+  didTapLinkedText = [(HKInfographicLinkedTextViewCell *)self didTapLinkedText];
+  didTapLinkedText[2]();
 }
 
-- (void)updateAutomationIdentifiersWith:(id)a3
+- (void)updateAutomationIdentifiersWith:(id)with
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  withCopy = with;
+  v5 = withCopy;
+  if (withCopy)
   {
-    v13[0] = v4;
+    v13[0] = withCopy;
     v13[1] = @"InfographicLinkedTextItem";
     v13[2] = @"Cell";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
@@ -49,15 +49,15 @@
     v12[2] = @"Description";
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
     v9 = HKUIJoinStringsForAutomationIdentifier(v8);
-    v10 = [(HKInfographicTextViewCell *)self descriptionLabel];
-    [v10 setAccessibilityIdentifier:v9];
+    descriptionLabel = [(HKInfographicTextViewCell *)self descriptionLabel];
+    [descriptionLabel setAccessibilityIdentifier:v9];
   }
 
   else
   {
     [(HKInfographicLinkedTextViewCell *)self setAccessibilityIdentifier:0];
-    v11 = [(HKInfographicTextViewCell *)self descriptionLabel];
-    [v11 setAccessibilityIdentifier:0];
+    descriptionLabel2 = [(HKInfographicTextViewCell *)self descriptionLabel];
+    [descriptionLabel2 setAccessibilityIdentifier:0];
   }
 }
 

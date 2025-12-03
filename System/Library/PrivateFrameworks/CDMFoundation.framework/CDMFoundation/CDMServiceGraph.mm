@@ -1,37 +1,37 @@
 @interface CDMServiceGraph
-+ (BOOL)isServiceRequiredForSetup:(id)a3;
-+ (BOOL)shouldSkipNode:(id)a3 service:(id)a4;
-+ (id)getAssetsForSetup:(id)a3;
++ (BOOL)isServiceRequiredForSetup:(id)setup;
++ (BOOL)shouldSkipNode:(id)node service:(id)service;
++ (id)getAssetsForSetup:(id)setup;
 + (id)requiredCDMGraphServices;
-+ (int)getCdmRequesterWithConnectionId:(id)a3;
-+ (void)dispatchServiceGraphHandleMetricsLogging:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
-+ (void)dispatchServiceGraphRequestLogging:(id)a3 dataDispatcherContext:(id)a4;
-+ (void)dispatchServiceGraphResponseLogging:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5;
++ (int)getCdmRequesterWithConnectionId:(id)id;
++ (void)dispatchServiceGraphHandleMetricsLogging:(id)logging requestId:(id)id dataDispatcherContext:(id)context;
++ (void)dispatchServiceGraphRequestLogging:(id)logging dataDispatcherContext:(id)context;
++ (void)dispatchServiceGraphResponseLogging:(id)logging requestId:(id)id dataDispatcherContext:(id)context;
 - (BOOL)isAcyclic;
 - (CDMServiceGraph)init;
-- (CDMServiceGraph)initWithServices:(id)a3 graphServices:(id)a4 graphInput:(id)a5 languageCode:(id)a6 handlerId:(id)a7 aneLock:(id)a8 dataDispatcherContext:(id)a9;
-- (id)addNodeWithName:(id)a3 bindService:(id)a4 aneEnabled:(BOOL)a5 requestId:(id)a6 block:(id)a7;
-- (id)getGraphServiceByClass:(Class)a3;
-- (id)getServiceByClass:(Class)a3;
+- (CDMServiceGraph)initWithServices:(id)services graphServices:(id)graphServices graphInput:(id)input languageCode:(id)code handlerId:(id)id aneLock:(id)lock dataDispatcherContext:(id)context;
+- (id)addNodeWithName:(id)name bindService:(id)service aneEnabled:(BOOL)enabled requestId:(id)id block:(id)block;
+- (id)getGraphServiceByClass:(Class)class;
+- (id)getServiceByClass:(Class)class;
 - (id)toMermaid;
 - (id)topoSort;
-- (id)validateRequest:(id)a3;
+- (id)validateRequest:(id)request;
 - (void)buildGraphInternal;
-- (void)failedWithError:(id)a3;
-- (void)failedWithErrorCode:(int64_t)a3 errorDomain:(id)a4 message:(id)a5;
-- (void)populateRequesterEnumForNluRequest:(id)a3;
-- (void)skipNode:(id)a3 basedOnNode:(id)a4 withCondition:(id)a5;
+- (void)failedWithError:(id)error;
+- (void)failedWithErrorCode:(int64_t)code errorDomain:(id)domain message:(id)message;
+- (void)populateRequesterEnumForNluRequest:(id)request;
+- (void)skipNode:(id)node basedOnNode:(id)onNode withCondition:(id)condition;
 @end
 
 @implementation CDMServiceGraph
 
-- (void)skipNode:(id)a3 basedOnNode:(id)a4 withCondition:(id)a5
+- (void)skipNode:(id)node basedOnNode:(id)onNode withCondition:(id)condition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  nodeCopy = node;
+  onNodeCopy = onNode;
+  conditionCopy = condition;
+  if (!conditionCopy)
   {
     v17 = CDMOSLoggerForCategory(2);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -42,7 +42,7 @@
     v22 = 136315394;
     v23 = "[CDMServiceGraph skipNode:basedOnNode:withCondition:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = nodeCopy;
     v18 = "%s [WARN]: Empty skip condition for node:%@";
 LABEL_14:
     v19 = v17;
@@ -52,7 +52,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (([(NSMutableArray *)self->_nodes containsObject:v8]& 1) == 0)
+  if (([(NSMutableArray *)self->_nodes containsObject:nodeCopy]& 1) == 0)
   {
     v17 = CDMOSLoggerForCategory(2);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -63,12 +63,12 @@ LABEL_15:
     v22 = 136315394;
     v23 = "[CDMServiceGraph skipNode:basedOnNode:withCondition:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = nodeCopy;
     v18 = "%s [WARN]: Node is not found in graph:%@";
     goto LABEL_14;
   }
 
-  if (([(NSMutableArray *)self->_nodes containsObject:v9]& 1) == 0)
+  if (([(NSMutableArray *)self->_nodes containsObject:onNodeCopy]& 1) == 0)
   {
     v17 = CDMOSLoggerForCategory(2);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -76,7 +76,7 @@ LABEL_15:
       v22 = 136315394;
       v23 = "[CDMServiceGraph skipNode:basedOnNode:withCondition:]";
       v24 = 2112;
-      v25 = v9;
+      v25 = onNodeCopy;
       v18 = "%s [WARN]: Node is not found in graph:%@";
       goto LABEL_14;
     }
@@ -86,7 +86,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v8 == v9)
+  if (nodeCopy == onNodeCopy)
   {
     v17 = CDMOSLoggerForCategory(2);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -102,50 +102,50 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v11 = [v9 getNodeName];
-  v12 = [v8 getNodeName];
-  v13 = [(NSMutableDictionary *)self->_skipNodes objectForKey:v11];
+  getNodeName = [onNodeCopy getNodeName];
+  getNodeName2 = [nodeCopy getNodeName];
+  v13 = [(NSMutableDictionary *)self->_skipNodes objectForKey:getNodeName];
 
   if (!v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_skipNodes setObject:v14 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_skipNodes setObject:v14 forKeyedSubscript:getNodeName];
   }
 
-  v15 = _Block_copy(v10);
-  v16 = [(NSMutableDictionary *)self->_skipNodes objectForKeyedSubscript:v11];
-  [v16 setObject:v15 forKeyedSubscript:v12];
+  v15 = _Block_copy(conditionCopy);
+  v16 = [(NSMutableDictionary *)self->_skipNodes objectForKeyedSubscript:getNodeName];
+  [v16 setObject:v15 forKeyedSubscript:getNodeName2];
 
 LABEL_17:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateRequesterEnumForNluRequest:(id)a3
+- (void)populateRequesterEnumForNluRequest:(id)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 requestId];
-  if (v4)
+  requestCopy = request;
+  requestId = [requestCopy requestId];
+  if (requestId)
   {
-    v5 = v4;
-    v6 = [v3 requestId];
-    v7 = [v6 connectionId];
-    if (!v7)
+    v5 = requestId;
+    requestId2 = [requestCopy requestId];
+    connectionId = [requestId2 connectionId];
+    if (!connectionId)
     {
       goto LABEL_6;
     }
 
-    v8 = v7;
-    v9 = [v3 requestId];
-    v10 = [v9 requester];
+    v8 = connectionId;
+    requestId3 = [requestCopy requestId];
+    requester = [requestId3 requester];
 
-    if (!v10)
+    if (!requester)
     {
-      v11 = [v3 requestId];
-      v12 = [v11 connectionId];
-      v13 = [CDMServiceGraph getCdmRequesterWithConnectionId:v12];
-      v14 = [v3 requestId];
-      [v14 setRequester:v13];
+      requestId4 = [requestCopy requestId];
+      connectionId2 = [requestId4 connectionId];
+      v13 = [CDMServiceGraph getCdmRequesterWithConnectionId:connectionId2];
+      requestId5 = [requestCopy requestId];
+      [requestId5 setRequester:v13];
 
       v5 = CDMOSLoggerForCategory(2);
       if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -155,15 +155,15 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v6 = [v3 requestId];
-      v15 = [v6 connectionId];
-      v16 = [v3 requestId];
+      requestId2 = [requestCopy requestId];
+      connectionId3 = [requestId2 connectionId];
+      requestId6 = [requestCopy requestId];
       v18 = 136315650;
       v19 = "[CDMServiceGraph populateRequesterEnumForNluRequest:]";
       v20 = 2112;
-      v21 = v15;
+      v21 = connectionId3;
       v22 = 1024;
-      v23 = [v16 requester];
+      requester2 = [requestId6 requester];
       _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s Inferring cdmRequester enum based on connectionId=%@ as requester enum=%d; use enum directly once SRD / other callers of CDM start populating RequestID.requester", &v18, 0x1Cu);
 
 LABEL_6:
@@ -176,39 +176,39 @@ LABEL_8:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)validateRequest:(id)a3
+- (id)validateRequest:(id)request
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (!requestCopy)
   {
     goto LABEL_17;
   }
 
-  v6 = [v4 currentTurnInput];
-  if (!v6)
+  currentTurnInput = [requestCopy currentTurnInput];
+  if (!currentTurnInput)
   {
     goto LABEL_17;
   }
 
-  v7 = v6;
-  v8 = [v5 currentTurnInput];
-  v9 = [v8 asrOutputs];
-  v10 = [v9 count];
+  v7 = currentTurnInput;
+  currentTurnInput2 = [v5 currentTurnInput];
+  asrOutputs = [currentTurnInput2 asrOutputs];
+  v10 = [asrOutputs count];
 
   if (v10)
   {
-    v35 = self;
+    selfCopy = self;
     v36 = v5;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = [v5 currentTurnInput];
-    v12 = [v11 asrOutputs];
+    currentTurnInput3 = [v5 currentTurnInput];
+    asrOutputs2 = [currentTurnInput3 asrOutputs];
 
-    v13 = [v12 countByEnumeratingWithState:&v37 objects:v51 count:16];
+    v13 = [asrOutputs2 countByEnumeratingWithState:&v37 objects:v51 count:16];
     if (v13)
     {
       v14 = v13;
@@ -219,12 +219,12 @@ LABEL_8:
         {
           if (*v38 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(asrOutputs2);
           }
 
           v17 = *(*(&v37 + 1) + 8 * i);
-          v18 = [v17 utterance];
-          v19 = [v18 mutableCopy];
+          utterance = [v17 utterance];
+          v19 = [utterance mutableCopy];
 
           v20 = skitRemoveBidiCharacters();
           [v17 setUtterance:v20];
@@ -233,9 +233,9 @@ LABEL_8:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
             v22 = [v19 length];
-            v23 = [v17 utterance];
-            v24 = [v17 utterance];
-            v25 = [v24 length];
+            utterance2 = [v17 utterance];
+            utterance3 = [v17 utterance];
+            v25 = [utterance3 length];
             *buf = 136316162;
             v42 = "[CDMServiceGraph validateRequest:]";
             v43 = 2112;
@@ -243,45 +243,45 @@ LABEL_8:
             v45 = 2048;
             v46 = v22;
             v47 = 2112;
-            v48 = v23;
+            v48 = utterance2;
             v49 = 2048;
             v50 = v25;
             _os_log_debug_impl(&dword_1DC287000, v21, OS_LOG_TYPE_DEBUG, "%s Original text is '<%@>' with u16 size <%zu>. Text after filtering bidi characters is' <%@>' with u16 size <%zu>.", buf, 0x34u);
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v37 objects:v51 count:16];
+        v14 = [asrOutputs2 countByEnumeratingWithState:&v37 objects:v51 count:16];
       }
 
       while (v14);
     }
 
     v5 = v36;
-    v26 = [v36 currentTurnInput];
-    v27 = [v26 asrOutputs];
-    v28 = [v27 firstObject];
+    currentTurnInput4 = [v36 currentTurnInput];
+    asrOutputs3 = [currentTurnInput4 asrOutputs];
+    firstObject = [asrOutputs3 firstObject];
 
-    v29 = [v28 utterance];
-    if (v29)
+    utterance4 = [firstObject utterance];
+    if (utterance4)
     {
-      v30 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v31 = [v29 stringByTrimmingCharactersInSet:v30];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v31 = [utterance4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-      if ([v31 length] && objc_msgSend(v29, "length"))
+      if ([v31 length] && objc_msgSend(utterance4, "length"))
       {
-        v32 = v28;
+        v32 = firstObject;
       }
 
       else
       {
-        [(CDMServiceGraph *)v35 failedWithErrorCode:2 errorDomain:@"CDMServiceGraphErrorDomain" message:@"utterance is empty"];
+        [(CDMServiceGraph *)selfCopy failedWithErrorCode:2 errorDomain:@"CDMServiceGraphErrorDomain" message:@"utterance is empty"];
         v32 = 0;
       }
     }
 
     else
     {
-      [(CDMServiceGraph *)v35 failedWithErrorCode:2 errorDomain:@"CDMServiceGraphErrorDomain" message:@"utterance is nil"];
+      [(CDMServiceGraph *)selfCopy failedWithErrorCode:2 errorDomain:@"CDMServiceGraphErrorDomain" message:@"utterance is nil"];
       v32 = 0;
     }
   }
@@ -298,45 +298,45 @@ LABEL_17:
   return v32;
 }
 
-- (void)failedWithError:(id)a3
+- (void)failedWithError:(id)error
 {
   language = self->_language;
-  v5 = a3;
-  [CDMAnalytics recordGraphFailureEvent:language withError:v5];
-  v6 = [v5 copy];
+  errorCopy = error;
+  [CDMAnalytics recordGraphFailureEvent:language withError:errorCopy];
+  v6 = [errorCopy copy];
 
   [(CDMServiceGraph *)self setError:v6];
 }
 
-- (void)failedWithErrorCode:(int64_t)a3 errorDomain:(id)a4 message:(id)a5
+- (void)failedWithErrorCode:(int64_t)code errorDomain:(id)domain message:(id)message
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E696ABC0];
   v17 = *MEMORY[0x1E696A578];
-  v18[0] = a5;
+  v18[0] = message;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a5;
-  v11 = a4;
+  messageCopy = message;
+  domainCopy = domain;
   v12 = [v9 dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v13 = [v8 errorWithDomain:v11 code:a3 userInfo:v12];
+  v13 = [v8 errorWithDomain:domainCopy code:code userInfo:v12];
 
   [(CDMServiceGraph *)self setError:v13];
   language = self->_language;
-  v15 = [(CDMServiceGraph *)self error];
-  [CDMAnalytics recordGraphFailureEvent:language withError:v15];
+  error = [(CDMServiceGraph *)self error];
+  [CDMAnalytics recordGraphFailureEvent:language withError:error];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addNodeWithName:(id)a3 bindService:(id)a4 aneEnabled:(BOOL)a5 requestId:(id)a6 block:(id)a7
+- (id)addNodeWithName:(id)name bindService:(id)service aneEnabled:(BOOL)enabled requestId:(id)id block:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v36 = a6;
-  v14 = a7;
-  v15 = _Block_copy(v14);
-  if (v9)
+  enabledCopy = enabled;
+  nameCopy = name;
+  serviceCopy = service;
+  idCopy = id;
+  blockCopy = block;
+  v15 = _Block_copy(blockCopy);
+  if (enabledCopy)
   {
     objc_initWeak(location, self->_aneLock);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -344,7 +344,7 @@ LABEL_17:
     aBlock[2] = __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_block___block_invoke;
     aBlock[3] = &unk_1E862EE68;
     objc_copyWeak(&v43, location);
-    v42 = v14;
+    v42 = blockCopy;
     v16 = _Block_copy(aBlock);
 
     objc_destroyWeak(&v43);
@@ -352,8 +352,8 @@ LABEL_17:
     v15 = v16;
   }
 
-  v35 = v13;
-  if ([CDMServiceGraph shouldSkipNode:v12 service:v13])
+  v35 = serviceCopy;
+  if ([CDMServiceGraph shouldSkipNode:nameCopy service:serviceCopy])
   {
     objc_initWeak(location, self);
     handlerId = self->_handlerId;
@@ -364,10 +364,10 @@ LABEL_17:
     v39[3] = &unk_1E862EE90;
     objc_copyWeak(&v40, location);
     WeakRetained = objc_loadWeakRetained(location);
-    v20 = [WeakRetained cdmDataDispatcherContext];
+    cdmDataDispatcherContext = [WeakRetained cdmDataDispatcherContext];
     v21 = objc_loadWeakRetained(location);
-    v22 = [v21 serviceMetrics];
-    v23 = [CDMServiceGraphNode initWithName:v12 forHandler:handlerId withError:v39 usingFunction:&__block_literal_global_445 requestId:v36 dataDispatcherContext:v20 serviceMetricsArray:v22];
+    serviceMetrics = [v21 serviceMetrics];
+    v23 = [CDMServiceGraphNode initWithName:nameCopy forHandler:handlerId withError:v39 usingFunction:&__block_literal_global_445 requestId:idCopy dataDispatcherContext:cdmDataDispatcherContext serviceMetricsArray:serviceMetrics];
   }
 
   else
@@ -381,10 +381,10 @@ LABEL_17:
     v37[3] = &unk_1E862EE90;
     objc_copyWeak(&v38, location);
     WeakRetained = objc_loadWeakRetained(location);
-    v20 = [WeakRetained cdmDataDispatcherContext];
+    cdmDataDispatcherContext = [WeakRetained cdmDataDispatcherContext];
     v21 = objc_loadWeakRetained(location);
-    v22 = [v21 serviceMetrics];
-    v23 = [CDMServiceGraphNode initWithName:v12 forHandler:v24 withError:v37 usingFunction:v15 requestId:v36 dataDispatcherContext:v20 serviceMetricsArray:v22];
+    serviceMetrics = [v21 serviceMetrics];
+    v23 = [CDMServiceGraphNode initWithName:nameCopy forHandler:v24 withError:v37 usingFunction:v15 requestId:idCopy dataDispatcherContext:cdmDataDispatcherContext serviceMetricsArray:serviceMetrics];
   }
 
   v25 = v23;
@@ -393,21 +393,21 @@ LABEL_17:
   objc_destroyWeak(location);
   [(NSMutableArray *)self->_nodes addObject:v25];
   nodesWithName = self->_nodesWithName;
-  v27 = [v25 getNodeName];
-  v28 = [(NSMutableDictionary *)nodesWithName objectForKey:v27];
+  getNodeName = [v25 getNodeName];
+  v28 = [(NSMutableDictionary *)nodesWithName objectForKey:getNodeName];
 
   if (v28)
   {
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [v25 getNodeName];
-    v31 = [v29 stringWithFormat:@"Duplicate node name: %@", v30];
+    getNodeName2 = [v25 getNodeName];
+    v31 = [v29 stringWithFormat:@"Duplicate node name: %@", getNodeName2];
 
     [DuplicateNodeNameException raise:@"DuplicateNodeNameException" format:@"%@", v31];
   }
 
   v32 = self->_nodesWithName;
-  v33 = [v25 getNodeName];
-  [(NSMutableDictionary *)v32 setValue:v25 forKey:v33];
+  getNodeName3 = [v25 getNodeName];
+  [(NSMutableDictionary *)v32 setValue:v25 forKey:getNodeName3];
 
   return v25;
 }
@@ -450,16 +450,16 @@ void __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_bloc
   }
 }
 
-- (id)getGraphServiceByClass:(Class)a3
+- (id)getGraphServiceByClass:(Class)class
 {
   graphServiceMap = self->_graphServiceMap;
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(class);
   v6 = [(NSMutableDictionary *)graphServiceMap valueForKey:v5];
 
   if (!v6)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = NSStringFromClass(a3);
+    v8 = NSStringFromClass(class);
     v9 = [v7 stringWithFormat:@"Service type %@ is unknown", v8];
 
     [UnknownServiceException raise:@"UnknownServiceException" format:@"%@", v9];
@@ -468,16 +468,16 @@ void __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_bloc
   return v6;
 }
 
-- (id)getServiceByClass:(Class)a3
+- (id)getServiceByClass:(Class)class
 {
   serviceMap = self->_serviceMap;
-  v5 = NSStringFromClass(a3);
+  v5 = NSStringFromClass(class);
   v6 = [(NSMutableDictionary *)serviceMap valueForKey:v5];
 
   if (!v6)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = NSStringFromClass(a3);
+    v8 = NSStringFromClass(class);
     v9 = [v7 stringWithFormat:@"Service type %@ is unknown", v8];
 
     [UnknownServiceException raise:@"UnknownServiceException" format:@"%@", v9];
@@ -504,8 +504,8 @@ void __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_bloc
     [(CDMServiceGraph *)self buildGraphInternal];
   }
 
-  v4 = [(CDMServiceGraph *)self topoSort];
-  v5 = v4 != 0;
+  topoSort = [(CDMServiceGraph *)self topoSort];
+  v5 = topoSort != 0;
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
@@ -534,8 +534,8 @@ void __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_bloc
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(CDMServiceGraph *)self getNodes];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  getNodes = [(CDMServiceGraph *)self getNodes];
+  v5 = [getNodes countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v5)
   {
     v6 = *v25;
@@ -545,24 +545,24 @@ void __74__CDMServiceGraph_addNodeWithName_bindService_aneEnabled_requestId_bloc
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(getNodes);
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
-        v9 = [v8 getNodeName];
-        v10 = [v8 getNodeName];
-        v11 = [v3 containsObject:v10];
+        getNodeName = [v8 getNodeName];
+        getNodeName2 = [v8 getNodeName];
+        v11 = [v3 containsObject:getNodeName2];
 
         if (v11)
         {
-          v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate CDMServiceGraphNode name: %@", v9];
+          v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate CDMServiceGraphNode name: %@", getNodeName];
           [DuplicateNodeNameException raise:@"DuplicateNodeNameException" format:@"%@", v12];
         }
 
-        [v3 addObject:v9];
+        [v3 addObject:getNodeName];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v5 = [getNodes countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v5);
@@ -736,8 +736,8 @@ LABEL_16:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v7 = [v6 dependencies];
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        dependencies = [v6 dependencies];
+        v8 = [dependencies countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v8)
         {
           v9 = v8;
@@ -750,13 +750,13 @@ LABEL_16:
             {
               if (*v26 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(dependencies);
               }
 
               v13 = MEMORY[0x1E696AEC0];
-              v14 = [*(*(&v25 + 1) + 8 * v11) getNodeName];
-              v15 = [v6 getNodeName];
-              v16 = [v13 stringWithFormat:@"  %@-->%@\n", v14, v15];
+              getNodeName = [*(*(&v25 + 1) + 8 * v11) getNodeName];
+              getNodeName2 = [v6 getNodeName];
+              v16 = [v13 stringWithFormat:@"  %@-->%@\n", getNodeName, getNodeName2];
 
               v4 = [(__CFString *)v12 stringByAppendingString:v16];
 
@@ -765,7 +765,7 @@ LABEL_16:
             }
 
             while (v9 != v11);
-            v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v9 = [dependencies countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v9);
@@ -831,19 +831,19 @@ LABEL_16:
   }
 
   objc_storeStrong(&self->_endNode, v4);
-  v9 = [(CDMServiceGraph *)self getGraphInput];
-  v10 = [v9 loggingRequestID];
+  getGraphInput = [(CDMServiceGraph *)self getGraphInput];
+  loggingRequestID = [getGraphInput loggingRequestID];
 
-  v11 = [(CDMServiceGraph *)self serviceMetrics];
-  v12 = [(CDMServiceGraph *)self cdmDataDispatcherContext];
+  serviceMetrics = [(CDMServiceGraph *)self serviceMetrics];
+  cdmDataDispatcherContext = [(CDMServiceGraph *)self cdmDataDispatcherContext];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __37__CDMServiceGraph_buildGraphInternal__block_invoke_405;
   v29[3] = &unk_1E862EE18;
-  v13 = v11;
+  v13 = serviceMetrics;
   v30 = v13;
-  v31 = v10;
-  v14 = v12;
+  v31 = loggingRequestID;
+  v14 = cdmDataDispatcherContext;
   v32 = v14;
   v24 = v31;
   v15 = [(CDMServiceGraph *)self addNodeWithName:@"metricsNode" requestId:v31 block:v29];
@@ -881,11 +881,11 @@ LABEL_16:
   v21 = CDMOSLoggerForCategory(2);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [(CDMServiceGraph *)self toMermaid];
+    toMermaid = [(CDMServiceGraph *)self toMermaid];
     *buf = 136315394;
     v38 = "[CDMServiceGraph buildGraphInternal]";
     v39 = 2112;
-    v40 = v23;
+    v40 = toMermaid;
     _os_log_debug_impl(&dword_1DC287000, v21, OS_LOG_TYPE_DEBUG, "%s Mermaid graph%@", buf, 0x16u);
   }
 
@@ -915,30 +915,30 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
   return 0;
 }
 
-- (CDMServiceGraph)initWithServices:(id)a3 graphServices:(id)a4 graphInput:(id)a5 languageCode:(id)a6 handlerId:(id)a7 aneLock:(id)a8 dataDispatcherContext:(id)a9
+- (CDMServiceGraph)initWithServices:(id)services graphServices:(id)graphServices graphInput:(id)input languageCode:(id)code handlerId:(id)id aneLock:(id)lock dataDispatcherContext:(id)context
 {
   v101 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  obj = a6;
-  v18 = a6;
-  v81 = a7;
-  v19 = a7;
-  v82 = a8;
-  v20 = a8;
-  v21 = a9;
+  servicesCopy = services;
+  graphServicesCopy = graphServices;
+  inputCopy = input;
+  obj = code;
+  codeCopy = code;
+  idCopy = id;
+  idCopy2 = id;
+  lockCopy = lock;
+  lockCopy2 = lock;
+  contextCopy = context;
   v92.receiver = self;
   v92.super_class = CDMServiceGraph;
   v22 = [(CDMServiceGraph *)&v92 init];
   if (v22)
   {
-    v74 = v21;
-    v75 = v20;
-    v76 = v19;
-    v77 = v18;
-    v78 = v17;
-    v83 = v16;
+    v74 = contextCopy;
+    v75 = lockCopy2;
+    v76 = idCopy2;
+    v77 = codeCopy;
+    v78 = inputCopy;
+    v83 = graphServicesCopy;
     v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
     serviceMap = v22->_serviceMap;
     v22->_serviceMap = v23;
@@ -947,13 +947,13 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
     graphServiceMap = v22->_graphServiceMap;
     v22->_graphServiceMap = v25;
 
-    v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
+    v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(servicesCopy, "count")}];
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v79 = v15;
-    v28 = v15;
+    v79 = servicesCopy;
+    v28 = servicesCopy;
     v29 = [v28 countByEnumeratingWithState:&v88 objects:v100 count:16];
     if (v29)
     {
@@ -975,8 +975,8 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
           [(NSMutableDictionary *)v22->_serviceMap setObject:v34 forKeyedSubscript:v36];
           if ([v34 serviceState] == 3)
           {
-            v37 = [v34 serviceName];
-            [v27 addObject:v37];
+            serviceName = [v34 serviceName];
+            [v27 addObject:serviceName];
 
             v32 = 0;
           }
@@ -1026,19 +1026,19 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
 
     if (v32)
     {
-      v17 = v78;
-      v21 = v74;
+      inputCopy = v78;
+      contextCopy = v74;
       if ([(CDMServiceGraph *)v22 supportedGraphInputType])
       {
         [(CDMServiceGraph *)v22 supportedGraphInputType];
-        v15 = v79;
+        servicesCopy = v79;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v46 = MEMORY[0x1E696AEC0];
-          v47 = [(CDMServiceGraph *)v22 supportedGraphInputType];
+          supportedGraphInputType = [(CDMServiceGraph *)v22 supportedGraphInputType];
           v48 = objc_opt_class();
           v49 = NSStringFromClass(v48);
-          v50 = [v46 stringWithFormat:@"Incompatible type for graphInput, expected:%@, received:%@", v47, v49];
+          v50 = [v46 stringWithFormat:@"Incompatible type for graphInput, expected:%@, received:%@", supportedGraphInputType, v49];
 
           v51 = CDMOSLoggerForCategory(2);
           if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -1053,7 +1053,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
           [IncompatibleInputTypeException raise:@"IncompatibleInputTypeException" format:@"%@", v50];
         }
 
-        objc_storeStrong(&v22->_graphInput, a5);
+        objc_storeStrong(&v22->_graphInput, input);
         v52 = v74;
         cdmDataDispatcherContext = v22->_cdmDataDispatcherContext;
         v22->_cdmDataDispatcherContext = v52;
@@ -1063,10 +1063,10 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
       {
         cdmDataDispatcherContext = v22->_graphInput;
         v22->_graphInput = 0;
-        v15 = v79;
+        servicesCopy = v79;
       }
 
-      v16 = v83;
+      graphServicesCopy = v83;
 
       objc_storeStrong(&v22->_language, obj);
       graphOutput = v22->_graphOutput;
@@ -1075,7 +1075,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
       error = v22->_error;
       v22->_error = 0;
 
-      objc_storeStrong(&v22->_handlerId, v81);
+      objc_storeStrong(&v22->_handlerId, idCopy);
       v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
       nodes = v22->_nodes;
       v22->_nodes = v62;
@@ -1087,7 +1087,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
       endNode = v22->_endNode;
       v22->_endNode = 0;
 
-      objc_storeStrong(&v22->_aneLock, v82);
+      objc_storeStrong(&v22->_aneLock, lockCopy);
       v67 = objc_alloc_init(MEMORY[0x1E695DF90]);
       skipNodes = v22->_skipNodes;
       v22->_skipNodes = v67;
@@ -1111,8 +1111,8 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
       v22->_error = v57;
 
       v59 = CDMOSLoggerForCategory(2);
-      v17 = v78;
-      v21 = v74;
+      inputCopy = v78;
+      contextCopy = v74;
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
         v73 = [CDMPlatformUtils prettyPrintError:v22->_error];
@@ -1123,32 +1123,32 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
         _os_log_error_impl(&dword_1DC287000, v59, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
       }
 
-      v15 = v79;
-      v16 = v83;
+      servicesCopy = v79;
+      graphServicesCopy = v83;
     }
 
-    v19 = v76;
-    v18 = v77;
+    idCopy2 = v76;
+    codeCopy = v77;
 
-    v20 = v75;
+    lockCopy2 = v75;
   }
 
   v71 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-+ (id)getAssetsForSetup:(id)a3
++ (id)getAssetsForSetup:(id)setup
 {
   v70 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  setupCopy = setup;
   v4 = [CDMAssetsInfo alloc];
-  v40 = a1;
+  selfCopy = self;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v38 = [(CDMAssetsInfo *)v4 initWithGraphName:v6];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v40 requiredDAGServices];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [selfCopy requiredDAGServices];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
@@ -1168,17 +1168,17 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
 
         v8 = *(*(&v58 + 1) + 8 * i);
         v43 = [CDMServiceGraph isServiceRequiredForSetup:v8];
-        v9 = [NSClassFromString(v8) getCDMServiceAssetConfig];
+        getCDMServiceAssetConfig = [NSClassFromString(v8) getCDMServiceAssetConfig];
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v45 = v9;
-        v10 = [v9 getAllAssetSets];
-        v11 = [v10 countByEnumeratingWithState:&v54 objects:v68 count:16];
+        v45 = getCDMServiceAssetConfig;
+        getAllAssetSets = [getCDMServiceAssetConfig getAllAssetSets];
+        v11 = [getAllAssetSets countByEnumeratingWithState:&v54 objects:v68 count:16];
         if (v11)
         {
-          v41 = v10;
+          v41 = getAllAssetSets;
           v42 = *v55;
           do
           {
@@ -1192,20 +1192,20 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
 
               v13 = *(*(&v54 + 1) + 8 * j);
               v14 = [v45 getCDMAssetsFactorConfigForAssetSet:{objc_msgSend(v13, "integerValue")}];
-              v15 = [v7 objectForKeyedSubscript:v13];
+              v15 = [dictionary objectForKeyedSubscript:v13];
 
               if (v15)
               {
-                v16 = [v7 objectForKeyedSubscript:v13];
-                [v16 addEntriesFromCDMAssetsFactorConfig:v14];
+                getFactorToFoldersMapping = [dictionary objectForKeyedSubscript:v13];
+                [getFactorToFoldersMapping addEntriesFromCDMAssetsFactorConfig:v14];
               }
 
               else
               {
                 v17 = [CDMAssetsFactorConfig alloc];
-                v16 = [v14 getFactorToFoldersMapping];
-                v18 = [(CDMAssetsFactorConfig *)v17 initWithFactorToFoldersMapping:v16];
-                [v7 setObject:v18 forKeyedSubscript:v13];
+                getFactorToFoldersMapping = [v14 getFactorToFoldersMapping];
+                v18 = [(CDMAssetsFactorConfig *)v17 initWithFactorToFoldersMapping:getFactorToFoldersMapping];
+                [dictionary setObject:v18 forKeyedSubscript:v13];
               }
 
               if (v43)
@@ -1214,8 +1214,8 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
                 v53 = 0u;
                 v50 = 0u;
                 v51 = 0u;
-                v19 = [v45 getAllFactors];
-                v20 = [v19 countByEnumeratingWithState:&v50 objects:v67 count:16];
+                getAllFactors = [v45 getAllFactors];
+                v20 = [getAllFactors countByEnumeratingWithState:&v50 objects:v67 count:16];
                 if (v20)
                 {
                   v21 = *v51;
@@ -1225,15 +1225,15 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
                     {
                       if (*v51 != v21)
                       {
-                        objc_enumerationMutation(v19);
+                        objc_enumerationMutation(getAllFactors);
                       }
 
                       v23 = *(*(&v50 + 1) + 8 * k);
-                      v24 = [v7 objectForKeyedSubscript:v13];
+                      v24 = [dictionary objectForKeyedSubscript:v13];
                       [v24 setIsRequiredForFactor:v23 isRequired:1];
                     }
 
-                    v20 = [v19 countByEnumeratingWithState:&v50 objects:v67 count:16];
+                    v20 = [getAllFactors countByEnumeratingWithState:&v50 objects:v67 count:16];
                   }
 
                   while (v20);
@@ -1241,7 +1241,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
               }
             }
 
-            v10 = v41;
+            getAllAssetSets = v41;
             v11 = [v41 countByEnumeratingWithState:&v54 objects:v68 count:16];
           }
 
@@ -1259,7 +1259,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v25 = v7;
+  v25 = dictionary;
   v26 = [v25 countByEnumeratingWithState:&v46 objects:v66 count:16];
   if (v26)
   {
@@ -1274,7 +1274,7 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
         }
 
         v29 = *(*(&v46 + 1) + 8 * m);
-        v30 = [v40 getUsageForAssetSetName:objc_msgSend(v29 withLocale:{"integerValue"), v39}];
+        v30 = [selfCopy getUsageForAssetSetName:objc_msgSend(v29 withLocale:{"integerValue"), setupCopy}];
         if (v30)
         {
           v31 = [v25 objectForKeyedSubscript:v29];
@@ -1306,51 +1306,51 @@ uint64_t __37__CDMServiceGraph_buildGraphInternal__block_invoke_405(void *a1)
   return v38;
 }
 
-+ (BOOL)isServiceRequiredForSetup:(id)a3
++ (BOOL)isServiceRequiredForSetup:(id)setup
 {
-  v3 = a3;
-  if (-[objc_class isEnabled](NSClassFromString(v3), "isEnabled") && (-[objc_class getCDMServiceAssetConfig](NSClassFromString(v3), "getCDMServiceAssetConfig"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isAssetRequiredForSetup], v4, v5))
+  setupCopy = setup;
+  if (-[objc_class isEnabled](NSClassFromString(setupCopy), "isEnabled") && (-[objc_class getCDMServiceAssetConfig](NSClassFromString(setupCopy), "getCDMServiceAssetConfig"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isAssetRequiredForSetup], v4, v5))
   {
-    v6 = [NSClassFromString(v3) getCDMServiceAssetConfig];
-    v7 = [v6 getCDMAssetSetToFactorsConfig];
-    v8 = [v7 hasAssetSetToFactorsMapping];
+    getCDMServiceAssetConfig = [NSClassFromString(setupCopy) getCDMServiceAssetConfig];
+    getCDMAssetSetToFactorsConfig = [getCDMServiceAssetConfig getCDMAssetSetToFactorsConfig];
+    hasAssetSetToFactorsMapping = [getCDMAssetSetToFactorsConfig hasAssetSetToFactorsMapping];
   }
 
   else
   {
-    v8 = 0;
+    hasAssetSetToFactorsMapping = 0;
   }
 
-  return v8;
+  return hasAssetSetToFactorsMapping;
 }
 
-+ (void)dispatchServiceGraphHandleMetricsLogging:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchServiceGraphHandleMetricsLogging:(id)logging requestId:(id)id dataDispatcherContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  loggingCopy = logging;
+  idCopy = id;
+  contextCopy = context;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy__460;
   v19[4] = __Block_byref_object_dispose__461;
-  v20 = [CDMSELFLogUtil createSELFMetadataWithRequestId:v8];
+  v20 = [CDMSELFLogUtil createSELFMetadataWithRequestId:idCopy];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__460;
   v17[4] = __Block_byref_object_dispose__461;
-  v10 = v9;
+  v10 = contextCopy;
   v18 = v10;
   v11 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__CDMServiceGraph_dispatchServiceGraphHandleMetricsLogging_requestId_dataDispatcherContext___block_invoke;
   block[3] = &unk_1E862EF48;
-  v14 = v7;
+  v14 = loggingCopy;
   v15 = v19;
   v16 = v17;
-  v12 = v7;
+  v12 = loggingCopy;
   dispatch_async(v11, block);
 
   _Block_object_dispose(v17, 8);
@@ -1415,12 +1415,12 @@ void __92__CDMServiceGraph_dispatchServiceGraphHandleMetricsLogging_requestId_da
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)dispatchServiceGraphResponseLogging:(id)a3 requestId:(id)a4 dataDispatcherContext:(id)a5
++ (void)dispatchServiceGraphResponseLogging:(id)logging requestId:(id)id dataDispatcherContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loggingCopy = logging;
+  idCopy = id;
+  contextCopy = context;
   v11 = CDMOSLoggerForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1434,13 +1434,13 @@ void __92__CDMServiceGraph_dispatchServiceGraphHandleMetricsLogging_requestId_da
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__460;
   v35 = __Block_byref_object_dispose__461;
-  v36 = [CDMSELFLogUtil createSELFMetadataWithRequestId:v9];
+  v36 = [CDMSELFLogUtil createSELFMetadataWithRequestId:idCopy];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__460;
   v26[4] = __Block_byref_object_dispose__461;
-  v12 = v10;
+  v12 = contextCopy;
   v27 = v12;
   v13 = mach_absolute_time();
   v14 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
@@ -1453,8 +1453,8 @@ void __92__CDMServiceGraph_dispatchServiceGraphHandleMetricsLogging_requestId_da
   block[6] = v13;
   dispatch_async(v14, block);
 
-  v15 = [a1 responseFeatureStoreStreamId];
-  LODWORD(v14) = v15 == 0;
+  responseFeatureStoreStreamId = [self responseFeatureStoreStreamId];
+  LODWORD(v14) = responseFeatureStoreStreamId == 0;
 
   if (v14)
   {
@@ -1478,9 +1478,9 @@ void __92__CDMServiceGraph_dispatchServiceGraphHandleMetricsLogging_requestId_da
     v21[1] = 3221225472;
     v21[2] = __87__CDMServiceGraph_dispatchServiceGraphResponseLogging_requestId_dataDispatcherContext___block_invoke_473;
     v21[3] = &unk_1E862EEF8;
-    v24 = a1;
-    v22 = v8;
-    v23 = v9;
+    selfCopy = self;
+    v22 = loggingCopy;
+    v23 = idCopy;
     dispatch_async(v16, v21);
 
     v17 = v22;
@@ -1538,12 +1538,12 @@ void __87__CDMServiceGraph_dispatchServiceGraphResponseLogging_requestId_dataDis
   }
 }
 
-+ (void)dispatchServiceGraphRequestLogging:(id)a3 dataDispatcherContext:(id)a4
++ (void)dispatchServiceGraphRequestLogging:(id)logging dataDispatcherContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 loggingRequestID];
+  loggingCopy = logging;
+  contextCopy = context;
+  loggingRequestID = [loggingCopy loggingRequestID];
   v9 = CDMOSLoggerForCategory(2);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1557,13 +1557,13 @@ void __87__CDMServiceGraph_dispatchServiceGraphResponseLogging_requestId_dataDis
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__460;
   v33 = __Block_byref_object_dispose__461;
-  v34 = [CDMSELFLogUtil createSELFMetadataWithRequestId:v8];
+  v34 = [CDMSELFLogUtil createSELFMetadataWithRequestId:loggingRequestID];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__460;
   v24[4] = __Block_byref_object_dispose__461;
-  v10 = v7;
+  v10 = contextCopy;
   v25 = v10;
   v11 = mach_absolute_time();
   v12 = +[CDMDataDispatcherCompletionQueue getDataDispatcherCompletionQueue];
@@ -1572,13 +1572,13 @@ void __87__CDMServiceGraph_dispatchServiceGraphResponseLogging_requestId_dataDis
   block[2] = __76__CDMServiceGraph_dispatchServiceGraphRequestLogging_dataDispatcherContext___block_invoke;
   block[3] = &unk_1E862EED0;
   block[6] = v11;
-  block[7] = a1;
+  block[7] = self;
   block[4] = &buf;
   block[5] = v24;
   dispatch_async(v12, block);
 
-  v13 = [a1 requestFeatureStoreStreamId];
-  LODWORD(v12) = v13 == 0;
+  requestFeatureStoreStreamId = [self requestFeatureStoreStreamId];
+  LODWORD(v12) = requestFeatureStoreStreamId == 0;
 
   if (v12)
   {
@@ -1602,9 +1602,9 @@ void __87__CDMServiceGraph_dispatchServiceGraphResponseLogging_requestId_dataDis
     v19[1] = 3221225472;
     v19[2] = __76__CDMServiceGraph_dispatchServiceGraphRequestLogging_dataDispatcherContext___block_invoke_468;
     v19[3] = &unk_1E862EEF8;
-    v22 = a1;
-    v20 = v6;
-    v21 = v8;
+    selfCopy = self;
+    v20 = loggingCopy;
+    v21 = loggingRequestID;
     dispatch_async(v14, v19);
 
     v15 = v20;
@@ -1662,22 +1662,22 @@ void __76__CDMServiceGraph_dispatchServiceGraphRequestLogging_dataDispatcherCont
   }
 }
 
-+ (BOOL)shouldSkipNode:(id)a3 service:(id)a4
++ (BOOL)shouldSkipNode:(id)node service:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6 && (![objc_opt_class() isEnabled] || objc_msgSend(v6, "serviceState") == 4);
+  nodeCopy = node;
+  serviceCopy = service;
+  v7 = serviceCopy && (![objc_opt_class() isEnabled] || objc_msgSend(serviceCopy, "serviceState") == 4);
 
   return v7;
 }
 
-+ (int)getCdmRequesterWithConnectionId:(id)a3
++ (int)getCdmRequesterWithConnectionId:(id)id
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  idCopy = id;
+  v4 = idCopy;
+  if (idCopy)
   {
-    if ([v3 isEqualToString:@"ORCHESTRATOR"])
+    if ([idCopy isEqualToString:@"ORCHESTRATOR"])
     {
       v5 = 1;
     }

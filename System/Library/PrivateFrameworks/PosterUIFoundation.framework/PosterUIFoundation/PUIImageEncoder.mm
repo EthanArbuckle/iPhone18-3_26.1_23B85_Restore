@@ -1,35 +1,35 @@
 @interface PUIImageEncoder
-+ (BOOL)setSnapshotDeviceOrientation:(int64_t)a3 forURL:(id)a4;
-+ (BOOL)setSnapshotInterfaceOrientation:(int64_t)a3 forURL:(id)a4;
-+ (BOOL)setSnapshotScale:(double)a3 forURL:(id)a4;
-+ (BOOL)setSnapshotVersionForURL:(id)a3;
-+ (double)snapshotScaleForURL:(id)a3;
-+ (int64_t)snapshotDeviceOrientationForURL:(id)a3;
-+ (int64_t)snapshotInterfaceOrientationForURL:(id)a3;
-+ (unsigned)snapshotVersionForURL:(id)a3;
-+ (void)decorateSurface:(id)a3 interfaceOrientation:(int64_t)a4 deviceOrientation:(int64_t)a5 scale:(double)a6;
-- (PUIImageEncoder)initWithURL:(id)a3 format:(id)a4;
-- (id)createUIImageWithError:(id *)a3;
-- (id)createUIImageWithOrientation:(int64_t)a3 scale:(double)a4 error:(id *)a5;
-- (id)saveImage:(CGImage *)a3 error:(id *)a4;
-- (id)saveUIImage:(id)a3 error:(id *)a4;
-- (id)writeThenReadBackImage:(id)a3 error:(id *)a4;
-- (void)currentSnapshotInterfaceOrientation:(int64_t *)a3 outDeviceOrientation:(int64_t *)a4;
++ (BOOL)setSnapshotDeviceOrientation:(int64_t)orientation forURL:(id)l;
++ (BOOL)setSnapshotInterfaceOrientation:(int64_t)orientation forURL:(id)l;
++ (BOOL)setSnapshotScale:(double)scale forURL:(id)l;
++ (BOOL)setSnapshotVersionForURL:(id)l;
++ (double)snapshotScaleForURL:(id)l;
++ (int64_t)snapshotDeviceOrientationForURL:(id)l;
++ (int64_t)snapshotInterfaceOrientationForURL:(id)l;
++ (unsigned)snapshotVersionForURL:(id)l;
++ (void)decorateSurface:(id)surface interfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation scale:(double)scale;
+- (PUIImageEncoder)initWithURL:(id)l format:(id)format;
+- (id)createUIImageWithError:(id *)error;
+- (id)createUIImageWithOrientation:(int64_t)orientation scale:(double)scale error:(id *)error;
+- (id)saveImage:(CGImage *)image error:(id *)error;
+- (id)saveUIImage:(id)image error:(id *)error;
+- (id)writeThenReadBackImage:(id)image error:(id *)error;
+- (void)currentSnapshotInterfaceOrientation:(int64_t *)orientation outDeviceOrientation:(int64_t *)deviceOrientation;
 @end
 
 @implementation PUIImageEncoder
 
-- (PUIImageEncoder)initWithURL:(id)a3 format:(id)a4
+- (PUIImageEncoder)initWithURL:(id)l format:(id)format
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  formatCopy = format;
+  if (!lCopy)
   {
     [PUIImageEncoder initWithURL:a2 format:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = formatCopy;
+  if (!formatCopy)
   {
     [PUIImageEncoder initWithURL:a2 format:?];
   }
@@ -39,8 +39,8 @@
   v10 = [(PUIImageEncoder *)&v17 init];
   if (v10)
   {
-    v11 = [v7 absoluteURL];
-    v12 = [v11 copy];
+    absoluteURL = [lCopy absoluteURL];
+    v12 = [absoluteURL copy];
     url = v10->_url;
     v10->_url = v12;
 
@@ -52,13 +52,13 @@
   return v10;
 }
 
-- (id)writeThenReadBackImage:(id)a3 error:(id *)a4
+- (id)writeThenReadBackImage:(id)image error:(id *)error
 {
-  v6 = [(PUIImageEncoder *)self saveUIImage:a3 error:?];
+  v6 = [(PUIImageEncoder *)self saveUIImage:image error:?];
 
   if (v6)
   {
-    v7 = [(PUIImageEncoder *)self createUIImageWithError:a4];
+    v7 = [(PUIImageEncoder *)self createUIImageWithError:error];
   }
 
   else
@@ -69,7 +69,7 @@
   return v7;
 }
 
-- (id)createUIImageWithError:(id *)a3
+- (id)createUIImageWithError:(id *)error
 {
   [objc_opt_class() snapshotInterfaceOrientationForURL:self->_url];
   [objc_opt_class() snapshotDeviceOrientationForURL:self->_url];
@@ -86,45 +86,45 @@
 
   v7 = PUIImageOrientationForImageCapturedInInterfaceOrientationToBeDisplayedInInterfaceOrientation();
 
-  return [(PUIImageEncoder *)self createUIImageWithOrientation:v7 scale:a3 error:v6];
+  return [(PUIImageEncoder *)self createUIImageWithOrientation:v7 scale:error error:v6];
 }
 
-- (void)currentSnapshotInterfaceOrientation:(int64_t *)a3 outDeviceOrientation:(int64_t *)a4
+- (void)currentSnapshotInterfaceOrientation:(int64_t *)orientation outDeviceOrientation:(int64_t *)deviceOrientation
 {
-  if (a3)
+  if (orientation)
   {
-    *a3 = [objc_opt_class() snapshotInterfaceOrientationForURL:self->_url];
+    *orientation = [objc_opt_class() snapshotInterfaceOrientationForURL:self->_url];
   }
 
-  if (a4)
+  if (deviceOrientation)
   {
-    *a4 = [objc_opt_class() snapshotDeviceOrientationForURL:self->_url];
+    *deviceOrientation = [objc_opt_class() snapshotDeviceOrientationForURL:self->_url];
   }
 }
 
-+ (void)decorateSurface:(id)a3 interfaceOrientation:(int64_t)a4 deviceOrientation:(int64_t)a5 scale:(double)a6
++ (void)decorateSurface:(id)surface interfaceOrientation:(int64_t)orientation deviceOrientation:(int64_t)deviceOrientation scale:(double)scale
 {
-  v12 = a3;
+  surfaceCopy = surface;
   if (BSInterfaceOrientationIsValid())
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [v12 setAttachment:v9 forKey:kPaperboardIOSurfaceInterfaceOrientationPropertiesKey];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+    [surfaceCopy setAttachment:v9 forKey:kPaperboardIOSurfaceInterfaceOrientationPropertiesKey];
   }
 
   if (BSInterfaceOrientationIsValid())
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-    [v12 setAttachment:v10 forKey:kPaperboardIOSurfaceDeviceOrientationPropertiesKey];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:deviceOrientation];
+    [surfaceCopy setAttachment:v10 forKey:kPaperboardIOSurfaceDeviceOrientationPropertiesKey];
   }
 
-  if (a6 > 0.0)
+  if (scale > 0.0)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-    [v12 setAttachment:v11 forKey:kPaperboardIOSurfaceDeviceScalePropertiesKey];
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
+    [surfaceCopy setAttachment:v11 forKey:kPaperboardIOSurfaceDeviceScalePropertiesKey];
   }
 }
 
-- (id)createUIImageWithOrientation:(int64_t)a3 scale:(double)a4 error:(id *)a5
+- (id)createUIImageWithOrientation:(int64_t)orientation scale:(double)scale error:(id *)error
 {
   v50[4] = *MEMORY[0x1E69E9840];
   url = self->_url;
@@ -134,7 +134,7 @@
   v12 = v11;
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
       v21 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A598];
@@ -150,7 +150,7 @@
       v50[3] = v24;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:4];
       [v21 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v17];
-      *a5 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_29;
     }
 
@@ -179,7 +179,7 @@ LABEL_10:
     v17 = v27;
     if (!v26 || v27)
     {
-      if (!a5)
+      if (!error)
       {
         v20 = 0;
 LABEL_28:
@@ -201,7 +201,7 @@ LABEL_28:
       v46[3] = v36;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:4];
       [v33 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v32];
-      *a5 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -209,13 +209,13 @@ LABEL_28:
       v28 = CGImageSourceCreateWithData(v26, 0);
       ImageAtIndex = CGImageSourceCreateImageAtIndex(v28, 0, 0);
       v30 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v31 = 1.0;
-      if (a4 != 0.0)
+      scaleCopy = 1.0;
+      if (scale != 0.0)
       {
-        v31 = a4;
+        scaleCopy = scale;
       }
 
-      v32 = [v30 initWithCGImage:ImageAtIndex scale:a3 orientation:v31];
+      v32 = [v30 initWithCGImage:ImageAtIndex scale:orientation orientation:scaleCopy];
       if (ImageAtIndex)
       {
         CGImageRelease(ImageAtIndex);
@@ -234,7 +234,7 @@ LABEL_28:
 
       else
       {
-        if (a5)
+        if (error)
         {
           v37 = MEMORY[0x1E696ABC0];
           v38 = *MEMORY[0x1E696A598];
@@ -245,7 +245,7 @@ LABEL_28:
           v43[2] = *MEMORY[0x1E696A998];
           v44[2] = self->_url;
           v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:3];
-          *a5 = [v37 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v39];
+          *error = [v37 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v39];
         }
 
         v20 = 0;
@@ -255,7 +255,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -271,7 +271,7 @@ LABEL_28:
   v48[1] = v17;
   v48[2] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:3];
-  *a5 = [v15 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:3 userInfo:v19];
+  *error = [v15 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:3 userInfo:v19];
 
   v20 = 0;
 LABEL_29:
@@ -281,27 +281,27 @@ LABEL_30:
   return v20;
 }
 
-- (id)saveUIImage:(id)a3 error:(id *)a4
+- (id)saveUIImage:(id)image error:(id *)error
 {
   v58[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  imageCopy = image;
+  v8 = imageCopy;
+  if (imageCopy)
   {
-    CGImageRepresentation = [v7 CGImage];
+    CGImageRepresentation = [imageCopy CGImage];
     if (!CGImageRepresentation)
     {
-      v10 = [v8 pui_wrappedIOSurface];
+      pui_wrappedIOSurface = [v8 pui_wrappedIOSurface];
 
-      if (v10)
+      if (pui_wrappedIOSurface)
       {
-        v11 = [v8 pui_wrappedIOSurface];
-        v12 = [v11 CGImageBuilder];
+        pui_wrappedIOSurface2 = [v8 pui_wrappedIOSurface];
+        cGImageBuilder = [pui_wrappedIOSurface2 CGImageBuilder];
 
-        v13 = [v12 buildCGImage];
-        if (!v13)
+        buildCGImage = [cGImageBuilder buildCGImage];
+        if (!buildCGImage)
         {
-          if (a4)
+          if (error)
           {
             v48 = MEMORY[0x1E696ABC0];
             v49 = *MEMORY[0x1E696A598];
@@ -312,41 +312,41 @@ LABEL_30:
             v55[2] = *MEMORY[0x1E696A998];
             v56[2] = self->_url;
             v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:3];
-            *a4 = [v48 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v50];
+            *error = [v48 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v50];
           }
 
           v15 = 0;
           goto LABEL_49;
         }
 
-        v14 = CFAutorelease(v13);
+        v14 = CFAutorelease(buildCGImage);
 
         if (v14)
         {
 LABEL_8:
-          v15 = [(PUIImageEncoder *)self saveImage:v14 error:a4];
+          v15 = [(PUIImageEncoder *)self saveImage:v14 error:error];
           if (!v15)
           {
             goto LABEL_50;
           }
 
-          v16 = [v8 pui_wrappedIOSurface];
-          v17 = [v16 attachmentForKey:kPaperboardIOSurfaceInterfaceOrientationPropertiesKey];
-          v18 = [v17 unsignedIntegerValue];
+          pui_wrappedIOSurface3 = [v8 pui_wrappedIOSurface];
+          v17 = [pui_wrappedIOSurface3 attachmentForKey:kPaperboardIOSurfaceInterfaceOrientationPropertiesKey];
+          unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-          v19 = [v8 pui_wrappedIOSurface];
-          v20 = [v19 attachmentForKey:kPaperboardIOSurfaceDeviceOrientationPropertiesKey];
-          v21 = [v20 unsignedIntegerValue];
+          pui_wrappedIOSurface4 = [v8 pui_wrappedIOSurface];
+          v20 = [pui_wrappedIOSurface4 attachmentForKey:kPaperboardIOSurfaceDeviceOrientationPropertiesKey];
+          unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
-          if (v18 | v21)
+          if (unsignedIntegerValue | unsignedIntegerValue2)
           {
-            if (!v18)
+            if (!unsignedIntegerValue)
             {
 LABEL_20:
-              if (v21)
+              if (unsignedIntegerValue2)
               {
-                v28 = [objc_opt_class() setSnapshotDeviceOrientation:v21 forURL:v15];
-                if (a4)
+                v28 = [objc_opt_class() setSnapshotDeviceOrientation:unsignedIntegerValue2 forURL:v15];
+                if (error)
                 {
                   if ((v28 & 1) == 0)
                   {
@@ -359,14 +359,14 @@ LABEL_20:
                       [v29 setObject:v30 forKeyedSubscript:*MEMORY[0x1E696AA08]];
                     }
 
-                    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:6 userInfo:v29];
+                    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:6 userInfo:v29];
                   }
                 }
               }
 
 LABEL_26:
-              v31 = [v8 pui_wrappedIOSurface];
-              v32 = [v31 attachmentForKey:kPaperboardIOSurfaceDeviceScalePropertiesKey];
+              pui_wrappedIOSurface5 = [v8 pui_wrappedIOSurface];
+              v32 = [pui_wrappedIOSurface5 attachmentForKey:kPaperboardIOSurfaceDeviceScalePropertiesKey];
               [v32 doubleValue];
               v34 = v33;
               if (v33 == 0.0)
@@ -376,7 +376,7 @@ LABEL_26:
               }
 
               v36 = [objc_opt_class() setSnapshotScale:v15 forURL:v34];
-              if (a4 && !v36)
+              if (error && !v36)
               {
                 v37 = [MEMORY[0x1E695DF90] dictionaryWithObject:@"Failed to write snapshot orientation xattr" forKey:*MEMORY[0x1E696A580]];
                 [v37 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A998]];
@@ -387,11 +387,11 @@ LABEL_26:
                   [v37 setObject:v38 forKeyedSubscript:*MEMORY[0x1E696AA08]];
                 }
 
-                *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:6 userInfo:v37];
+                *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:6 userInfo:v37];
               }
 
               v39 = [objc_opt_class() setSnapshotVersionForURL:v15];
-              if (a4 && !v39)
+              if (error && !v39)
               {
                 v40 = [MEMORY[0x1E695DF90] dictionaryWithObject:@"Failed to write snapshot version xattr" forKey:*MEMORY[0x1E696A580]];
                 [v40 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A998]];
@@ -402,7 +402,7 @@ LABEL_26:
                   [v40 setObject:v41 forKeyedSubscript:*MEMORY[0x1E696AA08]];
                 }
 
-                *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:5 userInfo:v40];
+                *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:5 userInfo:v40];
               }
 
               v42 = *MEMORY[0x1E695DAF0];
@@ -414,18 +414,18 @@ LABEL_26:
               v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
               v52 = 0;
               v45 = [v15 setResourceValues:v44 error:&v52];
-              v12 = v52;
+              cGImageBuilder = v52;
 
-              if (!a4 || v45)
+              if (!error || v45)
               {
                 goto LABEL_49;
               }
 
               v46 = [MEMORY[0x1E695DF90] dictionaryWithObject:@"Failed to tag snapshot as excluded from backup" forKey:*MEMORY[0x1E696A580]];
               [v46 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A998]];
-              if (v12)
+              if (cGImageBuilder)
               {
-                v47 = v12;
+                v47 = cGImageBuilder;
               }
 
               else
@@ -435,7 +435,7 @@ LABEL_26:
                 if (!v47)
                 {
 LABEL_45:
-                  *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:5 userInfo:v46];
+                  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:5 userInfo:v46];
 
                   goto LABEL_49;
                 }
@@ -448,18 +448,18 @@ LABEL_45:
 
           else
           {
-            v22 = [v8 imageOrientation];
-            if (v22 >= 4)
+            imageOrientation = [v8 imageOrientation];
+            if (imageOrientation >= 4)
             {
               goto LABEL_26;
             }
 
-            v21 = v22 + 1;
-            v18 = 1;
+            unsignedIntegerValue2 = imageOrientation + 1;
+            unsignedIntegerValue = 1;
           }
 
-          v25 = [objc_opt_class() setSnapshotInterfaceOrientation:v18 forURL:v15];
-          if (a4 && (v25 & 1) == 0)
+          v25 = [objc_opt_class() setSnapshotInterfaceOrientation:unsignedIntegerValue forURL:v15];
+          if (error && (v25 & 1) == 0)
           {
             v26 = [MEMORY[0x1E695DF90] dictionaryWithObject:@"Failed to write snapshot orientation xattr" forKey:*MEMORY[0x1E696A580]];
             [v26 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A998]];
@@ -470,7 +470,7 @@ LABEL_45:
               [v26 setObject:v27 forKeyedSubscript:*MEMORY[0x1E696AA08]];
             }
 
-            *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:7 userInfo:v26];
+            *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:7 userInfo:v26];
           }
 
           goto LABEL_20;
@@ -488,7 +488,7 @@ LABEL_45:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v15 = 0;
     goto LABEL_50;
@@ -502,9 +502,9 @@ LABEL_45:
   v58[1] = @"Ensure the image is an actual image.";
   v57[2] = *MEMORY[0x1E696A998];
   v58[2] = self->_url;
-  v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:3];
-  [v23 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:v12];
-  *a4 = v15 = 0;
+  cGImageBuilder = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:3];
+  [v23 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:4 userInfo:cGImageBuilder];
+  *error = v15 = 0;
 LABEL_49:
 
 LABEL_50:
@@ -512,20 +512,20 @@ LABEL_50:
   return v15;
 }
 
-- (id)saveImage:(CGImage *)a3 error:(id *)a4
+- (id)saveImage:(CGImage *)image error:(id *)error
 {
   v42[3] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     [PUIImageEncoder saveImage:a2 error:?];
   }
 
   v7 = self->_format;
-  v8 = [(PUIImageOnDiskFormat *)v7 resolveDestinationOptionsForImage:a3];
+  v8 = [(PUIImageOnDiskFormat *)v7 resolveDestinationOptionsForImage:image];
   v9 = CGImageDestinationCreateWithURL(self->_url, [(PUIImageOnDiskFormat *)self->_format typeIdentifier], 1uLL, v8);
   if (!v9)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -537,8 +537,8 @@ LABEL_50:
     v41[0] = v23;
     v41[1] = v24;
     v25 = MEMORY[0x1E696AEC0];
-    v16 = [(PUIImageOnDiskFormat *)self->_format typeIdentifier];
-    v26 = [v25 stringWithFormat:@"Ensure the path is reachable, and that the device supports the type identifier", v16];
+    typeIdentifier = [(PUIImageOnDiskFormat *)self->_format typeIdentifier];
+    v26 = [v25 stringWithFormat:@"Ensure the path is reachable, and that the device supports the type identifier", typeIdentifier];
     v27 = v26;
     v41[2] = *MEMORY[0x1E696A998];
     url = self->_url;
@@ -550,7 +550,7 @@ LABEL_50:
     v42[1] = v26;
     v42[2] = url;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:3];
-    *a4 = [v22 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:1 userInfo:v29];
+    *error = [v22 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:1 userInfo:v29];
 
     goto LABEL_19;
   }
@@ -569,9 +569,9 @@ LABEL_50:
     _os_signpost_emit_with_name_impl(&dword_1A8C85000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "[PUIImageEncoder saveImage:error:]", "URL: %@", buf, 0xCu);
   }
 
-  v16 = [(PUIImageOnDiskFormat *)v7 resolveAddImageOptionsForImage:a3];
+  typeIdentifier = [(PUIImageOnDiskFormat *)v7 resolveAddImageOptionsForImage:image];
   v17 = objc_autoreleasePoolPush();
-  CGImageDestinationAddImage(v10, a3, v16);
+  CGImageDestinationAddImage(v10, image, typeIdentifier);
   v18 = CGImageDestinationFinalize(v10);
   CFRelease(v10);
   objc_autoreleasePoolPop(v17);
@@ -589,7 +589,7 @@ LABEL_50:
 
   if (!v18)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -607,26 +607,26 @@ LABEL_50:
     v36[0] = @"Image final encoding failed for unknown reasons in CoreGraphics.";
     v36[1] = v32;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-    *a4 = [v30 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:2 userInfo:v33];
+    *error = [v30 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:2 userInfo:v33];
 
 LABEL_19:
-    a4 = 0;
+    error = 0;
     goto LABEL_20;
   }
 
-  a4 = self->_url;
+  error = self->_url;
 LABEL_20:
 
 LABEL_21:
 
-  return a4;
+  return error;
 }
 
-+ (unsigned)snapshotVersionForURL:(id)a3
++ (unsigned)snapshotVersionForURL:(id)l
 {
   value = -1;
-  v3 = [a3 fileSystemRepresentation];
-  v4 = getxattr(v3, [kPaperboardIOSurfaceSnapshotVersionPropertiesKey UTF8String], &value, 1uLL, 0, 0);
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  v4 = getxattr(fileSystemRepresentation, [kPaperboardIOSurfaceSnapshotVersionPropertiesKey UTF8String], &value, 1uLL, 0, 0);
   v5 = value;
   if (v4 == -1)
   {
@@ -636,25 +636,25 @@ LABEL_21:
   return v5;
 }
 
-+ (BOOL)setSnapshotVersionForURL:(id)a3
++ (BOOL)setSnapshotVersionForURL:(id)l
 {
   value = 14;
-  v3 = [a3 fileSystemRepresentation];
-  return setxattr(v3, [kPaperboardIOSurfaceSnapshotVersionPropertiesKey UTF8String], &value, 1uLL, 0, 0) == 0;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  return setxattr(fileSystemRepresentation, [kPaperboardIOSurfaceSnapshotVersionPropertiesKey UTF8String], &value, 1uLL, 0, 0) == 0;
 }
 
-+ (BOOL)setSnapshotScale:(double)a3 forURL:(id)a4
++ (BOOL)setSnapshotScale:(double)scale forURL:(id)l
 {
-  value = a3;
-  v4 = [a4 fileSystemRepresentation];
-  return setxattr(v4, [kPaperboardIOSurfaceDeviceScalePropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
+  value = scale;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  return setxattr(fileSystemRepresentation, [kPaperboardIOSurfaceDeviceScalePropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
 }
 
-+ (double)snapshotScaleForURL:(id)a3
++ (double)snapshotScaleForURL:(id)l
 {
   value = 1.0;
-  v3 = [a3 fileSystemRepresentation];
-  v4 = getxattr(v3, [kPaperboardIOSurfaceDeviceScalePropertiesKey UTF8String], &value, 8uLL, 0, 0);
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  v4 = getxattr(fileSystemRepresentation, [kPaperboardIOSurfaceDeviceScalePropertiesKey UTF8String], &value, 8uLL, 0, 0);
   result = value;
   if (v4 == -1)
   {
@@ -664,11 +664,11 @@ LABEL_21:
   return result;
 }
 
-+ (int64_t)snapshotInterfaceOrientationForURL:(id)a3
++ (int64_t)snapshotInterfaceOrientationForURL:(id)l
 {
   value = 0;
-  v3 = [a3 fileSystemRepresentation];
-  if (getxattr(v3, [kPaperboardIOSurfaceInterfaceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == -1)
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (getxattr(fileSystemRepresentation, [kPaperboardIOSurfaceInterfaceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == -1)
   {
     return 0;
   }
@@ -679,18 +679,18 @@ LABEL_21:
   }
 }
 
-+ (BOOL)setSnapshotInterfaceOrientation:(int64_t)a3 forURL:(id)a4
++ (BOOL)setSnapshotInterfaceOrientation:(int64_t)orientation forURL:(id)l
 {
-  value = a3;
-  v4 = [a4 fileSystemRepresentation];
-  return setxattr(v4, [kPaperboardIOSurfaceInterfaceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
+  value = orientation;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  return setxattr(fileSystemRepresentation, [kPaperboardIOSurfaceInterfaceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
 }
 
-+ (int64_t)snapshotDeviceOrientationForURL:(id)a3
++ (int64_t)snapshotDeviceOrientationForURL:(id)l
 {
   value = 0;
-  v3 = [a3 fileSystemRepresentation];
-  if (getxattr(v3, [kPaperboardIOSurfaceDeviceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == -1)
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (getxattr(fileSystemRepresentation, [kPaperboardIOSurfaceDeviceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == -1)
   {
     return 0;
   }
@@ -701,11 +701,11 @@ LABEL_21:
   }
 }
 
-+ (BOOL)setSnapshotDeviceOrientation:(int64_t)a3 forURL:(id)a4
++ (BOOL)setSnapshotDeviceOrientation:(int64_t)orientation forURL:(id)l
 {
-  value = a3;
-  v4 = [a4 fileSystemRepresentation];
-  return setxattr(v4, [kPaperboardIOSurfaceDeviceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
+  value = orientation;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  return setxattr(fileSystemRepresentation, [kPaperboardIOSurfaceDeviceOrientationPropertiesKey UTF8String], &value, 8uLL, 0, 0) == 0;
 }
 
 - (void)initWithURL:(char *)a1 format:.cold.1(char *a1)

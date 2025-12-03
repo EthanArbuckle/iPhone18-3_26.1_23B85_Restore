@@ -5,8 +5,8 @@
 - (void)_logAnalyticsIfNeeded;
 - (void)didMoveToWindow;
 - (void)refreshContent;
-- (void)setAdvisories:(id)a3 coordinator:(id)a4;
-- (void)setOverrideTextColor:(id)a3 isSelected:(BOOL)a4;
+- (void)setAdvisories:(id)advisories coordinator:(id)coordinator;
+- (void)setOverrideTextColor:(id)color isSelected:(BOOL)selected;
 - (void)setupSubViews;
 @end
 
@@ -44,22 +44,22 @@
 
         v7 = *(*(&v22 + 1) + 8 * v6);
         v8 = [[RouteAdvisoryView alloc] initWithViewModel:v7];
-        v9 = [v7 handler];
+        handler = [v7 handler];
 
-        if (v9)
+        if (handler)
         {
-          v10 = [v7 handler];
-          [(RouteAdvisoryView *)v8 setActionHandler:v10];
+          handler2 = [v7 handler];
+          [(RouteAdvisoryView *)v8 setActionHandler:handler2];
         }
 
         else
         {
-          v11 = [v7 advisory];
-          v12 = [v11 isClickable];
+          advisory = [v7 advisory];
+          isClickable = [advisory isClickable];
 
-          if (v12)
+          if (isClickable)
           {
-            v13 = [v7 advisory];
+            advisory2 = [v7 advisory];
             [(RouteAdvisoryView *)v8 setAlwaysClickable:1];
             objc_initWeak(&from, v8);
             v17[0] = _NSConcreteStackBlock;
@@ -67,7 +67,7 @@
             v17[2] = sub_100E18E0C;
             v17[3] = &unk_1016559D0;
             objc_copyWeak(&v19, &location);
-            v14 = v13;
+            v14 = advisory2;
             v18 = v14;
             objc_copyWeak(&v20, &from);
             [(RouteAdvisoryView *)v8 setActionHandler:v17];
@@ -80,7 +80,7 @@
           }
         }
 
-        [(RouteAdvisoryView *)v8 setAlwaysClickable:v9 != 0];
+        [(RouteAdvisoryView *)v8 setAlwaysClickable:handler != 0];
 LABEL_11:
         [(RouteAdvisoryView *)v8 setOverrideTextColor:self->_overrideTextColor];
         [v3 addObject:v8];
@@ -96,8 +96,8 @@ LABEL_11:
   }
 
   [(RouteAdvisoriesView *)self _logAnalyticsIfNeeded];
-  v15 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v15 _maps_setArrangedSubviews:v3];
+  advisoryStackView = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView _maps_setArrangedSubviews:v3];
 
   objc_destroyWeak(&location);
 }
@@ -108,9 +108,9 @@ LABEL_11:
   {
     if ([(NSArray *)self->_viewModels count])
     {
-      v3 = [(RouteAdvisoriesView *)self window];
+      window = [(RouteAdvisoriesView *)self window];
 
-      if (v3)
+      if (window)
       {
         v15 = 0u;
         v16 = 0u;
@@ -132,13 +132,13 @@ LABEL_11:
               }
 
               v9 = *(*(&v13 + 1) + 8 * i);
-              v10 = [v9 advisory];
+              advisory = [v9 advisory];
 
-              if (v10)
+              if (advisory)
               {
                 v11 = +[MKMapService sharedService];
-                v12 = [v9 advisory];
-                [v11 captureUserAction:247 onTarget:504 forAdvisory:v12];
+                advisory2 = [v9 advisory];
+                [v11 captureUserAction:247 onTarget:504 forAdvisory:advisory2];
               }
             }
 
@@ -154,12 +154,12 @@ LABEL_11:
   }
 }
 
-- (void)setAdvisories:(id)a3 coordinator:(id)a4
+- (void)setAdvisories:(id)advisories coordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  advisoriesCopy = advisories;
+  coordinatorCopy = coordinator;
   viewModels = self->_viewModels;
-  v12 = v7;
+  v12 = advisoriesCopy;
   v10 = viewModels;
   if (v12 | v10)
   {
@@ -167,8 +167,8 @@ LABEL_11:
 
     if ((v11 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewModels, a3);
-      objc_storeWeak(&self->_coordinator, v8);
+      objc_storeStrong(&self->_viewModels, advisories);
+      objc_storeWeak(&self->_coordinator, coordinatorCopy);
       self->_hasLoggedAdvisoryAnalytics = 0;
       [(RouteAdvisoriesView *)self refreshContent];
     }
@@ -177,31 +177,31 @@ LABEL_11:
 
 - (BOOL)isVisible
 {
-  v2 = [(RouteAdvisoriesView *)self advisoryStackView];
-  v3 = [v2 arrangedSubviews];
-  v4 = [v3 count] != 0;
+  advisoryStackView = [(RouteAdvisoriesView *)self advisoryStackView];
+  arrangedSubviews = [advisoryStackView arrangedSubviews];
+  v4 = [arrangedSubviews count] != 0;
 
   return v4;
 }
 
-- (void)setOverrideTextColor:(id)a3 isSelected:(BOOL)a4
+- (void)setOverrideTextColor:(id)color isSelected:(BOOL)selected
 {
-  v4 = a4;
-  v7 = a3;
+  selectedCopy = selected;
+  colorCopy = color;
   v8 = self->_overrideTextColor;
-  v9 = v7;
-  if (v9 | v8 && (v10 = [v8 isEqual:v9], v9, v8, !v10) || self->_isSelected != v4)
+  v9 = colorCopy;
+  if (v9 | v8 && (v10 = [v8 isEqual:v9], v9, v8, !v10) || self->_isSelected != selectedCopy)
   {
-    objc_storeStrong(&self->_overrideTextColor, a3);
-    self->_isSelected = v4;
+    objc_storeStrong(&self->_overrideTextColor, color);
+    self->_isSelected = selectedCopy;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [(RouteAdvisoriesView *)self advisoryStackView];
-    v12 = [v11 arrangedSubviews];
+    advisoryStackView = [(RouteAdvisoriesView *)self advisoryStackView];
+    arrangedSubviews = [advisoryStackView arrangedSubviews];
 
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v13 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = v13;
@@ -213,7 +213,7 @@ LABEL_11:
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [*(*(&v17 + 1) + 8 * v16) setOverrideTextColor:self->_overrideTextColor];
@@ -221,7 +221,7 @@ LABEL_11:
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v14 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v14);
@@ -234,47 +234,47 @@ LABEL_11:
   v3 = objc_alloc_init(UIStackView);
   [(RouteAdvisoriesView *)self setAdvisoryStackView:v3];
 
-  v4 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  advisoryStackView = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v5 setAxis:1];
+  advisoryStackView2 = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView2 setAxis:1];
 
-  v6 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v6 setAlignment:0];
+  advisoryStackView3 = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView3 setAlignment:0];
 
-  v7 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v7 setDistribution:0];
+  advisoryStackView4 = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView4 setDistribution:0];
 
-  v8 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [v8 setSpacing:3.0];
+  advisoryStackView5 = [(RouteAdvisoriesView *)self advisoryStackView];
+  [advisoryStackView5 setSpacing:3.0];
 
-  v9 = [(RouteAdvisoriesView *)self advisoryStackView];
+  advisoryStackView6 = [(RouteAdvisoriesView *)self advisoryStackView];
   LODWORD(v10) = 1148846080;
-  [v9 setContentHuggingPriority:1 forAxis:v10];
+  [advisoryStackView6 setContentHuggingPriority:1 forAxis:v10];
 
-  v11 = [(RouteAdvisoriesView *)self advisoryStackView];
-  [(RouteAdvisoriesView *)self addSubview:v11];
+  advisoryStackView7 = [(RouteAdvisoriesView *)self advisoryStackView];
+  [(RouteAdvisoriesView *)self addSubview:advisoryStackView7];
 
-  v28 = [(RouteAdvisoriesView *)self advisoryStackView];
-  v27 = [v28 leadingAnchor];
-  v26 = [(RouteAdvisoriesView *)self leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  advisoryStackView8 = [(RouteAdvisoriesView *)self advisoryStackView];
+  leadingAnchor = [advisoryStackView8 leadingAnchor];
+  leadingAnchor2 = [(RouteAdvisoriesView *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v25;
-  v24 = [(RouteAdvisoriesView *)self advisoryStackView];
-  v23 = [v24 trailingAnchor];
-  v22 = [(RouteAdvisoriesView *)self trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  advisoryStackView9 = [(RouteAdvisoriesView *)self advisoryStackView];
+  trailingAnchor = [advisoryStackView9 trailingAnchor];
+  trailingAnchor2 = [(RouteAdvisoriesView *)self trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[1] = v21;
-  v12 = [(RouteAdvisoriesView *)self advisoryStackView];
-  v13 = [v12 topAnchor];
-  v14 = [(RouteAdvisoriesView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  advisoryStackView10 = [(RouteAdvisoriesView *)self advisoryStackView];
+  topAnchor = [advisoryStackView10 topAnchor];
+  topAnchor2 = [(RouteAdvisoriesView *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[2] = v15;
-  v16 = [(RouteAdvisoriesView *)self advisoryStackView];
-  v17 = [v16 bottomAnchor];
-  v18 = [(RouteAdvisoriesView *)self bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  advisoryStackView11 = [(RouteAdvisoriesView *)self advisoryStackView];
+  bottomAnchor = [advisoryStackView11 bottomAnchor];
+  bottomAnchor2 = [(RouteAdvisoriesView *)self bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v19;
   v20 = [NSArray arrayWithObjects:v29 count:4];
   [(RouteAdvisoriesView *)self addConstraints:v20];
@@ -285,9 +285,9 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = RouteAdvisoriesView;
   [(RouteAdvisoriesView *)&v4 didMoveToWindow];
-  v3 = [(RouteAdvisoriesView *)self window];
+  window = [(RouteAdvisoriesView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(RouteAdvisoriesView *)self _logAnalyticsIfNeeded];
   }

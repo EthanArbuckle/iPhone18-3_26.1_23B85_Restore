@@ -1,16 +1,16 @@
 @interface TSDVaryWidthPathManipulation
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4;
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width;
 @end
 
 @implementation TSDVaryWidthPathManipulation
 
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width
 {
   v10.receiver = self;
   v10.super_class = TSDVaryWidthPathManipulation;
-  v5 = [(TSDPathManipulation *)&v10 manipulatePath:a3 withLineWidth:?];
+  v5 = [(TSDPathManipulation *)&v10 manipulatePath:path withLineWidth:?];
   Mutable = CGPathCreateMutable();
-  v7 = a4 + a4;
+  v7 = width + width;
   v8 = 3;
   do
   {

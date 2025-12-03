@@ -1,13 +1,13 @@
 @interface MUWebBasedDebugPanelViewController
-- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithCoder:(id)a3;
-- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithCoder:(id)coder;
+- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)closeButtonTapped;
 - (void)viewDidLoad;
 @end
 
 @implementation MUWebBasedDebugPanelViewController
 
-- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithCoder:(id)a3
+- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6MapsUI34MUWebBasedDebugPanelViewController____lazy_storage___closeButton) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6MapsUI34MUWebBasedDebugPanelViewController_bridge) = 0;
@@ -41,13 +41,13 @@
     v8[2] = sub_1C56444F8;
     v8[3] = &block_descriptor_3;
     v5 = _Block_copy(v8);
-    v6 = self;
+    selfCopy = self;
     sub_1C5633060(v3);
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -56,7 +56,7 @@
   _Block_release(v5);
 }
 
-- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6MapsUI34MUWebBasedDebugPanelViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

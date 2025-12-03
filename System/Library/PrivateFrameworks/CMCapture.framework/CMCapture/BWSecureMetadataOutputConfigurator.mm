@@ -3,15 +3,15 @@
 - (BWSecureMetadataOutputConfiguration)configurationForPrimaryClient;
 - (BWSecureMetadataOutputConfigurator)init;
 - (id)_coalescedClientConfiguration;
-- (void)_updateSecureMetadataOutputConfigurationForceDelegate:(BOOL)a3;
+- (void)_updateSecureMetadataOutputConfigurationForceDelegate:(BOOL)delegate;
 - (void)dealloc;
-- (void)registerAttachedSessionID:(id)a3;
+- (void)registerAttachedSessionID:(id)d;
 - (void)resetAllConfigurations;
-- (void)setConfiguration:(id)a3 forAttachedSessionID:(id)a4;
-- (void)setConfigurationForPrimaryClient:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMaximumFrameRate:(float)a3 forAttachedSessionID:(id)a4;
-- (void)unregisterAttachedSessionID:(id)a3;
+- (void)setConfiguration:(id)configuration forAttachedSessionID:(id)d;
+- (void)setConfigurationForPrimaryClient:(id)client;
+- (void)setDelegate:(id)delegate;
+- (void)setMaximumFrameRate:(float)rate forAttachedSessionID:(id)d;
+- (void)unregisterAttachedSessionID:(id)d;
 @end
 
 @implementation BWSecureMetadataOutputConfigurator
@@ -45,11 +45,11 @@
     v3 = objc_alloc_init(BWSecureMetadataOutputConfiguration);
   }
 
-  v4 = [(BWSecureMetadataOutputConfiguration *)self->_configurationForPrimaryClient enabledDetectedObjectTypes];
-  v5 = [(BWSecureMetadataOutputConfiguration *)v3 motionToWakeEnabled];
+  enabledDetectedObjectTypes = [(BWSecureMetadataOutputConfiguration *)self->_configurationForPrimaryClient enabledDetectedObjectTypes];
+  motionToWakeEnabled = [(BWSecureMetadataOutputConfiguration *)v3 motionToWakeEnabled];
   v6 = 0;
   v7 = 0.0;
-  if (v5)
+  if (motionToWakeEnabled)
   {
     [(BWSecureMetadataOutputConfiguration *)v3 motionToWakeTargetFrameRate];
   }
@@ -67,8 +67,8 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [(NSMutableDictionary *)self->_secondaryClientConfigurationsByClientID allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v40 objects:v39 count:16];
+  allKeys = [(NSMutableDictionary *)self->_secondaryClientConfigurationsByClientID allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (v10)
   {
     v11 = v10;
@@ -79,7 +79,7 @@
       {
         if (*v41 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v40 + 1) + 8 * i);
@@ -91,7 +91,7 @@
           [(BWSecureMetadataOutputConfiguration *)v3 setObjectDetectionEnabled:1];
           if ([(BWSecureMetadataOutputConfiguration *)v15 enabledDetectedObjectTypes])
           {
-            v4 = [(NSSet *)[(BWSecureMetadataOutputConfiguration *)v15 enabledDetectedObjectTypes] setByAddingObjectsFromSet:v4];
+            enabledDetectedObjectTypes = [(NSSet *)[(BWSecureMetadataOutputConfiguration *)v15 enabledDetectedObjectTypes] setByAddingObjectsFromSet:enabledDetectedObjectTypes];
           }
 
           if (![(BWSecureMetadataOutputConfiguration *)self->_configurationForPrimaryClient objectDetectionEnabled])
@@ -131,8 +131,8 @@
         if ([(BWSecureMetadataOutputConfiguration *)v15 faceTrackingEnabled])
         {
           [(BWSecureMetadataOutputConfiguration *)v3 setFaceTrackingEnabled:1];
-          v23 = [(BWSecureMetadataOutputConfiguration *)v3 faceTrackingMaxNumTrackedFaces];
-          if (v23 <= [(BWSecureMetadataOutputConfiguration *)v15 faceTrackingMaxNumTrackedFaces])
+          faceTrackingMaxNumTrackedFaces = [(BWSecureMetadataOutputConfiguration *)v3 faceTrackingMaxNumTrackedFaces];
+          if (faceTrackingMaxNumTrackedFaces <= [(BWSecureMetadataOutputConfiguration *)v15 faceTrackingMaxNumTrackedFaces])
           {
             v24 = v15;
           }
@@ -222,13 +222,13 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v40 objects:v39 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v40 objects:v39 count:16];
     }
 
     while (v11);
   }
 
-  [(BWSecureMetadataOutputConfiguration *)v3 setEnabledDetectedObjectTypes:v4];
+  [(BWSecureMetadataOutputConfiguration *)v3 setEnabledDetectedObjectTypes:enabledDetectedObjectTypes];
   return v3;
 }
 
@@ -239,23 +239,23 @@
   [(BWSecureMetadataOutputConfigurator *)&v3 dealloc];
 }
 
-- (void)setConfigurationForPrimaryClient:(id)a3
+- (void)setConfigurationForPrimaryClient:(id)client
 {
   os_unfair_lock_lock(&self->_stateLock);
 
-  self->_configurationForPrimaryClient = a3;
+  self->_configurationForPrimaryClient = client;
   [(BWSecureMetadataOutputConfigurator *)self _updateSecureMetadataOutputConfigurationForceDelegate:0];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)registerAttachedSessionID:(id)a3
+- (void)registerAttachedSessionID:(id)d
 {
   os_unfair_lock_lock(&self->_stateLock);
   registeredAttachedSessionIDs = self->_registeredAttachedSessionIDs;
   if (registeredAttachedSessionIDs)
   {
-    [(NSMutableArray *)registeredAttachedSessionIDs containsObject:a3];
+    [(NSMutableArray *)registeredAttachedSessionIDs containsObject:d];
     v6 = self->_registeredAttachedSessionIDs;
   }
 
@@ -265,31 +265,31 @@
     self->_registeredAttachedSessionIDs = v6;
   }
 
-  [(NSMutableArray *)v6 addObject:a3];
+  [(NSMutableArray *)v6 addObject:d];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)unregisterAttachedSessionID:(id)a3
+- (void)unregisterAttachedSessionID:(id)d
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:a3])
+  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:d])
   {
-    [(NSMutableArray *)self->_registeredAttachedSessionIDs removeObject:a3];
+    [(NSMutableArray *)self->_registeredAttachedSessionIDs removeObject:d];
     if (![(NSMutableArray *)self->_registeredAttachedSessionIDs count])
     {
 
       self->_registeredAttachedSessionIDs = 0;
     }
 
-    [(NSMutableDictionary *)self->_secondaryClientConfigurationsByClientID setObject:0 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_secondaryClientConfigurationsByClientID setObject:0 forKeyedSubscript:d];
     if (![(NSMutableDictionary *)self->_secondaryClientConfigurationsByClientID count])
     {
 
       self->_secondaryClientConfigurationsByClientID = 0;
     }
 
-    [(NSMutableDictionary *)self->_maximumFrameRateByClientID setObject:0 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_maximumFrameRateByClientID setObject:0 forKeyedSubscript:d];
     if (![(NSMutableDictionary *)self->_maximumFrameRateByClientID count])
     {
 
@@ -302,17 +302,17 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)setConfiguration:(id)a3 forAttachedSessionID:(id)a4
+- (void)setConfiguration:(id)configuration forAttachedSessionID:(id)d
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:a4])
+  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:d])
   {
     if (!self->_secondaryClientConfigurationsByClientID)
     {
       self->_secondaryClientConfigurationsByClientID = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_secondaryClientConfigurationsByClientID, "setObject:forKeyedSubscript:", [a3 copy], a4);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_secondaryClientConfigurationsByClientID, "setObject:forKeyedSubscript:", [configuration copy], d);
     [(BWSecureMetadataOutputConfigurator *)self _updateSecureMetadataOutputConfigurationForceDelegate:0];
   }
 
@@ -330,15 +330,15 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)setMaximumFrameRate:(float)a3 forAttachedSessionID:(id)a4
+- (void)setMaximumFrameRate:(float)rate forAttachedSessionID:(id)d
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:a4])
+  if ([(NSMutableArray *)self->_registeredAttachedSessionIDs containsObject:d])
   {
     maximumFrameRateByClientID = self->_maximumFrameRateByClientID;
-    if (a3 <= 0.0)
+    if (rate <= 0.0)
     {
-      [(NSMutableDictionary *)maximumFrameRateByClientID setObject:0 forKeyedSubscript:a4];
+      [(NSMutableDictionary *)maximumFrameRateByClientID setObject:0 forKeyedSubscript:d];
       if (![(NSMutableDictionary *)self->_maximumFrameRateByClientID count])
       {
 
@@ -353,8 +353,8 @@
         self->_maximumFrameRateByClientID = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      *&v7 = a3;
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_maximumFrameRateByClientID, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithFloat:v7], a4);
+      *&v7 = rate;
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_maximumFrameRateByClientID, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithFloat:v7], d);
     }
 
     [(BWSecureMetadataOutputConfigurator *)self _updateSecureMetadataOutputConfigurationForceDelegate:0];
@@ -371,13 +371,13 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
-    if (a3)
+    self->_delegate = delegate;
+    if (delegate)
     {
       [(BWSecureMetadataOutputConfigurator *)self _updateSecureMetadataOutputConfigurationForceDelegate:1];
     }
@@ -386,13 +386,13 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_updateSecureMetadataOutputConfigurationForceDelegate:(BOOL)a3
+- (void)_updateSecureMetadataOutputConfigurationForceDelegate:(BOOL)delegate
 {
-  v3 = a3;
-  v5 = [(BWSecureMetadataOutputConfigurator *)self _coalescedClientConfiguration];
-  if ([v5 isEqual:self->_coalescedSecureMetadataOutputConfiguration])
+  delegateCopy = delegate;
+  _coalescedClientConfiguration = [(BWSecureMetadataOutputConfigurator *)self _coalescedClientConfiguration];
+  if ([_coalescedClientConfiguration isEqual:self->_coalescedSecureMetadataOutputConfiguration])
   {
-    if (!v3)
+    if (!delegateCopy)
     {
       return;
     }
@@ -401,12 +401,12 @@
   else
   {
 
-    self->_coalescedSecureMetadataOutputConfiguration = v5;
+    self->_coalescedSecureMetadataOutputConfiguration = _coalescedClientConfiguration;
   }
 
   delegate = self->_delegate;
 
-  [(BWSecureMetadataOutputConfiguratorDelegate *)delegate secureMetadataOutputConfigurationDidChange:v5];
+  [(BWSecureMetadataOutputConfiguratorDelegate *)delegate secureMetadataOutputConfigurationDidChange:_coalescedClientConfiguration];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface HDCloudSyncResetOperation
-- (HDCloudSyncResetOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 container:(id)a5;
+- (HDCloudSyncResetOperation)initWithConfiguration:(id)configuration cloudState:(id)state container:(id)container;
 - (void)main;
 @end
 
 @implementation HDCloudSyncResetOperation
 
-- (HDCloudSyncResetOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 container:(id)a5
+- (HDCloudSyncResetOperation)initWithConfiguration:(id)configuration cloudState:(id)state container:(id)container
 {
-  v9 = a5;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = HDCloudSyncResetOperation;
-  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:state];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_container, a5);
+    objc_storeStrong(&v10->_container, container);
   }
 
   return v11;
@@ -29,13 +29,13 @@
   {
     container = self->_container;
     v5 = v3;
-    v6 = [(HDCloudSyncOperation *)self configuration];
+    configuration = [(HDCloudSyncOperation *)self configuration];
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
     *&buf[14] = container;
     *&buf[22] = 2114;
-    v24 = v6;
+    v24 = configuration;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning reset for container (%{public}@) with configuration %{public}@", buf, 0x20u);
 
 LABEL_4:
@@ -67,16 +67,16 @@ LABEL_4:
     *&buf[8] = 3221225472;
     *&buf[16] = __50__HDCloudSyncResetOperation__fetchDatabaseChanges__block_invoke_4;
     v24 = &unk_278627078;
-    v25 = self;
+    selfCopy = self;
     v26 = v11;
     v12 = v11;
     [v7 setFetchDatabaseChangesCompletionBlock:buf];
-    v13 = [(HDCloudSyncOperation *)self configuration];
-    v14 = [v13 operationGroup];
-    [v7 setGroup:v14];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    operationGroup = [configuration2 operationGroup];
+    [v7 setGroup:operationGroup];
 
-    v15 = [(CKContainer *)self->_container privateCloudDatabase];
-    [v15 addOperation:v7];
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+    [privateCloudDatabase addOperation:v7];
 
     goto LABEL_5;
   }

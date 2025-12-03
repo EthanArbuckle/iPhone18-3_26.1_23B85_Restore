@@ -4,26 +4,26 @@
 - (QLPreviewController)previewController;
 - (UIViewController)presenterViewController;
 - (UIViewControllerContextTransitioning)transitionContext;
-- (void)_completeBackgroundTransition:(BOOL)a3;
-- (void)_completeOverlayTransition:(BOOL)a3;
+- (void)_completeBackgroundTransition:(BOOL)transition;
+- (void)_completeOverlayTransition:(BOOL)transition;
 - (void)_performForcedDismissal;
 - (void)_performStartBlockIfNeeded;
 - (void)_performTransition;
 - (void)_prepareTimedForcedDismissal;
-- (void)_updateBackgroundTransitionWithProgress:(double)a3;
-- (void)_updateOverlayTransitionWithProgress:(double)a3;
-- (void)_view:(id)a3 applyFrameFromTransitionContextAsFinalFrame:(BOOL)a4 isToView:(BOOL)a5;
-- (void)animateTransition:(id)a3;
-- (void)setUpWithTransitionContext:(id)a3 completionHandler:(id)a4;
+- (void)_updateBackgroundTransitionWithProgress:(double)progress;
+- (void)_updateOverlayTransitionWithProgress:(double)progress;
+- (void)_view:(id)_view applyFrameFromTransitionContextAsFinalFrame:(BOOL)frame isToView:(BOOL)view;
+- (void)animateTransition:(id)transition;
+- (void)setUpWithTransitionContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLTransitionController
 
-- (void)setUpWithTransitionContext:(id)a3 completionHandler:(id)a4
+- (void)setUpWithTransitionContext:(id)context completionHandler:(id)handler
 {
   v82 = *MEMORY[0x277D85DE8];
-  v72 = a3;
-  v6 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v7 = MEMORY[0x277D43EF8];
   v8 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -35,28 +35,28 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v79 = self;
+    selfCopy = self;
     v80 = 2112;
-    v81 = v72;
+    v81 = contextCopy;
     _os_log_impl(&dword_23A714000, v8, OS_LOG_TYPE_INFO, "QLTransitionController (%@) is being setup (%@). #AppearanceTransition", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [(QLTransitionController *)self setSetupDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(QLTransitionController *)self setSetupDate:date];
 
   [(QLTransitionController *)self setTransitionContext:v73];
   if (_os_feature_enabled_impl())
   {
-    v10 = [(QLTransitionController *)self previewController];
-    [v10 updateStatusBarAnimated:0];
+    previewController = [(QLTransitionController *)self previewController];
+    [previewController updateStatusBarAnimated:0];
 
-    v11 = [(QLTransitionController *)self previewController];
-    v12 = [v11 view];
-    [v12 layoutIfNeeded];
+    previewController2 = [(QLTransitionController *)self previewController];
+    view = [previewController2 view];
+    [view layoutIfNeeded];
   }
 
-  v13 = [(QLTransitionController *)self previewController];
-  v14 = [v13 delegate];
+  previewController3 = [(QLTransitionController *)self previewController];
+  delegate = [previewController3 delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
@@ -71,95 +71,95 @@
       v16 = 3;
     }
 
-    v17 = [(QLTransitionController *)self previewController];
-    v18 = [v17 delegate];
-    v19 = [(QLTransitionController *)self previewController];
-    [v18 previewController:v19 willTransitionToState:v16];
+    previewController4 = [(QLTransitionController *)self previewController];
+    delegate2 = [previewController4 delegate];
+    previewController5 = [(QLTransitionController *)self previewController];
+    [delegate2 previewController:previewController5 willTransitionToState:v16];
   }
 
-  v20 = [(QLTransitionController *)self transitionContext];
-  v21 = [v20 containerView];
+  transitionContext = [(QLTransitionController *)self transitionContext];
+  containerView = [transitionContext containerView];
 
-  v22 = [(QLTransitionController *)self transitionContext];
-  v23 = [v22 viewForKey:*MEMORY[0x277D77248]];
+  transitionContext2 = [(QLTransitionController *)self transitionContext];
+  v23 = [transitionContext2 viewForKey:*MEMORY[0x277D77248]];
 
-  v24 = [(QLTransitionController *)self transitionContext];
-  v25 = [v24 viewForKey:*MEMORY[0x277D77238]];
+  transitionContext3 = [(QLTransitionController *)self transitionContext];
+  v25 = [transitionContext3 viewForKey:*MEMORY[0x277D77238]];
 
   if ([(QLTransitionController *)self showing])
   {
-    [v21 addSubview:v23];
+    [containerView addSubview:v23];
     [v23 setHidden:1];
   }
 
   else
   {
-    v26 = [(QLTransitionController *)self previewController];
-    v27 = [v26 view];
-    [v21 insertSubview:v23 below:v27];
+    previewController6 = [(QLTransitionController *)self previewController];
+    view2 = [previewController6 view];
+    [containerView insertSubview:v23 below:view2];
   }
 
   [(QLTransitionController *)self _view:v25 applyFrameFromTransitionContextAsFinalFrame:0 isToView:0];
   [(QLTransitionController *)self _view:v23 applyFrameFromTransitionContextAsFinalFrame:1 isToView:1];
   v28 = [QLTransitionContext alloc];
-  v29 = [(QLTransitionController *)self previewController];
-  v30 = [(QLTransitionController *)self transitionContext];
-  v31 = [v30 viewControllerForKey:*MEMORY[0x277D77240]];
-  v32 = [(QLTransitionContext *)v28 initWithQLPreviewController:v29 containerView:v21 toViewController:v31];
+  previewController7 = [(QLTransitionController *)self previewController];
+  transitionContext4 = [(QLTransitionController *)self transitionContext];
+  v31 = [transitionContext4 viewControllerForKey:*MEMORY[0x277D77240]];
+  v32 = [(QLTransitionContext *)v28 initWithQLPreviewController:previewController7 containerView:containerView toViewController:v31];
   [(QLTransitionController *)self setQuickLookTransitionContext:v32];
 
-  v33 = [MEMORY[0x277D75348] clearColor];
-  v34 = [(QLTransitionController *)self previewController];
-  v35 = [v34 view];
-  [v35 setBackgroundColor:v33];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  previewController8 = [(QLTransitionController *)self previewController];
+  view3 = [previewController8 view];
+  [view3 setBackgroundColor:clearColor];
 
   v36 = objc_alloc(MEMORY[0x277D75D18]);
-  [v21 bounds];
+  [containerView bounds];
   v37 = [v36 initWithFrame:?];
   transitionBackgroundView = self->_transitionBackgroundView;
   self->_transitionBackgroundView = v37;
 
-  v39 = [(QLTransitionController *)self previewController];
-  v40 = [v39 _preferredBackgroundColor];
-  [(UIView *)self->_transitionBackgroundView setBackgroundColor:v40];
+  previewController9 = [(QLTransitionController *)self previewController];
+  _preferredBackgroundColor = [previewController9 _preferredBackgroundColor];
+  [(UIView *)self->_transitionBackgroundView setBackgroundColor:_preferredBackgroundColor];
 
   v41 = self->_transitionBackgroundView;
-  v42 = [(QLTransitionController *)self previewController];
-  v43 = [v42 view];
-  [v21 insertSubview:v41 below:v43];
+  previewController10 = [(QLTransitionController *)self previewController];
+  view4 = [previewController10 view];
+  [containerView insertSubview:v41 below:view4];
 
-  v44 = [(QLTransitionController *)self previewController];
-  v45 = [v44 presentationMode] == 1;
+  previewController11 = [(QLTransitionController *)self previewController];
+  v45 = [previewController11 presentationMode] == 1;
 
   if (v45)
   {
-    v46 = [(QLTransitionController *)self previewController];
-    if ([v46 fullScreen])
+    previewController12 = [(QLTransitionController *)self previewController];
+    if ([previewController12 fullScreen])
     {
-      v47 = [(QLTransitionController *)self showing];
+      showing = [(QLTransitionController *)self showing];
 
-      if (v47)
+      if (showing)
       {
 LABEL_20:
-        v52 = [(QLTransitionController *)self previewController];
-        v53 = [v52 internalNavigationController];
+        previewController13 = [(QLTransitionController *)self previewController];
+        internalNavigationController = [previewController13 internalNavigationController];
         disabledNavigationController = self->_disabledNavigationController;
-        self->_disabledNavigationController = v53;
+        self->_disabledNavigationController = internalNavigationController;
 
-        v55 = [(UINavigationController *)self->_disabledNavigationController view];
-        [v55 setUserInteractionEnabled:0];
+        view5 = [(UINavigationController *)self->_disabledNavigationController view];
+        [view5 setUserInteractionEnabled:0];
 
         goto LABEL_21;
       }
 
-      v48 = [(QLTransitionController *)self previewController];
-      v49 = [v48 navigationController];
-      v50 = [v49 navigationBar];
-      [v50 setAlpha:0.01];
+      previewController14 = [(QLTransitionController *)self previewController];
+      navigationController = [previewController14 navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setAlpha:0.01];
 
-      v46 = [(QLTransitionController *)self previewController];
-      v51 = [v46 toolbarController];
-      [v51 setOriginalToolbarAlpha:0.0];
+      previewController12 = [(QLTransitionController *)self previewController];
+      toolbarController = [previewController12 toolbarController];
+      [toolbarController setOriginalToolbarAlpha:0.0];
     }
 
     goto LABEL_20;
@@ -168,8 +168,8 @@ LABEL_20:
 LABEL_21:
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v56 = [(QLTransitionController *)self previewController];
-    [v56 updateStatusBarAnimated:1];
+    previewController15 = [(QLTransitionController *)self previewController];
+    [previewController15 updateStatusBarAnimated:1];
   }
 
   [(QLTransitionController *)self updateTransitionWithProgress:0.0];
@@ -179,7 +179,7 @@ LABEL_21:
   aBlock[2] = __71__QLTransitionController_setUpWithTransitionContext_completionHandler___block_invoke;
   aBlock[3] = &unk_278B578C8;
   objc_copyWeak(&v77, buf);
-  v57 = v6;
+  v57 = handlerCopy;
   v76 = v57;
   v58 = v23;
   v75 = v58;
@@ -187,8 +187,8 @@ LABEL_21:
   startTransitionBlock = self->_startTransitionBlock;
   self->_startTransitionBlock = v59;
 
-  v61 = [(QLTransitionController *)self previewController];
-  v62 = [v61 currentAnimator];
+  previewController16 = [(QLTransitionController *)self previewController];
+  currentAnimator = [previewController16 currentAnimator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -197,20 +197,20 @@ LABEL_21:
     [(QLTransitionController *)self _prepareTimedForcedDismissal];
   }
 
-  v64 = [(QLTransitionController *)self previewController];
-  v65 = [v64 previewCollection];
-  v66 = [v65 isAvailable];
+  previewController17 = [(QLTransitionController *)self previewController];
+  previewCollection = [previewController17 previewCollection];
+  isAvailable = [previewCollection isAvailable];
 
-  if (v66)
+  if (isAvailable)
   {
-    v67 = [(QLTransitionController *)self previewController];
-    v68 = [v67 previewCollection];
-    v69 = [v68 isRemote];
+    previewController18 = [(QLTransitionController *)self previewController];
+    previewCollection2 = [previewController18 previewCollection];
+    isRemote = [previewCollection2 isRemote];
 
-    if (v69)
+    if (isRemote)
     {
-      v70 = [(QLTransitionController *)self quickLookTransitionContext];
-      [v70 prepareContextToSend];
+      quickLookTransitionContext = [(QLTransitionController *)self quickLookTransitionContext];
+      [quickLookTransitionContext prepareContextToSend];
     }
 
     QLRunInBackgroundThread();
@@ -343,8 +343,8 @@ void __71__QLTransitionController_setUpWithTransitionContext_completionHandler__
 
 - (void)_prepareTimedForcedDismissal
 {
-  v3 = [(QLTransitionController *)self previewController];
-  v4 = [v3 currentAnimator];
+  previewController = [(QLTransitionController *)self previewController];
+  currentAnimator = [previewController currentAnimator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -508,19 +508,19 @@ uint64_t __44__QLTransitionController__performTransition__block_invoke_2(uint64_
   return [v2 tearDownTransition:1];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  objc_storeWeak(&self->_transitionContext, v4);
+  transitionCopy = transition;
+  objc_storeWeak(&self->_transitionContext, transitionCopy);
   objc_initWeak(&location, self);
-  v5 = [(QLTransitionController *)self previewController];
+  previewController = [(QLTransitionController *)self previewController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__QLTransitionController_animateTransition___block_invoke;
   v6[3] = &unk_278B578F0;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  [v5 waitForPreviewCollectionWithCompletionHandler:v6];
+  [previewController waitForPreviewCollectionWithCompletionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -557,30 +557,30 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
 
 - ($9F4668F2352A2F7A80B9EC1B630AA830)_requiredVisualStateTransitions
 {
-  v3 = [(QLTransitionController *)self previewController];
-  v4 = [v3 presentationMode];
+  previewController = [(QLTransitionController *)self previewController];
+  presentationMode = [previewController presentationMode];
 
-  v5 = [(QLTransitionController *)self previewController];
-  v6 = [v5 presentationMode];
+  previewController2 = [(QLTransitionController *)self previewController];
+  presentationMode2 = [previewController2 presentationMode];
 
-  v7 = [(QLTransitionController *)self previewController];
-  v8 = [v7 fullScreen];
+  previewController3 = [(QLTransitionController *)self previewController];
+  fullScreen = [previewController3 fullScreen];
 
-  v9 = [(QLTransitionController *)self previewController];
-  v10 = [v9 previousNavigationVCState];
-  v11 = [v10 toolBarHidden];
+  previewController4 = [(QLTransitionController *)self previewController];
+  previousNavigationVCState = [previewController4 previousNavigationVCState];
+  toolBarHidden = [previousNavigationVCState toolBarHidden];
 
-  v12 = [(QLTransitionController *)self previewController];
-  v13 = [v12 toolbarController];
-  v14 = [v13 isOriginalToolbarHidden];
+  previewController5 = [(QLTransitionController *)self previewController];
+  toolbarController = [previewController5 toolbarController];
+  isOriginalToolbarHidden = [toolbarController isOriginalToolbarHidden];
 
-  v15 = [(QLTransitionController *)self previewController];
-  v16 = [v15 toolbarController];
-  v17 = [v16 isAccessoryViewHidden];
+  previewController6 = [(QLTransitionController *)self previewController];
+  toolbarController2 = [previewController6 toolbarController];
+  isAccessoryViewHidden = [toolbarController2 isAccessoryViewHidden];
 
-  v18 = v14 ^ 1;
+  v18 = isOriginalToolbarHidden ^ 1;
   v19 = 0x10000000000;
-  if (v4 == 2)
+  if (presentationMode == 2)
   {
     v20 = 1;
     v21 = 0x1000000;
@@ -588,12 +588,12 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
 
   else
   {
-    if ((v8 & (v6 != 1)) == 0)
+    if ((fullScreen & (presentationMode2 != 1)) == 0)
     {
       v19 = 0;
     }
 
-    if (v8 & (v6 != 1) | v18 & 1)
+    if (fullScreen & (presentationMode2 != 1) | v18 & 1)
     {
       v21 = 0;
     }
@@ -602,17 +602,17 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
     {
       v21 = 0;
       v19 = 0x10000000000;
-      if ((v11 | v17))
+      if ((toolBarHidden | isAccessoryViewHidden))
       {
         v19 = 0;
       }
     }
 
-    v20 = v8;
+    v20 = fullScreen;
   }
 
-  v22 = v6 == 1;
-  v23 = v20 | v11 | v18 | v17;
+  v22 = presentationMode2 == 1;
+  v23 = v20 | toolBarHidden | v18 | isAccessoryViewHidden;
   v24 = 0x100000000;
   if (v23)
   {
@@ -620,26 +620,26 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
   }
 
   v25 = 0x10000;
-  if (v20 & 1 | ((v11 & 1) == 0) | v17 & v14 & 1)
+  if (v20 & 1 | ((toolBarHidden & 1) == 0) | isAccessoryViewHidden & isOriginalToolbarHidden & 1)
   {
     v25 = 0;
   }
 
   v26 = 256;
-  if (((v20 | v14) | (v11 | v17)))
+  if (((v20 | isOriginalToolbarHidden) | (toolBarHidden | isAccessoryViewHidden)))
   {
     v26 = 0;
   }
 
   v27 = (v23 & 1) == 0;
   v28 = 0x1000000000000;
-  if (v11)
+  if (toolBarHidden)
   {
     v28 = 0;
   }
 
-  v29 = v22 & v8;
-  if ((v22 & v8) != 0)
+  v29 = v22 & fullScreen;
+  if ((v22 & fullScreen) != 0)
   {
     v30 = v28;
   }
@@ -669,7 +669,7 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
   return result;
 }
 
-- (void)_updateOverlayTransitionWithProgress:(double)a3
+- (void)_updateOverlayTransitionWithProgress:(double)progress
 {
   v62 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D43EF8];
@@ -683,28 +683,28 @@ uint64_t __55__QLTransitionController_updateTransitionWithProgress___block_invok
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v60 = 134217984;
-    v61 = a3;
+    progressCopy = progress;
     _os_log_impl(&dword_23A714000, v6, OS_LOG_TYPE_INFO, "QLTransitionController is updating overlay with progress:%f #AppearanceTransition", &v60, 0xCu);
   }
 
-  v7 = [(QLTransitionController *)self _requiredVisualStateTransitions];
-  v8 = v7;
+  _requiredVisualStateTransitions = [(QLTransitionController *)self _requiredVisualStateTransitions];
+  v8 = _requiredVisualStateTransitions;
   v10 = v9;
-  if (v7)
+  if (_requiredVisualStateTransitions)
   {
     if ([(QLTransitionController *)self showing])
     {
-      v11 = 1.0 - a3;
+      progressCopy2 = 1.0 - progress;
     }
 
     else
     {
-      v11 = a3;
+      progressCopy2 = progress;
     }
 
-    v12 = [(QLTransitionController *)self previewController];
-    v13 = [v12 toolbarController];
-    [v13 setAccessoryViewAlpha:v11];
+    previewController = [(QLTransitionController *)self previewController];
+    toolbarController = [previewController toolbarController];
+    [toolbarController setAccessoryViewAlpha:progressCopy2];
 
     if ((v8 & 0x100) == 0)
     {
@@ -718,25 +718,25 @@ LABEL_7:
     }
   }
 
-  else if ((v7 & 0x100) == 0)
+  else if ((_requiredVisualStateTransitions & 0x100) == 0)
   {
     goto LABEL_7;
   }
 
-  v14 = [(QLTransitionController *)self previewController];
-  v15 = [v14 toolbarController];
-  v16 = [(QLTransitionController *)self showing];
-  v17 = 1.0 - a3;
-  if (!v16)
+  previewController2 = [(QLTransitionController *)self previewController];
+  toolbarController2 = [previewController2 toolbarController];
+  showing = [(QLTransitionController *)self showing];
+  progressCopy3 = 1.0 - progress;
+  if (!showing)
   {
-    v17 = a3;
+    progressCopy3 = progress;
   }
 
-  [v15 setAccessoryViewHiddenProgress:v17];
+  [toolbarController2 setAccessoryViewHiddenProgress:progressCopy3];
 
-  v18 = [(QLTransitionController *)self previewController];
-  v19 = [v18 toolbarController];
-  [v19 updateLayout];
+  previewController3 = [(QLTransitionController *)self previewController];
+  toolbarController3 = [previewController3 toolbarController];
+  [toolbarController3 updateLayout];
 
   if ((v8 & 0x10000) == 0)
   {
@@ -750,84 +750,84 @@ LABEL_8:
   }
 
 LABEL_17:
-  v20 = [(QLTransitionController *)self previewController];
-  v21 = [v20 toolbarController];
-  v22 = [v21 originalToolbar];
-  [v22 _removeAllAnimations:1];
+  previewController4 = [(QLTransitionController *)self previewController];
+  toolbarController4 = [previewController4 toolbarController];
+  originalToolbar = [toolbarController4 originalToolbar];
+  [originalToolbar _removeAllAnimations:1];
 
-  v23 = [(QLTransitionController *)self previewController];
-  v24 = [v23 toolbarController];
-  v25 = [(QLTransitionController *)self showing];
-  v26 = 1.0 - a3;
-  if (!v25)
+  previewController5 = [(QLTransitionController *)self previewController];
+  toolbarController5 = [previewController5 toolbarController];
+  showing2 = [(QLTransitionController *)self showing];
+  progressCopy4 = 1.0 - progress;
+  if (!showing2)
   {
-    v26 = a3;
+    progressCopy4 = progress;
   }
 
-  [v24 setHiddenProgress:v26];
+  [toolbarController5 setHiddenProgress:progressCopy4];
 
-  v27 = [(QLTransitionController *)self previewController];
-  v28 = [v27 toolbarController];
-  [v28 updateLayout];
+  previewController6 = [(QLTransitionController *)self previewController];
+  toolbarController6 = [previewController6 toolbarController];
+  [toolbarController6 updateLayout];
 
   if ((v8 & 0x1000000) != 0)
   {
 LABEL_20:
     if ([(QLTransitionController *)self showing])
     {
-      v29 = a3;
+      progressCopy5 = progress;
     }
 
     else
     {
-      v29 = 1.0 - a3;
+      progressCopy5 = 1.0 - progress;
     }
 
-    v30 = [(QLTransitionController *)self previewController];
-    v31 = [v30 toolbarController];
-    [v31 setToolbarAlpha:v29];
+    previewController7 = [(QLTransitionController *)self previewController];
+    toolbarController7 = [previewController7 toolbarController];
+    [toolbarController7 setToolbarAlpha:progressCopy5];
 
-    v32 = [(QLTransitionController *)self previewController];
-    LOBYTE(v31) = [v32 fullScreen];
+    previewController8 = [(QLTransitionController *)self previewController];
+    LOBYTE(toolbarController7) = [previewController8 fullScreen];
 
-    if ((v31 & 1) == 0)
+    if ((toolbarController7 & 1) == 0)
     {
       if ([(QLTransitionController *)self showing])
       {
-        v33 = a3;
+        progressCopy6 = progress;
       }
 
       else
       {
-        v33 = 1.0 - a3;
+        progressCopy6 = 1.0 - progress;
       }
 
-      v34 = [(QLTransitionController *)self previewController];
-      [v34 setToolbarGradientAlpha:v33];
+      previewController9 = [(QLTransitionController *)self previewController];
+      [previewController9 setToolbarGradientAlpha:progressCopy6];
     }
   }
 
 LABEL_28:
   if ((v8 & 0x10000000000) != 0)
   {
-    v35 = [(QLTransitionController *)self previewController];
-    v36 = [v35 toolbarController];
-    v37 = [v36 originalToolbar];
-    [v37 _removeAllAnimations:1];
+    previewController10 = [(QLTransitionController *)self previewController];
+    toolbarController8 = [previewController10 toolbarController];
+    originalToolbar2 = [toolbarController8 originalToolbar];
+    [originalToolbar2 _removeAllAnimations:1];
 
     if ([(QLTransitionController *)self showing])
     {
-      v38 = a3;
+      progressCopy7 = progress;
     }
 
     else
     {
-      v38 = 1.0 - a3;
+      progressCopy7 = 1.0 - progress;
     }
 
-    v39 = [(QLTransitionController *)self previewController];
-    v40 = [v39 toolbarController];
-    [v40 setOriginalToolbarAlpha:v38];
+    previewController11 = [(QLTransitionController *)self previewController];
+    toolbarController9 = [previewController11 toolbarController];
+    [toolbarController9 setOriginalToolbarAlpha:progressCopy7];
 
     if ((v8 & 0x1000000000000) == 0)
     {
@@ -846,28 +846,28 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v41 = [(QLTransitionController *)self previewController];
-  v42 = [v41 toolbarController];
-  [v42 restoreOriginalConfiguration];
+  previewController12 = [(QLTransitionController *)self previewController];
+  toolbarController10 = [previewController12 toolbarController];
+  [toolbarController10 restoreOriginalConfiguration];
 
-  v43 = [(QLTransitionController *)self previewController];
-  v44 = [v43 toolbarController];
-  v45 = [v44 originalToolbar];
-  [v45 _removeAllAnimations:1];
+  previewController13 = [(QLTransitionController *)self previewController];
+  toolbarController11 = [previewController13 toolbarController];
+  originalToolbar3 = [toolbarController11 originalToolbar];
+  [originalToolbar3 _removeAllAnimations:1];
 
   if ([(QLTransitionController *)self showing])
   {
-    v46 = 1.0 - a3;
+    progressCopy8 = 1.0 - progress;
   }
 
   else
   {
-    v46 = a3;
+    progressCopy8 = progress;
   }
 
-  v47 = [(QLTransitionController *)self previewController];
-  v48 = [v47 toolbarController];
-  [v48 setOriginalToolbarAlpha:v46];
+  previewController14 = [(QLTransitionController *)self previewController];
+  toolbarController12 = [previewController14 toolbarController];
+  [toolbarController12 setOriginalToolbarAlpha:progressCopy8];
 
   if ((v8 & 0x100000000000000) == 0)
   {
@@ -877,74 +877,74 @@ LABEL_30:
 LABEL_40:
   if ([(QLTransitionController *)self showing])
   {
-    v49 = a3;
+    progressCopy9 = progress;
   }
 
   else
   {
-    v49 = 1.0 - a3;
+    progressCopy9 = 1.0 - progress;
   }
 
-  v50 = [(QLTransitionController *)self previewController];
-  v51 = [v50 internalNavigationController];
-  v52 = [v51 navigationBar];
-  [v52 setAlpha:v49];
+  previewController15 = [(QLTransitionController *)self previewController];
+  internalNavigationController = [previewController15 internalNavigationController];
+  navigationBar = [internalNavigationController navigationBar];
+  [navigationBar setAlpha:progressCopy9];
 
-  v53 = [(QLTransitionController *)self previewController];
-  LOBYTE(v51) = [v53 fullScreen];
+  previewController16 = [(QLTransitionController *)self previewController];
+  LOBYTE(internalNavigationController) = [previewController16 fullScreen];
 
-  if ((v51 & 1) == 0)
+  if ((internalNavigationController & 1) == 0)
   {
     if ([(QLTransitionController *)self showing])
     {
-      v54 = a3;
+      progressCopy10 = progress;
     }
 
     else
     {
-      v54 = 1.0 - a3;
+      progressCopy10 = 1.0 - progress;
     }
 
-    v55 = [(QLTransitionController *)self previewController];
-    [v55 setNavigationBarGradientAlpha:v54];
+    previewController17 = [(QLTransitionController *)self previewController];
+    [previewController17 setNavigationBarGradientAlpha:progressCopy10];
   }
 
 LABEL_48:
   if (v10)
   {
-    v56 = [(QLTransitionController *)self presenterViewController];
-    v57 = [v56 navigationController];
-    v58 = [v57 navigationBar];
-    [v58 setAlpha:a3];
+    presenterViewController = [(QLTransitionController *)self presenterViewController];
+    navigationController = [presenterViewController navigationController];
+    navigationBar2 = [navigationController navigationBar];
+    [navigationBar2 setAlpha:progress];
   }
 
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateBackgroundTransitionWithProgress:(double)a3
+- (void)_updateBackgroundTransitionWithProgress:(double)progress
 {
-  v5 = [(QLTransitionController *)self showing];
-  v6 = 1.0 - a3;
-  if (v5)
+  showing = [(QLTransitionController *)self showing];
+  progressCopy = 1.0 - progress;
+  if (showing)
   {
-    v6 = a3;
+    progressCopy = progress;
   }
 
   transitionBackgroundView = self->_transitionBackgroundView;
 
-  [(UIView *)transitionBackgroundView setAlpha:v6];
+  [(UIView *)transitionBackgroundView setAlpha:progressCopy];
 }
 
-- (void)_completeOverlayTransition:(BOOL)a3
+- (void)_completeOverlayTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(QLTransitionController *)self _requiredVisualStateTransitions];
-  v6 = v5;
-  if (v5)
+  transitionCopy = transition;
+  _requiredVisualStateTransitions = [(QLTransitionController *)self _requiredVisualStateTransitions];
+  v6 = _requiredVisualStateTransitions;
+  if (_requiredVisualStateTransitions)
   {
-    v7 = [(QLTransitionController *)self previewController];
-    v8 = [v7 toolbarController];
-    [v8 setAccessoryViewAlpha:1.0];
+    previewController = [(QLTransitionController *)self previewController];
+    toolbarController = [previewController toolbarController];
+    [toolbarController setAccessoryViewAlpha:1.0];
 
     if ((v6 & 0x100) == 0)
     {
@@ -958,19 +958,19 @@ LABEL_3:
     }
   }
 
-  else if ((v5 & 0x100) == 0)
+  else if ((_requiredVisualStateTransitions & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [(QLTransitionController *)self showing];
-  v10 = [(QLTransitionController *)self previewController];
-  v11 = [v10 toolbarController];
-  [v11 setAccessoryViewHidden:v9 ^ v3];
+  showing = [(QLTransitionController *)self showing];
+  previewController2 = [(QLTransitionController *)self previewController];
+  toolbarController2 = [previewController2 toolbarController];
+  [toolbarController2 setAccessoryViewHidden:showing ^ transitionCopy];
 
-  v12 = [(QLTransitionController *)self previewController];
-  v13 = [v12 toolbarController];
-  [v13 updateLayout];
+  previewController3 = [(QLTransitionController *)self previewController];
+  toolbarController3 = [previewController3 toolbarController];
+  [toolbarController3 updateLayout];
 
   if ((v6 & 0x10000) == 0)
   {
@@ -984,14 +984,14 @@ LABEL_4:
   }
 
 LABEL_10:
-  v14 = [(QLTransitionController *)self showing];
-  v15 = [(QLTransitionController *)self previewController];
-  v16 = [v15 toolbarController];
-  [v16 setHidden:v14 ^ v3];
+  showing2 = [(QLTransitionController *)self showing];
+  previewController4 = [(QLTransitionController *)self previewController];
+  toolbarController4 = [previewController4 toolbarController];
+  [toolbarController4 setHidden:showing2 ^ transitionCopy];
 
-  v17 = [(QLTransitionController *)self previewController];
-  v18 = [v17 toolbarController];
-  [v18 updateLayout];
+  previewController5 = [(QLTransitionController *)self previewController];
+  toolbarController5 = [previewController5 toolbarController];
+  [toolbarController5 updateLayout];
 
   if ((v6 & 0x1000000) == 0)
   {
@@ -1005,7 +1005,7 @@ LABEL_5:
   }
 
 LABEL_11:
-  if ([(QLTransitionController *)self showing]!= v3)
+  if ([(QLTransitionController *)self showing]!= transitionCopy)
   {
     v19 = 0.0;
   }
@@ -1015,9 +1015,9 @@ LABEL_11:
     v19 = 1.0;
   }
 
-  v20 = [(QLTransitionController *)self previewController];
-  v21 = [v20 toolbarController];
-  [v21 setToolbarAlpha:v19];
+  previewController6 = [(QLTransitionController *)self previewController];
+  toolbarController6 = [previewController6 toolbarController];
+  [toolbarController6 setToolbarAlpha:v19];
 
   if ((v6 & 0x10000000000) == 0)
   {
@@ -1031,12 +1031,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  v22 = [(QLTransitionController *)self previewController];
-  v23 = [v22 toolbarController];
-  v24 = [v23 originalToolbar];
-  [v24 _removeAllAnimations:1];
+  previewController7 = [(QLTransitionController *)self previewController];
+  toolbarController7 = [previewController7 toolbarController];
+  originalToolbar = [toolbarController7 originalToolbar];
+  [originalToolbar _removeAllAnimations:1];
 
-  if ([(QLTransitionController *)self showing]!= v3)
+  if ([(QLTransitionController *)self showing]!= transitionCopy)
   {
     v25 = 0.0;
   }
@@ -1046,14 +1046,14 @@ LABEL_15:
     v25 = 1.0;
   }
 
-  v26 = [(QLTransitionController *)self previewController];
-  v27 = [v26 toolbarController];
-  [v27 setOriginalToolbarAlpha:v25];
+  previewController8 = [(QLTransitionController *)self previewController];
+  toolbarController8 = [previewController8 toolbarController];
+  [toolbarController8 setOriginalToolbarAlpha:v25];
 
   if ((v6 & 0x100000000000000) != 0)
   {
 LABEL_19:
-    if ([(QLTransitionController *)self showing]!= v3)
+    if ([(QLTransitionController *)self showing]!= transitionCopy)
     {
       v28 = 0.0;
     }
@@ -1063,19 +1063,19 @@ LABEL_19:
       v28 = 1.0;
     }
 
-    v31 = [(QLTransitionController *)self previewController];
-    v29 = [v31 internalNavigationController];
-    v30 = [v29 navigationBar];
-    [v30 setAlpha:v28];
+    previewController9 = [(QLTransitionController *)self previewController];
+    internalNavigationController = [previewController9 internalNavigationController];
+    navigationBar = [internalNavigationController navigationBar];
+    [navigationBar setAlpha:v28];
   }
 }
 
-- (void)_completeBackgroundTransition:(BOOL)a3
+- (void)_completeBackgroundTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(QLTransitionController *)self showing];
+  transitionCopy = transition;
+  showing = [(QLTransitionController *)self showing];
   v6 = 1.0;
-  if (v5 != v3)
+  if (showing != transitionCopy)
   {
     v6 = 0.0;
   }
@@ -1085,28 +1085,28 @@ LABEL_19:
   [(UIView *)transitionBackgroundView setAlpha:v6];
 }
 
-- (void)_view:(id)a3 applyFrameFromTransitionContextAsFinalFrame:(BOOL)a4 isToView:(BOOL)a5
+- (void)_view:(id)_view applyFrameFromTransitionContextAsFinalFrame:(BOOL)frame isToView:(BOOL)view
 {
-  v5 = a5;
-  v21 = a3;
+  viewCopy = view;
+  _viewCopy = _view;
   v8 = MEMORY[0x277D77240];
-  if (!v5)
+  if (!viewCopy)
   {
     v8 = MEMORY[0x277D77230];
   }
 
   v9 = *v8;
-  v10 = [(QLTransitionController *)self transitionContext];
-  v11 = [(QLTransitionController *)self transitionContext];
-  v12 = [v11 viewControllerForKey:v9];
-  if (a4)
+  transitionContext = [(QLTransitionController *)self transitionContext];
+  transitionContext2 = [(QLTransitionController *)self transitionContext];
+  v12 = [transitionContext2 viewControllerForKey:v9];
+  if (frame)
   {
-    [v10 finalFrameForViewController:v12];
+    [transitionContext finalFrameForViewController:v12];
   }
 
   else
   {
-    [v10 initialFrameForViewController:v12];
+    [transitionContext initialFrameForViewController:v12];
   }
 
   v17 = v13;
@@ -1120,7 +1120,7 @@ LABEL_19:
   v23.size.height = v20;
   if (!CGRectEqualToRect(v23, *MEMORY[0x277CBF3A0]))
   {
-    [v21 setFrame:{v17, v18, v19, v20}];
+    [_viewCopy setFrame:{v17, v18, v19, v20}];
   }
 }
 
@@ -1134,8 +1134,8 @@ LABEL_19:
 
   if (![(QLTransitionController *)self hasPerformedTransition])
   {
-    v6 = [(QLTransitionController *)self setupDate];
-    [v6 timeIntervalSinceNow];
+    setupDate = [(QLTransitionController *)self setupDate];
+    [setupDate timeIntervalSinceNow];
     v8 = v7;
 
     if (v8 < -5.0)
@@ -1160,7 +1160,7 @@ LABEL_19:
   if (v3)
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A714000, v5, OS_LOG_TYPE_INFO, "QLTransitionController (%@) did not perform forced dismissal because dismissal has already been performed successfully. #AppearanceTransition", &v11, 0xCu);
 LABEL_2:
     LOBYTE(v3) = 0;
@@ -1185,7 +1185,7 @@ LABEL_3:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A714000, v4, OS_LOG_TYPE_FAULT, "QLTransitionController (%@) had to performed a forced dismissal. #AppearanceTransition", buf, 0xCu);
   }
 

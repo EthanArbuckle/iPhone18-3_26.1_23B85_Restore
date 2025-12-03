@@ -1,24 +1,24 @@
 @interface AUHALOutputUnit
-- (AUHALOutputUnit)initWithAudioUnit:(OpaqueAudioComponentInstance *)a3 description:(AudioComponentDescription *)a4;
+- (AUHALOutputUnit)initWithAudioUnit:(OpaqueAudioComponentInstance *)unit description:(AudioComponentDescription *)description;
 - (BOOL)canPerformInput;
 - (BOOL)canPerformOutput;
 - (BOOL)isInputEnabled;
 - (BOOL)isOutputEnabled;
 - (BOOL)isRunning;
-- (BOOL)startHardwareAndReturnError:(id *)a3;
+- (BOOL)startHardwareAndReturnError:(id *)error;
 - (id).cxx_construct;
 - (id)_inputHandler;
 - (id)outputProvider;
-- (int64_t)tokenByAddingRenderObserver:(id)a3;
-- (void)addRenderObserver:(void *)a3 userData:(void *)a4;
+- (int64_t)tokenByAddingRenderObserver:(id)observer;
+- (void)addRenderObserver:(void *)observer userData:(void *)data;
 - (void)dealloc;
 - (void)initAUHALOutputUnit;
-- (void)removeRenderObserver:(int64_t)a3;
-- (void)removeRenderObserver:(void *)a3 userData:(void *)a4;
-- (void)setInputEnabled:(BOOL)a3;
-- (void)setInputHandler:(id)a3;
-- (void)setOutputEnabled:(BOOL)a3;
-- (void)setOutputProvider:(id)a3;
+- (void)removeRenderObserver:(int64_t)observer;
+- (void)removeRenderObserver:(void *)observer userData:(void *)data;
+- (void)setInputEnabled:(BOOL)enabled;
+- (void)setInputHandler:(id)handler;
+- (void)setOutputEnabled:(BOOL)enabled;
+- (void)setOutputProvider:(id)provider;
 - (void)stopHardware;
 @end
 
@@ -34,26 +34,26 @@
 
 - (void)stopHardware
 {
-  v2 = [(AUAudioUnitV2Bridge *)self audioUnit];
+  audioUnit = [(AUAudioUnitV2Bridge *)self audioUnit];
 
-  AudioOutputUnitStop(v2);
+  AudioOutputUnitStop(audioUnit);
 }
 
-- (BOOL)startHardwareAndReturnError:(id *)a3
+- (BOOL)startHardwareAndReturnError:(id *)error
 {
   v4 = AudioOutputUnitStart([(AUAudioUnitV2Bridge *)self audioUnit]);
   v5 = v4;
-  if (a3)
+  if (error)
   {
     if (v4)
     {
       v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v4 userInfo:0];
-      *a3 = v6;
+      *error = v6;
     }
 
     else
     {
-      *a3 = 0;
+      *error = 0;
     }
   }
 
@@ -77,17 +77,17 @@
   return !v2;
 }
 
-- (void)setOutputEnabled:(BOOL)a3
+- (void)setOutputEnabled:(BOOL)enabled
 {
-  inData = a3;
-  *(self + 697) = a3;
+  inData = enabled;
+  *(self + 697) = enabled;
   AudioUnitSetProperty([(AUAudioUnitV2Bridge *)self audioUnit], 0x7D3u, 2u, 0, &inData, 4u);
 }
 
-- (void)setInputEnabled:(BOOL)a3
+- (void)setInputEnabled:(BOOL)enabled
 {
-  inData = a3;
-  *(self + 696) = a3;
+  inData = enabled;
+  *(self + 696) = enabled;
   AudioUnitSetProperty([(AUAudioUnitV2Bridge *)self audioUnit], 0x7D3u, 1u, 1u, &inData, 4u);
 }
 
@@ -157,17 +157,17 @@
   }
 }
 
-- (void)setInputHandler:(id)a3
+- (void)setInputHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = *(self + 86);
-  if (v5 != v4)
+  if (v5 != handlerCopy)
   {
     *(self + 86) = 0;
 
-    if (v4)
+    if (handlerCopy)
     {
-      v6 = [v4 copy];
+      v6 = [handlerCopy copy];
       v7 = *(self + 86);
       *(self + 86) = v6;
 
@@ -186,12 +186,12 @@
   }
 }
 
-- (void)setOutputProvider:(id)a3
+- (void)setOutputProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = *(self + 85);
-  v8 = v4;
-  if (v5 != v4)
+  v8 = providerCopy;
+  if (v5 != providerCopy)
   {
     *(self + 85) = 0;
 
@@ -220,21 +220,21 @@
   return v2;
 }
 
-- (void)removeRenderObserver:(void *)a3 userData:(void *)a4
+- (void)removeRenderObserver:(void *)observer userData:(void *)data
 {
-  v6 = [(AUAudioUnitV2Bridge *)self audioUnit];
+  audioUnit = [(AUAudioUnitV2Bridge *)self audioUnit];
 
-  AudioUnitRemoveRenderNotify(v6, a3, a4);
+  AudioUnitRemoveRenderNotify(audioUnit, observer, data);
 }
 
-- (void)addRenderObserver:(void *)a3 userData:(void *)a4
+- (void)addRenderObserver:(void *)observer userData:(void *)data
 {
-  v6 = [(AUAudioUnitV2Bridge *)self audioUnit];
+  audioUnit = [(AUAudioUnitV2Bridge *)self audioUnit];
 
-  AudioUnitAddRenderNotify(v6, a3, a4);
+  AudioUnitAddRenderNotify(audioUnit, observer, data);
 }
 
-- (void)removeRenderObserver:(int64_t)a3
+- (void)removeRenderObserver:(int64_t)observer
 {
   v3 = (self + 704);
   v4 = *(self + 89);
@@ -244,27 +244,27 @@
     v5.i16[0] = vaddlv_u8(v5);
     if (v5.u32[0] > 1uLL)
     {
-      v6 = a3;
-      if (v4 <= a3)
+      observerCopy = observer;
+      if (v4 <= observer)
       {
-        v6 = a3 % v4;
+        observerCopy = observer % v4;
       }
     }
 
     else
     {
-      v6 = (v4 - 1) & a3;
+      observerCopy = (v4 - 1) & observer;
     }
 
-    v7 = *(*v3 + 8 * v6);
+    v7 = *(*v3 + 8 * observerCopy);
     if (v7)
     {
       for (i = *v7; i; i = *i)
       {
         v9 = i[1];
-        if (v9 == a3)
+        if (v9 == observer)
         {
-          if (i[2] == a3)
+          if (i[2] == observer)
           {
             AudioUnitRemoveRenderNotify([(AUAudioUnitV2Bridge *)self audioUnit], AUHALOutputUnit_RenderNotifyCallback, i[3]);
             v10 = v3[1];
@@ -391,7 +391,7 @@ LABEL_36:
             v9 &= v4 - 1;
           }
 
-          if (v9 != v6)
+          if (v9 != observerCopy)
           {
             return;
           }
@@ -401,10 +401,10 @@ LABEL_36:
   }
 }
 
-- (int64_t)tokenByAddingRenderObserver:(id)a3
+- (int64_t)tokenByAddingRenderObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  observerCopy = observer;
+  v5 = [observerCopy copy];
   AudioUnitAddRenderNotify([(AUAudioUnitV2Bridge *)self audioUnit], AUHALOutputUnit_RenderNotifyCallback, v5);
   v6 = (atomic_fetch_add_explicit(self + 175, 1u, memory_order_relaxed) + 1);
   v7 = *(self + 712);
@@ -515,12 +515,12 @@ LABEL_17:
   [(AUAudioUnitV2Bridge *)&v7 dealloc];
 }
 
-- (AUHALOutputUnit)initWithAudioUnit:(OpaqueAudioComponentInstance *)a3 description:(AudioComponentDescription *)a4
+- (AUHALOutputUnit)initWithAudioUnit:(OpaqueAudioComponentInstance *)unit description:(AudioComponentDescription *)description
 {
-  v8 = *a4;
+  v8 = *description;
   v7.receiver = self;
   v7.super_class = AUHALOutputUnit;
-  v4 = [(AUAudioUnitV2Bridge *)&v7 initWithAudioUnit:a3 description:&v8];
+  v4 = [(AUAudioUnitV2Bridge *)&v7 initWithAudioUnit:unit description:&v8];
   v5 = v4;
   if (v4)
   {

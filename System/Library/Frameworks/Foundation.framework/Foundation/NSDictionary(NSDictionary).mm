@@ -21,33 +21,33 @@
 - (id)descriptionInStringsFileFormat
 {
   v2 = [objc_allocWithZone(NSMutableString) init];
-  v3 = [a1 keyEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  keyEnumerator = [self keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    nextObject2 = nextObject;
     do
     {
-      v6 = [a1 objectForKey:v5];
+      v6 = [self objectForKey:nextObject2];
       if (_NSIsNSString())
       {
-        v7 = [v6 quotedStringRepresentation];
+        quotedStringRepresentation = [v6 quotedStringRepresentation];
       }
 
       else
       {
-        v7 = [v6 description];
+        quotedStringRepresentation = [v6 description];
       }
 
-      v8 = v7;
-      [v2 replaceCharactersInRange:objc_msgSend(v2 withString:{"length"), 0, objc_msgSend(v5, "quotedStringRepresentation")}];
+      v8 = quotedStringRepresentation;
+      [v2 replaceCharactersInRange:objc_msgSend(v2 withString:{"length"), 0, objc_msgSend(nextObject2, "quotedStringRepresentation")}];
       [v2 replaceCharactersInRange:objc_msgSend(v2 withString:{"length"), 0, @" = "}];
       [v2 appendString:v8];
       [v2 replaceCharactersInRange:objc_msgSend(v2 withString:{"length"), 0, @";\n"}];
-      v5 = [v3 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v5);
+    while (nextObject2);
   }
 
   return v2;
@@ -58,14 +58,14 @@
   v36 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D8]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D8]);
   }
 
   if ([a3 allowsKeyedCoding])
   {
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
     {
-      v6 = [a1 count];
+      v6 = [self count];
       v7 = v6;
       if (v6 >> 60)
       {
@@ -78,7 +78,7 @@
       v30 = 0;
       v8 = _CFCreateArrayStorage();
       v9 = _CFCreateArrayStorage();
-      [a1 getObjects:v9 andKeys:v8 count:v7];
+      [self getObjects:v9 andKeys:v8 count:v7];
       if (v8)
       {
         if (v7)
@@ -138,7 +138,7 @@
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v23 = [a1 countByEnumeratingWithState:&v32 objects:v31 count:16];
+      v23 = [self countByEnumeratingWithState:&v32 objects:v31 count:16];
       if (v23)
       {
         v24 = 0;
@@ -149,15 +149,15 @@
           {
             if (*v33 != v25)
             {
-              objc_enumerationMutation(a1);
+              objc_enumerationMutation(self);
             }
 
             v27 = *(*(&v32 + 1) + 8 * i);
             [a3 encodeObject:v27 forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.key.%ld", v24)}];
-            [a3 encodeObject:objc_msgSend(a1 forKey:{"objectForKey:", v27), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object.%ld", v24++)}];
+            [a3 encodeObject:objc_msgSend(self forKey:{"objectForKey:", v27), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object.%ld", v24++)}];
           }
 
-          v23 = [a1 countByEnumeratingWithState:&v32 objects:v31 count:16];
+          v23 = [self countByEnumeratingWithState:&v32 objects:v31 count:16];
         }
 
         while (v23);
@@ -167,10 +167,10 @@
 
   else
   {
-    LODWORD(v30) = [a1 count];
+    LODWORD(v30) = [self count];
     [a3 encodeValueOfObjCType:"i" at:&v30];
-    v14 = [a1 keyEnumerator];
-    for (j = [v14 nextObject]; ; j = objc_msgSend(v14, "nextObject"))
+    keyEnumerator = [self keyEnumerator];
+    for (j = [keyEnumerator nextObject]; ; j = objc_msgSend(keyEnumerator, "nextObject"))
     {
       v16 = j;
       if (!j)
@@ -179,7 +179,7 @@
       }
 
       [a3 encodeBycopyObject:j];
-      [a3 encodeBycopyObject:{objc_msgSend(a1, "objectForKey:", v16)}];
+      [a3 encodeBycopyObject:{objc_msgSend(self, "objectForKey:", v16)}];
     }
   }
 }
@@ -194,7 +194,7 @@
     v14 = v46;
     if (v46 >> 29)
     {
-      [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: array is too large to decode", _NSMethodExceptionProem(a1, a2)}];
+      [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: array is too large to decode", _NSMethodExceptionProem(self, a2)}];
       return 0;
     }
 
@@ -220,7 +220,7 @@
       if (!v14)
       {
 LABEL_20:
-        v25 = [(objc_class *)a1 initWithObjects:v20 forKeys:v17 count:v14, v18];
+        v25 = [(objc_class *)self initWithObjects:v20 forKeys:v17 count:v14, v18];
         v26 = 8 * v14;
         v27 = v20 - 8;
         v28 = v17 - 8;
@@ -237,7 +237,7 @@ LABEL_20:
       }
     }
 
-    v43 = v22;
+    selfCopy = v22;
     v23 = 0;
     v24 = v14;
     do
@@ -249,7 +249,7 @@ LABEL_20:
     }
 
     while (v24);
-    v22 = v43;
+    v22 = selfCopy;
     goto LABEL_20;
   }
 
@@ -268,7 +268,7 @@ LABEL_20:
         if (v10 == v11)
         {
 
-          return [(objc_class *)a1 initWithObjects:v7 forKeys:v9];
+          return [(objc_class *)self initWithObjects:v7 forKeys:v9];
         }
 
         v49 = @"NSLocalizedDescription";
@@ -278,7 +278,7 @@ LABEL_20:
       }
     }
 
-    a1 = 0;
+    self = 0;
   }
 
   v30 = NSAllocateObjectArray(0x40uLL);
@@ -297,7 +297,7 @@ LABEL_20:
 
   v33 = v32;
   v42 = a2;
-  v43 = a1;
+  selfCopy = self;
   v34 = 0;
   v35 = 64;
   while (1)
@@ -322,7 +322,7 @@ LABEL_32:
     v39 = [NSString stringWithFormat:@"NS.key.%ld", v34];
     if (![a3 containsValueForKey:{v39, v42}])
     {
-      v25 = [(objc_class *)v43 initWithObjects:v33 forKeys:v31 count:v34];
+      v25 = [(objc_class *)selfCopy initWithObjects:v33 forKeys:v31 count:v34];
       goto LABEL_43;
     }
 
@@ -346,7 +346,7 @@ LABEL_32:
   free(v36);
   free(v38);
   v47 = @"NSLocalizedDescription";
-  v48 = [NSString stringWithFormat:@"%@: dictionary is too large to unarchive (%qd)", _NSMethodExceptionProem(v43, v42), v35];
+  v48 = [NSString stringWithFormat:@"%@: dictionary is too large to unarchive (%qd)", _NSMethodExceptionProem(selfCopy, v42), v35];
   [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v48, &v47, 1))}];
 LABEL_42:
   v25 = 0;
@@ -358,7 +358,7 @@ LABEL_43:
 
 - (uint64_t)_stringToWrite
 {
-  v1 = [a1 descriptionWithLocale:0 indent:0];
+  v1 = [self descriptionWithLocale:0 indent:0];
   if ([v1 hasSuffix:@"\n"])
   {
     return v1;
@@ -371,11 +371,11 @@ LABEL_43:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D8]);
   }
 
   v8 = objc_autoreleasePoolPush();
-  if (_NSIsPList(a1, 1, [MEMORY[0x1E695DFA8] set]) == 4)
+  if (_NSIsPList(self, 1, [MEMORY[0x1E695DFA8] set]) == 4)
   {
     if ((dyld_program_sdk_at_least() & 1) != 0 || ![objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")])
     {
@@ -384,7 +384,7 @@ LABEL_43:
 
     else
     {
-      v9 = [objc_msgSend(a1 "_stringToWrite")];
+      v9 = [objc_msgSend(self "_stringToWrite")];
     }
 
     v10 = v9;
@@ -404,7 +404,7 @@ LABEL_43:
   v13[1] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D8]);
     if (!a3)
     {
       return 0;
@@ -418,7 +418,7 @@ LABEL_43:
 
   v13[0] = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [NSPropertyListSerialization dataWithPropertyList:a1 format:100 options:0 error:v13];
+  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:v13];
   if (v9 && [(NSData *)v9 writeToURL:a3 options:a4 error:v13])
   {
     objc_autoreleasePoolPop(v8);
@@ -436,12 +436,12 @@ LABEL_43:
   v14[1] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D8]);
   }
 
   v14[0] = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [NSPropertyListSerialization dataWithPropertyList:a1 format:100 options:0 error:v14];
+  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:v14];
   if (v9 && [(NSData *)v9 writeToURL:a3 options:1 error:v14])
   {
     objc_autoreleasePoolPop(v8);
@@ -465,21 +465,21 @@ LABEL_43:
 
 + (id)dictionaryWithContentsOfFile:()NSDictionary
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfFile:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfFile:a3];
 
   return v3;
 }
 
 + (id)dictionaryWithContentsOfURL:()NSDictionary
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfURL:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfURL:a3];
 
   return v3;
 }
 
 + (id)dictionaryWithContentsOfURL:()NSDictionary error:
 {
-  v4 = [objc_allocWithZone(a1) initWithContentsOfURL:a3 error:a4];
+  v4 = [objc_allocWithZone(self) initWithContentsOfURL:a3 error:a4];
 
   return v4;
 }

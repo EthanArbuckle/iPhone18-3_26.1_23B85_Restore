@@ -10,9 +10,9 @@
   syncableItems = self->_syncableItems;
   if (!syncableItems)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_syncableItems;
-    self->_syncableItems = v4;
+    self->_syncableItems = dictionary;
 
     syncableItems = self->_syncableItems;
   }
@@ -25,9 +25,9 @@
   nonSyncableItems = self->_nonSyncableItems;
   if (!nonSyncableItems)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_nonSyncableItems;
-    self->_nonSyncableItems = v4;
+    self->_nonSyncableItems = dictionary;
 
     nonSyncableItems = self->_nonSyncableItems;
   }

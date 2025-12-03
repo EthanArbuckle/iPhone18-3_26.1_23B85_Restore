@@ -1,75 +1,75 @@
 @interface HMDUserActivityType6Detector
-+ (BOOL)supportsDataSource:(id)a3;
++ (BOOL)supportsDataSource:(id)source;
 + (id)logCategory;
 + (void)initialize;
-- (BOOL)_shouldSuppressCurrentStateEvent:(id)a3;
-- (HMDUserActivityType6Detector)initWithDataSource:(id)a3;
-- (HMDUserActivityType6Detector)initWithDataSource:(id)a3 locationManager:(id)a4;
+- (BOOL)_shouldSuppressCurrentStateEvent:(id)event;
+- (HMDUserActivityType6Detector)initWithDataSource:(id)source;
+- (HMDUserActivityType6Detector)initWithDataSource:(id)source locationManager:(id)manager;
 - (void)_evaluateCurrentStateEvent;
-- (void)configureWithCompletion:(id)a3;
-- (void)handleBackgroundTaskTimerFired:(id)a3;
-- (void)handleLocationAuthorizationChange:(int64_t)a3;
+- (void)configureWithCompletion:(id)completion;
+- (void)handleBackgroundTaskTimerFired:(id)fired;
+- (void)handleLocationAuthorizationChange:(int64_t)change;
 - (void)stateUpdated;
-- (void)updateLatestReportWithReason:(unint64_t)a3;
+- (void)updateLatestReportWithReason:(unint64_t)reason;
 @end
 
 @implementation HMDUserActivityType6Detector
 
-- (void)handleBackgroundTaskTimerFired:(id)a3
+- (void)handleBackgroundTaskTimerFired:(id)fired
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HMD.BGTM.NK"];
+  userInfo = [fired userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HMD.BGTM.NK"];
 
-  v6 = [(HMDUserActivityType6Detector *)self reportSuppressedTimerIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  reportSuppressedTimerIdentifier = [(HMDUserActivityType6Detector *)self reportSuppressedTimerIdentifier];
+  v7 = [v5 isEqualToString:reportSuppressedTimerIdentifier];
 
   if (v7)
   {
-    v8 = [(HMDUserActivityStateDetector *)self dataSource];
-    v9 = [v8 queue];
+    dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+    queue = [dataSource queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__HMDUserActivityType6Detector_handleBackgroundTaskTimerFired___block_invoke;
     block[3] = &unk_27868A728;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)handleLocationAuthorizationChange:(int64_t)a3
+- (void)handleLocationAuthorizationChange:(int64_t)change
 {
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDUserActivityType6Detector *)self tracker];
-  [v7 handleLocationAuthorizationChange:a3];
+  tracker = [(HMDUserActivityType6Detector *)self tracker];
+  [tracker handleLocationAuthorizationChange:change];
 }
 
 - (void)stateUpdated
 {
-  v3 = [(HMDUserActivityStateDetector *)self dataSource];
-  v4 = [v3 queue];
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HMDUserActivityType6Detector_stateUpdated__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_evaluateCurrentStateEvent
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetector *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserActivityType6Detector *)self tracker];
-  v6 = [v5 currentStateEvent];
+  tracker = [(HMDUserActivityType6Detector *)self tracker];
+  currentStateEvent = [tracker currentStateEvent];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -77,39 +77,39 @@
     v47 = 138543618;
     v48 = v10;
     v49 = 2112;
-    v50 = v6;
+    v50 = currentStateEvent;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@State has updated %@", &v47, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  if (![(HMDUserActivityType6Detector *)v8 _shouldSuppressCurrentStateEvent:v6])
+  if (![(HMDUserActivityType6Detector *)selfCopy _shouldSuppressCurrentStateEvent:currentStateEvent])
   {
-    v20 = [(HMDUserActivityType6Detector *)v8 previousStateEvent];
-    if (v20)
+    previousStateEvent = [(HMDUserActivityType6Detector *)selfCopy previousStateEvent];
+    if (previousStateEvent)
     {
-      v21 = v20;
-      v22 = [(HMDUserActivityType6Detector *)v8 previousStateEvent];
-      v23 = [v22 state];
-      if (v23 == [v6 state])
+      v21 = previousStateEvent;
+      previousStateEvent2 = [(HMDUserActivityType6Detector *)selfCopy previousStateEvent];
+      state = [previousStateEvent2 state];
+      if (state == [currentStateEvent state])
       {
-        v24 = [(HMDUserActivityType6Detector *)v8 previousStateEvent];
-        v25 = [v24 stateEnd];
-        v26 = [v6 stateEnd];
+        previousStateEvent3 = [(HMDUserActivityType6Detector *)selfCopy previousStateEvent];
+        stateEnd = [previousStateEvent3 stateEnd];
+        stateEnd2 = [currentStateEvent stateEnd];
         v27 = HMFEqualObjects();
 
         if (v27)
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = v8;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             v31 = HMFGetLogIdentifier();
-            v32 = [(HMDUserActivityType6Detector *)v29 previousStateEvent];
+            previousStateEvent4 = [(HMDUserActivityType6Detector *)v29 previousStateEvent];
             v47 = 138543618;
             v48 = v31;
             v49 = 2112;
-            v50 = v32;
+            v50 = previousStateEvent4;
             _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_INFO, "%{public}@State has not changed, not sending report %@", &v47, 0x16u);
           }
 
@@ -123,12 +123,12 @@
       }
     }
 
-    [(HMDUserActivityType6Detector *)v8 setPreviousStateEvent:v6];
+    [(HMDUserActivityType6Detector *)selfCopy setPreviousStateEvent:currentStateEvent];
     goto LABEL_21;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = v8;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -139,14 +139,14 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDUserActivityType6Detector *)v12 previousStateEvent];
-  if (v15)
+  previousStateEvent5 = [(HMDUserActivityType6Detector *)v12 previousStateEvent];
+  if (previousStateEvent5)
   {
-    v16 = v15;
-    v17 = [(HMDUserActivityType6Detector *)v12 previousStateEvent];
-    v18 = [v17 state];
+    v16 = previousStateEvent5;
+    previousStateEvent6 = [(HMDUserActivityType6Detector *)v12 previousStateEvent];
+    state2 = [previousStateEvent6 state];
 
-    if (v18 != 2)
+    if (state2 != 2)
     {
       v34 = objc_autoreleasePoolPush();
       v35 = v12;
@@ -154,11 +154,11 @@
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         v37 = HMFGetLogIdentifier();
-        v38 = [(HMDUserActivityType6Detector *)v35 previousStateEvent];
+        previousStateEvent7 = [(HMDUserActivityType6Detector *)v35 previousStateEvent];
         v47 = 138543618;
         v48 = v37;
         v49 = 2112;
-        v50 = v38;
+        v50 = previousStateEvent7;
         _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_INFO, "%{public}@State has not changed, not sending report %@", &v47, 0x16u);
       }
 
@@ -176,61 +176,61 @@ LABEL_18:
 LABEL_21:
   v39 = 1;
 LABEL_22:
-  if ([(HMDUserActivityType6Detector *)v8 queryingInitialState])
+  if ([(HMDUserActivityType6Detector *)selfCopy queryingInitialState])
   {
     v40 = [HMDUserActivityType6StateEvent alloc];
-    v41 = [v6 state];
-    v42 = [v6 stateEnd];
-    v43 = [v6 changedTimestamp];
-    v44 = [(HMDUserActivityType6StateEvent *)v40 initWithState:v41 stateEnd:v42 changedTimestamp:v43 withReason:1];
-    [(HMDUserActivityType6Detector *)v8 setPreviousStateEvent:v44];
+    state3 = [currentStateEvent state];
+    stateEnd3 = [currentStateEvent stateEnd];
+    changedTimestamp = [currentStateEvent changedTimestamp];
+    v44 = [(HMDUserActivityType6StateEvent *)v40 initWithState:state3 stateEnd:stateEnd3 changedTimestamp:changedTimestamp withReason:1];
+    [(HMDUserActivityType6Detector *)selfCopy setPreviousStateEvent:v44];
 
-    [(HMDUserActivityType6Detector *)v8 setQueryingInitialState:0];
+    [(HMDUserActivityType6Detector *)selfCopy setQueryingInitialState:0];
   }
 
   if (v39)
   {
-    v45 = [(HMDUserActivityType6Detector *)v8 previousStateEvent];
-    -[HMDUserActivityType6Detector updateLatestReportWithReason:](v8, "updateLatestReportWithReason:", [v45 reason]);
+    previousStateEvent8 = [(HMDUserActivityType6Detector *)selfCopy previousStateEvent];
+    -[HMDUserActivityType6Detector updateLatestReportWithReason:](selfCopy, "updateLatestReportWithReason:", [previousStateEvent8 reason]);
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldSuppressCurrentStateEvent:(id)a3
+- (BOOL)_shouldSuppressCurrentStateEvent:(id)event
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  eventCopy = event;
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 state] != 2)
+  if ([eventCopy state] != 2)
   {
     goto LABEL_4;
   }
 
-  v7 = [(HMDUserActivityStateDetector *)self dataSource];
-  v8 = [v7 currentDate];
+  dataSource2 = [(HMDUserActivityStateDetector *)self dataSource];
+  currentDate = [dataSource2 currentDate];
 
-  v9 = [v4 stateEnd];
-  [v9 timeIntervalSinceDate:v8];
+  stateEnd = [eventCopy stateEnd];
+  [stateEnd timeIntervalSinceDate:currentDate];
   v11 = v10;
 
-  v12 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v13 = [v12 preferenceForKey:@"detectorMaximumIntervalForStateEnd"];
-  v14 = [v13 numberValue];
-  [v14 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v13 = [mEMORY[0x277D0F8D0] preferenceForKey:@"detectorMaximumIntervalForStateEnd"];
+  numberValue = [v13 numberValue];
+  [numberValue doubleValue];
   v16 = v15;
 
   if (v11 <= v16)
   {
 
 LABEL_4:
-    v17 = [(HMDUserActivityStateDetector *)self dataSource];
-    v18 = [v17 backgroundTaskManager];
-    v19 = [(HMDUserActivityType6Detector *)self reportSuppressedTimerIdentifier];
-    [v18 cancelTaskWithIdentifier:v19 onObserver:self];
+    dataSource3 = [(HMDUserActivityStateDetector *)self dataSource];
+    backgroundTaskManager = [dataSource3 backgroundTaskManager];
+    reportSuppressedTimerIdentifier = [(HMDUserActivityType6Detector *)self reportSuppressedTimerIdentifier];
+    [backgroundTaskManager cancelTaskWithIdentifier:reportSuppressedTimerIdentifier onObserver:self];
 
     [(HMDUserActivityType6Detector *)self setReportSuppressionTimerPreviousStateEnd:0];
     v20 = 0;
@@ -238,7 +238,7 @@ LABEL_4:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -253,44 +253,44 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v21);
-  v25 = [(HMDUserActivityType6Detector *)v22 reportSuppressionTimerPreviousStateEnd];
-  if (!v25)
+  reportSuppressionTimerPreviousStateEnd = [(HMDUserActivityType6Detector *)selfCopy reportSuppressionTimerPreviousStateEnd];
+  if (!reportSuppressionTimerPreviousStateEnd)
   {
     goto LABEL_9;
   }
 
-  v26 = v25;
-  v27 = [(HMDUserActivityType6Detector *)v22 reportSuppressionTimerPreviousStateEnd];
-  v28 = [v4 stateEnd];
+  v26 = reportSuppressionTimerPreviousStateEnd;
+  reportSuppressionTimerPreviousStateEnd2 = [(HMDUserActivityType6Detector *)selfCopy reportSuppressionTimerPreviousStateEnd];
+  stateEnd2 = [eventCopy stateEnd];
   v29 = HMFEqualObjects();
 
   if ((v29 & 1) == 0)
   {
 LABEL_9:
-    v30 = [v4 stateEnd];
-    [(HMDUserActivityType6Detector *)v22 setReportSuppressionTimerPreviousStateEnd:v30];
+    stateEnd3 = [eventCopy stateEnd];
+    [(HMDUserActivityType6Detector *)selfCopy setReportSuppressionTimerPreviousStateEnd:stateEnd3];
 
-    v31 = [v8 dateByAddingTimeInterval:v11 - v16];
+    v31 = [currentDate dateByAddingTimeInterval:v11 - v16];
     v32 = objc_autoreleasePoolPush();
-    v33 = v22;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       v35 = HMFGetLogIdentifier();
-      v36 = [v31 hmf_localTimeDescription];
+      hmf_localTimeDescription = [v31 hmf_localTimeDescription];
       *buf = 138543618;
       v50 = v35;
       v51 = 2112;
-      v52 = *&v36;
+      v52 = *&hmf_localTimeDescription;
       _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_INFO, "%{public}@Scheduling coming home report suppression timer firing at %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v32);
-    v37 = [(HMDUserActivityStateDetector *)v33 dataSource];
-    v38 = [v37 backgroundTaskManager];
-    v39 = [(HMDUserActivityType6Detector *)v33 reportSuppressedTimerIdentifier];
+    dataSource4 = [(HMDUserActivityStateDetector *)v33 dataSource];
+    backgroundTaskManager2 = [dataSource4 backgroundTaskManager];
+    reportSuppressedTimerIdentifier2 = [(HMDUserActivityType6Detector *)v33 reportSuppressedTimerIdentifier];
     v48 = 0;
-    v40 = [v38 scheduleTaskWithIdentifier:v39 fireDate:v31 onObserver:v33 selector:sel_handleBackgroundTaskTimerFired_ error:&v48];
+    v40 = [backgroundTaskManager2 scheduleTaskWithIdentifier:reportSuppressedTimerIdentifier2 fireDate:v31 onObserver:v33 selector:sel_handleBackgroundTaskTimerFired_ error:&v48];
     v41 = v48;
 
     if ((v40 & 1) == 0)
@@ -319,28 +319,28 @@ LABEL_17:
   return v20;
 }
 
-- (void)updateLatestReportWithReason:(unint64_t)a3
+- (void)updateLatestReportWithReason:(unint64_t)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDUserActivityStateDetector *)self dataSource];
-  v8 = [v7 home];
+  dataSource2 = [(HMDUserActivityStateDetector *)self dataSource];
+  home = [dataSource2 home];
 
-  if (v8)
+  if (home)
   {
-    v9 = [(HMDUserActivityType6Detector *)self previousStateEvent];
-    if ([v9 state] == 2)
+    previousStateEvent = [(HMDUserActivityType6Detector *)self previousStateEvent];
+    if ([previousStateEvent state] == 2)
     {
-      v10 = [(HMDUserActivityType6Detector *)self previousStateEvent];
-      v11 = [v10 stateEnd];
+      previousStateEvent2 = [(HMDUserActivityType6Detector *)self previousStateEvent];
+      stateEnd = [previousStateEvent2 stateEnd];
 
-      if (!v11)
+      if (!stateEnd)
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy2 = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
@@ -364,23 +364,23 @@ LABEL_8:
     {
     }
 
-    v19 = [(HMDUserActivityType6Detector *)self previousStateEvent];
+    previousStateEvent3 = [(HMDUserActivityType6Detector *)self previousStateEvent];
     v20 = [HMDUserActivityType6Report alloc];
-    v21 = [v8 currentUser];
-    v22 = [v19 state];
-    v23 = [v19 stateEnd];
-    v24 = [v19 changedTimestamp];
-    v25 = [(HMDUserActivityType6Report *)v20 initWithUser:v21 state:v22 stateEnd:v23 withReason:a3 changedTimestamp:v24 lastUpdateTimestamp:0];
+    currentUser = [home currentUser];
+    state = [previousStateEvent3 state];
+    stateEnd2 = [previousStateEvent3 stateEnd];
+    changedTimestamp = [previousStateEvent3 changedTimestamp];
+    v25 = [(HMDUserActivityType6Report *)v20 initWithUser:currentUser state:state stateEnd:stateEnd2 withReason:reason changedTimestamp:changedTimestamp lastUpdateTimestamp:0];
 
     v26 = [[HMDUserActivityReportSetValue alloc] initWithReport:v25];
     [(HMDUserActivityStateDetector *)self setLatestReport:v26];
 
-    [(HMDUserActivityStateDetector *)self notifyDetectorStateChangedWithReason:a3];
+    [(HMDUserActivityStateDetector *)self notifyDetectorStateChangedWithReason:reason];
     goto LABEL_12;
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy2 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -401,16 +401,16 @@ LABEL_12:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -421,23 +421,23 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDUserActivityType6Detector *)v8 setQueryingInitialState:1];
-  v11 = [(HMDUserActivityType6Detector *)v8 tracker];
-  [v11 configureWithDelegate:v8];
+  [(HMDUserActivityType6Detector *)selfCopy setQueryingInitialState:1];
+  tracker = [(HMDUserActivityType6Detector *)selfCopy tracker];
+  [tracker configureWithDelegate:selfCopy];
 
-  v12 = [(HMDUserActivityType6Detector *)v8 tracker];
-  v13 = [v12 currentStateEvent];
-  [(HMDUserActivityType6Detector *)v8 setPreviousStateEvent:v13];
+  tracker2 = [(HMDUserActivityType6Detector *)selfCopy tracker];
+  currentStateEvent = [tracker2 currentStateEvent];
+  [(HMDUserActivityType6Detector *)selfCopy setPreviousStateEvent:currentStateEvent];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = v8;
+  v15 = selfCopy;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
     v18 = MEMORY[0x277CCABB0];
-    v19 = [(HMDUserActivityType6Detector *)v15 previousStateEvent];
-    v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(v19, "state")}];
+    previousStateEvent = [(HMDUserActivityType6Detector *)v15 previousStateEvent];
+    v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(previousStateEvent, "state")}];
     v24 = 138543618;
     v25 = v17;
     v26 = 2112;
@@ -446,7 +446,7 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v14);
-  v21 = _Block_copy(v4);
+  v21 = _Block_copy(completionCopy);
   v22 = v21;
   if (v21)
   {
@@ -456,21 +456,21 @@ LABEL_12:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserActivityType6Detector)initWithDataSource:(id)a3 locationManager:(id)a4
+- (HMDUserActivityType6Detector)initWithDataSource:(id)source locationManager:(id)manager
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = HMDUserActivityType6Detector;
-  v8 = [(HMDUserActivityStateDetector *)&v26 initWithDataSource:v6];
+  v8 = [(HMDUserActivityStateDetector *)&v26 initWithDataSource:sourceCopy];
   if (v8)
   {
-    v9 = [v6 home];
-    v10 = [v6 featuresDataSource];
-    v11 = [v10 isUserActivityComingHomeArrivalPredictionEnabled];
+    home = [sourceCopy home];
+    featuresDataSource = [sourceCopy featuresDataSource];
+    isUserActivityComingHomeArrivalPredictionEnabled = [featuresDataSource isUserActivityComingHomeArrivalPredictionEnabled];
 
-    if (v11)
+    if (isUserActivityComingHomeArrivalPredictionEnabled)
     {
       v12 = objc_autoreleasePoolPush();
       v13 = v8;
@@ -484,15 +484,15 @@ LABEL_12:
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [[HMDUserComingHomeCoreRoutineTracker alloc] initWithDataSource:v6 locationManager:v7];
+      v16 = [[HMDUserComingHomeCoreRoutineTracker alloc] initWithDataSource:sourceCopy locationManager:managerCopy];
       tracker = v13->_tracker;
       v13->_tracker = v16;
     }
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v9 uuid];
-    v20 = [v19 UUIDString];
-    v21 = [v18 stringWithFormat:@"HMDUserActivityType6Detector.ReportSuppressedTimer.%@", v20];
+    uuid = [home uuid];
+    uUIDString = [uuid UUIDString];
+    v21 = [v18 stringWithFormat:@"HMDUserActivityType6Detector.ReportSuppressedTimer.%@", uUIDString];
     reportSuppressedTimerIdentifier = v8->_reportSuppressedTimerIdentifier;
     v8->_reportSuppressedTimerIdentifier = v21;
   }
@@ -511,11 +511,11 @@ LABEL_12:
   return v23;
 }
 
-- (HMDUserActivityType6Detector)initWithDataSource:(id)a3
+- (HMDUserActivityType6Detector)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = +[HMDLocation sharedManager];
-  v6 = [(HMDUserActivityType6Detector *)self initWithDataSource:v4 locationManager:v5];
+  v6 = [(HMDUserActivityType6Detector *)self initWithDataSource:sourceCopy locationManager:v5];
 
   return v6;
 }
@@ -540,12 +540,12 @@ void __43__HMDUserActivityType6Detector_logCategory__block_invoke()
   logCategory__hmf_once_v14_161907 = v1;
 }
 
-+ (BOOL)supportsDataSource:(id)a3
++ (BOOL)supportsDataSource:(id)source
 {
-  v3 = [a3 featuresDataSource];
-  v4 = [v3 isUserActivityComingHomeArrivalPredictionEnabled];
+  featuresDataSource = [source featuresDataSource];
+  isUserActivityComingHomeArrivalPredictionEnabled = [featuresDataSource isUserActivityComingHomeArrivalPredictionEnabled];
 
-  return v4;
+  return isUserActivityComingHomeArrivalPredictionEnabled;
 }
 
 + (void)initialize

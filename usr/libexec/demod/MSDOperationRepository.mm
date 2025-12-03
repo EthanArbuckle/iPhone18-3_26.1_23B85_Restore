@@ -1,14 +1,14 @@
 @interface MSDOperationRepository
-+ (id)createOperationFromIdentifier:(id)a3 withContext:(id)a4;
++ (id)createOperationFromIdentifier:(id)identifier withContext:(id)context;
 @end
 
 @implementation MSDOperationRepository
 
-+ (id)createOperationFromIdentifier:(id)a3 withContext:(id)a4
++ (id)createOperationFromIdentifier:(id)identifier withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = NSClassFromString(v5);
+  identifierCopy = identifier;
+  contextCopy = context;
+  v7 = NSClassFromString(identifierCopy);
   if (v7)
   {
     v8 = [v7 alloc];
@@ -18,7 +18,7 @@
       if (objc_opt_isKindOfClass())
       {
         v8 = v8;
-        v9 = [v8 initWithContext:v6];
+        v9 = [v8 initWithContext:contextCopy];
         goto LABEL_5;
       }
     }

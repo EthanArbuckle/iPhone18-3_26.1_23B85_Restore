@@ -1,34 +1,34 @@
 @interface ICASDocScanActionType
-- (ICASDocScanActionType)initWithDocScanActionType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASDocScanActionType)initWithDocScanActionType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASDocScanActionType
 
-- (ICASDocScanActionType)initWithDocScanActionType:(int64_t)a3
+- (ICASDocScanActionType)initWithDocScanActionType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASDocScanActionType;
   result = [(ICASDocScanActionType *)&v5 init];
   if (result)
   {
-    result->_docScanActionType = a3;
+    result->_docScanActionType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASDocScanActionType *)self docScanActionType];
-  if ((v3 - 1) > 4)
+  docScanActionType = [(ICASDocScanActionType *)self docScanActionType];
+  if ((docScanActionType - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF9A8[v3 - 1];
+    return off_2799AF9A8[docScanActionType - 1];
   }
 }
 

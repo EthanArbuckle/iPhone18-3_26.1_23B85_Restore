@@ -1,5 +1,5 @@
 @interface VUIMediaItemEntityTypesFetchResponse
-- (BOOL)_updateWithResponse:(id)a3 changes:(id)a4 replaceContentsOnNilChanges:(BOOL)a5;
+- (BOOL)_updateWithResponse:(id)response changes:(id)changes replaceContentsOnNilChanges:(BOOL)nilChanges;
 - (VUIMediaItemEntityTypesFetchResponse)init;
 - (id)description;
 @end
@@ -13,9 +13,9 @@
   v2 = [(VUIMediaItemEntityTypesFetchResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     mediaItemEntityTypes = v2->_mediaItemEntityTypes;
-    v2->_mediaItemEntityTypes = v3;
+    v2->_mediaItemEntityTypes = orderedSet;
   }
 
   return v2;
@@ -30,8 +30,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaItemEntityTypesFetchResponse *)self mediaItemEntityTypes];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaItemEntityTypes", v6];
+  mediaItemEntityTypes = [(VUIMediaItemEntityTypesFetchResponse *)self mediaItemEntityTypes];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaItemEntityTypes", mediaItemEntityTypes];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
@@ -47,20 +47,20 @@
   return v13;
 }
 
-- (BOOL)_updateWithResponse:(id)a3 changes:(id)a4 replaceContentsOnNilChanges:(BOOL)a5
+- (BOOL)_updateWithResponse:(id)response changes:(id)changes replaceContentsOnNilChanges:(BOOL)nilChanges
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VUIMediaItemEntityTypesFetchResponse *)self mediaItemEntityTypes];
-  v11 = [v10 array];
-  v12 = [v11 mutableCopy];
+  nilChangesCopy = nilChanges;
+  responseCopy = response;
+  changesCopy = changes;
+  mediaItemEntityTypes = [(VUIMediaItemEntityTypesFetchResponse *)self mediaItemEntityTypes];
+  array = [mediaItemEntityTypes array];
+  v12 = [array mutableCopy];
 
-  v13 = [v8 mediaItemEntityTypes];
-  v14 = [v13 array];
+  mediaItemEntityTypes2 = [responseCopy mediaItemEntityTypes];
+  array2 = [mediaItemEntityTypes2 array];
 
-  v15 = [v9 mediaItemEntityTypesChangeSet];
-  v16 = [v12 vui_applyChangeSetIfAvailable:v15 destinationObjects:v14 replaceContentsOnNilChanges:v5];
+  mediaItemEntityTypesChangeSet = [changesCopy mediaItemEntityTypesChangeSet];
+  v16 = [v12 vui_applyChangeSetIfAvailable:mediaItemEntityTypesChangeSet destinationObjects:array2 replaceContentsOnNilChanges:nilChangesCopy];
 
   if (v16)
   {
@@ -68,9 +68,9 @@
     [(VUIMediaItemEntityTypesFetchResponse *)self setMediaItemEntityTypes:v17];
   }
 
-  if ([v9 localMediaItemsAvailableDidChange])
+  if ([changesCopy localMediaItemsAvailableDidChange])
   {
-    -[VUIMediaItemEntityTypesFetchResponse setLocalMediaItemsAvailable:](self, "setLocalMediaItemsAvailable:", [v8 areLocalMediaItemsAvailable]);
+    -[VUIMediaItemEntityTypesFetchResponse setLocalMediaItemsAvailable:](self, "setLocalMediaItemsAvailable:", [responseCopy areLocalMediaItemsAvailable]);
     LOBYTE(v16) = 1;
   }
 

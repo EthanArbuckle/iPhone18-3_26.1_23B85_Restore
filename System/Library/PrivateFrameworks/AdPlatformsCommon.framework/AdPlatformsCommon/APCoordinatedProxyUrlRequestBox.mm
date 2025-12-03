@@ -1,18 +1,18 @@
 @interface APCoordinatedProxyUrlRequestBox
-- (APCoordinatedProxyUrlRequestBox)initWithDelegate:(id)a3 handler:(id)a4;
+- (APCoordinatedProxyUrlRequestBox)initWithDelegate:(id)delegate handler:(id)handler;
 @end
 
 @implementation APCoordinatedProxyUrlRequestBox
 
-- (APCoordinatedProxyUrlRequestBox)initWithDelegate:(id)a3 handler:(id)a4
+- (APCoordinatedProxyUrlRequestBox)initWithDelegate:(id)delegate handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = APCoordinatedProxyUrlRequestBox;
-  v7 = [(APCoordinatedRetryBox *)&v11 initWithType:2 delegate:a3];
+  v7 = [(APCoordinatedRetryBox *)&v11 initWithType:2 delegate:delegate];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(handlerCopy);
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v8;
   }

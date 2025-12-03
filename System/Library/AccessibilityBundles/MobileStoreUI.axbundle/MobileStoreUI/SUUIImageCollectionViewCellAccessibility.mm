@@ -1,34 +1,34 @@
 @interface SUUIImageCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SUUIImageCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIImageView"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v14 = 0;
   objc_opt_class();
-  v3 = [(SUUIImageCollectionViewCellAccessibility *)self superview];
+  superview = [(SUUIImageCollectionViewCellAccessibility *)self superview];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 collectionViewLayout];
+  collectionViewLayout = [v4 collectionViewLayout];
   NSClassFromString(&cfstr_Suuicarouselco.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = self;
+    selfCopy = self;
     v7 = MEMORY[0x29EDC7F70];
-    v8 = &v13;
+    v8 = &selfCopy;
   }
 
   else
@@ -39,10 +39,10 @@
   }
 
   v8->super_class = SUUIImageCollectionViewCellAccessibility;
-  v9 = [(objc_super *)v8 accessibilityTraits];
+  accessibilityTraits = [(objc_super *)v8 accessibilityTraits];
   v10 = *v7;
 
-  return v10 | v9;
+  return v10 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
@@ -54,20 +54,20 @@
   v37[3] = &unk_29F2D9060;
   v37[4] = self;
   v3 = [(SUUIImageCollectionViewCellAccessibility *)self _accessibilityFindDescendant:v37];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (!v4)
+  if (!accessibilityLabel)
   {
     v36 = 0;
     objc_opt_class();
-    v5 = [(SUUIImageCollectionViewCellAccessibility *)self superview];
+    superview = [(SUUIImageCollectionViewCellAccessibility *)self superview];
     v6 = __UIAccessibilityCastAsClass();
 
-    v7 = [v6 collectionViewLayout];
+    collectionViewLayout = [v6 collectionViewLayout];
     NSClassFromString(&cfstr_Suuistorepagec.isa);
-    LOBYTE(v5) = objc_opt_isKindOfClass();
+    LOBYTE(superview) = objc_opt_isKindOfClass();
 
-    if (v5)
+    if (superview)
     {
       [v6 subviews];
       v32 = 0u;
@@ -137,8 +137,8 @@ LABEL_13:
             {
               v25 = MEMORY[0x29EDBA0F8];
               v26 = accessibilityLocalizedString(@"cover.photo.of.artist");
-              v27 = [v21 accessibilityLabel];
-              v22 = [v25 stringWithFormat:v26, v27];
+              accessibilityLabel2 = [v21 accessibilityLabel];
+              accessibilityLabel3 = [v25 stringWithFormat:v26, accessibilityLabel2];
 
               goto LABEL_24;
             }
@@ -156,12 +156,12 @@ LABEL_13:
     }
   }
 
-  v22 = [v3 accessibilityLabel];
+  accessibilityLabel3 = [v3 accessibilityLabel];
 LABEL_24:
 
   v23 = *MEMORY[0x29EDCA608];
 
-  return v22;
+  return accessibilityLabel3;
 }
 
 BOOL __62__SUUIImageCollectionViewCellAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2)

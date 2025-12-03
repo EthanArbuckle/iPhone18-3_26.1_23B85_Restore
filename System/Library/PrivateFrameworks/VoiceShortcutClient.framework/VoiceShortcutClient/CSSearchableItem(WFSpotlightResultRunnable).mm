@@ -6,9 +6,9 @@
 
 - (void)wf_shortcutsRunnableData
 {
-  v1 = [a1 attributeSet];
+  attributeSet = [self attributeSet];
   v2 = WFSpotlightResultRunnableAttributeKey();
-  v3 = [v1 valueForCustomKey:v2];
+  v3 = [attributeSet valueForCustomKey:v2];
 
   if (v3)
   {

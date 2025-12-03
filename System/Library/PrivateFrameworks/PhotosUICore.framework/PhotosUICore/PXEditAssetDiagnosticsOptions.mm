@@ -11,8 +11,8 @@
   v2 = [(PXEditAssetDiagnosticsOptions *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
-    [(PXEditAssetDiagnosticsOptions *)v2 setScalePolicyForRenders:v3];
+    oneToOneScalePolicy = [MEMORY[0x1E69B3A88] oneToOneScalePolicy];
+    [(PXEditAssetDiagnosticsOptions *)v2 setScalePolicyForRenders:oneToOneScalePolicy];
   }
 
   return v2;

@@ -10,7 +10,7 @@
 - (void)beginObservingUpdates;
 - (void)dealloc;
 - (void)endObservingUpdates;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NMSMediaSettingsSynchronizer
@@ -81,9 +81,9 @@ uint64_t __50__NMSMediaSettingsSynchronizer_sharedSynchronizer__block_invoke()
     [(NSUserDefaults *)self->_nanoMusicSyncDefaults addObserver:self forKeyPath:@"GreenTeaMusicAllowsDownloadsOverCellular" options:0 context:@"GreenTeaMusicAllowsDownloadsOverCellular"];
     [(NMSMediaSettingsSynchronizer *)self _migrateMusicDefaultsIfNecessary];
     [(NMSMediaSettingsSynchronizer *)self _createDefaultGreenTeaSettingsIfNecessary];
-    v12 = [(NMSMediaSettingsSynchronizer *)self _podcastsUserDefaults];
+    _podcastsUserDefaults = [(NMSMediaSettingsSynchronizer *)self _podcastsUserDefaults];
     podcastsDefaults = self->_podcastsDefaults;
-    self->_podcastsDefaults = v12;
+    self->_podcastsDefaults = _podcastsUserDefaults;
 
     [(NSUserDefaults *)self->_podcastsDefaults addObserver:self forKeyPath:@"MTSyncSubscriptions" options:0 context:@"MTSyncSubscriptions"];
     [(NSUserDefaults *)self->_podcastsDefaults addObserver:self forKeyPath:@"MTPodcastUpdateIntervalDefault" options:0 context:@"MTPodcastUpdateIntervalDefault"];
@@ -92,8 +92,8 @@ uint64_t __50__NMSMediaSettingsSynchronizer_sharedSynchronizer__block_invoke()
     [(NSUserDefaults *)self->_podcastsDefaults addObserver:self forKeyPath:@"MTSkipBackwardsIntervalDefault" options:0 context:@"MTSkipBackwardsIntervalDefault"];
     [(NSUserDefaults *)self->_podcastsDefaults addObserver:self forKeyPath:@"MTRemoteSkipInsteadOfNextTrackDefault" options:0 context:@"MTRemoteSkipInsteadOfNextTrackDefault"];
     [(NSUserDefaults *)self->_podcastsDefaults addObserver:self forKeyPath:@"MTPrivacyResetIdentifier" options:0 context:@"MTPrivacyResetIdentifier"];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel__syncPodcastDefaultsIfNecessary name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__syncPodcastDefaultsIfNecessary name:*MEMORY[0x277D2BC48] object:0];
 
     [(NMSMediaSettingsSynchronizer *)self _syncPodcastDefaultsIfNecessary];
   }
@@ -226,20 +226,20 @@ LABEL_12:
   }
 
   v4 = +[NMSGreenTeaStreamingDefaults sharedInstance];
-  v5 = [v4 greenTeaMusicIsMirroringStreamingSettings];
+  greenTeaMusicIsMirroringStreamingSettings = [v4 greenTeaMusicIsMirroringStreamingSettings];
 
-  if ((v5 & 1) == 0)
+  if ((greenTeaMusicIsMirroringStreamingSettings & 1) == 0)
   {
-    v6 = [(NMSMediaSettingsSynchronizer *)self _preferredGreenTeaMusicStreamingResolutionPreference];
+    _preferredGreenTeaMusicStreamingResolutionPreference = [(NMSMediaSettingsSynchronizer *)self _preferredGreenTeaMusicStreamingResolutionPreference];
     v7 = NMLogForCategory(5);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = v6;
+      v12 = _preferredGreenTeaMusicStreamingResolutionPreference;
       _os_log_impl(&dword_25B27B000, v7, OS_LOG_TYPE_DEFAULT, "[NMSMediaSettingsSynchronizer] Reconciling on init. Overriding LowBandwidthResolution with %ld", &v11, 0xCu);
     }
 
-    CFPreferencesSetAppValue(@"MusicLowBandwidthResolution", [MEMORY[0x277CCABB0] numberWithInteger:v6], @"com.apple.mobileipod");
+    CFPreferencesSetAppValue(@"MusicLowBandwidthResolution", [MEMORY[0x277CCABB0] numberWithInteger:_preferredGreenTeaMusicStreamingResolutionPreference], @"com.apple.mobileipod");
     CFPreferencesAppSynchronize(@"com.apple.mobileipod");
   }
 
@@ -276,12 +276,12 @@ LABEL_13:
     {
       if (!isEitherDeviceGreenTeaCapable() || (+[NMSGreenTeaStreamingDefaults sharedInstance](NMSGreenTeaStreamingDefaults, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 greenTeaMusicIsMirroringStreamingSettings], v6, v7))
       {
-        v8 = [MEMORY[0x277D2BCF8] sharedInstance];
-        v9 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-        v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
-        v11 = [v10 firstObject];
+        mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+        activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+        v10 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+        firstObject = [v10 firstObject];
         v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"88D7381B-F0D1-498F-88D5-9F016A27EB4F"];
-        v13 = [v11 supportsCapability:v12];
+        v13 = [firstObject supportsCapability:v12];
 
         if (v13)
         {
@@ -305,12 +305,12 @@ LABEL_13:
       [(NSUserDefaults *)self->_nanoMusicSyncDefaults setInteger:4 forKey:@"NMLastSyncedMusicSettingsVersion"];
     }
 
-    v17 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v18 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-    v19 = [v17 getAllDevicesWithArchivedAltAccountDevicesMatching:v18];
-    v20 = [v19 firstObject];
+    mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+    activePairedDeviceSelectorBlock2 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+    v19 = [mEMORY[0x277D2BCF8]2 getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock2];
+    firstObject2 = [v19 firstObject];
     v21 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C79D46D1-84CF-4208-AEA0-39117F9770E7"];
-    v22 = [v20 supportsCapability:v21];
+    v22 = [firstObject2 supportsCapability:v21];
 
     if (v22)
     {
@@ -330,9 +330,9 @@ LABEL_16:
 - (int64_t)_preferredGreenTeaMusicStreamingResolutionPreference
 {
   v2 = +[NMSGreenTeaStreamingDefaults sharedInstance];
-  v3 = [v2 greenTeaMusicAllowCellularForStreaming];
+  greenTeaMusicAllowCellularForStreaming = [v2 greenTeaMusicAllowCellularForStreaming];
 
-  if (v3)
+  if (greenTeaMusicAllowCellularForStreaming)
   {
     v4 = 64;
   }
@@ -343,9 +343,9 @@ LABEL_16:
   }
 
   v5 = +[NMSGreenTeaStreamingDefaults sharedInstance];
-  v6 = [v5 greenTeaMusicAllowCellularForHighQualityStreaming];
+  greenTeaMusicAllowCellularForHighQualityStreaming = [v5 greenTeaMusicAllowCellularForHighQualityStreaming];
 
-  if (v6)
+  if (greenTeaMusicAllowCellularForHighQualityStreaming)
   {
     return 256;
   }
@@ -360,16 +360,16 @@ LABEL_16:
 {
   v12 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:@"com.apple.podcasts"];
-  v3 = [v2 dataContainerURL];
+  dataContainerURL = [v2 dataContainerURL];
 
-  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) _initWithSuiteName:@"com.apple.podcasts" container:v3];
+  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) _initWithSuiteName:@"com.apple.podcasts" container:dataContainerURL];
   v5 = NMLogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
     v9 = v4;
     v10 = 2112;
-    v11 = v3;
+    v11 = dataContainerURL;
     _os_log_impl(&dword_25B27B000, v5, OS_LOG_TYPE_DEFAULT, "[NMSMediaSettingsSynchronizer] Observing podcasts user defaults %@ at %@", &v8, 0x16u);
   }
 
@@ -381,23 +381,23 @@ LABEL_16:
 - (id)_podcastsAppGroupPath
 {
   v2 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:@"com.apple.podcasts"];
-  v3 = [v2 groupContainerURLs];
-  v4 = [v3 allValues];
-  v5 = [v4 firstObject];
+  groupContainerURLs = [v2 groupContainerURLs];
+  allValues = [groupContainerURLs allValues];
+  firstObject = [allValues firstObject];
 
-  v6 = [v5 path];
+  path = [firstObject path];
 
-  return v6;
+  return path;
 }
 
 - (void)_syncPodcastDefaultsIfNecessary
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v5 = [v3 getAllDevicesWithArchivedDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v5 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v5 firstObject];
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"54FC3688-3F2A-435A-A95D-2F1866839415"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if ((v8 & 1) == 0)
   {
@@ -458,11 +458,11 @@ LABEL_16:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v82 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v74 = a4;
+  pathCopy = path;
+  objectCopy = object;
   if (isEitherDeviceGreenTeaCapable())
   {
     v9 = NMLogForCategory(5);
@@ -473,17 +473,17 @@ LABEL_16:
     }
 
     v10 = +[NMSGreenTeaStreamingDefaults sharedInstance];
-    v11 = [v10 greenTeaMusicIsMirroringStreamingSettings];
+    greenTeaMusicIsMirroringStreamingSettings = [v10 greenTeaMusicIsMirroringStreamingSettings];
   }
 
   else
   {
-    v11 = 1;
+    greenTeaMusicIsMirroringStreamingSettings = 1;
   }
 
-  v72 = self;
-  v71 = v11;
-  if (a6 == @"MPCPlaybackPrivateListeningEnabled")
+  selfCopy = self;
+  v71 = greenTeaMusicIsMirroringStreamingSettings;
+  if (context == @"MPCPlaybackPrivateListeningEnabled")
   {
     v75 = @"MPCPlaybackPrivateListeningEnabled";
     v14 = [(NSUserDefaults *)self->_mediaPlaybackCoreDefaults objectForKey:?];
@@ -491,11 +491,11 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  if (a6 != @"MusicLowBandwidthResolution")
+  if (context != @"MusicLowBandwidthResolution")
   {
-    if (a6 == @"AllowsCellularDataDownloads")
+    if (context == @"AllowsCellularDataDownloads")
     {
-      if (v11)
+      if (greenTeaMusicIsMirroringStreamingSettings)
       {
         v75 = @"AllowsCellularDataDownloads";
         v14 = [(NSUserDefaults *)self->_musicDefaults objectForKey:?];
@@ -507,7 +507,7 @@ LABEL_16:
     else
     {
       v12 = @"GreenTeaMusicAllowsCellularData";
-      if (@"GreenTeaMusicAllowsCellularData" == a6 || (v12 = @"GreenTeaMusicAllowsHighQualityStreamingOnCellular", @"GreenTeaMusicAllowsHighQualityStreamingOnCellular" == a6) || (v12 = @"GreenTeaMusicAllowsDownloadsOverCellular", @"GreenTeaMusicAllowsDownloadsOverCellular" == a6))
+      if (@"GreenTeaMusicAllowsCellularData" == context || (v12 = @"GreenTeaMusicAllowsHighQualityStreamingOnCellular", @"GreenTeaMusicAllowsHighQualityStreamingOnCellular" == context) || (v12 = @"GreenTeaMusicAllowsDownloadsOverCellular", @"GreenTeaMusicAllowsDownloadsOverCellular" == context))
       {
         v13 = @"com.apple.NanoMusicSync";
         v75 = v12;
@@ -521,7 +521,7 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!greenTeaMusicIsMirroringStreamingSettings)
   {
 LABEL_20:
     v15 = 0;
@@ -531,12 +531,12 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v16 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v17 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v18 = [v16 getAllDevicesWithArchivedAltAccountDevicesMatching:v17];
-  v19 = [v18 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v18 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v18 firstObject];
   v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"88D7381B-F0D1-498F-88D5-9F016A27EB4F"];
-  v21 = [v19 supportsCapability:v20];
+  v21 = [firstObject supportsCapability:v20];
 
   mobileIPodDefaults = self->_mobileIPodDefaults;
   if (v21)
@@ -560,12 +560,12 @@ LABEL_20:
   v14 = 0;
   v75 = 0;
 LABEL_21:
-  v23 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v24 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v25 = [v23 getAllDevicesWithArchivedDevicesMatching:v24];
-  v26 = [v25 firstObject];
+  mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock2 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v25 = [mEMORY[0x277D2BCF8]2 getAllDevicesWithArchivedDevicesMatching:activePairedDeviceSelectorBlock2];
+  firstObject2 = [v25 firstObject];
   v27 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"54FC3688-3F2A-435A-A95D-2F1866839415"];
-  v28 = [v26 supportsCapability:v27];
+  v28 = [firstObject2 supportsCapability:v27];
 
   if (v28)
   {
@@ -573,7 +573,7 @@ LABEL_22:
     if (v15)
     {
       v29 = v14;
-      v30 = v73;
+      v30 = pathCopy;
       v31 = v75;
 LABEL_43:
       v39 = NMLogForCategory(5);
@@ -588,83 +588,83 @@ LABEL_43:
         _os_log_impl(&dword_25B27B000, v39, OS_LOG_TYPE_DEFAULT, "[NMSMediaSettingsSynchronizer] Synchronizing defaults for domain: %@, key: %@, value: %@", buf, 0x20u);
       }
 
-      v33 = objc_alloc_init(MEMORY[0x277D2BA60]);
+      _podcastsAppGroupPath = objc_alloc_init(MEMORY[0x277D2BA60]);
       v35 = [MEMORY[0x277CBEB98] setWithObject:v31];
-      [v33 synchronizeUserDefaultsDomain:v13 keys:v35];
+      [_podcastsAppGroupPath synchronizeUserDefaultsDomain:v13 keys:v35];
       goto LABEL_67;
     }
 
-    v33 = 0;
+    _podcastsAppGroupPath = 0;
     v29 = v14;
-    v30 = v73;
+    v30 = pathCopy;
     goto LABEL_34;
   }
 
   v31 = @"MTSyncSubscriptions";
-  if (a6 == @"MTSyncSubscriptions")
+  if (context == @"MTSyncSubscriptions")
   {
-    p_isa = &v72->super.isa;
+    p_isa = &selfCopy->super.isa;
 LABEL_38:
 
-    v33 = [p_isa _podcastsAppGroupPath];
+    _podcastsAppGroupPath = [p_isa _podcastsAppGroupPath];
 
     v29 = [p_isa[6] objectForKey:v31];
 
-    v30 = v73;
+    v30 = pathCopy;
     goto LABEL_39;
   }
 
   v31 = @"MTPodcastUpdateIntervalDefault";
-  p_isa = &v72->super.isa;
-  if (a6 == @"MTPodcastUpdateIntervalDefault")
+  p_isa = &selfCopy->super.isa;
+  if (context == @"MTPodcastUpdateIntervalDefault")
   {
     goto LABEL_38;
   }
 
   v31 = @"MTContinuousPlaybackEnabled";
-  if (a6 == @"MTContinuousPlaybackEnabled")
+  if (context == @"MTContinuousPlaybackEnabled")
   {
     goto LABEL_38;
   }
 
   v31 = @"MTSkipForwardIntervalDefault";
-  if (a6 == @"MTSkipForwardIntervalDefault")
+  if (context == @"MTSkipForwardIntervalDefault")
   {
     goto LABEL_38;
   }
 
   v31 = @"MTSkipBackwardsIntervalDefault";
-  if (a6 == @"MTSkipBackwardsIntervalDefault")
+  if (context == @"MTSkipBackwardsIntervalDefault")
   {
     goto LABEL_38;
   }
 
   v31 = @"MTRemoteSkipInsteadOfNextTrackDefault";
-  if (a6 == @"MTRemoteSkipInsteadOfNextTrackDefault")
+  if (context == @"MTRemoteSkipInsteadOfNextTrackDefault")
   {
     goto LABEL_38;
   }
 
-  if (a6 != @"MTPrivacyResetIdentifier")
+  if (context != @"MTPrivacyResetIdentifier")
   {
     goto LABEL_22;
   }
 
-  v33 = [(NMSMediaSettingsSynchronizer *)v72 _podcastsAppGroupPath];
+  _podcastsAppGroupPath = [(NMSMediaSettingsSynchronizer *)selfCopy _podcastsAppGroupPath];
 
   v75 = @"MTPrivacyResetIdentifier";
-  v29 = [(NSUserDefaults *)v72->_podcastsDefaults objectForKey:?];
+  v29 = [(NSUserDefaults *)selfCopy->_podcastsDefaults objectForKey:?];
 
-  v30 = v73;
+  v30 = pathCopy;
   if (([v29 BOOLValue] & 1) == 0)
   {
     v13 = @"243LU875E5.groups.com.apple.podcasts";
 LABEL_34:
     v34 = NMLogForCategory(5);
     v35 = v34;
-    if (@"GreenTeaMobileIpodCellularKeysAreMirrored" == a6)
+    if (@"GreenTeaMobileIpodCellularKeysAreMirrored" == context)
     {
-      v40 = v72;
+      v40 = selfCopy;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -673,13 +673,13 @@ LABEL_34:
 
       if (v71)
       {
-        v70 = [(NSUserDefaults *)v72->_mobileIPodDefaults integerForKey:@"MusicLowBandwidthResolution"];
-        v41 = [MEMORY[0x277D2BCF8] sharedInstance];
-        v42 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-        v43 = [v41 getAllDevicesWithArchivedAltAccountDevicesMatching:v42];
-        v44 = [v43 firstObject];
+        v70 = [(NSUserDefaults *)selfCopy->_mobileIPodDefaults integerForKey:@"MusicLowBandwidthResolution"];
+        mEMORY[0x277D2BCF8]3 = [MEMORY[0x277D2BCF8] sharedInstance];
+        activePairedDeviceSelectorBlock3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+        v43 = [mEMORY[0x277D2BCF8]3 getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock3];
+        firstObject3 = [v43 firstObject];
         v45 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"88D7381B-F0D1-498F-88D5-9F016A27EB4F"];
-        v46 = [v44 supportsCapability:v45];
+        v46 = [firstObject3 supportsCapability:v45];
 
         v47 = NMLogForCategory(5);
         v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
@@ -695,16 +695,16 @@ LABEL_34:
           v49 = objc_alloc_init(MEMORY[0x277D2BA60]);
           v50 = [MEMORY[0x277CBEB98] setWithObject:@"MusicLowBandwidthResolution"];
           [v49 synchronizeUserDefaultsDomain:@"com.apple.mobileipod" keys:v50];
-          v40 = v72;
+          v40 = selfCopy;
         }
 
         else
         {
-          v40 = v72;
+          v40 = selfCopy;
           if (v48)
           {
-            v58 = [(NSUserDefaults *)v72->_mobileIPodDefaults objectForKey:@"MusicAllowsCellularData"];
-            v59 = [(NSUserDefaults *)v72->_mobileIPodDefaults objectForKey:@"MusicAllowsHighQualityStreamingOnCellular"];
+            v58 = [(NSUserDefaults *)selfCopy->_mobileIPodDefaults objectForKey:@"MusicAllowsCellularData"];
+            v59 = [(NSUserDefaults *)selfCopy->_mobileIPodDefaults objectForKey:@"MusicAllowsHighQualityStreamingOnCellular"];
             *buf = 138412546;
             *v77 = v58;
             *&v77[8] = 2112;
@@ -737,9 +737,9 @@ LABEL_34:
         v54 = NMLogForCategory(5);
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [(NSUserDefaults *)v72->_nanoMusicSyncDefaults objectForKey:@"GreenTeaMusicAllowsCellularData"];
-          v56 = [(NSUserDefaults *)v72->_nanoMusicSyncDefaults objectForKey:?];
-          v57 = [(NSUserDefaults *)v72->_nanoMusicSyncDefaults objectForKey:@"GreenTeaMusicAllowsDownloadsOverCellular"];
+          v55 = [(NSUserDefaults *)selfCopy->_nanoMusicSyncDefaults objectForKey:@"GreenTeaMusicAllowsCellularData"];
+          v56 = [(NSUserDefaults *)selfCopy->_nanoMusicSyncDefaults objectForKey:?];
+          v57 = [(NSUserDefaults *)selfCopy->_nanoMusicSyncDefaults objectForKey:@"GreenTeaMusicAllowsDownloadsOverCellular"];
           *buf = 138412802;
           *v77 = v55;
           *&v77[8] = 2112;
@@ -748,7 +748,7 @@ LABEL_34:
           *v79 = v57;
           _os_log_impl(&dword_25B27B000, v54, OS_LOG_TYPE_DEFAULT, "[NMSMediaSettingsSynchronizer]\tSynchronizing GreenTeaCellularStreamingAllowed %@, GreenTeaMusicAllowsHighQualityStreamingOnCellular %@, and GreenTeaMusicAllowsDownloadsOverCellular: %@", buf, 0x20u);
 
-          v40 = v72;
+          v40 = selfCopy;
         }
 
         v62 = objc_alloc_init(MEMORY[0x277D2BA60]);
@@ -785,9 +785,9 @@ LABEL_34:
       *v78 = 2112;
       *&v78[2] = v30;
       *v79 = 2112;
-      *&v79[2] = v74;
+      *&v79[2] = objectCopy;
       *v80 = 2112;
-      *&v80[2] = a6;
+      *&v80[2] = context;
       _os_log_error_impl(&dword_25B27B000, v35, OS_LOG_TYPE_ERROR, "[NMSMediaSettingsSynchronizer] Did not sync value change. isGreenTea %x, isMirroringCellularPolicy: %x, keypath: %@, object: %@, context: %@", buf, 0x2Cu);
     }
 
@@ -798,7 +798,7 @@ LABEL_34:
   v31 = @"MTPrivacyResetIdentifier";
 LABEL_39:
   v13 = @"243LU875E5.groups.com.apple.podcasts";
-  if (!v33)
+  if (!_podcastsAppGroupPath)
   {
     goto LABEL_43;
   }

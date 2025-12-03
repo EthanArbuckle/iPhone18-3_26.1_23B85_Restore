@@ -1,28 +1,28 @@
 @interface LPApplePhotosSharedLibraryInvitationMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPApplePhotosSharedLibraryInvitationMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPApplePhotosSharedLibraryInvitationMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
 - (id)sharedLibraryInvitationMessage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPApplePhotosSharedLibraryInvitationMetadata
 
-- (LPApplePhotosSharedLibraryInvitationMetadata)initWithCoder:(id)a3
+- (LPApplePhotosSharedLibraryInvitationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = LPApplePhotosSharedLibraryInvitationMetadata;
   v5 = [(LPApplePhotosSharedLibraryInvitationMetadata *)&v12 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"message");
+    v6 = decodeStringForKey(coderCopy, @"message");
     message = v5->_message;
     v5->_message = v6;
 
-    v8 = decodeStringForKey(v4, @"originatorDisplayName");
+    v8 = decodeStringForKey(coderCopy, @"originatorDisplayName");
     originatorDisplayName = v5->_originatorDisplayName;
     v5->_originatorDisplayName = v8;
 
@@ -32,23 +32,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_message forKey:@"message"];
-  [v4 _lp_encodeStringIfNotNil:self->_originatorDisplayName forKey:@"originatorDisplayName"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_message forKey:@"message"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_originatorDisplayName forKey:@"originatorDisplayName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPApplePhotosSharedLibraryInvitationMetadata allocWithZone:a3];
+  v4 = [LPApplePhotosSharedLibraryInvitationMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self message];
-    [(LPApplePhotosSharedLibraryInvitationMetadata *)v4 setMessage:v5];
+    message = [(LPApplePhotosSharedLibraryInvitationMetadata *)self message];
+    [(LPApplePhotosSharedLibraryInvitationMetadata *)v4 setMessage:message];
 
-    v6 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
-    [(LPApplePhotosSharedLibraryInvitationMetadata *)v4 setOriginatorDisplayName:v6];
+    originatorDisplayName = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
+    [(LPApplePhotosSharedLibraryInvitationMetadata *)v4 setOriginatorDisplayName:originatorDisplayName];
 
     v7 = v4;
   }
@@ -56,12 +56,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPApplePhotosSharedLibraryInvitationMetadata;
-  if ([(LPApplePhotosSharedLibraryInvitationMetadata *)&v8 isEqual:v4])
+  if ([(LPApplePhotosSharedLibraryInvitationMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if (objectsAreEqual_0(v6[2], self->_message))
       {
         v5 = objectsAreEqual_0(v6[3], self->_originatorDisplayName);
@@ -94,33 +94,33 @@
 
 - (id)sharedLibraryInvitationMessage
 {
-  v3 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
+  originatorDisplayName = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
 
-  if (v3)
+  if (originatorDisplayName)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = LPLocalizedString(@"%@ wants you to join a Shared Library in Photos");
-    v6 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
-    v7 = [v4 localizedStringWithFormat:v5, v6];
+    originatorDisplayName2 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self originatorDisplayName];
+    message = [v4 localizedStringWithFormat:v5, originatorDisplayName2];
   }
 
   else
   {
-    v7 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self message];
+    message = [(LPApplePhotosSharedLibraryInvitationMetadata *)self message];
   }
 
-  return v7;
+  return message;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [v5 title];
-  v7 = v6;
-  if (v6)
+  transformerCopy = transformer;
+  metadata = [transformerCopy metadata];
+  title = [metadata title];
+  v7 = title;
+  if (title)
   {
-    v8 = v6;
+    v8 = title;
   }
 
   else
@@ -136,37 +136,37 @@
   v12 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [(LPWebLinkPresentationProperties *)v11 setCaptionBar:v12];
 
-  v13 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-  v14 = [v13 top];
-  v15 = [v14 leading];
-  [v15 setText:v9];
+  captionBar = [(LPWebLinkPresentationProperties *)v11 captionBar];
+  v14 = [captionBar top];
+  leading = [v14 leading];
+  [leading setText:v9];
 
-  v16 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self sharedLibraryInvitationMessage];
-  v17 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-  v18 = [v17 bottom];
-  v19 = [v18 leading];
-  [v19 setText:v16];
+  sharedLibraryInvitationMessage = [(LPApplePhotosSharedLibraryInvitationMetadata *)self sharedLibraryInvitationMessage];
+  captionBar2 = [(LPWebLinkPresentationProperties *)v11 captionBar];
+  bottom = [captionBar2 bottom];
+  leading2 = [bottom leading];
+  [leading2 setText:sharedLibraryInvitationMessage];
 
-  if ([v4 _rowConfigurationForStyle:{-[LPWebLinkPresentationProperties style](v11, "style")}] == 3)
+  if ([transformerCopy _rowConfigurationForStyle:{-[LPWebLinkPresentationProperties style](v11, "style")}] == 3)
   {
-    v20 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-    v21 = [v20 bottom];
-    v22 = [v21 leading];
-    [v22 setMaximumNumberOfLines:&unk_1F24835D8];
+    captionBar3 = [(LPWebLinkPresentationProperties *)v11 captionBar];
+    bottom2 = [captionBar3 bottom];
+    leading3 = [bottom2 leading];
+    [leading3 setMaximumNumberOfLines:&unk_1F24835D8];
   }
 
-  if ([v4 effectiveSizeClass] == 1 || sizeClassIsCardHeading(objc_msgSend(v4, "effectiveSizeClass")))
+  if ([transformerCopy effectiveSizeClass] == 1 || sizeClassIsCardHeading(objc_msgSend(transformerCopy, "effectiveSizeClass")))
   {
-    v23 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-    [v23 setLeadingIcon:v10];
+    captionBar4 = [(LPWebLinkPresentationProperties *)v11 captionBar];
+    [captionBar4 setLeadingIcon:v10];
 
     v24 = objc_alloc_init(LPImagePresentationProperties);
-    v25 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-    [v25 setLeadingIconProperties:v24];
+    captionBar5 = [(LPWebLinkPresentationProperties *)v11 captionBar];
+    [captionBar5 setLeadingIconProperties:v24];
 
-    v26 = [(LPWebLinkPresentationProperties *)v11 captionBar];
-    v27 = [v26 leadingIconProperties];
-    [v27 setFilter:5];
+    captionBar6 = [(LPWebLinkPresentationProperties *)v11 captionBar];
+    leadingIconProperties = [captionBar6 leadingIconProperties];
+    [leadingIconProperties setFilter:5];
   }
 
   else
@@ -177,13 +177,13 @@
   return v11;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v3 = [(LPApplePhotosSharedLibraryInvitationMetadata *)self sharedLibraryInvitationMessage];
-  v4 = v3;
-  if (v3)
+  sharedLibraryInvitationMessage = [(LPApplePhotosSharedLibraryInvitationMetadata *)self sharedLibraryInvitationMessage];
+  v4 = sharedLibraryInvitationMessage;
+  if (sharedLibraryInvitationMessage)
   {
-    v5 = v3;
+    v5 = sharedLibraryInvitationMessage;
   }
 
   else

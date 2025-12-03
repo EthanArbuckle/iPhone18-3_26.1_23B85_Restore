@@ -7,7 +7,7 @@
 - (id)_lightColor1;
 - (id)_lightColor2;
 - (id)_lightColor3;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 @end
 
 @implementation NTKAtiumColorPalette
@@ -22,7 +22,7 @@
 
 - (id)_lightColor1
 {
-  v2 = [(NTKAtiumColorPalette *)self primaryColor];
+  primaryColor = [(NTKAtiumColorPalette *)self primaryColor];
   v3 = NTKColorByModifyingHSB();
 
   return v3;
@@ -34,8 +34,8 @@
   v11 = 0.0;
   v8 = 0;
   v9 = 0;
-  v3 = [(NTKAtiumColorPalette *)self primaryColor];
-  v4 = [v3 getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8];
+  primaryColor = [(NTKAtiumColorPalette *)self primaryColor];
+  v4 = [primaryColor getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8];
 
   if (v4)
   {
@@ -47,20 +47,20 @@
 
     v10 = v5;
     v9 = 0x3FF0000000000000;
-    v6 = [UIColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v11 brightness:? alpha:?];
+    primaryColor2 = [UIColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v11 brightness:? alpha:?];
   }
 
   else
   {
-    v6 = [(NTKAtiumColorPalette *)self primaryColor];
+    primaryColor2 = [(NTKAtiumColorPalette *)self primaryColor];
   }
 
-  return v6;
+  return primaryColor2;
 }
 
 - (id)_lightColor3
 {
-  v2 = [(NTKAtiumColorPalette *)self primaryColor];
+  primaryColor = [(NTKAtiumColorPalette *)self primaryColor];
   v3 = NTKColorByModifyingHSB();
 
   return v3;
@@ -75,7 +75,7 @@
 
   else
   {
-    v4 = [(NTKAtiumColorPalette *)self lightColor1];
+    lightColor1 = [(NTKAtiumColorPalette *)self lightColor1];
     v3 = NTKColorByApplyingWhiteOverlay();
   }
 
@@ -84,28 +84,28 @@
 
 - (BOOL)isThreeColor
 {
-  v3 = [(NTKAtiumColorPalette *)self configuration];
-  v4 = [v3 colorOption];
-  if ([v4 containsString:@"threecolor"])
+  configuration = [(NTKAtiumColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  if ([colorOption containsString:@"threecolor"])
   {
-    v5 = 1;
+    isUnityColor = 1;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NTKAtiumColorPalette;
-    v5 = [(NTKAtiumColorPalette *)&v7 isUnityColor];
+    isUnityColor = [(NTKAtiumColorPalette *)&v7 isUnityColor];
   }
 
-  return v5;
+  return isUnityColor;
 }
 
 - (BOOL)isRainbow
 {
-  v2 = [(NTKAtiumColorPalette *)self configuration];
-  v3 = [v2 colorOption];
-  v4 = [v3 isEqualToString:@"rainbow"];
+  configuration = [(NTKAtiumColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
+  v4 = [colorOption isEqualToString:@"rainbow"];
 
   return v4;
 }
@@ -114,9 +114,9 @@
 {
   v4.receiver = self;
   v4.super_class = NTKAtiumColorPalette;
-  v2 = [(NTKAtiumColorPalette *)&v4 isUnityColor];
+  isUnityColor = [(NTKAtiumColorPalette *)&v4 isUnityColor];
   result = 1.0;
-  if (v2)
+  if (isUnityColor)
   {
     return 2.0;
   }
@@ -124,10 +124,10 @@
   return result;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKAtiumColorPalette *)self isRainbow])
   {
     v18.receiver = self;
@@ -154,22 +154,22 @@
       sub_5FE4();
     }
 
-    v8 = [(NTKAtiumColorPalette *)self configuration];
-    v9 = [v8 uniqueId];
+    configuration = [(NTKAtiumColorPalette *)self configuration];
+    uniqueId = [configuration uniqueId];
     v21.width = width;
     v21.height = height;
     v10 = NSStringFromCGSize(v21);
-    v11 = [NSString stringWithFormat:@"%@-%@", v9, v10];
+    v11 = [NSString stringWithFormat:@"%@-%@", uniqueId, v10];
 
     v6 = [qword_11FE0 objectForKey:v11];
     if (!v6)
     {
-      v12 = [(NTKAtiumColorPalette *)self lightColor1];
-      v19[0] = v12;
-      v13 = [(NTKAtiumColorPalette *)self lightColor2];
-      v19[1] = v13;
-      v14 = [(NTKAtiumColorPalette *)self lightColor3];
-      v19[2] = v14;
+      lightColor1 = [(NTKAtiumColorPalette *)self lightColor1];
+      v19[0] = lightColor1;
+      lightColor2 = [(NTKAtiumColorPalette *)self lightColor2];
+      v19[1] = lightColor2;
+      lightColor3 = [(NTKAtiumColorPalette *)self lightColor3];
+      v19[2] = lightColor3;
       v15 = [NSArray arrayWithObjects:v19 count:3];
 
       v6 = NTKSwatchColorSectorsImage();

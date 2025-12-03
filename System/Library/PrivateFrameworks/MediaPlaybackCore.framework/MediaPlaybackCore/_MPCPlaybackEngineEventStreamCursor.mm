@@ -1,27 +1,27 @@
 @interface _MPCPlaybackEngineEventStreamCursor
 - (NSString)description;
-- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)a3 fromNanoSeconds:(unint64_t)a4 endEvent:(id)a5;
-- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)a3 startEvent:(id)a4 endEvent:(id)a5;
-- (id)_statementForColumnsExpression:(void *)a3 eventTypes:(void *)a4 payload:(uint64_t)a5 limit:;
-- (id)_statementForEventTypes:(void *)a3 payload:(uint64_t)a4 limit:;
-- (id)cursorFromEvent:(id)a3 untilEvent:(id)a4;
-- (id)cursorUntilEvent:(id)a3;
-- (id)findPreviousEventWithType:(id)a3 matchingPayload:(id)a4;
-- (id)findPreviousEventWithTypes:(id)a3 matchingPayload:(id)a4;
-- (int64_t)countOfPreviousEventsWithType:(id)a3 matchingPayload:(id)a4;
-- (int64_t)countOfPreviousEventsWithTypes:(id)a3 matchingPayload:(id)a4;
-- (void)enumeratePreviousEventsWithType:(id)a3 matchingPayload:(id)a4 usingBlock:(id)a5;
-- (void)enumeratePreviousEventsWithType:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePreviousEventsWithTypes:(id)a3 matchingPayload:(id)a4 usingBlock:(id)a5;
+- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)stream fromNanoSeconds:(unint64_t)seconds endEvent:(id)event;
+- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)stream startEvent:(id)event endEvent:(id)endEvent;
+- (id)_statementForColumnsExpression:(void *)expression eventTypes:(void *)types payload:(uint64_t)payload limit:;
+- (id)_statementForEventTypes:(void *)types payload:(uint64_t)payload limit:;
+- (id)cursorFromEvent:(id)event untilEvent:(id)untilEvent;
+- (id)cursorUntilEvent:(id)event;
+- (id)findPreviousEventWithType:(id)type matchingPayload:(id)payload;
+- (id)findPreviousEventWithTypes:(id)types matchingPayload:(id)payload;
+- (int64_t)countOfPreviousEventsWithType:(id)type matchingPayload:(id)payload;
+- (int64_t)countOfPreviousEventsWithTypes:(id)types matchingPayload:(id)payload;
+- (void)enumeratePreviousEventsWithType:(id)type matchingPayload:(id)payload usingBlock:(id)block;
+- (void)enumeratePreviousEventsWithType:(id)type usingBlock:(id)block;
+- (void)enumeratePreviousEventsWithTypes:(id)types matchingPayload:(id)payload usingBlock:(id)block;
 @end
 
 @implementation _MPCPlaybackEngineEventStreamCursor
 
-- (id)findPreviousEventWithTypes:(id)a3 matchingPayload:(id)a4
+- (id)findPreviousEventWithTypes:(id)types matchingPayload:(id)payload
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  payloadCopy = payload;
   eventStream = self->_eventStream;
   if (eventStream)
   {
@@ -40,9 +40,9 @@
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
+      engineID = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
       *buf = 138543362;
-      v26 = v12;
+      v26 = engineID;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] findPreviousEventsWithTypes:… | return nil [invalidated]", buf, 0xCu);
     }
 
@@ -51,7 +51,7 @@
 
   else
   {
-    v14 = [(MPCPlaybackEngineEventStream *)v10 cachedEventWithTypes:v6 matchingPayload:v7 cursor:self];
+    v14 = [(MPCPlaybackEngineEventStream *)v10 cachedEventWithTypes:typesCopy matchingPayload:payloadCopy cursor:self];
     if (v14)
     {
       v11 = v14;
@@ -60,7 +60,7 @@
 
     else
     {
-      v15 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForEventTypes:v6 payload:v7 limit:1];
+      v15 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForEventTypes:typesCopy payload:payloadCopy limit:1];
       v16 = [(MPCPlaybackEngineEventStream *)&self->_eventStream->super.isa sql];
       v17 = [v16 resultsForStatement:v15];
 
@@ -72,11 +72,11 @@
         v20 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
         {
-          v21 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
+          engineID2 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
           *buf = 134218498;
-          v26 = v21;
+          v26 = engineID2;
           v27 = 2114;
-          v28 = v6;
+          v28 = typesCopy;
           v29 = 2114;
           v30 = v19;
           _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_FAULT, "[EVS:%public}@] findPreviousEventsWithTypes:%{public}@ … | failed to find events [sql failure] error=%{public}@", buf, 0x20u);
@@ -115,35 +115,35 @@
   return v13;
 }
 
-- (id)_statementForEventTypes:(void *)a3 payload:(uint64_t)a4 limit:
+- (id)_statementForEventTypes:(void *)types payload:(uint64_t)payload limit:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_MPCPlaybackEngineEventStreamCursor *)a1 _statementForColumnsExpression:events.type eventTypes:events.monoAbsolute payload:events.monoContinuous limit:events.monoTimebaseNS, events.userNS, events.threadPriority, events.payload""), a2, a3, a4];
+    self = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForColumnsExpression:events.type eventTypes:events.monoAbsolute payload:events.monoContinuous limit:events.monoTimebaseNS, events.userNS, events.threadPriority, events.payload""), a2, types, payload];
     v4 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_statementForColumnsExpression:(void *)a3 eventTypes:(void *)a4 payload:(uint64_t)a5 limit:
+- (id)_statementForColumnsExpression:(void *)expression eventTypes:(void *)types payload:(uint64_t)payload limit:
 {
   v45 = *MEMORY[0x1E69E9840];
   v32 = a2;
-  v9 = a3;
-  v10 = a4;
-  v36 = a1;
-  v34 = v10;
-  if (a1)
+  expressionCopy = expression;
+  typesCopy = types;
+  selfCopy = self;
+  v34 = typesCopy;
+  if (self)
   {
-    v33 = MPCPlaybackEngineEventPayloadJSONFromPayload(v10);
+    v33 = MPCPlaybackEngineEventPayloadJSONFromPayload(typesCopy);
     v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v34, "count")}];
     _MPCPlaybackEngineEventFlattenPayload(v33, v11, &unk_1F4599880);
-    v12 = [v9 count];
+    v12 = [expressionCopy count];
     if ((v12 + 2 * [v11 count] + 3) >= 0x3E7)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:sel__statementForColumnsExpression_eventTypes_payload_limit_ object:a1 file:@"MPCPlaybackEngineEventStream.m" lineNumber:1220 description:@"Query too large"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__statementForColumnsExpression_eventTypes_payload_limit_ object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1220 description:@"Query too large"];
     }
 
     v13 = [MEMORY[0x1E696AD60] stringWithFormat:@"SELECT %@ FROM events", v32];
@@ -163,15 +163,15 @@
       while (v15 < [v11 count]);
     }
 
-    if ([v9 count] == 1)
+    if ([expressionCopy count] == 1)
     {
       [v14 addObject:@"events.type = @type"];
     }
 
-    else if ([v9 count] >= 2)
+    else if ([expressionCopy count] >= 2)
     {
       v17 = objc_msgSend(@"events.type IN ("), "mutableCopy";
-      if ([v9 count] >= 1)
+      if ([expressionCopy count] >= 1)
       {
         v18 = 0;
         do
@@ -184,7 +184,7 @@
           [v17 appendFormat:@"@type_%d", v18++];
         }
 
-        while (v18 < [v9 count]);
+        while (v18 < [expressionCopy count]);
       }
 
       [v17 appendString:@""]);
@@ -192,7 +192,7 @@
     }
 
     [v14 addObject:@"_ns < @startNS"];
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
       [v14 addObject:@"_ns > @endNS"];
     }
@@ -202,12 +202,12 @@
     [v13 appendString:v19];
 
     [v13 appendString:@" ORDER BY _ns DESC"];
-    if (a5 >= 1)
+    if (payload >= 1)
     {
       [v13 appendFormat:@" LIMIT %lld", 1];
     }
 
-    v20 = [(MPCPlaybackEngineEventStream *)*(a1 + 24) sql];
+    v20 = [(MPCPlaybackEngineEventStream *)*(self + 24) sql];
     v42 = 0;
     v31 = [v20 statementWithString:v13 error:&v42];
     v35 = v42;
@@ -217,9 +217,9 @@
       v21 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
-        v22 = [*(a1 + 24) engineID];
+        engineID = [*(self + 24) engineID];
         *buf = 138543874;
-        *&buf[4] = v22;
+        *&buf[4] = engineID;
         *&buf[12] = 2114;
         *&buf[14] = v13;
         *&buf[22] = 2114;
@@ -232,7 +232,7 @@
 
     else
     {
-      [v31 bindUInt64Value:*(a1 + 8) toParameterNamed:@"@startNS"];
+      [v31 bindUInt64Value:*(self + 8) toParameterNamed:@"@startNS"];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
@@ -245,27 +245,27 @@
       v24 = v31;
       v41 = sel__statementForColumnsExpression_eventTypes_payload_limit_;
       v38 = v24;
-      v39 = a1;
+      selfCopy2 = self;
       [v11 enumerateKeysAndObjectsUsingBlock:v37];
-      if ([v9 count] == 1)
+      if ([expressionCopy count] == 1)
       {
-        v25 = [v9 firstObject];
-        [v24 bindStringValue:v25 toParameterNamed:@"@type"];
+        firstObject = [expressionCopy firstObject];
+        [v24 bindStringValue:firstObject toParameterNamed:@"@type"];
       }
 
-      else if ([v9 count] >= 2)
+      else if ([expressionCopy count] >= 2)
       {
-        for (i = 0; i < [v9 count]; ++i)
+        for (i = 0; i < [expressionCopy count]; ++i)
         {
-          v27 = [v9 objectAtIndexedSubscript:i];
+          v27 = [expressionCopy objectAtIndexedSubscript:i];
           v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@type_%d", i];
           [v24 bindStringValue:v27 toParameterNamed:v28];
         }
       }
 
-      if (*(v36 + 40))
+      if (*(selfCopy + 40))
       {
-        [v24 bindUInt64Value:*(v36 + 16) toParameterNamed:@"@endNS"];
+        [v24 bindUInt64Value:*(selfCopy + 16) toParameterNamed:@"@endNS"];
       }
 
       v23 = v24;
@@ -282,35 +282,35 @@
   return v23;
 }
 
-- (id)findPreviousEventWithType:(id)a3 matchingPayload:(id)a4
+- (id)findPreviousEventWithType:(id)type matchingPayload:(id)payload
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  typeCopy = type;
+  v7 = typeCopy;
+  if (typeCopy)
   {
-    v14 = v6;
+    v14 = typeCopy;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a4;
+    payloadCopy = payload;
     v10 = [v8 arrayWithObjects:&v14 count:1];
-    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self findPreviousEventWithTypes:v10 matchingPayload:v9, v14, v15];
+    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self findPreviousEventWithTypes:v10 matchingPayload:payloadCopy, v14, v15];
   }
 
   else
   {
-    v12 = a4;
-    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self findPreviousEventWithTypes:MEMORY[0x1E695E0F0] matchingPayload:v12];
+    payloadCopy2 = payload;
+    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self findPreviousEventWithTypes:MEMORY[0x1E695E0F0] matchingPayload:payloadCopy2];
   }
 
   return v11;
 }
 
-- (void)enumeratePreviousEventsWithTypes:(id)a3 matchingPayload:(id)a4 usingBlock:(id)a5
+- (void)enumeratePreviousEventsWithTypes:(id)types matchingPayload:(id)payload usingBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typesCopy = types;
+  payloadCopy = payload;
+  blockCopy = block;
   eventStream = self->_eventStream;
   if (eventStream)
   {
@@ -323,24 +323,24 @@
   }
 
   dispatch_assert_queue_V2(queue);
-  if (![v9 count])
+  if (![typesCopy count])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1148 description:@"Must provide event types to enumerate."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1148 description:@"Must provide event types to enumerate."];
 
-    if (v10)
+    if (payloadCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_23:
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1149 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1149 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
 
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!payloadCopy)
   {
     goto LABEL_23;
   }
@@ -352,16 +352,16 @@ LABEL_5:
     v15 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
+      engineID = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
       *buf = 138543362;
-      v33 = v16;
+      v33 = engineID;
       _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] enumeratePreviousEventsWithType:… | skipping enumeration [invalidated]", buf, 0xCu);
     }
   }
 
   else
   {
-    v15 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForEventTypes:v9 payload:v10 limit:0];
+    v15 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForEventTypes:typesCopy payload:payloadCopy limit:0];
     v17 = [(MPCPlaybackEngineEventStream *)&self->_eventStream->super.isa sql];
     v18 = [v17 resultsForStatement:v15];
 
@@ -378,7 +378,7 @@ LABEL_5:
         v23 = [MPCPlaybackEngineEvent eventFromRowResult:v19];
         if (v23)
         {
-          v11[2](v11, v23, &v31);
+          blockCopy[2](blockCopy, v23, &v31);
         }
 
         objc_autoreleasePoolPop(v22);
@@ -409,11 +409,11 @@ LABEL_5:
       v26 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
-        v27 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
+        engineID2 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
         *buf = 138543874;
-        v33 = v27;
+        v33 = engineID2;
         v34 = 2114;
-        v35 = v9;
+        v35 = typesCopy;
         v36 = 2114;
         v37 = v25;
         _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_FAULT, "[EVS:%{public}@] enumeratePreviousEventsWithTypes:%{public}@ … | failed enumeration [sql failure] error=%{public}@", buf, 0x20u);
@@ -422,70 +422,70 @@ LABEL_5:
   }
 }
 
-- (void)enumeratePreviousEventsWithType:(id)a3 matchingPayload:(id)a4 usingBlock:(id)a5
+- (void)enumeratePreviousEventsWithType:(id)type matchingPayload:(id)payload usingBlock:(id)block
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  typeCopy = type;
+  payloadCopy = payload;
+  blockCopy = block;
+  if (!payloadCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1138 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1138 description:{@"Invalid parameter not satisfying: %@", @"payload"}];
 
-    if (v9)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:MEMORY[0x1E695E0F0] matchingPayload:v10 usingBlock:v11];
+    [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:MEMORY[0x1E695E0F0] matchingPayload:payloadCopy usingBlock:blockCopy];
     goto LABEL_6;
   }
 
-  if (!v9)
+  if (!typeCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v14[0] = v9;
+  v14[0] = typeCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:v12 matchingPayload:v10 usingBlock:v11];
+  [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:v12 matchingPayload:payloadCopy usingBlock:blockCopy];
 
 LABEL_6:
 }
 
-- (void)enumeratePreviousEventsWithType:(id)a3 usingBlock:(id)a4
+- (void)enumeratePreviousEventsWithType:(id)type usingBlock:(id)block
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  typeCopy = type;
+  blockCopy = block;
+  if (!typeCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"eventType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"eventType"}];
   }
 
-  v11[0] = v7;
+  v11[0] = typeCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:v9 matchingPayload:MEMORY[0x1E695E0F8] usingBlock:v8];
+  [(_MPCPlaybackEngineEventStreamCursor *)self enumeratePreviousEventsWithTypes:v9 matchingPayload:MEMORY[0x1E695E0F8] usingBlock:blockCopy];
 }
 
-- (int64_t)countOfPreviousEventsWithTypes:(id)a3 matchingPayload:(id)a4
+- (int64_t)countOfPreviousEventsWithTypes:(id)types matchingPayload:(id)payload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  payloadCopy = payload;
   eventStream = self->_eventStream;
   if (eventStream && eventStream->_invalidated)
   {
     v9 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
+      engineID = [(MPCPlaybackEngineEventStream *)self->_eventStream engineID];
       v17 = 138543362;
-      v18 = v10;
+      v18 = engineID;
       _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] countOfPreviousEventsWithTypes:… | returning 0 [invalidated]", &v17, 0xCu);
     }
 
@@ -494,49 +494,49 @@ LABEL_6:
 
   else
   {
-    v12 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForColumnsExpression:v6 eventTypes:v7 payload:0 limit:?];
+    v12 = [(_MPCPlaybackEngineEventStreamCursor *)self _statementForColumnsExpression:typesCopy eventTypes:payloadCopy payload:0 limit:?];
     v13 = [(MPCPlaybackEngineEventStream *)&self->_eventStream->super.isa sql];
     v14 = [v13 resultsForStatement:v12];
 
-    v15 = [v14 nextObject];
-    v11 = [v15 int64ValueAtColumnIndex:0];
+    nextObject = [v14 nextObject];
+    v11 = [nextObject int64ValueAtColumnIndex:0];
     [v12 invalidate];
   }
 
   return v11;
 }
 
-- (int64_t)countOfPreviousEventsWithType:(id)a3 matchingPayload:(id)a4
+- (int64_t)countOfPreviousEventsWithType:(id)type matchingPayload:(id)payload
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  typeCopy = type;
+  v7 = typeCopy;
+  if (typeCopy)
   {
-    v13 = v6;
+    v13 = typeCopy;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a4;
-    v10 = [v8 arrayWithObjects:&v13 count:1];
-    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self countOfPreviousEventsWithTypes:v10 matchingPayload:v9, v13, v14];
+    payloadCopy = payload;
+    payloadCopy2 = [v8 arrayWithObjects:&v13 count:1];
+    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self countOfPreviousEventsWithTypes:payloadCopy2 matchingPayload:payloadCopy, v13, v14];
   }
 
   else
   {
-    v10 = a4;
-    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self countOfPreviousEventsWithTypes:MEMORY[0x1E695E0F0] matchingPayload:v10];
+    payloadCopy2 = payload;
+    v11 = [(_MPCPlaybackEngineEventStreamCursor *)self countOfPreviousEventsWithTypes:MEMORY[0x1E695E0F0] matchingPayload:payloadCopy2];
   }
 
   return v11;
 }
 
-- (id)cursorFromEvent:(id)a3 untilEvent:(id)a4
+- (id)cursorFromEvent:(id)event untilEvent:(id)untilEvent
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  eventCopy = event;
+  untilEventCopy = untilEvent;
+  v9 = untilEventCopy;
+  if (eventCopy)
   {
-    if (!v8)
+    if (!untilEventCopy)
     {
       goto LABEL_5;
     }
@@ -544,8 +544,8 @@ LABEL_6:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1108 description:{@"Invalid parameter not satisfying: %@", @"startEvent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1108 description:{@"Invalid parameter not satisfying: %@", @"startEvent"}];
 
     if (!v9)
     {
@@ -553,34 +553,34 @@ LABEL_6:
     }
   }
 
-  v10 = [v7 earlierEvent:v9];
+  v10 = [eventCopy earlierEvent:v9];
 
   if (v10 != v9)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1109 description:@"Start event must be chronologically AFTER the limiting event."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:1109 description:@"Start event must be chronologically AFTER the limiting event."];
   }
 
 LABEL_5:
-  v12 = [[_MPCPlaybackEngineEventStreamCursor alloc] initWithEventStream:self->_eventStream startEvent:v7 endEvent:v9];
+  v12 = [[_MPCPlaybackEngineEventStreamCursor alloc] initWithEventStream:self->_eventStream startEvent:eventCopy endEvent:v9];
 
   return v12;
 }
 
-- (id)cursorUntilEvent:(id)a3
+- (id)cursorUntilEvent:(id)event
 {
   startEvent = self->_startEvent;
-  v5 = a3;
+  eventCopy = event;
   v6 = [_MPCPlaybackEngineEventStreamCursor alloc];
   eventStream = self->_eventStream;
   if (startEvent)
   {
-    v8 = [(_MPCPlaybackEngineEventStreamCursor *)v6 initWithEventStream:eventStream startEvent:self->_startEvent endEvent:v5];
+    v8 = [(_MPCPlaybackEngineEventStreamCursor *)v6 initWithEventStream:eventStream startEvent:self->_startEvent endEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(_MPCPlaybackEngineEventStreamCursor *)v6 initWithEventStream:eventStream fromNanoSeconds:self->_startNS endEvent:v5];
+    v8 = [(_MPCPlaybackEngineEventStreamCursor *)v6 initWithEventStream:eventStream fromNanoSeconds:self->_startNS endEvent:eventCopy];
   }
 
   v9 = v8;
@@ -619,23 +619,23 @@ LABEL_5:
   return v8;
 }
 
-- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)a3 startEvent:(id)a4 endEvent:(id)a5
+- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)stream startEvent:(id)event endEvent:(id)endEvent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  eventCopy = event;
+  endEventCopy = endEvent;
   v21.receiver = self;
   v21.super_class = _MPCPlaybackEngineEventStreamCursor;
   v12 = [(_MPCPlaybackEngineEventStreamCursor *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_eventStream, a3);
-    objc_storeStrong(&v13->_startEvent, a4);
-    if (v10)
+    objc_storeStrong(&v12->_eventStream, stream);
+    objc_storeStrong(&v13->_startEvent, event);
+    if (eventCopy)
     {
-      [v10 monotonicTime];
-      [v10 monotonicTime];
+      [eventCopy monotonicTime];
+      [eventCopy monotonicTime];
       v14 = v19 + v20;
     }
 
@@ -645,11 +645,11 @@ LABEL_5:
     }
 
     v13->_startNS = v14;
-    objc_storeStrong(&v13->_endEvent, a5);
-    if (v11)
+    objc_storeStrong(&v13->_endEvent, endEvent);
+    if (endEventCopy)
     {
-      [v11 monotonicTime];
-      [v11 monotonicTime];
+      [endEventCopy monotonicTime];
+      [endEventCopy monotonicTime];
       v15 = v17 + v18;
     }
 
@@ -664,23 +664,23 @@ LABEL_5:
   return v13;
 }
 
-- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)a3 fromNanoSeconds:(unint64_t)a4 endEvent:(id)a5
+- (_MPCPlaybackEngineEventStreamCursor)initWithEventStream:(id)stream fromNanoSeconds:(unint64_t)seconds endEvent:(id)event
 {
-  v9 = a3;
-  v10 = a5;
+  streamCopy = stream;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = _MPCPlaybackEngineEventStreamCursor;
   v11 = [(_MPCPlaybackEngineEventStreamCursor *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_eventStream, a3);
-    v12->_startNS = a4;
-    objc_storeStrong(&v12->_endEvent, a5);
-    if (v10)
+    objc_storeStrong(&v11->_eventStream, stream);
+    v12->_startNS = seconds;
+    objc_storeStrong(&v12->_endEvent, event);
+    if (eventCopy)
     {
-      [v10 monotonicTime];
-      [v10 monotonicTime];
+      [eventCopy monotonicTime];
+      [eventCopy monotonicTime];
       v13 = v15 + v16;
     }
 

@@ -1,14 +1,14 @@
 @interface AUAudioUnit
-+ (BOOL)_deleteUserPreset:(id)a3 error:(id *)a4;
-+ (BOOL)_saveUserPreset:(id)a3 state:(id)a4 error:(id *)a5;
-+ (id)__presetFromPath:(id)a3;
-+ (id)__sanitizeFileName:(id)a3;
-+ (id)__userPresetPath:(id)a3 error:(id *)a4;
-+ (id)_monitorUserPresets:(id)a3 callback:(id)a4;
-+ (id)_presetStateFor:(id)a3 error:(id *)a4;
-+ (id)auAudioUnitForAudioUnit:(OpaqueAudioComponentInstance *)a3;
-+ (void)__sanitizePresetNumber:(id)a3;
-+ (void)_loadUserPresets:(id)a3 error:(id *)a4;
++ (BOOL)_deleteUserPreset:(id)preset error:(id *)error;
++ (BOOL)_saveUserPreset:(id)preset state:(id)state error:(id *)error;
++ (id)__presetFromPath:(id)path;
++ (id)__sanitizeFileName:(id)name;
++ (id)__userPresetPath:(id)path error:(id *)error;
++ (id)_monitorUserPresets:(id)presets callback:(id)callback;
++ (id)_presetStateFor:(id)for error:(id *)error;
++ (id)auAudioUnitForAudioUnit:(OpaqueAudioComponentInstance *)unit;
++ (void)__sanitizePresetNumber:(id)number;
++ (void)_loadUserPresets:(id)presets error:(id *)error;
 + (void)registerSubclass:(Class)cls asComponentDescription:(AudioComponentDescription *)componentDescription name:(NSString *)name version:(UInt32)version;
 - ($115C4C562B26FF47E01F9F4EA65B5887)remoteProcessAuditToken;
 - (AUAudioUnit)init;
@@ -36,9 +36,9 @@
 - (NSString)componentName;
 - (NSString)manufacturerName;
 - (id).cxx_construct;
-- (id)_valueForProperty:(id)a3 error:(id *)a4;
+- (id)_valueForProperty:(id)property error:(id *)error;
 - (uint32_t)componentVersion;
-- (void)addRenderObserver:(void *)a3 userData:(void *)a4;
+- (void)addRenderObserver:(void *)observer userData:(void *)data;
 - (void)dealloc;
 - (void)deallocateRenderResources;
 - (void)deliverV2Parameters:(const AURenderEvent *)next;
@@ -46,27 +46,27 @@
 - (void)internalDeallocateRenderResources;
 - (void)invalidateAudioUnit;
 - (void)removeRenderObserver:(NSInteger)token;
-- (void)removeRenderObserver:(void *)a3 userData:(void *)a4;
+- (void)removeRenderObserver:(void *)observer userData:(void *)data;
 - (void)resolveComponent;
 - (void)scheduledParameterRefresher;
-- (void)setCachedViewController:(id)a3;
+- (void)setCachedViewController:(id)controller;
 - (void)setFullState:(NSDictionary *)fullState;
 - (void)setMIDIOutputEventBlock:(AUMIDIOutputEventBlock)MIDIOutputEventBlock;
 - (void)setMIDIOutputEventListBlock:(AUMIDIEventListBlock)MIDIOutputEventListBlock;
 - (void)setMaximumFramesToRender:(AUAudioFrameCount)maximumFramesToRender;
-- (void)setV2Parameter:(unint64_t)a3 value:(float)a4 bufferOffset:(unsigned int)a5 sequenceNumber:(unsigned int)a6;
+- (void)setV2Parameter:(unint64_t)parameter value:(float)value bufferOffset:(unsigned int)offset sequenceNumber:(unsigned int)number;
 - (void)setupMIDIConversion;
 - (void)startUserPresetFolderMonitoring;
 @end
 
 @implementation AUAudioUnit
 
-+ (id)_monitorUserPresets:(id)a3 callback:(id)a4
++ (id)_monitorUserPresets:(id)presets callback:(id)callback
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  presetsCopy = presets;
+  callbackCopy = callback;
+  if (!presetsCopy)
   {
     __assert_rtn("+[AUAudioUnit(PresetHandling) _monitorUserPresets:callback:]", "AUAudioUnitPresetHandling.mm", 177, "presetMonitoringQueue");
   }
@@ -82,11 +82,11 @@
     aBlock[3] = &__block_descriptor_36_e5_v8__0l;
     v18 = v8;
     v10 = _Block_copy(aBlock);
-    v11 = dispatch_source_create(MEMORY[0x1E69E9728], v9, 2uLL, v5);
+    v11 = dispatch_source_create(MEMORY[0x1E69E9728], v9, 2uLL, presetsCopy);
     if (v11)
     {
 LABEL_19:
-      dispatch_source_set_event_handler(v11, v6);
+      dispatch_source_set_event_handler(v11, callbackCopy);
       dispatch_source_set_cancel_handler(v11, v10);
       dispatch_resume(v11);
       goto LABEL_20;
@@ -159,16 +159,16 @@ LABEL_21:
   return v11;
 }
 
-+ (void)_loadUserPresets:(id)a3 error:(id *)a4
++ (void)_loadUserPresets:(id)presets error:(id *)error
 {
-  v5 = a3;
-  if (a4)
+  presetsCopy = presets;
+  if (error)
   {
-    v6 = [AUAudioUnit __userPresetPath:0 error:a4];
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 contentsOfDirectoryAtPath:v6 error:a4];
+    v6 = [AUAudioUnit __userPresetPath:0 error:error];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager contentsOfDirectoryAtPath:v6 error:error];
 
-    if (!*a4)
+    if (!*error)
     {
       v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF ENDSWITH '.aupreset'"];
       v10 = [v8 filteredArrayUsingPredicate:v9];
@@ -186,7 +186,7 @@ LABEL_21:
       v12[2] = __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2;
       v12[3] = &unk_1E72B9F58;
       v13 = v11;
-      v14 = v5;
+      v14 = presetsCopy;
       [v8 enumerateObjectsUsingBlock:v12];
     }
   }
@@ -245,12 +245,12 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
   }
 }
 
-+ (id)_presetStateFor:(id)a3 error:(id *)a4
++ (id)_presetStateFor:(id)for error:(id *)error
 {
-  v5 = a3;
-  if (a4)
+  forCopy = for;
+  if (error)
   {
-    v6 = [AUAudioUnit __userPresetPath:v5 error:a4];
+    v6 = [AUAudioUnit __userPresetPath:forCopy error:error];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
@@ -258,32 +258,32 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6 options:0 error:a4];
-    if (*a4)
+    v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v6 options:0 error:error];
+    if (*error)
     {
-      a4 = 0;
+      error = 0;
     }
 
     else
     {
-      a4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v13 fromData:v14 error:a4];
+      error = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v13 fromData:v14 error:error];
     }
   }
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)_deleteUserPreset:(id)a3 error:(id *)a4
++ (BOOL)_deleteUserPreset:(id)preset error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  presetCopy = preset;
+  if (error)
   {
-    v6 = [AUAudioUnit __userPresetPath:v5 error:a4];
+    v6 = [AUAudioUnit __userPresetPath:presetCopy error:error];
     if (v6)
     {
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
-      LOBYTE(a4) = [v7 removeItemAtPath:v6 error:a4];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      LOBYTE(error) = [defaultManager removeItemAtPath:v6 error:error];
     }
 
     else
@@ -292,45 +292,45 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
       v12 = *MEMORY[0x1E696A578];
       v13[0] = @"Illegal file name for user preset!";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      *a4 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-66742 userInfo:v9];
+      *error = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-66742 userInfo:v9];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-+ (BOOL)_saveUserPreset:(id)a3 state:(id)a4 error:(id *)a5
++ (BOOL)_saveUserPreset:(id)preset state:(id)state error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  presetCopy = preset;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (error)
   {
-    v10 = [v8 mutableCopy];
-    v11 = [v10 allKeys];
+    v10 = [stateCopy mutableCopy];
+    allKeys = [v10 allKeys];
     v12 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F034DE60];
-    v13 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+    v13 = [MEMORY[0x1E695DFD8] setWithArray:allKeys];
     v14 = [v12 isSubsetOfSet:v13];
 
     if (v14)
     {
-      v15 = [AUAudioUnit __userPresetPath:v7 error:a5];
+      v15 = [AUAudioUnit __userPresetPath:presetCopy error:error];
       if (v15)
       {
-        v16 = [v7 name];
-        [v10 setObject:v16 forKeyedSubscript:@"name"];
+        name = [presetCopy name];
+        [v10 setObject:name forKeyedSubscript:@"name"];
 
-        v17 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v7, "number")}];
+        v17 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(presetCopy, "number")}];
         [v10 setObject:v17 forKeyedSubscript:@"preset-number"];
 
-        v18 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:a5];
-        [v18 writeToFile:v15 options:1 error:a5];
+        v18 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:error];
+        [v18 writeToFile:v15 options:1 error:error];
 
-        v19 = *a5 == 0;
+        v19 = *error == 0;
       }
 
       else
@@ -339,7 +339,7 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
         v25 = *MEMORY[0x1E696A578];
         v26 = @"Illegal file name for user preset!";
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        *a5 = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-66742 userInfo:v22];
+        *error = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-66742 userInfo:v22];
 
         v15 = 0;
         v19 = 0;
@@ -353,7 +353,7 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
       v28[0] = @"Missing key in preset state map!";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-66741 userInfo:v15];
-      *a5 = v19 = 0;
+      *error = v19 = 0;
     }
   }
 
@@ -366,37 +366,37 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
   return v19;
 }
 
-+ (id)__userPresetPath:(id)a3 error:(id *)a4
++ (id)__userPresetPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
   v7 = [v6 objectAtIndex:0];
   v8 = [v7 stringByAppendingPathComponent:@"/AUPresets"];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
-  if (v10 & 1) != 0 || (([MEMORY[0x1E696AC08] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 0, 0, a4), v11, !a4) ? (v13 = v12) : (v13 = 0), (v13))
+  if (v10 & 1) != 0 || (([MEMORY[0x1E696AC08] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 0, 0, error), v11, !error) ? (v13 = v12) : (v13 = 0), (v13))
   {
-    if (v5)
+    if (pathCopy)
     {
-      v14 = [v5 name];
-      v15 = [AUAudioUnit __sanitizeFileName:v14];
+      name = [pathCopy name];
+      v15 = [AUAudioUnit __sanitizeFileName:name];
 
       if (v15 && [v15 length])
       {
-        [AUAudioUnit __sanitizePresetNumber:v5];
+        [AUAudioUnit __sanitizePresetNumber:pathCopy];
         v16 = MEMORY[0x1E696AEC0];
-        if ([v5 number] < 0)
+        if ([pathCopy number] < 0)
         {
-          v17 = -[v5 number];
+          number = -[pathCopy number];
         }
 
         else
         {
-          v17 = [v5 number];
+          number = [pathCopy number];
         }
 
-        v18 = [v16 stringWithFormat:@"%@/%@_%ld.aupreset", v8, v15, v17];
+        v18 = [v16 stringWithFormat:@"%@/%@_%ld.aupreset", v8, v15, number];
       }
 
       else
@@ -423,17 +423,17 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
   return v8;
 }
 
-+ (void)__sanitizePresetNumber:(id)a3
++ (void)__sanitizePresetNumber:(id)number
 {
-  v4 = a3;
-  if ([v4 number])
+  numberCopy = number;
+  if ([numberCopy number])
   {
-    if ([v4 number] < 1)
+    if ([numberCopy number] < 1)
     {
       goto LABEL_6;
     }
 
-    v3 = -[v4 number];
+    v3 = -[numberCopy number];
   }
 
   else
@@ -441,37 +441,37 @@ void __54__AUAudioUnit_PresetHandling___loadUserPresets_error___block_invoke_2(u
     v3 = -1;
   }
 
-  [v4 setNumber:v3];
+  [numberCopy setNumber:v3];
 LABEL_6:
 }
 
-+ (id)__sanitizeFileName:(id)a3
++ (id)__sanitizeFileName:(id)name
 {
-  v3 = a3;
-  if ([v3 length] <= 0x50)
+  nameCopy = name;
+  if ([nameCopy length] <= 0x50)
   {
-    v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v6 = [v5 mutableCopy];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v6 = [newlineCharacterSet mutableCopy];
 
     v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"/\\""];
     [v6 formUnionWithCharacterSet:v7];
 
-    v8 = [MEMORY[0x1E696AB08] illegalCharacterSet];
-    [v6 formUnionWithCharacterSet:v8];
+    illegalCharacterSet = [MEMORY[0x1E696AB08] illegalCharacterSet];
+    [v6 formUnionWithCharacterSet:illegalCharacterSet];
 
-    v9 = [MEMORY[0x1E696AB08] controlCharacterSet];
-    [v6 formUnionWithCharacterSet:v9];
+    controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+    [v6 formUnionWithCharacterSet:controlCharacterSet];
 
-    if ([v3 rangeOfCharacterFromSet:v6] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([nameCopy rangeOfCharacterFromSet:v6] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      [v6 formUnionWithCharacterSet:v10];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      [v6 formUnionWithCharacterSet:whitespaceCharacterSet];
 
       v11 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"|$()<>{}.#'"];
       [v6 formUnionWithCharacterSet:v11];
 
-      v12 = [v6 invertedSet];
-      v4 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+      invertedSet = [v6 invertedSet];
+      v4 = [nameCopy stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
     }
 
     else
@@ -488,19 +488,19 @@ LABEL_6:
   return v4;
 }
 
-+ (id)__presetFromPath:(id)a3
++ (id)__presetFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if (([v4 isEqualToString:@"aupreset"] & 1) == 0)
+  pathCopy = path;
+  pathExtension = [pathCopy pathExtension];
+  if (([pathExtension isEqualToString:@"aupreset"] & 1) == 0)
   {
     __assert_rtn("+[AUAudioUnit(PresetHandling) __presetFromPath:]", "AUAudioUnitPresetHandling.mm", 14, "[[pathString pathExtension] isEqualToString:@aupreset]");
   }
 
-  v5 = [v3 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  lastPathComponent = [pathCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v7 = [v6 componentsSeparatedByString:@"_"];
+  v7 = [stringByDeletingPathExtension componentsSeparatedByString:@"_"];
   v8 = [v7 mutableCopy];
 
   if ([v8 count] <= 1)
@@ -508,14 +508,14 @@ LABEL_6:
     __assert_rtn("+[AUAudioUnit(PresetHandling) __presetFromPath:]", "AUAudioUnitPresetHandling.mm", 18, "chunks.count > 1");
   }
 
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
   [v8 removeObjectAtIndex:{objc_msgSend(v8, "count") - 1}];
   v10 = [v8 componentsJoinedByString:@"_"];
-  v11 = [v10 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v10 stringByRemovingPercentEncoding];
 
   v12 = objc_opt_new();
-  [v12 setName:v11];
-  [v12 setNumber:{-objc_msgSend(v9, "intValue")}];
+  [v12 setName:stringByRemovingPercentEncoding];
+  [v12 setNumber:{-objc_msgSend(lastObject, "intValue")}];
 
   return v12;
 }
@@ -1381,17 +1381,17 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10850 userInfo:0];
+    fullStateForDocument = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10850 userInfo:0];
     v7 = 0;
-    *outError = v8;
+    *outError = fullStateForDocument;
     goto LABEL_7;
   }
 
   if (!self->_isLoadedInProcess)
   {
     [(AUAudioUnit *)self startUserPresetFolderMonitoring];
-    v8 = [(AUAudioUnit *)self fullStateForDocument];
-    v7 = [AUAudioUnit _saveUserPreset:v6 state:v8 error:outError];
+    fullStateForDocument = [(AUAudioUnit *)self fullStateForDocument];
+    v7 = [AUAudioUnit _saveUserPreset:v6 state:fullStateForDocument error:outError];
 LABEL_7:
 
     goto LABEL_9;
@@ -1427,16 +1427,16 @@ LABEL_9:
 
 - (NSIndexSet)supportedViewConfigurations:(NSArray *)availableViewConfigurations
 {
-  v3 = [MEMORY[0x1E696AC90] indexSet];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
 
-  return v3;
+  return indexSet;
 }
 
-- (id)_valueForProperty:(id)a3 error:(id *)a4
+- (id)_valueForProperty:(id)property error:(id *)error
 {
-  v4 = [(AUAudioUnit *)self valueForKey:*(a3 + 1), a4];
+  error = [(AUAudioUnit *)self valueForKey:*(property + 1), error];
 
-  return v4;
+  return error;
 }
 
 - (void)setMaximumFramesToRender:(AUAudioFrameCount)maximumFramesToRender
@@ -1608,7 +1608,7 @@ LABEL_10:
 
 - (void)setupMIDIConversion
 {
-  v3 = [(AUAudioUnit *)self hostMIDIProtocol];
+  hostMIDIProtocol = [(AUAudioUnit *)self hostMIDIProtocol];
   v4 = _Block_copy(self->_MIDIOutputEventHostBlock);
   v5 = _Block_copy(self->_MIDIOutputEventListHostBlock);
   MIDIOutputEventBlock = self->_MIDIOutputEventBlock;
@@ -1617,7 +1617,7 @@ LABEL_10:
     self->_MIDIOutputEventBlock = 0;
   }
 
-  if (v3 == kMIDIProtocol_2_0)
+  if (hostMIDIProtocol == kMIDIProtocol_2_0)
   {
     if (v5)
     {
@@ -1625,7 +1625,7 @@ LABEL_10:
     }
   }
 
-  else if (v3 == kMIDIProtocol_1_0)
+  else if (hostMIDIProtocol == kMIDIProtocol_1_0)
   {
     if (v5)
     {
@@ -1635,7 +1635,7 @@ LABEL_10:
 
   else
   {
-    if (v3)
+    if (hostMIDIProtocol)
     {
       v9 = self->_MIDIOutputEventBlock;
       self->_MIDIOutputEventBlock = &__block_literal_global_73;
@@ -1668,9 +1668,9 @@ LABEL_14:
     self->_MIDIOutputEventListBlock = 0;
   }
 
-  if ((v3 - 1) >= 2)
+  if ((hostMIDIProtocol - 1) >= 2)
   {
-    if (v3)
+    if (hostMIDIProtocol)
     {
       v13 = self->_MIDIOutputEventListBlock;
       self->_MIDIOutputEventListBlock = &__block_literal_global_77;
@@ -2736,16 +2736,16 @@ LABEL_260:
   return v7;
 }
 
-- (void)setCachedViewController:(id)a3
+- (void)setCachedViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   cachedViewController = self->_cachedViewController;
   p_cachedViewController = &self->_cachedViewController;
-  if (cachedViewController != v5)
+  if (cachedViewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_cachedViewController, a3);
-    v5 = v8;
+    v8 = controllerCopy;
+    objc_storeStrong(p_cachedViewController, controller);
+    controllerCopy = v8;
   }
 }
 
@@ -2768,10 +2768,10 @@ LABEL_8:
   }
 
   v7 = [(NSDictionary *)v4 objectForKeyedSubscript:@"manufacturer"];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
   componentManufacturer = self->_componentDescription.componentManufacturer;
 
-  if (v8 != componentManufacturer)
+  if (unsignedIntValue != componentManufacturer)
   {
 LABEL_9:
     if (kAUExtensionScope)
@@ -2804,10 +2804,10 @@ LABEL_9:
   v10 = [(NSDictionary *)v4 objectForKeyedSubscript:@"data"];
   if (v10)
   {
-    v11 = [(AUAudioUnit *)self parameterTree];
+    parameterTree = [(AUAudioUnit *)self parameterTree];
     [(AUAudioUnit *)self willChangeValueForKey:@"allParameterValues"];
     MEMORY[0x193ADE3C0](&v15, v10);
-    [v11 _deserialize:&v15 fromSetFullState:1];
+    [parameterTree _deserialize:&v15 fromSetFullState:1];
     [(AUAudioUnit *)self didChangeValueForKey:@"allParameterValues"];
     MEMORY[0x193ADE3E0](&v15);
   }
@@ -2816,8 +2816,8 @@ LABEL_9:
   {
     if (kAUExtensionScope)
     {
-      v11 = *kAUExtensionScope;
-      if (!v11)
+      parameterTree = *kAUExtensionScope;
+      if (!parameterTree)
       {
         v10 = 0;
         goto LABEL_15;
@@ -2826,17 +2826,17 @@ LABEL_9:
 
     else
     {
-      v11 = MEMORY[0x1E69E9C10];
+      parameterTree = MEMORY[0x1E69E9C10];
       v14 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(parameterTree, OS_LOG_TYPE_ERROR))
     {
       v15 = 136315394;
       v16 = "AUAudioUnit.mm";
       v17 = 1024;
       v18 = 1173;
-      _os_log_impl(&dword_18F5DF000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d setFullState: no data", &v15, 0x12u);
+      _os_log_impl(&dword_18F5DF000, parameterTree, OS_LOG_TYPE_ERROR, "%25s:%-5d setFullState: no data", &v15, 0x12u);
     }
   }
 
@@ -2860,8 +2860,8 @@ LABEL_16:
   [v3 setObject:v6 forKeyedSubscript:@"manufacturer"];
 
   CASerializer::CASerializer(&v9, 0);
-  v7 = [(AUAudioUnit *)self parameterTree];
-  [v7 _serialize:&v9];
+  parameterTree = [(AUAudioUnit *)self parameterTree];
+  [parameterTree _serialize:&v9];
 
   [v3 setObject:v9.var0 forKeyedSubscript:@"data"];
   MEMORY[0x193ADE2A0](&v9);
@@ -2905,30 +2905,30 @@ LABEL_16:
 - (void)internalDeallocateRenderResources
 {
   AUEventSchedule::uninitialize(&self->_realtimeState.eventSchedule.mScheduledParameterRefresher);
-  v3 = [(AUAudioUnit *)self scheduledParameterRefresher];
-  v4 = self;
-  AUScheduledParameterRefresher::performPendingMessages(v3);
-  v27 = (v3 + 336);
+  scheduledParameterRefresher = [(AUAudioUnit *)self scheduledParameterRefresher];
+  selfCopy = self;
+  AUScheduledParameterRefresher::performPendingMessages(scheduledParameterRefresher);
+  v27 = (scheduledParameterRefresher + 336);
   v28 = 1;
-  std::mutex::lock((v3 + 336));
-  v5 = atomic_load(v3 + 37);
+  std::mutex::lock((scheduledParameterRefresher + 336));
+  v5 = atomic_load(scheduledParameterRefresher + 37);
   if (v5)
   {
-    SlotForKey = caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl::findSlotForKey(v5, v4);
+    SlotForKey = caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl::findSlotForKey(v5, selfCopy);
     if (SlotForKey)
     {
       v8 = v7;
       atomic_store(0xFFFFFFFFFFFFFFFFLL, (v5 + 8 * HIDWORD(SlotForKey) + 16));
       if (v7)
       {
-        v9 = atomic_load(v3 + 76);
+        v9 = atomic_load(scheduledParameterRefresher + 76);
         if (v9 >= 1)
         {
           do
           {
             __ns.__rep_ = 50000;
             std::this_thread::sleep_for (&__ns);
-            v10 = atomic_load(v3 + 76);
+            v10 = atomic_load(scheduledParameterRefresher + 76);
           }
 
           while (v10 > 0);
@@ -2945,35 +2945,35 @@ LABEL_16:
           }
 
           std::unique_lock<std::mutex>::lock[abi:ne200100](&v27);
-          v5 = atomic_load(v3 + 37);
+          v5 = atomic_load(scheduledParameterRefresher + 37);
         }
 
         caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::element_t::release(v8);
-        v14 = *(v3 + 72) - 1;
-        *(v3 + 72) = v14;
+        v14 = *(scheduledParameterRefresher + 72) - 1;
+        *(scheduledParameterRefresher + 72) = v14;
         if (v5)
         {
           v15 = 16 * v14;
           v16 = *(v5 + 8);
           if (v15 / v16 <= 2 && v16 >= 9)
           {
-            caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::rehash(v3 + 36, v16 >> 1);
+            caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::rehash(scheduledParameterRefresher + 36, v16 >> 1);
           }
         }
       }
     }
   }
 
-  v18 = atomic_load(v3 + 76);
+  v18 = atomic_load(scheduledParameterRefresher + 76);
   if (v18 <= 0)
   {
-    v20 = *(v3 + 39);
-    for (i = *(v3 + 40); i != v20; std::allocator_traits<std::allocator<std::unique_ptr<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl,std::default_delete<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl>>>>::destroy[abi:ne200100]<std::unique_ptr<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl,std::default_delete<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl>>,void,0>(i))
+    v20 = *(scheduledParameterRefresher + 39);
+    for (i = *(scheduledParameterRefresher + 40); i != v20; std::allocator_traits<std::allocator<std::unique_ptr<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl,std::default_delete<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl>>>>::destroy[abi:ne200100]<std::unique_ptr<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl,std::default_delete<caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl>>,void,0>(i))
     {
       --i;
     }
 
-    *(v3 + 40) = v20;
+    *(scheduledParameterRefresher + 40) = v20;
   }
 
   if (v28 == 1)
@@ -2981,23 +2981,23 @@ LABEL_16:
     std::mutex::unlock(v27);
   }
 
-  transportStateBlock = v4->_transportStateBlock;
-  v4->_transportStateBlock = 0;
+  transportStateBlock = selfCopy->_transportStateBlock;
+  selfCopy->_transportStateBlock = 0;
 
-  musicalContextBlock = v4->_musicalContextBlock;
-  v4->_musicalContextBlock = 0;
+  musicalContextBlock = selfCopy->_musicalContextBlock;
+  selfCopy->_musicalContextBlock = 0;
 
-  MIDIOutputEventBlock = v4->_MIDIOutputEventBlock;
-  v4->_MIDIOutputEventBlock = 0;
+  MIDIOutputEventBlock = selfCopy->_MIDIOutputEventBlock;
+  selfCopy->_MIDIOutputEventBlock = 0;
 
-  MIDIOutputEventListBlock = v4->_MIDIOutputEventListBlock;
-  v4->_MIDIOutputEventListBlock = 0;
+  MIDIOutputEventListBlock = selfCopy->_MIDIOutputEventListBlock;
+  selfCopy->_MIDIOutputEventListBlock = 0;
 
-  MIDIOutputEventHostBlock = v4->_MIDIOutputEventHostBlock;
-  v4->_MIDIOutputEventHostBlock = 0;
+  MIDIOutputEventHostBlock = selfCopy->_MIDIOutputEventHostBlock;
+  selfCopy->_MIDIOutputEventHostBlock = 0;
 
-  MIDIOutputEventListHostBlock = v4->_MIDIOutputEventListHostBlock;
-  v4->_MIDIOutputEventListHostBlock = 0;
+  MIDIOutputEventListHostBlock = selfCopy->_MIDIOutputEventListHostBlock;
+  selfCopy->_MIDIOutputEventListHostBlock = 0;
 }
 
 - (void)deallocateRenderResources
@@ -3019,22 +3019,22 @@ LABEL_16:
     return 1;
   }
 
-  v4 = [(AUAudioUnit *)self outputBusses];
-  v5 = v4;
+  outputBusses = [(AUAudioUnit *)self outputBusses];
+  v5 = outputBusses;
   v6 = 0;
-  if (v4 && [v4 count])
+  if (outputBusses && [outputBusses count])
   {
     v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v7 format];
-    [v8 sampleRate];
+    format = [v7 format];
+    [format sampleRate];
     v6 = v9;
   }
 
-  v10 = [(AUAudioUnit *)self scheduledParameterRefresher];
-  std::mutex::lock((v10 + 336));
-  v11 = atomic_load(v10 + 37);
-  v12 = *(v10 + 72) + 1;
-  *(v10 + 72) = v12;
+  scheduledParameterRefresher = [(AUAudioUnit *)self scheduledParameterRefresher];
+  std::mutex::lock((scheduledParameterRefresher + 336));
+  v11 = atomic_load(scheduledParameterRefresher + 37);
+  v12 = *(scheduledParameterRefresher + 72) + 1;
+  *(scheduledParameterRefresher + 72) = v12;
   if (!v11)
   {
     v15 = 8;
@@ -3047,7 +3047,7 @@ LABEL_16:
   {
     v15 = 2 * v14;
 LABEL_9:
-    v11 = caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::rehash(v10 + 36, v15);
+    v11 = caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::rehash(scheduledParameterRefresher + 36, v15);
   }
 
   if ((caulk::concurrent::guarded_lookup_hash_table<void *,int,(caulk::concurrent::guarded_lookup_hash_table_options)2,caulk::concurrent::guarded_lookup_default_hash_fn<void *>>::table_impl::findSlotForKey(v11, self) & 1) == 0)
@@ -3055,18 +3055,18 @@ LABEL_9:
     operator new();
   }
 
-  --*(v10 + 72);
-  std::mutex::unlock((v10 + 336));
-  v16 = [(AUAudioUnit *)self scheduledParameterRefresher];
-  v17 = self;
-  v17->_realtimeState.contextChangeGenerator.var0.__val_.mObserver = v17;
-  v18 = [(AUAudioUnit *)v17 renderBlock];
-  v19 = *&v17->_realtimeState.contextChangeGenerator.__engaged_;
-  *&v17->_realtimeState.contextChangeGenerator.__engaged_ = v18;
+  --*(scheduledParameterRefresher + 72);
+  std::mutex::unlock((scheduledParameterRefresher + 336));
+  scheduledParameterRefresher2 = [(AUAudioUnit *)self scheduledParameterRefresher];
+  selfCopy = self;
+  selfCopy->_realtimeState.contextChangeGenerator.var0.__val_.mObserver = selfCopy;
+  renderBlock = [(AUAudioUnit *)selfCopy renderBlock];
+  v19 = *&selfCopy->_realtimeState.contextChangeGenerator.__engaged_;
+  *&selfCopy->_realtimeState.contextChangeGenerator.__engaged_ = renderBlock;
 
-  *&v17->_realtimeState.renderBlockType = v6;
-  *v17->_realtimeState.eventSchedule.mAddedEventQueue.mDequeueHead.padding = v16;
-  a_value = v17->_realtimeState.eventSchedule.mAddedEventQueue.mEnqueueHead.__a_.__a_value;
+  *&selfCopy->_realtimeState.renderBlockType = v6;
+  *selfCopy->_realtimeState.eventSchedule.mAddedEventQueue.mDequeueHead.padding = scheduledParameterRefresher2;
+  a_value = selfCopy->_realtimeState.eventSchedule.mAddedEventQueue.mEnqueueHead.__a_.__a_value;
   if (a_value[24] <= 511)
   {
     do
@@ -3098,10 +3098,10 @@ LABEL_9:
   }
 
   _X0 = 0;
-  v22 = *&v17->_anon_f8[8];
+  v22 = *&selfCopy->_anon_f8[8];
   do
   {
-    _X5 = *&v17->_anon_f8[16];
+    _X5 = *&selfCopy->_anon_f8[16];
     __asm { CASPAL          X4, X5, X0, X1, [X8] }
 
     _ZF = _X4 == v22;
@@ -3110,23 +3110,23 @@ LABEL_9:
 
   while (!_ZF);
 
-  *&v17->_anon_f8[76] = [(AUAudioUnit *)v17 AudioUnitMIDIProtocol];
+  *&selfCopy->_anon_f8[76] = [(AUAudioUnit *)selfCopy AudioUnitMIDIProtocol];
   self->_renderResourcesAllocated = 1;
 
   return 1;
 }
 
-- (void)removeRenderObserver:(void *)a3 userData:(void *)a4
+- (void)removeRenderObserver:(void *)observer userData:(void *)data
 {
-  RenderObserver::RenderObserver(&v6, 0, 0, a3, a4);
+  RenderObserver::RenderObserver(&v6, 0, 0, observer, data);
   TThreadSafeList<RenderObserver>::deferred_remove(&self->_realtimeState.renderObserverList.mObservers.mPendingList, &v6);
   v5 = v7;
   v7 = 0;
 }
 
-- (void)addRenderObserver:(void *)a3 userData:(void *)a4
+- (void)addRenderObserver:(void *)observer userData:(void *)data
 {
-  RenderObserver::RenderObserver(&v6, 0, 0, a3, a4);
+  RenderObserver::RenderObserver(&v6, 0, 0, observer, data);
   TThreadSafeList<RenderObserver>::deferred_add(&self->_realtimeState.renderObserverList.mObservers.mPendingList, &v6);
   LOBYTE(self->_realtimeState.eventSchedule.mAUv2GetParameterSynchronizer) = 1;
   v5 = v7;
@@ -4052,15 +4052,15 @@ LABEL_52:
   {
     if (self->_renderResourcesAllocated)
     {
-      v3 = *&self->_anon_f8[76];
+      audioUnitMIDIProtocol = *&self->_anon_f8[76];
     }
 
     else
     {
-      v3 = [(AUAudioUnit *)self AudioUnitMIDIProtocol];
+      audioUnitMIDIProtocol = [(AUAudioUnit *)self AudioUnitMIDIProtocol];
     }
 
-    if (!self->_shouldUseMIDI2 || v3 == 0)
+    if (!self->_shouldUseMIDI2 || audioUnitMIDIProtocol == 0)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -4072,12 +4072,12 @@ LABEL_52:
 
     else
     {
-      if (v3 == kMIDIProtocol_2_0)
+      if (audioUnitMIDIProtocol == kMIDIProtocol_2_0)
       {
         operator new();
       }
 
-      if (v3 == kMIDIProtocol_1_0)
+      if (audioUnitMIDIProtocol == kMIDIProtocol_1_0)
       {
         operator new();
       }
@@ -4137,17 +4137,17 @@ uint64_t __37__AUAudioUnit_scheduleMIDIEventBlock__block_invoke_29(uint64_t a1, 
   return result;
 }
 
-- (void)setV2Parameter:(unint64_t)a3 value:(float)a4 bufferOffset:(unsigned int)a5 sequenceNumber:(unsigned int)a6
+- (void)setV2Parameter:(unint64_t)parameter value:(float)value bufferOffset:(unsigned int)offset sequenceNumber:(unsigned int)number
 {
   v11 = XAtomicPoolAllocator::alloc(self->_realtimeState.eventSchedule.mAddedEventQueue.mEnqueueHead.__a_.__a_value);
   *v11 = 0;
-  *(v11 + 1) = a5 | 0xFFFFFFFE00000000;
+  *(v11 + 1) = offset | 0xFFFFFFFE00000000;
   v11[16] = 1;
   *(v11 + 17) = 0;
   *(v11 + 5) = 0;
-  *(v11 + 3) = a3;
-  *(v11 + 8) = a4;
-  *(v11 + 9) = a6;
+  *(v11 + 3) = parameter;
+  *(v11 + 8) = value;
+  *(v11 + 9) = number;
   *(v11 + 5) = pthread_self();
   v12 = *&self->_realtimeState.eventSchedule.mAddedEventQueue.mDequeueHead.padding[8];
   atomic_store(v12, v11);
@@ -4272,12 +4272,12 @@ char *__37__AUAudioUnit_scheduleParameterBlock__block_invoke(uint64_t a1, uint64
 
 - (AURenderBlock)renderBlock
 {
-  v3 = [(AUAudioUnit *)self internalRenderBlock];
-  if (v3)
+  internalRenderBlock = [(AUAudioUnit *)self internalRenderBlock];
+  if (internalRenderBlock)
   {
-    v4 = [(AUAudioUnit *)self renderContextObserver];
-    v13 = v4;
-    if (v4)
+    renderContextObserver = [(AUAudioUnit *)self renderContextObserver];
+    v13 = renderContextObserver;
+    if (renderContextObserver)
     {
       std::optional<RenderContextChangeGenerator>::emplace[abi:ne200100]<void({block_pointer} {__strong}&)(AudioUnitRenderContext const*),void>(&self->_anon_f8[48], &v13);
     }
@@ -4308,8 +4308,8 @@ char *__37__AUAudioUnit_scheduleParameterBlock__block_invoke(uint64_t a1, uint64
     v9[2] = __26__AUAudioUnit_renderBlock__block_invoke;
     v9[3] = &unk_1E72C1198;
     p_realtimeState = &self->_realtimeState;
-    v12 = self;
-    v10 = v3;
+    selfCopy = self;
+    v10 = internalRenderBlock;
     v7 = _Block_copy(v9);
     v6 = _Block_copy(v7);
   }
@@ -4428,11 +4428,11 @@ uint64_t __26__AUAudioUnit_renderBlock__block_invoke(uint64_t a1, unsigned int *
 
 - (NSString)manufacturerName
 {
-  v2 = [(AUAudioUnit *)self componentName];
-  v3 = [v2 rangeOfString:@": "];
+  componentName = [(AUAudioUnit *)self componentName];
+  v3 = [componentName rangeOfString:@": "];
   if (v4)
   {
-    v5 = [v2 substringToIndex:v3];
+    v5 = [componentName substringToIndex:v3];
   }
 
   else
@@ -4445,16 +4445,16 @@ uint64_t __26__AUAudioUnit_renderBlock__block_invoke(uint64_t a1, unsigned int *
 
 - (NSString)audioUnitName
 {
-  v2 = [(AUAudioUnit *)self componentName];
-  v3 = [v2 rangeOfString:@": "];
+  componentName = [(AUAudioUnit *)self componentName];
+  v3 = [componentName rangeOfString:@": "];
   if (v4)
   {
-    v5 = [v2 substringFromIndex:v3 + v4];
+    v5 = [componentName substringFromIndex:v3 + v4];
 
-    v2 = v5;
+    componentName = v5;
   }
 
-  return v2;
+  return componentName;
 }
 
 - (NSString)componentName
@@ -4726,16 +4726,16 @@ void __58__AUAudioUnit_initWithComponentDescription_options_error___block_invoke
   return 0;
 }
 
-+ (id)auAudioUnitForAudioUnit:(OpaqueAudioComponentInstance *)a3
++ (id)auAudioUnitForAudioUnit:(OpaqueAudioComponentInstance *)unit
 {
-  Component = AudioComponentInstanceGetComponent(a3);
+  Component = AudioComponentInstanceGetComponent(unit);
   ComponentInfo = Impl_AudioGetComponentInfo(Component, &v15, 0);
   v6 = 0;
   if (!ComponentInfo)
   {
     outData = 0;
     ioDataSize = 8;
-    Property = AudioUnitGetProperty(a3, 0x739u, 0, 0, &outData, &ioDataSize);
+    Property = AudioUnitGetProperty(unit, 0x739u, 0, 0, &outData, &ioDataSize);
     if (Property == -10879)
     {
       if (v15.componentType == 1635086197)
@@ -4750,7 +4750,7 @@ void __58__AUAudioUnit_initWithComponentDescription_options_error___block_invoke
 
       v11 = [AUOutputUnitClass alloc];
       v12 = v15;
-      v6 = [v11 initWithAudioUnit:a3 description:&v12];
+      v6 = [v11 initWithAudioUnit:unit description:&v12];
     }
 
     else

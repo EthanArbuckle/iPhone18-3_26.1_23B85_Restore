@@ -1,55 +1,55 @@
 @interface _SFPBPunchout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPunchout)initWithDictionary:(id)a3;
-- (_SFPBPunchout)initWithFacade:(id)a3;
-- (_SFPBPunchout)initWithJSON:(id)a3;
+- (_SFPBPunchout)initWithDictionary:(id)dictionary;
+- (_SFPBPunchout)initWithFacade:(id)facade;
+- (_SFPBPunchout)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUrls:(id)a3;
-- (void)setActionTarget:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setName:(id)a3;
-- (void)setUrls:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUrls:(id)urls;
+- (void)setActionTarget:(id)target;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setLabel:(id)label;
+- (void)setName:(id)name;
+- (void)setUrls:(id)urls;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPunchout
 
-- (_SFPBPunchout)initWithFacade:(id)a3
+- (_SFPBPunchout)initWithFacade:(id)facade
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPunchout *)self init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(_SFPBPunchout *)v5 setName:v7];
+      name2 = [facadeCopy name];
+      [(_SFPBPunchout *)v5 setName:name2];
     }
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [facadeCopy bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v4 bundleIdentifier];
-      [(_SFPBPunchout *)v5 setBundleIdentifier:v9];
+      bundleIdentifier2 = [facadeCopy bundleIdentifier];
+      [(_SFPBPunchout *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    v10 = [v4 label];
+    label = [facadeCopy label];
 
-    if (v10)
+    if (label)
     {
-      v11 = [v4 label];
-      [(_SFPBPunchout *)v5 setLabel:v11];
+      label2 = [facadeCopy label];
+      [(_SFPBPunchout *)v5 setLabel:label2];
     }
 
-    v12 = [v4 urls];
-    if (v12)
+    urls = [facadeCopy urls];
+    if (urls)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -63,8 +63,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [v4 urls];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    urls2 = [facadeCopy urls];
+    v15 = [urls2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v15)
     {
       v16 = v15;
@@ -75,7 +75,7 @@
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(urls2);
           }
 
           v19 = [[_SFPBURL alloc] initWithNSURL:*(*(&v29 + 1) + 8 * i)];
@@ -85,44 +85,44 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v16 = [urls2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v16);
     }
 
     [(_SFPBPunchout *)v5 setUrls:v13];
-    v20 = [v4 userActivityData];
+    userActivityData = [facadeCopy userActivityData];
 
-    if (v20)
+    if (userActivityData)
     {
       v21 = [_SFPBUserActivityData alloc];
-      v22 = [v4 userActivityData];
-      v23 = [(_SFPBUserActivityData *)v21 initWithFacade:v22];
+      userActivityData2 = [facadeCopy userActivityData];
+      v23 = [(_SFPBUserActivityData *)v21 initWithFacade:userActivityData2];
       [(_SFPBPunchout *)v5 setUserActivityData:v23];
     }
 
-    v24 = [v4 actionTarget];
+    actionTarget = [facadeCopy actionTarget];
 
-    if (v24)
+    if (actionTarget)
     {
-      v25 = [v4 actionTarget];
-      [(_SFPBPunchout *)v5 setActionTarget:v25];
+      actionTarget2 = [facadeCopy actionTarget];
+      [(_SFPBPunchout *)v5 setActionTarget:actionTarget2];
     }
 
-    if ([v4 hasIsRunnableInBackground])
+    if ([facadeCopy hasIsRunnableInBackground])
     {
-      -[_SFPBPunchout setIsRunnableInBackground:](v5, "setIsRunnableInBackground:", [v4 isRunnableInBackground]);
+      -[_SFPBPunchout setIsRunnableInBackground:](v5, "setIsRunnableInBackground:", [facadeCopy isRunnableInBackground]);
     }
 
-    if ([v4 hasHasClip])
+    if ([facadeCopy hasHasClip])
     {
-      -[_SFPBPunchout setHasClip:](v5, "setHasClip:", [v4 hasClip]);
+      -[_SFPBPunchout setHasClip:](v5, "setHasClip:", [facadeCopy hasClip]);
     }
 
-    if ([v4 hasForceOpenInBrowser])
+    if ([facadeCopy hasForceOpenInBrowser])
     {
-      -[_SFPBPunchout setForceOpenInBrowser:](v5, "setForceOpenInBrowser:", [v4 forceOpenInBrowser]);
+      -[_SFPBPunchout setForceOpenInBrowser:](v5, "setForceOpenInBrowser:", [facadeCopy forceOpenInBrowser]);
     }
 
     v26 = v5;
@@ -132,16 +132,16 @@
   return v5;
 }
 
-- (_SFPBPunchout)initWithDictionary:(id)a3
+- (_SFPBPunchout)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = _SFPBPunchout;
   v5 = [(_SFPBPunchout *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
       [(_SFPBPunchout *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,7 +158,7 @@
     }
 
     v31 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,7 +166,7 @@
       [(_SFPBPunchout *)v5 setLabel:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"urls"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"urls"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -208,7 +208,7 @@
       v6 = v30;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"userActivityData"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"userActivityData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,7 +216,7 @@
       [(_SFPBPunchout *)v5 setUserActivityData:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"actionTarget"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"actionTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -224,21 +224,21 @@
       [(_SFPBPunchout *)v5 setActionTarget:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isRunnableInBackground"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isRunnableInBackground"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPunchout setIsRunnableInBackground:](v5, "setIsRunnableInBackground:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"hasClip"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"hasClip"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPunchout setHasClip:](v5, "setHasClip:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"forceOpenInBrowser"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"forceOpenInBrowser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,30 +252,30 @@
   return v5;
 }
 
-- (_SFPBPunchout)initWithJSON:(id)a3
+- (_SFPBPunchout)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPunchout *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPunchout *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPunchout *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -289,56 +289,56 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionTarget)
   {
-    v4 = [(_SFPBPunchout *)self actionTarget];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actionTarget"];
+    actionTarget = [(_SFPBPunchout *)self actionTarget];
+    v5 = [actionTarget copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionTarget"];
   }
 
   if (self->_bundleIdentifier)
   {
-    v6 = [(_SFPBPunchout *)self bundleIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_SFPBPunchout *)self bundleIdentifier];
+    v7 = [bundleIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_forceOpenInBrowser)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPunchout forceOpenInBrowser](self, "forceOpenInBrowser")}];
-    [v3 setObject:v8 forKeyedSubscript:@"forceOpenInBrowser"];
+    [dictionary setObject:v8 forKeyedSubscript:@"forceOpenInBrowser"];
   }
 
   if (self->_hasClip)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPunchout hasClip](self, "hasClip")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasClip"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasClip"];
   }
 
   if (self->_isRunnableInBackground)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPunchout isRunnableInBackground](self, "isRunnableInBackground")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isRunnableInBackground"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isRunnableInBackground"];
   }
 
   if (self->_label)
   {
-    v11 = [(_SFPBPunchout *)self label];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"label"];
+    label = [(_SFPBPunchout *)self label];
+    v12 = [label copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"label"];
   }
 
   if (self->_name)
   {
-    v13 = [(_SFPBPunchout *)self name];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"name"];
+    name = [(_SFPBPunchout *)self name];
+    v14 = [name copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"name"];
   }
 
   if ([(NSArray *)self->_urls count])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -358,16 +358,16 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          if (v21)
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v15 addObject:v21];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v22 = [MEMORY[0x1E695DFB0] null];
-            [v15 addObject:v22];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -377,28 +377,28 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"urls"];
+    [dictionary setObject:array forKeyedSubscript:@"urls"];
   }
 
   if (self->_userActivityData)
   {
-    v23 = [(_SFPBPunchout *)self userActivityData];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    userActivityData = [(_SFPBPunchout *)self userActivityData];
+    dictionaryRepresentation2 = [userActivityData dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"userActivityData"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"userActivityData"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"userActivityData"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"userActivityData"];
     }
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -438,28 +438,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v10 ^ v11 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_SFPBPunchout *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_SFPBPunchout *)self name];
-  if (v7)
+  name3 = [(_SFPBPunchout *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPunchout *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(_SFPBPunchout *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -471,20 +471,20 @@
   {
   }
 
-  v5 = [(_SFPBPunchout *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self bundleIdentifier];
+  name2 = [equalCopy bundleIdentifier];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_SFPBPunchout *)self bundleIdentifier];
-  if (v12)
+  bundleIdentifier = [(_SFPBPunchout *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBPunchout *)self bundleIdentifier];
-    v15 = [v4 bundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = bundleIdentifier;
+    bundleIdentifier2 = [(_SFPBPunchout *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v16 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (!v16)
     {
@@ -496,20 +496,20 @@
   {
   }
 
-  v5 = [(_SFPBPunchout *)self label];
-  v6 = [v4 label];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self label];
+  name2 = [equalCopy label];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_SFPBPunchout *)self label];
-  if (v17)
+  label = [(_SFPBPunchout *)self label];
+  if (label)
   {
-    v18 = v17;
-    v19 = [(_SFPBPunchout *)self label];
-    v20 = [v4 label];
-    v21 = [v19 isEqual:v20];
+    v18 = label;
+    label2 = [(_SFPBPunchout *)self label];
+    label3 = [equalCopy label];
+    v21 = [label2 isEqual:label3];
 
     if (!v21)
     {
@@ -521,20 +521,20 @@
   {
   }
 
-  v5 = [(_SFPBPunchout *)self urls];
-  v6 = [v4 urls];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self urls];
+  name2 = [equalCopy urls];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_SFPBPunchout *)self urls];
-  if (v22)
+  urls = [(_SFPBPunchout *)self urls];
+  if (urls)
   {
-    v23 = v22;
-    v24 = [(_SFPBPunchout *)self urls];
-    v25 = [v4 urls];
-    v26 = [v24 isEqual:v25];
+    v23 = urls;
+    urls2 = [(_SFPBPunchout *)self urls];
+    urls3 = [equalCopy urls];
+    v26 = [urls2 isEqual:urls3];
 
     if (!v26)
     {
@@ -546,20 +546,20 @@
   {
   }
 
-  v5 = [(_SFPBPunchout *)self userActivityData];
-  v6 = [v4 userActivityData];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self userActivityData];
+  name2 = [equalCopy userActivityData];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_SFPBPunchout *)self userActivityData];
-  if (v27)
+  userActivityData = [(_SFPBPunchout *)self userActivityData];
+  if (userActivityData)
   {
-    v28 = v27;
-    v29 = [(_SFPBPunchout *)self userActivityData];
-    v30 = [v4 userActivityData];
-    v31 = [v29 isEqual:v30];
+    v28 = userActivityData;
+    userActivityData2 = [(_SFPBPunchout *)self userActivityData];
+    userActivityData3 = [equalCopy userActivityData];
+    v31 = [userActivityData2 isEqual:userActivityData3];
 
     if (!v31)
     {
@@ -571,22 +571,22 @@
   {
   }
 
-  v5 = [(_SFPBPunchout *)self actionTarget];
-  v6 = [v4 actionTarget];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBPunchout *)self actionTarget];
+  name2 = [equalCopy actionTarget];
+  if ((name != 0) == (name2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(_SFPBPunchout *)self actionTarget];
-  if (v32)
+  actionTarget = [(_SFPBPunchout *)self actionTarget];
+  if (actionTarget)
   {
-    v33 = v32;
-    v34 = [(_SFPBPunchout *)self actionTarget];
-    v35 = [v4 actionTarget];
-    v36 = [v34 isEqual:v35];
+    v33 = actionTarget;
+    actionTarget2 = [(_SFPBPunchout *)self actionTarget];
+    actionTarget3 = [equalCopy actionTarget];
+    v36 = [actionTarget2 isEqual:actionTarget3];
 
     if (!v36)
     {
@@ -599,13 +599,13 @@ LABEL_31:
   }
 
   isRunnableInBackground = self->_isRunnableInBackground;
-  if (isRunnableInBackground == [v4 isRunnableInBackground])
+  if (isRunnableInBackground == [equalCopy isRunnableInBackground])
   {
     hasClip = self->_hasClip;
-    if (hasClip == [v4 hasClip])
+    if (hasClip == [equalCopy hasClip])
     {
       forceOpenInBrowser = self->_forceOpenInBrowser;
-      v37 = forceOpenInBrowser == [v4 forceOpenInBrowser];
+      v37 = forceOpenInBrowser == [equalCopy forceOpenInBrowser];
       goto LABEL_33;
     }
   }
@@ -617,34 +617,34 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBPunchout *)self name];
-  if (v5)
+  toCopy = to;
+  name = [(_SFPBPunchout *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBPunchout *)self bundleIdentifier];
-  if (v6)
+  bundleIdentifier = [(_SFPBPunchout *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBPunchout *)self label];
-  if (v7)
+  label = [(_SFPBPunchout *)self label];
+  if (label)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBPunchout *)self urls];
+  urls = [(_SFPBPunchout *)self urls];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [urls countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -656,7 +656,7 @@ LABEL_33:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(urls);
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
@@ -665,20 +665,20 @@ LABEL_33:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [urls countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(_SFPBPunchout *)self userActivityData];
-  if (v14)
+  userActivityData = [(_SFPBPunchout *)self userActivityData];
+  if (userActivityData)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBPunchout *)self actionTarget];
-  if (v15)
+  actionTarget = [(_SFPBPunchout *)self actionTarget];
+  if (actionTarget)
   {
     PBDataWriterWriteStringField();
   }
@@ -701,63 +701,63 @@ LABEL_33:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActionTarget:(id)a3
+- (void)setActionTarget:(id)target
 {
-  v4 = [a3 copy];
+  v4 = [target copy];
   actionTarget = self->_actionTarget;
   self->_actionTarget = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addUrls:(id)a3
+- (void)addUrls:(id)urls
 {
-  v4 = a3;
+  urlsCopy = urls;
   urls = self->_urls;
-  v8 = v4;
+  v8 = urlsCopy;
   if (!urls)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_urls;
-    self->_urls = v6;
+    self->_urls = array;
 
-    v4 = v8;
+    urlsCopy = v8;
     urls = self->_urls;
   }
 
-  [(NSArray *)urls addObject:v4];
+  [(NSArray *)urls addObject:urlsCopy];
 }
 
-- (void)setUrls:(id)a3
+- (void)setUrls:(id)urls
 {
-  v4 = [a3 copy];
+  v4 = [urls copy];
   urls = self->_urls;
   self->_urls = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   label = self->_label;
   self->_label = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 

@@ -1,39 +1,39 @@
 @interface HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo *)self setIdsIdentifierString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo *)self setMediaRouteIdString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((idsIdentifierString = self->_idsIdentifierString, !(idsIdentifierString | v4[1])) || -[NSString isEqual:](idsIdentifierString, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((idsIdentifierString = self->_idsIdentifierString, !(idsIdentifierString | equalCopy[1])) || -[NSString isEqual:](idsIdentifierString, "isEqual:")))
   {
     mediaRouteIdString = self->_mediaRouteIdString;
-    if (mediaRouteIdString | v4[2])
+    if (mediaRouteIdString | equalCopy[2])
     {
       v7 = [(NSString *)mediaRouteIdString isEqual:?];
     }
@@ -52,62 +52,62 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idsIdentifierString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idsIdentifierString copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_mediaRouteIdString copyWithZone:a3];
+  v8 = [(NSString *)self->_mediaRouteIdString copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_idsIdentifierString)
   {
-    [v4 setIdsIdentifierString:?];
-    v4 = v5;
+    [toCopy setIdsIdentifierString:?];
+    toCopy = v5;
   }
 
   if (self->_mediaRouteIdString)
   {
     [v5 setMediaRouteIdString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_idsIdentifierString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaRouteIdString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idsIdentifierString = self->_idsIdentifierString;
   if (idsIdentifierString)
   {
-    [v3 setObject:idsIdentifierString forKey:@"idsIdentifierString"];
+    [dictionary setObject:idsIdentifierString forKey:@"idsIdentifierString"];
   }
 
   mediaRouteIdString = self->_mediaRouteIdString;
@@ -125,8 +125,8 @@
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoVisibleDeviceInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

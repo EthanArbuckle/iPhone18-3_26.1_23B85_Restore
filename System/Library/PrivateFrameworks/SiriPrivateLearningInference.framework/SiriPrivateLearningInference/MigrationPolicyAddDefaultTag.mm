@@ -1,16 +1,16 @@
 @interface MigrationPolicyAddDefaultTag
 - (_TtC28SiriPrivateLearningInference28MigrationPolicyAddDefaultTag)init;
-- (id)migrateAndAddDefaultTagWithSource:(id)a3 manager:(id)a4;
+- (id)migrateAndAddDefaultTagWithSource:(id)source manager:(id)manager;
 @end
 
 @implementation MigrationPolicyAddDefaultTag
 
-- (id)migrateAndAddDefaultTagWithSource:(id)a3 manager:(id)a4
+- (id)migrateAndAddDefaultTagWithSource:(id)source manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_222BB80B8(v7);
+  sourceCopy = source;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_222BB80B8(managerCopy);
 
   sub_222B505A8(0, &qword_27D025FF0, 0x277CBE438);
   v9 = sub_222C9470C();

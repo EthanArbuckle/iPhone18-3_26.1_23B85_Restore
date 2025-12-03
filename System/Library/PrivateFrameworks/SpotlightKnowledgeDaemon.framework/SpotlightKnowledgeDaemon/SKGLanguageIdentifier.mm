@@ -1,6 +1,6 @@
 @interface SKGLanguageIdentifier
 + (id)sharedIdentifier;
-- (id)languageFromString:(id)a3 normalizedChunkBlock:(id)a4;
+- (id)languageFromString:(id)string normalizedChunkBlock:(id)block;
 @end
 
 @implementation SKGLanguageIdentifier
@@ -24,11 +24,11 @@ void __41__SKGLanguageIdentifier_sharedIdentifier__block_invoke()
   sharedIdentifier_gIdentifier = v0;
 }
 
-- (id)languageFromString:(id)a3 normalizedChunkBlock:(id)a4
+- (id)languageFromString:(id)string normalizedChunkBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  blockCopy = block;
   memset(v26, 0, 240);
   v22 = 0;
   v23 = &v22;
@@ -38,7 +38,7 @@ void __41__SKGLanguageIdentifier_sharedIdentifier__block_invoke()
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v21[3] = 0;
-  v7 = [v5 length];
+  v7 = [stringCopy length];
   v8 = v7;
   if (v7 - 16 > 0x53)
   {
@@ -48,10 +48,10 @@ void __41__SKGLanguageIdentifier_sharedIdentifier__block_invoke()
       v17[1] = 3221225472;
       v17[2] = __65__SKGLanguageIdentifier_languageFromString_normalizedChunkBlock___block_invoke;
       v17[3] = &unk_27893EE28;
-      v18 = v6;
+      v18 = blockCopy;
       v19 = &v22;
       v20 = v21;
-      [v5 enumerateSubstringsInRange:0 options:v8 usingBlock:{1, v17}];
+      [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{1, v17}];
     }
   }
 

@@ -1,9 +1,9 @@
 @interface FTUserConfiguration
 + (id)sharedInstance;
 - (BOOL)_adequateInternalOrCarrierInstall;
-- (BOOL)_getCellularDataEnabledForBundleID:(id)a3;
-- (BOOL)_getNonBluetoothDataAllowedForBundleID:(id)a3;
-- (BOOL)_getWifiDataAllowedForBundleID:(id)a3;
+- (BOOL)_getCellularDataEnabledForBundleID:(id)d;
+- (BOOL)_getNonBluetoothDataAllowedForBundleID:(id)d;
+- (BOOL)_getWifiDataAllowedForBundleID:(id)d;
 - (BOOL)_nonWifiFaceTimeEntitled;
 - (BOOL)allowAnyNetwork;
 - (FTUserConfiguration)init;
@@ -11,13 +11,13 @@
 - (NSNumber)selectedPhoneNumberRegistrationSubscriptionNumber;
 - (__CTServerConnection)ctServerConnection;
 - (void)_clearCaches;
-- (void)_setAppCellularDataEnabled:(BOOL)a3;
+- (void)_setAppCellularDataEnabled:(BOOL)enabled;
 - (void)_setupUsageHandlerIfNeeded;
 - (void)dealloc;
-- (void)setIsDeviceInDualPhoneIdentityMode:(BOOL)a3;
-- (void)setIsDeviceInManualPhoneSelectionMode:(BOOL)a3;
-- (void)setSelectedPhoneNumberRegistrationSubscriptionLabels:(id)a3;
-- (void)silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:(id)a3;
+- (void)setIsDeviceInDualPhoneIdentityMode:(BOOL)mode;
+- (void)setIsDeviceInManualPhoneSelectionMode:(BOOL)mode;
+- (void)setSelectedPhoneNumberRegistrationSubscriptionLabels:(id)labels;
+- (void)silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:(id)labels;
 @end
 
 @implementation FTUserConfiguration
@@ -44,16 +44,16 @@
   if (v2)
   {
     v2->_shouldCacheCTConnection = 1;
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    v5 = [v4 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if ([v5 isEqualToString:@"InCallService"])
+    if ([processName isEqualToString:@"InCallService"])
     {
       v6 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = processName;
         _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Not building UserConfiguration cache for {processName: %@}", buf, 0xCu);
       }
 
@@ -265,15 +265,15 @@ LABEL_17:
   pthread_mutex_unlock(&stru_1ED768518);
 }
 
-- (void)_setAppCellularDataEnabled:(BOOL)a3
+- (void)_setAppCellularDataEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(FTUserConfiguration *)self ctServerConnection])
   {
     v10 = *MEMORY[0x1E6965230];
     v4 = MEMORY[0x1E6965238];
-    if (!v3)
+    if (!enabledCopy)
     {
       v4 = MEMORY[0x1E6965240];
     }
@@ -304,14 +304,14 @@ LABEL_17:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_getCellularDataEnabledForBundleID:(id)a3
+- (BOOL)_getCellularDataEnabledForBundleID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     pthread_mutex_lock(&stru_1ED768558);
-    v5 = [(NSMutableDictionary *)self->_cellularDataAvailableCache objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_cellularDataAvailableCache objectForKey:dCopy];
     if (!v5)
     {
       if ([(FTUserConfiguration *)self ctServerConnection])
@@ -344,7 +344,7 @@ LABEL_17:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_ERROR, "Failed to get the data usage policy for bundle %@", buf, 0xCu);
       }
 
@@ -359,26 +359,26 @@ LABEL_17:
     }
 
     pthread_mutex_unlock(&stru_1ED768558);
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_getWifiDataAllowedForBundleID:(id)a3
+- (BOOL)_getWifiDataAllowedForBundleID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     pthread_mutex_lock(&stru_1ED7684D8);
-    v5 = [(NSMutableDictionary *)self->_wifiAllowedCache objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_wifiAllowedCache objectForKey:dCopy];
     if (!v5)
     {
       if ([(FTUserConfiguration *)self ctServerConnection])
@@ -411,7 +411,7 @@ LABEL_17:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_ERROR, "Failed to get the data usage policy for bundle %@", buf, 0xCu);
       }
 
@@ -426,16 +426,16 @@ LABEL_17:
     }
 
     pthread_mutex_unlock(&stru_1ED7684D8);
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 - (void)_setupUsageHandlerIfNeeded
@@ -451,10 +451,10 @@ LABEL_17:
   }
 }
 
-- (BOOL)_getNonBluetoothDataAllowedForBundleID:(id)a3
+- (BOOL)_getNonBluetoothDataAllowedForBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     pthread_mutex_lock(&stru_1ED768518);
     [(FTUserConfiguration *)self _setupUsageHandlerIfNeeded];
@@ -463,7 +463,7 @@ LABEL_17:
     v17 = 0x3032000000;
     v18 = sub_19592BEB4;
     v19 = sub_19592BFE8;
-    v20 = [(NSMutableDictionary *)self->_nonBTAllowedCache objectForKey:v4];
+    v20 = [(NSMutableDictionary *)self->_nonBTAllowedCache objectForKey:dCopy];
     if (!v16[5])
     {
       v5 = [MEMORY[0x1E69A61A0] weakRefWithObject:self];
@@ -473,8 +473,8 @@ LABEL_17:
       v14 = 1;
       v6 = dispatch_semaphore_create(0);
       usageClient = self->_usageClient;
-      [v4 UTF8String];
-      v10 = v4;
+      [dCopy UTF8String];
+      v10 = dCopy;
       v11 = v5;
       v12 = v6;
       network_usage_policy_get_for_bundle();
@@ -484,30 +484,30 @@ LABEL_17:
     }
 
     pthread_mutex_unlock(&stru_1ED768518);
-    v8 = [v16[5] BOOLValue];
+    bOOLValue = [v16[5] BOOLValue];
     _Block_object_dispose(&v15, 8);
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)_adequateInternalOrCarrierInstall
 {
-  v2 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if ([v2 isInternalInstall])
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if ([mEMORY[0x1E69A60F0] isInternalInstall])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-    if ([v4 isCarrierInstall])
+    mEMORY[0x1E69A60F0]2 = [MEMORY[0x1E69A60F0] sharedInstance];
+    if ([mEMORY[0x1E69A60F0]2 isCarrierInstall])
     {
       v3 = IMGetAppBoolForKey();
     }
@@ -523,43 +523,43 @@ LABEL_17:
 
 - (BOOL)allowAnyNetwork
 {
-  v2 = [(FTUserConfiguration *)self _adequateInternalOrCarrierInstall];
-  if (v2)
+  _adequateInternalOrCarrierInstall = [(FTUserConfiguration *)self _adequateInternalOrCarrierInstall];
+  if (_adequateInternalOrCarrierInstall)
   {
     if (IMGetDomainBoolForKey())
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(_adequateInternalOrCarrierInstall) = 1;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E696AC08] defaultManager];
-      v4 = [v3 fileExistsAtPath:@"/Library/Preferences/SystemConfiguration/rtether.plist"];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v4 = [defaultManager fileExistsAtPath:@"/Library/Preferences/SystemConfiguration/rtether.plist"];
 
-      LOBYTE(v2) = v4;
+      LOBYTE(_adequateInternalOrCarrierInstall) = v4;
     }
   }
 
-  return v2;
+  return _adequateInternalOrCarrierInstall;
 }
 
-- (void)setSelectedPhoneNumberRegistrationSubscriptionLabels:(id)a3
+- (void)setSelectedPhoneNumberRegistrationSubscriptionLabels:(id)labels
 {
-  v4 = a3;
-  [(FTUserConfiguration *)self silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:v4];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"FTUserConfigurationSelectedSubscriptionLabelDidChange" object:v4];
+  labelsCopy = labels;
+  [(FTUserConfiguration *)self silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:labelsCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"FTUserConfigurationSelectedSubscriptionLabelDidChange" object:labelsCopy];
 }
 
-- (void)silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:(id)a3
+- (void)silentlySetSelectedPhoneNumberRegistrationSubscriptionLabels:(id)labels
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  labelsCopy = labels;
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = labelsCopy;
     _os_log_impl(&dword_195925000, v4, OS_LOG_TYPE_DEFAULT, "Setting persisted phone number registration subscription label {subscriptionLabels: %@}", &v6, 0xCu);
   }
 
@@ -567,15 +567,15 @@ LABEL_17:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIsDeviceInDualPhoneIdentityMode:(BOOL)a3
+- (void)setIsDeviceInDualPhoneIdentityMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v9 = *MEMORY[0x1E69E9840];
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (modeCopy)
     {
       v5 = @"YES";
     }
@@ -589,15 +589,15 @@ LABEL_17:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIsDeviceInManualPhoneSelectionMode:(BOOL)a3
+- (void)setIsDeviceInManualPhoneSelectionMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v9 = *MEMORY[0x1E69E9840];
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (modeCopy)
     {
       v5 = @"YES";
     }
@@ -613,14 +613,14 @@ LABEL_17:
 
 - (BOOL)_nonWifiFaceTimeEntitled
 {
-  v2 = [(FTUserConfiguration *)self _adequateInternalOrCarrierInstall];
-  if (v2)
+  _adequateInternalOrCarrierInstall = [(FTUserConfiguration *)self _adequateInternalOrCarrierInstall];
+  if (_adequateInternalOrCarrierInstall)
   {
 
-    LOBYTE(v2) = IMGetCachedDomainBoolForKey();
+    LOBYTE(_adequateInternalOrCarrierInstall) = IMGetCachedDomainBoolForKey();
   }
 
-  return v2;
+  return _adequateInternalOrCarrierInstall;
 }
 
 @end

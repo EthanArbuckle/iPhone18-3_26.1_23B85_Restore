@@ -1,5 +1,5 @@
 @interface NSString
-+ (id)csd_stringWithCSDVoIPApplicationMessageTransportType:(int64_t)a3;
++ (id)csd_stringWithCSDVoIPApplicationMessageTransportType:(int64_t)type;
 - (NSUUID)csd_UUIDv5;
 @end
 
@@ -16,16 +16,16 @@
   return v3;
 }
 
-+ (id)csd_stringWithCSDVoIPApplicationMessageTransportType:(int64_t)a3
++ (id)csd_stringWithCSDVoIPApplicationMessageTransportType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_10061FF08[a3];
+    return off_10061FF08[type];
   }
 }
 

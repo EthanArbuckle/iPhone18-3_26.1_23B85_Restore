@@ -1,6 +1,6 @@
 @interface TUIElementInstantiate
 + (id)containerAttributes;
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementInstantiate
@@ -17,14 +17,14 @@
   return v3;
 }
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v13 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 nameReferenceForAttribute:137 node:a4.var0];
+  builderCopy = builder;
+  attributesCopy = attributes;
+  contextCopy = context;
+  v11 = [attributesCopy nameReferenceForAttribute:137 node:node.var0];
   v12 = objc_autoreleasePoolPush();
-  [v10 instantiateElementReference:v11 withChildrenOfNode:a4.var0];
+  [contextCopy instantiateElementReference:v11 withChildrenOfNode:node.var0];
   objc_autoreleasePoolPop(v12);
 }
 

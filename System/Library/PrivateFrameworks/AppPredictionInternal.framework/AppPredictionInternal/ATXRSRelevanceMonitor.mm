@@ -1,15 +1,15 @@
 @interface ATXRSRelevanceMonitor
 - (ATXRSRelevanceMonitor)init;
 - (ATXRSRelevanceMonitorDelegate)delegate;
-- (BOOL)_isBehavioralRelevanceSatisfiedForCandidate:(id)a3 currentMode:(unint64_t)a4;
-- (BOOL)_isDateRelevantContextSatisfied:(id)a3;
-- (id)_earliestFutureDateAmongDateRelevantContexts:(id)a3;
-- (id)_nonnullEndDateOfDateRelevantContext:(id)a3;
+- (BOOL)_isBehavioralRelevanceSatisfiedForCandidate:(id)candidate currentMode:(unint64_t)mode;
+- (BOOL)_isDateRelevantContextSatisfied:(id)satisfied;
+- (id)_earliestFutureDateAmongDateRelevantContexts:(id)contexts;
+- (id)_nonnullEndDateOfDateRelevantContext:(id)context;
 - (void)_queue_clearAllCurrentMonitoring;
 - (void)_queue_refreshCurrentlyRelevantCandidates;
-- (void)_queue_startMonitoringDateRelevantContexts:(id)a3;
+- (void)_queue_startMonitoringDateRelevantContexts:(id)contexts;
 - (void)_queue_startMonitoringModeChanges;
-- (void)resetToMonitorForRelevantShortcutCandidates:(id)a3;
+- (void)resetToMonitorForRelevantShortcutCandidates:(id)candidates;
 @end
 
 @implementation ATXRSRelevanceMonitor
@@ -81,19 +81,19 @@ void __29__ATXRSRelevanceMonitor_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "ATXRSRelevanceMonitor: fetching current mode", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D41C60] currentModeEvent];
-  v5 = [v4 eventBody];
-  v6 = [v5 starting];
+  currentModeEvent = [MEMORY[0x277D41C60] currentModeEvent];
+  eventBody = [currentModeEvent eventBody];
+  starting = [eventBody starting];
 
-  if (v6)
+  if (starting)
   {
-    v7 = [v4 eventBody];
-    [v7 atx_dndModeSemanticType];
+    eventBody2 = [currentModeEvent eventBody];
+    [eventBody2 atx_dndModeSemanticType];
 
     DNDModeSemanticTypeToATXActivityType();
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ATXModeFromActivityType()];
     v9 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timestamp];
+    [currentModeEvent timestamp];
     v10 = [v9 initWithTimeIntervalSinceReferenceDate:?];
     v11 = __atxlog_handle_relevant_shortcut();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -109,18 +109,18 @@ void __29__ATXRSRelevanceMonitor_init__block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  v12 = [MEMORY[0x277D41C68] currentModeEvent];
-  v13 = [v12 eventBody];
-  v14 = [v13 isStart];
+  currentModeEvent2 = [MEMORY[0x277D41C68] currentModeEvent];
+  eventBody3 = [currentModeEvent2 eventBody];
+  isStart = [eventBody3 isStart];
 
-  if (v14)
+  if (isStart)
   {
-    v15 = [v12 eventBody];
-    [v15 modeType];
+    eventBody4 = [currentModeEvent2 eventBody];
+    [eventBody4 modeType];
     BMUserFocusInferredModeTypeToActivity();
 
     v16 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v12 timestamp];
+    [currentModeEvent2 timestamp];
     v17 = [v16 initWithTimeIntervalSinceReferenceDate:?];
     v18 = v17;
     if (v8 && v10 && [v17 compare:v10] != 1)
@@ -202,10 +202,10 @@ LABEL_33:
   v29 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v8 second:v10];
 LABEL_34:
 
-  v30 = [v29 first];
-  v74 = [v30 unsignedIntegerValue];
+  first = [v29 first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
 
-  v31 = [v29 second];
+  second = [v29 second];
   v32 = +[_ATXGlobals sharedInstance];
   buf[0] = 0;
   v33 = 0.0;
@@ -217,7 +217,7 @@ LABEL_34:
 
   [v32 behavioralModeRelevanceDuration];
   v36 = v35;
-  v37 = [v31 dateByAddingTimeInterval:v33];
+  v37 = [second dateByAddingTimeInterval:v33];
   v38 = [v37 dateByAddingTimeInterval:v36];
   [v37 timeIntervalSinceNow];
   v73 = v29;
@@ -253,28 +253,28 @@ LABEL_34:
         }
 
         v42 = *(*(&v89 + 1) + 8 * i);
-        if (v82 && ([*(*(&v89 + 1) + 8 * i) relevantContexts], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44) && -[ATXRSRelevanceMonitor _isBehavioralRelevanceSatisfiedForCandidate:currentMode:](self, "_isBehavioralRelevanceSatisfiedForCandidate:currentMode:", v42, v74))
+        if (v82 && ([*(*(&v89 + 1) + 8 * i) relevantContexts], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "count"), v43, !v44) && -[ATXRSRelevanceMonitor _isBehavioralRelevanceSatisfiedForCandidate:currentMode:](self, "_isBehavioralRelevanceSatisfiedForCandidate:currentMode:", v42, unsignedIntegerValue))
         {
           [v80 addObject:v42];
-          v45 = __atxlog_handle_relevant_shortcut();
-          if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+          relevantContexts = __atxlog_handle_relevant_shortcut();
+          if (os_log_type_enabled(relevantContexts, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v42 widgetDescriptor];
-            v47 = [v46 extensionBundleIdentifier];
-            v48 = [v42 widgetDescriptor];
-            v49 = [v48 kind];
-            v50 = [v42 intent];
-            v51 = [v50 intentDescription];
+            widgetDescriptor = [v42 widgetDescriptor];
+            extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
+            widgetDescriptor2 = [v42 widgetDescriptor];
+            kind = [widgetDescriptor2 kind];
+            intent = [v42 intent];
+            intentDescription = [intent intentDescription];
             v52 = ATXModeToString();
             *buf = 138413058;
-            v94 = v47;
+            v94 = extensionBundleIdentifier;
             v95 = 2112;
-            v96 = v49;
+            v96 = kind;
             v97 = 2112;
-            v98 = v51;
+            v98 = intentDescription;
             v99 = 2112;
             v100 = v52;
-            _os_log_impl(&dword_2263AA000, v45, OS_LOG_TYPE_DEFAULT, "ATXRSRelevanceMonitor: Candidate (%@ - %@ - %@) with no providers satisfied behavioral relevance for mode: %@", buf, 0x2Au);
+            _os_log_impl(&dword_2263AA000, relevantContexts, OS_LOG_TYPE_DEFAULT, "ATXRSRelevanceMonitor: Candidate (%@ - %@ - %@) with no providers satisfied behavioral relevance for mode: %@", buf, 0x2Au);
 
 LABEL_67:
           }
@@ -286,8 +286,8 @@ LABEL_67:
           v88 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v45 = [v42 relevantContexts];
-          v53 = [v45 countByEnumeratingWithState:&v85 objects:v103 count:16];
+          relevantContexts = [v42 relevantContexts];
+          v53 = [relevantContexts countByEnumeratingWithState:&v85 objects:v103 count:16];
           if (v53)
           {
             v54 = v53;
@@ -298,7 +298,7 @@ LABEL_67:
               {
                 if (*v86 != v55)
                 {
-                  objc_enumerationMutation(v45);
+                  objc_enumerationMutation(relevantContexts);
                 }
 
                 v57 = *(*(&v85 + 1) + 8 * j);
@@ -331,24 +331,24 @@ LABEL_67:
                   v61 = __atxlog_handle_relevant_shortcut();
                   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
                   {
-                    v78 = [v42 widgetDescriptor];
-                    v62 = [v78 extensionBundleIdentifier];
-                    v77 = [v42 widgetDescriptor];
-                    v63 = [v77 kind];
-                    v76 = [v42 intent];
-                    v64 = [v76 intentDescription];
-                    v65 = [v52 startDate];
-                    v66 = [v52 endDate];
+                    widgetDescriptor3 = [v42 widgetDescriptor];
+                    extensionBundleIdentifier2 = [widgetDescriptor3 extensionBundleIdentifier];
+                    widgetDescriptor4 = [v42 widgetDescriptor];
+                    kind2 = [widgetDescriptor4 kind];
+                    intent2 = [v42 intent];
+                    intentDescription2 = [intent2 intentDescription];
+                    startDate = [v52 startDate];
+                    endDate = [v52 endDate];
                     *buf = 138413314;
-                    v94 = v62;
+                    v94 = extensionBundleIdentifier2;
                     v95 = 2112;
-                    v96 = v63;
+                    v96 = kind2;
                     v97 = 2112;
-                    v98 = v64;
+                    v98 = intentDescription2;
                     v99 = 2114;
-                    v100 = v65;
+                    v100 = startDate;
                     v101 = 2114;
-                    v102 = v66;
+                    v102 = endDate;
                     _os_log_impl(&dword_2263AA000, v61, OS_LOG_TYPE_DEFAULT, "ATXRSRelevanceMonitor: Candidate (%@ - %@ - %@) has active date relevant context (start %{public}@, end %{public}@)", buf, 0x34u);
                   }
 
@@ -356,7 +356,7 @@ LABEL_67:
                 }
               }
 
-              v54 = [v45 countByEnumeratingWithState:&v85 objects:v103 count:16];
+              v54 = [relevantContexts countByEnumeratingWithState:&v85 objects:v103 count:16];
               if (v54)
               {
                 continue;
@@ -383,25 +383,25 @@ LABEL_67:
     _os_log_impl(&dword_2263AA000, v67, OS_LOG_TYPE_DEFAULT, "ATXRSRelevanceMonitor: %lu candidates are currently relevant", buf, 0xCu);
   }
 
-  v69 = [(ATXRSRelevanceMonitor *)self delegate];
+  delegate = [(ATXRSRelevanceMonitor *)self delegate];
   v70 = [v80 copy];
   v71 = [v79 copy];
-  [v69 relevanceMonitorDidUpdateCurrentlyRelevantCandidates:v70 relevantContexts:v71];
+  [delegate relevanceMonitorDidUpdateCurrentlyRelevantCandidates:v70 relevantContexts:v71];
 
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetToMonitorForRelevantShortcutCandidates:(id)a3
+- (void)resetToMonitorForRelevantShortcutCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ATXRSRelevanceMonitor_resetToMonitorForRelevantShortcutCandidates___block_invoke;
   v7[3] = &unk_278596C10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = candidatesCopy;
+  selfCopy = self;
+  v6 = candidatesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -530,10 +530,10 @@ void __69__ATXRSRelevanceMonitor_resetToMonitorForRelevantShortcutCandidates___b
   [(BPSSink *)inferredModeSink cancel];
 }
 
-- (void)_queue_startMonitoringDateRelevantContexts:(id)a3
+- (void)_queue_startMonitoringDateRelevantContexts:(id)contexts
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [(ATXRSRelevanceMonitor *)self _earliestFutureDateAmongDateRelevantContexts:a3];
+  v4 = [(ATXRSRelevanceMonitor *)self _earliestFutureDateAmongDateRelevantContexts:contexts];
   v5 = __atxlog_handle_relevant_shortcut();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   if (v4)
@@ -575,15 +575,15 @@ void __69__ATXRSRelevanceMonitor_resetToMonitorForRelevantShortcutCandidates___b
 {
   objc_initWeak(&location, self);
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 ComputedMode];
-  v6 = [v5 atx_DSLPublisher];
+  userFocus = [v3 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  atx_DSLPublisher = [computedMode atx_DSLPublisher];
 
   v7 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.proactive.ATXRSRelevanceMonitor.ComputedMode" targetQueue:self->_queue];
   computedModeScheduler = self->_computedModeScheduler;
   self->_computedModeScheduler = v7;
 
-  v9 = [v6 subscribeOn:self->_computedModeScheduler];
+  v9 = [atx_DSLPublisher subscribeOn:self->_computedModeScheduler];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke_37;
@@ -594,15 +594,15 @@ void __69__ATXRSRelevanceMonitor_resetToMonitorForRelevantShortcutCandidates___b
   self->_computedModeSink = v10;
 
   v12 = BiomeLibrary();
-  v13 = [v12 UserFocus];
-  v14 = [v13 InferredMode];
-  v15 = [v14 atx_DSLPublisher];
+  userFocus2 = [v12 UserFocus];
+  inferredMode = [userFocus2 InferredMode];
+  atx_DSLPublisher2 = [inferredMode atx_DSLPublisher];
 
   v16 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.proactive.ATXRSRelevanceMonitor.InferredMode" targetQueue:self->_queue];
   inferredModeScheduler = self->_inferredModeScheduler;
   self->_inferredModeScheduler = v16;
 
-  v18 = [v15 subscribeOn:self->_inferredModeScheduler];
+  v18 = [atx_DSLPublisher2 subscribeOn:self->_inferredModeScheduler];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke_45;
@@ -674,22 +674,22 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
   [WeakRetained _coalescedRefreshCurrentlyRelevantCandidates];
 }
 
-- (id)_earliestFutureDateAmongDateRelevantContexts:(id)a3
+- (id)_earliestFutureDateAmongDateRelevantContexts:(id)contexts
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
+  contextsCopy = contexts;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = contextsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v25;
-    v10 = v5;
+    v10 = distantFuture;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -700,14 +700,14 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        [v13 timeIntervalSinceNow];
+        startDate = [v12 startDate];
+        [startDate timeIntervalSinceNow];
         v15 = v14;
 
         if (v15 > 0.0)
         {
-          v16 = [v12 startDate];
-          v17 = [v10 earlierDate:v16];
+          startDate2 = [v12 startDate];
+          v17 = [v10 earlierDate:startDate2];
 
           v10 = v17;
         }
@@ -727,7 +727,7 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
 
     while (v8);
 
-    if (v10 == v5)
+    if (v10 == distantFuture)
     {
       v21 = 0;
     }
@@ -743,7 +743,7 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
   {
 
     v21 = 0;
-    v10 = v5;
+    v10 = distantFuture;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -751,37 +751,37 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
   return v21;
 }
 
-- (id)_nonnullEndDateOfDateRelevantContext:(id)a3
+- (id)_nonnullEndDateOfDateRelevantContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 endDate];
+  contextCopy = context;
+  endDate = [contextCopy endDate];
 
-  if (v4)
+  if (endDate)
   {
-    v5 = [v3 endDate];
+    endDate2 = [contextCopy endDate];
   }
 
   else
   {
-    v6 = [v3 startDate];
+    startDate = [contextCopy startDate];
 
-    v5 = [v6 dateByAddingTimeInterval:1800.0];
-    v3 = v6;
+    endDate2 = [startDate dateByAddingTimeInterval:1800.0];
+    contextCopy = startDate;
   }
 
-  return v5;
+  return endDate2;
 }
 
-- (BOOL)_isDateRelevantContextSatisfied:(id)a3
+- (BOOL)_isDateRelevantContextSatisfied:(id)satisfied
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  [v5 timeIntervalSinceNow];
+  satisfiedCopy = satisfied;
+  startDate = [satisfiedCopy startDate];
+  [startDate timeIntervalSinceNow];
   v7 = v6;
 
   if (v7 <= 0.0)
   {
-    v9 = [(ATXRSRelevanceMonitor *)self _nonnullEndDateOfDateRelevantContext:v4];
+    v9 = [(ATXRSRelevanceMonitor *)self _nonnullEndDateOfDateRelevantContext:satisfiedCopy];
     [v9 timeIntervalSinceNow];
     v8 = v10 > 0.0;
   }
@@ -794,11 +794,11 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
   return v8;
 }
 
-- (BOOL)_isBehavioralRelevanceSatisfiedForCandidate:(id)a3 currentMode:(unint64_t)a4
+- (BOOL)_isBehavioralRelevanceSatisfiedForCandidate:(id)candidate currentMode:(unint64_t)mode
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = [a3 donationBundleIdentifier];
-  v6 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:v5];
+  donationBundleIdentifier = [candidate donationBundleIdentifier];
+  v6 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:donationBundleIdentifier];
   v7 = v6;
   if (v6)
   {
@@ -807,7 +807,7 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
 
   else
   {
-    v8 = v5;
+    v8 = donationBundleIdentifier;
   }
 
   v9 = v8;
@@ -832,7 +832,7 @@ void __58__ATXRSRelevanceMonitor__queue_startMonitoringModeChanges__block_invoke
   v17 = +[ATXModeEntityScorerServer sharedInstance];
   v18 = [v16 initWithModeEntityScorerClient:v17];
 
-  [v18 rankedAppsForMode:a4];
+  [v18 rankedAppsForMode:mode];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -852,8 +852,8 @@ LABEL_9:
       }
 
       v24 = *(*(&v42 + 1) + 8 * v23);
-      v25 = [v24 bundleId];
-      v26 = [v25 isEqualToString:v9];
+      bundleId = [v24 bundleId];
+      v26 = [bundleId isEqualToString:v9];
 
       if (v26)
       {
@@ -872,8 +872,8 @@ LABEL_9:
       }
     }
 
-    v30 = [v24 scoreMetadata];
-    [v30 score];
+    scoreMetadata = [v24 scoreMetadata];
+    [scoreMetadata score];
     v32 = v31;
 
     v33 = __atxlog_handle_relevant_shortcut();
@@ -884,8 +884,8 @@ LABEL_9:
       v29 = v41;
       if (v34)
       {
-        v35 = [v24 scoreMetadata];
-        [v35 score];
+        scoreMetadata2 = [v24 scoreMetadata];
+        [scoreMetadata2 score];
         *buf = 134218242;
         v47 = v38;
         v48 = 2112;
@@ -900,8 +900,8 @@ LABEL_9:
       v29 = v41;
       if (v34)
       {
-        v35 = [v24 scoreMetadata];
-        [v35 score];
+        scoreMetadata2 = [v24 scoreMetadata];
+        [scoreMetadata2 score];
         *buf = 134218242;
         v47 = v36;
         v48 = 2112;

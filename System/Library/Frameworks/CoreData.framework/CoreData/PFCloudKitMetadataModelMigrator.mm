@@ -1,15 +1,15 @@
 @interface PFCloudKitMetadataModelMigrator
-- (PFCloudKitMetadataModelMigrator)initWithStore:(id)a3 metadataContext:(id)a4 databaseScope:(int64_t)a5 metricsClient:(id)a6;
-- (uint64_t)addMigrationStatementForAddingAttribute:(_BYTE *)a1 toContext:(uint64_t)a2 inStore:(void *)a3;
-- (uint64_t)calculateMigrationStepsWithConnection:(void *)a3 error:;
-- (uint64_t)checkAndPerformMigrationIfNecessary:(uint64_t *)a1;
-- (uint64_t)checkForCorruptedRecordMetadataInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:;
-- (uint64_t)checkForOrphanedMirroredRelationshipsInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:;
-- (uint64_t)cleanUpAfterClientMigrationWithStore:(void *)a3 andContext:(void *)a4 error:;
-- (uint64_t)computeAncillaryEntityPrimaryKeyTableEntriesForStore:(void *)a3 error:;
-- (uint64_t)moveBinaryDataFromColumn:(uint64_t)a3 forAttribute:(uint64_t)a4 toMetadataAsset:(uint64_t)a5 byRelationshipNamed:(void *)a6 error:;
-- (void)addMigrationStatementForAddingRelationship:(void *)a1 toContext:(uint64_t)a2 inStore:(void *)a3;
-- (void)addMigrationStatementToContext:(uint64_t)a1 forRenamingAttributeNamed:(uint64_t)a2 withOldColumnName:(uint64_t)a3 toAttributeName:(uint64_t)a4 onOldSQLEntity:(uint64_t)a5 andCurrentSQLEntity:(id *)a6;
+- (PFCloudKitMetadataModelMigrator)initWithStore:(id)store metadataContext:(id)context databaseScope:(int64_t)scope metricsClient:(id)client;
+- (uint64_t)addMigrationStatementForAddingAttribute:(_BYTE *)attribute toContext:(uint64_t)context inStore:(void *)store;
+- (uint64_t)calculateMigrationStepsWithConnection:(void *)connection error:;
+- (uint64_t)checkAndPerformMigrationIfNecessary:(uint64_t *)necessary;
+- (uint64_t)checkForCorruptedRecordMetadataInStore:(void *)store inManagedObjectContext:(void *)context error:;
+- (uint64_t)checkForOrphanedMirroredRelationshipsInStore:(void *)store inManagedObjectContext:(void *)context error:;
+- (uint64_t)cleanUpAfterClientMigrationWithStore:(void *)store andContext:(void *)context error:;
+- (uint64_t)computeAncillaryEntityPrimaryKeyTableEntriesForStore:(void *)store error:;
+- (uint64_t)moveBinaryDataFromColumn:(uint64_t)column forAttribute:(uint64_t)attribute toMetadataAsset:(uint64_t)asset byRelationshipNamed:(void *)named error:;
+- (void)addMigrationStatementForAddingRelationship:(void *)relationship toContext:(uint64_t)context inStore:(void *)store;
+- (void)addMigrationStatementToContext:(uint64_t)context forRenamingAttributeNamed:(uint64_t)named withOldColumnName:(uint64_t)name toAttributeName:(uint64_t)attributeName onOldSQLEntity:(uint64_t)entity andCurrentSQLEntity:(id *)lEntity;
 - (void)dealloc;
 @end
 
@@ -22,20 +22,20 @@
   [(PFCloudKitMetadataModelMigrator *)&v3 dealloc];
 }
 
-- (PFCloudKitMetadataModelMigrator)initWithStore:(id)a3 metadataContext:(id)a4 databaseScope:(int64_t)a5 metricsClient:(id)a6
+- (PFCloudKitMetadataModelMigrator)initWithStore:(id)store metadataContext:(id)context databaseScope:(int64_t)scope metricsClient:(id)client
 {
   v13.receiver = self;
   v13.super_class = PFCloudKitMetadataModelMigrator;
   v10 = [(PFCloudKitMetadataModelMigrator *)&v13 init];
   if (v10)
   {
-    v10->_store = a3;
-    v11 = a4;
-    v10->_metadataContext = v11;
-    [(NSManagedObjectContext *)v11 setTransactionAuthor:@"NSCloudKitMirroringDelegate.migration"];
+    v10->_store = store;
+    contextCopy = context;
+    v10->_metadataContext = contextCopy;
+    [(NSManagedObjectContext *)contextCopy setTransactionAuthor:@"NSCloudKitMirroringDelegate.migration"];
     v10->_context = objc_alloc_init(PFCloudKitMetadataMigrationContext);
-    v10->_databaseScope = a5;
-    v10->_metricsClient = a6;
+    v10->_databaseScope = scope;
+    v10->_metricsClient = client;
   }
 
   return v10;
@@ -75,10 +75,10 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)computeAncillaryEntityPrimaryKeyTableEntriesForStore:(void *)a3 error:
+- (uint64_t)computeAncillaryEntityPrimaryKeyTableEntriesForStore:(void *)store error:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v13 = 0;
     v14 = &v13;
@@ -98,9 +98,9 @@ LABEL_4:
       v9 = 0;
       if (v9)
       {
-        if (a3)
+        if (store)
         {
-          *a3 = v9;
+          *store = v9;
         }
       }
 
@@ -242,10 +242,10 @@ void __70__PFCloudKitMetadataModelMigrator_prepareContextWithConnection_error___
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)calculateMigrationStepsWithConnection:(void *)a3 error:
+- (uint64_t)calculateMigrationStepsWithConnection:(void *)connection error:
 {
   v407 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v273 = 0;
     goto LABEL_477;
@@ -261,12 +261,12 @@ void __70__PFCloudKitMetadataModelMigrator_prepareContextWithConnection_error___
   v365 = __Block_byref_object_copy__50;
   v366 = __Block_byref_object_dispose__50;
   v367 = 0;
-  v4 = *(a1 + 24);
+  v4 = *(self + 24);
   if (v4)
   {
     if (*(v4 + 50))
     {
-      v5 = [a2 adapter];
+      adapter = [a2 adapter];
       v372 = 0u;
       v373 = 0u;
       v374 = 0u;
@@ -284,7 +284,7 @@ void __70__PFCloudKitMetadataModelMigrator_prepareContextWithConnection_error___
               objc_enumerationMutation(&unk_1EF43D888);
             }
 
-            v9 = [(NSSQLiteAdapter *)v5 newDropTableStatementForTableNamed:?];
+            v9 = [(NSSQLiteAdapter *)adapter newDropTableStatementForTableNamed:?];
             [*(v4 + 8) addObject:v9];
             *(v4 + 48) = 1;
           }
@@ -295,7 +295,7 @@ void __70__PFCloudKitMetadataModelMigrator_prepareContextWithConnection_error___
         while (v6);
       }
 
-      v4 = *(a1 + 24);
+      v4 = *(self + 24);
       v358 = 0u;
       v359 = 0u;
       v360 = 0u;
@@ -362,17 +362,17 @@ LABEL_16:
         goto LABEL_169;
       }
 
-      v14 = [v13 tableName];
-      if (!a2 || ([(NSSQLiteConnection *)a2 _hasTableWithName:v14 isTemp:0]& 1) == 0)
+      tableName = [v13 tableName];
+      if (!a2 || ([(NSSQLiteConnection *)a2 _hasTableWithName:tableName isTemp:0]& 1) == 0)
       {
-        [(PFCloudKitMetadataMigrationContext *)*(a1 + 24) addSQLEntityToCreate:v13];
+        [(PFCloudKitMetadataMigrationContext *)*(self + 24) addSQLEntityToCreate:v13];
         goto LABEL_169;
       }
 
       if (!-[NSSQLiteConnection _tableHasRows:](a2, [v13 tableName]))
       {
         v34 = -[NSSQLiteAdapter newDropTableStatementForTableNamed:]([a2 adapter], objc_msgSend(v13, "tableName"));
-        v35 = *(a1 + 24);
+        v35 = *(self + 24);
         if (v35)
         {
           [*(v35 + 8) addObject:v34];
@@ -384,28 +384,28 @@ LABEL_16:
 
       v15 = [PFCloudKitMetadataMigrationSQLUtilities fetchSchemaSQLForEntity:v13 usingConnection:a2];
       v292 = [PFCloudKitMetadataMigrationSQLUtilities columnNamesFromCreateStatement:v15];
-      [*(a1 + 24) addColumnNames:v292 forTableName:{objc_msgSend(v13, "tableName")}];
-      v16 = [v13 name];
+      [*(self + 24) addColumnNames:v292 forTableName:{objc_msgSend(v13, "tableName")}];
+      name = [v13 name];
       v17 = objc_opt_class();
-      if (([v16 isEqualToString:NSStringFromClass(v17)] & 1) == 0)
+      if (([name isEqualToString:NSStringFromClass(v17)] & 1) == 0)
       {
-        v18 = [v13 name];
+        name2 = [v13 name];
         v19 = objc_opt_class();
-        if (![v18 isEqualToString:NSStringFromClass(v19)])
+        if (![name2 isEqualToString:NSStringFromClass(v19)])
         {
-          v60 = [v13 name];
+          name3 = [v13 name];
           v61 = objc_opt_class();
-          if (![v60 isEqualToString:NSStringFromClass(v61)])
+          if (![name3 isEqualToString:NSStringFromClass(v61)])
           {
             goto LABEL_163;
           }
 
-          v62 = *(a1 + 16);
+          v62 = *(self + 16);
           v345[0] = MEMORY[0x1E69E9820];
           v345[1] = 3221225472;
           v345[2] = __79__PFCloudKitMetadataModelMigrator_calculateMigrationStepsWithConnection_error___block_invoke;
           v345[3] = &unk_1E6EC5650;
-          v345[4] = a1;
+          v345[4] = self;
           v345[5] = v13;
           v345[6] = &v362;
           v345[7] = &v368;
@@ -440,7 +440,7 @@ LABEL_16:
 
                 if (([v292 containsObject:{objc_msgSend(v66, "columnName")}] & 1) == 0)
                 {
-                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v66 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v66 toContext:*(self + 24) inStore:*(self + 8)];
                 }
 
                 ++v65;
@@ -463,23 +463,23 @@ LABEL_16:
               v68->super._entity = v13;
             }
 
-            v70 = *(a1 + 24);
+            v70 = *(self + 24);
             if (v70)
             {
               [*(v70 + 32) addObject:v68];
             }
           }
 
-          v71 = *(a1 + 24);
+          v71 = *(self + 24);
           if (v71)
           {
             [*(v71 + 24) addObject:v13];
           }
 
-          v72 = [a2 adapter];
-          if (v72)
+          adapter2 = [a2 adapter];
+          if (adapter2)
           {
-            v73 = [(NSSQLiteAdapter *)v72 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
+            v73 = [(NSSQLiteAdapter *)adapter2 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
           }
 
           else
@@ -504,7 +504,7 @@ LABEL_16:
                   objc_enumerationMutation(v73);
                 }
 
-                v77 = *(a1 + 24);
+                v77 = *(self + 24);
                 if (v77)
                 {
                   [*(v77 + 8) addObject:*(*(&v337 + 1) + 8 * j)];
@@ -524,7 +524,7 @@ LABEL_162:
         }
       }
 
-      v20 = *(a1 + 24);
+      v20 = *(self + 24);
       if (v20)
       {
         v21 = *(v20 + 88);
@@ -546,9 +546,9 @@ LABEL_162:
         [PFCloudKitMetadataModelMigrator addMigrationStatementToContext:@"isDeleted" forRenamingAttributeNamed:@"ZISDELETED" withOldColumnName:@"needsDelete" toAttributeName:v22 onOldSQLEntity:v13 andCurrentSQLEntity:?];
       }
 
-      v23 = [v13 name];
+      name4 = [v13 name];
       v24 = objc_opt_class();
-      if ([v23 isEqualToString:NSStringFromClass(v24)])
+      if ([name4 isEqualToString:NSStringFromClass(v24)])
       {
         if (v13)
         {
@@ -564,20 +564,20 @@ LABEL_162:
         {
           v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ INTEGER", objc_msgSend(v13, "tableName"), objc_msgSend(v25, "columnName")];
           v27 = [[NSSQLiteStatement alloc] initWithEntity:v13 sqlString:v26];
-          v28 = *(a1 + 24);
+          v28 = *(self + 24);
           if (v28)
           {
             [*(v28 + 8) addObject:v27];
             *(v28 + 48) = 1;
-            v29 = *(a1 + 24);
+            v29 = *(self + 24);
             if (v29)
             {
               *(v29 + 51) = 1;
             }
           }
 
-          v30 = *(a1 + 16);
-          v31 = *(a1 + 24);
+          v30 = *(self + 16);
+          v31 = *(self + 24);
           v32 = v363;
           v376 = 0;
           v377 = &v376;
@@ -656,7 +656,7 @@ LABEL_129:
             v83->super._entity = v13;
           }
 
-          v85 = *(a1 + 24);
+          v85 = *(self + 24);
           if (v85)
           {
             [*(v85 + 32) addObject:v83];
@@ -695,7 +695,7 @@ LABEL_129:
 
                 if (([v292 containsObject:{objc_msgSend(v89, "columnName")}] & 1) == 0)
                 {
-                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v89 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v89 toContext:*(self + 24) inStore:*(self + 8)];
                   v81 = 1;
                 }
 
@@ -713,10 +713,10 @@ LABEL_129:
 
         if (*(v369 + 24) == 1 && (v81 & 1) != 0)
         {
-          v91 = [a2 adapter];
-          if (v91)
+          adapter3 = [a2 adapter];
+          if (adapter3)
           {
-            v73 = [(NSSQLiteAdapter *)v91 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
+            v73 = [(NSSQLiteAdapter *)adapter3 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
           }
 
           else
@@ -741,7 +741,7 @@ LABEL_129:
                   objc_enumerationMutation(v73);
                 }
 
-                v95 = *(a1 + 24);
+                v95 = *(self + 24);
                 if (v95)
                 {
                   [*(v95 + 8) addObject:*(*(&v350 + 1) + 8 * k)];
@@ -761,9 +761,9 @@ LABEL_129:
         goto LABEL_163;
       }
 
-      v36 = [v13 name];
+      name5 = [v13 name];
       v37 = objc_opt_class();
-      if ([v36 isEqualToString:NSStringFromClass(v37)])
+      if ([name5 isEqualToString:NSStringFromClass(v37)])
       {
         v349 = 0u;
         v348 = 0u;
@@ -841,16 +841,16 @@ LABEL_129:
 
                 if (os_log_type_enabled(Stream, v48))
                 {
-                  v49 = [v13 tableName];
-                  v50 = [v42 columnName];
+                  tableName2 = [v13 tableName];
+                  columnName = [v42 columnName];
                   *buf = 136315906;
                   *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                   *&buf[12] = 1024;
                   *&buf[14] = 321;
                   *&buf[18] = 2112;
-                  *&buf[20] = v49;
+                  *&buf[20] = tableName2;
                   *&buf[28] = 2112;
-                  *&buf[30] = v50;
+                  *&buf[30] = columnName;
                   _os_log_impl(&dword_18565F000, v45, v48, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                 }
 
@@ -859,12 +859,12 @@ LABEL_129:
 
               else
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v42 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v42 toContext:*(self + 24) inStore:*(self + 8)];
                 if (([v41 isEqualToString:@"recordZoneName"] & 1) != 0 || objc_msgSend(v41, "isEqualToString:", @"relatedRecordZoneName"))
                 {
                   v51 = [NSSQLiteStatement alloc];
                   v52 = -[NSSQLiteStatement initWithEntity:sqlString:](v51, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE %@ SET %@ = '%@'", objc_msgSend(v13, "tableName"), objc_msgSend(v42, "columnName"), @"com.apple.coredata.cloudkit.zone"]);
-                  v53 = *(a1 + 24);
+                  v53 = *(self + 24);
                   if (v53)
                   {
                     [*(v53 + 8) addObject:v52];
@@ -880,10 +880,10 @@ LABEL_76:
                 {
                   v54 = [NSSQLiteStatement alloc];
                   v55 = MEMORY[0x1E696AEC0];
-                  v56 = [v13 tableName];
-                  v57 = [v42 columnName];
-                  v52 = -[NSSQLiteStatement initWithEntity:sqlString:](v54, "initWithEntity:sqlString:", v13, [v55 stringWithFormat:@"UPDATE %@ SET %@ = '%@'", v56, v57, getCloudKitCKCurrentUserDefaultName()]);
-                  v58 = *(a1 + 24);
+                  tableName3 = [v13 tableName];
+                  columnName2 = [v42 columnName];
+                  v52 = -[NSSQLiteStatement initWithEntity:sqlString:](v54, "initWithEntity:sqlString:", v13, [v55 stringWithFormat:@"UPDATE %@ SET %@ = '%@'", tableName3, columnName2, getCloudKitCKCurrentUserDefaultName()]);
+                  v58 = *(self + 24);
                   if (v58)
                   {
                     [*(v58 + 8) addObject:v52];
@@ -908,12 +908,12 @@ LABEL_77:
       }
 
 LABEL_163:
-      v96 = [v13 name];
+      name6 = [v13 name];
       v97 = objc_opt_class();
-      if ([v96 isEqualToString:NSStringFromClass(v97)] & 1) != 0 || (v98 = objc_msgSend(v13, "name"), v99 = objc_opt_class(), (objc_msgSend(v98, "isEqualToString:", NSStringFromClass(v99))) || (v100 = objc_msgSend(v13, "name"), v101 = objc_opt_class(), objc_msgSend(v100, "isEqualToString:", NSStringFromClass(v101))))
+      if ([name6 isEqualToString:NSStringFromClass(v97)] & 1) != 0 || (v98 = objc_msgSend(v13, "name"), v99 = objc_opt_class(), (objc_msgSend(v98, "isEqualToString:", NSStringFromClass(v99))) || (v100 = objc_msgSend(v13, "name"), v101 = objc_opt_class(), objc_msgSend(v100, "isEqualToString:", NSStringFromClass(v101))))
       {
         v34 = -[NSSQLiteAdapter newDropTableStatementForTableNamed:]([a2 adapter], objc_msgSend(v13, "tableName"));
-        v102 = *(a1 + 24);
+        v102 = *(self + 24);
         if (v102)
         {
           [*(v102 + 8) addObject:v34];
@@ -922,13 +922,13 @@ LABEL_163:
 
 LABEL_168:
 
-        [(PFCloudKitMetadataMigrationContext *)*(a1 + 24) addSQLEntityToCreate:v13];
+        [(PFCloudKitMetadataMigrationContext *)*(self + 24) addSQLEntityToCreate:v13];
         goto LABEL_169;
       }
 
-      v103 = [v13 name];
+      name7 = [v13 name];
       v104 = objc_opt_class();
-      if ([v103 isEqualToString:NSStringFromClass(v104)])
+      if ([name7 isEqualToString:NSStringFromClass(v104)])
       {
         v335 = 0u;
         v336 = 0u;
@@ -1005,16 +1005,16 @@ LABEL_168:
 
                 if (os_log_type_enabled(v110, v114))
                 {
-                  v115 = [v13 tableName];
-                  v116 = [v108 columnName];
+                  tableName4 = [v13 tableName];
+                  columnName3 = [v108 columnName];
                   *buf = 136315906;
                   *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                   *&buf[12] = 1024;
                   *&buf[14] = 406;
                   *&buf[18] = 2112;
-                  *&buf[20] = v115;
+                  *&buf[20] = tableName4;
                   *&buf[28] = 2112;
-                  *&buf[30] = v116;
+                  *&buf[30] = columnName3;
                   _os_log_impl(&dword_18565F000, v111, v114, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                 }
 
@@ -1023,7 +1023,7 @@ LABEL_168:
 
               else
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v108 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v108 toContext:*(self + 24) inStore:*(self + 8)];
               }
 
               ++v107;
@@ -1064,7 +1064,7 @@ LABEL_168:
                   v122->super._entity = v13;
                 }
 
-                v124 = *(a1 + 24);
+                v124 = *(self + 24);
                 if (v124)
                 {
                   [*(v124 + 32) addObject:v122];
@@ -1073,7 +1073,7 @@ LABEL_168:
                 if ([v121 isEqualToString:@"ZUNIQUEIDENTIFIER"])
                 {
                   v125 = [[NSSQLiteStatement alloc] initWithEntity:v13 sqlString:@"DROP INDEX IF EXISTS Z_NSCKRecordMetadata_UNIQUE_uniqueIdentifier"];
-                  v126 = *(a1 + 24);
+                  v126 = *(self + 24);
                   if (v126)
                   {
                     [*(v126 + 8) addObject:v125];
@@ -1119,7 +1119,7 @@ LABEL_168:
 
               if (([v292 containsObject:{objc_msgSend(v130, "columnName")}] & 1) == 0)
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v130 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingRelationship:v130 toContext:*(self + 24) inStore:*(self + 8)];
               }
 
               ++v129;
@@ -1133,16 +1133,16 @@ LABEL_168:
           while (v131);
         }
 
-        v132 = *(a1 + 24);
+        v132 = *(self + 24);
         if (v132)
         {
           [*(v132 + 24) addObject:v13];
         }
 
-        v133 = [a2 adapter];
-        if (v133)
+        adapter4 = [a2 adapter];
+        if (adapter4)
         {
-          v134 = [(NSSQLiteAdapter *)v133 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
+          v134 = [(NSSQLiteAdapter *)adapter4 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
         }
 
         else
@@ -1167,7 +1167,7 @@ LABEL_168:
                 objc_enumerationMutation(v134);
               }
 
-              v138 = *(a1 + 24);
+              v138 = *(self + 24);
               if (v138)
               {
                 [*(v138 + 8) addObject:*(*(&v321 + 1) + 8 * n)];
@@ -1182,15 +1182,15 @@ LABEL_168:
         }
       }
 
-      v139 = [v13 name];
+      name8 = [v13 name];
       v140 = objc_opt_class();
-      if (([v139 isEqualToString:NSStringFromClass(v140)] & 1) != 0 || (v141 = objc_msgSend(v13, "name"), v142 = objc_opt_class(), objc_msgSend(v141, "isEqualToString:", NSStringFromClass(v142))))
+      if (([name8 isEqualToString:NSStringFromClass(v140)] & 1) != 0 || (v141 = objc_msgSend(v13, "name"), v142 = objc_opt_class(), objc_msgSend(v141, "isEqualToString:", NSStringFromClass(v142))))
       {
         if ([v292 containsObject:@"ZHASCHANGES"])
         {
-          v143 = [v13 name];
+          name9 = [v13 name];
           v144 = objc_opt_class();
-          v290 = [v143 isEqualToString:NSStringFromClass(v144)];
+          v290 = [name9 isEqualToString:NSStringFromClass(v144)];
           v283 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"CREATE TEMPORARY TABLE %@_tmp("), objc_msgSend(v13, "tableName");
           v145 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"INSERT INTO %@_tmp ("), objc_msgSend(v13, "tableName");
           v146 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"SELECT"];
@@ -1302,7 +1302,7 @@ LABEL_258:
           [v280 appendFormat:@" FROM %@", objc_msgSend(v13, "tableName")];
           [v279 appendFormat:@" FROM %@_tmp", objc_msgSend(v13, "tableName")];
           v165 = [[NSSQLiteStatement alloc] initWithEntity:v13 sqlString:v283];
-          v166 = *(a1 + 24);
+          v166 = *(self + 24);
           if (v166)
           {
             [*(v166 + 8) addObject:v165];
@@ -1311,7 +1311,7 @@ LABEL_258:
 
           v167 = [NSSQLiteStatement alloc];
           v168 = -[NSSQLiteStatement initWithEntity:sqlString:](v167, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v145, v280]);
-          v169 = *(a1 + 24);
+          v169 = *(self + 24);
           if (v169)
           {
             [*(v169 + 8) addObject:v168];
@@ -1320,7 +1320,7 @@ LABEL_258:
 
           v170 = [NSSQLiteStatement alloc];
           v171 = -[NSSQLiteStatement initWithEntity:sqlString:](v170, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE %@", objc_msgSend(v13, "tableName")]);
-          v172 = *(a1 + 24);
+          v172 = *(self + 24);
           if (v172)
           {
             [*(v172 + 8) addObject:v171];
@@ -1328,7 +1328,7 @@ LABEL_258:
           }
 
           v173 = -[NSSQLiteAdapter newCreateTableStatementForEntity:]([a2 adapter], v13);
-          v174 = *(a1 + 24);
+          v174 = *(self + 24);
           if (v174)
           {
             [*(v174 + 8) addObject:v173];
@@ -1336,11 +1336,11 @@ LABEL_258:
           }
 
           v292 = [PFCloudKitMetadataMigrationSQLUtilities columnNamesFromCreateStatement:?];
-          [*(a1 + 24) addColumnNames:v292 forTableName:{objc_msgSend(v13, "tableName")}];
+          [*(self + 24) addColumnNames:v292 forTableName:{objc_msgSend(v13, "tableName")}];
 
           v175 = [NSSQLiteStatement alloc];
           v176 = -[NSSQLiteStatement initWithEntity:sqlString:](v175, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v282, v279]);
-          v177 = *(a1 + 24);
+          v177 = *(self + 24);
           if (v177)
           {
             [*(v177 + 8) addObject:v176];
@@ -1349,22 +1349,22 @@ LABEL_258:
 
           v178 = [NSSQLiteStatement alloc];
           v179 = -[NSSQLiteStatement initWithEntity:sqlString:](v178, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE %@_tmp", objc_msgSend(v13, "tableName")]);
-          v180 = *(a1 + 24);
+          v180 = *(self + 24);
           if (v180)
           {
             [*(v180 + 8) addObject:v179];
             *(v180 + 48) = 1;
-            v181 = *(a1 + 24);
+            v181 = *(self + 24);
             if (v181)
             {
               [*(v181 + 24) addObject:v13];
             }
           }
 
-          v182 = [a2 adapter];
-          if (v182)
+          adapter5 = [a2 adapter];
+          if (adapter5)
           {
-            v183 = [(NSSQLiteAdapter *)v182 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
+            v183 = [(NSSQLiteAdapter *)adapter5 newCreateIndexStatementsForEntity:v13 defaultIndicesOnly:0];
           }
 
           else
@@ -1389,7 +1389,7 @@ LABEL_258:
                   objc_enumerationMutation(v183);
                 }
 
-                v187 = *(a1 + 24);
+                v187 = *(self + 24);
                 if (v187)
                 {
                   [*(v187 + 8) addObject:*(*(&v313 + 1) + 8 * jj)];
@@ -1484,16 +1484,16 @@ LABEL_258:
 
                 if (os_log_type_enabled(v193, v197))
                 {
-                  v198 = [v13 tableName];
-                  v199 = [v191 columnName];
+                  tableName5 = [v13 tableName];
+                  columnName4 = [v191 columnName];
                   *buf = 136315906;
                   *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                   *&buf[12] = 1024;
                   *&buf[14] = 546;
                   *&buf[18] = 2112;
-                  *&buf[20] = v198;
+                  *&buf[20] = tableName5;
                   *&buf[28] = 2112;
-                  *&buf[30] = v199;
+                  *&buf[30] = columnName4;
                   _os_log_impl(&dword_18565F000, v194, v197, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                 }
 
@@ -1502,7 +1502,7 @@ LABEL_258:
 
               else
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v191 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v191 toContext:*(self + 24) inStore:*(self + 8)];
               }
 
               ++v190;
@@ -1516,9 +1516,9 @@ LABEL_258:
           while (v200);
         }
 
-        v201 = [v13 name];
+        name10 = [v13 name];
         v202 = objc_opt_class();
-        if ([v201 isEqualToString:NSStringFromClass(v202)])
+        if ([name10 isEqualToString:NSStringFromClass(v202)])
         {
           v307 = 0u;
           v308 = 0u;
@@ -1595,16 +1595,16 @@ LABEL_258:
 
                   if (os_log_type_enabled(v208, v212))
                   {
-                    v213 = [v13 tableName];
-                    v214 = [v206 columnName];
+                    tableName6 = [v13 tableName];
+                    columnName5 = [v206 columnName];
                     *buf = 136315906;
                     *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                     *&buf[12] = 1024;
                     *&buf[14] = 562;
                     *&buf[18] = 2112;
-                    *&buf[20] = v213;
+                    *&buf[20] = tableName6;
                     *&buf[28] = 2112;
-                    *&buf[30] = v214;
+                    *&buf[30] = columnName5;
                     _os_log_impl(&dword_18565F000, v209, v212, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                   }
 
@@ -1613,7 +1613,7 @@ LABEL_258:
 
                 else
                 {
-                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v206 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v206 toContext:*(self + 24) inStore:*(self + 8)];
                   v290 = 1;
                 }
 
@@ -1703,16 +1703,16 @@ LABEL_258:
 
                   if (os_log_type_enabled(v221, v225))
                   {
-                    v226 = [v13 tableName];
-                    v227 = [v219 columnName];
+                    tableName7 = [v13 tableName];
+                    columnName6 = [v219 columnName];
                     *buf = 136315906;
                     *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                     *&buf[12] = 1024;
                     *&buf[14] = 579;
                     *&buf[18] = 2112;
-                    *&buf[20] = v226;
+                    *&buf[20] = tableName7;
                     *&buf[28] = 2112;
-                    *&buf[30] = v227;
+                    *&buf[30] = columnName6;
                     _os_log_impl(&dword_18565F000, v222, v225, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                   }
 
@@ -1721,7 +1721,7 @@ LABEL_258:
 
                 else
                 {
-                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v219 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                  [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v219 toContext:*(self + 24) inStore:*(self + 8)];
                 }
 
                 ++v218;
@@ -1740,7 +1740,7 @@ LABEL_258:
         {
           v229 = [NSSQLiteStatement alloc];
           v230 = MEMORY[0x1E696AEC0];
-          v231 = [v13 tableName];
+          tableName8 = [v13 tableName];
           if (v13)
           {
             v232 = [v13[5] objectForKey:@"hasRecordZoneNum"];
@@ -1751,8 +1751,8 @@ LABEL_258:
             v232 = 0;
           }
 
-          v233 = -[NSSQLiteStatement initWithEntity:sqlString:](v229, "initWithEntity:sqlString:", v13, [v230 stringWithFormat:@"UPDATE %@ SET %@=0", v231, objc_msgSend(v232, "columnName")]);
-          v234 = *(a1 + 24);
+          v233 = -[NSSQLiteStatement initWithEntity:sqlString:](v229, "initWithEntity:sqlString:", v13, [v230 stringWithFormat:@"UPDATE %@ SET %@=0", tableName8, objc_msgSend(v232, "columnName")]);
+          v234 = *(self + 24);
           if (v234)
           {
             [*(v234 + 8) addObject:v233];
@@ -1761,9 +1761,9 @@ LABEL_258:
         }
       }
 
-      v235 = [v13 name];
+      name11 = [v13 name];
       v236 = objc_opt_class();
-      if ([v235 isEqualToString:NSStringFromClass(v236)])
+      if ([name11 isEqualToString:NSStringFromClass(v236)])
       {
         v299 = 0u;
         v300 = 0u;
@@ -1840,16 +1840,16 @@ LABEL_258:
 
                 if (os_log_type_enabled(v242, v246))
                 {
-                  v247 = [v13 tableName];
-                  v248 = [v240 columnName];
+                  tableName9 = [v13 tableName];
+                  columnName7 = [v240 columnName];
                   *buf = 136315906;
                   *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                   *&buf[12] = 1024;
                   *&buf[14] = 603;
                   *&buf[18] = 2112;
-                  *&buf[20] = v247;
+                  *&buf[20] = tableName9;
                   *&buf[28] = 2112;
-                  *&buf[30] = v248;
+                  *&buf[30] = columnName7;
                   _os_log_impl(&dword_18565F000, v243, v246, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                 }
 
@@ -1858,7 +1858,7 @@ LABEL_258:
 
               else
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v240 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v240 toContext:*(self + 24) inStore:*(self + 8)];
               }
 
               ++v239;
@@ -1873,9 +1873,9 @@ LABEL_258:
         }
       }
 
-      v250 = [v13 name];
+      name12 = [v13 name];
       v251 = objc_opt_class();
-      if ([v250 isEqualToString:NSStringFromClass(v251)])
+      if ([name12 isEqualToString:NSStringFromClass(v251)])
       {
         v295 = 0u;
         v296 = 0u;
@@ -1952,16 +1952,16 @@ LABEL_258:
 
                 if (os_log_type_enabled(v257, v261))
                 {
-                  v262 = [v13 tableName];
-                  v263 = [v255 columnName];
+                  tableName10 = [v13 tableName];
+                  columnName8 = [v255 columnName];
                   *buf = 136315906;
                   *&buf[4] = "[PFCloudKitMetadataModelMigrator calculateMigrationStepsWithConnection:error:]";
                   *&buf[12] = 1024;
                   *&buf[14] = 617;
                   *&buf[18] = 2112;
-                  *&buf[20] = v262;
+                  *&buf[20] = tableName10;
                   *&buf[28] = 2112;
-                  *&buf[30] = v263;
+                  *&buf[30] = columnName8;
                   _os_log_impl(&dword_18565F000, v258, v261, "CoreData+CloudKit: %s(%d): Skipping migration for '%@' because it already has a column named '%@'", buf, 0x26u);
                 }
 
@@ -1970,7 +1970,7 @@ LABEL_258:
 
               else
               {
-                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v255 toContext:*(a1 + 24) inStore:*(a1 + 8)];
+                [PFCloudKitMetadataModelMigrator addMigrationStatementForAddingAttribute:v255 toContext:*(self + 24) inStore:*(self + 8)];
               }
 
               ++v254;
@@ -1985,7 +1985,7 @@ LABEL_258:
         }
       }
 
-      v265 = *(a1 + 24);
+      v265 = *(self + 24);
       if (v265)
       {
         v266 = *(v265 + 96);
@@ -2000,7 +2000,7 @@ LABEL_258:
       {
         v267 = [NSSQLiteStatement alloc];
         v268 = -[NSSQLiteStatement initWithEntity:sqlString:](v267, "initWithEntity:sqlString:", v13, [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE %@ SET Z_OPT = 1 WHERE Z_OPT IS NULL OR Z_OPT <= 0", objc_msgSend(v13, "tableName")]);
-        v269 = *(a1 + 24);
+        v269 = *(self + 24);
         if (v269)
         {
           [*(v269 + 8) addObject:v268];
@@ -2008,7 +2008,7 @@ LABEL_258:
         }
       }
 
-      v270 = *(a1 + 24);
+      v270 = *(self + 24);
       if (v270)
       {
         v271 = *(v270 + 96);
@@ -2021,7 +2021,7 @@ LABEL_258:
 
       if ([v271 integerValue] <= 1031)
       {
-        v272 = *(a1 + 24);
+        v272 = *(self + 24);
         if (v272)
         {
           *(v272 + 54) = 1;
@@ -2049,9 +2049,9 @@ LABEL_475:
     v276 = v363[5];
     if (v276)
     {
-      if (a3)
+      if (connection)
       {
-        *a3 = v276;
+        *connection = v276;
       }
     }
 
@@ -2088,30 +2088,30 @@ LABEL_477:
   return v273 & 1;
 }
 
-- (void)addMigrationStatementToContext:(uint64_t)a1 forRenamingAttributeNamed:(uint64_t)a2 withOldColumnName:(uint64_t)a3 toAttributeName:(uint64_t)a4 onOldSQLEntity:(uint64_t)a5 andCurrentSQLEntity:(id *)a6
+- (void)addMigrationStatementToContext:(uint64_t)context forRenamingAttributeNamed:(uint64_t)named withOldColumnName:(uint64_t)name toAttributeName:(uint64_t)attributeName onOldSQLEntity:(uint64_t)entity andCurrentSQLEntity:(id *)lEntity
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a6 && (v12 = [a6[5] objectForKey:a4]) != 0)
+  if (lEntity && (v12 = [lEntity[5] objectForKey:attributeName]) != 0)
   {
     v13 = v12;
-    if (a5)
+    if (entity)
     {
-      v14 = [*(a5 + 40) objectForKey:a2];
+      v14 = [*(entity + 40) objectForKey:named];
       if (v14)
       {
-        a3 = [v14 columnName];
+        name = [v14 columnName];
       }
     }
 
     v15 = [NSSQLiteStatement alloc];
-    v16 = -[NSSQLiteStatement initWithEntity:sqlString:](v15, "initWithEntity:sqlString:", a6, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", objc_msgSend(a6, "tableName"), a3, objc_msgSend(v13, "columnName")]);
+    v16 = -[NSSQLiteStatement initWithEntity:sqlString:](v15, "initWithEntity:sqlString:", lEntity, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", objc_msgSend(lEntity, "tableName"), name, objc_msgSend(v13, "columnName")]);
     v17 = v16;
-    if (a1)
+    if (context)
     {
       v22 = v16;
-      v16 = [*(a1 + 8) addObject:v16];
+      v16 = [*(context + 8) addObject:v16];
       v17 = v22;
-      *(a1 + 48) = 1;
+      *(context + 48) = 1;
     }
 
     v18 = *MEMORY[0x1E69E9840];
@@ -2125,11 +2125,11 @@ LABEL_477:
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = a4;
+      attributeNameCopy2 = attributeName;
       v25 = 2112;
-      v26 = a2;
+      namedCopy2 = named;
       v27 = 2112;
-      v28 = a6;
+      lEntityCopy2 = lEntity;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unable to find attribute to migrate to '%@' from '%@' on entity: %@\n", buf, 0x20u);
     }
 
@@ -2137,11 +2137,11 @@ LABEL_477:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      v24 = a4;
+      attributeNameCopy2 = attributeName;
       v25 = 2112;
-      v26 = a2;
+      namedCopy2 = named;
       v27 = 2112;
-      v28 = a6;
+      lEntityCopy2 = lEntity;
       _os_log_fault_impl(&dword_18565F000, v20, OS_LOG_TYPE_FAULT, "CoreData: Unable to find attribute to migrate to '%@' from '%@' on entity: %@", buf, 0x20u);
     }
 
@@ -2149,16 +2149,16 @@ LABEL_477:
   }
 }
 
-- (void)addMigrationStatementForAddingRelationship:(void *)a1 toContext:(uint64_t)a2 inStore:(void *)a3
+- (void)addMigrationStatementForAddingRelationship:(void *)relationship toContext:(uint64_t)context inStore:(void *)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ([a1 isToMany])
+  if ([relationship isToMany])
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = a1;
+      relationshipCopy4 = relationship;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: I don't know how to generate the sql for to-many relationships yet: %@\n", buf, 0xCu);
     }
 
@@ -2166,7 +2166,7 @@ LABEL_477:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v16 = a1;
+      relationshipCopy4 = relationship;
       _os_log_fault_impl(&dword_18565F000, v7, OS_LOG_TYPE_FAULT, "CoreData: I don't know how to generate the sql for to-many relationships yet: %@", buf, 0xCu);
     }
   }
@@ -2180,7 +2180,7 @@ LABEL_477:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = a1;
+        relationshipCopy4 = relationship;
         _os_log_error_impl(&dword_18565F000, v8, OS_LOG_TYPE_ERROR, "CoreData: fault: I don't know how to generate the sql for relationships that aren't a to-one yet: %@\n", buf, 0xCu);
       }
 
@@ -2188,37 +2188,37 @@ LABEL_477:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v16 = a1;
+        relationshipCopy4 = relationship;
         _os_log_fault_impl(&dword_18565F000, v9, OS_LOG_TYPE_FAULT, "CoreData: I don't know how to generate the sql for relationships that aren't a to-one yet: %@", buf, 0xCu);
       }
     }
 
-    v10 = [a1 entity];
-    v11 = [a1 foreignKey];
+    entity = [relationship entity];
+    foreignKey = [relationship foreignKey];
     v12 = [NSSQLiteStatement alloc];
-    v13 = -[NSSQLiteStatement initWithEntity:sqlString:](v12, "initWithEntity:sqlString:", v10, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", objc_msgSend(v10, "tableName"), objc_msgSend(v11, "columnName"), -[NSSQLiteAdapter typeStringForColumn:](objc_msgSend(a3, "adapter"), v11)]);
-    if (a2)
+    v13 = -[NSSQLiteStatement initWithEntity:sqlString:](v12, "initWithEntity:sqlString:", entity, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", objc_msgSend(entity, "tableName"), objc_msgSend(foreignKey, "columnName"), -[NSSQLiteAdapter typeStringForColumn:](objc_msgSend(store, "adapter"), foreignKey)]);
+    if (context)
     {
-      [*(a2 + 8) addObject:v13];
-      *(a2 + 48) = 1;
+      [*(context + 8) addObject:v13];
+      *(context + 48) = 1;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)addMigrationStatementForAddingAttribute:(_BYTE *)a1 toContext:(uint64_t)a2 inStore:(void *)a3
+- (uint64_t)addMigrationStatementForAddingAttribute:(_BYTE *)attribute toContext:(uint64_t)context inStore:(void *)store
 {
-  v6 = [a1 entity];
+  entity = [attribute entity];
   v7 = [NSSQLiteStatement alloc];
-  v8 = -[NSSQLiteStatement initWithEntity:sqlString:](v7, "initWithEntity:sqlString:", v6, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", objc_msgSend(v6, "tableName"), objc_msgSend(a1, "columnName"), -[NSSQLiteAdapter typeStringForColumn:](objc_msgSend(a3, "adapter"), a1)]);
+  v8 = -[NSSQLiteStatement initWithEntity:sqlString:](v7, "initWithEntity:sqlString:", entity, [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", objc_msgSend(entity, "tableName"), objc_msgSend(attribute, "columnName"), -[NSSQLiteAdapter typeStringForColumn:](objc_msgSend(store, "adapter"), attribute)]);
   v9 = v8;
-  if (a2)
+  if (context)
   {
     v11 = v8;
-    v8 = [*(a2 + 8) addObject:v8];
+    v8 = [*(context + 8) addObject:v8];
     v9 = v11;
-    *(a2 + 48) = 1;
+    *(context + 48) = 1;
   }
 
   return MEMORY[0x1EEE66BB8](v8, v9);
@@ -3499,22 +3499,22 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)checkForOrphanedMirroredRelationshipsInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:
+- (uint64_t)checkForOrphanedMirroredRelationshipsInStore:(void *)store inManagedObjectContext:(void *)context error:
 {
   v62 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v28 = 0;
     goto LABEL_35;
   }
 
   v46[0] = 0;
-  v36 = [a2 persistentStoreCoordinator];
+  persistentStoreCoordinator = [a2 persistentStoreCoordinator];
   v7 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKMirroredRelationship entityPath]);
   [(NSFetchRequest *)v7 setPropertiesToFetch:&unk_1EF43D858];
   [(NSFetchRequest *)v7 setPropertiesToGroupBy:&unk_1EF43D870];
   [(NSFetchRequest *)v7 setResultType:2];
-  v8 = [a3 executeFetchRequest:v7 error:v46];
+  v8 = [store executeFetchRequest:v7 error:v46];
   if (!v8)
   {
     v26 = v46[0];
@@ -3522,7 +3522,7 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v41 = [v36 managedObjectModel];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -3533,7 +3533,7 @@ LABEL_15:
     goto LABEL_28;
   }
 
-  v38 = a3;
+  storeCopy = store;
   v39 = v9;
   v33 = a2;
   v40 = *v43;
@@ -3552,7 +3552,7 @@ LABEL_15:
       v12 = objc_autoreleasePoolPush();
       v13 = [v11 objectForKeyedSubscript:@"cdEntityName"];
       v14 = [v11 objectForKeyedSubscript:@"relationshipName"];
-      if ([objc_msgSend(objc_msgSend(objc_msgSend(v41 "entitiesByName")])
+      if ([objc_msgSend(objc_msgSend(objc_msgSend(managedObjectModel "entitiesByName")])
       {
         goto LABEL_16;
       }
@@ -3561,7 +3561,7 @@ LABEL_15:
       -[NSFetchRequest setPredicate:](v15, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"cdEntityName = %@ AND relationshipName = %@", v13, v14]);
       v16 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v15];
       [(NSBatchDeleteRequest *)v16 setResultType:2];
-      v17 = [v38 executeRequest:v16 error:v46];
+      v17 = [storeCopy executeRequest:v16 error:v46];
       if (v17)
       {
         v18 = objc_autoreleasePoolPush();
@@ -3580,15 +3580,15 @@ LABEL_15:
         type = v21;
         if (os_log_type_enabled(Stream, v21))
         {
-          v22 = [v17 result];
+          result = [v17 result];
           *buf = 136316674;
           v48 = "[PFCloudKitMetadataModelMigrator checkForOrphanedMirroredRelationshipsInStore:inManagedObjectContext:error:]";
           v49 = 1024;
           v50 = 1662;
           v51 = 2112;
-          v52 = a1;
+          selfCopy = self;
           v53 = 2112;
-          v54 = v22;
+          v54 = result;
           v55 = 2112;
           v56 = v13;
           v57 = 2112;
@@ -3637,10 +3637,10 @@ LABEL_25:
   v27 = v46[0];
   if (v27)
   {
-    if (a4)
+    if (context)
     {
       v28 = 0;
-      *a4 = v27;
+      *context = v27;
       goto LABEL_34;
     }
   }
@@ -3676,10 +3676,10 @@ LABEL_35:
   return v28;
 }
 
-- (uint64_t)checkForCorruptedRecordMetadataInStore:(void *)a3 inManagedObjectContext:(void *)a4 error:
+- (uint64_t)checkForCorruptedRecordMetadataInStore:(void *)store inManagedObjectContext:(void *)context error:
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v38 = 0;
     v39 = &v38;
@@ -3691,7 +3691,7 @@ LABEL_35:
     v35 = __Block_byref_object_copy__50;
     v36 = __Block_byref_object_dispose__50;
     v37 = 0;
-    v7 = [objc_msgSend(a3 "persistentStoreCoordinator")];
+    v7 = [objc_msgSend(store "persistentStoreCoordinator")];
     v8 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordMetadata entityPath]);
     [(NSFetchRequest *)v8 setFetchBatchSize:500];
     [(NSFetchRequest *)v8 setPropertiesToFetch:&unk_1EF43D8B8];
@@ -3710,7 +3710,7 @@ LABEL_35:
     v27[6] = &v28;
     v27[7] = &v38;
     v27[8] = &v32;
-    [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:v8 usingManagedObjectContext:a3 andApplyBlock:v27];
+    [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:v8 usingManagedObjectContext:store andApplyBlock:v27];
     v9 = *(v39 + 24);
     if (v9 == 1 && *(v29 + 24) == 1)
     {
@@ -3718,7 +3718,7 @@ LABEL_35:
       [(NSBatchDeleteRequest *)v10 setResultType:0];
       v48 = a2;
       -[NSPersistentStoreRequest setAffectedStores:](v10, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1]);
-      v11 = [objc_msgSend(objc_msgSend(a3 executeRequest:v10 error:{v33 + 5), "result"), "BOOLValue"}];
+      v11 = [objc_msgSend(objc_msgSend(store executeRequest:v10 error:{v33 + 5), "result"), "BOOLValue"}];
       v12 = objc_autoreleasePoolPush();
       if (v11)
       {
@@ -3782,9 +3782,9 @@ LABEL_35:
       v24 = v33[5];
       if (v24)
       {
-        if (a4)
+        if (context)
         {
-          *a4 = v24;
+          *context = v24;
         }
       }
 
@@ -3828,10 +3828,10 @@ LABEL_35:
   return v21 & 1;
 }
 
-- (uint64_t)cleanUpAfterClientMigrationWithStore:(void *)a3 andContext:(void *)a4 error:
+- (uint64_t)cleanUpAfterClientMigrationWithStore:(void *)store andContext:(void *)context error:
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v42 = 0;
     v43 = &v42;
@@ -3844,29 +3844,29 @@ LABEL_35:
     v40 = __Block_byref_object_dispose__50;
     v41 = 0;
     v5 = objc_alloc(MEMORY[0x1E695DF70]);
-    v6 = [a2 model];
-    if (v6)
+    model = [a2 model];
+    if (model)
     {
-      v6 = v6[4];
+      model = model[4];
     }
 
-    v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    v7 = [v5 initWithCapacity:{objc_msgSend(model, "count")}];
     v8 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v9 = [a2 model];
-    if (v9)
+    model2 = [a2 model];
+    if (model2)
     {
-      v9 = v9[4];
+      model2 = model2[4];
     }
 
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    v10 = [v8 initWithCapacity:{objc_msgSend(model2, "count")}];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [a2 model];
-    if (v11)
+    model3 = [a2 model];
+    if (model3)
     {
-      v12 = *(v11 + 32);
+      v12 = *(model3 + 32);
     }
 
     else
@@ -3918,7 +3918,7 @@ LABEL_35:
     [(NSBatchDeleteRequest *)v20 setResultType:0];
     v51 = a2;
     -[NSPersistentStoreRequest setAffectedStores:](v20, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1]);
-    if ([objc_msgSend(objc_msgSend(a3 executeRequest:v20 error:{v37 + 5), "result"), "BOOLValue"}])
+    if ([objc_msgSend(objc_msgSend(store executeRequest:v20 error:{v37 + 5), "result"), "BOOLValue"}])
     {
       v21 = [[NSFetchRequest alloc] initWithEntityName:+[NSCKMirroredRelationship entityPath]];
       [(NSFetchRequest *)v21 setFetchBatchSize:500];
@@ -3931,10 +3931,10 @@ LABEL_35:
       v31[3] = &unk_1E6EC5740;
       v31[4] = v10;
       v31[5] = a2;
-      v31[6] = a3;
+      v31[6] = store;
       v31[7] = &v36;
       v31[8] = &v42;
-      [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:v21 usingManagedObjectContext:a3 andApplyBlock:v31];
+      [_PFRoutines efficientlyEnumerateManagedObjectsInFetchRequest:v21 usingManagedObjectContext:store andApplyBlock:v31];
     }
 
     else
@@ -3948,9 +3948,9 @@ LABEL_35:
       v26 = v37[5];
       if (v26)
       {
-        if (a4)
+        if (context)
         {
-          *a4 = v26;
+          *context = v26;
         }
       }
 
@@ -3993,10 +3993,10 @@ LABEL_35:
   return v23 & 1;
 }
 
-- (uint64_t)moveBinaryDataFromColumn:(uint64_t)a3 forAttribute:(uint64_t)a4 toMetadataAsset:(uint64_t)a5 byRelationshipNamed:(void *)a6 error:
+- (uint64_t)moveBinaryDataFromColumn:(uint64_t)column forAttribute:(uint64_t)attribute toMetadataAsset:(uint64_t)asset byRelationshipNamed:(void *)named error:
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (!a2)
     {
@@ -4007,7 +4007,7 @@ LABEL_35:
       objc_exception_throw([v15 exceptionWithName:*MEMORY[0x1E695D940] reason:@"Missing 'column'" userInfo:v16]);
     }
 
-    if (!a3)
+    if (!column)
     {
       v17 = MEMORY[0x1E695DF30];
       v38 = @"selector";
@@ -4016,7 +4016,7 @@ LABEL_35:
       objc_exception_throw([v17 exceptionWithName:*MEMORY[0x1E695D940] reason:@"Missing 'attribute'" userInfo:v18]);
     }
 
-    if (!a4)
+    if (!attribute)
     {
       v19 = MEMORY[0x1E695DF30];
       v36 = @"selector";
@@ -4040,22 +4040,22 @@ LABEL_35:
     v21[2] = __115__PFCloudKitMetadataModelMigrator_moveBinaryDataFromColumn_forAttribute_toMetadataAsset_byRelationshipNamed_error___block_invoke;
     v21[3] = &unk_1E6EC5768;
     v21[4] = a2;
-    v21[5] = a4;
-    v21[6] = a5;
-    v21[7] = a3;
+    v21[5] = attribute;
+    v21[6] = asset;
+    v21[7] = column;
     v21[8] = &v28;
     v21[9] = &v22;
-    v8 = [[NSSQLBlockRequestContext alloc] initWithBlock:v21 context:0 sqlCore:*(a1 + 8)];
-    [(NSSQLCore *)*(a1 + 8) dispatchRequest:v8 withRetries:0];
+    v8 = [[NSSQLBlockRequestContext alloc] initWithBlock:v21 context:0 sqlCore:*(self + 8)];
+    [(NSSQLCore *)*(self + 8) dispatchRequest:v8 withRetries:0];
 
     if ((v29[3] & 1) == 0)
     {
       v12 = v23[5];
       if (v12)
       {
-        if (a6)
+        if (named)
         {
-          *a6 = v12;
+          *named = v12;
         }
       }
 
@@ -4098,10 +4098,10 @@ LABEL_35:
   return v9 & 1;
 }
 
-- (uint64_t)checkAndPerformMigrationIfNecessary:(uint64_t *)a1
+- (uint64_t)checkAndPerformMigrationIfNecessary:(uint64_t *)necessary
 {
   v77 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!necessary)
   {
     v21 = 0;
     goto LABEL_28;
@@ -4121,11 +4121,11 @@ LABEL_35:
   v28 = 3221225472;
   v29 = __71__PFCloudKitMetadataModelMigrator_checkAndPerformMigrationIfNecessary___block_invoke;
   v30 = &unk_1E6EC5678;
-  v31 = a1;
+  necessaryCopy = necessary;
   v32 = &v40;
   v33 = &v34;
-  v4 = [[NSSQLBlockRequestContext alloc] initWithBlock:&v27 context:0 sqlCore:a1[1]];
-  [(NSSQLCore *)a1[1] dispatchRequest:v4 withRetries:0];
+  v4 = [[NSSQLBlockRequestContext alloc] initWithBlock:&v27 context:0 sqlCore:necessary[1]];
+  [(NSSQLCore *)necessary[1] dispatchRequest:v4 withRetries:0];
 
   v5 = *(v41 + 24);
   if (v5 != 1)
@@ -4144,24 +4144,24 @@ LABEL_35:
   v48 = __Block_byref_object_copy__50;
   v49 = __Block_byref_object_dispose__50;
   v50 = 0;
-  v7 = a1[2];
+  v7 = necessary[2];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __69__PFCloudKitMetadataModelMigrator_commitMigrationMetadataAndCleanup___block_invoke;
   v44[3] = &unk_1E6EC1EB8;
-  v44[4] = a1;
+  v44[4] = necessary;
   v44[5] = &v51;
   v44[6] = &v45;
-  [v7 performBlockAndWait:{v44, v27, v28, v29, v30, v31, v32, v33}];
-  LODWORD(v8) = *(v52 + 24);
-  if (v8 != 1)
+  [v7 performBlockAndWait:{v44, v27, v28, v29, v30, necessaryCopy, v32, v33}];
+  LODWORD(persistentStoreCoordinator) = *(v52 + 24);
+  if (persistentStoreCoordinator != 1)
   {
     goto LABEL_17;
   }
 
-  if (a1[4] == 2)
+  if (necessary[4] == 2)
   {
-    v9 = a1[1];
+    v9 = necessary[1];
     v10 = v46;
     v61 = 0;
     v62 = &v61;
@@ -4173,10 +4173,10 @@ LABEL_35:
     v58 = __Block_byref_object_copy__50;
     v59 = __Block_byref_object_dispose__50;
     v60 = 0;
-    v8 = [v9 persistentStoreCoordinator];
+    persistentStoreCoordinator = [v9 persistentStoreCoordinator];
     v11 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
     [(NSManagedObjectContext *)v11 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-    [(NSManagedObjectContext *)v11 setPersistentStoreCoordinator:v8];
+    [(NSManagedObjectContext *)v11 setPersistentStoreCoordinator:persistentStoreCoordinator];
     [(NSManagedObjectContext *)v11 _setAllowAncillaryEntities:1];
     if (v11)
     {
@@ -4187,12 +4187,12 @@ LABEL_35:
     *&buf[8] = 3221225472;
     *&buf[16] = __85__PFCloudKitMetadataModelMigrator_checkForRecordMetadataZoneCorruptionInStore_error___block_invoke;
     v70 = &unk_1E6EC56A0;
-    v71 = a1;
+    necessaryCopy2 = necessary;
     v72 = v9;
     v75 = &v55;
     v76 = &v61;
     v73 = v11;
-    v74 = v8;
+    v74 = persistentStoreCoordinator;
     [(NSManagedObjectContext *)v11 performBlockAndWait:buf];
     if ((v62[3] & 1) == 0)
     {
@@ -4227,18 +4227,18 @@ LABEL_35:
     }
 
     v56[5] = 0;
-    LOBYTE(v8) = *(v62 + 24);
+    LOBYTE(persistentStoreCoordinator) = *(v62 + 24);
     _Block_object_dispose(&v55, 8);
     _Block_object_dispose(&v61, 8);
-    *(v52 + 24) = v8;
+    *(v52 + 24) = persistentStoreCoordinator;
   }
 
-  if ((v8 & 1) == 0)
+  if ((persistentStoreCoordinator & 1) == 0)
   {
     v15 = v46[5];
-    LODWORD(v8) = *(v52 + 24);
+    LODWORD(persistentStoreCoordinator) = *(v52 + 24);
 LABEL_17:
-    if (!v8)
+    if (!persistentStoreCoordinator)
     {
       v16 = v46[5];
       if (v16)

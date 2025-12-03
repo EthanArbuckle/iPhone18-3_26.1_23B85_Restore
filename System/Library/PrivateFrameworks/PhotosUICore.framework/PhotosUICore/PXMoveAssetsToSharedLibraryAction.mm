@@ -1,23 +1,23 @@
 @interface PXMoveAssetsToSharedLibraryAction
-- (PXMoveAssetsToSharedLibraryAction)initWithAssets:(id)a3;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXMoveAssetsToSharedLibraryAction)initWithAssets:(id)assets;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXMoveAssetsToSharedLibraryAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
+  undoCopy = undo;
+  assets = [(PXAssetsAction *)self assets];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PXMoveAssetsToSharedLibraryAction_performUndo___block_invoke;
   v7[3] = &unk_1E774BD88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  PXSharedLibraryMoveAssetsToPersonalLibrary(v5, v7);
+  v8 = undoCopy;
+  v6 = undoCopy;
+  PXSharedLibraryMoveAssetsToPersonalLibrary(assets, v7);
 }
 
 void __49__PXMoveAssetsToSharedLibraryAction_performUndo___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -38,19 +38,19 @@ void __49__PXMoveAssetsToSharedLibraryAction_performUndo___block_invoke(uint64_t
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  PXSharedLibraryMoveAssetsToSharedLibrary(v5, v4);
+  actionCopy = action;
+  assets = [(PXAssetsAction *)self assets];
+  PXSharedLibraryMoveAssetsToSharedLibrary(assets, actionCopy);
 }
 
-- (PXMoveAssetsToSharedLibraryAction)initWithAssets:(id)a3
+- (PXMoveAssetsToSharedLibraryAction)initWithAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v6.receiver = self;
   v6.super_class = PXMoveAssetsToSharedLibraryAction;
-  if ([(PXAssetsAction *)&v6 initWithAssets:v4])
+  if ([(PXAssetsAction *)&v6 initWithAssets:assetsCopy])
   {
     PXFilter();
   }

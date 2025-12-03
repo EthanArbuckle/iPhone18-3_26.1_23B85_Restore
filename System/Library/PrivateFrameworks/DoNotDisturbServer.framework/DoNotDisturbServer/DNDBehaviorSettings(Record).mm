@@ -10,9 +10,9 @@
   v3 = MEMORY[0x277D05A08];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 interruptionBehaviorSetting];
+  interruptionBehaviorSetting = [v4 interruptionBehaviorSetting];
 
-  [v5 setInterruptionBehaviorSetting:{objc_msgSend(v6, "unsignedIntegerValue")}];
+  [v5 setInterruptionBehaviorSetting:{objc_msgSend(interruptionBehaviorSetting, "unsignedIntegerValue")}];
 
   return v5;
 }
@@ -20,7 +20,7 @@
 - (DNDSMutableBehaviorSettingsRecord)makeRecord
 {
   v2 = objc_alloc_init(DNDSMutableBehaviorSettingsRecord);
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "interruptionBehaviorSetting")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "interruptionBehaviorSetting")}];
   [(DNDSMutableBehaviorSettingsRecord *)v2 setInterruptionBehaviorSetting:v3];
 
   return v2;

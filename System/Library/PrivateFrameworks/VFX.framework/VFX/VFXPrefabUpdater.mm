@@ -1,99 +1,99 @@
 @interface VFXPrefabUpdater
-- (id)_findAssociatedNode:(id)a3 inSubtree:(id)a4 ignoring:(id)a5;
-- (id)_findChild:(id)a3 inChildrenOf:(id)a4 index:(unint64_t)a5;
-- (id)diffOld:(id)a3 withNew:(id)a4 options:(unint64_t)a5;
-- (void)_associate:(id)a3 with:(id)a4;
-- (void)_syncNode:(id)a3 with:(id)a4;
-- (void)addOperation:(int64_t)a3 src:(id)a4 dst:(id)a5;
-- (void)applyDiff:(id)a3;
-- (void)associateNodeTree:(id)a3 withNodeTree:(id)a4 root:(id)a5;
-- (void)collectOrphanNodes:(id)a3 dst:(id)a4;
-- (void)updatePrefab:(id)a3 withNewPrefab:(id)a4 options:(unint64_t)a5;
+- (id)_findAssociatedNode:(id)node inSubtree:(id)subtree ignoring:(id)ignoring;
+- (id)_findChild:(id)child inChildrenOf:(id)of index:(unint64_t)index;
+- (id)diffOld:(id)old withNew:(id)new options:(unint64_t)options;
+- (void)_associate:(id)_associate with:(id)with;
+- (void)_syncNode:(id)node with:(id)with;
+- (void)addOperation:(int64_t)operation src:(id)src dst:(id)dst;
+- (void)applyDiff:(id)diff;
+- (void)associateNodeTree:(id)tree withNodeTree:(id)nodeTree root:(id)root;
+- (void)collectOrphanNodes:(id)nodes dst:(id)dst;
+- (void)updatePrefab:(id)prefab withNewPrefab:(id)newPrefab options:(unint64_t)options;
 @end
 
 @implementation VFXPrefabUpdater
 
-- (void)_associate:(id)a3 with:(id)a4
+- (void)_associate:(id)_associate with:(id)with
 {
-  CFDictionarySetValue(self->_srcToDst, a3, a4);
+  CFDictionarySetValue(self->_srcToDst, _associate, with);
   dstToSrc = self->_dstToSrc;
 
-  CFDictionarySetValue(dstToSrc, a4, a3);
+  CFDictionarySetValue(dstToSrc, with, _associate);
 }
 
-- (void)addOperation:(int64_t)a3 src:(id)a4 dst:(id)a5
+- (void)addOperation:(int64_t)operation src:(id)src dst:(id)dst
 {
   v17 = objc_alloc_init(VFXPrefabUpdateOperation);
-  objc_msgSend_setSource_(v17, v9, a4, v10);
-  objc_msgSend_setDestination_(v17, v11, a5, v12);
-  objc_msgSend_setOperation_(v17, v13, a3, v14);
+  objc_msgSend_setSource_(v17, v9, src, v10);
+  objc_msgSend_setDestination_(v17, v11, dst, v12);
+  objc_msgSend_setOperation_(v17, v13, operation, v14);
   objc_msgSend_addObject_(self->_operations, v15, v17, v16);
 }
 
-- (void)_syncNode:(id)a3 with:(id)a4
+- (void)_syncNode:(id)node with:(id)with
 {
-  if ((self->_importOptions & 2) != 0 && self->_rootSrc != a4 && self->_rootDst != a3)
+  if ((self->_importOptions & 2) != 0 && self->_rootSrc != with && self->_rootDst != node)
   {
-    objc_msgSend_transform(a4, a2, a3, a4);
+    objc_msgSend_transform(with, a2, node, with);
     v37 = v8;
     v38 = v7;
     v39 = v10;
     v40 = v9;
-    objc_msgSend_transform(a3, v11, v12, v13);
+    objc_msgSend_transform(node, v11, v12, v13);
     if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v38, v14), vceqq_f32(v37, v15)), vandq_s8(vceqq_f32(v40, v16), vceqq_f32(v39, v17)))) & 0x80000000) == 0)
     {
-      objc_msgSend_addOperation_src_dst_(self, a2, 2, a4, a3);
+      objc_msgSend_addOperation_src_dst_(self, a2, 2, with, node);
     }
   }
 
-  if ((self->_importOptions & 0x20) != 0 && (objc_msgSend_camera(a4, a2, a3, a4) || objc_msgSend_camera(a3, a2, v18, v19)))
+  if ((self->_importOptions & 0x20) != 0 && (objc_msgSend_camera(with, a2, node, with) || objc_msgSend_camera(node, a2, v18, v19)))
   {
-    objc_msgSend_addOperation_src_dst_(self, a2, 5, a4, a3);
+    objc_msgSend_addOperation_src_dst_(self, a2, 5, with, node);
   }
 
-  if ((self->_importOptions & 4) != 0 && (objc_msgSend_model(a4, a2, a3, a4) || objc_msgSend_model(a3, a2, v20, v21)))
+  if ((self->_importOptions & 4) != 0 && (objc_msgSend_model(with, a2, node, with) || objc_msgSend_model(node, a2, v20, v21)))
   {
-    objc_msgSend_addOperation_src_dst_(self, a2, 3, a4, a3);
+    objc_msgSend_addOperation_src_dst_(self, a2, 3, with, node);
   }
 
-  if ((self->_importOptions & 0x10) != 0 && (objc_msgSend_light(a4, a2, a3, a4) || objc_msgSend_light(a3, a2, v22, v23)))
+  if ((self->_importOptions & 0x10) != 0 && (objc_msgSend_light(with, a2, node, with) || objc_msgSend_light(node, a2, v22, v23)))
   {
-    objc_msgSend_addOperation_src_dst_(self, a2, 4, a4, a3);
+    objc_msgSend_addOperation_src_dst_(self, a2, 4, with, node);
   }
 
   if ((self->_importOptions & 8) != 0)
   {
-    v24 = objc_msgSend_animationKeys(a4, a2, a3, a4);
-    if (objc_msgSend_count(v24, v25, v26, v27) || (v30 = objc_msgSend_animationKeys(a3, a2, v28, v29), objc_msgSend_count(v30, v31, v32, v33)))
+    v24 = objc_msgSend_animationKeys(with, a2, node, with);
+    if (objc_msgSend_count(v24, v25, v26, v27) || (v30 = objc_msgSend_animationKeys(node, a2, v28, v29), objc_msgSend_count(v30, v31, v32, v33)))
     {
-      objc_msgSend_addOperation_src_dst_(self, a2, 7, a4, a3);
+      objc_msgSend_addOperation_src_dst_(self, a2, 7, with, node);
     }
   }
 
-  if ((self->_importOptions & 0x40) != 0 && (objc_msgSend_model(a4, a2, a3, a4) || objc_msgSend_model(a3, v34, v35, v36)))
+  if ((self->_importOptions & 0x40) != 0 && (objc_msgSend_model(with, a2, node, with) || objc_msgSend_model(node, v34, v35, v36)))
   {
 
-    objc_msgSend_addOperation_src_dst_(self, v34, 6, a4, a3);
+    objc_msgSend_addOperation_src_dst_(self, v34, 6, with, node);
   }
 }
 
-- (id)_findAssociatedNode:(id)a3 inSubtree:(id)a4 ignoring:(id)a5
+- (id)_findAssociatedNode:(id)node inSubtree:(id)subtree ignoring:(id)ignoring
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a4 == a5)
+  if (subtree == ignoring)
   {
     return 0;
   }
 
-  v6 = a4;
-  v9 = objc_msgSend_name(a4, a2, a3, a4);
-  v13 = objc_msgSend_name(a3, v10, v11, v12);
-  if (objc_msgSend_isEqualToString_(v9, v14, v13, v15) && !objc_msgSend__dstHasAssociatedNode_(self, v16, v6, v18))
+  subtreeCopy = subtree;
+  v9 = objc_msgSend_name(subtree, a2, node, subtree);
+  v13 = objc_msgSend_name(node, v10, v11, v12);
+  if (objc_msgSend_isEqualToString_(v9, v14, v13, v15) && !objc_msgSend__dstHasAssociatedNode_(self, v16, subtreeCopy, v18))
   {
-    return v6;
+    return subtreeCopy;
   }
 
-  if (!objc_msgSend_name(a3, v16, v17, v18))
+  if (!objc_msgSend_name(node, v16, v17, v18))
   {
     return 0;
   }
@@ -102,7 +102,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = objc_msgSend_childNodes(v6, v19, v20, v21, 0);
+  v22 = objc_msgSend_childNodes(subtreeCopy, v19, v20, v21, 0);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v31, v35, 16);
   if (!v24)
   {
@@ -120,7 +120,7 @@
         objc_enumerationMutation(v22);
       }
 
-      AssociatedNode_inSubtree_ignoring = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v25, a3, *(*(&v31 + 1) + 8 * i), a5);
+      AssociatedNode_inSubtree_ignoring = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v25, node, *(*(&v31 + 1) + 8 * i), ignoring);
       if (AssociatedNode_inSubtree_ignoring)
       {
         return AssociatedNode_inSubtree_ignoring;
@@ -128,7 +128,7 @@
     }
 
     v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v25, &v31, v35, 16);
-    v6 = 0;
+    subtreeCopy = 0;
     if (v26)
     {
       continue;
@@ -137,79 +137,79 @@
     break;
   }
 
-  return v6;
+  return subtreeCopy;
 }
 
-- (id)_findChild:(id)a3 inChildrenOf:(id)a4 index:(unint64_t)a5
+- (id)_findChild:(id)child inChildrenOf:(id)of index:(unint64_t)index
 {
-  v7 = objc_msgSend_name(a3, a2, a3, a4);
-  result = objc_msgSend_childNodeWithName_(a4, v8, v7, v9);
+  v7 = objc_msgSend_name(child, a2, child, of);
+  result = objc_msgSend_childNodeWithName_(of, v8, v7, v9);
   if (!result)
   {
-    v14 = objc_msgSend_childNodes(a4, v11, v12, v13);
-    if (objc_msgSend_count(v14, v15, v16, v17) <= a5)
+    v14 = objc_msgSend_childNodes(of, v11, v12, v13);
+    if (objc_msgSend_count(v14, v15, v16, v17) <= index)
     {
       return 0;
     }
 
     else
     {
-      v21 = objc_msgSend_childNodes(a4, v18, v19, v20);
+      v21 = objc_msgSend_childNodes(of, v18, v19, v20);
 
-      return objc_msgSend_objectAtIndexedSubscript_(v21, v22, a5, v23);
+      return objc_msgSend_objectAtIndexedSubscript_(v21, v22, index, v23);
     }
   }
 
   return result;
 }
 
-- (void)associateNodeTree:(id)a3 withNodeTree:(id)a4 root:(id)a5
+- (void)associateNodeTree:(id)tree withNodeTree:(id)nodeTree root:(id)root
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend__srcAssociatedNode_(self, a2, a3, a4))
+  if (objc_msgSend__srcAssociatedNode_(self, a2, tree, nodeTree))
   {
-    v12 = 0;
+    nodeTreeCopy2 = 0;
   }
 
-  else if (objc_msgSend_name(a3, v9, v10, v11) || objc_msgSend_name(a4, v13, v14, v15) || (objc_msgSend__dstHasAssociatedNode_(self, v13, a4, v16) & 1) != 0)
+  else if (objc_msgSend_name(tree, v9, v10, v11) || objc_msgSend_name(nodeTree, v13, v14, v15) || (objc_msgSend__dstHasAssociatedNode_(self, v13, nodeTree, v16) & 1) != 0)
   {
-    AssociatedNode_inSubtree_ignoring = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v13, a3, a4, 0);
+    AssociatedNode_inSubtree_ignoring = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v13, tree, nodeTree, 0);
     if (AssociatedNode_inSubtree_ignoring)
     {
-      v12 = AssociatedNode_inSubtree_ignoring;
-      objc_msgSend__associate_with_(self, v18, a3, AssociatedNode_inSubtree_ignoring);
+      nodeTreeCopy2 = AssociatedNode_inSubtree_ignoring;
+      objc_msgSend__associate_with_(self, v18, tree, AssociatedNode_inSubtree_ignoring);
     }
 
     else
     {
-      v12 = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v18, a3, a5, a4);
-      if (v12)
+      nodeTreeCopy2 = objc_msgSend__findAssociatedNode_inSubtree_ignoring_(self, v18, tree, root, nodeTree);
+      if (nodeTreeCopy2)
       {
-        objc_msgSend__associate_with_(self, v9, a3, v12);
+        objc_msgSend__associate_with_(self, v9, tree, nodeTreeCopy2);
       }
     }
   }
 
   else
   {
-    objc_msgSend__associate_with_(self, v13, a3, a4);
-    v12 = a4;
+    objc_msgSend__associate_with_(self, v13, tree, nodeTree);
+    nodeTreeCopy2 = nodeTree;
   }
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = objc_msgSend_childNodes(a3, v9, v10, v11, 0);
+  v19 = objc_msgSend_childNodes(tree, v9, v10, v11, 0);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v30, v34, 16);
   if (v21)
   {
     v23 = v21;
     v24 = 0;
     v25 = *v31;
-    if (!v12)
+    if (!nodeTreeCopy2)
     {
-      v12 = a4;
+      nodeTreeCopy2 = nodeTree;
     }
 
     do
@@ -222,15 +222,15 @@
         }
 
         v27 = *(*(&v30 + 1) + 8 * i);
-        Child_inChildrenOf_index = objc_msgSend__findChild_inChildrenOf_index_(self, v22, v27, v12, v24);
+        Child_inChildrenOf_index = objc_msgSend__findChild_inChildrenOf_index_(self, v22, v27, nodeTreeCopy2, v24);
         if (Child_inChildrenOf_index)
         {
-          objc_msgSend_associateNodeTree_withNodeTree_root_(self, v29, v27, Child_inChildrenOf_index, a5);
+          objc_msgSend_associateNodeTree_withNodeTree_root_(self, v29, v27, Child_inChildrenOf_index, root);
         }
 
         else
         {
-          objc_msgSend_associateNodeTree_withNodeTree_root_(self, v29, v27, a4, a5);
+          objc_msgSend_associateNodeTree_withNodeTree_root_(self, v29, v27, nodeTree, root);
         }
 
         ++v24;
@@ -243,37 +243,37 @@
   }
 }
 
-- (void)collectOrphanNodes:(id)a3 dst:(id)a4
+- (void)collectOrphanNodes:(id)nodes dst:(id)dst
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1AF316A50;
   v9[3] = &unk_1E7A79810;
   v9[4] = self;
-  objc_msgSend_enumerateHierarchyUsingBlock_(a3, a2, v9, a4);
+  objc_msgSend_enumerateHierarchyUsingBlock_(nodes, a2, v9, dst);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF316AC8;
   v8[3] = &unk_1E7A79810;
   v8[4] = self;
-  objc_msgSend_enumerateHierarchyUsingBlock_(a4, v6, v8, v7);
+  objc_msgSend_enumerateHierarchyUsingBlock_(dst, v6, v8, v7);
 }
 
-- (id)diffOld:(id)a3 withNew:(id)a4 options:(unint64_t)a5
+- (id)diffOld:(id)old withNew:(id)new options:(unint64_t)options
 {
-  v5 = a5;
-  self->_importOptions = (a5 >> 4) & 4 | a5;
-  self->_rootSrc = a4;
-  self->_rootDst = a3;
-  self->_operations = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, a4);
+  optionsCopy = options;
+  self->_importOptions = (options >> 4) & 4 | options;
+  self->_rootSrc = new;
+  self->_rootDst = old;
+  self->_operations = objc_msgSend_array(MEMORY[0x1E695DF70], a2, old, new);
   self->_srcToDst = CFDictionaryCreateMutable(0, 0, 0, 0);
   self->_dstToSrc = CFDictionaryCreateMutable(0, 0, 0, 0);
-  objc_msgSend__associate_with_(self, v9, a4, a3);
-  objc_msgSend_associateNodeTree_withNodeTree_root_(self, v10, a4, a3, a3);
+  objc_msgSend__associate_with_(self, v9, new, old);
+  objc_msgSend_associateNodeTree_withNodeTree_root_(self, v10, new, old, old);
   CFDictionaryApplyFunction(self->_srcToDst, sub_1AF316C28, self);
-  if (v5)
+  if (optionsCopy)
   {
-    objc_msgSend_collectOrphanNodes_dst_(self, v11, a4, a3);
+    objc_msgSend_collectOrphanNodes_dst_(self, v11, new, old);
   }
 
   CFRelease(self->_srcToDst);
@@ -283,7 +283,7 @@
   return self->_operations;
 }
 
-- (void)applyDiff:(id)a3
+- (void)applyDiff:(id)diff
 {
   v90 = *MEMORY[0x1E69E9840];
   NSLog(&cfstr_Diff.isa, a2);
@@ -291,8 +291,8 @@
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  obj = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v4, &v84, v89, 16);
+  obj = diff;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(diff, v4, &v84, v89, 16);
   if (v5)
   {
     v9 = v5;
@@ -421,9 +421,9 @@ LABEL_33:
   }
 }
 
-- (void)updatePrefab:(id)a3 withNewPrefab:(id)a4 options:(unint64_t)a5
+- (void)updatePrefab:(id)prefab withNewPrefab:(id)newPrefab options:(unint64_t)options
 {
-  v6 = objc_msgSend_diffOld_withNew_options_(self, a2, a3, a4, a5);
+  v6 = objc_msgSend_diffOld_withNew_options_(self, a2, prefab, newPrefab, options);
 
   MEMORY[0x1EEE66B58](self, sel_applyDiff_, v6, v7);
 }

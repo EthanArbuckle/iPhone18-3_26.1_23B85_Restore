@@ -1,20 +1,20 @@
 @interface HUMosaicCameraCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3 viewSizeSubclass:(int64_t)a4;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass viewSizeSubclass:(int64_t)sizeSubclass;
 - (double)cameraCellWidth;
-- (double)cornerRadiusForCellSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)numColumnsForContainerWidth:(double)a3 minimumCameraCellWidth:(double)a4 padding:(double)a5;
+- (double)cornerRadiusForCellSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)numColumnsForContainerWidth:(double)width minimumCameraCellWidth:(double)cellWidth padding:(double)padding;
 @end
 
 @implementation HUMosaicCameraCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3 viewSizeSubclass:(int64_t)a4
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass viewSizeSubclass:(int64_t)sizeSubclass
 {
   v20[5] = *MEMORY[0x277D85DE8];
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___HUMosaicCameraCellLayoutOptions;
   v6 = objc_msgSendSuper2(&v18, sel_defaultOptionsForCellSizeSubclass_);
-  [v6 setViewSizeSubclass:a4];
+  [v6 setViewSizeSubclass:sizeSubclass];
   v7 = *MEMORY[0x277D769D0];
   v8 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D769D0] variant:1024];
   [v6 setFont:v8];
@@ -41,18 +41,18 @@
   v19[4] = &unk_2824922B8;
   v20[4] = &unk_2824937E0;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
-  [v6 setInterItemSpacing:{HUConstantForCellSizeSubclass(a3, v14)}];
+  [v6 setInterItemSpacing:{HUConstantForCellSizeSubclass(subclass, v14)}];
 
   [v6 setExpandedFormatAspectRatio:0.98];
-  if (a3 == 3)
+  if (subclass == 3)
   {
     [v6 setMaxWidth:359.0];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     [v6 setMaxWidth:v16];
   }
 
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (unint64_t)numColumnsForContainerWidth:(double)a3 minimumCameraCellWidth:(double)a4 padding:(double)a5
+- (unint64_t)numColumnsForContainerWidth:(double)width minimumCameraCellWidth:(double)cellWidth padding:(double)padding
 {
-  if ([(HUGridCellLayoutOptions *)self cellSizeSubclass]== 3 && a4 + a4 + a5 - a3 < 0.00000011920929)
+  if ([(HUGridCellLayoutOptions *)self cellSizeSubclass]== 3 && cellWidth + cellWidth + padding - width < 0.00000011920929)
   {
     return 2;
   }
@@ -86,9 +86,9 @@
   return v4 + -40.0;
 }
 
-- (double)cornerRadiusForCellSize:(CGSize)a3
+- (double)cornerRadiusForCellSize:(CGSize)size
 {
-  if (![(HUMosaicCameraCellLayoutOptions *)self isSingleCell:a3.width])
+  if (![(HUMosaicCameraCellLayoutOptions *)self isSingleCell:size.width])
   {
     return 0.0;
   }
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HUMosaicCameraCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:a3];
+  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:zone];
   [(HUMosaicCameraCellLayoutOptions *)self descriptionInset];
   [v4 setDescriptionInset:?];
   return v4;

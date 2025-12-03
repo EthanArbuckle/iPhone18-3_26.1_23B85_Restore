@@ -1,20 +1,20 @@
 @interface VNFaceAttributeCategory
-- (BOOL)isEqual:(id)a3;
-- (VNFaceAttributeCategory)initWithCoder:(id)a3;
-- (VNFaceAttributeCategory)initWithRequestRevision:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNFaceAttributeCategory)initWithCoder:(id)coder;
+- (VNFaceAttributeCategory)initWithRequestRevision:(unint64_t)revision;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
 - (void)_computeLabel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllLabelsWithConfidences:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllLabelsWithConfidences:(id)confidences;
 @end
 
 @implementation VNFaceAttributeCategory
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -24,12 +24,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNFaceAttributeCategory *)self requestRevision];
-      if (v6 == [(VNFaceAttributeCategory *)v5 requestRevision]&& ([(VNFaceAttributeCategory *)self label], v7 = objc_claimAutoreleasedReturnValue(), [(VNFaceAttributeCategory *)v5 label], v8 = objc_claimAutoreleasedReturnValue(), v9 = VisionCoreEqualOrNilObjects(), v8, v7, (v9 & 1) != 0))
+      v5 = equalCopy;
+      requestRevision = [(VNFaceAttributeCategory *)self requestRevision];
+      if (requestRevision == [(VNFaceAttributeCategory *)v5 requestRevision]&& ([(VNFaceAttributeCategory *)self label], v7 = objc_claimAutoreleasedReturnValue(), [(VNFaceAttributeCategory *)v5 label], v8 = objc_claimAutoreleasedReturnValue(), v9 = VisionCoreEqualOrNilObjects(), v8, v7, (v9 & 1) != 0))
       {
-        v10 = [(VNFaceAttributeCategory *)self allLabelsWithConfidences];
-        v11 = [(VNFaceAttributeCategory *)v5 allLabelsWithConfidences];
+        allLabelsWithConfidences = [(VNFaceAttributeCategory *)self allLabelsWithConfidences];
+        allLabelsWithConfidences2 = [(VNFaceAttributeCategory *)v5 allLabelsWithConfidences];
         v12 = VisionCoreEqualOrNilObjects();
       }
 
@@ -53,12 +53,12 @@
   v10.receiver = self;
   v10.super_class = VNFaceAttributeCategory;
   v3 = [(VNFaceAttributeCategory *)&v10 hash];
-  v4 = [(VNFaceAttributeCategory *)self requestRevision];
-  v5 = [(VNFaceAttributeCategory *)self label];
-  v6 = [v5 hash];
+  requestRevision = [(VNFaceAttributeCategory *)self requestRevision];
+  label = [(VNFaceAttributeCategory *)self label];
+  v6 = [label hash];
 
-  v7 = [(VNFaceAttributeCategory *)self allLabelsWithConfidences];
-  v8 = [v7 hash] ^ __ROR8__(v6 ^ __ROR8__(v4 ^ __ROR8__(v3, 51), 51), 51);
+  allLabelsWithConfidences = [(VNFaceAttributeCategory *)self allLabelsWithConfidences];
+  v8 = [allLabelsWithConfidences hash] ^ __ROR8__(v6 ^ __ROR8__(requestRevision ^ __ROR8__(v3, 51), 51), 51);
 
   return v8;
 }
@@ -78,41 +78,41 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:0 forKey:@"VNFaceAttributeCategoryVersion"];
-  [v4 encodeInteger:self->_requestRevision forKey:@"facrRev"];
-  [v4 encodeObject:self->_mostLikelyLabel forKey:@"FAC_label"];
-  [v4 encodeObject:self->_allLabelsWithConfidences forKey:@"FAC_LAC"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:0 forKey:@"VNFaceAttributeCategoryVersion"];
+  [coderCopy encodeInteger:self->_requestRevision forKey:@"facrRev"];
+  [coderCopy encodeObject:self->_mostLikelyLabel forKey:@"FAC_label"];
+  [coderCopy encodeObject:self->_allLabelsWithConfidences forKey:@"FAC_LAC"];
 }
 
-- (VNFaceAttributeCategory)initWithCoder:(id)a3
+- (VNFaceAttributeCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"VNFaceAttributeCategoryVersion"])
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"VNFaceAttributeCategoryVersion"])
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v5 = -[VNFaceAttributeCategory initWithRequestRevision:](self, "initWithRequestRevision:", [v4 decodeIntegerForKey:@"facrRev"]);
-    if (v5)
+    selfCopy = -[VNFaceAttributeCategory initWithRequestRevision:](self, "initWithRequestRevision:", [coderCopy decodeIntegerForKey:@"facrRev"]);
+    if (selfCopy)
     {
       v6 = objc_opt_class();
-      v7 = [v4 decodeObjectOfClass:v6 forKey:@"FAC_label"];
-      mostLikelyLabel = v5->_mostLikelyLabel;
-      v5->_mostLikelyLabel = v7;
+      v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"FAC_label"];
+      mostLikelyLabel = selfCopy->_mostLikelyLabel;
+      selfCopy->_mostLikelyLabel = v7;
 
       v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), v6, 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"FAC_LAC"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"FAC_LAC"];
       v11 = [v10 copy];
-      allLabelsWithConfidences = v5->_allLabelsWithConfidences;
-      v5->_allLabelsWithConfidences = v11;
+      allLabelsWithConfidences = selfCopy->_allLabelsWithConfidences;
+      selfCopy->_allLabelsWithConfidences = v11;
 
-      self = v5;
-      v5 = self;
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -121,10 +121,10 @@
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VNFaceAttributeCategory)initWithRequestRevision:(unint64_t)a3
+- (VNFaceAttributeCategory)initWithRequestRevision:(unint64_t)revision
 {
   v8.receiver = self;
   v8.super_class = VNFaceAttributeCategory;
@@ -132,17 +132,17 @@
   v5 = v4;
   if (v4)
   {
-    v4->_requestRevision = a3;
+    v4->_requestRevision = revision;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (void)setAllLabelsWithConfidences:(id)a3
+- (void)setAllLabelsWithConfidences:(id)confidences
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  confidencesCopy = confidences;
+  v4 = [confidencesCopy copy];
   allLabelsWithConfidences = self->_allLabelsWithConfidences;
   self->_allLabelsWithConfidences = v4;
 

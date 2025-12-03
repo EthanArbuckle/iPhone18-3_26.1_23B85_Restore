@@ -1,35 +1,35 @@
 @interface TVAppExtensionHostService
 - (void)dismiss;
 - (void)finishLoading;
-- (void)playTrailerWithPlayableData:(id)a3;
-- (void)reportWithError:(id)a3;
+- (void)playTrailerWithPlayableData:(id)data;
+- (void)reportWithError:(id)error;
 @end
 
 @implementation TVAppExtensionHostService
 
-- (void)reportWithError:(id)a3
+- (void)reportWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1E38DBB14();
 }
 
 - (void)dismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E38DBD50();
 }
 
 - (void)finishLoading
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E38DBDC0();
 }
 
-- (void)playTrailerWithPlayableData:(id)a3
+- (void)playTrailerWithPlayableData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_1E41FE464();
   v7 = v6;
 

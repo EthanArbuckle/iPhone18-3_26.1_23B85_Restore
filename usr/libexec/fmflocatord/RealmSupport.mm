@@ -1,12 +1,12 @@
 @interface RealmSupport
-+ (id)redirectedHostForHost:(id)a3 withContext:(id)a4;
++ (id)redirectedHostForHost:(id)host withContext:(id)context;
 + (id)serverContextHeaderString;
 + (void)_printCache;
 + (void)_updateRealmPrefs;
-+ (void)clearCachedHostsWithContext:(id)a3;
++ (void)clearCachedHostsWithContext:(id)context;
 + (void)initialize;
-+ (void)setRedirectedHost:(id)a3 forHost:(id)a4 withContext:(id)a5;
-+ (void)setServerContextHeaderString:(id)a3;
++ (void)setRedirectedHost:(id)host forHost:(id)forHost withContext:(id)context;
++ (void)setServerContextHeaderString:(id)string;
 @end
 
 @implementation RealmSupport
@@ -24,12 +24,12 @@
     qword_100070110 = v4;
 
     v6 = [FMPreferencesUtil dictionaryForKey:@"RealmRedirects" inDomain:@"com.apple.icloud.fmflocatord"];
-    v7 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -40,7 +40,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -49,7 +49,7 @@
           [qword_100070108 setObject:v14 forKeyedSubscript:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -57,24 +57,24 @@
   }
 }
 
-+ (id)redirectedHostForHost:(id)a3 withContext:(id)a4
++ (id)redirectedHostForHost:(id)host withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  hostCopy = host;
+  contextCopy = context;
+  v7 = contextCopy;
   v8 = @"DefaultContext";
-  if (v6)
+  if (contextCopy)
   {
-    v8 = v6;
+    v8 = contextCopy;
   }
 
   v9 = v8;
   [qword_100070110 lock];
   v10 = [qword_100070108 objectForKeyedSubscript:v9];
-  v11 = [v10 objectForKeyedSubscript:v5];
+  v11 = [v10 objectForKeyedSubscript:hostCopy];
 
   [qword_100070110 unlock];
-  if ([v11 isEqualToString:v5])
+  if ([v11 isEqualToString:hostCopy])
   {
 
     v11 = 0;
@@ -83,20 +83,20 @@
   return v11;
 }
 
-+ (void)setRedirectedHost:(id)a3 forHost:(id)a4 withContext:(id)a5
++ (void)setRedirectedHost:(id)host forHost:(id)forHost withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  hostCopy = host;
+  forHostCopy = forHost;
+  contextCopy = context;
+  v10 = contextCopy;
   v11 = @"DefaultContext";
-  if (v9)
+  if (contextCopy)
   {
-    v11 = v9;
+    v11 = contextCopy;
   }
 
   v12 = v11;
-  if (!v8)
+  if (!forHostCopy)
   {
     v13 = sub_100002830();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -114,14 +114,14 @@
     [qword_100070108 setObject:v14 forKeyedSubscript:v12];
   }
 
-  if (v7)
+  if (hostCopy)
   {
-    [v14 setObject:v7 forKeyedSubscript:v8];
+    [v14 setObject:hostCopy forKeyedSubscript:forHostCopy];
   }
 
   else
   {
-    [v14 removeObjectForKey:v8];
+    [v14 removeObjectForKey:forHostCopy];
   }
 
   +[RealmSupport _updateRealmPrefs];
@@ -129,14 +129,14 @@
   [qword_100070110 unlock];
 }
 
-+ (void)clearCachedHostsWithContext:(id)a3
++ (void)clearCachedHostsWithContext:(id)context
 {
-  v3 = a3;
-  v4 = v3;
+  contextCopy = context;
+  v4 = contextCopy;
   v5 = @"DefaultContext";
-  if (v3)
+  if (contextCopy)
   {
-    v5 = v3;
+    v5 = contextCopy;
   }
 
   v6 = v5;
@@ -155,11 +155,11 @@
   [qword_100070110 unlock];
 }
 
-+ (void)setServerContextHeaderString:(id)a3
++ (void)setServerContextHeaderString:(id)string
 {
-  objc_storeStrong(&qword_100070118, a3);
-  v4 = a3;
-  [FMPreferencesUtil setString:v4 forKey:@"ServerContext" inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
+  objc_storeStrong(&qword_100070118, string);
+  stringCopy = string;
+  [FMPreferencesUtil setString:stringCopy forKey:@"ServerContext" inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
 }
 
 + (id)serverContextHeaderString

@@ -1,8 +1,8 @@
 @interface SUUILockupSwooshCellLayout
-- (CGSize)cellSizeForImageOfSize:(CGSize)a3;
+- (CGSize)cellSizeForImageOfSize:(CGSize)size;
 - (CGSize)maxImageSize;
 - (CGSize)videoSize;
-- (SUUILockupSwooshCellLayout)initWithCollectionViewCell:(id)a3;
+- (SUUILockupSwooshCellLayout)initWithCollectionViewCell:(id)cell;
 - (id)_newDefaultLabel;
 - (void)_layoutFieldsHorizontal;
 - (void)_layoutFieldsVertical;
@@ -10,28 +10,28 @@
 - (void)_reloadPriceLabel;
 - (void)_removeHighlightViews;
 - (void)layoutSubviews;
-- (void)setArtistName:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemCountString:(id)a3;
-- (void)setItemOffer:(id)a3;
-- (void)setItemState:(id)a3 animated:(BOOL)a4;
-- (void)setPrice:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setVideoThumbnailImage:(id)a3;
-- (void)setVisibleFields:(unint64_t)a3;
+- (void)setArtistName:(id)name;
+- (void)setBackgroundColor:(id)color;
+- (void)setCategory:(id)category;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemCountString:(id)string;
+- (void)setItemOffer:(id)offer;
+- (void)setItemState:(id)state animated:(BOOL)animated;
+- (void)setPrice:(id)price;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
+- (void)setVideoThumbnailImage:(id)image;
+- (void)setVisibleFields:(unint64_t)fields;
 @end
 
 @implementation SUUILockupSwooshCellLayout
 
-- (SUUILockupSwooshCellLayout)initWithCollectionViewCell:(id)a3
+- (SUUILockupSwooshCellLayout)initWithCollectionViewCell:(id)cell
 {
   v7.receiver = self;
   v7.super_class = SUUILockupSwooshCellLayout;
-  v3 = [(SUUICellLayout *)&v7 initWithCollectionViewCell:a3];
+  v3 = [(SUUICellLayout *)&v7 initWithCollectionViewCell:cell];
   if (v3)
   {
     SUUILockupStyleDefault(v5);
@@ -41,11 +41,11 @@
   return v3;
 }
 
-- (CGSize)cellSizeForImageOfSize:(CGSize)a3
+- (CGSize)cellSizeForImageOfSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   visibleFields = self->_visibleFields;
-  v6 = a3.height + 5.0;
+  v6 = size.height + 5.0;
   v7 = ceilf(v6);
   if ((visibleFields & 2) != 0)
   {
@@ -65,12 +65,12 @@
 
   else
   {
-    v9 = a3.width;
+    v9 = size.width;
     width = ceilf(v9);
   }
 
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = 1.0 / v12 + 14.0;
 
   v14 = self->_visibleFields;
@@ -141,23 +141,23 @@
   return result;
 }
 
-- (void)setArtistName:(id)a3
+- (void)setArtistName:(id)name
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_artistNameLabel text];
-  if (v4 != v10 && ([v4 isEqualToString:v10] & 1) == 0)
+  nameCopy = name;
+  text = [(UILabel *)self->_artistNameLabel text];
+  if (text != nameCopy && ([text isEqualToString:nameCopy] & 1) == 0)
   {
     artistNameLabel = self->_artistNameLabel;
-    if (v10)
+    if (nameCopy)
     {
       if (!artistNameLabel)
       {
-        v6 = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
         v7 = self->_artistNameLabel;
-        self->_artistNameLabel = v6;
+        self->_artistNameLabel = _newDefaultLabel;
 
-        v8 = [(SUUICellLayout *)self contentView];
-        [v8 addSubview:self->_artistNameLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_artistNameLabel];
 
         artistNameLabel = self->_artistNameLabel;
       }
@@ -176,23 +176,23 @@
   }
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_categoryLabel text];
-  if (v4 != v10 && ([v4 isEqualToString:v10] & 1) == 0)
+  categoryCopy = category;
+  text = [(UILabel *)self->_categoryLabel text];
+  if (text != categoryCopy && ([text isEqualToString:categoryCopy] & 1) == 0)
   {
     categoryLabel = self->_categoryLabel;
-    if (v10)
+    if (categoryCopy)
     {
       if (!categoryLabel)
       {
-        v6 = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
         v7 = self->_categoryLabel;
-        self->_categoryLabel = v6;
+        self->_categoryLabel = _newDefaultLabel;
 
-        v8 = [(SUUICellLayout *)self contentView];
-        [v8 addSubview:self->_categoryLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_categoryLabel];
 
         categoryLabel = self->_categoryLabel;
       }
@@ -211,11 +211,11 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
-  v15 = [v4 primaryTextColor];
-  objc_storeStrong(&self->_primaryTextColor, v15);
+  schemeCopy = scheme;
+  primaryTextColor = [schemeCopy primaryTextColor];
+  objc_storeStrong(&self->_primaryTextColor, primaryTextColor);
   categoryLabel = self->_categoryLabel;
   if (self->_primaryTextColor)
   {
@@ -252,10 +252,10 @@
     [(UILabel *)priceLabel setTextColor:v10];
   }
 
-  v11 = [v4 secondaryTextColor];
+  secondaryTextColor = [schemeCopy secondaryTextColor];
 
-  primaryTextColor = v11;
-  if (!v11)
+  primaryTextColor = secondaryTextColor;
+  if (!secondaryTextColor)
   {
     primaryTextColor = self->_primaryTextColor;
   }
@@ -269,28 +269,28 @@
 
   else
   {
-    v14 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)titleLabel setTextColor:v14];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)titleLabel setTextColor:blackColor];
   }
 }
 
-- (void)setItemCountString:(id)a3
+- (void)setItemCountString:(id)string
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_itemCountLabel text];
-  if (v4 != v10 && ([v4 isEqualToString:v10] & 1) == 0)
+  stringCopy = string;
+  text = [(UILabel *)self->_itemCountLabel text];
+  if (text != stringCopy && ([text isEqualToString:stringCopy] & 1) == 0)
   {
     itemCountLabel = self->_itemCountLabel;
-    if (v10)
+    if (stringCopy)
     {
       if (!itemCountLabel)
       {
-        v6 = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
         v7 = self->_itemCountLabel;
-        self->_itemCountLabel = v6;
+        self->_itemCountLabel = _newDefaultLabel;
 
-        v8 = [(SUUICellLayout *)self contentView];
-        [v8 addSubview:self->_itemCountLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_itemCountLabel];
 
         itemCountLabel = self->_itemCountLabel;
       }
@@ -309,23 +309,23 @@
   }
 }
 
-- (void)setPrice:(id)a3
+- (void)setPrice:(id)price
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_priceLabel text];
-  if (v4 != v10 && ([v4 isEqualToString:v10] & 1) == 0)
+  priceCopy = price;
+  text = [(UILabel *)self->_priceLabel text];
+  if (text != priceCopy && ([text isEqualToString:priceCopy] & 1) == 0)
   {
     priceLabel = self->_priceLabel;
-    if (v10)
+    if (priceCopy)
     {
       if (!priceLabel)
       {
-        v6 = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
+        _newDefaultLabel = [(SUUILockupSwooshCellLayout *)self _newDefaultLabel];
         v7 = self->_priceLabel;
-        self->_priceLabel = v6;
+        self->_priceLabel = _newDefaultLabel;
 
-        v8 = [(SUUICellLayout *)self contentView];
-        [v8 addSubview:self->_priceLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_priceLabel];
 
         priceLabel = self->_priceLabel;
       }
@@ -344,14 +344,14 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v17 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v17 && ([v4 isEqualToString:v17] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v17)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -360,9 +360,9 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUICellLayout *)self parentCellView];
-        v10 = [v9 backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v10];
+        parentCellView = [(SUUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v11 = self->_titleLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
@@ -377,12 +377,12 @@
 
         else
         {
-          v15 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v15];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:blackColor];
         }
 
-        v16 = [(SUUICellLayout *)self contentView];
-        [v16 addSubview:self->_titleLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_titleLabel];
 
         titleLabel = self->_titleLabel;
       }
@@ -401,17 +401,17 @@
   }
 }
 
-- (void)setVideoThumbnailImage:(id)a3
+- (void)setVideoThumbnailImage:(id)image
 {
-  v17 = a3;
-  v4 = [(SUUILockupSwooshCellLayout *)self videoThumbnailImage];
+  imageCopy = image;
+  videoThumbnailImage = [(SUUILockupSwooshCellLayout *)self videoThumbnailImage];
 
-  v5 = v17;
-  if (v4 != v17)
+  v5 = imageCopy;
+  if (videoThumbnailImage != imageCopy)
   {
-    if (v17)
+    if (imageCopy)
     {
-      v6 = [(SUUICellLayout *)self contentView];
+      contentView = [(SUUICellLayout *)self contentView];
       if (!self->_videoImageView)
       {
         v7 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -419,12 +419,12 @@
         self->_videoImageView = v7;
 
         v9 = self->_videoImageView;
-        v10 = [(SUUICellLayout *)self parentCellView];
-        v11 = [v10 backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v11];
+        parentCellView = [(SUUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(UIImageView *)self->_videoImageView setContentMode:6];
-        [v6 addSubview:self->_videoImageView];
+        [contentView addSubview:self->_videoImageView];
       }
 
       if (!self->_videoPlayButtonImageView)
@@ -440,28 +440,28 @@
         [(UIImageView *)self->_videoPlayButtonImageView setContentMode:4];
       }
 
-      [(UIImageView *)self->_videoImageView setImage:v17];
-      [v6 insertSubview:self->_videoPlayButtonImageView aboveSubview:self->_videoImageView];
+      [(UIImageView *)self->_videoImageView setImage:imageCopy];
+      [contentView insertSubview:self->_videoPlayButtonImageView aboveSubview:self->_videoImageView];
     }
 
     else
     {
       [(UIImageView *)self->_videoPlayButtonImageView setHidden:1];
       [(UIImageView *)self->_videoImageView removeFromSuperview];
-      v6 = self->_videoImageView;
+      contentView = self->_videoImageView;
       self->_videoImageView = 0;
     }
 
     [(SUUICellLayout *)self setNeedsLayout];
-    v5 = v17;
+    v5 = imageCopy;
   }
 }
 
-- (void)setVisibleFields:(unint64_t)a3
+- (void)setVisibleFields:(unint64_t)fields
 {
-  if (self->_visibleFields != a3)
+  if (self->_visibleFields != fields)
   {
-    self->_visibleFields = a3;
+    self->_visibleFields = fields;
     [(SUUICellLayout *)self setNeedsLayout];
   }
 }
@@ -475,11 +475,11 @@
     height = self->_videoSize.height;
     [(UIImageView *)self->_videoImageView setFrame:0.0, 5.0, width, height];
     [(UIImageView *)self->_videoImageView setHidden:0];
-    v7 = [(UIImageView *)self->_videoImageView image];
-    v8 = v7;
-    if (v7)
+    image = [(UIImageView *)self->_videoImageView image];
+    v8 = image;
+    if (image)
     {
-      [v7 size];
+      [image size];
       v10 = v9;
       v20.origin.x = 0.0;
       v20.origin.y = 5.0;
@@ -506,22 +506,22 @@
     v4 = 5.0;
   }
 
-  v12 = [(SUUIItemCellLayout *)self iconImageView];
-  v18 = v12;
+  iconImageView = [(SUUIItemCellLayout *)self iconImageView];
+  v18 = iconImageView;
   if ((self->_visibleFields & 2) != 0)
   {
-    [v12 frame];
+    [iconImageView frame];
     [v18 setFrame:{0.0, v4 + self->_maxImageSize.height - v14}];
-    v13 = [(SUUIItemCellLayout *)self isIconImageHidden];
-    v12 = v18;
+    isIconImageHidden = [(SUUIItemCellLayout *)self isIconImageHidden];
+    iconImageView = v18;
   }
 
   else
   {
-    v13 = 1;
+    isIconImageHidden = 1;
   }
 
-  [v12 setHidden:v13];
+  [iconImageView setHidden:isIconImageHidden];
   if ((visibleFields & 0x400) != 0)
   {
     [(SUUILockupSwooshCellLayout *)self _layoutFieldsHorizontal];
@@ -535,8 +535,8 @@
   iconHighlightImageView = self->_iconHighlightImageView;
   if (iconHighlightImageView)
   {
-    v16 = [(SUUIItemCellLayout *)self iconImageView];
-    [v16 frame];
+    iconImageView2 = [(SUUIItemCellLayout *)self iconImageView];
+    [iconImageView2 frame];
     [(UIImageView *)iconHighlightImageView setFrame:?];
   }
 
@@ -548,67 +548,67 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   artistNameLabel = self->_artistNameLabel;
-  v5 = a3;
-  [(UILabel *)artistNameLabel setBackgroundColor:v5];
-  [(UILabel *)self->_categoryLabel setBackgroundColor:v5];
-  [(UILabel *)self->_itemCountLabel setBackgroundColor:v5];
-  [(UILabel *)self->_priceLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
-  [(UIImageView *)self->_videoImageView setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)artistNameLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_categoryLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_itemCountLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_priceLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_videoImageView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUILockupSwooshCellLayout;
-  [(SUUIItemCellLayout *)&v6 setBackgroundColor:v5];
+  [(SUUIItemCellLayout *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setItemOffer:(id)a3
+- (void)setItemOffer:(id)offer
 {
   v4.receiver = self;
   v4.super_class = SUUILockupSwooshCellLayout;
-  [(SUUIItemCellLayout *)&v4 setItemOffer:a3];
+  [(SUUIItemCellLayout *)&v4 setItemOffer:offer];
   [(SUUILockupSwooshCellLayout *)self _reloadPriceLabel];
 }
 
-- (void)setItemState:(id)a3 animated:(BOOL)a4
+- (void)setItemState:(id)state animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SUUILockupSwooshCellLayout;
-  [(SUUIItemCellLayout *)&v5 setItemState:a3 animated:a4];
+  [(SUUIItemCellLayout *)&v5 setItemState:state animated:animated];
   [(SUUILockupSwooshCellLayout *)self _reloadPriceLabel];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUILockupSwooshCellLayout;
-  [(SUUIItemCellLayout *)&v4 setHighlighted:a3];
+  [(SUUIItemCellLayout *)&v4 setHighlighted:highlighted];
   [(SUUILockupSwooshCellLayout *)self _reloadHighlight];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUILockupSwooshCellLayout;
-  [(SUUIItemCellLayout *)&v4 setSelected:a3];
+  [(SUUIItemCellLayout *)&v4 setSelected:selected];
   [(SUUILockupSwooshCellLayout *)self _reloadHighlight];
 }
 
 - (void)_layoutFieldsHorizontal
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUICellLayout *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUICellLayout *)self contentView];
+  [contentView bounds];
   v5 = v4;
 
-  v32 = [(SUUIItemCellLayout *)self iconImageView];
+  iconImageView = [(SUUIItemCellLayout *)self iconImageView];
   visibleFields = self->_visibleFields;
   v7 = 0.0;
   v8 = 0.0;
   if ((visibleFields & 2) != 0)
   {
-    [v32 frame];
+    [iconImageView frame];
     v8 = CGRectGetMaxX(v49) + 9.0;
   }
 
@@ -651,8 +651,8 @@
 
         else
         {
-          v19 = [MEMORY[0x277D759A0] mainScreen];
-          [v19 scale];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen scale];
           v21 = 1.0 / v20 + 14.0;
 
           v22 = v16;
@@ -713,16 +713,16 @@
 
 - (void)_layoutFieldsVertical
 {
-  v3 = [(SUUICellLayout *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUICellLayout *)self contentView];
+  [contentView bounds];
   v5 = v4;
 
-  v6 = [(SUUIItemCellLayout *)self iconImageView];
+  iconImageView = [(SUUIItemCellLayout *)self iconImageView];
   visibleFields = self->_visibleFields;
-  v31 = v6;
+  v31 = iconImageView;
   if ((visibleFields & 2) != 0)
   {
-    [v6 frame];
+    [iconImageView frame];
     v8 = CGRectGetMaxY(v33) + 6.0;
     visibleFields = self->_visibleFields;
   }
@@ -762,8 +762,8 @@
     if (categoryLabel)
     {
       [(UILabel *)categoryLabel frame];
-      v15 = [MEMORY[0x277D759A0] mainScreen];
-      [v15 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v17 = 1.0 / v16 + 14.0;
 
       [(UILabel *)self->_categoryLabel setFrame:0.0, v8, v5, v17];
@@ -787,8 +787,8 @@
     if (artistNameLabel)
     {
       [(UILabel *)artistNameLabel frame];
-      v19 = [MEMORY[0x277D759A0] mainScreen];
-      [v19 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v21 = 1.0 / v20 + 14.0;
 
       [(UILabel *)self->_artistNameLabel setFrame:0.0, v8, v5, v21];
@@ -812,8 +812,8 @@
     if (itemCountLabel)
     {
       [(UILabel *)itemCountLabel frame];
-      v23 = [MEMORY[0x277D759A0] mainScreen];
-      [v23 scale];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 scale];
       v25 = 1.0 / v24 + 14.0;
 
       [(UILabel *)self->_itemCountLabel setFrame:0.0, v8, v5, v25];
@@ -840,8 +840,8 @@
     }
 
     [(UILabel *)priceLabel frame];
-    v28 = [MEMORY[0x277D759A0] mainScreen];
-    [v28 scale];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 scale];
     v30 = 1.0 / v29 + 14.0;
 
     [(UILabel *)self->_priceLabel setFrame:0.0, v8, v5, v30];
@@ -861,9 +861,9 @@ LABEL_25:
 - (id)_newDefaultLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SUUICellLayout *)self parentCellView];
-  v5 = [v4 backgroundColor];
-  [v3 setBackgroundColor:v5];
+  parentCellView = [(SUUICellLayout *)self parentCellView];
+  backgroundColor = [parentCellView backgroundColor];
+  [v3 setBackgroundColor:backgroundColor];
 
   v6 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
   [v3 setFont:v6];
@@ -884,27 +884,27 @@ LABEL_25:
 
 - (void)_reloadPriceLabel
 {
-  v3 = [(SUUIItemCellLayout *)self itemState];
-  v4 = [v3 state];
+  itemState = [(SUUIItemCellLayout *)self itemState];
+  state = [itemState state];
 
-  if ((v4 & 3) != 0)
+  if ((state & 3) != 0)
   {
-    v5 = [(SUUICellLayout *)self clientContext];
-    if (v5)
+    clientContext = [(SUUICellLayout *)self clientContext];
+    if (clientContext)
     {
       v6 = @"ITEM_OFFER_BUTTON_INSTALLING";
 LABEL_14:
-      v8 = [v5 localizedStringForKey:v6];
+      v8 = [clientContext localizedStringForKey:v6];
       goto LABEL_19;
     }
 
     v7 = @"ITEM_OFFER_BUTTON_INSTALLING";
   }
 
-  else if ((v4 & 4) != 0)
+  else if ((state & 4) != 0)
   {
-    v5 = [(SUUICellLayout *)self clientContext];
-    if (v5)
+    clientContext = [(SUUICellLayout *)self clientContext];
+    if (clientContext)
     {
       v6 = @"ITEM_OFFER_BUTTON_INSTALLED";
       goto LABEL_14;
@@ -913,10 +913,10 @@ LABEL_14:
     v7 = @"ITEM_OFFER_BUTTON_INSTALLED";
   }
 
-  else if ((v4 & 8) != 0)
+  else if ((state & 8) != 0)
   {
-    v5 = [(SUUICellLayout *)self clientContext];
-    if (v5)
+    clientContext = [(SUUICellLayout *)self clientContext];
+    if (clientContext)
     {
       v6 = @"ITEM_OFFER_BUTTON_INSTALL";
       goto LABEL_14;
@@ -927,13 +927,13 @@ LABEL_14:
 
   else
   {
-    if ((v4 & 0x10) == 0)
+    if ((state & 0x10) == 0)
     {
       goto LABEL_21;
     }
 
-    v5 = [(SUUICellLayout *)self clientContext];
-    if (v5)
+    clientContext = [(SUUICellLayout *)self clientContext];
+    if (clientContext)
     {
       v6 = @"ITEM_OFFER_BUTTON_GRATIS";
       goto LABEL_14;
@@ -944,18 +944,18 @@ LABEL_14:
 
   v8 = [SUUIClientContext localizedStringForKey:v7 inBundles:0];
 LABEL_19:
-  v10 = v8;
+  itemOffer = v8;
 
-  if (v10)
+  if (itemOffer)
   {
-    [(SUUILockupSwooshCellLayout *)self setPrice:v10];
+    [(SUUILockupSwooshCellLayout *)self setPrice:itemOffer];
     goto LABEL_22;
   }
 
 LABEL_21:
-  v10 = [(SUUIItemCellLayout *)self itemOffer];
-  v9 = [v10 buttonText];
-  [(SUUILockupSwooshCellLayout *)self setPrice:v9];
+  itemOffer = [(SUUIItemCellLayout *)self itemOffer];
+  buttonText = [itemOffer buttonText];
+  [(SUUILockupSwooshCellLayout *)self setPrice:buttonText];
 
 LABEL_22:
 }
@@ -972,20 +972,20 @@ LABEL_22:
       self->_iconHighlightImageView = v4;
 
       v6 = self->_iconHighlightImageView;
-      v7 = [(SUUICellLayout *)self parentCellView];
-      v8 = [v7 backgroundColor];
-      [(UIImageView *)v6 setBackgroundColor:v8];
+      parentCellView = [(SUUICellLayout *)self parentCellView];
+      backgroundColor = [parentCellView backgroundColor];
+      [(UIImageView *)v6 setBackgroundColor:backgroundColor];
 
-      v9 = [(SUUICellLayout *)self contentView];
-      [v9 addSubview:self->_iconHighlightImageView];
+      contentView = [(SUUICellLayout *)self contentView];
+      [contentView addSubview:self->_iconHighlightImageView];
 
       [(SUUICellLayout *)self setNeedsLayout];
       iconHighlightImageView = self->_iconHighlightImageView;
     }
 
-    v10 = [(SUUIItemCellLayout *)self iconImage];
-    v11 = [MEMORY[0x277D75348] blackColor];
-    v12 = [v10 _flatImageWithColor:v11];
+    iconImage = [(SUUIItemCellLayout *)self iconImage];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v12 = [iconImage _flatImageWithColor:blackColor];
     [(UIImageView *)iconHighlightImageView setImage:v12];
 
     [(UIImageView *)self->_iconHighlightImageView setAlpha:0.3];
@@ -1000,21 +1000,21 @@ LABEL_22:
         self->_videoHighlightImageView = v15;
 
         v17 = self->_videoHighlightImageView;
-        v18 = [(SUUICellLayout *)self parentCellView];
-        v19 = [v18 backgroundColor];
-        [(UIImageView *)v17 setBackgroundColor:v19];
+        parentCellView2 = [(SUUICellLayout *)self parentCellView];
+        backgroundColor2 = [parentCellView2 backgroundColor];
+        [(UIImageView *)v17 setBackgroundColor:backgroundColor2];
 
         [(UIImageView *)self->_videoHighlightImageView setContentMode:6];
-        v20 = [(SUUICellLayout *)self contentView];
-        [v20 insertSubview:self->_videoHighlightImageView aboveSubview:self->_videoImageView];
+        contentView2 = [(SUUICellLayout *)self contentView];
+        [contentView2 insertSubview:self->_videoHighlightImageView aboveSubview:self->_videoImageView];
 
         [(SUUICellLayout *)self setNeedsLayout];
         videoHighlightImageView = self->_videoHighlightImageView;
       }
 
-      v21 = [(UIImageView *)self->_videoImageView image];
-      v22 = [MEMORY[0x277D75348] blackColor];
-      v23 = [v21 _flatImageWithColor:v22];
+      image = [(UIImageView *)self->_videoImageView image];
+      blackColor2 = [MEMORY[0x277D75348] blackColor];
+      v23 = [image _flatImageWithColor:blackColor2];
       [(UIImageView *)videoHighlightImageView setImage:v23];
 
       v24 = self->_videoHighlightImageView;

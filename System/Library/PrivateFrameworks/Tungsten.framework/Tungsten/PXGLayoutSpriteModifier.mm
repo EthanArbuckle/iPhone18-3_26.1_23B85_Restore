@@ -1,19 +1,19 @@
 @interface PXGLayoutSpriteModifier
-- (PXGLayoutSpriteModifier)initWithStateHandler:(id)a3;
-- (void)modifySpriteDataStore:(id)a3 spriteIndexRange:(_PXGSpriteIndexRange)a4 forLayout:(id)a5;
+- (PXGLayoutSpriteModifier)initWithStateHandler:(id)handler;
+- (void)modifySpriteDataStore:(id)store spriteIndexRange:(_PXGSpriteIndexRange)range forLayout:(id)layout;
 @end
 
 @implementation PXGLayoutSpriteModifier
 
-- (void)modifySpriteDataStore:(id)a3 spriteIndexRange:(_PXGSpriteIndexRange)a4 forLayout:(id)a5
+- (void)modifySpriteDataStore:(id)store spriteIndexRange:(_PXGSpriteIndexRange)range forLayout:(id)layout
 {
-  v9 = a5;
+  layoutCopy = layout;
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
-  if (a3)
+  if (store)
   {
-    [a3 spritesInRange:a4];
+    [store spritesInRange:range];
   }
 
   stateHandler = self->_stateHandler;
@@ -21,18 +21,18 @@
   v12[0] = v14;
   v12[1] = v15;
   v13 = v16;
-  (v11)(stateHandler, v9, a4, v12, v8);
+  (v11)(stateHandler, layoutCopy, range, v12, v8);
 }
 
-- (PXGLayoutSpriteModifier)initWithStateHandler:(id)a3
+- (PXGLayoutSpriteModifier)initWithStateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = PXGLayoutSpriteModifier;
   v5 = [(PXGLayoutSpriteModifier *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x21CEE40A0](v4);
+    v6 = MEMORY[0x21CEE40A0](handlerCopy);
     stateHandler = v5->_stateHandler;
     v5->_stateHandler = v6;
   }

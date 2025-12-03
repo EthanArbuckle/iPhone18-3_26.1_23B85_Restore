@@ -1,33 +1,33 @@
 @interface NDTodayFeed
-- (NDTodayFeed)initWithCoder:(id)a3;
-- (NDTodayFeed)initWithConfigData:(id)a3 publishDate:(id)a4 contentManifest:(id)a5 contentArchive:(id)a6;
+- (NDTodayFeed)initWithCoder:(id)coder;
+- (NDTodayFeed)initWithConfigData:(id)data publishDate:(id)date contentManifest:(id)manifest contentArchive:(id)archive;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDTodayFeed
 
-- (NDTodayFeed)initWithConfigData:(id)a3 publishDate:(id)a4 contentManifest:(id)a5 contentArchive:(id)a6
+- (NDTodayFeed)initWithConfigData:(id)data publishDate:(id)date contentManifest:(id)manifest contentArchive:(id)archive
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  dateCopy = date;
+  manifestCopy = manifest;
+  archiveCopy = archive;
   v20.receiver = self;
   v20.super_class = NDTodayFeed;
   v14 = [(NDTodayFeed *)&v20 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dataCopy copy];
     configData = v14->_configData;
     v14->_configData = v15;
 
-    v17 = [v11 copy];
+    v17 = [dateCopy copy];
     publishDate = v14->_publishDate;
     v14->_publishDate = v17;
 
-    objc_storeStrong(&v14->_contentManifest, a5);
-    objc_storeStrong(&v14->_contentArchive, a6);
+    objc_storeStrong(&v14->_contentManifest, manifest);
+    objc_storeStrong(&v14->_contentArchive, archive);
   }
 
   return v14;
@@ -37,42 +37,42 @@
 {
   v3 = [objc_alloc(MEMORY[0x277D30F48]) initWithObject:self];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(NDTodayFeed *)self configData];
-  v6 = [v4 stringWithFormat:@"<%lu bytes>", objc_msgSend(v5, "length")];
+  configData = [(NDTodayFeed *)self configData];
+  v6 = [v4 stringWithFormat:@"<%lu bytes>", objc_msgSend(configData, "length")];
   [v3 addField:@"configData" object:v6];
 
-  v7 = [(NDTodayFeed *)self publishDate];
-  [v3 addField:@"publishDate" object:v7];
+  publishDate = [(NDTodayFeed *)self publishDate];
+  [v3 addField:@"publishDate" object:publishDate];
 
-  v8 = [(NDTodayFeed *)self contentManifest];
-  [v3 addField:@"contentManifest" object:v8];
+  contentManifest = [(NDTodayFeed *)self contentManifest];
+  [v3 addField:@"contentManifest" object:contentManifest];
 
-  v9 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v9;
+  return descriptionString;
 }
 
-- (NDTodayFeed)initWithCoder:(id)a3
+- (NDTodayFeed)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publishDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentManifest"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentArchive"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publishDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentManifest"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentArchive"];
 
-  v9 = v5;
+  data = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  v10 = v6;
+  date = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v11 = v7;
+  empty = v7;
   if (v7)
   {
     if (v8)
@@ -83,11 +83,11 @@
 
   else
   {
-    v11 = [MEMORY[0x277D30F10] empty];
+    empty = [MEMORY[0x277D30F10] empty];
     if (v8)
     {
 LABEL_7:
-      v12 = [(NDTodayFeed *)self initWithConfigData:v9 publishDate:v10 contentManifest:v11 contentArchive:v8];
+      v12 = [(NDTodayFeed *)self initWithConfigData:data publishDate:date contentManifest:empty contentArchive:v8];
       if (v7)
       {
         goto LABEL_9;
@@ -97,8 +97,8 @@ LABEL_7:
     }
   }
 
-  v14 = [MEMORY[0x277D30F00] empty];
-  v12 = [(NDTodayFeed *)self initWithConfigData:v9 publishDate:v10 contentManifest:v11 contentArchive:v14];
+  empty2 = [MEMORY[0x277D30F00] empty];
+  v12 = [(NDTodayFeed *)self initWithConfigData:data publishDate:date contentManifest:empty contentArchive:empty2];
 
   if (!v7)
   {
@@ -129,20 +129,20 @@ LABEL_11:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NDTodayFeed *)self configData];
-  [v4 encodeObject:v5 forKey:@"configData"];
+  coderCopy = coder;
+  configData = [(NDTodayFeed *)self configData];
+  [coderCopy encodeObject:configData forKey:@"configData"];
 
-  v6 = [(NDTodayFeed *)self publishDate];
-  [v4 encodeObject:v6 forKey:@"publishDate"];
+  publishDate = [(NDTodayFeed *)self publishDate];
+  [coderCopy encodeObject:publishDate forKey:@"publishDate"];
 
-  v7 = [(NDTodayFeed *)self contentManifest];
-  [v4 encodeObject:v7 forKey:@"contentManifest"];
+  contentManifest = [(NDTodayFeed *)self contentManifest];
+  [coderCopy encodeObject:contentManifest forKey:@"contentManifest"];
 
-  v8 = [(NDTodayFeed *)self contentArchive];
-  [v4 encodeObject:v8 forKey:@"contentArchive"];
+  contentArchive = [(NDTodayFeed *)self contentArchive];
+  [coderCopy encodeObject:contentArchive forKey:@"contentArchive"];
 }
 
 @end

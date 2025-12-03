@@ -2,19 +2,19 @@
 - (BOOL)isLoading;
 - (UIEdgeInsets)accessoryViewInsets;
 - (id)_navigationButton;
-- (id)createViewForNavigationItem:(id)a3;
-- (void)_addTouchCaptureViewForNavigationButton:(id)a3;
+- (id)createViewForNavigationItem:(id)item;
+- (void)_addTouchCaptureViewForNavigationButton:(id)button;
 - (void)_removeTouchCaptureView;
-- (void)_setTitle:(id)a3 isConfirmation:(BOOL)a4 appearance:(id)a5 animated:(BOOL)a6;
-- (void)_touchCaptureAction:(id)a3;
+- (void)_setTitle:(id)title isConfirmation:(BOOL)confirmation appearance:(id)appearance animated:(BOOL)animated;
+- (void)_touchCaptureAction:(id)action;
 - (void)_updateViewForAccessoryChange;
-- (void)configureFromScriptButton:(id)a3;
+- (void)configureFromScriptButton:(id)button;
 - (void)dealloc;
-- (void)hideConfirmationWithAppearance:(id)a3 animated:(BOOL)a4;
-- (void)setAccessoryView:(id)a3;
-- (void)setAccessoryViewInsets:(UIEdgeInsets)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)showConfirmationWithTitle:(id)a3 appearance:(id)a4 animated:(BOOL)a5;
+- (void)hideConfirmationWithAppearance:(id)appearance animated:(BOOL)animated;
+- (void)setAccessoryView:(id)view;
+- (void)setAccessoryViewInsets:(UIEdgeInsets)insets;
+- (void)setLoading:(BOOL)loading;
+- (void)showConfirmationWithTitle:(id)title appearance:(id)appearance animated:(BOOL)animated;
 @end
 
 @implementation SUBarButtonItem
@@ -28,12 +28,12 @@
   [(SUBarButtonItem *)&v3 dealloc];
 }
 
-- (void)hideConfirmationWithAppearance:(id)a3 animated:(BOOL)a4
+- (void)hideConfirmationWithAppearance:(id)appearance animated:(BOOL)animated
 {
   preConfirmationTitle = self->_preConfirmationTitle;
   if (preConfirmationTitle)
   {
-    [(SUBarButtonItem *)self _setTitle:preConfirmationTitle isConfirmation:0 appearance:a3 animated:a4];
+    [(SUBarButtonItem *)self _setTitle:preConfirmationTitle isConfirmation:0 appearance:appearance animated:animated];
 
     self->_confirmationAppearance = 0;
     self->_preConfirmationTitle = 0;
@@ -47,13 +47,13 @@
   return objc_opt_isKindOfClass() & 1;
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
   accessoryView = self->_accessoryView;
-  if (accessoryView != a3)
+  if (accessoryView != view)
   {
 
-    self->_accessoryView = a3;
+    self->_accessoryView = view;
   }
 
   [-[SUBarButtonItem _navigationButton](self "_navigationButton")];
@@ -61,17 +61,17 @@
   [(SUBarButtonItem *)self _updateViewForAccessoryChange];
 }
 
-- (void)setAccessoryViewInsets:(UIEdgeInsets)a3
+- (void)setAccessoryViewInsets:(UIEdgeInsets)insets
 {
-  self->_accessoryViewInsets = a3;
+  self->_accessoryViewInsets = insets;
   [-[SUBarButtonItem _navigationButton](self "_navigationButton")];
 
   [(SUBarButtonItem *)self _updateViewForAccessoryChange];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:1];
     [v4 sizeToFit];
@@ -87,33 +87,33 @@
   }
 }
 
-- (void)showConfirmationWithTitle:(id)a3 appearance:(id)a4 animated:(BOOL)a5
+- (void)showConfirmationWithTitle:(id)title appearance:(id)appearance animated:(BOOL)animated
 {
   if (!self->_preConfirmationTitle)
   {
-    v5 = a5;
+    animatedCopy = animated;
 
-    self->_confirmationAppearance = [a4 copy];
+    self->_confirmationAppearance = [appearance copy];
     self->_preConfirmationTitle = [(SUBarButtonItem *)self title];
 
-    [(SUBarButtonItem *)self _setTitle:a3 isConfirmation:1 appearance:a4 animated:v5];
+    [(SUBarButtonItem *)self _setTitle:title isConfirmation:1 appearance:appearance animated:animatedCopy];
   }
 }
 
-- (void)configureFromScriptButton:(id)a3
+- (void)configureFromScriptButton:(id)button
 {
-  -[SUBarButtonItem setLoading:](self, "setLoading:", [a3 loading]);
+  -[SUBarButtonItem setLoading:](self, "setLoading:", [button loading]);
   v5.receiver = self;
   v5.super_class = SUBarButtonItem;
-  [(UIBarButtonItem *)&v5 configureFromScriptButton:a3];
+  [(UIBarButtonItem *)&v5 configureFromScriptButton:button];
 }
 
-- (id)createViewForNavigationItem:(id)a3
+- (id)createViewForNavigationItem:(id)item
 {
-  self->_lastNavigationItem = a3;
+  self->_lastNavigationItem = item;
   v7.receiver = self;
   v7.super_class = SUBarButtonItem;
-  v5 = [(SUBarButtonItem *)&v7 createViewForNavigationItem:a3];
+  v5 = [(SUBarButtonItem *)&v7 createViewForNavigationItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -125,7 +125,7 @@
   return v5;
 }
 
-- (void)_touchCaptureAction:(id)a3
+- (void)_touchCaptureAction:(id)action
 {
   if ([(SUBarButtonItem *)self isShowingConfirmation])
   {
@@ -141,15 +141,15 @@
   }
 }
 
-- (void)_addTouchCaptureViewForNavigationButton:(id)a3
+- (void)_addTouchCaptureViewForNavigationButton:(id)button
 {
   if (!self->_touchCaptureView)
   {
-    v5 = [objc_msgSend(a3 "window")];
+    v5 = [objc_msgSend(button "window")];
     self->_touchCaptureView = v5;
     [(SUTouchCaptureView *)v5 addTarget:self action:sel__touchCaptureAction_ forControlEvents:64];
     touchCaptureView = self->_touchCaptureView;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, 0}];
+    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:{button, 0}];
 
     [(SUTouchCaptureView *)touchCaptureView setPassThroughViews:v7];
   }
@@ -157,11 +157,11 @@
 
 - (id)_navigationButton
 {
-  v3 = [(UINavigationItem *)self->_lastNavigationItem leftBarButtonItem];
+  leftBarButtonItem = [(UINavigationItem *)self->_lastNavigationItem leftBarButtonItem];
   lastNavigationItem = self->_lastNavigationItem;
-  if (v3 == self)
+  if (leftBarButtonItem == self)
   {
-    v6 = [(UINavigationItem *)lastNavigationItem customLeftView];
+    customLeftView = [(UINavigationItem *)lastNavigationItem customLeftView];
   }
 
   else
@@ -172,10 +172,10 @@
       goto LABEL_7;
     }
 
-    v6 = [(UINavigationItem *)self->_lastNavigationItem customRightView];
+    customLeftView = [(UINavigationItem *)self->_lastNavigationItem customRightView];
   }
 
-  v5 = v6;
+  v5 = customLeftView;
 LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -201,47 +201,47 @@ LABEL_7:
   }
 }
 
-- (void)_setTitle:(id)a3 isConfirmation:(BOOL)a4 appearance:(id)a5 animated:(BOOL)a6
+- (void)_setTitle:(id)title isConfirmation:(BOOL)confirmation appearance:(id)appearance animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a4;
-  v11 = [(SUBarButtonItem *)self _navigationButton];
-  v12 = [v11 superviewOfClass:objc_opt_class()];
+  animatedCopy = animated;
+  confirmationCopy = confirmation;
+  _navigationButton = [(SUBarButtonItem *)self _navigationButton];
+  v12 = [_navigationButton superviewOfClass:objc_opt_class()];
   if (v12)
   {
     v13 = v12;
-    [v11 frame];
+    [_navigationButton frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(SUBarButtonItem *)self title];
-    [(SUBarButtonItem *)self setTitle:a3];
+    title = [(SUBarButtonItem *)self title];
+    [(SUBarButtonItem *)self setTitle:title];
     [v13 layoutIfNeeded];
-    [v11 frame];
+    [_navigationButton frame];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    [(SUBarButtonItem *)self setTitle:v22];
+    [(SUBarButtonItem *)self setTitle:title];
     [v13 layoutIfNeeded];
-    if (a5)
+    if (appearance)
     {
-      if (v8)
+      if (confirmationCopy)
       {
-        [a5 styleConfirmationButtonItem:self];
+        [appearance styleConfirmationButtonItem:self];
       }
 
       else
       {
-        [a5 styleBarButtonItem:self];
+        [appearance styleBarButtonItem:self];
       }
     }
 
     [(SUBarButtonItem *)self setTitle:&stru_1F41B3660];
-    [v11 setFrame:{v15, v17, v19, v21}];
+    [_navigationButton setFrame:{v15, v17, v19, v21}];
     v31 = 0.35;
-    if (!v6)
+    if (!animatedCopy)
     {
       v31 = 0.0;
     }
@@ -254,16 +254,16 @@ LABEL_7:
     v34[7] = v26;
     v34[8] = v28;
     v34[9] = v30;
-    v34[4] = v11;
+    v34[4] = _navigationButton;
     v34[5] = v13;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __64__SUBarButtonItem__setTitle_isConfirmation_appearance_animated___block_invoke_2;
     v32[3] = &unk_1E81664D0;
-    v33 = v8;
+    v33 = confirmationCopy;
     v32[4] = self;
-    v32[5] = v11;
-    v32[6] = a3;
+    v32[5] = _navigationButton;
+    v32[6] = title;
     [MEMORY[0x1E69DD250] animateWithDuration:v34 animations:v32 completion:v31];
   }
 }
@@ -299,9 +299,9 @@ uint64_t __64__SUBarButtonItem__setTitle_isConfirmation_appearance_animated___bl
 - (void)_updateViewForAccessoryChange
 {
   [-[SUBarButtonItem _navigationButton](self "_navigationButton")];
-  v3 = [(UINavigationItem *)self->_lastNavigationItem navigationBar];
+  navigationBar = [(UINavigationItem *)self->_lastNavigationItem navigationBar];
 
-  [v3 setNeedsLayout];
+  [navigationBar setNeedsLayout];
 }
 
 - (UIEdgeInsets)accessoryViewInsets

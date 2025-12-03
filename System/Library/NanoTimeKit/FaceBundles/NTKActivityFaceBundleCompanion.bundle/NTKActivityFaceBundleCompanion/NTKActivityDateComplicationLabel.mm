@@ -7,7 +7,7 @@
 
 - (CGSize)_highlightInset
 {
-  v3 = [(NTKActivityDateComplicationLabel *)self device];
+  device = [(NTKActivityDateComplicationLabel *)self device];
   NTKUtilityComplicationHighlightPadding();
   v5 = v4;
   v7 = v6;
@@ -24,7 +24,7 @@
 
 - (double)_cornerRadius
 {
-  v2 = [(NTKActivityDateComplicationLabel *)self device];
+  device = [(NTKActivityDateComplicationLabel *)self device];
   NTKUtilityComplicationHighlightCornerRadius();
   v4 = v3;
 

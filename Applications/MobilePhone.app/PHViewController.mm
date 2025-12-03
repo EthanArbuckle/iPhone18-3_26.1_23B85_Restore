@@ -1,14 +1,14 @@
 @interface PHViewController
 - (PHContentUnavailable)contentUnavailableView;
 - (PHViewController)init;
-- (PHViewController)initWithCoder:(id)a3;
-- (PHViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHViewController)initWithCoder:(id)coder;
+- (PHViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)makeUIForDefaultPNG;
-- (void)setContentUnavailable:(BOOL)a3 animated:(BOOL)a4;
-- (void)setContentUnavailableViewTitle:(id)a3;
-- (void)setWhitePointAdaptivityStyle:(int64_t)a3;
+- (void)setContentUnavailable:(BOOL)unavailable animated:(BOOL)animated;
+- (void)setContentUnavailableViewTitle:(id)title;
+- (void)setWhitePointAdaptivityStyle:(int64_t)style;
 @end
 
 @implementation PHViewController
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (PHViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PHViewController;
-  v4 = [(PHViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PHViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -41,11 +41,11 @@
   return v5;
 }
 
-- (PHViewController)initWithCoder:(id)a3
+- (PHViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PHViewController;
-  v3 = [(PHViewController *)&v6 initWithCoder:a3];
+  v3 = [(PHViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -81,23 +81,23 @@
   [(PHViewController *)&v5 didReceiveMemoryWarning];
 }
 
-- (void)setContentUnavailable:(BOOL)a3 animated:(BOOL)a4
+- (void)setContentUnavailable:(BOOL)unavailable animated:(BOOL)animated
 {
-  if (self->_contentUnavailable != a3)
+  if (self->_contentUnavailable != unavailable)
   {
     v19 = v7;
     v20 = v6;
     v21 = v4;
     v22 = v5;
-    v8 = a4;
-    self->_contentUnavailable = a3;
-    if (a3 || ([(PHContentUnavailable *)self->_contentUnavailableView superview], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    animatedCopy = animated;
+    self->_contentUnavailable = unavailable;
+    if (unavailable || ([(PHContentUnavailable *)self->_contentUnavailableView superview], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = __51__PHViewController_setContentUnavailable_animated___block_invoke;
       v17[3] = &unk_100285418;
-      v18 = a3;
+      unavailableCopy = unavailable;
       v17[4] = self;
       v12 = objc_retainBlock(v17);
       v15[0] = _NSConcreteStackBlock;
@@ -105,10 +105,10 @@
       v15[2] = __51__PHViewController_setContentUnavailable_animated___block_invoke_2;
       v15[3] = &unk_100285120;
       v15[4] = self;
-      v16 = a3;
+      unavailableCopy2 = unavailable;
       v13 = objc_retainBlock(v15);
       v14 = v13;
-      if (v8)
+      if (animatedCopy)
       {
         [UIView animateWithDuration:4 delay:v13 options:v12 animations:0.300000012 completion:0.0];
       }
@@ -159,17 +159,17 @@ void __51__PHViewController_setContentUnavailable_animated___block_invoke_2(uint
   if (!contentUnavailableView)
   {
     v4 = [_UIContentUnavailableView alloc];
-    v5 = [(PHViewController *)self view];
-    [v5 bounds];
+    view = [(PHViewController *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:self->_contentUnavailableViewTitle title:?];
     v7 = self->_contentUnavailableView;
     self->_contentUnavailableView = v6;
 
     [(PHContentUnavailable *)self->_contentUnavailableView setAlpha:0.0];
     [(PHContentUnavailable *)self->_contentUnavailableView setAutoresizingMask:18];
-    v8 = [(PHViewController *)self view];
-    v9 = [v8 backgroundColor];
-    [(PHContentUnavailable *)self->_contentUnavailableView setBackgroundColor:v9];
+    view2 = [(PHViewController *)self view];
+    backgroundColor = [view2 backgroundColor];
+    [(PHContentUnavailable *)self->_contentUnavailableView setBackgroundColor:backgroundColor];
 
     [(PHContentUnavailable *)self->_contentUnavailableView setHidden:1];
     contentUnavailableView = self->_contentUnavailableView;
@@ -178,15 +178,15 @@ void __51__PHViewController_setContentUnavailable_animated___block_invoke_2(uint
   return contentUnavailableView;
 }
 
-- (void)setContentUnavailableViewTitle:(id)a3
+- (void)setContentUnavailableViewTitle:(id)title
 {
-  v5 = a3;
-  if (self->_contentUnavailableViewTitle != v5)
+  titleCopy = title;
+  if (self->_contentUnavailableViewTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentUnavailableViewTitle, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_contentUnavailableViewTitle, title);
     [(PHContentUnavailable *)self->_contentUnavailableView setTitle:self->_contentUnavailableViewTitle];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
@@ -194,19 +194,19 @@ void __51__PHViewController_setContentUnavailable_animated___block_invoke_2(uint
 {
   if (+[UIApplication shouldMakeUIForDefaultPNG])
   {
-    v3 = [(PHViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0];
-    [v3 setRightBarButtonItem:0];
+    navigationItem = [(PHViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
     [(PHViewController *)self setTabBarItem:0];
     [(PHViewController *)self setTitle:0];
   }
 }
 
-- (void)setWhitePointAdaptivityStyle:(int64_t)a3
+- (void)setWhitePointAdaptivityStyle:(int64_t)style
 {
-  if (self->_whitePointAdaptivityStyle != a3)
+  if (self->_whitePointAdaptivityStyle != style)
   {
-    self->_whitePointAdaptivityStyle = a3;
+    self->_whitePointAdaptivityStyle = style;
     [(PHViewController *)self setNeedsWhitePointAdaptivityStyleUpdate];
   }
 }

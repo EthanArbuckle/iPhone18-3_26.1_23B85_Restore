@@ -1,15 +1,15 @@
 @interface ULDataMigrator
-- (BOOL)_initializeMigrationStatusMetricsDict:(id)a3 forType:(int64_t)a4;
+- (BOOL)_initializeMigrationStatusMetricsDict:(id)dict forType:(int64_t)type;
 - (BOOL)_migrateMiloDataTransaction;
 - (BOOL)migrateMiloData;
-- (ULDataMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4;
-- (int64_t)_getCAMigrationErrorTypeForLastMigrationStateAfterMaxFailures:(int)a3;
-- (void)_sendCoreAnalyticsEventForMigrationIfNecessary:(int64_t)a3;
+- (ULDataMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management;
+- (int64_t)_getCAMigrationErrorTypeForLastMigrationStateAfterMaxFailures:(int)failures;
+- (void)_sendCoreAnalyticsEventForMigrationIfNecessary:(int64_t)necessary;
 @end
 
 @implementation ULDataMigrator
 
-- (ULDataMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4
+- (ULDataMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management
 {
   v9.receiver = self;
   v9.super_class = ULDataMigrator;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    [(ULDataMigrator *)v6 setDbStore:a3];
-    [(ULDataMigrator *)v7 setDbManagement:a4];
+    [(ULDataMigrator *)v6 setDbStore:store];
+    [(ULDataMigrator *)v7 setDbManagement:management];
   }
 
   return v7;
@@ -39,11 +39,11 @@
     _os_log_impl(&dword_258FE9000, v3, OS_LOG_TYPE_DEFAULT, "Migrating milo data", buf, 2u);
   }
 
-  v4 = [(ULDataMigrator *)self dbManagement];
-  if ((*(v4->var0 + 8))(v4))
+  dbManagement = [(ULDataMigrator *)self dbManagement];
+  if ((*(dbManagement->var0 + 8))(dbManagement))
   {
-    v5 = [(ULDataMigrator *)self dbStore];
-    v6 = (*(v5->var0 + 15))(v5);
+    dbStore = [(ULDataMigrator *)self dbStore];
+    v6 = (*(dbStore->var0 + 15))(dbStore);
     v18 = cl::chrono::CFAbsoluteTimeClock::now();
     ULMigrationDO::ULMigrationDO(v19, 3, &v18);
     *buf = 0;
@@ -114,9 +114,9 @@ uint64_t __33__ULDataMigrator_migrateMiloData__block_invoke(uint64_t a1)
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [(ULBackupAndRestore *)v3 getBackupDatabasePath];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  getBackupDatabasePath = [(ULBackupAndRestore *)v3 getBackupDatabasePath];
+  v6 = [defaultManager fileExistsAtPath:getBackupDatabasePath];
 
   if (!v6)
   {
@@ -138,8 +138,8 @@ uint64_t __33__ULDataMigrator_migrateMiloData__block_invoke(uint64_t a1)
   if ([(ULBackupAndRestore *)v3 importiCloudBackup])
   {
 LABEL_8:
-    v8 = [(ULDataMigrator *)self dbStore];
-    v9 = (*(v8->var0 + 15))(v8);
+    dbStore = [(ULDataMigrator *)self dbStore];
+    v9 = (*(dbStore->var0 + 15))(dbStore);
     v16 = cl::chrono::CFAbsoluteTimeClock::now();
     ULMigrationDO::ULMigrationDO(v19, 2, &v16);
     *buf = 0;
@@ -184,8 +184,8 @@ LABEL_8:
     _os_log_impl(&dword_258FE9000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:data migration iteration status., result:%{public, location:escape_only}s}", buf, 0x1Cu);
   }
 
-  v13 = [(ULDataMigrator *)self dbManagement];
-  if ((*(v13->var0 + 14))(v13, 1) - 3 <= 1)
+  dbManagement = [(ULDataMigrator *)self dbManagement];
+  if ((*(dbManagement->var0 + 14))(dbManagement, 1) - 3 <= 1)
   {
     [(ULDataMigrator *)self _sendCoreAnalyticsEventForMigrationIfNecessary:0];
   }
@@ -194,30 +194,30 @@ LABEL_8:
   return v10;
 }
 
-- (void)_sendCoreAnalyticsEventForMigrationIfNecessary:(int64_t)a3
+- (void)_sendCoreAnalyticsEventForMigrationIfNecessary:(int64_t)necessary
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = +[ULDefaultsSingleton shared];
-  v6 = [v5 defaultsDictionary];
+  defaultsDictionary = [v5 defaultsDictionary];
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULAnalyticsSendEventEnabled"];
-  v8 = [v6 objectForKey:v7];
+  v8 = [defaultsDictionary objectForKey:v7];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEC38] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC38] BOOLValue];
   }
 
-  v10 = v9;
+  v10 = bOOLValue;
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    if ([(ULDataMigrator *)self _initializeMigrationStatusMetricsDict:v11 forType:a3])
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if ([(ULDataMigrator *)self _initializeMigrationStatusMetricsDict:dictionary forType:necessary])
     {
       if (onceToken_MicroLocation_Default != -1)
       {
@@ -232,9 +232,9 @@ LABEL_8:
         v16 = 2082;
         v17 = "";
         v18 = 2082;
-        v19 = [@"com.apple.MicroLocation.DataMigration" UTF8String];
+        uTF8String = [@"com.apple.MicroLocation.DataMigration" UTF8String];
         v20 = 2114;
-        v21 = v11;
+        v21 = dictionary;
         _os_log_impl(&dword_258FE9000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Sending Migration CoreAnalytics, Event name:%{public, location:escape_only}s, metricsDict:%{public, location:escape_only}@}", v15, 0x26u);
       }
 
@@ -260,26 +260,26 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_getCAMigrationErrorTypeForLastMigrationStateAfterMaxFailures:(int)a3
+- (int64_t)_getCAMigrationErrorTypeForLastMigrationStateAfterMaxFailures:(int)failures
 {
-  if ((a3 - 1) > 0xA)
+  if ((failures - 1) > 0xA)
   {
     return 3;
   }
 
   else
   {
-    return qword_25921D2C0[a3 - 1];
+    return qword_25921D2C0[failures - 1];
   }
 }
 
-- (BOOL)_initializeMigrationStatusMetricsDict:(id)a3 forType:(int64_t)a4
+- (BOOL)_initializeMigrationStatusMetricsDict:(id)dict forType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  dictCopy = dict;
+  if (dictCopy)
   {
-    v7 = [(ULDataMigrator *)self dbStore];
-    v8 = (*(v7->var0 + 15))(v7);
+    dbStore = [(ULDataMigrator *)self dbStore];
+    v8 = (*(dbStore->var0 + 15))(dbStore);
     v9 = v8;
     if (v8)
     {
@@ -309,20 +309,20 @@ LABEL_28:
         v23 -= 16;
         if (v25 == 3)
         {
-          v26 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-          [v6 setObject:v26 forKeyedSubscript:@"MigrationType"];
+          v26 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+          [dictCopy setObject:v26 forKeyedSubscript:@"MigrationType"];
 
           v27 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-          [v6 setObject:v27 forKeyedSubscript:@"MigrationAttampts"];
+          [dictCopy setObject:v27 forKeyedSubscript:@"MigrationAttampts"];
 
           if (!v13)
           {
             v28 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-            [v6 setObject:v28 forKeyedSubscript:@"MigrationErrorType"];
+            [dictCopy setObject:v28 forKeyedSubscript:@"MigrationErrorType"];
           }
 
           v29 = [MEMORY[0x277CCABB0] numberWithDouble:*__p[0] - *v24];
-          [v6 setObject:v29 forKeyedSubscript:@"MigrationDuration"];
+          [dictCopy setObject:v29 forKeyedSubscript:@"MigrationDuration"];
 
           v10 = 1;
           goto LABEL_39;
@@ -392,21 +392,21 @@ LABEL_28:
 
 LABEL_22:
       v17 = +[ULDefaultsSingleton shared];
-      v18 = [v17 defaultsDictionary];
+      defaultsDictionary = [v17 defaultsDictionary];
 
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULDataMigrationMaxAttempts"];
-      v20 = [v18 objectForKey:v19];
+      v20 = [defaultsDictionary objectForKey:v19];
       if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue = [v20 unsignedIntValue];
       }
 
       else
       {
-        v21 = [&unk_286A717C0 unsignedIntValue];
+        unsignedIntValue = [&unk_286A717C0 unsignedIntValue];
       }
 
-      v22 = v21;
+      v22 = unsignedIntValue;
 
       if (v13 >= v22)
       {

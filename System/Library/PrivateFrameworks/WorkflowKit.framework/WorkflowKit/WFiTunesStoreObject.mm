@@ -9,11 +9,11 @@
 {
   v3 = objc_opt_new();
   [v3 setNumberStyle:2];
-  v4 = [(WFiTunesStoreObject *)self currencyCode];
-  [v3 setCurrencyCode:v4];
+  currencyCode = [(WFiTunesStoreObject *)self currencyCode];
+  [v3 setCurrencyCode:currencyCode];
 
-  v5 = [(WFiTunesStoreObject *)self price];
-  v6 = [v3 stringFromNumber:v5];
+  price = [(WFiTunesStoreObject *)self price];
+  v6 = [v3 stringFromNumber:price];
 
   return v6;
 }
@@ -41,7 +41,7 @@ id __53__WFiTunesStoreObject_descriptionTextJSONTransformer__block_invoke(uint64
 + (id)JSONKeyPathsByPropertyKey
 {
   v9[6] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFiTunesStoreObject;
   v2 = objc_msgSendSuper2(&v7, sel_JSONKeyPathsByPropertyKey);
   v3 = [v2 mutableCopy];

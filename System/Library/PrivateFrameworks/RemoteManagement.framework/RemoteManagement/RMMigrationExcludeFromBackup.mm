@@ -1,15 +1,15 @@
 @interface RMMigrationExcludeFromBackup
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)executeReturningError:(id *)error;
 @end
 
 @implementation RMMigrationExcludeFromBackup
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   v4 = [RMLocations baseDirectoryURLCreateIfNeeded:0];
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [v4 path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (!v7)
   {
@@ -22,7 +22,7 @@
     goto LABEL_7;
   }
 
-  v8 = [v4 path];
+  path2 = [v4 path];
   v9 = DMCSetSkipBackupAttributeToItemAtPath();
 
   v10 = +[RMLog migrationExcludeFromBackup];
@@ -44,7 +44,7 @@ LABEL_7:
     sub_1000540F8(v4, v11);
   }
 
-  if (!a3)
+  if (!error)
   {
     v12 = 0;
     goto LABEL_9;
@@ -56,7 +56,7 @@ LABEL_7:
   {
     v15 = v14;
     v12 = 0;
-    *a3 = v11;
+    *error = v11;
   }
 
   else

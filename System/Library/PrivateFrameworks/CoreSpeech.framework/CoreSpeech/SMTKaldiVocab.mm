@@ -1,8 +1,8 @@
 @interface SMTKaldiVocab
 + (void)initialize;
-- (SMTKaldiVocab)initWithContentsOfUrl:(id)a3 outError:(id *)a4;
+- (SMTKaldiVocab)initWithContentsOfUrl:(id)url outError:(id *)error;
 - (id).cxx_construct;
-- (unint64_t)indexForWord:(id)a3;
+- (unint64_t)indexForWord:(id)word;
 @end
 
 @implementation SMTKaldiVocab
@@ -15,10 +15,10 @@
   return self;
 }
 
-- (unint64_t)indexForWord:(id)a3
+- (unint64_t)indexForWord:(id)word
 {
-  v4 = a3;
-  sub_10001D0D8(__p, [v4 UTF8String]);
+  wordCopy = word;
+  sub_10001D0D8(__p, [wordCopy UTF8String]);
   v5 = sub_10001795C(__p);
   size = self->_w2i.__table_.__bucket_list_.__deleter_.__size_;
   if (size)
@@ -100,9 +100,9 @@ LABEL_18:
   return v14;
 }
 
-- (SMTKaldiVocab)initWithContentsOfUrl:(id)a3 outError:(id *)a4
+- (SMTKaldiVocab)initWithContentsOfUrl:(id)url outError:(id *)error
 {
-  v25 = a3;
+  urlCopy = url;
   v63.receiver = self;
   v63.super_class = SMTKaldiVocab;
   v6 = [(SMTKaldiVocab *)&v63 init];
@@ -111,7 +111,7 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v7 = [NSString stringWithContentsOfURL:v25 encoding:4 error:a4];
+  v7 = [NSString stringWithContentsOfURL:urlCopy encoding:4 error:error];
   if (!v7)
   {
     goto LABEL_20;
@@ -176,8 +176,8 @@ LABEL_18:
   if (!v46[5] || !v58[5] || !v52[5])
   {
     v65 = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithFormat:@"One of <UnknownWord>, <BeginOfSentenceWord> or <EndOfSentenceWord> symbols are missing from file:%@", v25];
-    v66 = v16;
+    urlCopy = [NSString stringWithFormat:@"One of <UnknownWord>, <BeginOfSentenceWord> or <EndOfSentenceWord> symbols are missing from file:%@", urlCopy];
+    v66 = urlCopy;
     v17 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
     v18 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:151 userInfo:v17];
     v19 = v40[5];
@@ -187,10 +187,10 @@ LABEL_18:
   v20 = v40[5];
   if (v20)
   {
-    if (a4)
+    if (error)
     {
       v21 = v20;
-      *a4 = v20;
+      *error = v20;
     }
   }
 
@@ -247,7 +247,7 @@ LABEL_21:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF70 = os_log_create("com.apple.speech.speechmodeltraining", "SMTKaldiVocab");
 

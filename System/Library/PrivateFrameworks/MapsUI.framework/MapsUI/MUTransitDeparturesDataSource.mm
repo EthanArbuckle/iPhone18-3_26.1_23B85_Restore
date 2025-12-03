@@ -2,8 +2,8 @@
 - (BOOL)isActive;
 - (MUTransitDeparturesDataSource)init;
 - (MUTransitDeparturesDataSourceDelegate)delegate;
-- (id)traitsForTransitDeparturesDataProvider:(id)a3;
-- (void)transitDeparturesDataProviderDidReload:(id)a3;
+- (id)traitsForTransitDeparturesDataProvider:(id)provider;
+- (void)transitDeparturesDataProviderDidReload:(id)reload;
 @end
 
 @implementation MUTransitDeparturesDataSource
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (id)traitsForTransitDeparturesDataProvider:(id)a3
+- (id)traitsForTransitDeparturesDataProvider:(id)provider
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    v9 = [v6 traitsForDeparturesDataSource_];
+    providerCopy = provider;
+    selfCopy = self;
+    traitsForDeparturesDataSource_ = [v6 traitsForDeparturesDataSource_];
 
     swift_unknownObjectRelease();
   }
@@ -47,8 +47,8 @@
   else
   {
     v10 = objc_allocWithZone(MEMORY[0x1E69A2210]);
-    v11 = a3;
-    v12 = self;
+    providerCopy2 = provider;
+    selfCopy2 = self;
     result = [v10 init];
     if (!result)
     {
@@ -56,13 +56,13 @@
       return result;
     }
 
-    v9 = result;
+    traitsForDeparturesDataSource_ = result;
   }
 
-  return v9;
+  return traitsForDeparturesDataSource_;
 }
 
-- (void)transitDeparturesDataProviderDidReload:(id)a3
+- (void)transitDeparturesDataProviderDidReload:(id)reload
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();

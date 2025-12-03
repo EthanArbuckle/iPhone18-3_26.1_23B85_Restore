@@ -1,21 +1,21 @@
 @interface EKUIIOSMacUtils
-+ (void)createNewEventInCalendarWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6 allDay:(BOOL)a7 location:(id)a8 notes:(id)a9 url:(id)a10;
++ (void)createNewEventInCalendarWithTitle:(id)title startDate:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day location:(id)location notes:(id)notes url:(id)self0;
 @end
 
 @implementation EKUIIOSMacUtils
 
-+ (void)createNewEventInCalendarWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5 timeZone:(id)a6 allDay:(BOOL)a7 location:(id)a8 notes:(id)a9 url:(id)a10
++ (void)createNewEventInCalendarWithTitle:(id)title startDate:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day location:(id)location notes:(id)notes url:(id)self0
 {
-  v38 = a7;
+  dayCopy = day;
   v42[6] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v39 = a8;
-  v16 = a9;
-  v17 = a10;
+  titleCopy = title;
+  zoneCopy = zone;
+  locationCopy = location;
+  notesCopy = notes;
+  urlCopy = url;
   v18 = MEMORY[0x1E696B090];
-  v19 = a5;
-  v20 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
   v21 = [[v18 alloc] initWithActivityType:@"com.apple.calendar.event_creation"];
   [v21 setTitle:@"Creating event"];
   v22 = objc_opt_new();
@@ -23,58 +23,58 @@
   v41[1] = @"com.apple.calendarUIKit.userActivity.type";
   v42[0] = &unk_1F4F32380;
   v42[1] = &unk_1F4F32398;
-  v40 = v14;
-  v42[2] = v14;
+  v40 = titleCopy;
+  v42[2] = titleCopy;
   v41[2] = @"com.apple.calendarUIKit.userActivity.title";
   v41[3] = @"com.apple.calendarUIKit.userActivity.startDate";
   v23 = MEMORY[0x1E696AD98];
-  [v20 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v25 = v24;
 
   v26 = [v23 numberWithDouble:v25];
   v42[3] = v26;
   v41[4] = @"com.apple.calendarUIKit.userActivity.endDate";
   v27 = MEMORY[0x1E696AD98];
-  [v19 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v29 = v28;
 
   v30 = [v27 numberWithDouble:v29];
   v42[4] = v30;
   v41[5] = @"com.apple.calendarUIKit.userActivity.allDay";
-  v31 = [MEMORY[0x1E696AD98] numberWithBool:v38];
+  v31 = [MEMORY[0x1E696AD98] numberWithBool:dayCopy];
   v42[5] = v31;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:6];
   [v22 addEntriesFromDictionary:v32];
 
-  v33 = [v15 name];
+  name = [zoneCopy name];
 
-  if (v33)
+  if (name)
   {
-    v34 = [v15 name];
-    [v22 setObject:v34 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.timeZone"];
+    name2 = [zoneCopy name];
+    [v22 setObject:name2 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.timeZone"];
   }
 
-  if (v39)
+  if (locationCopy)
   {
-    [v22 setObject:v39 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.location"];
+    [v22 setObject:locationCopy forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.location"];
   }
 
-  if (v16)
+  if (notesCopy)
   {
-    [v22 setObject:v16 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.notes"];
+    [v22 setObject:notesCopy forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.notes"];
   }
 
-  v35 = [v17 absoluteString];
+  absoluteString = [urlCopy absoluteString];
 
-  if (v35)
+  if (absoluteString)
   {
-    v36 = [v17 absoluteString];
-    [v22 setObject:v36 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.url"];
+    absoluteString2 = [urlCopy absoluteString];
+    [v22 setObject:absoluteString2 forKeyedSubscript:@"com.apple.calendarUIKit.userActivity.url"];
   }
 
   [v21 setUserInfo:v22];
-  v37 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v37 openUserActivity:v21 usingApplicationRecord:0 configuration:0 completionHandler:&__block_literal_global_8];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openUserActivity:v21 usingApplicationRecord:0 configuration:0 completionHandler:&__block_literal_global_8];
 }
 
 void __106__EKUIIOSMacUtils_createNewEventInCalendarWithTitle_startDate_endDate_timeZone_allDay_location_notes_url___block_invoke(uint64_t a1, char a2, void *a3)

@@ -18,7 +18,7 @@
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:8];
   v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
   v21[0] = MEMORY[0x277D85DD0];
@@ -29,10 +29,10 @@
   v22 = v8;
   v9 = v7;
   v26 = a3;
-  v24 = a1;
+  selfCopy = self;
   v25 = &v27;
   v23 = v9;
-  [a1 enumerateAttributesInRange:0 options:v5 usingBlock:{0, v21}];
+  [self enumerateAttributesInRange:0 options:v5 usingBlock:{0, v21}];
   if ((a3 & 1) == 0)
   {
     v19 = 0u;
@@ -60,7 +60,7 @@
           }
 
           v16 = *(*(&v17 + 1) + 8 * i);
-          [a1 enumerateAttribute:? inRange:? options:? usingBlock:?];
+          [self enumerateAttribute:? inRange:? options:? usingBlock:?];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v17 objects:v31 count:16];
@@ -74,7 +74,7 @@
 
   if (*(v28 + 24) == 1)
   {
-    [a1 endEditing];
+    [self endEditing];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -93,7 +93,7 @@
     [v15 setObject:v13 forKeyedSubscript:@"DDContext"];
   }
 
-  [a1 addAttributes:v16 range:{a5, a6}];
+  [self addAttributes:v16 range:{a5, a6}];
   if ([v14 count])
   {
     v17[0] = MEMORY[0x277D85DD0];
@@ -102,8 +102,8 @@
     v17[3] = &unk_278291688;
     v18 = v12;
     v19 = v14;
-    v20 = a1;
-    [a1 enumerateAttributesInRange:a5 options:a6 usingBlock:{0, v17}];
+    selfCopy = self;
+    [self enumerateAttributesInRange:a5 options:a6 usingBlock:{0, v17}];
   }
 }
 
@@ -117,8 +117,8 @@
   [v10 coreResult];
   RangeForURLification = DDResultGetRangeForURLification();
   v15 = v14;
-  v16 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-  v17 = [a1 length];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  v17 = [self length];
   v46.location = RangeForURLification;
   v46.length = v15;
   v48.location = 0;
@@ -135,9 +135,9 @@
     v39[1] = 3221225472;
     v39[2] = __99__NSMutableAttributedString_DataDetectorsSupport__dd_urlifyResult_withBlock_referenceDate_context___block_invoke;
     v39[3] = &unk_2782916B0;
-    v39[4] = a1;
+    v39[4] = self;
     v39[5] = &v40;
-    [a1 enumerateAttribute:v19 inRange:RangeForURLification options:v15 usingBlock:{0, v39}];
+    [self enumerateAttribute:v19 inRange:RangeForURLification options:v15 usingBlock:{0, v39}];
     if (v41[3])
     {
       v20 = 0;
@@ -146,9 +146,9 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%lu", @"embedded-result", RangeForURLification];
-    v21 = [v10 coreResult];
-    v22 = v11[2](v11, v21, v37, v12, v16);
+    rangeForURLification = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%lu", @"embedded-result", RangeForURLification];
+    coreResult = [v10 coreResult];
+    v22 = v11[2](v11, coreResult, rangeForURLification, v12, defaultTimeZone);
     if (v22)
     {
       v23 = [MEMORY[0x277CBEBC0] dd_URLWithPotentiallyInvalidURLString:v22];
@@ -166,26 +166,26 @@ LABEL_10:
 
         else
         {
-          v36 = [MEMORY[0x277CCA8D8] mainBundle];
-          v29 = [v36 bundleIdentifier];
-          if ([v29 isEqualToString:@"com.apple.mobilenotes"])
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
+          if ([bundleIdentifier isEqualToString:@"com.apple.mobilenotes"])
           {
             v30 = *MEMORY[0x277D741E8];
             v44[0] = *MEMORY[0x277D740C0];
             v44[1] = v30;
             v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
-            v32 = v29;
+            v32 = bundleIdentifier;
             v28 = v31;
           }
 
           else
           {
-            v32 = v29;
+            v32 = bundleIdentifier;
             v28 = 0;
           }
         }
 
-        [a1 dd_appendUrl:v24 context:v38 range:RangeForURLification backedAttributes:{v15, v28}];
+        [self dd_appendUrl:v24 context:v38 range:RangeForURLification backedAttributes:{v15, v28}];
 
         v20 = 1;
       }
@@ -208,7 +208,7 @@ LABEL_10:
         goto LABEL_21;
       }
 
-      v33 = [DDConversionAction actionAvailableForResult:v21];
+      v33 = [DDConversionAction actionAvailableForResult:coreResult];
 
       if (v33)
       {
@@ -251,7 +251,7 @@ LABEL_30:
 {
   v28[2] = *MEMORY[0x277D85DE8];
   v10 = a6;
-  v11 = [a1 length];
+  v11 = [self length];
   v29.location = a3;
   v29.length = a4;
   v31.location = 0;
@@ -269,7 +269,7 @@ LABEL_30:
     v23[2] = __86__NSMutableAttributedString_DataDetectorsSupport__dd_urlifyClientRange_index_context___block_invoke;
     v23[3] = &unk_2782916D8;
     v23[4] = &v24;
-    [a1 enumerateAttribute:v13 inRange:a3 options:a4 usingBlock:{0, v23}];
+    [self enumerateAttribute:v13 inRange:a3 options:a4 usingBlock:{0, v23}];
     v14 = *(v25 + 24);
     if ((v14 & 1) == 0)
     {
@@ -281,7 +281,7 @@ LABEL_30:
       v28[0] = *MEMORY[0x277D741F0];
       v28[1] = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-      [a1 dd_appendUrl:v17 context:v10 range:a3 backedAttributes:{a4, v19}];
+      [self dd_appendUrl:v17 context:v10 range:a3 backedAttributes:{a4, v19}];
     }
 
     v20 = v14 ^ 1u;
@@ -328,7 +328,7 @@ LABEL_30:
   v48 = 0;
   if (a6 != 0x7FFFFFFFFFFFFFFFLL && a7)
   {
-    v14 = [a1 length];
+    v14 = [self length];
     if (a6 > v14 || a6 + a7 > v14)
     {
       v26 = v14;
@@ -351,7 +351,7 @@ LABEL_30:
       v37[1] = 3221225472;
       v37[2] = __129__NSMutableAttributedString_DataDetectorsSupport__dd_makeLinksForResultsInAttributesOfType_usingURLificationBlock_context_range___block_invoke;
       v37[3] = &unk_278291700;
-      v37[4] = a1;
+      v37[4] = self;
       v40 = v36;
       v35 = v15;
       v38 = v35;
@@ -359,7 +359,7 @@ LABEL_30:
       v42 = v13;
       v39 = v17;
       v41 = &v43;
-      [a1 enumerateAttribute:v16 inRange:a6 options:a7 usingBlock:{0, v37}];
+      [self enumerateAttribute:v16 inRange:a6 options:a7 usingBlock:{0, v37}];
       v18 = [v17 objectForKeyedSubscript:@"CustomActionRanges"];
       if (v18)
       {
@@ -375,12 +375,12 @@ LABEL_30:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v23 = [v21 rangeValue];
-                if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+                rangeValue = [v21 rangeValue];
+                if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   if (v22)
                   {
-                    [a1 dd_urlifyClientRange:v23 index:v22 context:{i, v17}];
+                    [self dd_urlifyClientRange:rangeValue index:v22 context:{i, v17}];
                   }
                 }
               }
@@ -407,8 +407,8 @@ LABEL_30:
             v30 = dd_makeLinksForResultsInAttributesOfType_usingURLificationBlock_context_range___trackedCoreSpotlightUniqueIdentifiersCache;
           }
 
-          v33 = [MEMORY[0x277CBEB68] null];
-          [v30 setObject:v33 forKey:v12];
+          null = [MEMORY[0x277CBEB68] null];
+          [v30 setObject:null forKey:v12];
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -435,7 +435,7 @@ LABEL_30:
   }
 
   v7 = [DDOperation urlificationBlockForTypes:a3];
-  [a1 dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v7 context:v6 range:{0, objc_msgSend(a1, "length")}];
+  [self dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v7 context:v6 range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)dd_makeLinksForResultsInAttributesOfType:()DataDetectorsSupport context:range:
@@ -447,7 +447,7 @@ LABEL_30:
   }
 
   v11 = [DDOperation urlificationBlockForTypes:a3];
-  [a1 dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v11 context:v10 range:{a5, a6}];
+  [self dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v11 context:v10 range:{a5, a6}];
 }
 
 - (void)dd_replaceResultAttributesWithSimpleLinksForTypes:()DataDetectorsSupport context:
@@ -463,8 +463,8 @@ LABEL_30:
   v7[2] = __109__NSMutableAttributedString_DataDetectorsSupport__dd_replaceResultAttributesWithSimpleLinksForTypes_context___block_invoke;
   v7[3] = &__block_descriptor_40_e229___NSString_40__0____DDResult____CFRuntimeBase_QAQ____DDQueryRange____DDQueryOffset_b16b16b32____DDQueryOffset_b16b16b32_____qq_q____CFArray_____CFString_____CFString__v____CFDictionary_qCf_8__NSString_16__NSDate_24__NSTimeZone_32l;
   v7[4] = a3;
-  [a1 dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v7 context:v6 range:{0, objc_msgSend(a1, "length")}];
-  [a1 removeAttribute:*MEMORY[0x277D041D8] range:{0, objc_msgSend(a1, "length")}];
+  [self dd_makeLinksForResultsInAttributesOfType:a3 usingURLificationBlock:v7 context:v6 range:{0, objc_msgSend(self, "length")}];
+  [self removeAttribute:*MEMORY[0x277D041D8] range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)dd_urlifyResult:()DataDetectorsSupport withBlock:referenceDate:context:.cold.1(int a1, NSRange range, NSUInteger a3, NSUInteger a4)

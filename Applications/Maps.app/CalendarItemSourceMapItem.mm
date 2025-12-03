@@ -1,6 +1,6 @@
 @interface CalendarItemSourceMapItem
 - (CLLocationCoordinate2D)coordinate;
-- (CalendarItemSourceMapItem)initWithCalendarItem:(id)a3 mapItem:(id)a4;
+- (CalendarItemSourceMapItem)initWithCalendarItem:(id)item mapItem:(id)mapItem;
 - (NSArray)autocompletionStrings;
 - (NSDate)eventDate;
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID;
@@ -23,8 +23,8 @@
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
@@ -39,23 +39,23 @@
 - (NSArray)autocompletionStrings
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CalendarItemSourceMapItem *)self title];
-  v5 = [v4 value];
+  title = [(CalendarItemSourceMapItem *)self title];
+  value = [title value];
 
-  if ([v5 length])
+  if ([value length])
   {
     v6 = [AutocompleteMatchInfo matchInfoWithType:1];
-    v7 = [[AutocompleteStringMatcher alloc] initWithString:v5 requiredMatchLength:1 matchInfo:v6];
+    v7 = [[AutocompleteStringMatcher alloc] initWithString:value requiredMatchLength:1 matchInfo:v6];
     [v3 addObject:v7];
   }
 
-  v8 = [(CalendarItemSourceMapItem *)self subtitle];
-  v9 = [v8 value];
+  subtitle = [(CalendarItemSourceMapItem *)self subtitle];
+  value2 = [subtitle value];
 
-  if ([v9 length])
+  if ([value2 length])
   {
     v10 = [AutocompleteMatchInfo matchInfoWithType:4];
-    v11 = [[AutocompleteStringMatcher alloc] initWithString:v9 requiredMatchLength:3 matchInfo:v10];
+    v11 = [[AutocompleteStringMatcher alloc] initWithString:value2 requiredMatchLength:3 matchInfo:v10];
     [v3 addObject:v11];
   }
 
@@ -82,9 +82,9 @@
 
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
 {
-  v3 = [(CalendarItemSourceMapItem *)self styleAttributes];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 poiType];
+  styleAttributes = [(CalendarItemSourceMapItem *)self styleAttributes];
+  v3StyleAttributes = [styleAttributes styleAttributes];
+  poiType = [v3StyleAttributes poiType];
   [(MKMapItem *)self->_mapItem _coordinate];
   v7 = fabs(v6);
   v8 = floor(v7 + 0.5);
@@ -103,7 +103,7 @@
     v13 = v11;
   }
 
-  v14 = v13 ^ v5;
+  v14 = v13 ^ poiType;
   [(MKMapItem *)self->_mapItem _coordinate];
   v16 = fabs(v15);
   v17 = floor(v16 + 0.5);
@@ -124,14 +124,14 @@
 
   v23 = v14 ^ v22;
 
-  v24 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v25 = [v24 name];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v25)
+  if (name)
   {
-    v26 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v27 = [v26 name];
-    v23 ^= [v27 hash];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v23 ^= [name2 hash];
   }
 
   return [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v23];
@@ -156,15 +156,15 @@
     [v3 setObject:&off_1016E9728 forKeyedSubscript:&off_1016E9710];
   }
 
-  v6 = [(MKMapItem *)self->_mapItem _styleAttributes];
-  if (!v6)
+  _styleAttributes = [(MKMapItem *)self->_mapItem _styleAttributes];
+  if (!_styleAttributes)
   {
-    v7 = [(MKMapItem *)self->_mapItem place];
-    v8 = v7;
+    place = [(MKMapItem *)self->_mapItem place];
+    v8 = place;
     if (byte_10195EFE1)
     {
       v9 = 223;
-      if (!v7)
+      if (!place)
       {
         goto LABEL_16;
       }
@@ -175,11 +175,11 @@
       v9 = 353;
       if (v4)
       {
-        if (!v7)
+        if (!place)
         {
 LABEL_16:
           NSLog(@"We have a search result that has no style attributes and is not a 'place'. What is it? How should we display it?");
-          v6 = 0;
+          _styleAttributes = 0;
           goto LABEL_17;
         }
       }
@@ -196,18 +196,18 @@ LABEL_16:
           v9 = 348;
         }
 
-        if (!v7)
+        if (!place)
         {
           goto LABEL_16;
         }
       }
     }
 
-    v6 = [[GEOFeatureStyleAttributes alloc] initWithAttributes:{4, 226, 5, 3, 6, v9, 10, 0, 0}];
+    _styleAttributes = [[GEOFeatureStyleAttributes alloc] initWithAttributes:{4, 226, 5, 3, 6, v9, 10, 0, 0}];
 LABEL_17:
   }
 
-  v10 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:v6 additionalAttributes:v3];
+  v10 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:_styleAttributes additionalAttributes:v3];
 
   return v10;
 }
@@ -252,54 +252,54 @@ LABEL_17:
   return result;
 }
 
-- (CalendarItemSourceMapItem)initWithCalendarItem:(id)a3 mapItem:(id)a4
+- (CalendarItemSourceMapItem)initWithCalendarItem:(id)item mapItem:(id)mapItem
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  mapItemCopy = mapItem;
   v42.receiver = self;
   v42.super_class = CalendarItemSourceMapItem;
   v9 = [(CalendarItemSourceMapItem *)&v42 init];
   v10 = v9;
   if (v9)
   {
-    v41 = v7;
-    objc_storeStrong(&v9->_calendarItem, a3);
-    objc_storeStrong(&v10->_mapItem, a4);
-    v11 = [[PersonalizedMapItemKey alloc] initWithMapItem:v8];
+    v41 = itemCopy;
+    objc_storeStrong(&v9->_calendarItem, item);
+    objc_storeStrong(&v10->_mapItem, mapItem);
+    v11 = [[PersonalizedMapItemKey alloc] initWithMapItem:mapItemCopy];
     key = v10->_key;
     v10->_key = v11;
 
-    v13 = [v8 name];
-    v14 = [v8 _hasMUID];
+    name = [mapItemCopy name];
+    _hasMUID = [mapItemCopy _hasMUID];
     v15 = v10->_calendarItem;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(EKCalendarItem *)v15 title];
+      title = [(EKCalendarItem *)v15 title];
       v17 = +[CalendarItemSource sharedDateFormatter];
-      v18 = [(EKCalendarItem *)v15 startDate];
-      v19 = [v17 stringFromDate:v18];
+      startDate = [(EKCalendarItem *)v15 startDate];
+      v19 = [v17 stringFromDate:startDate];
     }
 
     else
     {
       v19 = 0;
-      v16 = 0;
+      title = 0;
     }
 
     v20 = v10->_calendarItem;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [(EKCalendarItem *)v20 title];
+      title2 = [(EKCalendarItem *)v20 title];
 
-      v16 = v21;
+      title = title2;
     }
 
-    if (v14)
+    if (_hasMUID)
     {
-      objc_storeStrong(&v10->_title, v13);
-      v22 = v16;
+      objc_storeStrong(&v10->_title, name);
+      v22 = title;
       if ([v22 length])
       {
         v23 = [NSString stringWithFormat:@"\b%@\b", v22];
@@ -352,8 +352,8 @@ LABEL_17:
 
     else
     {
-      objc_storeStrong(&v10->_title, v16);
-      v24 = v13;
+      objc_storeStrong(&v10->_title, title);
+      v24 = name;
       if ([v24 length])
       {
         v25 = [NSString stringWithFormat:@"\b%@\b", v24];
@@ -407,7 +407,7 @@ LABEL_17:
     subtitle = v10->_subtitle;
     v10->_subtitle = v38;
 
-    v7 = v41;
+    itemCopy = v41;
   }
 
   return v10;

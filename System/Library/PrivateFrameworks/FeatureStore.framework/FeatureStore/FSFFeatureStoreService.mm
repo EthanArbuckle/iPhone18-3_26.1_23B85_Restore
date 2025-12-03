@@ -1,24 +1,24 @@
 @interface FSFFeatureStoreService
 + (id)interactionIdForInjection;
-+ (id)retrieveCodingWithInteractionId:(id)a3 klass:(Class)a4 error:(id *)a5;
++ (id)retrieveCodingWithInteractionId:(id)id klass:(Class)klass error:(id *)error;
 @end
 
 @implementation FSFFeatureStoreService
 
-+ (id)retrieveCodingWithInteractionId:(id)a3 klass:(Class)a4 error:(id *)a5
++ (id)retrieveCodingWithInteractionId:(id)id klass:(Class)klass error:(id *)error
 {
-  v7 = a3;
-  v8 = NSStringFromClass(a4);
+  idCopy = id;
+  v8 = NSStringFromClass(klass);
   v9 = [FSFCurareInteractionStream getWithStreamId:v8 sourceType:0];
 
-  v10 = [MEMORY[0x277CBEB98] setWithObject:v7];
+  v10 = [MEMORY[0x277CBEB98] setWithObject:idCopy];
   v11 = [v9 retrieve:v10];
 
-  v12 = [v11 objectForKeyedSubscript:v7];
+  v12 = [v11 objectForKeyedSubscript:idCopy];
 
   v13 = [v12 objectAtIndexedSubscript:0];
 
-  v14 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a4 fromData:v13 error:a5];
+  v14 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:klass fromData:v13 error:error];
 
   return v14;
 }

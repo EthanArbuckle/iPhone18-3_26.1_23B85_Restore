@@ -1,11 +1,11 @@
 @interface VideosExtrasGridCellStyle
 - (CGSize)imageSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VideosExtrasGridCellStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VideosExtrasGridCellStyle);
   [(VideosExtrasGridCellStyle *)self imageSize];
@@ -14,28 +14,28 @@
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:?];
   [(VideosExtrasGridCellStyle *)self subtitleFirstBaselineHeight];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleFirstBaselineHeight:?];
-  v5 = [(VideosExtrasGridCellStyle *)self titleTextStyle];
-  v6 = [v5 copy];
+  titleTextStyle = [(VideosExtrasGridCellStyle *)self titleTextStyle];
+  v6 = [titleTextStyle copy];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextStyle:v6];
 
-  v7 = [(VideosExtrasGridCellStyle *)self subtitleTextStyle];
-  v8 = [v7 copy];
+  subtitleTextStyle = [(VideosExtrasGridCellStyle *)self subtitleTextStyle];
+  v8 = [subtitleTextStyle copy];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleTextStyle:v8];
 
-  v9 = [(VideosExtrasGridCellStyle *)self titleDefaultFontAttributes];
-  v10 = [v9 copy];
+  titleDefaultFontAttributes = [(VideosExtrasGridCellStyle *)self titleDefaultFontAttributes];
+  v10 = [titleDefaultFontAttributes copy];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v10];
 
-  v11 = [(VideosExtrasGridCellStyle *)self subtitleDefaultFontAttributes];
-  v12 = [v11 copy];
+  subtitleDefaultFontAttributes = [(VideosExtrasGridCellStyle *)self subtitleDefaultFontAttributes];
+  v12 = [subtitleDefaultFontAttributes copy];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleDefaultFontAttributes:v12];
 
-  v13 = [(VideosExtrasGridCellStyle *)self titleTextColor];
-  v14 = [v13 copy];
+  titleTextColor = [(VideosExtrasGridCellStyle *)self titleTextColor];
+  v14 = [titleTextColor copy];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v14];
 
-  v15 = [(VideosExtrasGridCellStyle *)self subtitleTextColor];
-  v16 = [v15 copy];
+  subtitleTextColor = [(VideosExtrasGridCellStyle *)self subtitleTextColor];
+  v16 = [subtitleTextColor copy];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleTextColor:v16];
 
   [(VideosExtrasGridCellStyle *)self textFirstBaselineToBottom];

@@ -1,47 +1,47 @@
 @interface ATXProactiveSuggestionExecutableSpecification
-+ (id)stringForExecutableType:(int64_t)a3;
-- (ATXProactiveSuggestionExecutableSpecification)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)a3 executableObjectHash:(unint64_t)a4 expectedExecutableClassString:(id)a5 executableDescription:(id)a6 executableIdentifier:(id)a7 suggestionExecutableType:(int64_t)a8;
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)a3 expectedExecutableClassString:(id)a4 executableDescription:(id)a5 executableIdentifier:(id)a6 suggestionExecutableType:(int64_t)a7;
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutableObject:(id)a3 executableDescription:(id)a4 executableIdentifier:(id)a5 suggestionExecutableType:(int64_t)a6;
-- (ATXProactiveSuggestionExecutableSpecification)initWithProto:(id)a3;
-- (ATXProactiveSuggestionExecutableSpecification)initWithProtoData:(id)a3;
++ (id)stringForExecutableType:(int64_t)type;
+- (ATXProactiveSuggestionExecutableSpecification)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)executable executableObjectHash:(unint64_t)hash expectedExecutableClassString:(id)string executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type;
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)executable expectedExecutableClassString:(id)string executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type;
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutableObject:(id)object executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type;
+- (ATXProactiveSuggestionExecutableSpecification)initWithProto:(id)proto;
+- (ATXProactiveSuggestionExecutableSpecification)initWithProtoData:(id)data;
 - (ATXSuggestionExecutableProtocol)executableObject;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSUInteger:(unint64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)fuzzyIsEqualToExecutableSpecification:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSUInteger:(unint64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)fuzzyIsEqualToExecutableSpecification:(id)specification;
+- (BOOL)isEqual:(id)equal;
 - (id)allowedExecutableClasses;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
-- (id)executableDataFromExecutableObject:(id)a3 executableClassStringFromObject:(id)a4;
-- (id)executableObjectFromData:(id)a3 executableClassString:(id)a4;
+- (id)executableDataFromExecutableObject:(id)object executableClassStringFromObject:(id)fromObject;
+- (id)executableObjectFromData:(id)data executableClassString:(id)string;
 - (id)jsonRawData;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXProactiveSuggestionExecutableSpecification
 
 - (ATXSuggestionExecutableProtocol)executableObject
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  executableObject = v2->_executableObject;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  executableObject = selfCopy->_executableObject;
   if (!executableObject)
   {
-    v4 = [(ATXProactiveSuggestionExecutableSpecification *)v2 executableObjectFromData:v2->_executable executableClassString:v2->_executableClassString];
-    v5 = v2->_executableObject;
-    v2->_executableObject = v4;
+    v4 = [(ATXProactiveSuggestionExecutableSpecification *)selfCopy executableObjectFromData:selfCopy->_executable executableClassString:selfCopy->_executableClassString];
+    v5 = selfCopy->_executableObject;
+    selfCopy->_executableObject = v4;
 
-    executableObject = v2->_executableObject;
+    executableObject = selfCopy->_executableObject;
   }
 
   v6 = executableObject;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -148,34 +148,34 @@
   return self->_executableType - (v5 - v4 + 32 * v4) + 32 * (v5 - v4 + 32 * v4);
 }
 
-+ (id)stringForExecutableType:(int64_t)a3
++ (id)stringForExecutableType:(int64_t)type
 {
-  if (a3 >= 0xC)
+  if (type >= 0xC)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %li)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %li)", type];
   }
 
   else
   {
-    v4 = off_1E86A48A8[a3];
+    type = off_1E86A48A8[type];
   }
 
-  return v4;
+  return type;
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)a3 expectedExecutableClassString:(id)a4 executableDescription:(id)a5 executableIdentifier:(id)a6 suggestionExecutableType:(int64_t)a7
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)executable expectedExecutableClassString:(id)string executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
-  v17 = [v16 containsObject:v13];
+  executableCopy = executable;
+  stringCopy = string;
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  allowedExecutableClasses = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
+  v17 = [allowedExecutableClasses containsObject:stringCopy];
 
   if (v17)
   {
-    self = [(ATXProactiveSuggestionExecutableSpecification *)self initWithExecutable:v12 executableObjectHash:0 expectedExecutableClassString:v13 executableDescription:v14 executableIdentifier:v15 suggestionExecutableType:a7];
-    v18 = self;
+    self = [(ATXProactiveSuggestionExecutableSpecification *)self initWithExecutable:executableCopy executableObjectHash:0 expectedExecutableClassString:stringCopy executableDescription:descriptionCopy executableIdentifier:identifierCopy suggestionExecutableType:type];
+    selfCopy = self;
   }
 
   else
@@ -186,88 +186,88 @@
       [ATXProactiveSuggestionExecutableSpecification initWithExecutable:expectedExecutableClassString:executableDescription:executableIdentifier:suggestionExecutableType:];
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutableObject:(id)a3 executableDescription:(id)a4 executableIdentifier:(id)a5 suggestionExecutableType:(int64_t)a6
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutableObject:(id)object executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectCopy = object;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   objc_opt_class();
   objc_opt_isKindOfClass();
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
-  v16 = [v15 containsObject:v14];
+  allowedExecutableClasses = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
+  v16 = [allowedExecutableClasses containsObject:v14];
 
   if (v16)
   {
-    v17 = [(ATXProactiveSuggestionExecutableSpecification *)self executableDataFromExecutableObject:v10 executableClassStringFromObject:v14];
-    self = -[ATXProactiveSuggestionExecutableSpecification initWithExecutable:executableObjectHash:expectedExecutableClassString:executableDescription:executableIdentifier:suggestionExecutableType:](self, "initWithExecutable:executableObjectHash:expectedExecutableClassString:executableDescription:executableIdentifier:suggestionExecutableType:", v17, [v10 hash], v14, v11, v12, a6);
+    v17 = [(ATXProactiveSuggestionExecutableSpecification *)self executableDataFromExecutableObject:objectCopy executableClassStringFromObject:v14];
+    self = -[ATXProactiveSuggestionExecutableSpecification initWithExecutable:executableObjectHash:expectedExecutableClassString:executableDescription:executableIdentifier:suggestionExecutableType:](self, "initWithExecutable:executableObjectHash:expectedExecutableClassString:executableDescription:executableIdentifier:suggestionExecutableType:", v17, [objectCopy hash], v14, descriptionCopy, identifierCopy, type);
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)a3 executableObjectHash:(unint64_t)a4 expectedExecutableClassString:(id)a5 executableDescription:(id)a6 executableIdentifier:(id)a7 suggestionExecutableType:(int64_t)a8
+- (ATXProactiveSuggestionExecutableSpecification)initWithExecutable:(id)executable executableObjectHash:(unint64_t)hash expectedExecutableClassString:(id)string executableDescription:(id)description executableIdentifier:(id)identifier suggestionExecutableType:(int64_t)type
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  executableCopy = executable;
+  stringCopy = string;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = ATXProactiveSuggestionExecutableSpecification;
   v18 = [(ATXProactiveSuggestionExecutableSpecification *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [executableCopy copy];
     executable = v18->_executable;
     v18->_executable = v19;
 
-    v18->_executableObjectHash = a4;
-    v21 = [v15 copy];
+    v18->_executableObjectHash = hash;
+    v21 = [stringCopy copy];
     executableClassString = v18->_executableClassString;
     v18->_executableClassString = v21;
 
-    v23 = [v16 copy];
+    v23 = [descriptionCopy copy];
     executableDescription = v18->_executableDescription;
     v18->_executableDescription = v23;
 
-    v25 = [v17 copy];
+    v25 = [identifierCopy copy];
     executableIdentifier = v18->_executableIdentifier;
     v18->_executableIdentifier = v25;
 
-    v18->_executableType = a8;
+    v18->_executableType = type;
   }
 
   return v18;
 }
 
-- (id)executableDataFromExecutableObject:(id)a3 executableClassStringFromObject:(id)a4
+- (id)executableDataFromExecutableObject:(id)object executableClassStringFromObject:(id)fromObject
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"NSString"])
+  objectCopy = object;
+  fromObjectCopy = fromObject;
+  if ([fromObjectCopy isEqualToString:@"NSString"])
   {
-    v7 = [v5 dataUsingEncoding:4];
+    v7 = [objectCopy dataUsingEncoding:4];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
     v12 = 0;
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v12];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v12];
     v9 = v12;
     objc_autoreleasePoolPop(v8);
     if (!v7)
@@ -283,28 +283,28 @@
   return v7;
 }
 
-- (id)executableObjectFromData:(id)a3 executableClassString:(id)a4
+- (id)executableObjectFromData:(id)data executableClassString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
-  v9 = [v8 containsObject:v7];
+  dataCopy = data;
+  stringCopy = string;
+  allowedExecutableClasses = [(ATXProactiveSuggestionExecutableSpecification *)self allowedExecutableClasses];
+  v9 = [allowedExecutableClasses containsObject:stringCopy];
 
   if (v9)
   {
-    v10 = NSClassFromString(v7);
+    v10 = NSClassFromString(stringCopy);
     if (v10)
     {
-      if ([(NSString *)v7 isEqualToString:@"NSString"])
+      if ([(NSString *)stringCopy isEqualToString:@"NSString"])
       {
-        v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
+        v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       }
 
       else
       {
         v12 = objc_autoreleasePoolPush();
         v16 = 0;
-        v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:v10 fromData:v6 error:&v16];
+        v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:v10 fromData:dataCopy error:&v16];
         v13 = v16;
         objc_autoreleasePoolPop(v12);
         if (!v10 && v13)
@@ -340,9 +340,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXProactiveSuggestionExecutableSpecification allocWithZone:a3];
+  v4 = [ATXProactiveSuggestionExecutableSpecification allocWithZone:zone];
   v5 = [(NSData *)self->_executable copy];
   executableObjectHash = self->_executableObjectHash;
   v7 = [(NSString *)self->_executableClassString copy];
@@ -350,18 +350,18 @@
   v9 = [(NSString *)self->_executableIdentifier copy];
   v10 = [(ATXProactiveSuggestionExecutableSpecification *)v4 initWithExecutable:v5 executableObjectHash:executableObjectHash expectedExecutableClassString:v7 executableDescription:v8 executableIdentifier:v9 suggestionExecutableType:self->_executableType];
 
-  v11 = self;
-  objc_sync_enter(v11);
-  objc_storeStrong(v10 + 1, v11->_executableObject);
-  objc_sync_exit(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(v10 + 1, selfCopy->_executableObject);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -371,7 +371,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_executable;
       v7 = v6;
       if (v6 == v5->_executable)
@@ -459,10 +459,10 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)fuzzyIsEqualToExecutableSpecification:(id)a3
+- (BOOL)fuzzyIsEqualToExecutableSpecification:(id)specification
 {
-  v4 = a3;
-  if (self != v4)
+  specificationCopy = specification;
+  if (self != specificationCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -471,14 +471,14 @@ LABEL_22:
     }
 
     executableObjectHash = self->_executableObjectHash;
-    if (executableObjectHash != [(ATXProactiveSuggestionExecutableSpecification *)v4 executableObjectHash])
+    if (executableObjectHash != [(ATXProactiveSuggestionExecutableSpecification *)specificationCopy executableObjectHash])
     {
       goto LABEL_11;
     }
 
     v6 = self->_executableClassString;
     v7 = v6;
-    if (v6 == v4->_executableClassString)
+    if (v6 == specificationCopy->_executableClassString)
     {
     }
 
@@ -494,7 +494,7 @@ LABEL_22:
 
     v10 = self->_executableIdentifier;
     v11 = v10;
-    if (v10 == v4->_executableIdentifier)
+    if (v10 == specificationCopy->_executableIdentifier)
     {
     }
 
@@ -511,7 +511,7 @@ LABEL_11:
     }
 
     executableType = self->_executableType;
-    v9 = executableType == [(ATXProactiveSuggestionExecutableSpecification *)v4 executableType];
+    v9 = executableType == [(ATXProactiveSuggestionExecutableSpecification *)specificationCopy executableType];
     goto LABEL_12;
   }
 
@@ -548,38 +548,38 @@ LABEL_12:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXProactiveSuggestionExecutableSpecification *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXProactiveSuggestionExecutableSpecification *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithProtoData:(id)a3
+- (ATXProactiveSuggestionExecutableSpecification)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestionExecutableSpecification alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestionExecutableSpecification alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestionExecutableSpecification *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithProto:(id)a3
+- (ATXProactiveSuggestionExecutableSpecification)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_36;
   }
 
@@ -595,21 +595,21 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executable];
-  v7 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableObjectHash];
-  v8 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableClassString];
-  v9 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableDescription];
-  v10 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableIdentifier];
-  v11 = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableType];
-  if (v11 >= 0xB)
+  v5 = protoCopy;
+  executable = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executable];
+  executableObjectHash = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableObjectHash];
+  executableClassString = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableClassString];
+  executableDescription = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableDescription];
+  executableIdentifier = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableIdentifier];
+  executableType = [(ATXPBProactiveSuggestionExecutableSpecification *)v5 executableType];
+  if (executableType >= 0xB)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", executableType];
   }
 
   else
   {
-    v12 = off_1E86A4850[v11];
+    v12 = off_1E86A4850[executableType];
   }
 
   v15 = v12;
@@ -678,40 +678,40 @@ LABEL_8:
     v16 = 0;
   }
 
-  self = [(ATXProactiveSuggestionExecutableSpecification *)self initWithExecutable:v6 executableObjectHash:v7 expectedExecutableClassString:v8 executableDescription:v9 executableIdentifier:v10 suggestionExecutableType:v16];
-  v14 = self;
+  self = [(ATXProactiveSuggestionExecutableSpecification *)self initWithExecutable:executable executableObjectHash:executableObjectHash expectedExecutableClassString:executableClassString executableDescription:executableDescription executableIdentifier:executableIdentifier suggestionExecutableType:v16];
+  selfCopy = self;
 LABEL_36:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -723,33 +723,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -761,33 +761,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSUInteger:(unint64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSUInteger:(unint64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -799,17 +799,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestionExecutableSpecification *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestionExecutableSpecification *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestionExecutableSpecification)initWithCoder:(id)a3
+- (ATXProactiveSuggestionExecutableSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestionExecutableSpecification *)self initWithProtoData:v5];
   return v6;

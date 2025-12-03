@@ -2,14 +2,14 @@
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getLastMigrationVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getSkyEquivalentVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getSydneyEquivalentVersion;
-- (BOOL)getDoMigrationForTargetRelease:(id *)a3;
-- (BOOL)isVersion:(id *)a3 lowerThan:(id *)a4;
+- (BOOL)getDoMigrationForTargetRelease:(id *)release;
+- (BOOL)isVersion:(id *)version lowerThan:(id *)than;
 - (MSDLegacyMigrationHelper)init;
 - (void)saveOSVerionAfterMigration;
-- (void)setCurrentOSVersion:(id *)a3;
-- (void)setLastMigrationVersion:(id *)a3;
-- (void)setSkyEquivalentVersion:(id *)a3;
-- (void)setSydneyEquivalentVersion:(id *)a3;
+- (void)setCurrentOSVersion:(id *)version;
+- (void)setLastMigrationVersion:(id *)version;
+- (void)setSkyEquivalentVersion:(id *)version;
+- (void)setSydneyEquivalentVersion:(id *)version;
 @end
 
 @implementation MSDLegacyMigrationHelper
@@ -70,15 +70,15 @@
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MSDLegacyMigrationHelper *)self osVersionStr];
+    osVersionStr = [(MSDLegacyMigrationHelper *)self osVersionStr];
     v7 = 138543362;
-    v8 = v4;
+    v8 = osVersionStr;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Saving last migration OS version: %{public}@", &v7, 0xCu);
   }
 
   v5 = +[MSDPreferencesFile sharedInstance];
-  v6 = [(MSDLegacyMigrationHelper *)self osVersionStr];
-  [v5 setObject:v6 forKey:@"LastMigrationVersion"];
+  osVersionStr2 = [(MSDLegacyMigrationHelper *)self osVersionStr];
+  [v5 setObject:osVersionStr2 forKey:@"LastMigrationVersion"];
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)getSkyEquivalentVersion
@@ -147,9 +147,9 @@
   return result;
 }
 
-- (BOOL)getDoMigrationForTargetRelease:(id *)a3
+- (BOOL)getDoMigrationForTargetRelease:(id *)release
 {
-  buf = *a3;
+  buf = *release;
   v5 = [(MSDLegacyMigrationHelper *)self stringFromNSOperatingSystemVersion:&buf];
   [(MSDLegacyMigrationHelper *)self lastMigrationVersion];
   if (v11 == -1)
@@ -160,8 +160,8 @@
   else
   {
     [(MSDLegacyMigrationHelper *)self lastMigrationVersion];
-    v9 = *&a3->var0;
-    var2 = a3->var2;
+    v9 = *&release->var0;
+    var2 = release->var2;
     v6 = [(MSDLegacyMigrationHelper *)self isVersion:&buf lowerThan:&v9];
   }
 
@@ -178,48 +178,48 @@
   return v6;
 }
 
-- (BOOL)isVersion:(id *)a3 lowerThan:(id *)a4
+- (BOOL)isVersion:(id *)version lowerThan:(id *)than
 {
-  v4 = a3->var0 < a4->var0;
-  if (a3->var0 == a4->var0)
+  v4 = version->var0 < than->var0;
+  if (version->var0 == than->var0)
   {
-    var1 = a3->var1;
-    v6 = a4->var1;
+    var1 = version->var1;
+    v6 = than->var1;
     v4 = var1 < v6;
     if (var1 == v6)
     {
-      return a3->var2 < a4->var2;
+      return version->var2 < than->var2;
     }
   }
 
   return v4;
 }
 
-- (void)setSkyEquivalentVersion:(id *)a3
+- (void)setSkyEquivalentVersion:(id *)version
 {
-  v3 = *&a3->var0;
-  self->_skyEquivalentVersion.patchVersion = a3->var2;
+  v3 = *&version->var0;
+  self->_skyEquivalentVersion.patchVersion = version->var2;
   *&self->_skyEquivalentVersion.majorVersion = v3;
 }
 
-- (void)setSydneyEquivalentVersion:(id *)a3
+- (void)setSydneyEquivalentVersion:(id *)version
 {
-  v3 = *&a3->var0;
-  self->_sydneyEquivalentVersion.patchVersion = a3->var2;
+  v3 = *&version->var0;
+  self->_sydneyEquivalentVersion.patchVersion = version->var2;
   *&self->_sydneyEquivalentVersion.majorVersion = v3;
 }
 
-- (void)setLastMigrationVersion:(id *)a3
+- (void)setLastMigrationVersion:(id *)version
 {
-  v3 = *&a3->var0;
-  self->_lastMigrationVersion.patchVersion = a3->var2;
+  v3 = *&version->var0;
+  self->_lastMigrationVersion.patchVersion = version->var2;
   *&self->_lastMigrationVersion.majorVersion = v3;
 }
 
-- (void)setCurrentOSVersion:(id *)a3
+- (void)setCurrentOSVersion:(id *)version
 {
-  v3 = *&a3->var0;
-  self->_currentOSVersion.patchVersion = a3->var2;
+  v3 = *&version->var0;
+  self->_currentOSVersion.patchVersion = version->var2;
   *&self->_currentOSVersion.majorVersion = v3;
 }
 

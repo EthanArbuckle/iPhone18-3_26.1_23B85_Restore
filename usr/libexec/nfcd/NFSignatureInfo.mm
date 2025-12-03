@@ -1,45 +1,45 @@
 @interface NFSignatureInfo
-- (NFSignatureInfo)initWithCoder:(id)a3;
-- (NFSignatureInfo)initWithDictionary:(id)a3;
+- (NFSignatureInfo)initWithCoder:(id)coder;
+- (NFSignatureInfo)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFSignatureInfo
 
-- (NFSignatureInfo)initWithDictionary:(id)a3
+- (NFSignatureInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = NFSignatureInfo;
   v5 = [(NFSignatureInfo *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rsa"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rsa"];
     rsaCert = v5->_rsaCert;
     v5->_rsaCert = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"ecc"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ecc"];
     eccCert = v5->_eccCert;
     v5->_eccCert = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"ecka"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ecka"];
     eckaCert = v5->_eckaCert;
     v5->_eckaCert = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"seid"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"seid"];
     seid = v5->_seid;
     v5->_seid = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"platformid"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"platformid"];
     platformId = v5->_platformId;
     v5->_platformId = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"jsblCounter"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"jsblCounter"];
     jsblCounter = v5->_jsblCounter;
     v5->_jsblCounter = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"certVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"certVersion"];
     v5->_certificateVersion = [v18 unsignedIntegerValue];
   }
 
@@ -76,55 +76,55 @@
   return v9;
 }
 
-- (NFSignatureInfo)initWithCoder:(id)a3
+- (NFSignatureInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = NFSignatureInfo;
   v5 = [(NFSignatureInfo *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsa"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsa"];
     rsaCert = v5->_rsaCert;
     v5->_rsaCert = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecc"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecc"];
     eccCert = v5->_eccCert;
     v5->_eccCert = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecka"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecka"];
     eckaCert = v5->_eckaCert;
     v5->_eckaCert = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
     seid = v5->_seid;
     v5->_seid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformid"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformid"];
     platformId = v5->_platformId;
     v5->_platformId = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jsblCounter"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jsblCounter"];
     jsblCounter = v5->_jsblCounter;
     v5->_jsblCounter = v16;
 
-    v5->_certificateVersion = [v4 decodeIntegerForKey:@"certVersion"];
+    v5->_certificateVersion = [coderCopy decodeIntegerForKey:@"certVersion"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rsaCert = self->_rsaCert;
-  v5 = a3;
-  [v5 encodeObject:rsaCert forKey:@"rsa"];
-  [v5 encodeObject:self->_eccCert forKey:@"ecc"];
-  [v5 encodeObject:self->_eckaCert forKey:@"ecka"];
-  [v5 encodeObject:self->_seid forKey:@"seid"];
-  [v5 encodeObject:self->_platformId forKey:@"platformid"];
-  [v5 encodeObject:self->_jsblCounter forKey:@"jsblCounter"];
-  [v5 encodeInteger:self->_certificateVersion forKey:@"certVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rsaCert forKey:@"rsa"];
+  [coderCopy encodeObject:self->_eccCert forKey:@"ecc"];
+  [coderCopy encodeObject:self->_eckaCert forKey:@"ecka"];
+  [coderCopy encodeObject:self->_seid forKey:@"seid"];
+  [coderCopy encodeObject:self->_platformId forKey:@"platformid"];
+  [coderCopy encodeObject:self->_jsblCounter forKey:@"jsblCounter"];
+  [coderCopy encodeInteger:self->_certificateVersion forKey:@"certVersion"];
 }
 
 @end

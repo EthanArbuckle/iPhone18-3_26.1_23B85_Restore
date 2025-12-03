@@ -45,7 +45,7 @@
 
 - (CGColor)sb_isGrayscale
 {
-  result = [a1 CGColor];
+  result = [self CGColor];
   if (result)
   {
     result = CGColorGetColorSpace(result);
@@ -60,7 +60,7 @@
           v5 = 0.0;
           v6 = 0.0;
           v4 = 0.0;
-          if (![a1 getRed:&v6 green:&v5 blue:&v4 alpha:0] || v6 != v5 || v5 != v4)
+          if (![self getRed:&v6 green:&v5 blue:&v4 alpha:0] || v6 != v5 || v5 != v4)
           {
             return 0;
           }
@@ -78,7 +78,7 @@
   v3 = 0.0;
   v4 = 0;
   v2 = 0;
-  [a1 getHue:&v5 saturation:&v4 brightness:&v3 alpha:&v2];
+  [self getHue:&v5 saturation:&v4 brightness:&v3 alpha:&v2];
   return v3;
 }
 

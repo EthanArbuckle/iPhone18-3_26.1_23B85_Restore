@@ -1,161 +1,161 @@
 @interface ATXPBTaskAgnosticBehaviorFeatureVector
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAmbientLightTypeLaunchPopularity:(BOOL)a3;
-- (void)setHasAmbientLightTypePopularity:(BOOL)a3;
-- (void)setHasAppDayOfWeekLaunches:(BOOL)a3;
-- (void)setHasAppEntropyForCoarseGeoHash:(BOOL)a3;
-- (void)setHasAppEntropyForSpecificGeoHash:(BOOL)a3;
-- (void)setHasAppEntropyForTimeBuckets:(BOOL)a3;
-- (void)setHasAppEntropyForZoom7GeoHash:(BOOL)a3;
-- (void)setHasAppLaunchPopularityAtPOIForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash0ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash1ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash2ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash3ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash4ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash5ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash6ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash7ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash8ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHash9ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHashForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHashForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtCoarseGeoHashInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtDayOfWeekForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtPOIForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtSSIDForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSSIDForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash0ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash10ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash11ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash12ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash13ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash14ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash1ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash2ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash3ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash4ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash5ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash6ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash7ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash8ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHash9ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHashForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHashForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtSpecificGeoHashInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtTimeAndDayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtTimeAndDayForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtTimeAndDayInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash0ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash1ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash2ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash3ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash4ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash5ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash6ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash7ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash8ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHash9ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHashForApp:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHashForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesAtZoom7GeoHashInContext:(BOOL)a3;
-- (void)setHasAppLaunchesCoarseTimePowLocationForAllAppsAndContexts:(BOOL)a3;
-- (void)setHasAppLaunchesCoarseTimePowLocationForApp:(BOOL)a3;
-- (void)setHasAppLaunchesCoarseTimePowLocationForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesCoarseTimePowLocationInContext:(BOOL)a3;
-- (void)setHasAppLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate:(BOOL)a3;
-- (void)setHasAppLaunchesForCoreMotionForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesInAirplaneModeForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket0ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket10ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket11ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket12ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket13ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket14ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket15ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket16ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket17ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket18ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket19ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket1ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket20ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket21ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket22ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket23ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket24ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket2ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket3ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket4ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket5ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket6ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket7ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket8ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTimeBucket9ForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTwoHourTimeBucketForApp:(BOOL)a3;
-- (void)setHasAppLaunchesInTwoHourTimeBucketForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesInTwoHourTimeBucketInContext:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekFridayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekMondayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekSaturdayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekSundayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekThursdayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekTuesdayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesOnDayOfWeekWednesdayForApp:(BOOL)a3;
-- (void)setHasAppLaunchesSpecificTimeDowLocationForAllAppsAndContexts:(BOOL)a3;
-- (void)setHasAppLaunchesSpecificTimeDowLocationForApp:(BOOL)a3;
-- (void)setHasAppLaunchesSpecificTimeDowLocationForAppInContext:(BOOL)a3;
-- (void)setHasAppLaunchesSpecificTimeDowLocationInContext:(BOOL)a3;
-- (void)setHasAppNumberOfCoarseGeohashesForApp:(BOOL)a3;
-- (void)setHasAppNumberOfSpecificGeohashesForApp:(BOOL)a3;
-- (void)setHasAppNumberOfZoom7GeohashesForApp:(BOOL)a3;
-- (void)setHasAppPopularityGivenTimeAndDayOfWeek:(BOOL)a3;
-- (void)setHasAppPopularityOfTimeAndDayOfWeekGivenApp:(BOOL)a3;
-- (void)setHasAppTimeAndDayOfWeekPopularity:(BOOL)a3;
-- (void)setHasAppTimeOfDayLaunches:(BOOL)a3;
-- (void)setHasAppTotalNumberOfTimeAndDayOfWeekLaunches:(BOOL)a3;
-- (void)setHasCoarseTimeOfDayPopularity:(BOOL)a3;
-- (void)setHasCoreMotionPopularity:(BOOL)a3;
-- (void)setHasCurrentTimeBucketFromZeroToTwentyFour:(BOOL)a3;
-- (void)setHasDayOfWeekBucket:(BOOL)a3;
-- (void)setHasDayOfWeekPopularity:(BOOL)a3;
-- (void)setHasEntropyDayOfWeekPopularity:(BOOL)a3;
-- (void)setHasEntropyDayOfWeekPopularityByApp:(BOOL)a3;
-- (void)setHasEntropyDayOfWeekPopularityByDay:(BOOL)a3;
-- (void)setHasEntropyLaunchPopularity:(BOOL)a3;
-- (void)setHasEntropySSIDPopularity:(BOOL)a3;
-- (void)setHasEntropySSIDPopularityByApp:(BOOL)a3;
-- (void)setHasEntropySSIDPopularityBySSID:(BOOL)a3;
-- (void)setHasEntropyTrendingPopularity:(BOOL)a3;
-- (void)setHasIsLocationServicesDisabled:(BOOL)a3;
-- (void)setHasLaunchDayOfWeekPopularity:(BOOL)a3;
-- (void)setHasLaunchPopularity:(BOOL)a3;
-- (void)setHasLaunchTimePopularity:(BOOL)a3;
-- (void)setHasOnWifi:(BOOL)a3;
-- (void)setHasPoiPopularityForAppInContext:(BOOL)a3;
-- (void)setHasSSIDPopularity:(BOOL)a3;
-- (void)setHasTimeOfDayBucket:(BOOL)a3;
-- (void)setHasTimeOfDayPopularity:(BOOL)a3;
-- (void)setHasTotalNumberOfAirplaneModeLaunches:(BOOL)a3;
-- (void)setHasTotalNumberOfCoreMotionLaunches:(BOOL)a3;
-- (void)setHasTotalNumberOfLaunches:(BOOL)a3;
-- (void)setHasTotalNumberOfSSIDLaunches:(BOOL)a3;
-- (void)setHasTotalNumberOfTrendingLaunches:(BOOL)a3;
-- (void)setHasTrendingPopularity:(BOOL)a3;
-- (void)setHasUnlockTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAmbientLightTypeLaunchPopularity:(BOOL)popularity;
+- (void)setHasAmbientLightTypePopularity:(BOOL)popularity;
+- (void)setHasAppDayOfWeekLaunches:(BOOL)launches;
+- (void)setHasAppEntropyForCoarseGeoHash:(BOOL)hash;
+- (void)setHasAppEntropyForSpecificGeoHash:(BOOL)hash;
+- (void)setHasAppEntropyForTimeBuckets:(BOOL)buckets;
+- (void)setHasAppEntropyForZoom7GeoHash:(BOOL)hash;
+- (void)setHasAppLaunchPopularityAtPOIForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtCoarseGeoHash0ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash1ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash2ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash3ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash4ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash5ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash6ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash7ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash8ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHash9ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHashForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtCoarseGeoHashForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtCoarseGeoHashInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtDayOfWeekForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtPOIForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtSSIDForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSSIDForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtSpecificGeoHash0ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash10ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash11ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash12ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash13ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash14ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash1ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash2ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash3ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash4ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash5ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash6ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash7ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash8ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHash9ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHashForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtSpecificGeoHashForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtSpecificGeoHashInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtTimeAndDayForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtTimeAndDayForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtTimeAndDayInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtZoom7GeoHash0ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash1ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash2ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash3ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash4ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash5ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash6ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash7ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash8ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHash9ForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHashForApp:(BOOL)app;
+- (void)setHasAppLaunchesAtZoom7GeoHashForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesAtZoom7GeoHashInContext:(BOOL)context;
+- (void)setHasAppLaunchesCoarseTimePowLocationForAllAppsAndContexts:(BOOL)contexts;
+- (void)setHasAppLaunchesCoarseTimePowLocationForApp:(BOOL)app;
+- (void)setHasAppLaunchesCoarseTimePowLocationForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesCoarseTimePowLocationInContext:(BOOL)context;
+- (void)setHasAppLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate:(BOOL)rate;
+- (void)setHasAppLaunchesForCoreMotionForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesInAirplaneModeForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesInTimeBucket0ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket10ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket11ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket12ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket13ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket14ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket15ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket16ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket17ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket18ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket19ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket1ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket20ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket21ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket22ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket23ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket24ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket2ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket3ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket4ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket5ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket6ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket7ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket8ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTimeBucket9ForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTwoHourTimeBucketForApp:(BOOL)app;
+- (void)setHasAppLaunchesInTwoHourTimeBucketForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesInTwoHourTimeBucketInContext:(BOOL)context;
+- (void)setHasAppLaunchesOnDayOfWeekFridayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekMondayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekSaturdayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekSundayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekThursdayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekTuesdayForApp:(BOOL)app;
+- (void)setHasAppLaunchesOnDayOfWeekWednesdayForApp:(BOOL)app;
+- (void)setHasAppLaunchesSpecificTimeDowLocationForAllAppsAndContexts:(BOOL)contexts;
+- (void)setHasAppLaunchesSpecificTimeDowLocationForApp:(BOOL)app;
+- (void)setHasAppLaunchesSpecificTimeDowLocationForAppInContext:(BOOL)context;
+- (void)setHasAppLaunchesSpecificTimeDowLocationInContext:(BOOL)context;
+- (void)setHasAppNumberOfCoarseGeohashesForApp:(BOOL)app;
+- (void)setHasAppNumberOfSpecificGeohashesForApp:(BOOL)app;
+- (void)setHasAppNumberOfZoom7GeohashesForApp:(BOOL)app;
+- (void)setHasAppPopularityGivenTimeAndDayOfWeek:(BOOL)week;
+- (void)setHasAppPopularityOfTimeAndDayOfWeekGivenApp:(BOOL)app;
+- (void)setHasAppTimeAndDayOfWeekPopularity:(BOOL)popularity;
+- (void)setHasAppTimeOfDayLaunches:(BOOL)launches;
+- (void)setHasAppTotalNumberOfTimeAndDayOfWeekLaunches:(BOOL)launches;
+- (void)setHasCoarseTimeOfDayPopularity:(BOOL)popularity;
+- (void)setHasCoreMotionPopularity:(BOOL)popularity;
+- (void)setHasCurrentTimeBucketFromZeroToTwentyFour:(BOOL)four;
+- (void)setHasDayOfWeekBucket:(BOOL)bucket;
+- (void)setHasDayOfWeekPopularity:(BOOL)popularity;
+- (void)setHasEntropyDayOfWeekPopularity:(BOOL)popularity;
+- (void)setHasEntropyDayOfWeekPopularityByApp:(BOOL)app;
+- (void)setHasEntropyDayOfWeekPopularityByDay:(BOOL)day;
+- (void)setHasEntropyLaunchPopularity:(BOOL)popularity;
+- (void)setHasEntropySSIDPopularity:(BOOL)popularity;
+- (void)setHasEntropySSIDPopularityByApp:(BOOL)app;
+- (void)setHasEntropySSIDPopularityBySSID:(BOOL)d;
+- (void)setHasEntropyTrendingPopularity:(BOOL)popularity;
+- (void)setHasIsLocationServicesDisabled:(BOOL)disabled;
+- (void)setHasLaunchDayOfWeekPopularity:(BOOL)popularity;
+- (void)setHasLaunchPopularity:(BOOL)popularity;
+- (void)setHasLaunchTimePopularity:(BOOL)popularity;
+- (void)setHasOnWifi:(BOOL)wifi;
+- (void)setHasPoiPopularityForAppInContext:(BOOL)context;
+- (void)setHasSSIDPopularity:(BOOL)popularity;
+- (void)setHasTimeOfDayBucket:(BOOL)bucket;
+- (void)setHasTimeOfDayPopularity:(BOOL)popularity;
+- (void)setHasTotalNumberOfAirplaneModeLaunches:(BOOL)launches;
+- (void)setHasTotalNumberOfCoreMotionLaunches:(BOOL)launches;
+- (void)setHasTotalNumberOfLaunches:(BOOL)launches;
+- (void)setHasTotalNumberOfSSIDLaunches:(BOOL)launches;
+- (void)setHasTotalNumberOfTrendingLaunches:(BOOL)launches;
+- (void)setHasTrendingPopularity:(BOOL)popularity;
+- (void)setHasUnlockTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBTaskAgnosticBehaviorFeatureVector
 
-- (void)setHasUnlockTime:(BOOL)a3
+- (void)setHasUnlockTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 0x10000;
   }
@@ -168,9 +168,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasLaunchTimePopularity:(BOOL)a3
+- (void)setHasLaunchTimePopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 16;
   }
@@ -183,9 +183,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasTimeOfDayBucket:(BOOL)a3
+- (void)setHasTimeOfDayBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 256;
   }
@@ -198,9 +198,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasTimeOfDayPopularity:(BOOL)a3
+- (void)setHasTimeOfDayPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 512;
   }
@@ -213,10 +213,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFDFF | v3;
 }
 
-- (void)setHasCoarseTimeOfDayPopularity:(BOOL)a3
+- (void)setHasCoarseTimeOfDayPopularity:(BOOL)popularity
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -224,9 +224,9 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasLaunchPopularity:(BOOL)a3
+- (void)setHasLaunchPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 8;
   }
@@ -239,9 +239,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasLaunchDayOfWeekPopularity:(BOOL)a3
+- (void)setHasLaunchDayOfWeekPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 4;
   }
@@ -254,10 +254,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasDayOfWeekBucket:(BOOL)a3
+- (void)setHasDayOfWeekBucket:(BOOL)bucket
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!bucket)
   {
     v3 = 0;
   }
@@ -265,10 +265,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDayOfWeekPopularity:(BOOL)a3
+- (void)setHasDayOfWeekPopularity:(BOOL)popularity
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -276,10 +276,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropyLaunchPopularity:(BOOL)a3
+- (void)setHasEntropyLaunchPopularity:(BOOL)popularity
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -287,10 +287,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropyDayOfWeekPopularity:(BOOL)a3
+- (void)setHasEntropyDayOfWeekPopularity:(BOOL)popularity
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -298,10 +298,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropyDayOfWeekPopularityByDay:(BOOL)a3
+- (void)setHasEntropyDayOfWeekPopularityByDay:(BOOL)day
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!day)
   {
     v3 = 0;
   }
@@ -309,10 +309,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropyDayOfWeekPopularityByApp:(BOOL)a3
+- (void)setHasEntropyDayOfWeekPopularityByApp:(BOOL)app
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -320,10 +320,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropyTrendingPopularity:(BOOL)a3
+- (void)setHasEntropyTrendingPopularity:(BOOL)popularity
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -331,10 +331,10 @@
   *(&self->_has + 1) = v3 & 0x8000000000000000 | *(&self->_has + 1) & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasEntropySSIDPopularity:(BOOL)a3
+- (void)setHasEntropySSIDPopularity:(BOOL)popularity
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -342,10 +342,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropySSIDPopularityBySSID:(BOOL)a3
+- (void)setHasEntropySSIDPopularityBySSID:(BOOL)d
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -353,10 +353,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEntropySSIDPopularityByApp:(BOOL)a3
+- (void)setHasEntropySSIDPopularityByApp:(BOOL)app
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -364,9 +364,9 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalNumberOfLaunches:(BOOL)a3
+- (void)setHasTotalNumberOfLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 4096;
   }
@@ -379,9 +379,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasTotalNumberOfAirplaneModeLaunches:(BOOL)a3
+- (void)setHasTotalNumberOfAirplaneModeLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 1024;
   }
@@ -394,9 +394,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasTrendingPopularity:(BOOL)a3
+- (void)setHasTrendingPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 0x8000;
   }
@@ -409,9 +409,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasTotalNumberOfTrendingLaunches:(BOOL)a3
+- (void)setHasTotalNumberOfTrendingLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x4000;
   }
@@ -424,9 +424,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasSSIDPopularity:(BOOL)a3
+- (void)setHasSSIDPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 128;
   }
@@ -439,9 +439,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasTotalNumberOfSSIDLaunches:(BOOL)a3
+- (void)setHasTotalNumberOfSSIDLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x2000;
   }
@@ -454,9 +454,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasOnWifi:(BOOL)a3
+- (void)setHasOnWifi:(BOOL)wifi
 {
-  if (a3)
+  if (wifi)
   {
     v3 = 32;
   }
@@ -469,10 +469,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasCoreMotionPopularity:(BOOL)a3
+- (void)setHasCoreMotionPopularity:(BOOL)popularity
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -480,9 +480,9 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalNumberOfCoreMotionLaunches:(BOOL)a3
+- (void)setHasTotalNumberOfCoreMotionLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 2048;
   }
@@ -495,10 +495,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasAmbientLightTypePopularity:(BOOL)a3
+- (void)setHasAmbientLightTypePopularity:(BOOL)popularity
 {
   v3 = 4;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -506,10 +506,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasAmbientLightTypeLaunchPopularity:(BOOL)a3
+- (void)setHasAmbientLightTypeLaunchPopularity:(BOOL)popularity
 {
   v3 = 2;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -517,10 +517,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasAppTimeOfDayLaunches:(BOOL)a3
+- (void)setHasAppTimeOfDayLaunches:(BOOL)launches
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!launches)
   {
     v3 = 0;
   }
@@ -528,10 +528,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppDayOfWeekLaunches:(BOOL)a3
+- (void)setHasAppDayOfWeekLaunches:(BOOL)launches
 {
   v3 = 8;
-  if (!a3)
+  if (!launches)
   {
     v3 = 0;
   }
@@ -539,10 +539,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasAppTimeAndDayOfWeekPopularity:(BOOL)a3
+- (void)setHasAppTimeAndDayOfWeekPopularity:(BOOL)popularity
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!popularity)
   {
     v3 = 0;
   }
@@ -550,10 +550,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppPopularityGivenTimeAndDayOfWeek:(BOOL)a3
+- (void)setHasAppPopularityGivenTimeAndDayOfWeek:(BOOL)week
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!week)
   {
     v3 = 0;
   }
@@ -561,10 +561,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppPopularityOfTimeAndDayOfWeekGivenApp:(BOOL)a3
+- (void)setHasAppPopularityOfTimeAndDayOfWeekGivenApp:(BOOL)app
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -572,10 +572,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppTotalNumberOfTimeAndDayOfWeekLaunches:(BOOL)a3
+- (void)setHasAppTotalNumberOfTimeAndDayOfWeekLaunches:(BOOL)launches
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!launches)
   {
     v3 = 0;
   }
@@ -583,10 +583,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesCoarseTimePowLocationForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesCoarseTimePowLocationForAppInContext:(BOOL)context
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -594,10 +594,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesCoarseTimePowLocationInContext:(BOOL)a3
+- (void)setHasAppLaunchesCoarseTimePowLocationInContext:(BOOL)context
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -605,10 +605,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasAppLaunchesCoarseTimePowLocationForApp:(BOOL)a3
+- (void)setHasAppLaunchesCoarseTimePowLocationForApp:(BOOL)app
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -616,10 +616,10 @@
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesCoarseTimePowLocationForAllAppsAndContexts:(BOOL)a3
+- (void)setHasAppLaunchesCoarseTimePowLocationForAllAppsAndContexts:(BOOL)contexts
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!contexts)
   {
     v3 = 0;
   }
@@ -627,10 +627,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesSpecificTimeDowLocationForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesSpecificTimeDowLocationForAppInContext:(BOOL)context
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -638,10 +638,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesSpecificTimeDowLocationInContext:(BOOL)a3
+- (void)setHasAppLaunchesSpecificTimeDowLocationInContext:(BOOL)context
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -649,10 +649,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesSpecificTimeDowLocationForApp:(BOOL)a3
+- (void)setHasAppLaunchesSpecificTimeDowLocationForApp:(BOOL)app
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -660,10 +660,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesSpecificTimeDowLocationForAllAppsAndContexts:(BOOL)a3
+- (void)setHasAppLaunchesSpecificTimeDowLocationForAllAppsAndContexts:(BOOL)contexts
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!contexts)
   {
     v3 = 0;
   }
@@ -671,10 +671,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket0ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket0ForApp:(BOOL)app
 {
   v3 = 16;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -682,10 +682,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket1ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket1ForApp:(BOOL)app
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -693,10 +693,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket2ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket2ForApp:(BOOL)app
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -704,10 +704,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket3ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket3ForApp:(BOOL)app
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -715,10 +715,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket4ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket4ForApp:(BOOL)app
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -726,10 +726,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket5ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket5ForApp:(BOOL)app
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -737,10 +737,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket6ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket6ForApp:(BOOL)app
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -748,10 +748,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket7ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket7ForApp:(BOOL)app
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -759,10 +759,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket8ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket8ForApp:(BOOL)app
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -770,10 +770,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket9ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket9ForApp:(BOOL)app
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -781,10 +781,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket10ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket10ForApp:(BOOL)app
 {
   v3 = 32;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -792,10 +792,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket11ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket11ForApp:(BOOL)app
 {
   v3 = 64;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -803,10 +803,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket12ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket12ForApp:(BOOL)app
 {
   v3 = 128;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -814,10 +814,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket13ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket13ForApp:(BOOL)app
 {
   v3 = 256;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -825,10 +825,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket14ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket14ForApp:(BOOL)app
 {
   v3 = 512;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -836,10 +836,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket15ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket15ForApp:(BOOL)app
 {
   v3 = 1024;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -847,10 +847,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket16ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket16ForApp:(BOOL)app
 {
   v3 = 2048;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -858,10 +858,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket17ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket17ForApp:(BOOL)app
 {
   v3 = 4096;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -869,10 +869,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket18ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket18ForApp:(BOOL)app
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -880,10 +880,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket19ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket19ForApp:(BOOL)app
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -891,10 +891,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket20ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket20ForApp:(BOOL)app
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -902,10 +902,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket21ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket21ForApp:(BOOL)app
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -913,10 +913,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket22ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket22ForApp:(BOOL)app
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -924,10 +924,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket23ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket23ForApp:(BOOL)app
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -935,10 +935,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTimeBucket24ForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTimeBucket24ForApp:(BOOL)app
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -946,10 +946,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekSundayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekSundayForApp:(BOOL)app
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -957,10 +957,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekMondayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekMondayForApp:(BOOL)app
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -968,10 +968,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekTuesdayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekTuesdayForApp:(BOOL)app
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -979,10 +979,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekWednesdayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekWednesdayForApp:(BOOL)app
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -990,10 +990,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekThursdayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekThursdayForApp:(BOOL)app
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1001,10 +1001,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekFridayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekFridayForApp:(BOOL)app
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1012,10 +1012,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesOnDayOfWeekSaturdayForApp:(BOOL)a3
+- (void)setHasAppLaunchesOnDayOfWeekSaturdayForApp:(BOOL)app
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1023,10 +1023,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash0ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash0ForApp:(BOOL)app
 {
   v3 = 512;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1034,10 +1034,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash1ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash1ForApp:(BOOL)app
 {
   v3 = 1024;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1045,10 +1045,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash2ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash2ForApp:(BOOL)app
 {
   v3 = 2048;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1056,10 +1056,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash3ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash3ForApp:(BOOL)app
 {
   v3 = 4096;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1067,10 +1067,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash4ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash4ForApp:(BOOL)app
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1078,10 +1078,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash5ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash5ForApp:(BOOL)app
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1089,10 +1089,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash6ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash6ForApp:(BOOL)app
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1100,10 +1100,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash7ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash7ForApp:(BOOL)app
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1111,10 +1111,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash8ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash8ForApp:(BOOL)app
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1122,10 +1122,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHash9ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHash9ForApp:(BOOL)app
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1133,10 +1133,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash0ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash0ForApp:(BOOL)app
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1144,10 +1144,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash1ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash1ForApp:(BOOL)app
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1155,10 +1155,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash2ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash2ForApp:(BOOL)app
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1166,10 +1166,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash3ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash3ForApp:(BOOL)app
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1177,10 +1177,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash4ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash4ForApp:(BOOL)app
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1188,10 +1188,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash5ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash5ForApp:(BOOL)app
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1199,10 +1199,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash6ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash6ForApp:(BOOL)app
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1210,10 +1210,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash7ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash7ForApp:(BOOL)app
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1221,10 +1221,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash8ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash8ForApp:(BOOL)app
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1232,10 +1232,10 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash9ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash9ForApp:(BOOL)app
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1243,10 +1243,10 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash10ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash10ForApp:(BOOL)app
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1254,10 +1254,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash11ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash11ForApp:(BOOL)app
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1265,10 +1265,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash12ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash12ForApp:(BOOL)app
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1276,10 +1276,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash13ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash13ForApp:(BOOL)app
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1287,10 +1287,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHash14ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHash14ForApp:(BOOL)app
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1298,10 +1298,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasAppNumberOfSpecificGeohashesForApp:(BOOL)a3
+- (void)setHasAppNumberOfSpecificGeohashesForApp:(BOOL)app
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1309,10 +1309,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppNumberOfCoarseGeohashesForApp:(BOOL)a3
+- (void)setHasAppNumberOfCoarseGeohashesForApp:(BOOL)app
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1320,10 +1320,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppEntropyForTimeBuckets:(BOOL)a3
+- (void)setHasAppEntropyForTimeBuckets:(BOOL)buckets
 {
   v3 = 64;
-  if (!a3)
+  if (!buckets)
   {
     v3 = 0;
   }
@@ -1331,10 +1331,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasAppEntropyForSpecificGeoHash:(BOOL)a3
+- (void)setHasAppEntropyForSpecificGeoHash:(BOOL)hash
 {
   v3 = 32;
-  if (!a3)
+  if (!hash)
   {
     v3 = 0;
   }
@@ -1342,10 +1342,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasAppEntropyForCoarseGeoHash:(BOOL)a3
+- (void)setHasAppEntropyForCoarseGeoHash:(BOOL)hash
 {
   v3 = 16;
-  if (!a3)
+  if (!hash)
   {
     v3 = 0;
   }
@@ -1353,10 +1353,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHashForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHashForAppInContext:(BOOL)context
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1364,10 +1364,10 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHashForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHashForAppInContext:(BOOL)context
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1375,10 +1375,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtDayOfWeekForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtDayOfWeekForApp:(BOOL)app
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1386,10 +1386,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtTimeAndDayForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtTimeAndDayForAppInContext:(BOOL)context
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1397,10 +1397,10 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtTimeAndDayInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtTimeAndDayInContext:(BOOL)context
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1408,10 +1408,10 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtTimeAndDayForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtTimeAndDayForApp:(BOOL)app
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1419,10 +1419,10 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHashInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHashInContext:(BOOL)context
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1430,10 +1430,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtCoarseGeoHashForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtCoarseGeoHashForApp:(BOOL)app
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1441,10 +1441,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHashInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHashInContext:(BOOL)context
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1452,10 +1452,10 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSpecificGeoHashForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSpecificGeoHashForApp:(BOOL)app
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1463,10 +1463,10 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate:(BOOL)a3
+- (void)setHasAppLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate:(BOOL)rate
 {
   v3 = 2;
-  if (!a3)
+  if (!rate)
   {
     v3 = 0;
   }
@@ -1474,9 +1474,9 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasIsLocationServicesDisabled:(BOOL)a3
+- (void)setHasIsLocationServicesDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 2;
   }
@@ -1489,10 +1489,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFFD | v3;
 }
 
-- (void)setHasAppLaunchesInTwoHourTimeBucketForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesInTwoHourTimeBucketForAppInContext:(BOOL)context
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1500,10 +1500,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTwoHourTimeBucketInContext:(BOOL)a3
+- (void)setHasAppLaunchesInTwoHourTimeBucketInContext:(BOOL)context
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1511,10 +1511,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesInTwoHourTimeBucketForApp:(BOOL)a3
+- (void)setHasAppLaunchesInTwoHourTimeBucketForApp:(BOOL)app
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1522,10 +1522,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasCurrentTimeBucketFromZeroToTwentyFour:(BOOL)a3
+- (void)setHasCurrentTimeBucketFromZeroToTwentyFour:(BOOL)four
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!four)
   {
     v3 = 0;
   }
@@ -1533,10 +1533,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHashForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHashForAppInContext:(BOOL)context
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1544,10 +1544,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHashInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHashInContext:(BOOL)context
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1555,10 +1555,10 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHashForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHashForApp:(BOOL)app
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1566,10 +1566,10 @@
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash0ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash0ForApp:(BOOL)app
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1577,10 +1577,10 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash1ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash1ForApp:(BOOL)app
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1588,10 +1588,10 @@
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash2ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash2ForApp:(BOOL)app
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1599,10 +1599,10 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash3ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash3ForApp:(BOOL)app
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1610,10 +1610,10 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash4ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash4ForApp:(BOOL)app
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1621,10 +1621,10 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash5ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash5ForApp:(BOOL)app
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1632,10 +1632,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash6ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash6ForApp:(BOOL)app
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1643,10 +1643,10 @@
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash7ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash7ForApp:(BOOL)app
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1654,10 +1654,10 @@
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash8ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash8ForApp:(BOOL)app
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1665,10 +1665,10 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtZoom7GeoHash9ForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtZoom7GeoHash9ForApp:(BOOL)app
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1676,10 +1676,10 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppEntropyForZoom7GeoHash:(BOOL)a3
+- (void)setHasAppEntropyForZoom7GeoHash:(BOOL)hash
 {
   v3 = 128;
-  if (!a3)
+  if (!hash)
   {
     v3 = 0;
   }
@@ -1687,10 +1687,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasAppNumberOfZoom7GeohashesForApp:(BOOL)a3
+- (void)setHasAppNumberOfZoom7GeohashesForApp:(BOOL)app
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1698,10 +1698,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSSIDForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtSSIDForAppInContext:(BOOL)context
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1709,10 +1709,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtSSIDForApp:(BOOL)a3
+- (void)setHasAppLaunchesAtSSIDForApp:(BOOL)app
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -1720,10 +1720,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasAppLaunchesForCoreMotionForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesForCoreMotionForAppInContext:(BOOL)context
 {
   v3 = 4;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1731,10 +1731,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasAppLaunchesInAirplaneModeForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesInAirplaneModeForAppInContext:(BOOL)context
 {
   v3 = 8;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1742,9 +1742,9 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasPoiPopularityForAppInContext:(BOOL)a3
+- (void)setHasPoiPopularityForAppInContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 64;
   }
@@ -1757,10 +1757,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasAppLaunchPopularityAtPOIForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchPopularityAtPOIForAppInContext:(BOOL)context
 {
   v3 = 256;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1768,10 +1768,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasAppLaunchesAtPOIForAppInContext:(BOOL)a3
+- (void)setHasAppLaunchesAtPOIForAppInContext:(BOOL)context
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -1785,21 +1785,21 @@
   v8.receiver = self;
   v8.super_class = ATXPBTaskAgnosticBehaviorFeatureVector;
   v4 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)&v8 description];
-  v5 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBTaskAgnosticBehaviorFeatureVector *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   p_has = &self->_has;
   v5 = *(&self->_has + 4);
   if ((v5 & 0x10000) != 0)
   {
     v60 = [MEMORY[0x277CCABB0] numberWithDouble:self->_unlockTime];
-    [v3 setObject:v60 forKey:@"unlockTime"];
+    [dictionary setObject:v60 forKey:@"unlockTime"];
 
     v5 = *(&self->_has + 4);
     if ((v5 & 0x10) == 0)
@@ -1820,7 +1820,7 @@ LABEL_3:
   }
 
   v61 = [MEMORY[0x277CCABB0] numberWithDouble:self->_launchTimePopularity];
-  [v3 setObject:v61 forKey:@"launchTimePopularity"];
+  [dictionary setObject:v61 forKey:@"launchTimePopularity"];
 
   v5 = *(&self->_has + 4);
   if ((v5 & 0x100) == 0)
@@ -1836,27 +1836,27 @@ LABEL_4:
 
 LABEL_184:
   v62 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeOfDayBucket];
-  [v3 setObject:v62 forKey:@"timeOfDayBucket"];
+  [dictionary setObject:v62 forKey:@"timeOfDayBucket"];
 
   if ((*(&self->_has + 4) & 0x200) != 0)
   {
 LABEL_5:
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeOfDayPopularity];
-    [v3 setObject:v6 forKey:@"timeOfDayPopularity"];
+    [dictionary setObject:v6 forKey:@"timeOfDayPopularity"];
   }
 
 LABEL_6:
   if ((*(&self->_has + 14) & 8) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_coarseTimeOfDayPopularity];
-    [v3 setObject:v7 forKey:@"coarseTimeOfDayPopularity"];
+    [dictionary setObject:v7 forKey:@"coarseTimeOfDayPopularity"];
   }
 
   v8 = *(&self->_has + 4);
   if ((v8 & 8) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_launchPopularity];
-    [v3 setObject:v9 forKey:@"launchPopularity"];
+    [dictionary setObject:v9 forKey:@"launchPopularity"];
 
     v8 = *(&self->_has + 4);
   }
@@ -1864,14 +1864,14 @@ LABEL_6:
   if ((v8 & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_launchDayOfWeekPopularity];
-    [v3 setObject:v10 forKey:@"launchDayOfWeekPopularity"];
+    [dictionary setObject:v10 forKey:@"launchDayOfWeekPopularity"];
   }
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x40000000000000) != 0)
   {
     v63 = [MEMORY[0x277CCABB0] numberWithDouble:self->_dayOfWeekBucket];
-    [v3 setObject:v63 forKey:@"dayOfWeekBucket"];
+    [dictionary setObject:v63 forKey:@"dayOfWeekBucket"];
 
     v11 = *(&self->_has + 1);
     if ((v11 & 0x80000000000000) == 0)
@@ -1892,7 +1892,7 @@ LABEL_14:
   }
 
   v64 = [MEMORY[0x277CCABB0] numberWithDouble:self->_dayOfWeekPopularity];
-  [v3 setObject:v64 forKey:@"dayOfWeekPopularity"];
+  [dictionary setObject:v64 forKey:@"dayOfWeekPopularity"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x800000000000000) == 0)
@@ -1908,7 +1908,7 @@ LABEL_15:
 
 LABEL_188:
   v65 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropyLaunchPopularity];
-  [v3 setObject:v65 forKey:@"entropyLaunchPopularity"];
+  [dictionary setObject:v65 forKey:@"entropyLaunchPopularity"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x100000000000000) == 0)
@@ -1924,7 +1924,7 @@ LABEL_16:
 
 LABEL_189:
   v66 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropyDayOfWeekPopularity];
-  [v3 setObject:v66 forKey:@"entropyDayOfWeekPopularity"];
+  [dictionary setObject:v66 forKey:@"entropyDayOfWeekPopularity"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x400000000000000) == 0)
@@ -1940,7 +1940,7 @@ LABEL_17:
 
 LABEL_190:
   v67 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropyDayOfWeekPopularityByDay];
-  [v3 setObject:v67 forKey:@"entropyDayOfWeekPopularityByDay"];
+  [dictionary setObject:v67 forKey:@"entropyDayOfWeekPopularityByDay"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x200000000000000) == 0)
@@ -1956,7 +1956,7 @@ LABEL_18:
 
 LABEL_191:
   v68 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropyDayOfWeekPopularityByApp];
-  [v3 setObject:v68 forKey:@"entropyDayOfWeekPopularityByApp"];
+  [dictionary setObject:v68 forKey:@"entropyDayOfWeekPopularityByApp"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x8000000000000000) == 0)
@@ -1972,7 +1972,7 @@ LABEL_19:
 
 LABEL_192:
   v69 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropyTrendingPopularity];
-  [v3 setObject:v69 forKey:@"entropyTrendingPopularity"];
+  [dictionary setObject:v69 forKey:@"entropyTrendingPopularity"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x1000000000000000) == 0)
@@ -1988,7 +1988,7 @@ LABEL_20:
 
 LABEL_193:
   v70 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropySSIDPopularity];
-  [v3 setObject:v70 forKey:@"entropySSIDPopularity"];
+  [dictionary setObject:v70 forKey:@"entropySSIDPopularity"];
 
   v11 = *(&self->_has + 1);
   if ((v11 & 0x4000000000000000) == 0)
@@ -2004,33 +2004,33 @@ LABEL_21:
 
 LABEL_194:
   v71 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropySSIDPopularityBySSID];
-  [v3 setObject:v71 forKey:@"entropySSIDPopularityBySSID"];
+  [dictionary setObject:v71 forKey:@"entropySSIDPopularityBySSID"];
 
   if ((*(&self->_has + 1) & 0x2000000000000000) != 0)
   {
 LABEL_22:
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_entropySSIDPopularityByApp];
-    [v3 setObject:v12 forKey:@"entropySSIDPopularityByApp"];
+    [dictionary setObject:v12 forKey:@"entropySSIDPopularityByApp"];
   }
 
 LABEL_23:
   if ((*(&self->_has + 17) & 0x10) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalNumberOfLaunches];
-    [v3 setObject:v13 forKey:@"totalNumberOfLaunches"];
+    [dictionary setObject:v13 forKey:@"totalNumberOfLaunches"];
   }
 
   if (*p_has)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_airplaneModePopularity];
-    [v3 setObject:v14 forKey:@"airplaneModePopularity"];
+    [dictionary setObject:v14 forKey:@"airplaneModePopularity"];
   }
 
   v15 = *(&self->_has + 4);
   if ((v15 & 0x400) != 0)
   {
     v72 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalNumberOfAirplaneModeLaunches];
-    [v3 setObject:v72 forKey:@"totalNumberOfAirplaneModeLaunches"];
+    [dictionary setObject:v72 forKey:@"totalNumberOfAirplaneModeLaunches"];
 
     v15 = *(&self->_has + 4);
     if ((v15 & 0x8000) == 0)
@@ -2051,7 +2051,7 @@ LABEL_29:
   }
 
   v73 = [MEMORY[0x277CCABB0] numberWithDouble:self->_trendingPopularity];
-  [v3 setObject:v73 forKey:@"trendingPopularity"];
+  [dictionary setObject:v73 forKey:@"trendingPopularity"];
 
   v15 = *(&self->_has + 4);
   if ((v15 & 0x4000) == 0)
@@ -2067,7 +2067,7 @@ LABEL_30:
 
 LABEL_198:
   v74 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalNumberOfTrendingLaunches];
-  [v3 setObject:v74 forKey:@"totalNumberOfTrendingLaunches"];
+  [dictionary setObject:v74 forKey:@"totalNumberOfTrendingLaunches"];
 
   v15 = *(&self->_has + 4);
   if ((v15 & 0x80) == 0)
@@ -2083,7 +2083,7 @@ LABEL_31:
 
 LABEL_199:
   v75 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sSIDPopularity];
-  [v3 setObject:v75 forKey:@"sSIDPopularity"];
+  [dictionary setObject:v75 forKey:@"sSIDPopularity"];
 
   v15 = *(&self->_has + 4);
   if ((v15 & 0x2000) == 0)
@@ -2099,27 +2099,27 @@ LABEL_32:
 
 LABEL_200:
   v76 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalNumberOfSSIDLaunches];
-  [v3 setObject:v76 forKey:@"totalNumberOfSSIDLaunches"];
+  [dictionary setObject:v76 forKey:@"totalNumberOfSSIDLaunches"];
 
   if ((*(&self->_has + 4) & 0x20) != 0)
   {
 LABEL_33:
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_onWifi];
-    [v3 setObject:v16 forKey:@"onWifi"];
+    [dictionary setObject:v16 forKey:@"onWifi"];
   }
 
 LABEL_34:
   if ((*(&self->_has + 14) & 0x10) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_coreMotionPopularity];
-    [v3 setObject:v17 forKey:@"coreMotionPopularity"];
+    [dictionary setObject:v17 forKey:@"coreMotionPopularity"];
   }
 
   v18 = *(&self->_has + 4);
   if ((v18 & 0x800) != 0)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:self->_totalNumberOfCoreMotionLaunches];
-    [v3 setObject:v19 forKey:@"totalNumberOfCoreMotionLaunches"];
+    [dictionary setObject:v19 forKey:@"totalNumberOfCoreMotionLaunches"];
 
     v18 = *(&self->_has + 4);
   }
@@ -2127,14 +2127,14 @@ LABEL_34:
   if (v18)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithDouble:self->_isDateInWeekendOnDevice];
-    [v3 setObject:v20 forKey:@"isDateInWeekendOnDevice"];
+    [dictionary setObject:v20 forKey:@"isDateInWeekendOnDevice"];
   }
 
   v21 = *p_has;
   if ((*p_has & 4) != 0)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ambientLightTypePopularity];
-    [v3 setObject:v22 forKey:@"ambientLightTypePopularity"];
+    [dictionary setObject:v22 forKey:@"ambientLightTypePopularity"];
 
     v21 = *p_has;
   }
@@ -2142,26 +2142,26 @@ LABEL_34:
   if ((v21 & 2) != 0)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ambientLightTypeLaunchPopularity];
-    [v3 setObject:v23 forKey:@"ambientLightTypeLaunchPopularity"];
+    [dictionary setObject:v23 forKey:@"ambientLightTypeLaunchPopularity"];
   }
 
   if ((*(&self->_has + 14) & 2) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appTimeOfDayLaunches];
-    [v3 setObject:v24 forKey:@"appTimeOfDayLaunches"];
+    [dictionary setObject:v24 forKey:@"appTimeOfDayLaunches"];
   }
 
   if ((*p_has & 8) != 0)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appDayOfWeekLaunches];
-    [v3 setObject:v25 forKey:@"appDayOfWeekLaunches"];
+    [dictionary setObject:v25 forKey:@"appDayOfWeekLaunches"];
   }
 
   v26 = *(&self->_has + 1);
   if ((v26 & 0x1000000000000) != 0)
   {
     v77 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appTimeAndDayOfWeekPopularity];
-    [v3 setObject:v77 forKey:@"appTimeAndDayOfWeekPopularity"];
+    [dictionary setObject:v77 forKey:@"appTimeAndDayOfWeekPopularity"];
 
     v26 = *(&self->_has + 1);
     if ((v26 & 0x400000000000) == 0)
@@ -2182,7 +2182,7 @@ LABEL_50:
   }
 
   v78 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appPopularityGivenTimeAndDayOfWeek];
-  [v3 setObject:v78 forKey:@"appPopularityGivenTimeAndDayOfWeek"];
+  [dictionary setObject:v78 forKey:@"appPopularityGivenTimeAndDayOfWeek"];
 
   v26 = *(&self->_has + 1);
   if ((v26 & 0x800000000000) == 0)
@@ -2198,13 +2198,13 @@ LABEL_51:
 
 LABEL_204:
   v79 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appPopularityOfTimeAndDayOfWeekGivenApp];
-  [v3 setObject:v79 forKey:@"appPopularityOfTimeAndDayOfWeekGivenApp"];
+  [dictionary setObject:v79 forKey:@"appPopularityOfTimeAndDayOfWeekGivenApp"];
 
   if ((*(&self->_has + 1) & 0x4000000000000) != 0)
   {
 LABEL_52:
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appTotalNumberOfTimeAndDayOfWeekLaunches];
-    [v3 setObject:v27 forKey:@"appTotalNumberOfTimeAndDayOfWeekLaunches"];
+    [dictionary setObject:v27 forKey:@"appTotalNumberOfTimeAndDayOfWeekLaunches"];
   }
 
 LABEL_53:
@@ -2212,7 +2212,7 @@ LABEL_53:
   if ((*p_has & 0x4000000000000000) != 0)
   {
     v80 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesCoarseTimePowLocationForAppInContext];
-    [v3 setObject:v80 forKey:@"appLaunchesCoarseTimePowLocationForAppInContext"];
+    [dictionary setObject:v80 forKey:@"appLaunchesCoarseTimePowLocationForAppInContext"];
 
     v28 = *p_has;
     if ((*p_has & 0x8000000000000000) == 0)
@@ -2233,7 +2233,7 @@ LABEL_55:
   }
 
   v81 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesCoarseTimePowLocationInContext];
-  [v3 setObject:v81 forKey:@"appLaunchesCoarseTimePowLocationInContext"];
+  [dictionary setObject:v81 forKey:@"appLaunchesCoarseTimePowLocationInContext"];
 
   v28 = *p_has;
   if ((*p_has & 0x2000000000000000) == 0)
@@ -2249,13 +2249,13 @@ LABEL_56:
 
 LABEL_208:
   v82 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesCoarseTimePowLocationForApp];
-  [v3 setObject:v82 forKey:@"appLaunchesCoarseTimePowLocationForApp"];
+  [dictionary setObject:v82 forKey:@"appLaunchesCoarseTimePowLocationForApp"];
 
   if ((*p_has & 0x1000000000000000) != 0)
   {
 LABEL_57:
     v29 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts];
-    [v3 setObject:v29 forKey:@"appLaunchesCoarseTimePowLocationForAllAppsAndContexts"];
+    [dictionary setObject:v29 forKey:@"appLaunchesCoarseTimePowLocationForAllAppsAndContexts"];
   }
 
 LABEL_58:
@@ -2263,7 +2263,7 @@ LABEL_58:
   if ((v30 & 0x20000000000) != 0)
   {
     v83 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesSpecificTimeDowLocationForAppInContext];
-    [v3 setObject:v83 forKey:@"appLaunchesSpecificTimeDowLocationForAppInContext"];
+    [dictionary setObject:v83 forKey:@"appLaunchesSpecificTimeDowLocationForAppInContext"];
 
     v30 = *(&self->_has + 1);
     if ((v30 & 0x40000000000) == 0)
@@ -2284,7 +2284,7 @@ LABEL_60:
   }
 
   v84 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesSpecificTimeDowLocationInContext];
-  [v3 setObject:v84 forKey:@"appLaunchesSpecificTimeDowLocationInContext"];
+  [dictionary setObject:v84 forKey:@"appLaunchesSpecificTimeDowLocationInContext"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x10000000000) == 0)
@@ -2300,7 +2300,7 @@ LABEL_61:
 
 LABEL_212:
   v85 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesSpecificTimeDowLocationForApp];
-  [v3 setObject:v85 forKey:@"appLaunchesSpecificTimeDowLocationForApp"];
+  [dictionary setObject:v85 forKey:@"appLaunchesSpecificTimeDowLocationForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x8000000000) == 0)
@@ -2316,7 +2316,7 @@ LABEL_62:
 
 LABEL_213:
   v86 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts];
-  [v3 setObject:v86 forKey:@"appLaunchesSpecificTimeDowLocationForAllAppsAndContexts"];
+  [dictionary setObject:v86 forKey:@"appLaunchesSpecificTimeDowLocationForAllAppsAndContexts"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x10) == 0)
@@ -2332,7 +2332,7 @@ LABEL_63:
 
 LABEL_214:
   v87 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket0ForApp];
-  [v3 setObject:v87 forKey:@"appLaunchesInTimeBucket0ForApp"];
+  [dictionary setObject:v87 forKey:@"appLaunchesInTimeBucket0ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x8000) == 0)
@@ -2348,7 +2348,7 @@ LABEL_64:
 
 LABEL_215:
   v88 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket1ForApp];
-  [v3 setObject:v88 forKey:@"appLaunchesInTimeBucket1ForApp"];
+  [dictionary setObject:v88 forKey:@"appLaunchesInTimeBucket1ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x200000) == 0)
@@ -2364,7 +2364,7 @@ LABEL_65:
 
 LABEL_216:
   v89 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket2ForApp];
-  [v3 setObject:v89 forKey:@"appLaunchesInTimeBucket2ForApp"];
+  [dictionary setObject:v89 forKey:@"appLaunchesInTimeBucket2ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x400000) == 0)
@@ -2380,7 +2380,7 @@ LABEL_66:
 
 LABEL_217:
   v90 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket3ForApp];
-  [v3 setObject:v90 forKey:@"appLaunchesInTimeBucket3ForApp"];
+  [dictionary setObject:v90 forKey:@"appLaunchesInTimeBucket3ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x800000) == 0)
@@ -2396,7 +2396,7 @@ LABEL_67:
 
 LABEL_218:
   v91 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket4ForApp];
-  [v3 setObject:v91 forKey:@"appLaunchesInTimeBucket4ForApp"];
+  [dictionary setObject:v91 forKey:@"appLaunchesInTimeBucket4ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x1000000) == 0)
@@ -2412,7 +2412,7 @@ LABEL_68:
 
 LABEL_219:
   v92 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket5ForApp];
-  [v3 setObject:v92 forKey:@"appLaunchesInTimeBucket5ForApp"];
+  [dictionary setObject:v92 forKey:@"appLaunchesInTimeBucket5ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x2000000) == 0)
@@ -2428,7 +2428,7 @@ LABEL_69:
 
 LABEL_220:
   v93 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket6ForApp];
-  [v3 setObject:v93 forKey:@"appLaunchesInTimeBucket6ForApp"];
+  [dictionary setObject:v93 forKey:@"appLaunchesInTimeBucket6ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x4000000) == 0)
@@ -2444,7 +2444,7 @@ LABEL_70:
 
 LABEL_221:
   v94 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket7ForApp];
-  [v3 setObject:v94 forKey:@"appLaunchesInTimeBucket7ForApp"];
+  [dictionary setObject:v94 forKey:@"appLaunchesInTimeBucket7ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x8000000) == 0)
@@ -2460,7 +2460,7 @@ LABEL_71:
 
 LABEL_222:
   v95 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket8ForApp];
-  [v3 setObject:v95 forKey:@"appLaunchesInTimeBucket8ForApp"];
+  [dictionary setObject:v95 forKey:@"appLaunchesInTimeBucket8ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x10000000) == 0)
@@ -2476,7 +2476,7 @@ LABEL_72:
 
 LABEL_223:
   v96 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket9ForApp];
-  [v3 setObject:v96 forKey:@"appLaunchesInTimeBucket9ForApp"];
+  [dictionary setObject:v96 forKey:@"appLaunchesInTimeBucket9ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x20) == 0)
@@ -2492,7 +2492,7 @@ LABEL_73:
 
 LABEL_224:
   v97 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket10ForApp];
-  [v3 setObject:v97 forKey:@"appLaunchesInTimeBucket10ForApp"];
+  [dictionary setObject:v97 forKey:@"appLaunchesInTimeBucket10ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x40) == 0)
@@ -2508,7 +2508,7 @@ LABEL_74:
 
 LABEL_225:
   v98 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket11ForApp];
-  [v3 setObject:v98 forKey:@"appLaunchesInTimeBucket11ForApp"];
+  [dictionary setObject:v98 forKey:@"appLaunchesInTimeBucket11ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x80) == 0)
@@ -2524,7 +2524,7 @@ LABEL_75:
 
 LABEL_226:
   v99 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket12ForApp];
-  [v3 setObject:v99 forKey:@"appLaunchesInTimeBucket12ForApp"];
+  [dictionary setObject:v99 forKey:@"appLaunchesInTimeBucket12ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x100) == 0)
@@ -2540,7 +2540,7 @@ LABEL_76:
 
 LABEL_227:
   v100 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket13ForApp];
-  [v3 setObject:v100 forKey:@"appLaunchesInTimeBucket13ForApp"];
+  [dictionary setObject:v100 forKey:@"appLaunchesInTimeBucket13ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x200) == 0)
@@ -2556,7 +2556,7 @@ LABEL_77:
 
 LABEL_228:
   v101 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket14ForApp];
-  [v3 setObject:v101 forKey:@"appLaunchesInTimeBucket14ForApp"];
+  [dictionary setObject:v101 forKey:@"appLaunchesInTimeBucket14ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x400) == 0)
@@ -2572,7 +2572,7 @@ LABEL_78:
 
 LABEL_229:
   v102 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket15ForApp];
-  [v3 setObject:v102 forKey:@"appLaunchesInTimeBucket15ForApp"];
+  [dictionary setObject:v102 forKey:@"appLaunchesInTimeBucket15ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x800) == 0)
@@ -2588,7 +2588,7 @@ LABEL_79:
 
 LABEL_230:
   v103 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket16ForApp];
-  [v3 setObject:v103 forKey:@"appLaunchesInTimeBucket16ForApp"];
+  [dictionary setObject:v103 forKey:@"appLaunchesInTimeBucket16ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x1000) == 0)
@@ -2604,7 +2604,7 @@ LABEL_80:
 
 LABEL_231:
   v104 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket17ForApp];
-  [v3 setObject:v104 forKey:@"appLaunchesInTimeBucket17ForApp"];
+  [dictionary setObject:v104 forKey:@"appLaunchesInTimeBucket17ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x2000) == 0)
@@ -2620,7 +2620,7 @@ LABEL_81:
 
 LABEL_232:
   v105 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket18ForApp];
-  [v3 setObject:v105 forKey:@"appLaunchesInTimeBucket18ForApp"];
+  [dictionary setObject:v105 forKey:@"appLaunchesInTimeBucket18ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x4000) == 0)
@@ -2636,7 +2636,7 @@ LABEL_82:
 
 LABEL_233:
   v106 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket19ForApp];
-  [v3 setObject:v106 forKey:@"appLaunchesInTimeBucket19ForApp"];
+  [dictionary setObject:v106 forKey:@"appLaunchesInTimeBucket19ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x10000) == 0)
@@ -2652,7 +2652,7 @@ LABEL_83:
 
 LABEL_234:
   v107 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket20ForApp];
-  [v3 setObject:v107 forKey:@"appLaunchesInTimeBucket20ForApp"];
+  [dictionary setObject:v107 forKey:@"appLaunchesInTimeBucket20ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x20000) == 0)
@@ -2668,7 +2668,7 @@ LABEL_84:
 
 LABEL_235:
   v108 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket21ForApp];
-  [v3 setObject:v108 forKey:@"appLaunchesInTimeBucket21ForApp"];
+  [dictionary setObject:v108 forKey:@"appLaunchesInTimeBucket21ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x40000) == 0)
@@ -2684,7 +2684,7 @@ LABEL_85:
 
 LABEL_236:
   v109 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket22ForApp];
-  [v3 setObject:v109 forKey:@"appLaunchesInTimeBucket22ForApp"];
+  [dictionary setObject:v109 forKey:@"appLaunchesInTimeBucket22ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x80000) == 0)
@@ -2700,7 +2700,7 @@ LABEL_86:
 
 LABEL_237:
   v110 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket23ForApp];
-  [v3 setObject:v110 forKey:@"appLaunchesInTimeBucket23ForApp"];
+  [dictionary setObject:v110 forKey:@"appLaunchesInTimeBucket23ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x100000) == 0)
@@ -2716,7 +2716,7 @@ LABEL_87:
 
 LABEL_238:
   v111 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTimeBucket24ForApp];
-  [v3 setObject:v111 forKey:@"appLaunchesInTimeBucket24ForApp"];
+  [dictionary setObject:v111 forKey:@"appLaunchesInTimeBucket24ForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x800000000) == 0)
@@ -2732,7 +2732,7 @@ LABEL_88:
 
 LABEL_239:
   v112 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekSundayForApp];
-  [v3 setObject:v112 forKey:@"appLaunchesOnDayOfWeekSundayForApp"];
+  [dictionary setObject:v112 forKey:@"appLaunchesOnDayOfWeekSundayForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x200000000) == 0)
@@ -2748,7 +2748,7 @@ LABEL_89:
 
 LABEL_240:
   v113 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekMondayForApp];
-  [v3 setObject:v113 forKey:@"appLaunchesOnDayOfWeekMondayForApp"];
+  [dictionary setObject:v113 forKey:@"appLaunchesOnDayOfWeekMondayForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x2000000000) == 0)
@@ -2764,7 +2764,7 @@ LABEL_90:
 
 LABEL_241:
   v114 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekTuesdayForApp];
-  [v3 setObject:v114 forKey:@"appLaunchesOnDayOfWeekTuesdayForApp"];
+  [dictionary setObject:v114 forKey:@"appLaunchesOnDayOfWeekTuesdayForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x4000000000) == 0)
@@ -2780,7 +2780,7 @@ LABEL_91:
 
 LABEL_242:
   v115 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekWednesdayForApp];
-  [v3 setObject:v115 forKey:@"appLaunchesOnDayOfWeekWednesdayForApp"];
+  [dictionary setObject:v115 forKey:@"appLaunchesOnDayOfWeekWednesdayForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x1000000000) == 0)
@@ -2796,7 +2796,7 @@ LABEL_92:
 
 LABEL_243:
   v116 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekThursdayForApp];
-  [v3 setObject:v116 forKey:@"appLaunchesOnDayOfWeekThursdayForApp"];
+  [dictionary setObject:v116 forKey:@"appLaunchesOnDayOfWeekThursdayForApp"];
 
   v30 = *(&self->_has + 1);
   if ((v30 & 0x100000000) == 0)
@@ -2812,13 +2812,13 @@ LABEL_93:
 
 LABEL_244:
   v117 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekFridayForApp];
-  [v3 setObject:v117 forKey:@"appLaunchesOnDayOfWeekFridayForApp"];
+  [dictionary setObject:v117 forKey:@"appLaunchesOnDayOfWeekFridayForApp"];
 
   if ((*(&self->_has + 1) & 0x400000000) != 0)
   {
 LABEL_94:
     v31 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesOnDayOfWeekSaturdayForApp];
-    [v3 setObject:v31 forKey:@"appLaunchesOnDayOfWeekSaturdayForApp"];
+    [dictionary setObject:v31 forKey:@"appLaunchesOnDayOfWeekSaturdayForApp"];
   }
 
 LABEL_95:
@@ -2826,7 +2826,7 @@ LABEL_95:
   if ((*p_has & 0x200) != 0)
   {
     v118 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash0ForApp];
-    [v3 setObject:v118 forKey:@"appLaunchesAtCoarseGeoHash0ForApp"];
+    [dictionary setObject:v118 forKey:@"appLaunchesAtCoarseGeoHash0ForApp"];
 
     v32 = *p_has;
     if ((*p_has & 0x400) == 0)
@@ -2847,7 +2847,7 @@ LABEL_97:
   }
 
   v119 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash1ForApp];
-  [v3 setObject:v119 forKey:@"appLaunchesAtCoarseGeoHash1ForApp"];
+  [dictionary setObject:v119 forKey:@"appLaunchesAtCoarseGeoHash1ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -2863,7 +2863,7 @@ LABEL_98:
 
 LABEL_248:
   v120 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash2ForApp];
-  [v3 setObject:v120 forKey:@"appLaunchesAtCoarseGeoHash2ForApp"];
+  [dictionary setObject:v120 forKey:@"appLaunchesAtCoarseGeoHash2ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -2879,7 +2879,7 @@ LABEL_99:
 
 LABEL_249:
   v121 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash3ForApp];
-  [v3 setObject:v121 forKey:@"appLaunchesAtCoarseGeoHash3ForApp"];
+  [dictionary setObject:v121 forKey:@"appLaunchesAtCoarseGeoHash3ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -2895,7 +2895,7 @@ LABEL_100:
 
 LABEL_250:
   v122 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash4ForApp];
-  [v3 setObject:v122 forKey:@"appLaunchesAtCoarseGeoHash4ForApp"];
+  [dictionary setObject:v122 forKey:@"appLaunchesAtCoarseGeoHash4ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -2911,7 +2911,7 @@ LABEL_101:
 
 LABEL_251:
   v123 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash5ForApp];
-  [v3 setObject:v123 forKey:@"appLaunchesAtCoarseGeoHash5ForApp"];
+  [dictionary setObject:v123 forKey:@"appLaunchesAtCoarseGeoHash5ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -2927,7 +2927,7 @@ LABEL_102:
 
 LABEL_252:
   v124 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash6ForApp];
-  [v3 setObject:v124 forKey:@"appLaunchesAtCoarseGeoHash6ForApp"];
+  [dictionary setObject:v124 forKey:@"appLaunchesAtCoarseGeoHash6ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x10000) == 0)
@@ -2943,7 +2943,7 @@ LABEL_103:
 
 LABEL_253:
   v125 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash7ForApp];
-  [v3 setObject:v125 forKey:@"appLaunchesAtCoarseGeoHash7ForApp"];
+  [dictionary setObject:v125 forKey:@"appLaunchesAtCoarseGeoHash7ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -2959,7 +2959,7 @@ LABEL_104:
 
 LABEL_254:
   v126 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash8ForApp];
-  [v3 setObject:v126 forKey:@"appLaunchesAtCoarseGeoHash8ForApp"];
+  [dictionary setObject:v126 forKey:@"appLaunchesAtCoarseGeoHash8ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -2975,7 +2975,7 @@ LABEL_105:
 
 LABEL_255:
   v127 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHash9ForApp];
-  [v3 setObject:v127 forKey:@"appLaunchesAtCoarseGeoHash9ForApp"];
+  [dictionary setObject:v127 forKey:@"appLaunchesAtCoarseGeoHash9ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x4000000) == 0)
@@ -2991,7 +2991,7 @@ LABEL_106:
 
 LABEL_256:
   v128 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash0ForApp];
-  [v3 setObject:v128 forKey:@"appLaunchesAtSpecificGeoHash0ForApp"];
+  [dictionary setObject:v128 forKey:@"appLaunchesAtSpecificGeoHash0ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x100000000) == 0)
@@ -3007,7 +3007,7 @@ LABEL_107:
 
 LABEL_257:
   v129 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash1ForApp];
-  [v3 setObject:v129 forKey:@"appLaunchesAtSpecificGeoHash1ForApp"];
+  [dictionary setObject:v129 forKey:@"appLaunchesAtSpecificGeoHash1ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x200000000) == 0)
@@ -3023,7 +3023,7 @@ LABEL_108:
 
 LABEL_258:
   v130 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash2ForApp];
-  [v3 setObject:v130 forKey:@"appLaunchesAtSpecificGeoHash2ForApp"];
+  [dictionary setObject:v130 forKey:@"appLaunchesAtSpecificGeoHash2ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x400000000) == 0)
@@ -3039,7 +3039,7 @@ LABEL_109:
 
 LABEL_259:
   v131 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash3ForApp];
-  [v3 setObject:v131 forKey:@"appLaunchesAtSpecificGeoHash3ForApp"];
+  [dictionary setObject:v131 forKey:@"appLaunchesAtSpecificGeoHash3ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x800000000) == 0)
@@ -3055,7 +3055,7 @@ LABEL_110:
 
 LABEL_260:
   v132 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash4ForApp];
-  [v3 setObject:v132 forKey:@"appLaunchesAtSpecificGeoHash4ForApp"];
+  [dictionary setObject:v132 forKey:@"appLaunchesAtSpecificGeoHash4ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
@@ -3071,7 +3071,7 @@ LABEL_111:
 
 LABEL_261:
   v133 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash5ForApp];
-  [v3 setObject:v133 forKey:@"appLaunchesAtSpecificGeoHash5ForApp"];
+  [dictionary setObject:v133 forKey:@"appLaunchesAtSpecificGeoHash5ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
@@ -3087,7 +3087,7 @@ LABEL_112:
 
 LABEL_262:
   v134 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash6ForApp];
-  [v3 setObject:v134 forKey:@"appLaunchesAtSpecificGeoHash6ForApp"];
+  [dictionary setObject:v134 forKey:@"appLaunchesAtSpecificGeoHash6ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
@@ -3103,7 +3103,7 @@ LABEL_113:
 
 LABEL_263:
   v135 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash7ForApp];
-  [v3 setObject:v135 forKey:@"appLaunchesAtSpecificGeoHash7ForApp"];
+  [dictionary setObject:v135 forKey:@"appLaunchesAtSpecificGeoHash7ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
@@ -3119,7 +3119,7 @@ LABEL_114:
 
 LABEL_264:
   v136 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash8ForApp];
-  [v3 setObject:v136 forKey:@"appLaunchesAtSpecificGeoHash8ForApp"];
+  [dictionary setObject:v136 forKey:@"appLaunchesAtSpecificGeoHash8ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x10000000000) == 0)
@@ -3135,7 +3135,7 @@ LABEL_115:
 
 LABEL_265:
   v137 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash9ForApp];
-  [v3 setObject:v137 forKey:@"appLaunchesAtSpecificGeoHash9ForApp"];
+  [dictionary setObject:v137 forKey:@"appLaunchesAtSpecificGeoHash9ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -3151,7 +3151,7 @@ LABEL_116:
 
 LABEL_266:
   v138 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash10ForApp];
-  [v3 setObject:v138 forKey:@"appLaunchesAtSpecificGeoHash10ForApp"];
+  [dictionary setObject:v138 forKey:@"appLaunchesAtSpecificGeoHash10ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x10000000) == 0)
@@ -3167,7 +3167,7 @@ LABEL_117:
 
 LABEL_267:
   v139 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash11ForApp];
-  [v3 setObject:v139 forKey:@"appLaunchesAtSpecificGeoHash11ForApp"];
+  [dictionary setObject:v139 forKey:@"appLaunchesAtSpecificGeoHash11ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x20000000) == 0)
@@ -3183,7 +3183,7 @@ LABEL_118:
 
 LABEL_268:
   v140 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash12ForApp];
-  [v3 setObject:v140 forKey:@"appLaunchesAtSpecificGeoHash12ForApp"];
+  [dictionary setObject:v140 forKey:@"appLaunchesAtSpecificGeoHash12ForApp"];
 
   v32 = *p_has;
   if ((*p_has & 0x40000000) == 0)
@@ -3199,13 +3199,13 @@ LABEL_119:
 
 LABEL_269:
   v141 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash13ForApp];
-  [v3 setObject:v141 forKey:@"appLaunchesAtSpecificGeoHash13ForApp"];
+  [dictionary setObject:v141 forKey:@"appLaunchesAtSpecificGeoHash13ForApp"];
 
   if ((*p_has & 0x80000000) != 0)
   {
 LABEL_120:
     v33 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHash14ForApp];
-    [v3 setObject:v33 forKey:@"appLaunchesAtSpecificGeoHash14ForApp"];
+    [dictionary setObject:v33 forKey:@"appLaunchesAtSpecificGeoHash14ForApp"];
   }
 
 LABEL_121:
@@ -3213,7 +3213,7 @@ LABEL_121:
   if ((v34 & 0x100000000000) != 0)
   {
     v35 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appNumberOfSpecificGeohashesForApp];
-    [v3 setObject:v35 forKey:@"appNumberOfSpecificGeohashesForApp"];
+    [dictionary setObject:v35 forKey:@"appNumberOfSpecificGeohashesForApp"];
 
     v34 = *(&self->_has + 1);
   }
@@ -3221,14 +3221,14 @@ LABEL_121:
   if ((v34 & 0x80000000000) != 0)
   {
     v36 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appNumberOfCoarseGeohashesForApp];
-    [v3 setObject:v36 forKey:@"appNumberOfCoarseGeohashesForApp"];
+    [dictionary setObject:v36 forKey:@"appNumberOfCoarseGeohashesForApp"];
   }
 
   v37 = *p_has;
   if ((*p_has & 0x40) != 0)
   {
     v142 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appEntropyForTimeBuckets];
-    [v3 setObject:v142 forKey:@"appEntropyForTimeBuckets"];
+    [dictionary setObject:v142 forKey:@"appEntropyForTimeBuckets"];
 
     v37 = *p_has;
     if ((*p_has & 0x20) == 0)
@@ -3249,7 +3249,7 @@ LABEL_127:
   }
 
   v143 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appEntropyForSpecificGeoHash];
-  [v3 setObject:v143 forKey:@"appEntropyForSpecificGeoHash"];
+  [dictionary setObject:v143 forKey:@"appEntropyForSpecificGeoHash"];
 
   v37 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -3265,7 +3265,7 @@ LABEL_128:
 
 LABEL_273:
   v144 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appEntropyForCoarseGeoHash];
-  [v3 setObject:v144 forKey:@"appEntropyForCoarseGeoHash"];
+  [dictionary setObject:v144 forKey:@"appEntropyForCoarseGeoHash"];
 
   v37 = *p_has;
   if ((*p_has & 0x40000000000) == 0)
@@ -3281,7 +3281,7 @@ LABEL_129:
 
 LABEL_274:
   v145 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHashForAppInContext];
-  [v3 setObject:v145 forKey:@"appLaunchesAtSpecificGeoHashForAppInContext"];
+  [dictionary setObject:v145 forKey:@"appLaunchesAtSpecificGeoHashForAppInContext"];
 
   v37 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -3297,7 +3297,7 @@ LABEL_130:
 
 LABEL_275:
   v146 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHashForAppInContext];
-  [v3 setObject:v146 forKey:@"appLaunchesAtCoarseGeoHashForAppInContext"];
+  [dictionary setObject:v146 forKey:@"appLaunchesAtCoarseGeoHashForAppInContext"];
 
   v37 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -3313,7 +3313,7 @@ LABEL_131:
 
 LABEL_276:
   v147 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtDayOfWeekForApp];
-  [v3 setObject:v147 forKey:@"appLaunchesAtDayOfWeekForApp"];
+  [dictionary setObject:v147 forKey:@"appLaunchesAtDayOfWeekForApp"];
 
   v37 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
@@ -3329,7 +3329,7 @@ LABEL_132:
 
 LABEL_277:
   v148 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtTimeAndDayForAppInContext];
-  [v3 setObject:v148 forKey:@"appLaunchesAtTimeAndDayForAppInContext"];
+  [dictionary setObject:v148 forKey:@"appLaunchesAtTimeAndDayForAppInContext"];
 
   v37 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
@@ -3345,7 +3345,7 @@ LABEL_133:
 
 LABEL_278:
   v149 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtTimeAndDayInContext];
-  [v3 setObject:v149 forKey:@"appLaunchesAtTimeAndDayInContext"];
+  [dictionary setObject:v149 forKey:@"appLaunchesAtTimeAndDayInContext"];
 
   v37 = *p_has;
   if ((*p_has & 0x100000000000) == 0)
@@ -3361,7 +3361,7 @@ LABEL_134:
 
 LABEL_279:
   v150 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtTimeAndDayForApp];
-  [v3 setObject:v150 forKey:@"appLaunchesAtTimeAndDayForApp"];
+  [dictionary setObject:v150 forKey:@"appLaunchesAtTimeAndDayForApp"];
 
   v37 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -3377,7 +3377,7 @@ LABEL_135:
 
 LABEL_280:
   v151 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHashInContext];
-  [v3 setObject:v151 forKey:@"appLaunchesAtCoarseGeoHashInContext"];
+  [dictionary setObject:v151 forKey:@"appLaunchesAtCoarseGeoHashInContext"];
 
   v37 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -3393,7 +3393,7 @@ LABEL_136:
 
 LABEL_281:
   v152 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtCoarseGeoHashForApp];
-  [v3 setObject:v152 forKey:@"appLaunchesAtCoarseGeoHashForApp"];
+  [dictionary setObject:v152 forKey:@"appLaunchesAtCoarseGeoHashForApp"];
 
   v37 = *p_has;
   if ((*p_has & 0x80000000000) == 0)
@@ -3409,13 +3409,13 @@ LABEL_137:
 
 LABEL_282:
   v153 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHashInContext];
-  [v3 setObject:v153 forKey:@"appLaunchesAtSpecificGeoHashInContext"];
+  [dictionary setObject:v153 forKey:@"appLaunchesAtSpecificGeoHashInContext"];
 
   if ((*p_has & 0x20000000000) != 0)
   {
 LABEL_138:
     v38 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSpecificGeoHashForApp];
-    [v3 setObject:v38 forKey:@"appLaunchesAtSpecificGeoHashForApp"];
+    [dictionary setObject:v38 forKey:@"appLaunchesAtSpecificGeoHashForApp"];
   }
 
 LABEL_139:
@@ -3423,7 +3423,7 @@ LABEL_139:
   if (v39)
   {
     v40 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate];
-    [v3 setObject:v40 forKey:@"appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate"];
+    [dictionary setObject:v40 forKey:@"appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate"];
 
     v39 = *(&self->_has + 1);
   }
@@ -3431,20 +3431,20 @@ LABEL_139:
   if ((v39 & 2) != 0)
   {
     v41 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate];
-    [v3 setObject:v41 forKey:@"appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate"];
+    [dictionary setObject:v41 forKey:@"appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate"];
   }
 
   if ((*(&self->_has + 16) & 2) != 0)
   {
     v42 = [MEMORY[0x277CCABB0] numberWithDouble:self->_isLocationServicesDisabled];
-    [v3 setObject:v42 forKey:@"isLocationServicesDisabled"];
+    [dictionary setObject:v42 forKey:@"isLocationServicesDisabled"];
   }
 
   v43 = *(&self->_has + 1);
   if ((v43 & 0x40000000) != 0)
   {
     v154 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTwoHourTimeBucketForAppInContext];
-    [v3 setObject:v154 forKey:@"appLaunchesInTwoHourTimeBucketForAppInContext"];
+    [dictionary setObject:v154 forKey:@"appLaunchesInTwoHourTimeBucketForAppInContext"];
 
     v43 = *(&self->_has + 1);
     if ((v43 & 0x80000000) == 0)
@@ -3465,7 +3465,7 @@ LABEL_147:
   }
 
   v155 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTwoHourTimeBucketInContext];
-  [v3 setObject:v155 forKey:@"appLaunchesInTwoHourTimeBucketInContext"];
+  [dictionary setObject:v155 forKey:@"appLaunchesInTwoHourTimeBucketInContext"];
 
   v43 = *(&self->_has + 1);
   if ((v43 & 0x20000000) == 0)
@@ -3481,13 +3481,13 @@ LABEL_148:
 
 LABEL_286:
   v156 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInTwoHourTimeBucketForApp];
-  [v3 setObject:v156 forKey:@"appLaunchesInTwoHourTimeBucketForApp"];
+  [dictionary setObject:v156 forKey:@"appLaunchesInTwoHourTimeBucketForApp"];
 
   if ((*(&self->_has + 1) & 0x20000000000000) != 0)
   {
 LABEL_149:
     v44 = [MEMORY[0x277CCABB0] numberWithDouble:self->_currentTimeBucketFromZeroToTwentyFour];
-    [v3 setObject:v44 forKey:@"currentTimeBucketFromZeroToTwentyFour"];
+    [dictionary setObject:v44 forKey:@"currentTimeBucketFromZeroToTwentyFour"];
   }
 
 LABEL_150:
@@ -3495,7 +3495,7 @@ LABEL_150:
   if ((*p_has & 0x400000000000000) != 0)
   {
     v157 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHashForAppInContext];
-    [v3 setObject:v157 forKey:@"appLaunchesAtZoom7GeoHashForAppInContext"];
+    [dictionary setObject:v157 forKey:@"appLaunchesAtZoom7GeoHashForAppInContext"];
 
     v45 = *p_has;
     if ((*p_has & 0x800000000000000) == 0)
@@ -3516,7 +3516,7 @@ LABEL_152:
   }
 
   v158 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHashInContext];
-  [v3 setObject:v158 forKey:@"appLaunchesAtZoom7GeoHashInContext"];
+  [dictionary setObject:v158 forKey:@"appLaunchesAtZoom7GeoHashInContext"];
 
   v45 = *p_has;
   if ((*p_has & 0x200000000000000) == 0)
@@ -3532,7 +3532,7 @@ LABEL_153:
 
 LABEL_290:
   v159 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHashForApp];
-  [v3 setObject:v159 forKey:@"appLaunchesAtZoom7GeoHashForApp"];
+  [dictionary setObject:v159 forKey:@"appLaunchesAtZoom7GeoHashForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x800000000000) == 0)
@@ -3548,7 +3548,7 @@ LABEL_154:
 
 LABEL_291:
   v160 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash0ForApp];
-  [v3 setObject:v160 forKey:@"appLaunchesAtZoom7GeoHash0ForApp"];
+  [dictionary setObject:v160 forKey:@"appLaunchesAtZoom7GeoHash0ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x1000000000000) == 0)
@@ -3564,7 +3564,7 @@ LABEL_155:
 
 LABEL_292:
   v161 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash1ForApp];
-  [v3 setObject:v161 forKey:@"appLaunchesAtZoom7GeoHash1ForApp"];
+  [dictionary setObject:v161 forKey:@"appLaunchesAtZoom7GeoHash1ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x2000000000000) == 0)
@@ -3580,7 +3580,7 @@ LABEL_156:
 
 LABEL_293:
   v162 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash2ForApp];
-  [v3 setObject:v162 forKey:@"appLaunchesAtZoom7GeoHash2ForApp"];
+  [dictionary setObject:v162 forKey:@"appLaunchesAtZoom7GeoHash2ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x4000000000000) == 0)
@@ -3596,7 +3596,7 @@ LABEL_157:
 
 LABEL_294:
   v163 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash3ForApp];
-  [v3 setObject:v163 forKey:@"appLaunchesAtZoom7GeoHash3ForApp"];
+  [dictionary setObject:v163 forKey:@"appLaunchesAtZoom7GeoHash3ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x8000000000000) == 0)
@@ -3612,7 +3612,7 @@ LABEL_158:
 
 LABEL_295:
   v164 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash4ForApp];
-  [v3 setObject:v164 forKey:@"appLaunchesAtZoom7GeoHash4ForApp"];
+  [dictionary setObject:v164 forKey:@"appLaunchesAtZoom7GeoHash4ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x10000000000000) == 0)
@@ -3628,7 +3628,7 @@ LABEL_159:
 
 LABEL_296:
   v165 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash5ForApp];
-  [v3 setObject:v165 forKey:@"appLaunchesAtZoom7GeoHash5ForApp"];
+  [dictionary setObject:v165 forKey:@"appLaunchesAtZoom7GeoHash5ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x20000000000000) == 0)
@@ -3644,7 +3644,7 @@ LABEL_160:
 
 LABEL_297:
   v166 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash6ForApp];
-  [v3 setObject:v166 forKey:@"appLaunchesAtZoom7GeoHash6ForApp"];
+  [dictionary setObject:v166 forKey:@"appLaunchesAtZoom7GeoHash6ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x40000000000000) == 0)
@@ -3660,7 +3660,7 @@ LABEL_161:
 
 LABEL_298:
   v167 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash7ForApp];
-  [v3 setObject:v167 forKey:@"appLaunchesAtZoom7GeoHash7ForApp"];
+  [dictionary setObject:v167 forKey:@"appLaunchesAtZoom7GeoHash7ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x80000000000000) == 0)
@@ -3676,7 +3676,7 @@ LABEL_162:
 
 LABEL_299:
   v168 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash8ForApp];
-  [v3 setObject:v168 forKey:@"appLaunchesAtZoom7GeoHash8ForApp"];
+  [dictionary setObject:v168 forKey:@"appLaunchesAtZoom7GeoHash8ForApp"];
 
   v45 = *p_has;
   if ((*p_has & 0x100000000000000) == 0)
@@ -3692,27 +3692,27 @@ LABEL_163:
 
 LABEL_300:
   v169 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtZoom7GeoHash9ForApp];
-  [v3 setObject:v169 forKey:@"appLaunchesAtZoom7GeoHash9ForApp"];
+  [dictionary setObject:v169 forKey:@"appLaunchesAtZoom7GeoHash9ForApp"];
 
   if ((*p_has & 0x80) != 0)
   {
 LABEL_164:
     v46 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appEntropyForZoom7GeoHash];
-    [v3 setObject:v46 forKey:@"appEntropyForZoom7GeoHash"];
+    [dictionary setObject:v46 forKey:@"appEntropyForZoom7GeoHash"];
   }
 
 LABEL_165:
   if ((*(&self->_has + 13) & 0x20) != 0)
   {
     v47 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appNumberOfZoom7GeohashesForApp];
-    [v3 setObject:v47 forKey:@"appNumberOfZoom7GeohashesForApp"];
+    [dictionary setObject:v47 forKey:@"appNumberOfZoom7GeohashesForApp"];
   }
 
   v48 = *p_has;
   if ((*p_has & 0x2000000) != 0)
   {
     v49 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSSIDForAppInContext];
-    [v3 setObject:v49 forKey:@"appLaunchesAtSSIDForAppInContext"];
+    [dictionary setObject:v49 forKey:@"appLaunchesAtSSIDForAppInContext"];
 
     v48 = *p_has;
   }
@@ -3720,14 +3720,14 @@ LABEL_165:
   if ((v48 & 0x1000000) != 0)
   {
     v50 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtSSIDForApp];
-    [v3 setObject:v50 forKey:@"appLaunchesAtSSIDForApp"];
+    [dictionary setObject:v50 forKey:@"appLaunchesAtSSIDForApp"];
   }
 
   v51 = *(&self->_has + 1);
   if ((v51 & 4) != 0)
   {
     v52 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesForCoreMotionForAppInContext];
-    [v3 setObject:v52 forKey:@"appLaunchesForCoreMotionForAppInContext"];
+    [dictionary setObject:v52 forKey:@"appLaunchesForCoreMotionForAppInContext"];
 
     v51 = *(&self->_has + 1);
   }
@@ -3735,20 +3735,20 @@ LABEL_165:
   if ((v51 & 8) != 0)
   {
     v53 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesInAirplaneModeForAppInContext];
-    [v3 setObject:v53 forKey:@"appLaunchesInAirplaneModeForAppInContext"];
+    [dictionary setObject:v53 forKey:@"appLaunchesInAirplaneModeForAppInContext"];
   }
 
   if ((*(&self->_has + 16) & 0x40) != 0)
   {
     v54 = [MEMORY[0x277CCABB0] numberWithDouble:self->_poiPopularityForAppInContext];
-    [v3 setObject:v54 forKey:@"poiPopularityForAppInContext"];
+    [dictionary setObject:v54 forKey:@"poiPopularityForAppInContext"];
   }
 
   v55 = *p_has;
   if ((*p_has & 0x100) != 0)
   {
     v56 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchPopularityAtPOIForAppInContext];
-    [v3 setObject:v56 forKey:@"appLaunchPopularityAtPOIForAppInContext"];
+    [dictionary setObject:v56 forKey:@"appLaunchPopularityAtPOIForAppInContext"];
 
     v55 = *p_has;
   }
@@ -3756,17 +3756,17 @@ LABEL_165:
   if ((v55 & 0x800000) != 0)
   {
     v57 = [MEMORY[0x277CCABB0] numberWithDouble:self->_appLaunchesAtPOIForAppInContext];
-    [v3 setObject:v57 forKey:@"appLaunchesAtPOIForAppInContext"];
+    [dictionary setObject:v57 forKey:@"appLaunchesAtPOIForAppInContext"];
   }
 
-  v58 = v3;
+  v58 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v168 = a3;
+  toCopy = to;
   p_has = &self->_has;
   v5 = *(&self->_has + 4);
   if ((v5 & 0x10000) != 0)
@@ -5615,15 +5615,15 @@ LABEL_165:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   v6 = *(&self->_has + 4);
   if ((v6 & 0x10000) != 0)
   {
-    v4[145] = *&self->_unlockTime;
-    *(v4 + 296) |= 0x10000u;
+    toCopy[145] = *&self->_unlockTime;
+    *(toCopy + 296) |= 0x10000u;
     v6 = *(&self->_has + 4);
     if ((v6 & 0x10) == 0)
     {
@@ -5642,8 +5642,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[133] = *&self->_launchTimePopularity;
-  *(v4 + 296) |= 0x10u;
+  toCopy[133] = *&self->_launchTimePopularity;
+  *(toCopy + 296) |= 0x10u;
   v6 = *(&self->_has + 4);
   if ((v6 & 0x100) == 0)
   {
@@ -5657,41 +5657,41 @@ LABEL_4:
   }
 
 LABEL_186:
-  v4[137] = *&self->_timeOfDayBucket;
-  *(v4 + 296) |= 0x100u;
+  toCopy[137] = *&self->_timeOfDayBucket;
+  *(toCopy + 296) |= 0x100u;
   if ((*(&self->_has + 4) & 0x200) != 0)
   {
 LABEL_5:
-    v4[138] = *&self->_timeOfDayPopularity;
-    *(v4 + 296) |= 0x200u;
+    toCopy[138] = *&self->_timeOfDayPopularity;
+    *(toCopy + 296) |= 0x200u;
   }
 
 LABEL_6:
   if ((*(&self->_has + 14) & 8) != 0)
   {
-    v4[116] = *&self->_coarseTimeOfDayPopularity;
-    v4[147] |= 0x8000000000000uLL;
+    toCopy[116] = *&self->_coarseTimeOfDayPopularity;
+    toCopy[147] |= 0x8000000000000uLL;
   }
 
   v7 = *(&self->_has + 4);
   if ((v7 & 8) != 0)
   {
-    v4[132] = *&self->_launchPopularity;
-    *(v4 + 296) |= 8u;
+    toCopy[132] = *&self->_launchPopularity;
+    *(toCopy + 296) |= 8u;
     v7 = *(&self->_has + 4);
   }
 
   if ((v7 & 4) != 0)
   {
-    v4[131] = *&self->_launchDayOfWeekPopularity;
-    *(v4 + 296) |= 4u;
+    toCopy[131] = *&self->_launchDayOfWeekPopularity;
+    *(toCopy + 296) |= 4u;
   }
 
   v8 = *(&self->_has + 1);
   if ((v8 & 0x40000000000000) != 0)
   {
-    v4[119] = *&self->_dayOfWeekBucket;
-    v4[147] |= 0x40000000000000uLL;
+    toCopy[119] = *&self->_dayOfWeekBucket;
+    toCopy[147] |= 0x40000000000000uLL;
     v8 = *(&self->_has + 1);
     if ((v8 & 0x80000000000000) == 0)
     {
@@ -5710,8 +5710,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v4[120] = *&self->_dayOfWeekPopularity;
-  v4[147] |= 0x80000000000000uLL;
+  toCopy[120] = *&self->_dayOfWeekPopularity;
+  toCopy[147] |= 0x80000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x800000000000000) == 0)
   {
@@ -5725,8 +5725,8 @@ LABEL_15:
   }
 
 LABEL_190:
-  v4[124] = *&self->_entropyLaunchPopularity;
-  v4[147] |= 0x800000000000000uLL;
+  toCopy[124] = *&self->_entropyLaunchPopularity;
+  toCopy[147] |= 0x800000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x100000000000000) == 0)
   {
@@ -5740,8 +5740,8 @@ LABEL_16:
   }
 
 LABEL_191:
-  v4[121] = *&self->_entropyDayOfWeekPopularity;
-  v4[147] |= 0x100000000000000uLL;
+  toCopy[121] = *&self->_entropyDayOfWeekPopularity;
+  toCopy[147] |= 0x100000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x400000000000000) == 0)
   {
@@ -5755,8 +5755,8 @@ LABEL_17:
   }
 
 LABEL_192:
-  v4[123] = *&self->_entropyDayOfWeekPopularityByDay;
-  v4[147] |= 0x400000000000000uLL;
+  toCopy[123] = *&self->_entropyDayOfWeekPopularityByDay;
+  toCopy[147] |= 0x400000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x200000000000000) == 0)
   {
@@ -5770,8 +5770,8 @@ LABEL_18:
   }
 
 LABEL_193:
-  v4[122] = *&self->_entropyDayOfWeekPopularityByApp;
-  v4[147] |= 0x200000000000000uLL;
+  toCopy[122] = *&self->_entropyDayOfWeekPopularityByApp;
+  toCopy[147] |= 0x200000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x8000000000000000) == 0)
   {
@@ -5785,8 +5785,8 @@ LABEL_19:
   }
 
 LABEL_194:
-  v4[128] = *&self->_entropyTrendingPopularity;
-  v4[147] |= 0x8000000000000000;
+  toCopy[128] = *&self->_entropyTrendingPopularity;
+  toCopy[147] |= 0x8000000000000000;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x1000000000000000) == 0)
   {
@@ -5800,8 +5800,8 @@ LABEL_20:
   }
 
 LABEL_195:
-  v4[125] = *&self->_entropySSIDPopularity;
-  v4[147] |= 0x1000000000000000uLL;
+  toCopy[125] = *&self->_entropySSIDPopularity;
+  toCopy[147] |= 0x1000000000000000uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 0x4000000000000000) == 0)
   {
@@ -5815,33 +5815,33 @@ LABEL_21:
   }
 
 LABEL_196:
-  v4[127] = *&self->_entropySSIDPopularityBySSID;
-  v4[147] |= 0x4000000000000000uLL;
+  toCopy[127] = *&self->_entropySSIDPopularityBySSID;
+  toCopy[147] |= 0x4000000000000000uLL;
   if ((*(&self->_has + 1) & 0x2000000000000000) != 0)
   {
 LABEL_22:
-    v4[126] = *&self->_entropySSIDPopularityByApp;
-    v4[147] |= 0x2000000000000000uLL;
+    toCopy[126] = *&self->_entropySSIDPopularityByApp;
+    toCopy[147] |= 0x2000000000000000uLL;
   }
 
 LABEL_23:
   if ((*(&self->_has + 17) & 0x10) != 0)
   {
-    v4[141] = *&self->_totalNumberOfLaunches;
-    *(v4 + 296) |= 0x1000u;
+    toCopy[141] = *&self->_totalNumberOfLaunches;
+    *(toCopy + 296) |= 0x1000u;
   }
 
   if (*p_has)
   {
-    v4[1] = *&self->_airplaneModePopularity;
-    v4[146] |= 1uLL;
+    toCopy[1] = *&self->_airplaneModePopularity;
+    toCopy[146] |= 1uLL;
   }
 
   v9 = *(&self->_has + 4);
   if ((v9 & 0x400) != 0)
   {
-    v4[139] = *&self->_totalNumberOfAirplaneModeLaunches;
-    *(v4 + 296) |= 0x400u;
+    toCopy[139] = *&self->_totalNumberOfAirplaneModeLaunches;
+    *(toCopy + 296) |= 0x400u;
     v9 = *(&self->_has + 4);
     if ((v9 & 0x8000) == 0)
     {
@@ -5860,8 +5860,8 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v4[144] = *&self->_trendingPopularity;
-  *(v4 + 296) |= 0x8000u;
+  toCopy[144] = *&self->_trendingPopularity;
+  *(toCopy + 296) |= 0x8000u;
   v9 = *(&self->_has + 4);
   if ((v9 & 0x4000) == 0)
   {
@@ -5875,8 +5875,8 @@ LABEL_30:
   }
 
 LABEL_200:
-  v4[143] = *&self->_totalNumberOfTrendingLaunches;
-  *(v4 + 296) |= 0x4000u;
+  toCopy[143] = *&self->_totalNumberOfTrendingLaunches;
+  *(toCopy + 296) |= 0x4000u;
   v9 = *(&self->_has + 4);
   if ((v9 & 0x80) == 0)
   {
@@ -5890,8 +5890,8 @@ LABEL_31:
   }
 
 LABEL_201:
-  v4[136] = *&self->_sSIDPopularity;
-  *(v4 + 296) |= 0x80u;
+  toCopy[136] = *&self->_sSIDPopularity;
+  *(toCopy + 296) |= 0x80u;
   v9 = *(&self->_has + 4);
   if ((v9 & 0x2000) == 0)
   {
@@ -5905,67 +5905,67 @@ LABEL_32:
   }
 
 LABEL_202:
-  v4[142] = *&self->_totalNumberOfSSIDLaunches;
-  *(v4 + 296) |= 0x2000u;
+  toCopy[142] = *&self->_totalNumberOfSSIDLaunches;
+  *(toCopy + 296) |= 0x2000u;
   if ((*(&self->_has + 4) & 0x20) != 0)
   {
 LABEL_33:
-    v4[134] = *&self->_onWifi;
-    *(v4 + 296) |= 0x20u;
+    toCopy[134] = *&self->_onWifi;
+    *(toCopy + 296) |= 0x20u;
   }
 
 LABEL_34:
   if ((*(&self->_has + 14) & 0x10) != 0)
   {
-    v4[117] = *&self->_coreMotionPopularity;
-    v4[147] |= 0x10000000000000uLL;
+    toCopy[117] = *&self->_coreMotionPopularity;
+    toCopy[147] |= 0x10000000000000uLL;
   }
 
   v10 = *(&self->_has + 4);
   if ((v10 & 0x800) != 0)
   {
-    v4[140] = *&self->_totalNumberOfCoreMotionLaunches;
-    *(v4 + 296) |= 0x800u;
+    toCopy[140] = *&self->_totalNumberOfCoreMotionLaunches;
+    *(toCopy + 296) |= 0x800u;
     v10 = *(&self->_has + 4);
   }
 
   if (v10)
   {
-    v4[129] = *&self->_isDateInWeekendOnDevice;
-    *(v4 + 296) |= 1u;
+    toCopy[129] = *&self->_isDateInWeekendOnDevice;
+    *(toCopy + 296) |= 1u;
   }
 
   has = *p_has;
   if ((*p_has & 4) != 0)
   {
-    v4[3] = *&self->_ambientLightTypePopularity;
-    v4[146] |= 4uLL;
+    toCopy[3] = *&self->_ambientLightTypePopularity;
+    toCopy[146] |= 4uLL;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_ambientLightTypeLaunchPopularity;
-    v4[146] |= 2uLL;
+    toCopy[2] = *&self->_ambientLightTypeLaunchPopularity;
+    toCopy[146] |= 2uLL;
   }
 
   if ((*(&self->_has + 14) & 2) != 0)
   {
-    v4[114] = *&self->_appTimeOfDayLaunches;
-    v4[147] |= 0x2000000000000uLL;
+    toCopy[114] = *&self->_appTimeOfDayLaunches;
+    toCopy[147] |= 0x2000000000000uLL;
   }
 
   if ((*p_has & 8) != 0)
   {
-    v4[4] = *&self->_appDayOfWeekLaunches;
-    v4[146] |= 8uLL;
+    toCopy[4] = *&self->_appDayOfWeekLaunches;
+    toCopy[146] |= 8uLL;
   }
 
   v12 = *(&self->_has + 1);
   if ((v12 & 0x1000000000000) != 0)
   {
-    v4[113] = *&self->_appTimeAndDayOfWeekPopularity;
-    v4[147] |= 0x1000000000000uLL;
+    toCopy[113] = *&self->_appTimeAndDayOfWeekPopularity;
+    toCopy[147] |= 0x1000000000000uLL;
     v12 = *(&self->_has + 1);
     if ((v12 & 0x400000000000) == 0)
     {
@@ -5984,8 +5984,8 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v4[111] = *&self->_appPopularityGivenTimeAndDayOfWeek;
-  v4[147] |= 0x400000000000uLL;
+  toCopy[111] = *&self->_appPopularityGivenTimeAndDayOfWeek;
+  toCopy[147] |= 0x400000000000uLL;
   v12 = *(&self->_has + 1);
   if ((v12 & 0x800000000000) == 0)
   {
@@ -5999,21 +5999,21 @@ LABEL_51:
   }
 
 LABEL_206:
-  v4[112] = *&self->_appPopularityOfTimeAndDayOfWeekGivenApp;
-  v4[147] |= 0x800000000000uLL;
+  toCopy[112] = *&self->_appPopularityOfTimeAndDayOfWeekGivenApp;
+  toCopy[147] |= 0x800000000000uLL;
   if ((*(&self->_has + 1) & 0x4000000000000) != 0)
   {
 LABEL_52:
-    v4[115] = *&self->_appTotalNumberOfTimeAndDayOfWeekLaunches;
-    v4[147] |= 0x4000000000000uLL;
+    toCopy[115] = *&self->_appTotalNumberOfTimeAndDayOfWeekLaunches;
+    toCopy[147] |= 0x4000000000000uLL;
   }
 
 LABEL_53:
   v13 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
-    v4[63] = *&self->_appLaunchesCoarseTimePowLocationForAppInContext;
-    v4[146] |= 0x4000000000000000uLL;
+    toCopy[63] = *&self->_appLaunchesCoarseTimePowLocationForAppInContext;
+    toCopy[146] |= 0x4000000000000000uLL;
     v13 = self->_has;
     if ((v13 & 0x8000000000000000) == 0)
     {
@@ -6032,8 +6032,8 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v4[64] = *&self->_appLaunchesCoarseTimePowLocationInContext;
-  v4[146] |= 0x8000000000000000;
+  toCopy[64] = *&self->_appLaunchesCoarseTimePowLocationInContext;
+  toCopy[146] |= 0x8000000000000000;
   v13 = self->_has;
   if ((v13 & 0x2000000000000000) == 0)
   {
@@ -6047,21 +6047,21 @@ LABEL_56:
   }
 
 LABEL_210:
-  v4[62] = *&self->_appLaunchesCoarseTimePowLocationForApp;
-  v4[146] |= 0x2000000000000000uLL;
+  toCopy[62] = *&self->_appLaunchesCoarseTimePowLocationForApp;
+  toCopy[146] |= 0x2000000000000000uLL;
   if ((*&self->_has & 0x1000000000000000) != 0)
   {
 LABEL_57:
-    v4[61] = *&self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts;
-    v4[146] |= 0x1000000000000000uLL;
+    toCopy[61] = *&self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts;
+    toCopy[146] |= 0x1000000000000000uLL;
   }
 
 LABEL_58:
   v14 = *(&self->_has + 1);
   if ((v14 & 0x20000000000) != 0)
   {
-    v4[106] = *&self->_appLaunchesSpecificTimeDowLocationForAppInContext;
-    v4[147] |= 0x20000000000uLL;
+    toCopy[106] = *&self->_appLaunchesSpecificTimeDowLocationForAppInContext;
+    toCopy[147] |= 0x20000000000uLL;
     v14 = *(&self->_has + 1);
     if ((v14 & 0x40000000000) == 0)
     {
@@ -6080,8 +6080,8 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v4[107] = *&self->_appLaunchesSpecificTimeDowLocationInContext;
-  v4[147] |= 0x40000000000uLL;
+  toCopy[107] = *&self->_appLaunchesSpecificTimeDowLocationInContext;
+  toCopy[147] |= 0x40000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x10000000000) == 0)
   {
@@ -6095,8 +6095,8 @@ LABEL_61:
   }
 
 LABEL_214:
-  v4[105] = *&self->_appLaunchesSpecificTimeDowLocationForApp;
-  v4[147] |= 0x10000000000uLL;
+  toCopy[105] = *&self->_appLaunchesSpecificTimeDowLocationForApp;
+  toCopy[147] |= 0x10000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x8000000000) == 0)
   {
@@ -6110,8 +6110,8 @@ LABEL_62:
   }
 
 LABEL_215:
-  v4[104] = *&self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts;
-  v4[147] |= 0x8000000000uLL;
+  toCopy[104] = *&self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts;
+  toCopy[147] |= 0x8000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x10) == 0)
   {
@@ -6125,8 +6125,8 @@ LABEL_63:
   }
 
 LABEL_216:
-  v4[69] = *&self->_appLaunchesInTimeBucket0ForApp;
-  v4[147] |= 0x10uLL;
+  toCopy[69] = *&self->_appLaunchesInTimeBucket0ForApp;
+  toCopy[147] |= 0x10uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x8000) == 0)
   {
@@ -6140,8 +6140,8 @@ LABEL_64:
   }
 
 LABEL_217:
-  v4[80] = *&self->_appLaunchesInTimeBucket1ForApp;
-  v4[147] |= 0x8000uLL;
+  toCopy[80] = *&self->_appLaunchesInTimeBucket1ForApp;
+  toCopy[147] |= 0x8000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x200000) == 0)
   {
@@ -6155,8 +6155,8 @@ LABEL_65:
   }
 
 LABEL_218:
-  v4[86] = *&self->_appLaunchesInTimeBucket2ForApp;
-  v4[147] |= 0x200000uLL;
+  toCopy[86] = *&self->_appLaunchesInTimeBucket2ForApp;
+  toCopy[147] |= 0x200000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x400000) == 0)
   {
@@ -6170,8 +6170,8 @@ LABEL_66:
   }
 
 LABEL_219:
-  v4[87] = *&self->_appLaunchesInTimeBucket3ForApp;
-  v4[147] |= 0x400000uLL;
+  toCopy[87] = *&self->_appLaunchesInTimeBucket3ForApp;
+  toCopy[147] |= 0x400000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x800000) == 0)
   {
@@ -6185,8 +6185,8 @@ LABEL_67:
   }
 
 LABEL_220:
-  v4[88] = *&self->_appLaunchesInTimeBucket4ForApp;
-  v4[147] |= 0x800000uLL;
+  toCopy[88] = *&self->_appLaunchesInTimeBucket4ForApp;
+  toCopy[147] |= 0x800000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x1000000) == 0)
   {
@@ -6200,8 +6200,8 @@ LABEL_68:
   }
 
 LABEL_221:
-  v4[89] = *&self->_appLaunchesInTimeBucket5ForApp;
-  v4[147] |= 0x1000000uLL;
+  toCopy[89] = *&self->_appLaunchesInTimeBucket5ForApp;
+  toCopy[147] |= 0x1000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x2000000) == 0)
   {
@@ -6215,8 +6215,8 @@ LABEL_69:
   }
 
 LABEL_222:
-  v4[90] = *&self->_appLaunchesInTimeBucket6ForApp;
-  v4[147] |= 0x2000000uLL;
+  toCopy[90] = *&self->_appLaunchesInTimeBucket6ForApp;
+  toCopy[147] |= 0x2000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x4000000) == 0)
   {
@@ -6230,8 +6230,8 @@ LABEL_70:
   }
 
 LABEL_223:
-  v4[91] = *&self->_appLaunchesInTimeBucket7ForApp;
-  v4[147] |= 0x4000000uLL;
+  toCopy[91] = *&self->_appLaunchesInTimeBucket7ForApp;
+  toCopy[147] |= 0x4000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x8000000) == 0)
   {
@@ -6245,8 +6245,8 @@ LABEL_71:
   }
 
 LABEL_224:
-  v4[92] = *&self->_appLaunchesInTimeBucket8ForApp;
-  v4[147] |= 0x8000000uLL;
+  toCopy[92] = *&self->_appLaunchesInTimeBucket8ForApp;
+  toCopy[147] |= 0x8000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x10000000) == 0)
   {
@@ -6260,8 +6260,8 @@ LABEL_72:
   }
 
 LABEL_225:
-  v4[93] = *&self->_appLaunchesInTimeBucket9ForApp;
-  v4[147] |= 0x10000000uLL;
+  toCopy[93] = *&self->_appLaunchesInTimeBucket9ForApp;
+  toCopy[147] |= 0x10000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x20) == 0)
   {
@@ -6275,8 +6275,8 @@ LABEL_73:
   }
 
 LABEL_226:
-  v4[70] = *&self->_appLaunchesInTimeBucket10ForApp;
-  v4[147] |= 0x20uLL;
+  toCopy[70] = *&self->_appLaunchesInTimeBucket10ForApp;
+  toCopy[147] |= 0x20uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x40) == 0)
   {
@@ -6290,8 +6290,8 @@ LABEL_74:
   }
 
 LABEL_227:
-  v4[71] = *&self->_appLaunchesInTimeBucket11ForApp;
-  v4[147] |= 0x40uLL;
+  toCopy[71] = *&self->_appLaunchesInTimeBucket11ForApp;
+  toCopy[147] |= 0x40uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x80) == 0)
   {
@@ -6305,8 +6305,8 @@ LABEL_75:
   }
 
 LABEL_228:
-  v4[72] = *&self->_appLaunchesInTimeBucket12ForApp;
-  v4[147] |= 0x80uLL;
+  toCopy[72] = *&self->_appLaunchesInTimeBucket12ForApp;
+  toCopy[147] |= 0x80uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x100) == 0)
   {
@@ -6320,8 +6320,8 @@ LABEL_76:
   }
 
 LABEL_229:
-  v4[73] = *&self->_appLaunchesInTimeBucket13ForApp;
-  v4[147] |= 0x100uLL;
+  toCopy[73] = *&self->_appLaunchesInTimeBucket13ForApp;
+  toCopy[147] |= 0x100uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x200) == 0)
   {
@@ -6335,8 +6335,8 @@ LABEL_77:
   }
 
 LABEL_230:
-  v4[74] = *&self->_appLaunchesInTimeBucket14ForApp;
-  v4[147] |= 0x200uLL;
+  toCopy[74] = *&self->_appLaunchesInTimeBucket14ForApp;
+  toCopy[147] |= 0x200uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x400) == 0)
   {
@@ -6350,8 +6350,8 @@ LABEL_78:
   }
 
 LABEL_231:
-  v4[75] = *&self->_appLaunchesInTimeBucket15ForApp;
-  v4[147] |= 0x400uLL;
+  toCopy[75] = *&self->_appLaunchesInTimeBucket15ForApp;
+  toCopy[147] |= 0x400uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x800) == 0)
   {
@@ -6365,8 +6365,8 @@ LABEL_79:
   }
 
 LABEL_232:
-  v4[76] = *&self->_appLaunchesInTimeBucket16ForApp;
-  v4[147] |= 0x800uLL;
+  toCopy[76] = *&self->_appLaunchesInTimeBucket16ForApp;
+  toCopy[147] |= 0x800uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x1000) == 0)
   {
@@ -6380,8 +6380,8 @@ LABEL_80:
   }
 
 LABEL_233:
-  v4[77] = *&self->_appLaunchesInTimeBucket17ForApp;
-  v4[147] |= 0x1000uLL;
+  toCopy[77] = *&self->_appLaunchesInTimeBucket17ForApp;
+  toCopy[147] |= 0x1000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x2000) == 0)
   {
@@ -6395,8 +6395,8 @@ LABEL_81:
   }
 
 LABEL_234:
-  v4[78] = *&self->_appLaunchesInTimeBucket18ForApp;
-  v4[147] |= 0x2000uLL;
+  toCopy[78] = *&self->_appLaunchesInTimeBucket18ForApp;
+  toCopy[147] |= 0x2000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x4000) == 0)
   {
@@ -6410,8 +6410,8 @@ LABEL_82:
   }
 
 LABEL_235:
-  v4[79] = *&self->_appLaunchesInTimeBucket19ForApp;
-  v4[147] |= 0x4000uLL;
+  toCopy[79] = *&self->_appLaunchesInTimeBucket19ForApp;
+  toCopy[147] |= 0x4000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x10000) == 0)
   {
@@ -6425,8 +6425,8 @@ LABEL_83:
   }
 
 LABEL_236:
-  v4[81] = *&self->_appLaunchesInTimeBucket20ForApp;
-  v4[147] |= 0x10000uLL;
+  toCopy[81] = *&self->_appLaunchesInTimeBucket20ForApp;
+  toCopy[147] |= 0x10000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x20000) == 0)
   {
@@ -6440,8 +6440,8 @@ LABEL_84:
   }
 
 LABEL_237:
-  v4[82] = *&self->_appLaunchesInTimeBucket21ForApp;
-  v4[147] |= 0x20000uLL;
+  toCopy[82] = *&self->_appLaunchesInTimeBucket21ForApp;
+  toCopy[147] |= 0x20000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x40000) == 0)
   {
@@ -6455,8 +6455,8 @@ LABEL_85:
   }
 
 LABEL_238:
-  v4[83] = *&self->_appLaunchesInTimeBucket22ForApp;
-  v4[147] |= 0x40000uLL;
+  toCopy[83] = *&self->_appLaunchesInTimeBucket22ForApp;
+  toCopy[147] |= 0x40000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x80000) == 0)
   {
@@ -6470,8 +6470,8 @@ LABEL_86:
   }
 
 LABEL_239:
-  v4[84] = *&self->_appLaunchesInTimeBucket23ForApp;
-  v4[147] |= 0x80000uLL;
+  toCopy[84] = *&self->_appLaunchesInTimeBucket23ForApp;
+  toCopy[147] |= 0x80000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x100000) == 0)
   {
@@ -6485,8 +6485,8 @@ LABEL_87:
   }
 
 LABEL_240:
-  v4[85] = *&self->_appLaunchesInTimeBucket24ForApp;
-  v4[147] |= 0x100000uLL;
+  toCopy[85] = *&self->_appLaunchesInTimeBucket24ForApp;
+  toCopy[147] |= 0x100000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x800000000) == 0)
   {
@@ -6500,8 +6500,8 @@ LABEL_88:
   }
 
 LABEL_241:
-  v4[100] = *&self->_appLaunchesOnDayOfWeekSundayForApp;
-  v4[147] |= 0x800000000uLL;
+  toCopy[100] = *&self->_appLaunchesOnDayOfWeekSundayForApp;
+  toCopy[147] |= 0x800000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x200000000) == 0)
   {
@@ -6515,8 +6515,8 @@ LABEL_89:
   }
 
 LABEL_242:
-  v4[98] = *&self->_appLaunchesOnDayOfWeekMondayForApp;
-  v4[147] |= 0x200000000uLL;
+  toCopy[98] = *&self->_appLaunchesOnDayOfWeekMondayForApp;
+  toCopy[147] |= 0x200000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x2000000000) == 0)
   {
@@ -6530,8 +6530,8 @@ LABEL_90:
   }
 
 LABEL_243:
-  v4[102] = *&self->_appLaunchesOnDayOfWeekTuesdayForApp;
-  v4[147] |= 0x2000000000uLL;
+  toCopy[102] = *&self->_appLaunchesOnDayOfWeekTuesdayForApp;
+  toCopy[147] |= 0x2000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x4000000000) == 0)
   {
@@ -6545,8 +6545,8 @@ LABEL_91:
   }
 
 LABEL_244:
-  v4[103] = *&self->_appLaunchesOnDayOfWeekWednesdayForApp;
-  v4[147] |= 0x4000000000uLL;
+  toCopy[103] = *&self->_appLaunchesOnDayOfWeekWednesdayForApp;
+  toCopy[147] |= 0x4000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x1000000000) == 0)
   {
@@ -6560,8 +6560,8 @@ LABEL_92:
   }
 
 LABEL_245:
-  v4[101] = *&self->_appLaunchesOnDayOfWeekThursdayForApp;
-  v4[147] |= 0x1000000000uLL;
+  toCopy[101] = *&self->_appLaunchesOnDayOfWeekThursdayForApp;
+  toCopy[147] |= 0x1000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x100000000) == 0)
   {
@@ -6575,21 +6575,21 @@ LABEL_93:
   }
 
 LABEL_246:
-  v4[97] = *&self->_appLaunchesOnDayOfWeekFridayForApp;
-  v4[147] |= 0x100000000uLL;
+  toCopy[97] = *&self->_appLaunchesOnDayOfWeekFridayForApp;
+  toCopy[147] |= 0x100000000uLL;
   if ((*(&self->_has + 1) & 0x400000000) != 0)
   {
 LABEL_94:
-    v4[99] = *&self->_appLaunchesOnDayOfWeekSaturdayForApp;
-    v4[147] |= 0x400000000uLL;
+    toCopy[99] = *&self->_appLaunchesOnDayOfWeekSaturdayForApp;
+    toCopy[147] |= 0x400000000uLL;
   }
 
 LABEL_95:
   v15 = *p_has;
   if ((*p_has & 0x200) != 0)
   {
-    v4[10] = *&self->_appLaunchesAtCoarseGeoHash0ForApp;
-    v4[146] |= 0x200uLL;
+    toCopy[10] = *&self->_appLaunchesAtCoarseGeoHash0ForApp;
+    toCopy[146] |= 0x200uLL;
     v15 = self->_has;
     if ((v15 & 0x400) == 0)
     {
@@ -6608,8 +6608,8 @@ LABEL_97:
     goto LABEL_97;
   }
 
-  v4[11] = *&self->_appLaunchesAtCoarseGeoHash1ForApp;
-  v4[146] |= 0x400uLL;
+  toCopy[11] = *&self->_appLaunchesAtCoarseGeoHash1ForApp;
+  toCopy[146] |= 0x400uLL;
   v15 = self->_has;
   if ((v15 & 0x800) == 0)
   {
@@ -6623,8 +6623,8 @@ LABEL_98:
   }
 
 LABEL_250:
-  v4[12] = *&self->_appLaunchesAtCoarseGeoHash2ForApp;
-  v4[146] |= 0x800uLL;
+  toCopy[12] = *&self->_appLaunchesAtCoarseGeoHash2ForApp;
+  toCopy[146] |= 0x800uLL;
   v15 = self->_has;
   if ((v15 & 0x1000) == 0)
   {
@@ -6638,8 +6638,8 @@ LABEL_99:
   }
 
 LABEL_251:
-  v4[13] = *&self->_appLaunchesAtCoarseGeoHash3ForApp;
-  v4[146] |= 0x1000uLL;
+  toCopy[13] = *&self->_appLaunchesAtCoarseGeoHash3ForApp;
+  toCopy[146] |= 0x1000uLL;
   v15 = self->_has;
   if ((v15 & 0x2000) == 0)
   {
@@ -6653,8 +6653,8 @@ LABEL_100:
   }
 
 LABEL_252:
-  v4[14] = *&self->_appLaunchesAtCoarseGeoHash4ForApp;
-  v4[146] |= 0x2000uLL;
+  toCopy[14] = *&self->_appLaunchesAtCoarseGeoHash4ForApp;
+  toCopy[146] |= 0x2000uLL;
   v15 = self->_has;
   if ((v15 & 0x4000) == 0)
   {
@@ -6668,8 +6668,8 @@ LABEL_101:
   }
 
 LABEL_253:
-  v4[15] = *&self->_appLaunchesAtCoarseGeoHash5ForApp;
-  v4[146] |= 0x4000uLL;
+  toCopy[15] = *&self->_appLaunchesAtCoarseGeoHash5ForApp;
+  toCopy[146] |= 0x4000uLL;
   v15 = self->_has;
   if ((v15 & 0x8000) == 0)
   {
@@ -6683,8 +6683,8 @@ LABEL_102:
   }
 
 LABEL_254:
-  v4[16] = *&self->_appLaunchesAtCoarseGeoHash6ForApp;
-  v4[146] |= 0x8000uLL;
+  toCopy[16] = *&self->_appLaunchesAtCoarseGeoHash6ForApp;
+  toCopy[146] |= 0x8000uLL;
   v15 = self->_has;
   if ((v15 & 0x10000) == 0)
   {
@@ -6698,8 +6698,8 @@ LABEL_103:
   }
 
 LABEL_255:
-  v4[17] = *&self->_appLaunchesAtCoarseGeoHash7ForApp;
-  v4[146] |= 0x10000uLL;
+  toCopy[17] = *&self->_appLaunchesAtCoarseGeoHash7ForApp;
+  toCopy[146] |= 0x10000uLL;
   v15 = self->_has;
   if ((v15 & 0x20000) == 0)
   {
@@ -6713,8 +6713,8 @@ LABEL_104:
   }
 
 LABEL_256:
-  v4[18] = *&self->_appLaunchesAtCoarseGeoHash8ForApp;
-  v4[146] |= 0x20000uLL;
+  toCopy[18] = *&self->_appLaunchesAtCoarseGeoHash8ForApp;
+  toCopy[146] |= 0x20000uLL;
   v15 = self->_has;
   if ((v15 & 0x40000) == 0)
   {
@@ -6728,8 +6728,8 @@ LABEL_105:
   }
 
 LABEL_257:
-  v4[19] = *&self->_appLaunchesAtCoarseGeoHash9ForApp;
-  v4[146] |= 0x40000uLL;
+  toCopy[19] = *&self->_appLaunchesAtCoarseGeoHash9ForApp;
+  toCopy[146] |= 0x40000uLL;
   v15 = self->_has;
   if ((v15 & 0x4000000) == 0)
   {
@@ -6743,8 +6743,8 @@ LABEL_106:
   }
 
 LABEL_258:
-  v4[27] = *&self->_appLaunchesAtSpecificGeoHash0ForApp;
-  v4[146] |= 0x4000000uLL;
+  toCopy[27] = *&self->_appLaunchesAtSpecificGeoHash0ForApp;
+  toCopy[146] |= 0x4000000uLL;
   v15 = self->_has;
   if ((v15 & 0x100000000) == 0)
   {
@@ -6758,8 +6758,8 @@ LABEL_107:
   }
 
 LABEL_259:
-  v4[33] = *&self->_appLaunchesAtSpecificGeoHash1ForApp;
-  v4[146] |= 0x100000000uLL;
+  toCopy[33] = *&self->_appLaunchesAtSpecificGeoHash1ForApp;
+  toCopy[146] |= 0x100000000uLL;
   v15 = self->_has;
   if ((v15 & 0x200000000) == 0)
   {
@@ -6773,8 +6773,8 @@ LABEL_108:
   }
 
 LABEL_260:
-  v4[34] = *&self->_appLaunchesAtSpecificGeoHash2ForApp;
-  v4[146] |= 0x200000000uLL;
+  toCopy[34] = *&self->_appLaunchesAtSpecificGeoHash2ForApp;
+  toCopy[146] |= 0x200000000uLL;
   v15 = self->_has;
   if ((v15 & 0x400000000) == 0)
   {
@@ -6788,8 +6788,8 @@ LABEL_109:
   }
 
 LABEL_261:
-  v4[35] = *&self->_appLaunchesAtSpecificGeoHash3ForApp;
-  v4[146] |= 0x400000000uLL;
+  toCopy[35] = *&self->_appLaunchesAtSpecificGeoHash3ForApp;
+  toCopy[146] |= 0x400000000uLL;
   v15 = self->_has;
   if ((v15 & 0x800000000) == 0)
   {
@@ -6803,8 +6803,8 @@ LABEL_110:
   }
 
 LABEL_262:
-  v4[36] = *&self->_appLaunchesAtSpecificGeoHash4ForApp;
-  v4[146] |= 0x800000000uLL;
+  toCopy[36] = *&self->_appLaunchesAtSpecificGeoHash4ForApp;
+  toCopy[146] |= 0x800000000uLL;
   v15 = self->_has;
   if ((v15 & 0x1000000000) == 0)
   {
@@ -6818,8 +6818,8 @@ LABEL_111:
   }
 
 LABEL_263:
-  v4[37] = *&self->_appLaunchesAtSpecificGeoHash5ForApp;
-  v4[146] |= 0x1000000000uLL;
+  toCopy[37] = *&self->_appLaunchesAtSpecificGeoHash5ForApp;
+  toCopy[146] |= 0x1000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x2000000000) == 0)
   {
@@ -6833,8 +6833,8 @@ LABEL_112:
   }
 
 LABEL_264:
-  v4[38] = *&self->_appLaunchesAtSpecificGeoHash6ForApp;
-  v4[146] |= 0x2000000000uLL;
+  toCopy[38] = *&self->_appLaunchesAtSpecificGeoHash6ForApp;
+  toCopy[146] |= 0x2000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x4000000000) == 0)
   {
@@ -6848,8 +6848,8 @@ LABEL_113:
   }
 
 LABEL_265:
-  v4[39] = *&self->_appLaunchesAtSpecificGeoHash7ForApp;
-  v4[146] |= 0x4000000000uLL;
+  toCopy[39] = *&self->_appLaunchesAtSpecificGeoHash7ForApp;
+  toCopy[146] |= 0x4000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x8000000000) == 0)
   {
@@ -6863,8 +6863,8 @@ LABEL_114:
   }
 
 LABEL_266:
-  v4[40] = *&self->_appLaunchesAtSpecificGeoHash8ForApp;
-  v4[146] |= 0x8000000000uLL;
+  toCopy[40] = *&self->_appLaunchesAtSpecificGeoHash8ForApp;
+  toCopy[146] |= 0x8000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x10000000000) == 0)
   {
@@ -6878,8 +6878,8 @@ LABEL_115:
   }
 
 LABEL_267:
-  v4[41] = *&self->_appLaunchesAtSpecificGeoHash9ForApp;
-  v4[146] |= 0x10000000000uLL;
+  toCopy[41] = *&self->_appLaunchesAtSpecificGeoHash9ForApp;
+  toCopy[146] |= 0x10000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x8000000) == 0)
   {
@@ -6893,8 +6893,8 @@ LABEL_116:
   }
 
 LABEL_268:
-  v4[28] = *&self->_appLaunchesAtSpecificGeoHash10ForApp;
-  v4[146] |= 0x8000000uLL;
+  toCopy[28] = *&self->_appLaunchesAtSpecificGeoHash10ForApp;
+  toCopy[146] |= 0x8000000uLL;
   v15 = self->_has;
   if ((v15 & 0x10000000) == 0)
   {
@@ -6908,8 +6908,8 @@ LABEL_117:
   }
 
 LABEL_269:
-  v4[29] = *&self->_appLaunchesAtSpecificGeoHash11ForApp;
-  v4[146] |= 0x10000000uLL;
+  toCopy[29] = *&self->_appLaunchesAtSpecificGeoHash11ForApp;
+  toCopy[146] |= 0x10000000uLL;
   v15 = self->_has;
   if ((v15 & 0x20000000) == 0)
   {
@@ -6923,8 +6923,8 @@ LABEL_118:
   }
 
 LABEL_270:
-  v4[30] = *&self->_appLaunchesAtSpecificGeoHash12ForApp;
-  v4[146] |= 0x20000000uLL;
+  toCopy[30] = *&self->_appLaunchesAtSpecificGeoHash12ForApp;
+  toCopy[146] |= 0x20000000uLL;
   v15 = self->_has;
   if ((v15 & 0x40000000) == 0)
   {
@@ -6938,35 +6938,35 @@ LABEL_119:
   }
 
 LABEL_271:
-  v4[31] = *&self->_appLaunchesAtSpecificGeoHash13ForApp;
-  v4[146] |= 0x40000000uLL;
+  toCopy[31] = *&self->_appLaunchesAtSpecificGeoHash13ForApp;
+  toCopy[146] |= 0x40000000uLL;
   if ((*&self->_has & 0x80000000) != 0)
   {
 LABEL_120:
-    v4[32] = *&self->_appLaunchesAtSpecificGeoHash14ForApp;
-    v4[146] |= 0x80000000uLL;
+    toCopy[32] = *&self->_appLaunchesAtSpecificGeoHash14ForApp;
+    toCopy[146] |= 0x80000000uLL;
   }
 
 LABEL_121:
   v16 = *(&self->_has + 1);
   if ((v16 & 0x100000000000) != 0)
   {
-    v4[109] = *&self->_appNumberOfSpecificGeohashesForApp;
-    v4[147] |= 0x100000000000uLL;
+    toCopy[109] = *&self->_appNumberOfSpecificGeohashesForApp;
+    toCopy[147] |= 0x100000000000uLL;
     v16 = *(&self->_has + 1);
   }
 
   if ((v16 & 0x80000000000) != 0)
   {
-    v4[108] = *&self->_appNumberOfCoarseGeohashesForApp;
-    v4[147] |= 0x80000000000uLL;
+    toCopy[108] = *&self->_appNumberOfCoarseGeohashesForApp;
+    toCopy[147] |= 0x80000000000uLL;
   }
 
   v17 = *p_has;
   if ((*p_has & 0x40) != 0)
   {
-    v4[7] = *&self->_appEntropyForTimeBuckets;
-    v4[146] |= 0x40uLL;
+    toCopy[7] = *&self->_appEntropyForTimeBuckets;
+    toCopy[146] |= 0x40uLL;
     v17 = self->_has;
     if ((v17 & 0x20) == 0)
     {
@@ -6985,8 +6985,8 @@ LABEL_127:
     goto LABEL_127;
   }
 
-  v4[6] = *&self->_appEntropyForSpecificGeoHash;
-  v4[146] |= 0x20uLL;
+  toCopy[6] = *&self->_appEntropyForSpecificGeoHash;
+  toCopy[146] |= 0x20uLL;
   v17 = self->_has;
   if ((v17 & 0x10) == 0)
   {
@@ -7000,8 +7000,8 @@ LABEL_128:
   }
 
 LABEL_275:
-  v4[5] = *&self->_appEntropyForCoarseGeoHash;
-  v4[146] |= 0x10uLL;
+  toCopy[5] = *&self->_appEntropyForCoarseGeoHash;
+  toCopy[146] |= 0x10uLL;
   v17 = self->_has;
   if ((v17 & 0x40000000000) == 0)
   {
@@ -7015,8 +7015,8 @@ LABEL_129:
   }
 
 LABEL_276:
-  v4[43] = *&self->_appLaunchesAtSpecificGeoHashForAppInContext;
-  v4[146] |= 0x40000000000uLL;
+  toCopy[43] = *&self->_appLaunchesAtSpecificGeoHashForAppInContext;
+  toCopy[146] |= 0x40000000000uLL;
   v17 = self->_has;
   if ((v17 & 0x100000) == 0)
   {
@@ -7030,8 +7030,8 @@ LABEL_130:
   }
 
 LABEL_277:
-  v4[21] = *&self->_appLaunchesAtCoarseGeoHashForAppInContext;
-  v4[146] |= 0x100000uLL;
+  toCopy[21] = *&self->_appLaunchesAtCoarseGeoHashForAppInContext;
+  toCopy[146] |= 0x100000uLL;
   v17 = self->_has;
   if ((v17 & 0x400000) == 0)
   {
@@ -7045,8 +7045,8 @@ LABEL_131:
   }
 
 LABEL_278:
-  v4[23] = *&self->_appLaunchesAtDayOfWeekForApp;
-  v4[146] |= 0x400000uLL;
+  toCopy[23] = *&self->_appLaunchesAtDayOfWeekForApp;
+  toCopy[146] |= 0x400000uLL;
   v17 = self->_has;
   if ((v17 & 0x200000000000) == 0)
   {
@@ -7060,8 +7060,8 @@ LABEL_132:
   }
 
 LABEL_279:
-  v4[46] = *&self->_appLaunchesAtTimeAndDayForAppInContext;
-  v4[146] |= 0x200000000000uLL;
+  toCopy[46] = *&self->_appLaunchesAtTimeAndDayForAppInContext;
+  toCopy[146] |= 0x200000000000uLL;
   v17 = self->_has;
   if ((v17 & 0x400000000000) == 0)
   {
@@ -7075,8 +7075,8 @@ LABEL_133:
   }
 
 LABEL_280:
-  v4[47] = *&self->_appLaunchesAtTimeAndDayInContext;
-  v4[146] |= 0x400000000000uLL;
+  toCopy[47] = *&self->_appLaunchesAtTimeAndDayInContext;
+  toCopy[146] |= 0x400000000000uLL;
   v17 = self->_has;
   if ((v17 & 0x100000000000) == 0)
   {
@@ -7090,8 +7090,8 @@ LABEL_134:
   }
 
 LABEL_281:
-  v4[45] = *&self->_appLaunchesAtTimeAndDayForApp;
-  v4[146] |= 0x100000000000uLL;
+  toCopy[45] = *&self->_appLaunchesAtTimeAndDayForApp;
+  toCopy[146] |= 0x100000000000uLL;
   v17 = self->_has;
   if ((v17 & 0x200000) == 0)
   {
@@ -7105,8 +7105,8 @@ LABEL_135:
   }
 
 LABEL_282:
-  v4[22] = *&self->_appLaunchesAtCoarseGeoHashInContext;
-  v4[146] |= 0x200000uLL;
+  toCopy[22] = *&self->_appLaunchesAtCoarseGeoHashInContext;
+  toCopy[146] |= 0x200000uLL;
   v17 = self->_has;
   if ((v17 & 0x80000) == 0)
   {
@@ -7120,8 +7120,8 @@ LABEL_136:
   }
 
 LABEL_283:
-  v4[20] = *&self->_appLaunchesAtCoarseGeoHashForApp;
-  v4[146] |= 0x80000uLL;
+  toCopy[20] = *&self->_appLaunchesAtCoarseGeoHashForApp;
+  toCopy[146] |= 0x80000uLL;
   v17 = self->_has;
   if ((v17 & 0x80000000000) == 0)
   {
@@ -7135,41 +7135,41 @@ LABEL_137:
   }
 
 LABEL_284:
-  v4[44] = *&self->_appLaunchesAtSpecificGeoHashInContext;
-  v4[146] |= 0x80000000000uLL;
+  toCopy[44] = *&self->_appLaunchesAtSpecificGeoHashInContext;
+  toCopy[146] |= 0x80000000000uLL;
   if ((*&self->_has & 0x20000000000) != 0)
   {
 LABEL_138:
-    v4[42] = *&self->_appLaunchesAtSpecificGeoHashForApp;
-    v4[146] |= 0x20000000000uLL;
+    toCopy[42] = *&self->_appLaunchesAtSpecificGeoHashForApp;
+    toCopy[146] |= 0x20000000000uLL;
   }
 
 LABEL_139:
   v18 = *(&self->_has + 1);
   if (v18)
   {
-    v4[65] = *&self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate;
-    v4[147] |= 1uLL;
+    toCopy[65] = *&self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate;
+    toCopy[147] |= 1uLL;
     v18 = *(&self->_has + 1);
   }
 
   if ((v18 & 2) != 0)
   {
-    v4[66] = *&self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate;
-    v4[147] |= 2uLL;
+    toCopy[66] = *&self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate;
+    toCopy[147] |= 2uLL;
   }
 
   if ((*(&self->_has + 16) & 2) != 0)
   {
-    v4[130] = *&self->_isLocationServicesDisabled;
-    *(v4 + 296) |= 2u;
+    toCopy[130] = *&self->_isLocationServicesDisabled;
+    *(toCopy + 296) |= 2u;
   }
 
   v19 = *(&self->_has + 1);
   if ((v19 & 0x40000000) != 0)
   {
-    v4[95] = *&self->_appLaunchesInTwoHourTimeBucketForAppInContext;
-    v4[147] |= 0x40000000uLL;
+    toCopy[95] = *&self->_appLaunchesInTwoHourTimeBucketForAppInContext;
+    toCopy[147] |= 0x40000000uLL;
     v19 = *(&self->_has + 1);
     if ((v19 & 0x80000000) == 0)
     {
@@ -7188,8 +7188,8 @@ LABEL_147:
     goto LABEL_147;
   }
 
-  v4[96] = *&self->_appLaunchesInTwoHourTimeBucketInContext;
-  v4[147] |= 0x80000000uLL;
+  toCopy[96] = *&self->_appLaunchesInTwoHourTimeBucketInContext;
+  toCopy[147] |= 0x80000000uLL;
   v19 = *(&self->_has + 1);
   if ((v19 & 0x20000000) == 0)
   {
@@ -7203,21 +7203,21 @@ LABEL_148:
   }
 
 LABEL_288:
-  v4[94] = *&self->_appLaunchesInTwoHourTimeBucketForApp;
-  v4[147] |= 0x20000000uLL;
+  toCopy[94] = *&self->_appLaunchesInTwoHourTimeBucketForApp;
+  toCopy[147] |= 0x20000000uLL;
   if ((*(&self->_has + 1) & 0x20000000000000) != 0)
   {
 LABEL_149:
-    v4[118] = *&self->_currentTimeBucketFromZeroToTwentyFour;
-    v4[147] |= 0x20000000000000uLL;
+    toCopy[118] = *&self->_currentTimeBucketFromZeroToTwentyFour;
+    toCopy[147] |= 0x20000000000000uLL;
   }
 
 LABEL_150:
   v20 = *p_has;
   if ((*p_has & 0x400000000000000) != 0)
   {
-    v4[59] = *&self->_appLaunchesAtZoom7GeoHashForAppInContext;
-    v4[146] |= 0x400000000000000uLL;
+    toCopy[59] = *&self->_appLaunchesAtZoom7GeoHashForAppInContext;
+    toCopy[146] |= 0x400000000000000uLL;
     v20 = self->_has;
     if ((v20 & 0x800000000000000) == 0)
     {
@@ -7236,8 +7236,8 @@ LABEL_152:
     goto LABEL_152;
   }
 
-  v4[60] = *&self->_appLaunchesAtZoom7GeoHashInContext;
-  v4[146] |= 0x800000000000000uLL;
+  toCopy[60] = *&self->_appLaunchesAtZoom7GeoHashInContext;
+  toCopy[146] |= 0x800000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x200000000000000) == 0)
   {
@@ -7251,8 +7251,8 @@ LABEL_153:
   }
 
 LABEL_292:
-  v4[58] = *&self->_appLaunchesAtZoom7GeoHashForApp;
-  v4[146] |= 0x200000000000000uLL;
+  toCopy[58] = *&self->_appLaunchesAtZoom7GeoHashForApp;
+  toCopy[146] |= 0x200000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x800000000000) == 0)
   {
@@ -7266,8 +7266,8 @@ LABEL_154:
   }
 
 LABEL_293:
-  v4[48] = *&self->_appLaunchesAtZoom7GeoHash0ForApp;
-  v4[146] |= 0x800000000000uLL;
+  toCopy[48] = *&self->_appLaunchesAtZoom7GeoHash0ForApp;
+  toCopy[146] |= 0x800000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x1000000000000) == 0)
   {
@@ -7281,8 +7281,8 @@ LABEL_155:
   }
 
 LABEL_294:
-  v4[49] = *&self->_appLaunchesAtZoom7GeoHash1ForApp;
-  v4[146] |= 0x1000000000000uLL;
+  toCopy[49] = *&self->_appLaunchesAtZoom7GeoHash1ForApp;
+  toCopy[146] |= 0x1000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x2000000000000) == 0)
   {
@@ -7296,8 +7296,8 @@ LABEL_156:
   }
 
 LABEL_295:
-  v4[50] = *&self->_appLaunchesAtZoom7GeoHash2ForApp;
-  v4[146] |= 0x2000000000000uLL;
+  toCopy[50] = *&self->_appLaunchesAtZoom7GeoHash2ForApp;
+  toCopy[146] |= 0x2000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x4000000000000) == 0)
   {
@@ -7311,8 +7311,8 @@ LABEL_157:
   }
 
 LABEL_296:
-  v4[51] = *&self->_appLaunchesAtZoom7GeoHash3ForApp;
-  v4[146] |= 0x4000000000000uLL;
+  toCopy[51] = *&self->_appLaunchesAtZoom7GeoHash3ForApp;
+  toCopy[146] |= 0x4000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x8000000000000) == 0)
   {
@@ -7326,8 +7326,8 @@ LABEL_158:
   }
 
 LABEL_297:
-  v4[52] = *&self->_appLaunchesAtZoom7GeoHash4ForApp;
-  v4[146] |= 0x8000000000000uLL;
+  toCopy[52] = *&self->_appLaunchesAtZoom7GeoHash4ForApp;
+  toCopy[146] |= 0x8000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x10000000000000) == 0)
   {
@@ -7341,8 +7341,8 @@ LABEL_159:
   }
 
 LABEL_298:
-  v4[53] = *&self->_appLaunchesAtZoom7GeoHash5ForApp;
-  v4[146] |= 0x10000000000000uLL;
+  toCopy[53] = *&self->_appLaunchesAtZoom7GeoHash5ForApp;
+  toCopy[146] |= 0x10000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x20000000000000) == 0)
   {
@@ -7356,8 +7356,8 @@ LABEL_160:
   }
 
 LABEL_299:
-  v4[54] = *&self->_appLaunchesAtZoom7GeoHash6ForApp;
-  v4[146] |= 0x20000000000000uLL;
+  toCopy[54] = *&self->_appLaunchesAtZoom7GeoHash6ForApp;
+  toCopy[146] |= 0x20000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x40000000000000) == 0)
   {
@@ -7371,8 +7371,8 @@ LABEL_161:
   }
 
 LABEL_300:
-  v4[55] = *&self->_appLaunchesAtZoom7GeoHash7ForApp;
-  v4[146] |= 0x40000000000000uLL;
+  toCopy[55] = *&self->_appLaunchesAtZoom7GeoHash7ForApp;
+  toCopy[146] |= 0x40000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x80000000000000) == 0)
   {
@@ -7386,8 +7386,8 @@ LABEL_162:
   }
 
 LABEL_301:
-  v4[56] = *&self->_appLaunchesAtZoom7GeoHash8ForApp;
-  v4[146] |= 0x80000000000000uLL;
+  toCopy[56] = *&self->_appLaunchesAtZoom7GeoHash8ForApp;
+  toCopy[146] |= 0x80000000000000uLL;
   v20 = self->_has;
   if ((v20 & 0x100000000000000) == 0)
   {
@@ -7401,74 +7401,74 @@ LABEL_163:
   }
 
 LABEL_302:
-  v4[57] = *&self->_appLaunchesAtZoom7GeoHash9ForApp;
-  v4[146] |= 0x100000000000000uLL;
+  toCopy[57] = *&self->_appLaunchesAtZoom7GeoHash9ForApp;
+  toCopy[146] |= 0x100000000000000uLL;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_164:
-    v4[8] = *&self->_appEntropyForZoom7GeoHash;
-    v4[146] |= 0x80uLL;
+    toCopy[8] = *&self->_appEntropyForZoom7GeoHash;
+    toCopy[146] |= 0x80uLL;
   }
 
 LABEL_165:
   if ((*(&self->_has + 13) & 0x20) != 0)
   {
-    v4[110] = *&self->_appNumberOfZoom7GeohashesForApp;
-    v4[147] |= 0x200000000000uLL;
+    toCopy[110] = *&self->_appNumberOfZoom7GeohashesForApp;
+    toCopy[147] |= 0x200000000000uLL;
   }
 
   v21 = *p_has;
   if ((*p_has & 0x2000000) != 0)
   {
-    v4[26] = *&self->_appLaunchesAtSSIDForAppInContext;
-    v4[146] |= 0x2000000uLL;
+    toCopy[26] = *&self->_appLaunchesAtSSIDForAppInContext;
+    toCopy[146] |= 0x2000000uLL;
     v21 = self->_has;
   }
 
   if ((v21 & 0x1000000) != 0)
   {
-    v4[25] = *&self->_appLaunchesAtSSIDForApp;
-    v4[146] |= 0x1000000uLL;
+    toCopy[25] = *&self->_appLaunchesAtSSIDForApp;
+    toCopy[146] |= 0x1000000uLL;
   }
 
   v22 = *(&self->_has + 1);
   if ((v22 & 4) != 0)
   {
-    v4[67] = *&self->_appLaunchesForCoreMotionForAppInContext;
-    v4[147] |= 4uLL;
+    toCopy[67] = *&self->_appLaunchesForCoreMotionForAppInContext;
+    toCopy[147] |= 4uLL;
     v22 = *(&self->_has + 1);
   }
 
   if ((v22 & 8) != 0)
   {
-    v4[68] = *&self->_appLaunchesInAirplaneModeForAppInContext;
-    v4[147] |= 8uLL;
+    toCopy[68] = *&self->_appLaunchesInAirplaneModeForAppInContext;
+    toCopy[147] |= 8uLL;
   }
 
   if ((*(&self->_has + 16) & 0x40) != 0)
   {
-    v4[135] = *&self->_poiPopularityForAppInContext;
-    *(v4 + 296) |= 0x40u;
+    toCopy[135] = *&self->_poiPopularityForAppInContext;
+    *(toCopy + 296) |= 0x40u;
   }
 
   v23 = *p_has;
   if ((v23 & 0x100) != 0)
   {
-    v4[9] = *&self->_appLaunchPopularityAtPOIForAppInContext;
-    v4[146] |= 0x100uLL;
+    toCopy[9] = *&self->_appLaunchPopularityAtPOIForAppInContext;
+    toCopy[146] |= 0x100uLL;
     v23 = self->_has;
   }
 
   if ((v23 & 0x800000) != 0)
   {
-    v4[24] = *&self->_appLaunchesAtPOIForAppInContext;
-    v4[146] |= 0x800000uLL;
+    toCopy[24] = *&self->_appLaunchesAtPOIForAppInContext;
+    toCopy[146] |= 0x800000uLL;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   p_has = &self->_has;
   v6 = *(&self->_has + 4);
   if ((v6 & 0x10000) != 0)
@@ -9321,20 +9321,20 @@ LABEL_165:
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_727;
   }
 
   v5 = *(&self->_has + 4);
-  v6 = v4 + 146;
-  v7 = *(v4 + 296);
+  v6 = equalCopy + 146;
+  v7 = *(equalCopy + 296);
   if ((v5 & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_unlockTime != *(v4 + 145))
+    if ((v7 & 0x10000) == 0 || self->_unlockTime != *(equalCopy + 145))
     {
       goto LABEL_727;
     }
@@ -9347,7 +9347,7 @@ LABEL_165:
 
   if ((v5 & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_launchTimePopularity != *(v4 + 133))
+    if ((v7 & 0x10) == 0 || self->_launchTimePopularity != *(equalCopy + 133))
     {
       goto LABEL_727;
     }
@@ -9360,7 +9360,7 @@ LABEL_165:
 
   if ((v5 & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_timeOfDayBucket != *(v4 + 137))
+    if ((v7 & 0x100) == 0 || self->_timeOfDayBucket != *(equalCopy + 137))
     {
       goto LABEL_727;
     }
@@ -9373,7 +9373,7 @@ LABEL_165:
 
   if ((v5 & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_timeOfDayPopularity != *(v4 + 138))
+    if ((v7 & 0x200) == 0 || self->_timeOfDayPopularity != *(equalCopy + 138))
     {
       goto LABEL_727;
     }
@@ -9385,10 +9385,10 @@ LABEL_165:
   }
 
   v8 = *(&self->_has + 1);
-  v9 = v4[147];
+  v9 = equalCopy[147];
   if ((v8 & 0x8000000000000) != 0)
   {
-    if ((v9 & 0x8000000000000) == 0 || self->_coarseTimeOfDayPopularity != *(v4 + 116))
+    if ((v9 & 0x8000000000000) == 0 || self->_coarseTimeOfDayPopularity != *(equalCopy + 116))
     {
       goto LABEL_727;
     }
@@ -9401,7 +9401,7 @@ LABEL_165:
 
   if ((v5 & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_launchPopularity != *(v4 + 132))
+    if ((v7 & 8) == 0 || self->_launchPopularity != *(equalCopy + 132))
     {
       goto LABEL_727;
     }
@@ -9414,7 +9414,7 @@ LABEL_165:
 
   if ((v5 & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_launchDayOfWeekPopularity != *(v4 + 131))
+    if ((v7 & 4) == 0 || self->_launchDayOfWeekPopularity != *(equalCopy + 131))
     {
       goto LABEL_727;
     }
@@ -9427,7 +9427,7 @@ LABEL_165:
 
   if ((v8 & 0x40000000000000) != 0)
   {
-    if ((v9 & 0x40000000000000) == 0 || self->_dayOfWeekBucket != *(v4 + 119))
+    if ((v9 & 0x40000000000000) == 0 || self->_dayOfWeekBucket != *(equalCopy + 119))
     {
       goto LABEL_727;
     }
@@ -9440,7 +9440,7 @@ LABEL_165:
 
   if ((v8 & 0x80000000000000) != 0)
   {
-    if ((v9 & 0x80000000000000) == 0 || self->_dayOfWeekPopularity != *(v4 + 120))
+    if ((v9 & 0x80000000000000) == 0 || self->_dayOfWeekPopularity != *(equalCopy + 120))
     {
       goto LABEL_727;
     }
@@ -9453,7 +9453,7 @@ LABEL_165:
 
   if ((v8 & 0x800000000000000) != 0)
   {
-    if ((v9 & 0x800000000000000) == 0 || self->_entropyLaunchPopularity != *(v4 + 124))
+    if ((v9 & 0x800000000000000) == 0 || self->_entropyLaunchPopularity != *(equalCopy + 124))
     {
       goto LABEL_727;
     }
@@ -9466,7 +9466,7 @@ LABEL_165:
 
   if ((v8 & 0x100000000000000) != 0)
   {
-    if ((v9 & 0x100000000000000) == 0 || self->_entropyDayOfWeekPopularity != *(v4 + 121))
+    if ((v9 & 0x100000000000000) == 0 || self->_entropyDayOfWeekPopularity != *(equalCopy + 121))
     {
       goto LABEL_727;
     }
@@ -9479,7 +9479,7 @@ LABEL_165:
 
   if ((v8 & 0x400000000000000) != 0)
   {
-    if ((v9 & 0x400000000000000) == 0 || self->_entropyDayOfWeekPopularityByDay != *(v4 + 123))
+    if ((v9 & 0x400000000000000) == 0 || self->_entropyDayOfWeekPopularityByDay != *(equalCopy + 123))
     {
       goto LABEL_727;
     }
@@ -9492,7 +9492,7 @@ LABEL_165:
 
   if ((v8 & 0x200000000000000) != 0)
   {
-    if ((v9 & 0x200000000000000) == 0 || self->_entropyDayOfWeekPopularityByApp != *(v4 + 122))
+    if ((v9 & 0x200000000000000) == 0 || self->_entropyDayOfWeekPopularityByApp != *(equalCopy + 122))
     {
       goto LABEL_727;
     }
@@ -9505,7 +9505,7 @@ LABEL_165:
 
   if (v8 < 0)
   {
-    if ((v9 & 0x8000000000000000) == 0 || self->_entropyTrendingPopularity != *(v4 + 128))
+    if ((v9 & 0x8000000000000000) == 0 || self->_entropyTrendingPopularity != *(equalCopy + 128))
     {
       goto LABEL_727;
     }
@@ -9518,7 +9518,7 @@ LABEL_165:
 
   if ((v8 & 0x1000000000000000) != 0)
   {
-    if ((v9 & 0x1000000000000000) == 0 || self->_entropySSIDPopularity != *(v4 + 125))
+    if ((v9 & 0x1000000000000000) == 0 || self->_entropySSIDPopularity != *(equalCopy + 125))
     {
       goto LABEL_727;
     }
@@ -9531,7 +9531,7 @@ LABEL_165:
 
   if ((v8 & 0x4000000000000000) != 0)
   {
-    if ((v9 & 0x4000000000000000) == 0 || self->_entropySSIDPopularityBySSID != *(v4 + 127))
+    if ((v9 & 0x4000000000000000) == 0 || self->_entropySSIDPopularityBySSID != *(equalCopy + 127))
     {
       goto LABEL_727;
     }
@@ -9544,7 +9544,7 @@ LABEL_165:
 
   if ((v8 & 0x2000000000000000) != 0)
   {
-    if ((v9 & 0x2000000000000000) == 0 || self->_entropySSIDPopularityByApp != *(v4 + 126))
+    if ((v9 & 0x2000000000000000) == 0 || self->_entropySSIDPopularityByApp != *(equalCopy + 126))
     {
       goto LABEL_727;
     }
@@ -9557,7 +9557,7 @@ LABEL_165:
 
   if ((v5 & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_totalNumberOfLaunches != *(v4 + 141))
+    if ((v7 & 0x1000) == 0 || self->_totalNumberOfLaunches != *(equalCopy + 141))
     {
       goto LABEL_727;
     }
@@ -9572,7 +9572,7 @@ LABEL_165:
   v11 = *v6;
   if (has)
   {
-    if ((v11 & 1) == 0 || self->_airplaneModePopularity != *(v4 + 1))
+    if ((v11 & 1) == 0 || self->_airplaneModePopularity != *(equalCopy + 1))
     {
       goto LABEL_727;
     }
@@ -9585,7 +9585,7 @@ LABEL_165:
 
   if ((v5 & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_totalNumberOfAirplaneModeLaunches != *(v4 + 139))
+    if ((v7 & 0x400) == 0 || self->_totalNumberOfAirplaneModeLaunches != *(equalCopy + 139))
     {
       goto LABEL_727;
     }
@@ -9598,7 +9598,7 @@ LABEL_165:
 
   if ((v5 & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_trendingPopularity != *(v4 + 144))
+    if ((v7 & 0x8000) == 0 || self->_trendingPopularity != *(equalCopy + 144))
     {
       goto LABEL_727;
     }
@@ -9611,7 +9611,7 @@ LABEL_165:
 
   if ((v5 & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_totalNumberOfTrendingLaunches != *(v4 + 143))
+    if ((v7 & 0x4000) == 0 || self->_totalNumberOfTrendingLaunches != *(equalCopy + 143))
     {
       goto LABEL_727;
     }
@@ -9624,7 +9624,7 @@ LABEL_165:
 
   if ((v5 & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_sSIDPopularity != *(v4 + 136))
+    if ((v7 & 0x80) == 0 || self->_sSIDPopularity != *(equalCopy + 136))
     {
       goto LABEL_727;
     }
@@ -9637,7 +9637,7 @@ LABEL_165:
 
   if ((v5 & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_totalNumberOfSSIDLaunches != *(v4 + 142))
+    if ((v7 & 0x2000) == 0 || self->_totalNumberOfSSIDLaunches != *(equalCopy + 142))
     {
       goto LABEL_727;
     }
@@ -9650,7 +9650,7 @@ LABEL_165:
 
   if ((v5 & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_onWifi != *(v4 + 134))
+    if ((v7 & 0x20) == 0 || self->_onWifi != *(equalCopy + 134))
     {
       goto LABEL_727;
     }
@@ -9663,7 +9663,7 @@ LABEL_165:
 
   if ((v8 & 0x10000000000000) != 0)
   {
-    if ((v9 & 0x10000000000000) == 0 || self->_coreMotionPopularity != *(v4 + 117))
+    if ((v9 & 0x10000000000000) == 0 || self->_coreMotionPopularity != *(equalCopy + 117))
     {
       goto LABEL_727;
     }
@@ -9676,7 +9676,7 @@ LABEL_165:
 
   if ((v5 & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_totalNumberOfCoreMotionLaunches != *(v4 + 140))
+    if ((v7 & 0x800) == 0 || self->_totalNumberOfCoreMotionLaunches != *(equalCopy + 140))
     {
       goto LABEL_727;
     }
@@ -9689,7 +9689,7 @@ LABEL_165:
 
   if (v5)
   {
-    if ((v7 & 1) == 0 || self->_isDateInWeekendOnDevice != *(v4 + 129))
+    if ((v7 & 1) == 0 || self->_isDateInWeekendOnDevice != *(equalCopy + 129))
     {
       goto LABEL_727;
     }
@@ -9702,7 +9702,7 @@ LABEL_165:
 
   if ((has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_ambientLightTypePopularity != *(v4 + 3))
+    if ((v11 & 4) == 0 || self->_ambientLightTypePopularity != *(equalCopy + 3))
     {
       goto LABEL_727;
     }
@@ -9715,7 +9715,7 @@ LABEL_165:
 
   if ((has & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_ambientLightTypeLaunchPopularity != *(v4 + 2))
+    if ((v11 & 2) == 0 || self->_ambientLightTypeLaunchPopularity != *(equalCopy + 2))
     {
       goto LABEL_727;
     }
@@ -9728,7 +9728,7 @@ LABEL_165:
 
   if ((v8 & 0x2000000000000) != 0)
   {
-    if ((v9 & 0x2000000000000) == 0 || self->_appTimeOfDayLaunches != *(v4 + 114))
+    if ((v9 & 0x2000000000000) == 0 || self->_appTimeOfDayLaunches != *(equalCopy + 114))
     {
       goto LABEL_727;
     }
@@ -9741,7 +9741,7 @@ LABEL_165:
 
   if ((has & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_appDayOfWeekLaunches != *(v4 + 4))
+    if ((v11 & 8) == 0 || self->_appDayOfWeekLaunches != *(equalCopy + 4))
     {
       goto LABEL_727;
     }
@@ -9754,7 +9754,7 @@ LABEL_165:
 
   if ((v8 & 0x1000000000000) != 0)
   {
-    if ((v9 & 0x1000000000000) == 0 || self->_appTimeAndDayOfWeekPopularity != *(v4 + 113))
+    if ((v9 & 0x1000000000000) == 0 || self->_appTimeAndDayOfWeekPopularity != *(equalCopy + 113))
     {
       goto LABEL_727;
     }
@@ -9767,7 +9767,7 @@ LABEL_165:
 
   if ((v8 & 0x400000000000) != 0)
   {
-    if ((v9 & 0x400000000000) == 0 || self->_appPopularityGivenTimeAndDayOfWeek != *(v4 + 111))
+    if ((v9 & 0x400000000000) == 0 || self->_appPopularityGivenTimeAndDayOfWeek != *(equalCopy + 111))
     {
       goto LABEL_727;
     }
@@ -9780,7 +9780,7 @@ LABEL_165:
 
   if ((v8 & 0x800000000000) != 0)
   {
-    if ((v9 & 0x800000000000) == 0 || self->_appPopularityOfTimeAndDayOfWeekGivenApp != *(v4 + 112))
+    if ((v9 & 0x800000000000) == 0 || self->_appPopularityOfTimeAndDayOfWeekGivenApp != *(equalCopy + 112))
     {
       goto LABEL_727;
     }
@@ -9793,7 +9793,7 @@ LABEL_165:
 
   if ((v8 & 0x4000000000000) != 0)
   {
-    if ((v9 & 0x4000000000000) == 0 || self->_appTotalNumberOfTimeAndDayOfWeekLaunches != *(v4 + 115))
+    if ((v9 & 0x4000000000000) == 0 || self->_appTotalNumberOfTimeAndDayOfWeekLaunches != *(equalCopy + 115))
     {
       goto LABEL_727;
     }
@@ -9806,7 +9806,7 @@ LABEL_165:
 
   if ((has & 0x4000000000000000) != 0)
   {
-    if ((v11 & 0x4000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForAppInContext != *(v4 + 63))
+    if ((v11 & 0x4000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForAppInContext != *(equalCopy + 63))
     {
       goto LABEL_727;
     }
@@ -9819,7 +9819,7 @@ LABEL_165:
 
   if (has < 0)
   {
-    if ((v11 & 0x8000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationInContext != *(v4 + 64))
+    if ((v11 & 0x8000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationInContext != *(equalCopy + 64))
     {
       goto LABEL_727;
     }
@@ -9832,7 +9832,7 @@ LABEL_165:
 
   if ((has & 0x2000000000000000) != 0)
   {
-    if ((v11 & 0x2000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForApp != *(v4 + 62))
+    if ((v11 & 0x2000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForApp != *(equalCopy + 62))
     {
       goto LABEL_727;
     }
@@ -9845,7 +9845,7 @@ LABEL_165:
 
   if ((has & 0x1000000000000000) != 0)
   {
-    if ((v11 & 0x1000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts != *(v4 + 61))
+    if ((v11 & 0x1000000000000000) == 0 || self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts != *(equalCopy + 61))
     {
       goto LABEL_727;
     }
@@ -9858,7 +9858,7 @@ LABEL_165:
 
   if ((v8 & 0x20000000000) != 0)
   {
-    if ((v9 & 0x20000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForAppInContext != *(v4 + 106))
+    if ((v9 & 0x20000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForAppInContext != *(equalCopy + 106))
     {
       goto LABEL_727;
     }
@@ -9871,7 +9871,7 @@ LABEL_165:
 
   if ((v8 & 0x40000000000) != 0)
   {
-    if ((v9 & 0x40000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationInContext != *(v4 + 107))
+    if ((v9 & 0x40000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationInContext != *(equalCopy + 107))
     {
       goto LABEL_727;
     }
@@ -9884,7 +9884,7 @@ LABEL_165:
 
   if ((v8 & 0x10000000000) != 0)
   {
-    if ((v9 & 0x10000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForApp != *(v4 + 105))
+    if ((v9 & 0x10000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForApp != *(equalCopy + 105))
     {
       goto LABEL_727;
     }
@@ -9897,7 +9897,7 @@ LABEL_165:
 
   if ((v8 & 0x8000000000) != 0)
   {
-    if ((v9 & 0x8000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts != *(v4 + 104))
+    if ((v9 & 0x8000000000) == 0 || self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts != *(equalCopy + 104))
     {
       goto LABEL_727;
     }
@@ -9910,7 +9910,7 @@ LABEL_165:
 
   if ((v8 & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_appLaunchesInTimeBucket0ForApp != *(v4 + 69))
+    if ((v9 & 0x10) == 0 || self->_appLaunchesInTimeBucket0ForApp != *(equalCopy + 69))
     {
       goto LABEL_727;
     }
@@ -9923,7 +9923,7 @@ LABEL_165:
 
   if ((v8 & 0x8000) != 0)
   {
-    if ((v9 & 0x8000) == 0 || self->_appLaunchesInTimeBucket1ForApp != *(v4 + 80))
+    if ((v9 & 0x8000) == 0 || self->_appLaunchesInTimeBucket1ForApp != *(equalCopy + 80))
     {
       goto LABEL_727;
     }
@@ -9936,7 +9936,7 @@ LABEL_165:
 
   if ((v8 & 0x200000) != 0)
   {
-    if ((v9 & 0x200000) == 0 || self->_appLaunchesInTimeBucket2ForApp != *(v4 + 86))
+    if ((v9 & 0x200000) == 0 || self->_appLaunchesInTimeBucket2ForApp != *(equalCopy + 86))
     {
       goto LABEL_727;
     }
@@ -9949,7 +9949,7 @@ LABEL_165:
 
   if ((v8 & 0x400000) != 0)
   {
-    if ((v9 & 0x400000) == 0 || self->_appLaunchesInTimeBucket3ForApp != *(v4 + 87))
+    if ((v9 & 0x400000) == 0 || self->_appLaunchesInTimeBucket3ForApp != *(equalCopy + 87))
     {
       goto LABEL_727;
     }
@@ -9962,7 +9962,7 @@ LABEL_165:
 
   if ((v8 & 0x800000) != 0)
   {
-    if ((v9 & 0x800000) == 0 || self->_appLaunchesInTimeBucket4ForApp != *(v4 + 88))
+    if ((v9 & 0x800000) == 0 || self->_appLaunchesInTimeBucket4ForApp != *(equalCopy + 88))
     {
       goto LABEL_727;
     }
@@ -9975,7 +9975,7 @@ LABEL_165:
 
   if ((v8 & 0x1000000) != 0)
   {
-    if ((v9 & 0x1000000) == 0 || self->_appLaunchesInTimeBucket5ForApp != *(v4 + 89))
+    if ((v9 & 0x1000000) == 0 || self->_appLaunchesInTimeBucket5ForApp != *(equalCopy + 89))
     {
       goto LABEL_727;
     }
@@ -9988,7 +9988,7 @@ LABEL_165:
 
   if ((v8 & 0x2000000) != 0)
   {
-    if ((v9 & 0x2000000) == 0 || self->_appLaunchesInTimeBucket6ForApp != *(v4 + 90))
+    if ((v9 & 0x2000000) == 0 || self->_appLaunchesInTimeBucket6ForApp != *(equalCopy + 90))
     {
       goto LABEL_727;
     }
@@ -10001,7 +10001,7 @@ LABEL_165:
 
   if ((v8 & 0x4000000) != 0)
   {
-    if ((v9 & 0x4000000) == 0 || self->_appLaunchesInTimeBucket7ForApp != *(v4 + 91))
+    if ((v9 & 0x4000000) == 0 || self->_appLaunchesInTimeBucket7ForApp != *(equalCopy + 91))
     {
       goto LABEL_727;
     }
@@ -10014,7 +10014,7 @@ LABEL_165:
 
   if ((v8 & 0x8000000) != 0)
   {
-    if ((v9 & 0x8000000) == 0 || self->_appLaunchesInTimeBucket8ForApp != *(v4 + 92))
+    if ((v9 & 0x8000000) == 0 || self->_appLaunchesInTimeBucket8ForApp != *(equalCopy + 92))
     {
       goto LABEL_727;
     }
@@ -10027,7 +10027,7 @@ LABEL_165:
 
   if ((v8 & 0x10000000) != 0)
   {
-    if ((v9 & 0x10000000) == 0 || self->_appLaunchesInTimeBucket9ForApp != *(v4 + 93))
+    if ((v9 & 0x10000000) == 0 || self->_appLaunchesInTimeBucket9ForApp != *(equalCopy + 93))
     {
       goto LABEL_727;
     }
@@ -10040,7 +10040,7 @@ LABEL_165:
 
   if ((v8 & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_appLaunchesInTimeBucket10ForApp != *(v4 + 70))
+    if ((v9 & 0x20) == 0 || self->_appLaunchesInTimeBucket10ForApp != *(equalCopy + 70))
     {
       goto LABEL_727;
     }
@@ -10051,10 +10051,10 @@ LABEL_165:
     goto LABEL_727;
   }
 
-  v12 = v4[147];
+  v12 = equalCopy[147];
   if ((v8 & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_appLaunchesInTimeBucket11ForApp != *(v4 + 71))
+    if ((v12 & 0x40) == 0 || self->_appLaunchesInTimeBucket11ForApp != *(equalCopy + 71))
     {
       goto LABEL_727;
     }
@@ -10067,7 +10067,7 @@ LABEL_165:
 
   if ((v8 & 0x80) != 0)
   {
-    if ((v12 & 0x80) == 0 || self->_appLaunchesInTimeBucket12ForApp != *(v4 + 72))
+    if ((v12 & 0x80) == 0 || self->_appLaunchesInTimeBucket12ForApp != *(equalCopy + 72))
     {
       goto LABEL_727;
     }
@@ -10080,7 +10080,7 @@ LABEL_165:
 
   if ((v8 & 0x100) != 0)
   {
-    if ((v12 & 0x100) == 0 || self->_appLaunchesInTimeBucket13ForApp != *(v4 + 73))
+    if ((v12 & 0x100) == 0 || self->_appLaunchesInTimeBucket13ForApp != *(equalCopy + 73))
     {
       goto LABEL_727;
     }
@@ -10093,7 +10093,7 @@ LABEL_165:
 
   if ((v8 & 0x200) != 0)
   {
-    if ((v12 & 0x200) == 0 || self->_appLaunchesInTimeBucket14ForApp != *(v4 + 74))
+    if ((v12 & 0x200) == 0 || self->_appLaunchesInTimeBucket14ForApp != *(equalCopy + 74))
     {
       goto LABEL_727;
     }
@@ -10106,7 +10106,7 @@ LABEL_165:
 
   if ((v8 & 0x400) != 0)
   {
-    if ((v12 & 0x400) == 0 || self->_appLaunchesInTimeBucket15ForApp != *(v4 + 75))
+    if ((v12 & 0x400) == 0 || self->_appLaunchesInTimeBucket15ForApp != *(equalCopy + 75))
     {
       goto LABEL_727;
     }
@@ -10119,7 +10119,7 @@ LABEL_165:
 
   if ((v8 & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_appLaunchesInTimeBucket16ForApp != *(v4 + 76))
+    if ((v12 & 0x800) == 0 || self->_appLaunchesInTimeBucket16ForApp != *(equalCopy + 76))
     {
       goto LABEL_727;
     }
@@ -10132,7 +10132,7 @@ LABEL_165:
 
   if ((v8 & 0x1000) != 0)
   {
-    if ((v12 & 0x1000) == 0 || self->_appLaunchesInTimeBucket17ForApp != *(v4 + 77))
+    if ((v12 & 0x1000) == 0 || self->_appLaunchesInTimeBucket17ForApp != *(equalCopy + 77))
     {
       goto LABEL_727;
     }
@@ -10145,7 +10145,7 @@ LABEL_165:
 
   if ((v8 & 0x2000) != 0)
   {
-    if ((v12 & 0x2000) == 0 || self->_appLaunchesInTimeBucket18ForApp != *(v4 + 78))
+    if ((v12 & 0x2000) == 0 || self->_appLaunchesInTimeBucket18ForApp != *(equalCopy + 78))
     {
       goto LABEL_727;
     }
@@ -10158,7 +10158,7 @@ LABEL_165:
 
   if ((v8 & 0x4000) != 0)
   {
-    if ((v12 & 0x4000) == 0 || self->_appLaunchesInTimeBucket19ForApp != *(v4 + 79))
+    if ((v12 & 0x4000) == 0 || self->_appLaunchesInTimeBucket19ForApp != *(equalCopy + 79))
     {
       goto LABEL_727;
     }
@@ -10171,7 +10171,7 @@ LABEL_165:
 
   if ((v8 & 0x10000) != 0)
   {
-    if ((v12 & 0x10000) == 0 || self->_appLaunchesInTimeBucket20ForApp != *(v4 + 81))
+    if ((v12 & 0x10000) == 0 || self->_appLaunchesInTimeBucket20ForApp != *(equalCopy + 81))
     {
       goto LABEL_727;
     }
@@ -10184,7 +10184,7 @@ LABEL_165:
 
   if ((v8 & 0x20000) != 0)
   {
-    if ((v12 & 0x20000) == 0 || self->_appLaunchesInTimeBucket21ForApp != *(v4 + 82))
+    if ((v12 & 0x20000) == 0 || self->_appLaunchesInTimeBucket21ForApp != *(equalCopy + 82))
     {
       goto LABEL_727;
     }
@@ -10197,7 +10197,7 @@ LABEL_165:
 
   if ((v8 & 0x40000) != 0)
   {
-    if ((v12 & 0x40000) == 0 || self->_appLaunchesInTimeBucket22ForApp != *(v4 + 83))
+    if ((v12 & 0x40000) == 0 || self->_appLaunchesInTimeBucket22ForApp != *(equalCopy + 83))
     {
       goto LABEL_727;
     }
@@ -10210,7 +10210,7 @@ LABEL_165:
 
   if ((v8 & 0x80000) != 0)
   {
-    if ((v12 & 0x80000) == 0 || self->_appLaunchesInTimeBucket23ForApp != *(v4 + 84))
+    if ((v12 & 0x80000) == 0 || self->_appLaunchesInTimeBucket23ForApp != *(equalCopy + 84))
     {
       goto LABEL_727;
     }
@@ -10223,7 +10223,7 @@ LABEL_165:
 
   if ((v8 & 0x100000) != 0)
   {
-    if ((v12 & 0x100000) == 0 || self->_appLaunchesInTimeBucket24ForApp != *(v4 + 85))
+    if ((v12 & 0x100000) == 0 || self->_appLaunchesInTimeBucket24ForApp != *(equalCopy + 85))
     {
       goto LABEL_727;
     }
@@ -10236,7 +10236,7 @@ LABEL_165:
 
   if ((v8 & 0x800000000) != 0)
   {
-    if ((v12 & 0x800000000) == 0 || self->_appLaunchesOnDayOfWeekSundayForApp != *(v4 + 100))
+    if ((v12 & 0x800000000) == 0 || self->_appLaunchesOnDayOfWeekSundayForApp != *(equalCopy + 100))
     {
       goto LABEL_727;
     }
@@ -10249,7 +10249,7 @@ LABEL_165:
 
   if ((v8 & 0x200000000) != 0)
   {
-    if ((v12 & 0x200000000) == 0 || self->_appLaunchesOnDayOfWeekMondayForApp != *(v4 + 98))
+    if ((v12 & 0x200000000) == 0 || self->_appLaunchesOnDayOfWeekMondayForApp != *(equalCopy + 98))
     {
       goto LABEL_727;
     }
@@ -10262,7 +10262,7 @@ LABEL_165:
 
   if ((v8 & 0x2000000000) != 0)
   {
-    if ((v12 & 0x2000000000) == 0 || self->_appLaunchesOnDayOfWeekTuesdayForApp != *(v4 + 102))
+    if ((v12 & 0x2000000000) == 0 || self->_appLaunchesOnDayOfWeekTuesdayForApp != *(equalCopy + 102))
     {
       goto LABEL_727;
     }
@@ -10275,7 +10275,7 @@ LABEL_165:
 
   if ((v8 & 0x4000000000) != 0)
   {
-    if ((v12 & 0x4000000000) == 0 || self->_appLaunchesOnDayOfWeekWednesdayForApp != *(v4 + 103))
+    if ((v12 & 0x4000000000) == 0 || self->_appLaunchesOnDayOfWeekWednesdayForApp != *(equalCopy + 103))
     {
       goto LABEL_727;
     }
@@ -10288,7 +10288,7 @@ LABEL_165:
 
   if ((v8 & 0x1000000000) != 0)
   {
-    if ((v12 & 0x1000000000) == 0 || self->_appLaunchesOnDayOfWeekThursdayForApp != *(v4 + 101))
+    if ((v12 & 0x1000000000) == 0 || self->_appLaunchesOnDayOfWeekThursdayForApp != *(equalCopy + 101))
     {
       goto LABEL_727;
     }
@@ -10301,7 +10301,7 @@ LABEL_165:
 
   if ((v8 & 0x100000000) != 0)
   {
-    if ((v12 & 0x100000000) == 0 || self->_appLaunchesOnDayOfWeekFridayForApp != *(v4 + 97))
+    if ((v12 & 0x100000000) == 0 || self->_appLaunchesOnDayOfWeekFridayForApp != *(equalCopy + 97))
     {
       goto LABEL_727;
     }
@@ -10314,7 +10314,7 @@ LABEL_165:
 
   if ((v8 & 0x400000000) != 0)
   {
-    if ((v12 & 0x400000000) == 0 || self->_appLaunchesOnDayOfWeekSaturdayForApp != *(v4 + 99))
+    if ((v12 & 0x400000000) == 0 || self->_appLaunchesOnDayOfWeekSaturdayForApp != *(equalCopy + 99))
     {
       goto LABEL_727;
     }
@@ -10328,7 +10328,7 @@ LABEL_165:
   v13 = *v6;
   if ((has & 0x200) != 0)
   {
-    if ((v13 & 0x200) == 0 || self->_appLaunchesAtCoarseGeoHash0ForApp != *(v4 + 10))
+    if ((v13 & 0x200) == 0 || self->_appLaunchesAtCoarseGeoHash0ForApp != *(equalCopy + 10))
     {
       goto LABEL_727;
     }
@@ -10341,7 +10341,7 @@ LABEL_165:
 
   if ((has & 0x400) != 0)
   {
-    if ((v13 & 0x400) == 0 || self->_appLaunchesAtCoarseGeoHash1ForApp != *(v4 + 11))
+    if ((v13 & 0x400) == 0 || self->_appLaunchesAtCoarseGeoHash1ForApp != *(equalCopy + 11))
     {
       goto LABEL_727;
     }
@@ -10354,7 +10354,7 @@ LABEL_165:
 
   if ((has & 0x800) != 0)
   {
-    if ((v13 & 0x800) == 0 || self->_appLaunchesAtCoarseGeoHash2ForApp != *(v4 + 12))
+    if ((v13 & 0x800) == 0 || self->_appLaunchesAtCoarseGeoHash2ForApp != *(equalCopy + 12))
     {
       goto LABEL_727;
     }
@@ -10367,7 +10367,7 @@ LABEL_165:
 
   if ((has & 0x1000) != 0)
   {
-    if ((v13 & 0x1000) == 0 || self->_appLaunchesAtCoarseGeoHash3ForApp != *(v4 + 13))
+    if ((v13 & 0x1000) == 0 || self->_appLaunchesAtCoarseGeoHash3ForApp != *(equalCopy + 13))
     {
       goto LABEL_727;
     }
@@ -10380,7 +10380,7 @@ LABEL_165:
 
   if ((has & 0x2000) != 0)
   {
-    if ((v13 & 0x2000) == 0 || self->_appLaunchesAtCoarseGeoHash4ForApp != *(v4 + 14))
+    if ((v13 & 0x2000) == 0 || self->_appLaunchesAtCoarseGeoHash4ForApp != *(equalCopy + 14))
     {
       goto LABEL_727;
     }
@@ -10393,7 +10393,7 @@ LABEL_165:
 
   if ((has & 0x4000) != 0)
   {
-    if ((v13 & 0x4000) == 0 || self->_appLaunchesAtCoarseGeoHash5ForApp != *(v4 + 15))
+    if ((v13 & 0x4000) == 0 || self->_appLaunchesAtCoarseGeoHash5ForApp != *(equalCopy + 15))
     {
       goto LABEL_727;
     }
@@ -10406,7 +10406,7 @@ LABEL_165:
 
   if ((has & 0x8000) != 0)
   {
-    if ((v13 & 0x8000) == 0 || self->_appLaunchesAtCoarseGeoHash6ForApp != *(v4 + 16))
+    if ((v13 & 0x8000) == 0 || self->_appLaunchesAtCoarseGeoHash6ForApp != *(equalCopy + 16))
     {
       goto LABEL_727;
     }
@@ -10419,7 +10419,7 @@ LABEL_165:
 
   if ((has & 0x10000) != 0)
   {
-    if ((v13 & 0x10000) == 0 || self->_appLaunchesAtCoarseGeoHash7ForApp != *(v4 + 17))
+    if ((v13 & 0x10000) == 0 || self->_appLaunchesAtCoarseGeoHash7ForApp != *(equalCopy + 17))
     {
       goto LABEL_727;
     }
@@ -10432,7 +10432,7 @@ LABEL_165:
 
   if ((has & 0x20000) != 0)
   {
-    if ((v13 & 0x20000) == 0 || self->_appLaunchesAtCoarseGeoHash8ForApp != *(v4 + 18))
+    if ((v13 & 0x20000) == 0 || self->_appLaunchesAtCoarseGeoHash8ForApp != *(equalCopy + 18))
     {
       goto LABEL_727;
     }
@@ -10445,7 +10445,7 @@ LABEL_165:
 
   if ((has & 0x40000) != 0)
   {
-    if ((v13 & 0x40000) == 0 || self->_appLaunchesAtCoarseGeoHash9ForApp != *(v4 + 19))
+    if ((v13 & 0x40000) == 0 || self->_appLaunchesAtCoarseGeoHash9ForApp != *(equalCopy + 19))
     {
       goto LABEL_727;
     }
@@ -10458,7 +10458,7 @@ LABEL_165:
 
   if ((has & 0x4000000) != 0)
   {
-    if ((v13 & 0x4000000) == 0 || self->_appLaunchesAtSpecificGeoHash0ForApp != *(v4 + 27))
+    if ((v13 & 0x4000000) == 0 || self->_appLaunchesAtSpecificGeoHash0ForApp != *(equalCopy + 27))
     {
       goto LABEL_727;
     }
@@ -10471,7 +10471,7 @@ LABEL_165:
 
   if ((has & 0x100000000) != 0)
   {
-    if ((v13 & 0x100000000) == 0 || self->_appLaunchesAtSpecificGeoHash1ForApp != *(v4 + 33))
+    if ((v13 & 0x100000000) == 0 || self->_appLaunchesAtSpecificGeoHash1ForApp != *(equalCopy + 33))
     {
       goto LABEL_727;
     }
@@ -10484,7 +10484,7 @@ LABEL_165:
 
   if ((has & 0x200000000) != 0)
   {
-    if ((v13 & 0x200000000) == 0 || self->_appLaunchesAtSpecificGeoHash2ForApp != *(v4 + 34))
+    if ((v13 & 0x200000000) == 0 || self->_appLaunchesAtSpecificGeoHash2ForApp != *(equalCopy + 34))
     {
       goto LABEL_727;
     }
@@ -10497,7 +10497,7 @@ LABEL_165:
 
   if ((has & 0x400000000) != 0)
   {
-    if ((v13 & 0x400000000) == 0 || self->_appLaunchesAtSpecificGeoHash3ForApp != *(v4 + 35))
+    if ((v13 & 0x400000000) == 0 || self->_appLaunchesAtSpecificGeoHash3ForApp != *(equalCopy + 35))
     {
       goto LABEL_727;
     }
@@ -10510,7 +10510,7 @@ LABEL_165:
 
   if ((has & 0x800000000) != 0)
   {
-    if ((v13 & 0x800000000) == 0 || self->_appLaunchesAtSpecificGeoHash4ForApp != *(v4 + 36))
+    if ((v13 & 0x800000000) == 0 || self->_appLaunchesAtSpecificGeoHash4ForApp != *(equalCopy + 36))
     {
       goto LABEL_727;
     }
@@ -10523,7 +10523,7 @@ LABEL_165:
 
   if ((has & 0x1000000000) != 0)
   {
-    if ((v13 & 0x1000000000) == 0 || self->_appLaunchesAtSpecificGeoHash5ForApp != *(v4 + 37))
+    if ((v13 & 0x1000000000) == 0 || self->_appLaunchesAtSpecificGeoHash5ForApp != *(equalCopy + 37))
     {
       goto LABEL_727;
     }
@@ -10536,7 +10536,7 @@ LABEL_165:
 
   if ((has & 0x2000000000) != 0)
   {
-    if ((v13 & 0x2000000000) == 0 || self->_appLaunchesAtSpecificGeoHash6ForApp != *(v4 + 38))
+    if ((v13 & 0x2000000000) == 0 || self->_appLaunchesAtSpecificGeoHash6ForApp != *(equalCopy + 38))
     {
       goto LABEL_727;
     }
@@ -10549,7 +10549,7 @@ LABEL_165:
 
   if ((has & 0x4000000000) != 0)
   {
-    if ((v13 & 0x4000000000) == 0 || self->_appLaunchesAtSpecificGeoHash7ForApp != *(v4 + 39))
+    if ((v13 & 0x4000000000) == 0 || self->_appLaunchesAtSpecificGeoHash7ForApp != *(equalCopy + 39))
     {
       goto LABEL_727;
     }
@@ -10562,7 +10562,7 @@ LABEL_165:
 
   if ((has & 0x8000000000) != 0)
   {
-    if ((v13 & 0x8000000000) == 0 || self->_appLaunchesAtSpecificGeoHash8ForApp != *(v4 + 40))
+    if ((v13 & 0x8000000000) == 0 || self->_appLaunchesAtSpecificGeoHash8ForApp != *(equalCopy + 40))
     {
       goto LABEL_727;
     }
@@ -10575,7 +10575,7 @@ LABEL_165:
 
   if ((has & 0x10000000000) != 0)
   {
-    if ((v13 & 0x10000000000) == 0 || self->_appLaunchesAtSpecificGeoHash9ForApp != *(v4 + 41))
+    if ((v13 & 0x10000000000) == 0 || self->_appLaunchesAtSpecificGeoHash9ForApp != *(equalCopy + 41))
     {
       goto LABEL_727;
     }
@@ -10588,7 +10588,7 @@ LABEL_165:
 
   if ((has & 0x8000000) != 0)
   {
-    if ((v13 & 0x8000000) == 0 || self->_appLaunchesAtSpecificGeoHash10ForApp != *(v4 + 28))
+    if ((v13 & 0x8000000) == 0 || self->_appLaunchesAtSpecificGeoHash10ForApp != *(equalCopy + 28))
     {
       goto LABEL_727;
     }
@@ -10601,7 +10601,7 @@ LABEL_165:
 
   if ((has & 0x10000000) != 0)
   {
-    if ((v13 & 0x10000000) == 0 || self->_appLaunchesAtSpecificGeoHash11ForApp != *(v4 + 29))
+    if ((v13 & 0x10000000) == 0 || self->_appLaunchesAtSpecificGeoHash11ForApp != *(equalCopy + 29))
     {
       goto LABEL_727;
     }
@@ -10614,7 +10614,7 @@ LABEL_165:
 
   if ((has & 0x20000000) != 0)
   {
-    if ((v13 & 0x20000000) == 0 || self->_appLaunchesAtSpecificGeoHash12ForApp != *(v4 + 30))
+    if ((v13 & 0x20000000) == 0 || self->_appLaunchesAtSpecificGeoHash12ForApp != *(equalCopy + 30))
     {
       goto LABEL_727;
     }
@@ -10627,7 +10627,7 @@ LABEL_165:
 
   if ((has & 0x40000000) != 0)
   {
-    if ((v13 & 0x40000000) == 0 || self->_appLaunchesAtSpecificGeoHash13ForApp != *(v4 + 31))
+    if ((v13 & 0x40000000) == 0 || self->_appLaunchesAtSpecificGeoHash13ForApp != *(equalCopy + 31))
     {
       goto LABEL_727;
     }
@@ -10640,7 +10640,7 @@ LABEL_165:
 
   if ((has & 0x80000000) != 0)
   {
-    if ((v13 & 0x80000000) == 0 || self->_appLaunchesAtSpecificGeoHash14ForApp != *(v4 + 32))
+    if ((v13 & 0x80000000) == 0 || self->_appLaunchesAtSpecificGeoHash14ForApp != *(equalCopy + 32))
     {
       goto LABEL_727;
     }
@@ -10653,7 +10653,7 @@ LABEL_165:
 
   if ((v8 & 0x100000000000) != 0)
   {
-    if ((v12 & 0x100000000000) == 0 || self->_appNumberOfSpecificGeohashesForApp != *(v4 + 109))
+    if ((v12 & 0x100000000000) == 0 || self->_appNumberOfSpecificGeohashesForApp != *(equalCopy + 109))
     {
       goto LABEL_727;
     }
@@ -10666,7 +10666,7 @@ LABEL_165:
 
   if ((v8 & 0x80000000000) != 0)
   {
-    if ((v12 & 0x80000000000) == 0 || self->_appNumberOfCoarseGeohashesForApp != *(v4 + 108))
+    if ((v12 & 0x80000000000) == 0 || self->_appNumberOfCoarseGeohashesForApp != *(equalCopy + 108))
     {
       goto LABEL_727;
     }
@@ -10679,7 +10679,7 @@ LABEL_165:
 
   if ((has & 0x40) != 0)
   {
-    if ((v13 & 0x40) == 0 || self->_appEntropyForTimeBuckets != *(v4 + 7))
+    if ((v13 & 0x40) == 0 || self->_appEntropyForTimeBuckets != *(equalCopy + 7))
     {
       goto LABEL_727;
     }
@@ -10692,7 +10692,7 @@ LABEL_165:
 
   if ((has & 0x20) != 0)
   {
-    if ((v13 & 0x20) == 0 || self->_appEntropyForSpecificGeoHash != *(v4 + 6))
+    if ((v13 & 0x20) == 0 || self->_appEntropyForSpecificGeoHash != *(equalCopy + 6))
     {
       goto LABEL_727;
     }
@@ -10705,7 +10705,7 @@ LABEL_165:
 
   if ((has & 0x10) != 0)
   {
-    if ((v13 & 0x10) == 0 || self->_appEntropyForCoarseGeoHash != *(v4 + 5))
+    if ((v13 & 0x10) == 0 || self->_appEntropyForCoarseGeoHash != *(equalCopy + 5))
     {
       goto LABEL_727;
     }
@@ -10718,7 +10718,7 @@ LABEL_165:
 
   if ((has & 0x40000000000) != 0)
   {
-    if ((v13 & 0x40000000000) == 0 || self->_appLaunchesAtSpecificGeoHashForAppInContext != *(v4 + 43))
+    if ((v13 & 0x40000000000) == 0 || self->_appLaunchesAtSpecificGeoHashForAppInContext != *(equalCopy + 43))
     {
       goto LABEL_727;
     }
@@ -10731,7 +10731,7 @@ LABEL_165:
 
   if ((has & 0x100000) != 0)
   {
-    if ((v13 & 0x100000) == 0 || self->_appLaunchesAtCoarseGeoHashForAppInContext != *(v4 + 21))
+    if ((v13 & 0x100000) == 0 || self->_appLaunchesAtCoarseGeoHashForAppInContext != *(equalCopy + 21))
     {
       goto LABEL_727;
     }
@@ -10744,7 +10744,7 @@ LABEL_165:
 
   if ((has & 0x400000) != 0)
   {
-    if ((v13 & 0x400000) == 0 || self->_appLaunchesAtDayOfWeekForApp != *(v4 + 23))
+    if ((v13 & 0x400000) == 0 || self->_appLaunchesAtDayOfWeekForApp != *(equalCopy + 23))
     {
       goto LABEL_727;
     }
@@ -10757,7 +10757,7 @@ LABEL_165:
 
   if ((has & 0x200000000000) != 0)
   {
-    if ((v13 & 0x200000000000) == 0 || self->_appLaunchesAtTimeAndDayForAppInContext != *(v4 + 46))
+    if ((v13 & 0x200000000000) == 0 || self->_appLaunchesAtTimeAndDayForAppInContext != *(equalCopy + 46))
     {
       goto LABEL_727;
     }
@@ -10770,7 +10770,7 @@ LABEL_165:
 
   if ((has & 0x400000000000) != 0)
   {
-    if ((v13 & 0x400000000000) == 0 || self->_appLaunchesAtTimeAndDayInContext != *(v4 + 47))
+    if ((v13 & 0x400000000000) == 0 || self->_appLaunchesAtTimeAndDayInContext != *(equalCopy + 47))
     {
       goto LABEL_727;
     }
@@ -10783,7 +10783,7 @@ LABEL_165:
 
   if ((has & 0x100000000000) != 0)
   {
-    if ((v13 & 0x100000000000) == 0 || self->_appLaunchesAtTimeAndDayForApp != *(v4 + 45))
+    if ((v13 & 0x100000000000) == 0 || self->_appLaunchesAtTimeAndDayForApp != *(equalCopy + 45))
     {
       goto LABEL_727;
     }
@@ -10796,7 +10796,7 @@ LABEL_165:
 
   if ((has & 0x200000) != 0)
   {
-    if ((v13 & 0x200000) == 0 || self->_appLaunchesAtCoarseGeoHashInContext != *(v4 + 22))
+    if ((v13 & 0x200000) == 0 || self->_appLaunchesAtCoarseGeoHashInContext != *(equalCopy + 22))
     {
       goto LABEL_727;
     }
@@ -10809,7 +10809,7 @@ LABEL_165:
 
   if ((has & 0x80000) != 0)
   {
-    if ((v13 & 0x80000) == 0 || self->_appLaunchesAtCoarseGeoHashForApp != *(v4 + 20))
+    if ((v13 & 0x80000) == 0 || self->_appLaunchesAtCoarseGeoHashForApp != *(equalCopy + 20))
     {
       goto LABEL_727;
     }
@@ -10822,7 +10822,7 @@ LABEL_165:
 
   if ((has & 0x80000000000) != 0)
   {
-    if ((v13 & 0x80000000000) == 0 || self->_appLaunchesAtSpecificGeoHashInContext != *(v4 + 44))
+    if ((v13 & 0x80000000000) == 0 || self->_appLaunchesAtSpecificGeoHashInContext != *(equalCopy + 44))
     {
       goto LABEL_727;
     }
@@ -10835,7 +10835,7 @@ LABEL_165:
 
   if ((has & 0x20000000000) != 0)
   {
-    if ((v13 & 0x20000000000) == 0 || self->_appLaunchesAtSpecificGeoHashForApp != *(v4 + 42))
+    if ((v13 & 0x20000000000) == 0 || self->_appLaunchesAtSpecificGeoHashForApp != *(equalCopy + 42))
     {
       goto LABEL_727;
     }
@@ -10846,10 +10846,10 @@ LABEL_165:
     goto LABEL_727;
   }
 
-  v14 = v4[147];
+  v14 = equalCopy[147];
   if (v8)
   {
-    if ((v14 & 1) == 0 || self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate != *(v4 + 65))
+    if ((v14 & 1) == 0 || self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate != *(equalCopy + 65))
     {
       goto LABEL_727;
     }
@@ -10862,7 +10862,7 @@ LABEL_165:
 
   if ((v8 & 2) != 0)
   {
-    if ((v14 & 2) == 0 || self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate != *(v4 + 66))
+    if ((v14 & 2) == 0 || self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate != *(equalCopy + 66))
     {
       goto LABEL_727;
     }
@@ -10873,10 +10873,10 @@ LABEL_165:
     goto LABEL_727;
   }
 
-  v15 = *(v4 + 296);
+  v15 = *(equalCopy + 296);
   if ((v5 & 2) != 0)
   {
-    if ((v15 & 2) == 0 || self->_isLocationServicesDisabled != *(v4 + 130))
+    if ((v15 & 2) == 0 || self->_isLocationServicesDisabled != *(equalCopy + 130))
     {
       goto LABEL_727;
     }
@@ -10889,7 +10889,7 @@ LABEL_165:
 
   if ((v8 & 0x40000000) != 0)
   {
-    if ((v14 & 0x40000000) == 0 || self->_appLaunchesInTwoHourTimeBucketForAppInContext != *(v4 + 95))
+    if ((v14 & 0x40000000) == 0 || self->_appLaunchesInTwoHourTimeBucketForAppInContext != *(equalCopy + 95))
     {
       goto LABEL_727;
     }
@@ -10902,7 +10902,7 @@ LABEL_165:
 
   if ((v8 & 0x80000000) != 0)
   {
-    if ((v14 & 0x80000000) == 0 || self->_appLaunchesInTwoHourTimeBucketInContext != *(v4 + 96))
+    if ((v14 & 0x80000000) == 0 || self->_appLaunchesInTwoHourTimeBucketInContext != *(equalCopy + 96))
     {
       goto LABEL_727;
     }
@@ -10915,7 +10915,7 @@ LABEL_165:
 
   if ((v8 & 0x20000000) != 0)
   {
-    if ((v14 & 0x20000000) == 0 || self->_appLaunchesInTwoHourTimeBucketForApp != *(v4 + 94))
+    if ((v14 & 0x20000000) == 0 || self->_appLaunchesInTwoHourTimeBucketForApp != *(equalCopy + 94))
     {
       goto LABEL_727;
     }
@@ -10928,7 +10928,7 @@ LABEL_165:
 
   if ((v8 & 0x20000000000000) != 0)
   {
-    if ((v14 & 0x20000000000000) == 0 || self->_currentTimeBucketFromZeroToTwentyFour != *(v4 + 118))
+    if ((v14 & 0x20000000000000) == 0 || self->_currentTimeBucketFromZeroToTwentyFour != *(equalCopy + 118))
     {
       goto LABEL_727;
     }
@@ -10941,7 +10941,7 @@ LABEL_165:
 
   if ((has & 0x400000000000000) != 0)
   {
-    if ((v13 & 0x400000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashForAppInContext != *(v4 + 59))
+    if ((v13 & 0x400000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashForAppInContext != *(equalCopy + 59))
     {
       goto LABEL_727;
     }
@@ -10954,7 +10954,7 @@ LABEL_165:
 
   if ((has & 0x800000000000000) != 0)
   {
-    if ((v13 & 0x800000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashInContext != *(v4 + 60))
+    if ((v13 & 0x800000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashInContext != *(equalCopy + 60))
     {
       goto LABEL_727;
     }
@@ -10967,7 +10967,7 @@ LABEL_165:
 
   if ((has & 0x200000000000000) != 0)
   {
-    if ((v13 & 0x200000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashForApp != *(v4 + 58))
+    if ((v13 & 0x200000000000000) == 0 || self->_appLaunchesAtZoom7GeoHashForApp != *(equalCopy + 58))
     {
       goto LABEL_727;
     }
@@ -10980,7 +10980,7 @@ LABEL_165:
 
   if ((has & 0x800000000000) != 0)
   {
-    if ((v13 & 0x800000000000) == 0 || self->_appLaunchesAtZoom7GeoHash0ForApp != *(v4 + 48))
+    if ((v13 & 0x800000000000) == 0 || self->_appLaunchesAtZoom7GeoHash0ForApp != *(equalCopy + 48))
     {
       goto LABEL_727;
     }
@@ -10994,7 +10994,7 @@ LABEL_165:
   v16 = *v6;
   if ((has & 0x1000000000000) != 0)
   {
-    if ((v16 & 0x1000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash1ForApp != *(v4 + 49))
+    if ((v16 & 0x1000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash1ForApp != *(equalCopy + 49))
     {
       goto LABEL_727;
     }
@@ -11007,7 +11007,7 @@ LABEL_165:
 
   if ((has & 0x2000000000000) != 0)
   {
-    if ((v16 & 0x2000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash2ForApp != *(v4 + 50))
+    if ((v16 & 0x2000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash2ForApp != *(equalCopy + 50))
     {
       goto LABEL_727;
     }
@@ -11020,7 +11020,7 @@ LABEL_165:
 
   if ((has & 0x4000000000000) != 0)
   {
-    if ((v16 & 0x4000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash3ForApp != *(v4 + 51))
+    if ((v16 & 0x4000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash3ForApp != *(equalCopy + 51))
     {
       goto LABEL_727;
     }
@@ -11033,7 +11033,7 @@ LABEL_165:
 
   if ((has & 0x8000000000000) != 0)
   {
-    if ((v16 & 0x8000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash4ForApp != *(v4 + 52))
+    if ((v16 & 0x8000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash4ForApp != *(equalCopy + 52))
     {
       goto LABEL_727;
     }
@@ -11046,7 +11046,7 @@ LABEL_165:
 
   if ((has & 0x10000000000000) != 0)
   {
-    if ((v16 & 0x10000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash5ForApp != *(v4 + 53))
+    if ((v16 & 0x10000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash5ForApp != *(equalCopy + 53))
     {
       goto LABEL_727;
     }
@@ -11059,7 +11059,7 @@ LABEL_165:
 
   if ((has & 0x20000000000000) != 0)
   {
-    if ((v16 & 0x20000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash6ForApp != *(v4 + 54))
+    if ((v16 & 0x20000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash6ForApp != *(equalCopy + 54))
     {
       goto LABEL_727;
     }
@@ -11072,7 +11072,7 @@ LABEL_165:
 
   if ((has & 0x40000000000000) != 0)
   {
-    if ((v16 & 0x40000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash7ForApp != *(v4 + 55))
+    if ((v16 & 0x40000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash7ForApp != *(equalCopy + 55))
     {
       goto LABEL_727;
     }
@@ -11085,7 +11085,7 @@ LABEL_165:
 
   if ((has & 0x80000000000000) != 0)
   {
-    if ((v16 & 0x80000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash8ForApp != *(v4 + 56))
+    if ((v16 & 0x80000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash8ForApp != *(equalCopy + 56))
     {
       goto LABEL_727;
     }
@@ -11098,7 +11098,7 @@ LABEL_165:
 
   if ((has & 0x100000000000000) != 0)
   {
-    if ((v16 & 0x100000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash9ForApp != *(v4 + 57))
+    if ((v16 & 0x100000000000000) == 0 || self->_appLaunchesAtZoom7GeoHash9ForApp != *(equalCopy + 57))
     {
       goto LABEL_727;
     }
@@ -11111,7 +11111,7 @@ LABEL_165:
 
   if ((has & 0x80) != 0)
   {
-    if ((v16 & 0x80) == 0 || self->_appEntropyForZoom7GeoHash != *(v4 + 8))
+    if ((v16 & 0x80) == 0 || self->_appEntropyForZoom7GeoHash != *(equalCopy + 8))
     {
       goto LABEL_727;
     }
@@ -11124,7 +11124,7 @@ LABEL_165:
 
   if ((v8 & 0x200000000000) != 0)
   {
-    if ((v14 & 0x200000000000) == 0 || self->_appNumberOfZoom7GeohashesForApp != *(v4 + 110))
+    if ((v14 & 0x200000000000) == 0 || self->_appNumberOfZoom7GeohashesForApp != *(equalCopy + 110))
     {
       goto LABEL_727;
     }
@@ -11137,7 +11137,7 @@ LABEL_165:
 
   if ((has & 0x2000000) != 0)
   {
-    if ((v16 & 0x2000000) == 0 || self->_appLaunchesAtSSIDForAppInContext != *(v4 + 26))
+    if ((v16 & 0x2000000) == 0 || self->_appLaunchesAtSSIDForAppInContext != *(equalCopy + 26))
     {
       goto LABEL_727;
     }
@@ -11150,7 +11150,7 @@ LABEL_165:
 
   if ((has & 0x1000000) != 0)
   {
-    if ((v16 & 0x1000000) == 0 || self->_appLaunchesAtSSIDForApp != *(v4 + 25))
+    if ((v16 & 0x1000000) == 0 || self->_appLaunchesAtSSIDForApp != *(equalCopy + 25))
     {
       goto LABEL_727;
     }
@@ -11163,7 +11163,7 @@ LABEL_165:
 
   if ((v8 & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_appLaunchesForCoreMotionForAppInContext != *(v4 + 67))
+    if ((v14 & 4) == 0 || self->_appLaunchesForCoreMotionForAppInContext != *(equalCopy + 67))
     {
       goto LABEL_727;
     }
@@ -11176,7 +11176,7 @@ LABEL_165:
 
   if ((v8 & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_appLaunchesInAirplaneModeForAppInContext != *(v4 + 68))
+    if ((v14 & 8) == 0 || self->_appLaunchesInAirplaneModeForAppInContext != *(equalCopy + 68))
     {
       goto LABEL_727;
     }
@@ -11189,7 +11189,7 @@ LABEL_165:
 
   if ((v5 & 0x40) != 0)
   {
-    if ((v15 & 0x40) == 0 || self->_poiPopularityForAppInContext != *(v4 + 135))
+    if ((v15 & 0x40) == 0 || self->_poiPopularityForAppInContext != *(equalCopy + 135))
     {
       goto LABEL_727;
     }
@@ -11212,7 +11212,7 @@ LABEL_727:
     goto LABEL_728;
   }
 
-  if ((v16 & 0x100) == 0 || self->_appLaunchPopularityAtPOIForAppInContext != *(v4 + 9))
+  if ((v16 & 0x100) == 0 || self->_appLaunchPopularityAtPOIForAppInContext != *(equalCopy + 9))
   {
     goto LABEL_727;
   }
@@ -11220,7 +11220,7 @@ LABEL_727:
 LABEL_722:
   if ((has & 0x800000) != 0)
   {
-    if ((v16 & 0x800000) == 0 || self->_appLaunchesAtPOIForAppInContext != *(v4 + 24))
+    if ((v16 & 0x800000) == 0 || self->_appLaunchesAtPOIForAppInContext != *(equalCopy + 24))
     {
       goto LABEL_727;
     }
@@ -16368,16 +16368,16 @@ LABEL_1183:
   return v619 ^ v515 ^ v519 ^ v625 ^ v621 ^ v624 ^ v623 ^ v716 ^ v592 ^ v622 ^ v591 ^ v554 ^ v590 ^ v563 ^ v589 ^ v571 ^ v575 ^ v580 ^ v584 ^ v593 ^ v598 ^ v602 ^ v606 ^ v610 ^ v614;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4 + 1168;
-  v6 = *(v4 + 296);
+  fromCopy = from;
+  v5 = fromCopy + 1168;
+  v6 = *(fromCopy + 296);
   if ((v6 & 0x10000) != 0)
   {
-    self->_unlockTime = *(v4 + 145);
+    self->_unlockTime = *(fromCopy + 145);
     *(&self->_has + 4) |= 0x10000u;
-    v6 = *(v4 + 296);
+    v6 = *(fromCopy + 296);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -16395,9 +16395,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_launchTimePopularity = *(v4 + 133);
+  self->_launchTimePopularity = *(fromCopy + 133);
   *(&self->_has + 4) |= 0x10u;
-  v6 = *(v4 + 296);
+  v6 = *(fromCopy + 296);
   if ((v6 & 0x100) == 0)
   {
 LABEL_4:
@@ -16410,42 +16410,42 @@ LABEL_4:
   }
 
 LABEL_186:
-  self->_timeOfDayBucket = *(v4 + 137);
+  self->_timeOfDayBucket = *(fromCopy + 137);
   *(&self->_has + 4) |= 0x100u;
-  if ((*(v4 + 296) & 0x200) != 0)
+  if ((*(fromCopy + 296) & 0x200) != 0)
   {
 LABEL_5:
-    self->_timeOfDayPopularity = *(v4 + 138);
+    self->_timeOfDayPopularity = *(fromCopy + 138);
     *(&self->_has + 4) |= 0x200u;
   }
 
 LABEL_6:
-  if ((v4[1182] & 8) != 0)
+  if ((fromCopy[1182] & 8) != 0)
   {
-    self->_coarseTimeOfDayPopularity = *(v4 + 116);
+    self->_coarseTimeOfDayPopularity = *(fromCopy + 116);
     *(&self->_has + 1) |= 0x8000000000000uLL;
   }
 
-  v7 = *(v4 + 296);
+  v7 = *(fromCopy + 296);
   if ((v7 & 8) != 0)
   {
-    self->_launchPopularity = *(v4 + 132);
+    self->_launchPopularity = *(fromCopy + 132);
     *(&self->_has + 4) |= 8u;
-    v7 = *(v4 + 296);
+    v7 = *(fromCopy + 296);
   }
 
   if ((v7 & 4) != 0)
   {
-    self->_launchDayOfWeekPopularity = *(v4 + 131);
+    self->_launchDayOfWeekPopularity = *(fromCopy + 131);
     *(&self->_has + 4) |= 4u;
   }
 
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x40000000000000) != 0)
   {
-    self->_dayOfWeekBucket = *(v4 + 119);
+    self->_dayOfWeekBucket = *(fromCopy + 119);
     *(&self->_has + 1) |= 0x40000000000000uLL;
-    v8 = *(v4 + 147);
+    v8 = *(fromCopy + 147);
     if ((v8 & 0x80000000000000) == 0)
     {
 LABEL_14:
@@ -16463,9 +16463,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  self->_dayOfWeekPopularity = *(v4 + 120);
+  self->_dayOfWeekPopularity = *(fromCopy + 120);
   *(&self->_has + 1) |= 0x80000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x800000000000000) == 0)
   {
 LABEL_15:
@@ -16478,9 +16478,9 @@ LABEL_15:
   }
 
 LABEL_190:
-  self->_entropyLaunchPopularity = *(v4 + 124);
+  self->_entropyLaunchPopularity = *(fromCopy + 124);
   *(&self->_has + 1) |= 0x800000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x100000000000000) == 0)
   {
 LABEL_16:
@@ -16493,9 +16493,9 @@ LABEL_16:
   }
 
 LABEL_191:
-  self->_entropyDayOfWeekPopularity = *(v4 + 121);
+  self->_entropyDayOfWeekPopularity = *(fromCopy + 121);
   *(&self->_has + 1) |= 0x100000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x400000000000000) == 0)
   {
 LABEL_17:
@@ -16508,9 +16508,9 @@ LABEL_17:
   }
 
 LABEL_192:
-  self->_entropyDayOfWeekPopularityByDay = *(v4 + 123);
+  self->_entropyDayOfWeekPopularityByDay = *(fromCopy + 123);
   *(&self->_has + 1) |= 0x400000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x200000000000000) == 0)
   {
 LABEL_18:
@@ -16523,9 +16523,9 @@ LABEL_18:
   }
 
 LABEL_193:
-  self->_entropyDayOfWeekPopularityByApp = *(v4 + 122);
+  self->_entropyDayOfWeekPopularityByApp = *(fromCopy + 122);
   *(&self->_has + 1) |= 0x200000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x8000000000000000) == 0)
   {
 LABEL_19:
@@ -16538,9 +16538,9 @@ LABEL_19:
   }
 
 LABEL_194:
-  self->_entropyTrendingPopularity = *(v4 + 128);
+  self->_entropyTrendingPopularity = *(fromCopy + 128);
   *(&self->_has + 1) |= 0x8000000000000000;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x1000000000000000) == 0)
   {
 LABEL_20:
@@ -16553,9 +16553,9 @@ LABEL_20:
   }
 
 LABEL_195:
-  self->_entropySSIDPopularity = *(v4 + 125);
+  self->_entropySSIDPopularity = *(fromCopy + 125);
   *(&self->_has + 1) |= 0x1000000000000000uLL;
-  v8 = *(v4 + 147);
+  v8 = *(fromCopy + 147);
   if ((v8 & 0x4000000000000000) == 0)
   {
 LABEL_21:
@@ -16568,34 +16568,34 @@ LABEL_21:
   }
 
 LABEL_196:
-  self->_entropySSIDPopularityBySSID = *(v4 + 127);
+  self->_entropySSIDPopularityBySSID = *(fromCopy + 127);
   *(&self->_has + 1) |= 0x4000000000000000uLL;
-  if ((*(v4 + 147) & 0x2000000000000000) != 0)
+  if ((*(fromCopy + 147) & 0x2000000000000000) != 0)
   {
 LABEL_22:
-    self->_entropySSIDPopularityByApp = *(v4 + 126);
+    self->_entropySSIDPopularityByApp = *(fromCopy + 126);
     *(&self->_has + 1) |= 0x2000000000000000uLL;
   }
 
 LABEL_23:
-  if ((v4[1185] & 0x10) != 0)
+  if ((fromCopy[1185] & 0x10) != 0)
   {
-    self->_totalNumberOfLaunches = *(v4 + 141);
+    self->_totalNumberOfLaunches = *(fromCopy + 141);
     *(&self->_has + 4) |= 0x1000u;
   }
 
   if (*v5)
   {
-    self->_airplaneModePopularity = *(v4 + 1);
+    self->_airplaneModePopularity = *(fromCopy + 1);
     *&self->_has |= 1uLL;
   }
 
-  v9 = *(v4 + 296);
+  v9 = *(fromCopy + 296);
   if ((v9 & 0x400) != 0)
   {
-    self->_totalNumberOfAirplaneModeLaunches = *(v4 + 139);
+    self->_totalNumberOfAirplaneModeLaunches = *(fromCopy + 139);
     *(&self->_has + 4) |= 0x400u;
-    v9 = *(v4 + 296);
+    v9 = *(fromCopy + 296);
     if ((v9 & 0x8000) == 0)
     {
 LABEL_29:
@@ -16613,9 +16613,9 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  self->_trendingPopularity = *(v4 + 144);
+  self->_trendingPopularity = *(fromCopy + 144);
   *(&self->_has + 4) |= 0x8000u;
-  v9 = *(v4 + 296);
+  v9 = *(fromCopy + 296);
   if ((v9 & 0x4000) == 0)
   {
 LABEL_30:
@@ -16628,9 +16628,9 @@ LABEL_30:
   }
 
 LABEL_200:
-  self->_totalNumberOfTrendingLaunches = *(v4 + 143);
+  self->_totalNumberOfTrendingLaunches = *(fromCopy + 143);
   *(&self->_has + 4) |= 0x4000u;
-  v9 = *(v4 + 296);
+  v9 = *(fromCopy + 296);
   if ((v9 & 0x80) == 0)
   {
 LABEL_31:
@@ -16643,9 +16643,9 @@ LABEL_31:
   }
 
 LABEL_201:
-  self->_sSIDPopularity = *(v4 + 136);
+  self->_sSIDPopularity = *(fromCopy + 136);
   *(&self->_has + 4) |= 0x80u;
-  v9 = *(v4 + 296);
+  v9 = *(fromCopy + 296);
   if ((v9 & 0x2000) == 0)
   {
 LABEL_32:
@@ -16658,68 +16658,68 @@ LABEL_32:
   }
 
 LABEL_202:
-  self->_totalNumberOfSSIDLaunches = *(v4 + 142);
+  self->_totalNumberOfSSIDLaunches = *(fromCopy + 142);
   *(&self->_has + 4) |= 0x2000u;
-  if ((*(v4 + 296) & 0x20) != 0)
+  if ((*(fromCopy + 296) & 0x20) != 0)
   {
 LABEL_33:
-    self->_onWifi = *(v4 + 134);
+    self->_onWifi = *(fromCopy + 134);
     *(&self->_has + 4) |= 0x20u;
   }
 
 LABEL_34:
-  if ((v4[1182] & 0x10) != 0)
+  if ((fromCopy[1182] & 0x10) != 0)
   {
-    self->_coreMotionPopularity = *(v4 + 117);
+    self->_coreMotionPopularity = *(fromCopy + 117);
     *(&self->_has + 1) |= 0x10000000000000uLL;
   }
 
-  v10 = *(v4 + 296);
+  v10 = *(fromCopy + 296);
   if ((v10 & 0x800) != 0)
   {
-    self->_totalNumberOfCoreMotionLaunches = *(v4 + 140);
+    self->_totalNumberOfCoreMotionLaunches = *(fromCopy + 140);
     *(&self->_has + 4) |= 0x800u;
-    v10 = *(v4 + 296);
+    v10 = *(fromCopy + 296);
   }
 
   if (v10)
   {
-    self->_isDateInWeekendOnDevice = *(v4 + 129);
+    self->_isDateInWeekendOnDevice = *(fromCopy + 129);
     *(&self->_has + 4) |= 1u;
   }
 
   v11 = *v5;
   if ((*v5 & 4) != 0)
   {
-    self->_ambientLightTypePopularity = *(v4 + 3);
+    self->_ambientLightTypePopularity = *(fromCopy + 3);
     *&self->_has |= 4uLL;
-    v11 = *(v4 + 146);
+    v11 = *(fromCopy + 146);
   }
 
   if ((v11 & 2) != 0)
   {
-    self->_ambientLightTypeLaunchPopularity = *(v4 + 2);
+    self->_ambientLightTypeLaunchPopularity = *(fromCopy + 2);
     *&self->_has |= 2uLL;
   }
 
-  if ((v4[1182] & 2) != 0)
+  if ((fromCopy[1182] & 2) != 0)
   {
-    self->_appTimeOfDayLaunches = *(v4 + 114);
+    self->_appTimeOfDayLaunches = *(fromCopy + 114);
     *(&self->_has + 1) |= 0x2000000000000uLL;
   }
 
   if ((*v5 & 8) != 0)
   {
-    self->_appDayOfWeekLaunches = *(v4 + 4);
+    self->_appDayOfWeekLaunches = *(fromCopy + 4);
     *&self->_has |= 8uLL;
   }
 
-  v12 = *(v4 + 147);
+  v12 = *(fromCopy + 147);
   if ((v12 & 0x1000000000000) != 0)
   {
-    self->_appTimeAndDayOfWeekPopularity = *(v4 + 113);
+    self->_appTimeAndDayOfWeekPopularity = *(fromCopy + 113);
     *(&self->_has + 1) |= 0x1000000000000uLL;
-    v12 = *(v4 + 147);
+    v12 = *(fromCopy + 147);
     if ((v12 & 0x400000000000) == 0)
     {
 LABEL_50:
@@ -16737,9 +16737,9 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  self->_appPopularityGivenTimeAndDayOfWeek = *(v4 + 111);
+  self->_appPopularityGivenTimeAndDayOfWeek = *(fromCopy + 111);
   *(&self->_has + 1) |= 0x400000000000uLL;
-  v12 = *(v4 + 147);
+  v12 = *(fromCopy + 147);
   if ((v12 & 0x800000000000) == 0)
   {
 LABEL_51:
@@ -16752,12 +16752,12 @@ LABEL_51:
   }
 
 LABEL_206:
-  self->_appPopularityOfTimeAndDayOfWeekGivenApp = *(v4 + 112);
+  self->_appPopularityOfTimeAndDayOfWeekGivenApp = *(fromCopy + 112);
   *(&self->_has + 1) |= 0x800000000000uLL;
-  if ((*(v4 + 147) & 0x4000000000000) != 0)
+  if ((*(fromCopy + 147) & 0x4000000000000) != 0)
   {
 LABEL_52:
-    self->_appTotalNumberOfTimeAndDayOfWeekLaunches = *(v4 + 115);
+    self->_appTotalNumberOfTimeAndDayOfWeekLaunches = *(fromCopy + 115);
     *(&self->_has + 1) |= 0x4000000000000uLL;
   }
 
@@ -16765,9 +16765,9 @@ LABEL_53:
   v13 = *v5;
   if ((*v5 & 0x4000000000000000) != 0)
   {
-    self->_appLaunchesCoarseTimePowLocationForAppInContext = *(v4 + 63);
+    self->_appLaunchesCoarseTimePowLocationForAppInContext = *(fromCopy + 63);
     *&self->_has |= 0x4000000000000000uLL;
-    v13 = *(v4 + 146);
+    v13 = *(fromCopy + 146);
     if ((v13 & 0x8000000000000000) == 0)
     {
 LABEL_55:
@@ -16785,9 +16785,9 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  self->_appLaunchesCoarseTimePowLocationInContext = *(v4 + 64);
+  self->_appLaunchesCoarseTimePowLocationInContext = *(fromCopy + 64);
   *&self->_has |= 0x8000000000000000;
-  v13 = *(v4 + 146);
+  v13 = *(fromCopy + 146);
   if ((v13 & 0x2000000000000000) == 0)
   {
 LABEL_56:
@@ -16800,22 +16800,22 @@ LABEL_56:
   }
 
 LABEL_210:
-  self->_appLaunchesCoarseTimePowLocationForApp = *(v4 + 62);
+  self->_appLaunchesCoarseTimePowLocationForApp = *(fromCopy + 62);
   *&self->_has |= 0x2000000000000000uLL;
-  if ((*(v4 + 146) & 0x1000000000000000) != 0)
+  if ((*(fromCopy + 146) & 0x1000000000000000) != 0)
   {
 LABEL_57:
-    self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts = *(v4 + 61);
+    self->_appLaunchesCoarseTimePowLocationForAllAppsAndContexts = *(fromCopy + 61);
     *&self->_has |= 0x1000000000000000uLL;
   }
 
 LABEL_58:
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x20000000000) != 0)
   {
-    self->_appLaunchesSpecificTimeDowLocationForAppInContext = *(v4 + 106);
+    self->_appLaunchesSpecificTimeDowLocationForAppInContext = *(fromCopy + 106);
     *(&self->_has + 1) |= 0x20000000000uLL;
-    v14 = *(v4 + 147);
+    v14 = *(fromCopy + 147);
     if ((v14 & 0x40000000000) == 0)
     {
 LABEL_60:
@@ -16833,9 +16833,9 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  self->_appLaunchesSpecificTimeDowLocationInContext = *(v4 + 107);
+  self->_appLaunchesSpecificTimeDowLocationInContext = *(fromCopy + 107);
   *(&self->_has + 1) |= 0x40000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x10000000000) == 0)
   {
 LABEL_61:
@@ -16848,9 +16848,9 @@ LABEL_61:
   }
 
 LABEL_214:
-  self->_appLaunchesSpecificTimeDowLocationForApp = *(v4 + 105);
+  self->_appLaunchesSpecificTimeDowLocationForApp = *(fromCopy + 105);
   *(&self->_has + 1) |= 0x10000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x8000000000) == 0)
   {
 LABEL_62:
@@ -16863,9 +16863,9 @@ LABEL_62:
   }
 
 LABEL_215:
-  self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts = *(v4 + 104);
+  self->_appLaunchesSpecificTimeDowLocationForAllAppsAndContexts = *(fromCopy + 104);
   *(&self->_has + 1) |= 0x8000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x10) == 0)
   {
 LABEL_63:
@@ -16878,9 +16878,9 @@ LABEL_63:
   }
 
 LABEL_216:
-  self->_appLaunchesInTimeBucket0ForApp = *(v4 + 69);
+  self->_appLaunchesInTimeBucket0ForApp = *(fromCopy + 69);
   *(&self->_has + 1) |= 0x10uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x8000) == 0)
   {
 LABEL_64:
@@ -16893,9 +16893,9 @@ LABEL_64:
   }
 
 LABEL_217:
-  self->_appLaunchesInTimeBucket1ForApp = *(v4 + 80);
+  self->_appLaunchesInTimeBucket1ForApp = *(fromCopy + 80);
   *(&self->_has + 1) |= 0x8000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x200000) == 0)
   {
 LABEL_65:
@@ -16908,9 +16908,9 @@ LABEL_65:
   }
 
 LABEL_218:
-  self->_appLaunchesInTimeBucket2ForApp = *(v4 + 86);
+  self->_appLaunchesInTimeBucket2ForApp = *(fromCopy + 86);
   *(&self->_has + 1) |= 0x200000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x400000) == 0)
   {
 LABEL_66:
@@ -16923,9 +16923,9 @@ LABEL_66:
   }
 
 LABEL_219:
-  self->_appLaunchesInTimeBucket3ForApp = *(v4 + 87);
+  self->_appLaunchesInTimeBucket3ForApp = *(fromCopy + 87);
   *(&self->_has + 1) |= 0x400000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x800000) == 0)
   {
 LABEL_67:
@@ -16938,9 +16938,9 @@ LABEL_67:
   }
 
 LABEL_220:
-  self->_appLaunchesInTimeBucket4ForApp = *(v4 + 88);
+  self->_appLaunchesInTimeBucket4ForApp = *(fromCopy + 88);
   *(&self->_has + 1) |= 0x800000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x1000000) == 0)
   {
 LABEL_68:
@@ -16953,9 +16953,9 @@ LABEL_68:
   }
 
 LABEL_221:
-  self->_appLaunchesInTimeBucket5ForApp = *(v4 + 89);
+  self->_appLaunchesInTimeBucket5ForApp = *(fromCopy + 89);
   *(&self->_has + 1) |= 0x1000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x2000000) == 0)
   {
 LABEL_69:
@@ -16968,9 +16968,9 @@ LABEL_69:
   }
 
 LABEL_222:
-  self->_appLaunchesInTimeBucket6ForApp = *(v4 + 90);
+  self->_appLaunchesInTimeBucket6ForApp = *(fromCopy + 90);
   *(&self->_has + 1) |= 0x2000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x4000000) == 0)
   {
 LABEL_70:
@@ -16983,9 +16983,9 @@ LABEL_70:
   }
 
 LABEL_223:
-  self->_appLaunchesInTimeBucket7ForApp = *(v4 + 91);
+  self->_appLaunchesInTimeBucket7ForApp = *(fromCopy + 91);
   *(&self->_has + 1) |= 0x4000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x8000000) == 0)
   {
 LABEL_71:
@@ -16998,9 +16998,9 @@ LABEL_71:
   }
 
 LABEL_224:
-  self->_appLaunchesInTimeBucket8ForApp = *(v4 + 92);
+  self->_appLaunchesInTimeBucket8ForApp = *(fromCopy + 92);
   *(&self->_has + 1) |= 0x8000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x10000000) == 0)
   {
 LABEL_72:
@@ -17013,9 +17013,9 @@ LABEL_72:
   }
 
 LABEL_225:
-  self->_appLaunchesInTimeBucket9ForApp = *(v4 + 93);
+  self->_appLaunchesInTimeBucket9ForApp = *(fromCopy + 93);
   *(&self->_has + 1) |= 0x10000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x20) == 0)
   {
 LABEL_73:
@@ -17028,9 +17028,9 @@ LABEL_73:
   }
 
 LABEL_226:
-  self->_appLaunchesInTimeBucket10ForApp = *(v4 + 70);
+  self->_appLaunchesInTimeBucket10ForApp = *(fromCopy + 70);
   *(&self->_has + 1) |= 0x20uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x40) == 0)
   {
 LABEL_74:
@@ -17043,9 +17043,9 @@ LABEL_74:
   }
 
 LABEL_227:
-  self->_appLaunchesInTimeBucket11ForApp = *(v4 + 71);
+  self->_appLaunchesInTimeBucket11ForApp = *(fromCopy + 71);
   *(&self->_has + 1) |= 0x40uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x80) == 0)
   {
 LABEL_75:
@@ -17058,9 +17058,9 @@ LABEL_75:
   }
 
 LABEL_228:
-  self->_appLaunchesInTimeBucket12ForApp = *(v4 + 72);
+  self->_appLaunchesInTimeBucket12ForApp = *(fromCopy + 72);
   *(&self->_has + 1) |= 0x80uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x100) == 0)
   {
 LABEL_76:
@@ -17073,9 +17073,9 @@ LABEL_76:
   }
 
 LABEL_229:
-  self->_appLaunchesInTimeBucket13ForApp = *(v4 + 73);
+  self->_appLaunchesInTimeBucket13ForApp = *(fromCopy + 73);
   *(&self->_has + 1) |= 0x100uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x200) == 0)
   {
 LABEL_77:
@@ -17088,9 +17088,9 @@ LABEL_77:
   }
 
 LABEL_230:
-  self->_appLaunchesInTimeBucket14ForApp = *(v4 + 74);
+  self->_appLaunchesInTimeBucket14ForApp = *(fromCopy + 74);
   *(&self->_has + 1) |= 0x200uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x400) == 0)
   {
 LABEL_78:
@@ -17103,9 +17103,9 @@ LABEL_78:
   }
 
 LABEL_231:
-  self->_appLaunchesInTimeBucket15ForApp = *(v4 + 75);
+  self->_appLaunchesInTimeBucket15ForApp = *(fromCopy + 75);
   *(&self->_has + 1) |= 0x400uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x800) == 0)
   {
 LABEL_79:
@@ -17118,9 +17118,9 @@ LABEL_79:
   }
 
 LABEL_232:
-  self->_appLaunchesInTimeBucket16ForApp = *(v4 + 76);
+  self->_appLaunchesInTimeBucket16ForApp = *(fromCopy + 76);
   *(&self->_has + 1) |= 0x800uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x1000) == 0)
   {
 LABEL_80:
@@ -17133,9 +17133,9 @@ LABEL_80:
   }
 
 LABEL_233:
-  self->_appLaunchesInTimeBucket17ForApp = *(v4 + 77);
+  self->_appLaunchesInTimeBucket17ForApp = *(fromCopy + 77);
   *(&self->_has + 1) |= 0x1000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x2000) == 0)
   {
 LABEL_81:
@@ -17148,9 +17148,9 @@ LABEL_81:
   }
 
 LABEL_234:
-  self->_appLaunchesInTimeBucket18ForApp = *(v4 + 78);
+  self->_appLaunchesInTimeBucket18ForApp = *(fromCopy + 78);
   *(&self->_has + 1) |= 0x2000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x4000) == 0)
   {
 LABEL_82:
@@ -17163,9 +17163,9 @@ LABEL_82:
   }
 
 LABEL_235:
-  self->_appLaunchesInTimeBucket19ForApp = *(v4 + 79);
+  self->_appLaunchesInTimeBucket19ForApp = *(fromCopy + 79);
   *(&self->_has + 1) |= 0x4000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x10000) == 0)
   {
 LABEL_83:
@@ -17178,9 +17178,9 @@ LABEL_83:
   }
 
 LABEL_236:
-  self->_appLaunchesInTimeBucket20ForApp = *(v4 + 81);
+  self->_appLaunchesInTimeBucket20ForApp = *(fromCopy + 81);
   *(&self->_has + 1) |= 0x10000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x20000) == 0)
   {
 LABEL_84:
@@ -17193,9 +17193,9 @@ LABEL_84:
   }
 
 LABEL_237:
-  self->_appLaunchesInTimeBucket21ForApp = *(v4 + 82);
+  self->_appLaunchesInTimeBucket21ForApp = *(fromCopy + 82);
   *(&self->_has + 1) |= 0x20000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x40000) == 0)
   {
 LABEL_85:
@@ -17208,9 +17208,9 @@ LABEL_85:
   }
 
 LABEL_238:
-  self->_appLaunchesInTimeBucket22ForApp = *(v4 + 83);
+  self->_appLaunchesInTimeBucket22ForApp = *(fromCopy + 83);
   *(&self->_has + 1) |= 0x40000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x80000) == 0)
   {
 LABEL_86:
@@ -17223,9 +17223,9 @@ LABEL_86:
   }
 
 LABEL_239:
-  self->_appLaunchesInTimeBucket23ForApp = *(v4 + 84);
+  self->_appLaunchesInTimeBucket23ForApp = *(fromCopy + 84);
   *(&self->_has + 1) |= 0x80000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x100000) == 0)
   {
 LABEL_87:
@@ -17238,9 +17238,9 @@ LABEL_87:
   }
 
 LABEL_240:
-  self->_appLaunchesInTimeBucket24ForApp = *(v4 + 85);
+  self->_appLaunchesInTimeBucket24ForApp = *(fromCopy + 85);
   *(&self->_has + 1) |= 0x100000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x800000000) == 0)
   {
 LABEL_88:
@@ -17253,9 +17253,9 @@ LABEL_88:
   }
 
 LABEL_241:
-  self->_appLaunchesOnDayOfWeekSundayForApp = *(v4 + 100);
+  self->_appLaunchesOnDayOfWeekSundayForApp = *(fromCopy + 100);
   *(&self->_has + 1) |= 0x800000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x200000000) == 0)
   {
 LABEL_89:
@@ -17268,9 +17268,9 @@ LABEL_89:
   }
 
 LABEL_242:
-  self->_appLaunchesOnDayOfWeekMondayForApp = *(v4 + 98);
+  self->_appLaunchesOnDayOfWeekMondayForApp = *(fromCopy + 98);
   *(&self->_has + 1) |= 0x200000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x2000000000) == 0)
   {
 LABEL_90:
@@ -17283,9 +17283,9 @@ LABEL_90:
   }
 
 LABEL_243:
-  self->_appLaunchesOnDayOfWeekTuesdayForApp = *(v4 + 102);
+  self->_appLaunchesOnDayOfWeekTuesdayForApp = *(fromCopy + 102);
   *(&self->_has + 1) |= 0x2000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x4000000000) == 0)
   {
 LABEL_91:
@@ -17298,9 +17298,9 @@ LABEL_91:
   }
 
 LABEL_244:
-  self->_appLaunchesOnDayOfWeekWednesdayForApp = *(v4 + 103);
+  self->_appLaunchesOnDayOfWeekWednesdayForApp = *(fromCopy + 103);
   *(&self->_has + 1) |= 0x4000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x1000000000) == 0)
   {
 LABEL_92:
@@ -17313,9 +17313,9 @@ LABEL_92:
   }
 
 LABEL_245:
-  self->_appLaunchesOnDayOfWeekThursdayForApp = *(v4 + 101);
+  self->_appLaunchesOnDayOfWeekThursdayForApp = *(fromCopy + 101);
   *(&self->_has + 1) |= 0x1000000000uLL;
-  v14 = *(v4 + 147);
+  v14 = *(fromCopy + 147);
   if ((v14 & 0x100000000) == 0)
   {
 LABEL_93:
@@ -17328,12 +17328,12 @@ LABEL_93:
   }
 
 LABEL_246:
-  self->_appLaunchesOnDayOfWeekFridayForApp = *(v4 + 97);
+  self->_appLaunchesOnDayOfWeekFridayForApp = *(fromCopy + 97);
   *(&self->_has + 1) |= 0x100000000uLL;
-  if ((*(v4 + 147) & 0x400000000) != 0)
+  if ((*(fromCopy + 147) & 0x400000000) != 0)
   {
 LABEL_94:
-    self->_appLaunchesOnDayOfWeekSaturdayForApp = *(v4 + 99);
+    self->_appLaunchesOnDayOfWeekSaturdayForApp = *(fromCopy + 99);
     *(&self->_has + 1) |= 0x400000000uLL;
   }
 
@@ -17341,9 +17341,9 @@ LABEL_95:
   v15 = *v5;
   if ((*v5 & 0x200) != 0)
   {
-    self->_appLaunchesAtCoarseGeoHash0ForApp = *(v4 + 10);
+    self->_appLaunchesAtCoarseGeoHash0ForApp = *(fromCopy + 10);
     *&self->_has |= 0x200uLL;
-    v15 = *(v4 + 146);
+    v15 = *(fromCopy + 146);
     if ((v15 & 0x400) == 0)
     {
 LABEL_97:
@@ -17361,9 +17361,9 @@ LABEL_97:
     goto LABEL_97;
   }
 
-  self->_appLaunchesAtCoarseGeoHash1ForApp = *(v4 + 11);
+  self->_appLaunchesAtCoarseGeoHash1ForApp = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x800) == 0)
   {
 LABEL_98:
@@ -17376,9 +17376,9 @@ LABEL_98:
   }
 
 LABEL_250:
-  self->_appLaunchesAtCoarseGeoHash2ForApp = *(v4 + 12);
+  self->_appLaunchesAtCoarseGeoHash2ForApp = *(fromCopy + 12);
   *&self->_has |= 0x800uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x1000) == 0)
   {
 LABEL_99:
@@ -17391,9 +17391,9 @@ LABEL_99:
   }
 
 LABEL_251:
-  self->_appLaunchesAtCoarseGeoHash3ForApp = *(v4 + 13);
+  self->_appLaunchesAtCoarseGeoHash3ForApp = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x2000) == 0)
   {
 LABEL_100:
@@ -17406,9 +17406,9 @@ LABEL_100:
   }
 
 LABEL_252:
-  self->_appLaunchesAtCoarseGeoHash4ForApp = *(v4 + 14);
+  self->_appLaunchesAtCoarseGeoHash4ForApp = *(fromCopy + 14);
   *&self->_has |= 0x2000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x4000) == 0)
   {
 LABEL_101:
@@ -17421,9 +17421,9 @@ LABEL_101:
   }
 
 LABEL_253:
-  self->_appLaunchesAtCoarseGeoHash5ForApp = *(v4 + 15);
+  self->_appLaunchesAtCoarseGeoHash5ForApp = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x8000) == 0)
   {
 LABEL_102:
@@ -17436,9 +17436,9 @@ LABEL_102:
   }
 
 LABEL_254:
-  self->_appLaunchesAtCoarseGeoHash6ForApp = *(v4 + 16);
+  self->_appLaunchesAtCoarseGeoHash6ForApp = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x10000) == 0)
   {
 LABEL_103:
@@ -17451,9 +17451,9 @@ LABEL_103:
   }
 
 LABEL_255:
-  self->_appLaunchesAtCoarseGeoHash7ForApp = *(v4 + 17);
+  self->_appLaunchesAtCoarseGeoHash7ForApp = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x20000) == 0)
   {
 LABEL_104:
@@ -17466,9 +17466,9 @@ LABEL_104:
   }
 
 LABEL_256:
-  self->_appLaunchesAtCoarseGeoHash8ForApp = *(v4 + 18);
+  self->_appLaunchesAtCoarseGeoHash8ForApp = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x40000) == 0)
   {
 LABEL_105:
@@ -17481,9 +17481,9 @@ LABEL_105:
   }
 
 LABEL_257:
-  self->_appLaunchesAtCoarseGeoHash9ForApp = *(v4 + 19);
+  self->_appLaunchesAtCoarseGeoHash9ForApp = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x4000000) == 0)
   {
 LABEL_106:
@@ -17496,9 +17496,9 @@ LABEL_106:
   }
 
 LABEL_258:
-  self->_appLaunchesAtSpecificGeoHash0ForApp = *(v4 + 27);
+  self->_appLaunchesAtSpecificGeoHash0ForApp = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x100000000) == 0)
   {
 LABEL_107:
@@ -17511,9 +17511,9 @@ LABEL_107:
   }
 
 LABEL_259:
-  self->_appLaunchesAtSpecificGeoHash1ForApp = *(v4 + 33);
+  self->_appLaunchesAtSpecificGeoHash1ForApp = *(fromCopy + 33);
   *&self->_has |= 0x100000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x200000000) == 0)
   {
 LABEL_108:
@@ -17526,9 +17526,9 @@ LABEL_108:
   }
 
 LABEL_260:
-  self->_appLaunchesAtSpecificGeoHash2ForApp = *(v4 + 34);
+  self->_appLaunchesAtSpecificGeoHash2ForApp = *(fromCopy + 34);
   *&self->_has |= 0x200000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x400000000) == 0)
   {
 LABEL_109:
@@ -17541,9 +17541,9 @@ LABEL_109:
   }
 
 LABEL_261:
-  self->_appLaunchesAtSpecificGeoHash3ForApp = *(v4 + 35);
+  self->_appLaunchesAtSpecificGeoHash3ForApp = *(fromCopy + 35);
   *&self->_has |= 0x400000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x800000000) == 0)
   {
 LABEL_110:
@@ -17556,9 +17556,9 @@ LABEL_110:
   }
 
 LABEL_262:
-  self->_appLaunchesAtSpecificGeoHash4ForApp = *(v4 + 36);
+  self->_appLaunchesAtSpecificGeoHash4ForApp = *(fromCopy + 36);
   *&self->_has |= 0x800000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x1000000000) == 0)
   {
 LABEL_111:
@@ -17571,9 +17571,9 @@ LABEL_111:
   }
 
 LABEL_263:
-  self->_appLaunchesAtSpecificGeoHash5ForApp = *(v4 + 37);
+  self->_appLaunchesAtSpecificGeoHash5ForApp = *(fromCopy + 37);
   *&self->_has |= 0x1000000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x2000000000) == 0)
   {
 LABEL_112:
@@ -17586,9 +17586,9 @@ LABEL_112:
   }
 
 LABEL_264:
-  self->_appLaunchesAtSpecificGeoHash6ForApp = *(v4 + 38);
+  self->_appLaunchesAtSpecificGeoHash6ForApp = *(fromCopy + 38);
   *&self->_has |= 0x2000000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x4000000000) == 0)
   {
 LABEL_113:
@@ -17601,9 +17601,9 @@ LABEL_113:
   }
 
 LABEL_265:
-  self->_appLaunchesAtSpecificGeoHash7ForApp = *(v4 + 39);
+  self->_appLaunchesAtSpecificGeoHash7ForApp = *(fromCopy + 39);
   *&self->_has |= 0x4000000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x8000000000) == 0)
   {
 LABEL_114:
@@ -17616,9 +17616,9 @@ LABEL_114:
   }
 
 LABEL_266:
-  self->_appLaunchesAtSpecificGeoHash8ForApp = *(v4 + 40);
+  self->_appLaunchesAtSpecificGeoHash8ForApp = *(fromCopy + 40);
   *&self->_has |= 0x8000000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x10000000000) == 0)
   {
 LABEL_115:
@@ -17631,9 +17631,9 @@ LABEL_115:
   }
 
 LABEL_267:
-  self->_appLaunchesAtSpecificGeoHash9ForApp = *(v4 + 41);
+  self->_appLaunchesAtSpecificGeoHash9ForApp = *(fromCopy + 41);
   *&self->_has |= 0x10000000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x8000000) == 0)
   {
 LABEL_116:
@@ -17646,9 +17646,9 @@ LABEL_116:
   }
 
 LABEL_268:
-  self->_appLaunchesAtSpecificGeoHash10ForApp = *(v4 + 28);
+  self->_appLaunchesAtSpecificGeoHash10ForApp = *(fromCopy + 28);
   *&self->_has |= 0x8000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x10000000) == 0)
   {
 LABEL_117:
@@ -17661,9 +17661,9 @@ LABEL_117:
   }
 
 LABEL_269:
-  self->_appLaunchesAtSpecificGeoHash11ForApp = *(v4 + 29);
+  self->_appLaunchesAtSpecificGeoHash11ForApp = *(fromCopy + 29);
   *&self->_has |= 0x10000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x20000000) == 0)
   {
 LABEL_118:
@@ -17676,9 +17676,9 @@ LABEL_118:
   }
 
 LABEL_270:
-  self->_appLaunchesAtSpecificGeoHash12ForApp = *(v4 + 30);
+  self->_appLaunchesAtSpecificGeoHash12ForApp = *(fromCopy + 30);
   *&self->_has |= 0x20000000uLL;
-  v15 = *(v4 + 146);
+  v15 = *(fromCopy + 146);
   if ((v15 & 0x40000000) == 0)
   {
 LABEL_119:
@@ -17691,36 +17691,36 @@ LABEL_119:
   }
 
 LABEL_271:
-  self->_appLaunchesAtSpecificGeoHash13ForApp = *(v4 + 31);
+  self->_appLaunchesAtSpecificGeoHash13ForApp = *(fromCopy + 31);
   *&self->_has |= 0x40000000uLL;
-  if ((*(v4 + 146) & 0x80000000) != 0)
+  if ((*(fromCopy + 146) & 0x80000000) != 0)
   {
 LABEL_120:
-    self->_appLaunchesAtSpecificGeoHash14ForApp = *(v4 + 32);
+    self->_appLaunchesAtSpecificGeoHash14ForApp = *(fromCopy + 32);
     *&self->_has |= 0x80000000uLL;
   }
 
 LABEL_121:
-  v16 = *(v4 + 147);
+  v16 = *(fromCopy + 147);
   if ((v16 & 0x100000000000) != 0)
   {
-    self->_appNumberOfSpecificGeohashesForApp = *(v4 + 109);
+    self->_appNumberOfSpecificGeohashesForApp = *(fromCopy + 109);
     *(&self->_has + 1) |= 0x100000000000uLL;
-    v16 = *(v4 + 147);
+    v16 = *(fromCopy + 147);
   }
 
   if ((v16 & 0x80000000000) != 0)
   {
-    self->_appNumberOfCoarseGeohashesForApp = *(v4 + 108);
+    self->_appNumberOfCoarseGeohashesForApp = *(fromCopy + 108);
     *(&self->_has + 1) |= 0x80000000000uLL;
   }
 
   v17 = *v5;
   if ((*v5 & 0x40) != 0)
   {
-    self->_appEntropyForTimeBuckets = *(v4 + 7);
+    self->_appEntropyForTimeBuckets = *(fromCopy + 7);
     *&self->_has |= 0x40uLL;
-    v17 = *(v4 + 146);
+    v17 = *(fromCopy + 146);
     if ((v17 & 0x20) == 0)
     {
 LABEL_127:
@@ -17738,9 +17738,9 @@ LABEL_127:
     goto LABEL_127;
   }
 
-  self->_appEntropyForSpecificGeoHash = *(v4 + 6);
+  self->_appEntropyForSpecificGeoHash = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x10) == 0)
   {
 LABEL_128:
@@ -17753,9 +17753,9 @@ LABEL_128:
   }
 
 LABEL_275:
-  self->_appEntropyForCoarseGeoHash = *(v4 + 5);
+  self->_appEntropyForCoarseGeoHash = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x40000000000) == 0)
   {
 LABEL_129:
@@ -17768,9 +17768,9 @@ LABEL_129:
   }
 
 LABEL_276:
-  self->_appLaunchesAtSpecificGeoHashForAppInContext = *(v4 + 43);
+  self->_appLaunchesAtSpecificGeoHashForAppInContext = *(fromCopy + 43);
   *&self->_has |= 0x40000000000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x100000) == 0)
   {
 LABEL_130:
@@ -17783,9 +17783,9 @@ LABEL_130:
   }
 
 LABEL_277:
-  self->_appLaunchesAtCoarseGeoHashForAppInContext = *(v4 + 21);
+  self->_appLaunchesAtCoarseGeoHashForAppInContext = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x400000) == 0)
   {
 LABEL_131:
@@ -17798,9 +17798,9 @@ LABEL_131:
   }
 
 LABEL_278:
-  self->_appLaunchesAtDayOfWeekForApp = *(v4 + 23);
+  self->_appLaunchesAtDayOfWeekForApp = *(fromCopy + 23);
   *&self->_has |= 0x400000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x200000000000) == 0)
   {
 LABEL_132:
@@ -17813,9 +17813,9 @@ LABEL_132:
   }
 
 LABEL_279:
-  self->_appLaunchesAtTimeAndDayForAppInContext = *(v4 + 46);
+  self->_appLaunchesAtTimeAndDayForAppInContext = *(fromCopy + 46);
   *&self->_has |= 0x200000000000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x400000000000) == 0)
   {
 LABEL_133:
@@ -17828,9 +17828,9 @@ LABEL_133:
   }
 
 LABEL_280:
-  self->_appLaunchesAtTimeAndDayInContext = *(v4 + 47);
+  self->_appLaunchesAtTimeAndDayInContext = *(fromCopy + 47);
   *&self->_has |= 0x400000000000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x100000000000) == 0)
   {
 LABEL_134:
@@ -17843,9 +17843,9 @@ LABEL_134:
   }
 
 LABEL_281:
-  self->_appLaunchesAtTimeAndDayForApp = *(v4 + 45);
+  self->_appLaunchesAtTimeAndDayForApp = *(fromCopy + 45);
   *&self->_has |= 0x100000000000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x200000) == 0)
   {
 LABEL_135:
@@ -17858,9 +17858,9 @@ LABEL_135:
   }
 
 LABEL_282:
-  self->_appLaunchesAtCoarseGeoHashInContext = *(v4 + 22);
+  self->_appLaunchesAtCoarseGeoHashInContext = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x80000) == 0)
   {
 LABEL_136:
@@ -17873,9 +17873,9 @@ LABEL_136:
   }
 
 LABEL_283:
-  self->_appLaunchesAtCoarseGeoHashForApp = *(v4 + 20);
+  self->_appLaunchesAtCoarseGeoHashForApp = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v17 = *(v4 + 146);
+  v17 = *(fromCopy + 146);
   if ((v17 & 0x80000000000) == 0)
   {
 LABEL_137:
@@ -17888,42 +17888,42 @@ LABEL_137:
   }
 
 LABEL_284:
-  self->_appLaunchesAtSpecificGeoHashInContext = *(v4 + 44);
+  self->_appLaunchesAtSpecificGeoHashInContext = *(fromCopy + 44);
   *&self->_has |= 0x80000000000uLL;
-  if ((*(v4 + 146) & 0x20000000000) != 0)
+  if ((*(fromCopy + 146) & 0x20000000000) != 0)
   {
 LABEL_138:
-    self->_appLaunchesAtSpecificGeoHashForApp = *(v4 + 42);
+    self->_appLaunchesAtSpecificGeoHashForApp = *(fromCopy + 42);
     *&self->_has |= 0x20000000000uLL;
   }
 
 LABEL_139:
-  v18 = *(v4 + 147);
+  v18 = *(fromCopy + 147);
   if (v18)
   {
-    self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate = *(v4 + 65);
+    self->_appLaunchesForAllAppsAndContextsDecayedAtCoarseContextRate = *(fromCopy + 65);
     *(&self->_has + 1) |= 1uLL;
-    v18 = *(v4 + 147);
+    v18 = *(fromCopy + 147);
   }
 
   if ((v18 & 2) != 0)
   {
-    self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate = *(v4 + 66);
+    self->_appLaunchesForAllAppsAndContextsDecayedAtSpecificContextRate = *(fromCopy + 66);
     *(&self->_has + 1) |= 2uLL;
   }
 
-  if ((v4[1184] & 2) != 0)
+  if ((fromCopy[1184] & 2) != 0)
   {
-    self->_isLocationServicesDisabled = *(v4 + 130);
+    self->_isLocationServicesDisabled = *(fromCopy + 130);
     *(&self->_has + 4) |= 2u;
   }
 
-  v19 = *(v4 + 147);
+  v19 = *(fromCopy + 147);
   if ((v19 & 0x40000000) != 0)
   {
-    self->_appLaunchesInTwoHourTimeBucketForAppInContext = *(v4 + 95);
+    self->_appLaunchesInTwoHourTimeBucketForAppInContext = *(fromCopy + 95);
     *(&self->_has + 1) |= 0x40000000uLL;
-    v19 = *(v4 + 147);
+    v19 = *(fromCopy + 147);
     if ((v19 & 0x80000000) == 0)
     {
 LABEL_147:
@@ -17941,9 +17941,9 @@ LABEL_147:
     goto LABEL_147;
   }
 
-  self->_appLaunchesInTwoHourTimeBucketInContext = *(v4 + 96);
+  self->_appLaunchesInTwoHourTimeBucketInContext = *(fromCopy + 96);
   *(&self->_has + 1) |= 0x80000000uLL;
-  v19 = *(v4 + 147);
+  v19 = *(fromCopy + 147);
   if ((v19 & 0x20000000) == 0)
   {
 LABEL_148:
@@ -17956,12 +17956,12 @@ LABEL_148:
   }
 
 LABEL_288:
-  self->_appLaunchesInTwoHourTimeBucketForApp = *(v4 + 94);
+  self->_appLaunchesInTwoHourTimeBucketForApp = *(fromCopy + 94);
   *(&self->_has + 1) |= 0x20000000uLL;
-  if ((*(v4 + 147) & 0x20000000000000) != 0)
+  if ((*(fromCopy + 147) & 0x20000000000000) != 0)
   {
 LABEL_149:
-    self->_currentTimeBucketFromZeroToTwentyFour = *(v4 + 118);
+    self->_currentTimeBucketFromZeroToTwentyFour = *(fromCopy + 118);
     *(&self->_has + 1) |= 0x20000000000000uLL;
   }
 
@@ -17969,9 +17969,9 @@ LABEL_150:
   v20 = *v5;
   if ((*v5 & 0x400000000000000) != 0)
   {
-    self->_appLaunchesAtZoom7GeoHashForAppInContext = *(v4 + 59);
+    self->_appLaunchesAtZoom7GeoHashForAppInContext = *(fromCopy + 59);
     *&self->_has |= 0x400000000000000uLL;
-    v20 = *(v4 + 146);
+    v20 = *(fromCopy + 146);
     if ((v20 & 0x800000000000000) == 0)
     {
 LABEL_152:
@@ -17989,9 +17989,9 @@ LABEL_152:
     goto LABEL_152;
   }
 
-  self->_appLaunchesAtZoom7GeoHashInContext = *(v4 + 60);
+  self->_appLaunchesAtZoom7GeoHashInContext = *(fromCopy + 60);
   *&self->_has |= 0x800000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x200000000000000) == 0)
   {
 LABEL_153:
@@ -18004,9 +18004,9 @@ LABEL_153:
   }
 
 LABEL_292:
-  self->_appLaunchesAtZoom7GeoHashForApp = *(v4 + 58);
+  self->_appLaunchesAtZoom7GeoHashForApp = *(fromCopy + 58);
   *&self->_has |= 0x200000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x800000000000) == 0)
   {
 LABEL_154:
@@ -18019,9 +18019,9 @@ LABEL_154:
   }
 
 LABEL_293:
-  self->_appLaunchesAtZoom7GeoHash0ForApp = *(v4 + 48);
+  self->_appLaunchesAtZoom7GeoHash0ForApp = *(fromCopy + 48);
   *&self->_has |= 0x800000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x1000000000000) == 0)
   {
 LABEL_155:
@@ -18034,9 +18034,9 @@ LABEL_155:
   }
 
 LABEL_294:
-  self->_appLaunchesAtZoom7GeoHash1ForApp = *(v4 + 49);
+  self->_appLaunchesAtZoom7GeoHash1ForApp = *(fromCopy + 49);
   *&self->_has |= 0x1000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x2000000000000) == 0)
   {
 LABEL_156:
@@ -18049,9 +18049,9 @@ LABEL_156:
   }
 
 LABEL_295:
-  self->_appLaunchesAtZoom7GeoHash2ForApp = *(v4 + 50);
+  self->_appLaunchesAtZoom7GeoHash2ForApp = *(fromCopy + 50);
   *&self->_has |= 0x2000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x4000000000000) == 0)
   {
 LABEL_157:
@@ -18064,9 +18064,9 @@ LABEL_157:
   }
 
 LABEL_296:
-  self->_appLaunchesAtZoom7GeoHash3ForApp = *(v4 + 51);
+  self->_appLaunchesAtZoom7GeoHash3ForApp = *(fromCopy + 51);
   *&self->_has |= 0x4000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x8000000000000) == 0)
   {
 LABEL_158:
@@ -18079,9 +18079,9 @@ LABEL_158:
   }
 
 LABEL_297:
-  self->_appLaunchesAtZoom7GeoHash4ForApp = *(v4 + 52);
+  self->_appLaunchesAtZoom7GeoHash4ForApp = *(fromCopy + 52);
   *&self->_has |= 0x8000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x10000000000000) == 0)
   {
 LABEL_159:
@@ -18094,9 +18094,9 @@ LABEL_159:
   }
 
 LABEL_298:
-  self->_appLaunchesAtZoom7GeoHash5ForApp = *(v4 + 53);
+  self->_appLaunchesAtZoom7GeoHash5ForApp = *(fromCopy + 53);
   *&self->_has |= 0x10000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x20000000000000) == 0)
   {
 LABEL_160:
@@ -18109,9 +18109,9 @@ LABEL_160:
   }
 
 LABEL_299:
-  self->_appLaunchesAtZoom7GeoHash6ForApp = *(v4 + 54);
+  self->_appLaunchesAtZoom7GeoHash6ForApp = *(fromCopy + 54);
   *&self->_has |= 0x20000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x40000000000000) == 0)
   {
 LABEL_161:
@@ -18124,9 +18124,9 @@ LABEL_161:
   }
 
 LABEL_300:
-  self->_appLaunchesAtZoom7GeoHash7ForApp = *(v4 + 55);
+  self->_appLaunchesAtZoom7GeoHash7ForApp = *(fromCopy + 55);
   *&self->_has |= 0x40000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x80000000000000) == 0)
   {
 LABEL_162:
@@ -18139,9 +18139,9 @@ LABEL_162:
   }
 
 LABEL_301:
-  self->_appLaunchesAtZoom7GeoHash8ForApp = *(v4 + 56);
+  self->_appLaunchesAtZoom7GeoHash8ForApp = *(fromCopy + 56);
   *&self->_has |= 0x80000000000000uLL;
-  v20 = *(v4 + 146);
+  v20 = *(fromCopy + 146);
   if ((v20 & 0x100000000000000) == 0)
   {
 LABEL_163:
@@ -18154,67 +18154,67 @@ LABEL_163:
   }
 
 LABEL_302:
-  self->_appLaunchesAtZoom7GeoHash9ForApp = *(v4 + 57);
+  self->_appLaunchesAtZoom7GeoHash9ForApp = *(fromCopy + 57);
   *&self->_has |= 0x100000000000000uLL;
-  if ((*(v4 + 146) & 0x80) != 0)
+  if ((*(fromCopy + 146) & 0x80) != 0)
   {
 LABEL_164:
-    self->_appEntropyForZoom7GeoHash = *(v4 + 8);
+    self->_appEntropyForZoom7GeoHash = *(fromCopy + 8);
     *&self->_has |= 0x80uLL;
   }
 
 LABEL_165:
-  if ((v4[1181] & 0x20) != 0)
+  if ((fromCopy[1181] & 0x20) != 0)
   {
-    self->_appNumberOfZoom7GeohashesForApp = *(v4 + 110);
+    self->_appNumberOfZoom7GeohashesForApp = *(fromCopy + 110);
     *(&self->_has + 1) |= 0x200000000000uLL;
   }
 
   v21 = *v5;
   if ((*v5 & 0x2000000) != 0)
   {
-    self->_appLaunchesAtSSIDForAppInContext = *(v4 + 26);
+    self->_appLaunchesAtSSIDForAppInContext = *(fromCopy + 26);
     *&self->_has |= 0x2000000uLL;
-    v21 = *(v4 + 146);
+    v21 = *(fromCopy + 146);
   }
 
   if ((v21 & 0x1000000) != 0)
   {
-    self->_appLaunchesAtSSIDForApp = *(v4 + 25);
+    self->_appLaunchesAtSSIDForApp = *(fromCopy + 25);
     *&self->_has |= 0x1000000uLL;
   }
 
-  v22 = *(v4 + 147);
+  v22 = *(fromCopy + 147);
   if ((v22 & 4) != 0)
   {
-    self->_appLaunchesForCoreMotionForAppInContext = *(v4 + 67);
+    self->_appLaunchesForCoreMotionForAppInContext = *(fromCopy + 67);
     *(&self->_has + 1) |= 4uLL;
-    v22 = *(v4 + 147);
+    v22 = *(fromCopy + 147);
   }
 
   if ((v22 & 8) != 0)
   {
-    self->_appLaunchesInAirplaneModeForAppInContext = *(v4 + 68);
+    self->_appLaunchesInAirplaneModeForAppInContext = *(fromCopy + 68);
     *(&self->_has + 1) |= 8uLL;
   }
 
-  if ((v4[1184] & 0x40) != 0)
+  if ((fromCopy[1184] & 0x40) != 0)
   {
-    self->_poiPopularityForAppInContext = *(v4 + 135);
+    self->_poiPopularityForAppInContext = *(fromCopy + 135);
     *(&self->_has + 4) |= 0x40u;
   }
 
   v23 = *v5;
   if ((v23 & 0x100) != 0)
   {
-    self->_appLaunchPopularityAtPOIForAppInContext = *(v4 + 9);
+    self->_appLaunchPopularityAtPOIForAppInContext = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
-    v23 = *(v4 + 146);
+    v23 = *(fromCopy + 146);
   }
 
   if ((v23 & 0x800000) != 0)
   {
-    self->_appLaunchesAtPOIForAppInContext = *(v4 + 24);
+    self->_appLaunchesAtPOIForAppInContext = *(fromCopy + 24);
     *&self->_has |= 0x800000uLL;
   }
 }

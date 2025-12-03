@@ -1,14 +1,14 @@
 @interface SFContactAutoFillValue
-- (SFContactAutoFillValue)initWithMatches:(id)a3 displayValue:(id)a4 label:(id)a5;
+- (SFContactAutoFillValue)initWithMatches:(id)matches displayValue:(id)value label:(id)label;
 @end
 
 @implementation SFContactAutoFillValue
 
-- (SFContactAutoFillValue)initWithMatches:(id)a3 displayValue:(id)a4 label:(id)a5
+- (SFContactAutoFillValue)initWithMatches:(id)matches displayValue:(id)value label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  matchesCopy = matches;
+  valueCopy = value;
+  labelCopy = label;
   v21.receiver = self;
   v21.super_class = SFContactAutoFillValue;
   v11 = [(SFContactAutoFillValue *)&v21 init];
@@ -16,15 +16,15 @@
   if (v11)
   {
     v11->_selected = 1;
-    v13 = [v8 copy];
+    v13 = [matchesCopy copy];
     matches = v12->_matches;
     v12->_matches = v13;
 
-    v15 = [v9 copy];
+    v15 = [valueCopy copy];
     displayValue = v12->_displayValue;
     v12->_displayValue = v15;
 
-    v17 = [v10 copy];
+    v17 = [labelCopy copy];
     label = v12->_label;
     v12->_label = v17;
 

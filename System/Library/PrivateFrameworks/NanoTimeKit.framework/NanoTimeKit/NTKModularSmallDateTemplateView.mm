@@ -1,18 +1,18 @@
 @interface NTKModularSmallDateTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularSmallDateTemplateView)initWithFrame:(CGRect)a3;
-- (id)_newLabelSubviewWithFont:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularSmallDateTemplateView)initWithFrame:(CGRect)frame;
+- (id)_newLabelSubviewWithFont:(id)font;
 - (void)_configureContentSubviews;
 - (void)_layoutContentView;
 - (void)_update;
-- (void)setIsXL:(BOOL)a3;
+- (void)setIsXL:(BOOL)l;
 @end
 
 @implementation NTKModularSmallDateTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,11 +28,11 @@
   return isKindOfClass & 1;
 }
 
-- (NTKModularSmallDateTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularSmallDateTemplateView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTKModularSmallDateTemplateView;
-  v3 = [(NTKModuleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,15 +44,15 @@
 
 - (void)_configureContentSubviews
 {
-  v11 = [(CLKUIColoringLabel *)self->_weekdayLabel textProvider];
-  v3 = [(CLKUIColoringLabel *)self->_dayLabel textProvider];
+  textProvider = [(CLKUIColoringLabel *)self->_weekdayLabel textProvider];
+  textProvider2 = [(CLKUIColoringLabel *)self->_dayLabel textProvider];
   [(CLKUIColoringLabel *)self->_weekdayLabel removeFromSuperview];
   [(CLKUIColoringLabel *)self->_dayLabel removeFromSuperview];
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
-  v4 = [(NTKModuleView *)self device];
-  _LayoutConstants_7(v4, [(NTKComplicationModuleView *)self isXL], &v12);
+  device = [(NTKModuleView *)self device];
+  _LayoutConstants_7(device, [(NTKComplicationModuleView *)self isXL], &v12);
 
   v5 = [MEMORY[0x277CBBB08] systemFontOfSize:v12 weight:?];
   v6 = [(NTKModularSmallDateTemplateView *)self _newLabelSubviewWithFont:v5];
@@ -60,28 +60,28 @@
   self->_weekdayLabel = v6;
 
   [(CLKUIColoringLabel *)self->_weekdayLabel setUppercase:1];
-  [(CLKUIColoringLabel *)self->_weekdayLabel setTextProvider:v11];
+  [(CLKUIColoringLabel *)self->_weekdayLabel setTextProvider:textProvider];
   v8 = [MEMORY[0x277CBBB08] systemFontOfSize:*&v13 weight:*MEMORY[0x277D74408]];
   v9 = [(NTKModularSmallDateTemplateView *)self _newLabelSubviewWithFont:v8];
   dayLabel = self->_dayLabel;
   self->_dayLabel = v9;
 
-  [(CLKUIColoringLabel *)self->_dayLabel setTextProvider:v3];
+  [(CLKUIColoringLabel *)self->_dayLabel setTextProvider:textProvider2];
 }
 
-- (void)setIsXL:(BOOL)a3
+- (void)setIsXL:(BOOL)l
 {
   v4.receiver = self;
   v4.super_class = NTKModularSmallDateTemplateView;
-  [(NTKComplicationModuleView *)&v4 setIsXL:a3];
+  [(NTKComplicationModuleView *)&v4 setIsXL:l];
   [(NTKModularSmallDateTemplateView *)self _configureContentSubviews];
   [(NTKModularSmallDateTemplateView *)self _layoutContentView];
   [(NTKModuleView *)self _updateColors];
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3
+- (id)_newLabelSubviewWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_alloc_init(off_27877BEF8);
   [v5 setNowProvider:&__block_literal_global_108];
   objc_initWeak(&location, self);
@@ -91,13 +91,13 @@
   v11[3] = &unk_27877DC58;
   objc_copyWeak(&v12, &location);
   [v5 setNeedsResizeHandler:v11];
-  [v5 setFont:v4];
-  v6 = [(NTKModuleView *)self device];
-  _LayoutConstants_7(v6, [(NTKComplicationModuleView *)self isXL], &v9);
+  [v5 setFont:fontCopy];
+  device = [(NTKModuleView *)self device];
+  _LayoutConstants_7(device, [(NTKComplicationModuleView *)self isXL], &v9);
   [v5 setMaxWidth:v10];
 
-  v7 = [(NTKModuleView *)self contentView];
-  [v7 addSubview:v5];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:v5];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -114,20 +114,20 @@ void __60__NTKModularSmallDateTemplateView__newLabelSubviewWithFont___block_invo
 
 - (void)_layoutContentView
 {
-  v3 = [(NTKModuleView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView bounds];
 
-  v4 = [(NTKModuleView *)self device];
-  _LayoutConstants_7(v4, [(NTKComplicationModuleView *)self isXL], &v27);
+  device = [(NTKModuleView *)self device];
+  _LayoutConstants_7(device, [(NTKComplicationModuleView *)self isXL], &v27);
   v23 = v28;
 
-  v5 = [(NTKModuleView *)self device];
-  _LayoutConstants_7(v5, [(NTKComplicationModuleView *)self isXL], &v25);
+  device2 = [(NTKModuleView *)self device];
+  _LayoutConstants_7(device2, [(NTKComplicationModuleView *)self isXL], &v25);
   v24 = v26;
 
   [(CLKUIColoringLabel *)self->_weekdayLabel sizeToFit];
   [(CLKUIColoringLabel *)self->_weekdayLabel frame];
-  v6 = [(NTKModuleView *)self device];
+  device3 = [(NTKModuleView *)self device];
   CLKRectCenteredXInRectForDevice();
   v8 = v7;
   v10 = v9;
@@ -137,7 +137,7 @@ void __60__NTKModularSmallDateTemplateView__newLabelSubviewWithFont___block_invo
   [(CLKUIColoringLabel *)self->_weekdayLabel setFrame:v8, v23 - v13, v10, v12];
   [(CLKUIColoringLabel *)self->_dayLabel sizeToFit];
   [(CLKUIColoringLabel *)self->_dayLabel frame];
-  v14 = [(NTKModuleView *)self device];
+  device4 = [(NTKModuleView *)self device];
   CLKRectCenteredXInRectForDevice();
   v16 = v15;
   v18 = v17;
@@ -151,16 +151,16 @@ void __60__NTKModularSmallDateTemplateView__newLabelSubviewWithFont___block_invo
 
 - (void)_update
 {
-  v6 = [(NTKModularTemplateView *)self complicationTemplate];
-  -[NTKModularTemplateView setHighlightMode:](self, "setHighlightMode:", [v6 highlightMode]);
-  v3 = [v6 weekdayTextProvider];
-  [(CLKUIColoringLabel *)self->_weekdayLabel setTextProvider:v3];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  -[NTKModularTemplateView setHighlightMode:](self, "setHighlightMode:", [complicationTemplate highlightMode]);
+  weekdayTextProvider = [complicationTemplate weekdayTextProvider];
+  [(CLKUIColoringLabel *)self->_weekdayLabel setTextProvider:weekdayTextProvider];
 
-  v4 = [v6 dayTextProvider];
-  [(CLKUIColoringLabel *)self->_dayLabel setTextProvider:v4];
+  dayTextProvider = [complicationTemplate dayTextProvider];
+  [(CLKUIColoringLabel *)self->_dayLabel setTextProvider:dayTextProvider];
 
-  v5 = [(NTKModuleView *)self contentView];
-  [v5 setNeedsLayout];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView setNeedsLayout];
 }
 
 @end

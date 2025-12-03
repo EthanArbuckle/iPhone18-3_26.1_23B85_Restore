@@ -1,18 +1,18 @@
 @interface PXPeopleRemovalUtilities
-+ (void)presentAlertFor:(id)a3 totalNumberOfPeople:(int64_t)a4 presentationEnvironment:(id)a5 undoManager:(id)a6 sourceItem:(id)a7 completion:(id)a8;
++ (void)presentAlertFor:(id)for totalNumberOfPeople:(int64_t)people presentationEnvironment:(id)environment undoManager:(id)manager sourceItem:(id)item completion:(id)completion;
 @end
 
 @implementation PXPeopleRemovalUtilities
 
-+ (void)presentAlertFor:(id)a3 totalNumberOfPeople:(int64_t)a4 presentationEnvironment:(id)a5 undoManager:(id)a6 sourceItem:(id)a7 completion:(id)a8
++ (void)presentAlertFor:(id)for totalNumberOfPeople:(int64_t)people presentationEnvironment:(id)environment undoManager:(id)manager sourceItem:(id)item completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   _Block_copy(v13);
-  v14 = a3;
+  forCopy = for;
   swift_unknownObjectRetain();
-  v15 = a6;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  sub_1A3D78DFC(v14, a4, a5, a6, a7, v13);
+  sub_1A3D78DFC(forCopy, people, environment, manager, item, v13);
   _Block_release(v13);
   _Block_release(v13);
 

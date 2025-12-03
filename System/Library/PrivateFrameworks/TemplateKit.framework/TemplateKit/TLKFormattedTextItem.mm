@@ -1,47 +1,47 @@
 @interface TLKFormattedTextItem
-- (void)setIsBold:(BOOL)a3;
-- (void)setIsEmphasized:(BOOL)a3;
+- (void)setIsBold:(BOOL)bold;
+- (void)setIsEmphasized:(BOOL)emphasized;
 @end
 
 @implementation TLKFormattedTextItem
 
-- (void)setIsBold:(BOOL)a3
+- (void)setIsBold:(BOOL)bold
 {
-  if (self->_isBold != a3)
+  if (self->_isBold != bold)
   {
-    self->_isBold = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_isBold = bold;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setIsEmphasized:(BOOL)a3
+- (void)setIsEmphasized:(BOOL)emphasized
 {
-  if (self->_isEmphasized != a3)
+  if (self->_isEmphasized != emphasized)
   {
-    self->_isEmphasized = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_isEmphasized = emphasized;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }

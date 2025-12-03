@@ -1,35 +1,35 @@
 @interface NTKMargaritaStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKMargaritaStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_14580[a3];
+    return off_14580[value];
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKMargaritaStyleEditOption *)self style];
-  if (v2 > 3)
+  style = [(NTKMargaritaStyleEditOption *)self style];
+  if (style > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_145A0[v2];
+    v3 = off_145A0[style];
   }
 
   v4 = [(__CFString *)v3 stringByAppendingString:@"_COMPANION"];

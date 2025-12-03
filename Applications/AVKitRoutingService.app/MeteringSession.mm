@@ -1,10 +1,10 @@
 @interface MeteringSession
-- (void)handleRecordingStateChanged:(id)a3;
+- (void)handleRecordingStateChanged:(id)changed;
 @end
 
 @implementation MeteringSession
 
-- (void)handleRecordingStateChanged:(id)a3
+- (void)handleRecordingStateChanged:(id)changed
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -1,36 +1,36 @@
 @interface PKApplySavingsInlineTermsRow
-- (PKApplySavingsInlineTermsRow)initWithContent:(id)a3 delegate:(id)a4;
-- (void)configureCell:(id)a3;
-- (void)didTapFooterLink:(id)a3;
+- (PKApplySavingsInlineTermsRow)initWithContent:(id)content delegate:(id)delegate;
+- (void)configureCell:(id)cell;
+- (void)didTapFooterLink:(id)link;
 @end
 
 @implementation PKApplySavingsInlineTermsRow
 
-- (PKApplySavingsInlineTermsRow)initWithContent:(id)a3 delegate:(id)a4
+- (PKApplySavingsInlineTermsRow)initWithContent:(id)content delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contentCopy = content;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKApplySavingsInlineTermsRow;
   v9 = [(PKApplySavingsInlineTermsRow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_content, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_content, content);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   [(PKApplySavingsInlineTermsRow *)self cellClass];
   if (objc_opt_isKindOfClass())
   {
     objc_initWeak(&location, self);
-    v5 = v4;
+    v5 = cellCopy;
     content = self->_content;
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
@@ -41,18 +41,18 @@
     v8 = [(PKApplyFooterContent *)self->_content footerText:v13];
     [v5 setText:v8];
 
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [v5 setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v5 setTextColor:labelColor];
 
     [v5 setTextAlignment:4];
     v10 = PKTableViewCellTextInset();
     [v5 setEdgeInsets:{8.0, v10, 8.0, PKTableViewCellTextInset()}];
     [v5 setSources:v7];
-    v11 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
     v12 = PKProvisioningSecondaryBackgroundColor();
-    [v11 setBackgroundColor:v12];
+    [listCellConfiguration setBackgroundColor:v12];
 
-    [v5 setBackgroundConfiguration:v11];
+    [v5 setBackgroundConfiguration:listCellConfiguration];
     [v5 setAccessibilityIdentifier:*MEMORY[0x1E69B9D08]];
 
     objc_destroyWeak(&v17);
@@ -71,13 +71,13 @@ void __46__PKApplySavingsInlineTermsRow_configureCell___block_invoke(uint64_t a1
   }
 }
 
-- (void)didTapFooterLink:(id)a3
+- (void)didTapFooterLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained didTapFooterLink:v5];
+    [WeakRetained didTapFooterLink:linkCopy];
   }
 }
 

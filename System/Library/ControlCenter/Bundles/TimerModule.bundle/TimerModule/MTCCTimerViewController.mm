@@ -1,17 +1,17 @@
 @interface MTCCTimerViewController
 - (MTCCTimerViewController)init;
 - (MTCCTimerViewControllerDelegate)delegate;
-- (double)sliderValueFromRemainingTime:(double)a3;
+- (double)sliderValueFromRemainingTime:(double)time;
 - (id)createSliderView;
 - (id)sliderView;
 - (void)_updateGlyphPackageDescription;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)dealloc;
-- (void)displayLinkTick:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)sliderDidBeginEditing:(id)a3;
-- (void)sliderEditingEnded:(id)a3;
-- (void)sliderValueChanged:(id)a3;
+- (void)displayLinkTick:(id)tick;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)sliderDidBeginEditing:(id)editing;
+- (void)sliderEditingEnded:(id)ended;
+- (void)sliderValueChanged:(id)changed;
 - (void)startDisplayLinkUpdates;
 - (void)stopDisplayLinkUpdates;
 - (void)viewDidLoad;
@@ -47,7 +47,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocating", buf, 0xCu);
   }
 
@@ -99,9 +99,9 @@
 {
   v4.receiver = self;
   v4.super_class = MTCCTimerViewController;
-  v2 = [(CCUISliderModuleViewController *)&v4 sliderView];
+  sliderView = [(CCUISliderModuleViewController *)&v4 sliderView];
 
-  return v2;
+  return sliderView;
 }
 
 - (id)createSliderView
@@ -114,45 +114,45 @@
   return v11;
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
   v7.receiver = self;
   v7.super_class = MTCCTimerViewController;
-  if ([(CCUIButtonModuleViewController *)&v7 contentRenderingMode]!= a3)
+  if ([(CCUIButtonModuleViewController *)&v7 contentRenderingMode]!= mode)
   {
     v6.receiver = self;
     v6.super_class = MTCCTimerViewController;
-    [(CCUIButtonModuleViewController *)&v6 setContentRenderingMode:a3];
+    [(CCUIButtonModuleViewController *)&v6 setContentRenderingMode:mode];
     objc_msgSend__reloadForCurrentStateAnimated_(self, v5, 0);
   }
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
   v14 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  eventCopy = event;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ button tapped, relaying to delegate", &v12, 0xCu);
   }
 
   v9 = objc_msgSend_delegate(self, v7, v8);
-  objc_msgSend_timerViewControllerButtonTapped_withEvent_(v9, v10, self, v5);
+  objc_msgSend_timerViewControllerButtonTapped_withEvent_(v9, v10, self, eventCopy);
 
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sliderDidBeginEditing:(id)a3
+- (void)sliderDidBeginEditing:(id)editing
 {
   v36 = *MEMORY[0x29EDCA608];
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v34 = 138543362;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ slider began editing", &v34, 0xCu);
   }
 
@@ -180,9 +180,9 @@
   v33 = *MEMORY[0x29EDCA608];
 }
 
-- (void)sliderEditingEnded:(id)a3
+- (void)sliderEditingEnded:(id)ended
 {
-  v4 = objc_msgSend_timer(self, a2, a3);
+  v4 = objc_msgSend_timer(self, a2, ended);
   v7 = objc_msgSend_editingTimer(v4, v5, v6);
 
   if (v7)
@@ -196,10 +196,10 @@
   }
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
   v31 = *MEMORY[0x29EDCA608];
-  v4 = objc_msgSend_step(a3, a2, a3);
+  v4 = objc_msgSend_step(changed, a2, changed);
   v5 = v4;
   if (v4 >= 0xD)
   {
@@ -220,7 +220,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = self;
+    selfCopy = self;
     v29 = 2050;
     v30 = v6;
     _os_log_impl(&dword_29C9FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ slider value changed to step: %{public}lu", buf, 0x16u);
@@ -282,9 +282,9 @@
   objc_msgSend_setDisplayLink_(self, v7, 0);
 }
 
-- (void)displayLinkTick:(id)a3
+- (void)displayLinkTick:(id)tick
 {
-  v4 = objc_msgSend_timer(self, a2, a3);
+  v4 = objc_msgSend_timer(self, a2, tick);
   v7 = objc_msgSend_fireDate(v4, v5, v6);
   objc_msgSend_timeIntervalSinceNow(v7, v8, v9);
   v11 = v10;
@@ -295,10 +295,10 @@
   objc_msgSend_setValue_animated_(v18, v17, 0, v16);
 }
 
-- (double)sliderValueFromRemainingTime:(double)a3
+- (double)sliderValueFromRemainingTime:(double)time
 {
   v3 = 0;
-  v4 = round(a3);
+  v4 = round(time);
   while (qword_29CA02F80[v3] * 60.0 < v4)
   {
     if (++v3 == 13)

@@ -1,22 +1,22 @@
 @interface BRCNamedThrottleManager
-- (BRCNamedThrottleManager)initWithDB:(id)a3;
-- (void)cleanNamedThrottleTable:(id)a3;
-- (void)dumpToContext:(id)a3;
-- (void)throttle:(id)a3 subCategory:(id)a4 withRules:(id)a5 onQueue:(id)a6 block:(id)a7;
+- (BRCNamedThrottleManager)initWithDB:(id)b;
+- (void)cleanNamedThrottleTable:(id)table;
+- (void)dumpToContext:(id)context;
+- (void)throttle:(id)throttle subCategory:(id)category withRules:(id)rules onQueue:(id)queue block:(id)block;
 @end
 
 @implementation BRCNamedThrottleManager
 
-- (BRCNamedThrottleManager)initWithDB:(id)a3
+- (BRCNamedThrottleManager)initWithDB:(id)b
 {
-  v5 = a3;
+  bCopy = b;
   v11.receiver = self;
   v11.super_class = BRCNamedThrottleManager;
   v6 = [(BRCNamedThrottleManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, b);
     v8 = OSVersion();
     currentOSVersion = v7->_currentOSVersion;
     v7->_currentOSVersion = v8;
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (void)cleanNamedThrottleTable:(id)a3
+- (void)cleanNamedThrottleTable:(id)table
 {
-  v3 = a3;
+  tableCopy = table;
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -37,32 +37,32 @@
 
   v6 = time(0);
   v7 = OSVersion();
-  [v3 execute:{@"DELETE FROM named_throttles_history WHERE expiration < %ld AND (allow_same_build = 1 OR os_version != %@)", v6, v7}];
+  [tableCopy execute:{@"DELETE FROM named_throttles_history WHERE expiration < %ld AND (allow_same_build = 1 OR os_version != %@)", v6, v7}];
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(BRCNamedThrottleManager *)v3 cleanNamedThrottleTable:v8, v9];
+    [(BRCNamedThrottleManager *)tableCopy cleanNamedThrottleTable:v8, v9];
   }
 }
 
-- (void)throttle:(id)a3 subCategory:(id)a4 withRules:(id)a5 onQueue:(id)a6 block:(id)a7
+- (void)throttle:(id)throttle subCategory:(id)category withRules:(id)rules onQueue:(id)queue block:(id)block
 {
-  v34 = a3;
-  v33 = a4;
-  v12 = a6;
-  v13 = a7;
+  throttleCopy = throttle;
+  categoryCopy = category;
+  queueCopy = queue;
+  blockCopy = block;
   v14 = self->_db;
   v15 = self->_currentOSVersion;
-  v16 = a5;
+  rulesCopy = rules;
   v17 = time(0);
-  v18 = [v16 objectForKeyedSubscript:@"waitBetweenThrottleRuns"];
-  v19 = [v18 longValue];
+  v18 = [rulesCopy objectForKeyedSubscript:@"waitBetweenThrottleRuns"];
+  longValue = [v18 longValue];
   v20 = 86400;
-  if (v19)
+  if (longValue)
   {
-    v21 = v19;
+    v21 = longValue;
   }
 
   else
@@ -70,38 +70,38 @@
     v21 = 86400;
   }
 
-  v22 = [v16 objectForKeyedSubscript:@"waitBetweenSubCatagoryRuns"];
-  v23 = [v22 longValue];
-  if (v23)
+  v22 = [rulesCopy objectForKeyedSubscript:@"waitBetweenSubCatagoryRuns"];
+  longValue2 = [v22 longValue];
+  if (longValue2)
   {
-    v20 = v23;
+    v20 = longValue2;
   }
 
-  v24 = [v16 objectForKeyedSubscript:@"allowOnSameBuild"];
+  v24 = [rulesCopy objectForKeyedSubscript:@"allowOnSameBuild"];
 
-  v25 = [v24 BOOLValue];
-  v26 = [(BRCPQLConnection *)self->_db serialQueue];
+  bOOLValue = [v24 BOOLValue];
+  serialQueue = [(BRCPQLConnection *)self->_db serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__BRCNamedThrottleManager_throttle_subCategory_withRules_onQueue_block___block_invoke;
   block[3] = &unk_2785065D8;
   v36 = v14;
-  v37 = v34;
+  v37 = throttleCopy;
   v42 = v17;
   v43 = v21;
-  v45 = v25;
-  v38 = v33;
+  v45 = bOOLValue;
+  v38 = categoryCopy;
   v39 = v15;
   v44 = v20;
-  v40 = v12;
-  v41 = v13;
-  v27 = v13;
-  v28 = v12;
+  v40 = queueCopy;
+  v41 = blockCopy;
+  v27 = blockCopy;
+  v28 = queueCopy;
   v29 = v15;
-  v30 = v33;
-  v31 = v34;
+  v30 = categoryCopy;
+  v31 = throttleCopy;
   v32 = v14;
-  dispatch_async(v26, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __72__BRCNamedThrottleManager_throttle_subCategory_withRules_onQueue_block___block_invoke(uint64_t a1)
@@ -292,16 +292,16 @@ void __72__BRCNamedThrottleManager_throttle_subCategory_withRules_onQueue_block_
   dispatch_async(v1, block);
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v18 = a3;
-  [v18 writeLineWithFormat:&stru_2837504F0];
-  [v18 writeLineWithFormat:@"Named Throttle History"];
-  [v18 writeLineWithFormat:@"-----------------------------------------------------"];
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:&stru_2837504F0];
+  [contextCopy writeLineWithFormat:@"Named Throttle History"];
+  [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 dumpDateFormat];
-  [v4 setDateFormat:v6];
+  dumpDateFormat = [v5 dumpDateFormat];
+  [v4 setDateFormat:dumpDateFormat];
 
   v7 = [(BRCPQLConnection *)self->_db fetch:@"SELECT throttle_id, sub_category, last_run, os_version, expiration, allow_same_build FROM named_throttles_history LIMIT 100"];
   if ([v7 next])
@@ -323,13 +323,13 @@ void __72__BRCNamedThrottleManager_throttle_subCategory_withRules_onQueue_block_
         v17 = @"yes";
       }
 
-      [v18 writeLineWithFormat:@"|<%@, %@>|last run:%@|os version:%@|expiration:%@|allow same build:%@", v8, v9, v14, v11, v15, v17];
+      [contextCopy writeLineWithFormat:@"|<%@, %@>|last run:%@|os version:%@|expiration:%@|allow same build:%@", v8, v9, v14, v11, v15, v17];
     }
 
     while (([v7 next] & 1) != 0);
   }
 
-  [v18 writeLineWithFormat:&stru_2837504F0];
+  [contextCopy writeLineWithFormat:&stru_2837504F0];
 }
 
 @end

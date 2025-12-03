@@ -1,24 +1,24 @@
 @interface SUUIItemCellLayout
 - (BOOL)_canShowItemOfferNotice;
 - (id)_parentCollectionViewCell;
-- (void)_getParentTableView:(id *)a3 collectionView:(id *)a4;
-- (void)_itemOfferConfirmAction:(id)a3;
-- (void)_reloadItemOfferButton:(BOOL)a3;
+- (void)_getParentTableView:(id *)view collectionView:(id *)collectionView;
+- (void)_itemOfferConfirmAction:(id)action;
+- (void)_reloadItemOfferButton:(BOOL)button;
 - (void)_reloadItemOfferVisibility;
-- (void)_showItemOfferConfirmationAction:(id)a3;
+- (void)_showItemOfferConfirmationAction:(id)action;
 - (void)dealloc;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)prepareForReuse;
 - (void)resetLayout;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDisplaysItemOfferButton:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setIconImageHidden:(BOOL)a3;
-- (void)setItemOffer:(id)a3;
-- (void)setItemOfferButtonAppearance:(id)a3;
-- (void)setItemOfferNoticeString:(id)a3;
-- (void)setItemState:(id)a3 animated:(BOOL)a4;
-- (void)setRestricted:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDisplaysItemOfferButton:(BOOL)button;
+- (void)setIconImage:(id)image;
+- (void)setIconImageHidden:(BOOL)hidden;
+- (void)setItemOffer:(id)offer;
+- (void)setItemOfferButtonAppearance:(id)appearance;
+- (void)setItemOfferNoticeString:(id)string;
+- (void)setItemState:(id)state animated:(BOOL)animated;
+- (void)setRestricted:(BOOL)restricted;
 @end
 
 @implementation SUUIItemCellLayout
@@ -45,25 +45,25 @@
   [(SUUICellLayout *)&v4 resetLayout];
 }
 
-- (void)setDisplaysItemOfferButton:(BOOL)a3
+- (void)setDisplaysItemOfferButton:(BOOL)button
 {
-  if (self->_hidesItemOfferButton == a3)
+  if (self->_hidesItemOfferButton == button)
   {
-    self->_hidesItemOfferButton = !a3;
+    self->_hidesItemOfferButton = !button;
     [(SUUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v23 = a3;
-  v4 = [(SUUICellImageView *)self->_iconImageView image];
+  imageCopy = image;
+  image = [(SUUICellImageView *)self->_iconImageView image];
 
-  v6 = v23;
-  if (v4 != v23)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
     iconImageView = self->_iconImageView;
-    if (!v23)
+    if (!imageCopy)
     {
       [(SUUICellImageView *)iconImageView removeFromSuperview];
       v22 = self->_iconImageView;
@@ -79,83 +79,83 @@
       self->_iconImageView = v8;
 
       v10 = self->_iconImageView;
-      v11 = [(SUUICellLayout *)self parentCellView];
-      v12 = [v11 backgroundColor];
-      [(SUUICellImageView *)v10 setBackgroundColor:v12];
+      parentCellView = [(SUUICellLayout *)self parentCellView];
+      backgroundColor = [parentCellView backgroundColor];
+      [(SUUICellImageView *)v10 setBackgroundColor:backgroundColor];
 
       [(SUUICellImageView *)self->_iconImageView setHidden:[(SUUIItemCellLayout *)self isIconImageHidden]];
-      v13 = [(SUUICellLayout *)self contentView];
-      [v13 insertSubview:self->_iconImageView atIndex:0];
+      contentView = [(SUUICellLayout *)self contentView];
+      [contentView insertSubview:self->_iconImageView atIndex:0];
 
       iconImageView = self->_iconImageView;
     }
 
-    v14 = [(SUUICellImageView *)iconImageView image];
-    [v14 size];
+    image2 = [(SUUICellImageView *)iconImageView image];
+    [image2 size];
     v16 = v15;
     v18 = v17;
 
-    [(SUUICellImageView *)self->_iconImageView setImage:v23];
-    v5 = [v23 size];
-    v6 = v23;
+    [(SUUICellImageView *)self->_iconImageView setImage:imageCopy];
+    setNeedsLayout = [imageCopy size];
+    v6 = imageCopy;
     if (v16 != v20 || v18 != v19)
     {
       [(SUUICellImageView *)self->_iconImageView sizeToFit];
 LABEL_11:
-      v5 = [(SUUICellLayout *)self setNeedsLayout];
-      v6 = v23;
+      setNeedsLayout = [(SUUICellLayout *)self setNeedsLayout];
+      v6 = imageCopy;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](setNeedsLayout, v6);
 }
 
-- (void)setIconImageHidden:(BOOL)a3
+- (void)setIconImageHidden:(BOOL)hidden
 {
-  if (self->_iconImageHidden != a3)
+  if (self->_iconImageHidden != hidden)
   {
-    self->_iconImageHidden = a3;
+    self->_iconImageHidden = hidden;
     [(SUUICellImageView *)self->_iconImageView setHidden:?];
   }
 }
 
-- (void)setItemOffer:(id)a3
+- (void)setItemOffer:(id)offer
 {
-  v5 = a3;
-  if (self->_itemOffer == v5)
+  offerCopy = offer;
+  if (self->_itemOffer == offerCopy)
   {
     [(SUUIItemCellLayout *)self _reloadItemOfferVisibility];
   }
 
   else
   {
-    objc_storeStrong(&self->_itemOffer, a3);
+    objc_storeStrong(&self->_itemOffer, offer);
     [(SUUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
 
-- (void)setItemOfferButtonAppearance:(id)a3
+- (void)setItemOfferButtonAppearance:(id)appearance
 {
-  v5 = a3;
-  if (self->_itemOfferButtonAppearance != v5)
+  appearanceCopy = appearance;
+  if (self->_itemOfferButtonAppearance != appearanceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemOfferButtonAppearance, a3);
+    v6 = appearanceCopy;
+    objc_storeStrong(&self->_itemOfferButtonAppearance, appearance);
     [(SUUIItemOfferButton *)self->_itemOfferButton setColoringWithAppearance:self->_itemOfferButtonAppearance];
-    v5 = v6;
+    appearanceCopy = v6;
   }
 }
 
-- (void)setItemOfferNoticeString:(id)a3
+- (void)setItemOfferNoticeString:(id)string
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_itemOfferNoticeLabel text];
+  stringCopy = string;
+  text = [(UILabel *)self->_itemOfferNoticeLabel text];
 
-  v6 = v16;
-  if (v4 != v16)
+  v6 = stringCopy;
+  if (text != stringCopy)
   {
     itemOfferNoticeLabel = self->_itemOfferNoticeLabel;
-    if (v16)
+    if (stringCopy)
     {
       if (!itemOfferNoticeLabel)
       {
@@ -164,9 +164,9 @@ LABEL_11:
         self->_itemOfferNoticeLabel = v8;
 
         v10 = self->_itemOfferNoticeLabel;
-        v11 = [(SUUICellLayout *)self parentCellView];
-        v12 = [v11 backgroundColor];
-        [(UILabel *)v10 setBackgroundColor:v12];
+        parentCellView = [(SUUICellLayout *)self parentCellView];
+        backgroundColor = [parentCellView backgroundColor];
+        [(UILabel *)v10 setBackgroundColor:backgroundColor];
 
         v13 = self->_itemOfferNoticeLabel;
         v14 = [MEMORY[0x277D74300] systemFontOfSize:7.0];
@@ -174,32 +174,32 @@ LABEL_11:
 
         [(UILabel *)self->_itemOfferNoticeLabel setNumberOfLines:3];
         [(UILabel *)self->_itemOfferNoticeLabel setTextAlignment:1];
-        v15 = [(SUUICellLayout *)self contentView];
-        [v15 addSubview:self->_itemOfferNoticeLabel];
+        contentView = [(SUUICellLayout *)self contentView];
+        [contentView addSubview:self->_itemOfferNoticeLabel];
 
         itemOfferNoticeLabel = self->_itemOfferNoticeLabel;
       }
 
-      [(UILabel *)itemOfferNoticeLabel setText:v16];
+      [(UILabel *)itemOfferNoticeLabel setText:stringCopy];
       [(UILabel *)self->_itemOfferNoticeLabel setHidden:[(SUUIItemCellLayout *)self _canShowItemOfferNotice]^ 1];
-      v5 = [(SUUICellLayout *)self setNeedsLayout];
+      setNeedsLayout = [(SUUICellLayout *)self setNeedsLayout];
     }
 
     else
     {
       [(UILabel *)itemOfferNoticeLabel setHidden:1];
-      v5 = [(UILabel *)self->_itemOfferNoticeLabel setText:0];
+      setNeedsLayout = [(UILabel *)self->_itemOfferNoticeLabel setText:0];
     }
 
-    v6 = v16;
+    v6 = stringCopy;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](setNeedsLayout, v6);
 }
 
-- (void)setItemState:(id)a3 animated:(BOOL)a4
+- (void)setItemState:(id)state animated:(BOOL)animated
 {
-  if (self->_itemState == a3)
+  if (self->_itemState == state)
   {
 
     [(SUUIItemCellLayout *)self _reloadItemOfferVisibility];
@@ -207,20 +207,20 @@ LABEL_11:
 
   else
   {
-    v5 = a4;
-    v6 = [a3 copy];
+    animatedCopy = animated;
+    v6 = [state copy];
     itemState = self->_itemState;
     self->_itemState = v6;
 
-    [(SUUIItemCellLayout *)self _reloadItemOfferButton:v5];
+    [(SUUIItemCellLayout *)self _reloadItemOfferButton:animatedCopy];
   }
 }
 
-- (void)setRestricted:(BOOL)a3
+- (void)setRestricted:(BOOL)restricted
 {
-  if (self->_restricted != a3)
+  if (self->_restricted != restricted)
   {
-    self->_restricted = a3;
+    self->_restricted = restricted;
     [(SUUIItemCellLayout *)self _reloadItemOfferButton:0];
   }
 }
@@ -233,51 +233,51 @@ LABEL_11:
   [(SUUICellLayout *)&v3 prepareForReuse];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   iconImageView = self->_iconImageView;
-  v5 = a3;
-  [(SUUICellImageView *)iconImageView setBackgroundColor:v5];
-  [(SUUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:v5];
-  [(UILabel *)self->_itemOfferNoticeLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUICellImageView *)iconImageView setBackgroundColor:colorCopy];
+  [(SUUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:colorCopy];
+  [(UILabel *)self->_itemOfferNoticeLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIItemCellLayout;
-  [(SUUICellLayout *)&v6 setBackgroundColor:v5];
+  [(SUUICellLayout *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
   [(UILabel *)self->_itemOfferNoticeLabel setHidden:[(SUUIItemCellLayout *)self _canShowItemOfferNotice]^ 1];
 
   [(SUUIItemCellLayout *)self layoutForItemOfferChange];
 }
 
-- (void)_itemOfferConfirmAction:(id)a3
+- (void)_itemOfferConfirmAction:(id)action
 {
   v10 = 0;
   v11 = 0;
   [(SUUIItemCellLayout *)self _getParentTableView:&v11 collectionView:&v10];
   v4 = v11;
   v5 = v10;
-  v6 = [v4 delegate];
+  delegate = [v4 delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SUUICellLayout *)self parentCellView];
-    [v6 itemTableView:v4 didConfirmItemOfferForTableViewCell:v7];
+    parentCellView = [(SUUICellLayout *)self parentCellView];
+    [delegate itemTableView:v4 didConfirmItemOfferForTableViewCell:parentCellView];
   }
 
-  v8 = [v5 delegate];
+  delegate2 = [v5 delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(SUUIItemCellLayout *)self _parentCollectionViewCell];
-    [v8 itemCollectionView:v5 didConfirmItemOfferForCell:v9];
+    _parentCollectionViewCell = [(SUUIItemCellLayout *)self _parentCollectionViewCell];
+    [delegate2 itemCollectionView:v5 didConfirmItemOfferForCell:_parentCollectionViewCell];
   }
 }
 
-- (void)_showItemOfferConfirmationAction:(id)a3
+- (void)_showItemOfferConfirmationAction:(id)action
 {
-  v4 = [(SUUIItemOfferButton *)self->_itemOfferButton superview];
-  [v4 bringSubviewToFront:self->_itemOfferButton];
+  superview = [(SUUIItemOfferButton *)self->_itemOfferButton superview];
+  [superview bringSubviewToFront:self->_itemOfferButton];
 
   itemOfferButton = self->_itemOfferButton;
 
@@ -286,41 +286,41 @@ LABEL_11:
 
 - (BOOL)_canShowItemOfferNotice
 {
-  v3 = [(UILabel *)self->_itemOfferNoticeLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_itemOfferNoticeLabel text];
+  v4 = [text length];
 
   if (!v4)
   {
 LABEL_4:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(displaysItemOfferButton) = 0;
+    return displaysItemOfferButton;
   }
 
-  v5 = [(SUUIItemCellLayout *)self displaysItemOfferButton];
-  if (v5)
+  displaysItemOfferButton = [(SUUIItemCellLayout *)self displaysItemOfferButton];
+  if (displaysItemOfferButton)
   {
     if (![(SUUIItemCellLayout *)self isRestricted])
     {
-      v6 = [(SUUIItemCellLayout *)self itemState];
-      v7 = [v6 state];
+      itemState = [(SUUIItemCellLayout *)self itemState];
+      state = [itemState state];
 
-      LOBYTE(v5) = (v7 & 0xFFFFFFFFFFFFFFEFLL) == 0;
-      return v5;
+      LOBYTE(displaysItemOfferButton) = (state & 0xFFFFFFFFFFFFFFEFLL) == 0;
+      return displaysItemOfferButton;
     }
 
     goto LABEL_4;
   }
 
-  return v5;
+  return displaysItemOfferButton;
 }
 
-- (void)_getParentTableView:(id *)a3 collectionView:(id *)a4
+- (void)_getParentTableView:(id *)view collectionView:(id *)collectionView
 {
-  v16 = [(SUUICellLayout *)self parentCellView];
-  v6 = [v16 superview];
-  if (v6)
+  parentCellView = [(SUUICellLayout *)self parentCellView];
+  superview = [parentCellView superview];
+  if (superview)
   {
-    v7 = v6;
+    v7 = superview;
     while (1)
     {
       objc_opt_class();
@@ -347,12 +347,12 @@ LABEL_4:
       v10 = v8;
       v11 = v9;
 LABEL_7:
-      v13 = [v7 superview];
+      superview2 = [v7 superview];
 
       if (!v11 && !v10)
       {
-        v7 = v13;
-        if (v13)
+        v7 = superview2;
+        if (superview2)
         {
           continue;
         }
@@ -364,25 +364,25 @@ LABEL_7:
 
   v10 = 0;
   v11 = 0;
-  v13 = 0;
+  superview2 = 0;
 LABEL_12:
-  if (a4)
+  if (collectionView)
   {
     v14 = v10;
-    *a4 = v10;
+    *collectionView = v10;
   }
 
-  if (a3)
+  if (view)
   {
     v15 = v11;
-    *a3 = v11;
+    *view = v11;
   }
 }
 
 - (id)_parentCollectionViewCell
 {
-  v2 = [(SUUICellLayout *)self parentCellView];
-  if (v2)
+  parentCellView = [(SUUICellLayout *)self parentCellView];
+  if (parentCellView)
   {
     do
     {
@@ -392,20 +392,20 @@ LABEL_12:
         break;
       }
 
-      v3 = [v2 superview];
+      superview = [parentCellView superview];
 
-      v2 = v3;
+      parentCellView = superview;
     }
 
-    while (v3);
+    while (superview);
   }
 
-  return v2;
+  return parentCellView;
 }
 
-- (void)_reloadItemOfferButton:(BOOL)a3
+- (void)_reloadItemOfferButton:(BOOL)button
 {
-  if (!self->_itemOffer || self->_hidesItemOfferButton || (v4 = a3, [(SUUIItemCellLayout *)self isRestricted]))
+  if (!self->_itemOffer || self->_hidesItemOfferButton || (v4 = button, [(SUUIItemCellLayout *)self isRestricted]))
   {
     [(SUUIItemOfferButton *)self->_itemOfferButton setHidden:1];
   }
@@ -423,25 +423,25 @@ LABEL_12:
       [(SUUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__itemOfferConfirmAction_ forControlEvents:0x20000];
       [(SUUIItemOfferButton *)self->_itemOfferButton addTarget:self action:sel__showItemOfferConfirmationAction_ forControlEvents:0x40000];
       v10 = self->_itemOfferButton;
-      v11 = [(SUUICellLayout *)self parentCellView];
-      v12 = [v11 backgroundColor];
-      [(SUUIItemOfferButton *)v10 setBackgroundColor:v12];
+      parentCellView = [(SUUICellLayout *)self parentCellView];
+      backgroundColor = [parentCellView backgroundColor];
+      [(SUUIItemOfferButton *)v10 setBackgroundColor:backgroundColor];
 
       LODWORD(v13) = -0.5;
       [(SUUIItemOfferButton *)self->_itemOfferButton setCharge:v13];
       [(SUUIItemOfferButton *)self->_itemOfferButton setDelegate:self];
-      v14 = [(SUUICellLayout *)self contentView];
-      [v14 addSubview:self->_itemOfferButton];
+      contentView = [(SUUICellLayout *)self contentView];
+      [contentView addSubview:self->_itemOfferButton];
 
       itemOfferButton = self->_itemOfferButton;
     }
 
     [(SUUIItemOfferButton *)itemOfferButton setHidden:0];
-    v15 = [(SUUIItemCellLayout *)self itemState];
+    itemState = [(SUUIItemCellLayout *)self itemState];
     v16 = self->_itemOfferButton;
     itemOffer = self->_itemOffer;
-    v18 = [(SUUICellLayout *)self clientContext];
-    v19 = [(SUUIItemOfferButton *)v16 setValuesUsingItemOffer:itemOffer itemState:v15 clientContext:v18 animated:v4];
+    clientContext = [(SUUICellLayout *)self clientContext];
+    v19 = [(SUUIItemOfferButton *)v16 setValuesUsingItemOffer:itemOffer itemState:itemState clientContext:clientContext animated:v4];
 
     if (v19)
     {

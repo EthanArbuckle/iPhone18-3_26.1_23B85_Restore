@@ -1,6 +1,6 @@
 @interface AVPlayerItemAccessLog
 - (AVPlayerItemAccessLog)init;
-- (AVPlayerItemAccessLog)initWithLogArray:(id)a3;
+- (AVPlayerItemAccessLog)initWithLogArray:(id)array;
 - (NSArray)events;
 - (id)_common_init;
 - (id)accessLogArray;
@@ -45,7 +45,7 @@ LABEL_5:
   return result;
 }
 
-- (AVPlayerItemAccessLog)initWithLogArray:(id)a3
+- (AVPlayerItemAccessLog)initWithLogArray:(id)array
 {
   v8.receiver = self;
   v8.super_class = AVPlayerItemAccessLog;
@@ -55,11 +55,11 @@ LABEL_5:
     return 0;
   }
 
-  v5 = [(AVPlayerItemAccessLog *)v4 _common_init];
-  v6 = v5;
-  if (a3 && v5)
+  _common_init = [(AVPlayerItemAccessLog *)v4 _common_init];
+  v6 = _common_init;
+  if (array && _common_init)
   {
-    *(*(v5 + 8) + 8) = a3;
+    *(*(_common_init + 8) + 8) = array;
   }
 
   return v6;

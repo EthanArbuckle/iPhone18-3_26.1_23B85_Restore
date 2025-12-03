@@ -1,45 +1,45 @@
 @interface AKURLBagRequestProvider
-- (AKURLBagRequestProvider)initWithAltDSID:(id)a3 urlSwitchData:(id)a4;
-- (id)_bagURLForAltDSID:(id)a3;
+- (AKURLBagRequestProvider)initWithAltDSID:(id)d urlSwitchData:(id)data;
+- (id)_bagURLForAltDSID:(id)d;
 - (id)newBagURLRequest;
-- (void)_signRequestWithServerBackoffInfoHeader:(id)a3;
+- (void)_signRequestWithServerBackoffInfoHeader:(id)header;
 @end
 
 @implementation AKURLBagRequestProvider
 
-- (AKURLBagRequestProvider)initWithAltDSID:(id)a3 urlSwitchData:(id)a4
+- (AKURLBagRequestProvider)initWithAltDSID:(id)d urlSwitchData:(id)data
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, data);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AKURLBagRequestProvider;
-  v11 = [(AKURLBagRequestProvider *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKURLBagRequestProvider *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(AKURLBagRequestProvider *)v11 setAltDSID:location[0]];
-    [(AKURLBagRequestProvider *)v11 setUrlSwitchData:v9];
+    [(AKURLBagRequestProvider *)selfCopy setAltDSID:location[0]];
+    [(AKURLBagRequestProvider *)selfCopy setUrlSwitchData:v9];
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (id)_bagURLForAltDSID:(id)a3
+- (id)_bagURLForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = _objc_retain(@"https://gsa.apple.com/grandslam/GsService2/lookup/v2");
   if (location[0])
   {
@@ -62,14 +62,14 @@
 
 - (id)newBagURLRequest
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(AKURLBagRequestProvider *)self _bagURLForAltDSID:self->_altDSID];
-  if (v14->_urlSwitchData)
+  if (selfCopy->_urlSwitchData)
   {
     v12 = [NSURLComponents componentsWithURL:v13[0] resolvingAgainstBaseURL:0];
     v2 = [NSURLQueryItem alloc];
-    v11 = [v2 initWithName:@"idata" value:v14->_urlSwitchData];
+    v11 = [v2 initWithName:@"idata" value:selfCopy->_urlSwitchData];
     v8 = v12;
     v15 = v11;
     v9 = [NSArray arrayWithObjects:&v15 count:1];
@@ -101,12 +101,12 @@
   return v7;
 }
 
-- (void)_signRequestWithServerBackoffInfoHeader:(id)a3
+- (void)_signRequestWithServerBackoffInfoHeader:(id)header
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, header);
   v4 = objc_alloc_init(AKServerBackoffHelper);
   v3 = [v4 serverBackoffInfoForRequest:location[0]];
   [location[0] ak_addServerBackoffInfoHeader:v3];

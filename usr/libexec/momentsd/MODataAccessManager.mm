@@ -1,24 +1,24 @@
 @interface MODataAccessManager
-- (BOOL)_needsActivityRegistrationAfterRegisteringClientsForDataAccess:(id)a3;
-- (BOOL)hasAnyApplicationsWithDataAccessWithinTimeInterval:(double)a3;
-- (BOOL)hasAnyClientsWithDataAccessWithinTimeInterval:(double)a3;
-- (MODataAccessManager)initWithUniverse:(id)a3;
-- (void)_registerForOnboardingRefresh:(id)a3;
-- (void)getApplicationsWithDataAccess:(id)a3;
-- (void)getApplicationsWithDataAccess:(id)a3 withinTimeInterval:(double)a4;
-- (void)getClientsWithDataAccess:(id)a3;
-- (void)getClientsWithDataAccess:(id)a3 withinTimeInterval:(double)a4;
-- (void)registerClientsForDataAccess:(id)a3;
+- (BOOL)_needsActivityRegistrationAfterRegisteringClientsForDataAccess:(id)access;
+- (BOOL)hasAnyApplicationsWithDataAccessWithinTimeInterval:(double)interval;
+- (BOOL)hasAnyClientsWithDataAccessWithinTimeInterval:(double)interval;
+- (MODataAccessManager)initWithUniverse:(id)universe;
+- (void)_registerForOnboardingRefresh:(id)refresh;
+- (void)getApplicationsWithDataAccess:(id)access;
+- (void)getApplicationsWithDataAccess:(id)access withinTimeInterval:(double)interval;
+- (void)getClientsWithDataAccess:(id)access;
+- (void)getClientsWithDataAccess:(id)access withinTimeInterval:(double)interval;
+- (void)registerClientsForDataAccess:(id)access;
 @end
 
 @implementation MODataAccessManager
 
-- (MODataAccessManager)initWithUniverse:(id)a3
+- (MODataAccessManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   v15.receiver = self;
   v15.super_class = MODataAccessManager;
@@ -26,7 +26,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_universe, a3);
+    objc_storeStrong(&v9->_universe, universe);
     objc_storeStrong(&v10->_defaultsManager, v8);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("MODataAccessManager.refreshSchedulingQueue", v11);
@@ -37,13 +37,13 @@
   return v10;
 }
 
-- (void)getApplicationsWithDataAccess:(id)a3
+- (void)getApplicationsWithDataAccess:(id)access
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MODataAccessManager *)v4 defaultsManager];
-  v6 = [v5 objectForKey:@"ApplicationsWithDataAccess"];
+  accessCopy = access;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultsManager = [(MODataAccessManager *)selfCopy defaultsManager];
+  v6 = [defaultsManager objectForKey:@"ApplicationsWithDataAccess"];
 
   if (v6)
   {
@@ -55,18 +55,18 @@
     v7 = &__NSDictionary0__struct;
   }
 
-  v8[2](v8, v7, 0);
+  accessCopy[2](accessCopy, v7, 0);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)getClientsWithDataAccess:(id)a3
+- (void)getClientsWithDataAccess:(id)access
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MODataAccessManager *)v4 defaultsManager];
-  v6 = [v5 objectForKey:@"ClientsWithDataAccess"];
+  accessCopy = access;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultsManager = [(MODataAccessManager *)selfCopy defaultsManager];
+  v6 = [defaultsManager objectForKey:@"ClientsWithDataAccess"];
 
   if (v6)
   {
@@ -78,49 +78,49 @@
     v7 = &__NSDictionary0__struct;
   }
 
-  v8[2](v8, v7, 0);
+  accessCopy[2](accessCopy, v7, 0);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_needsActivityRegistrationAfterRegisteringClientsForDataAccess:(id)a3
+- (BOOL)_needsActivityRegistrationAfterRegisteringClientsForDataAccess:(id)access
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MODataAccessManager *)v5 defaultsManager];
-  v7 = [v6 objectForKey:@"ClientsWithDataAccess"];
+  accessCopy = access;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultsManager = [(MODataAccessManager *)selfCopy defaultsManager];
+  v7 = [defaultsManager objectForKey:@"ClientsWithDataAccess"];
 
   if (v7)
   {
     v8 = [v7 mutableCopy];
     v9 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
-    [v8 setObject:v9 forKey:v4];
+    [v8 setObject:v9 forKey:accessCopy];
   }
 
   else
   {
-    v13 = v4;
+    v13 = accessCopy;
     v10 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
     v14 = v10;
     v8 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   }
 
-  v11 = [(MODataAccessManager *)v5 defaultsManager];
-  [v11 setObject:v8 forKey:@"ClientsWithDataAccess"];
+  defaultsManager2 = [(MODataAccessManager *)selfCopy defaultsManager];
+  [defaultsManager2 setObject:v8 forKey:@"ClientsWithDataAccess"];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7 == 0;
 }
 
-- (void)_registerForOnboardingRefresh:(id)a3
+- (void)_registerForOnboardingRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = refreshCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Posting onboarding refresh request after first data access client registered [%@]", &v10, 0xCu);
   }
 
@@ -135,10 +135,10 @@
   [v9 registerNotificationAvailabilityPredictionActivity];
 }
 
-- (void)registerClientsForDataAccess:(id)a3
+- (void)registerClientsForDataAccess:(id)access
 {
-  v4 = a3;
-  if ([(MODataAccessManager *)self _needsActivityRegistrationAfterRegisteringClientsForDataAccess:v4])
+  accessCopy = access;
+  if ([(MODataAccessManager *)self _needsActivityRegistrationAfterRegisteringClientsForDataAccess:accessCopy])
   {
     refreshSchedulingQueue = self->_refreshSchedulingQueue;
     v6[0] = _NSConcreteStackBlock;
@@ -146,18 +146,18 @@
     v6[2] = __52__MODataAccessManager_registerClientsForDataAccess___block_invoke;
     v6[3] = &unk_100335B08;
     v6[4] = self;
-    v7 = v4;
+    v7 = accessCopy;
     dispatch_async(refreshSchedulingQueue, v6);
   }
 }
 
-- (void)getApplicationsWithDataAccess:(id)a3 withinTimeInterval:(double)a4
+- (void)getApplicationsWithDataAccess:(id)access withinTimeInterval:(double)interval
 {
-  v6 = a3;
+  accessCopy = access;
   Current = CFAbsoluteTimeGetCurrent();
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
-    [(MODataAccessManager *)self getApplicationsWithDataAccess:v6, Current];
+    [(MODataAccessManager *)self getApplicationsWithDataAccess:accessCopy, Current];
   }
 
   else
@@ -167,8 +167,8 @@
     v9[1] = 3221225472;
     v9[2] = __72__MODataAccessManager_getApplicationsWithDataAccess_withinTimeInterval___block_invoke;
     v9[3] = &unk_100335B30;
-    v10 = v6;
-    v11 = a4;
+    v10 = accessCopy;
+    intervalCopy = interval;
     v12 = v8;
     [(MODataAccessManager *)self getApplicationsWithDataAccess:v9];
   }
@@ -227,13 +227,13 @@ void __72__MODataAccessManager_getApplicationsWithDataAccess_withinTimeInterval_
   }
 }
 
-- (void)getClientsWithDataAccess:(id)a3 withinTimeInterval:(double)a4
+- (void)getClientsWithDataAccess:(id)access withinTimeInterval:(double)interval
 {
-  v6 = a3;
+  accessCopy = access;
   Current = CFAbsoluteTimeGetCurrent();
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
-    [(MODataAccessManager *)self getClientsWithDataAccess:v6, Current];
+    [(MODataAccessManager *)self getClientsWithDataAccess:accessCopy, Current];
   }
 
   else
@@ -243,8 +243,8 @@ void __72__MODataAccessManager_getApplicationsWithDataAccess_withinTimeInterval_
     v9[1] = 3221225472;
     v9[2] = __67__MODataAccessManager_getClientsWithDataAccess_withinTimeInterval___block_invoke;
     v9[3] = &unk_100335B30;
-    v10 = v6;
-    v11 = a4;
+    v10 = accessCopy;
+    intervalCopy = interval;
     v12 = v8;
     [(MODataAccessManager *)self getClientsWithDataAccess:v9];
   }
@@ -303,7 +303,7 @@ void __67__MODataAccessManager_getClientsWithDataAccess_withinTimeInterval___blo
   }
 }
 
-- (BOOL)hasAnyApplicationsWithDataAccessWithinTimeInterval:(double)a3
+- (BOOL)hasAnyApplicationsWithDataAccessWithinTimeInterval:(double)interval
 {
   v6 = 0;
   v7 = &v6;
@@ -314,7 +314,7 @@ void __67__MODataAccessManager_getClientsWithDataAccess_withinTimeInterval___blo
   v5[2] = __74__MODataAccessManager_hasAnyApplicationsWithDataAccessWithinTimeInterval___block_invoke;
   v5[3] = &unk_100335B58;
   v5[4] = &v6;
-  [(MODataAccessManager *)self getApplicationsWithDataAccess:v5 withinTimeInterval:a3];
+  [(MODataAccessManager *)self getApplicationsWithDataAccess:v5 withinTimeInterval:interval];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -337,7 +337,7 @@ void *__74__MODataAccessManager_hasAnyApplicationsWithDataAccessWithinTimeInterv
   return result;
 }
 
-- (BOOL)hasAnyClientsWithDataAccessWithinTimeInterval:(double)a3
+- (BOOL)hasAnyClientsWithDataAccessWithinTimeInterval:(double)interval
 {
   v6 = 0;
   v7 = &v6;
@@ -348,7 +348,7 @@ void *__74__MODataAccessManager_hasAnyApplicationsWithDataAccessWithinTimeInterv
   v5[2] = __69__MODataAccessManager_hasAnyClientsWithDataAccessWithinTimeInterval___block_invoke;
   v5[3] = &unk_100335B58;
   v5[4] = &v6;
-  [(MODataAccessManager *)self getClientsWithDataAccess:v5 withinTimeInterval:a3];
+  [(MODataAccessManager *)self getClientsWithDataAccess:v5 withinTimeInterval:interval];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;

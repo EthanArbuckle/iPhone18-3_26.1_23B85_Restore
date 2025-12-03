@@ -1,25 +1,25 @@
 @interface HNDHandManager
-+ (CGPoint)_pointByAvoidingDisplayCornerRadius:(double)a3 forPoint:(CGPoint)a4;
++ (CGPoint)_pointByAvoidingDisplayCornerRadius:(double)radius forPoint:(CGPoint)point;
 + (double)displayCornerRadius;
-+ (id)_actionForHotCorner:(unint64_t)a3;
++ (id)_actionForHotCorner:(unint64_t)corner;
 + (id)sharedManager;
 - (BOOL)_continuousPathGestureHandlePress;
 - (BOOL)_fadedFingersShouldShowOutlines;
-- (BOOL)_isChildElement:(id)a3 desendantOfElement:(id)a4;
-- (BOOL)_isInNubbitHitbox:(CGPoint)a3 onDisplay:(id)a4;
-- (BOOL)_isInNubbitHitbox:(CGPoint)a3 onDisplay:(id)a4 activationFactor:(double)a5;
-- (BOOL)_isPoint:(CGPoint)a3 withinTolerance:(double)a4 ofStartPoint:(CGPoint)a5;
+- (BOOL)_isChildElement:(id)element desendantOfElement:(id)ofElement;
+- (BOOL)_isInNubbitHitbox:(CGPoint)hitbox onDisplay:(id)display;
+- (BOOL)_isInNubbitHitbox:(CGPoint)hitbox onDisplay:(id)display activationFactor:(double)factor;
+- (BOOL)_isPoint:(CGPoint)point withinTolerance:(double)tolerance ofStartPoint:(CGPoint)startPoint;
 - (BOOL)_isWaitingForFirstSystemPointerMovement;
-- (BOOL)_isWithinLastDwellBounds:(CGPoint)a3;
-- (BOOL)_iterateRemoteViewsAndPerformContinuousScrollWithSpeed:(double)a3 direction:(unint64_t)a4;
-- (BOOL)_performAXScrollActionAtPoint:(CGPoint)a3 onDisplay:(id)a4 action:(int)a5;
+- (BOOL)_isWithinLastDwellBounds:(CGPoint)bounds;
+- (BOOL)_iterateRemoteViewsAndPerformContinuousScrollWithSpeed:(double)speed direction:(unint64_t)direction;
+- (BOOL)_performAXScrollActionAtPoint:(CGPoint)point onDisplay:(id)display action:(int)action;
 - (BOOL)_requiresLargeSystemPointer;
-- (BOOL)_scrollAncestorIsSelfForScrollView:(id)a3 scrollAction:(int)a4 resultScrollAncestor:(id *)a5;
-- (BOOL)_shouldAutoFadeFingersOnDisplay:(id)a3;
+- (BOOL)_scrollAncestorIsSelfForScrollView:(id)view scrollAction:(int)action resultScrollAncestor:(id *)ancestor;
+- (BOOL)_shouldAutoFadeFingersOnDisplay:(id)display;
 - (BOOL)_shouldEnableMultiTouchToolBackground;
 - (BOOL)_shouldHandleRealEventWithMultiTouchTool;
-- (BOOL)_shouldLockIntoHotCornerAtNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (BOOL)_shouldLockIntoNubbitAtPoint:(CGPoint)a3;
+- (BOOL)_shouldLockIntoHotCornerAtNormalizedPoint:(CGPoint)point onDisplay:(id)display;
+- (BOOL)_shouldLockIntoNubbitAtPoint:(CGPoint)point;
 - (BOOL)_shouldRepeatGesture;
 - (BOOL)_startDwellTimerForBubbleMode;
 - (BOOL)_startDwellTimerForPointer;
@@ -38,46 +38,46 @@
 - (BOOL)isFingersPressedDown;
 - (BOOL)isPerformingGesture;
 - (BOOL)isPerformingMultiStepGesture;
-- (BOOL)isSimpleElementForBubbleMode:(id)a3;
-- (BOOL)isSystemSleeping:(id)a3;
+- (BOOL)isSimpleElementForBubbleMode:(id)mode;
+- (BOOL)isSystemSleeping:(id)sleeping;
 - (BOOL)isVirtualTrackpadVisible;
 - (BOOL)isVoiceControlRunning;
 - (BOOL)needsElementHitTesting;
 - (BOOL)nubbitMoving;
 - (BOOL)nubbitVisible;
-- (BOOL)shouldHandleSystemPointerButtonEvent:(id)a3;
+- (BOOL)shouldHandleSystemPointerButtonEvent:(id)event;
 - (BOOL)shouldHideSystemPointerForFingersView;
 - (BOOL)shouldIgnoreHIDDeviceMovementWhileMouseActive;
-- (BOOL)shouldIgnorePointerEventWhileEyeTrackerConfigures:(id)a3;
+- (BOOL)shouldIgnorePointerEventWhileEyeTrackerConfigures:(id)configures;
 - (BOOL)shouldIgnorePointerEventWhileEyeTrackerIsInactive;
 - (BOOL)shouldIgnorePointerEventWhileEyeTrackerPressedButtonDownWithDwell;
 - (BOOL)shouldUseBubbleMode;
 - (BOOL)shouldUseEyeTrackingAutoHide;
 - (BOOL)showFingerOutlines;
 - (BOOL)showInnerCircle;
-- (BOOL)supportsActivateForBubbleModeElement:(id)a3;
+- (BOOL)supportsActivateForBubbleModeElement:(id)element;
 - (BOOL)useSystemFilters;
 - (BOOL)usingSpecialTool;
-- (CGPoint)_fingerControllerPointForScreenPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (CGPoint)_pointForLockedCorner:(unint64_t)a3 onDisplay:(id)a4;
+- (CGPoint)_fingerControllerPointForScreenPoint:(CGPoint)point onDisplay:(id)display;
+- (CGPoint)_pointForLockedCorner:(unint64_t)corner onDisplay:(id)display;
 - (CGPoint)currentPointForPointer;
 - (CGPoint)eyeTrackingAutotHideLastPointCursorShowed;
 - (CGPoint)lastSelectedKeyboardSlidePoint;
-- (CGPoint)preferredMenuDisplayPointOnDisplay:(id)a3;
-- (CGPoint)rotateEventFromOrientation:(CGPoint)a3;
+- (CGPoint)preferredMenuDisplayPointOnDisplay:(id)display;
+- (CGPoint)rotateEventFromOrientation:(CGPoint)orientation;
 - (CGPoint)rotateNormalizedPointToOrientation:(CGPoint)result;
 - (CGPoint)startPointForDrag;
 - (CGPoint)systemPointerLocation;
-- (CGRect)_paddedHitboxForNubbitOnDisplay:(id)a3 activationFactor:(double)a4;
-- (CGRect)clipRect:(CGRect)a3 toRotatedScreenBoundsOnDisplay:(id)a4;
-- (CGSize)_hotCornerActivationSizeOnDisplay:(id)a3;
+- (CGRect)_paddedHitboxForNubbitOnDisplay:(id)display activationFactor:(double)factor;
+- (CGRect)clipRect:(CGRect)rect toRotatedScreenBoundsOnDisplay:(id)display;
+- (CGSize)_hotCornerActivationSizeOnDisplay:(id)display;
 - (HNDDisplayManager)currentDisplayManager;
 - (HNDDisplayManager)mainDisplayManager;
 - (HNDHandManager)init;
 - (double)_dwellTimerDuration;
-- (double)_fingerRadiusOnDisplay:(id)a3;
-- (double)_scrollDeltaForGesture:(BOOL)a3 screenSize:(CGSize)a4;
-- (double)distanceBetweenRect:(CGRect)a3 andPoint:(CGPoint)a4;
+- (double)_fingerRadiusOnDisplay:(id)display;
+- (double)_scrollDeltaForGesture:(BOOL)gesture screenSize:(CGSize)size;
+- (double)distanceBetweenRect:(CGRect)rect andPoint:(CGPoint)point;
 - (double)fingerInnerCircleInnerRadius;
 - (double)fingerInnerRadius;
 - (double)fingerWidth;
@@ -91,12 +91,12 @@
 - (double)unpressedAlpha;
 - (double)unpressedScale;
 - (double)volumeLevel;
-- (id)_avPlayerForSound:(id)a3;
-- (id)_groupWithDictionary:(id)a3 currentPid:(int)a4;
-- (id)_groupWithItems:(id)a3 groupTraits:(unint64_t)a4 scanningBehaviorTraits:(unint64_t)a5 label:(id)a6 identifier:(id)a7 currentPid:(int)a8;
-- (id)_scrollFallbackGestureAtPoint:(CGPoint)a3 onDisplay:(id)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7;
-- (id)_scrollViewForScrollAction:(int)a3 elementsToScroll:(id *)a4;
-- (id)_shiftGestureIfNeeded:(id)a3 onDisplay:(id)a4 toMidpoint:(CGPoint)a5;
+- (id)_avPlayerForSound:(id)sound;
+- (id)_groupWithDictionary:(id)dictionary currentPid:(int)pid;
+- (id)_groupWithItems:(id)items groupTraits:(unint64_t)traits scanningBehaviorTraits:(unint64_t)behaviorTraits label:(id)label identifier:(id)identifier currentPid:(int)pid;
+- (id)_scrollFallbackGestureAtPoint:(CGPoint)point onDisplay:(id)display vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max;
+- (id)_scrollViewForScrollAction:(int)action elementsToScroll:(id *)scroll;
+- (id)_shiftGestureIfNeeded:(id)needed onDisplay:(id)display toMidpoint:(CGPoint)midpoint;
 - (id)additionalAXNotificationsToObserve;
 - (id)availableElements;
 - (id)circularProgressFillColor;
@@ -104,60 +104,60 @@
 - (id)currentHardwareIdentifierForPointer;
 - (id)deselectedFillColor;
 - (id)deselectedStrokeColor;
-- (id)displayManagerForDisplayId:(unsigned int)a3;
-- (id)displayManagerForHardwareIdentifier:(id)a3;
+- (id)displayManagerForDisplayId:(unsigned int)id;
+- (id)displayManagerForHardwareIdentifier:(id)identifier;
 - (id)fingerController;
-- (id)keyboardRowContainingKeyboardKey:(id)a3;
+- (id)keyboardRowContainingKeyboardKey:(id)key;
 - (id)mainWindow;
-- (id)nearestElementFrameForPortraitPoint:(CGPoint)a3 distance:(double *)a4;
-- (id)nearestRockerButtonForDisplayManger:(id)a3 orientedPoint:(CGPoint)a4 distance:(double *)a5;
+- (id)nearestElementFrameForPortraitPoint:(CGPoint)point distance:(double *)distance;
+- (id)nearestRockerButtonForDisplayManger:(id)manger orientedPoint:(CGPoint)point distance:(double *)distance;
 - (id)pressedCircularProgressFillColor;
 - (id)selectedFillColor;
 - (id)selectedStrokeColor;
 - (id)strokeOutlineColor;
 - (id)viewAtSystemPointerPoint;
 - (int)deviceOrientation;
-- (unint64_t)_cornerForNormalizedPoint:(CGPoint)a3 normalizedPadding:(CGSize)a4;
+- (unint64_t)_cornerForNormalizedPoint:(CGPoint)point normalizedPadding:(CGSize)padding;
 - (unint64_t)_defaultDwellMode;
-- (unint64_t)_hotCornerForNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (unint64_t)_roundedCornersForCursorAtPoint:(CGPoint)a3 onDisplay:(id)a4;
+- (unint64_t)_hotCornerForNormalizedPoint:(CGPoint)point onDisplay:(id)display;
+- (unint64_t)_roundedCornersForCursorAtPoint:(CGPoint)point onDisplay:(id)display;
 - (void)_attemptToShowVisualsAfterPerformingScreenshot;
 - (void)_bootstrapRegister;
 - (void)_dwellControlToggled;
 - (void)_dwellTimerFired;
 - (void)_endContinuousSlideGesture;
 - (void)_fadeFingersAfterDelayIfNeeded;
-- (void)_fadeFingersAfterDelayIfNeededOnDisplay:(id)a3;
-- (void)_handleAction:(id)a3 type:(int)a4 state:(int)a5;
+- (void)_fadeFingersAfterDelayIfNeededOnDisplay:(id)display;
+- (void)_handleAction:(id)action type:(int)type state:(int)state;
 - (void)_handleAutomationSupportChanges;
 - (void)_handleBrokenHomeButtonMode;
-- (void)_handleMultiTouchToolEvent:(id)a3;
-- (void)_handlePinchFingerDownWithFinger:(id)a3 onDisplay:(id)a4;
-- (void)_handleRealContinuousScrollToolUp:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealCustomGestureMove:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealCustomGestureUp:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealDragToolMove:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealDragToolUp:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealMultiFingerDown:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealMultiFingerMove:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealMultiFingerUp:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealPinchToolDown:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealPinchToolMove:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_handleRealPinchToolUp:(CGPoint)a3 onDisplay:(id)a4;
+- (void)_handleMultiTouchToolEvent:(id)event;
+- (void)_handlePinchFingerDownWithFinger:(id)finger onDisplay:(id)display;
+- (void)_handleRealContinuousScrollToolUp:(CGPoint)up onDisplay:(id)display;
+- (void)_handleRealCustomGestureMove:(CGPoint)move onDisplay:(id)display;
+- (void)_handleRealCustomGestureUp:(CGPoint)up onDisplay:(id)display;
+- (void)_handleRealDragToolMove:(CGPoint)move onDisplay:(id)display;
+- (void)_handleRealDragToolUp:(CGPoint)up onDisplay:(id)display;
+- (void)_handleRealMultiFingerDown:(CGPoint)down onDisplay:(id)display;
+- (void)_handleRealMultiFingerMove:(CGPoint)move onDisplay:(id)display;
+- (void)_handleRealMultiFingerUp:(CGPoint)up onDisplay:(id)display;
+- (void)_handleRealPinchToolDown:(CGPoint)down onDisplay:(id)display;
+- (void)_handleRealPinchToolMove:(CGPoint)move onDisplay:(id)display;
+- (void)_handleRealPinchToolUp:(CGPoint)up onDisplay:(id)display;
 - (void)_handleScreenshotDidFireCallbackTimeout;
 - (void)_handleUsageConfirmation;
 - (void)_hideCursorsForEyeTrackingAutoHide;
 - (void)_highlightFingers;
 - (void)_initializeDwell;
 - (void)_liftFingersUpForPotentialTapViaPrimaryButton;
-- (void)_lockIntoHotCornerForOrientedNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4 cancelDwell:(BOOL)a5;
-- (void)_menuOpenTracker:(CGPoint)a3;
-- (void)_modifyPinchToolMoveToPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_moveFingersForRealEventToPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)_moveFingersToPointInFingerCoordinateSpace:(CGPoint)a3 onDisplay:(id)a4 allowOutOfBounds:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)_performActionForHotCorner:(unint64_t)a3 onDisplay:(id)a4;
-- (void)_performCustomGestureOnDisplay:(id)a3;
-- (void)_performDwellActionOnDisplay:(id)a3;
+- (void)_lockIntoHotCornerForOrientedNormalizedPoint:(CGPoint)point onDisplay:(id)display cancelDwell:(BOOL)dwell;
+- (void)_menuOpenTracker:(CGPoint)tracker;
+- (void)_modifyPinchToolMoveToPoint:(CGPoint)point onDisplay:(id)display;
+- (void)_moveFingersForRealEventToPoint:(CGPoint)point onDisplay:(id)display;
+- (void)_moveFingersToPointInFingerCoordinateSpace:(CGPoint)space onDisplay:(id)display allowOutOfBounds:(BOOL)bounds animated:(BOOL)animated completion:(id)completion;
+- (void)_performActionForHotCorner:(unint64_t)corner onDisplay:(id)display;
+- (void)_performCustomGestureOnDisplay:(id)display;
+- (void)_performDwellActionOnDisplay:(id)display;
 - (void)_presentMigrationPopupIfNeeded;
 - (void)_reallyLiftFingersUpForPotentialTapViaPrimaryButton;
 - (void)_registerForSettingsNotifications;
@@ -165,27 +165,27 @@
 - (void)_resetDwellModeToDefault;
 - (void)_resetMenuOpenTracker;
 - (void)_setApplicationAccessibilityEnabledIfNeeded;
-- (void)_showCursorsForAutoHideWithDuration:(id)a3;
-- (void)_showFingersIfNeededForMouseOnDisplay:(id)a3;
+- (void)_showCursorsForAutoHideWithDuration:(id)duration;
+- (void)_showFingersIfNeededForMouseOnDisplay:(id)display;
 - (void)_startDwellTimer;
 - (void)_startOrientationUpdateTimer;
 - (void)_systemPointerSettingsDidChange;
-- (void)_updateBubbleModeFrameOnDisplay:(id)a3 elementFrame:(CGRect)a4 wasSnapped:(BOOL)a5;
+- (void)_updateBubbleModeFrameOnDisplay:(id)display elementFrame:(CGRect)frame wasSnapped:(BOOL)snapped;
 - (void)_updateContinuousPathGestureState;
 - (void)_updateContinuousSlideGesture;
 - (void)_updateElementFetchingForKeyboardVisible;
 - (void)_updateEyeTrackingAutoHideIfNecessary;
 - (void)_updateFadedFingerOpacity;
 - (void)_updateForElementFetchRequired;
-- (void)_updateHitTestingElementsWithPoint:(CGPoint)a3 onDisplay:(id)a4;
+- (void)_updateHitTestingElementsWithPoint:(CGPoint)point onDisplay:(id)display;
 - (void)_updateSystemPointerForOneness;
-- (void)_updateZoomWithDisplayPoint:(CGPoint)a3 onDisplay:(unsigned int)a4;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
+- (void)_updateZoomWithDisplayPoint:(CGPoint)point onDisplay:(unsigned int)display;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
 - (void)activateCurrentBubbleModeFocusedElement;
-- (void)addEventHandler:(id)a3;
-- (void)beginContinuousScrollingInDirection:(unint64_t)a3 onDisplay:(id)a4;
-- (void)beginDragAtPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)bubbleModeFailedToSnapOnDisplay:(id)a3;
+- (void)addEventHandler:(id)handler;
+- (void)beginContinuousScrollingInDirection:(unint64_t)direction onDisplay:(id)display;
+- (void)beginDragAtPoint:(CGPoint)point onDisplay:(id)display;
+- (void)bubbleModeFailedToSnapOnDisplay:(id)display;
 - (void)cancelDwellTimer;
 - (void)cancelDwellTimerForBubbleMode;
 - (void)cancelDwellTimerForPointer;
@@ -194,84 +194,84 @@
 - (void)dealloc;
 - (void)didCompleteHIDDeviceConfiguration;
 - (void)disableElementFetcherIfNecessary;
-- (void)enableBubbleMode:(BOOL)a3;
+- (void)enableBubbleMode:(BOOL)mode;
 - (void)enableElementFetcherAndNotificationsIfNecessary;
-- (void)enableEyeTrackingAutoHide:(BOOL)a3;
-- (void)endContinuousScrollingOnDisplay:(id)a3 withCompletion:(BOOL)a4;
-- (void)endDragModeAtPoint:(CGPoint)a3 onDisplay:(id)a4 completed:(BOOL)a5;
-- (void)enumerateDisplayManagersWithBlock:(id)a3;
-- (void)eyeTrackerIsActivelyTracking:(BOOL)a3;
-- (void)fetcher:(id)a3 didFetchElementsForEvent:(unint64_t)a4 foundNewElements:(BOOL)a5;
-- (void)generateContinuousScrollersOnQueue:(id)a3 withCompletion:(id)a4;
-- (void)generateContinuousScrollersWithCompletion:(id)a3;
+- (void)enableEyeTrackingAutoHide:(BOOL)hide;
+- (void)endContinuousScrollingOnDisplay:(id)display withCompletion:(BOOL)completion;
+- (void)endDragModeAtPoint:(CGPoint)point onDisplay:(id)display completed:(BOOL)completed;
+- (void)enumerateDisplayManagersWithBlock:(id)block;
+- (void)eyeTrackerIsActivelyTracking:(BOOL)tracking;
+- (void)fetcher:(id)fetcher didFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements;
+- (void)generateContinuousScrollersOnQueue:(id)queue withCompletion:(id)completion;
+- (void)generateContinuousScrollersWithCompletion:(id)completion;
 - (void)generateMappingForElementFrames;
-- (void)handleButtonEvent:(id)a3;
-- (void)handleCustomHomeButtonAction:(int)a3;
-- (void)handleMultiTouchStandard:(int64_t)a3 onDisplay:(id)a4 withExistingFingerMidPoint:(CGPoint)a5;
-- (void)handlePrimaryButtonPress:(int)a3;
-- (void)handleRealEvent:(id)a3;
+- (void)handleButtonEvent:(id)event;
+- (void)handleCustomHomeButtonAction:(int)action;
+- (void)handleMultiTouchStandard:(int64_t)standard onDisplay:(id)display withExistingFingerMidPoint:(CGPoint)point;
+- (void)handlePrimaryButtonPress:(int)press;
+- (void)handleRealEvent:(id)event;
 - (void)hideUIForEyeTracker;
-- (void)keyboardVisible:(BOOL)a3 withFrame:(CGRect)a4;
-- (void)mediaControlsChanged:(BOOL)a3;
+- (void)keyboardVisible:(BOOL)visible withFrame:(CGRect)frame;
+- (void)mediaControlsChanged:(BOOL)changed;
 - (void)mediaPlaybackChanged;
-- (void)menuExitedOnDisplay:(id)a3;
-- (void)mouseEventRecordedWithDelta:(CGPoint)a3;
-- (void)moveFingerByDelta:(CGPoint)a3;
-- (void)moveFingerToPoint:(CGPoint)a3;
-- (void)moveFingerToPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)moveFingersToPointInFingerCoordinateSpace:(CGPoint)a3 onDisplay:(id)a4 allowOutOfBounds:(BOOL)a5;
-- (void)moveSystemPointerIfActiveToPoint:(CGPoint)a3 onDisplay:(id)a4;
+- (void)menuExitedOnDisplay:(id)display;
+- (void)mouseEventRecordedWithDelta:(CGPoint)delta;
+- (void)moveFingerByDelta:(CGPoint)delta;
+- (void)moveFingerToPoint:(CGPoint)point;
+- (void)moveFingerToPoint:(CGPoint)point onDisplay:(id)display;
+- (void)moveFingersToPointInFingerCoordinateSpace:(CGPoint)space onDisplay:(id)display allowOutOfBounds:(BOOL)bounds;
+- (void)moveSystemPointerIfActiveToPoint:(CGPoint)point onDisplay:(id)display;
 - (void)notifyUserEventOccurred;
 - (void)orientationChanged;
-- (void)orientationChanged:(int64_t)a3;
+- (void)orientationChanged:(int64_t)changed;
 - (void)pauseBubbleModeForSpecialUsageTool;
 - (void)pauseEyeTrackingAutoHideForSpecialUsageTool;
-- (void)performButtonAction:(id)a3 type:(int)a4 state:(int)a5;
-- (void)performFingerDownAtPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)performFingerMoveToPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)performFingerUpAtPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)performPreparedGestureOnDisplay:(id)a3;
-- (void)pointerController:(id)a3 didReceivePointerEvent:(id)a4;
-- (void)prepareForContinuousScrollOnDisplay:(id)a3;
-- (void)prepareForEyeTrackerConnected:(BOOL)a3;
+- (void)performButtonAction:(id)action type:(int)type state:(int)state;
+- (void)performFingerDownAtPoint:(CGPoint)point onDisplay:(id)display;
+- (void)performFingerMoveToPoint:(CGPoint)point onDisplay:(id)display;
+- (void)performFingerUpAtPoint:(CGPoint)point onDisplay:(id)display;
+- (void)performPreparedGestureOnDisplay:(id)display;
+- (void)pointerController:(id)controller didReceivePointerEvent:(id)event;
+- (void)prepareForContinuousScrollOnDisplay:(id)display;
+- (void)prepareForEyeTrackerConnected:(BOOL)connected;
 - (void)prepareForHIDDeviceConfiguration;
-- (void)prepareGesture:(id)a3 onDisplay:(id)a4;
-- (void)prepareScrollAtPoint:(CGPoint)a3 onDisplay:(id)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7;
-- (void)processOrientedPointForContinuousScrolling:(CGPoint)a3 onDisplay:(id)a4;
-- (void)processPortraitUpPointForElementHitTesting:(CGPoint)a3 onDisplay:(id)a4;
-- (void)refreshElementFetcherWithScrollingBlocked:(BOOL)a3;
+- (void)prepareGesture:(id)gesture onDisplay:(id)display;
+- (void)prepareScrollAtPoint:(CGPoint)point onDisplay:(id)display vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max;
+- (void)processOrientedPointForContinuousScrolling:(CGPoint)scrolling onDisplay:(id)display;
+- (void)processPortraitUpPointForElementHitTesting:(CGPoint)testing onDisplay:(id)display;
+- (void)refreshElementFetcherWithScrollingBlocked:(BOOL)blocked;
 - (void)refreshOrientation;
 - (void)reloadFingerAppearance;
-- (void)removeEventHandler:(id)a3;
-- (void)removeFingersToPoint:(CGPoint)a3 onDisplay:(id)a4;
-- (void)resetFingersIfActiveOnDisplay:(id)a3;
+- (void)removeEventHandler:(id)handler;
+- (void)removeFingersToPoint:(CGPoint)point onDisplay:(id)display;
+- (void)resetFingersIfActiveOnDisplay:(id)display;
 - (void)resetFingersIfNeeded;
-- (void)resetFingersIfNeededOnDisplay:(id)a3;
-- (void)resetFingersToPoint:(CGPoint)a3 onDisplay:(id)a4 active:(BOOL)a5;
-- (void)resetPinchFingersOnDisplay:(id)a3;
+- (void)resetFingersIfNeededOnDisplay:(id)display;
+- (void)resetFingersToPoint:(CGPoint)point onDisplay:(id)display active:(BOOL)active;
+- (void)resetPinchFingersOnDisplay:(id)display;
 - (void)restartEverything;
 - (void)resumeBubbleModeForSpecialUsageToolIfNecessary;
 - (void)resumeEyeTrackingAutoHideForSpecialUsageToolIfNecessary;
-- (void)rotateEventToOrientation:(id)a3;
-- (void)sceneDidConnect:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)rotateEventToOrientation:(id)orientation;
+- (void)sceneDidConnect:(id)connect;
+- (void)sceneDidDisconnect:(id)disconnect;
 - (void)screenshotDidFire;
 - (void)screenshotWillFire;
-- (void)setAlwaysShowMenu:(BOOL)a3;
-- (void)setCaptureEvents:(BOOL)a3;
-- (void)setCurrentBubbleModeFocusedElement:(id)a3;
-- (void)setDwellControlAutorevertEnabled:(BOOL)a3;
-- (void)setDwellControlPaused:(BOOL)a3;
-- (void)setDwellMode:(unint64_t)a3;
-- (void)setNubbitMoving:(BOOL)a3;
-- (void)setVirtualTrackpadBubbleModeEnabled:(BOOL)a3;
-- (void)setupNonSceneUI:(BOOL)a3;
-- (void)setupWindow:(id)a3 ignoredWindow:(id)a4 trackpadWindow:(id)a5;
-- (void)showMenu:(BOOL)a3 onDisplay:(id)a4;
+- (void)setAlwaysShowMenu:(BOOL)menu;
+- (void)setCaptureEvents:(BOOL)events;
+- (void)setCurrentBubbleModeFocusedElement:(id)element;
+- (void)setDwellControlAutorevertEnabled:(BOOL)enabled;
+- (void)setDwellControlPaused:(BOOL)paused;
+- (void)setDwellMode:(unint64_t)mode;
+- (void)setNubbitMoving:(BOOL)moving;
+- (void)setVirtualTrackpadBubbleModeEnabled:(BOOL)enabled;
+- (void)setupNonSceneUI:(BOOL)i;
+- (void)setupWindow:(id)window ignoredWindow:(id)ignoredWindow trackpadWindow:(id)trackpadWindow;
+- (void)showMenu:(BOOL)menu onDisplay:(id)display;
 - (void)showUIForEyeTracker;
-- (void)specialToolUsageEnded:(BOOL)a3;
-- (void)startDragModeOnDisplay:(id)a3;
-- (void)startPinchModeWithPoint:(CGPoint)a3 onDisplay:(id)a4 mode:(unint64_t)a5;
+- (void)specialToolUsageEnded:(BOOL)ended;
+- (void)startDragModeOnDisplay:(id)display;
+- (void)startPinchModeWithPoint:(CGPoint)point onDisplay:(id)display mode:(unint64_t)mode;
 - (void)substantialTransitionOccurred;
 - (void)updateAllSettings;
 - (void)updateAssistiveTouchEyeTrackingAutoHideEnabled;
@@ -458,10 +458,10 @@
 
   [v38 _handleAutomationSupportChanges];
   v52 = +[AXSpringBoardServer server];
-  v53 = [v52 isContinuitySessionActive];
+  isContinuitySessionActive = [v52 isContinuitySessionActive];
 
-  *(v38 + 388) = v53;
-  if (v53)
+  *(v38 + 388) = isContinuitySessionActive;
+  if (isContinuitySessionActive)
   {
     [*(v2 + 58) hideSystemPointer:{objc_msgSend(v38, "shouldHideSystemPointerForFingersView")}];
   }
@@ -494,18 +494,18 @@
   CFNotificationCenterRemoveEveryObserver(LocalCenter, self);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v5 = [(HNDHandManager *)self elementFetcher];
-  [v5 disableEventManagement];
+  elementFetcher = [(HNDHandManager *)self elementFetcher];
+  [elementFetcher disableEventManagement];
 
-  v6 = [(HNDHandManager *)self elementFetcher];
-  [v6 unregisterFetchObserver:self];
+  elementFetcher2 = [(HNDHandManager *)self elementFetcher];
+  [elementFetcher2 unregisterFetchObserver:self];
 
   v7 = +[HNDAccessibilityManager sharedManager];
   [v7 removeObserver:self];
 
   v8 = +[HNDAccessibilityManager sharedManager];
-  v9 = [(HNDHandManager *)self additionalAXNotificationsToObserve];
-  [v8 stopObservingAXNotifications:v9];
+  additionalAXNotificationsToObserve = [(HNDHandManager *)self additionalAXNotificationsToObserve];
+  [v8 stopObservingAXNotifications:additionalAXNotificationsToObserve];
 
   [(HNDHandManager *)self setContinuousScrollerGenerationQueue:0];
   [(HNDHandManager *)self setOrientationQueue:0];
@@ -527,18 +527,18 @@
   }
 }
 
-- (void)setAlwaysShowMenu:(BOOL)a3
+- (void)setAlwaysShowMenu:(BOOL)menu
 {
-  if (self->_alwaysShowMenu != a3)
+  if (self->_alwaysShowMenu != menu)
   {
     v8 = v3;
     v9 = v4;
-    self->_alwaysShowMenu = a3;
+    self->_alwaysShowMenu = menu;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100023C24;
     v6[3] = &unk_1001D3D10;
-    v7 = a3;
+    menuCopy = menu;
     [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v6];
     [(HNDHandManager *)self refreshOrientation];
   }
@@ -552,14 +552,14 @@
   {
     v4 = +[HNDDefaults sharedDefaults];
     v5 = [v4 preferenceForKey:@"DidShowBrokenHomeButtonAlert"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v7 = +[AXSubsystemBrokenHomeButton sharedInstance];
-      v8 = [v7 ignoreLogging];
+      ignoreLogging = [v7 ignoreLogging];
 
-      if ((v8 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v9 = +[AXSubsystemBrokenHomeButton identifier];
         v10 = AXLoggerForFacility();
@@ -586,9 +586,9 @@
     }
 
     v16 = +[AXSubsystemBrokenHomeButton sharedInstance];
-    v17 = [v16 ignoreLogging];
+    ignoreLogging2 = [v16 ignoreLogging];
 
-    if ((v17 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
       v18 = +[AXSubsystemBrokenHomeButton identifier];
       v19 = AXLoggerForFacility();
@@ -613,8 +613,8 @@
     v24 = +[AXSettings sharedInstance];
     [v24 setAssistiveTouchMainScreenCustomization:v23];
 
-    v25 = [(HNDHandManager *)self mainDisplayManager];
-    [v25 placeNubbitAtBottomCenter];
+    mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+    [mainDisplayManager placeNubbitAtBottomCenter];
   }
 }
 
@@ -623,9 +623,9 @@
   if (_AXSAssistiveTouchScannerEnabled())
   {
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 assistiveTouchSwitchUsageConfirmed];
+    assistiveTouchSwitchUsageConfirmed = [v2 assistiveTouchSwitchUsageConfirmed];
 
-    if ((v3 & 1) == 0)
+    if ((assistiveTouchSwitchUsageConfirmed & 1) == 0)
     {
       v4 = +[AXSpringBoardServer server];
       [v4 showAlert:4 withHandler:&stru_1001D3D70];
@@ -805,7 +805,7 @@
   if ((+[AXSpringBoardServer isAvailable]& 1) != 0)
   {
     v3 = +[AXSpringBoardServer server];
-    v2 = [v3 activeInterfaceOrientation];
+    activeInterfaceOrientation = [v3 activeInterfaceOrientation];
   }
 
   else
@@ -819,7 +819,7 @@
     return 0;
   }
 
-  return v2;
+  return activeInterfaceOrientation;
 }
 
 - (void)refreshOrientation
@@ -828,25 +828,25 @@
   {
     [(HNDHandManager *)self setIsRefreshingOrientation:1];
     objc_initWeak(&location, self);
-    v3 = [(HNDHandManager *)self orientationQueue];
+    orientationQueue = [(HNDHandManager *)self orientationQueue];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100024F40;
     v4[3] = &unk_1001D3460;
     objc_copyWeak(&v5, &location);
-    dispatch_async(v3, v4);
+    dispatch_async(orientationQueue, v4);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setupNonSceneUI:(BOOL)a3
+- (void)setupNonSceneUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   if (+[HNDApplication usesScenes])
   {
-    v5 = !v3;
+    v5 = !iCopy;
   }
 
   else
@@ -862,23 +862,23 @@
     [(HNDDisplayManager *)v15 setHandManager:self];
     [(HNDDisplayManager *)v15 setIsMainDisplay:1];
     [(HNDDisplayManager *)v15 setOrientation:self->_orientation withCompletion:0];
-    v6 = [(HNDDisplayManager *)v15 fingerController];
-    [v6 setAppearanceDelegate:self];
+    fingerController = [(HNDDisplayManager *)v15 fingerController];
+    [fingerController setAppearanceDelegate:self];
 
     [(HNDDisplayManager *)v15 updateAutoHideMousePointer];
     [(HNDDisplayManager *)v15 initializeDisplay];
-    v7 = [(HNDDisplayManager *)v15 window];
-    v8 = [v7 _contextId];
+    window = [(HNDDisplayManager *)v15 window];
+    _contextId = [window _contextId];
 
-    if (v8)
+    if (_contextId)
     {
       systemPointerController = self->_systemPointerController;
-      v10 = [(HNDDisplayManager *)v15 window];
-      v11 = [v10 screen];
-      v12 = [v11 displayIdentity];
-      v13 = [v12 displayID];
-      v14 = [(HNDDisplayManager *)v15 window];
-      -[HNDSystemPointerController requestGlobalMouseEventsForDisplay:displayID:targetContextID:](systemPointerController, "requestGlobalMouseEventsForDisplay:displayID:targetContextID:", 0, v13, [v14 _contextId]);
+      window2 = [(HNDDisplayManager *)v15 window];
+      screen = [window2 screen];
+      displayIdentity = [screen displayIdentity];
+      displayID = [displayIdentity displayID];
+      window3 = [(HNDDisplayManager *)v15 window];
+      -[HNDSystemPointerController requestGlobalMouseEventsForDisplay:displayID:targetContextID:](systemPointerController, "requestGlobalMouseEventsForDisplay:displayID:targetContextID:", 0, displayID, [window3 _contextId]);
     }
 
     [(HNDHandManager *)self restartEverything];
@@ -903,15 +903,15 @@
   [(HNDHandManager *)self _handleBrokenHomeButtonMode];
 }
 
-- (void)keyboardVisible:(BOOL)a3 withFrame:(CGRect)a4
+- (void)keyboardVisible:(BOOL)visible withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  v10 = [(HNDHandManager *)self mainDisplayManager];
-  [v10 keyboardVisible:v8 withFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  visibleCopy = visible;
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  [mainDisplayManager keyboardVisible:visibleCopy withFrame:{x, y, width, height}];
 
   if ((AXRuntimeCheck_DwellKeyboardKeyTimer() & 1) != 0 || AXRuntimeCheck_DwellKeyboardSwipe())
   {
@@ -945,24 +945,24 @@
 {
   if (AXRuntimeCheck_DwellKeyboardSwipe() && self->_continuousPathGestureState != 2)
   {
-    v3 = [(HNDHandManager *)self mainDisplayManager];
-    v4 = [v3 keyboardVisible];
+    mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+    keyboardVisible = [mainDisplayManager keyboardVisible];
 
-    v5 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    [v5 updateCache:2241];
+    currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    [currentBubbleModeFocusedElement updateCache:2241];
 
-    v6 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    v7 = [v6 uiElement];
-    v8 = [v7 BOOLWithAXAttribute:2241];
+    currentBubbleModeFocusedElement2 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    uiElement = [currentBubbleModeFocusedElement2 uiElement];
+    v8 = [uiElement BOOLWithAXAttribute:2241];
 
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 assistiveTouchDwellKeyboardContinuousPathEnabled];
+    assistiveTouchDwellKeyboardContinuousPathEnabled = [v9 assistiveTouchDwellKeyboardContinuousPathEnabled];
 
     v11 = 0;
-    if (v4 && v8 && v10)
+    if (keyboardVisible && v8 && assistiveTouchDwellKeyboardContinuousPathEnabled)
     {
-      v12 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-      [(HNDHandManager *)self setKeyboardSlideStartElement:v12];
+      currentBubbleModeFocusedElement3 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+      [(HNDHandManager *)self setKeyboardSlideStartElement:currentBubbleModeFocusedElement3];
 
       v11 = 1;
     }
@@ -985,10 +985,10 @@
   }
 }
 
-- (void)pointerController:(id)a3 didReceivePointerEvent:(id)a4
+- (void)pointerController:(id)controller didReceivePointerEvent:(id)event
 {
-  v5 = a4;
-  v4 = v5;
+  eventCopy = event;
+  v4 = eventCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -1006,57 +1006,57 @@
 {
   if ([(HNDHandManager *)self inBubbleMode])
   {
-    v3 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+    currentlySnappedInBubbleMode = [(HNDHandManager *)self currentlySnappedInBubbleMode];
   }
 
   else
   {
-    v3 = 0;
+    currentlySnappedInBubbleMode = 0;
   }
 
   if ([(HNDHandManager *)self shouldUseEyeTrackingAutoHide])
   {
-    v4 = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
+    eyeTrackingAutoHideEnabled = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
   }
 
   else
   {
-    v4 = 0;
+    eyeTrackingAutoHideEnabled = 0;
   }
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  if ([(HNDHandManager *)self usingSpecialTool]|| [(HNDHandManager *)self inCustomGesture]|| [(HNDHandManager *)self dwellControlEnabled]|| (([(HNDHandManager *)self canShowASTMousePointer]| v3) & 1) != 0)
+  if ([(HNDHandManager *)self usingSpecialTool]|| [(HNDHandManager *)self inCustomGesture]|| [(HNDHandManager *)self dwellControlEnabled]|| (([(HNDHandManager *)self canShowASTMousePointer]| currentlySnappedInBubbleMode) & 1) != 0)
   {
-    v5 = 1;
+    isShowingCalibrationUI = 1;
   }
 
   else
   {
-    v8 = [(HNDHandManager *)self deviceManager];
-    if ([v8 hidDeviceIsConfiguring])
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    if ([deviceManager hidDeviceIsConfiguring])
     {
-      v5 = 1;
+      isShowingCalibrationUI = 1;
     }
 
     else
     {
-      v9 = [(HNDHandManager *)self deviceManager];
-      if (([v9 hidDeviceSentReservedStatus] | v4))
+      deviceManager2 = [(HNDHandManager *)self deviceManager];
+      if (([deviceManager2 hidDeviceSentReservedStatus] | eyeTrackingAutoHideEnabled))
       {
-        v5 = 1;
+        isShowingCalibrationUI = 1;
       }
 
       else
       {
-        v10 = [(HNDHandManager *)self mainDisplayManager];
-        v5 = [v10 isShowingCalibrationUI];
+        mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+        isShowingCalibrationUI = [mainDisplayManager isShowingCalibrationUI];
       }
     }
   }
 
-  v15 = v5;
+  v15 = isShowingCalibrationUI;
   if ([(HNDHandManager *)self onenessSessionActive])
   {
     v6 = 1;
@@ -1088,72 +1088,72 @@
   v3 = +[AXSpringBoardServer server];
   -[HNDHandManager setOnenessSessionActive:](self, "setOnenessSessionActive:", [v3 isContinuitySessionActive]);
 
-  v4 = [(HNDHandManager *)self systemPointerController];
-  [v4 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 }
 
-- (BOOL)shouldHandleSystemPointerButtonEvent:(id)a3
+- (BOOL)shouldHandleSystemPointerButtonEvent:(id)event
 {
-  v4 = a3;
-  if (!_AXSAssistiveTouchEnabled() || [v4 type] != 1 && objc_msgSend(v4, "type") != 2)
+  eventCopy = event;
+  if (!_AXSAssistiveTouchEnabled() || [eventCopy type] != 1 && objc_msgSend(eventCopy, "type") != 2)
   {
-    v11 = 0;
+    isMainDisplay = 0;
     goto LABEL_16;
   }
 
-  v5 = [v4 actionOverride];
-  if (![v5 length])
+  actionOverride = [eventCopy actionOverride];
+  if (![actionOverride length])
   {
 
     goto LABEL_10;
   }
 
-  v6 = [v4 actionOverride];
-  v7 = [v6 isEqualToString:@"__NONE__"];
+  actionOverride2 = [eventCopy actionOverride];
+  v7 = [actionOverride2 isEqualToString:@"__NONE__"];
 
-  if ((v7 & 1) != 0 || ([v4 actionOverride], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "buttonNumber"), AXAssistiveTouchDefaultLaserIconTypeForMouseButton(), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
+  if ((v7 & 1) != 0 || ([eventCopy actionOverride], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "buttonNumber"), AXAssistiveTouchDefaultLaserIconTypeForMouseButton(), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, v10))
   {
 LABEL_10:
-    if (-[HNDHandManager mouseBehavesLikeFinger](self, "mouseBehavesLikeFinger") && ([v4 buttonNumber], AXAssistiveTouchDefaultLaserIconTypeForMouseButton(), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", AXAssistiveTouchIconTypeMousePrimaryClick), v12, v13))
+    if (-[HNDHandManager mouseBehavesLikeFinger](self, "mouseBehavesLikeFinger") && ([eventCopy buttonNumber], AXAssistiveTouchDefaultLaserIconTypeForMouseButton(), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", AXAssistiveTouchIconTypeMousePrimaryClick), v12, v13))
     {
-      v14 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-      v15 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v14];
+      currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+      v15 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:currentHardwareIdentifierForPointer];
 
-      v11 = [v15 isMainDisplay];
+      isMainDisplay = [v15 isMainDisplay];
     }
 
     else
     {
-      v11 = 0;
+      isMainDisplay = 0;
     }
 
     goto LABEL_14;
   }
 
-  v11 = 1;
+  isMainDisplay = 1;
 LABEL_14:
   if ([(HNDHandManager *)self inBubbleMode])
   {
-    v11 |= [(HNDHandManager *)self currentlySnappedInBubbleMode];
+    isMainDisplay |= [(HNDHandManager *)self currentlySnappedInBubbleMode];
   }
 
 LABEL_16:
 
-  return v11 & 1;
+  return isMainDisplay & 1;
 }
 
 - (BOOL)hitTestsViewAtSystemPointerPoint
 {
-  v2 = [(HNDHandManager *)self viewAtSystemPointerPoint];
-  v3 = v2 != 0;
+  viewAtSystemPointerPoint = [(HNDHandManager *)self viewAtSystemPointerPoint];
+  v3 = viewAtSystemPointerPoint != 0;
 
   return v3;
 }
 
 - (id)viewAtSystemPointerPoint
 {
-  v3 = [(HNDSystemPointerController *)self->_systemPointerController currentSystemPointerHardwareIdentifier];
-  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v3];
+  currentSystemPointerHardwareIdentifier = [(HNDSystemPointerController *)self->_systemPointerController currentSystemPointerHardwareIdentifier];
+  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:currentSystemPointerHardwareIdentifier];
   [(HNDSystemPointerController *)self->_systemPointerController currentAbsoluteSystemPointerPoint];
   v5 = [v4 viewAtDisplayPoint:?];
 
@@ -1166,11 +1166,11 @@ LABEL_16:
   {
     if ([(HNDHandManager *)self shouldHideSystemPointerForFingersView])
     {
-      v3 = [(HNDHandManager *)self systemPointerController];
-      [v3 hideSystemPointer:0];
+      systemPointerController = [(HNDHandManager *)self systemPointerController];
+      [systemPointerController hideSystemPointer:0];
 
-      v4 = [(HNDHandManager *)self systemPointerController];
-      [v4 hideSystemPointer:1];
+      systemPointerController2 = [(HNDHandManager *)self systemPointerController];
+      [systemPointerController2 hideSystemPointer:1];
     }
   }
 
@@ -1187,23 +1187,23 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)moveSystemPointerIfActiveToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)moveSystemPointerIfActiveToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (sub_100042C64())
   {
-    v7 = [(HNDHandManager *)self systemPointerController];
-    if (v7)
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
+    if (systemPointerController)
     {
-      v8 = v7;
-      v9 = [(HNDHandManager *)self deviceManager];
-      v10 = [v9 mainDeviceIsPointer];
+      v8 = systemPointerController;
+      deviceManager = [(HNDHandManager *)self deviceManager];
+      mainDeviceIsPointer = [deviceManager mainDeviceIsPointer];
 
-      if (v10)
+      if (mainDeviceIsPointer)
       {
-        v11 = [(HNDHandManager *)self systemPointerController];
-        [v11 currentSystemPointerPoint];
+        systemPointerController2 = [(HNDHandManager *)self systemPointerController];
+        [systemPointerController2 currentSystemPointerPoint];
         v13 = v12;
         v15 = v14;
 
@@ -1217,28 +1217,28 @@ LABEL_16:
 {
   if ([(HNDHandManager *)self mouseBehavesLikeFinger])
   {
-    v3 = [(HNDHandManager *)self currentDisplayManager];
-    v4 = [v3 fingerController];
-    v5 = [v4 fingerModels];
-    v6 = [v5 firstObject];
-    [v6 location];
+    currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+    fingerController = [currentDisplayManager fingerController];
+    fingerModels = [fingerController fingerModels];
+    firstObject = [fingerModels firstObject];
+    [firstObject location];
     x = v7;
     y = v9;
   }
 
   else
   {
-    v11 = [(HNDHandManager *)self systemPointerController];
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
 
-    if (!v11)
+    if (!systemPointerController)
     {
       x = CGPointZero.x;
       y = CGPointZero.y;
       goto LABEL_6;
     }
 
-    v3 = [(HNDHandManager *)self systemPointerController];
-    [v3 currentSystemPointerPoint];
+    currentDisplayManager = [(HNDHandManager *)self systemPointerController];
+    [currentDisplayManager currentSystemPointerPoint];
     x = v12;
     y = v13;
   }
@@ -1253,39 +1253,39 @@ LABEL_6:
 
 - (BOOL)isVirtualTrackpadVisible
 {
-  v2 = [(HNDHandManager *)self mainDisplayManager];
-  v3 = [v2 isShowingVirtualTrackpad];
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  isShowingVirtualTrackpad = [mainDisplayManager isShowingVirtualTrackpad];
 
-  return v3;
+  return isShowingVirtualTrackpad;
 }
 
-- (void)setVirtualTrackpadBubbleModeEnabled:(BOOL)a3
+- (void)setVirtualTrackpadBubbleModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(HNDHandManager *)self enableElementFetcherAndNotificationsIfNecessary];
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchBubbleModeEnabled];
+    assistiveTouchBubbleModeEnabled = [v4 assistiveTouchBubbleModeEnabled];
   }
 
   else
   {
     [(HNDHandManager *)self disableElementFetcherIfNecessary];
-    v5 = [(HNDHandManager *)self shouldUseBubbleMode];
+    assistiveTouchBubbleModeEnabled = [(HNDHandManager *)self shouldUseBubbleMode];
   }
 
-  [(HNDHandManager *)self enableBubbleMode:v5];
+  [(HNDHandManager *)self enableBubbleMode:assistiveTouchBubbleModeEnabled];
 }
 
-- (void)_moveFingersToPointInFingerCoordinateSpace:(CGPoint)a3 onDisplay:(id)a4 allowOutOfBounds:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_moveFingersToPointInFingerCoordinateSpace:(CGPoint)space onDisplay:(id)display allowOutOfBounds:(BOOL)bounds animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v14 = a7;
-  if (v8)
+  animatedCopy = animated;
+  boundsCopy = bounds;
+  y = space.y;
+  x = space.x;
+  displayCopy = display;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -1294,34 +1294,34 @@ LABEL_6:
     v15[4] = self;
     v17 = x;
     v18 = y;
-    v16 = v13;
-    v19 = v9;
-    [UIView animateWithDuration:v15 animations:v14 completion:0.15];
+    v16 = displayCopy;
+    v19 = boundsCopy;
+    [UIView animateWithDuration:v15 animations:completionCopy completion:0.15];
   }
 
   else
   {
-    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v13 onDisplay:v9 allowOutOfBounds:x, y];
-    if (v14)
+    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:boundsCopy allowOutOfBounds:x, y];
+    if (completionCopy)
     {
-      v14[2](v14, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
-- (void)moveFingersToPointInFingerCoordinateSpace:(CGPoint)a3 onDisplay:(id)a4 allowOutOfBounds:(BOOL)a5
+- (void)moveFingersToPointInFingerCoordinateSpace:(CGPoint)space onDisplay:(id)display allowOutOfBounds:(BOOL)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v9];
-  v11 = [v10 fingerController];
+  y = space.y;
+  x = space.x;
+  displayCopy = display;
+  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v10 fingerController];
 
-  if ([v11 numberOfFingers])
+  if ([fingerController numberOfFingers])
   {
     if (self->_hotCornerLocked)
     {
-      v12 = [(HNDHandManager *)self _roundedCornersForCursorAtPoint:v9 onDisplay:x, y];
+      v12 = [(HNDHandManager *)self _roundedCornersForCursorAtPoint:displayCopy onDisplay:x, y];
     }
 
     else
@@ -1353,8 +1353,8 @@ LABEL_6:
     v24 = v33;
     v26 = x;
     v27 = y;
-    v28 = a5;
-    v15 = v11;
+    boundsCopy = bounds;
+    v15 = fingerController;
     v21 = v15;
     v25 = &v29;
     v16 = v14;
@@ -1377,15 +1377,15 @@ LABEL_6:
   }
 }
 
-- (void)startDragModeOnDisplay:(id)a3
+- (void)startDragModeOnDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (![(HNDHandManager *)self inDragMode])
   {
-    [(HNDHandManager *)self showMenu:0 onDisplay:v4];
-    v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
-    v6 = [v5 fingerController];
-    if (![v6 numberOfFingers])
+    [(HNDHandManager *)self showMenu:0 onDisplay:displayCopy];
+    v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+    fingerController = [v5 fingerController];
+    if (![fingerController numberOfFingers])
     {
       [(HNDHandManager *)self currentPointForPointer];
       v8 = v7;
@@ -1393,7 +1393,7 @@ LABEL_6:
       v11 = [AXPIFingerModel fingerModelForLocation:?];
       v13 = v11;
       v12 = [NSArray arrayWithObjects:&v13 count:1];
-      [v6 showFingerModels:v12 animated:1 startPointForAnimation:{v8, v10}];
+      [fingerController showFingerModels:v12 animated:1 startPointForAnimation:{v8, v10}];
     }
 
     [v5 setMultiTouchToolBackgroundEnabled:1];
@@ -1405,17 +1405,17 @@ LABEL_6:
   }
 }
 
-- (void)beginDragAtPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)beginDragAtPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if ([(HNDHandManager *)self inDragMode]&& !self->_isPerformingDragPressEvent)
   {
-    if ([(HNDHandManager *)self _isInNubbitHitbox:v7 onDisplay:x, y]&& !self->_isDragNubbitMode)
+    if ([(HNDHandManager *)self _isInNubbitHitbox:displayCopy onDisplay:x, y]&& !self->_isDragNubbitMode)
     {
-      [(HNDHandManager *)self endDragModeAtPoint:v7 onDisplay:0 completed:x, y];
-      [(HNDHandManager *)self showMenu:1 onDisplay:v7];
+      [(HNDHandManager *)self endDragModeAtPoint:displayCopy onDisplay:0 completed:x, y];
+      [(HNDHandManager *)self showMenu:1 onDisplay:displayCopy];
     }
 
     else
@@ -1425,11 +1425,11 @@ LABEL_6:
       self->_isPerformingDragPressEvent = 1;
       self->_dragStartPoint.x = x;
       self->_dragStartPoint.y = y;
-      v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+      v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
       [v8 updateWithPrimaryFingerPoint:{x, y}];
-      [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:0 allowOutOfBounds:x, y];
-      v9 = [v8 fingerController];
-      [v9 pressFingersDownAnimated:1];
+      [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:0 allowOutOfBounds:x, y];
+      fingerController = [v8 fingerController];
+      [fingerController pressFingersDownAnimated:1];
 
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -1445,25 +1445,25 @@ LABEL_6:
   }
 }
 
-- (void)endDragModeAtPoint:(CGPoint)a3 onDisplay:(id)a4 completed:(BOOL)a5
+- (void)endDragModeAtPoint:(CGPoint)point onDisplay:(id)display completed:(BOOL)completed
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  completedCopy = completed;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if ([(HNDHandManager *)self inDragMode]&& !self->_isPerformingDragPressEvent)
   {
-    [(HNDHandManager *)self displayManagerForHardwareIdentifier:v9];
+    [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100027400;
     v10 = v34[3] = &unk_1001D3EA8;
     v35 = v10;
-    v36 = self;
+    selfCopy = self;
     v38 = x;
     v39 = y;
-    v40 = v5;
-    v11 = v9;
+    v40 = completedCopy;
+    v11 = displayCopy;
     v37 = v11;
     v12 = objc_retainBlock(v34);
     v32[0] = _NSConcreteStackBlock;
@@ -1482,7 +1482,7 @@ LABEL_6:
     v15 = v13;
     v31 = v15;
     v16 = objc_retainBlock(v30);
-    if (v5)
+    if (completedCopy)
     {
       self->_isPerformingDragPressEvent = 1;
       v25[0] = _NSConcreteStackBlock;
@@ -1502,7 +1502,7 @@ LABEL_6:
       v23 = x;
       v24 = y;
       v18 = v15;
-      v19 = self;
+      selfCopy2 = self;
       v20 = v26;
       v22 = v12;
       [UIView animateWithDuration:v25 animations:v17 completion:0.15];
@@ -1523,67 +1523,67 @@ LABEL_6:
   }
 }
 
-- (void)_handleRealDragToolUp:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealDragToolUp:(CGPoint)up onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v10 = [v8 fingerController];
+  y = up.y;
+  x = up.x;
+  displayCopy = display;
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v8 fingerController];
 
-  [v10 hndConvertPointToFingerContainerView:{x, y}];
+  [fingerController hndConvertPointToFingerContainerView:{x, y}];
   if (self->_dragStartPoint.x == -1.0 && self->_dragStartPoint.y == -1.0)
   {
-    [(HNDHandManager *)self beginDragAtPoint:v7 onDisplay:?];
+    [(HNDHandManager *)self beginDragAtPoint:displayCopy onDisplay:?];
   }
 
   else
   {
-    [(HNDHandManager *)self endDragModeAtPoint:v7 onDisplay:1 completed:?];
+    [(HNDHandManager *)self endDragModeAtPoint:displayCopy onDisplay:1 completed:?];
   }
 }
 
-- (void)_handleRealDragToolMove:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealDragToolMove:(CGPoint)move onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
+  y = move.y;
+  x = move.x;
+  displayCopy = display;
+  v8 = displayCopy;
   if (!self->_isPerformingDragPressEvent && !self->_isDragNubbitMode)
   {
-    v9 = v7;
-    v7 = [(HNDHandManager *)self _moveFingersForRealEventToPoint:v7 onDisplay:x, y];
+    v9 = displayCopy;
+    displayCopy = [(HNDHandManager *)self _moveFingersForRealEventToPoint:displayCopy onDisplay:x, y];
     v8 = v9;
   }
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(displayCopy, v8);
 }
 
-- (void)_handleRealContinuousScrollToolUp:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealContinuousScrollToolUp:(CGPoint)up onDisplay:(id)display
 {
-  v5 = a4;
+  displayCopy = display;
   if ([(HNDHandManager *)self inContinuousScrollMode])
   {
-    [(HNDHandManager *)self endContinuousScrollingOnDisplay:v5 withCompletion:0];
+    [(HNDHandManager *)self endContinuousScrollingOnDisplay:displayCopy withCompletion:0];
   }
 
   else
   {
-    [(HNDHandManager *)self beginContinuousScrollingInDirection:[(HNDHandManager *)self continuousScrollMode]== 1 onDisplay:v5];
+    [(HNDHandManager *)self beginContinuousScrollingInDirection:[(HNDHandManager *)self continuousScrollMode]== 1 onDisplay:displayCopy];
   }
 }
 
-- (BOOL)isSystemSleeping:(id)a3
+- (BOOL)isSystemSleeping:(id)sleeping
 {
   v3 = +[AXSystemAppServer server];
-  v4 = [v3 isSystemSleeping];
+  isSystemSleeping = [v3 isSystemSleeping];
 
-  return v4;
+  return isSystemSleeping;
 }
 
-- (void)fetcher:(id)a3 didFetchElementsForEvent:(unint64_t)a4 foundNewElements:(BOOL)a5
+- (void)fetcher:(id)fetcher didFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements
 {
-  if ([(HNDHandManager *)self needsGenerateScrollers:a3])
+  if ([(HNDHandManager *)self needsGenerateScrollers:fetcher])
   {
     [(HNDHandManager *)self generateContinuousScrollersWithCompletion:0];
   }
@@ -1607,55 +1607,55 @@ LABEL_6:
   return v3;
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  if (a4 <= 0x10 && ((1 << a4) & 0x1F2EE) != 0)
+  if (event <= 0x10 && ((1 << event) & 0x1F2EE) != 0)
   {
-    [(HNDHandManager *)self setBubbleModeBlockedOnElementRefresh:a4 != 3];
+    [(HNDHandManager *)self setBubbleModeBlockedOnElementRefresh:event != 3];
     v7 = +[HNDHandManager sharedManager];
-    v6 = [v7 updateElementVisualsCoalescer];
-    [v6 notifyUpdateElementVisualsEventDidOccur];
+    updateElementVisualsCoalescer = [v7 updateElementVisualsCoalescer];
+    [updateElementVisualsCoalescer notifyUpdateElementVisualsEventDidOccur];
   }
 }
 
-- (BOOL)_scrollAncestorIsSelfForScrollView:(id)a3 scrollAction:(int)a4 resultScrollAncestor:(id *)a5
+- (BOOL)_scrollAncestorIsSelfForScrollView:(id)view scrollAction:(int)action resultScrollAncestor:(id *)ancestor
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = +[AXElement elementWithAXUIElement:](AXElement, "elementWithAXUIElement:", [v7 scrollAncestorForScrollAction:v6]);
+  v6 = *&action;
+  viewCopy = view;
+  v8 = +[AXElement elementWithAXUIElement:](AXElement, "elementWithAXUIElement:", [viewCopy scrollAncestorForScrollAction:v6]);
   v9 = v8;
-  if (a5)
+  if (ancestor)
   {
     v10 = v8;
-    *a5 = v9;
+    *ancestor = v9;
   }
 
-  v11 = [v7 isEqual:v9];
+  v11 = [viewCopy isEqual:v9];
 
   return v11;
 }
 
-- (void)generateContinuousScrollersWithCompletion:(id)a3
+- (void)generateContinuousScrollersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self continuousScrollerGenerationQueue];
+  completionCopy = completion;
+  continuousScrollerGenerationQueue = [(HNDHandManager *)self continuousScrollerGenerationQueue];
 
-  if (v5)
+  if (continuousScrollerGenerationQueue)
   {
-    v6 = [(HNDHandManager *)self continuousScrollerGenerationQueue];
+    continuousScrollerGenerationQueue2 = [(HNDHandManager *)self continuousScrollerGenerationQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100027B30;
     v7[3] = &unk_1001D3CD0;
-    v8 = v4;
-    [(HNDHandManager *)self generateContinuousScrollersOnQueue:v6 withCompletion:v7];
+    v8 = completionCopy;
+    [(HNDHandManager *)self generateContinuousScrollersOnQueue:continuousScrollerGenerationQueue2 withCompletion:v7];
   }
 }
 
-- (void)generateContinuousScrollersOnQueue:(id)a3 withCompletion:(id)a4
+- (void)generateContinuousScrollersOnQueue:(id)queue withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   if (![(HNDHandManager *)self isActivelyScrollingContinuously])
   {
     v8[0] = _NSConcreteStackBlock;
@@ -1663,49 +1663,49 @@ LABEL_6:
     v8[2] = sub_100027C04;
     v8[3] = &unk_1001D3FB8;
     v8[4] = self;
-    v9 = v7;
-    dispatch_async(v6, v8);
+    v9 = completionCopy;
+    dispatch_async(queueCopy, v8);
   }
 }
 
 - (BOOL)shouldUseEyeTrackingAutoHide
 {
-  v2 = [(HNDHandManager *)self deviceSupportsAutoHide];
-  if (v2)
+  deviceSupportsAutoHide = [(HNDHandManager *)self deviceSupportsAutoHide];
+  if (deviceSupportsAutoHide)
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 assistiveTouchEyeTrackingAutoHideEnabled];
+    assistiveTouchEyeTrackingAutoHideEnabled = [v3 assistiveTouchEyeTrackingAutoHideEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(deviceSupportsAutoHide) = assistiveTouchEyeTrackingAutoHideEnabled;
   }
 
-  return v2;
+  return deviceSupportsAutoHide;
 }
 
 - (BOOL)deviceSupportsAutoHide
 {
-  v3 = [(HNDHandManager *)self deviceManager];
-  v4 = [v3 mainDeviceIsThirdPartyTracker];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  mainDeviceIsThirdPartyTracker = [deviceManager mainDeviceIsThirdPartyTracker];
 
-  v5 = [(HNDHandManager *)self deviceManager];
-  LOBYTE(v3) = [v5 mainDeviceIsOnDeviceEyeTracker];
+  deviceManager2 = [(HNDHandManager *)self deviceManager];
+  LOBYTE(deviceManager) = [deviceManager2 mainDeviceIsOnDeviceEyeTracker];
 
-  return (v4 | v3) & 1;
+  return (mainDeviceIsThirdPartyTracker | deviceManager) & 1;
 }
 
-- (void)enableBubbleMode:(BOOL)a3
+- (void)enableBubbleMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(HNDHandManager *)self inBubbleMode];
-  v6 = !v3;
-  v7 = !v3 & v5;
-  [(HNDHandManager *)self setInBubbleMode:v3];
+  modeCopy = mode;
+  inBubbleMode = [(HNDHandManager *)self inBubbleMode];
+  v6 = !modeCopy;
+  v7 = !modeCopy & inBubbleMode;
+  [(HNDHandManager *)self setInBubbleMode:modeCopy];
   v8 = AXLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(HNDHandManager *)self inBubbleMode];
+    inBubbleMode2 = [(HNDHandManager *)self inBubbleMode];
     v10 = @"NO";
-    if (v9)
+    if (inBubbleMode2)
     {
       v10 = @"YES";
     }
@@ -1727,7 +1727,7 @@ LABEL_6:
     [(HNDHandManager *)self _systemPointerSettingsDidChange];
   }
 
-  if (((v6 | v5) & 1) == 0)
+  if (((v6 | inBubbleMode) & 1) == 0)
   {
     [(HNDHandManager *)self _setApplicationAccessibilityEnabledIfNeeded];
     [(HNDHandManager *)self refreshElementFetcherWithScrollingBlocked:1];
@@ -1736,55 +1736,55 @@ LABEL_6:
 
 - (BOOL)shouldUseBubbleMode
 {
-  v2 = [(HNDHandManager *)self bubbleModeAllowed];
-  if (v2)
+  bubbleModeAllowed = [(HNDHandManager *)self bubbleModeAllowed];
+  if (bubbleModeAllowed)
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 assistiveTouchBubbleModeEnabled];
+    assistiveTouchBubbleModeEnabled = [v3 assistiveTouchBubbleModeEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(bubbleModeAllowed) = assistiveTouchBubbleModeEnabled;
   }
 
-  return v2;
+  return bubbleModeAllowed;
 }
 
 - (BOOL)bubbleModeAllowed
 {
-  v3 = [(HNDHandManager *)self deviceManager];
-  v4 = [v3 mainDeviceIsMotionTracker];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  mainDeviceIsMotionTracker = [deviceManager mainDeviceIsMotionTracker];
 
-  return (v4 | [(HNDHandManager *)self isVirtualTrackpadVisible]) & 1;
+  return (mainDeviceIsMotionTracker | [(HNDHandManager *)self isVirtualTrackpadVisible]) & 1;
 }
 
-- (id)_groupWithDictionary:(id)a3 currentPid:(int)a4
+- (id)_groupWithDictionary:(id)dictionary currentPid:(int)pid
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"GroupElements"];
-  v8 = [v6 objectForKeyedSubscript:@"GroupTraits"];
-  v9 = [v8 intValue];
-  v10 = [v6 objectForKeyedSubscript:@"GroupScanBehaviorTraits"];
-  v11 = [v10 intValue];
-  v12 = [v6 objectForKeyedSubscript:@"GroupLabel"];
-  v13 = [v6 objectForKeyedSubscript:@"GroupIdentifier"];
+  v4 = *&pid;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"GroupElements"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"GroupTraits"];
+  intValue = [v8 intValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"GroupScanBehaviorTraits"];
+  intValue2 = [v10 intValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"GroupLabel"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"GroupIdentifier"];
 
-  v14 = [(HNDHandManager *)self _groupWithItems:v7 groupTraits:v9 scanningBehaviorTraits:v11 label:v12 identifier:v13 currentPid:v4];
+  v14 = [(HNDHandManager *)self _groupWithItems:v7 groupTraits:intValue scanningBehaviorTraits:intValue2 label:v12 identifier:v13 currentPid:v4];
 
   return v14;
 }
 
-- (id)_groupWithItems:(id)a3 groupTraits:(unint64_t)a4 scanningBehaviorTraits:(unint64_t)a5 label:(id)a6 identifier:(id)a7 currentPid:(int)a8
+- (id)_groupWithItems:(id)items groupTraits:(unint64_t)traits scanningBehaviorTraits:(unint64_t)behaviorTraits label:(id)label identifier:(id)identifier currentPid:(int)pid
 {
-  v8 = *&a8;
-  v31 = a5;
-  v11 = a3;
-  v32 = a6;
+  v8 = *&pid;
+  behaviorTraitsCopy = behaviorTraits;
+  itemsCopy = items;
+  labelCopy = label;
   v12 = +[NSMutableArray array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = v11;
+  v13 = itemsCopy;
   v34 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v34)
   {
@@ -1830,8 +1830,8 @@ LABEL_6:
             [AXElement elementWithAXUIElement:v16];
           }
           v20 = ;
-          v21 = [v20 uiElement];
-          v22 = [v21 pid];
+          uiElement = [v20 uiElement];
+          v22 = [uiElement pid];
 
           if (v22 == v8)
           {
@@ -1840,8 +1840,8 @@ LABEL_6:
 
           else
           {
-            v23 = [v20 uiElement];
-            [v23 objectWithAXAttribute:94500 parameter:&off_1001E4E00];
+            uiElement2 = [v20 uiElement];
+            [uiElement2 objectWithAXAttribute:94500 parameter:&off_1001E4E00];
             v25 = v24 = v12;
 
             v18 = [(HNDHandManager *)self _groupWithItems:v25 groupTraits:0 scanningBehaviorTraits:0 label:0 identifier:0 currentPid:v22];
@@ -1853,7 +1853,7 @@ LABEL_6:
           if (v18)
           {
 LABEL_17:
-            [v12 addObject:{v18, v31}];
+            [v12 addObject:{v18, behaviorTraitsCopy}];
 
             continue;
           }
@@ -1871,37 +1871,37 @@ LABEL_20:
   {
     v26 = v12;
     v27 = v12;
-    v28 = v32;
-    v29 = [AXElementGroup groupWithElements:v26 label:v32];
-    [v29 setUserDefinedScanningBehaviorTraits:v31];
+    v28 = labelCopy;
+    v29 = [AXElementGroup groupWithElements:v26 label:labelCopy];
+    [v29 setUserDefinedScanningBehaviorTraits:behaviorTraitsCopy];
   }
 
   else
   {
     v29 = 0;
     v27 = v12;
-    v28 = v32;
+    v28 = labelCopy;
   }
 
   return v29;
 }
 
-- (void)processPortraitUpPointForElementHitTesting:(CGPoint)a3 onDisplay:(id)a4
+- (void)processPortraitUpPointForElementHitTesting:(CGPoint)testing onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = testing.y;
+  x = testing.x;
+  displayCopy = display;
   if ([(HNDHandManager *)self needsElementHitTesting])
   {
-    [(HNDHandManager *)self _updateHitTestingElementsWithPoint:v7 onDisplay:x, y];
+    [(HNDHandManager *)self _updateHitTestingElementsWithPoint:displayCopy onDisplay:x, y];
   }
 }
 
-- (void)_updateHitTestingElementsWithPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)_updateHitTestingElementsWithPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if ((byte_1002189B8 & 1) == 0)
   {
     [(HNDHandManager *)self refreshElementFetcherWithScrollingBlocked:1];
@@ -1910,16 +1910,16 @@ LABEL_20:
 
   if (!self->_primaryButtonDown || ![(HNDHandManager *)self currentlySnappedInBubbleMode]|| self->_continuousPathGestureState == 2)
   {
-    v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+    v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     if ([v8 shouldHideBubbleModeForVirtualTrackpad])
     {
-      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:v7];
+      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:displayCopy];
 LABEL_69:
 
       goto LABEL_70;
     }
 
-    v9 = [v8 isMenuVisible];
+    isMenuVisible = [v8 isMenuVisible];
     v10 = CGRectZero.origin.x;
     v11 = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -1928,12 +1928,12 @@ LABEL_69:
     [(HNDHandManager *)self lastTimeHitTestedForBubbleMode];
     if (AXMachTimeToNanoseconds() / 1000000000.0 <= 0.1)
     {
-      v21 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
+      lastBubbleModeFocusedElement = [(HNDHandManager *)self lastBubbleModeFocusedElement];
 
-      if (v21)
+      if (lastBubbleModeFocusedElement)
       {
-        v16 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
-        [v16 visibleFrame];
+        lastBubbleModeFocusedElement2 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
+        [lastBubbleModeFocusedElement2 visibleFrame];
         v10 = v22;
         v11 = v23;
         width = v24;
@@ -1946,7 +1946,7 @@ LABEL_69:
       }
 
       v15 = 0;
-      v16 = 0;
+      lastBubbleModeFocusedElement2 = 0;
     }
 
     else
@@ -1956,8 +1956,8 @@ LABEL_69:
       v15 = [(HNDHandManager *)self isSimpleElementForBubbleMode:v14];
       if (v15)
       {
-        v16 = v14;
-        [v16 visibleFrame];
+        lastBubbleModeFocusedElement2 = v14;
+        [lastBubbleModeFocusedElement2 visibleFrame];
         v10 = v17;
         v11 = v18;
         width = v19;
@@ -1966,23 +1966,23 @@ LABEL_69:
 
       else
       {
-        v16 = 0;
+        lastBubbleModeFocusedElement2 = 0;
       }
     }
 
     [v8 convertPointToInterfaceOrientation:{x, y}];
     v96 = v29;
     v97 = v28;
-    if (((v15 | v9) & 1) == 0)
+    if (((v15 | isMenuVisible) & 1) == 0)
     {
       v30 = v28;
       v31 = v29;
-      v32 = [v8 trackpadViewController];
-      v33 = [v32 trackpadContainsPoint:{v30, v31}];
+      trackpadViewController = [v8 trackpadViewController];
+      v33 = [trackpadViewController trackpadContainsPoint:{v30, v31}];
 
       if (v33)
       {
-        v34 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
+        currentlySelectedKeyboardRow = [(HNDHandManager *)self currentlySelectedKeyboardRow];
 
         v103 = 1.79769313e308;
         v35 = [(HNDHandManager *)self nearestElementFrameForPortraitPoint:&v103 distance:x, y];
@@ -1992,23 +1992,23 @@ LABEL_69:
         }
 
         v36 = 200.0;
-        if (!v34)
+        if (!currentlySelectedKeyboardRow)
         {
           v36 = 70.0;
         }
 
         if (v103 <= v36)
         {
-          v37 = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
-          v38 = [v37 objectForKeyedSubscript:v35];
+          bubbleModeFrameToElementMapping = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
+          v38 = [bubbleModeFrameToElementMapping objectForKeyedSubscript:v35];
 
           if (v38 && [(HNDHandManager *)self isSimpleElementForBubbleMode:v38])
           {
             v39 = v38;
-            v40 = v16;
-            v16 = v39;
+            v40 = lastBubbleModeFocusedElement2;
+            lastBubbleModeFocusedElement2 = v39;
 
-            [v16 frame];
+            [lastBubbleModeFocusedElement2 frame];
             v10 = v41;
             v11 = v42;
             width = v43;
@@ -2069,17 +2069,17 @@ LABEL_30:
       v61 = AXMIsContainedBy();
     }
 
-    v64 = [(HNDHandManager *)self availableElements];
-    v65 = [v64 count] != 1;
+    availableElements = [(HNDHandManager *)self availableElements];
+    v65 = [availableElements count] != 1;
 
-    v66 = (v9 & 1) == 0 && [(HNDHandManager *)self _isInNubbitHitbox:v7 onDisplay:v97 activationFactor:v96, 0.65];
+    v66 = (isMenuVisible & 1) == 0 && [(HNDHandManager *)self _isInNubbitHitbox:displayCopy onDisplay:v97 activationFactor:v96, 0.65];
     [v8 convertToNormalizedInterfaceOrientation:{v97, v96}];
     v68 = v67;
     v70 = v69;
-    if ([(HNDHandManager *)self _shouldLockIntoHotCornerAtNormalizedPoint:v7 onDisplay:?])
+    if ([(HNDHandManager *)self _shouldLockIntoHotCornerAtNormalizedPoint:displayCopy onDisplay:?])
     {
-      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:v7];
-      [(HNDHandManager *)self _lockIntoHotCornerForOrientedNormalizedPoint:v7 onDisplay:0 cancelDwell:v68, v70];
+      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:displayCopy];
+      [(HNDHandManager *)self _lockIntoHotCornerForOrientedNormalizedPoint:displayCopy onDisplay:0 cancelDwell:v68, v70];
 LABEL_68:
 
       goto LABEL_69;
@@ -2087,11 +2087,11 @@ LABEL_68:
 
     v72 = v15 & (v65 | v61 ^ 1);
     v103 = 1.79769313e308;
-    if (v9)
+    if (isMenuVisible)
     {
-      v73 = [v8 rocker];
-      v74 = [v73 currentlyVisibleRockerItems];
-      v75 = [v74 count];
+      rocker = [v8 rocker];
+      currentlyVisibleRockerItems = [rocker currentlyVisibleRockerItems];
+      v75 = [currentlyVisibleRockerItems count];
 
       v77 = v94;
       v76 = v95;
@@ -2120,46 +2120,46 @@ LABEL_68:
 
     if (!(v72 | v66) && !v81)
     {
-      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:v7, v71];
+      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:displayCopy, v71];
 LABEL_67:
 
       goto LABEL_68;
     }
 
     v98 = v81;
-    v82 = v16;
-    v83 = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
-    v84 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+    v82 = lastBubbleModeFocusedElement2;
+    bubbleModeCurrentlyFocusedOnNubbit = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
+    bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
     v102 = 0;
     v100 = v72;
-    if (v84 && v79)
+    if (bubbleModeFocusedRockerItem && v79)
     {
-      v85 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-      v102 = [v85 isEqual:v79];
+      bubbleModeFocusedRockerItem2 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+      v102 = [bubbleModeFocusedRockerItem2 isEqual:v79];
     }
 
-    v86 = v83 & v66;
+    v86 = bubbleModeCurrentlyFocusedOnNubbit & v66;
 
-    v87 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
+    lastBubbleModeFocusedElement3 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
     v88 = 0;
-    if (v87)
+    if (lastBubbleModeFocusedElement3)
     {
-      v16 = v82;
+      lastBubbleModeFocusedElement2 = v82;
       if (!v82)
       {
         goto LABEL_59;
       }
 
-      v89 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
-      v88 = [v89 isEqual:v82] & !v66;
+      lastBubbleModeFocusedElement4 = [(HNDHandManager *)self lastBubbleModeFocusedElement];
+      v88 = [lastBubbleModeFocusedElement4 isEqual:v82] & !v66;
     }
 
-    v16 = v82;
+    lastBubbleModeFocusedElement2 = v82;
 LABEL_59:
 
     if (((v86 | v88 | v102) & 1) == 0)
     {
-      v90 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+      currentlySnappedInBubbleMode = [(HNDHandManager *)self currentlySnappedInBubbleMode];
       [(HNDHandManager *)self setBubbleModeCurrentlyFocusedOnNubbit:v66];
       if (v98)
       {
@@ -2174,7 +2174,7 @@ LABEL_59:
       [(HNDHandManager *)self setBubbleModeFocusedRockerItem:v91];
       if (v100)
       {
-        v92 = v16;
+        v92 = lastBubbleModeFocusedElement2;
       }
 
       else
@@ -2185,7 +2185,7 @@ LABEL_59:
       [(HNDHandManager *)self setCurrentBubbleModeFocusedElement:v92];
       [(HNDHandManager *)self setLastBubbleModeFocusedElement:v92];
       self->_hoverNubbitLocked = 0;
-      [(HNDHandManager *)self _updateBubbleModeFrameOnDisplay:v7 elementFrame:v90 wasSnapped:v76, v77, v62, v63];
+      [(HNDHandManager *)self _updateBubbleModeFrameOnDisplay:displayCopy elementFrame:currentlySnappedInBubbleMode wasSnapped:v76, v77, v62, v63];
     }
 
     goto LABEL_67;
@@ -2194,29 +2194,29 @@ LABEL_59:
 LABEL_70:
 }
 
-- (void)_updateBubbleModeFrameOnDisplay:(id)a3 elementFrame:(CGRect)a4 wasSnapped:(BOOL)a5
+- (void)_updateBubbleModeFrameOnDisplay:(id)display elementFrame:(CGRect)frame wasSnapped:(BOOL)snapped
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v54 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  displayCopy = display;
   if (![(HNDHandManager *)self shouldUseBubbleMode])
   {
     goto LABEL_22;
   }
 
-  v11 = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
-  v12 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+  bubbleModeCurrentlyFocusedOnNubbit = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
+  bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
 
-  v13 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+  currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
 
-  v14 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v54];
+  v14 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   v15 = v14;
-  if (v12)
+  if (bubbleModeFocusedRockerItem)
   {
-    v16 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-    [v15 screenBoundsForRockerButton:v16];
+    bubbleModeFocusedRockerItem2 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+    [v15 screenBoundsForRockerButton:bubbleModeFocusedRockerItem2];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -2225,14 +2225,14 @@ LABEL_70:
 
   else
   {
-    if (v11)
+    if (bubbleModeCurrentlyFocusedOnNubbit)
     {
       [v14 rockerFrame];
     }
 
     else
     {
-      if (!v13)
+      if (!currentBubbleModeFocusedElement)
       {
         v18 = CGRectZero.origin.x;
         v20 = CGRectZero.origin.y;
@@ -2264,7 +2264,7 @@ LABEL_9:
     v57.origin.y = v30;
   }
 
-  [(HNDHandManager *)self clipRect:v54 toRotatedScreenBoundsOnDisplay:v57.origin.x, v57.origin.y, v57.size.width, v57.size.height, 40.0, v30];
+  [(HNDHandManager *)self clipRect:displayCopy toRotatedScreenBoundsOnDisplay:v57.origin.x, v57.origin.y, v57.size.width, v57.size.height, 40.0, v30];
   v52 = v31;
   v33 = v32;
   v34 = v58.size.width;
@@ -2281,45 +2281,45 @@ LABEL_9:
   {
     v41 = v40;
     [(HNDHandManager *)self cancelDwellTimerForPointer];
-    if (v12)
+    if (bubbleModeFocusedRockerItem)
     {
-      v42 = [v15 rocker];
-      v43 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-      [v42 hoveredToRockerButton:v43];
+      rocker = [v15 rocker];
+      bubbleModeFocusedRockerItem3 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+      [rocker hoveredToRockerButton:bubbleModeFocusedRockerItem3];
     }
 
-    else if (v11)
+    else if (bubbleModeCurrentlyFocusedOnNubbit)
     {
       [(HNDHandManager *)self setBubbleModeCurrentlyFocusedOnNubbit:1];
       self->_hoverNubbitLocked = 1;
     }
 
-    v44 = [(HNDHandManager *)self systemPointerController];
-    [v44 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
+    [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 
-    v45 = [(HNDHandManager *)self currentDisplayManager];
-    v46 = [v45 fingerContentViewIsActive];
+    currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+    fingerContentViewIsActive = [currentDisplayManager fingerContentViewIsActive];
 
-    if (v46 && ![(HNDHandManager *)self isVirtualTrackpadVisible])
+    if (fingerContentViewIsActive && ![(HNDHandManager *)self isVirtualTrackpadVisible])
     {
       if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
       {
         [v15 overrideFingerContentViewOpacity:0.0];
       }
 
-      v47 = [(HNDHandManager *)self currentDisplayManager];
-      [v47 setFingerContentViewIsActive:0 withDuration:0.0];
+      currentDisplayManager2 = [(HNDHandManager *)self currentDisplayManager];
+      [currentDisplayManager2 setFingerContentViewIsActive:0 withDuration:0.0];
     }
 
     if (![(HNDHandManager *)self isVirtualTrackpadVisible])
     {
-      v48 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v54];
-      v49 = [v48 fingerController];
-      v50 = [v49 fingerContainerView];
-      [v50 setAlpha:0.0];
+      v48 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+      fingerController = [v48 fingerController];
+      fingerContainerView = [fingerController fingerContainerView];
+      [fingerContainerView setAlpha:0.0];
     }
 
-    if (!a5)
+    if (!snapped)
     {
       [(HNDHandManager *)self reloadFingerAppearance];
     }
@@ -2336,18 +2336,18 @@ LABEL_9:
 
   else
   {
-    [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:v54, v52];
+    [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:displayCopy, v52];
   }
 
 LABEL_22:
 }
 
-- (void)bubbleModeFailedToSnapOnDisplay:(id)a3
+- (void)bubbleModeFailedToSnapOnDisplay:(id)display
 {
-  v14 = a3;
-  v4 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+  displayCopy = display;
+  currentlySnappedInBubbleMode = [(HNDHandManager *)self currentlySnappedInBubbleMode];
   [(HNDHandManager *)self cancelDwellTimerForBubbleMode];
-  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v14];
+  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
   {
     [v5 overrideBubbleCursorOpacity:0.0];
@@ -2358,10 +2358,10 @@ LABEL_22:
   [(HNDHandManager *)self setLastBubbleModeFocusedElement:0];
   [(HNDHandManager *)self setBubbleModeFocusedRockerItem:0];
   [(HNDHandManager *)self setBubbleModeCurrentlyFocusedOnNubbit:0];
-  v6 = [(HNDHandManager *)self currentDisplayManager];
-  v7 = [v6 fingerContentViewIsActive];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerContentViewIsActive = [currentDisplayManager fingerContentViewIsActive];
 
-  if ((v7 & 1) == 0)
+  if ((fingerContentViewIsActive & 1) == 0)
   {
     if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
     {
@@ -2370,38 +2370,38 @@ LABEL_22:
       [v5 overrideFingerContentViewOpacity:?];
     }
 
-    v9 = [(HNDHandManager *)self currentDisplayManager];
-    [v9 setFingerContentViewIsActive:1];
+    currentDisplayManager2 = [(HNDHandManager *)self currentDisplayManager];
+    [currentDisplayManager2 setFingerContentViewIsActive:1];
   }
 
-  v10 = [(HNDHandManager *)self systemPointerController];
-  [v10 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 
-  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v14];
-  v12 = [v11 fingerController];
-  v13 = [v12 fingerContainerView];
-  [v13 setAlpha:1.0];
+  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v11 fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView setAlpha:1.0];
 
-  if (v4)
+  if (currentlySnappedInBubbleMode)
   {
     [(HNDHandManager *)self reloadFingerAppearance];
   }
 }
 
-- (id)keyboardRowContainingKeyboardKey:(id)a3
+- (id)keyboardRowContainingKeyboardKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 elementParent];
-  v6 = [v5 uiElement];
-  v7 = [v6 objectWithAXAttribute:12017];
+  keyCopy = key;
+  elementParent = [keyCopy elementParent];
+  uiElement = [elementParent uiElement];
+  v7 = [uiElement objectWithAXAttribute:12017];
 
-  v8 = -[HNDHandManager _groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:](self, "_groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:", v7, 0, 0, @"Keyboard Row", @"Keyboard Row", [v5 pid]);
+  v8 = -[HNDHandManager _groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:](self, "_groupWithItems:groupTraits:scanningBehaviorTraits:label:identifier:currentPid:", v7, 0, 0, @"Keyboard Row", @"Keyboard Row", [elementParent pid]);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000299F0;
   v14[3] = &unk_1001D3FE0;
-  v15 = v4;
-  v9 = v4;
+  v15 = keyCopy;
+  v9 = keyCopy;
   v10 = [v8 firstChildPassingTest:v14];
   if ([v10 isGroup])
   {
@@ -2420,20 +2420,20 @@ LABEL_22:
 
 - (id)availableElements
 {
-  v3 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
-  v4 = v3;
-  if (v3)
+  currentlySelectedKeyboardRow = [(HNDHandManager *)self currentlySelectedKeyboardRow];
+  v4 = currentlySelectedKeyboardRow;
+  if (currentlySelectedKeyboardRow)
   {
-    v5 = [v3 descendantsPassingTest:&stru_1001D4020];
+    availableElements = [currentlySelectedKeyboardRow descendantsPassingTest:&stru_1001D4020];
   }
 
   else
   {
-    v6 = [(HNDHandManager *)self elementFetcher];
-    v5 = [v6 availableElements];
+    elementFetcher = [(HNDHandManager *)self elementFetcher];
+    availableElements = [elementFetcher availableElements];
   }
 
-  return v5;
+  return availableElements;
 }
 
 - (void)generateMappingForElementFrames
@@ -2445,8 +2445,8 @@ LABEL_22:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(HNDHandManager *)self availableElements];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  availableElements = [(HNDHandManager *)self availableElements];
+  v5 = [availableElements countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2457,7 +2457,7 @@ LABEL_22:
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableElements);
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
@@ -2472,9 +2472,9 @@ LABEL_22:
           {
             if ([v9 isKeyboardKey])
             {
-              v18 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
+              currentlySelectedKeyboardRow = [(HNDHandManager *)self currentlySelectedKeyboardRow];
 
-              if (!v18)
+              if (!currentlySelectedKeyboardRow)
               {
                 v19 = [(HNDHandManager *)self keyboardRowContainingKeyboardKey:v9];
                 [v19 frame];
@@ -2500,29 +2500,29 @@ LABEL_22:
           if (!CGRectIsInfinite(v32) && CGFloatIsValid() && CGFloatIsValid() && v15 > 0.0 && v17 > 0.0)
           {
             v24 = [NSValue valueWithCGRect:v11, v13, v15, v17];
-            v25 = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
-            [v25 setObject:v9 forKey:v24];
+            bubbleModeFrameToElementMapping = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
+            [bubbleModeFrameToElementMapping setObject:v9 forKey:v24];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v6 = [availableElements countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)nearestElementFrameForPortraitPoint:(CGPoint)a3 distance:(double *)a4
+- (id)nearestElementFrameForPortraitPoint:(CGPoint)point distance:(double *)distance
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
-  v7 = [v6 allKeys];
+  bubbleModeFrameToElementMapping = [(HNDHandManager *)self bubbleModeFrameToElementMapping];
+  allKeys = [bubbleModeFrameToElementMapping allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2535,7 +2535,7 @@ LABEL_3:
     {
       if (*v20 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v14 = *(*(&v19 + 1) + 8 * v13);
@@ -2557,7 +2557,7 @@ LABEL_3:
 
       if (v9 == ++v13)
       {
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -2574,22 +2574,22 @@ LABEL_3:
     v12 = 1.79769313e308;
   }
 
-  *a4 = v12;
+  *distance = v12;
 
   return v10;
 }
 
-- (id)nearestRockerButtonForDisplayManger:(id)a3 orientedPoint:(CGPoint)a4 distance:(double *)a5
+- (id)nearestRockerButtonForDisplayManger:(id)manger orientedPoint:(CGPoint)point distance:(double *)distance
 {
-  v7 = a3;
-  v8 = [v7 rocker];
-  v9 = [v8 currentlyVisibleRockerItems];
+  mangerCopy = manger;
+  rocker = [mangerCopy rocker];
+  currentlyVisibleRockerItems = [rocker currentlyVisibleRockerItems];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v9;
+  v10 = currentlyVisibleRockerItems;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -2607,7 +2607,7 @@ LABEL_3:
       }
 
       v17 = *(*(&v22 + 1) + 8 * v16);
-      [v7 screenBoundsForRockerButton:{v17, v22}];
+      [mangerCopy screenBoundsForRockerButton:{v17, v22}];
       [HNDHandManager distanceBetweenRect:"distanceBetweenRect:andPoint:" andPoint:?];
       v19 = v18;
       if (v18 < v15)
@@ -2642,20 +2642,20 @@ LABEL_3:
     v15 = 1.79769313e308;
   }
 
-  *a5 = v15;
+  *distance = v15;
 
   return v13;
 }
 
-- (double)distanceBetweenRect:(CGRect)a3 andPoint:(CGPoint)a4
+- (double)distanceBetweenRect:(CGRect)rect andPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v10 = CGRectGetMinX(a3) - a4.x;
+  y = point.y;
+  x = point.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
+  v10 = CGRectGetMinX(rect) - point.x;
   v15.origin.x = v9;
   v15.origin.y = v8;
   v15.size.width = width;
@@ -2674,15 +2674,15 @@ LABEL_3:
   return sqrt(v13 * v13 + v11 * v11);
 }
 
-- (void)setCurrentBubbleModeFocusedElement:(id)a3
+- (void)setCurrentBubbleModeFocusedElement:(id)element
 {
-  v5 = a3;
-  if (self->_currentBubbleModeFocusedElement != v5)
+  elementCopy = element;
+  if (self->_currentBubbleModeFocusedElement != elementCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentBubbleModeFocusedElement, a3);
+    v6 = elementCopy;
+    objc_storeStrong(&self->_currentBubbleModeFocusedElement, element);
     [(HNDHandManager *)self _updateContinuousPathGestureState];
-    v5 = v6;
+    elementCopy = v6;
   }
 }
 
@@ -2690,24 +2690,24 @@ LABEL_3:
 {
   if ([(HNDHandManager *)self inBubbleMode]&& [(HNDHandManager *)self currentlySnappedInBubbleMode])
   {
-    v3 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+    currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
     v4 = +[HNDHandManager sharedManager];
-    v5 = [v4 displayManagerForHardwareIdentifier:v3];
+    v5 = [v4 displayManagerForHardwareIdentifier:currentHardwareIdentifierForPointer];
 
-    v6 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    v7 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-    if (v7)
+    currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+    if (bubbleModeFocusedRockerItem)
     {
-      v8 = v7;
-      v9 = [v5 isMenuVisible];
+      v8 = bubbleModeFocusedRockerItem;
+      isMenuVisible = [v5 isMenuVisible];
 
-      if (v9)
+      if (isMenuVisible)
       {
-        v10 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-        [v10 performPress:1];
+        bubbleModeFocusedRockerItem2 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+        [bubbleModeFocusedRockerItem2 performPress:1];
 
-        v11 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-        [v11 performPress:0];
+        bubbleModeFocusedRockerItem3 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+        [bubbleModeFocusedRockerItem3 performPress:0];
 
 LABEL_25:
         return;
@@ -2716,27 +2716,27 @@ LABEL_25:
 
     if ([(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit])
     {
-      [(HNDHandManager *)self showMenu:1 onDisplay:v3];
+      [(HNDHandManager *)self showMenu:1 onDisplay:currentHardwareIdentifierForPointer];
       goto LABEL_25;
     }
 
-    if (!v6)
+    if (!currentBubbleModeFocusedElement)
     {
       goto LABEL_25;
     }
 
-    if (-[HNDHandManager isOnDeviceEyeTrackingEnabled](self, "isOnDeviceEyeTrackingEnabled") && -[HNDHandManager _shouldUseTwoStageTyping](self, "_shouldUseTwoStageTyping") && [v6 isKeyboardKey])
+    if (-[HNDHandManager isOnDeviceEyeTrackingEnabled](self, "isOnDeviceEyeTrackingEnabled") && -[HNDHandManager _shouldUseTwoStageTyping](self, "_shouldUseTwoStageTyping") && [currentBubbleModeFocusedElement isKeyboardKey])
     {
-      v12 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
+      currentlySelectedKeyboardRow = [(HNDHandManager *)self currentlySelectedKeyboardRow];
 
-      if (v12)
+      if (currentlySelectedKeyboardRow)
       {
         [(HNDHandManager *)self setCurrentlySelectedKeyboardRow:0];
       }
 
       else
       {
-        v13 = [(HNDHandManager *)self keyboardRowContainingKeyboardKey:v6];
+        v13 = [(HNDHandManager *)self keyboardRowContainingKeyboardKey:currentBubbleModeFocusedElement];
         [(HNDHandManager *)self setCurrentlySelectedKeyboardRow:v13];
       }
 
@@ -2749,12 +2749,12 @@ LABEL_25:
       dispatch_async(v14, block);
     }
 
-    v15 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    if ([(HNDHandManager *)self supportsActivateForBubbleModeElement:v15])
+    currentBubbleModeFocusedElement2 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    if ([(HNDHandManager *)self supportsActivateForBubbleModeElement:currentBubbleModeFocusedElement2])
     {
-      v16 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
+      currentlySelectedKeyboardRow2 = [(HNDHandManager *)self currentlySelectedKeyboardRow];
 
-      if (v16)
+      if (currentlySelectedKeyboardRow2)
       {
 LABEL_20:
         if (-[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled") && ([v5 isMenuVisible] & 1) == 0 && !-[HNDHandManager inDragMode](self, "inDragMode") && !-[HNDHandManager inContinuousScrollMode](self, "inContinuousScrollMode"))
@@ -2765,42 +2765,42 @@ LABEL_20:
         goto LABEL_25;
       }
 
-      v15 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-      [v15 performAction:2010];
+      currentBubbleModeFocusedElement2 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+      [currentBubbleModeFocusedElement2 performAction:2010];
     }
 
     goto LABEL_20;
   }
 }
 
-- (BOOL)supportsActivateForBubbleModeElement:(id)a3
+- (BOOL)supportsActivateForBubbleModeElement:(id)element
 {
-  v3 = a3;
-  if ([v3 supportsAction:2010])
+  elementCopy = element;
+  if ([elementCopy supportsAction:2010])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 traits];
+    traits = [elementCopy traits];
     v6 = kAXAdjustableTrait;
-    v7 = kAXAdjustableTrait & v5;
-    if ((kAXIsEditingTrait & ~v5) != 0)
+    v7 = kAXAdjustableTrait & traits;
+    if ((kAXIsEditingTrait & ~traits) != 0)
     {
       v11 = 1;
     }
 
-    else if ((kAXWebContentTrait & ~v5) != 0)
+    else if ((kAXWebContentTrait & ~traits) != 0)
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [v3 application];
-      v9 = [v8 uiElement];
-      v10 = [v9 BOOLWithAXAttribute:3005];
+      application = [elementCopy application];
+      uiElement = [application uiElement];
+      v10 = [uiElement BOOLWithAXAttribute:3005];
 
       v11 = v10 ^ 1;
     }
@@ -2811,16 +2811,16 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)isSimpleElementForBubbleMode:(id)a3
+- (BOOL)isSimpleElementForBubbleMode:(id)mode
 {
-  v3 = a3;
-  v4 = [v3 traits];
+  modeCopy = mode;
+  traits = [modeCopy traits];
   v5 = kAXAdjustableTrait;
-  v6 = kAXAdjustableTrait & v4;
-  v7 = [v3 isAccessibleElement];
-  if (v7)
+  v6 = kAXAdjustableTrait & traits;
+  isAccessibleElement = [modeCopy isAccessibleElement];
+  if (isAccessibleElement)
   {
-    LOBYTE(v7) = [v3 respondsToUserInteraction];
+    LOBYTE(isAccessibleElement) = [modeCopy respondsToUserInteraction];
   }
 
   if (v6 == v5)
@@ -2830,7 +2830,7 @@ LABEL_20:
 
   else
   {
-    v8 = ((kAXIsEditingTrait & v4) != kAXIsEditingTrait) & v7;
+    v8 = ((kAXIsEditingTrait & traits) != kAXIsEditingTrait) & isAccessibleElement;
   }
 
   return v8;
@@ -2843,28 +2843,28 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-  if (v3 || [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit])
+  currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+  if (currentBubbleModeFocusedElement || [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit])
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-    v4 = v6 != 0;
+    bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+    v4 = bubbleModeFocusedRockerItem != 0;
   }
 
   return v4;
 }
 
-- (CGRect)clipRect:(CGRect)a3 toRotatedScreenBoundsOnDisplay:(id)a4
+- (CGRect)clipRect:(CGRect)rect toRotatedScreenBoundsOnDisplay:(id)display
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
   [v8 screenBounds];
   v24.origin.x = v9;
   v24.origin.y = v10;
@@ -2907,8 +2907,8 @@ LABEL_20:
 
   if (AXRuntimeCheck_DwellKeyboardKeyTimer())
   {
-    v3 = [(HNDHandManager *)self mainDisplayManager];
-    if ([v3 keyboardVisible])
+    mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+    if ([mainDisplayManager keyboardVisible])
     {
       v4 = +[AXSettings sharedInstance];
       [v4 assistiveTouchMouseDwellControlKeyboardKeyActivationTimeout];
@@ -2933,52 +2933,52 @@ LABEL_20:
     return 0;
   }
 
-  v11 = [(HNDHandManager *)self mainDisplayManager];
-  if ([v11 keyboardVisible])
+  mainDisplayManager2 = [(HNDHandManager *)self mainDisplayManager];
+  if ([mainDisplayManager2 keyboardVisible])
   {
     v12 = +[AXSettings sharedInstance];
-    v10 = [v12 assistiveTouchDwellKeyboardContinuousPathEnabled];
+    assistiveTouchDwellKeyboardContinuousPathEnabled = [v12 assistiveTouchDwellKeyboardContinuousPathEnabled];
   }
 
   else
   {
-    v10 = 0;
+    assistiveTouchDwellKeyboardContinuousPathEnabled = 0;
   }
 
-  return v10;
+  return assistiveTouchDwellKeyboardContinuousPathEnabled;
 }
 
 - (BOOL)eyeTrackingAutoHideAllowed
 {
-  v2 = [(HNDHandManager *)self deviceManager];
-  v3 = [v2 mainDeviceIsMotionTracker];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  mainDeviceIsMotionTracker = [deviceManager mainDeviceIsMotionTracker];
 
-  return v3;
+  return mainDeviceIsMotionTracker;
 }
 
 - (BOOL)inContinuousScrollMode
 {
-  v3 = [(HNDHandManager *)self continuousScrollMode];
-  if (v3 != 1)
+  continuousScrollMode = [(HNDHandManager *)self continuousScrollMode];
+  if (continuousScrollMode != 1)
   {
-    LOBYTE(v3) = [(HNDHandManager *)self continuousScrollMode]== 2;
+    LOBYTE(continuousScrollMode) = [(HNDHandManager *)self continuousScrollMode]== 2;
   }
 
-  return v3;
+  return continuousScrollMode;
 }
 
-- (void)refreshElementFetcherWithScrollingBlocked:(BOOL)a3
+- (void)refreshElementFetcherWithScrollingBlocked:(BOOL)blocked
 {
-  v3 = a3;
+  blockedCopy = blocked;
   v5 = mach_absolute_time();
   [(HNDHandManager *)self lastTimeElementFetcherRefreshed];
   if (AXMachTimeToNanoseconds() / 1000000000.0 > 0.1)
   {
-    v6 = [(HNDHandManager *)self elementFetcher];
-    [v6 refresh];
+    elementFetcher = [(HNDHandManager *)self elementFetcher];
+    [elementFetcher refresh];
 
     [(HNDHandManager *)self setLastTimeElementFetcherRefreshed:v5];
-    if (v3)
+    if (blockedCopy)
     {
       os_unfair_lock_lock(&self->_continuousScrollLock);
       [(HNDHandManager *)self setScrollingBlockedOnElementRefresh:1];
@@ -2988,15 +2988,15 @@ LABEL_20:
   }
 }
 
-- (void)prepareForEyeTrackerConnected:(BOOL)a3
+- (void)prepareForEyeTrackerConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     [(HNDHandManager *)self enableElementFetcherAndNotificationsIfNecessary];
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchBubbleModeEnabled];
+    assistiveTouchBubbleModeEnabled = [v4 assistiveTouchBubbleModeEnabled];
 
-    [(HNDHandManager *)self enableBubbleMode:v5];
+    [(HNDHandManager *)self enableBubbleMode:assistiveTouchBubbleModeEnabled];
     v6 = +[AXSettings sharedInstance];
     -[HNDHandManager enableEyeTrackingAutoHide:](self, "enableEyeTrackingAutoHide:", [v6 assistiveTouchEyeTrackingAutoHideEnabled]);
   }
@@ -3011,18 +3011,18 @@ LABEL_20:
   [(HNDHandManager *)self updateAssistiveTouchEyeTrackingAutoHideOpacity];
 }
 
-- (void)eyeTrackerIsActivelyTracking:(BOOL)a3
+- (void)eyeTrackerIsActivelyTracking:(BOOL)tracking
 {
-  if (!a3)
+  if (!tracking)
   {
     if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
     {
-      v5 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+      eyeTrackingAutoHideCursorAnimator = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
 
-      if (v5)
+      if (eyeTrackingAutoHideCursorAnimator)
       {
-        v6 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
-        [v6 stopAnimation:1];
+        eyeTrackingAutoHideCursorAnimator2 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+        [eyeTrackingAutoHideCursorAnimator2 stopAnimation:1];
 
         [(HNDHandManager *)self setEyeTrackingAutoHideCursorAnimator:0];
       }
@@ -3034,30 +3034,30 @@ LABEL_20:
 
 - (void)enableElementFetcherAndNotificationsIfNecessary
 {
-  v3 = [(HNDHandManager *)self continuousScrollerGenerationQueue];
+  continuousScrollerGenerationQueue = [(HNDHandManager *)self continuousScrollerGenerationQueue];
 
-  if (!v3)
+  if (!continuousScrollerGenerationQueue)
   {
     v4 = dispatch_queue_create("com.apple.AssistiveTouch.HNDHandManager.contScrollerGenerationQueue", 0);
     [(HNDHandManager *)self setContinuousScrollerGenerationQueue:v4];
   }
 
   [(HNDHandManager *)self setContinuousScrollLock:0];
-  v5 = [(HNDHandManager *)self elementFetcher];
-  if ([v5 isEnabled])
+  elementFetcher = [(HNDHandManager *)self elementFetcher];
+  if ([elementFetcher isEnabled])
   {
-    v6 = 0;
+    _elementFetchingRequired = 0;
   }
 
   else
   {
-    v6 = [(HNDHandManager *)self _elementFetchingRequired];
+    _elementFetchingRequired = [(HNDHandManager *)self _elementFetchingRequired];
   }
 
   v7 = +[HNDDeviceManager sharedManager];
-  v8 = [v7 mainDeviceIsMotionTracker];
+  mainDeviceIsMotionTracker = [v7 mainDeviceIsMotionTracker];
 
-  v9 = v6 & v8;
+  v9 = _elementFetchingRequired & mainDeviceIsMotionTracker;
   if (AXRuntimeCheck_DwellKeyboardKeyTimer())
   {
     if (v9)
@@ -3068,8 +3068,8 @@ LABEL_17:
       [v15 addObserver:self];
 
       v16 = +[HNDAccessibilityManager sharedManager];
-      v17 = [(HNDHandManager *)self additionalAXNotificationsToObserve];
-      [v16 observeAXNotifications:v17];
+      additionalAXNotificationsToObserve = [(HNDHandManager *)self additionalAXNotificationsToObserve];
+      [v16 observeAXNotifications:additionalAXNotificationsToObserve];
 
       v14 = 1;
       goto LABEL_18;
@@ -3081,30 +3081,30 @@ LABEL_17:
     v10 = AXRuntimeCheck_DwellKeyboardSwipe();
     if (v9 & 1 | ((v10 & 1) == 0))
     {
-      v11 = v10 | v9;
+      needsElementHitTesting = v10 | v9;
       goto LABEL_12;
     }
   }
 
-  v11 = [(HNDHandManager *)self needsElementHitTesting];
+  needsElementHitTesting = [(HNDHandManager *)self needsElementHitTesting];
 LABEL_12:
   if ([(HNDHandManager *)self isVirtualTrackpadVisible])
   {
-    if (v11)
+    if (needsElementHitTesting)
     {
       goto LABEL_17;
     }
 
     v12 = +[AXSettings sharedInstance];
-    v13 = [v12 assistiveTouchBubbleModeEnabled];
+    assistiveTouchBubbleModeEnabled = [v12 assistiveTouchBubbleModeEnabled];
 
-    if (v13)
+    if (assistiveTouchBubbleModeEnabled)
     {
       goto LABEL_17;
     }
   }
 
-  else if (v11)
+  else if (needsElementHitTesting)
   {
     goto LABEL_17;
   }
@@ -3123,11 +3123,11 @@ LABEL_18:
 - (void)disableElementFetcherIfNecessary
 {
   v3 = +[HNDDeviceManager sharedManager];
-  v4 = [v3 mainDeviceIsMotionTracker];
+  mainDeviceIsMotionTracker = [v3 mainDeviceIsMotionTracker];
 
   if (AXRuntimeCheck_DwellKeyboardKeyTimer())
   {
-    if (v4)
+    if (mainDeviceIsMotionTracker)
     {
       goto LABEL_13;
     }
@@ -3142,12 +3142,12 @@ LABEL_12:
   }
 
   v5 = AXRuntimeCheck_DwellKeyboardSwipe();
-  if (!(v4 & 1 | ((v5 & 1) == 0)))
+  if (!(mainDeviceIsMotionTracker & 1 | ((v5 & 1) == 0)))
   {
     goto LABEL_12;
   }
 
-  if ((v5 | v4))
+  if ((v5 | mainDeviceIsMotionTracker))
   {
 LABEL_13:
     v10 = 1;
@@ -3155,25 +3155,25 @@ LABEL_13:
   }
 
 LABEL_6:
-  v6 = [(HNDHandManager *)self elementFetcher];
-  if (v6)
+  elementFetcher = [(HNDHandManager *)self elementFetcher];
+  if (elementFetcher)
   {
-    v7 = v6;
-    v8 = [(HNDHandManager *)self elementFetcher];
-    if (![v8 isEnabled])
+    v7 = elementFetcher;
+    elementFetcher2 = [(HNDHandManager *)self elementFetcher];
+    if (![elementFetcher2 isEnabled])
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v9 = [(HNDHandManager *)self _elementFetchingRequired];
+    _elementFetchingRequired = [(HNDHandManager *)self _elementFetchingRequired];
 
-    if (v9)
+    if (_elementFetchingRequired)
     {
       v7 = +[HNDAccessibilityManager sharedManager];
-      v8 = [(HNDHandManager *)self additionalAXNotificationsToObserve];
-      [v7 stopObservingAXNotifications:v8];
+      elementFetcher2 = [(HNDHandManager *)self additionalAXNotificationsToObserve];
+      [v7 stopObservingAXNotifications:elementFetcher2];
       goto LABEL_10;
     }
   }
@@ -3190,25 +3190,25 @@ LABEL_14:
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)prepareForContinuousScrollOnDisplay:(id)a3
+- (void)prepareForContinuousScrollOnDisplay:(id)display
 {
-  v4 = a3;
-  [(HNDHandManager *)self showMenu:0 onDisplay:v4];
-  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
+  displayCopy = display;
+  [(HNDHandManager *)self showMenu:0 onDisplay:displayCopy];
+  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
 
-  v6 = [v5 fingerController];
-  v7 = [v6 numberOfFingers];
+  fingerController = [v5 fingerController];
+  numberOfFingers = [fingerController numberOfFingers];
 
-  if (!v7)
+  if (!numberOfFingers)
   {
     [(HNDHandManager *)self currentPointForPointer];
     v9 = v8;
     v11 = v10;
-    v12 = [v5 fingerController];
+    fingerController2 = [v5 fingerController];
     v13 = [AXPIFingerModel fingerModelForLocation:v9, v11];
     v15 = v13;
     v14 = [NSArray arrayWithObjects:&v15 count:1];
-    [v12 showFingerModels:v14 animated:1 startPointForAnimation:{v9, v11}];
+    [fingerController2 showFingerModels:v14 animated:1 startPointForAnimation:{v9, v11}];
   }
 
   [v5 setMultiTouchToolBackgroundEnabled:1];
@@ -3222,42 +3222,42 @@ LABEL_14:
   [(HNDHandManager *)self enableElementFetcherAndNotificationsIfNecessary];
 }
 
-- (void)beginContinuousScrollingInDirection:(unint64_t)a3 onDisplay:(id)a4
+- (void)beginContinuousScrollingInDirection:(unint64_t)direction onDisplay:(id)display
 {
-  v6 = a4;
+  displayCopy = display;
   if (![(HNDHandManager *)self inContinuousScrollMode])
   {
-    if (a3 != 1)
+    if (direction != 1)
     {
-      if (a3)
+      if (direction)
       {
         [(HNDHandManager *)self setContinuousScrollMode:0];
         goto LABEL_7;
       }
 
-      a3 = 2;
+      direction = 2;
     }
 
-    [(HNDHandManager *)self setContinuousScrollMode:a3];
-    [(HNDHandManager *)self prepareForContinuousScrollOnDisplay:v6];
+    [(HNDHandManager *)self setContinuousScrollMode:direction];
+    [(HNDHandManager *)self prepareForContinuousScrollOnDisplay:displayCopy];
     [(HNDHandManager *)self setDwellMode:0];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10002B274;
     v7[3] = &unk_1001D4048;
     v7[4] = self;
-    v8 = v6;
+    v8 = displayCopy;
     [(HNDHandManager *)self generateContinuousScrollersWithCompletion:v7];
   }
 
 LABEL_7:
 }
 
-- (void)processOrientedPointForContinuousScrolling:(CGPoint)a3 onDisplay:(id)a4
+- (void)processOrientedPointForContinuousScrolling:(CGPoint)scrolling onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = scrolling.y;
+  x = scrolling.x;
+  displayCopy = display;
   v8 = +[NSMutableArray array];
   os_unfair_lock_lock(&self->_continuousScrollLock);
   if ([(HNDHandManager *)self continuousScrollMode]== 1)
@@ -3272,8 +3272,8 @@ LABEL_7:
   v9 = ;
   v10 = [v9 copy];
 
-  v11 = [(HNDHandManager *)self scrollingBlockedOnElementRefresh];
-  v62 = self;
+  scrollingBlockedOnElementRefresh = [(HNDHandManager *)self scrollingBlockedOnElementRefresh];
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_continuousScrollLock);
   v69 = 0u;
   v70 = 0u;
@@ -3308,14 +3308,14 @@ LABEL_7:
   }
 
   v18 = [v8 count];
-  if (((v18 != 0) & v11) == 0)
+  if (((v18 != 0) & scrollingBlockedOnElementRefresh) == 0)
   {
     if (v18)
     {
-      v60 = v7;
-      [(HNDHandManager *)v62 setIsActivelyScrollingContinuously:1];
-      v19 = [v8 firstObject];
-      [v8 removeObject:v19];
+      v60 = displayCopy;
+      [(HNDHandManager *)selfCopy setIsActivelyScrollingContinuously:1];
+      firstObject = [v8 firstObject];
+      [v8 removeObject:firstObject];
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
@@ -3337,15 +3337,15 @@ LABEL_7:
             }
 
             v25 = *(*(&v63 + 1) + 8 * j);
-            v26 = [v25 scrollView];
-            v27 = [v19 scrollView];
-            v28 = [(HNDHandManager *)v62 _isChildElement:v26 desendantOfElement:v27];
+            scrollView = [v25 scrollView];
+            scrollView2 = [firstObject scrollView];
+            v28 = [(HNDHandManager *)selfCopy _isChildElement:scrollView desendantOfElement:scrollView2];
 
             if (v28)
             {
               v29 = v25;
 
-              v19 = v29;
+              firstObject = v29;
             }
           }
 
@@ -3358,35 +3358,35 @@ LABEL_7:
       v30 = AXLogCommon();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [v19 targetElement];
-        v32 = [v31 label];
-        v33 = [v19 targetElement];
-        [v33 frame];
+        targetElement = [firstObject targetElement];
+        label = [targetElement label];
+        targetElement2 = [firstObject targetElement];
+        [targetElement2 frame];
         v34 = NSStringFromCGRect(v79);
-        v35 = [v19 scrollDirectionToActivationFrame];
+        scrollDirectionToActivationFrame = [firstObject scrollDirectionToActivationFrame];
         *buf = 138412802;
-        v72 = v32;
+        v72 = label;
         v73 = 2112;
         v74 = v34;
         v75 = 2112;
-        v76 = v35;
+        v76 = scrollDirectionToActivationFrame;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Attempting to scroll targetElement with label: %@, element frames: %@, activation frames: %@", buf, 0x20u);
       }
 
-      v36 = [v19 directionForOrientedPoint:{x, y}];
-      v37 = [v36 intValue];
-      v38 = [v19 scrollingSpeedFactorForOrientedPoint:{x, y}];
+      v36 = [firstObject directionForOrientedPoint:{x, y}];
+      intValue = [v36 intValue];
+      v38 = [firstObject scrollingSpeedFactorForOrientedPoint:{x, y}];
       [v38 floatValue];
       v40 = v39;
 
-      [(HNDHandManager *)v62 continuousScrollCurrentSpeedFactor];
+      [(HNDHandManager *)selfCopy continuousScrollCurrentSpeedFactor];
       v42 = v41;
-      v43 = [(HNDHandManager *)v62 currentContinuousScrollDirection];
-      v7 = v60;
-      if (v43)
+      currentContinuousScrollDirection = [(HNDHandManager *)selfCopy currentContinuousScrollDirection];
+      displayCopy = v60;
+      if (currentContinuousScrollDirection)
       {
-        v44 = [(HNDHandManager *)v62 currentContinuousScrollDirection];
-        v45 = [v44 intValue] != v37;
+        currentContinuousScrollDirection2 = [(HNDHandManager *)selfCopy currentContinuousScrollDirection];
+        v45 = [currentContinuousScrollDirection2 intValue] != intValue;
       }
 
       else
@@ -3396,8 +3396,8 @@ LABEL_7:
 
       v50 = v40 * 1000.0;
 
-      v51 = [(HNDHandManager *)v62 activeContinuousScroller];
-      v52 = [v19 isEqual:v51];
+      activeContinuousScroller = [(HNDHandManager *)selfCopy activeContinuousScroller];
+      v52 = [firstObject isEqual:activeContinuousScroller];
 
       v53 = v52 ^ 1 | v45;
       if ((v53 & 1) != 0 || vabdd_f64(v42, v40) < 0.1)
@@ -3410,64 +3410,64 @@ LABEL_41:
           goto LABEL_42;
         }
 
-        v55 = [(HNDHandManager *)v62 continuousScrollPickedElement];
-        v56 = [v55 isAutoscrolling];
+        continuousScrollPickedElement = [(HNDHandManager *)selfCopy continuousScrollPickedElement];
+        isAutoscrolling = [continuousScrollPickedElement isAutoscrolling];
 
-        if (v56)
+        if (isAutoscrolling)
         {
-          v57 = [(HNDHandManager *)v62 continuousScrollPickedElement];
-          [v57 pauseAutoscrolling];
+          continuousScrollPickedElement2 = [(HNDHandManager *)selfCopy continuousScrollPickedElement];
+          [continuousScrollPickedElement2 pauseAutoscrolling];
         }
 
-        [(HNDHandManager *)v62 setContinuousScrollCurrentSpeedFactor:v40];
-        v58 = [NSNumber numberWithUnsignedLong:v37];
-        [(HNDHandManager *)v62 setCurrentContinuousScrollDirection:v58];
+        [(HNDHandManager *)selfCopy setContinuousScrollCurrentSpeedFactor:v40];
+        v58 = [NSNumber numberWithUnsignedLong:intValue];
+        [(HNDHandManager *)selfCopy setCurrentContinuousScrollDirection:v58];
 
-        v59 = [v19 targetElement];
-        [(HNDHandManager *)v62 setContinuousScrollPickedElement:v59];
+        targetElement3 = [firstObject targetElement];
+        [(HNDHandManager *)selfCopy setContinuousScrollPickedElement:targetElement3];
 
-        [(HNDHandManager *)v62 setActiveContinuousScroller:v19];
-        [(HNDHandManager *)v62 _iterateRemoteViewsAndPerformContinuousScrollWithSpeed:v37 direction:v50];
+        [(HNDHandManager *)selfCopy setActiveContinuousScroller:firstObject];
+        [(HNDHandManager *)selfCopy _iterateRemoteViewsAndPerformContinuousScrollWithSpeed:intValue direction:v50];
       }
 
       else
       {
-        [(HNDHandManager *)v62 setContinuousScrollCurrentSpeedFactor:v40];
-        v54 = [(HNDHandManager *)v62 continuousScrollPickedElement];
-        [v54 setAutoscrollSpeed:v50];
+        [(HNDHandManager *)selfCopy setContinuousScrollCurrentSpeedFactor:v40];
+        continuousScrollPickedElement3 = [(HNDHandManager *)selfCopy continuousScrollPickedElement];
+        [continuousScrollPickedElement3 setAutoscrollSpeed:v50];
       }
 
       v8 = v61;
       goto LABEL_41;
     }
 
-    v46 = [(HNDHandManager *)v62 isActivelyScrollingContinuously];
-    [(HNDHandManager *)v62 setCurrentContinuousScrollDirection:0];
-    [(HNDHandManager *)v62 setIsActivelyScrollingContinuously:0];
-    if (v46)
+    isActivelyScrollingContinuously = [(HNDHandManager *)selfCopy isActivelyScrollingContinuously];
+    [(HNDHandManager *)selfCopy setCurrentContinuousScrollDirection:0];
+    [(HNDHandManager *)selfCopy setIsActivelyScrollingContinuously:0];
+    if (isActivelyScrollingContinuously)
     {
-      v47 = [(HNDHandManager *)v62 continuousScrollPickedElement];
-      v48 = [v47 isAutoscrolling];
+      continuousScrollPickedElement4 = [(HNDHandManager *)selfCopy continuousScrollPickedElement];
+      isAutoscrolling2 = [continuousScrollPickedElement4 isAutoscrolling];
 
-      if (v48)
+      if (isAutoscrolling2)
       {
-        v49 = [(HNDHandManager *)v62 continuousScrollPickedElement];
-        [v49 pauseAutoscrolling];
+        continuousScrollPickedElement5 = [(HNDHandManager *)selfCopy continuousScrollPickedElement];
+        [continuousScrollPickedElement5 pauseAutoscrolling];
       }
 
-      [(HNDHandManager *)v62 generateContinuousScrollersWithCompletion:0];
+      [(HNDHandManager *)selfCopy generateContinuousScrollersWithCompletion:0];
     }
   }
 
 LABEL_42:
 }
 
-- (BOOL)_iterateRemoteViewsAndPerformContinuousScrollWithSpeed:(double)a3 direction:(unint64_t)a4
+- (BOOL)_iterateRemoteViewsAndPerformContinuousScrollWithSpeed:(double)speed direction:(unint64_t)direction
 {
-  v7 = [(HNDHandManager *)self continuousScrollPickedElement];
-  [v7 setAutoscrollSpeed:a3];
-  [v7 setAutoscrollTarget:v7];
-  if ([v7 autoscrollInDirection:a4])
+  continuousScrollPickedElement = [(HNDHandManager *)self continuousScrollPickedElement];
+  [continuousScrollPickedElement setAutoscrollSpeed:speed];
+  [continuousScrollPickedElement setAutoscrollTarget:continuousScrollPickedElement];
+  if ([continuousScrollPickedElement autoscrollInDirection:direction])
   {
     v8 = 1;
   }
@@ -3476,40 +3476,40 @@ LABEL_42:
   {
     while (1)
     {
-      v9 = [v7 uiElement];
-      v10 = [v9 BOOLWithAXAttribute:2093];
+      uiElement = [continuousScrollPickedElement uiElement];
+      v10 = [uiElement BOOLWithAXAttribute:2093];
 
       if (!v10)
       {
         break;
       }
 
-      v11 = [v7 uiElement];
-      v12 = [v11 objectWithAXAttribute:2310];
+      uiElement2 = [continuousScrollPickedElement uiElement];
+      v12 = [uiElement2 objectWithAXAttribute:2310];
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v14 = v12;
+      axElement = v12;
       if (isKindOfClass)
       {
-        v14 = [v12 axElement];
+        axElement = [v12 axElement];
       }
 
-      v15 = [AXElement elementWithAXUIElement:v14];
-      v16 = [v15 isEqual:v7];
+      v15 = [AXElement elementWithAXUIElement:axElement];
+      v16 = [v15 isEqual:continuousScrollPickedElement];
       if (!v15 || v16)
       {
 
         break;
       }
 
-      [v15 setAutoscrollSpeed:a3];
+      [v15 setAutoscrollSpeed:speed];
       [v15 setAutoscrollTarget:v15];
-      v7 = v15;
-      if ([v15 autoscrollInDirection:a4])
+      continuousScrollPickedElement = v15;
+      if ([v15 autoscrollInDirection:direction])
       {
         v8 = 1;
-        v7 = v15;
+        continuousScrollPickedElement = v15;
         goto LABEL_14;
       }
     }
@@ -3517,13 +3517,13 @@ LABEL_42:
     v17 = AXLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v7 label];
+      label = [continuousScrollPickedElement label];
       v20 = 134218498;
-      v21 = a3;
+      speedCopy = speed;
       v22 = 2048;
-      v23 = a4;
+      directionCopy = direction;
       v24 = 2112;
-      v25 = v19;
+      v25 = label;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to autoscroll with speed: %f, direction: %lu, pickedElement label: %@", &v20, 0x20u);
     }
 
@@ -3531,12 +3531,12 @@ LABEL_42:
   }
 
 LABEL_14:
-  [(HNDHandManager *)self setContinuousScrollPickedElement:v7];
+  [(HNDHandManager *)self setContinuousScrollPickedElement:continuousScrollPickedElement];
 
   return v8;
 }
 
-- (id)_scrollViewForScrollAction:(int)a3 elementsToScroll:(id *)a4
+- (id)_scrollViewForScrollAction:(int)action elementsToScroll:(id *)scroll
 {
   v7 = +[NSMutableOrderedSet orderedSet];
   v8 = +[NSMutableArray array];
@@ -3544,7 +3544,7 @@ LABEL_14:
   v35[1] = 3221225472;
   v35[2] = sub_10002BDE4;
   v35[3] = &unk_1001D4070;
-  v38 = a3;
+  actionCopy = action;
   v9 = v7;
   v36 = v9;
   v10 = v8;
@@ -3554,10 +3554,10 @@ LABEL_14:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [(HNDHandManager *)self elementFetcher];
-  v13 = [v12 availableElements];
+  elementFetcher = [(HNDHandManager *)self elementFetcher];
+  availableElements = [elementFetcher availableElements];
 
-  v14 = [v13 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  v14 = [availableElements countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
@@ -3568,13 +3568,13 @@ LABEL_14:
       {
         if (*v32 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(availableElements);
         }
 
         (v11[2])(v11, *(*(&v31 + 1) + 8 * i));
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v15 = [availableElements countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v15);
@@ -3610,36 +3610,36 @@ LABEL_14:
     while (v21);
   }
 
-  if (a4)
+  if (scroll)
   {
     v25 = v10;
-    *a4 = v10;
+    *scroll = v10;
   }
 
   return v18;
 }
 
-- (BOOL)_isChildElement:(id)a3 desendantOfElement:(id)a4
+- (BOOL)_isChildElement:(id)element desendantOfElement:(id)ofElement
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  elementCopy = element;
+  v6 = elementCopy;
+  if (elementCopy)
   {
-    v7 = v5;
+    v7 = elementCopy;
     do
     {
-      v8 = [v7 isEqual:a4];
+      v8 = [v7 isEqual:ofElement];
       if (v8)
       {
         break;
       }
 
-      v9 = [v7 elementParent];
+      elementParent = [v7 elementParent];
 
-      v7 = v9;
+      v7 = elementParent;
     }
 
-    while (v9);
+    while (elementParent);
   }
 
   else
@@ -3650,10 +3650,10 @@ LABEL_14:
   return v8;
 }
 
-- (void)endContinuousScrollingOnDisplay:(id)a3 withCompletion:(BOOL)a4
+- (void)endContinuousScrollingOnDisplay:(id)display withCompletion:(BOOL)completion
 {
-  v4 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  displayCopy = display;
   if ([(HNDHandManager *)self inContinuousScrollMode])
   {
     if ([(AXElement *)self->_continuousScrollPickedElement isAutoscrolling])
@@ -3664,7 +3664,7 @@ LABEL_14:
     continuousScrollMode = self->_continuousScrollMode;
     self->_continuousScrollMode = 0;
     [(HNDHandManager *)self _systemPointerSettingsDidChange];
-    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v13];
+    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     [v7 setMultiTouchToolBackgroundEnabled:0];
     [(HNDHandManager *)self currentPointForPointer];
     [v7 updateWithPrimaryFingerPoint:?];
@@ -3689,9 +3689,9 @@ LABEL_14:
     self->_isActivelyScrollingContinuously = 0;
     [(HNDHandManager *)self setDwellMode:1];
     [(HNDHandManager *)self _resetDwellDueToFingersReset];
-    if ([(HNDHandManager *)self _shouldRepeatGesture]&& v4)
+    if ([(HNDHandManager *)self _shouldRepeatGesture]&& completionCopy)
     {
-      [(HNDHandManager *)self beginContinuousScrollingInDirection:continuousScrollMode == 1 onDisplay:v13];
+      [(HNDHandManager *)self beginContinuousScrollingInDirection:continuousScrollMode == 1 onDisplay:displayCopy];
     }
 
     else
@@ -3702,48 +3702,48 @@ LABEL_14:
   }
 }
 
-- (void)_handlePinchFingerDownWithFinger:(id)a3 onDisplay:(id)a4
+- (void)_handlePinchFingerDownWithFinger:(id)finger onDisplay:(id)display
 {
-  v6 = a3;
-  v9 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
+  fingerCopy = finger;
+  v9 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
   [v9 performPress:2 type:1];
-  v7 = [v9 fingerController];
-  [v7 pressFingersDownAnimated:1];
+  fingerController = [v9 fingerController];
+  [fingerController pressFingersDownAnimated:1];
 
   self->_pinchState = 1;
   realSelectedPinchFinger = self->_realSelectedPinchFinger;
-  self->_realSelectedPinchFinger = v6;
+  self->_realSelectedPinchFinger = fingerCopy;
 }
 
-- (void)_handleRealPinchToolDown:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealPinchToolDown:(CGPoint)down onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v10 = [v8 fingerController];
+  y = down.y;
+  x = down.x;
+  displayCopy = display;
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v8 fingerController];
 
-  [v10 hndConvertPointToFingerContainerView:{x, y}];
-  v9 = [v10 fingerModelAtPoint:?];
+  [fingerController hndConvertPointToFingerContainerView:{x, y}];
+  v9 = [fingerController fingerModelAtPoint:?];
   if (v9)
   {
-    [(HNDHandManager *)self _handlePinchFingerDownWithFinger:v9 onDisplay:v7];
+    [(HNDHandManager *)self _handlePinchFingerDownWithFinger:v9 onDisplay:displayCopy];
   }
 
   else
   {
-    [(HNDHandManager *)self _handleRealPinchToolMove:v7 onDisplay:x, y];
+    [(HNDHandManager *)self _handleRealPinchToolMove:displayCopy onDisplay:x, y];
 
-    [v10 enumerateFingersUsingBlock:&stru_1001D40B0];
+    [fingerController enumerateFingersUsingBlock:&stru_1001D40B0];
   }
 }
 
-- (void)resetPinchFingersOnDisplay:(id)a3
+- (void)resetPinchFingersOnDisplay:(id)display
 {
-  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a3];
-  v5 = [v4 fingerController];
-  v6 = [v5 fingerModels];
-  v7 = [v6 count];
+  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
+  fingerController = [v4 fingerController];
+  fingerModels = [fingerController fingerModels];
+  v7 = [fingerModels count];
 
   if (v7 != 2)
   {
@@ -3765,129 +3765,129 @@ LABEL_14:
 
 - (id)mainWindow
 {
-  v2 = [(HNDHandManager *)self mainDisplayManager];
-  v3 = [v2 window];
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  window = [mainDisplayManager window];
 
-  return v3;
+  return window;
 }
 
-- (void)_handleRealPinchToolUp:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealPinchToolUp:(CGPoint)up onDisplay:(id)display
 {
-  v8 = a4;
+  displayCopy = display;
   v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:?];
-  v6 = [v5 fingerController];
+  fingerController = [v5 fingerController];
 
   if (self->_pinchState)
   {
-    [(HNDHandManager *)self resetPinchFingersOnDisplay:v8];
+    [(HNDHandManager *)self resetPinchFingersOnDisplay:displayCopy];
     realSelectedPinchFinger = self->_realSelectedPinchFinger;
     self->_realSelectedPinchFinger = 0;
   }
 
   else
   {
-    [v6 enumerateFingersUsingBlock:&stru_1001D40D0];
+    [fingerController enumerateFingersUsingBlock:&stru_1001D40D0];
   }
 
-  [v6 liftFingersUpAnimated:1];
+  [fingerController liftFingersUpAnimated:1];
   self->_pinchState = 0;
 }
 
-- (void)_handleRealPinchToolMove:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealPinchToolMove:(CGPoint)move onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v9 = [v8 fingerController];
+  y = move.y;
+  x = move.x;
+  displayCopy = display;
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v8 fingerController];
 
   if (self->_pinchState)
   {
-    [v9 hndConvertPointToFingerContainerView:{x, y}];
-    [(HNDHandManager *)self _modifyPinchToolMoveToPoint:v7 onDisplay:?];
+    [fingerController hndConvertPointToFingerContainerView:{x, y}];
+    [(HNDHandManager *)self _modifyPinchToolMoveToPoint:displayCopy onDisplay:?];
   }
 
   else
   {
-    [v9 hndCentroidForPinchChainMidPoint:{x, y}];
-    [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:0 allowOutOfBounds:1 animated:0 completion:?];
+    [fingerController hndCentroidForPinchChainMidPoint:{x, y}];
+    [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:0 allowOutOfBounds:1 animated:0 completion:?];
   }
 }
 
-- (void)_handleRealMultiFingerMove:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealMultiFingerMove:(CGPoint)move onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v9 = [v8 fingerController];
+  y = move.y;
+  x = move.x;
+  displayCopy = display;
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v8 fingerController];
 
-  [v9 hndStandardCentroidForMultifingers:{x, y}];
-  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:0 allowOutOfBounds:?];
+  [fingerController hndStandardCentroidForMultifingers:{x, y}];
+  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:0 allowOutOfBounds:?];
 }
 
-- (void)_handleRealMultiFingerDown:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealMultiFingerDown:(CGPoint)down onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v14 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+  y = down.y;
+  x = down.x;
+  displayCopy = display;
+  v14 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   self->_inMultiFingerGesture = 1;
-  v8 = [v14 fingerController];
-  [v8 hndStandardCentroidForMultifingers:{x, y}];
+  fingerController = [v14 fingerController];
+  [fingerController hndStandardCentroidForMultifingers:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:0 allowOutOfBounds:1 animated:0 completion:v10, v12];
+  [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:0 allowOutOfBounds:1 animated:0 completion:v10, v12];
   [v14 performPress:2 type:1];
-  v13 = [v14 fingerController];
-  [v13 pressFingersDownAnimated:1];
+  fingerController2 = [v14 fingerController];
+  [fingerController2 pressFingersDownAnimated:1];
 }
 
-- (void)_handleRealMultiFingerUp:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealMultiFingerUp:(CGPoint)up onDisplay:(id)display
 {
   self->_inMultiFingerGesture = 0;
-  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4, a3.x, a3.y];
-  v4 = [v5 fingerController];
-  [v4 liftFingersUpAnimated:1];
+  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display, up.x, up.y];
+  fingerController = [v5 fingerController];
+  [fingerController liftFingersUpAnimated:1];
 }
 
-- (void)_moveFingersForRealEventToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)_moveFingersForRealEventToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v13];
-  v8 = [v7 fingerController];
-  [v8 hndAbsoluteCentroidForMultifingers:{x, y}];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v7 fingerController];
+  [fingerController hndAbsoluteCentroidForMultifingers:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:v13 onDisplay:0 allowOutOfBounds:1 animated:0 completion:v10, v12];
+  [(HNDHandManager *)self _moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:0 allowOutOfBounds:1 animated:0 completion:v10, v12];
 }
 
-- (void)_handleRealCustomGestureMove:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealCustomGestureMove:(CGPoint)move onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v13];
-  v8 = [v7 fingerController];
-  [v8 hndAbsoluteCentroidForMultifingers:{x, y}];
+  y = move.y;
+  x = move.x;
+  displayCopy = display;
+  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v7 fingerController];
+  [fingerController hndAbsoluteCentroidForMultifingers:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v13 onDisplay:1 allowOutOfBounds:v10, v12];
+  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:1 allowOutOfBounds:v10, v12];
 }
 
-- (void)_handleRealCustomGestureUp:(CGPoint)a3 onDisplay:(id)a4
+- (void)_handleRealCustomGestureUp:(CGPoint)up onDisplay:(id)display
 {
-  v5 = a4;
+  displayCopy = display;
   if (![(HNDHandManager *)self isPerformingGesture])
   {
     if (self->_inCustomGestureMovement)
     {
-      [(HNDHandManager *)self _performCustomGestureOnDisplay:v5];
+      [(HNDHandManager *)self _performCustomGestureOnDisplay:displayCopy];
     }
 
     self->_inCustomGestureMovement = 0;
@@ -3896,8 +3896,8 @@ LABEL_14:
 
 - (BOOL)_shouldEnableMultiTouchToolBackground
 {
-  v2 = [(HNDHandManager *)self deviceManager];
-  if ([v2 deviceCount])
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  if ([deviceManager deviceCount])
   {
     v3 = 0;
   }
@@ -3910,28 +3910,28 @@ LABEL_14:
   return v3;
 }
 
-- (void)_handleMultiTouchToolEvent:(id)a3
+- (void)_handleMultiTouchToolEvent:(id)event
 {
-  v4 = a3;
-  v19 = [(HNDHandManager *)self currentDisplayManager];
-  if (([v19 fingerContentViewIsActive] & 1) == 0)
+  eventCopy = event;
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  if (([currentDisplayManager fingerContentViewIsActive] & 1) == 0)
   {
-    [v19 setFingerContentViewIsActive:1];
+    [currentDisplayManager setFingerContentViewIsActive:1];
   }
 
-  v5 = [v4 handInfo];
-  v6 = [v5 paths];
-  v7 = [v6 firstPath];
-  [v7 pathLocation];
+  handInfo = [eventCopy handInfo];
+  paths = [handInfo paths];
+  firstPath = [paths firstPath];
+  [firstPath pathLocation];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v4 handInfo];
+  handInfo2 = [eventCopy handInfo];
 
-  v13 = [v12 eventType];
-  if (v13 > 7)
+  eventType = [handInfo2 eventType];
+  if (eventType > 7)
   {
-    if ((v13 - 8) > 1)
+    if ((eventType - 8) > 1)
     {
       goto LABEL_41;
     }
@@ -3939,41 +3939,41 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  switch(v13)
+  switch(eventType)
   {
     case 1:
       if (!self->_resettingPinch)
       {
         if ([(HNDHandManager *)self inPinchMode])
         {
-          v15 = [v19 hardwareIdentifier];
-          [(HNDHandManager *)self _handleRealPinchToolDown:v15 onDisplay:v9, v11];
+          hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+          [(HNDHandManager *)self _handleRealPinchToolDown:hardwareIdentifier onDisplay:v9, v11];
         }
 
         else if ([(HNDHandManager *)self inCustomGesture])
         {
-          v15 = [v19 hardwareIdentifier];
-          [(HNDHandManager *)self _handleRealCustomGestureDown:v15 onDisplay:v9, v11];
+          hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+          [(HNDHandManager *)self _handleRealCustomGestureDown:hardwareIdentifier onDisplay:v9, v11];
         }
 
         else if ([(HNDHandManager *)self inDragMode])
         {
-          v15 = [v19 hardwareIdentifier];
-          [(HNDHandManager *)self _handleRealDragToolMove:v15 onDisplay:v9, v11];
+          hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+          [(HNDHandManager *)self _handleRealDragToolMove:hardwareIdentifier onDisplay:v9, v11];
         }
 
         else
         {
-          v18 = [(HNDHandManager *)self inContinuousScrollMode];
-          v15 = [v19 hardwareIdentifier];
-          if (v18)
+          inContinuousScrollMode = [(HNDHandManager *)self inContinuousScrollMode];
+          hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+          if (inContinuousScrollMode)
           {
-            [(HNDHandManager *)self _handleRealContinuousScrollToolMove:v15 onDisplay:v9, v11];
+            [(HNDHandManager *)self _handleRealContinuousScrollToolMove:hardwareIdentifier onDisplay:v9, v11];
           }
 
           else
           {
-            [(HNDHandManager *)self _handleRealMultiFingerDown:v15 onDisplay:v9, v11];
+            [(HNDHandManager *)self _handleRealMultiFingerDown:hardwareIdentifier onDisplay:v9, v11];
           }
         }
 
@@ -3984,26 +3984,26 @@ LABEL_14:
     case 2:
       if ([(HNDHandManager *)self inPinchMode])
       {
-        v16 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealPinchToolMove:v16 onDisplay:v9, v11];
+        hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealPinchToolMove:hardwareIdentifier2 onDisplay:v9, v11];
       }
 
       else if ([(HNDHandManager *)self inCustomGesture])
       {
-        v16 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealCustomGestureMove:v16 onDisplay:v9, v11];
+        hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealCustomGestureMove:hardwareIdentifier2 onDisplay:v9, v11];
       }
 
       else if ([(HNDHandManager *)self inDragMode])
       {
-        v16 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealDragToolMove:v16 onDisplay:v9, v11];
+        hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealDragToolMove:hardwareIdentifier2 onDisplay:v9, v11];
       }
 
       else if ([(HNDHandManager *)self inContinuousScrollMode])
       {
-        v16 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealContinuousScrollToolMove:v16 onDisplay:v9, v11];
+        hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealContinuousScrollToolMove:hardwareIdentifier2 onDisplay:v9, v11];
       }
 
       else
@@ -4013,8 +4013,8 @@ LABEL_14:
           break;
         }
 
-        v16 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealMultiFingerMove:v16 onDisplay:v9, v11];
+        hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealMultiFingerMove:hardwareIdentifier2 onDisplay:v9, v11];
       }
 
       break;
@@ -4022,34 +4022,34 @@ LABEL_14:
 LABEL_9:
       if ([(HNDHandManager *)self inPinchMode])
       {
-        v14 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealPinchToolUp:v14 onDisplay:v9, v11];
+        hardwareIdentifier3 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealPinchToolUp:hardwareIdentifier3 onDisplay:v9, v11];
       }
 
       else if ([(HNDHandManager *)self inCustomGesture])
       {
-        v14 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealCustomGestureUp:v14 onDisplay:v9, v11];
+        hardwareIdentifier3 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealCustomGestureUp:hardwareIdentifier3 onDisplay:v9, v11];
       }
 
       else if ([(HNDHandManager *)self inDragMode])
       {
-        v14 = [v19 hardwareIdentifier];
-        [(HNDHandManager *)self _handleRealDragToolUp:v14 onDisplay:v9, v11];
+        hardwareIdentifier3 = [currentDisplayManager hardwareIdentifier];
+        [(HNDHandManager *)self _handleRealDragToolUp:hardwareIdentifier3 onDisplay:v9, v11];
       }
 
       else
       {
-        v17 = [(HNDHandManager *)self inContinuousScrollMode];
-        v14 = [v19 hardwareIdentifier];
-        if (v17)
+        inContinuousScrollMode2 = [(HNDHandManager *)self inContinuousScrollMode];
+        hardwareIdentifier3 = [currentDisplayManager hardwareIdentifier];
+        if (inContinuousScrollMode2)
         {
-          [(HNDHandManager *)self _handleRealContinuousScrollToolUp:v14 onDisplay:v9, v11];
+          [(HNDHandManager *)self _handleRealContinuousScrollToolUp:hardwareIdentifier3 onDisplay:v9, v11];
         }
 
         else
         {
-          [(HNDHandManager *)self _handleRealMultiFingerUp:v14 onDisplay:v9, v11];
+          [(HNDHandManager *)self _handleRealMultiFingerUp:hardwareIdentifier3 onDisplay:v9, v11];
         }
       }
 
@@ -4069,9 +4069,9 @@ LABEL_41:
     return 1;
   }
 
-  v5 = [(HNDHandManager *)self currentDisplayManager];
-  v6 = [v5 fingerController];
-  v3 = [v6 numberOfFingers] > 1;
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
+  v3 = [fingerController numberOfFingers] > 1;
 
   return v3;
 }
@@ -4089,9 +4089,9 @@ LABEL_41:
 {
   if ([(HNDHandManager *)self shouldUseBubbleMode])
   {
-    v3 = [(HNDHandManager *)self shouldUseBubbleMode];
+    shouldUseBubbleMode = [(HNDHandManager *)self shouldUseBubbleMode];
 
-    [(HNDHandManager *)self enableBubbleMode:v3];
+    [(HNDHandManager *)self enableBubbleMode:shouldUseBubbleMode];
   }
 }
 
@@ -4108,15 +4108,15 @@ LABEL_41:
 {
   if ([(HNDHandManager *)self shouldUseEyeTrackingAutoHide])
   {
-    v3 = [(HNDHandManager *)self shouldUseEyeTrackingAutoHide];
+    shouldUseEyeTrackingAutoHide = [(HNDHandManager *)self shouldUseEyeTrackingAutoHide];
 
-    [(HNDHandManager *)self enableEyeTrackingAutoHide:v3];
+    [(HNDHandManager *)self enableEyeTrackingAutoHide:shouldUseEyeTrackingAutoHide];
   }
 }
 
-- (void)specialToolUsageEnded:(BOOL)a3
+- (void)specialToolUsageEnded:(BOOL)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   currentCustomGesture = self->_currentCustomGesture;
   self->_currentCustomGesture = 0;
 
@@ -4135,14 +4135,14 @@ LABEL_41:
   self->_isPerformingDragPressEvent = 0;
   if ([(HNDHandManager *)self inDragMode])
   {
-    v11 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-    [(HNDHandManager *)self endDragModeAtPoint:v11 onDisplay:0 completed:self->_dragStartPoint.x, self->_dragStartPoint.y];
+    currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+    [(HNDHandManager *)self endDragModeAtPoint:currentHardwareIdentifierForPointer onDisplay:0 completed:self->_dragStartPoint.x, self->_dragStartPoint.y];
   }
 
   if ([(HNDHandManager *)self inContinuousScrollMode])
   {
-    v12 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-    [(HNDHandManager *)self endContinuousScrollingOnDisplay:v12 withCompletion:0];
+    currentHardwareIdentifierForPointer2 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+    [(HNDHandManager *)self endContinuousScrollingOnDisplay:currentHardwareIdentifierForPointer2 withCompletion:0];
   }
 
   if ([(HNDHandManager *)self inPinchMode])
@@ -4150,8 +4150,8 @@ LABEL_41:
     [(HNDHandManager *)self currentPointForPointer];
     v14 = v13;
     v16 = v15;
-    v17 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-    [(HNDHandManager *)self moveSystemPointerIfActiveToPoint:v17 onDisplay:v14, v16];
+    currentHardwareIdentifierForPointer3 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+    [(HNDHandManager *)self moveSystemPointerIfActiveToPoint:currentHardwareIdentifierForPointer3 onDisplay:v14, v16];
   }
 
   self->_pinchState = 0;
@@ -4165,11 +4165,11 @@ LABEL_41:
   }
 
   [(HNDHandManager *)self _systemPointerSettingsDidChange];
-  if (v3 && (currentCustomGesture || [(HNDHandManager *)self dwellControlPaused]))
+  if (endedCopy && (currentCustomGesture || [(HNDHandManager *)self dwellControlPaused]))
   {
-    v19 = [(HNDHandManager *)self dwellControlPaused];
+    dwellControlPaused = [(HNDHandManager *)self dwellControlPaused];
     v20 = AXAssistiveTouchIconTypeDwellPause;
-    if (!v19)
+    if (!dwellControlPaused)
     {
       v20 = 0;
     }
@@ -4194,10 +4194,10 @@ LABEL_41:
   return [(HNDHandManager *)self inContinuousScrollMode];
 }
 
-- (void)handleRealEvent:(id)a3
+- (void)handleRealEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 3200)
+  eventCopy = event;
+  if ([eventCopy type] == 3200)
   {
     v5 = sub_100042C64();
   }
@@ -4208,19 +4208,19 @@ LABEL_41:
   }
 
   v6 = +[SCATScannerManager sharedManager];
-  v7 = [v6 isControllingOtherDevice];
+  isControllingOtherDevice = [v6 isControllingOtherDevice];
 
-  if ((v7 & 1) == 0 && (v5 & 1) == 0)
+  if ((isControllingOtherDevice & 1) == 0 && (v5 & 1) == 0)
   {
     [(HNDHandManager *)self notifyUserEventOccurred];
   }
 
-  v8 = [(HNDHandManager *)self eventHandlers];
-  if ([v4 type] == 3001 && (objc_msgSend(v4, "isDisplayIntegrated") & 1) == 0)
+  eventHandlers = [(HNDHandManager *)self eventHandlers];
+  if ([eventCopy type] == 3001 && (objc_msgSend(eventCopy, "isDisplayIntegrated") & 1) == 0)
   {
-    v9 = [v4 handInfo];
-    v10 = [v9 paths];
-    if ([v10 count] != 1)
+    handInfo = [eventCopy handInfo];
+    paths = [handInfo paths];
+    if ([paths count] != 1)
     {
 
       if (!v5)
@@ -4231,12 +4231,12 @@ LABEL_41:
       goto LABEL_12;
     }
 
-    v11 = [v4 handInfo];
-    v12 = [v11 paths];
-    v13 = [v12 objectAtIndexedSubscript:0];
-    v14 = [v13 transducerType];
+    handInfo2 = [eventCopy handInfo];
+    paths2 = [handInfo2 paths];
+    v13 = [paths2 objectAtIndexedSubscript:0];
+    transducerType = [v13 transducerType];
 
-    if (!v14)
+    if (!transducerType)
     {
       goto LABEL_31;
     }
@@ -4248,8 +4248,8 @@ LABEL_41:
   }
 
 LABEL_12:
-  v15 = [(HNDHandManager *)self systemPointerController];
-  v16 = [v15 handleEventRepresentationForMovement:v4];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  v16 = [systemPointerController handleEventRepresentationForMovement:eventCopy];
 
   if (v16)
   {
@@ -4257,13 +4257,13 @@ LABEL_12:
   }
 
 LABEL_15:
-  if (([v4 isSystemDrag] & 1) == 0)
+  if (([eventCopy isSystemDrag] & 1) == 0)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = v8;
+    v17 = eventHandlers;
     v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v18)
     {
@@ -4279,7 +4279,7 @@ LABEL_15:
             objc_enumerationMutation(v17);
           }
 
-          if ([*(*(&v28 + 1) + 8 * v21) handledEvent:{v4, v28}])
+          if ([*(*(&v28 + 1) + 8 * v21) handledEvent:{eventCopy, v28}])
           {
 
             goto LABEL_31;
@@ -4299,13 +4299,13 @@ LABEL_15:
       }
     }
 
-    v22 = [v4 handInfo];
-    v23 = [v22 eventType];
+    handInfo3 = [eventCopy handInfo];
+    eventType = [handInfo3 eventType];
 
-    v24 = [(HNDHandManager *)self usingSpecialTool];
-    if (v23 == 2)
+    usingSpecialTool = [(HNDHandManager *)self usingSpecialTool];
+    if (eventType == 2)
     {
-      v25 = v24;
+      v25 = usingSpecialTool;
     }
 
     else
@@ -4313,8 +4313,8 @@ LABEL_15:
       v25 = 0;
     }
 
-    v26 = [(HNDHandManager *)self currentDisplayManager];
-    if ([v26 handleRealEvent:v4])
+    currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+    if ([currentDisplayManager handleRealEvent:eventCopy])
     {
 
       if (!v25)
@@ -4325,9 +4325,9 @@ LABEL_15:
 
     else
     {
-      v27 = [(HNDHandManager *)self _shouldHandleRealEventWithMultiTouchTool];
+      _shouldHandleRealEventWithMultiTouchTool = [(HNDHandManager *)self _shouldHandleRealEventWithMultiTouchTool];
 
-      if (((v27 | v25) & 1) == 0)
+      if (((_shouldHandleRealEventWithMultiTouchTool | v25) & 1) == 0)
       {
         goto LABEL_31;
       }
@@ -4335,7 +4335,7 @@ LABEL_15:
 
     if (![(HNDHandManager *)self isVirtualTrackpadVisible])
     {
-      [(HNDHandManager *)self _handleMultiTouchToolEvent:v4];
+      [(HNDHandManager *)self _handleMultiTouchToolEvent:eventCopy];
     }
   }
 
@@ -4394,16 +4394,16 @@ LABEL_31:
 
 - (void)orientationChanged
 {
-  v3 = [(HNDHandManager *)self orientationQueue];
+  orientationQueue = [(HNDHandManager *)self orientationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002DCE4;
   block[3] = &unk_1001D3488;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(orientationQueue, block);
 }
 
-- (void)orientationChanged:(int64_t)a3
+- (void)orientationChanged:(int64_t)changed
 {
   v5 = ASTLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -4412,21 +4412,21 @@ LABEL_31:
     v8[0] = 67109376;
     v8[1] = orientation;
     v9 = 2048;
-    v10 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Orientation changed via SpringBoard action handler: old %d new %ld", v8, 0x12u);
   }
 
-  if ((a3 - 1) < 4)
+  if ((changed - 1) < 4)
   {
-    v7 = a3;
+    changedCopy2 = changed;
   }
 
   else
   {
-    v7 = 0;
+    changedCopy2 = 0;
   }
 
-  self->_orientation = v7;
+  self->_orientation = changedCopy2;
   [(HNDHandManager *)self _startOrientationUpdateTimer];
 }
 
@@ -4450,8 +4450,8 @@ LABEL_31:
 
   else
   {
-    v7 = [(HNDHandManager *)self mainDisplayManager];
-    if ([v7 isMenuVisible])
+    mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+    if ([mainDisplayManager isMenuVisible])
     {
       v6 = 0.05;
     }
@@ -4471,13 +4471,13 @@ LABEL_31:
   [(AXDispatchTimer *)v8 afterDelay:v9 processBlock:v6];
 }
 
-- (void)mediaControlsChanged:(BOOL)a3
+- (void)mediaControlsChanged:(BOOL)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002E0D0;
   v3[3] = &unk_1001D41B8;
-  v4 = a3;
+  changedCopy = changed;
   v3[4] = a2;
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v3];
 }
@@ -4582,26 +4582,26 @@ LABEL_31:
   [v4 isMediaPlayingForApp:0 completionHandler:v5];
 }
 
-- (void)_modifyPinchToolMoveToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)_modifyPinchToolMoveToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v66 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v8 = [v66 fingerController];
-  v9 = [v8 fingerModels];
-  v10 = [v9 count];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v66 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v66 fingerController];
+  fingerModels = [fingerController fingerModels];
+  v10 = [fingerModels count];
 
   if (v10 != 2)
   {
     _AXAssert();
   }
 
-  v11 = [v8 fingerModels];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  fingerModels2 = [fingerController fingerModels];
+  v12 = [fingerModels2 objectAtIndexedSubscript:0];
 
-  v13 = [v8 fingerModels];
-  v14 = [v13 objectAtIndexedSubscript:1];
+  fingerModels3 = [fingerController fingerModels];
+  v14 = [fingerModels3 objectAtIndexedSubscript:1];
 
   [(AXPIFingerModel *)v12 location];
   v16 = v15;
@@ -4667,15 +4667,15 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  [v8 midpointForFingers];
+  [fingerController midpointForFingers];
   v38 = v37;
   v40 = v39;
   if (sub_100042C64())
   {
-    v41 = [(HNDHandManager *)self deviceManager];
-    v42 = [v41 mainDeviceIsPointer];
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    mainDeviceIsPointer = [deviceManager mainDeviceIsPointer];
 
-    if (v42)
+    if (mainDeviceIsPointer)
     {
       v43 = self->_pinchRotatePreviousPoint.x;
       v44 = self->_pinchRotatePreviousPoint.y;
@@ -4732,14 +4732,14 @@ LABEL_24:
 LABEL_31:
   AX_CGPointGetDistanceToPoint();
   v56 = v55;
-  [(HNDHandManager *)self _fingerRadiusOnDisplay:v7];
+  [(HNDHandManager *)self _fingerRadiusOnDisplay:displayCopy];
   v58 = v57;
 
   if (v56 + v58 * -2.0 > 0.0)
   {
-    [v8 beginUpdates];
-    v59 = [v8 fingerContainerView];
-    [v59 bounds];
+    [fingerController beginUpdates];
+    fingerContainerView = [fingerController fingerContainerView];
+    [fingerContainerView bounds];
     v68.x = v16;
     v68.y = v18;
     v60 = CGRectContainsPoint(v70, v68);
@@ -4749,8 +4749,8 @@ LABEL_31:
       [(AXPIFingerModel *)v12 setLocation:v16, v18];
     }
 
-    v61 = [v8 fingerContainerView];
-    [v61 bounds];
+    fingerContainerView2 = [fingerController fingerContainerView];
+    [fingerContainerView2 bounds];
     v69.x = v20;
     v69.y = v22;
     v62 = CGRectContainsPoint(v71, v69);
@@ -4760,17 +4760,17 @@ LABEL_31:
       [v14 setLocation:{v20, v22}];
     }
 
-    [v8 endUpdates];
+    [fingerController endUpdates];
     [(AXPIFingerModel *)v12 location];
     [v66 updateWithPrimaryFingerPoint:?];
   }
 }
 
-- (void)addEventHandler:(id)a3
+- (void)addEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 conformsToProtocol:&OBJC_PROTOCOL___AXEventHandler] & 1) != 0)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy && ([handlerCopy conformsToProtocol:&OBJC_PROTOCOL___AXEventHandler] & 1) != 0)
   {
     [(HNDHandManager *)self eventHandlers];
     v16 = 0u;
@@ -4822,8 +4822,8 @@ LABEL_31:
       while (1)
       {
         v14 = [v6 pointerAtIndex:v13];
-        v15 = [v14 priority];
-        if (v15 > [v5 priority])
+        priority = [v14 priority];
+        if (priority > [v5 priority])
         {
           break;
         }
@@ -4857,21 +4857,21 @@ LABEL_23:
   }
 }
 
-- (void)removeEventHandler:(id)a3
+- (void)removeEventHandler:(id)handler
 {
-  v9 = a3;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v4 = [(HNDHandManager *)self eventHandlers];
-    v5 = [v4 count];
+    eventHandlers = [(HNDHandManager *)self eventHandlers];
+    v5 = [eventHandlers count];
     if (v5)
     {
       v6 = v5;
       v7 = 0;
       while (1)
       {
-        v8 = [v4 pointerAtIndex:v7];
-        if (v8 == v9)
+        v8 = [eventHandlers pointerAtIndex:v7];
+        if (v8 == handlerCopy)
         {
           break;
         }
@@ -4882,11 +4882,11 @@ LABEL_23:
         }
       }
 
-      [v4 removePointerAtIndex:v7];
+      [eventHandlers removePointerAtIndex:v7];
     }
 
 LABEL_9:
-    if (![v4 count])
+    if (![eventHandlers count])
     {
       [(HNDHandManager *)self setCaptureEvents:0];
     }
@@ -4904,13 +4904,13 @@ LABEL_9:
   [v5 assistiveTouchSpeed];
   [(HNDHandManager *)self setTouchSpeed:?];
   -[HNDHandManager setOpenMenuWithSwaggle:](self, "setOpenMenuWithSwaggle:", [v5 assistiveTouchOpenMenuSwaggleEnabled]);
-  v3 = [v5 assistiveTouchCustomGestures];
-  [(HNDHandManager *)self setCustomGestures:v3];
+  assistiveTouchCustomGestures = [v5 assistiveTouchCustomGestures];
+  [(HNDHandManager *)self setCustomGestures:assistiveTouchCustomGestures];
 
   [(HNDHandManager *)self updateMenuVisibility];
   [(HNDHandManager *)self updatePointerAppearance];
-  v4 = [(HNDHandManager *)self deviceManager];
-  [v4 setDetectDevices:1];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  [deviceManager setDetectDevices:1];
 }
 
 - (void)updateMenuVisibility
@@ -4922,31 +4922,31 @@ LABEL_9:
 
   else
   {
-    v4 = [(HNDHandManager *)self deviceManager];
-    v5 = [v4 mainDeviceIsPointer];
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    mainDeviceIsPointer = [deviceManager mainDeviceIsPointer];
 
-    v3 = v5 ^ 1;
+    v3 = mainDeviceIsPointer ^ 1;
   }
 
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchInternalOnlyHiddenNubbitModeEnabled];
-  if ((v7 & 1) == 0 && (v3 & 1) == 0)
+  assistiveTouchInternalOnlyHiddenNubbitModeEnabled = [v6 assistiveTouchInternalOnlyHiddenNubbitModeEnabled];
+  if ((assistiveTouchInternalOnlyHiddenNubbitModeEnabled & 1) == 0 && (v3 & 1) == 0)
   {
     v8 = +[AXSettings sharedInstance];
-    v7 = [v8 assistiveTouchAlwaysShowMenuEnabled] ^ 1;
+    assistiveTouchInternalOnlyHiddenNubbitModeEnabled = [v8 assistiveTouchAlwaysShowMenuEnabled] ^ 1;
   }
 
-  v9 = [(HNDHandManager *)self deviceManager];
-  if ([v9 hidDeviceIsConfiguring])
+  deviceManager2 = [(HNDHandManager *)self deviceManager];
+  if ([deviceManager2 hidDeviceIsConfiguring])
   {
   }
 
   else
   {
-    v10 = [(HNDHandManager *)self deviceManager];
-    v11 = [v10 hidDeviceSentReservedStatus];
+    deviceManager3 = [(HNDHandManager *)self deviceManager];
+    hidDeviceSentReservedStatus = [deviceManager3 hidDeviceSentReservedStatus];
 
-    if (!v11)
+    if (!hidDeviceSentReservedStatus)
     {
       goto LABEL_13;
     }
@@ -4959,37 +4959,37 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Forcing menu to be hidden because HID device is configuring", v14, 2u);
   }
 
-  v7 = 1;
+  assistiveTouchInternalOnlyHiddenNubbitModeEnabled = 1;
 LABEL_13:
   v13 = ASTLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14[0] = 67109120;
-    v14[1] = v7;
+    v14[1] = assistiveTouchInternalOnlyHiddenNubbitModeEnabled;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Updating menu visibility: %d", v14, 8u);
   }
 
-  [(HNDHandManager *)self setAlwaysShowMenu:v7 ^ 1];
+  [(HNDHandManager *)self setAlwaysShowMenu:assistiveTouchInternalOnlyHiddenNubbitModeEnabled ^ 1];
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:&stru_1001D4270];
 }
 
 - (void)updateSoftwareKeyboardState
 {
-  v3 = [(HNDHandManager *)self deviceManager];
-  v4 = [v3 deviceDetector];
-  v5 = [v4 attachedKeyboards];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  deviceDetector = [deviceManager deviceDetector];
+  attachedKeyboards = [deviceDetector attachedKeyboards];
 
-  if (!v5)
+  if (!attachedKeyboards)
   {
     [(AXUISoftwareKeyboardManager *)self->_softwareKeyboardManager removeReasonToEnableSoftwareKeyboard:@"AST HandManager"];
     goto LABEL_5;
   }
 
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled];
+  assistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled = [v6 assistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled];
 
   softwareKeyboardManager = self->_softwareKeyboardManager;
-  if (v7)
+  if (assistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled)
   {
     [(AXUISoftwareKeyboardManager *)softwareKeyboardManager addReasonToEnableSoftwareKeyboard:@"AST HandManager"];
 LABEL_5:
@@ -5037,11 +5037,11 @@ LABEL_5:
     [(HNDMousePointerAppearance *)self->_mousePointerAppearance setSizeMultiplier:?];
   }
 
-  v9 = [(HNDMousePointerAppearance *)self->_mousePointerAppearance cursorColor];
+  cursorColor = [(HNDMousePointerAppearance *)self->_mousePointerAppearance cursorColor];
   v10 = +[AXSettings sharedInstance];
-  v11 = [v10 assistiveTouchMousePointerColor];
+  assistiveTouchMousePointerColor = [v10 assistiveTouchMousePointerColor];
 
-  if (v9 == v11)
+  if (cursorColor == assistiveTouchMousePointerColor)
   {
     if (v7 < 2.22044605e-16)
     {
@@ -5109,34 +5109,34 @@ LABEL_5:
   return v2;
 }
 
-- (void)performPreparedGestureOnDisplay:(id)a3
+- (void)performPreparedGestureOnDisplay:(id)display
 {
   if (self->_currentCustomGesture)
   {
-    [(HNDHandManager *)self _performCustomGestureOnDisplay:a3];
+    [(HNDHandManager *)self _performCustomGestureOnDisplay:display];
   }
 }
 
-- (id)_shiftGestureIfNeeded:(id)a3 onDisplay:(id)a4 toMidpoint:(CGPoint)a5
+- (id)_shiftGestureIfNeeded:(id)needed onDisplay:(id)display toMidpoint:(CGPoint)midpoint
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  if ([v9 shouldPerformAtOriginalLocation])
+  y = midpoint.y;
+  x = midpoint.x;
+  neededCopy = needed;
+  displayCopy = display;
+  if ([neededCopy shouldPerformAtOriginalLocation])
   {
-    v11 = v9;
+    v11 = neededCopy;
   }
 
   else
   {
-    v12 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v10];
-    v13 = [v12 fingerController];
-    [v13 midpointOfStartingFingersForGesture:v9];
+    v12 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+    fingerController = [v12 fingerController];
+    [fingerController midpointOfStartingFingersForGesture:neededCopy];
     v15 = v14;
     v17 = v16;
 
-    v11 = [v9 gestureShiftedByOffset:{x - v15, y - v17}];
+    v11 = [neededCopy gestureShiftedByOffset:{x - v15, y - v17}];
   }
 
   v18 = v11;
@@ -5144,9 +5144,9 @@ LABEL_5:
   return v18;
 }
 
-- (void)_performCustomGestureOnDisplay:(id)a3
+- (void)_performCustomGestureOnDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (![(HNDHandManager *)self inCustomGesture])
   {
     _AXAssert();
@@ -5156,11 +5156,11 @@ LABEL_5:
   {
     [(HNDHandManager *)self pauseBubbleModeForSpecialUsageTool];
     [(HNDHandManager *)self pauseEyeTrackingAutoHideForSpecialUsageTool];
-    v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
+    v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     [(HNDHandManager *)self currentPointForPointer];
     v7 = v6;
     v9 = v8;
-    v10 = [(HNDHandManager *)self _shiftGestureIfNeeded:self->_currentCustomGesture onDisplay:v4 toMidpoint:?];
+    v10 = [(HNDHandManager *)self _shiftGestureIfNeeded:self->_currentCustomGesture onDisplay:displayCopy toMidpoint:?];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10002FD78;
@@ -5171,8 +5171,8 @@ LABEL_5:
     v30 = v7;
     v31 = v9;
     v27 = v12;
-    v28 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = displayCopy;
     v29 = v13;
     v14 = objc_retainBlock(v25);
     if ((self->_preparedScrollAction - 2006) <= 0x19 && ((1 << (LOBYTE(self->_preparedScrollAction) + 42)) & 0x300000F) != 0 && [v12 numberOfEvents] && (objc_msgSend(v12, "fingerIdentifiersAtEventIndex:", 0), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v16) && (-[HNDHandManager currentDisplayManager](self, "currentDisplayManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "pointForFingerIdentifier:atEventIndex:", &off_1001E50D0, 0), objc_msgSend(v17, "convertPointToPortraitUpOrientation:"), v19 = v18, v21 = v20, v17, -[HNDHandManager _performAXScrollActionAtPoint:onDisplay:action:](self, "_performAXScrollActionAtPoint:onDisplay:action:", v13, self->_preparedScrollAction, v19, v21)))
@@ -5182,13 +5182,13 @@ LABEL_5:
 
     else
     {
-      v22 = [v11 fingerController];
+      fingerController = [v11 fingerController];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_10002FE1C;
       v23[3] = &unk_1001D3CD0;
       v24 = v14;
-      [v22 performGesture:v12 completion:v23];
+      [fingerController performGesture:v12 completion:v23];
     }
   }
 }
@@ -5197,27 +5197,27 @@ LABEL_5:
 {
   if (-[HNDHandManager isVirtualTrackpadVisible](self, "isVirtualTrackpadVisible") || (-[HNDHandManager deviceManager](self, "deviceManager"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 mainDeviceIsPointer], v3, !v4))
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(dwellControlEnabled) = 1;
   }
 
   else
   {
-    v5 = [(HNDHandManager *)self dwellControlEnabled];
-    if (v5)
+    dwellControlEnabled = [(HNDHandManager *)self dwellControlEnabled];
+    if (dwellControlEnabled)
     {
       if ([(HNDHandManager *)self dwellControlAutorevertEnabled])
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(dwellControlEnabled) = 0;
       }
 
       else
       {
-        LOBYTE(v5) = ![(HNDHandManager *)self dwellControlPaused];
+        LOBYTE(dwellControlEnabled) = ![(HNDHandManager *)self dwellControlPaused];
       }
     }
   }
 
-  return v5;
+  return dwellControlEnabled;
 }
 
 - (BOOL)isCapturingRealEvents
@@ -5237,18 +5237,18 @@ LABEL_5:
   return v2;
 }
 
-- (void)prepareGesture:(id)a3 onDisplay:(id)a4
+- (void)prepareGesture:(id)gesture onDisplay:(id)display
 {
-  v25 = a3;
-  v7 = a4;
-  [(HNDHandManager *)self showMenu:0 onDisplay:v7];
-  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+  gestureCopy = gesture;
+  displayCopy = display;
+  [(HNDHandManager *)self showMenu:0 onDisplay:displayCopy];
+  v8 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   [v8 setMultiTouchToolBackgroundEnabled:1];
   [v8 setFingerContentViewIsActive:1];
-  if (self->_currentCustomGesture != v25)
+  if (self->_currentCustomGesture != gestureCopy)
   {
-    objc_storeStrong(&self->_currentCustomGesture, a3);
-    v9 = v25;
+    objc_storeStrong(&self->_currentCustomGesture, gesture);
+    v9 = gestureCopy;
     [(HNDHandManager *)self currentPointForPointer];
     v11 = v10;
     v13 = v12;
@@ -5258,7 +5258,7 @@ LABEL_5:
       y = CGPointZero.y;
       if (v11 != CGPointZero.x || v13 != y)
       {
-        v17 = [(HNDHandManager *)self _shiftGestureIfNeeded:v9 onDisplay:v7 toMidpoint:v11, v13];
+        v17 = [(HNDHandManager *)self _shiftGestureIfNeeded:v9 onDisplay:displayCopy toMidpoint:v11, v13];
 
         x = v11;
         y = v13;
@@ -5272,18 +5272,18 @@ LABEL_5:
       y = CGPointZero.y;
     }
 
-    v18 = [v8 fingerController];
-    [v18 showStartingFingersForGesture:v9 animated:1 startPointForAnimation:{x, y}];
+    fingerController = [v8 fingerController];
+    [fingerController showStartingFingersForGesture:v9 animated:1 startPointForAnimation:{x, y}];
 
-    v19 = [v8 fingerController];
-    v20 = [v19 fingerModels];
-    v21 = [v20 count];
+    fingerController2 = [v8 fingerController];
+    fingerModels = [fingerController2 fingerModels];
+    v21 = [fingerModels count];
 
     if (v21)
     {
-      v22 = [v8 fingerController];
-      v23 = [v22 fingerModels];
-      v24 = [v23 objectAtIndexedSubscript:0];
+      fingerController3 = [v8 fingerController];
+      fingerModels2 = [fingerController3 fingerModels];
+      v24 = [fingerModels2 objectAtIndexedSubscript:0];
       [v24 location];
       [v8 updateWithPrimaryFingerPoint:?];
     }
@@ -5303,10 +5303,10 @@ LABEL_5:
   qword_1002189D0 = 0;
 }
 
-- (void)setCaptureEvents:(BOOL)a3
+- (void)setCaptureEvents:(BOOL)events
 {
-  v3 = a3;
-  if (a3)
+  eventsCopy = events;
+  if (events)
   {
     if ([(HNDHandManager *)self isVirtualTrackpadVisible])
     {
@@ -5315,10 +5315,10 @@ LABEL_5:
       return;
     }
 
-    v8 = [(HNDHandManager *)self eventManager];
-    v9 = [v8 isCapturingEvents];
+    eventManager = [(HNDHandManager *)self eventManager];
+    isCapturingEvents = [eventManager isCapturingEvents];
 
-    if (v9)
+    if (isCapturingEvents)
     {
       goto LABEL_13;
     }
@@ -5326,24 +5326,24 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v5 = [(HNDHandManager *)self eventManager];
-  if (![v5 isCapturingEvents])
+  eventManager2 = [(HNDHandManager *)self eventManager];
+  if (![eventManager2 isCapturingEvents])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v6 = [(HNDHandManager *)self eventHandlers];
-  v7 = [v6 count];
+  eventHandlers = [(HNDHandManager *)self eventHandlers];
+  v7 = [eventHandlers count];
 
   if (!v7)
   {
 LABEL_10:
     if (![(HNDHandManager *)self dwellControlEnabled])
     {
-      v5 = [(HNDHandManager *)self eventManager];
-      [v5 setCaptureEvents:v3];
+      eventManager2 = [(HNDHandManager *)self eventManager];
+      [eventManager2 setCaptureEvents:eventsCopy];
       goto LABEL_12;
     }
   }
@@ -5352,38 +5352,38 @@ LABEL_13:
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:&stru_1001D42D8];
   if (sub_100042C64() && _AXSAssistiveTouchEnabled() && !UIAccessibilityIsSwitchControlRunning() && ![(HNDHandManager *)self canShowASTMousePointer])
   {
-    v10 = [(HNDHandManager *)self systemPointerController];
-    [v10 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
+    [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10003042C;
     v11[3] = &unk_1001D4300;
-    v12 = v3;
+    v12 = eventsCopy;
     v11[4] = self;
     [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v11];
   }
 }
 
-- (void)setNubbitMoving:(BOOL)a3
+- (void)setNubbitMoving:(BOOL)moving
 {
-  v3 = a3;
-  v4 = [(HNDHandManager *)self eventManager];
-  [v4 setNubbitMoving:v3];
+  movingCopy = moving;
+  eventManager = [(HNDHandManager *)self eventManager];
+  [eventManager setNubbitMoving:movingCopy];
 }
 
 - (BOOL)nubbitMoving
 {
-  v2 = [(HNDHandManager *)self eventManager];
-  v3 = [v2 nubbitMoving];
+  eventManager = [(HNDHandManager *)self eventManager];
+  nubbitMoving = [eventManager nubbitMoving];
 
-  return v3;
+  return nubbitMoving;
 }
 
-- (void)_menuOpenTracker:(CGPoint)a3
+- (void)_menuOpenTracker:(CGPoint)tracker
 {
-  y = a3.y;
-  x = a3.x;
+  y = tracker.y;
+  x = tracker.x;
   if (![(HNDHandManager *)self openMenuWithSwaggle])
   {
     return;
@@ -5399,8 +5399,8 @@ LABEL_13:
     }
   }
 
-  v7 = [(HNDHandManager *)self currentDisplayManager];
-  [v7 screenBounds];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  [currentDisplayManager screenBounds];
   v11 = sub_1000429B0(1, x, y, v8, v9, v10);
   v13 = v12;
 
@@ -5470,8 +5470,8 @@ LABEL_23:
 + (double)displayCornerRadius
 {
   v2 = +[UIScreen mainScreen];
-  v3 = [v2 traitCollection];
-  [v3 displayCornerRadius];
+  traitCollection = [v2 traitCollection];
+  [traitCollection displayCornerRadius];
   v5 = v4;
 
   if (v5 == _UITraitCollectionDisplayCornerRadiusUnspecified)
@@ -5489,11 +5489,11 @@ LABEL_23:
   return v5;
 }
 
-+ (CGPoint)_pointByAvoidingDisplayCornerRadius:(double)a3 forPoint:(CGPoint)a4
++ (CGPoint)_pointByAvoidingDisplayCornerRadius:(double)radius forPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  if (a3 <= 0.0)
+  y = point.y;
+  x = point.x;
+  if (radius <= 0.0)
   {
     v7 = ASTLogMouse();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -5505,7 +5505,7 @@ LABEL_23:
   v8 = qword_1002189E0;
   if (qword_1002189E0)
   {
-    v9 = *&qword_1002189E8 == a3;
+    v9 = *&qword_1002189E8 == radius;
   }
 
   else
@@ -5519,7 +5519,7 @@ LABEL_23:
     v11 = qword_1002189E0;
     qword_1002189E0 = v10;
 
-    qword_1002189E8 = *&a3;
+    qword_1002189E8 = *&radius;
     v8 = qword_1002189E0;
   }
 
@@ -5532,24 +5532,24 @@ LABEL_23:
     v16 = [HNDHandManager screenFrame:]_0();
     if (x <= v13)
     {
-      v20 = CGRectGetMinX(*&v16) + a3;
+      v20 = CGRectGetMinX(*&v16) + radius;
     }
 
     else
     {
-      v20 = CGRectGetMaxX(*&v16) - a3;
+      v20 = CGRectGetMaxX(*&v16) - radius;
     }
 
     v39 = v20;
     v21 = [HNDHandManager screenFrame:]_0();
     if (y <= v15)
     {
-      v25 = CGRectGetMinY(*&v21) + a3;
+      v25 = CGRectGetMinY(*&v21) + radius;
     }
 
     else
     {
-      v25 = CGRectGetMaxY(*&v21) - a3;
+      v25 = CGRectGetMaxY(*&v21) - radius;
     }
 
     v26 = atan2(y - v25, x - v39);
@@ -5609,43 +5609,43 @@ LABEL_29:
   return result;
 }
 
-- (void)setupWindow:(id)a3 ignoredWindow:(id)a4 trackpadWindow:(id)a5
+- (void)setupWindow:(id)window ignoredWindow:(id)ignoredWindow trackpadWindow:(id)trackpadWindow
 {
-  v8 = a3;
-  v9 = a4;
-  v25 = a5;
+  windowCopy = window;
+  ignoredWindowCopy = ignoredWindow;
+  trackpadWindowCopy = trackpadWindow;
   block = _NSConcreteStackBlock;
   v28 = 3221225472;
   v29 = sub_100030DF4;
   v30 = &unk_1001D3488;
-  v31 = self;
+  selfCopy = self;
   if (qword_1002189F0 != -1)
   {
     dispatch_once(&qword_1002189F0, &block);
   }
 
   systemPointerController = self->_systemPointerController;
-  v11 = [v8 screen];
-  v12 = [v11 displayConfiguration];
-  v13 = [v12 hardwareIdentifier];
-  v14 = [v8 screen];
-  v15 = [v14 displayIdentity];
-  -[HNDSystemPointerController requestGlobalMouseEventsForDisplay:displayID:targetContextID:](systemPointerController, "requestGlobalMouseEventsForDisplay:displayID:targetContextID:", v13, [v15 displayID], objc_msgSend(v8, "_contextId"));
+  screen = [windowCopy screen];
+  displayConfiguration = [screen displayConfiguration];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+  screen2 = [windowCopy screen];
+  displayIdentity = [screen2 displayIdentity];
+  -[HNDSystemPointerController requestGlobalMouseEventsForDisplay:displayID:targetContextID:](systemPointerController, "requestGlobalMouseEventsForDisplay:displayID:targetContextID:", hardwareIdentifier, [displayIdentity displayID], objc_msgSend(windowCopy, "_contextId"));
 
-  v16 = v9;
-  v17 = [[HNDDisplayManager alloc] initWithWindow:v8 ignoredWindow:v9 trackpadWindow:v26];
+  v16 = ignoredWindowCopy;
+  v17 = [[HNDDisplayManager alloc] initWithWindow:windowCopy ignoredWindow:ignoredWindowCopy trackpadWindow:v26];
   [(NSMutableArray *)self->_displayManagers addObject:v17];
   [(HNDDisplayManager *)v17 setAlwaysShowMenu:[(HNDHandManager *)self alwaysShowMenu]];
   [(HNDDisplayManager *)v17 setHandManager:self];
-  v18 = [v8 screen];
-  v19 = [v18 displayConfiguration];
-  v20 = [v19 hardwareIdentifier];
-  [(HNDDisplayManager *)v17 setHardwareIdentifier:v20];
+  screen3 = [windowCopy screen];
+  displayConfiguration2 = [screen3 displayConfiguration];
+  hardwareIdentifier2 = [displayConfiguration2 hardwareIdentifier];
+  [(HNDDisplayManager *)v17 setHardwareIdentifier:hardwareIdentifier2];
 
-  v21 = [v8 screen];
+  screen4 = [windowCopy screen];
   v22 = +[UIScreen mainScreen];
 
-  if (v21 == v22)
+  if (screen4 == v22)
   {
     [(HNDDisplayManager *)v17 setIsMainDisplay:1];
     orientation = self->_orientation;
@@ -5657,25 +5657,25 @@ LABEL_29:
   }
 
   [(HNDDisplayManager *)v17 setOrientation:orientation withCompletion:0];
-  v24 = [(HNDDisplayManager *)v17 fingerController];
-  [v24 setAppearanceDelegate:self];
+  fingerController = [(HNDDisplayManager *)v17 fingerController];
+  [fingerController setAppearanceDelegate:self];
 
   [(HNDDisplayManager *)v17 updateAutoHideMousePointer];
   [(HNDHandManager *)self restartEverything];
 }
 
-- (void)sceneDidConnect:(id)a3
+- (void)sceneDidConnect:(id)connect
 {
   if (+[HNDAccessibilityManager accessibilityEnabled])
   {
     v5 = +[HNDAccessibilityManager sharedManager];
     v3 = +[HNDHandManager sharedManager];
-    v4 = [v3 displayManagers];
-    [v5 displaysDidChange:v4];
+    displayManagers = [v3 displayManagers];
+    [v5 displaysDidChange:displayManagers];
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v12 = 0;
   v13 = &v12;
@@ -5687,54 +5687,54 @@ LABEL_29:
   v8[1] = 3221225472;
   v8[2] = sub_10003105C;
   v8[3] = &unk_1001D4328;
-  v4 = a3;
-  v10 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
+  v9 = disconnectCopy;
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v8];
   [(NSMutableArray *)self->_displayManagers removeObject:v13[5]];
   if (+[HNDAccessibilityManager accessibilityEnabled])
   {
     v5 = +[HNDAccessibilityManager sharedManager];
     v6 = +[HNDHandManager sharedManager];
-    v7 = [v6 displayManagers];
-    [v5 displaysDidChange:v7];
+    displayManagers = [v6 displayManagers];
+    [v5 displaysDidChange:displayManagers];
   }
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)moveFingerByDelta:(CGPoint)a3
+- (void)moveFingerByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != CGPointZero.x || a3.y != CGPointZero.y)
+  y = delta.y;
+  x = delta.x;
+  if (delta.x != CGPointZero.x || delta.y != CGPointZero.y)
   {
-    v18 = [(HNDHandManager *)self currentDisplayManager];
-    [v18 normalizedPointForDifference:{x, y}];
+    currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+    [currentDisplayManager normalizedPointForDifference:{x, y}];
     v8 = v7;
     v10 = v9;
-    [v18 screenBounds];
+    [currentDisplayManager screenBounds];
     v14 = sub_1000429B0(0, v8, v10, v11, v12, v13);
     v16 = v15;
-    v17 = [v18 hardwareIdentifier];
-    [(HNDHandManager *)self moveFingerToPoint:v17 onDisplay:v14, v16];
+    hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+    [(HNDHandManager *)self moveFingerToPoint:hardwareIdentifier onDisplay:v14, v16];
   }
 }
 
-- (void)moveFingerToPoint:(CGPoint)a3
+- (void)moveFingerToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-  [(HNDHandManager *)self moveFingerToPoint:v6 onDisplay:x, y];
+  y = point.y;
+  x = point.x;
+  currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+  [(HNDHandManager *)self moveFingerToPoint:currentHardwareIdentifierForPointer onDisplay:x, y];
 }
 
-- (void)moveFingerToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)moveFingerToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if ([(HNDHandManager *)self inPinchMode])
   {
     primaryButtonDown = self->_primaryButtonDown;
@@ -5746,22 +5746,22 @@ LABEL_29:
   }
 
   v9 = primaryButtonDown;
-  [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+  [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   v76[0] = _NSConcreteStackBlock;
   v76[1] = 3221225472;
   v76[2] = sub_1000319F0;
   v10 = v76[3] = &unk_1001D4350;
   v77 = v10;
-  v78 = self;
+  selfCopy = self;
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v76];
   [objc_opt_class() displayCornerRadius];
   if (v11 > 0.0)
   {
     v12 = v11;
-    v13 = [(HNDHandManager *)self currentDisplayManager];
-    v14 = [v13 isMainDisplay];
+    currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+    isMainDisplay = [currentDisplayManager isMainDisplay];
 
-    if (v14)
+    if (isMainDisplay)
     {
       [v10 convertPointToPortraitUpOrientation:{x, y}];
       v16 = v15;
@@ -5769,8 +5769,8 @@ LABEL_29:
       [v10 portraitUpScreenBounds];
       v20 = fmax(fmin(v16, v19), 0.0);
       v22 = fmax(fmin(v18, v21), 0.0);
-      v23 = [(HNDHandManager *)self currentDisplayManager];
-      [v23 convertPointToInterfaceOrientation:{v20, v22}];
+      currentDisplayManager2 = [(HNDHandManager *)self currentDisplayManager];
+      [currentDisplayManager2 convertPointToInterfaceOrientation:{v20, v22}];
       v25 = v24;
       v27 = v26;
 
@@ -5787,7 +5787,7 @@ LABEL_29:
   v37 = v36;
   v39 = v38;
   [v10 convertPointToPortraitUpOrientation:{x, y}];
-  [(HNDHandManager *)self processPortraitUpPointForElementHitTesting:v7 onDisplay:?];
+  [(HNDHandManager *)self processPortraitUpPointForElementHitTesting:displayCopy onDisplay:?];
   [v10 screenPoint];
   if (vabdd_f64(x, v40) >= 0.001)
   {
@@ -5816,12 +5816,12 @@ LABEL_29:
 
   if ([(HNDHandManager *)self currentlySnappedInBubbleMode])
   {
-    v44 = [(HNDHandManager *)self isVirtualTrackpadVisible];
+    isVirtualTrackpadVisible = [(HNDHandManager *)self isVirtualTrackpadVisible];
   }
 
   else
   {
-    v44 = 1;
+    isVirtualTrackpadVisible = 1;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
@@ -5830,8 +5830,8 @@ LABEL_29:
   v49 = [v10 hoverMovedToNormalizedPoint:v9 ^ 1u shouldUpdateCurrentPoint:{v33, v35}];
   if (v49 && CFAbsoluteTimeGetCurrent() - *&qword_100215560 > 4.0)
   {
-    v50 = [(HNDHandManager *)self eventManager];
-    [v50 wakeDeviceFromSleepIfNecessary];
+    eventManager = [(HNDHandManager *)self eventManager];
+    [eventManager wakeDeviceFromSleepIfNecessary];
 
     qword_100215560 = *&Current;
   }
@@ -5843,13 +5843,13 @@ LABEL_29:
 
   if (v9)
   {
-    [(HNDHandManager *)self _modifyPinchToolMoveToPoint:v7 onDisplay:x, y];
+    [(HNDHandManager *)self _modifyPinchToolMoveToPoint:displayCopy onDisplay:x, y];
     goto LABEL_41;
   }
 
   if ([(HNDHandManager *)self inDragMode]&& self->_isDragNubbitMode)
   {
-    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:1 allowOutOfBounds:x, y];
+    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:1 allowOutOfBounds:x, y];
     if (sub_100042C64())
     {
       v51 = 0.15;
@@ -5874,14 +5874,14 @@ LABEL_29:
 
   if ([(HNDHandManager *)self inContinuousScrollMode])
   {
-    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:1 allowOutOfBounds:x, y];
-    [(HNDHandManager *)self processOrientedPointForContinuousScrolling:v7 onDisplay:x, y];
+    [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:1 allowOutOfBounds:x, y];
+    [(HNDHandManager *)self processOrientedPointForContinuousScrolling:displayCopy onDisplay:x, y];
     goto LABEL_41;
   }
 
-  if (![(HNDHandManager *)self currentlySnappedInBubbleMode]|| (self->_continuousPathGestureState - 1 < 2) | v44 & 1)
+  if (![(HNDHandManager *)self currentlySnappedInBubbleMode]|| (self->_continuousPathGestureState - 1 < 2) | isVirtualTrackpadVisible & 1)
   {
-    v53 = [(HNDHandManager *)self _shouldLockIntoHotCornerAtNormalizedPoint:v7 onDisplay:v37, v39];
+    v53 = [(HNDHandManager *)self _shouldLockIntoHotCornerAtNormalizedPoint:displayCopy onDisplay:v37, v39];
     if ([(HNDHandManager *)self _shouldLockIntoNubbitAtPoint:x, y])
     {
       if (self->_hoverNubbitLocked)
@@ -5899,7 +5899,7 @@ LABEL_29:
       v65[4] = self;
       v67 = v54;
       v68 = v55;
-      v66 = v7;
+      v66 = displayCopy;
       [UIView animateWithDuration:v65 animations:0.15];
       v52 = v66;
 LABEL_40:
@@ -5914,10 +5914,10 @@ LABEL_40:
       v58 = 3221225472;
       v59 = sub_100031B14;
       v60 = &unk_1001D43A0;
-      v61 = self;
+      selfCopy2 = self;
       v63 = x;
       v64 = y;
-      v62 = v7;
+      v62 = displayCopy;
       [UIView animateWithDuration:&v57 animations:0.15];
       v52 = v62;
       goto LABEL_40;
@@ -5927,7 +5927,7 @@ LABEL_40:
     {
       if (!self->_hotCornerLocked)
       {
-        [(HNDHandManager *)self _lockIntoHotCornerForOrientedNormalizedPoint:v7 onDisplay:1 cancelDwell:v37, v39];
+        [(HNDHandManager *)self _lockIntoHotCornerForOrientedNormalizedPoint:displayCopy onDisplay:1 cancelDwell:v37, v39];
       }
     }
 
@@ -5939,16 +5939,16 @@ LABEL_40:
         [(HNDHandManager *)self cancelDwellTimer];
       }
 
-      [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v7 onDisplay:1 allowOutOfBounds:x, y];
+      [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:1 allowOutOfBounds:x, y];
     }
   }
 
 LABEL_41:
   -[HNDHandManager _updateZoomWithDisplayPoint:onDisplay:](self, "_updateZoomWithDisplayPoint:onDisplay:", [v10 displayID], x, y);
-  if ([(HNDHandManager *)self dwellControlEnabled]&& [(HNDHandManager *)self _isInNubbitHitbox:v7 onDisplay:x, y])
+  if ([(HNDHandManager *)self dwellControlEnabled]&& [(HNDHandManager *)self _isInNubbitHitbox:displayCopy onDisplay:x, y])
   {
-    v56 = [v10 rocker];
-    [v56 highlightNubbit];
+    rocker = [v10 rocker];
+    [rocker highlightNubbit];
 
     [(HNDHandManager *)self _highlightFingers];
   }
@@ -5993,61 +5993,61 @@ LABEL_57:
 LABEL_59:
 }
 
-- (void)_lockIntoHotCornerForOrientedNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4 cancelDwell:(BOOL)a5
+- (void)_lockIntoHotCornerForOrientedNormalizedPoint:(CGPoint)point onDisplay:(id)display cancelDwell:(BOOL)dwell
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  dwellCopy = dwell;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   self->_hotCornerLocked = 1;
-  if (v5)
+  if (dwellCopy)
   {
     [(HNDHandManager *)self cancelDwellTimer];
   }
 
   [(HNDHandManager *)self _highlightFingers];
-  [(HNDHandManager *)self _pointForLockedCorner:[(HNDHandManager *)self _hotCornerForNormalizedPoint:v9 onDisplay:x onDisplay:y], v9];
-  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:v9 onDisplay:1 allowOutOfBounds:?];
+  [(HNDHandManager *)self _pointForLockedCorner:[(HNDHandManager *)self _hotCornerForNormalizedPoint:displayCopy onDisplay:x onDisplay:y], displayCopy];
+  [(HNDHandManager *)self moveFingersToPointInFingerCoordinateSpace:displayCopy onDisplay:1 allowOutOfBounds:?];
 }
 
-- (BOOL)_shouldLockIntoNubbitAtPoint:(CGPoint)a3
+- (BOOL)_shouldLockIntoNubbitAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-  if ([(HNDHandManager *)self _isInNubbitHitbox:v6 onDisplay:x, y])
+  y = point.y;
+  x = point.x;
+  currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+  if ([(HNDHandManager *)self _isInNubbitHitbox:currentHardwareIdentifierForPointer onDisplay:x, y])
   {
-    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v6];
+    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:currentHardwareIdentifierForPointer];
     if ([v7 isMenuVisible])
     {
-      v8 = 0;
+      mainDeviceIsMotionTracker = 0;
     }
 
     else
     {
-      v9 = [(HNDHandManager *)self deviceManager];
-      v8 = [v9 mainDeviceIsMotionTracker];
+      deviceManager = [(HNDHandManager *)self deviceManager];
+      mainDeviceIsMotionTracker = [deviceManager mainDeviceIsMotionTracker];
     }
   }
 
   else
   {
-    v8 = 0;
+    mainDeviceIsMotionTracker = 0;
   }
 
-  return v8;
+  return mainDeviceIsMotionTracker;
 }
 
-- (CGRect)_paddedHitboxForNubbitOnDisplay:(id)a3 activationFactor:(double)a4
+- (CGRect)_paddedHitboxForNubbitOnDisplay:(id)display activationFactor:(double)factor
 {
-  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a3, a4];
-  v5 = [v4 rocker];
-  [v5 alpha];
+  factor = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display, factor];
+  rocker = [factor rocker];
+  [rocker alpha];
   v7 = fabs(v6);
 
   if (v7 >= 0.001)
   {
-    [v4 rockerFrame];
+    [factor rockerFrame];
     v17 = CGRectInset(v16, v16.size.width * -0.18, v16.size.height * -0.18);
     x = v17.origin.x;
     y = v17.origin.y;
@@ -6074,13 +6074,13 @@ LABEL_59:
   return result;
 }
 
-- (BOOL)_isInNubbitHitbox:(CGPoint)a3 onDisplay:(id)a4
+- (BOOL)_isInNubbitHitbox:(CGPoint)hitbox onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = hitbox.y;
+  x = hitbox.x;
+  displayCopy = display;
   [(HNDHandManager *)self _defaultNubbitHitboxActivationFactor];
-  [(HNDHandManager *)self _paddedHitboxForNubbitOnDisplay:v7 activationFactor:?];
+  [(HNDHandManager *)self _paddedHitboxForNubbitOnDisplay:displayCopy activationFactor:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -6105,11 +6105,11 @@ LABEL_59:
   return CGRectContainsPoint(*&v17, *&v21);
 }
 
-- (BOOL)_isInNubbitHitbox:(CGPoint)a3 onDisplay:(id)a4 activationFactor:(double)a5
+- (BOOL)_isInNubbitHitbox:(CGPoint)hitbox onDisplay:(id)display activationFactor:(double)factor
 {
-  y = a3.y;
-  x = a3.x;
-  [(HNDHandManager *)self _paddedHitboxForNubbitOnDisplay:a4 activationFactor:a5];
+  y = hitbox.y;
+  x = hitbox.x;
+  [(HNDHandManager *)self _paddedHitboxForNubbitOnDisplay:display activationFactor:factor];
   v7 = v19.origin.x;
   v8 = v19.origin.y;
   width = v19.size.width;
@@ -6129,11 +6129,11 @@ LABEL_59:
   return CGRectContainsPoint(*&v12, *&v16);
 }
 
-- (void)_updateZoomWithDisplayPoint:(CGPoint)a3 onDisplay:(unsigned int)a4
+- (void)_updateZoomWithDisplayPoint:(CGPoint)point onDisplay:(unsigned int)display
 {
-  v4 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v4 = *&display;
+  y = point.y;
+  x = point.x;
   if (_AXSZoomTouchEnabled())
   {
     v7 = +[ZoomServices sharedInstance];
@@ -6143,23 +6143,23 @@ LABEL_59:
     if (v9 >= 2.22044605e-16 && (sub_100042C64() & 1) == 0)
     {
       v10 = +[AXSettings sharedInstance];
-      v11 = [v10 assistiveTouchMouseZoomPanningStyle];
+      assistiveTouchMouseZoomPanningStyle = [v10 assistiveTouchMouseZoomPanningStyle];
 
       v12 = +[ZoomServices sharedInstance];
-      [v12 autoPanZoomUsingLocation:v11 withPanningStyle:v4 onDisplay:{x, y}];
+      [v12 autoPanZoomUsingLocation:assistiveTouchMouseZoomPanningStyle withPanningStyle:v4 onDisplay:{x, y}];
     }
   }
 }
 
-- (void)_showFingersIfNeededForMouseOnDisplay:(id)a3
+- (void)_showFingersIfNeededForMouseOnDisplay:(id)display
 {
-  v6 = a3;
+  displayCopy = display;
   v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:?];
-  v5 = [v4 fingerController];
+  fingerController = [v4 fingerController];
 
-  if (-[HNDHandManager mouseBehavesLikeFinger](self, "mouseBehavesLikeFinger") && ![v5 numberOfFingers])
+  if (-[HNDHandManager mouseBehavesLikeFinger](self, "mouseBehavesLikeFinger") && ![fingerController numberOfFingers])
   {
-    [(HNDHandManager *)self resetFingersIfNeededOnDisplay:v6];
+    [(HNDHandManager *)self resetFingersIfNeededOnDisplay:displayCopy];
   }
 }
 
@@ -6193,14 +6193,14 @@ LABEL_59:
 
       else
       {
-        v4 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-        if ([v4 hasAllTraits:kAXAutoCorrectCandidateTrait])
+        currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+        if ([currentBubbleModeFocusedElement hasAllTraits:kAXAutoCorrectCandidateTrait])
         {
-          [v4 simulateTapWithFingerIndex:2];
+          [currentBubbleModeFocusedElement simulateTapWithFingerIndex:2];
           AXPerformBlockOnMainThreadAfterDelay();
         }
 
-        else if ([v4 isKeyboardKey] && (objc_msgSend(v4, "axIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"space"), v5, !v6))
+        else if ([currentBubbleModeFocusedElement isKeyboardKey] && (objc_msgSend(currentBubbleModeFocusedElement, "axIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"space"), v5, !v6))
         {
           [(HNDHandManager *)self _updateContinuousSlideGesture];
         }
@@ -6218,15 +6218,15 @@ LABEL_59:
 
 - (void)_updateContinuousSlideGesture
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  v4 = [v3 keyboardSlideFingerController];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  keyboardSlideFingerController = [currentDisplayManager keyboardSlideFingerController];
   [(HNDHandManager *)self currentPointForPointer];
   v6 = v5;
   v8 = v7;
   [(HNDHandManager *)self lastSelectedKeyboardSlidePoint];
   if (v10 != -1.0 || v9 != -1.0)
   {
-    v12 = [(HNDHandManager *)self hasPerformedFirstKeyboardSlideMovement];
+    hasPerformedFirstKeyboardSlideMovement = [(HNDHandManager *)self hasPerformedFirstKeyboardSlideMovement];
     [(HNDHandManager *)self lastSelectedKeyboardSlidePoint];
     v14 = v13;
     v16 = v15;
@@ -6241,16 +6241,16 @@ LABEL_59:
     v21 = [NSArray arrayWithObjects:v19, v20, 0];
     v22 = [AXNamedReplayableGesture lineGestureBetweenPoints:v21 duration:1 numberOfFingers:v18];
 
-    if (v12)
+    if (hasPerformedFirstKeyboardSlideMovement)
     {
-      [v4 continueWithGesture:v22];
+      [keyboardSlideFingerController continueWithGesture:v22];
     }
 
     else
     {
-      v38 = [(HNDHandManager *)self keyboardSlideStartElement];
-      v39 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-      v40 = [v38 isEqual:v39];
+      keyboardSlideStartElement = [(HNDHandManager *)self keyboardSlideStartElement];
+      currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+      v40 = [keyboardSlideStartElement isEqual:currentBubbleModeFocusedElement];
 
       if (v40)
       {
@@ -6259,7 +6259,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      [v4 startGesture:v22];
+      [keyboardSlideFingerController startGesture:v22];
       [(HNDHandManager *)self setHasPerformedFirstKeyboardSlideMovement:1];
     }
 
@@ -6267,9 +6267,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v23 = [v3 fingerController];
-  v24 = [v23 fingerContainerView];
-  [v24 bounds];
+  fingerController = [currentDisplayManager fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v29 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:1 aroundPoint:v6 withinBounds:v8, v25, v26, v27, v28];
 
   v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v29 count]);
@@ -6307,7 +6307,7 @@ LABEL_18:
     while (v33);
   }
 
-  [v4 showFingerModels:v30 animated:1 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+  [keyboardSlideFingerController showFingerModels:v30 animated:1 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
   [(HNDHandManager *)self setLastSelectedKeyboardSlidePoint:v6, v8];
 
 LABEL_19:
@@ -6315,8 +6315,8 @@ LABEL_19:
 
 - (void)_endContinuousSlideGesture
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  [v3 keyboardSlideFingerController];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  [currentDisplayManager keyboardSlideFingerController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100032614;
@@ -6329,7 +6329,7 @@ LABEL_19:
 
 - (void)_dwellTimerFired
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
   if ([(HNDHandManager *)self _continuousPathGestureHandledDwellTimer])
   {
     goto LABEL_30;
@@ -6340,21 +6340,21 @@ LABEL_19:
     if (AXDeviceSupportsOnDeviceEyeTracking())
     {
       v4 = +[AXSettings sharedInstance];
-      v5 = [v4 onDeviceEyeTrackingEnabled];
+      onDeviceEyeTrackingEnabled = [v4 onDeviceEyeTrackingEnabled];
 
-      if (v5)
+      if (onDeviceEyeTrackingEnabled)
       {
         if (![(HNDHandManager *)self isCurrentlySelectingKeyboardKey])
         {
           v6 = +[AXSettings sharedInstance];
           if ([v6 assistiveTouchEyeTrackingUseZoomForKeyboardKeys])
           {
-            v7 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-            v8 = [v7 isKeyboardKey];
+            currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+            isKeyboardKey = [currentBubbleModeFocusedElement isKeyboardKey];
 
-            if (v8)
+            if (isKeyboardKey)
             {
-              [v3 setNeedsToShowZoomWindow:1];
+              [currentDisplayManager setNeedsToShowZoomWindow:1];
               [(HNDHandManager *)self setCurrentlySelectingKeyboardKey:1];
             }
           }
@@ -6364,18 +6364,18 @@ LABEL_19:
           }
         }
 
-        v23 = [v3 needsToShowZoomWindow];
-        [v3 showZoomWindow];
-        if (([v3 needsToShowZoomWindow] & 1) == 0)
+        needsToShowZoomWindow = [currentDisplayManager needsToShowZoomWindow];
+        [currentDisplayManager showZoomWindow];
+        if (([currentDisplayManager needsToShowZoomWindow] & 1) == 0)
         {
           [(HNDHandManager *)self activateCurrentBubbleModeFocusedElement];
           [(HNDHandManager *)self setCurrentlySelectingKeyboardKey:0];
         }
 
 LABEL_22:
-        if (v23)
+        if (needsToShowZoomWindow)
         {
-          [v3 setNeedsToShowZoomWindow:0];
+          [currentDisplayManager setNeedsToShowZoomWindow:0];
         }
 
         goto LABEL_24;
@@ -6387,53 +6387,53 @@ LABEL_22:
 
   else
   {
-    v9 = [v3 fingerController];
-    v10 = [v9 numberOfFingers];
+    fingerController = [currentDisplayManager fingerController];
+    numberOfFingers = [fingerController numberOfFingers];
 
-    if (v10)
+    if (numberOfFingers)
     {
       [(HNDHandManager *)self setCurrentlySelectedKeyboardRow:0];
       if (self->_hotCornerLocked)
       {
-        v11 = [v3 fingerController];
-        v12 = [v11 fingerModels];
-        v13 = [v12 objectAtIndexedSubscript:0];
+        fingerController2 = [currentDisplayManager fingerController];
+        fingerModels = [fingerController2 fingerModels];
+        v13 = [fingerModels objectAtIndexedSubscript:0];
         [v13 location];
-        [v3 convertToNormalizedInterfaceOrientation:?];
+        [currentDisplayManager convertToNormalizedInterfaceOrientation:?];
         v15 = v14;
         v17 = v16;
 
-        v18 = [v3 hardwareIdentifier];
-        v19 = [(HNDHandManager *)self _hotCornerForNormalizedPoint:v18 onDisplay:v15, v17];
+        hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+        v19 = [(HNDHandManager *)self _hotCornerForNormalizedPoint:hardwareIdentifier onDisplay:v15, v17];
 
         if (v19)
         {
           self->_hotCornerLocked = 0;
-          v20 = [v3 hardwareIdentifier];
-          [(HNDHandManager *)self _performActionForHotCorner:v19 onDisplay:v20];
+          hardwareIdentifier2 = [currentDisplayManager hardwareIdentifier];
+          [(HNDHandManager *)self _performActionForHotCorner:v19 onDisplay:hardwareIdentifier2];
         }
 
         goto LABEL_24;
       }
 
       v21 = +[AXSettings sharedInstance];
-      v22 = [v21 onDeviceEyeTrackingEnabled];
+      onDeviceEyeTrackingEnabled2 = [v21 onDeviceEyeTrackingEnabled];
 
-      if (v22)
+      if (onDeviceEyeTrackingEnabled2)
       {
-        v23 = [v3 needsToShowZoomWindow];
-        [v3 showZoomWindow];
-        if (([v3 needsToShowZoomWindow] & 1) == 0)
+        needsToShowZoomWindow = [currentDisplayManager needsToShowZoomWindow];
+        [currentDisplayManager showZoomWindow];
+        if (([currentDisplayManager needsToShowZoomWindow] & 1) == 0)
         {
-          v24 = [v3 hardwareIdentifier];
-          [(HNDHandManager *)self _performDwellActionOnDisplay:v24];
+          hardwareIdentifier3 = [currentDisplayManager hardwareIdentifier];
+          [(HNDHandManager *)self _performDwellActionOnDisplay:hardwareIdentifier3];
         }
 
         goto LABEL_22;
       }
 
-      v25 = [v3 hardwareIdentifier];
-      [(HNDHandManager *)self _performDwellActionOnDisplay:v25];
+      hardwareIdentifier4 = [currentDisplayManager hardwareIdentifier];
+      [(HNDHandManager *)self _performDwellActionOnDisplay:hardwareIdentifier4];
     }
   }
 
@@ -6441,7 +6441,7 @@ LABEL_24:
   if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
   {
     [(HNDHandManager *)self setEyeTrackingAutoHideFinished:0];
-    if (!-[HNDHandManager hidePointerForEyeTrackingAutoHide](self, "hidePointerForEyeTrackingAutoHide") && ([v3 isMenuVisible] & 1) == 0)
+    if (!-[HNDHandManager hidePointerForEyeTrackingAutoHide](self, "hidePointerForEyeTrackingAutoHide") && ([currentDisplayManager isMenuVisible] & 1) == 0)
     {
       [(HNDHandManager *)self setHidePointerForEyeTrackingAutoHide:1];
       [(HNDHandManager *)self _hideCursorsForEyeTrackingAutoHide];
@@ -6456,15 +6456,15 @@ LABEL_24:
 LABEL_30:
 }
 
-- (void)_performDwellActionOnDisplay:(id)a3
+- (void)_performDwellActionOnDisplay:(id)display
 {
   v5 = AXAssistiveTouchIconTypeDwellClick;
-  v6 = a3;
+  displayCopy = display;
   [(HNDHandManager *)self currentPointForPointer];
   v8 = v7;
   v10 = v9;
-  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v6];
-  v12 = [(HNDHandManager *)self _isInNubbitHitbox:v6 onDisplay:v8, v10];
+  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  v12 = [(HNDHandManager *)self _isInNubbitHitbox:displayCopy onDisplay:v8, v10];
 
   if ((v12 & 1) != 0 || self->_hoverNubbitLocked || [v11 isMenuVisible])
   {
@@ -6507,9 +6507,9 @@ LABEL_30:
 - (void)_resetDwellDueToFingersReset
 {
   [(HNDHandManager *)self setDwellMode:[(HNDHandManager *)self _defaultDwellMode]];
-  v3 = [(HNDHandManager *)self dwellControlPaused];
+  dwellControlPaused = [(HNDHandManager *)self dwellControlPaused];
   v4 = &AXAssistiveTouchIconTypeDwellPause;
-  if (!v3)
+  if (!dwellControlPaused)
   {
     v4 = &AXAssistiveTouchIconTypeDwellClick;
   }
@@ -6530,14 +6530,14 @@ LABEL_30:
   if ([(HNDHandManager *)self dwellControlAutorevertEnabled])
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 assistiveTouchMouseDwellControlAutorevertAction];
+    assistiveTouchMouseDwellControlAutorevertAction = [v3 assistiveTouchMouseDwellControlAutorevertAction];
 
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100032DE0;
     v6[3] = &unk_1001D36C0;
-    v7 = v4;
-    v5 = v4;
+    v7 = assistiveTouchMouseDwellControlAutorevertAction;
+    v5 = assistiveTouchMouseDwellControlAutorevertAction;
     [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v6];
   }
 
@@ -6556,15 +6556,15 @@ LABEL_30:
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseDwellControlAutorevertAction];
+  assistiveTouchMouseDwellControlAutorevertAction = [v3 assistiveTouchMouseDwellControlAutorevertAction];
 
-  if ([v4 isEqualToString:AXAssistiveTouchIconTypeDwellClick])
+  if ([assistiveTouchMouseDwellControlAutorevertAction isEqualToString:AXAssistiveTouchIconTypeDwellClick])
   {
 
     return 1;
   }
 
-  v6 = [v4 isEqualToString:AXAssistiveTouchIconTypeDwellPause];
+  v6 = [assistiveTouchMouseDwellControlAutorevertAction isEqualToString:AXAssistiveTouchIconTypeDwellPause];
 
   if (v6)
   {
@@ -6577,26 +6577,26 @@ LABEL_30:
   }
 }
 
-- (void)_performActionForHotCorner:(unint64_t)a3 onDisplay:(id)a4
+- (void)_performActionForHotCorner:(unint64_t)corner onDisplay:(id)display
 {
-  v8 = a4;
-  v6 = [HNDHandManager _actionForHotCorner:a3];
+  displayCopy = display;
+  v6 = [HNDHandManager _actionForHotCorner:corner];
   if (v6)
   {
-    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v8];
+    v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     [v7 activateAssistiveTouchAction:v6 fromButtonPress:0];
   }
 }
 
-+ (id)_actionForHotCorner:(unint64_t)a3
++ (id)_actionForHotCorner:(unint64_t)corner
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMouseDwellControlCornerCustomization];
+  assistiveTouchMouseDwellControlCornerCustomization = [v4 assistiveTouchMouseDwellControlCornerCustomization];
 
-  v6 = a3 - 1;
-  if (a3 - 1 <= 7 && ((0x8Bu >> v6) & 1) != 0)
+  v6 = corner - 1;
+  if (corner - 1 <= 7 && ((0x8Bu >> v6) & 1) != 0)
   {
-    v7 = [v5 objectForKey:**(&off_1001D4798 + v6)];
+    v7 = [assistiveTouchMouseDwellControlCornerCustomization objectForKey:**(&off_1001D4798 + v6)];
   }
 
   else
@@ -6617,25 +6617,25 @@ LABEL_30:
   return v8;
 }
 
-- (unint64_t)_cornerForNormalizedPoint:(CGPoint)a3 normalizedPadding:(CGSize)a4
+- (unint64_t)_cornerForNormalizedPoint:(CGPoint)point normalizedPadding:(CGSize)padding
 {
-  if (a3.x < a4.width && a3.y < a4.height)
+  if (point.x < padding.width && point.y < padding.height)
   {
     return 1;
   }
 
-  if (a3.x > 1.0 - a4.width && a3.y < a4.height)
+  if (point.x > 1.0 - padding.width && point.y < padding.height)
   {
     return 2;
   }
 
-  v6 = 1.0 - a4.height;
-  if (a3.x < a4.width && a3.y > v6)
+  v6 = 1.0 - padding.height;
+  if (point.x < padding.width && point.y > v6)
   {
     return 4;
   }
 
-  if (a3.y <= v6 || a3.x <= 1.0 - a4.width)
+  if (point.y <= v6 || point.x <= 1.0 - padding.width)
   {
     return 0;
   }
@@ -6646,13 +6646,13 @@ LABEL_30:
   }
 }
 
-- (CGSize)_hotCornerActivationSizeOnDisplay:(id)a3
+- (CGSize)_hotCornerActivationSizeOnDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self deviceManager];
-  v6 = [v5 mainDeviceIsMotionTracker];
+  displayCopy = display;
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  mainDeviceIsMotionTracker = [deviceManager mainDeviceIsMotionTracker];
 
-  if (v6)
+  if (mainDeviceIsMotionTracker)
   {
     if (self->_hotCornerLocked)
     {
@@ -6679,7 +6679,7 @@ LABEL_30:
   else
   {
     v9 = v8 - sqrt(v8 * v8 * 0.5);
-    v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
+    v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     [v10 convertToNormalizedInterfaceOrientation:{v9, v9}];
     v12 = v11;
     v14 = v13;
@@ -6695,28 +6695,28 @@ LABEL_30:
   return result;
 }
 
-- (unint64_t)_hotCornerForNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4
+- (unint64_t)_hotCornerForNormalizedPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(HNDHandManager *)self _fingerRadiusOnDisplay:v7];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  [(HNDHandManager *)self _fingerRadiusOnDisplay:displayCopy];
   v9 = v8;
-  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
+  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
   [v10 convertToNormalizedInterfaceOrientation:{v9, v9}];
   v12 = v11;
   v14 = v13;
 
-  [(HNDHandManager *)self _hotCornerActivationSizeOnDisplay:v7];
+  [(HNDHandManager *)self _hotCornerActivationSizeOnDisplay:displayCopy];
   v16 = v15;
   v18 = v17;
 
   return [(HNDHandManager *)self _cornerForNormalizedPoint:x normalizedPadding:y, v12 + v16, v14 + v18];
 }
 
-- (unint64_t)_roundedCornersForCursorAtPoint:(CGPoint)a3 onDisplay:(id)a4
+- (unint64_t)_roundedCornersForCursorAtPoint:(CGPoint)point onDisplay:(id)display
 {
-  if (self->_hotCornerLocked && (y = a3.y, x = a3.x, v7 = a4, -[HNDHandManager displayManagerForHardwareIdentifier:](self, "displayManagerForHardwareIdentifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), [v8 convertToNormalizedInterfaceOrientation:{x, y}], v9 = -[HNDHandManager _hotCornerForNormalizedPoint:onDisplay:](self, "_hotCornerForNormalizedPoint:onDisplay:", v7), v7, v8, v10 = v9 - 1, v9 - 1 <= 7) && ((0x8Bu >> v10) & 1) != 0)
+  if (self->_hotCornerLocked && (y = point.y, x = point.x, v7 = display, -[HNDHandManager displayManagerForHardwareIdentifier:](self, "displayManagerForHardwareIdentifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), [v8 convertToNormalizedInterfaceOrientation:{x, y}], v9 = -[HNDHandManager _hotCornerForNormalizedPoint:onDisplay:](self, "_hotCornerForNormalizedPoint:onDisplay:", v7), v7, v8, v10 = v9 - 1, v9 - 1 <= 7) && ((0x8Bu >> v10) & 1) != 0)
   {
     return qword_1001BD118[v10];
   }
@@ -6727,14 +6727,14 @@ LABEL_30:
   }
 }
 
-- (BOOL)_shouldLockIntoHotCornerAtNormalizedPoint:(CGPoint)a3 onDisplay:(id)a4
+- (BOOL)_shouldLockIntoHotCornerAtNormalizedPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if ([(HNDHandManager *)self dwellControlEnabled])
   {
-    [(HNDHandManager *)self _hotCornerActivationSizeOnDisplay:v7];
+    [(HNDHandManager *)self _hotCornerActivationSizeOnDisplay:displayCopy];
     v10 = [HNDHandManager _actionForHotCorner:[(HNDHandManager *)self _cornerForNormalizedPoint:x normalizedPadding:y, v8, v9]];
     v11 = v10 != 0;
   }
@@ -6747,21 +6747,21 @@ LABEL_30:
   return v11;
 }
 
-- (CGPoint)_pointForLockedCorner:(unint64_t)a3 onDisplay:(id)a4
+- (CGPoint)_pointForLockedCorner:(unint64_t)corner onDisplay:(id)display
 {
-  v6 = a4;
-  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v6];
-  [(HNDHandManager *)self _fingerRadiusOnDisplay:v6];
+  displayCopy = display;
+  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  [(HNDHandManager *)self _fingerRadiusOnDisplay:displayCopy];
   y = v8;
 
   [v7 screenBounds];
   x = CGRectGetMaxX(v16) - y;
   [v7 screenBounds];
   MaxY = CGRectGetMaxY(v17);
-  if (a3 > 3)
+  if (corner > 3)
   {
     v12 = MaxY - y;
-    if (a3 == 4)
+    if (corner == 4)
     {
       x = y;
       y = v12;
@@ -6769,7 +6769,7 @@ LABEL_30:
     }
 
     y = v12;
-    if (a3 != 8)
+    if (corner != 8)
     {
 LABEL_7:
       _AXAssert();
@@ -6780,13 +6780,13 @@ LABEL_7:
 
   else
   {
-    if (a3 == 1)
+    if (corner == 1)
     {
       x = y;
       goto LABEL_10;
     }
 
-    if (a3 != 2)
+    if (corner != 2)
     {
       goto LABEL_7;
     }
@@ -6801,9 +6801,9 @@ LABEL_10:
   return result;
 }
 
-- (id)_avPlayerForSound:(id)a3
+- (id)_avPlayerForSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   avPlayers = self->_avPlayers;
   if (!avPlayers)
   {
@@ -6814,32 +6814,32 @@ LABEL_10:
     avPlayers = self->_avPlayers;
   }
 
-  v8 = [(NSMutableDictionary *)avPlayers objectForKey:v4];
+  v8 = [(NSMutableDictionary *)avPlayers objectForKey:soundCopy];
   if (!v8)
   {
     v9 = +[NSBundle mainBundle];
-    v10 = [v4 stringByDeletingPathExtension];
-    v11 = [v4 pathExtension];
-    v12 = [v9 URLForResource:v10 withExtension:v11];
+    stringByDeletingPathExtension = [soundCopy stringByDeletingPathExtension];
+    pathExtension = [soundCopy pathExtension];
+    v12 = [v9 URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
 
     v8 = [objc_allocWithZone(AVAudioPlayer) initWithContentsOfURL:v12 error:0];
-    [(NSMutableDictionary *)self->_avPlayers setObject:v8 forKey:v4];
+    [(NSMutableDictionary *)self->_avPlayers setObject:v8 forKey:soundCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_isPoint:(CGPoint)a3 withinTolerance:(double)a4 ofStartPoint:(CGPoint)a5
+- (BOOL)_isPoint:(CGPoint)point withinTolerance:(double)tolerance ofStartPoint:(CGPoint)startPoint
 {
-  v6 = vabdd_f64(a3.x, a5.x) < a4;
-  v5 = vabdd_f64(a3.y, a5.y);
-  return v6 && v5 < a4;
+  v6 = vabdd_f64(point.x, startPoint.x) < tolerance;
+  v5 = vabdd_f64(point.y, startPoint.y);
+  return v6 && v5 < tolerance;
 }
 
-- (BOOL)_isWithinLastDwellBounds:(CGPoint)a3
+- (BOOL)_isWithinLastDwellBounds:(CGPoint)bounds
 {
-  y = a3.y;
-  x = a3.x;
+  y = bounds.y;
+  x = bounds.x;
   v6 = +[AXSettings sharedInstance];
   [v6 assistiveTouchMouseDwellControlMovementToleranceRadius];
   LOBYTE(self) = [(HNDHandManager *)self _isPoint:x withinTolerance:y ofStartPoint:v7, self->_lastDwellStartPoint.x, self->_lastDwellStartPoint.y];
@@ -6847,33 +6847,33 @@ LABEL_10:
   return self;
 }
 
-- (void)enableEyeTrackingAutoHide:(BOOL)a3
+- (void)enableEyeTrackingAutoHide:(BOOL)hide
 {
-  v3 = a3;
-  if (a3)
+  hideCopy = hide;
+  if (hide)
   {
     if (![(HNDHandManager *)self deviceSupportsAutoHide])
     {
       return;
     }
 
-    v5 = 0;
+    eyeTrackingAutoHideEnabled = 0;
     v6 = ![(HNDHandManager *)self eyeTrackingAutoHideEnabled];
   }
 
   else
   {
-    v5 = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
+    eyeTrackingAutoHideEnabled = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
     v6 = 0;
   }
 
-  [(HNDHandManager *)self setEyeTrackingAutoHideEnabled:v3];
+  [(HNDHandManager *)self setEyeTrackingAutoHideEnabled:hideCopy];
   v7 = AXLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
+    eyeTrackingAutoHideEnabled2 = [(HNDHandManager *)self eyeTrackingAutoHideEnabled];
     v9 = @"NO";
-    if (v8)
+    if (eyeTrackingAutoHideEnabled2)
     {
       v9 = @"YES";
     }
@@ -6883,7 +6883,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "enableEyeTrackingAutoHide: %@", &v10, 0xCu);
   }
 
-  if (v5)
+  if (eyeTrackingAutoHideEnabled)
   {
     [(HNDHandManager *)self setHidePointerForEyeTrackingAutoHide:0];
     [(HNDHandManager *)self setEyeTrackingAutoHideFinished:1];
@@ -6912,11 +6912,11 @@ LABEL_10:
 
   dwellTimer = self->_dwellTimer;
   v4 = dwellTimer ? [(AXDispatchTimer *)dwellTimer isCancelled]^ 1 : 0;
-  v5 = [(HNDHandManager *)self dwellBubbleModeTimer];
-  if (v5)
+  dwellBubbleModeTimer = [(HNDHandManager *)self dwellBubbleModeTimer];
+  if (dwellBubbleModeTimer)
   {
-    v6 = [(HNDHandManager *)self dwellBubbleModeTimer];
-    v7 = [v6 isCancelled] ^ 1;
+    dwellBubbleModeTimer2 = [(HNDHandManager *)self dwellBubbleModeTimer];
+    v7 = [dwellBubbleModeTimer2 isCancelled] ^ 1;
   }
 
   else
@@ -6925,11 +6925,11 @@ LABEL_10:
   }
 
   v8 = v4 | v7;
-  v9 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
-  if (v9)
+  eyeTrackingAutoHideCursorAnimator = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+  if (eyeTrackingAutoHideCursorAnimator)
   {
-    v10 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
-    v11 = [v10 state] == 1;
+    eyeTrackingAutoHideCursorAnimator2 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+    v11 = [eyeTrackingAutoHideCursorAnimator2 state] == 1;
   }
 
   else
@@ -6944,11 +6944,11 @@ LABEL_10:
 
   if ([(HNDHandManager *)self inBubbleMode])
   {
-    v12 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+    currentlySnappedInBubbleMode = [(HNDHandManager *)self currentlySnappedInBubbleMode];
     if ([(HNDHandManager *)self inBubbleMode])
     {
-      v13 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
-      if (v12)
+      currentlySnappedInBubbleMode2 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+      if (currentlySnappedInBubbleMode)
       {
         goto LABEL_22;
       }
@@ -6956,15 +6956,15 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    if (v12)
+    if (currentlySnappedInBubbleMode)
     {
 LABEL_22:
-      v14 = [(HNDHandManager *)self eyeTrackingAutotHideLastBubbleModeElementShowed];
-      if (v14)
+      eyeTrackingAutotHideLastBubbleModeElementShowed = [(HNDHandManager *)self eyeTrackingAutotHideLastBubbleModeElementShowed];
+      if (eyeTrackingAutotHideLastBubbleModeElementShowed)
       {
-        v15 = [(HNDHandManager *)self eyeTrackingAutotHideLastBubbleModeElementShowed];
-        v16 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-        v17 = [v15 isEqual:v16] ^ 1;
+        eyeTrackingAutotHideLastBubbleModeElementShowed2 = [(HNDHandManager *)self eyeTrackingAutotHideLastBubbleModeElementShowed];
+        currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+        v17 = [eyeTrackingAutotHideLastBubbleModeElementShowed2 isEqual:currentBubbleModeFocusedElement] ^ 1;
       }
 
       else
@@ -6972,21 +6972,21 @@ LABEL_22:
         v17 = 1;
       }
 
-      v38 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-      if (v38)
+      bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+      if (bubbleModeFocusedRockerItem)
       {
-        v19 = 1;
+        bubbleModeCurrentlyFocusedOnNubbit = 1;
       }
 
       else
       {
-        v19 = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
+        bubbleModeCurrentlyFocusedOnNubbit = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
       }
 
       if (v17)
       {
-        v39 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-        [(HNDHandManager *)self setEyeTrackingAutotHideLastBubbleModeElementShowed:v39];
+        currentBubbleModeFocusedElement2 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+        [(HNDHandManager *)self setEyeTrackingAutotHideLastBubbleModeElementShowed:currentBubbleModeFocusedElement2];
       }
 
       [(HNDHandManager *)self setEyeTrackingAutotHideLastPointCursorShowed:-1.0, -1.0];
@@ -6996,31 +6996,31 @@ LABEL_22:
 
   else if ([(HNDHandManager *)self inBubbleMode])
   {
-    v13 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
+    currentlySnappedInBubbleMode2 = [(HNDHandManager *)self currentlySnappedInBubbleMode];
 LABEL_19:
-    if ((v13 & 1) == 0)
+    if ((currentlySnappedInBubbleMode2 & 1) == 0)
     {
       [(HNDHandManager *)self setEyeTrackingAutotHideLastBubbleModeElementShowed:0];
     }
   }
 
-  v18 = [(HNDHandManager *)self currentDisplayManager];
-  v19 = [v18 isMenuVisible];
-  v20 = [v18 fingerController];
-  if (![v20 numberOfFingers])
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  bubbleModeCurrentlyFocusedOnNubbit = [currentDisplayManager isMenuVisible];
+  fingerController = [currentDisplayManager fingerController];
+  if (![fingerController numberOfFingers])
   {
     goto LABEL_36;
   }
 
-  v21 = [v20 fingerModels];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  fingerModels = [fingerController fingerModels];
+  v22 = [fingerModels objectAtIndexedSubscript:0];
   [v22 location];
   v24 = v23;
   v26 = v25;
 
-  v27 = [v18 hardwareIdentifier];
-  v28 = -[HNDHandManager _isInNubbitHitbox:onDisplay:](self, "_isInNubbitHitbox:onDisplay:", v27, v24, v26) ? 1 : [v18 isMenuVisible];
-  v19 |= v28;
+  hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+  v28 = -[HNDHandManager _isInNubbitHitbox:onDisplay:](self, "_isInNubbitHitbox:onDisplay:", hardwareIdentifier, v24, v26) ? 1 : [currentDisplayManager isMenuVisible];
+  bubbleModeCurrentlyFocusedOnNubbit |= v28;
 
   if ([(HNDHandManager *)self dwellControlEnabled])
   {
@@ -7051,20 +7051,20 @@ LABEL_36:
   }
 
 LABEL_46:
-  if (![(HNDHandManager *)self hidePointerForEyeTrackingAutoHide]&& v17 && !(v8 & 1 | ![(HNDHandManager *)self dwellControlEnabled]| v11 | v19 & 1))
+  if (![(HNDHandManager *)self hidePointerForEyeTrackingAutoHide]&& v17 && !(v8 & 1 | ![(HNDHandManager *)self dwellControlEnabled]| v11 | bubbleModeCurrentlyFocusedOnNubbit & 1))
   {
     [(HNDHandManager *)self setHidePointerForEyeTrackingAutoHide:1];
     [(HNDHandManager *)self _hideCursorsForEyeTrackingAutoHide];
   }
 
-  if ((v19 | v17))
+  if ((bubbleModeCurrentlyFocusedOnNubbit | v17))
   {
-    v40 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+    eyeTrackingAutoHideCursorAnimator3 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
 
-    if (v40)
+    if (eyeTrackingAutoHideCursorAnimator3)
     {
-      v41 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
-      [v41 stopAnimation:1];
+      eyeTrackingAutoHideCursorAnimator4 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+      [eyeTrackingAutoHideCursorAnimator4 stopAnimation:1];
 
       [(HNDHandManager *)self setEyeTrackingAutoHideCursorAnimator:0];
       [(HNDHandManager *)self _hideCursorsForEyeTrackingAutoHide];
@@ -7076,7 +7076,7 @@ LABEL_46:
     v46[3] = &unk_1001D4408;
     v46[4] = self;
     v42 = objc_retainBlock(v46);
-    if (v19)
+    if (bubbleModeCurrentlyFocusedOnNubbit)
     {
       [(HNDHandManager *)self _showCursorsForAutoHideWithDuration:0];
       (v42[2])(v42, 0);
@@ -7107,16 +7107,16 @@ LABEL_46:
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v2];
 }
 
-- (void)_showCursorsForAutoHideWithDuration:(id)a3
+- (void)_showCursorsForAutoHideWithDuration:(id)duration
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100033F98;
   v4[3] = &unk_1001D4350;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(HNDHandManager *)v5 enumerateDisplayManagersWithBlock:v4];
+  selfCopy = self;
+  durationCopy = duration;
+  v3 = durationCopy;
+  [(HNDHandManager *)selfCopy enumerateDisplayManagersWithBlock:v4];
 }
 
 - (void)_startDwellTimer
@@ -7125,11 +7125,11 @@ LABEL_46:
   {
     if ([(HNDHandManager *)self inBubbleMode]&& [(HNDHandManager *)self currentlySnappedInBubbleMode])
     {
-      v3 = [(HNDHandManager *)self dwellBubbleModeTimer];
-      if (v3)
+      dwellBubbleModeTimer = [(HNDHandManager *)self dwellBubbleModeTimer];
+      if (dwellBubbleModeTimer)
       {
-        v4 = [(HNDHandManager *)self dwellBubbleModeTimer];
-        v5 = [v4 isCancelled] ^ 1;
+        dwellBubbleModeTimer2 = [(HNDHandManager *)self dwellBubbleModeTimer];
+        v5 = [dwellBubbleModeTimer2 isCancelled] ^ 1;
       }
 
       else
@@ -7137,7 +7137,7 @@ LABEL_46:
         v5 = 0;
       }
 
-      v7 = [(HNDHandManager *)self _startDwellTimerForBubbleMode];
+      _startDwellTimerForBubbleMode = [(HNDHandManager *)self _startDwellTimerForBubbleMode];
     }
 
     else
@@ -7153,10 +7153,10 @@ LABEL_46:
         v5 = 0;
       }
 
-      v7 = [(HNDHandManager *)self _startDwellTimerForPointer];
+      _startDwellTimerForBubbleMode = [(HNDHandManager *)self _startDwellTimerForPointer];
     }
 
-    v8 = v7;
+    v8 = _startDwellTimerForBubbleMode;
     if ([(HNDHandManager *)self eyeTrackingAutoHideFinished]&& v5 && v8)
     {
       [(HNDHandManager *)self setEyeTrackingAutoHideFinished:0];
@@ -7168,11 +7168,11 @@ LABEL_46:
 
 - (BOOL)_startDwellTimerForPointer
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  v4 = [v3 fingerController];
-  if ([v4 numberOfFingers] && ((objc_msgSend(v4, "fingerModels"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "location"), v8 = v7, v10 = v9, v6, v5, self->_lastDwellStartPoint.x == -1.0) ? (v11 = self->_lastDwellStartPoint.y == -1.0) : (v11 = 0), (v11 || !-[HNDHandManager _isWithinLastDwellBounds:](self, "_isWithinLastDwellBounds:", v8, v10)) && (-[HNDHandManager cancelDwellTimer](self, "cancelDwellTimer"), -[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled")) && ((objc_msgSend(v3, "hardwareIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), !-[HNDHandManager _isInNubbitHitbox:onDisplay:](self, "_isInNubbitHitbox:onDisplay:", v12, v8, v10)) ? (v13 = objc_msgSend(v3, "isMenuVisible")) : (v13 = 1), (v12, !-[HNDHandManager dwellControlPaused](self, "dwellControlPaused")) || (v13 & 1) != 0 || self->_hotCornerLocked)))
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
+  if ([fingerController numberOfFingers] && ((objc_msgSend(fingerController, "fingerModels"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "location"), v8 = v7, v10 = v9, v6, v5, self->_lastDwellStartPoint.x == -1.0) ? (v11 = self->_lastDwellStartPoint.y == -1.0) : (v11 = 0), (v11 || !-[HNDHandManager _isWithinLastDwellBounds:](self, "_isWithinLastDwellBounds:", v8, v10)) && (-[HNDHandManager cancelDwellTimer](self, "cancelDwellTimer"), -[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled")) && ((objc_msgSend(currentDisplayManager, "hardwareIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), !-[HNDHandManager _isInNubbitHitbox:onDisplay:](self, "_isInNubbitHitbox:onDisplay:", v12, v8, v10)) ? (v13 = objc_msgSend(currentDisplayManager, "isMenuVisible")) : (v13 = 1), (v12, !-[HNDHandManager dwellControlPaused](self, "dwellControlPaused")) || (v13 & 1) != 0 || self->_hotCornerLocked)))
   {
-    if (([v3 fingerContentViewIsActive] & 1) == 0)
+    if (([currentDisplayManager fingerContentViewIsActive] & 1) == 0)
     {
       v14 = ASTLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7193,8 +7193,8 @@ LABEL_46:
     v20[1] = 3221225472;
     v20[2] = sub_100034380;
     v20[3] = &unk_1001D4480;
-    v21 = v4;
-    v22 = self;
+    v21 = fingerController;
+    selfCopy = self;
     objc_copyWeak(&v23, &location);
     [(AXDispatchTimer *)v17 afterDelay:v20 processBlock:0 cancelBlock:0.25];
     objc_destroyWeak(&v23);
@@ -7213,13 +7213,13 @@ LABEL_46:
 
 - (BOOL)_startDwellTimerForBubbleMode
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  v4 = [(HNDHandManager *)self lastBubbleModeDwellElement];
-  if (v4)
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  lastBubbleModeDwellElement = [(HNDHandManager *)self lastBubbleModeDwellElement];
+  if (lastBubbleModeDwellElement)
   {
-    v5 = [(HNDHandManager *)self lastBubbleModeDwellElement];
-    v6 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    v7 = [v5 isEqual:v6];
+    lastBubbleModeDwellElement2 = [(HNDHandManager *)self lastBubbleModeDwellElement];
+    currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    v7 = [lastBubbleModeDwellElement2 isEqual:currentBubbleModeFocusedElement];
   }
 
   else
@@ -7227,12 +7227,12 @@ LABEL_46:
     v7 = 0;
   }
 
-  v8 = [(HNDHandManager *)self lastBubbleModeDwellRockerItem];
-  if (v8)
+  lastBubbleModeDwellRockerItem = [(HNDHandManager *)self lastBubbleModeDwellRockerItem];
+  if (lastBubbleModeDwellRockerItem)
   {
-    v9 = [(HNDHandManager *)self lastBubbleModeDwellRockerItem];
-    v10 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-    v11 = [v9 isEqual:v10];
+    lastBubbleModeDwellRockerItem2 = [(HNDHandManager *)self lastBubbleModeDwellRockerItem];
+    bubbleModeFocusedRockerItem = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+    v11 = [lastBubbleModeDwellRockerItem2 isEqual:bubbleModeFocusedRockerItem];
   }
 
   else
@@ -7240,39 +7240,39 @@ LABEL_46:
     v11 = 0;
   }
 
-  v12 = [(HNDHandManager *)self lastBubbleModeDwellWasOnNubbit];
-  if (v12)
+  lastBubbleModeDwellWasOnNubbit = [(HNDHandManager *)self lastBubbleModeDwellWasOnNubbit];
+  if (lastBubbleModeDwellWasOnNubbit)
   {
-    LOBYTE(v12) = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
+    LOBYTE(lastBubbleModeDwellWasOnNubbit) = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit];
   }
 
   v13 = 0;
-  if (((v7 | v11) & 1) == 0 && (v12 & 1) == 0)
+  if (((v7 | v11) & 1) == 0 && (lastBubbleModeDwellWasOnNubbit & 1) == 0)
   {
     [(HNDHandManager *)self cancelDwellTimer];
     if ([(HNDHandManager *)self dwellControlEnabled]&& (([(HNDHandManager *)self bubbleModeFocusedRockerItem], (v14 = objc_claimAutoreleasedReturnValue()) == 0) ? (v15 = [(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit]) : (v15 = 1), (v14, ![(HNDHandManager *)self dwellControlPaused]) || (v15 & 1) != 0 || self->_hotCornerLocked))
     {
-      v16 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-      [(HNDHandManager *)self setLastBubbleModeDwellElement:v16];
+      currentBubbleModeFocusedElement2 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+      [(HNDHandManager *)self setLastBubbleModeDwellElement:currentBubbleModeFocusedElement2];
 
-      v17 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
-      [(HNDHandManager *)self setLastBubbleModeDwellRockerItem:v17];
+      bubbleModeFocusedRockerItem2 = [(HNDHandManager *)self bubbleModeFocusedRockerItem];
+      [(HNDHandManager *)self setLastBubbleModeDwellRockerItem:bubbleModeFocusedRockerItem2];
 
       [(HNDHandManager *)self setLastBubbleModeDwellWasOnNubbit:[(HNDHandManager *)self bubbleModeCurrentlyFocusedOnNubbit]];
       v18 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
       [(HNDHandManager *)self setDwellBubbleModeTimer:v18];
 
       objc_initWeak(&location, self);
-      v19 = [(HNDHandManager *)self dwellBubbleModeTimer];
+      dwellBubbleModeTimer = [(HNDHandManager *)self dwellBubbleModeTimer];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100034784;
       v21[3] = &unk_1001D44A8;
-      v22 = v3;
-      v23 = self;
+      v22 = currentDisplayManager;
+      selfCopy = self;
       v25 = v15;
       objc_copyWeak(&v24, &location);
-      [v19 afterDelay:v21 processBlock:0 cancelBlock:0.25];
+      [dwellBubbleModeTimer afterDelay:v21 processBlock:0 cancelBlock:0.25];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -7296,8 +7296,8 @@ LABEL_46:
 
   if (AXRuntimeCheck_DwellKeyboardKeyTimer())
   {
-    v6 = [(HNDHandManager *)self currentBubbleModeFocusedElement];
-    if ([v6 isKeyboardKey])
+    currentBubbleModeFocusedElement = [(HNDHandManager *)self currentBubbleModeFocusedElement];
+    if ([currentBubbleModeFocusedElement isKeyboardKey])
     {
 
 LABEL_5:
@@ -7333,8 +7333,8 @@ LABEL_5:
 
   if (sub_100042C64())
   {
-    v3 = [(HNDHandManager *)self systemPointerController];
-    [v3 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
+    [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
   }
 }
 
@@ -7357,11 +7357,11 @@ LABEL_5:
 
 - (void)cancelDwellTimerWithoutStateResetForBubbleMode
 {
-  v3 = [(HNDHandManager *)self dwellBubbleModeTimer];
-  [v3 cancel];
+  dwellBubbleModeTimer = [(HNDHandManager *)self dwellBubbleModeTimer];
+  [dwellBubbleModeTimer cancel];
 
-  v4 = [(HNDHandManager *)self currentDisplayManager];
-  [v4 cancelDwellOnBubbleCursor];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  [currentDisplayManager cancelDwellOnBubbleCursor];
 }
 
 - (void)prepareForHIDDeviceConfiguration
@@ -7377,19 +7377,19 @@ LABEL_5:
   [(HNDHandManager *)self hideUIForEyeTracker];
 }
 
-- (BOOL)shouldIgnorePointerEventWhileEyeTrackerConfigures:(id)a3
+- (BOOL)shouldIgnorePointerEventWhileEyeTrackerConfigures:(id)configures
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self mainDisplayManager];
-  v6 = [v5 isShowingCalibrationUI];
+  configuresCopy = configures;
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  isShowingCalibrationUI = [mainDisplayManager isShowingCalibrationUI];
 
   v7 = 1;
-  if ((v6 & 1) == 0)
+  if ((isShowingCalibrationUI & 1) == 0)
   {
-    v8 = [(HNDHandManager *)self deviceManager];
-    v9 = [v8 hidDeviceIsConfiguring];
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    hidDeviceIsConfiguring = [deviceManager hidDeviceIsConfiguring];
 
-    if (!v9 || (mach_absolute_time(), -[HNDHandManager lastTimeEyeTrackerConfigured](self, "lastTimeEyeTrackerConfigured"), AXMachTimeToNanoseconds() / 1000000000.0 >= 0.5) && (([v4 deltaX], v10 != 0.0) || (objc_msgSend(v4, "deltaY"), v11 != 0.0)))
+    if (!hidDeviceIsConfiguring || (mach_absolute_time(), -[HNDHandManager lastTimeEyeTrackerConfigured](self, "lastTimeEyeTrackerConfigured"), AXMachTimeToNanoseconds() / 1000000000.0 >= 0.5) && (([configuresCopy deltaX], v10 != 0.0) || (objc_msgSend(configuresCopy, "deltaY"), v11 != 0.0)))
     {
       v7 = 0;
     }
@@ -7400,17 +7400,17 @@ LABEL_5:
 
 - (BOOL)shouldIgnorePointerEventWhileEyeTrackerIsInactive
 {
-  v3 = [(HNDHandManager *)self deviceManager];
-  if ([v3 mainDeviceIsMotionTracker])
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  if ([deviceManager mainDeviceIsMotionTracker])
   {
-    v4 = [(HNDHandManager *)self deviceManager];
-    v5 = [v4 isTrackingInputActive];
+    deviceManager2 = [(HNDHandManager *)self deviceManager];
+    isTrackingInputActive = [deviceManager2 isTrackingInputActive];
 
-    if ((v5 & 1) == 0)
+    if ((isTrackingInputActive & 1) == 0)
     {
-      v6 = [(HNDHandManager *)self systemPointerController];
-      v7 = [v6 currentSystemPointerPointAttributes];
-      [v7 unacceleratedRelativePosition];
+      systemPointerController = [(HNDHandManager *)self systemPointerController];
+      currentSystemPointerPointAttributes = [systemPointerController currentSystemPointerPointAttributes];
+      [currentSystemPointerPointAttributes unacceleratedRelativePosition];
       v9 = v8;
       v11 = v10;
 
@@ -7430,17 +7430,17 @@ LABEL_5:
 
 - (BOOL)shouldIgnorePointerEventWhileEyeTrackerPressedButtonDownWithDwell
 {
-  v3 = [(HNDHandManager *)self deviceManager];
-  if (([v3 mainDeviceIsMotionTracker] & 1) == 0)
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  if (([deviceManager mainDeviceIsMotionTracker] & 1) == 0)
   {
 
     return 0;
   }
 
-  v4 = [(HNDHandManager *)self deviceManager];
-  v5 = [v4 isTrackingInputActive];
+  deviceManager2 = [(HNDHandManager *)self deviceManager];
+  isTrackingInputActive = [deviceManager2 isTrackingInputActive];
 
-  if (!v5)
+  if (!isTrackingInputActive)
   {
     return 0;
   }
@@ -7474,21 +7474,21 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Preparing to hide UI for eye tracker", v11, 2u);
   }
 
-  v5 = [(HNDHandManager *)self currentDisplayManager];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
   [(HNDHandManager *)self setCaptureEvents:0];
   [(HNDHandManager *)self cancelDwellTimer];
   [(HNDHandManager *)self specialToolUsageEnded:1];
-  v6 = [v5 hardwareIdentifier];
-  [(HNDHandManager *)self resetFingersToPoint:v6 onDisplay:0 active:-1.0, -1.0];
+  hardwareIdentifier = [currentDisplayManager hardwareIdentifier];
+  [(HNDHandManager *)self resetFingersToPoint:hardwareIdentifier onDisplay:0 active:-1.0, -1.0];
 
   if ([(HNDHandManager *)self eyeTrackingAutoHideEnabled])
   {
-    v7 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+    eyeTrackingAutoHideCursorAnimator = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
 
-    if (v7)
+    if (eyeTrackingAutoHideCursorAnimator)
     {
-      v8 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
-      [v8 stopAnimation:1];
+      eyeTrackingAutoHideCursorAnimator2 = [(HNDHandManager *)self eyeTrackingAutoHideCursorAnimator];
+      [eyeTrackingAutoHideCursorAnimator2 stopAnimation:1];
 
       [(HNDHandManager *)self setEyeTrackingAutoHideCursorAnimator:0];
     }
@@ -7497,19 +7497,19 @@ LABEL_5:
   }
 
   v9 = NSStringFromSelector(a2);
-  [v5 setVisualsHidden:1 forReason:v9 animated:1];
+  [currentDisplayManager setVisualsHidden:1 forReason:v9 animated:1];
 
   if ([(HNDHandManager *)self inBubbleMode])
   {
-    [v5 hideBubbleCursor];
+    [currentDisplayManager hideBubbleCursor];
     [(HNDHandManager *)self setCurrentBubbleModeFocusedElement:0];
     [(HNDHandManager *)self setLastBubbleModeFocusedElement:0];
     [(HNDHandManager *)self setBubbleModeFocusedRockerItem:0];
     [(HNDHandManager *)self setBubbleModeCurrentlyFocusedOnNubbit:0];
   }
 
-  v10 = [(HNDHandManager *)self systemPointerController];
-  [v10 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 }
 
 - (void)showUIForEyeTracker
@@ -7521,21 +7521,21 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Preparing to show UI for eye tracker", v8, 2u);
   }
 
-  v5 = [(HNDHandManager *)self currentDisplayManager];
-  if ([v5 visualsHidden])
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  if ([currentDisplayManager visualsHidden])
   {
     v6 = NSStringFromSelector(a2);
-    [v5 setVisualsHidden:0 forReason:v6 animated:1];
+    [currentDisplayManager setVisualsHidden:0 forReason:v6 animated:1];
   }
 
   if ([(HNDHandManager *)self inBubbleMode])
   {
-    [v5 showBubbleCursor];
+    [currentDisplayManager showBubbleCursor];
   }
 
   [(HNDHandManager *)self resetFingersIfNeeded];
-  v7 = [(HNDHandManager *)self systemPointerController];
-  [v7 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
 }
 
 - (BOOL)shouldIgnoreHIDDeviceMovementWhileMouseActive
@@ -7545,9 +7545,9 @@ LABEL_5:
   return AXMachTimeToNanoseconds() / 1000000000.0 < 0.5;
 }
 
-- (void)mouseEventRecordedWithDelta:(CGPoint)a3
+- (void)mouseEventRecordedWithDelta:(CGPoint)delta
 {
-  if (a3.x < 0.0 || a3.x > 0.0 || a3.y != 0.0)
+  if (delta.x < 0.0 || delta.x > 0.0 || delta.y != 0.0)
   {
     [(HNDHandManager *)self setLastTimeMouseMoved:mach_absolute_time()];
 
@@ -7555,13 +7555,13 @@ LABEL_5:
   }
 }
 
-- (BOOL)_shouldAutoFadeFingersOnDisplay:(id)a3
+- (BOOL)_shouldAutoFadeFingersOnDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self deviceManager];
-  if ([v5 mainDeviceIsMotionTracker] && -[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled") && -[HNDHandManager dwellControlPaused](self, "dwellControlPaused"))
+  displayCopy = display;
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  if ([deviceManager mainDeviceIsMotionTracker] && -[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled") && -[HNDHandManager dwellControlPaused](self, "dwellControlPaused"))
   {
-    v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
+    v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
     v7 = ([v6 isMenuVisible] & 1) == 0 && !self->_hotCornerLocked;
   }
 
@@ -7605,12 +7605,12 @@ LABEL_5:
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v2];
 }
 
-- (void)_fadeFingersAfterDelayIfNeededOnDisplay:(id)a3
+- (void)_fadeFingersAfterDelayIfNeededOnDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (!self->_fingersFaded && ([(AXDispatchTimer *)self->_fingerFadeTimer isPending]& 1) == 0)
   {
-    if ([(HNDHandManager *)self _shouldAutoFadeFingersOnDisplay:v4])
+    if ([(HNDHandManager *)self _shouldAutoFadeFingersOnDisplay:displayCopy])
     {
       v5 = +[AXSettings sharedInstance];
       [v5 assistiveTouchIdleOpacity];
@@ -7624,7 +7624,7 @@ LABEL_5:
         v9[2] = sub_100035598;
         v9[3] = &unk_1001D36E8;
         v9[4] = self;
-        v10 = v4;
+        v10 = displayCopy;
         [(AXDispatchTimer *)fingerFadeTimer afterDelay:v9 processBlock:4.0];
       }
     }
@@ -7642,11 +7642,11 @@ LABEL_5:
     [(HNDHandManager *)self reloadFingerAppearance];
   }
 
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  v4 = [v3 fingerController];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
 
-  v5 = [v4 fingerContainerView];
-  [v5 alpha];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView alpha];
   v7 = v6;
 
   if (v7 < 1.0)
@@ -7655,7 +7655,7 @@ LABEL_5:
     v8[1] = 3221225472;
     v8[2] = sub_100035844;
     v8[3] = &unk_1001D3488;
-    v9 = v4;
+    v9 = fingerController;
     [UIView animateWithDuration:v8 animations:0.15];
   }
 }
@@ -7683,26 +7683,26 @@ LABEL_5:
   if ([(HNDHandManager *)self assistiveTouchMouseDwellControlEnabled])
   {
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 assistiveTouchEnabled];
+    assistiveTouchEnabled = [v2 assistiveTouchEnabled];
 
-    if (v3)
+    if (assistiveTouchEnabled)
     {
       v4 = +[AXSettings sharedInstance];
-      v5 = [v4 assistiveTouchMainScreenCustomization];
+      assistiveTouchMainScreenCustomization = [v4 assistiveTouchMainScreenCustomization];
 
       v6 = +[AXSettings sharedInstance];
-      v7 = [v6 assistiveTouchMainScreenDefaultCustomization];
+      assistiveTouchMainScreenDefaultCustomization = [v6 assistiveTouchMainScreenDefaultCustomization];
 
-      v8 = [v5 isEqualToDictionary:v7];
+      v8 = [assistiveTouchMainScreenCustomization isEqualToDictionary:assistiveTouchMainScreenDefaultCustomization];
       v9 = +[AXSettings sharedInstance];
-      v10 = [v9 assistiveTouchMouseDwellControlMutatedMenu];
+      assistiveTouchMouseDwellControlMutatedMenu = [v9 assistiveTouchMouseDwellControlMutatedMenu];
 
-      if (!v8 || (v10 & 1) != 0)
+      if (!v8 || (assistiveTouchMouseDwellControlMutatedMenu & 1) != 0)
       {
         v16 = +[AXSettings sharedInstance];
-        v17 = [v16 assistiveTouchMouseDwellControlShowPrompt];
+        assistiveTouchMouseDwellControlShowPrompt = [v16 assistiveTouchMouseDwellControlShowPrompt];
 
-        if (!v17)
+        if (!assistiveTouchMouseDwellControlShowPrompt)
         {
           goto LABEL_10;
         }
@@ -7710,11 +7710,11 @@ LABEL_5:
         v18 = +[AXSettings sharedInstance];
         [v18 setAssistiveTouchMouseDwellControlShowPrompt:0];
 
-        v19 = [v5 allValues];
-        v20 = [v19 containsObject:AXAssistiveTouchIconTypeDwell];
+        allValues = [assistiveTouchMainScreenCustomization allValues];
+        v20 = [allValues containsObject:AXAssistiveTouchIconTypeDwell];
 
-        v21 = [v5 allValues];
-        v22 = [v21 containsObject:AXAssistiveTouchIconTypeScroll];
+        allValues2 = [assistiveTouchMainScreenCustomization allValues];
+        v22 = [allValues2 containsObject:AXAssistiveTouchIconTypeScroll];
 
         if (v20)
         {
@@ -7724,7 +7724,7 @@ LABEL_5:
           }
         }
 
-        v23 = (v20 & 1) == 0 && [v5 count] < 8;
+        v23 = (v20 & 1) == 0 && [assistiveTouchMainScreenCustomization count] < 8;
         v24 = 19;
         v25 = 20;
         if (v22)
@@ -7735,7 +7735,7 @@ LABEL_5:
 
         else
         {
-          v28 = [v5 count];
+          v28 = [assistiveTouchMainScreenCustomization count];
           v29 = 7;
           if (!v23)
           {
@@ -7783,7 +7783,7 @@ LABEL_5:
         v34 = v27;
         v35 = v26;
         v36 = v23;
-        v33 = v5;
+        v33 = assistiveTouchMainScreenCustomization;
         [v31 showAlert:v30 withHandler:v32];
 
         v11 = v33;
@@ -7815,19 +7815,19 @@ LABEL_10:
   if (!_AXSApplicationAccessibilityEnabled())
   {
     v2 = +[AXSettings sharedInstance];
-    v3 = [v2 assistiveTouchMainScreenCustomization];
+    assistiveTouchMainScreenCustomization = [v2 assistiveTouchMainScreenCustomization];
 
     v4 = AXAssistiveTouchScrollIcons();
     v5 = [v4 arrayByAddingObject:AXAssistiveTouchIconTypeScroll];
 
-    v6 = [v3 allValues];
+    allValues = [assistiveTouchMainScreenCustomization allValues];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100035EF8;
     v10[3] = &unk_1001D4558;
     v7 = v5;
     v11 = v7;
-    LOBYTE(v5) = [v6 ax_containsObjectUsingBlock:v10];
+    LOBYTE(v5) = [allValues ax_containsObjectUsingBlock:v10];
 
     if ((v5 & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 assistiveTouchBubbleModeEnabled], v8, v9))
     {
@@ -7839,43 +7839,43 @@ LABEL_10:
 
 - (BOOL)dwellControlEnabled
 {
-  v3 = [(HNDHandManager *)self canShowASTMousePointer];
-  if (v3)
+  canShowASTMousePointer = [(HNDHandManager *)self canShowASTMousePointer];
+  if (canShowASTMousePointer)
   {
 
-    LOBYTE(v3) = [(HNDHandManager *)self assistiveTouchMouseDwellControlEnabled];
+    LOBYTE(canShowASTMousePointer) = [(HNDHandManager *)self assistiveTouchMouseDwellControlEnabled];
   }
 
-  return v3;
+  return canShowASTMousePointer;
 }
 
 - (BOOL)dwellControlAutorevertEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseDwellControlAutorevertEnabled];
+  assistiveTouchMouseDwellControlAutorevertEnabled = [v2 assistiveTouchMouseDwellControlAutorevertEnabled];
 
-  return v3;
+  return assistiveTouchMouseDwellControlAutorevertEnabled;
 }
 
-- (void)setDwellControlAutorevertEnabled:(BOOL)a3
+- (void)setDwellControlAutorevertEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchMouseDwellControlAutorevertEnabled:v3];
+  [v4 setAssistiveTouchMouseDwellControlAutorevertEnabled:enabledCopy];
 }
 
-- (void)setDwellMode:(unint64_t)a3
+- (void)setDwellMode:(unint64_t)mode
 {
-  if (self->_dwellMode != a3)
+  if (self->_dwellMode != mode)
   {
-    self->_dwellMode = a3;
+    self->_dwellMode = mode;
     [(HNDHandManager *)self enumerateDisplayManagersWithBlock:&stru_1001D4578];
   }
 }
 
-- (void)setDwellControlPaused:(BOOL)a3
+- (void)setDwellControlPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     [(HNDHandManager *)self specialToolUsageEnded:0];
     [(HNDHandManager *)self setDwellMode:0];
@@ -7901,8 +7901,8 @@ LABEL_10:
 {
   if (sub_100042C64())
   {
-    v3 = [(HNDHandManager *)self deviceManager];
-    if (![v3 mainDeviceIsPointer])
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    if (![deviceManager mainDeviceIsPointer])
     {
       v7 = 0;
 LABEL_9:
@@ -7910,12 +7910,12 @@ LABEL_9:
       return v7;
     }
 
-    v4 = [(HNDHandManager *)self systemPointerController];
+    systemPointerController = [(HNDHandManager *)self systemPointerController];
 
-    if (v4)
+    if (systemPointerController)
     {
-      v3 = [(HNDHandManager *)self systemPointerController];
-      [v3 currentSystemPointerPoint];
+      deviceManager = [(HNDHandManager *)self systemPointerController];
+      [deviceManager currentSystemPointerPoint];
       v7 = v6 == -1.0 && v5 == -1.0;
       goto LABEL_9;
     }
@@ -7932,16 +7932,16 @@ LABEL_9:
   {
     if (![(HNDHandManager *)self shouldHideSystemPointerForFingersView])
     {
-      v5 = [(HNDHandManager *)self systemPointerController];
-      if (v5)
+      systemPointerController = [(HNDHandManager *)self systemPointerController];
+      if (systemPointerController)
       {
-        v6 = v5;
-        v7 = [(HNDHandManager *)self _isWaitingForFirstSystemPointerMovement];
+        v6 = systemPointerController;
+        _isWaitingForFirstSystemPointerMovement = [(HNDHandManager *)self _isWaitingForFirstSystemPointerMovement];
 
-        if ((v7 & 1) == 0)
+        if ((_isWaitingForFirstSystemPointerMovement & 1) == 0)
         {
-          v8 = [(HNDHandManager *)self systemPointerController];
-          [v8 currentSystemPointerPoint];
+          systemPointerController2 = [(HNDHandManager *)self systemPointerController];
+          [systemPointerController2 currentSystemPointerPoint];
           v3 = v9;
           v4 = v10;
         }
@@ -7949,15 +7949,15 @@ LABEL_9:
     }
   }
 
-  v11 = [(HNDHandManager *)self currentDisplayManager];
-  v12 = v11;
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  v12 = currentDisplayManager;
   if (v3 == -1.0 && v4 == -1.0)
   {
-    v14 = [v11 fingerController];
-    if ([v14 numberOfFingers])
+    fingerController = [currentDisplayManager fingerController];
+    if ([fingerController numberOfFingers])
     {
-      v15 = [v12 fingerController];
-      [v15 midpointForFingers];
+      fingerController2 = [v12 fingerController];
+      [fingerController2 midpointForFingers];
       v3 = v16;
       v4 = v17;
     }
@@ -7985,31 +7985,31 @@ LABEL_9:
 
 - (id)currentHardwareIdentifierForPointer
 {
-  v2 = [(HNDHandManager *)self systemPointerController];
-  v3 = [v2 currentSystemPointerHardwareIdentifier];
+  systemPointerController = [(HNDHandManager *)self systemPointerController];
+  currentSystemPointerHardwareIdentifier = [systemPointerController currentSystemPointerHardwareIdentifier];
 
-  return v3;
+  return currentSystemPointerHardwareIdentifier;
 }
 
-- (void)handleButtonEvent:(id)a3
+- (void)handleButtonEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = ASTLogMouse();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100128C08(v4, v5);
+    sub_100128C08(eventCopy, v5);
   }
 
   [(HNDHandManager *)self cancelDwellTimer];
-  v6 = [v4 type];
-  if (v6 == 2)
+  type = [eventCopy type];
+  if (type == 2)
   {
     v7 = 3;
   }
 
   else
   {
-    if ([v4 type] != 1)
+    if ([eventCopy type] != 1)
     {
       goto LABEL_18;
     }
@@ -8017,55 +8017,55 @@ LABEL_9:
     v7 = 2;
   }
 
-  v8 = [v4 actionOverride];
-  if (![v8 length])
+  actionOverride = [eventCopy actionOverride];
+  if (![actionOverride length])
   {
-    [v4 buttonNumber];
+    [eventCopy buttonNumber];
     v9 = AXAssistiveTouchDefaultIconTypeForMouseButton();
 
     if (sub_100042C64())
     {
-      [v4 buttonNumber];
-      v8 = AXAssistiveTouchDefaultLaserIconTypeForMouseButton();
+      [eventCopy buttonNumber];
+      actionOverride = AXAssistiveTouchDefaultLaserIconTypeForMouseButton();
     }
 
     else
     {
-      v8 = v9;
+      actionOverride = v9;
     }
   }
 
-  if ([v4 buttonNumber] > 3)
+  if ([eventCopy buttonNumber] > 3)
   {
-    v10 = 4;
+    buttonNumber = 4;
   }
 
   else
   {
-    v10 = [v4 buttonNumber];
+    buttonNumber = [eventCopy buttonNumber];
   }
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    [(HNDHandManager *)self _handleAction:v8 type:v10 state:v7];
+    [(HNDHandManager *)self _handleAction:actionOverride type:buttonNumber state:v7];
     [(HNDHandManager *)self _fadeFingersAfterDelayIfNeeded];
   }
 
   else
   {
     [(HNDHandManager *)self _highlightFingers];
-    [(HNDHandManager *)self _handleAction:v8 type:v10 state:v7];
+    [(HNDHandManager *)self _handleAction:actionOverride type:buttonNumber state:v7];
   }
 
 LABEL_18:
 }
 
-- (void)_handleAction:(id)a3 type:(int)a4 state:(int)a5
+- (void)_handleAction:(id)action type:(int)type state:(int)state
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v17 = a3;
-  if ([v17 isEqualToString:AXAssistiveTouchIconTypeMousePrimaryClick])
+  v5 = *&state;
+  v6 = *&type;
+  actionCopy = action;
+  if ([actionCopy isEqualToString:AXAssistiveTouchIconTypeMousePrimaryClick])
   {
     if (![(HNDHandManager *)self dwellControlEnabled]|| [(HNDHandManager *)self dwellControlAutorevertEnabled]|| [(HNDHandManager *)self dwellControlPaused])
     {
@@ -8100,22 +8100,22 @@ LABEL_18:
 
   else
   {
-    if ([v17 isEqualToString:AXAssistiveTouchIconTypeDwellClick])
+    if ([actionCopy isEqualToString:AXAssistiveTouchIconTypeDwellClick])
     {
 LABEL_9:
       [(HNDHandManager *)self handlePrimaryButtonPress:v5];
       goto LABEL_10;
     }
 
-    if ([v17 isEqualToString:AXAssistiveTouchIconTypeHome])
+    if ([actionCopy isEqualToString:AXAssistiveTouchIconTypeHome])
     {
       [(HNDHandManager *)self handleCustomHomeButtonAction:v5];
       goto LABEL_10;
     }
 
-    if (![v17 isEqualToString:AXAssistiveTouchIconTypeOpenMenu])
+    if (![actionCopy isEqualToString:AXAssistiveTouchIconTypeOpenMenu])
     {
-      if ([v17 isEqualToString:AXAssistiveTouchIconTypeMouseSecondaryClick])
+      if ([actionCopy isEqualToString:AXAssistiveTouchIconTypeMouseSecondaryClick])
       {
         if (![(HNDHandManager *)self shouldHideSystemPointerForFingersView])
         {
@@ -8124,33 +8124,33 @@ LABEL_9:
         }
 
         v14 = AXAssistiveTouchIconTypeLongPress;
-        v15 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v15 = self;
-        v14 = v17;
+        selfCopy2 = self;
+        v14 = actionCopy;
       }
 
-      [(HNDHandManager *)v15 performButtonAction:v14 type:v6 state:v5];
+      [(HNDHandManager *)selfCopy2 performButtonAction:v14 type:v6 state:v5];
       goto LABEL_10;
     }
 
     if ([(HNDHandManager *)self inContinuousScrollMode])
     {
-      v8 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-      [(HNDHandManager *)self endContinuousScrollingOnDisplay:v8 withCompletion:0];
+      currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+      [(HNDHandManager *)self endContinuousScrollingOnDisplay:currentHardwareIdentifierForPointer withCompletion:0];
     }
 
     if (v5 == 2)
     {
-      v9 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-      v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v9];
+      currentHardwareIdentifierForPointer2 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+      v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:currentHardwareIdentifierForPointer2];
 
-      LODWORD(v9) = [v10 isMenuVisible];
-      v11 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-      [(HNDHandManager *)self showMenu:v9 ^ 1 onDisplay:v11];
+      LODWORD(currentHardwareIdentifierForPointer2) = [v10 isMenuVisible];
+      currentHardwareIdentifierForPointer3 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+      [(HNDHandManager *)self showMenu:currentHardwareIdentifierForPointer2 ^ 1 onDisplay:currentHardwareIdentifierForPointer3];
     }
   }
 
@@ -8159,9 +8159,9 @@ LABEL_10:
 
 - (void)_reallyLiftFingersUpForPotentialTapViaPrimaryButton
 {
-  v3 = [(HNDHandManager *)self currentDisplayManager];
-  v4 = [v3 fingerController];
-  [v4 liftFingersUpAnimated:1];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
+  [fingerController liftFingersUpAnimated:1];
 
   [(HNDHandManager *)self setIsPendingFingerLiftForPrimaryButtonPressUp:0];
 }
@@ -8179,12 +8179,12 @@ LABEL_10:
 
   [(HNDHandManager *)self setIsPendingFingerLiftForPrimaryButtonPressUp:0];
   v4 = +[NSDate date];
-  v5 = [(HNDHandManager *)self previousPrimaryButtonPressDownDate];
+  previousPrimaryButtonPressDownDate = [(HNDHandManager *)self previousPrimaryButtonPressDownDate];
 
-  if (v5)
+  if (previousPrimaryButtonPressDownDate)
   {
-    v6 = [(HNDHandManager *)self previousPrimaryButtonPressDownDate];
-    [v4 timeIntervalSinceDate:v6];
+    previousPrimaryButtonPressDownDate2 = [(HNDHandManager *)self previousPrimaryButtonPressDownDate];
+    [v4 timeIntervalSinceDate:previousPrimaryButtonPressDownDate2];
     v8 = v7;
 
     if (v8 < 0.1)
@@ -8200,32 +8200,32 @@ LABEL_10:
   }
 }
 
-- (void)handlePrimaryButtonPress:(int)a3
+- (void)handlePrimaryButtonPress:(int)press
 {
   if ([(HNDHandManager *)self isPendingFingerLiftForPrimaryButtonPressUp])
   {
     [(HNDHandManager *)self _reallyLiftFingersUpForPotentialTapViaPrimaryButton];
   }
 
-  v34 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-  v5 = [(HNDHandManager *)self currentDisplayManager];
-  v6 = [v5 fingerController];
-  if (a3 == 3)
+  currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
+  if (press == 3)
   {
     if (self->_hotCornerLocked)
     {
-      v10 = [v5 fingerController];
-      v11 = [v10 fingerModels];
-      v12 = [v11 objectAtIndexedSubscript:0];
+      fingerController2 = [currentDisplayManager fingerController];
+      fingerModels = [fingerController2 fingerModels];
+      v12 = [fingerModels objectAtIndexedSubscript:0];
       [v12 location];
-      [v5 convertToNormalizedInterfaceOrientation:?];
+      [currentDisplayManager convertToNormalizedInterfaceOrientation:?];
       v14 = v13;
       v16 = v15;
 
-      v17 = [(HNDHandManager *)self _hotCornerForNormalizedPoint:v34 onDisplay:v14, v16];
+      v17 = [(HNDHandManager *)self _hotCornerForNormalizedPoint:currentHardwareIdentifierForPointer onDisplay:v14, v16];
       if (v17)
       {
-        [(HNDHandManager *)self _performActionForHotCorner:v17 onDisplay:v34];
+        [(HNDHandManager *)self _performActionForHotCorner:v17 onDisplay:currentHardwareIdentifierForPointer];
       }
     }
 
@@ -8240,24 +8240,24 @@ LABEL_10:
       self->_pinchState = 0;
       if ([(HNDHandManager *)self dwellControlEnabled])
       {
-        [v5 updateNubbitForegroundImageForAction:AXAssistiveTouchIconTypeDwellClick];
-        v24 = [v5 fingerController];
-        [v24 liftFingersUpAnimated:0];
+        [currentDisplayManager updateNubbitForegroundImageForAction:AXAssistiveTouchIconTypeDwellClick];
+        fingerController3 = [currentDisplayManager fingerController];
+        [fingerController3 liftFingersUpAnimated:0];
 
-        v25 = [v5 fingerController];
-        [v25 midpointForFingers];
+        fingerController4 = [currentDisplayManager fingerController];
+        [fingerController4 midpointForFingers];
         v27 = v26;
         v29 = v28;
 
-        [(HNDHandManager *)self removeFingersToPoint:v34 onDisplay:v27, v29];
-        [(HNDHandManager *)self resetFingersToPoint:v34 onDisplay:1 active:v27, v29];
+        [(HNDHandManager *)self removeFingersToPoint:currentHardwareIdentifierForPointer onDisplay:v27, v29];
+        [(HNDHandManager *)self resetFingersToPoint:currentHardwareIdentifierForPointer onDisplay:1 active:v27, v29];
       }
 
       else
       {
-        [(HNDHandManager *)self resetPinchFingersOnDisplay:v34];
-        v30 = [v5 fingerController];
-        [v30 liftFingersUpAnimated:1];
+        [(HNDHandManager *)self resetPinchFingersOnDisplay:currentHardwareIdentifierForPointer];
+        fingerController5 = [currentDisplayManager fingerController];
+        [fingerController5 liftFingersUpAnimated:1];
       }
     }
 
@@ -8279,7 +8279,7 @@ LABEL_10:
       }
     }
 
-    if (-[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled") && ([v5 isMenuVisible] & 1) == 0 && !-[HNDHandManager inDragMode](self, "inDragMode") && !-[HNDHandManager inContinuousScrollMode](self, "inContinuousScrollMode"))
+    if (-[HNDHandManager dwellControlEnabled](self, "dwellControlEnabled") && ([currentDisplayManager isMenuVisible] & 1) == 0 && !-[HNDHandManager inDragMode](self, "inDragMode") && !-[HNDHandManager inContinuousScrollMode](self, "inContinuousScrollMode"))
     {
       [(HNDHandManager *)self _resetDwellModeToDefault];
     }
@@ -8289,11 +8289,11 @@ LABEL_10:
     self->_wasExistingGestureEndedScrollAction = 0;
   }
 
-  else if (a3 == 2)
+  else if (press == 2)
   {
-    if (-[HNDHandManager isVirtualTrackpadVisible](self, "isVirtualTrackpadVisible") && -[HNDHandManager inBubbleMode](self, "inBubbleMode") && [v5 shouldHideBubbleModeForVirtualTrackpad])
+    if (-[HNDHandManager isVirtualTrackpadVisible](self, "isVirtualTrackpadVisible") && -[HNDHandManager inBubbleMode](self, "inBubbleMode") && [currentDisplayManager shouldHideBubbleModeForVirtualTrackpad])
     {
-      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:v34];
+      [(HNDHandManager *)self bubbleModeFailedToSnapOnDisplay:currentHardwareIdentifierForPointer];
     }
 
     v7 = +[AXOutputManager sharedOutputManager];
@@ -8303,8 +8303,8 @@ LABEL_10:
     {
       if ([(HNDHandManager *)self inCustomGesture])
       {
-        v8 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-        [(HNDHandManager *)self _performCustomGestureOnDisplay:v8];
+        currentHardwareIdentifierForPointer2 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+        [(HNDHandManager *)self _performCustomGestureOnDisplay:currentHardwareIdentifierForPointer2];
 
         goto LABEL_12;
       }
@@ -8313,46 +8313,46 @@ LABEL_10:
       {
         if (self->_pinchState != 2)
         {
-          v18 = [v6 fingerModels];
-          v19 = [v18 count];
+          fingerModels2 = [fingerController fingerModels];
+          v19 = [fingerModels2 count];
 
           if (v19 != 2)
           {
             _AXAssert();
           }
 
-          v20 = [v6 fingerModels];
-          v21 = [v20 count];
+          fingerModels3 = [fingerController fingerModels];
+          v21 = [fingerModels3 count];
 
           if (v21 != 2)
           {
             goto LABEL_12;
           }
 
-          v22 = [v6 fingerModels];
-          v23 = [v22 objectAtIndexedSubscript:0];
+          fingerModels4 = [fingerController fingerModels];
+          v23 = [fingerModels4 objectAtIndexedSubscript:0];
           [v23 location];
-          if ([(HNDHandManager *)self _isInNubbitHitbox:v34 onDisplay:?])
+          if ([(HNDHandManager *)self _isInNubbitHitbox:currentHardwareIdentifierForPointer onDisplay:?])
           {
           }
 
           else
           {
-            v31 = [v6 fingerModels];
-            v32 = [v31 objectAtIndexedSubscript:1];
+            fingerModels5 = [fingerController fingerModels];
+            v32 = [fingerModels5 objectAtIndexedSubscript:1];
             [v32 location];
-            v33 = [(HNDHandManager *)self _isInNubbitHitbox:v34 onDisplay:?];
+            v33 = [(HNDHandManager *)self _isInNubbitHitbox:currentHardwareIdentifierForPointer onDisplay:?];
 
             if (!v33)
             {
               [(HNDHandManager *)self setCaptureEvents:1];
-              [v6 pressFingersDownAnimated:1];
+              [fingerController pressFingersDownAnimated:1];
               self->_pinchState = 1;
               goto LABEL_12;
             }
           }
 
-          [(HNDHandManager *)self showMenu:1 onDisplay:v34];
+          [(HNDHandManager *)self showMenu:1 onDisplay:currentHardwareIdentifierForPointer];
 LABEL_12:
           [(HNDHandManager *)self _resetMenuOpenTracker];
           self->_primaryButtonDown = 1;
@@ -8368,12 +8368,12 @@ LABEL_12:
           [(HNDHandManager *)self currentPointForPointer];
           if (self->_dragStartPoint.x == -1.0 && self->_dragStartPoint.y == -1.0)
           {
-            [(HNDHandManager *)self beginDragAtPoint:v34 onDisplay:?];
+            [(HNDHandManager *)self beginDragAtPoint:currentHardwareIdentifierForPointer onDisplay:?];
           }
 
           else
           {
-            [(HNDHandManager *)self endDragModeAtPoint:v34 onDisplay:1 completed:?];
+            [(HNDHandManager *)self endDragModeAtPoint:currentHardwareIdentifierForPointer onDisplay:1 completed:?];
           }
 
           goto LABEL_12;
@@ -8381,7 +8381,7 @@ LABEL_12:
 
         if ([(HNDHandManager *)self inContinuousScrollMode])
         {
-          [(HNDHandManager *)self endContinuousScrollingOnDisplay:v34 withCompletion:0];
+          [(HNDHandManager *)self endContinuousScrollingOnDisplay:currentHardwareIdentifierForPointer withCompletion:0];
           goto LABEL_12;
         }
 
@@ -8389,7 +8389,7 @@ LABEL_12:
         {
           if (![(HNDHandManager *)self currentlySnappedInBubbleMode])
           {
-            [v6 pressFingersDownAnimated:1];
+            [fingerController pressFingersDownAnimated:1];
           }
 
           goto LABEL_12;
@@ -8401,18 +8401,18 @@ LABEL_12:
 LABEL_22:
 }
 
-- (void)handleMultiTouchStandard:(int64_t)a3 onDisplay:(id)a4 withExistingFingerMidPoint:(CGPoint)a5
+- (void)handleMultiTouchStandard:(int64_t)standard onDisplay:(id)display withExistingFingerMidPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   self->_inMultiFingerGesture = 1;
-  [(HNDHandManager *)self showMenu:0 onDisplay:v9];
-  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v9];
-  v11 = [v10 fingerController];
-  v12 = [v11 fingerContainerView];
-  [v12 bounds];
-  v17 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:a3 aroundPoint:x withinBounds:y, v13, v14, v15, v16];
+  [(HNDHandManager *)self showMenu:0 onDisplay:displayCopy];
+  v10 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v10 fingerController];
+  fingerContainerView = [fingerController fingerContainerView];
+  [fingerContainerView bounds];
+  v17 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:standard aroundPoint:x withinBounds:y, v13, v14, v15, v16];
 
   v18 = CGPointZero.y;
   if (x == CGPointZero.x && y == v18)
@@ -8420,9 +8420,9 @@ LABEL_22:
     AX_CGPointGetMidpointOfAllPoints();
     v23 = v22;
     v25 = v24;
-    v26 = [v10 fingerController];
-    v27 = [v26 fingerContainerView];
-    [v27 bounds];
+    fingerController2 = [v10 fingerController];
+    fingerContainerView2 = [fingerController2 fingerContainerView];
+    [fingerContainerView2 bounds];
     AX_CGRectGetCenter();
     v29 = v28;
     v31 = v30;
@@ -8472,26 +8472,26 @@ LABEL_22:
     while (v35);
   }
 
-  v40 = [v10 fingerController];
-  [v40 showFingerModels:v32 animated:1 startPointForAnimation:{CGPointZero.x, v18}];
+  fingerController3 = [v10 fingerController];
+  [fingerController3 showFingerModels:v32 animated:1 startPointForAnimation:{CGPointZero.x, v18}];
 
   [v10 setMultiTouchToolBackgroundEnabled:1];
 }
 
-- (void)prepareScrollAtPoint:(CGPoint)a3 onDisplay:(id)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7
+- (void)prepareScrollAtPoint:(CGPoint)point onDisplay:(id)display vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v16 = [(HNDHandManager *)self _scrollFallbackGestureAtPoint:v13 onDisplay:v9 vertical:v8 forward:v7 max:x, y];
+  maxCopy = max;
+  forwardCopy = forward;
+  verticalCopy = vertical;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v16 = [(HNDHandManager *)self _scrollFallbackGestureAtPoint:displayCopy onDisplay:verticalCopy vertical:forwardCopy forward:maxCopy max:x, y];
   [HNDHandManager prepareGesture:"prepareGesture:onDisplay:" onDisplay:?];
 
-  if (v9 && v7)
+  if (verticalCopy && maxCopy)
   {
-    if (v8)
+    if (forwardCopy)
     {
       v14 = 2031;
     }
@@ -8504,7 +8504,7 @@ LABEL_22:
 
   else
   {
-    if (v8)
+    if (forwardCopy)
     {
       v14 = 2009;
     }
@@ -8514,7 +8514,7 @@ LABEL_22:
       v14 = 2008;
     }
 
-    if (v8)
+    if (forwardCopy)
     {
       v15 = 2006;
     }
@@ -8524,7 +8524,7 @@ LABEL_22:
       v15 = 2007;
     }
 
-    if (v9)
+    if (verticalCopy)
     {
       v14 = v15;
     }
@@ -8533,11 +8533,11 @@ LABEL_22:
   self->_preparedScrollAction = v14;
 }
 
-- (BOOL)_performAXScrollActionAtPoint:(CGPoint)a3 onDisplay:(id)a4 action:(int)a5
+- (BOOL)_performAXScrollActionAtPoint:(CGPoint)point onDisplay:(id)display action:(int)action
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   if (self->_shouldSkipElementFetchForAXScroll)
   {
     v10 = 0;
@@ -8549,7 +8549,7 @@ LABEL_22:
     v34[1] = 3221225472;
     v34[2] = sub_100037488;
     v34[3] = &unk_1001D4598;
-    v35 = a5;
+    actionCopy = action;
     v11 = objc_retainBlock(v34);
     v30 = 0;
     v31 = &v30;
@@ -8605,33 +8605,33 @@ LABEL_22:
   return v10 & 1;
 }
 
-- (double)_scrollDeltaForGesture:(BOOL)a3 screenSize:(CGSize)a4
+- (double)_scrollDeltaForGesture:(BOOL)gesture screenSize:(CGSize)size
 {
-  if (a3)
+  if (gesture)
   {
-    a4.width = a4.height;
+    size.width = size.height;
   }
 
-  return a4.width * 0.75;
+  return size.width * 0.75;
 }
 
-- (id)_scrollFallbackGestureAtPoint:(CGPoint)a3 onDisplay:(id)a4 vertical:(BOOL)a5 forward:(BOOL)a6 max:(BOOL)a7
+- (id)_scrollFallbackGestureAtPoint:(CGPoint)point onDisplay:(id)display vertical:(BOOL)vertical forward:(BOOL)forward max:(BOOL)max
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
-  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
+  maxCopy = max;
+  forwardCopy = forward;
+  verticalCopy = vertical;
+  y = point.y;
+  x = point.x;
+  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
   [v13 screenBounds];
   v15 = v14;
-  [(HNDHandManager *)self _scrollDeltaForGesture:v9 screenSize:v14, v16];
-  if (v8)
+  [(HNDHandManager *)self _scrollDeltaForGesture:verticalCopy screenSize:v14, v16];
+  if (forwardCopy)
   {
     v17 = -v17;
   }
 
-  if (v9)
+  if (verticalCopy)
   {
     v18 = 0.0;
   }
@@ -8642,7 +8642,7 @@ LABEL_22:
   }
 
   v19 = x + v18;
-  if (v9)
+  if (verticalCopy)
   {
     v20 = v17;
   }
@@ -8652,23 +8652,23 @@ LABEL_22:
     v20 = 0.0;
   }
 
-  v21 = [v13 orientation];
-  if (((AXDeviceIsPhone() & 1) != 0 || AXDeviceIsPod()) && !v9)
+  orientation = [v13 orientation];
+  if (((AXDeviceIsPhone() & 1) != 0 || AXDeviceIsPod()) && !verticalCopy)
   {
     v22 = 0.0;
-    if (v8)
+    if (forwardCopy)
     {
       v22 = v15;
     }
 
-    if (v21 == 2)
+    if (orientation == 2)
     {
       v19 = v22;
     }
   }
 
   v23 = y + v20;
-  if (v9 && v7)
+  if (verticalCopy && maxCopy)
   {
     v24 = [AXNamedReplayableGesture flickGestureStartingAtPoint:1 endingAtPoint:x numberOfFingers:y, v19, v23];
   }
@@ -8683,19 +8683,19 @@ LABEL_22:
   return v25;
 }
 
-- (void)startPinchModeWithPoint:(CGPoint)a3 onDisplay:(id)a4 mode:(unint64_t)a5
+- (void)startPinchModeWithPoint:(CGPoint)point onDisplay:(id)display mode:(unint64_t)mode
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
   [(HNDHandManager *)self pauseBubbleModeForSpecialUsageTool];
   [(HNDHandManager *)self pauseEyeTrackingAutoHideForSpecialUsageTool];
-  self->_pinchMode = a5;
-  [(HNDHandManager *)self showMenu:0 onDisplay:v9];
-  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v9];
+  self->_pinchMode = mode;
+  [(HNDHandManager *)self showMenu:0 onDisplay:displayCopy];
+  v11 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
 
-  v10 = [v11 fingerController];
-  [v10 showPinchFingersAnimated:0 midpoint:{x, y}];
+  fingerController = [v11 fingerController];
+  [fingerController showPinchFingersAnimated:0 midpoint:{x, y}];
 
   [(HNDHandManager *)self setDwellMode:1];
   self->_pinchRotatePreviousPoint = HNDPointNull;
@@ -8704,17 +8704,17 @@ LABEL_22:
 
 - (void)notifyUserEventOccurred
 {
-  v2 = [(HNDHandManager *)self eventManager];
-  [v2 notifyUserEventOccurred];
+  eventManager = [(HNDHandManager *)self eventManager];
+  [eventManager notifyUserEventOccurred];
 }
 
-- (void)menuExitedOnDisplay:(id)a3
+- (void)menuExitedOnDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self eventManager];
-  [v5 manipulateDimTimer:0];
+  displayCopy = display;
+  eventManager = [(HNDHandManager *)self eventManager];
+  [eventManager manipulateDimTimer:0];
 
-  v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
+  v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
 
   [v6 showMenu:0];
   if ([(HNDHandManager *)self dwellControlEnabled]&& [(HNDHandManager *)self dwellControlPaused])
@@ -8731,52 +8731,52 @@ LABEL_22:
     goto LABEL_3;
   }
 
-  v4 = [(HNDHandManager *)self deviceManager];
-  v5 = [v4 mainDeviceIsPointer];
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  mainDeviceIsPointer = [deviceManager mainDeviceIsPointer];
 
   if ([(HNDHandManager *)self isOnDeviceEyeTrackingEnabled])
   {
-    v6 = [(HNDHandManager *)self deviceManager];
-    v5 = [v6 mainDeviceIsOnDeviceEyeTracker];
+    deviceManager2 = [(HNDHandManager *)self deviceManager];
+    mainDeviceIsPointer = [deviceManager2 mainDeviceIsOnDeviceEyeTracker];
   }
 
   v7 = sub_100042C64();
-  v8 = (v7 ^ 1) & v5;
-  if (((v7 ^ 1) & 1) == 0 && v5)
+  mouseBehavesLikeFinger = (v7 ^ 1) & mainDeviceIsPointer;
+  if (((v7 ^ 1) & 1) == 0 && mainDeviceIsPointer)
   {
     if ([(HNDHandManager *)self assistiveTouchMouseDwellControlEnabled])
     {
-      v8 = 1;
+      mouseBehavesLikeFinger = 1;
     }
 
     else
     {
-      v8 = [(HNDHandManager *)self mouseBehavesLikeFinger];
+      mouseBehavesLikeFinger = [(HNDHandManager *)self mouseBehavesLikeFinger];
     }
   }
 
-  v9 = [(HNDHandManager *)self deviceManager];
-  if ([v9 hidDeviceIsConfiguring])
+  deviceManager3 = [(HNDHandManager *)self deviceManager];
+  if ([deviceManager3 hidDeviceIsConfiguring])
   {
 
 LABEL_16:
-    v8 = 0;
+    mouseBehavesLikeFinger = 0;
     goto LABEL_17;
   }
 
-  v10 = [(HNDHandManager *)self deviceManager];
-  v11 = [v10 hidDeviceSentReservedStatus];
+  deviceManager4 = [(HNDHandManager *)self deviceManager];
+  hidDeviceSentReservedStatus = [deviceManager4 hidDeviceSentReservedStatus];
 
-  if (v11)
+  if (hidDeviceSentReservedStatus)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
-  v12 = [(HNDHandManager *)self mainDisplayManager];
-  v13 = [v12 isShowingCalibrationUI];
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  isShowingCalibrationUI = [mainDisplayManager isShowingCalibrationUI];
 
-  if (!v13 && (v8 & 1) != 0)
+  if (!isShowingCalibrationUI && (mouseBehavesLikeFinger & 1) != 0)
   {
     return 1;
   }
@@ -8813,18 +8813,18 @@ LABEL_3:
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v2];
 }
 
-- (void)resetFingersIfNeededOnDisplay:(id)a3
+- (void)resetFingersIfNeededOnDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (![(HNDHandManager *)self usingSpecialTool]&& ![(HNDHandManager *)self inCustomGesture])
   {
-    [(HNDHandManager *)self resetFingersToPoint:v4 onDisplay:-1.0, -1.0];
+    [(HNDHandManager *)self resetFingersToPoint:displayCopy onDisplay:-1.0, -1.0];
   }
 }
 
-- (void)resetFingersIfActiveOnDisplay:(id)a3
+- (void)resetFingersIfActiveOnDisplay:(id)display
 {
-  v8 = a3;
+  displayCopy = display;
   v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:?];
   if ([v4 fingerContentViewIsActive])
   {
@@ -8832,27 +8832,27 @@ LABEL_3:
 
   else
   {
-    v5 = [(HNDHandManager *)self deviceManager];
-    v6 = [v5 mainDeviceIsPointer];
+    deviceManager = [(HNDHandManager *)self deviceManager];
+    mainDeviceIsPointer = [deviceManager mainDeviceIsPointer];
 
-    v7 = v8;
-    if (v6)
+    v7 = displayCopy;
+    if (mainDeviceIsPointer)
     {
       goto LABEL_5;
     }
   }
 
-  [(HNDHandManager *)self resetFingersToPoint:v8 onDisplay:-1.0, -1.0];
-  v7 = v8;
+  [(HNDHandManager *)self resetFingersToPoint:displayCopy onDisplay:-1.0, -1.0];
+  v7 = displayCopy;
 LABEL_5:
 }
 
-- (void)resetFingersToPoint:(CGPoint)a3 onDisplay:(id)a4 active:(BOOL)a5
+- (void)resetFingersToPoint:(CGPoint)point onDisplay:(id)display active:(BOOL)active
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v9 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
+  activeCopy = active;
+  y = point.y;
+  x = point.x;
+  v9 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
   v10 = x == -1.0 && y == -1.0;
   if (v10 && (([(HNDHandManager *)self currentPointForPointer], x = v11, y = v12, [(HNDHandManager *)self systemPointerController], v13 = objc_claimAutoreleasedReturnValue(), v13, v14 = [(HNDHandManager *)self _isWaitingForFirstSystemPointerMovement], !v13) ? (v15 = 1) : (v15 = v14), _AXSAssistiveTouchEnabled() && !UIAccessibilityIsSwitchControlRunning() && (sub_100042C64() & v15) == 1 && [(HNDHandManager *)self shouldHideSystemPointerForFingersView]))
   {
@@ -8870,41 +8870,41 @@ LABEL_5:
     v31 = &unk_1001D4628;
     v16 = v9;
     v32 = v16;
-    v33 = self;
+    selfCopy = self;
     v17 = objc_retainBlock(&v28);
     if (![(HNDHandManager *)self shouldHideSystemPointerForFingersView:v28]|| (v17[2])(v17, x, y))
     {
-      v18 = [v16 fingerController];
-      [v18 clearAllFingersAnimated:1 endPointForAnimation:{x, y}];
+      fingerController = [v16 fingerController];
+      [fingerController clearAllFingersAnimated:1 endPointForAnimation:{x, y}];
 
       self->_primaryButtonDown = 0;
     }
 
     if ((v17[2])(v17, x, y))
     {
-      v19 = [(HNDHandManager *)self deviceManager];
-      if ([v19 hidDeviceIsConfiguring])
+      deviceManager = [(HNDHandManager *)self deviceManager];
+      if ([deviceManager hidDeviceIsConfiguring])
       {
       }
 
       else
       {
-        v20 = [(HNDHandManager *)self deviceManager];
-        v21 = [v20 hidDeviceSentReservedStatus];
+        deviceManager2 = [(HNDHandManager *)self deviceManager];
+        hidDeviceSentReservedStatus = [deviceManager2 hidDeviceSentReservedStatus];
 
-        if ((v21 & 1) == 0)
+        if ((hidDeviceSentReservedStatus & 1) == 0)
         {
-          v22 = [(HNDHandManager *)self mainDisplayManager];
-          v23 = [v22 isShowingCalibrationUI];
+          mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+          isShowingCalibrationUI = [mainDisplayManager isShowingCalibrationUI];
 
-          if ((v23 & 1) == 0)
+          if ((isShowingCalibrationUI & 1) == 0)
           {
-            [v16 setFingerContentViewIsActive:v5];
-            v24 = [v16 fingerController];
+            [v16 setFingerContentViewIsActive:activeCopy];
+            fingerController2 = [v16 fingerController];
             v25 = [AXPIFingerModel fingerModelForLocation:x, y];
             v34 = v25;
             v26 = [NSArray arrayWithObjects:&v34 count:1];
-            [v24 showFingerModels:v26 animated:1 startPointForAnimation:{x, y}];
+            [fingerController2 showFingerModels:v26 animated:1 startPointForAnimation:{x, y}];
 
             [v16 updateWithPrimaryFingerPoint:{x, y}];
             if ([(HNDHandManager *)self dwellControlEnabled])
@@ -8919,19 +8919,19 @@ LABEL_5:
     [v16 setMultiTouchToolBackgroundEnabled:0];
     if (sub_100042C64())
     {
-      v27 = [(HNDHandManager *)self systemPointerController];
-      [v27 hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
+      systemPointerController = [(HNDHandManager *)self systemPointerController];
+      [systemPointerController hideSystemPointer:{-[HNDHandManager shouldHideSystemPointerForFingersView](self, "shouldHideSystemPointerForFingersView")}];
     }
   }
 }
 
-- (void)removeFingersToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)removeFingersToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
-  v8 = [v7 fingerController];
-  [v8 clearAllFingersAnimated:1 endPointForAnimation:{x, y}];
+  y = point.y;
+  x = point.x;
+  v7 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
+  fingerController = [v7 fingerController];
+  [fingerController clearAllFingersAnimated:1 endPointForAnimation:{x, y}];
 
   self->_primaryButtonDown = 0;
 }
@@ -8946,34 +8946,34 @@ LABEL_5:
   [(HNDHandManager *)self enumerateDisplayManagersWithBlock:v2];
 }
 
-- (CGPoint)preferredMenuDisplayPointOnDisplay:(id)a3
+- (CGPoint)preferredMenuDisplayPointOnDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self deviceManager];
-  v6 = [v5 deviceCount];
+  displayCopy = display;
+  deviceManager = [(HNDHandManager *)self deviceManager];
+  deviceCount = [deviceManager deviceCount];
 
-  if (v6)
+  if (deviceCount)
   {
-    v7 = [(HNDHandManager *)self deviceManager];
-    v8 = [v7 mainDeviceIsMotionTracker];
+    deviceManager2 = [(HNDHandManager *)self deviceManager];
+    mainDeviceIsMotionTracker = [deviceManager2 mainDeviceIsMotionTracker];
 
-    if (!v8)
+    if (!mainDeviceIsMotionTracker)
     {
       if (sub_100042C64())
       {
-        v11 = [(HNDHandManager *)self systemPointerController];
-        if (v11)
+        systemPointerController = [(HNDHandManager *)self systemPointerController];
+        if (systemPointerController)
         {
-          v12 = v11;
-          v13 = [(HNDHandManager *)self deviceManager];
-          if ([v13 mainDeviceIsPointer])
+          v12 = systemPointerController;
+          deviceManager3 = [(HNDHandManager *)self deviceManager];
+          if ([deviceManager3 mainDeviceIsPointer])
           {
-            v14 = [(HNDHandManager *)self shouldHideSystemPointerForFingersView];
+            shouldHideSystemPointerForFingersView = [(HNDHandManager *)self shouldHideSystemPointerForFingersView];
 
-            if ((v14 & 1) == 0)
+            if ((shouldHideSystemPointerForFingersView & 1) == 0)
             {
-              v15 = [(HNDHandManager *)self systemPointerController];
-              [v15 currentSystemPointerPoint];
+              systemPointerController2 = [(HNDHandManager *)self systemPointerController];
+              [systemPointerController2 currentSystemPointerPoint];
               x = v16;
               y = v17;
 LABEL_15:
@@ -8988,16 +8988,16 @@ LABEL_15:
         }
       }
 
-      v15 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v4];
-      v18 = [v15 fingerController];
-      if ([v18 numberOfFingers])
+      systemPointerController2 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+      fingerController = [systemPointerController2 fingerController];
+      if ([fingerController numberOfFingers])
       {
-        v19 = [v15 fingerContentViewIsActive];
+        fingerContentViewIsActive = [systemPointerController2 fingerContentViewIsActive];
 
-        if (v19)
+        if (fingerContentViewIsActive)
         {
-          v20 = [v15 fingerController];
-          [v20 hndMenuPointForFingerLayout];
+          fingerController2 = [systemPointerController2 fingerController];
+          [fingerController2 hndMenuPointForFingerLayout];
           x = v21;
           y = v22;
 
@@ -9026,24 +9026,24 @@ LABEL_16:
   return result;
 }
 
-- (void)performButtonAction:(id)a3 type:(int)a4 state:(int)a5
+- (void)performButtonAction:(id)action type:(int)type state:(int)state
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v11 = a3;
-  v8 = [(HNDHandManager *)self currentDisplayManager];
-  v9 = v8;
+  v5 = *&state;
+  v6 = *&type;
+  actionCopy = action;
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  v9 = currentDisplayManager;
   if (self->_primaryButtonDown)
   {
-    v10 = [v8 fingerController];
-    [v10 liftFingersUpAnimated:1];
+    fingerController = [currentDisplayManager fingerController];
+    [fingerController liftFingersUpAnimated:1];
 
     self->_primaryButtonDown = 0;
   }
 
   if (v5 == 2)
   {
-    [v9 activateAssistiveTouchAction:v11 fromButtonPress:1];
+    [v9 activateAssistiveTouchAction:actionCopy fromButtonPress:1];
   }
 
   else
@@ -9052,11 +9052,11 @@ LABEL_16:
   }
 }
 
-- (void)handleCustomHomeButtonAction:(int)a3
+- (void)handleCustomHomeButtonAction:(int)action
 {
   v4 = +[AXPISystemActionHelper sharedInstance];
   v5 = v4;
-  if (a3 == 2)
+  if (action == 2)
   {
     [v4 pressHomeButtonDown];
   }
@@ -9067,14 +9067,14 @@ LABEL_16:
   }
 }
 
-- (void)rotateEventToOrientation:(id)a3
+- (void)rotateEventToOrientation:(id)orientation
 {
-  v4 = a3;
+  orientationCopy = orientation;
   orientation = self->_orientation;
   if (orientation == 4)
   {
-    v13 = v4;
-    [v4 deltaY];
+    v13 = orientationCopy;
+    [orientationCopy deltaY];
     v8 = v11;
     [v13 deltaX];
     v10 = -v12;
@@ -9083,8 +9083,8 @@ LABEL_16:
 
   if (orientation == 3)
   {
-    v13 = v4;
-    [v4 deltaY];
+    v13 = orientationCopy;
+    [orientationCopy deltaY];
     v8 = -v9;
     [v13 deltaX];
 LABEL_7:
@@ -9097,21 +9097,21 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v13 = v4;
-  [v4 deltaY];
+  v13 = orientationCopy;
+  [orientationCopy deltaY];
   [v13 setDeltaY:-v6];
   [v13 deltaX];
   v8 = -v7;
 LABEL_8:
   [v13 setDeltaX:v8];
-  v4 = v13;
+  orientationCopy = v13;
 LABEL_9:
 }
 
 - (double)volumeLevel
 {
-  v2 = [(HNDHandManager *)self eventManager];
-  [v2 volumeLevel];
+  eventManager = [(HNDHandManager *)self eventManager];
+  [eventManager volumeLevel];
   v4 = v3;
 
   return v4;
@@ -9119,10 +9119,10 @@ LABEL_9:
 
 - (BOOL)isVoiceControlRunning
 {
-  v2 = [(HNDHandManager *)self eventManager];
-  v3 = [v2 isVoiceControlRunning];
+  eventManager = [(HNDHandManager *)self eventManager];
+  isVoiceControlRunning = [eventManager isVoiceControlRunning];
 
-  return v3;
+  return isVoiceControlRunning;
 }
 
 - (CGPoint)rotateNormalizedPointToOrientation:(CGPoint)result
@@ -9155,28 +9155,28 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)rotateEventFromOrientation:(CGPoint)a3
+- (CGPoint)rotateEventFromOrientation:(CGPoint)orientation
 {
-  x = a3.x;
+  x = orientation.x;
   orientation = self->_orientation;
-  v5 = -a3.y;
+  v5 = -orientation.y;
   if (orientation != 4)
   {
     v6 = -x;
     if (orientation == 2)
     {
       x = -x;
-      y = -a3.y;
+      y = -orientation.y;
     }
 
     else
     {
-      y = a3.y;
+      y = orientation.y;
     }
 
     if (orientation == 3)
     {
-      v5 = a3.y;
+      v5 = orientation.y;
     }
 
     else
@@ -9201,11 +9201,11 @@ LABEL_9:
   return result;
 }
 
-- (void)showMenu:(BOOL)a3 onDisplay:(id)a4
+- (void)showMenu:(BOOL)menu onDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
-  [v5 showMenu:v4];
+  menuCopy = menu;
+  v5 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
+  [v5 showMenu:menuCopy];
 }
 
 - (id)fingerController
@@ -9215,24 +9215,24 @@ LABEL_9:
     _AXAssert();
   }
 
-  v3 = [(HNDHandManager *)self mainDisplayManager];
-  v4 = [v3 fingerController];
+  mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
+  fingerController = [mainDisplayManager fingerController];
 
-  return v4;
+  return fingerController;
 }
 
-- (CGPoint)_fingerControllerPointForScreenPoint:(CGPoint)a3 onDisplay:(id)a4
+- (CGPoint)_fingerControllerPointForScreenPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a4];
-  v7 = [v6 fingerController];
+  y = point.y;
+  x = point.x;
+  v6 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
+  fingerController = [v6 fingerController];
 
-  v8 = [v7 fingerContainerView];
-  v9 = [v7 fingerContainerView];
-  v10 = [v9 window];
-  [v10 convertPoint:0 fromWindow:{x, y}];
-  [v8 convertPoint:0 fromView:?];
+  fingerContainerView = [fingerController fingerContainerView];
+  fingerContainerView2 = [fingerController fingerContainerView];
+  window = [fingerContainerView2 window];
+  [window convertPoint:0 fromWindow:{x, y}];
+  [fingerContainerView convertPoint:0 fromView:?];
   v12 = v11;
   v14 = v13;
 
@@ -9243,46 +9243,46 @@ LABEL_9:
   return result;
 }
 
-- (void)performFingerDownAtPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)performFingerDownAtPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v8 = [v13 fingerController];
-  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:v7 onDisplay:x, y];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v13 fingerController];
+  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:displayCopy onDisplay:x, y];
   v10 = v9;
   v12 = v11;
 
-  [v8 performDownAtPoint:{v10, v12}];
+  [fingerController performDownAtPoint:{v10, v12}];
 }
 
-- (void)performFingerMoveToPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)performFingerMoveToPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v8 = [v13 fingerController];
-  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:v7 onDisplay:x, y];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v13 fingerController];
+  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:displayCopy onDisplay:x, y];
   v10 = v9;
   v12 = v11;
 
-  [v8 performMoveToPoint:{v10, v12}];
+  [fingerController performMoveToPoint:{v10, v12}];
 }
 
-- (void)performFingerUpAtPoint:(CGPoint)a3 onDisplay:(id)a4
+- (void)performFingerUpAtPoint:(CGPoint)point onDisplay:(id)display
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v7];
-  v8 = [v13 fingerController];
-  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:v7 onDisplay:x, y];
+  y = point.y;
+  x = point.x;
+  displayCopy = display;
+  v13 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:displayCopy];
+  fingerController = [v13 fingerController];
+  [(HNDHandManager *)self _fingerControllerPointForScreenPoint:displayCopy onDisplay:x, y];
   v10 = v9;
   v12 = v11;
 
-  [v8 performUpAtPoint:{v10, v12}];
+  [fingerController performUpAtPoint:{v10, v12}];
 }
 
 - (CGPoint)startPointForDrag
@@ -9294,18 +9294,18 @@ LABEL_9:
   return result;
 }
 
-- (double)_fingerRadiusOnDisplay:(id)a3
+- (double)_fingerRadiusOnDisplay:(id)display
 {
-  v3 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:a3];
-  v4 = [v3 fingerController];
+  v3 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:display];
+  fingerController = [v3 fingerController];
 
   if (sub_100042C64())
   {
-    v5 = [v4 appearanceDelegate];
-    [v5 fingerInnerRadius];
+    appearanceDelegate = [fingerController appearanceDelegate];
+    [appearanceDelegate fingerInnerRadius];
     v7 = v6;
-    v8 = [v4 appearanceDelegate];
-    [v8 strokeWidth];
+    appearanceDelegate2 = [fingerController appearanceDelegate];
+    [appearanceDelegate2 strokeWidth];
     v10 = v7 + v9 * 0.5;
   }
 
@@ -9315,11 +9315,11 @@ LABEL_9:
     [v11 assistiveTouchMousePointerSizeMultiplier];
     v13 = v12;
 
-    v14 = [v4 appearanceDelegate];
-    [v14 fingerInnerRadius];
+    appearanceDelegate3 = [fingerController appearanceDelegate];
+    [appearanceDelegate3 fingerInnerRadius];
     v16 = v15;
-    v17 = [v4 appearanceDelegate];
-    [v17 strokeWidth];
+    appearanceDelegate4 = [fingerController appearanceDelegate];
+    [appearanceDelegate4 strokeWidth];
     v19 = v16 + v18 * 0.5;
 
     v10 = v13 * v19;
@@ -9335,19 +9335,19 @@ LABEL_9:
     return 1;
   }
 
-  v5 = [(HNDHandManager *)self currentDisplayManager];
-  v6 = [v5 fingerController];
-  if ([v6 numberOfFingers] <= 1)
+  currentDisplayManager = [(HNDHandManager *)self currentDisplayManager];
+  fingerController = [currentDisplayManager fingerController];
+  if ([fingerController numberOfFingers] <= 1)
   {
-    v3 = [(HNDHandManager *)self dwellControlEnabled];
+    dwellControlEnabled = [(HNDHandManager *)self dwellControlEnabled];
   }
 
   else
   {
-    v3 = 1;
+    dwellControlEnabled = 1;
   }
 
-  return v3;
+  return dwellControlEnabled;
 }
 
 - (id)currentFingerAppearance
@@ -9397,72 +9397,72 @@ LABEL_12:
 
 - (id)selectedFillColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 selectedFillColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  selectedFillColor = [currentFingerAppearance selectedFillColor];
 
-  return v3;
+  return selectedFillColor;
 }
 
 - (id)deselectedFillColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 deselectedFillColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  deselectedFillColor = [currentFingerAppearance deselectedFillColor];
 
-  return v3;
+  return deselectedFillColor;
 }
 
 - (id)selectedStrokeColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 selectedStrokeColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  selectedStrokeColor = [currentFingerAppearance selectedStrokeColor];
 
-  return v3;
+  return selectedStrokeColor;
 }
 
 - (id)deselectedStrokeColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 deselectedStrokeColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  deselectedStrokeColor = [currentFingerAppearance deselectedStrokeColor];
 
-  return v3;
+  return deselectedStrokeColor;
 }
 
 - (id)strokeOutlineColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 strokeOutlineColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  strokeOutlineColor = [currentFingerAppearance strokeOutlineColor];
 
-  return v3;
+  return strokeOutlineColor;
 }
 
 - (id)circularProgressFillColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 circularProgressFillColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  circularProgressFillColor = [currentFingerAppearance circularProgressFillColor];
 
-  return v3;
+  return circularProgressFillColor;
 }
 
 - (id)pressedCircularProgressFillColor
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 pressedCircularProgressFillColor];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  pressedCircularProgressFillColor = [currentFingerAppearance pressedCircularProgressFillColor];
 
-  return v3;
+  return pressedCircularProgressFillColor;
 }
 
 - (BOOL)useSystemFilters
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 useSystemFilters];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  useSystemFilters = [currentFingerAppearance useSystemFilters];
 
-  return v3;
+  return useSystemFilters;
 }
 
 - (double)pressedAlpha
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 pressedAlpha];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance pressedAlpha];
   v4 = v3;
 
   return v4;
@@ -9470,8 +9470,8 @@ LABEL_12:
 
 - (double)unpressedAlpha
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 unpressedAlpha];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance unpressedAlpha];
   v4 = v3;
 
   return v4;
@@ -9479,8 +9479,8 @@ LABEL_12:
 
 - (double)pressedScale
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 pressedScale];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance pressedScale];
   v4 = v3;
 
   return v4;
@@ -9488,8 +9488,8 @@ LABEL_12:
 
 - (double)unpressedScale
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 unpressedScale];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance unpressedScale];
   v4 = v3;
 
   return v4;
@@ -9497,8 +9497,8 @@ LABEL_12:
 
 - (double)strokeWidth
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 strokeWidth];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance strokeWidth];
   v4 = v3;
 
   return v4;
@@ -9506,8 +9506,8 @@ LABEL_12:
 
 - (double)strokeOutlineWidth
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 strokeOutlineWidth];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance strokeOutlineWidth];
   v4 = v3;
 
   return v4;
@@ -9515,8 +9515,8 @@ LABEL_12:
 
 - (double)innerCircleStrokeWidth
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 innerCircleStrokeWidth];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance innerCircleStrokeWidth];
   v4 = v3;
 
   return v4;
@@ -9524,8 +9524,8 @@ LABEL_12:
 
 - (double)fingerInnerRadius
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 fingerInnerRadius];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance fingerInnerRadius];
   v4 = v3;
 
   return v4;
@@ -9533,16 +9533,16 @@ LABEL_12:
 
 - (BOOL)showFingerOutlines
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 showFingerOutlines];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  showFingerOutlines = [currentFingerAppearance showFingerOutlines];
 
-  return v3;
+  return showFingerOutlines;
 }
 
 - (double)fingerInnerCircleInnerRadius
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 fingerInnerCircleInnerRadius];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance fingerInnerCircleInnerRadius];
   v4 = v3;
 
   return v4;
@@ -9550,16 +9550,16 @@ LABEL_12:
 
 - (BOOL)showInnerCircle
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  v3 = [v2 showInnerCircle];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  showInnerCircle = [currentFingerAppearance showInnerCircle];
 
-  return v3;
+  return showInnerCircle;
 }
 
 - (double)fingerWidth
 {
-  v2 = [(HNDHandManager *)self currentFingerAppearance];
-  [v2 fingerWidth];
+  currentFingerAppearance = [(HNDHandManager *)self currentFingerAppearance];
+  [currentFingerAppearance fingerWidth];
   v4 = v3;
 
   return v4;
@@ -9567,69 +9567,69 @@ LABEL_12:
 
 - (HNDDisplayManager)mainDisplayManager
 {
-  v2 = [(HNDHandManager *)self displayManagers];
-  v3 = [v2 axFirstObjectsUsingBlock:&stru_1001D4708];
+  displayManagers = [(HNDHandManager *)self displayManagers];
+  v3 = [displayManagers axFirstObjectsUsingBlock:&stru_1001D4708];
 
   return v3;
 }
 
 - (HNDDisplayManager)currentDisplayManager
 {
-  v3 = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
-  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:v3];
+  currentHardwareIdentifierForPointer = [(HNDHandManager *)self currentHardwareIdentifierForPointer];
+  v4 = [(HNDHandManager *)self displayManagerForHardwareIdentifier:currentHardwareIdentifierForPointer];
 
   return v4;
 }
 
-- (id)displayManagerForHardwareIdentifier:(id)a3
+- (id)displayManagerForHardwareIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self displayManagers];
+  identifierCopy = identifier;
+  displayManagers = [(HNDHandManager *)self displayManagers];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100039624;
   v12[3] = &unk_1001D4730;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 axFirstObjectsUsingBlock:v12];
+  v13 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [displayManagers axFirstObjectsUsingBlock:v12];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    mainDisplayManager = v7;
   }
 
   else
   {
-    v9 = [(HNDHandManager *)self mainDisplayManager];
+    mainDisplayManager = [(HNDHandManager *)self mainDisplayManager];
   }
 
-  v10 = v9;
+  v10 = mainDisplayManager;
 
   return v10;
 }
 
-- (void)enumerateDisplayManagersWithBlock:(id)a3
+- (void)enumerateDisplayManagersWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HNDHandManager *)self displayManagers];
+  blockCopy = block;
+  displayManagers = [(HNDHandManager *)self displayManagers];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100039714;
   v7[3] = &unk_1001D4758;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [displayManagers enumerateObjectsUsingBlock:v7];
 }
 
-- (id)displayManagerForDisplayId:(unsigned int)a3
+- (id)displayManagerForDisplayId:(unsigned int)id
 {
-  v4 = [(HNDHandManager *)self displayManagers];
+  displayManagers = [(HNDHandManager *)self displayManagers];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000397C8;
   v7[3] = &unk_1001D4778;
-  v8 = a3;
-  v5 = [v4 axFirstObjectsUsingBlock:v7];
+  idCopy = id;
+  v5 = [displayManagers axFirstObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -9657,9 +9657,9 @@ LABEL_12:
   if ((AXDeviceIsPad() & 1) != 0 || AXDeviceIsPhone())
   {
     v0 = +[UIDevice currentDevice];
-    v1 = [v0 orientation];
+    orientation = [v0 orientation];
 
-    if (!v1)
+    if (!orientation)
     {
       return CGRectZero.origin.x;
     }
@@ -9667,16 +9667,16 @@ LABEL_12:
 
   IsSwitchControlRunning = UIAccessibilityIsSwitchControlRunning();
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 currentDisplayManager];
-  v5 = v4;
+  currentDisplayManager = [v3 currentDisplayManager];
+  v5 = currentDisplayManager;
   if (IsSwitchControlRunning)
   {
-    [v4 portraitUpScreenBounds];
+    [currentDisplayManager portraitUpScreenBounds];
   }
 
   else
   {
-    [v4 screenBounds];
+    [currentDisplayManager screenBounds];
   }
 
   v7 = v6;

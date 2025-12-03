@@ -1,8 +1,8 @@
 @interface CUIPSDLayerEnumerator
-+ (id)enumeratorWithPSDImage:(id)a3;
-+ (id)enumeratorWithPSDLayerGroup:(id)a3;
-- (CUIPSDLayerEnumerator)initWithPSDImage:(id)a3;
-- (CUIPSDLayerEnumerator)initWithPSDLayerGroup:(id)a3;
++ (id)enumeratorWithPSDImage:(id)image;
++ (id)enumeratorWithPSDLayerGroup:(id)group;
+- (CUIPSDLayerEnumerator)initWithPSDImage:(id)image;
+- (CUIPSDLayerEnumerator)initWithPSDLayerGroup:(id)group;
 - (id)allObjects;
 - (id)nextObject;
 - (void)dealloc;
@@ -10,28 +10,28 @@
 
 @implementation CUIPSDLayerEnumerator
 
-+ (id)enumeratorWithPSDLayerGroup:(id)a3
++ (id)enumeratorWithPSDLayerGroup:(id)group
 {
-  v3 = [[CUIPSDLayerEnumerator alloc] initWithPSDLayerGroup:a3];
+  v3 = [[CUIPSDLayerEnumerator alloc] initWithPSDLayerGroup:group];
 
   return v3;
 }
 
-+ (id)enumeratorWithPSDImage:(id)a3
++ (id)enumeratorWithPSDImage:(id)image
 {
-  v3 = [[CUIPSDLayerEnumerator alloc] initWithPSDImage:a3];
+  v3 = [[CUIPSDLayerEnumerator alloc] initWithPSDImage:image];
 
   return v3;
 }
 
-- (CUIPSDLayerEnumerator)initWithPSDLayerGroup:(id)a3
+- (CUIPSDLayerEnumerator)initWithPSDLayerGroup:(id)group
 {
   v6.receiver = self;
   v6.super_class = CUIPSDLayerEnumerator;
   v4 = [(CUIPSDLayerEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_layerGroup = a3;
+    v4->_layerGroup = group;
     v4->_currentIndex = 0;
     v4->_isImageFile = 0;
   }
@@ -39,14 +39,14 @@
   return v4;
 }
 
-- (CUIPSDLayerEnumerator)initWithPSDImage:(id)a3
+- (CUIPSDLayerEnumerator)initWithPSDImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = CUIPSDLayerEnumerator;
   v4 = [(CUIPSDLayerEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_layerGroup = a3;
+    v4->_layerGroup = image;
     v4->_currentIndex = 0;
     v4->_isImageFile = 1;
   }
@@ -63,14 +63,14 @@
 
 - (id)nextObject
 {
-  v3 = [(CUIPSDLayerGroupRef *)self->_layerGroup numberOfLayers];
-  if (!v3)
+  numberOfLayers = [(CUIPSDLayerGroupRef *)self->_layerGroup numberOfLayers];
+  if (!numberOfLayers)
   {
     return 0;
   }
 
   currentIndex = self->_currentIndex;
-  if (!self->_isImageFile && currentIndex >= v3)
+  if (!self->_isImageFile && currentIndex >= numberOfLayers)
   {
     return 0;
   }
@@ -146,17 +146,17 @@ LABEL_19:
   v3 = +[NSMutableArray array];
   currentIndex = self->_currentIndex;
   self->_currentIndex = 0;
-  v5 = [(CUIPSDLayerEnumerator *)self nextObject];
-  if (v5)
+  nextObject = [(CUIPSDLayerEnumerator *)self nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      [v3 addObject:v6];
-      v6 = [(CUIPSDLayerEnumerator *)self nextObject];
+      [v3 addObject:nextObject2];
+      nextObject2 = [(CUIPSDLayerEnumerator *)self nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   self->_currentIndex = currentIndex;

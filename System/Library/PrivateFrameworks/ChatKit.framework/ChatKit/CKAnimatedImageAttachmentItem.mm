@@ -2,19 +2,19 @@
 - (CGSize)imageSize;
 - (CGSize)size;
 - (id)_newImageData;
-- (id)_savedPreviewFromURL:(id)a3;
-- (id)animatedPreviewURL:(BOOL)a3;
-- (id)generatePreviewFromThumbnail:(id)a3 width:(double)a4;
-- (id)thumbnailAtIndex:(unint64_t)a3 forWidth:(double)a4 withImageData:(id)a5;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (id)_savedPreviewFromURL:(id)l;
+- (id)animatedPreviewURL:(BOOL)l;
+- (id)generatePreviewFromThumbnail:(id)thumbnail width:(double)width;
+- (id)thumbnailAtIndex:(unint64_t)index forWidth:(double)width withImageData:(id)data;
+- (void)generatePreviewWithCompletion:(id)completion;
 @end
 
 @implementation CKAnimatedImageAttachmentItem
 
 - (CGSize)size
 {
-  v3 = [(CKAttachmentItem *)self cachedPreview];
-  if (!v3)
+  cachedPreview = [(CKAttachmentItem *)self cachedPreview];
+  if (!cachedPreview)
   {
     goto LABEL_6;
   }
@@ -25,7 +25,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 size];
+      [cachedPreview size];
 LABEL_7:
       v6 = v9;
       v8 = v10;
@@ -39,8 +39,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [v3 image];
-  [v4 size];
+  image = [cachedPreview image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -52,12 +52,12 @@ LABEL_8:
   return result;
 }
 
-- (id)animatedPreviewURL:(BOOL)a3
+- (id)animatedPreviewURL:(BOOL)l
 {
   animatedPreviewURL = self->_animatedPreviewURL;
   if (!animatedPreviewURL)
   {
-    v5 = [(CKAttachmentItem *)self fileURL];
+    fileURL = [(CKAttachmentItem *)self fileURL];
     v6 = +[CKAnimatedImage filenameExtension];
     v7 = IMAttachmentPreviewFileURL();
     v8 = self->_animatedPreviewURL;
@@ -69,10 +69,10 @@ LABEL_8:
   return animatedPreviewURL;
 }
 
-- (id)_savedPreviewFromURL:(id)a3
+- (id)_savedPreviewFromURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = [(CKAnimatedImageAttachmentItem *)self animatedPreviewURL:0];
     v12 = 0;
@@ -87,7 +87,7 @@ LABEL_8:
     {
       v11.receiver = self;
       v11.super_class = CKAnimatedImageAttachmentItem;
-      v8 = [(CKAttachmentItem *)&v11 _savedPreviewFromURL:v4];
+      v8 = [(CKAttachmentItem *)&v11 _savedPreviewFromURL:lCopy];
     }
 
     v9 = v8;
@@ -101,22 +101,22 @@ LABEL_8:
   return v9;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
+  completionCopy = completion;
+  previewCache = [objc_opt_class() previewCache];
   v6 = CKAttachmentPreviewCacheKey(self);
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 previewMaxWidth];
   v9 = v8;
 
-  v10 = [v5 cachedPreviewForKey:v6];
+  v10 = [previewCache cachedPreviewForKey:v6];
 
   if (!v10)
   {
     v23.receiver = self;
     v23.super_class = CKAnimatedImageAttachmentItem;
-    [(CKImageAttachmentItem *)&v23 generatePreviewWithCompletion:v4];
+    [(CKImageAttachmentItem *)&v23 generatePreviewWithCompletion:completionCopy];
   }
 
   v21[0] = 0;
@@ -136,12 +136,12 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __63__CKAnimatedImageAttachmentItem_generatePreviewWithCompletion___block_invoke_3;
   v14[3] = &unk_1E72EC850;
-  v11 = v5;
+  v11 = previewCache;
   v15 = v11;
   v12 = v6;
   v16 = v12;
-  v13 = v4;
-  v17 = self;
+  v13 = completionCopy;
+  selfCopy = self;
   v18 = v13;
   v19 = v21;
   [v11 enqueueGenerationBlock:v20 completion:v14 withPriority:-1 forKey:v12];
@@ -348,8 +348,8 @@ LABEL_5:
 - (id)_newImageData
 {
   v3 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v4 = [(CKAttachmentItem *)self fileURL];
-  v5 = [v3 initWithContentsOfURL:v4 options:8 error:0];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  v5 = [v3 initWithContentsOfURL:fileURL options:8 error:0];
 
   if (v5)
   {
@@ -364,22 +364,22 @@ LABEL_5:
   return v6;
 }
 
-- (id)thumbnailAtIndex:(unint64_t)a3 forWidth:(double)a4 withImageData:(id)a5
+- (id)thumbnailAtIndex:(unint64_t)index forWidth:(double)width withImageData:(id)data
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  dataCopy = data;
   v8 = +[CKUIBehavior sharedBehaviors];
-  [v7 ptSize];
-  [v8 thumbnailFillSizeForWidth:a4 imageSize:{v9, v10}];
+  [dataCopy ptSize];
+  [v8 thumbnailFillSizeForWidth:width imageSize:{v9, v10}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v7 thumbnailAtIndex:a3 fillToSize:*MEMORY[0x1E69A70C0] maxCount:{v12, v14}];
+  v15 = [dataCopy thumbnailAtIndex:index fillToSize:*MEMORY[0x1E69A70C0] maxCount:{v12, v14}];
   [v15 size];
   v17 = v16;
   v19 = v18;
   v20 = +[CKUIBehavior sharedBehaviors];
-  [v20 thumbnailFillSizeForWidth:a4 imageSize:{v17, v19}];
+  [v20 thumbnailFillSizeForWidth:width imageSize:{v17, v19}];
   v22 = v21;
   v24 = v23;
 
@@ -407,13 +407,13 @@ LABEL_5:
         v27 = v24 / v19;
       }
 
-      v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v28 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v30 = v29;
 
-      v31 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
       v32 = v30 / fmax(v26, v27);
-      [v31 scale];
+      [mainScreen2 scale];
       v34 = v33 * 0.5;
 
       if (v32 < v34)
@@ -465,14 +465,14 @@ LABEL_5:
   return v15;
 }
 
-- (id)generatePreviewFromThumbnail:(id)a3 width:(double)a4
+- (id)generatePreviewFromThumbnail:(id)thumbnail width:(double)width
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  thumbnailCopy = thumbnail;
+  if (thumbnailCopy)
   {
-    v6 = v5;
-    [v5 size];
+    v6 = thumbnailCopy;
+    [thumbnailCopy size];
     v8 = v7;
     v10 = v9;
     v11 = +[CKUIBehavior sharedBehaviors];
@@ -486,8 +486,8 @@ LABEL_5:
       v18 = v17;
       Width = CGImageGetWidth(v17);
       Height = CGImageGetHeight(v18);
-      v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v21 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v23 = 1.0 / v22;
       v24 = v23 * Width;
       v25 = v23 * Height;
@@ -560,8 +560,8 @@ LABEL_5:
         _CKLog();
       }
 
-      v35 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v35 scale];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen2 scale];
       v37 = v36;
 
       v38 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v18 scale:objc_msgSend(v6 orientation:{"imageOrientation"), v37 / v30}];
@@ -576,7 +576,7 @@ LABEL_5:
     }
 
     v41 = +[CKUIBehavior sharedBehaviors];
-    [v41 thumbnailFillSizeForWidth:a4 imageSize:{v8, v10}];
+    [v41 thumbnailFillSizeForWidth:width imageSize:{v8, v10}];
     v43 = v42;
     v45 = v44;
 

@@ -1,14 +1,14 @@
 @interface PRRendererStopScriptExecutionAction
-+ (id)stopScriptExecutionActionWithResponder:(id)a3;
++ (id)stopScriptExecutionActionWithResponder:(id)responder;
 - (PRRendererStopScriptExecutionAction)init;
 @end
 
 @implementation PRRendererStopScriptExecutionAction
 
-+ (id)stopScriptExecutionActionWithResponder:(id)a3
++ (id)stopScriptExecutionActionWithResponder:(id)responder
 {
-  v3 = a3;
-  v4 = [[PRRendererStopScriptExecutionAction alloc] initWithInfo:0 responder:v3];
+  responderCopy = responder;
+  v4 = [[PRRendererStopScriptExecutionAction alloc] initWithInfo:0 responder:responderCopy];
 
   return v4;
 }

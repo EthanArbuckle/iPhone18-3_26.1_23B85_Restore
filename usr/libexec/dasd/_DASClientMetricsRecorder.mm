@@ -1,23 +1,23 @@
 @interface _DASClientMetricsRecorder
 + (id)sharedInstance;
-- (BOOL)reportCustomCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5;
-- (BOOL)reportFeatureCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5 error:(id *)a6;
-- (BOOL)reportFeatureStatus:(unint64_t)a3 forFeature:(unint64_t)a4 stateChangedDate:(id)a5 error:(id *)a6;
-- (BOOL)reportProgressMetricsForIdentifier:(id)a3 taskName:(id)a4 itemsCompleted:(id)a5 totalItemCount:(id)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 error:(id *)a10;
-- (BOOL)reportTaskCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5;
-- (BOOL)reportThroughputMetricsForIdentifier:(id)a3 taskName:(id)a4 itemCount:(unint64_t)a5 totalDuration:(double)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 error:(id *)a10;
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5;
-- (BOOL)sendTaskCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5;
-- (BOOL)shouldLogCheckpointForActivity:(id)a3;
-- (BOOL)validateFeatureCode:(id)a3;
+- (BOOL)reportCustomCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error;
+- (BOOL)reportFeatureCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature atDate:(id)date error:(id *)error;
+- (BOOL)reportFeatureStatus:(unint64_t)status forFeature:(unint64_t)feature stateChangedDate:(id)date error:(id *)error;
+- (BOOL)reportProgressMetricsForIdentifier:(id)identifier taskName:(id)name itemsCompleted:(id)completed totalItemCount:(id)count qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value error:(id *)self0;
+- (BOOL)reportTaskCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error;
+- (BOOL)reportThroughputMetricsForIdentifier:(id)identifier taskName:(id)name itemCount:(unint64_t)count totalDuration:(double)duration qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value error:(id *)self0;
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category;
+- (BOOL)sendTaskCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error;
+- (BOOL)shouldLogCheckpointForActivity:(id)activity;
+- (BOOL)validateFeatureCode:(id)code;
 - (_DASClientMetricsRecorder)init;
-- (void)addDependencyInfoForTask:(id)a3 producedResultIdentifiers:(id)a4 dependencyIdentifiers:(id)a5;
-- (void)addFeatureCodesForTask:(id)a3 featureCodes:(id)a4 semanticVersion:(int64_t)a5;
-- (void)addMappingForTaskID:(unint64_t)a3 toTaskInstanceID:(id)a4;
-- (void)addTaskInstanceInfoAtTermination:(id)a3;
-- (void)checkAndAddMetadataForTask:(id)a3;
+- (void)addDependencyInfoForTask:(id)task producedResultIdentifiers:(id)identifiers dependencyIdentifiers:(id)dependencyIdentifiers;
+- (void)addFeatureCodesForTask:(id)task featureCodes:(id)codes semanticVersion:(int64_t)version;
+- (void)addMappingForTaskID:(unint64_t)d toTaskInstanceID:(id)iD;
+- (void)addTaskInstanceInfoAtTermination:(id)termination;
+- (void)checkAndAddMetadataForTask:(id)task;
 - (void)handlePLBackgroundProcessingNotification;
-- (void)logFeatureAvailability:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5;
+- (void)logFeatureAvailability:(unint64_t)availability forFeature:(unint64_t)feature atDate:(id)date;
 - (void)populateFeatureStatusFromPast;
 - (void)registerFeatureStatusTask;
 - (void)registerReportTaskInfoTask;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = sub_10008E73C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B5D8 != -1)
   {
     dispatch_once(&qword_10020B5D8, block);
@@ -119,29 +119,29 @@
     featureStatusQueue = v2->_featureStatusQueue;
     v2->_featureStatusQueue = v40;
 
-    v42 = [@"com.apple.perfpowerservices.reportfeaturestatus" UTF8String];
+    uTF8String = [@"com.apple.perfpowerservices.reportfeaturestatus" UTF8String];
     v43 = v2->_featureStatusQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10008EAC8;
     handler[3] = &unk_1001B5B78;
     v46 = v2;
-    notify_register_dispatch(v42, &v2->_notifyToken, v43, handler);
+    notify_register_dispatch(uTF8String, &v2->_notifyToken, v43, handler);
   }
 
   return v2;
 }
 
-- (BOOL)reportFeatureCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5 error:(id *)a6
+- (BOOL)reportFeatureCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature atDate:(id)date error:(id *)error
 {
-  v10 = a5;
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  dateCopy = date;
+  v11 = [NSNumber numberWithUnsignedInteger:feature];
   v12 = [(_DASClientMetricsRecorder *)self validateFeatureCode:v11];
 
   if (v12)
   {
-    v35 = v10;
-    v13 = [NSNumber numberWithUnsignedInteger:a4];
+    v35 = dateCopy;
+    v13 = [NSNumber numberWithUnsignedInteger:feature];
     v14 = [NSPredicate predicateWithFormat:@"FeatureCode == %@", v13];
 
     v15 = +[_DASPPSDataManager sharedInstance];
@@ -153,19 +153,19 @@
     if (!v17 && v16)
     {
       v33 = v14;
-      v18 = [v16 firstObject];
-      v19 = [v18 metricKeysAndValues];
-      v20 = [v19 objectForKeyedSubscript:@"FeatureState"];
-      v21 = [v20 unsignedIntegerValue];
+      firstObject = [v16 firstObject];
+      metricKeysAndValues = [firstObject metricKeysAndValues];
+      v20 = [metricKeysAndValues objectForKeyedSubscript:@"FeatureState"];
+      unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-      if (v21 == a3 && (a3 == 50 || a3 == 30))
+      if (unsignedIntegerValue == checkpoint && (checkpoint == 50 || checkpoint == 30))
       {
         log = self->_log;
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
           v23 = log;
-          v24 = [NSNumber numberWithUnsignedInteger:a3];
-          v25 = [NSNumber numberWithUnsignedInteger:a4];
+          v24 = [NSNumber numberWithUnsignedInteger:checkpoint];
+          v25 = [NSNumber numberWithUnsignedInteger:feature];
           *buf = 138412546;
           v42 = v24;
           v43 = 2112;
@@ -174,7 +174,7 @@
         }
 
         v26 = 1;
-        v10 = v35;
+        dateCopy = v35;
         v14 = v33;
 LABEL_20:
 
@@ -184,8 +184,8 @@ LABEL_20:
       v14 = v33;
     }
 
-    v10 = v35;
-    if (a3 == 50 || a3 == 30)
+    dateCopy = v35;
+    if (checkpoint == 50 || checkpoint == 30)
     {
       featureAvailabilityQueue = self->_featureAvailabilityQueue;
       block[0] = _NSConcreteStackBlock;
@@ -193,27 +193,27 @@ LABEL_20:
       block[2] = sub_10008EF00;
       block[3] = &unk_1001B74C8;
       block[4] = self;
-      v38 = a3;
-      v39 = a4;
+      checkpointCopy = checkpoint;
+      featureCopy = feature;
       v37 = v35;
       dispatch_sync(featureAvailabilityQueue, block);
     }
 
-    v18 = +[NSMutableDictionary dictionary];
-    v29 = [NSNumber numberWithUnsignedInteger:a4];
-    [v18 setObject:v29 forKeyedSubscript:@"FeatureCode"];
+    firstObject = +[NSMutableDictionary dictionary];
+    v29 = [NSNumber numberWithUnsignedInteger:feature];
+    [firstObject setObject:v29 forKeyedSubscript:@"FeatureCode"];
 
-    v30 = [NSNumber numberWithUnsignedInteger:a3];
-    [v18 setObject:v30 forKeyedSubscript:@"FeatureState"];
+    v30 = [NSNumber numberWithUnsignedInteger:checkpoint];
+    [firstObject setObject:v30 forKeyedSubscript:@"FeatureState"];
 
-    [v18 setObject:v35 forKeyedSubscript:@"StateChangedDate"];
-    if (a6)
+    [firstObject setObject:v35 forKeyedSubscript:@"StateChangedDate"];
+    if (error)
     {
       v31 = v17;
-      *a6 = v17;
+      *error = v17;
     }
 
-    v26 = [(_DASClientMetricsRecorder *)self sendDataToPPS:v18 subsystem:@"BackgroundProcessing" category:@"FeatureCheckpoint"];
+    v26 = [(_DASClientMetricsRecorder *)self sendDataToPPS:firstObject subsystem:@"BackgroundProcessing" category:@"FeatureCheckpoint"];
     goto LABEL_20;
   }
 
@@ -221,7 +221,7 @@ LABEL_20:
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     sub_100124164();
-    if (a6)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -231,7 +231,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_22;
   }
@@ -239,31 +239,31 @@ LABEL_22:
 LABEL_12:
   v27 = v17;
   v26 = 0;
-  *a6 = v17;
+  *error = v17;
 LABEL_23:
 
   return v26;
 }
 
-- (void)logFeatureAvailability:(unint64_t)a3 forFeature:(unint64_t)a4 atDate:(id)a5
+- (void)logFeatureAvailability:(unint64_t)availability forFeature:(unint64_t)feature atDate:(id)date
 {
-  v8 = a5;
-  if (a3 == 50)
+  dateCopy = date;
+  if (availability == 50)
   {
     v9 = @"availableStatus";
     v10 = 88;
     goto LABEL_5;
   }
 
-  if (a3 == 30)
+  if (availability == 30)
   {
     v9 = @"previewAvailableStatus";
     v10 = 96;
 LABEL_5:
     v11 = *(&self->super.isa + v10);
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
-    v13 = [v12 stringValue];
-    [v11 setObject:v8 forKeyedSubscript:v13];
+    v12 = [NSNumber numberWithUnsignedInteger:feature];
+    stringValue = [v12 stringValue];
+    [v11 setObject:dateCopy forKeyedSubscript:stringValue];
 
     [(NSUserDefaults *)self->_defaults setObject:*(&self->super.isa + v10) forKey:v9];
   }
@@ -276,18 +276,18 @@ LABEL_5:
   v17 = 0;
   if (!v16 && v15)
   {
-    v18 = [v15 firstObject];
-    v19 = [v18 metricKeysAndValues];
-    v20 = [v19 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+    firstObject = [v15 firstObject];
+    metricKeysAndValues = [firstObject metricKeysAndValues];
+    v20 = [metricKeysAndValues objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
-    v21 = [v18 metricKeysAndValues];
-    [v21 objectForKeyedSubscript:@"InstallType"];
+    metricKeysAndValues2 = [firstObject metricKeysAndValues];
+    [metricKeysAndValues2 objectForKeyedSubscript:@"InstallType"];
 
     if (v20)
     {
       [v20 doubleValue];
       v17 = [NSDate dateWithTimeIntervalSince1970:?];
-      [v8 timeIntervalSinceDate:v17];
+      [dateCopy timeIntervalSinceDate:v17];
     }
 
     else
@@ -297,7 +297,7 @@ LABEL_5:
   }
 
   v37 = v15;
-  if (a4 - 100 > 0x64)
+  if (feature - 100 > 0x64)
   {
     v26 = 0;
   }
@@ -313,28 +313,28 @@ LABEL_5:
     v26 = 0;
     if (!v25 && v24)
     {
-      v27 = [v24 firstObject];
-      v28 = [v27 metricKeysAndValues];
-      v26 = [v28 objectForKeyedSubscript:@"Size"];
+      firstObject2 = [v24 firstObject];
+      metricKeysAndValues3 = [firstObject2 metricKeysAndValues];
+      v26 = [metricKeysAndValues3 objectForKeyedSubscript:@"Size"];
     }
   }
 
   v29 = +[_APRSPLLogger sharedInstance];
   [v29 getInferredCarryStatus];
 
-  if (v17 && [v17 compare:v8] != 1)
+  if (v17 && [v17 compare:dateCopy] != 1)
   {
     v30 = +[_DASPPSDataManager sharedInstance];
-    v31 = [[NSDateInterval alloc] initWithStartDate:v17 endDate:v8];
+    v31 = [[NSDateInterval alloc] initWithStartDate:v17 endDate:dateCopy];
     v38 = 0;
     v32 = [v30 getPPSTimeSeries:@"BackgroundProcessing" category:@"FeatureCheckpoint" valueFilter:0 metrics:0 timeFilter:v31 limitCount:1 offsetCount:0 readDirection:1 filepath:0 error:&v38];
     v33 = v38;
 
     if (!v33 && v32)
     {
-      v34 = [v32 firstObject];
-      v35 = [v34 metricKeysAndValues];
-      [v35 objectForKeyedSubscript:@"FeatureState"];
+      firstObject3 = [v32 firstObject];
+      metricKeysAndValues4 = [firstObject3 metricKeysAndValues];
+      [metricKeysAndValues4 objectForKeyedSubscript:@"FeatureState"];
     }
   }
 
@@ -342,61 +342,61 @@ LABEL_5:
   AnalyticsSendEventLazy();
 }
 
-- (BOOL)validateFeatureCode:(id)a3
+- (BOOL)validateFeatureCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = +[_DASPlistParser sharedInstance];
   v5 = [v4 dictionaryForPlist:2];
 
-  v6 = [v3 stringValue];
+  stringValue = [codeCopy stringValue];
 
-  v7 = [v5 objectForKey:v6];
-  LOBYTE(v3) = v7 != 0;
+  v7 = [v5 objectForKey:stringValue];
+  LOBYTE(codeCopy) = v7 != 0;
 
-  return v3;
+  return codeCopy;
 }
 
-- (BOOL)shouldLogCheckpointForActivity:(id)a3
+- (BOOL)shouldLogCheckpointForActivity:(id)activity
 {
-  v3 = a3;
-  if (([v3 requestsApplicationLaunch] & 1) != 0 || (objc_msgSend(v3, "widgetID"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  activityCopy = activity;
+  if (([activityCopy requestsApplicationLaunch] & 1) != 0 || (objc_msgSend(activityCopy, "widgetID"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = 0;
   }
 
-  else if ([v3 isIntensive])
+  else if ([activityCopy isIntensive])
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [v3 fastPass];
-    if (v7)
+    fastPass = [activityCopy fastPass];
+    if (fastPass)
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [v3 name];
-      if ([v8 containsString:@"com.apple.cloudphotod.sync"])
+      name = [activityCopy name];
+      if ([name containsString:@"com.apple.cloudphotod.sync"])
       {
         v5 = 1;
       }
 
       else
       {
-        v9 = [v3 name];
-        if ([v9 containsString:@"com.apple.assetsd.backgroundjobservice.urgentresource"])
+        name2 = [activityCopy name];
+        if ([name2 containsString:@"com.apple.assetsd.backgroundjobservice.urgentresource"])
         {
           v5 = 1;
         }
 
         else
         {
-          v10 = [v3 name];
-          v5 = [v10 containsString:@"com.apple.spotlightknowledged"];
+          name3 = [activityCopy name];
+          v5 = [name3 containsString:@"com.apple.spotlightknowledged"];
         }
       }
     }
@@ -405,23 +405,23 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)sendTaskCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5
+- (BOOL)sendTaskCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error
 {
-  v7 = a4;
+  taskCopy = task;
   v8 = +[NSMutableDictionary dictionary];
-  [v8 setObject:v7 forKeyedSubscript:@"TaskInstanceID"];
+  [v8 setObject:taskCopy forKeyedSubscript:@"TaskInstanceID"];
 
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:checkpoint];
   [v8 setObject:v9 forKeyedSubscript:@"CheckpointState"];
 
   LOBYTE(v9) = [(_DASClientMetricsRecorder *)self sendDataToPPS:v8 subsystem:@"BackgroundProcessing" category:@"TaskCheckpoint"];
   return v9;
 }
 
-- (BOOL)reportTaskCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5
+- (BOOL)reportTaskCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error
 {
-  v7 = a4;
-  v8 = [(_DASClientMetricsRecorder *)self shouldLogCheckpointForActivity:v7];
+  taskCopy = task;
+  v8 = [(_DASClientMetricsRecorder *)self shouldLogCheckpointForActivity:taskCopy];
   if (v8)
   {
     taskCheckpointQueue = self->_taskCheckpointQueue;
@@ -429,22 +429,22 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_10008F93C;
     block[3] = &unk_1001B5DC0;
-    v14 = a3;
-    v12 = v7;
-    v13 = self;
+    checkpointCopy = checkpoint;
+    v12 = taskCopy;
+    selfCopy = self;
     dispatch_async(taskCheckpointQueue, block);
   }
 
   return v8;
 }
 
-- (BOOL)reportCustomCheckpoint:(unint64_t)a3 forTask:(id)a4 error:(id *)a5
+- (BOOL)reportCustomCheckpoint:(unint64_t)checkpoint forTask:(id)task error:(id *)error
 {
-  v7 = a4;
+  taskCopy = task;
   v8 = +[NSMutableDictionary dictionary];
-  [v8 setObject:v7 forKeyedSubscript:@"TaskName"];
+  [v8 setObject:taskCopy forKeyedSubscript:@"TaskName"];
 
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:checkpoint];
   [v8 setObject:v9 forKeyedSubscript:@"CheckpointState"];
 
   LOBYTE(v9) = [(_DASClientMetricsRecorder *)self sendDataToPPS:v8 subsystem:@"BackgroundProcessing" category:@"CustomCheckpoint"];
@@ -491,35 +491,35 @@ LABEL_7:
   }
 }
 
-- (void)addFeatureCodesForTask:(id)a3 featureCodes:(id)a4 semanticVersion:(int64_t)a5
+- (void)addFeatureCodesForTask:(id)task featureCodes:(id)codes semanticVersion:(int64_t)version
 {
-  v8 = a3;
-  v9 = a4;
+  taskCopy = task;
+  codesCopy = codes;
   featureCodeQueue = self->_featureCodeQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008FC50;
   v13[3] = &unk_1001B7100;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = taskCopy;
+  v15 = codesCopy;
+  versionCopy = version;
+  v11 = codesCopy;
+  v12 = taskCopy;
   dispatch_async(featureCodeQueue, v13);
 }
 
-- (BOOL)reportFeatureStatus:(unint64_t)a3 forFeature:(unint64_t)a4 stateChangedDate:(id)a5 error:(id *)a6
+- (BOOL)reportFeatureStatus:(unint64_t)status forFeature:(unint64_t)feature stateChangedDate:(id)date error:(id *)error
 {
-  v9 = a5;
+  dateCopy = date;
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [NSNumber numberWithUnsignedInteger:a4];
+  v11 = [NSNumber numberWithUnsignedInteger:feature];
   [v10 setObject:v11 forKeyedSubscript:@"FeatureCode"];
 
-  v12 = [NSNumber numberWithUnsignedInteger:a3];
+  v12 = [NSNumber numberWithUnsignedInteger:status];
   [v10 setObject:v12 forKeyedSubscript:@"FeatureState"];
 
-  [v10 setObject:v9 forKeyedSubscript:@"StateChangedDate"];
+  [v10 setObject:dateCopy forKeyedSubscript:@"StateChangedDate"];
   LOBYTE(self) = [(_DASClientMetricsRecorder *)self sendDataToPPS:v10 subsystem:@"BackgroundProcessing" category:@"FeatureStatus"];
 
   return self;
@@ -559,7 +559,7 @@ LABEL_7:
   {
     v6 = *v48;
     v7 = &NSLocalizedDescriptionKey_ptr;
-    v41 = self;
+    selfCopy = self;
     v42 = *v48;
     v44 = v5;
     do
@@ -572,20 +572,20 @@ LABEL_7:
         }
 
         v9 = *(*(&v47 + 1) + 8 * i);
-        v10 = [v9 metricKeysAndValues];
-        v11 = [v10 objectForKeyedSubscript:@"FeatureCode"];
+        metricKeysAndValues = [v9 metricKeysAndValues];
+        v11 = [metricKeysAndValues objectForKeyedSubscript:@"FeatureCode"];
         v12 = v7[20];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v45 = [v11 integerValue];
-          v13 = [v10 objectForKeyedSubscript:@"FeatureState"];
+          integerValue = [v11 integerValue];
+          v13 = [metricKeysAndValues objectForKeyedSubscript:@"FeatureState"];
           v14 = v7[20];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v15 = v13;
-            v16 = [v10 objectForKeyedSubscript:@"StateChangedDate"];
+            v16 = [metricKeysAndValues objectForKeyedSubscript:@"StateChangedDate"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -593,14 +593,14 @@ LABEL_7:
               v43 = v15;
               if ([v15 unsignedIntegerValue] == 50)
               {
-                v18 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:v45];
-                v19 = [v18 stringValue];
-                v20 = [(NSMutableDictionary *)v40 objectForKeyedSubscript:v19];
+                v18 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:integerValue];
+                stringValue = [v18 stringValue];
+                v20 = [(NSMutableDictionary *)v40 objectForKeyedSubscript:stringValue];
 
                 if (!v20)
                 {
-                  v21 = [NSNumber numberWithInteger:v45];
-                  v22 = [v21 stringValue];
+                  v21 = [NSNumber numberWithInteger:integerValue];
+                  stringValue2 = [v21 stringValue];
                   v23 = v40;
                   goto LABEL_24;
                 }
@@ -610,21 +610,21 @@ LABEL_7:
 
               if ([v15 unsignedIntegerValue] == 30)
               {
-                v27 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:v45];
-                v28 = [v27 stringValue];
-                v29 = [(NSMutableDictionary *)v39 objectForKeyedSubscript:v28];
+                v27 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:integerValue];
+                stringValue3 = [v27 stringValue];
+                v29 = [(NSMutableDictionary *)v39 objectForKeyedSubscript:stringValue3];
 
                 if (!v29)
                 {
-                  v21 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:v45];
-                  v22 = [v21 stringValue];
+                  v21 = [(NSErrorUserInfoKey *)v7[20] numberWithInteger:integerValue];
+                  stringValue2 = [v21 stringValue];
                   v23 = v39;
 LABEL_24:
-                  [(NSMutableDictionary *)v23 setObject:v17 forKeyedSubscript:v22];
+                  [(NSMutableDictionary *)v23 setObject:v17 forKeyedSubscript:stringValue2];
                 }
 
 LABEL_25:
-                self = v41;
+                self = selfCopy;
                 v6 = v42;
               }
 
@@ -639,7 +639,7 @@ LABEL_25:
                 v30 = log;
                 v31 = objc_opt_class();
                 *buf = 134218498;
-                v52 = v45;
+                v52 = integerValue;
                 v53 = 2112;
                 v54 = v16;
                 v55 = 2112;
@@ -662,7 +662,7 @@ LABEL_25:
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
               *buf = 134218242;
-              v52 = v45;
+              v52 = integerValue;
               v53 = 2112;
               v54 = v9;
               _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "populateFeatureStatusFromPast: Invalid or missing FeatureState for FeatureCode %ld. Event: %@", buf, 0x16u);
@@ -723,32 +723,32 @@ LABEL_29:
   dispatch_sync(featureAvailabilityQueue, block);
 }
 
-- (void)addDependencyInfoForTask:(id)a3 producedResultIdentifiers:(id)a4 dependencyIdentifiers:(id)a5
+- (void)addDependencyInfoForTask:(id)task producedResultIdentifiers:(id)identifiers dependencyIdentifiers:(id)dependencyIdentifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  identifiersCopy = identifiers;
+  dependencyIdentifiersCopy = dependencyIdentifiers;
   taskDependencyQueue = self->_taskDependencyQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100090A5C;
   v15[3] = &unk_1001B5E90;
-  v16 = v9;
-  v17 = v10;
-  v18 = self;
-  v19 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifiersCopy;
+  v17 = dependencyIdentifiersCopy;
+  selfCopy = self;
+  v19 = taskCopy;
+  v12 = taskCopy;
+  v13 = dependencyIdentifiersCopy;
+  v14 = identifiersCopy;
   dispatch_async(taskDependencyQueue, v15);
 }
 
-- (void)checkAndAddMetadataForTask:(id)a3
+- (void)checkAndAddMetadataForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   taskMetadataCache = self->_taskMetadataCache;
-  v41 = v4;
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 taskID]);
+  v41 = taskCopy;
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskID]);
   v7 = [(_DASLFUCache *)taskMetadataCache objectForKey:v6];
 
   if (!v7)
@@ -757,17 +757,17 @@ LABEL_29:
     v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v41 taskID]);
     [v8 setObject:v9 forKeyedSubscript:@"TaskID"];
 
-    v10 = [v41 name];
-    [v8 setObject:v10 forKeyedSubscript:@"Name"];
+    name = [v41 name];
+    [v8 setObject:name forKeyedSubscript:@"Name"];
 
     v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v41 schedulingPriority]);
     [v8 setObject:v11 forKeyedSubscript:@"Priority"];
 
-    v12 = [v41 groupName];
-    [v8 setObject:v12 forKeyedSubscript:@"GroupName"];
+    groupName = [v41 groupName];
+    [v8 setObject:groupName forKeyedSubscript:@"GroupName"];
 
-    v13 = [v41 fileProtection];
-    v14 = [v13 description];
+    fileProtection = [v41 fileProtection];
+    v14 = [fileProtection description];
     [v8 setObject:v14 forKeyedSubscript:@"FileProtection"];
 
     v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v41 cpuIntensive]);
@@ -806,19 +806,19 @@ LABEL_29:
     v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v41 triggersRestart]);
     [v8 setObject:v26 forKeyedSubscript:@"TriggersRestart"];
 
-    v27 = [v41 bundleId];
-    [v8 setObject:v27 forKeyedSubscript:@"BundleID"];
+    bundleId = [v41 bundleId];
+    [v8 setObject:bundleId forKeyedSubscript:@"BundleID"];
 
-    v28 = [v41 relatedApplications];
-    v29 = [_DASUtils commaDelimitedEntriesFrom:v28];
+    relatedApplications = [v41 relatedApplications];
+    v29 = [_DASUtils commaDelimitedEntriesFrom:relatedApplications];
 
     if (v29)
     {
       [v8 setObject:v29 forKeyedSubscript:@"Application"];
     }
 
-    v30 = [v41 involvedProcesses];
-    v31 = [_DASUtils commaDelimitedEntriesFrom:v30];
+    involvedProcesses = [v41 involvedProcesses];
+    v31 = [_DASUtils commaDelimitedEntriesFrom:involvedProcesses];
 
     if (v31)
     {
@@ -841,118 +841,118 @@ LABEL_29:
   }
 }
 
-- (void)addMappingForTaskID:(unint64_t)a3 toTaskInstanceID:(id)a4
+- (void)addMappingForTaskID:(unint64_t)d toTaskInstanceID:(id)iD
 {
-  v6 = a4;
+  iDCopy = iD;
   v8 = +[NSMutableDictionary dictionary];
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:d];
   [v8 setObject:v7 forKeyedSubscript:@"TaskID"];
 
-  [v8 setObject:v6 forKeyedSubscript:@"TaskInstanceID"];
+  [v8 setObject:iDCopy forKeyedSubscript:@"TaskInstanceID"];
   [(_DASClientMetricsRecorder *)self sendDataToPPS:v8 subsystem:@"BackgroundProcessing" category:@"TaskInstanceStore"];
 }
 
-- (void)addTaskInstanceInfoAtTermination:(id)a3
+- (void)addTaskInstanceInfoAtTermination:(id)termination
 {
-  v39 = a3;
+  terminationCopy = termination;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v39 taskInstanceID];
-  [v4 setObject:v5 forKeyedSubscript:@"TaskInstanceID"];
+  taskInstanceID = [terminationCopy taskInstanceID];
+  [v4 setObject:taskInstanceID forKeyedSubscript:@"TaskInstanceID"];
 
-  v6 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v39 pid]);
+  v6 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [terminationCopy pid]);
   [v4 setObject:v6 forKeyedSubscript:@"ProcessName"];
 
-  v7 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v39 pid]);
+  v7 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [terminationCopy pid]);
   [v4 setObject:v7 forKeyedSubscript:@"PID"];
 
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v39 transferSize]);
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [terminationCopy transferSize]);
   [v4 setObject:v8 forKeyedSubscript:@"NetworkTaskSize"];
 
-  [v39 interval];
+  [terminationCopy interval];
   v9 = [NSNumber numberWithDouble:?];
   [v4 setObject:v9 forKeyedSubscript:@"Interval"];
 
-  v10 = [v39 startAfter];
-  [v4 setObject:v10 forKeyedSubscript:@"ScheduleAfterDate"];
+  startAfter = [terminationCopy startAfter];
+  [v4 setObject:startAfter forKeyedSubscript:@"ScheduleAfterDate"];
 
-  v11 = [v39 startBefore];
-  [v4 setObject:v11 forKeyedSubscript:@"ScheduleBeforeDate"];
+  startBefore = [terminationCopy startBefore];
+  [v4 setObject:startBefore forKeyedSubscript:@"ScheduleBeforeDate"];
 
-  v12 = [v39 startDate];
-  [v4 setObject:v12 forKeyedSubscript:@"StartDate"];
+  startDate = [terminationCopy startDate];
+  [v4 setObject:startDate forKeyedSubscript:@"StartDate"];
 
-  v13 = [v39 endTime];
-  [v4 setObject:v13 forKeyedSubscript:@"EndDate"];
+  endTime = [terminationCopy endTime];
+  [v4 setObject:endTime forKeyedSubscript:@"EndDate"];
 
-  v14 = [v39 suspendRequestDate];
-  [v4 setObject:v14 forKeyedSubscript:@"SuspendRequestDate"];
+  suspendRequestDate = [terminationCopy suspendRequestDate];
+  [v4 setObject:suspendRequestDate forKeyedSubscript:@"SuspendRequestDate"];
 
-  v15 = [v39 limitationResponse];
-  v16 = [v15 count];
+  limitationResponse = [terminationCopy limitationResponse];
+  v16 = [limitationResponse count];
 
   if (v16)
   {
-    v17 = [v39 limitationResponse];
-    v18 = [_DASLimiterResponse bitmaskFromResponses:v17];
+    limitationResponse2 = [terminationCopy limitationResponse];
+    v18 = [_DASLimiterResponse bitmaskFromResponses:limitationResponse2];
 
     v19 = [NSNumber numberWithUnsignedInteger:v18];
     [v4 setObject:v19 forKeyedSubscript:@"Limitations"];
   }
 
-  v20 = [v39 suspendRequestDate];
+  suspendRequestDate2 = [terminationCopy suspendRequestDate];
 
-  if (v20)
+  if (suspendRequestDate2)
   {
-    v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v39 lastDenialValue]);
+    v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [terminationCopy lastDenialValue]);
     [v4 setObject:v21 forKeyedSubscript:@"SuspensionReason"];
   }
 
-  [v39 cpuTimeConsumed];
+  [terminationCopy cpuTimeConsumed];
   v22 = [NSNumber numberWithDouble:?];
   [v4 setObject:v22 forKeyedSubscript:@"CPUTimeConsumed"];
 
-  [v39 cpuCycleConsumed];
+  [terminationCopy cpuCycleConsumed];
   v24 = log10(fabs(v23));
   v25 = __exp10(4.0 - floor(v24));
-  [v39 cpuCycleConsumed];
+  [terminationCopy cpuCycleConsumed];
   v27 = [NSNumber numberWithDouble:round(v26 * v25) / v25];
   [v4 setObject:v27 forKeyedSubscript:@"CPUCycleConsumed"];
 
-  [v39 diskIOConsumed];
+  [terminationCopy diskIOConsumed];
   v28 = [NSNumber numberWithDouble:?];
   [v4 setObject:v28 forKeyedSubscript:@"DiskIOConsumed"];
 
-  [v39 diskIOWrites];
+  [terminationCopy diskIOWrites];
   v29 = [NSNumber numberWithDouble:?];
   [v4 setObject:v29 forKeyedSubscript:@"DiskIOWrites"];
 
-  [v39 billedEnergy];
+  [terminationCopy billedEnergy];
   v30 = [NSNumber numberWithDouble:?];
   [v4 setObject:v30 forKeyedSubscript:@"BilledEnergy"];
 
-  [v39 dataConsumed];
+  [terminationCopy dataConsumed];
   v31 = [NSNumber numberWithDouble:?];
   [v4 setObject:v31 forKeyedSubscript:@"DataConsumed"];
 
-  v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 startedOnBattery]);
+  v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy startedOnBattery]);
   [v4 setObject:v32 forKeyedSubscript:@"StartedOnBattery"];
 
-  v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 startedInIdle]);
+  v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy startedInIdle]);
   [v4 setObject:v33 forKeyedSubscript:@"StartedInIdle"];
 
-  v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 isIndeedIntensive]);
+  v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy isIndeedIntensive]);
   [v4 setObject:v34 forKeyedSubscript:@"IndeedIntensive"];
 
-  v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 indeedCPUIntensive]);
+  v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy indeedCPUIntensive]);
   [v4 setObject:v35 forKeyedSubscript:@"IndeedCPUIntensive"];
 
-  v36 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 indeedMemoryIntensive]);
+  v36 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy indeedMemoryIntensive]);
   [v4 setObject:v36 forKeyedSubscript:@"IndeedMemoryIntensive"];
 
-  v37 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 thermalLevelElevated]);
+  v37 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy thermalLevelElevated]);
   [v4 setObject:v37 forKeyedSubscript:@"ThermalLevelElevated"];
 
-  v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 requestsImmediateRuntime]);
+  v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [terminationCopy requestsImmediateRuntime]);
   [v4 setObject:v38 forKeyedSubscript:@"RequestsImmediateRuntime"];
 
   [(_DASClientMetricsRecorder *)self sendDataToPPS:v4 subsystem:@"BackgroundProcessing" category:@"TaskInstanceData"];
@@ -991,12 +991,12 @@ LABEL_29:
   dispatch_sync(taskDependencyQueue, block);
 }
 
-- (BOOL)reportThroughputMetricsForIdentifier:(id)a3 taskName:(id)a4 itemCount:(unint64_t)a5 totalDuration:(double)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 error:(id *)a10
+- (BOOL)reportThroughputMetricsForIdentifier:(id)identifier taskName:(id)name itemCount:(unint64_t)count totalDuration:(double)duration qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a9;
+  identifierCopy = identifier;
+  nameCopy = name;
+  qosCopy = qos;
+  valueCopy = value;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -1007,17 +1007,17 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = sub_100091ECC;
   block[3] = &unk_1001B7518;
-  v22 = v16;
+  v22 = identifierCopy;
   v29 = v22;
-  v23 = v17;
+  v23 = nameCopy;
   v30 = v23;
-  v24 = v18;
+  v24 = qosCopy;
   v31 = v24;
-  v35 = a8;
-  v25 = v19;
-  v37 = a6;
-  v36 = a5;
-  v33 = self;
+  categoryCopy = category;
+  v25 = valueCopy;
+  durationCopy = duration;
+  countCopy = count;
+  selfCopy = self;
   v34 = &v38;
   v32 = v25;
   dispatch_sync(performanceMetricsQueue, block);
@@ -1035,14 +1035,14 @@ LABEL_29:
   return v20 & 1;
 }
 
-- (BOOL)reportProgressMetricsForIdentifier:(id)a3 taskName:(id)a4 itemsCompleted:(id)a5 totalItemCount:(id)a6 qos:(id)a7 workloadCategory:(unint64_t)a8 expectedValue:(id)a9 error:(id *)a10
+- (BOOL)reportProgressMetricsForIdentifier:(id)identifier taskName:(id)name itemsCompleted:(id)completed totalItemCount:(id)count qos:(id)qos workloadCategory:(unint64_t)category expectedValue:(id)value error:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v29 = a6;
-  v18 = a7;
-  v19 = a9;
+  identifierCopy = identifier;
+  nameCopy = name;
+  completedCopy = completed;
+  countCopy = count;
+  qosCopy = qos;
+  valueCopy = value;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -1062,22 +1062,22 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = sub_100092330;
   block[3] = &unk_1001B7540;
-  v21 = v17;
+  v21 = completedCopy;
   v32 = v21;
-  v22 = v15;
+  v22 = identifierCopy;
   v39 = &v44;
   v40 = v43;
   v33 = v22;
-  v34 = self;
+  selfCopy = self;
   v41 = &v50;
-  v23 = v16;
+  v23 = nameCopy;
   v35 = v23;
-  v24 = v18;
+  v24 = qosCopy;
   v36 = v24;
-  v42 = a8;
-  v25 = v19;
+  categoryCopy = category;
+  v25 = valueCopy;
   v37 = v25;
-  v26 = v29;
+  v26 = countCopy;
   v38 = v26;
   dispatch_sync(performanceMetricsQueue, block);
   if ((v51[3] & 1) == 0)
@@ -1085,7 +1085,7 @@ LABEL_29:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_100124400();
-      if (!a10)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -1093,10 +1093,10 @@ LABEL_29:
       goto LABEL_4;
     }
 
-    if (a10)
+    if (error)
     {
 LABEL_4:
-      *a10 = v45[5];
+      *error = v45[5];
     }
   }
 
@@ -1110,13 +1110,13 @@ LABEL_5:
   return v27;
 }
 
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  sCopy = s;
   v10 = +[_DASPPSDataManager sharedInstance];
-  v11 = [v10 sendDataToPPS:v9 subsystem:v8 category:v7];
+  v11 = [v10 sendDataToPPS:sCopy subsystem:subsystemCopy category:categoryCopy];
 
   return v11;
 }

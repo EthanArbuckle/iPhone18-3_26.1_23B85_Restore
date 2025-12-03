@@ -1,13 +1,13 @@
 @interface RTSource
-- (BOOL)isEqual:(id)a3;
-- (RTSource)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTSource)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation RTSource
 
-- (RTSource)initWithCoder:(id)a3
+- (RTSource)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = RTSource;
@@ -21,18 +21,18 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v6 = [(RTSource *)v4 isMemberOfClass:objc_opt_class()];
+    v6 = [(RTSource *)equalCopy isMemberOfClass:objc_opt_class()];
   }
 
   else

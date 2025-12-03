@@ -1,33 +1,33 @@
 @interface HKCodableQuantityValueWithRange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCode:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCode:(id)code;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableQuantityValueWithRange
 
-- (void)addCode:(id)a3
+- (void)addCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   codes = self->_codes;
-  v8 = v4;
+  v8 = codeCopy;
   if (!codes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_codes;
     self->_codes = v6;
 
-    v4 = v8;
+    codeCopy = v8;
     codes = self->_codes;
   }
 
-  [(NSMutableArray *)codes addObject:v4];
+  [(NSMutableArray *)codes addObject:codeCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableQuantityValueWithRange;
   v4 = [(HKCodableQuantityValueWithRange *)&v8 description];
-  v5 = [(HKCodableQuantityValueWithRange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableQuantityValueWithRange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_codes count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_codes, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -78,49 +78,49 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"code"];
+    [dictionary setObject:v4 forKey:@"code"];
   }
 
   quantityValue = self->_quantityValue;
   if (quantityValue)
   {
-    v12 = [(HKCodableQuantity *)quantityValue dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"quantityValue"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)quantityValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"quantityValue"];
   }
 
   textualValue = self->_textualValue;
   if (textualValue)
   {
-    [v3 setObject:textualValue forKey:@"textualValue"];
+    [dictionary setObject:textualValue forKey:@"textualValue"];
   }
 
   referenceRangeMin = self->_referenceRangeMin;
   if (referenceRangeMin)
   {
-    v15 = [(HKCodableQuantity *)referenceRangeMin dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"referenceRangeMin"];
+    dictionaryRepresentation3 = [(HKCodableQuantity *)referenceRangeMin dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"referenceRangeMin"];
   }
 
   referenceRangeMax = self->_referenceRangeMax;
   if (referenceRangeMax)
   {
-    v17 = [(HKCodableQuantity *)referenceRangeMax dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"referenceRangeMax"];
+    dictionaryRepresentation4 = [(HKCodableQuantity *)referenceRangeMax dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"referenceRangeMax"];
   }
 
   valueTitle = self->_valueTitle;
   if (valueTitle)
   {
-    [v3 setObject:valueTitle forKey:@"valueTitle"];
+    [dictionary setObject:valueTitle forKey:@"valueTitle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -178,59 +178,59 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HKCodableQuantityValueWithRange *)self codesCount])
   {
-    [v9 clearCodes];
-    v4 = [(HKCodableQuantityValueWithRange *)self codesCount];
-    if (v4)
+    [toCopy clearCodes];
+    codesCount = [(HKCodableQuantityValueWithRange *)self codesCount];
+    if (codesCount)
     {
-      v5 = v4;
+      v5 = codesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableQuantityValueWithRange *)self codeAtIndex:i];
-        [v9 addCode:v7];
+        [toCopy addCode:v7];
       }
     }
   }
 
   if (self->_quantityValue)
   {
-    [v9 setQuantityValue:?];
+    [toCopy setQuantityValue:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_textualValue)
   {
-    [v9 setTextualValue:?];
-    v8 = v9;
+    [toCopy setTextualValue:?];
+    v8 = toCopy;
   }
 
   if (self->_referenceRangeMin)
   {
-    [v9 setReferenceRangeMin:?];
-    v8 = v9;
+    [toCopy setReferenceRangeMin:?];
+    v8 = toCopy;
   }
 
   if (self->_referenceRangeMax)
   {
-    [v9 setReferenceRangeMax:?];
-    v8 = v9;
+    [toCopy setReferenceRangeMax:?];
+    v8 = toCopy;
   }
 
   if (self->_valueTitle)
   {
-    [v9 setValueTitle:?];
-    v8 = v9;
+    [toCopy setValueTitle:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -251,7 +251,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:{a3, v23}];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:{zone, v23}];
         [v5 addCode:v11];
 
         ++v10;
@@ -264,36 +264,36 @@
     while (v8);
   }
 
-  v12 = [(HKCodableQuantity *)self->_quantityValue copyWithZone:a3];
+  v12 = [(HKCodableQuantity *)self->_quantityValue copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_textualValue copyWithZone:a3];
+  v14 = [(NSString *)self->_textualValue copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(HKCodableQuantity *)self->_referenceRangeMin copyWithZone:a3];
+  v16 = [(HKCodableQuantity *)self->_referenceRangeMin copyWithZone:zone];
   v17 = v5[4];
   v5[4] = v16;
 
-  v18 = [(HKCodableQuantity *)self->_referenceRangeMax copyWithZone:a3];
+  v18 = [(HKCodableQuantity *)self->_referenceRangeMax copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
-  v20 = [(NSString *)self->_valueTitle copyWithZone:a3];
+  v20 = [(NSString *)self->_valueTitle copyWithZone:zone];
   v21 = v5[6];
   v5[6] = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((codes = self->_codes, !(codes | v4[1])) || -[NSMutableArray isEqual:](codes, "isEqual:")) && ((quantityValue = self->_quantityValue, !(quantityValue | v4[2])) || -[HKCodableQuantity isEqual:](quantityValue, "isEqual:")) && ((textualValue = self->_textualValue, !(textualValue | v4[5])) || -[NSString isEqual:](textualValue, "isEqual:")) && ((referenceRangeMin = self->_referenceRangeMin, !(referenceRangeMin | v4[4])) || -[HKCodableQuantity isEqual:](referenceRangeMin, "isEqual:")) && ((referenceRangeMax = self->_referenceRangeMax, !(referenceRangeMax | v4[3])) || -[HKCodableQuantity isEqual:](referenceRangeMax, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((codes = self->_codes, !(codes | equalCopy[1])) || -[NSMutableArray isEqual:](codes, "isEqual:")) && ((quantityValue = self->_quantityValue, !(quantityValue | equalCopy[2])) || -[HKCodableQuantity isEqual:](quantityValue, "isEqual:")) && ((textualValue = self->_textualValue, !(textualValue | equalCopy[5])) || -[NSString isEqual:](textualValue, "isEqual:")) && ((referenceRangeMin = self->_referenceRangeMin, !(referenceRangeMin | equalCopy[4])) || -[HKCodableQuantity isEqual:](referenceRangeMin, "isEqual:")) && ((referenceRangeMax = self->_referenceRangeMax, !(referenceRangeMax | equalCopy[3])) || -[HKCodableQuantity isEqual:](referenceRangeMax, "isEqual:")))
   {
     valueTitle = self->_valueTitle;
-    if (valueTitle | v4[6])
+    if (valueTitle | equalCopy[6])
     {
       v11 = [(NSString *)valueTitle isEqual:?];
     }
@@ -322,15 +322,15 @@
   return v6 ^ v7 ^ [(NSString *)self->_valueTitle hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -355,7 +355,7 @@
   }
 
   quantityValue = self->_quantityValue;
-  v11 = v4[2];
+  v11 = fromCopy[2];
   if (quantityValue)
   {
     if (v11)
@@ -369,13 +369,13 @@
     [(HKCodableQuantityValueWithRange *)self setQuantityValue:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(HKCodableQuantityValueWithRange *)self setTextualValue:?];
   }
 
   referenceRangeMin = self->_referenceRangeMin;
-  v13 = v4[4];
+  v13 = fromCopy[4];
   if (referenceRangeMin)
   {
     if (v13)
@@ -390,7 +390,7 @@
   }
 
   referenceRangeMax = self->_referenceRangeMax;
-  v15 = v4[3];
+  v15 = fromCopy[3];
   if (referenceRangeMax)
   {
     if (v15)
@@ -404,7 +404,7 @@
     [(HKCodableQuantityValueWithRange *)self setReferenceRangeMax:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(HKCodableQuantityValueWithRange *)self setValueTitle:?];
   }

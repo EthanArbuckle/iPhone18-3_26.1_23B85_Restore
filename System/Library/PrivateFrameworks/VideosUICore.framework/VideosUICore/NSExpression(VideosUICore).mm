@@ -32,13 +32,13 @@
 
 - (BOOL)vui_isKeyPathBitTestExpression
 {
-  if ([a1 expressionType] != 19)
+  if ([self expressionType] != 19)
   {
     return 0;
   }
 
-  v2 = [a1 expressionBlock];
-  v3 = v2 == __keyPathBitTestExpressionBlock;
+  expressionBlock = [self expressionBlock];
+  v3 = expressionBlock == __keyPathBitTestExpressionBlock;
 
   return v3;
 }

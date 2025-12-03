@@ -1,15 +1,15 @@
 @interface NRCompanionLinkViabilityAgent
 + (id)agentDomain;
 + (id)agentType;
-- (BOOL)assertAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
 - (id)description;
 - (void)dealloc;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NRCompanionLinkViabilityAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
   if (self)
   {
@@ -29,7 +29,7 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
   if (self)
   {
@@ -53,9 +53,9 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(NRCompanionLinkViabilityAgent *)self agentUUID];
-  v5 = [v4 UUIDString];
-  [v3 appendFormat:@"agent-uuid: %@", v5];
+  agentUUID = [(NRCompanionLinkViabilityAgent *)self agentUUID];
+  uUIDString = [agentUUID UUIDString];
+  [v3 appendFormat:@"agent-uuid: %@", uUIDString];
 
   v6 = "";
   if (self && self->_isRegistered)
@@ -94,8 +94,8 @@
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
     v16 = 65;
-    v17 = self;
-    v14 = "";
+    selfCopy = self;
+    selfCopy2 = "";
     v15 = "[NRCompanionLinkViabilityAgent dealloc]";
     _NRLogWithArgs();
   }
@@ -112,7 +112,7 @@
       {
         v12 = self->_nrUUID;
         v13 = _NRCopyLogObjectForNRUUID();
-        v14 = self;
+        selfCopy2 = self;
         _NRLogWithArgs();
       }
     }
@@ -120,7 +120,7 @@
 
   v18.receiver = self;
   v18.super_class = NRCompanionLinkViabilityAgent;
-  [(NRCompanionLinkViabilityAgent *)&v18 dealloc:v14];
+  [(NRCompanionLinkViabilityAgent *)&v18 dealloc:selfCopy2];
 }
 
 + (id)agentDomain

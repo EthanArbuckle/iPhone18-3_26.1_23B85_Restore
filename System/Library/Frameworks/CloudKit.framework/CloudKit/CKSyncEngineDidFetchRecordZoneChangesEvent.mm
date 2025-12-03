@@ -1,16 +1,16 @@
 @interface CKSyncEngineDidFetchRecordZoneChangesEvent
-- (CKSyncEngineDidFetchRecordZoneChangesEvent)initWithZoneID:(id)a3 error:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineDidFetchRecordZoneChangesEvent)initWithZoneID:(id)d error:(id)error;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineDidFetchRecordZoneChangesEvent
 
-- (CKSyncEngineDidFetchRecordZoneChangesEvent)initWithZoneID:(id)a3 error:(id)a4
+- (CKSyncEngineDidFetchRecordZoneChangesEvent)initWithZoneID:(id)d error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  errorCopy = error;
   v26 = 0;
-  v9 = _CKCheckArgument("zoneID", v7, 0, 0, 0, &v26);
+  v9 = _CKCheckArgument("zoneID", dCopy, 0, 0, 0, &v26);
   v10 = v26;
   if ((v9 & 1) == 0)
   {
@@ -26,28 +26,28 @@
 
   v25.receiver = self;
   v25.super_class = CKSyncEngineDidFetchRecordZoneChangesEvent;
-  v11 = [(CKSyncEngineEvent *)&v25 initInternal];
-  v12 = v11;
-  if (v11)
+  initInternal = [(CKSyncEngineEvent *)&v25 initInternal];
+  v12 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v11 + 1, a3);
-    objc_storeStrong(&v12->_error, a4);
+    objc_storeStrong(initInternal + 1, d);
+    objc_storeStrong(&v12->_error, error);
   }
 
   return v12;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
   v13.receiver = self;
   v13.super_class = CKSyncEngineDidFetchRecordZoneChangesEvent;
-  v4 = a3;
-  [(CKSyncEngineEvent *)&v13 CKDescribePropertiesUsing:v4];
+  usingCopy = using;
+  [(CKSyncEngineEvent *)&v13 CKDescribePropertiesUsing:usingCopy];
   v7 = objc_msgSend_zoneID(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"zoneID", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"zoneID", v7, 0);
 
   v11 = objc_msgSend_error(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v12, @"error", v11, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v12, @"error", v11, 0);
 }
 
 @end

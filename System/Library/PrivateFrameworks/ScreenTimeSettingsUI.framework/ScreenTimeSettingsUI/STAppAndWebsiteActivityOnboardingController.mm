@@ -1,23 +1,23 @@
 @interface STAppAndWebsiteActivityOnboardingController
 - (id)_createAppAndWebsiteActivityController;
-- (void)_addTrayButtonToWelcomeController:(id)a3 localizationKey:(id)a4 action:(SEL)a5 isBold:(BOOL)a6;
+- (void)_addTrayButtonToWelcomeController:(id)controller localizationKey:(id)key action:(SEL)action isBold:(BOOL)bold;
 - (void)_notNowSelected;
 - (void)_turnOnAppAndWebsiteActivitySelected;
-- (void)presentOverViewController:(id)a3 completionBlock:(id)a4;
+- (void)presentOverViewController:(id)controller completionBlock:(id)block;
 @end
 
 @implementation STAppAndWebsiteActivityOnboardingController
 
-- (void)presentOverViewController:(id)a3 completionBlock:(id)a4
+- (void)presentOverViewController:(id)controller completionBlock:(id)block
 {
-  v6 = a3;
-  [(STAppAndWebsiteActivityOnboardingController *)self setCompletionBlock:a4];
-  v7 = [(STAppAndWebsiteActivityOnboardingController *)self _createAppAndWebsiteActivityController];
-  v8 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v7];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  controllerCopy = controller;
+  [(STAppAndWebsiteActivityOnboardingController *)self setCompletionBlock:block];
+  _createAppAndWebsiteActivityController = [(STAppAndWebsiteActivityOnboardingController *)self _createAppAndWebsiteActivityController];
+  v8 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:_createAppAndWebsiteActivityController];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v10)
+  if (!userInterfaceIdiom)
   {
     [v8 setSupportedInterfaceOrientations:2];
   }
@@ -30,7 +30,7 @@
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v6 presentViewController:v11 animated:1 completion:v12];
+  [controllerCopy presentViewController:v11 animated:1 completion:v12];
 }
 
 - (id)_createAppAndWebsiteActivityController
@@ -56,38 +56,38 @@
 
 - (void)_turnOnAppAndWebsiteActivitySelected
 {
-  v3 = [(STAppAndWebsiteActivityOnboardingController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(STAppAndWebsiteActivityOnboardingController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
-  v4 = [(STAppAndWebsiteActivityOnboardingController *)self completionBlock];
-  if (v4)
+  completionBlock = [(STAppAndWebsiteActivityOnboardingController *)self completionBlock];
+  if (completionBlock)
   {
-    v5 = v4;
-    v4[2](v4, 1);
-    v4 = v5;
+    v5 = completionBlock;
+    completionBlock[2](completionBlock, 1);
+    completionBlock = v5;
   }
 }
 
 - (void)_notNowSelected
 {
-  v3 = [(STAppAndWebsiteActivityOnboardingController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(STAppAndWebsiteActivityOnboardingController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
-  v4 = [(STAppAndWebsiteActivityOnboardingController *)self completionBlock];
-  if (v4)
+  completionBlock = [(STAppAndWebsiteActivityOnboardingController *)self completionBlock];
+  if (completionBlock)
   {
-    v5 = v4;
-    v4[2](v4, 0);
-    v4 = v5;
+    v5 = completionBlock;
+    completionBlock[2](completionBlock, 0);
+    completionBlock = v5;
   }
 }
 
-- (void)_addTrayButtonToWelcomeController:(id)a3 localizationKey:(id)a4 action:(SEL)a5 isBold:(BOOL)a6
+- (void)_addTrayButtonToWelcomeController:(id)controller localizationKey:(id)key action:(SEL)action isBold:(BOOL)bold
 {
-  v10 = a4;
-  v11 = a3;
+  keyCopy = key;
+  controllerCopy = controller;
   v15 = +[STScreenTimeSettingsUIBundle bundle];
-  if (a6)
+  if (bold)
   {
     [MEMORY[0x277D37618] boldButton];
   }
@@ -97,13 +97,13 @@
     [MEMORY[0x277D37650] linkButton];
   }
   v12 = ;
-  v13 = [v15 localizedStringForKey:v10 value:&stru_28766E5A8 table:0];
+  v13 = [v15 localizedStringForKey:keyCopy value:&stru_28766E5A8 table:0];
 
   [v12 setTitle:v13 forState:0];
-  [v12 addTarget:self action:a5 forControlEvents:0x2000];
-  v14 = [v11 buttonTray];
+  [v12 addTarget:self action:action forControlEvents:0x2000];
+  buttonTray = [controllerCopy buttonTray];
 
-  [v14 addButton:v12];
+  [buttonTray addButton:v12];
 }
 
 @end

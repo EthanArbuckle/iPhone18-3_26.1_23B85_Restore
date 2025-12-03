@@ -7,13 +7,13 @@
 
 - (void)updateState
 {
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v6 infoProvider];
-  v4 = [v3 sleepScheduleModel];
-  if (([v4 goodMorningScreenEnabledWithLogObject:self] & 1) == 0)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  if (([sleepScheduleModel goodMorningScreenEnabledWithLogObject:self] & 1) == 0)
   {
-    v5 = [v6 offState];
-    [v6 enterState:v5];
+    offState = [stateMachine offState];
+    [stateMachine enterState:offState];
   }
 }
 
@@ -29,9 +29,9 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] dismissing good morning alert", &v8, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v5 offState];
-  [v5 enterState:v6];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  offState = [stateMachine offState];
+  [stateMachine enterState:offState];
 
   v7 = *MEMORY[0x277D85DE8];
 }

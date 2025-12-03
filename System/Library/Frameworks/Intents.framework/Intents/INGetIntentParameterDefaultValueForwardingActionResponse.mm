@@ -1,15 +1,15 @@
 @interface INGetIntentParameterDefaultValueForwardingActionResponse
-- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithArchivedDefaultValue:(id)a3 error:(id)a4;
-- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithArchivedDefaultValue:(id)value error:(id)error;
+- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INGetIntentParameterDefaultValueForwardingActionResponse
 
-- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithCoder:(id)a3
+- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedDefaultValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedDefaultValue"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -18,31 +18,31 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"error"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"error"];
 
   v15 = [(INGetIntentParameterDefaultValueForwardingActionResponse *)self initWithArchivedDefaultValue:v5 error:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INGetIntentParameterDefaultValueForwardingActionResponse;
-  v4 = a3;
-  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_archivedDefaultValue forKey:{@"archivedDefaultValue", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INIntentForwardingActionResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_archivedDefaultValue forKey:{@"archivedDefaultValue", v5.receiver, v5.super_class}];
 }
 
-- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithArchivedDefaultValue:(id)a3 error:(id)a4
+- (INGetIntentParameterDefaultValueForwardingActionResponse)initWithArchivedDefaultValue:(id)value error:(id)error
 {
-  v7 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = INGetIntentParameterDefaultValueForwardingActionResponse;
-  v8 = [(INIntentForwardingActionResponse *)&v11 initWithError:a4];
+  v8 = [(INIntentForwardingActionResponse *)&v11 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_archivedDefaultValue, a3);
+    objc_storeStrong(&v8->_archivedDefaultValue, value);
   }
 
   return v9;

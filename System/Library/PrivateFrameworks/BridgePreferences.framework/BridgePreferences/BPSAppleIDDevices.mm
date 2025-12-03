@@ -1,18 +1,18 @@
 @interface BPSAppleIDDevices
-+ (BOOL)isNetworkError:(id)a3;
-+ (void)fetchFamilyMemberForAltDSID:(id)a3 username:(id)a4 withCompletion:(id)a5;
-+ (void)fetchFamilyMemberForDevice:(id)a3 withCompletion:(id)a4;
++ (BOOL)isNetworkError:(id)error;
++ (void)fetchFamilyMemberForAltDSID:(id)d username:(id)username withCompletion:(id)completion;
++ (void)fetchFamilyMemberForDevice:(id)device withCompletion:(id)completion;
 @end
 
 @implementation BPSAppleIDDevices
 
-+ (void)fetchFamilyMemberForDevice:(id)a3 withCompletion:(id)a4
++ (void)fetchFamilyMemberForDevice:(id)device withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = *MEMORY[0x277D2BD30];
-  v7 = a3;
-  v8 = [v7 valueForProperty:v6];
-  v9 = [v7 valueForProperty:*MEMORY[0x277D2BD38]];
+  deviceCopy = device;
+  v8 = [deviceCopy valueForProperty:v6];
+  v9 = [deviceCopy valueForProperty:*MEMORY[0x277D2BD38]];
 
   if (v8 | v9)
   {
@@ -21,14 +21,14 @@
     v12[1] = 3221225472;
     v12[2] = __63__BPSAppleIDDevices_fetchFamilyMemberForDevice_withCompletion___block_invoke;
     v12[3] = &unk_278D236E8;
-    v13 = v5;
+    v13 = completionCopy;
     [v11 fetchFamilyMemberForAltDSID:v8 username:v9 withCompletion:v12];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BPSAppleIDDevicesErrorDomain" code:1 userInfo:0];
-    (*(v5 + 2))(v5, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -55,16 +55,16 @@ void __63__BPSAppleIDDevices_fetchFamilyMemberForDevice_withCompletion___block_i
   v7();
 }
 
-+ (void)fetchFamilyMemberForAltDSID:(id)a3 username:(id)a4 withCompletion:(id)a5
++ (void)fetchFamilyMemberForAltDSID:(id)d username:(id)username withCompletion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  usernameCopy = username;
+  completionCopy = completion;
   v10 = objc_alloc_init(MEMORY[0x277D08280]);
-  if (v7)
+  if (dCopy)
   {
-    v22[0] = v7;
+    v22[0] = dCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     [v10 setExpectedAltDSIDs:v11];
   }
@@ -92,12 +92,12 @@ void __63__BPSAppleIDDevices_fetchFamilyMemberForDevice_withCompletion___block_i
   v17[1] = 3221225472;
   v17[2] = __73__BPSAppleIDDevices_fetchFamilyMemberForAltDSID_username_withCompletion___block_invoke;
   v17[3] = &unk_278D23710;
-  v19 = v8;
-  v20 = v9;
-  v18 = v7;
-  v14 = v8;
-  v15 = v7;
-  v16 = v9;
+  v19 = usernameCopy;
+  v20 = completionCopy;
+  v18 = dCopy;
+  v14 = usernameCopy;
+  v15 = dCopy;
+  v16 = completionCopy;
   [v10 startRequestWithCompletionHandler:v17];
 }
 
@@ -189,13 +189,13 @@ LABEL_19:
   }
 }
 
-+ (BOOL)isNetworkError:(id)a3
++ (BOOL)isNetworkError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"BPSAppleIDDevicesErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"BPSAppleIDDevicesErrorDomain"])
   {
-    v5 = [v3 code] == 2;
+    v5 = [errorCopy code] == 2;
   }
 
   else

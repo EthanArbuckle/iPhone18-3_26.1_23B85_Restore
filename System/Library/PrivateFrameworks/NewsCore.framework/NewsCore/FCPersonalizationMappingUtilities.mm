@@ -1,14 +1,14 @@
 @interface FCPersonalizationMappingUtilities
-+ (id)scoredTagsDictionaryFromScoredTags:(id)a3;
++ (id)scoredTagsDictionaryFromScoredTags:(id)tags;
 @end
 
 @implementation FCPersonalizationMappingUtilities
 
-+ (id)scoredTagsDictionaryFromScoredTags:(id)a3
++ (id)scoredTagsDictionaryFromScoredTags:(id)tags
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  tagsCopy = tags;
+  if (!tagsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "scoredTagIDs"];
     *buf = 136315906;
@@ -22,7 +22,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [MEMORY[0x1E695DF20] fc_dictionaryFromArray:v3 keyBlock:&__block_literal_global_130 valueBlock:&__block_literal_global_7_1];
+  v4 = [MEMORY[0x1E695DF20] fc_dictionaryFromArray:tagsCopy keyBlock:&__block_literal_global_130 valueBlock:&__block_literal_global_7_1];
 
   v5 = *MEMORY[0x1E69E9840];
 

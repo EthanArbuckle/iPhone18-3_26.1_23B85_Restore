@@ -1,9 +1,9 @@
 @interface MXAlarmEvents
 + (id)sharedInstance;
 - (MXAlarmEvents)init;
-- (void)handleAlarmEventNotification:(id)a3;
-- (void)resetAlarmEvent:(id)a3;
-- (void)setAlarmEvent:(double)a3 eventName:(id)a4;
+- (void)handleAlarmEventNotification:(id)notification;
+- (void)resetAlarmEvent:(id)event;
+- (void)setAlarmEvent:(double)event eventName:(id)name;
 @end
 
 @implementation MXAlarmEvents
@@ -50,7 +50,7 @@ void __31__MXAlarmEvents_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)handleAlarmEventNotification:(id)a3
+- (void)handleAlarmEventNotification:(id)notification
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9E40];
@@ -61,15 +61,15 @@ void __31__MXAlarmEvents_sharedInstance__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlarmEvent:(double)a3 eventName:(id)a4
+- (void)setAlarmEvent:(double)event eventName:(id)name
 {
   mAccessQueue = self->mAccessQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__MXAlarmEvents_setAlarmEvent_eventName___block_invoke;
   v5[3] = &unk_1E7AEBCA0;
-  v5[4] = a4;
-  *&v5[5] = a3;
+  v5[4] = name;
+  *&v5[5] = event;
   MXDispatchAsync("[MXAlarmEvents setAlarmEvent:eventName:]", "MXAlarmEvents.m", 92, 0, 0, mAccessQueue, v5);
 }
 
@@ -96,14 +96,14 @@ void __41__MXAlarmEvents_setAlarmEvent_eventName___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetAlarmEvent:(id)a3
+- (void)resetAlarmEvent:(id)event
 {
   mAccessQueue = self->mAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __33__MXAlarmEvents_resetAlarmEvent___block_invoke;
   v4[3] = &unk_1E7AE7CE0;
-  v4[4] = a3;
+  v4[4] = event;
   MXDispatchAsync("[MXAlarmEvents resetAlarmEvent:]", "MXAlarmEvents.m", 111, 0, 0, mAccessQueue, v4);
 }
 

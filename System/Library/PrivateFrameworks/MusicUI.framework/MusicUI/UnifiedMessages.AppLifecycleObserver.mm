@@ -1,10 +1,10 @@
 @interface UnifiedMessages.AppLifecycleObserver
-- (void)handleSceneWillForegroundNotification:(id)a3;
+- (void)handleSceneWillForegroundNotification:(id)notification;
 @end
 
 @implementation UnifiedMessages.AppLifecycleObserver
 
-- (void)handleSceneWillForegroundNotification:(id)a3
+- (void)handleSceneWillForegroundNotification:(id)notification
 {
   v3 = sub_217005974();
   v4 = *(v3 - 8);

@@ -1,59 +1,59 @@
 @interface Request
 - (NSString)description;
-- (Request)initWithDate:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 itemBundleIdentifier:(id)a6 itemIdentifier:(id)a7 localizations:(id)a8 mocked:(BOOL)a9 offerName:(id)a10 previewURL:(id)a11 productType:(id)a12 productTypeName:(id)a13 productURL:(id)a14 requestInfo:(id)a15 status:(int64_t)a16;
-- (Request)initWithDictionary:(id)a3;
+- (Request)initWithDate:(id)date requestIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier itemBundleIdentifier:(id)bundleIdentifier itemIdentifier:(id)itemIdentifier localizations:(id)localizations mocked:(BOOL)mocked offerName:(id)self0 previewURL:(id)self1 productType:(id)self2 productTypeName:(id)self3 productURL:(id)self4 requestInfo:(id)self5 status:(int64_t)self6;
+- (Request)initWithDictionary:(id)dictionary;
 - (id)compile;
 @end
 
 @implementation Request
 
-- (Request)initWithDate:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 itemBundleIdentifier:(id)a6 itemIdentifier:(id)a7 localizations:(id)a8 mocked:(BOOL)a9 offerName:(id)a10 previewURL:(id)a11 productType:(id)a12 productTypeName:(id)a13 productURL:(id)a14 requestInfo:(id)a15 status:(int64_t)a16
+- (Request)initWithDate:(id)date requestIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier itemBundleIdentifier:(id)bundleIdentifier itemIdentifier:(id)itemIdentifier localizations:(id)localizations mocked:(BOOL)mocked offerName:(id)self0 previewURL:(id)self1 productType:(id)self2 productTypeName:(id)self3 productURL:(id)self4 requestInfo:(id)self5 status:(int64_t)self6
 {
-  v41 = a3;
-  v39 = a4;
-  v32 = a5;
-  v37 = a5;
-  v33 = a6;
-  v21 = a6;
-  v34 = a7;
-  v22 = a7;
-  v35 = a8;
-  v40 = a8;
-  v38 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
+  dateCopy = date;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  uniqueIdentifierCopy2 = uniqueIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  bundleIdentifierCopy2 = bundleIdentifier;
+  itemIdentifierCopy = itemIdentifier;
+  itemIdentifierCopy2 = itemIdentifier;
+  localizationsCopy = localizations;
+  localizationsCopy2 = localizations;
+  nameCopy = name;
+  lCopy = l;
+  typeCopy = type;
+  typeNameCopy = typeName;
+  rLCopy = rL;
+  infoCopy = info;
   v42.receiver = self;
   v42.super_class = Request;
   v28 = [(Request *)&v42 init];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_date, a3);
-    objc_storeStrong(&v29->_requestIdentifier, a4);
-    objc_storeStrong(&v29->_uniqueIdentifier, v32);
-    objc_storeStrong(&v29->_itemBundleIdentifier, v33);
-    objc_storeStrong(&v29->_itemIdentifier, v34);
-    objc_storeStrong(&v29->_localizations, v35);
-    v29->_mocked = a9;
-    objc_storeStrong(&v29->_offerName, a10);
-    objc_storeStrong(&v29->_previewURL, a11);
-    objc_storeStrong(&v29->_productType, a12);
-    objc_storeStrong(&v29->_productTypeName, a13);
-    objc_storeStrong(&v29->_productURL, a14);
-    objc_storeStrong(&v29->_requestInfo, a15);
-    v29->_status = a16;
+    objc_storeStrong(&v28->_date, date);
+    objc_storeStrong(&v29->_requestIdentifier, identifier);
+    objc_storeStrong(&v29->_uniqueIdentifier, uniqueIdentifierCopy);
+    objc_storeStrong(&v29->_itemBundleIdentifier, bundleIdentifierCopy);
+    objc_storeStrong(&v29->_itemIdentifier, itemIdentifierCopy);
+    objc_storeStrong(&v29->_localizations, localizationsCopy);
+    v29->_mocked = mocked;
+    objc_storeStrong(&v29->_offerName, name);
+    objc_storeStrong(&v29->_previewURL, l);
+    objc_storeStrong(&v29->_productType, type);
+    objc_storeStrong(&v29->_productTypeName, typeName);
+    objc_storeStrong(&v29->_productURL, rL);
+    objc_storeStrong(&v29->_requestInfo, info);
+    v29->_status = status;
   }
 
   return v29;
 }
 
-- (Request)initWithDictionary:(id)a3
+- (Request)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"date"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"date"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -74,7 +74,7 @@ LABEL_5:
   v56 = 0;
 LABEL_7:
 
-  v7 = [v4 objectForKeyedSubscript:@"identifier"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -86,7 +86,7 @@ LABEL_7:
     v55 = 0;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"uniqueIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -98,7 +98,7 @@ LABEL_7:
     v49 = 0;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"itemIdentifier"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -110,7 +110,7 @@ LABEL_7:
     v10 = 0;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"itemBundleIdentifier"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"itemBundleIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -125,7 +125,7 @@ LABEL_7:
   v53 = v12;
 
   v13 = [RequestLocalizations alloc];
-  v14 = [v4 objectForKeyedSubscript:@"localizations"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"localizations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -138,7 +138,7 @@ LABEL_7:
   }
 
   v47 = [(RequestLocalizations *)v13 initWithDictionary:v15];
-  v16 = [v4 objectForKeyedSubscript:@"mocked"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"mocked"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -150,10 +150,10 @@ LABEL_7:
     v17 = 0;
   }
 
-  v45 = [v17 BOOLValue];
-  v18 = [v4 objectForKeyedSubscript:@"offerName"];
+  bOOLValue = [v17 BOOLValue];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"offerName"];
   objc_opt_class();
-  v54 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -164,7 +164,7 @@ LABEL_7:
     v19 = 0;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"previewURL"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"previewURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -184,7 +184,7 @@ LABEL_32:
   v22 = 0;
 LABEL_34:
 
-  v23 = [v4 objectForKeyedSubscript:@"productType"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,7 +196,7 @@ LABEL_34:
     v24 = 0;
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"productTypeName"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"productTypeName"];
   objc_opt_class();
   v52 = v19;
   if (objc_opt_isKindOfClass())
@@ -209,7 +209,7 @@ LABEL_34:
     v26 = 0;
   }
 
-  v27 = [v4 objectForKeyedSubscript:@"productURL"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"productURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -229,7 +229,7 @@ LABEL_44:
   v29 = 0;
 LABEL_46:
 
-  v30 = [v4 objectForKeyedSubscript:@"requestInfo"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"requestInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -241,7 +241,7 @@ LABEL_46:
     v31 = 0;
   }
 
-  v32 = [v4 objectForKeyedSubscript:@"status"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -257,29 +257,29 @@ LABEL_46:
 
   if (v33)
   {
-    v34 = [v33 integerValue];
+    integerValue = [v33 integerValue];
   }
 
   else
   {
-    v34 = -2;
+    integerValue = -2;
   }
 
   v35 = v49;
   v36 = v22;
   v37 = v26;
-  v51 = v4;
+  v51 = dictionaryCopy;
   v46 = v22;
   if (v56 && v55 && v49 && v10 && v47)
   {
     v38 = v31;
     v39 = v48;
     v40 = v52;
-    LOBYTE(v44) = v45;
+    LOBYTE(v44) = bOOLValue;
     v41 = v53;
     v42 = v37;
-    v54 = [(Request *)v54 initWithDate:v56 requestIdentifier:v55 uniqueIdentifier:v49 itemBundleIdentifier:v53 itemIdentifier:v10 localizations:v47 mocked:v44 offerName:v52 previewURL:v36 productType:v48 productTypeName:v37 productURL:v29 requestInfo:v31 status:v34];
-    v50 = v54;
+    selfCopy = [(Request *)selfCopy initWithDate:v56 requestIdentifier:v55 uniqueIdentifier:v49 itemBundleIdentifier:v53 itemIdentifier:v10 localizations:v47 mocked:v44 offerName:v52 previewURL:v36 productType:v48 productTypeName:v37 productURL:v29 requestInfo:v31 status:integerValue];
+    v50 = selfCopy;
   }
 
   else
@@ -298,47 +298,47 @@ LABEL_46:
 - (id)compile
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(Request *)self date];
-  [v3 ap_setNullableObject:v4 forKey:@"date"];
+  date = [(Request *)self date];
+  [v3 ap_setNullableObject:date forKey:@"date"];
 
-  v5 = [(Request *)self requestIdentifier];
-  [v3 ap_setNullableObject:v5 forKey:@"identifier"];
+  requestIdentifier = [(Request *)self requestIdentifier];
+  [v3 ap_setNullableObject:requestIdentifier forKey:@"identifier"];
 
-  v6 = [(Request *)self uniqueIdentifier];
-  [v3 ap_setNullableObject:v6 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(Request *)self uniqueIdentifier];
+  [v3 ap_setNullableObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v7 = [(Request *)self itemBundleIdentifier];
-  [v3 ap_setNullableObject:v7 forKey:@"itemBundleIdentifier"];
+  itemBundleIdentifier = [(Request *)self itemBundleIdentifier];
+  [v3 ap_setNullableObject:itemBundleIdentifier forKey:@"itemBundleIdentifier"];
 
-  v8 = [(Request *)self itemIdentifier];
-  [v3 ap_setNullableObject:v8 forKey:@"itemIdentifier"];
+  itemIdentifier = [(Request *)self itemIdentifier];
+  [v3 ap_setNullableObject:itemIdentifier forKey:@"itemIdentifier"];
 
-  v9 = [(Request *)self localizations];
-  v10 = [v9 compile];
-  [v3 ap_setNullableObject:v10 forKey:@"localizations"];
+  localizations = [(Request *)self localizations];
+  compile = [localizations compile];
+  [v3 ap_setNullableObject:compile forKey:@"localizations"];
 
   v11 = [NSNumber numberWithBool:[(Request *)self isMocked]];
   [v3 ap_setNullableObject:v11 forKey:@"mocked"];
 
-  v12 = [(Request *)self offerName];
-  [v3 ap_setNullableObject:v12 forKey:@"offerName"];
+  offerName = [(Request *)self offerName];
+  [v3 ap_setNullableObject:offerName forKey:@"offerName"];
 
-  v13 = [(Request *)self previewURL];
-  v14 = [v13 absoluteString];
-  [v3 ap_setNullableObject:v14 forKey:@"previewURL"];
+  previewURL = [(Request *)self previewURL];
+  absoluteString = [previewURL absoluteString];
+  [v3 ap_setNullableObject:absoluteString forKey:@"previewURL"];
 
-  v15 = [(Request *)self productType];
-  [v3 ap_setNullableObject:v15 forKey:@"productType"];
+  productType = [(Request *)self productType];
+  [v3 ap_setNullableObject:productType forKey:@"productType"];
 
-  v16 = [(Request *)self productTypeName];
-  [v3 ap_setNullableObject:v16 forKey:@"productTypeName"];
+  productTypeName = [(Request *)self productTypeName];
+  [v3 ap_setNullableObject:productTypeName forKey:@"productTypeName"];
 
-  v17 = [(Request *)self productURL];
-  v18 = [v17 absoluteString];
-  [v3 ap_setNullableObject:v18 forKey:@"productURL"];
+  productURL = [(Request *)self productURL];
+  absoluteString2 = [productURL absoluteString];
+  [v3 ap_setNullableObject:absoluteString2 forKey:@"productURL"];
 
-  v19 = [(Request *)self requestInfo];
-  [v3 ap_setNullableObject:v19 forKey:@"requestInfo"];
+  requestInfo = [(Request *)self requestInfo];
+  [v3 ap_setNullableObject:requestInfo forKey:@"requestInfo"];
 
   v20 = [NSNumber numberWithInteger:[(Request *)self status]];
   [v3 ap_setNullableObject:v20 forKey:@"status"];
@@ -348,8 +348,8 @@ LABEL_46:
 
 - (NSString)description
 {
-  v3 = [(Request *)self compile];
-  v4 = [(Request *)self ap_generateDescriptionWithSubObjects:v3];
+  compile = [(Request *)self compile];
+  v4 = [(Request *)self ap_generateDescriptionWithSubObjects:compile];
 
   return v4;
 }

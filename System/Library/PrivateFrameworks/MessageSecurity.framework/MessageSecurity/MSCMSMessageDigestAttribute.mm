@@ -1,69 +1,69 @@
 @interface MSCMSMessageDigestAttribute
-+ (id)messageDigestAttributeWithDigest:(id)a3;
-- (MSCMSMessageDigestAttribute)initWithAttribute:(id)a3 error:(id *)a4;
-- (MSCMSMessageDigestAttribute)initWithDigest:(id)a3;
-- (id)encodeAttributeWithError:(id *)a3;
++ (id)messageDigestAttributeWithDigest:(id)digest;
+- (MSCMSMessageDigestAttribute)initWithAttribute:(id)attribute error:(id *)error;
+- (MSCMSMessageDigestAttribute)initWithDigest:(id)digest;
+- (id)encodeAttributeWithError:(id *)error;
 @end
 
 @implementation MSCMSMessageDigestAttribute
 
-- (MSCMSMessageDigestAttribute)initWithAttribute:(id)a3 error:(id *)a4
+- (MSCMSMessageDigestAttribute)initWithAttribute:(id)attribute error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 attributeType];
-  v8 = [v7 isEqualToString:@"1.2.840.113549.1.9.4"];
+  attributeCopy = attribute;
+  attributeType = [attributeCopy attributeType];
+  v8 = [attributeType isEqualToString:@"1.2.840.113549.1.9.4"];
 
   if ((v8 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
 
     v14 = MSErrorCMSDomain[0];
-    v16 = *a4;
+    v16 = *error;
     v17 = @"Not a MessageDigest attribute according to AttributeType";
 LABEL_10:
     v15 = -26275;
     goto LABEL_11;
   }
 
-  v9 = [v6 attributeValues];
-  v10 = [v9 count];
+  attributeValues = [attributeCopy attributeValues];
+  v10 = [attributeValues count];
 
   if (v10 != 1)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
 
     v14 = MSErrorCMSDomain[0];
-    v16 = *a4;
+    v16 = *error;
     v17 = @"MessageDigest attribute contains more than one value";
     goto LABEL_10;
   }
 
-  v11 = [v6 attributeValues];
-  v12 = [v11 objectAtIndex:0];
+  attributeValues2 = [attributeCopy attributeValues];
+  v12 = [attributeValues2 objectAtIndex:0];
   v13 = nsheim_decode_MessageDigest(v12);
 
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       v14 = MSErrorASN1Domain[0];
       v15 = v13;
-      v16 = *a4;
+      v16 = *error;
       v17 = @"unable to decode MessageDigest";
 LABEL_11:
       [MSError MSErrorWithDomain:v14 code:v15 underlyingError:v16 description:v17];
-      *a4 = v18 = 0;
+      *error = selfCopy = 0;
       goto LABEL_17;
     }
 
 LABEL_12:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -72,19 +72,19 @@ LABEL_12:
   {
     free_MessageDigest();
     self = [(MSCMSMessageDigestAttribute *)self initWithDigest:v19];
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
 LABEL_17:
-  return v18;
+  return selfCopy;
 }
 
-- (id)encodeAttributeWithError:(id *)a3
+- (id)encodeAttributeWithError:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v23[0] = [(NSData *)self->_messageDigest length];
@@ -95,7 +95,7 @@ LABEL_17:
   if (!v6)
   {
     v10 = 12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -110,7 +110,7 @@ LABEL_17:
     v9 = v8;
 
     v10 = v9;
-    if (!a3)
+    if (!error)
     {
 LABEL_5:
       v7 = 0;
@@ -122,7 +122,7 @@ LABEL_4:
     v24 = *MEMORY[0x277CCA450];
     v25[0] = @"Failed encoding type MessageDigest";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:{1, v22}];
-    *a3 = [v11 errorWithDomain:@"com.apple.HeimASN1" code:v10 userInfo:v12];
+    *error = [v11 errorWithDomain:@"com.apple.HeimASN1" code:v10 userInfo:v12];
 
     goto LABEL_5;
   }
@@ -137,7 +137,7 @@ LABEL_9:
   if ([v7 length])
   {
     v13 = [MSCMSAttribute alloc];
-    v14 = [MSOID OIDWithString:@"1.2.840.113549.1.9.4" error:a3];
+    v14 = [MSOID OIDWithString:@"1.2.840.113549.1.9.4" error:error];
     v15 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
     v16 = [(MSCMSAttribute *)v13 initWithAttributeType:v14 values:v15];
   }
@@ -152,11 +152,11 @@ LABEL_9:
   return v16;
 }
 
-- (MSCMSMessageDigestAttribute)initWithDigest:(id)a3
+- (MSCMSMessageDigestAttribute)initWithDigest:(id)digest
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] == 16 || objc_msgSend(v4, "length") == 20 || objc_msgSend(v4, "length") == 28 || objc_msgSend(v4, "length") == 32 || objc_msgSend(v4, "length") == 48 || objc_msgSend(v4, "length") == 64)
+  digestCopy = digest;
+  if ([digestCopy length] == 16 || objc_msgSend(digestCopy, "length") == 20 || objc_msgSend(digestCopy, "length") == 28 || objc_msgSend(digestCopy, "length") == 32 || objc_msgSend(digestCopy, "length") == 48 || objc_msgSend(digestCopy, "length") == 64)
   {
     v12.receiver = self;
     v12.super_class = MSCMSMessageDigestAttribute;
@@ -164,11 +164,11 @@ LABEL_9:
     v6 = v5;
     if (v5)
     {
-      [(MSCMSMessageDigestAttribute *)v5 setMessageDigest:v4];
+      [(MSCMSMessageDigestAttribute *)v5 setMessageDigest:digestCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -183,15 +183,15 @@ LABEL_9:
     {
       v11 = v10;
       *buf = 134217984;
-      v14 = [v4 length];
+      v14 = [digestCopy length];
       _os_log_impl(&dword_258C80000, v11, OS_LOG_TYPE_ERROR, "Digest length %lu is not a supported length", buf, 0xCu);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __46__MSCMSMessageDigestAttribute_initWithDigest___block_invoke()
@@ -201,10 +201,10 @@ uint64_t __46__MSCMSMessageDigestAttribute_initWithDigest___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)messageDigestAttributeWithDigest:(id)a3
++ (id)messageDigestAttributeWithDigest:(id)digest
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDigest:v4];
+  digestCopy = digest;
+  v5 = [[self alloc] initWithDigest:digestCopy];
 
   return v5;
 }

@@ -1,23 +1,23 @@
 @interface AMSFamilyInfoLookupResult
-+ (id)_familyMembersFromDictionaryRepresentation:(id)a3;
-- (AMSFamilyInfoLookupResult)initWithDictionaryRepresentation:(id)a3 cached:(BOOL)a4;
++ (id)_familyMembersFromDictionaryRepresentation:(id)representation;
+- (AMSFamilyInfoLookupResult)initWithDictionaryRepresentation:(id)representation cached:(BOOL)cached;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation AMSFamilyInfoLookupResult
 
-- (AMSFamilyInfoLookupResult)initWithDictionaryRepresentation:(id)a3 cached:(BOOL)a4
+- (AMSFamilyInfoLookupResult)initWithDictionaryRepresentation:(id)representation cached:(BOOL)cached
 {
-  v6 = a3;
+  representationCopy = representation;
   v18.receiver = self;
   v18.super_class = AMSFamilyInfoLookupResult;
   v7 = [(AMSFamilyInfoLookupResult *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    v7->_cached = a4;
-    v9 = [v6 valueForKeyPath:@"family.ICloudHohDsid"];
+    v7->_cached = cached;
+    v9 = [representationCopy valueForKeyPath:@"family.ICloudHohDsid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,10 +41,10 @@
 
     objc_storeStrong(&v8->_headOfHouseholdICloudDSID, v11);
 
-    v12 = [v6 valueForKeyPath:@"family.hohSharingPayment"];
+    v12 = [representationCopy valueForKeyPath:@"family.hohSharingPayment"];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v6 valueForKeyPath:@"family.hohSharingPayment"];
+      v13 = [representationCopy valueForKeyPath:@"family.hohSharingPayment"];
       v8->_headOfHouseholdSharingPayment = [v13 BOOLValue];
     }
 
@@ -53,7 +53,7 @@
       v8->_headOfHouseholdSharingPayment = 0;
     }
 
-    v14 = [AMSFamilyInfoLookupResult _familyMembersFromDictionaryRepresentation:v6];
+    v14 = [AMSFamilyInfoLookupResult _familyMembersFromDictionaryRepresentation:representationCopy];
     v15 = v14;
     if (v14)
     {
@@ -74,8 +74,8 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSFamilyInfoLookupResult *)self familyMembers];
-  v4 = [v3 ams_mapWithTransform:&__block_literal_global_54];
+  familyMembers = [(AMSFamilyInfoLookupResult *)self familyMembers];
+  v4 = [familyMembers ams_mapWithTransform:&__block_literal_global_54];
 
   v12 = @"family";
   v11[0] = v4;
@@ -84,8 +84,8 @@
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSFamilyInfoLookupResult isHeadOfHouseholdSharingPayment](self, "isHeadOfHouseholdSharingPayment")}];
   v11[1] = v5;
   v10[2] = @"ICloudHohDsid";
-  v6 = [(AMSFamilyInfoLookupResult *)self headOfHouseholdICloudDSID];
-  v11[2] = v6;
+  headOfHouseholdICloudDSID = [(AMSFamilyInfoLookupResult *)self headOfHouseholdICloudDSID];
+  v11[2] = headOfHouseholdICloudDSID;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
   v13[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
@@ -121,20 +121,20 @@
 
   v11[1] = v4;
   v10[2] = @"ICloudHohDsid";
-  v5 = [(AMSFamilyInfoLookupResult *)self headOfHouseholdICloudDSID];
-  v11[2] = v5;
+  headOfHouseholdICloudDSID = [(AMSFamilyInfoLookupResult *)self headOfHouseholdICloudDSID];
+  v11[2] = headOfHouseholdICloudDSID;
   v10[3] = @"familyMembers";
-  v6 = [(AMSFamilyInfoLookupResult *)self familyMembers];
-  v11[3] = v6;
+  familyMembers = [(AMSFamilyInfoLookupResult *)self familyMembers];
+  v11[3] = familyMembers;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
   v8 = [self ams_generateDescriptionWithSubObjects:v7];
 
   return v8;
 }
 
-+ (id)_familyMembersFromDictionaryRepresentation:(id)a3
++ (id)_familyMembersFromDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 valueForKeyPath:@"family.members"];
+  v3 = [representation valueForKeyPath:@"family.members"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,21 +149,21 @@
   v5 = [v4 ams_mapWithTransform:&__block_literal_global_40];
   v6 = [v5 ams_filterUsingTest:&__block_literal_global_45_0];
 
-  v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v8 = [v7 ams_activeiCloudAccount];
-  v9 = [v8 ams_DSID];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
+  ams_DSID = [ams_activeiCloudAccount ams_DSID];
 
-  v10 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v11 = [v10 ams_activeiTunesAccount];
-  v12 = [v11 ams_DSID];
+  ams_sharedAccountStore2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore2 ams_activeiTunesAccount];
+  ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__AMSFamilyInfoLookupResult__familyMembersFromDictionaryRepresentation___block_invoke_3;
   v20[3] = &unk_1E73B7868;
-  v13 = v9;
+  v13 = ams_DSID;
   v21 = v13;
-  v14 = v12;
+  v14 = ams_DSID2;
   v22 = v14;
   v15 = [v6 ams_firstObjectPassingTest:v20];
   if (!v15)

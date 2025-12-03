@@ -1,23 +1,23 @@
 @interface PXDebugHierarchyCALayerObjectsBuilder
-+ (id)buildLayerTreeForDebugHierarchyWithIdentifier:(id)a3 provider:(id)a4 options:(unint64_t)a5;
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5;
++ (id)buildLayerTreeForDebugHierarchyWithIdentifier:(id)identifier provider:(id)provider options:(unint64_t)options;
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options;
 @end
 
 @implementation PXDebugHierarchyCALayerObjectsBuilder
 
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  objectCopy = object;
   v8 = objc_alloc_init(MEMORY[0x277CD9ED0]);
-  [v6 frame];
+  [elementCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  if (v7)
+  if (objectCopy)
   {
-    [v7 bounds];
+    [objectCopy bounds];
     PXRectFlippedVertically();
     v10 = v17;
     v12 = v18;
@@ -26,40 +26,40 @@
   }
 
   [v8 setFrame:{v10, v12, v14, v16}];
-  [v6 zPosition];
+  [elementCopy zPosition];
   [v8 setZPosition:?];
-  [v6 alpha];
+  [elementCopy alpha];
   *&v21 = v21;
   [v8 setOpacity:v21];
-  [v8 setContents:{objc_msgSend(v6, "previewImage")}];
-  v22 = [v6 contentsGravity];
-  [v8 setContentsGravity:v22];
+  [v8 setContents:{objc_msgSend(elementCopy, "previewImage")}];
+  contentsGravity = [elementCopy contentsGravity];
+  [v8 setContentsGravity:contentsGravity];
 
-  [v6 contentsRect];
+  [elementCopy contentsRect];
   [v8 setContentsRect:?];
   [v8 setMasksToBounds:1];
-  [v8 setBackgroundColor:{objc_msgSend(v6, "backgroundColor")}];
-  v23 = [v6 name];
-  [v8 setName:v23];
+  [v8 setBackgroundColor:{objc_msgSend(elementCopy, "backgroundColor")}];
+  name = [elementCopy name];
+  [v8 setName:name];
 
-  [v7 addSublayer:v8];
+  [objectCopy addSublayer:v8];
 
   return v8;
 }
 
-+ (id)buildLayerTreeForDebugHierarchyWithIdentifier:(id)a3 provider:(id)a4 options:(unint64_t)a5
++ (id)buildLayerTreeForDebugHierarchyWithIdentifier:(id)identifier provider:(id)provider options:(unint64_t)options
 {
-  v7 = [a1 buildObjectTreeForDebugHierarchyWithIdentifier:a3 provider:a4 options:a5];
+  v7 = [self buildObjectTreeForDebugHierarchyWithIdentifier:identifier provider:provider options:options];
   if (v7)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v7 px_descriptionForAssertionMessage];
-      [v9 handleFailureInMethod:a2 object:a1 file:@"PXDebugHierarchyCALayerObjectsBuilder.m" lineNumber:19 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self buildObjectTreeForDebugHierarchyWithIdentifier:identifier provider:provider options:options]", v11, v12}];
+      px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDebugHierarchyCALayerObjectsBuilder.m" lineNumber:19 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self buildObjectTreeForDebugHierarchyWithIdentifier:identifier provider:provider options:options]", v11, px_descriptionForAssertionMessage}];
     }
   }
 

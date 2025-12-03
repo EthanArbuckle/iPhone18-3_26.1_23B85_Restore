@@ -14,28 +14,28 @@
 
 - (void)setValue:()PXEditStringRow
 {
-  v2 = [a1 _px_validatedTextFromText:?];
-  v3.receiver = a1;
+  v2 = [self _px_validatedTextFromText:?];
+  v3.receiver = self;
   v3.super_class = &off_1F1AF02A8;
   objc_msgSendSuper2(&v3, sel_setValue_, v2);
 }
 
 - (void)_px_updateSaveActionFromTextField
 {
-  v1 = [a1 _px_editStringRowTextFieldAction];
-  v1[2]();
+  _px_editStringRowTextFieldAction = [self _px_editStringRowTextFieldAction];
+  _px_editStringRowTextFieldAction[2]();
 }
 
 - (void)_px_setEditStringRowTextFieldAction:()PXEditStringRow
 {
   v4 = _PXPTEditStringRowTextFieldActionAssociationKey;
   v5 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, v4, v5, 1);
+  objc_setAssociatedObject(self, v4, v5, 1);
 }
 
 - (id)_px_editStringRowTextFieldAction
 {
-  v1 = objc_getAssociatedObject(a1, _PXPTEditStringRowTextFieldActionAssociationKey);
+  v1 = objc_getAssociatedObject(self, _PXPTEditStringRowTextFieldActionAssociationKey);
   v2 = _Block_copy(v1);
 
   return v2;
@@ -44,12 +44,12 @@
 - (id)_px_validatedTextFromText:()PXEditStringRow
 {
   v4 = a3;
-  v5 = [a1 _px_editStringRowTextValidationAction];
+  _px_editStringRowTextValidationAction = [self _px_editStringRowTextValidationAction];
 
-  if (v5)
+  if (_px_editStringRowTextValidationAction)
   {
-    v6 = [a1 _px_editStringRowTextValidationAction];
-    v7 = (v6)[2](v6, v4);
+    _px_editStringRowTextValidationAction2 = [self _px_editStringRowTextValidationAction];
+    v7 = (_px_editStringRowTextValidationAction2)[2](_px_editStringRowTextValidationAction2, v4);
   }
 
   else
@@ -64,12 +64,12 @@
 {
   v4 = _PXPTEditStringRowTextValidationActionAssociationKey;
   v5 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, v4, v5, 1);
+  objc_setAssociatedObject(self, v4, v5, 1);
 }
 
 - (id)_px_editStringRowTextValidationAction
 {
-  v1 = objc_getAssociatedObject(a1, _PXPTEditStringRowTextValidationActionAssociationKey);
+  v1 = objc_getAssociatedObject(self, _PXPTEditStringRowTextValidationActionAssociationKey);
   v2 = _Block_copy(v1);
 
   return v2;
@@ -85,8 +85,8 @@
   [v9 setAutocorrectionType:1];
   [v9 setEnablesReturnKeyAutomatically:1];
   [v9 setPlaceholder:v10];
-  v13 = [v12 value];
-  [v9 setText:v13];
+  value = [v12 value];
+  [v9 setText:value];
 
   objc_initWeak(&location, v9);
   objc_initWeak(&v22, v11);
@@ -116,7 +116,7 @@
   v17 = a7;
   v18 = a8;
   v19 = a9;
-  v20 = [a1 rowWithTitle:a3 valueKeyPath:a4];
+  v20 = [self rowWithTitle:a3 valueKeyPath:a4];
   [v20 setCondition:v19];
 
   v21 = MEMORY[0x1E69C6658];
@@ -127,7 +127,7 @@
   v29 = v15;
   v30 = v16;
   v32 = v18;
-  v33 = a1;
+  selfCopy = self;
   v31 = v17;
   v22 = v17;
   v23 = v16;

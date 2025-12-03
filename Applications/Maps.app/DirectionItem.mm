@@ -1,20 +1,20 @@
 @interface DirectionItem
-+ (DirectionItem)directionItemWithNanoRoutePlanningRequest:(id)a3;
-+ (DirectionItem)directionItemWithRideBookingSession:(id)a3;
-+ (DirectionItem)directionItemWithRoutePlanningSession:(id)a3;
++ (DirectionItem)directionItemWithNanoRoutePlanningRequest:(id)request;
++ (DirectionItem)directionItemWithRideBookingSession:(id)session;
++ (DirectionItem)directionItemWithRoutePlanningSession:(id)session;
 - (BOOL)canAddStop;
 - (BOOL)hasCurrentLocationOnlyAsOriginWaypoint;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDirectionItem:(id)a3;
-- (BOOL)isEquivalentAsWaypointToDirectionItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDirectionItem:(id)item;
+- (BOOL)isEquivalentAsWaypointToDirectionItem:(id)item;
 - (BOOL)isVenueItem;
-- (DirectionItem)initWithItems:(id)a3 ignoreMapType:(BOOL)a4 transportType:(int64_t)a5;
+- (DirectionItem)initWithItems:(id)items ignoreMapType:(BOOL)type transportType:(int64_t)transportType;
 - (MKMapItem)endMapItem;
 - (MKMapItem)startMapItem;
-- (id)copyWithItems:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)editRequired:(unint64_t *)a3;
-- (unint64_t)numberOfCurrentLocationWaypoints:(id *)a3;
+- (id)copyWithItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)editRequired:(unint64_t *)required;
+- (unint64_t)numberOfCurrentLocationWaypoints:(id *)waypoints;
 - (unint64_t)numberOfUserRequestedWaypoints;
 - (unint64_t)venueID;
 @end
@@ -23,31 +23,31 @@
 
 - (unint64_t)venueID
 {
-  v3 = [(DirectionItem *)self endMapItem];
-  v4 = [v3 _venueInfo];
-  v5 = [v4 venueIdentifier];
-  v6 = [v5 _hasVenueID];
+  endMapItem = [(DirectionItem *)self endMapItem];
+  _venueInfo = [endMapItem _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
+  _hasVenueID = [venueIdentifier _hasVenueID];
 
-  if (v6)
+  if (_hasVenueID)
   {
-    v7 = [(DirectionItem *)self endMapItem];
+    endMapItem2 = [(DirectionItem *)self endMapItem];
 LABEL_5:
-    v12 = v7;
-    v13 = [v7 _venueInfo];
-    v14 = [v13 venueIdentifier];
-    v15 = [v14 venueID];
+    v12 = endMapItem2;
+    _venueInfo2 = [endMapItem2 _venueInfo];
+    venueIdentifier2 = [_venueInfo2 venueIdentifier];
+    venueID = [venueIdentifier2 venueID];
 
-    return v15;
+    return venueID;
   }
 
-  v8 = [(DirectionItem *)self startMapItem];
-  v9 = [v8 _venueInfo];
-  v10 = [v9 venueIdentifier];
-  v11 = [v10 _hasVenueID];
+  startMapItem = [(DirectionItem *)self startMapItem];
+  _venueInfo3 = [startMapItem _venueInfo];
+  venueIdentifier3 = [_venueInfo3 venueIdentifier];
+  _hasVenueID2 = [venueIdentifier3 _hasVenueID];
 
-  if (v11)
+  if (_hasVenueID2)
   {
-    v7 = [(DirectionItem *)self startMapItem];
+    endMapItem2 = [(DirectionItem *)self startMapItem];
     goto LABEL_5;
   }
 
@@ -56,38 +56,38 @@ LABEL_5:
 
 - (BOOL)isVenueItem
 {
-  v3 = [(DirectionItem *)self startMapItem];
-  v4 = [v3 _venueInfo];
-  v5 = [v4 venueIdentifier];
-  if ([v5 _hasVenueID])
+  startMapItem = [(DirectionItem *)self startMapItem];
+  _venueInfo = [startMapItem _venueInfo];
+  venueIdentifier = [_venueInfo venueIdentifier];
+  if ([venueIdentifier _hasVenueID])
   {
-    v6 = 1;
+    _hasVenueID = 1;
   }
 
   else
   {
-    v7 = [(DirectionItem *)self endMapItem];
-    v8 = [v7 _venueInfo];
-    v9 = [v8 venueIdentifier];
-    v6 = [v9 _hasVenueID];
+    endMapItem = [(DirectionItem *)self endMapItem];
+    _venueInfo2 = [endMapItem _venueInfo];
+    venueIdentifier2 = [_venueInfo2 venueIdentifier];
+    _hasVenueID = [venueIdentifier2 _hasVenueID];
   }
 
-  return v6;
+  return _hasVenueID;
 }
 
 - (BOOL)canAddStop
 {
-  v3 = [(DirectionItem *)self transportType];
-  if (v3 > 1)
+  transportType = [(DirectionItem *)self transportType];
+  if (transportType > 1)
   {
-    if (v3 == 2)
+    if (transportType == 2)
     {
       IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
     }
 
     else
     {
-      if (v3 != 5)
+      if (transportType != 5)
       {
         goto LABEL_8;
       }
@@ -106,9 +106,9 @@ LABEL_13:
     return 0;
   }
 
-  if (v3)
+  if (transportType)
   {
-    if (v3 == 1)
+    if (transportType == 1)
     {
       IsEnabled_Maps182 = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
       goto LABEL_13;
@@ -137,16 +137,16 @@ LABEL_8:
 
 - (unint64_t)numberOfUserRequestedWaypoints
 {
-  v2 = [(DirectionItem *)self items];
-  v3 = sub_1000282CC(v2, &stru_10162C010);
+  items = [(DirectionItem *)self items];
+  v3 = sub_1000282CC(items, &stru_10162C010);
   v4 = [v3 count];
 
   return v4;
 }
 
-- (unint64_t)numberOfCurrentLocationWaypoints:(id *)a3
+- (unint64_t)numberOfCurrentLocationWaypoints:(id *)waypoints
 {
-  if (a3)
+  if (waypoints)
   {
     v5 = objc_alloc_init(NSMutableIndexSet);
   }
@@ -162,22 +162,22 @@ LABEL_8:
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v6 = [(DirectionItem *)self items];
+    items = [(DirectionItem *)self items];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10085FC7C;
     v9[3] = &unk_10162E978;
     v10 = v5;
     v11 = &v12;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [items enumerateObjectsUsingBlock:v9];
 
     self->_numberOfCurrentLocationWaypoints = v13[3];
     _Block_object_dispose(&v12, 8);
   }
 
-  if (a3)
+  if (waypoints)
   {
-    *a3 = [v5 copy];
+    *waypoints = [v5 copy];
   }
 
   numberOfCurrentLocationWaypoints = self->_numberOfCurrentLocationWaypoints;
@@ -190,34 +190,34 @@ LABEL_8:
   v3 = [(DirectionItem *)self numberOfCurrentLocationWaypoints:0];
   if (v3)
   {
-    v4 = [(DirectionItem *)self items];
-    v5 = [v4 firstObject];
-    v6 = [v5 searchResult];
-    v7 = [v6 isDynamicCurrentLocation];
+    items = [(DirectionItem *)self items];
+    firstObject = [items firstObject];
+    searchResult = [firstObject searchResult];
+    isDynamicCurrentLocation = [searchResult isDynamicCurrentLocation];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(v3) = isDynamicCurrentLocation;
   }
 
   return v3;
 }
 
-- (unint64_t)editRequired:(unint64_t *)a3
+- (unint64_t)editRequired:(unint64_t *)required
 {
-  if (a3)
+  if (required)
   {
-    *a3 = 0x7FFFFFFFFFFFFFFFLL;
+    *required = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(DirectionItem *)self items];
-  v6 = [v5 count];
+  items = [(DirectionItem *)self items];
+  v6 = [items count];
 
   if (!v6)
   {
     return 4;
   }
 
-  v7 = [(DirectionItem *)self items];
-  v8 = [v7 count];
+  items2 = [(DirectionItem *)self items];
+  v8 = [items2 count];
 
   if (v8 != 1)
   {
@@ -231,18 +231,18 @@ LABEL_18:
       v24 = &v23;
       v25 = 0x2020000000;
       v26 = 0x7FFFFFFFFFFFFFFFLL;
-      v17 = [(DirectionItem *)self items];
+      items3 = [(DirectionItem *)self items];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10085FFD8;
       v22[3] = &unk_10162BFF0;
       v22[4] = &v23;
-      [v17 enumerateObjectsUsingBlock:v22];
+      [items3 enumerateObjectsUsingBlock:v22];
 
       v18 = v24[3];
-      if (a3)
+      if (required)
       {
-        *a3 = v18;
+        *required = v18;
       }
 
       v9 = 4 * (v18 != 0x7FFFFFFFFFFFFFFFLL);
@@ -251,9 +251,9 @@ LABEL_18:
     }
 
     v12 = +[MKLocationManager sharedLocationManager];
-    v13 = [v12 isLocationServicesPossiblyAvailable];
+    isLocationServicesPossiblyAvailable = [v12 isLocationServicesPossiblyAvailable];
 
-    if (v13)
+    if (isLocationServicesPossiblyAvailable)
     {
       v14 = +[MKLocationManager sharedLocationManager];
       if ([v14 isAuthorizedForPreciseLocation])
@@ -262,13 +262,13 @@ LABEL_18:
 
       else
       {
-        v15 = [(DirectionItem *)self allowApproximateUserLocation];
+        allowApproximateUserLocation = [(DirectionItem *)self allowApproximateUserLocation];
 
-        if (!v15)
+        if (!allowApproximateUserLocation)
         {
-          if (a3)
+          if (required)
           {
-            *a3 = [v11 firstIndex];
+            *required = [v11 firstIndex];
           }
 
           v9 = 3;
@@ -283,12 +283,12 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v19 = [(DirectionItem *)self allowApproximateUserLocation];
-      v20 = [v19 BOOLValue];
+      allowApproximateUserLocation2 = [(DirectionItem *)self allowApproximateUserLocation];
+      bOOLValue = [allowApproximateUserLocation2 BOOLValue];
 
-      if (!a3 || (v20 & 1) != 0)
+      if (!required || (bOOLValue & 1) != 0)
       {
-        if (v20)
+        if (bOOLValue)
         {
           goto LABEL_18;
         }
@@ -301,12 +301,12 @@ LABEL_25:
       }
     }
 
-    else if (!a3)
+    else if (!required)
     {
       goto LABEL_24;
     }
 
-    *a3 = [v11 firstIndex];
+    *required = [v11 firstIndex];
     goto LABEL_24;
   }
 
@@ -323,20 +323,20 @@ LABEL_25:
 
 - (MKMapItem)endMapItem
 {
-  v2 = [(DirectionItem *)self items];
-  v3 = [v2 lastObject];
+  items = [(DirectionItem *)self items];
+  lastObject = [items lastObject];
 
-  v4 = [v3 searchResult];
-  if (v4)
+  searchResult = [lastObject searchResult];
+  if (searchResult)
   {
-    v5 = [v3 searchResult];
-    [v5 mapItem];
+    searchResult2 = [lastObject searchResult];
+    [searchResult2 mapItem];
   }
 
   else
   {
-    v5 = [v3 address];
-    [v5 geocodedMapItem];
+    searchResult2 = [lastObject address];
+    [searchResult2 geocodedMapItem];
   }
   v6 = ;
 
@@ -345,36 +345,36 @@ LABEL_25:
 
 - (MKMapItem)startMapItem
 {
-  v2 = [(DirectionItem *)self items];
-  v3 = [v2 firstObject];
+  items = [(DirectionItem *)self items];
+  firstObject = [items firstObject];
 
-  v4 = [v3 searchResult];
-  if (v4)
+  searchResult = [firstObject searchResult];
+  if (searchResult)
   {
-    v5 = [v3 searchResult];
-    [v5 mapItem];
+    searchResult2 = [firstObject searchResult];
+    [searchResult2 mapItem];
   }
 
   else
   {
-    v5 = [v3 address];
-    [v5 geocodedMapItem];
+    searchResult2 = [firstObject address];
+    [searchResult2 geocodedMapItem];
   }
   v6 = ;
 
   return v6;
 }
 
-- (BOOL)isEquivalentAsWaypointToDirectionItem:(id)a3
+- (BOOL)isEquivalentAsWaypointToDirectionItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_27;
   }
 
-  if (v4 == self)
+  if (itemCopy == self)
   {
     v45 = 1;
     goto LABEL_29;
@@ -442,22 +442,22 @@ LABEL_29:
   return v45;
 }
 
-- (BOOL)isEqualToDirectionItem:(id)a3
+- (BOOL)isEqualToDirectionItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_21;
   }
 
-  if (v4 == self)
+  if (itemCopy == self)
   {
     v45 = 1;
     goto LABEL_23;
   }
 
-  if (((items = v4->_items, v7 = self->_items, v8 = items, !(v7 | v8)) || (v9 = v8, v10 = [v7 isEqual:v8], v9, v7, v10)) && self->_ignoreMapType == v5->_ignoreMapType && self->_transportType == v5->_transportType && ((allowApproximateUserLocation = v5->_allowApproximateUserLocation, v12 = self->_allowApproximateUserLocation, v13 = allowApproximateUserLocation, !(v12 | v13)) || (v14 = v13, v15 = objc_msgSend(v12, "isEqual:", v13), v14, v12, v15)) && ((drivePreferences = v5->_drivePreferences, v17 = self->_drivePreferences, v18 = drivePreferences, !(v17 | v18)) || (v19 = v18, v20 = objc_msgSend(v17, "isEqual:", v18), v19, v17, v20)) && ((walkPreferences = v5->_walkPreferences, v22 = self->_walkPreferences, v23 = walkPreferences, !(v22 | v23)) || (v24 = v23, v25 = objc_msgSend(v22, "isEqual:", v23), v24, v22, v25)) && ((transitPreferences = v5->_transitPreferences, v27 = self->_transitPreferences, v28 = transitPreferences, !(v27 | v28)) || (v29 = v28, v30 = objc_msgSend(v27, "isEqual:", v28), v29, v27, v30)) && ((cyclePreferences = v5->_cyclePreferences, v32 = self->_cyclePreferences, v33 = cyclePreferences, !(v32 | v33)) || (v34 = v33, v35 = objc_msgSend(v32, "isEqual:", v33), v34, v32, v35)) && ((timing = v5->_timing, v37 = self->_timing, v38 = timing, !(v37 | v38)) || (v39 = v38, v40 = objc_msgSend(v37, "isEqual:", v38), v39, v37, v40)))
+  if (((items = itemCopy->_items, v7 = self->_items, v8 = items, !(v7 | v8)) || (v9 = v8, v10 = [v7 isEqual:v8], v9, v7, v10)) && self->_ignoreMapType == v5->_ignoreMapType && self->_transportType == v5->_transportType && ((allowApproximateUserLocation = v5->_allowApproximateUserLocation, v12 = self->_allowApproximateUserLocation, v13 = allowApproximateUserLocation, !(v12 | v13)) || (v14 = v13, v15 = objc_msgSend(v12, "isEqual:", v13), v14, v12, v15)) && ((drivePreferences = v5->_drivePreferences, v17 = self->_drivePreferences, v18 = drivePreferences, !(v17 | v18)) || (v19 = v18, v20 = objc_msgSend(v17, "isEqual:", v18), v19, v17, v20)) && ((walkPreferences = v5->_walkPreferences, v22 = self->_walkPreferences, v23 = walkPreferences, !(v22 | v23)) || (v24 = v23, v25 = objc_msgSend(v22, "isEqual:", v23), v24, v22, v25)) && ((transitPreferences = v5->_transitPreferences, v27 = self->_transitPreferences, v28 = transitPreferences, !(v27 | v28)) || (v29 = v28, v30 = objc_msgSend(v27, "isEqual:", v28), v29, v27, v30)) && ((cyclePreferences = v5->_cyclePreferences, v32 = self->_cyclePreferences, v33 = cyclePreferences, !(v32 | v33)) || (v34 = v33, v35 = objc_msgSend(v32, "isEqual:", v33), v34, v32, v35)) && ((timing = v5->_timing, v37 = self->_timing, v38 = timing, !(v37 | v38)) || (v39 = v38, v40 = objc_msgSend(v37, "isEqual:", v38), v39, v37, v40)))
   {
     persistentData = self->_persistentData;
     v42 = v5->_persistentData;
@@ -485,16 +485,16 @@ LABEL_23:
   return v45;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -517,10 +517,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_items copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_items copyWithZone:zone];
   v7 = *(v5 + 3);
   *(v5 + 3) = v6;
 
@@ -536,11 +536,11 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithItems:(id)a3
+- (id)copyWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [(DirectionItem *)self copy];
-  v6 = [v4 copy];
+  v6 = [itemsCopy copy];
 
   v7 = v5[3];
   v5[3] = v6;
@@ -548,9 +548,9 @@ LABEL_7:
   return v5;
 }
 
-- (DirectionItem)initWithItems:(id)a3 ignoreMapType:(BOOL)a4 transportType:(int64_t)a5
+- (DirectionItem)initWithItems:(id)items ignoreMapType:(BOOL)type transportType:(int64_t)transportType
 {
-  v9 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = DirectionItem;
   v10 = [(DirectionItem *)&v13 init];
@@ -558,31 +558,31 @@ LABEL_7:
   if (v10)
   {
     v10->_numberOfCurrentLocationWaypoints = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v10->_items, a3);
-    v11->_ignoreMapType = a4;
-    v11->_transportType = a5;
+    objc_storeStrong(&v10->_items, items);
+    v11->_ignoreMapType = type;
+    v11->_transportType = transportType;
   }
 
   return v11;
 }
 
-+ (DirectionItem)directionItemWithNanoRoutePlanningRequest:(id)a3
++ (DirectionItem)directionItemWithNanoRoutePlanningRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 waypoints];
-  v5 = sub_100021DB0(v4, &stru_10162DBD8);
+  requestCopy = request;
+  waypoints = [requestCopy waypoints];
+  v5 = sub_100021DB0(waypoints, &stru_10162DBD8);
 
   v6 = [DirectionItem alloc];
-  v7 = [v3 resolvedTransportType];
+  resolvedTransportType = [requestCopy resolvedTransportType];
 
-  if (v7 - 1 > 5)
+  if (resolvedTransportType - 1 > 5)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = qword_101216278[v7 - 1];
+    v8 = qword_101216278[resolvedTransportType - 1];
   }
 
   v9 = [(DirectionItem *)v6 initWithItems:v5 transportType:v8];
@@ -590,10 +590,10 @@ LABEL_7:
   return v9;
 }
 
-+ (DirectionItem)directionItemWithRideBookingSession:(id)a3
++ (DirectionItem)directionItemWithRideBookingSession:(id)session
 {
-  v4 = a3;
-  if (!v4)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -622,10 +622,10 @@ LABEL_7:
     }
   }
 
-  v5 = [v4 originRequest];
-  v6 = [v4 destinationRequest];
-  v7 = v6;
-  if (!v5 || !v6)
+  originRequest = [sessionCopy originRequest];
+  destinationRequest = [sessionCopy destinationRequest];
+  v7 = destinationRequest;
+  if (!originRequest || !destinationRequest)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -663,16 +663,16 @@ LABEL_7:
   v18[3] = &unk_10164F1B8;
   v19 = objc_opt_new();
   v8 = v19;
-  [v4 enumerateRequestsOrWaypointsUsingBlock:v18];
-  v9 = [[a1 alloc] initWithItems:v8 transportType:4];
+  [sessionCopy enumerateRequestsOrWaypointsUsingBlock:v18];
+  v9 = [[self alloc] initWithItems:v8 transportType:4];
 
   return v9;
 }
 
-+ (DirectionItem)directionItemWithRoutePlanningSession:(id)a3
++ (DirectionItem)directionItemWithRoutePlanningSession:(id)session
 {
-  v4 = a3;
-  if (!v4)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     v16 = sub_10006D178();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -701,13 +701,13 @@ LABEL_7:
     }
   }
 
-  v5 = [v4 configuration];
-  v6 = [v5 originWaypointRequest];
+  configuration = [sessionCopy configuration];
+  originWaypointRequest = [configuration originWaypointRequest];
 
-  v7 = [v4 configuration];
-  v8 = [v7 destinationWaypointRequest];
+  configuration2 = [sessionCopy configuration];
+  destinationWaypointRequest = [configuration2 destinationWaypointRequest];
 
-  if (!v6 || !v8)
+  if (!originWaypointRequest || !destinationWaypointRequest)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -745,19 +745,19 @@ LABEL_7:
   v23[3] = &unk_10164F1B8;
   v24 = objc_opt_new();
   v9 = v24;
-  [v4 enumerateRequestsOrWaypointsUsingBlock:v23];
-  v10 = [[a1 alloc] initWithItems:v9 transportType:{objc_msgSend(v4, "currentTransportType")}];
-  v11 = [v4 timing];
-  [v10 setTiming:v11];
+  [sessionCopy enumerateRequestsOrWaypointsUsingBlock:v23];
+  v10 = [[self alloc] initWithItems:v9 transportType:{objc_msgSend(sessionCopy, "currentTransportType")}];
+  timing = [sessionCopy timing];
+  [v10 setTiming:timing];
 
-  v12 = [v4 drivePreferences];
-  [v10 setDrivePreferences:v12];
+  drivePreferences = [sessionCopy drivePreferences];
+  [v10 setDrivePreferences:drivePreferences];
 
-  v13 = [v4 transitPreferences];
-  [v10 setTransitPreferences:v13];
+  transitPreferences = [sessionCopy transitPreferences];
+  [v10 setTransitPreferences:transitPreferences];
 
-  v14 = [v4 cyclePreferences];
-  [v10 setCyclePreferences:v14];
+  cyclePreferences = [sessionCopy cyclePreferences];
+  [v10 setCyclePreferences:cyclePreferences];
 
   return v10;
 }

@@ -1,15 +1,15 @@
 @interface _ICInputContextManager
 + (id)sharedManager;
-- (_ICInputContextManager)initWithPredictionSource:(id)a3;
-- (id)addContactObserver:(id)a3;
-- (id)addNamedEntitiesUpdateObserver:(id)a3;
+- (_ICInputContextManager)initWithPredictionSource:(id)source;
+- (id)addContactObserver:(id)observer;
+- (id)addNamedEntitiesUpdateObserver:(id)observer;
 - (id)getLexiconManager;
 - (id)getPredictionManager;
 - (id)initForIntegrationTesting;
-- (id)lastCachedResultWithInitialCharacters:(id)a3;
+- (id)lastCachedResultWithInitialCharacters:(id)characters;
 - (id)loadLexicons;
-- (id)loadLexicons:(id)a3;
-- (id)loadLexiconsUsingFilter:(id)a3;
+- (id)loadLexicons:(id)lexicons;
+- (id)loadLexiconsUsingFilter:(id)filter;
 - (id)searchForMeCardEmailAddresses;
 - (id)searchForMeCardRegions;
 - (void)doInitLexiconManager;
@@ -17,9 +17,9 @@
 - (void)hibernate;
 - (void)initLexiconManager;
 - (void)initPredictionManager;
-- (void)predictedItemSelected:(id)a3;
-- (void)removeContactObserver:(id)a3;
-- (void)removeNamedEntitiesUpdateObserver:(id)a3;
+- (void)predictedItemSelected:(id)selected;
+- (void)removeContactObserver:(id)observer;
+- (void)removeNamedEntitiesUpdateObserver:(id)observer;
 - (void)reset;
 - (void)unloadLexicons;
 - (void)warmUp;
@@ -115,135 +115,135 @@
   return lexiconManager;
 }
 
-- (id)lastCachedResultWithInitialCharacters:(id)a3
+- (id)lastCachedResultWithInitialCharacters:(id)characters
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getPredictionManager];
-  v6 = [v5 lastCachedResultWithInitialCharacters:v4];
+  charactersCopy = characters;
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  v6 = [getPredictionManager lastCachedResultWithInitialCharacters:charactersCopy];
 
   return v6;
 }
 
-- (void)predictedItemSelected:(id)a3
+- (void)predictedItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getPredictionManager];
-  [v5 predictedItemSelected:v4];
+  selectedCopy = selected;
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  [getPredictionManager predictedItemSelected:selectedCopy];
 }
 
 - (void)reset
 {
-  v2 = [(_ICInputContextManager *)self getPredictionManager];
-  [v2 reset];
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  [getPredictionManager reset];
 }
 
 - (id)searchForMeCardRegions
 {
-  v2 = [(_ICInputContextManager *)self getPredictionManager];
-  v3 = [v2 searchForMeCardRegions];
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  searchForMeCardRegions = [getPredictionManager searchForMeCardRegions];
 
-  return v3;
+  return searchForMeCardRegions;
 }
 
 - (id)searchForMeCardEmailAddresses
 {
-  v2 = [(_ICInputContextManager *)self getPredictionManager];
-  v3 = [v2 searchForMeCardEmailAddresses];
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  searchForMeCardEmailAddresses = [getPredictionManager searchForMeCardEmailAddresses];
 
-  return v3;
+  return searchForMeCardEmailAddresses;
 }
 
-- (id)addContactObserver:(id)a3
+- (id)addContactObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  v6 = [v5 addContactObserver:v4];
+  observerCopy = observer;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  v6 = [getLexiconManager addContactObserver:observerCopy];
 
   return v6;
 }
 
-- (void)removeContactObserver:(id)a3
+- (void)removeContactObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  [v5 removeContactObserver:v4];
+  observerCopy = observer;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  [getLexiconManager removeContactObserver:observerCopy];
 }
 
-- (id)addNamedEntitiesUpdateObserver:(id)a3
+- (id)addNamedEntitiesUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  v6 = [v5 addNamedEntitiesUpdateObserver:v4];
+  observerCopy = observer;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  v6 = [getLexiconManager addNamedEntitiesUpdateObserver:observerCopy];
 
   return v6;
 }
 
-- (void)removeNamedEntitiesUpdateObserver:(id)a3
+- (void)removeNamedEntitiesUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  [v5 removeNamedEntitiesUpdateObserver:v4];
+  observerCopy = observer;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  [getLexiconManager removeNamedEntitiesUpdateObserver:observerCopy];
 }
 
-- (id)loadLexicons:(id)a3
+- (id)loadLexicons:(id)lexicons
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  v6 = [v5 loadLexicons:v4];
+  lexiconsCopy = lexicons;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  v6 = [getLexiconManager loadLexicons:lexiconsCopy];
 
   return v6;
 }
 
-- (id)loadLexiconsUsingFilter:(id)a3
+- (id)loadLexiconsUsingFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(_ICInputContextManager *)self getLexiconManager];
-  v6 = [v5 loadLexiconsUsingFilter:v4];
+  filterCopy = filter;
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  v6 = [getLexiconManager loadLexiconsUsingFilter:filterCopy];
 
   return v6;
 }
 
 - (id)loadLexicons
 {
-  v2 = [(_ICInputContextManager *)self getLexiconManager];
-  v3 = [v2 loadLexicons];
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  loadLexicons = [getLexiconManager loadLexicons];
 
-  return v3;
+  return loadLexicons;
 }
 
 - (void)unloadLexicons
 {
-  v2 = [(_ICInputContextManager *)self getLexiconManager];
-  [v2 unloadLexicons];
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  [getLexiconManager unloadLexicons];
 }
 
 - (void)warmUp
 {
-  v3 = [(_ICInputContextManager *)self getPredictionManager];
-  [v3 warmUp];
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  [getPredictionManager warmUp];
 
-  v4 = [(_ICInputContextManager *)self getLexiconManager];
-  [v4 warmUp];
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  [getLexiconManager warmUp];
 }
 
 - (void)hibernate
 {
-  v3 = [(_ICInputContextManager *)self getPredictionManager];
-  [v3 hibernate];
+  getPredictionManager = [(_ICInputContextManager *)self getPredictionManager];
+  [getPredictionManager hibernate];
 
-  v4 = [(_ICInputContextManager *)self getLexiconManager];
-  [v4 hibernate];
+  getLexiconManager = [(_ICInputContextManager *)self getLexiconManager];
+  [getLexiconManager hibernate];
 }
 
-- (_ICInputContextManager)initWithPredictionSource:(id)a3
+- (_ICInputContextManager)initWithPredictionSource:(id)source
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(_ICInputContextManager *)self init];
   if (v5)
   {
     v6 = [_ICPredictionManager alloc];
-    v12[0] = v4;
+    v12[0] = sourceCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     v8 = [(_ICPredictionManager *)v6 initWithPredictionSources:v7];
     predictionManager = v5->_predictionManager;

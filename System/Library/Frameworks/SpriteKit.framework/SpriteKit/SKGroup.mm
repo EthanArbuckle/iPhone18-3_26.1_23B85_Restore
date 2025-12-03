@@ -1,11 +1,11 @@
 @interface SKGroup
-+ (id)groupWithActions:(id)a3;
++ (id)groupWithActions:(id)actions;
 - (BOOL)finished;
 - (SKGroup)init;
-- (SKGroup)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKGroup)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKGroup
@@ -22,13 +22,13 @@
   return 0;
 }
 
-- (SKGroup)initWithCoder:(id)a3
+- (SKGroup)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKGroup;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -36,21 +36,21 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKGroup;
-  [(SKAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_actions forKey:@"_actions"];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_actions forKey:@"_actions"];
 }
 
-+ (id)groupWithActions:(id)a3
++ (id)groupWithActions:(id)actions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  actionsCopy = actions;
+  v4 = actionsCopy;
+  if (actionsCopy && [actionsCopy count])
   {
     v5 = objc_alloc_init(SKGroup);
     objc_opt_class();
@@ -147,12 +147,12 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SKGroup groupWithActions:self->_actions];
   [v4 setTimingMode:{-[SKAction timingMode](self, "timingMode")}];
-  v5 = [(SKAction *)self timingFunction];
-  [v4 setTimingFunction:v5];
+  timingFunction = [(SKAction *)self timingFunction];
+  [v4 setTimingFunction:timingFunction];
 
   return v4;
 }
@@ -179,8 +179,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) reversedAction];
-        [v3 addObject:v8];
+        reversedAction = [*(*(&v11 + 1) + 8 * i) reversedAction];
+        [v3 addObject:reversedAction];
       }
 
       v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

@@ -1,21 +1,21 @@
 @interface PCWorkoutPredictionAlgorithm
-- (BOOL)_hasUserWorkedOutForActivityType:(id)a3 nearCurrentVisit:(id)a4 workoutTypeLocationMap:(id)a5;
-- (BOOL)_isWorkoutTypeAlreadyPredicted:(id)a3 inPredictions:(id)a4;
-- (BOOL)isHomeOrWorkLocation:(id)a3;
+- (BOOL)_hasUserWorkedOutForActivityType:(id)type nearCurrentVisit:(id)visit workoutTypeLocationMap:(id)map;
+- (BOOL)_isWorkoutTypeAlreadyPredicted:(id)predicted inPredictions:(id)predictions;
+- (BOOL)isHomeOrWorkLocation:(id)location;
 - (PCWorkoutPredictionAlgorithm)init;
-- (PCWorkoutPredictionAlgorithm)initWithConfig:(id)a3;
-- (double)_piecewiseLinearMap:(double)a3 anchorsX:(id)a4 anchorsY:(id)a5 minValue:(double)a6 maxValue:(double)a7;
-- (double)calculateScoreFromFeatures:(id)a3 identifier:(id)a4;
-- (double)mapScoreToProbability:(double)a3 forVisit:(id)a4;
-- (id)_buildWorkoutTypeLocationMapping:(id)a3;
-- (id)_createDateIntervalStartingAt:(id)a3 probability:(double)a4 embeddings:(id)a5;
-- (id)_createPredictionFromCluster:(id)a3 probability:(double)a4 atTime:(id)a5 embeddings:(id)a6;
-- (id)_createSourcesFromEmbeddings:(id)a3;
-- (id)_sortClustersByProbability:(id)a3;
-- (id)_subselectEmbeddings:(id)a3 fromCluster:(id)a4;
-- (id)calculateClusterProbabilities:(id)a3 embeddings:(id)a4 clusters:(id)a5;
-- (id)generateWorkoutPredictionsFromProbabilities:(id)a3 atTime:(double)a4 currentVisit:(id)a5 embeddings:(id)a6 clusters:(id)a7;
-- (void)_updateActivityInfoForPrediction:(id)a3 fromActivityType:(id)a4;
+- (PCWorkoutPredictionAlgorithm)initWithConfig:(id)config;
+- (double)_piecewiseLinearMap:(double)map anchorsX:(id)x anchorsY:(id)y minValue:(double)value maxValue:(double)maxValue;
+- (double)calculateScoreFromFeatures:(id)features identifier:(id)identifier;
+- (double)mapScoreToProbability:(double)probability forVisit:(id)visit;
+- (id)_buildWorkoutTypeLocationMapping:(id)mapping;
+- (id)_createDateIntervalStartingAt:(id)at probability:(double)probability embeddings:(id)embeddings;
+- (id)_createPredictionFromCluster:(id)cluster probability:(double)probability atTime:(id)time embeddings:(id)embeddings;
+- (id)_createSourcesFromEmbeddings:(id)embeddings;
+- (id)_sortClustersByProbability:(id)probability;
+- (id)_subselectEmbeddings:(id)embeddings fromCluster:(id)cluster;
+- (id)calculateClusterProbabilities:(id)probabilities embeddings:(id)embeddings clusters:(id)clusters;
+- (id)generateWorkoutPredictionsFromProbabilities:(id)probabilities atTime:(double)time currentVisit:(id)visit embeddings:(id)embeddings clusters:(id)clusters;
+- (void)_updateActivityInfoForPrediction:(id)prediction fromActivityType:(id)type;
 @end
 
 @implementation PCWorkoutPredictionAlgorithm
@@ -28,16 +28,16 @@
   return v4;
 }
 
-- (PCWorkoutPredictionAlgorithm)initWithConfig:(id)a3
+- (PCWorkoutPredictionAlgorithm)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = PCWorkoutPredictionAlgorithm;
   v6 = [(PCWorkoutPredictionAlgorithm *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     homeWorkScoreAnchorsX = v7->_homeWorkScoreAnchorsX;
     v7->_homeWorkScoreAnchorsX = &unk_1F4BDDFA8;
 
@@ -51,18 +51,18 @@
   return v7;
 }
 
-- (double)calculateScoreFromFeatures:(id)a3 identifier:(id)a4
+- (double)calculateScoreFromFeatures:(id)features identifier:(id)identifier
 {
   v132[8] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  featuresCopy = features;
+  identifierCopy = identifier;
+  if (featuresCopy && [featuresCopy count])
   {
-    v8 = [(PCDistanceWeightingConfig *)self->_config weights];
-    v9 = [v8 objectForKeyedSubscript:@"intercept"];
+    weights = [(PCDistanceWeightingConfig *)self->_config weights];
+    v9 = [weights objectForKeyedSubscript:@"intercept"];
 
     v84 = v9;
-    v85 = v7;
+    v85 = identifierCopy;
     if (v9)
     {
       [v9 doubleValue];
@@ -113,10 +113,10 @@
           }
 
           v20 = *(*(&v89 + 1) + 8 * i);
-          v21 = v6;
-          v22 = [v6 objectForKeyedSubscript:v20];
-          v23 = [(PCDistanceWeightingConfig *)self->_config weights];
-          v24 = [v23 objectForKeyedSubscript:v20];
+          v21 = featuresCopy;
+          v22 = [featuresCopy objectForKeyedSubscript:v20];
+          weights2 = [(PCDistanceWeightingConfig *)self->_config weights];
+          v24 = [weights2 objectForKeyedSubscript:v20];
 
           v25 = 0.0;
           v26 = 0.0;
@@ -142,7 +142,7 @@
           [v15 addObject:v31];
 
           v11 = v11 + v26 * v25;
-          v6 = v21;
+          featuresCopy = v21;
         }
 
         v17 = [obj countByEnumeratingWithState:&v89 objects:v131 count:16];
@@ -156,7 +156,7 @@
     v34 = v33;
     if (v32 < INFINITY || v32 > INFINITY)
     {
-      v7 = v85;
+      identifierCopy = v85;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         v76 = [v88 objectAtIndexedSubscript:0];
@@ -254,7 +254,7 @@
     else
     {
       v12 = 0.0;
-      v7 = v85;
+      identifierCopy = v85;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218240;
@@ -281,14 +281,14 @@
   return v12;
 }
 
-- (double)mapScoreToProbability:(double)a3 forVisit:(id)a4
+- (double)mapScoreToProbability:(double)probability forVisit:(id)visit
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  visitCopy = visit;
+  v7 = visitCopy;
+  if (visitCopy)
   {
-    v8 = [v6 locationContextEmbedding];
-    v9 = [(PCWorkoutPredictionAlgorithm *)self isHomeOrWorkLocation:v8];
+    locationContextEmbedding = [visitCopy locationContextEmbedding];
+    v9 = [(PCWorkoutPredictionAlgorithm *)self isHomeOrWorkLocation:locationContextEmbedding];
 
     if (v9)
     {
@@ -300,7 +300,7 @@
       homeWorkScoreAnchorsX = self->_otherScoreAnchorsX;
     }
 
-    [(PCWorkoutPredictionAlgorithm *)self _piecewiseLinearMap:homeWorkScoreAnchorsX anchorsX:self->_probabilityAnchorsY anchorsY:a3 minValue:0.0 maxValue:1.0];
+    [(PCWorkoutPredictionAlgorithm *)self _piecewiseLinearMap:homeWorkScoreAnchorsX anchorsX:self->_probabilityAnchorsY anchorsY:probability minValue:0.0 maxValue:1.0];
     v12 = v13;
   }
 
@@ -319,13 +319,13 @@
   return v12;
 }
 
-- (double)_piecewiseLinearMap:(double)a3 anchorsX:(id)a4 anchorsY:(id)a5 minValue:(double)a6 maxValue:(double)a7
+- (double)_piecewiseLinearMap:(double)map anchorsX:(id)x anchorsY:(id)y minValue:(double)value maxValue:(double)maxValue
 {
   v49 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 count];
-  if (v13 != [v12 count] || objc_msgSend(v11, "count") <= 1)
+  xCopy = x;
+  yCopy = y;
+  v13 = [xCopy count];
+  if (v13 != [yCopy count] || objc_msgSend(xCopy, "count") <= 1)
   {
     v14 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -344,54 +344,54 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v18 = [v11 objectAtIndexedSubscript:0];
+  v18 = [xCopy objectAtIndexedSubscript:0];
   [v18 doubleValue];
   v20 = v19;
 
-  if (v20 >= a3)
+  if (v20 >= map)
   {
-    v40 = v12;
+    v40 = yCopy;
     v41 = 0;
   }
 
   else
   {
-    v21 = [v11 objectAtIndexedSubscript:{objc_msgSend(v11, "count") - 1}];
+    v21 = [xCopy objectAtIndexedSubscript:{objc_msgSend(xCopy, "count") - 1}];
     [v21 doubleValue];
     v23 = v22;
 
-    if (v23 > a3)
+    if (v23 > map)
     {
       v24 = -1;
       while (1)
       {
         v25 = v24 + 1;
-        if (v24 + 1 >= ([v11 count] - 1))
+        if (v24 + 1 >= ([xCopy count] - 1))
         {
           break;
         }
 
-        v26 = [v11 objectAtIndexedSubscript:v24 + 1];
+        v26 = [xCopy objectAtIndexedSubscript:v24 + 1];
         [v26 doubleValue];
         v28 = v27;
 
-        v29 = [v11 objectAtIndexedSubscript:v24 + 2];
+        v29 = [xCopy objectAtIndexedSubscript:v24 + 2];
         [v29 doubleValue];
         v31 = v30;
 
-        v32 = v28 > a3 || v31 < a3;
+        v32 = v28 > map || v31 < map;
         ++v24;
         if (!v32)
         {
-          v33 = [v12 objectAtIndexedSubscript:v25];
+          v33 = [yCopy objectAtIndexedSubscript:v25];
           [v33 doubleValue];
           v35 = v34;
 
-          v36 = [v12 objectAtIndexedSubscript:v25 + 1];
+          v36 = [yCopy objectAtIndexedSubscript:v25 + 1];
           [v36 doubleValue];
           v38 = v37;
 
-          v39 = fmax(a6, v35 + (a3 - v28) / (v31 - v28) * (v38 - v35));
+          v39 = fmax(value, v35 + (map - v28) / (v31 - v28) * (v38 - v35));
           goto LABEL_19;
         }
       }
@@ -403,38 +403,38 @@ LABEL_5:
       }
 
       v47 = 134217984;
-      v48 = a3;
+      mapCopy = map;
       v15 = "Piecewise linear map: Failed to find segment for value %.4f";
       v16 = v14;
       v17 = 12;
       goto LABEL_5;
     }
 
-    v41 = [v12 count] - 1;
-    v40 = v12;
+    v41 = [yCopy count] - 1;
+    v40 = yCopy;
   }
 
   v42 = [v40 objectAtIndexedSubscript:v41];
   [v42 doubleValue];
   v44 = v43;
 
-  v39 = fmax(a6, v44);
+  v39 = fmax(value, v44);
 LABEL_19:
-  a6 = fmin(a7, v39);
+  value = fmin(maxValue, v39);
 LABEL_20:
 
   v45 = *MEMORY[0x1E69E9840];
-  return a6;
+  return value;
 }
 
-- (id)calculateClusterProbabilities:(id)a3 embeddings:(id)a4 clusters:(id)a5
+- (id)calculateClusterProbabilities:(id)probabilities embeddings:(id)embeddings clusters:(id)clusters
 {
   v101 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v73 = v7;
-  if (!v7)
+  probabilitiesCopy = probabilities;
+  embeddingsCopy = embeddings;
+  clustersCopy = clusters;
+  v73 = probabilitiesCopy;
+  if (!probabilitiesCopy)
   {
     v59 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (!os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -447,7 +447,7 @@ LABEL_20:
     goto LABEL_63;
   }
 
-  if (!v8 || ![v8 count])
+  if (!embeddingsCopy || ![embeddingsCopy count])
   {
     v59 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (!os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -462,7 +462,7 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if (!v9 || ![v9 count])
+  if (!clustersCopy || ![clustersCopy count])
   {
     v59 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -478,15 +478,15 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  v64 = v9;
-  [PCEmbeddingDistanceCalculator calculateCircularStandardDeviationsForClusters:v9 fromEmbeddings:v8];
+  v64 = clustersCopy;
+  [PCEmbeddingDistanceCalculator calculateCircularStandardDeviationsForClusters:clustersCopy fromEmbeddings:embeddingsCopy];
   v10 = objc_opt_new();
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v63 = v8;
-  v11 = v8;
+  v63 = embeddingsCopy;
+  v11 = embeddingsCopy;
   v12 = [v11 countByEnumeratingWithState:&v82 objects:v100 count:16];
   if (v12)
   {
@@ -502,18 +502,18 @@ LABEL_64:
         }
 
         v16 = *(*(&v82 + 1) + 8 * i);
-        v17 = [v16 bundleIdentifier];
-        if (v17)
+        bundleIdentifier = [v16 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          v18 = v17;
-          v19 = [v16 bundleIdentifier];
-          v20 = [v19 UUIDString];
+          v18 = bundleIdentifier;
+          bundleIdentifier2 = [v16 bundleIdentifier];
+          uUIDString = [bundleIdentifier2 UUIDString];
 
-          if (v20)
+          if (uUIDString)
           {
-            v21 = [v16 bundleIdentifier];
-            v22 = [v21 UUIDString];
-            [v10 setObject:v16 forKeyedSubscript:v22];
+            bundleIdentifier3 = [v16 bundleIdentifier];
+            uUIDString2 = [bundleIdentifier3 UUIDString];
+            [v10 setObject:v16 forKeyedSubscript:uUIDString2];
           }
         }
       }
@@ -524,8 +524,8 @@ LABEL_64:
     while (v13);
   }
 
-  v23 = [v73 locationContextEmbedding];
-  v24 = [(PCWorkoutPredictionAlgorithm *)self isHomeOrWorkLocation:v23];
+  locationContextEmbedding = [v73 locationContextEmbedding];
+  v24 = [(PCWorkoutPredictionAlgorithm *)self isHomeOrWorkLocation:locationContextEmbedding];
 
   v66 = objc_opt_new();
   v78 = 0u;
@@ -559,23 +559,23 @@ LABEL_64:
         }
 
         v31 = *(*(&v78 + 1) + 8 * v30);
-        v32 = [v31 identifier];
+        identifier = [v31 identifier];
 
-        if (v32)
+        if (identifier)
         {
-          v33 = [v31 clusterMetadata];
-          v34 = [v33 subSuggestionIDsBeforePruning];
+          clusterMetadata = [v31 clusterMetadata];
+          subSuggestionIDsBeforePruning = [clusterMetadata subSuggestionIDsBeforePruning];
 
-          if (v34 && [v34 count])
+          if (subSuggestionIDsBeforePruning && [subSuggestionIDsBeforePruning count])
           {
             v71 = v30;
-            v35 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v74 = 0u;
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v70 = v34;
-            v36 = v34;
+            v70 = subSuggestionIDsBeforePruning;
+            v36 = subSuggestionIDsBeforePruning;
             v37 = [v36 countByEnumeratingWithState:&v74 objects:v98 count:16];
             if (v37)
             {
@@ -597,7 +597,7 @@ LABEL_64:
                     v43 = [PCEmbeddingDistanceCalculator extractFeatureDistancesBetweenEmbedding:v73 andEmbedding:v42 withCluster:v31];
                     [(PCWorkoutPredictionAlgorithm *)self calculateScoreFromFeatures:v43 identifier:v41];
                     v44 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-                    [v35 addObject:v44];
+                    [array addObject:v44];
                   }
 
                   else
@@ -618,21 +618,21 @@ LABEL_64:
               while (v38);
             }
 
-            if ([v35 count])
+            if ([array count])
             {
-              [PCEmbeddingDistanceCalculator calculateValidMean:v35];
+              [PCEmbeddingDistanceCalculator calculateValidMean:array];
               v25 = v68;
-              v34 = v70;
+              subSuggestionIDsBeforePruning = v70;
               v30 = v71;
               if (v45 <= 0.0)
               {
                 v51 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
                 if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                 {
-                  v52 = [v31 identifier];
-                  v58 = [v35 count];
+                  identifier2 = [v31 identifier];
+                  v58 = [array count];
                   *buf = 138412546;
-                  v87 = v52;
+                  v87 = identifier2;
                   v88 = 2048;
                   v89 = v58;
                   _os_log_impl(&dword_1CEE74000, v51, OS_LOG_TYPE_ERROR, "Cluster %@: Could not compute mean probability (numWorkouts=%lu)", buf, 0x16u);
@@ -646,18 +646,18 @@ LABEL_64:
                 [(PCWorkoutPredictionAlgorithm *)self mapScoreToProbability:v73 forVisit:?];
                 v48 = v47;
                 v49 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-                v50 = [v31 identifier];
-                [v66 setObject:v49 forKeyedSubscript:v50];
+                identifier3 = [v31 identifier];
+                [v66 setObject:v49 forKeyedSubscript:identifier3];
 
                 v51 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
                 if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
                 {
-                  v52 = [v31 identifier];
-                  v53 = [v31 activityType];
-                  v54 = v53;
-                  if (v53)
+                  identifier2 = [v31 identifier];
+                  activityType = [v31 activityType];
+                  v54 = activityType;
+                  if (activityType)
                   {
-                    v55 = v53;
+                    v55 = activityType;
                   }
 
                   else
@@ -665,9 +665,9 @@ LABEL_64:
                     v55 = @"unknown";
                   }
 
-                  v56 = [v35 count];
+                  v56 = [array count];
                   *buf = 138544642;
-                  v87 = v52;
+                  v87 = identifier2;
                   v88 = 2114;
                   v89 = v55;
                   v90 = 2050;
@@ -693,31 +693,31 @@ LABEL_51:
               v28 = v67;
               v25 = v68;
               v27 = v69;
-              v34 = v70;
+              subSuggestionIDsBeforePruning = v70;
               v30 = v71;
             }
           }
 
           else
           {
-            v35 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+            array = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+            if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
             {
-              v57 = [v31 identifier];
+              identifier4 = [v31 identifier];
               *buf = 138412290;
-              v87 = v57;
-              _os_log_impl(&dword_1CEE74000, v35, OS_LOG_TYPE_ERROR, "Cluster %@ has no workouts", buf, 0xCu);
+              v87 = identifier4;
+              _os_log_impl(&dword_1CEE74000, array, OS_LOG_TYPE_ERROR, "Cluster %@ has no workouts", buf, 0xCu);
             }
           }
 
           goto LABEL_54;
         }
 
-        v34 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+        subSuggestionIDsBeforePruning = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+        if (os_log_type_enabled(subSuggestionIDsBeforePruning, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_impl(&dword_1CEE74000, v34, OS_LOG_TYPE_ERROR, "Cluster has null identifier", buf, 2u);
+          _os_log_impl(&dword_1CEE74000, subSuggestionIDsBeforePruning, OS_LOG_TYPE_ERROR, "Cluster has null identifier", buf, 2u);
         }
 
 LABEL_54:
@@ -732,8 +732,8 @@ LABEL_54:
     while (v27);
   }
 
-  v8 = v63;
-  v9 = v64;
+  embeddingsCopy = v63;
+  clustersCopy = v64;
 LABEL_65:
 
   v61 = *MEMORY[0x1E69E9840];
@@ -741,14 +741,14 @@ LABEL_65:
   return v66;
 }
 
-- (id)generateWorkoutPredictionsFromProbabilities:(id)a3 atTime:(double)a4 currentVisit:(id)a5 embeddings:(id)a6 clusters:(id)a7
+- (id)generateWorkoutPredictionsFromProbabilities:(id)probabilities atTime:(double)time currentVisit:(id)visit embeddings:(id)embeddings clusters:(id)clusters
 {
   v107 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v84 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (!v11 || ![v11 count])
+  probabilitiesCopy = probabilities;
+  visitCopy = visit;
+  embeddingsCopy = embeddings;
+  clustersCopy = clusters;
+  if (!probabilitiesCopy || ![probabilitiesCopy count])
   {
     v74 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
@@ -767,7 +767,7 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  if (!v12 || ![v12 count])
+  if (!embeddingsCopy || ![embeddingsCopy count])
   {
     v74 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -782,7 +782,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if (!v84)
+  if (!visitCopy)
   {
     v74 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -794,18 +794,18 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  v82 = v12;
+  v82 = embeddingsCopy;
   v85 = objc_opt_new();
-  v81 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a4];
-  v88 = v11;
-  v87 = [(PCWorkoutPredictionAlgorithm *)self _sortClustersByProbability:v11];
+  v81 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
+  v88 = probabilitiesCopy;
+  v87 = [(PCWorkoutPredictionAlgorithm *)self _sortClustersByProbability:probabilitiesCopy];
   v14 = objc_opt_new();
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v80 = v13;
-  obj = v13;
+  v80 = clustersCopy;
+  obj = clustersCopy;
   v15 = [obj countByEnumeratingWithState:&v95 objects:v106 count:16];
   if (v15)
   {
@@ -821,27 +821,27 @@ LABEL_81:
         }
 
         v19 = *(*(&v95 + 1) + 8 * i);
-        v20 = [v19 identifier];
+        identifier = [v19 identifier];
 
-        if (v20)
+        if (identifier)
         {
-          v21 = [v19 identifier];
-          [v14 setObject:v19 forKeyedSubscript:v21];
+          identifier2 = [v19 identifier];
+          [v14 setObject:v19 forKeyedSubscript:identifier2];
 
           v22 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
-            v23 = [v19 identifier];
-            v24 = [v19 activityType];
-            v25 = v24;
+            identifier3 = [v19 identifier];
+            activityType = [v19 activityType];
+            v25 = activityType;
             *buf = 138412546;
             v26 = @"<nil>";
-            if (v24)
+            if (activityType)
             {
-              v26 = v24;
+              v26 = activityType;
             }
 
-            v101 = v23;
+            v101 = identifier3;
             v102 = 2112;
             v103 = *&v26;
             _os_log_impl(&dword_1CEE74000, v22, OS_LOG_TYPE_DEBUG, "Added cluster to map: %@, activity: %@", buf, 0x16u);
@@ -866,7 +866,7 @@ LABEL_81:
   }
 
   v27 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-  v11 = v88;
+  probabilitiesCopy = v88;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     v28 = [v14 count];
@@ -903,7 +903,7 @@ LABEL_81:
         }
 
         v35 = *(*(&v91 + 1) + 8 * v34);
-        v36 = [v11 objectForKeyedSubscript:v35];
+        v36 = [probabilitiesCopy objectForKeyedSubscript:v35];
         [v36 doubleValue];
         v38 = v37;
 
@@ -927,20 +927,20 @@ LABEL_81:
           v42 = v43;
           if (v43)
           {
-            v44 = [v43 activityType];
-            if (v44 && (v45 = v44, -[NSObject activityType](v42, "activityType"), v46 = objc_claimAutoreleasedReturnValue(), v47 = [v46 length], v46, v45, v47))
+            activityType2 = [v43 activityType];
+            if (activityType2 && (v45 = activityType2, -[NSObject activityType](v42, "activityType"), v46 = objc_claimAutoreleasedReturnValue(), v47 = [v46 length], v46, v45, v47))
             {
-              v48 = [v42 activityType];
-              v49 = [(PCWorkoutPredictionAlgorithm *)self _isWorkoutTypeAlreadyPredicted:v48 inPredictions:v85];
+              activityType3 = [v42 activityType];
+              v49 = [(PCWorkoutPredictionAlgorithm *)self _isWorkoutTypeAlreadyPredicted:activityType3 inPredictions:v85];
 
               v50 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
               if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
               {
-                v51 = [v42 activityType];
+                activityType4 = [v42 activityType];
                 *buf = 138543874;
                 v101 = v35;
                 v102 = 2114;
-                v103 = *&v51;
+                v103 = *&activityType4;
                 v104 = 1026;
                 LODWORD(v105) = v49;
                 _os_log_impl(&dword_1CEE74000, v50, OS_LOG_TYPE_DEFAULT, "Before De-duping: cluster=%{public}@, activityType='%{public}@', isAlreadyPredicted=%{public}d", buf, 0x1Cu);
@@ -948,12 +948,12 @@ LABEL_81:
 
               if (v49)
               {
-                v11 = v88;
+                probabilitiesCopy = v88;
                 goto LABEL_54;
               }
 
-              v58 = [v42 activityType];
-              v59 = [(PCWorkoutPredictionAlgorithm *)self _hasUserWorkedOutForActivityType:v58 nearCurrentVisit:v84 workoutTypeLocationMap:v83];
+              activityType5 = [v42 activityType];
+              v59 = [(PCWorkoutPredictionAlgorithm *)self _hasUserWorkedOutForActivityType:activityType5 nearCurrentVisit:visitCopy workoutTypeLocationMap:v83];
 
               v52 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
               v60 = os_log_type_enabled(v52, OS_LOG_TYPE_INFO);
@@ -961,23 +961,23 @@ LABEL_81:
               {
                 if (v60)
                 {
-                  v61 = [v42 identifier];
-                  v62 = [v42 activityType];
+                  identifier4 = [v42 identifier];
+                  activityType6 = [v42 activityType];
                   *buf = 138543874;
-                  v101 = v61;
+                  v101 = identifier4;
                   v102 = 2114;
-                  v103 = *&v62;
+                  v103 = *&activityType6;
                   v104 = 2050;
                   v105 = v38;
                   _os_log_impl(&dword_1CEE74000, v52, OS_LOG_TYPE_INFO, "Selected cluster %{public}@, workoutType: %{public}@, probability: %{public}.4f", buf, 0x20u);
                 }
 
-                v63 = [v42 activityType];
-                v64 = [v63 isEqualToString:@"Outdoor Walking"];
+                activityType7 = [v42 activityType];
+                v64 = [activityType7 isEqualToString:@"Outdoor Walking"];
 
                 if (v64)
                 {
-                  v11 = v88;
+                  probabilitiesCopy = v88;
                   if (v38 > 0.89)
                   {
                     v65 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
@@ -996,25 +996,25 @@ LABEL_81:
 
                 else
                 {
-                  v11 = v88;
+                  probabilitiesCopy = v88;
                 }
 
                 v52 = [(PCWorkoutPredictionAlgorithm *)self _createPredictionFromCluster:v42 probability:v81 atTime:v82 embeddings:v38];
                 if (v52)
                 {
                   [v85 addObject:v52];
-                  v54 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-                  if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+                  allKeys = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+                  if (os_log_type_enabled(allKeys, OS_LOG_TYPE_DEFAULT))
                   {
-                    v67 = [v42 activityType];
+                    activityType8 = [v42 activityType];
                     v68 = [v85 count];
                     *buf = 138543618;
-                    v101 = v67;
+                    v101 = activityType8;
                     v102 = 2050;
                     v103 = *&v68;
-                    _os_log_impl(&dword_1CEE74000, v54, OS_LOG_TYPE_DEFAULT, "Created prediction for activity type: %{public}@, total predictions now: %{public}lu", buf, 0x16u);
+                    _os_log_impl(&dword_1CEE74000, allKeys, OS_LOG_TYPE_DEFAULT, "Created prediction for activity type: %{public}@, total predictions now: %{public}lu", buf, 0x16u);
 
-                    v11 = v88;
+                    probabilitiesCopy = v88;
                   }
 
 LABEL_52:
@@ -1023,15 +1023,15 @@ LABEL_53:
                   goto LABEL_54;
                 }
 
-                v54 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-                if (!os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+                allKeys = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+                if (!os_log_type_enabled(allKeys, OS_LOG_TYPE_ERROR))
                 {
                   goto LABEL_52;
                 }
 
                 *buf = 138543362;
                 v101 = v35;
-                v55 = v54;
+                v55 = allKeys;
                 v56 = OS_LOG_TYPE_ERROR;
                 v57 = "Failed to create prediction for cluster %{public}@";
 LABEL_51:
@@ -1041,9 +1041,9 @@ LABEL_51:
 
               if (v60)
               {
-                v66 = [v42 activityType];
+                activityType9 = [v42 activityType];
                 *buf = 138412546;
-                v101 = v66;
+                v101 = activityType9;
                 v102 = 2112;
                 v103 = *&v35;
                 _os_log_impl(&dword_1CEE74000, v52, OS_LOG_TYPE_INFO, "User has not done %@ workouts at current location, skipping cluster %@", buf, 0x16u);
@@ -1061,7 +1061,7 @@ LABEL_51:
               }
             }
 
-            v11 = v88;
+            probabilitiesCopy = v88;
             goto LABEL_53;
           }
 
@@ -1079,9 +1079,9 @@ LABEL_51:
             goto LABEL_53;
           }
 
-          v54 = [v14 allKeys];
+          allKeys = [v14 allKeys];
           *buf = 138412290;
-          v101 = v54;
+          v101 = allKeys;
           v55 = v52;
           v56 = OS_LOG_TYPE_DEBUG;
           v57 = "Available cluster UUIDs: %@";
@@ -1112,7 +1112,7 @@ LABEL_54:
   }
 
   v70 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-  v13 = v80;
+  clustersCopy = v80;
   v71 = v85;
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
   {
@@ -1125,7 +1125,7 @@ LABEL_54:
     _os_log_impl(&dword_1CEE74000, v70, OS_LOG_TYPE_DEFAULT, "Prediction completed with %{public}lu predictions from %{public}lu clusters", buf, 0x16u);
   }
 
-  v12 = v82;
+  embeddingsCopy = v82;
 LABEL_82:
 
   v78 = *MEMORY[0x1E69E9840];
@@ -1133,17 +1133,17 @@ LABEL_82:
   return v71;
 }
 
-- (id)_sortClustersByProbability:(id)a3
+- (id)_sortClustersByProbability:(id)probability
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
+  probabilityCopy = probability;
+  allKeys = [probabilityCopy allKeys];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__PCWorkoutPredictionAlgorithm__sortClustersByProbability___block_invoke;
   v8[3] = &unk_1E83B8178;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 sortedArrayUsingComparator:v8];
+  v9 = probabilityCopy;
+  v5 = probabilityCopy;
+  v6 = [allKeys sortedArrayUsingComparator:v8];
 
   return v6;
 }
@@ -1159,22 +1159,22 @@ uint64_t __59__PCWorkoutPredictionAlgorithm__sortClustersByProbability___block_i
   return v9;
 }
 
-- (BOOL)_isWorkoutTypeAlreadyPredicted:(id)a3 inPredictions:(id)a4
+- (BOOL)_isWorkoutTypeAlreadyPredicted:(id)predicted inPredictions:(id)predictions
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  predictedCopy = predicted;
+  predictionsCopy = predictions;
   v7 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v54 = v5;
+    v54 = predictedCopy;
     v55 = 2048;
-    *v56 = [v6 count];
+    *v56 = [predictionsCopy count];
     _os_log_impl(&dword_1CEE74000, v7, OS_LOG_TYPE_INFO, "Checking if '%@' is already predicted in %lu existing predictions", buf, 0x16u);
   }
 
-  v8 = v5;
+  v8 = predictedCopy;
   v9 = objc_msgSend(v8, "rangeOfString:", @" (");
   v10 = v8;
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1217,7 +1217,7 @@ uint64_t __59__PCWorkoutPredictionAlgorithm__sortClustersByProbability___block_i
           v18 = [v12 substringFromIndex:{objc_msgSend(v17, "length")}];
 
           v19 = [&unk_1F4BDE110 objectForKeyedSubscript:v17];
-          v44 = [v19 intValue];
+          intValue = [v19 intValue];
 
           v20 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1225,7 +1225,7 @@ uint64_t __59__PCWorkoutPredictionAlgorithm__sortClustersByProbability___block_i
             *buf = 138412802;
             v54 = v18;
             v55 = 1024;
-            *v56 = v44;
+            *v56 = intValue;
             *&v56[4] = 2112;
             *&v56[6] = v12;
             _os_log_impl(&dword_1CEE74000, v20, OS_LOG_TYPE_DEBUG, "Extracted base='%@', location=%d from '%@'", buf, 0x1Cu);
@@ -1245,7 +1245,7 @@ uint64_t __59__PCWorkoutPredictionAlgorithm__sortClustersByProbability___block_i
     }
   }
 
-  v44 = 0;
+  intValue = 0;
   v18 = v12;
 LABEL_19:
   v21 = objc_msgSend(v18, "rangeOfString:", @" (");
@@ -1709,7 +1709,7 @@ LABEL_19:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v27 = v6;
+  v27 = predictionsCopy;
   v28 = [v27 countByEnumeratingWithState:&v45 objects:v59 count:16];
   if (v28)
   {
@@ -1728,20 +1728,20 @@ LABEL_19:
         v33 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = [v32 workoutActivityType];
-          v35 = [v32 workoutLocationType];
+          workoutActivityType = [v32 workoutActivityType];
+          workoutLocationType = [v32 workoutLocationType];
           *buf = 134349824;
-          v54 = v34;
+          v54 = workoutActivityType;
           v55 = 1026;
-          *v56 = v35;
+          *v56 = workoutLocationType;
           *&v56[4] = 2050;
           *&v56[6] = v25;
           v57 = 1026;
-          v58 = v44;
+          v58 = intValue;
           _os_log_impl(&dword_1CEE74000, v33, OS_LOG_TYPE_INFO, "Comparing with existing prediction: workoutType=%{public}llu, locationType=%{public}d (looking for workoutType=%{public}llu, locationType=%{public}d)", buf, 0x22u);
         }
 
-        if ([v32 workoutActivityType] == v25 && objc_msgSend(v32, "workoutLocationType") == v44)
+        if ([v32 workoutActivityType] == v25 && objc_msgSend(v32, "workoutLocationType") == intValue)
         {
           v39 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           v37 = v42;
@@ -1752,7 +1752,7 @@ LABEL_19:
             v55 = 2050;
             *v56 = v25;
             *&v56[8] = 1026;
-            *&v56[10] = v44;
+            *&v56[10] = intValue;
             _os_log_impl(&dword_1CEE74000, v39, OS_LOG_TYPE_INFO, "Workout %@ (workoutType=%{public}llu, locationType=%{public}d) is already predicted, skipping", buf, 0x1Cu);
           }
 
@@ -1794,43 +1794,43 @@ LABEL_209:
   return v38;
 }
 
-- (id)_createPredictionFromCluster:(id)a3 probability:(double)a4 atTime:(id)a5 embeddings:(id)a6
+- (id)_createPredictionFromCluster:(id)cluster probability:(double)probability atTime:(id)time embeddings:(id)embeddings
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(PCWorkoutPredictionAlgorithm *)self _subselectEmbeddings:a6 fromCluster:v11];
+  timeCopy = time;
+  clusterCopy = cluster;
+  v12 = [(PCWorkoutPredictionAlgorithm *)self _subselectEmbeddings:embeddings fromCluster:clusterCopy];
   v13 = objc_alloc_init(PCPPredictedContext);
-  [(PCPPredictedContext *)v13 setProbability:a4];
+  [(PCPPredictedContext *)v13 setProbability:probability];
   [(PCPPredictedContext *)v13 setContextType:4];
-  v14 = [(PCWorkoutPredictionAlgorithm *)self _createDateIntervalStartingAt:v10 probability:v12 embeddings:a4];
+  v14 = [(PCWorkoutPredictionAlgorithm *)self _createDateIntervalStartingAt:timeCopy probability:v12 embeddings:probability];
 
   [(PCPPredictedContext *)v13 setDateInterval:v14];
   v15 = [(PCWorkoutPredictionAlgorithm *)self _createSourcesFromEmbeddings:v12];
   [(PCPPredictedContext *)v13 setSources:v15];
 
   v16 = objc_alloc_init(PCPPredictedContextWorkout);
-  v17 = [v11 activityType];
-  [(PCWorkoutPredictionAlgorithm *)self _updateActivityInfoForPrediction:v16 fromActivityType:v17];
+  activityType = [clusterCopy activityType];
+  [(PCWorkoutPredictionAlgorithm *)self _updateActivityInfoForPrediction:v16 fromActivityType:activityType];
 
   [(PCPPredictedContextWorkout *)v16 setPredictedContext:v13];
-  v18 = [v11 sourceBundleIdentifier];
+  sourceBundleIdentifier = [clusterCopy sourceBundleIdentifier];
 
-  [(PCPPredictedContextWorkout *)v16 setSourceBundleIdentifier:v18];
+  [(PCPPredictedContextWorkout *)v16 setSourceBundleIdentifier:sourceBundleIdentifier];
 
   return v16;
 }
 
-- (void)_updateActivityInfoForPrediction:(id)a3 fromActivityType:(id)a4
+- (void)_updateActivityInfoForPrediction:(id)prediction fromActivityType:(id)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  predictionCopy = prediction;
+  typeCopy = type;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v7 = [&unk_1F4BDE138 countByEnumeratingWithState:&v17 objects:v21 count:16];
-  v8 = v6;
+  v8 = typeCopy;
   if (v7)
   {
     v9 = v7;
@@ -1845,12 +1845,12 @@ LABEL_209:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([v6 hasPrefix:v12])
+        if ([typeCopy hasPrefix:v12])
         {
-          v8 = [v6 substringFromIndex:{objc_msgSend(v12, "length")}];
+          v8 = [typeCopy substringFromIndex:{objc_msgSend(v12, "length")}];
 
           v13 = [&unk_1F4BDE138 objectForKeyedSubscript:v12];
-          [v5 setWorkoutLocationType:{objc_msgSend(v13, "intValue")}];
+          [predictionCopy setWorkoutLocationType:{objc_msgSend(v13, "intValue")}];
 
           goto LABEL_11;
         }
@@ -1865,7 +1865,7 @@ LABEL_209:
       break;
     }
 
-    v8 = v6;
+    v8 = typeCopy;
   }
 
 LABEL_11:
@@ -2295,36 +2295,36 @@ LABEL_11:
     v15 = 0;
   }
 
-  [v5 setWorkoutActivityType:v15];
+  [predictionCopy setWorkoutActivityType:v15];
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createDateIntervalStartingAt:(id)a3 probability:(double)a4 embeddings:(id)a5
+- (id)_createDateIntervalStartingAt:(id)at probability:(double)probability embeddings:(id)embeddings
 {
   v57 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 dateByAddingTimeInterval:10.0];
+  atCopy = at;
+  embeddingsCopy = embeddings;
+  v9 = [atCopy dateByAddingTimeInterval:10.0];
   v10 = [v9 dateByAddingTimeInterval:4500.0];
   v11 = v10;
-  if (a4 >= 0.9)
+  if (probability >= 0.9)
   {
     v45 = v9;
     v43 = v10;
-    v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v13 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    [v12 setTimeZone:v13];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    [currentCalendar setTimeZone:systemTimeZone];
 
-    v42 = v12;
-    v14 = [v12 components:96 fromDate:v7];
+    v42 = currentCalendar;
+    v14 = [currentCalendar components:96 fromDate:atCopy];
     [v14 setSecond:0];
     v15 = objc_opt_new();
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v44 = v8;
-    v16 = v8;
+    v44 = embeddingsCopy;
+    v16 = embeddingsCopy;
     v17 = [v16 countByEnumeratingWithState:&v46 objects:v56 count:16];
     if (v17)
     {
@@ -2340,12 +2340,12 @@ LABEL_11:
           }
 
           v21 = *(*(&v46 + 1) + 8 * i);
-          v22 = [v21 timeOfDay];
+          timeOfDay = [v21 timeOfDay];
 
-          if (v22)
+          if (timeOfDay)
           {
-            v23 = [v21 timeOfDay];
-            [PCEmbedding secondsFromTimeOfDay:v14 toTimeOfDay:v23];
+            timeOfDay2 = [v21 timeOfDay];
+            [PCEmbedding secondsFromTimeOfDay:v14 toTimeOfDay:timeOfDay2];
             v25 = v24;
 
             if (v25 >= 0.0 && v25 <= 3600.0)
@@ -2362,12 +2362,12 @@ LABEL_11:
     }
 
     [v15 sortUsingComparator:&__block_literal_global_0];
-    v26 = [v15 lastObject];
-    v27 = v26;
-    if (v26)
+    lastObject = [v15 lastObject];
+    v27 = lastObject;
+    if (lastObject)
     {
-      v28 = [v26 timeOfDay];
-      [PCEmbedding secondsFromTimeOfDay:v14 toTimeOfDay:v28];
+      timeOfDay3 = [lastObject timeOfDay];
+      [PCEmbedding secondsFromTimeOfDay:v14 toTimeOfDay:timeOfDay3];
       v30 = v29;
       v31 = v29 + -480.0;
       if (v31 < 10.0)
@@ -2375,7 +2375,7 @@ LABEL_11:
         v31 = 10.0;
       }
 
-      v9 = [v7 dateByAddingTimeInterval:v31];
+      v9 = [atCopy dateByAddingTimeInterval:v31];
       v32 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
@@ -2394,18 +2394,18 @@ LABEL_11:
 
     else
     {
-      v28 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+      timeOfDay3 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
       v9 = v45;
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(timeOfDay3, OS_LOG_TYPE_INFO))
       {
         [v45 timeIntervalSinceReferenceDate];
         *buf = 134349056;
         v51 = v36;
-        _os_log_impl(&dword_1CEE74000, v28, OS_LOG_TYPE_INFO, "Scheduling: High-probability prediction, but no embeddings found in prediction period (startTime=%{public}.1f)", buf, 0xCu);
+        _os_log_impl(&dword_1CEE74000, timeOfDay3, OS_LOG_TYPE_INFO, "Scheduling: High-probability prediction, but no embeddings found in prediction period (startTime=%{public}.1f)", buf, 0xCu);
       }
     }
 
-    v8 = v44;
+    embeddingsCopy = v44;
 
     v11 = v43;
   }
@@ -2439,22 +2439,22 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
   return v9;
 }
 
-- (id)_subselectEmbeddings:(id)a3 fromCluster:(id)a4
+- (id)_subselectEmbeddings:(id)embeddings fromCluster:(id)cluster
 {
   v38 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v5 = a4;
+  embeddingsCopy = embeddings;
+  clusterCopy = cluster;
   v6 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = v5;
-  v7 = [v5 clusterMetadata];
-  v8 = [v7 subSuggestionIDsBeforePruning];
+  v22 = clusterCopy;
+  clusterMetadata = [clusterCopy clusterMetadata];
+  subSuggestionIDsBeforePruning = [clusterMetadata subSuggestionIDsBeforePruning];
 
-  obj = v8;
-  v26 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  obj = subSuggestionIDsBeforePruning;
+  v26 = [subSuggestionIDsBeforePruning countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
     v24 = *v33;
@@ -2474,7 +2474,7 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v11 = v25;
+        v11 = embeddingsCopy;
         v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v12)
         {
@@ -2490,9 +2490,9 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
               }
 
               v16 = *(*(&v28 + 1) + 8 * i);
-              v17 = [v16 bundleIdentifier];
-              v18 = [v17 UUIDString];
-              v19 = [v18 isEqualToString:v10];
+              bundleIdentifier = [v16 bundleIdentifier];
+              uUIDString = [bundleIdentifier UUIDString];
+              v19 = [uUIDString isEqualToString:v10];
 
               if (v19)
               {
@@ -2521,16 +2521,16 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
   return v6;
 }
 
-- (id)_createSourcesFromEmbeddings:(id)a3
+- (id)_createSourcesFromEmbeddings:(id)embeddings
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  embeddingsCopy = embeddings;
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = embeddingsCopy;
   v4 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
@@ -2553,12 +2553,12 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
 
         v11 = objc_alloc_init(PCPPredictedContextSource);
         v12 = objc_alloc_init(PCPHealthKitWorkout);
-        v13 = [v7 activityContextEmbedding];
-        v14 = [v13 objectForKeyedSubscript:@"startTimeCFAbsolute"];
+        activityContextEmbedding = [v7 activityContextEmbedding];
+        v14 = [activityContextEmbedding objectForKeyedSubscript:@"startTimeCFAbsolute"];
         [v14 doubleValue];
         [(PCPHealthKitWorkout *)v12 setStartTimeCFAbsolute:?];
 
-        v15 = [v13 objectForKeyedSubscript:@"hkObjectUUID"];
+        v15 = [activityContextEmbedding objectForKeyedSubscript:@"hkObjectUUID"];
         [(PCPHealthKitWorkout *)v12 setIdentifier:v15];
 
         [(PCPPredictedContextSource *)v11 setHealthKitWorkout:v12];
@@ -2578,12 +2578,12 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
   return v20;
 }
 
-- (BOOL)isHomeOrWorkLocation:(id)a3
+- (BOOL)isHomeOrWorkLocation:(id)location
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (location)
   {
-    v3 = [a3 objectForKeyedSubscript:@"combinedPlaceType"];
+    v3 = [location objectForKeyedSubscript:@"combinedPlaceType"];
     v4 = v3;
     if (v3)
     {
@@ -2643,12 +2643,12 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
   return v5;
 }
 
-- (id)_buildWorkoutTypeLocationMapping:(id)a3
+- (id)_buildWorkoutTypeLocationMapping:(id)mapping
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  mappingCopy = mapping;
+  v4 = mappingCopy;
+  if (mappingCopy && [mappingCopy count])
   {
     v5 = objc_opt_new();
     v43 = 0u;
@@ -2676,8 +2676,8 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
           }
 
           v10 = *(*(&v43 + 1) + 8 * v9);
-          v11 = [v10 activityContextEmbedding];
-          v12 = [v11 objectForKeyedSubscript:@"activityType"];
+          activityContextEmbedding = [v10 activityContextEmbedding];
+          v12 = [activityContextEmbedding objectForKeyedSubscript:@"activityType"];
           v13 = v12;
           if (v12 && [v12 length])
           {
@@ -2701,11 +2701,11 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
             v19 = [v5 objectForKeyedSubscript:v13];
             v20 = [v19 objectForKeyedSubscript:@"locations"];
             v21 = [v19 objectForKeyedSubscript:@"placeTypes"];
-            v22 = [v10 locationContextEmbedding];
-            v23 = v22;
-            if (v22)
+            locationContextEmbedding = [v10 locationContextEmbedding];
+            v23 = locationContextEmbedding;
+            if (locationContextEmbedding)
             {
-              v24 = [v22 objectForKeyedSubscript:@"placeLatitude"];
+              v24 = [locationContextEmbedding objectForKeyedSubscript:@"placeLatitude"];
               v25 = [v23 objectForKeyedSubscript:@"placeLongitude"];
               v26 = v25;
               if (v24)
@@ -2779,29 +2779,29 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
   return v5;
 }
 
-- (BOOL)_hasUserWorkedOutForActivityType:(id)a3 nearCurrentVisit:(id)a4 workoutTypeLocationMap:(id)a5
+- (BOOL)_hasUserWorkedOutForActivityType:(id)type nearCurrentVisit:(id)visit workoutTypeLocationMap:(id)map
 {
   v66 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  typeCopy = type;
+  visitCopy = visit;
+  mapCopy = map;
+  if (typeCopy)
   {
-    v10 = [v7 length];
+    v10 = [typeCopy length];
     v11 = 0;
-    if (v9 && v8 && v10)
+    if (mapCopy && visitCopy && v10)
     {
-      v12 = [v9 objectForKeyedSubscript:v7];
+      v12 = [mapCopy objectForKeyedSubscript:typeCopy];
       v13 = v12;
       if (v12)
       {
         v14 = [v12 objectForKeyedSubscript:@"locations"];
         v15 = [v13 objectForKeyedSubscript:@"placeTypes"];
-        v16 = [v8 locationContextEmbedding];
-        v17 = v16;
-        if (v16)
+        locationContextEmbedding = [visitCopy locationContextEmbedding];
+        v17 = locationContextEmbedding;
+        if (locationContextEmbedding)
         {
-          v18 = [v16 objectForKeyedSubscript:@"combinedPlaceType"];
+          v18 = [locationContextEmbedding objectForKeyedSubscript:@"combinedPlaceType"];
           v19 = [v17 objectForKeyedSubscript:@"placeLatitude"];
           v20 = [v17 objectForKeyedSubscript:@"placeLongitude"];
           v48 = v20;
@@ -2853,7 +2853,7 @@ uint64_t __85__PCWorkoutPredictionAlgorithm__createDateIntervalStartingAt_probab
                           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
                           {
                             *buf = 138412802;
-                            v60 = v7;
+                            v60 = typeCopy;
                             v61 = 2048;
                             v62 = 0x4000000000000000;
                             v63 = 2048;
@@ -2917,7 +2917,7 @@ LABEL_49:
                     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138412546;
-                      v60 = v7;
+                      v60 = typeCopy;
                       v61 = 2112;
                       v62 = v18;
                       _os_log_impl(&dword_1CEE74000, v41, OS_LOG_TYPE_INFO, "Found %@ workout with matching placeType: %@", buf, 0x16u);
@@ -2946,7 +2946,7 @@ LABEL_49:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v60 = v7;
+            v60 = typeCopy;
             _os_log_impl(&dword_1CEE74000, v26, OS_LOG_TYPE_INFO, "No matching %@ workout locations found near this visit", buf, 0xCu);
           }
 
@@ -2973,7 +2973,7 @@ LABEL_50:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v60 = v7;
+          v60 = typeCopy;
           _os_log_impl(&dword_1CEE74000, v14, OS_LOG_TYPE_INFO, "No location data found for activity type: %@", buf, 0xCu);
         }
 

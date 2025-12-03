@@ -1,7 +1,7 @@
 @interface _UIKBVoidSpace
 - (_UIKBVoidSpace)init;
-- (id)divideSpaceIntoNumberOfPieces:(unint64_t)a3;
-- (void)addRect:(CGRect)a3;
+- (id)divideSpaceIntoNumberOfPieces:(unint64_t)pieces;
+- (void)addRect:(CGRect)rect;
 @end
 
 @implementation _UIKBVoidSpace
@@ -21,14 +21,14 @@
   return v2;
 }
 
-- (void)addRect:(CGRect)a3
+- (void)addRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v29 = *MEMORY[0x1E69E9840];
-  MinX = CGRectGetMinX(a3);
+  MinX = CGRectGetMinX(rect);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -101,10 +101,10 @@ LABEL_12:
   }
 }
 
-- (id)divideSpaceIntoNumberOfPieces:(unint64_t)a3
+- (id)divideSpaceIntoNumberOfPieces:(unint64_t)pieces
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -132,7 +132,7 @@ LABEL_12:
         v19 = [(NSMutableArray *)self->_distinctSpaces count];
         if (v16 > 0.0)
         {
-          v20 = v16 / (a3 / v19);
+          v20 = v16 / (pieces / v19);
           v21 = v16;
           v22 = v12;
           do
@@ -151,7 +151,7 @@ LABEL_12:
             }
 
             v23 = [MEMORY[0x1E696B098] valueWithCGRect:{v22, v14, v20, v18}];
-            [v5 addObject:v23];
+            [array addObject:v23];
 
             v22 = v20 + v22;
             v21 = v21 - v20;
@@ -167,7 +167,7 @@ LABEL_12:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 @end

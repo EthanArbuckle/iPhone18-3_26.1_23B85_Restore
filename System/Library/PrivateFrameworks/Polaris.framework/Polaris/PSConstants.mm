@@ -2,9 +2,9 @@
 + (id)anePrioritiesDictionary;
 + (id)bufferCountDict;
 + (id)bufferCountDictLock;
-+ (unint64_t)getOverridenANEPriorityForGraphTag:(id)a3;
-+ (void)bufferDepthsFromDict:(id)a3 writerDepth:(unsigned int *)a4 readerDepth:(unsigned int *)a5;
-+ (void)getBufferDepthsForKey:(id)a3 writerDepth:(unsigned int *)a4 readerDepth:(unsigned int *)a5;
++ (unint64_t)getOverridenANEPriorityForGraphTag:(id)tag;
++ (void)bufferDepthsFromDict:(id)dict writerDepth:(unsigned int *)depth readerDepth:(unsigned int *)readerDepth;
++ (void)getBufferDepthsForKey:(id)key writerDepth:(unsigned int *)depth readerDepth:(unsigned int *)readerDepth;
 @end
 
 @implementation PSConstants
@@ -100,16 +100,16 @@ void __38__PSConstants_anePrioritiesDictionary__block_invoke()
   anePrioritiesDictionary_anePrioritiesDictionary = v2;
 }
 
-+ (void)bufferDepthsFromDict:(id)a3 writerDepth:(unsigned int *)a4 readerDepth:(unsigned int *)a5
++ (void)bufferDepthsFromDict:(id)dict writerDepth:(unsigned int *)depth readerDepth:(unsigned int *)readerDepth
 {
-  v7 = a3;
-  if (!v7)
+  dictCopy = dict;
+  if (!dictCopy)
   {
     +[PSConstants bufferDepthsFromDict:writerDepth:readerDepth:];
   }
 
-  v12 = v7;
-  v8 = [v7 objectForKeyedSubscript:@"Writer"];
+  v12 = dictCopy;
+  v8 = [dictCopy objectForKeyedSubscript:@"Writer"];
   if (!v8)
   {
     +[PSConstants bufferDepthsFromDict:writerDepth:readerDepth:];
@@ -122,46 +122,46 @@ void __38__PSConstants_anePrioritiesDictionary__block_invoke()
   }
 
   v10 = [v12 objectForKeyedSubscript:@"Writer"];
-  *a4 = [v10 unsignedIntValue];
+  *depth = [v10 unsignedIntValue];
 
   v11 = [v12 objectForKeyedSubscript:@"Reader"];
-  *a5 = [v11 unsignedIntValue];
+  *readerDepth = [v11 unsignedIntValue];
 }
 
-+ (unint64_t)getOverridenANEPriorityForGraphTag:(id)a3
++ (unint64_t)getOverridenANEPriorityForGraphTag:(id)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v4 = +[PSConstants anePrioritiesDictionary];
   v5 = v4;
-  if (v3 && ([v4 objectForKeyedSubscript:v3], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (tagCopy && ([v4 objectForKeyedSubscript:tagCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 objectForKeyedSubscript:v3];
-    v8 = [v7 unsignedIntValue];
+    v7 = [v5 objectForKeyedSubscript:tagCopy];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   else
   {
-    v8 = -1;
+    unsignedIntValue = -1;
   }
 
-  return v8;
+  return unsignedIntValue;
 }
 
-+ (void)getBufferDepthsForKey:(id)a3 writerDepth:(unsigned int *)a4 readerDepth:(unsigned int *)a5
++ (void)getBufferDepthsForKey:(id)key writerDepth:(unsigned int *)depth readerDepth:(unsigned int *)readerDepth
 {
-  v16 = a3;
+  keyCopy = key;
   v7 = +[PSConstants bufferCountDictLock];
   [v7 lock];
 
   v8 = +[PSConstants bufferCountDict];
   v9 = [v8 objectForKeyedSubscript:@"FixedCounts"];
   v10 = [v8 objectForKeyedSubscript:@"CustomCounts"];
-  v11 = [v10 objectForKeyedSubscript:v16];
+  v11 = [v10 objectForKeyedSubscript:keyCopy];
 
   if (v11)
   {
     v12 = v10;
-    v13 = v16;
+    v13 = keyCopy;
   }
 
   else
@@ -171,7 +171,7 @@ void __38__PSConstants_anePrioritiesDictionary__block_invoke()
   }
 
   v14 = [v12 objectForKeyedSubscript:v13];
-  [PSConstants bufferDepthsFromDict:v14 writerDepth:a4 readerDepth:a5];
+  [PSConstants bufferDepthsFromDict:v14 writerDepth:depth readerDepth:readerDepth];
   v15 = +[PSConstants bufferCountDictLock];
   [v15 unlock];
 }

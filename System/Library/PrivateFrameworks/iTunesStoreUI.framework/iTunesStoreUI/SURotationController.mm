@@ -1,15 +1,15 @@
 @interface SURotationController
 - (BOOL)orientationAffectsViewFrame;
-- (CGRect)viewFrameForInterfaceOrientation:(int64_t)a3;
-- (SURotationController)initWithViewController:(id)a3;
+- (CGRect)viewFrameForInterfaceOrientation:(int64_t)orientation;
+- (SURotationController)initWithViewController:(id)controller;
 - (void)dealloc;
 @end
 
 @implementation SURotationController
 
-- (SURotationController)initWithViewController:(id)a3
+- (SURotationController)initWithViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"viewController cannot be nil"];
   }
@@ -19,7 +19,7 @@
   result = [(SURotationController *)&v6 init];
   if (result)
   {
-    result->_viewController = a3;
+    result->_viewController = controller;
   }
 
   return result;
@@ -37,13 +37,13 @@
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
   v4 = v3;
   v6 = v5;
-  v7 = [(SUViewController *)self->_viewController interfaceOrientation];
+  interfaceOrientation = [(SUViewController *)self->_viewController interfaceOrientation];
   if ([(UIViewController *)self->_viewController overlayViewController])
   {
     return 0;
   }
 
-  if (v4 < v6 == (v7 - 3) < 2)
+  if (v4 < v6 == (interfaceOrientation - 3) < 2)
   {
     v4 = v6;
   }
@@ -54,12 +54,12 @@
     return 0;
   }
 
-  v10 = [(SUViewController *)self->_viewController presentingViewController];
-  result = !v10 || (v11 = v10, !-[UIViewController isDescendantOfViewController:](self->_viewController, "isDescendantOfViewController:", v10)) || [v11 modalPresentationStyle] != 2;
+  presentingViewController = [(SUViewController *)self->_viewController presentingViewController];
+  result = !presentingViewController || (v11 = presentingViewController, !-[UIViewController isDescendantOfViewController:](self->_viewController, "isDescendantOfViewController:", presentingViewController)) || [v11 modalPresentationStyle] != 2;
   return result;
 }
 
-- (CGRect)viewFrameForInterfaceOrientation:(int64_t)a3
+- (CGRect)viewFrameForInterfaceOrientation:(int64_t)orientation
 {
   [-[SUViewController view](self->_viewController "view")];
   v6 = v5;
@@ -70,7 +70,7 @@
   {
     v13 = [(SUViewController *)self->_viewController interfaceOrientation]- 3;
     [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       if (v13 <= 1)
       {

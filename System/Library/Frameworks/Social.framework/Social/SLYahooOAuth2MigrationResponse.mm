@@ -1,15 +1,15 @@
 @interface SLYahooOAuth2MigrationResponse
-- (SLYahooOAuth2MigrationResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SLYahooOAuth2MigrationResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SLYahooOAuth2MigrationResponse
 
-- (SLYahooOAuth2MigrationResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SLYahooOAuth2MigrationResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   _SLLog(v5, 7, @"SLYahooOAuth2MigrationResponse initWithData: %@ length urlResponse: %@ error: %@");
 
   v31.receiver = self;
@@ -18,20 +18,20 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v12->_error, error);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v10;
-      v15 = [v14 statusCode];
-      v13->_statusCode = v15;
-      v29 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
+      v14 = responseCopy;
+      statusCode = [v14 statusCode];
+      v13->_statusCode = statusCode;
+      v29 = [MEMORY[0x1E696AD98] numberWithInteger:statusCode];
       _SLLog(v5, 7, @"SLYahooOAuth2MigrationResponse httpResponse status code %@");
 
       if (!v13->_error)
       {
         v30 = 0;
-        v16 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v9 options:0 error:{&v30, v29}];
+        v16 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:{&v30, v29}];
         v17 = v30;
         v18 = v30;
         if (v18)

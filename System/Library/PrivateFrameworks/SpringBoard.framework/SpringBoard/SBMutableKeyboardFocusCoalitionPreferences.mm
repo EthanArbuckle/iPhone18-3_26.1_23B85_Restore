@@ -1,14 +1,14 @@
 @interface SBMutableKeyboardFocusCoalitionPreferences
-- (void)setLockReasons:(id)a3;
-- (void)setPolicy:(id)a3;
+- (void)setLockReasons:(id)reasons;
+- (void)setPolicy:(id)policy;
 @end
 
 @implementation SBMutableKeyboardFocusCoalitionPreferences
 
-- (void)setPolicy:(id)a3
+- (void)setPolicy:(id)policy
 {
-  v7 = a3;
-  if (!v7)
+  policyCopy = policy;
+  if (!policyCopy)
   {
     [(SBMutableKeyboardFocusCoalitionPreferences *)a2 setPolicy:?];
   }
@@ -16,27 +16,27 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBMutableKeyboardFocusCoalitionPreferences *)v7 setPolicy:a2];
+    [(SBMutableKeyboardFocusCoalitionPreferences *)policyCopy setPolicy:a2];
   }
 
-  v5 = [v7 copy];
+  v5 = [policyCopy copy];
   policy = self->super._policy;
   self->super._policy = v5;
 }
 
-- (void)setLockReasons:(id)a3
+- (void)setLockReasons:(id)reasons
 {
-  v7 = a3;
-  if (v7)
+  reasonsCopy = reasons;
+  if (reasonsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(SBMutableKeyboardFocusCoalitionPreferences *)v7 setLockReasons:a2];
+      [(SBMutableKeyboardFocusCoalitionPreferences *)reasonsCopy setLockReasons:a2];
     }
   }
 
-  v5 = [v7 copy];
+  v5 = [reasonsCopy copy];
   lockReasons = self->super._lockReasons;
   self->super._lockReasons = v5;
 }

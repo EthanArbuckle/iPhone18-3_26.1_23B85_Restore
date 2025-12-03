@@ -1,39 +1,39 @@
 @interface PXLivePhotoTrimScrubberLoupeView
-- (CGRect)_loupeFrameWithBounds:(CGRect)a3;
-- (PXLivePhotoTrimScrubberLoupeView)initWithCoder:(id)a3;
-- (PXLivePhotoTrimScrubberLoupeView)initWithFrame:(CGRect)a3 forceDarkUserInterfaceStyle:(BOOL)a4;
-- (id)_collapsedPathForBounds:(CGRect)a3;
-- (id)_expandedPathForBounds:(CGRect)a3 needsCutout:(BOOL)a4;
-- (id)_transitionPathForBounds:(CGRect)a3 needsCutout:(BOOL)a4;
+- (CGRect)_loupeFrameWithBounds:(CGRect)bounds;
+- (PXLivePhotoTrimScrubberLoupeView)initWithCoder:(id)coder;
+- (PXLivePhotoTrimScrubberLoupeView)initWithFrame:(CGRect)frame forceDarkUserInterfaceStyle:(BOOL)style;
+- (id)_collapsedPathForBounds:(CGRect)bounds;
+- (id)_expandedPathForBounds:(CGRect)bounds needsCutout:(BOOL)cutout;
+- (id)_transitionPathForBounds:(CGRect)bounds needsCutout:(BOOL)cutout;
 - (void)_PXLivePhotoTrimScrubberLoupeView_commonInit;
-- (void)_extractImageFromImageRequest:(id)a3;
+- (void)_extractImageFromImageRequest:(id)request;
 - (void)_invalidateImage;
-- (void)_presentImage:(id)a3;
-- (void)_setPlayheadStyle:(unint64_t)a3 animate:(BOOL)a4;
+- (void)_presentImage:(id)image;
+- (void)_setPlayheadStyle:(unint64_t)style animate:(BOOL)animate;
 - (void)_updateImageIfNeeded;
-- (void)_updatePlayheadBorderAnimate:(BOOL)a3;
+- (void)_updatePlayheadBorderAnimate:(BOOL)animate;
 - (void)_updatePlayheadIfNeeded;
 - (void)layoutSubviews;
-- (void)setAsset:(id)a3 videoComposition:(id)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrameTime:(id *)a3;
-- (void)setPlayerView:(id)a3;
-- (void)setShowLoupePlayerAnimate:(BOOL)a3;
-- (void)setShowLoupeThumbnailWithFrameTime:(id *)a3 animate:(BOOL)a4;
-- (void)setShowNeedleWithWidth:(double)a3 animate:(BOOL)a4;
-- (void)setShowPlayerView:(BOOL)a3;
+- (void)setAsset:(id)asset videoComposition:(id)composition;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrameTime:(id *)time;
+- (void)setPlayerView:(id)view;
+- (void)setShowLoupePlayerAnimate:(BOOL)animate;
+- (void)setShowLoupeThumbnailWithFrameTime:(id *)time animate:(BOOL)animate;
+- (void)setShowNeedleWithWidth:(double)width animate:(BOOL)animate;
+- (void)setShowPlayerView:(BOOL)view;
 @end
 
 @implementation PXLivePhotoTrimScrubberLoupeView
 
-- (void)_updatePlayheadBorderAnimate:(BOOL)a3
+- (void)_updatePlayheadBorderAnimate:(BOOL)animate
 {
-  v3 = a3;
+  animateCopy = animate;
   v63[3] = *MEMORY[0x1E69E9840];
   [(PXLivePhotoTrimScrubberLoupeView *)self bounds];
   if (!CGRectIsEmpty(v64))
   {
-    v5 = [(PXLivePhotoTrimScrubberLoupeView *)self playheadStyle];
+    playheadStyle = [(PXLivePhotoTrimScrubberLoupeView *)self playheadStyle];
     [(PXLivePhotoTrimScrubberLoupeView *)self bounds];
     v7 = v6;
     [(PXLivePhotoTrimScrubberLoupeView *)self aspectRatio];
@@ -50,16 +50,16 @@
     width = v66.size.width;
     height = v66.size.height;
     v16 = 0.5;
-    if (v5 != 2)
+    if (playheadStyle != 2)
     {
       v16 = 0.0;
     }
 
     [(CAShapeLayer *)self->_borderLayer setLineWidth:v16];
-    if (v5 == 2)
+    if (playheadStyle == 2)
     {
-      v17 = [(PXLivePhotoTrimScrubberLoupeView *)self _collapsedPathForBounds:x, y, width, height];
-      v18 = [(PXLivePhotoTrimScrubberLoupeView *)self _collapsedPathForBounds:x, y, width, height];
+      height = [(PXLivePhotoTrimScrubberLoupeView *)self _collapsedPathForBounds:x, y, width, height];
+      height2 = [(PXLivePhotoTrimScrubberLoupeView *)self _collapsedPathForBounds:x, y, width, height];
       v19 = height;
       v20 = width;
       v21 = y;
@@ -68,22 +68,22 @@
 
     else
     {
-      v17 = [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:1 needsCutout:x, y, width, height];
+      height = [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:1 needsCutout:x, y, width, height];
       [(PXLivePhotoTrimScrubberLoupeView *)self _loupeFrameWithBounds:0.0, 0.0, v9, v7];
       v22 = v23;
       v21 = v24;
       v20 = v25;
       v19 = v26;
-      v18 = [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:0 needsCutout:?];
+      height2 = [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:0 needsCutout:?];
     }
 
-    v27 = [v17 CGPath];
-    v28 = [v18 CGPath];
-    v29 = v28;
-    if (v3)
+    cGPath = [height CGPath];
+    cGPath2 = [height2 CGPath];
+    v29 = cGPath2;
+    if (animateCopy)
     {
       v51 = v19;
-      v53 = v28;
+      v53 = cGPath2;
       [MEMORY[0x1E6979518] animationDuration];
       v52 = v30;
       v31 = *MEMORY[0x1E6979ED8];
@@ -93,8 +93,8 @@
       [v32 setRemovedOnCompletion:0];
       v33 = *MEMORY[0x1E69797E0];
       [v32 setFillMode:*MEMORY[0x1E69797E0]];
-      v34 = dbl_1A5381200[v5 == 2];
-      if (v5 == 2)
+      v34 = dbl_1A5381200[playheadStyle == 2];
+      if (playheadStyle == 2)
       {
         [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:1 needsCutout:x, y, width, height];
       }
@@ -108,7 +108,7 @@
       v54 = v55 = v35;
       v63[0] = [v35 CGPath];
       v63[1] = [v54 CGPath];
-      v63[2] = v27;
+      v63[2] = cGPath;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:3];
       [v32 setValues:v36];
 
@@ -126,13 +126,13 @@
       [v32 setTimingFunctions:v39];
 
       borderLayer = self->_borderLayer;
-      v41 = [v32 keyPath];
-      [(CAShapeLayer *)borderLayer addAnimation:v32 forKey:v41];
+      keyPath = [v32 keyPath];
+      [(CAShapeLayer *)borderLayer addAnimation:v32 forKey:keyPath];
 
       v42 = [MEMORY[0x1E6979390] animationWithKeyPath:@"path"];
       [v42 setRemovedOnCompletion:0];
       [v42 setFillMode:v33];
-      if (v5 == 2)
+      if (playheadStyle == 2)
       {
         [(PXLivePhotoTrimScrubberLoupeView *)self _expandedPathForBounds:0 needsCutout:v22, v21, v20, v51];
       }
@@ -163,15 +163,15 @@
       [v42 setTimingFunctions:v48];
 
       maskLayer = self->_maskLayer;
-      v50 = [v42 keyPath];
-      [(CAShapeLayer *)maskLayer addAnimation:v42 forKey:v50];
+      keyPath2 = [v42 keyPath];
+      [(CAShapeLayer *)maskLayer addAnimation:v42 forKey:keyPath2];
     }
 
     else
     {
       [(CAShapeLayer *)self->_borderLayer removeAllAnimations];
       [(CAShapeLayer *)self->_maskLayer removeAllAnimations];
-      [(CAShapeLayer *)self->_borderLayer setPath:v27];
+      [(CAShapeLayer *)self->_borderLayer setPath:cGPath];
       [(CAShapeLayer *)self->_maskLayer setPath:v29];
     }
   }
@@ -186,15 +186,15 @@
   }
 }
 
-- (id)_transitionPathForBounds:(CGRect)a3 needsCutout:(BOOL)a4
+- (id)_transitionPathForBounds:(CGRect)bounds needsCutout:(BOOL)cutout
 {
-  v4 = a4;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:a3.origin.x cornerRadius:{a3.origin.y, 4.5, a3.size.height, 2.0}];
+  cutoutCopy = cutout;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:bounds.origin.x cornerRadius:{bounds.origin.y, 4.5, bounds.size.height, 2.0}];
   [v9 closePath];
-  if (v4)
+  if (cutoutCopy)
   {
     v20.size.width = 4.5;
     v20.origin.x = x;
@@ -208,26 +208,26 @@
     v14 = MEMORY[0x1E69DC728];
     [(PXLivePhotoTrimScrubberLoupeView *)self innerCornerRadius];
     v16 = [v14 bezierPathWithRoundedRect:v10 cornerRadius:{v11, width, v13, v15}];
-    v17 = [v16 bezierPathByReversingPath];
+    bezierPathByReversingPath = [v16 bezierPathByReversingPath];
 
-    [v9 appendPath:v17];
+    [v9 appendPath:bezierPathByReversingPath];
   }
 
   return v9;
 }
 
-- (id)_expandedPathForBounds:(CGRect)a3 needsCutout:(BOOL)a4
+- (id)_expandedPathForBounds:(CGRect)bounds needsCutout:(BOOL)cutout
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  cutoutCopy = cutout;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = MEMORY[0x1E69DC728];
   [(PXLivePhotoTrimScrubberLoupeView *)self outerCornerRadius];
   v12 = [v10 bezierPathWithRoundedRect:x cornerRadius:{y, width, height, v11}];
   [v12 closePath];
-  if (v4)
+  if (cutoutCopy)
   {
     [(PXLivePhotoTrimScrubberLoupeView *)self _loupeFrameWithBounds:x, y, width, height];
     v14 = v13;
@@ -237,18 +237,18 @@
     v21 = MEMORY[0x1E69DC728];
     [(PXLivePhotoTrimScrubberLoupeView *)self innerCornerRadius];
     v23 = [v21 bezierPathWithRoundedRect:v14 cornerRadius:{v16, v18, v20, v22}];
-    v24 = [v23 bezierPathByReversingPath];
-    [v12 appendPath:v24];
+    bezierPathByReversingPath = [v23 bezierPathByReversingPath];
+    [v12 appendPath:bezierPathByReversingPath];
   }
 
   return v12;
 }
 
-- (id)_collapsedPathForBounds:(CGRect)a3
+- (id)_collapsedPathForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_needleWidth >= 0.1)
   {
     needleWidth = self->_needleWidth;
@@ -267,9 +267,9 @@
   return v9;
 }
 
-- (void)_presentImage:(id)a3
+- (void)_presentImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   imageView = self->_imageView;
   if (!imageView)
   {
@@ -282,7 +282,7 @@
     v6 = self->_imageView;
 LABEL_5:
     v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     [v8 setContentMode:2];
     [(UIView *)self->_container addSubview:v8];
     [(UIView *)self->_container bounds];
@@ -323,21 +323,21 @@ void __50__PXLivePhotoTrimScrubberLoupeView__presentImage___block_invoke(uint64_
   }
 }
 
-- (void)_extractImageFromImageRequest:(id)a3
+- (void)_extractImageFromImageRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
   v35 = 0uLL;
   v36 = 0;
-  if (v4)
+  if (requestCopy)
   {
-    [v4 sourceTime];
+    [requestCopy sourceTime];
   }
 
-  [v4 imageSize];
+  [requestCopy imageSize];
   v7 = v6;
   v9 = v8;
-  [v4 scale];
+  [requestCopy scale];
   if (v10 >= 1.0)
   {
     v11 = v10;
@@ -360,11 +360,11 @@ void __50__PXLivePhotoTrimScrubberLoupeView__presentImage___block_invoke(uint64_
 
   v13 = fmin(v12 * v11, 1024.0);
   v14 = objc_alloc(MEMORY[0x1E6987E68]);
-  v15 = [v4 asset];
-  v16 = [v14 initWithAsset:v15];
+  asset = [requestCopy asset];
+  v16 = [v14 initWithAsset:asset];
 
-  v17 = [v4 videoComposition];
-  [v16 setVideoComposition:v17];
+  videoComposition = [requestCopy videoComposition];
+  [v16 setVideoComposition:videoComposition];
 
   [v16 setMaximumSize:{v13, v13}];
   v18 = MEMORY[0x1E6960CC0];
@@ -375,14 +375,14 @@ void __50__PXLivePhotoTrimScrubberLoupeView__presentImage___block_invoke(uint64_
   v34 = *(v18 + 2);
   [v16 setRequestedTimeToleranceAfter:&v33];
   [v16 setAppliesPreferredTrackTransform:1];
-  v19 = [v16 customVideoCompositor];
+  customVideoCompositor = [v16 customVideoCompositor];
   NSClassFromString(&cfstr_Nuvideoplaybac.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v21 = [v16 customVideoCompositor];
-    [v21 setValue:@"PXLivePhotoTrimScrubberLoupeView" forKey:@"label"];
+    customVideoCompositor2 = [v16 customVideoCompositor];
+    [customVideoCompositor2 setValue:@"PXLivePhotoTrimScrubberLoupeView" forKey:@"label"];
   }
 
   v32 = 0;
@@ -446,9 +446,9 @@ void __50__PXLivePhotoTrimScrubberLoupeView__presentImage___block_invoke(uint64_
       v14 = v12 * v11;
       [(_PXLivePhotoTrimScrubberLoupeViewImageRequest *)v4 setScale:?];
       [(_PXLivePhotoTrimScrubberLoupeViewImageRequest *)v4 setImageSize:v13, v14];
-      v15 = [(_PXLivePhotoTrimScrubberLoupeViewImageRequest *)v4 isValid];
+      isValid = [(_PXLivePhotoTrimScrubberLoupeViewImageRequest *)v4 isValid];
       currentImageRequest = self->_currentImageRequest;
-      if (v15)
+      if (isValid)
       {
         if (![(_PXLivePhotoTrimScrubberLoupeViewImageRequest *)v4 isEqual:currentImageRequest])
         {
@@ -472,9 +472,9 @@ void __50__PXLivePhotoTrimScrubberLoupeView__presentImage___block_invoke(uint64_
       {
         self->_currentImageRequest = 0;
 
-        v18 = [(UIImageView *)self->_imageView image];
+        image = [(UIImageView *)self->_imageView image];
 
-        if (v18)
+        if (image)
         {
           [(PXLivePhotoTrimScrubberLoupeView *)self _presentImage:0];
         }
@@ -503,12 +503,12 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
   }
 }
 
-- (void)setPlayerView:(id)a3
+- (void)setPlayerView:(id)view
 {
-  v5 = a3;
-  if (self->_playerView != v5)
+  viewCopy = view;
+  if (self->_playerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     v6 = self->_container;
     if (v8)
     {
@@ -516,27 +516,27 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
       [(UIView *)v6 bringSubviewToFront:v8];
     }
 
-    v7 = [(UIView *)self->_playerView superview];
+    superview = [(UIView *)self->_playerView superview];
 
-    if (v7 == v6)
+    if (superview == v6)
     {
       [(UIView *)self->_playerView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_playerView, a3);
+    objc_storeStrong(&self->_playerView, view);
     [(PXLivePhotoTrimScrubberLoupeView *)self setNeedsLayout];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (CGRect)_loupeFrameWithBounds:(CGRect)a3
+- (CGRect)_loupeFrameWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = CGRectInset(a3, 3.0, 3.0);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v16 = CGRectInset(bounds, 3.0, 3.0);
   v7 = v16.origin.x;
   v8 = v16.origin.y;
   v9 = v16.size.width;
@@ -589,11 +589,11 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PXLivePhotoTrimScrubberLoupeView;
-  [(PXLivePhotoTrimScrubberLoupeView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXLivePhotoTrimScrubberLoupeView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PXLivePhotoTrimScrubberLoupeView *)self bounds];
   v5 = v4;
   [(PXLivePhotoTrimScrubberLoupeView *)self aspectRatio];
@@ -612,99 +612,99 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
   }
 }
 
-- (void)setAsset:(id)a3 videoComposition:(id)a4
+- (void)setAsset:(id)asset videoComposition:(id)composition
 {
-  v10 = a3;
-  v7 = a4;
-  if (self->_asset == v10)
+  assetCopy = asset;
+  compositionCopy = composition;
+  if (self->_asset == assetCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(AVAsset *)v10 isEqual:?]^ 1;
+    v8 = [(AVAsset *)assetCopy isEqual:?]^ 1;
   }
 
-  if (self->_videoComposition == v7)
+  if (self->_videoComposition == compositionCopy)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(AVVideoComposition *)v7 isEqual:?]^ 1;
+    v9 = [(AVVideoComposition *)compositionCopy isEqual:?]^ 1;
   }
 
   if ((v8 | v9))
   {
-    objc_storeStrong(&self->_asset, a3);
-    objc_storeStrong(&self->_videoComposition, a4);
+    objc_storeStrong(&self->_asset, asset);
+    objc_storeStrong(&self->_videoComposition, composition);
     [(PXLivePhotoTrimScrubberLoupeView *)self _invalidateImage];
   }
 }
 
-- (void)_setPlayheadStyle:(unint64_t)a3 animate:(BOOL)a4
+- (void)_setPlayheadStyle:(unint64_t)style animate:(BOOL)animate
 {
   playheadStyle = self->_playheadStyle;
-  if (playheadStyle != a3)
+  if (playheadStyle != style)
   {
-    v5 = a4;
-    v7 = a3 != 1;
-    v8 = playheadStyle | a3;
-    self->_playheadStyle = a3;
-    [(PXLivePhotoTrimScrubberLoupeView *)self setShowPlayerView:a3 - 1 < 2];
-    v9 = [(PXLivePhotoTrimScrubberLoupeView *)self playerView];
-    [v9 setHidden:v7];
+    animateCopy = animate;
+    v7 = style != 1;
+    v8 = playheadStyle | style;
+    self->_playheadStyle = style;
+    [(PXLivePhotoTrimScrubberLoupeView *)self setShowPlayerView:style - 1 < 2];
+    playerView = [(PXLivePhotoTrimScrubberLoupeView *)self playerView];
+    [playerView setHidden:v7];
 
     if (v8 >= 2)
     {
 
-      [(PXLivePhotoTrimScrubberLoupeView *)self _updatePlayheadBorderAnimate:v5];
+      [(PXLivePhotoTrimScrubberLoupeView *)self _updatePlayheadBorderAnimate:animateCopy];
     }
   }
 }
 
-- (void)setShowLoupePlayerAnimate:(BOOL)a3
+- (void)setShowLoupePlayerAnimate:(BOOL)animate
 {
   if (self->_playheadStyle != 1)
   {
-    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:1 animate:a3];
+    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:1 animate:animate];
   }
 }
 
-- (void)setFrameTime:(id *)a3
+- (void)setFrameTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_frameTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_frameTime.value = *&time->var0;
   self->_frameTime.epoch = var3;
   [(PXLivePhotoTrimScrubberLoupeView *)self _invalidateImage];
 }
 
-- (void)setShowLoupeThumbnailWithFrameTime:(id *)a3 animate:(BOOL)a4
+- (void)setShowLoupeThumbnailWithFrameTime:(id *)time animate:(BOOL)animate
 {
   if (self->_playheadStyle)
   {
-    v4 = a4;
-    v6 = *a3;
+    animateCopy = animate;
+    v6 = *time;
     [(PXLivePhotoTrimScrubberLoupeView *)self setFrameTime:&v6];
-    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:0 animate:v4];
+    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:0 animate:animateCopy];
   }
 }
 
-- (void)setShowNeedleWithWidth:(double)a3 animate:(BOOL)a4
+- (void)setShowNeedleWithWidth:(double)width animate:(BOOL)animate
 {
-  if (self->_playheadStyle != 2 || self->_needleWidth != a3)
+  if (self->_playheadStyle != 2 || self->_needleWidth != width)
   {
-    self->_needleWidth = a3;
-    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:2 animate:a4];
+    self->_needleWidth = width;
+    [(PXLivePhotoTrimScrubberLoupeView *)self _setPlayheadStyle:2 animate:animate];
   }
 }
 
-- (void)setShowPlayerView:(BOOL)a3
+- (void)setShowPlayerView:(BOOL)view
 {
   imageView = self->_imageView;
-  if (a3)
+  if (view)
   {
     [(UIImageView *)imageView setHidden:1];
     v5 = self->_imageView;
@@ -731,32 +731,32 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
 
 - (void)_PXLivePhotoTrimScrubberLoupeView_commonInit
 {
-  v3 = [MEMORY[0x1E69794A0] layer];
+  layer = [MEMORY[0x1E69794A0] layer];
   borderLayer = self->_borderLayer;
-  self->_borderLayer = v3;
+  self->_borderLayer = layer;
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CAShapeLayer setFillColor:](self->_borderLayer, "setFillColor:", [v5 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  -[CAShapeLayer setFillColor:](self->_borderLayer, "setFillColor:", [whiteColor CGColor]);
 
   [(CAShapeLayer *)self->_borderLayer setLineCap:*MEMORY[0x1E6979E78]];
   LODWORD(v6) = 1.0;
   [(CAShapeLayer *)self->_borderLayer setOpacity:v6];
   [(CAShapeLayer *)self->_borderLayer setZPosition:10.0];
-  v7 = [MEMORY[0x1E69DC888] grayColor];
-  -[CAShapeLayer setStrokeColor:](self->_borderLayer, "setStrokeColor:", [v7 CGColor]);
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  -[CAShapeLayer setStrokeColor:](self->_borderLayer, "setStrokeColor:", [grayColor CGColor]);
 
-  v8 = [MEMORY[0x1E69DC888] blackColor];
-  -[CAShapeLayer setShadowColor:](self->_borderLayer, "setShadowColor:", [v8 CGColor]);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  -[CAShapeLayer setShadowColor:](self->_borderLayer, "setShadowColor:", [blackColor CGColor]);
 
   LODWORD(v9) = 1058642330;
   [(CAShapeLayer *)self->_borderLayer setShadowOpacity:v9];
   [(CAShapeLayer *)self->_borderLayer setShadowOffset:0.0, 0.0];
-  v10 = [(PXLivePhotoTrimScrubberLoupeView *)self layer];
-  [v10 addSublayer:self->_borderLayer];
+  layer2 = [(PXLivePhotoTrimScrubberLoupeView *)self layer];
+  [layer2 addSublayer:self->_borderLayer];
 
-  v11 = [MEMORY[0x1E69794A0] layer];
+  layer3 = [MEMORY[0x1E69794A0] layer];
   maskLayer = self->_maskLayer;
-  self->_maskLayer = v11;
+  self->_maskLayer = layer3;
 
   if (self->_forceDarkUserInterfaceStyle)
   {
@@ -785,26 +785,26 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
 
   [(PXLivePhotoTrimScrubberLoupeView *)self addSubview:self->_container];
   v19 = self->_maskLayer;
-  v20 = [(UIView *)self->_container layer];
-  [v20 setMask:v19];
+  layer4 = [(UIView *)self->_container layer];
+  [layer4 setMask:v19];
 
-  v21 = [(UIView *)self->_container layer];
-  [v21 setMasksToBounds:1];
+  layer5 = [(UIView *)self->_container layer];
+  [layer5 setMasksToBounds:1];
 
   [(PXLivePhotoTrimScrubberLoupeView *)self outerCornerRadius];
   v23 = v22;
-  v24 = [(UIView *)self->_container layer];
-  [v24 setCornerRadius:v23];
+  layer6 = [(UIView *)self->_container layer];
+  [layer6 setCornerRadius:v23];
 
   self->_aspectRatio = 1.0;
   self->_needleWidth = 1.0;
 }
 
-- (PXLivePhotoTrimScrubberLoupeView)initWithCoder:(id)a3
+- (PXLivePhotoTrimScrubberLoupeView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXLivePhotoTrimScrubberLoupeView;
-  v3 = [(PXLivePhotoTrimScrubberLoupeView *)&v6 initWithCoder:a3];
+  v3 = [(PXLivePhotoTrimScrubberLoupeView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -815,15 +815,15 @@ void __56__PXLivePhotoTrimScrubberLoupeView__updateImageIfNeeded__block_invoke(u
   return v4;
 }
 
-- (PXLivePhotoTrimScrubberLoupeView)initWithFrame:(CGRect)a3 forceDarkUserInterfaceStyle:(BOOL)a4
+- (PXLivePhotoTrimScrubberLoupeView)initWithFrame:(CGRect)frame forceDarkUserInterfaceStyle:(BOOL)style
 {
   v8.receiver = self;
   v8.super_class = PXLivePhotoTrimScrubberLoupeView;
-  v5 = [(PXLivePhotoTrimScrubberLoupeView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXLivePhotoTrimScrubberLoupeView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_forceDarkUserInterfaceStyle = a4;
+    v5->_forceDarkUserInterfaceStyle = style;
     [(PXLivePhotoTrimScrubberLoupeView *)v5 _PXLivePhotoTrimScrubberLoupeView_commonInit];
   }
 

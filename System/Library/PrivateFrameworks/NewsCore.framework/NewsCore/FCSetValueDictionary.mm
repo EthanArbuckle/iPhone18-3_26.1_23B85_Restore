@@ -1,20 +1,20 @@
 @interface FCSetValueDictionary
 - (FCSetValueDictionary)init;
-- (id)_setForKey:(id)a3;
+- (id)_setForKey:(id)key;
 - (id)description;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)addObject:(id)a3 forKey:(id)a4;
-- (void)addObjects:(id)a3 forKey:(id)a4;
-- (void)removeObjectsForKey:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)addObject:(id)object forKey:(id)key;
+- (void)addObjects:(id)objects forKey:(id)key;
+- (void)removeObjectsForKey:(id)key;
 @end
 
 @implementation FCSetValueDictionary
 
 - (id)description
 {
-  v2 = [(FCSetValueDictionary *)self backingDictionary];
-  v3 = [v2 description];
+  backingDictionary = [(FCSetValueDictionary *)self backingDictionary];
+  v3 = [backingDictionary description];
 
   return v3;
 }
@@ -34,54 +34,54 @@
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[FCSetValueDictionary allocWithZone:?]];
-  v5 = [(FCSetValueDictionary *)v4 backingDictionary];
-  v6 = [(FCSetValueDictionary *)self backingDictionary];
-  [v5 addEntriesFromDictionary:v6];
+  backingDictionary = [(FCSetValueDictionary *)v4 backingDictionary];
+  backingDictionary2 = [(FCSetValueDictionary *)self backingDictionary];
+  [backingDictionary addEntriesFromDictionary:backingDictionary2];
 
   return v4;
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(FCSetValueDictionary *)self _setForKey:a4];
-  [v7 addObject:v6];
+  objectCopy = object;
+  v7 = [(FCSetValueDictionary *)self _setForKey:key];
+  [v7 addObject:objectCopy];
 }
 
-- (void)addObjects:(id)a3 forKey:(id)a4
+- (void)addObjects:(id)objects forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(FCSetValueDictionary *)self _setForKey:a4];
-  [v7 unionSet:v6];
+  objectsCopy = objects;
+  v7 = [(FCSetValueDictionary *)self _setForKey:key];
+  [v7 unionSet:objectsCopy];
 }
 
-- (void)removeObjectsForKey:(id)a3
+- (void)removeObjectsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCSetValueDictionary *)self backingDictionary];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  backingDictionary = [(FCSetValueDictionary *)self backingDictionary];
+  [backingDictionary removeObjectForKey:keyCopy];
 }
 
 - (id)keyEnumerator
 {
-  v2 = [(FCSetValueDictionary *)self backingDictionary];
-  v3 = [v2 keyEnumerator];
+  backingDictionary = [(FCSetValueDictionary *)self backingDictionary];
+  keyEnumerator = [backingDictionary keyEnumerator];
 
-  return v3;
+  return keyEnumerator;
 }
 
-- (id)_setForKey:(id)a3
+- (id)_setForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCSetValueDictionary *)self backingDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  backingDictionary = [(FCSetValueDictionary *)self backingDictionary];
+  v6 = [backingDictionary objectForKeyedSubscript:keyCopy];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [v5 setObject:v6 forKeyedSubscript:v4];
+    [backingDictionary setObject:v6 forKeyedSubscript:keyCopy];
   }
 
   return v6;

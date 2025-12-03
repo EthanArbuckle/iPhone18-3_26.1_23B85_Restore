@@ -1,23 +1,23 @@
 @interface KeybagSyncOperation
-- (KeybagSyncOperation)initWithKeybagSyncRequest:(id)a3;
-- (id)_newBodyDataWithBodyPlist:(id)a3 error:(id *)a4;
-- (id)_newRequestPropertiesWithBodyData:(id)a3;
+- (KeybagSyncOperation)initWithKeybagSyncRequest:(id)request;
+- (id)_newBodyDataWithBodyPlist:(id)plist error:(id *)error;
+- (id)_newRequestPropertiesWithBodyData:(id)data;
 - (void)run;
 @end
 
 @implementation KeybagSyncOperation
 
-- (KeybagSyncOperation)initWithKeybagSyncRequest:(id)a3
+- (KeybagSyncOperation)initWithKeybagSyncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = KeybagSyncOperation;
   v5 = [(KeybagSyncOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 accountIdentifier];
+    accountIdentifier = [requestCopy accountIdentifier];
     accountIdentifier = v5->_accountIdentifier;
-    v5->_accountIdentifier = v6;
+    v5->_accountIdentifier = accountIdentifier;
   }
 
   return v5;
@@ -28,22 +28,22 @@
   v3 = self->_accountIdentifier;
   if (v3)
   {
-    v4 = v3;
+    uniqueIdentifier = v3;
   }
 
   else
   {
     v5 = +[SSAccountStore defaultStore];
-    v6 = [v5 activeAccount];
-    v4 = [v6 uniqueIdentifier];
+    activeAccount = [v5 activeAccount];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-    if (!v4)
+    if (!uniqueIdentifier)
     {
       goto LABEL_27;
     }
   }
 
-  v7 = sub_1000B18E8([v4 unsignedLongLongValue], 11);
+  v7 = sub_1000B18E8([uniqueIdentifier unsignedLongLongValue], 11);
   if (v7)
   {
     v8 = v7;
@@ -51,11 +51,11 @@
     [v9 setObject:v8 forKey:@"kbsync"];
     [v9 setObject:@"familyChange" forKey:@"reason"];
     v10 = +[ISDevice sharedInstance];
-    v11 = [v10 guid];
+    guid = [v10 guid];
 
-    if ([v11 length])
+    if ([guid length])
     {
-      [v9 setObject:v11 forKey:@"guid"];
+      [v9 setObject:guid forKey:@"guid"];
     }
 
     v48 = 0;
@@ -79,7 +79,7 @@ LABEL_40:
     v43 = v16;
     [v14 setRequestProperties:v16];
     v45 = v14;
-    v42 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:v4];
+    v42 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:uniqueIdentifier];
     [v14 setAuthenticationContext:?];
     v17 = +[SSLogConfig sharedDaemonConfig];
     if (!v17)
@@ -87,20 +87,20 @@ LABEL_40:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v44 = v4;
-    v18 = [v17 shouldLog];
+    v44 = uniqueIdentifier;
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v18 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v19 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v18 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v18)
+    if (shouldLog)
     {
       v20 = objc_opt_class();
       v49 = 138412290;
@@ -108,13 +108,13 @@ LABEL_40:
       v21 = v9;
       v22 = v8;
       v23 = v12;
-      v24 = v11;
+      v24 = guid;
       v25 = v20;
       LODWORD(v40) = 12;
       v39 = &v49;
       v26 = _os_log_send_and_compose_impl();
 
-      v11 = v24;
+      guid = v24;
       v12 = v23;
       v8 = v22;
       v9 = v21;
@@ -128,15 +128,15 @@ LABEL_18:
         v28 = [(KeybagSyncOperation *)self runSubOperation:v45 returningError:&v47];
         v29 = v47;
 
-        v4 = v44;
+        uniqueIdentifier = v44;
         if (v28)
         {
-          v30 = [v46 output];
+          output = [v46 output];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v41 = v29;
-            v31 = [v30 objectForKey:@"keybag"];
+            v31 = [output objectForKey:@"keybag"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -160,9 +160,9 @@ LABEL_18:
         goto LABEL_40;
       }
 
-      v19 = [NSString stringWithCString:v26 encoding:4, &v49, v40];
+      oSLogObject = [NSString stringWithCString:v26 encoding:4, &v49, v40];
       free(v26);
-      v39 = v19;
+      v39 = oSLogObject;
       SSFileLog();
     }
 
@@ -176,19 +176,19 @@ LABEL_27:
     v33 = +[SSLogConfig sharedConfig];
   }
 
-  v34 = [v33 shouldLog];
+  shouldLog2 = [v33 shouldLog];
   if ([v33 shouldLogToDisk])
   {
-    v35 = v34 | 2;
+    v35 = shouldLog2 | 2;
   }
 
   else
   {
-    v35 = v34;
+    v35 = shouldLog2;
   }
 
-  v36 = [v33 OSLogObject];
-  if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v33 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v35 &= 2u;
   }
@@ -207,9 +207,9 @@ LABEL_27:
 
   if (v38)
   {
-    v36 = [NSString stringWithCString:v38 encoding:4, &v49, v40];
+    oSLogObject2 = [NSString stringWithCString:v38 encoding:4, &v49, v40];
     free(v38);
-    v39 = v36;
+    v39 = oSLogObject2;
     SSFileLog();
 LABEL_37:
   }
@@ -221,15 +221,15 @@ LABEL_41:
   [(KeybagSyncOperation *)self setSuccess:v28];
 }
 
-- (id)_newBodyDataWithBodyPlist:(id)a3 error:(id *)a4
+- (id)_newBodyDataWithBodyPlist:(id)plist error:(id *)error
 {
   v10 = 0;
-  v5 = [NSPropertyListSerialization dataWithPropertyList:a3 format:100 options:0 error:&v10];
+  v5 = [NSPropertyListSerialization dataWithPropertyList:plist format:100 options:0 error:&v10];
   v6 = v10;
   if (v5)
   {
     v7 = ISCopyGzippedDataForData();
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -238,7 +238,7 @@ LABEL_41:
   else
   {
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -247,7 +247,7 @@ LABEL_41:
   if (!v7)
   {
     v8 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_7:
@@ -255,12 +255,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)_newRequestPropertiesWithBodyData:(id)a3
+- (id)_newRequestPropertiesWithBodyData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(SSMutableURLRequestProperties);
   [v4 setAllowedRetryCount:0];
-  [v4 setHTTPBody:v3];
+  [v4 setHTTPBody:dataCopy];
 
   [v4 setHTTPMethod:@"POST"];
   [v4 setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];

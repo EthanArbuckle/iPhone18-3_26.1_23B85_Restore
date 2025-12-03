@@ -1,21 +1,21 @@
 @interface TSUBufferedReadChannelHelper
 - (TSUBufferedReadChannelHelper)init;
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3;
-- (void)readWithHandler:(id)a3;
-- (void)readWithHandlerAndWait:(id)a3;
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel;
+- (void)readWithHandler:(id)handler;
+- (void)readWithHandlerAndWait:(id)wait;
 @end
 
 @implementation TSUBufferedReadChannelHelper
 
-- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)a3
+- (TSUBufferedReadChannelHelper)initWithBufferedReadChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = TSUBufferedReadChannelHelper;
   v5 = [(TSUBufferedReadChannelHelper *)&v9 init];
   if (v5)
   {
-    if (!v4)
+    if (!channelCopy)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -35,7 +35,7 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    objc_storeWeak(&v5->_bufferedReadChannel, v4);
+    objc_storeWeak(&v5->_bufferedReadChannel, channelCopy);
   }
 
   return v5;
@@ -75,16 +75,16 @@
   objc_exception_throw(v7);
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_bufferedReadChannel);
-  [WeakRetained setStreamReadChannelSourceHandler:v4];
+  [WeakRetained setStreamReadChannelSourceHandler:handlerCopy];
 }
 
-- (void)readWithHandlerAndWait:(id)a3
+- (void)readWithHandlerAndWait:(id)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {

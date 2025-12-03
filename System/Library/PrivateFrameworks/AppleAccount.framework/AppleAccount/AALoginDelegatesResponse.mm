@@ -5,58 +5,58 @@
 - (NSString)altDSID;
 - (NSString)dsid;
 - (NSString)statusMessage;
-- (id)augmentedResponseParametersForServiceIdentifier:(id)a3 withAppleID:(id)a4 password:(id)a5 DSID:(id)a6 altDSID:(id)a7;
+- (id)augmentedResponseParametersForServiceIdentifier:(id)identifier withAppleID:(id)d password:(id)password DSID:(id)iD altDSID:(id)sID;
 - (id)privacySensitiveResponseBody;
-- (id)responseParametersForServiceIdentifier:(id)a3;
+- (id)responseParametersForServiceIdentifier:(id)identifier;
 @end
 
 @implementation AALoginDelegatesResponse
 
 - (NSNumber)status
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"status"];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"status"];
 
   return v3;
 }
 
 - (NSString)statusMessage
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"status-message"];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"status-message"];
 
   return v3;
 }
 
 - (NSDictionary)responseParameters
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"delegates"];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"delegates"];
 
   return v3;
 }
 
-- (id)responseParametersForServiceIdentifier:(id)a3
+- (id)responseParametersForServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AALoginDelegatesResponse *)self responseParameters];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  responseParameters = [(AALoginDelegatesResponse *)self responseParameters];
+  v6 = [responseParameters objectForKey:identifierCopy];
 
   return v6;
 }
 
 - (NSString)dsid
 {
-  v2 = [(AAResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"dsid"];
+  responseDictionary = [(AAResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"dsid"];
 
   return v3;
 }
 
 - (NSString)altDSID
 {
-  v2 = [(AALoginDelegatesResponse *)self responseParameters];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.mobileme"];
+  responseParameters = [(AALoginDelegatesResponse *)self responseParameters];
+  v3 = [responseParameters objectForKeyedSubscript:@"com.apple.mobileme"];
   v4 = [v3 objectForKeyedSubscript:@"service-data"];
   v5 = [v4 objectForKeyedSubscript:@"appleAccountInfo"];
   v6 = [v5 objectForKeyedSubscript:@"aDsID"];
@@ -64,13 +64,13 @@
   return v6;
 }
 
-- (id)augmentedResponseParametersForServiceIdentifier:(id)a3 withAppleID:(id)a4 password:(id)a5 DSID:(id)a6 altDSID:(id)a7
+- (id)augmentedResponseParametersForServiceIdentifier:(id)identifier withAppleID:(id)d password:(id)password DSID:(id)iD altDSID:(id)sID
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(AALoginDelegatesResponse *)self responseParametersForServiceIdentifier:a3];
+  dCopy = d;
+  passwordCopy = password;
+  iDCopy = iD;
+  sIDCopy = sID;
+  v16 = [(AALoginDelegatesResponse *)self responseParametersForServiceIdentifier:identifier];
   v17 = [v16 objectForKeyedSubscript:@"service-data"];
   v18 = [v17 mutableCopy];
 
@@ -95,24 +95,24 @@
     [v18 setObject:v22 forKeyedSubscript:@"status-message"];
   }
 
-  if (v12)
+  if (dCopy)
   {
-    [v18 setObject:v12 forKeyedSubscript:@"appleIDEnteredByUser"];
+    [v18 setObject:dCopy forKeyedSubscript:@"appleIDEnteredByUser"];
   }
 
-  if (v13)
+  if (passwordCopy)
   {
-    [v18 setObject:v13 forKeyedSubscript:@"password"];
+    [v18 setObject:passwordCopy forKeyedSubscript:@"password"];
   }
 
-  if (v14)
+  if (iDCopy)
   {
-    [v18 setObject:v14 forKeyedSubscript:@"dsid"];
+    [v18 setObject:iDCopy forKeyedSubscript:@"dsid"];
   }
 
-  if (v15)
+  if (sIDCopy)
   {
-    [v18 setObject:v15 forKeyedSubscript:@"altDSID"];
+    [v18 setObject:sIDCopy forKeyedSubscript:@"altDSID"];
   }
 
   v23 = [v18 copy];
@@ -163,14 +163,14 @@ void __49__AALoginDelegatesResponse__privacySensitiveKeys__block_invoke()
 
 - (id)privacySensitiveResponseBody
 {
-  v3 = [(AAResponse *)self responseDictionary];
+  responseDictionary = [(AAResponse *)self responseDictionary];
 
-  if (v3)
+  if (responseDictionary)
   {
     v4 = [AAPrivacySensitiveDictionaryLog alloc];
-    v5 = [(AAResponse *)self responseDictionary];
+    responseDictionary2 = [(AAResponse *)self responseDictionary];
     v6 = +[AALoginDelegatesResponse _privacySensitiveKeys];
-    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:v5 forKeys:v6];
+    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:responseDictionary2 forKeys:v6];
   }
 
   else

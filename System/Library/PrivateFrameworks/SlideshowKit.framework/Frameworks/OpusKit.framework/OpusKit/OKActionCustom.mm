@@ -1,18 +1,18 @@
 @interface OKActionCustom
-+ (id)customActionWithName:(id)a3;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)customActionWithName:(id)name;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionCustom)init;
-- (OKActionCustom)initWithCoder:(id)a3;
+- (OKActionCustom)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionCustom
 
-+ (id)customActionWithName:(id)a3
++ (id)customActionWithName:(id)name
 {
   v4 = objc_alloc_init(OKActionCustom);
-  v4->_name = [a3 copy];
+  v4->_name = [name copy];
 
   return v4;
 }
@@ -52,7 +52,7 @@
   [(OKAction *)&v5 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = OKActionCustom;
@@ -60,35 +60,35 @@
   name = self->_name;
   if (name)
   {
-    [a3 encodeObject:name forKey:@"name"];
+    [coder encodeObject:name forKey:@"name"];
   }
 
   attributes = self->_attributes;
   if (attributes)
   {
-    [a3 encodeObject:attributes forKey:@"attributes"];
+    [coder encodeObject:attributes forKey:@"attributes"];
   }
 }
 
-- (OKActionCustom)initWithCoder:(id)a3
+- (OKActionCustom)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OKActionCustom;
   v4 = [(OKAction *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v4->_attributes = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v4->_attributes = [coder decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionCustom"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionCustom"];
 }
 
 @end

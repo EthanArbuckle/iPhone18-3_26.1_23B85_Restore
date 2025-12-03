@@ -1,16 +1,16 @@
 @interface PLLibraryScopeConditionUnknown
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4;
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria;
 - (id)conditionQuery;
 @end
 
 @implementation PLLibraryScopeConditionUnknown
 
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCriteria:v4];
-  [v7 setUnknownSingleQueries:v6];
+  criteriaCopy = criteria;
+  queriesCopy = queries;
+  v7 = [[self alloc] initWithCriteria:criteriaCopy];
+  [v7 setUnknownSingleQueries:queriesCopy];
 
   return v7;
 }

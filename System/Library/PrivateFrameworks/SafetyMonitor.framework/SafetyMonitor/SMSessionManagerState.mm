@@ -1,143 +1,143 @@
 @interface SMSessionManagerState
-+ (id)convertEstimatedEndDateStatusToString:(unint64_t)a3;
-+ (id)convertSessionStateToString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isTimerExtensionValid:(double)a3;
++ (id)convertEstimatedEndDateStatusToString:(unint64_t)string;
++ (id)convertSessionStateToString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isTimerExtensionValid:(double)valid;
 - (SMSessionManagerState)init;
-- (SMSessionManagerState)initWithCoder:(id)a3;
-- (SMSessionManagerState)initWithDictionary:(id)a3;
-- (SMSessionManagerState)initWithSessionState:(unint64_t)a3 configuration:(id)a4 userTriggerResponse:(int64_t)a5 monitorContext:(id)a6 allowReadToken:(id)a7 safetyCacheKey:(id)a8 startMessageGUID:(id)a9 scheduledSendMessageGUID:(id)a10 scheduledSendMessageDate:(id)a11 activeDeviceIdentifier:(id)a12 estimatedEndDate:(id)a13 coarseEstimatedEndDate:(id)a14 estimatedEndDateStatus:(unint64_t)a15 sessionEndReason:(unint64_t)a16 activePairedDeviceIdentifier:(id)a17;
-- (SMSessionManagerState)initWithSessionState:(unint64_t)a3 configuration:(id)a4 userTriggerResponse:(int64_t)a5 monitorContext:(id)a6 date:(id)a7 location:(id)a8 allowReadToken:(id)a9 safetyCacheKey:(id)a10 startMessageGUID:(id)a11 scheduledSendMessageGUID:(id)a12 scheduledSendMessageDate:(id)a13 activeDeviceIdentifier:(id)a14 estimatedEndDate:(id)a15 coarseEstimatedEndDate:(id)a16 estimatedEndDateStatus:(unint64_t)a17 sessionEndReason:(unint64_t)a18 sessionStateTransitionDate:(id)a19 activePairedDeviceIdentifier:(id)a20;
+- (SMSessionManagerState)initWithCoder:(id)coder;
+- (SMSessionManagerState)initWithDictionary:(id)dictionary;
+- (SMSessionManagerState)initWithSessionState:(unint64_t)state configuration:(id)configuration userTriggerResponse:(int64_t)response monitorContext:(id)context allowReadToken:(id)token safetyCacheKey:(id)key startMessageGUID:(id)d scheduledSendMessageGUID:(id)self0 scheduledSendMessageDate:(id)self1 activeDeviceIdentifier:(id)self2 estimatedEndDate:(id)self3 coarseEstimatedEndDate:(id)self4 estimatedEndDateStatus:(unint64_t)self5 sessionEndReason:(unint64_t)self6 activePairedDeviceIdentifier:(id)self7;
+- (SMSessionManagerState)initWithSessionState:(unint64_t)state configuration:(id)configuration userTriggerResponse:(int64_t)response monitorContext:(id)context date:(id)date location:(id)location allowReadToken:(id)token safetyCacheKey:(id)self0 startMessageGUID:(id)self1 scheduledSendMessageGUID:(id)self2 scheduledSendMessageDate:(id)self3 activeDeviceIdentifier:(id)self4 estimatedEndDate:(id)self5 coarseEstimatedEndDate:(id)self6 estimatedEndDateStatus:(unint64_t)self7 sessionEndReason:(unint64_t)self8 sessionStateTransitionDate:(id)self9 activePairedDeviceIdentifier:(id)deviceIdentifier;
 - (id)cacheReleaseDate;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionManagerState
 
 - (SMSessionManagerState)init
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(SMSessionManagerState *)self initWithSessionState:0 configuration:0 userTriggerResponse:0 monitorContext:0 date:v3 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:0 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:v4 activePairedDeviceIdentifier:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v5 = [(SMSessionManagerState *)self initWithSessionState:0 configuration:0 userTriggerResponse:0 monitorContext:0 date:date location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:0 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:date2 activePairedDeviceIdentifier:0];
 
   return v5;
 }
 
-- (SMSessionManagerState)initWithSessionState:(unint64_t)a3 configuration:(id)a4 userTriggerResponse:(int64_t)a5 monitorContext:(id)a6 allowReadToken:(id)a7 safetyCacheKey:(id)a8 startMessageGUID:(id)a9 scheduledSendMessageGUID:(id)a10 scheduledSendMessageDate:(id)a11 activeDeviceIdentifier:(id)a12 estimatedEndDate:(id)a13 coarseEstimatedEndDate:(id)a14 estimatedEndDateStatus:(unint64_t)a15 sessionEndReason:(unint64_t)a16 activePairedDeviceIdentifier:(id)a17
+- (SMSessionManagerState)initWithSessionState:(unint64_t)state configuration:(id)configuration userTriggerResponse:(int64_t)response monitorContext:(id)context allowReadToken:(id)token safetyCacheKey:(id)key startMessageGUID:(id)d scheduledSendMessageGUID:(id)self0 scheduledSendMessageDate:(id)self1 activeDeviceIdentifier:(id)self2 estimatedEndDate:(id)self3 coarseEstimatedEndDate:(id)self4 estimatedEndDateStatus:(unint64_t)self5 sessionEndReason:(unint64_t)self6 activePairedDeviceIdentifier:(id)self7
 {
   v29 = MEMORY[0x277CBEAA8];
-  v33 = a17;
-  v32 = a14;
-  v25 = a13;
-  v28 = a12;
-  v27 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v31 = a7;
-  v26 = a6;
-  v22 = a4;
-  v23 = [v29 date];
-  v35 = [MEMORY[0x277CBEAA8] date];
-  v39 = [(SMSessionManagerState *)self initWithSessionState:a3 configuration:v22 userTriggerResponse:a5 monitorContext:v26 date:v23 location:0 allowReadToken:v31 safetyCacheKey:v21 startMessageGUID:v20 scheduledSendMessageGUID:v19 scheduledSendMessageDate:v27 activeDeviceIdentifier:v28 estimatedEndDate:v25 coarseEstimatedEndDate:v32 estimatedEndDateStatus:a15 sessionEndReason:a16 sessionStateTransitionDate:v35 activePairedDeviceIdentifier:v33];
+  deviceIdentifierCopy = deviceIdentifier;
+  estimatedEndDateCopy = estimatedEndDate;
+  endDateCopy = endDate;
+  identifierCopy = identifier;
+  dateCopy = date;
+  iDCopy = iD;
+  dCopy = d;
+  keyCopy = key;
+  tokenCopy = token;
+  contextCopy = context;
+  configurationCopy = configuration;
+  date = [v29 date];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v39 = [(SMSessionManagerState *)self initWithSessionState:state configuration:configurationCopy userTriggerResponse:response monitorContext:contextCopy date:date location:0 allowReadToken:tokenCopy safetyCacheKey:keyCopy startMessageGUID:dCopy scheduledSendMessageGUID:iDCopy scheduledSendMessageDate:dateCopy activeDeviceIdentifier:identifierCopy estimatedEndDate:endDateCopy coarseEstimatedEndDate:estimatedEndDateCopy estimatedEndDateStatus:status sessionEndReason:reason sessionStateTransitionDate:date2 activePairedDeviceIdentifier:deviceIdentifierCopy];
 
   return v39;
 }
 
-- (SMSessionManagerState)initWithSessionState:(unint64_t)a3 configuration:(id)a4 userTriggerResponse:(int64_t)a5 monitorContext:(id)a6 date:(id)a7 location:(id)a8 allowReadToken:(id)a9 safetyCacheKey:(id)a10 startMessageGUID:(id)a11 scheduledSendMessageGUID:(id)a12 scheduledSendMessageDate:(id)a13 activeDeviceIdentifier:(id)a14 estimatedEndDate:(id)a15 coarseEstimatedEndDate:(id)a16 estimatedEndDateStatus:(unint64_t)a17 sessionEndReason:(unint64_t)a18 sessionStateTransitionDate:(id)a19 activePairedDeviceIdentifier:(id)a20
+- (SMSessionManagerState)initWithSessionState:(unint64_t)state configuration:(id)configuration userTriggerResponse:(int64_t)response monitorContext:(id)context date:(id)date location:(id)location allowReadToken:(id)token safetyCacheKey:(id)self0 startMessageGUID:(id)self1 scheduledSendMessageGUID:(id)self2 scheduledSendMessageDate:(id)self3 activeDeviceIdentifier:(id)self4 estimatedEndDate:(id)self5 coarseEstimatedEndDate:(id)self6 estimatedEndDateStatus:(unint64_t)self7 sessionEndReason:(unint64_t)self8 sessionStateTransitionDate:(id)self9 activePairedDeviceIdentifier:(id)deviceIdentifier
 {
-  v53 = a4;
-  v52 = a6;
-  obj = a7;
-  v51 = a7;
-  v46 = a8;
-  v50 = a8;
-  v54 = a9;
-  v23 = a10;
-  v24 = a11;
-  v49 = a12;
-  v48 = a13;
-  v25 = a14;
-  v26 = a15;
-  v27 = a16;
-  v28 = a19;
-  v29 = a20;
+  configurationCopy = configuration;
+  contextCopy = context;
+  obj = date;
+  dateCopy = date;
+  locationCopy = location;
+  locationCopy2 = location;
+  tokenCopy = token;
+  keyCopy = key;
+  dCopy = d;
+  iDCopy = iD;
+  messageDateCopy = messageDate;
+  identifierCopy = identifier;
+  endDateCopy = endDate;
+  estimatedEndDateCopy = estimatedEndDate;
+  transitionDateCopy = transitionDate;
+  deviceIdentifierCopy = deviceIdentifier;
   v55.receiver = self;
   v55.super_class = SMSessionManagerState;
   v30 = [(SMSessionManagerState *)&v55 init];
   v31 = v30;
   if (v30)
   {
-    v30->_sessionState = a3;
-    v32 = [v53 copy];
+    v30->_sessionState = state;
+    v32 = [configurationCopy copy];
     configuration = v31->_configuration;
     v31->_configuration = v32;
 
-    v31->_userTriggerResponse = a5;
-    v34 = [v52 copy];
+    v31->_userTriggerResponse = response;
+    v34 = [contextCopy copy];
     monitorContext = v31->_monitorContext;
     v31->_monitorContext = v34;
 
     objc_storeStrong(&v31->_date, obj);
-    objc_storeStrong(&v31->_location, v46);
-    v36 = [v54 copy];
+    objc_storeStrong(&v31->_location, locationCopy);
+    v36 = [tokenCopy copy];
     allowReadToken = v31->_allowReadToken;
     v31->_allowReadToken = v36;
 
-    v38 = [v23 copy];
+    v38 = [keyCopy copy];
     safetyCacheKey = v31->_safetyCacheKey;
     v31->_safetyCacheKey = v38;
 
-    v40 = [v24 copy];
+    v40 = [dCopy copy];
     startMessageGUID = v31->_startMessageGUID;
     v31->_startMessageGUID = v40;
 
-    objc_storeStrong(&v31->_scheduledSendMessageGUID, a12);
-    objc_storeStrong(&v31->_scheduledSendMessageDate, a13);
-    objc_storeStrong(&v31->_activeDeviceIdentifier, a14);
-    objc_storeStrong(&v31->_estimatedEndDate, a15);
-    objc_storeStrong(&v31->_coarseEstimatedEndDate, a16);
-    v31->_estimatedEndDateStatus = a17;
-    v31->_sessionEndReason = a18;
-    objc_storeStrong(&v31->_sessionStateTransitionDate, a19);
-    objc_storeStrong(&v31->_activePairedDeviceIdentifier, a20);
+    objc_storeStrong(&v31->_scheduledSendMessageGUID, iD);
+    objc_storeStrong(&v31->_scheduledSendMessageDate, messageDate);
+    objc_storeStrong(&v31->_activeDeviceIdentifier, identifier);
+    objc_storeStrong(&v31->_estimatedEndDate, endDate);
+    objc_storeStrong(&v31->_coarseEstimatedEndDate, estimatedEndDate);
+    v31->_estimatedEndDateStatus = status;
+    v31->_sessionEndReason = reason;
+    objc_storeStrong(&v31->_sessionStateTransitionDate, transitionDate);
+    objc_storeStrong(&v31->_activePairedDeviceIdentifier, deviceIdentifier);
   }
 
   return v31;
 }
 
-+ (id)convertSessionStateToString:(unint64_t)a3
++ (id)convertSessionStateToString:(unint64_t)string
 {
-  if (a3 < 0xF && ((0x5F97u >> a3) & 1) != 0)
+  if (string < 0xF && ((0x5F97u >> string) & 1) != 0)
   {
-    v4 = off_279B64C48[a3];
+    string = off_279B64C48[string];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported (%lu)", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported (%lu)", string];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)convertEstimatedEndDateStatusToString:(unint64_t)a3
++ (id)convertEstimatedEndDateStatusToString:(unint64_t)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported (%lu)", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported (%lu)", string];
   }
 
   else
   {
-    v4 = off_279B64CC0[a3];
+    string = off_279B64CC0[string];
   }
 
-  return v4;
+  return string;
 }
 
 - (id)cacheReleaseDate
@@ -168,8 +168,8 @@
     v4 = &SMWorkoutSessionEndedExtensionTimerDuration;
   }
 
-  v5 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-  v6 = [v5 dateByAddingTimeInterval:*v4];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  v6 = [sessionStateTransitionDate dateByAddingTimeInterval:*v4];
 
   v3 = v6;
 LABEL_10:
@@ -177,150 +177,150 @@ LABEL_10:
   return v3;
 }
 
-- (SMSessionManagerState)initWithCoder:(id)a3
+- (SMSessionManagerState)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeIntegerForKey:@"__kSMSessionManagerStateStateKey"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateConfigurationKey"];
-  v18 = [v3 decodeIntegerForKey:@"__kSMSessionManagerStateUserTriggerResposeKey"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateMonitorContextKey"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateDateKey"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateLocationKey"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
-  v6 = [v3 decodeIntegerForKey:@"__kSMSessionManagerStateEstimatedEndDateStatusKey"];
-  v7 = [v3 decodeIntForKey:@"__kSMSessionManagerStateSessionEndReasonKey"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
+  coderCopy = coder;
+  v20 = [coderCopy decodeIntegerForKey:@"__kSMSessionManagerStateStateKey"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateConfigurationKey"];
+  v18 = [coderCopy decodeIntegerForKey:@"__kSMSessionManagerStateUserTriggerResposeKey"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateMonitorContextKey"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateDateKey"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateLocationKey"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"__kSMSessionManagerStateEstimatedEndDateStatusKey"];
+  v7 = [coderCopy decodeIntForKey:@"__kSMSessionManagerStateSessionEndReasonKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
 
   v23 = [(SMSessionManagerState *)self initWithSessionState:v20 configuration:v24 userTriggerResponse:v18 monitorContext:v21 date:v19 location:v17 allowReadToken:v16 safetyCacheKey:v15 startMessageGUID:v14 scheduledSendMessageGUID:v13 scheduledSendMessageDate:v12 activeDeviceIdentifier:v11 estimatedEndDate:v4 coarseEstimatedEndDate:v5 estimatedEndDateStatus:v6 sessionEndReason:v7 sessionStateTransitionDate:v8 activePairedDeviceIdentifier:v9];
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SMSessionManagerState sessionState](self forKey:{"sessionState"), @"__kSMSessionManagerStateStateKey"}];
-  v5 = [(SMSessionManagerState *)self configuration];
-  [v4 encodeObject:v5 forKey:@"__kSMSessionManagerStateConfigurationKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SMSessionManagerState sessionState](self forKey:{"sessionState"), @"__kSMSessionManagerStateStateKey"}];
+  configuration = [(SMSessionManagerState *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"__kSMSessionManagerStateConfigurationKey"];
 
-  [v4 encodeInteger:-[SMSessionManagerState userTriggerResponse](self forKey:{"userTriggerResponse"), @"__kSMSessionManagerStateUserTriggerResposeKey"}];
-  v6 = [(SMSessionManagerState *)self monitorContext];
-  [v4 encodeObject:v6 forKey:@"__kSMSessionManagerStateMonitorContextKey"];
+  [coderCopy encodeInteger:-[SMSessionManagerState userTriggerResponse](self forKey:{"userTriggerResponse"), @"__kSMSessionManagerStateUserTriggerResposeKey"}];
+  monitorContext = [(SMSessionManagerState *)self monitorContext];
+  [coderCopy encodeObject:monitorContext forKey:@"__kSMSessionManagerStateMonitorContextKey"];
 
-  v7 = [(SMSessionManagerState *)self date];
-  [v4 encodeObject:v7 forKey:@"__kSMSessionManagerStateDateKey"];
+  date = [(SMSessionManagerState *)self date];
+  [coderCopy encodeObject:date forKey:@"__kSMSessionManagerStateDateKey"];
 
-  v8 = [(SMSessionManagerState *)self location];
-  [v4 encodeObject:v8 forKey:@"__kSMSessionManagerStateLocationKey"];
+  location = [(SMSessionManagerState *)self location];
+  [coderCopy encodeObject:location forKey:@"__kSMSessionManagerStateLocationKey"];
 
-  v9 = [(SMSessionManagerState *)self allowReadToken];
-  [v4 encodeObject:v9 forKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
+  allowReadToken = [(SMSessionManagerState *)self allowReadToken];
+  [coderCopy encodeObject:allowReadToken forKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
 
-  v10 = [(SMSessionManagerState *)self safetyCacheKey];
-  [v4 encodeObject:v10 forKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
+  safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
+  [coderCopy encodeObject:safetyCacheKey forKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
 
-  v11 = [(SMSessionManagerState *)self startMessageGUID];
-  [v4 encodeObject:v11 forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
+  startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
+  [coderCopy encodeObject:startMessageGUID forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
 
-  v12 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-  [v4 encodeObject:v12 forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
+  scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+  [coderCopy encodeObject:scheduledSendMessageGUID forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
 
-  v13 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-  [v4 encodeObject:v13 forKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
+  scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
+  [coderCopy encodeObject:scheduledSendMessageDate forKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
 
-  v14 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-  [v4 encodeObject:v14 forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
+  activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
+  [coderCopy encodeObject:activeDeviceIdentifier forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
 
-  v15 = [(SMSessionManagerState *)self estimatedEndDate];
-  [v4 encodeObject:v15 forKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
+  estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
+  [coderCopy encodeObject:estimatedEndDate forKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
 
-  v16 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-  [v4 encodeObject:v16 forKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
+  coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+  [coderCopy encodeObject:coarseEstimatedEndDate forKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
 
-  [v4 encodeInteger:-[SMSessionManagerState estimatedEndDateStatus](self forKey:{"estimatedEndDateStatus"), @"__kSMSessionManagerStateEstimatedEndDateStatusKey"}];
-  [v4 encodeInteger:-[SMSessionManagerState sessionEndReason](self forKey:{"sessionEndReason"), @"__kSMSessionManagerStateSessionEndReasonKey"}];
-  v17 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-  [v4 encodeObject:v17 forKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
+  [coderCopy encodeInteger:-[SMSessionManagerState estimatedEndDateStatus](self forKey:{"estimatedEndDateStatus"), @"__kSMSessionManagerStateEstimatedEndDateStatusKey"}];
+  [coderCopy encodeInteger:-[SMSessionManagerState sessionEndReason](self forKey:{"sessionEndReason"), @"__kSMSessionManagerStateSessionEndReasonKey"}];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  [coderCopy encodeObject:sessionStateTransitionDate forKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
 
-  v18 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-  [v4 encodeObject:v18 forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
+  activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+  [coderCopy encodeObject:activePairedDeviceIdentifier forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v23 = [SMSessionManagerMutableState allocWithZone:a3];
-  v22 = [(SMSessionManagerState *)self sessionState];
-  v21 = [(SMSessionManagerState *)self configuration];
-  v20 = [(SMSessionManagerState *)self userTriggerResponse];
-  v19 = [(SMSessionManagerState *)self monitorContext];
-  v18 = [(SMSessionManagerState *)self date];
-  v17 = [(SMSessionManagerState *)self location];
-  v15 = [(SMSessionManagerState *)self allowReadToken];
-  v14 = [(SMSessionManagerState *)self safetyCacheKey];
-  v13 = [(SMSessionManagerState *)self startMessageGUID];
-  v16 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-  v11 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-  v12 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-  v4 = [(SMSessionManagerState *)self estimatedEndDate];
-  v5 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-  v6 = [(SMSessionManagerState *)self estimatedEndDateStatus];
-  v7 = [(SMSessionManagerState *)self sessionEndReason];
-  v8 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-  v9 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-  v24 = [(SMSessionManagerState *)v23 initWithSessionState:v22 configuration:v21 userTriggerResponse:v20 monitorContext:v19 date:v18 location:v17 allowReadToken:v15 safetyCacheKey:v14 startMessageGUID:v13 scheduledSendMessageGUID:v16 scheduledSendMessageDate:v11 activeDeviceIdentifier:v12 estimatedEndDate:v4 coarseEstimatedEndDate:v5 estimatedEndDateStatus:v6 sessionEndReason:v7 sessionStateTransitionDate:v8 activePairedDeviceIdentifier:v9];
+  v23 = [SMSessionManagerMutableState allocWithZone:zone];
+  sessionState = [(SMSessionManagerState *)self sessionState];
+  configuration = [(SMSessionManagerState *)self configuration];
+  userTriggerResponse = [(SMSessionManagerState *)self userTriggerResponse];
+  monitorContext = [(SMSessionManagerState *)self monitorContext];
+  date = [(SMSessionManagerState *)self date];
+  location = [(SMSessionManagerState *)self location];
+  allowReadToken = [(SMSessionManagerState *)self allowReadToken];
+  safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
+  startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
+  scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+  scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
+  activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
+  estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
+  coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+  estimatedEndDateStatus = [(SMSessionManagerState *)self estimatedEndDateStatus];
+  sessionEndReason = [(SMSessionManagerState *)self sessionEndReason];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+  v24 = [(SMSessionManagerState *)v23 initWithSessionState:sessionState configuration:configuration userTriggerResponse:userTriggerResponse monitorContext:monitorContext date:date location:location allowReadToken:allowReadToken safetyCacheKey:safetyCacheKey startMessageGUID:startMessageGUID scheduledSendMessageGUID:scheduledSendMessageGUID scheduledSendMessageDate:scheduledSendMessageDate activeDeviceIdentifier:activeDeviceIdentifier estimatedEndDate:estimatedEndDate coarseEstimatedEndDate:coarseEstimatedEndDate estimatedEndDateStatus:estimatedEndDateStatus sessionEndReason:sessionEndReason sessionStateTransitionDate:sessionStateTransitionDate activePairedDeviceIdentifier:activePairedDeviceIdentifier];
 
   return v24;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SMSessionManagerState *)self sessionState];
-  v35 = [(SMSessionManagerState *)self configuration];
-  v4 = [v35 hash];
-  v5 = v4 ^ v3 ^ [(SMSessionManagerState *)self userTriggerResponse];
-  v34 = [(SMSessionManagerState *)self monitorContext];
-  v6 = [v34 hash];
-  v33 = [(SMSessionManagerState *)self date];
-  v7 = v5 ^ v6 ^ [v33 hash];
-  v32 = [(SMSessionManagerState *)self location];
-  v8 = [v32 hash];
-  v31 = [(SMSessionManagerState *)self allowReadToken];
-  v9 = v8 ^ [v31 hash];
-  v30 = [(SMSessionManagerState *)self safetyCacheKey];
-  v10 = v7 ^ v9 ^ [v30 hash];
-  v11 = [(SMSessionManagerState *)self startMessageGUID];
-  v12 = [v11 hash];
-  v13 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-  v18 = v10 ^ v16 ^ [v17 hash];
-  v19 = [(SMSessionManagerState *)self estimatedEndDate];
-  v20 = [v19 hash];
-  v21 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-  v22 = v20 ^ [v21 hash];
+  sessionState = [(SMSessionManagerState *)self sessionState];
+  configuration = [(SMSessionManagerState *)self configuration];
+  v4 = [configuration hash];
+  v5 = v4 ^ sessionState ^ [(SMSessionManagerState *)self userTriggerResponse];
+  monitorContext = [(SMSessionManagerState *)self monitorContext];
+  v6 = [monitorContext hash];
+  date = [(SMSessionManagerState *)self date];
+  v7 = v5 ^ v6 ^ [date hash];
+  location = [(SMSessionManagerState *)self location];
+  v8 = [location hash];
+  allowReadToken = [(SMSessionManagerState *)self allowReadToken];
+  v9 = v8 ^ [allowReadToken hash];
+  safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
+  v10 = v7 ^ v9 ^ [safetyCacheKey hash];
+  startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
+  v12 = [startMessageGUID hash];
+  scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+  v14 = v12 ^ [scheduledSendMessageGUID hash];
+  scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
+  v16 = v14 ^ [scheduledSendMessageDate hash];
+  activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
+  v18 = v10 ^ v16 ^ [activeDeviceIdentifier hash];
+  estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
+  v20 = [estimatedEndDate hash];
+  coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+  v22 = v20 ^ [coarseEstimatedEndDate hash];
   v23 = v22 ^ [(SMSessionManagerState *)self estimatedEndDateStatus];
   v24 = v23 ^ [(SMSessionManagerState *)self sessionEndReason];
-  v25 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-  v26 = v18 ^ v24 ^ [v25 hash];
-  v27 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-  v28 = [v27 hash];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  v26 = v18 ^ v24 ^ [sessionStateTransitionDate hash];
+  activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+  v28 = [activePairedDeviceIdentifier hash];
 
   return v26 ^ v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -330,9 +330,9 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SMSessionManagerState *)self sessionState];
-      if (v8 != [(SMSessionManagerState *)v7 sessionState])
+      v7 = equalCopy;
+      sessionState = [(SMSessionManagerState *)self sessionState];
+      if (sessionState != [(SMSessionManagerState *)v7 sessionState])
       {
         v11 = 0;
 LABEL_90:
@@ -340,111 +340,111 @@ LABEL_90:
         goto LABEL_91;
       }
 
-      v9 = [(SMSessionManagerState *)self configuration];
-      v10 = [(SMSessionManagerState *)v7 configuration];
-      if (v9 != v10)
+      configuration = [(SMSessionManagerState *)self configuration];
+      configuration2 = [(SMSessionManagerState *)v7 configuration];
+      if (configuration != configuration2)
       {
-        v3 = [(SMSessionManagerState *)self configuration];
-        v4 = [(SMSessionManagerState *)v7 configuration];
-        if (![v3 isEqual:v4])
+        configuration3 = [(SMSessionManagerState *)self configuration];
+        configuration4 = [(SMSessionManagerState *)v7 configuration];
+        if (![configuration3 isEqual:configuration4])
         {
           v11 = 0;
           goto LABEL_88;
         }
       }
 
-      v12 = [(SMSessionManagerState *)self userTriggerResponse];
-      if (v12 != [(SMSessionManagerState *)v7 userTriggerResponse])
+      userTriggerResponse = [(SMSessionManagerState *)self userTriggerResponse];
+      if (userTriggerResponse != [(SMSessionManagerState *)v7 userTriggerResponse])
       {
         v11 = 0;
         goto LABEL_87;
       }
 
-      v13 = [(SMSessionManagerState *)self monitorContext];
-      v14 = [(SMSessionManagerState *)v7 monitorContext];
-      if (v13 == v14)
+      monitorContext = [(SMSessionManagerState *)self monitorContext];
+      monitorContext2 = [(SMSessionManagerState *)v7 monitorContext];
+      if (monitorContext == monitorContext2)
       {
-        v121 = v13;
+        v121 = monitorContext;
       }
 
       else
       {
-        v15 = [(SMSessionManagerState *)self monitorContext];
-        v120 = [(SMSessionManagerState *)v7 monitorContext];
-        if (![v15 isEqual:?])
+        monitorContext3 = [(SMSessionManagerState *)self monitorContext];
+        monitorContext4 = [(SMSessionManagerState *)v7 monitorContext];
+        if (![monitorContext3 isEqual:?])
         {
           v11 = 0;
           goto LABEL_85;
         }
 
-        v118 = v15;
-        v121 = v13;
+        v118 = monitorContext3;
+        v121 = monitorContext;
       }
 
-      v16 = [(SMSessionManagerState *)self date];
-      [v16 timeIntervalSince1970];
+      date = [(SMSessionManagerState *)self date];
+      [date timeIntervalSince1970];
       v18 = v17;
-      v19 = [(SMSessionManagerState *)v7 date];
-      [v19 timeIntervalSince1970];
+      date2 = [(SMSessionManagerState *)v7 date];
+      [date2 timeIntervalSince1970];
       if (v18 != v20)
       {
 
         v11 = 0;
-        v13 = v121;
+        monitorContext = v121;
         goto LABEL_84;
       }
 
-      v119 = v19;
-      v117 = v16;
-      v116 = [(SMSessionManagerState *)self location];
-      [v116 coordinate];
+      v119 = date2;
+      v117 = date;
+      location = [(SMSessionManagerState *)self location];
+      [location coordinate];
       v22 = v21;
-      v115 = [(SMSessionManagerState *)v7 location];
-      [v115 coordinate];
+      location2 = [(SMSessionManagerState *)v7 location];
+      [location2 coordinate];
       v24 = v23;
       if (v22 == v23)
       {
-        v28 = v19;
+        v28 = date2;
       }
 
       else
       {
-        v112 = [(SMSessionManagerState *)self location];
-        [v112 coordinate];
+        location3 = [(SMSessionManagerState *)self location];
+        [location3 coordinate];
         v26 = v25;
-        v111 = [(SMSessionManagerState *)v7 location];
-        [v111 coordinate];
-        v28 = v19;
+        location4 = [(SMSessionManagerState *)v7 location];
+        [location4 coordinate];
+        v28 = date2;
         if (vabdd_f64(v26, v27) >= 2.22044605e-16)
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
           goto LABEL_82;
         }
       }
 
-      v114 = [(SMSessionManagerState *)self location];
-      [v114 coordinate];
+      location5 = [(SMSessionManagerState *)self location];
+      [location5 coordinate];
       v30 = v29;
-      v113 = [(SMSessionManagerState *)v7 location];
-      [v113 coordinate];
+      location6 = [(SMSessionManagerState *)v7 location];
+      [location6 coordinate];
       v32 = v31;
       if (v30 == v31)
       {
-        v109 = v14;
+        v109 = monitorContext2;
       }
 
       else
       {
-        v107 = [(SMSessionManagerState *)self location];
-        [v107 coordinate];
+        location7 = [(SMSessionManagerState *)self location];
+        [location7 coordinate];
         v34 = v33;
-        v106 = [(SMSessionManagerState *)v7 location];
-        [v106 coordinate];
+        location8 = [(SMSessionManagerState *)v7 location];
+        [location8 coordinate];
         if (vabdd_f64(v34, v35) >= 2.22044605e-16)
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
 LABEL_80:
 
 LABEL_81:
@@ -453,13 +453,13 @@ LABEL_81:
 LABEL_83:
 
 LABEL_84:
-            v15 = v118;
-            if (v13 == v14)
+            monitorContext3 = v118;
+            if (monitorContext == monitorContext2)
             {
 LABEL_86:
 
 LABEL_87:
-              if (v9 == v10)
+              if (configuration == configuration2)
               {
 LABEL_89:
 
@@ -481,27 +481,27 @@ LABEL_82:
           goto LABEL_83;
         }
 
-        v109 = v14;
+        v109 = monitorContext2;
       }
 
-      v36 = [(SMSessionManagerState *)self allowReadToken];
+      allowReadToken = [(SMSessionManagerState *)self allowReadToken];
       [(SMSessionManagerState *)v7 allowReadToken];
-      v108 = v110 = v36;
-      if (v36 != v108)
+      v108 = v110 = allowReadToken;
+      if (allowReadToken != v108)
       {
-        v37 = [(SMSessionManagerState *)self allowReadToken];
-        v103 = [(SMSessionManagerState *)v7 allowReadToken];
-        v104 = v37;
-        if (![v37 isEqual:v103])
+        allowReadToken2 = [(SMSessionManagerState *)self allowReadToken];
+        allowReadToken3 = [(SMSessionManagerState *)v7 allowReadToken];
+        v104 = allowReadToken2;
+        if (![allowReadToken2 isEqual:allowReadToken3])
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
           v38 = v108;
 LABEL_78:
 
 LABEL_79:
           v28 = v119;
-          v14 = v109;
+          monitorContext2 = v109;
           if (v30 == v32)
           {
             goto LABEL_81;
@@ -511,23 +511,23 @@ LABEL_79:
         }
       }
 
-      v39 = [(SMSessionManagerState *)self safetyCacheKey];
-      v40 = [(SMSessionManagerState *)v7 safetyCacheKey];
-      v105 = v39;
-      if (v39 != v40)
+      safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
+      safetyCacheKey2 = [(SMSessionManagerState *)v7 safetyCacheKey];
+      v105 = safetyCacheKey;
+      if (safetyCacheKey != safetyCacheKey2)
       {
-        v41 = [(SMSessionManagerState *)self safetyCacheKey];
-        v99 = [(SMSessionManagerState *)v7 safetyCacheKey];
-        v100 = v41;
-        if (![v41 isEqual:v99])
+        safetyCacheKey3 = [(SMSessionManagerState *)self safetyCacheKey];
+        safetyCacheKey4 = [(SMSessionManagerState *)v7 safetyCacheKey];
+        v100 = safetyCacheKey3;
+        if (![safetyCacheKey3 isEqual:safetyCacheKey4])
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
           v42 = v105;
 LABEL_76:
 
 LABEL_77:
-          v36 = v110;
+          allowReadToken = v110;
           v38 = v108;
           if (v110 == v108)
           {
@@ -538,26 +538,26 @@ LABEL_77:
         }
       }
 
-      v43 = [(SMSessionManagerState *)self startMessageGUID];
-      v44 = [(SMSessionManagerState *)v7 startMessageGUID];
-      v101 = v43;
-      v102 = v40;
-      v45 = v43 == v44;
-      v46 = v44;
+      startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
+      startMessageGUID2 = [(SMSessionManagerState *)v7 startMessageGUID];
+      v101 = startMessageGUID;
+      v102 = safetyCacheKey2;
+      v45 = startMessageGUID == startMessageGUID2;
+      v46 = startMessageGUID2;
       if (!v45)
       {
-        v47 = [(SMSessionManagerState *)self startMessageGUID];
-        v94 = [(SMSessionManagerState *)v7 startMessageGUID];
-        v95 = v47;
-        if (![v47 isEqual:v94])
+        startMessageGUID3 = [(SMSessionManagerState *)self startMessageGUID];
+        startMessageGUID4 = [(SMSessionManagerState *)v7 startMessageGUID];
+        v95 = startMessageGUID3;
+        if (![startMessageGUID3 isEqual:startMessageGUID4])
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
           v48 = v101;
 LABEL_74:
 
 LABEL_75:
-          v40 = v102;
+          safetyCacheKey2 = v102;
           v42 = v105;
           if (v105 == v102)
           {
@@ -568,31 +568,31 @@ LABEL_75:
         }
       }
 
-      v49 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-      v96 = [(SMSessionManagerState *)v7 scheduledSendMessageGUID];
-      v97 = v49;
+      scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+      scheduledSendMessageGUID2 = [(SMSessionManagerState *)v7 scheduledSendMessageGUID];
+      v97 = scheduledSendMessageGUID;
       v98 = v46;
-      if (v49 != v96)
+      if (scheduledSendMessageGUID != scheduledSendMessageGUID2)
       {
-        v50 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-        v91 = [(SMSessionManagerState *)v7 scheduledSendMessageGUID];
-        v92 = v50;
-        if (![v50 isEqual:v91])
+        scheduledSendMessageGUID3 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+        scheduledSendMessageGUID4 = [(SMSessionManagerState *)v7 scheduledSendMessageGUID];
+        v92 = scheduledSendMessageGUID3;
+        if (![scheduledSendMessageGUID3 isEqual:scheduledSendMessageGUID4])
         {
           v11 = 0;
-          v13 = v121;
-          v52 = v96;
+          monitorContext = v121;
+          v52 = scheduledSendMessageGUID2;
           v51 = v97;
           goto LABEL_72;
         }
       }
 
-      v93 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-      if (v93 || ([(SMSessionManagerState *)v7 scheduledSendMessageDate], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
+      scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
+      if (scheduledSendMessageDate || ([(SMSessionManagerState *)v7 scheduledSendMessageDate], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v53 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-        v54 = [(SMSessionManagerState *)v7 scheduledSendMessageDate];
-        [v53 timeIntervalSinceDate:v54];
+        scheduledSendMessageDate2 = [(SMSessionManagerState *)self scheduledSendMessageDate];
+        scheduledSendMessageDate3 = [(SMSessionManagerState *)v7 scheduledSendMessageDate];
+        [scheduledSendMessageDate2 timeIntervalSinceDate:scheduledSendMessageDate3];
         v56 = v55;
 
         v57 = -v56;
@@ -604,7 +604,7 @@ LABEL_75:
         if (v57 >= 0.01)
         {
           v11 = 0;
-          v13 = v121;
+          monitorContext = v121;
           goto LABEL_69;
         }
       }
@@ -614,51 +614,51 @@ LABEL_75:
         v89 = 0;
       }
 
-      v58 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-      v59 = [(SMSessionManagerState *)v7 activeDeviceIdentifier];
-      v90 = v58;
-      if (v58 == v59 || (-[SMSessionManagerState activeDeviceIdentifier](self, "activeDeviceIdentifier"), v60 = objc_claimAutoreleasedReturnValue(), -[SMSessionManagerState activeDeviceIdentifier](v7, "activeDeviceIdentifier"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v60, [v60 isEqual:v86]))
+      activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
+      activeDeviceIdentifier2 = [(SMSessionManagerState *)v7 activeDeviceIdentifier];
+      v90 = activeDeviceIdentifier;
+      if (activeDeviceIdentifier == activeDeviceIdentifier2 || (-[SMSessionManagerState activeDeviceIdentifier](self, "activeDeviceIdentifier"), v60 = objc_claimAutoreleasedReturnValue(), -[SMSessionManagerState activeDeviceIdentifier](v7, "activeDeviceIdentifier"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v60, [v60 isEqual:v86]))
       {
-        v61 = [(SMSessionManagerState *)self estimatedEndDate];
-        [v61 timeIntervalSince1970];
+        estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
+        [estimatedEndDate timeIntervalSince1970];
         v63 = v62;
-        v88 = [(SMSessionManagerState *)v7 estimatedEndDate];
-        [v88 timeIntervalSince1970];
+        estimatedEndDate2 = [(SMSessionManagerState *)v7 estimatedEndDate];
+        [estimatedEndDate2 timeIntervalSince1970];
         if (v63 == v64)
         {
-          v85 = v59;
-          v65 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-          [v65 timeIntervalSince1970];
+          v85 = activeDeviceIdentifier2;
+          coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+          [coarseEstimatedEndDate timeIntervalSince1970];
           v67 = v66;
-          v83 = [(SMSessionManagerState *)v7 coarseEstimatedEndDate];
-          [v83 timeIntervalSince1970];
-          v84 = v61;
+          coarseEstimatedEndDate2 = [(SMSessionManagerState *)v7 coarseEstimatedEndDate];
+          [coarseEstimatedEndDate2 timeIntervalSince1970];
+          v84 = estimatedEndDate;
           if (v67 == v68)
           {
-            v82 = v65;
-            v69 = [(SMSessionManagerState *)self estimatedEndDateStatus];
-            if (v69 == [(SMSessionManagerState *)v7 estimatedEndDateStatus]&& (v70 = [(SMSessionManagerState *)self sessionEndReason], v70 == [(SMSessionManagerState *)v7 sessionEndReason]))
+            v82 = coarseEstimatedEndDate;
+            estimatedEndDateStatus = [(SMSessionManagerState *)self estimatedEndDateStatus];
+            if (estimatedEndDateStatus == [(SMSessionManagerState *)v7 estimatedEndDateStatus]&& (v70 = [(SMSessionManagerState *)self sessionEndReason], v70 == [(SMSessionManagerState *)v7 sessionEndReason]))
             {
-              v71 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-              [v71 timeIntervalSince1970];
+              sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+              [sessionStateTransitionDate timeIntervalSince1970];
               v73 = v72;
-              v81 = [(SMSessionManagerState *)v7 sessionStateTransitionDate];
-              [v81 timeIntervalSince1970];
+              sessionStateTransitionDate2 = [(SMSessionManagerState *)v7 sessionStateTransitionDate];
+              [sessionStateTransitionDate2 timeIntervalSince1970];
               if (v73 == v74)
               {
-                v75 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-                v79 = [(SMSessionManagerState *)v7 activePairedDeviceIdentifier];
-                v80 = v75;
-                if (v75 == v79)
+                activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+                activePairedDeviceIdentifier2 = [(SMSessionManagerState *)v7 activePairedDeviceIdentifier];
+                v80 = activePairedDeviceIdentifier;
+                if (activePairedDeviceIdentifier == activePairedDeviceIdentifier2)
                 {
                   v11 = 1;
                 }
 
                 else
                 {
-                  v76 = [(SMSessionManagerState *)self activePairedDeviceIdentifier:v79];
-                  v77 = [(SMSessionManagerState *)v7 activePairedDeviceIdentifier];
-                  v11 = [v76 isEqual:v77];
+                  v76 = [(SMSessionManagerState *)self activePairedDeviceIdentifier:activePairedDeviceIdentifier2];
+                  activePairedDeviceIdentifier3 = [(SMSessionManagerState *)v7 activePairedDeviceIdentifier];
+                  v11 = [v76 isEqual:activePairedDeviceIdentifier3];
                 }
               }
 
@@ -673,17 +673,17 @@ LABEL_75:
               v11 = 0;
             }
 
-            v13 = v121;
-            v65 = v82;
+            monitorContext = v121;
+            coarseEstimatedEndDate = v82;
           }
 
           else
           {
             v11 = 0;
-            v13 = v121;
+            monitorContext = v121;
           }
 
-          v59 = v85;
+          activeDeviceIdentifier2 = v85;
           if (v90 == v85)
           {
             goto LABEL_68;
@@ -694,8 +694,8 @@ LABEL_75:
         {
 
           v11 = 0;
-          v13 = v121;
-          if (v90 == v59)
+          monitorContext = v121;
+          if (v90 == activeDeviceIdentifier2)
           {
             goto LABEL_68;
           }
@@ -705,18 +705,18 @@ LABEL_75:
       else
       {
         v11 = 0;
-        v13 = v121;
+        monitorContext = v121;
       }
 
 LABEL_68:
 LABEL_69:
-      if (!v93)
+      if (!scheduledSendMessageDate)
       {
       }
 
-      v52 = v96;
+      v52 = scheduledSendMessageGUID2;
       v51 = v97;
-      if (v97 == v96)
+      if (v97 == scheduledSendMessageGUID2)
       {
 LABEL_73:
 
@@ -743,24 +743,24 @@ LABEL_91:
   return v11;
 }
 
-- (SMSessionManagerState)initWithDictionary:(id)a3
+- (SMSessionManagerState)initWithDictionary:(id)dictionary
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForKey:@"__kSMSessionManagerStateStateKey"];
-  v6 = [v4 valueForKey:@"__kSMSessionManagerStateUserTriggerResposeKey"];
-  v7 = [v4 valueForKey:@"__kSMSessionManagerStateEstimatedEndDateStatusKey"];
-  v8 = [v4 valueForKey:@"__kSMSessionManagerStateSessionEndReasonKey"];
-  v9 = [v6 intValue];
-  v10 = [v5 intValue];
-  v11 = [[SMSessionConfiguration alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateStateKey"];
+  v6 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateUserTriggerResposeKey"];
+  v7 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateEstimatedEndDateStatusKey"];
+  v8 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateSessionEndReasonKey"];
+  intValue = [v6 intValue];
+  intValue2 = [v5 intValue];
+  v11 = [[SMSessionConfiguration alloc] initWithDictionary:dictionaryCopy];
   if (v11)
   {
-    v61 = v9;
+    v61 = intValue;
     v63 = v6;
-    v69 = [[SMSessionMonitorContext alloc] initWithDictionary:v4];
-    v12 = [v4 valueForKey:@"__kSMSessionManagerStateDateKey"];
-    v71 = self;
+    v69 = [[SMSessionMonitorContext alloc] initWithDictionary:dictionaryCopy];
+    v12 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateDateKey"];
+    selfCopy = self;
     v64 = v5;
     v59 = v12;
     if (v12)
@@ -776,11 +776,11 @@ LABEL_91:
     }
 
     v16 = objc_alloc(MEMORY[0x277CCAD78]);
-    v17 = [v4 valueForKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
+    v17 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
     v67 = [v16 initWithUUIDString:v17];
 
-    v18 = [v4 valueForKey:@"__kSMSessionManagerStateLocationKeyLatitude"];
-    v19 = [v4 valueForKey:@"__kSMSessionManagerStateLocationKeyLongitude"];
+    v18 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateLocationKeyLatitude"];
+    v19 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateLocationKeyLongitude"];
     v20 = 0;
     if (v18 && v19)
     {
@@ -792,8 +792,8 @@ LABEL_91:
     }
 
     v66 = v20;
-    v25 = [v4 valueForKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
-    v26 = v10;
+    v25 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
+    v26 = intValue2;
     if (v25)
     {
       v65 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v25 options:0];
@@ -804,7 +804,7 @@ LABEL_91:
       v65 = 0;
     }
 
-    v27 = [v4 valueForKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
+    v27 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
     if (v27)
     {
       v55 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v27 options:0];
@@ -816,9 +816,9 @@ LABEL_91:
     }
 
     v56 = v27;
-    v54 = [v4 valueForKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
-    v53 = [v4 valueForKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
-    v28 = [v4 valueForKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
+    v54 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
+    v53 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
+    v28 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
     v52 = v28;
     if (v28)
     {
@@ -833,7 +833,7 @@ LABEL_91:
     }
 
     v58 = v18;
-    v30 = [v4 valueForKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
+    v30 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
     v57 = v19;
     v50 = v30;
     if (v30)
@@ -850,7 +850,7 @@ LABEL_91:
 
     v47 = v26;
     v48 = v61;
-    v33 = [v4 valueForKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
+    v33 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
     v70 = v11;
     v49 = v33;
     if (v33)
@@ -866,10 +866,10 @@ LABEL_91:
     }
 
     v62 = v7;
-    v36 = [v7 intValue];
+    intValue3 = [v7 intValue];
     v60 = v8;
-    v37 = [v8 intValue];
-    v38 = [v4 valueForKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
+    intValue4 = [v8 intValue];
+    v38 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
     v39 = v38;
     if (v38)
     {
@@ -884,10 +884,10 @@ LABEL_91:
     }
 
     v42 = objc_alloc(MEMORY[0x277CCAD78]);
-    v43 = [v4 valueForKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
+    v43 = [dictionaryCopy valueForKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
     v44 = [v42 initWithUUIDString:v43];
 
-    v72 = [(SMSessionManagerState *)v71 initWithSessionState:v47 configuration:v70 userTriggerResponse:v48 monitorContext:v69 date:v68 location:v66 allowReadToken:v65 safetyCacheKey:v55 startMessageGUID:v54 scheduledSendMessageGUID:v53 scheduledSendMessageDate:v51 activeDeviceIdentifier:v67 estimatedEndDate:v32 coarseEstimatedEndDate:v35 estimatedEndDateStatus:v36 sessionEndReason:v37 sessionStateTransitionDate:v41 activePairedDeviceIdentifier:v44];
+    v72 = [(SMSessionManagerState *)selfCopy initWithSessionState:v47 configuration:v70 userTriggerResponse:v48 monitorContext:v69 date:v68 location:v66 allowReadToken:v65 safetyCacheKey:v55 startMessageGUID:v54 scheduledSendMessageGUID:v53 scheduledSendMessageDate:v51 activeDeviceIdentifier:v67 estimatedEndDate:v32 coarseEstimatedEndDate:v35 estimatedEndDateStatus:intValue3 sessionEndReason:intValue4 sessionStateTransitionDate:v41 activePairedDeviceIdentifier:v44];
     self = v72;
 
     v11 = v70;
@@ -918,24 +918,24 @@ LABEL_91:
 - (id)outputToDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(SMSessionManagerState *)self date];
+  date = [(SMSessionManagerState *)self date];
 
-  if (v4)
+  if (date)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [(SMSessionManagerState *)self date];
-    [v6 timeIntervalSince1970];
+    date2 = [(SMSessionManagerState *)self date];
+    [date2 timeIntervalSince1970];
     v7 = [v5 numberWithDouble:?];
     [v3 setObject:v7 forKey:@"__kSMSessionManagerStateDateKey"];
   }
 
-  v8 = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
 
-  if (v8)
+  if (sessionStateTransitionDate)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-    [v10 timeIntervalSince1970];
+    sessionStateTransitionDate2 = [(SMSessionManagerState *)self sessionStateTransitionDate];
+    [sessionStateTransitionDate2 timeIntervalSince1970];
     v11 = [v9 numberWithDouble:?];
     [v3 setObject:v11 forKey:@"__kSMSessionManagerStateSessionStateTransitionDateKey"];
   }
@@ -946,123 +946,123 @@ LABEL_91:
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMSessionManagerState userTriggerResponse](self, "userTriggerResponse")}];
   [v3 setObject:v13 forKey:@"__kSMSessionManagerStateUserTriggerResposeKey"];
 
-  v14 = [(SMSessionManagerState *)self monitorContext];
+  monitorContext = [(SMSessionManagerState *)self monitorContext];
 
-  if (v14)
+  if (monitorContext)
   {
-    v15 = [(SMSessionManagerState *)self monitorContext];
-    v16 = [v15 outputToDictionary];
-    [v3 addEntriesFromDictionary:v16];
+    monitorContext2 = [(SMSessionManagerState *)self monitorContext];
+    outputToDictionary = [monitorContext2 outputToDictionary];
+    [v3 addEntriesFromDictionary:outputToDictionary];
   }
 
-  v17 = [(SMSessionManagerState *)self configuration];
-  v18 = [v17 outputToDictionary];
+  configuration = [(SMSessionManagerState *)self configuration];
+  outputToDictionary2 = [configuration outputToDictionary];
 
-  if (v18)
+  if (outputToDictionary2)
   {
-    [v3 addEntriesFromDictionary:v18];
+    [v3 addEntriesFromDictionary:outputToDictionary2];
   }
 
-  v19 = [(SMSessionManagerState *)self activeDeviceIdentifier];
+  activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
 
-  if (v19)
+  if (activeDeviceIdentifier)
   {
-    v20 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-    v21 = [v20 UUIDString];
-    [v3 setObject:v21 forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
+    activeDeviceIdentifier2 = [(SMSessionManagerState *)self activeDeviceIdentifier];
+    uUIDString = [activeDeviceIdentifier2 UUIDString];
+    [v3 setObject:uUIDString forKey:@"__kSMSessionManagerStateActiveDeviceIdentifierKey"];
   }
 
-  v22 = [(SMSessionManagerState *)self location];
+  location = [(SMSessionManagerState *)self location];
 
-  if (v22)
+  if (location)
   {
     v23 = MEMORY[0x277CCABB0];
-    v24 = [(SMSessionManagerState *)self location];
-    [v24 coordinate];
+    location2 = [(SMSessionManagerState *)self location];
+    [location2 coordinate];
     v26 = [v23 numberWithDouble:v25];
     [v3 setObject:v26 forKey:@"__kSMSessionManagerStateLocationKeyLongitude"];
 
     v27 = MEMORY[0x277CCABB0];
-    v28 = [(SMSessionManagerState *)self location];
-    [v28 coordinate];
+    location3 = [(SMSessionManagerState *)self location];
+    [location3 coordinate];
     v29 = [v27 numberWithDouble:?];
     [v3 setObject:v29 forKey:@"__kSMSessionManagerStateLocationKeyLatitude"];
   }
 
-  v30 = [(SMSessionManagerState *)self allowReadToken];
+  allowReadToken = [(SMSessionManagerState *)self allowReadToken];
 
-  if (v30)
+  if (allowReadToken)
   {
-    v31 = [(SMSessionManagerState *)self allowReadToken];
-    v32 = [v31 base64EncodedStringWithOptions:0];
+    allowReadToken2 = [(SMSessionManagerState *)self allowReadToken];
+    v32 = [allowReadToken2 base64EncodedStringWithOptions:0];
     [v3 setObject:v32 forKey:@"__kSMSessionManagerStateAllowReadTokenKey"];
   }
 
-  v33 = [(SMSessionManagerState *)self safetyCacheKey];
+  safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
 
-  if (v33)
+  if (safetyCacheKey)
   {
-    v34 = [(SMSessionManagerState *)self safetyCacheKey];
-    v35 = [v34 base64EncodedStringWithOptions:0];
+    safetyCacheKey2 = [(SMSessionManagerState *)self safetyCacheKey];
+    v35 = [safetyCacheKey2 base64EncodedStringWithOptions:0];
     [v3 setObject:v35 forKey:@"__kSMSessionManagerStateSafetyCacheKeyKey"];
   }
 
-  v36 = [(SMSessionManagerState *)self startMessageGUID];
+  startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
 
-  if (v36)
+  if (startMessageGUID)
   {
-    v37 = [(SMSessionManagerState *)self startMessageGUID];
-    [v3 setObject:v37 forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
+    startMessageGUID2 = [(SMSessionManagerState *)self startMessageGUID];
+    [v3 setObject:startMessageGUID2 forKey:@"__kSMSessionManagerStateStartMessageGUIDKey"];
   }
 
-  v38 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+  scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
 
-  if (v38)
+  if (scheduledSendMessageGUID)
   {
-    v39 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-    [v3 setObject:v39 forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
+    scheduledSendMessageGUID2 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+    [v3 setObject:scheduledSendMessageGUID2 forKey:@"__kSMSessionManagerStateScheduledSendMessageGUIDKey"];
   }
 
-  v40 = [(SMSessionManagerState *)self scheduledSendMessageDate];
+  scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
 
-  if (v40)
+  if (scheduledSendMessageDate)
   {
     v41 = MEMORY[0x277CCABB0];
-    v42 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-    [v42 timeIntervalSince1970];
+    scheduledSendMessageDate2 = [(SMSessionManagerState *)self scheduledSendMessageDate];
+    [scheduledSendMessageDate2 timeIntervalSince1970];
     v43 = [v41 numberWithDouble:?];
     [v3 setObject:v43 forKey:@"__kSMSessionManagerStateScheduledSendMessageDateKey"];
   }
 
-  v44 = [(SMSessionManagerState *)self estimatedEndDate];
+  estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
 
-  if (v44)
+  if (estimatedEndDate)
   {
     v45 = MEMORY[0x277CCABB0];
-    v46 = [(SMSessionManagerState *)self estimatedEndDate];
-    [v46 timeIntervalSince1970];
+    estimatedEndDate2 = [(SMSessionManagerState *)self estimatedEndDate];
+    [estimatedEndDate2 timeIntervalSince1970];
     v47 = [v45 numberWithDouble:?];
     [v3 setObject:v47 forKey:@"__kSMSessionManagerStateEstimatedEndDateKey"];
   }
 
-  v48 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+  coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
 
-  if (v48)
+  if (coarseEstimatedEndDate)
   {
     v49 = MEMORY[0x277CCABB0];
-    v50 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-    [v50 timeIntervalSince1970];
+    coarseEstimatedEndDate2 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+    [coarseEstimatedEndDate2 timeIntervalSince1970];
     v51 = [v49 numberWithDouble:?];
     [v3 setObject:v51 forKey:@"__kSMSessionManagerStateCoarseEstimatedEndDateKey"];
   }
 
-  v52 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+  activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
 
-  if (v52)
+  if (activePairedDeviceIdentifier)
   {
-    v53 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-    v54 = [v53 UUIDString];
-    [v3 setObject:v54 forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
+    activePairedDeviceIdentifier2 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+    uUIDString2 = [activePairedDeviceIdentifier2 UUIDString];
+    [v3 setObject:uUIDString2 forKey:@"__kSMSessionManagerStateActivePairedDeviceIdentifierKey"];
   }
 
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionManagerState estimatedEndDateStatus](self, "estimatedEndDateStatus")}];
@@ -1078,52 +1078,52 @@ LABEL_91:
 {
   v21 = MEMORY[0x277CCACA8];
   v30 = [SMSessionManagerState convertSessionStateToString:[(SMSessionManagerState *)self sessionState]];
-  v27 = [(SMSessionManagerState *)self configuration];
-  v33 = [v27 description];
+  configuration = [(SMSessionManagerState *)self configuration];
+  v33 = [configuration description];
   v32 = [SMSessionMonitorContext userTriggerResponseToString:[(SMSessionManagerState *)self userTriggerResponse]];
-  v26 = [(SMSessionManagerState *)self monitorContext];
-  v18 = [v26 description];
-  v25 = [(SMSessionManagerState *)self date];
-  v31 = [v25 stringFromDate];
-  v24 = [(SMSessionManagerState *)self location];
-  v29 = [v24 description];
-  v23 = [(SMSessionManagerState *)self allowReadToken];
-  v16 = [v23 description];
-  v20 = [(SMSessionManagerState *)self safetyCacheKey];
-  v28 = [v20 description];
-  v14 = [(SMSessionManagerState *)self startMessageGUID];
-  v13 = [(SMSessionManagerState *)self scheduledSendMessageGUID];
-  v19 = [(SMSessionManagerState *)self scheduledSendMessageDate];
-  v12 = [v19 stringFromDate];
-  v3 = [(SMSessionManagerState *)self activeDeviceIdentifier];
-  v17 = [(SMSessionManagerState *)self estimatedEndDate];
-  v11 = [v17 stringFromDate];
-  v15 = [(SMSessionManagerState *)self coarseEstimatedEndDate];
-  v4 = [v15 stringFromDate];
+  monitorContext = [(SMSessionManagerState *)self monitorContext];
+  v18 = [monitorContext description];
+  date = [(SMSessionManagerState *)self date];
+  stringFromDate = [date stringFromDate];
+  location = [(SMSessionManagerState *)self location];
+  v29 = [location description];
+  allowReadToken = [(SMSessionManagerState *)self allowReadToken];
+  v16 = [allowReadToken description];
+  safetyCacheKey = [(SMSessionManagerState *)self safetyCacheKey];
+  v28 = [safetyCacheKey description];
+  startMessageGUID = [(SMSessionManagerState *)self startMessageGUID];
+  scheduledSendMessageGUID = [(SMSessionManagerState *)self scheduledSendMessageGUID];
+  scheduledSendMessageDate = [(SMSessionManagerState *)self scheduledSendMessageDate];
+  stringFromDate2 = [scheduledSendMessageDate stringFromDate];
+  activeDeviceIdentifier = [(SMSessionManagerState *)self activeDeviceIdentifier];
+  estimatedEndDate = [(SMSessionManagerState *)self estimatedEndDate];
+  stringFromDate3 = [estimatedEndDate stringFromDate];
+  coarseEstimatedEndDate = [(SMSessionManagerState *)self coarseEstimatedEndDate];
+  stringFromDate4 = [coarseEstimatedEndDate stringFromDate];
   v5 = [SMSessionManagerState convertEstimatedEndDateStatusToString:[(SMSessionManagerState *)self estimatedEndDateStatus]];
   v6 = [SMSessionMonitorContext sessionEndReasonToString:[(SMSessionManagerState *)self sessionEndReason]];
-  v7 = [(SMSessionManagerState *)self sessionStateTransitionDate];
-  v8 = [v7 stringFromDate];
-  v9 = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
-  v22 = [v21 stringWithFormat:@"{SessionState:%@, Configuration:%@, UserTriggerResponse:%@, monitorContext:%@, date:%@, location:%@, allowReadToken:%@, safetyCacheKey:%@, startMessageGUID:%@, scheduledSendMessageGUID:%@, scheduledSendMessageDate:%@, activeDeviceIdentifier:%@, estimatedEndDate:%@, coarseEstimatedEndDate:%@, estimatedEndDateStatus:%@, sessionEndReason:%@, sessionStateTransitionDate:%@, activePairedDeviceIdentifier:%@}", v30, v33, v32, v18, v31, v29, v16, v28, v14, v13, v12, v3, v11, v4, v5, v6, v8, v9];
+  sessionStateTransitionDate = [(SMSessionManagerState *)self sessionStateTransitionDate];
+  stringFromDate5 = [sessionStateTransitionDate stringFromDate];
+  activePairedDeviceIdentifier = [(SMSessionManagerState *)self activePairedDeviceIdentifier];
+  v22 = [v21 stringWithFormat:@"{SessionState:%@, Configuration:%@, UserTriggerResponse:%@, monitorContext:%@, date:%@, location:%@, allowReadToken:%@, safetyCacheKey:%@, startMessageGUID:%@, scheduledSendMessageGUID:%@, scheduledSendMessageDate:%@, activeDeviceIdentifier:%@, estimatedEndDate:%@, coarseEstimatedEndDate:%@, estimatedEndDateStatus:%@, sessionEndReason:%@, sessionStateTransitionDate:%@, activePairedDeviceIdentifier:%@}", v30, v33, v32, v18, stringFromDate, v29, v16, v28, startMessageGUID, scheduledSendMessageGUID, stringFromDate2, activeDeviceIdentifier, stringFromDate3, stringFromDate4, v5, v6, stringFromDate5, activePairedDeviceIdentifier];
 
   return v22;
 }
 
-- (BOOL)isTimerExtensionValid:(double)a3
+- (BOOL)isTimerExtensionValid:(double)valid
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(SMSessionManagerState *)self configuration];
-  v6 = [v5 sessionStartDate];
+  configuration = [(SMSessionManagerState *)self configuration];
+  sessionStartDate = [configuration sessionStartDate];
 
-  v7 = [(SMSessionManagerState *)self configuration];
-  v8 = [v7 time];
-  v9 = [v8 timeBound];
+  configuration2 = [(SMSessionManagerState *)self configuration];
+  time = [configuration2 time];
+  timeBound = [time timeBound];
 
-  if (v6 && v9)
+  if (sessionStartDate && timeBound)
   {
-    [v9 timeIntervalSinceDate:v6];
-    v11 = v10 + 900.0 + a3 <= 43200.0;
+    [timeBound timeIntervalSinceDate:sessionStartDate];
+    v11 = v10 + 900.0 + valid <= 43200.0;
   }
 
   else
@@ -1134,9 +1134,9 @@ LABEL_91:
       v15 = 136315650;
       v16 = "[SMSessionManagerState isTimerExtensionValid:]";
       v17 = 2112;
-      v18 = v6;
+      v18 = sessionStartDate;
       v19 = 2112;
-      v20 = v9;
+      v20 = timeBound;
       _os_log_error_impl(&dword_26455D000, v12, OS_LOG_TYPE_ERROR, "%s, Unable to determine if timer extension is valid,startDate,%@,endDate,%@", &v15, 0x20u);
     }
 

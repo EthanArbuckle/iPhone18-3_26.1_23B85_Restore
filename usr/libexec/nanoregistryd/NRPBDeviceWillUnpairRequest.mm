@@ -1,10 +1,10 @@
 @interface NRPBDeviceWillUnpairRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBDeviceWillUnpairRequest
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBDeviceWillUnpairRequest;
   v3 = [(NRPBDeviceWillUnpairRequest *)&v7 description];
-  v4 = [(NRPBDeviceWillUnpairRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBDeviceWillUnpairRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -69,11 +69,11 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   advertisedName = self->_advertisedName;
-  v12 = v4;
+  v12 = toCopy;
   PBDataWriterWriteStringField();
   has = self->_has;
   if ((has & 4) != 0)
@@ -109,10 +109,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_advertisedName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_advertisedName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -130,7 +130,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v9 = [(NSString *)self->_abortReason copyWithZone:a3];
+  v9 = [(NSString *)self->_abortReason copyWithZone:zone];
   v10 = v5[1];
   v5[1] = v9;
 
@@ -151,16 +151,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   advertisedName = self->_advertisedName;
-  if (advertisedName | *(v4 + 2))
+  if (advertisedName | *(equalCopy + 2))
   {
     if (![(NSString *)advertisedName isEqual:?])
     {
@@ -169,49 +169,49 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 32);
+  v7 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_28;
     }
 
-    v8 = *(v4 + 29);
+    v8 = *(equalCopy + 29);
     if (self->_shouldObliterate)
     {
-      if ((*(v4 + 29) & 1) == 0)
+      if ((*(equalCopy + 29) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 29))
+    else if (*(equalCopy + 29))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_pairingFailureCode != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_pairingFailureCode != *(equalCopy + 6))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_28;
   }
 
   abortReason = self->_abortReason;
-  if (abortReason | *(v4 + 1))
+  if (abortReason | *(equalCopy + 1))
   {
     if (![(NSString *)abortReason isEqual:?])
     {
@@ -223,45 +223,45 @@
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_28;
     }
 
-    v12 = *(v4 + 28);
+    v12 = *(equalCopy + 28);
     if (self->_shouldBrick)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_28;
   }
 
-  v10 = (*(v4 + 32) & 8) == 0;
+  v10 = (*(equalCopy + 32) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) != 0)
+    if ((*(equalCopy + 32) & 8) != 0)
     {
       if (self->_shouldPreserveESim)
       {
-        if (*(v4 + 30))
+        if (*(equalCopy + 30))
         {
           goto LABEL_36;
         }
       }
 
-      else if (!*(v4 + 30))
+      else if (!*(equalCopy + 30))
       {
 LABEL_36:
         v10 = 1;

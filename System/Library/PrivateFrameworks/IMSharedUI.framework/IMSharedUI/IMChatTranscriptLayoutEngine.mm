@@ -3,20 +3,20 @@
 - (IMChatTranscriptLayoutEngine)init;
 - (IMChatTranscriptLayoutEngineDataSource)dataSource;
 - (NSArray)layoutAttributes;
-- (double)_spaceForVerticalSpaceDescriptor:(int64_t)a3;
-- (id)_cachedDrawableAtIndexOrNil:(unint64_t)a3;
-- (id)_cachedDrawableForTranscriptItem:(id)a3 atIndex:(unint64_t)a4;
-- (id)drawableAtIndex:(unint64_t)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (double)_spaceForVerticalSpaceDescriptor:(int64_t)descriptor;
+- (id)_cachedDrawableAtIndexOrNil:(unint64_t)nil;
+- (id)_cachedDrawableForTranscriptItem:(id)item atIndex:(unint64_t)index;
+- (id)drawableAtIndex:(unint64_t)index;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (unint64_t)_numberOfTranscriptItems;
 - (void)_buildLayoutAttributesIfNeeded;
 - (void)_invalidateCachedItemData;
 - (void)_updateContentSize;
 - (void)_updateFrames;
 - (void)reloadData;
-- (void)removeItemsAtIndexPaths:(id)a3 insertItemsAtIndexPaths:(id)a4;
-- (void)setDataSource:(id)a3;
-- (void)setLayoutSpecification:(id)a3;
+- (void)removeItemsAtIndexPaths:(id)paths insertItemsAtIndexPaths:(id)indexPaths;
+- (void)setDataSource:(id)source;
+- (void)setLayoutSpecification:(id)specification;
 @end
 
 @implementation IMChatTranscriptLayoutEngine
@@ -36,14 +36,14 @@
   return v5;
 }
 
-- (void)setLayoutSpecification:(id)a3
+- (void)setLayoutSpecification:(id)specification
 {
-  v4 = a3;
+  specificationCopy = specification;
   layoutSpecification = self->_layoutSpecification;
-  if (layoutSpecification != v4)
+  if (layoutSpecification != specificationCopy)
   {
-    v11 = v4;
-    if ((objc_msgSend_isEqual_(layoutSpecification, v4, v4) & 1) == 0)
+    v11 = specificationCopy;
+    if ((objc_msgSend_isEqual_(layoutSpecification, specificationCopy, specificationCopy) & 1) == 0)
     {
       v7 = objc_msgSend_copy(v11, v11, v6);
       v8 = self->_layoutSpecification;
@@ -56,9 +56,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -77,11 +77,11 @@
   objc_msgSend_invalidateLayout(self, v4, v5);
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_layoutAttributes(self, v5, v6);
-  v10 = objc_msgSend_item(v4, v8, v9);
+  v10 = objc_msgSend_item(pathCopy, v8, v9);
 
   if (v10 >= objc_msgSend_count(v7, v11, v12))
   {
@@ -268,24 +268,24 @@
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_spaceForVerticalSpaceDescriptor:(int64_t)a3
+- (double)_spaceForVerticalSpaceDescriptor:(int64_t)descriptor
 {
-  if (a3 > 1)
+  if (descriptor > 1)
   {
-    if (a3 == 2)
+    if (descriptor == 2)
     {
       MEMORY[0x2821F9670](self->_layoutSpecification, sel_mediumVerticalItemSpacing, 2);
     }
 
-    else if (a3 == 3)
+    else if (descriptor == 3)
     {
       MEMORY[0x2821F9670](self->_layoutSpecification, sel_largeVerticalItemSpacing, 3);
     }
   }
 
-  else if (a3)
+  else if (descriptor)
   {
-    if (a3 == 1)
+    if (descriptor == 1)
     {
       MEMORY[0x2821F9670](self->_layoutSpecification, sel_smallVerticalItemSpacing, 1);
     }
@@ -299,25 +299,25 @@
   return result;
 }
 
-- (id)drawableAtIndex:(unint64_t)a3
+- (id)drawableAtIndex:(unint64_t)index
 {
-  objc_msgSend__buildLayoutAttributesIfNeeded(self, a2, a3);
+  objc_msgSend__buildLayoutAttributesIfNeeded(self, a2, index);
   cachedDrawables = self->_cachedDrawables;
 
-  return objc_msgSend_objectAtIndex_(cachedDrawables, v5, a3);
+  return objc_msgSend_objectAtIndex_(cachedDrawables, v5, index);
 }
 
-- (void)removeItemsAtIndexPaths:(id)a3 insertItemsAtIndexPaths:(id)a4
+- (void)removeItemsAtIndexPaths:(id)paths insertItemsAtIndexPaths:(id)indexPaths
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
   v10 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v8, v9);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = v6;
+  v11 = pathsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v57, v62, 16);
   if (v13)
   {
@@ -348,13 +348,13 @@
   objc_msgSend_removeObjectsAtIndexes_(self->_cachedDrawables, v21, v10);
   v24 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v22, v23);
   v25 = MEMORY[0x277CBEB18];
-  v28 = objc_msgSend_count(v7, v26, v27);
+  v28 = objc_msgSend_count(indexPathsCopy, v26, v27);
   v30 = objc_msgSend_arrayWithCapacity_(v25, v29, v28);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v31 = v7;
+  v31 = indexPathsCopy;
   v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(v31, v32, &v53, v61, 16);
   if (v33)
   {
@@ -386,19 +386,19 @@
   v48 = 3221225472;
   v49 = sub_254801878;
   v50 = &unk_279789150;
-  v51 = self;
+  selfCopy = self;
   v52 = v30;
   v41 = v30;
   objc_msgSend_enumerateIndexesUsingBlock_(v24, v42, &v47);
-  objc_msgSend_insertObjects_atIndexes_(self->_cachedDrawables, v43, v41, v24, v47, v48, v49, v50, v51);
+  objc_msgSend_insertObjects_atIndexes_(self->_cachedDrawables, v43, v41, v24, v47, v48, v49, v50, selfCopy);
   objc_msgSend_invalidateLayout(self, v44, v45);
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cachedDrawableForTranscriptItem:(id)a3 atIndex:(unint64_t)a4
+- (id)_cachedDrawableForTranscriptItem:(id)item atIndex:(unint64_t)index
 {
-  v8 = a3;
+  itemCopy = item;
   p_cachedDrawables = &self->_cachedDrawables;
   cachedDrawables = self->_cachedDrawables;
   if (!cachedDrawables)
@@ -411,29 +411,29 @@
   }
 
   v13 = objc_msgSend_count(cachedDrawables, v6, v7);
-  if (v13 >= a4)
+  if (v13 >= index)
   {
-    if (v13 > a4)
+    if (v13 > index)
     {
-      v16 = objc_msgSend__cachedDrawableAtIndexOrNil_(self, v14, a4);
+      v16 = objc_msgSend__cachedDrawableAtIndexOrNil_(self, v14, index);
       if (v16)
       {
         v17 = v16;
-        objc_msgSend_setChatTranscriptItem_(v16, v14, v8);
+        objc_msgSend_setChatTranscriptItem_(v16, v14, itemCopy);
         goto LABEL_16;
       }
     }
 
-    v18 = objc_msgSend__makeDrawableForTranscriptItem_(self, v14, v8);
+    v18 = objc_msgSend__makeDrawableForTranscriptItem_(self, v14, itemCopy);
     if (v18)
     {
       v17 = v18;
-      objc_msgSend_setObject_atIndexedSubscript_(*p_cachedDrawables, v19, v18, a4);
+      objc_msgSend_setObject_atIndexedSubscript_(*p_cachedDrawables, v19, v18, index);
       goto LABEL_16;
     }
 
     v21 = objc_msgSend_null(MEMORY[0x277CBEB68], v19, v20);
-    objc_msgSend_setObject_atIndexedSubscript_(*p_cachedDrawables, v22, v21, a4);
+    objc_msgSend_setObject_atIndexedSubscript_(*p_cachedDrawables, v22, v21, index);
 
     v23 = IMLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -447,7 +447,7 @@
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_2548057C0(p_cachedDrawables, a4, v15);
+      sub_2548057C0(p_cachedDrawables, index, v15);
     }
   }
 
@@ -457,9 +457,9 @@ LABEL_16:
   return v17;
 }
 
-- (id)_cachedDrawableAtIndexOrNil:(unint64_t)a3
+- (id)_cachedDrawableAtIndexOrNil:(unint64_t)nil
 {
-  v3 = objc_msgSend_objectAtIndexedSubscript_(self->_cachedDrawables, a2, a3);
+  v3 = objc_msgSend_objectAtIndexedSubscript_(self->_cachedDrawables, a2, nil);
   v6 = objc_msgSend_null(MEMORY[0x277CBEB68], v4, v5);
   if (objc_msgSend_isEqual_(v3, v7, v6))
   {

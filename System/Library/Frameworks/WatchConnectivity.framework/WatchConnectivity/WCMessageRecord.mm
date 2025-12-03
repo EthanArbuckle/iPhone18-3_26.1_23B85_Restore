@@ -1,6 +1,6 @@
 @interface WCMessageRecord
-- (BOOL)isEqual:(id)a3;
-- (WCMessageRecord)initWithIdentifier:(id)a3 errorHandler:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WCMessageRecord)initWithIdentifier:(id)identifier errorHandler:(id)handler;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,20 +8,20 @@
 
 @implementation WCMessageRecord
 
-- (WCMessageRecord)initWithIdentifier:(id)a3 errorHandler:(id)a4
+- (WCMessageRecord)initWithIdentifier:(id)identifier errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = WCMessageRecord;
   v8 = [(WCMessageRecord *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     errorHandler = v8->_errorHandler;
     v8->_errorHandler = v11;
   }
@@ -47,8 +47,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCMessageRecord *)self identifier];
-  v7 = v6;
+  identifier = [(WCMessageRecord *)self identifier];
+  v7 = identifier;
   if (self->_errorHandler)
   {
     v8 = "YES";
@@ -59,15 +59,15 @@
     v8 = "NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, hasErrorHandler: %s>", v5, self, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, hasErrorHandler: %s>", v5, self, identifier, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -77,11 +77,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCMessageRecord *)self identifier];
-      v7 = [(WCMessageRecord *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(WCMessageRecord *)self identifier];
+      identifier2 = [(WCMessageRecord *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -95,8 +95,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WCMessageRecord *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WCMessageRecord *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

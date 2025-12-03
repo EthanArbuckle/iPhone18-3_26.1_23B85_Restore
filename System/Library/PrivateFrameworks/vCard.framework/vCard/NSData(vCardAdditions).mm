@@ -6,7 +6,7 @@
 
 - (id)_cn_encodeVCardBase64DataWithInitialLength:()vCardAdditions
 {
-  v5 = 4 * [a1 length] / 3uLL;
+  v5 = 4 * [self length] / 3uLL;
   v6 = NSZoneMalloc(0, 0x18uLL);
   if (v5 <= 1)
   {
@@ -17,8 +17,8 @@
   v6[1] = 0;
   v6[2] = v5;
   *v6 = v7;
-  v8 = [a1 bytes];
-  v9 = [a1 length];
+  bytes = [self bytes];
+  v9 = [self length];
   if (v9 >= 1)
   {
     v10 = v9;
@@ -28,30 +28,30 @@
     {
       if (v11 % 3 == 2)
       {
-        a3 = appendToBufferWithLineFolding(v6, Encode64Table[((*v8 | (*(v8 - 1) << 8)) >> 6) & 0x3F], a3);
-        v13 = *v8 & 0x3F;
+        a3 = appendToBufferWithLineFolding(v6, Encode64Table[((*bytes | (*(bytes - 1) << 8)) >> 6) & 0x3F], a3);
+        v13 = *bytes & 0x3F;
       }
 
       else if (v11 % 3 == 1)
       {
-        v13 = ((*v8 | (*(v8 - 1) << 8)) >> 4) & 0x3F;
+        v13 = ((*bytes | (*(bytes - 1) << 8)) >> 4) & 0x3F;
       }
 
       else
       {
-        v13 = *v8 >> 2;
+        v13 = *bytes >> 2;
       }
 
       a3 = appendToBufferWithLineFolding(v6, Encode64Table[v13], a3);
       ++v11;
-      ++v8;
+      ++bytes;
       --v12;
     }
 
     while (v12);
     if (v10 % 3 == 2)
     {
-      v16 = Encode64Table[4 * (*(v8 - 1) & 0xF)];
+      v16 = Encode64Table[4 * (*(bytes - 1) & 0xF)];
       v15 = v6;
       v14 = a3;
     }
@@ -63,7 +63,7 @@
         goto LABEL_16;
       }
 
-      v14 = appendToBufferWithLineFolding(v6, Encode64Table[16 * (*(v8 - 1) & 3)], a3);
+      v14 = appendToBufferWithLineFolding(v6, Encode64Table[16 * (*(bytes - 1) & 3)], a3);
       v15 = v6;
       v16 = 61;
     }

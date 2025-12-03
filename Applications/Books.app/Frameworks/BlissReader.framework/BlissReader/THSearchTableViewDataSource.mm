@@ -1,43 +1,43 @@
 @interface THSearchTableViewDataSource
-- (BOOL)indexPathCorrespondsToSearchResultRow:(id)a3;
-- (BOOL)indexPathCorrespondsToSeeAllResultsRow:(id)a3;
-- (THSearchTableViewDataSource)initWithSearchController:(id)a3 searchViewMode:(int)a4;
-- (id)p_resultsForSection:(int64_t)a3;
-- (id)p_resultsForSection:(int64_t)a3 onlyTop:(BOOL)a4;
-- (id)searchResultForTableIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 searchViewController:(id)a5;
-- (id)titleForHeaderInSection:(int64_t)a3;
+- (BOOL)indexPathCorrespondsToSearchResultRow:(id)row;
+- (BOOL)indexPathCorrespondsToSeeAllResultsRow:(id)row;
+- (THSearchTableViewDataSource)initWithSearchController:(id)controller searchViewMode:(int)mode;
+- (id)p_resultsForSection:(int64_t)section;
+- (id)p_resultsForSection:(int64_t)section onlyTop:(BOOL)top;
+- (id)searchResultForTableIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path searchViewController:(id)controller;
+- (id)titleForHeaderInSection:(int64_t)section;
 - (int64_t)p_numberOfSections;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)numberOfResultsInSection:(int64_t)a3;
-- (void)updateForResultsKind:(int)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)numberOfResultsInSection:(int64_t)section;
+- (void)updateForResultsKind:(int)kind;
 @end
 
 @implementation THSearchTableViewDataSource
 
-- (THSearchTableViewDataSource)initWithSearchController:(id)a3 searchViewMode:(int)a4
+- (THSearchTableViewDataSource)initWithSearchController:(id)controller searchViewMode:(int)mode
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = THSearchTableViewDataSource;
   v8 = [(THSearchTableViewDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_searchController, a3);
-    v9->_searchViewMode = a4;
+    objc_storeStrong(&v8->_searchController, controller);
+    v9->_searchViewMode = mode;
     *&v9->_showTextResults = 257;
   }
 
   return v9;
 }
 
-- (void)updateForResultsKind:(int)a3
+- (void)updateForResultsKind:(int)kind
 {
-  if (a3)
+  if (kind)
   {
-    if (a3 != 1)
+    if (kind != 1)
     {
       return;
     }
@@ -69,24 +69,24 @@
   }
 }
 
-- (id)p_resultsForSection:(int64_t)a3 onlyTop:(BOOL)a4
+- (id)p_resultsForSection:(int64_t)section onlyTop:(BOOL)top
 {
-  v7 = [(THSearchTableViewDataSource *)self searchViewMode];
-  if (v7 == 2)
+  searchViewMode = [(THSearchTableViewDataSource *)self searchViewMode];
+  if (searchViewMode == 2)
   {
-    v14 = [(THSearchTableViewDataSource *)self p_resultKindForSection:a3];
+    v14 = [(THSearchTableViewDataSource *)self p_resultKindForSection:section];
     if (v14 == 1)
     {
-      v18 = [(THSearchTableViewDataSource *)self searchController];
-      v16 = v18;
-      if (a4)
+      searchController = [(THSearchTableViewDataSource *)self searchController];
+      v16 = searchController;
+      if (top)
       {
-        [v18 topMediaSearchResults];
+        [searchController topMediaSearchResults];
       }
 
       else
       {
-        [v18 mediaSearchResults];
+        [searchController mediaSearchResults];
       }
     }
 
@@ -95,85 +95,85 @@
       if (v14)
       {
 LABEL_14:
-        v8 = 0;
+        suggestions = 0;
         goto LABEL_19;
       }
 
-      v15 = [(THSearchTableViewDataSource *)self searchController];
-      v16 = v15;
-      if (a4)
+      searchController2 = [(THSearchTableViewDataSource *)self searchController];
+      v16 = searchController2;
+      if (top)
       {
-        [v15 topTextSearchResults];
+        [searchController2 topTextSearchResults];
       }
 
       else
       {
-        [v15 textSearchResults];
+        [searchController2 textSearchResults];
       }
     }
     v17 = ;
-    v8 = v17;
+    suggestions = v17;
 
     goto LABEL_19;
   }
 
-  if (v7 == 1)
+  if (searchViewMode == 1)
   {
-    v8 = [(THSearchTableViewDataSource *)self suggestions];
+    suggestions = [(THSearchTableViewDataSource *)self suggestions];
     goto LABEL_19;
   }
 
-  if (v7)
+  if (searchViewMode)
   {
     goto LABEL_14;
   }
 
-  v8 = +[NSMutableArray array];
-  v9 = [(THSearchTableViewDataSource *)self searchController];
-  v10 = [v9 recentSearchCount];
+  suggestions = +[NSMutableArray array];
+  searchController3 = [(THSearchTableViewDataSource *)self searchController];
+  recentSearchCount = [searchController3 recentSearchCount];
 
-  if (v10 >= 1)
+  if (recentSearchCount >= 1)
   {
-    for (i = 0; i != v10; ++i)
+    for (i = 0; i != recentSearchCount; ++i)
     {
-      v12 = [(THSearchTableViewDataSource *)self searchController];
-      v13 = [v12 recentSearchQueryAtIndex:i];
-      [v8 addObject:v13];
+      searchController4 = [(THSearchTableViewDataSource *)self searchController];
+      v13 = [searchController4 recentSearchQueryAtIndex:i];
+      [suggestions addObject:v13];
     }
   }
 
 LABEL_19:
 
-  return v8;
+  return suggestions;
 }
 
-- (id)p_resultsForSection:(int64_t)a3
+- (id)p_resultsForSection:(int64_t)section
 {
-  v5 = [(THSearchTableViewDataSource *)self p_onlyTopResults];
+  p_onlyTopResults = [(THSearchTableViewDataSource *)self p_onlyTopResults];
 
-  return [(THSearchTableViewDataSource *)self p_resultsForSection:a3 onlyTop:v5];
+  return [(THSearchTableViewDataSource *)self p_resultsForSection:section onlyTop:p_onlyTopResults];
 }
 
-- (unint64_t)numberOfResultsInSection:(int64_t)a3
+- (unint64_t)numberOfResultsInSection:(int64_t)section
 {
-  v3 = [(THSearchTableViewDataSource *)self p_resultsForSection:a3];
+  v3 = [(THSearchTableViewDataSource *)self p_resultsForSection:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(THSearchTableViewDataSource *)self searchViewMode];
-  if (!v5)
+  searchViewMode = [(THSearchTableViewDataSource *)self searchViewMode];
+  if (!searchViewMode)
   {
     v6 = @"Recent Searches";
     goto LABEL_11;
   }
 
-  if (v5 == 2)
+  if (searchViewMode == 2)
   {
-    v7 = [(THSearchTableViewDataSource *)self p_resultKindForSection:a3];
+    v7 = [(THSearchTableViewDataSource *)self p_resultKindForSection:section];
     if (!v7)
     {
       v6 = @"Text";
@@ -191,7 +191,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (v5 != 1)
+  if (searchViewMode != 1)
   {
     goto LABEL_8;
   }
@@ -206,37 +206,37 @@ LABEL_12:
   return v8;
 }
 
-- (id)searchResultForTableIndexPath:(id)a3
+- (id)searchResultForTableIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [pathCopy section]);
   v6 = [v5 count];
 
-  if ([v4 row] >= v6)
+  if ([pathCopy row] >= v6)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [v4 section]);
-    v8 = [v7 objectAtIndex:{objc_msgSend(v4, "row")}];
+    v7 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [pathCopy section]);
+    v8 = [v7 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(THSearchTableViewDataSource *)self searchController];
-  v7 = [(THSearchTableViewDataSource *)self searchViewMode];
-  if (v7 == 2)
+  searchController = [(THSearchTableViewDataSource *)self searchController];
+  searchViewMode = [(THSearchTableViewDataSource *)self searchViewMode];
+  if (searchViewMode == 2)
   {
-    v10 = [(THSearchTableViewDataSource *)self numberOfResultsInSection:a4];
-    v11 = [(THSearchTableViewDataSource *)self p_resultsForSection:a4 onlyTop:0];
+    v10 = [(THSearchTableViewDataSource *)self numberOfResultsInSection:section];
+    v11 = [(THSearchTableViewDataSource *)self p_resultsForSection:section onlyTop:0];
     v12 = [v11 count];
 
-    v13 = [(THSearchTableViewDataSource *)self p_onlyTopResults];
+    p_onlyTopResults = [(THSearchTableViewDataSource *)self p_onlyTopResults];
     if (v10)
     {
       v14 = v10 >= v12;
@@ -257,75 +257,75 @@ LABEL_12:
       v15 = (v10 + 1);
     }
 
-    if (v13)
+    if (p_onlyTopResults)
     {
-      v8 = v15;
+      recentSearchCount = v15;
     }
 
     else
     {
-      v8 = v10;
+      recentSearchCount = v10;
     }
   }
 
-  else if (v7 == 1)
+  else if (searchViewMode == 1)
   {
-    v9 = [(THSearchTableViewDataSource *)self suggestions];
-    v8 = [v9 count];
+    suggestions = [(THSearchTableViewDataSource *)self suggestions];
+    recentSearchCount = [suggestions count];
   }
 
-  else if (v7)
+  else if (searchViewMode)
   {
-    v8 = 0;
+    recentSearchCount = 0;
   }
 
   else
   {
-    v8 = [v6 recentSearchCount];
+    recentSearchCount = [searchController recentSearchCount];
   }
 
-  return v8;
+  return recentSearchCount;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(UITableViewCell);
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 searchViewController:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path searchViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(THSearchTableViewDataSource *)self searchController];
-  v12 = [(THSearchTableViewDataSource *)self searchViewMode];
-  if (v12 == 2)
+  viewCopy = view;
+  pathCopy = path;
+  controllerCopy = controller;
+  searchController = [(THSearchTableViewDataSource *)self searchController];
+  searchViewMode = [(THSearchTableViewDataSource *)self searchViewMode];
+  if (searchViewMode == 2)
   {
-    v20 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [v9 section]);
+    v20 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [pathCopy section]);
     v21 = [v20 count];
 
-    v13 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:v9];
+    v13 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:pathCopy];
     if (v13)
     {
-      v19 = [v10 tableView:v8 cellForSearchResult:v13];
+      v19 = [controllerCopy tableView:viewCopy cellForSearchResult:v13];
     }
 
     else
     {
-      v23 = -[THSearchTableViewDataSource p_resultKindForSection:](self, "p_resultKindForSection:", [v9 section]);
+      v23 = -[THSearchTableViewDataSource p_resultKindForSection:](self, "p_resultKindForSection:", [pathCopy section]);
       if (v21)
       {
-        v24 = -[THSearchTableViewDataSource p_resultsForSection:onlyTop:](self, "p_resultsForSection:onlyTop:", [v9 section], 0);
+        v24 = -[THSearchTableViewDataSource p_resultsForSection:onlyTop:](self, "p_resultsForSection:onlyTop:", [pathCopy section], 0);
         v25 = [v24 count];
 
-        [v10 tableView:v8 seeAllResultsCellWithKind:v23 count:v25];
+        [controllerCopy tableView:viewCopy seeAllResultsCellWithKind:v23 count:v25];
       }
 
       else
       {
-        [v10 tableView:v8 noResultsCellWithKind:v23];
+        [controllerCopy tableView:viewCopy noResultsCellWithKind:v23];
       }
       v19 = ;
     }
@@ -333,14 +333,14 @@ LABEL_12:
 
   else
   {
-    if (v12 == 1)
+    if (searchViewMode == 1)
     {
-      v14 = [(THSearchTableViewDataSource *)self suggestions];
-      v13 = [v14 objectAtIndex:{objc_msgSend(v9, "row")}];
+      suggestions = [(THSearchTableViewDataSource *)self suggestions];
+      v13 = [suggestions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      if ([v11 isEncodedResultForPageNumber:v13])
+      if ([searchController isEncodedResultForPageNumber:v13])
       {
-        v15 = [v11 displayNumberStringFromEncodedPageNumberResult:v13];
+        v15 = [searchController displayNumberStringFromEncodedPageNumberResult:v13];
         v16 = THBundle();
         v17 = [v16 localizedStringForKey:@"Page %@" value:&stru_471858 table:0];
 
@@ -352,41 +352,41 @@ LABEL_12:
 
     else
     {
-      if (v12)
+      if (searchViewMode)
       {
         v22 = 0;
         goto LABEL_16;
       }
 
-      v13 = [v11 recentSearchQueryAtIndex:{objc_msgSend(v9, "row")}];
+      v13 = [searchController recentSearchQueryAtIndex:{objc_msgSend(pathCopy, "row")}];
     }
 
-    v19 = [v10 tableView:v8 cellForPlainString:v13];
+    v19 = [controllerCopy tableView:viewCopy cellForPlainString:v13];
   }
 
   v22 = v19;
 
 LABEL_16:
-  v26 = [v8 backgroundColor];
-  [v22 setBackgroundColor:v26];
+  backgroundColor = [viewCopy backgroundColor];
+  [v22 setBackgroundColor:backgroundColor];
 
   return v22;
 }
 
-- (BOOL)indexPathCorrespondsToSeeAllResultsRow:(id)a3
+- (BOOL)indexPathCorrespondsToSeeAllResultsRow:(id)row
 {
-  v4 = a3;
-  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [v4 section]);
+  rowCopy = row;
+  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [rowCopy section]);
   v6 = [v5 count];
 
-  if ([v4 row] >= v6)
+  if ([rowCopy row] >= v6)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:v4];
+    v7 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:rowCopy];
 
     v8 = v7 == 0;
   }
@@ -404,20 +404,20 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)indexPathCorrespondsToSearchResultRow:(id)a3
+- (BOOL)indexPathCorrespondsToSearchResultRow:(id)row
 {
-  v4 = a3;
-  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [v4 section]);
+  rowCopy = row;
+  v5 = -[THSearchTableViewDataSource p_resultsForSection:](self, "p_resultsForSection:", [rowCopy section]);
   v6 = [v5 count];
 
-  if ([v4 row] >= v6)
+  if ([rowCopy row] >= v6)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:v4];
+    v7 = [(THSearchTableViewDataSource *)self searchResultForTableIndexPath:rowCopy];
 
     v8 = v7 != 0;
   }

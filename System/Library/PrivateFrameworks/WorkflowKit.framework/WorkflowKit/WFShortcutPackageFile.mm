@@ -2,48 +2,48 @@
 - (NSString)directoryName;
 - (NSString)fileName;
 - (NSString)sanitizedName;
-- (WFShortcutPackageFile)initWithShortcutData:(id)a3 shortcutName:(id)a4;
-- (WFShortcutPackageFile)initWithSignedShortcutData:(id)a3 shortcutName:(id)a4;
-- (WFShortcutPackageFile)initWithSignedShortcutFileURL:(id)a3;
-- (id)extractShortcutFileRepresentationWithSigningMethod:(int64_t *)a3 iCloudIdentifier:(id *)a4 error:(id *)a5;
-- (id)generateDirectoryStructureInDirectory:(id)a3 error:(id *)a4;
-- (id)generateSignedShortcutFileRepresentationWithAccount:(id)a3 error:(id *)a4;
-- (id)generateSignedShortcutFileRepresentationWithPrivateKey:(__SecKey *)a3 signingContext:(id)a4 error:(id *)a5;
+- (WFShortcutPackageFile)initWithShortcutData:(id)data shortcutName:(id)name;
+- (WFShortcutPackageFile)initWithSignedShortcutData:(id)data shortcutName:(id)name;
+- (WFShortcutPackageFile)initWithSignedShortcutFileURL:(id)l;
+- (id)extractShortcutFileRepresentationWithSigningMethod:(int64_t *)method iCloudIdentifier:(id *)identifier error:(id *)error;
+- (id)generateDirectoryStructureInDirectory:(id)directory error:(id *)error;
+- (id)generateSignedShortcutFileRepresentationWithAccount:(id)account error:(id *)error;
+- (id)generateSignedShortcutFileRepresentationWithPrivateKey:(__SecKey *)key signingContext:(id)context error:(id *)error;
 - (void)commonInit;
-- (void)extractShortcutFileRepresentationWithCompletion:(id)a3;
-- (void)preformShortcutDataExtractionWithCompletion:(id)a3;
+- (void)extractShortcutFileRepresentationWithCompletion:(id)completion;
+- (void)preformShortcutDataExtractionWithCompletion:(id)completion;
 @end
 
 @implementation WFShortcutPackageFile
 
-- (id)generateDirectoryStructureInDirectory:(id)a3 error:(id *)a4
+- (id)generateDirectoryStructureInDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFShortcutPackageFile *)self shortcutData];
+  directoryCopy = directory;
+  shortcutData = [(WFShortcutPackageFile *)self shortcutData];
 
-  if (v7)
+  if (shortcutData)
   {
-    v8 = [(WFShortcutPackageFile *)self directoryName];
-    v9 = [v6 URLByAppendingPathComponent:v8];
+    directoryName = [(WFShortcutPackageFile *)self directoryName];
+    v9 = [directoryCopy URLByAppendingPathComponent:directoryName];
 
-    v10 = [(WFShortcutPackageFile *)self fileManager];
-    v11 = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:0 attributes:0 error:a4];
+    fileManager = [(WFShortcutPackageFile *)self fileManager];
+    v11 = [fileManager createDirectoryAtURL:v9 withIntermediateDirectories:0 attributes:0 error:error];
 
     v12 = 0;
     if (v11)
     {
       v13 = [v9 URLByAppendingPathComponent:@"Shortcut.wflow"];
-      v14 = [(WFShortcutPackageFile *)self shortcutData];
-      [v14 writeToURL:v13 atomically:1];
+      shortcutData2 = [(WFShortcutPackageFile *)self shortcutData];
+      [shortcutData2 writeToURL:v13 atomically:1];
 
       v12 = v9;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     WFShortcutPackageFileFailedToSignShortcutFileError();
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -54,10 +54,10 @@
   return v12;
 }
 
-- (id)generateSignedShortcutFileRepresentationWithAccount:(id)a3 error:(id *)a4
+- (id)generateSignedShortcutFileRepresentationWithAccount:(id)account error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = getWFSecurityLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -66,12 +66,12 @@
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEFAULT, "%s Generating Signed Shortcut Data with AppleID information", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v8 setObject:*MEMORY[0x1E697AD78] forKeyedSubscript:*MEMORY[0x1E697AD68]];
-  [v8 setObject:&unk_1F4A9A348 forKeyedSubscript:*MEMORY[0x1E697AD50]];
-  [v8 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E697AD18]];
-  RandomKey = SecKeyCreateRandomKey(v8, 0);
-  v10 = [WFShortcutSigningContext contextWithAppleIDAccount:v6 signingKey:RandomKey];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:*MEMORY[0x1E697AD78] forKeyedSubscript:*MEMORY[0x1E697AD68]];
+  [dictionary setObject:&unk_1F4A9A348 forKeyedSubscript:*MEMORY[0x1E697AD50]];
+  [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E697AD18]];
+  RandomKey = SecKeyCreateRandomKey(dictionary, 0);
+  v10 = [WFShortcutSigningContext contextWithAppleIDAccount:accountCopy signingKey:RandomKey];
 
   v18 = 0;
   v11 = [(WFShortcutPackageFile *)self generateSignedShortcutFileRepresentationWithPrivateKey:RandomKey signingContext:v10 error:&v18];
@@ -99,10 +99,10 @@
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_ERROR, "%s Failed to generate Signed Shortcut Data with AppleID information: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -111,15 +111,15 @@
   return v11;
 }
 
-- (id)generateSignedShortcutFileRepresentationWithPrivateKey:(__SecKey *)a3 signingContext:(id)a4 error:(id *)a5
+- (id)generateSignedShortcutFileRepresentationWithPrivateKey:(__SecKey *)key signingContext:(id)context error:(id *)error
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 generateAuthData];
-  if (v9)
+  contextCopy = context;
+  generateAuthData = [contextCopy generateAuthData];
+  if (generateAuthData)
   {
-    v10 = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
-    v11 = [(WFShortcutPackageFile *)self generateDirectoryStructureInDirectory:v10 error:a5];
+    temporaryWorkingDirectoryURL = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
+    v11 = [(WFShortcutPackageFile *)self generateDirectoryStructureInDirectory:temporaryWorkingDirectoryURL error:error];
 
     if (!v11)
     {
@@ -138,10 +138,10 @@
       v14 = _Block_copy(aBlock);
       if (AEAContextSetFieldUInt(v13, 3u, 0x801uLL))
       {
-        if (a5)
+        if (error)
         {
           WFShortcutPackageFileFailedToSignShortcutFileError();
-          *a5 = v15 = 0;
+          *error = v15 = 0;
         }
 
         else
@@ -153,11 +153,11 @@
       }
 
       error = 0;
-      v16 = SecKeyCopyExternalRepresentation(a3, &error);
+      v16 = SecKeyCopyExternalRepresentation(key, &error);
       v17 = v16;
       if (!v16)
       {
-        if (a5)
+        if (error)
         {
           v19 = MEMORY[0x1E696ABC0];
           v47[0] = *MEMORY[0x1E696A578];
@@ -166,7 +166,7 @@
           v48[0] = v20;
           v48[1] = error;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-          *a5 = [v19 errorWithDomain:@"WFWorkflowErrorDomain" code:4 userInfo:v21];
+          *error = [v19 errorWithDomain:@"WFWorkflowErrorDomain" code:4 userInfo:v21];
         }
 
         goto LABEL_20;
@@ -175,10 +175,10 @@
       v18 = v16;
       if (AEAContextSetFieldBlob(v13, 8u, 1u, [(__CFData *)v17 bytes], [(__CFData *)v17 length]))
       {
-        if (a5)
+        if (error)
         {
           WFShortcutPackageFileFailedToSignShortcutFileError();
-          *a5 = v15 = 0;
+          *error = v15 = 0;
 LABEL_39:
 
 LABEL_40:
@@ -192,11 +192,11 @@ LABEL_20:
         goto LABEL_39;
       }
 
-      v22 = v9;
-      AEAContextSetFieldBlob(v13, 5u, 0, [v9 bytes], objc_msgSend(v9, "length"));
-      v23 = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
-      v24 = [(WFShortcutPackageFile *)self fileName];
-      v42 = [v23 URLByAppendingPathComponent:v24];
+      v22 = generateAuthData;
+      AEAContextSetFieldBlob(v13, 5u, 0, [generateAuthData bytes], objc_msgSend(generateAuthData, "length"));
+      temporaryWorkingDirectoryURL2 = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
+      fileName = [(WFShortcutPackageFile *)self fileName];
+      v42 = [temporaryWorkingDirectoryURL2 URLByAppendingPathComponent:fileName];
 
       v25 = v42;
       s = AAFileStreamOpenWithPath([v42 fileSystemRepresentation], 514, 0x1A4u);
@@ -205,10 +205,10 @@ LABEL_20:
       v27 = v26;
       if (!v26)
       {
-        if (a5)
+        if (error)
         {
           WFShortcutPackageFileFailedToSignShortcutFileError();
-          *a5 = v15 = 0;
+          *error = v15 = 0;
         }
 
         else
@@ -230,10 +230,10 @@ LABEL_20:
       v30 = v29;
       if (!v29)
       {
-        if (a5)
+        if (error)
         {
           WFShortcutPackageFileFailedToSignShortcutFileError();
-          *a5 = v15 = 0;
+          *error = v15 = 0;
         }
 
         else
@@ -260,26 +260,26 @@ LABEL_20:
           AAByteStreamClose(stream);
           AAByteStreamClose(s);
           v33 = MEMORY[0x1E6996E20];
-          v34 = [(WFShortcutPackageFile *)self sanitizedName];
-          v15 = [v33 fileWithURL:v42 options:3 ofType:0 proposedFilename:v34];
+          sanitizedName = [(WFShortcutPackageFile *)self sanitizedName];
+          v15 = [v33 fileWithURL:v42 options:3 ofType:0 proposedFilename:sanitizedName];
 
-          v35 = [(WFShortcutPackageFile *)self fileManager];
-          [v35 removeItemAtURL:v42 error:0];
+          fileManager = [(WFShortcutPackageFile *)self fileManager];
+          [fileManager removeItemAtURL:v42 error:0];
 
           goto LABEL_36;
         }
 
-        if (a5)
+        if (error)
         {
           goto LABEL_32;
         }
       }
 
-      else if (a5)
+      else if (error)
       {
 LABEL_32:
         WFShortcutPackageFileFailedToSignShortcutFileError();
-        *a5 = v15 = 0;
+        *error = v15 = 0;
 LABEL_36:
         v38[2](v38);
 
@@ -294,10 +294,10 @@ LABEL_38:
       goto LABEL_36;
     }
 
-    if (a5)
+    if (error)
     {
       WFShortcutPackageFileFailedToSignShortcutFileError();
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -311,10 +311,10 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (a5)
+  if (error)
   {
     WFShortcutPackageFileInvalidShortcutFileError();
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -329,10 +329,10 @@ LABEL_42:
   return v15;
 }
 
-- (void)preformShortcutDataExtractionWithCompletion:(id)a3
+- (void)preformShortcutDataExtractionWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFSecurityLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -341,37 +341,37 @@ LABEL_42:
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Extracting Signed Shortcut Data", buf, 0xCu);
   }
 
-  v6 = [(WFShortcutPackageFile *)self signedShortcutData];
-  if (v6)
+  signedShortcutData = [(WFShortcutPackageFile *)self signedShortcutData];
+  if (signedShortcutData)
   {
   }
 
   else
   {
-    v7 = [(WFShortcutPackageFile *)self signedShortcutFileURL];
+    signedShortcutFileURL = [(WFShortcutPackageFile *)self signedShortcutFileURL];
 
-    if (!v7)
+    if (!signedShortcutFileURL)
     {
       v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
       goto LABEL_19;
     }
   }
 
-  v8 = [(WFShortcutPackageFile *)self signedShortcutData];
+  signedShortcutData2 = [(WFShortcutPackageFile *)self signedShortcutData];
 
-  if (v8)
+  if (signedShortcutData2)
   {
-    v9 = [(WFShortcutPackageFile *)self signedShortcutData];
-    [v9 bytes];
-    v10 = [(WFShortcutPackageFile *)self signedShortcutData];
-    [v10 length];
+    signedShortcutData3 = [(WFShortcutPackageFile *)self signedShortcutData];
+    [signedShortcutData3 bytes];
+    signedShortcutData4 = [(WFShortcutPackageFile *)self signedShortcutData];
+    [signedShortcutData4 length];
     v11 = AAMemoryInputStreamOpen();
   }
 
   else
   {
-    v9 = [(WFShortcutPackageFile *)self signedShortcutFileURL];
-    v11 = AAFileStreamOpenWithPath([v9 fileSystemRepresentation], 0, 0x1A4u);
+    signedShortcutData3 = [(WFShortcutPackageFile *)self signedShortcutFileURL];
+    v11 = AAFileStreamOpenWithPath([signedShortcutData3 fileSystemRepresentation], 0, 0x1A4u);
   }
 
   if (!v11 || (v12 = AEAContextCreateWithEncryptedStream(v11)) == 0)
@@ -379,7 +379,7 @@ LABEL_42:
     v16 = WFShortcutPackageFileInvalidShortcutFileError();
 LABEL_19:
     v17 = v16;
-    (*(v4 + 2))(v4, 0, 0, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v16);
 
     goto LABEL_20;
   }
@@ -399,9 +399,9 @@ LABEL_19:
         v21[1] = 3221225472;
         v21[2] = __69__WFShortcutPackageFile_preformShortcutDataExtractionWithCompletion___block_invoke;
         v21[3] = &unk_1E8376628;
-        v24 = v4;
+        v24 = completionCopy;
         v22 = v19;
-        v23 = self;
+        selfCopy = self;
         v25 = v13;
         v26 = v11;
         [v22 validateWithCompletion:v21];
@@ -412,7 +412,7 @@ LABEL_19:
       else
       {
         v20 = WFShortcutPackageFileInvalidShortcutFileError();
-        (*(v4 + 2))(v4, 0, 0, 0, v20);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, v20);
       }
 
       goto LABEL_16;
@@ -422,7 +422,7 @@ LABEL_19:
   }
 
   v15 = WFShortcutPackageFileInvalidShortcutFileError();
-  (*(v4 + 2))(v4, 0, 0, 0, v15);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, v15);
 LABEL_16:
 
 LABEL_20:
@@ -590,21 +590,21 @@ void __69__WFShortcutPackageFile_preformShortcutDataExtractionWithCompletion___b
   [v2 removeItemAtURL:*(a1 + 40) error:0];
 }
 
-- (void)extractShortcutFileRepresentationWithCompletion:(id)a3
+- (void)extractShortcutFileRepresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFShortcutPackageFile *)self executionQueue];
+  completionCopy = completion;
+  executionQueue = [(WFShortcutPackageFile *)self executionQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__WFShortcutPackageFile_extractShortcutFileRepresentationWithCompletion___block_invoke;
   v7[3] = &unk_1E837E1F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(executionQueue, v7);
 }
 
-- (id)extractShortcutFileRepresentationWithSigningMethod:(int64_t *)a3 iCloudIdentifier:(id *)a4 error:(id *)a5
+- (id)extractShortcutFileRepresentationWithSigningMethod:(int64_t *)method iCloudIdentifier:(id *)identifier error:(id *)error
 {
   v9 = dispatch_semaphore_create(0);
   v39 = 0;
@@ -653,19 +653,19 @@ void __69__WFShortcutPackageFile_preformShortcutDataExtractionWithCompletion___b
   }
 
   v14 = !v13;
-  if (a5 && v14)
+  if (error && v14)
   {
-    *a5 = v34[5];
+    *error = v34[5];
   }
 
-  if (a3)
+  if (method)
   {
-    *a3 = v24[3];
+    *method = v24[3];
   }
 
-  if (a4)
+  if (identifier)
   {
-    *a4 = v28[5];
+    *identifier = v28[5];
   }
 
   v15 = v40[5];
@@ -706,20 +706,20 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
 - (void)commonInit
 {
   v3 = MEMORY[0x1E6996F68];
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 createTemporaryDirectoryWithFilename:v5];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 createTemporaryDirectoryWithFilename:uUIDString];
   temporaryWorkingDirectoryURL = self->_temporaryWorkingDirectoryURL;
   self->_temporaryWorkingDirectoryURL = v6;
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   fileManager = self->_fileManager;
-  self->_fileManager = v8;
+  self->_fileManager = defaultManager;
 
-  v10 = [(WFShortcutPackageFile *)self fileManager];
-  v11 = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
+  fileManager = [(WFShortcutPackageFile *)self fileManager];
+  temporaryWorkingDirectoryURL = [(WFShortcutPackageFile *)self temporaryWorkingDirectoryURL];
   v15 = 0;
-  [v10 createDirectoryAtURL:v11 withIntermediateDirectories:0 attributes:0 error:&v15];
+  [fileManager createDirectoryAtURL:temporaryWorkingDirectoryURL withIntermediateDirectories:0 attributes:0 error:&v15];
   v12 = v15;
 
   v13 = dispatch_queue_create("com.apple.shortcuts.shorcut-package-file.execution-queue", 0);
@@ -727,20 +727,20 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
   self->_executionQueue = v13;
 }
 
-- (WFShortcutPackageFile)initWithSignedShortcutFileURL:(id)a3
+- (WFShortcutPackageFile)initWithSignedShortcutFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = WFShortcutPackageFile;
   v6 = [(WFShortcutPackageFile *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_signedShortcutFileURL, a3);
-    v8 = [v5 lastPathComponent];
-    v9 = [v8 stringByDeletingPathExtension];
+    objc_storeStrong(&v6->_signedShortcutFileURL, l);
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
     shortcutName = v7->_shortcutName;
-    v7->_shortcutName = v9;
+    v7->_shortcutName = stringByDeletingPathExtension;
 
     [(WFShortcutPackageFile *)v7 commonInit];
     v11 = v7;
@@ -749,18 +749,18 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
   return v7;
 }
 
-- (WFShortcutPackageFile)initWithSignedShortcutData:(id)a3 shortcutName:(id)a4
+- (WFShortcutPackageFile)initWithSignedShortcutData:(id)data shortcutName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = WFShortcutPackageFile;
   v9 = [(WFShortcutPackageFile *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_signedShortcutData, a3);
-    objc_storeStrong(&v10->_shortcutName, a4);
+    objc_storeStrong(&v9->_signedShortcutData, data);
+    objc_storeStrong(&v10->_shortcutName, name);
     [(WFShortcutPackageFile *)v10 commonInit];
     v11 = v10;
   }
@@ -768,18 +768,18 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
   return v10;
 }
 
-- (WFShortcutPackageFile)initWithShortcutData:(id)a3 shortcutName:(id)a4
+- (WFShortcutPackageFile)initWithShortcutData:(id)data shortcutName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = WFShortcutPackageFile;
   v9 = [(WFShortcutPackageFile *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_shortcutData, a3);
-    objc_storeStrong(&v10->_shortcutName, a4);
+    objc_storeStrong(&v9->_shortcutData, data);
+    objc_storeStrong(&v10->_shortcutName, name);
     [(WFShortcutPackageFile *)v10 commonInit];
     v11 = v10;
   }
@@ -792,10 +792,10 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
   sanitizedName = self->_sanitizedName;
   if (!sanitizedName)
   {
-    v4 = [(WFShortcutPackageFile *)self shortcutName];
-    v5 = [v4 wf_sanitizedFilename];
+    shortcutName = [(WFShortcutPackageFile *)self shortcutName];
+    wf_sanitizedFilename = [shortcutName wf_sanitizedFilename];
     v6 = self->_sanitizedName;
-    self->_sanitizedName = v5;
+    self->_sanitizedName = wf_sanitizedFilename;
 
     sanitizedName = self->_sanitizedName;
   }
@@ -805,16 +805,16 @@ void __99__WFShortcutPackageFile_extractShortcutFileRepresentationWithSigningMet
 
 - (NSString)directoryName
 {
-  v2 = [(WFShortcutPackageFile *)self sanitizedName];
-  v3 = [v2 stringByAppendingPathExtension:@"shortcuts"];
+  sanitizedName = [(WFShortcutPackageFile *)self sanitizedName];
+  v3 = [sanitizedName stringByAppendingPathExtension:@"shortcuts"];
 
   return v3;
 }
 
 - (NSString)fileName
 {
-  v2 = [(WFShortcutPackageFile *)self sanitizedName];
-  v3 = [v2 stringByAppendingPathExtension:@"shortcut"];
+  sanitizedName = [(WFShortcutPackageFile *)self sanitizedName];
+  v3 = [sanitizedName stringByAppendingPathExtension:@"shortcut"];
 
   return v3;
 }

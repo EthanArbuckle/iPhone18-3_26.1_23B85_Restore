@@ -2,7 +2,7 @@
 - (BOOL)videoButtonIsEnabled;
 - (NSString)description;
 - (UIView)audioButton;
-- (_TtC15ConversationKit28InCallControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit28InCallControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)accessibilityCameraButton;
 - (id)accessibilityCameraLabel;
 - (id)accessibilityDisableVideoButton;
@@ -13,77 +13,77 @@
 - (id)accessibilityMuteAudioLabel;
 - (id)accessibilityRouteButton;
 - (id)accessibilityRouteLabel;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didTapFlipCameraButton:(id)a3;
-- (void)didTapJoinLeaveButton:(id)a3;
-- (void)didTapMuteButton:(id)a3;
-- (void)didTapScreenShareButton:(id)a3;
-- (void)didTapToggleCameraButton:(id)a3;
-- (void)didTapToggleCinematicFramingButton:(id)a3;
-- (void)embedEffectsBrowserViewController:(id)a3;
-- (void)handleLegacyCallStatusDidChangeNotification:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didTapFlipCameraButton:(id)button;
+- (void)didTapJoinLeaveButton:(id)button;
+- (void)didTapMuteButton:(id)button;
+- (void)didTapScreenShareButton:(id)button;
+- (void)didTapToggleCameraButton:(id)button;
+- (void)didTapToggleCinematicFramingButton:(id)button;
+- (void)embedEffectsBrowserViewController:(id)controller;
+- (void)handleLegacyCallStatusDidChangeNotification:(id)notification;
 - (void)loadView;
-- (void)setAudioIsEnabled:(BOOL)a3;
-- (void)setCinematicFramingIsAvailable:(BOOL)a3;
-- (void)setCinematicFramingIsEnabled:(BOOL)a3;
-- (void)setIsExpanded:(BOOL)a3;
-- (void)setIsScreenSharing:(BOOL)a3;
-- (void)setShouldShowLeaveButton:(BOOL)a3;
-- (void)setVideoButtonIsEnabled:(BOOL)a3;
-- (void)setVideoIsEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAudioRouteButtonFor:(id)a3;
-- (void)updateControlsVisibilityForExpandedState:(BOOL)a3;
-- (void)updateToRepresentLegacyCall:(id)a3;
+- (void)setAudioIsEnabled:(BOOL)enabled;
+- (void)setCinematicFramingIsAvailable:(BOOL)available;
+- (void)setCinematicFramingIsEnabled:(BOOL)enabled;
+- (void)setIsExpanded:(BOOL)expanded;
+- (void)setIsScreenSharing:(BOOL)sharing;
+- (void)setShouldShowLeaveButton:(BOOL)button;
+- (void)setVideoButtonIsEnabled:(BOOL)enabled;
+- (void)setVideoIsEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAudioRouteButtonFor:(id)for;
+- (void)updateControlsVisibilityForExpandedState:(BOOL)state;
+- (void)updateToRepresentLegacyCall:(id)call;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation InCallControlsViewController
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  v4 = self;
-  InCallControlsViewController.isExpanded.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.isExpanded.setter(expanded);
 }
 
-- (void)setAudioIsEnabled:(BOOL)a3
+- (void)setAudioIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  InCallControlsViewController.audioIsEnabled.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.audioIsEnabled.setter(enabled);
 }
 
-- (void)setVideoIsEnabled:(BOOL)a3
+- (void)setVideoIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  InCallControlsViewController.videoIsEnabled.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.videoIsEnabled.setter(enabled);
 }
 
-- (void)setIsScreenSharing:(BOOL)a3
+- (void)setIsScreenSharing:(BOOL)sharing
 {
-  v4 = self;
-  InCallControlsViewController.isScreenSharing.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.isScreenSharing.setter(sharing);
 }
 
-- (void)setCinematicFramingIsAvailable:(BOOL)a3
+- (void)setCinematicFramingIsAvailable:(BOOL)available
 {
-  v3 = self;
+  selfCopy = self;
   InCallControlsViewController.cinematicFramingIsAvailable.setter();
 }
 
-- (void)setCinematicFramingIsEnabled:(BOOL)a3
+- (void)setCinematicFramingIsEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   InCallControlsViewController.cinematicFramingIsEnabled.setter();
 }
 
-- (void)setShouldShowLeaveButton:(BOOL)a3
+- (void)setShouldShowLeaveButton:(BOOL)button
 {
-  v4 = self;
-  InCallControlsViewController.shouldShowLeaveButton.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.shouldShowLeaveButton.setter(button);
 }
 
 - (UIView)audioButton
@@ -95,7 +95,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsViewController.description.getter();
   v5 = v4;
 
@@ -104,126 +104,126 @@
   return v6;
 }
 
-- (void)embedEffectsBrowserViewController:(id)a3
+- (void)embedEffectsBrowserViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsViewController.embedEffectsBrowserViewController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  InCallControlsViewController.embedEffectsBrowserViewController(_:)(controllerCopy);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  InCallControlsViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  InCallControlsViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  InCallControlsViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  InCallControlsViewController.willMove(toParent:)(controller);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  InCallControlsViewController.didMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  InCallControlsViewController.didMove(toParent:)(controller);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   InCallControlsViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsViewController.updateViewConstraints()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsViewController.viewDidLayoutSubviews()();
 }
 
-- (void)didTapFlipCameraButton:(id)a3
+- (void)didTapFlipCameraButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsViewController.didTapFlipCameraButton(_:)();
 }
 
-- (void)didTapJoinLeaveButton:(id)a3
+- (void)didTapJoinLeaveButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsViewController.didTapJoinLeaveButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsViewController.didTapJoinLeaveButton(_:)(buttonCopy);
 }
 
-- (void)didTapToggleCameraButton:(id)a3
+- (void)didTapToggleCameraButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsViewController.didTapFlipCameraButton(_:)();
 }
 
-- (void)didTapScreenShareButton:(id)a3
+- (void)didTapScreenShareButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsViewController.didTapFlipCameraButton(_:)();
 }
 
-- (void)didTapToggleCinematicFramingButton:(id)a3
+- (void)didTapToggleCinematicFramingButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsViewController.didTapFlipCameraButton(_:)();
 }
 
-- (void)didTapMuteButton:(id)a3
+- (void)didTapMuteButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsViewController.didTapFlipCameraButton(_:)();
 }
 
-- (void)updateControlsVisibilityForExpandedState:(BOOL)a3
+- (void)updateControlsVisibilityForExpandedState:(BOOL)state
 {
-  v4 = self;
-  InCallControlsViewController.updateControlsVisibility(forExpandedState:)(a3);
+  selfCopy = self;
+  InCallControlsViewController.updateControlsVisibility(forExpandedState:)(state);
 }
 
-- (void)updateAudioRouteButtonFor:(id)a3
+- (void)updateAudioRouteButtonFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   InCallControlsViewController.updateAudioRouteButton(for:)();
 }
 
-- (void)updateToRepresentLegacyCall:(id)a3
+- (void)updateToRepresentLegacyCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   InCallControlsViewController.updateToRepresentLegacyCall(_:)();
 }
 
@@ -297,25 +297,25 @@
   return v2;
 }
 
-- (_TtC15ConversationKit28InCallControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit28InCallControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   InCallControlsViewController.init(nibName:bundle:)();
 }
 
-- (void)handleLegacyCallStatusDidChangeNotification:(id)a3
+- (void)handleLegacyCallStatusDidChangeNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   InCallControlsViewController.handleLegacyCallStatusDidChangeNotification(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -323,16 +323,16 @@
 
 - (BOOL)videoButtonIsEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsViewController.videoButtonIsEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVideoButtonIsEnabled:(BOOL)a3
+- (void)setVideoButtonIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  InCallControlsViewController.videoButtonIsEnabled.setter(a3);
+  selfCopy = self;
+  InCallControlsViewController.videoButtonIsEnabled.setter(enabled);
 }
 
 @end

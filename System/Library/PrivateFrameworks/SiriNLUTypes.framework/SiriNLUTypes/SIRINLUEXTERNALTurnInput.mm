@@ -1,28 +1,28 @@
 @interface SIRINLUEXTERNALTurnInput
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActiveTasks:(id)a3;
-- (void)addAsrOutputs:(id)a3;
-- (void)addExecutedTasks:(id)a3;
-- (void)addSalientEntities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectedToCarPlayUltra:(BOOL)a3;
-- (void)setHasTapToEdit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveTasks:(id)tasks;
+- (void)addAsrOutputs:(id)outputs;
+- (void)addExecutedTasks:(id)tasks;
+- (void)addSalientEntities:(id)entities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectedToCarPlayUltra:(BOOL)ultra;
+- (void)setHasTapToEdit:(BOOL)edit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALTurnInput
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   systemDialogActGroup = self->_systemDialogActGroup;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   if (systemDialogActGroup)
   {
     if (v6)
@@ -40,7 +40,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   v8 = [v7 countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v8)
   {
@@ -68,7 +68,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = *(v4 + 2);
+  v12 = *(fromCopy + 2);
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (v13)
   {
@@ -96,7 +96,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v17 = *(v4 + 5);
+  v17 = *(fromCopy + 5);
   v18 = [v17 countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (v18)
   {
@@ -124,7 +124,7 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = *(v4 + 3);
+  v22 = *(fromCopy + 3);
   v23 = [v22 countByEnumeratingWithState:&v33 objects:v49 count:16];
   if (v23)
   {
@@ -149,7 +149,7 @@
   }
 
   turnContext = self->_turnContext;
-  v28 = *(v4 + 9);
+  v28 = *(fromCopy + 9);
   if (turnContext)
   {
     if (v28)
@@ -163,27 +163,27 @@
     [(SIRINLUEXTERNALTurnInput *)self setTurnContext:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALTurnInput *)self setLocale:?];
   }
 
-  v29 = *(v4 + 84);
+  v29 = *(fromCopy + 84);
   if ((v29 & 4) != 0)
   {
-    self->_tapToEdit = *(v4 + 81);
+    self->_tapToEdit = *(fromCopy + 81);
     *&self->_has |= 4u;
-    v29 = *(v4 + 84);
+    v29 = *(fromCopy + 84);
   }
 
   if (v29)
   {
-    self->_startTimestamp = *(v4 + 1);
+    self->_startTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   correctionOutcomeOverride = self->_correctionOutcomeOverride;
-  v31 = *(v4 + 4);
+  v31 = *(fromCopy + 4);
   if (correctionOutcomeOverride)
   {
     if (v31)
@@ -197,9 +197,9 @@
     [(SIRINLUEXTERNALTurnInput *)self setCorrectionOutcomeOverride:?];
   }
 
-  if ((*(v4 + 84) & 2) != 0)
+  if ((*(fromCopy + 84) & 2) != 0)
   {
-    self->_connectedToCarPlayUltra = *(v4 + 80);
+    self->_connectedToCarPlayUltra = *(fromCopy + 80);
     *&self->_has |= 2u;
   }
 
@@ -251,16 +251,16 @@ LABEL_6:
   return v13 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   systemDialogActGroup = self->_systemDialogActGroup;
-  if (systemDialogActGroup | *(v4 + 8))
+  if (systemDialogActGroup | *(equalCopy + 8))
   {
     if (![(SIRINLUEXTERNALSystemDialogActGroup *)systemDialogActGroup isEqual:?])
     {
@@ -269,7 +269,7 @@ LABEL_6:
   }
 
   salientEntities = self->_salientEntities;
-  if (salientEntities | *(v4 + 7))
+  if (salientEntities | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)salientEntities isEqual:?])
     {
@@ -278,7 +278,7 @@ LABEL_6:
   }
 
   activeTasks = self->_activeTasks;
-  if (activeTasks | *(v4 + 2))
+  if (activeTasks | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)activeTasks isEqual:?])
     {
@@ -287,7 +287,7 @@ LABEL_6:
   }
 
   executedTasks = self->_executedTasks;
-  if (executedTasks | *(v4 + 5))
+  if (executedTasks | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)executedTasks isEqual:?])
     {
@@ -296,7 +296,7 @@ LABEL_6:
   }
 
   asrOutputs = self->_asrOutputs;
-  if (asrOutputs | *(v4 + 3))
+  if (asrOutputs | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)asrOutputs isEqual:?])
     {
@@ -305,7 +305,7 @@ LABEL_6:
   }
 
   turnContext = self->_turnContext;
-  if (turnContext | *(v4 + 9))
+  if (turnContext | *(equalCopy + 9))
   {
     if (![(SIRINLUEXTERNALTurnContext *)turnContext isEqual:?])
     {
@@ -314,7 +314,7 @@ LABEL_6:
   }
 
   locale = self->_locale;
-  if (locale | *(v4 + 6))
+  if (locale | *(equalCopy + 6))
   {
     if (![(NSString *)locale isEqual:?])
     {
@@ -323,49 +323,49 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = *(v4 + 84);
+  v13 = *(equalCopy + 84);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 84) & 4) == 0)
+    if ((*(equalCopy + 84) & 4) == 0)
     {
       goto LABEL_36;
     }
 
-    v14 = *(v4 + 81);
+    v14 = *(equalCopy + 81);
     if (self->_tapToEdit)
     {
-      if ((*(v4 + 81) & 1) == 0)
+      if ((*(equalCopy + 81) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 81))
+    else if (*(equalCopy + 81))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 84) & 4) != 0)
+  else if ((*(equalCopy + 84) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_startTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_startTimestamp != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_36;
   }
 
   correctionOutcomeOverride = self->_correctionOutcomeOverride;
-  if (correctionOutcomeOverride | *(v4 + 4))
+  if (correctionOutcomeOverride | *(equalCopy + 4))
   {
     if (![(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcomeOverride isEqual:?])
     {
@@ -373,7 +373,7 @@ LABEL_6:
     }
 
     has = self->_has;
-    v13 = *(v4 + 84);
+    v13 = *(equalCopy + 84);
   }
 
   v16 = (v13 & 2) == 0;
@@ -383,13 +383,13 @@ LABEL_6:
     {
       if (self->_connectedToCarPlayUltra)
       {
-        if (*(v4 + 80))
+        if (*(equalCopy + 80))
         {
           goto LABEL_39;
         }
       }
 
-      else if (!*(v4 + 80))
+      else if (!*(equalCopy + 80))
       {
 LABEL_39:
         v16 = 1;
@@ -406,11 +406,11 @@ LABEL_37:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALSystemDialogActGroup *)self->_systemDialogActGroup copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALSystemDialogActGroup *)self->_systemDialogActGroup copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -433,7 +433,7 @@ LABEL_37:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v53 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v53 + 1) + 8 * i) copyWithZone:zone];
         [v5 addSalientEntities:v13];
       }
 
@@ -462,7 +462,7 @@ LABEL_37:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v49 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v49 + 1) + 8 * j) copyWithZone:zone];
         [v5 addActiveTasks:v19];
       }
 
@@ -491,7 +491,7 @@ LABEL_37:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v45 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v45 + 1) + 8 * k) copyWithZone:zone];
         [v5 addExecutedTasks:v25];
       }
 
@@ -520,7 +520,7 @@ LABEL_37:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v41 + 1) + 8 * m) copyWithZone:{a3, v41}];
+        v31 = [*(*(&v41 + 1) + 8 * m) copyWithZone:{zone, v41}];
         [v5 addAsrOutputs:v31];
       }
 
@@ -530,11 +530,11 @@ LABEL_37:
     while (v28);
   }
 
-  v32 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:a3];
+  v32 = [(SIRINLUEXTERNALTurnContext *)self->_turnContext copyWithZone:zone];
   v33 = *(v5 + 72);
   *(v5 + 72) = v32;
 
-  v34 = [(NSString *)self->_locale copyWithZone:a3];
+  v34 = [(NSString *)self->_locale copyWithZone:zone];
   v35 = *(v5 + 48);
   *(v5 + 48) = v34;
 
@@ -552,7 +552,7 @@ LABEL_37:
     *(v5 + 84) |= 1u;
   }
 
-  v37 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcomeOverride copyWithZone:a3, v41];
+  v37 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcomeOverride copyWithZone:zone, v41];
   v38 = *(v5 + 32);
   *(v5 + 32) = v37;
 
@@ -566,84 +566,84 @@ LABEL_37:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v22 = a3;
+  toCopy = to;
   if (self->_systemDialogActGroup)
   {
-    [v22 setSystemDialogActGroup:?];
+    [toCopy setSystemDialogActGroup:?];
   }
 
   if ([(SIRINLUEXTERNALTurnInput *)self salientEntitiesCount])
   {
-    [v22 clearSalientEntities];
-    v4 = [(SIRINLUEXTERNALTurnInput *)self salientEntitiesCount];
-    if (v4)
+    [toCopy clearSalientEntities];
+    salientEntitiesCount = [(SIRINLUEXTERNALTurnInput *)self salientEntitiesCount];
+    if (salientEntitiesCount)
     {
-      v5 = v4;
+      v5 = salientEntitiesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALTurnInput *)self salientEntitiesAtIndex:i];
-        [v22 addSalientEntities:v7];
+        [toCopy addSalientEntities:v7];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALTurnInput *)self activeTasksCount])
   {
-    [v22 clearActiveTasks];
-    v8 = [(SIRINLUEXTERNALTurnInput *)self activeTasksCount];
-    if (v8)
+    [toCopy clearActiveTasks];
+    activeTasksCount = [(SIRINLUEXTERNALTurnInput *)self activeTasksCount];
+    if (activeTasksCount)
     {
-      v9 = v8;
+      v9 = activeTasksCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUEXTERNALTurnInput *)self activeTasksAtIndex:j];
-        [v22 addActiveTasks:v11];
+        [toCopy addActiveTasks:v11];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALTurnInput *)self executedTasksCount])
   {
-    [v22 clearExecutedTasks];
-    v12 = [(SIRINLUEXTERNALTurnInput *)self executedTasksCount];
-    if (v12)
+    [toCopy clearExecutedTasks];
+    executedTasksCount = [(SIRINLUEXTERNALTurnInput *)self executedTasksCount];
+    if (executedTasksCount)
     {
-      v13 = v12;
+      v13 = executedTasksCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(SIRINLUEXTERNALTurnInput *)self executedTasksAtIndex:k];
-        [v22 addExecutedTasks:v15];
+        [toCopy addExecutedTasks:v15];
       }
     }
   }
 
   if ([(SIRINLUEXTERNALTurnInput *)self asrOutputsCount])
   {
-    [v22 clearAsrOutputs];
-    v16 = [(SIRINLUEXTERNALTurnInput *)self asrOutputsCount];
-    if (v16)
+    [toCopy clearAsrOutputs];
+    asrOutputsCount = [(SIRINLUEXTERNALTurnInput *)self asrOutputsCount];
+    if (asrOutputsCount)
     {
-      v17 = v16;
+      v17 = asrOutputsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(SIRINLUEXTERNALTurnInput *)self asrOutputsAtIndex:m];
-        [v22 addAsrOutputs:v19];
+        [toCopy addAsrOutputs:v19];
       }
     }
   }
 
   if (self->_turnContext)
   {
-    [v22 setTurnContext:?];
+    [toCopy setTurnContext:?];
   }
 
-  v20 = v22;
+  v20 = toCopy;
   if (self->_locale)
   {
-    [v22 setLocale:?];
-    v20 = v22;
+    [toCopy setLocale:?];
+    v20 = toCopy;
   }
 
   has = self->_has;
@@ -662,8 +662,8 @@ LABEL_37:
 
   if (self->_correctionOutcomeOverride)
   {
-    [v22 setCorrectionOutcomeOverride:?];
-    v20 = v22;
+    [toCopy setCorrectionOutcomeOverride:?];
+    v20 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -673,10 +673,10 @@ LABEL_37:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_systemDialogActGroup)
   {
     PBDataWriterWriteSubmessage();
@@ -839,12 +839,12 @@ LABEL_37:
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   systemDialogActGroup = self->_systemDialogActGroup;
   if (systemDialogActGroup)
   {
-    v5 = [(SIRINLUEXTERNALSystemDialogActGroup *)systemDialogActGroup dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"system_dialog_act_group"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALSystemDialogActGroup *)systemDialogActGroup dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"system_dialog_act_group"];
   }
 
   if ([(NSMutableArray *)self->_salientEntities count])
@@ -869,8 +869,8 @@ LABEL_37:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v57 objects:v64 count:16];
@@ -879,7 +879,7 @@ LABEL_37:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"salient_entities"];
+    [dictionary setObject:v6 forKey:@"salient_entities"];
   }
 
   if ([(NSMutableArray *)self->_activeTasks count])
@@ -904,8 +904,8 @@ LABEL_37:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v53 objects:v63 count:16];
@@ -914,7 +914,7 @@ LABEL_37:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"active_tasks"];
+    [dictionary setObject:v13 forKey:@"active_tasks"];
   }
 
   if ([(NSMutableArray *)self->_executedTasks count])
@@ -939,8 +939,8 @@ LABEL_37:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation4 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation4];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -949,7 +949,7 @@ LABEL_37:
       while (v23);
     }
 
-    [v3 setObject:v20 forKey:@"executed_tasks"];
+    [dictionary setObject:v20 forKey:@"executed_tasks"];
   }
 
   if ([(NSMutableArray *)self->_asrOutputs count])
@@ -974,8 +974,8 @@ LABEL_37:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation5 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation5];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v45 objects:v61 count:16];
@@ -984,27 +984,27 @@ LABEL_37:
       while (v30);
     }
 
-    [v3 setObject:v27 forKey:@"asr_outputs"];
+    [dictionary setObject:v27 forKey:@"asr_outputs"];
   }
 
   turnContext = self->_turnContext;
   if (turnContext)
   {
-    v35 = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"turn_context"];
+    dictionaryRepresentation6 = [(SIRINLUEXTERNALTurnContext *)turnContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"turn_context"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v3 setObject:locale forKey:@"locale"];
+    [dictionary setObject:locale forKey:@"locale"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v38 = [MEMORY[0x1E696AD98] numberWithBool:self->_tapToEdit];
-    [v3 setObject:v38 forKey:@"tap_to_edit"];
+    [dictionary setObject:v38 forKey:@"tap_to_edit"];
 
     has = self->_has;
   }
@@ -1012,25 +1012,25 @@ LABEL_37:
   if (has)
   {
     v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_startTimestamp];
-    [v3 setObject:v39 forKey:@"start_timestamp"];
+    [dictionary setObject:v39 forKey:@"start_timestamp"];
   }
 
   correctionOutcomeOverride = self->_correctionOutcomeOverride;
   if (correctionOutcomeOverride)
   {
-    v41 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcomeOverride dictionaryRepresentation];
-    [v3 setObject:v41 forKey:@"correction_outcome_override"];
+    dictionaryRepresentation7 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcomeOverride dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"correction_outcome_override"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v42 = [MEMORY[0x1E696AD98] numberWithBool:self->_connectedToCarPlayUltra];
-    [v3 setObject:v42 forKey:@"connectedToCarPlayUltra"];
+    [dictionary setObject:v42 forKey:@"connectedToCarPlayUltra"];
   }
 
   v43 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1039,15 +1039,15 @@ LABEL_37:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALTurnInput;
   v4 = [(SIRINLUEXTERNALTurnInput *)&v8 description];
-  v5 = [(SIRINLUEXTERNALTurnInput *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALTurnInput *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasConnectedToCarPlayUltra:(BOOL)a3
+- (void)setHasConnectedToCarPlayUltra:(BOOL)ultra
 {
-  if (a3)
+  if (ultra)
   {
     v3 = 2;
   }
@@ -1060,9 +1060,9 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTapToEdit:(BOOL)a3
+- (void)setHasTapToEdit:(BOOL)edit
 {
-  if (a3)
+  if (edit)
   {
     v3 = 4;
   }
@@ -1075,76 +1075,76 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAsrOutputs:(id)a3
+- (void)addAsrOutputs:(id)outputs
 {
-  v4 = a3;
+  outputsCopy = outputs;
   asrOutputs = self->_asrOutputs;
-  v8 = v4;
+  v8 = outputsCopy;
   if (!asrOutputs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_asrOutputs;
     self->_asrOutputs = v6;
 
-    v4 = v8;
+    outputsCopy = v8;
     asrOutputs = self->_asrOutputs;
   }
 
-  [(NSMutableArray *)asrOutputs addObject:v4];
+  [(NSMutableArray *)asrOutputs addObject:outputsCopy];
 }
 
-- (void)addExecutedTasks:(id)a3
+- (void)addExecutedTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   executedTasks = self->_executedTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!executedTasks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_executedTasks;
     self->_executedTasks = v6;
 
-    v4 = v8;
+    tasksCopy = v8;
     executedTasks = self->_executedTasks;
   }
 
-  [(NSMutableArray *)executedTasks addObject:v4];
+  [(NSMutableArray *)executedTasks addObject:tasksCopy];
 }
 
-- (void)addActiveTasks:(id)a3
+- (void)addActiveTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   activeTasks = self->_activeTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!activeTasks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_activeTasks;
     self->_activeTasks = v6;
 
-    v4 = v8;
+    tasksCopy = v8;
     activeTasks = self->_activeTasks;
   }
 
-  [(NSMutableArray *)activeTasks addObject:v4];
+  [(NSMutableArray *)activeTasks addObject:tasksCopy];
 }
 
-- (void)addSalientEntities:(id)a3
+- (void)addSalientEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   salientEntities = self->_salientEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!salientEntities)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_salientEntities;
     self->_salientEntities = v6;
 
-    v4 = v8;
+    entitiesCopy = v8;
     salientEntities = self->_salientEntities;
   }
 
-  [(NSMutableArray *)salientEntities addObject:v4];
+  [(NSMutableArray *)salientEntities addObject:entitiesCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface NFRemoteAdminReaderSession
 - (BOOL)_closeSession;
-- (BOOL)_executePreCheckScripts:(id)a3;
+- (BOOL)_executePreCheckScripts:(id)scripts;
 - (BOOL)_preValidateCardForMercury;
 - (BOOL)_validateCard;
 - (BOOL)_validateCardForFelica;
-- (BOOL)_validateCardForMercury:(id)a3;
-- (BOOL)_validateCardForMiFare:(id)a3;
+- (BOOL)_validateCardForMercury:(id)mercury;
+- (BOOL)_validateCardForMiFare:(id)fare;
 - (BOOL)reconnectTag;
 - (BOOL)startNewSession;
 - (id)_gatherCardStateInfo;
 - (id)_getRequireServiceV1List;
 - (id)_getSessionSystemCode;
-- (id)connectTagWithTimeout:(unint64_t)a3;
+- (id)connectTagWithTimeout:(unint64_t)timeout;
 - (id)getNextRequest;
 - (id)sessionCardServiceInfo;
 - (unint64_t)_doFinalTSMCheckIn;
@@ -19,42 +19,42 @@
 - (unint64_t)_doReaderModeRedirect;
 - (unint64_t)_openSession;
 - (unint64_t)_performReaderModeRequest;
-- (unint64_t)executeScript:(id)a3;
+- (unint64_t)executeScript:(id)script;
 - (unint64_t)run;
-- (unsigned)_generateRandomNumber:(unsigned int)a3 endingWith:(unsigned int)a4;
+- (unsigned)_generateRandomNumber:(unsigned int)number endingWith:(unsigned int)with;
 - (unsigned)targetTagType;
 - (void)_checkForMercuryIngestion;
-- (void)_fireCardIngestionStatus:(unint64_t)a3;
+- (void)_fireCardIngestionStatus:(unint64_t)status;
 - (void)_restoreRFSettingForCathayIngestion;
 - (void)_restoreRFSettingForMercuryIngestion;
-- (void)abort:(int64_t)a3;
-- (void)processNotification:(id)a3;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4;
+- (void)abort:(int64_t)abort;
+- (void)processNotification:(id)notification;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason;
 @end
 
 @implementation NFRemoteAdminReaderSession
 
 - (id)sessionCardServiceInfo
 {
-  v2 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v3 = [v2 requestInfo];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  requestInfo = [redirectState requestInfo];
 
-  v4 = [v3 cardServiceInfo];
+  cardServiceInfo = [requestInfo cardServiceInfo];
 
-  return v4;
+  return cardServiceInfo;
 }
 
 - (unsigned)targetTagType
 {
-  v4 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v5 = [v4 objectForKeyedSubscript:@"version"];
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v5 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && ([v4 objectForKeyedSubscript:@"version"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "intValue"), v7, v8 >= 3))
+  if ((isKindOfClass & 1) != 0 && ([sessionCardServiceInfo objectForKeyedSubscript:@"version"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "intValue"), v7, v8 >= 3))
   {
-    v10 = [v4 NF_stringForKey:@"technology"];
+    v10 = [sessionCardServiceInfo NF_stringForKey:@"technology"];
     if ([v10 length])
     {
       v9 = [v10 containsString:@"A"];
@@ -127,13 +127,13 @@
   return v9;
 }
 
-- (unsigned)_generateRandomNumber:(unsigned int)a3 endingWith:(unsigned int)a4
+- (unsigned)_generateRandomNumber:(unsigned int)number endingWith:(unsigned int)with
 {
-  v4 = a4;
-  if (a3 <= a4)
+  numberCopy = with;
+  if (number <= with)
   {
-    v17 = a4;
-    v4 = a3;
+    numberCopy2 = with;
+    numberCopy = number;
   }
 
   else
@@ -182,21 +182,21 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i startingNumber > endingNumber. Swaping them!", buf, 0x22u);
     }
 
-    v17 = a3;
+    numberCopy2 = number;
   }
 
-  return arc4random_uniform(v17 - v4) + v4;
+  return arc4random_uniform(numberCopy2 - numberCopy) + numberCopy;
 }
 
 - (id)_gatherCardStateInfo
 {
-  v2 = self;
-  v3 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v4 = v3;
-  p_isa = &v2->super.super.isa;
-  if (v2->_cardValidationStatus == 14)
+  selfCopy = self;
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v4 = sessionCardServiceInfo;
+  p_isa = &selfCopy->super.super.isa;
+  if (selfCopy->_cardValidationStatus == 14)
   {
-    v5 = [v3 NF_arrayForKey:@"areaCodeList"];
+    v5 = [sessionCardServiceInfo NF_arrayForKey:@"areaCodeList"];
     v6 = [v4 NF_arrayForKey:@"blockDataList"];
     v7 = [v4 objectForKeyedSubscript:@"cardServiceId"];
 
@@ -205,13 +205,13 @@
       v8 = [v4 objectForKeyedSubscript:@"cardServiceId"];
       [p_isa[10] setObject:v8 forKeyedSubscript:@"cardServiceId"];
 
-      v2 = p_isa;
+      selfCopy = p_isa;
     }
 
-    readerSession = v2->_readerSession;
-    v10 = [(NFRemoteAdminReaderSession *)v2 _getSessionSystemCode];
-    [(NFReaderSession *)readerSession felicaStateForSystemCode:v10 withRequestService:v5 withBlockReadList:v6 performSearchServiceCode:0];
-    v12 = v11 = v2;
+    readerSession = selfCopy->_readerSession;
+    _getSessionSystemCode = [(NFRemoteAdminReaderSession *)selfCopy _getSessionSystemCode];
+    [(NFReaderSession *)readerSession felicaStateForSystemCode:_getSessionSystemCode withRequestService:v5 withBlockReadList:v6 performSearchServiceCode:0];
+    v12 = v11 = selfCopy;
 
     v11->_cardValidationStatus = 0;
     goto LABEL_118;
@@ -228,9 +228,9 @@
     if (Logger)
     {
       v17 = Logger;
-      Class = object_getClass(v2);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v2);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v21 = 45;
       if (isMetaClass)
@@ -245,7 +245,7 @@
     v22 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = object_getClass(v2);
+      v23 = object_getClass(selfCopy);
       if (class_isMetaClass(v23))
       {
         v24 = 43;
@@ -259,7 +259,7 @@
       *buf = 67109890;
       v194 = v24;
       v195 = 2082;
-      v196 = object_getClassName(v2);
+      v196 = object_getClassName(selfCopy);
       v197 = 2082;
       v198 = sel_getName(a2);
       v199 = 1024;
@@ -267,7 +267,7 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid Command APDU. Bailing out now.", buf, 0x22u);
     }
 
-    v2->_cardValidationStatus = 4;
+    selfCopy->_cardValidationStatus = 4;
     v25 = 0;
 LABEL_117:
 
@@ -283,9 +283,9 @@ LABEL_117:
     if (v27)
     {
       v28 = v27;
-      v29 = object_getClass(v2);
+      v29 = object_getClass(selfCopy);
       v30 = class_isMetaClass(v29);
-      v31 = object_getClassName(v2);
+      v31 = object_getClassName(selfCopy);
       v161 = sel_getName(a2);
       v32 = 45;
       if (v30)
@@ -300,7 +300,7 @@ LABEL_117:
     v33 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v34 = object_getClass(v2);
+      v34 = object_getClass(selfCopy);
       if (class_isMetaClass(v34))
       {
         v35 = 43;
@@ -314,7 +314,7 @@ LABEL_117:
       *buf = 67109890;
       v194 = v35;
       v195 = 2082;
-      v196 = object_getClassName(v2);
+      v196 = object_getClassName(selfCopy);
       v197 = 2082;
       v198 = sel_getName(a2);
       v199 = 1024;
@@ -365,9 +365,9 @@ LABEL_117:
         if (v42)
         {
           v43 = v42;
-          v44 = object_getClass(v2);
+          v44 = object_getClass(selfCopy);
           v45 = class_isMetaClass(v44);
-          v46 = object_getClassName(v2);
+          v46 = object_getClassName(selfCopy);
           v47 = sel_getName(a2);
           v165 = objc_opt_class();
           v48 = 45;
@@ -383,7 +383,7 @@ LABEL_117:
         v49 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v50 = object_getClass(v2);
+          v50 = object_getClass(selfCopy);
           if (class_isMetaClass(v50))
           {
             v51 = 43;
@@ -394,7 +394,7 @@ LABEL_117:
             v51 = 45;
           }
 
-          v52 = object_getClassName(v2);
+          v52 = object_getClassName(selfCopy);
           v53 = sel_getName(a2);
           v54 = objc_opt_class();
           *buf = 67110146;
@@ -419,9 +419,9 @@ LABEL_117:
         if (v134)
         {
           v135 = v134;
-          v136 = object_getClass(v2);
+          v136 = object_getClass(selfCopy);
           v137 = class_isMetaClass(v136);
-          v138 = object_getClassName(v2);
+          v138 = object_getClassName(selfCopy);
           v163 = sel_getName(a2);
           v139 = 45;
           if (v137)
@@ -436,7 +436,7 @@ LABEL_117:
         v140 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v140, OS_LOG_TYPE_ERROR))
         {
-          v141 = object_getClass(v2);
+          v141 = object_getClass(selfCopy);
           if (class_isMetaClass(v141))
           {
             v142 = 43;
@@ -447,7 +447,7 @@ LABEL_117:
             v142 = 45;
           }
 
-          v143 = object_getClassName(v2);
+          v143 = object_getClassName(selfCopy);
           v144 = sel_getName(a2);
           *buf = 67109890;
           v194 = v142;
@@ -460,7 +460,7 @@ LABEL_117:
           _os_log_impl(&_mh_execute_header, v140, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid Command APDU. Bailing out now.", buf, 0x22u);
         }
 
-        v2->_cardValidationStatus = 4;
+        selfCopy->_cardValidationStatus = 4;
         goto LABEL_141;
       }
 
@@ -498,12 +498,12 @@ LABEL_117:
                 if (v62)
                 {
                   v64 = [v61 objectForKey:@"length"];
-                  v65 = [v64 integerValue];
+                  integerValue = [v64 integerValue];
                 }
 
                 else
                 {
-                  v65 = 0;
+                  integerValue = 0;
                 }
 
                 v78 = [v61 NF_numberForKey:@"offset"];
@@ -511,11 +511,11 @@ LABEL_117:
                 if (v78)
                 {
                   v79 = [v61 objectForKey:@"offset"];
-                  v80 = [v79 integerValue];
+                  integerValue2 = [v79 integerValue];
 
-                  if ((v80 & 0x8000000000000000) != 0)
+                  if ((integerValue2 & 0x8000000000000000) != 0)
                   {
-                    v81 = [v180 length] + v80;
+                    v81 = [v180 length] + integerValue2;
                     if (v81 < 0)
                     {
                       goto LABEL_105;
@@ -524,18 +524,18 @@ LABEL_117:
 
                   else
                   {
-                    v81 = v80;
+                    v81 = integerValue2;
                   }
                 }
 
                 else
                 {
                   v81 = 0;
-                  v80 = 0;
+                  integerValue2 = 0;
                   v63 = 1;
                 }
 
-                if (&v65[v81] > [v180 length])
+                if (&integerValue[v81] > [v180 length])
                 {
 LABEL_105:
                   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -544,9 +544,9 @@ LABEL_105:
                   if (v121)
                   {
                     v122 = v121;
-                    v123 = object_getClass(v2);
+                    v123 = object_getClass(selfCopy);
                     v124 = class_isMetaClass(v123);
-                    v125 = object_getClassName(v2);
+                    v125 = object_getClassName(selfCopy);
                     v126 = sel_getName(a2);
                     v168 = [v180 length];
                     v158 = v125;
@@ -556,8 +556,8 @@ LABEL_105:
                       v127 = 45;
                     }
 
-                    v2 = p_isa;
-                    v122(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid commandModificaiton length or offset: startingOffset = %ld, length = %ld, [theStateGenerationScriptApdus length] = %lu", v127, v158, v126, 238, v81, v65, v168);
+                    selfCopy = p_isa;
+                    v122(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid commandModificaiton length or offset: startingOffset = %ld, length = %ld, [theStateGenerationScriptApdus length] = %lu", v127, v158, v126, 238, v81, integerValue, v168);
                   }
 
                   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -565,7 +565,7 @@ LABEL_105:
                   v4 = v172;
                   if (os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
                   {
-                    v128 = object_getClass(v2);
+                    v128 = object_getClass(selfCopy);
                     if (class_isMetaClass(v128))
                     {
                       v129 = 43;
@@ -576,7 +576,7 @@ LABEL_105:
                       v129 = 45;
                     }
 
-                    v130 = object_getClassName(v2);
+                    v130 = object_getClassName(selfCopy);
                     v131 = sel_getName(a2);
                     v132 = [v180 length];
                     *buf = 67110658;
@@ -585,13 +585,13 @@ LABEL_105:
                     v196 = v130;
                     v197 = 2082;
                     v198 = v131;
-                    v2 = p_isa;
+                    selfCopy = p_isa;
                     v199 = 1024;
                     v200 = 238;
                     v201 = 2048;
                     v202 = v81;
                     v203 = 2048;
-                    v204 = v65;
+                    v204 = integerValue;
                     v205 = 2048;
                     v206 = v132;
 LABEL_114:
@@ -602,7 +602,7 @@ LABEL_115:
                   v36 = v173;
                   v25 = v174;
 
-                  v2->_cardValidationStatus = 4;
+                  selfCopy->_cardValidationStatus = 4;
                   goto LABEL_116;
                 }
 
@@ -611,18 +611,18 @@ LABEL_115:
                 if (v82)
                 {
                   v83 = [v61 objectForKey:@"min"];
-                  v84 = [v83 intValue];
+                  intValue = [v83 intValue];
                 }
 
                 else
                 {
-                  v84 = 0;
+                  intValue = 0;
                   v63 = 1;
                 }
 
                 v85 = [v61 NF_numberForKey:@"max"];
 
-                if (!v85 || (-[NSObject objectForKey:](v61, "objectForKey:", @"max"), v86 = objc_claimAutoreleasedReturnValue(), v87 = [v86 intValue], v86, v2 = p_isa, v63))
+                if (!v85 || (-[NSObject objectForKey:](v61, "objectForKey:", @"max"), v86 = objc_claimAutoreleasedReturnValue(), v87 = [v86 intValue], v86, selfCopy = p_isa, v63))
                 {
                   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                   v107 = NFLogGetLogger();
@@ -630,9 +630,9 @@ LABEL_115:
                   if (v107)
                   {
                     v109 = v107;
-                    v110 = object_getClass(v2);
+                    v110 = object_getClass(selfCopy);
                     v111 = class_isMetaClass(v110);
-                    v112 = object_getClassName(v2);
+                    v112 = object_getClassName(selfCopy);
                     v113 = sel_getName(a2);
                     v167 = [v180 length];
                     v157 = v112;
@@ -642,8 +642,8 @@ LABEL_115:
                       v114 = 45;
                     }
 
-                    v2 = p_isa;
-                    v109(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid commandModificaiton length or offset: startingOffset = %ld, length = %ld, [theStateGenerationScriptApdus length] = %lu", v114, v157, v113, 227, v81, v65, v167);
+                    selfCopy = p_isa;
+                    v109(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid commandModificaiton length or offset: startingOffset = %ld, length = %ld, [theStateGenerationScriptApdus length] = %lu", v114, v157, v113, 227, v81, integerValue, v167);
                   }
 
                   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -651,7 +651,7 @@ LABEL_115:
                   v4 = v172;
                   if (os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
                   {
-                    v116 = object_getClass(v2);
+                    v116 = object_getClass(selfCopy);
                     if (class_isMetaClass(v116))
                     {
                       v117 = 43;
@@ -662,7 +662,7 @@ LABEL_115:
                       v117 = 45;
                     }
 
-                    v118 = object_getClassName(v2);
+                    v118 = object_getClassName(selfCopy);
                     v119 = sel_getName(a2);
                     v120 = [v180 length];
                     *buf = 67110658;
@@ -671,13 +671,13 @@ LABEL_115:
                     v196 = v118;
                     v197 = 2082;
                     v198 = v119;
-                    v2 = p_isa;
+                    selfCopy = p_isa;
                     v199 = 1024;
                     v200 = 227;
                     v201 = 2048;
                     v202 = v81;
                     v203 = 2048;
-                    v204 = v65;
+                    v204 = integerValue;
                     v205 = 2048;
                     v206 = v120;
                     goto LABEL_114;
@@ -686,8 +686,8 @@ LABEL_115:
                   goto LABEL_115;
                 }
 
-                v88 = [[NSString alloc] initWithFormat:@"%04X", objc_msgSend(p_isa, "_generateRandomNumber:endingWith:", v84, v87)];
-                v89 = [v180 stringByReplacingCharactersInRange:v80 withString:{v65, v88}];
+                v88 = [[NSString alloc] initWithFormat:@"%04X", objc_msgSend(p_isa, "_generateRandomNumber:endingWith:", intValue, v87)];
+                v89 = [v180 stringByReplacingCharactersInRange:integerValue2 withString:{integerValue, v88}];
 
                 v180 = v89;
                 v58 = v176;
@@ -701,9 +701,9 @@ LABEL_115:
               if (v66)
               {
                 v67 = v66;
-                v68 = object_getClass(v2);
+                v68 = object_getClass(selfCopy);
                 v69 = class_isMetaClass(v68);
-                v70 = object_getClassName(v2);
+                v70 = object_getClassName(selfCopy);
                 v71 = sel_getName(a2);
                 v166 = objc_opt_class();
                 v72 = 45;
@@ -719,7 +719,7 @@ LABEL_115:
               v61 = NFSharedLogGetLogger();
               if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
               {
-                v73 = object_getClass(v2);
+                v73 = object_getClass(selfCopy);
                 if (class_isMetaClass(v73))
                 {
                   v74 = 43;
@@ -730,7 +730,7 @@ LABEL_115:
                   v74 = 45;
                 }
 
-                v75 = object_getClassName(v2);
+                v75 = object_getClassName(selfCopy);
                 v76 = sel_getName(a2);
                 v77 = objc_opt_class();
                 *buf = 67110146;
@@ -767,9 +767,9 @@ LABEL_115:
         if (v145)
         {
           v146 = v145;
-          v147 = object_getClass(v2);
+          v147 = object_getClass(selfCopy);
           v148 = class_isMetaClass(v147);
-          v149 = object_getClassName(v2);
+          v149 = object_getClassName(selfCopy);
           v164 = sel_getName(a2);
           v150 = 45;
           if (v148)
@@ -778,7 +778,7 @@ LABEL_115:
           }
 
           v159 = v149;
-          v2 = p_isa;
+          selfCopy = p_isa;
           v146(3, "%c[%{public}s %{public}s]:%i Invalid Command APDU. Bailing out now.", v150, v159, v164, 247);
         }
 
@@ -786,7 +786,7 @@ LABEL_115:
         v151 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v151, OS_LOG_TYPE_ERROR))
         {
-          v152 = object_getClass(v2);
+          v152 = object_getClass(selfCopy);
           if (class_isMetaClass(v152))
           {
             v153 = 43;
@@ -797,7 +797,7 @@ LABEL_115:
             v153 = 45;
           }
 
-          v154 = object_getClassName(v2);
+          v154 = object_getClassName(selfCopy);
           v155 = sel_getName(a2);
           *buf = 67109890;
           v194 = v153;
@@ -810,7 +810,7 @@ LABEL_115:
           _os_log_impl(&_mh_execute_header, v151, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid Command APDU. Bailing out now.", buf, 0x22u);
         }
 
-        v2->_cardValidationStatus = 4;
+        selfCopy->_cardValidationStatus = 4;
 LABEL_141:
         v36 = v173;
         v25 = v174;
@@ -820,11 +820,11 @@ LABEL_116:
         goto LABEL_117;
       }
 
-      v91 = [(NFReaderSession *)v2->_readerSession transceive:v90];
-      v92 = [v91 NF_asHexString];
-      v93 = v92;
+      v91 = [(NFReaderSession *)selfCopy->_readerSession transceive:v90];
+      nF_asHexString = [v91 NF_asHexString];
+      v93 = nF_asHexString;
       v4 = v172;
-      if (v92)
+      if (nF_asHexString)
       {
         v94 = v180;
         if (v180)
@@ -832,7 +832,7 @@ LABEL_116:
           v191[0] = @"command";
           v191[1] = @"response";
           v192[0] = v180;
-          v192[1] = v92;
+          v192[1] = nF_asHexString;
           v95 = [NSDictionary dictionaryWithObjects:v192 forKeys:v191 count:2];
           [v175 addObject:v95];
         }
@@ -845,9 +845,9 @@ LABEL_116:
         if (v96)
         {
           v97 = v96;
-          v98 = object_getClass(v2);
+          v98 = object_getClass(selfCopy);
           v99 = class_isMetaClass(v98);
-          v100 = object_getClassName(v2);
+          v100 = object_getClassName(selfCopy);
           v162 = sel_getName(a2);
           v101 = 45;
           if (v99)
@@ -856,7 +856,7 @@ LABEL_116:
           }
 
           v156 = v100;
-          v2 = p_isa;
+          selfCopy = p_isa;
           v97(3, "%c[%{public}s %{public}s]:%i Invalid Response APDU. Bailing out now.", v101, v156, v162, 255);
         }
 
@@ -864,7 +864,7 @@ LABEL_116:
         v102 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
         {
-          v103 = object_getClass(v2);
+          v103 = object_getClass(selfCopy);
           if (class_isMetaClass(v103))
           {
             v104 = 43;
@@ -875,7 +875,7 @@ LABEL_116:
             v104 = 45;
           }
 
-          v105 = object_getClassName(v2);
+          v105 = object_getClassName(selfCopy);
           v106 = sel_getName(a2);
           *buf = 67109890;
           v194 = v104;
@@ -888,7 +888,7 @@ LABEL_116:
           _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid Response APDU. Bailing out now.", buf, 0x22u);
         }
 
-        v2->_cardValidationStatus = 5;
+        selfCopy->_cardValidationStatus = 5;
         v94 = v180;
       }
 
@@ -938,14 +938,14 @@ LABEL_118:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v77 = [(NFTag *)self->_tag technology];
+      technology = [(NFTag *)self->_tag technology];
       v29 = 45;
       if (isMetaClass)
       {
         v29 = 43;
       }
 
-      v24(4, "%c[%{public}s %{public}s]:%i Unsupported tag, technology=%d", v29, ClassName, Name, 280, v77);
+      v24(4, "%c[%{public}s %{public}s]:%i Unsupported tag, technology=%d", v29, ClassName, Name, 280, technology);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -965,7 +965,7 @@ LABEL_118:
 
       v33 = object_getClassName(self);
       v34 = sel_getName(a2);
-      v35 = [(NFTag *)self->_tag technology];
+      technology2 = [(NFTag *)self->_tag technology];
       *buf = 67110146;
       v101 = v32;
       v102 = 2082;
@@ -975,7 +975,7 @@ LABEL_118:
       v106 = 1024;
       v107 = 280;
       v108 = 1024;
-      v109 = v35;
+      v109 = technology2;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unsupported tag, technology=%d", buf, 0x28u);
     }
 
@@ -984,8 +984,8 @@ LABEL_118:
     return v21;
   }
 
-  v4 = [(NFRemoteAdminReaderSession *)self _getSessionSystemCode];
-  if (!v4)
+  _getSessionSystemCode = [(NFRemoteAdminReaderSession *)self _getSessionSystemCode];
+  if (!_getSessionSystemCode)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v46 = NFLogGetLogger();
@@ -1042,8 +1042,8 @@ LABEL_118:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v5 = [(NFTag *)self->_tag allSystemCodes];
-  v6 = [v5 countByEnumeratingWithState:&v93 objects:v99 count:16];
+  allSystemCodes = [(NFTag *)self->_tag allSystemCodes];
+  v6 = [allSystemCodes countByEnumeratingWithState:&v93 objects:v99 count:16];
   if (!v6)
   {
     goto LABEL_11;
@@ -1057,15 +1057,15 @@ LABEL_118:
     {
       if (*v94 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allSystemCodes);
       }
 
-      if ([*(*(&v93 + 1) + 8 * i) isEqualToData:v4])
+      if ([*(*(&v93 + 1) + 8 * i) isEqualToData:_getSessionSystemCode])
       {
 
         v36 = [NSData NF_dataWithHexString:@"FFFF"];
-        v37 = [(NFRemoteAdminReaderSession *)self _getRequireServiceV1List];
-        if (![v37 count])
+        _getRequireServiceV1List = [(NFRemoteAdminReaderSession *)self _getRequireServiceV1List];
+        if (![_getRequireServiceV1List count])
         {
 LABEL_67:
           self->_cardValidationStatus = 14;
@@ -1077,14 +1077,14 @@ LABEL_79:
 
         readerSession = self->_readerSession;
         v92 = 0;
-        v39 = [(NFReaderSession *)readerSession felicaRequestService:v37 error:&v92];
+        v39 = [(NFReaderSession *)readerSession felicaRequestService:_getRequireServiceV1List error:&v92];
         v40 = v92;
         if (v40)
         {
 LABEL_54:
           v57 = self->_readerSession;
           v87 = v40;
-          v58 = [(NFReaderSession *)v57 felicaRequestService:v37 forSystemCode:v4 error:&v87];
+          v58 = [(NFReaderSession *)v57 felicaRequestService:_getRequireServiceV1List forSystemCode:_getSessionSystemCode error:&v87];
           v59 = v87;
 
           if (v59)
@@ -1096,7 +1096,7 @@ LABEL_78:
             goto LABEL_79;
           }
 
-          v81 = v37;
+          v81 = _getRequireServiceV1List;
           v82 = v39;
           v85 = 0u;
           v86 = 0u;
@@ -1168,7 +1168,7 @@ LABEL_78:
                   }
 
                   self->_cardValidationStatus = 13;
-                  v37 = v81;
+                  _getRequireServiceV1List = v81;
                   v39 = v82;
                   goto LABEL_78;
                 }
@@ -1202,7 +1202,7 @@ LABEL_66:
           }
 
           v43 = v42;
-          v81 = v37;
+          v81 = _getRequireServiceV1List;
           v44 = *v89;
           while (2)
           {
@@ -1216,7 +1216,7 @@ LABEL_66:
               if ([*(*(&v88 + 1) + 8 * k) isEqualToData:v36])
               {
 
-                v37 = v81;
+                _getRequireServiceV1List = v81;
                 v39 = v82;
                 goto LABEL_54;
               }
@@ -1232,12 +1232,12 @@ LABEL_66:
           }
         }
 
-        v37 = v81;
+        _getRequireServiceV1List = v81;
         goto LABEL_66;
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v93 objects:v99 count:16];
+    v7 = [allSystemCodes countByEnumeratingWithState:&v93 objects:v99 count:16];
     if (v7)
     {
       continue;
@@ -1303,11 +1303,11 @@ LABEL_80:
   return v21;
 }
 
-- (BOOL)_executePreCheckScripts:(id)a3
+- (BOOL)_executePreCheckScripts:(id)scripts
 {
-  v5 = a3;
-  v6 = [v5 NF_arrayForKey:@"validateCardScript"];
-  v7 = [v5 valueForKey:@"validateCardScript"];
+  scriptsCopy = scripts;
+  v6 = [scriptsCopy NF_arrayForKey:@"validateCardScript"];
+  v7 = [scriptsCopy valueForKey:@"validateCardScript"];
 
   if (v7 && !v6)
   {
@@ -1428,8 +1428,8 @@ LABEL_24:
   v141 = *v148;
   v138 = v26;
   sel = a2;
-  v134 = v5;
-  v135 = self;
+  v134 = scriptsCopy;
+  selfCopy = self;
 LABEL_26:
   v27 = 0;
 LABEL_27:
@@ -1563,7 +1563,7 @@ LABEL_27:
   if (v31)
   {
     v136 = v31;
-    v32 = [v31 NF_asHexString];
+    nF_asHexString = [v31 NF_asHexString];
     v33 = [v28 NF_arrayForKey:@"filter"];
     v143 = 0u;
     v144 = 0u;
@@ -1595,20 +1595,20 @@ LABEL_34:
         break;
       }
 
-      v39 = [v38 NF_numberForKey:@"length"];
+      integerValue = [v38 NF_numberForKey:@"length"];
 
-      if (v39)
+      if (integerValue)
       {
         v40 = [v38 objectForKey:@"length"];
-        v39 = [v40 integerValue];
+        integerValue = [v40 integerValue];
       }
 
-      v41 = [v38 NF_numberForKey:@"offset"];
+      integerValue2 = [v38 NF_numberForKey:@"offset"];
 
-      if (v41)
+      if (integerValue2)
       {
         v42 = [v38 objectForKey:@"offset"];
-        v41 = [v42 integerValue];
+        integerValue2 = [v42 integerValue];
       }
 
       v43 = [v38 NF_arrayForKey:@"value"];
@@ -1620,33 +1620,33 @@ LABEL_34:
         v44 = 0;
       }
 
-      if (v41 < 0 && (v41 += [v32 length], v41 < 0) || &v39[v41] > objc_msgSend(v32, "length"))
+      if (integerValue2 < 0 && (integerValue2 += [nF_asHexString length], integerValue2 < 0) || &integerValue[integerValue2] > objc_msgSend(nF_asHexString, "length"))
       {
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v61 = NFLogGetLogger();
         if (v61)
         {
           v62 = v61;
-          v63 = object_getClass(v135);
+          v63 = object_getClass(selfCopy);
           v64 = class_isMetaClass(v63);
-          v65 = object_getClassName(v135);
+          v65 = object_getClassName(selfCopy);
           v66 = sel_getName(sel);
-          v132 = [v32 length];
+          v132 = [nF_asHexString length];
           v67 = 43;
           if (!v64)
           {
             v67 = 45;
           }
 
-          v62(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid filter length or offset: startingOffset = %ld, length = %ld, [rResponse length] = %lu", v67, v65, v66, 436, v41, v39, v132);
+          v62(3, "%c[%{public}s %{public}s]:%i Validation Error: Invalid filter length or offset: startingOffset = %ld, length = %ld, [rResponse length] = %lu", v67, v65, v66, 436, integerValue2, integerValue, v132);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v68 = NFSharedLogGetLogger();
-        v69 = v135;
+        v69 = selfCopy;
         if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
         {
-          v70 = object_getClass(v135);
+          v70 = object_getClass(selfCopy);
           if (class_isMetaClass(v70))
           {
             v71 = 43;
@@ -1657,22 +1657,22 @@ LABEL_34:
             v71 = 45;
           }
 
-          v72 = object_getClassName(v135);
+          v72 = object_getClassName(selfCopy);
           v73 = sel_getName(sel);
-          v74 = [v32 length];
+          v74 = [nF_asHexString length];
           *buf = 67110658;
           v152 = v71;
           v153 = 2082;
           v154 = v72;
           v155 = 2082;
           v156 = v73;
-          v69 = v135;
+          v69 = selfCopy;
           v157 = 1024;
           v158 = 436;
           v159 = 2048;
-          v160 = v41;
+          v160 = integerValue2;
           v161 = 2048;
-          v162 = v39;
+          v162 = integerValue;
           v163 = 2048;
           v164 = v74;
           _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Validation Error: Invalid filter length or offset: startingOffset = %ld, length = %ld, [rResponse length] = %lu", buf, 0x40u);
@@ -1683,24 +1683,24 @@ LABEL_94:
 
 LABEL_95:
         v29 = v133;
-        v5 = v134;
+        scriptsCopy = v134;
         v26 = v138;
         goto LABEL_96;
       }
 
-      v45 = [v32 substringWithRange:{v41, v39}];
-      v46 = [v45 uppercaseString];
+      v45 = [nF_asHexString substringWithRange:{integerValue2, integerValue}];
+      uppercaseString = [v45 uppercaseString];
 
-      if (([v44 containsObject:v46] & 1) == 0)
+      if (([v44 containsObject:uppercaseString] & 1) == 0)
       {
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v89 = NFLogGetLogger();
         if (v89)
         {
           v90 = v89;
-          v91 = object_getClass(v135);
+          v91 = object_getClass(selfCopy);
           v92 = class_isMetaClass(v91);
-          v93 = object_getClassName(v135);
+          v93 = object_getClassName(selfCopy);
           v127 = sel_getName(sel);
           v94 = 45;
           if (v92)
@@ -1715,7 +1715,7 @@ LABEL_95:
         v95 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
         {
-          v96 = object_getClass(v135);
+          v96 = object_getClass(selfCopy);
           if (class_isMetaClass(v96))
           {
             v97 = 43;
@@ -1726,7 +1726,7 @@ LABEL_95:
             v97 = 45;
           }
 
-          v98 = object_getClassName(v135);
+          v98 = object_getClassName(selfCopy);
           v99 = sel_getName(sel);
           *buf = 67109890;
           v152 = v97;
@@ -1739,7 +1739,7 @@ LABEL_95:
           _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Validation Error: retrieved Value not found in the allowed list", buf, 0x22u);
         }
 
-        v135->_cardValidationStatus = 3;
+        selfCopy->_cardValidationStatus = 3;
         goto LABEL_94;
       }
 
@@ -1755,8 +1755,8 @@ LABEL_95:
 
 LABEL_50:
 
-        v5 = v134;
-        self = v135;
+        scriptsCopy = v134;
+        self = selfCopy;
         a2 = sel;
 LABEL_60:
 
@@ -1781,9 +1781,9 @@ LABEL_60:
     if (v75)
     {
       v76 = v75;
-      v77 = object_getClass(v135);
+      v77 = object_getClass(selfCopy);
       v78 = class_isMetaClass(v77);
-      v79 = object_getClassName(v135);
+      v79 = object_getClassName(selfCopy);
       v80 = sel_getName(sel);
       v131 = objc_opt_class();
       v81 = 45;
@@ -1799,7 +1799,7 @@ LABEL_60:
     v82 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
-      v83 = object_getClass(v135);
+      v83 = object_getClass(selfCopy);
       if (class_isMetaClass(v83))
       {
         v84 = 43;
@@ -1810,7 +1810,7 @@ LABEL_60:
         v84 = 45;
       }
 
-      v85 = object_getClassName(v135);
+      v85 = object_getClassName(selfCopy);
       v86 = sel_getName(sel);
       v87 = objc_opt_class();
       *buf = 67110146;
@@ -1827,7 +1827,7 @@ LABEL_60:
       _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid type in de-serialization %{public}@", buf, 0x2Cu);
     }
 
-    v135->_cardValidationStatus = 9;
+    selfCopy->_cardValidationStatus = 9;
     goto LABEL_95;
   }
 
@@ -1891,10 +1891,10 @@ LABEL_98:
   return v60;
 }
 
-- (BOOL)_validateCardForMercury:(id)a3
+- (BOOL)_validateCardForMercury:(id)mercury
 {
-  v5 = a3;
-  v6 = [v5 NF_stringForKey:@"technology"];
+  mercuryCopy = mercury;
+  v6 = [mercuryCopy NF_stringForKey:@"technology"];
   if (v6)
   {
     v7 = v6;
@@ -1928,7 +1928,7 @@ LABEL_98:
   v9 = [(__CFString *)v7 containsString:v8];
   if (v9)
   {
-    if (![(NFRemoteAdminReaderSession *)self _executePreCheckScripts:v5])
+    if (![(NFRemoteAdminReaderSession *)self _executePreCheckScripts:mercuryCopy])
     {
       v9 = 0;
       goto LABEL_26;
@@ -1996,10 +1996,10 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)_validateCardForMiFare:(id)a3
+- (BOOL)_validateCardForMiFare:(id)fare
 {
-  v4 = a3;
-  v5 = [v4 NF_stringForKey:@"technology"];
+  fareCopy = fare;
+  v5 = [fareCopy NF_stringForKey:@"technology"];
   if (v5)
   {
     objc_opt_class();
@@ -2078,10 +2078,10 @@ LABEL_26:
     goto LABEL_66;
   }
 
-  v7 = [v4 NF_arrayForKey:@"tagType"];
+  v7 = [fareCopy NF_arrayForKey:@"tagType"];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v8 = NFLogGetLogger();
-  v70 = v4;
+  v70 = fareCopy;
   if (v8)
   {
     v9 = v8;
@@ -2089,14 +2089,14 @@ LABEL_26:
     v11 = class_isMetaClass(v10);
     v12 = object_getClassName(self);
     v13 = sel_getName(a2);
-    v68 = [(NFTag *)self->_tag type];
+    type = [(NFTag *)self->_tag type];
     v14 = 45;
     if (v11)
     {
       v14 = 43;
     }
 
-    v9(6, "%c[%{public}s %{public}s]:%i Tag Type %d found", v14, v12, v13, 499, v68);
+    v9(6, "%c[%{public}s %{public}s]:%i Tag Type %d found", v14, v12, v13, 499, type);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2116,7 +2116,7 @@ LABEL_26:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [(NFTag *)self->_tag type];
+    type2 = [(NFTag *)self->_tag type];
     *buf = 67110146;
     v81 = v17;
     v82 = 2082;
@@ -2126,7 +2126,7 @@ LABEL_26:
     v86 = 1024;
     v87 = 499;
     v88 = 1024;
-    LODWORD(v89) = v20;
+    LODWORD(v89) = type2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Tag Type %d found", buf, 0x28u);
   }
 
@@ -2137,9 +2137,9 @@ LABEL_26:
 
   else
   {
-    v32 = [(NFTag *)self->_tag type];
+    type3 = [(NFTag *)self->_tag type];
     v21 = @"Unknown";
-    if (v32 == 16)
+    if (type3 == 16)
     {
       v21 = @"DesFire";
     }
@@ -2207,7 +2207,7 @@ LABEL_51:
 
     v31 = 0;
     v61 = 15;
-    v4 = v70;
+    fareCopy = v70;
 LABEL_63:
     self->_cardValidationStatus = v61;
     goto LABEL_65;
@@ -2299,7 +2299,7 @@ LABEL_49:
     }
   }
 
-  v4 = v70;
+  fareCopy = v70;
   if ([(NFRemoteAdminReaderSession *)self _executePreCheckScripts:v70])
   {
     v61 = 0;
@@ -2320,16 +2320,16 @@ LABEL_66:
 {
   if (self->_readerSession)
   {
-    v4 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-    v5 = [v4 objectForKeyedSubscript:@"version"];
+    sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+    v5 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) != 0 && ([v4 objectForKeyedSubscript:@"version"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "intValue"), v7, v8 > 2))
+    if ((isKindOfClass & 1) != 0 && ([sessionCardServiceInfo objectForKeyedSubscript:@"version"], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "intValue"), v7, v8 > 2))
     {
       if (v8 == 4)
       {
-        v9 = [(NFRemoteAdminReaderSession *)self _validateCardForMiFare:v4];
+        _validateCardForFelica = [(NFRemoteAdminReaderSession *)self _validateCardForMiFare:sessionCardServiceInfo];
       }
 
       else
@@ -2386,16 +2386,16 @@ LABEL_66:
           goto LABEL_6;
         }
 
-        v9 = [(NFRemoteAdminReaderSession *)self _validateCardForMercury:v4];
+        _validateCardForFelica = [(NFRemoteAdminReaderSession *)self _validateCardForMercury:sessionCardServiceInfo];
       }
     }
 
     else
     {
-      v9 = [(NFRemoteAdminReaderSession *)self _validateCardForFelica];
+      _validateCardForFelica = [(NFRemoteAdminReaderSession *)self _validateCardForFelica];
     }
 
-    v10 = v9;
+    v10 = _validateCardForFelica;
 LABEL_6:
 
     return v10;
@@ -2452,12 +2452,12 @@ LABEL_6:
 
 - (id)_getRequireServiceV1List
 {
-  v3 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v4 = [v3 NF_arrayForKey:@"requiredServicesV1"];
-  if (v4 || ([v3 NF_arrayForKey:@"areaCodeList"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v4 = [sessionCardServiceInfo NF_arrayForKey:@"requiredServicesV1"];
+  if (v4 || ([sessionCardServiceInfo NF_arrayForKey:@"areaCodeList"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v46 = v3;
+    v46 = sessionCardServiceInfo;
     v48 = objc_opt_new();
     v49 = 0u;
     v50 = 0u;
@@ -2622,7 +2622,7 @@ LABEL_6:
       }
     }
 
-    v3 = v46;
+    sessionCardServiceInfo = v46;
   }
 
   else
@@ -2635,8 +2635,8 @@ LABEL_6:
 
 - (id)_getSessionSystemCode
 {
-  v4 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v5 = [v4 objectForKeyedSubscript:@"systemCode"];
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v5 = [sessionCardServiceInfo objectForKeyedSubscript:@"systemCode"];
   if (v5)
   {
     objc_opt_class();
@@ -2711,7 +2711,7 @@ LABEL_18:
   return v7;
 }
 
-- (void)abort:(int64_t)a3
+- (void)abort:(int64_t)abort
 {
   v19.receiver = self;
   v19.super_class = NFRemoteAdminReaderSession;
@@ -2719,9 +2719,9 @@ LABEL_18:
   dispatch_semaphore_signal(self->_sessionStartSem);
   [(NFRemoteAdminReaderSession *)self _fireCardIngestionStatus:5];
   dispatch_semaphore_signal(self->_tagSem);
-  v5 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v6 = v5;
-  if (a3 == 6)
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  v6 = redirectState;
+  if (abort == 6)
   {
     cardIngestionStatus = 7;
     self->_cardIngestionStatus = 7;
@@ -2736,12 +2736,12 @@ LABEL_18:
     }
   }
 
-  v8 = [v5 stateUpdateOnSessionEndedCallback];
+  stateUpdateOnSessionEndedCallback = [redirectState stateUpdateOnSessionEndedCallback];
 
-  if (v8)
+  if (stateUpdateOnSessionEndedCallback)
   {
-    v9 = [v6 stateUpdateOnSessionEndedCallback];
-    (v9)[2](v9, v6, cardIngestionStatus);
+    stateUpdateOnSessionEndedCallback2 = [v6 stateUpdateOnSessionEndedCallback];
+    (stateUpdateOnSessionEndedCallback2)[2](stateUpdateOnSessionEndedCallback2, v6, cardIngestionStatus);
 
     [v6 setStateUpdateOnSessionEndedCallback:0];
   }
@@ -2757,20 +2757,20 @@ LABEL_18:
     [v13 setObject:v14 forKeyedSubscript:@"sessionStatus"];
   }
 
-  v15 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v16 = [v15 spStatusCode];
+  redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  spStatusCode = [redirectState2 spStatusCode];
 
-  if (v16)
+  if (spStatusCode)
   {
-    v17 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v18 = [v17 spStatusCode];
-    [v13 setObject:v18 forKey:@"spStatus"];
+    redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    spStatusCode2 = [redirectState3 spStatusCode];
+    [v13 setObject:spStatusCode2 forKey:@"spStatus"];
   }
 
   [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:v13 prepOnly:0];
 }
 
-- (void)_fireCardIngestionStatus:(unint64_t)a3
+- (void)_fireCardIngestionStatus:(unint64_t)status
 {
   if (self)
   {
@@ -2789,17 +2789,17 @@ LABEL_18:
       v6 = 0;
     }
 
-    [(NFRemoteAdminSessionDelegate *)v6 handleCardIngestionStatus:a3];
+    [(NFRemoteAdminSessionDelegate *)v6 handleCardIngestionStatus:status];
   }
 }
 
-- (void)processNotification:(id)a3
+- (void)processNotification:(id)notification
 {
   v22.receiver = self;
   v22.super_class = NFRemoteAdminReaderSession;
-  v5 = a3;
-  [(NFRemoteAdminRedirectSession *)&v22 processNotification:v5];
-  v6 = [v5 NF_stringForKey:@"tokenValue"];
+  notificationCopy = notification;
+  [(NFRemoteAdminRedirectSession *)&v22 processNotification:notificationCopy];
+  v6 = [notificationCopy NF_stringForKey:@"tokenValue"];
 
   if ([v6 length])
   {
@@ -2875,34 +2875,34 @@ LABEL_18:
     }
   }
 
-  v19 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v19 setNotification:0];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState setNotification:0];
 }
 
 - (id)getNextRequest
 {
-  v3 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v4 = [v3 objectForKeyedSubscript:@"version"];
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v4 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v6 = 2;
   if (isKindOfClass)
   {
-    v7 = [v3 objectForKeyedSubscript:@"version"];
-    v8 = [v7 intValue];
+    v7 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
+    intValue = [v7 intValue];
 
-    if (v8 <= 3)
+    if (intValue <= 3)
     {
       v6 = 2;
     }
 
     else
     {
-      v6 = v8;
+      v6 = intValue;
     }
 
-    v9 = v8 == 4;
+    v9 = intValue == 4;
   }
 
   else
@@ -2910,66 +2910,66 @@ LABEL_18:
     v9 = 0;
   }
 
-  v10 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v11 = [v10 step];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step = [redirectState step];
 
-  v12 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v13 = v12;
-  if (!v11)
+  redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  v13 = redirectState2;
+  if (!step)
   {
-    v16 = objc_opt_new();
+    redirectResponse = objc_opt_new();
     v17 = [NSNumber numberWithInteger:v6];
-    [v16 setObject:v17 forKeyedSubscript:@"kVersion"];
+    [redirectResponse setObject:v17 forKeyedSubscript:@"kVersion"];
 
-    v18 = [v13 parameters];
-    if (v18)
+    parameters = [v13 parameters];
+    if (parameters)
     {
-      v19 = [v13 parameters];
-      [v16 setObject:v19 forKeyedSubscript:@"readerModeParameters"];
+      parameters2 = [v13 parameters];
+      [redirectResponse setObject:parameters2 forKeyedSubscript:@"readerModeParameters"];
     }
 
     else
     {
-      [v16 setObject:&__NSDictionary0__struct forKeyedSubscript:@"readerModeParameters"];
+      [redirectResponse setObject:&__NSDictionary0__struct forKeyedSubscript:@"readerModeParameters"];
     }
 
     goto LABEL_16;
   }
 
-  v14 = [v12 step];
+  step2 = [redirectState2 step];
 
-  v15 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v13 = v15;
-  if (v14 == 2)
+  redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  v13 = redirectState3;
+  if (step2 == 2)
   {
-    v16 = [v15 redirectResponse];
+    redirectResponse = [redirectState3 redirectResponse];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v20 = [v15 unsentScriptResponse];
+  unsentScriptResponse = [redirectState3 unsentScriptResponse];
 
-  if (v20)
+  if (unsentScriptResponse)
   {
-    v21 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v16 = [v21 unsentScriptResponse];
+    redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    redirectResponse = [redirectState4 unsentScriptResponse];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    redirectResponse = objc_opt_new();
     v23 = [NSNumber numberWithInteger:v6];
-    [v16 setObject:v23 forKeyedSubscript:@"kVersion"];
+    [redirectResponse setObject:v23 forKeyedSubscript:@"kVersion"];
 
-    v24 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v25 = [v24 forwardDataToSP];
+    redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    forwardDataToSP = [redirectState5 forwardDataToSP];
 
-    if (v25)
+    if (forwardDataToSP)
     {
-      v26 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v27 = [v26 forwardDataToSP];
-      [v16 setObject:v27 forKeyedSubscript:@"forwardData"];
+      redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      forwardDataToSP2 = [redirectState6 forwardDataToSP];
+      [redirectResponse setObject:forwardDataToSP2 forKeyedSubscript:@"forwardData"];
     }
 
     v28 = objc_opt_new();
@@ -2982,44 +2982,44 @@ LABEL_16:
 
     if (v9)
     {
-      v30 = [(NFTag *)self->_tag tagID];
-      v31 = [v30 NF_asHexString];
+      tagID = [(NFTag *)self->_tag tagID];
+      nF_asHexString = [tagID NF_asHexString];
 
       v32 = [(NFTag *)self->_tag sak];
-      v33 = [v32 NF_asHexString];
+      nF_asHexString2 = [v32 NF_asHexString];
 
-      v34 = [(NFTag *)self->_tag atqa];
-      v35 = [v34 NF_asHexString];
+      atqa = [(NFTag *)self->_tag atqa];
+      nF_asHexString3 = [atqa NF_asHexString];
 
-      v36 = [(NFTag *)self->_tag historicalBytes];
-      v37 = [v36 NF_asHexString];
+      historicalBytes = [(NFTag *)self->_tag historicalBytes];
+      nF_asHexString4 = [historicalBytes NF_asHexString];
 
-      if (v31 && v33 && v35 && v37)
+      if (nF_asHexString && nF_asHexString2 && nF_asHexString3 && nF_asHexString4)
       {
         v39[0] = @"UID";
         v39[1] = @"SAK";
-        v40[0] = v31;
-        v40[1] = v33;
+        v40[0] = nF_asHexString;
+        v40[1] = nF_asHexString2;
         v39[2] = @"ATQA";
         v39[3] = @"historicalBytes";
-        v40[2] = v35;
-        v40[3] = v37;
+        v40[2] = nF_asHexString3;
+        v40[3] = nF_asHexString4;
         v38 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:4];
         [v28 setObject:v38 forKeyedSubscript:@"cardTypeAParams"];
       }
     }
 
-    [v16 setObject:v28 forKeyedSubscript:@"SEStateInfo"];
+    [redirectResponse setObject:v28 forKeyedSubscript:@"SEStateInfo"];
   }
 
 LABEL_17:
 
-  return v16;
+  return redirectResponse;
 }
 
-- (unint64_t)executeScript:(id)a3
+- (unint64_t)executeScript:(id)script
 {
-  v5 = a3;
+  scriptCopy = script;
   if (![(NFRemoteAdminRedirectSession *)self aborted])
   {
     [(NFRemoteAdminReaderSession *)self _fireCardIngestionStatus:4];
@@ -3032,18 +3032,18 @@ LABEL_17:
 
     readerSession = self->_readerSession;
     v62 = 0;
-    v18 = [(NFReaderSession *)readerSession runScript:v5 parameters:v16 results:&v62];
+    v18 = [(NFReaderSession *)readerSession runScript:scriptCopy parameters:v16 results:&v62];
     v12 = v62;
     [(NFRemoteAdminRedirectSession *)self setRedirectStepError:v18];
-    v19 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v19 setUnsentScriptResponse:v12];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState setUnsentScriptResponse:v12];
 
-    v20 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v21 = [v20 performanceMetrics];
+    redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    performanceMetrics = [redirectState2 performanceMetrics];
     [v16 outTotalAPDUExecutionDuration];
     v23 = v22;
-    [v21 totalAPDUTime];
-    [v21 setTotalAPDUTime:v23 + v24];
+    [performanceMetrics totalAPDUTime];
+    [performanceMetrics setTotalAPDUTime:v23 + v24];
 
     if (v12)
     {
@@ -3340,17 +3340,17 @@ LABEL_30:
   v3 = NFGetProductType();
   if (v3 <= 9 && ((1 << v3) & 0x206) != 0)
   {
-    v4 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-    v5 = [v4 objectForKeyedSubscript:@"version"];
+    sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+    v5 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 objectForKeyedSubscript:@"version"];
-      v8 = [v7 intValue];
+      v7 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
+      intValue = [v7 intValue];
 
-      if (v8 == 3)
+      if (intValue == 3)
       {
         return 1;
       }
@@ -3483,19 +3483,19 @@ LABEL_11:
       [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:v12 prepOnly:1];
     }
 
-    v13 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-    v14 = [v13 objectForKeyedSubscript:@"version"];
+    sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+    v14 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v16 = [v13 objectForKeyedSubscript:@"version"];
-      v17 = [v16 intValue];
+      v16 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
+      intValue = [v16 intValue];
 
-      if (v17 == 3)
+      if (intValue == 3)
       {
-        v18 = [(NFReaderSession *)self->_readerSession skipMifareClassification];
+        skipMifareClassification = [(NFReaderSession *)self->_readerSession skipMifareClassification];
       }
     }
 
@@ -3545,11 +3545,11 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Waiting for tag", buf, 0x22u);
     }
 
-    v30 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v31 = [v30 requestInfo];
-    v32 = [v31 maxDetectionTimeout];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    requestInfo = [redirectState requestInfo];
+    maxDetectionTimeout = [requestInfo maxDetectionTimeout];
 
-    v33 = [(NFRemoteAdminReaderSession *)self connectTagWithTimeout:v32];
+    v33 = [(NFRemoteAdminReaderSession *)self connectTagWithTimeout:maxDetectionTimeout];
     v34 = v108[5];
     v108[5] = v33;
 
@@ -3623,18 +3623,18 @@ LABEL_92:
 
     if ([(NFRemoteAdminReaderSession *)self _validateCard])
     {
-      v48 = [v13 objectForKeyedSubscript:@"cardServiceId"];
+      v48 = [sessionCardServiceInfo objectForKeyedSubscript:@"cardServiceId"];
 
       if (v48)
       {
-        v49 = [v13 objectForKeyedSubscript:@"cardServiceId"];
+        v49 = [sessionCardServiceInfo objectForKeyedSubscript:@"cardServiceId"];
         [(NSMutableDictionary *)self->_cardContents setObject:v49 forKeyedSubscript:@"cardServiceId"];
       }
 
-      v50 = [(NFRemoteAdminReaderSession *)self _gatherCardStateInfo];
-      if (v50)
+      _gatherCardStateInfo = [(NFRemoteAdminReaderSession *)self _gatherCardStateInfo];
+      if (_gatherCardStateInfo)
       {
-        [(NSMutableDictionary *)self->_cardContents addEntriesFromDictionary:v50];
+        [(NSMutableDictionary *)self->_cardContents addEntriesFromDictionary:_gatherCardStateInfo];
 LABEL_46:
 
         if (byte_10005BAB0 == 1)
@@ -3912,12 +3912,12 @@ LABEL_46:
   return readerSession != 0;
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
-  v6 = a4;
-  if ([v6 count])
+  tagsCopy = tags;
+  if ([tagsCopy count])
   {
-    v7 = [v6 objectAtIndex:0];
+    v7 = [tagsCopy objectAtIndex:0];
     tag = self->_tag;
     self->_tag = v7;
 
@@ -4125,10 +4125,10 @@ LABEL_46:
   }
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-  v7 = a4;
+  reasonCopy = reason;
   Logger = NFLogGetLogger();
   if (Logger)
   {
@@ -4172,8 +4172,8 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Lost reader session", buf, 0x22u);
   }
 
-  v17 = [v7 code];
-  if (v17 == 47)
+  code = [reasonCopy code];
+  if (code == 47)
   {
     v18 = 6;
   }
@@ -4186,45 +4186,45 @@ LABEL_46:
   [(NFRemoteAdminReaderSession *)self abort:v18];
 }
 
-- (id)connectTagWithTimeout:(unint64_t)a3
+- (id)connectTagWithTimeout:(unint64_t)timeout
 {
-  v6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
   v56 = a2;
-  v57 = v6;
-  if (v6)
+  v57 = redirectState;
+  if (redirectState)
   {
-    v7 = [v6 parameters];
-    v8 = [v7 objectForKeyedSubscript:@"technology"];
+    parameters = [redirectState parameters];
+    v8 = [parameters objectForKeyedSubscript:@"technology"];
 
-    v9 = [v8 uppercaseString];
+    uppercaseString = [v8 uppercaseString];
   }
 
   else
   {
-    v9 = 0;
+    uppercaseString = 0;
   }
 
-  v10 = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
-  v11 = [v10 objectForKeyedSubscript:@"version"];
+  sessionCardServiceInfo = [(NFRemoteAdminReaderSession *)self sessionCardServiceInfo];
+  v11 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [v10 objectForKeyedSubscript:@"version"];
-    v14 = [v13 intValue];
+    v13 = [sessionCardServiceInfo objectForKeyedSubscript:@"version"];
+    intValue = [v13 intValue];
   }
 
   else
   {
-    v14 = 0;
+    intValue = 0;
   }
 
   v15 = 0;
-  v16 = a3;
+  timeoutCopy = timeout;
   do
   {
-    if (v14 == 2)
+    if (intValue == 2)
     {
       readerSession = self->_readerSession;
       v60 = v15;
@@ -4234,7 +4234,7 @@ LABEL_46:
       goto LABEL_13;
     }
 
-    if (v14 == 3 && [v9 containsString:@"A"])
+    if (intValue == 3 && [uppercaseString containsString:@"A"])
     {
       readerSession = self->_readerSession;
       v59 = v15;
@@ -4256,17 +4256,17 @@ LABEL_15:
     if ([(__CFString *)v22 code]== 47)
     {
       sleep(1u);
-      v16 -= 1000;
+      timeoutCopy -= 1000;
     }
 
-    v23 = [(__CFString *)v22 code]!= 47 || v16 <= 0;
+    v23 = [(__CFString *)v22 code]!= 47 || timeoutCopy <= 0;
     v15 = v22;
   }
 
   while (!v23);
-  if (a3)
+  if (timeout)
   {
-    v24 = dispatch_time(0, 1000000 * (v16 & ~(v16 >> 63)));
+    v24 = dispatch_time(0, 1000000 * (timeoutCopy & ~(timeoutCopy >> 63)));
   }
 
   else
@@ -4521,20 +4521,20 @@ LABEL_15:
 - (unint64_t)_performReaderModeRequest
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NFRemoteAdminReaderSession *)self getNextRequest];
-  if ([v5 count])
+  getNextRequest = [(NFRemoteAdminReaderSession *)self getNextRequest];
+  if ([getNextRequest count])
   {
     v79 = v4;
     [(NFRemoteAdminReaderSession *)self _fireCardIngestionStatus:3];
     v6 = objc_opt_new();
     v7 = objc_opt_new();
     v80 = 0;
-    v8 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:v5 httpHeader:0 response:v6 responseHeader:v7 duration:0 sessionError:&v80];
+    v8 = [(NFRemoteAdminRedirectSession *)self executeHttpRequest:getNextRequest httpHeader:0 response:v6 responseHeader:v7 duration:0 sessionError:&v80];
     v9 = v80;
-    v10 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v11 = [v10 performanceMetrics];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    performanceMetrics = [redirectState performanceMetrics];
     v78 = v9;
-    [v11 setNsUrlSessionError:v9];
+    [performanceMetrics setNsUrlSessionError:v9];
 
     if (v8)
     {
@@ -4688,23 +4688,23 @@ LABEL_15:
         }
 
         v52 = [v6 NF_stringForKey:@"kBatchId"];
-        v53 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v53 setBatchId:v52];
+        redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState2 setBatchId:v52];
 
         v54 = [v6 NF_stringForKey:@"kTaskId"];
-        v55 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v55 setTaskId:v54];
+        redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState3 setTaskId:v54];
 
         v56 = [v18 NF_stringForKey:@"targetURL"];
-        v57 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v57 setRedirectUrl:v56];
+        redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState4 setRedirectUrl:v56];
 
         v58 = [v18 NF_dictionaryForKey:@"forwardData"];
-        v59 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v59 setForwardDataToSP:v58];
+        redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState5 setForwardDataToSP:v58];
 
-        v60 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v60 setHttpHeaderInfo:v7];
+        redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState6 setHttpHeaderInfo:v7];
         v8 = 0;
       }
 
@@ -4729,8 +4729,8 @@ LABEL_15:
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-        v60 = NFSharedLogGetLogger();
-        if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+        redirectState6 = NFSharedLogGetLogger();
+        if (os_log_type_enabled(redirectState6, OS_LOG_TYPE_ERROR))
         {
           v67 = object_getClass(self);
           if (class_isMetaClass(v67))
@@ -4753,7 +4753,7 @@ LABEL_15:
           v86 = v70;
           v87 = 1024;
           v88 = 1215;
-          _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to receive redirect info for reader mode request", buf, 0x22u);
+          _os_log_impl(&_mh_execute_header, redirectState6, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to receive redirect info for reader mode request", buf, 0x22u);
         }
 
         v8 = 5;
@@ -4872,21 +4872,21 @@ LABEL_15:
     }
 
     [(NFRemoteAdminReaderSession *)self _fireCardIngestionStatus:5];
-    v19 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v19 setStep:3];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState setStep:3];
 
-    v20 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v20 save];
-    v8 = 1;
+    redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState2 save];
+    _doInitialRequest = 1;
     goto LABEL_15;
   }
 
-  v6 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v7 = [v6 step];
+  redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step = [redirectState3 step];
 
-  if (v7)
+  if (step)
   {
-    v8 = 0;
+    _doInitialRequest = 0;
   }
 
   else
@@ -4937,7 +4937,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i initiating reader mode request", buf, 0x22u);
     }
 
-    v8 = [(NFRemoteAdminReaderSession *)self _doInitialRequest];
+    _doInitialRequest = [(NFRemoteAdminReaderSession *)self _doInitialRequest];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v33 = NFLogGetLogger();
     if (v33)
@@ -4953,7 +4953,7 @@ LABEL_15:
         v37 = 43;
       }
 
-      v34(6, "%c[%{public}s %{public}s]:%i Result = 0x%04x", v37, v115, v119, 1247, v8);
+      v34(6, "%c[%{public}s %{public}s]:%i Result = 0x%04x", v37, v115, v119, 1247, _doInitialRequest);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -4982,7 +4982,7 @@ LABEL_15:
       v132 = 1024;
       v133 = 1247;
       v134 = 1024;
-      LODWORD(v135) = v8;
+      LODWORD(v135) = _doInitialRequest;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Result = 0x%04x", buf, 0x28u);
     }
 
@@ -4996,18 +4996,18 @@ LABEL_15:
     [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:v44 prepOnly:1];
   }
 
-  v45 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v46 = [v45 step];
+  redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step2 = [redirectState4 step];
 
-  if (self && v46 == 3 && v8 == 2)
+  if (self && step2 == 3 && _doInitialRequest == 2)
   {
     self->_cardIngestionStatus = 2;
   }
 
-  v47 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v48 = [v47 step];
+  redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step3 = [redirectState5 step];
 
-  if (v48 == 1)
+  if (step3 == 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v49 = NFLogGetLogger();
@@ -5055,10 +5055,10 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Performing reader mode redirect", buf, 0x22u);
     }
 
-    v60 = [(NFRemoteAdminReaderSession *)self _doReaderModeRedirect];
+    _doReaderModeRedirect = [(NFRemoteAdminReaderSession *)self _doReaderModeRedirect];
     if (self)
     {
-      self->_cardIngestionStatus = v60;
+      self->_cardIngestionStatus = _doReaderModeRedirect;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5143,23 +5143,23 @@ LABEL_15:
       [v77 setObject:v78 forKeyedSubscript:@"sessionStatus"];
     }
 
-    v79 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v80 = [v79 spStatusCode];
+    redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    spStatusCode = [redirectState6 spStatusCode];
 
-    if (v80)
+    if (spStatusCode)
     {
-      v81 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v82 = [v81 spStatusCode];
-      [v77 setObject:v82 forKey:@"spStatus"];
+      redirectState7 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      spStatusCode2 = [redirectState7 spStatusCode];
+      [v77 setObject:spStatusCode2 forKey:@"spStatus"];
     }
 
     [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:v77 prepOnly:1];
   }
 
-  v83 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v84 = [v83 step];
+  redirectState8 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  step4 = [redirectState8 step];
 
-  if (v84 == 2)
+  if (step4 == 2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v85 = NFLogGetLogger();
@@ -5207,7 +5207,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Performing post-redirect TSM check in", buf, 0x22u);
     }
 
-    v8 = [(NFRemoteAdminReaderSession *)self _doFinalTSMCheckIn];
+    _doInitialRequest = [(NFRemoteAdminReaderSession *)self _doFinalTSMCheckIn];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v96 = NFLogGetLogger();
     if (v96)
@@ -5223,7 +5223,7 @@ LABEL_15:
         v100 = 43;
       }
 
-      v97(6, "%c[%{public}s %{public}s]:%i Result = 0x%04x", v100, v116, v122, 1288, v8);
+      v97(6, "%c[%{public}s %{public}s]:%i Result = 0x%04x", v100, v116, v122, 1288, _doInitialRequest);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5252,36 +5252,36 @@ LABEL_15:
       v132 = 1024;
       v133 = 1288;
       v134 = 1024;
-      LODWORD(v135) = v8;
+      LODWORD(v135) = _doInitialRequest;
       _os_log_impl(&_mh_execute_header, v101, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Result = 0x%04x", buf, 0x28u);
     }
 
     v106 = [NSMutableDictionary alloc];
     v107 = [NSNumber numberWithUnsignedInt:[(NFRemoteAdminReaderSession *)self targetTagType]];
     v108 = [NSNumber numberWithUnsignedInteger:self->_cardValidationStatus];
-    v20 = [v106 initWithObjectsAndKeys:{&off_100057330, @"state", v107, @"technology", v108, @"cardValidationStatus", 0}];
+    redirectState2 = [v106 initWithObjectsAndKeys:{&off_100057330, @"state", v107, @"technology", v108, @"cardValidationStatus", 0}];
 
     if (self->_cardIngestionStatus != -1)
     {
       v109 = [NSNumber numberWithUnsignedInteger:?];
-      [v20 setObject:v109 forKeyedSubscript:@"sessionStatus"];
+      [redirectState2 setObject:v109 forKeyedSubscript:@"sessionStatus"];
     }
 
-    v110 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    v111 = [v110 spStatusCode];
+    redirectState9 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    spStatusCode3 = [redirectState9 spStatusCode];
 
-    if (v111)
+    if (spStatusCode3)
     {
-      v112 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v113 = [v112 spStatusCode];
-      [v20 setObject:v113 forKey:@"spStatus"];
+      redirectState10 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      spStatusCode4 = [redirectState10 spStatusCode];
+      [redirectState2 setObject:spStatusCode4 forKey:@"spStatus"];
     }
 
-    [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:v20 prepOnly:0];
+    [NFReaderModeCardIngestionCALogger postAnalyticsReaderModeCardIngestionSession:redirectState2 prepOnly:0];
 LABEL_15:
   }
 
-  return v8;
+  return _doInitialRequest;
 }
 
 - (unint64_t)_doInitialRequest
@@ -5337,7 +5337,7 @@ LABEL_15:
   {
     if (![(NFRemoteAdminRedirectSession *)self aborted])
     {
-      v13 = 5;
+      _performReaderModeRequest = 5;
 LABEL_95:
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v91 = NFLogGetLogger();
@@ -5354,7 +5354,7 @@ LABEL_95:
           v95 = 43;
         }
 
-        v92(3, "%c[%{public}s %{public}s]:%i Failed to perform initial reader mode request with TSM, status=0x%lx", v95, v127, v134, 1365, v13);
+        v92(3, "%c[%{public}s %{public}s]:%i Failed to perform initial reader mode request with TSM, status=0x%lx", v95, v127, v134, 1365, _performReaderModeRequest);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -5383,12 +5383,12 @@ LABEL_95:
         v143 = 1024;
         v144 = 1365;
         v145 = 2048;
-        v146 = v13;
+        v146 = _performReaderModeRequest;
         _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to perform initial reader mode request with TSM, status=0x%lx", buf, 0x2Cu);
       }
 
-      v78 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v78 setStep:3];
+      redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState setStep:3];
       v79 = 2;
       goto LABEL_105;
     }
@@ -5400,9 +5400,9 @@ LABEL_95:
   v15 = 5;
   do
   {
-    v16 = [(NFRemoteAdminRedirectSession *)self connection];
+    connection = [(NFRemoteAdminRedirectSession *)self connection];
 
-    if (!v16)
+    if (!connection)
     {
       if (byte_10005BAB0 == 1)
       {
@@ -5457,9 +5457,9 @@ LABEL_95:
         }
       }
 
-      v28 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v29 = [v28 sourceUrl];
-      v30 = [(NFRemoteAdminRedirectSession *)self openConnection:v29];
+      redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      sourceUrl = [redirectState2 sourceUrl];
+      v30 = [(NFRemoteAdminRedirectSession *)self openConnection:sourceUrl];
 
       if ((v30 & 1) == 0)
       {
@@ -5517,15 +5517,15 @@ LABEL_95:
       }
     }
 
-    v42 = [(NFRemoteAdminRedirectSession *)self connection];
+    connection2 = [(NFRemoteAdminRedirectSession *)self connection];
 
-    v13 = v15;
-    if (v42)
+    _performReaderModeRequest = v15;
+    if (connection2)
     {
-      v13 = [(NFRemoteAdminReaderSession *)self _performReaderModeRequest];
+      _performReaderModeRequest = [(NFRemoteAdminReaderSession *)self _performReaderModeRequest];
     }
 
-    if (v14 <= 2 && v13 == 3)
+    if (v14 <= 2 && _performReaderModeRequest == 3)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v43 = NFLogGetLogger();
@@ -5581,7 +5581,7 @@ LABEL_95:
       }
 
       sleep(dword_100040800[v14++]);
-      v13 = 6;
+      _performReaderModeRequest = 6;
     }
 
     if (v14 >= 3)
@@ -5637,7 +5637,7 @@ LABEL_95:
       }
     }
 
-    if (v13 != 6)
+    if (_performReaderModeRequest != 6)
     {
       break;
     }
@@ -5649,7 +5649,7 @@ LABEL_95:
   [(NFRemoteAdminRedirectSession *)self closeConnection];
   if ([(NFRemoteAdminRedirectSession *)self aborted])
   {
-    if (!v13)
+    if (!_performReaderModeRequest)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v103 = NFLogGetLogger();
@@ -5697,12 +5697,12 @@ LABEL_95:
         _os_log_impl(&_mh_execute_header, v109, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Abort with checkin", buf, 0x22u);
       }
 
-      v114 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v114 setStep:2];
+      redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState3 setStep:2];
 
-      v78 = [[NSString alloc] initWithFormat:@"%@(reason=%d)", @"Cancel", -[NFRemoteAdminRedirectSession abortedReason](self, "abortedReason")];
-      v115 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v115 setIncompleteReason:v78];
+      redirectState = [[NSString alloc] initWithFormat:@"%@(reason=%d)", @"Cancel", -[NFRemoteAdminRedirectSession abortedReason](self, "abortedReason")];
+      redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState4 setIncompleteReason:redirectState];
 
       goto LABEL_82;
     }
@@ -5754,14 +5754,14 @@ LABEL_72:
       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Abort", buf, 0x22u);
     }
 
-    v78 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v78 setStep:3];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState setStep:3];
 LABEL_82:
     v79 = 1;
     goto LABEL_105;
   }
 
-  if (v13 == 8)
+  if (_performReaderModeRequest == 8)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v116 = NFLogGetLogger();
@@ -5809,14 +5809,14 @@ LABEL_82:
       _os_log_impl(&_mh_execute_header, v122, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i device not registered", buf, 0x22u);
     }
 
-    v78 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v78 setStep:3];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState setStep:3];
     v79 = 8;
   }
 
   else
   {
-    if (v13)
+    if (_performReaderModeRequest)
     {
       goto LABEL_95;
     }
@@ -5867,15 +5867,15 @@ LABEL_82:
       _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i advancing to InProgress step", buf, 0x22u);
     }
 
-    v78 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v78 incrementStep];
+    redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState incrementStep];
     v79 = 0;
   }
 
 LABEL_105:
 
-  v101 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v101 save];
+  redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState5 save];
 
   return v79;
 }
@@ -5986,12 +5986,12 @@ LABEL_105:
     }
   }
 
-  v47 = [(NFRemoteAdminReaderSession *)self _openSession];
-  v14 = v47;
+  _openSession = [(NFRemoteAdminReaderSession *)self _openSession];
+  v14 = _openSession;
   v13 = 0;
-  if (v47 > 8)
+  if (_openSession > 8)
   {
-    switch(v47)
+    switch(_openSession)
     {
       case 9:
         goto LABEL_14;
@@ -6149,9 +6149,9 @@ LABEL_72:
     goto LABEL_14;
   }
 
-  if (v47 != 2)
+  if (_openSession != 2)
   {
-    if (v47 == 5)
+    if (_openSession == 5)
     {
       goto LABEL_14;
     }
@@ -6165,9 +6165,9 @@ LABEL_72:
   {
     if ((v13 & 1) == 0)
     {
-      v93 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v94 = [v93 redirectUrl];
-      v95 = [(NFRemoteAdminRedirectSession *)self openConnection:v94];
+      redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+      redirectUrl = [redirectState redirectUrl];
+      v95 = [(NFRemoteAdminRedirectSession *)self openConnection:redirectUrl];
 
       if ((v95 & 1) == 0)
       {
@@ -6224,9 +6224,9 @@ LABEL_72:
     }
 
     [(NFRemoteAdminReaderSession *)self _fireCardIngestionStatus:8];
-    v96 = [(NFRemoteAdminRedirectSession *)self performRedirect];
+    performRedirect = [(NFRemoteAdminRedirectSession *)self performRedirect];
     v13 = 1;
-    if (v96 != 6)
+    if (performRedirect != 6)
     {
       break;
     }
@@ -6240,8 +6240,8 @@ LABEL_122:
     }
   }
 
-  v14 = v96;
-  if (v96 == 1)
+  v14 = performRedirect;
+  if (performRedirect == 1)
   {
     [(NFRemoteAdminRedirectSession *)self setRedirectStepError:3];
     v13 = 1;
@@ -6249,8 +6249,8 @@ LABEL_122:
   }
 
 LABEL_109:
-  v108 = [(NFRemoteAdminRedirectSession *)self aborted];
-  if (v14 == 3 && !v108 && v92 <= 2)
+  aborted = [(NFRemoteAdminRedirectSession *)self aborted];
+  if (v14 == 3 && !aborted && v92 <= 2)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v109 = NFLogGetLogger();
@@ -6415,9 +6415,9 @@ LABEL_14:
       v14 = 1;
     }
 
-    v26 = [[NSString alloc] initWithFormat:@"%@(reason=%d)", @"Cancel", -[NFRemoteAdminRedirectSession abortedReason](self, "abortedReason")];
-    v27 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v27 setIncompleteReason:v26];
+    redirectState3 = [[NSString alloc] initWithFormat:@"%@(reason=%d)", @"Cancel", -[NFRemoteAdminRedirectSession abortedReason](self, "abortedReason")];
+    redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState2 setIncompleteReason:redirectState3];
 
     goto LABEL_29;
   }
@@ -6472,8 +6472,8 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i tag unavailable", buf, 0x22u);
       }
 
-      v26 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v26 setIncompleteReason:@"CardNotFound"];
+      redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState3 setIncompleteReason:@"CardNotFound"];
       v14 = 3;
 LABEL_29:
 
@@ -6482,11 +6482,11 @@ LABEL_29:
 
     if ([(NFRemoteAdminRedirectSession *)self redirectStepError]== 29)
     {
-      v122 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v26 = v122;
+      redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      redirectState3 = redirectState4;
       v123 = @"ReaderTransceiveError";
 LABEL_126:
-      [v122 setIncompleteReason:v123];
+      [redirectState4 setIncompleteReason:v123];
       v14 = 5;
       goto LABEL_29;
     }
@@ -6494,18 +6494,18 @@ LABEL_126:
     switch(v14)
     {
       case 0xDuLL:
-        v122 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        v26 = v122;
+        redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        redirectState3 = redirectState4;
         v123 = @"ReaderModeProtection";
         goto LABEL_126;
       case 0xAuLL:
-        v26 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v26 setIncompleteReason:@"CommandError"];
+        redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState3 setIncompleteReason:@"CommandError"];
         v14 = 6;
         goto LABEL_29;
       case 9uLL:
-        v26 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v26 setIncompleteReason:@"UnsupportedCardFound"];
+        redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState3 setIncompleteReason:@"UnsupportedCardFound"];
         v14 = 4;
         goto LABEL_29;
     }
@@ -6562,8 +6562,8 @@ LABEL_126:
 
       if (v14 != 8)
       {
-        v26 = [(NFRemoteAdminRedirectSession *)self redirectState];
-        [v26 setIncompleteReason:@"NetworkError"];
+        redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+        [redirectState3 setIncompleteReason:@"NetworkError"];
         v14 = 2;
         goto LABEL_29;
       }
@@ -6621,8 +6621,8 @@ LABEL_126:
     }
 
     v155 = [[NSString alloc] initWithFormat:@"Unknown error:%d", -[NFRemoteAdminRedirectSession redirectStepError](self, "redirectStepError")];
-    v156 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v156 setIncompleteReason:v155];
+    redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState5 setIncompleteReason:v155];
 
     v14 = -1;
 LABEL_31:
@@ -6639,21 +6639,21 @@ LABEL_30:
   }
 
   [(NFRemoteAdminReaderSession *)self _closeSession];
-  v28 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  v29 = [v28 performanceMetrics];
+  redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  performanceMetrics = [redirectState6 performanceMetrics];
   mach_continuous_time();
   v30 = GetElapsedTimeInMillisecondsFromMachTime() / 1000.0;
-  [v29 totalSessionTime];
-  [v29 setTotalSessionTime:v31 + v30];
+  [performanceMetrics totalSessionTime];
+  [performanceMetrics setTotalSessionTime:v31 + v30];
 
-  v32 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v32 clearRetryInterval];
+  redirectState7 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState7 clearRetryInterval];
 
-  v33 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v33 incrementStep];
+  redirectState8 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState8 incrementStep];
 
-  v34 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v34 save];
+  redirectState9 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState9 save];
 
   return v14;
 }
@@ -6708,12 +6708,12 @@ LABEL_30:
   }
 
   v13 = 0;
-  v14 = 5;
+  performCheckIn = 5;
   while (1)
   {
-    v15 = [(NFRemoteAdminRedirectSession *)self connection];
+    connection = [(NFRemoteAdminRedirectSession *)self connection];
 
-    if (!v15)
+    if (!connection)
     {
       if (byte_10005BAB0 == 1)
       {
@@ -6764,9 +6764,9 @@ LABEL_30:
         }
       }
 
-      v27 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      v28 = [v27 sourceUrl];
-      v29 = [(NFRemoteAdminRedirectSession *)self openConnection:v28];
+      redirectState = [(NFRemoteAdminRedirectSession *)self redirectState];
+      sourceUrl = [redirectState sourceUrl];
+      v29 = [(NFRemoteAdminRedirectSession *)self openConnection:sourceUrl];
 
       if ((v29 & 1) == 0)
       {
@@ -6816,24 +6816,24 @@ LABEL_30:
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open connection", buf, 0x22u);
         }
 
-        v14 = 3;
+        performCheckIn = 3;
       }
     }
 
-    v41 = [(NFRemoteAdminRedirectSession *)self connection];
+    connection2 = [(NFRemoteAdminRedirectSession *)self connection];
 
-    if (v41)
+    if (connection2)
     {
-      v14 = [(NFRemoteAdminRedirectSession *)self performCheckIn];
-      if (!v14)
+      performCheckIn = [(NFRemoteAdminRedirectSession *)self performCheckIn];
+      if (!performCheckIn)
       {
         if (v13 <= 2)
         {
           [(NFRemoteAdminRedirectSession *)self closeConnection];
-          v102 = [(NFRemoteAdminRedirectSession *)self redirectState];
-          [v102 incrementStep];
+          redirectState2 = [(NFRemoteAdminRedirectSession *)self redirectState];
+          [redirectState2 incrementStep];
 
-          v14 = [(NFRemoteAdminRedirectSession *)self aborted];
+          performCheckIn = [(NFRemoteAdminRedirectSession *)self aborted];
           goto LABEL_104;
         }
 
@@ -6946,7 +6946,7 @@ LABEL_88:
       goto LABEL_89;
     }
 
-    if (v14 != 3 || v13 > 2)
+    if (performCheckIn != 3 || v13 > 2)
     {
       break;
     }
@@ -7002,11 +7002,11 @@ LABEL_88:
 
     sleep(dword_100040800[v13++]);
 LABEL_53:
-    v14 = 6;
+    performCheckIn = 6;
     if ([(NFRemoteAdminRedirectSession *)self aborted])
     {
       [(NFRemoteAdminRedirectSession *)self closeConnection];
-      v14 = 6;
+      performCheckIn = 6;
       goto LABEL_55;
     }
   }
@@ -7016,18 +7016,18 @@ LABEL_53:
     goto LABEL_78;
   }
 
-  if (v14 == 6)
+  if (performCheckIn == 6)
   {
     goto LABEL_53;
   }
 
   [(NFRemoteAdminRedirectSession *)self closeConnection];
-  if (v14 == 8)
+  if (performCheckIn == 8)
   {
     goto LABEL_102;
   }
 
-  if (v14 != 4)
+  if (performCheckIn != 4)
   {
 LABEL_55:
     if ([(NFRemoteAdminRedirectSession *)self aborted])
@@ -7081,16 +7081,16 @@ LABEL_55:
         }
       }
 
-      v66 = [(NFRemoteAdminRedirectSession *)self redirectState];
-      [v66 incrementLongRetry];
+      redirectState3 = [(NFRemoteAdminRedirectSession *)self redirectState];
+      [redirectState3 incrementLongRetry];
 
-      v14 = 1;
+      performCheckIn = 1;
       goto LABEL_104;
     }
 
 LABEL_102:
-    v101 = [(NFRemoteAdminRedirectSession *)self redirectState];
-    [v101 incrementStep];
+    redirectState4 = [(NFRemoteAdminRedirectSession *)self redirectState];
+    [redirectState4 incrementStep];
 
     goto LABEL_104;
   }
@@ -7142,15 +7142,15 @@ LABEL_89:
     _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Incrementing long retry for TSM checkin", buf, 0x22u);
   }
 
-  v100 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v100 incrementLongRetry];
+  redirectState5 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState5 incrementLongRetry];
 
-  v14 = 4;
+  performCheckIn = 4;
 LABEL_104:
-  v103 = [(NFRemoteAdminRedirectSession *)self redirectState];
-  [v103 save];
+  redirectState6 = [(NFRemoteAdminRedirectSession *)self redirectState];
+  [redirectState6 save];
 
-  return v14;
+  return performCheckIn;
 }
 
 @end

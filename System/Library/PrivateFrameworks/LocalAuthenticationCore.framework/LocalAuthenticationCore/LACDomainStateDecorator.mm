@@ -1,40 +1,40 @@
 @interface LACDomainStateDecorator
-+ (id)_hashData:(id)a3;
-+ (id)saltHash:(id)a3 withBundleID:(id)a4;
++ (id)_hashData:(id)data;
++ (id)saltHash:(id)hash withBundleID:(id)d;
 @end
 
 @implementation LACDomainStateDecorator
 
-+ (id)saltHash:(id)a3 withBundleID:(id)a4
++ (id)saltHash:(id)hash withBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  hashCopy = hash;
+  dCopy = d;
+  if ([dCopy length])
   {
-    v8 = [v6 mutableCopy];
-    v9 = [v7 dataUsingEncoding:4];
+    v8 = [hashCopy mutableCopy];
+    v9 = [dCopy dataUsingEncoding:4];
     [v8 appendData:v9];
 
-    v10 = [a1 _hashData:v8];
+    v10 = [self _hashData:v8];
   }
 
   else
   {
-    v10 = v6;
+    v10 = hashCopy;
   }
 
   return v10;
 }
 
-+ (id)_hashData:(id)a3
++ (id)_hashData:(id)data
 {
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v4 = [MEMORY[0x1E695DF88] dataWithLength:32];
     ccsha256_di();
-    [v3 length];
-    [v3 bytes];
+    [dataCopy length];
+    [dataCopy bytes];
     [v4 mutableBytes];
     ccdigest();
   }

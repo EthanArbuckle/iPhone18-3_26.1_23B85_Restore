@@ -1,20 +1,20 @@
 @interface LNSpotlightCascadeAllowList
-+ (BOOL)isAllowedClientBundleIdentifier:(id)a3;
++ (BOOL)isAllowedClientBundleIdentifier:(id)identifier;
 @end
 
 @implementation LNSpotlightCascadeAllowList
 
-+ (BOOL)isAllowedClientBundleIdentifier:(id)a3
++ (BOOL)isAllowedClientBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqual:@"com.apple.mail"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"com.apple.mobilemail"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"com.apple.mail"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqual:", @"com.apple.mobilemail"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"com.apple.MobileSMS"] ^ 1;
+    v4 = [identifierCopy isEqual:@"com.apple.MobileSMS"] ^ 1;
   }
 
   return v4;

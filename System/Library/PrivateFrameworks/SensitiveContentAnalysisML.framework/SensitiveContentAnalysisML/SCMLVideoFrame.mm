@@ -1,6 +1,6 @@
 @interface SCMLVideoFrame
-- (BOOL)saveToPngWithUrl:(id)a3;
-- (SCMLVideoFrame)initWithFrameBuffer:(opaqueCMSampleBuffer *)a3 frameIndex:(int64_t)a4;
+- (BOOL)saveToPngWithUrl:(id)url;
+- (SCMLVideoFrame)initWithFrameBuffer:(opaqueCMSampleBuffer *)buffer frameIndex:(int64_t)index;
 - (double)_timestamp;
 - (id)metaDataInfo;
 - (void)dealloc;
@@ -8,7 +8,7 @@
 
 @implementation SCMLVideoFrame
 
-- (SCMLVideoFrame)initWithFrameBuffer:(opaqueCMSampleBuffer *)a3 frameIndex:(int64_t)a4
+- (SCMLVideoFrame)initWithFrameBuffer:(opaqueCMSampleBuffer *)buffer frameIndex:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = SCMLVideoFrame;
@@ -17,24 +17,24 @@
   if (v6)
   {
     v6->_frameBuffer = 0;
-    if (a3)
+    if (buffer)
     {
-      v6->_frameBuffer = CFRetain(a3);
+      v6->_frameBuffer = CFRetain(buffer);
     }
 
-    v7->_frameIndex = a4;
+    v7->_frameIndex = index;
   }
 
   return v7;
 }
 
-- (BOOL)saveToPngWithUrl:(id)a3
+- (BOOL)saveToPngWithUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   ImageBuffer = CMSampleBufferGetImageBuffer([(SCMLVideoFrame *)self frameBuffer]);
   if (ImageBuffer)
   {
-    v6 = saveCVPixelBufferToPng(ImageBuffer, v4);
+    v6 = saveCVPixelBufferToPng(ImageBuffer, urlCopy);
   }
 
   else
@@ -42,7 +42,7 @@
     v7 = +[SCMLLog imageAnalyzer];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SCMLVideoFrame *)v4 saveToPngWithUrl:v7];
+      [(SCMLVideoFrame *)urlCopy saveToPngWithUrl:v7];
     }
 
     v6 = 0;
@@ -61,9 +61,9 @@
 - (id)metaDataInfo
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SCMLVideoFrame *)self frameIndex];
+  frameIndex = [(SCMLVideoFrame *)self frameIndex];
   [(SCMLVideoFrame *)self _timestamp];
-  return [v3 stringWithFormat:@"%03d-time%.6f", v4, v5];
+  return [v3 stringWithFormat:@"%03d-time%.6f", frameIndex, v5];
 }
 
 - (void)dealloc

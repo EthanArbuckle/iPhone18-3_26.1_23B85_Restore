@@ -1,7 +1,7 @@
 @interface AlarmKitAdoptionManager
 - (_TtC18MobileTimerSupport23AlarmKitAdoptionManager)init;
-- (void)scheduleWithAlarm:(id)a3;
-- (void)scheduleWithTimer:(id)a3;
+- (void)scheduleWithAlarm:(id)alarm;
+- (void)scheduleWithTimer:(id)timer;
 - (void)unscheduleAllAlarms;
 @end
 
@@ -17,24 +17,24 @@
   v8 = *(&self->super.isa + OBJC_IVAR____TtC18MobileTimerSupport23AlarmKitAdoptionManager_queue);
   v10[0] = &unk_22D825408;
   v10[1] = 0;
-  v9 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DA035D8, &qword_22D825410);
   sub_22D81B528();
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)scheduleWithAlarm:(id)a3
+- (void)scheduleWithAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = self;
-  sub_22D7D34BC(v4);
+  alarmCopy = alarm;
+  selfCopy = self;
+  sub_22D7D34BC(alarmCopy);
 }
 
-- (void)scheduleWithTimer:(id)a3
+- (void)scheduleWithTimer:(id)timer
 {
-  v4 = a3;
-  v5 = self;
-  sub_22D7D3FCC(v4);
+  timerCopy = timer;
+  selfCopy = self;
+  sub_22D7D3FCC(timerCopy);
 }
 
 - (_TtC18MobileTimerSupport23AlarmKitAdoptionManager)init

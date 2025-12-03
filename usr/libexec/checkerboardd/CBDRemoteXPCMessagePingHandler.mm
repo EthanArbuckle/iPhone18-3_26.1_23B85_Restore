@@ -1,10 +1,10 @@
 @interface CBDRemoteXPCMessagePingHandler
 - (CBDPingIPGenerator)ipGenerator;
 - (CBDRemoteXPCMessagePingHandler)init;
-- (CBDRemoteXPCMessagePingHandler)initWithIPGenerator:(id)a3;
+- (CBDRemoteXPCMessagePingHandler)initWithIPGenerator:(id)generator;
 - (id)expectedRemoteMessageClasses;
-- (id)generateLocalIPAddress:(id)a3;
-- (void)handleRemoteMessage:(id)a3 completion:(id)a4;
+- (id)generateLocalIPAddress:(id)address;
+- (void)handleRemoteMessage:(id)message completion:(id)completion;
 @end
 
 @implementation CBDRemoteXPCMessagePingHandler
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (CBDRemoteXPCMessagePingHandler)initWithIPGenerator:(id)a3
+- (CBDRemoteXPCMessagePingHandler)initWithIPGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v8.receiver = self;
   v8.super_class = CBDRemoteXPCMessagePingHandler;
   v5 = [(CBDRemoteXPCMessagePingHandler *)&v8 init];
@@ -41,11 +41,11 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = generatorCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Use an ip generator %@ instead of the default generator.", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_ipGenerator, v4);
+    objc_storeWeak(&v5->_ipGenerator, generatorCopy);
   }
 
   return v5;
@@ -58,16 +58,16 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)handleRemoteMessage:(id)a3 completion:(id)a4
+- (void)handleRemoteMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [(CBDRemoteXPCMessagePingHandler *)self ipGenerator];
-    v10 = [v9 generateLocalIPAddress:v8];
+    v8 = messageCopy;
+    ipGenerator = [(CBDRemoteXPCMessagePingHandler *)self ipGenerator];
+    v10 = [ipGenerator generateLocalIPAddress:v8];
 
     if (v10)
     {
@@ -88,9 +88,9 @@
       v11 = [CBDRemoteXPCMessagePingReply replyToRemoteMessage:v8 success:0 error:v15];
     }
 
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
 
-    v7 = v10;
+    completionCopy = v10;
   }
 
   else
@@ -99,20 +99,20 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = messageCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Expect to handle a ping message, but received %@ instead.", &v16, 0xCu);
     }
 
     v13 = [NSError errorWithDomain:@"com.apple.checkerboardd.remoteXPCMessageDomain" code:1 userInfo:0];
-    v8 = [CBDRemoteXPCMessagePingReply replyToRemoteMessage:v6 success:0 error:v13];
+    v8 = [CBDRemoteXPCMessagePingReply replyToRemoteMessage:messageCopy success:0 error:v13];
 
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (id)generateLocalIPAddress:(id)a3
+- (id)generateLocalIPAddress:(id)address
 {
-  v3 = [a3 connection];
+  connection = [address connection];
   v4 = xpc_remote_connection_copy_remote_address_string();
 
   if (v4)

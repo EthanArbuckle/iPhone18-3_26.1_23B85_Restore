@@ -1,9 +1,9 @@
 @interface ICUserIdentityStoreCoding
-- (ICUserIdentityStoreCoding)initWithCoder:(id)a3;
-- (ICUserIdentityStoreCoding)initWithIdentityStoreStyle:(int64_t)a3;
+- (ICUserIdentityStoreCoding)initWithCoder:(id)coder;
+- (ICUserIdentityStoreCoding)initWithIdentityStoreStyle:(int64_t)style;
 - (id)_initCommon;
-- (void)encodeWithCoder:(id)a3;
-- (void)lock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)lock:(id)lock;
 @end
 
 @implementation ICUserIdentityStoreCoding
@@ -21,65 +21,65 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activeAccountHistory = self->_activeAccountHistory;
-  v5 = a3;
-  [v5 encodeObject:activeAccountHistory forKey:@"accountHistory"];
-  [v5 encodeObject:self->_activeLockerAccountHistory forKey:@"lockerHistory"];
-  [v5 encodeObject:self->_backend forKey:@"backend"];
-  [v5 encodeObject:self->_delegateAccountStoreOptions forKey:@"delegationOptions"];
-  [v5 encodeInteger:self->_identityStoreStyle forKey:@"style"];
-  [v5 encodeInt64:self->_uniqueIdentifier forKey:@"uid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activeAccountHistory forKey:@"accountHistory"];
+  [coderCopy encodeObject:self->_activeLockerAccountHistory forKey:@"lockerHistory"];
+  [coderCopy encodeObject:self->_backend forKey:@"backend"];
+  [coderCopy encodeObject:self->_delegateAccountStoreOptions forKey:@"delegationOptions"];
+  [coderCopy encodeInteger:self->_identityStoreStyle forKey:@"style"];
+  [coderCopy encodeInt64:self->_uniqueIdentifier forKey:@"uid"];
 }
 
-- (ICUserIdentityStoreCoding)initWithCoder:(id)a3
+- (ICUserIdentityStoreCoding)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICUserIdentityStoreCoding *)self _initCommon];
-  if (v5)
+  coderCopy = coder;
+  _initCommon = [(ICUserIdentityStoreCoding *)self _initCommon];
+  if (_initCommon)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountHistory"];
-    activeAccountHistory = v5->_activeAccountHistory;
-    v5->_activeAccountHistory = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountHistory"];
+    activeAccountHistory = _initCommon->_activeAccountHistory;
+    _initCommon->_activeAccountHistory = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockerHistory"];
-    activeLockerAccountHistory = v5->_activeLockerAccountHistory;
-    v5->_activeLockerAccountHistory = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockerHistory"];
+    activeLockerAccountHistory = _initCommon->_activeLockerAccountHistory;
+    _initCommon->_activeLockerAccountHistory = v8;
 
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
     v11 = objc_opt_class();
     v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"backend"];
-    backend = v5->_backend;
-    v5->_backend = v13;
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"backend"];
+    backend = _initCommon->_backend;
+    _initCommon->_backend = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delegationOptions"];
-    delegateAccountStoreOptions = v5->_delegateAccountStoreOptions;
-    v5->_delegateAccountStoreOptions = v15;
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delegationOptions"];
+    delegateAccountStoreOptions = _initCommon->_delegateAccountStoreOptions;
+    _initCommon->_delegateAccountStoreOptions = v15;
 
-    v5->_identityStoreStyle = [v4 decodeIntegerForKey:@"style"];
-    v5->_uniqueIdentifier = [v4 decodeInt64ForKey:@"uid"];
+    _initCommon->_identityStoreStyle = [coderCopy decodeIntegerForKey:@"style"];
+    _initCommon->_uniqueIdentifier = [coderCopy decodeInt64ForKey:@"uid"];
   }
 
-  return v5;
+  return _initCommon;
 }
 
-- (void)lock:(id)a3
+- (void)lock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2]();
+  lockCopy[2]();
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (ICUserIdentityStoreCoding)initWithIdentityStoreStyle:(int64_t)a3
+- (ICUserIdentityStoreCoding)initWithIdentityStoreStyle:(int64_t)style
 {
-  v4 = [(ICUserIdentityStoreCoding *)self _initCommon];
-  v5 = v4;
-  if (v4)
+  _initCommon = [(ICUserIdentityStoreCoding *)self _initCommon];
+  v5 = _initCommon;
+  if (_initCommon)
   {
-    v4->_identityStoreStyle = a3;
+    _initCommon->_identityStoreStyle = style;
     v6 = CFUUIDCreate(*MEMORY[0x1E695E480]);
     v5->_uniqueIdentifier = *&CFUUIDGetUUIDBytes(v6);
     CFRelease(v6);

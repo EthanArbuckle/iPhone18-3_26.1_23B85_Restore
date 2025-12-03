@@ -1,9 +1,9 @@
 @interface HKHeartbeatSequenceDataSource
-- (CGRect)unionWithExtent:(CGRect)a3;
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
+- (CGRect)unionWithExtent:(CGRect)extent;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
 - (HKHeartbeatSequenceDataSource)init;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
-- (void)setHeartbeatSequencePoints:(id)a3;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
+- (void)setHeartbeatSequencePoints:(id)points;
 @end
 
 @implementation HKHeartbeatSequenceDataSource
@@ -26,23 +26,23 @@
   return v2;
 }
 
-- (void)setHeartbeatSequencePoints:(id)a3
+- (void)setHeartbeatSequencePoints:(id)points
 {
-  [(HKGraphSeriesDataBlock *)self->_dataBlock setChartPoints:a3];
-  v4 = [(HKGraphSeriesDataSource *)self delegate];
-  [v4 dataSourceDidUpdateCache:self];
+  [(HKGraphSeriesDataBlock *)self->_dataBlock setChartPoints:points];
+  delegate = [(HKGraphSeriesDataSource *)self delegate];
+  [delegate dataSourceDidUpdateCache:self];
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
   *&retstr->index = xmmword_1C3D5D360;
   retstr->resolution = a6;
   return self;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  if (a3->index)
+  if (path->index)
   {
     v4 = objc_alloc_init(HKGraphSeriesDataBlock);
     [(HKGraphSeriesDataBlock *)v4 setChartPoints:MEMORY[0x1E695E0F0]];
@@ -56,19 +56,19 @@
   return v4;
 }
 
-- (CGRect)unionWithExtent:(CGRect)a3
+- (CGRect)unionWithExtent:(CGRect)extent
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [(HKGraphSeriesDataBlock *)self->_dataBlock chartPoints];
+  chartPoints = [(HKGraphSeriesDataBlock *)self->_dataBlock chartPoints];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v8 = [chartPoints countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -82,16 +82,16 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(chartPoints);
         }
 
         v14 = *(*(&v27 + 1) + 8 * v11);
-        v15 = [v14 xValueAsGenericType];
-        [v15 doubleValue];
+        xValueAsGenericType = [v14 xValueAsGenericType];
+        [xValueAsGenericType doubleValue];
         v17 = v16;
 
-        v18 = [v14 yValue];
-        [v18 doubleValue];
+        yValue = [v14 yValue];
+        [yValue doubleValue];
         v20 = v19;
 
         if (v12 >= v17)
@@ -134,7 +134,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v9 = [chartPoints countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v9);

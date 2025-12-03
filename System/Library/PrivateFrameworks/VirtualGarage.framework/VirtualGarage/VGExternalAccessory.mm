@@ -1,30 +1,30 @@
 @interface VGExternalAccessory
 - (BOOL)_currentStatePassesEVRoutingRequirements;
-- (BOOL)_isAccessoryTracked:(id)a3;
+- (BOOL)_isAccessoryTracked:(id)tracked;
 - (BOOL)_isConnectedToCarPlayAccessory;
 - (BOOL)_isConnectedToElectricVehicle;
 - (BOOL)_isConnectedVehicleAllowlisted;
-- (BOOL)isConnectedToAccessoryWithIdentifier:(id)a3;
-- (BOOL)isConnectedToVehicle:(id)a3;
+- (BOOL)isConnectedToAccessoryWithIdentifier:(id)identifier;
+- (BOOL)isConnectedToVehicle:(id)vehicle;
 - (VGExternalAccessory)init;
 - (VGExternalAccessoryUpdating)accessoryUpdateDelegate;
 - (id)_bluetoothIdentifier;
 - (id)_firmwareId;
 - (id)_identifier;
-- (id)_modelIdFromArguments:(id)a3;
+- (id)_modelIdFromArguments:(id)arguments;
 - (id)_vehicleForCurrentState;
 - (id)_vehicleStateForCurrentState;
-- (void)_accessoryDidConnect:(id)a3;
-- (void)_accessoryDidDisconnect:(id)a3;
-- (void)_accessoryDidUpdateVehicle:(id)a3;
-- (void)_addNewCarPlayAccessory:(id)a3;
+- (void)_accessoryDidConnect:(id)connect;
+- (void)_accessoryDidDisconnect:(id)disconnect;
+- (void)_accessoryDidUpdateVehicle:(id)vehicle;
+- (void)_addNewCarPlayAccessory:(id)accessory;
 - (void)_checkAvailableAccessoriesAndAttachIfNeeded;
 - (void)_notifyDelegateWithCurrentVehicle;
-- (void)_removeCarPlayAccessory:(id)a3;
-- (void)_updateFromVehicleInfo:(id)a3;
+- (void)_removeCarPlayAccessory:(id)accessory;
+- (void)_updateFromVehicleInfo:(id)info;
 - (void)dealloc;
-- (void)getStateOfChargeForVehicle:(id)a3 completion:(id)a4;
-- (void)listCarsWithCompletion:(id)a3;
+- (void)getStateOfChargeForVehicle:(id)vehicle completion:(id)completion;
+- (void)listCarsWithCompletion:(id)completion;
 @end
 
 @implementation VGExternalAccessory
@@ -59,10 +59,10 @@
     trackedAccessoriesByConnectionId = v2->_trackedAccessoriesByConnectionId;
     v2->_trackedAccessoriesByConnectionId = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel__accessoryDidConnect_ name:*MEMORY[0x277CC5E88] object:0];
-    [v12 addObserver:v2 selector:sel__accessoryDidUpdateVehicle_ name:*MEMORY[0x277CC5EA8] object:0];
-    [v12 addObserver:v2 selector:sel__accessoryDidDisconnect_ name:*MEMORY[0x277CC5E90] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidConnect_ name:*MEMORY[0x277CC5E88] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidUpdateVehicle_ name:*MEMORY[0x277CC5EA8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accessoryDidDisconnect_ name:*MEMORY[0x277CC5E90] object:0];
     v13 = VGGetExternalAccessoryLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -71,8 +71,8 @@
       _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_INFO, "[%{public}p] Registering for local accessory notifications", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-    [v14 registerForLocalNotifications];
+    mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+    [mEMORY[0x277CC5FB0] registerForLocalNotifications];
 
     [(VGExternalAccessory *)v2 _checkAvailableAccessoriesAndAttachIfNeeded];
     v15 = *MEMORY[0x277D0EA90];
@@ -108,7 +108,7 @@
 
 - (void)_checkAvailableAccessoriesAndAttachIfNeeded
 {
-  v3 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+  mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -116,8 +116,8 @@
   block[2] = __66__VGExternalAccessory__checkAvailableAccessoriesAndAttachIfNeeded__block_invoke;
   block[3] = &unk_279E26F20;
   objc_copyWeak(&v8, &location);
-  v7 = v3;
-  v5 = v3;
+  v7 = mEMORY[0x277CC5FB0];
+  v5 = mEMORY[0x277CC5FB0];
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v8);
@@ -281,27 +281,27 @@ LABEL_28:
   return WeakRetained;
 }
 
-- (void)listCarsWithCompletion:(id)a3
+- (void)listCarsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     if (self)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = self;
-      v8 = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), v7];
+      selfCopy = self;
+      selfCopy = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v8 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543618;
-    v16 = v8;
+    v16 = selfCopy;
     v17 = 2080;
     v18 = "[VGExternalAccessory listCarsWithCompletion:]";
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] %s", buf, 0x16u);
@@ -314,8 +314,8 @@ LABEL_28:
   block[2] = __46__VGExternalAccessory_listCarsWithCompletion___block_invoke;
   block[3] = &unk_279E26F48;
   objc_copyWeak(&v14, buf);
-  v13 = v4;
-  v10 = v4;
+  v13 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v14);
@@ -372,28 +372,28 @@ void __46__VGExternalAccessory_listCarsWithCompletion___block_invoke(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getStateOfChargeForVehicle:(id)a3 completion:(id)a4
+- (void)getStateOfChargeForVehicle:(id)vehicle completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  completionCopy = completion;
   v8 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     if (self)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = self;
-      v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+      selfCopy = self;
+      selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543618;
-    v21 = v11;
+    v21 = selfCopy;
     v22 = 2080;
     v23 = "[VGExternalAccessory getStateOfChargeForVehicle:completion:]";
     _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] %s", buf, 0x16u);
@@ -406,10 +406,10 @@ void __46__VGExternalAccessory_listCarsWithCompletion___block_invoke(uint64_t a1
   block[2] = __61__VGExternalAccessory_getStateOfChargeForVehicle_completion___block_invoke;
   block[3] = &unk_279E26CD0;
   objc_copyWeak(&v19, buf);
-  v17 = v6;
-  v18 = v7;
-  v13 = v6;
-  v14 = v7;
+  v17 = vehicleCopy;
+  v18 = completionCopy;
+  v13 = vehicleCopy;
+  v14 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v19);
@@ -489,27 +489,27 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isConnectedToAccessoryWithIdentifier:(id)a3
+- (BOOL)isConnectedToAccessoryWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     if (self)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = self;
-      v8 = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), v7];
+      selfCopy = self;
+      selfCopy = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v8 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = selfCopy;
     *&buf[12] = 2080;
     *&buf[14] = "[VGExternalAccessory isConnectedToAccessoryWithIdentifier:]";
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] %s", buf, 0x16u);
@@ -524,10 +524,10 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __60__VGExternalAccessory_isConnectedToAccessoryWithIdentifier___block_invoke;
   block[3] = &unk_279E26E60;
-  v15 = v4;
+  v15 = identifierCopy;
   v16 = buf;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   dispatch_sync(workQueue, block);
   v11 = *(*&buf[8] + 24);
 
@@ -550,27 +550,27 @@ void __60__VGExternalAccessory_isConnectedToAccessoryWithIdentifier___block_invo
   }
 }
 
-- (BOOL)isConnectedToVehicle:(id)a3
+- (BOOL)isConnectedToVehicle:(id)vehicle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     if (self)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = self;
-      v8 = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), v7];
+      selfCopy = self;
+      selfCopy = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v8 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = selfCopy;
     *&buf[12] = 2080;
     *&buf[14] = "[VGExternalAccessory isConnectedToVehicle:]";
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] %s", buf, 0x16u);
@@ -586,9 +586,9 @@ void __60__VGExternalAccessory_isConnectedToAccessoryWithIdentifier___block_invo
   block[2] = __44__VGExternalAccessory_isConnectedToVehicle___block_invoke;
   block[3] = &unk_279E26E60;
   block[4] = self;
-  v15 = v4;
+  v15 = vehicleCopy;
   v16 = buf;
-  v10 = v4;
+  v10 = vehicleCopy;
   dispatch_sync(workQueue, block);
   v11 = *(*&buf[8] + 24);
 
@@ -644,10 +644,10 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
 - (id)_firmwareId
 {
-  v2 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
+  firstObject = [allValues firstObject];
 
-  if (v3)
+  if (firstObject)
   {
     if (GEOConfigGetBOOL())
     {
@@ -656,8 +656,8 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
     else
     {
-      v5 = [v3 firmwareRevision];
-      v4 = [v5 copy];
+      firmwareRevision = [firstObject firmwareRevision];
+      v4 = [firmwareRevision copy];
     }
   }
 
@@ -671,10 +671,10 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
 - (id)_bluetoothIdentifier
 {
-  v2 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
+  firstObject = [allValues firstObject];
 
-  if (v3)
+  if (firstObject)
   {
     if (GEOConfigGetBOOL())
     {
@@ -683,8 +683,8 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
     else
     {
-      v5 = [v3 macAddress];
-      v4 = [v5 copy];
+      macAddress = [firstObject macAddress];
+      v4 = [macAddress copy];
     }
   }
 
@@ -698,10 +698,10 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
 - (id)_identifier
 {
-  v2 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
+  firstObject = [allValues firstObject];
 
-  if (v3)
+  if (firstObject)
   {
     if (GEOConfigGetBOOL())
     {
@@ -710,8 +710,8 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
 
     else
     {
-      v5 = [v3 serialNumber];
-      v4 = [v5 copy];
+      serialNumber = [firstObject serialNumber];
+      v4 = [serialNumber copy];
     }
   }
 
@@ -730,8 +730,8 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -741,7 +741,7 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isConnected])
@@ -751,7 +751,7 @@ void __44__VGExternalAccessory_isConnectedToVehicle___block_invoke(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -774,11 +774,11 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
-  if ([v3 length])
+  consumptionArguments = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
+  if ([consumptionArguments length])
   {
-    v4 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
-    v5 = [v4 length] != 0;
+    chargingArguments = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
+    v5 = [chargingArguments length] != 0;
   }
 
   else
@@ -796,25 +796,25 @@ LABEL_11:
   v4 = *(MEMORY[0x277D0EA90] + 8);
   if (GEOConfigGetBOOL())
   {
-    v5 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
-    v6 = [(VGExternalAccessory *)self _modelIdFromArguments:v5];
+    consumptionArguments = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
+    v6 = [(VGExternalAccessory *)self _modelIdFromArguments:consumptionArguments];
 
-    v7 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
-    v8 = [(VGExternalAccessory *)self _modelIdFromArguments:v7];
+    chargingArguments = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
+    v8 = [(VGExternalAccessory *)self _modelIdFromArguments:chargingArguments];
 
     if (v6 && v8)
     {
       modelFilter = self->_modelFilter;
-      v10 = [(VGExternalAccessory *)self _firmwareId];
-      v11 = [(VGExternalAccessoryState *)self->_accessoryState year];
-      v12 = [(VGExternalAccessoryState *)self->_accessoryState model];
-      v13 = [(VGExternalAccessoryModelFilter *)modelFilter allowsVehicleWithModelId:v6 firmwareId:v10 year:v11 model:v12];
+      _firmwareId = [(VGExternalAccessory *)self _firmwareId];
+      year = [(VGExternalAccessoryState *)self->_accessoryState year];
+      model = [(VGExternalAccessoryState *)self->_accessoryState model];
+      v13 = [(VGExternalAccessoryModelFilter *)modelFilter allowsVehicleWithModelId:v6 firmwareId:_firmwareId year:year model:model];
 
       v14 = self->_modelFilter;
-      v15 = [(VGExternalAccessory *)self _firmwareId];
-      v16 = [(VGExternalAccessoryState *)self->_accessoryState year];
-      v17 = [(VGExternalAccessoryState *)self->_accessoryState model];
-      v18 = [(VGExternalAccessoryModelFilter *)v14 allowsVehicleWithModelId:v8 firmwareId:v15 year:v16 model:v17];
+      _firmwareId2 = [(VGExternalAccessory *)self _firmwareId];
+      year2 = [(VGExternalAccessoryState *)self->_accessoryState year];
+      model2 = [(VGExternalAccessoryState *)self->_accessoryState model];
+      v18 = [(VGExternalAccessoryModelFilter *)v14 allowsVehicleWithModelId:v8 firmwareId:_firmwareId2 year:year2 model:model2];
 
       if (v13 && v18)
       {
@@ -828,7 +828,7 @@ LABEL_13:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v25 = 134349056;
-        v26 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_ERROR, "[%{public}p] Currently connected vehicle is an EV, but does is not allow listed. Onboarding won't be allowed", &v25, 0xCu);
       }
     }
@@ -838,14 +838,14 @@ LABEL_13:
       v20 = VGGetExternalAccessoryLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v21 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
-        v22 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
+        consumptionArguments2 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
+        chargingArguments2 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
         v25 = 134349570;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
-        v28 = v21;
+        v28 = consumptionArguments2;
         v29 = 2112;
-        v30 = v22;
+        v30 = chargingArguments2;
         _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_FAULT, "[%{public}p] Vehicle does not have valid consumption or charging arguments. consumption: %@, charging: %@", &v25, 0x20u);
       }
     }
@@ -860,11 +860,11 @@ LABEL_14:
   return v19;
 }
 
-- (id)_modelIdFromArguments:(id)a3
+- (id)_modelIdFromArguments:(id)arguments
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = VGDictionaryFromVGVehicleArguments(v4);
+  argumentsCopy = arguments;
+  v5 = VGDictionaryFromVGVehicleArguments(argumentsCopy);
   if (v5)
   {
     v6 = GEOConfigGetString();
@@ -882,9 +882,9 @@ LABEL_14:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v12 = 134349314;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = argumentsCopy;
       _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_FAULT, "[%{public}p] Failed to parse model id from arguments: %@", &v12, 0x16u);
     }
   }
@@ -895,9 +895,9 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v12 = 134349314;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = argumentsCopy;
       _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_FAULT, "[%{public}p] Failed to parse arguments: %@", &v12, 0x16u);
     }
   }
@@ -913,11 +913,11 @@ LABEL_10:
 - (BOOL)_currentStatePassesEVRoutingRequirements
 {
   v27 = *MEMORY[0x277D85DE8];
-  LODWORD(v3) = [(VGExternalAccessory *)self _isConnectedToElectricVehicle];
-  if (v3)
+  LODWORD(_identifier) = [(VGExternalAccessory *)self _isConnectedToElectricVehicle];
+  if (_identifier)
   {
-    v3 = [(VGExternalAccessory *)self _identifier];
-    if (v3)
+    _identifier = [(VGExternalAccessory *)self _identifier];
+    if (_identifier)
     {
       accessoryState = self->_accessoryState;
 
@@ -925,43 +925,43 @@ LABEL_10:
       {
         if ([(VGExternalAccessory *)self _isConnectedVehicleAllowlisted])
         {
-          LOBYTE(v3) = 1;
+          LOBYTE(_identifier) = 1;
           goto LABEL_10;
         }
 
         v5 = VGGetExternalAccessoryLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
         {
-          v6 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
-          v7 = [(VGExternalAccessory *)self _modelIdFromArguments:v6];
-          v8 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
-          v9 = [(VGExternalAccessory *)self _modelIdFromArguments:v8];
-          v10 = [(VGExternalAccessory *)self _firmwareId];
-          v11 = [(VGExternalAccessoryState *)self->_accessoryState year];
-          v12 = [(VGExternalAccessoryState *)self->_accessoryState model];
+          consumptionArguments = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
+          v7 = [(VGExternalAccessory *)self _modelIdFromArguments:consumptionArguments];
+          chargingArguments = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
+          v9 = [(VGExternalAccessory *)self _modelIdFromArguments:chargingArguments];
+          _firmwareId = [(VGExternalAccessory *)self _firmwareId];
+          year = [(VGExternalAccessoryState *)self->_accessoryState year];
+          model = [(VGExternalAccessoryState *)self->_accessoryState model];
           v15 = 134350338;
-          v16 = self;
+          selfCopy = self;
           v17 = 2112;
           v18 = v7;
           v19 = 2112;
           v20 = v9;
           v21 = 2112;
-          v22 = v10;
+          v22 = _firmwareId;
           v23 = 2112;
-          v24 = v11;
+          v24 = year;
           v25 = 2112;
-          v26 = v12;
+          v26 = model;
           _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "[%{public}p] Connected vehicle is not allowlisted. consumption modelId: %@, charging modelId: %@, firmwareId: %@, year: %@, model: %@", &v15, 0x3Eu);
         }
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(_identifier) = 0;
     }
   }
 
 LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
-  return v3;
+  return _identifier;
 }
 
 - (id)_vehicleStateForCurrentState
@@ -969,24 +969,24 @@ LABEL_10:
   if ([(VGExternalAccessory *)self _currentStatePassesEVRoutingRequirements])
   {
     v20 = [VGVehicleState alloc];
-    v22 = [(VGExternalAccessory *)self _identifier];
-    v3 = [v22 copy];
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v21 = [(VGExternalAccessoryState *)self->_accessoryState batteryCharge];
-    v19 = [(VGExternalAccessoryState *)self->_accessoryState currentEVRange];
-    v18 = [(VGExternalAccessoryState *)self->_accessoryState maxEVRange];
-    v15 = [(VGExternalAccessoryState *)self->_accessoryState minBatteryCapacity];
-    v5 = [(VGExternalAccessoryState *)self->_accessoryState currentBatteryCapacity];
-    v14 = [(VGExternalAccessoryState *)self->_accessoryState maxBatteryCapacity];
-    v17 = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
-    v6 = [v17 copy];
-    v16 = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
-    v7 = [v16 copy];
-    v8 = [(VGExternalAccessoryState *)self->_accessoryState isCharging];
-    v9 = [(VGExternalAccessoryState *)self->_accessoryState activeConnector];
-    v10 = [v9 unsignedIntegerValue];
-    LOBYTE(v13) = v8;
-    v11 = [(VGVehicleState *)v20 initWithIdentifier:v3 dateOfUpdate:v4 origin:1 batteryPercentage:v21 currentEVRange:v19 maxEVRange:v18 minBatteryCapacity:v15 currentBatteryCapacity:v5 maxBatteryCapacity:v14 consumptionArguments:v6 chargingArguments:v7 isCharging:v13 activeConnector:v10 & 0x128 | (v10 >> 2) & 1 | (2 * (v10 & 3)) & 0x7F | (v10 >> 2) & 0x10 | (v10 >> 1) & 0x40 | (((v10 >> 4) & 1) << 7)];
+    _identifier = [(VGExternalAccessory *)self _identifier];
+    v3 = [_identifier copy];
+    date = [MEMORY[0x277CBEAA8] date];
+    batteryCharge = [(VGExternalAccessoryState *)self->_accessoryState batteryCharge];
+    currentEVRange = [(VGExternalAccessoryState *)self->_accessoryState currentEVRange];
+    maxEVRange = [(VGExternalAccessoryState *)self->_accessoryState maxEVRange];
+    minBatteryCapacity = [(VGExternalAccessoryState *)self->_accessoryState minBatteryCapacity];
+    currentBatteryCapacity = [(VGExternalAccessoryState *)self->_accessoryState currentBatteryCapacity];
+    maxBatteryCapacity = [(VGExternalAccessoryState *)self->_accessoryState maxBatteryCapacity];
+    consumptionArguments = [(VGExternalAccessoryState *)self->_accessoryState consumptionArguments];
+    v6 = [consumptionArguments copy];
+    chargingArguments = [(VGExternalAccessoryState *)self->_accessoryState chargingArguments];
+    v7 = [chargingArguments copy];
+    isCharging = [(VGExternalAccessoryState *)self->_accessoryState isCharging];
+    activeConnector = [(VGExternalAccessoryState *)self->_accessoryState activeConnector];
+    unsignedIntegerValue = [activeConnector unsignedIntegerValue];
+    LOBYTE(v13) = isCharging;
+    v11 = [(VGVehicleState *)v20 initWithIdentifier:v3 dateOfUpdate:date origin:1 batteryPercentage:batteryCharge currentEVRange:currentEVRange maxEVRange:maxEVRange minBatteryCapacity:minBatteryCapacity currentBatteryCapacity:currentBatteryCapacity maxBatteryCapacity:maxBatteryCapacity consumptionArguments:v6 chargingArguments:v7 isCharging:v13 activeConnector:unsignedIntegerValue & 0x128 | (unsignedIntegerValue >> 2) & 1 | (2 * (unsignedIntegerValue & 3)) & 0x7F | (unsignedIntegerValue >> 2) & 0x10 | (unsignedIntegerValue >> 1) & 0x40 | (((unsignedIntegerValue >> 4) & 1) << 7)];
   }
 
   else
@@ -1002,15 +1002,15 @@ LABEL_10:
   if ([(VGExternalAccessory *)self _currentStatePassesEVRoutingRequirements])
   {
     v3 = [VGVehicle alloc];
-    v24 = [(VGExternalAccessoryState *)self->_accessoryState name];
-    v26 = [v24 copy];
-    v25 = [(VGExternalAccessoryState *)self->_accessoryState year];
-    v23 = [(VGExternalAccessoryState *)self->_accessoryState manufacturer];
-    v22 = [v23 copy];
-    v21 = [(VGExternalAccessoryState *)self->_accessoryState model];
-    v20 = [v21 copy];
-    v19 = [(VGExternalAccessoryState *)self->_accessoryState colorHex];
-    v4 = [v19 stringByReplacingOccurrencesOfString:@"#" withString:&stru_2880E19B8];
+    name = [(VGExternalAccessoryState *)self->_accessoryState name];
+    v26 = [name copy];
+    year = [(VGExternalAccessoryState *)self->_accessoryState year];
+    manufacturer = [(VGExternalAccessoryState *)self->_accessoryState manufacturer];
+    v22 = [manufacturer copy];
+    model = [(VGExternalAccessoryState *)self->_accessoryState model];
+    v20 = [model copy];
+    colorHex = [(VGExternalAccessoryState *)self->_accessoryState colorHex];
+    v4 = [colorHex stringByReplacingOccurrencesOfString:@"#" withString:&stru_2880E19B8];
     if ([v4 length] == 6)
     {
       v18 = [v4 stringByAppendingString:@"ff"];
@@ -1021,19 +1021,19 @@ LABEL_10:
       v18 = 0;
     }
 
-    v17 = [(VGExternalAccessory *)self _identifier];
-    v6 = [v17 copy];
-    v16 = [(VGExternalAccessory *)self _bluetoothIdentifier];
-    v7 = [v16 copy];
-    v8 = [(VGExternalAccessoryState *)self->_accessoryState supportedConnectors];
-    v9 = [v8 unsignedIntegerValue];
-    v10 = v9 & 0x128 | (v9 >> 2) & 1 | (2 * (v9 & 3)) & 0x7F | (v9 >> 2) & 0x10 | (v9 >> 1) & 0x40 | (((v9 >> 4) & 1) << 7);
-    v11 = [(VGExternalAccessoryState *)self->_accessoryState powerByConnector];
-    v12 = [v11 copy];
-    v5 = [(VGVehicle *)v3 initWithDisplayName:v26 year:v25 manufacturer:v22 model:v20 colorHex:v18 headUnitIdentifier:v6 headUnitBluetoothIdentifier:v7 supportedConnectors:v10 powerByConnector:v12];
+    _identifier = [(VGExternalAccessory *)self _identifier];
+    v6 = [_identifier copy];
+    _bluetoothIdentifier = [(VGExternalAccessory *)self _bluetoothIdentifier];
+    v7 = [_bluetoothIdentifier copy];
+    supportedConnectors = [(VGExternalAccessoryState *)self->_accessoryState supportedConnectors];
+    unsignedIntegerValue = [supportedConnectors unsignedIntegerValue];
+    v10 = unsignedIntegerValue & 0x128 | (unsignedIntegerValue >> 2) & 1 | (2 * (unsignedIntegerValue & 3)) & 0x7F | (unsignedIntegerValue >> 2) & 0x10 | (unsignedIntegerValue >> 1) & 0x40 | (((unsignedIntegerValue >> 4) & 1) << 7);
+    powerByConnector = [(VGExternalAccessoryState *)self->_accessoryState powerByConnector];
+    v12 = [powerByConnector copy];
+    v5 = [(VGVehicle *)v3 initWithDisplayName:v26 year:year manufacturer:v22 model:v20 colorHex:v18 headUnitIdentifier:v6 headUnitBluetoothIdentifier:v7 supportedConnectors:v10 powerByConnector:v12];
 
-    v13 = [(VGExternalAccessory *)self _identifier];
-    v14 = [v13 copy];
+    _identifier2 = [(VGExternalAccessory *)self _identifier];
+    v14 = [_identifier2 copy];
     [(VGVehicle *)v5 setIapIdentifier:v14];
   }
 
@@ -1052,12 +1052,12 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270EC1000, v3, OS_LOG_TYPE_INFO, "[%{public}p] _notifyDelegateWithCurrentVehicle", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v4 = [(VGExternalAccessory *)self accessoryUpdateDelegate];
+  accessoryUpdateDelegate = [(VGExternalAccessory *)self accessoryUpdateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -1137,20 +1137,20 @@ void __56__VGExternalAccessory__notifyDelegateWithCurrentVehicle__block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateFromVehicleInfo:(id)a3
+- (void)_updateFromVehicleInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = VGGetExternalAccessoryLog();
   v6 = v5;
-  if (v4)
+  if (infoCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = infoCopy;
       _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_INFO, "[%{public}p] _updateFromVehicleInfo: %@", buf, 0x16u);
     }
 
@@ -1161,7 +1161,7 @@ void __56__VGExternalAccessory__notifyDelegateWithCurrentVehicle__block_invoke(u
     v9[2] = __46__VGExternalAccessory__updateFromVehicleInfo___block_invoke;
     v9[3] = &unk_279E26F20;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = infoCopy;
     dispatch_async(workQueue, v9);
 
     objc_destroyWeak(&v11);
@@ -1173,7 +1173,7 @@ void __56__VGExternalAccessory__notifyDelegateWithCurrentVehicle__block_invoke(u
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_ERROR, "[%{public}p] _updateFromVehicleInfo: tried to update from a nil vehicleInfo.", buf, 0xCu);
     }
   }
@@ -1252,17 +1252,17 @@ void __46__VGExternalAccessory__updateFromVehicleInfo___block_invoke(uint64_t a1
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessoryDidUpdateVehicle:(id)a3
+- (void)_accessoryDidUpdateVehicle:(id)vehicle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = vehicleCopy;
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "[%{public}p] _accessoryDidUpdateVehicle: %@", buf, 0x16u);
   }
 
@@ -1273,8 +1273,8 @@ void __46__VGExternalAccessory__updateFromVehicleInfo___block_invoke(uint64_t a1
   v9[2] = __50__VGExternalAccessory__accessoryDidUpdateVehicle___block_invoke;
   v9[3] = &unk_279E26F20;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = vehicleCopy;
+  v7 = vehicleCopy;
   dispatch_async(workQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -1357,17 +1357,17 @@ void __50__VGExternalAccessory__accessoryDidUpdateVehicle___block_invoke(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessoryDidDisconnect:(id)a3
+- (void)_accessoryDidDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = disconnectCopy;
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "[%{public}p] _accessoryDidDisconnect: %@", buf, 0x16u);
   }
 
@@ -1378,8 +1378,8 @@ void __50__VGExternalAccessory__accessoryDidUpdateVehicle___block_invoke(uint64_
   v9[2] = __47__VGExternalAccessory__accessoryDidDisconnect___block_invoke;
   v9[3] = &unk_279E26F20;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = disconnectCopy;
+  v7 = disconnectCopy;
   dispatch_async(workQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -1443,17 +1443,17 @@ void __47__VGExternalAccessory__accessoryDidDisconnect___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessoryDidConnect:(id)a3
+- (void)_accessoryDidConnect:(id)connect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectCopy = connect;
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = connectCopy;
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "[%{public}p] _accessoryDidConnect: %@", buf, 0x16u);
   }
 
@@ -1464,8 +1464,8 @@ void __47__VGExternalAccessory__accessoryDidDisconnect___block_invoke(uint64_t a
   v9[2] = __44__VGExternalAccessory__accessoryDidConnect___block_invoke;
   v9[3] = &unk_279E26F20;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = connectCopy;
+  v7 = connectCopy;
   dispatch_async(workQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -1570,13 +1570,13 @@ void __44__VGExternalAccessory__accessoryDidConnect___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isAccessoryTracked:(id)a3
+- (BOOL)_isAccessoryTracked:(id)tracked
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 connectionID])
+  trackedCopy = tracked;
+  if ([trackedCopy connectionID])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "connectionID")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(trackedCopy, "connectionID")}];
     v6 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId objectForKeyedSubscript:v5];
     v7 = v6 != 0;
   }
@@ -1586,13 +1586,13 @@ void __44__VGExternalAccessory__accessoryDidConnect___block_invoke(uint64_t a1)
     v8 = VGGetExternalAccessoryLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name = [trackedCopy name];
       v12 = 134349570;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v9;
+      v15 = name;
       v16 = 2048;
-      v17 = [v4 connectionID];
+      connectionID = [trackedCopy connectionID];
       _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_ERROR, "[%{public}p] _isAccessoryTracked: tried to check status of accessory with an invalid key. %@ %lu", &v12, 0x20u);
     }
 
@@ -1603,11 +1603,11 @@ void __44__VGExternalAccessory__accessoryDidConnect___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_removeCarPlayAccessory:(id)a3
+- (void)_removeCarPlayAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 connectionID])
+  accessoryCopy = accessory;
+  if (![accessoryCopy connectionID])
   {
     v5 = VGGetExternalAccessoryLog();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1615,36 +1615,36 @@ void __44__VGExternalAccessory__accessoryDidConnect___block_invoke(uint64_t a1)
       goto LABEL_14;
     }
 
-    v8 = [v4 name];
+    name = [accessoryCopy name];
     v16 = 134349570;
-    v17 = self;
+    selfCopy4 = self;
     v18 = 2112;
-    v19 = v8;
+    v19 = name;
     v20 = 2048;
-    v21 = [v4 connectionID];
+    connectionID = [accessoryCopy connectionID];
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_ERROR, "[%{public}p] _removeCarPlayAccessory: tried to remove an accessory that has an invalid key. %@, %lu", &v16, 0x20u);
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "connectionID")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(accessoryCopy, "connectionID")}];
   v6 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId objectForKeyedSubscript:v5];
 
   v7 = VGGetExternalAccessoryLog();
-  v8 = v7;
+  name = v7;
   if (!v6)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v4 name];
+      name2 = [accessoryCopy name];
       v16 = 134349570;
-      v17 = self;
+      selfCopy4 = self;
       v18 = 2112;
-      v19 = v14;
+      v19 = name2;
       v20 = 2112;
-      v21 = v5;
-      _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_ERROR, "[%{public}p] _removeCarPlayAccessory: tried to remove an accessory that was not tracked. %@, %@", &v16, 0x20u);
+      connectionID = v5;
+      _os_log_impl(&dword_270EC1000, name, OS_LOG_TYPE_ERROR, "[%{public}p] _removeCarPlayAccessory: tried to remove an accessory that was not tracked. %@, %@", &v16, 0x20u);
     }
 
     goto LABEL_13;
@@ -1652,14 +1652,14 @@ LABEL_13:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v9 = [v4 name];
+    name3 = [accessoryCopy name];
     v16 = 134349570;
-    v17 = self;
+    selfCopy4 = self;
     v18 = 2112;
-    v19 = v9;
+    v19 = name3;
     v20 = 2112;
-    v21 = v5;
-    _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "[%{public}p] _removeCarPlayAccessory: removing accessory with key. %@, %@", &v16, 0x20u);
+    connectionID = v5;
+    _os_log_impl(&dword_270EC1000, name, OS_LOG_TYPE_INFO, "[%{public}p] _removeCarPlayAccessory: removing accessory with key. %@, %@", &v16, 0x20u);
   }
 
   [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId removeObjectForKey:v5];
@@ -1669,7 +1669,7 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_270EC1000, v10, OS_LOG_TYPE_INFO, "[%{public}p] _removeCarPlayAccessory: currently not tracking any accessories. clearing tracked vehicle state", &v16, 0xCu);
     }
 
@@ -1690,13 +1690,13 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addNewCarPlayAccessory:(id)a3
+- (void)_addNewCarPlayAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 connectionID])
+  accessoryCopy = accessory;
+  if ([accessoryCopy connectionID])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "connectionID")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(accessoryCopy, "connectionID")}];
     v6 = [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId objectForKeyedSubscript:v5];
 
     if (v6)
@@ -1704,13 +1704,13 @@ LABEL_14:
       v7 = VGGetExternalAccessoryLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v4 name];
+        name = [accessoryCopy name];
         v14 = 134349570;
-        v15 = self;
+        selfCopy3 = self;
         v16 = 2112;
-        v17 = v8;
+        v17 = name;
         v18 = 2112;
-        v19 = v5;
+        connectionID = v5;
         _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_ERROR, "[%{public}p] _addNewCarPlayAccessory: trying to add an accessory, it is already tracked -> replacing, name: %@ key: %@", &v14, 0x20u);
       }
     }
@@ -1718,35 +1718,35 @@ LABEL_14:
     v9 = VGGetExternalAccessoryLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 name];
+      name2 = [accessoryCopy name];
       v14 = 134349570;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
-      v17 = v10;
+      v17 = name2;
       v18 = 2112;
-      v19 = v5;
+      connectionID = v5;
       _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "[%{public}p] _addNewCarPlayAccessory: added a new accessory: %@ key: %@.", &v14, 0x20u);
     }
 
-    [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId setObject:v4 forKeyedSubscript:v5];
-    v11 = [v4 getVehicleInfoData];
-    [(VGExternalAccessory *)self _updateFromVehicleInfo:v11];
+    [(NSMutableDictionary *)self->_trackedAccessoriesByConnectionId setObject:accessoryCopy forKeyedSubscript:v5];
+    getVehicleInfoData = [accessoryCopy getVehicleInfoData];
+    [(VGExternalAccessory *)self _updateFromVehicleInfo:getVehicleInfoData];
 
-    v12 = [v4 vehicleInfoInitialData];
-    [(VGExternalAccessory *)self _updateFromVehicleInfo:v12];
+    vehicleInfoInitialData = [accessoryCopy vehicleInfoInitialData];
+    [(VGExternalAccessory *)self _updateFromVehicleInfo:vehicleInfoInitialData];
     goto LABEL_11;
   }
 
   v5 = VGGetExternalAccessoryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    v12 = [v4 name];
+    vehicleInfoInitialData = [accessoryCopy name];
     v14 = 134349570;
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2112;
-    v17 = v12;
+    v17 = vehicleInfoInitialData;
     v18 = 2048;
-    v19 = [v4 connectionID];
+    connectionID = [accessoryCopy connectionID];
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_FAULT, "[%{public}p] _addNewCarPlayAccessory: tried to add an accessory, but it has an invalid key. %@, %lu", &v14, 0x20u);
 LABEL_11:
   }
@@ -1761,15 +1761,15 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270EC1000, v3, OS_LOG_TYPE_INFO, "[%{public}p] dealloc: deallocating accessory", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-  [v4 unregisterForLocalNotifications];
+  mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+  [mEMORY[0x277CC5FB0] unregisterForLocalNotifications];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = VGExternalAccessory;

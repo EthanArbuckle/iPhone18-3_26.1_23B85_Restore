@@ -1,38 +1,38 @@
 @interface BMTrialNamespaceUpdates
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTrialNamespaceUpdates)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMTrialNamespaceUpdates)initWithNamespaceNames:(id)a3 experimentStatus:(int)a4 userId:(id)a5 experimentId:(id)a6 deploymentId:(id)a7 treatmentId:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMTrialNamespaceUpdates)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMTrialNamespaceUpdates)initWithNamespaceNames:(id)names experimentStatus:(int)status userId:(id)id experimentId:(id)experimentId deploymentId:(id)deploymentId treatmentId:(id)treatmentId;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTrialNamespaceUpdates
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTrialNamespaceUpdates *)self NamespaceNames];
-    v7 = [v5 NamespaceNames];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    namespaceNames = [(BMTrialNamespaceUpdates *)self NamespaceNames];
+    namespaceNames2 = [v5 NamespaceNames];
+    v8 = namespaceNames2;
+    if (namespaceNames == namespaceNames2)
     {
     }
 
     else
     {
-      v9 = [(BMTrialNamespaceUpdates *)self NamespaceNames];
-      v10 = [v5 NamespaceNames];
-      v11 = [v9 isEqual:v10];
+      namespaceNames3 = [(BMTrialNamespaceUpdates *)self NamespaceNames];
+      namespaceNames4 = [v5 NamespaceNames];
+      v11 = [namespaceNames3 isEqual:namespaceNames4];
 
       if (!v11)
       {
@@ -40,21 +40,21 @@
       }
     }
 
-    v13 = [(BMTrialNamespaceUpdates *)self experimentStatus];
-    if (v13 == [v5 experimentStatus])
+    experimentStatus = [(BMTrialNamespaceUpdates *)self experimentStatus];
+    if (experimentStatus == [v5 experimentStatus])
     {
-      v14 = [(BMTrialNamespaceUpdates *)self userId];
-      v15 = [v5 userId];
-      v16 = v15;
-      if (v14 == v15)
+      userId = [(BMTrialNamespaceUpdates *)self userId];
+      userId2 = [v5 userId];
+      v16 = userId2;
+      if (userId == userId2)
       {
       }
 
       else
       {
-        v17 = [(BMTrialNamespaceUpdates *)self userId];
-        v18 = [v5 userId];
-        v19 = [v17 isEqual:v18];
+        userId3 = [(BMTrialNamespaceUpdates *)self userId];
+        userId4 = [v5 userId];
+        v19 = [userId3 isEqual:userId4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMTrialNamespaceUpdates *)self experimentId];
-      v21 = [v5 experimentId];
-      v22 = v21;
-      if (v20 == v21)
+      experimentId = [(BMTrialNamespaceUpdates *)self experimentId];
+      experimentId2 = [v5 experimentId];
+      v22 = experimentId2;
+      if (experimentId == experimentId2)
       {
       }
 
       else
       {
-        v23 = [(BMTrialNamespaceUpdates *)self experimentId];
-        v24 = [v5 experimentId];
-        v25 = [v23 isEqual:v24];
+        experimentId3 = [(BMTrialNamespaceUpdates *)self experimentId];
+        experimentId4 = [v5 experimentId];
+        v25 = [experimentId3 isEqual:experimentId4];
 
         if (!v25)
         {
@@ -81,18 +81,18 @@
         }
       }
 
-      v26 = [(BMTrialNamespaceUpdates *)self deploymentId];
-      v27 = [v5 deploymentId];
-      v28 = v27;
-      if (v26 == v27)
+      deploymentId = [(BMTrialNamespaceUpdates *)self deploymentId];
+      deploymentId2 = [v5 deploymentId];
+      v28 = deploymentId2;
+      if (deploymentId == deploymentId2)
       {
       }
 
       else
       {
-        v29 = [(BMTrialNamespaceUpdates *)self deploymentId];
-        v30 = [v5 deploymentId];
-        v31 = [v29 isEqual:v30];
+        deploymentId3 = [(BMTrialNamespaceUpdates *)self deploymentId];
+        deploymentId4 = [v5 deploymentId];
+        v31 = [deploymentId3 isEqual:deploymentId4];
 
         if (!v31)
         {
@@ -100,18 +100,18 @@
         }
       }
 
-      v33 = [(BMTrialNamespaceUpdates *)self treatmentId];
-      v34 = [v5 treatmentId];
-      if (v33 == v34)
+      treatmentId = [(BMTrialNamespaceUpdates *)self treatmentId];
+      treatmentId2 = [v5 treatmentId];
+      if (treatmentId == treatmentId2)
       {
         v12 = 1;
       }
 
       else
       {
-        v35 = [(BMTrialNamespaceUpdates *)self treatmentId];
-        v36 = [v5 treatmentId];
-        v12 = [v35 isEqual:v36];
+        treatmentId3 = [(BMTrialNamespaceUpdates *)self treatmentId];
+        treatmentId4 = [v5 treatmentId];
+        v12 = [treatmentId3 isEqual:treatmentId4];
       }
 
       goto LABEL_19;
@@ -133,76 +133,76 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v24[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMTrialNamespaceUpdates *)self NamespaceNames];
-  v4 = [v3 jsonDictionary];
+  namespaceNames = [(BMTrialNamespaceUpdates *)self NamespaceNames];
+  jsonDictionary = [namespaceNames jsonDictionary];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMTrialNamespaceUpdates experimentStatus](self, "experimentStatus")}];
-  v6 = [(BMTrialNamespaceUpdates *)self userId];
-  v7 = [(BMTrialNamespaceUpdates *)self experimentId];
-  v8 = [(BMTrialNamespaceUpdates *)self deploymentId];
-  v9 = [(BMTrialNamespaceUpdates *)self treatmentId];
+  userId = [(BMTrialNamespaceUpdates *)self userId];
+  experimentId = [(BMTrialNamespaceUpdates *)self experimentId];
+  deploymentId = [(BMTrialNamespaceUpdates *)self deploymentId];
+  treatmentId = [(BMTrialNamespaceUpdates *)self treatmentId];
   v23[0] = @"NamespaceNames";
-  v10 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v10;
-  v24[0] = v10;
+  v21 = null;
+  v24[0] = null;
   v23[1] = @"experimentStatus";
-  v11 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v24[1] = v11;
+  v19 = null2;
+  v24[1] = null2;
   v23[2] = @"userId";
-  v12 = v6;
-  if (!v6)
+  null3 = userId;
+  if (!userId)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v4;
-  v24[2] = v12;
+  v22 = jsonDictionary;
+  v24[2] = null3;
   v23[3] = @"experimentId";
-  v13 = v7;
-  if (!v7)
+  null4 = experimentId;
+  if (!experimentId)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v13;
+  v24[3] = null4;
   v23[4] = @"deploymentId";
-  v14 = v8;
-  if (!v8)
+  null5 = deploymentId;
+  if (!deploymentId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v14;
+  v24[4] = null5;
   v23[5] = @"treatmentId";
-  v15 = v9;
-  if (!v9)
+  null6 = treatmentId;
+  if (!treatmentId)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[5] = v15;
+  v24[5] = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{6, v19}];
-  if (v9)
+  if (treatmentId)
   {
-    if (v8)
+    if (deploymentId)
     {
       goto LABEL_15;
     }
 
 LABEL_23:
 
-    if (v7)
+    if (experimentId)
     {
       goto LABEL_16;
     }
@@ -210,13 +210,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v8)
+  if (!deploymentId)
   {
     goto LABEL_23;
   }
 
 LABEL_15:
-  if (v7)
+  if (experimentId)
   {
     goto LABEL_16;
   }
@@ -224,7 +224,7 @@ LABEL_15:
 LABEL_24:
 
 LABEL_16:
-  if (v6)
+  if (userId)
   {
     if (v5)
     {
@@ -260,11 +260,11 @@ LABEL_19:
   return v16;
 }
 
-- (BMTrialNamespaceUpdates)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMTrialNamespaceUpdates)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"NamespaceNames"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"NamespaceNames"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v52 = v7;
@@ -275,16 +275,16 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    errorCopy = v7;
     v55 = 0;
-    v8 = [[BMTrialNamespaceUpdatesNamespaceNamesList alloc] initWithJSONDictionary:v10 error:&v55];
+    v8 = [[BMTrialNamespaceUpdatesNamespaceNamesList alloc] initWithJSONDictionary:errorCopy error:&v55];
     v11 = v55;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v11 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
       v12 = 0;
@@ -294,7 +294,7 @@ LABEL_19:
     v52 = v7;
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"experimentStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"experimentStatus"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -305,11 +305,11 @@ LABEL_4:
 
       else
       {
-        v10 = a4;
+        errorCopy = error;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v12 = 0;
             goto LABEL_54;
@@ -325,8 +325,8 @@ LABEL_4:
           v45 = v44;
           v9 = v43;
           v12 = 0;
-          *a4 = [v42 initWithDomain:v45 code:2 userInfo:v19];
-          v10 = 0;
+          *error = [v42 initWithDomain:v45 code:2 userInfo:v19];
+          errorCopy = 0;
 LABEL_53:
 
 LABEL_54:
@@ -337,23 +337,23 @@ LABEL_54:
         v13 = [MEMORY[0x1E696AD98] numberWithInt:BMTrialNamespaceUpdatesEventTypeFromString(v9)];
       }
 
-      v10 = v13;
+      errorCopy = v13;
     }
 
     else
     {
-      v10 = 0;
+      errorCopy = 0;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"userId"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"userId"];
     v53 = v8;
-    v51 = v10;
+    v51 = errorCopy;
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v54 = 0;
           v12 = 0;
@@ -362,7 +362,7 @@ LABEL_54:
 
         v28 = v9;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v30 = a4;
+        errorCopy2 = error;
         v31 = *MEMORY[0x1E698F240];
         v62 = *MEMORY[0x1E696A578];
         v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"userId"];
@@ -372,7 +372,7 @@ LABEL_54:
         v9 = v28;
         v54 = 0;
         v12 = 0;
-        *v30 = [v32 initWithDomain:v31 code:2 userInfo:v20];
+        *errorCopy2 = [v32 initWithDomain:v31 code:2 userInfo:v20];
         goto LABEL_63;
       }
 
@@ -384,9 +384,9 @@ LABEL_54:
       v54 = 0;
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"experimentId"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"experimentId"];
     v49 = v9;
-    v21 = a4;
+    errorCopy3 = error;
     if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v22 = 0;
@@ -398,11 +398,11 @@ LABEL_54:
     {
       v22 = v20;
 LABEL_25:
-      v23 = [v6 objectForKeyedSubscript:@"deploymentId"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"deploymentId"];
       v50 = v22;
       if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v24 = self;
+        selfCopy3 = self;
         v25 = 0;
         goto LABEL_28;
       }
@@ -410,20 +410,20 @@ LABEL_25:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = self;
+        selfCopy3 = self;
         v25 = v23;
 LABEL_28:
-        v26 = [v6 objectForKeyedSubscript:@"treatmentId"];
+        v26 = [dictionaryCopy objectForKeyedSubscript:@"treatmentId"];
         if (!v26 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v27 = 0;
 LABEL_31:
-          v10 = v51;
-          v12 = -[BMTrialNamespaceUpdates initWithNamespaceNames:experimentStatus:userId:experimentId:deploymentId:treatmentId:](v24, "initWithNamespaceNames:experimentStatus:userId:experimentId:deploymentId:treatmentId:", v53, [v51 intValue], v54, v50, v25, v27);
-          v24 = v12;
+          errorCopy = v51;
+          v12 = -[BMTrialNamespaceUpdates initWithNamespaceNames:experimentStatus:userId:experimentId:deploymentId:treatmentId:](selfCopy3, "initWithNamespaceNames:experimentStatus:userId:experimentId:deploymentId:treatmentId:", v53, [v51 intValue], v54, v50, v25, v27);
+          selfCopy3 = v12;
 LABEL_50:
 
-          self = v24;
+          self = selfCopy3;
           v22 = v50;
 LABEL_51:
 
@@ -441,7 +441,7 @@ LABEL_52:
           goto LABEL_31;
         }
 
-        if (v21)
+        if (errorCopy3)
         {
           v48 = objc_alloc(MEMORY[0x1E696ABC0]);
           v46 = *MEMORY[0x1E698F240];
@@ -449,19 +449,19 @@ LABEL_52:
           v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"treatmentId"];
           v57 = v38;
           v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-          *v21 = [v48 initWithDomain:v46 code:2 userInfo:v39];
+          *errorCopy3 = [v48 initWithDomain:v46 code:2 userInfo:v39];
         }
 
         v27 = 0;
         v12 = 0;
 LABEL_49:
-        v10 = v51;
+        errorCopy = v51;
         goto LABEL_50;
       }
 
-      if (v21)
+      if (errorCopy3)
       {
-        v24 = self;
+        selfCopy3 = self;
         v47 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
         v58 = *MEMORY[0x1E696A578];
@@ -471,18 +471,18 @@ LABEL_49:
         v37 = [v47 initWithDomain:v36 code:2 userInfo:v26];
         v25 = 0;
         v12 = 0;
-        *v21 = v37;
+        *errorCopy3 = v37;
         goto LABEL_49;
       }
 
       v25 = 0;
       v12 = 0;
 LABEL_65:
-      v10 = v51;
+      errorCopy = v51;
       goto LABEL_51;
     }
 
-    if (a4)
+    if (error)
     {
       v33 = objc_alloc(MEMORY[0x1E696ABC0]);
       v34 = *MEMORY[0x1E698F240];
@@ -493,18 +493,18 @@ LABEL_65:
       v35 = [v33 initWithDomain:v34 code:2 userInfo:v23];
       v22 = 0;
       v12 = 0;
-      *v21 = v35;
+      *errorCopy3 = v35;
       goto LABEL_65;
     }
 
     v22 = 0;
     v12 = 0;
 LABEL_63:
-    v10 = v51;
+    errorCopy = v51;
     goto LABEL_52;
   }
 
-  if (!a4)
+  if (!error)
   {
     v12 = 0;
     goto LABEL_56;
@@ -520,8 +520,8 @@ LABEL_63:
   v18 = v16;
   v7 = v15;
   v12 = 0;
-  *a4 = [v14 initWithDomain:v18 code:2 userInfo:v17];
-  v10 = v17;
+  *error = [v14 initWithDomain:v18 code:2 userInfo:v17];
+  errorCopy = v17;
 LABEL_55:
 
 LABEL_56:
@@ -533,18 +533,18 @@ LABEL_56:
 {
   v3 = objc_opt_new();
   [(BMTrialNamespaceUpdates *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_NamespaceNames)
   {
     PBDataWriterPlaceMark();
-    [(BMTrialNamespaceUpdatesNamespaceNamesList *)self->_NamespaceNames writeTo:v4];
+    [(BMTrialNamespaceUpdatesNamespaceNamesList *)self->_NamespaceNames writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -571,9 +571,9 @@ LABEL_56:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMTrialNamespaceUpdates;
   v5 = [(BMEventBase *)&v31 init];
@@ -582,12 +582,12 @@ LABEL_56:
     goto LABEL_52;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_50;
       }
@@ -598,18 +598,18 @@ LABEL_56:
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v32[0] & 0x7F) << v7;
@@ -626,9 +626,9 @@ LABEL_56:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_50;
       }
@@ -649,18 +649,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v32[0]) = 0;
-            v23 = [v4 position] + 1;
-            if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+            v23 = [fromCopy position] + 1;
+            if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
             {
-              v25 = [v4 data];
-              [v25 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v22 |= (v32[0] & 0x7F) << v20;
@@ -676,7 +676,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v22 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v22 > 2)
           {
 LABEL_48:
             LODWORD(v22) = 0;
@@ -703,7 +703,7 @@ LABEL_48:
         goto LABEL_51;
       }
 
-      v18 = [[BMTrialNamespaceUpdatesNamespaceNamesList alloc] initByReadFrom:v4];
+      v18 = [[BMTrialNamespaceUpdatesNamespaceNamesList alloc] initByReadFrom:fromCopy];
       if (!v18)
       {
         goto LABEL_51;
@@ -714,8 +714,8 @@ LABEL_48:
 
       PBReaderRecallMark();
 LABEL_44:
-      v28 = [v4 position];
-      if (v28 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_50;
       }
@@ -753,7 +753,7 @@ LABEL_43:
   }
 
 LABEL_50:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_51:
     v29 = 0;
@@ -771,36 +771,36 @@ LABEL_52:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMTrialNamespaceUpdates *)self NamespaceNames];
+  namespaceNames = [(BMTrialNamespaceUpdates *)self NamespaceNames];
   v5 = BMTrialNamespaceUpdatesEventTypeAsString([(BMTrialNamespaceUpdates *)self experimentStatus]);
-  v6 = [(BMTrialNamespaceUpdates *)self userId];
-  v7 = [(BMTrialNamespaceUpdates *)self experimentId];
-  v8 = [(BMTrialNamespaceUpdates *)self deploymentId];
-  v9 = [(BMTrialNamespaceUpdates *)self treatmentId];
-  v10 = [v3 initWithFormat:@"BMTrialNamespaceUpdates with NamespaceNames: %@, experimentStatus: %@, userId: %@, experimentId: %@, deploymentId: %@, treatmentId: %@", v4, v5, v6, v7, v8, v9];
+  userId = [(BMTrialNamespaceUpdates *)self userId];
+  experimentId = [(BMTrialNamespaceUpdates *)self experimentId];
+  deploymentId = [(BMTrialNamespaceUpdates *)self deploymentId];
+  treatmentId = [(BMTrialNamespaceUpdates *)self treatmentId];
+  v10 = [v3 initWithFormat:@"BMTrialNamespaceUpdates with NamespaceNames: %@, experimentStatus: %@, userId: %@, experimentId: %@, deploymentId: %@, treatmentId: %@", namespaceNames, v5, userId, experimentId, deploymentId, treatmentId];
 
   return v10;
 }
 
-- (BMTrialNamespaceUpdates)initWithNamespaceNames:(id)a3 experimentStatus:(int)a4 userId:(id)a5 experimentId:(id)a6 deploymentId:(id)a7 treatmentId:(id)a8
+- (BMTrialNamespaceUpdates)initWithNamespaceNames:(id)names experimentStatus:(int)status userId:(id)id experimentId:(id)experimentId deploymentId:(id)deploymentId treatmentId:(id)treatmentId
 {
-  v21 = a3;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  namesCopy = names;
+  idCopy = id;
+  experimentIdCopy = experimentId;
+  deploymentIdCopy = deploymentId;
+  treatmentIdCopy = treatmentId;
   v22.receiver = self;
   v22.super_class = BMTrialNamespaceUpdates;
   v18 = [(BMEventBase *)&v22 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_NamespaceNames, a3);
-    v18->_experimentStatus = a4;
-    objc_storeStrong(&v18->_userId, a5);
-    objc_storeStrong(&v18->_experimentId, a6);
-    objc_storeStrong(&v18->_deploymentId, a7);
-    objc_storeStrong(&v18->_treatmentId, a8);
+    objc_storeStrong(&v18->_NamespaceNames, names);
+    v18->_experimentStatus = status;
+    objc_storeStrong(&v18->_userId, id);
+    objc_storeStrong(&v18->_experimentId, experimentId);
+    objc_storeStrong(&v18->_deploymentId, deploymentId);
+    objc_storeStrong(&v18->_treatmentId, treatmentId);
   }
 
   return v18;
@@ -860,9 +860,9 @@ id __34__BMTrialNamespaceUpdates_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -870,8 +870,8 @@ id __34__BMTrialNamespaceUpdates_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTrialNamespaceUpdates alloc] initByReadFrom:v7];
     v4 = v8;

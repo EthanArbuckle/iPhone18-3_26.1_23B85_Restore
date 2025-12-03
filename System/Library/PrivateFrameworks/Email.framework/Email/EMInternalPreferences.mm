@@ -1,16 +1,16 @@
 @interface EMInternalPreferences
-+ (BOOL)_hasUserDefaultValueForKey:(id)a3 expectedValue:(id)a4;
-+ (BOOL)_preferenceEnabled:(unint64_t)a3;
-+ (BOOL)_userDefaultEnabledForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (BOOL)preferenceEnabled:(unint64_t)a3;
++ (BOOL)_hasUserDefaultValueForKey:(id)key expectedValue:(id)value;
++ (BOOL)_preferenceEnabled:(unint64_t)enabled;
++ (BOOL)_userDefaultEnabledForKey:(id)key defaultValue:(BOOL)value;
++ (BOOL)preferenceEnabled:(unint64_t)enabled;
 + (OS_os_log)log;
-+ (id)_testOverrideForPreference:(uint64_t)a1;
++ (id)_testOverrideForPreference:(uint64_t)preference;
 + (id)_testingOverrideDictionary;
-+ (id)defaultForPreference:(unint64_t)a3;
-+ (id)observeChangesForPreference:(unint64_t)a3 usingBlock:(id)a4;
++ (id)defaultForPreference:(unint64_t)preference;
++ (id)observeChangesForPreference:(unint64_t)preference usingBlock:(id)block;
 + (void)_registerForDefaultChanges;
-+ (void)clearPreferenceForTesting:(unint64_t)a3;
-+ (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
++ (void)clearPreferenceForTesting:(unint64_t)testing;
++ (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 + (void)registerForDefaultChanges;
 @end
 
@@ -19,7 +19,7 @@
 + (void)_registerForDefaultChanges
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] em_userDefaults];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
   v4 = 1;
   *&v5 = 134218242;
   v10 = v5;
@@ -28,12 +28,12 @@
     v6 = [EMInternalPreferences defaultForPreference:v4, v10];
     if (v6)
     {
-      [v3 addObserver:a1 forKeyPath:v6 options:0 context:&kvoContext];
+      [em_userDefaults addObserver:self forKeyPath:v6 options:0 context:&kvoContext];
       v7 = +[EMInternalPreferences log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v10;
-        v12 = a1;
+        selfCopy = self;
         v13 = 2112;
         v14 = v6;
         _os_log_impl(&dword_1C6655000, v7, OS_LOG_TYPE_DEFAULT, "EMInternalPreferences (%p) adding observer for key path %@ on defaults", buf, 0x16u);
@@ -45,7 +45,7 @@
 
   while (v4 != 63);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _userDefaultsDidChange, @"com.apple.mail.EMUserDefaultsDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _userDefaultsDidChange, @"com.apple.mail.EMUserDefaultsDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __28__EMInternalPreferences_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_19 != -1)
   {
     dispatch_once(&log_onceToken_19, block);
@@ -75,14 +75,14 @@ void __28__EMInternalPreferences_log__block_invoke(uint64_t a1)
   log_log_19 = v1;
 }
 
-+ (BOOL)preferenceEnabled:(unint64_t)a3
++ (BOOL)preferenceEnabled:(unint64_t)enabled
 {
-  v5 = [MEMORY[0x1E699B7B0] currentDevice];
-  v6 = [v5 areInternalSecurityPoliciesAllowed];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  areInternalSecurityPoliciesAllowed = [currentDevice areInternalSecurityPoliciesAllowed];
 
-  if (v6)
+  if (areInternalSecurityPoliciesAllowed)
   {
-    v7 = [(EMInternalPreferences *)a1 _testOverrideForPreference:a3];
+    v7 = [(EMInternalPreferences *)self _testOverrideForPreference:enabled];
     v8 = v7;
     if (v7)
     {
@@ -113,7 +113,7 @@ void __28__EMInternalPreferences_log__block_invoke(uint64_t a1)
         atomic_store(v10, &cachedFlags);
       }
 
-      v9 = (v10 >> a3) & 1;
+      v9 = (v10 >> enabled) & 1;
     }
   }
 
@@ -125,7 +125,7 @@ void __28__EMInternalPreferences_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)_testOverrideForPreference:(uint64_t)a1
++ (id)_testOverrideForPreference:(uint64_t)preference
 {
   objc_opt_self();
   if (EFIsRunningUnitTests())
@@ -149,34 +149,34 @@ void __28__EMInternalPreferences_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__EMInternalPreferences_registerForDefaultChanges__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (registerForDefaultChanges_onceToken != -1)
   {
     dispatch_once(&registerForDefaultChanges_onceToken, block);
   }
 }
 
-+ (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
++ (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &kvoContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &kvoContext)
   {
     atomic_store(0, &cachedFlags);
   }
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___EMInternalPreferences;
-    objc_msgSendSuper2(&v13, sel_observeValueForKeyPath_ofObject_change_context_, v10, v11, v12, a6);
+    objc_msgSendSuper2(&v13, sel_observeValueForKeyPath_ofObject_change_context_, pathCopy, objectCopy, changeCopy, context);
   }
 }
 
-+ (id)observeChangesForPreference:(unint64_t)a3 usingBlock:(id)a4
++ (id)observeChangesForPreference:(unint64_t)preference usingBlock:(id)block
 {
-  v4 = [EMInternalPreferences observeChangesForPreference:a3 autoCancelToken:0 usingBlock:a4];
+  v4 = [EMInternalPreferences observeChangesForPreference:preference autoCancelToken:0 usingBlock:block];
 
   return v4;
 }
@@ -199,22 +199,22 @@ void __80__EMInternalPreferences_observeChangesForPreference_autoCancelToken_usi
   (*(*(a1 + 32) + 16))();
 }
 
-+ (BOOL)_preferenceEnabled:(unint64_t)a3
++ (BOOL)_preferenceEnabled:(unint64_t)enabled
 {
-  v5 = [a1 defaultForPreference:?];
+  v5 = [self defaultForPreference:?];
   v6 = 0;
-  if (a3 <= 0x3F)
+  if (enabled <= 0x3F)
   {
-    if (((1 << a3) & 0x7FFFFFFFFF7FFFFCLL) != 0)
+    if (((1 << enabled) & 0x7FFFFFFFFF7FFFFCLL) != 0)
     {
 LABEL_3:
-      LOBYTE(v6) = [a1 _userDefaultEnabledForKey:v5 defaultValue:v6];
+      LOBYTE(v6) = [self _userDefaultEnabledForKey:v5 defaultValue:v6];
       goto LABEL_4;
     }
 
-    if (((1 << a3) & 0x8000000000000001) == 0)
+    if (((1 << enabled) & 0x8000000000000001) == 0)
     {
-      if (a3 != 23)
+      if (enabled != 23)
       {
         goto LABEL_4;
       }
@@ -226,7 +226,7 @@ LABEL_3:
     v6 = +[EMInternalPreferences log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(EMInternalPreferences *)a3 _preferenceEnabled:v6];
+      [(EMInternalPreferences *)enabled _preferenceEnabled:v6];
     }
 
     LOBYTE(v6) = 0;
@@ -237,15 +237,15 @@ LABEL_4:
   return v6;
 }
 
-+ (id)defaultForPreference:(unint64_t)a3
++ (id)defaultForPreference:(unint64_t)preference
 {
-  v4 = [MEMORY[0x1E699B7B0] currentDevice];
-  v5 = [v4 areInternalSecurityPoliciesAllowed];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  areInternalSecurityPoliciesAllowed = [currentDevice areInternalSecurityPoliciesAllowed];
 
-  if (v5)
+  if (areInternalSecurityPoliciesAllowed)
   {
     v6 = 0;
-    switch(a3)
+    switch(preference)
     {
       case 0uLL:
       case 0x3FuLL:
@@ -455,29 +455,29 @@ LABEL_6:
   return v6;
 }
 
-+ (BOOL)_userDefaultEnabledForKey:(id)a3 defaultValue:(BOOL)a4
++ (BOOL)_userDefaultEnabledForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695E000] em_userDefaults];
-  v7 = [v6 valueForKey:v5];
+  keyCopy = key;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v7 = [em_userDefaults valueForKey:keyCopy];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    a4 = [v7 BOOLValue];
+    value = [v7 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-+ (BOOL)_hasUserDefaultValueForKey:(id)a3 expectedValue:(id)a4
++ (BOOL)_hasUserDefaultValueForKey:(id)key expectedValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695E000] em_userDefaults];
-  v8 = [v7 stringForKey:v5];
+  keyCopy = key;
+  valueCopy = value;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v8 = [em_userDefaults stringForKey:keyCopy];
 
-  if (v6 | v8)
+  if (valueCopy | v8)
   {
-    v9 = [v6 isEqual:v8];
+    v9 = [valueCopy isEqual:v8];
   }
 
   else
@@ -493,8 +493,8 @@ LABEL_6:
   v0 = objc_opt_self();
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v3 handleFailureInMethod:sel__testingOverrideDictionary object:v0 file:@"EMInternalPreferences.m" lineNumber:347 description:{@"%s can only be called from unit tests", "+[EMInternalPreferences _testingOverrideDictionary]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__testingOverrideDictionary object:v0 file:@"EMInternalPreferences.m" lineNumber:347 description:{@"%s can only be called from unit tests", "+[EMInternalPreferences _testingOverrideDictionary]"}];
   }
 
   if (_testingOverrideDictionary_onceToken != -1)
@@ -514,10 +514,10 @@ void __51__EMInternalPreferences__testingOverrideDictionary__block_invoke()
   _testingOverrideDictionary_testingOverrideDictionary = v0;
 }
 
-+ (void)clearPreferenceForTesting:(unint64_t)a3
++ (void)clearPreferenceForTesting:(unint64_t)testing
 {
   v5 = +[EMInternalPreferences _testingOverrideDictionary];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:testing];
   [v5 setObject:0 forKeyedSubscript:v4];
 }
 

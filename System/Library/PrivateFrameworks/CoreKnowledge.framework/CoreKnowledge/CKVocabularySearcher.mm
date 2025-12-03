@@ -1,32 +1,32 @@
 @interface CKVocabularySearcher
 + (id)makeSearcher;
-+ (id)makeSearcherForUserId:(id)a3;
++ (id)makeSearcherForUserId:(id)id;
 + (void)initialize;
 - (CKVocabularySearcher)init;
-- (CKVocabularySearcher)initWithUserId:(id)a3 spanMatcher:(id)a4 prewarm:(BOOL)a5;
-- (id)_convertMatches:(id)a3;
-- (id)_convertResults:(id)a3;
-- (id)_convertTypes:(id)a3;
-- (id)_queryFromTokenChain:(id)a3;
+- (CKVocabularySearcher)initWithUserId:(id)id spanMatcher:(id)matcher prewarm:(BOOL)prewarm;
+- (id)_convertMatches:(id)matches;
+- (id)_convertResults:(id)results;
+- (id)_convertTypes:(id)types;
+- (id)_queryFromTokenChain:(id)chain;
 - (id)_searcher;
-- (id)matchSpansOfString:(id)a3;
-- (id)matchSpansOfUtterance:(id)a3;
-- (id)searchCustomVocabulary:(id)a3 appIds:(id)a4 vocabularyTypes:(id)a5;
-- (id)searchCustomVocabularyWithWildcardPatterns:(id)a3 appIds:(id)a4 vocabularyTypes:(id)a5;
+- (id)matchSpansOfString:(id)string;
+- (id)matchSpansOfUtterance:(id)utterance;
+- (id)searchCustomVocabulary:(id)vocabulary appIds:(id)ids vocabularyTypes:(id)types;
+- (id)searchCustomVocabularyWithWildcardPatterns:(id)patterns appIds:(id)ids vocabularyTypes:(id)types;
 @end
 
 @implementation CKVocabularySearcher
 
-- (id)_convertMatches:(id)a3
+- (id)_convertMatches:(id)matches
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  matchesCopy = matches;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(matchesCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = matchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -57,15 +57,15 @@
   return v4;
 }
 
-- (id)_queryFromTokenChain:(id)a3
+- (id)_queryFromTokenChain:(id)chain
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  chainCopy = chain;
+  if ([chainCopy isMemberOfClass:objc_opt_class()])
   {
-    v24 = v3;
-    v4 = [v3 tokens];
-    v5 = [v4 count];
+    v24 = chainCopy;
+    tokens = [chainCopy tokens];
+    v5 = [tokens count];
 
     if (v5)
     {
@@ -88,9 +88,9 @@
       v7 = v6;
       _Block_object_dispose(&v32, 8);
       v8 = [v6 alloc];
-      v9 = [v24 locale];
-      v10 = [v24 normalizedString];
-      v26 = [v8 initWithLocale:v9 originalText:v10];
+      locale = [v24 locale];
+      normalizedString = [v24 normalizedString];
+      v26 = [v8 initWithLocale:locale originalText:normalizedString];
 
       v29 = 0u;
       v30 = 0u;
@@ -111,14 +111,14 @@
             }
 
             v14 = *(*(&v27 + 1) + 8 * i);
-            v15 = [v14 value];
-            v16 = [v14 cleanValue];
-            v17 = [v14 normalizedValues];
-            v18 = [v14 beginIndex];
-            v19 = [v14 endIndex];
-            v20 = [v14 isSignificant];
+            value = [v14 value];
+            cleanValue = [v14 cleanValue];
+            normalizedValues = [v14 normalizedValues];
+            beginIndex = [v14 beginIndex];
+            endIndex = [v14 endIndex];
+            isSignificant = [v14 isSignificant];
             LOBYTE(v23) = [v14 isWhitespace];
-            [v26 addTokenWithValue:v15 cleanValue:v16 normalizedValues:v17 beginIndex:v18 endIndex:v19 isSignificant:v20 isWhitespace:v23];
+            [v26 addTokenWithValue:value cleanValue:cleanValue normalizedValues:normalizedValues beginIndex:beginIndex endIndex:endIndex isSignificant:isSignificant isWhitespace:v23];
           }
 
           v11 = [obj countByEnumeratingWithState:&v27 objects:v36 count:16];
@@ -127,35 +127,35 @@
         while (v11);
       }
 
-      v21 = [v26 build];
+      build = [v26 build];
     }
 
     else
     {
-      v21 = 0;
+      build = 0;
     }
 
-    v3 = v24;
+    chainCopy = v24;
   }
 
   else
   {
-    v21 = 0;
+    build = 0;
   }
 
-  return v21;
+  return build;
 }
 
-- (id)_convertResults:(id)a3
+- (id)_convertResults:(id)results
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  resultsCopy = results;
+  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = resultsCopy;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
@@ -172,27 +172,27 @@
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 vocabularyType];
-        if (v10 == 1)
+        vocabularyType = [v9 vocabularyType];
+        if (vocabularyType == 1)
         {
           v11 = 1;
         }
 
         else
         {
-          v11 = 2 * (v10 == 2);
+          v11 = 2 * (vocabularyType == 2);
         }
 
         v12 = [CKVCustomTerm alloc];
         v6 = (v6 + 1);
         v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", v6];
-        v14 = [v9 vocabularyString];
-        v15 = [v9 vocabularyIdentifier];
-        v16 = [(CKVCustomTerm *)v12 initWithItemId:v13 vocabularyType:v11 term:v14 vocabularyId:v15];
+        vocabularyString = [v9 vocabularyString];
+        vocabularyIdentifier = [v9 vocabularyIdentifier];
+        v16 = [(CKVCustomTerm *)v12 initWithItemId:v13 vocabularyType:v11 term:vocabularyString vocabularyId:vocabularyIdentifier];
 
         v17 = [CKVocabularySearchResult alloc];
-        v18 = [v9 originAppId];
-        v19 = [(CKVocabularySearchResult *)v17 initWithVocabularyItem:v16 originAppId:v18];
+        originAppId = [v9 originAppId];
+        v19 = [(CKVocabularySearchResult *)v17 initWithVocabularyItem:v16 originAppId:originAppId];
 
         if (v19)
         {
@@ -209,18 +209,18 @@
   return v22;
 }
 
-- (id)_convertTypes:(id)a3
+- (id)_convertTypes:(id)types
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  typesCopy = types;
+  if (typesCopy)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v3;
+    v5 = typesCopy;
     v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v6)
     {
@@ -236,10 +236,10 @@ LABEL_4:
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
-        v11 = [v10 integerValue];
-        if (CKVCustomTypeIsValid(v11))
+        integerValue = [v10 integerValue];
+        if (CKVCustomTypeIsValid(integerValue))
         {
-          v12 = v11;
+          v12 = integerValue;
         }
 
         else
@@ -331,10 +331,10 @@ LABEL_22:
   return v5;
 }
 
-- (id)matchSpansOfString:(id)a3
+- (id)matchSpansOfString:(id)string
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -358,7 +358,7 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  if (![v4 length])
+  if (![stringCopy length])
   {
     v24 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
@@ -399,7 +399,7 @@ LABEL_12:
     v10 = v9;
     _Block_object_dispose(&v30, 8);
     v11 = [[v9 alloc] initWithLocale:v7];
-    v12 = [v11 queryFromText:v4];
+    v12 = [v11 queryFromText:stringCopy];
     v14 = self->_userId;
     v13 = self->_spanMatcher;
     v28 = v8;
@@ -421,7 +421,7 @@ LABEL_12:
         *&buf[12] = 2112;
         *&buf[14] = v16;
         *&buf[22] = 2112;
-        v35 = v4;
+        v35 = stringCopy;
         _os_log_error_impl(&dword_1C8683000, v26, OS_LOG_TYPE_ERROR, "%s Failed match spans due to error: %@ input: %@", buf, 0x20u);
       }
 
@@ -451,11 +451,11 @@ LABEL_21:
   return v17;
 }
 
-- (id)matchSpansOfUtterance:(id)a3
+- (id)matchSpansOfUtterance:(id)utterance
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKVocabularySearcher *)self _queryFromTokenChain:v4];
+  utteranceCopy = utterance;
+  v5 = [(CKVocabularySearcher *)self _queryFromTokenChain:utteranceCopy];
   if (v5)
   {
     userId = self->_userId;
@@ -478,7 +478,7 @@ LABEL_21:
         v17 = 2112;
         v18 = v9;
         v19 = 2112;
-        v20 = v4;
+        v20 = utteranceCopy;
         _os_log_error_impl(&dword_1C8683000, v12, OS_LOG_TYPE_ERROR, "%s Failed match spans due to error: %@ input: %@", buf, 0x20u);
       }
 
@@ -494,7 +494,7 @@ LABEL_21:
       *buf = 136315394;
       v16 = "[CKVocabularySearcher matchSpansOfUtterance:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = utteranceCopy;
       _os_log_error_impl(&dword_1C8683000, v11, OS_LOG_TYPE_ERROR, "%s Received invalid utteranceTokens input: %@", buf, 0x16u);
     }
 
@@ -504,16 +504,16 @@ LABEL_21:
   return v10;
 }
 
-- (id)searchCustomVocabularyWithWildcardPatterns:(id)a3 appIds:(id)a4 vocabularyTypes:(id)a5
+- (id)searchCustomVocabularyWithWildcardPatterns:(id)patterns appIds:(id)ids vocabularyTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CKVocabularySearcher *)self _convertTypes:a5];
+  patternsCopy = patterns;
+  idsCopy = ids;
+  v10 = [(CKVocabularySearcher *)self _convertTypes:types];
   v11 = v10;
-  if (!a5 || v10)
+  if (!types || v10)
   {
-    v13 = [(CKVocabularySearcher *)self _searcher];
-    v14 = [v13 searchAppCustomVocabularyFTSWithWildcardPatterns:v8 appIds:v9 types:v11];
+    _searcher = [(CKVocabularySearcher *)self _searcher];
+    v14 = [_searcher searchAppCustomVocabularyFTSWithWildcardPatterns:patternsCopy appIds:idsCopy types:v11];
 
     v12 = [(CKVocabularySearcher *)self _convertResults:v14];
   }
@@ -526,16 +526,16 @@ LABEL_21:
   return v12;
 }
 
-- (id)searchCustomVocabulary:(id)a3 appIds:(id)a4 vocabularyTypes:(id)a5
+- (id)searchCustomVocabulary:(id)vocabulary appIds:(id)ids vocabularyTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CKVocabularySearcher *)self _convertTypes:a5];
+  vocabularyCopy = vocabulary;
+  idsCopy = ids;
+  v10 = [(CKVocabularySearcher *)self _convertTypes:types];
   v11 = v10;
-  if (!a5 || v10)
+  if (!types || v10)
   {
-    v13 = [(CKVocabularySearcher *)self _searcher];
-    v14 = [v13 searchAppCustomVocabularyFTS:v8 appIds:v9 types:v11];
+    _searcher = [(CKVocabularySearcher *)self _searcher];
+    v14 = [_searcher searchAppCustomVocabularyFTS:vocabularyCopy appIds:idsCopy types:v11];
 
     v12 = [(CKVocabularySearcher *)self _convertResults:v14];
   }
@@ -554,22 +554,22 @@ LABEL_21:
   objc_exception_throw(v2);
 }
 
-- (CKVocabularySearcher)initWithUserId:(id)a3 spanMatcher:(id)a4 prewarm:(BOOL)a5
+- (CKVocabularySearcher)initWithUserId:(id)id spanMatcher:(id)matcher prewarm:(BOOL)prewarm
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  prewarmCopy = prewarm;
+  idCopy = id;
+  matcherCopy = matcher;
   v14.receiver = self;
   v14.super_class = CKVocabularySearcher;
   v11 = [(CKVocabularySearcher *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_userId, a3);
-    objc_storeStrong(&v12->_spanMatcher, a4);
-    if (v5)
+    objc_storeStrong(&v11->_userId, id);
+    objc_storeStrong(&v12->_spanMatcher, matcher);
+    if (prewarmCopy)
     {
-      [(SEMSpanMatcher *)v12->_spanMatcher prewarmIndexWithUserId:v9];
+      [(SEMSpanMatcher *)v12->_spanMatcher prewarmIndexWithUserId:idCopy];
     }
   }
 
@@ -584,12 +584,12 @@ LABEL_21:
   }
 }
 
-+ (id)makeSearcherForUserId:(id)a3
++ (id)makeSearcherForUserId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [getSEMSpanMatcherClass() indexMatcher];
-  v6 = [v4 initWithUserId:v3 spanMatcher:v5 prewarm:1];
+  indexMatcher = [getSEMSpanMatcherClass() indexMatcher];
+  v6 = [v4 initWithUserId:idCopy spanMatcher:indexMatcher prewarm:1];
 
   return v6;
 }
@@ -597,8 +597,8 @@ LABEL_21:
 + (id)makeSearcher
 {
   v2 = objc_alloc(objc_opt_class());
-  v3 = [getSEMSpanMatcherClass() indexMatcher];
-  v4 = [v2 initWithUserId:0 spanMatcher:v3 prewarm:0];
+  indexMatcher = [getSEMSpanMatcherClass() indexMatcher];
+  v4 = [v2 initWithUserId:0 spanMatcher:indexMatcher prewarm:0];
 
   return v4;
 }

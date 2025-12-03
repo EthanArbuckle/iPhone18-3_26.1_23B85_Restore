@@ -2,8 +2,8 @@
 + (BOOL)useZKWFTE;
 + (int64_t)viewCount;
 + (void)incrementViewCount;
-+ (void)updateViewCountToCount:(int64_t)a3;
-- (SPUISearchFirstTimeViewController)initWithDomains:(id)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6;
++ (void)updateViewCountToCount:(int64_t)count;
+- (SPUISearchFirstTimeViewController)initWithDomains:(id)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title;
 - (double)idealContentHeight;
 - (void)updateViewCount;
 @end
@@ -16,11 +16,11 @@
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.spotlightui"];
   if ([v2 integerForKey:@"SPUISearchFirstTimeLastOSVersionUsed"] <= 15)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = v3;
-    if (v3)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v4 = processInfo;
+    if (processInfo)
     {
-      [v3 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
       v5 = v12;
     }
 
@@ -60,30 +60,30 @@
   return v6;
 }
 
-- (SPUISearchFirstTimeViewController)initWithDomains:(id)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6
+- (SPUISearchFirstTimeViewController)initWithDomains:(id)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title
 {
   v16.receiver = self;
   v16.super_class = SPUISearchFirstTimeViewController;
-  v6 = [(SearchUIFirstTimeExperienceViewController *)&v16 initWithDomains:a3 explanationText:a4 learnMoreText:a5 continueButtonTitle:a6];
+  v6 = [(SearchUIFirstTimeExperienceViewController *)&v16 initWithDomains:domains explanationText:text learnMoreText:moreText continueButtonTitle:title];
   if (v6)
   {
     v7 = objc_opt_new();
     [v7 setAlwaysBounceVertical:1];
     [v7 setDelaysContentTouches:0];
     [v7 setKeyboardDismissMode:1];
-    v8 = [(SPUISearchFirstTimeViewController *)v6 view];
-    [v7 addSubview:v8];
+    view = [(SPUISearchFirstTimeViewController *)v6 view];
+    [v7 addSubview:view];
 
-    v9 = [(SPUISearchFirstTimeViewController *)v6 view];
-    [(SPUISearchFirstTimeViewController *)v6 setContentView:v9];
+    view2 = [(SPUISearchFirstTimeViewController *)v6 view];
+    [(SPUISearchFirstTimeViewController *)v6 setContentView:view2];
 
     v10 = MEMORY[0x277D4C828];
-    v11 = [(SPUISearchFirstTimeViewController *)v6 view];
-    [v10 constrainViewHeightContainer:v11];
+    view3 = [(SPUISearchFirstTimeViewController *)v6 view];
+    [v10 constrainViewHeightContainer:view3];
 
     v12 = MEMORY[0x277D4C828];
-    v13 = [(SPUISearchFirstTimeViewController *)v6 view];
-    v14 = [v12 alignView:v7 toView:v13 withAttribute:9];
+    view4 = [(SPUISearchFirstTimeViewController *)v6 view];
+    v14 = [v12 alignView:v7 toView:view4 withAttribute:9];
 
     [(SPUISearchFirstTimeViewController *)v6 setView:v7];
   }
@@ -101,31 +101,31 @@
 + (void)incrementViewCount
 {
   _hasBeenDisplayed = 1;
-  v3 = [a1 viewCount] + 1;
+  v3 = [self viewCount] + 1;
 
-  [a1 updateViewCountToCount:v3];
+  [self updateViewCountToCount:v3];
 }
 
 - (double)idealContentHeight
 {
-  v3 = [(SPUISearchFirstTimeViewController *)self contentView];
-  [v3 setNeedsLayout];
+  contentView = [(SPUISearchFirstTimeViewController *)self contentView];
+  [contentView setNeedsLayout];
 
-  v4 = [(SPUISearchFirstTimeViewController *)self contentView];
-  [v4 layoutIfNeeded];
+  contentView2 = [(SPUISearchFirstTimeViewController *)self contentView];
+  [contentView2 layoutIfNeeded];
 
-  v5 = [(SPUISearchFirstTimeViewController *)self contentView];
-  [v5 frame];
+  contentView3 = [(SPUISearchFirstTimeViewController *)self contentView];
+  [contentView3 frame];
   v7 = v6;
 
   return v7;
 }
 
-+ (void)updateViewCountToCount:(int64_t)a3
++ (void)updateViewCountToCount:(int64_t)count
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.spotlightui"];
-  [v4 setInteger:a3 forKey:@"SPUISearchFirstTimeShowCount"];
+  [v4 setInteger:count forKey:@"SPUISearchFirstTimeShowCount"];
   v5 = SPLogForSPLogCategoryDefault();
   v6 = v5;
   if (*MEMORY[0x277D4BF48])
@@ -143,7 +143,7 @@
     v9 = 138412546;
     v10 = v4;
     v11 = 2048;
-    v12 = a3;
+    countCopy = count;
     _os_log_impl(&dword_26B837000, v6, v7, "[FTE] updating view count in %@ to: %ld", &v9, 0x16u);
   }
 

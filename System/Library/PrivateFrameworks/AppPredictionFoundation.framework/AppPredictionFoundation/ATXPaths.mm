@@ -1,28 +1,28 @@
 @interface ATXPaths
 + (id)appPredictionBackupDirectory;
 + (id)appPredictionCacheDirectory;
-+ (id)appPredictionDirectoryFile:(id)a3;
-+ (id)appPredictionDirectoryFile:(id)a3 forClientWithIdentifier:(id)a4;
-+ (id)appPredictionDirectoryForClientWithIdentifier:(id)a3;
++ (id)appPredictionDirectoryFile:(id)file;
++ (id)appPredictionDirectoryFile:(id)file forClientWithIdentifier:(id)identifier;
++ (id)appPredictionDirectoryForClientWithIdentifier:(id)identifier;
 + (id)biomeStreamsRootDirectory;
-+ (id)bookmarksPathFile:(id)a3;
++ (id)bookmarksPathFile:(id)file;
 + (id)clientModelCachesRootDirectory;
 + (id)contextualActionsModelDirectory;
-+ (id)contextualActionsModelFileWithFilename:(id)a3;
++ (id)contextualActionsModelFileWithFilename:(id)filename;
 + (id)feedbackRootDirectory;
 + (id)magicalMomentsPredictionTablesRootDirectory;
 + (id)metricsRootDirectory;
 + (id)modeCachesRootDirectory;
-+ (id)modificationDateOfFileAtPath:(id)a3;
++ (id)modificationDateOfFileAtPath:(id)path;
 + (id)onboardingStackResultCacheFilePath;
 + (id)scoreNormalizationModelDirectory;
-+ (id)scoreNormalizationModelFileWithFilename:(id)a3;
++ (id)scoreNormalizationModelFileWithFilename:(id)filename;
 + (id)trialFolderResourcePath;
 + (id)uiCachesRootDirectory;
 + (id)widgetPredictionModelDirectory;
-+ (id)widgetPredictionModelFileWithFilename:(id)a3;
-+ (void)_recursivelyCreateDirectoryWithErrorHandlingAtPath:(id)a3;
-+ (void)createDataVault:(id)a3;
++ (id)widgetPredictionModelFileWithFilename:(id)filename;
++ (void)_recursivelyCreateDirectoryWithErrorHandlingAtPath:(id)path;
++ (void)createDataVault:(id)vault;
 + (void)createDirectoriesIfNeeded;
 @end
 
@@ -63,7 +63,7 @@
 + (void)createDirectoriesIfNeeded
 {
   v16[12] = *MEMORY[0x277D85DE8];
-  v3 = [a1 _getDirectoryCreating:1 clientIdentifier:0];
+  v3 = [self _getDirectoryCreating:1 clientIdentifier:0];
   v16[0] = @"MagicalMoments";
   v16[1] = @"caches";
   v16[2] = @"ClientModelCaches";
@@ -97,7 +97,7 @@
         }
 
         v9 = [v3 stringByAppendingPathComponent:{*(*(&v11 + 1) + 8 * v8), v11}];
-        [a1 _recursivelyCreateDirectoryWithErrorHandlingAtPath:v9];
+        [self _recursivelyCreateDirectoryWithErrorHandlingAtPath:v9];
 
         ++v8;
       }
@@ -112,24 +112,24 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_recursivelyCreateDirectoryWithErrorHandlingAtPath:(id)a3
++ (void)_recursivelyCreateDirectoryWithErrorHandlingAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+  v5 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v10];
   v6 = v10;
 
   if ((v5 & 1) == 0)
   {
-    v7 = [v6 code];
+    code = [v6 code];
     v8 = __atxlog_handle_default();
     v9 = v8;
-    if (v7 == 640)
+    if (code == 640)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(ATXPaths *)v3 _recursivelyCreateDirectoryWithErrorHandlingAtPath:v9];
+        [(ATXPaths *)pathCopy _recursivelyCreateDirectoryWithErrorHandlingAtPath:v9];
       }
     }
 
@@ -140,13 +140,13 @@
   }
 }
 
-+ (id)appPredictionDirectoryForClientWithIdentifier:(id)a3
++ (id)appPredictionDirectoryForClientWithIdentifier:(id)identifier
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__ATXPaths_appPredictionDirectoryForClientWithIdentifier___block_invoke;
   v5[3] = &__block_descriptor_41_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   v6 = 0;
   if (appPredictionDirectoryForClientWithIdentifier__onceToken != -1)
   {
@@ -165,14 +165,14 @@ uint64_t __58__ATXPaths_appPredictionDirectoryForClientWithIdentifier___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)createDataVault:(id)a3
++ (void)createDataVault:(id)vault
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
+  vaultCopy = vault;
+  uTF8String = [vaultCopy UTF8String];
   v5 = rootless_check_datavault_flag();
   if (v5 == 1)
   {
-    if (chmod(v4, 0x1C0u))
+    if (chmod(uTF8String, 0x1C0u))
     {
       v6 = __atxlog_handle_default();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -235,20 +235,20 @@ LABEL_5:
 LABEL_11:
 }
 
-+ (id)appPredictionDirectoryFile:(id)a3
++ (id)appPredictionDirectoryFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[ATXPaths appPredictionDirectory];
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:fileCopy];
 
   return v5;
 }
 
-+ (id)appPredictionDirectoryFile:(id)a3 forClientWithIdentifier:(id)a4
++ (id)appPredictionDirectoryFile:(id)file forClientWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [ATXPaths appPredictionDirectoryForClientWithIdentifier:a4];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  fileCopy = file;
+  v6 = [ATXPaths appPredictionDirectoryForClientWithIdentifier:identifier];
+  v7 = [v6 stringByAppendingPathComponent:fileCopy];
 
   return v7;
 }
@@ -301,12 +301,12 @@ LABEL_11:
   return v3;
 }
 
-+ (id)bookmarksPathFile:(id)a3
++ (id)bookmarksPathFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[ATXPaths appPredictionDirectory];
   v5 = [v4 stringByAppendingPathComponent:@"Bookmarks"];
-  v6 = [v5 stringByAppendingPathComponent:v3];
+  v6 = [v5 stringByAppendingPathComponent:fileCopy];
 
   return v6;
 }
@@ -319,11 +319,11 @@ LABEL_11:
   return v3;
 }
 
-+ (id)contextualActionsModelFileWithFilename:(id)a3
++ (id)contextualActionsModelFileWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 contextualActionsModelDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  filenameCopy = filename;
+  contextualActionsModelDirectory = [self contextualActionsModelDirectory];
+  v6 = [contextualActionsModelDirectory stringByAppendingPathComponent:filenameCopy];
 
   return v6;
 }
@@ -336,11 +336,11 @@ LABEL_11:
   return v3;
 }
 
-+ (id)scoreNormalizationModelFileWithFilename:(id)a3
++ (id)scoreNormalizationModelFileWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 scoreNormalizationModelDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  filenameCopy = filename;
+  scoreNormalizationModelDirectory = [self scoreNormalizationModelDirectory];
+  v6 = [scoreNormalizationModelDirectory stringByAppendingPathComponent:filenameCopy];
 
   return v6;
 }
@@ -353,11 +353,11 @@ LABEL_11:
   return v3;
 }
 
-+ (id)widgetPredictionModelFileWithFilename:(id)a3
++ (id)widgetPredictionModelFileWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 widgetPredictionModelDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  filenameCopy = filename;
+  widgetPredictionModelDirectory = [self widgetPredictionModelDirectory];
+  v6 = [widgetPredictionModelDirectory stringByAppendingPathComponent:filenameCopy];
 
   return v6;
 }
@@ -370,12 +370,12 @@ LABEL_11:
   return v3;
 }
 
-+ (id)modificationDateOfFileAtPath:(id)a3
++ (id)modificationDateOfFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v10];
+  v5 = [defaultManager attributesOfItemAtPath:pathCopy error:&v10];
   v6 = v10;
 
   if (v6)

@@ -1,14 +1,14 @@
 @interface MPCPlaybackErrorController
 - (MPCPlaybackEngine)playbackEngine;
-- (MPCPlaybackErrorController)initWithPlaybackEngine:(id)a3 translator:(id)a4;
+- (MPCPlaybackErrorController)initWithPlaybackEngine:(id)engine translator:(id)translator;
 - (MPCPlaybackErrorControllerDelegate)delegate;
-- (int64_t)_resolutionForPlaybackError:(id)a3 item:(id)a4;
-- (void)_notifyObserversForError:(id)a3 item:(id)a4;
-- (void)_playbackFailedWithError:(id)a3 item:(id)a4 canResolve:(BOOL)a5 proposedResolution:(int64_t)a6 completion:(id)a7;
-- (void)reportCriticalError:(id)a3 forItem:(id)a4;
-- (void)resetWithReason:(id)a3;
-- (void)resolveError:(id)a3 forItem:(id)a4 completion:(id)a5;
-- (void)setItemsHavePlayed:(BOOL)a3;
+- (int64_t)_resolutionForPlaybackError:(id)error item:(id)item;
+- (void)_notifyObserversForError:(id)error item:(id)item;
+- (void)_playbackFailedWithError:(id)error item:(id)item canResolve:(BOOL)resolve proposedResolution:(int64_t)resolution completion:(id)completion;
+- (void)reportCriticalError:(id)error forItem:(id)item;
+- (void)resetWithReason:(id)reason;
+- (void)resolveError:(id)error forItem:(id)item completion:(id)completion;
+- (void)setItemsHavePlayed:(BOOL)played;
 @end
 
 @implementation MPCPlaybackErrorController
@@ -27,14 +27,14 @@
   return WeakRetained;
 }
 
-- (void)_notifyObserversForError:(id)a3 item:(id)a4
+- (void)_notifyObserversForError:(id)error item:(id)item
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCPlaybackErrorController *)self playbackEngine];
-  v9 = [v8 delegate];
-  v10 = [v6 msv_errorByUnwrappingDomain:@"MPCEnginePlayerError" code:16];
+  errorCopy = error;
+  itemCopy = item;
+  playbackEngine = [(MPCPlaybackErrorController *)self playbackEngine];
+  delegate = [playbackEngine delegate];
+  v10 = [errorCopy msv_errorByUnwrappingDomain:@"MPCEnginePlayerError" code:16];
   v11 = v10;
   if (v10)
   {
@@ -42,40 +42,40 @@
 
     if (v12)
     {
-      v13 = [MEMORY[0x1E69708A8] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
       v71 = v11;
-      if ([v13 preferredMusicLowBandwidthResolution] < 1)
+      if ([standardUserDefaults preferredMusicLowBandwidthResolution] < 1)
       {
         v15 = 0;
       }
 
       else
       {
-        v14 = [MEMORY[0x1E69704E0] sharedCloudController];
-        v15 = [v14 isCellularDataRestrictedForMusic] ^ 1;
+        mEMORY[0x1E69704E0] = [MEMORY[0x1E69704E0] sharedCloudController];
+        v15 = [mEMORY[0x1E69704E0] isCellularDataRestrictedForMusic] ^ 1;
       }
 
-      v16 = [MEMORY[0x1E69E4428] sharedMonitor];
-      v17 = [v16 networkType];
+      mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+      networkType = [mEMORY[0x1E69E4428] networkType];
 
       IsCellular = ICEnvironmentNetworkTypeIsCellular();
-      v19 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine2 = [(MPCPlaybackErrorController *)self playbackEngine];
       v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      v70 = v8;
+      v70 = playbackEngine;
       if ((v15 & 1) != 0 || !IsCellular)
       {
         if (v21)
         {
-          v25 = [v19 engineID];
+          engineID = [playbackEngine2 engineID];
           *buf = 138544130;
-          v76 = v25;
+          v76 = engineID;
           v77 = 2048;
-          v78 = self;
+          selfCopy9 = self;
           v79 = 2114;
-          v80 = v19;
+          v80 = playbackEngine2;
           v81 = 2114;
-          v82 = v6;
+          v82 = errorCopy;
           _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Transforming error to network unavailable instead of original: %{public}@", buf, 0x2Au);
         }
 
@@ -87,15 +87,15 @@
       {
         if (v21)
         {
-          v22 = [v19 engineID];
+          engineID2 = [playbackEngine2 engineID];
           *buf = 138544130;
-          v76 = v22;
+          v76 = engineID2;
           v77 = 2048;
-          v78 = self;
+          selfCopy9 = self;
           v79 = 2114;
-          v80 = v19;
+          v80 = playbackEngine2;
           v81 = 2114;
-          v82 = v6;
+          v82 = errorCopy;
           _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Transforming error to cellular restricted error instead of original: %{public}@", buf, 0x2Au);
         }
 
@@ -104,99 +104,99 @@
       }
 
       v73[0] = @"ICEnvironmentNetworkType";
-      v26 = [MEMORY[0x1E696AD98] numberWithInteger:v17];
+      v26 = [MEMORY[0x1E696AD98] numberWithInteger:networkType];
       v73[1] = @"isMusicCellularStreamingAllowed";
       v74[0] = v26;
       v27 = [MEMORY[0x1E696AD98] numberWithBool:v15];
       v74[1] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
-      v29 = [v6 msv_errorByWrappingWithDomain:@"MPCError" code:v24 userInfo:v28 debugDescription:{@"playback request failed with reason: %@", v23}];
+      v29 = [errorCopy msv_errorByWrappingWithDomain:@"MPCError" code:v24 userInfo:v28 debugDescription:{@"playback request failed with reason: %@", v23}];
 
-      v6 = v29;
-      v8 = v70;
+      errorCopy = v29;
+      playbackEngine = v70;
       v11 = v71;
     }
   }
 
-  if (v7)
+  if (itemCopy)
   {
-    v30 = [(MPCPlaybackErrorController *)self delegate];
-    v31 = [v30 isUserSelectedItem:v7];
+    delegate2 = [(MPCPlaybackErrorController *)self delegate];
+    v31 = [delegate2 isUserSelectedItem:itemCopy];
 
-    v32 = objc_opt_respondsToSelector();
-    if ((v32 & 1) != 0 && (v31 & 1) == 0)
+    mpc_isSubscriptionRequiredError = objc_opt_respondsToSelector();
+    if ((mpc_isSubscriptionRequiredError & 1) != 0 && (v31 & 1) == 0)
     {
-      if ([v6 mpc_isQueueLoadingFailure])
+      if ([errorCopy mpc_isQueueLoadingFailure])
       {
         goto LABEL_21;
       }
 
-      v32 = [v6 mpc_isSubscriptionRequiredError];
+      mpc_isSubscriptionRequiredError = [errorCopy mpc_isSubscriptionRequiredError];
     }
 
-    if (v32)
+    if (mpc_isSubscriptionRequiredError)
     {
 LABEL_21:
       if (v31)
       {
-        if (([v6 mpc_isFileDoesNotExistError] & 1) != 0 || objc_msgSend(v6, "mpc_isNoPermissionsToReadFileError"))
+        if (([errorCopy mpc_isFileDoesNotExistError] & 1) != 0 || objc_msgSend(errorCopy, "mpc_isNoPermissionsToReadFileError"))
         {
           v72 = v11;
-          v33 = [v6 userInfo];
-          v34 = v7;
-          v35 = [v33 mutableCopy];
+          userInfo = [errorCopy userInfo];
+          v34 = itemCopy;
+          v35 = [userInfo mutableCopy];
 
-          v36 = [v8 mediaRemotePublisher];
+          mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
           v68 = v34;
-          v37 = [v36 getQOSDialogForError:v6 withItem:v34];
+          v37 = [mediaRemotePublisher getQOSDialogForError:errorCopy withItem:v34];
 
           v67 = v37;
           [v35 addEntriesFromDictionary:v37];
           v38 = MEMORY[0x1E696ABC0];
-          v39 = [v6 domain];
-          v40 = [v6 code];
-          v41 = [v6 underlyingErrors];
-          v42 = [v6 description];
+          domain = [errorCopy domain];
+          code = [errorCopy code];
+          underlyingErrors = [errorCopy underlyingErrors];
+          v42 = [errorCopy description];
           v69 = v35;
-          v43 = [v38 msv_errorWithDomain:v39 code:v40 underlyingErrors:v41 userInfo:v35 debugDescription:{@"%@", v42}];
+          v43 = [v38 msv_errorWithDomain:domain code:code underlyingErrors:underlyingErrors userInfo:v35 debugDescription:{@"%@", v42}];
 
           v44 = v43;
-          v45 = [(MPCPlaybackErrorController *)self playbackEngine];
+          playbackEngine3 = [(MPCPlaybackErrorController *)self playbackEngine];
           v46 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
-            v47 = [v45 engineID];
+            engineID3 = [playbackEngine3 engineID];
             *buf = 138544130;
-            v76 = v47;
+            v76 = engineID3;
             v77 = 2048;
-            v78 = self;
+            selfCopy9 = self;
             v79 = 2114;
-            v80 = v45;
+            v80 = playbackEngine3;
             v81 = 2114;
             v82 = v44;
             _os_log_impl(&dword_1C5C61000, v46, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [File does not exist] error=%{public}@", buf, 0x2Au);
           }
 
           v11 = v72;
-          v7 = v68;
-          v48 = v69;
+          itemCopy = v68;
+          playbackEngine4 = v69;
           v49 = v67;
           goto LABEL_51;
         }
 
-        v48 = [(MPCPlaybackErrorController *)self playbackEngine];
+        playbackEngine4 = [(MPCPlaybackErrorController *)self playbackEngine];
         v49 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v65 = [v48 engineID];
+          engineID4 = [playbackEngine4 engineID];
           *buf = 138544130;
-          v76 = v65;
+          v76 = engineID4;
           v77 = 2048;
-          v78 = self;
+          selfCopy9 = self;
           v79 = 2114;
-          v80 = v48;
+          v80 = playbackEngine4;
           v81 = 2114;
-          v82 = v6;
+          v82 = errorCopy;
           v66 = "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Specified first item failure] error=%{public}@";
           goto LABEL_49;
         }
@@ -204,52 +204,52 @@ LABEL_21:
 
       else
       {
-        if (![v6 mpc_isQueueLoadingFailure])
+        if (![errorCopy mpc_isQueueLoadingFailure])
         {
-          if (![v6 mpc_isSubscriptionRequiredError])
+          if (![errorCopy mpc_isSubscriptionRequiredError])
           {
 LABEL_52:
-            v53 = v9;
-            v54 = v8;
-            v55 = v7;
+            v53 = delegate;
+            v54 = playbackEngine;
+            v55 = itemCopy;
 LABEL_53:
-            [v53 engine:v54 didFailToPlayFirstItem:v55 withError:v6];
+            [v53 engine:v54 didFailToPlayFirstItem:v55 withError:errorCopy];
             goto LABEL_54;
           }
 
-          v48 = [(MPCPlaybackErrorController *)self playbackEngine];
+          playbackEngine4 = [(MPCPlaybackErrorController *)self playbackEngine];
           v49 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_50;
           }
 
-          v65 = [v48 engineID];
+          engineID4 = [playbackEngine4 engineID];
           *buf = 138544130;
-          v76 = v65;
+          v76 = engineID4;
           v77 = 2048;
-          v78 = self;
+          selfCopy9 = self;
           v79 = 2114;
-          v80 = v48;
+          v80 = playbackEngine4;
           v81 = 2114;
-          v82 = v6;
+          v82 = errorCopy;
           v66 = "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Subscription required] error=%{public}@";
           goto LABEL_49;
         }
 
-        v48 = [(MPCPlaybackErrorController *)self playbackEngine];
+        playbackEngine4 = [(MPCPlaybackErrorController *)self playbackEngine];
         v49 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v65 = [v48 engineID];
+          engineID4 = [playbackEngine4 engineID];
           *buf = 138544130;
-          v76 = v65;
+          v76 = engineID4;
           v77 = 2048;
-          v78 = self;
+          selfCopy9 = self;
           v79 = 2114;
-          v80 = v48;
+          v80 = playbackEngine4;
           v81 = 2114;
-          v82 = v6;
+          v82 = errorCopy;
           v66 = "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Entire queue loading failure] error=%{public}@";
 LABEL_49:
           _os_log_impl(&dword_1C5C61000, v49, OS_LOG_TYPE_ERROR, v66, buf, 0x2Au);
@@ -257,85 +257,85 @@ LABEL_49:
       }
 
 LABEL_50:
-      v44 = v6;
+      v44 = errorCopy;
 LABEL_51:
 
-      v6 = v44;
+      errorCopy = v44;
       goto LABEL_52;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v62 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine5 = [(MPCPlaybackErrorController *)self playbackEngine];
       v63 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
-        v64 = [v62 engineID];
+        engineID5 = [playbackEngine5 engineID];
         *buf = 138544130;
-        v76 = v64;
+        v76 = engineID5;
         v77 = 2048;
-        v78 = self;
+        selfCopy9 = self;
         v79 = 2114;
-        v80 = v62;
+        v80 = playbackEngine5;
         v81 = 2114;
-        v82 = v6;
+        v82 = errorCopy;
         _os_log_impl(&dword_1C5C61000, v63, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Queue item failure] error=%{public}@", buf, 0x2Au);
       }
 
-      v59 = v9;
-      v60 = v8;
-      v61 = v7;
+      v59 = delegate;
+      v60 = playbackEngine;
+      v61 = itemCopy;
 LABEL_40:
-      [v59 engine:v60 didFailToPlayItem:v61 withError:v6];
+      [v59 engine:v60 didFailToPlayItem:v61 withError:errorCopy];
     }
   }
 
   else
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 mpc_isQueueLoadingFailure])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [errorCopy mpc_isQueueLoadingFailure])
     {
-      v50 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine6 = [(MPCPlaybackErrorController *)self playbackEngine];
       v51 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
-        v52 = [v50 engineID];
+        engineID6 = [playbackEngine6 engineID];
         *buf = 138544130;
-        v76 = v52;
+        v76 = engineID6;
         v77 = 2048;
-        v78 = self;
+        selfCopy9 = self;
         v79 = 2114;
-        v80 = v50;
+        v80 = playbackEngine6;
         v81 = 2114;
-        v82 = v6;
+        v82 = errorCopy;
         _os_log_impl(&dword_1C5C61000, v51, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Failed to queue any items] error=%{public}@", buf, 0x2Au);
       }
 
-      v53 = v9;
-      v54 = v8;
+      v53 = delegate;
+      v54 = playbackEngine;
       v55 = 0;
       goto LABEL_53;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v56 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine7 = [(MPCPlaybackErrorController *)self playbackEngine];
       v57 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
-        v58 = [v56 engineID];
+        engineID7 = [playbackEngine7 engineID];
         *buf = 138544130;
-        v76 = v58;
+        v76 = engineID7;
         v77 = 2048;
-        v78 = self;
+        selfCopy9 = self;
         v79 = 2114;
-        v80 = v56;
+        v80 = playbackEngine7;
         v81 = 2114;
-        v82 = v6;
+        v82 = errorCopy;
         _os_log_impl(&dword_1C5C61000, v57, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Notifying delegate [Queue item failure - nil item] error=%{public}@", buf, 0x2Au);
       }
 
-      v59 = v9;
-      v60 = v8;
+      v59 = delegate;
+      v60 = playbackEngine;
       v61 = 0;
       goto LABEL_40;
     }
@@ -344,33 +344,33 @@ LABEL_40:
 LABEL_54:
 }
 
-- (int64_t)_resolutionForPlaybackError:(id)a3 item:(id)a4
+- (int64_t)_resolutionForPlaybackError:(id)error item:(id)item
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCPlaybackErrorController *)self playbackEngine];
-  if (!v8)
+  errorCopy = error;
+  itemCopy = item;
+  playbackEngine = [(MPCPlaybackErrorController *)self playbackEngine];
+  if (!playbackEngine)
   {
     v12 = 1;
     goto LABEL_25;
   }
 
-  if (!v7)
+  if (!itemCopy)
   {
-    v13 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine2 = [(MPCPlaybackErrorController *)self playbackEngine];
     v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 engineID];
+      engineID = [playbackEngine2 engineID];
       v26 = 138544130;
-      v27 = v15;
+      selfCopy4 = engineID;
       v28 = 2048;
-      v29 = self;
+      selfCopy5 = self;
       v30 = 2114;
-      v31 = v13;
+      v31 = playbackEngine2;
       v32 = 2114;
-      v33 = v6;
+      v33 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - nil item received [Queue failure] error=%{public}@", &v26, 0x2Au);
     }
 
@@ -380,43 +380,43 @@ LABEL_54:
 
   if ([(MPCPlaybackErrorController *)self itemsHavePlayed])
   {
-    v9 = [(MPCPlaybackErrorController *)self playbackEngine];
-    v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    playbackEngine3 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(playbackEngine4, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 engineID];
+      engineID2 = [playbackEngine3 engineID];
       v26 = 138543874;
-      v27 = v11;
+      selfCopy4 = engineID2;
       v28 = 2048;
-      v29 = self;
+      selfCopy5 = self;
       v30 = 2114;
-      v31 = v9;
-      _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Playback has succeeded for at least one item [Ignoring queue failure]", &v26, 0x20u);
+      v31 = playbackEngine3;
+      _os_log_impl(&dword_1C5C61000, playbackEngine4, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Playback has succeeded for at least one item [Ignoring queue failure]", &v26, 0x20u);
     }
   }
 
   else
   {
-    v16 = [(MPCPlaybackErrorController *)v8 queueController];
-    v17 = [v7 contentItemID];
-    v9 = [v16 contentItemIDWithoutRepeatIteration:v17];
+    queueController = [(MPCPlaybackErrorController *)playbackEngine queueController];
+    contentItemID = [itemCopy contentItemID];
+    playbackEngine3 = [queueController contentItemIDWithoutRepeatIteration:contentItemID];
 
-    v18 = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
-    LODWORD(v17) = [v18 containsObject:v9];
+    failedItemsIdentifiers = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
+    LODWORD(contentItemID) = [failedItemsIdentifiers containsObject:playbackEngine3];
 
-    if (v17)
+    if (contentItemID)
     {
-      v10 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine4 = [(MPCPlaybackErrorController *)self playbackEngine];
       v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v10 engineID];
+        engineID3 = [playbackEngine4 engineID];
         v26 = 138543874;
-        v27 = v20;
+        selfCopy4 = engineID3;
         v28 = 2048;
-        v29 = self;
+        selfCopy5 = self;
         v30 = 2114;
-        v31 = v10;
+        v31 = playbackEngine4;
         _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Ending playback [Entire queue failure]", &v26, 0x20u);
       }
 
@@ -428,37 +428,37 @@ LABEL_54:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 134218242;
-      v27 = self;
+      selfCopy4 = self;
       v28 = 2114;
-      v29 = v8;
+      selfCopy5 = playbackEngine;
       _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEFAULT, "MPCErrorControllerImplementation %p <%{public}@> - Playback has not yet succeeded [Adding to queue failure set]", &v26, 0x16u);
     }
 
-    v10 = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
-    [v10 addObject:v9];
+    playbackEngine4 = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
+    [playbackEngine4 addObject:playbackEngine3];
   }
 
   v12 = 0;
 LABEL_18:
 
-  v22 = [(MPCPlaybackErrorController *)self delegate];
-  if ([v22 isUserSelectedItem:v7])
+  delegate = [(MPCPlaybackErrorController *)self delegate];
+  if ([delegate isUserSelectedItem:itemCopy])
   {
 
 LABEL_21:
-    v13 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine2 = [(MPCPlaybackErrorController *)self playbackEngine];
     v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v13 engineID];
+      engineID4 = [playbackEngine2 engineID];
       v26 = 138544130;
-      v27 = v24;
+      selfCopy4 = engineID4;
       v28 = 2048;
-      v29 = self;
+      selfCopy5 = self;
       v30 = 2114;
-      v31 = v13;
+      v31 = playbackEngine2;
       v32 = 2114;
-      v33 = v6;
+      v33 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Stopping playback for a first item or unrecoverable asset loading error. error=%{public}@", &v26, 0x2Au);
     }
 
@@ -468,9 +468,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v23 = [v6 mpc_isQueueLoadingFailure];
+  mpc_isQueueLoadingFailure = [errorCopy mpc_isQueueLoadingFailure];
 
-  if (v23)
+  if (mpc_isQueueLoadingFailure)
   {
     goto LABEL_21;
   }
@@ -480,68 +480,68 @@ LABEL_25:
   return v12;
 }
 
-- (void)_playbackFailedWithError:(id)a3 item:(id)a4 canResolve:(BOOL)a5 proposedResolution:(int64_t)a6 completion:(id)a7
+- (void)_playbackFailedWithError:(id)error item:(id)item canResolve:(BOOL)resolve proposedResolution:(int64_t)resolution completion:(id)completion
 {
-  v9 = a5;
+  resolveCopy = resolve;
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v13 && v9 && ([v13 hasPerformedErrorResolution] & 1) == 0)
+  errorCopy = error;
+  itemCopy = item;
+  completionCopy = completion;
+  if (itemCopy && resolveCopy && ([itemCopy hasPerformedErrorResolution] & 1) == 0)
   {
-    v24 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine = [(MPCPlaybackErrorController *)self playbackEngine];
     v25 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v24 engineID];
+      engineID = [playbackEngine engineID];
       *buf = 138544386;
-      v34 = v26;
+      v34 = engineID;
       v35 = 2048;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2114;
-      v38 = v24;
+      v38 = playbackEngine;
       v39 = 2114;
-      v40 = v13;
+      v40 = itemCopy;
       v41 = 2114;
-      v42 = v12;
+      v42 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Attempting to recover from error [using item resolution] - item:%{public}@ - error:%{public}@", buf, 0x34u);
     }
 
-    [(MPCPlaybackErrorController *)self setLastItemUsedForErrorResolution:v13];
+    [(MPCPlaybackErrorController *)self setLastItemUsedForErrorResolution:itemCopy];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __101__MPCPlaybackErrorController__playbackFailedWithError_item_canResolve_proposedResolution_completion___block_invoke;
     v27[3] = &unk_1E82350D0;
-    v32 = a6;
-    v28 = v13;
-    v29 = self;
-    v30 = v12;
-    v31 = v14;
+    resolutionCopy = resolution;
+    v28 = itemCopy;
+    selfCopy2 = self;
+    v30 = errorCopy;
+    v31 = completionCopy;
     [v28 resolvePlaybackError:v30 withCompletion:v27];
   }
 
   else
   {
-    v15 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine2 = [(MPCPlaybackErrorController *)self playbackEngine];
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 engineID];
+      engineID2 = [playbackEngine2 engineID];
       *buf = 138544386;
-      v34 = v17;
+      v34 = engineID2;
       v35 = 2048;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2114;
-      v38 = v15;
+      v38 = playbackEngine2;
       v39 = 2114;
-      v40 = v13;
+      v40 = itemCopy;
       v41 = 2114;
-      v42 = v12;
+      v42 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Unable resolve error [determining final resolution] - item:%{public}@ - error:%{public}@", buf, 0x34u);
     }
 
-    v18 = [(MPCPlaybackErrorController *)self _resolutionForPlaybackError:v12 item:v13];
-    if (a6 == 1)
+    v18 = [(MPCPlaybackErrorController *)self _resolutionForPlaybackError:errorCopy item:itemCopy];
+    if (resolution == 1)
     {
       v19 = 1;
     }
@@ -551,33 +551,33 @@ LABEL_25:
       v19 = v18;
     }
 
-    v20 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine3 = [(MPCPlaybackErrorController *)self playbackEngine];
     v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v20 engineID];
+      engineID3 = [playbackEngine3 engineID];
       v23 = [MFDescription forErrorResolution:v19];
       *buf = 138544642;
-      v34 = v22;
+      v34 = engineID3;
       v35 = 2048;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2114;
-      v38 = v20;
+      v38 = playbackEngine3;
       v39 = 2114;
       v40 = v23;
       v41 = 2114;
-      v42 = v13;
+      v42 = itemCopy;
       v43 = 2114;
-      v44 = v12;
+      v44 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Final error resolution reached [%{public}@] - item:%{public}@ - error:%{public}@", buf, 0x3Eu);
     }
 
     if ((_os_feature_enabled_impl() & 1) == 0 && v19 == 1)
     {
-      [(MPCPlaybackErrorController *)self _notifyObserversForError:v12 item:v13];
+      [(MPCPlaybackErrorController *)self _notifyObserversForError:errorCopy item:itemCopy];
     }
 
-    (*(v14 + 2))(v14, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
   }
 }
 
@@ -660,47 +660,47 @@ LABEL_4:
 LABEL_10:
 }
 
-- (void)reportCriticalError:(id)a3 forItem:(id)a4
+- (void)reportCriticalError:(id)error forItem:(id)item
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  itemCopy = item;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v8 = [(MPCPlaybackErrorController *)self playbackEngine];
+    playbackEngine = [(MPCPlaybackErrorController *)self playbackEngine];
     v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v8 engineID];
+      engineID = [playbackEngine engineID];
       v21 = 138544386;
-      v22 = v10;
+      v22 = engineID;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
-      v26 = v8;
+      v26 = playbackEngine;
       v27 = 2114;
-      v28 = v7;
+      v28 = itemCopy;
       v29 = 2114;
-      v30 = v6;
+      v30 = errorCopy;
       _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Processing fatal playback error - item:%{public}@ - error:%{public}@", &v21, 0x34u);
     }
 
-    v11 = [(MPCPlaybackErrorController *)self translator];
-    v12 = [v11 MPAVItemForMFPlayerItem:v7];
+    translator = [(MPCPlaybackErrorController *)self translator];
+    v12 = [translator MPAVItemForMFPlayerItem:itemCopy];
 
-    v13 = v6;
-    v14 = [v13 domain];
-    v15 = [v14 isEqualToString:@"MPCEnginePlayerError"];
+    v13 = errorCopy;
+    domain = [v13 domain];
+    v15 = [domain isEqualToString:@"MPCEnginePlayerError"];
 
     if (!v15)
     {
       goto LABEL_10;
     }
 
-    v16 = [v13 code];
-    if ((v16 - 5) >= 3)
+    code = [v13 code];
+    if ((code - 5) >= 3)
     {
-      if (v16 != 9)
+      if (code != 9)
       {
 LABEL_10:
         [(MPCPlaybackErrorController *)self _notifyObserversForError:v13 item:v12];
@@ -729,46 +729,46 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)resolveError:(id)a3 forItem:(id)a4 completion:(id)a5
+- (void)resolveError:(id)error forItem:(id)item completion:(id)completion
 {
   v109 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MPCPlaybackErrorController *)self playbackEngine];
-  v13 = [(MPCPlaybackErrorController *)self playbackEngine];
+  errorCopy = error;
+  itemCopy = item;
+  completionCopy = completion;
+  playbackEngine = [(MPCPlaybackErrorController *)self playbackEngine];
+  playbackEngine2 = [(MPCPlaybackErrorController *)self playbackEngine];
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = [v13 engineID];
+    engineID = [playbackEngine2 engineID];
     *buf = 138544386;
-    v100 = v15;
+    v100 = engineID;
     v101 = 2048;
-    v102 = self;
+    selfCopy12 = self;
     v103 = 2114;
-    v104 = v13;
+    v104 = playbackEngine2;
     v105 = 2114;
-    v106 = v10;
+    v106 = itemCopy;
     v107 = 2114;
-    *v108 = v9;
+    *v108 = errorCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Starting error resolution - item:%{public}@ - error:%{public}@", buf, 0x34u);
   }
 
   if ([(MPCPlaybackErrorController *)self contiguousFailSilentlyResolutionCount]< 250)
   {
-    v19 = [(MPCPlaybackErrorController *)self translator];
-    v20 = [v19 MPAVItemForMFPlayerItem:v10];
+    translator = [(MPCPlaybackErrorController *)self translator];
+    v20 = [translator MPAVItemForMFPlayerItem:itemCopy];
 
-    v21 = [v9 userInfo];
+    userInfo = [errorCopy userInfo];
     v22 = *MEMORY[0x1E696AA08];
-    v85 = [v21 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v85 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v23 = [v20 playbackError];
-    v87 = v23;
-    if (v23)
+    playbackError = [v20 playbackError];
+    v87 = playbackError;
+    if (playbackError)
     {
-      v24 = [v23 userInfo];
-      v84 = [v24 objectForKeyedSubscript:v22];
+      userInfo2 = [playbackError userInfo];
+      v84 = [userInfo2 objectForKeyedSubscript:v22];
     }
 
     else
@@ -781,56 +781,56 @@ LABEL_11:
     v95 = 0x3032000000;
     v96 = __Block_byref_object_copy__15746;
     v97 = __Block_byref_object_dispose__15747;
-    v25 = v9;
+    v25 = errorCopy;
     v98 = v25;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__MPCPlaybackErrorController_resolveError_forItem_completion___block_invoke;
     aBlock[3] = &unk_1E82350A8;
-    v91 = v11;
+    v91 = completionCopy;
     aBlock[4] = self;
     v83 = v20;
     v89 = v83;
     v92 = &v93;
-    v26 = v12;
+    v26 = playbackEngine;
     v90 = v26;
     v86 = _Block_copy(aBlock);
     if (([v25 mpc_isAirplayDeviceBusyError] & 1) != 0 || (objc_msgSend(v85, "mpc_isAirplayDeviceBusyError") & 1) != 0 || objc_msgSend(v84, "mpc_isAirplayDeviceBusyError"))
     {
-      v27 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine3 = [(MPCPlaybackErrorController *)self playbackEngine];
       v28 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v27 engineID];
+        engineID2 = [playbackEngine3 engineID];
         v30 = [MFDescription forErrorResolution:1];
         *buf = 138544130;
-        v100 = v29;
+        v100 = engineID2;
         v101 = 2048;
-        v102 = self;
+        selfCopy12 = self;
         v103 = 2114;
-        v104 = v27;
+        v104 = playbackEngine3;
         v105 = 2114;
         v106 = v30;
         _os_log_impl(&dword_1C5C61000, v28, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Unrecoverable AirPlay failure [airPlayVideoEnded] - Actual resolution:%{public}@", buf, 0x2Au);
       }
 
       v86[2](v86, 1);
-      v31 = [(MPCPlaybackErrorController *)self delegate];
-      [v31 pickBestDeviceRoute];
+      delegate = [(MPCPlaybackErrorController *)self delegate];
+      [delegate pickBestDeviceRoute];
 
       goto LABEL_16;
     }
 
-    v32 = [v26 player];
-    if ([v32 state] == 1)
+    player = [v26 player];
+    if ([player state] == 1)
     {
       v80 = 0;
     }
 
     else
     {
-      v33 = [v26 player];
-      v80 = [v33 state] != 6;
+      player2 = [v26 player];
+      v80 = [player2 state] != 6;
     }
 
     if (([v25 mpc_isRentalContentRequiresDownloadError] & 1) != 0 || (objc_msgSend(v85, "mpc_isRentalContentRequiresDownloadError") & 1) != 0 || objc_msgSend(v84, "mpc_isRentalContentRequiresDownloadError"))
@@ -839,20 +839,20 @@ LABEL_11:
       v35 = v94[5];
       v94[5] = v34;
 
-      v36 = [(MPCPlaybackErrorController *)self playbackEngine];
+      playbackEngine4 = [(MPCPlaybackErrorController *)self playbackEngine];
       v37 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      v81 = v36;
+      playbackEngine8 = playbackEngine4;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v38 = [v36 engineID];
+        engineID3 = [playbackEngine4 engineID];
         v39 = [MFDescription forErrorResolution:1];
         v40 = v94[5];
         *buf = 138544642;
-        v100 = v38;
+        v100 = engineID3;
         v101 = 2048;
-        v102 = self;
+        selfCopy12 = self;
         v103 = 2114;
-        v104 = v36;
+        v104 = playbackEngine4;
         v105 = 2114;
         v106 = v39;
         v107 = 1024;
@@ -878,20 +878,20 @@ LABEL_11:
         }
 
         objc_storeStrong(v94 + 5, v43);
-        v44 = [(MPCPlaybackErrorController *)self playbackEngine];
+        playbackEngine5 = [(MPCPlaybackErrorController *)self playbackEngine];
         v37 = _MPCLogCategoryPlayback();
-        v81 = v44;
+        playbackEngine8 = playbackEngine5;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v44 engineID];
+          engineID4 = [playbackEngine5 engineID];
           v46 = [MFDescription forErrorResolution:0];
           v47 = v94[5];
           *buf = 138544642;
-          v100 = v45;
+          v100 = engineID4;
           v101 = 2048;
-          v102 = self;
+          selfCopy12 = self;
           v103 = 2114;
-          v104 = v44;
+          v104 = playbackEngine5;
           v105 = 2114;
           v106 = v46;
           v107 = 1024;
@@ -906,22 +906,22 @@ LABEL_11:
         goto LABEL_27;
       }
 
-      if ([v25 mpc_isResourceUnavailableError] && objc_msgSend(v10, "isAssetLoaded") && (objc_msgSend(v10, "avPlayerItem"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "errorLog"), v49 = objc_claimAutoreleasedReturnValue(), v50 = v49 == 0, v49, v48, !v50))
+      if ([v25 mpc_isResourceUnavailableError] && objc_msgSend(itemCopy, "isAssetLoaded") && (objc_msgSend(itemCopy, "avPlayerItem"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "errorLog"), v49 = objc_claimAutoreleasedReturnValue(), v50 = v49 == 0, v49, v48, !v50))
       {
-        objc_storeStrong(v94 + 5, a3);
-        v51 = [(MPCPlaybackErrorController *)self playbackEngine];
+        objc_storeStrong(v94 + 5, error);
+        playbackEngine6 = [(MPCPlaybackErrorController *)self playbackEngine];
         v37 = _MPCLogCategoryPlayback();
-        v81 = v51;
+        playbackEngine8 = playbackEngine6;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          v52 = [v51 engineID];
+          engineID5 = [playbackEngine6 engineID];
           v53 = [MFDescription forErrorResolution:1];
           *buf = 138544130;
-          v100 = v52;
+          v100 = engineID5;
           v101 = 2048;
-          v102 = self;
+          selfCopy12 = self;
           v103 = 2114;
-          v104 = v51;
+          v104 = playbackEngine6;
           v105 = 2114;
           v106 = v53;
           _os_log_impl(&dword_1C5C61000, v37, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Unrecoverable playback failure [resource unavailable] - Actual resolution:%{public}@", buf, 0x2Au);
@@ -934,21 +934,21 @@ LABEL_11:
         {
           if ([v25 mpc_isKeyServerNoOfflineSlotError])
           {
-            objc_storeStrong(v94 + 5, a3);
-            v60 = [(MPCPlaybackErrorController *)self playbackEngine];
+            objc_storeStrong(v94 + 5, error);
+            playbackEngine7 = [(MPCPlaybackErrorController *)self playbackEngine];
             v37 = _MPCLogCategoryPlayback();
-            v81 = v60;
+            playbackEngine8 = playbackEngine7;
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
-              v61 = [v60 engineID];
+              engineID6 = [playbackEngine7 engineID];
               v62 = [MFDescription forErrorResolution:1];
               v63 = v94[5];
               *buf = 138544642;
-              v100 = v61;
+              v100 = engineID6;
               v101 = 2048;
-              v102 = self;
+              selfCopy12 = self;
               v103 = 2114;
-              v104 = v60;
+              v104 = playbackEngine7;
               v105 = 2114;
               v106 = v62;
               v107 = 1024;
@@ -961,20 +961,20 @@ LABEL_11:
 
           else if ([v25 mpc_isStreamingSlotError])
           {
-            objc_storeStrong(v94 + 5, a3);
-            v81 = [(MPCPlaybackErrorController *)self playbackEngine];
+            objc_storeStrong(v94 + 5, error);
+            playbackEngine8 = [(MPCPlaybackErrorController *)self playbackEngine];
             v37 = _MPCLogCategoryPlayback();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
-              v64 = [v81 engineID];
+              engineID7 = [playbackEngine8 engineID];
               v65 = [MFDescription forErrorResolution:1];
               v66 = v94[5];
               *buf = 138544642;
-              v100 = v64;
+              v100 = engineID7;
               v101 = 2048;
-              v102 = self;
+              selfCopy12 = self;
               v103 = 2114;
-              v104 = v81;
+              v104 = playbackEngine8;
               v105 = 2114;
               v106 = v65;
               v107 = 1024;
@@ -987,20 +987,20 @@ LABEL_11:
 
           else
           {
-            v67 = [v25 mpc_isUnrecoverableAssetLoadingError];
-            objc_storeStrong(v94 + 5, a3);
-            if (!v67)
+            mpc_isUnrecoverableAssetLoadingError = [v25 mpc_isUnrecoverableAssetLoadingError];
+            objc_storeStrong(v94 + 5, error);
+            if (!mpc_isUnrecoverableAssetLoadingError)
             {
-              v71 = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
-              if (v71)
+              lastItemUsedForErrorResolution = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
+              if (lastItemUsedForErrorResolution)
               {
-                v82 = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
-                if (v82)
+                lastItemUsedForErrorResolution2 = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
+                if (lastItemUsedForErrorResolution2)
                 {
-                  v72 = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
-                  v73 = [v72 contentItemID];
-                  v74 = [v83 contentItemID];
-                  v79 = [v73 isEqualToString:v74];
+                  lastItemUsedForErrorResolution3 = [(MPCPlaybackErrorController *)self lastItemUsedForErrorResolution];
+                  contentItemID = [lastItemUsedForErrorResolution3 contentItemID];
+                  contentItemID2 = [v83 contentItemID];
+                  v79 = [contentItemID isEqualToString:contentItemID2];
 
                   v41 = v79 ^ 1u;
                 }
@@ -1016,19 +1016,19 @@ LABEL_11:
                 v41 = 1;
               }
 
-              v81 = [(MPCPlaybackErrorController *)self playbackEngine];
+              playbackEngine8 = [(MPCPlaybackErrorController *)self playbackEngine];
               v75 = _MPCLogCategoryPlayback();
               if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
               {
-                v76 = [v81 engineID];
+                engineID8 = [playbackEngine8 engineID];
                 v77 = [MFDescription forErrorResolution:0];
                 v78 = v94[5];
                 *buf = 138544642;
-                v100 = v76;
+                v100 = engineID8;
                 v101 = 2048;
-                v102 = self;
+                selfCopy12 = self;
                 v103 = 2114;
-                v104 = v81;
+                v104 = playbackEngine8;
                 v105 = 2114;
                 v106 = v77;
                 v107 = 1024;
@@ -1043,19 +1043,19 @@ LABEL_11:
               goto LABEL_27;
             }
 
-            v81 = [(MPCPlaybackErrorController *)self playbackEngine];
+            playbackEngine8 = [(MPCPlaybackErrorController *)self playbackEngine];
             v37 = _MPCLogCategoryPlayback();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
-              v68 = [v81 engineID];
+              engineID9 = [playbackEngine8 engineID];
               v69 = [MFDescription forErrorResolution:1];
               v70 = v94[5];
               *buf = 138544642;
-              v100 = v68;
+              v100 = engineID9;
               v101 = 2048;
-              v102 = self;
+              selfCopy12 = self;
               v103 = 2114;
-              v104 = v81;
+              v104 = playbackEngine8;
               v105 = 2114;
               v106 = v69;
               v107 = 1024;
@@ -1069,20 +1069,20 @@ LABEL_11:
 
         else
         {
-          objc_storeStrong(v94 + 5, a3);
-          v81 = [(MPCPlaybackErrorController *)self playbackEngine];
+          objc_storeStrong(v94 + 5, error);
+          playbackEngine8 = [(MPCPlaybackErrorController *)self playbackEngine];
           v37 = _MPCLogCategoryPlayback();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
-            v54 = [v81 engineID];
+            engineID10 = [playbackEngine8 engineID];
             v55 = [MFDescription forErrorResolution:1];
             v56 = v94[5];
             *buf = 138544642;
-            v100 = v54;
+            v100 = engineID10;
             v101 = 2048;
-            v102 = self;
+            selfCopy12 = self;
             v103 = 2114;
-            v104 = v81;
+            v104 = playbackEngine8;
             v105 = 2114;
             v106 = v55;
             v107 = 1024;
@@ -1096,20 +1096,20 @@ LABEL_11:
 
       else
       {
-        objc_storeStrong(v94 + 5, a3);
-        v57 = [(MPCPlaybackErrorController *)self playbackEngine];
+        objc_storeStrong(v94 + 5, error);
+        playbackEngine9 = [(MPCPlaybackErrorController *)self playbackEngine];
         v37 = _MPCLogCategoryPlayback();
-        v81 = v57;
+        playbackEngine8 = playbackEngine9;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          v58 = [v57 engineID];
+          engineID11 = [playbackEngine9 engineID];
           v59 = [MFDescription forErrorResolution:1];
           *buf = 138544130;
-          v100 = v58;
+          v100 = engineID11;
           v101 = 2048;
-          v102 = self;
+          selfCopy12 = self;
           v103 = 2114;
-          v104 = v57;
+          v104 = playbackEngine9;
           v105 = 2114;
           v106 = v59;
           _os_log_impl(&dword_1C5C61000, v37, OS_LOG_TYPE_ERROR, "[%{public}@]-❗️MPCErrorControllerImplementation %p <%{public}@> - Unrecoverable playback failure [lease error while paused or interrupted] - Actual resolution:%{public}@", buf, 0x2Au);
@@ -1129,25 +1129,25 @@ LABEL_16:
   }
 
   [(MPCPlaybackErrorController *)self setContiguousFailSilentlyResolutionCount:0];
-  v16 = [(MPCPlaybackErrorController *)self playbackEngine];
+  playbackEngine10 = [(MPCPlaybackErrorController *)self playbackEngine];
   v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v16 engineID];
+    engineID12 = [playbackEngine10 engineID];
     *buf = 138544386;
-    v100 = v18;
+    v100 = engineID12;
     v101 = 2048;
-    v102 = self;
+    selfCopy12 = self;
     v103 = 2114;
-    v104 = v16;
+    v104 = playbackEngine10;
     v105 = 2114;
-    v106 = v10;
+    v106 = itemCopy;
     v107 = 2114;
-    *v108 = v9;
+    *v108 = errorCopy;
     _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCErrorControllerImplementation %p <%{public}@> - Contiguous playback failures exceeded the limit - item:%{public}@ - error:%{public}@", buf, 0x34u);
   }
 
-  (*(v11 + 2))(v11, 1);
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_17:
 }
 
@@ -1213,37 +1213,37 @@ void __62__MPCPlaybackErrorController_resolveError_forItem_completion___block_in
   [v16 emitEventType:@"error-resolution" payload:v15];
 }
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
   [(MPCPlaybackErrorController *)self setItemsHavePlayed:0];
   [(MPCPlaybackErrorController *)self setLastItemUsedForErrorResolution:0];
-  v4 = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
-  [v4 removeAllObjects];
+  failedItemsIdentifiers = [(MPCPlaybackErrorController *)self failedItemsIdentifiers];
+  [failedItemsIdentifiers removeAllObjects];
 
   [(MPCPlaybackErrorController *)self setContiguousFailSilentlyResolutionCount:0];
 }
 
-- (void)setItemsHavePlayed:(BOOL)a3
+- (void)setItemsHavePlayed:(BOOL)played
 {
-  self->_itemsHavePlayed = a3;
-  if (a3)
+  self->_itemsHavePlayed = played;
+  if (played)
   {
     [(MPCPlaybackErrorController *)self setContiguousFailSilentlyResolutionCount:0];
   }
 }
 
-- (MPCPlaybackErrorController)initWithPlaybackEngine:(id)a3 translator:(id)a4
+- (MPCPlaybackErrorController)initWithPlaybackEngine:(id)engine translator:(id)translator
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  translatorCopy = translator;
   v13.receiver = self;
   v13.super_class = MPCPlaybackErrorController;
   v8 = [(MPCPlaybackErrorController *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_playbackEngine, v6);
-    objc_storeStrong(&v9->_translator, a4);
+    objc_storeWeak(&v8->_playbackEngine, engineCopy);
+    objc_storeStrong(&v9->_translator, translator);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     failedItemsIdentifiers = v9->_failedItemsIdentifiers;
     v9->_failedItemsIdentifiers = v10;

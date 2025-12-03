@@ -1,11 +1,11 @@
 @interface CKObjectDescription
-- (CKObjectDescription)initWithObject:(id)a3 redact:(BOOL)a4 avoidShortDescription:(BOOL)a5;
-- (id)_arrayDescription:(id)a3 shouldRedact:(BOOL)a4;
-- (id)_dictionaryDescription:(id)a3 shouldRedact:(BOOL)a4;
+- (CKObjectDescription)initWithObject:(id)object redact:(BOOL)redact avoidShortDescription:(BOOL)description;
+- (id)_arrayDescription:(id)description shouldRedact:(BOOL)redact;
+- (id)_dictionaryDescription:(id)description shouldRedact:(BOOL)redact;
 - (id)description;
-- (void)addBooleanProperty:(id)a3 value:(BOOL)a4 defaultValue:(int64_t)a5;
-- (void)addFlagsForKey:(id)a3 flagsAndConditions:(id)a4;
-- (void)addPropertyIfExists:(id)a3 value:(id)a4 shouldRedact:(BOOL)a5;
+- (void)addBooleanProperty:(id)property value:(BOOL)value defaultValue:(int64_t)defaultValue;
+- (void)addFlagsForKey:(id)key flagsAndConditions:(id)conditions;
+- (void)addPropertyIfExists:(id)exists value:(id)value shouldRedact:(BOOL)redact;
 @end
 
 @implementation CKObjectDescription
@@ -61,9 +61,9 @@
   return v10;
 }
 
-- (CKObjectDescription)initWithObject:(id)a3 redact:(BOOL)a4 avoidShortDescription:(BOOL)a5
+- (CKObjectDescription)initWithObject:(id)object redact:(BOOL)redact avoidShortDescription:(BOOL)description
 {
-  v8 = a3;
+  objectCopy = object;
   v28.receiver = self;
   v28.super_class = CKObjectDescription;
   v9 = [(CKObjectDescription *)&v28 init];
@@ -71,17 +71,17 @@
   if (v9)
   {
     v9->_printAsDictionary = 0;
-    v9->_redact = a4;
-    v9->_avoidShortDescription = a5;
-    if (v8)
+    v9->_redact = redact;
+    v9->_avoidShortDescription = description;
+    if (objectCopy)
     {
-      ShouldPrintPointer = objc_msgSend_CKDescriptionShouldPrintPointer(v8, v10, v11);
+      ShouldPrintPointer = objc_msgSend_CKDescriptionShouldPrintPointer(objectCopy, v10, v11);
       v14 = MEMORY[0x1E696AEC0];
-      v17 = objc_msgSend_CKDescriptionClassName(v8, v15, v16);
+      v17 = objc_msgSend_CKDescriptionClassName(objectCopy, v15, v16);
       v19 = v17;
       if (ShouldPrintPointer)
       {
-        objc_msgSend_stringWithFormat_(v14, v18, @"<%@: %p;", v17, v8);
+        objc_msgSend_stringWithFormat_(v14, v18, @"<%@: %p;", v17, objectCopy);
       }
 
       else
@@ -100,29 +100,29 @@
     v24 = objc_opt_class();
     if (objc_msgSend_conformsToProtocol_(v24, v25, &unk_1EFA8A7B0))
     {
-      objc_msgSend_CKDescribePropertiesUsing_(v8, v26, v12);
+      objc_msgSend_CKDescribePropertiesUsing_(objectCopy, v26, v12);
     }
   }
 
   return v12;
 }
 
-- (void)addPropertyIfExists:(id)a3 value:(id)a4 shouldRedact:(BOOL)a5
+- (void)addPropertyIfExists:(id)exists value:(id)value shouldRedact:(BOOL)redact
 {
-  if (a4)
+  if (value)
   {
-    MEMORY[0x1EEE66B58](self, sel__addProperty_value_shouldRedact_, a3);
+    MEMORY[0x1EEE66B58](self, sel__addProperty_value_shouldRedact_, exists);
   }
 }
 
-- (void)addBooleanProperty:(id)a3 value:(BOOL)a4 defaultValue:(int64_t)a5
+- (void)addBooleanProperty:(id)property value:(BOOL)value defaultValue:(int64_t)defaultValue
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v6)
+  valueCopy = value;
+  propertyCopy = property;
+  v9 = propertyCopy;
+  if (valueCopy)
   {
-    if (a5 == 1)
+    if (defaultValue == 1)
     {
       goto LABEL_7;
     }
@@ -132,7 +132,7 @@
 
   else
   {
-    if (!a5)
+    if (!defaultValue)
     {
       goto LABEL_7;
     }
@@ -140,30 +140,30 @@
     v10 = @"NO";
   }
 
-  v11 = v8;
-  v8 = objc_msgSend_addObject_forKey_(self->_orderedDictionary, v8, v10, v8);
+  v11 = propertyCopy;
+  propertyCopy = objc_msgSend_addObject_forKey_(self->_orderedDictionary, propertyCopy, v10, propertyCopy);
   v9 = v11;
 LABEL_7:
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](propertyCopy, v9);
 }
 
-- (void)addFlagsForKey:(id)a3 flagsAndConditions:(id)a4
+- (void)addFlagsForKey:(id)key flagsAndConditions:(id)conditions
 {
-  v15 = a3;
-  v7 = objc_msgSend_CKCompactMap_(a4, v6, &unk_1EFA306D0);
+  keyCopy = key;
+  v7 = objc_msgSend_CKCompactMap_(conditions, v6, &unk_1EFA306D0);
   if (objc_msgSend_count(v7, v8, v9))
   {
     v11 = objc_msgSend_sortedArrayUsingSelector_(v7, v10, sel_compare_);
     v13 = objc_msgSend_componentsJoinedByString_(v11, v12, @"|");
 
-    objc_msgSend_addObject_forKey_(self->_orderedDictionary, v14, v13, v15);
+    objc_msgSend_addObject_forKey_(self->_orderedDictionary, v14, v13, keyCopy);
   }
 }
 
-- (id)_arrayDescription:(id)a3 shouldRedact:(BOOL)a4
+- (id)_arrayDescription:(id)description shouldRedact:(BOOL)redact
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (objc_msgSend_avoidShortDescription(self, v7, v8))
   {
     v10 = objc_msgSend_orderedDictionaryWithCapacity_(CKOrderedDictionary, v9, 2);
@@ -178,22 +178,22 @@ LABEL_7:
     v14[2] = sub_1886AD274;
     v14[3] = &unk_1E70C1C60;
     v14[4] = self;
-    v15 = a4;
-    v10 = objc_msgSend_CKMap_(v6, v9, v14);
+    redactCopy = redact;
+    v10 = objc_msgSend_CKMap_(descriptionCopy, v9, v14);
   }
 
   return v10;
 }
 
-- (id)_dictionaryDescription:(id)a3 shouldRedact:(BOOL)a4
+- (id)_dictionaryDescription:(id)description shouldRedact:(BOOL)redact
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1886AD314;
   v6[3] = &unk_1E70C1C88;
   v6[4] = self;
-  v7 = a4;
-  v4 = objc_msgSend_CKMapValues_(a3, a2, v6);
+  redactCopy = redact;
+  v4 = objc_msgSend_CKMapValues_(description, a2, v6);
 
   return v4;
 }

@@ -1,23 +1,23 @@
 @interface IMBlastdoor
-+ (BOOL)_commandReadyForBlastdoor:(int64_t)a3;
++ (BOOL)_commandReadyForBlastdoor:(int64_t)blastdoor;
 + (BOOL)_messageBlastdoorMetricsEnabled;
-+ (BOOL)supportsFeature:(id)a3;
-+ (id)blastdoorInterfaceForSenderContext:(id)a3;
++ (BOOL)supportsFeature:(id)feature;
++ (id)blastdoorInterfaceForSenderContext:(id)context;
 + (id)logger;
-+ (id)sendLiteData:(id)a3 senderContext:(id)a4 error:(id *)a5;
-+ (id)sendLiteRelayData:(id)a3 senderContext:(id)a4 error:(id *)a5;
-+ (id)sendRelayGroupMutationData:(id)a3 error:(id *)a4;
-+ (id)sendRelayReachabilityRequest:(id)a3 error:(id *)a4;
-+ (id)sendRelayReachabilityResponse:(id)a3 error:(id *)a4;
-+ (id)sendSatelliteSMSDictionary:(id)a3 senderContext:(id)a4 error:(id *)a5;
-+ (int64_t)_convertErrorToBlastdoorError:(id)a3;
-+ (void)_askToTapToRadarForGUID:(id)a3 messageTypeString:(id)a4 sender:(id)a5 errorString:(id)a6 payloadAttachmentURL:(id)a7;
-+ (void)sendBlastDoorError:(id)a3 guid:(id)a4 messageTypeString:(id)a5 senderURI:(id)a6 senderToken:(id)a7 messageContext:(id)a8 payloadAttachmentURL:(id)a9;
-+ (void)sendClearNoticeData:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5;
-+ (void)sendCollaborationNoticeActionDictionary:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5;
-+ (void)sendCollaborationNoticeData:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5;
-+ (void)sendDictionary:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5;
-+ (void)sendSMSDictionary:(id)a3 withCompletionBlock:(id)a4;
++ (id)sendLiteData:(id)data senderContext:(id)context error:(id *)error;
++ (id)sendLiteRelayData:(id)data senderContext:(id)context error:(id *)error;
++ (id)sendRelayGroupMutationData:(id)data error:(id *)error;
++ (id)sendRelayReachabilityRequest:(id)request error:(id *)error;
++ (id)sendRelayReachabilityResponse:(id)response error:(id *)error;
++ (id)sendSatelliteSMSDictionary:(id)dictionary senderContext:(id)context error:(id *)error;
++ (int64_t)_convertErrorToBlastdoorError:(id)error;
++ (void)_askToTapToRadarForGUID:(id)d messageTypeString:(id)string sender:(id)sender errorString:(id)errorString payloadAttachmentURL:(id)l;
++ (void)sendBlastDoorError:(id)error guid:(id)guid messageTypeString:(id)string senderURI:(id)i senderToken:(id)token messageContext:(id)context payloadAttachmentURL:(id)l;
++ (void)sendClearNoticeData:(id)data senderContext:(id)context withCompletionBlock:(id)block;
++ (void)sendCollaborationNoticeActionDictionary:(id)dictionary senderContext:(id)context withCompletionBlock:(id)block;
++ (void)sendCollaborationNoticeData:(id)data senderContext:(id)context withCompletionBlock:(id)block;
++ (void)sendDictionary:(id)dictionary senderContext:(id)context withCompletionBlock:(id)block;
++ (void)sendSMSDictionary:(id)dictionary withCompletionBlock:(id)block;
 @end
 
 @implementation IMBlastdoor
@@ -34,11 +34,11 @@
   return v3;
 }
 
-+ (BOOL)supportsFeature:(id)a3
++ (BOOL)supportsFeature:(id)feature
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D28680] supportsFeature:v3];
+  featureCopy = feature;
+  v4 = [MEMORY[0x277D28680] supportsFeature:featureCopy];
   v5 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,7 +49,7 @@
     }
 
     v9 = 138412546;
-    v10 = v3;
+    v10 = featureCopy;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_DEFAULT, "Installed BlastDoor supports feature %@ (%@)", &v9, 0x16u);
@@ -59,10 +59,10 @@
   return v4;
 }
 
-+ (BOOL)_commandReadyForBlastdoor:(int64_t)a3
++ (BOOL)_commandReadyForBlastdoor:(int64_t)blastdoor
 {
   result = 0;
-  switch(a3)
+  switch(blastdoor)
   {
     case 100:
     case 101:
@@ -108,20 +108,20 @@
     case 137:
       return result;
     default:
-      result = a3 == 170;
+      result = blastdoor == 170;
       break;
   }
 
   return result;
 }
 
-+ (id)blastdoorInterfaceForSenderContext:(id)a3
++ (id)blastdoorInterfaceForSenderContext:(id)context
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v5 = [v4 isUnknownSenderBlastDoorEnabled];
+  contextCopy = context;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isUnknownSenderBlastDoorEnabled = [mEMORY[0x277D1A9B8] isUnknownSenderBlastDoorEnabled];
 
-  if (v5)
+  if (isUnknownSenderBlastDoorEnabled)
   {
     if (qword_281422570 != -1)
     {
@@ -133,9 +133,9 @@
       sub_22B7D3B50();
     }
 
-    v6 = [v3 isTrustedSender];
+    isTrustedSender = [contextCopy isTrustedSender];
     v7 = &qword_281422578;
-    if (!v6)
+    if (!isTrustedSender)
     {
       v7 = &qword_281422588;
     }
@@ -163,18 +163,18 @@
   v13 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v3 = [v2 objectForKey:@"disable-bd-metrics"];
-  LOBYTE(v4) = [v3 BOOLValue];
+  LOBYTE(bOOLValue) = [v3 BOOLValue];
 
   v5 = IMGetCachedDomainValueForKey();
   v6 = v5;
   if (v5)
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
     v7 = +[IMBlastdoor logger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v8 = @"YES";
       }
@@ -186,18 +186,18 @@
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-+ (int64_t)_convertErrorToBlastdoorError:(id)a3
++ (int64_t)_convertErrorToBlastdoorError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCA050]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CCA050]];
 
   if (v5)
   {
-    v6 = [v3 code] == 4864;
+    v6 = [errorCopy code] == 4864;
     v7 = 13001;
     v8 = 13003;
 LABEL_3:
@@ -214,13 +214,13 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v11 = [v3 domain];
-  v12 = [v11 isEqualToString:*MEMORY[0x277D18DF8]];
+  domain2 = [errorCopy domain];
+  v12 = [domain2 isEqualToString:*MEMORY[0x277D18DF8]];
 
   if (!v12)
   {
-    v14 = [v3 domain];
-    v15 = [v14 isEqualToString:*MEMORY[0x277D19CE0]];
+    domain3 = [errorCopy domain];
+    v15 = [domain3 isEqualToString:*MEMORY[0x277D19CE0]];
 
     if (v15)
     {
@@ -228,20 +228,20 @@ LABEL_3:
       goto LABEL_6;
     }
 
-    v16 = [v3 domain];
-    if ([v16 isEqualToString:@"BlastDoor.Explosion"])
+    domain4 = [errorCopy domain];
+    if ([domain4 isEqualToString:@"BlastDoor.Explosion"])
     {
     }
 
     else
     {
-      v17 = [v3 domain];
-      v18 = [v17 isEqualToString:@"com.apple.BlastDoor"];
+      domain5 = [errorCopy domain];
+      v18 = [domain5 isEqualToString:@"com.apple.BlastDoor"];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v3 domain];
-        v20 = [v19 isEqualToString:*MEMORY[0x277D18DF0]];
+        domain6 = [errorCopy domain];
+        v20 = [domain6 isEqualToString:*MEMORY[0x277D18DF0]];
 
         if (v20)
         {
@@ -249,8 +249,8 @@ LABEL_3:
           goto LABEL_6;
         }
 
-        v21 = [v3 userInfo];
-        v22 = [v21 objectForKeyedSubscript:@"errorMetric"];
+        userInfo = [errorCopy userInfo];
+        v22 = [userInfo objectForKeyedSubscript:@"errorMetric"];
 
         v6 = v22 == 0;
         v7 = 13250;
@@ -263,15 +263,15 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v13 = [v3 code];
-  if ((v13 - 1) >= 0x17)
+  code = [errorCopy code];
+  if ((code - 1) >= 0x17)
   {
     v9 = 13250;
   }
 
   else
   {
-    v9 = qword_22B7F8638[v13 - 1];
+    v9 = qword_22B7F8638[code - 1];
   }
 
 LABEL_6:
@@ -279,16 +279,16 @@ LABEL_6:
   return v9;
 }
 
-+ (void)_askToTapToRadarForGUID:(id)a3 messageTypeString:(id)a4 sender:(id)a5 errorString:(id)a6 payloadAttachmentURL:(id)a7
++ (void)_askToTapToRadarForGUID:(id)d messageTypeString:(id)string sender:(id)sender errorString:(id)errorString payloadAttachmentURL:(id)l
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x277D19268] sharedInstance];
-  if (![v16 isInternalInstall])
+  dCopy = d;
+  stringCopy = string;
+  senderCopy = sender;
+  errorStringCopy = errorString;
+  lCopy = l;
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  if (![mEMORY[0x277D19268] isInternalInstall])
   {
 LABEL_16:
 
@@ -299,8 +299,8 @@ LABEL_16:
 
   if (v17)
   {
-    v16 = IMGetCachedDomainValueForKey();
-    if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([MEMORY[0x277CBEAA8] date], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "timeIntervalSinceDate:", v16), v20 = v19, v18, v20 < 3600.0))
+    mEMORY[0x277D19268] = IMGetCachedDomainValueForKey();
+    if (mEMORY[0x277D19268] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([MEMORY[0x277CBEAA8] date], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "timeIntervalSinceDate:", mEMORY[0x277D19268]), v20 = v19, v18, v20 < 3600.0))
     {
       v23 = +[IMBlastdoor logger];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -319,13 +319,13 @@ LABEL_16:
       }
 
       v21 = MEMORY[0x277D192D0];
-      v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"An incoming iMessage from %@ failed validation.\n\nA copy of the message will be attached.", v13];
-      v23 = [v21 userNotificationWithIdentifier:@"com.apple.Messages.BlastdoorValidationFailureInternalPrompt" title:@"iMessage Validation Failure" message:v22 defaultButton:@"File a Radar" alternateButton:@"Dismiss" otherButton:0];
+      senderCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"An incoming iMessage from %@ failed validation.\n\nA copy of the message will be attached.", senderCopy];
+      v23 = [v21 userNotificationWithIdentifier:@"com.apple.Messages.BlastdoorValidationFailureInternalPrompt" title:@"iMessage Validation Failure" message:senderCopy defaultButton:@"File a Radar" alternateButton:@"Dismiss" otherButton:0];
 
       if (v23)
       {
-        v24 = [MEMORY[0x277D192D8] sharedInstance];
-        v25 = [v24 countForIdentifier:@"com.apple.Messages.BlastdoorValidationFailureInternalPrompt"];
+        mEMORY[0x277D192D8] = [MEMORY[0x277D192D8] sharedInstance];
+        v25 = [mEMORY[0x277D192D8] countForIdentifier:@"com.apple.Messages.BlastdoorValidationFailureInternalPrompt"];
 
         if (!v25)
         {
@@ -336,24 +336,24 @@ LABEL_16:
             _os_log_impl(&dword_22B4CC000, v26, OS_LOG_TYPE_DEFAULT, "Presenting BD TTR UI", buf, 2u);
           }
 
-          v27 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           IMSetDomainValueForKey();
 
-          v28 = [MEMORY[0x277D1AAA8] sharedInstance];
-          [v28 trackEvent:*MEMORY[0x277D1A1E0]];
+          mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
+          [mEMORY[0x277D1AAA8] trackEvent:*MEMORY[0x277D1A1E0]];
 
           [v23 setUsesNotificationCenter:0];
           [v23 setRepresentedApplicationBundle:*MEMORY[0x277D192F0]];
-          v29 = [MEMORY[0x277D192D8] sharedInstance];
+          mEMORY[0x277D192D8]2 = [MEMORY[0x277D192D8] sharedInstance];
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = sub_22B58DF00;
           v31[3] = &unk_2787051C8;
-          v32 = v14;
-          v33 = v12;
-          v34 = v11;
-          v35 = v15;
-          [v29 addUserNotification:v23 listener:0 completionHandler:v31];
+          v32 = errorStringCopy;
+          v33 = stringCopy;
+          v34 = dCopy;
+          v35 = lCopy;
+          [mEMORY[0x277D192D8]2 addUserNotification:v23 listener:0 completionHandler:v31];
         }
       }
     }
@@ -366,16 +366,16 @@ LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendBlastDoorError:(id)a3 guid:(id)a4 messageTypeString:(id)a5 senderURI:(id)a6 senderToken:(id)a7 messageContext:(id)a8 payloadAttachmentURL:(id)a9
++ (void)sendBlastDoorError:(id)error guid:(id)guid messageTypeString:(id)string senderURI:(id)i senderToken:(id)token messageContext:(id)context payloadAttachmentURL:(id)l
 {
   v65 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  errorCopy = error;
+  guidCopy = guid;
+  stringCopy = string;
+  iCopy = i;
+  tokenCopy = token;
+  contextCopy = context;
+  lCopy = l;
   if (([objc_opt_class() _messageBlastdoorMetricsEnabled] & 1) == 0)
   {
     v21 = +[IMBlastdoor logger];
@@ -392,7 +392,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (![v15 length])
+  if (![guidCopy length])
   {
     v21 = +[IMBlastdoor logger];
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -410,13 +410,13 @@ LABEL_12:
     sub_22B7D3B78();
   }
 
-  if ([qword_27D8CFEB8 containsObject:v15])
+  if ([qword_27D8CFEB8 containsObject:guidCopy])
   {
     v21 = +[IMBlastdoor logger];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v62 = v15;
+      v62 = guidCopy;
       v22 = "Already submitted metric for GUID, ignoring (%@)";
       v23 = v21;
       v24 = 12;
@@ -429,12 +429,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [qword_27D8CFEB8 addObject:v15];
+  [qword_27D8CFEB8 addObject:guidCopy];
   v26 = im_checkpointIDSService();
 
   if (v26)
   {
-    v27 = [objc_opt_class() _convertErrorToBlastdoorError:v14];
+    v27 = [objc_opt_class() _convertErrorToBlastdoorError:errorCopy];
     if (v27 != -1)
     {
       v28 = v27;
@@ -450,17 +450,17 @@ LABEL_14:
       }
 
       v51 = v30;
-      if (v18)
+      if (tokenCopy)
       {
-        [v21 setObject:v18 forKey:@"t"];
+        [v21 setObject:tokenCopy forKey:@"t"];
       }
 
-      v31 = [v14 userInfo];
-      v32 = [v31 objectForKeyedSubscript:@"errorMetric"];
+      userInfo = [errorCopy userInfo];
+      v32 = [userInfo objectForKeyedSubscript:@"errorMetric"];
 
-      v33 = [MEMORY[0x277D1A9A0] deviceIsLockedDown];
+      deviceIsLockedDown = [MEMORY[0x277D1A9A0] deviceIsLockedDown];
       v34 = &stru_283F23018;
-      if (v33)
+      if (deviceIsLockedDown)
       {
         v34 = @"-Lockdown";
       }
@@ -469,17 +469,17 @@ LABEL_14:
       v52 = v32;
       v35 = [v32 length];
       v48 = MEMORY[0x277CCACA8];
-      v53 = [v14 domain];
-      v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "code")}];
+      domain = [errorCopy domain];
+      v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
       v49 = v36;
       if (v35)
       {
-        [v48 stringWithFormat:@"type-%@-%@-%@-%@%@", v16, v53, v36, v52, v50];
+        [v48 stringWithFormat:@"type-%@-%@-%@-%@%@", stringCopy, domain, v36, v52, v50];
       }
 
       else
       {
-        [v48 stringWithFormat:@"type-%@-%@-%@%@", v16, v53, v36, v50, v46];
+        [v48 stringWithFormat:@"type-%@-%@-%@%@", stringCopy, domain, v36, v50, v46];
       }
       v37 = ;
 
@@ -489,7 +489,7 @@ LABEL_14:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v62 = v15;
+        v62 = guidCopy;
         v63 = 2112;
         v64 = v21;
         _os_log_impl(&dword_22B4CC000, v38, OS_LOG_TYPE_DEFAULT, "Sending BlastDoor metric (guid: %@): %@", buf, 0x16u);
@@ -498,19 +498,19 @@ LABEL_14:
       v39 = im_checkpointIDSService();
       [v39 sendServerMessage:v21 command:&unk_283F4E720 fromAccount:0];
 
-      if (v15 && v19)
+      if (guidCopy && contextCopy)
       {
         v40 = im_checkpointIDSService();
         v41 = [MEMORY[0x277CCABB0] numberWithInteger:v47];
         im_sendCertifiedDeliveryReceiptIfPossible();
       }
 
-      v42 = [MEMORY[0x277D19268] sharedInstance];
-      v43 = [v42 isInternalInstall];
+      mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+      isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-      if (v43)
+      if (isInternalInstall)
       {
-        if (([v52 containsString:@"AVFoundationErrorDomain--11869"] & 1) != 0 || objc_msgSend(v16, "containsString:", @"131"))
+        if (([v52 containsString:@"AVFoundationErrorDomain--11869"] & 1) != 0 || objc_msgSend(stringCopy, "containsString:", @"131"))
         {
           v44 = +[IMBlastdoor logger];
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -518,7 +518,7 @@ LABEL_14:
             *buf = 138412546;
             v62 = v54;
             v63 = 2112;
-            v64 = v15;
+            v64 = guidCopy;
             _os_log_impl(&dword_22B4CC000, v44, OS_LOG_TYPE_DEFAULT, "Don't show BlastDoor TTR for error metric: %@ (guid: %@)", buf, 0x16u);
           }
 
@@ -530,11 +530,11 @@ LABEL_14:
         block[1] = 3221225472;
         block[2] = sub_22B58E884;
         block[3] = &unk_2787051F0;
-        v56 = v15;
-        v57 = v16;
-        v58 = v17;
+        v56 = guidCopy;
+        v57 = stringCopy;
+        v58 = iCopy;
         v59 = v54;
-        v60 = v20;
+        v60 = lCopy;
         dispatch_after(v45, MEMORY[0x277D85CD0], block);
       }
 
@@ -548,49 +548,49 @@ LABEL_15:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendDictionary:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5
++ (void)sendDictionary:(id)dictionary senderContext:(id)context withCompletionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (v8)
+    if (dictionaryCopy)
     {
-      v11 = [v8 objectForKey:*MEMORY[0x277D18810]];
+      v11 = [dictionaryCopy objectForKey:*MEMORY[0x277D18810]];
       v12 = [v11 objectForKey:*MEMORY[0x277D18848]];
       if (!v12)
       {
         v12 = [v11 objectForKey:*MEMORY[0x277D187D8]];
       }
 
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v14 = +[IMBlastdoor logger];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v27 = v13;
+        v27 = integerValue;
         _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_DEFAULT, "Piping command through BlastDoor: %ld", buf, 0xCu);
       }
 
-      v15 = [a1 blastdoorInterfaceForSenderContext:v9];
+      v15 = [self blastdoorInterfaceForSenderContext:contextCopy];
       v16 = objc_alloc(MEMORY[0x277CF3148]);
-      v17 = [v9 serviceName];
-      v18 = [v16 initForBusinessChat:{objc_msgSend(v17, "isEqualToString:", *MEMORY[0x277D186B8])}];
+      serviceName = [contextCopy serviceName];
+      v18 = [v16 initForBusinessChat:{objc_msgSend(serviceName, "isEqualToString:", *MEMORY[0x277D186B8])}];
 
       v25 = 0;
-      v19 = [v15 defuseTopLevelDictionary:v8 context:v18 error:&v25];
+      v19 = [v15 defuseTopLevelDictionary:dictionaryCopy context:v18 error:&v25];
       v20 = v25;
-      v21 = v10[2];
+      v21 = blockCopy[2];
       if (v19)
       {
-        v21(v10, v13, v19, 0);
+        v21(blockCopy, integerValue, v19, 0);
       }
 
       else
       {
-        v21(v10, v13, 0, v20);
+        v21(blockCopy, integerValue, 0, v20);
       }
     }
 
@@ -598,23 +598,23 @@ LABEL_15:
     {
       v22 = objc_alloc(MEMORY[0x277CCA9B8]);
       v23 = [v22 initWithDomain:*MEMORY[0x277D18DF0] code:1 userInfo:0];
-      (v10[2])(v10, 0, 0, v23);
+      (blockCopy[2])(blockCopy, 0, 0, v23);
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendSMSDictionary:(id)a3 withCompletionBlock:(id)a4
++ (void)sendSMSDictionary:(id)dictionary withCompletionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dictionaryCopy = dictionary;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (v6)
+    if (dictionaryCopy)
     {
-      v8 = [v6 objectForKey:@"g"];
+      v8 = [dictionaryCopy objectForKey:@"g"];
       v9 = +[IMBlastdoor logger];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -624,21 +624,21 @@ LABEL_15:
       }
 
       v10 = [MEMORY[0x277D1AB80] contextWithKnownSender:0 serviceName:*MEMORY[0x277D1A610]];
-      v11 = [a1 blastdoorInterfaceForSenderContext:v10];
+      v11 = [self blastdoorInterfaceForSenderContext:v10];
       if (objc_opt_respondsToSelector())
       {
         v24 = 0;
-        v12 = [v11 defuseSMSDictionary:v6 error:&v24];
+        v12 = [v11 defuseSMSDictionary:dictionaryCopy error:&v24];
         v13 = v24;
-        v14 = v7[2];
+        v14 = blockCopy[2];
         if (v12)
         {
-          v14(v7, v12, 0);
+          v14(blockCopy, v12, 0);
         }
 
         else
         {
-          v14(v7, 0, v13);
+          v14(blockCopy, 0, v13);
         }
       }
 
@@ -649,8 +649,8 @@ LABEL_15:
         v21[2] = sub_22B58F014;
         v21[3] = &unk_278705218;
         v22 = v8;
-        v23 = v7;
-        [v11 defuseSMSDictionary:v6 resultHandler:v21];
+        v23 = blockCopy;
+        [v11 defuseSMSDictionary:dictionaryCopy resultHandler:v21];
 
         v13 = v22;
       }
@@ -665,7 +665,7 @@ LABEL_15:
       block[2] = sub_22B58F1B0;
       block[3] = &unk_2787028B0;
       v19 = v16;
-      v20 = v7;
+      v20 = blockCopy;
       v8 = v16;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -674,15 +674,15 @@ LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendClearNoticeData:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5
++ (void)sendClearNoticeData:(id)data senderContext:(id)context withCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  contextCopy = context;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (!v8)
+    if (!dataCopy)
     {
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v11 initWithDomain:*MEMORY[0x277D18DF0] code:8 userInfo:0];
@@ -691,7 +691,7 @@ LABEL_15:
       block[2] = sub_22B58F54C;
       block[3] = &unk_2787028B0;
       v20 = v12;
-      v21 = v10;
+      v21 = blockCopy;
       v13 = v12;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -703,27 +703,27 @@ LABEL_15:
       _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_DEFAULT, "Piping Clear Notices through Blastdoor", buf, 2u);
     }
 
-    v15 = [a1 blastdoorInterfaceForSenderContext:v9];
+    v15 = [self blastdoorInterfaceForSenderContext:contextCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_22B58F564;
     v17[3] = &unk_278705240;
-    v18 = v10;
-    [v15 defuseCollaborationClearNoticePayload:v8 resultHandler:v17];
+    v18 = blockCopy;
+    [v15 defuseCollaborationClearNoticePayload:dataCopy resultHandler:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendCollaborationNoticeData:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5
++ (void)sendCollaborationNoticeData:(id)data senderContext:(id)context withCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  contextCopy = context;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (!v8)
+    if (!dataCopy)
     {
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v11 initWithDomain:*MEMORY[0x277D18DF0] code:4 userInfo:0];
@@ -732,7 +732,7 @@ LABEL_15:
       block[2] = sub_22B58FA74;
       block[3] = &unk_2787028B0;
       v20 = v12;
-      v21 = v10;
+      v21 = blockCopy;
       v13 = v12;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -744,27 +744,27 @@ LABEL_15:
       _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_DEFAULT, "Piping Collaboration Notices through Blastdoor", buf, 2u);
     }
 
-    v15 = [a1 blastdoorInterfaceForSenderContext:v9];
+    v15 = [self blastdoorInterfaceForSenderContext:contextCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_22B58FA8C;
     v17[3] = &unk_278705268;
-    v18 = v10;
-    [v15 defuseCollaborationNoticePayload:v8 resultHandler:v17];
+    v18 = blockCopy;
+    [v15 defuseCollaborationNoticePayload:dataCopy resultHandler:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sendCollaborationNoticeActionDictionary:(id)a3 senderContext:(id)a4 withCompletionBlock:(id)a5
++ (void)sendCollaborationNoticeActionDictionary:(id)dictionary senderContext:(id)context withCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (!v8)
+    if (!dictionaryCopy)
     {
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v11 initWithDomain:*MEMORY[0x277D18DF0] code:6 userInfo:0];
@@ -773,7 +773,7 @@ LABEL_15:
       block[2] = sub_22B58FF9C;
       block[3] = &unk_2787028B0;
       v20 = v12;
-      v21 = v10;
+      v21 = blockCopy;
       v13 = v12;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -785,23 +785,23 @@ LABEL_15:
       _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_DEFAULT, "Piping Collaboration Notice Action through Blastdoor", buf, 2u);
     }
 
-    v15 = [a1 blastdoorInterfaceForSenderContext:v9];
+    v15 = [self blastdoorInterfaceForSenderContext:contextCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_22B58FFB8;
     v17[3] = &unk_2787052B8;
-    v18 = v10;
-    [v15 defuseCollaborationNoticeActionDictionary:v8 resultHandler:v17];
+    v18 = blockCopy;
+    [v15 defuseCollaborationNoticeActionDictionary:dictionaryCopy resultHandler:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)sendLiteData:(id)a3 senderContext:(id)a4 error:(id *)a5
++ (id)sendLiteData:(id)data senderContext:(id)context error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v10 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -809,8 +809,8 @@ LABEL_15:
     _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_DEFAULT, "Piping lite message through Blastdoor", &v16, 2u);
   }
 
-  v11 = [a1 blastdoorInterfaceForSenderContext:v9];
-  v12 = [v11 defuseLiteTextMessage:v8 error:a5];
+  v11 = [self blastdoorInterfaceForSenderContext:contextCopy];
+  v12 = [v11 defuseLiteTextMessage:dataCopy error:error];
 
   v13 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -825,11 +825,11 @@ LABEL_15:
   return v12;
 }
 
-+ (id)sendLiteRelayData:(id)a3 senderContext:(id)a4 error:(id *)a5
++ (id)sendLiteRelayData:(id)data senderContext:(id)context error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v10 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -837,8 +837,8 @@ LABEL_15:
     _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_DEFAULT, "Piping lite relay message through Blastdoor", &v16, 2u);
   }
 
-  v11 = [a1 blastdoorInterfaceForSenderContext:v9];
-  v12 = [v11 defuseLiteRelayTextMessage:v8 error:a5];
+  v11 = [self blastdoorInterfaceForSenderContext:contextCopy];
+  v12 = [v11 defuseLiteRelayTextMessage:dataCopy error:error];
 
   v13 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -853,11 +853,11 @@ LABEL_15:
   return v12;
 }
 
-+ (id)sendSatelliteSMSDictionary:(id)a3 senderContext:(id)a4 error:(id *)a5
++ (id)sendSatelliteSMSDictionary:(id)dictionary senderContext:(id)context error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v10 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -865,8 +865,8 @@ LABEL_15:
     _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_DEFAULT, "Piping lite message through Blastdoor", &v16, 2u);
   }
 
-  v11 = [a1 blastdoorInterfaceForSenderContext:v9];
-  v12 = [v11 defuseSatelliteSMSTextMessageDictionary:v8 error:a5];
+  v11 = [self blastdoorInterfaceForSenderContext:contextCopy];
+  v12 = [v11 defuseSatelliteSMSTextMessageDictionary:dictionaryCopy error:error];
 
   v13 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -881,10 +881,10 @@ LABEL_15:
   return v12;
 }
 
-+ (id)sendRelayGroupMutationData:(id)a3 error:(id *)a4
++ (id)sendRelayGroupMutationData:(id)data error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -893,8 +893,8 @@ LABEL_15:
   }
 
   v8 = [MEMORY[0x277D1AB80] contextWithKnownSender:0 serviceName:*MEMORY[0x277D1A608]];
-  v9 = [a1 blastdoorInterfaceForSenderContext:v8];
-  v10 = [v9 defuseRelayGroupMutationPayload:v6 error:a4];
+  v9 = [self blastdoorInterfaceForSenderContext:v8];
+  v10 = [v9 defuseRelayGroupMutationPayload:dataCopy error:error];
 
   v11 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -909,10 +909,10 @@ LABEL_15:
   return v10;
 }
 
-+ (id)sendRelayReachabilityRequest:(id)a3 error:(id *)a4
++ (id)sendRelayReachabilityRequest:(id)request error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v7 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -921,8 +921,8 @@ LABEL_15:
   }
 
   v8 = [MEMORY[0x277D1AB80] contextWithKnownSender:1 serviceName:*MEMORY[0x277D1A608]];
-  v9 = [a1 blastdoorInterfaceForSenderContext:v8];
-  v10 = [v9 defuseRelayReachabilityRequestPayload:v6 error:a4];
+  v9 = [self blastdoorInterfaceForSenderContext:v8];
+  v10 = [v9 defuseRelayReachabilityRequestPayload:requestCopy error:error];
 
   v11 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -937,10 +937,10 @@ LABEL_15:
   return v10;
 }
 
-+ (id)sendRelayReachabilityResponse:(id)a3 error:(id *)a4
++ (id)sendRelayReachabilityResponse:(id)response error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  responseCopy = response;
   v7 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -949,8 +949,8 @@ LABEL_15:
   }
 
   v8 = [MEMORY[0x277D1AB80] contextWithKnownSender:1 serviceName:*MEMORY[0x277D1A608]];
-  v9 = [a1 blastdoorInterfaceForSenderContext:v8];
-  v10 = [v9 defuseRelayReachabilityResponsePayload:v6 error:a4];
+  v9 = [self blastdoorInterfaceForSenderContext:v8];
+  v10 = [v9 defuseRelayReachabilityResponsePayload:responseCopy error:error];
 
   v11 = +[IMBlastdoor logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))

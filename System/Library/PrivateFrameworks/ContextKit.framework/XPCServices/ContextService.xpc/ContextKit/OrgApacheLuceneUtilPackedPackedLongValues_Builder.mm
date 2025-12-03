@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilPackedPackedLongValues_Builder
 + (void)initialize;
-- (id)addWithLong:(int64_t)a3;
+- (id)addWithLong:(int64_t)long;
 - (id)build;
 - (id)pack;
 - (void)dealloc;
 - (void)finish;
-- (void)growWithInt:(int)a3;
+- (void)growWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedLongValues_Builder
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (id)addWithLong:(int64_t)a3
+- (id)addWithLong:(int64_t)long
 {
   pending = self->pending_;
   if (!pending)
@@ -71,7 +71,7 @@
     size = values->super.size_;
     if (size == self->valuesOff_)
     {
-      [(OrgApacheLuceneUtilPackedPackedLongValues_Builder *)self growWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(size + 1, 8, a3, v3, v4, v5, v6, v7)];
+      [(OrgApacheLuceneUtilPackedPackedLongValues_Builder *)self growWithInt:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(size + 1, 8, long, v3, v4, v5, v6, v7)];
     }
 
     [OrgApacheLuceneUtilPackedPackedLongValues_Builder pack]_0(self, v8);
@@ -86,22 +86,22 @@
     IOSArray_throwOutOfBoundsWithMsg(v15, pendingOff);
   }
 
-  pending->buffer_[pendingOff] = a3;
+  pending->buffer_[pendingOff] = long;
   ++self->size_;
   return self;
 }
 
 - (id)pack
 {
-  LODWORD(a2) = *(a1 + 16);
-  [a1 packWithLongArray:*(a1 + 24) withInt:*(a1 + 60) withInt:*(a1 + 56) withFloat:a2];
-  v3 = *(a1 + 40);
+  LODWORD(a2) = *(self + 16);
+  [self packWithLongArray:*(self + 24) withInt:*(self + 60) withInt:*(self + 56) withFloat:a2];
+  v3 = *(self + 40);
   if (!v3)
   {
     goto LABEL_6;
   }
 
-  v4 = *(a1 + 56);
+  v4 = *(self + 56);
   v5 = *(v3 + 8);
   if (v4 < 0 || v4 >= v5)
   {
@@ -116,18 +116,18 @@ LABEL_6:
   }
 
   result = [v6 ramBytesUsed];
-  *(a1 + 48) += result;
-  *(a1 + 56) = (*(a1 + 56) + 1);
+  *(self + 48) += result;
+  *(self + 56) = (*(self + 56) + 1);
   return result;
 }
 
-- (void)growWithInt:(int)a3
+- (void)growWithInt:(int)int
 {
   p_values = &self->values_;
   v5 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfWithNSObjectArray_(self->values_);
   v6 = *p_values;
   p_values[1] = (p_values[1] - v5);
-  v7 = JavaUtilArrays_copyOfWithNSObjectArray_withInt_(v6, a3);
+  v7 = JavaUtilArrays_copyOfWithNSObjectArray_withInt_(v6, int);
   JreStrongAssign(p_values, v7);
   p_values[1] = (p_values[1] + OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfWithNSObjectArray_(*p_values));
 }
@@ -141,7 +141,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPackedPackedLongValues_Builder_class_();
     qword_1005544C8 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

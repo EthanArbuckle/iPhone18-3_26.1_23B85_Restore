@@ -1,23 +1,23 @@
 @interface PBFPosterConfigurationUpdateResult
-- (PBFPosterConfigurationUpdateResult)initWithConfiguration:(id)a3 updates:(id)a4 changes:(id)a5;
-- (PBFPosterConfigurationUpdateResult)initWithIncomingPosterConfiguration:(id)a3 incomingAssocPosterConfiguration:(id)a4 postersToDelete:(id)a5;
+- (PBFPosterConfigurationUpdateResult)initWithConfiguration:(id)configuration updates:(id)updates changes:(id)changes;
+- (PBFPosterConfigurationUpdateResult)initWithIncomingPosterConfiguration:(id)configuration incomingAssocPosterConfiguration:(id)posterConfiguration postersToDelete:(id)delete;
 - (void)dealloc;
 @end
 
 @implementation PBFPosterConfigurationUpdateResult
 
-- (PBFPosterConfigurationUpdateResult)initWithIncomingPosterConfiguration:(id)a3 incomingAssocPosterConfiguration:(id)a4 postersToDelete:(id)a5
+- (PBFPosterConfigurationUpdateResult)initWithIncomingPosterConfiguration:(id)configuration incomingAssocPosterConfiguration:(id)posterConfiguration postersToDelete:(id)delete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  configurationCopy = configuration;
+  posterConfigurationCopy = posterConfiguration;
+  deleteCopy = delete;
+  if (!configurationCopy)
   {
     [PBFPosterConfigurationUpdateResult initWithIncomingPosterConfiguration:a2 incomingAssocPosterConfiguration:? postersToDelete:?];
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = deleteCopy;
+  if (!deleteCopy)
   {
     [PBFPosterConfigurationUpdateResult initWithIncomingPosterConfiguration:a2 incomingAssocPosterConfiguration:? postersToDelete:?];
   }
@@ -28,20 +28,20 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_incomingPosterConfiguration, a3);
-    objc_storeStrong(&v15->_incomingAssocPosterConfiguration, a4);
-    objc_storeStrong(&v15->_postersToDelete, a5);
-    v16 = [v10 path];
+    objc_storeStrong(&v14->_incomingPosterConfiguration, configuration);
+    objc_storeStrong(&v15->_incomingAssocPosterConfiguration, posterConfiguration);
+    objc_storeStrong(&v15->_postersToDelete, delete);
+    path = [configurationCopy path];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v16 extendValidityForReason:v18];
+    v19 = [path extendValidityForReason:v18];
     pathValidityExtension = v15->_pathValidityExtension;
     v15->_pathValidityExtension = v19;
 
-    v21 = [v11 path];
+    path2 = [posterConfigurationCopy path];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    v24 = [v21 extendValidityForReason:v23];
+    v24 = [path2 extendValidityForReason:v23];
     assocPathValidityExtension = v15->_assocPathValidityExtension;
     v15->_assocPathValidityExtension = v24;
   }
@@ -49,12 +49,12 @@
   return v15;
 }
 
-- (PBFPosterConfigurationUpdateResult)initWithConfiguration:(id)a3 updates:(id)a4 changes:(id)a5
+- (PBFPosterConfigurationUpdateResult)initWithConfiguration:(id)configuration updates:(id)updates changes:(id)changes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
+  configurationCopy = configuration;
+  updatesCopy = updates;
+  changesCopy = changes;
+  v13 = configurationCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v13)
   {
@@ -66,12 +66,12 @@
     [PBFPosterConfigurationUpdateResult initWithConfiguration:a2 updates:? changes:?];
   }
 
-  if (![v11 count])
+  if (![updatesCopy count])
   {
     [PBFPosterConfigurationUpdateResult initWithConfiguration:a2 updates:? changes:?];
   }
 
-  if (![v12 count])
+  if (![changesCopy count])
   {
     [PBFPosterConfigurationUpdateResult initWithConfiguration:a2 updates:? changes:?];
   }
@@ -82,12 +82,12 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_configuration, a3);
-    v16 = [v11 copy];
+    objc_storeStrong(&v14->_configuration, configuration);
+    v16 = [updatesCopy copy];
     updates = v15->_updates;
     v15->_updates = v16;
 
-    v18 = [v12 copy];
+    v18 = [changesCopy copy];
     roleCoordinatorChanges = v15->_roleCoordinatorChanges;
     v15->_roleCoordinatorChanges = v18;
   }

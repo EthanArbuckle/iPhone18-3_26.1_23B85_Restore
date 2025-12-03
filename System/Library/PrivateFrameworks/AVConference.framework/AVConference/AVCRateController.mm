@@ -1,55 +1,55 @@
 @interface AVCRateController
-+ (unsigned)rateControlTrafficTypeForScreen:(BOOL)a3 isPersona:(BOOL)a4;
++ (unsigned)rateControlTrafficTypeForScreen:(BOOL)screen isPersona:(BOOL)persona;
 - (AVCRateControlConfig)configuration;
-- (AVCRateController)initWithDelegate:(id)a3 dumpID:(id)a4 isUplink:(BOOL)a5 isForSimulation:(BOOL)a6 useExternalThread:(BOOL)a7 rateSharingGroupToken:(unsigned int)a8;
-- (AVCRateController)initWithDelegate:(id)a3 params:(const tagVCRateControlParams *)a4;
+- (AVCRateController)initWithDelegate:(id)delegate dumpID:(id)d isUplink:(BOOL)uplink isForSimulation:(BOOL)simulation useExternalThread:(BOOL)thread rateSharingGroupToken:(unsigned int)token;
+- (AVCRateController)initWithDelegate:(id)delegate params:(const tagVCRateControlParams *)params;
 - (BOOL)start;
 - (BOOL)stop;
-- (id)sharingGroupFromToken:(unsigned int)a3;
+- (id)sharingGroupFromToken:(unsigned int)token;
 - (tagAVCRateControlExperimentConfig)rateControlExperimentConfig;
 - (tagVCRateControlAlgorithmConfig)algorithmConfig;
-- (unsigned)loadDefaultVCRCFeatureFlags:(unsigned int)a3;
-- (unsigned)radioAccessTechnologyFromAVConferenceCellTech:(int)a3 isCellular:(BOOL)a4;
-- (unsigned)rateControlModeFromAVConferenceOperatingMode:(int)a3;
+- (unsigned)loadDefaultVCRCFeatureFlags:(unsigned int)flags;
+- (unsigned)radioAccessTechnologyFromAVConferenceCellTech:(int)tech isCellular:(BOOL)cellular;
+- (unsigned)rateControlModeFromAVConferenceOperatingMode:(int)mode;
 - (void)accumulateStatsForPeriodicTaskUpdate;
 - (void)cleanupNwActivity;
 - (void)cleanupSharingGroup;
-- (void)completeAndReleaseNwActivity:(id)a3 withReason:(int)a4;
-- (void)configure:(AVCRateControlConfig *)a3;
-- (void)configureTrafficType:(unsigned __int8)a3 inRateControlConfig:(AVCRateControlConfig *)a4;
-- (void)configureWithOperatingMode:(int)a3 isLocalCellular:(BOOL)a4 localCellTech:(int)a5 isRemoteCellular:(BOOL)a6 remoteCellTech:(int)a7 bitrateCapKbps:(unsigned int)a8 trafficType:(unsigned __int8)a9 featureFlags:(unsigned int)a10;
+- (void)completeAndReleaseNwActivity:(id)activity withReason:(int)reason;
+- (void)configure:(AVCRateControlConfig *)configure;
+- (void)configureTrafficType:(unsigned __int8)type inRateControlConfig:(AVCRateControlConfig *)config;
+- (void)configureWithOperatingMode:(int)mode isLocalCellular:(BOOL)cellular localCellTech:(int)tech isRemoteCellular:(BOOL)remoteCellular remoteCellTech:(int)cellTech bitrateCapKbps:(unsigned int)kbps trafficType:(unsigned __int8)type featureFlags:(unsigned int)self0;
 - (void)createBasebandLogDumpFile;
 - (void)createNWConnectionLogDumpFile;
 - (void)dealloc;
 - (void)deregisterForRateSharing;
-- (void)getRealTimeStats:(__CFDictionary *)a3;
-- (void)getRealTimeStatsForLowLatency:(__CFDictionary *)a3;
-- (void)getRealTimeStatsForServerBasedRxOnly:(__CFDictionary *)a3;
-- (void)getRealTimeStatsForServerBasedTxOnly:(__CFDictionary *)a3;
+- (void)getRealTimeStats:(__CFDictionary *)stats;
+- (void)getRealTimeStatsForLowLatency:(__CFDictionary *)latency;
+- (void)getRealTimeStatsForServerBasedRxOnly:(__CFDictionary *)only;
+- (void)getRealTimeStatsForServerBasedTxOnly:(__CFDictionary *)only;
 - (void)initAndStartTrafficMetricCollector;
 - (void)loadParametersFromExperimentManagerForABTesting;
-- (void)periodicTask:(void *)a3;
+- (void)periodicTask:(void *)task;
 - (void)printRateControllerHealthPrint;
-- (void)registerForRateSharing:(unsigned int)a3;
+- (void)registerForRateSharing:(unsigned int)sharing;
 - (void)registerPeriodicTask;
 - (void)releaseAllLogDumpFiles;
-- (void)releaseLogDumpFile:(void *)a3;
+- (void)releaseLogDumpFile:(void *)file;
 - (void)reportContinuousTierMLRateControllerStatsAfterMLDisengagement;
 - (void)resetStatsForPeriodicTaskReport;
 - (void)setBtNotificationMonitor;
-- (void)setEstimatedBandwidthCap:(unsigned int)a3;
-- (void)setMaxTargetBitrate:(unsigned int)a3;
-- (void)setMinTargetBitrate:(unsigned int)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setShareProfile:(id)a3;
-- (void)setTargetBitrateCap:(unsigned int)a3;
+- (void)setEstimatedBandwidthCap:(unsigned int)cap;
+- (void)setMaxTargetBitrate:(unsigned int)bitrate;
+- (void)setMinTargetBitrate:(unsigned int)bitrate;
+- (void)setPaused:(BOOL)paused;
+- (void)setShareProfile:(id)profile;
+- (void)setTargetBitrateCap:(unsigned int)cap;
 - (void)start;
 - (void)triggerDeferredDelegateCallbacks;
 @end
 
 @implementation AVCRateController
 
-- (AVCRateController)initWithDelegate:(id)a3 dumpID:(id)a4 isUplink:(BOOL)a5 isForSimulation:(BOOL)a6 useExternalThread:(BOOL)a7 rateSharingGroupToken:(unsigned int)a8
+- (AVCRateController)initWithDelegate:(id)delegate dumpID:(id)d isUplink:(BOOL)uplink isForSimulation:(BOOL)simulation useExternalThread:(BOOL)thread rateSharingGroupToken:(unsigned int)token
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -57,15 +57,15 @@
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
-  v9 = a4;
-  LOBYTE(v10) = a6;
-  BYTE1(v10) = a5;
-  BYTE8(v11) = a7;
-  DWORD2(v13) = a8;
-  return [(AVCRateController *)self initWithDelegate:a3 params:&v9];
+  dCopy = d;
+  LOBYTE(v10) = simulation;
+  BYTE1(v10) = uplink;
+  BYTE8(v11) = thread;
+  DWORD2(v13) = token;
+  return [(AVCRateController *)self initWithDelegate:delegate params:&dCopy];
 }
 
-- (AVCRateController)initWithDelegate:(id)a3 params:(const tagVCRateControlParams *)a4
+- (AVCRateController)initWithDelegate:(id)delegate params:(const tagVCRateControlParams *)params
 {
   v32 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -79,25 +79,25 @@
   FigCFWeakReferenceStore();
   FigCFWeakReferenceStore();
   v5->_reportingModuleID = VCReporting_GetDynamicReportingModuleID();
-  v5->_statisticsCollector = [[AVCStatisticsCollector alloc] initForSimulation:a4->var1 useExternalThread:a4->var5];
+  v5->_statisticsCollector = [[AVCStatisticsCollector alloc] initForSimulation:params->var1 useExternalThread:params->var5];
   v5->_feedbackController = [[AVCRateControlFeedbackController alloc] initWithStatisticsCollector:v5->_statisticsCollector];
   v5->_probingSequenceController = objc_alloc_init(VCRateControlProbingSequenceController);
-  v5->_experimentManager = a4->var11;
+  v5->_experimentManager = params->var11;
   [(AVCRateController *)v5 loadParametersFromExperimentManagerForABTesting];
-  v5->_isForSimulation = a4->var1;
+  v5->_isForSimulation = params->var1;
   v5->_isRateControlDumpFileEnabled = [+[VCDefaults sharedInstance](VCDefaults rateControlDumpEnabled];
   v5->_isBWEDumpFileEnabled = [+[VCDefaults sharedInstance](VCDefaults bandwidthEstimationDumpEnabled];
-  v5->_dumpID = [a4->var0 copy];
-  v5->_isUplink = a4->var2;
-  v5->_useExternalThread = a4->var5;
+  v5->_dumpID = [params->var0 copy];
+  v5->_isUplink = params->var2;
+  v5->_useExternalThread = params->var5;
   v5->_isPeriodicLoggingEnabled = [+[VCDefaults sharedInstance](VCDefaults rateControlLogEnabled];
   *&v5->_forcedTargetBitrate = -1;
-  v5->_serverBag = a4->var3;
+  v5->_serverBag = params->var3;
   v5->_btNotificationMonitorToken = 0;
-  v5->_parentNWActivity = a4->var6;
+  v5->_parentNWActivity = params->var6;
   v5->_registrationLock._os_unfair_lock_opaque = 0;
   v5->_isECNEnabled = 0;
-  v5->_rateControlMLModelPath = a4->var10;
+  v5->_rateControlMLModelPath = params->var10;
   parentNWActivity = v5->_parentNWActivity;
   if (parentNWActivity)
   {
@@ -106,7 +106,7 @@
 
   pthread_mutex_init(&v5->_mutex, 0);
   v5->_useNWConnectionNotification = _os_feature_enabled_impl();
-  var8 = a4->var8;
+  var8 = params->var8;
   if (var8)
   {
     v8 = var8;
@@ -115,7 +115,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4->var9)
+  if (params->var9)
   {
     v8 = [(AVCRateController *)v5 sharingGroupFromToken:?];
     goto LABEL_8;
@@ -124,7 +124,7 @@ LABEL_8:
 LABEL_9:
   if (_os_feature_enabled_impl())
   {
-    v5->_useBTNotificationMonitor = a4->var7;
+    v5->_useBTNotificationMonitor = params->var7;
   }
 
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
@@ -208,7 +208,7 @@ LABEL_9:
           v18 = 1024;
           v19 = 595;
           v20 = 2048;
-          v21 = self;
+          selfCopy3 = self;
           v22 = 1024;
           v23 = v13;
           _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d VCFeatureExperimentSetting: [%p] Found experiment group. lowBandwidthOptimizationGroup=%d", buf, 0x2Cu);
@@ -233,7 +233,7 @@ LABEL_9:
           v18 = 1024;
           v19 = 601;
           v20 = 2048;
-          v21 = self;
+          selfCopy3 = self;
           v22 = 1024;
           v23 = v12;
           _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d VCFeatureExperimentSetting: [%p] Found experiment group. shouldAlwaysReportStatisticsGroup=%d", buf, 0x2Cu);
@@ -257,7 +257,7 @@ LABEL_9:
       v18 = 1024;
       v19 = 604;
       v20 = 2048;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 1024;
       v23 = lowBandwidthOptimizationEnabled;
       v24 = 1024;
@@ -267,11 +267,11 @@ LABEL_9:
   }
 }
 
-- (id)sharingGroupFromToken:(unsigned int)a3
+- (id)sharingGroupFromToken:(unsigned int)token
 {
   v26 = *MEMORY[0x1E69E9840];
   memset(v25, 0, sizeof(v25));
-  LODWORD(v25[0]) = a3;
+  LODWORD(v25[0]) = token;
   v5 = [[VCConnectionLegacy alloc] initWithConnectionResult:v25 type:0];
   self->_connectionWithCallID = &v5->super;
   if (!v5)
@@ -321,9 +321,9 @@ LABEL_9:
     v19 = 2112;
     v20 = v7;
     v21 = 2048;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 1024;
-    v24 = a3;
+    tokenCopy2 = token;
     v11 = "AVCRC [%s] %s:%d %@(%p) Cannot create connection with token=%d!";
     goto LABEL_25;
   }
@@ -376,9 +376,9 @@ LABEL_9:
     v19 = 2112;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 1024;
-    v24 = a3;
+    tokenCopy2 = token;
     v11 = "AVCRC [%s] %s:%d %@(%p) Cannot resolve sharingGroup with token=%d!";
 LABEL_25:
     _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, v11, &v13, 0x36u);
@@ -388,11 +388,11 @@ LABEL_25:
   return result;
 }
 
-- (void)completeAndReleaseNwActivity:(id)a3 withReason:(int)a4
+- (void)completeAndReleaseNwActivity:(id)activity withReason:(int)reason
 {
   nw_activity_complete_with_reason();
 
-  nw_release(a3);
+  nw_release(activity);
 }
 
 - (void)cleanupNwActivity
@@ -449,7 +449,7 @@ LABEL_25:
       v12 = 1024;
       v13 = 651;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d (%p)", buf, 0x26u);
     }
   }
@@ -478,16 +478,16 @@ LABEL_25:
   [(AVCRateController *)&v7 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
-    VCRateControlAlgorithm_SetPaused(self->_rateControlAlgorithm, a3);
+    self->_paused = paused;
+    VCRateControlAlgorithm_SetPaused(self->_rateControlAlgorithm, paused);
   }
 }
 
-- (void)setMaxTargetBitrate:(unsigned int)a3
+- (void)setMaxTargetBitrate:(unsigned int)bitrate
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->_configuration.mode == 12)
@@ -514,7 +514,7 @@ LABEL_25:
       *&v15[22] = 1024;
       LODWORD(v16) = 700;
       WORD2(v16) = 1024;
-      *(&v16 + 6) = a3;
+      *(&v16 + 6) = bitrate;
       WORD5(v16) = 1024;
       HIDWORD(v16) = mode;
       v9 = "AVCRC [%s] %s:%d set maxBitrate=%u with mode=%d";
@@ -558,7 +558,7 @@ LABEL_25:
       HIWORD(v16) = 2048;
       *&v17 = self;
       WORD4(v17) = 1024;
-      *(&v17 + 10) = a3;
+      *(&v17 + 10) = bitrate;
       HIWORD(v17) = 1024;
       LODWORD(v18) = v14;
       v9 = "AVCRC [%s] %s:%d %@(%p) set maxBitrate=%u with mode=%d";
@@ -582,13 +582,13 @@ LABEL_13:
     *&v15[8] = 0u;
     *v15 = 0x100000009;
     LODWORD(v16) = self->_configuration.mode;
-    HIDWORD(v16) = a3;
+    HIDWORD(v16) = bitrate;
     LODWORD(v18) = 1;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v15);
   }
 }
 
-- (void)setMinTargetBitrate:(unsigned int)a3
+- (void)setMinTargetBitrate:(unsigned int)bitrate
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->_configuration.mode == 12)
@@ -615,7 +615,7 @@ LABEL_13:
       *&v15[22] = 1024;
       LODWORD(v16) = 714;
       WORD2(v16) = 1024;
-      *(&v16 + 6) = a3;
+      *(&v16 + 6) = bitrate;
       WORD5(v16) = 1024;
       HIDWORD(v16) = mode;
       v9 = "AVCRC [%s] %s:%d set minBitrate=%u with mode=%d";
@@ -659,7 +659,7 @@ LABEL_13:
       HIWORD(v16) = 2048;
       *&v17 = self;
       WORD4(v17) = 1024;
-      *(&v17 + 10) = a3;
+      *(&v17 + 10) = bitrate;
       HIWORD(v17) = 1024;
       LODWORD(v18) = v14;
       v9 = "AVCRC [%s] %s:%d %@(%p) set minBitrate=%u with mode=%d";
@@ -683,26 +683,26 @@ LABEL_13:
     *&v15[8] = 0u;
     *v15 = 0x100000009;
     LODWORD(v16) = self->_configuration.mode;
-    LODWORD(v17) = a3;
+    LODWORD(v17) = bitrate;
     LODWORD(v18) = 2;
     AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v15);
   }
 }
 
-+ (unsigned)rateControlTrafficTypeForScreen:(BOOL)a3 isPersona:(BOOL)a4
++ (unsigned)rateControlTrafficTypeForScreen:(BOOL)screen isPersona:(BOOL)persona
 {
-  if (a4)
+  if (persona)
   {
-    return a3 | 2;
+    return screen | 2;
   }
 
   else
   {
-    return a3;
+    return screen;
   }
 }
 
-- (void)configure:(AVCRateControlConfig *)a3
+- (void)configure:(AVCRateControlConfig *)configure
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -711,13 +711,13 @@ LABEL_13:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      mode = a3->mode;
-      localRadioAccessTechnology = a3->localRadioAccessTechnology;
-      maxBitrate = a3->maxBitrate;
-      minBitrate = a3->minBitrate;
-      remoteRadioAccessTechnology = a3->remoteRadioAccessTechnology;
-      isTrafficBursty = a3->isTrafficBursty;
-      featureFlags = a3->featureFlags;
+      mode = configure->mode;
+      localRadioAccessTechnology = configure->localRadioAccessTechnology;
+      maxBitrate = configure->maxBitrate;
+      minBitrate = configure->minBitrate;
+      remoteRadioAccessTechnology = configure->remoteRadioAccessTechnology;
+      isTrafficBursty = configure->isTrafficBursty;
+      featureFlags = configure->featureFlags;
       statisticsCollector = self->_statisticsCollector;
       *v21 = 136317954;
       *&v21[4] = v5;
@@ -747,20 +747,20 @@ LABEL_13:
     }
   }
 
-  if ((a3->featureFlags & 4) != 0)
+  if ((configure->featureFlags & 4) != 0)
   {
     [(VCRateControlMediaController *)self->_mediaController setEnableAggressiveProbingSequence:1];
   }
 
   [(VCRateControlMediaController *)self->_mediaController setServerBag:self->_serverBag];
-  algorithmConfig = a3->algorithmConfig;
+  algorithmConfig = configure->algorithmConfig;
   if (algorithmConfig && !self->_didCacheAlgorithmConfig)
   {
     memcpy(&self->_algorithmConfigCache, algorithmConfig, sizeof(self->_algorithmConfigCache));
     self->_didCacheAlgorithmConfig = 1;
   }
 
-  if (!self->_basebandCongestionDetector && a3->localRadioAccessTechnology - 2 <= 4)
+  if (!self->_basebandCongestionDetector && configure->localRadioAccessTechnology - 2 <= 4)
   {
     v16 = objc_alloc_init(AVCBasebandCongestionDetector);
     self->_basebandCongestionDetector = v16;
@@ -772,10 +772,10 @@ LABEL_13:
     [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector start];
   }
 
-  v17 = a3->mode;
+  v17 = configure->mode;
   if (!self->_nwConnectionCongestionDetector)
   {
-    if ((v17 & 0xFFFFFFFE) != 8 || (v19 = objc_alloc_init(VCNWConnectionCongestionDetector), self->_nwConnectionCongestionDetector = v19, [(VCNWConnectionCongestionDetector *)v19 setStatisticsCollector:self->_statisticsCollector], [(AVCRateController *)self createNWConnectionLogDumpFile], [(VCNWConnectionCongestionDetector *)self->_nwConnectionCongestionDetector enableNWLogDump:self->_logNWDump], v17 = a3->mode, !self->_nwConnectionCongestionDetector))
+    if ((v17 & 0xFFFFFFFE) != 8 || (v19 = objc_alloc_init(VCNWConnectionCongestionDetector), self->_nwConnectionCongestionDetector = v19, [(VCNWConnectionCongestionDetector *)v19 setStatisticsCollector:self->_statisticsCollector], [(AVCRateController *)self createNWConnectionLogDumpFile], [(VCNWConnectionCongestionDetector *)self->_nwConnectionCongestionDetector enableNWLogDump:self->_logNWDump], v17 = configure->mode, !self->_nwConnectionCongestionDetector))
     {
       if (v17 == 11)
       {
@@ -784,12 +784,12 @@ LABEL_13:
         [(VCNWConnectionCongestionDetector *)v20 setStatisticsCollector:self->_statisticsCollector];
         [(AVCRateController *)self createNWConnectionLogDumpFile];
         [(VCNWConnectionCongestionDetector *)self->_nwConnectionCongestionDetector enableNWLogDump:self->_logNWDump];
-        v17 = a3->mode;
+        v17 = configure->mode;
       }
     }
   }
 
-  if (a3->localRadioAccessTechnology == 1 && v17 - 1 <= 1)
+  if (configure->localRadioAccessTechnology == 1 && v17 - 1 <= 1)
   {
     if (self->_logNWDump)
     {
@@ -797,7 +797,7 @@ LABEL_13:
     }
 
     [(AVCRateController *)self createNWConnectionLogDumpFile];
-    v17 = a3->mode;
+    v17 = configure->mode;
   }
 
   if (v17 == 12)
@@ -811,12 +811,12 @@ LABEL_19:
   *&v21[8] = 0u;
   *v21 = 0x100000009;
   *&v21[24] = v17;
-  *&v18 = vrev64q_s32(*&a3->localRadioAccessTechnology).u64[0];
-  *(&v18 + 1) = *&a3->maxBitrate;
+  *&v18 = vrev64q_s32(*&configure->localRadioAccessTechnology).u64[0];
+  *(&v18 + 1) = *&configure->maxBitrate;
   *&v21[28] = v18;
-  *&v21[44] = a3->initialBitrate;
-  *&v21[52] = a3->featureFlags;
-  *&v21[48] = *&a3->isTrafficBursty;
+  *&v21[44] = configure->initialBitrate;
+  *&v21[52] = configure->featureFlags;
+  *&v21[48] = *&configure->isTrafficBursty;
   AVCStatisticsCollector_SetVCStatistics(self->_statisticsCollector, v21);
 }
 
@@ -853,8 +853,8 @@ LABEL_19:
           *v40 = mode;
           *&v40[4] = 1024;
           *&v40[6] = targetBitrate;
-          LOWORD(v41) = 1024;
-          *(&v41 + 2) = rateChangeCounter;
+          LOWORD(selfCopy2) = 1024;
+          *(&selfCopy2 + 2) = rateChangeCounter;
           v9 = "AVCRC [%s] %s:%d Deferred targetBitrate changed for mode=%d, targetBitrate=%u, rateChangeCounter=%u";
           v10 = v5;
           v11 = 46;
@@ -894,7 +894,7 @@ LABEL_13:
           v39 = 2112;
           *v40 = v3;
           *&v40[8] = 2048;
-          v41 = self;
+          selfCopy2 = self;
           *v42 = 1024;
           *&v42[2] = v14;
           v43 = 1024;
@@ -939,9 +939,9 @@ LABEL_13:
         *v40 = v20;
         *&v40[4] = 1024;
         *&v40[6] = v21;
-        LOWORD(v41) = 1024;
-        *(&v41 + 2) = probingSequenceSize;
-        HIWORD(v41) = 1024;
+        LOWORD(selfCopy2) = 1024;
+        *(&selfCopy2 + 2) = probingSequenceSize;
+        HIWORD(selfCopy2) = 1024;
         *v42 = probingSequenceID;
         v24 = "AVCRC [%s] %s:%d Deferred request probing sequence for mode=%d, targetBitrate=%u, probingSequenceSize=%u, probingSequenceID=%u";
         v25 = v19;
@@ -983,7 +983,7 @@ LABEL_25:
         v39 = 2112;
         *v40 = v17;
         *&v40[8] = 2048;
-        v41 = self;
+        selfCopy2 = self;
         *v42 = 1024;
         *&v42[2] = v29;
         v43 = 1024;
@@ -1184,8 +1184,8 @@ void __26__AVCRateController_start__block_invoke_2(uint64_t a1, uint64_t a2)
 {
   v17 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_mutex);
-  v3 = [(AVCRateController *)self isStarted];
-  if (v3)
+  isStarted = [(AVCRateController *)self isStarted];
+  if (isStarted)
   {
     [(AVCRateController *)self deregisterForRateSharing];
     [(AVCRateController *)self deregisterPeriodicTask];
@@ -1224,19 +1224,19 @@ void __26__AVCRateController_start__block_invoke_2(uint64_t a1, uint64_t a2)
       v13 = 1024;
       v14 = 885;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d (%p) rate controller has been stopped", &v9, 0x26u);
     }
   }
 
   pthread_mutex_unlock(&self->_mutex);
-  return v3;
+  return isStarted;
 }
 
 - (tagAVCRateControlExperimentConfig)rateControlExperimentConfig
 {
-  v3 = [(VCRateControlServerBag *)self->_serverBag experimentVersion];
-  v4 = [(NSNumber *)[(VCRateControlServerBag *)self->_serverBag experimentGroupIndex] intValue];
+  experimentVersion = [(VCRateControlServerBag *)self->_serverBag experimentVersion];
+  intValue = [(NSNumber *)[(VCRateControlServerBag *)self->_serverBag experimentGroupIndex] intValue];
   rateControlAlgorithm = self->_rateControlAlgorithm;
   if (!rateControlAlgorithm)
   {
@@ -1273,7 +1273,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = v3 | (v4 << 32);
+  v9 = experimentVersion | (intValue << 32);
   result.var0 = v9;
   result.var1 = HIDWORD(v9);
   result.var2 = v7;
@@ -1295,7 +1295,7 @@ LABEL_10:
 - (void)initAndStartTrafficMetricCollector
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -1315,7 +1315,7 @@ LABEL_10:
     OUTLINED_FUNCTION_6();
     v14 = 925;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v4 = &dword_1DB56E000;
     v5 = "AVCRC [%s] %s:%d [%p] cannot start Rate controller, because trafficMetricCollector is not allocated";
     v6 = &v11;
@@ -1328,7 +1328,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1341,7 +1341,7 @@ LABEL_11:
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_0_0();
       v17 = v10;
-      v18 = a1;
+      selfCopy2 = self;
       OUTLINED_FUNCTION_5_1();
       v8 = 58;
       goto LABEL_11;
@@ -1349,9 +1349,9 @@ LABEL_11:
   }
 }
 
-- (void)periodicTask:(void *)a3
+- (void)periodicTask:(void *)task
 {
-  if (a3)
+  if (task)
   {
     mode = self->_configuration.mode;
     if (mode - 8 < 2)
@@ -1411,16 +1411,16 @@ LABEL_11:
   self->_sumExtraTargetBitrate += targetBitrateTier;
   if (([(VCRateControlAlgorithm *)self->_rateControlAlgorithm isSendBitrateLimited]& 1) == 0)
   {
-    v9 = [(AVCStatisticsCollector *)self->_statisticsCollector sharedRemoteEstimatedBandwidth];
+    sharedRemoteEstimatedBandwidth = [(AVCStatisticsCollector *)self->_statisticsCollector sharedRemoteEstimatedBandwidth];
     v10 = self->_targetBitrate;
-    v11 = v9 - v10;
-    if (v10 >= v9)
+    v11 = sharedRemoteEstimatedBandwidth - v10;
+    if (v10 >= sharedRemoteEstimatedBandwidth)
     {
-      v11 = v10 - v9;
+      v11 = v10 - sharedRemoteEstimatedBandwidth;
     }
 
     v12 = 1256;
-    if (v10 < v9)
+    if (v10 < sharedRemoteEstimatedBandwidth)
     {
       v12 = 1260;
     }
@@ -1487,7 +1487,7 @@ LABEL_11:
   _os_log_error_impl(v0, v1, v2, v3, v4, 0x26u);
 }
 
-- (void)getRealTimeStatsForServerBasedTxOnly:(__CFDictionary *)a3
+- (void)getRealTimeStatsForServerBasedTxOnly:(__CFDictionary *)only
 {
   countPeriodicTaskUpdate = self->_countPeriodicTaskUpdate;
   if (countPeriodicTaskUpdate)
@@ -1500,25 +1500,25 @@ LABEL_11:
     v6 = 0.0;
   }
 
-  CFDictionaryAddValue(a3, @"ULPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
-  CFDictionaryAddValue(a3, @"RTTUL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
-  CFDictionaryAddValue(a3, @"ULTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"ULSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actualBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"ULWMBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wifiTxMediaBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"ULWNBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wifiNonAVCTxMediaBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"ULBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedEstimatedBandwidthUncapped](self->_statisticsCollector, "sharedEstimatedBandwidthUncapped") / 0x3E8uLL}]);
-  CFDictionaryAddValue(a3, @"ULTBSNT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalBytesSent]);
-  CFDictionaryAddValue(a3, @"ULTPRC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsReceived]);
-  CFDictionaryAddValue(a3, @"ULTPST", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsSent]);
-  CFDictionaryAddValue(a3, @"ULLBA", [MEMORY[0x1E696AD98] numberWithInt:{-[VCRateControlAlgorithm isLossBasedAdaptationOn](self->_rateControlAlgorithm, "isLossBasedAdaptationOn")}]);
+  CFDictionaryAddValue(only, @"ULPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
+  CFDictionaryAddValue(only, @"RTTUL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
+  CFDictionaryAddValue(only, @"ULTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"ULSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actualBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"ULWMBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wifiTxMediaBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"ULWNBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_wifiNonAVCTxMediaBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"ULBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedEstimatedBandwidthUncapped](self->_statisticsCollector, "sharedEstimatedBandwidthUncapped") / 0x3E8uLL}]);
+  CFDictionaryAddValue(only, @"ULTBSNT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalBytesSent]);
+  CFDictionaryAddValue(only, @"ULTPRC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsReceived]);
+  CFDictionaryAddValue(only, @"ULTPST", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsSent]);
+  CFDictionaryAddValue(only, @"ULLBA", [MEMORY[0x1E696AD98] numberWithInt:{-[VCRateControlAlgorithm isLossBasedAdaptationOn](self->_rateControlAlgorithm, "isLossBasedAdaptationOn")}]);
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[AVCBasebandCongestionDetector basebandNotificationType](self->_basebandCongestionDetector, "basebandNotificationType") == 4}];
 
-  CFDictionaryAddValue(a3, @"BBNOTENW", v7);
+  CFDictionaryAddValue(only, @"BBNOTENW", v7);
 }
 
-- (void)getRealTimeStatsForServerBasedRxOnly:(__CFDictionary *)a3
+- (void)getRealTimeStatsForServerBasedRxOnly:(__CFDictionary *)only
 {
-  CFDictionaryAddValue(a3, @"DLTPRC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsReceived]);
+  CFDictionaryAddValue(only, @"DLTPRC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalPacketsReceived]);
   countPeriodicTaskUpdate = self->_countPeriodicTaskUpdate;
   if (countPeriodicTaskUpdate)
   {
@@ -1530,18 +1530,18 @@ LABEL_11:
     v6 = 0.0;
   }
 
-  CFDictionaryAddValue(a3, @"DLPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
-  CFDictionaryAddValue(a3, @"RTTDL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
-  CFDictionaryAddValue(a3, @"DLTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"DLRBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actualBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"DLBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedEstimatedBandwidthUncapped](self->_statisticsCollector, "sharedEstimatedBandwidthUncapped") / 0x3E8uLL}]);
-  CFDictionaryAddValue(a3, @"DLTBRCVD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalBytesReceived]);
+  CFDictionaryAddValue(only, @"DLPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
+  CFDictionaryAddValue(only, @"RTTDL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
+  CFDictionaryAddValue(only, @"DLTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"DLRBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actualBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(only, @"DLBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedEstimatedBandwidthUncapped](self->_statisticsCollector, "sharedEstimatedBandwidthUncapped") / 0x3E8uLL}]);
+  CFDictionaryAddValue(only, @"DLTBRCVD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_totalBytesReceived]);
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCRateControlAlgorithm isLossBasedAdaptationOn](self->_rateControlAlgorithm, "isLossBasedAdaptationOn")}];
 
-  CFDictionaryAddValue(a3, @"DLLBA", v7);
+  CFDictionaryAddValue(only, @"DLLBA", v7);
 }
 
-- (void)getRealTimeStatsForLowLatency:(__CFDictionary *)a3
+- (void)getRealTimeStatsForLowLatency:(__CFDictionary *)latency
 {
   countPeriodicTaskUpdate = self->_countPeriodicTaskUpdate;
   if (countPeriodicTaskUpdate)
@@ -1554,25 +1554,25 @@ LABEL_11:
     v6 = 0.0;
   }
 
-  CFDictionaryAddValue(a3, @"ULPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
-  CFDictionaryAddValue(a3, @"RTT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
-  CFDictionaryAddValue(a3, @"ULTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
-  CFDictionaryAddValue(a3, @"ULBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedRemoteEstimatedBandwidth](self->_statisticsCollector, "sharedRemoteEstimatedBandwidth") / 0x3E8uLL}]);
-  CFDictionaryAddValue(a3, @"ULBPL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_burstPacketLoss]);
+  CFDictionaryAddValue(latency, @"ULPLR", [MEMORY[0x1E696AD98] numberWithDouble:v6]);
+  CFDictionaryAddValue(latency, @"RTT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_roundTripTimeMilliseconds]);
+  CFDictionaryAddValue(latency, @"ULTBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_targetBitrate / 0x3E8uLL]);
+  CFDictionaryAddValue(latency, @"ULBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AVCStatisticsCollector sharedRemoteEstimatedBandwidth](self->_statisticsCollector, "sharedRemoteEstimatedBandwidth") / 0x3E8uLL}]);
+  CFDictionaryAddValue(latency, @"ULBPL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_burstPacketLoss]);
   nwConnectionCongestionDetector = self->_nwConnectionCongestionDetector;
   if (nwConnectionCongestionDetector)
   {
-    CFDictionaryAddValue(a3, @"NWAPD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector averagePacketDelayMs](nwConnectionCongestionDetector, "averagePacketDelayMs")}]);
-    CFDictionaryAddValue(a3, @"MAWFPD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector maxAveragePacketDelayMs](self->_nwConnectionCongestionDetector, "maxAveragePacketDelayMs")}]);
-    CFDictionaryAddValue(a3, @"NWATH", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector averageThroughputBps](self->_nwConnectionCongestionDetector, "averageThroughputBps") / 0x3E8uLL}]);
-    CFDictionaryAddValue(a3, @"NWNaC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector packetDropCount](self->_nwConnectionCongestionDetector, "packetDropCount")}]);
+    CFDictionaryAddValue(latency, @"NWAPD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector averagePacketDelayMs](nwConnectionCongestionDetector, "averagePacketDelayMs")}]);
+    CFDictionaryAddValue(latency, @"MAWFPD", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector maxAveragePacketDelayMs](self->_nwConnectionCongestionDetector, "maxAveragePacketDelayMs")}]);
+    CFDictionaryAddValue(latency, @"NWATH", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector averageThroughputBps](self->_nwConnectionCongestionDetector, "averageThroughputBps") / 0x3E8uLL}]);
+    CFDictionaryAddValue(latency, @"NWNaC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCNWConnectionCongestionDetector packetDropCount](self->_nwConnectionCongestionDetector, "packetDropCount")}]);
     v8 = self->_nwConnectionCongestionDetector;
 
     [(VCNWConnectionCongestionDetector *)v8 setMaxAveragePacketDelayMs:0];
   }
 }
 
-- (void)getRealTimeStats:(__CFDictionary *)a3
+- (void)getRealTimeStats:(__CFDictionary *)stats
 {
   v5 = *MEMORY[0x1E695E480];
   countPeriodicTaskUpdate = self->_countPeriodicTaskUpdate;
@@ -1582,7 +1582,7 @@ LABEL_11:
   }
 
   v7 = CFStringCreateWithFormat(v5, 0, @"%u", countPeriodicTaskUpdate);
-  CFDictionaryAddValue(a3, @"PLR", v7);
+  CFDictionaryAddValue(stats, @"PLR", v7);
   CFRelease(v7);
   v8 = self->_countPeriodicTaskUpdate;
   if (v8)
@@ -1591,22 +1591,22 @@ LABEL_11:
   }
 
   v9 = CFStringCreateWithFormat(v5, 0, @"%u", v8);
-  CFDictionaryAddValue(a3, @"VPLR", v9);
+  CFDictionaryAddValue(stats, @"VPLR", v9);
   CFRelease(v9);
   v10 = CFStringCreateWithFormat(v5, 0, @"%u", self->_roundTripTimeMilliseconds);
-  CFDictionaryAddValue(a3, @"RTT", v10);
+  CFDictionaryAddValue(stats, @"RTT", v10);
   CFRelease(v10);
   v11 = CFStringCreateWithFormat(v5, 0, @"%u", self->_targetBitrate / 0x3E8uLL);
-  CFDictionaryAddValue(a3, @"TTxR", v11);
+  CFDictionaryAddValue(stats, @"TTxR", v11);
   CFRelease(v11);
   v12 = CFStringCreateWithFormat(v5, 0, @"%u", self->_actualBitrate / 0x3E8uLL);
-  CFDictionaryAddValue(a3, @"ULSBR", v12);
+  CFDictionaryAddValue(stats, @"ULSBR", v12);
   CFRelease(v12);
   v13 = CFStringCreateWithFormat(v5, 0, @"%u", [(AVCStatisticsCollector *)self->_statisticsCollector sharedEstimatedBandwidthUncapped]/ 0x3E8uLL);
-  CFDictionaryAddValue(a3, @"DBE", v13);
+  CFDictionaryAddValue(stats, @"DBE", v13);
   CFRelease(v13);
   v14 = CFStringCreateWithFormat(v5, 0, @"%u", [(AVCStatisticsCollector *)self->_statisticsCollector sharedRemoteEstimatedBandwidth]/ 0x3E8uLL);
-  CFDictionaryAddValue(a3, @"UBE", v14);
+  CFDictionaryAddValue(stats, @"UBE", v14);
   CFRelease(v14);
   v15 = self->_countPeriodicTaskUpdate;
   if (v15)
@@ -1619,7 +1619,7 @@ LABEL_11:
     v16 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"WRRTT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16]);
+  CFDictionaryAddValue(stats, @"WRRTT", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16]);
   v17 = self->_countPeriodicTaskUpdate;
   if (v17)
   {
@@ -1631,7 +1631,7 @@ LABEL_11:
     v18 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"WRBPL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v18]);
+  CFDictionaryAddValue(stats, @"WRBPL", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v18]);
   v19 = self->_countPeriodicTaskUpdate;
   if (v19)
   {
@@ -1643,7 +1643,7 @@ LABEL_11:
     v20 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"OVSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v20]);
+  CFDictionaryAddValue(stats, @"OVSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v20]);
   v21 = self->_countPeriodicTaskUpdate;
   if (v21)
   {
@@ -1655,7 +1655,7 @@ LABEL_11:
     v22 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"UNSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v22]);
+  CFDictionaryAddValue(stats, @"UNSBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v22]);
   v23 = self->_countPeriodicTaskUpdate;
   if (v23)
   {
@@ -1667,7 +1667,7 @@ LABEL_11:
     v24 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"OVBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v24]);
+  CFDictionaryAddValue(stats, @"OVBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v24]);
   v25 = self->_countPeriodicTaskUpdate;
   if (v25)
   {
@@ -1679,7 +1679,7 @@ LABEL_11:
     v26 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"UNBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v26]);
+  CFDictionaryAddValue(stats, @"UNBWE", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v26]);
   v27 = self->_countPeriodicTaskUpdate;
   if (v27)
   {
@@ -1691,17 +1691,17 @@ LABEL_11:
     v28 = 0;
   }
 
-  CFDictionaryAddValue(a3, @"AExTR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v28]);
-  v29 = [(AVCStatisticsCollector *)self->_statisticsCollector sharedEstimatedBandwidth];
+  CFDictionaryAddValue(stats, @"AExTR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v28]);
+  sharedEstimatedBandwidth = [(AVCStatisticsCollector *)self->_statisticsCollector sharedEstimatedBandwidth];
   lastReportedBandwidthEstimation = self->_lastReportedBandwidthEstimation;
-  if (lastReportedBandwidthEstimation && v29 && lastReportedBandwidthEstimation / v29 > 2.0 && lastReportedBandwidthEstimation - v29 >= 0x2EF)
+  if (lastReportedBandwidthEstimation && sharedEstimatedBandwidth && lastReportedBandwidthEstimation / sharedEstimatedBandwidth > 2.0 && lastReportedBandwidthEstimation - sharedEstimatedBandwidth >= 0x2EF)
   {
     ++self->_totalSuddenBandwidthDropCount;
   }
 
-  self->_lastReportedBandwidthEstimation = v29;
+  self->_lastReportedBandwidthEstimation = sharedEstimatedBandwidth;
   v31 = CFStringCreateWithFormat(v5, 0, @"%u", self->_totalSuddenBandwidthDropCount);
-  CFDictionaryAddValue(a3, @"SBWD", v31);
+  CFDictionaryAddValue(stats, @"SBWD", v31);
   CFRelease(v31);
   if ([(VCRateControlAlgorithm *)self->_rateControlAlgorithm didMBLRampDown])
   {
@@ -1710,61 +1710,61 @@ LABEL_11:
 
   [(VCRateControlAlgorithm *)self->_rateControlAlgorithm setDidMBLRampDown:0];
   v32 = CFStringCreateWithFormat(v5, 0, @"%u", self->_totalMBLRampDownCount);
-  CFDictionaryAddValue(a3, @"RDMBL", v32);
+  CFDictionaryAddValue(stats, @"RDMBL", v32);
   CFRelease(v32);
   [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector basebandExpectedQueuingDelay];
   v34 = CFStringCreateWithFormat(v5, 0, @"%u", (v33 * 1000.0));
-  CFDictionaryAddValue(a3, @"BbD", v34);
+  CFDictionaryAddValue(stats, @"BbD", v34);
   CFRelease(v34);
   v35 = CFStringCreateWithFormat(v5, 0, @"%u", [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector basebandQueueDepth]);
-  CFDictionaryAddValue(a3, @"BbQ", v35);
+  CFDictionaryAddValue(stats, @"BbQ", v35);
   CFRelease(v35);
   v36 = CFStringCreateWithFormat(v5, 0, @"%5.1f", [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector basebandAverageBitrate]/ 1000.0);
-  CFDictionaryAddValue(a3, @"BbTx", v36);
+  CFDictionaryAddValue(stats, @"BbTx", v36);
   CFRelease(v36);
   v37 = CFStringCreateWithFormat(v5, 0, @"%5.1f", [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector basebandTxBitrate]/ 1000.0);
-  CFDictionaryAddValue(a3, @"InTxR", v37);
+  CFDictionaryAddValue(stats, @"InTxR", v37);
   CFRelease(v37);
-  v38 = [(VCRateControlMediaController *)self->_mediaController basebandFlushedVideoCount];
-  v39 = [(VCRateControlMediaController *)self->_mediaController basebandFlushedAudioCount];
-  v40 = CFStringCreateWithFormat(v5, 0, @"%u", v38 - self->_lastReportFlushedVideoPacketCount);
-  CFDictionaryAddValue(a3, @"VPF", v40);
+  basebandFlushedVideoCount = [(VCRateControlMediaController *)self->_mediaController basebandFlushedVideoCount];
+  basebandFlushedAudioCount = [(VCRateControlMediaController *)self->_mediaController basebandFlushedAudioCount];
+  v40 = CFStringCreateWithFormat(v5, 0, @"%u", basebandFlushedVideoCount - self->_lastReportFlushedVideoPacketCount);
+  CFDictionaryAddValue(stats, @"VPF", v40);
   CFRelease(v40);
-  v41 = CFStringCreateWithFormat(v5, 0, @"%u", v39 - self->_lastReportFlushedAudioPacketCount);
-  CFDictionaryAddValue(a3, @"APF", v41);
+  v41 = CFStringCreateWithFormat(v5, 0, @"%u", basebandFlushedAudioCount - self->_lastReportFlushedAudioPacketCount);
+  CFDictionaryAddValue(stats, @"APF", v41);
   CFRelease(v41);
-  v42 = [(VCRateControlMediaController *)self->_mediaController basebandDropAudioCount];
-  v43 = [(VCRateControlMediaController *)self->_mediaController basebandDropVideoCount];
-  v44 = CFStringCreateWithFormat(v5, 0, @"%u", v42 - self->_lastReportBasebandDropAudioPacketCount);
-  CFDictionaryAddValue(a3, @"APBBD", v44);
+  basebandDropAudioCount = [(VCRateControlMediaController *)self->_mediaController basebandDropAudioCount];
+  basebandDropVideoCount = [(VCRateControlMediaController *)self->_mediaController basebandDropVideoCount];
+  v44 = CFStringCreateWithFormat(v5, 0, @"%u", basebandDropAudioCount - self->_lastReportBasebandDropAudioPacketCount);
+  CFDictionaryAddValue(stats, @"APBBD", v44);
   CFRelease(v44);
-  v45 = CFStringCreateWithFormat(v5, 0, @"%u", v43 - self->_lastReportBasebandDropVideoPacketCount);
-  CFDictionaryAddValue(a3, @"VPBBD", v45);
+  v45 = CFStringCreateWithFormat(v5, 0, @"%u", basebandDropVideoCount - self->_lastReportBasebandDropVideoPacketCount);
+  CFDictionaryAddValue(stats, @"VPBBD", v45);
   CFRelease(v45);
   v46 = CFStringCreateWithFormat(v5, 0, @"%u", [(AVCBasebandCongestionDetector *)self->_basebandCongestionDetector basebandNotificationType]== 4);
-  CFDictionaryAddValue(a3, @"BBNOTENW", v46);
+  CFDictionaryAddValue(stats, @"BBNOTENW", v46);
   CFRelease(v46);
   v47 = CFStringCreateWithFormat(v5, 0, @"%u", self->_remotePacketReceivedAudio);
-  CFDictionaryAddValue(a3, @"APRR", v47);
+  CFDictionaryAddValue(stats, @"APRR", v47);
   CFRelease(v47);
   v48 = CFStringCreateWithFormat(v5, 0, @"%u", self->_remoteECT1ReceiveCount);
-  CFDictionaryAddValue(a3, @"ECT1Cnt", v48);
+  CFDictionaryAddValue(stats, @"ECT1Cnt", v48);
   CFRelease(v48);
   v49 = CFStringCreateWithFormat(v5, 0, @"%u", self->_remoteCEReceiveCount);
-  CFDictionaryAddValue(a3, @"CECnt", v49);
+  CFDictionaryAddValue(stats, @"CECnt", v49);
   CFRelease(v49);
   v50 = CFStringCreateWithFormat(v5, 0, @"%u", self->_isCongestedForReport);
-  CFDictionaryAddValue(a3, @"NWCng", v50);
+  CFDictionaryAddValue(stats, @"NWCng", v50);
   CFRelease(v50);
   if ([(VCRateControlAlgorithm *)self->_rateControlAlgorithm bytesInFlightState]!= -1)
   {
     v51 = CFStringCreateWithFormat(v5, 0, @"%u", [(VCRateControlAlgorithm *)self->_rateControlAlgorithm bytesInFlightState]== 0);
-    CFDictionaryAddValue(a3, @"BIFCng", v51);
+    CFDictionaryAddValue(stats, @"BIFCng", v51);
     CFRelease(v51);
   }
 
   v52 = CFStringCreateWithFormat(v5, 0, @"%u", [(VCRateControlAlgorithm *)self->_rateControlAlgorithm isLossBasedAdaptationOn]);
-  CFDictionaryAddValue(a3, @"ULLBA", v52);
+  CFDictionaryAddValue(stats, @"ULLBA", v52);
   CFRelease(v52);
   if (VCMediaControlInfo_IsLossStatsEnabled([(AVCStatisticsCollector *)self->_statisticsCollector mediaControlInfoFECFeedbackVersion]))
   {
@@ -1777,32 +1777,32 @@ LABEL_11:
   }
 
   v54 = CFStringCreateWithFormat(v5, 0, @"%u", remotePacketReceivedVideo);
-  CFDictionaryAddValue(a3, @"VPRR", v54);
+  CFDictionaryAddValue(stats, @"VPRR", v54);
   CFRelease(v54);
-  self->_lastReportFlushedVideoPacketCount = v38;
-  self->_lastReportFlushedAudioPacketCount = v39;
-  self->_lastReportBasebandDropAudioPacketCount = v42;
-  self->_lastReportBasebandDropVideoPacketCount = v43;
+  self->_lastReportFlushedVideoPacketCount = basebandFlushedVideoCount;
+  self->_lastReportFlushedAudioPacketCount = basebandFlushedAudioCount;
+  self->_lastReportBasebandDropAudioPacketCount = basebandDropAudioCount;
+  self->_lastReportBasebandDropVideoPacketCount = basebandDropVideoCount;
 }
 
-- (void)setShareProfile:(id)a3
+- (void)setShareProfile:(id)profile
 {
-  v4 = [a3 rateSharingCount];
+  rateSharingCount = [profile rateSharingCount];
   rateControlAlgorithm = self->_rateControlAlgorithm;
 
-  [(VCRateControlAlgorithm *)rateControlAlgorithm setRateSharingCount:v4];
+  [(VCRateControlAlgorithm *)rateControlAlgorithm setRateSharingCount:rateSharingCount];
 }
 
-- (void)configureTrafficType:(unsigned __int8)a3 inRateControlConfig:(AVCRateControlConfig *)a4
+- (void)configureTrafficType:(unsigned __int8)type inRateControlConfig:(AVCRateControlConfig *)config
 {
-  if (a3)
+  if (type)
   {
-    a4->isTrafficBursty = 1;
+    config->isTrafficBursty = 1;
   }
 
-  if ((a3 & 2) != 0)
+  if ((type & 2) != 0)
   {
-    a4->isTrafficSpatial = 1;
+    config->isTrafficSpatial = 1;
   }
 
   mode = self->_configuration.mode;
@@ -1814,29 +1814,29 @@ LABEL_11:
   }
 }
 
-- (void)configureWithOperatingMode:(int)a3 isLocalCellular:(BOOL)a4 localCellTech:(int)a5 isRemoteCellular:(BOOL)a6 remoteCellTech:(int)a7 bitrateCapKbps:(unsigned int)a8 trafficType:(unsigned __int8)a9 featureFlags:(unsigned int)a10
+- (void)configureWithOperatingMode:(int)mode isLocalCellular:(BOOL)cellular localCellTech:(int)tech isRemoteCellular:(BOOL)remoteCellular remoteCellTech:(int)cellTech bitrateCapKbps:(unsigned int)kbps trafficType:(unsigned __int8)type featureFlags:(unsigned int)self0
 {
-  v11 = *&a7;
-  v12 = a6;
-  v13 = *&a5;
-  v14 = a4;
+  v11 = *&cellTech;
+  remoteCellularCopy = remoteCellular;
+  v13 = *&tech;
+  cellularCopy = cellular;
   v20 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v18 = 0u;
-  LODWORD(v17) = [(AVCRateController *)self rateControlModeFromAVConferenceOperatingMode:*&a3];
-  DWORD1(v17) = [(AVCRateController *)self radioAccessTechnologyFromAVConferenceCellTech:v13 isCellular:v14];
-  DWORD2(v17) = [(AVCRateController *)self radioAccessTechnologyFromAVConferenceCellTech:v11 isCellular:v12];
-  HIDWORD(v17) = 1000 * a8;
+  LODWORD(v17) = [(AVCRateController *)self rateControlModeFromAVConferenceOperatingMode:*&mode];
+  DWORD1(v17) = [(AVCRateController *)self radioAccessTechnologyFromAVConferenceCellTech:v13 isCellular:cellularCopy];
+  DWORD2(v17) = [(AVCRateController *)self radioAccessTechnologyFromAVConferenceCellTech:v11 isCellular:remoteCellularCopy];
+  HIDWORD(v17) = 1000 * kbps;
   LODWORD(v18) = 0;
-  [(AVCRateController *)self configureTrafficType:a9 inRateControlConfig:&v17];
-  DWORD2(v19) = [(AVCRateController *)self loadDefaultVCRCFeatureFlags:a10];
+  [(AVCRateController *)self configureTrafficType:type inRateControlConfig:&v17];
+  DWORD2(v19) = [(AVCRateController *)self loadDefaultVCRCFeatureFlags:flags];
   v16[0] = v17;
   v16[1] = v18;
   v16[2] = v19;
   [(AVCRateController *)self configure:v16];
 }
 
-- (void)setTargetBitrateCap:(unsigned int)a3
+- (void)setTargetBitrateCap:(unsigned int)cap
 {
   v12 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1857,26 +1857,26 @@ LABEL_11:
       *&v11[26] = 1024;
       *&v11[28] = targetBitrateCap;
       *&v11[32] = 1024;
-      *&v11[34] = a3;
+      *&v11[34] = cap;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d (%p) AVCRateController target bitrate cap %d -> %d", v10, 0x32u);
     }
   }
 
-  self->_targetBitrateCap = a3;
+  self->_targetBitrateCap = cap;
   *v10 = *&self->_configuration.mode;
   remoteRadioAccessTechnology = self->_configuration.remoteRadioAccessTechnology;
   v9 = *&self->_configuration.algorithmConfig;
   *&v11[4] = *&self->_configuration.minBitrate;
   *&v11[20] = v9;
   *&v10[8] = remoteRadioAccessTechnology;
-  *v11 = a3;
+  *v11 = cap;
   [(AVCRateController *)self configure:v10];
 }
 
-- (void)setEstimatedBandwidthCap:(unsigned int)a3
+- (void)setEstimatedBandwidthCap:(unsigned int)cap
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (cap)
   {
     if ((self->_configuration.mode & 0xFFFFFFFE) == 4)
     {
@@ -1888,7 +1888,7 @@ LABEL_11:
         ++v6;
       }
 
-      while (v7 < a3);
+      while (v7 < cap);
     }
 
     else
@@ -1901,7 +1901,7 @@ LABEL_11:
         ++v6;
       }
 
-      while (v10 < a3);
+      while (v10 < cap);
     }
 
     if (v6 >= 31)
@@ -1947,9 +1947,9 @@ LABEL_11:
       v20 = 1024;
       v21 = 1271;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 1024;
-      v25 = a3;
+      capCopy = cap;
       v26 = 1024;
       v27 = estimatedBandwidthCap;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, "AVCRC [%s] %s:%d (%p) AVCRateController bandwidth estimation cap %d -> %d", &v16, 0x32u);
@@ -1959,10 +1959,10 @@ LABEL_11:
   [(AVCStatisticsCollector *)self->_statisticsCollector setEstimatedBandwidthCap:self->_estimatedBandwidthCap];
 }
 
-- (void)registerForRateSharing:(unsigned int)a3
+- (void)registerForRateSharing:(unsigned int)sharing
 {
   os_unfair_lock_lock(&self->_registrationLock);
-  if ((a3 & 0xFFFFFFFB) != 8 || self->_isRegisteredForRateSharing)
+  if ((sharing & 0xFFFFFFFB) != 8 || self->_isRegisteredForRateSharing)
   {
   }
 
@@ -1998,7 +1998,7 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_registrationLock);
 }
 
-- (unsigned)loadDefaultVCRCFeatureFlags:(unsigned int)a3
+- (unsigned)loadDefaultVCRCFeatureFlags:(unsigned int)flags
 {
   if (VCDefaults_GetBoolValueForKey(@"disableBasebandAdaptation", 0))
   {
@@ -2010,7 +2010,7 @@ LABEL_11:
     v4 = 189;
   }
 
-  v5 = v4 | a3;
+  v5 = v4 | flags;
   if (VCDefaults_GetBoolValueForKey(@"enableRampDownSuppression", 0))
   {
     v5 |= 0x400u;
@@ -2044,7 +2044,7 @@ LABEL_11:
 
 - (void)setBtNotificationMonitor
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2068,7 +2068,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2117,27 +2117,27 @@ void __45__AVCRateController_setBtNotificationMonitor__block_invoke(uint64_t a1,
   }
 }
 
-- (unsigned)rateControlModeFromAVConferenceOperatingMode:(int)a3
+- (unsigned)rateControlModeFromAVConferenceOperatingMode:(int)mode
 {
   result = 2;
-  if (a3 <= 3)
+  if (mode <= 3)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       return 1;
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
       return 0;
     }
   }
 
-  else if (a3 != 7)
+  else if (mode != 7)
   {
-    if (a3 != 6)
+    if (mode != 6)
     {
-      return a3 == 4;
+      return mode == 4;
     }
 
     if (self->_isUplink)
@@ -2154,19 +2154,19 @@ void __45__AVCRateController_setBtNotificationMonitor__block_invoke(uint64_t a1,
   return result;
 }
 
-- (unsigned)radioAccessTechnologyFromAVConferenceCellTech:(int)a3 isCellular:(BOOL)a4
+- (unsigned)radioAccessTechnologyFromAVConferenceCellTech:(int)tech isCellular:(BOOL)cellular
 {
-  if (!a4)
+  if (!cellular)
   {
     return 1;
   }
 
-  if ((a3 - 1) > 8)
+  if ((tech - 1) > 8)
   {
     return 0;
   }
 
-  return dword_1DBD45790[a3 - 1];
+  return dword_1DBD45790[tech - 1];
 }
 
 - (void)createBasebandLogDumpFile
@@ -2220,10 +2220,10 @@ void __45__AVCRateController_setBtNotificationMonitor__block_invoke(uint64_t a1,
   [(AVCRateController *)self releaseLogDumpFile:&self->_logBWEDump];
 }
 
-- (void)releaseLogDumpFile:(void *)a3
+- (void)releaseLogDumpFile:(void *)file
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (*a3)
+  if (*file)
   {
     *&v4 = 0xAAAAAAAAAAAAAAAALL;
     *(&v4 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -2237,9 +2237,9 @@ void __45__AVCRateController_setBtNotificationMonitor__block_invoke(uint64_t a1,
     v11[1] = v4;
     micro();
     VRLogfileGetTimestamp(v11, 0x80u);
-    VRLogfilePrintSync(*a3, "%s\t%8.3f\tEndOfFile\n", v5, v6, v7, v8, v9, v10, v11);
-    VRLogfileFree(a3);
-    *a3 = 0;
+    VRLogfilePrintSync(*file, "%s\t%8.3f\tEndOfFile\n", v5, v6, v7, v8, v9, v10, v11);
+    VRLogfileFree(file);
+    *file = 0;
   }
 }
 
@@ -2302,7 +2302,7 @@ void __45__AVCRateController_setBtNotificationMonitor__block_invoke(uint64_t a1,
         v26 = 1024;
         v27 = 3525;
         v28 = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 1024;
         v31 = mode;
         v32 = 1024;

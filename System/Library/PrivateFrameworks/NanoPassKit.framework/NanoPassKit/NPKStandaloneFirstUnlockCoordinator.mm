@@ -1,25 +1,25 @@
 @interface NPKStandaloneFirstUnlockCoordinator
-- (NPKStandaloneFirstUnlockCoordinator)initWithQueue:(id)a3;
+- (NPKStandaloneFirstUnlockCoordinator)initWithQueue:(id)queue;
 - (void)_performFirstUnlockWork;
 - (void)dealloc;
-- (void)performSubjectToFirstUnlock:(id)a3;
+- (void)performSubjectToFirstUnlock:(id)unlock;
 @end
 
 @implementation NPKStandaloneFirstUnlockCoordinator
 
-- (NPKStandaloneFirstUnlockCoordinator)initWithQueue:(id)a3
+- (NPKStandaloneFirstUnlockCoordinator)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = NPKStandaloneFirstUnlockCoordinator;
   v6 = [(NPKStandaloneFirstUnlockCoordinator *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_queue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     blocksToPerformAfterFirstDeviceUnlock = v7->_blocksToPerformAfterFirstDeviceUnlock;
-    v7->_blocksToPerformAfterFirstDeviceUnlock = v8;
+    v7->_blocksToPerformAfterFirstDeviceUnlock = array;
 
     objc_initWeak(&location, v7);
     v11[0] = MEMORY[0x277D85DD0];
@@ -27,7 +27,7 @@
     v11[2] = __53__NPKStandaloneFirstUnlockCoordinator_initWithQueue___block_invoke;
     v11[3] = &unk_279944F20;
     objc_copyWeak(&v12, &location);
-    notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &v7->_firstDeviceUnlockRegistrationToken, v5, v11);
+    notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &v7->_firstDeviceUnlockRegistrationToken, queueCopy, v11);
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -75,16 +75,16 @@ void __53__NPKStandaloneFirstUnlockCoordinator_initWithQueue___block_invoke(uint
   [(NPKStandaloneFirstUnlockCoordinator *)&v3 dealloc];
 }
 
-- (void)performSubjectToFirstUnlock:(id)a3
+- (void)performSubjectToFirstUnlock:(id)unlock
 {
-  v4 = a3;
-  v5 = [(NPKStandaloneFirstUnlockCoordinator *)self queue];
-  dispatch_assert_queue_V2(v5);
+  unlockCopy = unlock;
+  queue = [(NPKStandaloneFirstUnlockCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(NPKStandaloneFirstUnlockCoordinator *)self blocksToPerformAfterFirstDeviceUnlock];
-  v7 = _Block_copy(v4);
+  blocksToPerformAfterFirstDeviceUnlock = [(NPKStandaloneFirstUnlockCoordinator *)self blocksToPerformAfterFirstDeviceUnlock];
+  v7 = _Block_copy(unlockCopy);
 
-  [v6 addObject:v7];
+  [blocksToPerformAfterFirstDeviceUnlock addObject:v7];
   if (NPKProtectedDataAvailable())
   {
 
@@ -110,14 +110,14 @@ void __53__NPKStandaloneFirstUnlockCoordinator_initWithQueue___block_invoke(uint
 
 - (void)_performFirstUnlockWork
 {
-  v3 = [(NPKStandaloneFirstUnlockCoordinator *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(NPKStandaloneFirstUnlockCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(NPKStandaloneFirstUnlockCoordinator *)self blocksToPerformAfterFirstDeviceUnlock];
-  v4 = [MEMORY[0x277CBEB18] array];
-  [(NPKStandaloneFirstUnlockCoordinator *)self setBlocksToPerformAfterFirstDeviceUnlock:v4];
+  blocksToPerformAfterFirstDeviceUnlock = [(NPKStandaloneFirstUnlockCoordinator *)self blocksToPerformAfterFirstDeviceUnlock];
+  array = [MEMORY[0x277CBEB18] array];
+  [(NPKStandaloneFirstUnlockCoordinator *)self setBlocksToPerformAfterFirstDeviceUnlock:array];
 
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_19];
+  [blocksToPerformAfterFirstDeviceUnlock enumerateObjectsUsingBlock:&__block_literal_global_19];
 }
 
 @end

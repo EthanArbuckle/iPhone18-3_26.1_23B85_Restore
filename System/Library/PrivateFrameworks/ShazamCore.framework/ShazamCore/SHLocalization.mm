@@ -1,15 +1,15 @@
 @interface SHLocalization
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 + (id)shFrameworkBundle;
 @end
 
 @implementation SHLocalization
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 shFrameworkBundle];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_2845D1F60 table:@"Localizable"];
+  keyCopy = key;
+  shFrameworkBundle = [self shFrameworkBundle];
+  v6 = [shFrameworkBundle localizedStringForKey:keyCopy value:&stru_2845D1F60 table:@"Localizable"];
 
   return v6;
 }

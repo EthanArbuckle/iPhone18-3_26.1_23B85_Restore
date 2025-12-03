@@ -7,8 +7,8 @@
 
 - (uint64_t)CUIKEditingContext_saveWithSpan:()Saving error:
 {
-  v6 = [a1 eventStore];
-  v7 = [v6 saveSource:a1 commit:0 error:a4];
+  eventStore = [self eventStore];
+  v7 = [eventStore saveSource:self commit:0 error:a4];
 
   if ((v7 & 1) == 0)
   {
@@ -24,8 +24,8 @@
 
 - (uint64_t)CUIKEditingContext_removeWithSpan:()Saving error:
 {
-  v6 = [a1 eventStore];
-  v7 = [v6 removeSource:a1 commit:0 error:a4];
+  eventStore = [self eventStore];
+  v7 = [eventStore removeSource:self commit:0 error:a4];
 
   if ((v7 & 1) == 0)
   {

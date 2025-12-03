@@ -1,5 +1,5 @@
 @interface WOCorePowerZonesAlertTargetZone
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (WOCorePowerZonesAlertTargetZone)init;
 - (int64_t)hash;
@@ -14,7 +14,7 @@
   swift_beginAccess();
   v7 = *v3;
   v8 = v3[16];
-  v4 = self;
+  selfCopy = self;
   PowerZonesAlertZoneType.hash(into:)(v9);
   v5 = Hasher.finalize()();
 
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PowerZonesAlertTargetZone.isEqual(_:)(v8);

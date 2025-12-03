@@ -1,7 +1,7 @@
 @interface CFXOverlayEffectPickerView
 - (JTCollectionView)collectionView;
 - (UIView)contentView;
-- (void)didResizeCollectionViewToSize:(CGSize)a3;
+- (void)didResizeCollectionViewToSize:(CGSize)size;
 - (void)subviewsDidLoad;
 - (void)updateThumbnailColumnSizeForCollectionSize;
 @end
@@ -13,32 +13,32 @@
   v6.receiver = self;
   v6.super_class = CFXOverlayEffectPickerView;
   [(CFXEffectPickerView *)&v6 subviewsDidLoad];
-  v3 = [(CFXOverlayEffectPickerView *)self collectionView];
-  [v3 setContentInset:{9.0, 16.0, 0.0, 16.0}];
+  collectionView = [(CFXOverlayEffectPickerView *)self collectionView];
+  [collectionView setContentInset:{9.0, 16.0, 0.0, 16.0}];
 
-  v4 = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
-  [v4 setMinimumLineSpacing:16.0];
+  collectionViewLayout = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
+  [collectionViewLayout setMinimumLineSpacing:16.0];
 
-  v5 = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
-  [v5 setMinimumInteritemSpacing:16.0];
+  collectionViewLayout2 = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
+  [collectionViewLayout2 setMinimumInteritemSpacing:16.0];
 
   [(CFXOverlayEffectPickerView *)self updateThumbnailColumnSizeForCollectionSize];
 }
 
 - (void)updateThumbnailColumnSizeForCollectionSize
 {
-  v3 = [(CFXOverlayEffectPickerView *)self window];
+  window = [(CFXOverlayEffectPickerView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CFXOverlayEffectPickerView *)self collectionView];
-    [v4 bounds];
+    collectionView = [(CFXOverlayEffectPickerView *)self collectionView];
+    [collectionView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CFXOverlayEffectPickerView *)self collectionView];
-    [v13 contentInset];
+    collectionView2 = [(CFXOverlayEffectPickerView *)self collectionView];
+    [collectionView2 contentInset];
     v15 = v6 + v14;
     v17 = v8 + v16;
     v19 = v10 - (v14 + v18);
@@ -49,8 +49,8 @@
     v28.size.width = v19;
     v28.size.height = v21;
     Width = CGRectGetWidth(v28);
-    v23 = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
-    [v23 minimumInteritemSpacing];
+    collectionViewLayout = [(CFXOverlayEffectPickerView *)self collectionViewLayout];
+    [collectionViewLayout minimumInteritemSpacing];
     v25 = (4.0 + -1.0) * v24;
 
     v26 = floor((Width - v25) / 4.0);
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)didResizeCollectionViewToSize:(CGSize)a3
+- (void)didResizeCollectionViewToSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = CFXOverlayEffectPickerView;
-  [(CFXEffectPickerView *)&v4 didResizeCollectionViewToSize:a3.width, a3.height];
+  [(CFXEffectPickerView *)&v4 didResizeCollectionViewToSize:size.width, size.height];
   [(CFXOverlayEffectPickerView *)self updateThumbnailColumnSizeForCollectionSize];
 }
 

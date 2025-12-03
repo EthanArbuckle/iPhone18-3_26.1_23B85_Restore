@@ -1,19 +1,19 @@
 @interface PHAsynchronousPhotoLibraryExecutionContext
 + (PHAsynchronousPhotoLibraryExecutionContext)asynchronousExecutionContext;
-- (void)callTransactionCompletionHandler:(id)a3 withSuccess:(BOOL)a4 error:(id)a5;
+- (void)callTransactionCompletionHandler:(id)handler withSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation PHAsynchronousPhotoLibraryExecutionContext
 
-- (void)callTransactionCompletionHandler:(id)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)callTransactionCompletionHandler:(id)handler withSuccess:(BOOL)success error:(id)error
 {
-  v6 = a3;
-  v7 = a5;
-  if (v6)
+  handlerCopy = handler;
+  errorCopy = error;
+  if (handlerCopy)
   {
     v8 = dispatch_get_global_queue(0, 0);
-    v10 = v6;
-    v9 = v7;
+    v10 = handlerCopy;
+    v9 = errorCopy;
     pl_dispatch_async();
   }
 }

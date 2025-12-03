@@ -1,100 +1,100 @@
 @interface __HMDHomeAdministratorDynamicRelay
 + (id)logCategory;
-- (void)__handleRemoteMessage:(id)a3;
-- (void)__handleXPCMessage:(id)a3;
-- (void)registerForMessage:(id)a3 policies:(id)a4;
+- (void)__handleRemoteMessage:(id)message;
+- (void)__handleXPCMessage:(id)message;
+- (void)registerForMessage:(id)message policies:(id)policies;
 @end
 
 @implementation __HMDHomeAdministratorDynamicRelay
 
-- (void)__handleRemoteMessage:(id)a3
+- (void)__handleRemoteMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageCopy = message;
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
 
-  if (v5)
+  if (receiver)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       *buf = 138543618;
       v18 = v9;
       v19 = 2112;
-      v20 = v10;
+      v20 = shortDescription;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Locally dispatching remote configuration message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(__HMDHomeAdministratorReceiver *)v7 handler];
-    v12 = [v11 home];
-    v13 = [v12 residentSyncManager];
+    handler = [(__HMDHomeAdministratorReceiver *)selfCopy handler];
+    home = [handler home];
+    residentSyncManager = [home residentSyncManager];
 
-    if (v13)
+    if (residentSyncManager)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __60____HMDHomeAdministratorDynamicRelay___handleRemoteMessage___block_invoke;
       v15[3] = &unk_27868A398;
-      v16 = v11;
-      [v13 interceptRemoteResidentRequest:v4 proceed:v15];
+      v16 = handler;
+      [residentSyncManager interceptRemoteResidentRequest:messageCopy proceed:v15];
     }
 
     else
     {
-      [v11 dispatchMessage:v4];
+      [handler dispatchMessage:messageCopy];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__handleXPCMessage:(id)a3
+- (void)__handleXPCMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageCopy = message;
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
 
-  if (v5)
+  if (receiver)
   {
-    v6 = [(__HMDHomeAdministratorReceiver *)self handler];
-    if ([v6 shouldRelayMessage:v4])
+    handler = [(__HMDHomeAdministratorReceiver *)self handler];
+    if ([handler shouldRelayMessage:messageCopy])
     {
-      v7 = v4;
-      if ([v6 allowLocalFallbackForMessage:v7])
+      v7 = messageCopy;
+      if ([handler allowLocalFallbackForMessage:v7])
       {
         v8 = [v7 mutableCopy];
-        v9 = [v7 identifier];
-        [v8 setIdentifier:v9];
+        identifier = [v7 identifier];
+        [v8 setIdentifier:identifier];
 
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __57____HMDHomeAdministratorDynamicRelay___handleXPCMessage___block_invoke;
         v19[3] = &unk_278686658;
-        v20 = v6;
-        v21 = self;
+        v20 = handler;
+        selfCopy = self;
         v22 = v7;
         [v8 setResponseHandler:v19];
         v7 = [v8 copy];
       }
 
       v18 = 0;
-      v10 = [v6 operationForMessage:v7 error:&v18];
+      v10 = [handler operationForMessage:v7 error:&v18];
       v11 = v18;
       if (v10)
       {
         [v10 setShouldSuspendSyncing:1];
-        [v6 addOperation:v10];
+        [handler addOperation:v10];
       }
 
       else
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy2 = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
@@ -124,42 +124,42 @@
     {
       v23.receiver = self;
       v23.super_class = __HMDHomeAdministratorDynamicRelay;
-      [(__HMDHomeAdministratorReceiver *)&v23 __handleXPCMessage:v4];
+      [(__HMDHomeAdministratorReceiver *)&v23 __handleXPCMessage:messageCopy];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessage:(id)a3 policies:(id)a4
+- (void)registerForMessage:(id)message policies:(id)policies
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  policiesCopy = policies;
   v16.receiver = self;
   v16.super_class = __HMDHomeAdministratorDynamicRelay;
-  [(__HMDHomeAdministratorReceiver *)&v16 registerForMessage:v6 policies:v7];
-  v8 = [(__HMDHomeAdministratorReceiver *)self handler];
-  v9 = [v8 home];
-  if (![v9 isOwnerUser])
+  [(__HMDHomeAdministratorReceiver *)&v16 registerForMessage:messageCopy policies:policiesCopy];
+  handler = [(__HMDHomeAdministratorReceiver *)self handler];
+  home = [handler home];
+  if (![home isOwnerUser])
   {
     goto LABEL_4;
   }
 
   v10 = +[HMDDeviceCapabilities deviceCapabilities];
-  v11 = [v10 isResidentCapable];
+  isResidentCapable = [v10 isResidentCapable];
 
-  if (v11)
+  if (isResidentCapable)
   {
-    v12 = [v7 hmf_objectsPassingTest:&__block_literal_global_179_251826];
-    v9 = [v12 mutableCopy];
+    v12 = [policiesCopy hmf_objectsPassingTest:&__block_literal_global_179_251826];
+    home = [v12 mutableCopy];
 
     v13 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
     [v13 setRoles:8];
     v14 = [v13 copy];
-    [v9 addObject:v14];
+    [home addObject:v14];
 
-    v15 = [v8 dispatcher];
-    [v15 registerForMessage:v6 receiver:self policies:v9 selector:sel___handleRemoteMessage_];
+    dispatcher = [handler dispatcher];
+    [dispatcher registerForMessage:messageCopy receiver:self policies:home selector:sel___handleRemoteMessage_];
 
 LABEL_4:
   }

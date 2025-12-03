@@ -1,39 +1,39 @@
 @interface TRIPETLogHandler
-- (void)logEvent:(id)a3 subgroupName:(id)a4 queue:(id)a5;
+- (void)logEvent:(id)event subgroupName:(id)name queue:(id)queue;
 @end
 
 @implementation TRIPETLogHandler
 
-- (void)logEvent:(id)a3 subgroupName:(id)a4 queue:(id)a5
+- (void)logEvent:(id)event subgroupName:(id)name queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  nameCopy = name;
+  queueCopy = queue;
   if ([MEMORY[0x277D737A8] callerIsRunningFromSystemContext])
   {
-    v10 = [MEMORY[0x277D737E0] sharedPaths];
-    v11 = [v10 systemInteropDirectory];
+    mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+    systemInteropDirectory = [mEMORY[0x277D737E0] systemInteropDirectory];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __48__TRIPETLogHandler_logEvent_subgroupName_queue___block_invoke;
     v22[3] = &unk_279DDEEE0;
-    v23 = v11;
+    v23 = systemInteropDirectory;
     v12 = logEvent_subgroupName_queue___pasOnceToken2;
-    v13 = v11;
+    v13 = systemInteropDirectory;
     if (v12 != -1)
     {
       dispatch_once(&logEvent_subgroupName_queue___pasOnceToken2, v22);
     }
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v7 logEventId];
-    v16 = [v14 stringWithFormat:@"%@.log", v15];
+    logEventId = [eventCopy logEventId];
+    v16 = [v14 stringWithFormat:@"%@.log", logEventId];
 
     v17 = [v13 stringByAppendingPathComponent:v16];
 
-    v18 = [v7 data];
-    [v18 writeToFile:v17 atomically:1];
+    data = [eventCopy data];
+    [data writeToFile:v17 atomically:1];
   }
 
   else
@@ -42,9 +42,9 @@
     block[1] = 3221225472;
     block[2] = __48__TRIPETLogHandler_logEvent_subgroupName_queue___block_invoke_2;
     block[3] = &unk_279DDF7A0;
-    v20 = v8;
-    v21 = v7;
-    dispatch_async(v9, block);
+    v20 = nameCopy;
+    v21 = eventCopy;
+    dispatch_async(queueCopy, block);
 
     v16 = v20;
   }

@@ -1,7 +1,7 @@
 @interface EngagementPresentationCoordinator
 - (BOOL)allowsModalMessageDisplay;
 - (_TtC9SeymourUI33EngagementPresentationCoordinator)init;
-- (id)contextPropertyWithName:(id)a3;
+- (id)contextPropertyWithName:(id)name;
 - (id)viewControllerForModalPresentation;
 @end
 
@@ -9,16 +9,16 @@
 
 - (BOOL)allowsModalMessageDisplay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = EngagementPresentationCoordinator.allowsModalMessageDisplay.getter();
 
   return v3 & 1;
 }
 
-- (id)contextPropertyWithName:(id)a3
+- (id)contextPropertyWithName:(id)name
 {
   sub_20C13C954();
-  v4 = self;
+  selfCopy = self;
   EngagementPresentationCoordinator.contextProperty(withName:)(&v13);
 
   v5 = v14;
@@ -44,7 +44,7 @@
 
 - (id)viewControllerForModalPresentation
 {
-  v2 = self;
+  selfCopy = self;
   EngagementPresentationCoordinator.viewControllerForModalPresentation()(v3);
   v5 = v4;
 

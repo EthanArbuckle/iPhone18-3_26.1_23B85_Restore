@@ -1,21 +1,21 @@
 @interface PKPeerPaymentDynamicFraudPageBodyTextContent
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDynamicFraudPageBodyTextContent
 
-- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentDynamicFraudPageBodyTextContent;
-  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v11 initWithDictionary:v4];
-  if (v5 && ([v4 PKStringForKey:@"text"], v6 = objc_claimAutoreleasedReturnValue(), text = v5->_text, v5->_text = v6, text, objc_msgSend(v4, "PKStringForKey:", @"formatType"), v8 = objc_claimAutoreleasedReturnValue(), v5->_formatType = PKPeerPaymentDynamicFraudPageBodyTextContentFormatTypeFromString(v8), v8, !v5->_text))
+  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v11 initWithDictionary:dictionaryCopy];
+  if (v5 && ([dictionaryCopy PKStringForKey:@"text"], v6 = objc_claimAutoreleasedReturnValue(), text = v5->_text, v5->_text = v6, text, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"formatType"), v8 = objc_claimAutoreleasedReturnValue(), v5->_formatType = PKPeerPaymentDynamicFraudPageBodyTextContentFormatTypeFromString(v8), v8, !v5->_text))
   {
     v9 = 0;
   }
@@ -28,46 +28,46 @@
   return v9;
 }
 
-- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyTextContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentDynamicFraudPageBodyTextContent;
-  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v9 initWithCoder:v4];
+  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v5->_formatType = [v4 decodeIntegerForKey:@"formatType"];
+    v5->_formatType = [coderCopy decodeIntegerForKey:@"formatType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentDynamicFraudPageBodyTextContent;
-  v4 = a3;
-  [(PKPeerPaymentDynamicFraudPageBodyContent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_text forKey:{@"text", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_formatType forKey:@"formatType"];
+  coderCopy = coder;
+  [(PKPeerPaymentDynamicFraudPageBodyContent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_text forKey:{@"text", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_formatType forKey:@"formatType"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKPeerPaymentDynamicFraudPageBodyContent *)self type];
-  if (v4 - 1 > 2)
+  type = [(PKPeerPaymentDynamicFraudPageBodyContent *)self type];
+  if (type - 1 > 2)
   {
     v5 = @"unknown";
   }
 
   else
   {
-    v5 = off_1E79CDA10[v4 - 1];
+    v5 = off_1E79CDA10[type - 1];
   }
 
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -89,9 +89,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -100,12 +100,12 @@
 
   v13.receiver = self;
   v13.super_class = PKPeerPaymentDynamicFraudPageBodyTextContent;
-  if (![(PKPeerPaymentDynamicFraudPageBodyContent *)&v13 isEqual:v4])
+  if (![(PKPeerPaymentDynamicFraudPageBodyContent *)&v13 isEqual:equalCopy])
   {
     goto LABEL_13;
   }
 
-  v5 = v4[2];
+  v5 = equalCopy[2];
   v6 = self->_text;
   v7 = v5;
   v8 = v7;
@@ -141,7 +141,7 @@ LABEL_13:
   }
 
 LABEL_12:
-  v11 = self->_formatType == v4[3];
+  v11 = self->_formatType == equalCopy[3];
 LABEL_14:
 
   return v11;
@@ -149,9 +149,9 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_text];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_text];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_formatType - v4 + 32 * v4;
   v8.receiver = self;
   v8.super_class = PKPeerPaymentDynamicFraudPageBodyTextContent;

@@ -1,50 +1,50 @@
 @interface VGVirtualGarage
-- (BOOL)_persisterHasStaleStateForVehicle:(id)a3;
+- (BOOL)_persisterHasStaleStateForVehicle:(id)vehicle;
 - (NSArray)vehicles;
 - (NSString)description;
 - (VGVehicle)selectedVehicle;
-- (VGVirtualGarage)initWithCoder:(id)a3;
-- (VGVirtualGarage)initWithGaragePersister:(id)a3;
+- (VGVirtualGarage)initWithCoder:(id)coder;
+- (VGVirtualGarage)initWithGaragePersister:(id)persister;
 - (VGVirtualGarageDelegate)delegate;
 - (id)_garageCopy;
-- (id)_vehicleWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addVehicle:(id)a3;
+- (id)_vehicleWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addVehicle:(id)vehicle;
 - (void)_endContinuousUpdates;
 - (void)_executeQueuedCompletionHandlersIfNeeded;
-- (void)_forceUpdateWithVehicles:(id)a3;
+- (void)_forceUpdateWithVehicles:(id)vehicles;
 - (void)_notifyObserversGarageDidUpdateVehicles;
-- (void)_onboardVehicle:(id)a3;
-- (void)_removeVehicleWithIdentifier:(id)a3;
+- (void)_onboardVehicle:(id)vehicle;
+- (void)_removeVehicleWithIdentifier:(id)identifier;
 - (void)_removeVehiclesWithUninstalledAppsIfNeeded;
-- (void)_saveVehicle:(id)a3 syncAcrossDevices:(BOOL)a4;
-- (void)_selectVehicleWithIdentifier:(id)a3;
-- (void)_setDataCoordintorRunning:(BOOL)a3;
+- (void)_saveVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices;
+- (void)_selectVehicleWithIdentifier:(id)identifier;
+- (void)_setDataCoordintorRunning:(BOOL)running;
 - (void)_startContinuousUpdatesIfNeeded;
-- (void)_unpairVehicle:(id)a3;
+- (void)_unpairVehicle:(id)vehicle;
 - (void)_updateDataCoordinatorAvailability;
-- (void)dataCoordinator:(id)a3 didUpdateUnpairedVehicles:(id)a4;
-- (void)dataCoordinatorDidUpdateInstalledApps:(id)a3;
+- (void)dataCoordinator:(id)coordinator didUpdateUnpairedVehicles:(id)vehicles;
+- (void)dataCoordinatorDidUpdateInstalledApps:(id)apps;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)garagePersister:(id)a3 wantsToUpdateVehicles:(id)a4;
-- (void)setShouldAssumeFullCharge:(BOOL)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)garagePersister:(id)persister wantsToUpdateVehicles:(id)vehicles;
+- (void)setShouldAssumeFullCharge:(BOOL)charge;
+- (void)valueChangedForGEOConfigKey:(id)key;
 - (void)virtualGarageForceFetchAllVehicles;
-- (void)virtualGarageGetGarageWithReply:(id)a3;
-- (void)virtualGarageGetLatestStateOfVehicleWithIdentifier:(id)a3 syncAcrossDevices:(BOOL)a4 withReply:(id)a5;
-- (void)virtualGarageGetListOfUnpairedVehiclesWithReply:(id)a3;
-- (void)virtualGarageRemoveVehicle:(id)a3;
-- (void)virtualGarageSelectVehicle:(id)a3;
+- (void)virtualGarageGetGarageWithReply:(id)reply;
+- (void)virtualGarageGetLatestStateOfVehicleWithIdentifier:(id)identifier syncAcrossDevices:(BOOL)devices withReply:(id)reply;
+- (void)virtualGarageGetListOfUnpairedVehiclesWithReply:(id)reply;
+- (void)virtualGarageRemoveVehicle:(id)vehicle;
+- (void)virtualGarageSelectVehicle:(id)vehicle;
 @end
 
 @implementation VGVirtualGarage
 
 - (void)_notifyObserversGarageDidUpdateVehicles
 {
-  v4 = [(VGVirtualGarage *)self _garageCopy];
-  v3 = [(VGVirtualGarage *)self delegate];
-  [v3 virtualGarageDidUpdate:v4];
+  _garageCopy = [(VGVirtualGarage *)self _garageCopy];
+  delegate = [(VGVirtualGarage *)self delegate];
+  [delegate virtualGarageDidUpdate:_garageCopy];
 }
 
 - (id)_garageCopy
@@ -88,8 +88,8 @@ LABEL_7:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * v13) identifier];
-          v15 = [v14 isEqualToString:*(v2 + 16)];
+          identifier = [*(*(&v18 + 1) + 8 * v13) identifier];
+          v15 = [identifier isEqualToString:*(v2 + 16)];
 
           if (v15)
           {
@@ -208,7 +208,7 @@ LABEL_13:
     {
       persister = self->_persister;
       *buf = 134218240;
-      v8 = self;
+      selfCopy = self;
       v9 = 2048;
       v10 = persister;
       _os_log_impl(&dword_270EC1000, v3, OS_LOG_TYPE_INFO, "Deallocating virtualGarage: %p with persister: %p", buf, 0x16u);
@@ -224,10 +224,10 @@ LABEL_13:
 
 - (VGVehicle)selectedVehicle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VGVirtualGarage *)v2 _vehicleWithIdentifier:v2->_selectedVehicleIdentifier];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(VGVirtualGarage *)selfCopy _vehicleWithIdentifier:selfCopy->_selectedVehicleIdentifier];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -237,8 +237,8 @@ LABEL_13:
   v29 = *MEMORY[0x277D85DE8];
   if (!self->_dataCoordinator)
   {
-    v3 = VGGetVirtualGarageLog();
-    if (!os_log_type_enabled(&v3->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetVirtualGarageLog();
+    if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_22;
     }
@@ -246,7 +246,7 @@ LABEL_13:
     *buf = 136315138;
     Name = sel_getName(a2);
     v16 = "Tried to use a method (%s) that requires a dataCoordinator.";
-    p_super = &v3->super;
+    p_super = &selfCopy->super;
     v18 = OS_LOG_TYPE_ERROR;
     v19 = 12;
 LABEL_21:
@@ -256,24 +256,24 @@ LABEL_21:
 
   if ((GEOConfigGetBOOL() & 1) == 0)
   {
-    v3 = VGGetVirtualGarageLog();
-    if (!os_log_type_enabled(&v3->super, OS_LOG_TYPE_INFO))
+    selfCopy = VGGetVirtualGarageLog();
+    if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_INFO))
     {
       goto LABEL_22;
     }
 
     *buf = 0;
     v16 = "Automatic unpairing is disabled. Will not remove vehicles.";
-    p_super = &v3->super;
+    p_super = &selfCopy->super;
     v18 = OS_LOG_TYPE_INFO;
     v19 = 2;
     goto LABEL_21;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(VGVirtualGarage *)v3 vehicles];
-  v5 = [v4 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  vehicles = [(VGVirtualGarage *)selfCopy vehicles];
+  v5 = [vehicles copy];
 
   v6 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -314,8 +314,8 @@ LABEL_21:
             _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_INFO, "The OEM app on the primary device was uninstalled. Will remove vehicle: %@", buf, 0xCu);
           }
 
-          v14 = [v12 identifier];
-          [(VGVirtualGarage *)v3 _removeVehicleWithIdentifier:v14];
+          identifier = [v12 identifier];
+          [(VGVirtualGarage *)selfCopy _removeVehicleWithIdentifier:identifier];
         }
       }
 
@@ -325,7 +325,7 @@ LABEL_21:
     while (v8);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 LABEL_22:
 
   v20 = *MEMORY[0x277D85DE8];
@@ -333,10 +333,10 @@ LABEL_22:
 
 - (NSArray)vehicles
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_vehicles copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_vehicles copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -346,7 +346,7 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_queuedGetGarageCompletionHandlers count])
   {
-    v3 = [(VGVirtualGarage *)self _garageCopy];
+    _garageCopy = [(VGVirtualGarage *)self _garageCopy];
     v4 = [(NSMutableArray *)self->_queuedGetGarageCompletionHandlers copy];
     [(NSMutableArray *)self->_queuedGetGarageCompletionHandlers removeAllObjects];
     v5 = VGGetVirtualGarageLog();
@@ -355,7 +355,7 @@ LABEL_22:
       *buf = 134218242;
       v20 = [v4 count];
       v21 = 2112;
-      v22 = v3;
+      v22 = _garageCopy;
       _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "Will execute %lu queued completionHandlers with garage: %@.", buf, 0x16u);
     }
 
@@ -402,29 +402,29 @@ LABEL_22:
 
   else
   {
-    v3 = VGGetVirtualGarageLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    _garageCopy = VGGetVirtualGarageLog();
+    if (os_log_type_enabled(_garageCopy, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_impl(&dword_270EC1000, v3, OS_LOG_TYPE_DEBUG, "There are no queued completion handlers, nothing to do.", buf, 2u);
+      _os_log_impl(&dword_270EC1000, _garageCopy, OS_LOG_TYPE_DEBUG, "There are no queued completion handlers, nothing to do.", buf, 2u);
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)virtualGarageGetLatestStateOfVehicleWithIdentifier:(id)a3 syncAcrossDevices:(BOOL)a4 withReply:(id)a5
+- (void)virtualGarageGetLatestStateOfVehicleWithIdentifier:(id)identifier syncAcrossDevices:(BOOL)devices withReply:(id)reply
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v10 = replyCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (replyCopy)
     {
-      v11 = self;
-      objc_sync_enter(v11);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v12 = VGGetDataCoordinatorLog();
       v13 = os_signpost_id_generate(v12);
 
@@ -443,14 +443,14 @@ LABEL_22:
       v39 = v13;
       v38 = v10;
       v16 = MEMORY[0x2743B8310](v37);
-      if ([v8 isEqualToString:v11->_selectedVehicleIdentifier])
+      if ([identifierCopy isEqualToString:selfCopy->_selectedVehicleIdentifier])
       {
-        [(VGVirtualGarage *)v11 selectedVehicle];
+        [(VGVirtualGarage *)selfCopy selectedVehicle];
       }
 
       else
       {
-        [(VGVirtualGarage *)v11 _vehicleWithIdentifier:v8];
+        [(VGVirtualGarage *)selfCopy _vehicleWithIdentifier:identifierCopy];
       }
       v17 = ;
       v18 = v17;
@@ -458,7 +458,7 @@ LABEL_22:
       {
         if ([v17 isPureElectricVehicle])
         {
-          objc_initWeak(buf, v11);
+          objc_initWeak(buf, selfCopy);
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __98__VGVirtualGarage_virtualGarageGetLatestStateOfVehicleWithIdentifier_syncAcrossDevices_withReply___block_invoke_44;
@@ -466,7 +466,7 @@ LABEL_22:
           objc_copyWeak(&v35, buf);
           v19 = v18;
           v34 = v19;
-          v36 = a4;
+          devicesCopy = devices;
           v20 = MEMORY[0x2743B8310](v33);
           BOOL = GEOConfigGetBOOL();
           v22 = VGGetVirtualGarageLog();
@@ -500,7 +500,7 @@ LABEL_22:
           objc_destroyWeak(buf);
 LABEL_29:
 
-          objc_sync_exit(v11);
+          objc_sync_exit(selfCopy);
           goto LABEL_30;
         }
 
@@ -531,8 +531,8 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v11 = VGGetAssertLog();
-    if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetAssertLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446722;
       v43 = "[VGVirtualGarage virtualGarageGetLatestStateOfVehicleWithIdentifier:syncAcrossDevices:withReply:]";
@@ -546,8 +546,8 @@ LABEL_29:
 
   else
   {
-    v11 = VGGetAssertLog();
-    if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetAssertLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446722;
       v43 = "[VGVirtualGarage virtualGarageGetLatestStateOfVehicleWithIdentifier:syncAcrossDevices:withReply:]";
@@ -556,7 +556,7 @@ LABEL_29:
       v46 = 2082;
       v47 = "vehicleIdentifier cannot be nil";
 LABEL_12:
-      _os_log_impl(&dword_270EC1000, &v11->super, OS_LOG_TYPE_ERROR, "%{public}s forbids: %{public}s. %{public}s", buf, 0x20u);
+      _os_log_impl(&dword_270EC1000, &selfCopy->super, OS_LOG_TYPE_ERROR, "%{public}s forbids: %{public}s. %{public}s", buf, 0x20u);
     }
   }
 
@@ -721,13 +721,13 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)virtualGarageGetListOfUnpairedVehiclesWithReply:(id)a3
+- (void)virtualGarageGetListOfUnpairedVehiclesWithReply:(id)reply
 {
   dataCoordinator = self->_dataCoordinator;
-  v5 = a3;
-  v7 = [(VGDataCoordinator *)dataCoordinator unpairedVehicles];
-  v6 = [v7 copy];
-  (*(a3 + 2))(v5, v6, 0);
+  replyCopy = reply;
+  unpairedVehicles = [(VGDataCoordinator *)dataCoordinator unpairedVehicles];
+  v6 = [unpairedVehicles copy];
+  (*(reply + 2))(replyCopy, v6, 0);
 }
 
 - (void)virtualGarageForceFetchAllVehicles
@@ -738,33 +738,33 @@ LABEL_17:
   objc_sync_exit(obj);
 }
 
-- (void)virtualGarageSelectVehicle:(id)a3
+- (void)virtualGarageSelectVehicle:(id)vehicle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VGVirtualGarage *)self selectedVehicle];
-  v6 = [v4 identifier];
-  [(VGVirtualGarage *)self _selectVehicleWithIdentifier:v6];
+  vehicleCopy = vehicle;
+  selectedVehicle = [(VGVirtualGarage *)self selectedVehicle];
+  identifier = [vehicleCopy identifier];
+  [(VGVirtualGarage *)self _selectVehicleWithIdentifier:identifier];
 
-  if ([v4 isPureElectricVehicle])
+  if ([vehicleCopy isPureElectricVehicle])
   {
-    v7 = [v5 identifier];
-    v8 = [v4 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier2 = [selectedVehicle identifier];
+    identifier3 = [vehicleCopy identifier];
+    v9 = [identifier2 isEqualToString:identifier3];
 
-    if (!v9 || ([v5 currentVehicleState], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "currentVehicleState"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isSignificantlyDifferentFromVehicleState:", v11), v11, v10, v12))
+    if (!v9 || ([selectedVehicle currentVehicleState], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(vehicleCopy, "currentVehicleState"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isSignificantlyDifferentFromVehicleState:", v11), v11, v10, v12))
     {
       v13 = VGGetVirtualGarageLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v4 identifier];
+        identifier4 = [vehicleCopy identifier];
         v17 = 138412290;
-        v18 = v14;
+        v18 = identifier4;
         _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_INFO, "Will fetch SoC for vehicle: (%@) after it's been selected.", &v17, 0xCu);
       }
 
-      v15 = [v4 identifier];
-      [(VGVirtualGarage *)self virtualGarageGetLatestStateOfVehicleWithIdentifier:v15 syncAcrossDevices:1 withReply:&__block_literal_global_31];
+      identifier5 = [vehicleCopy identifier];
+      [(VGVirtualGarage *)self virtualGarageGetLatestStateOfVehicleWithIdentifier:identifier5 syncAcrossDevices:1 withReply:&__block_literal_global_31];
     }
   }
 
@@ -811,15 +811,15 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)virtualGarageGetGarageWithReply:(id)a3
+- (void)virtualGarageGetGarageWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_finishedLoadingVehicles)
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_finishedLoadingVehicles)
   {
-    v6 = [(VGVirtualGarage *)v5 _garageCopy];
-    v4[2](v4, v6, 0);
+    _garageCopy = [(VGVirtualGarage *)selfCopy _garageCopy];
+    replyCopy[2](replyCopy, _garageCopy, 0);
   }
 
   else
@@ -828,9 +828,9 @@ LABEL_6:
     v12[1] = 3221225472;
     v12[2] = __51__VGVirtualGarage_virtualGarageGetGarageWithReply___block_invoke;
     v12[3] = &unk_279E26AD0;
-    v13 = v4;
+    v13 = replyCopy;
     v7 = MEMORY[0x2743B8310](v12);
-    queuedGetGarageCompletionHandlers = v5->_queuedGetGarageCompletionHandlers;
+    queuedGetGarageCompletionHandlers = selfCopy->_queuedGetGarageCompletionHandlers;
     v9 = MEMORY[0x2743B8310]();
     [(NSMutableArray *)queuedGetGarageCompletionHandlers addObject:v9];
 
@@ -842,16 +842,16 @@ LABEL_6:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)virtualGarageRemoveVehicle:(id)a3
+- (void)virtualGarageRemoveVehicle:(id)vehicle
 {
-  v4 = [a3 identifier];
-  [(VGVirtualGarage *)self _removeVehicleWithIdentifier:v4];
+  identifier = [vehicle identifier];
+  [(VGVirtualGarage *)self _removeVehicleWithIdentifier:identifier];
 }
 
-- (void)dataCoordinatorDidUpdateInstalledApps:(id)a3
+- (void)dataCoordinatorDidUpdateInstalledApps:(id)apps
 {
   v4 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -863,17 +863,17 @@ LABEL_6:
   [(VGVirtualGarage *)self _removeVehiclesWithUninstalledAppsIfNeeded];
 }
 
-- (void)dataCoordinator:(id)a3 didUpdateUnpairedVehicles:(id)a4
+- (void)dataCoordinator:(id)coordinator didUpdateUnpairedVehicles:(id)vehicles
 {
-  v5 = a4;
-  v6 = [(VGVirtualGarage *)self delegate];
-  [v6 virtualGarage:self didUpdateUnpairedVehicles:v5];
+  vehiclesCopy = vehicles;
+  delegate = [(VGVirtualGarage *)self delegate];
+  [delegate virtualGarage:self didUpdateUnpairedVehicles:vehiclesCopy];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3.var0 == *MEMORY[0x277D0EAA0] && a3.var1 == *(MEMORY[0x277D0EAA0] + 8))
+  if (key.var0 == *MEMORY[0x277D0EAA0] && key.var1 == *(MEMORY[0x277D0EAA0] + 8))
   {
     v5 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -897,40 +897,40 @@ LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableArray *)v6->_vehicles mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableArray *)selfCopy->_vehicles mutableCopyWithZone:zone];
   v8 = *(v5 + 8);
   *(v5 + 8) = v7;
 
-  v9 = [(NSString *)v6->_selectedVehicleIdentifier copyWithZone:a3];
+  v9 = [(NSString *)selfCopy->_selectedVehicleIdentifier copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
-  *(v5 + 64) = v6->_shouldAssumeFullCharge;
-  objc_sync_exit(v6);
+  *(v5 + 64) = selfCopy->_shouldAssumeFullCharge;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeObject:v4->_vehicles forKey:@"_vehicles"];
-  [v5 encodeObject:v4->_selectedVehicleIdentifier forKey:@"_selectedVehicleIdentifier"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_vehicles forKey:@"_vehicles"];
+  [coderCopy encodeObject:selfCopy->_selectedVehicleIdentifier forKey:@"_selectedVehicleIdentifier"];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)garagePersister:(id)a3 wantsToUpdateVehicles:(id)a4
+- (void)garagePersister:(id)persister wantsToUpdateVehicles:(id)vehicles
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  persisterCopy = persister;
+  vehiclesCopy = vehicles;
   BOOL = GEOConfigGetBOOL();
   v9 = VGGetVirtualGarageLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -943,11 +943,11 @@ LABEL_6:
       v14 = 138412546;
       v15 = v12;
       v16 = 2112;
-      v17 = v7;
+      v17 = vehiclesCopy;
       _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "garagePersister: %@ wants to update vehicles with vehicles: %@", &v14, 0x16u);
     }
 
-    [(VGVirtualGarage *)self _forceUpdateWithVehicles:v7];
+    [(VGVirtualGarage *)self _forceUpdateWithVehicles:vehiclesCopy];
     [(VGVirtualGarage *)self _removeVehiclesWithUninstalledAppsIfNeeded];
   }
 
@@ -963,21 +963,21 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forceUpdateWithVehicles:(id)a3
+- (void)_forceUpdateWithVehicles:(id)vehicles
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehiclesCopy = vehicles;
   obj = self;
   objc_sync_enter(obj);
-  v54 = v4;
-  if (v4)
+  v54 = vehiclesCopy;
+  if (vehiclesCopy)
   {
     v5 = objc_opt_new();
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v6 = v4;
+    v6 = vehiclesCopy;
     v7 = [v6 countByEnumeratingWithState:&v59 objects:v71 count:16];
     if (!v7)
     {
@@ -995,21 +995,21 @@ LABEL_6:
         }
 
         v10 = *(*(&v59 + 1) + 8 * i);
-        v11 = [v10 currentVehicleState];
-        v12 = [v11 dateOfUpdate];
+        currentVehicleState = [v10 currentVehicleState];
+        dateOfUpdate = [currentVehicleState dateOfUpdate];
 
-        if (!v12)
+        if (!dateOfUpdate)
         {
           goto LABEL_14;
         }
 
-        v13 = [v10 identifier];
-        v14 = [(VGVirtualGarage *)obj _vehicleWithIdentifier:v13];
+        identifier = [v10 identifier];
+        v14 = [(VGVirtualGarage *)obj _vehicleWithIdentifier:identifier];
 
-        v15 = [v14 currentVehicleState];
-        v16 = [v15 dateOfUpdate];
+        currentVehicleState2 = [v14 currentVehicleState];
+        dateOfUpdate2 = [currentVehicleState2 dateOfUpdate];
 
-        if (!v16 || [v16 compare:v12] != 1)
+        if (!dateOfUpdate2 || [dateOfUpdate2 compare:dateOfUpdate] != 1)
         {
 
 LABEL_14:
@@ -1252,8 +1252,8 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
   v9 = *MEMORY[0x277D85DE8];
   if (self->_dataCoordinator)
   {
-    v3 = self;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v4 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -1262,17 +1262,17 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
     }
 
     [(VGDataCoordinator *)self->_dataCoordinator endAllContinuousUpdates];
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v3 = VGGetVirtualGarageLog();
-    if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetVirtualGarageLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315138;
       Name = sel_getName(a2);
-      _os_log_impl(&dword_270EC1000, &v3->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v7, 0xCu);
+      _os_log_impl(&dword_270EC1000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v7, 0xCu);
     }
   }
 
@@ -1284,21 +1284,21 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
   v11 = *MEMORY[0x277D85DE8];
   if (self->_dataCoordinator)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    v4 = [(VGVirtualGarage *)v3 selectedVehicle];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selectedVehicle = [(VGVirtualGarage *)selfCopy selectedVehicle];
     v5 = VGGetVirtualGarageLog();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-    if (v4)
+    if (selectedVehicle)
     {
       if (v6)
       {
         v9 = 138412290;
-        Name = v4;
+        Name = selectedVehicle;
         _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_INFO, "Garage will start continuous updates for vehicle: %@", &v9, 0xCu);
       }
 
-      [(VGDataCoordinator *)self->_dataCoordinator startContinuousUpdatesForVehicle:v4];
+      [(VGDataCoordinator *)self->_dataCoordinator startContinuousUpdatesForVehicle:selectedVehicle];
     }
 
     else
@@ -1310,31 +1310,31 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       }
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v3 = VGGetVirtualGarageLog();
-    if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetVirtualGarageLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       v9 = 136315138;
       Name = sel_getName(a2);
-      _os_log_impl(&dword_270EC1000, &v3->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v9, 0xCu);
+      _os_log_impl(&dword_270EC1000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v9, 0xCu);
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unpairVehicle:(id)a3
+- (void)_unpairVehicle:(id)vehicle
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  vehicleCopy = vehicle;
+  v6 = vehicleCopy;
   if (self->_dataCoordinator)
   {
-    if (!v5)
+    if (!vehicleCopy)
     {
       v10 = VGGetAssertLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1355,16 +1355,16 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
         v11 = VGGetAssertLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v12 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v13 = 138412290;
-          Name = v12;
+          Name = callStackSymbols;
           _os_log_impl(&dword_270EC1000, v11, OS_LOG_TYPE_ERROR, "%@", &v13, 0xCu);
         }
       }
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v8 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -1374,42 +1374,42 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
     }
 
     [(VGDataCoordinator *)self->_dataCoordinator unpairVehicle:v6];
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v7 = VGGetVirtualGarageLog();
-    if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
+    selfCopy = VGGetVirtualGarageLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       v13 = 136315138;
       Name = sel_getName(a2);
-      _os_log_impl(&dword_270EC1000, &v7->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v13, 0xCu);
+      _os_log_impl(&dword_270EC1000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Tried to use a method (%s) that requires a dataCoordinator.", &v13, 0xCu);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onboardVehicle:(id)a3
+- (void)_onboardVehicle:(id)vehicle
 {
   v45 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  vehicleCopy = vehicle;
   if (self->_dataCoordinator)
   {
     obj = self;
     objc_sync_enter(obj);
-    v28 = self;
-    v5 = [(VGDataCoordinator *)self->_dataCoordinator unpairedVehicles];
+    selfCopy = self;
+    unpairedVehicles = [(VGDataCoordinator *)self->_dataCoordinator unpairedVehicles];
     v6 = MEMORY[0x277CCAC30];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __35__VGVirtualGarage__onboardVehicle___block_invoke;
     v33[3] = &unk_279E26A60;
-    v31 = v32;
+    v31 = vehicleCopy;
     v34 = v31;
     v7 = [v6 predicateWithBlock:v33];
-    v30 = [v5 filteredArrayUsingPredicate:v7];
+    v30 = [unpairedVehicles filteredArrayUsingPredicate:v7];
 
     if ([v30 count] != 1)
     {
@@ -1500,7 +1500,7 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       _os_log_impl(&dword_270EC1000, v25, OS_LOG_TYPE_INFO, "Onboarding vehicle: %@ in virtual garage.", buf, 0xCu);
     }
 
-    [(VGDataCoordinator *)v28->_dataCoordinator finishOnboardingVehicle:v31];
+    [(VGDataCoordinator *)selfCopy->_dataCoordinator finishOnboardingVehicle:v31];
     [(VGVirtualGarage *)obj _addVehicle:v31];
 
     p_super = &obj->super;
@@ -1521,17 +1521,17 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_selectVehicleWithIdentifier:(id)a3
+- (void)_selectVehicleWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (([v5 isEqualToString:v6->_selectedVehicleIdentifier] & 1) == 0)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([identifierCopy isEqualToString:selfCopy->_selectedVehicleIdentifier] & 1) == 0)
   {
-    v7 = [(VGVirtualGarage *)v6 _vehicleWithIdentifier:v5];
+    v7 = [(VGVirtualGarage *)selfCopy _vehicleWithIdentifier:identifierCopy];
     v8 = v7;
-    if (v5 && !v7)
+    if (identifierCopy && !v7)
     {
       v11 = VGGetAssertLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1552,9 +1552,9 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
         v12 = VGGetAssertLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v13 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v15 = 138412290;
-          v16 = v13;
+          v16 = callStackSymbols;
           _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_ERROR, "%@", &v15, 0xCu);
         }
       }
@@ -1569,8 +1569,8 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
 
     else
     {
-      objc_storeStrong(&v6->_selectedVehicleIdentifier, a3);
-      [(VGVirtualGaragePersisting *)v6->_persister setSelectedVehicleIdentifier:v5];
+      objc_storeStrong(&selfCopy->_selectedVehicleIdentifier, identifier);
+      [(VGVirtualGaragePersisting *)selfCopy->_persister setSelectedVehicleIdentifier:identifierCopy];
       v9 = VGGetVirtualGarageLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -1579,38 +1579,38 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
         _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "Selected vehicle: %@", &v15, 0xCu);
       }
 
-      [(VGVirtualGarage *)v6 _notifyObserversGarageDidUpdateVehicles];
+      [(VGVirtualGarage *)selfCopy _notifyObserversGarageDidUpdateVehicles];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeVehicleWithIdentifier:(id)a3
+- (void)_removeVehicleWithIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(VGVirtualGarage *)v5 _vehicleWithIdentifier:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(VGVirtualGarage *)selfCopy _vehicleWithIdentifier:identifierCopy];
   if (v6)
   {
-    v7 = [(VGVirtualGarage *)v5 selectedVehicle];
-    v8 = [v6 isEqual:v7];
+    selectedVehicle = [(VGVirtualGarage *)selfCopy selectedVehicle];
+    v8 = [v6 isEqual:selectedVehicle];
 
     if (v8)
     {
-      [(VGVirtualGarage *)v5 _endContinuousUpdates];
+      [(VGVirtualGarage *)selfCopy _endContinuousUpdates];
     }
 
-    [(NSMutableArray *)v5->_vehicles removeObject:v6];
-    [(VGVirtualGaragePersisting *)v5->_persister removeVehicle:v6];
+    [(NSMutableArray *)selfCopy->_vehicles removeObject:v6];
+    [(VGVirtualGaragePersisting *)selfCopy->_persister removeVehicle:v6];
     v9 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(NSMutableArray *)v5->_vehicles count];
+      v10 = [(NSMutableArray *)selfCopy->_vehicles count];
       v17 = 138412546;
       v18 = v6;
       v19 = 2048;
@@ -1618,8 +1618,8 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "Removed vehicle: %@, vehicles.count: %lu", &v17, 0x16u);
     }
 
-    [(VGVirtualGarage *)v5 _unpairVehicle:v6];
-    [(VGVirtualGarage *)v5 _notifyObserversGarageDidUpdateVehicles];
+    [(VGVirtualGarage *)selfCopy _unpairVehicle:v6];
+    [(VGVirtualGarage *)selfCopy _notifyObserversGarageDidUpdateVehicles];
   }
 
   else
@@ -1643,10 +1643,10 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       v13 = VGGetAssertLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v17 = 138412290;
-        v18 = v14;
-        v15 = v14;
+        v18 = callStackSymbols;
+        v15 = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v13, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
       }
     }
@@ -1659,14 +1659,14 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveVehicle:(id)a3 syncAcrossDevices:(BOOL)a4
+- (void)_saveVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  vehicleCopy = vehicle;
   obj = self;
   objc_sync_enter(obj);
   vehicles = obj->_vehicles;
@@ -1674,7 +1674,7 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
   v35[1] = 3221225472;
   v35[2] = __50__VGVirtualGarage__saveVehicle_syncAcrossDevices___block_invoke;
   v35[3] = &unk_279E26A38;
-  v34 = v6;
+  v34 = vehicleCopy;
   v36 = v34;
   v8 = [(NSMutableArray *)vehicles indexOfObjectPassingTest:v35];
   v9 = VGGetVirtualGarageLog();
@@ -1684,7 +1684,7 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v31 = v10;
-      v30 = [v34 identifier];
+      identifier = [v34 identifier];
       v11 = obj->_vehicles;
       v32 = v11;
       if (v11)
@@ -1754,7 +1754,7 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       }
 
       *v41 = 138412546;
-      v42 = v30;
+      v42 = identifier;
       v43 = 2112;
       v44 = v23;
       _os_log_impl(&dword_270EC1000, v31, OS_LOG_TYPE_ERROR, "_saveVehicle: Vehicle with ID: %@ wasn't found, it was removed before _save was called. vehicles: %@", v41, 0x16u);
@@ -1787,7 +1787,7 @@ void __44__VGVirtualGarage__forceUpdateWithVehicles___block_invoke(uint64_t a1, 
       }
     }
 
-    [(VGVirtualGaragePersisting *)obj->_persister saveVehicle:v34 syncAcrossDevices:a4 || v25];
+    [(VGVirtualGaragePersisting *)obj->_persister saveVehicle:v34 syncAcrossDevices:devices || v25];
   }
 
   objc_sync_exit(obj);
@@ -1805,13 +1805,13 @@ uint64_t __50__VGVirtualGarage__saveVehicle_syncAcrossDevices___block_invoke(uin
   return v6;
 }
 
-- (void)_addVehicle:(id)a3
+- (void)_addVehicle:(id)vehicle
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableArray *)v5->_vehicles containsObject:v4])
+  vehicleCopy = vehicle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_vehicles containsObject:vehicleCopy])
   {
     v13 = VGGetAssertLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1832,16 +1832,16 @@ uint64_t __50__VGVirtualGarage__saveVehicle_syncAcrossDevices___block_invoke(uin
       v14 = VGGetAssertLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v17 = 138412290;
-        v18 = v15;
-        v16 = v15;
+        v18 = callStackSymbols;
+        v16 = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v14, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
       }
     }
   }
 
-  if ([(NSMutableArray *)v5->_vehicles containsObject:v4])
+  if ([(NSMutableArray *)selfCopy->_vehicles containsObject:vehicleCopy])
   {
     v6 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1853,64 +1853,64 @@ uint64_t __50__VGVirtualGarage__saveVehicle_syncAcrossDevices___block_invoke(uin
 
   else
   {
-    [(NSMutableArray *)v5->_vehicles addObject:v4];
-    [(VGVirtualGaragePersisting *)v5->_persister addVehicle:v4];
+    [(NSMutableArray *)selfCopy->_vehicles addObject:vehicleCopy];
+    [(VGVirtualGaragePersisting *)selfCopy->_persister addVehicle:vehicleCopy];
     v7 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(NSMutableArray *)v5->_vehicles count];
+      v8 = [(NSMutableArray *)selfCopy->_vehicles count];
       v17 = 138412546;
-      v18 = v4;
+      v18 = vehicleCopy;
       v19 = 2048;
       v20 = v8;
       _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_INFO, "Added vehicle: %@, vehicles.count: %lu", &v17, 0x16u);
     }
 
-    if (!v5->_selectedVehicleIdentifier)
+    if (!selfCopy->_selectedVehicleIdentifier)
     {
       v9 = VGGetVirtualGarageLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 identifier];
+        identifier = [vehicleCopy identifier];
         v17 = 138412290;
-        v18 = v10;
+        v18 = identifier;
         _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "Default selecting new vehicle: %@", &v17, 0xCu);
       }
 
-      v11 = [v4 identifier];
-      [(VGVirtualGarage *)v5 _selectVehicleWithIdentifier:v11];
+      identifier2 = [vehicleCopy identifier];
+      [(VGVirtualGarage *)selfCopy _selectVehicleWithIdentifier:identifier2];
     }
 
-    [(VGVirtualGarage *)v5 _notifyObserversGarageDidUpdateVehicles];
+    [(VGVirtualGarage *)selfCopy _notifyObserversGarageDidUpdateVehicles];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setDataCoordintorRunning:(BOOL)a3
+- (void)_setDataCoordintorRunning:(BOOL)running
 {
-  v3 = a3;
+  runningCopy = running;
   v16 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_isDataCoordinatorRunning != v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isDataCoordinatorRunning != runningCopy)
   {
-    v4->_isDataCoordinatorRunning = v3;
-    if (v3)
+    selfCopy->_isDataCoordinatorRunning = runningCopy;
+    if (runningCopy)
     {
       v5 = [VGDataCoordinator alloc];
       v6 = objc_alloc_init(VGOEMApplicationFinder);
       v7 = objc_alloc_init(VGExternalAccessory);
-      v8 = [(VGDataCoordinator *)v5 initWithApplicationFinder:v6 externalAccessory:v7 delegate:v4];
-      dataCoordinator = v4->_dataCoordinator;
-      v4->_dataCoordinator = v8;
+      v8 = [(VGDataCoordinator *)v5 initWithApplicationFinder:v6 externalAccessory:v7 delegate:selfCopy];
+      dataCoordinator = selfCopy->_dataCoordinator;
+      selfCopy->_dataCoordinator = v8;
 
       p_super = VGGetVirtualGarageLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_INFO))
       {
-        v11 = v4->_dataCoordinator;
+        v11 = selfCopy->_dataCoordinator;
         v14 = 138412290;
         v15 = v11;
         _os_log_impl(&dword_270EC1000, p_super, OS_LOG_TYPE_INFO, "Instantiated a new _dataCoordinator %@ for VirtualGarage", &v14, 0xCu);
@@ -1926,53 +1926,53 @@ uint64_t __50__VGVirtualGarage__saveVehicle_syncAcrossDevices___block_invoke(uin
         _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_INFO, "Will not use dataCoordinator, EV routing isn't enabled", &v14, 2u);
       }
 
-      p_super = &v4->_dataCoordinator->super;
-      v4->_dataCoordinator = 0;
+      p_super = &selfCopy->_dataCoordinator->super;
+      selfCopy->_dataCoordinator = 0;
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_persisterHasStaleStateForVehicle:(id)a3
+- (BOOL)_persisterHasStaleStateForVehicle:(id)vehicle
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VGVirtualGaragePersisting *)self->_persister persistedVehicleForVehicle:v4];
+  vehicleCopy = vehicle;
+  v5 = [(VGVirtualGaragePersisting *)self->_persister persistedVehicleForVehicle:vehicleCopy];
   if (!v5)
   {
     v21 = VGGetVirtualGarageLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       v24 = 138412290;
-      v25 = v4;
+      v25 = vehicleCopy;
       _os_log_impl(&dword_270EC1000, v21, OS_LOG_TYPE_DEBUG, "_persisterHasStaleStateForVehicle: Didn't find persisted vehicle for vehicle: %@", &v24, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v6 = [v4 currentVehicleState];
-  if (!v6 || (v7 = v6, [v5 currentVehicleState], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  currentVehicleState = [vehicleCopy currentVehicleState];
+  if (!currentVehicleState || (v7 = currentVehicleState, [v5 currentVehicleState], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
 LABEL_8:
     v20 = 1;
     goto LABEL_9;
   }
 
-  v9 = [v4 currentVehicleState];
-  v10 = [v5 currentVehicleState];
-  v11 = [v9 isSignificantlyDifferentFromVehicleState:v10];
+  currentVehicleState2 = [vehicleCopy currentVehicleState];
+  currentVehicleState3 = [v5 currentVehicleState];
+  v11 = [currentVehicleState2 isSignificantlyDifferentFromVehicleState:currentVehicleState3];
 
   GEOConfigGetDouble();
   v13 = v12;
-  v14 = [v5 currentVehicleState];
-  v15 = [v14 dateOfUpdate];
-  v16 = [v4 currentVehicleState];
-  v17 = [v16 dateOfUpdate];
-  [v15 timeIntervalSinceDate:v17];
+  currentVehicleState4 = [v5 currentVehicleState];
+  dateOfUpdate = [currentVehicleState4 dateOfUpdate];
+  currentVehicleState5 = [vehicleCopy currentVehicleState];
+  dateOfUpdate2 = [currentVehicleState5 dateOfUpdate];
+  [dateOfUpdate timeIntervalSinceDate:dateOfUpdate2];
   v19 = fabs(v18) > v13;
 
   v20 = v11 | v19;
@@ -1982,33 +1982,33 @@ LABEL_9:
   return v20 & 1;
 }
 
-- (void)setShouldAssumeFullCharge:(BOOL)a3
+- (void)setShouldAssumeFullCharge:(BOOL)charge
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_shouldAssumeFullCharge = a3;
+  obj->_shouldAssumeFullCharge = charge;
   [(VGVirtualGarage *)obj _notifyObserversGarageDidUpdateVehicles];
   objc_sync_exit(obj);
 }
 
-- (id)_vehicleWithIdentifier:(id)a3
+- (id)_vehicleWithIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  obj = &v5->super.isa;
-  if (v4)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = &selfCopy->super.isa;
+  if (identifierCopy)
   {
-    vehicles = v5->_vehicles;
+    vehicles = selfCopy->_vehicles;
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke;
     v31[3] = &unk_279E26A38;
-    v29 = v4;
+    v29 = identifierCopy;
     v32 = v29;
     v7 = [(NSMutableArray *)vehicles indexOfObjectPassingTest:v31];
-    if (v7 >= [(NSMutableArray *)v5->_vehicles count])
+    if (v7 >= [(NSMutableArray *)selfCopy->_vehicles count])
     {
       v9 = VGGetVirtualGarageLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2096,7 +2096,7 @@ LABEL_9:
 
     else
     {
-      v8 = [(NSMutableArray *)v5->_vehicles objectAtIndexedSubscript:v7];
+      v8 = [(NSMutableArray *)selfCopy->_vehicles objectAtIndexedSubscript:v7];
     }
   }
 
@@ -2123,14 +2123,14 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
 - (NSString)description
 {
   v33 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v24 = MEMORY[0x277CCACA8];
-  obj = v2;
+  obj = selfCopy;
   v3 = objc_opt_class();
   v25 = NSStringFromClass(v3);
-  selectedVehicleIdentifier = v2->_selectedVehicleIdentifier;
-  v4 = v2->_vehicles;
+  selectedVehicleIdentifier = selfCopy->_selectedVehicleIdentifier;
+  v4 = selfCopy->_vehicles;
   v26 = v4;
   if (v4)
   {
@@ -2206,9 +2206,9 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
   return v20;
 }
 
-- (VGVirtualGarage)initWithCoder:(id)a3
+- (VGVirtualGarage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = VGVirtualGarage;
   v5 = [(VGVirtualGarage *)&v14 init];
@@ -2217,11 +2217,11 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_vehicles"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_vehicles"];
     vehicles = v5->_vehicles;
     v5->_vehicles = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_selectedVehicleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_selectedVehicleIdentifier"];
     selectedVehicleIdentifier = v5->_selectedVehicleIdentifier;
     v5->_selectedVehicleIdentifier = v11;
   }
@@ -2229,11 +2229,11 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
   return v5;
 }
 
-- (VGVirtualGarage)initWithGaragePersister:(id)a3
+- (VGVirtualGarage)initWithGaragePersister:(id)persister
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  persisterCopy = persister;
+  if (persisterCopy)
   {
     v31.receiver = self;
     v31.super_class = VGVirtualGarage;
@@ -2246,19 +2246,19 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
         *buf = 134218240;
         v33 = v6;
         v34 = 2048;
-        v35 = v5;
+        v35 = persisterCopy;
         _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_INFO, "Creating new virtualGarage: %p with persister: %p", buf, 0x16u);
       }
 
-      objc_storeStrong(&v6->_persister, a3);
+      objc_storeStrong(&v6->_persister, persister);
       [(VGVirtualGaragePersisting *)v6->_persister setDelegate:v6];
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       vehicles = v6->_vehicles;
-      v6->_vehicles = v8;
+      v6->_vehicles = array;
 
-      v10 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       queuedGetGarageCompletionHandlers = v6->_queuedGetGarageCompletionHandlers;
-      v6->_queuedGetGarageCompletionHandlers = v10;
+      v6->_queuedGetGarageCompletionHandlers = array2;
 
       global_queue = geo_get_global_queue();
       v13 = *MEMORY[0x277D0EAA0];
@@ -2294,7 +2294,7 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
     }
 
     self = v6;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
@@ -2311,11 +2311,11 @@ uint64_t __42__VGVirtualGarage__vehicleWithIdentifier___block_invoke(uint64_t a1
       _os_log_impl(&dword_270EC1000, v23, OS_LOG_TYPE_ERROR, "%{public}s forbids: %{public}s. %{public}s", buf, 0x20u);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 void __43__VGVirtualGarage_initWithGaragePersister___block_invoke(uint64_t a1, void *a2, void *a3)

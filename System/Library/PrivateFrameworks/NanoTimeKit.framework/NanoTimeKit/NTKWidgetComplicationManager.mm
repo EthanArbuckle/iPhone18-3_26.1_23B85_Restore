@@ -1,38 +1,38 @@
 @interface NTKWidgetComplicationManager
-+ (id)instanceForDevice:(id)a3;
-- (BOOL)_isWidgetAvailable:(id)a3;
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4;
-- (BOOL)isComplicationConfigurable:(id)a3;
-- (BOOL)vendorExistsWithDescriptor:(id)a3;
-- (NTKWidgetComplicationManager)initWithDevice:(id)a3;
-- (id)infoForDescriptor:(id)a3;
-- (unint64_t)_widgetFamiliesForComplicationFamilies:(id)a3;
++ (id)instanceForDevice:(id)device;
+- (BOOL)_isWidgetAvailable:(id)available;
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families;
+- (BOOL)isComplicationConfigurable:(id)configurable;
+- (BOOL)vendorExistsWithDescriptor:(id)descriptor;
+- (NTKWidgetComplicationManager)initWithDevice:(id)device;
+- (id)infoForDescriptor:(id)descriptor;
+- (unint64_t)_widgetFamiliesForComplicationFamilies:(id)families;
 - (void)_activate;
-- (void)_lock_updateInfoForDescriptor:(id)a3 extension:(id)a4;
+- (void)_lock_updateInfoForDescriptor:(id)descriptor extension:(id)extension;
 - (void)_postUpdate;
 - (void)_queue_updateComplicationDescriptorCache;
 - (void)_registerObserver;
 - (void)_updateInfo;
 - (void)dealloc;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
-- (void)enumerateAvailableDescriptorsWithBlock:(id)a3;
-- (void)enumerateDescriptorsCompatibleWithFamilies:(id)a3 locationStyle:(unint64_t)a4 withBlock:(id)a5;
-- (void)extensionsDidChangeForExtensionProvider:(id)a3;
-- (void)reloadDescriptorsForAppBundleIdentifier:(id)a3 withCompletion:(id)a4;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
+- (void)enumerateAvailableDescriptorsWithBlock:(id)block;
+- (void)enumerateDescriptorsCompatibleWithFamilies:(id)families locationStyle:(unint64_t)style withBlock:(id)block;
+- (void)extensionsDidChangeForExtensionProvider:(id)provider;
+- (void)reloadDescriptorsForAppBundleIdentifier:(id)identifier withCompletion:(id)completion;
 @end
 
 @implementation NTKWidgetComplicationManager
 
-+ (id)instanceForDevice:(id)a3
++ (id)instanceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy)
   {
-    v5 = [v3 pairingID];
-    if (!v5)
+    pairingID = [deviceCopy pairingID];
+    if (!pairingID)
     {
-      v5 = [MEMORY[0x277CBEB68] null];
+      pairingID = [MEMORY[0x277CBEB68] null];
     }
 
     os_unfair_lock_lock(&instanceForDevice__lock_0);
@@ -46,12 +46,12 @@
       v6 = instanceForDevice__uuidToProvider_0;
     }
 
-    v9 = [v6 objectForKeyedSubscript:v5];
+    v9 = [v6 objectForKeyedSubscript:pairingID];
     if (!v9)
     {
       v9 = [[NTKWidgetComplicationManager alloc] initWithDevice:v4];
       [(NTKWidgetComplicationManager *)v9 _activate];
-      [instanceForDevice__uuidToProvider_0 setObject:v9 forKeyedSubscript:v5];
+      [instanceForDevice__uuidToProvider_0 setObject:v9 forKeyedSubscript:pairingID];
     }
 
     os_unfair_lock_unlock(&instanceForDevice__lock_0);
@@ -65,16 +65,16 @@
   return v9;
 }
 
-- (NTKWidgetComplicationManager)initWithDevice:(id)a3
+- (NTKWidgetComplicationManager)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKWidgetComplicationManager;
   v6 = [(NTKWidgetComplicationManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     infoByDescriptor = v7->_infoByDescriptor;
     v7->_infoByDescriptor = v8;
@@ -128,19 +128,19 @@
   [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider registerObserver:self];
 }
 
-- (BOOL)_isWidgetAvailable:(id)a3
+- (BOOL)_isWidgetAvailable:(id)available
 {
-  v6 = (![v3 hiddenBySensitiveUI] || (objc_msgSend(MEMORY[0x277CBBB70], "sharedMonitor"), v4 = v3 = a3;
+  v6 = (![v3 hiddenBySensitiveUI] || (objc_msgSend(MEMORY[0x277CBBB70], "sharedMonitor"), v4 = v3 = available;
 
   return v6;
 }
 
-- (BOOL)vendorExistsWithDescriptor:(id)a3
+- (BOOL)vendorExistsWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleIdentifier];
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
   v6 = NTKDebugSimulatedTombstoneExtensionBundleIdentifier();
-  v7 = [v5 isEqual:v6];
+  v7 = [extensionBundleIdentifier isEqual:v6];
 
   if (v7)
   {
@@ -160,8 +160,8 @@
     v11[1] = 3221225472;
     v11[2] = __59__NTKWidgetComplicationManager_vendorExistsWithDescriptor___block_invoke;
     v11[3] = &unk_278789380;
-    v12 = v4;
-    v13 = self;
+    v12 = descriptorCopy;
+    selfCopy = self;
     v14 = &v15;
     [(NSArray *)v9 enumerateObjectsUsingBlock:v11];
     v8 = *(v16 + 24);
@@ -186,17 +186,17 @@ void __59__NTKWidgetComplicationManager_vendorExistsWithDescriptor___block_invok
   }
 }
 
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 extensionBundleIdentifier];
+  availableCopy = available;
+  familiesCopy = families;
+  extensionBundleIdentifier = [availableCopy extensionBundleIdentifier];
   v9 = NTKDebugSimulatedTombstoneExtensionBundleIdentifier();
-  v10 = [v8 isEqual:v9];
+  v10 = [extensionBundleIdentifier isEqual:v9];
 
   if ((v10 & 1) == 0)
   {
-    v12 = [(NTKWidgetComplicationManager *)self _widgetFamiliesForComplicationFamilies:v7];
+    v12 = [(NTKWidgetComplicationManager *)self _widgetFamiliesForComplicationFamilies:familiesCopy];
     os_unfair_lock_lock(&self->_widgetComplicationDescriptorCacheLock);
     v13 = self->_lock_widgetComplicationDescriptorCacheOrderedKeys;
     os_unfair_lock_unlock(&self->_widgetComplicationDescriptorCacheLock);
@@ -210,17 +210,17 @@ void __59__NTKWidgetComplicationManager_vendorExistsWithDescriptor___block_invok
     v22 = 3221225472;
     v23 = __68__NTKWidgetComplicationManager_isComplicationAvailable_forFamilies___block_invoke;
     v24 = &unk_2787893A8;
-    v14 = v6;
+    v14 = availableCopy;
     v25 = v14;
-    v26 = self;
+    selfCopy = self;
     v27 = &v29;
     v28 = v12;
     [(NSArray *)v13 enumerateObjectsUsingBlock:&v21];
     v15 = v30[5];
     if (v15)
     {
-      v16 = [v15 intentType];
-      if (!v16 || ([v14 descriptor], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "intentReference"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v16, v18))
+      intentType = [v15 intentType];
+      if (!intentType || ([v14 descriptor], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "intentReference"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, intentType, v18))
       {
         v11 = 1;
 LABEL_11:
@@ -260,16 +260,16 @@ void __68__NTKWidgetComplicationManager_isComplicationAvailable_forFamilies___bl
   }
 }
 
-- (BOOL)isComplicationConfigurable:(id)a3
+- (BOOL)isComplicationConfigurable:(id)configurable
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleIdentifier];
+  configurableCopy = configurable;
+  extensionBundleIdentifier = [configurableCopy extensionBundleIdentifier];
   v6 = NTKDebugSimulatedTombstoneExtensionBundleIdentifier();
-  v7 = [v5 isEqual:v6];
+  v7 = [extensionBundleIdentifier isEqual:v6];
 
   if ((v7 & 1) != 0 || !NTKUseComplicationEditor())
   {
-    v10 = 0;
+    isConfigurable = 0;
   }
 
   else
@@ -280,30 +280,30 @@ void __68__NTKWidgetComplicationManager_isComplicationAvailable_forFamilies___bl
     v21 = __Block_byref_object_copy__56;
     v22 = __Block_byref_object_dispose__56;
     v23 = 0;
-    v8 = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
+    extensions = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __59__NTKWidgetComplicationManager_isComplicationConfigurable___block_invoke;
     v15 = &unk_2787893F8;
-    v16 = v4;
+    v16 = configurableCopy;
     v17 = &v18;
-    [v8 enumerateObjectsUsingBlock:&v12];
+    [extensions enumerateObjectsUsingBlock:&v12];
 
     v9 = v19[5];
     if (v9)
     {
-      v10 = [v9 isConfigurable];
+      isConfigurable = [v9 isConfigurable];
     }
 
     else
     {
-      v10 = 0;
+      isConfigurable = 0;
     }
 
     _Block_object_dispose(&v18, 8);
   }
 
-  return v10;
+  return isConfigurable;
 }
 
 void __59__NTKWidgetComplicationManager_isComplicationConfigurable___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -346,19 +346,19 @@ void __59__NTKWidgetComplicationManager_isComplicationConfigurable___block_invok
   }
 }
 
-- (void)reloadDescriptorsForAppBundleIdentifier:(id)a3 withCompletion:(id)a4
+- (void)reloadDescriptorsForAppBundleIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = +[NTKWidgetDescriptorProvider sharedInstance];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__NTKWidgetComplicationManager_reloadDescriptorsForAppBundleIdentifier_withCompletion___block_invoke;
   v10[3] = &unk_278789420;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   [v7 reloadDescriptorsForContainerIdentifier:v9 completion:v10];
 }
 
@@ -400,7 +400,7 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v3, v12, v13);
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
   v4 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -417,7 +417,7 @@ LABEL_6:
   dispatch_assert_queue_V2(self->_descriptorQueue);
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
+  extensions = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache__block_invoke;
@@ -426,7 +426,7 @@ LABEL_6:
   v17 = v4;
   v6 = v4;
   v7 = v3;
-  [v5 enumerateObjectsUsingBlock:&v12];
+  [extensions enumerateObjectsUsingBlock:&v12];
 
   os_unfair_lock_lock(&self->_widgetComplicationDescriptorCacheLock);
   v8 = [v7 copy];
@@ -514,15 +514,15 @@ void __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache
   [*(a1 + 40) addObject:v5];
 }
 
-- (unint64_t)_widgetFamiliesForComplicationFamilies:(id)a3
+- (unint64_t)_widgetFamiliesForComplicationFamilies:(id)families
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  familiesCopy = families;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [familiesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -534,7 +534,7 @@ void __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(familiesCopy);
         }
 
         [*(*(&v10 + 1) + 8 * i) integerValue];
@@ -542,7 +542,7 @@ void __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache
         v6 |= CHSWidgetFamilyMaskFromWidgetFamily();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [familiesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -556,10 +556,10 @@ void __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache
   return v6;
 }
 
-- (void)enumerateDescriptorsCompatibleWithFamilies:(id)a3 locationStyle:(unint64_t)a4 withBlock:(id)a5
+- (void)enumerateDescriptorsCompatibleWithFamilies:(id)families locationStyle:(unint64_t)style withBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(NTKWidgetComplicationManager *)self _widgetFamiliesForComplicationFamilies:a3];
+  blockCopy = block;
+  v9 = [(NTKWidgetComplicationManager *)self _widgetFamiliesForComplicationFamilies:families];
   os_unfair_lock_lock(&self->_widgetComplicationDescriptorCacheLock);
   v10 = self->_lock_widgetComplicationDescriptorCache;
   v11 = self->_lock_widgetComplicationDescriptorCacheOrderedKeys;
@@ -569,11 +569,11 @@ void __72__NTKWidgetComplicationManager__queue_updateComplicationDescriptorCache
   v14[2] = __99__NTKWidgetComplicationManager_enumerateDescriptorsCompatibleWithFamilies_locationStyle_withBlock___block_invoke;
   v14[3] = &unk_2787894E8;
   v15 = v10;
-  v16 = self;
-  v18 = a4;
+  selfCopy = self;
+  styleCopy = style;
   v19 = v9;
-  v17 = v8;
-  v12 = v8;
+  v17 = blockCopy;
+  v12 = blockCopy;
   v13 = v10;
   [(NSArray *)v11 enumerateObjectsUsingBlock:v14];
 }
@@ -619,9 +619,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)enumerateAvailableDescriptorsWithBlock:(id)a3
+- (void)enumerateAvailableDescriptorsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_widgetComplicationDescriptorCacheLock);
   v5 = self->_lock_widgetComplicationDescriptorCacheOrderedKeys;
   os_unfair_lock_unlock(&self->_widgetComplicationDescriptorCacheLock);
@@ -630,8 +630,8 @@ LABEL_9:
   v7[2] = __71__NTKWidgetComplicationManager_enumerateAvailableDescriptorsWithBlock___block_invoke;
   v7[3] = &unk_278789510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)v5 enumerateObjectsUsingBlock:v7];
 }
 
@@ -650,13 +650,13 @@ void __71__NTKWidgetComplicationManager_enumerateAvailableDescriptorsWithBlock__
 {
   os_unfair_lock_lock(&self->_infoByDescriptorLock);
   [(NSMutableDictionary *)self->_infoByDescriptor removeAllObjects];
-  v3 = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
+  extensions = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider extensions];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__NTKWidgetComplicationManager__updateInfo__block_invoke;
   v4[3] = &unk_278789538;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [extensions enumerateObjectsUsingBlock:v4];
 
   os_unfair_lock_unlock(&self->_infoByDescriptorLock);
 }
@@ -680,20 +680,20 @@ void __43__NTKWidgetComplicationManager__updateInfo__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_lock_updateInfoForDescriptor:(id)a3 extension:(id)a4
+- (void)_lock_updateInfoForDescriptor:(id)descriptor extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  extensionCopy = extension;
   os_unfair_lock_assert_owner(&self->_infoByDescriptorLock);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__NTKWidgetComplicationManager__lock_updateInfoForDescriptor_extension___block_invoke;
   aBlock[3] = &unk_278789560;
-  v8 = v6;
+  v8 = descriptorCopy;
   v25 = v8;
-  v9 = v7;
+  v9 = extensionCopy;
   v26 = v9;
-  v27 = self;
+  selfCopy = self;
   v10 = _Block_copy(aBlock);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -703,29 +703,29 @@ void __43__NTKWidgetComplicationManager__updateInfo__block_invoke(uint64_t a1, v
   v21 = v11;
   v12 = v9;
   v22 = v12;
-  v23 = self;
+  selfCopy2 = self;
   v13 = _Block_copy(v20);
-  v14 = [v11 intentType];
+  intentType = [v11 intentType];
 
-  if (v14)
+  if (intentType)
   {
     if ([v11 isConfigurable])
     {
-      v15 = [v11 defaultIntentReference];
-      v16 = [v15 intent];
+      defaultIntentReference = [v11 defaultIntentReference];
+      intent = [defaultIntentReference intent];
 
-      v13[2](v13, v16);
+      v13[2](v13, intent);
     }
 
     else
     {
-      v17 = [v11 intentRecommendations];
+      intentRecommendations = [v11 intentRecommendations];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __72__NTKWidgetComplicationManager__lock_updateInfoForDescriptor_extension___block_invoke_3;
       v18[3] = &unk_2787895B0;
       v19 = v10;
-      [v17 enumerateObjectsUsingBlock:v18];
+      [intentRecommendations enumerateObjectsUsingBlock:v18];
     }
   }
 
@@ -766,12 +766,12 @@ void __72__NTKWidgetComplicationManager__lock_updateInfoForDescriptor_extension_
   [*(*(a1 + 48) + 24) setObject:v7 forKeyedSubscript:v8];
 }
 
-- (id)infoForDescriptor:(id)a3
+- (id)infoForDescriptor:(id)descriptor
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_infoByDescriptorLock);
-  v5 = [(NSMutableDictionary *)self->_infoByDescriptor objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_infoByDescriptor objectForKeyedSubscript:descriptorCopy];
   if (!v5)
   {
     [(NSMutableDictionary *)self->_infoByDescriptor allKeys];
@@ -783,7 +783,7 @@ void __72__NTKWidgetComplicationManager__lock_updateInfoForDescriptor_extension_
     if (v7)
     {
       v8 = v7;
-      v21 = self;
+      selfCopy = self;
       v9 = *v24;
 LABEL_4:
       v10 = 0;
@@ -796,17 +796,17 @@ LABEL_4:
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
-        v12 = [v11 extensionBundleIdentifier];
-        v13 = [v4 extensionBundleIdentifier];
-        if ([v12 isEqualToString:v13])
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        extensionBundleIdentifier2 = [descriptorCopy extensionBundleIdentifier];
+        if ([extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2])
         {
           [v11 kind];
           v15 = v14 = v6;
-          [v4 kind];
-          v17 = v16 = v4;
+          [descriptorCopy kind];
+          v17 = v16 = descriptorCopy;
           v18 = [v15 isEqualToString:v17];
 
-          v4 = v16;
+          descriptorCopy = v16;
           v6 = v14;
           v8 = v22;
 
@@ -816,13 +816,13 @@ LABEL_4:
 
             if (v19)
             {
-              self = v21;
-              v5 = [(NSMutableDictionary *)v21->_infoByDescriptor objectForKeyedSubscript:v19];
+              self = selfCopy;
+              v5 = [(NSMutableDictionary *)selfCopy->_infoByDescriptor objectForKeyedSubscript:v19];
               goto LABEL_17;
             }
 
             v5 = 0;
-            self = v21;
+            self = selfCopy;
             goto LABEL_19;
           }
         }
@@ -841,7 +841,7 @@ LABEL_4:
 
           v5 = 0;
           v19 = v6;
-          self = v21;
+          self = selfCopy;
           goto LABEL_17;
         }
       }
@@ -859,13 +859,13 @@ LABEL_19:
   return v5;
 }
 
-- (void)extensionsDidChangeForExtensionProvider:(id)a3
+- (void)extensionsDidChangeForExtensionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   widgetExtensionProvider = self->_widgetExtensionProvider;
   v6 = _NTKLoggingObjectForDomain(47, "NTKLoggingDomainWidget");
   v7 = v6;
-  if (widgetExtensionProvider == v4)
+  if (widgetExtensionProvider == providerCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -880,7 +880,7 @@ LABEL_19:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(NTKWidgetComplicationManager *)v4 extensionsDidChangeForExtensionProvider:v7];
+      [(NTKWidgetComplicationManager *)providerCopy extensionsDidChangeForExtensionProvider:v7];
     }
   }
 }

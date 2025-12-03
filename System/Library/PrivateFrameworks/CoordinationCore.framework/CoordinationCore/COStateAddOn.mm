@@ -1,24 +1,24 @@
 @interface COStateAddOn
 - (COStateAddOn)init;
 - (COStateAddOnDelegate)delegate;
-- (void)_broadcastMeshState:(id)a3;
+- (void)_broadcastMeshState:(id)state;
 - (void)_constructMeshState;
-- (void)_handleStateNotification:(id)a3;
-- (void)_handleStateReadRequest:(id)a3 callback:(id)a4;
-- (void)_handleStateUpdateNotification:(id)a3;
-- (void)_handleStateUpdateRequest:(id)a3 callback:(id)a4;
-- (void)_handleUpdates:(id)a3 removals:(id)a4;
+- (void)_handleStateNotification:(id)notification;
+- (void)_handleStateReadRequest:(id)request callback:(id)callback;
+- (void)_handleStateUpdateNotification:(id)notification;
+- (void)_handleStateUpdateRequest:(id)request callback:(id)callback;
+- (void)_handleUpdates:(id)updates removals:(id)removals;
 - (void)_processOutstandingUpdateRequests;
-- (void)_sendRequest:(id)a3 withRetryCount:(int64_t)a4 withCallback:(id)a5;
-- (void)_withLock:(id)a3;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)removeKeyPaths:(id)a3 suite:(id)a4 withCallback:(id)a5;
-- (void)sendStateUpdates:(id)a3 removals:(id)a4 withCallback:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setDictionary:(id)a3 suite:(id)a4 withCallback:(id)a5;
-- (void)willRemoveFromMeshController:(id)a3;
+- (void)_sendRequest:(id)request withRetryCount:(int64_t)count withCallback:(id)callback;
+- (void)_withLock:(id)lock;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)removeKeyPaths:(id)paths suite:(id)suite withCallback:(id)callback;
+- (void)sendStateUpdates:(id)updates removals:(id)removals withCallback:(id)callback;
+- (void)setDelegate:(id)delegate;
+- (void)setDictionary:(id)dictionary suite:(id)suite withCallback:(id)callback;
+- (void)willRemoveFromMeshController:(id)controller;
 @end
 
 @implementation COStateAddOn
@@ -30,9 +30,9 @@
   v2 = [(COMeshAddOn *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     outstandingUpdateRequests = v2->_outstandingUpdateRequests;
-    v2->_outstandingUpdateRequests = v3;
+    v2->_outstandingUpdateRequests = array;
 
     v2->_stateConstructionGeneration = 0;
     v2->_lock._os_unfair_lock_opaque = 0;
@@ -41,11 +41,11 @@
   return v2;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -81,16 +81,16 @@ uint64_t __24__COStateAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v4);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__COStateAddOn_setDelegate___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(COStateAddOn *)self _withLock:v6];
 }
 
@@ -109,87 +109,87 @@ void __28__COStateAddOn_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDictionary:(id)a3 suite:(id)a4 withCallback:(id)a5
+- (void)setDictionary:(id)dictionary suite:(id)suite withCallback:(id)callback
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  suiteCopy = suite;
+  callbackCopy = callback;
   v11 = COCoreLogForCategory(6);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     v15 = 134218498;
-    v16 = v14;
+    v16 = meshController;
     v17 = 2112;
-    v18 = v8;
+    v18 = dictionaryCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = suiteCopy;
     _os_log_debug_impl(&dword_244378000, v11, OS_LOG_TYPE_DEBUG, "%p setting state %@ for suite %@", &v15, 0x20u);
   }
 
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  [v12 setValue:v8 forKey:v9];
-  [(COStateAddOn *)self sendStateUpdates:v12 removals:0 withCallback:v10];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setValue:dictionaryCopy forKey:suiteCopy];
+  [(COStateAddOn *)self sendStateUpdates:dictionary removals:0 withCallback:callbackCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeKeyPaths:(id)a3 suite:(id)a4 withCallback:(id)a5
+- (void)removeKeyPaths:(id)paths suite:(id)suite withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathsCopy = paths;
+  suiteCopy = suite;
+  callbackCopy = callback;
   v11 = COCoreLogForCategory(6);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [COStateAddOn removeKeyPaths:suite:withCallback:];
   }
 
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  [v12 setObject:v8 forKey:v9];
-  [(COStateAddOn *)self sendStateUpdates:0 removals:v12 withCallback:v10];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:pathsCopy forKey:suiteCopy];
+  [(COStateAddOn *)self sendStateUpdates:0 removals:dictionary withCallback:callbackCopy];
 }
 
-- (void)sendStateUpdates:(id)a3 removals:(id)a4 withCallback:(id)a5
+- (void)sendStateUpdates:(id)updates removals:(id)removals withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatesCopy = updates;
+  removalsCopy = removals;
+  callbackCopy = callback;
   v11 = COCoreLogForCategory(6);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [COStateAddOn sendStateUpdates:removals:withCallback:];
   }
 
-  v12 = [[COStateUpdateRequest alloc] initWithUpdates:v8 removals:v9];
-  v13 = [(COMeshAddOn *)self meshController];
+  v12 = [[COStateUpdateRequest alloc] initWithUpdates:updatesCopy removals:removalsCopy];
+  meshController = [(COMeshAddOn *)self meshController];
 
-  if (v13)
+  if (meshController)
   {
-    [(COStateAddOn *)self _sendRequest:v12 withRetryCount:5 withCallback:v10];
+    [(COStateAddOn *)self _sendRequest:v12 withRetryCount:5 withCallback:callbackCopy];
   }
 
   else
   {
-    [(COStateAddOn *)self _handleUpdates:v8 removals:v9];
+    [(COStateAddOn *)self _handleUpdates:updatesCopy removals:removalsCopy];
   }
 }
 
-- (void)_sendRequest:(id)a3 withRetryCount:(int64_t)a4 withCallback:(id)a5
+- (void)_sendRequest:(id)request withRetryCount:(int64_t)count withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 <= 0)
+  requestCopy = request;
+  callbackCopy = callback;
+  if (count <= 0)
   {
     v13 = COCoreLogForCategory(6);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [COStateAddOn _sendRequest:v8 withRetryCount:v13 withCallback:?];
+      [COStateAddOn _sendRequest:requestCopy withRetryCount:v13 withCallback:?];
     }
 
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4002 userInfo:0];
-    v9[2](v9, v14);
+    callbackCopy[2](callbackCopy, v14);
   }
 
   else
@@ -200,13 +200,13 @@ void __28__COStateAddOn_setDelegate___block_invoke(uint64_t a1)
     v15[2] = __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke;
     v15[3] = &unk_278E18090;
     objc_copyWeak(v18, &location);
-    v10 = v8;
+    v10 = requestCopy;
     v16 = v10;
-    v18[1] = a4;
-    v17 = v9;
+    v18[1] = count;
+    v17 = callbackCopy;
     v11 = MEMORY[0x245D5FF10](v15);
-    v12 = [(COMeshAddOn *)self meshController];
-    [v12 sendRequest:v10 withCompletionHandler:v11];
+    meshController = [(COMeshAddOn *)self meshController];
+    [meshController sendRequest:v10 withCompletionHandler:v11];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -240,36 +240,36 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
   }
 }
 
-- (void)_handleUpdates:(id)a3 removals:(id)a4
+- (void)_handleUpdates:(id)updates removals:(id)removals
 {
   v98 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v57 = a4;
+  updatesCopy = updates;
+  removalsCopy = removals;
   v7 = COCoreLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v93 = self;
+    selfCopy3 = self;
     v94 = 2112;
-    v95 = v6;
+    v95 = updatesCopy;
     v96 = 2112;
-    v97 = v57;
+    v97 = removalsCopy;
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p handling updates %@ and removals %@", buf, 0x20u);
   }
 
-  v8 = [(COStateAddOn *)self meshState];
-  v61 = [v8 mutableCopy];
+  meshState = [(COStateAddOn *)self meshState];
+  v61 = [meshState mutableCopy];
 
   v9 = 0x277CBE000uLL;
-  v55 = [MEMORY[0x277CBEB38] dictionary];
-  v54 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = [v6 allKeys];
-  v70 = v6;
-  v71 = self;
+  obj = [updatesCopy allKeys];
+  v70 = updatesCopy;
+  selfCopy2 = self;
   v58 = [obj countByEnumeratingWithState:&v84 objects:v91 count:16];
   if (v58)
   {
@@ -285,34 +285,34 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
         }
 
         v11 = *(*(&v84 + 1) + 8 * v10);
-        v12 = [(COStateAddOn *)self meshState];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        meshState2 = [(COStateAddOn *)self meshState];
+        v13 = [meshState2 objectForKeyedSubscript:v11];
         v59 = v10;
         if (v13)
         {
-          v14 = [(COStateAddOn *)self meshState];
-          v15 = [v14 objectForKeyedSubscript:v11];
-          v64 = [v15 mutableCopy];
+          meshState3 = [(COStateAddOn *)self meshState];
+          v15 = [meshState3 objectForKeyedSubscript:v11];
+          dictionary3 = [v15 mutableCopy];
 
           v9 = 0x277CBE000;
         }
 
         else
         {
-          v64 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary3 = [MEMORY[0x277CBEB38] dictionary];
         }
 
-        v62 = [*(v9 + 2872) dictionary];
+        dictionary4 = [*(v9 + 2872) dictionary];
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
         v16 = v70;
         v17 = [v70 objectForKeyedSubscript:v11];
-        v18 = [v17 allKeys];
+        allKeys = [v17 allKeys];
 
-        v66 = v18;
-        v19 = [v18 countByEnumeratingWithState:&v80 objects:v90 count:16];
+        v66 = allKeys;
+        v19 = [allKeys countByEnumeratingWithState:&v80 objects:v90 count:16];
         if (v19)
         {
           v20 = v19;
@@ -327,8 +327,8 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
               }
 
               v22 = *(*(&v80 + 1) + 8 * i);
-              v23 = [(COStateAddOn *)self meshState];
-              v24 = [v23 objectForKeyedSubscript:v11];
+              meshState4 = [(COStateAddOn *)self meshState];
+              v24 = [meshState4 objectForKeyedSubscript:v11];
               v25 = [v24 objectForKeyedSubscript:v22];
               v26 = [v16 objectForKeyedSubscript:v11];
               v27 = [v26 objectForKeyedSubscript:v22];
@@ -339,14 +339,14 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
               {
                 v29 = [v70 objectForKeyedSubscript:v11];
                 v30 = [v29 objectForKeyedSubscript:v22];
-                [v62 setObject:v30 forKey:v22];
+                [dictionary4 setObject:v30 forKey:v22];
 
                 v31 = [v70 objectForKeyedSubscript:v11];
                 v32 = [v31 objectForKeyedSubscript:v22];
-                [v64 setObject:v32 forKey:v22];
+                [dictionary3 setObject:v32 forKey:v22];
               }
 
-              self = v71;
+              self = selfCopy2;
             }
 
             v20 = [v66 countByEnumeratingWithState:&v80 objects:v90 count:16];
@@ -355,12 +355,12 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
           while (v20);
         }
 
-        if ([v62 count])
+        if ([dictionary4 count])
         {
-          [v55 setObject:v62 forKey:v11];
+          [dictionary setObject:dictionary4 forKey:v11];
         }
 
-        [(NSDictionary *)v61 setObject:v64 forKey:v11];
+        [(NSDictionary *)v61 setObject:dictionary3 forKey:v11];
 
         v10 = v59 + 1;
         v9 = 0x277CBE000uLL;
@@ -377,8 +377,8 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v60 = [v57 allKeys];
-  v65 = [v60 countByEnumeratingWithState:&v76 objects:v89 count:16];
+  allKeys2 = [removalsCopy allKeys];
+  v65 = [allKeys2 countByEnumeratingWithState:&v76 objects:v89 count:16];
   if (v65)
   {
     v63 = *v77;
@@ -389,23 +389,23 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
       {
         if (*v77 != v63)
         {
-          objc_enumerationMutation(v60);
+          objc_enumerationMutation(allKeys2);
         }
 
         v67 = v33;
         v34 = *(*(&v76 + 1) + 8 * v33);
-        v35 = [(COStateAddOn *)self meshState];
-        v36 = [v35 objectForKeyedSubscript:v34];
+        meshState5 = [(COStateAddOn *)self meshState];
+        v36 = [meshState5 objectForKeyedSubscript:v34];
         if (v36)
         {
-          v37 = [(COStateAddOn *)self meshState];
-          v38 = [v37 objectForKeyedSubscript:v34];
-          v69 = [v38 mutableCopy];
+          meshState6 = [(COStateAddOn *)self meshState];
+          v38 = [meshState6 objectForKeyedSubscript:v34];
+          dictionary5 = [v38 mutableCopy];
         }
 
         else
         {
-          v69 = [*(v9 + 2872) dictionary];
+          dictionary5 = [*(v9 + 2872) dictionary];
         }
 
         v39 = [MEMORY[0x277CBEB58] set];
@@ -413,7 +413,7 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
         v73 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v40 = [v57 objectForKeyedSubscript:v34];
+        v40 = [removalsCopy objectForKeyedSubscript:v34];
         v41 = [v40 countByEnumeratingWithState:&v72 objects:v88 count:16];
         if (v41)
         {
@@ -429,17 +429,17 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
               }
 
               v45 = *(*(&v72 + 1) + 8 * j);
-              v46 = [(COStateAddOn *)self meshState];
-              v47 = [v46 objectForKeyedSubscript:v34];
+              meshState7 = [(COStateAddOn *)self meshState];
+              v47 = [meshState7 objectForKeyedSubscript:v34];
               v48 = [v47 objectForKeyedSubscript:v45];
 
               if (v48)
               {
                 [v39 addObject:v45];
-                [v69 removeObjectForKey:v45];
+                [dictionary5 removeObjectForKey:v45];
               }
 
-              self = v71;
+              self = selfCopy2;
             }
 
             v42 = [v40 countByEnumeratingWithState:&v72 objects:v88 count:16];
@@ -450,17 +450,17 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
 
         if ([v39 count])
         {
-          [v54 setObject:v39 forKey:v34];
+          [dictionary2 setObject:v39 forKey:v34];
         }
 
-        [(NSDictionary *)v61 setObject:v69 forKey:v34];
+        [(NSDictionary *)v61 setObject:dictionary5 forKey:v34];
 
         v33 = v67 + 1;
         v9 = 0x277CBE000;
       }
 
       while (v67 + 1 != v65);
-      v65 = [v60 countByEnumeratingWithState:&v76 objects:v89 count:16];
+      v65 = [allKeys2 countByEnumeratingWithState:&v76 objects:v89 count:16];
     }
 
     while (v65);
@@ -469,36 +469,36 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
   meshState = self->_meshState;
   self->_meshState = v61;
 
-  if ([v55 count] || objc_msgSend(v54, "count"))
+  if ([dictionary count] || objc_msgSend(dictionary2, "count"))
   {
     v50 = COCoreLogForCategory(6);
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v93 = self;
+      selfCopy3 = self;
       v94 = 2112;
-      v95 = v55;
+      v95 = dictionary;
       v96 = 2112;
-      v97 = v54;
+      v97 = dictionary2;
       _os_log_impl(&dword_244378000, v50, OS_LOG_TYPE_DEFAULT, "%p informing delegates of changes. Updates Diff = %@ and Removals Diff %@", buf, 0x20u);
     }
 
-    v51 = [(COStateAddOn *)self delegate];
-    [v51 addOn:self receivedUpdates:v55 removals:v54];
+    delegate = [(COStateAddOn *)self delegate];
+    [delegate addOn:self receivedUpdates:dictionary removals:dictionary2];
   }
 
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 3)
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (state == 3)
   {
-    v8 = [v6 me];
-    v9 = [v7 leader];
-    v10 = [v8 isEqual:v9];
+    v8 = [controllerCopy me];
+    leader = [v7 leader];
+    v10 = [v8 isEqual:leader];
 
     if (v10)
     {
@@ -508,40 +508,40 @@ void __57__COStateAddOn__sendRequest_withRetryCount_withCallback___block_invoke(
 
   v11.receiver = self;
   v11.super_class = COStateAddOn;
-  [(COMeshAddOn *)&v11 meshController:v7 didTransitionToState:a4];
+  [(COMeshAddOn *)&v11 meshController:v7 didTransitionToState:state];
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = COStateAddOn;
-  [(COMeshAddOn *)&v14 didAddToMeshController:v4];
+  [(COMeshAddOn *)&v14 didAddToMeshController:controllerCopy];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__COStateAddOn_didAddToMeshController___block_invoke;
   v11[3] = &unk_278E15FA8;
   objc_copyWeak(&v12, &location);
-  [v4 registerHandler:v11 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v11 forRequestClass:objc_opt_class()];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__COStateAddOn_didAddToMeshController___block_invoke_2;
   v9[3] = &unk_278E15FA8;
   objc_copyWeak(&v10, &location);
-  [v4 registerHandler:v9 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v9 forRequestClass:objc_opt_class()];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__COStateAddOn_didAddToMeshController___block_invoke_3;
   v7[3] = &unk_278E15FF8;
   objc_copyWeak(&v8, &location);
-  [v4 registerHandler:v7 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v7 forNotificationClass:objc_opt_class()];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__COStateAddOn_didAddToMeshController___block_invoke_4;
   v5[3] = &unk_278E15FF8;
   objc_copyWeak(&v6, &location);
-  [v4 registerHandler:v5 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v5 forNotificationClass:objc_opt_class()];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -595,26 +595,26 @@ void __39__COStateAddOn_didAddToMeshController___block_invoke_4(uint64_t a1, voi
   }
 }
 
-- (void)willRemoveFromMeshController:(id)a3
+- (void)willRemoveFromMeshController:(id)controller
 {
-  v4 = a3;
-  [v4 deregisterHandlerForRequestClass:objc_opt_class()];
-  [v4 deregisterHandlerForRequestClass:objc_opt_class()];
-  [v4 deregisterHandlerForNotificationClass:objc_opt_class()];
-  [v4 deregisterHandlerForNotificationClass:objc_opt_class()];
+  controllerCopy = controller;
+  [controllerCopy deregisterHandlerForRequestClass:objc_opt_class()];
+  [controllerCopy deregisterHandlerForRequestClass:objc_opt_class()];
+  [controllerCopy deregisterHandlerForNotificationClass:objc_opt_class()];
+  [controllerCopy deregisterHandlerForNotificationClass:objc_opt_class()];
   v5.receiver = self;
   v5.super_class = COStateAddOn;
-  [(COMeshAddOn *)&v5 willRemoveFromMeshController:v4];
+  [(COMeshAddOn *)&v5 willRemoveFromMeshController:controllerCopy];
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshController];
-  v6 = [v5 me];
-  v7 = [(COMeshAddOn *)self meshController];
-  v8 = [v7 leader];
-  v9 = [v6 isEqual:v8];
+  controllerCopy = controller;
+  meshController = [(COMeshAddOn *)self meshController];
+  v6 = [meshController me];
+  meshController2 = [(COMeshAddOn *)self meshController];
+  leader = [meshController2 leader];
+  v9 = [v6 isEqual:leader];
 
   if (v9)
   {
@@ -623,13 +623,13 @@ void __39__COStateAddOn_didAddToMeshController___block_invoke_4(uint64_t a1, voi
 
   v10.receiver = self;
   v10.super_class = COStateAddOn;
-  [(COMeshAddOn *)&v10 didChangeNodesForMeshController:v4];
+  [(COMeshAddOn *)&v10 didChangeNodesForMeshController:controllerCopy];
 }
 
 - (void)_constructMeshState
 {
-  v3 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v3);
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   ++self->_stateConstructionGeneration;
   self->_isConstructingState = 1;
@@ -945,11 +945,11 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
 - (void)_processOutstandingUpdateRequests
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v3);
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   self->_isConstructingState = 0;
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(NSMutableArray *)self->_outstandingUpdateRequests count])
   {
     v27 = 0u;
@@ -971,7 +971,7 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
             objc_enumerationMutation(v5);
           }
 
-          [v4 addObject:*(*(&v25 + 1) + 8 * i)];
+          [array addObject:*(*(&v25 + 1) + 8 * i)];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -986,7 +986,7 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v4;
+  v10 = array;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v11)
   {
@@ -1002,9 +1002,9 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
         }
 
         v15 = *(*(&v21 + 1) + 8 * j);
-        v16 = [v15 request];
-        v17 = [v15 callback];
-        [(COStateAddOn *)self _handleStateUpdateRequest:v16 callback:v17];
+        request = [v15 request];
+        callback = [v15 callback];
+        [(COStateAddOn *)self _handleStateUpdateRequest:request callback:callback];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -1023,13 +1023,13 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_broadcastMeshState:(id)a3
+- (void)_broadcastMeshState:(id)state
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v6 = [[COStateNotification alloc] initWithState:v4];
+  v6 = [[COStateNotification alloc] initWithState:stateCopy];
   v7 = COCoreLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1037,49 +1037,49 @@ void __35__COStateAddOn__constructMeshState__block_invoke_2_40(uint64_t a1, uint
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "Sending state notification to all clients", v9, 2u);
   }
 
-  v8 = [(COMeshAddOn *)self meshController];
-  [v8 sendNotification:v6];
+  meshController = [(COMeshAddOn *)self meshController];
+  [meshController sendNotification:v6];
 
   [(COStateAddOn *)self _handleStateNotification:v6];
 }
 
-- (void)_handleStateNotification:(id)a3
+- (void)_handleStateNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v6 = [v4 state];
+  state = [notificationCopy state];
 
-  v7 = [(COStateAddOn *)self meshState];
-  v8 = [v7 isEqualToDictionary:v6];
+  meshState = [(COStateAddOn *)self meshState];
+  v8 = [meshState isEqualToDictionary:state];
 
   if (v8)
   {
     v9 = COCoreLogForCategory(6);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(COMeshAddOn *)self meshController];
-      v11 = [(COStateAddOn *)self meshState];
+      meshController = [(COMeshAddOn *)self meshController];
+      meshState2 = [(COStateAddOn *)self meshState];
       *buf = 134218242;
-      v17 = v10;
+      v17 = meshController;
       v18 = 2112;
-      v19 = v11;
+      v19 = meshState2;
       _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, "%p handling state notification. No changes to current mesh state %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v12 = [(COStateAddOn *)self meshState];
+    meshState3 = [(COStateAddOn *)self meshState];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __41__COStateAddOn__handleStateNotification___block_invoke;
     v14[3] = &unk_278E18180;
     v14[4] = self;
-    v15 = v6;
-    determineStateChanges(v12, v15, v14);
+    v15 = state;
+    determineStateChanges(meshState3, v15, v14);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1112,31 +1112,31 @@ void __41__COStateAddOn__handleStateNotification___block_invoke(uint64_t a1, voi
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStateUpdateNotification:(id)a3
+- (void)_handleStateUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v7 = [v4 updates];
-  v6 = [v4 removals];
+  updates = [notificationCopy updates];
+  removals = [notificationCopy removals];
 
-  [(COStateAddOn *)self _handleUpdates:v7 removals:v6];
+  [(COStateAddOn *)self _handleUpdates:updates removals:removals];
 }
 
-- (void)_handleStateReadRequest:(id)a3 callback:(id)a4
+- (void)_handleStateReadRequest:(id)request callback:(id)callback
 {
-  v5 = a4;
-  v6 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v6);
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__COStateAddOn__handleStateReadRequest_callback___block_invoke;
   v9[3] = &unk_278E181A8;
-  v10 = v5;
-  v8 = v5;
+  v10 = callbackCopy;
+  v8 = callbackCopy;
   [WeakRetained stateForAddOn:self withCallback:v9];
 }
 
@@ -1148,33 +1148,33 @@ void __49__COStateAddOn__handleStateReadRequest_callback___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleStateUpdateRequest:(id)a3 callback:(id)a4
+- (void)_handleStateUpdateRequest:(id)request callback:(id)callback
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COMeshAddOn *)self meshControllerQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  callbackCopy = callback;
+  meshControllerQueue = [(COMeshAddOn *)self meshControllerQueue];
+  dispatch_assert_queue_V2(meshControllerQueue);
 
-  v9 = [(COMeshAddOn *)self meshController];
-  v10 = [v9 me];
-  v11 = [(COMeshAddOn *)self meshController];
-  v12 = [v11 leader];
-  v13 = [v10 isEqual:v12];
+  meshController = [(COMeshAddOn *)self meshController];
+  v10 = [meshController me];
+  meshController2 = [(COMeshAddOn *)self meshController];
+  leader = [meshController2 leader];
+  v13 = [v10 isEqual:leader];
 
   if (v13)
   {
     v14 = COCoreLogForCategory(6);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v6 updates];
-      v16 = [v6 removals];
+      updates = [requestCopy updates];
+      removals = [requestCopy removals];
       v28 = 134218498;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
-      v31 = v15;
+      v31 = updates;
       v32 = 2112;
-      v33 = v16;
+      v33 = removals;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p leader processing state update request [updates = %@, removals = %@]", &v28, 0x20u);
     }
 
@@ -1188,33 +1188,33 @@ void __49__COStateAddOn__handleStateReadRequest_callback___block_invoke(uint64_t
       }
 
       v18 = objc_alloc_init(COOutstandingRequests);
-      [(COOutstandingRequests *)v18 setRequest:v6];
-      [(COOutstandingRequests *)v18 setCallback:v7];
+      [(COOutstandingRequests *)v18 setRequest:requestCopy];
+      [(COOutstandingRequests *)v18 setCallback:callbackCopy];
       [(NSMutableArray *)self->_outstandingUpdateRequests addObject:v18];
     }
 
     else
     {
       v18 = objc_alloc_init(COStateUpdateResponse);
-      v7[2](v7, v18, 0);
+      callbackCopy[2](callbackCopy, v18, 0);
       v20 = [COStateUpdateNotification alloc];
-      v21 = [v6 updates];
-      v22 = [v6 removals];
-      v23 = [(COStateUpdateNotification *)v20 initWithUpdates:v21 removals:v22];
+      updates2 = [requestCopy updates];
+      removals2 = [requestCopy removals];
+      v23 = [(COStateUpdateNotification *)v20 initWithUpdates:updates2 removals:removals2];
 
-      v24 = [(COMeshAddOn *)self meshController];
-      [v24 sendNotification:v23];
+      meshController3 = [(COMeshAddOn *)self meshController];
+      [meshController3 sendNotification:v23];
 
-      v25 = [v6 updates];
-      v26 = [v6 removals];
-      [(COStateAddOn *)self _handleUpdates:v25 removals:v26];
+      updates3 = [requestCopy updates];
+      removals3 = [requestCopy removals];
+      [(COStateAddOn *)self _handleUpdates:updates3 removals:removals3];
     }
   }
 
   else
   {
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4002 userInfo:0];
-    (v7)[2](v7, 0, v19);
+    (callbackCopy)[2](callbackCopy, 0, v19);
   }
 
   v27 = *MEMORY[0x277D85DE8];

@@ -1,168 +1,168 @@
 @interface CADXPCImplementation
-+ (void)monitorLocationAuthorizationStatusChanges:(unint64_t)a3;
++ (void)monitorLocationAuthorizationStatusChanges:(unint64_t)changes;
 - (BOOL)_CADDatabaseCanModifyCalendarDatabase;
 - (BOOL)_CADDatabaseCanModifySuggestedEventCalendar;
-- (BOOL)_checkAccess:(unint64_t)a3;
-- (BOOL)_hasAccess:(unint64_t)a3;
-- (BOOL)_performRestoreOperation:(id)a3;
-- (BOOL)_requiresSpecialEntitlementToReadSecurityScopedURLWrapperForProperty:(id)a3;
-- (BOOL)_verifyClientAllowedToWriteValue:(id)a3 forKey:(id)a4;
-- (BOOL)accessGrantedToPerformSelector:(SEL)a3;
-- (BOOL)hasAccess:(unint64_t)a3;
-- (BOOL)isDuplicateEvent:(id)a3 updates:(id)a4;
-- (BOOL)location:(void *)a3 matchesProperties:(id)a4;
-- (BOOL)object:(void *)a3 matchesProperties:(id)a4 forKeys:(id)a5;
-- (BOOL)recurrenceRule:(void *)a3 matchesProperties:(id)a4;
-- (BOOL)shouldBlockSaveOfEvent:(id)a3 updates:(id)a4 becauseOfExistingEvent:(void *)a5;
-- (CADXPCImplementation)initWithClientConnection:(id)a3;
-- (__CFArray)_copyToIntCFArrayRef:(id)a3;
-- (__CFSet)_copyToIntCFSetRef:(id)a3;
-- (id)_TCCPromptReasonStringForReason:(int64_t)a3;
+- (BOOL)_checkAccess:(unint64_t)access;
+- (BOOL)_hasAccess:(unint64_t)access;
+- (BOOL)_performRestoreOperation:(id)operation;
+- (BOOL)_requiresSpecialEntitlementToReadSecurityScopedURLWrapperForProperty:(id)property;
+- (BOOL)_verifyClientAllowedToWriteValue:(id)value forKey:(id)key;
+- (BOOL)accessGrantedToPerformSelector:(SEL)selector;
+- (BOOL)hasAccess:(unint64_t)access;
+- (BOOL)isDuplicateEvent:(id)event updates:(id)updates;
+- (BOOL)location:(void *)location matchesProperties:(id)properties;
+- (BOOL)object:(void *)object matchesProperties:(id)properties forKeys:(id)keys;
+- (BOOL)recurrenceRule:(void *)rule matchesProperties:(id)properties;
+- (BOOL)shouldBlockSaveOfEvent:(id)event updates:(id)updates becauseOfExistingEvent:(void *)existingEvent;
+- (CADXPCImplementation)initWithClientConnection:(id)connection;
+- (__CFArray)_copyToIntCFArrayRef:(id)ref;
+- (__CFSet)_copyToIntCFSetRef:(id)ref;
+- (id)_TCCPromptReasonStringForReason:(int64_t)reason;
 - (id)_accountStoreForBackupRestore;
-- (id)_getAlarmOccurrencesFromAlarmCacheForDatabase:(CalDatabase *)a3 databaseID:(int)a4 accessLogger:(id)a5;
+- (id)_getAlarmOccurrencesFromAlarmCacheForDatabase:(CalDatabase *)database databaseID:(int)d accessLogger:(id)logger;
 - (id)_hangAssertionForBlockingTCCCall;
-- (id)_importEvents:(id)a3 data:(id)a4 intoCalendarWithID:(id)a5 inDatabase:(CalDatabase *)a6 optionsMask:(unint64_t)a7 batchSize:(int)a8 outCalendarObjectID:(id *)a9 outError:(int *)a10;
-- (id)_insert:(id)a3 delete:(id)a4 update:(id)a5 database:(CalDatabase *)a6 error:(int *)a7;
-- (id)_insertObjectsWithTemporaryObjectIDs:(id)a3 updates:(id)a4 database:(CalDatabase *)a5 error:(int *)a6;
-- (id)constraintsData:(id)a3 error:(int *)a4;
-- (id)owningEventForObject:(id)a3 withUpdates:(id)a4;
-- (id)owningObjectForObject:(id)a3 withProperties:(id)a4;
-- (id)removeDuplicateEvents:(id)a3;
-- (id)updatedOrInsertedObjectIDs:(id)a3 relatedToEvent:(id)a4;
-- (int)_deleteObjects:(id)a3 database:(CalDatabase *)a4;
-- (int)_tryPerformBlockWithCalendarID:(id)a3 forAction:(unint64_t)a4 withBlock:(id)a5;
-- (int)_tryPerformBlockWithSourceID:(id)a3 forAction:(unint64_t)a4 entityType:(int)a5 withBlock:(id)a6;
-- (int)_tryPerformBlockWithSourceID:(id)a3 forAction:(unint64_t)a4 withBlock:(id)a5;
-- (int)_updatePropertiesAndRelations:(id)a3 database:(CalDatabase *)a4 insertedObjectMap:(id)a5;
-- (int)findDatabaseForObject:(id)a3 withUpdates:(id)a4 personas:(id *)a5 accounts:(id *)a6 nextTempDBID:(int *)a7;
-- (int)insert:(id)a3 deletes:(id)a4 updates:(id)a5 insertedObjectIDMap:(id)a6 inDatabase:(CalDatabase *)a7;
-- (int)preflightAccessForDeletes:(id)a3 updates:(id)a4 inDatabase:(CalDatabase *)a5;
-- (int)preflightObjectID:(id)a3 inDatabase:(CalDatabase *)a4;
-- (unint64_t)sizeAttachmentsForDatabase:(CalDatabase *)a3;
-- (unint64_t)sizeCalendarDirectoryForDatabase:(CalDatabase *)a3;
-- (unint64_t)sizeDirectoryAtPath:(id)a3 excludingDirectory:(id)a4;
-- (void)CADAnalyticsSendEvent:(id)a3 appendingClientBundleIDToPayload:(id)a4;
-- (void)CADBackupDatabaseToFileNamed:(id)a3 inDirectory:(id)a4 includeAttachments:(BOOL)a5 reply:(id)a6;
-- (void)CADBackupToICBU:(id)a3 reply:(id)a4;
-- (void)CADCalendar:(id)a3 hasEvents:(id)a4;
-- (void)CADCalendar:(id)a3 hasEventsWithRoomAsAttendee:(id)a4;
-- (void)CADCalendarSetClearedFromNotificationCenter:(id)a3 error:(id)a4;
-- (void)CADCatchUpIntegrationSyncingIfBehind:(id)a3;
-- (void)CADCountOriginalCalendarItemsBySource:(id)a3 reply:(id)a4;
-- (void)CADDatabaseCanModifyCalendarDatabase:(id)a3;
-- (void)CADDatabaseCanModifySuggestedEventCalendar:(id)a3;
-- (void)CADDatabaseCommitDeletes:(id)a3 updatesAndInserts:(id)a4 options:(int64_t)a5 andFetchChangesSinceTimestamp:(id)a6 withReply:(id)a7;
-- (void)CADDatabaseConsumeAllChangesUpToToken:(id)a3 except:(id)a4 reply:(id)a5;
-- (void)CADDatabaseExportICSDataForCalendar:(id)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)CADDatabaseExportICSDataForCalendarItems:(id)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)CADDatabaseExportICSForCalendarItemWithID:(id)a3 occurrenceDate:(id)a4 options:(unint64_t)a5 reply:(id)a6;
-- (void)CADDatabaseFetchChangedObjectIDs:(id)a3;
-- (void)CADDatabaseFetchObjectChangesForEntityTypes:(id)a3 insideObject:(id)a4 reply:(id)a5;
-- (void)CADDatabaseGetAccess:(id)a3;
-- (void)CADDatabaseGetAlarmOccurrencesFromAlarmCacheWithReply:(id)a3;
-- (void)CADDatabaseGetAlarmWithExternalID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetAlarmWithUUID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetAllEventsWithUniqueID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetAttachmentWithUUID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetBirthdayCalendarEnabledWithReply:(id)a3;
-- (void)CADDatabaseGetBirthdayCalendarVersionWithReply:(id)a3;
-- (void)CADDatabaseGetCalendarItemWithUUID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetCalendarItemsWithRecurrenceSet:(id)a3 inCalendar:(id)a4 reply:(id)a5;
-- (void)CADDatabaseGetCalendarItemsWithUUIDs:(id)a3 inCalendars:(id)a4 propertiesToLoad:(id)a5 reply:(id)a6;
-- (void)CADDatabaseGetCalendarItemsWithUniqueIdentifier:(id)a3 inCalendar:(id)a4 reply:(id)a5;
-- (void)CADDatabaseGetCalendarsWithFaultedProperties:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetChangedEntityIDsSinceTimestamp:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetChangesSinceSequenceToken:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetColorWithProviderIdentifier:(id)a3 externalID:(id)a4 reply:(id)a5;
-- (void)CADDatabaseGetCreatorTeamIdentifierForEventWithObjectID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetDefaultAlarmOffsetForAllDay:(BOOL)a3 reply:(id)a4;
-- (void)CADDatabaseGetDefaultCalendarForNewEventsInDelegateSource:(id)a3 withReply:(id)a4;
-- (void)CADDatabaseGetDefaultLocalCalendarWithReply:(id)a3;
-- (void)CADDatabaseGetDeletableCalendars:(id)a3;
-- (void)CADDatabaseGetDeletableSources:(id)a3;
-- (void)CADDatabaseGetErrorCount:(id)a3;
-- (void)CADDatabaseGetEventWithEventIdentifier:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetEventWithUniqueID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetEventsWithErrorsPerSource:(id)a3;
-- (void)CADDatabaseGetInboxRepliedSectionItems:(id)a3;
-- (void)CADDatabaseGetInviteReplyNotifications:(id)a3;
-- (void)CADDatabaseGetLocalBirthdaySource:(id)a3;
-- (void)CADDatabaseGetLocalSourceWithEnableIfNeeded:(BOOL)a3 reply:(id)a4;
-- (void)CADDatabaseGetNaturalLanguageSuggestedEventCalendarWithReply:(id)a3;
-- (void)CADDatabaseGetOrCreateBirthdayCalendar:(id)a3;
-- (void)CADDatabaseGetOrCreateSubscribedCalendarsSource:(id)a3;
-- (void)CADDatabaseGetResourceChanges:(id)a3;
-- (void)CADDatabaseGetSequenceToken:(id)a3;
-- (void)CADDatabaseGetSharedCalendarInvitationsWithReply:(id)a3;
-- (void)CADDatabaseGetSourceIdentifierForEventWithObjectID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetSourcesWithFaultedProperties:(id)a3 reply:(id)a4;
-- (void)CADDatabaseGetStorageUsage:(id)a3;
-- (void)CADDatabaseGetSuggestedEventCalendarWithReply:(id)a3;
-- (void)CADDatabaseGetTTLLocationAuthorizationStatus:(id)a3;
-- (void)CADDatabaseGetUUID:(id)a3;
-- (void)CADDatabaseImportEvents:(id)a3 fromICSData:(id)a4 intoCalendarsWithIDs:(id)a5 optionsMask:(unint64_t)a6 batchSize:(int)a7 reply:(id)a8;
-- (void)CADDatabaseInsertSuggestedEventCalendarWithReply:(id)a3;
-- (void)CADDatabaseIsCurrentProcessCreatorOfEventWithObjectID:(id)a3 reply:(id)a4;
-- (void)CADDatabaseLastConfirmedSplashScreenVersion:(id)a3;
-- (void)CADDatabaseLoadEventsInCalendar:(id)a3 reply:(id)a4;
-- (void)CADDatabaseMarkChangedObjectIDsConsumedUpToSequenceToken:(id)a3 reply:(id)a4;
-- (void)CADDatabaseMarkIndividualChangesConsumed:(id)a3 reply:(id)a4;
-- (void)CADDatabaseMigrateSubscribedCalendar:(id)a3 toSource:(id)a4 reply:(id)a5;
-- (void)CADDatabaseRebuildOccurrenceCacheWithReply:(id)a3;
-- (void)CADDatabaseRegisterForDetailedChangeTrackingInSource:(id)a3 reply:(id)a4;
-- (void)CADDatabaseRemoveSuggestedEventCalendarWithReply:(id)a3;
-- (void)CADDatabaseRequestAccessForEntityType:(unint64_t)a3 desiredFullAccess:(BOOL)a4 isBlockingUIThread:(BOOL)a5 reason:(int64_t)a6 reply:(id)a7;
-- (void)CADDatabaseResetWithReply:(id)a3;
-- (void)CADDatabaseSetBirthdayCalendarVersion:(int)a3 withReply:(id)a4;
-- (void)CADDatabaseSetDefaultCalendarForNewEvents:(id)a3 delegateSource:(id)a4 reply:(id)a5;
-- (void)CADDatabaseSetInitializationOptions:(id)a3 reply:(id)a4;
-- (void)CADDatabaseSetShowsCompletedReminders:(BOOL)a3 reply:(id)a4;
-- (void)CADDatabaseSetShowsDeclinedEvents:(BOOL)a3 reply:(id)a4;
-- (void)CADDatabaseShouldPermitOrganizerEmailFromJunkChecks:(id)a3 reply:(id)a4;
-- (void)CADDatabaseShouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3 reply:(id)a4;
-- (void)CADDatabaseShowsDeclinedEventsWithReply:(id)a3;
-- (void)CADDatabaseStatsBySource:(id)a3;
-- (void)CADDatabaseUnregisterForDetailedChangeTracking:(id)a3;
-- (void)CADEventSetInvitationStatus:(int)a3 forEvents:(id)a4 error:(id)a5;
-- (void)CADInternalForceStatCollection:(id)a3;
-- (void)CADInternalRemoveConferenceLinkRenewalDate:(id)a3;
-- (void)CADInternalSetNextConferenceLinkRenewalToNow:(id)a3;
-- (void)CADMigrateDatabaseIfNeeded:(id)a3;
-- (void)CADObject:(id)a3 getDataPropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getDatePropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getNumberPropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getPropertiesWithNames:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getPropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getRelatedObjectWithRelationName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getRelatedObjectsWithRelationName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getSecurityScopedURLWrapperPropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObject:(id)a3 getStringPropertyWithName:(id)a4 reply:(id)a5;
-- (void)CADObjectExists:(id)a3 reply:(id)a4;
-- (void)CADObjectGetConstraints:(id)a3 reply:(id)a4;
-- (void)CADObjectIsManaged:(id)a3 reply:(id)a4;
-- (void)CADObjects:(id)a3 getPropertiesWithNames:(id)a4 reply:(id)a5;
-- (void)CADObjectsExist:(id)a3 reply:(id)a4;
-- (void)CADOccurrenceCacheDoEvents:(id)a3 haveOccurrencesAfterDate:(id)a4 reply:(id)a5;
-- (void)CADOccurrenceCacheGetOccurrenceCountOrSumDurationWithStartDate:(id)a3 endDate:(id)a4 calendarIDs:(id)a5 sumDuration:(BOOL)a6 reply:(id)a7;
-- (void)CADOccurrenceCacheGetOccurrenceCountWithStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)CADOccurrenceCacheGetOccurrenceCountsForCalendars:(id)a3 reply:(id)a4;
-- (void)CADOccurrenceCacheGetOccurrenceDateOfEventWithObjectID:(id)a3 nearestDate:(id)a4 prefersForwardSearch:(BOOL)a5 reply:(id)a6;
-- (void)CADOccurrenceCacheGetOccurrencesForCalendars:(id)a3 onDay:(id)a4 reply:(id)a5;
-- (void)CADOccurrencesExistInRangeForEvent:(id)a3 startDate:(id)a4 endDate:(id)a5 mustStartInInterval:(BOOL)a6 timezone:(id)a7 reply:(id)a8;
-- (void)CADPersonaIdentifierForDatabaseID:(int)a3 reply:(id)a4;
-- (void)CADPostSyntheticRouteHypothesis:(id)a3 forEventWithExternalURL:(id)a4 reply:(id)a5;
-- (void)CADPurgeChangeTrackingReply:(id)a3;
-- (void)CADResourceChange:(id)a3 setAlertedWithError:(id)a4;
-- (void)CADRestoreFromDatabaseBackupFileNamed:(id)a3 inDirectory:(id)a4 includeAttachments:(BOOL)a5 reply:(id)a6;
-- (void)CADRestoreFromICBU:(id)a3 reply:(id)a4;
-- (void)CADSourceAddExchangeDelegateWithName:(id)a3 emailAddress:(id)a4 toSourceWithID:(id)a5 reply:(id)a6;
-- (void)CADSourceGetGrantedDelegatesList:(id)a3 reply:(id)a4;
-- (void)CADSourceGetNotificationCollection:(id)a3 reply:(id)a4;
-- (void)CADSourceRefresh:(id)a3 isUserRequested:(BOOL)a4 reply:(id)a5;
-- (void)CADSourceRemoveExchangeDelegateWithID:(id)a3 reply:(id)a4;
-- (void)CADSourceUpdateGrantedDelegate:(id)a3 action:(int64_t)a4 sourceID:(id)a5 reply:(id)a6;
-- (void)CADTestingCloseDatabase:(id)a3;
-- (void)_handleiTIPMesssageAndCopyEventFromDocument:(id)a3 data:(id)a4 database:(CalDatabase *)a5 store:(void *)a6 accountInfo:(id)a7 options:(unint64_t)a8;
+- (id)_importEvents:(id)events data:(id)data intoCalendarWithID:(id)d inDatabase:(CalDatabase *)database optionsMask:(unint64_t)mask batchSize:(int)size outCalendarObjectID:(id *)iD outError:(int *)self0;
+- (id)_insert:(id)_insert delete:(id)delete update:(id)update database:(CalDatabase *)database error:(int *)error;
+- (id)_insertObjectsWithTemporaryObjectIDs:(id)ds updates:(id)updates database:(CalDatabase *)database error:(int *)error;
+- (id)constraintsData:(id)data error:(int *)error;
+- (id)owningEventForObject:(id)object withUpdates:(id)updates;
+- (id)owningObjectForObject:(id)object withProperties:(id)properties;
+- (id)removeDuplicateEvents:(id)events;
+- (id)updatedOrInsertedObjectIDs:(id)ds relatedToEvent:(id)event;
+- (int)_deleteObjects:(id)objects database:(CalDatabase *)database;
+- (int)_tryPerformBlockWithCalendarID:(id)d forAction:(unint64_t)action withBlock:(id)block;
+- (int)_tryPerformBlockWithSourceID:(id)d forAction:(unint64_t)action entityType:(int)type withBlock:(id)block;
+- (int)_tryPerformBlockWithSourceID:(id)d forAction:(unint64_t)action withBlock:(id)block;
+- (int)_updatePropertiesAndRelations:(id)relations database:(CalDatabase *)database insertedObjectMap:(id)map;
+- (int)findDatabaseForObject:(id)object withUpdates:(id)updates personas:(id *)personas accounts:(id *)accounts nextTempDBID:(int *)d;
+- (int)insert:(id)insert deletes:(id)deletes updates:(id)updates insertedObjectIDMap:(id)map inDatabase:(CalDatabase *)database;
+- (int)preflightAccessForDeletes:(id)deletes updates:(id)updates inDatabase:(CalDatabase *)database;
+- (int)preflightObjectID:(id)d inDatabase:(CalDatabase *)database;
+- (unint64_t)sizeAttachmentsForDatabase:(CalDatabase *)database;
+- (unint64_t)sizeCalendarDirectoryForDatabase:(CalDatabase *)database;
+- (unint64_t)sizeDirectoryAtPath:(id)path excludingDirectory:(id)directory;
+- (void)CADAnalyticsSendEvent:(id)event appendingClientBundleIDToPayload:(id)payload;
+- (void)CADBackupDatabaseToFileNamed:(id)named inDirectory:(id)directory includeAttachments:(BOOL)attachments reply:(id)reply;
+- (void)CADBackupToICBU:(id)u reply:(id)reply;
+- (void)CADCalendar:(id)calendar hasEvents:(id)events;
+- (void)CADCalendar:(id)calendar hasEventsWithRoomAsAttendee:(id)attendee;
+- (void)CADCalendarSetClearedFromNotificationCenter:(id)center error:(id)error;
+- (void)CADCatchUpIntegrationSyncingIfBehind:(id)behind;
+- (void)CADCountOriginalCalendarItemsBySource:(id)source reply:(id)reply;
+- (void)CADDatabaseCanModifyCalendarDatabase:(id)database;
+- (void)CADDatabaseCanModifySuggestedEventCalendar:(id)calendar;
+- (void)CADDatabaseCommitDeletes:(id)deletes updatesAndInserts:(id)inserts options:(int64_t)options andFetchChangesSinceTimestamp:(id)timestamp withReply:(id)reply;
+- (void)CADDatabaseConsumeAllChangesUpToToken:(id)token except:(id)except reply:(id)reply;
+- (void)CADDatabaseExportICSDataForCalendar:(id)calendar options:(unint64_t)options reply:(id)reply;
+- (void)CADDatabaseExportICSDataForCalendarItems:(id)items options:(unint64_t)options reply:(id)reply;
+- (void)CADDatabaseExportICSForCalendarItemWithID:(id)d occurrenceDate:(id)date options:(unint64_t)options reply:(id)reply;
+- (void)CADDatabaseFetchChangedObjectIDs:(id)ds;
+- (void)CADDatabaseFetchObjectChangesForEntityTypes:(id)types insideObject:(id)object reply:(id)reply;
+- (void)CADDatabaseGetAccess:(id)access;
+- (void)CADDatabaseGetAlarmOccurrencesFromAlarmCacheWithReply:(id)reply;
+- (void)CADDatabaseGetAlarmWithExternalID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetAlarmWithUUID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetAllEventsWithUniqueID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetAttachmentWithUUID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetBirthdayCalendarEnabledWithReply:(id)reply;
+- (void)CADDatabaseGetBirthdayCalendarVersionWithReply:(id)reply;
+- (void)CADDatabaseGetCalendarItemWithUUID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetCalendarItemsWithRecurrenceSet:(id)set inCalendar:(id)calendar reply:(id)reply;
+- (void)CADDatabaseGetCalendarItemsWithUUIDs:(id)ds inCalendars:(id)calendars propertiesToLoad:(id)load reply:(id)reply;
+- (void)CADDatabaseGetCalendarItemsWithUniqueIdentifier:(id)identifier inCalendar:(id)calendar reply:(id)reply;
+- (void)CADDatabaseGetCalendarsWithFaultedProperties:(id)properties reply:(id)reply;
+- (void)CADDatabaseGetChangedEntityIDsSinceTimestamp:(id)timestamp reply:(id)reply;
+- (void)CADDatabaseGetChangesSinceSequenceToken:(id)token reply:(id)reply;
+- (void)CADDatabaseGetColorWithProviderIdentifier:(id)identifier externalID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetCreatorTeamIdentifierForEventWithObjectID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetDefaultAlarmOffsetForAllDay:(BOOL)day reply:(id)reply;
+- (void)CADDatabaseGetDefaultCalendarForNewEventsInDelegateSource:(id)source withReply:(id)reply;
+- (void)CADDatabaseGetDefaultLocalCalendarWithReply:(id)reply;
+- (void)CADDatabaseGetDeletableCalendars:(id)calendars;
+- (void)CADDatabaseGetDeletableSources:(id)sources;
+- (void)CADDatabaseGetErrorCount:(id)count;
+- (void)CADDatabaseGetEventWithEventIdentifier:(id)identifier reply:(id)reply;
+- (void)CADDatabaseGetEventWithUniqueID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetEventsWithErrorsPerSource:(id)source;
+- (void)CADDatabaseGetInboxRepliedSectionItems:(id)items;
+- (void)CADDatabaseGetInviteReplyNotifications:(id)notifications;
+- (void)CADDatabaseGetLocalBirthdaySource:(id)source;
+- (void)CADDatabaseGetLocalSourceWithEnableIfNeeded:(BOOL)needed reply:(id)reply;
+- (void)CADDatabaseGetNaturalLanguageSuggestedEventCalendarWithReply:(id)reply;
+- (void)CADDatabaseGetOrCreateBirthdayCalendar:(id)calendar;
+- (void)CADDatabaseGetOrCreateSubscribedCalendarsSource:(id)source;
+- (void)CADDatabaseGetResourceChanges:(id)changes;
+- (void)CADDatabaseGetSequenceToken:(id)token;
+- (void)CADDatabaseGetSharedCalendarInvitationsWithReply:(id)reply;
+- (void)CADDatabaseGetSourceIdentifierForEventWithObjectID:(id)d reply:(id)reply;
+- (void)CADDatabaseGetSourcesWithFaultedProperties:(id)properties reply:(id)reply;
+- (void)CADDatabaseGetStorageUsage:(id)usage;
+- (void)CADDatabaseGetSuggestedEventCalendarWithReply:(id)reply;
+- (void)CADDatabaseGetTTLLocationAuthorizationStatus:(id)status;
+- (void)CADDatabaseGetUUID:(id)d;
+- (void)CADDatabaseImportEvents:(id)events fromICSData:(id)data intoCalendarsWithIDs:(id)ds optionsMask:(unint64_t)mask batchSize:(int)size reply:(id)reply;
+- (void)CADDatabaseInsertSuggestedEventCalendarWithReply:(id)reply;
+- (void)CADDatabaseIsCurrentProcessCreatorOfEventWithObjectID:(id)d reply:(id)reply;
+- (void)CADDatabaseLastConfirmedSplashScreenVersion:(id)version;
+- (void)CADDatabaseLoadEventsInCalendar:(id)calendar reply:(id)reply;
+- (void)CADDatabaseMarkChangedObjectIDsConsumedUpToSequenceToken:(id)token reply:(id)reply;
+- (void)CADDatabaseMarkIndividualChangesConsumed:(id)consumed reply:(id)reply;
+- (void)CADDatabaseMigrateSubscribedCalendar:(id)calendar toSource:(id)source reply:(id)reply;
+- (void)CADDatabaseRebuildOccurrenceCacheWithReply:(id)reply;
+- (void)CADDatabaseRegisterForDetailedChangeTrackingInSource:(id)source reply:(id)reply;
+- (void)CADDatabaseRemoveSuggestedEventCalendarWithReply:(id)reply;
+- (void)CADDatabaseRequestAccessForEntityType:(unint64_t)type desiredFullAccess:(BOOL)access isBlockingUIThread:(BOOL)thread reason:(int64_t)reason reply:(id)reply;
+- (void)CADDatabaseResetWithReply:(id)reply;
+- (void)CADDatabaseSetBirthdayCalendarVersion:(int)version withReply:(id)reply;
+- (void)CADDatabaseSetDefaultCalendarForNewEvents:(id)events delegateSource:(id)source reply:(id)reply;
+- (void)CADDatabaseSetInitializationOptions:(id)options reply:(id)reply;
+- (void)CADDatabaseSetShowsCompletedReminders:(BOOL)reminders reply:(id)reply;
+- (void)CADDatabaseSetShowsDeclinedEvents:(BOOL)events reply:(id)reply;
+- (void)CADDatabaseShouldPermitOrganizerEmailFromJunkChecks:(id)checks reply:(id)reply;
+- (void)CADDatabaseShouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks reply:(id)reply;
+- (void)CADDatabaseShowsDeclinedEventsWithReply:(id)reply;
+- (void)CADDatabaseStatsBySource:(id)source;
+- (void)CADDatabaseUnregisterForDetailedChangeTracking:(id)tracking;
+- (void)CADEventSetInvitationStatus:(int)status forEvents:(id)events error:(id)error;
+- (void)CADInternalForceStatCollection:(id)collection;
+- (void)CADInternalRemoveConferenceLinkRenewalDate:(id)date;
+- (void)CADInternalSetNextConferenceLinkRenewalToNow:(id)now;
+- (void)CADMigrateDatabaseIfNeeded:(id)needed;
+- (void)CADObject:(id)object getDataPropertyWithName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getDatePropertyWithName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getNumberPropertyWithName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getPropertiesWithNames:(id)names reply:(id)reply;
+- (void)CADObject:(id)object getPropertyWithName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getRelatedObjectWithRelationName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getRelatedObjectsWithRelationName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getSecurityScopedURLWrapperPropertyWithName:(id)name reply:(id)reply;
+- (void)CADObject:(id)object getStringPropertyWithName:(id)name reply:(id)reply;
+- (void)CADObjectExists:(id)exists reply:(id)reply;
+- (void)CADObjectGetConstraints:(id)constraints reply:(id)reply;
+- (void)CADObjectIsManaged:(id)managed reply:(id)reply;
+- (void)CADObjects:(id)objects getPropertiesWithNames:(id)names reply:(id)reply;
+- (void)CADObjectsExist:(id)exist reply:(id)reply;
+- (void)CADOccurrenceCacheDoEvents:(id)events haveOccurrencesAfterDate:(id)date reply:(id)reply;
+- (void)CADOccurrenceCacheGetOccurrenceCountOrSumDurationWithStartDate:(id)date endDate:(id)endDate calendarIDs:(id)ds sumDuration:(BOOL)duration reply:(id)reply;
+- (void)CADOccurrenceCacheGetOccurrenceCountWithStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)CADOccurrenceCacheGetOccurrenceCountsForCalendars:(id)calendars reply:(id)reply;
+- (void)CADOccurrenceCacheGetOccurrenceDateOfEventWithObjectID:(id)d nearestDate:(id)date prefersForwardSearch:(BOOL)search reply:(id)reply;
+- (void)CADOccurrenceCacheGetOccurrencesForCalendars:(id)calendars onDay:(id)day reply:(id)reply;
+- (void)CADOccurrencesExistInRangeForEvent:(id)event startDate:(id)date endDate:(id)endDate mustStartInInterval:(BOOL)interval timezone:(id)timezone reply:(id)reply;
+- (void)CADPersonaIdentifierForDatabaseID:(int)d reply:(id)reply;
+- (void)CADPostSyntheticRouteHypothesis:(id)hypothesis forEventWithExternalURL:(id)l reply:(id)reply;
+- (void)CADPurgeChangeTrackingReply:(id)reply;
+- (void)CADResourceChange:(id)change setAlertedWithError:(id)error;
+- (void)CADRestoreFromDatabaseBackupFileNamed:(id)named inDirectory:(id)directory includeAttachments:(BOOL)attachments reply:(id)reply;
+- (void)CADRestoreFromICBU:(id)u reply:(id)reply;
+- (void)CADSourceAddExchangeDelegateWithName:(id)name emailAddress:(id)address toSourceWithID:(id)d reply:(id)reply;
+- (void)CADSourceGetGrantedDelegatesList:(id)list reply:(id)reply;
+- (void)CADSourceGetNotificationCollection:(id)collection reply:(id)reply;
+- (void)CADSourceRefresh:(id)refresh isUserRequested:(BOOL)requested reply:(id)reply;
+- (void)CADSourceRemoveExchangeDelegateWithID:(id)d reply:(id)reply;
+- (void)CADSourceUpdateGrantedDelegate:(id)delegate action:(int64_t)action sourceID:(id)d reply:(id)reply;
+- (void)CADTestingCloseDatabase:(id)database;
+- (void)_handleiTIPMesssageAndCopyEventFromDocument:(id)document data:(id)data database:(CalDatabase *)database store:(void *)store accountInfo:(id)info options:(unint64_t)options;
 - (void)clearCachedAuthorizationStatus;
 @end
 
@@ -170,10 +170,10 @@
 
 - (BOOL)_CADDatabaseCanModifySuggestedEventCalendar
 {
-  v2 = [(ClientConnection *)self->_conn permissionValidator];
-  v3 = [v2 canModifySuggestedEventCalendar];
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  canModifySuggestedEventCalendar = [permissionValidator canModifySuggestedEventCalendar];
 
-  return v3;
+  return canModifySuggestedEventCalendar;
 }
 
 - (void)clearCachedAuthorizationStatus
@@ -187,26 +187,26 @@
 
 - (id)_accountStoreForBackupRestore
 {
-  v3 = [MEMORY[0x277CF74F0] sharedInstance];
-  v4 = [(ClientConnection *)self->_conn databaseInitializationOptions];
-  v5 = [v4 unitTesting];
+  mEMORY[0x277CF74F0] = [MEMORY[0x277CF74F0] sharedInstance];
+  databaseInitializationOptions = [(ClientConnection *)self->_conn databaseInitializationOptions];
+  unitTesting = [databaseInitializationOptions unitTesting];
 
-  if (v5)
+  if (unitTesting)
   {
-    v6 = [MEMORY[0x277CF7500] storeFilteringAllChangesInBackingAccountStore:v3];
+    v6 = [MEMORY[0x277CF7500] storeFilteringAllChangesInBackingAccountStore:mEMORY[0x277CF74F0]];
 
-    v3 = v6;
+    mEMORY[0x277CF74F0] = v6;
   }
 
-  return v3;
+  return mEMORY[0x277CF74F0];
 }
 
-- (void)CADBackupToICBU:(id)a3 reply:(id)a4
+- (void)CADBackupToICBU:(id)u reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 url];
+  uCopy = u;
+  replyCopy = reply;
+  v8 = [uCopy url];
   v9 = v8;
   if (!v8)
   {
@@ -231,7 +231,7 @@
     }
 
 LABEL_11:
-    v7[2](v7, 1001);
+    replyCopy[2](replyCopy, 1001);
     goto LABEL_12;
   }
 
@@ -247,7 +247,7 @@ LABEL_11:
   v16[3] = &unk_278519DF0;
   v12 = v9;
   v17 = v12;
-  v18 = self;
+  selfCopy = self;
   p_buf = &buf;
   if (![(ClientConnection *)conn withDatabaseID:v11 perform:v16])
   {
@@ -255,7 +255,7 @@ LABEL_11:
   }
 
   [v12 stopAccessingSecurityScopedResource];
-  v7[2](v7, *(*(&buf + 1) + 24));
+  replyCopy[2](replyCopy, *(*(&buf + 1) + 24));
   _Block_object_dispose(&buf, 8);
 LABEL_12:
 
@@ -274,15 +274,15 @@ void __78__CADXPCImplementation_CADBackupRestoreOperationGroup__CADBackupToICBU_
   }
 }
 
-- (void)CADBackupDatabaseToFileNamed:(id)a3 inDirectory:(id)a4 includeAttachments:(BOOL)a5 reply:(id)a6
+- (void)CADBackupDatabaseToFileNamed:(id)named inDirectory:(id)directory includeAttachments:(BOOL)attachments reply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 length])
+  namedCopy = named;
+  directoryCopy = directory;
+  replyCopy = reply;
+  if ([namedCopy length])
   {
-    v13 = [v11 url];
+    v13 = [directoryCopy url];
     v14 = v13;
     if (v13)
     {
@@ -292,14 +292,14 @@ void __78__CADXPCImplementation_CADBackupRestoreOperationGroup__CADBackupToICBU_
         *(&buf + 1) = &buf;
         v28 = 0x2020000000;
         v29 = 1015;
-        v15 = [v14 URLByAppendingPathComponent:v10];
+        v15 = [v14 URLByAppendingPathComponent:namedCopy];
         conn = self->_conn;
         v17 = *MEMORY[0x277CF7570];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __122__CADXPCImplementation_CADBackupRestoreOperationGroup__CADBackupDatabaseToFileNamed_inDirectory_includeAttachments_reply___block_invoke;
         v23[3] = &unk_278519E18;
-        v26 = a5;
+        attachmentsCopy = attachments;
         v18 = v15;
         v24 = v18;
         p_buf = &buf;
@@ -309,7 +309,7 @@ void __78__CADXPCImplementation_CADBackupRestoreOperationGroup__CADBackupToICBU_
         }
 
         [v14 stopAccessingSecurityScopedResource];
-        v12[2](v12, *(*(&buf + 1) + 24));
+        replyCopy[2](replyCopy, *(*(&buf + 1) + 24));
         _Block_object_dispose(&buf, 8);
         goto LABEL_16;
       }
@@ -333,7 +333,7 @@ void __78__CADXPCImplementation_CADBackupRestoreOperationGroup__CADBackupToICBU_
       }
     }
 
-    v12[2](v12, 1001);
+    replyCopy[2](replyCopy, 1001);
 LABEL_16:
 
     goto LABEL_17;
@@ -346,7 +346,7 @@ LABEL_16:
     _os_log_impl(&dword_22430B000, v19, OS_LOG_TYPE_ERROR, "No file name given for backup", &buf, 2u);
   }
 
-  v12[2](v12, 1001);
+  replyCopy[2](replyCopy, 1001);
 LABEL_17:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -376,38 +376,38 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_performRestoreOperation:(id)a3
+- (BOOL)_performRestoreOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v11 = -1;
-  v5 = [(ClientConnection *)self->_conn databaseInitializationOptions];
-  v6 = [v5 unitTesting];
+  databaseInitializationOptions = [(ClientConnection *)self->_conn databaseInitializationOptions];
+  unitTesting = [databaseInitializationOptions unitTesting];
 
-  if (v6)
+  if (unitTesting)
   {
-    LOBYTE(v7) = v4[2](v4, &v11);
+    LOBYTE(v7) = operationCopy[2](operationCopy, &v11);
   }
 
   else
   {
-    v8 = [MEMORY[0x277D03928] sharedConnection];
-    v9 = [v8 requestDaemonStopMonitoringAgents];
-    v7 = v4[2](v4, &v11);
-    [v8 requestDaemonStartMonitoringAgentsWithToken:v9];
+    mEMORY[0x277D03928] = [MEMORY[0x277D03928] sharedConnection];
+    requestDaemonStopMonitoringAgents = [mEMORY[0x277D03928] requestDaemonStopMonitoringAgents];
+    v7 = operationCopy[2](operationCopy, &v11);
+    [mEMORY[0x277D03928] requestDaemonStartMonitoringAgentsWithToken:requestDaemonStopMonitoringAgents];
   }
 
   return v7;
 }
 
-- (void)CADRestoreFromDatabaseBackupFileNamed:(id)a3 inDirectory:(id)a4 includeAttachments:(BOOL)a5 reply:(id)a6
+- (void)CADRestoreFromDatabaseBackupFileNamed:(id)named inDirectory:(id)directory includeAttachments:(BOOL)attachments reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 length])
+  namedCopy = named;
+  directoryCopy = directory;
+  replyCopy = reply;
+  if ([namedCopy length])
   {
-    v13 = [v11 url];
+    v13 = [directoryCopy url];
     v14 = v13;
     if (v13)
     {
@@ -421,7 +421,7 @@ LABEL_5:
         v29 = &v28;
         v30 = 0x2020000000;
         v31 = -1;
-        v15 = [v14 URLByAppendingPathComponent:v10];
+        v15 = [v14 URLByAppendingPathComponent:namedCopy];
         conn = self->_conn;
         v17 = *MEMORY[0x277CF7570];
         v23[0] = MEMORY[0x277D85DD0];
@@ -429,7 +429,7 @@ LABEL_5:
         v23[2] = __131__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreFromDatabaseBackupFileNamed_inDirectory_includeAttachments_reply___block_invoke;
         v23[3] = &unk_278519E68;
         v23[4] = self;
-        v27 = a5;
+        attachmentsCopy = attachments;
         v18 = v15;
         v24 = v18;
         v25 = &v28;
@@ -440,7 +440,7 @@ LABEL_5:
         }
 
         [v14 stopAccessingSecurityScopedResource];
-        (*(v12 + 2))(v12, *(*(&buf + 1) + 24), *(v29 + 6));
+        (*(replyCopy + 2))(replyCopy, *(*(&buf + 1) + 24), *(v29 + 6));
         _Block_object_dispose(&v28, 8);
         _Block_object_dispose(&buf, 8);
         goto LABEL_16;
@@ -465,7 +465,7 @@ LABEL_5:
       }
     }
 
-    (*(v12 + 2))(v12, 1001, 0xFFFFFFFFLL);
+    (*(replyCopy + 2))(replyCopy, 1001, 0xFFFFFFFFLL);
 LABEL_16:
 
     goto LABEL_17;
@@ -478,7 +478,7 @@ LABEL_16:
     _os_log_impl(&dword_22430B000, v19, OS_LOG_TYPE_ERROR, "No backup database file name given for restore", &buf, 2u);
   }
 
-  (*(v12 + 2))(v12, 1001, 0xFFFFFFFFLL);
+  (*(replyCopy + 2))(replyCopy, 1001, 0xFFFFFFFFLL);
 LABEL_17:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -523,12 +523,12 @@ uint64_t __131__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreF
   return result;
 }
 
-- (void)CADRestoreFromICBU:(id)a3 reply:(id)a4
+- (void)CADRestoreFromICBU:(id)u reply:(id)reply
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 url];
+  uCopy = u;
+  replyCopy = reply;
+  v8 = [uCopy url];
   v9 = v8;
   if (!v8)
   {
@@ -553,7 +553,7 @@ uint64_t __131__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreF
     }
 
 LABEL_11:
-    v7[2](v7, 1001, 0xFFFFFFFFLL);
+    replyCopy[2](replyCopy, 1001, 0xFFFFFFFFLL);
     goto LABEL_12;
   }
 
@@ -571,7 +571,7 @@ LABEL_11:
   v17 = 3221225472;
   v18 = __81__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreFromICBU_reply___block_invoke;
   v19 = &unk_278519EB8;
-  v20 = self;
+  selfCopy = self;
   v12 = v9;
   v21 = v12;
   v22 = &v24;
@@ -582,7 +582,7 @@ LABEL_11:
   }
 
   [v12 stopAccessingSecurityScopedResource];
-  v7[2](v7, *(*(&buf + 1) + 24), *(v25 + 6));
+  replyCopy[2](replyCopy, *(*(&buf + 1) + 24), *(v25 + 6));
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(&buf, 8);
 LABEL_12:
@@ -621,25 +621,25 @@ uint64_t __81__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreFr
   return result;
 }
 
-- (void)CADDatabaseGetAlarmWithUUID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetAlarmWithUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dCopy = d;
+  replyCopy = reply;
+  v8 = replyCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  if (v6)
+  if (dCopy)
   {
     conn = self->_conn;
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __88__CADXPCImplementation_CADAlarmEngineOperationGroup__CADDatabaseGetAlarmWithUUID_reply___block_invoke;
     v14 = &unk_278519F08;
-    v15 = v6;
+    v15 = dCopy;
     v16 = &v17;
     [(ClientConnection *)conn withAllDatabasesPerform:&v11];
     if (v18[5])
@@ -658,7 +658,7 @@ uint64_t __81__CADXPCImplementation_CADBackupRestoreOperationGroup__CADRestoreFr
 
   else
   {
-    (*(v7 + 2))(v7, 1001, 0);
+    (*(replyCopy + 2))(replyCopy, 1001, 0);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -681,11 +681,11 @@ void __88__CADXPCImplementation_CADAlarmEngineOperationGroup__CADDatabaseGetAlar
   }
 }
 
-- (void)CADDatabaseGetAlarmOccurrencesFromAlarmCacheWithReply:(id)a3
+- (void)CADDatabaseGetAlarmOccurrencesFromAlarmCacheWithReply:(id)reply
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  replyCopy = reply;
+  array = [v4 array];
   v7 = objc_opt_new();
   conn = self->_conn;
   v11[0] = MEMORY[0x277D85DD0];
@@ -694,11 +694,11 @@ void __88__CADXPCImplementation_CADAlarmEngineOperationGroup__CADDatabaseGetAlar
   v11[3] = &unk_278519F58;
   v11[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = array;
+  v9 = array;
   v10 = v7;
   [(ClientConnection *)conn withAllDatabasesPerform:v11];
-  v5[2](v5, 0, v9);
+  replyCopy[2](replyCopy, 0, v9);
 
   [(ClientConnection *)self->_conn logAccessToObjects:v10];
 }
@@ -715,10 +715,10 @@ void __108__CADXPCImplementation_CADAlarmEngineOperationGroup__CADDatabaseGetAla
   [*(a1 + 48) addObjectsFromArray:v7];
 }
 
-- (id)_getAlarmOccurrencesFromAlarmCacheForDatabase:(CalDatabase *)a3 databaseID:(int)a4 accessLogger:(id)a5
+- (id)_getAlarmOccurrencesFromAlarmCacheForDatabase:(CalDatabase *)database databaseID:(int)d accessLogger:(id)logger
 {
-  v41 = a5;
-  v40 = [MEMORY[0x277CBEB18] array];
+  loggerCopy = logger;
+  array = [MEMORY[0x277CBEB18] array];
   theArray = CalDatabaseCopyAlarmOccurrencesFromAlarmCache();
   if (theArray)
   {
@@ -764,7 +764,7 @@ LABEL_26:
           v26 = *(v7 + 2728);
           CalAlarmGetAcknowledgedDate();
           v46 = [v26 dateWithTimeIntervalSinceReferenceDate:floor(v27)];
-          v28 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:4 entityID:CalAlarmGetUID() databaseID:a4];
+          v28 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:4 entityID:CalAlarmGetUID() databaseID:d];
           v29 = CADEntityCopyObjectID();
           v30 = started;
           if (v29)
@@ -775,8 +775,8 @@ LABEL_26:
             v32 = v25;
             v33 = v9;
             v35 = v34 = v7;
-            [v40 addObject:v35];
-            v41[2](v41, v29);
+            [array addObject:v35];
+            loggerCopy[2](loggerCopy, v29);
 
             v7 = v34;
             v9 = v33;
@@ -872,13 +872,13 @@ LABEL_30:
     CFRelease(theArray);
   }
 
-  return v40;
+  return array;
 }
 
-- (void)CADObjectExists:(id)a3 reply:(id)a4
+- (void)CADObjectExists:(id)exists reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  existsCopy = exists;
+  replyCopy = reply;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -894,12 +894,12 @@ LABEL_30:
   v13 = &unk_278519F80;
   v16 = &v22;
   v17 = &v18;
-  v14 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = existsCopy;
   v15 = v9;
   [(ClientConnection *)conn withDatabaseForObject:v9 perform:&v10];
-  (*(v7 + 2))(v7, *(v23 + 6), *(v19 + 24));
-  [(ClientConnection *)self->_conn logAccessToObject:v9, v10, v11, v12, v13, v14];
+  (*(replyCopy + 2))(replyCopy, *(v23 + 6), *(v19 + 24));
+  [(ClientConnection *)self->_conn logAccessToObject:v9, v10, v11, v12, v13, selfCopy];
 
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v22, 8);
@@ -913,10 +913,10 @@ uint64_t __71__CADXPCImplementation_CADObjectOperationGroup__CADObjectExists_rep
   return result;
 }
 
-- (void)CADObjectsExist:(id)a3 reply:(id)a4
+- (void)CADObjectsExist:(id)exist reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  existCopy = exist;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -930,9 +930,9 @@ uint64_t __71__CADXPCImplementation_CADObjectOperationGroup__CADObjectExists_rep
   v9[3] = &unk_278519FA8;
   v9[4] = self;
   v9[5] = &v10;
-  [(ClientConnection *)conn withDatabaseForObjects:v6 options:1 perform:v9];
-  v7[2](v7, 0, v11[5]);
-  [(ClientConnection *)self->_conn logAccessToObjects:v6];
+  [(ClientConnection *)conn withDatabaseForObjects:existCopy options:1 perform:v9];
+  replyCopy[2](replyCopy, 0, v11[5]);
+  [(ClientConnection *)self->_conn logAccessToObjects:existCopy];
   _Block_object_dispose(&v10, 8);
 }
 
@@ -1006,11 +1006,11 @@ void __71__CADXPCImplementation_CADObjectOperationGroup__CADObjectsExist_reply__
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getPropertiesWithNames:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getPropertiesWithNames:(id)names reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  namesCopy = names;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -1026,12 +1026,12 @@ void __71__CADXPCImplementation_CADObjectOperationGroup__CADObjectsExist_reply__
   v15[1] = 3221225472;
   v15[2] = __88__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertiesWithNames_reply___block_invoke;
   v15[3] = &unk_278519FD0;
-  v12 = v8;
+  v12 = objectCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v19 = &v27;
   v20 = &v21;
-  v13 = v9;
+  v13 = namesCopy;
   v18 = v13;
   if ([(ClientConnection *)conn withDatabaseForObject:v12 perform:v15])
   {
@@ -1044,7 +1044,7 @@ void __71__CADXPCImplementation_CADObjectOperationGroup__CADObjectsExist_reply__
     *(v28 + 6) = 1010;
   }
 
-  v10[2](v10, v14, v22[5]);
+  replyCopy[2](replyCopy, v14, v22[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v12];
 
   _Block_object_dispose(&v21, 8);
@@ -1109,14 +1109,14 @@ void __88__CADXPCImplementation_CADObjectOperationGroup__CADObject_getProperties
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObjects:(id)a3 getPropertiesWithNames:(id)a4 reply:(id)a5
+- (void)CADObjects:(id)objects getPropertiesWithNames:(id)names reply:(id)reply
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithCapacity:{objc_msgSend(v11, "count")}];
-  v13 = [[CADFetchedObjectSerializer alloc] initWithConnection:self->_conn defaultPropertiesToLoad:v10];
+  replyCopy = reply;
+  namesCopy = names;
+  objectsCopy = objects;
+  v12 = [v8 arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
+  v13 = [[CADFetchedObjectSerializer alloc] initWithConnection:self->_conn defaultPropertiesToLoad:namesCopy];
 
   conn = self->_conn;
   v17[0] = MEMORY[0x277D85DD0];
@@ -1128,10 +1128,10 @@ void __88__CADXPCImplementation_CADObjectOperationGroup__CADObject_getProperties
   v19 = v12;
   v15 = v12;
   v16 = v13;
-  [(ClientConnection *)conn withDatabaseForObjects:v11 options:1 perform:v17];
-  v9[2](v9, 0, v15);
+  [(ClientConnection *)conn withDatabaseForObjects:objectsCopy options:1 perform:v17];
+  replyCopy[2](replyCopy, 0, v15);
 
-  [(ClientConnection *)self->_conn logAccessToObjects:v11];
+  [(ClientConnection *)self->_conn logAccessToObjects:objectsCopy];
 }
 
 void __89__CADXPCImplementation_CADObjectOperationGroup__CADObjects_getPropertiesWithNames_reply___block_invoke(uint64_t a1, uint64_t a2, void *a3, os_unfair_lock_s *a4)
@@ -1204,11 +1204,11 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getPropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getPropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1217,7 +1217,7 @@ LABEL_12:
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1225,9 +1225,9 @@ LABEL_12:
     v14[2] = __85__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A020;
     v18 = &v24;
-    v15 = v8;
-    v16 = self;
-    v17 = v9;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1243,14 +1243,14 @@ LABEL_12:
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1309,11 +1309,11 @@ void __85__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertyWi
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getStringPropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getStringPropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1322,7 +1322,7 @@ void __85__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertyWi
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1330,9 +1330,9 @@ void __85__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertyWi
     v14[2] = __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getStringPropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A020;
     v18 = &v24;
-    v15 = v8;
-    v16 = self;
-    v17 = v9;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1348,14 +1348,14 @@ void __85__CADXPCImplementation_CADObjectOperationGroup__CADObject_getPropertyWi
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1414,11 +1414,11 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getStringProp
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getNumberPropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getNumberPropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1427,7 +1427,7 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getStringProp
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1435,9 +1435,9 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getStringProp
     v14[2] = __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getNumberPropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A020;
     v18 = &v24;
-    v15 = v8;
-    v16 = self;
-    v17 = v9;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1453,14 +1453,14 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getStringProp
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1519,11 +1519,11 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getNumberProp
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getDatePropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getDatePropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1532,7 +1532,7 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getNumberProp
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1540,9 +1540,9 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getNumberProp
     v14[2] = __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDatePropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A020;
     v18 = &v24;
-    v15 = v8;
-    v16 = self;
-    v17 = v9;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1558,14 +1558,14 @@ void __91__CADXPCImplementation_CADObjectOperationGroup__CADObject_getNumberProp
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1624,11 +1624,11 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDateProper
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getDataPropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getDataPropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1637,7 +1637,7 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDateProper
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1645,9 +1645,9 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDateProper
     v14[2] = __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDataPropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A020;
     v18 = &v24;
-    v15 = v8;
-    v16 = self;
-    v17 = v9;
+    v15 = objectCopy;
+    selfCopy = self;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1663,14 +1663,14 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDateProper
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1729,27 +1729,27 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDataProper
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_requiresSpecialEntitlementToReadSecurityScopedURLWrapperForProperty:(id)a3
+- (BOOL)_requiresSpecialEntitlementToReadSecurityScopedURLWrapperForProperty:(id)property
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CF71C8]])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:*MEMORY[0x277CF71C8]])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277CF71C0]] ^ 1;
+    v4 = [propertyCopy isEqualToString:*MEMORY[0x277CF71C0]] ^ 1;
   }
 
   return v4;
 }
 
-- (void)CADObject:(id)a3 getSecurityScopedURLWrapperPropertyWithName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getSecurityScopedURLWrapperPropertyWithName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1758,17 +1758,17 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDataProper
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __109__CADXPCImplementation_CADObjectOperationGroup__CADObject_getSecurityScopedURLWrapperPropertyWithName_reply___block_invoke;
     v14[3] = &unk_27851A048;
-    v15 = v8;
-    v16 = self;
+    v15 = objectCopy;
+    selfCopy = self;
     v18 = &v24;
-    v17 = v9;
+    v17 = nameCopy;
     v19 = &v20;
     if (![(ClientConnection *)conn withDatabaseForObject:v15 perform:v14])
     {
@@ -1784,14 +1784,14 @@ void __89__CADXPCImplementation_CADObjectOperationGroup__CADObject_getDataProper
     *(v25 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v21[3]);
+  replyCopy[2](replyCopy, v12, v21[3]);
   v13 = v21[3];
   if (v13)
   {
     CFRelease(v13);
   }
 
-  [(ClientConnection *)self->_conn logAccessToObject:v8];
+  [(ClientConnection *)self->_conn logAccessToObject:objectCopy];
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v24, 8);
 }
@@ -1850,11 +1850,11 @@ void __109__CADXPCImplementation_CADObjectOperationGroup__CADObject_getSecurityS
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getRelatedObjectWithRelationName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getRelatedObjectWithRelationName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -1865,7 +1865,7 @@ void __109__CADXPCImplementation_CADObjectOperationGroup__CADObject_getSecurityS
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v15[0] = MEMORY[0x277D85DD0];
@@ -1873,9 +1873,9 @@ void __109__CADXPCImplementation_CADObjectOperationGroup__CADObject_getSecurityS
     v15[2] = __98__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObjectWithRelationName_reply___block_invoke;
     v15[3] = &unk_27851A020;
     v19 = &v27;
-    v16 = v8;
-    v17 = self;
-    v18 = v9;
+    v16 = objectCopy;
+    selfCopy = self;
+    v18 = nameCopy;
     v20 = &v21;
     if (![(ClientConnection *)conn withDatabaseForObject:v16 perform:v15])
     {
@@ -1891,12 +1891,12 @@ void __109__CADXPCImplementation_CADObjectOperationGroup__CADObject_getSecurityS
     *(v28 + 6) = 1013;
   }
 
-  v10[2](v10, v12, v22[5]);
+  replyCopy[2](replyCopy, v12, v22[5]);
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v14 = v13;
-  if (v8)
+  if (objectCopy)
   {
-    [v13 addObject:v8];
+    [v13 addObject:objectCopy];
   }
 
   if (v22[5])
@@ -1975,11 +1975,11 @@ void __98__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObject:(id)a3 getRelatedObjectsWithRelationName:(id)a4 reply:(id)a5
+- (void)CADObject:(id)object getRelatedObjectsWithRelationName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
+  replyCopy = reply;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1988,7 +1988,7 @@ void __98__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (CADObjectPassedOrSkippedAccessCheck(v8, self->_conn))
+  if (CADObjectPassedOrSkippedAccessCheck(objectCopy, self->_conn))
   {
     conn = self->_conn;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1996,9 +1996,9 @@ void __98__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
     v19[2] = __99__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObjectsWithRelationName_reply___block_invoke;
     v19[3] = &unk_27851A020;
     v23 = &v29;
-    v20 = v8;
-    v21 = self;
-    v22 = v9;
+    v20 = objectCopy;
+    selfCopy = self;
+    v22 = nameCopy;
     v24 = &v25;
     [(ClientConnection *)conn withDatabaseForObject:v20 perform:v19];
   }
@@ -2010,18 +2010,18 @@ void __98__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
 
   v12 = v26[3];
   v13 = self->_conn;
-  v14 = [v12 allObjects];
-  v15 = [v14 arrayByAddingObject:v8];
+  allObjects = [v12 allObjects];
+  v15 = [allObjects arrayByAddingObject:objectCopy];
   [(ClientConnection *)v13 logAccessToObjects:v15];
 
-  v10[2](v10, *(v30 + 6), v12);
+  replyCopy[2](replyCopy, *(v30 + 6), v12);
   v16 = MEMORY[0x277CBEB18];
-  v17 = [v12 allObjects];
-  v18 = [v16 arrayWithArray:v17];
+  allObjects2 = [v12 allObjects];
+  v18 = [v16 arrayWithArray:allObjects2];
 
-  if (v8)
+  if (objectCopy)
   {
-    [v18 addObject:v8];
+    [v18 addObject:objectCopy];
   }
 
   [(ClientConnection *)self->_conn logAccessToObjects:v18];
@@ -2084,10 +2084,10 @@ void __99__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADObjectIsManaged:(id)a3 reply:(id)a4
+- (void)CADObjectIsManaged:(id)managed reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  managedCopy = managed;
+  replyCopy = reply;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -2101,9 +2101,9 @@ void __99__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
   v12 = 3221225472;
   v13 = __74__CADXPCImplementation_CADObjectOperationGroup__CADObjectIsManaged_reply___block_invoke;
   v14 = &unk_27851A070;
-  v9 = v6;
+  v9 = managedCopy;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v17 = &v23;
   v18 = &v19;
   if ([(ClientConnection *)conn withDatabaseForObject:v9 perform:&v11])
@@ -2117,7 +2117,7 @@ void __99__CADXPCImplementation_CADObjectOperationGroup__CADObject_getRelatedObj
     *(v24 + 6) = 1010;
   }
 
-  v7[2](v7, v10, *(v20 + 24));
+  replyCopy[2](replyCopy, v10, *(v20 + 24));
   [(ClientConnection *)self->_conn logAccessToObject:v9, v11, v12, v13, v14];
 
   _Block_object_dispose(&v19, 8);
@@ -2149,9 +2149,9 @@ void __74__CADXPCImplementation_CADObjectOperationGroup__CADObjectIsManaged_repl
   }
 }
 
-- (void)CADDatabaseGetErrorCount:(id)a3
+- (void)CADDatabaseGetErrorCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2168,7 +2168,7 @@ void __74__CADXPCImplementation_CADObjectOperationGroup__CADObjectIsManaged_repl
   v6[4] = &v11;
   v6[5] = &v7;
   [(ClientConnection *)conn withAllDatabasesPerform:v6];
-  (*(v4 + 2))(v4, *(v12 + 6), *(v8 + 6));
+  (*(countCopy + 2))(countCopy, *(v12 + 6), *(v8 + 6));
   _Block_object_dispose(&v7, 8);
   _Block_object_dispose(&v11, 8);
 }
@@ -2190,9 +2190,9 @@ void __73__CADXPCImplementation_CADErrorOperationGroup__CADDatabaseGetErrorCount
   }
 }
 
-- (void)CADDatabaseGetEventsWithErrorsPerSource:(id)a3
+- (void)CADDatabaseGetEventsWithErrorsPerSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_opt_new();
   conn = self->_conn;
   v8[0] = MEMORY[0x277D85DD0];
@@ -2202,7 +2202,7 @@ void __73__CADXPCImplementation_CADErrorOperationGroup__CADDatabaseGetErrorCount
   v9 = v5;
   v7 = v5;
   [(ClientConnection *)conn withAllDatabasesPerform:v8];
-  v4[2](v4, 0, v7);
+  sourceCopy[2](sourceCopy, 0, v7);
 
   [(ClientConnection *)self->_conn logAccessToObjects:v7];
 }
@@ -2245,23 +2245,23 @@ void __88__CADXPCImplementation_CADErrorOperationGroup__CADDatabaseGetEventsWith
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetSharedCalendarInvitationsWithReply:(id)a3
+- (void)CADDatabaseGetSharedCalendarInvitationsWithReply:(id)reply
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  replyCopy = reply;
+  array = [v4 array];
   conn = self->_conn;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __111__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetSharedCalendarInvitationsWithReply___block_invoke;
   v12 = &unk_27851A0E8;
-  v13 = self;
-  v14 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v14 = array;
+  v8 = array;
   [(ClientConnection *)conn withAllDatabasesPerform:&v9];
-  v5[2](v5, 0, v8);
+  replyCopy[2](replyCopy, 0, v8);
 
-  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, v13];
+  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, selfCopy];
 }
 
 void __111__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetSharedCalendarInvitationsWithReply___block_invoke(uint64_t a1, uint64_t a2)
@@ -2289,10 +2289,10 @@ void __111__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDataba
   }
 }
 
-- (void)CADCalendarSetClearedFromNotificationCenter:(id)a3 error:(id)a4
+- (void)CADCalendarSetClearedFromNotificationCenter:(id)center error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2302,8 +2302,8 @@ void __111__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDataba
   v11[1] = 3221225472;
   v11[2] = __112__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADCalendarSetClearedFromNotificationCenter_error___block_invoke;
   v11[3] = &unk_27851A110;
-  v9 = v6;
-  v13 = self;
+  v9 = centerCopy;
+  selfCopy = self;
   v14 = &v15;
   v12 = v9;
   if ([(ClientConnection *)conn withDatabaseForObject:v9 perform:v11])
@@ -2317,7 +2317,7 @@ void __111__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDataba
     *(v16 + 6) = 1010;
   }
 
-  v7[2](v7, v10);
+  errorCopy[2](errorCopy, v10);
   [(ClientConnection *)self->_conn logAccessToObject:v9];
 
   _Block_object_dispose(&v15, 8);
@@ -2350,23 +2350,23 @@ LABEL_10:
   CFRelease(v5);
 }
 
-- (void)CADDatabaseGetResourceChanges:(id)a3
+- (void)CADDatabaseGetResourceChanges:(id)changes
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  changesCopy = changes;
+  array = [v4 array];
   conn = self->_conn;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __92__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetResourceChanges___block_invoke;
   v12 = &unk_27851A0E8;
-  v13 = self;
-  v14 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v14 = array;
+  v8 = array;
   [(ClientConnection *)conn withAllDatabasesPerform:&v9];
-  v5[2](v5, 0, v8);
+  changesCopy[2](changesCopy, 0, v8);
 
-  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, v13];
+  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, selfCopy];
 }
 
 void __92__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetResourceChanges___block_invoke(uint64_t a1, uint64_t a2)
@@ -2457,23 +2457,23 @@ LABEL_17:
   }
 }
 
-- (void)CADDatabaseGetInviteReplyNotifications:(id)a3
+- (void)CADDatabaseGetInviteReplyNotifications:(id)notifications
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  notificationsCopy = notifications;
+  array = [v4 array];
   conn = self->_conn;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __101__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetInviteReplyNotifications___block_invoke;
   v12 = &unk_27851A0E8;
-  v13 = self;
-  v14 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v14 = array;
+  v8 = array;
   [(ClientConnection *)conn withAllDatabasesPerform:&v9];
-  v5[2](v5, 0, v8);
+  notificationsCopy[2](notificationsCopy, 0, v8);
 
-  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, v13];
+  [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12, selfCopy];
 }
 
 void __101__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDatabaseGetInviteReplyNotifications___block_invoke(uint64_t a1, uint64_t a2)
@@ -2550,10 +2550,10 @@ LABEL_15:
   }
 }
 
-- (void)CADDatabaseGetInboxRepliedSectionItems:(id)a3
+- (void)CADDatabaseGetInboxRepliedSectionItems:(id)items
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2568,7 +2568,7 @@ LABEL_15:
   if ([v9 count])
   {
     v19 = v9;
-    v20 = v4;
+    v20 = itemsCopy;
     v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_23];
     v21 = 0u;
     v22 = 0u;
@@ -2601,7 +2601,7 @@ LABEL_15:
       while (v12);
     }
 
-    v4 = v20;
+    itemsCopy = v20;
     v20[2](v20, 0, v6, v7);
     [(ClientConnection *)self->_conn logAccessToObjects:v6];
 
@@ -2610,7 +2610,7 @@ LABEL_15:
 
   else
   {
-    v4[2](v4, 0, v6, v7);
+    itemsCopy[2](itemsCopy, 0, v6, v7);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2803,10 +2803,10 @@ uint64_t __101__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDa
   }
 }
 
-- (void)CADResourceChange:(id)a3 setAlertedWithError:(id)a4
+- (void)CADResourceChange:(id)change setAlertedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2816,8 +2816,8 @@ uint64_t __101__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDa
   v11[1] = 3221225472;
   v11[2] = __100__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADResourceChange_setAlertedWithError___block_invoke;
   v11[3] = &unk_27851A110;
-  v9 = v6;
-  v13 = self;
+  v9 = changeCopy;
+  selfCopy = self;
   v14 = &v15;
   v12 = v9;
   if ([(ClientConnection *)conn withDatabaseForObject:v9 perform:v11])
@@ -2831,7 +2831,7 @@ uint64_t __101__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADDa
     *(v16 + 6) = 1010;
   }
 
-  v7[2](v7, v10);
+  errorCopy[2](errorCopy, v10);
   [(ClientConnection *)self->_conn logAccessToObject:v9];
 
   _Block_object_dispose(&v15, 8);
@@ -2873,10 +2873,10 @@ LABEL_14:
   CFRelease(v5);
 }
 
-- (void)CADEventSetInvitationStatus:(int)a3 forEvents:(id)a4 error:(id)a5
+- (void)CADEventSetInvitationStatus:(int)status forEvents:(id)events error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  eventsCopy = events;
+  errorCopy = error;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -2887,10 +2887,10 @@ LABEL_14:
   v11[2] = __106__CADXPCImplementation_CADNotificationMonitorOperationGroup__CADEventSetInvitationStatus_forEvents_error___block_invoke;
   v11[3] = &unk_27851A178;
   v11[4] = &v13;
-  v12 = a3;
-  [(ClientConnection *)conn withDatabaseForObjects:v8 perform:v11];
-  v9[2](v9, *(v14 + 6));
-  [(ClientConnection *)self->_conn logAccessToObjects:v8];
+  statusCopy = status;
+  [(ClientConnection *)conn withDatabaseForObjects:eventsCopy perform:v11];
+  errorCopy[2](errorCopy, *(v14 + 6));
+  [(ClientConnection *)self->_conn logAccessToObjects:eventsCopy];
   _Block_object_dispose(&v13, 8);
 }
 
@@ -2959,23 +2959,23 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (CADXPCImplementation)initWithClientConnection:(id)a3
+- (CADXPCImplementation)initWithClientConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CADXPCImplementation;
   v6 = [(CADXPCImplementation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conn, a3);
+    objc_storeStrong(&v6->_conn, connection);
     v7->_accessLock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-- (BOOL)accessGrantedToPerformSelector:(SEL)a3
+- (BOOL)accessGrantedToPerformSelector:(SEL)selector
 {
   v14 = *MEMORY[0x277D85DE8];
   if (accessGrantedToPerformSelector__onceToken != -1)
@@ -2983,13 +2983,13 @@ LABEL_11:
     [CADXPCImplementation accessGrantedToPerformSelector:];
   }
 
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   v6 = [accessGrantedToPerformSelector__accessTypeBySelector objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
-    v8 = [(CADXPCImplementation *)self hasAccess:v7];
+    v8 = [(CADXPCImplementation *)self hasAccess:unsignedIntegerValue];
   }
 
   else
@@ -3430,24 +3430,24 @@ void __55__CADXPCImplementation_accessGrantedToPerformSelector___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasAccess:(unint64_t)a3
+- (BOOL)hasAccess:(unint64_t)access
 {
   os_unfair_lock_lock(&self->_accessLock);
-  LOBYTE(a3) = [(CADXPCImplementation *)self _hasAccess:a3];
+  LOBYTE(access) = [(CADXPCImplementation *)self _hasAccess:access];
   os_unfair_lock_unlock(&self->_accessLock);
-  return a3;
+  return access;
 }
 
-- (BOOL)_hasAccess:(unint64_t)a3
+- (BOOL)_hasAccess:(unint64_t)access
 {
   v3 = 1;
-  if ((self->_allowedAccess & a3) == 0)
+  if ((self->_allowedAccess & access) == 0)
   {
     v6 = 0;
     while (1)
     {
       v7 = (1 << v6);
-      if ((v7 & a3) != 0)
+      if ((v7 & access) != 0)
       {
         checkedAccess = self->_checkedAccess;
         if ((checkedAccess & v7) == 0)
@@ -3473,64 +3473,64 @@ void __55__CADXPCImplementation_accessGrantedToPerformSelector___block_invoke()
   return v3;
 }
 
-- (BOOL)_checkAccess:(unint64_t)a3
+- (BOOL)_checkAccess:(unint64_t)access
 {
-  v5 = [(ClientConnection *)self->_conn permissionValidator];
-  if ([v5 testingAccessLevelGranted])
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  if ([permissionValidator testingAccessLevelGranted])
   {
-    LOBYTE(a3) = 1;
+    LOBYTE(access) = 1;
     goto LABEL_42;
   }
 
-  if (a3 <= 127)
+  if (access <= 127)
   {
-    if (a3 > 7)
+    if (access > 7)
     {
-      if (a3 > 31)
+      if (access > 31)
       {
-        if (a3 == 32)
+        if (access == 32)
         {
-          v6 = [v5 hasCalendarToolEntitlement];
+          hasCalendarToolEntitlement = [permissionValidator hasCalendarToolEntitlement];
           goto LABEL_41;
         }
 
-        if (a3 == 64)
+        if (access == 64)
         {
-          v6 = [v5 hasNotificationCountEntitlement];
+          hasCalendarToolEntitlement = [permissionValidator hasNotificationCountEntitlement];
           goto LABEL_41;
         }
       }
 
       else
       {
-        if (a3 == 8)
+        if (access == 8)
         {
-          v6 = [v5 isCalendarDaemon];
+          hasCalendarToolEntitlement = [permissionValidator isCalendarDaemon];
           goto LABEL_41;
         }
 
-        if (a3 == 16)
+        if (access == 16)
         {
-          v6 = [v5 hasSyncClientEntitlement];
+          hasCalendarToolEntitlement = [permissionValidator hasSyncClientEntitlement];
           goto LABEL_41;
         }
       }
 
 LABEL_43:
-      LOBYTE(a3) = 0;
+      LOBYTE(access) = 0;
       goto LABEL_42;
     }
 
-    if (a3 == 1)
+    if (access == 1)
     {
       goto LABEL_42;
     }
 
-    if (a3 != 2)
+    if (access != 2)
     {
-      if (a3 == 4)
+      if (access == 4)
       {
-        v6 = [v5 isFirstPartyCalendarApp];
+        hasCalendarToolEntitlement = [permissionValidator isFirstPartyCalendarApp];
         goto LABEL_41;
       }
 
@@ -3542,36 +3542,36 @@ LABEL_43:
 
   else
   {
-    if (a3 <= 2047)
+    if (access <= 2047)
     {
-      if (a3 > 511)
+      if (access > 511)
       {
-        if (a3 == 512)
+        if (access == 512)
         {
-          v6 = [v5 canRequestDiagnostics];
+          hasCalendarToolEntitlement = [permissionValidator canRequestDiagnostics];
           goto LABEL_41;
         }
 
-        if (a3 == 1024)
+        if (access == 1024)
         {
-          v6 = [v5 testingAccessLevelGranted];
+          hasCalendarToolEntitlement = [permissionValidator testingAccessLevelGranted];
           goto LABEL_41;
         }
       }
 
       else
       {
-        if (a3 == 128)
+        if (access == 128)
         {
-          v6 = [v5 internalAccessLevelGranted];
+          hasCalendarToolEntitlement = [permissionValidator internalAccessLevelGranted];
           goto LABEL_41;
         }
 
-        if (a3 == 256)
+        if (access == 256)
         {
-          v6 = [v5 storageManagementAccessGranted];
+          hasCalendarToolEntitlement = [permissionValidator storageManagementAccessGranted];
 LABEL_41:
-          LOBYTE(a3) = v6;
+          LOBYTE(access) = hasCalendarToolEntitlement;
           goto LABEL_42;
         }
       }
@@ -3579,46 +3579,46 @@ LABEL_41:
       goto LABEL_43;
     }
 
-    if (a3 >= 0x2000)
+    if (access >= 0x2000)
     {
-      if (a3 == 0x2000)
+      if (access == 0x2000)
       {
-        v6 = [v5 isAutomatorApp];
+        hasCalendarToolEntitlement = [permissionValidator isAutomatorApp];
         goto LABEL_41;
       }
 
-      if (a3 == 0x4000)
+      if (access == 0x4000)
       {
-        v6 = [v5 isShortcutsApp];
+        hasCalendarToolEntitlement = [permissionValidator isShortcutsApp];
         goto LABEL_41;
       }
 
       goto LABEL_43;
     }
 
-    if (a3 != 2048)
+    if (access != 2048)
     {
-      if (a3 == 4096)
+      if (access == 4096)
       {
-        v6 = [v5 isRemoteUIExtension];
+        hasCalendarToolEntitlement = [permissionValidator isRemoteUIExtension];
         goto LABEL_41;
       }
 
       goto LABEL_43;
     }
 
-    v7 = [v5 eventAccessLevel] == 1;
+    v7 = [permissionValidator eventAccessLevel] == 1;
   }
 
-  LOBYTE(a3) = v7;
+  LOBYTE(access) = v7;
 LABEL_42:
 
-  return a3;
+  return access;
 }
 
-- (void)CADDatabaseGetUUID:(id)a3
+- (void)CADDatabaseGetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -3643,7 +3643,7 @@ LABEL_42:
     v7 = 1007;
   }
 
-  v4[2](v4, v7);
+  dCopy[2](dCopy, v7);
   _Block_object_dispose(&v9, 8);
 }
 
@@ -3657,26 +3657,26 @@ uint64_t __70__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetUUI
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)CADDatabaseRegisterForDetailedChangeTrackingInSource:(id)a3 reply:(id)a4
+- (void)CADDatabaseRegisterForDetailedChangeTrackingInSource:(id)source reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v8 = [(ClientConnection *)self->_conn changeTrackingID];
-  v9 = v8;
-  if (v8)
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  v9 = changeTrackingID;
+  if (changeTrackingID)
   {
     conn = self->_conn;
-    if (v6)
+    if (sourceCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterForDetailedChangeTrackingInSource_reply___block_invoke;
       v16[3] = &unk_27851A110;
-      v17 = v6;
+      v17 = sourceCopy;
       v19 = &v21;
       v18 = v9;
       [(ClientConnection *)conn withDatabaseForObject:v17 perform:v16];
@@ -3689,7 +3689,7 @@ uint64_t __70__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetUUI
       v14[1] = 3221225472;
       v14[2] = __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterForDetailedChangeTrackingInSource_reply___block_invoke_2;
       v14[3] = &unk_27851A0C0;
-      v15 = v8;
+      v15 = changeTrackingID;
       [(ClientConnection *)conn withAllDatabasesPerform:v14];
       v11 = &v15;
     }
@@ -3709,7 +3709,7 @@ uint64_t __70__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetUUI
     *(v22 + 6) = 1018;
   }
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 
   _Block_object_dispose(&v21, 8);
 }
@@ -3733,20 +3733,20 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
   }
 }
 
-- (void)CADDatabaseUnregisterForDetailedChangeTracking:(id)a3
+- (void)CADDatabaseUnregisterForDetailedChangeTracking:(id)tracking
 {
   conn = self->_conn;
-  v5 = a3;
-  v6 = [(ClientConnection *)conn changeTrackingID];
-  v7 = v6;
-  if (v6)
+  trackingCopy = tracking;
+  changeTrackingID = [(ClientConnection *)conn changeTrackingID];
+  v7 = changeTrackingID;
+  if (changeTrackingID)
   {
     v8 = self->_conn;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseUnregisterForDetailedChangeTracking___block_invoke;
     v11[3] = &unk_27851A0C0;
-    v12 = v6;
+    v12 = changeTrackingID;
     [(ClientConnection *)v8 withAllDatabasesPerform:v11];
 
     v9 = 0;
@@ -3764,12 +3764,12 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
     v9 = 1018;
   }
 
-  v5[2](v5, v9);
+  trackingCopy[2](trackingCopy, v9);
 }
 
-- (void)CADDatabaseFetchChangedObjectIDs:(id)a3
+- (void)CADDatabaseFetchChangedObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -3778,8 +3778,8 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v5 = [(ClientConnection *)self->_conn changeTrackingID];
-  if (v5)
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  if (changeTrackingID)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -3788,8 +3788,8 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
     v15 = 3221225472;
     v16 = __84__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchChangedObjectIDs___block_invoke;
     v17 = &unk_27851A430;
-    v18 = self;
-    v19 = v5;
+    selfCopy = self;
+    v19 = changeTrackingID;
     v9 = v6;
     v20 = v9;
     v22 = &v24;
@@ -3800,7 +3800,7 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
     if ((v25[3] & 1) != 0 || *(v29 + 24) != 1)
     {
       v13 = [CADSequenceToken alloc];
-      v11 = [(CADSequenceToken *)v13 initWithAllDBSequenceMap:v9, v14, v15, v16, v17, v18, v19, v20];
+      v11 = [(CADSequenceToken *)v13 initWithAllDBSequenceMap:v9, v14, v15, v16, v17, selfCopy, v19, v20];
       v12 = 0;
     }
 
@@ -3812,12 +3812,12 @@ void __110__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRegisterF
       v12 = 1;
     }
 
-    v4[2](v4, 0, v12, v11, v10);
+    dsCopy[2](dsCopy, 0, v12, v11, v10);
   }
 
   else
   {
-    v4[2](v4, 1018, 0, 0, 0);
+    dsCopy[2](dsCopy, 1018, 0, 0, 0);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -3898,20 +3898,20 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseFetchObjectChangesForEntityTypes:(id)a3 insideObject:(id)a4 reply:(id)a5
+- (void)CADDatabaseFetchObjectChangesForEntityTypes:(id)types insideObject:(id)object reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  objectCopy = object;
+  replyCopy = reply;
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  v11 = [(ClientConnection *)self->_conn changeTrackingID];
-  v12 = v11;
-  if (v11)
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  v12 = changeTrackingID;
+  if (changeTrackingID)
   {
-    v25 = v11;
+    v25 = changeTrackingID;
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v48 = 0;
     v49 = &v48;
@@ -3933,15 +3933,15 @@ LABEL_12:
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = 0;
-    v24 = v8;
-    v14 = [(CADXPCImplementation *)self _copyToIntCFSetRef:v8];
+    v24 = typesCopy;
+    v14 = [(CADXPCImplementation *)self _copyToIntCFSetRef:typesCopy];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObjectChangesForEntityTypes_insideObject_reply___block_invoke;
     v28[3] = &unk_27851A458;
     v28[4] = self;
-    v15 = v9;
-    v16 = v9;
+    v15 = objectCopy;
+    v16 = objectCopy;
     v29 = v16;
     v37 = v14;
     v30 = v25;
@@ -3971,7 +3971,7 @@ LABEL_12:
     }
 
     CFRelease(v14);
-    v9 = v15;
+    objectCopy = v15;
     if ((v39[3] & 1) != 0 || (v43[3] & 1) == 0)
     {
       if (!*(v55 + 6))
@@ -3994,19 +3994,19 @@ LABEL_12:
 
     v23 = 0;
 LABEL_13:
-    v10[2](v10, *(v55 + 6), v21, v23, v49[5]);
+    replyCopy[2](replyCopy, *(v55 + 6), v21, v23, v49[5]);
 
     _Block_object_dispose(&v38, 8);
     _Block_object_dispose(&v42, 8);
     _Block_object_dispose(v46, 8);
 
     _Block_object_dispose(&v48, 8);
-    v8 = v24;
+    typesCopy = v24;
     v12 = v25;
     goto LABEL_14;
   }
 
-  v10[2](v10, 1018, 0, 0, 0);
+  replyCopy[2](replyCopy, 1018, 0, 0, 0);
 LABEL_14:
 
   _Block_object_dispose(&v54, 8);
@@ -4095,17 +4095,17 @@ void __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObje
   }
 }
 
-- (void)CADDatabaseMarkChangedObjectIDsConsumedUpToSequenceToken:(id)a3 reply:(id)a4
+- (void)CADDatabaseMarkChangedObjectIDsConsumedUpToSequenceToken:(id)token reply:(id)reply
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v20 = self;
-  v21 = [(ClientConnection *)self->_conn changeTrackingID];
-  if (v21)
+  tokenCopy = token;
+  replyCopy = reply;
+  selfCopy = self;
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  if (changeTrackingID)
   {
-    v19 = v7;
-    [v6 allDBSequenceMap];
+    v19 = replyCopy;
+    [tokenCopy allDBSequenceMap];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -4125,8 +4125,8 @@ void __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObje
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
-          conn = v20->_conn;
-          v15 = [v13 intValue];
+          conn = selfCopy->_conn;
+          intValue = [v13 intValue];
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkChangedObjectIDsConsumedUpToSequenceToken_reply___block_invoke;
@@ -4134,8 +4134,8 @@ void __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObje
           v16 = v8;
           v23 = v16;
           v24 = v13;
-          v25 = v21;
-          [(ClientConnection *)conn withDatabaseID:v15 perform:v22];
+          v25 = changeTrackingID;
+          [(ClientConnection *)conn withDatabaseID:intValue perform:v22];
         }
 
         v10 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -4145,7 +4145,7 @@ void __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObje
     }
 
     v17 = 0;
-    v7 = v19;
+    replyCopy = v19;
   }
 
   else
@@ -4153,7 +4153,7 @@ void __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseFetchObje
     v17 = 1018;
   }
 
-  v7[2](v7, v17);
+  replyCopy[2](replyCopy, v17);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -4168,18 +4168,18 @@ uint64_t __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkC
   return CalDatabaseClearChangedObjectIDsUpToSequenceNumberForClient();
 }
 
-- (void)CADDatabaseConsumeAllChangesUpToToken:(id)a3 except:(id)a4 reply:(id)a5
+- (void)CADDatabaseConsumeAllChangesUpToToken:(id)token except:(id)except reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v24 = a4;
-  v9 = a5;
-  v23 = [(ClientConnection *)self->_conn changeTrackingID];
-  if (v23)
+  tokenCopy = token;
+  exceptCopy = except;
+  replyCopy = reply;
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  if (changeTrackingID)
   {
-    v21 = v9;
-    v22 = v8;
-    [v8 allDBSequenceMap];
+    v21 = replyCopy;
+    v22 = tokenCopy;
+    [tokenCopy allDBSequenceMap];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -4200,7 +4200,7 @@ uint64_t __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkC
 
           v15 = *(*(&v30 + 1) + 8 * i);
           conn = self->_conn;
-          v17 = [v15 intValue];
+          intValue = [v15 intValue];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseConsumeAllChangesUpToToken_except_reply___block_invoke;
@@ -4208,9 +4208,9 @@ uint64_t __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkC
           v18 = v10;
           v26 = v18;
           v27 = v15;
-          v28 = v24;
-          v29 = v23;
-          [(ClientConnection *)conn withDatabaseID:v17 perform:v25];
+          v28 = exceptCopy;
+          v29 = changeTrackingID;
+          [(ClientConnection *)conn withDatabaseID:intValue perform:v25];
         }
 
         v12 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -4220,8 +4220,8 @@ uint64_t __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkC
     }
 
     v19 = 0;
-    v9 = v21;
-    v8 = v22;
+    replyCopy = v21;
+    tokenCopy = v22;
   }
 
   else
@@ -4229,7 +4229,7 @@ uint64_t __114__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkC
     v19 = 1018;
   }
 
-  v9[2](v9, v19);
+  replyCopy[2](replyCopy, v19);
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -4286,21 +4286,21 @@ void __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseConsumeAl
   }
 }
 
-- (void)CADDatabaseMarkIndividualChangesConsumed:(id)a3 reply:(id)a4
+- (void)CADDatabaseMarkIndividualChangesConsumed:(id)consumed reply:(id)reply
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v20 = [(ClientConnection *)self->_conn changeTrackingID];
-  if (v20)
+  consumedCopy = consumed;
+  replyCopy = reply;
+  changeTrackingID = [(ClientConnection *)self->_conn changeTrackingID];
+  if (changeTrackingID)
   {
-    v18 = v7;
-    v19 = v6;
+    v18 = replyCopy;
+    v19 = consumedCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v6;
+    v8 = consumedCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v9)
     {
@@ -4317,7 +4317,7 @@ void __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseConsumeAl
 
           v13 = *(*(&v26 + 1) + 8 * i);
           conn = self->_conn;
-          v15 = [v13 intValue];
+          intValue = [v13 intValue];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkIndividualChangesConsumed_reply___block_invoke;
@@ -4325,9 +4325,9 @@ void __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseConsumeAl
           v16 = v8;
           v22 = v16;
           v23 = v13;
-          v24 = self;
-          v25 = v20;
-          [(ClientConnection *)conn withDatabaseID:v15 perform:v21];
+          selfCopy = self;
+          v25 = changeTrackingID;
+          [(ClientConnection *)conn withDatabaseID:intValue perform:v21];
         }
 
         v10 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -4336,14 +4336,14 @@ void __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseConsumeAl
       while (v10);
     }
 
-    v7 = v18;
+    replyCopy = v18;
     v18[2](v18, 0);
-    v6 = v19;
+    consumedCopy = v19;
   }
 
   else
   {
-    v7[2](v7, 1018);
+    replyCopy[2](replyCopy, 1018);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -4391,16 +4391,16 @@ void __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkIndivi
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFArray)_copyToIntCFArrayRef:(id)a3
+- (__CFArray)_copyToIntCFArrayRef:(id)ref
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  Mutable = CFArrayCreateMutable(0, [v3 count], 0);
+  refCopy = ref;
+  Mutable = CFArrayCreateMutable(0, [refCopy count], 0);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = refCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -4430,16 +4430,16 @@ void __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkIndivi
   return Mutable;
 }
 
-- (__CFSet)_copyToIntCFSetRef:(id)a3
+- (__CFSet)_copyToIntCFSetRef:(id)ref
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  Mutable = CFSetCreateMutable(0, [v3 count], 0);
+  refCopy = ref;
+  Mutable = CFSetCreateMutable(0, [refCopy count], 0);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = refCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -4469,15 +4469,15 @@ void __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkIndivi
   return Mutable;
 }
 
-- (void)CADDatabaseGetSequenceToken:(id)a3
+- (void)CADDatabaseGetSequenceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__2;
   v13 = __Block_byref_object_dispose__2;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   conn = self->_conn;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -4487,7 +4487,7 @@ void __98__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMarkIndivi
   [(ClientConnection *)conn withAllDatabasesPerform:v8];
   v6 = [CADSequenceToken alloc];
   v7 = [(CADSequenceToken *)v6 initWithAllDBSequenceMap:v10[5]];
-  v4[2](v4, 0, v7);
+  tokenCopy[2](tokenCopy, 0, v7);
 
   _Block_object_dispose(&v9, 8);
 }
@@ -4501,27 +4501,27 @@ void __79__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetSequenc
   [v5 setObject:v7 forKey:v6];
 }
 
-- (void)CADDatabaseGetChangesSinceSequenceToken:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetChangesSinceSequenceToken:(id)token reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   conn = self->_conn;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __97__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChangesSinceSequenceToken_reply___block_invoke;
   v19 = &unk_27851A548;
-  v11 = v6;
+  v11 = tokenCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = dictionary2;
   v21 = v12;
   v23 = &v24;
-  v13 = v8;
+  v13 = dictionary;
   v22 = v13;
   [(ClientConnection *)conn withAllDatabasesPerform:&v16];
   if (*(v25 + 6))
@@ -4537,7 +4537,7 @@ void __79__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetSequenc
     v14 = [(CADSequenceToken *)v15 initWithAllDBSequenceMap:v12, v16, v17, v18, v19, v20, v21];
   }
 
-  v7[2](v7, *(v25 + 6), v13, v14);
+  replyCopy[2](replyCopy, *(v25 + 6), v13, v14);
 
   _Block_object_dispose(&v24, 8);
 }
@@ -4590,10 +4590,10 @@ void __97__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChanges
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetChangedEntityIDsSinceTimestamp:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetChangedEntityIDsSinceTimestamp:(id)timestamp reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  timestampCopy = timestamp;
+  replyCopy = reply;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -4602,16 +4602,16 @@ void __97__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChanges
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 1;
-  v8 = [(ClientConnection *)self->_conn databaseInitializationOptions];
-  v9 = [v8 allowIntegrations];
+  databaseInitializationOptions = [(ClientConnection *)self->_conn databaseInitializationOptions];
+  allowIntegrations = [databaseInitializationOptions allowIntegrations];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v13 = [v6 allDatabases];
-  if ([v13 count])
+  allDatabases = [timestampCopy allDatabases];
+  if ([allDatabases count])
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v13];
+    v14 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:allDatabases];
   }
 
   else
@@ -4625,9 +4625,9 @@ void __97__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChanges
   v22[2] = __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChangedEntityIDsSinceTimestamp_reply___block_invoke;
   v22[3] = &unk_27851A570;
   v28 = &v35;
-  v16 = v6;
+  v16 = timestampCopy;
   v23 = v16;
-  v30 = v9;
+  v30 = allowIntegrations;
   v17 = v10;
   v24 = v17;
   v18 = v11;
@@ -4656,7 +4656,7 @@ LABEL_7:
 
 LABEL_8:
   v21 = [[CADInMemoryChangeTimestamp alloc] initWithTimestamps:v19];
-  (*(v7 + 2))(v7, 0, v17, v18, v21, *(v32 + 24));
+  (*(replyCopy + 2))(replyCopy, 0, v17, v18, v21, *(v32 + 24));
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(&v35, 8);
@@ -4735,88 +4735,88 @@ void __102__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetChange
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseCanModifyCalendarDatabase:(id)a3
+- (void)CADDatabaseCanModifyCalendarDatabase:(id)database
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, 0, [(CADXPCImplementation *)self _CADDatabaseCanModifyCalendarDatabase]);
+  databaseCopy = database;
+  (*(database + 2))(databaseCopy, 0, [(CADXPCImplementation *)self _CADDatabaseCanModifyCalendarDatabase]);
 }
 
 - (BOOL)_CADDatabaseCanModifyCalendarDatabase
 {
-  v2 = [(ClientConnection *)self->_conn permissionValidator];
-  v3 = [v2 canModifyCalendarDatabase];
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  canModifyCalendarDatabase = [permissionValidator canModifyCalendarDatabase];
 
-  return v3;
+  return canModifyCalendarDatabase;
 }
 
-- (void)CADDatabaseLastConfirmedSplashScreenVersion:(id)a3
+- (void)CADDatabaseLastConfirmedSplashScreenVersion:(id)version
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  versionCopy = version;
   v5 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
     conn = self->_conn;
     v7 = v5;
-    v8 = [(ClientConnection *)conn identity];
+    identity = [(ClientConnection *)conn identity];
     v11 = 136315394;
     v12 = "[CADXPCImplementation(CADDatabaseOperationGroup) CADDatabaseLastConfirmedSplashScreenVersion:]";
     v13 = 2112;
-    v14 = v8;
+    v14 = identity;
     _os_log_impl(&dword_22430B000, v7, OS_LOG_TYPE_DEBUG, "[%s] called by client: [%@].", &v11, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CF74E0] shared];
-  v4[2](v4, 0, [v9 get_LastConfirmedSplashScreenVersionViewed]);
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  versionCopy[2](versionCopy, 0, [mEMORY[0x277CF74E0] get_LastConfirmedSplashScreenVersionViewed]);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseImportEvents:(id)a3 fromICSData:(id)a4 intoCalendarsWithIDs:(id)a5 optionsMask:(unint64_t)a6 batchSize:(int)a7 reply:(id)a8
+- (void)CADDatabaseImportEvents:(id)events fromICSData:(id)data intoCalendarsWithIDs:(id)ds optionsMask:(unint64_t)mask batchSize:(int)size reply:(id)reply
 {
   v111 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v60 = a8;
-  v70 = v12;
-  v14 = [v12 count];
-  v59 = v13;
-  v69 = v11;
-  if (v14 != [v13 count])
+  eventsCopy = events;
+  dataCopy = data;
+  dsCopy = ds;
+  replyCopy = reply;
+  v70 = dataCopy;
+  v14 = [dataCopy count];
+  v59 = dsCopy;
+  v69 = eventsCopy;
+  if (v14 != [dsCopy count])
   {
     v18 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
       *buf = 134218240;
-      *&buf[4] = [v12 count];
+      *&buf[4] = [dataCopy count];
       *&buf[12] = 2048;
-      *&buf[14] = [v13 count];
+      *&buf[14] = [dsCopy count];
       _os_log_impl(&dword_22430B000, v19, OS_LOG_TYPE_ERROR, "Mismatched number of data objects (%lu) and calendar row IDs (%lu).", buf, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  if (v11)
+  if (eventsCopy)
   {
-    v15 = [v11 count];
-    if (v15 != [v13 count])
+    v15 = [eventsCopy count];
+    if (v15 != [dsCopy count])
     {
       v20 = CADLogHandle;
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
       {
         v21 = v20;
         *buf = 134218240;
-        *&buf[4] = [v11 count];
+        *&buf[4] = [eventsCopy count];
         *&buf[12] = 2048;
-        *&buf[14] = [v13 count];
+        *&buf[14] = [dsCopy count];
         _os_log_impl(&dword_22430B000, v21, OS_LOG_TYPE_ERROR, "Mismatched number of ID maps (%lu) and calendar row IDs (%lu).", buf, 0x16u);
       }
 
 LABEL_9:
-      v60[2](v60, 1001, 0);
+      replyCopy[2](replyCopy, 1001, 0);
       goto LABEL_48;
     }
   }
@@ -4825,17 +4825,17 @@ LABEL_9:
   v101 = &v100;
   v102 = 0x2020000000;
   v103 = 0;
-  v64 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
+  v64 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dataCopy, "count")}];
   v16 = 0;
   v17 = MEMORY[0x277CBEBF8];
-  while (v16 < [v12 count])
+  while (v16 < [dataCopy count])
   {
     [v64 addObject:v17];
     ++v16;
   }
 
   v71 = objc_opt_new();
-  if (v11)
+  if (eventsCopy)
   {
     v75 = objc_opt_new();
   }
@@ -4868,16 +4868,16 @@ LABEL_9:
         }
 
         v25 = *(*(&v96 + 1) + 8 * i);
-        v26 = [MEMORY[0x277CBEB68] null];
-        v27 = v25 == v26;
+        null = [MEMORY[0x277CBEB68] null];
+        v27 = v25 == null;
 
-        v28 = v66;
+        databaseID = v66;
         if (!v27)
         {
-          v28 = [v25 databaseID];
+          databaseID = [v25 databaseID];
         }
 
-        v29 = [MEMORY[0x277CCABB0] numberWithInt:v28];
+        v29 = [MEMORY[0x277CCABB0] numberWithInt:databaseID];
         v30 = [v71 objectForKeyedSubscript:v29];
         v31 = [v75 objectForKeyedSubscript:v29];
         v32 = [v74 objectForKeyedSubscript:v29];
@@ -4932,7 +4932,7 @@ LABEL_9:
   *&buf[16] = 0x3032000000;
   v107 = __Block_byref_object_copy__2;
   v108 = __Block_byref_object_dispose__2;
-  v109 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
@@ -4952,7 +4952,7 @@ LABEL_32:
       }
 
       v42 = *(*(&v92 + 1) + 8 * v41);
-      v43 = [v42 intValue];
+      intValue = [v42 intValue];
       v44 = [v72 objectForKeyedSubscript:v42];
       v45 = [v75 objectForKeyedSubscript:v42];
       v46 = [v74 objectForKeyedSubscript:v42];
@@ -4967,18 +4967,18 @@ LABEL_32:
       v82 = v49;
       v50 = v47;
       v83 = v50;
-      v84 = self;
+      selfCopy = self;
       v51 = v45;
-      v91 = a7;
+      sizeCopy = size;
       v85 = v51;
       v88 = &v100;
       v89 = buf;
-      v90 = a6;
+      maskCopy = mask;
       v52 = v44;
       v86 = v52;
       v64 = v64;
       v87 = v64;
-      [(ClientConnection *)conn withDatabaseID:v43 perform:v80];
+      [(ClientConnection *)conn withDatabaseID:intValue perform:v80];
       v53 = *(v101 + 6);
       if (v53)
       {
@@ -5004,7 +5004,7 @@ LABEL_32:
     }
   }
 
-  (v60)[2](v60, *(v101 + 6), v64);
+  (replyCopy)[2](replyCopy, *(v101 + 6), v64);
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
@@ -5204,20 +5204,20 @@ LABEL_35:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_importEvents:(id)a3 data:(id)a4 intoCalendarWithID:(id)a5 inDatabase:(CalDatabase *)a6 optionsMask:(unint64_t)a7 batchSize:(int)a8 outCalendarObjectID:(id *)a9 outError:(int *)a10
+- (id)_importEvents:(id)events data:(id)data intoCalendarWithID:(id)d inDatabase:(CalDatabase *)database optionsMask:(unint64_t)mask batchSize:(int)size outCalendarObjectID:(id *)iD outError:(int *)self0
 {
   v79 = *MEMORY[0x277D85DE8];
-  v74 = a3;
-  v16 = a4;
-  v17 = a5;
-  if (a8)
+  eventsCopy = events;
+  dataCopy = data;
+  dCopy = d;
+  if (size)
   {
     CalDatabaseReset();
   }
 
-  if (v17)
+  if (dCopy)
   {
-    [v17 entityID];
+    [dCopy entityID];
     DefaultCalendarForNewEvents = CalDatabaseCopyCalendarWithUID();
   }
 
@@ -5233,18 +5233,18 @@ LABEL_35:
     {
       v22 = 0;
       v21 = 1001;
-      v23 = v74;
+      v23 = eventsCopy;
       goto LABEL_88;
     }
 
     v20 = CADEntityCopyObjectID();
-    v73 = a7;
+    maskCopy = mask;
     if (v20)
     {
       if ([(ClientConnection *)self->_conn isCalendarRestricted:v19 forAction:1])
       {
         v21 = 1013;
-        if (!a9)
+        if (!iD)
         {
           goto LABEL_17;
         }
@@ -5252,7 +5252,7 @@ LABEL_35:
 
       else
       {
-        if (v16)
+        if (dataCopy)
         {
           v21 = 0;
         }
@@ -5262,19 +5262,19 @@ LABEL_35:
           v21 = 1001;
         }
 
-        if (!a9)
+        if (!iD)
         {
 LABEL_17:
 
           if (v21)
           {
             v22 = 0;
-            v23 = v74;
+            v23 = eventsCopy;
             goto LABEL_87;
           }
 
           v25 = CalCalendarCopyStore();
-          v23 = v74;
+          v23 = eventsCopy;
           v72 = v25;
           if (v25)
           {
@@ -5284,7 +5284,7 @@ LABEL_17:
               if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
               {
                 *buf = 138543362;
-                v78 = v17;
+                v78 = dCopy;
                 _os_log_impl(&dword_22430B000, v26, OS_LOG_TYPE_INFO, "Skipping import into calendar id %{public}@ because its source doesn't allow ICS import.", buf, 0xCu);
               }
 
@@ -5308,7 +5308,7 @@ LABEL_84:
             }
 
             Type = CalStoreGetType();
-            if (v74)
+            if (eventsCopy)
             {
               v30 = _copyExternalIDCallback;
             }
@@ -5321,12 +5321,12 @@ LABEL_84:
             v64 = v30;
             if (!Type)
             {
-              v31 = [(ClientConnection *)self->_conn localAccountInfo];
+              localAccountInfo = [(ClientConnection *)self->_conn localAccountInfo];
 LABEL_38:
-              v71 = v31;
+              v71 = localAccountInfo;
               context = objc_autoreleasePoolPush();
               v75 = 0;
-              v32 = [objc_alloc(MEMORY[0x277D7F108]) initWithData:v16 options:v73 error:&v75];
+              v32 = [objc_alloc(MEMORY[0x277D7F108]) initWithData:dataCopy options:maskCopy error:&v75];
               v70 = v75;
               if (!v32)
               {
@@ -5354,9 +5354,9 @@ LABEL_82:
               }
 
               v67 = v32;
-              v33 = [v32 calendar];
-              v66 = v33;
-              if ((*MEMORY[0x277CF75D0] & v73) != 0)
+              calendar = [v32 calendar];
+              v66 = calendar;
+              if ((*MEMORY[0x277CF75D0] & maskCopy) != 0)
               {
                 v34 = 0;
 LABEL_41:
@@ -5365,24 +5365,24 @@ LABEL_41:
                 goto LABEL_42;
               }
 
-              v45 = [v33 method];
-              v34 = v45;
-              if (v45 > 2)
+              method = [calendar method];
+              v34 = method;
+              if (method > 2)
               {
-                if (v45 == 3)
+                if (method == 3)
                 {
                   v36 = 0;
                   goto LABEL_96;
                 }
 
-                if (v45 == 5)
+                if (method == 5)
                 {
 LABEL_60:
                   v36 = 1;
 LABEL_96:
                   v35 = 1;
 LABEL_42:
-                  if ((*MEMORY[0x277CF7638] & v73) != 0)
+                  if ((*MEMORY[0x277CF7638] & maskCopy) != 0)
                   {
                     v37 = v35;
                   }
@@ -5393,7 +5393,7 @@ LABEL_42:
                   }
 
                   v68 = v37;
-                  v62 = (*MEMORY[0x277CF75C0] & v73) != 0;
+                  v62 = (*MEMORY[0x277CF75C0] & maskCopy) != 0;
                   v65 = [MEMORY[0x277D7F0D0] ICSStringFromMethod:v34];
                   v63 = v36;
                   if (v36 & 1) != 0 || (v35)
@@ -5409,15 +5409,15 @@ LABEL_42:
                           if (!v43)
                           {
 LABEL_66:
-                            v46 = [v66 components];
+                            components = [v66 components];
                             LOBYTE(v60) = 1;
                             updated = CalItemsUpdateFromiCalendarDocumentWithOptionsIncludingPhantomMaster();
-                            v47 = [v66 components];
-                            v48 = (v47 != v46) & v68;
+                            components2 = [v66 components];
+                            v48 = (components2 != components) & v68;
 
                             if (v48 == 1)
                             {
-                              [v66 setComponents:v46 options:2];
+                              [v66 setComponents:components options:2];
                             }
 
                             v25 = v72;
@@ -5471,9 +5471,9 @@ LABEL_75:
                       v42 = v71;
                       if (v68)
                       {
-                        v49 = self;
+                        selfCopy = self;
                         v41 = v67;
-                        v50 = [(CADXPCImplementation *)v49 _handleiTIPMesssageAndCopyEventFromDocument:v67 data:v16 database:a6 store:v25 accountInfo:v71 options:v62];
+                        v50 = [(CADXPCImplementation *)selfCopy _handleiTIPMesssageAndCopyEventFromDocument:v67 data:dataCopy database:database store:v25 accountInfo:v71 options:v62];
                         if (v50)
                         {
                           v51 = v50;
@@ -5495,14 +5495,14 @@ LABEL_75:
                           if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
                           {
                             v56 = v55;
-                            v57 = [v67 calendar];
-                            v58 = [v57 componentKeys];
-                            v59 = [v58 firstObject];
+                            calendar2 = [v67 calendar];
+                            componentKeys = [calendar2 componentKeys];
+                            firstObject = [componentKeys firstObject];
                             *buf = 138412290;
-                            v78 = v59;
+                            v78 = firstObject;
                             _os_log_impl(&dword_22430B000, v56, OS_LOG_TYPE_ERROR, "Didn't find event while handling iTIP message. (%@)", buf, 0xCu);
 
-                            v23 = v74;
+                            v23 = eventsCopy;
                             v41 = v67;
 
                             v42 = v71;
@@ -5556,12 +5556,12 @@ LABEL_65:
 
               else
               {
-                if (v45 < 2)
+                if (method < 2)
                 {
                   goto LABEL_41;
                 }
 
-                if (v45 == 2)
+                if (method == 2)
                 {
                   goto LABEL_60;
                 }
@@ -5575,7 +5575,7 @@ LABEL_65:
 
           else
           {
-            if (v74)
+            if (eventsCopy)
             {
               v28 = _copyExternalIDCallback;
             }
@@ -5588,7 +5588,7 @@ LABEL_65:
             v64 = v28;
           }
 
-          v31 = [objc_alloc(MEMORY[0x277CF74D8]) initWithStore:v25];
+          localAccountInfo = [objc_alloc(MEMORY[0x277CF74D8]) initWithStore:v25];
           goto LABEL_38;
         }
       }
@@ -5597,20 +5597,20 @@ LABEL_65:
     else
     {
       v21 = 1001;
-      if (!a9)
+      if (!iD)
       {
         goto LABEL_17;
       }
     }
 
     v24 = v20;
-    *a9 = v20;
+    *iD = v20;
     goto LABEL_17;
   }
 
   v22 = 0;
   v21 = 1016;
-  v23 = v74;
+  v23 = eventsCopy;
   if (v19)
   {
 LABEL_87:
@@ -5618,9 +5618,9 @@ LABEL_87:
   }
 
 LABEL_88:
-  if (a10)
+  if (error)
   {
-    *a10 = v21;
+    *error = v21;
   }
 
   v53 = *MEMORY[0x277D85DE8];
@@ -5628,12 +5628,12 @@ LABEL_88:
   return v22;
 }
 
-- (void)_handleiTIPMesssageAndCopyEventFromDocument:(id)a3 data:(id)a4 database:(CalDatabase *)a5 store:(void *)a6 accountInfo:(id)a7 options:(unint64_t)a8
+- (void)_handleiTIPMesssageAndCopyEventFromDocument:(id)document data:(id)data database:(CalDatabase *)database store:(void *)store accountInfo:(id)info options:(unint64_t)options
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = [objc_alloc(MEMORY[0x277CF7550]) initWithData:v14 document:v13 filename:0 scheduleChanges:0];
+  documentCopy = document;
+  dataCopy = data;
+  infoCopy = info;
+  v16 = [objc_alloc(MEMORY[0x277CF7550]) initWithData:dataCopy document:documentCopy filename:0 scheduleChanges:0];
   [v16 setIMIPImported:1];
   v17 = [MEMORY[0x277CBEB98] setWithObject:v16];
   v22 = 0;
@@ -5646,7 +5646,7 @@ LABEL_88:
   v21[3] = &unk_27851A5C0;
   v21[4] = &v22;
   v18 = MEMORY[0x22AA4DCD0](v21);
-  [MEMORY[0x277CF7548] processMessages:v17 withDatabase:a5 calStore:a6 accountInfo:v15 handledEventCallback:v18 cancellationToken:0 options:a8];
+  [MEMORY[0x277CF7548] processMessages:v17 withDatabase:database calStore:store accountInfo:infoCopy handledEventCallback:v18 cancellationToken:0 options:options];
   CalDatabaseSave();
   v19 = v23[3];
 
@@ -5669,10 +5669,10 @@ void *__135__CADXPCImplementation_CADDatabaseOperationGroup___handleiTIPMesssage
   return result;
 }
 
-- (void)CADDatabaseExportICSDataForCalendarItems:(id)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)CADDatabaseExportICSDataForCalendarItems:(id)items options:(unint64_t)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  itemsCopy = items;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -5690,9 +5690,9 @@ void *__135__CADXPCImplementation_CADDatabaseOperationGroup___handleiTIPMesssage
   v17 = &unk_27851A5E8;
   v19 = &v22;
   v20 = &v28;
-  v11 = v8;
+  v11 = itemsCopy;
   v18 = v11;
-  v21 = a4;
+  optionsCopy = options;
   if (![(ClientConnection *)conn withDatabaseForObjects:v11 perform:&v14])
   {
     *(v29 + 6) = 1010;
@@ -5711,7 +5711,7 @@ LABEL_5:
 
   v12 = 0;
 LABEL_6:
-  v9[2](v9, v12, v23[5]);
+  replyCopy[2](replyCopy, v12, v23[5]);
   [(ClientConnection *)self->_conn logAccessToObjects:v11, v14, v15, v16, v17];
 
   _Block_object_dispose(&v22, 8);
@@ -5802,10 +5802,10 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseExportICSDataForCalendar:(id)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)CADDatabaseExportICSDataForCalendar:(id)calendar options:(unint64_t)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  calendarCopy = calendar;
+  replyCopy = reply;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -5822,14 +5822,14 @@ LABEL_7:
   v16 = 3221225472;
   v17 = __101__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseExportICSDataForCalendar_options_reply___block_invoke;
   v18 = &unk_27851A610;
-  v12 = v8;
+  v12 = calendarCopy;
   v19 = v12;
   v13 = v10;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v22 = &v31;
   v23 = &v25;
-  v24 = a4;
+  optionsCopy = options;
   if ([(ClientConnection *)conn withDatabaseForObject:v12 perform:&v15])
   {
     v14 = *(v32 + 6);
@@ -5841,7 +5841,7 @@ LABEL_7:
     *(v32 + 6) = 1010;
   }
 
-  v9[2](v9, v14, v26[5]);
+  replyCopy[2](replyCopy, v14, v26[5]);
   [(ClientConnection *)self->_conn logAccessToEntities:v13, v15, v16, v17, v18];
 
   _Block_object_dispose(&v25, 8);
@@ -5885,43 +5885,43 @@ void __101__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseExportICS
   }
 }
 
-- (void)CADDatabaseSetShowsDeclinedEvents:(BOOL)a3 reply:(id)a4
+- (void)CADDatabaseSetShowsDeclinedEvents:(BOOL)events reply:(id)reply
 {
-  v4 = a3;
-  v6 = a4;
-  if (CalShowDeclinedEvents() != v4)
+  eventsCopy = events;
+  replyCopy = reply;
+  if (CalShowDeclinedEvents() != eventsCopy)
   {
     CalSetShowDeclinedEvents();
     [(ClientConnection *)self->_conn withAllDatabasesPerform:&__block_literal_global_8];
   }
 
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)CADDatabaseShowsDeclinedEventsWithReply:(id)a3
+- (void)CADDatabaseShowsDeclinedEventsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v3 = CalShowDeclinedEvents();
-  v4[2](v4, 0, v3);
+  replyCopy[2](replyCopy, 0, v3);
 }
 
-- (void)CADDatabaseSetShowsCompletedReminders:(BOOL)a3 reply:(id)a4
+- (void)CADDatabaseSetShowsCompletedReminders:(BOOL)reminders reply:(id)reply
 {
-  v4 = a3;
-  v6 = a4;
-  if (CalShowCompletedReminders() != v4)
+  remindersCopy = reminders;
+  replyCopy = reply;
+  if (CalShowCompletedReminders() != remindersCopy)
   {
     CalSetShowCompletedReminders();
     [(ClientConnection *)self->_conn withAllDatabasesPerform:&__block_literal_global_35];
   }
 
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)CADDatabaseRebuildOccurrenceCacheWithReply:(id)a3
+- (void)CADDatabaseRebuildOccurrenceCacheWithReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5929,9 +5929,9 @@ void __101__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseExportICS
   v5 = CADLogHandle;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(ClientConnection *)self->_conn identity];
+    identity = [(ClientConnection *)self->_conn identity];
     *buf = 138412290;
-    v15 = v6;
+    v15 = identity;
     _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_DEBUG, "Received request to rebuild the occurrence cache from: [%@]", buf, 0xCu);
   }
 
@@ -5942,7 +5942,7 @@ void __101__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseExportICS
   v9[3] = &unk_27851A520;
   v9[4] = &v10;
   [(ClientConnection *)conn withAllDatabasesPerform:v9];
-  v4[2](v4, *(v11 + 6));
+  replyCopy[2](replyCopy, *(v11 + 6));
   _Block_object_dispose(&v10, 8);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5974,26 +5974,26 @@ void __94__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRebuildOcc
   }
 }
 
-- (void)CADDatabaseCommitDeletes:(id)a3 updatesAndInserts:(id)a4 options:(int64_t)a5 andFetchChangesSinceTimestamp:(id)a6 withReply:(id)a7
+- (void)CADDatabaseCommitDeletes:(id)deletes updatesAndInserts:(id)inserts options:(int64_t)options andFetchChangesSinceTimestamp:(id)timestamp withReply:(id)reply
 {
-  v9 = a5;
+  optionsCopy = options;
   v222 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v135 = a4;
-  v112 = a6;
-  v116 = a7;
+  deletesCopy = deletes;
+  insertsCopy = inserts;
+  timestampCopy = timestamp;
+  replyCopy = reply;
   v190 = 0;
   v191 = &v190;
   v192 = 0x2020000000;
   v193 = 0;
-  v137 = self;
-  v13 = [(CADXPCImplementation *)self _CADDatabaseCanModifyCalendarDatabase];
+  selfCopy = self;
+  _CADDatabaseCanModifyCalendarDatabase = [(CADXPCImplementation *)self _CADDatabaseCanModifyCalendarDatabase];
   v14 = v191;
-  if (v13)
+  if (_CADDatabaseCanModifyCalendarDatabase)
   {
     if (*(v191 + 6) || [(ClientConnection *)self->_conn eventAccessLevel])
     {
-      if ((v9 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         goto LABEL_9;
       }
@@ -6011,12 +6011,12 @@ void __94__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseRebuildOcc
   }
 
   *(v14 + 6) = v15;
-  if (v9)
+  if (optionsCopy)
   {
 LABEL_8:
-    v16 = [(CADXPCImplementation *)self removeDuplicateEvents:v135];
+    v16 = [(CADXPCImplementation *)self removeDuplicateEvents:insertsCopy];
 
-    v135 = v16;
+    insertsCopy = v16;
   }
 
 LABEL_9:
@@ -6030,7 +6030,7 @@ LABEL_9:
   v188 = 0u;
   v185 = 0u;
   v186 = 0u;
-  obj = v12;
+  obj = deletesCopy;
   v17 = [obj countByEnumeratingWithState:&v185 objects:v213 count:16];
   if (v17)
   {
@@ -6048,8 +6048,8 @@ LABEL_9:
         }
 
         v21 = *(*(&v185 + 1) + 8 * i);
-        v22 = [v21 databaseID];
-        v23 = [MEMORY[0x277CCABB0] numberWithInt:v22];
+        databaseID = [v21 databaseID];
+        v23 = [MEMORY[0x277CCABB0] numberWithInt:databaseID];
         v24 = [v141 objectForKeyedSubscript:v23];
         if (!v24)
         {
@@ -6059,7 +6059,7 @@ LABEL_9:
 
         [v24 addObject:v21];
         [v140 addObject:v23];
-        if (v22 != v19 && [v21 entityType] == 6)
+        if (databaseID != v19 && [v21 entityType] == 6)
         {
           if (!v139)
           {
@@ -6085,12 +6085,12 @@ LABEL_9:
     v139 = 0;
   }
 
-  v26 = [(ClientConnection *)v137->_conn eventAccessLevel];
+  eventAccessLevel = [(ClientConnection *)selfCopy->_conn eventAccessLevel];
   v183 = 0u;
   v184 = 0u;
   v181 = 0u;
   v182 = 0u;
-  v27 = v135;
+  v27 = insertsCopy;
   v28 = [v27 countByEnumeratingWithState:&v181 objects:v212 count:16];
   if (!v28)
   {
@@ -6112,21 +6112,21 @@ LABEL_9:
       }
 
       v31 = *(*(&v181 + 1) + 8 * j);
-      v32 = [v31 entityType];
-      if (v32 == 1)
+      entityType = [v31 entityType];
+      if (entityType == 1)
       {
         goto LABEL_33;
       }
 
-      if (v32 != 2)
+      if (entityType != 2)
       {
-        if (v32 != 6)
+        if (entityType != 6)
         {
           continue;
         }
 
 LABEL_33:
-        if (v26 == 1)
+        if (eventAccessLevel == 1)
         {
           v33 = CADLogHandle;
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -6168,16 +6168,16 @@ LABEL_33:
   {
     if (!*(v191 + 6))
     {
-      v37 = v137->_conn;
+      v37 = selfCopy->_conn;
       v38 = v136;
       v205 = 0;
       v206 = &v205;
       v207 = 0x2020000000;
       v208 = 0;
       v110 = [CADOperationGroupUtil defaultCalendarForNewEventsInDelegateSource:0 withConnection:v37 limitedAccess:0];
-      v123 = [(ClientConnection *)v37 effectiveApplicationIdentifier];
+      effectiveApplicationIdentifier = [(ClientConnection *)v37 effectiveApplicationIdentifier];
       v109 = v37;
-      v120 = [(ClientConnection *)v37 effectiveTeamIdentifier];
+      effectiveTeamIdentifier = [(ClientConnection *)v37 effectiveTeamIdentifier];
       v39 = v27;
       v125 = [v39 mutableCopy];
       v204 = 0u;
@@ -6208,7 +6208,7 @@ LABEL_33:
             v46 = [v125 objectForKeyedSubscript:?];
             v131 = [v46 mutableCopy];
 
-            if (v26 == 1)
+            if (eventAccessLevel == 1)
             {
               v47 = [v39 objectForKeyedSubscript:v45];
               v48 = [v47 valueForKey:v128];
@@ -6259,13 +6259,13 @@ LABEL_33:
                     else
                     {
                       v55 = [v49 valueForKey:v114];
-                      v56 = [v55 isVirtual];
+                      isVirtual = [v55 isVirtual];
                       v57 = v110;
-                      if ((v56 & 1) == 0)
+                      if ((isVirtual & 1) == 0)
                       {
-                        v58 = [v55 isTemporary];
+                        isTemporary = [v55 isTemporary];
                         v57 = v55;
-                        if (v58)
+                        if (isTemporary)
                         {
                           v57 = v110;
                         }
@@ -6330,14 +6330,14 @@ LABEL_57:
 LABEL_72:
             }
 
-            if (v123)
+            if (effectiveApplicationIdentifier)
             {
-              [v131 setObject:v123 forKeyedSubscript:v113];
+              [v131 setObject:effectiveApplicationIdentifier forKeyedSubscript:v113];
             }
 
-            if (v120)
+            if (effectiveTeamIdentifier)
             {
-              [v131 setObject:v120 forKeyedSubscript:v111];
+              [v131 setObject:effectiveTeamIdentifier forKeyedSubscript:v111];
             }
 
             [v125 setObject:v131 forKeyedSubscript:v45];
@@ -6409,27 +6409,27 @@ LABEL_87:
       }
 
       v69 = *(*(&v177 + 1) + 8 * v68);
-      if (v26 == 1)
+      if (eventAccessLevel == 1)
       {
-        v70 = [*(*(&v177 + 1) + 8 * v68) entityType];
-        if ((v70 - 7) < 2)
+        entityType2 = [*(*(&v177 + 1) + 8 * v68) entityType];
+        if ((entityType2 - 7) < 2)
         {
-          _recursivelyFindAndReplacePropertyFromRebasedObject(v137->_conn, v69, v64, v129, v63);
-          _recursivelyFindAndReplacePropertyFromRebasedObject(v137->_conn, v69, v64, v126, v63);
+          _recursivelyFindAndReplacePropertyFromRebasedObject(selfCopy->_conn, v69, v64, v129, v63);
+          _recursivelyFindAndReplacePropertyFromRebasedObject(selfCopy->_conn, v69, v64, v126, v63);
           v71 = v124;
 LABEL_99:
-          _recursivelyFindAndReplacePropertyFromRebasedObject(v137->_conn, v69, v64, v71, v63);
+          _recursivelyFindAndReplacePropertyFromRebasedObject(selfCopy->_conn, v69, v64, v71, v63);
         }
 
         else
         {
           v71 = v132;
-          if (v70 == 2)
+          if (entityType2 == 2)
           {
             goto LABEL_99;
           }
 
-          if (v70 == 4)
+          if (entityType2 == 4)
           {
             v71 = v121;
             goto LABEL_99;
@@ -6499,7 +6499,7 @@ LABEL_103:
           {
             v172 = v75;
             v171 = v133;
-            v100 = [(CADXPCImplementation *)v137 findDatabaseForObject:v99 withUpdates:v27 personas:&v172 accounts:&v171 nextTempDBID:&v189];
+            v100 = [(CADXPCImplementation *)selfCopy findDatabaseForObject:v99 withUpdates:v27 personas:&v172 accounts:&v171 nextTempDBID:&v189];
             v101 = v172;
 
             v102 = v171;
@@ -6603,10 +6603,10 @@ LABEL_107:
         v79 = [v118 objectForKeyedSubscript:v78];
         v80 = [v141 objectForKeyedSubscript:v78];
         v81 = [v119 objectForKeyedSubscript:v78];
-        v82 = [v78 intValue];
-        if ((v82 & 0x80000000) != 0)
+        intValue = [v78 intValue];
+        if ((intValue & 0x80000000) != 0)
         {
-          conn = v137->_conn;
+          conn = selfCopy->_conn;
           v148[0] = MEMORY[0x277D85DD0];
           v148[1] = 3221225472;
           v148[2] = __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDeletes_updatesAndInserts_options_andFetchChangesSinceTimestamp_withReply___block_invoke_2;
@@ -6614,7 +6614,7 @@ LABEL_107:
           v149 = v75;
           v150 = v78;
           v151 = v133;
-          v152 = v137;
+          v152 = selfCopy;
           v157 = &v190;
           v153 = v79;
           v154 = v80;
@@ -6626,13 +6626,13 @@ LABEL_107:
         else
         {
           *(v191 + 6) = 1010;
-          v83 = v137->_conn;
+          v83 = selfCopy->_conn;
           v158[0] = MEMORY[0x277D85DD0];
           v158[1] = 3221225472;
           v158[2] = __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDeletes_updatesAndInserts_options_andFetchChangesSinceTimestamp_withReply___block_invoke;
           v158[3] = &unk_27851A658;
           v166 = &v190;
-          v158[4] = v137;
+          v158[4] = selfCopy;
           v159 = v79;
           v160 = v80;
           v161 = v81;
@@ -6640,7 +6640,7 @@ LABEL_107:
           v163 = v139;
           v164 = v78;
           v165 = v134;
-          [(ClientConnection *)v83 withDatabaseID:v82 perform:v158];
+          [(ClientConnection *)v83 withDatabaseID:intValue perform:v158];
         }
 
         v85 = *(v191 + 6) == 0;
@@ -6665,7 +6665,7 @@ LABEL_107:
 
     if (!*(v191 + 6) && ([v75 count] || objc_msgSend(v134, "count")))
     {
-      v86 = v137->_conn;
+      v86 = selfCopy->_conn;
       v87 = *MEMORY[0x277CF7570];
       v143[0] = MEMORY[0x277D85DD0];
       v143[1] = 3221225472;
@@ -6720,7 +6720,7 @@ LABEL_107:
     v142[5] = &v194;
     v142[6] = buf;
     v142[7] = v214;
-    [(CADXPCImplementation *)v137 CADDatabaseGetChangedEntityIDsSinceTimestamp:v112 reply:v142];
+    [(CADXPCImplementation *)selfCopy CADDatabaseGetChangedEntityIDsSinceTimestamp:timestampCopy reply:v142];
     v88 = *(v191 + 6);
     v92 = *(*(&v201 + 1) + 40);
     v91 = *(v195 + 40);
@@ -6728,11 +6728,11 @@ LABEL_107:
     v89 = *(*&v214[8] + 24);
   }
 
-  v116[2](v116, v88, v130, v92, v91, v90, v89 & 1);
-  v93 = [v130 allValues];
-  [v117 addObjectsFromArray:v93];
+  replyCopy[2](replyCopy, v88, v130, v92, v91, v90, v89 & 1);
+  allValues = [v130 allValues];
+  [v117 addObjectsFromArray:allValues];
 
-  [(ClientConnection *)v137->_conn logAccessToObjects:v117];
+  [(ClientConnection *)selfCopy->_conn logAccessToObjects:v117];
   _Block_object_dispose(&v194, 8);
 
   _Block_object_dispose(&v201, 8);
@@ -7176,15 +7176,15 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
   *(*(a1[7] + 8) + 24) = a6;
 }
 
-- (int)findDatabaseForObject:(id)a3 withUpdates:(id)a4 personas:(id *)a5 accounts:(id *)a6 nextTempDBID:(int *)a7
+- (int)findDatabaseForObject:(id)object withUpdates:(id)updates personas:(id *)personas accounts:(id *)accounts nextTempDBID:(int *)d
 {
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  if ([v12 isTemporary])
+  objectCopy = object;
+  updatesCopy = updates;
+  if ([objectCopy isTemporary])
   {
-    v14 = [v13 objectForKeyedSubscript:v12];
-    if ([v12 entityType] == 6)
+    v14 = [updatesCopy objectForKeyedSubscript:objectCopy];
+    if ([objectCopy entityType] == 6)
     {
       v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CF74A8]];
       v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277CF74B0]];
@@ -7210,13 +7210,13 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
         v48 = 0x3032000000;
         v49 = __Block_byref_object_copy__2;
         v50 = __Block_byref_object_dispose__2;
-        v51 = *a5;
+        v51 = *personas;
         v36 = 0;
         v37 = &v36;
         v38 = 0x3032000000;
         v39 = __Block_byref_object_copy__2;
         v40 = __Block_byref_object_dispose__2;
-        v22 = *a6;
+        v22 = *accounts;
         conn = self->_conn;
         v41 = v22;
         v23 = *MEMORY[0x277CF7570];
@@ -7229,12 +7229,12 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
         v31 = v15;
         v33 = buf;
         v34 = &v36;
-        v35 = a7;
+        dCopy = d;
         [(ClientConnection *)conn withDatabaseID:v23 perform:v29];
         v16 = v27;
-        *a6 = v37[5];
-        *a5 = *(v47 + 5);
-        v18 = *(v43 + 6);
+        *accounts = v37[5];
+        *personas = *(v47 + 5);
+        databaseID2 = *(v43 + 6);
 
         _Block_object_dispose(&v36, 8);
         _Block_object_dispose(buf, 8);
@@ -7244,13 +7244,13 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
 
       else
       {
-        v18 = *MEMORY[0x277CF7570];
+        databaseID2 = *MEMORY[0x277CF7570];
       }
     }
 
     else
     {
-      v19 = [(CADXPCImplementation *)self owningObjectForObject:v12 withProperties:v14];
+      v19 = [(CADXPCImplementation *)self owningObjectForObject:objectCopy withProperties:v14];
       v15 = v19;
       if (v19)
       {
@@ -7258,15 +7258,15 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
         {
           if ([v15 isTemporary])
           {
-            v24 = [(CADXPCImplementation *)self findDatabaseForObject:v15 withUpdates:v13 personas:a5 accounts:a6 nextTempDBID:a7];
+            databaseID = [(CADXPCImplementation *)self findDatabaseForObject:v15 withUpdates:updatesCopy personas:personas accounts:accounts nextTempDBID:d];
           }
 
           else
           {
-            v24 = [v15 databaseID];
+            databaseID = [v15 databaseID];
           }
 
-          v18 = v24;
+          databaseID2 = databaseID;
           goto LABEL_20;
         }
 
@@ -7275,12 +7275,12 @@ void __142__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseCommitDel
         {
           v21 = v20;
           *buf = 67109120;
-          *&buf[4] = [v12 entityType];
+          *&buf[4] = [objectCopy entityType];
           _os_log_impl(&dword_22430B000, v21, OS_LOG_TYPE_ERROR, "Unexpected fake entity type %d in -findDatabaseForObject:withUpdates:", buf, 8u);
         }
       }
 
-      v18 = 0x80000000;
+      databaseID2 = 0x80000000;
     }
 
 LABEL_20:
@@ -7288,11 +7288,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v18 = [v12 databaseID];
+  databaseID2 = [objectCopy databaseID];
 LABEL_21:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v18;
+  return databaseID2;
 }
 
 void __116__CADXPCImplementation_CADDatabaseOperationGroup__findDatabaseForObject_withUpdates_personas_accounts_nextTempDBID___block_invoke(uint64_t a1)
@@ -7433,27 +7433,27 @@ LABEL_31:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (int)insert:(id)a3 deletes:(id)a4 updates:(id)a5 insertedObjectIDMap:(id)a6 inDatabase:(CalDatabase *)a7
+- (int)insert:(id)insert deletes:(id)deletes updates:(id)updates insertedObjectIDMap:(id)map inDatabase:(CalDatabase *)database
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(CADXPCImplementation *)self preflightAccessForDeletes:v13 updates:v14 inDatabase:a7];
+  insertCopy = insert;
+  deletesCopy = deletes;
+  updatesCopy = updates;
+  mapCopy = map;
+  v16 = [(CADXPCImplementation *)self preflightAccessForDeletes:deletesCopy updates:updatesCopy inDatabase:database];
   v34 = v16;
   if (!v16)
   {
-    os_unfair_lock_lock(&a7->var9);
-    v17 = [(CADXPCImplementation *)self _insert:v12 delete:v13 update:v14 database:a7 error:&v34];
+    os_unfair_lock_lock(&database->var9);
+    v17 = [(CADXPCImplementation *)self _insert:insertCopy delete:deletesCopy update:updatesCopy database:database error:&v34];
     if (v34)
     {
       if (*MEMORY[0x277CF7110] == 1)
       {
-        os_unfair_lock_assert_owner(&a7->var9);
+        os_unfair_lock_assert_owner(&database->var9);
       }
 
-      os_unfair_lock_unlock(&a7->var9);
+      os_unfair_lock_unlock(&database->var9);
     }
 
     else
@@ -7471,8 +7471,8 @@ LABEL_20:
 
       if (v17)
       {
-        v28 = v13;
-        v29 = v12;
+        v28 = deletesCopy;
+        v29 = insertCopy;
         AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
         v30 = 0u;
         v31 = 0u;
@@ -7497,7 +7497,7 @@ LABEL_20:
               [v19 objectForKeyedSubscript:v24];
 
               v25 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:objc_msgSend(v24 entityID:"entityType") databaseID:{CalEntityGetID(), AuxilliaryDatabaseID}];
-              [v15 setObject:v25 forKeyedSubscript:v24];
+              [mapCopy setObject:v25 forKeyedSubscript:v24];
             }
 
             v21 = [v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -7506,8 +7506,8 @@ LABEL_20:
           while (v21);
         }
 
-        v13 = v28;
-        v12 = v29;
+        deletesCopy = v28;
+        insertCopy = v29;
       }
     }
 
@@ -7525,16 +7525,16 @@ LABEL_21:
   return v16;
 }
 
-- (int)preflightAccessForDeletes:(id)a3 updates:(id)a4 inDatabase:(CalDatabase *)a5
+- (int)preflightAccessForDeletes:(id)deletes updates:(id)updates inDatabase:(CalDatabase *)database
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  deletesCopy = deletes;
+  updatesCopy = updates;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = v8;
+  v10 = deletesCopy;
   v11 = [v10 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v11)
   {
@@ -7549,7 +7549,7 @@ LABEL_21:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(CADXPCImplementation *)self preflightObjectID:*(*(&v48 + 1) + 8 * i) inDatabase:a5];
+        v15 = [(CADXPCImplementation *)self preflightObjectID:*(*(&v48 + 1) + 8 * i) inDatabase:database];
         if (v15)
         {
           v32 = v15;
@@ -7572,14 +7572,14 @@ LABEL_21:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = v9;
+  v16 = updatesCopy;
   v17 = [v16 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v17)
   {
     v18 = v17;
     v19 = *v45;
     v38 = v16;
-    v39 = v9;
+    v39 = updatesCopy;
     v35 = *v45;
     while (2)
     {
@@ -7594,7 +7594,7 @@ LABEL_21:
 
         v37 = v20;
         v21 = *(*(&v44 + 1) + 8 * v20);
-        v22 = [(CADXPCImplementation *)self preflightObjectID:v21 inDatabase:a5];
+        v22 = [(CADXPCImplementation *)self preflightObjectID:v21 inDatabase:database];
         if (v22)
         {
           v32 = v22;
@@ -7629,14 +7629,14 @@ LABEL_21:
 LABEL_31:
 
                 v16 = v38;
-                v9 = v39;
+                updatesCopy = v39;
                 goto LABEL_32;
               }
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v31 = [(CADXPCImplementation *)self preflightObjectID:v30 inDatabase:a5];
+                v31 = [(CADXPCImplementation *)self preflightObjectID:v30 inDatabase:database];
                 if (v31)
                 {
                   v32 = v31;
@@ -7657,7 +7657,7 @@ LABEL_31:
 
         v20 = v37 + 1;
         v16 = v38;
-        v9 = v39;
+        updatesCopy = v39;
         v19 = v35;
       }
 
@@ -7679,16 +7679,16 @@ LABEL_32:
   return v32;
 }
 
-- (BOOL)_verifyClientAllowedToWriteValue:(id)a3 forKey:(id)a4
+- (BOOL)_verifyClientAllowedToWriteValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (_verifyClientAllowedToWriteValue_forKey__onceToken != -1)
   {
     [CADXPCImplementation(CADDatabaseOperationGroup) _verifyClientAllowedToWriteValue:forKey:];
   }
 
-  v8 = [_verifyClientAllowedToWriteValue_forKey__protectedKeys objectForKeyedSubscript:v7];
+  v8 = [_verifyClientAllowedToWriteValue_forKey__protectedKeys objectForKeyedSubscript:keyCopy];
   v9 = v8;
   if (v8)
   {
@@ -7720,18 +7720,18 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup___verifyClientAllowedT
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (int)preflightObjectID:(id)a3 inDatabase:(CalDatabase *)a4
+- (int)preflightObjectID:(id)d inDatabase:(CalDatabase *)database
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 isTemporary])
+  dCopy = d;
+  if ([dCopy isTemporary])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = CADCopyEntityInDatabase(a4, v6);
+    v8 = CADCopyEntityInDatabase(database, dCopy);
     if (v8)
     {
       v9 = v8;
@@ -7741,7 +7741,7 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup___verifyClientAllowedT
         if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
         {
           v14 = 138543362;
-          v15 = v6;
+          v15 = dCopy;
           _os_log_impl(&dword_22430B000, v10, OS_LOG_TYPE_ERROR, "Failed preflight check: access denied to entity %{public}@", &v14, 0xCu);
         }
 
@@ -7762,7 +7762,7 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup___verifyClientAllowedT
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
       {
         v14 = 138543362;
-        v15 = v6;
+        v15 = dCopy;
         _os_log_impl(&dword_22430B000, v11, OS_LOG_TYPE_ERROR, "Failed preflight check: can not find entity %{public}@", &v14, 0xCu);
       }
 
@@ -7774,13 +7774,13 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup___verifyClientAllowedT
   return v7;
 }
 
-- (id)_insert:(id)a3 delete:(id)a4 update:(id)a5 database:(CalDatabase *)a6 error:(int *)a7
+- (id)_insert:(id)_insert delete:(id)delete update:(id)update database:(CalDatabase *)database error:(int *)error
 {
-  v12 = a4;
-  v13 = a5;
-  *a7 = 0;
-  v14 = [(CADXPCImplementation *)self _insertObjectsWithTemporaryObjectIDs:a3 updates:v13 database:a6 error:a7];
-  if (*a7 || (v15 = [(CADXPCImplementation *)self _deleteObjects:v12 database:a6], (*a7 = v15) != 0) || (v16 = [(CADXPCImplementation *)self _updatePropertiesAndRelations:v13 database:a6 insertedObjectMap:v14], (*a7 = v16) != 0))
+  deleteCopy = delete;
+  updateCopy = update;
+  *error = 0;
+  v14 = [(CADXPCImplementation *)self _insertObjectsWithTemporaryObjectIDs:_insert updates:updateCopy database:database error:error];
+  if (*error || (v15 = [(CADXPCImplementation *)self _deleteObjects:deleteCopy database:database], (*error = v15) != 0) || (v16 = [(CADXPCImplementation *)self _updatePropertiesAndRelations:updateCopy database:database insertedObjectMap:v14], (*error = v16) != 0))
   {
     v17 = 0;
   }
@@ -7793,22 +7793,22 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup___verifyClientAllowedT
   return v17;
 }
 
-- (id)_insertObjectsWithTemporaryObjectIDs:(id)a3 updates:(id)a4 database:(CalDatabase *)a5 error:(int *)a6
+- (id)_insertObjectsWithTemporaryObjectIDs:(id)ds updates:(id)updates database:(CalDatabase *)database error:(int *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v36 = a4;
-  v9 = [v8 count];
+  dsCopy = ds;
+  updatesCopy = updates;
+  v9 = [dsCopy count];
   if (v9)
   {
-    v31 = a6;
+    errorCopy = error;
     v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v9];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v32 = v8;
-    v11 = v8;
+    v32 = dsCopy;
+    v11 = dsCopy;
     v12 = [v11 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v12)
     {
@@ -7828,8 +7828,8 @@ LABEL_4:
         }
 
         v16 = *(*(&v38 + 1) + 8 * v15);
-        v17 = [v16 entityType];
-        switch(v17)
+        entityType = [v16 entityType];
+        switch(entityType)
         {
           case 1:
             CalendarForEntityType = _CalDatabaseCreateCalendarForEntityType();
@@ -7902,7 +7902,7 @@ LABEL_4:
             CalendarForEntityType = _CalDatabaseCreateError();
             goto LABEL_38;
           case 28:
-            v22 = [v36 objectForKeyedSubscript:v16];
+            v22 = [updatesCopy objectForKeyedSubscript:v16];
             v23 = [v22 objectForKeyedSubscript:v34];
             v24 = [v22 objectForKeyedSubscript:v33];
             if (([v24 isTemporary] & 1) != 0 || (objc_msgSend(v24, "entityID"), (ImageWithIdentifierInStoreID = _CalDatabaseGetImageWithIdentifierInStoreID()) == 0))
@@ -7928,7 +7928,7 @@ LABEL_4:
             CalendarForEntityType = _CalDatabaseCreateColor();
             goto LABEL_38;
           default:
-            if (v17 == 102)
+            if (entityType == 102)
             {
               CalendarForEntityType = _CalDatabaseCreateNotification();
 LABEL_38:
@@ -7948,9 +7948,9 @@ LABEL_11:
               if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
               {
                 v20 = v19;
-                v21 = [v16 entityType];
+                entityType2 = [v16 entityType];
                 *buf = 67109120;
-                v43 = v21;
+                v43 = entityType2;
                 _os_log_impl(&dword_22430B000, v20, OS_LOG_TYPE_ERROR, "Attempt to insert an invalid entity type (%d)", buf, 8u);
               }
 
@@ -7978,12 +7978,12 @@ LABEL_40:
     v37 = 0;
 LABEL_49:
 
-    if (v31)
+    if (errorCopy)
     {
-      *v31 = v37;
+      *errorCopy = v37;
     }
 
-    v8 = v32;
+    dsCopy = v32;
   }
 
   else
@@ -7996,15 +7996,15 @@ LABEL_49:
   return v10;
 }
 
-- (int)_deleteObjects:(id)a3 database:(CalDatabase *)a4
+- (int)_deleteObjects:(id)objects database:(CalDatabase *)database
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectsCopy = objects;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [objectsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8016,10 +8016,10 @@ LABEL_49:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectsCopy);
         }
 
-        v10 = _CADGetEntity(a4, *(*(&v13 + 1) + 8 * v9));
+        v10 = _CADGetEntity(database, *(*(&v13 + 1) + 8 * v9));
         if (v10)
         {
           _CADDeleteEntity(v10);
@@ -8029,7 +8029,7 @@ LABEL_49:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -8039,16 +8039,16 @@ LABEL_49:
   return 0;
 }
 
-- (int)_updatePropertiesAndRelations:(id)a3 database:(CalDatabase *)a4 insertedObjectMap:(id)a5
+- (int)_updatePropertiesAndRelations:(id)relations database:(CalDatabase *)database insertedObjectMap:(id)map
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v35 = a5;
+  relationsCopy = relations;
+  mapCopy = map;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v7;
+  v8 = relationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v9)
   {
@@ -8067,7 +8067,7 @@ LABEL_4:
     }
 
     v13 = *(*(&v40 + 1) + 8 * v12);
-    v14 = _CADGetExistingOrInsertedEntity(a4, v13, v35);
+    v14 = _CADGetExistingOrInsertedEntity(database, v13, mapCopy);
     if (v14)
     {
       v15 = v14;
@@ -8097,9 +8097,9 @@ LABEL_9:
 
         v22 = *(*(&v36 + 1) + 8 * v21);
         v23 = [v17 objectForKeyedSubscript:{v22, v30}];
-        v24 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v23 == v24)
+        if (v23 == null)
         {
           break;
         }
@@ -8107,13 +8107,13 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = _CADGetExistingOrInsertedEntity(a4, v23, v35);
+          v25 = _CADGetExistingOrInsertedEntity(database, v23, mapCopy);
 LABEL_16:
 
           v23 = v25;
         }
 
-        v26 = _CalEntitySetProperty(a4, v15, v22, v23);
+        v26 = _CalEntitySetProperty(database, v15, v22, v23);
 
         if (v26)
         {
@@ -8135,7 +8135,7 @@ LABEL_20:
           v27 = [v17 objectForKeyedSubscript:v30];
           if (v27)
           {
-            _CalEntitySetProperty(a4, v15, v30, v27);
+            _CalEntitySetProperty(database, v15, v30, v27);
           }
 
           v12 = v33 + 1;
@@ -8175,15 +8175,15 @@ LABEL_27:
   return v26;
 }
 
-- (id)removeDuplicateEvents:(id)a3
+- (id)removeDuplicateEvents:(id)events
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (!v5)
   {
     goto LABEL_17;
@@ -8195,30 +8195,30 @@ LABEL_27:
   v10 = &CADLogHandle;
   *&v6 = 138543618;
   v24 = v6;
-  v25 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v7; ++i)
     {
       if (*v27 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(eventsCopy);
       }
 
       v12 = *(*(&v26 + 1) + 8 * i);
-      if ([v12 entityType] == 2 && (objc_msgSend(v12, "entityID") & 0x80000000) != 0 && -[CADXPCImplementation isDuplicateEvent:updates:](self, "isDuplicateEvent:updates:", v12, v4))
+      if ([v12 entityType] == 2 && (objc_msgSend(v12, "entityID") & 0x80000000) != 0 && -[CADXPCImplementation isDuplicateEvent:updates:](self, "isDuplicateEvent:updates:", v12, eventsCopy))
       {
-        v13 = [(CADXPCImplementation *)self conn];
-        v14 = [v13 identity];
+        conn = [(CADXPCImplementation *)self conn];
+        identity = [conn identity];
 
         v15 = *v10;
         if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG|OS_LOG_TYPE_INFO))
         {
           v16 = v15;
-          [v14 clientName];
+          [identity clientName];
           v17 = v8;
           v19 = v18 = v10;
-          v20 = [v14 pid];
+          v20 = [identity pid];
           *buf = v24;
           v31 = v19;
           v32 = 1024;
@@ -8227,12 +8227,12 @@ LABEL_27:
 
           v10 = v18;
           v8 = v17;
-          self = v25;
+          self = selfCopy;
         }
 
         if (!v8)
         {
-          v8 = [v4 mutableCopy];
+          v8 = [eventsCopy mutableCopy];
         }
 
         v21 = [(CADXPCImplementation *)self updatedOrInsertedObjectIDs:v8 relatedToEvent:v12];
@@ -8240,14 +8240,14 @@ LABEL_27:
       }
     }
 
-    v7 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    v7 = [eventsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
   }
 
   while (v7);
   if (!v8)
   {
 LABEL_17:
-    v8 = v4;
+    v8 = eventsCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -8255,11 +8255,11 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)isDuplicateEvent:(id)a3 updates:(id)a4
+- (BOOL)isDuplicateEvent:(id)event updates:(id)updates
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  eventCopy = event;
+  updatesCopy = updates;
+  v8 = [updatesCopy objectForKeyedSubscript:eventCopy];
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CF7288]];
   v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CF7318]];
   v24 = 0;
@@ -8275,17 +8275,17 @@ LABEL_17:
   v18 = v12;
   v13 = v10;
   v19 = v13;
-  v20 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = eventCopy;
   v21 = v14;
-  v15 = v7;
+  v15 = updatesCopy;
   v22 = v15;
   v23 = &v24;
   [(ClientConnection *)conn withAllDatabasesPerform:v17];
-  LOBYTE(v6) = *(v25 + 24);
+  LOBYTE(eventCopy) = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
-  return v6;
+  return eventCopy;
 }
 
 void __76__CADXPCImplementation_CADDatabaseOperationGroup__isDuplicateEvent_updates___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -8335,11 +8335,11 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldBlockSaveOfEvent:(id)a3 updates:(id)a4 becauseOfExistingEvent:(void *)a5
+- (BOOL)shouldBlockSaveOfEvent:(id)event updates:(id)updates becauseOfExistingEvent:(void *)existingEvent
 {
   v64[6] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  eventCopy = event;
+  updatesCopy = updates;
   v11 = *MEMORY[0x277CF7260];
   v64[0] = *MEMORY[0x277CF72B8];
   v64[1] = v11;
@@ -8350,9 +8350,9 @@ LABEL_11:
   v64[4] = *MEMORY[0x277CF7290];
   v64[5] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:6];
-  v53 = v10;
-  v15 = [v10 objectForKeyedSubscript:v9];
-  if ([(CADXPCImplementation *)self object:a5 matchesProperties:v15 forKeys:v14])
+  v53 = updatesCopy;
+  v15 = [updatesCopy objectForKeyedSubscript:eventCopy];
+  if ([(CADXPCImplementation *)self object:existingEvent matchesProperties:v15 forKeys:v14])
   {
     v49 = v15;
     v16 = CalEventCopyCreatorIdentityString();
@@ -8365,8 +8365,8 @@ LABEL_20:
       v25 = CalCalendarItemCopyRecurrences();
       v5 = [v25 mutableCopy];
 
-      v48 = v9;
-      [(CADXPCImplementation *)self updatedOrInsertedObjectIDs:v53 relatedToEvent:v9];
+      v48 = eventCopy;
+      [(CADXPCImplementation *)self updatedOrInsertedObjectIDs:v53 relatedToEvent:eventCopy];
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
@@ -8428,7 +8428,7 @@ LABEL_20:
 LABEL_47:
         v19 = 0;
         v14 = v47;
-        v9 = v48;
+        eventCopy = v48;
         v21 = v50;
       }
 
@@ -8445,7 +8445,7 @@ LABEL_47:
         {
           v39 = v38;
           v40 = *v55;
-          v9 = v48;
+          eventCopy = v48;
           while (2)
           {
             for (k = 0; k != v39; ++k)
@@ -8480,7 +8480,7 @@ LABEL_47:
 
         else
         {
-          v9 = v48;
+          eventCopy = v48;
         }
 
         if (v36)
@@ -8505,8 +8505,8 @@ LABEL_59:
 
     if (v16 || ([(ClientConnection *)self->_conn effectiveApplicationIdentifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      a5 = [(ClientConnection *)self->_conn effectiveApplicationIdentifier];
-      if (([v16 isEqual:a5] & 1) == 0)
+      existingEvent = [(ClientConnection *)self->_conn effectiveApplicationIdentifier];
+      if (([v16 isEqual:existingEvent] & 1) == 0)
       {
 
         v19 = 0;
@@ -8538,8 +8538,8 @@ LABEL_49:
     if (v50 || ([(ClientConnection *)self->_conn effectiveTeamIdentifier], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v22 = v14;
-      v23 = [(ClientConnection *)self->_conn effectiveTeamIdentifier];
-      v24 = [v50 isEqual:v23] ^ 1;
+      effectiveTeamIdentifier = [(ClientConnection *)self->_conn effectiveTeamIdentifier];
+      v24 = [v50 isEqual:effectiveTeamIdentifier] ^ 1;
 
       v14 = v22;
       if (v50)
@@ -8596,7 +8596,7 @@ LABEL_51:
   return v18;
 }
 
-- (BOOL)recurrenceRule:(void *)a3 matchesProperties:(id)a4
+- (BOOL)recurrenceRule:(void *)rule matchesProperties:(id)properties
 {
   v14[6] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CF7448];
@@ -8609,39 +8609,39 @@ LABEL_51:
   v14[4] = *MEMORY[0x277CF7458];
   v14[5] = v8;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a4;
+  propertiesCopy = properties;
   v11 = [v9 arrayWithObjects:v14 count:6];
-  LOBYTE(a3) = [(CADXPCImplementation *)self object:a3 matchesProperties:v10 forKeys:v11];
+  LOBYTE(rule) = [(CADXPCImplementation *)self object:rule matchesProperties:propertiesCopy forKeys:v11];
 
   v12 = *MEMORY[0x277D85DE8];
-  return a3;
+  return rule;
 }
 
-- (BOOL)location:(void *)a3 matchesProperties:(id)a4
+- (BOOL)location:(void *)location matchesProperties:(id)properties
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CF7388];
   v12[0] = *MEMORY[0x277CF73B8];
   v12[1] = v6;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
+  propertiesCopy = properties;
   v9 = [v7 arrayWithObjects:v12 count:2];
-  LOBYTE(a3) = [(CADXPCImplementation *)self object:a3 matchesProperties:v8 forKeys:v9];
+  LOBYTE(location) = [(CADXPCImplementation *)self object:location matchesProperties:propertiesCopy forKeys:v9];
 
   v10 = *MEMORY[0x277D85DE8];
-  return a3;
+  return location;
 }
 
-- (BOOL)object:(void *)a3 matchesProperties:(id)a4 forKeys:(id)a5
+- (BOOL)object:(void *)object matchesProperties:(id)properties forKeys:(id)keys
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  propertiesCopy = properties;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = a5;
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  keysCopy = keys;
+  v10 = [keysCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -8652,12 +8652,12 @@ LABEL_51:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keysCopy);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
         v24 = 0;
-        v15 = CalEntityCopyPropertyAllowingLimitedAccess(self->_conn, a3, v14, &v24, 1);
+        v15 = CalEntityCopyPropertyAllowingLimitedAccess(self->_conn, object, v14, &v24, 1);
         v16 = v24;
         if (v15)
         {
@@ -8667,7 +8667,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v17 = [v8 objectForKeyedSubscript:v14];
+        v17 = [propertiesCopy objectForKeyedSubscript:v14];
         v18 = convertDefaultValueToNil(v16);
 
         v19 = convertDefaultValueToNil(v17);
@@ -8683,7 +8683,7 @@ LABEL_13:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [keysCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
         continue;
@@ -8700,17 +8700,17 @@ LABEL_14:
   return v21;
 }
 
-- (id)updatedOrInsertedObjectIDs:(id)a3 relatedToEvent:(id)a4
+- (id)updatedOrInsertedObjectIDs:(id)ds relatedToEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  eventCopy = event;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = dsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -8727,7 +8727,7 @@ LABEL_14:
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = [(CADXPCImplementation *)self owningEventForObject:v14 withUpdates:v9, v18];
-        if ([v15 isEqual:v7])
+        if ([v15 isEqual:eventCopy])
         {
           [v8 addObject:v14];
         }
@@ -8744,35 +8744,35 @@ LABEL_14:
   return v8;
 }
 
-- (id)owningEventForObject:(id)a3 withUpdates:(id)a4
+- (id)owningEventForObject:(id)object withUpdates:(id)updates
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 entityType] != 2)
+  objectCopy = object;
+  updatesCopy = updates;
+  if (objectCopy && [objectCopy entityType] != 2)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
-    v10 = [(CADXPCImplementation *)self owningObjectForObject:v6 withProperties:v9];
+    v9 = [updatesCopy objectForKeyedSubscript:objectCopy];
+    v10 = [(CADXPCImplementation *)self owningObjectForObject:objectCopy withProperties:v9];
 
-    v8 = [(CADXPCImplementation *)self owningEventForObject:v10 withUpdates:v7];
+    v8 = [(CADXPCImplementation *)self owningEventForObject:v10 withUpdates:updatesCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = objectCopy;
   }
 
   return v8;
 }
 
-- (id)owningObjectForObject:(id)a3 withProperties:(id)a4
+- (id)owningObjectForObject:(id)object withProperties:(id)properties
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 entityType];
+  objectCopy = object;
+  propertiesCopy = properties;
+  entityType = [objectCopy entityType];
   v8 = 0;
   v9 = MEMORY[0x277CF72C0];
-  switch(v7)
+  switch(entityType)
   {
     case -1:
     case 3:
@@ -8794,7 +8794,7 @@ LABEL_14:
       v9 = MEMORY[0x277CF7200];
       goto LABEL_21;
     case 4:
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF7198]];
+      v12 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CF7198]];
       if (v12)
       {
         goto LABEL_22;
@@ -8816,7 +8816,7 @@ LABEL_14:
       v9 = MEMORY[0x277CF73D8];
       goto LABEL_21;
     case 14:
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF7398]];
+      v12 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CF7398]];
       if (v12)
       {
         goto LABEL_22;
@@ -8831,13 +8831,13 @@ LABEL_14:
       v9 = MEMORY[0x277CF7460];
       goto LABEL_21;
     case 24:
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF72E0]];
+      v12 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CF72E0]];
       if (v12)
       {
         goto LABEL_22;
       }
 
-      v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF72D8]];
+      v12 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x277CF72D8]];
       if (v12)
       {
         goto LABEL_22;
@@ -8852,7 +8852,7 @@ LABEL_14:
       v9 = MEMORY[0x277CF72C8];
       goto LABEL_21;
     default:
-      if ((v7 - 100) < 2)
+      if ((entityType - 100) < 2)
       {
 LABEL_2:
         v10 = CADLogHandle;
@@ -8860,19 +8860,19 @@ LABEL_2:
         {
           v11 = v10;
           v15[0] = 67109120;
-          v15[1] = [v5 entityType];
+          v15[1] = [objectCopy entityType];
           _os_log_impl(&dword_22430B000, v11, OS_LOG_TYPE_ERROR, "Unexpected/unsupported entity type %d in -findDatabaseForObject:withUpdates:", v15, 8u);
         }
 
         v8 = 0;
       }
 
-      else if (v7 == 102)
+      else if (entityType == 102)
       {
 LABEL_8:
         v9 = MEMORY[0x277CF73C0];
 LABEL_21:
-        v12 = [v6 objectForKeyedSubscript:*v9];
+        v12 = [propertiesCopy objectForKeyedSubscript:*v9];
 LABEL_22:
         v8 = v12;
       }
@@ -8885,11 +8885,11 @@ LABEL_23:
   }
 }
 
-- (void)CADDatabaseMigrateSubscribedCalendar:(id)a3 toSource:(id)a4 reply:(id)a5
+- (void)CADDatabaseMigrateSubscribedCalendar:(id)calendar toSource:(id)source reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  calendarCopy = calendar;
+  sourceCopy = source;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -8905,13 +8905,13 @@ LABEL_23:
   v15[1] = 3221225472;
   v15[2] = __103__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMigrateSubscribedCalendar_toSource_reply___block_invoke;
   v15[3] = &unk_278519FD0;
-  v12 = v8;
+  v12 = calendarCopy;
   v16 = v12;
   v19 = &v27;
-  v13 = v9;
+  v13 = sourceCopy;
   v20 = &v21;
   v17 = v13;
-  v18 = self;
+  selfCopy = self;
   if ([(ClientConnection *)conn withDatabaseForObject:v12 perform:v15])
   {
     v14 = *(v28 + 6);
@@ -8923,7 +8923,7 @@ LABEL_23:
     *(v28 + 6) = 1010;
   }
 
-  v10[2](v10, v14, v22[5]);
+  replyCopy[2](replyCopy, v14, v22[5]);
 
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(&v27, 8);
@@ -9121,9 +9121,9 @@ void __103__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMigrateSu
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetDefaultAlarmOffsetForAllDay:(BOOL)a3 reply:(id)a4
+- (void)CADDatabaseGetDefaultAlarmOffsetForAllDay:(BOOL)day reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -9136,7 +9136,7 @@ void __103__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMigrateSu
   v10[1] = 3221225472;
   v10[2] = __99__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetDefaultAlarmOffsetForAllDay_reply___block_invoke;
   v10[3] = &unk_27851A798;
-  v11 = a3;
+  dayCopy = day;
   v10[4] = &v12;
   [(ClientConnection *)conn withDatabaseID:v8 perform:v10];
   v9 = v13[5];
@@ -9147,7 +9147,7 @@ void __103__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseMigrateSu
     v9 = v13[5];
   }
 
-  v6[2](v6, 0, v9);
+  replyCopy[2](replyCopy, 0, v9);
   _Block_object_dispose(&v12, 8);
 }
 
@@ -9169,22 +9169,22 @@ void __99__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetDefault
   *(v3 + 40) = v2;
 }
 
-- (void)CADAnalyticsSendEvent:(id)a3 appendingClientBundleIDToPayload:(id)a4
+- (void)CADAnalyticsSendEvent:(id)event appendingClientBundleIDToPayload:(id)payload
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v11 = [v6 dictionaryWithDictionary:a4];
-  v8 = [(ClientConnection *)self->_conn databaseInitializationOptions];
-  v9 = [v8 remoteClientIdentity];
-  v10 = [v9 untrustedBundleIdentifier];
+  eventCopy = event;
+  v11 = [v6 dictionaryWithDictionary:payload];
+  databaseInitializationOptions = [(ClientConnection *)self->_conn databaseInitializationOptions];
+  remoteClientIdentity = [databaseInitializationOptions remoteClientIdentity];
+  untrustedBundleIdentifier = [remoteClientIdentity untrustedBundleIdentifier];
 
-  [v11 setObject:v10 forKeyedSubscript:@"clientBundleID"];
+  [v11 setObject:untrustedBundleIdentifier forKeyedSubscript:@"clientBundleID"];
   CalAnalyticsSendEvent();
 }
 
-- (void)CADDatabaseStatsBySource:(id)a3
+- (void)CADDatabaseStatsBySource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -9198,7 +9198,7 @@ void __99__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseGetDefault
   v6[3] = &unk_27851A520;
   v6[4] = &v7;
   [(ClientConnection *)conn withAllDatabasesPerform:v6];
-  v4[2](v4, 0, v8[5]);
+  sourceCopy[2](sourceCopy, 0, v8[5]);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -9224,9 +9224,9 @@ void __76__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseStatsBySou
   }
 }
 
-- (void)CADPersonaIdentifierForDatabaseID:(int)a3 reply:(id)a4
+- (void)CADPersonaIdentifierForDatabaseID:(int)d reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -9243,11 +9243,11 @@ void __76__CADXPCImplementation_CADDatabaseOperationGroup__CADDatabaseStatsBySou
   v9[1] = 3221225472;
   v9[2] = __91__CADXPCImplementation_CADDatabaseOperationGroup__CADPersonaIdentifierForDatabaseID_reply___block_invoke;
   v9[3] = &unk_27851A7C0;
-  v10 = a3;
+  dCopy = d;
   v9[4] = &v15;
   v9[5] = &v11;
   [(ClientConnection *)conn withDatabaseID:v8 perform:v9];
-  v6[2](v6, *(v12 + 6), v16[5]);
+  replyCopy[2](replyCopy, *(v12 + 6), v16[5]);
   _Block_object_dispose(&v11, 8);
   _Block_object_dispose(&v15, 8);
 }
@@ -9270,20 +9270,20 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup__CADPersonaIdentifierF
   }
 }
 
-- (void)CADCatchUpIntegrationSyncingIfBehind:(id)a3
+- (void)CADCatchUpIntegrationSyncingIfBehind:(id)behind
 {
   v3 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v4 = [v3 defaultCenter];
-  [v4 postNotificationName:@"CADCatchUpIntegrationSyncRequested" object:0];
+  behindCopy = behind;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:@"CADCatchUpIntegrationSyncRequested" object:0];
 
-  v5[2](v5, 0);
+  behindCopy[2](behindCopy, 0);
 }
 
-- (void)CADDatabaseGetStorageUsage:(id)a3
+- (void)CADDatabaseGetStorageUsage:(id)usage
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usageCopy = usage;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -9309,7 +9309,7 @@ void __91__CADXPCImplementation_CADDatabaseOperationGroup__CADPersonaIdentifierF
   v20[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
-  v4[2](v4, 0, v8);
+  usageCopy[2](usageCopy, 0, v8);
   _Block_object_dispose(&v11, 8);
   _Block_object_dispose(&v15, 8);
 
@@ -9325,7 +9325,7 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
   return result;
 }
 
-- (unint64_t)sizeCalendarDirectoryForDatabase:(CalDatabase *)a3
+- (unint64_t)sizeCalendarDirectoryForDatabase:(CalDatabase *)database
 {
   v4 = CalDatabaseCopyDirectoryPathForDatabase();
   v5 = [(CADXPCImplementation *)self sizeDirectoryAtPath:v4 excludingDirectory:*MEMORY[0x277CF7890]];
@@ -9333,7 +9333,7 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
   return v5;
 }
 
-- (unint64_t)sizeAttachmentsForDatabase:(CalDatabase *)a3
+- (unint64_t)sizeAttachmentsForDatabase:(CalDatabase *)database
 {
   v38 = *MEMORY[0x277D85DE8];
   v5 = CalDatabaseCopyOfAllStores();
@@ -9351,10 +9351,10 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
       {
         CFArrayGetValueAtIndex(v6, v10);
         v11 = CalAttachmentFileCopyAttachmentContainerForStore();
-        v12 = [v11 path];
-        if (v12)
+        path = [v11 path];
+        if (path)
         {
-          [v8 addObject:v12];
+          [v8 addObject:path];
         }
 
         else
@@ -9365,14 +9365,14 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
             log = v13;
             v14 = v6;
             v15 = Count;
-            v16 = a3;
+            databaseCopy = database;
             v17 = v8;
             UID = CalStoreGetUID();
             v19 = CalStoreCopyName();
             *buf = v27;
             v35 = UID;
             v8 = v17;
-            a3 = v16;
+            database = databaseCopy;
             Count = v15;
             v6 = v14;
             v36 = 2112;
@@ -9427,18 +9427,18 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
   return v6;
 }
 
-- (unint64_t)sizeDirectoryAtPath:(id)a3 excludingDirectory:(id)a4
+- (unint64_t)sizeDirectoryAtPath:(id)path excludingDirectory:(id)directory
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  directoryCopy = directory;
   v44 = 0;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v8 fileExistsAtPath:v6 isDirectory:&v44] && v44 == 1)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy isDirectory:&v44] && v44 == 1)
   {
     v9 = MEMORY[0x277CBE868];
     v10 = MEMORY[0x277CBE8E8];
-    if (v7)
+    if (directoryCopy)
     {
       v11 = *MEMORY[0x277CBE868];
       v51[0] = *MEMORY[0x277CBE8E8];
@@ -9460,16 +9460,16 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
     }
 
     v16 = [v12 arrayWithObjects:v13 count:v14];
-    v33 = v6;
-    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
+    v33 = pathCopy;
+    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __107__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__sizeDirectoryAtPath_excludingDirectory___block_invoke;
     v43[3] = &unk_27851A8B0;
     v43[4] = self;
     v31 = v16;
-    v32 = v8;
-    v18 = [v8 enumeratorAtURL:v17 includingPropertiesForKeys:v16 options:0 errorHandler:v43];
+    v32 = defaultManager;
+    v18 = [defaultManager enumeratorAtURL:v17 includingPropertiesForKeys:v16 options:0 errorHandler:v43];
 
     v41 = 0u;
     v42 = 0u;
@@ -9498,7 +9498,7 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
         }
 
         v25 = *(*(&v39 + 1) + 8 * i);
-        if (v7)
+        if (directoryCopy)
         {
           v38 = 0;
           [v25 getResourceValue:&v38 forKey:v23 error:0];
@@ -9507,7 +9507,7 @@ uint64_t __95__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup__
           {
             v37 = 0;
             [v25 getResourceValue:&v37 forKey:v34 error:0];
-            if ([v37 isEqualToString:v7])
+            if ([v37 isEqualToString:directoryCopy])
             {
               [v19 skipDescendants];
               goto LABEL_21;
@@ -9541,8 +9541,8 @@ LABEL_21:
       {
 LABEL_25:
 
-        v8 = v32;
-        v6 = v33;
+        defaultManager = v32;
+        pathCopy = v33;
         goto LABEL_26;
       }
     }
@@ -9577,10 +9577,10 @@ uint64_t __107__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup_
   return 1;
 }
 
-- (void)CADDatabaseGetCalendarItemWithUUID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetCalendarItemWithUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -9596,9 +9596,9 @@ uint64_t __107__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup_
   v14 = 3221225472;
   v15 = __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCalendarItemWithUUID_reply___block_invoke;
   v16 = &unk_27851A8D8;
-  v9 = v6;
+  v9 = dCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   v19 = &v27;
   v20 = &v21;
   [(ClientConnection *)conn withAllDatabasesPerform:&v13];
@@ -9616,7 +9616,7 @@ uint64_t __107__CADXPCImplementation_CADDatabaseStorageManagementOperationGroup_
     v11 = v10[5];
   }
 
-  v7[2](v7, v12, v11);
+  replyCopy[2](replyCopy, v12, v11);
   [(ClientConnection *)self->_conn logAccessToObject:v22[5], v13, v14, v15, v16];
 
   _Block_object_dispose(&v21, 8);
@@ -9648,22 +9648,22 @@ void __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCal
   }
 }
 
-- (void)CADDatabaseGetCalendarItemsWithUUIDs:(id)a3 inCalendars:(id)a4 propertiesToLoad:(id)a5 reply:(id)a6
+- (void)CADDatabaseGetCalendarItemsWithUUIDs:(id)ds inCalendars:(id)calendars propertiesToLoad:(id)load reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[CADFetchedObjectSerializer alloc] initWithConnection:self->_conn defaultPropertiesToLoad:v13];
+  dsCopy = ds;
+  calendarsCopy = calendars;
+  replyCopy = reply;
+  loadCopy = load;
+  v14 = [[CADFetchedObjectSerializer alloc] initWithConnection:self->_conn defaultPropertiesToLoad:loadCopy];
 
-  v15 = [MEMORY[0x277CBEB18] arrayWithArray:v11];
+  v15 = [MEMORY[0x277CBEB18] arrayWithArray:calendarsCopy];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __127__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCalendarItemsWithUUIDs_inCalendars_propertiesToLoad_reply___block_invoke;
   v29[3] = &unk_27851A900;
-  v16 = v10;
+  v16 = dsCopy;
   v30 = v16;
-  v31 = self;
+  selfCopy = self;
   v17 = v14;
   v32 = v17;
   v18 = v15;
@@ -9671,7 +9671,7 @@ void __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCal
   v19 = MEMORY[0x22AA4DCD0](v29);
   v20 = v19;
   conn = self->_conn;
-  if (v11)
+  if (calendarsCopy)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -9679,7 +9679,7 @@ void __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCal
     v25[3] = &unk_27851A950;
     v22 = &v26;
     v26 = v19;
-    [(ClientConnection *)conn withDatabaseForObjects:v11 perform:v25];
+    [(ClientConnection *)conn withDatabaseForObjects:calendarsCopy perform:v25];
   }
 
   else
@@ -9693,8 +9693,8 @@ void __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCal
     [(ClientConnection *)conn withAllDatabasesPerform:v27];
   }
 
-  v23 = [(CADFetchedObjectSerializer *)v17 fetchedObjectWrappers];
-  if ([v23 count])
+  fetchedObjectWrappers = [(CADFetchedObjectSerializer *)v17 fetchedObjectWrappers];
+  if ([fetchedObjectWrappers count])
   {
     v24 = 0;
   }
@@ -9702,11 +9702,11 @@ void __96__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCal
   else
   {
 
-    v23 = 0;
+    fetchedObjectWrappers = 0;
     v24 = 1010;
   }
 
-  v12[2](v12, v24, v23);
+  replyCopy[2](replyCopy, v24, fetchedObjectWrappers);
   [(ClientConnection *)self->_conn logAccessToObjects:v18];
 }
 
@@ -9744,11 +9744,11 @@ void __127__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCa
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)CADDatabaseGetCalendarItemsWithUniqueIdentifier:(id)a3 inCalendar:(id)a4 reply:(id)a5
+- (void)CADDatabaseGetCalendarItemsWithUniqueIdentifier:(id)identifier inCalendar:(id)calendar reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  calendarCopy = calendar;
+  replyCopy = reply;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -9757,9 +9757,9 @@ void __127__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCa
   v29 = 0;
   v11 = objc_opt_new();
   v12 = v11;
-  if (v9)
+  if (calendarCopy)
   {
-    [v11 addObject:v9];
+    [v11 addObject:calendarCopy];
   }
 
   conn = self->_conn;
@@ -9767,10 +9767,10 @@ void __127__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCa
   v18[1] = 3221225472;
   v18[2] = __120__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCalendarItemsWithUniqueIdentifier_inCalendar_reply___block_invoke;
   v18[3] = &unk_27851A978;
-  v14 = v9;
+  v14 = calendarCopy;
   v19 = v14;
-  v20 = self;
-  v15 = v8;
+  selfCopy = self;
+  v15 = identifierCopy;
   v21 = v15;
   v23 = &v24;
   v16 = v12;
@@ -9785,7 +9785,7 @@ void __127__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCa
     v17 = 1010;
   }
 
-  v10[2](v10, v17, v25[5]);
+  replyCopy[2](replyCopy, v17, v25[5]);
   [(ClientConnection *)self->_conn logAccessToObjects:v16];
 
   _Block_object_dispose(&v24, 8);
@@ -9862,11 +9862,11 @@ LABEL_18:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetCalendarItemsWithRecurrenceSet:(id)a3 inCalendar:(id)a4 reply:(id)a5
+- (void)CADDatabaseGetCalendarItemsWithRecurrenceSet:(id)set inCalendar:(id)calendar reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setCopy = set;
+  calendarCopy = calendar;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -9874,18 +9874,18 @@ LABEL_18:
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
   v11 = objc_opt_new();
-  if (v8 && v9)
+  if (setCopy && calendarCopy)
   {
     conn = self->_conn;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __117__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetCalendarItemsWithRecurrenceSet_inCalendar_reply___block_invoke;
     v15[3] = &unk_27851A9A0;
-    v16 = v9;
-    v17 = self;
+    v16 = calendarCopy;
+    selfCopy = self;
     v13 = v11;
     v18 = v13;
-    v19 = v8;
+    v19 = setCopy;
     v20 = &v21;
     if ([(ClientConnection *)conn withDatabaseForObject:v16 perform:v15])
     {
@@ -9897,13 +9897,13 @@ LABEL_18:
       v14 = 1010;
     }
 
-    v10[2](v10, v14, v22[5]);
+    replyCopy[2](replyCopy, v14, v22[5]);
     [(ClientConnection *)self->_conn logAccessToObjects:v13];
   }
 
   else
   {
-    v10[2](v10, 1001, v22[5]);
+    replyCopy[2](replyCopy, 1001, v22[5]);
   }
 
   _Block_object_dispose(&v21, 8);
@@ -9999,12 +9999,12 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetAlarmWithExternalID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetAlarmWithExternalID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (dCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -10021,8 +10021,8 @@ LABEL_20:
     v13 = 3221225472;
     v14 = __95__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseGetAlarmWithExternalID_reply___block_invoke;
     v15 = &unk_27851A9C8;
-    v16 = v6;
-    v17 = self;
+    v16 = dCopy;
+    selfCopy = self;
     v18 = &v24;
     v19 = &v20;
     [(ClientConnection *)conn withAllDatabasesPerform:&v12];
@@ -10057,7 +10057,7 @@ LABEL_20:
 
   else
   {
-    (*(v7 + 2))(v7, 1001, 0);
+    (*(replyCopy + 2))(replyCopy, 1001, 0);
   }
 }
 
@@ -10096,11 +10096,11 @@ void __143__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseFetch
   }
 }
 
-- (void)CADDatabaseExportICSForCalendarItemWithID:(id)a3 occurrenceDate:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (void)CADDatabaseExportICSForCalendarItemWithID:(id)d occurrenceDate:(id)date options:(unint64_t)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  replyCopy = reply;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -10116,14 +10116,14 @@ void __143__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseFetch
   v18 = 3221225472;
   v19 = __126__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseExportICSForCalendarItemWithID_occurrenceDate_options_reply___block_invoke;
   v20 = &unk_27851AA18;
-  v14 = v10;
+  v14 = dCopy;
   v21 = v14;
-  v22 = self;
+  selfCopy = self;
   v24 = &v33;
   v25 = &v27;
-  v15 = v11;
+  v15 = dateCopy;
   v23 = v15;
-  v26 = a5;
+  optionsCopy = options;
   if ([(ClientConnection *)conn withDatabaseForObject:v14 perform:&v17])
   {
     v16 = *(v34 + 6);
@@ -10135,7 +10135,7 @@ void __143__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseFetch
     *(v34 + 6) = 1010;
   }
 
-  v12[2](v12, v16, v28[5]);
+  replyCopy[2](replyCopy, v16, v28[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v14, v17, v18, v19, v20];
 
   _Block_object_dispose(&v27, 8);
@@ -10187,10 +10187,10 @@ void __126__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseExpor
   }
 }
 
-- (void)CADDatabaseGetDeletableCalendars:(id)a3
+- (void)CADDatabaseGetDeletableCalendars:(id)calendars
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  calendarsCopy = calendars;
   v6 = objc_alloc_init(v4);
   conn = self->_conn;
   v9 = MEMORY[0x277D85DD0];
@@ -10201,7 +10201,7 @@ void __126__CADXPCImplementation_CADCalendarItemOperationGroup__CADDatabaseExpor
   v14 = &__block_literal_global_11;
   v8 = v6;
   [(ClientConnection *)conn withAllDatabasesPerform:&v9];
-  v5[2](v5, 0, v8);
+  calendarsCopy[2](calendarsCopy, 0, v8);
 
   [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12];
 }
@@ -10278,10 +10278,10 @@ void __80__CADXPCImplementation_CADSyncOperationGroup__CADDatabaseGetDeletableCa
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetDeletableSources:(id)a3
+- (void)CADDatabaseGetDeletableSources:(id)sources
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  sourcesCopy = sources;
   v6 = objc_alloc_init(v4);
   conn = self->_conn;
   v9 = MEMORY[0x277D85DD0];
@@ -10292,7 +10292,7 @@ void __80__CADXPCImplementation_CADSyncOperationGroup__CADDatabaseGetDeletableCa
   v14 = &__block_literal_global_4;
   v8 = v6;
   [(ClientConnection *)conn withAllDatabasesPerform:&v9];
-  v5[2](v5, 0, v8);
+  sourcesCopy[2](sourcesCopy, 0, v8);
 
   [(ClientConnection *)self->_conn logAccessToObjects:v8, v9, v10, v11, v12];
 }
@@ -10357,9 +10357,9 @@ void __78__CADXPCImplementation_CADSyncOperationGroup__CADDatabaseGetDeletableSo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADMigrateDatabaseIfNeeded:(id)a3
+- (void)CADMigrateDatabaseIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   IsCurrentProcessCalaccessd = CalDatabaseIsCurrentProcessCalaccessd();
   v5 = CADLogHandle;
   v6 = os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEFAULT);
@@ -10409,52 +10409,52 @@ LABEL_9:
 
   v10 = 1022;
 LABEL_14:
-  v3[2](v3, v10);
+  neededCopy[2](neededCopy, v10);
 }
 
-- (void)CADDatabaseSetInitializationOptions:(id)a3 reply:(id)a4
+- (void)CADDatabaseSetInitializationOptions:(id)options reply:(id)reply
 {
-  v8 = a4;
-  if ([(ClientConnection *)self->_conn trySetDatabaseInitializationOptions:a3])
+  replyCopy = reply;
+  if ([(ClientConnection *)self->_conn trySetDatabaseInitializationOptions:options])
   {
     if ([(ClientConnection *)self->_conn eventAccessLevel])
     {
-      v6 = [(ClientConnection *)self->_conn databaseRestoreGeneration];
+      databaseRestoreGeneration = [(ClientConnection *)self->_conn databaseRestoreGeneration];
       v7 = 0;
     }
 
     else
     {
       v7 = 0;
-      v6 = 0xFFFFFFFFLL;
+      databaseRestoreGeneration = 0xFFFFFFFFLL;
     }
   }
 
   else
   {
-    v6 = 0xFFFFFFFFLL;
+    databaseRestoreGeneration = 0xFFFFFFFFLL;
     v7 = 1013;
   }
 
-  v8[2](v8, v7, v6);
+  replyCopy[2](replyCopy, v7, databaseRestoreGeneration);
 }
 
-- (void)CADDatabaseGetAccess:(id)a3
+- (void)CADDatabaseGetAccess:(id)access
 {
   conn = self->_conn;
-  v6 = a3;
-  v9 = [(ClientConnection *)conn permissionValidator];
-  v7 = [v9 eventAuthorization];
-  v8 = [(ClientConnection *)self->_conn permissionValidator];
-  (*(a3 + 2))(v6, 0, v7, [v8 remindersAuthorization]);
+  accessCopy = access;
+  permissionValidator = [(ClientConnection *)conn permissionValidator];
+  eventAuthorization = [permissionValidator eventAuthorization];
+  permissionValidator2 = [(ClientConnection *)self->_conn permissionValidator];
+  (*(access + 2))(accessCopy, 0, eventAuthorization, [permissionValidator2 remindersAuthorization]);
 }
 
 - (id)_hangAssertionForBlockingTCCCall
 {
   v37[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D47008];
-  v4 = [(ClientConnection *)self->_conn identity];
-  v5 = [v3 targetWithPid:{objc_msgSend(v4, "pid")}];
+  identity = [(ClientConnection *)self->_conn identity];
+  v5 = [v3 targetWithPid:{objc_msgSend(identity, "pid")}];
 
   if (v5)
   {
@@ -10483,8 +10483,8 @@ LABEL_14:
           {
             conn = self->_conn;
             v27 = v25;
-            v28 = [(ClientConnection *)conn identity];
-            v29 = [v28 pid];
+            identity2 = [(ClientConnection *)conn identity];
+            v29 = [identity2 pid];
             *buf = 67109378;
             v34 = v29;
             v35 = 2112;
@@ -10503,9 +10503,9 @@ LABEL_14:
         {
           v22 = self->_conn;
           v23 = v21;
-          v24 = [(ClientConnection *)v22 identity];
+          identity3 = [(ClientConnection *)v22 identity];
           *buf = 67109120;
-          v34 = [v24 pid];
+          v34 = [identity3 pid];
           _os_log_impl(&dword_22430B000, v23, OS_LOG_TYPE_ERROR, "Failed to create RBSAssertion for connected client with PID %d", buf, 8u);
         }
 
@@ -10520,9 +10520,9 @@ LABEL_14:
       {
         v18 = self->_conn;
         v19 = v17;
-        v20 = [(ClientConnection *)v18 identity];
+        identity4 = [(ClientConnection *)v18 identity];
         *buf = 67109120;
-        v34 = [v20 pid];
+        v34 = [identity4 pid];
         _os_log_impl(&dword_22430B000, v19, OS_LOG_TYPE_ERROR, "Failed to create RBSAttribute for connected client with PID %d", buf, 8u);
       }
 
@@ -10537,9 +10537,9 @@ LABEL_14:
     {
       v14 = self->_conn;
       v15 = v13;
-      v16 = [(ClientConnection *)v14 identity];
+      identity5 = [(ClientConnection *)v14 identity];
       *buf = 67109120;
-      v34 = [v16 pid];
+      v34 = [identity5 pid];
       _os_log_impl(&dword_22430B000, v15, OS_LOG_TYPE_ERROR, "Failed to create RBSTarget for connected client with PID %d", buf, 8u);
     }
 
@@ -10551,16 +10551,16 @@ LABEL_14:
   return v12;
 }
 
-- (id)_TCCPromptReasonStringForReason:(int64_t)a3
+- (id)_TCCPromptReasonStringForReason:(int64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 >= 8)
+  if (reason >= 8)
   {
     v5 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       v7 = 134217984;
-      v8 = a3;
+      reasonCopy = reason;
       _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_ERROR, "Unexpected CalRequestAccessReason (int value: %ld): we don't support this kind of CalRequestAccessReason.", &v7, 0xCu);
     }
 
@@ -10569,25 +10569,25 @@ LABEL_14:
 
   else
   {
-    result = off_27851B5F0[a3];
+    result = off_27851B5F0[reason];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)CADDatabaseRequestAccessForEntityType:(unint64_t)a3 desiredFullAccess:(BOOL)a4 isBlockingUIThread:(BOOL)a5 reason:(int64_t)a6 reply:(id)a7
+- (void)CADDatabaseRequestAccessForEntityType:(unint64_t)type desiredFullAccess:(BOOL)access isBlockingUIThread:(BOOL)thread reason:(int64_t)reason reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = v12;
-  if (a3)
+  threadCopy = thread;
+  accessCopy = access;
+  replyCopy = reply;
+  v13 = replyCopy;
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
 LABEL_8:
-      (*(v12 + 2))(v12, 1001, 0);
+      (*(replyCopy + 2))(replyCopy, 1001, 0);
       goto LABEL_16;
     }
 
@@ -10605,29 +10605,29 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (v8)
+  if (threadCopy)
   {
-    v16 = [(CADXPCImplementation *)self _hangAssertionForBlockingTCCCall];
+    _hangAssertionForBlockingTCCCall = [(CADXPCImplementation *)self _hangAssertionForBlockingTCCCall];
   }
 
   else
   {
-    v16 = 0;
+    _hangAssertionForBlockingTCCCall = 0;
   }
 
   v17 = objc_opt_new();
-  v18 = [(CADXPCImplementation *)self _TCCPromptReasonStringForReason:a6];
+  v18 = [(CADXPCImplementation *)self _TCCPromptReasonStringForReason:reason];
   [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x277D6C0F8]];
 
-  v19 = [(ClientConnection *)self->_conn identity];
-  v20 = [v19 bundleIdentifier];
+  identity = [(ClientConnection *)self->_conn identity];
+  bundleIdentifier = [identity bundleIdentifier];
 
-  if (v20)
+  if (bundleIdentifier)
   {
-    [v17 setObject:v20 forKeyedSubscript:@"kEventKitTCCUIFullAccessNotificationClientBundleIDKey"];
+    [v17 setObject:bundleIdentifier forKeyedSubscript:@"kEventKitTCCUIFullAccessNotificationClientBundleIDKey"];
   }
 
-  if (v9)
+  if (accessCopy)
   {
     v21 = 2;
   }
@@ -10637,17 +10637,17 @@ LABEL_8:
     v21 = 4;
   }
 
-  v22 = [(ClientConnection *)self->_conn tccPermissionChecker];
+  tccPermissionChecker = [(ClientConnection *)self->_conn tccPermissionChecker];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __137__CADXPCImplementation_CADAccessOperationGroup__CADDatabaseRequestAccessForEntityType_desiredFullAccess_isBlockingUIThread_reason_reply___block_invoke;
   v24[3] = &unk_27851B5D0;
   v27 = v15;
   v24[4] = self;
-  v25 = v16;
+  v25 = _hangAssertionForBlockingTCCCall;
   v26 = v13;
-  v23 = v16;
-  [v22 requestAuthorization:v21 forService:v15 clientDictionary:v17 completion:v24];
+  v23 = _hangAssertionForBlockingTCCCall;
+  [tccPermissionChecker requestAuthorization:v21 forService:v15 clientDictionary:v17 completion:v24];
 
 LABEL_16:
 }
@@ -10688,18 +10688,18 @@ void *__137__CADXPCImplementation_CADAccessOperationGroup__CADDatabaseRequestAcc
   return result;
 }
 
-- (void)CADDatabaseResetWithReply:(id)a3
+- (void)CADDatabaseResetWithReply:(id)reply
 {
   conn = self->_conn;
-  v4 = a3;
+  replyCopy = reply;
   [(ClientConnection *)conn clearCachedAuthorizationStatus];
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)CADDatabaseGetCalendarsWithFaultedProperties:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetCalendarsWithFaultedProperties:(id)properties reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  replyCopy = reply;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -10716,9 +10716,9 @@ void *__137__CADXPCImplementation_CADAccessOperationGroup__CADDatabaseRequestAcc
   v17 = __Block_byref_object_copy__7;
   v18 = __Block_byref_object_dispose__7;
   v19 = 0;
-  v8 = [(ClientConnection *)self->_conn eventAccessLevel];
+  eventAccessLevel = [(ClientConnection *)self->_conn eventAccessLevel];
   conn = self->_conn;
-  if (v8 == 1)
+  if (eventAccessLevel == 1)
   {
     v10 = *MEMORY[0x277CF7570];
     v11 = v13;
@@ -10729,10 +10729,10 @@ void *__137__CADXPCImplementation_CADAccessOperationGroup__CADDatabaseRequestAcc
     v13[6] = &v20;
     v13[7] = &v14;
     v13[4] = self;
-    v13[5] = v6;
+    v13[5] = propertiesCopy;
     v13[8] = &v26;
     [(ClientConnection *)conn withDatabaseID:v10 perform:v13];
-    v7[2](v7, *(v27 + 6), v21[5], v15[5]);
+    replyCopy[2](replyCopy, *(v27 + 6), v21[5], v15[5]);
   }
 
   else
@@ -10745,10 +10745,10 @@ void *__137__CADXPCImplementation_CADAccessOperationGroup__CADDatabaseRequestAcc
     v12[6] = &v20;
     v12[7] = &v14;
     v12[4] = self;
-    v12[5] = v6;
+    v12[5] = propertiesCopy;
     v12[8] = &v26;
     [(ClientConnection *)conn withAllDatabasesPerform:v12];
-    v7[2](v7, *(v27 + 6), v21[5], v15[5]);
+    replyCopy[2](replyCopy, *(v27 + 6), v21[5], v15[5]);
     [(ClientConnection *)self->_conn logAccessToObjects:v21[5]];
   }
 
@@ -10854,10 +10854,10 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADCalendar:(id)a3 hasEvents:(id)a4
+- (void)CADCalendar:(id)calendar hasEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  eventsCopy = events;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -10869,7 +10869,7 @@ LABEL_14:
     v9[2] = __73__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEvents___block_invoke;
     v9[3] = &unk_27851B688;
     v9[4] = &v10;
-    v8 = [(CADXPCImplementation *)self _tryPerformBlockWithCalendarID:v6 forAction:0 withBlock:v9];
+    v8 = [(CADXPCImplementation *)self _tryPerformBlockWithCalendarID:calendarCopy forAction:0 withBlock:v9];
   }
 
   else
@@ -10877,7 +10877,7 @@ LABEL_14:
     v8 = 0;
   }
 
-  v7[2](v7, v8, *(v11 + 24));
+  eventsCopy[2](eventsCopy, v8, *(v11 + 24));
   _Block_object_dispose(&v10, 8);
 }
 
@@ -10888,10 +10888,10 @@ uint64_t __73__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEv
   return result;
 }
 
-- (void)CADCalendar:(id)a3 hasEventsWithRoomAsAttendee:(id)a4
+- (void)CADCalendar:(id)calendar hasEventsWithRoomAsAttendee:(id)attendee
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  attendeeCopy = attendee;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -10901,8 +10901,8 @@ uint64_t __73__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEv
   v9[2] = __91__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEventsWithRoomAsAttendee___block_invoke;
   v9[3] = &unk_27851B688;
   v9[4] = &v10;
-  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithCalendarID:v6 forAction:0 withBlock:v9];
-  v7[2](v7, v8, *(v11 + 24));
+  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithCalendarID:calendarCopy forAction:0 withBlock:v9];
+  attendeeCopy[2](attendeeCopy, v8, *(v11 + 24));
   _Block_object_dispose(&v10, 8);
 }
 
@@ -10913,10 +10913,10 @@ uint64_t __91__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEv
   return result;
 }
 
-- (int)_tryPerformBlockWithCalendarID:(id)a3 forAction:(unint64_t)a4 withBlock:(id)a5
+- (int)_tryPerformBlockWithCalendarID:(id)d forAction:(unint64_t)action withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -10926,12 +10926,12 @@ uint64_t __91__CADXPCImplementation_CADCalendarOperationGroup__CADCalendar_hasEv
   v15[1] = 3221225472;
   v15[2] = __102__CADXPCImplementation_CADCalendarOperationGroup___tryPerformBlockWithCalendarID_forAction_withBlock___block_invoke;
   v15[3] = &unk_27851B6B0;
-  v11 = v8;
+  v11 = dCopy;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v19 = &v21;
-  v20 = a4;
-  v12 = v9;
+  actionCopy = action;
+  v12 = blockCopy;
   v18 = v12;
   if ([(ClientConnection *)conn withDatabaseForObject:v11 perform:v15])
   {
@@ -10978,10 +10978,10 @@ LABEL_5:
   [v7 logAccessToObject:v6];
 }
 
-- (void)CADDatabaseGetSourcesWithFaultedProperties:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetSourcesWithFaultedProperties:(id)properties reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  replyCopy = reply;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -10998,9 +10998,9 @@ LABEL_5:
   v17 = __Block_byref_object_copy__8;
   v18 = __Block_byref_object_dispose__8;
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(ClientConnection *)self->_conn eventAccessLevel];
+  eventAccessLevel = [(ClientConnection *)self->_conn eventAccessLevel];
   conn = self->_conn;
-  if (v8 == 1)
+  if (eventAccessLevel == 1)
   {
     v10 = *MEMORY[0x277CF7570];
     v11 = v13;
@@ -11009,12 +11009,12 @@ LABEL_5:
     v13[2] = __98__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetSourcesWithFaultedProperties_reply___block_invoke;
     v13[3] = &unk_27851B6D8;
     v13[4] = self;
-    v13[5] = v6;
+    v13[5] = propertiesCopy;
     v13[6] = &v26;
     v13[7] = &v20;
     v13[8] = &v14;
     [(ClientConnection *)conn withDatabaseID:v10 perform:v13];
-    v7[2](v7, *(v27 + 6), v21[5], v15[5]);
+    replyCopy[2](replyCopy, *(v27 + 6), v21[5], v15[5]);
   }
 
   else
@@ -11025,12 +11025,12 @@ LABEL_5:
     v12[2] = __98__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetSourcesWithFaultedProperties_reply___block_invoke_2;
     v12[3] = &unk_27851B700;
     v12[4] = self;
-    v12[5] = v6;
+    v12[5] = propertiesCopy;
     v12[6] = &v26;
     v12[7] = &v20;
     v12[8] = &v14;
     [(ClientConnection *)conn withAllDatabasesPerform:v12];
-    v7[2](v7, *(v27 + 6), v21[5], v15[5]);
+    replyCopy[2](replyCopy, *(v27 + 6), v21[5], v15[5]);
     [(ClientConnection *)self->_conn logAccessToObjects:v21[5]];
   }
 
@@ -11099,9 +11099,9 @@ void __98__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetSourcesWi
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetLocalSourceWithEnableIfNeeded:(BOOL)a3 reply:(id)a4
+- (void)CADDatabaseGetLocalSourceWithEnableIfNeeded:(BOOL)needed reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -11118,7 +11118,7 @@ void __98__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetSourcesWi
   v10[1] = 3221225472;
   v10[2] = __99__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetLocalSourceWithEnableIfNeeded_reply___block_invoke;
   v10[3] = &unk_27851B728;
-  v11 = a3;
+  neededCopy = needed;
   v10[4] = self;
   v10[5] = &v12;
   v10[6] = &v18;
@@ -11133,7 +11133,7 @@ void __98__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetSourcesWi
     *(v19 + 6) = 1007;
   }
 
-  v6[2](v6, v9, v13[5]);
+  replyCopy[2](replyCopy, v9, v13[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v13[5]];
   _Block_object_dispose(&v12, 8);
 
@@ -11234,9 +11234,9 @@ LABEL_13:
   }
 }
 
-- (void)CADDatabaseGetLocalBirthdaySource:(id)a3
+- (void)CADDatabaseGetLocalBirthdaySource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -11247,8 +11247,8 @@ LABEL_13:
   v13 = __Block_byref_object_copy__8;
   v14 = __Block_byref_object_dispose__8;
   v15 = 0;
-  v5 = [(ClientConnection *)self->_conn permissionValidator];
-  if ([v5 canModifyBirthdayCalendar])
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  if ([permissionValidator canModifyBirthdayCalendar])
   {
     conn = self->_conn;
     v7 = *MEMORY[0x277CF7570];
@@ -11273,7 +11273,7 @@ LABEL_13:
     *(v17 + 6) = 1013;
   }
 
-  v4[2](v4, v8, v11[5]);
+  sourceCopy[2](sourceCopy, v8, v11[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v11[5]];
 
   _Block_object_dispose(&v10, 8);
@@ -11313,9 +11313,9 @@ void __83__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetLocalBirt
   }
 }
 
-- (id)constraintsData:(id)a3 error:(int *)a4
+- (id)constraintsData:(id)data error:(int *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v12 = 0;
   v13 = &v12;
   v14 = 0x4010000000;
@@ -11329,13 +11329,13 @@ void __83__CADXPCImplementation_CADSourceOperationGroup__CADDatabaseGetLocalBirt
   v11[2] = __71__CADXPCImplementation_CADSourceOperationGroup__constraintsData_error___block_invoke;
   v11[3] = &unk_27851B750;
   v11[4] = &v12;
-  v7 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:v6 forAction:0 withBlock:v11];
+  v7 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:dataCopy forAction:0 withBlock:v11];
   if (v7)
   {
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -12067,18 +12067,18 @@ uint64_t __71__CADXPCImplementation_CADSourceOperationGroup__constraintsData_err
   return result;
 }
 
-- (void)CADObjectGetConstraints:(id)a3 reply:(id)a4
+- (void)CADObjectGetConstraints:(id)constraints reply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  constraintsCopy = constraints;
+  replyCopy = reply;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__8;
   v33 = __Block_byref_object_dispose__8;
   v34 = 0;
-  if ((!v7 || [v7 isVirtual]) && -[ClientConnection eventAccessLevel](self->_conn, "eventAccessLevel") == 1)
+  if ((!constraintsCopy || [constraintsCopy isVirtual]) && -[ClientConnection eventAccessLevel](self->_conn, "eventAccessLevel") == 1)
   {
     v9 = [CADOperationGroupUtil defaultCalendarForNewEventsInDelegateSource:0 withConnection:self->_conn limitedAccess:0];
     conn = self->_conn;
@@ -12096,7 +12096,7 @@ uint64_t __71__CADXPCImplementation_CADSourceOperationGroup__constraintsData_err
 LABEL_13:
       *buf = 0;
       v16 = [(CADXPCImplementation *)self constraintsData:v30[5] error:buf, v20, v21, v22, v23];
-      v8[2](v8, *buf, v16);
+      replyCopy[2](replyCopy, *buf, v16);
 
       goto LABEL_14;
     }
@@ -12108,17 +12108,17 @@ LABEL_13:
       _os_log_impl(&dword_22430B000, v18, OS_LOG_TYPE_ERROR, "Couldn't fetch the default source for getting constraints, with limited access", buf, 2u);
     }
 
-    v8[2](v8, 1010, 0);
+    replyCopy[2](replyCopy, 1010, 0);
   }
 
   else
   {
-    v12 = [v7 entityType];
-    if (v12 != 2)
+    entityType = [constraintsCopy entityType];
+    if (entityType != 2)
     {
-      if (v12 == 6)
+      if (entityType == 6)
       {
-        objc_storeStrong(v30 + 5, a3);
+        objc_storeStrong(v30 + 5, constraints);
       }
 
       else
@@ -12127,7 +12127,7 @@ LABEL_13:
         if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v36 = v7;
+          v36 = constraintsCopy;
           _os_log_impl(&dword_22430B000, v15, OS_LOG_TYPE_ERROR, "Undefined constraints for objectID: %@. We only support source and event to get source constraints right now", buf, 0xCu);
         }
       }
@@ -12140,7 +12140,7 @@ LABEL_13:
     v21 = 3221225472;
     v22 = __79__CADXPCImplementation_CADSourceOperationGroup__CADObjectGetConstraints_reply___block_invoke_6;
     v23 = &unk_27851B778;
-    v14 = v7;
+    v14 = constraintsCopy;
     v24 = v14;
     v25 = &v29;
     [(ClientConnection *)v13 withDatabaseForObject:v14 perform:&v20];
@@ -12158,7 +12158,7 @@ LABEL_13:
       _os_log_impl(&dword_22430B000, v19, OS_LOG_TYPE_ERROR, "Couldn't retrieve actual source for event (%@) to get its constraints", buf, 0xCu);
     }
 
-    v8[2](v8, 1010, 0);
+    replyCopy[2](replyCopy, 1010, 0);
   }
 
 LABEL_14:
@@ -12213,10 +12213,10 @@ void __79__CADXPCImplementation_CADSourceOperationGroup__CADObjectGetConstraints
   }
 }
 
-- (void)CADSourceGetNotificationCollection:(id)a3 reply:(id)a4
+- (void)CADSourceGetNotificationCollection:(id)collection reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -12228,8 +12228,8 @@ void __79__CADXPCImplementation_CADSourceOperationGroup__CADObjectGetConstraints
   v9[2] = __90__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetNotificationCollection_reply___block_invoke;
   v9[3] = &unk_27851B750;
   v9[4] = &v10;
-  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:v6 forAction:0 withBlock:v9];
-  v7[2](v7, v8, v11[5]);
+  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:collectionCopy forAction:0 withBlock:v9];
+  replyCopy[2](replyCopy, v8, v11[5]);
   _Block_object_dispose(&v10, 8);
 }
 
@@ -12262,10 +12262,10 @@ void __90__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetNotificatio
   }
 }
 
-- (void)CADSourceRefresh:(id)a3 isUserRequested:(BOOL)a4 reply:(id)a5
+- (void)CADSourceRefresh:(id)refresh isUserRequested:(BOOL)requested reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  refreshCopy = refresh;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -12284,11 +12284,11 @@ void __90__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetNotificatio
   v13[1] = 3221225472;
   v13[2] = __88__CADXPCImplementation_CADSourceOperationGroup__CADSourceRefresh_isUserRequested_reply___block_invoke;
   v13[3] = &unk_27851B7A0;
-  v14 = a4;
+  requestedCopy = requested;
   v13[4] = v15;
   v13[5] = &v21;
   v13[6] = &v17;
-  v10 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:v8 forAction:0 withBlock:v13];
+  v10 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:refreshCopy forAction:0 withBlock:v13];
   v11 = *(v18 + 6);
   if (v11)
   {
@@ -12300,7 +12300,7 @@ void __90__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetNotificatio
     v12 = v10;
   }
 
-  v9[2](v9, v12, *(v22 + 24));
+  replyCopy[2](replyCopy, v12, *(v22 + 24));
   _Block_object_dispose(v15, 8);
 
   _Block_object_dispose(&v17, 8);
@@ -12361,10 +12361,10 @@ uint64_t __92__CADXPCImplementation_CADSourceOperationGroup__CADCountCalendarIte
   return result;
 }
 
-- (void)CADCountOriginalCalendarItemsBySource:(id)a3 reply:(id)a4
+- (void)CADCountOriginalCalendarItemsBySource:(id)source reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -12374,8 +12374,8 @@ uint64_t __92__CADXPCImplementation_CADSourceOperationGroup__CADCountCalendarIte
   v9[2] = __93__CADXPCImplementation_CADSourceOperationGroup__CADCountOriginalCalendarItemsBySource_reply___block_invoke;
   v9[3] = &unk_27851B750;
   v9[4] = &v10;
-  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:v6 forAction:0 withBlock:v9];
-  v7[2](v7, v8, *(v11 + 6));
+  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:sourceCopy forAction:0 withBlock:v9];
+  replyCopy[2](replyCopy, v8, *(v11 + 6));
   _Block_object_dispose(&v10, 8);
 }
 
@@ -12395,16 +12395,16 @@ uint64_t __107__CADXPCImplementation_CADSourceOperationGroup__CADRemoveCalendarI
   return result;
 }
 
-- (void)CADSourceGetGrantedDelegatesList:(id)a3 reply:(id)a4
+- (void)CADSourceGetGrantedDelegatesList:(id)list reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetGrantedDelegatesList_reply___block_invoke;
   v9[3] = &unk_27851B840;
-  v7 = v6;
+  v7 = replyCopy;
   v10 = v7;
-  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:a3 forAction:0 withBlock:v9];
+  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:list forAction:0 withBlock:v9];
   if (v8)
   {
     (*(v7 + 2))(v7, v8, 0);
@@ -12512,20 +12512,20 @@ void __88__CADXPCImplementation_CADSourceOperationGroup__CADSourceGetGrantedDele
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADSourceUpdateGrantedDelegate:(id)a3 action:(int64_t)a4 sourceID:(id)a5 reply:(id)a6
+- (void)CADSourceUpdateGrantedDelegate:(id)delegate action:(int64_t)action sourceID:(id)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  delegateCopy = delegate;
+  replyCopy = reply;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__CADXPCImplementation_CADSourceOperationGroup__CADSourceUpdateGrantedDelegate_action_sourceID_reply___block_invoke;
   v15[3] = &unk_27851B868;
-  v12 = v11;
-  v16 = v10;
+  v12 = replyCopy;
+  v16 = delegateCopy;
   v17 = v12;
-  v18 = a4;
-  v13 = v10;
-  v14 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:a5 forAction:1 withBlock:v15];
+  actionCopy = action;
+  v13 = delegateCopy;
+  v14 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:d forAction:1 withBlock:v15];
   if (v14)
   {
     (*(v12 + 2))(v12, v14);
@@ -12620,22 +12620,22 @@ void __102__CADXPCImplementation_CADSourceOperationGroup__CADSourceUpdateGranted
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADSourceAddExchangeDelegateWithName:(id)a3 emailAddress:(id)a4 toSourceWithID:(id)a5 reply:(id)a6
+- (void)CADSourceAddExchangeDelegateWithName:(id)name emailAddress:(id)address toSourceWithID:(id)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  addressCopy = address;
+  replyCopy = reply;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __120__CADXPCImplementation_CADSourceOperationGroup__CADSourceAddExchangeDelegateWithName_emailAddress_toSourceWithID_reply___block_invoke;
   v17[3] = &unk_27851B8B8;
-  v13 = v12;
-  v19 = v11;
+  v13 = replyCopy;
+  v19 = addressCopy;
   v20 = v13;
-  v18 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:a5 forAction:1 withBlock:v17];
+  v18 = nameCopy;
+  v14 = addressCopy;
+  v15 = nameCopy;
+  v16 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:d forAction:1 withBlock:v17];
   if (v16)
   {
     (*(v13 + 2))(v13, v16, 0, -1);
@@ -12754,16 +12754,16 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADSourceRemoveExchangeDelegateWithID:(id)a3 reply:(id)a4
+- (void)CADSourceRemoveExchangeDelegateWithID:(id)d reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __93__CADXPCImplementation_CADSourceOperationGroup__CADSourceRemoveExchangeDelegateWithID_reply___block_invoke;
   v9[3] = &unk_27851B840;
-  v7 = v6;
+  v7 = replyCopy;
   v10 = v7;
-  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:a3 forAction:1 withBlock:v9];
+  v8 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:d forAction:1 withBlock:v9];
   if (v8)
   {
     (*(v7 + 2))(v7, v8);
@@ -12823,27 +12823,27 @@ void __93__CADXPCImplementation_CADSourceOperationGroup__CADSourceRemoveExchange
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_tryPerformBlockWithSourceID:(id)a3 forAction:(unint64_t)a4 entityType:(int)a5 withBlock:(id)a6
+- (int)_tryPerformBlockWithSourceID:(id)d forAction:(unint64_t)action entityType:(int)type withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(ClientConnection *)self->_conn eventAccessLevel];
-  v13 = [(ClientConnection *)self->_conn reminderAccessGranted];
-  v15 = a5 == 2 && v12 == 0;
+  dCopy = d;
+  blockCopy = block;
+  eventAccessLevel = [(ClientConnection *)self->_conn eventAccessLevel];
+  reminderAccessGranted = [(ClientConnection *)self->_conn reminderAccessGranted];
+  v15 = type == 2 && eventAccessLevel == 0;
   v16 = 1013;
-  if ((a5 != 3 || v13) && !v15 && (a5 || v12 != 0 && v13))
+  if ((type != 3 || reminderAccessGranted) && !v15 && (type || eventAccessLevel != 0 && reminderAccessGranted))
   {
-    v17 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:v10 forAction:a4 withBlock:v11];
+    v17 = [(CADXPCImplementation *)self _tryPerformBlockWithSourceID:dCopy forAction:action withBlock:blockCopy];
     v16 = v17 & (v17 >> 31);
   }
 
   return v16;
 }
 
-- (int)_tryPerformBlockWithSourceID:(id)a3 forAction:(unint64_t)a4 withBlock:(id)a5
+- (int)_tryPerformBlockWithSourceID:(id)d forAction:(unint64_t)action withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -12853,12 +12853,12 @@ void __93__CADXPCImplementation_CADSourceOperationGroup__CADSourceRemoveExchange
   v15[1] = 3221225472;
   v15[2] = __98__CADXPCImplementation_CADSourceOperationGroup___tryPerformBlockWithSourceID_forAction_withBlock___block_invoke;
   v15[3] = &unk_27851B6B0;
-  v11 = v8;
+  v11 = dCopy;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v19 = &v21;
-  v20 = a4;
-  v12 = v9;
+  actionCopy = action;
+  v12 = blockCopy;
   v18 = v12;
   if ([(ClientConnection *)conn withDatabaseForObject:v11 perform:v15])
   {
@@ -12903,11 +12903,11 @@ LABEL_5:
   CFRelease(v3);
 }
 
-- (void)CADDatabaseGetColorWithProviderIdentifier:(id)a3 externalID:(id)a4 reply:(id)a5
+- (void)CADDatabaseGetColorWithProviderIdentifier:(id)identifier externalID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -12919,13 +12919,13 @@ LABEL_5:
   v14[1] = 3221225472;
   v14[2] = __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWithProviderIdentifier_externalID_reply___block_invoke;
   v14[3] = &unk_27851B910;
-  v12 = v8;
+  v12 = identifierCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = dCopy;
   v16 = v13;
   v17 = &v18;
   [(ClientConnection *)conn withAllDatabasesPerform:v14];
-  v10[2](v10, 0, v19[5]);
+  replyCopy[2](replyCopy, 0, v19[5]);
 
   _Block_object_dispose(&v18, 8);
 }
@@ -12948,41 +12948,41 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
   }
 }
 
-- (void)CADInternalForceStatCollection:(id)a3
+- (void)CADInternalForceStatCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   CADStatsCollect();
-  v3[2](v3, 0);
+  collectionCopy[2](collectionCopy, 0);
 }
 
-- (void)CADInternalSetNextConferenceLinkRenewalToNow:(id)a3
+- (void)CADInternalSetNextConferenceLinkRenewalToNow:(id)now
 {
   v3 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v4 = [v3 date];
-  [CADConferenceUtils setNextConferenceLinkRenewalDate:v4];
+  nowCopy = now;
+  date = [v3 date];
+  [CADConferenceUtils setNextConferenceLinkRenewalDate:date];
 
-  v5[2](v5, 0);
+  nowCopy[2](nowCopy, 0);
 }
 
-- (void)CADInternalRemoveConferenceLinkRenewalDate:(id)a3
+- (void)CADInternalRemoveConferenceLinkRenewalDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   +[CADConferenceUtils removeNextConferenceLinkRenewalDate];
-  v3[2](v3, 0);
+  dateCopy[2](dateCopy, 0);
 }
 
-- (void)CADTestingCloseDatabase:(id)a3
+- (void)CADTestingCloseDatabase:(id)database
 {
   conn = self->_conn;
-  v4 = a3;
+  databaseCopy = database;
   [(ClientConnection *)conn closeDatabases];
-  v4[2](v4, 0);
+  databaseCopy[2](databaseCopy, 0);
 }
 
-- (void)CADPurgeChangeTrackingReply:(id)a3
+- (void)CADPurgeChangeTrackingReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -12998,33 +12998,33 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
   v8[3] = &__block_descriptor_40_e344_v28__0i8__CalDatabase____CFRuntimeBase_QAQ_i__CPRecordStore___CalEventOccurrenceCache___CalScheduledTaskCache__v_v____CFDictionary_____CFDictionary__os_unfair_lock_s_I_II____CFArray_____CFString_____CFArray_ii____CFString_____CFURL_____CFString_____CFString_Qiii____opaque_pthread_mutex_t_q_56c__B____CFArray_B____CFSet_______IIiQBBBBBBB_12_B20l;
   *&v8[4] = Current;
   [(ClientConnection *)conn withAllDatabasesPerform:v8];
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)CADPostSyntheticRouteHypothesis:(id)a3 forEventWithExternalURL:(id)a4 reply:(id)a5
+- (void)CADPostSyntheticRouteHypothesis:(id)hypothesis forEventWithExternalURL:(id)l reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  hypothesisCopy = hypothesis;
+  lCopy = l;
+  replyCopy = reply;
   v10 = +[CADSyntheticRouteHypothesizerCache sharedInstance];
-  v11 = [v10 syntheticRouteHypothesizerForEventExternalURL:v8];
+  v11 = [v10 syntheticRouteHypothesizerForEventExternalURL:lCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 updateHandler];
+    updateHandler = [v11 updateHandler];
     v14 = CADLogHandle;
-    if (v13)
+    if (updateHandler)
     {
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138543362;
-        v19 = v8;
+        v19 = lCopy;
         _os_log_impl(&dword_22430B000, v14, OS_LOG_TYPE_DEFAULT, "Posting synthetic route hypothesis for event with external url = %{public}@", &v18, 0xCu);
       }
 
-      [v12 setCurrentCADRouteHypothesis:v7];
-      v13[2](v13);
+      [v12 setCurrentCADRouteHypothesis:hypothesisCopy];
+      updateHandler[2](updateHandler);
       v15 = 0;
     }
 
@@ -13033,7 +13033,7 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
       {
         v18 = 138543618;
-        v19 = v8;
+        v19 = lCopy;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&dword_22430B000, v14, OS_LOG_TYPE_ERROR, "Could not post synthetic route hypothesis for event with external url because could not get update handler for synthetic route hypothesizer, event external url = %{public}@, synthetic route hypothesizer = %@", &v18, 0x16u);
@@ -13042,7 +13042,7 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
       v15 = 1015;
     }
 
-    v9[2](v9, v15);
+    replyCopy[2](replyCopy, v15);
   }
 
   else
@@ -13051,19 +13051,19 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       v18 = 138543362;
-      v19 = v8;
+      v19 = lCopy;
       _os_log_impl(&dword_22430B000, v16, OS_LOG_TYPE_ERROR, "Could not post synthetic route hypothesis for event with external url because could not get cached synthetic route hypothesizer, event external url = %{public}@", &v18, 0xCu);
     }
 
-    v9[2](v9, 1015);
+    replyCopy[2](replyCopy, 1015);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetDefaultLocalCalendarWithReply:(id)a3
+- (void)CADDatabaseGetDefaultLocalCalendarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -13078,7 +13078,7 @@ void __107__CADXPCImplementation_CADColorOperationGroup__CADDatabaseGetColorWith
   v7[3] = &unk_27851A408;
   v7[4] = &v8;
   [(ClientConnection *)conn withDatabaseID:v6 perform:v7];
-  v4[2](v4, 0, v9[5]);
+  replyCopy[2](replyCopy, 0, v9[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v9[5]];
   _Block_object_dispose(&v8, 8);
 }
@@ -13098,13 +13098,13 @@ void __92__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetDefaultLoc
   }
 }
 
-- (void)CADDatabaseGetDefaultCalendarForNewEventsInDelegateSource:(id)a3 withReply:(id)a4
+- (void)CADDatabaseGetDefaultCalendarForNewEventsInDelegateSource:(id)source withReply:(id)reply
 {
-  v12 = a3;
+  sourceCopy = source;
   conn = self->_conn;
-  v7 = a4;
-  v8 = [(ClientConnection *)conn permissionValidator];
-  v9 = +[CADOperationGroupUtil defaultCalendarForNewEventsInDelegateSource:withConnection:limitedAccess:](CADOperationGroupUtil, "defaultCalendarForNewEventsInDelegateSource:withConnection:limitedAccess:", v12, conn, [v8 eventAccessLevel] == 1);
+  replyCopy = reply;
+  permissionValidator = [(ClientConnection *)conn permissionValidator];
+  v9 = +[CADOperationGroupUtil defaultCalendarForNewEventsInDelegateSource:withConnection:limitedAccess:](CADOperationGroupUtil, "defaultCalendarForNewEventsInDelegateSource:withConnection:limitedAccess:", sourceCopy, conn, [permissionValidator eventAccessLevel] == 1);
 
   if (v9)
   {
@@ -13116,12 +13116,12 @@ void __92__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetDefaultLoc
     v10 = 1010;
   }
 
-  v7[2](v7, v10, v9);
+  replyCopy[2](replyCopy, v10, v9);
 
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  if (v12)
+  if (sourceCopy)
   {
-    [v11 addObject:v12];
+    [v11 addObject:sourceCopy];
   }
 
   if (v9)
@@ -13132,30 +13132,30 @@ void __92__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetDefaultLoc
   [(ClientConnection *)self->_conn logAccessToObjects:v11];
 }
 
-- (void)CADDatabaseSetDefaultCalendarForNewEvents:(id)a3 delegateSource:(id)a4 reply:(id)a5
+- (void)CADDatabaseSetDefaultCalendarForNewEvents:(id)events delegateSource:(id)source reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  sourceCopy = source;
+  replyCopy = reply;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  if (v9)
+  if (sourceCopy)
   {
-    v11 = [v8 databaseID];
-    if (v11 != [v9 databaseID])
+    databaseID = [eventsCopy databaseID];
+    if (databaseID != [sourceCopy databaseID])
     {
       v12 = CADLogHandle;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v8 databaseID];
-        v14 = [v9 databaseID];
+        databaseID2 = [eventsCopy databaseID];
+        databaseID3 = [sourceCopy databaseID];
         *buf = 67109376;
-        v35 = v13;
+        v35 = databaseID2;
         v36 = 1024;
-        v37 = v14;
+        v37 = databaseID3;
         _os_log_impl(&dword_22430B000, v12, OS_LOG_TYPE_ERROR, "Attempted to set a calendar in database %i as the default calendar for a source in database %i", buf, 0xEu);
       }
 
@@ -13168,12 +13168,12 @@ void __92__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetDefaultLoc
   v23 = 3221225472;
   v24 = __111__CADXPCImplementation_CADEventOperationGroup__CADDatabaseSetDefaultCalendarForNewEvents_delegateSource_reply___block_invoke;
   v25 = &unk_27851A6D0;
-  v16 = v8;
+  v16 = eventsCopy;
   v26 = v16;
   v29 = &v30;
-  v17 = v9;
+  v17 = sourceCopy;
   v27 = v17;
-  v28 = self;
+  selfCopy = self;
   if ([(ClientConnection *)conn withDatabaseForObject:v16 perform:&v22])
   {
     v18 = *(v31 + 6);
@@ -13185,10 +13185,10 @@ void __92__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetDefaultLoc
     *(v31 + 6) = 1010;
   }
 
-  v10[2](v10, v18);
+  replyCopy[2](replyCopy, v18);
   v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{2, v22, v23, v24, v25}];
   v20 = v19;
-  if (v9)
+  if (sourceCopy)
   {
     [v19 addObject:v17];
   }
@@ -13284,9 +13284,9 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADDatabaseGetOrCreateSubscribedCalendarsSource:(id)a3
+- (void)CADDatabaseGetOrCreateSubscribedCalendarsSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -13319,7 +13319,7 @@ LABEL_17:
     v8 = [v7 initWithEntityType:6 entityID:*(v11 + 6) databaseID:v6];
   }
 
-  v4[2](v4, *(v15 + 6), v8);
+  sourceCopy[2](sourceCopy, *(v15 + 6), v8);
   [(ClientConnection *)self->_conn logAccessToObject:v8];
 
   _Block_object_dispose(&v10, 8);
@@ -13350,9 +13350,9 @@ void __96__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetOrCreateSu
   }
 }
 
-- (void)CADDatabaseGetOrCreateBirthdayCalendar:(id)a3
+- (void)CADDatabaseGetOrCreateBirthdayCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -13385,7 +13385,7 @@ void __96__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetOrCreateSu
     v8 = [v7 initWithEntityType:1 entityID:*(v11 + 6) databaseID:v6];
   }
 
-  v4[2](v4, *(v15 + 6), v8);
+  calendarCopy[2](calendarCopy, *(v15 + 6), v8);
   [(ClientConnection *)self->_conn logAccessToObject:v8];
 
   _Block_object_dispose(&v10, 8);
@@ -13427,15 +13427,15 @@ void __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetOrCreateBi
   }
 }
 
-- (void)CADDatabaseGetBirthdayCalendarEnabledWithReply:(id)a3
+- (void)CADDatabaseGetBirthdayCalendarEnabledWithReply:(id)reply
 {
-  v4 = a3;
-  (*(a3 + 2))(v4, 0, +[CADBirthdayListener birthdayCalendarEnabled]);
+  replyCopy = reply;
+  (*(reply + 2))(replyCopy, 0, +[CADBirthdayListener birthdayCalendarEnabled]);
 }
 
-- (void)CADDatabaseGetBirthdayCalendarVersionWithReply:(id)a3
+- (void)CADDatabaseGetBirthdayCalendarVersionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -13457,7 +13457,7 @@ void __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetOrCreateBi
     v7 = 1007;
   }
 
-  v4[2](v4, v7, *(v10 + 6));
+  replyCopy[2](replyCopy, v7, *(v10 + 6));
   _Block_object_dispose(&v9, 8);
 }
 
@@ -13468,7 +13468,7 @@ uint64_t __95__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetBirthd
   return result;
 }
 
-- (void)CADDatabaseSetBirthdayCalendarVersion:(int)a3 withReply:(id)a4
+- (void)CADDatabaseSetBirthdayCalendarVersion:(int)version withReply:(id)reply
 {
   conn = self->_conn;
   v5 = *MEMORY[0x277CF7570];
@@ -13476,8 +13476,8 @@ uint64_t __95__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetBirthd
   v8[1] = 3221225472;
   v8[2] = __96__CADXPCImplementation_CADEventOperationGroup__CADDatabaseSetBirthdayCalendarVersion_withReply___block_invoke;
   v8[3] = &__block_descriptor_36_e340_v20__0i8__CalDatabase____CFRuntimeBase_QAQ_i__CPRecordStore___CalEventOccurrenceCache___CalScheduledTaskCache__v_v____CFDictionary_____CFDictionary__os_unfair_lock_s_I_II____CFArray_____CFString_____CFArray_ii____CFString_____CFURL_____CFString_____CFString_Qiii____opaque_pthread_mutex_t_q_56c__B____CFArray_B____CFSet_______IIiQBBBBBBB_12l;
-  v9 = a3;
-  v6 = a4;
+  versionCopy = version;
+  replyCopy = reply;
   if ([(ClientConnection *)conn withDatabaseID:v5 perform:v8])
   {
     v7 = 0;
@@ -13488,12 +13488,12 @@ uint64_t __95__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetBirthd
     v7 = 1007;
   }
 
-  v6[2](v6, v7);
+  replyCopy[2](replyCopy, v7);
 }
 
-- (void)CADDatabaseGetSuggestedEventCalendarWithReply:(id)a3
+- (void)CADDatabaseGetSuggestedEventCalendarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -13504,8 +13504,8 @@ uint64_t __95__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetBirthd
   v15 = __Block_byref_object_copy__14;
   v16 = __Block_byref_object_dispose__14;
   v17 = 0;
-  v5 = [(ClientConnection *)self->_conn permissionValidator];
-  if (![v5 canModifySuggestedEventCalendar] || !+[CADFeatureSet isSuggestionsEnabled](CADFeatureSet, "isSuggestionsEnabled"))
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  if (![permissionValidator canModifySuggestedEventCalendar] || !+[CADFeatureSet isSuggestionsEnabled](CADFeatureSet, "isSuggestionsEnabled"))
   {
     v9 = v19;
     v10 = 1013;
@@ -13532,7 +13532,7 @@ LABEL_6:
 
   v10 = *(v19 + 6);
 LABEL_7:
-  v4[2](v4, v10, v13[5]);
+  replyCopy[2](replyCopy, v10, v13[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v13[5]];
 
   _Block_object_dispose(&v12, 8);
@@ -13564,9 +13564,9 @@ void __94__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSuggestedE
   }
 }
 
-- (void)CADDatabaseGetNaturalLanguageSuggestedEventCalendarWithReply:(id)a3
+- (void)CADDatabaseGetNaturalLanguageSuggestedEventCalendarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -13577,8 +13577,8 @@ void __94__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSuggestedE
   v15 = __Block_byref_object_copy__14;
   v16 = __Block_byref_object_dispose__14;
   v17 = 0;
-  v5 = [(ClientConnection *)self->_conn permissionValidator];
-  if (![v5 canModifySuggestedEventCalendar] || !+[CADFeatureSet isSuggestionsEnabled](CADFeatureSet, "isSuggestionsEnabled"))
+  permissionValidator = [(ClientConnection *)self->_conn permissionValidator];
+  if (![permissionValidator canModifySuggestedEventCalendar] || !+[CADFeatureSet isSuggestionsEnabled](CADFeatureSet, "isSuggestionsEnabled"))
   {
     v9 = v19;
     v10 = 1013;
@@ -13605,7 +13605,7 @@ LABEL_6:
 
   v10 = *(v19 + 6);
 LABEL_7:
-  v4[2](v4, v10, v13[5]);
+  replyCopy[2](replyCopy, v10, v13[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v13[5]];
 
   _Block_object_dispose(&v12, 8);
@@ -13637,9 +13637,9 @@ void __109__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetNaturalLa
   }
 }
 
-- (void)CADDatabaseInsertSuggestedEventCalendarWithReply:(id)a3
+- (void)CADDatabaseInsertSuggestedEventCalendarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -13670,7 +13670,7 @@ LABEL_6:
 
   v9 = *(v12 + 6);
 LABEL_7:
-  v4[2](v4, v9);
+  replyCopy[2](replyCopy, v9);
   _Block_object_dispose(&v11, 8);
 }
 
@@ -13709,9 +13709,9 @@ LABEL_10:
   MEMORY[0x282147E20](a3);
 }
 
-- (void)CADDatabaseRemoveSuggestedEventCalendarWithReply:(id)a3
+- (void)CADDatabaseRemoveSuggestedEventCalendarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -13742,7 +13742,7 @@ LABEL_6:
 
   v9 = *(v12 + 6);
 LABEL_7:
-  v4[2](v4, v9);
+  replyCopy[2](replyCopy, v9);
   _Block_object_dispose(&v11, 8);
 }
 
@@ -13773,10 +13773,10 @@ void __97__CADXPCImplementation_CADEventOperationGroup__CADDatabaseRemoveSuggest
   }
 }
 
-- (void)CADDatabaseGetCreatorTeamIdentifierForEventWithObjectID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetCreatorTeamIdentifierForEventWithObjectID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -13792,12 +13792,12 @@ void __97__CADXPCImplementation_CADEventOperationGroup__CADDatabaseRemoveSuggest
   v10[1] = 3221225472;
   v10[2] = __110__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetCreatorTeamIdentifierForEventWithObjectID_reply___block_invoke;
   v10[3] = &unk_27851A7F0;
-  v9 = v6;
+  v9 = dCopy;
   v11 = v9;
   v12 = &v18;
   v13 = &v14;
   [(ClientConnection *)conn withDatabaseForObject:v9 perform:v10];
-  v7[2](v7, *(v15 + 6), v19[5]);
+  replyCopy[2](replyCopy, *(v15 + 6), v19[5]);
 
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v18, 8);
@@ -13823,15 +13823,15 @@ void __110__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetCreatorTe
   }
 }
 
-- (void)CADDatabaseIsCurrentProcessCreatorOfEventWithObjectID:(id)a3 reply:(id)a4
+- (void)CADDatabaseIsCurrentProcessCreatorOfEventWithObjectID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ClientConnection *)self->_conn databaseInitializationOptions];
-  v9 = [v8 remoteClientIdentity];
-  v10 = [v9 teamIdentifier];
+  dCopy = d;
+  replyCopy = reply;
+  databaseInitializationOptions = [(ClientConnection *)self->_conn databaseInitializationOptions];
+  remoteClientIdentity = [databaseInitializationOptions remoteClientIdentity];
+  teamIdentifier = [remoteClientIdentity teamIdentifier];
 
-  if (v10 || (-[ClientConnection identity](self->_conn, "identity"), v11 = objc_claimAutoreleasedReturnValue(), [v11 teamIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11, v10))
+  if (teamIdentifier || (-[ClientConnection identity](self->_conn, "identity"), v11 = objc_claimAutoreleasedReturnValue(), [v11 teamIdentifier], teamIdentifier = objc_claimAutoreleasedReturnValue(), v11, teamIdentifier))
   {
     v19 = 0;
     v20 = &v19;
@@ -13844,17 +13844,17 @@ void __110__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetCreatorTe
     v14 = 3221225472;
     v15 = __108__CADXPCImplementation_CADEventOperationGroup__CADDatabaseIsCurrentProcessCreatorOfEventWithObjectID_reply___block_invoke;
     v16 = &unk_27851B778;
-    v17 = v6;
+    v17 = dCopy;
     v18 = &v19;
     [(ClientConnection *)conn withDatabaseForObject:v17 perform:&v13];
-    v7[2](v7, [v10 isEqual:{v20[5], v13, v14, v15, v16}]);
+    replyCopy[2](replyCopy, [teamIdentifier isEqual:{v20[5], v13, v14, v15, v16}]);
 
     _Block_object_dispose(&v19, 8);
   }
 
   else
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
@@ -13873,10 +13873,10 @@ void __108__CADXPCImplementation_CADEventOperationGroup__CADDatabaseIsCurrentPro
   }
 }
 
-- (void)CADDatabaseGetEventWithEventIdentifier:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetEventWithEventIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -13894,8 +13894,8 @@ void __108__CADXPCImplementation_CADEventOperationGroup__CADDatabaseIsCurrentPro
     v11[1] = 3221225472;
     v11[2] = __93__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithEventIdentifier_reply___block_invoke;
     v11[3] = &unk_27851A8D8;
-    v12 = v6;
-    v13 = self;
+    v12 = identifierCopy;
+    selfCopy = self;
     v14 = &v16;
     v15 = &v20;
     [(ClientConnection *)conn withAllDatabasesPerform:v11];
@@ -13921,7 +13921,7 @@ void __108__CADXPCImplementation_CADEventOperationGroup__CADDatabaseIsCurrentPro
     v10 = v9;
   }
 
-  v7[2](v7, v10);
+  replyCopy[2](replyCopy, v10);
   [(ClientConnection *)self->_conn logAccessToObject:v21[5]];
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v20, 8);
@@ -13956,10 +13956,10 @@ void __93__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithE
   }
 }
 
-- (void)CADDatabaseGetEventWithUniqueID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetEventWithUniqueID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -13975,9 +13975,9 @@ void __93__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithE
   v14 = 3221225472;
   v15 = __86__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithUniqueID_reply___block_invoke;
   v16 = &unk_27851A8D8;
-  v9 = v6;
+  v9 = dCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   v19 = &v27;
   v20 = &v21;
   [(ClientConnection *)conn withAllDatabasesPerform:&v13];
@@ -13995,7 +13995,7 @@ void __93__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithE
     v11 = v10[5];
   }
 
-  v7[2](v7, v12, v11);
+  replyCopy[2](replyCopy, v12, v11);
   [(ClientConnection *)self->_conn logAccessToObject:v22[5], v13, v14, v15, v16];
 
   _Block_object_dispose(&v21, 8);
@@ -14031,10 +14031,10 @@ void __86__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithU
   }
 }
 
-- (void)CADDatabaseGetAllEventsWithUniqueID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetAllEventsWithUniqueID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -14045,14 +14045,14 @@ void __86__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetEventWithU
   v13 = 3221225472;
   v14 = __90__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAllEventsWithUniqueID_reply___block_invoke;
   v15 = &unk_27851BC10;
-  v10 = v6;
+  v10 = dCopy;
   v19 = &v20;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v11 = v8;
   v18 = v11;
   [(ClientConnection *)conn withAllDatabasesPerform:&v12];
-  v7[2](v7, *(v21 + 6), v11);
+  replyCopy[2](replyCopy, *(v21 + 6), v11);
   [(ClientConnection *)self->_conn logAccessToObjects:v11, v12, v13, v14, v15];
 
   _Block_object_dispose(&v20, 8);
@@ -14092,23 +14092,23 @@ void __90__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAllEventsW
   }
 }
 
-- (void)CADDatabaseCanModifySuggestedEventCalendar:(id)a3
+- (void)CADDatabaseCanModifySuggestedEventCalendar:(id)calendar
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, 0, [(CADXPCImplementation *)self _CADDatabaseCanModifySuggestedEventCalendar]);
+  calendarCopy = calendar;
+  (*(calendar + 2))(calendarCopy, 0, [(CADXPCImplementation *)self _CADDatabaseCanModifySuggestedEventCalendar]);
 }
 
-- (void)CADDatabaseGetSourceIdentifierForEventWithObjectID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetSourceIdentifierForEventWithObjectID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__14;
   v23 = __Block_byref_object_dispose__14;
   v24 = 0;
-  if ([v6 isTemporary])
+  if ([dCopy isTemporary])
   {
     v8 = [CADOperationGroupUtil defaultCalendarForNewEventsInDelegateSource:0 withConnection:self->_conn limitedAccess:0];
     conn = self->_conn;
@@ -14136,7 +14136,7 @@ LABEL_3:
     v13[1] = 3221225472;
     v13[2] = __105__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSourceIdentifierForEventWithObjectID_reply___block_invoke_2;
     v13[3] = &unk_27851B778;
-    v14 = v6;
+    v14 = dCopy;
     v15 = &v19;
     LODWORD(v12) = [(ClientConnection *)v12 withDatabaseForObject:v14 perform:v13];
 
@@ -14157,7 +14157,7 @@ LABEL_3:
   }
 
 LABEL_8:
-  v7[2](v7, v11, v20[5]);
+  replyCopy[2](replyCopy, v11, v20[5]);
   _Block_object_dispose(&v19, 8);
 }
 
@@ -14212,10 +14212,10 @@ void __105__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSourceIde
   }
 }
 
-- (void)CADOccurrenceCacheGetOccurrenceCountsForCalendars:(id)a3 reply:(id)a4
+- (void)CADOccurrenceCacheGetOccurrenceCountsForCalendars:(id)calendars reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  calendarsCopy = calendars;
+  replyCopy = reply;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -14227,9 +14227,9 @@ void __105__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSourceIde
   v11[1] = 3221225472;
   v11[2] = __104__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOccurrenceCountsForCalendars_reply___block_invoke;
   v11[3] = &unk_27851BC38;
-  v9 = v6;
+  v9 = calendarsCopy;
   v12 = v9;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   if ([(ClientConnection *)conn withDatabaseForObjects:v9 perform:v11])
   {
@@ -14241,7 +14241,7 @@ void __105__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetSourceIde
     v10 = 1010;
   }
 
-  v7[2](v7, v10, v16[5]);
+  replyCopy[2](replyCopy, v10, v16[5]);
   [(ClientConnection *)self->_conn logAccessToObjects:v9];
 
   _Block_object_dispose(&v15, 8);
@@ -14281,11 +14281,11 @@ void __104__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   }
 }
 
-- (void)CADOccurrenceCacheGetOccurrencesForCalendars:(id)a3 onDay:(id)a4 reply:(id)a5
+- (void)CADOccurrenceCacheGetOccurrencesForCalendars:(id)calendars onDay:(id)day reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dayCopy = day;
+  replyCopy = reply;
+  calendarsCopy = calendars;
   v11 = objc_opt_new();
   conn = self->_conn;
   v18[0] = MEMORY[0x277D85DD0];
@@ -14293,11 +14293,11 @@ void __104__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   v18[2] = __105__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOccurrencesForCalendars_onDay_reply___block_invoke;
   v18[3] = &unk_278519FF8;
   v18[4] = self;
-  v19 = v8;
+  v19 = dayCopy;
   v20 = v11;
   v13 = v11;
-  v14 = v8;
-  if ([(ClientConnection *)conn withDatabaseForObjects:v10 perform:v18])
+  v14 = dayCopy;
+  if ([(ClientConnection *)conn withDatabaseForObjects:calendarsCopy perform:v18])
   {
     v15 = 0;
   }
@@ -14308,9 +14308,9 @@ void __104__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   }
 
   [v13 sortWithOptions:16 usingComparator:&__block_literal_global_31];
-  v9[2](v9, v15, v13);
+  replyCopy[2](replyCopy, v15, v13);
 
-  v16 = [MEMORY[0x277CBEB18] arrayWithArray:v10];
+  v16 = [MEMORY[0x277CBEB18] arrayWithArray:calendarsCopy];
 
   v17 = [v13 CalMap:&__block_literal_global_29];
   [v16 addObjectsFromArray:v17];
@@ -14404,24 +14404,24 @@ uint64_t __105__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheG
   return v7;
 }
 
-- (void)CADOccurrenceCacheGetOccurrenceDateOfEventWithObjectID:(id)a3 nearestDate:(id)a4 prefersForwardSearch:(BOOL)a5 reply:(id)a6
+- (void)CADOccurrenceCacheGetOccurrenceDateOfEventWithObjectID:(id)d nearestDate:(id)date prefersForwardSearch:(BOOL)search reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  replyCopy = reply;
   conn = self->_conn;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __142__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOccurrenceDateOfEventWithObjectID_nearestDate_prefersForwardSearch_reply___block_invoke;
   v17[3] = &unk_27851BC98;
-  v22 = a5;
-  v18 = v11;
-  v19 = v10;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  searchCopy = search;
+  v18 = dateCopy;
+  v19 = dCopy;
+  selfCopy = self;
+  v21 = replyCopy;
+  v14 = replyCopy;
+  v15 = dCopy;
+  v16 = dateCopy;
   [(ClientConnection *)conn withDatabaseForObject:v15 perform:v17];
 }
 
@@ -14472,11 +14472,11 @@ void __142__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   [*(*(a1 + 48) + 8) logAccessToObject:*(a1 + 40)];
 }
 
-- (void)CADOccurrenceCacheGetOccurrenceCountWithStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)CADOccurrenceCacheGetOccurrenceCountWithStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -14486,13 +14486,13 @@ void __142__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   v14[1] = 3221225472;
   v14[2] = __112__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOccurrenceCountWithStartDate_endDate_reply___block_invoke;
   v14[3] = &unk_27851B910;
-  v12 = v8;
+  v12 = dateCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = endDateCopy;
   v16 = v13;
   v17 = &v18;
   [(ClientConnection *)conn withAllDatabasesPerform:v14];
-  (*(v10 + 2))(v10, 0, *(v19 + 6));
+  (*(replyCopy + 2))(replyCopy, 0, *(v19 + 6));
 
   _Block_object_dispose(&v18, 8);
 }
@@ -14510,22 +14510,22 @@ void __112__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   }
 }
 
-- (void)CADOccurrenceCacheGetOccurrenceCountOrSumDurationWithStartDate:(id)a3 endDate:(id)a4 calendarIDs:(id)a5 sumDuration:(BOOL)a6 reply:(id)a7
+- (void)CADOccurrenceCacheGetOccurrenceCountOrSumDurationWithStartDate:(id)date endDate:(id)endDate calendarIDs:(id)ds sumDuration:(BOOL)duration reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dsCopy = ds;
+  replyCopy = reply;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  [v12 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v17 = v16;
-  [v13 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v19 = v18;
-  v20 = [v14 valueForKey:@"entityID"];
+  v20 = [dsCopy valueForKey:@"entityID"];
   v21 = v20;
   if (v20)
   {
@@ -14538,7 +14538,7 @@ void __112__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
     v30 = v17;
     v31 = v19;
     v28 = v20;
-    v32 = a6;
+    durationCopy = duration;
     [(ClientConnection *)conn withAllDatabasesPerform:v27];
 
     v23 = 0;
@@ -14560,7 +14560,7 @@ void __112__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
     v23 = 1001;
   }
 
-  v15[2](v15, v23, v24);
+  replyCopy[2](replyCopy, v23, v24);
 
   _Block_object_dispose(&v33, 8);
   v26 = *MEMORY[0x277D85DE8];
@@ -14582,13 +14582,13 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   }
 }
 
-- (void)CADOccurrenceCacheDoEvents:(id)a3 haveOccurrencesAfterDate:(id)a4 reply:(id)a5
+- (void)CADOccurrenceCacheDoEvents:(id)events haveOccurrencesAfterDate:(id)date reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v27 = a4;
-  v29 = a5;
-  v8 = [v7 count];
+  eventsCopy = events;
+  dateCopy = date;
+  replyCopy = reply;
+  v8 = [eventsCopy count];
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v8];
   if (v8)
   {
@@ -14596,7 +14596,7 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
     v11 = v8;
     do
     {
-      [v9 addObject:{v10, v27}];
+      [v9 addObject:{v10, dateCopy}];
       --v11;
     }
 
@@ -14608,7 +14608,7 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v7;
+  v13 = eventsCopy;
   v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v14)
   {
@@ -14625,7 +14625,7 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v16, v27}];
+        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v16, dateCopy}];
         [v12 setObject:v20 forKeyedSubscript:v19];
 
         ++v16;
@@ -14642,12 +14642,12 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
   v30[1] = 3221225472;
   v30[2] = __106__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheDoEvents_haveOccurrencesAfterDate_reply___block_invoke;
   v30[3] = &unk_278519FF8;
-  v31 = v27;
+  v31 = dateCopy;
   v32 = v12;
   v22 = v9;
   v33 = v22;
   v23 = v12;
-  v24 = v27;
+  v24 = dateCopy;
   if ([(ClientConnection *)conn withDatabaseForObjects:v13 perform:v30])
   {
     v25 = 0;
@@ -14660,7 +14660,7 @@ void __149__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheGetOc
     v25 = 1010;
   }
 
-  v29[2](v29, v25, v22);
+  replyCopy[2](replyCopy, v25, v22);
   [(ClientConnection *)self->_conn logAccessToObjects:v13];
 
   v26 = *MEMORY[0x277D85DE8];
@@ -14721,13 +14721,13 @@ void __106__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheDoEve
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CADOccurrencesExistInRangeForEvent:(id)a3 startDate:(id)a4 endDate:(id)a5 mustStartInInterval:(BOOL)a6 timezone:(id)a7 reply:(id)a8
+- (void)CADOccurrencesExistInRangeForEvent:(id)event startDate:(id)date endDate:(id)endDate mustStartInInterval:(BOOL)interval timezone:(id)timezone reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  timezoneCopy = timezone;
+  replyCopy = reply;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -14741,17 +14741,17 @@ void __106__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheDoEve
   v25[1] = 3221225472;
   v25[2] = __136__CADXPCImplementation_CADEventOperationGroup__CADOccurrencesExistInRangeForEvent_startDate_endDate_mustStartInInterval_timezone_reply___block_invoke;
   v25[3] = &unk_27851BCE8;
-  v19 = v16;
+  v19 = timezoneCopy;
   v26 = v19;
-  v20 = v14;
+  v20 = dateCopy;
   v27 = v20;
-  v21 = v15;
+  v21 = endDateCopy;
   v28 = v21;
-  v22 = v13;
+  v22 = eventCopy;
   v29 = v22;
   v30 = &v37;
   v31 = &v33;
-  v32 = a6;
+  intervalCopy = interval;
   if ([(ClientConnection *)conn withDatabaseForObject:v22 perform:v25])
   {
     v23 = *(v38 + 6);
@@ -14763,7 +14763,7 @@ void __106__CADXPCImplementation_CADEventOperationGroup__CADOccurrenceCacheDoEve
     *(v38 + 6) = 1010;
   }
 
-  v17[2](v17, v23, *(v34 + 24));
+  replyCopy[2](replyCopy, v23, *(v34 + 24));
   [(ClientConnection *)self->_conn logAccessToObject:v22];
 
   _Block_object_dispose(&v33, 8);
@@ -14793,10 +14793,10 @@ void __136__CADXPCImplementation_CADEventOperationGroup__CADOccurrencesExistInRa
   }
 }
 
-- (void)CADDatabaseShouldPermitOrganizerEmailFromJunkChecks:(id)a3 reply:(id)a4
+- (void)CADDatabaseShouldPermitOrganizerEmailFromJunkChecks:(id)checks reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  checksCopy = checks;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -14807,9 +14807,9 @@ void __136__CADXPCImplementation_CADEventOperationGroup__CADOccurrencesExistInRa
   v9[2] = __106__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPermitOrganizerEmailFromJunkChecks_reply___block_invoke;
   v9[3] = &unk_27851BD10;
   v9[4] = &v10;
-  v9[5] = v6;
+  v9[5] = checksCopy;
   [(ClientConnection *)conn withAllDatabasesPerform:v9];
-  (*(v7 + 2))(v7, 0, *(v11 + 24));
+  (*(replyCopy + 2))(replyCopy, 0, *(v11 + 24));
   _Block_object_dispose(&v10, 8);
 }
 
@@ -14826,10 +14826,10 @@ uint64_t __106__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
   return result;
 }
 
-- (void)CADDatabaseShouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3 reply:(id)a4
+- (void)CADDatabaseShouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  checksCopy = checks;
+  replyCopy = reply;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -14840,9 +14840,9 @@ uint64_t __106__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
   v9[2] = __112__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPermitOrganizerPhoneNumberFromJunkChecks_reply___block_invoke;
   v9[3] = &unk_27851BD10;
   v9[4] = &v10;
-  v9[5] = v6;
+  v9[5] = checksCopy;
   [(ClientConnection *)conn withAllDatabasesPerform:v9];
-  (*(v7 + 2))(v7, 0, *(v11 + 24));
+  (*(replyCopy + 2))(replyCopy, 0, *(v11 + 24));
   _Block_object_dispose(&v10, 8);
 }
 
@@ -14859,10 +14859,10 @@ uint64_t __112__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
   return result;
 }
 
-- (void)CADDatabaseGetAttachmentWithUUID:(id)a3 reply:(id)a4
+- (void)CADDatabaseGetAttachmentWithUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -14873,7 +14873,7 @@ uint64_t __112__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
   v18 = __Block_byref_object_copy__14;
   v19 = __Block_byref_object_dispose__14;
   v20 = 0;
-  if (v6)
+  if (dCopy)
   {
     if ([(ClientConnection *)self->_conn eventAccessLevel])
     {
@@ -14882,8 +14882,8 @@ uint64_t __112__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
       v10[1] = 3221225472;
       v10[2] = __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAttachmentWithUUID_reply___block_invoke;
       v10[3] = &unk_27851A8D8;
-      v11 = v6;
-      v12 = self;
+      v11 = dCopy;
+      selfCopy = self;
       v13 = &v21;
       v14 = &v15;
       [(ClientConnection *)conn withAllDatabasesPerform:v10];
@@ -14908,7 +14908,7 @@ uint64_t __112__CADXPCImplementation_CADEventOperationGroup__CADDatabaseShouldPe
     v24 = 1001;
   }
 
-  v7[2](v7, v9, v16[5]);
+  replyCopy[2](replyCopy, v9, v16[5]);
   [(ClientConnection *)self->_conn logAccessToObject:v16[5]];
   _Block_object_dispose(&v15, 8);
 
@@ -14940,10 +14940,10 @@ void __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAttachment
   }
 }
 
-- (void)CADDatabaseLoadEventsInCalendar:(id)a3 reply:(id)a4
+- (void)CADDatabaseLoadEventsInCalendar:(id)calendar reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -14965,7 +14965,7 @@ void __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAttachment
   v11[1] = 3221225472;
   v11[2] = __86__CADXPCImplementation_CADEventOperationGroup__CADDatabaseLoadEventsInCalendar_reply___block_invoke;
   v11[3] = &unk_27851BD38;
-  v9 = v6;
+  v9 = calendarCopy;
   v12 = v9;
   v13 = &v28;
   v14 = &v16;
@@ -14981,7 +14981,7 @@ void __87__CADXPCImplementation_CADEventOperationGroup__CADDatabaseGetAttachment
     *(v29 + 6) = 1010;
   }
 
-  v7[2](v7, v10, v23[5], v17[5]);
+  replyCopy[2](replyCopy, v10, v23[5], v17[5]);
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v22, 8);
@@ -15011,22 +15011,22 @@ void __86__CADXPCImplementation_CADEventOperationGroup__CADDatabaseLoadEventsInC
   }
 }
 
-- (void)CADDatabaseGetTTLLocationAuthorizationStatus:(id)a3
+- (void)CADDatabaseGetTTLLocationAuthorizationStatus:(id)status
 {
   v3 = MEMORY[0x277CF77F0];
-  v5 = a3;
-  v4 = [v3 ttlLocationStatus];
-  [CADXPCImplementation monitorLocationAuthorizationStatusChanges:v4];
-  v5[2](v5, 0, v4);
+  statusCopy = status;
+  ttlLocationStatus = [v3 ttlLocationStatus];
+  [CADXPCImplementation monitorLocationAuthorizationStatusChanges:ttlLocationStatus];
+  statusCopy[2](statusCopy, 0, ttlLocationStatus);
 }
 
-+ (void)monitorLocationAuthorizationStatusChanges:(unint64_t)a3
++ (void)monitorLocationAuthorizationStatusChanges:(unint64_t)changes
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__CADXPCImplementation_CADEventOperationGroup__monitorLocationAuthorizationStatusChanges___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = changes;
   if (monitorLocationAuthorizationStatusChanges__onceToken != -1)
   {
     dispatch_once(&monitorLocationAuthorizationStatusChanges__onceToken, block);

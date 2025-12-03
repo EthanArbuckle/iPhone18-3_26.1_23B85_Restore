@@ -1,7 +1,7 @@
 @interface ATXSleepEvent
-- (ATXSleepEvent)initWithSleepStart:(id)a3 wakeUp:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSleepEvent:(id)a3;
+- (ATXSleepEvent)initWithSleepStart:(id)start wakeUp:(id)up;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSleepEvent:(id)event;
 - (double)duration;
 - (id)description;
 - (unint64_t)hash;
@@ -9,18 +9,18 @@
 
 @implementation ATXSleepEvent
 
-- (ATXSleepEvent)initWithSleepStart:(id)a3 wakeUp:(id)a4
+- (ATXSleepEvent)initWithSleepStart:(id)start wakeUp:(id)up
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  upCopy = up;
   v12.receiver = self;
   v12.super_class = ATXSleepEvent;
   v9 = [(ATXSleepEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sleepStartTime, a3);
-    objc_storeStrong(&v10->_wakeUpTime, a4);
+    objc_storeStrong(&v9->_sleepStartTime, start);
+    objc_storeStrong(&v10->_wakeUpTime, up);
   }
 
   return v10;
@@ -28,37 +28,37 @@
 
 - (double)duration
 {
-  v3 = [(ATXSleepEvent *)self wakeUpTime];
-  v4 = [(ATXSleepEvent *)self sleepStartTime];
-  [v3 timeIntervalSinceDate:v4];
+  wakeUpTime = [(ATXSleepEvent *)self wakeUpTime];
+  sleepStartTime = [(ATXSleepEvent *)self sleepStartTime];
+  [wakeUpTime timeIntervalSinceDate:sleepStartTime];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSleepEvent *)self isEqualToATXSleepEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSleepEvent *)self isEqualToATXSleepEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSleepEvent:(id)a3
+- (BOOL)isEqualToATXSleepEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_sleepStartTime;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == eventCopy[1])
   {
   }
 
@@ -75,7 +75,7 @@
 
   v9 = self->_wakeUpTime;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == eventCopy[2])
   {
     v8 = 1;
   }
@@ -91,11 +91,11 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXSleepEvent *)self sleepStartTime];
-  v4 = [v3 hash];
+  sleepStartTime = [(ATXSleepEvent *)self sleepStartTime];
+  v4 = [sleepStartTime hash];
 
-  v5 = [(ATXSleepEvent *)self wakeUpTime];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  wakeUpTime = [(ATXSleepEvent *)self wakeUpTime];
+  v6 = [wakeUpTime hash] - v4 + 32 * v4;
 
   return v6;
 }
@@ -103,10 +103,10 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXSleepEvent *)self sleepStartTime];
-  v5 = [(ATXSleepEvent *)self wakeUpTime];
+  sleepStartTime = [(ATXSleepEvent *)self sleepStartTime];
+  wakeUpTime = [(ATXSleepEvent *)self wakeUpTime];
   [(ATXSleepEvent *)self duration];
-  v7 = [v3 stringWithFormat:@"<ATXSleepEvent %@ -> %@ (%.1f hours)>", v4, v5, v6 / 3600.0];
+  v7 = [v3 stringWithFormat:@"<ATXSleepEvent %@ -> %@ (%.1f hours)>", sleepStartTime, wakeUpTime, v6 / 3600.0];
 
   return v7;
 }

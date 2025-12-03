@@ -1,35 +1,35 @@
 @interface _UIVisualEffectTintLayerConfig
-+ (id)layerWithTintColor:(id)a3 filterType:(id)a4;
++ (id)layerWithTintColor:(id)color filterType:(id)type;
 - (id)description;
-- (void)configureLayerView:(id)a3;
-- (void)deconfigureLayerView:(id)a3;
+- (void)configureLayerView:(id)view;
+- (void)deconfigureLayerView:(id)view;
 @end
 
 @implementation _UIVisualEffectTintLayerConfig
 
-+ (id)layerWithTintColor:(id)a3 filterType:(id)a4
++ (id)layerWithTintColor:(id)color filterType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 layerWithFillColor:0 opacity:v7 filterType:1.0];
+  colorCopy = color;
+  typeCopy = type;
+  v8 = [self layerWithFillColor:0 opacity:typeCopy filterType:1.0];
   v9 = v8[4];
-  v8[4] = v6;
-  v10 = v6;
+  v8[4] = colorCopy;
+  v10 = colorCopy;
 
   v11 = v8[1];
-  v8[1] = v7;
+  v8[1] = typeCopy;
 
   return v8;
 }
 
-- (void)configureLayerView:(id)a3
+- (void)configureLayerView:(id)view
 {
-  v9 = a3;
-  v4 = [(_UIVisualEffectTintLayerConfig *)self tintColor];
-  [v9 setTintColor:v4];
+  viewCopy = view;
+  tintColor = [(_UIVisualEffectTintLayerConfig *)self tintColor];
+  [viewCopy setTintColor:tintColor];
 
-  v5 = [(_UIVisualEffectLayerConfig *)self filterType];
-  if (v5)
+  filterType = [(_UIVisualEffectLayerConfig *)self filterType];
+  if (filterType)
   {
     v6 = MEMORY[0x1E6979378];
     self = [(_UIVisualEffectLayerConfig *)self filterType];
@@ -41,21 +41,21 @@
     v7 = 0;
   }
 
-  v8 = [v9 layer];
-  [v8 setCompositingFilter:v7];
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:v7];
 
-  if (v5)
+  if (filterType)
   {
   }
 }
 
-- (void)deconfigureLayerView:(id)a3
+- (void)deconfigureLayerView:(id)view
 {
-  v3 = a3;
-  [v3 setTintColor:0];
-  v4 = [v3 layer];
+  viewCopy = view;
+  [viewCopy setTintColor:0];
+  layer = [viewCopy layer];
 
-  [v4 setCompositingFilter:0];
+  [layer setCompositingFilter:0];
 }
 
 - (id)description

@@ -1,27 +1,27 @@
 @interface BRCContainerMetadataSyncUpOperation
-- (BOOL)shouldRetryForError:(id)a3;
-- (BRCContainerMetadataSyncUpOperation)initWithSessionContext:(id)a3 metadataSyncPersistedState:(id)a4;
-- (id)_containerMetadataRecordsToSaveWithBatchSize:(unint64_t)a3 requestID:(unint64_t)a4;
+- (BOOL)shouldRetryForError:(id)error;
+- (BRCContainerMetadataSyncUpOperation)initWithSessionContext:(id)context metadataSyncPersistedState:(id)state;
+- (id)_containerMetadataRecordsToSaveWithBatchSize:(unint64_t)size requestID:(unint64_t)d;
 - (id)createActivity;
 - (void)main;
-- (void)performAfterSavingRecords:(id)a3;
+- (void)performAfterSavingRecords:(id)records;
 @end
 
 @implementation BRCContainerMetadataSyncUpOperation
 
-- (BRCContainerMetadataSyncUpOperation)initWithSessionContext:(id)a3 metadataSyncPersistedState:(id)a4
+- (BRCContainerMetadataSyncUpOperation)initWithSessionContext:(id)context metadataSyncPersistedState:(id)state
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 syncContextProvider];
-  v10 = [v9 defaultSyncContext];
+  stateCopy = state;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v13.receiver = self;
   v13.super_class = BRCContainerMetadataSyncUpOperation;
-  v11 = [(_BRCOperation *)&v13 initWithName:@"sync-up/container-metadata" syncContext:v10 sessionContext:v8];
+  v11 = [(_BRCOperation *)&v13 initWithName:@"sync-up/container-metadata" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_metadataSyncState, a4);
+    objc_storeStrong(&v11->_metadataSyncState, state);
   }
 
   return v11;
@@ -34,21 +34,21 @@
   return v2;
 }
 
-- (id)_containerMetadataRecordsToSaveWithBatchSize:(unint64_t)a3 requestID:(unint64_t)a4
+- (id)_containerMetadataRecordsToSaveWithBatchSize:(unint64_t)size requestID:(unint64_t)d
 {
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-  v9 = [v8 serialQueue];
+  array = [MEMORY[0x277CBEB18] array];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  serialQueue = [clientReadWriteDatabaseFacade serialQueue];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __94__BRCContainerMetadataSyncUpOperation__containerMetadataRecordsToSaveWithBatchSize_requestID___block_invoke;
   v17 = &unk_278504578;
-  v18 = self;
-  v19 = v7;
-  v20 = a4;
-  v21 = a3;
-  v10 = v7;
-  dispatch_sync(v9, &v14);
+  selfCopy = self;
+  v19 = array;
+  dCopy = d;
+  sizeCopy = size;
+  v10 = array;
+  dispatch_sync(serialQueue, &v14);
 
   if ([v10 count])
   {
@@ -138,17 +138,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)performAfterSavingRecords:(id)a3
+- (void)performAfterSavingRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 maxRecordCountInClientZoneModifyRecordsOperation];
-  v25 = [(BRCContainerMetadataSyncPersistedState *)self->_metadataSyncState allocateNextRequestID];
-  v7 = [(BRCContainerMetadataSyncUpOperation *)self _containerMetadataRecordsToSaveWithBatchSize:v6 requestID:v25];
+  maxRecordCountInClientZoneModifyRecordsOperation = [v5 maxRecordCountInClientZoneModifyRecordsOperation];
+  allocateNextRequestID = [(BRCContainerMetadataSyncPersistedState *)self->_metadataSyncState allocateNextRequestID];
+  v7 = [(BRCContainerMetadataSyncUpOperation *)self _containerMetadataRecordsToSaveWithBatchSize:maxRecordCountInClientZoneModifyRecordsOperation requestID:allocateNextRequestID];
   v8 = v7;
   if (v7)
   {
-    self->_shouldPerformAnotherBatch = [v7 count] >= v6;
+    self->_shouldPerformAnotherBatch = [v7 count] >= maxRecordCountInClientZoneModifyRecordsOperation;
     v9 = brc_bread_crumbs();
     v10 = brc_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -163,17 +163,17 @@ LABEL_11:
     [v11 setConfiguration:v12];
 
     v13 = *MEMORY[0x277CFAD58];
-    v14 = [v11 configuration];
-    [v14 setSourceApplicationBundleIdentifier:v13];
+    configuration = [v11 configuration];
+    [configuration setSourceApplicationBundleIdentifier:v13];
 
-    v15 = [MEMORY[0x277CBEA90] dataWithBytes:&v25 length:8];
+    v15 = [MEMORY[0x277CBEA90] dataWithBytes:&allocateNextRequestID length:8];
     [v11 setClientChangeTokenData:v15];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __65__BRCContainerMetadataSyncUpOperation_performAfterSavingRecords___block_invoke;
     v23[3] = &unk_278503070;
-    v24 = v4;
+    v24 = recordsCopy;
     [v11 setModifyRecordsCompletionBlock:v23];
     sessionContext = self->super._sessionContext;
     v20[0] = MEMORY[0x277D85DD0];
@@ -181,7 +181,7 @@ LABEL_11:
     v20[2] = __65__BRCContainerMetadataSyncUpOperation_performAfterSavingRecords___block_invoke_12;
     v20[3] = &unk_2784FFE90;
     v21 = v11;
-    v22 = self;
+    selfCopy = self;
     v17 = v11;
     [(BRCSessionContext *)sessionContext performAsyncOnClientReadWriteDatabaseWorkloop:v20];
   }
@@ -195,7 +195,7 @@ LABEL_11:
       [(BRCContainerMetadataSyncUpOperation *)v18 performAfterSavingRecords:v19];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(recordsCopy + 2))(recordsCopy, 0);
   }
 }
 
@@ -265,10 +265,10 @@ uint64_t __65__BRCContainerMetadataSyncUpOperation_performAfterSavingRecords___b
   return [*(a1 + 40) addSubOperation:*(a1 + 32)];
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  if (([v4 brc_isResetError] & 1) != 0 || !objc_msgSend(v4, "brc_isCloudKitErrorSafeToSyncUpWithoutSyncDown"))
+  errorCopy = error;
+  if (([errorCopy brc_isResetError] & 1) != 0 || !objc_msgSend(errorCopy, "brc_isCloudKitErrorSafeToSyncUpWithoutSyncDown"))
   {
     v5 = 0;
   }
@@ -277,7 +277,7 @@ uint64_t __65__BRCContainerMetadataSyncUpOperation_performAfterSavingRecords___b
   {
     v7.receiver = self;
     v7.super_class = BRCContainerMetadataSyncUpOperation;
-    v5 = [(_BRCOperation *)&v7 shouldRetryForError:v4];
+    v5 = [(_BRCOperation *)&v7 shouldRetryForError:errorCopy];
   }
 
   return v5;

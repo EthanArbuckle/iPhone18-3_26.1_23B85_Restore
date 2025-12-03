@@ -1,50 +1,50 @@
 @interface FBSSceneSnapshotContext
-+ (FBSSceneSnapshotContext)contextWithSceneID:(id)a3 settings:(id)a4;
++ (FBSSceneSnapshotContext)contextWithSceneID:(id)d settings:(id)settings;
 - (CGRect)frame;
-- (FBSSceneSnapshotContext)initWithSceneID:(id)a3 settings:(id)a4;
-- (FBSSceneSnapshotContext)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSSceneSnapshotContext)initWithSceneID:(id)d settings:(id)settings;
+- (FBSSceneSnapshotContext)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)setExpirationInterval:(double)a3;
+- (void)setExpirationInterval:(double)interval;
 @end
 
 @implementation FBSSceneSnapshotContext
 
-+ (FBSSceneSnapshotContext)contextWithSceneID:(id)a3 settings:(id)a4
++ (FBSSceneSnapshotContext)contextWithSceneID:(id)d settings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSceneID:v7 settings:v6];
+  settingsCopy = settings;
+  dCopy = d;
+  v8 = [[self alloc] initWithSceneID:dCopy settings:settingsCopy];
 
   return v8;
 }
 
-- (FBSSceneSnapshotContext)initWithSceneID:(id)a3 settings:(id)a4
+- (FBSSceneSnapshotContext)initWithSceneID:(id)d settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = FBSSceneSnapshotContext;
   v8 = [(FBSSceneSnapshotContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     sceneID = v8->_sceneID;
     v8->_sceneID = v9;
 
-    v11 = [v7 copy];
+    v11 = [settingsCopy copy];
     settings = v8->_settings;
     v8->_settings = v11;
 
-    [v7 frame];
+    [settingsCopy frame];
     BSRectWithSize();
   }
 
   return 0;
 }
 
-- (void)setExpirationInterval:(double)a3
+- (void)setExpirationInterval:(double)interval
 {
   [MEMORY[0x1E695DF00] distantFuture];
   [objc_claimAutoreleasedReturnValue() timeIntervalSinceNow];
@@ -53,32 +53,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneSnapshotContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneSnapshotContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneSnapshotContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneSnapshotContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneSnapshotContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneSnapshotContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__FBSSceneSnapshotContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -105,9 +105,9 @@ id __65__FBSSceneSnapshotContext_descriptionBuilderWithMultilinePrefix___block_i
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 56) withName:@"clientExtendedData"];
 }
 
-- (FBSSceneSnapshotContext)initWithXPCDictionary:(id)a3
+- (FBSSceneSnapshotContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(FBSSceneSnapshotContext *)self init])
   {
     BSCreateDeserializedStringFromXPCDictionaryWithKey();

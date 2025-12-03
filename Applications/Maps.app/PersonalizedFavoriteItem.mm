@@ -10,16 +10,16 @@
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
 - (_TtC4Maps24PersonalizedFavoriteItem)init;
 - (id)leafPersonalizedAutocompleteItems;
-- (void)setAddress:(id)a3;
-- (void)setAutocompletionStrings:(id)a3;
-- (void)setKeys:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setPrefix:(id)a3;
-- (void)setSearchableStrings:(id)a3;
-- (void)setSource:(id)a3;
-- (void)setSourceLabelMarker:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAddress:(id)address;
+- (void)setAutocompletionStrings:(id)strings;
+- (void)setKeys:(id)keys;
+- (void)setMapItem:(id)item;
+- (void)setPrefix:(id)prefix;
+- (void)setSearchableStrings:(id)strings;
+- (void)setSource:(id)source;
+- (void)setSourceLabelMarker:(id)marker;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PersonalizedFavoriteItem
@@ -32,23 +32,23 @@
   return v2.super.isa;
 }
 
-- (void)setKeys:(id)a3
+- (void)setKeys:(id)keys
 {
   *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_keys) = static Set._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_mapItem);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_mapItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_mapItem) = item;
+  itemCopy = item;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_source);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_source) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_source) = source;
+  sourceCopy = source;
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -62,42 +62,42 @@
 
 - (GEOEnhancedPlacement)enhancedPlacement
 {
-  v2 = [*(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem) _enhancedPlacement];
+  _enhancedPlacement = [*(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem) _enhancedPlacement];
 
-  return v2;
+  return _enhancedPlacement;
 }
 
 - (GEOLabelGeometry)labelGeometry
 {
-  v2 = [*(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem) _labelGeometry];
+  _labelGeometry = [*(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem) _labelGeometry];
 
-  return v2;
+  return _labelGeometry;
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_prefix);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_prefix) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_prefix) = prefix;
+  prefixCopy = prefix;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_title);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_title) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_title) = title;
+  titleCopy = title;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_subtitle);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_subtitle) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_subtitle) = subtitle;
+  subtitleCopy = subtitle;
 }
 
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A33EC();
 
   return v3;
@@ -106,9 +106,9 @@
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
 {
   v3 = objc_opt_self();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1002A33EC();
-  v6 = [v3 clientFeatureIDFromAdornment:v5 mapItem:*(v4 + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem)];
+  v6 = [v3 clientFeatureIDFromAdornment:v5 mapItem:*(selfCopy + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem__mapItem)];
 
   if (v6)
   {
@@ -124,18 +124,18 @@
   return result;
 }
 
-- (void)setSourceLabelMarker:(id)a3
+- (void)setSourceLabelMarker:(id)marker
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_sourceLabelMarker);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_sourceLabelMarker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_sourceLabelMarker) = marker;
+  markerCopy = marker;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_address);
-  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_address) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem_address) = address;
+  addressCopy = address;
 }
 
 - (NSArray)searchableStrings
@@ -154,9 +154,9 @@
   return v2.super.isa;
 }
 
-- (void)setSearchableStrings:(id)a3
+- (void)setSearchableStrings:(id)strings
 {
-  if (a3)
+  if (strings)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -171,7 +171,7 @@
 
 - (NSArray)autocompletionStrings
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A39F4();
 
   if (v3)
@@ -188,9 +188,9 @@
   return v4.super.isa;
 }
 
-- (void)setAutocompletionStrings:(id)a3
+- (void)setAutocompletionStrings:(id)strings
 {
-  if (a3)
+  if (strings)
   {
     sub_1000CE6B8(&qword_101917C60);
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -203,7 +203,7 @@
 
   v5 = *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem____lazy_storage___autocompletionStrings);
   *(self + OBJC_IVAR____TtC4Maps24PersonalizedFavoriteItem____lazy_storage___autocompletionStrings) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1002A4AB4(v5);
 }
 
@@ -213,7 +213,7 @@
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_1011E47B0;
   *(v3 + 32) = self;
-  v4 = self;
+  selfCopy = self;
   sub_1000CE6B8(&qword_101917C58);
   v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
@@ -222,7 +222,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A3CFC();
 
   v3 = String._bridgeToObjectiveC()();

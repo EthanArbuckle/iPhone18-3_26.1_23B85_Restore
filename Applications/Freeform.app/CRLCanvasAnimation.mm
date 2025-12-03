@@ -1,23 +1,23 @@
 @interface CRLCanvasAnimation
-- (CRLCanvasAnimation)initWithAnimationID:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5;
+- (CRLCanvasAnimation)initWithAnimationID:(id)d;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setAnimation:(id)animation forLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation CRLCanvasAnimation
 
-- (CRLCanvasAnimation)initWithAnimationID:(id)a3
+- (CRLCanvasAnimation)initWithAnimationID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = CRLCanvasAnimation;
   v6 = [(CRLCanvasAnimation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animationID, a3);
+    objc_storeStrong(&v6->_animationID, d);
     v7->_duration = 0.2;
     v8 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     timingFunction = v7->_timingFunction;
@@ -29,11 +29,11 @@
   return v7;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_animationDictionariesForLayers objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [(NSMapTable *)self->_animationDictionariesForLayers objectForKeyedSubscript:layer];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
   if (!v8)
   {
     if (self->_firstAnimationDidStart)
@@ -65,7 +65,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:53 isFatal:0 description:"shouldn't be adding animations after we've started showing them"];
     }
 
-    v8 = [CABasicAnimation animationWithKeyPath:v6];
+    v8 = [CABasicAnimation animationWithKeyPath:keyCopy];
     [v8 setDuration:self->_duration];
     [v8 setTimingFunction:self->_timingFunction];
   }
@@ -76,11 +76,11 @@
   return v8;
 }
 
-- (void)setAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5
+- (void)setAnimation:(id)animation forLayer:(id)layer forKey:(id)key
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  animationCopy = animation;
+  layerCopy = layer;
+  keyCopy = key;
   animationDictionariesForLayers = self->_animationDictionariesForLayers;
   if (!animationDictionariesForLayers)
   {
@@ -91,19 +91,19 @@
     animationDictionariesForLayers = self->_animationDictionariesForLayers;
   }
 
-  v13 = [(NSMapTable *)animationDictionariesForLayers objectForKeyedSubscript:v8];
+  v13 = [(NSMapTable *)animationDictionariesForLayers objectForKeyedSubscript:layerCopy];
   if (!v13)
   {
     v13 = +[NSMapTable strongToWeakObjectsMapTable];
-    [(NSMapTable *)self->_animationDictionariesForLayers setObject:v13 forKeyedSubscript:v8];
+    [(NSMapTable *)self->_animationDictionariesForLayers setObject:v13 forKeyedSubscript:layerCopy];
   }
 
-  [v13 setObject:v14 forKeyedSubscript:v9];
+  [v13 setObject:animationCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (!self->_outstandingAnimationCount)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -139,9 +139,9 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
+  stopCopy = stop;
   if (!self->_outstandingAnimationCount)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -201,7 +201,7 @@
   }
 
   outstandingAnimationCount = self->_outstandingAnimationCount;
-  self->_allAnimationsFinishedBeforeStopping |= a4;
+  self->_allAnimationsFinishedBeforeStopping |= finished;
   self->_outstandingAnimationCount = --outstandingAnimationCount;
   if (!outstandingAnimationCount)
   {

@@ -1,6 +1,6 @@
 @interface VSSubscriptionServiceConnection
 - (VSSubscriptionServiceConnection)init;
-- (id)serviceWithErrorHandler:(id)a3;
+- (id)serviceWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -35,11 +35,11 @@
   [(VSSubscriptionServiceConnection *)&v3 dealloc];
 }
 
-- (id)serviceWithErrorHandler:(id)a3
+- (id)serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(VSSubscriptionServiceConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(VSSubscriptionServiceConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

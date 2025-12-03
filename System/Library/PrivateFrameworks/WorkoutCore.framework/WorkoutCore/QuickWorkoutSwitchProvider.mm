@@ -1,7 +1,7 @@
 @interface QuickWorkoutSwitchProvider
 - (BOOL)quickWorkoutSwitch;
 - (_TtC11WorkoutCore26QuickWorkoutSwitchProvider)init;
-- (void)setQuickWorkoutSwitch:(BOOL)a3;
+- (void)setQuickWorkoutSwitch:(BOOL)switch;
 @end
 
 @implementation QuickWorkoutSwitchProvider
@@ -10,18 +10,18 @@
 {
   swift_getKeyPath();
   lazy protocol witness table accessor for type QuickWorkoutSwitchProvider and conformance QuickWorkoutSwitchProvider();
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  LOBYTE(self) = *(&v3->super.isa + OBJC_IVAR____TtC11WorkoutCore26QuickWorkoutSwitchProvider__quickWorkoutSwitch);
+  LOBYTE(self) = *(&selfCopy->super.isa + OBJC_IVAR____TtC11WorkoutCore26QuickWorkoutSwitchProvider__quickWorkoutSwitch);
 
   return self;
 }
 
-- (void)setQuickWorkoutSwitch:(BOOL)a3
+- (void)setQuickWorkoutSwitch:(BOOL)switch
 {
-  v4 = self;
-  QuickWorkoutSwitchProvider.quickWorkoutSwitch.setter(a3);
+  selfCopy = self;
+  QuickWorkoutSwitchProvider.quickWorkoutSwitch.setter(switch);
 }
 
 - (_TtC11WorkoutCore26QuickWorkoutSwitchProvider)init

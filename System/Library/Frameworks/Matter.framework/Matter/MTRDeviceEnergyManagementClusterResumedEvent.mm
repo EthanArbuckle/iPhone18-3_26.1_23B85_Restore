@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterResumedEvent
 - (MTRDeviceEnergyManagementClusterResumedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterResumedEvent);
-  v5 = [(MTRDeviceEnergyManagementClusterResumedEvent *)self cause];
-  [(MTRDeviceEnergyManagementClusterResumedEvent *)v4 setCause:v5];
+  cause = [(MTRDeviceEnergyManagementClusterResumedEvent *)self cause];
+  [(MTRDeviceEnergyManagementClusterResumedEvent *)v4 setCause:cause];
 
   return v4;
 }

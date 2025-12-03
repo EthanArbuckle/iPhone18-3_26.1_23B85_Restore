@@ -8,10 +8,10 @@
 {
   v2 = [(MobileTimerAssistantTimerSnippetCellAccessibility *)self safeValueForKey:@"_timeView"];
   v3 = [v2 safeValueForKey:@"_running"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  v5 = [v2 accessibilityLabel];
-  if (v4)
+  accessibilityLabel = [v2 accessibilityLabel];
+  if (bOOLValue)
   {
     v6 = __UIAXStringForVariables();
   }

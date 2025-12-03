@@ -1,51 +1,51 @@
 @interface ABVCardDateScanner
-+ (id)scannerWithString:(id)a3;
-- (ABVCardDateScanner)initWithString:(id)a3;
++ (id)scannerWithString:(id)string;
+- (ABVCardDateScanner)initWithString:(id)string;
 - (BOOL)scanLeapMarker;
-- (int64_t)scanCalendarUnit:(unint64_t)a3;
-- (int64_t)scanComponentValueOfLength:(unint64_t)a3;
-- (unint64_t)lengthOfCalendarUnit:(unint64_t)a3;
+- (int64_t)scanCalendarUnit:(unint64_t)unit;
+- (int64_t)scanComponentValueOfLength:(unint64_t)length;
+- (unint64_t)lengthOfCalendarUnit:(unint64_t)unit;
 @end
 
 @implementation ABVCardDateScanner
 
-+ (id)scannerWithString:(id)a3
++ (id)scannerWithString:(id)string
 {
-  v3 = [[a1 alloc] initWithString:a3];
+  v3 = [[self alloc] initWithString:string];
 
   return v3;
 }
 
-- (ABVCardDateScanner)initWithString:(id)a3
+- (ABVCardDateScanner)initWithString:(id)string
 {
   v6.receiver = self;
   v6.super_class = ABVCardDateScanner;
   v4 = [(ABVCardDateScanner *)&v6 init];
   if (v4)
   {
-    v4->_string = [a3 copy];
+    v4->_string = [string copy];
     v4->_position = 0;
   }
 
   return v4;
 }
 
-- (int64_t)scanComponentValueOfLength:(unint64_t)a3
+- (int64_t)scanComponentValueOfLength:(unint64_t)length
 {
   if ([(ABVCardDateScanner *)self isAtEnd])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(ABVCardDateScanner *)self nextCharacter];
+  nextCharacter = [(ABVCardDateScanner *)self nextCharacter];
   position = self->_position;
-  if (v5 == 45)
+  if (nextCharacter == 45)
   {
     self->_position = position + 1;
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = a3 + 1;
+  v8 = length + 1;
   do
   {
     --v8;
@@ -58,16 +58,16 @@
   return [(NSString *)v9 integerValue];
 }
 
-- (int64_t)scanCalendarUnit:(unint64_t)a3
+- (int64_t)scanCalendarUnit:(unint64_t)unit
 {
-  v4 = [(ABVCardDateScanner *)self lengthOfCalendarUnit:a3];
+  v4 = [(ABVCardDateScanner *)self lengthOfCalendarUnit:unit];
 
   return [(ABVCardDateScanner *)self scanComponentValueOfLength:v4];
 }
 
-- (unint64_t)lengthOfCalendarUnit:(unint64_t)a3
+- (unint64_t)lengthOfCalendarUnit:(unint64_t)unit
 {
-  v3 = __ROR8__(a3 - 2, 1);
+  v3 = __ROR8__(unit - 2, 1);
   if (v3 > 7)
   {
     return 0;

@@ -1,12 +1,12 @@
 @interface UIPreviewAction
 + (UIPreviewAction)actionWithTitle:(NSString *)title style:(UIPreviewActionStyle)style handler:(void *)handler;
-+ (id)_actionWithPreviewMenuItem:(id)a3;
-+ (id)_actionWithTitle:(id)a3 color:(id)a4 image:(id)a5 handler:(id)a6;
-+ (id)_actionWithTitle:(id)a3 style:(int64_t)a4 color:(id)a5 image:(id)a6 handler:(id)a7;
-+ (id)_actionWithTitle:(id)a3 style:(int64_t)a4 image:(id)a5 handler:(id)a6;
++ (id)_actionWithPreviewMenuItem:(id)item;
++ (id)_actionWithTitle:(id)title color:(id)color image:(id)image handler:(id)handler;
++ (id)_actionWithTitle:(id)title style:(int64_t)style color:(id)color image:(id)image handler:(id)handler;
++ (id)_actionWithTitle:(id)title style:(int64_t)style image:(id)image handler:(id)handler;
 - (id)_effectiveColor;
 - (id)_effectiveImage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIPreviewAction
@@ -15,7 +15,7 @@
 {
   v8 = handler;
   v9 = title;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   [v10 setTitle:v9];
 
   [v10 setStyle:style];
@@ -24,132 +24,132 @@
   return v10;
 }
 
-+ (id)_actionWithTitle:(id)a3 style:(int64_t)a4 image:(id)a5 handler:(id)a6
++ (id)_actionWithTitle:(id)title style:(int64_t)style image:(id)image handler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = objc_alloc_init(a1);
-  [v13 setTitle:v12];
+  handlerCopy = handler;
+  imageCopy = image;
+  titleCopy = title;
+  v13 = objc_alloc_init(self);
+  [v13 setTitle:titleCopy];
 
-  [v13 setStyle:a4];
-  [v13 setHandler:v10];
+  [v13 setStyle:style];
+  [v13 setHandler:handlerCopy];
 
-  [v13 setImage:v11];
+  [v13 setImage:imageCopy];
 
   return v13;
 }
 
-+ (id)_actionWithTitle:(id)a3 color:(id)a4 image:(id)a5 handler:(id)a6
++ (id)_actionWithTitle:(id)title color:(id)color image:(id)image handler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = objc_alloc_init(a1);
-  [v14 setTitle:v13];
+  handlerCopy = handler;
+  imageCopy = image;
+  colorCopy = color;
+  titleCopy = title;
+  v14 = objc_alloc_init(self);
+  [v14 setTitle:titleCopy];
 
   [v14 setStyle:0];
-  [v14 _setColor:v12];
+  [v14 _setColor:colorCopy];
 
-  [v14 setImage:v11];
-  [v14 setHandler:v10];
+  [v14 setImage:imageCopy];
+  [v14 setHandler:handlerCopy];
 
   return v14;
 }
 
-+ (id)_actionWithTitle:(id)a3 style:(int64_t)a4 color:(id)a5 image:(id)a6 handler:(id)a7
++ (id)_actionWithTitle:(id)title style:(int64_t)style color:(id)color image:(id)image handler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = objc_alloc_init(a1);
-  [v16 setTitle:v15];
+  handlerCopy = handler;
+  imageCopy = image;
+  colorCopy = color;
+  titleCopy = title;
+  v16 = objc_alloc_init(self);
+  [v16 setTitle:titleCopy];
 
-  [v16 setStyle:a4];
-  [v16 _setColor:v14];
+  [v16 setStyle:style];
+  [v16 _setColor:colorCopy];
 
-  [v16 setImage:v13];
-  [v16 setHandler:v12];
+  [v16 setImage:imageCopy];
+  [v16 setHandler:handlerCopy];
 
   return v16;
 }
 
 - (id)_effectiveColor
 {
-  v3 = [(UIPreviewAction *)self _color];
-  if (!v3)
+  _color = [(UIPreviewAction *)self _color];
+  if (!_color)
   {
     if ([(UIPreviewAction *)self style]== 2)
     {
-      v3 = +[UIColor systemRedColor];
+      _color = +[UIColor systemRedColor];
     }
 
     else
     {
-      v3 = 0;
+      _color = 0;
     }
   }
 
-  return v3;
+  return _color;
 }
 
 - (id)_effectiveImage
 {
-  v3 = [(UIPreviewAction *)self image];
-  if (!v3)
+  image = [(UIPreviewAction *)self image];
+  if (!image)
   {
     if ([(UIPreviewAction *)self style]== 1)
     {
-      v3 = [objc_opt_class() _checkmarkImage];
+      image = [objc_opt_class() _checkmarkImage];
     }
 
     else
     {
-      v3 = 0;
+      image = 0;
     }
   }
 
-  return v3;
+  return image;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UIPreviewAction *)self title];
-  [v4 setTitle:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(UIPreviewAction *)self title];
+  [v4 setTitle:title];
 
   [v4 setStyle:{-[UIPreviewAction style](self, "style")}];
-  v6 = [(UIPreviewAction *)self handler];
-  [v4 setHandler:v6];
+  handler = [(UIPreviewAction *)self handler];
+  [v4 setHandler:handler];
 
-  v7 = [(UIPreviewAction *)self identifier];
-  [v4 setIdentifier:v7];
+  identifier = [(UIPreviewAction *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v8 = [(UIPreviewAction *)self _color];
-  [v4 _setColor:v8];
+  _color = [(UIPreviewAction *)self _color];
+  [v4 _setColor:_color];
 
-  v9 = [(UIPreviewAction *)self image];
-  [v4 setImage:v9];
+  image = [(UIPreviewAction *)self image];
+  [v4 setImage:image];
 
   return v4;
 }
 
-+ (id)_actionWithPreviewMenuItem:(id)a3
++ (id)_actionWithPreviewMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 style];
-  v7 = [v4 _color];
-  v8 = [v4 image];
+  itemCopy = item;
+  title = [itemCopy title];
+  style = [itemCopy style];
+  _color = [itemCopy _color];
+  image = [itemCopy image];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__UIPreviewAction__actionWithPreviewMenuItem___block_invoke;
   v12[3] = &unk_1E7103470;
-  v13 = v4;
-  v9 = v4;
-  v10 = [a1 _actionWithTitle:v5 style:v6 color:v7 image:v8 handler:v12];
+  v13 = itemCopy;
+  v9 = itemCopy;
+  v10 = [self _actionWithTitle:title style:style color:_color image:image handler:v12];
 
   return v10;
 }

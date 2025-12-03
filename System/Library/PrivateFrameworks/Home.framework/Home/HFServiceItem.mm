@@ -1,50 +1,50 @@
 @interface HFServiceItem
-+ (Class)itemClassForService:(id)a3;
++ (Class)itemClassForService:(id)service;
 + (NSDictionary)_serviceTypeToServiceItemClassMap;
 + (NSSet)supportedServiceTypes;
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
-+ (id)serviceItemForService:(id)a3 valueSource:(id)a4;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
++ (id)serviceItemForService:(id)service valueSource:(id)source;
 - (BOOL)actionsMayRequireDeviceUnlock;
 - (BOOL)containsActions;
 - (HFServiceItem)init;
-- (HFServiceItem)initWithValueSource:(id)a3 service:(id)a4;
+- (HFServiceItem)initWithValueSource:(id)source service:(id)service;
 - (HMHome)home;
 - (NSSet)services;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)_actionableCharacteristics;
 - (id)_allRepresentedServices;
-- (id)_augmentedStandardResultsForUpdateResponse:(id)a3 controlItems:(id)a4;
+- (id)_augmentedStandardResultsForUpdateResponse:(id)response controlItems:(id)items;
 - (id)_descriptionBuilder;
 - (id)_siriEndPointProfiles;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)characteristicsToReadForCharacteristicTypes:(id)a3 controlItems:(id)a4;
-- (id)characteristicsToReadWithCharacteristicTypes:(id)a3 options:(id)a4 controlItems:(id *)a5;
-- (id)controlDescriptionForCharacteristic:(id)a3 withValue:(id)a4;
+- (id)characteristicsToReadForCharacteristicTypes:(id)types controlItems:(id)items;
+- (id)characteristicsToReadWithCharacteristicTypes:(id)types options:(id)options controlItems:(id *)items;
+- (id)controlDescriptionForCharacteristic:(id)characteristic withValue:(id)value;
 - (id)controlItemValueSourceForPrimaryService;
-- (id)controlItemValueSourceForServices:(id)a3;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
-- (id)descriptionForCharacteristic:(id)a3 withValue:(id)a4;
-- (id)incrementalStateIconDescriptorForPrimaryState:(int64_t)a3 incrementalValue:(id)a4;
+- (id)controlItemValueSourceForServices:(id)services;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)currentStateActionBuildersForHome:(id)home;
+- (id)descriptionForCharacteristic:(id)characteristic withValue:(id)value;
+- (id)incrementalStateIconDescriptorForPrimaryState:(int64_t)state incrementalValue:(id)value;
 - (id)namingComponentForHomeKitObject;
-- (id)performStandardUpdateWithCharacteristicTypes:(id)a3 options:(id)a4;
-- (id)serviceLikeBuilderInHome:(id)a3;
-- (void)applyInflectionToDescriptions:(id)a3;
+- (id)performStandardUpdateWithCharacteristicTypes:(id)types options:(id)options;
+- (id)serviceLikeBuilderInHome:(id)home;
+- (void)applyInflectionToDescriptions:(id)descriptions;
 @end
 
 @implementation HFServiceItem
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = [v7 hf_homeKitObject];
+  hf_homeKitObject = [objectCopy hf_homeKitObject];
 
-  v10 = v9;
+  v10 = hf_homeKitObject;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -63,23 +63,23 @@
       goto LABEL_8;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v12 = 0;
 LABEL_8:
 
-  v15 = [a1 serviceItemForService:v12 valueSource:v6];
+  v15 = [self serviceItemForService:v12 valueSource:sourceCopy];
 
   return v15;
 }
 
 + (NSSet)supportedServiceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFServiceItem.m" lineNumber:48 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFServiceItem supportedServiceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:48 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFServiceItem supportedServiceTypes]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -275,34 +275,34 @@ void __50__HFServiceItem__serviceTypeToServiceItemClassMap__block_invoke()
   v35 = *MEMORY[0x277D85DE8];
 }
 
-+ (Class)itemClassForService:(id)a3
++ (Class)itemClassForService:(id)service
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _serviceTypeToServiceItemClassMap];
-  v5 = [v3 serviceType];
+  serviceCopy = service;
+  _serviceTypeToServiceItemClassMap = [objc_opt_class() _serviceTypeToServiceItemClassMap];
+  serviceType = [serviceCopy serviceType];
 
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [_serviceTypeToServiceItemClassMap objectForKeyedSubscript:serviceType];
 
   return v6;
 }
 
-+ (id)serviceItemForService:(id)a3 valueSource:(id)a4
++ (id)serviceItemForService:(id)service valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(objc_msgSend(a1 itemClassForService:{v7)), "initWithValueSource:service:", v6, v7}];
+  sourceCopy = source;
+  serviceCopy = service;
+  v8 = [objc_alloc(objc_msgSend(self itemClassForService:{serviceCopy)), "initWithValueSource:service:", sourceCopy, serviceCopy}];
 
   return v8;
 }
 
-- (HFServiceItem)initWithValueSource:(id)a3 service:(id)a4
+- (HFServiceItem)initWithValueSource:(id)source service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  serviceCopy = service;
   if ([(HFServiceItem *)self isMemberOfClass:objc_opt_class()])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:119 description:@"HFServiceItem is an abstract base class. It must be instantiated using +serviceItemForService:valueSource: or using one of its concrete subclasses directly."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:119 description:@"HFServiceItem is an abstract base class. It must be instantiated using +serviceItemForService:valueSource: or using one of its concrete subclasses directly."];
   }
 
   v18.receiver = self;
@@ -311,15 +311,15 @@ void __50__HFServiceItem__serviceTypeToServiceItemClassMap__block_invoke()
   if (v9)
   {
     v10 = [HFOverrideCharacteristicValueSource alloc];
-    v11 = [v8 home];
-    v12 = [v11 hf_suspendedStateOverrideValueProvider];
-    v13 = [(HFOverrideCharacteristicValueSource *)v10 initWithOriginalValueSource:v7 overrideValueProvider:v12];
+    home = [serviceCopy home];
+    hf_suspendedStateOverrideValueProvider = [home hf_suspendedStateOverrideValueProvider];
+    v13 = [(HFOverrideCharacteristicValueSource *)v10 initWithOriginalValueSource:sourceCopy overrideValueProvider:hf_suspendedStateOverrideValueProvider];
 
     valueSource = v9->_valueSource;
     v9->_valueSource = v13;
     v15 = v13;
 
-    objc_storeStrong(&v9->_service, a4);
+    objc_storeStrong(&v9->_service, service);
   }
 
   return v9;
@@ -327,27 +327,27 @@ void __50__HFServiceItem__serviceTypeToServiceItemClassMap__block_invoke()
 
 - (HFServiceItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithValueSource_service_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:131 description:{@"%s is unavailable; use %@ instead", "-[HFServiceItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:131 description:{@"%s is unavailable; use %@ instead", "-[HFServiceItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFServiceItem *)self valueSource];
-  v5 = [(HFServiceItem *)self copyWithValueSource:v4];
+  valueSource = [(HFServiceItem *)self valueSource];
+  v5 = [(HFServiceItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFServiceItem *)self service];
-  v7 = [v5 initWithValueSource:v4 service:v6];
+  service = [(HFServiceItem *)self service];
+  v7 = [v5 initWithValueSource:sourceCopy service:service];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -356,38 +356,38 @@ void __50__HFServiceItem__serviceTypeToServiceItemClassMap__block_invoke()
 - (id)_descriptionBuilder
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFServiceItem *)self service];
-  v5 = [v4 hf_prettyDescription];
-  v6 = [v3 appendObject:v5 withName:@"service"];
+  service = [(HFServiceItem *)self service];
+  hf_prettyDescription = [service hf_prettyDescription];
+  v6 = [v3 appendObject:hf_prettyDescription withName:@"service"];
 
-  v7 = [(HFServiceItem *)self service];
-  v8 = [v7 hf_childServices];
-  v9 = [v8 allObjects];
-  [v3 appendArraySection:v9 withName:@"childServices" skipIfEmpty:1 objectTransformer:&__block_literal_global_49_2];
+  service2 = [(HFServiceItem *)self service];
+  hf_childServices = [service2 hf_childServices];
+  allObjects = [hf_childServices allObjects];
+  [v3 appendArraySection:allObjects withName:@"childServices" skipIfEmpty:1 objectTransformer:&__block_literal_global_49_2];
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(HFServiceItem *)self _descriptionBuilder];
-  v3 = [v2 build];
+  _descriptionBuilder = [(HFServiceItem *)self _descriptionBuilder];
+  build = [_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(HFServiceItem *)self _descriptionBuilder];
-  v4 = [(HFItem *)self latestResults];
-  [v3 appendDictionarySection:v4 withName:@"results:" skipIfEmpty:0];
+  _descriptionBuilder = [(HFServiceItem *)self _descriptionBuilder];
+  latestResults = [(HFItem *)self latestResults];
+  [_descriptionBuilder appendDictionarySection:latestResults withName:@"results:" skipIfEmpty:0];
 
-  v5 = [v3 build];
+  build = [_descriptionBuilder build];
 
-  return v5;
+  return build;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v3 = MEMORY[0x277D2C900];
   v4 = [MEMORY[0x277CCA9B8] hf_errorWithCode:36];
@@ -399,42 +399,42 @@ void __50__HFServiceItem__serviceTypeToServiceItemClassMap__block_invoke()
 - (id)controlItemValueSourceForPrimaryService
 {
   v3 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v4 = [(HFServiceItem *)self valueSource];
+  valueSource = [(HFServiceItem *)self valueSource];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HFServiceItem *)self service];
-  v7 = [v6 characteristics];
-  v8 = [v5 setWithArray:v7];
-  v9 = [(HFServiceItem *)self service];
-  v10 = [v9 hf_serviceDescriptor];
-  v11 = [(HFSimpleAggregatedCharacteristicValueSource *)v3 initWithValueSource:v4 characteristics:v8 primaryServiceDescriptor:v10];
+  service = [(HFServiceItem *)self service];
+  characteristics = [service characteristics];
+  v8 = [v5 setWithArray:characteristics];
+  service2 = [(HFServiceItem *)self service];
+  hf_serviceDescriptor = [service2 hf_serviceDescriptor];
+  v11 = [(HFSimpleAggregatedCharacteristicValueSource *)v3 initWithValueSource:valueSource characteristics:v8 primaryServiceDescriptor:hf_serviceDescriptor];
 
   return v11;
 }
 
-- (id)controlItemValueSourceForServices:(id)a3
+- (id)controlItemValueSourceForServices:(id)services
 {
-  v5 = a3;
-  if (![v5 count])
+  servicesCopy = services;
+  if (![servicesCopy count])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"services.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"services.count > 0"}];
   }
 
-  v6 = [(HFServiceItem *)self _allRepresentedServices];
-  v7 = [v5 isSubsetOfSet:v6];
+  _allRepresentedServices = [(HFServiceItem *)self _allRepresentedServices];
+  v7 = [servicesCopy isSubsetOfSet:_allRepresentedServices];
 
   if ((v7 & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    v16 = [v5 hf_prettyDescription];
-    [v15 handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:196 description:{@"An HFServiceItem can only create a value source for its main service (self.service) and its child services (self.service.hf_childServices). But the client requested a value source for some other services: %@", v16}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    hf_prettyDescription = [servicesCopy hf_prettyDescription];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFServiceItem.m" lineNumber:196 description:{@"An HFServiceItem can only create a value source for its main service (self.service) and its child services (self.service.hf_childServices). But the client requested a value source for some other services: %@", hf_prettyDescription}];
   }
 
   v8 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v9 = [(HFServiceItem *)self valueSource];
-  v10 = [(HFServiceItem *)self service];
-  v11 = [v10 hf_serviceDescriptor];
-  v12 = [(HFSimpleAggregatedCharacteristicValueSource *)v8 initWithValueSource:v9 services:v5 primaryServiceDescriptor:v11];
+  valueSource = [(HFServiceItem *)self valueSource];
+  service = [(HFServiceItem *)self service];
+  hf_serviceDescriptor = [service hf_serviceDescriptor];
+  v12 = [(HFSimpleAggregatedCharacteristicValueSource *)v8 initWithValueSource:valueSource services:servicesCopy primaryServiceDescriptor:hf_serviceDescriptor];
 
   return v12;
 }
@@ -483,51 +483,51 @@ id __43__HFServiceItem__actionableCharacteristics__block_invoke_69(uint64_t a1, 
 
 - (BOOL)containsActions
 {
-  v2 = [(HFServiceItem *)self _actionableCharacteristics];
-  v3 = [v2 count] != 0;
+  _actionableCharacteristics = [(HFServiceItem *)self _actionableCharacteristics];
+  v3 = [_actionableCharacteristics count] != 0;
 
   return v3;
 }
 
 - (BOOL)actionsMayRequireDeviceUnlock
 {
-  v2 = [(HFServiceItem *)self _actionableCharacteristics];
-  v3 = [v2 na_any:&__block_literal_global_75_3];
+  _actionableCharacteristics = [(HFServiceItem *)self _actionableCharacteristics];
+  v3 = [_actionableCharacteristics na_any:&__block_literal_global_75_3];
 
   return v3;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFServiceItem *)self service];
+  homeCopy = home;
+  service = [(HFServiceItem *)self service];
 
-  if (!v5)
+  if (!service)
   {
     NSLog(&cfstr_CanTFindServic.isa);
   }
 
-  v6 = [(HFServiceItem *)self service];
+  service2 = [(HFServiceItem *)self service];
 
-  if (v6)
+  if (service2)
   {
-    v7 = [(HFServiceItem *)self _actionableCharacteristics];
-    v8 = [(HFServiceItem *)self valueSource];
-    v9 = [v8 readValuesForCharacteristics:v7];
+    _actionableCharacteristics = [(HFServiceItem *)self _actionableCharacteristics];
+    valueSource = [(HFServiceItem *)self valueSource];
+    v9 = [valueSource readValuesForCharacteristics:_actionableCharacteristics];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__HFServiceItem_currentStateActionBuildersForHome___block_invoke;
     v13[3] = &unk_277DF3A40;
-    v14 = v7;
-    v15 = v4;
-    v10 = v7;
+    v14 = _actionableCharacteristics;
+    v15 = homeCopy;
+    v10 = _actionableCharacteristics;
     v11 = [v9 flatMap:v13];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-    v11 = [MEMORY[0x277D2C900] futureWithError:v8];
+    valueSource = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+    v11 = [MEMORY[0x277D2C900] futureWithError:valueSource];
   }
 
   return v11;
@@ -652,20 +652,20 @@ LABEL_23:
 
 - (HMHome)home
 {
-  v2 = [(HFServiceItem *)self service];
-  v3 = [v2 home];
+  service = [(HFServiceItem *)self service];
+  home = [service home];
 
-  return v3;
+  return home;
 }
 
 - (NSSet)services
 {
-  v3 = [(HFServiceItem *)self service];
+  service = [(HFServiceItem *)self service];
   v4 = MEMORY[0x277CBEB98];
-  if (v3)
+  if (service)
   {
-    v5 = [(HFServiceItem *)self service];
-    v6 = [v4 setWithObject:v5];
+    service2 = [(HFServiceItem *)self service];
+    v6 = [v4 setWithObject:service2];
   }
 
   else
@@ -678,16 +678,16 @@ LABEL_23:
 
 - (id)accessories
 {
-  v2 = [(HFServiceItem *)self services];
-  v3 = [v2 na_map:&__block_literal_global_85_2];
+  services = [(HFServiceItem *)self services];
+  v3 = [services na_map:&__block_literal_global_85_2];
 
   return v3;
 }
 
 - (id)_siriEndPointProfiles
 {
-  v2 = [(HFServiceItem *)self accessories];
-  v3 = [v2 na_filter:&__block_literal_global_88_0];
+  accessories = [(HFServiceItem *)self accessories];
+  v3 = [accessories na_filter:&__block_literal_global_88_0];
 
   return v3;
 }
@@ -700,33 +700,33 @@ BOOL __38__HFServiceItem__siriEndPointProfiles__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFServiceBuilder alloc];
-  v6 = [(HFServiceItem *)self homeKitObject];
-  v7 = [(HFServiceBuilder *)v5 initWithExistingObject:v6 inHome:v4];
+  homeKitObject = [(HFServiceItem *)self homeKitObject];
+  v7 = [(HFServiceBuilder *)v5 initWithExistingObject:homeKitObject inHome:homeCopy];
 
   return v7;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFServiceItem *)self service];
-  v3 = [HFNamingComponents namingComponentFromService:v2];
+  service = [(HFServiceItem *)self service];
+  v3 = [HFNamingComponents namingComponentFromService:service];
 
   return v3;
 }
 
-- (id)characteristicsToReadForCharacteristicTypes:(id)a3 controlItems:(id)a4
+- (id)characteristicsToReadForCharacteristicTypes:(id)types controlItems:(id)items
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__HFServiceItem_characteristicsToReadForCharacteristicTypes_controlItems___block_invoke;
   v12[3] = &unk_277DF2DD8;
   v12[4] = self;
-  v6 = a4;
-  v7 = [a3 na_flatMap:v12];
+  itemsCopy = items;
+  v7 = [types na_flatMap:v12];
   v8 = [v7 mutableCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
@@ -734,7 +734,7 @@ BOOL __38__HFServiceItem__siriEndPointProfiles__block_invoke(uint64_t a1, void *
   v11[2] = __74__HFServiceItem_characteristicsToReadForCharacteristicTypes_controlItems___block_invoke_3;
   v11[3] = &unk_277E02780;
   v11[4] = self;
-  v9 = [v6 na_flatMap:v11];
+  v9 = [itemsCopy na_flatMap:v11];
 
   [v8 unionSet:v9];
 
@@ -840,25 +840,25 @@ id __74__HFServiceItem_characteristicsToReadForCharacteristicTypes_controlItems_
   return v7;
 }
 
-- (id)performStandardUpdateWithCharacteristicTypes:(id)a3 options:(id)a4
+- (id)performStandardUpdateWithCharacteristicTypes:(id)types options:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  optionsCopy = options;
   v8 = MEMORY[0x277CBEB98];
-  v9 = a3;
+  typesCopy = types;
   v10 = [v8 set];
   v27 = v10;
-  v11 = [(HFServiceItem *)self characteristicsToReadWithCharacteristicTypes:v9 options:v7 controlItems:&v27];
+  v11 = [(HFServiceItem *)self characteristicsToReadWithCharacteristicTypes:typesCopy options:optionsCopy controlItems:&v27];
 
   v12 = v27;
   v13 = [HFServiceLikeItemUpdateRequest alloc];
-  v14 = [(HFServiceItem *)self service];
-  v15 = [(HFServiceItem *)self valueSource];
-  v16 = [(HFServiceLikeItemUpdateRequest *)v13 initWithService:v14 valueSource:v15 characteristics:v11];
+  service = [(HFServiceItem *)self service];
+  valueSource = [(HFServiceItem *)self valueSource];
+  v16 = [(HFServiceLikeItemUpdateRequest *)v13 initWithService:service valueSource:valueSource characteristics:v11];
 
   if (v16)
   {
-    v17 = [(HFServiceLikeItemUpdateRequest *)v16 updateWithOptions:v7];
+    v17 = [(HFServiceLikeItemUpdateRequest *)v16 updateWithOptions:optionsCopy];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __70__HFServiceItem_performStandardUpdateWithCharacteristicTypes_options___block_invoke;
@@ -874,13 +874,13 @@ id __74__HFServiceItem_characteristicsToReadForCharacteristicTypes_controlItems_
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v23 = NSStringFromSelector(a2);
-      v24 = [(HFServiceItem *)self service];
+      service2 = [(HFServiceItem *)self service];
       *buf = 138412802;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
       v31 = v23;
       v32 = 2112;
-      v33 = v24;
+      v33 = service2;
       _os_log_error_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_ERROR, "%@:%@ Failed to create HFServiceLikeItemUpdateRequest. Service: %@ ", buf, 0x20u);
     }
 
@@ -910,12 +910,12 @@ id __70__HFServiceItem_performStandardUpdateWithCharacteristicTypes_options___bl
   return v10;
 }
 
-- (id)characteristicsToReadWithCharacteristicTypes:(id)a3 options:(id)a4 controlItems:(id *)a5
+- (id)characteristicsToReadWithCharacteristicTypes:(id)types options:(id)options controlItems:(id *)items
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HFServiceItem *)self createControlItemsWithOptions:v9];
+  typesCopy = types;
+  optionsCopy = options;
+  v10 = [(HFServiceItem *)self createControlItemsWithOptions:optionsCopy];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __83__HFServiceItem_characteristicsToReadWithCharacteristicTypes_options_controlItems___block_invoke;
@@ -925,19 +925,19 @@ id __70__HFServiceItem_performStandardUpdateWithCharacteristicTypes_options___bl
 
   v48 = v11;
   v51 = [MEMORY[0x277CBEB58] setWithSet:v11];
-  v49 = self;
-  v12 = [(HFServiceItem *)self service];
-  LODWORD(self) = [v12 isPrimaryService];
+  selfCopy = self;
+  service = [(HFServiceItem *)self service];
+  LODWORD(self) = [service isPrimaryService];
 
   if (!self)
   {
     goto LABEL_20;
   }
 
-  v45 = a5;
-  v46 = v9;
-  v47 = v8;
-  [(HFServiceItem *)v49 _siriEndPointProfiles];
+  itemsCopy = items;
+  v46 = optionsCopy;
+  v47 = typesCopy;
+  [(HFServiceItem *)selfCopy _siriEndPointProfiles];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -962,10 +962,10 @@ id __70__HFServiceItem_performStandardUpdateWithCharacteristicTypes_options___bl
 
       v17 = *(*(&v53 + 1) + 8 * i);
       v18 = v15[171];
-      v19 = [v17 mediaProfile];
-      if ([v19 conformsToProtocol:v18])
+      mediaProfile = [v17 mediaProfile];
+      if ([mediaProfile conformsToProtocol:v18])
       {
-        v20 = v19;
+        v20 = mediaProfile;
       }
 
       else
@@ -975,31 +975,31 @@ id __70__HFServiceItem_performStandardUpdateWithCharacteristicTypes_options___bl
 
       v21 = v20;
 
-      v22 = [v21 hf_mediaValueSource];
-      if (v22)
+      hf_mediaValueSource = [v21 hf_mediaValueSource];
+      if (hf_mediaValueSource)
       {
-        v23 = [[HFMediaControlItem alloc] initWithValueSource:v22 mediaProfileContainer:v21 mediaAccessoryItemType:6 displayResults:0];
+        v23 = [[HFMediaControlItem alloc] initWithValueSource:hf_mediaValueSource mediaProfileContainer:v21 mediaAccessoryItemType:6 displayResults:0];
         [v51 addObject:v23];
         if (_os_feature_enabled_impl())
         {
           v24 = v15;
           v25 = +[HFHomeKitDispatcher sharedDispatcher];
-          v26 = [(HFHomePodAlarmControlItem *)v25 home];
-          if (![(HFHomePodTimerControlItem *)v26 hf_currentUserIsAdministrator])
+          home = [(HFHomePodAlarmControlItem *)v25 home];
+          if (![(HFHomePodTimerControlItem *)home hf_currentUserIsAdministrator])
           {
             goto LABEL_15;
           }
 
-          v27 = [v17 hf_siriEndpointProfile];
-          v28 = [v27 supportsOnboarding];
+          hf_siriEndpointProfile = [v17 hf_siriEndpointProfile];
+          supportsOnboarding = [hf_siriEndpointProfile supportsOnboarding];
 
           v15 = v24;
-          if (v28)
+          if (supportsOnboarding)
           {
             v25 = [[HFHomePodAlarmControlItem alloc] initWithMediaProfileContainer:v21 displayResults:0];
             [v51 addObject:v25];
-            v26 = [[HFHomePodTimerControlItem alloc] initWithMediaProfileContainer:v21 displayResults:0];
-            [v51 addObject:v26];
+            home = [[HFHomePodTimerControlItem alloc] initWithMediaProfileContainer:v21 displayResults:0];
+            [v51 addObject:home];
 LABEL_15:
 
             v15 = v24;
@@ -1014,13 +1014,13 @@ LABEL_15:
   while (v14);
 LABEL_19:
 
-  v9 = v46;
-  v8 = v47;
-  a5 = v45;
+  optionsCopy = v46;
+  typesCopy = v47;
+  items = itemsCopy;
 LABEL_20:
   v29 = [v51 copy];
 
-  v30 = [v9 objectForKeyedSubscript:HFItemUpdateOptionPreviousResults];
+  v30 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionPreviousResults];
   v31 = [v30 objectForKeyedSubscript:@"childItems"];
   v32 = v31;
   if (v31)
@@ -1035,23 +1035,23 @@ LABEL_20:
 
   v34 = v33;
 
-  *a5 = [v34 na_setByDiffingWithSet:v29];
-  v35 = [(HFServiceItem *)v49 service];
-  v36 = [v35 hf_serviceDescriptor];
-  v37 = [HFServiceState stateClassForServiceDescriptor:v36];
+  *items = [v34 na_setByDiffingWithSet:v29];
+  service2 = [(HFServiceItem *)selfCopy service];
+  hf_serviceDescriptor = [service2 hf_serviceDescriptor];
+  v37 = [HFServiceState stateClassForServiceDescriptor:hf_serviceDescriptor];
 
   if (v37)
   {
-    v38 = [(objc_class *)v37 requiredCharacteristicTypes];
-    v39 = [(objc_class *)v37 optionalCharacteristicTypes];
-    v40 = [v38 setByAddingObjectsFromSet:v39];
+    requiredCharacteristicTypes = [(objc_class *)v37 requiredCharacteristicTypes];
+    optionalCharacteristicTypes = [(objc_class *)v37 optionalCharacteristicTypes];
+    v40 = [requiredCharacteristicTypes setByAddingObjectsFromSet:optionalCharacteristicTypes];
 
-    v41 = [v8 setByAddingObjectsFromSet:v40];
+    v41 = [typesCopy setByAddingObjectsFromSet:v40];
 
-    v8 = v41;
+    typesCopy = v41;
   }
 
-  v42 = [(HFServiceItem *)v49 characteristicsToReadForCharacteristicTypes:v8 controlItems:*a5];
+  v42 = [(HFServiceItem *)selfCopy characteristicsToReadForCharacteristicTypes:typesCopy controlItems:*items];
 
   v43 = *MEMORY[0x277D85DE8];
 
@@ -1068,91 +1068,91 @@ uint64_t __83__HFServiceItem_characteristicsToReadWithCharacteristicTypes_option
   return v5;
 }
 
-- (id)_augmentedStandardResultsForUpdateResponse:(id)a3 controlItems:(id)a4
+- (id)_augmentedStandardResultsForUpdateResponse:(id)response controlItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 standardResults];
-  v9 = [v8 mutableCopy];
+  responseCopy = response;
+  itemsCopy = items;
+  standardResults = [responseCopy standardResults];
+  v9 = [standardResults mutableCopy];
 
-  v10 = [(HFServiceItem *)self service];
-  v11 = [v10 hf_serviceNameComponents];
+  service = [(HFServiceItem *)self service];
+  hf_serviceNameComponents = [service hf_serviceNameComponents];
 
-  if (v11)
+  if (hf_serviceNameComponents)
   {
-    [v9 setObject:v11 forKeyedSubscript:@"serviceNameComponents"];
-    v12 = [v11 composedString];
-    if (v12)
+    [v9 setObject:hf_serviceNameComponents forKeyedSubscript:@"serviceNameComponents"];
+    composedString = [hf_serviceNameComponents composedString];
+    if (composedString)
     {
-      [v9 setObject:v12 forKeyedSubscript:@"title"];
+      [v9 setObject:composedString forKeyedSubscript:@"title"];
     }
   }
 
-  v13 = [(HFServiceItem *)self service];
-  v14 = [v13 hf_parentRoom];
+  service2 = [(HFServiceItem *)self service];
+  hf_parentRoom = [service2 hf_parentRoom];
 
-  v44 = v14;
-  v15 = [v14 uniqueIdentifier];
-  if (v15)
+  v44 = hf_parentRoom;
+  uniqueIdentifier = [hf_parentRoom uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    [v9 setObject:v15 forKeyedSubscript:@"roomIdentifier"];
+    [v9 setObject:uniqueIdentifier forKeyedSubscript:@"roomIdentifier"];
   }
 
-  v43 = v15;
-  [v9 setObject:v7 forKeyedSubscript:@"childItems"];
-  v16 = [v6 displayMetadata];
-  v17 = [v16 serviceState];
+  v43 = uniqueIdentifier;
+  [v9 setObject:itemsCopy forKeyedSubscript:@"childItems"];
+  displayMetadata = [responseCopy displayMetadata];
+  serviceState = [displayMetadata serviceState];
 
-  if (v17)
+  if (serviceState)
   {
     v18 = objc_alloc_init(HFServiceStateDescriptionFormatter);
     v19 = [v9 objectForKeyedSubscript:@"description"];
 
     if (!v19)
     {
-      v20 = [(HFServiceStateDescriptionFormatter *)v18 stringForObjectValue:v17];
+      v20 = [(HFServiceStateDescriptionFormatter *)v18 stringForObjectValue:serviceState];
       [v9 na_safeSetObject:v20 forKey:@"description"];
     }
 
     [(HFServiceStateDescriptionFormatter *)v18 setDescriptionContext:1];
-    v21 = [(HFServiceStateDescriptionFormatter *)v18 stringForObjectValue:v17];
+    v21 = [(HFServiceStateDescriptionFormatter *)v18 stringForObjectValue:serviceState];
     [v9 na_safeSetObject:v21 forKey:@"controlDescription"];
   }
 
-  v22 = [v6 displayMetadata];
-  v23 = [v22 transitioningPrimaryState];
+  displayMetadata2 = [responseCopy displayMetadata];
+  transitioningPrimaryState = [displayMetadata2 transitioningPrimaryState];
 
-  if (v23)
+  if (transitioningPrimaryState)
   {
     [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isInStateTransition"];
   }
 
   else
   {
-    v24 = [v6 displayMetadata];
-    v23 = [v24 primaryState];
+    displayMetadata3 = [responseCopy displayMetadata];
+    transitioningPrimaryState = [displayMetadata3 primaryState];
   }
 
-  v25 = [(HFServiceItem *)self service];
-  v26 = [v25 hf_iconDescriptor];
+  service3 = [(HFServiceItem *)self service];
+  hf_iconDescriptor = [service3 hf_iconDescriptor];
 
   objc_opt_class();
-  v45 = v7;
+  v45 = itemsCopy;
   if (objc_opt_isKindOfClass())
   {
     v27 = &HFCAPackageStateOn;
-    if (v23 != 2)
+    if (transitioningPrimaryState != 2)
     {
       v27 = &HFCAPackageStateOff;
     }
 
-    v28 = *v27;
-    v29 = [(HFServiceItem *)self service];
-    v30 = [HFServiceIconFactory iconModifiersForService:v29];
+    identifier2 = *v27;
+    service4 = [(HFServiceItem *)self service];
+    v30 = [HFServiceIconFactory iconModifiersForService:service4];
 
     v31 = [HFCAPackageIconDescriptor alloc];
-    v32 = [(__CFString *)v26 identifier];
-    v33 = [(HFCAPackageIconDescriptor *)v31 initWithPackageIdentifier:v32 state:v28 modifiers:v30];
+    identifier = [(__CFString *)hf_iconDescriptor identifier];
+    v33 = [(HFCAPackageIconDescriptor *)v31 initWithPackageIdentifier:identifier state:identifier2 modifiers:v30];
 
     goto LABEL_18;
   }
@@ -1160,17 +1160,17 @@ uint64_t __83__HFServiceItem_characteristicsToReadWithCharacteristicTypes_option
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = [(__CFString *)v26 iconDescriptorForPrimaryState:v23];
+    v41 = [(__CFString *)hf_iconDescriptor iconDescriptorForPrimaryState:transitioningPrimaryState];
     if (v41)
     {
-      v28 = v41;
+      identifier2 = v41;
 
-      v26 = v28;
+      hf_iconDescriptor = identifier2;
     }
 
     else
     {
-      v28 = 0;
+      identifier2 = 0;
     }
 
     goto LABEL_19;
@@ -1180,11 +1180,11 @@ uint64_t __83__HFServiceItem_characteristicsToReadWithCharacteristicTypes_option
   if (objc_opt_isKindOfClass())
   {
     v42 = [HFPrimaryStateIconDescriptor alloc];
-    v28 = [(__CFString *)v26 identifier];
-    v33 = [(HFPrimaryStateIconDescriptor *)v42 initWithIdentifier:v28 primaryState:v23];
+    identifier2 = [(__CFString *)hf_iconDescriptor identifier];
+    v33 = [(HFPrimaryStateIconDescriptor *)v42 initWithIdentifier:identifier2 primaryState:transitioningPrimaryState];
 
 LABEL_18:
-    v26 = v33;
+    hf_iconDescriptor = v33;
 LABEL_19:
 
     goto LABEL_20;
@@ -1193,40 +1193,40 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(HFServiceItem *)self incrementalStateIconDescriptorForPrimaryState:v23 incrementalValue:0];
-    v26 = v28 = v26;
+    [(HFServiceItem *)self incrementalStateIconDescriptorForPrimaryState:transitioningPrimaryState incrementalValue:0];
+    hf_iconDescriptor = identifier2 = hf_iconDescriptor;
     goto LABEL_19;
   }
 
 LABEL_20:
-  [v9 na_safeSetObject:v26 forKey:@"icon"];
-  v34 = [(HFServiceItem *)self service];
-  v35 = [v34 hf_dateAdded];
-  [v9 na_safeSetObject:v35 forKey:@"dateAdded"];
+  [v9 na_safeSetObject:hf_iconDescriptor forKey:@"icon"];
+  service5 = [(HFServiceItem *)self service];
+  hf_dateAdded = [service5 hf_dateAdded];
+  [v9 na_safeSetObject:hf_dateAdded forKey:@"dateAdded"];
 
-  v36 = [(HFServiceItem *)self service];
-  LODWORD(v35) = [v36 hf_hasSetFavorite];
+  service6 = [(HFServiceItem *)self service];
+  LODWORD(hf_dateAdded) = [service6 hf_hasSetFavorite];
 
-  if (v35)
+  if (hf_dateAdded)
   {
     v37 = MEMORY[0x277CCABB0];
-    v38 = [(HFServiceItem *)self service];
-    v39 = [v37 numberWithBool:{objc_msgSend(v38, "hf_isFavorite")}];
+    service7 = [(HFServiceItem *)self service];
+    v39 = [v37 numberWithBool:{objc_msgSend(service7, "hf_isFavorite")}];
     [v9 setObject:v39 forKeyedSubscript:@"isFavorite"];
   }
 
   return v9;
 }
 
-- (id)incrementalStateIconDescriptorForPrimaryState:(int64_t)a3 incrementalValue:(id)a4
+- (id)incrementalStateIconDescriptorForPrimaryState:(int64_t)state incrementalValue:(id)value
 {
-  v6 = a4;
-  v7 = [(HFServiceItem *)self service];
-  v8 = [v7 hf_iconDescriptor];
+  valueCopy = value;
+  service = [(HFServiceItem *)self service];
+  hf_iconDescriptor = [service hf_iconDescriptor];
 
-  v9 = v6;
+  v9 = valueCopy;
   v10 = v9;
-  if (a3 == 2)
+  if (state == 2)
   {
     if (v9)
     {
@@ -1246,102 +1246,102 @@ LABEL_20:
   }
 
   v12 = [HFIncrementalStateIconDescriptor alloc];
-  v13 = [v8 identifier];
-  v14 = [(HFIncrementalStateIconDescriptor *)v12 initWithIdentifier:v13 incrementalState:v11];
+  identifier = [hf_iconDescriptor identifier];
+  v14 = [(HFIncrementalStateIconDescriptor *)v12 initWithIdentifier:identifier incrementalState:v11];
 
   return v14;
 }
 
-- (id)descriptionForCharacteristic:(id)a3 withValue:(id)a4
+- (id)descriptionForCharacteristic:(id)characteristic withValue:(id)value
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAA28];
   v16 = @"serviceType";
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HFServiceItem *)self service];
-  v10 = [v9 serviceType];
-  v17[0] = v10;
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  service = [(HFServiceItem *)self service];
+  serviceType = [service serviceType];
+  v17[0] = serviceType;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v12 = [v6 hf_valueFormatterForCharacteristic:v8 options:v11];
+  v12 = [v6 hf_valueFormatterForCharacteristic:characteristicCopy options:v11];
 
-  v13 = [v12 stringForObjectValue:v7];
+  v13 = [v12 stringForObjectValue:valueCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)controlDescriptionForCharacteristic:(id)a3 withValue:(id)a4
+- (id)controlDescriptionForCharacteristic:(id)characteristic withValue:(id)value
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
-  v10 = [(HFServiceItem *)self service];
-  v11 = [v10 serviceType];
-  [v9 na_safeSetObject:v11 forKey:@"serviceType"];
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  dictionary = [v6 dictionary];
+  service = [(HFServiceItem *)self service];
+  serviceType = [service serviceType];
+  [dictionary na_safeSetObject:serviceType forKey:@"serviceType"];
 
-  v12 = [(HFServiceItem *)self service];
-  v13 = [v12 accessory];
-  v14 = [v13 room];
-  v15 = [v14 name];
-  [v9 na_safeSetObject:v15 forKey:@"roomName"];
+  service2 = [(HFServiceItem *)self service];
+  accessory = [service2 accessory];
+  room = [accessory room];
+  name = [room name];
+  [dictionary na_safeSetObject:name forKey:@"roomName"];
 
-  v16 = [MEMORY[0x277CCAA28] hf_controlDescriptionFormatterForCharacteristic:v8 options:v9];
+  v16 = [MEMORY[0x277CCAA28] hf_controlDescriptionFormatterForCharacteristic:characteristicCopy options:dictionary];
 
-  v17 = [v16 stringForObjectValue:v7];
+  v17 = [v16 stringForObjectValue:valueCopy];
 
   return v17;
 }
 
-- (void)applyInflectionToDescriptions:(id)a3
+- (void)applyInflectionToDescriptions:(id)descriptions
 {
-  v22 = a3;
-  v4 = [(HFServiceItem *)self service];
-  v5 = [v4 hf_serviceNameComponents];
-  v6 = [v5 serviceName];
+  descriptionsCopy = descriptions;
+  service = [(HFServiceItem *)self service];
+  hf_serviceNameComponents = [service hf_serviceNameComponents];
+  serviceName = [hf_serviceNameComponents serviceName];
 
-  v7 = [v22 objectForKeyedSubscript:@"description"];
+  v7 = [descriptionsCopy objectForKeyedSubscript:@"description"];
 
   if (v7)
   {
     v8 = MEMORY[0x277CCA898];
-    v9 = [v22 objectForKeyedSubscript:@"description"];
-    v10 = [v8 hf_attributedStringWithInflectableAccessoryStatus:v9 accessoryName:v6];
-    v11 = [v10 string];
-    [v22 setObject:v11 forKeyedSubscript:@"description"];
+    v9 = [descriptionsCopy objectForKeyedSubscript:@"description"];
+    v10 = [v8 hf_attributedStringWithInflectableAccessoryStatus:v9 accessoryName:serviceName];
+    string = [v10 string];
+    [descriptionsCopy setObject:string forKeyedSubscript:@"description"];
   }
 
-  v12 = [v22 objectForKeyedSubscript:@"controlDescription"];
+  v12 = [descriptionsCopy objectForKeyedSubscript:@"controlDescription"];
 
   if (v12)
   {
     v13 = MEMORY[0x277CCA898];
-    v14 = [v22 objectForKeyedSubscript:@"controlDescription"];
-    v15 = [v13 hf_attributedStringWithInflectableAccessoryStatus:v14 accessoryName:v6];
-    v16 = [v15 string];
-    [v22 setObject:v16 forKeyedSubscript:@"controlDescription"];
+    v14 = [descriptionsCopy objectForKeyedSubscript:@"controlDescription"];
+    v15 = [v13 hf_attributedStringWithInflectableAccessoryStatus:v14 accessoryName:serviceName];
+    string2 = [v15 string];
+    [descriptionsCopy setObject:string2 forKeyedSubscript:@"controlDescription"];
   }
 
-  v17 = [v22 objectForKeyedSubscript:@"detailedControlDescription"];
+  v17 = [descriptionsCopy objectForKeyedSubscript:@"detailedControlDescription"];
 
   if (v17)
   {
     v18 = MEMORY[0x277CCA898];
-    v19 = [v22 objectForKeyedSubscript:@"detailedControlDescription"];
-    v20 = [v18 hf_attributedStringWithInflectableAccessoryStatus:v19 accessoryName:v6];
-    v21 = [v20 string];
-    [v22 setObject:v21 forKeyedSubscript:@"detailedControlDescription"];
+    v19 = [descriptionsCopy objectForKeyedSubscript:@"detailedControlDescription"];
+    v20 = [v18 hf_attributedStringWithInflectableAccessoryStatus:v19 accessoryName:serviceName];
+    string3 = [v20 string];
+    [descriptionsCopy setObject:string3 forKeyedSubscript:@"detailedControlDescription"];
   }
 }
 
 - (id)_allRepresentedServices
 {
-  v3 = [(HFServiceItem *)self service];
-  v4 = [v3 hf_childServices];
-  v5 = [(HFServiceItem *)self service];
-  v6 = [v4 setByAddingObject:v5];
+  service = [(HFServiceItem *)self service];
+  hf_childServices = [service hf_childServices];
+  service2 = [(HFServiceItem *)self service];
+  v6 = [hf_childServices setByAddingObject:service2];
 
   return v6;
 }

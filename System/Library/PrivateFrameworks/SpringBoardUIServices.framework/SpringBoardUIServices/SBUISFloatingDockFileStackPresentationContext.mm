@@ -1,124 +1,124 @@
 @interface SBUISFloatingDockFileStackPresentationContext
-+ (id)fileStackRequestDescription:(int64_t)a3;
++ (id)fileStackRequestDescription:(int64_t)description;
 - (CGRect)anchorFrame;
 - (CGRect)dockFrame;
 - (CGSize)iconImageInfoSize;
-- (SBUISFloatingDockFileStackPresentationContext)initWithContext:(id)a3;
-- (SBUISFloatingDockFileStackPresentationContext)initWithContextIdentifier:(id)a3;
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)a3;
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)a3 request:(int64_t)a4;
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackPresentationContextIdentifier:(id)a3 iconIdentifier:(id)a4 url:(id)a5 sortingBy:(id)a6 sortingOrderAscending:(BOOL)a7 displayMode:(id)a8 anchorFrame:(CGRect)a9 dockFrame:(CGRect)a10 sourceLayerRenderId:(id)a11 sourceContextId:(id)a12 openIndicatorLayerRenderId:(id)a13 openIndicatorContextId:(id)a14 iconImageInfoSize:(CGSize)a15 iconImageInfoScale:(id)a16 iconImageInfoContinuousCornerRadius:(id)a17 request:(int64_t)a18;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBUISFloatingDockFileStackPresentationContext)initWithContext:(id)context;
+- (SBUISFloatingDockFileStackPresentationContext)initWithContextIdentifier:(id)identifier;
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)identifier;
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)identifier request:(int64_t)request;
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackPresentationContextIdentifier:(id)identifier iconIdentifier:(id)iconIdentifier url:(id)url sortingBy:(id)by sortingOrderAscending:(BOOL)ascending displayMode:(id)mode anchorFrame:(CGRect)frame dockFrame:(CGRect)self0 sourceLayerRenderId:(id)self1 sourceContextId:(id)self2 openIndicatorLayerRenderId:(id)self3 openIndicatorContextId:(id)self4 iconImageInfoSize:(CGSize)self5 iconImageInfoScale:(id)self6 iconImageInfoContinuousCornerRadius:(id)self7 request:(int64_t)self8;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBUISFloatingDockFileStackPresentationContext
 
-- (SBUISFloatingDockFileStackPresentationContext)initWithContextIdentifier:(id)a3
+- (SBUISFloatingDockFileStackPresentationContext)initWithContextIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBUISFloatingDockFileStackPresentationContext *)self iconIdentifier];
+  identifierCopy = identifier;
+  iconIdentifier = [(SBUISFloatingDockFileStackPresentationContext *)self iconIdentifier];
   v6 = [MEMORY[0x1E695DFF8] URLWithString:@"/DownloadNotSentinel"];
-  v7 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:v4 iconIdentifier:v5 url:v6 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 300];
+  v7 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:identifierCopy iconIdentifier:iconIdentifier url:v6 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 300];
 
   return v7;
 }
 
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)a3
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
+  identifierCopy = identifier;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
   v8 = [MEMORY[0x1E695DFF8] URLWithString:@"/DownloadNotSentinel"];
-  v9 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:v7 iconIdentifier:v5 url:v8 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 201];
+  v9 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:uUIDString iconIdentifier:identifierCopy url:v8 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), 201];
 
   return v9;
 }
 
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)a3 request:(int64_t)a4
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackIconIdentifier:(id)identifier request:(int64_t)request
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
+  identifierCopy = identifier;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
   v10 = [MEMORY[0x1E695DFF8] URLWithString:@"/DownloadNotSentinel"];
-  v11 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:v9 iconIdentifier:v7 url:v10 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), a4];
+  request = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:uUIDString iconIdentifier:identifierCopy url:v10 sortingBy:@"FileName" sortingOrderAscending:1 displayMode:@"FanOut" anchorFrame:*MEMORY[0x1E695F058] dockFrame:*(MEMORY[0x1E695F058] + 8) request:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), request];
 
-  return v11;
+  return request;
 }
 
-- (SBUISFloatingDockFileStackPresentationContext)initWithContext:(id)a3
+- (SBUISFloatingDockFileStackPresentationContext)initWithContext:(id)context
 {
-  v3 = a3;
-  v39 = [v3 uuid];
-  v34 = [v3 iconIdentifier];
-  v4 = [v3 url];
-  v5 = [v3 sortingBy];
-  v36 = [v3 sortingOrderAscending];
-  v35 = [v3 displayMode];
-  [v3 anchorFrame];
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  iconIdentifier = [contextCopy iconIdentifier];
+  v4 = [contextCopy url];
+  sortingBy = [contextCopy sortingBy];
+  sortingOrderAscending = [contextCopy sortingOrderAscending];
+  displayMode = [contextCopy displayMode];
+  [contextCopy anchorFrame];
   v32 = v7;
   v33 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 dockFrame];
+  [contextCopy dockFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v31 = [v3 sourceLayerRenderId];
-  v20 = [v3 sourceContextId];
-  v21 = [v3 openIndicatorLayerRenderId];
-  v22 = [v3 openIndicatorContextId];
-  [v3 iconImageInfoSize];
+  sourceLayerRenderId = [contextCopy sourceLayerRenderId];
+  sourceContextId = [contextCopy sourceContextId];
+  openIndicatorLayerRenderId = [contextCopy openIndicatorLayerRenderId];
+  openIndicatorContextId = [contextCopy openIndicatorContextId];
+  [contextCopy iconImageInfoSize];
   v24 = v23;
   v26 = v25;
-  v27 = [v3 iconImageInfoScale];
-  v28 = [v3 iconImageInfoContinuousCornerRadius];
-  v29 = [v3 request];
+  iconImageInfoScale = [contextCopy iconImageInfoScale];
+  iconImageInfoContinuousCornerRadius = [contextCopy iconImageInfoContinuousCornerRadius];
+  request = [contextCopy request];
 
-  v38 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:v39 iconIdentifier:v34 url:v4 sortingBy:v5 sortingOrderAscending:v36 displayMode:v35 anchorFrame:v33 dockFrame:v32 sourceLayerRenderId:v9 sourceContextId:v11 openIndicatorLayerRenderId:v13 openIndicatorContextId:v15 iconImageInfoSize:v17 iconImageInfoScale:v19 iconImageInfoContinuousCornerRadius:v31 request:v20, v21, v22, v24, v26, v27, v28, v29];
+  v38 = [(SBUISFloatingDockFileStackPresentationContext *)self initWithFileStackPresentationContextIdentifier:uuid iconIdentifier:iconIdentifier url:v4 sortingBy:sortingBy sortingOrderAscending:sortingOrderAscending displayMode:displayMode anchorFrame:v33 dockFrame:v32 sourceLayerRenderId:v9 sourceContextId:v11 openIndicatorLayerRenderId:v13 openIndicatorContextId:v15 iconImageInfoSize:v17 iconImageInfoScale:v19 iconImageInfoContinuousCornerRadius:sourceLayerRenderId request:sourceContextId, openIndicatorLayerRenderId, openIndicatorContextId, v24, v26, iconImageInfoScale, iconImageInfoContinuousCornerRadius, request];
   return v38;
 }
 
-- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackPresentationContextIdentifier:(id)a3 iconIdentifier:(id)a4 url:(id)a5 sortingBy:(id)a6 sortingOrderAscending:(BOOL)a7 displayMode:(id)a8 anchorFrame:(CGRect)a9 dockFrame:(CGRect)a10 sourceLayerRenderId:(id)a11 sourceContextId:(id)a12 openIndicatorLayerRenderId:(id)a13 openIndicatorContextId:(id)a14 iconImageInfoSize:(CGSize)a15 iconImageInfoScale:(id)a16 iconImageInfoContinuousCornerRadius:(id)a17 request:(int64_t)a18
+- (SBUISFloatingDockFileStackPresentationContext)initWithFileStackPresentationContextIdentifier:(id)identifier iconIdentifier:(id)iconIdentifier url:(id)url sortingBy:(id)by sortingOrderAscending:(BOOL)ascending displayMode:(id)mode anchorFrame:(CGRect)frame dockFrame:(CGRect)self0 sourceLayerRenderId:(id)self1 sourceContextId:(id)self2 openIndicatorLayerRenderId:(id)self3 openIndicatorContextId:(id)self4 iconImageInfoSize:(CGSize)self5 iconImageInfoScale:(id)self6 iconImageInfoContinuousCornerRadius:(id)self7 request:(int64_t)self8
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
-  v25 = a9.size.height;
-  v26 = a9.size.width;
-  v27 = a9.origin.y;
-  v28 = a9.origin.x;
-  v29 = a3;
-  v30 = a4;
-  v63 = a5;
-  v31 = a6;
-  v32 = a8;
-  v33 = a11;
-  v34 = a12;
-  v35 = a13;
-  v36 = a14;
-  v37 = v31;
-  v62 = a16;
-  v38 = a17;
+  height = dockFrame.size.height;
+  width = dockFrame.size.width;
+  y = dockFrame.origin.y;
+  x = dockFrame.origin.x;
+  v25 = frame.size.height;
+  v26 = frame.size.width;
+  v27 = frame.origin.y;
+  v28 = frame.origin.x;
+  identifierCopy = identifier;
+  iconIdentifierCopy = iconIdentifier;
+  urlCopy = url;
+  byCopy = by;
+  modeCopy = mode;
+  idCopy = id;
+  contextIdCopy = contextId;
+  renderIdCopy = renderId;
+  indicatorContextIdCopy = indicatorContextId;
+  v37 = byCopy;
+  scaleCopy = scale;
+  radiusCopy = radius;
   v64.receiver = self;
   v64.super_class = SBUISFloatingDockFileStackPresentationContext;
   v39 = [(SBUISFloatingDockFileStackPresentationContext *)&v64 init];
   if (v39)
   {
-    v40 = [v29 copy];
+    v40 = [identifierCopy copy];
     uuid = v39->_uuid;
     v39->_uuid = v40;
 
-    v42 = [v30 copy];
+    v42 = [iconIdentifierCopy copy];
     iconIdentifier = v39->_iconIdentifier;
     v39->_iconIdentifier = v42;
 
-    v44 = [v63 copy];
+    v44 = [urlCopy copy];
     url = v39->_url;
     v39->_url = v44;
 
@@ -126,8 +126,8 @@
     sortingBy = v39->_sortingBy;
     v39->_sortingBy = v46;
 
-    v39->_sortingOrderAscending = a7;
-    v48 = [v32 copy];
+    v39->_sortingOrderAscending = ascending;
+    v48 = [modeCopy copy];
     displayMode = v39->_displayMode;
     v39->_displayMode = v48;
 
@@ -139,45 +139,45 @@
     v39->_dockFrame.origin.y = y;
     v39->_dockFrame.size.width = width;
     v39->_dockFrame.size.height = height;
-    v50 = [v33 copy];
+    v50 = [idCopy copy];
     sourceLayerRenderId = v39->_sourceLayerRenderId;
     v39->_sourceLayerRenderId = v50;
 
-    v52 = [v34 copy];
+    v52 = [contextIdCopy copy];
     sourceContextId = v39->_sourceContextId;
     v39->_sourceContextId = v52;
 
-    v54 = [v35 copy];
+    v54 = [renderIdCopy copy];
     openIndicatorLayerRenderId = v39->_openIndicatorLayerRenderId;
     v39->_openIndicatorLayerRenderId = v54;
 
-    v56 = [v36 copy];
+    v56 = [indicatorContextIdCopy copy];
     openIndicatorContextId = v39->_openIndicatorContextId;
     v39->_openIndicatorContextId = v56;
 
-    v39->_iconImageInfoSize = a15;
-    objc_storeStrong(&v39->_iconImageInfoScale, a16);
-    objc_storeStrong(&v39->_iconImageInfoContinuousCornerRadius, a17);
-    v39->_request = a18;
+    v39->_iconImageInfoSize = size;
+    objc_storeStrong(&v39->_iconImageInfoScale, scale);
+    objc_storeStrong(&v39->_iconImageInfoContinuousCornerRadius, radius);
+    v39->_request = request;
   }
 
   return v39;
 }
 
-+ (id)fileStackRequestDescription:(int64_t)a3
++ (id)fileStackRequestDescription:(int64_t)description
 {
-  if (a3 <= 106)
+  if (description <= 106)
   {
-    if (a3 <= 102)
+    if (description <= 102)
     {
-      if (a3 != 100)
+      if (description != 100)
       {
-        if (a3 == 101)
+        if (description == 101)
         {
           return @"SBUISFloatingDockFileStackRequestCloseFromHost";
         }
 
-        if (a3 == 102)
+        if (description == 102)
         {
           return @"SBUISFloatingDockFileStackRequestIconAddedFromHost";
         }
@@ -188,9 +188,9 @@
       return @"SBUISFloatingDockFileStackRequestOpenFromHost";
     }
 
-    else if (a3 > 104)
+    else if (description > 104)
     {
-      if (a3 == 105)
+      if (description == 105)
       {
         return @"SBUISFloatingDockFileStackRequestFinishDownloadAnimationDidEndFromHost";
       }
@@ -201,7 +201,7 @@
       }
     }
 
-    else if (a3 == 103)
+    else if (description == 103)
     {
       return @"SBUISFloatingDockFileStackRequestIconRemovedFromHost";
     }
@@ -214,16 +214,16 @@
 
   else
   {
-    if (a3 > 202)
+    if (description > 202)
     {
-      if (a3 > 300)
+      if (description > 300)
       {
-        if (a3 == 301)
+        if (description == 301)
         {
           return @"SBUISFloatingDockFileStackRequestAcknowledgeFinishOpeningAnimationFromClient";
         }
 
-        if (a3 == 302)
+        if (description == 302)
         {
           return @"SBUISFloatingDockFileStackRequestAcknowledgeFinishClosingAnimationFromClient";
         }
@@ -231,12 +231,12 @@
 
       else
       {
-        if (a3 == 203)
+        if (description == 203)
         {
           return @"SBUISFloatingDockFileStackRequestIconRemovedFromClient";
         }
 
-        if (a3 == 300)
+        if (description == 300)
         {
           return @"SBUISFloatingDockFileStackRequestCompletionFromClient";
         }
@@ -245,14 +245,14 @@
       return @"Unknown request";
     }
 
-    if (a3 <= 200)
+    if (description <= 200)
     {
-      if (a3 == 107)
+      if (description == 107)
       {
         return @"SBUISFloatingDockFileStackRequestCloseWithoutAnimationFromHost";
       }
 
-      if (a3 == 200)
+      if (description == 200)
       {
         return @"SBUISFloatingDockFileStackRequestOpenFromClient";
       }
@@ -260,7 +260,7 @@
       return @"Unknown request";
     }
 
-    if (a3 == 201)
+    if (description == 201)
     {
       return @"SBUISFloatingDockFileStackRequestCloseFromClient";
     }
@@ -274,31 +274,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBUISFloatingDockFileStackPresentationContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBUISFloatingDockFileStackPresentationContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBUISFloatingDockFileStackPresentationContext *)self uuid];
-  [v3 appendString:v4 withName:@"uuid"];
+  uuid = [(SBUISFloatingDockFileStackPresentationContext *)self uuid];
+  [v3 appendString:uuid withName:@"uuid"];
 
-  v5 = [(SBUISFloatingDockFileStackPresentationContext *)self iconIdentifier];
-  [v3 appendString:v5 withName:@"identifier"];
+  iconIdentifier = [(SBUISFloatingDockFileStackPresentationContext *)self iconIdentifier];
+  [v3 appendString:iconIdentifier withName:@"identifier"];
 
   v6 = [(SBUISFloatingDockFileStackPresentationContext *)self url];
-  v7 = [v6 absoluteString];
-  [v3 appendString:v7 withName:@"url"];
+  absoluteString = [v6 absoluteString];
+  [v3 appendString:absoluteString withName:@"url"];
 
-  v8 = [(SBUISFloatingDockFileStackPresentationContext *)self sortingBy];
-  [v3 appendString:v8 withName:@"sortingBy"];
+  sortingBy = [(SBUISFloatingDockFileStackPresentationContext *)self sortingBy];
+  [v3 appendString:sortingBy withName:@"sortingBy"];
 
   v9 = [v3 appendBool:-[SBUISFloatingDockFileStackPresentationContext sortingOrderAscending](self withName:{"sortingOrderAscending"), @"sortingOrderAscending"}];
-  v10 = [(SBUISFloatingDockFileStackPresentationContext *)self displayMode];
-  [v3 appendString:v10 withName:@"displayMode"];
+  displayMode = [(SBUISFloatingDockFileStackPresentationContext *)self displayMode];
+  [v3 appendString:displayMode withName:@"displayMode"];
 
   [(SBUISFloatingDockFileStackPresentationContext *)self anchorFrame];
   v11 = NSStringFromCGRect(v32);
@@ -308,43 +308,43 @@
   v12 = NSStringFromCGRect(v33);
   [v3 appendString:v12 withName:@"dockFrame"];
 
-  v13 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceLayerRenderId];
+  sourceLayerRenderId = [(SBUISFloatingDockFileStackPresentationContext *)self sourceLayerRenderId];
 
-  if (v13)
+  if (sourceLayerRenderId)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceLayerRenderId];
-    v16 = [v14 stringWithFormat:@"%llu", objc_msgSend(v15, "unsignedLongLongValue")];
+    sourceLayerRenderId2 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceLayerRenderId];
+    v16 = [v14 stringWithFormat:@"%llu", objc_msgSend(sourceLayerRenderId2, "unsignedLongLongValue")];
     [v3 appendString:v16 withName:@"sourceLayerRenderId"];
   }
 
-  v17 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceContextId];
+  sourceContextId = [(SBUISFloatingDockFileStackPresentationContext *)self sourceContextId];
 
-  if (v17)
+  if (sourceContextId)
   {
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceContextId];
-    v20 = [v18 stringWithFormat:@"%u", objc_msgSend(v19, "unsignedIntValue")];
+    sourceContextId2 = [(SBUISFloatingDockFileStackPresentationContext *)self sourceContextId];
+    v20 = [v18 stringWithFormat:@"%u", objc_msgSend(sourceContextId2, "unsignedIntValue")];
     [v3 appendString:v20 withName:@"sourceContextId"];
   }
 
-  v21 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorLayerRenderId];
+  openIndicatorLayerRenderId = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorLayerRenderId];
 
-  if (v21)
+  if (openIndicatorLayerRenderId)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorLayerRenderId];
-    v24 = [v22 stringWithFormat:@"%llu", objc_msgSend(v23, "unsignedLongLongValue")];
+    openIndicatorLayerRenderId2 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorLayerRenderId];
+    v24 = [v22 stringWithFormat:@"%llu", objc_msgSend(openIndicatorLayerRenderId2, "unsignedLongLongValue")];
     [v3 appendString:v24 withName:@"openIndicatorLayerRenderId"];
   }
 
-  v25 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorContextId];
+  openIndicatorContextId = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorContextId];
 
-  if (v25)
+  if (openIndicatorContextId)
   {
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorContextId];
-    v28 = [v26 stringWithFormat:@"%u", objc_msgSend(v27, "unsignedIntValue")];
+    openIndicatorContextId2 = [(SBUISFloatingDockFileStackPresentationContext *)self openIndicatorContextId];
+    v28 = [v26 stringWithFormat:@"%u", objc_msgSend(openIndicatorContextId2, "unsignedIntValue")];
     [v3 appendString:v28 withName:@"openIndicatorContextId"];
   }
 
@@ -354,12 +354,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBUISFloatingDockFileStackPresentationContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBUISFloatingDockFileStackPresentationContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (CGRect)anchorFrame

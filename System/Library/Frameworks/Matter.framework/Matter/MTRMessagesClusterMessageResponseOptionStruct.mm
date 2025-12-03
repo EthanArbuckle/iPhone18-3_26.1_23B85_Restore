@@ -1,6 +1,6 @@
 @interface MTRMessagesClusterMessageResponseOptionStruct
 - (MTRMessagesClusterMessageResponseOptionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterMessageResponseOptionStruct);
-  v5 = [(MTRMessagesClusterMessageResponseOptionStruct *)self messageResponseID];
-  [(MTRMessagesClusterMessageResponseOptionStruct *)v4 setMessageResponseID:v5];
+  messageResponseID = [(MTRMessagesClusterMessageResponseOptionStruct *)self messageResponseID];
+  [(MTRMessagesClusterMessageResponseOptionStruct *)v4 setMessageResponseID:messageResponseID];
 
-  v6 = [(MTRMessagesClusterMessageResponseOptionStruct *)self label];
-  [(MTRMessagesClusterMessageResponseOptionStruct *)v4 setLabel:v6];
+  label = [(MTRMessagesClusterMessageResponseOptionStruct *)self label];
+  [(MTRMessagesClusterMessageResponseOptionStruct *)v4 setLabel:label];
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface NSHTMLWebDelegate
 - (NSHTMLWebDelegate)init;
-- (NSHTMLWebDelegate)initWithBaseURL:(id)a3;
+- (NSHTMLWebDelegate)initWithBaseURL:(id)l;
 - (void)dealloc;
-- (void)decidePolicyForRequest:(id)a3 decisionListener:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5;
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webView:(id)a3 resource:(id)a4 didReceiveAuthenticationChallenge:(id)a5 fromDataSource:(id)a6;
+- (void)decidePolicyForRequest:(id)request decisionListener:(id)listener;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame;
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame;
+- (void)webView:(id)view resource:(id)resource didReceiveAuthenticationChallenge:(id)challenge fromDataSource:(id)source;
 @end
 
 @implementation NSHTMLWebDelegate
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (NSHTMLWebDelegate)initWithBaseURL:(id)a3
+- (NSHTMLWebDelegate)initWithBaseURL:(id)l
 {
   v4 = [(NSHTMLWebDelegate *)self init];
-  v4->_baseURL = a3;
+  v4->_baseURL = l;
   return v4;
 }
 
@@ -35,9 +35,9 @@
   [(NSHTMLWebDelegate *)&v3 dealloc];
 }
 
-- (void)webView:(id)a3 didFailProvisionalLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailProvisionalLoadWithError:(id)error forFrame:(id)frame
 {
-  if ([a3 mainFrame] == a5)
+  if ([view mainFrame] == frame)
   {
     self->_loadDidFinish = 1;
   }
@@ -47,9 +47,9 @@
   CFRunLoopStop(Current);
 }
 
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame
 {
-  if ([a3 mainFrame] == a4)
+  if ([view mainFrame] == frame)
   {
     *&self->_loadDidFinish = 257;
   }
@@ -59,9 +59,9 @@
   CFRunLoopStop(Current);
 }
 
-- (void)webView:(id)a3 didFailLoadWithError:(id)a4 forFrame:(id)a5
+- (void)webView:(id)view didFailLoadWithError:(id)error forFrame:(id)frame
 {
-  if ([a3 mainFrame] == a5)
+  if ([view mainFrame] == frame)
   {
     self->_loadDidFinish = 1;
   }
@@ -71,33 +71,33 @@
   CFRunLoopStop(Current);
 }
 
-- (void)webView:(id)a3 resource:(id)a4 didReceiveAuthenticationChallenge:(id)a5 fromDataSource:(id)a6
+- (void)webView:(id)view resource:(id)resource didReceiveAuthenticationChallenge:(id)challenge fromDataSource:(id)source
 {
-  v7 = [a5 sender];
+  sender = [challenge sender];
 
-  [v7 continueWithoutCredentialForAuthenticationChallenge:a5];
+  [sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
-- (void)decidePolicyForRequest:(id)a3 decisionListener:(id)a4
+- (void)decidePolicyForRequest:(id)request decisionListener:(id)listener
 {
-  v6 = [a3 URL];
-  v7 = [(NSURL *)v6 scheme];
-  if (v6 && ((v8 = v7, v6 != self->_baseURL) ? (v9 = v7 == 0) : (v9 = 1), !v9 && ([(NSString *)v7 isEqualToString:@"mailto"]|| [(NSString *)v8 isEqualToString:@"rdar"]|| [(NSString *)v8 isEqualToString:@"radar"]) && ([(NSURL *)v6 isEqual:self->_baseURL]& 1) == 0 && ![[(NSURL *)v6 absoluteURL] isEqual:[(NSURL *)self->_baseURL absoluteURL]]))
+  v6 = [request URL];
+  scheme = [(NSURL *)v6 scheme];
+  if (v6 && ((v8 = scheme, v6 != self->_baseURL) ? (v9 = scheme == 0) : (v9 = 1), !v9 && ([(NSString *)scheme isEqualToString:@"mailto"]|| [(NSString *)v8 isEqualToString:@"rdar"]|| [(NSString *)v8 isEqualToString:@"radar"]) && ([(NSURL *)v6 isEqual:self->_baseURL]& 1) == 0 && ![[(NSURL *)v6 absoluteURL] isEqual:[(NSURL *)self->_baseURL absoluteURL]]))
   {
 
-    [a4 ignore];
+    [listener ignore];
   }
 
   else
   {
 
-    [a4 use];
+    [listener use];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  if (![a6 frameElement])
+  if (![frame frameElement])
   {
     goto LABEL_10;
   }
@@ -107,17 +107,17 @@
     [NSHTMLWebDelegate webView:decidePolicyForNavigationAction:request:frame:decisionListener:];
   }
 
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10 = [a5 URL]) != 0 && objc_msgSend(v10, "isFileURL"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10 = [request URL]) != 0 && objc_msgSend(v10, "isFileURL"))
   {
 
-    [a7 ignore];
+    [listener ignore];
   }
 
   else
   {
 LABEL_10:
 
-    [(NSHTMLWebDelegate *)self decidePolicyForRequest:a5 decisionListener:a7];
+    [(NSHTMLWebDelegate *)self decidePolicyForRequest:request decisionListener:listener];
   }
 }
 

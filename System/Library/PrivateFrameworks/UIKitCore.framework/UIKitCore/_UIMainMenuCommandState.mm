@@ -1,62 +1,62 @@
 @interface _UIMainMenuCommandState
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuCommandState)initWithCoder:(id)a3;
-- (id)_initWithValidatedMenuLeaf:(id)a3 localizedKeyCombination:(id)a4 isPerformable:(BOOL)a5;
-- (id)_resolvedAttributedTitleWithPasteVariant:(id)a3;
-- (id)_resolvedImageWithPasteVariant:(id)a3;
-- (id)_resolvedSelectedImageWithPasteVariant:(id)a3;
-- (id)_resolvedTitleWithPasteVariant:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuCommandState)initWithCoder:(id)coder;
+- (id)_initWithValidatedMenuLeaf:(id)leaf localizedKeyCombination:(id)combination isPerformable:(BOOL)performable;
+- (id)_resolvedAttributedTitleWithPasteVariant:(id)variant;
+- (id)_resolvedImageWithPasteVariant:(id)variant;
+- (id)_resolvedSelectedImageWithPasteVariant:(id)variant;
+- (id)_resolvedTitleWithPasteVariant:(id)variant;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuCommandState
 
-- (id)_initWithValidatedMenuLeaf:(id)a3 localizedKeyCombination:(id)a4 isPerformable:(BOOL)a5
+- (id)_initWithValidatedMenuLeaf:(id)leaf localizedKeyCombination:(id)combination isPerformable:(BOOL)performable
 {
-  v9 = a3;
-  v10 = a4;
+  leafCopy = leaf;
+  combinationCopy = combination;
   v14.receiver = self;
   v14.super_class = _UIMainMenuCommandState;
   v11 = [(_UIMainMenuCommandState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_validatedMenuLeaf, a3);
-    objc_storeStrong(&v12->_localizedKeyCombination, a4);
-    v12->_performable = a5;
+    objc_storeStrong(&v11->_validatedMenuLeaf, leaf);
+    objc_storeStrong(&v12->_localizedKeyCombination, combination);
+    v12->_performable = performable;
   }
 
   return v12;
 }
 
-- (id)_resolvedTitleWithPasteVariant:(id)a3
+- (id)_resolvedTitleWithPasteVariant:(id)variant
 {
-  v4 = [a3 localizedStringForLocalization:0];
+  v4 = [variant localizedStringForLocalization:0];
   if ([v4 length])
   {
-    v5 = v4;
+    title2 = v4;
 LABEL_7:
-    v11 = v5;
+    v11 = title2;
     goto LABEL_8;
   }
 
-  v6 = [(_UIMenuLeaf *)self->_validatedMenuLeaf title];
-  v7 = [v6 length];
+  title = [(_UIMenuLeaf *)self->_validatedMenuLeaf title];
+  v7 = [title length];
 
   validatedMenuLeaf = self->_validatedMenuLeaf;
   if (v7)
   {
-    v5 = [(_UIMenuLeaf *)validatedMenuLeaf title];
+    title2 = [(_UIMenuLeaf *)validatedMenuLeaf title];
     goto LABEL_7;
   }
 
-  v9 = [(_UIMenuLeaf *)validatedMenuLeaf discoverabilityTitle];
-  v10 = [v9 length];
+  discoverabilityTitle = [(_UIMenuLeaf *)validatedMenuLeaf discoverabilityTitle];
+  v10 = [discoverabilityTitle length];
 
   if (v10)
   {
-    v5 = [(_UIMenuLeaf *)self->_validatedMenuLeaf discoverabilityTitle];
+    title2 = [(_UIMenuLeaf *)self->_validatedMenuLeaf discoverabilityTitle];
     goto LABEL_7;
   }
 
@@ -66,27 +66,27 @@ LABEL_8:
   return v11;
 }
 
-- (id)_resolvedAttributedTitleWithPasteVariant:(id)a3
+- (id)_resolvedAttributedTitleWithPasteVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
-    v5 = 0;
+    attributedTitle = 0;
   }
 
   else
   {
-    v5 = [(_UIMenuLeaf *)self->_validatedMenuLeaf attributedTitle];
+    attributedTitle = [(_UIMenuLeaf *)self->_validatedMenuLeaf attributedTitle];
   }
 
-  return v5;
+  return attributedTitle;
 }
 
-- (id)_resolvedImageWithPasteVariant:(id)a3
+- (id)_resolvedImageWithPasteVariant:(id)variant
 {
-  v4 = [a3 glyph];
-  if ([v4 length])
+  glyph = [variant glyph];
+  if ([glyph length])
   {
-    [UIImage _systemImageNamed:v4];
+    [UIImage _systemImageNamed:glyph];
   }
 
   else
@@ -98,54 +98,54 @@ LABEL_8:
   return v5;
 }
 
-- (id)_resolvedSelectedImageWithPasteVariant:(id)a3
+- (id)_resolvedSelectedImageWithPasteVariant:(id)variant
 {
-  if (a3)
+  if (variant)
   {
-    v5 = 0;
+    selectedImage = 0;
   }
 
   else
   {
-    v5 = [(_UIMenuLeaf *)self->_validatedMenuLeaf selectedImage];
+    selectedImage = [(_UIMenuLeaf *)self->_validatedMenuLeaf selectedImage];
   }
 
-  return v5;
+  return selectedImage;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   validatedMenuLeaf = self->_validatedMenuLeaf;
-  v5 = a3;
-  [v5 encodeObject:validatedMenuLeaf forKey:@"ValidatedMenuLeaf"];
-  [v5 encodeObject:self->_localizedKeyCombination forKey:@"LocalizedKeyCombination"];
-  [v5 encodeBool:self->_performable forKey:@"Performable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:validatedMenuLeaf forKey:@"ValidatedMenuLeaf"];
+  [coderCopy encodeObject:self->_localizedKeyCombination forKey:@"LocalizedKeyCombination"];
+  [coderCopy encodeBool:self->_performable forKey:@"Performable"];
 }
 
-- (_UIMainMenuCommandState)initWithCoder:(id)a3
+- (_UIMainMenuCommandState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuCommandState *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"ValidatedMenuLeaf"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"ValidatedMenuLeaf"];
     validatedMenuLeaf = v5->_validatedMenuLeaf;
     v5->_validatedMenuLeaf = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"LocalizedKeyCombination"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"LocalizedKeyCombination"];
     localizedKeyCombination = v5->_localizedKeyCombination;
     v5->_localizedKeyCombination = v10;
 
-    v5->_performable = [v4 decodeBoolForKey:@"Performable"];
+    v5->_performable = [coderCopy decodeBoolForKey:@"Performable"];
     v12 = objc_opt_self();
     LOBYTE(v9) = objc_opt_isKindOfClass();
 
     if (v9)
     {
       v13 = v5->_validatedMenuLeaf;
-      v14 = [UIApp _hardwareKeyboard];
+      _hardwareKeyboard = [UIApp _hardwareKeyboard];
       if (_UIInternalPreferencesRevisionOnce != -1)
       {
         dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -184,17 +184,17 @@ LABEL_8:
         v17 = 0;
       }
 
-      [(_UIMenuLeaf *)v13 _localizeWithGSKeyboard:v14 automatically:v17 force:0];
+      [(_UIMenuLeaf *)v13 _localizeWithGSKeyboard:_hardwareKeyboard automatically:v17 force:0];
     }
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -206,7 +206,7 @@ LABEL_8:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       validatedMenuLeaf = v7->_validatedMenuLeaf;
       v9 = self->_validatedMenuLeaf;
       v10 = validatedMenuLeaf;
@@ -277,9 +277,9 @@ LABEL_21:
   v4 = [v3 appendObject:self->_validatedMenuLeaf withName:@"_validatedMenuLeaf"];
   v5 = [v3 appendObject:self->_localizedKeyCombination withName:@"_localizedKeyCombination" skipIfNil:1];
   v6 = [v3 appendBool:self->_performable withName:@"_performable"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

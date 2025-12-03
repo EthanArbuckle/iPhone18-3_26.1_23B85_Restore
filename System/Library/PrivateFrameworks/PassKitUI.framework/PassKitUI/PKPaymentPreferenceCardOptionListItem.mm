@@ -1,6 +1,6 @@
 @interface PKPaymentPreferenceCardOptionListItem
 - (PKPaymentPass)pass;
-- (id)_censoredPANTextForPass:(id)a3;
+- (id)_censoredPANTextForPass:(id)pass;
 - (id)_image;
 - (id)_secondaryText;
 - (id)_text;
@@ -10,20 +10,20 @@
 
 - (PKPaymentPass)pass
 {
-  v2 = [(PKPaymentPreferenceOptionListItem *)self preference];
+  preference = [(PKPaymentPreferenceOptionListItem *)self preference];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 pass];
+    pass = [preference pass];
 LABEL_5:
-    v4 = v3;
+    v4 = pass;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    pass = preference;
     goto LABEL_5;
   }
 
@@ -35,16 +35,16 @@ LABEL_7:
 
 - (id)_text
 {
-  v2 = [(PKPaymentPreferenceCardOptionListItem *)self pass];
-  v3 = [v2 localizedDescription];
+  pass = [(PKPaymentPreferenceCardOptionListItem *)self pass];
+  localizedDescription = [pass localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 - (id)_secondaryText
 {
-  v3 = [(PKPaymentPreferenceCardOptionListItem *)self pass];
-  v4 = [(PKPaymentPreferenceCardOptionListItem *)self _censoredPANTextForPass:v3];
+  pass = [(PKPaymentPreferenceCardOptionListItem *)self pass];
+  v4 = [(PKPaymentPreferenceCardOptionListItem *)self _censoredPANTextForPass:pass];
 
   return v4;
 }
@@ -52,8 +52,8 @@ LABEL_7:
 - (id)_image
 {
   v3 = [PKPassView alloc];
-  v4 = [(PKPaymentPreferenceCardOptionListItem *)self pass];
-  v5 = [(PKPassView *)v3 initWithPass:v4 content:4 suppressedContent:2039];
+  pass = [(PKPaymentPreferenceCardOptionListItem *)self pass];
+  v5 = [(PKPassView *)v3 initWithPass:pass content:4 suppressedContent:2039];
 
   PKPassFrontFaceContentSize();
   PKFloatRoundToPixel();
@@ -62,21 +62,21 @@ LABEL_7:
   return v7;
 }
 
-- (id)_censoredPANTextForPass:(id)a3
+- (id)_censoredPANTextForPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 isAccessPass])
+  passCopy = pass;
+  if ([passCopy isAccessPass])
   {
-    v4 = [v3 fieldForKey:*MEMORY[0x1E69BC0D8]];
-    v5 = [v4 value];
+    v4 = [passCopy fieldForKey:*MEMORY[0x1E69BC0D8]];
+    value = [v4 value];
   }
 
-  else if (![v3 hasAssociatedPeerPaymentAccount] || (objc_msgSend(v3, "peerPaymentBalance"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6) || (objc_msgSend(v3, "peerPaymentBalance"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "minimalFormattedStringValue"), v8 = objc_claimAutoreleasedReturnValue(), PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInA.isa, &stru_1F3BD5BF0.isa, v8), v5 = objc_claimAutoreleasedReturnValue(), v8, v7, !v5))
+  else if (![passCopy hasAssociatedPeerPaymentAccount] || (objc_msgSend(passCopy, "peerPaymentBalance"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6) || (objc_msgSend(passCopy, "peerPaymentBalance"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "minimalFormattedStringValue"), v8 = objc_claimAutoreleasedReturnValue(), PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInA.isa, &stru_1F3BD5BF0.isa, v8), value = objc_claimAutoreleasedReturnValue(), v8, v7, !value))
   {
-    v5 = PKSanitizedPrimaryAccountRepresentationForPass();
+    value = PKSanitizedPrimaryAccountRepresentationForPass();
   }
 
-  return v5;
+  return value;
 }
 
 @end

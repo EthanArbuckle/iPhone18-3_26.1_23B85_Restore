@@ -1,23 +1,23 @@
 @interface TSUNormalizedSandboxedURL
 - (BOOL)hasSandboxAccess;
-- (TSUNormalizedSandboxedURL)initWithURL:(id)a3 originalSandboxedURL:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSUNormalizedSandboxedURL)initWithURL:(id)l originalSandboxedURL:(id)rL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)originalSandboxedURLForNormalizing;
 @end
 
 @implementation TSUNormalizedSandboxedURL
 
-- (TSUNormalizedSandboxedURL)initWithURL:(id)a3 originalSandboxedURL:(id)a4
+- (TSUNormalizedSandboxedURL)initWithURL:(id)l originalSandboxedURL:(id)rL
 {
-  v7 = a4;
+  rLCopy = rL;
   v11.receiver = self;
   v11.super_class = TSUNormalizedSandboxedURL;
-  v8 = [(TSUSandboxedURL *)&v11 initWithURL:a3];
+  v8 = [(TSUSandboxedURL *)&v11 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_originalSandboxedURL, a4);
+    objc_storeStrong(&v8->_originalSandboxedURL, rL);
   }
 
   return v9;
@@ -36,21 +36,21 @@
   v5.super_class = TSUNormalizedSandboxedURL;
   if ([(TSUSandboxedURL *)&v5 hasSandboxAccess])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(TSUSandboxedURL *)self->_originalSandboxedURL originalSandboxedURLForNormalizing];
+    selfCopy = [(TSUSandboxedURL *)self->_originalSandboxedURL originalSandboxedURLForNormalizing];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(TSUSandboxedURL *)self->_originalSandboxedURL copyWithZone:?];
-  v6 = [TSUNormalizedSandboxedURL allocWithZone:a3];
+  v6 = [TSUNormalizedSandboxedURL allocWithZone:zone];
   v7 = [(TSUSandboxedURL *)self URL];
   v8 = [(TSUNormalizedSandboxedURL *)v6 initWithURL:v7 originalSandboxedURL:v5];
 
@@ -59,8 +59,8 @@
     sub_277112C64(v9, v10, v11, v12, v13, v14, v15, v16);
   }
 
-  v17 = [(TSUNormalizedSandboxedURL *)v8 hasSandboxAccess];
-  if (v17 != [(TSUNormalizedSandboxedURL *)self hasSandboxAccess])
+  hasSandboxAccess = [(TSUNormalizedSandboxedURL *)v8 hasSandboxAccess];
+  if (hasSandboxAccess != [(TSUNormalizedSandboxedURL *)self hasSandboxAccess])
   {
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUNormalizedSandboxedURL copyWithZone:]"];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUSandboxedURL.m"];
@@ -80,9 +80,9 @@
   v6 = [(TSUSandboxedURL *)self URL];
   v11.receiver = self;
   v11.super_class = TSUNormalizedSandboxedURL;
-  v7 = [(TSUSandboxedURL *)&v11 hasSandboxAccess];
+  hasSandboxAccess = [(TSUSandboxedURL *)&v11 hasSandboxAccess];
   v8 = @"NO";
-  if (v7)
+  if (hasSandboxAccess)
   {
     v8 = @"YES";
   }

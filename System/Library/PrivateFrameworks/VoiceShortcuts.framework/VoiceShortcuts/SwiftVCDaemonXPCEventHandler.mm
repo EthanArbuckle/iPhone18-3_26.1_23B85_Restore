@@ -1,13 +1,13 @@
 @interface SwiftVCDaemonXPCEventHandler
 - (NSArray)streams;
-- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)a3;
-- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)a3 queue:(id)a4;
+- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)streams;
+- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)streams queue:(id)queue;
 - (void)activate;
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5;
-- (void)addObserver:(id)a3 selector:(SEL)a4 stream:(id)a5 eventName:(id)a6;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 eventName:(id)a4;
-- (void)removeObserver:(id)a3 name:(id)a4;
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name;
+- (void)addObserver:(id)observer selector:(SEL)selector stream:(id)stream eventName:(id)name;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer eventName:(id)name;
+- (void)removeObserver:(id)observer name:(id)name;
 @end
 
 @implementation SwiftVCDaemonXPCEventHandler
@@ -21,72 +21,72 @@
   return v2;
 }
 
-- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)a3 queue:(id)a4
+- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)streams queue:(id)queue
 {
   type metadata accessor for VCXPCEventStream(0);
   v5 = sub_231158F48();
-  return DaemonXPCEventHandler.init(streams:queue:)(v5, a4);
+  return DaemonXPCEventHandler.init(streams:queue:)(v5, queue);
 }
 
-- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)a3
+- (SwiftVCDaemonXPCEventHandler)initWithStreams:(id)streams
 {
   type metadata accessor for VCXPCEventStream(0);
   sub_231158F48();
   return DaemonXPCEventHandler.init(streams:)();
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 stream:(id)a5 eventName:(id)a6
+- (void)addObserver:(id)observer selector:(SEL)selector stream:(id)stream eventName:(id)name
 {
   sub_231158E58();
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
+  streamCopy = stream;
+  selfCopy = self;
   sub_23104A65C();
   swift_unknownObjectRelease();
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name
 {
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_23104AB08(a3, a4, v9);
+  nameCopy = name;
+  selfCopy = self;
+  sub_23104AB08(observer, selector, nameCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23104AF44();
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserver:(id)a3 name:(id)a4
+- (void)removeObserver:(id)observer name:(id)name
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_23104AFB4();
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserver:(id)a3 eventName:(id)a4
+- (void)removeObserver:(id)observer eventName:(id)name
 {
-  if (a4)
+  if (name)
   {
     sub_231158E58();
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_23104B248();
   swift_unknownObjectRelease();
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_23104BFF8();
 }
 

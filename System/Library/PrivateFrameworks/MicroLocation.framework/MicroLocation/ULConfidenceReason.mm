@@ -1,15 +1,15 @@
 @interface ULConfidenceReason
-- (BOOL)isEqual:(id)a3;
-- (ULConfidenceReason)initWithCoder:(id)a3;
-- (ULConfidenceReason)initWithConfidenceReasonEnum:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULConfidenceReason)initWithCoder:(id)coder;
+- (ULConfidenceReason)initWithConfidenceReasonEnum:(unint64_t)enum;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULConfidenceReason
 
-- (ULConfidenceReason)initWithConfidenceReasonEnum:(unint64_t)a3
+- (ULConfidenceReason)initWithConfidenceReasonEnum:(unint64_t)enum
 {
   v7.receiver = self;
   v7.super_class = ULConfidenceReason;
@@ -17,13 +17,13 @@
   v5 = v4;
   if (v4)
   {
-    [(ULConfidenceReason *)v4 setConfidenceReasonEnum:a3];
+    [(ULConfidenceReason *)v4 setConfidenceReasonEnum:enum];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   confidenceReasonEnum = self->_confidenceReasonEnum;
@@ -31,30 +31,30 @@
   return [v4 initWithConfidenceReasonEnum:confidenceReasonEnum];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   confidenceReasonEnum = self->_confidenceReasonEnum;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:confidenceReasonEnum];
-  [v5 encodeObject:v6 forKey:@"confidenceReasonEnum"];
+  [coderCopy encodeObject:v6 forKey:@"confidenceReasonEnum"];
 }
 
-- (ULConfidenceReason)initWithCoder:(id)a3
+- (ULConfidenceReason)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULConfidenceReason;
   v5 = [(ULConfidenceReason *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confidenceReasonEnum"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confidenceReasonEnum"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULConfidenceReason *)v6 unsignedIntegerValue];
+      unsignedIntegerValue = [(ULConfidenceReason *)v6 unsignedIntegerValue];
 
-      v5->_confidenceReasonEnum = v8;
+      v5->_confidenceReasonEnum = unsignedIntegerValue;
       v7 = v5;
     }
   }
@@ -82,17 +82,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULConfidenceReason *)self confidenceReasonEnum];
-    v7 = [v5 confidenceReasonEnum];
+    v5 = equalCopy;
+    confidenceReasonEnum = [(ULConfidenceReason *)self confidenceReasonEnum];
+    confidenceReasonEnum2 = [v5 confidenceReasonEnum];
 
-    v8 = v6 == v7;
+    v8 = confidenceReasonEnum == confidenceReasonEnum2;
   }
 
   else

@@ -21,7 +21,7 @@
   v13 = v8;
   v9 = v7;
   v14 = v9;
-  [a1 enumerateObjectsUsingBlock:v12];
+  [self enumerateObjectsUsingBlock:v12];
   v10 = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);

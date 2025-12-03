@@ -1,39 +1,39 @@
 @interface HKSourceListDataSource
 + (id)_builtinPurposeStringsFetchTransformer;
-+ (void)_performTransformations:(id)a3 model:(id)a4 completion:(id)a5;
-+ (void)_remoteWatchAppPurposeStringsForBundleIdentifier:(id)a3 completion:(id)a4;
-+ (void)fetchIconForSource:(id)a3 completion:(id)a4;
-- (HKSourceListDataSource)initWithHealthStore:(id)a3 sources:(id)a4 queue:(id)a5;
++ (void)_performTransformations:(id)transformations model:(id)model completion:(id)completion;
++ (void)_remoteWatchAppPurposeStringsForBundleIdentifier:(id)identifier completion:(id)completion;
++ (void)fetchIconForSource:(id)source completion:(id)completion;
+- (HKSourceListDataSource)initWithHealthStore:(id)store sources:(id)sources queue:(id)queue;
 - (id)_specialAppBundleIdentifiers;
-- (id)fetchFilteredSourcesWithAuthorizationRecordsForSources:(id)a3;
-- (void)_didFetchSources:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_fakeSourceForInstalledAppWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (id)fetchFilteredSourcesWithAuthorizationRecordsForSources:(id)sources;
+- (void)_didFetchSources:(id)sources error:(id)error completion:(id)completion;
+- (void)_fakeSourceForInstalledAppWithBundleIdentifier:(id)identifier completion:(id)completion;
 - (void)_notifyObserversForDataSourceUpdate;
 - (void)_prependBuiltinTransformers;
 - (void)_throttledNotificationOfDataSourceUpdate;
-- (void)addFetchTransformer:(id)a3;
+- (void)addFetchTransformer:(id)transformer;
 - (void)dealloc;
-- (void)fetchModelForSources:(id)a3 completion:(id)a4;
+- (void)fetchModelForSources:(id)sources completion:(id)completion;
 - (void)fetchSources;
 - (void)invalidate;
-- (void)setDeliverUpdates:(BOOL)a3;
-- (void)setShouldFetchAppIcons:(BOOL)a3;
-- (void)setShouldFetchAppInstallationStatus:(BOOL)a3;
-- (void)setShouldFetchPurposeStrings:(BOOL)a3;
-- (void)setShouldIncludeSpecialSources:(BOOL)a3;
+- (void)setDeliverUpdates:(BOOL)updates;
+- (void)setShouldFetchAppIcons:(BOOL)icons;
+- (void)setShouldFetchAppInstallationStatus:(BOOL)status;
+- (void)setShouldFetchPurposeStrings:(BOOL)strings;
+- (void)setShouldIncludeSpecialSources:(BOOL)sources;
 @end
 
 @implementation HKSourceListDataSource
 
-- (HKSourceListDataSource)initWithHealthStore:(id)a3 sources:(id)a4 queue:(id)a5
+- (HKSourceListDataSource)initWithHealthStore:(id)store sources:(id)sources queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  storeCopy = store;
+  sourcesCopy = sources;
+  queueCopy = queue;
+  v12 = queueCopy;
+  if (storeCopy)
   {
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -56,9 +56,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_healthStore, a3);
-    objc_storeStrong(&v14->_mainQueue, a5);
-    v15 = [v10 copy];
+    objc_storeStrong(&v13->_healthStore, store);
+    objc_storeStrong(&v14->_mainQueue, queue);
+    v15 = [sourcesCopy copy];
     rawSources = v14->_rawSources;
     v14->_rawSources = v15;
 
@@ -118,21 +118,21 @@ LABEL_3:
   }
 }
 
-- (void)setDeliverUpdates:(BOOL)a3
+- (void)setDeliverUpdates:(BOOL)updates
 {
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource setDeliverUpdates:];
   }
 
-  self->_deliverUpdates = a3;
+  self->_deliverUpdates = updates;
 }
 
 - (void)fetchSources
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 136315138;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C3942000, a2, OS_LOG_TYPE_ERROR, "Failed to register for %s", &v2, 0xCu);
 }
 
@@ -150,23 +150,23 @@ void __38__HKSourceListDataSource_fetchSources__block_invoke_319(uint64_t a1, vo
   [WeakRetained _didFetchSources:v6 error:v5 completion:0];
 }
 
-+ (void)fetchIconForSource:(id)a3 completion:(id)a4
++ (void)fetchIconForSource:(id)source completion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HKSourceDataModel alloc] initWithSource:v7];
+  completionCopy = completion;
+  sourceCopy = source;
+  v8 = [[HKSourceDataModel alloc] initWithSource:sourceCopy];
 
-  v9 = [a1 _builtinIconFetchTransformer];
-  v14[0] = v9;
+  _builtinIconFetchTransformer = [self _builtinIconFetchTransformer];
+  v14[0] = _builtinIconFetchTransformer;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__HKSourceListDataSource_fetchIconForSource_completion___block_invoke;
   v12[3] = &unk_1E81BBAC0;
-  v13 = v6;
-  v11 = v6;
-  [a1 _performTransformations:v10 model:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [self _performTransformations:v10 model:v8 completion:v12];
 }
 
 void __56__HKSourceListDataSource_fetchIconForSource_completion___block_invoke(uint64_t a1, void *a2)
@@ -176,10 +176,10 @@ void __56__HKSourceListDataSource_fetchIconForSource_completion___block_invoke(u
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchModelForSources:(id)a3 completion:(id)a4
+- (void)fetchModelForSources:(id)sources completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  sourcesCopy = sources;
+  completionCopy = completion;
   if (self->_deliverUpdates)
   {
     [HKSourceListDataSource fetchModelForSources:completion:];
@@ -191,61 +191,61 @@ void __56__HKSourceListDataSource_fetchIconForSource_completion___block_invoke(u
     [(HKSourceListDataSource *)self _prependBuiltinTransformers];
   }
 
-  [(HKSourceListDataSource *)self _didFetchSources:v7 error:0 completion:v6];
+  [(HKSourceListDataSource *)self _didFetchSources:sourcesCopy error:0 completion:completionCopy];
 }
 
-- (void)setShouldFetchAppInstallationStatus:(BOOL)a3
+- (void)setShouldFetchAppInstallationStatus:(BOOL)status
 {
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource setShouldFetchAppInstallationStatus:];
   }
 
-  self->_shouldFetchAppInstallationStatus = a3;
+  self->_shouldFetchAppInstallationStatus = status;
 }
 
-- (void)setShouldFetchAppIcons:(BOOL)a3
+- (void)setShouldFetchAppIcons:(BOOL)icons
 {
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource setShouldFetchAppIcons:];
   }
 
-  self->_shouldFetchAppIcons = a3;
+  self->_shouldFetchAppIcons = icons;
 }
 
-- (void)setShouldFetchPurposeStrings:(BOOL)a3
+- (void)setShouldFetchPurposeStrings:(BOOL)strings
 {
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource setShouldFetchPurposeStrings:];
   }
 
-  self->_shouldFetchPurposeStrings = a3;
+  self->_shouldFetchPurposeStrings = strings;
 }
 
-- (void)setShouldIncludeSpecialSources:(BOOL)a3
+- (void)setShouldIncludeSpecialSources:(BOOL)sources
 {
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource setShouldIncludeSpecialSources:];
   }
 
-  self->_shouldIncludeSpecialSources = a3;
+  self->_shouldIncludeSpecialSources = sources;
 }
 
-- (void)addFetchTransformer:(id)a3
+- (void)addFetchTransformer:(id)transformer
 {
-  v4 = a3;
-  v8 = v4;
+  transformerCopy = transformer;
+  v8 = transformerCopy;
   if (self->_hasInitiatedFetch)
   {
     [HKSourceListDataSource addFetchTransformer:];
-    v4 = v8;
+    transformerCopy = v8;
   }
 
   transformers = self->_transformers;
-  v6 = [v4 copy];
+  v6 = [transformerCopy copy];
   v7 = _Block_copy(v6);
   [(NSMutableArray *)transformers addObject:v7];
 }
@@ -543,7 +543,7 @@ void __54__HKSourceListDataSource__builtinIconFetchTransformer__block_invoke_2_3
   aBlock[1] = 3221225472;
   aBlock[2] = __64__HKSourceListDataSource__builtinPurposeStringsFetchTransformer__block_invoke;
   aBlock[3] = &__block_descriptor_40_e56_v24__0__HKSourceDataModel_8___v____HKSourceDataModel__16l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -681,49 +681,49 @@ void __64__HKSourceListDataSource__builtinPurposeStringsFetchTransformer__block_
   if (self->_shouldFetchAppInstallationStatus)
   {
     transformers = self->_transformers;
-    v4 = [objc_opt_class() _builtinInstallationStatusTransformer];
-    [(NSMutableArray *)transformers insertObject:v4 atIndex:0];
+    _builtinInstallationStatusTransformer = [objc_opt_class() _builtinInstallationStatusTransformer];
+    [(NSMutableArray *)transformers insertObject:_builtinInstallationStatusTransformer atIndex:0];
   }
 
   if (self->_shouldFetchAppIcons)
   {
     followupTransformers = self->_followupTransformers;
-    v6 = [objc_opt_class() _builtinIconFetchTransformer];
-    [(NSMutableArray *)followupTransformers addObject:v6];
+    _builtinIconFetchTransformer = [objc_opt_class() _builtinIconFetchTransformer];
+    [(NSMutableArray *)followupTransformers addObject:_builtinIconFetchTransformer];
   }
 
   if (self->_shouldFetchPurposeStrings)
   {
     v7 = self->_followupTransformers;
-    v8 = [objc_opt_class() _builtinPurposeStringsFetchTransformer];
-    [(NSMutableArray *)v7 addObject:v8];
+    _builtinPurposeStringsFetchTransformer = [objc_opt_class() _builtinPurposeStringsFetchTransformer];
+    [(NSMutableArray *)v7 addObject:_builtinPurposeStringsFetchTransformer];
   }
 }
 
-+ (void)_performTransformations:(id)a3 model:(id)a4 completion:(id)a5
++ (void)_performTransformations:(id)transformations model:(id)model completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  transformationsCopy = transformations;
+  modelCopy = model;
+  completionCopy = completion;
+  if ([transformationsCopy count])
   {
-    v11 = [v8 firstObject];
-    v12 = [v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1}];
+    firstObject = [transformationsCopy firstObject];
+    v12 = [transformationsCopy subarrayWithRange:{1, objc_msgSend(transformationsCopy, "count") - 1}];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__HKSourceListDataSource__performTransformations_model_completion___block_invoke;
     v15[3] = &unk_1E81BBBC8;
-    v18 = a1;
+    selfCopy = self;
     v16 = v12;
-    v17 = v10;
-    v13 = v11[2];
+    v17 = completionCopy;
+    v13 = firstObject[2];
     v14 = v12;
-    v13(v11, v9, v15);
+    v13(firstObject, modelCopy, v15);
   }
 
   else
   {
-    (*(v10 + 2))(v10, v9);
+    (*(completionCopy + 2))(completionCopy, modelCopy);
   }
 }
 
@@ -740,18 +740,18 @@ uint64_t __67__HKSourceListDataSource__performTransformations_model_completion__
   }
 }
 
-- (void)_didFetchSources:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_didFetchSources:(id)sources error:(id)error completion:(id)completion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourcesCopy = sources;
+  errorCopy = error;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x1E696B940];
-  if (v8)
+  if (sourcesCopy)
   {
-    v32 = v10;
-    v33 = v9;
+    v32 = completionCopy;
+    v33 = errorCopy;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
@@ -760,13 +760,13 @@ uint64_t __67__HKSourceListDataSource__performTransformations_model_completion__
       *buf = 138543618;
       v57 = v13;
       v58 = 2048;
-      v59 = [v8 count];
+      v59 = [sourcesCopy count];
       _os_log_impl(&dword_1C3942000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: successfully fetched %lu sources", buf, 0x16u);
     }
 
     v15 = dispatch_group_create();
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v34 = v8;
+    v34 = sourcesCopy;
     if (self->_shouldIncludeSpecialSources)
     {
       [(HKSourceListDataSource *)self _specialAppBundleIdentifiers];
@@ -810,14 +810,14 @@ uint64_t __67__HKSourceListDataSource__performTransformations_model_completion__
         while (v18);
       }
 
-      v8 = v34;
+      sourcesCopy = v34;
     }
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obja = v8;
+    obja = sourcesCopy;
     v22 = [obja countByEnumeratingWithState:&v43 objects:v54 count:16];
     if (v22)
     {
@@ -864,13 +864,13 @@ uint64_t __67__HKSourceListDataSource__performTransformations_model_completion__
     block[3] = &unk_1E81B5A60;
     block[4] = self;
     v38 = v16;
-    v10 = v32;
+    completionCopy = v32;
     v39 = v32;
     v31 = v16;
     dispatch_group_notify(v15, resultsQueue, block);
 
-    v9 = v33;
-    v8 = v34;
+    errorCopy = v33;
+    sourcesCopy = v34;
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR))
@@ -1085,19 +1085,19 @@ uint64_t __60__HKSourceListDataSource__didFetchSources_error_completion___block_
   [(HKSourceListDataSource *)self performSelector:sel__notifyObserversForDataSourceUpdate withObject:0 afterDelay:0.25];
 }
 
-+ (void)_remoteWatchAppPurposeStringsForBundleIdentifier:(id)a3 completion:(id)a4
++ (void)_remoteWatchAppPurposeStringsForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E698AB08];
-  v7 = a3;
-  v8 = [v6 sharedDeviceConnection];
+  identifierCopy = identifier;
+  sharedDeviceConnection = [v6 sharedDeviceConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__HKSourceListDataSource__remoteWatchAppPurposeStringsForBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_1E81BBCB8;
-  v11 = v5;
-  v9 = v5;
-  [v8 fetchWatchAppBundleIDForCompanionAppBundleID:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [sharedDeviceConnection fetchWatchAppBundleIDForCompanionAppBundleID:identifierCopy completion:v10];
 }
 
 void __86__HKSourceListDataSource__remoteWatchAppPurposeStringsForBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1143,14 +1143,14 @@ void __86__HKSourceListDataSource__remoteWatchAppPurposeStringsForBundleIdentifi
   return v3;
 }
 
-- (void)_fakeSourceForInstalledAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_fakeSourceForInstalledAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696C4A0]) _init];
-  [v8 _setBundleIdentifier:v6];
-  [v8 _setOptions:5];
-  v9 = [[HKSourceDataModel alloc] initWithSource:v8];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  _init = [objc_alloc(MEMORY[0x1E696C4A0]) _init];
+  [_init _setBundleIdentifier:identifierCopy];
+  [_init _setOptions:5];
+  v9 = [[HKSourceDataModel alloc] initWithSource:_init];
   v10 = objc_opt_class();
   v11 = [(NSMutableArray *)self->_transformers copy];
   v15[0] = MEMORY[0x1E69E9820];
@@ -1158,10 +1158,10 @@ void __86__HKSourceListDataSource__remoteWatchAppPurposeStringsForBundleIdentifi
   v15[2] = __84__HKSourceListDataSource__fakeSourceForInstalledAppWithBundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E81BBCE0;
   v16 = v9;
-  v17 = v6;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
   v14 = v9;
   [v10 _performTransformations:v11 model:v14 completion:v15];
 }
@@ -1193,13 +1193,13 @@ void __84__HKSourceListDataSource__fakeSourceForInstalledAppWithBundleIdentifier
   }
 }
 
-- (id)fetchFilteredSourcesWithAuthorizationRecordsForSources:(id)a3
+- (id)fetchFilteredSourcesWithAuthorizationRecordsForSources:(id)sources
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourcesCopy = sources;
   v5 = objc_alloc(MEMORY[0x1E696BF50]);
-  v6 = [(HKSourceListDataSource *)self healthStore];
-  v21 = [v5 initWithHealthStore:v6];
+  healthStore = [(HKSourceListDataSource *)self healthStore];
+  v21 = [v5 initWithHealthStore:healthStore];
 
   v29 = 0;
   v30 = &v29;
@@ -1212,7 +1212,7 @@ void __84__HKSourceListDataSource__fakeSourceForInstalledAppWithBundleIdentifier
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v4;
+  v8 = sourcesCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v9)
   {
@@ -1227,15 +1227,15 @@ void __84__HKSourceListDataSource__fakeSourceForInstalledAppWithBundleIdentifier
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 source];
-        if ([v13 _isSiri])
+        source = [v12 source];
+        if ([source _isSiri])
         {
           [v30[5] addObject:v12];
         }
 
         else
         {
-          v14 = [v13 bundleIdentifier];
+          bundleIdentifier = [source bundleIdentifier];
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __81__HKSourceListDataSource_fetchFilteredSourcesWithAuthorizationRecordsForSources___block_invoke;
@@ -1245,7 +1245,7 @@ void __84__HKSourceListDataSource__fakeSourceForInstalledAppWithBundleIdentifier
           v22[5] = v12;
           v15 = v7;
           v23 = v15;
-          [v21 fetchAuthorizationRecordsForBundleIdentifier:v14 completion:v22];
+          [v21 fetchAuthorizationRecordsForBundleIdentifier:bundleIdentifier completion:v22];
 
           dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
         }

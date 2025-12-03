@@ -1,24 +1,24 @@
 @interface EditingCoordinator
 - (_TtC21PosterBoardUIServices18EditingCoordinator)init;
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4;
-- (void)injectedEditingClientSettingsDidChange:(id)a3;
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration;
+- (void)injectedEditingClientSettingsDidChange:(id)change;
 @end
 
 @implementation EditingCoordinator
 
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CAEB168C(v6, a4);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1CAEB168C(controllerCopy, configuration);
 }
 
-- (void)injectedEditingClientSettingsDidChange:(id)a3
+- (void)injectedEditingClientSettingsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CAEB1968(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1CAEB1968(changeCopy);
 }
 
 - (_TtC21PosterBoardUIServices18EditingCoordinator)init

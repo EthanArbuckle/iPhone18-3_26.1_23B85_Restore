@@ -1,8 +1,8 @@
 @interface MLCMatMulDescriptor
 + (MLCMatMulDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
-- (MLCMatMulDescriptor)initWithAlpha:(float)a3 transposesX:(BOOL)a4 transposesY:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MLCMatMulDescriptor)initWithAlpha:(float)alpha transposesX:(BOOL)x transposesY:(BOOL)y;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,23 +11,23 @@
 
 + (MLCMatMulDescriptor)descriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   LODWORD(v3) = 1.0;
   v4 = [v2 initWithAlpha:0 transposesX:0 transposesY:v3];
 
   return v4;
 }
 
-- (MLCMatMulDescriptor)initWithAlpha:(float)a3 transposesX:(BOOL)a4 transposesY:(BOOL)a5
+- (MLCMatMulDescriptor)initWithAlpha:(float)alpha transposesX:(BOOL)x transposesY:(BOOL)y
 {
   v9.receiver = self;
   v9.super_class = MLCMatMulDescriptor;
   result = [(MLCMatMulDescriptor *)&v9 init];
   if (result)
   {
-    result->_alpha = a3;
-    result->_transposesX = a4;
-    result->_transposesY = a5;
+    result->_alpha = alpha;
+    result->_transposesX = x;
+    result->_transposesY = y;
   }
 
   return result;
@@ -44,20 +44,20 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 alpha];
     v7 = v6;
     [(MLCMatMulDescriptor *)self alpha];
     if (v7 == v8 && (v9 = [v5 transposesX], v9 == -[MLCMatMulDescriptor transposesX](self, "transposesX")))
     {
-      v11 = [v5 transposesY];
-      v10 = v11 ^ [(MLCMatMulDescriptor *)self transposesY]^ 1;
+      transposesY = [v5 transposesY];
+      v10 = transposesY ^ [(MLCMatMulDescriptor *)self transposesY]^ 1;
     }
 
     else
@@ -88,16 +88,16 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(MLCMatMulDescriptor *)self alpha];
   v6 = v5;
-  v7 = [(MLCMatMulDescriptor *)self transposesY];
-  v8 = [(MLCMatMulDescriptor *)self transposesY];
+  transposesY = [(MLCMatMulDescriptor *)self transposesY];
+  transposesY2 = [(MLCMatMulDescriptor *)self transposesY];
   LODWORD(v9) = v6;
 
-  return [v4 initWithAlpha:v7 transposesX:v8 transposesY:v9];
+  return [v4 initWithAlpha:transposesY transposesX:transposesY2 transposesY:v9];
 }
 
 @end

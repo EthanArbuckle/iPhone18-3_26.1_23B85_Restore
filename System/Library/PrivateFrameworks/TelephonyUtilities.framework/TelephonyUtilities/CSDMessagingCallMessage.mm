@@ -1,20 +1,20 @@
 @interface CSDMessagingCallMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOBSOLETEProtoMomentsAvailable:(BOOL)a3;
-- (void)setHasProtoMomentsV2Available:(BOOL)a3;
-- (void)setHasProtoSenderMuteUplink:(BOOL)a3;
-- (void)setHasProtoShouldSuppressInCallUI:(BOOL)a3;
-- (void)setHasProtoWantsVideo:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOBSOLETEProtoMomentsAvailable:(BOOL)available;
+- (void)setHasProtoMomentsV2Available:(BOOL)available;
+- (void)setHasProtoSenderMuteUplink:(BOOL)uplink;
+- (void)setHasProtoShouldSuppressInCallUI:(BOOL)i;
+- (void)setHasProtoWantsVideo:(BOOL)video;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingCallMessage
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -47,20 +47,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Invite"])
+  else if ([typeCopy isEqualToString:@"Invite"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SenderMuteUplink"])
+  else if ([typeCopy isEqualToString:@"SenderMuteUplink"])
   {
     v4 = 2;
   }
@@ -73,9 +73,9 @@
   return v4;
 }
 
-- (void)setHasProtoWantsVideo:(BOOL)a3
+- (void)setHasProtoWantsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 64;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasOBSOLETEProtoMomentsAvailable:(BOOL)a3
+- (void)setHasOBSOLETEProtoMomentsAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 4;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProtoSenderMuteUplink:(BOOL)a3
+- (void)setHasProtoSenderMuteUplink:(BOOL)uplink
 {
-  if (a3)
+  if (uplink)
   {
     v3 = 16;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasProtoShouldSuppressInCallUI:(BOOL)a3
+- (void)setHasProtoShouldSuppressInCallUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 32;
   }
@@ -133,9 +133,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasProtoMomentsV2Available:(BOOL)a3
+- (void)setHasProtoMomentsV2Available:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 8;
   }
@@ -153,8 +153,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingCallMessage;
   v3 = [(CSDMessagingCallMessage *)&v7 description];
-  v4 = [(CSDMessagingCallMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingCallMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -198,8 +198,8 @@
   inviteData = self->_inviteData;
   if (inviteData)
   {
-    v10 = [(CSDMessagingAVConferenceInviteData *)inviteData dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"inviteData"];
+    dictionaryRepresentation = [(CSDMessagingAVConferenceInviteData *)inviteData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"inviteData"];
   }
 
   v11 = self->_has;
@@ -262,16 +262,16 @@ LABEL_17:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v14 = v4;
+  v14 = toCopy;
   if ((has & 2) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -292,20 +292,20 @@ LABEL_3:
 
   protoProtocolVersion = self->_protoProtocolVersion;
   PBDataWriterWriteUint32Field();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_4:
     protoWantsVideo = self->_protoWantsVideo;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_5:
   if (self->_inviteData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v14;
+    toCopy = v14;
   }
 
   v7 = self->_has;
@@ -313,7 +313,7 @@ LABEL_5:
   {
     oBSOLETEProtoMomentsAvailable = self->_oBSOLETEProtoMomentsAvailable;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
     v7 = self->_has;
     if ((v7 & 0x10) == 0)
     {
@@ -334,7 +334,7 @@ LABEL_9:
 
   protoSenderMuteUplink = self->_protoSenderMuteUplink;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   v7 = self->_has;
   if ((v7 & 0x20) == 0)
   {
@@ -350,31 +350,31 @@ LABEL_10:
 LABEL_22:
   protoShouldSuppressInCallUI = self->_protoShouldSuppressInCallUI;
   PBDataWriterWriteBOOLField();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     protoMomentsV2Available = self->_protoMomentsV2Available;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_12:
   if (self->_protoUpgradeSessionUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[8] = self->_type;
-    *(v4 + 44) |= 2u;
+    toCopy[8] = self->_type;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -393,28 +393,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_protoProtocolVersion;
-  *(v4 + 44) |= 1u;
+  toCopy[4] = self->_protoProtocolVersion;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_4:
-    *(v4 + 40) = self->_protoWantsVideo;
-    *(v4 + 44) |= 0x40u;
+    *(toCopy + 40) = self->_protoWantsVideo;
+    *(toCopy + 44) |= 0x40u;
   }
 
 LABEL_5:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_inviteData)
   {
-    [v4 setInviteData:?];
-    v4 = v7;
+    [toCopy setInviteData:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 36) = self->_oBSOLETEProtoMomentsAvailable;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 36) = self->_oBSOLETEProtoMomentsAvailable;
+    *(toCopy + 44) |= 4u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -433,8 +433,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 38) = self->_protoSenderMuteUplink;
-  *(v4 + 44) |= 0x10u;
+  *(toCopy + 38) = self->_protoSenderMuteUplink;
+  *(toCopy + 44) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -448,26 +448,26 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(v4 + 39) = self->_protoShouldSuppressInCallUI;
-  *(v4 + 44) |= 0x20u;
+  *(toCopy + 39) = self->_protoShouldSuppressInCallUI;
+  *(toCopy + 44) |= 0x20u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 37) = self->_protoMomentsV2Available;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 37) = self->_protoMomentsV2Available;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_12:
   if (self->_protoUpgradeSessionUUID)
   {
     [v7 setProtoUpgradeSessionUUID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -502,7 +502,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(CSDMessagingAVConferenceInviteData *)self->_inviteData copyWithZone:a3];
+  v8 = [(CSDMessagingAVConferenceInviteData *)self->_inviteData copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
@@ -554,78 +554,78 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSString *)self->_protoUpgradeSessionUUID copyWithZone:a3];
+  v11 = [(NSString *)self->_protoUpgradeSessionUUID copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_57;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_protoProtocolVersion != *(v4 + 4))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_protoProtocolVersion != *(equalCopy + 4))
     {
       goto LABEL_57;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_57;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 44) & 0x40) == 0)
+    if ((*(equalCopy + 44) & 0x40) == 0)
     {
       goto LABEL_57;
     }
 
-    v11 = *(v4 + 40);
+    v11 = *(equalCopy + 40);
     if (self->_protoWantsVideo)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x40) != 0)
+  else if ((*(equalCopy + 44) & 0x40) != 0)
   {
     goto LABEL_57;
   }
 
   inviteData = self->_inviteData;
-  if (inviteData | *(v4 + 1))
+  if (inviteData | *(equalCopy + 1))
   {
     if (![(CSDMessagingAVConferenceInviteData *)inviteData isEqual:?])
     {
@@ -635,91 +635,91 @@ LABEL_10:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0)
+    if ((*(equalCopy + 44) & 4) == 0)
     {
       goto LABEL_57;
     }
 
-    v12 = *(v4 + 36);
+    v12 = *(equalCopy + 36);
     if (self->_oBSOLETEProtoMomentsAvailable)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0)
+    if ((*(equalCopy + 44) & 0x10) == 0)
     {
       goto LABEL_57;
     }
 
-    v13 = *(v4 + 38);
+    v13 = *(equalCopy + 38);
     if (self->_protoSenderMuteUplink)
     {
-      if ((*(v4 + 38) & 1) == 0)
+      if ((*(equalCopy + 38) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 38))
+    else if (*(equalCopy + 38))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) != 0)
+  else if ((*(equalCopy + 44) & 0x10) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) == 0)
+    if ((*(equalCopy + 44) & 0x20) == 0)
     {
       goto LABEL_57;
     }
 
-    v14 = *(v4 + 39);
+    v14 = *(equalCopy + 39);
     if (self->_protoShouldSuppressInCallUI)
     {
-      if ((*(v4 + 39) & 1) == 0)
+      if ((*(equalCopy + 39) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 39))
+    else if (*(equalCopy + 39))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) != 0)
+  else if ((*(equalCopy + 44) & 0x20) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_25;
     }
@@ -729,28 +729,28 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  if ((*(v4 + 44) & 8) == 0)
+  if ((*(equalCopy + 44) & 8) == 0)
   {
     goto LABEL_57;
   }
 
-  v15 = *(v4 + 37);
+  v15 = *(equalCopy + 37);
   if (self->_protoMomentsV2Available)
   {
-    if ((*(v4 + 37) & 1) == 0)
+    if ((*(equalCopy + 37) & 1) == 0)
     {
       goto LABEL_57;
     }
   }
 
-  else if (*(v4 + 37))
+  else if (*(equalCopy + 37))
   {
     goto LABEL_57;
   }
 
 LABEL_25:
   protoUpgradeSessionUUID = self->_protoUpgradeSessionUUID;
-  if (protoUpgradeSessionUUID | *(v4 + 3))
+  if (protoUpgradeSessionUUID | *(equalCopy + 3))
   {
     v10 = [(NSString *)protoUpgradeSessionUUID isEqual:?];
   }
@@ -856,16 +856,16 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v6 ^ [(NSString *)self->_protoUpgradeSessionUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 44);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 44);
   if ((v6 & 2) != 0)
   {
-    self->_type = *(v4 + 8);
+    self->_type = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
     if ((v6 & 1) == 0)
     {
 LABEL_3:
@@ -878,17 +878,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_protoProtocolVersion = *(v4 + 4);
+  self->_protoProtocolVersion = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 0x40) != 0)
+  if ((*(fromCopy + 44) & 0x40) != 0)
   {
 LABEL_4:
-    self->_protoWantsVideo = *(v4 + 40);
+    self->_protoWantsVideo = *(fromCopy + 40);
     *&self->_has |= 0x40u;
   }
 

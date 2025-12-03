@@ -1,10 +1,10 @@
 @interface JSTreatmentStore
-- (id)fetchTreatmentSets:(id)a3 :(id)a4;
+- (id)fetchTreatmentSets:(id)sets :(id)a4;
 @end
 
 @implementation JSTreatmentStore
 
-- (id)fetchTreatmentSets:(id)a3 :(id)a4
+- (id)fetchTreatmentSets:(id)sets :(id)a4
 {
   if (a4)
   {
@@ -16,9 +16,9 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1001427A0(v7, v6);
+  setsCopy = sets;
+  selfCopy = self;
+  v9 = sub_1001427A0(setsCopy, v6);
 
   return v9;
 }

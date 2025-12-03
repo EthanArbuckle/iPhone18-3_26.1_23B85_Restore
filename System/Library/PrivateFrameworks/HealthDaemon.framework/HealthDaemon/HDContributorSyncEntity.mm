@@ -1,51 +1,51 @@
 @interface HDContributorSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
 + (id)_orderedProperties;
-+ (id)_syncCodableContributorFromRow:(HDSQLiteRow *)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)excludedSyncStoresForSession:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
++ (id)_syncCodableContributorFromRow:(HDSQLiteRow *)row profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)excludedSyncStoresForSession:(id)session;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDContributorSyncEntity
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [(HDHealthEntity *)HDContributorEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [(HDHealthEntity *)HDContributorEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (id)_syncCodableContributorFromRow:(HDSQLiteRow *)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)_syncCodableContributorFromRow:(HDSQLiteRow *)row profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
+  transactionCopy = transaction;
+  profileCopy = profile;
   v11 = objc_alloc_init(HDCodableContributor);
-  v12 = MEMORY[0x22AAC6CA0](a3, 0);
-  v13 = [v12 hk_dataForUUIDBytes];
-  [(HDCodableContributor *)v11 setUuid:v13];
+  v12 = MEMORY[0x22AAC6CA0](row, 0);
+  hk_dataForUUIDBytes = [v12 hk_dataForUUIDBytes];
+  [(HDCodableContributor *)v11 setUuid:hk_dataForUUIDBytes];
 
-  v14 = MEMORY[0x22AAC6C90](a3, 1);
+  v14 = MEMORY[0x22AAC6C90](row, 1);
   [(HDCodableContributor *)v11 setAppleID:v14];
 
-  v15 = MEMORY[0x22AAC6C90](a3, 2);
+  v15 = MEMORY[0x22AAC6C90](row, 2);
   [(HDCodableContributor *)v11 setCallerID:v15];
 
-  [(HDCodableContributor *)v11 setDeleted:MEMORY[0x22AAC6C10](a3, 3)];
-  MEMORY[0x22AAC6C50](a3, 4);
+  [(HDCodableContributor *)v11 setDeleted:MEMORY[0x22AAC6C10](row, 3)];
+  MEMORY[0x22AAC6C50](row, 4);
   [(HDCodableContributor *)v11 setModificationDate:?];
   v16 = HDSQLiteColumnAsInt64();
-  v17 = [v10 syncIdentityManager];
+  syncIdentityManager = [profileCopy syncIdentityManager];
 
-  v18 = [v17 identityForEntityID:v16 transaction:v9 error:a6];
+  v18 = [syncIdentityManager identityForEntityID:v16 transaction:transactionCopy error:error];
 
   if (v18)
   {
-    v19 = [v18 identity];
-    v20 = [v19 codableSyncIdentity];
-    [(HDCodableContributor *)v11 setSyncIdentity:v20];
+    identity = [v18 identity];
+    codableSyncIdentity = [identity codableSyncIdentity];
+    [(HDCodableContributor *)v11 setSyncIdentity:codableSyncIdentity];
 
     v21 = v11;
   }
@@ -58,39 +58,39 @@
   return v21;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v13 = a3;
-  v14 = a5;
-  v23 = a6;
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [v13 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
+  v16 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = -1;
-  v17 = [v14 database];
+  database = [profileCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __102__HDContributorSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v24[3] = &unk_27862B608;
-  v18 = v13;
+  v18 = sessionCopy;
   v29 = start;
   v30 = end;
   v25 = v18;
   v28 = &v32;
-  v19 = v14;
+  v19 = profileCopy;
   v26 = v19;
-  v20 = v15;
+  v20 = array;
   v27 = v20;
   v31 = v16 / 300;
-  LODWORD(v14) = [(HDHealthEntity *)HDContributorEntity performReadTransactionWithHealthDatabase:v17 error:a7 block:v24];
+  LODWORD(profileCopy) = [(HDHealthEntity *)HDContributorEntity performReadTransactionWithHealthDatabase:database error:error block:v24];
 
-  if (v14)
+  if (profileCopy)
   {
-    v21 = [v23 sendCodableChange:v20 resultAnchor:v33[3] sequence:0 done:1 error:a7];
+    v21 = [handlerCopy sendCodableChange:v20 resultAnchor:v33[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -142,31 +142,31 @@ BOOL __102__HDContributorSyncEntity_generateSyncObjectsForSession_syncAnchorRang
   return v10 != 0;
 }
 
-+ (id)excludedSyncStoresForSession:(id)a3
++ (id)excludedSyncStoresForSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 syncStore];
-  v5 = [v4 syncStoreType];
+  sessionCopy = session;
+  syncStore = [sessionCopy syncStore];
+  syncStoreType = [syncStore syncStoreType];
 
-  if ((v5 - 3) >= 3 && v5 == 2)
+  if ((syncStoreType - 3) >= 3 && syncStoreType == 2)
   {
-    v6 = [MEMORY[0x277CBEB98] set];
+    excludedSyncStores = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
-    v6 = [v3 excludedSyncStores];
+    excludedSyncStores = [sessionCopy excludedSyncStores];
   }
 
-  v7 = v6;
+  v7 = excludedSyncStores;
 
   return v7;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableContributor alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableContributor alloc] initWithData:dataCopy];
 
   return v4;
 }

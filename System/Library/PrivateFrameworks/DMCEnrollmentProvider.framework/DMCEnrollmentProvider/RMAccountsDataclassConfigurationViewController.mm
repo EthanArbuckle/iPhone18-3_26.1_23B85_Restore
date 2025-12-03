@@ -33,16 +33,16 @@
   v4 = *(&self->super.super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSummaryCell];
+    specifierForAccountSummaryCell = [(ACUIDataclassConfigurationViewController *)self specifierForAccountSummaryCell];
     v6 = MEMORY[0x277D3FAD8];
     v7 = DMCLocalizedString();
     v8 = [v6 groupSpecifierWithName:v7];
 
-    v9 = [(RMAccountsDataclassConfigurationViewController *)self specifier];
-    v10 = [v9 propertyForKey:*MEMORY[0x277CE8540]];
+    specifier = [(RMAccountsDataclassConfigurationViewController *)self specifier];
+    v10 = [specifier propertyForKey:*MEMORY[0x277CE8540]];
 
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:8];
-    [v11 addObject:v5];
+    [v11 addObject:specifierForAccountSummaryCell];
     if ([v10 count])
     {
       [v11 addObject:v8];

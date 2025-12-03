@@ -1,26 +1,26 @@
 @interface DVTFileStream
-- (DVTFileStream)initWithURL:(id)a3;
-- (id)read:(unint64_t)a3 error:(id *)a4;
+- (DVTFileStream)initWithURL:(id)l;
+- (id)read:(unint64_t)read error:(id *)error;
 - (void)_updateFileSize;
 @end
 
 @implementation DVTFileStream
 
-- (DVTFileStream)initWithURL:(id)a3
+- (DVTFileStream)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = DVTFileStream;
   v6 = [(DVTFileStream *)&v12 init];
   if (v6)
   {
     v7 = MEMORY[0x277CCA9F8];
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v5, "fileSystemRepresentation")}];
+    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(lCopy, "fileSystemRepresentation")}];
     v9 = [v7 fileHandleForReadingAtPath:v8];
     fileHandle = v6->_fileHandle;
     v6->_fileHandle = v9;
 
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
     v6->_currentRead = 0;
     [(DVTFileStream *)v6 _updateFileSize];
   }
@@ -38,24 +38,24 @@
   }
 }
 
-- (id)read:(unint64_t)a3 error:(id *)a4
+- (id)read:(unint64_t)read error:(id *)error
 {
   fileSize = self->_fileSize;
   currentRead = self->_currentRead;
-  v7 = currentRead + a3;
+  v7 = currentRead + read;
   fileHandle = self->_fileHandle;
   v9 = fileSize - currentRead;
   if (v7 <= fileSize)
   {
-    v10 = a3;
+    readCopy = read;
   }
 
   else
   {
-    v10 = v9;
+    readCopy = v9;
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:mmap(0 length:v10 deallocator:{1, 2, -[NSFileHandle fileDescriptor](fileHandle, "fileDescriptor"), self->_currentRead), v10, &unk_285A17EC8}];
+  v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:mmap(0 length:readCopy deallocator:{1, 2, -[NSFileHandle fileDescriptor](fileHandle, "fileDescriptor"), self->_currentRead), readCopy, &unk_285A17EC8}];
   self->_currentRead += [v11 length];
 
   return v11;

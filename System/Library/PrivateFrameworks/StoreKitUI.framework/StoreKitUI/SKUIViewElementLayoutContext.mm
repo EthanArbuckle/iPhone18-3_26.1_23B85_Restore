@@ -1,47 +1,47 @@
 @interface SKUIViewElementLayoutContext
-+ (double)_calculateValueFromString:(id)a3 withDefault:(double)a4 coefficent:(double)a5;
-+ (double)itemWidthForElement:(id)a3 withDefaultWidth:(double)a4 fitWidth:(double)a5;
-- (BOOL)_loadImageForURL:(id)a3 cacheKey:(id)a4 dataConsumer:(id)a5 reason:(int64_t)a6;
-- (BOOL)loadImageForArtwork:(id)a3 dataConsumer:(id)a4 reason:(int64_t)a5;
-- (BOOL)loadImageForArtwork:(id)a3 reason:(int64_t)a4;
-- (BOOL)loadImageForBadgeElement:(id)a3 reason:(int64_t)a4;
-- (BOOL)loadImageForImageElement:(id)a3 reason:(int64_t)a4;
-- (BOOL)loadImageForImageElement:(id)a3 reason:(int64_t)a4 dataConsumer:(id)a5;
-- (BOOL)loadTemplatedImageForBadgeElement:(id)a3 reason:(int64_t)a4;
-- (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4;
-- (CGSize)_sizeForImageElement:(id)a3 applyTransform:(BOOL)a4;
-- (CGSize)sizeForBadgeElement:(id)a3;
-- (CGSize)sizeForImageElement:(id)a3;
-- (CGSize)sizeForItemOfferButton:(id)a3;
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4;
++ (double)_calculateValueFromString:(id)string withDefault:(double)default coefficent:(double)coefficent;
++ (double)itemWidthForElement:(id)element withDefaultWidth:(double)width fitWidth:(double)fitWidth;
+- (BOOL)_loadImageForURL:(id)l cacheKey:(id)key dataConsumer:(id)consumer reason:(int64_t)reason;
+- (BOOL)loadImageForArtwork:(id)artwork dataConsumer:(id)consumer reason:(int64_t)reason;
+- (BOOL)loadImageForArtwork:(id)artwork reason:(int64_t)reason;
+- (BOOL)loadImageForBadgeElement:(id)element reason:(int64_t)reason;
+- (BOOL)loadImageForImageElement:(id)element reason:(int64_t)reason;
+- (BOOL)loadImageForImageElement:(id)element reason:(int64_t)reason dataConsumer:(id)consumer;
+- (BOOL)loadTemplatedImageForBadgeElement:(id)element reason:(int64_t)reason;
+- (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason;
+- (CGSize)_sizeForImageElement:(id)element applyTransform:(BOOL)transform;
+- (CGSize)sizeForBadgeElement:(id)element;
+- (CGSize)sizeForImageElement:(id)element;
+- (CGSize)sizeForItemOfferButton:(id)button;
+- (CGSize)sizeForViewElement:(id)element width:(double)width;
 - (MPUBorderDrawingCache)borderDrawingCache;
 - (SKUIArtworkRequestDelegate)artworkRequestDelegate;
 - (SKUIBadgeTextAttachmentLoader)badgeImageLoader;
-- (SKUIViewElementLayoutContext)initWithStorePageSectionContext:(id)a3 previousLayoutContext:(id)a4;
+- (SKUIViewElementLayoutContext)initWithStorePageSectionContext:(id)context previousLayoutContext:(id)layoutContext;
 - (UIEdgeInsets)largeScreenElementPadding;
 - (UIViewController)parentViewController;
-- (double)defaultItemWidthForViewElement:(id)a3;
+- (double)defaultItemWidthForViewElement:(id)element;
 - (double)displayScale;
 - (id)_initSKUIViewElementLayoutContext;
-- (id)blurColorForCacheKey:(id)a3;
-- (id)dataConsumerForImageElement:(id)a3;
-- (id)editorialLayoutForLabelElement:(id)a3 width:(double)a4;
-- (id)imageResourceCacheKeyForViewElement:(id)a3;
-- (id)placeholderImageForImageElement:(id)a3 dataConsumer:(id)a4;
-- (id)placeholderImageForSize:(CGSize)a3;
-- (id)requestIdentifierForArtwork:(id)a3;
-- (id)requestIdentifierForResourceCacheKey:(id)a3;
-- (id)requestIdentifierForViewElement:(id)a3;
-- (id)textPropertiesForViewElement:(id)a3 width:(double)a4;
-- (id)transientRequestIdentifierForViewElement:(id)a3;
-- (int64_t)maxWidthForElement:(id)a3 withDefaultWidth:(int64_t)a4;
-- (void)_artworkRequestDidLoadImageNotification:(id)a3;
+- (id)blurColorForCacheKey:(id)key;
+- (id)dataConsumerForImageElement:(id)element;
+- (id)editorialLayoutForLabelElement:(id)element width:(double)width;
+- (id)imageResourceCacheKeyForViewElement:(id)element;
+- (id)placeholderImageForImageElement:(id)element dataConsumer:(id)consumer;
+- (id)placeholderImageForSize:(CGSize)size;
+- (id)requestIdentifierForArtwork:(id)artwork;
+- (id)requestIdentifierForResourceCacheKey:(id)key;
+- (id)requestIdentifierForViewElement:(id)element;
+- (id)textPropertiesForViewElement:(id)element width:(double)width;
+- (id)transientRequestIdentifierForViewElement:(id)element;
+- (int64_t)maxWidthForElement:(id)element withDefaultWidth:(int64_t)width;
+- (void)_artworkRequestDidLoadImageNotification:(id)notification;
 - (void)_initSKUIViewElementLayoutContext;
 - (void)dealloc;
-- (void)expandEditorialForLabelElement:(id)a3;
-- (void)setAggregateValue:(id)a3 forKey:(id)a4;
-- (void)setBlurColor:(id)a3 cacheKey:(id)a4;
-- (void)setLargeScreenElementPaddingFromContext:(id)a3;
+- (void)expandEditorialForLabelElement:(id)element;
+- (void)setAggregateValue:(id)value forKey:(id)key;
+- (void)setBlurColor:(id)color cacheKey:(id)key;
+- (void)setLargeScreenElementPaddingFromContext:(id)context;
 @end
 
 @implementation SKUIViewElementLayoutContext
@@ -82,113 +82,113 @@
     itemOfferButtonSizes = v3->_itemOfferButtonSizes;
     v3->_itemOfferButtonSizes = v14;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v3 selector:sel__artworkRequestDidLoadImageNotification_ name:@"SKUIArtworkRequestDidLoadImageNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__artworkRequestDidLoadImageNotification_ name:@"SKUIArtworkRequestDidLoadImageNotification" object:0];
   }
 
   return v3;
 }
 
-- (SKUIViewElementLayoutContext)initWithStorePageSectionContext:(id)a3 previousLayoutContext:(id)a4
+- (SKUIViewElementLayoutContext)initWithStorePageSectionContext:(id)context previousLayoutContext:(id)layoutContext
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIViewElementLayoutContext *)self _initSKUIViewElementLayoutContext];
-  if (v8)
+  contextCopy = context;
+  layoutContextCopy = layoutContext;
+  _initSKUIViewElementLayoutContext = [(SKUIViewElementLayoutContext *)self _initSKUIViewElementLayoutContext];
+  if (_initSKUIViewElementLayoutContext)
   {
-    v9 = [v6 resourceLoader];
-    if (v9)
+    resourceLoader = [contextCopy resourceLoader];
+    if (resourceLoader)
     {
-      v10 = [v7 resourceLoader];
+      resourceLoader2 = [layoutContextCopy resourceLoader];
 
-      if (v10 == v9)
+      if (resourceLoader2 == resourceLoader)
       {
-        v11 = v7[12];
+        v11 = layoutContextCopy[12];
         if (v11)
         {
           v12 = v11;
           v13 = [v12 mutableCopy];
-          observedArtworkRequestIDs = v8->_observedArtworkRequestIDs;
-          v8->_observedArtworkRequestIDs = v13;
+          observedArtworkRequestIDs = _initSKUIViewElementLayoutContext->_observedArtworkRequestIDs;
+          _initSKUIViewElementLayoutContext->_observedArtworkRequestIDs = v13;
         }
       }
     }
 
-    v15 = [v7 labelLayoutCache];
-    v16 = [v6 textLayoutCache];
-    v17 = [v15 layoutCache];
+    labelLayoutCache = [layoutContextCopy labelLayoutCache];
+    textLayoutCache = [contextCopy textLayoutCache];
+    layoutCache = [labelLayoutCache layoutCache];
 
-    if (v17 == v16)
+    if (layoutCache == textLayoutCache)
     {
-      objc_storeStrong(&v8->_labelLayoutCache, v15);
-      [(SKUIViewElementTextLayoutCache *)v8->_labelLayoutCache invalidateLayoutsForUpdatedElements];
+      objc_storeStrong(&_initSKUIViewElementLayoutContext->_labelLayoutCache, labelLayoutCache);
+      [(SKUIViewElementTextLayoutCache *)_initSKUIViewElementLayoutContext->_labelLayoutCache invalidateLayoutsForUpdatedElements];
     }
 
     else
     {
       v18 = [SKUIViewElementTextLayoutCache alloc];
-      v19 = [v6 textLayoutCache];
-      v20 = [(SKUIViewElementTextLayoutCache *)v18 initWithLayoutCache:v19];
-      labelLayoutCache = v8->_labelLayoutCache;
-      v8->_labelLayoutCache = v20;
+      textLayoutCache2 = [contextCopy textLayoutCache];
+      v20 = [(SKUIViewElementTextLayoutCache *)v18 initWithLayoutCache:textLayoutCache2];
+      labelLayoutCache = _initSKUIViewElementLayoutContext->_labelLayoutCache;
+      _initSKUIViewElementLayoutContext->_labelLayoutCache = v20;
     }
 
-    [v6 activePageWidth];
-    [(SKUIViewElementLayoutContext *)v8 setActivePageWidth:?];
-    v22 = [v6 clientContext];
-    [(SKUIViewElementLayoutContext *)v8 setClientContext:v22];
+    [contextCopy activePageWidth];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setActivePageWidth:?];
+    clientContext = [contextCopy clientContext];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setClientContext:clientContext];
 
-    v23 = [v6 parentViewController];
-    [(SKUIViewElementLayoutContext *)v8 setParentViewController:v23];
-    v24 = [v6 placeholderColor];
-    [(SKUIViewElementLayoutContext *)v8 setPlaceholderColor:v24];
+    parentViewController = [contextCopy parentViewController];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setParentViewController:parentViewController];
+    placeholderColor = [contextCopy placeholderColor];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setPlaceholderColor:placeholderColor];
 
-    [(SKUIViewElementLayoutContext *)v8 setResourceLoader:v9];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setResourceLoader:resourceLoader];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v23;
+      navigationController = parentViewController;
     }
 
     else
     {
-      v25 = [v23 navigationController];
+      navigationController = [parentViewController navigationController];
     }
 
-    v26 = v25;
-    v27 = [v25 navigationBar];
-    v28 = [v27 _backdropViewLayerGroupName];
-    [(SKUIViewElementLayoutContext *)v8 setBackdropGroupName:v28];
+    v26 = navigationController;
+    navigationBar = [navigationController navigationBar];
+    _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setBackdropGroupName:_backdropViewLayerGroupName];
 
-    v29 = [v6 collectionView];
-    v30 = [v29 tintColor];
-    [(SKUIViewElementLayoutContext *)v8 setTintColor:v30];
+    collectionView = [contextCopy collectionView];
+    tintColor = [collectionView tintColor];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setTintColor:tintColor];
 
-    v31 = [v29 traitCollection];
-    [v31 displayScale];
-    [(SKUIViewElementLayoutContext *)v8 setDisplayScale:?];
-    [(SKUIViewElementLayoutContext *)v8 setLargeScreenElementPaddingFromContext:v6];
+    traitCollection = [collectionView traitCollection];
+    [traitCollection displayScale];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setDisplayScale:?];
+    [(SKUIViewElementLayoutContext *)_initSKUIViewElementLayoutContext setLargeScreenElementPaddingFromContext:contextCopy];
   }
 
-  return v8;
+  return _initSKUIViewElementLayoutContext;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SKUIArtworkRequestDidLoadImageNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SKUIArtworkRequestDidLoadImageNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SKUIViewElementLayoutContext;
   [(SKUIViewElementLayoutContext *)&v4 dealloc];
 }
 
-+ (double)itemWidthForElement:(id)a3 withDefaultWidth:(double)a4 fitWidth:(double)a5
++ (double)itemWidthForElement:(id)element withDefaultWidth:(double)width fitWidth:(double)fitWidth
 {
-  v8 = [a3 style];
-  v9 = [v8 itemWidth];
+  style = [element style];
+  itemWidth = [style itemWidth];
 
-  [a1 _calculateValueFromString:v9 withDefault:a4 coefficent:a5];
+  [self _calculateValueFromString:itemWidth withDefault:width coefficent:fitWidth];
   v11 = v10;
 
   return v11;
@@ -209,9 +209,9 @@
   return badgeImageLoader;
 }
 
-- (id)blurColorForCacheKey:(id)a3
+- (id)blurColorForCacheKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(NSMapTable *)self->_blurColors objectForKey:?];
   }
@@ -240,12 +240,12 @@
   return borderDrawingCache;
 }
 
-- (double)defaultItemWidthForViewElement:(id)a3
+- (double)defaultItemWidthForViewElement:(id)element
 {
-  v4 = [a3 style];
-  v5 = [v4 itemWidth];
+  style = [element style];
+  itemWidth = [style itemWidth];
 
-  if (v5 && ([v5 floatValue], v6 >= 0.00000011921))
+  if (itemWidth && ([itemWidth floatValue], v6 >= 0.00000011921))
   {
     v7 = v6;
   }
@@ -257,8 +257,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v9;
 
     if (v10 == 3.0)
@@ -268,8 +268,8 @@
 
     else
     {
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v13 = v12 > 320.0;
 
       v7 = dbl_215F3FD30[v13];
@@ -284,8 +284,8 @@
   result = self->_displayScale;
   if (result <= 0.00000011920929)
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v5 = v4;
 
     return v5;
@@ -294,27 +294,27 @@
   return result;
 }
 
-- (id)editorialLayoutForLabelElement:(id)a3 width:(double)a4
+- (id)editorialLayoutForLabelElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_editorialLayouts objectForKey:v6];
+  elementCopy = element;
+  v7 = [(NSMapTable *)self->_editorialLayouts objectForKey:elementCopy];
   if (!v7)
   {
-    v8 = [[SKUIEditorialComponent alloc] initWithViewElement:v6];
+    v8 = [[SKUIEditorialComponent alloc] initWithViewElement:elementCopy];
     v9 = [SKUIEditorialLayout alloc];
-    v10 = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutCache];
-    v7 = [(SKUIEditorialLayout *)v9 initWithEditorial:v8 layoutCache:v10];
+    layoutCache = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutCache];
+    v7 = [(SKUIEditorialLayout *)v9 initWithEditorial:v8 layoutCache:layoutCache];
 
-    [(SKUIEditorialLayout *)v7 setLayoutWidth:0 forOrientation:a4];
-    [(NSMapTable *)self->_editorialLayouts setObject:v7 forKey:v6];
+    [(SKUIEditorialLayout *)v7 setLayoutWidth:0 forOrientation:width];
+    [(NSMapTable *)self->_editorialLayouts setObject:v7 forKey:elementCopy];
   }
 
   return v7;
 }
 
-- (void)expandEditorialForLabelElement:(id)a3
+- (void)expandEditorialForLabelElement:(id)element
 {
-  v4 = [(NSMapTable *)self->_editorialLayouts objectForKey:a3];
+  v4 = [(NSMapTable *)self->_editorialLayouts objectForKey:element];
   v5 = v4;
   if (v4)
   {
@@ -336,76 +336,76 @@
   MEMORY[0x2821F96F8](v4, v5);
 }
 
-- (id)imageResourceCacheKeyForViewElement:(id)a3
+- (id)imageResourceCacheKeyForViewElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 elementType];
-  v5 = 0;
-  if (v4 > 48)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  resourceCacheKey2 = 0;
+  if (elementType > 48)
   {
-    if (v4 != 49)
+    if (elementType != 49)
     {
-      if (v4 == 50)
+      if (elementType == 50)
       {
-        v6 = [v3 buttonImage];
+        buttonImage = [elementCopy buttonImage];
       }
 
       else
       {
-        if (v4 != 152)
+        if (elementType != 152)
         {
           goto LABEL_14;
         }
 
-        v6 = [v3 thumbnailImage];
+        buttonImage = [elementCopy thumbnailImage];
       }
 
       goto LABEL_13;
     }
 
-    v7 = [v3 resourceCacheKey];
+    resourceCacheKey = [elementCopy resourceCacheKey];
 LABEL_10:
-    v5 = v7;
+    resourceCacheKey2 = resourceCacheKey;
     goto LABEL_14;
   }
 
-  if (v4 != 7)
+  if (elementType != 7)
   {
-    if (v4 != 8)
+    if (elementType != 8)
     {
       goto LABEL_14;
     }
 
-    v7 = [v3 URL];
+    resourceCacheKey = [elementCopy URL];
     goto LABEL_10;
   }
 
-  v6 = [v3 firstChildForElementType:49];
+  buttonImage = [elementCopy firstChildForElementType:49];
 LABEL_13:
-  v8 = v6;
-  v5 = [v6 resourceCacheKey];
+  v8 = buttonImage;
+  resourceCacheKey2 = [buttonImage resourceCacheKey];
 
 LABEL_14:
 
-  return v5;
+  return resourceCacheKey2;
 }
 
-- (BOOL)loadImageForArtwork:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForArtwork:(id)artwork reason:(int64_t)reason
 {
-  v6 = a3;
+  artworkCopy = artwork;
   v7 = +[(SSVURLDataConsumer *)SKUIImageDataConsumer];
-  LOBYTE(a4) = [(SKUIViewElementLayoutContext *)self loadImageForArtwork:v6 dataConsumer:v7 reason:a4];
+  LOBYTE(reason) = [(SKUIViewElementLayoutContext *)self loadImageForArtwork:artworkCopy dataConsumer:v7 reason:reason];
 
-  return a4;
+  return reason;
 }
 
-- (BOOL)loadImageForArtwork:(id)a3 dataConsumer:(id)a4 reason:(int64_t)a5
+- (BOOL)loadImageForArtwork:(id)artwork dataConsumer:(id)consumer reason:(int64_t)reason
 {
-  v8 = a4;
-  v9 = [a3 URL];
+  consumerCopy = consumer;
+  v9 = [artwork URL];
   if (v9)
   {
-    v10 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v9 cacheKey:v9 dataConsumer:v8 reason:a5];
+    v10 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v9 cacheKey:v9 dataConsumer:consumerCopy reason:reason];
   }
 
   else
@@ -416,22 +416,22 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)loadImageForBadgeElement:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForBadgeElement:(id)element reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 URL];
-  v8 = [v6 style];
-  v9 = [v8 imageMaskColor];
+  elementCopy = element;
+  v7 = [elementCopy URL];
+  style = [elementCopy style];
+  imageMaskColor = [style imageMaskColor];
 
-  if (v9)
+  if (imageMaskColor)
   {
-    v10 = [(SKUIViewElementLayoutContext *)self loadTemplatedImageForBadgeElement:v6 reason:a4];
+    v10 = [(SKUIViewElementLayoutContext *)self loadTemplatedImageForBadgeElement:elementCopy reason:reason];
   }
 
   else if (v7)
   {
     v11 = +[(SSVURLDataConsumer *)SKUIImageDataConsumer];
-    v10 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v7 cacheKey:v7 dataConsumer:v11 reason:a4];
+    v10 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v7 cacheKey:v7 dataConsumer:v11 reason:reason];
   }
 
   else
@@ -442,37 +442,37 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)loadTemplatedImageForBadgeElement:(id)a3 reason:(int64_t)a4
+- (BOOL)loadTemplatedImageForBadgeElement:(id)element reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 URL];
+  elementCopy = element;
+  v7 = [elementCopy URL];
   if (v7)
   {
     v8 = +[(SSVURLDataConsumer *)SKUITemplatedBadgeImageConsumer];
-    v9 = [v6 style];
-    v10 = [v9 imageMaskColor];
+    style = [elementCopy style];
+    imageMaskColor = [style imageMaskColor];
 
-    if (v10)
+    if (imageMaskColor)
     {
-      v11 = [v10 color];
-      if ([v10 colorType] == 1 || !v11)
+      color = [imageMaskColor color];
+      if ([imageMaskColor colorType] == 1 || !color)
       {
-        v12 = [(SKUIViewElementLayoutContext *)self tintColor];
+        tintColor = [(SKUIViewElementLayoutContext *)self tintColor];
 
-        v11 = v12;
+        color = tintColor;
       }
 
-      [v8 setTemplateColor:v11];
+      [v8 setTemplateColor:color];
       v13 = v8;
     }
 
     else
     {
       v13 = +[(SSVURLDataConsumer *)SKUIImageDataConsumer];
-      v11 = v13;
+      color = v13;
     }
 
-    v14 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v7 cacheKey:v7 dataConsumer:v13 reason:a4];
+    v14 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v7 cacheKey:v7 dataConsumer:v13 reason:reason];
   }
 
   else
@@ -483,25 +483,25 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)loadImageForImageElement:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForImageElement:(id)element reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(SKUIViewElementLayoutContext *)self dataConsumerForImageElement:v6];
-  LOBYTE(a4) = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:v6 reason:a4 dataConsumer:v7];
+  elementCopy = element;
+  v7 = [(SKUIViewElementLayoutContext *)self dataConsumerForImageElement:elementCopy];
+  LOBYTE(reason) = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:elementCopy reason:reason dataConsumer:v7];
 
-  return a4;
+  return reason;
 }
 
-- (BOOL)loadImageForImageElement:(id)a3 reason:(int64_t)a4 dataConsumer:(id)a5
+- (BOOL)loadImageForImageElement:(id)element reason:(int64_t)reason dataConsumer:(id)consumer
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 URL];
+  elementCopy = element;
+  consumerCopy = consumer;
+  v10 = [elementCopy URL];
   if (v10)
   {
-    v11 = [v8 URL];
-    v12 = [v8 resourceCacheKey];
-    v13 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v11 cacheKey:v12 dataConsumer:v9 reason:a4];
+    v11 = [elementCopy URL];
+    resourceCacheKey = [elementCopy resourceCacheKey];
+    v13 = [(SKUIViewElementLayoutContext *)self _loadImageForURL:v11 cacheKey:resourceCacheKey dataConsumer:consumerCopy reason:reason];
   }
 
   else
@@ -512,68 +512,68 @@ LABEL_14:
   return v13;
 }
 
-- (id)dataConsumerForImageElement:(id)a3
+- (id)dataConsumerForImageElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 style];
-  v6 = [v5 imageMaskColor];
+  elementCopy = element;
+  style = [elementCopy style];
+  imageMaskColor = [style imageMaskColor];
 
-  if (v6)
+  if (imageMaskColor)
   {
     v7 = +[(SSVURLDataConsumer *)SKUITemplatedBadgeImageConsumer];
-    v8 = [v6 color];
-    if ([v6 colorType] == 1 || !v8)
+    color = [imageMaskColor color];
+    if ([imageMaskColor colorType] == 1 || !color)
     {
-      v9 = [(SKUIViewElementLayoutContext *)self tintColor];
+      tintColor = [(SKUIViewElementLayoutContext *)self tintColor];
 
-      v8 = v9;
+      color = tintColor;
     }
 
-    [(SKUIStyledImageDataConsumer *)v7 setTemplateColor:v8];
+    [(SKUIStyledImageDataConsumer *)v7 setTemplateColor:color];
   }
 
   else
   {
-    v7 = [[SKUIStyledImageDataConsumer alloc] initWithViewElement:v4];
-    [(SKUIViewElementLayoutContext *)self _sizeForImageElement:v4 applyTransform:0];
+    v7 = [[SKUIStyledImageDataConsumer alloc] initWithViewElement:elementCopy];
+    [(SKUIViewElementLayoutContext *)self _sizeForImageElement:elementCopy applyTransform:0];
     [(SKUIStyledImageDataConsumer *)v7 setImageSize:?];
   }
 
   return v7;
 }
 
-- (id)placeholderImageForImageElement:(id)a3 dataConsumer:(id)a4
+- (id)placeholderImageForImageElement:(id)element dataConsumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
-  [(SKUIViewElementLayoutContext *)self _sizeForImageElement:v7 applyTransform:0];
+  consumerCopy = consumer;
+  elementCopy = element;
+  [(SKUIViewElementLayoutContext *)self _sizeForImageElement:elementCopy applyTransform:0];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 style];
-  v13 = [v12 imageTreatment];
-  v14 = SKUIImageTreatmentForString(v13);
+  style = [elementCopy style];
+  imageTreatment = [style imageTreatment];
+  v14 = SKUIImageTreatmentForString(imageTreatment);
 
-  v15 = [v7 style];
+  style2 = [elementCopy style];
 
-  v16 = [v15 imagePlaceholderBackgroundColor];
+  imagePlaceholderBackgroundColor = [style2 imagePlaceholderBackgroundColor];
 
-  if ([v16 colorType] == 4)
+  if ([imagePlaceholderBackgroundColor colorType] == 4)
   {
     v17 = 0;
     goto LABEL_8;
   }
 
-  v18 = [[SKUIPlaceholderImageKey alloc] initWithSize:v14 imageTreatment:v16 placeholderBackgroundColor:v9, v11];
-  v19 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
-  v17 = [v19 objectForKey:v18];
+  v18 = [[SKUIPlaceholderImageKey alloc] initWithSize:v14 imageTreatment:imagePlaceholderBackgroundColor placeholderBackgroundColor:v9, v11];
+  placeholderImageCache = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
+  v17 = [placeholderImageCache objectForKey:v18];
 
   if (!v17)
   {
-    v20 = [v16 color];
+    color = [imagePlaceholderBackgroundColor color];
 
-    if (!v20)
+    if (!color)
     {
-      v17 = [v6 imageForColor:self->_placeholderColor];
+      v17 = [consumerCopy imageForColor:self->_placeholderColor];
       if (!v17)
       {
         goto LABEL_7;
@@ -582,15 +582,15 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v21 = [v16 color];
-    v22 = [v6 imageForColor:v21];
+    color2 = [imagePlaceholderBackgroundColor color];
+    v22 = [consumerCopy imageForColor:color2];
     v17 = [v22 imageWithRenderingMode:1];
 
     if (v17)
     {
 LABEL_6:
-      v23 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
-      [v23 setObject:v17 forKey:v18];
+      placeholderImageCache2 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
+      [placeholderImageCache2 setObject:v17 forKey:v18];
     }
   }
 
@@ -601,12 +601,12 @@ LABEL_8:
   return v17;
 }
 
-- (int64_t)maxWidthForElement:(id)a3 withDefaultWidth:(int64_t)a4
+- (int64_t)maxWidthForElement:(id)element withDefaultWidth:(int64_t)width
 {
-  v5 = [a3 style];
-  v6 = [v5 maxWidth];
+  style = [element style];
+  maxWidth = [style maxWidth];
 
-  [objc_opt_class() _calculateValueFromString:v6 withDefault:a4 coefficent:a4];
+  [objc_opt_class() _calculateValueFromString:maxWidth withDefault:width coefficent:width];
   if (v7 < 0.0)
   {
     v7 = -v7;
@@ -617,13 +617,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)placeholderImageForSize:(CGSize)a3
+- (id)placeholderImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [[SKUIPlaceholderImageKey alloc] initWithSize:0 imageTreatment:0 placeholderBackgroundColor:a3.width, a3.height];
-  v7 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
-  v8 = [v7 objectForKey:v6];
+  height = size.height;
+  width = size.width;
+  v6 = [[SKUIPlaceholderImageKey alloc] initWithSize:0 imageTreatment:0 placeholderBackgroundColor:size.width, size.height];
+  placeholderImageCache = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
+  v8 = [placeholderImageCache objectForKey:v6];
 
   if (!v8)
   {
@@ -633,37 +633,37 @@ LABEL_8:
     v8 = [(SKUIStyledImageDataConsumer *)v9 imageForColor:self->_placeholderColor];
     if (v8)
     {
-      v10 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
-      [v10 setObject:v8 forKey:v6];
+      placeholderImageCache2 = [(SKUIViewElementLayoutContext *)self placeholderImageCache];
+      [placeholderImageCache2 setObject:v8 forKey:v6];
     }
   }
 
   return v8;
 }
 
-- (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4
+- (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 elementType];
+  elementCopy = element;
+  elementType = [elementCopy elementType];
   v8 = 0;
-  if (v7 <= 49)
+  if (elementType <= 49)
   {
-    if (v7 > 47)
+    if (elementType > 47)
     {
-      if (v7 == 48)
+      if (elementType == 48)
       {
         v10 = SKUISectionHeaderView;
         goto LABEL_22;
       }
 
-      v11 = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:v6 reason:a4];
+      v11 = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:elementCopy reason:reason];
     }
 
     else
     {
-      if (v7 != 8)
+      if (elementType != 8)
       {
-        if (v7 != 40)
+        if (elementType != 40)
         {
           goto LABEL_24;
         }
@@ -672,7 +672,7 @@ LABEL_8:
         goto LABEL_22;
       }
 
-      v11 = [(SKUIViewElementLayoutContext *)self loadImageForBadgeElement:v6 reason:a4];
+      v11 = [(SKUIViewElementLayoutContext *)self loadImageForBadgeElement:elementCopy reason:reason];
     }
 
 LABEL_23:
@@ -680,9 +680,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v7 > 61)
+  if (elementType > 61)
   {
-    switch(v7)
+    switch(elementType)
     {
       case 62:
         v10 = SKUIHorizontalListView;
@@ -691,10 +691,10 @@ LABEL_23:
         v10 = SKUIOfferView;
         break;
       case 152:
-        v9 = [v6 thumbnailImage];
+        thumbnailImage = [elementCopy thumbnailImage];
 LABEL_20:
-        v12 = v9;
-        v8 = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:v9 reason:a4];
+        v12 = thumbnailImage;
+        v8 = [(SKUIViewElementLayoutContext *)self loadImageForImageElement:thumbnailImage reason:reason];
 
         goto LABEL_24;
       default:
@@ -704,17 +704,17 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (v7 == 50)
+  if (elementType == 50)
   {
-    v9 = [v6 buttonImage];
+    thumbnailImage = [elementCopy buttonImage];
     goto LABEL_20;
   }
 
-  if (v7 == 51)
+  if (elementType == 51)
   {
     v10 = SKUIImageDeckView;
 LABEL_22:
-    v11 = [(__objc2_class *)v10 prefetchResourcesForViewElement:v6 reason:a4 context:self];
+    v11 = [(__objc2_class *)v10 prefetchResourcesForViewElement:elementCopy reason:reason context:self];
     goto LABEL_23;
   }
 
@@ -723,17 +723,17 @@ LABEL_24:
   return v8;
 }
 
-- (id)requestIdentifierForArtwork:(id)a3
+- (id)requestIdentifierForArtwork:(id)artwork
 {
-  v4 = [(SKUIViewElementLayoutContext *)self imageResourceCacheKeyForArtwork:a3];
+  v4 = [(SKUIViewElementLayoutContext *)self imageResourceCacheKeyForArtwork:artwork];
   v5 = [(SKUIViewElementLayoutContext *)self requestIdentifierForResourceCacheKey:v4];
 
   return v5;
 }
 
-- (id)requestIdentifierForResourceCacheKey:(id)a3
+- (id)requestIdentifierForResourceCacheKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(SKUIResourceLoader *)self->_resourceLoader requestIdentifierForCacheKey:?];
   }
@@ -746,22 +746,22 @@ LABEL_24:
   return v4;
 }
 
-- (id)requestIdentifierForViewElement:(id)a3
+- (id)requestIdentifierForViewElement:(id)element
 {
-  v4 = [(SKUIViewElementLayoutContext *)self imageResourceCacheKeyForViewElement:a3];
+  v4 = [(SKUIViewElementLayoutContext *)self imageResourceCacheKeyForViewElement:element];
   v5 = [(SKUIViewElementLayoutContext *)self requestIdentifierForResourceCacheKey:v4];
 
   return v5;
 }
 
-- (void)setAggregateValue:(id)a3 forKey:(id)a4
+- (void)setAggregateValue:(id)value forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  keyCopy = key;
+  v7 = valueCopy;
+  v8 = keyCopy;
   aggregateValues = self->_aggregateValues;
-  if (v12)
+  if (valueCopy)
   {
     if (!aggregateValues)
     {
@@ -769,7 +769,7 @@ LABEL_24:
       v11 = self->_aggregateValues;
       self->_aggregateValues = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       aggregateValues = self->_aggregateValues;
     }
 
@@ -782,31 +782,31 @@ LABEL_24:
   }
 }
 
-- (void)setBlurColor:(id)a3 cacheKey:(id)a4
+- (void)setBlurColor:(id)color cacheKey:(id)key
 {
-  if (a3)
+  if (color)
   {
-    if (a4)
+    if (key)
     {
       [NSMapTable setObject:"setObject:forKey:" forKey:?];
     }
   }
 }
 
-- (void)setLargeScreenElementPaddingFromContext:(id)a3
+- (void)setLargeScreenElementPaddingFromContext:(id)context
 {
-  v24 = a3;
+  contextCopy = context;
   v4 = *(MEMORY[0x277D768C8] + 16);
   *&self->_largeScreenElementPadding.top = *MEMORY[0x277D768C8];
   *&self->_largeScreenElementPadding.bottom = v4;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqual:@"com.apple.Music"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqual:@"com.apple.Music"];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v24 collectionView];
-    [v8 bounds];
+    collectionView = [contextCopy collectionView];
+    [collectionView bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -831,8 +831,8 @@ LABEL_24:
       }
     }
 
-    [v24 activePageWidth];
-    if (v22 == 455.0 || ([v24 activePageWidth], v23 == 341.0))
+    [contextCopy activePageWidth];
+    if (v22 == 455.0 || ([contextCopy activePageWidth], v23 == 341.0))
     {
       *&self->_largeScreenElementPadding.top = xmmword_215F3FD40;
       *&self->_largeScreenElementPadding.bottom = xmmword_215F3FD50;
@@ -840,17 +840,17 @@ LABEL_24:
   }
 }
 
-- (CGSize)sizeForBadgeElement:(id)a3
+- (CGSize)sizeForBadgeElement:(id)element
 {
-  v3 = a3;
-  [v3 size];
+  elementCopy = element;
+  [elementCopy size];
   v6 = v5;
   v7 = v4;
   if (v5 == *MEMORY[0x277CBF3A8] && v4 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v9 = [v3 resourceName];
-    v10 = v9;
-    if (v9 && (SKUIImageWithResourceName(v9), (v11 = objc_claimAutoreleasedReturnValue()) != 0) || ([v3 fallbackImage], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    resourceName = [elementCopy resourceName];
+    v10 = resourceName;
+    if (resourceName && (SKUIImageWithResourceName(resourceName), (v11 = objc_claimAutoreleasedReturnValue()) != 0) || ([elementCopy fallbackImage], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
       [v11 size];
@@ -866,24 +866,24 @@ LABEL_24:
   return result;
 }
 
-- (CGSize)sizeForImageElement:(id)a3
+- (CGSize)sizeForImageElement:(id)element
 {
-  [(SKUIViewElementLayoutContext *)self _sizeForImageElement:a3 applyTransform:1];
+  [(SKUIViewElementLayoutContext *)self _sizeForImageElement:element applyTransform:1];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeForItemOfferButton:(id)a3
+- (CGSize)sizeForItemOfferButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 buttonText];
-  v6 = [v5 string];
+  buttonCopy = button;
+  buttonText = [buttonCopy buttonText];
+  string = [buttonText string];
 
-  v7 = [v4 itemIdentifier];
-  if (v7)
+  itemIdentifier = [buttonCopy itemIdentifier];
+  if (itemIdentifier)
   {
-    v8 = v7;
+    v8 = itemIdentifier;
     v9 = +[SKUIItemStateCenter defaultCenter];
     v10 = [v9 stateForItemWithIdentifier:v8];
 
@@ -897,23 +897,23 @@ LABEL_24:
 
     if ([v10 state])
     {
-      v13 = [v4 parent];
-      v14 = [v13 attributes];
-      v15 = [v14 objectForKey:@"supportsPlayButton"];
-      v16 = [v15 BOOLValue];
+      parent = [buttonCopy parent];
+      attributes = [parent attributes];
+      v15 = [attributes objectForKey:@"supportsPlayButton"];
+      bOOLValue = [v15 BOOLValue];
 
-      if ((v16 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v17 = [SKUIItemOfferButton localizedTitleForItemState:v10 clientContext:self->_clientContext];
 
-        v6 = v17;
+        string = v17;
       }
     }
   }
 
-  if (v6)
+  if (string)
   {
-    v18 = [(NSMutableDictionary *)self->_itemOfferButtonSizes objectForKey:v6];
+    v18 = [(NSMutableDictionary *)self->_itemOfferButtonSizes objectForKey:string];
     if (v18)
     {
       v19 = v18;
@@ -925,16 +925,16 @@ LABEL_24:
     else
     {
       [(SKUIItemOfferButton *)self->_itemOfferButton setImage:0];
-      [(SKUIItemOfferButton *)self->_itemOfferButton setTitle:v6];
+      [(SKUIItemOfferButton *)self->_itemOfferButton setTitle:string];
       [(SKUIItemOfferButton *)self->_itemOfferButton sizeThatFits:*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)];
       v12 = v28;
       v11 = v29;
       v19 = [[SKUISizeValue alloc] initWithSize:v28, v29];
-      [(NSMutableDictionary *)self->_itemOfferButtonSizes setObject:v19 forKey:v6];
+      [(NSMutableDictionary *)self->_itemOfferButtonSizes setObject:v19 forKey:string];
     }
   }
 
-  else if ([v4 buttonViewType] == 3)
+  else if ([buttonCopy buttonViewType] == 3)
   {
     v22 = sizeForItemOfferButton__sDownloadButtonSize;
     if (!sizeForItemOfferButton__sDownloadButtonSize)
@@ -970,28 +970,28 @@ LABEL_18:
   return result;
 }
 
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4
+- (CGSize)sizeForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v8 = *MEMORY[0x277CBF3A8];
+  elementCopy = element;
+  widthCopy = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
-  v9 = [v6 elementType];
-  if (v9 <= 68)
+  elementType = [elementCopy elementType];
+  if (elementType <= 68)
   {
-    if (v9 > 47)
+    if (elementType > 47)
     {
-      if (v9 > 49)
+      if (elementType > 49)
       {
-        if (v9 != 50)
+        if (elementType != 50)
         {
-          if (v9 == 51)
+          if (elementType == 51)
           {
             v15 = SKUIImageDeckView;
           }
 
           else
           {
-            if (v9 != 62)
+            if (elementType != 62)
             {
               goto LABEL_82;
             }
@@ -1002,37 +1002,37 @@ LABEL_18:
           goto LABEL_62;
         }
 
-        v26 = [v6 buttonImage];
+        buttonImage = [elementCopy buttonImage];
 LABEL_55:
-        v10 = v26;
-        [(SKUIViewElementLayoutContext *)self _sizeForImageElement:v26 applyTransform:1];
+        titleItem = buttonImage;
+        [(SKUIViewElementLayoutContext *)self _sizeForImageElement:buttonImage applyTransform:1];
         goto LABEL_56;
       }
 
-      if (v9 == 48)
+      if (elementType == 48)
       {
         v15 = SKUISectionHeaderView;
         goto LABEL_62;
       }
 
-      [(SKUIViewElementLayoutContext *)self _sizeForImageElement:v6 applyTransform:1];
+      [(SKUIViewElementLayoutContext *)self _sizeForImageElement:elementCopy applyTransform:1];
 LABEL_63:
-      v8 = v24;
+      widthCopy = v24;
       v7 = v25;
       goto LABEL_82;
     }
 
-    if (v9 > 12)
+    if (elementType > 12)
     {
-      if (v9 == 13)
+      if (elementType == 13)
       {
-        [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:v6];
+        [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:elementCopy];
         goto LABEL_63;
       }
 
-      if (v9 != 32)
+      if (elementType != 32)
       {
-        if (v9 != 40)
+        if (elementType != 40)
         {
           goto LABEL_82;
         }
@@ -1047,15 +1047,15 @@ LABEL_63:
         goto LABEL_82;
       }
 
-      v21 = v6;
+      v21 = elementCopy;
       if ([(SKUIButtonBorderStyle *)v21 dividerType]== 3)
       {
-        v29 = [(SKUIButtonBorderStyle *)v21 style];
-        v30 = [v29 itemHeight];
+        style = [(SKUIButtonBorderStyle *)v21 style];
+        itemHeight = [style itemHeight];
 
-        if (v30)
+        if (itemHeight)
         {
-          [v30 floatValue];
+          [itemHeight floatValue];
           v7 = v31;
         }
 
@@ -1064,7 +1064,7 @@ LABEL_63:
           v7 = 10.0;
         }
 
-        v8 = 0.0;
+        widthCopy = 0.0;
       }
 
 LABEL_91:
@@ -1072,96 +1072,96 @@ LABEL_91:
       goto LABEL_82;
     }
 
-    if (v9 == 8)
+    if (elementType == 8)
     {
-      v10 = v6;
-      if ([v10 badgeType] == 1)
+      titleItem = elementCopy;
+      if ([titleItem badgeType] == 1)
       {
-        v34 = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutForWidth:a4 viewElement:v10];
+        v34 = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutForWidth:width viewElement:titleItem];
         if (v34)
         {
           [SKUIAttributedStringView sizeWithLayout:v34 treatment:1];
-          v8 = v35;
+          widthCopy = v35;
           v7 = v36;
         }
 
         goto LABEL_81;
       }
 
-      [(SKUIViewElementLayoutContext *)self sizeForBadgeElement:v10];
+      [(SKUIViewElementLayoutContext *)self sizeForBadgeElement:titleItem];
       goto LABEL_56;
     }
 
-    if (v9 != 12)
+    if (elementType != 12)
     {
       goto LABEL_82;
     }
 
-    [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForButton:v6 width:a4];
-    v8 = v16;
+    [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForButton:elementCopy width:width];
+    widthCopy = v16;
     v7 = v17;
-    v18 = [v6 buttonViewType];
-    if (v18 <= 6)
+    buttonViewType = [elementCopy buttonViewType];
+    if (buttonViewType <= 6)
     {
-      if (!v18)
+      if (!buttonViewType)
       {
 LABEL_37:
         v19 = [SKUIButtonBorderStyle alloc];
-        v20 = [v6 style];
-        v21 = [(SKUIButtonBorderStyle *)v19 initWithElementStyle:v20];
+        style2 = [elementCopy style];
+        v21 = [(SKUIButtonBorderStyle *)v19 initWithElementStyle:style2];
 
-        [SKUIStyledButton sizeForTextSize:0 buttonType:v21 borderStyle:v8, v7];
-        v8 = v22;
+        [SKUIStyledButton sizeForTextSize:0 buttonType:v21 borderStyle:widthCopy, v7];
+        widthCopy = v22;
         v7 = v23;
         goto LABEL_91;
       }
 
-      if (v18 != 1)
+      if (buttonViewType != 1)
       {
-        if (v18 != 6)
+        if (buttonViewType != 6)
         {
           goto LABEL_82;
         }
 
         v44 = [SKUIButtonBorderStyle alloc];
-        v45 = [v6 style];
-        v21 = [(SKUIButtonBorderStyle *)v44 initWithElementStyle:v45];
+        style3 = [elementCopy style];
+        v21 = [(SKUIButtonBorderStyle *)v44 initWithElementStyle:style3];
 
-        [SKUIStyledButton sizeForTextSize:[SKUIStyledButton buttonTypeForElement:v6] buttonType:v21 borderStyle:v8, v7];
+        [SKUIStyledButton sizeForTextSize:[SKUIStyledButton buttonTypeForElement:elementCopy] buttonType:v21 borderStyle:widthCopy, v7];
         v47 = v46;
         v49 = v48;
-        v50 = [v6 style];
-        [v50 elementPadding];
+        style4 = [elementCopy style];
+        [style4 elementPadding];
         v52 = v51;
         v54 = v53;
         v56 = v55;
         v58 = v57;
 
-        v8 = v47 + v54 + v58;
+        widthCopy = v47 + v54 + v58;
         v7 = v49 + v52 + v56;
         goto LABEL_91;
       }
 
-      v61 = v8;
+      v61 = widthCopy;
       v62 = v7;
       v63 = 3;
     }
 
     else
     {
-      if (v18 > 0xD)
+      if (buttonViewType > 0xD)
       {
         goto LABEL_82;
       }
 
-      if (((1 << v18) & 0x2D00) != 0)
+      if (((1 << buttonViewType) & 0x2D00) != 0)
       {
         goto LABEL_37;
       }
 
-      if (v18 != 7)
+      if (buttonViewType != 7)
       {
-        if (v18 != 12)
+        if (buttonViewType != 12)
         {
           goto LABEL_82;
         }
@@ -1170,7 +1170,7 @@ LABEL_37:
         goto LABEL_62;
       }
 
-      v61 = v8;
+      v61 = widthCopy;
       v62 = v7;
       v63 = 4;
     }
@@ -1179,15 +1179,15 @@ LABEL_37:
     goto LABEL_63;
   }
 
-  if (v9 > 134)
+  if (elementType > 134)
   {
-    if (v9 <= 143)
+    if (elementType <= 143)
     {
-      if (v9 != 135)
+      if (elementType != 135)
       {
-        if (v9 == 138)
+        if (elementType == 138)
         {
-          v32 = [(NSMapTable *)self->_editorialLayouts objectForKey:v6];
+          v32 = [(NSMapTable *)self->_editorialLayouts objectForKey:elementCopy];
           if (v32)
           {
             [v32 layoutHeightForOrientation:0 expanded:{-[SKUIViewElementLayoutContext isEditorialLayoutExpanded:](self, "isEditorialLayoutExpanded:", v32)}];
@@ -1196,62 +1196,62 @@ LABEL_37:
 
           else
           {
-            [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache estimatedSizeForLabel:v6 width:a4];
-            a4 = v42;
+            [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache estimatedSizeForLabel:elementCopy width:width];
+            width = v42;
             v7 = v43;
           }
 
-          v8 = a4;
+          widthCopy = width;
         }
 
-        else if (v9 == 141)
+        else if (elementType == 141)
         {
-          v10 = v6;
-          v11 = [v10 itemIdentifier];
-          if (v11)
+          titleItem = elementCopy;
+          itemIdentifier = [titleItem itemIdentifier];
+          if (itemIdentifier)
           {
-            v12 = v11;
+            v12 = itemIdentifier;
             v13 = +[SKUIItemStateCenter defaultCenter];
-            v14 = [v13 stateForItemWithIdentifier:v12];
+            storeIdentifier = [v13 stateForItemWithIdentifier:v12];
           }
 
           else
           {
-            v14 = [v10 storeIdentifier];
+            storeIdentifier = [titleItem storeIdentifier];
 
-            if (!v14)
+            if (!storeIdentifier)
             {
               goto LABEL_68;
             }
 
             v13 = +[SKUIItemStateCenter defaultCenter];
-            v37 = [v10 storeIdentifier];
-            v14 = [v13 stateForItemWithStoreIdentifier:v37];
+            storeIdentifier2 = [titleItem storeIdentifier];
+            storeIdentifier = [v13 stateForItemWithStoreIdentifier:storeIdentifier2];
           }
 
 LABEL_68:
-          if ([SKUIStyledButton usesItemOfferAppearanceForButtonType:1 itemState:v14])
+          if ([SKUIStyledButton usesItemOfferAppearanceForButtonType:1 itemState:storeIdentifier])
           {
-            [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:v10];
+            [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:titleItem];
           }
 
           else
           {
-            if (a4 < 0.00000011920929)
+            if (width < 0.00000011920929)
             {
-              [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:v10];
+              [(SKUIViewElementLayoutContext *)self sizeForItemOfferButton:titleItem];
               v7 = v40;
-              v8 = v41 + -20.0;
+              widthCopy = v41 + -20.0;
 LABEL_80:
 
               goto LABEL_81;
             }
 
-            [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForButton:v10 width:a4];
+            [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForButton:titleItem width:width];
             [SKUIStyledButton sizeForTextSize:1 buttonType:?];
           }
 
-          v8 = v38;
+          widthCopy = v38;
           v7 = v39;
           goto LABEL_80;
         }
@@ -1263,11 +1263,11 @@ LABEL_80:
       goto LABEL_62;
     }
 
-    if (v9 != 144)
+    if (elementType != 144)
     {
-      if (v9 != 152)
+      if (elementType != 152)
       {
-        if (v9 != 154)
+        if (elementType != 154)
         {
           goto LABEL_82;
         }
@@ -1276,31 +1276,31 @@ LABEL_80:
         goto LABEL_62;
       }
 
-      v26 = [v6 thumbnailImage];
+      buttonImage = [elementCopy thumbnailImage];
       goto LABEL_55;
     }
 
     v15 = SKUITomatoRatingView;
 LABEL_62:
-    [(__objc2_class *)v15 sizeThatFitsWidth:v6 viewElement:self context:a4];
+    [(__objc2_class *)v15 sizeThatFitsWidth:elementCopy viewElement:self context:width];
     goto LABEL_63;
   }
 
-  if (v9 <= 79)
+  if (elementType <= 79)
   {
-    if (v9 == 69)
+    if (elementType == 69)
     {
-      v10 = [v6 titleItem];
-      [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForViewElement:v10 width:a4];
+      titleItem = [elementCopy titleItem];
+      [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache sizeForViewElement:titleItem width:width];
 LABEL_56:
-      v8 = v27;
+      widthCopy = v27;
       v7 = v28;
 LABEL_81:
 
       goto LABEL_82;
     }
 
-    if (v9 != 77)
+    if (elementType != 77)
     {
       goto LABEL_82;
     }
@@ -1309,13 +1309,13 @@ LABEL_81:
     goto LABEL_62;
   }
 
-  switch(v9)
+  switch(elementType)
   {
     case 80:
-      [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache estimatedSizeForOrdinal:v6 width:a4];
+      [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache estimatedSizeForOrdinal:elementCopy width:width];
       goto LABEL_63;
     case 109:
-      v8 = 0.0;
+      widthCopy = 0.0;
       v7 = 29.0;
       break;
     case 131:
@@ -1325,20 +1325,20 @@ LABEL_81:
 
 LABEL_82:
 
-  v59 = v8;
+  v59 = widthCopy;
   v60 = v7;
   result.height = v60;
   result.width = v59;
   return result;
 }
 
-- (id)textPropertiesForViewElement:(id)a3 width:(double)a4
+- (id)textPropertiesForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 elementType];
-  if (v7 == 138)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (elementType == 138)
   {
-    v9 = [(NSMapTable *)self->_editorialLayouts objectForKey:v6];
+    v9 = [(NSMapTable *)self->_editorialLayouts objectForKey:elementCopy];
     v10 = v9;
     if (v9)
     {
@@ -1356,7 +1356,7 @@ LABEL_12:
 
     else
     {
-      v11 = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutForWidth:a4 viewElement:v6];
+      v11 = [(SKUIViewElementTextLayoutCache *)self->_labelLayoutCache layoutForWidth:width viewElement:elementCopy];
       if (v11)
       {
         v12 = [[SKUIViewTextProperties alloc] initWithStringLayout:v11];
@@ -1368,9 +1368,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v7 == 135)
+  if (elementType == 135)
   {
-    v8 = [SKUIStarRatingViewElementView textPropertiesForViewElement:v6 width:self context:a4];
+    v8 = [SKUIStarRatingViewElementView textPropertiesForViewElement:elementCopy width:self context:width];
   }
 
   else
@@ -1383,21 +1383,21 @@ LABEL_13:
   return v8;
 }
 
-- (id)transientRequestIdentifierForViewElement:(id)a3
+- (id)transientRequestIdentifierForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
-  switch(v5)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  switch(elementType)
   {
     case 152:
-      v8 = [v4 thumbnailImage];
+      thumbnailImage = [elementCopy thumbnailImage];
       break;
     case 50:
-      v8 = [v4 buttonImage];
+      thumbnailImage = [elementCopy buttonImage];
       break;
     case 49:
-      v6 = [v4 transientResourceCacheKey];
-      if (!v6)
+      transientResourceCacheKey = [elementCopy transientResourceCacheKey];
+      if (!transientResourceCacheKey)
       {
         goto LABEL_5;
       }
@@ -1407,10 +1407,10 @@ LABEL_13:
       goto LABEL_5;
   }
 
-  v9 = v8;
-  v6 = [v8 transientResourceCacheKey];
+  v9 = thumbnailImage;
+  transientResourceCacheKey = [thumbnailImage transientResourceCacheKey];
 
-  if (!v6)
+  if (!transientResourceCacheKey)
   {
 LABEL_5:
     v7 = 0;
@@ -1418,29 +1418,29 @@ LABEL_5:
   }
 
 LABEL_9:
-  v7 = [(SKUIResourceLoader *)self->_resourceLoader requestIdentifierForCacheKey:v6];
+  v7 = [(SKUIResourceLoader *)self->_resourceLoader requestIdentifierForCacheKey:transientResourceCacheKey];
 
 LABEL_10:
 
   return v7;
 }
 
-- (void)_artworkRequestDidLoadImageNotification:(id)a3
+- (void)_artworkRequestDidLoadImageNotification:(id)notification
 {
-  v9 = a3;
-  v4 = [v9 object];
-  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(v4, "requestIdentifier")}];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(object, "requestIdentifier")}];
   if ([(NSMutableSet *)self->_observedArtworkRequestIDs containsObject:v5])
   {
-    v6 = [v9 userInfo];
-    v7 = [v6 objectForKey:@"SKUIArtworkRequestImageKey"];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKey:@"SKUIArtworkRequestImageKey"];
 
     if (v7)
     {
       WeakRetained = objc_loadWeakRetained(&self->_artworkRequestDelegate);
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained artworkRequest:v4 didLoadImage:v7];
+        [WeakRetained artworkRequest:object didLoadImage:v7];
       }
     }
 
@@ -1448,38 +1448,38 @@ LABEL_10:
   }
 }
 
-+ (double)_calculateValueFromString:(id)a3 withDefault:(double)a4 coefficent:(double)a5
++ (double)_calculateValueFromString:(id)string withDefault:(double)default coefficent:(double)coefficent
 {
-  v7 = a3;
-  if ([v7 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v9 = [stringCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v10 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v9];
     v14 = 0.0;
-    a4 = 0.0;
+    default = 0.0;
     if ([v10 scanDouble:&v14])
     {
       v11 = [v10 scanString:@"%" intoString:0];
-      a4 = v14;
+      default = v14;
       if (v14 > 0.0 && v11 != 0)
       {
-        a4 = floor(v14 * a5 / 100.0);
+        default = floor(v14 * coefficent / 100.0);
       }
     }
   }
 
-  return a4;
+  return default;
 }
 
-- (BOOL)_loadImageForURL:(id)a3 cacheKey:(id)a4 dataConsumer:(id)a5 reason:(int64_t)a6
+- (BOOL)_loadImageForURL:(id)l cacheKey:(id)key dataConsumer:(id)consumer reason:(int64_t)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SKUIResourceLoader *)self->_resourceLoader requestIdentifierForCacheKey:v11];
+  lCopy = l;
+  keyCopy = key;
+  consumerCopy = consumer;
+  v13 = [(SKUIResourceLoader *)self->_resourceLoader requestIdentifierForCacheKey:keyCopy];
   v14 = v13;
-  if (v13 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", a6, [v13 unsignedIntegerValue]))
+  if (v13 && -[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", reason, [v13 unsignedIntegerValue]))
   {
     [(NSMutableSet *)self->_observedArtworkRequestIDs addObject:v14];
     v15 = 0;
@@ -1488,31 +1488,31 @@ LABEL_10:
   else
   {
     v16 = objc_alloc_init(SKUIArtworkRequest);
-    [(SKUIResourceRequest *)v16 setCacheKey:v11];
-    [(SKUIArtworkRequest *)v16 setDataConsumer:v12];
-    [(SKUIArtworkRequest *)v16 setURL:v10];
+    [(SKUIResourceRequest *)v16 setCacheKey:keyCopy];
+    [(SKUIArtworkRequest *)v16 setDataConsumer:consumerCopy];
+    [(SKUIArtworkRequest *)v16 setURL:lCopy];
     v17 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v16, "requestIdentifier")}];
     [(NSMutableSet *)self->_observedArtworkRequestIDs addObject:v17];
-    v15 = [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:a6];
+    v15 = [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:reason];
   }
 
   return v15;
 }
 
-- (CGSize)_sizeForImageElement:(id)a3 applyTransform:(BOOL)a4
+- (CGSize)_sizeForImageElement:(id)element applyTransform:(BOOL)transform
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 size];
+  transformCopy = transform;
+  elementCopy = element;
+  [elementCopy size];
   v8 = v7;
   v9 = v6;
   if (v7 == *MEMORY[0x277CBF3A8] && v6 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v11 = [v5 resourceName];
-    v12 = v11;
-    if (v11)
+    resourceName = [elementCopy resourceName];
+    v12 = resourceName;
+    if (resourceName)
     {
-      v13 = SKUIImageWithResourceName(v11);
+      v13 = SKUIImageWithResourceName(resourceName);
       if (v13)
       {
         v14 = v13;
@@ -1523,11 +1523,11 @@ LABEL_10:
     }
   }
 
-  v17 = [v5 style];
-  v18 = v17;
-  if (v4 && v17)
+  style = [elementCopy style];
+  v18 = style;
+  if (transformCopy && style)
   {
-    [v17 transform];
+    [style transform];
     v19 = v9 * v24 + v22 * v8;
     v9 = fabs(floor(v9 * v25 + v23 * v8));
     v8 = fabs(floor(v19));

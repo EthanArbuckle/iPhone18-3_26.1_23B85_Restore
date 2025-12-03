@@ -1,8 +1,8 @@
 @interface CCXPCClient
 - (CCXPCClient)init;
-- (id)_errorHandlerWithCompletion:(id)a3;
-- (id)_failureHandlerWithResponse:(unsigned __int16)a3;
-- (id)_remoteObjectProxy:(BOOL)a3 errorCompletion:(id)a4;
+- (id)_errorHandlerWithCompletion:(id)completion;
+- (id)_failureHandlerWithResponse:(unsigned __int16)response;
+- (id)_remoteObjectProxy:(BOOL)proxy errorCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -20,9 +20,9 @@
 - (void)invalidate
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 clientId];
+  clientId = [self clientId];
   v5 = 138412290;
-  v6 = v3;
+  v6 = clientId;
   _os_log_debug_impl(&dword_1B6DB2000, a2, OS_LOG_TYPE_DEBUG, "Invalidating XPC connection for client %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
@@ -34,7 +34,7 @@
   objc_exception_throw(v2);
 }
 
-- (id)_failureHandlerWithResponse:(unsigned __int16)a3
+- (id)_failureHandlerWithResponse:(unsigned __int16)response
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -42,7 +42,7 @@
   aBlock[2] = __43__CCXPCClient__failureHandlerWithResponse___block_invoke;
   aBlock[3] = &unk_1E7C8B8E0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  responseCopy = response;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -69,17 +69,17 @@ void __43__CCXPCClient__failureHandlerWithResponse___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_errorHandlerWithCompletion:(id)a3
+- (id)_errorHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__CCXPCClient__errorHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C8B908;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   objc_destroyWeak(&v10);
@@ -117,27 +117,27 @@ void __43__CCXPCClient__errorHandlerWithCompletion___block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_remoteObjectProxy:(BOOL)a3 errorCompletion:(id)a4
+- (id)_remoteObjectProxy:(BOOL)proxy errorCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CCXPCClient *)self _errorHandlerWithCompletion:v6];
-  v8 = [(CCXPCClient *)self connection];
-  v9 = v8;
-  if (v4)
+  proxyCopy = proxy;
+  completionCopy = completion;
+  v7 = [(CCXPCClient *)self _errorHandlerWithCompletion:completionCopy];
+  connection = [(CCXPCClient *)self connection];
+  v9 = connection;
+  if (proxyCopy)
   {
-    [v8 synchronousRemoteObjectProxyWithErrorHandler:v7];
+    [connection synchronousRemoteObjectProxyWithErrorHandler:v7];
   }
 
   else
   {
-    [v8 remoteObjectProxyWithErrorHandler:v7];
+    [connection remoteObjectProxyWithErrorHandler:v7];
   }
   v10 = ;
 
-  if (v6 && !v10)
+  if (completionCopy && !v10)
   {
-    v6[2](v6, [(CCXPCClient *)self failureCode]);
+    completionCopy[2](completionCopy, [(CCXPCClient *)self failureCode]);
   }
 
   return v10;

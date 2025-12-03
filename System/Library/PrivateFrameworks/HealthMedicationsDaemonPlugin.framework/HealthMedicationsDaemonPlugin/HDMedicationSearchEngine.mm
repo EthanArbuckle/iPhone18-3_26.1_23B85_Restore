@@ -1,32 +1,32 @@
 @interface HDMedicationSearchEngine
-+ (BOOL)_inflateFirstConcept:(id *)a3 predicate:(id)a4 relationshipTypes:(id)a5 maximumDepth:(int64_t)a6 ontologyTransaction:(id)a7 errorOut:(id *)a8;
-+ (BOOL)_medicationClusterFromMachineReadableCode:(id)a3 codeAttributeType:(int64_t)a4 searchResultOut:(id *)a5 ontologyTransaction:(id)a6 errorOut:(id *)a7;
-+ (BOOL)_medicationSearchResultForFirstConcept:(id *)a3 predicate:(id)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6;
-+ (BOOL)medicationCluster:(id *)a3 machineReadableCode:(id)a4 codeAttributeType:(int64_t)a5 profile:(id)a6 errorOut:(id *)a7;
++ (BOOL)_inflateFirstConcept:(id *)concept predicate:(id)predicate relationshipTypes:(id)types maximumDepth:(int64_t)depth ontologyTransaction:(id)transaction errorOut:(id *)out;
++ (BOOL)_medicationClusterFromMachineReadableCode:(id)code codeAttributeType:(int64_t)type searchResultOut:(id *)out ontologyTransaction:(id)transaction errorOut:(id *)errorOut;
++ (BOOL)_medicationSearchResultForFirstConcept:(id *)concept predicate:(id)predicate ontologyTransaction:(id)transaction errorOut:(id *)out;
++ (BOOL)medicationCluster:(id *)cluster machineReadableCode:(id)code codeAttributeType:(int64_t)type profile:(id)profile errorOut:(id *)out;
 + (id)_attributeTypesForInflation;
-+ (id)_genericProductForClinicalProduct:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5;
-+ (id)_importEligibleMedicationConceptsSinceDate:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6;
-+ (id)_medicationClustersFromScanResult:(id)a3 limit:(int64_t)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6;
-+ (id)_medicationClustersFromTextSearchTokens:(id)a3 limit:(int64_t)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6;
-+ (id)_medicationSearchResultForClinicalProduct:(id)a3 ontologyTransaction:(id)a4 errorOut:(id *)a5;
-+ (id)_medicationSearchResultForSpecificProduct:(id)a3 ontologyTransaction:(id)a4 errorOut:(id *)a5;
++ (id)_genericProductForClinicalProduct:(id)product ontologyTransaction:(id)transaction error:(id *)error;
++ (id)_importEligibleMedicationConceptsSinceDate:(id)date limit:(int64_t)limit profile:(id)profile errorOut:(id *)out;
++ (id)_medicationClustersFromScanResult:(id)result limit:(int64_t)limit ontologyTransaction:(id)transaction errorOut:(id *)out;
++ (id)_medicationClustersFromTextSearchTokens:(id)tokens limit:(int64_t)limit ontologyTransaction:(id)transaction errorOut:(id *)out;
++ (id)_medicationSearchResultForClinicalProduct:(id)product ontologyTransaction:(id)transaction errorOut:(id *)out;
++ (id)_medicationSearchResultForSpecificProduct:(id)product ontologyTransaction:(id)transaction errorOut:(id *)out;
 + (id)_relationshipsForInflation;
-+ (id)_resolveIndividualRxNormConceptsFromMedicalRecordsCodings:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)hkt_genericMedicationWithClinicalProductConcept:(id)a3 profile:(id)a4 errorOut:(id *)a5;
-+ (id)medicationClustersForCHRImportWithExistingMedications:(id)a3 sinceDate:(id)a4 limit:(int64_t)a5 profile:(id)a6 errorOut:(id *)a7;
-+ (id)medicationClustersFromScanResult:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6;
-+ (id)medicationClustersFromTextSearchTokens:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6;
++ (id)_resolveIndividualRxNormConceptsFromMedicalRecordsCodings:(id)codings profile:(id)profile error:(id *)error;
++ (id)hkt_genericMedicationWithClinicalProductConcept:(id)concept profile:(id)profile errorOut:(id *)out;
++ (id)medicationClustersForCHRImportWithExistingMedications:(id)medications sinceDate:(id)date limit:(int64_t)limit profile:(id)profile errorOut:(id *)out;
++ (id)medicationClustersFromScanResult:(id)result limit:(int64_t)limit profile:(id)profile errorOut:(id *)out;
++ (id)medicationClustersFromTextSearchTokens:(id)tokens limit:(int64_t)limit profile:(id)profile errorOut:(id *)out;
 @end
 
 @implementation HDMedicationSearchEngine
 
-+ (id)medicationClustersFromScanResult:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6
++ (id)medicationClustersFromScanResult:(id)result limit:(int64_t)limit profile:(id)profile errorOut:(id *)out
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  resultCopy = result;
+  profileCopy = profile;
+  if (!resultCopy)
   {
-    [HDMedicationSearchEngine medicationClustersFromScanResult:a2 limit:a1 profile:? errorOut:?];
+    [HDMedicationSearchEngine medicationClustersFromScanResult:a2 limit:self profile:? errorOut:?];
   }
 
   v22 = 0;
@@ -35,16 +35,16 @@
   v25 = __Block_byref_object_copy__9;
   v26 = __Block_byref_object_dispose__9;
   v27 = 0;
-  v13 = [v12 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__HDMedicationSearchEngine_medicationClustersFromScanResult_limit_profile_errorOut___block_invoke;
   v18[3] = &unk_2796CE238;
   v20 = &v22;
-  v14 = v11;
+  v14 = resultCopy;
   v19 = v14;
-  v21 = a4;
-  v15 = [v13 performTransactionWithError:a6 transactionHandler:v18];
+  limitCopy = limit;
+  v15 = [ontologyDatabase performTransactionWithError:out transactionHandler:v18];
 
   if (v15)
   {
@@ -71,12 +71,12 @@ BOOL __84__HDMedicationSearchEngine_medicationClustersFromScanResult_limit_profi
   return *(*(a1[5] + 8) + 40) != 0;
 }
 
-+ (BOOL)medicationCluster:(id *)a3 machineReadableCode:(id)a4 codeAttributeType:(int64_t)a5 profile:(id)a6 errorOut:(id *)a7
++ (BOOL)medicationCluster:(id *)cluster machineReadableCode:(id)code codeAttributeType:(int64_t)type profile:(id)profile errorOut:(id *)out
 {
-  v13 = a4;
-  v14 = a6;
+  codeCopy = code;
+  profileCopy = profile;
   v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_2863C2CF0];
-  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:type];
   v17 = [v15 containsObject:v16];
 
   if (v17)
@@ -87,17 +87,17 @@ BOOL __84__HDMedicationSearchEngine_medicationClustersFromScanResult_limit_profi
     v29 = __Block_byref_object_copy__9;
     v30 = __Block_byref_object_dispose__9;
     v31 = 0;
-    v18 = [v14 ontologyDatabase];
+    ontologyDatabase = [profileCopy ontologyDatabase];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __101__HDMedicationSearchEngine_medicationCluster_machineReadableCode_codeAttributeType_profile_errorOut___block_invoke;
     v22[3] = &unk_2796CDB20;
     v24 = &v26;
-    v25 = a5;
-    v23 = v13;
-    v19 = [v18 performTransactionWithError:a7 transactionHandler:v22];
+    typeCopy = type;
+    v23 = codeCopy;
+    v19 = [ontologyDatabase performTransactionWithError:out transactionHandler:v22];
 
-    if (a3)
+    if (cluster)
     {
       v20 = v19;
     }
@@ -109,7 +109,7 @@ BOOL __84__HDMedicationSearchEngine_medicationClustersFromScanResult_limit_profi
 
     if (v20)
     {
-      *a3 = v27[5];
+      *cluster = v27[5];
     }
 
     _Block_object_dispose(&v26, 8);
@@ -117,7 +117,7 @@ BOOL __84__HDMedicationSearchEngine_medicationClustersFromScanResult_limit_profi
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 invalidArgument:@"codeAttributeType" class:a1 selector:a2];
+    [MEMORY[0x277CCA9B8] hk_assignError:out invalidArgument:@"codeAttributeType" class:self selector:a2];
     v19 = 0;
   }
 
@@ -135,13 +135,13 @@ BOOL __101__HDMedicationSearchEngine_medicationCluster_machineReadableCode_codeA
   return v7;
 }
 
-+ (id)medicationClustersFromTextSearchTokens:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6
++ (id)medicationClustersFromTextSearchTokens:(id)tokens limit:(int64_t)limit profile:(id)profile errorOut:(id *)out
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  tokensCopy = tokens;
+  profileCopy = profile;
+  if (!tokensCopy)
   {
-    [HDMedicationSearchEngine medicationClustersFromTextSearchTokens:a2 limit:a1 profile:? errorOut:?];
+    [HDMedicationSearchEngine medicationClustersFromTextSearchTokens:a2 limit:self profile:? errorOut:?];
   }
 
   v22 = 0;
@@ -150,16 +150,16 @@ BOOL __101__HDMedicationSearchEngine_medicationCluster_machineReadableCode_codeA
   v25 = __Block_byref_object_copy__9;
   v26 = __Block_byref_object_dispose__9;
   v27 = 0;
-  v13 = [v12 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__HDMedicationSearchEngine_medicationClustersFromTextSearchTokens_limit_profile_errorOut___block_invoke;
   v18[3] = &unk_2796CE238;
   v20 = &v22;
-  v14 = v11;
+  v14 = tokensCopy;
   v19 = v14;
-  v21 = a4;
-  v15 = [v13 performTransactionWithError:a6 transactionHandler:v18];
+  limitCopy = limit;
+  v15 = [ontologyDatabase performTransactionWithError:out transactionHandler:v18];
 
   if (v15)
   {
@@ -186,22 +186,22 @@ BOOL __90__HDMedicationSearchEngine_medicationClustersFromTextSearchTokens_limit
   return *(*(a1[5] + 8) + 40) != 0;
 }
 
-+ (id)medicationClustersForCHRImportWithExistingMedications:(id)a3 sinceDate:(id)a4 limit:(int64_t)a5 profile:(id)a6 errorOut:(id *)a7
++ (id)medicationClustersForCHRImportWithExistingMedications:(id)medications sinceDate:(id)date limit:(int64_t)limit profile:(id)profile errorOut:(id *)out
 {
   v50 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  medicationsCopy = medications;
   v48 = 0;
-  v29 = a4;
-  v31 = a6;
-  v32 = [a1 _importEligibleMedicationConceptsSinceDate:v29 limit:a5 profile:? errorOut:?];
+  dateCopy = date;
+  profileCopy = profile;
+  v32 = [self _importEligibleMedicationConceptsSinceDate:dateCopy limit:limit profile:? errorOut:?];
   v33 = 0;
   if (v33)
   {
-    if (a7)
+    if (out)
     {
       v12 = v33;
       v13 = 0;
-      *a7 = v33;
+      *out = v33;
     }
 
     else
@@ -220,7 +220,7 @@ BOOL __90__HDMedicationSearchEngine_medicationClustersFromTextSearchTokens_limit
     v45 = __Block_byref_object_copy__9;
     v46 = __Block_byref_object_dispose__9;
     v47 = 0;
-    v15 = [v31 ontologyDatabase];
+    ontologyDatabase = [profileCopy ontologyDatabase];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __115__HDMedicationSearchEngine_medicationClustersForCHRImportWithExistingMedications_sinceDate_limit_profile_errorOut___block_invoke_2;
@@ -228,13 +228,13 @@ BOOL __90__HDMedicationSearchEngine_medicationClustersFromTextSearchTokens_limit
     v40 = &v42;
     v28 = v14;
     v39 = v28;
-    v41 = a5;
-    v16 = [v15 performTransactionWithError:a7 transactionHandler:v38];
+    limitCopy = limit;
+    v16 = [ontologyDatabase performTransactionWithError:out transactionHandler:v38];
 
     if (v16)
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v17 = [MEMORY[0x277CBEB98] setWithArray:v30];
+      v17 = [MEMORY[0x277CBEB98] setWithArray:medicationsCopy];
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -254,9 +254,9 @@ BOOL __90__HDMedicationSearchEngine_medicationClustersFromTextSearchTokens_limit
             }
 
             v22 = *(*(&v34 + 1) + 8 * i);
-            v23 = [v22 specificProduct];
-            v24 = [v23 identifier];
-            v25 = [v17 containsObject:v24];
+            specificProduct = [v22 specificProduct];
+            identifier = [specificProduct identifier];
+            v25 = [v17 containsObject:identifier];
 
             if ((v25 & 1) == 0)
             {
@@ -294,41 +294,41 @@ BOOL __115__HDMedicationSearchEngine_medicationClustersForCHRImportWithExistingM
   return *(*(a1[5] + 8) + 40) != 0;
 }
 
-+ (BOOL)_medicationClusterFromMachineReadableCode:(id)a3 codeAttributeType:(int64_t)a4 searchResultOut:(id *)a5 ontologyTransaction:(id)a6 errorOut:(id *)a7
++ (BOOL)_medicationClusterFromMachineReadableCode:(id)code codeAttributeType:(int64_t)type searchResultOut:(id *)out ontologyTransaction:(id)transaction errorOut:(id *)errorOut
 {
   v12 = MEMORY[0x277D10B70];
   v13 = MEMORY[0x277D103B8];
-  v14 = a6;
-  v15 = [v13 predicateMatchingConceptsWithAttributeType:a4 attributeValue:a3];
-  v16 = [a1 _predicateForConceptsNotExcludedFromSearch];
-  v17 = [v12 compoundPredicateWithPredicate:v15 otherPredicate:v16];
+  transactionCopy = transaction;
+  v15 = [v13 predicateMatchingConceptsWithAttributeType:type attributeValue:code];
+  _predicateForConceptsNotExcludedFromSearch = [self _predicateForConceptsNotExcludedFromSearch];
+  v17 = [v12 compoundPredicateWithPredicate:v15 otherPredicate:_predicateForConceptsNotExcludedFromSearch];
 
-  LOBYTE(a7) = [a1 _medicationSearchResultForFirstConcept:a5 predicate:v17 ontologyTransaction:v14 errorOut:a7];
-  return a7;
+  LOBYTE(errorOut) = [self _medicationSearchResultForFirstConcept:out predicate:v17 ontologyTransaction:transactionCopy errorOut:errorOut];
+  return errorOut;
 }
 
-+ (id)_medicationClustersFromScanResult:(id)a3 limit:(int64_t)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6
++ (id)_medicationClustersFromScanResult:(id)result limit:(int64_t)limit ontologyTransaction:(id)transaction errorOut:(id *)out
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  resultCopy = result;
+  transactionCopy = transaction;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0u;
   v42 = 0u;
-  if (a4 <= 1)
+  if (limit <= 1)
   {
-    v12 = 1;
+    limitCopy = 1;
   }
 
   else
   {
-    v12 = a4;
+    limitCopy = limit;
   }
 
   v43 = 0uLL;
   v44 = 0uLL;
-  v13 = v9;
-  v14 = v12;
+  v13 = resultCopy;
+  v14 = limitCopy;
   v15 = v13;
   v40 = [v13 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v40)
@@ -351,9 +351,9 @@ LABEL_6:
       }
 
       v18 = [objc_alloc(MEMORY[0x277CCD1D0]) initWithRawIdentifier:{objc_msgSend(v17, "integerValue")}];
-      v19 = [v10 profile];
-      v20 = [v19 ontologyConceptManager];
-      v21 = [v20 conceptForIdentifier:v18 options:1 transaction:v10 error:a6];
+      profile = [transactionCopy profile];
+      ontologyConceptManager = [profile ontologyConceptManager];
+      v21 = [ontologyConceptManager conceptForIdentifier:v18 options:1 transaction:transactionCopy error:out];
 
       if (v21)
       {
@@ -364,7 +364,7 @@ LABEL_6:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v46 = a1;
+            selfCopy3 = self;
             v47 = 2112;
             v48 = v18;
             v23 = v22;
@@ -378,12 +378,12 @@ LABEL_16:
         {
           v25 = v11;
           v26 = v15;
-          v27 = [v21 relationships];
-          if (v27 && (v28 = v27, [v21 relationships], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "count"), v29, v28, v30))
+          relationships = [v21 relationships];
+          if (relationships && (v28 = relationships, [v21 relationships], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "count"), v29, v28, v30))
           {
             if ([v21 meds_isSpecificProduct])
             {
-              v31 = [a1 _medicationSearchResultForSpecificProduct:v21 ontologyTransaction:v10 errorOut:a6];
+              v31 = [self _medicationSearchResultForSpecificProduct:v21 ontologyTransaction:transactionCopy errorOut:out];
               v15 = v26;
               v11 = v25;
               v14 = v38;
@@ -403,7 +403,7 @@ LABEL_16:
                 goto LABEL_29;
               }
 
-              v31 = [a1 _medicationSearchResultForClinicalProduct:v21 ontologyTransaction:v10 errorOut:a6];
+              v31 = [self _medicationSearchResultForClinicalProduct:v21 ontologyTransaction:transactionCopy errorOut:out];
               if (!v31)
               {
                 goto LABEL_29;
@@ -417,18 +417,18 @@ LABEL_16:
           else
           {
             v32 = MEMORY[0x277CCA9B8];
-            v33 = [v21 identifier];
-            [v32 hk_assignError:a6 code:1003 format:{@"Could not find any relationships for concept: %@ ", v33}];
+            identifier = [v21 identifier];
+            [v32 hk_assignError:out code:1003 format:{@"Could not find any relationships for concept: %@ ", identifier}];
 
             _HKInitializeLogging();
             v22 = HKLogMedication();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v34 = [v21 identifier];
+              identifier2 = [v21 identifier];
               *buf = 138543618;
-              v46 = a1;
+              selfCopy3 = self;
               v47 = 2114;
-              v48 = v34;
+              v48 = identifier2;
               _os_log_error_impl(&dword_25181C000, v22, OS_LOG_TYPE_ERROR, "[%{public}@] Could not find any relationships for concept: %{public}@", buf, 0x16u);
             }
 
@@ -446,7 +446,7 @@ LABEL_16:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v46 = a1;
+          selfCopy3 = self;
           v47 = 2114;
           v48 = v18;
           v23 = v22;
@@ -474,11 +474,11 @@ LABEL_29:
   return v11;
 }
 
-+ (id)_medicationClustersFromTextSearchTokens:(id)a3 limit:(int64_t)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6
++ (id)_medicationClustersFromTextSearchTokens:(id)tokens limit:(int64_t)limit ontologyTransaction:(id)transaction errorOut:(id *)out
 {
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v60 = a5;
+  tokensCopy = tokens;
+  transactionCopy = transaction;
   v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = [objc_alloc(MEMORY[0x277CCD1D0]) initWithRawIdentifier:841];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -494,7 +494,7 @@ LABEL_29:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v13 = v7;
+  v13 = tokensCopy;
   v14 = [v13 countByEnumeratingWithState:&v64 objects:v77 count:16];
   if (v14)
   {
@@ -558,17 +558,17 @@ LABEL_29:
   [v61 addObject:v24];
   v36 = MEMORY[0x277D10B70];
   v37 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v61];
-  v38 = [a1 _predicateForConceptsNotExcludedFromSearch];
-  v39 = [v36 compoundPredicateWithPredicate:v37 otherPredicate:v38];
+  _predicateForConceptsNotExcludedFromSearch = [self _predicateForConceptsNotExcludedFromSearch];
+  v39 = [v36 compoundPredicateWithPredicate:v37 otherPredicate:_predicateForConceptsNotExcludedFromSearch];
 
   v40 = [v13 componentsJoinedByString:@" | "];
   v41 = HKSensitiveLogItem();
 
-  v42 = [a1 _relationshipsForInflation];
+  _relationshipsForInflation = [self _relationshipsForInflation];
   CFAbsoluteTimeGetCurrent();
   v43 = MEMORY[0x277D103B8];
-  v44 = [a1 _attributeTypesForInflation];
-  v45 = [v43 inflateGraphWithRootConceptsPredicate:v39 limit:a4 maximumDepth:4 attributeTypes:v44 relationshipTypes:v42 ontologyTransaction:v60 error:a6];
+  _attributeTypesForInflation = [self _attributeTypesForInflation];
+  v45 = [v43 inflateGraphWithRootConceptsPredicate:v39 limit:limit maximumDepth:4 attributeTypes:_attributeTypesForInflation relationshipTypes:_relationshipsForInflation ontologyTransaction:transactionCopy error:out];
 
   if (v45)
   {
@@ -576,7 +576,7 @@ LABEL_29:
     v62[1] = 3221225472;
     v62[2] = __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit_ontologyTransaction_errorOut___block_invoke;
     v62[3] = &unk_2796CE280;
-    v63 = v42;
+    v63 = _relationshipsForInflation;
     v46 = [v45 hk_map:v62];
     _HKInitializeLogging();
     v47 = HKLogMedication();
@@ -590,7 +590,7 @@ LABEL_29:
         CFAbsoluteTimeGetCurrent();
         v50 = HKDiagnosticStringFromDuration();
         *buf = 138543874;
-        v69 = a1;
+        selfCopy = self;
         v70 = 2114;
         v71 = v41;
         v72 = 2114;
@@ -608,7 +608,7 @@ LABEL_29:
     v51 = HKLogMedication();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
-      [HDMedicationSearchEngine _medicationClustersFromTextSearchTokens:a1 limit:v13 ontologyTransaction:v51 errorOut:?];
+      [HDMedicationSearchEngine _medicationClustersFromTextSearchTokens:self limit:v13 ontologyTransaction:v51 errorOut:?];
     }
 
     v46 = 0;
@@ -663,21 +663,21 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   return v2;
 }
 
-+ (id)_medicationSearchResultForSpecificProduct:(id)a3 ontologyTransaction:(id)a4 errorOut:(id *)a5
++ (id)_medicationSearchResultForSpecificProduct:(id)product ontologyTransaction:(id)transaction errorOut:(id *)out
 {
-  v8 = a3;
+  productCopy = product;
   v9 = MEMORY[0x277D103B8];
-  v10 = a4;
-  v11 = [v8 identifier];
-  v12 = [v9 predicateMatchingConceptWithID:v11];
+  transactionCopy = transaction;
+  identifier = [productCopy identifier];
+  v12 = [v9 predicateMatchingConceptWithID:identifier];
 
   v19 = 0;
-  LODWORD(v11) = [a1 _medicationSearchResultForFirstConcept:&v19 predicate:v12 ontologyTransaction:v10 errorOut:a5];
+  LODWORD(identifier) = [self _medicationSearchResultForFirstConcept:&v19 predicate:v12 ontologyTransaction:transactionCopy errorOut:out];
 
   v13 = v19;
   v14 = v13;
   v15 = 0;
-  if (v11)
+  if (identifier)
   {
     if (v13)
     {
@@ -687,8 +687,8 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
     else
     {
       v16 = MEMORY[0x277CCA9B8];
-      v17 = [v8 identifier];
-      [v16 hk_assignError:a5 code:118 format:{@"Unable to get search result for specific product %@", v17}];
+      identifier2 = [productCopy identifier];
+      [v16 hk_assignError:out code:118 format:{@"Unable to get search result for specific product %@", identifier2}];
 
       v15 = 0;
     }
@@ -697,44 +697,44 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   return v15;
 }
 
-+ (BOOL)_medicationSearchResultForFirstConcept:(id *)a3 predicate:(id)a4 ontologyTransaction:(id)a5 errorOut:(id *)a6
++ (BOOL)_medicationSearchResultForFirstConcept:(id *)concept predicate:(id)predicate ontologyTransaction:(id)transaction errorOut:(id *)out
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a1 _relationshipsForInflation];
+  transactionCopy = transaction;
+  predicateCopy = predicate;
+  _relationshipsForInflation = [self _relationshipsForInflation];
   v20 = 0;
-  v13 = [a1 _inflateFirstConcept:&v20 predicate:v11 relationshipTypes:v12 maximumDepth:4 ontologyTransaction:v10 errorOut:a6];
+  v13 = [self _inflateFirstConcept:&v20 predicate:predicateCopy relationshipTypes:_relationshipsForInflation maximumDepth:4 ontologyTransaction:transactionCopy errorOut:out];
 
   v14 = v20;
   v15 = v14;
-  if (v13 && a3 && v14)
+  if (v13 && concept && v14)
   {
     v16 = objc_alloc(MEMORY[0x277D115B0]);
-    v17 = [v15 identifier];
-    v18 = [v17 numberRepresentation];
-    *a3 = [v16 initWithSeedHgId:v18 specificProduct:v15 traversedRelationships:v12 traversedDepth:4];
+    identifier = [v15 identifier];
+    numberRepresentation = [identifier numberRepresentation];
+    *concept = [v16 initWithSeedHgId:numberRepresentation specificProduct:v15 traversedRelationships:_relationshipsForInflation traversedDepth:4];
   }
 
   return v13;
 }
 
-+ (BOOL)_inflateFirstConcept:(id *)a3 predicate:(id)a4 relationshipTypes:(id)a5 maximumDepth:(int64_t)a6 ontologyTransaction:(id)a7 errorOut:(id *)a8
++ (BOOL)_inflateFirstConcept:(id *)concept predicate:(id)predicate relationshipTypes:(id)types maximumDepth:(int64_t)depth ontologyTransaction:(id)transaction errorOut:(id *)out
 {
   v14 = MEMORY[0x277D103B8];
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = [a1 _attributeTypesForInflation];
-  v19 = [v14 inflateGraphWithRootConceptsPredicate:v17 limit:1 maximumDepth:a6 attributeTypes:v18 relationshipTypes:v16 ontologyTransaction:v15 error:a8];
+  transactionCopy = transaction;
+  typesCopy = types;
+  predicateCopy = predicate;
+  _attributeTypesForInflation = [self _attributeTypesForInflation];
+  v19 = [v14 inflateGraphWithRootConceptsPredicate:predicateCopy limit:1 maximumDepth:depth attributeTypes:_attributeTypesForInflation relationshipTypes:typesCopy ontologyTransaction:transactionCopy error:out];
 
   if (v19)
   {
     v20 = [v19 count];
-    if (a3)
+    if (concept)
     {
       if (v20)
       {
-        *a3 = [v19 firstObject];
+        *concept = [v19 firstObject];
       }
     }
   }
@@ -742,13 +742,13 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   return v19 != 0;
 }
 
-+ (id)_medicationSearchResultForClinicalProduct:(id)a3 ontologyTransaction:(id)a4 errorOut:(id *)a5
++ (id)_medicationSearchResultForClinicalProduct:(id)product ontologyTransaction:(id)transaction errorOut:(id *)out
 {
-  v8 = a4;
-  v9 = [a1 _genericProductForClinicalProduct:a3 ontologyTransaction:v8 error:a5];
+  transactionCopy = transaction;
+  v9 = [self _genericProductForClinicalProduct:product ontologyTransaction:transactionCopy error:out];
   if (v9)
   {
-    v10 = [a1 _medicationSearchResultForSpecificProduct:v9 ontologyTransaction:v8 errorOut:a5];
+    v10 = [self _medicationSearchResultForSpecificProduct:v9 ontologyTransaction:transactionCopy errorOut:out];
   }
 
   else
@@ -759,13 +759,13 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   return v10;
 }
 
-+ (id)_genericProductForClinicalProduct:(id)a3 ontologyTransaction:(id)a4 error:(id *)a5
++ (id)_genericProductForClinicalProduct:(id)product ontologyTransaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  productCopy = product;
+  transactionCopy = transaction;
+  if (!productCopy)
   {
-    [HDMedicationSearchEngine _genericProductForClinicalProduct:a2 ontologyTransaction:a1 error:?];
+    [HDMedicationSearchEngine _genericProductForClinicalProduct:a2 ontologyTransaction:self error:?];
   }
 
   v27 = 0;
@@ -781,8 +781,8 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   v25 = __Block_byref_object_dispose__9;
   v26 = 0;
   v11 = MEMORY[0x277D103B8];
-  v12 = [v9 identifier];
-  v13 = [v11 predicateMatchingConceptsWithRelationshipType:798 withObjectId:v12];
+  identifier = [productCopy identifier];
+  v13 = [v11 predicateMatchingConceptsWithRelationshipType:798 withObjectId:identifier];
 
   v14 = *MEMORY[0x277D10C08];
   v20[0] = MEMORY[0x277D85DD0];
@@ -791,7 +791,7 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
   v20[3] = &unk_2796CE2A8;
   v20[4] = &v21;
   v20[5] = &v27;
-  if ([MEMORY[0x277D103B8] enumerateConceptsMatchingPredicate:v13 options:0 limit:v14 transaction:v10 error:a5 enumerationHandler:v20])
+  if ([MEMORY[0x277D103B8] enumerateConceptsMatchingPredicate:v13 options:0 limit:v14 transaction:transactionCopy error:error enumerationHandler:v20])
   {
     v15 = v28[5];
     if (v15 || (objc_storeStrong(v28 + 5, v22[5]), (v15 = v28[5]) != 0))
@@ -801,8 +801,8 @@ id __103__HDMedicationSearchEngine__medicationClustersFromTextSearchTokens_limit
     }
 
     v17 = MEMORY[0x277CCA9B8];
-    v18 = [v9 identifier];
-    [v17 hk_assignError:a5 code:118 format:{@"Unable to get generic product for clinical product %@", v18}];
+    identifier2 = [productCopy identifier];
+    [v17 hk_assignError:error code:118 format:{@"Unable to get generic product for clinical product %@", identifier2}];
   }
 
   v16 = 0;
@@ -834,10 +834,10 @@ uint64_t __88__HDMedicationSearchEngine__genericProductForClinicalProduct_ontolo
   return v8 ^ 1u;
 }
 
-+ (id)_importEligibleMedicationConceptsSinceDate:(id)a3 limit:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6
++ (id)_importEligibleMedicationConceptsSinceDate:(id)date limit:(int64_t)limit profile:(id)profile errorOut:(id *)out
 {
-  v10 = a3;
-  v11 = a5;
+  dateCopy = date;
+  profileCopy = profile;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -845,21 +845,21 @@ uint64_t __88__HDMedicationSearchEngine__genericProductForClinicalProduct_ontolo
   v29 = __Block_byref_object_dispose__9;
   v30 = 0;
   v12 = MEMORY[0x277D10770];
-  v13 = [v11 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94__HDMedicationSearchEngine__importEligibleMedicationConceptsSinceDate_limit_profile_errorOut___block_invoke;
   v19[3] = &unk_2796CE2F8;
-  v14 = v10;
+  v14 = dateCopy;
   v20 = v14;
-  v15 = v11;
-  v23 = a1;
-  v24 = a4;
+  v15 = profileCopy;
+  selfCopy = self;
+  limitCopy = limit;
   v21 = v15;
   v22 = &v25;
-  LODWORD(a6) = [v12 performReadTransactionWithHealthDatabase:v13 error:a6 block:v19];
+  LODWORD(out) = [v12 performReadTransactionWithHealthDatabase:database error:out block:v19];
 
-  if (a6)
+  if (out)
   {
     v16 = v26[5];
   }
@@ -1037,11 +1037,11 @@ id __94__HDMedicationSearchEngine__importEligibleMedicationConceptsSinceDate_lim
   return v7;
 }
 
-+ (id)_resolveIndividualRxNormConceptsFromMedicalRecordsCodings:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_resolveIndividualRxNormConceptsFromMedicalRecordsCodings:(id)codings profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 medicalRecordCodings];
-  v9 = [v8 hk_filter:&__block_literal_global_388];
+  profileCopy = profile;
+  medicalRecordCodings = [codings medicalRecordCodings];
+  v9 = [medicalRecordCodings hk_filter:&__block_literal_global_388];
 
   if ([v9 count])
   {
@@ -1055,7 +1055,7 @@ id __94__HDMedicationSearchEngine__importEligibleMedicationConceptsSinceDate_lim
     v18[3] = &unk_2796CE360;
     v14 = v11;
     v19 = v14;
-    v15 = [v12 enumerateConceptsMatchingPredicate:v13 profile:v7 error:a5 enumerationHandler:v18];
+    v15 = [v12 enumerateConceptsMatchingPredicate:v13 profile:profileCopy error:error enumerationHandler:v18];
 
     if (v15)
     {
@@ -1113,28 +1113,28 @@ uint64_t __100__HDMedicationSearchEngine__resolveIndividualRxNormConceptsFromMed
   return 1;
 }
 
-+ (id)hkt_genericMedicationWithClinicalProductConcept:(id)a3 profile:(id)a4 errorOut:(id *)a5
++ (id)hkt_genericMedicationWithClinicalProductConcept:(id)concept profile:(id)profile errorOut:(id *)out
 {
-  v8 = a3;
-  v9 = a4;
+  conceptCopy = concept;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__9;
   v23 = __Block_byref_object_dispose__9;
   v24 = 0;
-  v10 = [v9 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __93__HDMedicationSearchEngine_hkt_genericMedicationWithClinicalProductConcept_profile_errorOut___block_invoke;
   v15[3] = &unk_2796CE238;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = conceptCopy;
   v16 = v11;
-  LODWORD(a5) = [v10 performTransactionWithError:a5 transactionHandler:v15];
+  LODWORD(out) = [ontologyDatabase performTransactionWithError:out transactionHandler:v15];
 
-  if (a5)
+  if (out)
   {
     v12 = v20[5];
   }

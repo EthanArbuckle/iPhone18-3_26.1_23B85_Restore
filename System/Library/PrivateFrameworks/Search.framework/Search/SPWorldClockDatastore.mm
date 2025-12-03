@@ -1,12 +1,12 @@
 @interface SPWorldClockDatastore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPWorldClockDatastore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v18 = *v5;
   v19 = *(v5 + 16);
@@ -22,7 +22,7 @@
   *(v5 + 32) = "[SPWorldClockDatastore performQuery:]";
   si_tracing_log_span_begin();
   v10 = [[SPWorldClockDatastoreToken alloc] initWithStore:self];
-  [(SPWorldClockDatastoreToken *)v10 begin:v4];
+  [(SPWorldClockDatastoreToken *)v10 begin:queryCopy];
   v11 = *v5;
   v12 = *(v5 + 8);
   v13 = *(v5 + 16);

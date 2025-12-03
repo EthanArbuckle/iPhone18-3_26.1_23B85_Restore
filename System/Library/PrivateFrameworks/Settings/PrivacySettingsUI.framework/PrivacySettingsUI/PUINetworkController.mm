@@ -1,15 +1,15 @@
 @interface PUINetworkController
 - (PUINetworkController)init;
 - (id)eligibleApplications;
-- (id)isLocalNetworkEnabled:(id)a3;
-- (id)networkConfigurationEnabled:(id)a3;
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4;
+- (id)isLocalNetworkEnabled:(id)enabled;
+- (id)networkConfigurationEnabled:(id)enabled;
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create;
 - (id)specifiers;
-- (void)dnsConfigurationChanged:(id)a3;
-- (void)loadConfigurationsForceRefresh:(BOOL)a3 completionHandler:(id)a4;
+- (void)dnsConfigurationChanged:(id)changed;
+- (void)loadConfigurationsForceRefresh:(BOOL)refresh completionHandler:(id)handler;
 - (void)provideNavigationDonations;
 - (void)saveConfiguration;
-- (void)setLocalNetworkEnabled:(id)a3 specifier:(id)a4;
+- (void)setLocalNetworkEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation PUINetworkController
@@ -25,7 +25,7 @@
     v2->_isWaitingForNetworkConfigurationDidChangeInResponseToUserInteractionWithToggle = 0;
     [(PUINetworkController *)v2 setReusesCells:1];
     objc_initWeak(&location, v3);
-    v4 = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
+    mEMORY[0x277CD92B8] = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
     v5 = MEMORY[0x277D85CD0];
     v6 = MEMORY[0x277D85CD0];
     v12[0] = MEMORY[0x277D85DD0];
@@ -33,7 +33,7 @@
     v12[2] = __28__PUINetworkController_init__block_invoke;
     v12[3] = &unk_279BA1088;
     objc_copyWeak(&v13, &location);
-    [v4 setChangedQueue:v5 andHandler:v12];
+    [mEMORY[0x277CD92B8] setChangedQueue:v5 andHandler:v12];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -41,8 +41,8 @@
     v10[3] = &unk_279BA1E90;
     objc_copyWeak(&v11, &location);
     [(PUINetworkController *)v3 loadConfigurationsForceRefresh:0 completionHandler:v10];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel_dnsConfigurationChanged_ name:@"PUINetworkDNSChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_dnsConfigurationChanged_ name:@"PUINetworkDNSChangedNotification" object:0];
 
     v8 = v3;
     objc_destroyWeak(&v11);
@@ -101,15 +101,15 @@ void __28__PUINetworkController_init__block_invoke_3(uint64_t a1)
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"LOCAL_NETWORK" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"LOCAL_NETWORK" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -119,9 +119,9 @@ void __28__PUINetworkController_init__block_invoke_3(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dnsConfigurationChanged:(id)a3
+- (void)dnsConfigurationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -146,18 +146,18 @@ void __48__PUINetworkController_dnsConfigurationChanged___block_invoke(uint64_t 
 
 - (void)saveConfiguration
 {
-  v2 = [(PUINetworkController *)self pathControllerConfiguration];
-  v3 = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
+  pathControllerConfiguration = [(PUINetworkController *)self pathControllerConfiguration];
+  mEMORY[0x277CD92B8] = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__PUINetworkController_saveConfiguration__block_invoke;
   v6[3] = &unk_279BA0C90;
-  v7 = v2;
-  v4 = v2;
-  [v3 saveConfiguration:v4 withCompletionQueue:MEMORY[0x277D85CD0] handler:v6];
+  v7 = pathControllerConfiguration;
+  v4 = pathControllerConfiguration;
+  [mEMORY[0x277CD92B8] saveConfiguration:v4 withCompletionQueue:MEMORY[0x277D85CD0] handler:v6];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"com.apple.PrivacySettingsUI.NetworkConfigChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.NetworkConfigChanged" object:0];
 }
 
 void __41__PUINetworkController_saveConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -183,23 +183,23 @@ void __41__PUINetworkController_saveConfiguration__block_invoke(uint64_t a1, voi
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadConfigurationsForceRefresh:(BOOL)a3 completionHandler:(id)a4
+- (void)loadConfigurationsForceRefresh:(BOOL)refresh completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PUINetworkController *)self pathControllerConfiguration];
+  refreshCopy = refresh;
+  handlerCopy = handler;
+  pathControllerConfiguration = [(PUINetworkController *)self pathControllerConfiguration];
 
-  if (!v7 || v4)
+  if (!pathControllerConfiguration || refreshCopy)
   {
-    v10 = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
+    mEMORY[0x277CD92B8] = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __73__PUINetworkController_loadConfigurationsForceRefresh_completionHandler___block_invoke;
     v14[3] = &unk_279BA1EB8;
     v14[4] = self;
-    v15 = v6;
-    v11 = v6;
-    [v10 loadConfigurationsWithCompletionQueue:MEMORY[0x277D85CD0] handler:v14];
+    v15 = handlerCopy;
+    v11 = handlerCopy;
+    [mEMORY[0x277CD92B8] loadConfigurationsWithCompletionQueue:MEMORY[0x277D85CD0] handler:v14];
 
     v9 = v15;
   }
@@ -210,8 +210,8 @@ void __41__PUINetworkController_saveConfiguration__block_invoke(uint64_t a1, voi
     block[1] = 3221225472;
     block[2] = __73__PUINetworkController_loadConfigurationsForceRefresh_completionHandler___block_invoke_37;
     block[3] = &unk_279BA1038;
-    v13 = v6;
-    v8 = v6;
+    v13 = handlerCopy;
+    v8 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v9 = v13;
   }
@@ -313,15 +313,15 @@ void __73__PUINetworkController_loadConfigurationsForceRefresh_completionHandler
   v31 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(PUINetworkController *)self pathControllerConfiguration];
-  v6 = [v5 pathController];
+  pathControllerConfiguration = [(PUINetworkController *)self pathControllerConfiguration];
+  pathController = [pathControllerConfiguration pathController];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v6 pathRules];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  pathRules = [pathController pathRules];
+  v8 = [pathRules countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -332,18 +332,18 @@ void __73__PUINetworkController_loadConfigurationsForceRefresh_completionHandler
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pathRules);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
         if ([v12 multicastPreferenceSet])
         {
-          v13 = [v12 matchSigningIdentifier];
-          [v4 addObject:v13];
+          matchSigningIdentifier = [v12 matchSigningIdentifier];
+          [v4 addObject:matchSigningIdentifier];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [pathRules countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -359,9 +359,9 @@ void __73__PUINetworkController_loadConfigurationsForceRefresh_completionHandler
     v14 = v3;
     v25 = v14;
     v15 = _Block_copy(&v20);
-    v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v16 enumerateApplicationsOfType:0 block:v15];
-    [v16 enumerateApplicationsOfType:1 block:v15];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace enumerateApplicationsOfType:0 block:v15];
+    [defaultWorkspace enumerateApplicationsOfType:1 block:v15];
     if ([v14 count])
     {
       [v14 sortUsingFunction:compareAppNames context:0];
@@ -394,11 +394,11 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
   *a3 = 0;
 }
 
-- (id)networkConfigurationEnabled:(id)a3
+- (id)networkConfigurationEnabled:(id)enabled
 {
-  v3 = [a3 propertyForKey:@"PUINetworkConfigurationKey"];
-  v4 = [v3 dnsSettings];
-  if ([v4 isEnabled])
+  v3 = [enabled propertyForKey:@"PUINetworkConfigurationKey"];
+  dnsSettings = [v3 dnsSettings];
+  if ([dnsSettings isEnabled])
   {
     v5 = @"On";
   }
@@ -421,14 +421,14 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
   {
     v23 = *MEMORY[0x277D3FC48];
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v6 = PUI_LocalizedStringForPrivacy(@"LOCAL_NETWORK_FOOTER");
-    [v5 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
 
     v25 = v4;
-    v22 = v5;
-    [v4 addObject:v5];
-    v26 = self;
+    v22 = emptyGroupSpecifier;
+    [v4 addObject:emptyGroupSpecifier];
+    selfCopy = self;
     [(PUINetworkController *)self eligibleApplications];
     v27 = 0u;
     v28 = 0u;
@@ -451,16 +451,16 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
           }
 
           v13 = *(*(&v27 + 1) + 8 * i);
-          v14 = [v13 bundleIdentifier];
+          bundleIdentifier = [v13 bundleIdentifier];
           v15 = MEMORY[0x277D3FAD8];
-          v16 = [v13 localizedName];
-          v17 = [v15 preferenceSpecifierNamed:v16 target:v26 set:sel_setLocalNetworkEnabled_specifier_ get:sel_isLocalNetworkEnabled_ detail:objc_opt_class() cell:6 edit:0];
+          localizedName = [v13 localizedName];
+          v17 = [v15 preferenceSpecifierNamed:localizedName target:selfCopy set:sel_setLocalNetworkEnabled_specifier_ get:sel_isLocalNetworkEnabled_ detail:objc_opt_class() cell:6 edit:0];
 
           v18 = [MEMORY[0x277CCABB0] numberWithBool:1];
           [v17 setProperty:v18 forKey:v10];
 
-          [v17 setProperty:v14 forKey:v11];
-          [v17 setProperty:v14 forKey:@"PUINetworkApplicationKey"];
+          [v17 setProperty:bundleIdentifier forKey:v11];
+          [v17 setProperty:bundleIdentifier forKey:@"PUINetworkApplicationKey"];
           [v25 addObject:v17];
         }
 
@@ -470,10 +470,10 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
       while (v8);
     }
 
-    v19 = *(&v26->super.super.super.super.super.isa + v23);
-    *(&v26->super.super.super.super.super.isa + v23) = v25;
+    v19 = *(&selfCopy->super.super.super.super.super.isa + v23);
+    *(&selfCopy->super.super.super.super.super.isa + v23) = v25;
 
-    v3 = *(&v26->super.super.super.super.super.isa + v23);
+    v3 = *(&selfCopy->super.super.super.super.super.isa + v23);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -481,20 +481,20 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PUINetworkController *)self pathControllerConfiguration];
-  v8 = [v7 pathController];
+  dCopy = d;
+  pathControllerConfiguration = [(PUINetworkController *)self pathControllerConfiguration];
+  pathController = [pathControllerConfiguration pathController];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 pathRules];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  pathRules = [pathController pathRules];
+  v10 = [pathRules countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -505,12 +505,12 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(pathRules);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 matchSigningIdentifier];
-        v16 = [v15 isEqualToString:v6];
+        matchSigningIdentifier = [v14 matchSigningIdentifier];
+        v16 = [matchSigningIdentifier isEqualToString:dCopy];
 
         if (v16)
         {
@@ -519,7 +519,7 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v11 = [pathRules countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -529,23 +529,23 @@ void __44__PUINetworkController_eligibleApplications__block_invoke(uint64_t a1, 
     }
   }
 
-  if (v4)
+  if (createCopy)
   {
-    v17 = [objc_alloc(MEMORY[0x277CD92D0]) initWithSigningIdentifier:v6];
-    v18 = [v8 pathRules];
+    v17 = [objc_alloc(MEMORY[0x277CD92D0]) initWithSigningIdentifier:dCopy];
+    pathRules2 = [pathController pathRules];
 
-    if (v18)
+    if (pathRules2)
     {
-      v9 = [v8 pathRules];
-      v19 = [v9 arrayByAddingObject:v17];
-      [v8 setPathRules:v19];
+      pathRules = [pathController pathRules];
+      v19 = [pathRules arrayByAddingObject:v17];
+      [pathController setPathRules:v19];
     }
 
     else
     {
       v26 = v17;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-      [v8 setPathRules:v9];
+      pathRules = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
+      [pathController setPathRules:pathRules];
     }
 
 LABEL_13:
@@ -561,22 +561,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)setLocalNetworkEnabled:(id)a3 specifier:(id)a4
+- (void)setLocalNetworkEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v9 = [a4 propertyForKey:@"PUINetworkApplicationKey"];
+  enabledCopy = enabled;
+  v9 = [specifier propertyForKey:@"PUINetworkApplicationKey"];
   v7 = [(PUINetworkController *)self pathRuleForBundleID:v9 create:1];
-  v8 = [v6 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setDenyMulticast:v8 ^ 1u];
+  [v7 setDenyMulticast:bOOLValue ^ 1u];
   [v7 setMulticastPreferenceSet:1];
   [(PUINetworkController *)self saveConfiguration];
   self->_isWaitingForNetworkConfigurationDidChangeInResponseToUserInteractionWithToggle = 1;
 }
 
-- (id)isLocalNetworkEnabled:(id)a3
+- (id)isLocalNetworkEnabled:(id)enabled
 {
-  v4 = [a3 propertyForKey:@"PUINetworkApplicationKey"];
+  v4 = [enabled propertyForKey:@"PUINetworkApplicationKey"];
   v5 = [(PUINetworkController *)self pathRuleForBundleID:v4 create:0];
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:{objc_msgSend(v5, "denyMulticast") ^ 1}];
 

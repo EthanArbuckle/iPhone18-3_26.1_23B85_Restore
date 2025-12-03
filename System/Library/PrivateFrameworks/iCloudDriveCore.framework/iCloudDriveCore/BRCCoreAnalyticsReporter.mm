@@ -1,77 +1,77 @@
 @interface BRCCoreAnalyticsReporter
-+ (BOOL)uploadLoadErrorsAsIndividualEvents:(id)a3 syncType:(id)a4 totalItemsCount:(unint64_t)a5 zoneCountsOnly:(BOOL)a6 isFolderSharingEnabled:(BOOL)a7 dsid:(id)a8 rampNumber:(id)a9;
-+ (BOOL)uploadSyncErrorsAsIndividualEvents:(id)a3 syncType:(id)a4 totalItemsCount:(unint64_t)a5 zoneType:(id)a6 zoneCountsOnly:(BOOL)a7 isFolderSharingEnabled:(BOOL)a8 dsid:(id)a9 rampNumber:(id)a10;
-+ (id)dictionaryForErrorsByZone:(id)a3 wantPrivateZone:(BOOL)a4;
-+ (id)telemetryDictionaryToUploadForError:(id)a3 errorMessage:(id)a4 count:(id)a5 syncType:(id)a6 totalItemsCount:(id)a7 zoneType:(id)a8 zoneCountsOnly:(BOOL)a9 isFolderSharingEnabled:(BOOL)a10 dsid:(id)a11 rampNumber:(id)a12 lastFailureDate:(id)a13 pcsState:(id)a14;
-+ (void)newAppTelemetryMetricEvent:(id)a3;
-+ (void)sendTelemetryEvent:(id)a3 withReport:(id)a4;
-+ (void)uploadMetricsReport:(id)a3;
++ (BOOL)uploadLoadErrorsAsIndividualEvents:(id)events syncType:(id)type totalItemsCount:(unint64_t)count zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)enabled dsid:(id)dsid rampNumber:(id)number;
++ (BOOL)uploadSyncErrorsAsIndividualEvents:(id)events syncType:(id)type totalItemsCount:(unint64_t)count zoneType:(id)zoneType zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)enabled dsid:(id)dsid rampNumber:(id)self0;
++ (id)dictionaryForErrorsByZone:(id)zone wantPrivateZone:(BOOL)privateZone;
++ (id)telemetryDictionaryToUploadForError:(id)error errorMessage:(id)message count:(id)count syncType:(id)type totalItemsCount:(id)itemsCount zoneType:(id)zoneType zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)self0 dsid:(id)self1 rampNumber:(id)self2 lastFailureDate:(id)self3 pcsState:(id)self4;
++ (void)newAppTelemetryMetricEvent:(id)event;
++ (void)sendTelemetryEvent:(id)event withReport:(id)report;
++ (void)uploadMetricsReport:(id)report;
 @end
 
 @implementation BRCCoreAnalyticsReporter
 
-+ (void)uploadMetricsReport:(id)a3
++ (void)uploadMetricsReport:(id)report
 {
   v57[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   if (+[BRCAnalyticsReporter isTelemetryReportingEnabled])
   {
     v5 = [BRCUserDefaults defaultsForMangledID:0];
-    v6 = [v5 isBlacklistedFromFolderSharing];
+    isBlacklistedFromFolderSharing = [v5 isBlacklistedFromFolderSharing];
 
-    v7 = [v4 syncUpErrorsByMangledID];
-    v8 = [a1 dictionaryForErrorsByZone:v7 wantPrivateZone:0];
+    syncUpErrorsByMangledID = [reportCopy syncUpErrorsByMangledID];
+    v8 = [self dictionaryForErrorsByZone:syncUpErrorsByMangledID wantPrivateZone:0];
 
-    v9 = [v4 clientTruthTotalItemsCount];
-    v10 = [v4 dsid];
-    v11 = [v4 rampNumber];
+    clientTruthTotalItemsCount = [reportCopy clientTruthTotalItemsCount];
+    dsid = [reportCopy dsid];
+    rampNumber = [reportCopy rampNumber];
     v55 = v8;
-    v52 = [a1 uploadSyncErrorsAsIndividualEvents:v8 syncType:@"syncUp" totalItemsCount:v9 zoneType:@"shared" zoneCountsOnly:1 isFolderSharingEnabled:v6 ^ 1u dsid:v10 rampNumber:v11];
+    v52 = [self uploadSyncErrorsAsIndividualEvents:v8 syncType:@"syncUp" totalItemsCount:clientTruthTotalItemsCount zoneType:@"shared" zoneCountsOnly:1 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid rampNumber:rampNumber];
 
-    v12 = [v4 syncUpErrorsByMangledID];
-    v13 = [a1 dictionaryForErrorsByZone:v12 wantPrivateZone:1];
+    syncUpErrorsByMangledID2 = [reportCopy syncUpErrorsByMangledID];
+    v13 = [self dictionaryForErrorsByZone:syncUpErrorsByMangledID2 wantPrivateZone:1];
 
-    v14 = [v4 clientTruthTotalItemsCount];
-    v15 = [v4 dsid];
-    v16 = [v4 rampNumber];
+    clientTruthTotalItemsCount2 = [reportCopy clientTruthTotalItemsCount];
+    dsid2 = [reportCopy dsid];
+    rampNumber2 = [reportCopy rampNumber];
     v54 = v13;
-    v50 = [a1 uploadSyncErrorsAsIndividualEvents:v13 syncType:@"syncUp" totalItemsCount:v14 zoneType:@"private" zoneCountsOnly:1 isFolderSharingEnabled:v6 ^ 1u dsid:v15 rampNumber:v16];
+    v50 = [self uploadSyncErrorsAsIndividualEvents:v13 syncType:@"syncUp" totalItemsCount:clientTruthTotalItemsCount2 zoneType:@"private" zoneCountsOnly:1 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid2 rampNumber:rampNumber2];
 
-    v17 = [v4 syncDownErrorsByMangledID];
-    v18 = [a1 dictionaryForErrorsByZone:v17 wantPrivateZone:0];
+    syncDownErrorsByMangledID = [reportCopy syncDownErrorsByMangledID];
+    v18 = [self dictionaryForErrorsByZone:syncDownErrorsByMangledID wantPrivateZone:0];
 
-    v19 = [v4 clientTruthTotalItemsCount];
-    v20 = [v4 dsid];
-    v21 = [v4 rampNumber];
+    clientTruthTotalItemsCount3 = [reportCopy clientTruthTotalItemsCount];
+    dsid3 = [reportCopy dsid];
+    rampNumber3 = [reportCopy rampNumber];
     v53 = v18;
-    v49 = [a1 uploadSyncErrorsAsIndividualEvents:v18 syncType:@"syncDown" totalItemsCount:v19 zoneType:@"shared" zoneCountsOnly:1 isFolderSharingEnabled:v6 ^ 1u dsid:v20 rampNumber:v21];
+    v49 = [self uploadSyncErrorsAsIndividualEvents:v18 syncType:@"syncDown" totalItemsCount:clientTruthTotalItemsCount3 zoneType:@"shared" zoneCountsOnly:1 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid3 rampNumber:rampNumber3];
 
-    v22 = [v4 syncUpErrorsByMangledID];
-    v23 = [a1 dictionaryForErrorsByZone:v22 wantPrivateZone:1];
+    syncUpErrorsByMangledID3 = [reportCopy syncUpErrorsByMangledID];
+    v23 = [self dictionaryForErrorsByZone:syncUpErrorsByMangledID3 wantPrivateZone:1];
 
-    v24 = [v4 clientTruthTotalItemsCount];
-    v25 = [v4 dsid];
-    v26 = [v4 rampNumber];
+    clientTruthTotalItemsCount4 = [reportCopy clientTruthTotalItemsCount];
+    dsid4 = [reportCopy dsid];
+    rampNumber4 = [reportCopy rampNumber];
     v51 = v23;
-    v27 = [a1 uploadSyncErrorsAsIndividualEvents:v23 syncType:@"syncDown" totalItemsCount:v24 zoneType:@"private" zoneCountsOnly:1 isFolderSharingEnabled:v6 ^ 1u dsid:v25 rampNumber:v26];
+    v27 = [self uploadSyncErrorsAsIndividualEvents:v23 syncType:@"syncDown" totalItemsCount:clientTruthTotalItemsCount4 zoneType:@"private" zoneCountsOnly:1 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid4 rampNumber:rampNumber4];
 
-    v28 = [v4 uploadFailures];
-    v29 = [v4 clientTruthTotalItemsCount];
-    v30 = [v4 dsid];
-    v31 = [v4 rampNumber];
-    v32 = [a1 uploadLoadErrorsAsIndividualEvents:v28 syncType:@"upload" totalItemsCount:v29 zoneCountsOnly:0 isFolderSharingEnabled:v6 ^ 1u dsid:v30 rampNumber:v31];
+    uploadFailures = [reportCopy uploadFailures];
+    clientTruthTotalItemsCount5 = [reportCopy clientTruthTotalItemsCount];
+    dsid5 = [reportCopy dsid];
+    rampNumber5 = [reportCopy rampNumber];
+    v32 = [self uploadLoadErrorsAsIndividualEvents:uploadFailures syncType:@"upload" totalItemsCount:clientTruthTotalItemsCount5 zoneCountsOnly:0 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid5 rampNumber:rampNumber5];
 
-    v33 = [v4 downloadFailures];
-    v34 = [v4 clientTruthTotalItemsCount];
-    v35 = [v4 dsid];
-    v36 = [v4 rampNumber];
-    v37 = [a1 uploadLoadErrorsAsIndividualEvents:v33 syncType:@"download" totalItemsCount:v34 zoneCountsOnly:0 isFolderSharingEnabled:v6 ^ 1u dsid:v35 rampNumber:v36];
+    downloadFailures = [reportCopy downloadFailures];
+    clientTruthTotalItemsCount6 = [reportCopy clientTruthTotalItemsCount];
+    dsid6 = [reportCopy dsid];
+    rampNumber6 = [reportCopy rampNumber];
+    v37 = [self uploadLoadErrorsAsIndividualEvents:downloadFailures syncType:@"download" totalItemsCount:clientTruthTotalItemsCount6 zoneCountsOnly:0 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid6 rampNumber:rampNumber6];
 
-    v38 = [v4 syncUpFailures];
-    v39 = [v4 clientTruthTotalItemsCount];
-    v40 = [v4 dsid];
-    v41 = [v4 rampNumber];
-    v42 = [a1 uploadLoadErrorsAsIndividualEvents:v38 syncType:@"itemSyncUp" totalItemsCount:v39 zoneCountsOnly:0 isFolderSharingEnabled:v6 ^ 1u dsid:v40 rampNumber:v41];
+    syncUpFailures = [reportCopy syncUpFailures];
+    clientTruthTotalItemsCount7 = [reportCopy clientTruthTotalItemsCount];
+    dsid7 = [reportCopy dsid];
+    rampNumber7 = [reportCopy rampNumber];
+    v42 = [self uploadLoadErrorsAsIndividualEvents:syncUpFailures syncType:@"itemSyncUp" totalItemsCount:clientTruthTotalItemsCount7 zoneCountsOnly:0 isFolderSharingEnabled:isBlacklistedFromFolderSharing ^ 1u dsid:dsid7 rampNumber:rampNumber7];
 
     if ((v52 & 1) == 0 && (v50 & 1) == 0 && (v49 & 1) == 0 && (v27 & 1) == 0 && (v32 & 1) == 0 && (v37 & 1) == 0 && (v42 & 1) == 0)
     {
@@ -82,38 +82,38 @@
       v57[2] = @"success";
       v56[2] = @"SyncType";
       v56[3] = @"TotalItemsCount";
-      v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "clientTruthTotalItemsCount")}];
+      v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(reportCopy, "clientTruthTotalItemsCount")}];
       v57[3] = v43;
       v56[4] = @"FolderSharingEnabled";
-      v44 = [MEMORY[0x277CCABB0] numberWithBool:v6 ^ 1u];
+      v44 = [MEMORY[0x277CCABB0] numberWithBool:isBlacklistedFromFolderSharing ^ 1u];
       v57[4] = v44;
       v56[5] = @"DSID";
-      v45 = [v4 dsid];
-      v57[5] = v45;
+      dsid8 = [reportCopy dsid];
+      v57[5] = dsid8;
       v56[6] = @"RampNumber";
-      v46 = [v4 rampNumber];
-      v57[6] = v46;
+      rampNumber8 = [reportCopy rampNumber];
+      v57[6] = rampNumber8;
       v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:7];
 
-      [a1 sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v47];
+      [self sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v47];
     }
   }
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dictionaryForErrorsByZone:(id)a3 wantPrivateZone:(BOOL)a4
++ (id)dictionaryForErrorsByZone:(id)zone wantPrivateZone:(BOOL)privateZone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v6 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__BRCCoreAnalyticsReporter_dictionaryForErrorsByZone_wantPrivateZone___block_invoke;
   v9[3] = &unk_278508518;
-  v11 = a4;
+  privateZoneCopy = privateZone;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [zoneCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -140,32 +140,32 @@ void __70__BRCCoreAnalyticsReporter_dictionaryForErrorsByZone_wantPrivateZone___
   }
 }
 
-+ (id)telemetryDictionaryToUploadForError:(id)a3 errorMessage:(id)a4 count:(id)a5 syncType:(id)a6 totalItemsCount:(id)a7 zoneType:(id)a8 zoneCountsOnly:(BOOL)a9 isFolderSharingEnabled:(BOOL)a10 dsid:(id)a11 rampNumber:(id)a12 lastFailureDate:(id)a13 pcsState:(id)a14
++ (id)telemetryDictionaryToUploadForError:(id)error errorMessage:(id)message count:(id)count syncType:(id)type totalItemsCount:(id)itemsCount zoneType:(id)zoneType zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)self0 dsid:(id)self1 rampNumber:(id)self2 lastFailureDate:(id)self3 pcsState:(id)self4
 {
-  v41 = a4;
-  v37 = a8;
-  v40 = a11;
-  v39 = a13;
-  v38 = a14;
+  messageCopy = message;
+  zoneTypeCopy = zoneType;
+  dsidCopy = dsid;
+  dateCopy = date;
+  stateCopy = state;
   v19 = MEMORY[0x277CCACA8];
-  v20 = a12;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a3;
-  v25 = [v24 domain];
+  numberCopy = number;
+  itemsCountCopy = itemsCount;
+  typeCopy = type;
+  countCopy = count;
+  errorCopy = error;
+  domain = [errorCopy domain];
   v26 = MEMORY[0x277CCABB0];
-  v27 = [v24 code];
+  code = [errorCopy code];
 
-  v28 = [v26 numberWithInteger:v27];
-  v29 = [v19 stringWithFormat:@"%@%@", v25, v28];;
+  v28 = [v26 numberWithInteger:code];
+  v29 = [v19 stringWithFormat:@"%@%@", domain, v28];;
 
   v30 = objc_opt_new();
-  v31 = [MEMORY[0x277CCABB0] numberWithBool:a10];
+  v31 = [MEMORY[0x277CCABB0] numberWithBool:enabled];
   [v30 setObject:v31 forKey:@"FolderSharingEnabled"];
 
   [v30 setObject:v29 forKey:@"ErrorName"];
-  if (a9)
+  if (only)
   {
     v32 = @"ZoneErrorCount";
   }
@@ -175,47 +175,47 @@ void __70__BRCCoreAnalyticsReporter_dictionaryForErrorsByZone_wantPrivateZone___
     v32 = @"ErrorCount";
   }
 
-  [v30 setObject:v23 forKey:v32];
+  [v30 setObject:countCopy forKey:v32];
 
-  [v30 setObject:v22 forKey:@"SyncType"];
-  [v30 setObject:v21 forKey:@"TotalItemsCount"];
+  [v30 setObject:typeCopy forKey:@"SyncType"];
+  [v30 setObject:itemsCountCopy forKey:@"TotalItemsCount"];
 
-  if (v37)
+  if (zoneTypeCopy)
   {
-    [v30 setObject:v37 forKey:@"ZoneType"];
+    [v30 setObject:zoneTypeCopy forKey:@"ZoneType"];
   }
 
-  [v30 setObject:v40 forKey:@"DSID"];
-  [v30 setObject:v20 forKey:@"RampNumber"];
+  [v30 setObject:dsidCopy forKey:@"DSID"];
+  [v30 setObject:numberCopy forKey:@"RampNumber"];
 
-  if (v39)
+  if (dateCopy)
   {
     v33 = MEMORY[0x277CCACA8];
-    [v39 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v35 = [v33 stringWithFormat:@"%f", v34];
     [v30 setObject:v35 forKey:@"LastErrorTimestamp"];
   }
 
-  if (v38)
+  if (stateCopy)
   {
-    [v30 setObject:v38 forKey:@"ChainedFiles"];
+    [v30 setObject:stateCopy forKey:@"ChainedFiles"];
   }
 
-  if (v41)
+  if (messageCopy)
   {
-    [v30 setObject:v41 forKey:@"ErrorMessage"];
+    [v30 setObject:messageCopy forKey:@"ErrorMessage"];
   }
 
   return v30;
 }
 
-+ (BOOL)uploadSyncErrorsAsIndividualEvents:(id)a3 syncType:(id)a4 totalItemsCount:(unint64_t)a5 zoneType:(id)a6 zoneCountsOnly:(BOOL)a7 isFolderSharingEnabled:(BOOL)a8 dsid:(id)a9 rampNumber:(id)a10
++ (BOOL)uploadSyncErrorsAsIndividualEvents:(id)events syncType:(id)type totalItemsCount:(unint64_t)count zoneType:(id)zoneType zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)enabled dsid:(id)dsid rampNumber:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a9;
-  v20 = a10;
+  eventsCopy = events;
+  typeCopy = type;
+  zoneTypeCopy = zoneType;
+  dsidCopy = dsid;
+  numberCopy = number;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -224,24 +224,24 @@ void __70__BRCCoreAnalyticsReporter_dictionaryForErrorsByZone_wantPrivateZone___
   v26[1] = 3221225472;
   v26[2] = __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType_totalItemsCount_zoneType_zoneCountsOnly_isFolderSharingEnabled_dsid_rampNumber___block_invoke;
   v26[3] = &unk_278508540;
-  v32 = a1;
-  v21 = v17;
+  selfCopy = self;
+  v21 = typeCopy;
   v27 = v21;
-  v33 = a5;
-  v22 = v18;
+  countCopy = count;
+  v22 = zoneTypeCopy;
   v28 = v22;
-  v34 = a7;
-  v35 = a8;
-  v23 = v19;
+  onlyCopy = only;
+  enabledCopy = enabled;
+  v23 = dsidCopy;
   v29 = v23;
-  v24 = v20;
+  v24 = numberCopy;
   v30 = v24;
   v31 = &v36;
-  [v16 enumerateKeysAndObjectsUsingBlock:v26];
-  LOBYTE(v17) = *(v37 + 24);
+  [eventsCopy enumerateKeysAndObjectsUsingBlock:v26];
+  LOBYTE(typeCopy) = *(v37 + 24);
 
   _Block_object_dispose(&v36, 8);
-  return v17;
+  return typeCopy;
 }
 
 void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType_totalItemsCount_zoneType_zoneCountsOnly_isFolderSharingEnabled_dsid_rampNumber___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -273,19 +273,19 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
   *(*(*(a1 + 64) + 8) + 24) = 1;
 }
 
-+ (BOOL)uploadLoadErrorsAsIndividualEvents:(id)a3 syncType:(id)a4 totalItemsCount:(unint64_t)a5 zoneCountsOnly:(BOOL)a6 isFolderSharingEnabled:(BOOL)a7 dsid:(id)a8 rampNumber:(id)a9
++ (BOOL)uploadLoadErrorsAsIndividualEvents:(id)events syncType:(id)type totalItemsCount:(unint64_t)count zoneCountsOnly:(BOOL)only isFolderSharingEnabled:(BOOL)enabled dsid:(id)dsid rampNumber:(id)number
 {
   v81 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v64 = a4;
-  v63 = a8;
-  v62 = a9;
+  eventsCopy = events;
+  typeCopy = type;
+  dsidCopy = dsid;
+  numberCopy = number;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v11;
-  v46 = [v11 countByEnumeratingWithState:&v74 objects:v80 count:16];
+  obj = eventsCopy;
+  v46 = [eventsCopy countByEnumeratingWithState:&v74 objects:v80 count:16];
   v12 = 0;
   if (v46)
   {
@@ -307,11 +307,11 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
         v72 = 0u;
         v73 = 0u;
         v65 = v14;
-        v15 = [v14 shareDBErrorCountByPCSAndEDPState];
-        v16 = [v15 allKeys];
+        shareDBErrorCountByPCSAndEDPState = [v14 shareDBErrorCountByPCSAndEDPState];
+        allKeys = [shareDBErrorCountByPCSAndEDPState allKeys];
 
-        v48 = v16;
-        v52 = [v16 countByEnumeratingWithState:&v70 objects:v79 count:16];
+        v48 = allKeys;
+        v52 = [allKeys countByEnumeratingWithState:&v70 objects:v79 count:16];
         if (v52)
         {
           v50 = *v71;
@@ -325,26 +325,26 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
               }
 
               v18 = *(*(&v70 + 1) + 8 * i);
-              v56 = [v65 error];
-              v54 = [v65 error];
-              v19 = [v54 brc_cloudKitErrorMessage];
-              v20 = [v65 shareDBErrorCountByPCSAndEDPState];
-              v21 = [v20 objectForKeyedSubscript:v18];
-              v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
-              v23 = [v65 lastFailureDate];
-              v24 = [v18 left];
-              v25 = [v24 intValue] - 1;
+              error = [v65 error];
+              error2 = [v65 error];
+              brc_cloudKitErrorMessage = [error2 brc_cloudKitErrorMessage];
+              shareDBErrorCountByPCSAndEDPState2 = [v65 shareDBErrorCountByPCSAndEDPState];
+              v21 = [shareDBErrorCountByPCSAndEDPState2 objectForKeyedSubscript:v18];
+              v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:count];
+              lastFailureDate = [v65 lastFailureDate];
+              left = [v18 left];
+              v25 = [left intValue] - 1;
               v26 = @"unknown";
               if (v25 <= 3)
               {
                 v26 = off_278508560[v25];
               }
 
-              BYTE1(v43) = a7;
-              LOBYTE(v43) = a6;
-              v27 = [a1 telemetryDictionaryToUploadForError:v56 errorMessage:v19 count:v21 syncType:v64 totalItemsCount:v22 zoneType:@"shared" zoneCountsOnly:v43 isFolderSharingEnabled:v63 dsid:v62 rampNumber:v23 lastFailureDate:v26 pcsState:?];
+              BYTE1(v43) = enabled;
+              LOBYTE(v43) = only;
+              v27 = [self telemetryDictionaryToUploadForError:error errorMessage:brc_cloudKitErrorMessage count:v21 syncType:typeCopy totalItemsCount:v22 zoneType:@"shared" zoneCountsOnly:v43 isFolderSharingEnabled:dsidCopy dsid:numberCopy rampNumber:lastFailureDate lastFailureDate:v26 pcsState:?];
 
-              [a1 sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v27];
+              [self sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v27];
             }
 
             v52 = [v48 countByEnumeratingWithState:&v70 objects:v79 count:16];
@@ -358,11 +358,11 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v28 = [v65 privateDBErrorCountByPCSAndEDPState];
-        v29 = [v28 allKeys];
+        privateDBErrorCountByPCSAndEDPState = [v65 privateDBErrorCountByPCSAndEDPState];
+        allKeys2 = [privateDBErrorCountByPCSAndEDPState allKeys];
 
-        v49 = v29;
-        v53 = [v29 countByEnumeratingWithState:&v66 objects:v78 count:16];
+        v49 = allKeys2;
+        v53 = [allKeys2 countByEnumeratingWithState:&v66 objects:v78 count:16];
         if (v53)
         {
           v51 = *v67;
@@ -376,26 +376,26 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
               }
 
               v31 = *(*(&v66 + 1) + 8 * j);
-              v57 = [v65 error];
-              v55 = [v65 error];
-              v32 = [v55 brc_cloudKitErrorMessage];
-              v33 = [v65 privateDBErrorCountByPCSAndEDPState];
-              v34 = [v33 objectForKeyedSubscript:v31];
-              v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
-              v36 = [v65 lastFailureDate];
-              v37 = [v31 left];
-              v38 = [v37 intValue] - 1;
+              error3 = [v65 error];
+              error4 = [v65 error];
+              brc_cloudKitErrorMessage2 = [error4 brc_cloudKitErrorMessage];
+              privateDBErrorCountByPCSAndEDPState2 = [v65 privateDBErrorCountByPCSAndEDPState];
+              v34 = [privateDBErrorCountByPCSAndEDPState2 objectForKeyedSubscript:v31];
+              v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:count];
+              lastFailureDate2 = [v65 lastFailureDate];
+              left2 = [v31 left];
+              v38 = [left2 intValue] - 1;
               v39 = @"unknown";
               if (v38 <= 3)
               {
                 v39 = off_278508560[v38];
               }
 
-              BYTE1(v43) = a7;
-              LOBYTE(v43) = a6;
-              v40 = [a1 telemetryDictionaryToUploadForError:v57 errorMessage:v32 count:v34 syncType:v64 totalItemsCount:v35 zoneType:@"private" zoneCountsOnly:v43 isFolderSharingEnabled:v63 dsid:v62 rampNumber:v36 lastFailureDate:v39 pcsState:?];
+              BYTE1(v43) = enabled;
+              LOBYTE(v43) = only;
+              v40 = [self telemetryDictionaryToUploadForError:error3 errorMessage:brc_cloudKitErrorMessage2 count:v34 syncType:typeCopy totalItemsCount:v35 zoneType:@"private" zoneCountsOnly:v43 isFolderSharingEnabled:dsidCopy dsid:numberCopy rampNumber:lastFailureDate2 lastFailureDate:v39 pcsState:?];
 
-              [a1 sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v40];
+              [self sendTelemetryEvent:@"com.apple.iCloudDrive.syncStatus" withReport:v40];
             }
 
             v53 = [v49 countByEnumeratingWithState:&v66 objects:v78 count:16];
@@ -419,25 +419,25 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
   return v12 & 1;
 }
 
-+ (void)newAppTelemetryMetricEvent:(id)a3
++ (void)newAppTelemetryMetricEvent:(id)event
 {
-  v21 = a3;
+  eventCopy = event;
   if (!+[BRCAnalyticsReporter isTelemetryReportingEnabled])
   {
     goto LABEL_40;
   }
 
   v4 = objc_opt_new();
-  v5 = [v21 telemetrySchema];
+  telemetrySchema = [eventCopy telemetrySchema];
   v6 = 0;
   v7 = 1;
-  if (v5 > 4)
+  if (telemetrySchema > 4)
   {
-    if (v5 == 5)
+    if (telemetrySchema == 5)
     {
-      if ([v21 hasMagnitudeInt])
+      if ([eventCopy hasMagnitudeInt])
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v21, "magnitudeInt")];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(eventCopy, "magnitudeInt")];
         [v4 setObject:v12 forKey:@"eventCount"];
       }
 
@@ -447,12 +447,12 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
 
     else
     {
-      v8 = v21;
-      if (v5 == 6)
+      v8 = eventCopy;
+      if (telemetrySchema == 6)
       {
-        if ([v21 hasMagnitudeInt])
+        if ([eventCopy hasMagnitudeInt])
         {
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v21, "magnitudeInt")];
+          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(eventCopy, "magnitudeInt")];
           [v4 setObject:v14 forKey:@"data"];
         }
 
@@ -462,14 +462,14 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
 
       else
       {
-        if (v5 != 7)
+        if (telemetrySchema != 7)
         {
           goto LABEL_34;
         }
 
-        if ([v21 hasMagnitudeBool])
+        if ([eventCopy hasMagnitudeBool])
         {
-          if ([v21 magnitudeBool])
+          if ([eventCopy magnitudeBool])
           {
             v10 = @"true";
           }
@@ -488,11 +488,11 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
     }
   }
 
-  else if (v5 == 2)
+  else if (telemetrySchema == 2)
   {
-    if ([v21 hasMagnitudeInt])
+    if ([eventCopy hasMagnitudeInt])
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v21, "magnitudeInt")];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(eventCopy, "magnitudeInt")];
       [v4 setObject:v11 forKey:@"mismatchCount"];
     }
 
@@ -502,12 +502,12 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
 
   else
   {
-    v8 = v21;
-    if (v5 == 3)
+    v8 = eventCopy;
+    if (telemetrySchema == 3)
     {
-      if ([v21 hasMagnitudeInt])
+      if ([eventCopy hasMagnitudeInt])
       {
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v21, "magnitudeInt")];
+        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(eventCopy, "magnitudeInt")];
         [v4 setObject:v13 forKey:@"numberOfZonesOutOfSync"];
       }
 
@@ -517,14 +517,14 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
 
     else
     {
-      if (v5 != 4)
+      if (telemetrySchema != 4)
       {
         goto LABEL_34;
       }
 
-      if ([v21 hasMagnitudeBool])
+      if ([eventCopy hasMagnitudeBool])
       {
-        if ([v21 magnitudeBool])
+        if ([eventCopy magnitudeBool])
         {
           v9 = @"true";
         }
@@ -542,19 +542,19 @@ void __151__BRCCoreAnalyticsReporter_uploadSyncErrorsAsIndividualEvents_syncType
     }
   }
 
-  v8 = v21;
+  v8 = eventCopy;
 LABEL_34:
   if ([v8 hasInvestigation])
   {
-    v15 = [v21 investigation];
-    v16 = [v15 hasZoneName];
+    investigation = [eventCopy investigation];
+    hasZoneName = [investigation hasZoneName];
 
-    if (v16)
+    if (hasZoneName)
     {
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [v21 investigation];
-      v19 = [v18 zoneName];
-      v20 = [v17 initWithData:v19 encoding:4];
+      investigation2 = [eventCopy investigation];
+      zoneName = [investigation2 zoneName];
+      v20 = [v17 initWithData:zoneName encoding:4];
 
       [v4 setObject:v20 forKey:@"zoneName"];
     }
@@ -562,19 +562,19 @@ LABEL_34:
 
   if ((v7 & 1) == 0)
   {
-    [a1 sendTelemetryEvent:v6 withReport:v4];
+    [self sendTelemetryEvent:v6 withReport:v4];
   }
 
 LABEL_40:
 }
 
-+ (void)sendTelemetryEvent:(id)a3 withReport:(id)a4
++ (void)sendTelemetryEvent:(id)event withReport:(id)report
 {
-  v5 = a4;
-  v6 = a3;
+  reportCopy = report;
+  eventCopy = event;
   AnalyticsIsEventUsed();
-  v8 = v5;
-  v7 = v5;
+  v8 = reportCopy;
+  v7 = reportCopy;
   AnalyticsSendEventLazy();
 }
 

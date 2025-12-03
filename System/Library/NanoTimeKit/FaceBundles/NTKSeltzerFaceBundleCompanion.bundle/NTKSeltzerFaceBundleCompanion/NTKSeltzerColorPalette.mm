@@ -6,8 +6,8 @@
 
 - (id)_secondTickInactive
 {
-  v2 = [(NTKSeltzerColorPalette *)self secondTickActive];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  secondTickActive = [(NTKSeltzerColorPalette *)self secondTickActive];
+  v3 = [secondTickActive colorWithAlphaComponent:0.3];
 
   return v3;
 }

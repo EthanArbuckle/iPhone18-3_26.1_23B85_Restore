@@ -8,10 +8,10 @@
 
 - (BOOL)shouldShowHighlighted
 {
-  v2 = [(RoutePlanningEbikeRefinementModel *)self cyclePreferences];
-  v3 = [v2 ebike];
+  cyclePreferences = [(RoutePlanningEbikeRefinementModel *)self cyclePreferences];
+  ebike = [cyclePreferences ebike];
 
-  return v3;
+  return ebike;
 }
 
 - (id)titleText
@@ -24,11 +24,11 @@
 
 - (CyclePreferences)cyclePreferences
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = value;
   }
 
   else

@@ -1,23 +1,23 @@
 @interface TRIConfigurationTask
-+ (id)parseFromData:(id)a3;
-- (TRIConfigurationTask)initWithCoder:(id)a3;
++ (id)parseFromData:(id)data;
+- (TRIConfigurationTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIConfigurationTask
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [TRISystemConfiguration alloc];
-  v6 = [v4 paths];
+  paths = [contextCopy paths];
 
-  v7 = [(TRISystemConfiguration *)v5 initWithPaths:v6];
-  v8 = [(TRISystemConfiguration *)v7 createPersistentDeviceIdentifier];
-  if (v8)
+  v7 = [(TRISystemConfiguration *)v5 initWithPaths:paths];
+  createPersistentDeviceIdentifier = [(TRISystemConfiguration *)v7 createPersistentDeviceIdentifier];
+  if (createPersistentDeviceIdentifier)
   {
     v9 = 2;
   }
@@ -41,25 +41,25 @@
 
 - (id)serialize
 {
-  v4 = [(TRIConfigurationTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIConfigurationTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIConfigurationTask.m" lineNumber:45 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIConfigurationTask.m" lineNumber:45 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v3 = [(TRIPBMessage *)TRIConfigurationPersistedTask parseFromData:a3 error:&v9];
+  v3 = [(TRIPBMessage *)TRIConfigurationPersistedTask parseFromData:data error:&v9];
   v4 = v9;
   if (v3)
   {
@@ -84,15 +84,15 @@
   return v5;
 }
 
-- (TRIConfigurationTask)initWithCoder:(id)a3
+- (TRIConfigurationTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIConfigurationTask;
   v5 = [(TRIConfigurationTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -112,18 +112,18 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIConfigurationTask.m" lineNumber:62 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIConfigurationTask.m" lineNumber:62 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIConfigurationTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIConfigurationTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

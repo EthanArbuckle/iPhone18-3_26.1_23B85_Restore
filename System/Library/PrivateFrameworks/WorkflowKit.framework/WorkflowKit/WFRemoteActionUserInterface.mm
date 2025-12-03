@@ -1,13 +1,13 @@
 @interface WFRemoteActionUserInterface
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (WFRemoteActionUserInterface)initWithUserInterfaceType:(id)a3 listenerEndpoint:(id)a4 interface:(id)a5;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (WFRemoteActionUserInterface)initWithUserInterfaceType:(id)type listenerEndpoint:(id)endpoint interface:(id)interface;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation WFRemoteActionUserInterface
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = WFRemoteActionUserInterface;
@@ -18,56 +18,56 @@
 
   else
   {
-    v5 = [(WFRemoteActionUserInterface *)self remoteUserInterface];
+    remoteUserInterface = [(WFRemoteActionUserInterface *)self remoteUserInterface];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(WFRemoteActionUserInterface *)self remoteUserInterface];
-  v6 = [v5 conformsToProtocol:v4];
+  protocolCopy = protocol;
+  remoteUserInterface = [(WFRemoteActionUserInterface *)self remoteUserInterface];
+  v6 = [remoteUserInterface conformsToProtocol:protocolCopy];
 
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = WFRemoteActionUserInterface;
-  if ([(WFRemoteActionUserInterface *)&v6 respondsToSelector:a3])
+  if ([(WFRemoteActionUserInterface *)&v6 respondsToSelector:selector])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(WFRemoteActionUserInterface *)self remoteUserInterface];
+    selfCopy = [(WFRemoteActionUserInterface *)self remoteUserInterface];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (WFRemoteActionUserInterface)initWithUserInterfaceType:(id)a3 listenerEndpoint:(id)a4 interface:(id)a5
+- (WFRemoteActionUserInterface)initWithUserInterfaceType:(id)type listenerEndpoint:(id)endpoint interface:(id)interface
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  typeCopy = type;
+  endpointCopy = endpoint;
+  interfaceCopy = interface;
+  if (typeCopy)
   {
-    if (v11)
+    if (endpointCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"listenerEndpoint"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"listenerEndpoint"}];
 
-    if (v12)
+    if (interfaceCopy)
     {
       goto LABEL_4;
     }
@@ -75,23 +75,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"userInterfaceType"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"userInterfaceType"}];
 
-  if (!v11)
+  if (!endpointCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (interfaceCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"interface"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFRemoteActionUserInterface.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"interface"}];
 
 LABEL_4:
   v26.receiver = self;
@@ -100,9 +100,9 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_userInterfaceType, a3);
-    v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v11];
-    [v15 setRemoteObjectInterface:v12];
+    objc_storeStrong(&v13->_userInterfaceType, type);
+    v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
+    [v15 setRemoteObjectInterface:interfaceCopy];
     objc_initWeak(&location, v14);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -112,9 +112,9 @@ LABEL_4:
     [v15 setInterruptionHandler:v23];
     [v15 resume];
     objc_storeStrong(&v14->_connection, v15);
-    v16 = [v15 remoteObjectProxy];
+    remoteObjectProxy = [v15 remoteObjectProxy];
     remoteUserInterface = v14->_remoteUserInterface;
-    v14->_remoteUserInterface = v16;
+    v14->_remoteUserInterface = remoteObjectProxy;
 
     v18 = v14;
     objc_destroyWeak(&v24);

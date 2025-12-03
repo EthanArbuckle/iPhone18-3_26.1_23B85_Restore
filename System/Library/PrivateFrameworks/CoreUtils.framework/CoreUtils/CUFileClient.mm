@@ -1,47 +1,47 @@
 @interface CUFileClient
 - (CUFileClient)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_completeQuery:(id)a3 response:(id)a4 error:(id)a5;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_completeQuery:(id)query response:(id)response error:(id)error;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_reportError:(id)a3 where:(const char *)a4;
+- (void)_reportError:(id)error where:(const char *)where;
 - (void)_run;
 - (void)_runCLinkActivate;
 - (void)_runPrepare;
 - (void)_runQueries;
-- (void)_runQueryResponse:(id)a3 query:(id)a4 error:(id)a5;
-- (void)_runSendQuery:(id)a3;
+- (void)_runQueryResponse:(id)response query:(id)query error:(id)error;
+- (void)_runSendQuery:(id)query;
 - (void)_runSessionStartRequest;
-- (void)_runSessionStartResponse:(id)a3 error:(id)a4;
-- (void)_sendKeepAlive:(double)a3;
+- (void)_runSessionStartResponse:(id)response error:(id)error;
+- (void)_sendKeepAlive:(double)alive;
 - (void)_sendSessionStop;
 - (void)_sessionTimerFired;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performQuery:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)performQuery:(id)query;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUFileClient
 
-- (void)_runQueryResponse:(id)a3 query:(id)a4 error:(id)a5
+- (void)_runQueryResponse:(id)response query:(id)query error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v16 = v8;
-  if (!v16 || v10)
+  responseCopy = response;
+  queryCopy = query;
+  errorCopy = error;
+  v16 = responseCopy;
+  if (!v16 || errorCopy)
   {
-    if (v10)
+    if (errorCopy)
     {
-      [(CUFileClient *)self _completeQuery:v9 response:0 error:v10];
+      [(CUFileClient *)self _completeQuery:queryCopy response:0 error:errorCopy];
     }
 
     else
     {
       v19 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "No response, no error", v11, v12, v13, v14, v15, v20);
-      [(CUFileClient *)self _completeQuery:v9 response:0 error:v19];
+      [(CUFileClient *)self _completeQuery:queryCopy response:0 error:v19];
     }
   }
 
@@ -50,14 +50,14 @@
     v21 = 0;
     v17 = [[CUFileResponse alloc] initWithDictionary:v16 error:&v21];
     v18 = v21;
-    [(CUFileClient *)self _completeQuery:v9 response:v17 error:v18];
+    [(CUFileClient *)self _completeQuery:queryCopy response:v17 error:v18];
   }
 }
 
-- (void)_runSendQuery:(id)a3
+- (void)_runSendQuery:(id)query
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  queryCopy = query;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
@@ -71,12 +71,12 @@
       ucat = self->_ucat;
     }
 
-    LogPrintF(ucat, "[CUFileClient _runSendQuery:]", 0x1Eu, "Query start: %@", v4, v5, v6, v7, v8);
+    LogPrintF(ucat, "[CUFileClient _runSendQuery:]", 0x1Eu, "Query start: %@", v4, v5, v6, v7, queryCopy);
   }
 
 LABEL_5:
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v8 encodeWithDictionary:v10];
+  [queryCopy encodeWithDictionary:v10];
   v18 = NSPrintF("FSQy:%@", v11, v12, v13, v14, v15, v16, v17, self->_serviceType);
   v25[0] = @"fQry";
   v25[1] = @"sid";
@@ -90,8 +90,8 @@ LABEL_5:
   v23[2] = __30__CUFileClient__runSendQuery___block_invoke;
   v23[3] = &unk_1E73A31C8;
   v23[4] = self;
-  v24 = v8;
-  v22 = v8;
+  v24 = queryCopy;
+  v22 = queryCopy;
   [(RPCompanionLinkClient *)clinkClient sendRequestID:v18 request:v20 options:0 responseHandler:v23];
   self->_lastRequestTicks = mach_absolute_time();
 }
@@ -101,17 +101,17 @@ LABEL_5:
   p_currentQuery = &self->_currentQuery;
   if (!self->_currentQuery)
   {
-    v4 = [(NSMutableArray *)self->_queryArray popFirstObject];
-    v5 = v4;
-    if (v4)
+    popFirstObject = [(NSMutableArray *)self->_queryArray popFirstObject];
+    v5 = popFirstObject;
+    if (popFirstObject)
     {
-      v6 = v4;
-      objc_storeStrong(p_currentQuery, v4);
-      v4 = [(CUFileClient *)self _runSendQuery:v6];
+      v6 = popFirstObject;
+      objc_storeStrong(p_currentQuery, popFirstObject);
+      popFirstObject = [(CUFileClient *)self _runSendQuery:v6];
       v5 = v6;
     }
 
-    MEMORY[0x1EEE66BB8](v4, v5);
+    MEMORY[0x1EEE66BB8](popFirstObject, v5);
   }
 }
 
@@ -162,10 +162,10 @@ void *__27__CUFileClient__runPrepare__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_runSessionStartResponse:(id)a3 error:(id)a4
+- (void)_runSessionStartResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -179,9 +179,9 @@ void *__27__CUFileClient__runPrepare__block_invoke(uint64_t a1)
   aBlock[4] = self;
   aBlock[5] = &v29;
   v13 = _Block_copy(aBlock);
-  if (v6 && !v7)
+  if (responseCopy && !errorCopy)
   {
-    v19 = NSDictionaryGetNSNumber(v6, @"sid", 0);
+    v19 = NSDictionaryGetNSNumber(responseCopy, @"sid", 0);
     if (!v19)
     {
       v25 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No session ID", v14, v15, v16, v17, v18, v27);
@@ -216,14 +216,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v19 = v7;
-  if (!v7)
+  v19 = errorCopy;
+  if (!errorCopy)
   {
     v19 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "No response, no error", v8, v9, v10, v11, v12, v27);
   }
 
   objc_storeStrong(v30 + 5, v19);
-  if (!v7)
+  if (!errorCopy)
   {
     goto LABEL_9;
   }
@@ -646,7 +646,7 @@ LABEL_5:
   [*(a1 + 32) _invalidated];
 }
 
-- (void)_sendKeepAlive:(double)a3
+- (void)_sendKeepAlive:(double)alive
 {
   v18[1] = *MEMORY[0x1E69E9840];
   ucat = self->_ucat;
@@ -662,7 +662,7 @@ LABEL_5:
       ucat = self->_ucat;
     }
 
-    LogPrintF(ucat, "[CUFileClient _sendKeepAlive:]", 0x14u, "Keep alive request: %.3f delta seconds", v5, v6, v7, v8, *&a3);
+    LogPrintF(ucat, "[CUFileClient _sendKeepAlive:]", 0x14u, "Keep alive request: %.3f delta seconds", v5, v6, v7, v8, *&alive);
   }
 
 LABEL_5:
@@ -710,16 +710,16 @@ LABEL_5:
   }
 }
 
-- (void)_reportError:(id)a3 where:(const char *)a4
+- (void)_reportError:(id)error where:(const char *)where
 {
-  v13 = a3;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 90)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUFileClient _reportError:where:]", 0x5Au, "### Error: %s, %{error}", v6, v7, v8, v9, a4);
+      LogPrintF(ucat, "[CUFileClient _reportError:where:]", 0x5Au, "### Error: %s, %{error}", v6, v7, v8, v9, where);
       goto LABEL_5;
     }
 
@@ -738,25 +738,25 @@ LABEL_5:
 
   if (v11)
   {
-    v11[2](v11, v13);
+    v11[2](v11, errorCopy);
   }
 }
 
-- (void)_completeQuery:(id)a3 response:(id)a4 error:(id)a5
+- (void)_completeQuery:(id)query response:(id)response error:(id)error
 {
-  v20 = a3;
-  v8 = a4;
-  v13 = a5;
+  queryCopy = query;
+  responseCopy = response;
+  errorCopy = error;
   ucat = self->_ucat;
   var0 = ucat->var0;
-  if (v13)
+  if (errorCopy)
   {
     if (var0 > 90)
     {
       goto LABEL_12;
     }
 
-    v16 = v20;
+    v16 = queryCopy;
     if (var0 != -1)
     {
       goto LABEL_4;
@@ -765,7 +765,7 @@ LABEL_5:
     if (_LogCategory_Initialize(ucat, 0x5Au))
     {
       ucat = self->_ucat;
-      v16 = v20;
+      v16 = queryCopy;
 LABEL_4:
       LogPrintF(ucat, "[CUFileClient _completeQuery:response:error:]", 0x5Au, "### Query failed: %@, %{error}", v9, v10, v11, v12, v16);
     }
@@ -778,7 +778,7 @@ LABEL_4:
       goto LABEL_12;
     }
 
-    v17 = v20;
+    v17 = queryCopy;
     if (var0 == -1)
     {
       if (!_LogCategory_Initialize(ucat, 0x1Eu))
@@ -787,22 +787,22 @@ LABEL_4:
       }
 
       ucat = self->_ucat;
-      v17 = v20;
+      v17 = queryCopy;
     }
 
     LogPrintF(ucat, "[CUFileClient _completeQuery:response:error:]", 0x1Eu, "Query completed: %@, %@", v9, v10, v11, v12, v17);
   }
 
 LABEL_12:
-  v18 = [(CUFileQuery *)v20 completionHandler];
-  if (v18)
+  completionHandler = [(CUFileQuery *)queryCopy completionHandler];
+  if (completionHandler)
   {
-    [(CUFileQuery *)v20 setCompletionHandler:0];
-    (v18)[2](v18, v8, v13);
+    [(CUFileQuery *)queryCopy setCompletionHandler:0];
+    (completionHandler)[2](completionHandler, responseCopy, errorCopy);
   }
 
   currentQuery = self->_currentQuery;
-  if (currentQuery == v20)
+  if (currentQuery == queryCopy)
   {
     self->_currentQuery = 0;
 
@@ -810,17 +810,17 @@ LABEL_12:
   }
 }
 
-- (void)performQuery:(id)a3
+- (void)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__CUFileClient_performQuery___block_invoke;
   v7[3] = &unk_1E73A49F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = queryCopy;
+  selfCopy = self;
+  v6 = queryCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1018,9 +1018,9 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1033,7 +1033,7 @@ LABEL_6:
   aBlock[3] = &unk_1E73A3FA0;
   v21 = &v22;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v20 = v5;
   v11 = _Block_copy(aBlock);
   if (!self->_destinationID)
@@ -1106,17 +1106,17 @@ LABEL_7:
   return v11();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CUFileClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1149,13 +1149,13 @@ LABEL_5:
   return [v9 _activateWithCompletion:v12];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE96B8;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

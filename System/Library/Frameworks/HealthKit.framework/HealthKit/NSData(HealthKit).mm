@@ -102,7 +102,7 @@ LABEL_12:
 - (id)hk_MD5
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_MD5([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_MD5([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:16];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -112,7 +112,7 @@ LABEL_12:
 - (id)hk_SHA256
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -123,7 +123,7 @@ LABEL_12:
 {
   if (a3 < 0)
   {
-    [(NSData(HealthKit) *)a2 hk_randomDataOfLength:a1];
+    [(NSData(HealthKit) *)a2 hk_randomDataOfLength:self];
   }
 
   v4 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:@"/dev/random"];
@@ -144,15 +144,15 @@ LABEL_10:
   else
   {
     v4 = [v3 length] >> 1;
-    v5 = [v3 lowercaseString];
-    v6 = [v5 UTF8String];
+    lowercaseString = [v3 lowercaseString];
+    uTF8String = [lowercaseString UTF8String];
 
     v7 = malloc_type_calloc(v4, 1uLL, 0x100004077774924uLL);
     if ([v3 length])
     {
       for (i = 0; i < [v3 length]; ++i)
       {
-        v9 = *(v6 + i);
+        v9 = *(uTF8String + i);
         v10 = v9 - 48;
         if ((v9 - 48) >= 0xA)
         {
@@ -177,22 +177,22 @@ LABEL_10:
 
 - (id)hk_hexString
 {
-  v2 = 2 * [a1 length];
-  v3 = [a1 bytes];
+  v2 = 2 * [self length];
+  bytes = [self bytes];
   v4 = malloc_type_calloc(v2, 1uLL, 0x100004077774924uLL);
-  if ([a1 length])
+  if ([self length])
   {
     v5 = 0;
     v6 = v4 + 1;
     do
     {
-      *(v6 - 1) = hk_hexString_hexCharacters[*(v3 + v5) >> 4];
-      *v6 = hk_hexString_hexCharacters[*(v3 + v5) & 0xF];
+      *(v6 - 1) = hk_hexString_hexCharacters[*(bytes + v5) >> 4];
+      *v6 = hk_hexString_hexCharacters[*(bytes + v5) & 0xF];
       v6 += 2;
       ++v5;
     }
 
-    while (v5 < [a1 length]);
+    while (v5 < [self length]);
   }
 
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:v4 length:v2 encoding:4 freeWhenDone:1];

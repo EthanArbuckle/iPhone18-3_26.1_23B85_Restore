@@ -1,10 +1,10 @@
 @interface HDOriginalSignedClinicalDataRecordEntity
 + (id)allProperties;
 + (id)checkConstraints;
-+ (id)entityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)existingEntityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5;
++ (id)entityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error;
++ (id)existingEntityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error;
 + (id)foreignKeys;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)joinClausesForProperty:(id)property;
 + (id)uniquedColumns;
 @end
 
@@ -18,10 +18,10 @@
   return v2;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"gateway.external_id"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"gateway.external_id"])
   {
     v5 = MEMORY[0x277D10B50];
     v6 = +[(HDSQLiteSchemaEntity *)HDOriginalSignedClinicalDataRecordEntity];
@@ -35,9 +35,9 @@
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___HDOriginalSignedClinicalDataRecordEntity;
-    v11 = objc_msgSendSuper2(&v13, sel_joinClausesForProperty_, v4);
+    v11 = objc_msgSendSuper2(&v13, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v11;
@@ -75,11 +75,11 @@
   return v3;
 }
 
-+ (id)existingEntityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)existingEntityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v15 = 0;
-  v9 = [a1 entityWithSyncIdentifier:v8 database:a4 error:&v15];
+  v9 = [self entityWithSyncIdentifier:identifierCopy database:database error:&v15];
   v10 = v15;
   v11 = v10;
   if (v9)
@@ -89,10 +89,10 @@
 
   else if (v10)
   {
-    if (a5)
+    if (error)
     {
       v14 = v10;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -103,18 +103,18 @@
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:118 format:{@"original signed clinical data record with sync identifier %@ not found", v8}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:{@"original signed clinical data record with sync identifier %@ not found", identifierCopy}];
   }
 
   return v9;
 }
 
-+ (id)entityWithSyncIdentifier:(id)a3 database:(id)a4 error:(id *)a5
++ (id)entityWithSyncIdentifier:(id)identifier database:(id)database error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"sync_identifier" equalToValue:a3];
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  databaseCopy = database;
+  v10 = [v8 predicateWithProperty:@"sync_identifier" equalToValue:identifier];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10 error:error];
 
   if (v11)
   {

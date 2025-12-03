@@ -4,45 +4,45 @@
 + (char)cloudEnabledStatus;
 + (char)cloudMigrationStatus;
 + (id)allPickers;
-+ (id)allPickersForMode:(unint64_t)a3 documentTypes:(id)a4;
-+ (id)defaultPickerIdentifierForMode:(unint64_t)a3 documentTypes:(id)a4;
-+ (id)descriptorWithIdentifier:(id)a3;
-+ (id)enabledPickersForMode:(unint64_t)a3 documentTypes:(id)a4;
-+ (id)filteredPickersForPickers:(id)a3 filter:(unint64_t)a4;
-+ (id)manageablePickersForMode:(unint64_t)a3 documentTypes:(id)a4;
++ (id)allPickersForMode:(unint64_t)mode documentTypes:(id)types;
++ (id)defaultPickerIdentifierForMode:(unint64_t)mode documentTypes:(id)types;
++ (id)descriptorWithIdentifier:(id)identifier;
++ (id)enabledPickersForMode:(unint64_t)mode documentTypes:(id)types;
++ (id)filteredPickersForPickers:(id)pickers filter:(unint64_t)filter;
++ (id)manageablePickersForMode:(unint64_t)mode documentTypes:(id)types;
 + (id)pickerOrder;
 + (void)_updateCloudEnabledStatus;
 + (void)cloudMigrationStatus;
-+ (void)setHostAuditToken:(id *)a3;
-+ (void)setHostBundleID:(id)a3;
-+ (void)setOrderFromPickers:(id)a3;
++ (void)setHostAuditToken:(id *)token;
++ (void)setHostBundleID:(id)d;
++ (void)setOrderFromPickers:(id)pickers;
 - (BOOL)enabled;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)pickerEnabledForMode:(unint64_t)a3 documentTypes:(id)a4 reason:(id *)a5;
-- (BOOL)supportsPickerMode:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)pickerEnabledForMode:(unint64_t)mode documentTypes:(id)types reason:(id *)reason;
+- (BOOL)supportsPickerMode:(unint64_t)mode;
 - (NSArray)supportedContentTypes;
 - (NSString)fileProviderDocumentGroup;
 - (NSString)identifier;
 - (NSString)localizedName;
 - (NSString)nonUIIdentifier;
-- (id)_extensionValueOfClass:(Class)a3 forKey:(id)a4;
+- (id)_extensionValueOfClass:(Class)class forKey:(id)key;
 - (id)_ownBundle;
 - (id)_parentApp;
 - (id)description;
-- (id)imageWithScale:(double)a3;
+- (id)imageWithScale:(double)scale;
 - (id)nonUIBundle;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIDocumentPickerDescriptor
 
-+ (void)setHostBundleID:(id)a3
++ (void)setHostBundleID:(id)d
 {
-  if (sHostBundleID != a3)
+  if (sHostBundleID != d)
   {
-    v3 = [a3 copy];
+    v3 = [d copy];
     v4 = sHostBundleID;
     sHostBundleID = v3;
 
@@ -50,10 +50,10 @@
   }
 }
 
-+ (void)setHostAuditToken:(id *)a3
++ (void)setHostAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  sHostAuditToken = *a3->var0;
+  v3 = *&token->var0[4];
+  sHostAuditToken = *token->var0;
   *algn_27ED94650 = v3;
 }
 
@@ -67,8 +67,8 @@
 
 + (BOOL)isInAddToiCloudDrive
 {
-  v2 = [a1 hostBundleID];
-  v3 = [v2 isEqualToString:@"com.apple.CloudDocsUI.AddToiCloudDrive"];
+  hostBundleID = [self hostBundleID];
+  v3 = [hostBundleID isEqualToString:@"com.apple.CloudDocsUI.AddToiCloudDrive"];
 
   return v3;
 }
@@ -76,8 +76,8 @@
 + (id)allPickers
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v32 = [a1 isInAddToiCloudDrive];
-  v30 = [a1 pickerOrder];
+  isInAddToiCloudDrive = [self isInAddToiCloudDrive];
+  pickerOrder = [self pickerOrder];
   v3 = dispatch_semaphore_create(0);
   v42 = 0;
   v43 = &v42;
@@ -101,11 +101,11 @@
   dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v43[5];
   v7 = [v6 valueForKeyPath:@"identifier"];
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v9 = [a1 hostBundleID];
-  v10 = [v8 allowedAppBundleIDsForBidirectionalDataMovementAfterApplyingFilterToBundleIDs:v7 localAppBundleID:v9 localAccountIsManaged:{objc_msgSend(a1, "isContentManaged")}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  hostBundleID = [self hostBundleID];
+  v10 = [mEMORY[0x277D262A0] allowedAppBundleIDsForBidirectionalDataMovementAfterApplyingFilterToBundleIDs:v7 localAppBundleID:hostBundleID localAccountIsManaged:{objc_msgSend(self, "isContentManaged")}];
 
-  v31 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -126,22 +126,22 @@
         }
 
         v16 = *(*(&v35 + 1) + 8 * i);
-        v17 = [v16 identifier];
-        v18 = [v10 containsObject:v17];
+        identifier = [v16 identifier];
+        v18 = [v10 containsObject:identifier];
 
         if (v18)
         {
-          v19 = [v16 identifier];
-          v20 = [v19 isEqualToString:@"com.apple.UIKit.fileprovider.default"];
+          identifier2 = [v16 identifier];
+          v20 = [identifier2 isEqualToString:@"com.apple.UIKit.fileprovider.default"];
 
           if ((v20 & 1) == 0)
           {
-            if (!v32 || ([v16 identifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v14), v21, v22))
+            if (!isInAddToiCloudDrive || ([v16 identifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", v14), v21, v22))
             {
               v23 = objc_alloc_init(_UIDocumentPickerDescriptor);
               [(_UIDocumentPickerDescriptor *)v23 setExtension:v16];
-              v24 = [(_UIDocumentPickerDescriptor *)v23 identifier];
-              v25 = [v24 isEqualToString:v14];
+              identifier3 = [(_UIDocumentPickerDescriptor *)v23 identifier];
+              v25 = [identifier3 isEqualToString:v14];
 
               if (v25)
               {
@@ -150,11 +150,11 @@
 
               else
               {
-                v26 = [(_UIDocumentPickerDescriptor *)v23 identifier];
-                -[_UIDocumentPickerDescriptor setNewlyAdded:](v23, "setNewlyAdded:", [v30 containsObject:v26] ^ 1);
+                identifier4 = [(_UIDocumentPickerDescriptor *)v23 identifier];
+                -[_UIDocumentPickerDescriptor setNewlyAdded:](v23, "setNewlyAdded:", [pickerOrder containsObject:identifier4] ^ 1);
               }
 
-              [v31 addObject:v23];
+              [array addObject:v23];
             }
           }
         }
@@ -170,31 +170,31 @@
   v33[1] = 3221225472;
   v33[2] = __41___UIDocumentPickerDescriptor_allPickers__block_invoke_2;
   v33[3] = &unk_278DD6808;
-  v27 = v30;
+  v27 = pickerOrder;
   v34 = v27;
-  [v31 sortUsingComparator:v33];
+  [array sortUsingComparator:v33];
 
   _Block_object_dispose(&v42, 8);
 
-  return v31;
+  return array;
 }
 
-- (BOOL)pickerEnabledForMode:(unint64_t)a3 documentTypes:(id)a4 reason:(id *)a5
+- (BOOL)pickerEnabledForMode:(unint64_t)mode documentTypes:(id)types reason:(id *)reason
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if ([(_UIDocumentPickerDescriptor *)self supportsPickerMode:a3])
+  typesCopy = types;
+  if ([(_UIDocumentPickerDescriptor *)self supportsPickerMode:mode])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = [(_UIDocumentPickerDescriptor *)self supportedContentTypes];
-    v28 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    supportedContentTypes = [(_UIDocumentPickerDescriptor *)self supportedContentTypes];
+    v28 = [supportedContentTypes countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v28)
     {
       v10 = *v34;
-      v26 = a5;
+      reasonCopy = reason;
       v27 = *v34;
       do
       {
@@ -202,7 +202,7 @@
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(supportedContentTypes);
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
@@ -210,8 +210,8 @@
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v13 = v8;
-          v14 = v8;
+          v13 = typesCopy;
+          v14 = typesCopy;
           v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v15)
           {
@@ -227,11 +227,11 @@
                 }
 
                 v19 = *(*(&v29 + 1) + 8 * j);
-                if (a3 <= 1 && UTTypeConformsTo(v12, *(*(&v29 + 1) + 8 * j)) || UTTypeConformsTo(v19, v12))
+                if (mode <= 1 && UTTypeConformsTo(v12, *(*(&v29 + 1) + 8 * j)) || UTTypeConformsTo(v19, v12))
                 {
 
                   v23 = 1;
-                  v8 = v13;
+                  typesCopy = v13;
                   goto LABEL_33;
                 }
               }
@@ -246,12 +246,12 @@
             }
           }
 
-          v8 = v13;
+          typesCopy = v13;
           v10 = v27;
         }
 
-        a5 = v26;
-        v28 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        reason = reasonCopy;
+        v28 = [supportedContentTypes countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v28);
@@ -265,9 +265,9 @@
   else
   {
     v23 = 0;
-    if (a3 > 1)
+    if (mode > 1)
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         v20 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v21 = v20;
@@ -276,7 +276,7 @@
 
       else
       {
-        if (a3 != 3)
+        if (mode != 3)
         {
           goto LABEL_33;
         }
@@ -287,9 +287,9 @@
       }
     }
 
-    else if (a3)
+    else if (mode)
     {
-      if (a3 != 1)
+      if (mode != 1)
       {
         goto LABEL_33;
       }
@@ -308,9 +308,9 @@
   }
 
   v24 = [v20 localizedStringForKey:v22 value:v22 table:@"Localizable"];
-  if (a5)
+  if (reason)
   {
-    *a5 = v24;
+    *reason = v24;
   }
 
   v23 = 0;
@@ -319,39 +319,39 @@ LABEL_33:
   return v23;
 }
 
-+ (id)allPickersForMode:(unint64_t)a3 documentTypes:(id)a4
++ (id)allPickersForMode:(unint64_t)mode documentTypes:(id)types
 {
-  v6 = a4;
-  v7 = [a1 allPickers];
+  typesCopy = types;
+  allPickers = [self allPickers];
   v8 = MEMORY[0x277CCAC30];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __63___UIDocumentPickerDescriptor_allPickersForMode_documentTypes___block_invoke;
   v16 = &unk_278DD6830;
-  v17 = v6;
-  v18 = a3;
-  v9 = v6;
+  v17 = typesCopy;
+  modeCopy = mode;
+  v9 = typesCopy;
   v10 = [v8 predicateWithBlock:&v13];
-  v11 = [v7 filteredArrayUsingPredicate:{v10, v13, v14, v15, v16}];
+  v11 = [allPickers filteredArrayUsingPredicate:{v10, v13, v14, v15, v16}];
 
   return v11;
 }
 
-+ (id)filteredPickersForPickers:(id)a3 filter:(unint64_t)a4
++ (id)filteredPickersForPickers:(id)pickers filter:(unint64_t)filter
 {
-  v5 = a3;
-  if (!a4)
+  pickersCopy = pickers;
+  if (!filter)
   {
     v6 = &__block_literal_global_6;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (filter == 1)
   {
     v6 = &__block_literal_global_57;
 LABEL_5:
     v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v6];
-    v8 = [v5 filteredArrayUsingPredicate:v7];
+    v8 = [pickersCopy filteredArrayUsingPredicate:v7];
 
     goto LABEL_7;
   }
@@ -362,42 +362,42 @@ LABEL_7:
   return v8;
 }
 
-+ (id)enabledPickersForMode:(unint64_t)a3 documentTypes:(id)a4
++ (id)enabledPickersForMode:(unint64_t)mode documentTypes:(id)types
 {
-  v5 = [a1 allPickersForMode:a3 documentTypes:a4];
-  v6 = [a1 filteredPickersForPickers:v5 filter:0];
+  v5 = [self allPickersForMode:mode documentTypes:types];
+  v6 = [self filteredPickersForPickers:v5 filter:0];
 
   return v6;
 }
 
-+ (id)manageablePickersForMode:(unint64_t)a3 documentTypes:(id)a4
++ (id)manageablePickersForMode:(unint64_t)mode documentTypes:(id)types
 {
-  v5 = [a1 allPickersForMode:a3 documentTypes:a4];
-  v6 = [a1 filteredPickersForPickers:v5 filter:1];
+  v5 = [self allPickersForMode:mode documentTypes:types];
+  v6 = [self filteredPickersForPickers:v5 filter:1];
 
   return v6;
 }
 
-+ (id)defaultPickerIdentifierForMode:(unint64_t)a3 documentTypes:(id)a4
++ (id)defaultPickerIdentifierForMode:(unint64_t)mode documentTypes:(id)types
 {
-  v4 = [a1 enabledPickersForMode:a3 documentTypes:a4];
-  v5 = [v4 firstObject];
-  v6 = [v5 identifier];
+  v4 = [self enabledPickersForMode:mode documentTypes:types];
+  firstObject = [v4 firstObject];
+  identifier = [firstObject identifier];
 
-  return v6;
+  return identifier;
 }
 
-+ (id)descriptorWithIdentifier:(id)a3
++ (id)descriptorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 allPickers];
+  identifierCopy = identifier;
+  allPickers = [self allPickers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56___UIDocumentPickerDescriptor_descriptorWithIdentifier___block_invoke;
   v10[3] = &unk_278DD6898;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v10];
+  v7 = [allPickers indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -405,7 +405,7 @@ LABEL_7:
 
   else
   {
-    v8 = [v5 objectAtIndex:v7];
+    v8 = [allPickers objectAtIndex:v7];
   }
 
   return v8;
@@ -414,11 +414,11 @@ LABEL_7:
 + (void)_updateCloudEnabledStatus
 {
   v3 = _UIDocumentPickerCloudEnabledStatus;
-  [a1 __updateCloudEnabledStatus];
+  [self __updateCloudEnabledStatus];
   if (v3 != _UIDocumentPickerCloudEnabledStatus)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"_UIDocumentPickerDescriptorCloudEnabledStatusDidChange" object:a1];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIDocumentPickerDescriptorCloudEnabledStatusDidChange" object:self];
   }
 }
 
@@ -428,7 +428,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __49___UIDocumentPickerDescriptor_cloudEnabledStatus__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cloudEnabledStatus_onceToken != -1)
   {
     dispatch_once(&cloudEnabledStatus_onceToken, block);
@@ -451,17 +451,17 @@ LABEL_7:
   }
 
   v5 = [v2 objectForKeyedSubscript:*MEMORY[0x277CFAB50]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(_UIDocumentPickerDescriptor *)self identifier];
+  compareCopy = compare;
+  identifier = [(_UIDocumentPickerDescriptor *)self identifier];
   v6 = *MEMORY[0x277D773A0];
-  v7 = [v5 isEqualToString:*MEMORY[0x277D773A0]];
+  v7 = [identifier isEqualToString:*MEMORY[0x277D773A0]];
 
   if (v7)
   {
@@ -470,8 +470,8 @@ LABEL_7:
 
   else
   {
-    v9 = [v4 identifier];
-    v10 = [v9 isEqualToString:v6];
+    identifier2 = [compareCopy identifier];
+    v10 = [identifier2 isEqualToString:v6];
 
     if (v10)
     {
@@ -480,25 +480,25 @@ LABEL_7:
 
     else
     {
-      v11 = [(_UIDocumentPickerDescriptor *)self localizedName];
-      v12 = [v4 localizedName];
-      v8 = [v11 localizedCaseInsensitiveCompare:v12];
+      localizedName = [(_UIDocumentPickerDescriptor *)self localizedName];
+      localizedName2 = [compareCopy localizedName];
+      v8 = [localizedName localizedCaseInsensitiveCompare:localizedName2];
     }
   }
 
   return v8;
 }
 
-- (BOOL)supportsPickerMode:(unint64_t)a3
+- (BOOL)supportsPickerMode:(unint64_t)mode
 {
-  if (a3 > 3)
+  if (mode > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_278DD68B8[a3];
+    v3 = off_278DD68B8[mode];
   }
 
   v4 = [(_UIDocumentPickerDescriptor *)self _extensionValueOfClass:objc_opt_class() forKey:@"UIDocumentPickerModes"];
@@ -510,56 +510,56 @@ LABEL_7:
 - (id)_ownBundle
 {
   v2 = MEMORY[0x277CC1ED8];
-  v3 = [(_UIDocumentPickerDescriptor *)self extension];
-  v4 = [v3 identifier];
-  v5 = [v2 pluginKitProxyForIdentifier:v4];
+  extension = [(_UIDocumentPickerDescriptor *)self extension];
+  identifier = [extension identifier];
+  v5 = [v2 pluginKitProxyForIdentifier:identifier];
 
   return v5;
 }
 
 - (id)_parentApp
 {
-  v2 = [(_UIDocumentPickerDescriptor *)self _ownBundle];
-  v3 = [v2 containingBundle];
+  _ownBundle = [(_UIDocumentPickerDescriptor *)self _ownBundle];
+  containingBundle = [_ownBundle containingBundle];
 
-  return v3;
+  return containingBundle;
 }
 
 - (NSString)identifier
 {
-  v3 = [(_UIDocumentPickerDescriptor *)self extension];
-  v4 = [v3 identifier];
+  extension = [(_UIDocumentPickerDescriptor *)self extension];
+  identifier = [extension identifier];
   v5 = *MEMORY[0x277D773A0];
-  v6 = [v4 isEqual:*MEMORY[0x277D773A0]];
+  v6 = [identifier isEqual:*MEMORY[0x277D773A0]];
 
   if (v6)
   {
-    v7 = v5;
+    bundleIdentifier = v5;
   }
 
   else
   {
-    v8 = [(_UIDocumentPickerDescriptor *)self _parentApp];
-    v7 = [v8 bundleIdentifier];
+    _parentApp = [(_UIDocumentPickerDescriptor *)self _parentApp];
+    bundleIdentifier = [_parentApp bundleIdentifier];
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
 - (id)nonUIBundle
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CC1E60];
-  v3 = [(_UIDocumentPickerDescriptor *)self _parentApp];
-  v4 = [v3 bundleURL];
-  v5 = [v2 applicationProxyForBundleURL:v4];
+  _parentApp = [(_UIDocumentPickerDescriptor *)self _parentApp];
+  bundleURL = [_parentApp bundleURL];
+  v5 = [v2 applicationProxyForBundleURL:bundleURL];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 plugInKitPlugins];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  plugInKitPlugins = [v5 plugInKitPlugins];
+  v7 = [plugInKitPlugins countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -570,7 +570,7 @@ LABEL_7:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plugInKitPlugins);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -583,7 +583,7 @@ LABEL_7:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [plugInKitPlugins countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -601,66 +601,66 @@ LABEL_11:
 
 - (NSString)fileProviderDocumentGroup
 {
-  v2 = [(_UIDocumentPickerDescriptor *)self nonUIBundle];
-  v3 = [v2 objectForInfoDictionaryKey:@"NSExtensionFileProviderDocumentGroup" ofClass:objc_opt_class() inScope:1];
+  nonUIBundle = [(_UIDocumentPickerDescriptor *)self nonUIBundle];
+  v3 = [nonUIBundle objectForInfoDictionaryKey:@"NSExtensionFileProviderDocumentGroup" ofClass:objc_opt_class() inScope:1];
 
   return v3;
 }
 
 - (NSString)nonUIIdentifier
 {
-  v2 = [(_UIDocumentPickerDescriptor *)self nonUIBundle];
-  v3 = [v2 bundleIdentifier];
+  nonUIBundle = [(_UIDocumentPickerDescriptor *)self nonUIBundle];
+  bundleIdentifier = [nonUIBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)localizedName
 {
-  v3 = [(_UIDocumentPickerDescriptor *)self _ownBundle];
-  v4 = [v3 localizedName];
+  _ownBundle = [(_UIDocumentPickerDescriptor *)self _ownBundle];
+  localizedName = [_ownBundle localizedName];
 
-  if (!v4 || (-[_UIDocumentPickerDescriptor _ownBundle](self, "_ownBundle"), v5 = objc_claimAutoreleasedReturnValue(), [v5 bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToString:", v6), v6, v5, v7))
+  if (!localizedName || (-[_UIDocumentPickerDescriptor _ownBundle](self, "_ownBundle"), v5 = objc_claimAutoreleasedReturnValue(), [v5 bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(localizedName, "isEqualToString:", v6), v6, v5, v7))
   {
-    v8 = [(_UIDocumentPickerDescriptor *)self _parentApp];
-    v9 = [v8 localizedName];
+    _parentApp = [(_UIDocumentPickerDescriptor *)self _parentApp];
+    localizedName2 = [_parentApp localizedName];
 
-    v4 = v9;
+    localizedName = localizedName2;
   }
 
-  return v4;
+  return localizedName;
 }
 
-- (id)imageWithScale:(double)a3
+- (id)imageWithScale:(double)scale
 {
-  v5 = [(_UIDocumentPickerDescriptor *)self identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D773A0]];
+  identifier = [(_UIDocumentPickerDescriptor *)self identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x277D773A0]];
 
   v7 = MEMORY[0x277D755B8];
   if (v6)
   {
-    v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-    v9 = [v7 imageNamed:@"OpeniCloud" inBundle:v8];
-    [v9 imageWithRenderingMode:2];
+    _parentApp = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
+    bundleIdentifier = [v7 imageNamed:@"OpeniCloud" inBundle:_parentApp];
+    [bundleIdentifier imageWithRenderingMode:2];
   }
 
   else
   {
-    v8 = [(_UIDocumentPickerDescriptor *)self _parentApp];
-    v9 = [v8 bundleIdentifier];
-    [v7 _applicationIconImageForBundleIdentifier:v9 format:0 scale:a3];
+    _parentApp = [(_UIDocumentPickerDescriptor *)self _parentApp];
+    bundleIdentifier = [_parentApp bundleIdentifier];
+    [v7 _applicationIconImageForBundleIdentifier:bundleIdentifier format:0 scale:scale];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)_extensionValueOfClass:(Class)a3 forKey:(id)a4
+- (id)_extensionValueOfClass:(Class)class forKey:(id)key
 {
-  v5 = a4;
-  v6 = [(_UIDocumentPickerDescriptor *)self extension];
-  v7 = [v6 attributes];
-  v8 = [v7 objectForKey:v5];
+  keyCopy = key;
+  extension = [(_UIDocumentPickerDescriptor *)self extension];
+  attributes = [extension attributes];
+  v8 = [attributes objectForKey:keyCopy];
 
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -669,7 +669,7 @@ LABEL_11:
     v11[2] = __61___UIDocumentPickerDescriptor__extensionValueOfClass_forKey___block_invoke;
     v11[3] = &unk_278DD6200;
     v11[4] = self;
-    v12 = v5;
+    v12 = keyCopy;
     if (_extensionValueOfClass_forKey__onceToken != -1)
     {
       dispatch_once(&_extensionValueOfClass_forKey__onceToken, v11);
@@ -707,26 +707,26 @@ LABEL_11:
   return v5;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(_UIDocumentPickerDescriptor *)self extension];
-  v5 = v4;
-  if (v3)
+  enabledCopy = enabled;
+  extension = [(_UIDocumentPickerDescriptor *)self extension];
+  v5 = extension;
+  if (enabledCopy)
   {
-    [v4 attemptOptIn:0];
+    [extension attemptOptIn:0];
   }
 
   else
   {
-    [v4 attemptOptOut:0];
+    [extension attemptOptOut:0];
   }
 }
 
 - (BOOL)enabled
 {
-  v3 = [(_UIDocumentPickerDescriptor *)self identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D773A0]];
+  identifier = [(_UIDocumentPickerDescriptor *)self identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x277D773A0]];
 
   if (v4)
   {
@@ -735,19 +735,19 @@ LABEL_11:
       return 0;
     }
 
-    v5 = [MEMORY[0x277CFAE20] allContainersByContainerID];
-    v6 = [v5 objectForKey:*MEMORY[0x277CFAD68]];
+    allContainersByContainerID = [MEMORY[0x277CFAE20] allContainersByContainerID];
+    extension = [allContainersByContainerID objectForKey:*MEMORY[0x277CFAD68]];
 
-    v7 = v6 != 0;
+    optedIn = extension != 0;
   }
 
   else
   {
-    v6 = [(_UIDocumentPickerDescriptor *)self extension];
-    v7 = [v6 optedIn];
+    extension = [(_UIDocumentPickerDescriptor *)self extension];
+    optedIn = [extension optedIn];
   }
 
-  return v7;
+  return optedIn;
 }
 
 + (id)pickerOrder
@@ -759,15 +759,15 @@ LABEL_11:
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    array = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v8 = v7;
+  v8 = array;
 
   v9 = *MEMORY[0x277D773A0];
   [v8 removeObject:*MEMORY[0x277D773A0]];
@@ -776,30 +776,30 @@ LABEL_11:
   return v8;
 }
 
-+ (void)setOrderFromPickers:(id)a3
++ (void)setOrderFromPickers:(id)pickers
 {
-  v4 = a3;
-  if (!v4)
+  pickersCopy = pickers;
+  if (!pickersCopy)
   {
-    v4 = [a1 allPickers];
+    pickersCopy = [self allPickers];
   }
 
-  v12 = v4;
+  v12 = pickersCopy;
   v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.UIKit"];
   v6 = [v5 objectForKey:@"_UIDocumentPickerSettings"];
   v7 = [v6 mutableCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    dictionary = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v10 = v9;
+  v10 = dictionary;
 
   v11 = [v12 valueForKey:@"identifier"];
   [v10 setObject:v11 forKey:@"order"];
@@ -808,28 +808,28 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(_UIDocumentPickerDescriptor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_UIDocumentPickerDescriptor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_UIDocumentPickerDescriptor *)self identifier];
-    v6 = [v4 identifier];
-    if (v5 == v6)
+    identifier = [(_UIDocumentPickerDescriptor *)self identifier];
+    identifier2 = [equalCopy identifier];
+    if (identifier == identifier2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isEqualToString:v6];
+      v7 = [identifier isEqualToString:identifier2];
     }
   }
 
@@ -845,15 +845,15 @@ LABEL_11:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_UIDocumentPickerDescriptor *)self localizedName];
-  v6 = [(_UIDocumentPickerDescriptor *)self enabled];
+  localizedName = [(_UIDocumentPickerDescriptor *)self localizedName];
+  enabled = [(_UIDocumentPickerDescriptor *)self enabled];
   v7 = @"disabled";
-  if (v6)
+  if (enabled)
   {
     v7 = @"enabled";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> %@, %@", v4, self, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> %@, %@", v4, self, localizedName, v7];
 
   return v8;
 }
@@ -862,7 +862,7 @@ LABEL_11:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_243823000, a2, OS_LOG_TYPE_FAULT, "[ERROR] Could not get iCloud account status: %@", &v2, 0xCu);
 }
 

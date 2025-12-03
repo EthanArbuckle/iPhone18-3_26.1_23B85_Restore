@@ -1,28 +1,28 @@
 @interface ETMessageImageEncoder
-+ (BOOL)createVideoForMessage:(id)a3 atURL:(id)a4 completionBlock:(id)a5;
-+ (BOOL)createVideoWithIntroMessage:(id)a3 playingMessagesArray:(id)a4 sourceVideoURL:(id)a5 destinationURL:(id)a6 completionBlock:(id)a7;
-+ (void)_drawImageFromPath:(id)a3 intoContext:(CGContext *)a4;
-+ (void)_finishedWritingAtURL:(id)a3 withSuccess:(BOOL)a4 completionBlock:(id)a5;
-+ (void)createSingleFrameVideoFromPhotoURL:(id)a3 atTempURL:(id)a4 videoSize:(CGSize)a5 forMessage:(id)a6 withCompletion:(id)a7;
-- (CGImage)_createImageForMessage:(id)a3;
-- (void)fallbackForData:(id)a3 attachments:(id)a4 inFileURL:(id)a5 completionBlockWithText:(id)a6;
++ (BOOL)createVideoForMessage:(id)message atURL:(id)l completionBlock:(id)block;
++ (BOOL)createVideoWithIntroMessage:(id)message playingMessagesArray:(id)array sourceVideoURL:(id)l destinationURL:(id)rL completionBlock:(id)block;
++ (void)_drawImageFromPath:(id)path intoContext:(CGContext *)context;
++ (void)_finishedWritingAtURL:(id)l withSuccess:(BOOL)success completionBlock:(id)block;
++ (void)createSingleFrameVideoFromPhotoURL:(id)l atTempURL:(id)rL videoSize:(CGSize)size forMessage:(id)message withCompletion:(id)completion;
+- (CGImage)_createImageForMessage:(id)message;
+- (void)fallbackForData:(id)data attachments:(id)attachments inFileURL:(id)l completionBlockWithText:(id)text;
 @end
 
 @implementation ETMessageImageEncoder
 
-- (void)fallbackForData:(id)a3 attachments:(id)a4 inFileURL:(id)a5 completionBlockWithText:(id)a6
+- (void)fallbackForData:(id)data attachments:(id)attachments inFileURL:(id)l completionBlockWithText:(id)text
 {
-  v10 = a3;
-  v11 = a4;
-  v57 = a5;
-  v12 = a6;
-  if (v12)
+  dataCopy = data;
+  attachmentsCopy = attachments;
+  lCopy = l;
+  textCopy = text;
+  if (textCopy)
   {
-    v13 = [ETMessage unarchive:v10];
-    v14 = [v13 messageType];
-    if (v14 == 8)
+    v13 = [ETMessage unarchive:dataCopy];
+    messageType = [v13 messageType];
+    if (messageType == 8)
     {
-      if (![v11 count] || (objc_msgSend(v11, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) == 0))
+      if (![attachmentsCopy count] || (objc_msgSend(attachmentsCopy, "objectAtIndexedSubscript:", 0), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) == 0))
       {
         if (IMOSLoggingEnabled())
         {
@@ -34,14 +34,14 @@
           }
         }
 
-        (*(v12 + 2))(v12, 0, 0, 0, 0, 1);
+        (*(textCopy + 2))(textCopy, 0, 0, 0, 0, 1);
         goto LABEL_39;
       }
 
-      v56 = [v11 objectAtIndexedSubscript:0];
+      v56 = [attachmentsCopy objectAtIndexedSubscript:0];
       v17 = +[NSFileManager defaultManager];
-      v18 = [v56 path];
-      v19 = [v17 fileExistsAtPath:v18];
+      path = [v56 path];
+      v19 = [v17 fileExistsAtPath:path];
 
       if ((v19 & 1) == 0)
       {
@@ -50,69 +50,69 @@
           v42 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
-            v43 = [v56 absoluteString];
+            absoluteString = [v56 absoluteString];
             *buf = 138412290;
-            v65 = v43;
+            v65 = absoluteString;
             _os_log_impl(&dword_0, v42, OS_LOG_TYPE_INFO, "IMTranscoderAgent can't generate fallback asset because the attachment URL doesn't yet exist: %@", buf, 0xCu);
           }
         }
 
-        (*(v12 + 2))(v12, 0, 0, 0, 0, 1);
+        (*(textCopy + 2))(textCopy, 0, 0, 0, 0, 1);
         goto LABEL_38;
       }
 
       v20 = v13;
-      v21 = [v20 identifier];
-      v22 = [NSString stringWithFormat:@"%@.mov", v21];
-      v55 = [v57 URLByAppendingPathComponent:v22];
+      identifier = [v20 identifier];
+      v22 = [NSString stringWithFormat:@"%@.mov", identifier];
+      v55 = [lCopy URLByAppendingPathComponent:v22];
 
       if ([v20 mediaType] == &dword_0 + 2)
       {
-        v23 = [v20 introMessage];
-        if (v23)
+        introMessage = [v20 introMessage];
+        if (introMessage)
         {
         }
 
         else
         {
-          v45 = [v20 playingMessages];
-          v46 = [v45 count];
+          playingMessages = [v20 playingMessages];
+          v46 = [playingMessages count];
 
           if (!v46)
           {
-            v52 = [v11 objectAtIndexedSubscript:0];
+            v52 = [attachmentsCopy objectAtIndexedSubscript:0];
             v63 = v52;
             v53 = [NSArray arrayWithObjects:&v63 count:1];
-            (*(v12 + 2))(v12, v53, 0, 0, 1, 1);
+            (*(textCopy + 2))(textCopy, v53, 0, 0, 1, 1);
 
             goto LABEL_37;
           }
         }
 
         v47 = NSTemporaryDirectory();
-        v48 = [v20 identifier];
-        v49 = [NSString stringWithFormat:@"Image-%@.mov", v48];
+        identifier2 = [v20 identifier];
+        v49 = [NSString stringWithFormat:@"Image-%@.mov", identifier2];
         v50 = [v47 stringByAppendingPathComponent:v49];
         v54 = [NSURL fileURLWithPath:v50];
 
         [v20 setMediaURL:v54];
-        v51 = [v11 objectAtIndexedSubscript:0];
+        v51 = [attachmentsCopy objectAtIndexedSubscript:0];
         v58[0] = _NSConcreteStackBlock;
         v58[1] = 3221225472;
         v58[2] = sub_FEB8;
         v58[3] = &unk_24B50;
         v59 = v20;
         v60 = v55;
-        v61 = v12;
+        v61 = textCopy;
         [ETMessageImageEncoder createSingleFrameVideoFromPhotoURL:v51 atTempURL:v54 videoSize:v59 forMessage:v58 withCompletion:480.0, 600.0];
       }
 
       else
       {
-        v44 = [v11 objectAtIndexedSubscript:0];
+        v44 = [attachmentsCopy objectAtIndexedSubscript:0];
         [v20 setMediaURL:v44];
 
-        [ETMessageImageEncoder createVideoForMessage:v20 atURL:v55 completionBlock:v12];
+        [ETMessageImageEncoder createVideoForMessage:v20 atURL:v55 completionBlock:textCopy];
       }
 
 LABEL_37:
@@ -121,10 +121,10 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v24 = v14;
-    v25 = [v13 identifier];
-    v26 = [NSString stringWithFormat:@"%@.png", v25];
-    v27 = [v57 URLByAppendingPathComponent:v26];
+    v24 = messageType;
+    identifier3 = [v13 identifier];
+    v26 = [NSString stringWithFormat:@"%@.png", identifier3];
+    v27 = [lCopy URLByAppendingPathComponent:v26];
 
     if (v24 == 10)
     {
@@ -159,14 +159,14 @@ LABEL_21:
         {
           v62 = v27;
           v37 = [NSArray arrayWithObjects:&v62 count:1];
-          (*(v12 + 2))(v12, v37, 0, 0, 1, 1);
+          (*(textCopy + 2))(textCopy, v37, 0, 0, 1, 1);
 
 LABEL_39:
           goto LABEL_40;
         }
 
 LABEL_33:
-        (*(v12 + 2))(v12, 0, 0, 0, 0, 1);
+        (*(textCopy + 2))(textCopy, 0, 0, 0, 0, 1);
 
         goto LABEL_39;
       }
@@ -185,8 +185,8 @@ LABEL_33:
     v33 = [UIImage imageNamed:v30 inBundle:v32];
 
     v34 = UIImagePNGRepresentation(v33);
-    v35 = [(__CFURL *)v27 path];
-    v36 = [v34 writeToFile:v35 atomically:1];
+    path2 = [(__CFURL *)v27 path];
+    v36 = [v34 writeToFile:path2 atomically:1];
 
     goto LABEL_21;
   }
@@ -194,24 +194,24 @@ LABEL_33:
 LABEL_40:
 }
 
-- (CGImage)_createImageForMessage:(id)a3
+- (CGImage)_createImageForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  [v4 setRenderingOffscreen:1];
+  [messageCopy setRenderingOffscreen:1];
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = v6;
 
-  v8 = [v4 messageType];
-  if (v8 <= 0xA)
+  messageType = [messageCopy messageType];
+  if (messageType <= 0xA)
   {
     v9 = ETMessageRenderBufferWidth / v7;
     v10 = ETMessageRenderBufferHeight / v7;
-    if (((1 << v8) & 0x605) != 0)
+    if (((1 << messageType) & 0x605) != 0)
     {
       v21 = _NSConcreteStackBlock;
       v22 = 3221225472;
@@ -219,7 +219,7 @@ LABEL_40:
       v24 = &unk_24B78;
       v27 = v9;
       v28 = v10;
-      v25 = v4;
+      v25 = messageCopy;
       v26 = &v29;
       v11 = objc_retainBlock(&v21);
       if ([NSThread isMainThread:v21])
@@ -236,31 +236,31 @@ LABEL_40:
       goto LABEL_12;
     }
 
-    if (v8 == 1)
+    if (messageType == 1)
     {
-      [v4 setRenderingOffscreen:1];
+      [messageCopy setRenderingOffscreen:1];
       v12 = [[ETGLSketchView alloc] initWithFrame:{0.0, 0.0, v9, v10}];
-      [v12 setMessageData:v4];
-      v19 = [v4 color];
-      [v4 setColor:v19];
+      [v12 setMessageData:messageCopy];
+      color = [messageCopy color];
+      [messageCopy setColor:color];
 
       [v12 drawFrameBeforeWisp];
-      v20 = [v12 createRenderedFrameImage];
-      v30[3] = v20;
+      createRenderedFrameImage = [v12 createRenderedFrameImage];
+      v30[3] = createRenderedFrameImage;
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    if (v8 == 8)
+    if (messageType == 8)
     {
-      v12 = v4;
-      v13 = [v12 introMessage];
-      v14 = [v12 playingMessages];
-      v15 = v14;
-      if (v13 || [v14 count] && (objc_msgSend(v15, "objectAtIndex:", 0), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      v12 = messageCopy;
+      introMessage = [v12 introMessage];
+      playingMessages = [v12 playingMessages];
+      v15 = playingMessages;
+      if (introMessage || [playingMessages count] && (objc_msgSend(v15, "objectAtIndex:", 0), (introMessage = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v16 = [(ETMessageImageEncoder *)self _createImageForMessage:v13];
+        v16 = [(ETMessageImageEncoder *)self _createImageForMessage:introMessage];
         v30[3] = v16;
       }
 
@@ -275,32 +275,32 @@ LABEL_13:
   return v17;
 }
 
-+ (void)_finishedWritingAtURL:(id)a3 withSuccess:(BOOL)a4 completionBlock:(id)a5
++ (void)_finishedWritingAtURL:(id)l withSuccess:(BOOL)success completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  lCopy = l;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
-    if (a4)
+    if (success)
     {
-      v11 = v7;
+      v11 = lCopy;
       v10 = [NSArray arrayWithObjects:&v11 count:1];
       (v9)[2](v9, v10, 0, 0, 1, 1);
     }
 
     else
     {
-      (*(v8 + 2))(v8, 0, 0, 0, 0, 1);
+      (*(blockCopy + 2))(blockCopy, 0, 0, 0, 0, 1);
     }
   }
 }
 
-+ (void)_drawImageFromPath:(id)a3 intoContext:(CGContext *)a4
++ (void)_drawImageFromPath:(id)path intoContext:(CGContext *)context
 {
-  v5 = [UIImage imageWithContentsOfFile:a3];
-  Width = CGBitmapContextGetWidth(a4);
-  Height = CGBitmapContextGetHeight(a4);
+  v5 = [UIImage imageWithContentsOfFile:path];
+  Width = CGBitmapContextGetWidth(context);
+  Height = CGBitmapContextGetHeight(context);
   v8 = *&CGAffineTransformIdentity.c;
   *&v12.a = *&CGAffineTransformIdentity.a;
   *&v12.c = v8;
@@ -312,26 +312,26 @@ LABEL_13:
   v10 = v12;
   CGAffineTransformTranslate(&transform, &v10, -Height, 0.0);
   v12 = transform;
-  CGContextConcatCTM(a4, &transform);
-  v9 = [v5 CGImage];
+  CGContextConcatCTM(context, &transform);
+  cGImage = [v5 CGImage];
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = Height;
   v13.size.height = Width;
-  CGContextDrawImage(a4, v13, v9);
+  CGContextDrawImage(context, v13, cGImage);
 }
 
-+ (void)createSingleFrameVideoFromPhotoURL:(id)a3 atTempURL:(id)a4 videoSize:(CGSize)a5 forMessage:(id)a6 withCompletion:(id)a7
++ (void)createSingleFrameVideoFromPhotoURL:(id)l atTempURL:(id)rL videoSize:(CGSize)size forMessage:(id)message withCompletion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v46 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  messageCopy = message;
+  completionCopy = completion;
   v63 = 0;
-  v43 = v12;
-  v15 = [[AVAssetWriter alloc] initWithURL:v12 fileType:AVFileTypeQuickTimeMovie error:&v63];
+  v43 = rLCopy;
+  v15 = [[AVAssetWriter alloc] initWithURL:rLCopy fileType:AVFileTypeQuickTimeMovie error:&v63];
   v44 = v63;
   v71[0] = AVVideoCodecTypeH264;
   v70[0] = AVVideoCodecKey;
@@ -375,11 +375,11 @@ LABEL_13:
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v26 = CGBitmapContextCreate(BaseAddress, width, height, 8uLL, (width * 4.0), DeviceRGB, 0x2002u);
-  if (v46)
+  if (lCopy)
   {
     v27 = objc_opt_class();
-    v28 = [v46 path];
-    [v27 _drawImageFromPath:v28 intoContext:v26];
+    path = [lCopy path];
+    [v27 _drawImageFromPath:path intoContext:v26];
   }
 
   else
@@ -408,14 +408,14 @@ LABEL_13:
     v38 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
-      v39 = [v13 identifier];
+      identifier = [messageCopy identifier];
       *buf = 138412290;
-      *&buf[4] = v39;
+      *&buf[4] = identifier;
       _os_log_impl(&dword_0, v38, OS_LOG_TYPE_INFO, "Pixel buffer couldn't be created for message id: %@! Please file a bug.", buf, 0xCu);
     }
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -425,8 +425,8 @@ LABEL_5:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v31 = [v13 playingMessages];
-      v32 = [v31 countByEnumeratingWithState:&v58 objects:v67 count:16];
+      playingMessages = [messageCopy playingMessages];
+      v32 = [playingMessages countByEnumeratingWithState:&v58 objects:v67 count:16];
       if (v32)
       {
         v33 = *v59;
@@ -437,14 +437,14 @@ LABEL_5:
           {
             if (*v59 != v33)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(playingMessages);
             }
 
             [*(*(&v58 + 1) + 8 * i) messageDuration];
             v34 = v34 + v36;
           }
 
-          v32 = [v31 countByEnumeratingWithState:&v58 objects:v67 count:16];
+          v32 = [playingMessages countByEnumeratingWithState:&v58 objects:v67 count:16];
         }
 
         while (v32);
@@ -458,16 +458,16 @@ LABEL_5:
 
     else
     {
-      [v13 messageDuration];
+      [messageCopy messageDuration];
       v34 = v37;
     }
 
     v40 = v34 + 0.5;
     if (v34 + 0.5 == 0.0)
     {
-      if (v14)
+      if (completionCopy)
       {
-        v14[2](v14, v40);
+        completionCopy[2](completionCopy, v40);
         goto LABEL_27;
       }
 
@@ -495,7 +495,7 @@ LABEL_5:
     v49 = v23;
     v55 = pixelBufferOut;
     v50 = v15;
-    v51 = v14;
+    v51 = completionCopy;
     [v48 requestMediaDataWhenReadyOnQueue:v42 usingBlock:v47];
 
     _Block_object_dispose(v56, 8);
@@ -504,61 +504,61 @@ LABEL_5:
 
   else
   {
-    (v14[2])(v14);
+    (completionCopy[2])(completionCopy);
   }
 
 LABEL_27:
 }
 
-+ (BOOL)createVideoForMessage:(id)a3 atURL:(id)a4 completionBlock:(id)a5
++ (BOOL)createVideoForMessage:(id)message atURL:(id)l completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 introMessage];
-  v12 = [v10 playingMessages];
-  v13 = [v10 mediaURL];
+  blockCopy = block;
+  lCopy = l;
+  messageCopy = message;
+  introMessage = [messageCopy introMessage];
+  playingMessages = [messageCopy playingMessages];
+  mediaURL = [messageCopy mediaURL];
 
-  LOBYTE(v10) = [a1 createVideoWithIntroMessage:v11 playingMessagesArray:v12 sourceVideoURL:v13 destinationURL:v9 completionBlock:v8];
-  return v10;
+  LOBYTE(messageCopy) = [self createVideoWithIntroMessage:introMessage playingMessagesArray:playingMessages sourceVideoURL:mediaURL destinationURL:lCopy completionBlock:blockCopy];
+  return messageCopy;
 }
 
-+ (BOOL)createVideoWithIntroMessage:(id)a3 playingMessagesArray:(id)a4 sourceVideoURL:(id)a5 destinationURL:(id)a6 completionBlock:(id)a7
++ (BOOL)createVideoWithIntroMessage:(id)message playingMessagesArray:(id)array sourceVideoURL:(id)l destinationURL:(id)rL completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (a5)
+  messageCopy = message;
+  arrayCopy = array;
+  rLCopy = rL;
+  blockCopy = block;
+  if (l)
   {
-    v15 = [AVAsset assetWithURL:a5];
+    v15 = [AVAsset assetWithURL:l];
     v16 = v15;
     if (v15)
     {
       v17 = [v15 tracksWithMediaType:AVMediaTypeVideo];
-      v18 = [v17 lastObject];
+      lastObject = [v17 lastObject];
 
-      if (v18)
+      if (lastObject)
       {
         v19 = [[AVAssetExportSession alloc] initWithAsset:v16 presetName:AVAssetExportPresetMediumQuality];
         if (v19)
         {
           v20 = [AVMutableVideoComposition videoCompositionWithPropertiesOfAsset:v16];
-          LOBYTE(a5) = v20 != 0;
+          LOBYTE(l) = v20 != 0;
           if (v20)
           {
             [v20 setCustomVideoCompositorClass:objc_opt_class()];
             [v19 setVideoComposition:v20];
             [v19 setOutputFileType:AVFileTypeQuickTimeMovie];
-            [v19 setOutputURL:v13];
-            [v18 naturalSize];
+            [v19 setOutputURL:rLCopy];
+            [lastObject naturalSize];
             v23 = v21;
             v24 = v22;
-            v45 = v18;
+            v45 = lastObject;
             v43 = v20;
-            if (v11)
+            if (messageCopy)
             {
-              v25 = [[ETMessageFrameRenderer alloc] initWithMessage:v11 videoFrame:0.0, 0.0, v21, v22];
+              v25 = [[ETMessageFrameRenderer alloc] initWithMessage:messageCopy videoFrame:0.0, 0.0, v21, v22];
               v42 = [(ETMessageFrameRenderer *)v25 createImageForTime:10000.0];
             }
 
@@ -568,19 +568,19 @@ LABEL_27:
             }
 
             v44 = v19;
-            v26 = [v19 customVideoCompositor];
+            customVideoCompositor = [v19 customVideoCompositor];
             v27 = +[NSMutableArray array];
             v51 = 0u;
             v52 = 0u;
             v53 = 0u;
             v54 = 0u;
-            v28 = v12;
+            v28 = arrayCopy;
             v29 = [v28 countByEnumeratingWithState:&v51 objects:v55 count:16];
             if (v29)
             {
               v30 = v29;
-              v40 = v14;
-              v41 = v11;
+              v40 = blockCopy;
+              v41 = messageCopy;
               v31 = *v52;
               while (1)
               {
@@ -593,10 +593,10 @@ LABEL_27:
                   }
 
                   v33 = *(*(&v51 + 1) + 8 * v32);
-                  v34 = [v33 messageType];
-                  if (v34 <= 0xA)
+                  messageType = [v33 messageType];
+                  if (messageType <= 0xA)
                   {
-                    if (((1 << v34) & 0x605) != 0)
+                    if (((1 << messageType) & 0x605) != 0)
                     {
                       v35 = [[ETMessageFrameRenderer alloc] initWithMessage:v33 videoFrame:0.0, 0.0, v23, v24];
                       [v27 addObject:v35];
@@ -605,10 +605,10 @@ LABEL_22:
                       goto LABEL_23;
                     }
 
-                    if (v34 == 1)
+                    if (messageType == 1)
                     {
                       v35 = [[ETMessageFrameRenderer alloc] initWithMessage:v33 videoFrame:0.0, 0.0, v23, v24];
-                      [v26 setSketchMessageRenderer:v35];
+                      [customVideoCompositor setSketchMessageRenderer:v35];
                       goto LABEL_22;
                     }
                   }
@@ -622,19 +622,19 @@ LABEL_23:
                 v30 = v36;
                 if (!v36)
                 {
-                  v11 = v41;
-                  v14 = v40;
+                  messageCopy = v41;
+                  blockCopy = v40;
                   break;
                 }
               }
             }
 
-            v18 = v45;
-            [v26 setVideoTrackID:{objc_msgSend(v45, "trackID")}];
+            lastObject = v45;
+            [customVideoCompositor setVideoTrackID:{objc_msgSend(v45, "trackID")}];
             [v45 preferredTransform];
-            [v26 setVideoTransform:v50];
-            [v26 setVideoRect:{0.0, 0.0, v23, v24}];
-            [v26 setIntroImage:v42];
+            [customVideoCompositor setVideoTransform:v50];
+            [customVideoCompositor setVideoRect:{0.0, 0.0, v23, v24}];
+            [customVideoCompositor setIntroImage:v42];
             if ([v27 count])
             {
               v37 = v27;
@@ -645,55 +645,55 @@ LABEL_23:
               v37 = 0;
             }
 
-            [v26 setSceneMessageRenderers:v37];
+            [customVideoCompositor setSceneMessageRenderers:v37];
             v46[0] = _NSConcreteStackBlock;
             v46[1] = 3221225472;
             v46[2] = sub_11390;
             v46[3] = &unk_24BF0;
             v47 = v44;
-            v48 = v26;
-            v49 = v14;
-            v38 = v26;
+            v48 = customVideoCompositor;
+            v49 = blockCopy;
+            v38 = customVideoCompositor;
             [v47 exportAsynchronouslyWithCompletionHandler:v46];
 
             v19 = v44;
-            LOBYTE(a5) = 1;
+            LOBYTE(l) = 1;
             v20 = v43;
           }
 
           else
           {
-            [ETMessageImageEncoder _finishedWritingAtURL:v13 withSuccess:0 completionBlock:v14];
+            [ETMessageImageEncoder _finishedWritingAtURL:rLCopy withSuccess:0 completionBlock:blockCopy];
           }
         }
 
         else
         {
-          [ETMessageImageEncoder _finishedWritingAtURL:v13 withSuccess:0 completionBlock:v14];
-          LOBYTE(a5) = 0;
+          [ETMessageImageEncoder _finishedWritingAtURL:rLCopy withSuccess:0 completionBlock:blockCopy];
+          LOBYTE(l) = 0;
         }
       }
 
       else
       {
-        [ETMessageImageEncoder _finishedWritingAtURL:v13 withSuccess:0 completionBlock:v14];
-        LOBYTE(a5) = 0;
+        [ETMessageImageEncoder _finishedWritingAtURL:rLCopy withSuccess:0 completionBlock:blockCopy];
+        LOBYTE(l) = 0;
       }
     }
 
     else
     {
-      [ETMessageImageEncoder _finishedWritingAtURL:v13 withSuccess:0 completionBlock:v14];
-      LOBYTE(a5) = 0;
+      [ETMessageImageEncoder _finishedWritingAtURL:rLCopy withSuccess:0 completionBlock:blockCopy];
+      LOBYTE(l) = 0;
     }
   }
 
   else
   {
-    [ETMessageImageEncoder _finishedWritingAtURL:v13 withSuccess:0 completionBlock:v14];
+    [ETMessageImageEncoder _finishedWritingAtURL:rLCopy withSuccess:0 completionBlock:blockCopy];
   }
 
-  return a5;
+  return l;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface VUIAlertAction
-+ (id)vui_actionWithTitle:(id)a3 titleImage:(id)a4 style:(int64_t)a5 metrics:(id)a6 accessibilityIdentifier:(id)a7 handler:(id)a8;
++ (id)vui_actionWithTitle:(id)title titleImage:(id)image style:(int64_t)style metrics:(id)metrics accessibilityIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation VUIAlertAction
 
-+ (id)vui_actionWithTitle:(id)a3 titleImage:(id)a4 style:(int64_t)a5 metrics:(id)a6 accessibilityIdentifier:(id)a7 handler:(id)a8
++ (id)vui_actionWithTitle:(id)title titleImage:(id)image style:(int64_t)style metrics:(id)metrics accessibilityIdentifier:(id)identifier handler:(id)handler
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  metricsCopy = metrics;
+  imageCopy = image;
+  titleCopy = title;
   v18 = objc_alloc_init(VUIAlertAction);
-  [(VUIAlertAction *)v18 setTitle:v17];
+  [(VUIAlertAction *)v18 setTitle:titleCopy];
 
-  [(VUIAlertAction *)v18 setTitleImage:v16];
-  [(VUIAlertAction *)v18 setStyle:a5];
-  [(VUIAlertAction *)v18 setHandler:v13];
+  [(VUIAlertAction *)v18 setTitleImage:imageCopy];
+  [(VUIAlertAction *)v18 setStyle:style];
+  [(VUIAlertAction *)v18 setHandler:handlerCopy];
 
-  [(VUIAlertAction *)v18 setMetrics:v15];
-  [(VUIAlertAction *)v18 setAccessibilityIdentifier:v14];
+  [(VUIAlertAction *)v18 setMetrics:metricsCopy];
+  [(VUIAlertAction *)v18 setAccessibilityIdentifier:identifierCopy];
 
   return v18;
 }

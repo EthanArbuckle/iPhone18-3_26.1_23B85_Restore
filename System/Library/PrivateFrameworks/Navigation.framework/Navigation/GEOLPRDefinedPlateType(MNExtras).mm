@@ -12,8 +12,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a1 conditions];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  conditions = [self conditions];
+  v8 = [conditions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -24,7 +24,7 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(conditions);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -47,12 +47,12 @@
 
 LABEL_13:
 
-          v7 = v15;
+          conditions = v15;
           goto LABEL_14;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [conditions countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
         continue;

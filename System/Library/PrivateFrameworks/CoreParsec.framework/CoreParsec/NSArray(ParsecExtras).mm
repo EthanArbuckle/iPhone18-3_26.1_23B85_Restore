@@ -9,7 +9,7 @@
 - (id)parsec_mapAndFilterObjectsWithOptions:()ParsecExtras usingBlock:
 {
   v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__NSArray_ParsecExtras__parsec_mapAndFilterObjectsWithOptions_usingBlock___block_invoke;
@@ -18,7 +18,7 @@
   v8 = v7;
   v14 = v8;
   v9 = v6;
-  [a1 enumerateObjectsWithOptions:a3 usingBlock:v13];
+  [self enumerateObjectsWithOptions:a3 usingBlock:v13];
   v10 = v14;
   v11 = v8;
 
@@ -34,15 +34,15 @@
   v9[3] = &unk_1E7AC6780;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
-  v7 = [a1 objectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v9];
+  v7 = [self objectsAtIndexes:v6];
 
   return v7;
 }
 
 - (id)parsec_numberAtIndex:()ParsecExtras
 {
-  v1 = [a1 objectAtIndex:?];
+  v1 = [self objectAtIndex:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

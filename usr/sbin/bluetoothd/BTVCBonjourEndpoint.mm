@@ -1,39 +1,39 @@
 @interface BTVCBonjourEndpoint
 + (id)createConnectionParameters;
-- (BTVCBonjourEndpoint)initWithConnection:(id)a3 connectionType:(unsigned __int8)a4 localUniqueID:(id)a5 withQueue:(id)a6;
-- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)a3 connectionType:(unsigned __int8)a4;
+- (BTVCBonjourEndpoint)initWithConnection:(id)connection connectionType:(unsigned __int8)type localUniqueID:(id)d withQueue:(id)queue;
+- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)metadata connectionType:(unsigned __int8)type;
 - (void)_handleUUIDHeaders;
 - (void)_startConnection;
 - (void)cancel;
 - (void)receiveNextMessage;
-- (void)sendDataMessage:(id)a3 completion:(id)a4;
+- (void)sendDataMessage:(id)message completion:(id)completion;
 @end
 
 @implementation BTVCBonjourEndpoint
 
-- (BTVCBonjourEndpoint)initWithConnection:(id)a3 connectionType:(unsigned __int8)a4 localUniqueID:(id)a5 withQueue:(id)a6
+- (BTVCBonjourEndpoint)initWithConnection:(id)connection connectionType:(unsigned __int8)type localUniqueID:(id)d withQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  dCopy = d;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = BTVCBonjourEndpoint;
   v14 = [(BTVCBonjourEndpoint *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    if (v12 && v11 && v13)
+    if (dCopy && connectionCopy && queueCopy)
     {
-      objc_storeStrong(&v14->_queue, a6);
-      objc_storeStrong(&v15->_connection, a3);
+      objc_storeStrong(&v14->_queue, queue);
+      objc_storeStrong(&v15->_connection, connection);
       v16 = nw_connection_copy_endpoint(v15->_connection);
       remoteEndpoint = v15->_remoteEndpoint;
       v15->_remoteEndpoint = v16;
 
       if (v15->_remoteEndpoint)
       {
-        v15->_connectionType = a4;
-        objc_storeStrong(&v15->_localUniqueIDString, a5);
+        v15->_connectionType = type;
+        objc_storeStrong(&v15->_localUniqueIDString, d);
         [(BTVCBonjourEndpoint *)v15 _startConnection];
         if ((v15->_connectionType & 2) != 0)
         {
@@ -102,7 +102,7 @@ LABEL_15:
   v8 = sub_1005B7B88;
   v9 = &unk_100AFF5E8;
   objc_copyWeak(&v12, &location);
-  v10 = self;
+  selfCopy = self;
   p_buf = &buf;
   nw_connection_set_state_changed_handler(v5, &v6);
   [(BTVCBonjourEndpoint *)self _handleUUIDHeaders:v6];
@@ -113,11 +113,11 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)a3 connectionType:(unsigned __int8)a4
+- (id)_getServerRemoteUUIDFromConnectionMetadata:(id)metadata connectionType:(unsigned __int8)type
 {
-  v6 = a3;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
-  if (a4)
+  if (type)
   {
     v12 = 0;
   }
@@ -131,7 +131,7 @@ LABEL_15:
     v19 = sub_10004265C;
     v20 = 0;
     v7 = nw_protocol_copy_ws_definition();
-    v8 = nw_connection_copy_protocol_metadata(v6, v7);
+    v8 = nw_connection_copy_protocol_metadata(metadataCopy, v7);
 
     v9 = nw_ws_metadata_copy_server_response(v8);
     v10 = v9;
@@ -251,14 +251,14 @@ LABEL_15:
   }
 }
 
-- (void)sendDataMessage:(id)a3 completion:(id)a4
+- (void)sendDataMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_connection)
   {
-    v8 = dispatch_data_create([v6 bytes], objc_msgSend(v6, "length"), 0, 0);
+    v8 = dispatch_data_create([messageCopy bytes], objc_msgSend(messageCopy, "length"), 0, 0);
     metadata = nw_ws_create_metadata(nw_ws_opcode_binary);
     v10 = nw_content_context_create("send");
     nw_content_context_set_metadata_for_protocol(v10, metadata);
@@ -267,22 +267,22 @@ LABEL_15:
     completion[1] = 3221225472;
     completion[2] = sub_1005B8CB8;
     completion[3] = &unk_100AFF6D8;
-    v14 = v6;
-    v15 = v7;
+    v14 = messageCopy;
+    v15 = completionCopy;
     nw_connection_send(connection, v8, v10, 1, completion);
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v16 = NSLocalizedDescriptionKey;
     v17 = @"Unable to send message, nil connection";
     v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-6700 userInfo:v12];
 
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
     goto LABEL_5;
   }
 

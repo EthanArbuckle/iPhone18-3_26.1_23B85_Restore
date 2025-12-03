@@ -2,38 +2,38 @@
 + (id)localRouteController;
 + (id)proactiveEndpointController;
 + (id)userSelectedEndpointController;
-+ (void)performRequest:(id)a3 withCompletion:(id)a4;
-+ (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 options:(id)a5 appOptions:(unsigned int)a6 withCompletion:(id)a7;
++ (void)performRequest:(id)request withCompletion:(id)completion;
++ (void)sendCommand:(unsigned int)command toDestination:(id)destination options:(id)options appOptions:(unsigned int)appOptions withCompletion:(id)completion;
 - (MRDestination)destination;
-- (MRNowPlayingController)initWithConfiguration:(id)a3;
-- (MRNowPlayingController)initWithDestination:(id)a3;
-- (MRNowPlayingController)initWithUID:(id)a3;
+- (MRNowPlayingController)initWithConfiguration:(id)configuration;
+- (MRNowPlayingController)initWithDestination:(id)destination;
+- (MRNowPlayingController)initWithUID:(id)d;
 - (MRNowPlayingControllerDelegate)delegate;
 - (MRNowPlayingControllerImpl)impl;
 - (MRNowPlayingPlayerResponse)response;
-- (id)_createImplWithConfiguration:(id)a3;
+- (id)_createImplWithConfiguration:(id)configuration;
 - (id)_makeHelper;
 - (id)debugDescription;
 - (id)description;
 - (id)playerPath;
-- (void)_notifyDelegateOfError:(id)a3;
+- (void)_notifyDelegateOfError:(id)error;
 - (void)_notifyDelegateOfInvalidation;
-- (void)_notifyDelegateOfNewResponse:(id)a3;
-- (void)_notifyDelegateOfPlaybackQueueChange:(id)a3;
-- (void)_notifyDelegateOfPlayerPathChange:(id)a3;
-- (void)_notifyDelegateOfSupportedCommandsChange:(id)a3;
+- (void)_notifyDelegateOfNewResponse:(id)response;
+- (void)_notifyDelegateOfPlaybackQueueChange:(id)change;
+- (void)_notifyDelegateOfPlayerPathChange:(id)change;
+- (void)_notifyDelegateOfSupportedCommandsChange:(id)change;
 - (void)_notifyDelegateOfUpdate;
-- (void)_notifyDelegateOfUpdatedArtwork:(id)a3;
-- (void)_notifyDelegateOfUpdatedClientProperties:(id)a3;
-- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)a3;
-- (void)_notifyDelegateOfUpdatedDeviceLastPlayingDate:(id)a3;
-- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)a3;
+- (void)_notifyDelegateOfUpdatedArtwork:(id)artwork;
+- (void)_notifyDelegateOfUpdatedClientProperties:(id)properties;
+- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)items;
+- (void)_notifyDelegateOfUpdatedDeviceLastPlayingDate:(id)date;
+- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)date;
 - (void)beginLoadingUpdates;
 - (void)dealloc;
 - (void)endLoadingUpdates;
-- (void)performRequestWithCompletion:(id)a3;
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 completion:(id)a6;
-- (void)setDelegate:(id)a3;
+- (void)performRequestWithCompletion:(id)completion;
+- (void)sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MRNowPlayingController
@@ -46,31 +46,31 @@
   beginDate = obj->_beginDate;
   obj->_beginDate = v2;
 
-  v4 = [(MRNowPlayingController *)obj impl];
-  [v4 beginLoadingUpdates];
+  impl = [(MRNowPlayingController *)obj impl];
+  [impl beginLoadingUpdates];
 
   objc_sync_exit(obj);
 }
 
 - (MRNowPlayingControllerImpl)impl
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  impl = v2->_impl;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  impl = selfCopy->_impl;
   if (!impl)
   {
-    v4 = [(MRNowPlayingController *)v2 _createImplWithConfiguration:v2->_configuration];
-    v5 = v2->_impl;
-    v2->_impl = v4;
+    v4 = [(MRNowPlayingController *)selfCopy _createImplWithConfiguration:selfCopy->_configuration];
+    v5 = selfCopy->_impl;
+    selfCopy->_impl = v4;
 
-    v6 = [(MRNowPlayingController *)v2 _makeHelper];
-    [(MRNowPlayingControllerImpl *)v2->_impl setHelper:v6];
+    _makeHelper = [(MRNowPlayingController *)selfCopy _makeHelper];
+    [(MRNowPlayingControllerImpl *)selfCopy->_impl setHelper:_makeHelper];
 
-    impl = v2->_impl;
+    impl = selfCopy->_impl;
   }
 
   v7 = impl;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -181,37 +181,37 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_19(uint64_t a1)
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_workerQueue);
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = [MEMORY[0x1E695DF00] now];
-  lastInvalidationDate = v3->_lastInvalidationDate;
-  v3->_lastInvalidationDate = v4;
+  lastInvalidationDate = selfCopy->_lastInvalidationDate;
+  selfCopy->_lastInvalidationDate = v4;
 
-  response = v3->_response;
-  v3->_response = 0;
+  response = selfCopy->_response;
+  selfCopy->_response = 0;
 
-  objc_sync_exit(v3);
-  if (![(MRNowPlayingControllerConfiguration *)v3->_configuration isSingleShot])
+  objc_sync_exit(selfCopy);
+  if (![(MRNowPlayingControllerConfiguration *)selfCopy->_configuration isSingleShot])
   {
     v7 = _MRLogForCategory(1uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MRNowPlayingController *)v3 delegate];
+      delegate = [(MRNowPlayingController *)selfCopy delegate];
       v13 = 138412546;
-      v14 = v3;
+      v14 = selfCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = delegate;
       _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingController] %@ NotifyInvalidated %@", &v13, 0x16u);
     }
   }
 
-  v9 = [(MRNowPlayingController *)v3 delegate];
+  delegate2 = [(MRNowPlayingController *)selfCopy delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(MRNowPlayingController *)v3 delegate];
-    [v11 controllerWillReloadForInvalidation:v3];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
+    [delegate3 controllerWillReloadForInvalidation:selfCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -249,7 +249,7 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingController] <%@> Deallocating.", buf, 0xCu);
   }
 
@@ -301,22 +301,22 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
   return v2;
 }
 
-- (MRNowPlayingController)initWithUID:(id)a3
+- (MRNowPlayingController)initWithUID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"proactiveEndpoint"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"proactiveEndpoint"])
   {
     v5 = +[MRDestination proactiveDestination];
   }
 
-  else if ([v4 isEqualToString:@"userSelectedEndpoint"])
+  else if ([dCopy isEqualToString:@"userSelectedEndpoint"])
   {
     v5 = +[MRDestination userSelectedDestination];
   }
 
   else
   {
-    v5 = [[MRDestination alloc] initWithOutputDeviceUID:v4];
+    v5 = [[MRDestination alloc] initWithOutputDeviceUID:dCopy];
   }
 
   v6 = v5;
@@ -325,10 +325,10 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
   return v7;
 }
 
-- (MRNowPlayingController)initWithDestination:(id)a3
+- (MRNowPlayingController)initWithDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:v4];
+  destinationCopy = destination;
+  v5 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:destinationCopy];
 
   [(MRNowPlayingControllerConfiguration *)v5 setRequestPlaybackQueue:1];
   [(MRNowPlayingControllerConfiguration *)v5 setRequestSupportedCommands:1];
@@ -338,9 +338,9 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
   return v6;
 }
 
-- (MRNowPlayingController)initWithConfiguration:(id)a3
+- (MRNowPlayingController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = MRNowPlayingController;
   v6 = [(MRNowPlayingController *)&v14 init];
@@ -350,7 +350,7 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
     allocationDate = v6->_allocationDate;
     v6->_allocationDate = v7;
 
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.MediaRemote.MRNowPlayingController.workerQueue", v9);
     workerQueue = v6->_workerQueue;
@@ -365,14 +365,14 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRNowPlayingController *)v2 configuration];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@ %@", v4, v2, v5, v2->_impl];
+  configuration = [(MRNowPlayingController *)selfCopy configuration];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@ %@", v4, selfCopy, configuration, selfCopy->_impl];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -381,69 +381,69 @@ void __37__MRNowPlayingController__makeHelper__block_invoke_21(uint64_t a1, void
 {
   v35 = objc_alloc(MEMORY[0x1E696AEC0]);
   v33 = objc_opt_class();
-  v38 = [(MRNowPlayingController *)self configuration];
-  v32 = MRCreateIndentedDebugDescriptionFromObject(v38);
-  v41 = [(MRNowPlayingController *)self allocationDate];
-  v37 = [(MRNowPlayingController *)self allocationDate];
-  [v37 timeIntervalSinceNow];
+  configuration = [(MRNowPlayingController *)self configuration];
+  v32 = MRCreateIndentedDebugDescriptionFromObject(configuration);
+  allocationDate = [(MRNowPlayingController *)self allocationDate];
+  allocationDate2 = [(MRNowPlayingController *)self allocationDate];
+  [allocationDate2 timeIntervalSinceNow];
   v4 = -v3;
-  v30 = [(MRNowPlayingController *)self beginDate];
-  v36 = [(MRNowPlayingController *)self beginDate];
-  [v36 timeIntervalSinceNow];
+  beginDate = [(MRNowPlayingController *)self beginDate];
+  beginDate2 = [(MRNowPlayingController *)self beginDate];
+  [beginDate2 timeIntervalSinceNow];
   v6 = -v5;
-  v40 = [(MRNowPlayingController *)self endDate];
-  v34 = [(MRNowPlayingController *)self endDate];
-  [v34 timeIntervalSinceNow];
+  endDate = [(MRNowPlayingController *)self endDate];
+  endDate2 = [(MRNowPlayingController *)self endDate];
+  [endDate2 timeIntervalSinceNow];
   v8 = -v7;
-  v39 = [(MRNowPlayingController *)self lastInitialLoadDate];
-  v31 = [(MRNowPlayingController *)self lastInitialLoadDate];
-  [v31 timeIntervalSinceNow];
+  lastInitialLoadDate = [(MRNowPlayingController *)self lastInitialLoadDate];
+  lastInitialLoadDate2 = [(MRNowPlayingController *)self lastInitialLoadDate];
+  [lastInitialLoadDate2 timeIntervalSinceNow];
   v10 = -v9;
-  v27 = [(MRNowPlayingController *)self lastUpdateDate];
-  v29 = [(MRNowPlayingController *)self lastUpdateDate];
-  [v29 timeIntervalSinceNow];
+  lastUpdateDate = [(MRNowPlayingController *)self lastUpdateDate];
+  lastUpdateDate2 = [(MRNowPlayingController *)self lastUpdateDate];
+  [lastUpdateDate2 timeIntervalSinceNow];
   v12 = -v11;
-  v26 = [(MRNowPlayingController *)self lastInvalidationDate];
-  v28 = [(MRNowPlayingController *)self lastInvalidationDate];
-  [v28 timeIntervalSinceNow];
+  lastInvalidationDate = [(MRNowPlayingController *)self lastInvalidationDate];
+  lastInvalidationDate2 = [(MRNowPlayingController *)self lastInvalidationDate];
+  [lastInvalidationDate2 timeIntervalSinceNow];
   v14 = -v13;
-  v15 = [(MRNowPlayingController *)self lastErrorDate];
-  v16 = [(MRNowPlayingController *)self lastErrorDate];
-  [v16 timeIntervalSinceNow];
+  lastErrorDate = [(MRNowPlayingController *)self lastErrorDate];
+  lastErrorDate2 = [(MRNowPlayingController *)self lastErrorDate];
+  [lastErrorDate2 timeIntervalSinceNow];
   v18 = -v17;
-  v19 = [(MRNowPlayingController *)self lastError];
-  v20 = [(MRNowPlayingController *)self impl];
-  v21 = MRCreateIndentedDebugDescriptionFromObject(v20);
-  v22 = [(MRNowPlayingController *)self response];
-  v23 = MRCreateIndentedDebugDescriptionFromObject(v22);
-  v24 = [v35 initWithFormat:@"<%@ %p {\n   configuration=      %@   allocationDate=     %@ (%lf seconds ago)\n   beginDate=          %@ (%lf seconds ago)\n   endDate=            %@ (%lf seconds ago)\n   intialLoadDate=     %@ (%lf seconds ago)\n   updateDate=         %@ (%lf seconds ago)\n   invalidationDate=   %@ (%lf seconds ago)\n   lastErrorDate=      %@ (%lf seconds ago)\n   lastError=          %@\n   impl=               %@\n   response=           %@\n}>\n", v33, self, v32, v41, *&v4, v30, *&v6, v40, *&v8, v39, *&v10, v27, *&v12, v26, *&v14, v15, *&v18, v19, v21, v23];
+  lastError = [(MRNowPlayingController *)self lastError];
+  impl = [(MRNowPlayingController *)self impl];
+  v21 = MRCreateIndentedDebugDescriptionFromObject(impl);
+  response = [(MRNowPlayingController *)self response];
+  v23 = MRCreateIndentedDebugDescriptionFromObject(response);
+  v24 = [v35 initWithFormat:@"<%@ %p {\n   configuration=      %@   allocationDate=     %@ (%lf seconds ago)\n   beginDate=          %@ (%lf seconds ago)\n   endDate=            %@ (%lf seconds ago)\n   intialLoadDate=     %@ (%lf seconds ago)\n   updateDate=         %@ (%lf seconds ago)\n   invalidationDate=   %@ (%lf seconds ago)\n   lastErrorDate=      %@ (%lf seconds ago)\n   lastError=          %@\n   impl=               %@\n   response=           %@\n}>\n", v33, self, v32, allocationDate, *&v4, beginDate, *&v6, endDate, *&v8, lastInitialLoadDate, *&v10, lastUpdateDate, *&v12, lastInvalidationDate, *&v14, lastErrorDate, *&v18, lastError, v21, v23];
 
   return v24;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   obj = self;
-  v4 = a3;
+  delegateCopy = delegate;
   objc_sync_enter(obj);
-  objc_storeWeak(&obj->_delegate, v4);
+  objc_storeWeak(&obj->_delegate, delegateCopy);
 
   objc_sync_exit(obj);
 }
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
-  v6 = [(MRNowPlayingController *)self configuration];
+  configuration = [(MRNowPlayingController *)self configuration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__MRNowPlayingController_performRequestWithCompletion___block_invoke;
   v8[3] = &unk_1E769E1E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 performRequest:v6 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v5 performRequest:configuration withCompletion:v8];
 }
 
 void __55__MRNowPlayingController_performRequestWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -454,33 +454,33 @@ void __55__MRNowPlayingController_performRequestWithCompletion___block_invoke(ui
   v6(v5, a2, a3);
 }
 
-+ (void)performRequest:(id)a3 withCompletion:(id)a4
++ (void)performRequest:(id)request withCompletion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  requestCopy = request;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    [MRNowPlayingController performRequest:a2 withCompletion:a1];
+    [MRNowPlayingController performRequest:a2 withCompletion:self];
   }
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [v7 copy];
+  v12 = [requestCopy copy];
   [v12 setSingleShot:1];
-  v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"performRequestWithCompletion<%@>", v10];
+  v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"performRequestWithCompletion<%@>", uUIDString];
   [v12 setLabel:v13];
 
   v14 = [[MRNowPlayingController alloc] initWithConfiguration:v12];
   v15 = objc_alloc_init(MRNowPlayingControllerHelper);
   v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"NowPlayingController<%p>.performRequestWithCompletion", v14];
-  v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v16, v10];
+  v17 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v16, uUIDString];
   v18 = v17;
-  if (v7)
+  if (requestCopy)
   {
-    [v17 appendFormat:@" for %@", v7];
+    [v17 appendFormat:@" for %@", requestCopy];
   }
 
   v19 = _MRLogForCategory(0xAuLL);
@@ -496,18 +496,18 @@ void __55__MRNowPlayingController_performRequestWithCompletion___block_invoke(ui
   v44[2] = __56__MRNowPlayingController_performRequest_withCompletion___block_invoke;
   v44[3] = &unk_1E769D430;
   v45 = v14;
-  v46 = v7;
+  v46 = requestCopy;
   v47 = v16;
-  v48 = v10;
+  v48 = uUIDString;
   v50 = v15;
-  v51 = v8;
+  v51 = completionCopy;
   v49 = v11;
   v20 = v15;
-  v21 = v8;
+  v21 = completionCopy;
   v22 = v11;
-  v23 = v10;
+  v23 = uUIDString;
   v24 = v16;
-  v25 = v7;
+  v25 = requestCopy;
   v26 = v14;
   v27 = MEMORY[0x1A58E3570](v44);
   v28 = [MRBlockGuard alloc];
@@ -715,35 +715,35 @@ void __56__MRNowPlayingController_performRequest_withCompletion___block_invoke_3
   }
 }
 
-+ (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 options:(id)a5 appOptions:(unsigned int)a6 withCompletion:(id)a7
++ (void)sendCommand:(unsigned int)command toDestination:(id)destination options:(id)options appOptions:(unsigned int)appOptions withCompletion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a7;
-  v12 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:v9];
+  destinationCopy = destination;
+  optionsCopy = options;
+  completionCopy = completion;
+  v12 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:destinationCopy];
   [(MRNowPlayingControllerConfiguration *)v12 setSingleShot:1];
   v13 = [[MRNowPlayingController alloc] initWithConfiguration:v12];
-  v14 = [v10 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
   v15 = v14;
   if (v14)
   {
-    v16 = v14;
+    uUIDString = v14;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
   v18 = [MEMORY[0x1E695DF00] now];
   v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"NowPlayingController<%p>.sendCommand", v13];
-  v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v19, v16];
+  v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v19, uUIDString];
   v21 = v20;
-  if (v9)
+  if (destinationCopy)
   {
-    [v20 appendFormat:@" for %@", v9];
+    [v20 appendFormat:@" for %@", destinationCopy];
   }
 
   v22 = _MRLogForCategory(0xAuLL);
@@ -760,18 +760,18 @@ void __56__MRNowPlayingController_performRequest_withCompletion___block_invoke_3
   v56[1] = 3221225472;
   v56[2] = __86__MRNowPlayingController_sendCommand_toDestination_options_appOptions_withCompletion___block_invoke;
   v56[3] = &unk_1E76A3238;
-  v57 = v9;
+  v57 = destinationCopy;
   v58 = v19;
-  v59 = v16;
+  v59 = uUIDString;
   v60 = v18;
   v25 = v24;
   v61 = v25;
-  v62 = v11;
-  v42 = v11;
+  v62 = completionCopy;
+  v42 = completionCopy;
   v41 = v18;
-  v40 = v16;
+  v40 = uUIDString;
   v26 = v19;
-  v27 = v9;
+  v27 = destinationCopy;
   v28 = MEMORY[0x1A58E3570](v56);
   v29 = [MRBlockGuard alloc];
   v54[0] = MEMORY[0x1E69E9820];
@@ -790,20 +790,20 @@ void __56__MRNowPlayingController_performRequest_withCompletion___block_invoke_3
   v32 = v30;
   v33 = v31;
   v34 = MEMORY[0x1A58E3570](v51);
-  v35 = [(MRNowPlayingController *)v13 impl];
+  impl = [(MRNowPlayingController *)v13 impl];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __86__MRNowPlayingController_sendCommand_toDestination_options_appOptions_withCompletion___block_invoke_4;
   v45[3] = &unk_1E76A3260;
-  v49 = a3;
-  v50 = a6;
-  v46 = v10;
+  commandCopy = command;
+  appOptionsCopy = appOptions;
+  v46 = optionsCopy;
   v47 = v25;
   v48 = v34;
   v36 = v34;
   v37 = v25;
-  v38 = v10;
-  [v35 destinationWithCompletion:v45];
+  v38 = optionsCopy;
+  [impl destinationWithCompletion:v45];
 
   v39 = *MEMORY[0x1E69E9840];
 }
@@ -1005,38 +1005,38 @@ void __86__MRNowPlayingController_sendCommand_toDestination_options_appOptions_w
   }
 }
 
-- (void)sendCommand:(unsigned int)a3 options:(id)a4 appOptions:(unsigned int)a5 completion:(id)a6
+- (void)sendCommand:(unsigned int)command options:(id)options appOptions:(unsigned int)appOptions completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a6;
+  optionsCopy = options;
+  completionCopy = completion;
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"NowPlayingController<%p>.sendCommand", self];
-  v11 = [v8 objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"kMRMediaRemoteOptionCommandID"];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    uUIDString = v11;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v14 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
   v15 = [MEMORY[0x1E695DF00] now];
-  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v10, v13];
-  v17 = [(MRNowPlayingController *)self configuration];
-  v18 = [v17 destination];
+  v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", v10, uUIDString];
+  configuration = [(MRNowPlayingController *)self configuration];
+  destination = [configuration destination];
 
-  if (v18)
+  if (destination)
   {
-    v19 = [(MRNowPlayingController *)self configuration];
-    v20 = [v19 destination];
-    [v16 appendFormat:@" for %@", v20];
+    configuration2 = [(MRNowPlayingController *)self configuration];
+    destination2 = [configuration2 destination];
+    [v16 appendFormat:@" for %@", destination2];
   }
 
-  v42 = v8;
+  v42 = optionsCopy;
   v21 = _MRLogForCategory(0xAuLL);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -1052,11 +1052,11 @@ void __86__MRNowPlayingController_sendCommand_toDestination_options_appOptions_w
   v48[4] = self;
   v22 = v10;
   v49 = v22;
-  v23 = v13;
+  v23 = uUIDString;
   v50 = v23;
   v24 = v15;
   v51 = v24;
-  v25 = v9;
+  v25 = completionCopy;
   v52 = v25;
   v26 = MEMORY[0x1A58E3570](v48);
   v27 = [MRBlockGuard alloc];
@@ -1076,23 +1076,23 @@ void __86__MRNowPlayingController_sendCommand_toDestination_options_appOptions_w
   v31 = v28;
   v45 = v31;
   v32 = MEMORY[0x1A58E3570](v43);
-  v33 = [(MRNowPlayingController *)self playerPath];
-  v34 = [v33 origin];
+  playerPath = [(MRNowPlayingController *)self playerPath];
+  origin = [playerPath origin];
 
-  if (v34)
+  if (origin)
   {
-    v35 = [(MRNowPlayingController *)self workerQueue];
+    workerQueue = [(MRNowPlayingController *)self workerQueue];
     v36 = v42;
-    MRMediaRemoteSendCommandToPlayerWithResult(a3, v42, v33, a5, v35, v32);
+    MRMediaRemoteSendCommandToPlayerWithResult(command, v42, playerPath, appOptions, workerQueue, v32);
   }
 
   else
   {
     v37 = objc_opt_class();
-    v35 = [(MRNowPlayingControllerConfiguration *)self->_configuration destination];
+    workerQueue = [(MRNowPlayingControllerConfiguration *)self->_configuration destination];
     v38 = v37;
     v36 = v42;
-    [v38 sendCommand:a3 toDestination:v35 options:v42 appOptions:a5 withCompletion:v32];
+    [v38 sendCommand:command toDestination:workerQueue options:v42 appOptions:appOptions withCompletion:v32];
   }
 
   v39 = *MEMORY[0x1E69E9840];
@@ -1292,200 +1292,200 @@ void __68__MRNowPlayingController_sendCommand_options_appOptions_completion___bl
 
 - (id)playerPath
 {
-  v2 = [(MRNowPlayingController *)self destination];
-  v3 = [v2 playerPath];
+  destination = [(MRNowPlayingController *)self destination];
+  playerPath = [destination playerPath];
 
-  return v3;
+  return playerPath;
 }
 
 - (MRDestination)destination
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRNowPlayingPlayerResponse *)v2->_response destination];
-  v4 = v3;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  destination = [(MRNowPlayingPlayerResponse *)selfCopy->_response destination];
+  destination2 = destination;
+  if (!destination)
   {
-    v4 = [(MRNowPlayingControllerConfiguration *)v2->_configuration destination];
+    destination2 = [(MRNowPlayingControllerConfiguration *)selfCopy->_configuration destination];
   }
 
-  v5 = [v4 copy];
-  if (!v3)
+  v5 = [destination2 copy];
+  if (!destination)
   {
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (MRNowPlayingPlayerResponse)response
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRNowPlayingPlayerResponse *)v2->_response copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MRNowPlayingPlayerResponse *)selfCopy->_response copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_notifyDelegateOfNewResponse:(id)a3
+- (void)_notifyDelegateOfNewResponse:(id)response
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  responseCopy = response;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = v6->_response;
-  objc_storeStrong(&v6->_response, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = selfCopy->_response;
+  objc_storeStrong(&selfCopy->_response, response);
   v8 = [MEMORY[0x1E695DF00] now];
-  lastInitialLoadDate = v6->_lastInitialLoadDate;
-  v6->_lastInitialLoadDate = v8;
+  lastInitialLoadDate = selfCopy->_lastInitialLoadDate;
+  selfCopy->_lastInitialLoadDate = v8;
 
-  objc_sync_exit(v6);
-  if (![(MRNowPlayingControllerConfiguration *)v6->_configuration isSingleShot])
+  objc_sync_exit(selfCopy);
+  if (![(MRNowPlayingControllerConfiguration *)selfCopy->_configuration isSingleShot])
   {
     v10 = _MRLogForCategory(1uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MRNowPlayingController *)v6 delegate];
-      v12 = [(MRNowPlayingController *)v6 configuration];
-      v13 = [v12 customDescriptionForResponse];
-      v14 = [(MRNowPlayingController *)v6 response];
-      v15 = (v13)[2](v13, v14);
+      delegate = [(MRNowPlayingController *)selfCopy delegate];
+      configuration = [(MRNowPlayingController *)selfCopy configuration];
+      customDescriptionForResponse = [configuration customDescriptionForResponse];
+      response = [(MRNowPlayingController *)selfCopy response];
+      v15 = (customDescriptionForResponse)[2](customDescriptionForResponse, response);
       *buf = 138412802;
-      v56 = v6;
+      v56 = selfCopy;
       v57 = 2112;
-      v58 = v11;
+      v58 = delegate;
       v59 = 2112;
       v60 = v15;
       _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingController] %@ NotifyLoadResponse %@ %@", buf, 0x20u);
     }
   }
 
-  v16 = [(MRNowPlayingController *)v6 delegate];
+  delegate2 = [(MRNowPlayingController *)selfCopy delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(MRNowPlayingController *)v6 delegate];
-    v19 = [(MRNowPlayingController *)v6 response];
-    [v18 controller:v6 didLoadResponse:v19];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
+    response2 = [(MRNowPlayingController *)selfCopy response];
+    [delegate3 controller:selfCopy didLoadResponse:response2];
   }
 
-  if ([(MRNowPlayingControllerConfiguration *)v6->_configuration wantsChangeCallbacksDuringInitialLoad])
+  if ([(MRNowPlayingControllerConfiguration *)selfCopy->_configuration wantsChangeCallbacksDuringInitialLoad])
   {
-    v20 = [(MRNowPlayingPlayerResponse *)v7 playbackState];
-    v21 = [v5 playbackState];
-    if (v20 != v21)
+    playbackState = [(MRNowPlayingPlayerResponse *)v7 playbackState];
+    playbackState2 = [responseCopy playbackState];
+    if (playbackState != playbackState2)
     {
-      v22 = [(MRNowPlayingController *)v6 delegate];
+      delegate4 = [(MRNowPlayingController *)selfCopy delegate];
       v23 = objc_opt_respondsToSelector();
 
       if (v23)
       {
-        v24 = [(MRNowPlayingController *)v6 delegate];
-        [v24 controller:v6 playbackStateDidChangeFrom:v20 to:v21];
+        delegate5 = [(MRNowPlayingController *)selfCopy delegate];
+        [delegate5 controller:selfCopy playbackStateDidChangeFrom:playbackState to:playbackState2];
       }
     }
 
-    v54 = [(MRNowPlayingPlayerResponse *)v7 playbackQueue];
-    v25 = [v5 playbackQueue];
-    if (v54 != v25 && ([v54 isEqual:v25] & 1) == 0)
+    playbackQueue = [(MRNowPlayingPlayerResponse *)v7 playbackQueue];
+    playbackQueue2 = [responseCopy playbackQueue];
+    if (playbackQueue != playbackQueue2 && ([playbackQueue isEqual:playbackQueue2] & 1) == 0)
     {
-      v26 = [(MRNowPlayingController *)v6 delegate];
+      delegate6 = [(MRNowPlayingController *)selfCopy delegate];
       v27 = objc_opt_respondsToSelector();
 
       if (v27)
       {
-        v28 = [(MRNowPlayingController *)v6 delegate];
-        [v28 controller:v6 playbackQueueDidChangeFrom:v54 to:v25];
+        delegate7 = [(MRNowPlayingController *)selfCopy delegate];
+        [delegate7 controller:selfCopy playbackQueueDidChangeFrom:playbackQueue to:playbackQueue2];
       }
     }
 
     [(MRNowPlayingPlayerResponse *)v7 playbackRate];
     v30 = v29;
-    [v5 playbackRate];
+    [responseCopy playbackRate];
     v32 = v31;
     if (vabds_f32(v31, v30) > 0.001)
     {
-      v33 = [(MRNowPlayingController *)v6 delegate];
+      delegate8 = [(MRNowPlayingController *)selfCopy delegate];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
       {
-        v35 = [(MRNowPlayingController *)v6 delegate];
+        delegate9 = [(MRNowPlayingController *)selfCopy delegate];
         *&v36 = v30;
         *&v37 = v32;
-        [v35 controller:v6 playbackRateDidChangeFrom:v36 to:v37];
+        [delegate9 controller:selfCopy playbackRateDidChangeFrom:v36 to:v37];
       }
     }
 
-    v38 = [(MRNowPlayingPlayerResponse *)v7 supportedCommands];
-    v39 = [v5 supportedCommands];
-    v40 = [(MRNowPlayingController *)v6 delegate];
+    supportedCommands = [(MRNowPlayingPlayerResponse *)v7 supportedCommands];
+    supportedCommands2 = [responseCopy supportedCommands];
+    delegate10 = [(MRNowPlayingController *)selfCopy delegate];
     v41 = objc_opt_respondsToSelector();
 
     if (v41)
     {
-      v42 = [(MRNowPlayingController *)v6 delegate];
-      [v42 controller:v6 supportedCommandsDidChangeFrom:v38 to:v39];
+      delegate11 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate11 controller:selfCopy supportedCommandsDidChangeFrom:supportedCommands to:supportedCommands2];
     }
 
-    v43 = [(MRNowPlayingPlayerResponse *)v7 repeatMode];
-    v44 = [v5 repeatMode];
-    if (v43 != v44)
+    repeatMode = [(MRNowPlayingPlayerResponse *)v7 repeatMode];
+    repeatMode2 = [responseCopy repeatMode];
+    if (repeatMode != repeatMode2)
     {
-      v45 = [(MRNowPlayingController *)v6 delegate];
+      delegate12 = [(MRNowPlayingController *)selfCopy delegate];
       v46 = objc_opt_respondsToSelector();
 
       if (v46)
       {
-        v47 = [(MRNowPlayingController *)v6 delegate];
-        [v47 controller:v6 repeatModeDidChangeFrom:v43 to:v44];
+        delegate13 = [(MRNowPlayingController *)selfCopy delegate];
+        [delegate13 controller:selfCopy repeatModeDidChangeFrom:repeatMode to:repeatMode2];
       }
     }
 
-    v48 = [(MRNowPlayingPlayerResponse *)v7 shuffleMode];
-    v49 = [v5 shuffleMode];
-    if (v48 != v49)
+    shuffleMode = [(MRNowPlayingPlayerResponse *)v7 shuffleMode];
+    shuffleMode2 = [responseCopy shuffleMode];
+    if (shuffleMode != shuffleMode2)
     {
-      v50 = [(MRNowPlayingController *)v6 delegate];
+      delegate14 = [(MRNowPlayingController *)selfCopy delegate];
       v51 = objc_opt_respondsToSelector();
 
       if (v51)
       {
-        v52 = [(MRNowPlayingController *)v6 delegate];
-        [v52 controller:v6 shuffleModeDidChangeFrom:v48 to:v49];
+        delegate15 = [(MRNowPlayingController *)selfCopy delegate];
+        [delegate15 controller:selfCopy shuffleModeDidChangeFrom:shuffleMode to:shuffleMode2];
       }
     }
 
-    [(MRNowPlayingController *)v6 _notifyDelegateOfUpdate];
+    [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
   }
 
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfPlaybackQueueChange:(id)a3
+- (void)_notifyDelegateOfPlaybackQueueChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v6 = self;
-  objc_sync_enter(v6);
-  response = v6->_response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  response = selfCopy->_response;
   if (!response)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:v6 file:@"MRNowPlayingController.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
 
-    response = v6->_response;
+    response = selfCopy->_response;
   }
 
-  v8 = [(MRNowPlayingPlayerResponse *)response playbackQueue];
-  [(MRNowPlayingPlayerResponse *)v6->_response playbackRate];
+  playbackQueue = [(MRNowPlayingPlayerResponse *)response playbackQueue];
+  [(MRNowPlayingPlayerResponse *)selfCopy->_response playbackRate];
   v10 = v9;
-  v11 = v8;
-  v12 = v5;
+  v11 = playbackQueue;
+  v12 = changeCopy;
   v25 = v12;
   if (v11 == v12)
   {
@@ -1498,57 +1498,57 @@ void __68__MRNowPlayingController_sendCommand_options_appOptions_completion___bl
   if (v13)
   {
 LABEL_12:
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_13;
   }
 
-  [(MRNowPlayingPlayerResponse *)v6->_response setPlaybackQueue:v25];
-  [(MRNowPlayingPlayerResponse *)v6->_response playbackRate];
+  [(MRNowPlayingPlayerResponse *)selfCopy->_response setPlaybackQueue:v25];
+  [(MRNowPlayingPlayerResponse *)selfCopy->_response playbackRate];
   v15 = v14;
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  v16 = [(MRNowPlayingController *)v6 delegate];
+  delegate = [(MRNowPlayingController *)selfCopy delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(MRNowPlayingController *)v6 delegate];
-    [v18 controller:v6 playbackQueueDidChangeFrom:v11 to:v25];
+    delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+    [delegate2 controller:selfCopy playbackQueueDidChangeFrom:v11 to:v25];
   }
 
   if (vabds_f32(v15, v10) > 0.001)
   {
-    v19 = [(MRNowPlayingController *)v6 delegate];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(MRNowPlayingController *)v6 delegate];
+      delegate4 = [(MRNowPlayingController *)selfCopy delegate];
       *&v22 = v10;
       *&v23 = v15;
-      [v21 controller:v6 playbackRateDidChangeFrom:v22 to:v23];
+      [delegate4 controller:selfCopy playbackRateDidChangeFrom:v22 to:v23];
     }
   }
 
-  [(MRNowPlayingController *)v6 _notifyDelegateOfUpdate];
+  [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
 LABEL_13:
 }
 
-- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)a3
+- (void)_notifyDelegateOfUpdatedContentItemsWithContentItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v6 = self;
-  objc_sync_enter(v6);
-  response = v6->_response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  response = selfCopy->_response;
   if (!response)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:v6 file:@"MRNowPlayingController.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
 
-    response = v6->_response;
+    response = selfCopy->_response;
   }
 
   [(MRNowPlayingPlayerResponse *)response playbackRate];
@@ -1557,7 +1557,7 @@ LABEL_13:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v5;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v11)
   {
@@ -1572,16 +1572,16 @@ LABEL_13:
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [(MRNowPlayingPlayerResponse *)v6->_response playbackQueue];
-        v16 = [v14 identifier];
-        v17 = [v15 contentItemForIdentifier:v16];
+        playbackQueue = [(MRNowPlayingPlayerResponse *)selfCopy->_response playbackQueue];
+        identifier = [v14 identifier];
+        v17 = [playbackQueue contentItemForIdentifier:identifier];
 
         if (v17)
         {
           [v17 mergeFrom:v14];
         }
 
-        [(MRNowPlayingPlayerResponse *)v6->_response playbackRate];
+        [(MRNowPlayingPlayerResponse *)selfCopy->_response playbackRate];
         v19 = v18;
       }
 
@@ -1596,67 +1596,67 @@ LABEL_13:
     v19 = 0.0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   if ([v10 count])
   {
-    v20 = [(MRNowPlayingController *)v6 delegate];
+    delegate = [(MRNowPlayingController *)selfCopy delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(MRNowPlayingController *)v6 delegate];
-      [v22 controller:v6 contentItemsDidUpdateWithContentItemChanges:v10];
+      delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate2 controller:selfCopy contentItemsDidUpdateWithContentItemChanges:v10];
     }
 
-    v23 = [(MRNowPlayingController *)v6 delegate];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
       v25 = [v10 mr_compactMap:&__block_literal_global_307];
-      v26 = [(MRNowPlayingController *)v6 delegate];
-      [v26 controller:v6 contentItemsDidUpdate:v25];
+      delegate4 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate4 controller:selfCopy contentItemsDidUpdate:v25];
     }
 
     if (vabds_f32(v19, v9) > 0.001)
     {
-      v27 = [(MRNowPlayingController *)v6 delegate];
+      delegate5 = [(MRNowPlayingController *)selfCopy delegate];
       v28 = objc_opt_respondsToSelector();
 
       if (v28)
       {
-        v29 = [(MRNowPlayingController *)v6 delegate];
+        delegate6 = [(MRNowPlayingController *)selfCopy delegate];
         *&v30 = v9;
         *&v31 = v19;
-        [v29 controller:v6 playbackRateDidChangeFrom:v30 to:v31];
+        [delegate6 controller:selfCopy playbackRateDidChangeFrom:v30 to:v31];
       }
     }
 
-    [(MRNowPlayingController *)v6 _notifyDelegateOfUpdate];
+    [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
   }
 
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfUpdatedArtwork:(id)a3
+- (void)_notifyDelegateOfUpdatedArtwork:(id)artwork
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  artworkCopy = artwork;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = self;
-  objc_sync_enter(v6);
-  if (!v6->_response)
+  v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(artworkCopy, "count")}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_response)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:v6 file:@"MRNowPlayingController.m" lineNumber:786 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:786 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v5;
+  v7 = artworkCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -1671,35 +1671,35 @@ LABEL_13:
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [(MRNowPlayingPlayerResponse *)v6->_response playbackQueue];
-        v13 = [v11 identifier];
-        v14 = [v12 contentItemForIdentifier:v13];
+        playbackQueue = [(MRNowPlayingPlayerResponse *)selfCopy->_response playbackQueue];
+        identifier = [v11 identifier];
+        v14 = [playbackQueue contentItemForIdentifier:identifier];
 
         if (v14)
         {
-          v15 = [v14 artwork];
-          v16 = [v11 artwork];
-          v17 = v15;
-          v18 = v16;
+          artwork = [v14 artwork];
+          artwork2 = [v11 artwork];
+          identifier2 = artwork;
+          v18 = artwork2;
           v19 = v18;
-          if (v17 == v18)
+          if (identifier2 == v18)
           {
           }
 
           else
           {
-            v20 = [v17 isEqual:v18];
+            v20 = [identifier2 isEqual:v18];
 
             if (v20)
             {
               goto LABEL_14;
             }
 
-            v21 = [v11 artwork];
-            [v14 setArtwork:v21];
+            artwork3 = [v11 artwork];
+            [v14 setArtwork:artwork3];
 
-            v17 = [v11 identifier];
-            [v27 addObject:v17];
+            identifier2 = [v11 identifier];
+            [v27 addObject:identifier2];
           }
         }
 
@@ -1712,44 +1712,44 @@ LABEL_14:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   if ([v27 count])
   {
-    v22 = [(MRNowPlayingController *)v6 delegate];
+    delegate = [(MRNowPlayingController *)selfCopy delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(MRNowPlayingController *)v6 delegate];
-      [v24 controller:v6 didLoadArtworkForContentItems:v27];
+      delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate2 controller:selfCopy didLoadArtworkForContentItems:v27];
     }
 
-    [(MRNowPlayingController *)v6 _notifyDelegateOfUpdate];
+    [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfSupportedCommandsChange:(id)a3
+- (void)_notifyDelegateOfSupportedCommandsChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v6 = self;
-  objc_sync_enter(v6);
-  response = v6->_response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  response = selfCopy->_response;
   if (!response)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:v6 file:@"MRNowPlayingController.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:820 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
 
-    response = v6->_response;
+    response = selfCopy->_response;
   }
 
-  v8 = [(MRNowPlayingPlayerResponse *)response supportedCommands];
-  v9 = [(MRNowPlayingPlayerResponse *)v6->_response shuffleMode];
-  v10 = [(MRNowPlayingPlayerResponse *)v6->_response repeatMode];
-  v11 = v8;
-  v12 = v5;
+  supportedCommands = [(MRNowPlayingPlayerResponse *)response supportedCommands];
+  shuffleMode = [(MRNowPlayingPlayerResponse *)selfCopy->_response shuffleMode];
+  repeatMode = [(MRNowPlayingPlayerResponse *)selfCopy->_response repeatMode];
+  v11 = supportedCommands;
+  v12 = changeCopy;
   v26 = v12;
   if (v11 == v12)
   {
@@ -1762,93 +1762,93 @@ LABEL_14:
   if (v13)
   {
 LABEL_15:
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_16;
   }
 
-  [(MRNowPlayingPlayerResponse *)v6->_response setSupportedCommands:v26];
-  v14 = [(MRNowPlayingPlayerResponse *)v6->_response shuffleMode];
-  v15 = [(MRNowPlayingPlayerResponse *)v6->_response repeatMode];
-  objc_sync_exit(v6);
+  [(MRNowPlayingPlayerResponse *)selfCopy->_response setSupportedCommands:v26];
+  shuffleMode2 = [(MRNowPlayingPlayerResponse *)selfCopy->_response shuffleMode];
+  repeatMode2 = [(MRNowPlayingPlayerResponse *)selfCopy->_response repeatMode];
+  objc_sync_exit(selfCopy);
 
-  v16 = [(MRNowPlayingController *)v6 delegate];
+  delegate = [(MRNowPlayingController *)selfCopy delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(MRNowPlayingController *)v6 delegate];
-    [v18 controller:v6 supportedCommandsDidChangeFrom:v11 to:v26];
+    delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+    [delegate2 controller:selfCopy supportedCommandsDidChangeFrom:v11 to:v26];
   }
 
-  if (v10 != v15)
+  if (repeatMode != repeatMode2)
   {
-    v19 = [(MRNowPlayingController *)v6 delegate];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(MRNowPlayingController *)v6 delegate];
-      [v21 controller:v6 repeatModeDidChangeFrom:v10 to:v15];
+      delegate4 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate4 controller:selfCopy repeatModeDidChangeFrom:repeatMode to:repeatMode2];
     }
   }
 
-  if (v9 != v14)
+  if (shuffleMode != shuffleMode2)
   {
-    v22 = [(MRNowPlayingController *)v6 delegate];
+    delegate5 = [(MRNowPlayingController *)selfCopy delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(MRNowPlayingController *)v6 delegate];
-      [v24 controller:v6 shuffleModeDidChangeFrom:v9 to:v14];
+      delegate6 = [(MRNowPlayingController *)selfCopy delegate];
+      [delegate6 controller:selfCopy shuffleModeDidChangeFrom:shuffleMode to:shuffleMode2];
     }
   }
 
-  [(MRNowPlayingController *)v6 _notifyDelegateOfUpdate];
+  [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
 LABEL_16:
 }
 
-- (void)_notifyDelegateOfUpdatedDeviceLastPlayingDate:(id)a3
+- (void)_notifyDelegateOfUpdatedDeviceLastPlayingDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v4 = [(MRNowPlayingController *)self delegate];
+  delegate = [(MRNowPlayingController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MRNowPlayingController *)self delegate];
-    [v6 controller:self deviceLastPlayingDateDidChange:v7];
+    delegate2 = [(MRNowPlayingController *)self delegate];
+    [delegate2 controller:self deviceLastPlayingDateDidChange:dateCopy];
   }
 
   [(MRNowPlayingController *)self _notifyDelegateOfUpdate];
 }
 
-- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)a3
+- (void)_notifyDelegateOfUpdatedPlayerLastPlayingDate:(id)date
 {
-  v17 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v5 = self;
-  objc_sync_enter(v5);
-  response = v5->_response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  response = selfCopy->_response;
   if (!response)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:v5 file:@"MRNowPlayingController.m" lineNumber:865 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:865 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
 
-    response = v5->_response;
+    response = selfCopy->_response;
   }
 
-  v7 = [(MRNowPlayingPlayerResponse *)response playerLastPlayingDate];
-  v8 = v7;
-  if (!v5->_response)
+  playerLastPlayingDate = [(MRNowPlayingPlayerResponse *)response playerLastPlayingDate];
+  v8 = playerLastPlayingDate;
+  if (!selfCopy->_response)
   {
     goto LABEL_10;
   }
 
-  v9 = v7;
-  v10 = v17;
+  v9 = playerLastPlayingDate;
+  v10 = dateCopy;
   v11 = v10;
   if (v9 == v10)
   {
@@ -1862,49 +1862,49 @@ LABEL_16:
   {
 LABEL_10:
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     goto LABEL_11;
   }
 
-  [(MRNowPlayingPlayerResponse *)v5->_response setPlayerLastPlayingDate:v11];
+  [(MRNowPlayingPlayerResponse *)selfCopy->_response setPlayerLastPlayingDate:v11];
 
-  objc_sync_exit(v5);
-  v13 = [(MRNowPlayingController *)v5 delegate];
+  objc_sync_exit(selfCopy);
+  delegate = [(MRNowPlayingController *)selfCopy delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(MRNowPlayingController *)v5 delegate];
-    [v15 controller:v5 playerLastPlayingDateDidChange:v11];
+    delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+    [delegate2 controller:selfCopy playerLastPlayingDateDidChange:v11];
   }
 
-  [(MRNowPlayingController *)v5 _notifyDelegateOfUpdate];
+  [(MRNowPlayingController *)selfCopy _notifyDelegateOfUpdate];
 LABEL_11:
 }
 
-- (void)_notifyDelegateOfUpdatedClientProperties:(id)a3
+- (void)_notifyDelegateOfUpdatedClientProperties:(id)properties
 {
-  v16 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v5 = self;
-  objc_sync_enter(v5);
-  response = v5->_response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  response = selfCopy->_response;
   if (!response)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:v5 file:@"MRNowPlayingController.m" lineNumber:889 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRNowPlayingController.m" lineNumber:889 description:{@"Invalid parameter not satisfying: %@", @"_response"}];
 
-    response = v5->_response;
+    response = selfCopy->_response;
   }
 
-  v7 = [(MRNowPlayingPlayerResponse *)response clientProperties];
-  v8 = v7;
-  if (v5->_response)
+  clientProperties = [(MRNowPlayingPlayerResponse *)response clientProperties];
+  v8 = clientProperties;
+  if (selfCopy->_response)
   {
-    v9 = [v7 data];
-    v10 = [v16 data];
-    v11 = v9;
-    v12 = v10;
+    data = [clientProperties data];
+    data2 = [propertiesCopy data];
+    v11 = data;
+    v12 = data2;
     v13 = v12;
     if (v11 == v12)
     {
@@ -1916,41 +1916,41 @@ LABEL_11:
 
       if ((v14 & 1) == 0)
       {
-        [(MRNowPlayingPlayerResponse *)v5->_response setClientProperties:v16];
+        [(MRNowPlayingPlayerResponse *)selfCopy->_response setClientProperties:propertiesCopy];
       }
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_notifyDelegateOfPlayerPathChange:(id)a3
+- (void)_notifyDelegateOfPlayerPathChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRNowPlayingPlayerResponse *)v5->_response playerPath];
-  v7 = v4;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  playerPath = [(MRNowPlayingPlayerResponse *)selfCopy->_response playerPath];
+  v7 = changeCopy;
   v12 = v7;
-  if (v6 == v7)
+  if (playerPath == v7)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [playerPath isEqual:v7];
 
   if (v8)
   {
 LABEL_6:
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     goto LABEL_7;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v9 = [(MRNowPlayingController *)v5 delegate];
+  delegate = [(MRNowPlayingController *)selfCopy delegate];
   v10 = objc_opt_respondsToSelector();
 
   if ((v10 & 1) == 0)
@@ -1958,9 +1958,9 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v11 = [(MRNowPlayingController *)v5 delegate];
-  [(MRNowPlayingController *)v11 controller:v5 playerPathDidChange:v12];
-  v5 = v11;
+  delegate2 = [(MRNowPlayingController *)selfCopy delegate];
+  [(MRNowPlayingController *)delegate2 controller:selfCopy playerPathDidChange:v12];
+  selfCopy = delegate2;
 LABEL_7:
 
 LABEL_8:
@@ -1979,93 +1979,93 @@ LABEL_8:
     v5 = _MRLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MRNowPlayingController *)self delegate];
-      v7 = [(MRNowPlayingController *)self configuration];
-      v8 = [v7 customDescriptionForResponse];
-      v9 = [(MRNowPlayingController *)self response];
-      v10 = (v8)[2](v8, v9);
+      delegate = [(MRNowPlayingController *)self delegate];
+      configuration = [(MRNowPlayingController *)self configuration];
+      customDescriptionForResponse = [configuration customDescriptionForResponse];
+      response = [(MRNowPlayingController *)self response];
+      v10 = (customDescriptionForResponse)[2](customDescriptionForResponse, response);
       v16 = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v6;
+      v19 = delegate;
       v20 = 2112;
       v21 = v10;
       _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingController] %@ NotifyUpdate %@ %@", &v16, 0x20u);
     }
   }
 
-  v11 = [(MRNowPlayingController *)self delegate];
+  delegate2 = [(MRNowPlayingController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(MRNowPlayingController *)self delegate];
-    v14 = [(MRNowPlayingController *)self response];
-    [v13 controller:self didUpdateResponse:v14];
+    delegate3 = [(MRNowPlayingController *)self delegate];
+    response2 = [(MRNowPlayingController *)self response];
+    [delegate3 controller:self didUpdateResponse:response2];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegateOfError:(id)a3
+- (void)_notifyDelegateOfError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_workerQueue);
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = [MEMORY[0x1E695DF00] now];
-  lastErrorDate = v6->_lastErrorDate;
-  v6->_lastErrorDate = v7;
+  lastErrorDate = selfCopy->_lastErrorDate;
+  selfCopy->_lastErrorDate = v7;
 
-  objc_storeStrong(&v6->_lastError, a3);
-  objc_sync_exit(v6);
+  objc_storeStrong(&selfCopy->_lastError, error);
+  objc_sync_exit(selfCopy);
 
-  if (![(MRNowPlayingControllerConfiguration *)v6->_configuration isSingleShot])
+  if (![(MRNowPlayingControllerConfiguration *)selfCopy->_configuration isSingleShot])
   {
     v9 = _MRLogForCategory(1uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MRNowPlayingController *)v6 delegate];
+      delegate = [(MRNowPlayingController *)selfCopy delegate];
       v15 = 138412802;
-      v16 = v6;
+      v16 = selfCopy;
       v17 = 2112;
-      v18 = v5;
+      v18 = errorCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = delegate;
       _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingController] %@ NotifyError %@ %@", &v15, 0x20u);
     }
   }
 
-  v11 = [(MRNowPlayingController *)v6 delegate];
+  delegate2 = [(MRNowPlayingController *)selfCopy delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(MRNowPlayingController *)v6 delegate];
-    [v13 controller:v6 didFailWithError:v5];
+    delegate3 = [(MRNowPlayingController *)selfCopy delegate];
+    [delegate3 controller:selfCopy didFailWithError:errorCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createImplWithConfiguration:(id)a3
+- (id)_createImplWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 nowPlayingControllerVersion];
+  nowPlayingControllerVersion = [v4 nowPlayingControllerVersion];
 
-  if ((v5 - 1) > 2)
+  if ((nowPlayingControllerVersion - 1) > 2)
   {
     v6 = off_1E76993C8;
   }
 
   else
   {
-    v6 = off_1E76A3368[v5 - 1];
+    v6 = off_1E76A3368[nowPlayingControllerVersion - 1];
   }
 
-  v7 = [objc_alloc(*v6) initWithConfiguration:v3];
+  v7 = [objc_alloc(*v6) initWithConfiguration:configurationCopy];
 
   return v7;
 }

@@ -1,23 +1,23 @@
 @interface ReviewExtensionHostView.Coordinator
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation ReviewExtensionHostView.Coordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BB1B49E0(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1BB1B49E0(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1BB1B4AE4(v8, a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1BB1B4AE4(errorCopy, error);
 }
 
 @end

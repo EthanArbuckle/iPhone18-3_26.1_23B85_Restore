@@ -1,45 +1,45 @@
 @interface PKDataReleaseContentViewController
 - (BOOL)_showMerchant;
 - (BOOL)shouldShowPhysicalButton;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (PKDataReleaseContentViewController)initWithRequest:(id)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (PKDataReleaseContentViewController)initWithRequest:(id)request;
 - (PKDataReleaseContentViewControllerDelegate)delegate;
-- (id)_layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
+- (id)_layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment;
 - (id)_merchantName;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)_configureFooterViewConfirmationTitle;
-- (void)_finishedRemovingDoublePressCredentialWithError:(id)a3;
+- (void)_finishedRemovingDoublePressCredentialWithError:(id)error;
 - (void)_reloadMerchantHeader;
-- (void)_startEvaluationWithExternalizedContext:(id)a3;
+- (void)_startEvaluationWithExternalizedContext:(id)context;
 - (void)_startInitialEvaluation;
 - (void)_updatePhysicalButtonState;
 - (void)_updatePreferredContentSize;
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4;
-- (void)authorizationFooterViewPasscodeButtonPressed:(id)a3;
-- (void)dataReleaseCompletedWithError:(id)a3;
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event;
+- (void)authorizationFooterViewPasscodeButtonPressed:(id)pressed;
+- (void)dataReleaseCompletedWithError:(id)error;
 - (void)dealloc;
 - (void)dismissPasscodeViewController;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 - (void)presentPasscodeToExitLockout;
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
-- (void)setIdleTimerDisabled:(BOOL)a3;
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
+- (void)setIdleTimerDisabled:(BOOL)disabled;
 - (void)userDidTapClose;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKDataReleaseContentViewController
 
-- (PKDataReleaseContentViewController)initWithRequest:(id)a3
+- (PKDataReleaseContentViewController)initWithRequest:(id)request
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     v36 = 0;
     v37 = &v36;
@@ -60,50 +60,50 @@
     if (self)
     {
       objc_storeWeak(v37 + 5, self);
-      objc_storeStrong(&self->_request, a3);
+      objc_storeStrong(&self->_request, request);
       v8 = objc_alloc_init(MEMORY[0x1E69BC740]);
       authenticator = self->_authenticator;
       self->_authenticator = v8;
 
       [(PKAuthenticator *)self->_authenticator setDelegate:self];
       v10 = [PKISO180135RecognizedElements alloc];
-      v11 = [v5 releasedData];
-      v12 = [v11 documentType];
-      v13 = [v5 releasedData];
-      v14 = [v13 elements];
-      v15 = [(PKISO180135RecognizedElements *)v10 initWithDocumentType:v12 documentElements:v14];
+      releasedData = [requestCopy releasedData];
+      documentType = [releasedData documentType];
+      releasedData2 = [requestCopy releasedData];
+      elements = [releasedData2 elements];
+      v15 = [(PKISO180135RecognizedElements *)v10 initWithDocumentType:documentType documentElements:elements];
       recognizedElements = self->_recognizedElements;
       self->_recognizedElements = v15;
 
       if (!self->_recognizedElements)
       {
-        v30 = 0;
+        selfCopy = 0;
         goto LABEL_10;
       }
 
-      v17 = [v5 releasedData];
+      releasedData3 = [requestCopy releasedData];
       dataToRelease = self->_dataToRelease;
-      self->_dataToRelease = v17;
+      self->_dataToRelease = releasedData3;
 
       v19 = self->_dataToRelease;
-      v20 = [(PKISO180135RecognizedElements *)self->_recognizedElements dataElements];
-      [(PKTransactionReleasedData *)v19 setElements:v20];
+      dataElements = [(PKISO180135RecognizedElements *)self->_recognizedElements dataElements];
+      [(PKTransactionReleasedData *)v19 setElements:dataElements];
 
       v21 = [[PKPaymentTransactionIconGenerator alloc] initWithCache:1 scale:PKUIScreenScale()];
       iconGenerator = self->_iconGenerator;
       self->_iconGenerator = v21;
 
-      v23 = [v5 iconData];
+      iconData = [requestCopy iconData];
 
-      if (v23)
+      if (iconData)
       {
         v24 = objc_alloc(MEMORY[0x1E69DCAB8]);
-        v23 = [v5 iconData];
-        v25 = [v24 initWithData:v23];
+        iconData = [requestCopy iconData];
+        v25 = [v24 initWithData:iconData];
         merchantIcon = self->_merchantIcon;
         self->_merchantIcon = v25;
 
-        LOBYTE(v23) = self->_merchantIcon != 0;
+        LOBYTE(iconData) = self->_merchantIcon != 0;
       }
 
       v27 = objc_alloc_init(PKDataReleaseEntityResolver);
@@ -116,11 +116,11 @@
       v32[2] = __54__PKDataReleaseContentViewController_initWithRequest___block_invoke_2;
       v32[3] = &unk_1E80204D0;
       v32[4] = &v36;
-      v33 = v23;
-      [(PKDataReleaseEntityResolver *)v29 resolveEntityForRequest:v5 completion:v32];
+      v33 = iconData;
+      [(PKDataReleaseEntityResolver *)v29 resolveEntityForRequest:requestCopy completion:v32];
     }
 
-    v30 = self;
+    selfCopy = self;
 LABEL_10:
 
     _Block_object_dispose(&v36, 8);
@@ -128,10 +128,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v30 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v30;
+  return selfCopy;
 }
 
 id __54__PKDataReleaseContentViewController_initWithRequest___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -289,18 +289,18 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   }
 
   [(LAContext *)self->_localAuthenticationContext invalidate];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 pkui_resetSharedRootAuthenticationContext];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] pkui_resetSharedRootAuthenticationContext];
 
   v5.receiver = self;
   v5.super_class = PKDataReleaseContentViewController;
   [(PKDataReleaseContentViewController *)&v5 dealloc];
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3
+- (void)setIdleTimerDisabled:(BOOL)disabled
 {
   idleTimerAssertion = self->_idleTimerAssertion;
-  if (a3)
+  if (disabled)
   {
     if (!idleTimerAssertion)
     {
@@ -348,8 +348,8 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   v26.receiver = self;
   v26.super_class = PKDataReleaseContentViewController;
   [(PKDataReleaseContentViewController *)&v26 viewDidLoad];
-  v3 = [(PKDataReleaseContentViewController *)self view];
-  v4 = [(PKDataReleaseContentViewController *)self navigationItem];
+  view = [(PKDataReleaseContentViewController *)self view];
+  navigationItem = [(PKDataReleaseContentViewController *)self navigationItem];
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
   v6 = PKLocalizedString(&cfstr_Wallet_1.isa);
   v27 = *MEMORY[0x1E69DB648];
@@ -357,16 +357,16 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   v28[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v9 = [v5 initWithString:v6 attributes:v8];
-  [v4 setAttributedTitle:v9];
+  [navigationItem setAttributedTitle:v9];
 
-  [v4 setStyle:2];
+  [navigationItem setStyle:2];
   v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel_userDidTapClose];
-  [v4 setRightBarButtonItem:v10];
+  [navigationItem setRightBarButtonItem:v10];
 
-  v11 = [(PKDataReleaseContentViewController *)self collectionView];
-  [v11 setAlwaysBounceVertical:0];
-  [v11 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"dataReleaseElementsCellIdentifier"];
-  [v11 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"dataReleaseRelyingPartyCellIdentifier"];
+  collectionView = [(PKDataReleaseContentViewController *)self collectionView];
+  [collectionView setAlwaysBounceVertical:0];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"dataReleaseElementsCellIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"dataReleaseRelyingPartyCellIdentifier"];
   v12 = [[PKPaymentAuthorizationLayout alloc] initWithStyle:1 paymentRequest:0];
   v13 = [PKPaymentAuthorizationFooterView alloc];
   v14 = [(PKPaymentAuthorizationFooterView *)v13 initWithFrame:v12 layout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -405,33 +405,33 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   [(PKPaymentAuthorizationFooterView *)self->_footerView setHidesSeparatorView:1];
   [(PKPaymentAuthorizationFooterView *)self->_footerView setPreventPasscodeFallbackForBiometricFailure:1];
   v24 = self->_footerView;
-  v25 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:v11 edge:4 style:0];
+  v25 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:collectionView edge:4 style:0];
   [(PKPaymentAuthorizationFooterView *)v24 addInteraction:v25];
 
-  [v3 addSubview:self->_footerView];
+  [view addSubview:self->_footerView];
   [(PKDataReleaseContentViewController *)self _startInitialEvaluation];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKDataReleaseContentViewController;
-  [(PKDataReleaseContentViewController *)&v4 viewWillAppear:a3];
+  [(PKDataReleaseContentViewController *)&v4 viewWillAppear:appear];
   [(PKDataReleaseContentViewController *)self _updatePreferredContentSize];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = PKDataReleaseContentViewController;
-  [(PKDataReleaseContentViewController *)&v22 viewDidAppear:a3];
+  [(PKDataReleaseContentViewController *)&v22 viewDidAppear:appear];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:*MEMORY[0x1E69BA818] forKeyedSubscript:*MEMORY[0x1E69BA680]];
   [v4 setObject:*MEMORY[0x1E69BA4F0] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
-  v5 = [(PKISO18013DataReleaseRequest *)self->_request isTrustedRelyingParty];
-  v6 = v5;
-  if (v5)
+  isTrustedRelyingParty = [(PKISO18013DataReleaseRequest *)self->_request isTrustedRelyingParty];
+  v6 = isTrustedRelyingParty;
+  if (isTrustedRelyingParty)
   {
     v7 = @"true";
   }
@@ -455,24 +455,24 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   [v4 setObject:v8 forKeyedSubscript:@"locationSet"];
   if ((v6 & 1) == 0)
   {
-    v9 = [(PKISO18013DataReleaseRequest *)self->_request analyticsIdentifier];
-    [v4 setObject:v9 forKeyedSubscript:@"relyingPartyID"];
+    analyticsIdentifier = [(PKISO18013DataReleaseRequest *)self->_request analyticsIdentifier];
+    [v4 setObject:analyticsIdentifier forKeyedSubscript:@"relyingPartyID"];
 
-    v10 = [(PKISO18013DataReleaseRequest *)self->_request analyticsOrganizationName];
-    [v4 setObject:v10 forKeyedSubscript:@"relyingPartyName"];
+    analyticsOrganizationName = [(PKISO18013DataReleaseRequest *)self->_request analyticsOrganizationName];
+    [v4 setObject:analyticsOrganizationName forKeyedSubscript:@"relyingPartyName"];
   }
 
-  v11 = [(PKISO18013DataReleaseRequest *)self->_request releasedData];
-  v12 = [v11 certificateData];
-  v13 = [v12 length];
+  releasedData = [(PKISO18013DataReleaseRequest *)self->_request releasedData];
+  certificateData = [releasedData certificateData];
+  v13 = [certificateData length];
 
   v14 = @"presentmentReaderType";
   if (v13)
   {
     [v4 setObject:@"tapToVerify" forKeyedSubscript:@"presentmentReaderType"];
-    v15 = [(PKISO180135RecognizedElements *)self->_recognizedElements isDisplayOnly];
+    isDisplayOnly = [(PKISO180135RecognizedElements *)self->_recognizedElements isDisplayOnly];
     v16 = PKAnalyticsReportDataTransferTypeDisplayOnly;
-    if (!v15)
+    if (!isDisplayOnly)
     {
       v16 = PKAnalyticsReportDataTransferTypeDataTransfer;
     }
@@ -495,8 +495,8 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   [v18 subjects:v20 sendEvent:v4];
 
   [(PKDataReleaseContentViewController *)self _updatePreferredContentSize];
-  v21 = [(PKDataReleaseContentViewController *)self collectionView];
-  [v21 flashScrollIndicators];
+  collectionView = [(PKDataReleaseContentViewController *)self collectionView];
+  [collectionView flashScrollIndicators];
 
   [(PKDataReleaseContentViewController *)self setIdleTimerDisabled:1];
   if (!self->_hasPlayedHaptics)
@@ -506,12 +506,12 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKDataReleaseContentViewController;
-  [(PKDataReleaseContentViewController *)&v8 viewWillDisappear:a3];
+  [(PKDataReleaseContentViewController *)&v8 viewWillDisappear:disappear];
   [(PKDataReleaseContentViewController *)self setIdleTimerDisabled:0];
   if ([(PKPaymentAuthorizationFooterView *)self->_footerView state]!= 12 && [(PKPaymentAuthorizationFooterView *)self->_footerView state]!= 13)
   {
@@ -533,8 +533,8 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   v4.super_class = PKDataReleaseContentViewController;
   [(PKDataReleaseContentViewController *)&v4 viewWillLayoutSubviews];
   ++self->_layoutRecursionCounter;
-  v3 = [(PKDataReleaseContentViewController *)self view];
-  [v3 bounds];
+  view = [(PKDataReleaseContentViewController *)self view];
+  [view bounds];
   [(PKDataReleaseContentViewController *)self _layoutWithBounds:?];
 }
 
@@ -556,18 +556,18 @@ uint64_t __54__PKDataReleaseContentViewController_initWithRequest___block_invoke
   v7.receiver = self;
   v7.super_class = PKDataReleaseContentViewController;
   [(PKDataReleaseContentViewController *)&v7 viewLayoutMarginsDidChange];
-  v3 = [(PKDataReleaseContentViewController *)self view];
-  [v3 directionalLayoutMargins];
+  view = [(PKDataReleaseContentViewController *)self view];
+  [view directionalLayoutMargins];
   v5 = v4;
 
-  v6 = [(PKDataReleaseContentViewController *)self navigationItem];
-  [v6 _setMinimumContentMargins:{0.0, v5 + 4.0, 0.0, 0.0}];
+  navigationItem = [(PKDataReleaseContentViewController *)self navigationItem];
+  [navigationItem _setMinimumContentMargins:{0.0, v5 + 4.0, 0.0, 0.0}];
 }
 
 - (void)_startInitialEvaluation
 {
-  v3 = [(PKISO18013DataReleaseRequest *)self->_request externalizedAuthenticationContext];
-  if (v3 && (v4 = v3, IsAvailable = PKUserIntentIsAvailable(), v4, IsAvailable))
+  externalizedAuthenticationContext = [(PKISO18013DataReleaseRequest *)self->_request externalizedAuthenticationContext];
+  if (externalizedAuthenticationContext && (v4 = externalizedAuthenticationContext, IsAvailable = PKUserIntentIsAvailable(), v4, IsAvailable))
   {
     v6 = SecAccessControlCreateWithFlags(*MEMORY[0x1E695E480], *MEMORY[0x1E697ABE8], 0x40000000uLL, 0);
     SecAccessControlSetConstraints();
@@ -604,27 +604,27 @@ void __61__PKDataReleaseContentViewController__startInitialEvaluation__block_inv
   [WeakRetained _finishedRemovingDoublePressCredentialWithError:v4];
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v7 = a5;
-  if (a3 == 5)
+  replyCopy = reply;
+  if (event == 5)
   {
     [(PKDataReleaseContentViewController *)self _finishedRemovingDoublePressCredentialWithError:0];
   }
 
-  (*(v7 + 2))(v7, MEMORY[0x1E695E0F8], 0);
+  (*(replyCopy + 2))(replyCopy, MEMORY[0x1E695E0F8], 0);
 }
 
-- (void)_finishedRemovingDoublePressCredentialWithError:(id)a3
+- (void)_finishedRemovingDoublePressCredentialWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__PKDataReleaseContentViewController__finishedRemovingDoublePressCredentialWithError___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -689,21 +689,21 @@ LABEL_9:
   [*(a1 + 32) _startEvaluationWithExternalizedContext:v12];
 }
 
-- (void)_startEvaluationWithExternalizedContext:(id)a3
+- (void)_startEvaluationWithExternalizedContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   self->_authenticating = 1;
   self->_isInBioLockout = 0;
   v5 = [objc_alloc(MEMORY[0x1E69BC748]) initWithPolicy:9];
-  [v5 setExternalizedContext:v4];
+  [v5 setExternalizedContext:contextCopy];
   v6 = PKLocalizedIdentityString(&cfstr_PresentmentFoo.isa);
   [v5 setPasscodeTitle:v6];
 
-  v7 = [(PKISO18013DataReleaseRequest *)self->_request authenticationACL];
+  authenticationACL = [(PKISO18013DataReleaseRequest *)self->_request authenticationACL];
   v8 = PKLogFacilityTypeGetObject();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v7)
+  if (!authenticationACL)
   {
     if (v9)
     {
@@ -1020,8 +1020,8 @@ LABEL_24:
   if (!self->_layoutRecursionCounter)
   {
     self->_isTemplateLayout = 1;
-    v4 = [(PKDataReleaseContentViewController *)self view];
-    [v4 bounds];
+    view = [(PKDataReleaseContentViewController *)self view];
+    [view bounds];
     [(PKDataReleaseContentViewController *)self _layoutWithBounds:?];
     v6 = v5;
     v8 = v7;
@@ -1032,22 +1032,22 @@ LABEL_24:
   }
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PKDataReleaseContentViewController *)self collectionView];
-  [v8 adjustedContentInset];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionView = [(PKDataReleaseContentViewController *)self collectionView];
+  [collectionView adjustedContentInset];
   v21 = v9;
-  [v8 contentSize];
+  [collectionView contentSize];
   v11 = v10;
   [(PKPaymentAuthorizationFooterView *)self->_footerView systemLayoutSizeFittingSize:*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)];
   v13 = v12;
-  v14 = [(PKDataReleaseContentViewController *)self navigationController];
-  v15 = [v14 view];
-  [v15 safeAreaInsets];
+  navigationController = [(PKDataReleaseContentViewController *)self navigationController];
+  view = [navigationController view];
+  [view safeAreaInsets];
   v17 = v16;
 
   if (v13 - v17 >= 0.0)
@@ -1083,12 +1083,12 @@ LABEL_24:
   return result;
 }
 
-- (void)dataReleaseCompletedWithError:(id)a3
+- (void)dataReleaseCompletedWithError:(id)error
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  if (v4)
+  if (errorCopy)
   {
     v5 = 13;
   }
@@ -1098,13 +1098,13 @@ LABEL_24:
     v5 = 12;
   }
 
-  v6 = [v4 domain];
-  if (v6 != @"PassKitUI.PKDataReleaseError")
+  domain = [errorCopy domain];
+  if (domain != @"PassKitUI.PKDataReleaseError")
   {
-    v7 = v6;
-    if (v6)
+    v7 = domain;
+    if (domain)
     {
-      v8 = [(__CFString *)v6 isEqualToString:@"PassKitUI.PKDataReleaseError"];
+      v8 = [(__CFString *)domain isEqualToString:@"PassKitUI.PKDataReleaseError"];
 
       if (v8)
       {
@@ -1119,31 +1119,31 @@ LABEL_24:
   }
 
 LABEL_7:
-  v9 = [v4 code];
+  code = [errorCopy code];
   v7 = 0;
   v10 = @"other";
-  if (v9 > 2)
+  if (code > 2)
   {
-    if (v9 == 3)
+    if (code == 3)
     {
       v7 = PKLocalizedIdentityString(&cfstr_PresentmentFoo_2.isa);
       v10 = @"transactionFailed";
     }
 
-    else if (v9 == 4)
+    else if (code == 4)
     {
       v7 = PKLocalizedIdentityString(&cfstr_PresentmentFoo_2.isa);
       v10 = @"sessionFailed";
     }
   }
 
-  else if (v9 == 1)
+  else if (code == 1)
   {
     v7 = PKLocalizedIdentityString(&cfstr_PresentmentFoo_3.isa);
     v10 = @"authenticationFailed";
   }
 
-  else if (v9 == 2)
+  else if (code == 2)
   {
     v7 = 0;
     v10 = @"userCancelled";
@@ -1156,7 +1156,7 @@ LABEL_18:
   v27[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v14 = @"failure";
-  if (!v4)
+  if (!errorCopy)
   {
     v14 = @"success";
   }
@@ -1181,7 +1181,7 @@ LABEL_18:
   v21[2] = __68__PKDataReleaseContentViewController_dataReleaseCompletedWithError___block_invoke;
   v21[3] = &unk_1E80113B0;
   objc_copyWeak(&v23, &location);
-  v20 = v4;
+  v20 = errorCopy;
   v22 = v20;
   [(PKPaymentAuthorizationFooterView *)footerView setState:v5 string:v7 animated:1 withCompletion:v21];
 
@@ -1229,8 +1229,8 @@ void __68__PKDataReleaseContentViewController_dataReleaseCompletedWithError___bl
   if (self->_footerView)
   {
     v3 = PKLocalizedIdentityString(&cfstr_PresentmentFoo.isa);
-    v4 = [(PKISO18013DataReleaseRequest *)self->_request authenticationACL];
-    if (v4)
+    authenticationACL = [(PKISO18013DataReleaseRequest *)self->_request authenticationACL];
+    if (authenticationACL)
     {
       v5 = SecAccessControlCreateFromData();
       if (v5)
@@ -1251,44 +1251,44 @@ void __68__PKDataReleaseContentViewController_dataReleaseCompletedWithError___bl
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithReuseIdentifier:@"dataReleaseElementsCellIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithReuseIdentifier:@"dataReleaseElementsCellIdentifier" forIndexPath:path];
   v6 = [_TtC9PassKitUI34PKIdentityDataReleaseConfiguration alloc];
   recognizedElements = self->_recognizedElements;
-  v8 = [(PKDataReleaseContentViewController *)self _merchantName];
-  v9 = [(PKIdentityDataReleaseConfiguration *)v6 initWithRecognizedElements:recognizedElements relyingPartyName:v8];
+  _merchantName = [(PKDataReleaseContentViewController *)self _merchantName];
+  v9 = [(PKIdentityDataReleaseConfiguration *)v6 initWithRecognizedElements:recognizedElements relyingPartyName:_merchantName];
 
   [v5 setDataReleaseConfiguration:v9];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"dataReleaseRelyingPartyCellIdentifier" forIndexPath:a5];
+  v6 = [view dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"dataReleaseRelyingPartyCellIdentifier" forIndexPath:path];
   v7 = [_TtC9PassKitUI42PKDataReleaseRelyingPartyCellConfiguration alloc];
-  v8 = [(PKDataReleaseContentViewController *)self _merchantName];
-  v9 = [(PKDataReleaseRelyingPartyCellConfiguration *)v7 initWithName:v8 icon:self->_merchantIcon];
+  _merchantName = [(PKDataReleaseContentViewController *)self _merchantName];
+  v9 = [(PKDataReleaseRelyingPartyCellConfiguration *)v7 initWithName:_merchantName icon:self->_merchantIcon];
 
   [v6 setConfiguration:v9];
 
   return v6;
 }
 
-- (id)_layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)_layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v5 = a4;
+  environmentCopy = environment;
   v6 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   if ([(PKDataReleaseContentViewController *)self _showMerchant])
   {
     [v6 setHeaderMode:1];
   }
 
-  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
   [v8 contentInsets];
   [v8 setContentInsets:0.0];
 
@@ -1297,11 +1297,11 @@ void __68__PKDataReleaseContentViewController_dataReleaseCompletedWithError___bl
 
 - (BOOL)_showMerchant
 {
-  v3 = [(PKISO18013DataReleaseRequest *)self->_request rpIdentifier];
-  if ([v3 length])
+  rpIdentifier = [(PKISO18013DataReleaseRequest *)self->_request rpIdentifier];
+  if ([rpIdentifier length])
   {
-    v4 = [(PKDataReleaseContentViewController *)self _merchantName];
-    v5 = v4 != 0;
+    _merchantName = [(PKDataReleaseContentViewController *)self _merchantName];
+    v5 = _merchantName != 0;
   }
 
   else
@@ -1314,38 +1314,38 @@ void __68__PKDataReleaseContentViewController_dataReleaseCompletedWithError___bl
 
 - (id)_merchantName
 {
-  v3 = [(PKMerchant *)self->_merchant displayName];
-  v4 = [v3 length];
+  displayName = [(PKMerchant *)self->_merchant displayName];
+  v4 = [displayName length];
 
   if (v4)
   {
-    v5 = [(PKMerchant *)self->_merchant displayName];
+    displayName2 = [(PKMerchant *)self->_merchant displayName];
   }
 
   else
   {
-    v6 = [(PKISO18013DataReleaseRequest *)self->_request organizationName];
-    v7 = [v6 length];
+    organizationName = [(PKISO18013DataReleaseRequest *)self->_request organizationName];
+    v7 = [organizationName length];
 
     if (v7)
     {
-      v5 = [(PKISO18013DataReleaseRequest *)self->_request organizationName];
+      displayName2 = [(PKISO18013DataReleaseRequest *)self->_request organizationName];
     }
 
     else
     {
-      v5 = 0;
+      displayName2 = 0;
     }
   }
 
-  return v5;
+  return displayName2;
 }
 
 - (void)_reloadMerchantHeader
 {
-  v3 = [(PKDataReleaseContentViewController *)self collectionView];
+  collectionView = [(PKDataReleaseContentViewController *)self collectionView];
   v2 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-  [v3 reloadSections:v2];
+  [collectionView reloadSections:v2];
 }
 
 - (void)presentPasscodeToExitLockout
@@ -1432,11 +1432,11 @@ void __66__PKDataReleaseContentViewController_presentPasscodeToExitLockout__bloc
   }
 }
 
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
+  var1 = event.var1;
+  var0 = event.var0;
+  authenticatorCopy = authenticator;
   p_lastFailureWasUnboundBiometric = &self->_lastFailureWasUnboundBiometric;
   lastFailureWasUnboundBiometric = self->_lastFailureWasUnboundBiometric;
   v10 = self->_lastFailureWasUnboundBiometric;
@@ -1536,7 +1536,7 @@ void __92__PKDataReleaseContentViewController_authenticator_didTransitionToEvalu
   }
 }
 
-- (void)authorizationFooterViewPasscodeButtonPressed:(id)a3
+- (void)authorizationFooterViewPasscodeButtonPressed:(id)pressed
 {
   if (self->_authenticating)
   {
@@ -1549,30 +1549,30 @@ void __92__PKDataReleaseContentViewController_authenticator_didTransitionToEvalu
   }
 }
 
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_passcodeViewController);
 
   if (WeakRetained)
   {
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
-    objc_storeWeak(&self->_passcodeViewController, v7);
-    [v7 setModalPresentationStyle:5];
+    objc_storeWeak(&self->_passcodeViewController, controllerCopy);
+    [controllerCopy setModalPresentationStyle:5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __92__PKDataReleaseContentViewController_presentPasscodeViewController_completionHandler_reply___block_invoke;
     v10[3] = &unk_1E8010B50;
-    v11 = v8;
-    [(PKDataReleaseContentViewController *)self presentViewController:v7 animated:1 completion:v10];
+    v11 = handlerCopy;
+    [(PKDataReleaseContentViewController *)self presentViewController:controllerCopy animated:1 completion:v10];
   }
 }
 
@@ -1593,8 +1593,8 @@ uint64_t __92__PKDataReleaseContentViewController_presentPasscodeViewController_
   if (WeakRetained)
   {
     v4 = WeakRetained;
-    v3 = [WeakRetained presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [WeakRetained presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

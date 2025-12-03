@@ -1,77 +1,77 @@
 @interface NSPServerClient
-+ (id)getErrorFromDict:(uint64_t)a1;
-- (BOOL)checkOriginAllowedAsThirdParty:(id)a3;
++ (id)getErrorFromDict:(uint64_t)dict;
+- (BOOL)checkOriginAllowedAsThirdParty:(id)party;
 - (BOOL)removePrivacyProxyPolicy;
-- (id)getAgentUUIDForType:(int64_t)a3;
+- (id)getAgentUUIDForType:(int64_t)type;
 - (id)getConnection;
 - (id)getTokenFetchConnection;
-- (id)initWithCallbackQueue:(id)a1;
-- (void)addAuxiliaryAuthenticationData:(id)a3 type:(unint64_t)a4 label:(id)a5 cacheKey:(id)a6;
-- (void)addOneTimeToken:(id)a3 oneTimeTokenSalt:(id)a4 longLivedToken:(id)a5 toCacheForFetcher:(id)a6;
-- (void)addToken:(id)a3 toCacheForFetcher:(id)a4;
-- (void)checkRemainingCostQuotaWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5;
-- (void)convertPrivacyProxyConfigurationWithCompletionHandler:(id)a3 completionHandler:(id)a4;
-- (void)dumpPrivacyProxyTokenEventsWithCompletionHandler:(id)a3 mostRecent:(BOOL)a4 limit:(unint64_t)a5 dumpStats:(BOOL)a6 completionHandler:(id)a7;
-- (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)a3 label:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6;
-- (void)fetchCurrentConfigurationWithCompletionHandler:(id)a3;
-- (void)fetchKnownPrivateAccessTokenKeyWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchNewConfigurationWithCompletionHandler:(id)a3;
-- (void)fetchPrivateAccessTokenAndAuxAuthWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchPrivateAccessTokenPairWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchPrivateAccessTokenWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5;
-- (void)getForceFallbackWithCompletionHandler:(id)a3;
-- (void)getGeohashSharingPreferenceWithCompletionHandler:(id)a3;
-- (void)getOverrideIngressProxyWithCompletionHandler:(id)a3;
-- (void)getOverrideProxiedContentMapEnabled:(id)a3 completionHandler:(id)a4;
-- (void)getPreferredObliviousProxyWithCompletionHandler:(id)a3;
-- (void)getPreferredProxyWithCompletionHandler:(id)a3;
-- (void)getPreferredResolverWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyAccountTypeWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyAppStatusesWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyConfiguration:(id)a3;
-- (void)getPrivacyProxyDomainFilters:(id)a3;
-- (void)getPrivacyProxyEffectiveUserTierWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyInfoWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyPolicyWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyServiceStatusTimelineWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyServiceStatusWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyStatusWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyTrafficStateWithCompletionHandler:(id)a3;
-- (void)getPrivacyProxyUserTierWithCompletionHandler:(id)a3;
-- (void)getPrivateAccessTokensEnabledWithCompletionHandler:(id)a3;
-- (void)locationAuthorizationStatusWithCompletionHandler:(id)a3;
-- (void)mergePrivacyProxyPolicy:(id)a3;
-- (void)overrideIngressProxy:(id)a3 fallbackProxy:(id)a4 key:(id)a5 completionHandler:(id)a6;
-- (void)overridePreferredObliviousProxy:(id)a3 completionHandler:(id)a4;
-- (void)overridePreferredProxy:(id)a3 completionHandler:(id)a4;
-- (void)overridePreferredResolver:(id)a3 completionHandler:(id)a4;
-- (void)overrideProxiedContentMap:(id)a3 enabled:(BOOL)a4 completionHandler:(id)a5;
-- (void)privateAccessTokensAllowTools:(BOOL)a3 completionHandler:(id)a4;
-- (void)reportPrivacyProxyNetworkStatus:(id)a3 completionHandler:(id)a4;
-- (void)reportPrivacyProxyServiceStatus:(unint64_t)a3 completionHandler:(id)a4;
-- (void)resetConfigurationInternalSettings:(id)a3;
-- (void)sendRTCReport:(int64_t)a3 errorCode:(int64_t)a4 url:(id)a5 completionHandler:(id)a6;
-- (void)setCurrentConfiguration:(id)a3 withCompletionHandler:(id)a4;
-- (void)setForceFallback:(BOOL)a3 completionHandler:(id)a4;
-- (void)setFreeUserTierUntilTomorrowWithCompletionHandler:(id)a3;
-- (void)setGeohashOverride:(id)a3 completionHandler:(id)a4;
-- (void)setGeohashSharingPreference:(BOOL)a3 completionHandler:(id)a4;
-- (void)setInProcessFlowDivert:(BOOL)a3 completionHandler:(id)a4;
-- (void)setLocationMonitorInterval:(double)a3;
-- (void)setPreferredPathRoutingEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setPrivacyProxyAppStatus:(unint64_t)a3 bundleIdentifier:(id)a4 path:(id)a5 completionHandler:(id)a6;
-- (void)setPrivacyProxyConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)setPrivacyProxyPolicy:(id)a3 completionHandler:(id)a4;
-- (void)setPrivacyProxyStatus:(BOOL)a3 completionHandler:(id)a4;
-- (void)setPrivacyProxyTokenEventsProactiveTokenFetchParams:(id)a3 lowerTokenCountThresholdStr:(id)a4 lowerTokenCountProbabilityStr:(id)a5 statsDurationStr:(id)a6 upperLWMCountThresholdStr:(id)a7 upperLWMCountProbabilityOffsetStr:(id)a8 completionHandler:(id)a9;
-- (void)setPrivacyProxyTrafficState:(unint64_t)a3 proxyTraffic:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setPrivacyProxyUserTier:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setPrivateAccessTokensEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setProxiedContentMapDoHBootstrapEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (id)initWithCallbackQueue:(id)queue;
+- (void)addAuxiliaryAuthenticationData:(id)data type:(unint64_t)type label:(id)label cacheKey:(id)key;
+- (void)addOneTimeToken:(id)token oneTimeTokenSalt:(id)salt longLivedToken:(id)livedToken toCacheForFetcher:(id)fetcher;
+- (void)addToken:(id)token toCacheForFetcher:(id)fetcher;
+- (void)checkRemainingCostQuotaWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler;
+- (void)convertPrivacyProxyConfigurationWithCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)dumpPrivacyProxyTokenEventsWithCompletionHandler:(id)handler mostRecent:(BOOL)recent limit:(unint64_t)limit dumpStats:(BOOL)stats completionHandler:(id)completionHandler;
+- (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)type label:(id)label cacheKey:(id)key completionHandler:(id)handler;
+- (void)fetchCurrentConfigurationWithCompletionHandler:(id)handler;
+- (void)fetchKnownPrivateAccessTokenKeyWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler;
+- (void)fetchNewConfigurationWithCompletionHandler:(id)handler;
+- (void)fetchPrivateAccessTokenAndAuxAuthWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler;
+- (void)fetchPrivateAccessTokenPairWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler;
+- (void)fetchPrivateAccessTokenWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler;
+- (void)getForceFallbackWithCompletionHandler:(id)handler;
+- (void)getGeohashSharingPreferenceWithCompletionHandler:(id)handler;
+- (void)getOverrideIngressProxyWithCompletionHandler:(id)handler;
+- (void)getOverrideProxiedContentMapEnabled:(id)enabled completionHandler:(id)handler;
+- (void)getPreferredObliviousProxyWithCompletionHandler:(id)handler;
+- (void)getPreferredProxyWithCompletionHandler:(id)handler;
+- (void)getPreferredResolverWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyAccountTypeWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyAppStatusesWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyConfiguration:(id)configuration;
+- (void)getPrivacyProxyDomainFilters:(id)filters;
+- (void)getPrivacyProxyEffectiveUserTierWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyInfoWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyPolicyWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyServiceStatusTimelineWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyServiceStatusWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyStatusWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyTrafficStateWithCompletionHandler:(id)handler;
+- (void)getPrivacyProxyUserTierWithCompletionHandler:(id)handler;
+- (void)getPrivateAccessTokensEnabledWithCompletionHandler:(id)handler;
+- (void)locationAuthorizationStatusWithCompletionHandler:(id)handler;
+- (void)mergePrivacyProxyPolicy:(id)policy;
+- (void)overrideIngressProxy:(id)proxy fallbackProxy:(id)fallbackProxy key:(id)key completionHandler:(id)handler;
+- (void)overridePreferredObliviousProxy:(id)proxy completionHandler:(id)handler;
+- (void)overridePreferredProxy:(id)proxy completionHandler:(id)handler;
+- (void)overridePreferredResolver:(id)resolver completionHandler:(id)handler;
+- (void)overrideProxiedContentMap:(id)map enabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)privateAccessTokensAllowTools:(BOOL)tools completionHandler:(id)handler;
+- (void)reportPrivacyProxyNetworkStatus:(id)status completionHandler:(id)handler;
+- (void)reportPrivacyProxyServiceStatus:(unint64_t)status completionHandler:(id)handler;
+- (void)resetConfigurationInternalSettings:(id)settings;
+- (void)sendRTCReport:(int64_t)report errorCode:(int64_t)code url:(id)url completionHandler:(id)handler;
+- (void)setCurrentConfiguration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setForceFallback:(BOOL)fallback completionHandler:(id)handler;
+- (void)setFreeUserTierUntilTomorrowWithCompletionHandler:(id)handler;
+- (void)setGeohashOverride:(id)override completionHandler:(id)handler;
+- (void)setGeohashSharingPreference:(BOOL)preference completionHandler:(id)handler;
+- (void)setInProcessFlowDivert:(BOOL)divert completionHandler:(id)handler;
+- (void)setLocationMonitorInterval:(double)interval;
+- (void)setPreferredPathRoutingEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setPrivacyProxyAppStatus:(unint64_t)status bundleIdentifier:(id)identifier path:(id)path completionHandler:(id)handler;
+- (void)setPrivacyProxyConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)setPrivacyProxyPolicy:(id)policy completionHandler:(id)handler;
+- (void)setPrivacyProxyStatus:(BOOL)status completionHandler:(id)handler;
+- (void)setPrivacyProxyTokenEventsProactiveTokenFetchParams:(id)params lowerTokenCountThresholdStr:(id)str lowerTokenCountProbabilityStr:(id)probabilityStr statsDurationStr:(id)durationStr upperLWMCountThresholdStr:(id)thresholdStr upperLWMCountProbabilityOffsetStr:(id)offsetStr completionHandler:(id)handler;
+- (void)setPrivacyProxyTrafficState:(unint64_t)state proxyTraffic:(unint64_t)traffic completionHandler:(id)handler;
+- (void)setPrivacyProxyUserTier:(unint64_t)tier completionHandler:(id)handler;
+- (void)setPrivateAccessTokensEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setProxiedContentMapDoHBootstrapEnabled:(BOOL)enabled completionHandler:(id)handler;
 - (void)startLocationMonitor;
-- (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3;
+- (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler;
 - (void)stopLocationMonitor;
-- (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3;
+- (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler;
 @end
 
 @implementation NSPServerClient
@@ -79,15 +79,15 @@
 - (id)getConnection
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 24);
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 24);
     if (!v2)
     {
-      v3 = [@"com.apple.networkserviceproxy" UTF8String];
-      Property = objc_getProperty(a1, v4, 16, 1);
-      mach_service = xpc_connection_create_mach_service(v3, Property, 0);
+      uTF8String = [@"com.apple.networkserviceproxy" UTF8String];
+      Property = objc_getProperty(self, v4, 16, 1);
+      mach_service = xpc_connection_create_mach_service(uTF8String, Property, 0);
       v7 = mach_service;
       if (mach_service)
       {
@@ -95,12 +95,12 @@
         v13[1] = 3221225472;
         v13[2] = __32__NSPServerClient_getConnection__block_invoke;
         v13[3] = &unk_1E7A308F8;
-        v13[4] = a1;
+        v13[4] = self;
         v8 = mach_service;
         v14 = v8;
         xpc_connection_set_event_handler(v8, v13);
         xpc_connection_resume(v8);
-        objc_storeStrong((a1 + 24), v7);
+        objc_storeStrong((self + 24), v7);
       }
 
       else
@@ -109,16 +109,16 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315138;
-          v16 = [@"com.apple.networkserviceproxy" UTF8String];
+          uTF8String2 = [@"com.apple.networkserviceproxy" UTF8String];
           _os_log_error_impl(&dword_1AE7E2000, v9, OS_LOG_TYPE_ERROR, "Failed to create an XPC connection to %s", buf, 0xCu);
         }
       }
 
-      v2 = *(a1 + 24);
+      v2 = *(self + 24);
     }
 
     v10 = v2;
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -131,15 +131,15 @@
   return v10;
 }
 
-- (id)initWithCallbackQueue:(id)a1
+- (id)initWithCallbackQueue:(id)queue
 {
   v3 = a2;
-  if (a1)
+  if (queue)
   {
-    v7.receiver = a1;
+    v7.receiver = queue;
     v7.super_class = NSPServerClient;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    queue = objc_msgSendSuper2(&v7, sel_init);
+    if (queue)
     {
       if (v3)
       {
@@ -151,14 +151,14 @@
         v4 = dispatch_queue_create("NSPServerClient queue", 0);
       }
 
-      v5 = *(a1 + 2);
-      *(a1 + 2) = v4;
+      v5 = *(queue + 2);
+      *(queue + 2) = v4;
 
-      *(a1 + 2) = 0;
+      *(queue + 2) = 0;
     }
   }
 
-  return a1;
+  return queue;
 }
 
 void __32__NSPServerClient_getConnection__block_invoke(uint64_t a1, void *a2)
@@ -218,7 +218,7 @@ uint64_t __50__NSPServerClient_isAllowedToUseFetchTokenService__block_invoke()
 - (id)getTokenFetchConnection
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (qword_1ED4BF5D8 != -1)
     {
@@ -227,11 +227,11 @@ uint64_t __50__NSPServerClient_isAllowedToUseFetchTokenService__block_invoke()
 
     if (_MergedGlobals_25)
     {
-      os_unfair_lock_lock((a1 + 8));
-      v3 = *(a1 + 32);
+      os_unfair_lock_lock((self + 8));
+      v3 = *(self + 32);
       if (!v3)
       {
-        Property = objc_getProperty(a1, v2, 16, 1);
+        Property = objc_getProperty(self, v2, 16, 1);
         mach_service = xpc_connection_create_mach_service("com.apple.networkserviceproxy.fetch-token", Property, 0);
         v6 = mach_service;
         if (mach_service)
@@ -240,12 +240,12 @@ uint64_t __50__NSPServerClient_isAllowedToUseFetchTokenService__block_invoke()
           v13[1] = 3221225472;
           v13[2] = __42__NSPServerClient_getTokenFetchConnection__block_invoke;
           v13[3] = &unk_1E7A308F8;
-          v13[4] = a1;
+          v13[4] = self;
           v7 = mach_service;
           v14 = v7;
           xpc_connection_set_event_handler(v7, v13);
           xpc_connection_resume(v7);
-          objc_storeStrong((a1 + 32), v6);
+          objc_storeStrong((self + 32), v6);
           v8 = nplog_obj();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
@@ -266,27 +266,27 @@ uint64_t __50__NSPServerClient_isAllowedToUseFetchTokenService__block_invoke()
           }
         }
 
-        v3 = *(a1 + 32);
+        v3 = *(self + 32);
       }
 
-      v9 = v3;
-      os_unfair_lock_unlock((a1 + 8));
+      getConnection = v3;
+      os_unfair_lock_unlock((self + 8));
     }
 
     else
     {
-      v9 = [(NSPServerClient *)a1 getConnection];
+      getConnection = [(NSPServerClient *)self getConnection];
     }
   }
 
   else
   {
-    v9 = 0;
+    getConnection = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return getConnection;
 }
 
 void __42__NSPServerClient_getTokenFetchConnection__block_invoke(uint64_t a1, void *a2)
@@ -330,9 +330,9 @@ void __42__NSPServerClient_getTokenFetchConnection__block_invoke(uint64_t a1, vo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCurrentConfigurationWithCompletionHandler:(id)a3
+- (void)fetchCurrentConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -340,8 +340,8 @@ void __42__NSPServerClient_getTokenFetchConnection__block_invoke(uint64_t a1, vo
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting fetch configuration", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 1);
@@ -354,13 +354,13 @@ void __42__NSPServerClient_getTokenFetchConnection__block_invoke(uint64_t a1, vo
     handler[1] = 3221225472;
     handler[2] = __66__NSPServerClient_fetchCurrentConfigurationWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v10 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v10 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -394,9 +394,9 @@ void __66__NSPServerClient_fetchCurrentConfigurationWithCompletionHandler___bloc
   }
 }
 
-- (void)fetchNewConfigurationWithCompletionHandler:(id)a3
+- (void)fetchNewConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -404,8 +404,8 @@ void __66__NSPServerClient_fetchCurrentConfigurationWithCompletionHandler___bloc
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting a new fetch of the configuration from the server", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 74);
@@ -418,8 +418,8 @@ void __66__NSPServerClient_fetchCurrentConfigurationWithCompletionHandler___bloc
     handler[1] = 3221225472;
     handler[2] = __62__NSPServerClient_fetchNewConfigurationWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v10 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v10 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 }
 
@@ -454,16 +454,16 @@ void __62__NSPServerClient_fetchNewConfigurationWithCompletionHandler___block_in
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetConfigurationInternalSettings:(id)a3
+- (void)resetConfigurationInternalSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__NSPServerClient_resetConfigurationInternalSettings___block_invoke;
   v6[3] = &unk_1E7A30970;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = settingsCopy;
+  v5 = settingsCopy;
   [(NSPServerClient *)self fetchCurrentConfigurationWithCompletionHandler:v6];
 }
 
@@ -505,10 +505,10 @@ void __54__NSPServerClient_resetConfigurationInternalSettings___block_invoke_2(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentConfiguration:(id)a3 withCompletionHandler:(id)a4
+- (void)setCurrentConfiguration:(id)configuration withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -516,13 +516,13 @@ void __54__NSPServerClient_resetConfigurationInternalSettings___block_invoke_2(u
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "Requesting set configuration", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 2);
     v11 = v10;
-    v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:configurationCopy requiringSecureCoding:1 error:0];
     if (v12)
     {
       v13 = v11;
@@ -539,13 +539,13 @@ void __54__NSPServerClient_resetConfigurationInternalSettings___block_invoke_2(u
     handler[1] = 3221225472;
     handler[2] = __65__NSPServerClient_setCurrentConfiguration_withCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v17 = v7;
-    xpc_connection_send_message_with_reply(v9, v11, &self->super, handler);
+    v17 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v11, &self->super, handler);
   }
 
   else
   {
-    (*(v7 + 2))(v7, @"IPC failed");
+    (*(handlerCopy + 2))(handlerCopy, @"IPC failed");
   }
 }
 
@@ -573,9 +573,9 @@ void __65__NSPServerClient_setCurrentConfiguration_withCompletionHandler___block
   }
 }
 
-- (void)getPrivacyProxyConfiguration:(id)a3
+- (void)getPrivacyProxyConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -587,8 +587,8 @@ void __65__NSPServerClient_setCurrentConfiguration_withCompletionHandler___block
   v7[1] = 3221225472;
   v7[2] = __48__NSPServerClient_getPrivacyProxyConfiguration___block_invoke;
   v7[3] = &unk_1E7A30998;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [(NSPServerClient *)self fetchCurrentConfigurationWithCompletionHandler:v7];
 }
 
@@ -666,9 +666,9 @@ void __48__NSPServerClient_getPrivacyProxyConfiguration___block_invoke(uint64_t 
   }
 }
 
-- (void)setPrivacyProxyConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setPrivacyProxyConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v4 = MEMORY[0x1EEE9AC00](self, a2, a3, a4);
+  v4 = MEMORY[0x1EEE9AC00](self, a2, configuration, handler);
   v6 = v5;
   selfa = v4;
   v891 = *MEMORY[0x1E69E9840];
@@ -3476,13 +3476,13 @@ void __48__NSPServerClient_getPrivacyProxyConfiguration___block_invoke(uint64_t 
       }
     }
 
-    v692 = [(NSPPrivacyProxyConfiguration *)v713 data];
-    v693 = [(NSPServerClient *)selfa getConnection];
-    if (v693)
+    data = [(NSPPrivacyProxyConfiguration *)v713 data];
+    getConnection = [(NSPServerClient *)selfa getConnection];
+    if (getConnection)
     {
       v694 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_int64(v694, "NSPServerCommandType", 16);
-      if (v692)
+      if (data)
       {
         v696 = v694;
         v697 = _CFXPCCreateXPCObjectFromCFObject();
@@ -3501,7 +3501,7 @@ void __48__NSPServerClient_getPrivacyProxyConfiguration___block_invoke(uint64_t 
       handler[2] = __66__NSPServerClient_setPrivacyProxyConfiguration_completionHandler___block_invoke;
       handler[3] = &unk_1E7A30920;
       v744 = v703;
-      xpc_connection_send_message_with_reply(v693, v694, v699, handler);
+      xpc_connection_send_message_with_reply(getConnection, v694, v699, handler);
 
       v9 = v703;
     }
@@ -3559,11 +3559,11 @@ void __66__NSPServerClient_setPrivacyProxyConfiguration_completionHandler___bloc
   }
 }
 
-- (void)convertPrivacyProxyConfigurationWithCompletionHandler:(id)a3 completionHandler:(id)a4
+- (void)convertPrivacyProxyConfigurationWithCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3571,12 +3571,12 @@ void __66__NSPServerClient_setPrivacyProxyConfiguration_completionHandler___bloc
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "converting privacy proxy configuration data into dictionary", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 30);
-    if (v6)
+    if (handlerCopy)
     {
       v12 = v10;
       v13 = _CFXPCCreateXPCObjectFromCFObject();
@@ -3592,8 +3592,8 @@ void __66__NSPServerClient_setPrivacyProxyConfiguration_completionHandler___bloc
     handler[1] = 3221225472;
     handler[2] = __91__NSPServerClient_convertPrivacyProxyConfigurationWithCompletionHandler_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v19 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v19 = completionHandlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -3611,7 +3611,7 @@ void __66__NSPServerClient_setPrivacyProxyConfiguration_completionHandler___bloc
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v10 = [v15 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v16];
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v10);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -3640,7 +3640,7 @@ void __91__NSPServerClient_convertPrivacyProxyConfigurationWithCompletionHandler
   }
 }
 
-+ (id)getErrorFromDict:(uint64_t)a1
++ (id)getErrorFromDict:(uint64_t)dict
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -3699,11 +3699,11 @@ LABEL_13:
   return int64;
 }
 
-- (void)overrideProxiedContentMap:(id)a3 enabled:(BOOL)a4 completionHandler:(id)a5
+- (void)overrideProxiedContentMap:(id)map enabled:(BOOL)enabled completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  mapCopy = map;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -3711,19 +3711,19 @@ LABEL_13:
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "override proxied content map enabled called", buf, 2u);
   }
 
-  v11 = [(NSPServerClient *)self getConnection];
-  if (v11)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v12 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v12, "NSPServerCommandType", 61);
-    if (v8)
+    if (mapCopy)
     {
       v13 = v12;
-      v14 = v8;
+      v14 = mapCopy;
       xpc_dictionary_set_string(v13, "NSPServerProxiedContentMapIdentifier", [v14 UTF8String]);
     }
 
-    xpc_dictionary_set_BOOL(v12, "NSPServerProxiedContentMapEnabled", a4);
+    xpc_dictionary_set_BOOL(v12, "NSPServerProxiedContentMapEnabled", enabled);
     if (self)
     {
       self = objc_getProperty(self, v15, 16, 1);
@@ -3733,8 +3733,8 @@ LABEL_13:
     handler[1] = 3221225472;
     handler[2] = __71__NSPServerClient_overrideProxiedContentMap_enabled_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v21 = v9;
-    xpc_connection_send_message_with_reply(v11, v12, &self->super, handler);
+    v21 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v12, &self->super, handler);
   }
 
   else
@@ -3752,7 +3752,7 @@ LABEL_13:
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v12 = [v17 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v18];
 
-    (*(v9 + 2))(v9, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -3771,11 +3771,11 @@ uint64_t __71__NSPServerClient_overrideProxiedContentMap_enabled_completionHandl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOverrideProxiedContentMapEnabled:(id)a3 completionHandler:(id)a4
+- (void)getOverrideProxiedContentMapEnabled:(id)enabled completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3783,15 +3783,15 @@ uint64_t __71__NSPServerClient_overrideProxiedContentMap_enabled_completionHandl
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "get override proxied content map enabled called", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 62);
-    if (v6)
+    if (enabledCopy)
     {
       v12 = v10;
-      v13 = v6;
+      v13 = enabledCopy;
       xpc_dictionary_set_string(v12, "NSPServerProxiedContentMapIdentifier", [v13 UTF8String]);
     }
 
@@ -3804,8 +3804,8 @@ uint64_t __71__NSPServerClient_overrideProxiedContentMap_enabled_completionHandl
     handler[1] = 3221225472;
     handler[2] = __73__NSPServerClient_getOverrideProxiedContentMapEnabled_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v19 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v19 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -3823,7 +3823,7 @@ uint64_t __71__NSPServerClient_overrideProxiedContentMap_enabled_completionHandl
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v10 = [v15 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v16];
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -3842,25 +3842,25 @@ void __73__NSPServerClient_getOverrideProxiedContentMapEnabled_completionHandler
   }
 }
 
-- (void)setProxiedContentMapDoHBootstrapEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setProxiedContentMapDoHBootstrapEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v20 = v4;
+    v20 = enabledCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set proxied content map DoH bootstrap enabled to %u", buf, 8u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 65);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", enabledCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -3870,8 +3870,8 @@ void __73__NSPServerClient_getOverrideProxiedContentMapEnabled_completionHandler
     handler[1] = 3221225472;
     handler[2] = __77__NSPServerClient_setProxiedContentMapDoHBootstrapEnabled_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -3889,7 +3889,7 @@ void __73__NSPServerClient_getOverrideProxiedContentMapEnabled_completionHandler
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -3908,11 +3908,11 @@ uint64_t __77__NSPServerClient_setProxiedContentMapDoHBootstrapEnabled_completio
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)overridePreferredProxy:(id)a3 completionHandler:(id)a4
+- (void)overridePreferredProxy:(id)proxy completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3920,15 +3920,15 @@ uint64_t __77__NSPServerClient_setProxiedContentMapDoHBootstrapEnabled_completio
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "override preferred proxy called", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 37);
-    if (v6)
+    if (proxyCopy)
     {
       v12 = v10;
-      v13 = v6;
+      v13 = proxyCopy;
       xpc_dictionary_set_string(v12, "NSPServerPrivacyProxyURL", [v13 UTF8String]);
     }
 
@@ -3941,8 +3941,8 @@ uint64_t __77__NSPServerClient_setProxiedContentMapDoHBootstrapEnabled_completio
     handler[1] = 3221225472;
     handler[2] = __60__NSPServerClient_overridePreferredProxy_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v19 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v19 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -3960,7 +3960,7 @@ uint64_t __77__NSPServerClient_setProxiedContentMapDoHBootstrapEnabled_completio
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v10 = [v15 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v16];
 
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -3979,10 +3979,10 @@ uint64_t __60__NSPServerClient_overridePreferredProxy_completionHandler___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPreferredProxyWithCompletionHandler:(id)a3
+- (void)getPreferredProxyWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3990,8 +3990,8 @@ uint64_t __60__NSPServerClient_overridePreferredProxy_completionHandler___block_
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get preferred proxy called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 38);
@@ -4004,8 +4004,8 @@ uint64_t __60__NSPServerClient_overridePreferredProxy_completionHandler___block_
     handler[1] = 3221225472;
     handler[2] = __58__NSPServerClient_getPreferredProxyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4023,7 +4023,7 @@ uint64_t __60__NSPServerClient_overridePreferredProxy_completionHandler___block_
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4046,11 +4046,11 @@ void __58__NSPServerClient_getPreferredProxyWithCompletionHandler___block_invoke
   }
 }
 
-- (void)overridePreferredResolver:(id)a3 completionHandler:(id)a4
+- (void)overridePreferredResolver:(id)resolver completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resolverCopy = resolver;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -4058,15 +4058,15 @@ void __58__NSPServerClient_getPreferredProxyWithCompletionHandler___block_invoke
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "override preferred resolver called", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 43);
-    if (v6)
+    if (resolverCopy)
     {
       v12 = v10;
-      v13 = v6;
+      v13 = resolverCopy;
       xpc_dictionary_set_string(v12, "NSPServerPrivacyProxyURL", [v13 UTF8String]);
     }
 
@@ -4079,8 +4079,8 @@ void __58__NSPServerClient_getPreferredProxyWithCompletionHandler___block_invoke
     handler[1] = 3221225472;
     handler[2] = __63__NSPServerClient_overridePreferredResolver_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v19 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v19 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -4098,7 +4098,7 @@ void __58__NSPServerClient_getPreferredProxyWithCompletionHandler___block_invoke
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v10 = [v15 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v16];
 
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -4117,10 +4117,10 @@ uint64_t __63__NSPServerClient_overridePreferredResolver_completionHandler___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPreferredResolverWithCompletionHandler:(id)a3
+- (void)getPreferredResolverWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4128,8 +4128,8 @@ uint64_t __63__NSPServerClient_overridePreferredResolver_completionHandler___blo
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get preferred resolver called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 44);
@@ -4142,8 +4142,8 @@ uint64_t __63__NSPServerClient_overridePreferredResolver_completionHandler___blo
     handler[1] = 3221225472;
     handler[2] = __61__NSPServerClient_getPreferredResolverWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4161,7 +4161,7 @@ uint64_t __63__NSPServerClient_overridePreferredResolver_completionHandler___blo
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4184,11 +4184,11 @@ void __61__NSPServerClient_getPreferredResolverWithCompletionHandler___block_inv
   }
 }
 
-- (void)overridePreferredObliviousProxy:(id)a3 completionHandler:(id)a4
+- (void)overridePreferredObliviousProxy:(id)proxy completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -4196,15 +4196,15 @@ void __61__NSPServerClient_getPreferredResolverWithCompletionHandler___block_inv
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "override preferred oblivious proxy called", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 68);
-    if (v6)
+    if (proxyCopy)
     {
       v12 = v10;
-      v13 = v6;
+      v13 = proxyCopy;
       xpc_dictionary_set_string(v12, "NSPServerPrivacyProxyURL", [v13 UTF8String]);
     }
 
@@ -4217,8 +4217,8 @@ void __61__NSPServerClient_getPreferredResolverWithCompletionHandler___block_inv
     handler[1] = 3221225472;
     handler[2] = __69__NSPServerClient_overridePreferredObliviousProxy_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v19 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v19 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -4236,7 +4236,7 @@ void __61__NSPServerClient_getPreferredResolverWithCompletionHandler___block_inv
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v10 = [v15 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v16];
 
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -4255,10 +4255,10 @@ uint64_t __69__NSPServerClient_overridePreferredObliviousProxy_completionHandler
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPreferredObliviousProxyWithCompletionHandler:(id)a3
+- (void)getPreferredObliviousProxyWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4266,8 +4266,8 @@ uint64_t __69__NSPServerClient_overridePreferredObliviousProxy_completionHandler
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get preferred oblivious proxy called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 69);
@@ -4280,8 +4280,8 @@ uint64_t __69__NSPServerClient_overridePreferredObliviousProxy_completionHandler
     handler[1] = 3221225472;
     handler[2] = __67__NSPServerClient_getPreferredObliviousProxyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4299,7 +4299,7 @@ uint64_t __69__NSPServerClient_overridePreferredObliviousProxy_completionHandler
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4322,13 +4322,13 @@ void __67__NSPServerClient_getPreferredObliviousProxyWithCompletionHandler___blo
   }
 }
 
-- (void)overrideIngressProxy:(id)a3 fallbackProxy:(id)a4 key:(id)a5 completionHandler:(id)a6
+- (void)overrideIngressProxy:(id)proxy fallbackProxy:(id)fallbackProxy key:(id)key completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  proxyCopy = proxy;
+  fallbackProxyCopy = fallbackProxy;
+  keyCopy = key;
+  handlerCopy = handler;
   v14 = nplog_obj();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -4336,26 +4336,26 @@ void __67__NSPServerClient_getPreferredObliviousProxyWithCompletionHandler___blo
     _os_log_debug_impl(&dword_1AE7E2000, v14, OS_LOG_TYPE_DEBUG, "override ingress proxy called", buf, 2u);
   }
 
-  v15 = [(NSPServerClient *)self getConnection];
-  if (v15)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v16 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v16, "NSPServerCommandType", 49);
-    v17 = v10;
+    v17 = proxyCopy;
     if (v17)
     {
       v18 = v16;
       xpc_dictionary_set_string(v18, "NSPServerPrivacyProxyURL", [v17 UTF8String]);
     }
 
-    v19 = v11;
+    v19 = fallbackProxyCopy;
     if (v19)
     {
       v20 = v16;
       xpc_dictionary_set_string(v20, "NSPServerPrivacyProxyFallbackURL", [v19 UTF8String]);
     }
 
-    if (v12)
+    if (keyCopy)
     {
       v22 = v16;
       v23 = _CFXPCCreateXPCObjectFromCFObject();
@@ -4371,8 +4371,8 @@ void __67__NSPServerClient_getPreferredObliviousProxyWithCompletionHandler___blo
     handler[1] = 3221225472;
     handler[2] = __76__NSPServerClient_overrideIngressProxy_fallbackProxy_key_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v29 = v13;
-    xpc_connection_send_message_with_reply(v15, v16, &self->super, handler);
+    v29 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v16, &self->super, handler);
   }
 
   else
@@ -4390,7 +4390,7 @@ void __67__NSPServerClient_getPreferredObliviousProxyWithCompletionHandler___blo
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v16 = [v25 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v26];
 
-    (*(v13 + 2))(v13, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -4409,10 +4409,10 @@ uint64_t __76__NSPServerClient_overrideIngressProxy_fallbackProxy_key_completion
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOverrideIngressProxyWithCompletionHandler:(id)a3
+- (void)getOverrideIngressProxyWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4420,8 +4420,8 @@ uint64_t __76__NSPServerClient_overrideIngressProxy_fallbackProxy_key_completion
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get override ingress proxy called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 50);
@@ -4434,8 +4434,8 @@ uint64_t __76__NSPServerClient_overrideIngressProxy_fallbackProxy_key_completion
     handler[1] = 3221225472;
     handler[2] = __64__NSPServerClient_getOverrideIngressProxyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4453,7 +4453,7 @@ uint64_t __76__NSPServerClient_overrideIngressProxy_fallbackProxy_key_completion
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, 0, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4483,10 +4483,10 @@ void __64__NSPServerClient_getOverrideIngressProxyWithCompletionHandler___block_
   }
 }
 
-- (void)setForceFallback:(BOOL)a3 completionHandler:(id)a4
+- (void)setForceFallback:(BOOL)fallback completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -4494,12 +4494,12 @@ void __64__NSPServerClient_getOverrideIngressProxyWithCompletionHandler___block_
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "force fallback called", buf, 2u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 46);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyForceFallback", a3);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyForceFallback", fallback);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -4509,8 +4509,8 @@ void __64__NSPServerClient_getOverrideIngressProxyWithCompletionHandler___block_
     handler[1] = 3221225472;
     handler[2] = __54__NSPServerClient_setForceFallback_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -4528,7 +4528,7 @@ void __64__NSPServerClient_getOverrideIngressProxyWithCompletionHandler___block_
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -4547,10 +4547,10 @@ uint64_t __54__NSPServerClient_setForceFallback_completionHandler___block_invoke
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getForceFallbackWithCompletionHandler:(id)a3
+- (void)getForceFallbackWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4558,8 +4558,8 @@ uint64_t __54__NSPServerClient_setForceFallback_completionHandler___block_invoke
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get force fallback called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 47);
@@ -4572,8 +4572,8 @@ uint64_t __54__NSPServerClient_setForceFallback_completionHandler___block_invoke
     handler[1] = 3221225472;
     handler[2] = __57__NSPServerClient_getForceFallbackWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4591,7 +4591,7 @@ uint64_t __54__NSPServerClient_setForceFallback_completionHandler___block_invoke
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4610,16 +4610,16 @@ void __57__NSPServerClient_getForceFallbackWithCompletionHandler___block_invoke(
   }
 }
 
-- (void)setPrivacyProxyStatus:(BOOL)a3 completionHandler:(id)a4
+- (void)setPrivacyProxyStatus:(BOOL)status completionHandler:(id)handler
 {
-  v4 = a3;
+  statusCopy = status;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v15 = @"Disabled";
-    if (v4)
+    if (statusCopy)
     {
       v15 = @"Enabled";
     }
@@ -4629,12 +4629,12 @@ void __57__NSPServerClient_getForceFallbackWithCompletionHandler___block_invoke(
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Setting privacy proxy %@", buf, 0xCu);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 17);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", statusCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -4644,8 +4644,8 @@ void __57__NSPServerClient_getForceFallbackWithCompletionHandler___block_invoke(
     handler[1] = 3221225472;
     handler[2] = __59__NSPServerClient_setPrivacyProxyStatus_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v17 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v17 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -4663,7 +4663,7 @@ void __57__NSPServerClient_getForceFallbackWithCompletionHandler___block_invoke(
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -4682,10 +4682,10 @@ uint64_t __59__NSPServerClient_setPrivacyProxyStatus_completionHandler___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivacyProxyStatusWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyStatusWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4693,8 +4693,8 @@ uint64_t __59__NSPServerClient_setPrivacyProxyStatus_completionHandler___block_i
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting get privacy proxy status", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 18);
@@ -4707,8 +4707,8 @@ uint64_t __59__NSPServerClient_setPrivacyProxyStatus_completionHandler___block_i
     handler[1] = 3221225472;
     handler[2] = __62__NSPServerClient_getPrivacyProxyStatusWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4726,7 +4726,7 @@ uint64_t __59__NSPServerClient_setPrivacyProxyStatus_completionHandler___block_i
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4745,10 +4745,10 @@ void __62__NSPServerClient_getPrivacyProxyStatusWithCompletionHandler___block_in
   }
 }
 
-- (void)getPrivacyProxyServiceStatusWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyServiceStatusWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4756,8 +4756,8 @@ void __62__NSPServerClient_getPrivacyProxyStatusWithCompletionHandler___block_in
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting get privacy proxy service status", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 33);
@@ -4770,8 +4770,8 @@ void __62__NSPServerClient_getPrivacyProxyStatusWithCompletionHandler___block_in
     handler[1] = 3221225472;
     handler[2] = __69__NSPServerClient_getPrivacyProxyServiceStatusWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4789,7 +4789,7 @@ void __62__NSPServerClient_getPrivacyProxyStatusWithCompletionHandler___block_in
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4816,10 +4816,10 @@ void __69__NSPServerClient_getPrivacyProxyServiceStatusWithCompletionHandler___b
   }
 }
 
-- (void)getPrivacyProxyServiceStatusTimelineWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyServiceStatusTimelineWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4827,8 +4827,8 @@ void __69__NSPServerClient_getPrivacyProxyServiceStatusWithCompletionHandler___b
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting get privacy proxy service status timeline", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 36);
@@ -4841,8 +4841,8 @@ void __69__NSPServerClient_getPrivacyProxyServiceStatusWithCompletionHandler___b
     handler[1] = 3221225472;
     handler[2] = __77__NSPServerClient_getPrivacyProxyServiceStatusTimelineWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -4860,7 +4860,7 @@ void __69__NSPServerClient_getPrivacyProxyServiceStatusWithCompletionHandler___b
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -4892,10 +4892,10 @@ void __77__NSPServerClient_getPrivacyProxyServiceStatusTimelineWithCompletionHan
   }
 }
 
-- (void)reportPrivacyProxyServiceStatus:(unint64_t)a3 completionHandler:(id)a4
+- (void)reportPrivacyProxyServiceStatus:(unint64_t)status completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -4903,12 +4903,12 @@ void __77__NSPServerClient_getPrivacyProxyServiceStatusTimelineWithCompletionHan
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Reporting privacy proxy service status", buf, 2u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 34);
-    xpc_dictionary_set_int64(v9, "NSPServerPrivacyProxyServiceStatus", a3);
+    xpc_dictionary_set_int64(v9, "NSPServerPrivacyProxyServiceStatus", status);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -4918,8 +4918,8 @@ void __77__NSPServerClient_getPrivacyProxyServiceStatusTimelineWithCompletionHan
     handler[1] = 3221225472;
     handler[2] = __69__NSPServerClient_reportPrivacyProxyServiceStatus_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -4937,7 +4937,7 @@ void __77__NSPServerClient_getPrivacyProxyServiceStatusTimelineWithCompletionHan
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -4956,11 +4956,11 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyServiceStatus_completionHandler
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)reportPrivacyProxyNetworkStatus:(id)a3 completionHandler:(id)a4
+- (void)reportPrivacyProxyNetworkStatus:(id)status completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -4968,13 +4968,13 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyServiceStatus_completionHandler
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "Reporting privacy proxy network status", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 35);
-    v12 = [v6 serialize];
-    if (v12)
+    serialize = [statusCopy serialize];
+    if (serialize)
     {
       v13 = v10;
       v14 = _CFXPCCreateXPCObjectFromCFObject();
@@ -4990,8 +4990,8 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyServiceStatus_completionHandler
     handler[1] = 3221225472;
     handler[2] = __69__NSPServerClient_reportPrivacyProxyNetworkStatus_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v20 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v20 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -5009,7 +5009,7 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyServiceStatus_completionHandler
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v10 = [v16 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v17];
 
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -5028,10 +5028,10 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyNetworkStatus_completionHandler
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivacyProxyAppStatusesWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyAppStatusesWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5039,8 +5039,8 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyNetworkStatus_completionHandler
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Requesting get privacy proxy app statuses", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 63);
@@ -5053,8 +5053,8 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyNetworkStatus_completionHandler
     handler[1] = 3221225472;
     handler[2] = __67__NSPServerClient_getPrivacyProxyAppStatusesWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5072,7 +5072,7 @@ uint64_t __69__NSPServerClient_reportPrivacyProxyNetworkStatus_completionHandler
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5115,12 +5115,12 @@ void __67__NSPServerClient_getPrivacyProxyAppStatusesWithCompletionHandler___blo
   }
 }
 
-- (void)setPrivacyProxyAppStatus:(unint64_t)a3 bundleIdentifier:(id)a4 path:(id)a5 completionHandler:(id)a6
+- (void)setPrivacyProxyAppStatus:(unint64_t)status bundleIdentifier:(id)identifier path:(id)path completionHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  pathCopy = path;
+  handlerCopy = handler;
   v13 = nplog_obj();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -5128,12 +5128,12 @@ void __67__NSPServerClient_getPrivacyProxyAppStatusesWithCompletionHandler___blo
     _os_log_debug_impl(&dword_1AE7E2000, v13, OS_LOG_TYPE_DEBUG, "Reporting privacy proxy service status", buf, 2u);
   }
 
-  v14 = [(NSPServerClient *)self getConnection];
-  if (v14)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v15, "NSPServerCommandType", 64);
-    v16 = [[PrivacyProxyAppStatus alloc] initWithStatus:a3 bundleID:v10 path:v11 activeDate:0];
+    v16 = [[PrivacyProxyAppStatus alloc] initWithStatus:status bundleID:identifierCopy path:pathCopy activeDate:0];
     v17 = v15;
     v18 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:0];
     if (v18)
@@ -5152,8 +5152,8 @@ void __67__NSPServerClient_getPrivacyProxyAppStatusesWithCompletionHandler___blo
     handler[1] = 3221225472;
     handler[2] = __84__NSPServerClient_setPrivacyProxyAppStatus_bundleIdentifier_path_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v27 = v12;
-    xpc_connection_send_message_with_reply(v14, v17, &self->super, handler);
+    v27 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v17, &self->super, handler);
   }
 
   else
@@ -5171,7 +5171,7 @@ void __67__NSPServerClient_getPrivacyProxyAppStatusesWithCompletionHandler___blo
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v17 = [v23 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v24];
 
-    (*(v12 + 2))(v12, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -5190,41 +5190,41 @@ uint64_t __84__NSPServerClient_setPrivacyProxyAppStatus_bundleIdentifier_path_co
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPrivacyProxyUserTier:(unint64_t)a3 completionHandler:(id)a4
+- (void)setPrivacyProxyUserTier:(unint64_t)tier completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    if (a3 >= 3)
+    if (tier >= 3)
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a3];
+      tier = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", tier];
     }
 
     else
     {
-      v19 = off_1E7A309E0[a3 & 3];
+      tier = off_1E7A309E0[tier & 3];
     }
 
     *buf = 138412290;
-    v25 = v19;
+    v25 = tier;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Setting user tier for privacy proxy %@", buf, 0xCu);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 19);
-    xpc_dictionary_set_uint64(v9, "NSPServerPrivacyProxyUserTier", a3);
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    xpc_dictionary_set_uint64(v9, "NSPServerPrivacyProxyUserTier", tier);
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v11)
+    if (bundleIdentifier)
     {
       v13 = v9;
-      v14 = v11;
+      v14 = bundleIdentifier;
       xpc_dictionary_set_string(v13, "NSPServerSigningIdentifier", [v14 UTF8String]);
     }
 
@@ -5237,8 +5237,8 @@ uint64_t __84__NSPServerClient_setPrivacyProxyAppStatus_bundleIdentifier_path_co
     handler[1] = 3221225472;
     handler[2] = __61__NSPServerClient_setPrivacyProxyUserTier_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v21 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v21 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -5256,7 +5256,7 @@ uint64_t __84__NSPServerClient_setPrivacyProxyAppStatus_bundleIdentifier_path_co
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v9 = [v16 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v17];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -5275,10 +5275,10 @@ uint64_t __61__NSPServerClient_setPrivacyProxyUserTier_completionHandler___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivacyProxyUserTierWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyUserTierWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5286,8 +5286,8 @@ uint64_t __61__NSPServerClient_setPrivacyProxyUserTier_completionHandler___block
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get user tier", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 20);
@@ -5300,8 +5300,8 @@ uint64_t __61__NSPServerClient_setPrivacyProxyUserTier_completionHandler___block
     handler[1] = 3221225472;
     handler[2] = __64__NSPServerClient_getPrivacyProxyUserTierWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5319,7 +5319,7 @@ uint64_t __61__NSPServerClient_setPrivacyProxyUserTier_completionHandler___block
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5348,10 +5348,10 @@ void __64__NSPServerClient_getPrivacyProxyUserTierWithCompletionHandler___block_
   }
 }
 
-- (void)setFreeUserTierUntilTomorrowWithCompletionHandler:(id)a3
+- (void)setFreeUserTierUntilTomorrowWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5359,8 +5359,8 @@ void __64__NSPServerClient_getPrivacyProxyUserTierWithCompletionHandler___block_
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Set user tier to free until tomorrow", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 19);
@@ -5375,8 +5375,8 @@ void __64__NSPServerClient_getPrivacyProxyUserTierWithCompletionHandler___block_
     handler[1] = 3221225472;
     handler[2] = __69__NSPServerClient_setFreeUserTierUntilTomorrowWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5394,7 +5394,7 @@ void __64__NSPServerClient_getPrivacyProxyUserTierWithCompletionHandler___block_
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5413,27 +5413,27 @@ uint64_t __69__NSPServerClient_setFreeUserTierUntilTomorrowWithCompletionHandler
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPrivacyProxyTrafficState:(unint64_t)a3 proxyTraffic:(unint64_t)a4 completionHandler:(id)a5
+- (void)setPrivacyProxyTrafficState:(unint64_t)state proxyTraffic:(unint64_t)traffic completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = nplog_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v22 = a3;
+    stateCopy = state;
     v23 = 2048;
-    v24 = a4;
+    trafficCopy = traffic;
     _os_log_debug_impl(&dword_1AE7E2000, v9, OS_LOG_TYPE_DEBUG, "Setting privacy proxy traffic state for traffic type %llx: %llx", buf, 0x16u);
   }
 
-  v10 = [(NSPServerClient *)self getConnection];
-  if (v10)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v11 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v11, "NSPServerCommandType", 21);
-    xpc_dictionary_set_uint64(v11, "NSPServerPrivacyProxyTrafficMask", a3);
-    xpc_dictionary_set_uint64(v11, "NSPServerPrivacyProxyTraffic", a4);
+    xpc_dictionary_set_uint64(v11, "NSPServerPrivacyProxyTrafficMask", state);
+    xpc_dictionary_set_uint64(v11, "NSPServerPrivacyProxyTraffic", traffic);
     if (self)
     {
       self = objc_getProperty(self, v12, 16, 1);
@@ -5443,8 +5443,8 @@ uint64_t __69__NSPServerClient_setFreeUserTierUntilTomorrowWithCompletionHandler
     handler[1] = 3221225472;
     handler[2] = __78__NSPServerClient_setPrivacyProxyTrafficState_proxyTraffic_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v18 = v8;
-    xpc_connection_send_message_with_reply(v10, v11, &self->super, handler);
+    v18 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v11, &self->super, handler);
   }
 
   else
@@ -5462,7 +5462,7 @@ uint64_t __69__NSPServerClient_setFreeUserTierUntilTomorrowWithCompletionHandler
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v11 = [v14 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v15];
 
-    (*(v8 + 2))(v8, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -5481,10 +5481,10 @@ uint64_t __78__NSPServerClient_setPrivacyProxyTrafficState_proxyTraffic_completi
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivacyProxyTrafficStateWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyTrafficStateWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5492,8 +5492,8 @@ uint64_t __78__NSPServerClient_setPrivacyProxyTrafficState_proxyTraffic_completi
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get privacy proxy traffic state", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 22);
@@ -5506,8 +5506,8 @@ uint64_t __78__NSPServerClient_setPrivacyProxyTrafficState_proxyTraffic_completi
     handler[1] = 3221225472;
     handler[2] = __68__NSPServerClient_getPrivacyProxyTrafficStateWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5525,7 +5525,7 @@ uint64_t __78__NSPServerClient_setPrivacyProxyTrafficState_proxyTraffic_completi
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5552,10 +5552,10 @@ void __68__NSPServerClient_getPrivacyProxyTrafficStateWithCompletionHandler___bl
   }
 }
 
-- (void)getPrivacyProxyEffectiveUserTierWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyEffectiveUserTierWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5563,8 +5563,8 @@ void __68__NSPServerClient_getPrivacyProxyTrafficStateWithCompletionHandler___bl
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get effective user tier", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 42);
@@ -5577,8 +5577,8 @@ void __68__NSPServerClient_getPrivacyProxyTrafficStateWithCompletionHandler___bl
     handler[1] = 3221225472;
     handler[2] = __73__NSPServerClient_getPrivacyProxyEffectiveUserTierWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5596,7 +5596,7 @@ void __68__NSPServerClient_getPrivacyProxyTrafficStateWithCompletionHandler___bl
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5623,9 +5623,9 @@ void __73__NSPServerClient_getPrivacyProxyEffectiveUserTierWithCompletionHandler
   }
 }
 
-- (void)getPrivacyProxyDomainFilters:(id)a3
+- (void)getPrivacyProxyDomainFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5633,8 +5633,8 @@ void __73__NSPServerClient_getPrivacyProxyEffectiveUserTierWithCompletionHandler
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "get privacy proxy domain filters called", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 58);
@@ -5647,8 +5647,8 @@ void __73__NSPServerClient_getPrivacyProxyEffectiveUserTierWithCompletionHandler
     handler[1] = 3221225472;
     handler[2] = __48__NSPServerClient_getPrivacyProxyDomainFilters___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v11 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v11 = filtersCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5660,7 +5660,7 @@ void __73__NSPServerClient_getPrivacyProxyEffectiveUserTierWithCompletionHandler
       _os_log_error_impl(&dword_1AE7E2000, v9, OS_LOG_TYPE_ERROR, "Failed to get XPC connection", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(filtersCopy + 2))(filtersCopy, 0);
   }
 }
 
@@ -5677,24 +5677,24 @@ uint64_t __48__NSPServerClient_getPrivacyProxyDomainFilters___block_invoke(uint6
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)getAgentUUIDForType:(int64_t)a3
+- (id)getAgentUUIDForType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v18 = 134217984;
-    v19 = a3;
+    typeCopy5 = type;
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Looking up agent UUID for type %lld", &v18, 0xCu);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 75);
-    xpc_dictionary_set_int64(v7, "NSPAgentType", a3);
-    v8 = xpc_connection_send_message_with_reply_sync(v6, v7);
+    xpc_dictionary_set_int64(v7, "NSPAgentType", type);
+    v8 = xpc_connection_send_message_with_reply_sync(getConnection, v7);
     v9 = v8;
     if (v8 && MEMORY[0x1B2708030](v8) == MEMORY[0x1E69E9E80])
     {
@@ -5706,9 +5706,9 @@ uint64_t __48__NSPServerClient_getPrivacyProxyDomainFilters___block_invoke(uint6
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
           v18 = 138412546;
-          v19 = v11;
+          typeCopy5 = v11;
           v20 = 2048;
-          v21 = a3;
+          typeCopy2 = type;
           _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Received agent UUID %@ for type %lld", &v18, 0x16u);
         }
 
@@ -5726,7 +5726,7 @@ LABEL_8:
       }
 
       v18 = 134217984;
-      v19 = a3;
+      typeCopy5 = type;
       v15 = "Failed to fetch agent UUID for type %lld, UUID was nil";
       v16 = v10;
       v17 = 12;
@@ -5741,9 +5741,9 @@ LABEL_8:
       }
 
       v18 = 134218242;
-      v19 = a3;
+      typeCopy5 = type;
       v20 = 2112;
-      v21 = v9;
+      typeCopy2 = v9;
       v15 = "Failed to fetch agent UUID for type %lld, message failed (%@)";
       v16 = v10;
       v17 = 22;
@@ -5757,7 +5757,7 @@ LABEL_8:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v18 = 134217984;
-    v19 = a3;
+    typeCopy5 = type;
     _os_log_error_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_ERROR, "Failed to fetch agent UUID for type %lld, unable to get connection", &v18, 0xCu);
   }
 
@@ -5769,9 +5769,9 @@ LABEL_12:
   return v11;
 }
 
-- (void)getPrivacyProxyPolicyWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyPolicyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5779,8 +5779,8 @@ LABEL_12:
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "fetching privacy proxy policy data", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 23);
@@ -5793,13 +5793,13 @@ LABEL_12:
     handler[1] = 3221225472;
     handler[2] = __62__NSPServerClient_getPrivacyProxyPolicyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v10 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v10 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -5825,10 +5825,10 @@ void __62__NSPServerClient_getPrivacyProxyPolicyWithCompletionHandler___block_in
   }
 }
 
-- (void)setPrivacyProxyPolicy:(id)a3 completionHandler:(id)a4
+- (void)setPrivacyProxyPolicy:(id)policy completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -5836,12 +5836,12 @@ void __62__NSPServerClient_getPrivacyProxyPolicyWithCompletionHandler___block_in
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "setting privacy proxy policy", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 24);
-    if (v6)
+    if (policyCopy)
     {
       v12 = v10;
       v13 = _CFXPCCreateXPCObjectFromCFObject();
@@ -5857,13 +5857,13 @@ void __62__NSPServerClient_getPrivacyProxyPolicyWithCompletionHandler___block_in
     handler[1] = 3221225472;
     handler[2] = __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v15 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v15 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -5896,12 +5896,12 @@ uint64_t __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_i
     _os_log_debug_impl(&dword_1AE7E2000, v3, OS_LOG_TYPE_DEBUG, "removing privacy proxy policy", v10, 2u);
   }
 
-  v4 = [(NSPServerClient *)self getConnection];
-  if (v4)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v5, "NSPServerCommandType", 25);
-    v6 = xpc_connection_send_message_with_reply_sync(v4, v5);
+    v6 = xpc_connection_send_message_with_reply_sync(getConnection, v5);
     v7 = v6;
     v8 = v6 && MEMORY[0x1B2708030](v6) == MEMORY[0x1E69E9E80] && xpc_dictionary_get_BOOL(v7, "NSPServerCommandResult");
   }
@@ -5914,10 +5914,10 @@ uint64_t __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_i
   return v8;
 }
 
-- (void)mergePrivacyProxyPolicy:(id)a3
+- (void)mergePrivacyProxyPolicy:(id)policy
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  policyCopy = policy;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5925,8 +5925,8 @@ uint64_t __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_i
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "merging privacy proxy policy with proxy traffic state", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 31);
@@ -5939,8 +5939,8 @@ uint64_t __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_i
     handler[1] = 3221225472;
     handler[2] = __43__NSPServerClient_mergePrivacyProxyPolicy___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = policyCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -5958,7 +5958,7 @@ uint64_t __59__NSPServerClient_setPrivacyProxyPolicy_completionHandler___block_i
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(policyCopy + 2))(policyCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -5987,9 +5987,9 @@ void __43__NSPServerClient_mergePrivacyProxyPolicy___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)locationAuthorizationStatusWithCompletionHandler:(id)a3
+- (void)locationAuthorizationStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5997,8 +5997,8 @@ void __43__NSPServerClient_mergePrivacyProxyPolicy___block_invoke(uint64_t a1, v
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "getting location authorization status", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 26);
@@ -6011,13 +6011,13 @@ void __43__NSPServerClient_mergePrivacyProxyPolicy___block_invoke(uint64_t a1, v
     handler[1] = 3221225472;
     handler[2] = __68__NSPServerClient_locationAuthorizationStatusWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v10 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v10 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -6054,7 +6054,7 @@ LABEL_8:
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setLocationMonitorInterval:(double)a3
+- (void)setLocationMonitorInterval:(double)interval
 {
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -6063,13 +6063,13 @@ LABEL_8:
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "setting location monitor time interval", v8, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 27);
-    xpc_dictionary_set_double(v7, "NSPServerLocationMonitorInterval", a3);
-    xpc_connection_send_message(v6, v7);
+    xpc_dictionary_set_double(v7, "NSPServerLocationMonitorInterval", interval);
+    xpc_connection_send_message(getConnection, v7);
   }
 }
 
@@ -6082,12 +6082,12 @@ LABEL_8:
     _os_log_debug_impl(&dword_1AE7E2000, v3, OS_LOG_TYPE_DEBUG, "starting location monitor", v6, 2u);
   }
 
-  v4 = [(NSPServerClient *)self getConnection];
-  if (v4)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v5, "NSPServerCommandType", 28);
-    xpc_connection_send_message(v4, v5);
+    xpc_connection_send_message(getConnection, v5);
   }
 }
 
@@ -6100,19 +6100,19 @@ LABEL_8:
     _os_log_debug_impl(&dword_1AE7E2000, v3, OS_LOG_TYPE_DEBUG, "stopping location monitor", v6, 2u);
   }
 
-  v4 = [(NSPServerClient *)self getConnection];
-  if (v4)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v5, "NSPServerCommandType", 29);
-    xpc_connection_send_message(v4, v5);
+    xpc_connection_send_message(getConnection, v5);
   }
 }
 
-- (void)getPrivacyProxyInfoWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyInfoWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -6120,8 +6120,8 @@ LABEL_8:
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get privacy proxy info", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 32);
@@ -6134,8 +6134,8 @@ LABEL_8:
     handler[1] = 3221225472;
     handler[2] = __60__NSPServerClient_getPrivacyProxyInfoWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -6153,7 +6153,7 @@ LABEL_8:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6180,10 +6180,10 @@ void __60__NSPServerClient_getPrivacyProxyInfoWithCompletionHandler___block_invo
   }
 }
 
-- (void)setGeohashSharingPreference:(BOOL)a3 completionHandler:(id)a4
+- (void)setGeohashSharingPreference:(BOOL)preference completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -6191,12 +6191,12 @@ void __60__NSPServerClient_getPrivacyProxyInfoWithCompletionHandler___block_invo
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set Geohash sharing preference", buf, 2u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 39);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyGeohashSharingEnabled", a3);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyGeohashSharingEnabled", preference);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -6206,8 +6206,8 @@ void __60__NSPServerClient_getPrivacyProxyInfoWithCompletionHandler___block_invo
     handler[1] = 3221225472;
     handler[2] = __65__NSPServerClient_setGeohashSharingPreference_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -6225,7 +6225,7 @@ void __60__NSPServerClient_getPrivacyProxyInfoWithCompletionHandler___block_invo
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6244,10 +6244,10 @@ uint64_t __65__NSPServerClient_setGeohashSharingPreference_completionHandler___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getGeohashSharingPreferenceWithCompletionHandler:(id)a3
+- (void)getGeohashSharingPreferenceWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -6255,8 +6255,8 @@ uint64_t __65__NSPServerClient_setGeohashSharingPreference_completionHandler___b
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get Geohash sharing preference", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 40);
@@ -6269,8 +6269,8 @@ uint64_t __65__NSPServerClient_setGeohashSharingPreference_completionHandler___b
     handler[1] = 3221225472;
     handler[2] = __68__NSPServerClient_getGeohashSharingPreferenceWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -6288,7 +6288,7 @@ uint64_t __65__NSPServerClient_setGeohashSharingPreference_completionHandler___b
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6307,27 +6307,27 @@ void __68__NSPServerClient_getGeohashSharingPreferenceWithCompletionHandler___bl
   }
 }
 
-- (void)setGeohashOverride:(id)a3 completionHandler:(id)a4
+- (void)setGeohashOverride:(id)override completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  handlerCopy = handler;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = overrideCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_DEBUG, "Set Geohash override to %@", buf, 0xCu);
   }
 
-  v9 = [(NSPServerClient *)self getConnection];
-  if (v9)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 48);
-    if ([v6 length])
+    if ([overrideCopy length])
     {
-      xpc_dictionary_set_string(v10, "NSPServerPrivacyProxyGeohash", [v6 UTF8String]);
+      xpc_dictionary_set_string(v10, "NSPServerPrivacyProxyGeohash", [overrideCopy UTF8String]);
     }
 
     if (self)
@@ -6339,8 +6339,8 @@ void __68__NSPServerClient_getGeohashSharingPreferenceWithCompletionHandler___bl
     handler[1] = 3221225472;
     handler[2] = __56__NSPServerClient_setGeohashOverride_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v17 = v7;
-    xpc_connection_send_message_with_reply(v9, v10, &self->super, handler);
+    v17 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v10, &self->super, handler);
   }
 
   else
@@ -6358,7 +6358,7 @@ void __68__NSPServerClient_getGeohashSharingPreferenceWithCompletionHandler___bl
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v10 = [v13 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v14];
 
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -6377,10 +6377,10 @@ uint64_t __56__NSPServerClient_setGeohashOverride_completionHandler___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivacyProxyAccountTypeWithCompletionHandler:(id)a3
+- (void)getPrivacyProxyAccountTypeWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -6388,8 +6388,8 @@ uint64_t __56__NSPServerClient_setGeohashOverride_completionHandler___block_invo
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get Privacy Proxy account type", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 41);
@@ -6402,8 +6402,8 @@ uint64_t __56__NSPServerClient_setGeohashOverride_completionHandler___block_invo
     handler[1] = 3221225472;
     handler[2] = __67__NSPServerClient_getPrivacyProxyAccountTypeWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -6421,7 +6421,7 @@ uint64_t __56__NSPServerClient_setGeohashOverride_completionHandler___block_invo
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6441,25 +6441,25 @@ void __67__NSPServerClient_getPrivacyProxyAccountTypeWithCompletionHandler___blo
   }
 }
 
-- (void)setPrivateAccessTokensEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setPrivateAccessTokensEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v20 = v4;
+    v20 = enabledCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set private access tokens enabled state to %u", buf, 8u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 54);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyPrivateAccessTokensEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyPrivateAccessTokensEnabled", enabledCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -6469,8 +6469,8 @@ void __67__NSPServerClient_getPrivacyProxyAccountTypeWithCompletionHandler___blo
     handler[1] = 3221225472;
     handler[2] = __67__NSPServerClient_setPrivateAccessTokensEnabled_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -6488,7 +6488,7 @@ void __67__NSPServerClient_getPrivacyProxyAccountTypeWithCompletionHandler___blo
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6507,10 +6507,10 @@ uint64_t __67__NSPServerClient_setPrivateAccessTokensEnabled_completionHandler__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getPrivateAccessTokensEnabledWithCompletionHandler:(id)a3
+- (void)getPrivateAccessTokensEnabledWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -6518,8 +6518,8 @@ uint64_t __67__NSPServerClient_setPrivateAccessTokensEnabled_completionHandler__
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Get private access tokens enabled state", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 55);
@@ -6532,8 +6532,8 @@ uint64_t __67__NSPServerClient_setPrivateAccessTokensEnabled_completionHandler__
     handler[1] = 3221225472;
     handler[2] = __70__NSPServerClient_getPrivateAccessTokensEnabledWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -6551,7 +6551,7 @@ uint64_t __67__NSPServerClient_setPrivateAccessTokensEnabled_completionHandler__
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -6570,25 +6570,25 @@ void __70__NSPServerClient_getPrivateAccessTokensEnabledWithCompletionHandler___
   }
 }
 
-- (void)privateAccessTokensAllowTools:(BOOL)a3 completionHandler:(id)a4
+- (void)privateAccessTokensAllowTools:(BOOL)tools completionHandler:(id)handler
 {
-  v4 = a3;
+  toolsCopy = tools;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v20 = v4;
+    v20 = toolsCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set private access tokens allow tools to %u", buf, 8u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 56);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyPrivateAccessTokensEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyPrivateAccessTokensEnabled", toolsCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -6598,8 +6598,8 @@ void __70__NSPServerClient_getPrivateAccessTokensEnabledWithCompletionHandler___
     handler[1] = 3221225472;
     handler[2] = __67__NSPServerClient_privateAccessTokensAllowTools_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -6617,7 +6617,7 @@ void __70__NSPServerClient_getPrivateAccessTokensEnabledWithCompletionHandler___
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6636,25 +6636,25 @@ uint64_t __67__NSPServerClient_privateAccessTokensAllowTools_completionHandler__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setInProcessFlowDivert:(BOOL)a3 completionHandler:(id)a4
+- (void)setInProcessFlowDivert:(BOOL)divert completionHandler:(id)handler
 {
-  v4 = a3;
+  divertCopy = divert;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v20 = v4;
+    v20 = divertCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set in-process flow divert enabled to %u", buf, 8u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 59);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyInProcessFlowDivertEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyInProcessFlowDivertEnabled", divertCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -6664,8 +6664,8 @@ uint64_t __67__NSPServerClient_privateAccessTokensAllowTools_completionHandler__
     handler[1] = 3221225472;
     handler[2] = __60__NSPServerClient_setInProcessFlowDivert_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -6683,7 +6683,7 @@ uint64_t __67__NSPServerClient_privateAccessTokensAllowTools_completionHandler__
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6702,25 +6702,25 @@ uint64_t __60__NSPServerClient_setInProcessFlowDivert_completionHandler___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPreferredPathRoutingEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setPreferredPathRoutingEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = nplog_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v20 = v4;
+    v20 = enabledCopy;
     _os_log_debug_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_DEBUG, "Set preferred path routing enabled to %u", buf, 8u);
   }
 
-  v8 = [(NSPServerClient *)self getConnection];
-  if (v8)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, "NSPServerCommandType", 57);
-    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", v4);
+    xpc_dictionary_set_BOOL(v9, "NSPServerPrivacyProxyEnabled", enabledCopy);
     if (self)
     {
       self = objc_getProperty(self, v10, 16, 1);
@@ -6730,8 +6730,8 @@ uint64_t __60__NSPServerClient_setInProcessFlowDivert_completionHandler___block_
     handler[1] = 3221225472;
     handler[2] = __68__NSPServerClient_setPreferredPathRoutingEnabled_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v16 = v6;
-    xpc_connection_send_message_with_reply(v8, v9, &self->super, handler);
+    v16 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v9, &self->super, handler);
   }
 
   else
@@ -6749,7 +6749,7 @@ uint64_t __60__NSPServerClient_setInProcessFlowDivert_completionHandler___block_
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = [v12 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v13];
 
-    (*(v6 + 2))(v6, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -6768,11 +6768,11 @@ uint64_t __68__NSPServerClient_setPreferredPathRoutingEnabled_completionHandler_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)sendRTCReport:(int64_t)a3 errorCode:(int64_t)a4 url:(id)a5 completionHandler:(id)a6
+- (void)sendRTCReport:(int64_t)report errorCode:(int64_t)code url:(id)url completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  urlCopy = url;
+  handlerCopy = handler;
   v12 = nplog_obj();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -6780,17 +6780,17 @@ uint64_t __68__NSPServerClient_setPreferredPathRoutingEnabled_completionHandler_
     _os_log_debug_impl(&dword_1AE7E2000, v12, OS_LOG_TYPE_DEBUG, "send RTC report", buf, 2u);
   }
 
-  v13 = [(NSPServerClient *)self getConnection];
-  if (v13)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v14 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v14, "NSPServerCommandType", 45);
-    xpc_dictionary_set_int64(v14, "NSPServerPrivacyProxyRTCReportType", a3);
-    xpc_dictionary_set_int64(v14, "NSPServerPrivacyProxyRTCReportErrorCode", a4);
-    if (v10)
+    xpc_dictionary_set_int64(v14, "NSPServerPrivacyProxyRTCReportType", report);
+    xpc_dictionary_set_int64(v14, "NSPServerPrivacyProxyRTCReportErrorCode", code);
+    if (urlCopy)
     {
       v16 = v14;
-      v17 = v10;
+      v17 = urlCopy;
       xpc_dictionary_set_string(v16, "NSPServerPrivacyProxyRTCReportURL", [v17 UTF8String]);
     }
 
@@ -6803,8 +6803,8 @@ uint64_t __68__NSPServerClient_setPreferredPathRoutingEnabled_completionHandler_
     handler[1] = 3221225472;
     handler[2] = __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v23 = v11;
-    xpc_connection_send_message_with_reply(v13, v14, &self->super, handler);
+    v23 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v14, &self->super, handler);
   }
 
   else
@@ -6822,7 +6822,7 @@ uint64_t __68__NSPServerClient_setPreferredPathRoutingEnabled_completionHandler_
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v14 = [v19 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v20];
 
-    (*(v11 + 2))(v11, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -6841,11 +6841,11 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)fetchPrivateAccessTokenWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchPrivateAccessTokenWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -6853,17 +6853,17 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Fetching Private Access Token", bytes, 2u);
   }
 
-  v11 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v11)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
-    v76 = v9;
+    v76 = handlerCopy;
     v12 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v12, "NSPServerCommandType", 51);
     xarray = xpc_array_create(0, 0);
     v14 = xpc_dictionary_create(0, 0, 0);
-    if (v8)
+    if (fetcherCopy)
     {
-      v15 = objc_getProperty(v8, v13, 64, 1);
+      v15 = objc_getProperty(fetcherCopy, v13, 64, 1);
       if (v15)
       {
         v16 = v14;
@@ -6871,7 +6871,7 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
         xpc_dictionary_set_value(v16, "NSPServerPrivateAccessTokenChallenge", v17);
       }
 
-      v19 = objc_getProperty(v8, v18, 80, 1);
+      v19 = objc_getProperty(fetcherCopy, v18, 80, 1);
       if (v19)
       {
         v20 = v14;
@@ -6879,7 +6879,7 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
         xpc_dictionary_set_value(v20, "NSPServerPrivateAccessTokenKey", v21);
       }
 
-      v23 = objc_getProperty(v8, v22, 88, 1);
+      v23 = objc_getProperty(fetcherCopy, v22, 88, 1);
       if (v23)
       {
         v24 = v14;
@@ -6898,14 +6898,14 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v77 = v8;
-    v75 = v11;
-    v74 = a4;
-    v73 = self;
+    v77 = fetcherCopy;
+    v75 = getTokenFetchConnection;
+    retryCopy = retry;
+    selfCopy = self;
     v71 = v14;
-    if (v8)
+    if (fetcherCopy)
     {
-      Property = objc_getProperty(v8, v26, 120, 1);
+      Property = objc_getProperty(fetcherCopy, v26, 120, 1);
     }
 
     else
@@ -6972,31 +6972,31 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
 
     v47 = v12;
     xpc_dictionary_set_value(v12, "NSPServerPrivateAccessTokenChallenges", xarray);
-    v8 = v77;
+    fetcherCopy = v77;
     if ([v77 rateLimit])
     {
       xpc_dictionary_set_uint64(v12, "NSPServerPrivateAccessTokenRateLimit", [v77 rateLimit]);
     }
 
-    v11 = v75;
-    v9 = v76;
+    getTokenFetchConnection = v75;
+    handlerCopy = v76;
     if ([v77 metadataSize])
     {
       xpc_dictionary_set_uint64(v12, "NSPServerPrivateAccessTokenMetadataSize", [v77 metadataSize]);
     }
 
-    v48 = [v77 selectedOrigin];
-    if (v48)
+    selectedOrigin = [v77 selectedOrigin];
+    if (selectedOrigin)
     {
       v49 = v12;
-      xpc_dictionary_set_string(v49, "NSPServerPrivateAccessTokenOriginName", [v48 UTF8String]);
+      xpc_dictionary_set_string(v49, "NSPServerPrivateAccessTokenOriginName", [selectedOrigin UTF8String]);
     }
 
-    v50 = [v77 bundleID];
-    if (v50)
+    bundleID = [v77 bundleID];
+    if (bundleID)
     {
       v51 = v12;
-      xpc_dictionary_set_string(v51, "NSPServerSigningIdentifier", [v50 UTF8String]);
+      xpc_dictionary_set_string(v51, "NSPServerSigningIdentifier", [bundleID UTF8String]);
     }
 
     if (v77)
@@ -7016,20 +7016,20 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
       xpc_dictionary_set_BOOL(v12, "NSPServerTokenSystemClient", 1);
     }
 
-    v55 = [v77 customAttester];
+    customAttester = [v77 customAttester];
 
-    if (v55)
+    if (customAttester)
     {
-      v56 = [v77 customAttester];
-      v57 = [v56 absoluteString];
-      if (v57)
+      customAttester2 = [v77 customAttester];
+      absoluteString = [customAttester2 absoluteString];
+      if (absoluteString)
       {
         v58 = v12;
-        xpc_dictionary_set_string(v58, "NSPServerPrivateAccessTokenCustomAttester", [v57 UTF8String]);
+        xpc_dictionary_set_string(v58, "NSPServerPrivateAccessTokenCustomAttester", [absoluteString UTF8String]);
       }
 
-      v59 = [v77 customAttesterHeaders];
-      if (v59)
+      customAttesterHeaders = [v77 customAttesterHeaders];
+      if (customAttesterHeaders)
       {
         v60 = v12;
         v61 = _CFXPCCreateXPCObjectFromCFObject();
@@ -7037,21 +7037,21 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
       }
     }
 
-    v62 = [v77 auxiliaryAuthenticationCacheKey];
+    auxiliaryAuthenticationCacheKey = [v77 auxiliaryAuthenticationCacheKey];
 
-    if (v62)
+    if (auxiliaryAuthenticationCacheKey)
     {
-      v64 = [v77 auxiliaryAuthenticationCacheKey];
-      if (v64)
+      auxiliaryAuthenticationCacheKey2 = [v77 auxiliaryAuthenticationCacheKey];
+      if (auxiliaryAuthenticationCacheKey2)
       {
         v65 = v12;
-        xpc_dictionary_set_string(v65, "NSPServerAuxiliaryAuthenticationCacheKey", [v64 UTF8String]);
+        xpc_dictionary_set_string(v65, "NSPServerAuxiliaryAuthenticationCacheKey", [auxiliaryAuthenticationCacheKey2 UTF8String]);
       }
     }
 
-    if (v73)
+    if (selfCopy)
     {
-      v66 = objc_getProperty(v73, v63, 16, 1);
+      v66 = objc_getProperty(selfCopy, v63, 16, 1);
     }
 
     else
@@ -7063,8 +7063,8 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
     handler[1] = 3221225472;
     handler[2] = __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_completionHandler___block_invoke;
     handler[3] = &unk_1E7A309C0;
-    v82 = v74;
-    handler[4] = v73;
+    v82 = retryCopy;
+    handler[4] = selfCopy;
     v80 = v77;
     v81 = v76;
     xpc_connection_send_message_with_reply(v75, v12, v66, handler);
@@ -7085,7 +7085,7 @@ uint64_t __65__NSPServerClient_sendRTCReport_errorCode_url_completionHandler___b
     v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
     v47 = [v68 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v69];
 
-    (*(v9 + 2))(v9, 0, v47);
+    (*(handlerCopy + 2))(handlerCopy, 0, v47);
   }
 
   v70 = *MEMORY[0x1E69E9840];
@@ -7119,11 +7119,11 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
   }
 }
 
-- (void)fetchPrivateAccessTokenPairWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchPrivateAccessTokenPairWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -7131,16 +7131,16 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Fetching Private Access Token Pair", bytes, 2u);
   }
 
-  if (v8 && (v12 = objc_getProperty(v8, v11, 64, 1)) != 0 && (v14 = v12, v15 = objc_getProperty(v8, v13, 72, 1), v15, v14, v15))
+  if (fetcherCopy && (v12 = objc_getProperty(fetcherCopy, v11, 64, 1)) != 0 && (v14 = v12, v15 = objc_getProperty(fetcherCopy, v13, 72, 1), v15, v14, v15))
   {
-    v16 = [(NSPServerClient *)self getTokenFetchConnection];
-    if (v16)
+    getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+    if (getTokenFetchConnection)
     {
       v17 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_int64(v17, "NSPServerCommandType", 51);
       v18 = xpc_array_create(0, 0);
       v19 = xpc_dictionary_create(0, 0, 0);
-      v21 = objc_getProperty(v8, v20, 64, 1);
+      v21 = objc_getProperty(fetcherCopy, v20, 64, 1);
       v59 = v19;
       if (v21)
       {
@@ -7151,7 +7151,7 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
         v19 = v59;
       }
 
-      v25 = objc_getProperty(v8, v24, 80, 1);
+      v25 = objc_getProperty(fetcherCopy, v24, 80, 1);
       if (v25)
       {
         v26 = v19;
@@ -7161,7 +7161,7 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
         v19 = v59;
       }
 
-      v29 = objc_getProperty(v8, v28, 88, 1);
+      v29 = objc_getProperty(fetcherCopy, v28, 88, 1);
       if (v29)
       {
         v30 = v19;
@@ -7173,63 +7173,63 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
 
       xpc_array_append_value(v18, v19);
       v32 = xpc_dictionary_create(0, 0, 0);
-      v34 = objc_getProperty(v8, v33, 72, 1);
+      v34 = objc_getProperty(fetcherCopy, v33, 72, 1);
       if (v34)
       {
         v35 = v32;
-        v58 = v16;
-        v36 = v9;
+        v58 = getTokenFetchConnection;
+        v36 = handlerCopy;
         v37 = v17;
-        v38 = self;
+        selfCopy = self;
         v39 = v32;
         v40 = v18;
-        v41 = a4;
+        retryCopy = retry;
         v42 = _CFXPCCreateXPCObjectFromCFObject();
         xpc_dictionary_set_value(v35, "NSPServerPrivateAccessPairedTokenChallenge", v42);
 
-        a4 = v41;
+        retry = retryCopy;
         v18 = v40;
         v32 = v39;
-        self = v38;
+        self = selfCopy;
         v17 = v37;
-        v9 = v36;
-        v16 = v58;
+        handlerCopy = v36;
+        getTokenFetchConnection = v58;
       }
 
       xpc_array_append_value(v18, v32);
       xpc_dictionary_set_value(v17, "NSPServerPrivateAccessTokenChallenges", v18);
-      v43 = [v8 selectedOrigin];
-      if (v43)
+      selectedOrigin = [fetcherCopy selectedOrigin];
+      if (selectedOrigin)
       {
         v44 = v17;
-        xpc_dictionary_set_string(v44, "NSPServerPrivateAccessTokenOriginName", [v43 UTF8String]);
+        xpc_dictionary_set_string(v44, "NSPServerPrivateAccessTokenOriginName", [selectedOrigin UTF8String]);
       }
 
-      v45 = [v8 bundleID];
-      if (v45)
+      bundleID = [fetcherCopy bundleID];
+      if (bundleID)
       {
         v46 = v17;
-        xpc_dictionary_set_string(v46, "NSPServerSigningIdentifier", [v45 UTF8String]);
+        xpc_dictionary_set_string(v46, "NSPServerSigningIdentifier", [bundleID UTF8String]);
       }
 
-      if (v8[20])
+      if (fetcherCopy[20])
       {
         v47 = 0;
       }
 
       else
       {
-        v47 = v8[21] == 0;
+        v47 = fetcherCopy[21] == 0;
       }
 
-      if (!v47 || v8[22] != 0 || v8[23] != 0)
+      if (!v47 || fetcherCopy[22] != 0 || fetcherCopy[23] != 0)
       {
         memset(bytes, 0, sizeof(bytes));
-        [v8 auditToken];
+        [fetcherCopy auditToken];
         xpc_dictionary_set_data(v17, "NSPServerEffectiveAuditToken", bytes, 0x20uLL);
       }
 
-      if ([v8 systemClient])
+      if ([fetcherCopy systemClient])
       {
         xpc_dictionary_set_BOOL(v17, "NSPServerTokenSystemClient", 1);
       }
@@ -7249,11 +7249,11 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
       handler[1] = 3221225472;
       handler[2] = __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_completionHandler___block_invoke;
       handler[3] = &unk_1E7A309C0;
-      v63 = a4;
+      retryCopy2 = retry;
       handler[4] = self;
-      v61 = v8;
-      v62 = v9;
-      xpc_connection_send_message_with_reply(v16, v17, Property, handler);
+      v61 = fetcherCopy;
+      v62 = handlerCopy;
+      xpc_connection_send_message_with_reply(getTokenFetchConnection, v17, Property, handler);
     }
 
     else
@@ -7271,7 +7271,7 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
       v17 = [v53 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v54];
 
-      (*(v9 + 2))(v9, 0, 0, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v17);
     }
   }
 
@@ -7281,9 +7281,9 @@ void __83__NSPServerClient_fetchPrivateAccessTokenWithFetcher_allowRetry_complet
     v67 = *MEMORY[0x1E696A588];
     v68[0] = @"No paired challenges found";
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-    v16 = [v55 initWithDomain:@"privacyProxyErrorDomain" code:1004 userInfo:v56];
+    getTokenFetchConnection = [v55 initWithDomain:@"privacyProxyErrorDomain" code:1004 userInfo:v56];
 
-    (*(v9 + 2))(v9, 0, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, getTokenFetchConnection);
   }
 
   v57 = *MEMORY[0x1E69E9840];
@@ -7319,11 +7319,11 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
   }
 }
 
-- (void)fetchPrivateAccessTokenAndAuxAuthWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchPrivateAccessTokenAndAuxAuthWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -7331,17 +7331,17 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Fetching Private Access Token and Auxiliary Authentication", bytes, 2u);
   }
 
-  if (v8 && (v12 = objc_getProperty(v8, v11, 64, 1)) != 0 && (v14 = v12, v15 = objc_getProperty(v8, v13, 96, 1), v15, v14, v15))
+  if (fetcherCopy && (v12 = objc_getProperty(fetcherCopy, v11, 64, 1)) != 0 && (v14 = v12, v15 = objc_getProperty(fetcherCopy, v13, 96, 1), v15, v14, v15))
   {
-    v16 = [(NSPServerClient *)self getTokenFetchConnection];
-    if (v16)
+    getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+    if (getTokenFetchConnection)
     {
-      v56 = a4;
+      retryCopy = retry;
       v17 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_int64(v17, "NSPServerCommandType", 51);
       v18 = xpc_array_create(0, 0);
       v19 = xpc_dictionary_create(0, 0, 0);
-      v21 = objc_getProperty(v8, v20, 64, 1);
+      v21 = objc_getProperty(fetcherCopy, v20, 64, 1);
       v57 = v19;
       if (v21)
       {
@@ -7350,7 +7350,7 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
         xpc_dictionary_set_value(v22, "NSPServerPrivateAccessTokenChallenge", v23);
       }
 
-      v25 = objc_getProperty(v8, v24, 80, 1);
+      v25 = objc_getProperty(fetcherCopy, v24, 80, 1);
       if (v25)
       {
         v26 = v19;
@@ -7360,7 +7360,7 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
 
       xpc_array_append_value(v18, v19);
       v28 = xpc_dictionary_create(0, 0, 0);
-      v30 = objc_getProperty(v8, v29, 96, 1);
+      v30 = objc_getProperty(fetcherCopy, v29, 96, 1);
       if (v30)
       {
         v31 = v28;
@@ -7368,7 +7368,7 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
         xpc_dictionary_set_value(v31, "NSPServerAuxiliaryAuthenticationChallenge", v32);
       }
 
-      v34 = objc_getProperty(v8, v33, 104, 1);
+      v34 = objc_getProperty(fetcherCopy, v33, 104, 1);
       if (v34)
       {
         v35 = v28;
@@ -7376,7 +7376,7 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
         xpc_dictionary_set_value(v35, "NSPServerPrivateAccessTokenKey", v36);
       }
 
-      v38 = objc_getProperty(v8, v37, 112, 1);
+      v38 = objc_getProperty(fetcherCopy, v37, 112, 1);
       if (v38)
       {
         v39 = v28;
@@ -7385,49 +7385,49 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
 
       xpc_array_append_value(v18, v28);
       xpc_dictionary_set_value(v17, "NSPServerPrivateAccessTokenChallenges", v18);
-      v40 = [v8 bundleID];
-      if (v40)
+      bundleID = [fetcherCopy bundleID];
+      if (bundleID)
       {
         v41 = v17;
-        xpc_dictionary_set_string(v41, "NSPServerSigningIdentifier", [v40 UTF8String]);
+        xpc_dictionary_set_string(v41, "NSPServerSigningIdentifier", [bundleID UTF8String]);
       }
 
-      if (v8[20])
+      if (fetcherCopy[20])
       {
         v42 = 0;
       }
 
       else
       {
-        v42 = v8[21] == 0;
+        v42 = fetcherCopy[21] == 0;
       }
 
-      if (!v42 || v8[22] != 0 || v8[23] != 0)
+      if (!v42 || fetcherCopy[22] != 0 || fetcherCopy[23] != 0)
       {
         memset(bytes, 0, sizeof(bytes));
-        [v8 auditToken];
+        [fetcherCopy auditToken];
         xpc_dictionary_set_data(v17, "NSPServerEffectiveAuditToken", bytes, 0x20uLL);
       }
 
-      if ([v8 systemClient])
+      if ([fetcherCopy systemClient])
       {
         xpc_dictionary_set_BOOL(v17, "NSPServerTokenSystemClient", 1);
       }
 
-      if ([v8 metadataSize])
+      if ([fetcherCopy metadataSize])
       {
-        xpc_dictionary_set_uint64(v17, "NSPServerPrivateAccessTokenMetadataSize", [v8 metadataSize]);
+        xpc_dictionary_set_uint64(v17, "NSPServerPrivateAccessTokenMetadataSize", [fetcherCopy metadataSize]);
       }
 
-      v45 = [v8 auxiliaryAuthenticationCacheKey];
+      auxiliaryAuthenticationCacheKey = [fetcherCopy auxiliaryAuthenticationCacheKey];
 
-      if (v45)
+      if (auxiliaryAuthenticationCacheKey)
       {
-        v46 = [v8 auxiliaryAuthenticationCacheKey];
-        if (v46)
+        auxiliaryAuthenticationCacheKey2 = [fetcherCopy auxiliaryAuthenticationCacheKey];
+        if (auxiliaryAuthenticationCacheKey2)
         {
           v47 = v17;
-          xpc_dictionary_set_string(v47, "NSPServerAuxiliaryAuthenticationCacheKey", [v46 UTF8String]);
+          xpc_dictionary_set_string(v47, "NSPServerAuxiliaryAuthenticationCacheKey", [auxiliaryAuthenticationCacheKey2 UTF8String]);
         }
       }
 
@@ -7446,11 +7446,11 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
       handler[1] = 3221225472;
       handler[2] = __93__NSPServerClient_fetchPrivateAccessTokenAndAuxAuthWithFetcher_allowRetry_completionHandler___block_invoke;
       handler[3] = &unk_1E7A309C0;
-      v61 = v56;
+      v61 = retryCopy;
       handler[4] = self;
-      v59 = v8;
-      v60 = v9;
-      xpc_connection_send_message_with_reply(v16, v17, Property, handler);
+      v59 = fetcherCopy;
+      v60 = handlerCopy;
+      xpc_connection_send_message_with_reply(getTokenFetchConnection, v17, Property, handler);
     }
 
     else
@@ -7468,7 +7468,7 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
       v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
       v17 = [v51 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v52];
 
-      (*(v9 + 2))(v9, 0, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v17);
     }
   }
 
@@ -7478,9 +7478,9 @@ void __87__NSPServerClient_fetchPrivateAccessTokenPairWithFetcher_allowRetry_com
     v65 = *MEMORY[0x1E696A588];
     v66[0] = @"Challenges not found";
     v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:&v65 count:1];
-    v16 = [v53 initWithDomain:@"privacyProxyErrorDomain" code:1004 userInfo:v54];
+    getTokenFetchConnection = [v53 initWithDomain:@"privacyProxyErrorDomain" code:1004 userInfo:v54];
 
-    (*(v9 + 2))(v9, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, getTokenFetchConnection);
   }
 
   v55 = *MEMORY[0x1E69E9840];
@@ -7515,11 +7515,11 @@ void __93__NSPServerClient_fetchPrivateAccessTokenAndAuxAuthWithFetcher_allowRet
   }
 }
 
-- (void)fetchKnownPrivateAccessTokenKeyWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchKnownPrivateAccessTokenKeyWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -7527,14 +7527,14 @@ void __93__NSPServerClient_fetchPrivateAccessTokenAndAuxAuthWithFetcher_allowRet
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Fetching Private Access Token key", buf, 2u);
   }
 
-  v11 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v11)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v12 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v12, "NSPServerCommandType", 70);
-    if (v8)
+    if (fetcherCopy)
     {
-      v14 = objc_getProperty(v8, v13, 64, 1);
+      v14 = objc_getProperty(fetcherCopy, v13, 64, 1);
       if (v14)
       {
         v15 = v12;
@@ -7562,11 +7562,11 @@ void __93__NSPServerClient_fetchPrivateAccessTokenAndAuxAuthWithFetcher_allowRet
     v23[1] = 3221225472;
     v23[2] = __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry_completionHandler___block_invoke;
     v23[3] = &unk_1E7A309C0;
-    v26 = a4;
+    retryCopy = retry;
     v23[4] = self;
-    v24 = v8;
-    v25 = v9;
-    xpc_connection_send_message_with_reply(v11, v12, Property, v23);
+    v24 = fetcherCopy;
+    v25 = handlerCopy;
+    xpc_connection_send_message_with_reply(getTokenFetchConnection, v12, Property, v23);
   }
 
   else
@@ -7584,7 +7584,7 @@ void __93__NSPServerClient_fetchPrivateAccessTokenAndAuxAuthWithFetcher_allowRet
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v12 = [v20 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v21];
 
-    (*(v9 + 2))(v9, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -7618,10 +7618,10 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
   }
 }
 
-- (void)addToken:(id)a3 toCacheForFetcher:(id)a4
+- (void)addToken:(id)token toCacheForFetcher:(id)fetcher
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  fetcherCopy = fetcher;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -7629,14 +7629,14 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     _os_log_impl(&dword_1AE7E2000, v8, OS_LOG_TYPE_INFO, "Adding Private Access Token to cache", buf, 2u);
   }
 
-  v9 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v9)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v10, "NSPServerCommandType", 71);
-    if (v7)
+    if (fetcherCopy)
     {
-      v12 = objc_getProperty(v7, v11, 64, 1);
+      v12 = objc_getProperty(fetcherCopy, v11, 64, 1);
       if (v12)
       {
         v13 = v10;
@@ -7650,14 +7650,14 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
       v12 = 0;
     }
 
-    if (v6)
+    if (tokenCopy)
     {
       v15 = v10;
       v16 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(v15, "NSPServerPrivateAccessToken", v16);
     }
 
-    xpc_connection_send_message(v9, v10);
+    xpc_connection_send_message(getTokenFetchConnection, v10);
   }
 
   else
@@ -7671,12 +7671,12 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
   }
 }
 
-- (void)addOneTimeToken:(id)a3 oneTimeTokenSalt:(id)a4 longLivedToken:(id)a5 toCacheForFetcher:(id)a6
+- (void)addOneTimeToken:(id)token oneTimeTokenSalt:(id)salt longLivedToken:(id)livedToken toCacheForFetcher:(id)fetcher
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tokenCopy = token;
+  saltCopy = salt;
+  livedTokenCopy = livedToken;
+  fetcherCopy = fetcher;
   v14 = nplog_obj();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -7684,14 +7684,14 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     _os_log_impl(&dword_1AE7E2000, v14, OS_LOG_TYPE_INFO, "Adding One Time Token to cache", buf, 2u);
   }
 
-  v15 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v15)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v16 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v16, "NSPServerCommandType", 71);
-    if (v13)
+    if (fetcherCopy)
     {
-      v18 = objc_getProperty(v13, v17, 64, 1);
+      v18 = objc_getProperty(fetcherCopy, v17, 64, 1);
       if (v18)
       {
         v19 = v16;
@@ -7699,7 +7699,7 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
         xpc_dictionary_set_value(v19, "NSPServerPrivateAccessTokenChallenge", v20);
       }
 
-      v22 = objc_getProperty(v13, v21, 72, 1);
+      v22 = objc_getProperty(fetcherCopy, v21, 72, 1);
       if (v22)
       {
         v23 = v16;
@@ -7713,28 +7713,28 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
       v22 = 0;
     }
 
-    if (v12)
+    if (livedTokenCopy)
     {
       v25 = v16;
       v26 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(v25, "NSPServerPrivateAccessTokenPairLongLived", v26);
     }
 
-    if (v10)
+    if (tokenCopy)
     {
       v27 = v16;
       v28 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(v27, "NSPServerPrivateAccessTokenPairOneTime", v28);
     }
 
-    if (v11)
+    if (saltCopy)
     {
       v29 = v16;
       v30 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(v29, "NSPServerPrivateAccessTokenPairOneTimeSalt", v30);
     }
 
-    xpc_connection_send_message(v15, v16);
+    xpc_connection_send_message(getTokenFetchConnection, v16);
   }
 
   else
@@ -7748,11 +7748,11 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
   }
 }
 
-- (void)addAuxiliaryAuthenticationData:(id)a3 type:(unint64_t)a4 label:(id)a5 cacheKey:(id)a6
+- (void)addAuxiliaryAuthenticationData:(id)data type:(unint64_t)type label:(id)label cacheKey:(id)key
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  labelCopy = label;
+  keyCopy = key;
   v13 = nplog_obj();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -7760,34 +7760,34 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     _os_log_impl(&dword_1AE7E2000, v13, OS_LOG_TYPE_INFO, "Adding auxiliary authentication data to cache", buf, 2u);
   }
 
-  v14 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v14)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v15, "NSPServerCommandType", 72);
-    if (v10)
+    if (dataCopy)
     {
       v16 = v15;
       v17 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(v16, "NSPServerAuxiliaryAuthenticationData", v17);
     }
 
-    v18 = v11;
+    v18 = labelCopy;
     if (v18)
     {
       v19 = v15;
       xpc_dictionary_set_string(v19, "NSPServerAuxiliaryAuthenticationLabel", [v18 UTF8String]);
     }
 
-    v20 = v12;
+    v20 = keyCopy;
     if (v20)
     {
       v21 = v15;
       xpc_dictionary_set_string(v21, "NSPServerAuxiliaryAuthenticationCacheKey", [v20 UTF8String]);
     }
 
-    xpc_dictionary_set_int64(v15, "NSPServerAuxiliaryAuthenticationType", a4);
-    xpc_connection_send_message(v14, v15);
+    xpc_dictionary_set_int64(v15, "NSPServerAuxiliaryAuthenticationType", type);
+    xpc_connection_send_message(getTokenFetchConnection, v15);
   }
 
   else
@@ -7801,12 +7801,12 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
   }
 }
 
-- (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)a3 label:(id)a4 cacheKey:(id)a5 completionHandler:(id)a6
+- (void)fetchAuxiliaryAuthenticationDataFromCacheForType:(unint64_t)type label:(id)label cacheKey:(id)key completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  labelCopy = label;
+  keyCopy = key;
+  handlerCopy = handler;
   v13 = nplog_obj();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -7814,26 +7814,26 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     _os_log_impl(&dword_1AE7E2000, v13, OS_LOG_TYPE_INFO, "Fetching auxiliary authentication data from cache", buf, 2u);
   }
 
-  v14 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v14)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v15, "NSPServerCommandType", 73);
-    v16 = v10;
+    v16 = labelCopy;
     if (v16)
     {
       v17 = v15;
       xpc_dictionary_set_string(v17, "NSPServerAuxiliaryAuthenticationLabel", [v16 UTF8String]);
     }
 
-    v18 = v11;
+    v18 = keyCopy;
     if (v18)
     {
       v19 = v15;
       xpc_dictionary_set_string(v19, "NSPServerAuxiliaryAuthenticationCacheKey", [v18 UTF8String]);
     }
 
-    xpc_dictionary_set_int64(v15, "NSPServerAuxiliaryAuthenticationType", a3);
+    xpc_dictionary_set_int64(v15, "NSPServerAuxiliaryAuthenticationType", type);
     if (self)
     {
       self = objc_getProperty(self, v20, 16, 1);
@@ -7843,8 +7843,8 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     handler[1] = 3221225472;
     handler[2] = __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_label_cacheKey_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v26 = v12;
-    xpc_connection_send_message_with_reply(v14, v15, &self->super, handler);
+    v26 = handlerCopy;
+    xpc_connection_send_message_with_reply(getTokenFetchConnection, v15, &self->super, handler);
   }
 
   else
@@ -7862,7 +7862,7 @@ void __91__NSPServerClient_fetchKnownPrivateAccessTokenKeyWithFetcher_allowRetry
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v15 = [v22 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v23];
 
-    (*(v12 + 2))(v12, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -7881,9 +7881,9 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
   }
 }
 
-- (BOOL)checkOriginAllowedAsThirdParty:(id)a3
+- (BOOL)checkOriginAllowedAsThirdParty:(id)party
 {
-  v4 = a3;
+  partyCopy = party;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -7891,19 +7891,19 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
     _os_log_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_INFO, "Checking origin for Private Access Token", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v6)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 60);
-    v8 = v4;
+    v8 = partyCopy;
     if (v8)
     {
       v9 = v7;
       xpc_dictionary_set_string(v9, "NSPServerPrivateAccessTokenOriginName", [v8 UTF8String]);
     }
 
-    v10 = xpc_connection_send_message_with_reply_sync(v6, v7);
+    v10 = xpc_connection_send_message_with_reply_sync(getTokenFetchConnection, v7);
     v11 = xpc_dictionary_get_BOOL(v10, "NSPServerPrivateAccessTokenOriginAllowed");
   }
 
@@ -7922,10 +7922,10 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
   return v11;
 }
 
-- (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3
+- (void)startProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7933,8 +7933,8 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "send start request to proxy socket based TCP connections to MPTCP converter proxy", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 52);
@@ -7947,8 +7947,8 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
     handler[1] = 3221225472;
     handler[2] = __72__NSPServerClient_startProxyToMPTCPConverterProxyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -7966,7 +7966,7 @@ void __101__NSPServerClient_fetchAuxiliaryAuthenticationDataFromCacheForType_lab
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -7985,10 +7985,10 @@ uint64_t __72__NSPServerClient_startProxyToMPTCPConverterProxyWithCompletionHand
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)a3
+- (void)stopProxyToMPTCPConverterProxyWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nplog_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7996,8 +7996,8 @@ uint64_t __72__NSPServerClient_startProxyToMPTCPConverterProxyWithCompletionHand
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "send stop request to proxy socket based TCP connections to MPTCP converter proxy", buf, 2u);
   }
 
-  v6 = [(NSPServerClient *)self getConnection];
-  if (v6)
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, "NSPServerCommandType", 53);
@@ -8010,8 +8010,8 @@ uint64_t __72__NSPServerClient_startProxyToMPTCPConverterProxyWithCompletionHand
     handler[1] = 3221225472;
     handler[2] = __71__NSPServerClient_stopProxyToMPTCPConverterProxyWithCompletionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v14 = v4;
-    xpc_connection_send_message_with_reply(v6, v7, &self->super, handler);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v7, &self->super, handler);
   }
 
   else
@@ -8029,7 +8029,7 @@ uint64_t __72__NSPServerClient_startProxyToMPTCPConverterProxyWithCompletionHand
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v7 = [v10 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v11];
 
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -8048,25 +8048,25 @@ uint64_t __71__NSPServerClient_stopProxyToMPTCPConverterProxyWithCompletionHandl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)dumpPrivacyProxyTokenEventsWithCompletionHandler:(id)a3 mostRecent:(BOOL)a4 limit:(unint64_t)a5 dumpStats:(BOOL)a6 completionHandler:(id)a7
+- (void)dumpPrivacyProxyTokenEventsWithCompletionHandler:(id)handler mostRecent:(BOOL)recent limit:(unint64_t)limit dumpStats:(BOOL)stats completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(NSPServerClient *)self getConnection];
-  if (v14)
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v15, "NSPServerCommandType", 66);
-    v16 = v12;
+    v16 = handlerCopy;
     if (v16)
     {
       v17 = v15;
       xpc_dictionary_set_string(v17, "NSPServerPrivacyProxyTokenEventsVendor", [v16 UTF8String]);
     }
 
-    xpc_dictionary_set_BOOL(v15, "NSPServerPrivacyProxyTokenEventsMostRecent", a4);
-    xpc_dictionary_set_uint64(v15, "NSPServerPrivacyProxyTokenEventsLimit", a5);
-    xpc_dictionary_set_BOOL(v15, "NSPServerPrivacyProxyTokenEventsStats", a6);
+    xpc_dictionary_set_BOOL(v15, "NSPServerPrivacyProxyTokenEventsMostRecent", recent);
+    xpc_dictionary_set_uint64(v15, "NSPServerPrivacyProxyTokenEventsLimit", limit);
+    xpc_dictionary_set_BOOL(v15, "NSPServerPrivacyProxyTokenEventsStats", stats);
     if (self)
     {
       self = objc_getProperty(self, v18, 16, 1);
@@ -8076,13 +8076,13 @@ uint64_t __71__NSPServerClient_stopProxyToMPTCPConverterProxyWithCompletionHandl
     handler[1] = 3221225472;
     handler[2] = __113__NSPServerClient_dumpPrivacyProxyTokenEventsWithCompletionHandler_mostRecent_limit_dumpStats_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v20 = v13;
-    xpc_connection_send_message_with_reply(v14, v15, &self->super, handler);
+    v20 = completionHandlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v15, &self->super, handler);
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0);
   }
 }
 
@@ -8099,73 +8099,73 @@ uint64_t __113__NSPServerClient_dumpPrivacyProxyTokenEventsWithCompletionHandler
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPrivacyProxyTokenEventsProactiveTokenFetchParams:(id)a3 lowerTokenCountThresholdStr:(id)a4 lowerTokenCountProbabilityStr:(id)a5 statsDurationStr:(id)a6 upperLWMCountThresholdStr:(id)a7 upperLWMCountProbabilityOffsetStr:(id)a8 completionHandler:(id)a9
+- (void)setPrivacyProxyTokenEventsProactiveTokenFetchParams:(id)params lowerTokenCountThresholdStr:(id)str lowerTokenCountProbabilityStr:(id)probabilityStr statsDurationStr:(id)durationStr upperLWMCountThresholdStr:(id)thresholdStr upperLWMCountProbabilityOffsetStr:(id)offsetStr completionHandler:(id)handler
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v38 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v37 = a8;
-  v19 = a9;
-  v20 = [(NSPServerClient *)self getConnection];
-  if (v20)
+  paramsCopy = params;
+  strCopy = str;
+  probabilityStrCopy = probabilityStr;
+  durationStrCopy = durationStr;
+  thresholdStrCopy = thresholdStr;
+  offsetStrCopy = offsetStr;
+  handlerCopy = handler;
+  getConnection = [(NSPServerClient *)self getConnection];
+  if (getConnection)
   {
     v21 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v21, "NSPServerCommandType", 67);
-    v23 = v15;
-    if (v15)
+    v23 = paramsCopy;
+    if (paramsCopy)
     {
-      v24 = [v15 caseInsensitiveCompare:@"Yes"];
-      if (!v24 || ![v15 caseInsensitiveCompare:@"No"])
+      v24 = [paramsCopy caseInsensitiveCompare:@"Yes"];
+      if (!v24 || ![paramsCopy caseInsensitiveCompare:@"No"])
       {
         xpc_dictionary_set_BOOL(v21, "NSPServerPrivacyProxyTokenEventsEnableProactiveTokenFetch", v24 == 0);
       }
     }
 
-    v25 = v17;
-    if (v17)
+    v25 = durationStrCopy;
+    if (durationStrCopy)
     {
-      v26 = [v17 integerValue];
-      if (v26 >= 1)
+      integerValue = [durationStrCopy integerValue];
+      if (integerValue >= 1)
       {
-        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetStatsDuration", v26);
+        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetStatsDuration", integerValue);
       }
     }
 
-    v28 = v37;
-    v27 = v38;
-    if (v38)
+    v28 = offsetStrCopy;
+    v27 = strCopy;
+    if (strCopy)
     {
-      v29 = [v38 integerValue];
-      if (v29 >= 1)
+      integerValue2 = [strCopy integerValue];
+      if (integerValue2 >= 1)
       {
-        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetLowerTokenCountThreshold", v29);
+        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetLowerTokenCountThreshold", integerValue2);
       }
     }
 
-    if (v16)
+    if (probabilityStrCopy)
     {
-      [v16 doubleValue];
+      [probabilityStrCopy doubleValue];
       if (v30 >= 0.0 && v30 <= 1.0)
       {
         xpc_dictionary_set_double(v21, "NSPServerPrivacyProxyTokenEventsSetLowerTokenCountProbability", v30);
       }
     }
 
-    if (v18)
+    if (thresholdStrCopy)
     {
-      v31 = [v18 integerValue];
-      if (v31 >= 1)
+      integerValue3 = [thresholdStrCopy integerValue];
+      if (integerValue3 >= 1)
       {
-        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetUpperLWMCountThreshold", v31);
+        xpc_dictionary_set_uint64(v21, "NSPServerPrivacyProxyTokenEventsSetUpperLWMCountThreshold", integerValue3);
       }
     }
 
-    if (v37)
+    if (offsetStrCopy)
     {
-      [v37 doubleValue];
+      [offsetStrCopy doubleValue];
       if (v32 >= 0.0 && v32 <= 1.0)
       {
         xpc_dictionary_set_double(v21, "NSPServerPrivacyProxyTokenEventsSetUpperLWMCountProbabilityOffset", v32);
@@ -8181,13 +8181,13 @@ uint64_t __113__NSPServerClient_dumpPrivacyProxyTokenEventsWithCompletionHandler
     handler[1] = 3221225472;
     handler[2] = __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchParams_lowerTokenCountThresholdStr_lowerTokenCountProbabilityStr_statsDurationStr_upperLWMCountThresholdStr_upperLWMCountProbabilityOffsetStr_completionHandler___block_invoke;
     handler[3] = &unk_1E7A30920;
-    v41 = v19;
-    xpc_connection_send_message_with_reply(v20, v21, &self->super, handler);
+    v41 = handlerCopy;
+    xpc_connection_send_message_with_reply(getConnection, v21, &self->super, handler);
   }
 
   else
   {
-    v23 = v15;
+    v23 = paramsCopy;
     v33 = nplog_obj();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -8201,10 +8201,10 @@ uint64_t __113__NSPServerClient_dumpPrivacyProxyTokenEventsWithCompletionHandler
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
     v21 = [v34 initWithDomain:@"privacyProxyErrorDomain" code:1004 userInfo:v35];
 
-    (*(v19 + 2))(v19, v21);
-    v25 = v17;
-    v28 = v37;
-    v27 = v38;
+    (*(handlerCopy + 2))(handlerCopy, v21);
+    v25 = durationStrCopy;
+    v28 = offsetStrCopy;
+    v27 = strCopy;
   }
 
   v36 = *MEMORY[0x1E69E9840];
@@ -8223,11 +8223,11 @@ uint64_t __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchPar
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)checkRemainingCostQuotaWithFetcher:(id)a3 allowRetry:(BOOL)a4 completionHandler:(id)a5
+- (void)checkRemainingCostQuotaWithFetcher:(id)fetcher allowRetry:(BOOL)retry completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  fetcherCopy = fetcher;
+  handlerCopy = handler;
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -8235,14 +8235,14 @@ uint64_t __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchPar
     _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "Checking remaining cost quota", bytes, 2u);
   }
 
-  v11 = [(NSPServerClient *)self getTokenFetchConnection];
-  if (v11)
+  getTokenFetchConnection = [(NSPServerClient *)self getTokenFetchConnection];
+  if (getTokenFetchConnection)
   {
     v12 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v12, "NSPServerCommandType", 76);
-    if (v8)
+    if (fetcherCopy)
     {
-      v14 = objc_getProperty(v8, v13, 64, 1);
+      v14 = objc_getProperty(fetcherCopy, v13, 64, 1);
       if (v14)
       {
         v15 = v12;
@@ -8256,21 +8256,21 @@ uint64_t __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchPar
       v14 = 0;
     }
 
-    v17 = [v8 bundleID];
-    if (v17)
+    bundleID = [fetcherCopy bundleID];
+    if (bundleID)
     {
       v18 = v12;
-      xpc_dictionary_set_string(v18, "NSPServerSigningIdentifier", [v17 UTF8String]);
+      xpc_dictionary_set_string(v18, "NSPServerSigningIdentifier", [bundleID UTF8String]);
     }
 
-    if (v8)
+    if (fetcherCopy)
     {
-      v20 = !v8[20] && v8[21] == 0;
-      v21 = v20 && v8[22] == 0;
-      if (!v21 || v8[23] != 0)
+      v20 = !fetcherCopy[20] && fetcherCopy[21] == 0;
+      v21 = v20 && fetcherCopy[22] == 0;
+      if (!v21 || fetcherCopy[23] != 0)
       {
         memset(bytes, 0, sizeof(bytes));
-        [v8 auditToken];
+        [fetcherCopy auditToken];
         xpc_dictionary_set_data(v12, "NSPServerEffectiveAuditToken", bytes, 0x20uLL);
       }
     }
@@ -8289,11 +8289,11 @@ uint64_t __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchPar
     v28[1] = 3221225472;
     v28[2] = __83__NSPServerClient_checkRemainingCostQuotaWithFetcher_allowRetry_completionHandler___block_invoke;
     v28[3] = &unk_1E7A309C0;
-    v31 = a4;
+    retryCopy = retry;
     v28[4] = self;
-    v29 = v8;
-    v30 = v9;
-    xpc_connection_send_message_with_reply(v11, v12, Property, v28);
+    v29 = fetcherCopy;
+    v30 = handlerCopy;
+    xpc_connection_send_message_with_reply(getTokenFetchConnection, v12, Property, v28);
   }
 
   else
@@ -8311,7 +8311,7 @@ uint64_t __224__NSPServerClient_setPrivacyProxyTokenEventsProactiveTokenFetchPar
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v12 = [v25 initWithDomain:@"privacyProxyErrorDomain" code:1002 userInfo:v26];
 
-    (*(v9 + 2))(v9, 0, v12, 0.0, 0.0);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12, 0.0, 0.0);
   }
 
   v27 = *MEMORY[0x1E69E9840];

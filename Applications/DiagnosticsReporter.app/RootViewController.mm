@@ -1,21 +1,21 @@
 @interface RootViewController
-- (_TtC19DiagnosticsReporter18RootViewController)initWithCoder:(id)a3;
-- (_TtC19DiagnosticsReporter18RootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC19DiagnosticsReporter18RootViewController)initWithCoder:(id)coder;
+- (_TtC19DiagnosticsReporter18RootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation RootViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_100007AE0();
 }
 
-- (_TtC19DiagnosticsReporter18RootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19DiagnosticsReporter18RootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = self + OBJC_IVAR____TtC19DiagnosticsReporter18RootViewController_diagnosticLog;
@@ -23,8 +23,8 @@
     *(v8 + 1) = 0u;
     *(v8 + 4) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC19DiagnosticsReporter18RootViewController_feedbackController) = 0;
-    v9 = a4;
-    a3 = String._bridgeToObjectiveC()();
+    bundleCopy = bundle;
+    name = String._bridgeToObjectiveC()();
   }
 
   else
@@ -34,17 +34,17 @@
     *(v10 + 1) = 0u;
     *(v10 + 4) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC19DiagnosticsReporter18RootViewController_feedbackController) = 0;
-    v11 = a4;
+    bundleCopy2 = bundle;
   }
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(RootViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v12 = [(RootViewController *)&v14 initWithNibName:name bundle:bundle];
 
   return v12;
 }
 
-- (_TtC19DiagnosticsReporter18RootViewController)initWithCoder:(id)a3
+- (_TtC19DiagnosticsReporter18RootViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC19DiagnosticsReporter18RootViewController_diagnosticLog;
@@ -54,8 +54,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19DiagnosticsReporter18RootViewController_feedbackController) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(RootViewController *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(RootViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

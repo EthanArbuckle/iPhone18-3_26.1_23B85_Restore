@@ -1,6 +1,6 @@
 @interface WFGetFileAction
 - (BOOL)requiresRemoteExecution;
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4;
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service;
 @end
 
 @implementation WFGetFileAction
@@ -12,10 +12,10 @@
   return [(WFStorageServiceAction *)&v3 requiresRemoteExecution];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  serviceCopy = service;
   v8 = [(WFGetFileAction *)self parameterValueForKey:@"WFGetFilePath" ofClass:objc_opt_class()];
   if ([v8 hasPrefix:@"/"])
   {
@@ -29,11 +29,11 @@
   v12[2] = __61__WFGetFileAction_runAsynchronouslyWithInput_storageService___block_invoke;
   v12[3] = &unk_278C1A298;
   v12[4] = self;
-  v13 = v7;
+  v13 = serviceCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v7;
-  [v6 getFileRepresentation:v12 forType:0];
+  v11 = serviceCopy;
+  [inputCopy getFileRepresentation:v12 forType:0];
 }
 
 void __61__WFGetFileAction_runAsynchronouslyWithInput_storageService___block_invoke(uint64_t a1, void *a2, uint64_t a3)

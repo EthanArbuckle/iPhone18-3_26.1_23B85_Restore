@@ -1,82 +1,82 @@
 @interface PKServiceProviderPurchase
-+ (PKServiceProviderPurchase)purchaseWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToServiceProviderPurchase:(id)a3;
-- (PKServiceProviderPurchase)initWithCoder:(id)a3;
-- (PKServiceProviderPurchase)initWithDictionary:(id)a3;
++ (PKServiceProviderPurchase)purchaseWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToServiceProviderPurchase:(id)purchase;
+- (PKServiceProviderPurchase)initWithCoder:(id)coder;
+- (PKServiceProviderPurchase)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKServiceProviderPurchase
 
-+ (PKServiceProviderPurchase)purchaseWithDictionary:(id)a3
++ (PKServiceProviderPurchase)purchaseWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (PKServiceProviderPurchase)initWithDictionary:(id)a3
+- (PKServiceProviderPurchase)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = PKServiceProviderPurchase;
   v5 = [(PKServiceProviderPurchase *)&v45 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 PKStringForKey:@"visibleTransactionIdentifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"visibleTransactionIdentifier"];
     v10 = [v9 copy];
     visibleTransactionIdentifier = v5->_visibleTransactionIdentifier;
     v5->_visibleTransactionIdentifier = v10;
 
-    v12 = [v4 PKStringForKey:@"state"];
+    v12 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_state = PKServiceProviderPurchaseStateFromString(v12);
 
-    v13 = [v4 PKStringForKey:@"deviceIdentifier"];
+    v13 = [dictionaryCopy PKStringForKey:@"deviceIdentifier"];
     v14 = [v13 copy];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v14;
 
-    v16 = [v4 PKStringForKey:@"serviceProviderIdentifier"];
+    v16 = [dictionaryCopy PKStringForKey:@"serviceProviderIdentifier"];
     v17 = [v16 copy];
     serviceProviderIdentifier = v5->_serviceProviderIdentifier;
     v5->_serviceProviderIdentifier = v17;
 
-    v19 = [v4 PKDictionaryForKey:@"serviceProviderData"];
+    v19 = [dictionaryCopy PKDictionaryForKey:@"serviceProviderData"];
     v20 = [v19 copy];
     serviceProviderData = v5->_serviceProviderData;
     v5->_serviceProviderData = v20;
 
-    v22 = [v4 PKStringForKey:@"signature"];
+    v22 = [dictionaryCopy PKStringForKey:@"signature"];
     v23 = [v22 copy];
     signature = v5->_signature;
     v5->_signature = v23;
 
-    v25 = [v4 PKDateForKey:@"datePurchased"];
+    v25 = [dictionaryCopy PKDateForKey:@"datePurchased"];
     v26 = [v25 copy];
     purchaseDate = v5->_purchaseDate;
     v5->_purchaseDate = v26;
 
-    v28 = [v4 PKStringForKey:@"partnerMetadata"];
+    v28 = [dictionaryCopy PKStringForKey:@"partnerMetadata"];
     v29 = [v28 copy];
     partnerMetadata = v5->_partnerMetadata;
     v5->_partnerMetadata = v29;
 
-    v31 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v32 = [v4 PKArrayContaining:objc_opt_class() forKey:{@"actions", 0}];
+    v32 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:{@"actions", 0}];
     v33 = [v32 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v33)
     {
@@ -95,7 +95,7 @@
           v37 = [PKServiceProviderPurchaseAction actionWithDictionary:*(*(&v41 + 1) + 8 * v36)];
           if (v37)
           {
-            [v31 addObject:v37];
+            [array addObject:v37];
           }
 
           ++v36;
@@ -108,7 +108,7 @@
       while (v34);
     }
 
-    v38 = [v31 copy];
+    v38 = [array copy];
     actions = v5->_actions;
     v5->_actions = v38;
   }
@@ -116,53 +116,53 @@
   return v5;
 }
 
-- (PKServiceProviderPurchase)initWithCoder:(id)a3
+- (PKServiceProviderPurchase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PKServiceProviderPurchase;
   v5 = [(PKServiceProviderPurchase *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visibleTransactionIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visibleTransactionIdentifier"];
     v10 = [v9 copy];
     visibleTransactionIdentifier = v5->_visibleTransactionIdentifier;
     v5->_visibleTransactionIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     v5->_state = PKServiceProviderPurchaseStateFromString(v12);
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
     v14 = [v13 copy];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionIdentifier"];
     v17 = [v16 copy];
     regionIdentifier = v5->_regionIdentifier;
     v5->_regionIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderIdentifier"];
     v20 = [v19 copy];
     serviceProviderIdentifier = v5->_serviceProviderIdentifier;
     v5->_serviceProviderIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderData"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderData"];
     v23 = [v22 copy];
     serviceProviderData = v5->_serviceProviderData;
     v5->_serviceProviderData = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     v26 = [v25 copy];
     signature = v5->_signature;
     v5->_signature = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"datePurchased"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"datePurchased"];
     v29 = [v28 copy];
     purchaseDate = v5->_purchaseDate;
     v5->_purchaseDate = v29;
@@ -170,12 +170,12 @@
     v31 = MEMORY[0x1E695DFD8];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"actions"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"actions"];
     v35 = [v34 copy];
     actions = v5->_actions;
     v5->_actions = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerMetadata"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerMetadata"];
     v38 = [v37 copy];
     partnerMetadata = v5->_partnerMetadata;
     v5->_partnerMetadata = v38;
@@ -184,11 +184,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_visibleTransactionIdentifier forKey:@"visibleTransactionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_visibleTransactionIdentifier forKey:@"visibleTransactionIdentifier"];
   v4 = self->_state - 1;
   if (v4 > 2)
   {
@@ -200,51 +200,51 @@
     v5 = off_1E79D23F0[v4];
   }
 
-  [v6 encodeObject:v5 forKey:@"identifier"];
-  [v6 encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
-  [v6 encodeObject:self->_regionIdentifier forKey:@"regionIdentifier"];
-  [v6 encodeObject:self->_serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
-  [v6 encodeObject:self->_serviceProviderData forKey:@"serviceProviderData"];
-  [v6 encodeObject:self->_signature forKey:@"signature"];
-  [v6 encodeObject:self->_purchaseDate forKey:@"datePurchased"];
-  [v6 encodeObject:self->_actions forKey:@"actions"];
-  [v6 encodeObject:self->_partnerMetadata forKey:@"partnerMetadata"];
+  [coderCopy encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
+  [coderCopy encodeObject:self->_regionIdentifier forKey:@"regionIdentifier"];
+  [coderCopy encodeObject:self->_serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
+  [coderCopy encodeObject:self->_serviceProviderData forKey:@"serviceProviderData"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_purchaseDate forKey:@"datePurchased"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_partnerMetadata forKey:@"partnerMetadata"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_visibleTransactionIdentifier];
-  [v3 safelyAddObject:self->_deviceIdentifier];
-  [v3 safelyAddObject:self->_regionIdentifier];
-  [v3 safelyAddObject:self->_serviceProviderIdentifier];
-  [v3 safelyAddObject:self->_serviceProviderData];
-  [v3 safelyAddObject:self->_purchaseDate];
-  [v3 safelyAddObject:self->_signature];
-  [v3 safelyAddObject:self->_actions];
-  [v3 safelyAddObject:self->_partnerMetadata];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_visibleTransactionIdentifier];
+  [array safelyAddObject:self->_deviceIdentifier];
+  [array safelyAddObject:self->_regionIdentifier];
+  [array safelyAddObject:self->_serviceProviderIdentifier];
+  [array safelyAddObject:self->_serviceProviderData];
+  [array safelyAddObject:self->_purchaseDate];
+  [array safelyAddObject:self->_signature];
+  [array safelyAddObject:self->_actions];
+  [array safelyAddObject:self->_partnerMetadata];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_state - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKServiceProviderPurchase *)self isEqualToServiceProviderPurchase:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKServiceProviderPurchase *)self isEqualToServiceProviderPurchase:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToServiceProviderPurchase:(id)a3
+- (BOOL)isEqualToServiceProviderPurchase:(id)purchase
 {
-  v4 = a3;
-  if (self != v4)
+  purchaseCopy = purchase;
+  if (self != purchaseCopy)
   {
     identifier = self->_identifier;
-    v6 = v4->_identifier;
+    v6 = purchaseCopy->_identifier;
     if (identifier)
     {
       v7 = v6 == 0;
@@ -269,7 +269,7 @@
     }
 
     visibleTransactionIdentifier = self->_visibleTransactionIdentifier;
-    v10 = v4->_visibleTransactionIdentifier;
+    v10 = purchaseCopy->_visibleTransactionIdentifier;
     if (visibleTransactionIdentifier && v10)
     {
       if (([(NSString *)visibleTransactionIdentifier isEqual:?]& 1) == 0)
@@ -284,7 +284,7 @@
     }
 
     deviceIdentifier = self->_deviceIdentifier;
-    v12 = v4->_deviceIdentifier;
+    v12 = purchaseCopy->_deviceIdentifier;
     if (deviceIdentifier && v12)
     {
       if (([(NSString *)deviceIdentifier isEqual:?]& 1) == 0)
@@ -299,7 +299,7 @@
     }
 
     regionIdentifier = self->_regionIdentifier;
-    v14 = v4->_regionIdentifier;
+    v14 = purchaseCopy->_regionIdentifier;
     if (regionIdentifier && v14)
     {
       if (([(NSString *)regionIdentifier isEqual:?]& 1) == 0)
@@ -314,7 +314,7 @@
     }
 
     serviceProviderIdentifier = self->_serviceProviderIdentifier;
-    v16 = v4->_serviceProviderIdentifier;
+    v16 = purchaseCopy->_serviceProviderIdentifier;
     if (serviceProviderIdentifier && v16)
     {
       if (([(NSString *)serviceProviderIdentifier isEqual:?]& 1) == 0)
@@ -329,7 +329,7 @@
     }
 
     serviceProviderData = self->_serviceProviderData;
-    v18 = v4->_serviceProviderData;
+    v18 = purchaseCopy->_serviceProviderData;
     if (serviceProviderData && v18)
     {
       if (![(PKServiceProviderPurchaseData *)serviceProviderData isEqual:?])
@@ -344,7 +344,7 @@
     }
 
     purchaseDate = self->_purchaseDate;
-    v20 = v4->_purchaseDate;
+    v20 = purchaseCopy->_purchaseDate;
     if (purchaseDate && v20)
     {
       if (([(NSDate *)purchaseDate isEqual:?]& 1) == 0)
@@ -359,7 +359,7 @@
     }
 
     signature = self->_signature;
-    v22 = v4->_signature;
+    v22 = purchaseCopy->_signature;
     if (signature && v22)
     {
       if (([(NSString *)signature isEqual:?]& 1) == 0)
@@ -374,7 +374,7 @@
     }
 
     actions = self->_actions;
-    v24 = v4->_actions;
+    v24 = purchaseCopy->_actions;
     if (actions && v24)
     {
       if (([(NSArray *)actions isEqual:?]& 1) == 0)
@@ -389,13 +389,13 @@
     }
 
     partnerMetadata = self->_partnerMetadata;
-    v26 = v4->_partnerMetadata;
+    v26 = purchaseCopy->_partnerMetadata;
     if (partnerMetadata && v26)
     {
       if (([(NSString *)partnerMetadata isEqual:?]& 1) != 0)
       {
 LABEL_54:
-        v8 = self->_state == v4->_state;
+        v8 = self->_state == purchaseCopy->_state;
         goto LABEL_57;
       }
     }

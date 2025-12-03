@@ -1,33 +1,33 @@
 @interface TYTextDirectionAnnotation
-+ (id)initWithRange:(_NSRange)a3 textDirection:(unint64_t)a4;
++ (id)initWithRange:(_NSRange)range textDirection:(unint64_t)direction;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation TYTextDirectionAnnotation
 
-+ (id)initWithRange:(_NSRange)a3 textDirection:(unint64_t)a4
++ (id)initWithRange:(_NSRange)range textDirection:(unint64_t)direction
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = objc_alloc_init(TYTextDirectionAnnotation);
   [(TYTextDirectionAnnotation *)v7 setRange:location, length];
-  [(TYTextDirectionAnnotation *)v7 setTextDirection:a4];
+  [(TYTextDirectionAnnotation *)v7 setTextDirection:direction];
 
   return v7;
 }
 
 - (id)description
 {
-  v3 = [(TYTextDirectionAnnotation *)self textDirection];
-  if (v3 - 1 > 3)
+  textDirection = [(TYTextDirectionAnnotation *)self textDirection];
+  if (textDirection - 1 > 3)
   {
     v4 = @"Unknown direction";
   }
 
   else
   {
-    v4 = off_279DF4888[v3 - 1];
+    v4 = off_279DF4888[textDirection - 1];
   }
 
   v5 = MEMORY[0x277CCACA8];

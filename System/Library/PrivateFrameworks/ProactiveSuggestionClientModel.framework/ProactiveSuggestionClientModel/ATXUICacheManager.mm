@@ -1,32 +1,32 @@
 @interface ATXUICacheManager
 - (ATXUICacheManager)init;
-- (ATXUICacheManager)initWithCacheBasePath:(id)a3;
-- (BOOL)writeSerializedDataToCacheFile:(id)a3 path:(id)a4;
-- (double)cacheAgeForConsumerSubTypeString:(id)a3;
+- (ATXUICacheManager)initWithCacheBasePath:(id)path;
+- (BOOL)writeSerializedDataToCacheFile:(id)file path:(id)path;
+- (double)cacheAgeForConsumerSubTypeString:(id)string;
 - (id)consumerSubTypeStringsWithNonEmptyCachedLayout;
-- (id)dataFromFileHandle:(id)a3;
-- (id)serializeLayout:(id)a3;
+- (id)dataFromFileHandle:(id)handle;
+- (id)serializeLayout:(id)layout;
 @end
 
 @implementation ATXUICacheManager
 
 - (ATXUICacheManager)init
 {
-  v3 = [MEMORY[0x1E698B010] uiCachesRootDirectory];
-  v4 = [(ATXUICacheManager *)self initWithCacheBasePath:v3];
+  uiCachesRootDirectory = [MEMORY[0x1E698B010] uiCachesRootDirectory];
+  v4 = [(ATXUICacheManager *)self initWithCacheBasePath:uiCachesRootDirectory];
 
   return v4;
 }
 
-- (ATXUICacheManager)initWithCacheBasePath:(id)a3
+- (ATXUICacheManager)initWithCacheBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ATXUICacheManager;
   v5 = [(ATXUICacheManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     cacheBasePath = v5->_cacheBasePath;
     v5->_cacheBasePath = v6;
   }
@@ -38,8 +38,8 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 contentsOfDirectoryAtPath:self->_cacheBasePath error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtPath:self->_cacheBasePath error:0];
 
   if (v5)
   {
@@ -93,11 +93,11 @@
   return v13;
 }
 
-- (double)cacheAgeForConsumerSubTypeString:(id)a3
+- (double)cacheAgeForConsumerSubTypeString:(id)string
 {
-  v3 = [(ATXUICacheManager *)self cacheFilePathForConsumerSubTypeString:a3];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 attributesOfItemAtPath:v3 error:0];
+  v3 = [(ATXUICacheManager *)self cacheFilePathForConsumerSubTypeString:string];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager attributesOfItemAtPath:v3 error:0];
 
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A350]];
   [v6 timeIntervalSinceNow];
@@ -106,10 +106,10 @@
   return v8;
 }
 
-- (BOOL)writeSerializedDataToCacheFile:(id)a3 path:(id)a4
+- (BOOL)writeSerializedDataToCacheFile:(id)file path:(id)path
 {
   v10 = 0;
-  v4 = [a3 writeToFile:a4 options:1073741825 error:&v10];
+  v4 = [file writeToFile:path options:1073741825 error:&v10];
   v5 = v10;
   v6 = __atxlog_handle_blending();
   v7 = v6;
@@ -135,9 +135,9 @@
   return v4;
 }
 
-- (id)dataFromFileHandle:(id)a3
+- (id)dataFromFileHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = __atxlog_handle_blending();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,10 +145,10 @@
     _os_log_impl(&dword_1DEFC4000, v4, OS_LOG_TYPE_DEFAULT, "Blending: Reading cache file to retrieve UI layout", buf, 2u);
   }
 
-  if (v3)
+  if (handleCopy)
   {
     v11 = 0;
-    v5 = [v3 readDataToEndOfFileAndReturnError:&v11];
+    v5 = [handleCopy readDataToEndOfFileAndReturnError:&v11];
     v6 = v11;
     v7 = v6;
     if (!v5 || v6)
@@ -183,13 +183,13 @@
   return v8;
 }
 
-- (id)serializeLayout:(id)a3
+- (id)serializeLayout:(id)layout
 {
-  v3 = [a3 encodeAsProto];
-  v4 = v3;
-  if (v3)
+  encodeAsProto = [layout encodeAsProto];
+  v4 = encodeAsProto;
+  if (encodeAsProto)
   {
-    v5 = v3;
+    v5 = encodeAsProto;
   }
 
   else

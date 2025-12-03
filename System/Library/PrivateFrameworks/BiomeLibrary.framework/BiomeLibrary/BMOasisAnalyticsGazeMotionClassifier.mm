@@ -1,38 +1,38 @@
 @interface BMOasisAnalyticsGazeMotionClassifier
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsGazeMotionClassifier)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMOasisAnalyticsGazeMotionClassifier)initWithPayload:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsGazeMotionClassifier)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMOasisAnalyticsGazeMotionClassifier)initWithPayload:(id)payload;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsGazeMotionClassifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
-    v7 = [v5 payload];
-    if (v6 == v7)
+    v5 = equalCopy;
+    payload = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
+    payload2 = [v5 payload];
+    if (payload == payload2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
-      v9 = [v5 payload];
-      v10 = [v8 isEqual:v9];
+      payload3 = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
+      payload4 = [v5 payload];
+      v10 = [payload3 isEqual:payload4];
     }
   }
 
@@ -47,19 +47,19 @@
 - (id)jsonDictionary
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
-  v3 = [v2 jsonDictionary];
+  payload = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
+  jsonDictionary = [payload jsonDictionary];
 
   v8 = @"payload";
-  v4 = v3;
-  if (!v3)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9[0] = v4;
+  v9[0] = null;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  if (!v3)
+  if (!jsonDictionary)
   {
   }
 
@@ -68,10 +68,10 @@
   return v5;
 }
 
-- (BMOasisAnalyticsGazeMotionClassifier)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMOasisAnalyticsGazeMotionClassifier)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"payload"];
+  v6 = [dictionary objectForKeyedSubscript:@"payload"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -130,25 +130,25 @@ LABEL_14:
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsGazeMotionClassifier *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_payload)
   {
-    v4 = a3;
+    toCopy = to;
     PBDataWriterPlaceMark();
-    [(BMOasisAnalyticsGazeMotionClassifierPayload *)self->_payload writeTo:v4];
+    [(BMOasisAnalyticsGazeMotionClassifierPayload *)self->_payload writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20.receiver = self;
   v20.super_class = BMOasisAnalyticsGazeMotionClassifier;
   v5 = [(BMEventBase *)&v20 init];
@@ -157,12 +157,12 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -173,18 +173,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v21[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v21 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v21 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v21[0] & 0x7F) << v7;
@@ -201,9 +201,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -217,7 +217,7 @@ LABEL_16:
           goto LABEL_25;
         }
 
-        v15 = [[BMOasisAnalyticsGazeMotionClassifierPayload alloc] initByReadFrom:v4];
+        v15 = [[BMOasisAnalyticsGazeMotionClassifierPayload alloc] initByReadFrom:fromCopy];
         if (!v15)
         {
           goto LABEL_25;
@@ -234,13 +234,13 @@ LABEL_16:
         goto LABEL_25;
       }
 
-      v17 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v17 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_25:
     v18 = 0;
@@ -258,22 +258,22 @@ LABEL_26:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
-  v5 = [v3 initWithFormat:@"BMOasisAnalyticsGazeMotionClassifier with payload: %@", v4];
+  payload = [(BMOasisAnalyticsGazeMotionClassifier *)self payload];
+  v5 = [v3 initWithFormat:@"BMOasisAnalyticsGazeMotionClassifier with payload: %@", payload];
 
   return v5;
 }
 
-- (BMOasisAnalyticsGazeMotionClassifier)initWithPayload:(id)a3
+- (BMOasisAnalyticsGazeMotionClassifier)initWithPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v8.receiver = self;
   v8.super_class = BMOasisAnalyticsGazeMotionClassifier;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_payload, a3);
+    objc_storeStrong(&v6->_payload, payload);
   }
 
   return v6;
@@ -313,9 +313,9 @@ id __47__BMOasisAnalyticsGazeMotionClassifier_columns__block_invoke(uint64_t a1,
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -323,8 +323,8 @@ id __47__BMOasisAnalyticsGazeMotionClassifier_columns__block_invoke(uint64_t a1,
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsGazeMotionClassifier alloc] initByReadFrom:v7];
     v4 = v8;

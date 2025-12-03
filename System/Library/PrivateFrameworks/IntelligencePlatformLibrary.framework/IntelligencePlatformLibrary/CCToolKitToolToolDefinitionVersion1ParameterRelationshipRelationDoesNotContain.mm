@@ -1,25 +1,25 @@
 @interface CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithValues:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithValues:(id)values error:(id *)error;
 - (NSArray)values;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain
 
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v34 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"values"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"values"];
     if (v9)
     {
       v10 = v9;
@@ -35,7 +35,7 @@
         goto LABEL_21;
       }
 
-      v27 = self;
+      selfCopy = self;
       v13 = objc_opt_new();
       v29 = 0u;
       v30 = 0u;
@@ -77,7 +77,7 @@
               CCSetError();
 
               v24 = 0;
-              self = v27;
+              self = selfCopy;
               goto LABEL_21;
             }
 
@@ -90,7 +90,7 @@
         while (v15);
       }
 
-      self = v27;
+      self = selfCopy;
     }
 
     else
@@ -99,7 +99,7 @@
       v12 = v8;
     }
 
-    v24 = [[CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain alloc] initWithValues:v13 error:a4];
+    v24 = [[CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain alloc] initWithValues:v13 error:error];
     v10 = v13;
 LABEL_21:
 
@@ -126,8 +126,8 @@ LABEL_22:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain *)self values];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    values = [(CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain *)self values];
+    v6 = [values countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -138,14 +138,14 @@ LABEL_22:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(values);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) jsonDictionary];
-          [v4 addObject:v10];
+          jsonDictionary = [*(*(&v14 + 1) + 8 * i) jsonDictionary];
+          [v4 addObject:jsonDictionary];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [values countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -161,15 +161,15 @@ LABEL_22:
   return v11;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
   if (self->_values)
   {
     v6 = MEMORY[0x1E69939F0];
-    v7 = a3;
+    blockCopy = block;
     v8 = [v6 alloc];
     v9 = [v8 initWithFieldType:*MEMORY[0x1E69939A8] repeatedSubMessageValue:self->_values];
-    (*(a3 + 2))(v7, v9);
+    (*(block + 2))(blockCopy, v9);
   }
 }
 
@@ -180,10 +180,10 @@ LABEL_22:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v38 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v38];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -316,13 +316,13 @@ LABEL_36:
   {
     CCSetError();
     v30 = 0;
-    v31 = v38;
+    v31 = dataCopy;
   }
 
   else
   {
     v32 = MEMORY[0x1E6993AA8];
-    v31 = v38;
+    v31 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v33 = objc_opt_class();
@@ -343,12 +343,12 @@ LABEL_36:
   return v30;
 }
 
-- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithValues:(id)a3 error:(id *)a4
+- (CCToolKitToolToolDefinitionVersion1ParameterRelationshipRelationDoesNotContain)initWithValues:(id)values error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  valuesCopy = values;
   v7 = objc_opt_new();
-  if (v6)
+  if (valuesCopy)
   {
     objc_opt_class();
     v24 = 0;
@@ -357,7 +357,7 @@ LABEL_36:
     if (!v8)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_14;
     }
 
@@ -365,7 +365,7 @@ LABEL_36:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = valuesCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -381,7 +381,7 @@ LABEL_36:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * v14) data];
+          data = [*(*(&v20 + 1) + 8 * v14) data];
           CCPBDataWriterWriteDataField();
 
           ++v14;
@@ -400,14 +400,14 @@ LABEL_36:
     v9 = 0;
   }
 
-  v16 = [v7 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a4];
+  immutableData = [v7 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_14:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 @end

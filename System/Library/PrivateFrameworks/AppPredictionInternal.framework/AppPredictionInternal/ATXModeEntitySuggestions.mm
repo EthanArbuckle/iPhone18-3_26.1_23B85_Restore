@@ -1,14 +1,14 @@
 @interface ATXModeEntitySuggestions
-- (void)suggestedBundleIDsForAllowListWithCompletion:(id)a3;
-- (void)suggestedBundleIDsForDenyListWithCompletion:(id)a3;
+- (void)suggestedBundleIDsForAllowListWithCompletion:(id)completion;
+- (void)suggestedBundleIDsForDenyListWithCompletion:(id)completion;
 @end
 
 @implementation ATXModeEntitySuggestions
 
-- (void)suggestedBundleIDsForAllowListWithCompletion:(id)a3
+- (void)suggestedBundleIDsForAllowListWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  completionCopy = completion;
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = dispatch_group_create();
@@ -32,7 +32,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v26 + 1) + 8 * v9) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v26 + 1) + 8 * v9) unsignedIntegerValue];
         v11 = objc_opt_new();
         v12 = ATXModeToString();
         [v3 setObject:v11 forKeyedSubscript:v12];
@@ -44,8 +44,8 @@
         v22[3] = &unk_278597B60;
         v23 = v5;
         v24 = v3;
-        v25 = v10;
-        [v4 recommendedAndCandidateAllowedAppsForMode:v10 reply:v22];
+        v25 = unsignedIntegerValue;
+        [v4 recommendedAndCandidateAllowedAppsForMode:unsignedIntegerValue reply:v22];
 
         ++v9;
       }
@@ -63,9 +63,9 @@
   block[2] = __73__ATXModeEntitySuggestions_suggestedBundleIDsForAllowListWithCompletion___block_invoke_2;
   block[3] = &unk_278596F88;
   v20 = v3;
-  v21 = v17;
+  v21 = completionCopy;
   v14 = v3;
-  v15 = v17;
+  v15 = completionCopy;
   dispatch_group_notify(v5, v13, block);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -103,10 +103,10 @@ void __73__ATXModeEntitySuggestions_suggestedBundleIDsForAllowListWithCompletion
   }
 }
 
-- (void)suggestedBundleIDsForDenyListWithCompletion:(id)a3
+- (void)suggestedBundleIDsForDenyListWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  completionCopy = completion;
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = dispatch_group_create();
@@ -130,7 +130,7 @@ void __73__ATXModeEntitySuggestions_suggestedBundleIDsForAllowListWithCompletion
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v26 + 1) + 8 * v9) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v26 + 1) + 8 * v9) unsignedIntegerValue];
         v11 = objc_opt_new();
         v12 = ATXModeToString();
         [v3 setObject:v11 forKeyedSubscript:v12];
@@ -142,8 +142,8 @@ void __73__ATXModeEntitySuggestions_suggestedBundleIDsForAllowListWithCompletion
         v22[3] = &unk_278597B60;
         v23 = v5;
         v24 = v3;
-        v25 = v10;
-        [v4 recommendedAndCandidateDeniedAppsForMode:v10 reply:v22];
+        v25 = unsignedIntegerValue;
+        [v4 recommendedAndCandidateDeniedAppsForMode:unsignedIntegerValue reply:v22];
 
         ++v9;
       }
@@ -161,9 +161,9 @@ void __73__ATXModeEntitySuggestions_suggestedBundleIDsForAllowListWithCompletion
   block[2] = __72__ATXModeEntitySuggestions_suggestedBundleIDsForDenyListWithCompletion___block_invoke_2;
   block[3] = &unk_278596F88;
   v20 = v3;
-  v21 = v17;
+  v21 = completionCopy;
   v14 = v3;
-  v15 = v17;
+  v15 = completionCopy;
   dispatch_group_notify(v5, v13, block);
 
   v16 = *MEMORY[0x277D85DE8];

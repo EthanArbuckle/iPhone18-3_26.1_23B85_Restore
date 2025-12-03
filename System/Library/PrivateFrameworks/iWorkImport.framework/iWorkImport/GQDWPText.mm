@@ -1,20 +1,20 @@
 @interface GQDWPText
 - (BOOL)isBlank;
-- (GQDWPText)initWithContent:(const char *)a3;
+- (GQDWPText)initWithContent:(const char *)content;
 - (void)dealloc;
 @end
 
 @implementation GQDWPText
 
-- (GQDWPText)initWithContent:(const char *)a3
+- (GQDWPText)initWithContent:(const char *)content
 {
   v7.receiver = self;
   v7.super_class = GQDWPText;
   v4 = [(GQDWPText *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (content && v4)
   {
-    v4->mContent = xmlStrdup(a3);
+    v4->mContent = xmlStrdup(content);
   }
 
   return v5;

@@ -1,23 +1,23 @@
 @interface CAPackage
-+ (id)packageWithContentsOfURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)packageWithData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
++ (id)packageWithContentsOfURL:(id)l type:(id)type options:(id)options error:(id *)error;
++ (id)packageWithData:(id)data type:(id)type options:(id)options error:(id *)error;
 - (BOOL)isGeometryFlipped;
 - (CALayer)rootLayer;
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4;
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
-- (id)CAMLParser:(id)a3 resourceForURL:(id)a4;
-- (id)_initWithContentsOfURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)_initWithData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
+- (id)CAMLParser:(id)parser resourceForURL:(id)l;
+- (id)_initWithContentsOfURL:(id)l type:(id)type options:(id)options error:(id *)error;
+- (id)_initWithData:(id)data type:(id)type options:(id)options error:(id *)error;
 - (id)publishedObjectNames;
-- (id)publishedObjectWithName:(id)a3;
+- (id)publishedObjectWithName:(id)name;
 - (id)substitutedClasses;
-- (void)CAMLParser:(id)a3 didLoadResource:(id)a4 fromURL:(id)a5;
-- (void)_addClassSubstitutions:(id)a3;
-- (void)_readFromArchiveData:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)_readFromCAMLData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
-- (void)_readFromCAMLURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
+- (void)CAMLParser:(id)parser didLoadResource:(id)resource fromURL:(id)l;
+- (void)_addClassSubstitutions:(id)substitutions;
+- (void)_readFromArchiveData:(id)data options:(id)options error:(id *)error;
+- (void)_readFromCAMLData:(id)data type:(id)type options:(id)options error:(id *)error;
+- (void)_readFromCAMLURL:(id)l type:(id)type options:(id)options error:(id *)error;
 - (void)dealloc;
-- (void)foreachLayer:(id)a3;
+- (void)foreachLayer:(id)layer;
 @end
 
 @implementation CAPackage
@@ -74,21 +74,21 @@
   return data & 1;
 }
 
-- (void)CAMLParser:(id)a3 didLoadResource:(id)a4 fromURL:(id)a5
+- (void)CAMLParser:(id)parser didLoadResource:(id)resource fromURL:(id)l
 {
   data = self->_data;
   if (data)
   {
-    [data->var6 setObject:a4 forKey:a5];
+    [data->var6 setObject:resource forKey:l];
   }
 }
 
-- (id)CAMLParser:(id)a3 resourceForURL:(id)a4
+- (id)CAMLParser:(id)parser resourceForURL:(id)l
 {
   data = self->_data;
   if (data)
   {
-    return [data->var6 objectForKey:a4];
+    return [data->var6 objectForKey:l];
   }
 
   else
@@ -97,18 +97,18 @@
   }
 }
 
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name
 {
-  v5 = [(CAPackage *)self substitutedClasses];
+  substitutedClasses = [(CAPackage *)self substitutedClasses];
 
-  return [v5 objectForKey:a4];
+  return [substitutedClasses objectForKey:name];
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  v6 = a3;
+  unarchiverCopy = unarchiver;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = [a5 count];
+  v8 = [classes count];
   if (v8 < 2)
   {
 LABEL_14:
@@ -123,7 +123,7 @@ LABEL_14:
     v11 = 0x1E69E5000uLL;
     while (1)
     {
-      v12 = NSClassFromString([a5 objectAtIndex:v10]);
+      v12 = NSClassFromString([classes objectAtIndex:v10]);
       if (v12)
       {
         v13 = v12;
@@ -133,8 +133,8 @@ LABEL_14:
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v14 = [v6 allowedClasses];
-          v15 = [v14 countByEnumeratingWithState:&v25 objects:v24 count:16];
+          allowedClasses = [unarchiverCopy allowedClasses];
+          v15 = [allowedClasses countByEnumeratingWithState:&v25 objects:v24 count:16];
           if (v15)
           {
             break;
@@ -153,15 +153,15 @@ LABEL_13:
     v17 = *v26;
     v23 = v9;
 LABEL_7:
-    v18 = v6;
-    v19 = self;
+    v18 = unarchiverCopy;
+    selfCopy = self;
     v20 = v11;
     v21 = 0;
     while (1)
     {
       if (*v26 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(allowedClasses);
       }
 
       if (([(objc_class *)v13 isSubclassOfClass:*(*(&v25 + 1) + 8 * v21)]& 1) != 0)
@@ -171,10 +171,10 @@ LABEL_7:
 
       if (v16 == ++v21)
       {
-        v16 = [v14 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        v16 = [allowedClasses countByEnumeratingWithState:&v25 objects:v24 count:16];
         v11 = v20;
-        self = v19;
-        v6 = v18;
+        self = selfCopy;
+        unarchiverCopy = v18;
         v9 = v23;
         if (v16)
         {
@@ -189,19 +189,19 @@ LABEL_7:
   return v13;
 }
 
-- (void)foreachLayer:(id)a3
+- (void)foreachLayer:(id)layer
 {
-  v4 = [(CAPackage *)self rootLayer];
+  rootLayer = [(CAPackage *)self rootLayer];
 
-  foreachLayer(v4, a3);
+  foreachLayer(rootLayer, layer);
 }
 
-- (id)publishedObjectWithName:(id)a3
+- (id)publishedObjectWithName:(id)name
 {
   data = self->_data;
   if (data)
   {
-    return [data->var1 objectForKey:a3];
+    return [data->var1 objectForKey:name];
   }
 
   else
@@ -224,62 +224,62 @@ LABEL_7:
   }
 }
 
-- (void)_readFromCAMLURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
+- (void)_readFromCAMLURL:(id)l type:(id)type options:(id)options error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  if ([a4 isEqualToString:@"com.apple.coreanimation-xml"])
+  if ([type isEqualToString:@"com.apple.coreanimation-xml"])
   {
     v9 = +[CAMLParser parser];
     [v9 setDelegate:self];
-    [v9 setBaseURL:{objc_msgSend(a3, "URLByDeletingLastPathComponent")}];
-    [v9 parseContentsOfURL:a3];
-    v10 = [v9 error];
-    if (a6 && v10 && !*a6)
+    [v9 setBaseURL:{objc_msgSend(l, "URLByDeletingLastPathComponent")}];
+    [v9 parseContentsOfURL:l];
+    error = [v9 error];
+    if (error && error && !*error)
     {
-      *a6 = v10;
+      *error = error;
     }
 
-    v11 = [v9 result];
+    result = [v9 result];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_data->var0 = v11;
+      self->_data->var0 = result;
     }
 
     else
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to parse CAPackage: %@", @"Expected CALayer at root"];
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         v62 = *MEMORY[0x1E696A578];
         v64 = v19;
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 1)}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 1)}];
       }
     }
   }
 
-  else if ([a4 isEqualToString:@"com.apple.coreanimation-bundle"])
+  else if ([type isEqualToString:@"com.apple.coreanimation-bundle"])
   {
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(a3 isDirectory:{"path"), 1}];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(l isDirectory:{"path"), 1}];
     self->_data->var2 = [objc_msgSend(v12 "path")];
     v13 = [MEMORY[0x1E695DFF8] URLWithString:@"index.xml" relativeToURL:v12];
-    v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v13 options:0 error:a6];
+    v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v13 options:0 error:error];
     if (v14)
     {
-      v15 = [MEMORY[0x1E696AE40] propertyListWithData:v14 options:0 format:0 error:a6];
+      v15 = [MEMORY[0x1E696AE40] propertyListWithData:v14 options:0 format:0 error:error];
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to parse CAPackage from URL: %@", v13];
-      if (a6)
+      if (error)
       {
-        v17 = *a6;
-        if (*a6)
+        v17 = *error;
+        if (*error)
         {
           v18 = *MEMORY[0x1E696AA08];
           v62 = *MEMORY[0x1E696A578];
           v63 = v18;
           v64 = v16;
           v65 = v17;
-          *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 2)}];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 2)}];
         }
       }
     }
@@ -287,17 +287,17 @@ LABEL_7:
     else
     {
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load CAPackage from URL: %@", v13];
-      if (a6)
+      if (error)
       {
-        v21 = *a6;
-        if (*a6)
+        v21 = *error;
+        if (*error)
         {
           v22 = *MEMORY[0x1E696AA08];
           v62 = *MEMORY[0x1E696A578];
           v63 = v22;
           v64 = v20;
           v65 = v21;
-          *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 2)}];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 2)}];
         }
       }
 
@@ -315,12 +315,12 @@ LABEL_7:
       [v25 setDelegate:self];
       [v25 setBaseURL:v12];
       [v25 parseContentsOfURL:v24];
-      v26 = [v25 error];
-      if (a6)
+      error2 = [v25 error];
+      if (error)
       {
-        if (v26 && !*a6)
+        if (error2 && !*error)
         {
-          *a6 = v26;
+          *error = error2;
         }
       }
     }
@@ -334,27 +334,27 @@ LABEL_7:
       [v29 setDelegate:self];
       [v29 setBaseURL:v12];
       [v29 parseContentsOfURL:v28];
-      v30 = [v29 error];
-      if (a6 && v30 && !*a6)
+      error3 = [v29 error];
+      if (error && error3 && !*error)
       {
-        *a6 = v30;
+        *error = error3;
       }
 
-      v31 = [v29 result];
+      result2 = [v29 result];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        self->_data->var0 = v31;
+        self->_data->var0 = result2;
       }
 
       else
       {
         v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to parse CAPackage: %@", @"Expected CALayer at root."];
-        if (a6 && !*a6)
+        if (error && !*error)
         {
           v62 = *MEMORY[0x1E696A578];
           v64 = v32;
-          *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 1)}];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v64, &v62, 1)}];
         }
       }
     }
@@ -362,9 +362,9 @@ LABEL_7:
     v33 = [v15 objectForKey:@"publishedObjectNames"];
     if (v33)
     {
-      v34 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v48 = v15;
-      v49 = a6;
+      errorCopy = error;
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
@@ -404,7 +404,7 @@ LABEL_7:
                   v43 = [*(*(&v53 + 1) + 8 * j) objectById:v38];
                   if (v43)
                   {
-                    [v34 setObject:v43 forKey:v38];
+                    [dictionary setObject:v43 forKey:v38];
                     goto LABEL_52;
                   }
                 }
@@ -430,8 +430,8 @@ LABEL_52:
       }
 
       v15 = v48;
-      a6 = v49;
-      self->_data->var1 = [v34 copy];
+      error = errorCopy;
+      self->_data->var1 = [dictionary copy];
     }
 
     v44 = [objc_msgSend(v15 objectForKey:{@"geometryFlipped", "BOOLValue"}];
@@ -441,17 +441,17 @@ LABEL_52:
     data->var6 = 0;
   }
 
-  if (a6)
+  if (error)
   {
-    if (*a6)
+    if (*error)
     {
-      v46 = *a6;
+      v46 = *error;
     }
 
     objc_autoreleasePoolPop(context);
-    if (*a6)
+    if (*error)
     {
-      v47 = *a6;
+      v47 = *error;
     }
   }
 
@@ -461,36 +461,36 @@ LABEL_52:
   }
 }
 
-- (void)_readFromCAMLData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
+- (void)_readFromCAMLData:(id)data type:(id)type options:(id)options error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v10 = objc_autoreleasePoolPush();
-  if ([a4 isEqualToString:@"com.apple.coreanimation-xml"])
+  if ([type isEqualToString:@"com.apple.coreanimation-xml"])
   {
     v11 = +[CAMLParser parser];
     [v11 setDelegate:self];
-    [v11 parseData:a3];
-    v12 = [v11 error];
-    if (a6 && v12 && !*a6)
+    [v11 parseData:data];
+    error = [v11 error];
+    if (error && error && !*error)
     {
-      *a6 = v12;
+      *error = error;
     }
 
-    v13 = [v11 result];
+    result = [v11 result];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_data->var0 = v13;
+      self->_data->var0 = result;
     }
 
     else
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to parse CAPackage: %@", @"Expected CALayer at root"];
-      if (a6 && !*a6)
+      if (error && !*error)
       {
         v15 = *MEMORY[0x1E696A578];
         v16[0] = v14;
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v16, &v15, 1)}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v16, &v15, 1)}];
       }
     }
   }
@@ -498,10 +498,10 @@ LABEL_52:
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)_readFromArchiveData:(id)a3 options:(id)a4 error:(id *)a5
+- (void)_readFromArchiveData:(id)data options:(id)options error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a3 error:0];
+  v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:data error:0];
   v9 = v8;
   if (v8)
   {
@@ -529,15 +529,15 @@ LABEL_52:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_addClassSubstitutions:(id)a3
+- (void)_addClassSubstitutions:(id)substitutions
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(CAPackage *)self substitutedClasses];
+  substitutedClasses = [(CAPackage *)self substitutedClasses];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v5 = [substitutedClasses countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -549,22 +549,22 @@ LABEL_52:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(substitutedClasses);
         }
 
-        [a3 setClass:objc_msgSend(v4 forClassName:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), *(*(&v10 + 1) + 8 * v8)}];
+        [substitutions setClass:objc_msgSend(substitutedClasses forClassName:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), *(*(&v10 + 1) + 8 * v8)}];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [substitutedClasses countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_initWithData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_initWithData:(id)data type:(id)type options:(id)options error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -573,19 +573,19 @@ LABEL_52:
   if (v10)
   {
     *(v10 + 1) = malloc_type_calloc(1uLL, 0x30uLL, 0x1080040EEFF6A89uLL);
-    if ([a4 isEqualToString:@"com.apple.coreanimation-archive"])
+    if ([type isEqualToString:@"com.apple.coreanimation-archive"])
     {
-      [v10 _readFromArchiveData:a3 options:a5 error:a6];
+      [v10 _readFromArchiveData:data options:options error:error];
     }
 
-    else if (([a4 isEqualToString:@"com.apple.coreanimation-bundle"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"com.apple.coreanimation-xml"))
+    else if (([type isEqualToString:@"com.apple.coreanimation-bundle"] & 1) != 0 || objc_msgSend(type, "isEqualToString:", @"com.apple.coreanimation-xml"))
     {
-      [v10 _readFromCAMLData:a3 type:a4 options:a5 error:a6];
+      [v10 _readFromCAMLData:data type:type options:options error:error];
     }
 
     if (**(v10 + 1))
     {
-      if ([objc_msgSend(a5 objectForKeyedSubscript:{@"prepareContents", "BOOLValue"}])
+      if ([objc_msgSend(options objectForKeyedSubscript:{@"prepareContents", "BOOLValue"}])
       {
         recursively_prepare_contents(**(v10 + 1));
       }
@@ -601,30 +601,30 @@ LABEL_52:
   return v10;
 }
 
-- (id)_initWithContentsOfURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_initWithContentsOfURL:(id)l type:(id)type options:(id)options error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:@"com.apple.coreanimation-archive"])
+  if ([type isEqualToString:@"com.apple.coreanimation-archive"])
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:a3 options:0 error:a6];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load CAPackage from URL: %@", a3];
-    if (a6)
+    v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:l options:0 error:error];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load CAPackage from URL: %@", l];
+    if (error)
     {
-      v13 = *a6;
-      if (*a6)
+      v13 = *error;
+      if (*error)
       {
         v14 = *MEMORY[0x1E696AA08];
         v17[0] = *MEMORY[0x1E696A578];
         v17[1] = v14;
         v18[0] = v12;
         v18[1] = v13;
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v18, v17, 2)}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CoreAnimationErrorDomain" code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v18, v17, 2)}];
       }
     }
 
     if (v11)
     {
-      self = [(CAPackage *)self _initWithData:v11 type:a4 options:a5 error:a6];
+      self = [(CAPackage *)self _initWithData:v11 type:type options:options error:error];
 
       return self;
     }
@@ -643,9 +643,9 @@ LABEL_14:
   }
 
   self->_data = malloc_type_calloc(1uLL, 0x30uLL, 0x1080040EEFF6A89uLL);
-  if (([a4 isEqualToString:@"com.apple.coreanimation-bundle"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"com.apple.coreanimation-xml"))
+  if (([type isEqualToString:@"com.apple.coreanimation-bundle"] & 1) != 0 || objc_msgSend(type, "isEqualToString:", @"com.apple.coreanimation-xml"))
   {
-    [(CAPackage *)self _readFromCAMLURL:a3 type:a4 options:a5 error:a6];
+    [(CAPackage *)self _readFromCAMLURL:l type:type options:options error:error];
   }
 
   if (!self->_data->var0)
@@ -653,7 +653,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([objc_msgSend(a5 objectForKeyedSubscript:{@"prepareContents", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKeyedSubscript:{@"prepareContents", "BOOLValue"}])
   {
     recursively_prepare_contents(self->_data->var0);
   }
@@ -661,26 +661,26 @@ LABEL_14:
   return self;
 }
 
-+ (id)packageWithData:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
++ (id)packageWithData:(id)data type:(id)type options:(id)options error:(id *)error
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v6 = [[a1 alloc] _initWithData:a3 type:a4 options:a5 error:a6];
+  v6 = [[self alloc] _initWithData:data type:type options:options error:error];
 
   return v6;
 }
 
-+ (id)packageWithContentsOfURL:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
++ (id)packageWithContentsOfURL:(id)l type:(id)type options:(id)options error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v6 = [[a1 alloc] _initWithContentsOfURL:a3 type:a4 options:a5 error:a6];
+  v6 = [[self alloc] _initWithContentsOfURL:l type:type options:options error:error];
 
   return v6;
 }

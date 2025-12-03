@@ -1,13 +1,13 @@
 @interface NSHashTable
 + (NSHashTable)alloc;
-+ (NSHashTable)allocWithZone:(_NSZone *)a3;
++ (NSHashTable)allocWithZone:(_NSZone *)zone;
 + (NSHashTable)hashTableWithOptions:(NSPointerFunctionsOptions)options;
 + (NSHashTable)weakObjectsHashTable;
 + (id)hashTableWithWeakObjects;
 - (BOOL)intersectsHashTable:(NSHashTable *)other;
 - (BOOL)isEqualToHashTable:(NSHashTable *)other;
 - (BOOL)isSubsetOfHashTable:(NSHashTable *)other;
-- (NSHashTable)initWithCoder:(id)a3;
+- (NSHashTable)initWithCoder:(id)coder;
 - (NSSet)setRepresentation;
 - (id)anyObject;
 - (id)mutableSet;
@@ -88,7 +88,7 @@
   return v2;
 }
 
-+ (NSHashTable)allocWithZone:(_NSZone *)a3
++ (NSHashTable)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_self();
 
@@ -102,11 +102,11 @@
   return v3;
 }
 
-- (NSHashTable)initWithCoder:(id)a3
+- (NSHashTable)initWithCoder:(id)coder
 {
   v4 = [NSConcreteHashTable alloc];
 
-  return [(NSConcreteHashTable *)v4 initWithCoder:a3];
+  return [(NSConcreteHashTable *)v4 initWithCoder:coder];
 }
 
 - (BOOL)intersectsHashTable:(NSHashTable *)other

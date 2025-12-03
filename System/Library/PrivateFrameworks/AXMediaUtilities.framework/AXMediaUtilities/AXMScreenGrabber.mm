@@ -1,34 +1,34 @@
 @interface AXMScreenGrabber
-- (double)_adjustedScaleFactorForInputSize:(CGSize)a3 constrainingToPreferredInputSizeFromDetectors:(id)a4;
-- (id)_ioSurfaceConfigurationWithSize:(CGSize)a3;
-- (id)_renderOptionsForSurface:(__IOSurface *)a3 captureRect:(CGRect)a4 displayName:(id)a5 scaleFactor:(double)a6 ignoredLayerContextIDs:(id)a7 includedLayerContextIDs:(id)a8 snapshotLayerID:(id)a9 snapshotContextID:(id)a10;
-- (id)grabScreenWithRect:(CGRect)a3 orientation:(int64_t)a4 options:(id)a5 metrics:(id)a6 error:(id *)a7;
-- (void)recordScreenForDuration:(double)a3 completion:(id)a4;
+- (double)_adjustedScaleFactorForInputSize:(CGSize)size constrainingToPreferredInputSizeFromDetectors:(id)detectors;
+- (id)_ioSurfaceConfigurationWithSize:(CGSize)size;
+- (id)_renderOptionsForSurface:(__IOSurface *)surface captureRect:(CGRect)rect displayName:(id)name scaleFactor:(double)factor ignoredLayerContextIDs:(id)ds includedLayerContextIDs:(id)iDs snapshotLayerID:(id)d snapshotContextID:(id)self0;
+- (id)grabScreenWithRect:(CGRect)rect orientation:(int64_t)orientation options:(id)options metrics:(id)metrics error:(id *)error;
+- (void)recordScreenForDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation AXMScreenGrabber
 
-- (id)grabScreenWithRect:(CGRect)a3 orientation:(int64_t)a4 options:(id)a5 metrics:(id)a6 error:(id *)a7
+- (id)grabScreenWithRect:(CGRect)rect orientation:(int64_t)orientation options:(id)options metrics:(id)metrics error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v139 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = [v16 startMeasure:@"Screen Grab"];
+  optionsCopy = options;
+  metricsCopy = metrics;
+  v17 = [metricsCopy startMeasure:@"Screen Grab"];
   v18 = AXMSharedDisplayManager();
-  v19 = [v18 coreAnimationMainDisplay];
+  coreAnimationMainDisplay = [v18 coreAnimationMainDisplay];
 
-  if (v19)
+  if (coreAnimationMainDisplay)
   {
-    v32 = [v19 name];
-    if (!v32)
+    name = [coreAnimationMainDisplay name];
+    if (!name)
     {
-      if (a7)
+      if (error)
       {
-        *a7 = _AXMMakeError(0, @"displayName was nil", v26, v27, v28, v29, v30, v31, v105);
+        *error = _AXMMakeError(0, @"displayName was nil", v26, v27, v28, v29, v30, v31, v105);
       }
 
       [v17 endMeasurement];
@@ -36,32 +36,32 @@
       goto LABEL_47;
     }
 
-    cf = a4;
-    v117 = a7;
-    [v19 convertRectToDisplay:{x, y, width, height}];
+    cf = orientation;
+    errorCopy = error;
+    [coreAnimationMainDisplay convertRectToDisplay:{x, y, width, height}];
     v119 = v33;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    v118 = [v15 objectForKeyedSubscript:@"UsePreferredModelInputSizeForDetectors"];
+    v118 = [optionsCopy objectForKeyedSubscript:@"UsePreferredModelInputSizeForDetectors"];
     [(AXMScreenGrabber *)self _adjustedScaleFactorForInputSize:v37 constrainingToPreferredInputSizeFromDetectors:v39];
     v41 = v40;
     v42 = AXMediaLogScreenGrab();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       v43 = [MEMORY[0x1E696AD98] numberWithInteger:cf];
-      v44 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v19, "physicalOrientation")}];
+      v44 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(coreAnimationMainDisplay, "physicalOrientation")}];
       AXMStringFromCGRect(x, y, width, height);
-      v45 = v109 = v15;
+      v45 = v109 = optionsCopy;
       AXMStringFromCGRect(v119, v35, v37, v39);
       v46 = v113 = v17;
       AXMStringFromCGSize(v37, v39);
-      v47 = v111 = v32;
+      v47 = v111 = name;
       v48 = AXMStringFromCGSize(v37, v39);
       *buf = 134220034;
       *&buf[4] = 0;
       *&buf[12] = 2112;
-      *&buf[14] = v19;
+      *&buf[14] = coreAnimationMainDisplay;
       *&buf[22] = 2112;
       *&buf[24] = v43;
       *v130 = 2112;
@@ -78,19 +78,19 @@
       v138 = v48;
       _os_log_impl(&dword_1AE37B000, v42, OS_LOG_TYPE_INFO, "Will perform capture\n\tUse Efficient Downsampling: %ld\n\tDisplay: %@\n\tInterface Orientation:%@\n\tPhysical Orientation:%@\n\tInput Rect: %@\n\tDisplay Rect: %@\n\tAdjusted Scale: %.2f\n\tInputSize (px): %@\n\tSurface Size (px): %@", buf, 0x5Cu);
 
-      v32 = v111;
+      name = v111;
       v17 = v113;
 
-      v15 = v109;
+      optionsCopy = v109;
     }
 
     v49 = [(AXMScreenGrabber *)self _ioSurfaceConfigurationWithSize:v37, v39];
     v50 = IOSurfaceCreate(v49);
     if (!v50)
     {
-      if (v117)
+      if (errorCopy)
       {
-        *v117 = _AXMMakeError(0, @"Failed to create IOSurface", v51, v52, v53, v54, v55, v56, v105);
+        *errorCopy = _AXMMakeError(0, @"Failed to create IOSurface", v51, v52, v53, v54, v55, v56, v105);
       }
 
       [v17 endMeasurement];
@@ -107,26 +107,26 @@
 
     v108 = v49;
 
-    v59 = [v15 objectForKeyedSubscript:@"IgnoredLayerContextIDs"];
-    v60 = [v15 objectForKeyedSubscript:@"IncludedLayerContextIDs"];
-    v61 = [v15 objectForKeyedSubscript:@"SnapshotLayerID"];
-    v62 = [v15 objectForKeyedSubscript:@"SnapshotContextID"];
+    v59 = [optionsCopy objectForKeyedSubscript:@"IgnoredLayerContextIDs"];
+    v60 = [optionsCopy objectForKeyedSubscript:@"IncludedLayerContextIDs"];
+    v61 = [optionsCopy objectForKeyedSubscript:@"SnapshotLayerID"];
+    v62 = [optionsCopy objectForKeyedSubscript:@"SnapshotContextID"];
     v63 = v119;
     v64 = v35;
     v65 = v41;
     v120 = v60;
     v110 = v61;
     v107 = v62;
-    v66 = [(AXMScreenGrabber *)self _renderOptionsForSurface:v57 captureRect:v32 displayName:v59 scaleFactor:v60 ignoredLayerContextIDs:v61 includedLayerContextIDs:v63 snapshotLayerID:v64 snapshotContextID:v37, v39, v41];
+    v66 = [(AXMScreenGrabber *)self _renderOptionsForSurface:v57 captureRect:name displayName:v59 scaleFactor:v60 ignoredLayerContextIDs:v61 includedLayerContextIDs:v63 snapshotLayerID:v64 snapshotContextID:v37, v39, v41];
     IOSurfaceLock(v57, 0, 0);
     LOBYTE(v60) = CARenderServerSnapshot();
     IOSurfaceUnlock(v57, 0, 0);
     if ((v60 & 1) == 0)
     {
       CFRelease(v57);
-      if (v117)
+      if (errorCopy)
       {
-        *v117 = _AXMMakeError(0, @"Failed to render display", v79, v80, v81, v82, v83, v84, v105);
+        *errorCopy = _AXMMakeError(0, @"Failed to render display", v79, v80, v81, v82, v83, v84, v105);
       }
 
       [v17 endMeasurement];
@@ -135,10 +135,10 @@
       goto LABEL_45;
     }
 
-    v112 = v32;
+    v112 = name;
     v114 = v17;
     v67 = [MEMORY[0x1E695F658] imageWithIOSurface:v57];
-    v68 = [v67 rotatedImageWithInterfaceOrientation:cf displayOrientation:objc_msgSend(v19 appliedImageOrientation:{"physicalOrientation"), 0}];
+    v68 = [v67 rotatedImageWithInterfaceOrientation:cf displayOrientation:objc_msgSend(coreAnimationMainDisplay appliedImageOrientation:{"physicalOrientation"), 0}];
 
     if (v68)
     {
@@ -178,10 +178,10 @@
             *buf = 0;
           }
 
-          if (v117)
+          if (errorCopy)
           {
             v97 = [MEMORY[0x1E696AD98] numberWithInt:v75];
-            *v117 = _AXMMakeError(0, @"CVPixelBufferCreate returned NULL buffer for pixel buffer. CVReturn: %@", v98, v99, v100, v101, v102, v103, v97);
+            *errorCopy = _AXMMakeError(0, @"CVPixelBufferCreate returned NULL buffer for pixel buffer. CVReturn: %@", v98, v99, v100, v101, v102, v103, v97);
           }
 
           [v17 endMeasurement];
@@ -194,7 +194,7 @@
           v121[1] = 3221225472;
           v121[2] = __73__AXMScreenGrabber_grabScreenWithRect_orientation_options_metrics_error___block_invoke;
           v121[3] = &unk_1E7A1C628;
-          v122 = v16;
+          v122 = metricsCopy;
           v123 = v68;
           v124 = *buf;
           v125 = v72;
@@ -221,15 +221,15 @@
           v78 = v76;
         }
 
-        v32 = v112;
+        name = v112;
         v59 = v106;
         goto LABEL_45;
       }
 
       CFRelease(v57);
-      if (v117)
+      if (errorCopy)
       {
-        *v117 = _AXMMakeError(0, @"Could not create color space", v91, v92, v93, v94, v95, v96, v105);
+        *errorCopy = _AXMMakeError(0, @"Could not create color space", v91, v92, v93, v94, v95, v96, v105);
       }
 
       [v17 endMeasurement];
@@ -239,16 +239,16 @@
     {
       CFRelease(v57);
       v49 = v108;
-      if (v117)
+      if (errorCopy)
       {
-        *v117 = _AXMMakeError(0, @"Could not convert surface to CIImage", v85, v86, v87, v88, v89, v90, v105);
+        *errorCopy = _AXMMakeError(0, @"Could not convert surface to CIImage", v85, v86, v87, v88, v89, v90, v105);
       }
 
       [v17 endMeasurement];
     }
 
     v78 = 0;
-    v32 = v112;
+    name = v112;
 LABEL_45:
 
 LABEL_46:
@@ -257,9 +257,9 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = _AXMMakeError(0, @"mainDisplay was nil", v20, v21, v22, v23, v24, v25, v105);
+    *error = _AXMMakeError(0, @"mainDisplay was nil", v20, v21, v22, v23, v24, v25, v105);
   }
 
   [v17 endMeasurement];
@@ -275,12 +275,12 @@ void __73__AXMScreenGrabber_grabScreenWithRect_orientation_options_metrics_error
   [v2 render:*(a1 + 40) toCVPixelBuffer:*(a1 + 48) bounds:*(a1 + 72) colorSpace:{0.0, 0.0, *(a1 + 56), *(a1 + 64)}];
 }
 
-- (id)_ioSurfaceConfigurationWithSize:(CGSize)a3
+- (id)_ioSurfaceConfigurationWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v4 = llroundf(width);
   v18[6] = *MEMORY[0x1E69E9840];
-  height = a3.height;
+  height = size.height;
   v6 = llroundf(height);
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   v8 = (AlignedBytesPerRow * v6);
@@ -307,41 +307,41 @@ void __73__AXMScreenGrabber_grabScreenWithRect_orientation_options_metrics_error
   return v15;
 }
 
-- (id)_renderOptionsForSurface:(__IOSurface *)a3 captureRect:(CGRect)a4 displayName:(id)a5 scaleFactor:(double)a6 ignoredLayerContextIDs:(id)a7 includedLayerContextIDs:(id)a8 snapshotLayerID:(id)a9 snapshotContextID:(id)a10
+- (id)_renderOptionsForSurface:(__IOSurface *)surface captureRect:(CGRect)rect displayName:(id)name scaleFactor:(double)factor ignoredLayerContextIDs:(id)ds includedLayerContextIDs:(id)iDs snapshotLayerID:(id)d snapshotContextID:(id)self0
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v61 = *MEMORY[0x1E69E9840];
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = [MEMORY[0x1E695DF90] dictionary];
-  [v22 setObject:a3 forKeyedSubscript:*MEMORY[0x1E6979F50]];
-  [v22 setObject:v17 forKeyedSubscript:*MEMORY[0x1E6979F68]];
+  nameCopy = name;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dCopy = d;
+  iDCopy = iD;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:surface forKeyedSubscript:*MEMORY[0x1E6979F50]];
+  [dictionary setObject:nameCopy forKeyedSubscript:*MEMORY[0x1E6979F68]];
   v23 = [MEMORY[0x1E696AD98] numberWithInt:x];
-  [v22 setObject:v23 forKeyedSubscript:*MEMORY[0x1E6979FE0]];
+  [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x1E6979FE0]];
 
   v24 = [MEMORY[0x1E696AD98] numberWithInt:y];
-  [v22 setObject:v24 forKeyedSubscript:*MEMORY[0x1E6979FE8]];
+  [dictionary setObject:v24 forKeyedSubscript:*MEMORY[0x1E6979FE8]];
 
-  [v22 setObject:v20 forKeyedSubscript:*MEMORY[0x1E6979FA8]];
+  [dictionary setObject:dCopy forKeyedSubscript:*MEMORY[0x1E6979FA8]];
   v25 = *MEMORY[0x1E6979F40];
-  [v22 setObject:v21 forKeyedSubscript:*MEMORY[0x1E6979F40]];
-  if ([v19 count])
+  [dictionary setObject:iDCopy forKeyedSubscript:*MEMORY[0x1E6979F40]];
+  if ([iDsCopy count])
   {
-    v43 = v21;
-    v44 = v20;
-    v45 = v18;
-    v46 = v17;
-    [v22 setObject:*MEMORY[0x1E6979FD8] forKeyedSubscript:*MEMORY[0x1E6979FB0]];
-    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
+    v43 = iDCopy;
+    v44 = dCopy;
+    v45 = dsCopy;
+    v46 = nameCopy;
+    [dictionary setObject:*MEMORY[0x1E6979FD8] forKeyedSubscript:*MEMORY[0x1E6979FB0]];
+    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(iDsCopy, "count")}];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v27 = v19;
+    v27 = iDsCopy;
     v28 = [v27 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v28)
     {
@@ -374,29 +374,29 @@ void __73__AXMScreenGrabber_grabScreenWithRect_orientation_options_metrics_error
 
 LABEL_22:
 
-    [v22 setObject:v26 forKeyedSubscript:*MEMORY[0x1E6979F48]];
-    v18 = v45;
-    v17 = v46;
-    v21 = v43;
-    v20 = v44;
+    [dictionary setObject:v26 forKeyedSubscript:*MEMORY[0x1E6979F48]];
+    dsCopy = v45;
+    nameCopy = v46;
+    iDCopy = v43;
+    dCopy = v44;
     goto LABEL_23;
   }
 
-  v34 = [v18 count];
+  v34 = [dsCopy count];
   v35 = *MEMORY[0x1E6979FB0];
   if (v34)
   {
-    v43 = v21;
-    v44 = v20;
-    v46 = v17;
-    [v22 setObject:*MEMORY[0x1E6979FC0] forKeyedSubscript:v35];
-    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
+    v43 = iDCopy;
+    v44 = dCopy;
+    v46 = nameCopy;
+    [dictionary setObject:*MEMORY[0x1E6979FC0] forKeyedSubscript:v35];
+    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v45 = v18;
-    v27 = v18;
+    v45 = dsCopy;
+    v27 = dsCopy;
     v36 = [v27 countByEnumeratingWithState:&v47 objects:v57 count:16];
     if (v36)
     {
@@ -430,23 +430,23 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  [v22 setObject:*MEMORY[0x1E6979FB8] forKeyedSubscript:v35];
+  [dictionary setObject:*MEMORY[0x1E6979FB8] forKeyedSubscript:v35];
 LABEL_23:
 
-  return v22;
+  return dictionary;
 }
 
-- (double)_adjustedScaleFactorForInputSize:(CGSize)a3 constrainingToPreferredInputSizeFromDetectors:(id)a4
+- (double)_adjustedScaleFactorForInputSize:(CGSize)size constrainingToPreferredInputSizeFromDetectors:(id)detectors
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  detectorsCopy = detectors;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [detectorsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -458,7 +458,7 @@ LABEL_23:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(detectorsCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -479,7 +479,7 @@ LABEL_23:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [detectorsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -509,9 +509,9 @@ LABEL_23:
   return v19;
 }
 
-- (void)recordScreenForDuration:(double)a3 completion:(id)a4
+- (void)recordScreenForDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (ReplayKitLibraryCore())
   {
     v34 = 0;
@@ -532,10 +532,10 @@ LABEL_23:
 
     v14 = v13;
     _Block_object_dispose(&v34, 8);
-    v15 = [v13 sharedRecorder];
-    [v15 setSystemRecording:1];
-    [v15 setDelegate:self];
-    if ([v15 isAvailable])
+    sharedRecorder = [v13 sharedRecorder];
+    [sharedRecorder setSystemRecording:1];
+    [sharedRecorder setDelegate:self];
+    if ([sharedRecorder isAvailable])
     {
       v22 = AXMediaLogScreenGrab();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -548,19 +548,19 @@ LABEL_23:
       v25[1] = 3221225472;
       v25[2] = __55__AXMScreenGrabber_recordScreenForDuration_completion___block_invoke;
       v25[3] = &unk_1E7A1C6A0;
-      v27 = v6;
-      v28 = a3;
-      v26 = v15;
+      v27 = completionCopy;
+      durationCopy = duration;
+      v26 = sharedRecorder;
       [v26 startSystemRecordingWithMicrophoneEnabled:0 handler:v25];
 
       v23 = v27;
       goto LABEL_12;
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v23 = _AXMMakeError(0, @"Screen recording is not available", v16, v17, v18, v19, v20, v21, v24);
-      (*(v6 + 2))(v6, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, v23);
 LABEL_12:
     }
 
@@ -569,10 +569,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v15 = _AXMMakeError(0, @"ReplayKit is not available", v7, v8, v9, v10, v11, v12, v24);
-    (*(v6 + 2))(v6, 0, v15);
+    sharedRecorder = _AXMMakeError(0, @"ReplayKit is not available", v7, v8, v9, v10, v11, v12, v24);
+    (*(completionCopy + 2))(completionCopy, 0, sharedRecorder);
     goto LABEL_13;
   }
 

@@ -1,11 +1,11 @@
 @interface FIRenameOperation
 - (FINode)node;
-- (FIRenameOperation)initWithItem:(id)a3 rawName:(id)a4 hideExtension:(BOOL)a5;
-- (FIRenameOperation)initWithNode:(id)a3 rawName:(id)a4 hideExtension:(BOOL)a5;
-- (id)_initWithNode:(id)a3 item:(id)a4 rawName:(id)a5 hideExtension:(const void *)a6;
+- (FIRenameOperation)initWithItem:(id)item rawName:(id)name hideExtension:(BOOL)extension;
+- (FIRenameOperation)initWithNode:(id)node rawName:(id)name hideExtension:(BOOL)extension;
+- (id)_initWithNode:(id)node item:(id)item rawName:(id)name hideExtension:(const void *)extension;
 - (id)_initWithNode:item:rawName:hideExtension:;
 - (id)createFPOperation;
-- (id)makeOperationRecordForNode:(id)a3;
+- (id)makeOperationRecordForNode:(id)node;
 - (uint64_t)_initWithNode:item:rawName:hideExtension:;
 - (void)_initWithNode:item:rawName:hideExtension:;
 - (void)schedule;
@@ -14,18 +14,18 @@
 
 @implementation FIRenameOperation
 
-- (id)_initWithNode:(id)a3 item:(id)a4 rawName:(id)a5 hideExtension:(const void *)a6
+- (id)_initWithNode:(id)node item:(id)item rawName:(id)name hideExtension:(const void *)extension
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nodeCopy = node;
+  itemCopy = item;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = FIRenameOperation;
   v13 = [(FIOperation *)&v27 init];
-  if ((v10 != 0) == (v11 != 0) || ![v12 length])
+  if ((nodeCopy != 0) == (itemCopy != 0) || ![nameCopy length])
   {
-    if (!(v10 | v11))
+    if (!(nodeCopy | itemCopy))
     {
       v15 = LogObj(8);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@
       }
     }
 
-    if (![v12 length])
+    if (![nameCopy length])
     {
       v18 = LogObj(8);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -57,22 +57,22 @@
   else
   {
     [(FIOperation *)v13 setOperationType:11];
-    objc_storeStrong(&v13->_rawName, a5);
-    [(FIRenameOperation *)v13 setHideExtension:*a6];
-    if (v10)
+    objc_storeStrong(&v13->_rawName, name);
+    [(FIRenameOperation *)v13 setHideExtension:*extension];
+    if (nodeCopy)
     {
-      v32[0] = v10;
+      v32[0] = nodeCopy;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
       [(FIOperation *)v13 setSourceNodes:v14];
     }
 
     else
     {
-      objc_storeStrong(&v13->_item, a4);
-      v31 = v11;
+      objc_storeStrong(&v13->_item, item);
+      v31 = itemCopy;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
       make_nsweak<FIRenameOperation>(v13, &v25);
-      v26 = v11;
+      v26 = itemCopy;
       v30 = 0;
       *buf = &unk_1F5F3D438;
       objc_copyWeak(&buf[8], &v25);
@@ -94,32 +94,32 @@
   return v21;
 }
 
-- (FIRenameOperation)initWithNode:(id)a3 rawName:(id)a4 hideExtension:(BOOL)a5
+- (FIRenameOperation)initWithNode:(id)node rawName:(id)name hideExtension:(BOOL)extension
 {
-  v6[0] = a5;
+  v6[0] = extension;
   v6[1] = 1;
-  return [(FIRenameOperation *)self _initWithNode:a3 item:0 rawName:a4 hideExtension:v6];
+  return [(FIRenameOperation *)self _initWithNode:node item:0 rawName:name hideExtension:v6];
 }
 
-- (FIRenameOperation)initWithItem:(id)a3 rawName:(id)a4 hideExtension:(BOOL)a5
+- (FIRenameOperation)initWithItem:(id)item rawName:(id)name hideExtension:(BOOL)extension
 {
-  v6[0] = a5;
+  v6[0] = extension;
   v6[1] = 1;
-  return [(FIRenameOperation *)self _initWithNode:0 item:a3 rawName:a4 hideExtension:v6];
+  return [(FIRenameOperation *)self _initWithNode:0 item:item rawName:name hideExtension:v6];
 }
 
 - (id)createFPOperation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(FIOperation *)v2 setExecutedAsFPAction:1];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FIOperation *)selfCopy setExecutedAsFPAction:1];
   v3 = objc_alloc(MEMORY[0x1E69673F8]);
-  v4 = [(FIOperation *)v2 sourceFPItems];
-  v5 = [v4 firstObject];
-  v6 = [(FIRenameOperation *)v2 rawName];
-  v7 = [v3 initWithItem:v5 newFileName:v6];
+  sourceFPItems = [(FIOperation *)selfCopy sourceFPItems];
+  firstObject = [sourceFPItems firstObject];
+  rawName = [(FIRenameOperation *)selfCopy rawName];
+  v7 = [v3 initWithItem:firstObject newFileName:rawName];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -129,32 +129,32 @@
   v4.receiver = self;
   v4.super_class = FIRenameOperation;
   [(FIOperation *)&v4 tearDownCallbacks];
-  v3 = [(FIRenameOperation *)self subOperation];
-  [v3 setNameConflictHandler:0];
+  subOperation = [(FIRenameOperation *)self subOperation];
+  [subOperation setNameConflictHandler:0];
 }
 
 - (FINode)node
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FIOperation *)v2 sourceNodes];
-  v4 = [v3 firstObject];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sourceNodes = [(FIOperation *)selfCopy sourceNodes];
+  firstObject = [sourceNodes firstObject];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return firstObject;
 }
 
-- (id)makeOperationRecordForNode:(id)a3
+- (id)makeOperationRecordForNode:(id)node
 {
   v11.receiver = self;
   v11.super_class = FIRenameOperation;
-  v4 = [(FIOperation *)&v11 makeOperationRecordForNode:a3];
-  v5 = [(FIRenameOperation *)self subOperation];
-  v6 = [(FIRenameOperation *)self node];
-  v7 = [(FIRenameOperation *)self rawName];
-  v10 = [(FIRenameOperation *)self hideExtension];
-  v8 = [v5 configureOperationRecord:v4 forNode:v6 rawName:v7 hideExtension:&v10];
+  v4 = [(FIOperation *)&v11 makeOperationRecordForNode:node];
+  subOperation = [(FIRenameOperation *)self subOperation];
+  node = [(FIRenameOperation *)self node];
+  rawName = [(FIRenameOperation *)self rawName];
+  hideExtension = [(FIRenameOperation *)self hideExtension];
+  v8 = [subOperation configureOperationRecord:v4 forNode:node rawName:rawName hideExtension:&hideExtension];
 
   return v8;
 }
@@ -168,7 +168,7 @@
   [(FIOperation *)&v14 schedule];
   if ([(FIOperation *)self operationRef])
   {
-    v4 = [(FIOperation *)self subOperationCompletedHandler];
+    subOperationCompletedHandler = [(FIOperation *)self subOperationCompletedHandler];
     v5 = MEMORY[0x1E692D6D0]();
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3321888768;
@@ -183,19 +183,19 @@
     v7 = v13;
     if ((v6 & 1) == 0)
     {
-      v8 = [(FIOperation *)self errorHandler];
-      if (v8)
+      errorHandler = [(FIOperation *)self errorHandler];
+      if (errorHandler)
       {
         v9 = [[FIOperationError alloc] initWithError:v7];
-        v10 = (v8)[2](v8, self, v9);
+        v10 = (errorHandler)[2](errorHandler, self, v9);
       }
 
       [(FIOperation *)self markAsCancelled];
-      v11 = [(FIOperation *)self completionHandler];
-      v12 = v11;
-      if (v11)
+      completionHandler = [(FIOperation *)self completionHandler];
+      v12 = completionHandler;
+      if (completionHandler)
       {
-        (*(v11 + 16))(v11, self, MEMORY[0x1E695E0F0]);
+        (*(completionHandler + 16))(completionHandler, self, MEMORY[0x1E695E0F0]);
       }
     }
   }
@@ -204,7 +204,7 @@
 - (void)_initWithNode:item:rawName:hideExtension:
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = TNSWeakPtr<FIRenameOperation>::Lock((a1 + 8));
+  v4 = TNSWeakPtr<FIRenameOperation>::Lock((self + 8));
   v5 = v4;
   if (v4)
   {
@@ -221,7 +221,7 @@
 
     else
     {
-      v13[0] = *(a1 + 16);
+      v13[0] = *(self + 16);
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
       [v6 setSourceFPItems:v11];
       v9 = v11;
@@ -236,8 +236,8 @@
 - (id)_initWithNode:item:rawName:hideExtension:
 {
   *a2 = &unk_1F5F3D438;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  result = *(a1 + 16);
+  objc_copyWeak((a2 + 8), (self + 8));
+  result = *(self + 16);
   *(a2 + 16) = result;
   return result;
 }
@@ -245,7 +245,7 @@
 - (uint64_t)_initWithNode:item:rawName:hideExtension:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

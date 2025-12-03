@@ -1,12 +1,12 @@
 @interface NPKProtoUpdateShareForPassIdentifierRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoUpdateShareForPassIdentifierRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoUpdateShareForPassIdentifierRequest;
   v4 = [(NPKProtoUpdateShareForPassIdentifierRequest *)&v8 description];
-  v5 = [(NPKProtoUpdateShareForPassIdentifierRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoUpdateShareForPassIdentifierRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passIdentifier = self->_passIdentifier;
   if (passIdentifier)
   {
-    [v3 setObject:passIdentifier forKey:@"passIdentifier"];
+    [dictionary setObject:passIdentifier forKey:@"passIdentifier"];
   }
 
   shareData = self->_shareData;
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_passIdentifier)
   {
     [NPKProtoUpdateShareForPassIdentifierRequest writeTo:];
@@ -69,42 +69,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setPassIdentifier:self->_passIdentifier];
-  [v4 setShareData:self->_shareData];
+  toCopy = to;
+  [toCopy setPassIdentifier:self->_passIdentifier];
+  [toCopy setShareData:self->_shareData];
   if (self->_authorization)
   {
-    [v4 setAuthorization:?];
+    [toCopy setAuthorization:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passIdentifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_shareData copyWithZone:a3];
+  v8 = [(NSData *)self->_shareData copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_authorization copyWithZone:a3];
+  v10 = [(NSData *)self->_authorization copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((passIdentifier = self->_passIdentifier, !(passIdentifier | v4[2])) || -[NSString isEqual:](passIdentifier, "isEqual:")) && ((shareData = self->_shareData, !(shareData | v4[3])) || -[NSData isEqual:](shareData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((passIdentifier = self->_passIdentifier, !(passIdentifier | equalCopy[2])) || -[NSString isEqual:](passIdentifier, "isEqual:")) && ((shareData = self->_shareData, !(shareData | equalCopy[3])) || -[NSData isEqual:](shareData, "isEqual:")))
   {
     authorization = self->_authorization;
-    if (authorization | v4[1])
+    if (authorization | equalCopy[1])
     {
       v8 = [(NSData *)authorization isEqual:?];
     }
@@ -130,26 +130,26 @@
   return v4 ^ [(NSData *)self->_authorization hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoUpdateShareForPassIdentifierRequest *)self setPassIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoUpdateShareForPassIdentifierRequest *)self setShareData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoUpdateShareForPassIdentifierRequest *)self setAuthorization:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

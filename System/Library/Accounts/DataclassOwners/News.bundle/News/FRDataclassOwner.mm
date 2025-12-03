@@ -5,10 +5,10 @@
 - (BOOL)_cleanUpUserDefaults;
 - (BOOL)_cleanUpWatchData;
 - (BOOL)_hasLocalData;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
 - (FRDataclassOwner)init;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
 - (void)_reloadWidgets;
 - (void)_unregisterDeviceToken;
 @end
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  if ([(FRDataclassOwner *)self _hasLocalData:a3])
+  if ([(FRDataclassOwner *)self _hasLocalData:account])
   {
     v4 = [ACDataclassAction actionWithType:5];
     v5 = [ACDataclassAction actionWithType:0, v4];
@@ -60,9 +60,9 @@
   return v6;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  if ([(FRDataclassOwner *)self _hasLocalData:a3])
+  if ([(FRDataclassOwner *)self _hasLocalData:account])
   {
     v4 = [ACDataclassAction destructiveActionWithType:3];
     v10[0] = v4;
@@ -83,13 +83,13 @@
   return v7;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 type] && objc_msgSend(v10, "type") != &dword_4 + 3)
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
+  dataclassCopy = dataclass;
+  if ([actionCopy type] && objc_msgSend(actionCopy, "type") != &dword_4 + 3)
   {
     v52 = 0;
     v53 = &v52;
@@ -102,9 +102,9 @@
     v16 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v15, v16);
     v17 = [(FRDataclassOwner *)self accountActionQueue:_NSConcreteStackBlock];
-    v14 = [v17 enqueueActionWithType:{objc_msgSend(v10, "type")}];
+    v14 = [v17 enqueueActionWithType:{objc_msgSend(actionCopy, "type")}];
 
-    if ([v10 type] == &dword_0 + 3)
+    if ([actionCopy type] == &dword_0 + 3)
     {
       [(FRDataclassOwner *)self _unregisterDeviceToken];
       if (![(FRDataclassOwner *)self _cleanUpAppExternalFiles])
@@ -189,13 +189,13 @@
   v16[3] = &unk_83E8;
   v16[4] = &v17;
   [v4 peekSyncWithAccessor:v16];
-  v5 = [v18[5] baseURLString];
-  v6 = [v18[5] notificationUserID];
-  v7 = [v18[5] deviceToken];
-  v8 = [v18[5] storefrontID];
-  if ([v5 length] && objc_msgSend(v6, "length") && objc_msgSend(v7, "length") && objc_msgSend(v8, "length"))
+  baseURLString = [v18[5] baseURLString];
+  notificationUserID = [v18[5] notificationUserID];
+  deviceToken = [v18[5] deviceToken];
+  storefrontID = [v18[5] storefrontID];
+  if ([baseURLString length] && objc_msgSend(notificationUserID, "length") && objc_msgSend(deviceToken, "length") && objc_msgSend(storefrontID, "length"))
   {
-    v9 = [[FCNotificationsEndpointConnection alloc] initWithBaseURLString:v5];
+    v9 = [[FCNotificationsEndpointConnection alloc] initWithBaseURLString:baseURLString];
     v10 = dispatch_semaphore_create(0);
     v11 = &_dispatch_main_q;
     v14[0] = _NSConcreteStackBlock;
@@ -204,7 +204,7 @@
     v14[3] = &unk_8410;
     v12 = v10;
     v15 = v12;
-    [v9 unregisterDeviceWithUserID:v6 deviceToken:v7 storefrontID:v8 deviceDigestMode:0 callbackQueue:&_dispatch_main_q completion:v14];
+    [v9 unregisterDeviceWithUserID:notificationUserID deviceToken:deviceToken storefrontID:storefrontID deviceDigestMode:0 callbackQueue:&_dispatch_main_q completion:v14];
 
     v13 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v12, v13);
@@ -351,21 +351,21 @@
 
 - (BOOL)_hasLocalData
 {
-  v2 = [(FRDataclassOwner *)self accountActionQueue];
-  v3 = [v2 readLocalDataHint];
+  accountActionQueue = [(FRDataclassOwner *)self accountActionQueue];
+  readLocalDataHint = [accountActionQueue readLocalDataHint];
 
-  return v3;
+  return readLocalDataHint;
 }
 
 - (void)_reloadWidgets
 {
   v2 = [CHSTimelineController alloc];
   v3 = [v2 initForAvocadoIdentifier:NSSNewsTodayWidgetKind inBundleIdentifier:NSSNewsTodayWidgetBundleID];
-  v4 = [v3 reloadTimeline];
+  reloadTimeline = [v3 reloadTimeline];
 
   v5 = [CHSTimelineController alloc];
   v7 = [v5 initForAvocadoIdentifier:NSSNewsTagWidgetKind inBundleIdentifier:NSSNewsTagWidgetBundleID];
-  v6 = [v7 reloadTimeline];
+  reloadTimeline2 = [v7 reloadTimeline];
 }
 
 @end

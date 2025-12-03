@@ -1,8 +1,8 @@
 @interface CHPostProcessingManager
 - (CHPostProcessingManager)init;
-- (CHPostProcessingManager)initWithSequence:(id)a3;
-- (CHPostProcessingManager)initWithStep:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (CHPostProcessingManager)initWithSequence:(id)sequence;
+- (CHPostProcessingManager)initWithStep:(id)step;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHPostProcessingManager
@@ -22,36 +22,36 @@
   return v2;
 }
 
-- (CHPostProcessingManager)initWithStep:(id)a3
+- (CHPostProcessingManager)initWithStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   v5 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v10 = objc_msgSend_initWithObjects_(v5, v6, v4, v7, v8, v9, 0);
+  v10 = objc_msgSend_initWithObjects_(v5, v6, stepCopy, v7, v8, v9, 0);
   v15 = objc_msgSend_initWithSequence_(self, v11, v10, v12, v13, v14);
 
   return v15;
 }
 
-- (CHPostProcessingManager)initWithSequence:(id)a3
+- (CHPostProcessingManager)initWithSequence:(id)sequence
 {
-  v5 = a3;
+  sequenceCopy = sequence;
   v9.receiver = self;
   v9.super_class = CHPostProcessingManager;
   v6 = [(CHPostProcessingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sequence, a3);
+    objc_storeStrong(&v6->_sequence, sequence);
   }
 
   return v7;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12 = a4;
+  processCopy = process;
+  optionsCopy = options;
   v13 = 0;
   v14 = &qword_1EA84D000;
   *&v15 = 138412802;
@@ -76,11 +76,11 @@
 
     else
     {
-      v45 = objc_msgSend_result(v6, v39, v40, v41, v42, v43);
+      v45 = objc_msgSend_result(processCopy, v39, v40, v41, v42, v43);
       v44 = objc_msgSend_rawTranscription(v45, v46, v47, v48, v49, v50);
     }
 
-    v51 = objc_msgSend_process_options_(v33, v39, v6, v12, v42, v43);
+    v51 = objc_msgSend_process_options_(v33, v39, processCopy, optionsCopy, v42, v43);
 
     if ((objc_msgSend_modifiesOriginalTokens(v33, v52, v53, v54, v55, v56) & 1) == 0)
     {
@@ -137,10 +137,10 @@
     }
 
     ++v13;
-    v6 = v51;
+    processCopy = v51;
   }
 
-  return v6;
+  return processCopy;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface _WKAPSConnectionDelegate
-- (_WKAPSConnectionDelegate)initWithConnection:(void *)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (_WKAPSConnectionDelegate)initWithConnection:(void *)connection;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation _WKAPSConnectionDelegate
 
-- (_WKAPSConnectionDelegate)initWithConnection:(void *)a3
+- (_WKAPSConnectionDelegate)initWithConnection:(void *)connection
 {
   v9.receiver = self;
   v9.super_class = _WKAPSConnectionDelegate;
   v5 = [(_WKAPSConnectionDelegate *)&v9 init];
   if (v5)
   {
-    if (a3)
+    if (connection)
     {
-      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3 + 2, a3);
-      v6 = *(a3 + 1);
+      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(connection + 2, connection);
+      v6 = *(connection + 1);
       if (v6)
       {
         atomic_fetch_add(v6, 1u);
@@ -40,7 +40,7 @@
   return v5;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   m_ptr = self->_connection.m_impl.m_ptr;
   if (m_ptr)
@@ -49,12 +49,12 @@
     if (v5)
     {
       ++v5[4];
-      if ([a4 length])
+      if ([token length])
       {
-        if (a4)
+        if (token)
         {
-          v7 = [a4 bytes];
-          v8 = [a4 length];
+          bytes = [token bytes];
+          v8 = [token length];
           v9 = v8;
           v14 = 0;
           LODWORD(v15) = 0;
@@ -72,7 +72,7 @@
             v14 = v10;
             do
             {
-              v11 = *v7++;
+              v11 = *bytes++;
               *v10 = v11;
               v10 = (v10 + 1);
               --v9;
@@ -111,7 +111,7 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   m_ptr = self->_connection.m_impl.m_ptr;
   if (m_ptr)
@@ -120,7 +120,7 @@
     if (v5)
     {
       ++*(v5 + 4);
-      WebPushD::PushServiceConnection::didReceivePushMessage(v5, [a4 topic], objc_msgSend(a4, "userInfo"));
+      WebPushD::PushServiceConnection::didReceivePushMessage(v5, [message topic], objc_msgSend(message, "userInfo"));
       if (*(v5 + 4) == 1)
       {
         v6 = *(*v5 + 8);

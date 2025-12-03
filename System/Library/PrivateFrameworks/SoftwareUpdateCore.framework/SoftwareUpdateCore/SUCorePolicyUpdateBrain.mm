@@ -1,23 +1,23 @@
 @interface SUCorePolicyUpdateBrain
-- (BOOL)isEqual:(id)a3;
-- (SUCorePolicyUpdateBrain)initWithCoder:(id)a3;
-- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)a3 documentationAssetType:(id)a4 usingExtensions:(id)a5;
-- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)a3 documentationAssetType:(id)a4 usingPolicies:(int64_t)a5 usingExtensions:(id)a6;
-- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUCorePolicyUpdateBrain)initWithCoder:(id)coder;
+- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)type documentationAssetType:(id)assetType usingExtensions:(id)extensions;
+- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)type documentationAssetType:(id)assetType usingPolicies:(int64_t)policies usingExtensions:(id)extensions;
+- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)purpose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)selectSoftwareUpdatePrimaryAsset:(id *)a3 secondaryAsset:(id *)a4 fromAssetQuery:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)selectSoftwareUpdatePrimaryAsset:(id *)asset secondaryAsset:(id *)secondaryAsset fromAssetQuery:(id)query;
 @end
 
 @implementation SUCorePolicyUpdateBrain
 
-- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)a3 documentationAssetType:(id)a4 usingPolicies:(int64_t)a5 usingExtensions:(id)a6
+- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)type documentationAssetType:(id)assetType usingPolicies:(int64_t)policies usingExtensions:(id)extensions
 {
   v10.receiver = self;
   v10.super_class = SUCorePolicyUpdateBrain;
-  v6 = [(SUCorePolicy *)&v10 initWithSoftwareUpdateAssetType:a3 documentationAssetType:a4 usingPolicies:a5 usingExtensions:a6];
+  v6 = [(SUCorePolicy *)&v10 initWithSoftwareUpdateAssetType:type documentationAssetType:assetType usingPolicies:policies usingExtensions:extensions];
   v7 = v6;
   if (v6)
   {
@@ -28,11 +28,11 @@
   return v7;
 }
 
-- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)a3 documentationAssetType:(id)a4 usingExtensions:(id)a5
+- (SUCorePolicyUpdateBrain)initWithSoftwareUpdateAssetType:(id)type documentationAssetType:(id)assetType usingExtensions:(id)extensions
 {
   v9.receiver = self;
   v9.super_class = SUCorePolicyUpdateBrain;
-  v5 = [(SUCorePolicy *)&v9 initWithSoftwareUpdateAssetType:a3 documentationAssetType:a4 usingExtensions:a5];
+  v5 = [(SUCorePolicy *)&v9 initWithSoftwareUpdateAssetType:type documentationAssetType:assetType usingExtensions:extensions];
   v6 = v5;
   if (v5)
   {
@@ -43,43 +43,43 @@
   return v6;
 }
 
-- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)a3
+- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)purpose
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D64460];
-  v5 = a3;
-  v6 = [v4 sharedLogger];
-  v7 = [v6 oslog];
+  purposeCopy = purpose;
+  sharedLogger = [v4 sharedLogger];
+  oslog = [sharedLogger oslog];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
-    _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] constructSoftwareUpdateMAAssetQuery for policy: %{public}@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] constructSoftwareUpdateMAAssetQuery for policy: %{public}@", buf, 0xCu);
   }
 
   v17.receiver = self;
   v17.super_class = SUCorePolicyUpdateBrain;
-  v8 = [(SUCorePolicy *)&v17 constructSoftwareUpdateMAAssetQueryWithPurpose:v5];
+  v8 = [(SUCorePolicy *)&v17 constructSoftwareUpdateMAAssetQueryWithPurpose:purposeCopy];
 
-  v9 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+  compatibilityVersion = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
 
-  if (v9)
+  if (compatibilityVersion)
   {
-    v10 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
-    v11 = [v10 stringValue];
-    [v8 addKeyValuePair:@"_CompatibilityVersion" with:v11];
+    compatibilityVersion2 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+    stringValue = [compatibilityVersion2 stringValue];
+    [v8 addKeyValuePair:@"_CompatibilityVersion" with:stringValue];
   }
 
-  v12 = [MEMORY[0x277D64460] sharedLogger];
-  v13 = [v12 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog2 = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+    compatibilityVersion3 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
     *buf = 138543362;
-    v19 = v14;
-    _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] querying SU metadata: compatibilityVersion=%{public}@", buf, 0xCu);
+    selfCopy = compatibilityVersion3;
+    _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] querying SU metadata: compatibilityVersion=%{public}@", buf, 0xCu);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -87,47 +87,47 @@
   return v8;
 }
 
-- (void)selectSoftwareUpdatePrimaryAsset:(id *)a3 secondaryAsset:(id *)a4 fromAssetQuery:(id)a5
+- (void)selectSoftwareUpdatePrimaryAsset:(id *)asset secondaryAsset:(id *)secondaryAsset fromAssetQuery:(id)query
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277D64460] sharedLogger];
-  v9 = [v8 oslog];
+  queryCopy = query;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v53 = self;
-    _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] selectSoftwareUpdatePrimaryAsset:secondaryAsset:fromAssetQuery for policy: %{public}@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] selectSoftwareUpdatePrimaryAsset:secondaryAsset:fromAssetQuery for policy: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (asset)
   {
-    v10 = [v7 SUCoreBorder_results];
-    v11 = [v10 count];
-    v12 = [MEMORY[0x277D64460] sharedLogger];
-    v13 = [v12 oslog];
+    sUCoreBorder_results = [queryCopy SUCoreBorder_results];
+    v11 = [sUCoreBorder_results count];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+    v14 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
     if (v11)
     {
       if (v14)
       {
-        v15 = [v10 count];
+        v15 = [sUCoreBorder_results count];
         *buf = 134217984;
-        v53 = v15;
-        _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu SU query results (before filtering)", buf, 0xCu);
+        selfCopy = v15;
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu SU query results (before filtering)", buf, 0xCu);
       }
 
-      v46 = a3;
-      v47 = v7;
+      assetCopy = asset;
+      v47 = queryCopy;
 
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v13 = [(SUCorePolicy *)self policyExtensions];
-      v16 = [v13 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      oslog2 = [(SUCorePolicy *)self policyExtensions];
+      v16 = [oslog2 countByEnumeratingWithState:&v48 objects:v56 count:16];
       if (v16)
       {
         v17 = v16;
@@ -135,52 +135,52 @@
         while (2)
         {
           v19 = 0;
-          v20 = v10;
+          v20 = sUCoreBorder_results;
           do
           {
             if (*v49 != v18)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(oslog2);
             }
 
             v21 = *(*(&v48 + 1) + 8 * v19);
-            v10 = [v21 filterSoftwareUpdateAssetArray:v20];
+            sUCoreBorder_results = [v21 filterSoftwareUpdateAssetArray:v20];
 
-            v22 = [MEMORY[0x277D64460] sharedLogger];
-            v23 = [v22 oslog];
+            mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+            oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [v10 count];
-              v25 = [v21 extensionName];
+              v24 = [sUCoreBorder_results count];
+              extensionName = [v21 extensionName];
               *buf = 134218242;
-              v53 = v24;
+              selfCopy = v24;
               v54 = 2114;
-              v55 = v25;
-              _os_log_impl(&dword_23193C000, v23, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu assets left after filtering from SUCorePolicyExtension %{public}@", buf, 0x16u);
+              v55 = extensionName;
+              _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu assets left after filtering from SUCorePolicyExtension %{public}@", buf, 0x16u);
             }
 
-            if (![v10 count])
+            if (![sUCoreBorder_results count])
             {
-              v43 = [MEMORY[0x277D64460] sharedLogger];
-              v44 = [v43 oslog];
+              mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+              oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-              if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
-                _os_log_impl(&dword_23193C000, v44, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 assets found, stopping filtering early", buf, 2u);
+                _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 assets found, stopping filtering early", buf, 2u);
               }
 
-              v7 = v47;
+              queryCopy = v47;
               goto LABEL_39;
             }
 
             ++v19;
-            v20 = v10;
+            v20 = sUCoreBorder_results;
           }
 
           while (v17 != v19);
-          v17 = [v13 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          v17 = [oslog2 countByEnumeratingWithState:&v48 objects:v56 count:16];
           if (v17)
           {
             continue;
@@ -190,75 +190,75 @@
         }
       }
 
-      v26 = [MEMORY[0x277D64460] sharedLogger];
-      v27 = [v26 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog5 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v10 count];
+        v28 = [sUCoreBorder_results count];
         *buf = 134217984;
-        v53 = v28;
-        _os_log_impl(&dword_23193C000, v27, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu SU query results (before sorting on mastered version)", buf, 0xCu);
+        selfCopy = v28;
+        _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %lu SU query results (before sorting on mastered version)", buf, 0xCu);
       }
 
-      v13 = [v10 sortedArrayUsingComparator:&__block_literal_global_2];
-      v29 = [v13 lastObject];
-      v30 = [v29 attributes];
-      v31 = [v30 safeStringForKey:@"_MasteredVersion"];
+      oslog2 = [sUCoreBorder_results sortedArrayUsingComparator:&__block_literal_global_2];
+      lastObject = [oslog2 lastObject];
+      attributes = [lastObject attributes];
+      v31 = [attributes safeStringForKey:@"_MasteredVersion"];
 
-      v32 = [MEMORY[0x277D64460] sharedLogger];
-      v33 = [v32 oslog];
+      mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+      oslog6 = [mEMORY[0x277D64460]6 oslog];
 
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v53 = v31;
-        _os_log_impl(&dword_23193C000, v33, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] found highestMasteredVersion = %{public}@", buf, 0xCu);
+        selfCopy = v31;
+        _os_log_impl(&dword_23193C000, oslog6, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] found highestMasteredVersion = %{public}@", buf, 0xCu);
       }
 
-      v34 = [v13 count];
-      v35 = [MEMORY[0x277D64460] sharedLogger];
-      v36 = [v35 oslog];
+      v34 = [oslog2 count];
+      mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+      oslog7 = [mEMORY[0x277D64460]7 oslog];
 
-      v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
+      v37 = os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT);
       if (v34)
       {
-        v7 = v47;
+        queryCopy = v47;
         if (v37)
         {
-          v38 = [v13 count];
+          v38 = [oslog2 count];
           *buf = 134217984;
-          v53 = v38;
-          _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %ld assets found", buf, 0xCu);
+          selfCopy = v38;
+          _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] %ld assets found", buf, 0xCu);
         }
 
-        if ([v13 count]>= 2)
+        if ([oslog2 count]>= 2)
         {
-          v39 = [MEMORY[0x277D64428] sharedDiag];
-          v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"selectSoftwareUpdatePrimaryAsset found %lu assets when 1 was expected", -[NSObject count](v13, "count")];
-          [v39 trackAnomaly:@"[POLICY_UPDATE_BRAIN] SELECT_UPDATE_ASSET" forReason:v40 withResult:8409 withError:0];
+          mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+          v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"selectSoftwareUpdatePrimaryAsset found %lu assets when 1 was expected", -[NSObject count](oslog2, "count")];
+          [mEMORY[0x277D64428] trackAnomaly:@"[POLICY_UPDATE_BRAIN] SELECT_UPDATE_ASSET" forReason:v40 withResult:8409 withError:0];
 
-          v41 = [MEMORY[0x277D64460] sharedLogger];
-          v42 = [v41 oslog];
+          mEMORY[0x277D64460]8 = [MEMORY[0x277D64460] sharedLogger];
+          oslog8 = [mEMORY[0x277D64460]8 oslog];
 
-          if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog8, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v53 = v31;
-            _os_log_impl(&dword_23193C000, v42, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] taking the last asset in the asset array, which is the highest mastered version (%{public}@)", buf, 0xCu);
+            selfCopy = v31;
+            _os_log_impl(&dword_23193C000, oslog8, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] taking the last asset in the asset array, which is the highest mastered version (%{public}@)", buf, 0xCu);
           }
         }
 
-        *v46 = [v13 lastObject];
+        *assetCopy = [oslog2 lastObject];
       }
 
       else
       {
-        v7 = v47;
+        queryCopy = v47;
         if (v37)
         {
           *buf = 0;
-          _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 assets found", buf, 2u);
+          _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 assets found", buf, 2u);
         }
       }
     }
@@ -266,7 +266,7 @@
     else if (v14)
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 SU query results (before filtering)", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY_UPDATE_BRAIN] 0 SU query results (before filtering)", buf, 2u);
     }
 
 LABEL_39:
@@ -274,8 +274,8 @@ LABEL_39:
 
   else
   {
-    v10 = [MEMORY[0x277D64428] sharedDiag];
-    [v10 trackError:@"[POLICY_UPDATE_BRAIN] SELECT_UPDATE_ASSET" forReason:@"selectSoftwareUpdatePrimaryAsset called with unexpected nil primaryAsset param" withResult:8102 withError:0];
+    sUCoreBorder_results = [MEMORY[0x277D64428] sharedDiag];
+    [sUCoreBorder_results trackError:@"[POLICY_UPDATE_BRAIN] SELECT_UPDATE_ASSET" forReason:@"selectSoftwareUpdatePrimaryAsset called with unexpected nil primaryAsset param" withResult:8102 withError:0];
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -294,15 +294,15 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
   return v9;
 }
 
-- (SUCorePolicyUpdateBrain)initWithCoder:(id)a3
+- (SUCorePolicyUpdateBrain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyUpdateBrain;
-  v5 = [(SUCorePolicy *)&v9 initWithCoder:v4];
+  v5 = [(SUCorePolicy *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_CompatibilityVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_CompatibilityVersion"];
     compatibilityVersion = v5->_compatibilityVersion;
     v5->_compatibilityVersion = v6;
   }
@@ -310,20 +310,20 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUCorePolicyUpdateBrain;
-  v4 = a3;
-  [(SUCorePolicy *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SUCorePolicy *)&v6 encodeWithCoder:coderCopy];
   v5 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"_CompatibilityVersion"];
+  [coderCopy encodeObject:v5 forKey:@"_CompatibilityVersion"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -333,15 +333,15 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v11.receiver = self;
       v11.super_class = SUCorePolicyUpdateBrain;
       if ([(SUCorePolicy *)&v11 isEqual:v5])
       {
         v6 = MEMORY[0x277D643F8];
-        v7 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
-        v8 = [(SUCorePolicyUpdateBrain *)v5 compatibilityVersion];
-        v9 = [v6 numberIsEqual:v7 to:v8];
+        compatibilityVersion = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+        compatibilityVersion2 = [(SUCorePolicyUpdateBrain *)v5 compatibilityVersion];
+        v9 = [v6 numberIsEqual:compatibilityVersion to:compatibilityVersion2];
       }
 
       else
@@ -359,13 +359,13 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SUCorePolicyUpdateBrain;
   v5 = [(SUCorePolicy *)&v9 copyWithZone:?];
-  v6 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
-  v7 = [v6 copyWithZone:a3];
+  compatibilityVersion = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+  v7 = [compatibilityVersion copyWithZone:zone];
   [v5 setCompatibilityVersion:v7];
 
   return v5;
@@ -374,11 +374,11 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+  compatibilityVersion = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
   v8.receiver = self;
   v8.super_class = SUCorePolicyUpdateBrain;
   v5 = [(SUCorePolicy *)&v8 description];
-  v6 = [v3 stringWithFormat:@"SUCorePolicyUpdateBrain(compatibilityVersion:%@|super:%@)", v4, v5];
+  v6 = [v3 stringWithFormat:@"SUCorePolicyUpdateBrain(compatibilityVersion:%@|super:%@)", compatibilityVersion, v5];
 
   return v6;
 }
@@ -387,25 +387,25 @@ uint64_t __90__SUCorePolicyUpdateBrain_selectSoftwareUpdatePrimaryAsset_secondar
 {
   v9.receiver = self;
   v9.super_class = SUCorePolicyUpdateBrain;
-  v3 = [(SUCorePolicy *)&v9 summary];
-  v4 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+  summary = [(SUCorePolicy *)&v9 summary];
+  compatibilityVersion = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
 
-  if (v4)
+  if (compatibilityVersion)
   {
-    v5 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
-    v6 = [v3 stringByAppendingFormat:@"|compatibilityVersion=%@", v5];
+    compatibilityVersion2 = [(SUCorePolicyUpdateBrain *)self compatibilityVersion];
+    v6 = [summary stringByAppendingFormat:@"|compatibilityVersion=%@", compatibilityVersion2];
 
-    v3 = v6;
+    summary = v6;
   }
 
-  if (([v3 isEqualToString:&stru_28469CC48] & 1) == 0)
+  if (([summary isEqualToString:&stru_28469CC48] & 1) == 0)
   {
-    v7 = [v3 stringByAppendingString:@"|"];
+    v7 = [summary stringByAppendingString:@"|"];
 
-    v3 = v7;
+    summary = v7;
   }
 
-  return v3;
+  return summary;
 }
 
 @end

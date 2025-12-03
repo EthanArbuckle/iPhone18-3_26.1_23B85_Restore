@@ -1,24 +1,24 @@
 @interface SubmitButtonContainer
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithCoder:(id)a3;
-- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithCoder:(id)coder;
+- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SubmitButtonContainer
 
-- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithFrame:(CGRect)a3
+- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer_submitButton) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SubmitButtonContainer();
-  v7 = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
+  height = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
   sub_100005744(0, &qword_100970180);
-  v8 = v7;
+  v8 = height;
   v9 = static UIColor.defaultButtonBackgroundColor.getter();
   [(SubmitButtonContainer *)v8 setBackgroundColor:v9];
 
@@ -26,7 +26,7 @@
   return v8;
 }
 
-- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithCoder:(id)a3
+- (_TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStoreP33_5C0EFAE2C001F32C54795036AF9AFFE421SubmitButtonContainer_submitButton) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100736954();
   v8 = v7;
   v10 = v9;
@@ -57,7 +57,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100733E3C();
 }
 

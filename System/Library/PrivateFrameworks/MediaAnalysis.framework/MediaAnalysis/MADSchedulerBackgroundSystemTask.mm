@@ -1,9 +1,9 @@
 @interface MADSchedulerBackgroundSystemTask
 + (id)sharedTask;
 + (void)submitPhotosTasks;
-+ (void)submitTaskWithTaskClass:(Class)a3;
++ (void)submitTaskWithTaskClass:(Class)class;
 + (void)updateTask;
-- (void)executeWith:(id)a3 completionHandler:(id)a4;
+- (void)executeWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation MADSchedulerBackgroundSystemTask
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001092C;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B80C8 != -1)
   {
     dispatch_once(&qword_1002B80C8, block);
@@ -29,20 +29,20 @@
 {
   if (+[VCPDeviceInformation isHomePod])
   {
-    v2 = [objc_opt_class() identifier];
+    identifier = [objc_opt_class() identifier];
     if (MediaAnalysisLogLevel() >= 6)
     {
       v3 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v3))
       {
         *buf = 138412290;
-        v29 = v2;
+        v29 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[%@][HomePod] Attempting updateTask", buf, 0xCu);
       }
     }
 
     v4 = +[BGSystemTaskScheduler sharedScheduler];
-    v5 = [v4 taskRequestForIdentifier:v2];
+    v5 = [v4 taskRequestForIdentifier:identifier];
 
     if (v5)
     {
@@ -55,7 +55,7 @@
           if (os_log_type_enabled(&_os_log_default, v23))
           {
             *buf = 138412290;
-            v29 = v2;
+            v29 = identifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[%@][HomePod] Task interval already up-to-date, skipping updateTask", buf, 0xCu);
           }
         }
@@ -70,7 +70,7 @@
         if (os_log_type_enabled(&_os_log_default, v7))
         {
           *buf = 138412290;
-          v29 = v2;
+          v29 = identifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[%@][HomePod] Updating interval to 24 hours", buf, 0xCu);
         }
       }
@@ -97,7 +97,7 @@
         }
 
         *buf = 138412290;
-        v29 = v2;
+        v29 = identifier;
         v12 = "[%@][HomePod] Successfully updated task request";
         v13 = v11;
         v14 = 12;
@@ -117,7 +117,7 @@
         }
 
         *buf = 138412546;
-        v29 = v2;
+        v29 = identifier;
         v30 = 2112;
         v31 = v10;
         v12 = "[%@][HomePod] Failed to update task request with error: %@";
@@ -137,12 +137,12 @@ LABEL_30:
       if (os_log_type_enabled(&_os_log_default, v15))
       {
         *buf = 138412290;
-        v29 = v2;
+        v29 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "[%@][HomePod] Scheduler task missing, submitting now", buf, 0xCu);
       }
     }
 
-    v16 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:v2];
+    v16 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:identifier];
     [v16 setGroupName:MediaAnalysisDaemonDomain];
     [v16 setRequiresBuddyComplete:{objc_msgSend(objc_opt_class(), "buddyCheckRequired")}];
     [v16 setGroupConcurrencyLimit:1];
@@ -171,7 +171,7 @@ LABEL_30:
       }
 
       *buf = 138412290;
-      v29 = v2;
+      v29 = identifier;
       v20 = "[%@][HomePod] Successfully submitted new task request";
       v21 = v19;
       v22 = 12;
@@ -191,7 +191,7 @@ LABEL_30:
       }
 
       *buf = 138412546;
-      v29 = v2;
+      v29 = identifier;
       v30 = 2112;
       v31 = v10;
       v20 = "[%@][HomePod] Failed to submit new task request with error: %@";
@@ -206,12 +206,12 @@ LABEL_29:
   }
 }
 
-+ (void)submitTaskWithTaskClass:(Class)a3
++ (void)submitTaskWithTaskClass:(Class)class
 {
-  v4 = [(objc_class *)a3 identifier];
-  v5 = [(objc_class *)a3 sharedTask];
+  identifier = [(objc_class *)class identifier];
+  sharedTask = [(objc_class *)class sharedTask];
   v12 = 0;
-  [v5 submitTask:&v12];
+  [sharedTask submitTask:&v12];
   v6 = v12;
 
   if (v6)
@@ -222,7 +222,7 @@ LABEL_29:
       if (os_log_type_enabled(&_os_log_default, v7))
       {
         *buf = 138412546;
-        v14 = v4;
+        v14 = identifier;
         v15 = 2112;
         v16 = v6;
         v8 = "[%@] Failed to submit this BGST task with error: %@";
@@ -240,7 +240,7 @@ LABEL_8:
     if (os_log_type_enabled(&_os_log_default, v11))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = identifier;
       v8 = "[%@] Successfully submitted this BGST task.";
       v9 = v11;
       v10 = 12;
@@ -254,10 +254,10 @@ LABEL_8:
   if ([objc_opt_class() photosActivitiesEnabled])
   {
     v2 = +[VCPPhotoLibraryManager sharedManager];
-    v3 = [v2 allPhotoLibraries];
+    allPhotoLibraries = [v2 allPhotoLibraries];
 
-    v28 = v3;
-    if ([v3 count])
+    v28 = allPhotoLibraries;
+    if ([allPhotoLibraries count])
     {
       if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
       {
@@ -265,7 +265,7 @@ LABEL_8:
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v4 = v3;
+        v4 = allPhotoLibraries;
         v5 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v5)
         {
@@ -289,11 +289,11 @@ LABEL_8:
                 if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
                 {
                   v12 = objc_opt_class();
-                  v13 = [v8 photoLibraryURL];
+                  photoLibraryURL = [v8 photoLibraryURL];
                   *buf = 138412546;
                   v35 = v12;
                   v36 = 2112;
-                  v37 = v13;
+                  v37 = photoLibraryURL;
                   _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@] Database migration incomplete for photo library %@", buf, 0x16u);
                 }
 
@@ -368,10 +368,10 @@ LABEL_28:
   }
 }
 
-- (void)executeWith:(id)a3 completionHandler:(id)a4
+- (void)executeWith:(id)with completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  handlerCopy = handler;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v7 = VCPLogToOSLogType[5];
@@ -384,7 +384,7 @@ LABEL_28:
     }
   }
 
-  if (v5 && v5[2](v5))
+  if (withCopy && withCopy[2](withCopy))
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
@@ -399,7 +399,7 @@ LABEL_28:
       }
     }
 
-    v6[2](v6, 4294967168);
+    handlerCopy[2](handlerCopy, 4294967168);
   }
 
   else
@@ -429,7 +429,7 @@ LABEL_28:
 
     v16 = objc_opt_class();
     [v16 submitTaskWithTaskClass:objc_opt_class()];
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
     if (MediaAnalysisLogLevel() >= 5)
     {
       v17 = VCPLogToOSLogType[5];

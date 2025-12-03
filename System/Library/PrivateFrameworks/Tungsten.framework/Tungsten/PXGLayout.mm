@@ -1,37 +1,37 @@
 @interface PXGLayout
-+ (id)_defaultAccessibilityIdentifierForAXInfoKind:(int64_t)a3;
-+ (unint64_t)scrolledEdgesForVisibleEdges:(unint64_t)a3 scrollableAxis:(int64_t)a4;
-- ($105A79951CE75EB7BB90BCA93995B378)styleForSpriteAtIndex:(SEL)a3;
-- ($738B17BD11CC339B30296C0EA03CEC2B)entityForSpriteAtIndex:(unsigned int)a3;
-- ($786F7D2F4E5B3A0CBB66DF574B7D98CF)infoForSpriteAtIndex:(SEL)a3;
++ (id)_defaultAccessibilityIdentifierForAXInfoKind:(int64_t)kind;
++ (unint64_t)scrolledEdgesForVisibleEdges:(unint64_t)edges scrollableAxis:(int64_t)axis;
+- ($105A79951CE75EB7BB90BCA93995B378)styleForSpriteAtIndex:(SEL)index;
+- ($738B17BD11CC339B30296C0EA03CEC2B)entityForSpriteAtIndex:(unsigned int)index;
+- ($786F7D2F4E5B3A0CBB66DF574B7D98CF)infoForSpriteAtIndex:(SEL)index;
 - ($7E6FF06E1E2A477A0598F669E6D2B004)orientedContentTransform;
-- ($C4327F77E24267CF92932F349E1559A2)geometryForSpriteAtIndex:(unsigned int)a3;
+- ($C4327F77E24267CF92932F349E1559A2)geometryForSpriteAtIndex:(unsigned int)index;
 - ($F075B4A35807C7876885CD3A0A1A7192)displayAssetSourceRespondsTo;
 - (BOOL)allowsDanglingUpdatesAssertions;
 - (BOOL)allowsSublayoutUpdateCycleAssertions;
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5;
-- (BOOL)changeVisibleRectToProposedVisibleRect:(CGRect)a3;
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info;
+- (BOOL)changeVisibleRectToProposedVisibleRect:(CGRect)rect;
 - (BOOL)hasPointReferences;
-- (BOOL)isDescendantOfLayout:(id)a3;
-- (BOOL)isSpriteIndex:(unsigned int)a3 decoratingSpriteWithIndex:(unsigned int *)a4;
+- (BOOL)isDescendantOfLayout:(id)layout;
+- (BOOL)isSpriteIndex:(unsigned int)index decoratingSpriteWithIndex:(unsigned int *)withIndex;
 - (BOOL)isVisible;
 - (BOOL)shouldFaultInContentAtAnchoredContentEdges;
-- (CGPoint)_offsetToDescendantLayout:(id)a3;
-- (CGPoint)axConvertPoint:(CGPoint)a3 fromDescendantGroup:(id)a4;
-- (CGPoint)axConvertPoint:(CGPoint)a3 toDescendantGroup:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromDescendantLayout:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromLayout:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toDescendantLayout:(id)a4;
+- (CGPoint)_offsetToDescendantLayout:(id)layout;
+- (CGPoint)axConvertPoint:(CGPoint)point fromDescendantGroup:(id)group;
+- (CGPoint)axConvertPoint:(CGPoint)point toDescendantGroup:(id)group;
+- (CGPoint)convertPoint:(CGPoint)point fromDescendantLayout:(id)layout;
+- (CGPoint)convertPoint:(CGPoint)point fromLayout:(id)layout;
+- (CGPoint)convertPoint:(CGPoint)point toDescendantLayout:(id)layout;
 - (CGPoint)lastScrollDirection;
-- (CGPoint)pointForPointReference:(id)a3;
-- (CGRect)anchoringRectForSpriteAtIndex:(unsigned int)a3;
-- (CGRect)axConvertRect:(CGRect)a3 fromDescendantGroup:(id)a4;
-- (CGRect)axConvertRect:(CGRect)a3 toDescendantGroup:(id)a4;
+- (CGPoint)pointForPointReference:(id)reference;
+- (CGRect)anchoringRectForSpriteAtIndex:(unsigned int)index;
+- (CGRect)axConvertRect:(CGRect)rect fromDescendantGroup:(id)group;
+- (CGRect)axConvertRect:(CGRect)rect toDescendantGroup:(id)group;
 - (CGRect)bounds;
 - (CGRect)clippingRect;
-- (CGRect)convertRect:(CGRect)a3 fromDescendantLayout:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 fromLayout:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toDescendantLayout:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromDescendantLayout:(id)layout;
+- (CGRect)convertRect:(CGRect)rect fromLayout:(id)layout;
+- (CGRect)convertRect:(CGRect)rect toDescendantLayout:(id)layout;
 - (CGRect)frame;
 - (CGRect)visibleRect;
 - (CGSize)contentSize;
@@ -69,198 +69,198 @@
 - (UIEdgeInsets)flexibleRegionInsets;
 - (UIEdgeInsets)fullPageSnapshotFloatingInsets;
 - (UIEdgeInsets)safeAreaInsets;
-- (_PXGSpriteIndexRange)addSpriteCount:(unsigned int)a3 withInitialState:(id)a4;
-- (_PXGSpriteIndexRange)convertRange:(_PXGSpriteIndexRange)a3 fromSublayout:(id)a4;
-- (_PXGSpriteIndexRange)convertSpriteIndexRange:(_PXGSpriteIndexRange)a3 fromDescendantLayout:(id)a4;
+- (_PXGSpriteIndexRange)addSpriteCount:(unsigned int)count withInitialState:(id)state;
+- (_PXGSpriteIndexRange)convertRange:(_PXGSpriteIndexRange)range fromSublayout:(id)sublayout;
+- (_PXGSpriteIndexRange)convertSpriteIndexRange:(_PXGSpriteIndexRange)range fromDescendantLayout:(id)layout;
 - (__n128)cameraConfiguration;
-- (id)_createAnchorForContentEdges:(unint64_t)a3 priority:(int64_t)a4;
-- (id)_createAnchorWithAnchor:(id)a3 resetPriority:(BOOL)a4;
-- (id)_createAnchorWithPriority:(int64_t)a3 constraints:(id)a4;
-- (id)_paddingForLevel:(int64_t)a3;
-- (id)ancestorSharedWithLayout:(id)a3;
-- (id)axContainingScrollViewForAXGroup:(id)a3;
-- (id)axContainingViewForAXGroup:(id)a3;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
-- (id)axLeafForObjectReference:(id)a3;
-- (id)axSpriteIndexesInRectDefaultImplementation:(CGRect)a3;
-- (id)convertChangeDetails:(id)a3 fromSublayout:(id)a4;
-- (id)convertSpriteIndexes:(id)a3 fromDescendantLayout:(id)a4;
-- (id)createAnchorForScrollingAnimationTowardsContentEdges:(unint64_t)a3;
-- (id)createAnchorForScrollingSpriteAtIndex:(unsigned int)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5;
-- (id)createAnchorForScrollingSpriteForObjectReference:(id)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5;
-- (id)createAnchorForScrollingSpriteForSpriteReference:(id)a3 normalizedAnchorPoint:(CGPoint)a4 toVisibleLocation:(CGPoint)a5;
-- (id)createAnchorForScrollingSpriteForSpriteReference:(id)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5 customOffset:(id)a6;
-- (id)createAnchorForScrollingToContentEdges:(unint64_t)a3 padding:(UIEdgeInsets)a4;
-- (id)createAnchorForSpriteAtIndex:(unsigned int)a3;
-- (id)createAnchorForSpriteReferences:(id)a3;
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3;
-- (id)createAnchorFromSuperlayoutWithSublayoutIndex:(int64_t)a3 sublayoutPositionEdges:(unint64_t)a4 ignoringScrollingAnimationAnchors:(BOOL)a5;
+- (id)_createAnchorForContentEdges:(unint64_t)edges priority:(int64_t)priority;
+- (id)_createAnchorWithAnchor:(id)anchor resetPriority:(BOOL)priority;
+- (id)_createAnchorWithPriority:(int64_t)priority constraints:(id)constraints;
+- (id)_paddingForLevel:(int64_t)level;
+- (id)ancestorSharedWithLayout:(id)layout;
+- (id)axContainingScrollViewForAXGroup:(id)group;
+- (id)axContainingViewForAXGroup:(id)group;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
+- (id)axLeafForObjectReference:(id)reference;
+- (id)axSpriteIndexesInRectDefaultImplementation:(CGRect)implementation;
+- (id)convertChangeDetails:(id)details fromSublayout:(id)sublayout;
+- (id)convertSpriteIndexes:(id)indexes fromDescendantLayout:(id)layout;
+- (id)createAnchorForScrollingAnimationTowardsContentEdges:(unint64_t)edges;
+- (id)createAnchorForScrollingSpriteAtIndex:(unsigned int)index toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding;
+- (id)createAnchorForScrollingSpriteForObjectReference:(id)reference toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding;
+- (id)createAnchorForScrollingSpriteForSpriteReference:(id)reference normalizedAnchorPoint:(CGPoint)point toVisibleLocation:(CGPoint)location;
+- (id)createAnchorForScrollingSpriteForSpriteReference:(id)reference toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding customOffset:(id)offset;
+- (id)createAnchorForScrollingToContentEdges:(unint64_t)edges padding:(UIEdgeInsets)padding;
+- (id)createAnchorForSpriteAtIndex:(unsigned int)index;
+- (id)createAnchorForSpriteReferences:(id)references;
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges;
+- (id)createAnchorFromSuperlayoutWithSublayoutIndex:(int64_t)index sublayoutPositionEdges:(unint64_t)edges ignoringScrollingAnimationAnchors:(BOOL)anchors;
 - (id)createAnimation;
 - (id)createDefaultAnimationForCurrentContext;
-- (id)createFenceWithType:(unint64_t)a3;
-- (id)createPointReferenceAtPoint:(CGPoint)a3;
-- (id)createTransitionWithAnimations:(id)a3;
-- (id)diagnosticsItemProvidersInRect:(CGRect)a3;
-- (id)dropTargetObjectReferenceForLocation:(CGPoint)a3;
-- (id)dynamicSpriteReferenceForObjectReference:(id)a3;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (id)leafSublayoutForSpriteIndex:(unsigned int)a3;
-- (id)navigationObjectReferenceForLocation:(CGPoint)a3;
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3;
-- (id)spriteReferenceForSpriteIndex:(unsigned int)a3 objectReference:(id)a4;
-- (id)spriteReferenceForSpriteReference:(id)a3;
-- (id)sublayoutAtIndex:(int64_t)a3 loadIfNeeded:(BOOL)a4;
-- (id)sublayoutForSpriteIndex:(unsigned int)a3;
-- (id)viewForSpriteIndex:(unsigned int)a3;
-- (int64_t)addSublayout:(id)a3;
+- (id)createFenceWithType:(unint64_t)type;
+- (id)createPointReferenceAtPoint:(CGPoint)point;
+- (id)createTransitionWithAnimations:(id)animations;
+- (id)diagnosticsItemProvidersInRect:(CGRect)rect;
+- (id)dropTargetObjectReferenceForLocation:(CGPoint)location;
+- (id)dynamicSpriteReferenceForObjectReference:(id)reference;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (id)leafSublayoutForSpriteIndex:(unsigned int)index;
+- (id)navigationObjectReferenceForLocation:(CGPoint)location;
+- (id)objectReferenceForSpriteIndex:(unsigned int)index;
+- (id)spriteReferenceForSpriteIndex:(unsigned int)index objectReference:(id)reference;
+- (id)spriteReferenceForSpriteReference:(id)reference;
+- (id)sublayoutAtIndex:(int64_t)index loadIfNeeded:(BOOL)needed;
+- (id)sublayoutForSpriteIndex:(unsigned int)index;
+- (id)viewForSpriteIndex:(unsigned int)index;
+- (int64_t)addSublayout:(id)sublayout;
 - (int64_t)anchoredSublayoutIndex;
-- (int64_t)indexOfSublayout:(id)a3;
+- (int64_t)indexOfSublayout:(id)sublayout;
 - (int64_t)numberOfSublayouts;
-- (int64_t)sublayoutIndexForSpriteIndex:(unsigned int)a3;
-- (int64_t)sublayoutIndexForSpriteReference:(id)a3 options:(unint64_t)a4;
+- (int64_t)sublayoutIndexForSpriteIndex:(unsigned int)index;
+- (int64_t)sublayoutIndexForSpriteReference:(id)reference options:(unint64_t)options;
 - (unint64_t)anchoredContentEdges;
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3;
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index;
 - (unint64_t)fullyVisibleEdgesWithDefaultTolerance;
-- (unint64_t)fullyVisibleEdgesWithEdgeTolerances:(UIEdgeInsets)a3;
-- (unsigned)addResizableCapInsets:(id)a3;
-- (unsigned)axSpriteIndexClosestToSpriteIndexDefaultImplementation:(unsigned int)a3 inDirection:(unint64_t)a4;
-- (unsigned)convertSpriteIndex:(unsigned int)a3 fromLayout:(id)a4;
-- (unsigned)convertSpriteIndex:(unsigned int)a3 toDescendantLayout:(id)a4;
+- (unint64_t)fullyVisibleEdgesWithEdgeTolerances:(UIEdgeInsets)tolerances;
+- (unsigned)addResizableCapInsets:(id)insets;
+- (unsigned)axSpriteIndexClosestToSpriteIndexDefaultImplementation:(unsigned int)implementation inDirection:(unint64_t)direction;
+- (unsigned)convertSpriteIndex:(unsigned int)index fromLayout:(id)layout;
+- (unsigned)convertSpriteIndex:(unsigned int)index toDescendantLayout:(id)layout;
 - (unsigned)localNumberOfSprites;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
-- (unsigned)spriteIndexForSpriteReference:(id)a3 options:(unint64_t)a4;
-- (void)_addAnimations:(id)a3;
-- (void)_addFences:(id)a3;
-- (void)_addHiddenSpriteIndexes:(id)a3;
-- (void)_appendDescription:(id)a3 atLevel:(int64_t)a4;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
+- (unsigned)spriteIndexForSpriteReference:(id)reference options:(unint64_t)options;
+- (void)_addAnimations:(id)animations;
+- (void)_addFences:(id)fences;
+- (void)_addHiddenSpriteIndexes:(id)indexes;
+- (void)_appendDescription:(id)description atLevel:(int64_t)level;
 - (void)_destroyModifiedSpriteDataStore;
 - (void)_destroySpriteDataStore;
 - (void)_ensureModifiedSpriteDataStore;
 - (void)_ensureSpriteDataStore;
 - (void)_ensureSublayoutDataStore;
-- (void)_enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 transform:(id *)a4 spriteOffset:(unsigned int)a5 stop:(BOOL *)a6 usingBlock:(id)a7;
-- (void)_enumerateSpritesInRect:(CGRect)a3 transform:(id *)a4 usingBlock:(id)a5;
-- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4 invalidateSprites:(BOOL)a5;
-- (void)_invalidateStyleOfSpritesWithIndexes:(id)a3;
-- (void)_propagateHiddenSpriteIndexes:(id)a3;
+- (void)_enumerateSpritesInRange:(_PXGSpriteIndexRange)range transform:(id *)transform spriteOffset:(unsigned int)offset stop:(BOOL *)stop usingBlock:(id)block;
+- (void)_enumerateSpritesInRect:(CGRect)rect transform:(id *)transform usingBlock:(id)block;
+- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)range inLayout:(id)layout invalidateSprites:(BOOL)sprites;
+- (void)_invalidateStyleOfSpritesWithIndexes:(id)indexes;
+- (void)_propagateHiddenSpriteIndexes:(id)indexes;
 - (void)_resetHiddenSpriteIndexes;
-- (void)_setNeedsUpdateExternally:(BOOL)a3;
+- (void)_setNeedsUpdateExternally:(BOOL)externally;
 - (void)_updateAnchoring;
 - (void)_updateVersion;
-- (void)_willAddSublayout:(id)a3;
-- (void)addAnchor:(id)a3;
-- (void)addAnimation:(id)a3;
-- (void)addFence:(id)a3;
-- (void)addInteraction:(id)a3;
-- (void)addPointReference:(id)a3;
-- (void)addSpritesAtIndexes:(id)a3 initialState:(id)a4;
-- (void)addSpritesInRange:(_PXGSpriteIndexRange)a3 initialState:(id)a4;
-- (void)addTransition:(id)a3;
-- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)a3 appliedToLayout:(id)a4;
-- (void)applySectionedChangeDetails:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 sublayoutProvider:(id)a6 outChangedSections:(id *)a7 outSectionsWithItemChanges:(id *)a8 changeMediaVersionHandler:(id)a9;
-- (void)applySectionedChangeDetailsForSingleSection:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 changeMediaVersionHandler:(id)a6;
-- (void)applySectionedChangeDetailsForSingleSection:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 changeMediaVersionHandler:(id)a6 sectionIndexPathBeforeState:(PXSimpleIndexPath *)a7;
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyFullState:(id)a6;
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6;
-- (void)applySublayoutChangeDetails:(id)a3 countAfterChanges:(int64_t)a4 sublayoutProvider:(id)a5;
-- (void)axAddSubgroupForSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
-- (void)axRemoveSubgroupForSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)_willAddSublayout:(id)sublayout;
+- (void)addAnchor:(id)anchor;
+- (void)addAnimation:(id)animation;
+- (void)addFence:(id)fence;
+- (void)addInteraction:(id)interaction;
+- (void)addPointReference:(id)reference;
+- (void)addSpritesAtIndexes:(id)indexes initialState:(id)state;
+- (void)addSpritesInRange:(_PXGSpriteIndexRange)range initialState:(id)state;
+- (void)addTransition:(id)transition;
+- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)details appliedToLayout:(id)layout;
+- (void)applySectionedChangeDetails:(id)details dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges sublayoutProvider:(id)provider outChangedSections:(id *)sections outSectionsWithItemChanges:(id *)itemChanges changeMediaVersionHandler:(id)handler;
+- (void)applySectionedChangeDetailsForSingleSection:(id)section dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges changeMediaVersionHandler:(id)handler;
+- (void)applySectionedChangeDetailsForSingleSection:(id)section dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges changeMediaVersionHandler:(id)handler sectionIndexPathBeforeState:(PXSimpleIndexPath *)state;
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyFullState:(id)fullState;
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState;
+- (void)applySublayoutChangeDetails:(id)details countAfterChanges:(int64_t)changes sublayoutProvider:(id)provider;
+- (void)axAddSubgroupForSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
+- (void)axRemoveSubgroupForSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)clearLastVisibleAreaAnchoringInformation;
-- (void)containingScrollViewDidScroll:(CGPoint)a3;
+- (void)containingScrollViewDidScroll:(CGPoint)scroll;
 - (void)contentSizeDidChange;
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 applySpriteTransforms:(BOOL)a4 entities:(id *)a5 geometries:(id *)a6 styles:(id *)a7 infos:(id *)a8;
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 applySpriteTransforms:(BOOL)a4 parentTransform:(id *)a5 parentAlpha:(float)a6 parentClippingRect:(CGRect)a7 parentSublayoutOrigin:(id)a8 entities:(id *)a9 geometries:(id *)a10 styles:(id *)a11 infos:(id *)a12;
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 toSpriteDataStore:(id)a4;
-- (void)copySpritesToDataStore:(id)a3;
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range applySpriteTransforms:(BOOL)transforms entities:(id *)entities geometries:(id *)geometries styles:(id *)styles infos:(id *)infos;
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range applySpriteTransforms:(BOOL)transforms parentTransform:(id *)transform parentAlpha:(float)alpha parentClippingRect:(CGRect)rect parentSublayoutOrigin:(id)origin entities:(id *)entities geometries:(id *)self0 styles:(id *)self1 infos:(id *)self2;
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range toSpriteDataStore:(id)store;
+- (void)copySpritesToDataStore:(id)store;
 - (void)dealloc;
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
-- (void)didApplySpriteChangeDetails:(id)a3;
-- (void)didApplySublayoutChangeDetails:(id)a3 axAdjustedSubgroupChangeDetails:(id)a4 countAfterChanges:(int64_t)a5;
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
+- (void)didApplySpriteChangeDetails:(id)details;
+- (void)didApplySublayoutChangeDetails:(id)details axAdjustedSubgroupChangeDetails:(id)changeDetails countAfterChanges:(int64_t)changes;
 - (void)didChangeSublayoutOrigins;
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5;
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size;
 - (void)didUpdate;
-- (void)enumerateDescendantsLayoutsBreadthFirstReverseUsingBlock:(id)a3;
-- (void)enumerateDescendantsLayoutsUsingBlock:(id)a3;
-- (void)enumerateLayoutsForSpritesInRange:(_PXGSpriteIndexRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateLocalSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)a3;
-- (void)enumerateSublayoutsForDetailedPlacement:(id)a3 ofItemWithReference:(id)a4 usingBlock:(id)a5;
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3;
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)hideSpritesForObjectReferences:(id)a3;
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSublayoutProvider:(id)a3 atIndexes:(id)a4;
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4;
-- (void)installLayoutCompletionBlock:(id)a3;
+- (void)enumerateDescendantsLayoutsBreadthFirstReverseUsingBlock:(id)block;
+- (void)enumerateDescendantsLayoutsUsingBlock:(id)block;
+- (void)enumerateLayoutsForSpritesInRange:(_PXGSpriteIndexRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateLocalSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)block;
+- (void)enumerateSublayoutsForDetailedPlacement:(id)placement ofItemWithReference:(id)reference usingBlock:(id)block;
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block;
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)hideSpritesForObjectReferences:(id)references;
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index;
+- (void)insertSublayoutProvider:(id)provider atIndexes:(id)indexes;
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range;
+- (void)installLayoutCompletionBlock:(id)block;
 - (void)invalidateAllSuperlayoutAnchors;
 - (void)invalidateDecoration;
 - (void)invalidateDecorationAndSprites;
 - (void)invalidateVersion;
-- (void)modifySpritesAtIndexes:(id)a3 fullState:(id)a4;
-- (void)modifySpritesAtIndexes:(id)a3 state:(id)a4;
-- (void)modifySpritesInRange:(_PXGSpriteIndexRange)a3 fullState:(id)a4;
-- (void)modifySpritesInRange:(_PXGSpriteIndexRange)a3 state:(id)a4;
-- (void)modifySpritesInRect:(CGRect)a3 state:(id)a4;
-- (void)moveSpritesInRange:(_PXGSpriteIndexRange)a3 toRange:(_PXGSpriteIndexRange)a4;
-- (void)performChangesWithLocalUpdate:(id)a3;
-- (void)performRepeatedSublayoutsUpdate:(id)a3;
-- (void)performSpriteStylingUpdate:(id)a3;
-- (void)removeAnchor:(id)a3;
-- (void)removeAnimation:(id)a3;
+- (void)modifySpritesAtIndexes:(id)indexes fullState:(id)state;
+- (void)modifySpritesAtIndexes:(id)indexes state:(id)state;
+- (void)modifySpritesInRange:(_PXGSpriteIndexRange)range fullState:(id)state;
+- (void)modifySpritesInRange:(_PXGSpriteIndexRange)range state:(id)state;
+- (void)modifySpritesInRect:(CGRect)rect state:(id)state;
+- (void)moveSpritesInRange:(_PXGSpriteIndexRange)range toRange:(_PXGSpriteIndexRange)toRange;
+- (void)performChangesWithLocalUpdate:(id)update;
+- (void)performRepeatedSublayoutsUpdate:(id)update;
+- (void)performSpriteStylingUpdate:(id)update;
+- (void)removeAnchor:(id)anchor;
+- (void)removeAnimation:(id)animation;
 - (void)removeFromSuperlayout;
-- (void)removeInteraction:(id)a3;
-- (void)removePointReference:(id)a3;
-- (void)removeSpritesAtIndexes:(id)a3;
-- (void)removeSpritesInRange:(_PXGSpriteIndexRange)a3;
-- (void)removeSublayoutsAtIndexes:(id)a3;
-- (void)removeSublayoutsInRange:(_NSRange)a3;
-- (void)setAlpha:(double)a3;
-- (void)setAppearState:(unint64_t)a3;
-- (void)setCameraConfiguration:(float32x4_t *)a3;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContentSource:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setDisplayScale:(double)a3;
-- (void)setEntityManager:(id)a3;
-- (void)setFloating:(BOOL)a3;
-- (void)setFloatingOffset:(double)a3;
-- (void)setHiddenSpriteIndexes:(id)a3;
-- (void)setInteractions:(id)a3;
-- (void)setLastBaseline:(double)a3;
-- (void)setLastScrollDirection:(CGPoint)a3;
-- (void)setLayoutQueue:(id)a3;
-- (void)setLocalHiddenSpriteIndexes:(id)a3;
-- (void)setMediaProvider:(id)a3;
+- (void)removeInteraction:(id)interaction;
+- (void)removePointReference:(id)reference;
+- (void)removeSpritesAtIndexes:(id)indexes;
+- (void)removeSpritesInRange:(_PXGSpriteIndexRange)range;
+- (void)removeSublayoutsAtIndexes:(id)indexes;
+- (void)removeSublayoutsInRange:(_NSRange)range;
+- (void)setAlpha:(double)alpha;
+- (void)setAppearState:(unint64_t)state;
+- (void)setCameraConfiguration:(float32x4_t *)configuration;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setContentSize:(CGSize)size;
+- (void)setContentSource:(id)source;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setDisplayScale:(double)scale;
+- (void)setEntityManager:(id)manager;
+- (void)setFloating:(BOOL)floating;
+- (void)setFloatingOffset:(double)offset;
+- (void)setHiddenSpriteIndexes:(id)indexes;
+- (void)setInteractions:(id)interactions;
+- (void)setLastBaseline:(double)baseline;
+- (void)setLastScrollDirection:(CGPoint)direction;
+- (void)setLayoutQueue:(id)queue;
+- (void)setLocalHiddenSpriteIndexes:(id)indexes;
+- (void)setMediaProvider:(id)provider;
 - (void)setNeedsFocusUpdate;
 - (void)setNeedsUpdateOfScrollableAxis;
-- (void)setReferenceDepth:(double)a3;
-- (void)setReferenceOptions:(unsigned __int16)a3;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setScrollSpeedRegime:(int64_t)a3;
-- (void)setSpriteModifier:(id)a3;
-- (void)setSuperlayout:(id)a3;
-- (void)setUserInterfaceDirection:(unint64_t)a3;
-- (void)setViewEnvironment:(id)a3;
-- (void)setVisibleRect:(CGRect)a3;
-- (void)sublayout:(id)a3 didAddAnchor:(id)a4;
-- (void)sublayout:(id)a3 didApplySpriteChangeDetails:(id)a4 fromDescendentSublayout:(id)a5;
-- (void)sublayout:(id)a3 didRemoveAnchor:(id)a4;
+- (void)setReferenceDepth:(double)depth;
+- (void)setReferenceOptions:(unsigned __int16)options;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setScrollSpeedRegime:(int64_t)regime;
+- (void)setSpriteModifier:(id)modifier;
+- (void)setSuperlayout:(id)superlayout;
+- (void)setUserInterfaceDirection:(unint64_t)direction;
+- (void)setViewEnvironment:(id)environment;
+- (void)setVisibleRect:(CGRect)rect;
+- (void)sublayout:(id)sublayout didAddAnchor:(id)anchor;
+- (void)sublayout:(id)sublayout didApplySpriteChangeDetails:(id)details fromDescendentSublayout:(id)descendentSublayout;
+- (void)sublayout:(id)sublayout didRemoveAnchor:(id)anchor;
 - (void)superlayoutDidChange;
 - (void)update;
 - (void)updateAsRootIfNeeded;
 - (void)updateIfNeeded;
-- (void)updateStylingForSpritesAtIndexes:(id)a3;
+- (void)updateStylingForSpritesAtIndexes:(id)indexes;
 - (void)viewEnvironmentDidChange;
 - (void)visibleRectDidChange;
-- (void)willFaultOutSublayout:(id)a3 atIndex:(int64_t)a4;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willFaultOutSublayout:(id)sublayout atIndex:(int64_t)index;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -324,29 +324,29 @@
 
 - (PXGLayout)rootLayout
 {
-  v2 = self;
-  v3 = [(PXGLayout *)v2 superlayout];
+  selfCopy = self;
+  superlayout = [(PXGLayout *)selfCopy superlayout];
 
-  if (v3)
+  if (superlayout)
   {
     do
     {
-      v4 = [(PXGLayout *)v2 superlayout];
+      superlayout2 = [(PXGLayout *)selfCopy superlayout];
 
-      v5 = [(PXGLayout *)v4 superlayout];
+      v4Superlayout = [(PXGLayout *)superlayout2 superlayout];
 
-      v2 = v4;
+      selfCopy = superlayout2;
     }
 
-    while (v5);
+    while (v4Superlayout);
   }
 
   else
   {
-    v4 = v2;
+    superlayout2 = selfCopy;
   }
 
-  return v4;
+  return superlayout2;
 }
 
 - (PXGLayoutScrollDelegate)scrollDelegate
@@ -386,11 +386,11 @@ void __17__PXGLayout_init__block_invoke()
 
 - (void)setNeedsUpdateOfScrollableAxis
 {
-  v3 = [(PXGLayout *)self superlayout];
-  [v3 setNeedsUpdateOfScrollableAxis];
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout setNeedsUpdateOfScrollableAxis];
 
-  v4 = [(PXGLayout *)self scrollDelegate];
-  [v4 setNeedsUpdateOfScrollableAxisForLayout:self];
+  scrollDelegate = [(PXGLayout *)self scrollDelegate];
+  [scrollDelegate setNeedsUpdateOfScrollableAxisForLayout:self];
 }
 
 - (NSMutableArray)changeDetails
@@ -410,13 +410,13 @@ void __17__PXGLayout_init__block_invoke()
 
 - (void)viewEnvironmentDidChange
 {
-  v3 = [(PXGLayout *)self viewEnvironment];
-  v4 = [v3 accessibilityEnabled];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
+  accessibilityEnabled = [viewEnvironment accessibilityEnabled];
 
-  if (v4)
+  if (accessibilityEnabled)
   {
-    v5 = [(PXGLayout *)self axGroup];
-    [v5 setLeafFeatures:{objc_msgSend(v5, "leafFeatures") | 4}];
+    axGroup = [(PXGLayout *)self axGroup];
+    [axGroup setLeafFeatures:{objc_msgSend(axGroup, "leafFeatures") | 4}];
   }
 }
 
@@ -455,8 +455,8 @@ void __17__PXGLayout_init__block_invoke()
 
 - (int64_t)numberOfSublayouts
 {
-  v2 = [(PXGLayout *)self sublayoutDataStore];
-  v3 = [v2 count];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v3 = [sublayoutDataStore count];
 
   return v3;
 }
@@ -472,24 +472,24 @@ void __17__PXGLayout_init__block_invoke()
 
 - (void)clearLastVisibleAreaAnchoringInformation
 {
-  v3 = [(PXGLayout *)self lastVisibleAreaAnchor];
+  lastVisibleAreaAnchor = [(PXGLayout *)self lastVisibleAreaAnchor];
 
-  if (v3)
+  if (lastVisibleAreaAnchor)
   {
     [(PXGLayout *)self setLastVisibleAreaAnchor:0];
   }
 
-  v4 = [(PXGLayout *)self sublayoutDataStore];
-  [v4 enumerateSublayoutsUsingBlock:&__block_literal_global_5736];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:&__block_literal_global_5736];
 }
 
 - (void)visibleRectDidChange
 {
   if (!self->_isRequestingVisibleRect)
   {
-    v4 = [(PXGLayout *)self axGroup];
-    [v4 invalidateVisibility];
-    [v4 invalidateLeafs];
+    axGroup = [(PXGLayout *)self axGroup];
+    [axGroup invalidateVisibility];
+    [axGroup invalidateLeafs];
     [(PXGLayout *)self _setNeedsUpdateExternally:0];
   }
 }
@@ -520,8 +520,8 @@ void __17__PXGLayout_init__block_invoke()
 
       v5 = mach_continuous_time() - v4;
       v6 = v5 - self->_childrenTotalUpdateDuration;
-      v7 = [(PXGLayout *)self superlayout];
-      [v7 _childDidUpdateWithDuration:v5];
+      superlayout = [(PXGLayout *)self superlayout];
+      [superlayout _childDidUpdateWithDuration:v5];
 
       if (v6 > updateIfNeeded_slowUpdateThreshold)
       {
@@ -566,9 +566,9 @@ void __17__PXGLayout_init__block_invoke()
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGLayout willUpdate]"];
-    [v4 handleFailureInFunction:v3 file:@"PXGLayout.m" lineNumber:634 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGLayout.m" lineNumber:634 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
@@ -584,8 +584,8 @@ void __17__PXGLayout_init__block_invoke()
 
 - (unsigned)localNumberOfSprites
 {
-  v2 = [(PXGLayout *)self spriteDataStore];
-  v3 = [v2 count];
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v3 = [spriteDataStore count];
 
   return v3;
 }
@@ -593,26 +593,26 @@ void __17__PXGLayout_init__block_invoke()
 - (void)invalidateVersion
 {
   self->_version = -atomic_fetch_add(PXGLayoutVersionMakeUnique_lastVersion, 1u);
-  v3 = [(PXGLayout *)self superlayout];
-  [v3 invalidateVersion];
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout invalidateVersion];
 
-  v4 = [(PXGLayout *)self axGroup];
-  [v4 invalidateVersion];
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup invalidateVersion];
 }
 
 - (BOOL)allowsSublayoutUpdateCycleAssertions
 {
   v2 = +[PXTungstenSettings sharedInstance];
-  v3 = [v2 enableSublayoutUpdateCycleAssertions];
+  enableSublayoutUpdateCycleAssertions = [v2 enableSublayoutUpdateCycleAssertions];
 
-  return v3;
+  return enableSublayoutUpdateCycleAssertions;
 }
 
 - (void)superlayoutDidChange
 {
-  v3 = [(PXGLayout *)self superlayout];
+  superlayout = [(PXGLayout *)self superlayout];
 
-  if (!v3)
+  if (!superlayout)
   {
     [(PXGLayout *)self setInternalCurrentDataSourceChange:0];
 
@@ -664,18 +664,18 @@ void __17__PXGLayout_init__block_invoke()
 
 - (void)removeFromSuperlayout
 {
-  v3 = [(PXGLayout *)self superlayout];
-  if (v3)
+  superlayout = [(PXGLayout *)self superlayout];
+  if (superlayout)
   {
-    v6 = v3;
-    v4 = [v3 sublayoutDataStore];
-    v5 = [v4 indexOfSublayout:self];
+    v6 = superlayout;
+    sublayoutDataStore = [superlayout sublayoutDataStore];
+    v5 = [sublayoutDataStore indexOfSublayout:self];
 
-    v3 = v6;
+    superlayout = v6;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v6 removeSublayoutsInRange:{v5, 1}];
-      v3 = v6;
+      superlayout = v6;
     }
   }
 }
@@ -689,29 +689,29 @@ void __17__PXGLayout_init__block_invoke()
 
 - (BOOL)isVisible
 {
-  v3 = [(PXGLayout *)self superlayout];
-  v4 = v3;
-  if (v3)
+  superlayout = [(PXGLayout *)self superlayout];
+  v4 = superlayout;
+  if (superlayout)
   {
-    v5 = [v3 isVisible];
+    isVisible = [superlayout isVisible];
   }
 
   else
   {
-    v6 = [(PXGLayout *)self updateDelegate];
-    v5 = [v6 layoutIsVisible:self];
+    updateDelegate = [(PXGLayout *)self updateDelegate];
+    isVisible = [updateDelegate layoutIsVisible:self];
   }
 
-  return v5;
+  return isVisible;
 }
 
 - (PXGDecoratingLayout)decoratingLayout
 {
-  v2 = [(PXGLayout *)self superlayout];
+  superlayout = [(PXGLayout *)self superlayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = superlayout;
   }
 
   else
@@ -726,16 +726,16 @@ void __17__PXGLayout_init__block_invoke()
 
 - (unint64_t)anchoredContentEdges
 {
-  v2 = [(PXGLayout *)self activeAnchor];
-  v3 = [v2 anchoredContentEdges];
+  activeAnchor = [(PXGLayout *)self activeAnchor];
+  anchoredContentEdges = [activeAnchor anchoredContentEdges];
 
-  return v3;
+  return anchoredContentEdges;
 }
 
 - (void)contentSizeDidChange
 {
-  v2 = [(PXGLayout *)self axGroup];
-  [v2 invalidateVisibility];
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup invalidateVisibility];
 }
 
 - (void)update
@@ -749,9 +749,9 @@ void __17__PXGLayout_init__block_invoke()
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGLayout.m" lineNumber:644 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGLayout.m" lineNumber:644 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = self->_updateFlags.needsUpdate;
     }
@@ -771,14 +771,14 @@ void __17__PXGLayout_init__block_invoke()
     self->_updateFlags.isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGLayout.m" lineNumber:650 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGLayout.m" lineNumber:650 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
     }
   }
 
-  v9 = [(PXGLayout *)self axGroup];
-  [v9 updateIfNeeded];
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup updateIfNeeded];
 }
 
 - (void)_updateVersion
@@ -787,8 +787,8 @@ void __17__PXGLayout_init__block_invoke()
   if (version < 0)
   {
     self->_version = -version;
-    v5 = [MEMORY[0x277D3CCC8] changeDetailsWithNoChanges];
-    [(PXGLayout *)self adjustReferencedSpriteIndexesWithChangeDetails:v5 appliedToLayout:self];
+    changeDetailsWithNoChanges = [MEMORY[0x277D3CCC8] changeDetailsWithNoChanges];
+    [(PXGLayout *)self adjustReferencedSpriteIndexesWithChangeDetails:changeDetailsWithNoChanges appliedToLayout:self];
 
     [(PXGLayout *)self updateIfNeeded];
   }
@@ -799,16 +799,16 @@ void __17__PXGLayout_init__block_invoke()
   v48 = *MEMORY[0x277D85DE8];
   isUpdatingAnchoring = self->_isUpdatingAnchoring;
   self->_isUpdatingAnchoring = 1;
-  v4 = [(PXGLayout *)self activeAnchor];
-  if ([v4 needsUpdate])
+  activeAnchor = [(PXGLayout *)self activeAnchor];
+  if ([activeAnchor needsUpdate])
   {
-    [v4 setNeedsUpdate:0];
+    [activeAnchor setNeedsUpdate:0];
     [(PXGLayout *)self visibleRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v4 adjustVisibleRect:?];
+    [activeAnchor adjustVisibleRect:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -825,13 +825,13 @@ void __17__PXGLayout_init__block_invoke()
           v34 = PXRectDescription();
           v35 = PXRectDescription();
           v36 = 138413058;
-          v37 = self;
+          selfCopy = self;
           v38 = 2112;
           v39 = v34;
           v40 = 2112;
           v41 = v35;
           v42 = 2112;
-          v43 = v4;
+          v43 = activeAnchor;
           _os_log_error_impl(&dword_21AD38000, v25, OS_LOG_TYPE_ERROR, "%@ layout had zero content size, but updated visible rect from %@ to %@, because of active anchor: %@", &v36, 0x2Au);
         }
       }
@@ -863,7 +863,7 @@ void __17__PXGLayout_init__block_invoke()
         v50.size.height = v20;
         v33 = NSStringFromCGRect(v50);
         v36 = 138413570;
-        v37 = v28;
+        selfCopy = v28;
         v38 = 2048;
         v39 = nestedAnchorVisibleRectChanges;
         v40 = 2112;
@@ -873,7 +873,7 @@ void __17__PXGLayout_init__block_invoke()
         v44 = 2112;
         v45 = v33;
         v46 = 2112;
-        v47 = v4;
+        v47 = activeAnchor;
         _os_log_impl(&dword_21AD38000, v26, OS_LOG_TYPE_DEFAULT, "%@ %ld nested visibleRect changed:%@ %@->%@ by anchor:%@", &v36, 0x3Eu);
       }
     }
@@ -884,9 +884,9 @@ void __17__PXGLayout_init__block_invoke()
     v21 = 0;
   }
 
-  if ([v4 isAutoInvalidated])
+  if ([activeAnchor isAutoInvalidated])
   {
-    [v4 invalidate];
+    [activeAnchor invalidate];
   }
 
   if (self->_isLastVisibleAreaAnchoringInformationInvalidated)
@@ -908,17 +908,17 @@ void __17__PXGLayout_init__block_invoke()
 
 - (CGRect)frame
 {
-  v3 = [(PXGLayout *)self superlayout];
+  superlayout = [(PXGLayout *)self superlayout];
 
-  if (v3)
+  if (superlayout)
   {
     v18 = 0u;
     v4 = [(PXGLayout *)self superlayout:0];
-    v5 = [v4 sublayoutDataStore];
-    v6 = v5;
-    if (v5)
+    sublayoutDataStore = [v4 sublayoutDataStore];
+    v6 = sublayoutDataStore;
+    if (sublayoutDataStore)
     {
-      [v5 geometryForSublayout:self];
+      [sublayoutDataStore geometryForSublayout:self];
     }
 
     else
@@ -954,11 +954,11 @@ void __17__PXGLayout_init__block_invoke()
 - (NSIndexSet)axBorderSpriteIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v4 = [(PXGLayout *)self axSpriteIndexes];
-  if ([v4 count])
+  axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
+  if ([axSpriteIndexes count])
   {
-    [v3 addIndex:{objc_msgSend(v4, "firstIndex")}];
-    [v3 addIndex:{objc_msgSend(v4, "lastIndex")}];
+    [v3 addIndex:{objc_msgSend(axSpriteIndexes, "firstIndex")}];
+    [v3 addIndex:{objc_msgSend(axSpriteIndexes, "lastIndex")}];
   }
 
   return v3;
@@ -967,14 +967,14 @@ void __17__PXGLayout_init__block_invoke()
 - (NSIndexSet)axSelectedSpriteIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAA78]);
-  v4 = [(PXGLayout *)self decoratingLayout];
-  v5 = [v4 selectionDecorationSource];
+  decoratingLayout = [(PXGLayout *)self decoratingLayout];
+  selectionDecorationSource = [decoratingLayout selectionDecorationSource];
 
-  if (v5)
+  if (selectionDecorationSource)
   {
-    v6 = [v5 selectedSpriteIndexesInLayout:self];
-    v7 = [(PXGLayout *)self axSpriteIndexes];
-    v8 = [v7 px_intersectionWithIndexSet:v6];
+    v6 = [selectionDecorationSource selectedSpriteIndexesInLayout:self];
+    axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
+    v8 = [axSpriteIndexes px_intersectionWithIndexSet:v6];
 
     v3 = v8;
   }
@@ -994,9 +994,9 @@ void __17__PXGLayout_init__block_invoke()
   v17 = *MEMORY[0x277D85DE8];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGLayout.m" lineNumber:656 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGLayout.m" lineNumber:656 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if ([(NSMutableSet *)self->_sublayoutsExpectedToBeUpdatedInUpdatePass count])
@@ -1061,12 +1061,12 @@ void __27__PXGLayout_updateIfNeeded__block_invoke()
 
 - (NSIndexSet)axVisibleSpriteIndexes
 {
-  v3 = [(PXGLayout *)self axSpriteIndexes];
-  v4 = [(PXGLayout *)self spriteDataStore];
-  if ([v3 lastIndex] != 0x7FFFFFFFFFFFFFFFLL)
+  axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  if ([axSpriteIndexes lastIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v3 lastIndex];
-    if (v5 > [v4 count])
+    lastIndex = [axSpriteIndexes lastIndex];
+    if (lastIndex > [spriteDataStore count])
     {
       v6 = PXAssertGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1078,7 +1078,7 @@ void __27__PXGLayout_updateIfNeeded__block_invoke()
   }
 
   [(PXGLayout *)self visibleRect];
-  v7 = [v4 spriteAtIndexes:v3 inRect:?];
+  v7 = [spriteDataStore spriteAtIndexes:axSpriteIndexes inRect:?];
 
   return v7;
 }
@@ -1143,39 +1143,39 @@ void __27__PXGLayout_updateIfNeeded__block_invoke()
 
 - (__n128)cameraConfiguration
 {
-  v2 = *(a1 + 816);
-  *(a2 + 160) = *(a1 + 800);
+  v2 = *(self + 816);
+  *(a2 + 160) = *(self + 800);
   *(a2 + 176) = v2;
-  *(a2 + 192) = *(a1 + 832);
-  v3 = *(a1 + 752);
-  *(a2 + 96) = *(a1 + 736);
+  *(a2 + 192) = *(self + 832);
+  v3 = *(self + 752);
+  *(a2 + 96) = *(self + 736);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 784);
-  *(a2 + 128) = *(a1 + 768);
+  v4 = *(self + 784);
+  *(a2 + 128) = *(self + 768);
   *(a2 + 144) = v4;
-  v5 = *(a1 + 688);
-  *(a2 + 32) = *(a1 + 672);
+  v5 = *(self + 688);
+  *(a2 + 32) = *(self + 672);
   *(a2 + 48) = v5;
-  v6 = *(a1 + 720);
-  *(a2 + 64) = *(a1 + 704);
+  v6 = *(self + 720);
+  *(a2 + 64) = *(self + 704);
   *(a2 + 80) = v6;
-  result = *(a1 + 656);
-  *a2 = *(a1 + 640);
+  result = *(self + 656);
+  *a2 = *(self + 640);
   *(a2 + 16) = result;
   return result;
 }
 
-- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)a3
+- (void)enumerateSublayoutsForCreatingPointReferenceUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self sublayoutDataStore];
+  blockCopy = block;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__PXGLayout_PXGPointReference__enumerateSublayoutsForCreatingPointReferenceUsingBlock___block_invoke;
   v7[3] = &unk_2782A79F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateSublayoutsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
 }
 
 - (BOOL)hasPointReferences
@@ -1229,13 +1229,13 @@ LABEL_11:
 
   else
   {
-    v8 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__PXGLayout_PXGPointReference__hasPointReferences__block_invoke;
     v10[3] = &unk_2782A79C8;
     v10[4] = &v15;
-    [v8 enumerateSublayoutsUsingBlock:v10];
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v10];
 
     v7 = *(v16 + 24);
   }
@@ -1253,19 +1253,19 @@ uint64_t __50__PXGLayout_PXGPointReference__hasPointReferences__block_invoke(uin
   return result;
 }
 
-- (CGPoint)pointForPointReference:(id)a3
+- (CGPoint)pointForPointReference:(id)reference
 {
-  v4 = a3;
-  [v4 point];
+  referenceCopy = reference;
+  [referenceCopy point];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 layout];
+  layout = [referenceCopy layout];
 
-  if (v9)
+  if (layout)
   {
-    if (v9 != self)
+    if (layout != self)
     {
-      [(PXGLayout *)self convertPoint:v9 fromDescendantLayout:v6, v8];
+      [(PXGLayout *)self convertPoint:layout fromDescendantLayout:v6, v8];
       v6 = v10;
       v8 = v11;
     }
@@ -1284,26 +1284,26 @@ uint64_t __50__PXGLayout_PXGPointReference__hasPointReferences__block_invoke(uin
   return result;
 }
 
-- (id)createPointReferenceAtPoint:(CGPoint)a3
+- (id)createPointReferenceAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PXGLayout *)self sublayoutDataStore];
-  v7 = [(PXGLayout *)self definesContextForPointReferences];
+  y = point.y;
+  x = point.x;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  definesContextForPointReferences = [(PXGLayout *)self definesContextForPointReferences];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  if (v7)
+  if (definesContextForPointReferences)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__PXGLayout_PXGPointReference__createPointReferenceAtPoint___block_invoke;
     v12[3] = &unk_2782A7978;
     v12[4] = &v13;
-    [v6 enumerateSublayoutsAtPoint:v12 usingBlock:{x, y}];
+    [sublayoutDataStore enumerateSublayoutsAtPoint:v12 usingBlock:{x, y}];
   }
 
   else
@@ -1354,64 +1354,64 @@ void __60__PXGLayout_PXGPointReference__createPointReferenceAtPoint___block_invo
   }
 }
 
-- (void)enumerateSublayoutsForDetailedPlacement:(id)a3 ofItemWithReference:(id)a4 usingBlock:(id)a5
+- (void)enumerateSublayoutsForDetailedPlacement:(id)placement ofItemWithReference:(id)reference usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PXGLayout *)self sublayoutDataStore];
+  referenceCopy = reference;
+  blockCopy = block;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __102__PXGLayout_PXGItemPlacement__enumerateSublayoutsForDetailedPlacement_ofItemWithReference_usingBlock___block_invoke;
   v12[3] = &unk_2782A7D10;
-  v13 = v7;
-  v14 = v8;
-  v10 = v7;
-  v11 = v8;
-  [v9 enumerateSublayoutsUsingBlock:v12];
+  v13 = referenceCopy;
+  v14 = blockCopy;
+  v10 = referenceCopy;
+  v11 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v12];
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  v6 = a3;
+  overrideCopy = override;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__PXGLayout_PXGItemPlacement__setDetailedPlacementOverride_forItemReference___block_invoke;
   v8[3] = &unk_2782A7CE8;
-  v9 = v6;
-  v7 = v6;
-  [(PXGLayout *)self enumerateSublayoutsForDetailedPlacement:v7 ofItemWithReference:a4 usingBlock:v8];
+  v9 = overrideCopy;
+  v7 = overrideCopy;
+  [(PXGLayout *)self enumerateSublayoutsForDetailedPlacement:v7 ofItemWithReference:reference usingBlock:v8];
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v6 = a3;
+  placementCopy = placement;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__PXGLayout_PXGItemPlacement__getDetailedPresentedPlacement_forItemReference___block_invoke;
   v8[3] = &unk_2782A7CE8;
-  v9 = v6;
-  v7 = v6;
-  [(PXGLayout *)self enumerateSublayoutsForDetailedPlacement:v7 ofItemWithReference:a4 usingBlock:v8];
+  v9 = placementCopy;
+  v7 = placementCopy;
+  [(PXGLayout *)self enumerateSublayoutsForDetailedPlacement:v7 ofItemWithReference:reference usingBlock:v8];
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4290;
   v16 = __Block_byref_object_dispose__4291;
   v17 = 0;
-  v5 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControllerForItemReference___block_invoke;
   v9[3] = &unk_2782AA970;
   v11 = &v12;
-  v6 = v4;
+  v6 = referenceCopy;
   v10 = v6;
-  [v5 enumerateSublayoutsUsingBlock:v9];
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1432,7 +1432,7 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
   }
 }
 
-- (CGRect)anchoringRectForSpriteAtIndex:(unsigned int)a3
+- (CGRect)anchoringRectForSpriteAtIndex:(unsigned int)index
 {
   v12 = *MEMORY[0x277D85DE8];
   v10 = 0;
@@ -1449,7 +1449,7 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
   v11[1] = unk_21AE2E270;
   v8 = 0;
   memset(v7, 0, sizeof(v7));
-  [(PXGLayout *)self copyLayoutForSpritesInRange:a3 | 0x100000000 applySpriteTransforms:0 entities:&v10 geometries:v9 styles:v11 infos:v7];
+  [(PXGLayout *)self copyLayoutForSpritesInRange:index | 0x100000000 applySpriteTransforms:0 entities:&v10 geometries:v9 styles:v11 infos:v7];
   PXRectWithCenterAndSize();
   result.size.height = v6;
   result.size.width = v5;
@@ -1460,32 +1460,32 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
 
 - (void)invalidateAllSuperlayoutAnchors
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     do
     {
-      v4 = [v3 activeAnchor];
-      [v4 invalidate];
+      activeAnchor = [v3 activeAnchor];
+      [activeAnchor invalidate];
 
-      v5 = [v3 superlayout];
+      superlayout = [v3 superlayout];
 
-      v3 = v5;
+      v3 = superlayout;
     }
 
-    while (v5);
+    while (superlayout);
   }
 }
 
-- (id)_createAnchorWithAnchor:(id)a3 resetPriority:(BOOL)a4
+- (id)_createAnchorWithAnchor:(id)anchor resetPriority:(BOOL)priority
 {
-  v4 = a4;
-  v6 = [a3 copyWithLayout:self];
-  v7 = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
-  [v6 adjustReferencedSpriteIndexesWithChangeDetails:v7 appliedToLayout:self];
+  priorityCopy = priority;
+  v6 = [anchor copyWithLayout:self];
+  changeDetailsWithNoIncrementalChanges = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
+  [v6 adjustReferencedSpriteIndexesWithChangeDetails:changeDetailsWithNoIncrementalChanges appliedToLayout:self];
 
-  if (v4)
+  if (priorityCopy)
   {
     [v6 setPriority:1];
   }
@@ -1495,22 +1495,22 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
   return v6;
 }
 
-- (id)createAnchorFromSuperlayoutWithSublayoutIndex:(int64_t)a3 sublayoutPositionEdges:(unint64_t)a4 ignoringScrollingAnimationAnchors:(BOOL)a5
+- (id)createAnchorFromSuperlayoutWithSublayoutIndex:(int64_t)index sublayoutPositionEdges:(unint64_t)edges ignoringScrollingAnimationAnchors:(BOOL)anchors
 {
-  v5 = a5;
-  v9 = [(PXGLayout *)self superlayout];
-  v10 = [v9 activeAnchor];
-  v11 = v10;
-  if (v5 && [v10 isScrollingAnimationAnchor])
+  anchorsCopy = anchors;
+  superlayout = [(PXGLayout *)self superlayout];
+  activeAnchor = [superlayout activeAnchor];
+  v11 = activeAnchor;
+  if (anchorsCopy && [activeAnchor isScrollingAnimationAnchor])
   {
 
     v11 = 0;
   }
 
-  v12 = [v11 type];
-  if ((v12 - 3) >= 3)
+  type = [v11 type];
+  if ((type - 3) >= 3)
   {
-    if ((v12 - 1) <= 1)
+    if ((type - 1) <= 1)
     {
       v20 = 0;
       v21 = &v20;
@@ -1521,8 +1521,8 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
       v16[2] = __127__PXGLayout_PXGAnchor__createAnchorFromSuperlayoutWithSublayoutIndex_sublayoutPositionEdges_ignoringScrollingAnimationAnchors___block_invoke;
       v16[3] = &unk_2782A8CD0;
       v18 = &v20;
-      v19 = a3;
-      v17 = v9;
+      indexCopy = index;
+      v17 = superlayout;
       [v11 enumerateAllSpriteReferencesUsingBlock:v16];
       if (*(v21 + 24) == 1)
       {
@@ -1542,7 +1542,7 @@ void __90__PXGLayout_PXGViewControllerTransitionEndPoint__itemPlacementControlle
 
   else
   {
-    v13 = [v11 edges] & a4;
+    v13 = [v11 edges] & edges;
     if (v13)
     {
       v14 = [v11 copyWithLayout:self];
@@ -1570,93 +1570,93 @@ uint64_t __127__PXGLayout_PXGAnchor__createAnchorFromSuperlayoutWithSublayoutInd
   return result;
 }
 
-- (id)createAnchorForScrollingAnimationTowardsContentEdges:(unint64_t)a3
+- (id)createAnchorForScrollingAnimationTowardsContentEdges:(unint64_t)edges
 {
   v10 = *MEMORY[0x277D85DE8];
-  if ((a3 & 8) != 0 && (a3 & 0xA) != 8)
+  if ((edges & 8) != 0 && (edges & 0xA) != 8)
   {
     v5 = PXAssertGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      edgesCopy = edges;
       _os_log_error_impl(&dword_21AD38000, v5, OS_LOG_TYPE_ERROR, "invalid edges %li", &v8, 0xCu);
     }
   }
 
   v6 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v6 setType:5];
-  [(PXGAnchor *)v6 setEdges:a3];
+  [(PXGAnchor *)v6 setEdges:edges];
   [(PXGLayout *)self addAnchor:v6];
 
   return v6;
 }
 
-- (id)createAnchorForScrollingToContentEdges:(unint64_t)a3 padding:(UIEdgeInsets)a4
+- (id)createAnchorForScrollingToContentEdges:(unint64_t)edges padding:(UIEdgeInsets)padding
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   v15 = *MEMORY[0x277D85DE8];
-  if ((a3 & 8) != 0 && (a3 & 0xA) != 8)
+  if ((edges & 8) != 0 && (edges & 0xA) != 8)
   {
     v10 = PXAssertGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 134217984;
-      v14 = a3;
+      edgesCopy = edges;
       _os_log_error_impl(&dword_21AD38000, v10, OS_LOG_TYPE_ERROR, "invalid edges %li", &v13, 0xCu);
     }
   }
 
   v11 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v11 setType:4];
-  [(PXGAnchor *)v11 setEdges:a3];
+  [(PXGAnchor *)v11 setEdges:edges];
   [(PXGAnchor *)v11 setPadding:top, left, bottom, right];
   [(PXGLayout *)self addAnchor:v11];
 
   return v11;
 }
 
-- (id)_createAnchorForContentEdges:(unint64_t)a3 priority:(int64_t)a4
+- (id)_createAnchorForContentEdges:(unint64_t)edges priority:(int64_t)priority
 {
   v12 = *MEMORY[0x277D85DE8];
-  if ((a3 & 8) != 0 && (a3 & 0xA) != 8)
+  if ((edges & 8) != 0 && (edges & 0xA) != 8)
   {
     v7 = PXAssertGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = 134217984;
-      v11 = a3;
+      edgesCopy = edges;
       _os_log_error_impl(&dword_21AD38000, v7, OS_LOG_TYPE_ERROR, "invalid edges %li", &v10, 0xCu);
     }
   }
 
   v8 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v8 setType:3];
-  [(PXGAnchor *)v8 setEdges:a3];
+  [(PXGAnchor *)v8 setEdges:edges];
   [(PXGLayout *)self estimatedContentSize];
   [(PXGAnchor *)v8 setContentSize:?];
   [(PXGLayout *)self visibleRect];
   [(PXGAnchor *)v8 setVisibleRect:?];
-  [(PXGAnchor *)v8 setPriority:a4];
+  [(PXGAnchor *)v8 setPriority:priority];
   [(PXGLayout *)self addAnchor:v8];
 
   return v8;
 }
 
-- (id)createAnchorForScrollingSpriteForSpriteReference:(id)a3 normalizedAnchorPoint:(CGPoint)a4 toVisibleLocation:(CGPoint)a5
+- (id)createAnchorForScrollingSpriteForSpriteReference:(id)reference normalizedAnchorPoint:(CGPoint)point toVisibleLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
+  y = location.y;
+  x = location.x;
+  v7 = point.y;
+  v8 = point.x;
   v14[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  referenceCopy = reference;
   v11 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v11 setType:2];
-  v14[0] = v10;
+  v14[0] = referenceCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
   [(PXGAnchor *)v11 setSpriteReferences:v12];
@@ -1667,41 +1667,41 @@ uint64_t __127__PXGLayout_PXGAnchor__createAnchorFromSuperlayoutWithSublayoutInd
   return v11;
 }
 
-- (id)createAnchorForScrollingSpriteForSpriteReference:(id)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5 customOffset:(id)a6
+- (id)createAnchorForScrollingSpriteForSpriteReference:(id)reference toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding customOffset:(id)offset
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   v22 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  if ((a4 & 0x30) != 0 && (a4 & 0x38) != 0x20 && (a4 & 0x38) != 0x10 || (a4 & 7) > 4 || (a4 & 7) == 3)
+  referenceCopy = reference;
+  offsetCopy = offset;
+  if ((position & 0x30) != 0 && (position & 0x38) != 0x20 && (position & 0x38) != 0x10 || (position & 7) > 4 || (position & 7) == 3)
   {
     v15 = PXAssertGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v21 = a4;
+      positionCopy = position;
       _os_log_error_impl(&dword_21AD38000, v15, OS_LOG_TYPE_ERROR, "invalid scroll position %li", buf, 0xCu);
     }
   }
 
   v16 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v16 setType:2];
-  v19 = v13;
+  v19 = referenceCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
   [(PXGAnchor *)v16 setSpriteReferences:v17];
 
-  [(PXGAnchor *)v16 setScrollPosition:a4];
+  [(PXGAnchor *)v16 setScrollPosition:position];
   [(PXGAnchor *)v16 setPadding:top, left, bottom, right];
-  [(PXGAnchor *)v16 setCustomOffset:v14];
+  [(PXGAnchor *)v16 setCustomOffset:offsetCopy];
   [(PXGLayout *)self addAnchor:v16];
 
   return v16;
 }
 
-- (id)createAnchorForScrollingSpriteAtIndex:(unsigned int)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5
+- (id)createAnchorForScrollingSpriteAtIndex:(unsigned int)index toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding
 {
   v9 = 0;
   v10 = &v9;
@@ -1715,9 +1715,9 @@ uint64_t __127__PXGLayout_PXGAnchor__createAnchorFromSuperlayoutWithSublayoutInd
   v7[3] = &unk_2782A8CA8;
   v7[4] = self;
   v7[5] = &v9;
-  v7[6] = a4;
-  v8 = a5;
-  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 | 0x100000000 options:1 usingBlock:v7];
+  v7[6] = position;
+  paddingCopy = padding;
+  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:index | 0x100000000 options:1 usingBlock:v7];
   v5 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -1734,29 +1734,29 @@ void __87__PXGLayout_PXGAnchor__createAnchorForScrollingSpriteAtIndex_toScrollPo
   *(v5 + 40) = v4;
 }
 
-- (id)createAnchorForScrollingSpriteForObjectReference:(id)a3 toScrollPosition:(unint64_t)a4 padding:(UIEdgeInsets)a5
+- (id)createAnchorForScrollingSpriteForObjectReference:(id)reference toScrollPosition:(unint64_t)position padding:(UIEdgeInsets)padding
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v11 = [(PXGLayout *)self spriteReferenceForObjectReference:a3];
-  v12 = [(PXGLayout *)self createAnchorForScrollingSpriteForSpriteReference:v11 toScrollPosition:a4 padding:top, left, bottom, right];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  v11 = [(PXGLayout *)self spriteReferenceForObjectReference:reference];
+  right = [(PXGLayout *)self createAnchorForScrollingSpriteForSpriteReference:v11 toScrollPosition:position padding:top, left, bottom, right];
 
-  return v12;
+  return right;
 }
 
-- (id)_createAnchorWithPriority:(int64_t)a3 constraints:(id)a4
+- (id)_createAnchorWithPriority:(int64_t)priority constraints:(id)constraints
 {
-  v7 = a4;
+  constraintsCopy = constraints;
   v8 = objc_alloc_init(PXGAnchorConstraintsBuilder);
-  v7[2](v7, v8);
+  constraintsCopy[2](constraintsCopy, v8);
 
-  v9 = [(PXGAnchorConstraintsBuilder *)v8 constraints];
+  constraints = [(PXGAnchorConstraintsBuilder *)v8 constraints];
   v10 = [[PXGAnchor alloc] initWithLayout:self];
   [(PXGAnchor *)v10 setType:1];
-  [(PXGAnchor *)v10 setPriority:a3];
-  [(PXGAnchor *)v10 setConstraints:v9];
+  [(PXGAnchor *)v10 setPriority:priority];
+  [(PXGAnchor *)v10 setConstraints:constraints];
   v13 = MEMORY[0x277D85DD0];
   v14 = a2;
   v11 = PXMap();
@@ -1785,15 +1785,15 @@ id __62__PXGLayout_PXGAnchor___createAnchorWithPriority_constraints___block_invo
   return v5;
 }
 
-- (id)createAnchorForSpriteReferences:(id)a3
+- (id)createAnchorForSpriteReferences:(id)references
 {
-  v4 = a3;
+  referencesCopy = references;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__PXGLayout_PXGAnchor__createAnchorForSpriteReferences___block_invoke;
   v8[3] = &unk_2782A8C58;
-  v9 = v4;
-  v5 = v4;
+  v9 = referencesCopy;
+  v5 = referencesCopy;
   v6 = [(PXGLayout *)self createAnchorWithConstraints:v8];
 
   return v6;
@@ -1834,10 +1834,10 @@ void __56__PXGLayout_PXGAnchor__createAnchorForSpriteReferences___block_invoke(u
   }
 }
 
-- (id)createAnchorForSpriteAtIndex:(unsigned int)a3
+- (id)createAnchorForSpriteAtIndex:(unsigned int)index
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [(PXGLayout *)self spriteReferenceForSpriteIndex:*&a3 objectReference:0];
+  v4 = [(PXGLayout *)self spriteReferenceForSpriteIndex:*&index objectReference:0];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v6 = [(PXGLayout *)self createAnchorForSpriteReferences:v5];
@@ -1845,12 +1845,12 @@ void __56__PXGLayout_PXGAnchor__createAnchorForSpriteReferences___block_invoke(u
   return v6;
 }
 
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges
 {
-  v5 = [(PXGLayout *)self lastVisibleAreaAnchor];
-  if (![v5 canBeReused] || a3 && objc_msgSend(v5, "type") == 3)
+  lastVisibleAreaAnchor = [(PXGLayout *)self lastVisibleAreaAnchor];
+  if (![lastVisibleAreaAnchor canBeReused] || edges && objc_msgSend(lastVisibleAreaAnchor, "type") == 3)
   {
-    if (a3 == 15 || (v6 = [PXGLayout scrolledEdgesForVisibleEdges:[(PXGLayout *)self fullyVisibleEdgesWithDefaultTolerance]& ~a3 scrollableAxis:[(PXGLayout *)self scrollableAxis]]) == 0)
+    if (edges == 15 || (v6 = [PXGLayout scrolledEdgesForVisibleEdges:[(PXGLayout *)self fullyVisibleEdgesWithDefaultTolerance]& ~edges scrollableAxis:[(PXGLayout *)self scrollableAxis]]) == 0)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -1866,13 +1866,13 @@ void __56__PXGLayout_PXGAnchor__createAnchorForSpriteReferences___block_invoke(u
     }
 
     v8 = v7;
-    v9 = [v7 layout];
-    v10 = [v9 activeAnchor];
+    layout = [v7 layout];
+    activeAnchor = [layout activeAnchor];
 
-    if (v8 == v10)
+    if (v8 == activeAnchor)
     {
-      v11 = [MEMORY[0x277CBEAA8] date];
-      [v8 setDate:v11];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v8 setDate:date];
 
       [(PXGLayout *)self setLastVisibleAreaAnchor:v8];
     }
@@ -1880,7 +1880,7 @@ void __56__PXGLayout_PXGAnchor__createAnchorForSpriteReferences___block_invoke(u
 
   else
   {
-    v8 = [(PXGLayout *)self _createAnchorWithAnchor:v5 resetPriority:0];
+    v8 = [(PXGLayout *)self _createAnchorWithAnchor:lastVisibleAreaAnchor resetPriority:0];
   }
 
   return v8;
@@ -1908,87 +1908,87 @@ void __64__PXGLayout_PXGAnchor__createAnchorForVisibleAreaIgnoringEdges___block_
 
 - (NSArray)pendingAnimations
 {
-  v2 = [(PXGLayout *)self rootLayout];
-  v3 = [v2 animations];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  animations = [rootLayout animations];
 
-  return v3;
+  return animations;
 }
 
 - (id)createDefaultAnimationForCurrentContext
 {
-  v3 = [(PXGLayout *)self superlayout];
+  superlayout = [(PXGLayout *)self superlayout];
 
-  if (v3)
+  if (superlayout)
   {
-    v4 = [(PXGLayout *)self superlayout];
-    v5 = [v4 createDefaultAnimationForCurrentContext];
+    superlayout2 = [(PXGLayout *)self superlayout];
+    createDefaultAnimationForCurrentContext = [superlayout2 createDefaultAnimationForCurrentContext];
   }
 
   else
   {
-    v5 = [(PXGLayout *)self createAnimation];
+    createDefaultAnimationForCurrentContext = [(PXGLayout *)self createAnimation];
   }
 
-  return v5;
+  return createDefaultAnimationForCurrentContext;
 }
 
 - (id)createAnimation
 {
   v3 = [[PXGAnimation alloc] initWithLayout:self];
-  v4 = [(PXGLayout *)self rootLayout];
-  [v4 addAnimation:v3];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  [rootLayout addAnimation:v3];
 
   return v3;
 }
 
-- (void)removeInteraction:(id)a3
+- (void)removeInteraction:(id)interaction
 {
-  v8 = a3;
-  v4 = [(PXGLayout *)self interactions];
-  v5 = [v4 containsObject:v8];
+  interactionCopy = interaction;
+  interactions = [(PXGLayout *)self interactions];
+  v5 = [interactions containsObject:interactionCopy];
 
   if (v5)
   {
-    v6 = [(PXGLayout *)self interactions];
-    v7 = [v6 mutableCopy];
+    interactions2 = [(PXGLayout *)self interactions];
+    v7 = [interactions2 mutableCopy];
 
-    [v7 removeObject:v8];
+    [v7 removeObject:interactionCopy];
     [(PXGLayout *)self setInteractions:v7];
-    [v8 setLayout:0];
+    [interactionCopy setLayout:0];
   }
 }
 
-- (void)addInteraction:(id)a3
+- (void)addInteraction:(id)interaction
 {
-  v8 = a3;
-  v4 = [(PXGLayout *)self interactions];
-  v5 = [v4 containsObject:v8];
+  interactionCopy = interaction;
+  interactions = [(PXGLayout *)self interactions];
+  v5 = [interactions containsObject:interactionCopy];
 
   if ((v5 & 1) == 0)
   {
-    [v8 setLayout:self];
-    v6 = [(PXGLayout *)self interactions];
-    v7 = [v6 arrayByAddingObject:v8];
+    [interactionCopy setLayout:self];
+    interactions2 = [(PXGLayout *)self interactions];
+    v7 = [interactions2 arrayByAddingObject:interactionCopy];
     [(PXGLayout *)self setInteractions:v7];
   }
 }
 
-- (int64_t)sublayoutIndexForSpriteReference:(id)a3 options:(unint64_t)a4
+- (int64_t)sublayoutIndexForSpriteReference:(id)reference options:(unint64_t)options
 {
-  v6 = a3;
-  if ([v6 spriteIndex] != -1)
+  referenceCopy = reference;
+  if ([referenceCopy spriteIndex] != -1)
   {
-    v7 = [v6 layoutVersion];
-    v8 = [v6 layout];
-    if (v7 == [v8 version])
+    layoutVersion = [referenceCopy layoutVersion];
+    layout = [referenceCopy layout];
+    if (layoutVersion == [layout version])
     {
-      v9 = [v6 layout];
+      layout2 = [referenceCopy layout];
 
-      if (v9)
+      if (layout2)
       {
-        v10 = [v6 spriteIndex];
-        v11 = [v6 layout];
-        v12 = [(PXGLayout *)self convertSpriteIndex:v10 fromLayout:v11];
+        spriteIndex = [referenceCopy spriteIndex];
+        layout3 = [referenceCopy layout];
+        v12 = [(PXGLayout *)self convertSpriteIndex:spriteIndex fromLayout:layout3];
 
         v13 = [(PXGLayout *)self sublayoutIndexForSpriteIndex:v12];
         if (v13 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2005,18 +2005,18 @@ void __64__PXGLayout_PXGAnchor__createAnchorForVisibleAreaIgnoringEdges___block_
     }
   }
 
-  v16 = [v6 objectReference];
+  objectReference = [referenceCopy objectReference];
 
-  if (v16)
+  if (objectReference)
   {
-    v17 = [v6 objectReference];
+    objectReference2 = [referenceCopy objectReference];
     v19 = 0;
-    v14 = [(PXGLayout *)self sublayoutIndexForObjectReference:v17 options:a4 updatedObjectReference:&v19];
+    v14 = [(PXGLayout *)self sublayoutIndexForObjectReference:objectReference2 options:options updatedObjectReference:&v19];
     v15 = v19;
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL && v15)
     {
-      [v6 setObjectReference:v15];
+      [referenceCopy setObjectReference:v15];
     }
   }
 
@@ -2031,28 +2031,28 @@ LABEL_12:
   return v14;
 }
 
-- (unsigned)spriteIndexForSpriteReference:(id)a3 options:(unint64_t)a4
+- (unsigned)spriteIndexForSpriteReference:(id)reference options:(unint64_t)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 layout];
-  v8 = v7;
-  if (v7)
+  referenceCopy = reference;
+  layout = [referenceCopy layout];
+  v8 = layout;
+  if (layout)
   {
-    v9 = [v7 version];
-    if ([v6 layoutVersion] == v9)
+    version = [layout version];
+    if ([referenceCopy layoutVersion] == version)
     {
-      v10 = [v6 spriteIndex];
+      spriteIndex = [referenceCopy spriteIndex];
     }
 
     else
     {
-      v10 = 0xFFFFFFFFLL;
+      spriteIndex = 0xFFFFFFFFLL;
     }
 
-    v12 = [v6 objectReference];
-    v13 = v12;
-    if (v10 != -1 || !v12)
+    objectReference = [referenceCopy objectReference];
+    v13 = objectReference;
+    if (spriteIndex != -1 || !objectReference)
     {
       goto LABEL_21;
     }
@@ -2060,40 +2060,40 @@ LABEL_12:
     if ([v8 allowsObjectReferenceSpriteIndexLookup])
     {
       v21 = 0;
-      v10 = [v8 spriteIndexForObjectReference:v13 options:a4 updatedObjectReference:&v21];
+      spriteIndex = [v8 spriteIndexForObjectReference:v13 options:options updatedObjectReference:&v21];
       v14 = v21;
       v15 = v8;
       v16 = v13;
       v17 = v16;
-      if (v10 == -1)
+      if (spriteIndex == -1)
       {
       }
 
       else
       {
-        if ([v15 numberOfSprites] <= v10)
+        if ([v15 numberOfSprites] <= spriteIndex)
         {
-          v19 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void PXValidateLayoutSpriteIndexForObjectReference(PXGLayout * _Nonnull __strong, PXGSpriteIndex, id  _Nonnull __strong)"}];
-          [v19 handleFailureInFunction:v20 file:@"PXGLayout_Internal.h" lineNumber:227 description:{@"%@ returned invalid spriteIndex %li for objectReference %@", v15, v10, v17}];
+          [currentHandler handleFailureInFunction:v20 file:@"PXGLayout_Internal.h" lineNumber:227 description:{@"%@ returned invalid spriteIndex %li for objectReference %@", v15, spriteIndex, v17}];
         }
 
-        [v6 setSpriteIndex:v10];
-        [v6 setLayoutVersion:v9];
+        [referenceCopy setSpriteIndex:spriteIndex];
+        [referenceCopy setLayoutVersion:version];
         if (v14)
         {
-          [v6 setObjectReference:v14];
+          [referenceCopy setObjectReference:v14];
         }
       }
     }
 
     else
     {
-      if ((a4 & 0x400) != 0)
+      if ((options & 0x400) != 0)
       {
-        v10 = 0xFFFFFFFFLL;
+        spriteIndex = 0xFFFFFFFFLL;
 LABEL_21:
-        v11 = [(PXGLayout *)self convertSpriteIndex:v10 fromLayout:v8];
+        v11 = [(PXGLayout *)self convertSpriteIndex:spriteIndex fromLayout:v8];
 
         goto LABEL_22;
       }
@@ -2104,11 +2104,11 @@ LABEL_21:
         *buf = 138412546;
         v23 = v8;
         v24 = 2112;
-        v25 = v6;
+        v25 = referenceCopy;
         _os_log_error_impl(&dword_21AD38000, v14, OS_LOG_TYPE_ERROR, "layout %@ is in the midst of its update pass, it is thus invalid to query the sprite index for sprite reference %@", buf, 0x16u);
       }
 
-      v10 = 0xFFFFFFFFLL;
+      spriteIndex = 0xFFFFFFFFLL;
     }
 
     goto LABEL_21;
@@ -2120,19 +2120,19 @@ LABEL_22:
   return v11;
 }
 
-- (id)spriteReferenceForSpriteReference:(id)a3
+- (id)spriteReferenceForSpriteReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 layout];
-  v6 = v5;
-  if (v5 == self)
+  referenceCopy = reference;
+  layout = [referenceCopy layout];
+  v6 = layout;
+  if (layout == self)
   {
-    v7 = [v4 layoutVersion];
-    v8 = [(PXGLayout *)self version];
+    layoutVersion = [referenceCopy layoutVersion];
+    version = [(PXGLayout *)self version];
 
-    if (v7 == v8)
+    if (layoutVersion == version)
     {
-      v9 = v4;
+      _init = referenceCopy;
       goto LABEL_6;
     }
   }
@@ -2141,85 +2141,85 @@ LABEL_22:
   {
   }
 
-  v9 = [[PXGSpriteReference alloc] _init];
-  v10 = [v4 objectReference];
-  [v9 setObjectReference:v10];
+  _init = [[PXGSpriteReference alloc] _init];
+  objectReference = [referenceCopy objectReference];
+  [_init setObjectReference:objectReference];
 
-  [v9 setIsDynamic:{objc_msgSend(v4, "isDynamic")}];
-  [v9 setLayout:self];
+  [_init setIsDynamic:{objc_msgSend(referenceCopy, "isDynamic")}];
+  [_init setLayout:self];
 LABEL_6:
 
-  return v9;
+  return _init;
 }
 
-- (id)dynamicSpriteReferenceForObjectReference:(id)a3
+- (id)dynamicSpriteReferenceForObjectReference:(id)reference
 {
-  v4 = a3;
-  v5 = [[PXGSpriteReference alloc] _init];
-  [v5 setObjectReference:v4];
+  referenceCopy = reference;
+  _init = [[PXGSpriteReference alloc] _init];
+  [_init setObjectReference:referenceCopy];
 
-  [v5 setLayout:self];
-  [v5 setIsDynamic:1];
+  [_init setLayout:self];
+  [_init setIsDynamic:1];
 
-  return v5;
+  return _init;
 }
 
-- (id)spriteReferenceForSpriteIndex:(unsigned int)a3 objectReference:(id)a4
+- (id)spriteReferenceForSpriteIndex:(unsigned int)index objectReference:(id)reference
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [[PXGSpriteReference alloc] _init];
-  [v7 setSpriteIndex:v4];
+  v4 = *&index;
+  referenceCopy = reference;
+  _init = [[PXGSpriteReference alloc] _init];
+  [_init setSpriteIndex:v4];
   if (v4 != -1)
   {
-    [v7 setLayoutVersion:{-[PXGLayout version](self, "version")}];
-    if (!v6)
+    [_init setLayoutVersion:{-[PXGLayout version](self, "version")}];
+    if (!referenceCopy)
     {
       if ([(PXGLayout *)self allowsObjectReferenceSpriteIndexLookup])
       {
-        v6 = [(PXGLayout *)self objectReferenceForSpriteIndex:v4];
+        referenceCopy = [(PXGLayout *)self objectReferenceForSpriteIndex:v4];
       }
 
       else
       {
-        v6 = 0;
+        referenceCopy = 0;
       }
     }
   }
 
-  [v7 setObjectReference:v6];
-  [v7 setLayout:self];
+  [_init setObjectReference:referenceCopy];
+  [_init setLayout:self];
 
-  return v7;
+  return _init;
 }
 
-- (BOOL)axGroup:(id)a3 didRequestToPerformAction:(int64_t)a4 userInfo:(id)a5
+- (BOOL)axGroup:(id)group didRequestToPerformAction:(int64_t)action userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGLayout *)self axNextResponder];
-  LOBYTE(a4) = [v10 axGroup:v9 didRequestToPerformAction:a4 userInfo:v8];
+  infoCopy = info;
+  groupCopy = group;
+  axNextResponder = [(PXGLayout *)self axNextResponder];
+  LOBYTE(action) = [axNextResponder axGroup:groupCopy didRequestToPerformAction:action userInfo:infoCopy];
 
-  return a4;
+  return action;
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGLayout *)self axNextResponder];
-  [v10 axGroup:v9 didChange:a4 userInfo:v8];
+  infoCopy = info;
+  groupCopy = group;
+  axNextResponder = [(PXGLayout *)self axNextResponder];
+  [axNextResponder axGroup:groupCopy didChange:change userInfo:infoCopy];
 }
 
-- (id)axContainingViewForAXGroup:(id)a3
+- (id)axContainingViewForAXGroup:(id)group
 {
-  v3 = [(PXGLayout *)self axContainingScrollViewForAXGroup:a3];
-  v4 = [v3 superview];
-  if (v4)
+  v3 = [(PXGLayout *)self axContainingScrollViewForAXGroup:group];
+  superview = [v3 superview];
+  if (superview)
   {
     do
     {
-      v5 = v4;
+      v5 = superview;
       v6 = objc_opt_self();
       if (objc_opt_isKindOfClass())
       {
@@ -2233,10 +2233,10 @@ LABEL_6:
 
       v8 = v7;
 
-      v4 = [v5 superview];
+      superview = [v5 superview];
     }
 
-    while (v4 && !v8);
+    while (superview && !v8);
   }
 
   else
@@ -2247,28 +2247,28 @@ LABEL_6:
   return v8;
 }
 
-- (id)axContainingScrollViewForAXGroup:(id)a3
+- (id)axContainingScrollViewForAXGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self axNextResponder];
-  v6 = [v5 axContainingScrollViewForAXGroup:v4];
+  groupCopy = group;
+  axNextResponder = [(PXGLayout *)self axNextResponder];
+  v6 = [axNextResponder axContainingScrollViewForAXGroup:groupCopy];
 
   return v6;
 }
 
-- (id)axLeafForObjectReference:(id)a3
+- (id)axLeafForObjectReference:(id)reference
 {
-  v4 = [(PXGLayout *)self spriteIndexForObjectReference:a3];
+  v4 = [(PXGLayout *)self spriteIndexForObjectReference:reference];
   v5 = [(PXGLayout *)self leafSublayoutForSpriteIndex:v4];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 convertSpriteIndex:v4 fromLayout:self];
-    v8 = [v6 axGroup];
-    v9 = [v8 loadLeafAtSpriteIndexIfNeeded:v7 usingOptions:1];
+    axGroup = [v6 axGroup];
+    v9 = [axGroup loadLeafAtSpriteIndexIfNeeded:v7 usingOptions:1];
 
-    v10 = [v6 axGroup];
-    v11 = [v10 loadedLeafAtSpriteIndex:v7];
+    axGroup2 = [v6 axGroup];
+    v11 = [axGroup2 loadedLeafAtSpriteIndex:v7];
   }
 
   else
@@ -2279,15 +2279,15 @@ LABEL_6:
   return v11;
 }
 
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index
 {
-  v4 = [(PXGLayout *)self spriteDataStore];
-  if ([v4 count] <= a3)
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  if ([spriteDataStore count] <= index)
   {
     v5 = 0;
   }
 
-  else if (PXGAXInfoKindForMediaKind(*([v4 infos] + 40 * a3 + 1)) == 6)
+  else if (PXGAXInfoKindForMediaKind(*([spriteDataStore infos] + 40 * index + 1)) == 6)
   {
     v5 = 2;
   }
@@ -2300,21 +2300,21 @@ LABEL_6:
   return v5;
 }
 
-- (unsigned)axSpriteIndexClosestToSpriteIndexDefaultImplementation:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)axSpriteIndexClosestToSpriteIndexDefaultImplementation:(unsigned int)implementation inDirection:(unint64_t)direction
 {
-  if (a3 == -1 || [(PXGLayout *)self localNumberOfSprites]> a3)
+  if (implementation == -1 || [(PXGLayout *)self localNumberOfSprites]> implementation)
   {
-    if (a4 - 4 < 2)
+    if (direction - 4 < 2)
     {
-      v7 = [(PXGLayout *)self axSpriteIndexes];
-      v8 = [v7 indexGreaterThanIndex:a3];
+      axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
+      v8 = [axSpriteIndexes indexGreaterThanIndex:implementation];
       goto LABEL_9;
     }
 
-    if (a4 == 6 || a4 == 3)
+    if (direction == 6 || direction == 3)
     {
-      v7 = [(PXGLayout *)self axSpriteIndexes];
-      v8 = [v7 indexLessThanIndex:a3];
+      axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
+      v8 = [axSpriteIndexes indexLessThanIndex:implementation];
 LABEL_9:
       v9 = v8;
 
@@ -2325,14 +2325,14 @@ LABEL_9:
   return -1;
 }
 
-- (id)axSpriteIndexesInRectDefaultImplementation:(CGRect)a3
+- (id)axSpriteIndexesInRectDefaultImplementation:(CGRect)implementation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = implementation.size.height;
+  width = implementation.size.width;
+  y = implementation.origin.y;
+  x = implementation.origin.x;
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v9 = [(PXGLayout *)self axSpriteIndexes];
+  axSpriteIndexes = [(PXGLayout *)self axSpriteIndexes];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__PXGLayout_AX__axSpriteIndexesInRectDefaultImplementation___block_invoke;
@@ -2344,7 +2344,7 @@ LABEL_9:
   v19 = height;
   v10 = v8;
   v15 = v10;
-  [v9 enumerateIndexesUsingBlock:v14];
+  [axSpriteIndexes enumerateIndexesUsingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -2375,17 +2375,17 @@ uint64_t __60__PXGLayout_AX__axSpriteIndexesInRectDefaultImplementation___block_
   return result;
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v52 = *MEMORY[0x277D85DE8];
-  v5 = [(PXGLayout *)self spriteDataStore];
-  if ([v5 count] <= v3)
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  if ([spriteDataStore count] <= v3)
   {
     goto LABEL_11;
   }
 
-  v6 = [v5 infos] + 40 * v3;
+  v6 = [spriteDataStore infos] + 40 * v3;
   v7 = *(v6 + 34);
   v8 = PXGAXInfoKindForMediaKind(*(v6 + 1));
   v9 = 6;
@@ -2401,10 +2401,10 @@ uint64_t __60__PXGLayout_AX__axSpriteIndexesInRectDefaultImplementation___block_
     v12 = [v11 checkOutReusableObjectWithReuseIdentifier:1];
     if ([v12 fillContentForContentKind:v10 inLayout:self atIndex:v3])
     {
-      v13 = ([v5 geometries] + 32 * v3);
+      v13 = ([spriteDataStore geometries] + 32 * v3);
       v30 = *v13;
       v31 = v13[1];
-      v14 = ([v5 styles] + 160 * v3);
+      v14 = ([spriteDataStore styles] + 160 * v3);
       v15 = v14[7];
       v48 = v14[6];
       v49 = v15;
@@ -2420,16 +2420,16 @@ uint64_t __60__PXGLayout_AX__axSpriteIndexesInRectDefaultImplementation___block_
       v19 = v14[1];
       v42 = *v14;
       v43 = v19;
-      v20 = [(PXGLayout *)self decoratingLayout];
-      if (v20)
+      decoratingLayout = [(PXGLayout *)self decoratingLayout];
+      if (decoratingLayout)
       {
-        v21 = [(PXGLayout *)self decoratingLayout];
-        v22 = [v21 focusRingType];
+        decoratingLayout2 = [(PXGLayout *)self decoratingLayout];
+        focusRingType = [decoratingLayout2 focusRingType];
       }
 
       else
       {
-        v22 = 1;
+        focusRingType = 1;
       }
 
       [v12 setSpriteIndex:v3];
@@ -2447,13 +2447,13 @@ uint64_t __60__PXGLayout_AX__axSpriteIndexesInRectDefaultImplementation___block_
       v32 = v42;
       v33 = v43;
       [v12 setSpriteStyle:&v32];
-      v24 = ([v5 styles] + 160 * v3);
+      v24 = ([spriteDataStore styles] + 160 * v3);
       LODWORD(v25) = v24[9];
       LODWORD(v26) = v24[10];
       LODWORD(v27) = v24[11];
       LODWORD(v28) = v24[12];
       [v12 setSpriteStyleCornerRadius:{v25, v26, v27, v28}];
-      [v12 setFocusRingType:v22];
+      [v12 setFocusRingType:focusRingType];
       [v12 setAxAccessibleWhenTransparent:(v7 >> 2) & 1];
       v23 = v12;
     }
@@ -2474,12 +2474,12 @@ LABEL_11:
   return v23;
 }
 
-- (CGPoint)axConvertPoint:(CGPoint)a3 toDescendantGroup:(id)a4
+- (CGPoint)axConvertPoint:(CGPoint)point toDescendantGroup:(id)group
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  if (v8)
+  y = point.y;
+  x = point.x;
+  groupCopy = group;
+  if (groupCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2487,30 +2487,30 @@ LABEL_11:
       goto LABEL_3;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v8 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v21, v23}];
+    px_descriptionForAssertionMessage = [groupCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v21, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v21}];
   }
 
 LABEL_3:
-  v9 = [v8 containingLayout];
+  containingLayout = [groupCopy containingLayout];
 
-  if (v9)
+  if (containingLayout)
   {
     v10 = *MEMORY[0x277CBF3A8];
     v11 = *(MEMORY[0x277CBF3A8] + 8);
-    v12 = [v8 containingLayout];
-    [(PXGLayout *)self convertRect:v12 toDescendantLayout:x, y, v10, v11];
+    containingLayout2 = [groupCopy containingLayout];
+    [(PXGLayout *)self convertRect:containingLayout2 toDescendantLayout:x, y, v10, v11];
     v14 = v13;
     v16 = v15;
   }
@@ -2528,12 +2528,12 @@ LABEL_3:
   return result;
 }
 
-- (CGPoint)axConvertPoint:(CGPoint)a3 fromDescendantGroup:(id)a4
+- (CGPoint)axConvertPoint:(CGPoint)point fromDescendantGroup:(id)group
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  if (v8)
+  y = point.y;
+  x = point.x;
+  groupCopy = group;
+  if (groupCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2541,30 +2541,30 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v8 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:116 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v21, v23}];
+    px_descriptionForAssertionMessage = [groupCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:116 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v21, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:116 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:116 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v21}];
   }
 
 LABEL_3:
-  v9 = [v8 containingLayout];
+  containingLayout = [groupCopy containingLayout];
 
-  if (v9)
+  if (containingLayout)
   {
     v10 = *MEMORY[0x277CBF3A8];
     v11 = *(MEMORY[0x277CBF3A8] + 8);
-    v12 = [v8 containingLayout];
-    [(PXGLayout *)self convertRect:v12 fromDescendantLayout:x, y, v10, v11];
+    containingLayout2 = [groupCopy containingLayout];
+    [(PXGLayout *)self convertRect:containingLayout2 fromDescendantLayout:x, y, v10, v11];
     v14 = v13;
     v16 = v15;
   }
@@ -2582,14 +2582,14 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)axConvertRect:(CGRect)a3 toDescendantGroup:(id)a4
+- (CGRect)axConvertRect:(CGRect)rect toDescendantGroup:(id)group
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  groupCopy = group;
+  if (groupCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2597,28 +2597,28 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v25 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = objc_opt_class();
     v27 = NSStringFromClass(v28);
-    v29 = [v10 px_descriptionForAssertionMessage];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v27, v29}];
+    px_descriptionForAssertionMessage = [groupCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v27, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v27}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:107 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v27}];
   }
 
 LABEL_3:
-  v11 = [v10 containingLayout];
+  containingLayout = [groupCopy containingLayout];
 
-  if (v11)
+  if (containingLayout)
   {
-    v12 = [v10 containingLayout];
-    [(PXGLayout *)self convertRect:v12 toDescendantLayout:x, y, width, height];
+    containingLayout2 = [groupCopy containingLayout];
+    [(PXGLayout *)self convertRect:containingLayout2 toDescendantLayout:x, y, width, height];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -2644,14 +2644,14 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)axConvertRect:(CGRect)a3 fromDescendantGroup:(id)a4
+- (CGRect)axConvertRect:(CGRect)rect fromDescendantGroup:(id)group
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  if (v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  groupCopy = group;
+  if (groupCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2659,28 +2659,28 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v25 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = objc_opt_class();
     v27 = NSStringFromClass(v28);
-    v29 = [v10 px_descriptionForAssertionMessage];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:98 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v27, v29}];
+    px_descriptionForAssertionMessage = [groupCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:98 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"descendantGroup", v27, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:98 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v27}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:98 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"descendantGroup", v27}];
   }
 
 LABEL_3:
-  v11 = [v10 containingLayout];
+  containingLayout = [groupCopy containingLayout];
 
-  if (v11)
+  if (containingLayout)
   {
-    v12 = [v10 containingLayout];
-    [(PXGLayout *)self convertRect:v12 fromDescendantLayout:x, y, width, height];
+    containingLayout2 = [groupCopy containingLayout];
+    [(PXGLayout *)self convertRect:containingLayout2 fromDescendantLayout:x, y, width, height];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -2706,77 +2706,77 @@ LABEL_3:
   return result;
 }
 
-- (void)axRemoveSubgroupForSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)axRemoveSubgroupForSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
-  v5 = a5;
-  v7 = [(PXGLayout *)self axGroup];
-  if (v7)
+  flagsCopy = flags;
+  axGroup = [(PXGLayout *)self axGroup];
+  if (axGroup)
   {
-    v9 = v7;
-    if (v5)
+    v9 = axGroup;
+    if (flagsCopy)
     {
-      [v7 unloadSubgroupAtIndex:a4];
+      [axGroup unloadSubgroupAtIndex:index];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{a4, 1}];
+      v8 = [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{index, 1}];
       [v9 updateSubgroupsWithChangeDetails:v8];
     }
 
-    v7 = v9;
+    axGroup = v9;
   }
 }
 
-- (void)axAddSubgroupForSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)axAddSubgroupForSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = [(PXGLayout *)self axGroup];
-  if (v8)
+  flagsCopy = flags;
+  sublayoutCopy = sublayout;
+  axGroup = [(PXGLayout *)self axGroup];
+  if (axGroup)
   {
-    if ((v5 & 1) == 0)
+    if ((flagsCopy & 1) == 0)
     {
-      v9 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{a4, 1}];
-      [v8 updateSubgroupsWithChangeDetails:v9];
+      v9 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{index, 1}];
+      [axGroup updateSubgroupsWithChangeDetails:v9];
     }
 
-    v10 = [v11 axGroup];
-    [v8 loadSubgroup:v10 atIndex:a4];
+    axGroup2 = [sublayoutCopy axGroup];
+    [axGroup loadSubgroup:axGroup2 atIndex:index];
   }
 }
 
-+ (id)_defaultAccessibilityIdentifierForAXInfoKind:(int64_t)a3
++ (id)_defaultAccessibilityIdentifierForAXInfoKind:(int64_t)kind
 {
-  if (a3 > 7)
+  if (kind > 7)
   {
     return @"mediaKind_text";
   }
 
   else
   {
-    return off_2782A93C0[a3];
+    return off_2782A93C0[kind];
   }
 }
 
 - (NSArray)pendingFences
 {
-  v2 = [(PXGLayout *)self rootLayout];
-  v3 = [v2 fences];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  fences = [rootLayout fences];
 
-  return v3;
+  return fences;
 }
 
-- (id)createFenceWithType:(unint64_t)a3
+- (id)createFenceWithType:(unint64_t)type
 {
-  v4 = [[PXGFence alloc] initWithLayout:self type:a3];
-  v5 = [(PXGLayout *)self rootLayout];
-  [v5 addFence:v4];
+  v4 = [[PXGFence alloc] initWithLayout:self type:type];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  [rootLayout addFence:v4];
 
   return v4;
 }
 
-- (BOOL)isSpriteIndex:(unsigned int)a3 decoratingSpriteWithIndex:(unsigned int *)a4
+- (BOOL)isSpriteIndex:(unsigned int)index decoratingSpriteWithIndex:(unsigned int *)withIndex
 {
   v12 = 0;
   v13 = &v12;
@@ -2785,7 +2785,7 @@ LABEL_3:
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v11 = a3;
+  indexCopy = index;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__PXGLayout_PXGDecoratingLayout__isSpriteIndex_decoratingSpriteWithIndex___block_invoke;
@@ -2793,10 +2793,10 @@ LABEL_3:
   v7[4] = self;
   v7[5] = &v12;
   v7[6] = &v8;
-  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 | 0x100000000 options:1 usingBlock:v7];
-  if (a4)
+  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:index | 0x100000000 options:1 usingBlock:v7];
+  if (withIndex)
   {
-    *a4 = *(v9 + 6);
+    *withIndex = *(v9 + 6);
   }
 
   v5 = *(v13 + 24);
@@ -2818,12 +2818,12 @@ void __74__PXGLayout_PXGDecoratingLayout__isSpriteIndex_decoratingSpriteWithInde
   }
 }
 
-- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4 invalidateSprites:(BOOL)a5
+- (void)_invalidateDecorationForSpriteRange:(_PXGSpriteIndexRange)range inLayout:(id)layout invalidateSprites:(BOOL)sprites
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(PXGLayout *)self superlayout];
-  [v9 _invalidateDecorationForSpriteRange:a3 inLayout:v8 invalidateSprites:v5];
+  spritesCopy = sprites;
+  layoutCopy = layout;
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout _invalidateDecorationForSpriteRange:range inLayout:layoutCopy invalidateSprites:spritesCopy];
 }
 
 - (void)invalidateDecorationAndSprites
@@ -2833,20 +2833,20 @@ void __74__PXGLayout_PXGDecoratingLayout__isSpriteIndex_decoratingSpriteWithInde
   [(PXGLayout *)self _invalidateDecorationForSpriteRange:v3 inLayout:self invalidateSprites:1];
 }
 
-- (id)createTransitionWithAnimations:(id)a3
+- (id)createTransitionWithAnimations:(id)animations
 {
-  v4 = a3;
-  v5 = [[PXGTransition alloc] initWithAnimations:v4 layout:self];
+  animationsCopy = animations;
+  v5 = [[PXGTransition alloc] initWithAnimations:animationsCopy layout:self];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__PXGLayout_PXGTransition__createTransitionWithAnimations___block_invoke;
   v9[3] = &unk_2782AA4E8;
   v6 = v5;
   v10 = v6;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [animationsCopy enumerateObjectsUsingBlock:v9];
 
-  v7 = [(PXGLayout *)self rootLayout];
-  [v7 addTransition:v6];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  [rootLayout addTransition:v6];
 
   return v6;
 }
@@ -2876,45 +2876,45 @@ void __74__PXGLayout_PXGDecoratingLayout__isSpriteIndex_decoratingSpriteWithInde
 
 - (void)setNeedsFocusUpdate
 {
-  v4 = [(PXGLayout *)self rootLayout];
-  v3 = [v4 focusDelegate];
-  [v3 setNeedsFocusUpdateForLayout:self];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  focusDelegate = [rootLayout focusDelegate];
+  [focusDelegate setNeedsFocusUpdateForLayout:self];
 }
 
-- (void)setCameraConfiguration:(float32x4_t *)a3
+- (void)setCameraConfiguration:(float32x4_t *)configuration
 {
-  if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(a3[1], a1[41]), vceqq_f32(*a3, a1[40])), vandq_s8(vceqq_f32(a3[2], a1[42]), vceqq_f32(a3[3], a1[43])))) & 0x80000000) == 0 || (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(a3[6], a1[46]), vceqq_f32(a3[7], a1[47])), vandq_s8(vceqq_f32(a3[5], a1[45]), vceqq_f32(a3[4], a1[44])))) & 0x80000000) == 0 || (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(a3[9], a1[49]), vceqq_f32(a3[8], a1[48])), vandq_s8(vceqq_f32(a3[10], a1[50]), vceqq_f32(a3[11], a1[51])))) & 0x80000000) == 0 || (v4 = vceqq_f32(a3[12], a1[52]), v4.i32[3] = v4.i32[2], (vminvq_u32(v4) & 0x80000000) == 0))
+  if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(configuration[1], self[41]), vceqq_f32(*configuration, self[40])), vandq_s8(vceqq_f32(configuration[2], self[42]), vceqq_f32(configuration[3], self[43])))) & 0x80000000) == 0 || (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(configuration[6], self[46]), vceqq_f32(configuration[7], self[47])), vandq_s8(vceqq_f32(configuration[5], self[45]), vceqq_f32(configuration[4], self[44])))) & 0x80000000) == 0 || (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(configuration[9], self[49]), vceqq_f32(configuration[8], self[48])), vandq_s8(vceqq_f32(configuration[10], self[50]), vceqq_f32(configuration[11], self[51])))) & 0x80000000) == 0 || (v4 = vceqq_f32(configuration[12], self[52]), v4.i32[3] = v4.i32[2], (vminvq_u32(v4) & 0x80000000) == 0))
   {
-    a1[40] = *a3;
-    v5 = a3[1];
-    v6 = a3[2];
-    v7 = a3[4];
-    a1[43] = a3[3];
-    a1[44] = v7;
-    a1[41] = v5;
-    a1[42] = v6;
-    v8 = a3[5];
-    v9 = a3[6];
-    v10 = a3[8];
-    a1[47] = a3[7];
-    a1[48] = v10;
-    a1[45] = v8;
-    a1[46] = v9;
-    v11 = a3[9];
-    v12 = a3[10];
-    v13 = a3[12];
-    a1[51] = a3[11];
-    a1[52] = v13;
-    a1[49] = v11;
-    a1[50] = v12;
-    v14 = [(float32x4_t *)a1 updateDelegate];
-    [v14 layoutNeedsRenderUpdate:a1];
+    self[40] = *configuration;
+    v5 = configuration[1];
+    v6 = configuration[2];
+    v7 = configuration[4];
+    self[43] = configuration[3];
+    self[44] = v7;
+    self[41] = v5;
+    self[42] = v6;
+    v8 = configuration[5];
+    v9 = configuration[6];
+    v10 = configuration[8];
+    self[47] = configuration[7];
+    self[48] = v10;
+    self[45] = v8;
+    self[46] = v9;
+    v11 = configuration[9];
+    v12 = configuration[10];
+    v13 = configuration[12];
+    self[51] = configuration[11];
+    self[52] = v13;
+    self[49] = v11;
+    self[50] = v12;
+    updateDelegate = [(float32x4_t *)self updateDelegate];
+    [updateDelegate layoutNeedsRenderUpdate:self];
   }
 }
 
-- (void)enumerateDescendantsLayoutsBreadthFirstReverseUsingBlock:(id)a3
+- (void)enumerateDescendantsLayoutsBreadthFirstReverseUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -2922,36 +2922,36 @@ void __74__PXGLayout_PXGDecoratingLayout__isSpriteIndex_decoratingSpriteWithInde
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v6 addObject:self];
-  v7 = [MEMORY[0x277CBEB68] null];
-  [v6 addObject:v7];
+  null = [MEMORY[0x277CBEB68] null];
+  [v6 addObject:null];
   while (1)
   {
 
-    v7 = [v6 firstObject];
+    null = [v6 firstObject];
 
-    if (v7)
+    if (null)
     {
-      v7 = [v6 firstObject];
-      [v6 removeObject:v7];
+      null = [v6 firstObject];
+      [v6 removeObject:null];
     }
 
-    v8 = [MEMORY[0x277CBEB68] null];
-    v9 = [v7 isEqual:v8];
+    null2 = [MEMORY[0x277CBEB68] null];
+    v9 = [null isEqual:null2];
 
     if (v9)
     {
       break;
     }
 
-    if (v7)
+    if (null)
     {
-      [v5 addObject:v7];
+      [v5 addObject:null];
     }
 
-    v10 = [v7 sublayoutDataStore];
-    for (i = 0; i < [v10 count]; ++i)
+    sublayoutDataStore = [null sublayoutDataStore];
+    for (i = 0; i < [sublayoutDataStore count]; ++i)
     {
-      v12 = [v10 sublayoutAtIndex:i];
+      v12 = [sublayoutDataStore sublayoutAtIndex:i];
       if (v12)
       {
         [v6 addObject:v12];
@@ -2963,21 +2963,21 @@ LABEL_7:
 
   if ([v6 count])
   {
-    v10 = [MEMORY[0x277CBEB68] null];
-    [v6 addObject:v10];
+    sublayoutDataStore = [MEMORY[0x277CBEB68] null];
+    [v6 addObject:sublayoutDataStore];
     goto LABEL_7;
   }
 
-  v13 = [v5 reverseObjectEnumerator];
-  v14 = [v13 allObjects];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__PXGLayout_enumerateDescendantsLayoutsBreadthFirstReverseUsingBlock___block_invoke;
   v16[3] = &unk_2782AADD0;
-  v15 = v4;
+  v15 = blockCopy;
   v17 = v15;
   v18 = v19;
-  [v14 enumerateObjectsUsingBlock:v16];
+  [allObjects enumerateObjectsUsingBlock:v16];
 
   _Block_object_dispose(v19, 8);
 }
@@ -2993,31 +2993,31 @@ uint64_t __70__PXGLayout_enumerateDescendantsLayoutsBreadthFirstReverseUsingBloc
   return result;
 }
 
-- (void)enumerateDescendantsLayoutsUsingBlock:(id)a3
+- (void)enumerateDescendantsLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15[0] = 0;
-  v4[2](v4, self, v15);
+  blockCopy[2](blockCopy, self, v15);
   if ((v13[3] & 1) == 0)
   {
-    v5 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v6 = 0;
     do
     {
-      if (v6 >= [v5 count])
+      if (v6 >= [sublayoutDataStore count])
       {
         break;
       }
 
-      v7 = [v5 sublayoutAtIndex:v6];
+      v7 = [sublayoutDataStore sublayoutAtIndex:v6];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __51__PXGLayout_enumerateDescendantsLayoutsUsingBlock___block_invoke;
       v9[3] = &unk_2782AADA8;
-      v10 = v4;
+      v10 = blockCopy;
       v11 = &v12;
       [v7 enumerateDescendantsLayoutsUsingBlock:v9];
       v8 = *(v13 + 24);
@@ -3042,26 +3042,26 @@ uint64_t __51__PXGLayout_enumerateDescendantsLayoutsUsingBlock___block_invoke(ui
   return result;
 }
 
-- (id)diagnosticsItemProvidersInRect:(CGRect)a3
+- (id)diagnosticsItemProvidersInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __44__PXGLayout_diagnosticsItemProvidersInRect___block_invoke;
   v16 = &unk_2782AAD80;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v19 = x;
   v20 = y;
   v21 = width;
   v22 = height;
   v10 = v8;
-  [v9 enumerateSublayoutsInRect:&v13 usingBlock:{x, y, width, height}];
+  [sublayoutDataStore enumerateSublayoutsInRect:&v13 usingBlock:{x, y, width, height}];
 
   v11 = [v10 copy];
 
@@ -3126,61 +3126,61 @@ void __44__PXGLayout_diagnosticsItemProvidersInRect___block_invoke(double *a1, u
   return result;
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    objc_storeStrong(&self->_mediaProvider, a3);
-    v6 = [(PXGLayout *)self sublayoutDataStore];
+    objc_storeStrong(&self->_mediaProvider, provider);
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__PXGLayout_setMediaProvider___block_invoke;
     v7[3] = &unk_2782AA878;
-    v8 = v5;
-    [v6 enumerateSublayoutsUsingBlock:v7];
+    v8 = providerCopy;
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
 
     [(PXGLayout *)self mediaProviderDidChange];
   }
 }
 
-- (void)_appendDescription:(id)a3 atLevel:(int64_t)a4
+- (void)_appendDescription:(id)description atLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = a4 + 1;
-  v8 = [(PXGLayout *)self _paddingForLevel:a4 + 1];
+  descriptionCopy = description;
+  v7 = level + 1;
+  v8 = [(PXGLayout *)self _paddingForLevel:level + 1];
   v9 = [(PXGLayout *)self description];
-  [v6 appendFormat:@"%@", v9];
+  [descriptionCopy appendFormat:@"%@", v9];
 
-  if (!a4)
+  if (!level)
   {
     [(PXGLayout *)self contentSize];
     v10 = NSStringFromCGSize(v21);
     [(PXGLayout *)self visibleRect];
     v11 = NSStringFromCGRect(v22);
-    [v6 appendFormat:@", contentSize=%@, visibleRect=%@", v10, v11];
+    [descriptionCopy appendFormat:@", contentSize=%@, visibleRect=%@", v10, v11];
   }
 
-  v12 = [(PXGLayout *)self briefDiagnosticDescription];
-  v13 = v12;
-  if (v12)
+  briefDiagnosticDescription = [(PXGLayout *)self briefDiagnosticDescription];
+  v13 = briefDiagnosticDescription;
+  if (briefDiagnosticDescription)
   {
-    [v6 appendFormat:@", %@", v12];
+    [descriptionCopy appendFormat:@", %@", briefDiagnosticDescription];
   }
 
-  [v6 appendString:@"\n"];
-  v14 = [(PXGLayout *)self sublayoutDataStore];
+  [descriptionCopy appendString:@"\n"];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __40__PXGLayout__appendDescription_atLevel___block_invoke;
   v17[3] = &unk_2782AAD58;
   v17[4] = self;
-  v18 = v6;
+  v18 = descriptionCopy;
   v19 = v8;
   v20 = v7;
   v15 = v8;
-  v16 = v6;
-  [v14 enumerateSublayoutsUsingBlock:v17];
+  v16 = descriptionCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v17];
 }
 
 void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3260,18 +3260,18 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
   [v5 _appendDescription:*(a1 + 40) atLevel:*(a1 + 56)];
 }
 
-- (id)_paddingForLevel:(int64_t)a3
+- (id)_paddingForLevel:(int64_t)level
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (a3 >= 1)
+  if (level >= 1)
   {
     do
     {
       [v4 appendString:@"   | "];
-      --a3;
+      --level;
     }
 
-    while (a3);
+    while (level);
   }
 
   v5 = [v4 copy];
@@ -3281,42 +3281,42 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
 
 - (NSString)parentDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = self;
-  if (v4)
+  string = [MEMORY[0x277CCAB68] string];
+  selfCopy = self;
+  if (selfCopy)
   {
-    v5 = v4;
+    v5 = selfCopy;
     v6 = 0;
     do
     {
-      if ([v3 length])
+      if ([string length])
       {
-        [v3 appendString:@"\n"];
+        [string appendString:@"\n"];
       }
 
       if (v6)
       {
         for (i = 1; i <= v6; ++i)
         {
-          [v3 appendString:@"    "];
+          [string appendString:@"    "];
         }
       }
 
       v8 = [v5 description];
-      [v3 appendString:v8];
+      [string appendString:v8];
 
-      v9 = [v5 superlayout];
+      superlayout = [v5 superlayout];
 
       ++v6;
-      v5 = v9;
+      v5 = superlayout;
     }
 
-    while (v9);
+    while (superlayout);
   }
 
-  [v3 appendString:@" (root)"];
+  [string appendString:@" (root)"];
 
-  return v3;
+  return string;
 }
 
 - (NSString)recursiveDescription
@@ -3388,39 +3388,39 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
     [v5 appendString:{@", needsUpdate"}];
   }
 
-  v21 = [(PXGLayout *)self sublayoutDataStore];
-  v22 = [v21 count];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v22 = [sublayoutDataStore count];
   if (v22 >= 1)
   {
     v23 = v22;
     [v5 appendString:@"\n\tSublayouts:\n"];
     for (i = 0; i != v23; ++i)
     {
-      v25 = [v21 sublayoutAtIndex:i];
+      v25 = [sublayoutDataStore sublayoutAtIndex:i];
       v26 = v25;
       if (v25)
       {
         v27 = [v25 description];
-        v28 = [v27 px_stringByIndentingNewLines];
-        [v5 appendFormat:@"\t%li: %@\n", i, v28];
+        px_stringByIndentingNewLines = [v27 px_stringByIndentingNewLines];
+        [v5 appendFormat:@"\t%li: %@\n", i, px_stringByIndentingNewLines];
       }
     }
   }
 
-  v29 = [(PXGLayout *)self spriteDataStore];
-  if ([v29 count])
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  if ([spriteDataStore count])
   {
-    v30 = [v29 diagnosticDescription];
-    v31 = [v30 px_stringByIndentingNewLines];
-    [v5 appendFormat:@"\n\tLocal Sprites: %@\n", v31];
+    diagnosticDescription = [spriteDataStore diagnosticDescription];
+    px_stringByIndentingNewLines2 = [diagnosticDescription px_stringByIndentingNewLines];
+    [v5 appendFormat:@"\n\tLocal Sprites: %@\n", px_stringByIndentingNewLines2];
   }
 
-  v32 = [(PXGLayout *)self modifiedSpriteDataStore];
-  if ([v32 count])
+  modifiedSpriteDataStore = [(PXGLayout *)self modifiedSpriteDataStore];
+  if ([modifiedSpriteDataStore count])
   {
-    v33 = [v32 diagnosticDescription];
-    v34 = [v33 px_stringByIndentingNewLines];
-    [v5 appendFormat:@"\n\tModified Sprites: %@\n", v34];
+    diagnosticDescription2 = [modifiedSpriteDataStore diagnosticDescription];
+    px_stringByIndentingNewLines3 = [diagnosticDescription2 px_stringByIndentingNewLines];
+    [v5 appendFormat:@"\n\tModified Sprites: %@\n", px_stringByIndentingNewLines3];
   }
 
   [v5 appendString:@">"];
@@ -3437,16 +3437,16 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
   result = [(PXGLayout *)self userInterfaceDirection];
   if (result == 1)
   {
-    v5 = [(PXGLayout *)self referenceSize];
+    referenceSize = [(PXGLayout *)self referenceSize];
     v6.n128_f64[0] = v6.n128_f64[0] * 0.5;
 
-    return MEMORY[0x28219CFA8](v5, v6);
+    return MEMORY[0x28219CFA8](referenceSize, v6);
   }
 
   return result;
 }
 
-- (unint64_t)fullyVisibleEdgesWithEdgeTolerances:(UIEdgeInsets)a3
+- (unint64_t)fullyVisibleEdgesWithEdgeTolerances:(UIEdgeInsets)tolerances
 {
   [(PXGLayout *)self visibleRect];
   [(PXGLayout *)self safeAreaInsets];
@@ -3510,13 +3510,13 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)_enumerateSpritesInRect:(CGRect)a3 transform:(id *)a4 usingBlock:(id)a5
+- (void)_enumerateSpritesInRect:(CGRect)rect transform:(id *)transform usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v12 = *MEMORY[0x277CBF348];
   v13 = *(MEMORY[0x277CBF348] + 8);
   [(PXGLayout *)self contentSize];
@@ -3534,25 +3534,25 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
     v43 = &v42;
     v44 = 0x2020000000;
     v45 = 0;
-    v16 = [(PXGLayout *)self spriteDataStore];
-    v17 = [v16 count];
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    v17 = [spriteDataStore count];
     if (v17)
     {
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_invoke;
       v35[3] = &unk_2782AACE0;
-      v18 = v11;
-      v19 = *&a4->var0.c;
-      v38 = *&a4->var0.a;
+      v18 = blockCopy;
+      v19 = *&transform->var0.c;
+      v38 = *&transform->var0.a;
       v39 = v19;
-      v40 = *&a4->var0.tx;
-      var1 = a4->var1;
+      v40 = *&transform->var0.tx;
+      var1 = transform->var1;
       v35[4] = self;
       v36 = v18;
       v41 = var1;
       v37 = &v42;
-      [v16 enumerateSpritesInRect:v35 usingBlock:{x, y, width, height}];
+      [spriteDataStore enumerateSpritesInRect:v35 usingBlock:{x, y, width, height}];
     }
 
     if ((v43[3] & 1) == 0)
@@ -3562,7 +3562,7 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
       v34[2] = 0x2810000000;
       v34[3] = "";
       v34[4] = v17;
-      v21 = [(PXGLayout *)self sublayoutDataStore];
+      sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_invoke_2;
@@ -3572,13 +3572,13 @@ void __40__PXGLayout__appendDescription_atLevel___block_invoke(uint64_t a1, uint
       v27 = y;
       v28 = width;
       v29 = height;
-      v22 = *&a4->var0.c;
-      v30 = *&a4->var0.a;
+      v22 = *&transform->var0.c;
+      v30 = *&transform->var0.a;
       v31 = v22;
-      v32 = *&a4->var0.tx;
-      v33 = a4->var1;
-      v24 = v11;
-      [v21 enumerateSublayoutGeometriesUsingBlock:v23];
+      v32 = *&transform->var0.tx;
+      v33 = transform->var1;
+      v24 = blockCopy;
+      [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v23];
 
       _Block_object_dispose(v34, 8);
     }
@@ -3659,14 +3659,14 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
   return result;
 }
 
-- (void)enumerateLocalSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateLocalSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PXGLayout *)self spriteDataStore];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__PXGLayout_enumerateLocalSpritesInRect_usingBlock___block_invoke;
@@ -3676,23 +3676,23 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
   v15 = *&PXGSpriteGeometryTransformIdentity[16];
   v16 = *&PXGSpriteGeometryTransformIdentity[32];
   v12[4] = self;
-  v13 = v9;
-  v11 = v9;
-  [v10 enumerateSpritesInRect:v12 usingBlock:{x, y, width, height}];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [spriteDataStore enumerateSpritesInRect:v12 usingBlock:{x, y, width, height}];
 }
 
-- (void)enumerateSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
   v5 = 0;
   v4[0] = *PXGSpriteGeometryTransformIdentity;
   v4[1] = *&PXGSpriteGeometryTransformIdentity[16];
   v4[2] = *&PXGSpriteGeometryTransformIdentity[32];
-  [(PXGLayout *)self _enumerateSpritesInRect:v4 transform:a4 usingBlock:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXGLayout *)self _enumerateSpritesInRect:v4 transform:block usingBlock:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (id)leafSublayoutForSpriteIndex:(unsigned int)a3
+- (id)leafSublayoutForSpriteIndex:(unsigned int)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
     v3 = 0;
   }
@@ -3710,7 +3710,7 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
     v5[2] = __41__PXGLayout_leafSublayoutForSpriteIndex___block_invoke;
     v5[3] = &unk_2782AAC90;
     v5[4] = &v6;
-    [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 | 0x100000000 options:1 usingBlock:v5];
+    [(PXGLayout *)self enumerateLayoutsForSpritesInRange:index | 0x100000000 options:1 usingBlock:v5];
     v3 = v7[5];
     _Block_object_dispose(&v6, 8);
   }
@@ -3718,9 +3718,9 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
   return v3;
 }
 
-- (id)sublayoutForSpriteIndex:(unsigned int)a3
+- (id)sublayoutForSpriteIndex:(unsigned int)index
 {
-  v4 = [(PXGLayout *)self sublayoutIndexForSpriteIndex:*&a3];
+  v4 = [(PXGLayout *)self sublayoutIndexForSpriteIndex:*&index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -3729,17 +3729,17 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
   else
   {
     v6 = v4;
-    v7 = [(PXGLayout *)self sublayoutDataStore];
-    v5 = [v7 sublayoutAtIndex:v6];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+    v5 = [sublayoutDataStore sublayoutAtIndex:v6];
   }
 
   return v5;
 }
 
-- (int64_t)sublayoutIndexForSpriteIndex:(unsigned int)a3
+- (int64_t)sublayoutIndexForSpriteIndex:(unsigned int)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != -1)
+  if (index != -1)
   {
     v6 = 0;
     v7 = &v6;
@@ -3751,7 +3751,7 @@ uint64_t __58__PXGLayout__enumerateSpritesInRect_transform_usingBlock___block_in
     v5[3] = &unk_2782AAC68;
     v5[4] = self;
     v5[5] = &v6;
-    [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 | 0x100000000 options:0 usingBlock:v5];
+    [(PXGLayout *)self enumerateLayoutsForSpritesInRange:index | 0x100000000 options:0 usingBlock:v5];
     v3 = v7[3];
     _Block_object_dispose(&v6, 8);
   }
@@ -3769,16 +3769,16 @@ void __42__PXGLayout_sublayoutIndexForSpriteIndex___block_invoke(uint64_t a1, ui
   *(*(*(a1 + 40) + 8) + 24) = v6;
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *&a3;
+    v3 = *&index;
     v11 = 0;
     v12 = &v11;
     v13 = 0x3032000000;
@@ -3822,73 +3822,73 @@ void __41__PXGLayout_hitTestResultForSpriteIndex___block_invoke(uint64_t a1, uin
   }
 }
 
-- (void)_enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 transform:(id *)a4 spriteOffset:(unsigned int)a5 stop:(BOOL *)a6 usingBlock:(id)a7
+- (void)_enumerateSpritesInRange:(_PXGSpriteIndexRange)range transform:(id *)transform spriteOffset:(unsigned int)offset stop:(BOOL *)stop usingBlock:(id)block
 {
-  v12 = a7;
-  v13 = [(PXGLayout *)self modifiedSpriteDataStore];
-  v14 = v13;
-  if (v13)
+  blockCopy = block;
+  modifiedSpriteDataStore = [(PXGLayout *)self modifiedSpriteDataStore];
+  v14 = modifiedSpriteDataStore;
+  if (modifiedSpriteDataStore)
   {
-    v15 = v13;
+    spriteDataStore = modifiedSpriteDataStore;
   }
 
   else
   {
-    v15 = [(PXGLayout *)self spriteDataStore];
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
   }
 
-  v16 = v15;
+  v16 = spriteDataStore;
 
   v17 = [v16 count];
   v18 = v17;
   if (v17)
   {
-    if (HIDWORD(*&a3))
+    if (HIDWORD(*&range))
     {
-      if (v17 > a3.location)
+      if (v17 > range.location)
       {
-        v19 = a3.length + a3.location;
-        if (a3.length + a3.location)
+        v19 = range.length + range.location;
+        if (range.length + range.location)
         {
           if (v17 < v19)
           {
             v19 = v17;
           }
 
-          v20 = v19 - a3.location;
+          v20 = v19 - range.location;
           if (v20)
           {
-            v12[2](v12, (a3.location + a5) | (v20 << 32), a4, [v16 geometries] + 32 * a3.location, objc_msgSend(v16, "styles") + 160 * a3.location, objc_msgSend(v16, "infos") + 40 * a3.location, self, (v20 << 32) | a3.location, a6);
+            blockCopy[2](blockCopy, (range.location + offset) | (v20 << 32), transform, [v16 geometries] + 32 * range.location, objc_msgSend(v16, "styles") + 160 * range.location, objc_msgSend(v16, "infos") + 40 * range.location, self, (v20 << 32) | range.location, stop);
           }
         }
       }
     }
   }
 
-  if (!*a6)
+  if (!*stop)
   {
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2810000000;
     v34[3] = "";
     v34[4] = v18;
-    v21 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __77__PXGLayout__enumerateSpritesInRange_transform_spriteOffset_stop_usingBlock___block_invoke;
     v24[3] = &unk_2782AAC40;
     v26 = v34;
-    v31 = a6;
-    v32 = a3;
-    v22 = *&a4->var0.c;
-    v27 = *&a4->var0.a;
+    stopCopy = stop;
+    rangeCopy = range;
+    v22 = *&transform->var0.c;
+    v27 = *&transform->var0.a;
     v28 = v22;
-    v29 = *&a4->var0.tx;
-    var1 = a4->var1;
-    v33 = a5;
+    v29 = *&transform->var0.tx;
+    var1 = transform->var1;
+    offsetCopy = offset;
     v30 = var1;
-    v25 = v12;
-    [v21 enumerateSublayoutGeometriesUsingBlock:v24];
+    v25 = blockCopy;
+    [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v24];
 
     _Block_object_dispose(v34, 8);
   }
@@ -3955,16 +3955,16 @@ void __77__PXGLayout__enumerateSpritesInRange_transform_spriteOffset_stop_usingB
   }
 }
 
-- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSpritesInRange:(_PXGSpriteIndexRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = 0;
   v11 = *PXGSpriteGeometryTransformIdentity;
   v12 = *&PXGSpriteGeometryTransformIdentity[16];
   v13 = *&PXGSpriteGeometryTransformIdentity[32];
   v14 = 0;
-  if (v5)
+  if (optionsCopy)
   {
     [(PXGLayout *)self orientedContentTransform];
   }
@@ -3973,48 +3973,48 @@ void __77__PXGLayout__enumerateSpritesInRange_transform_spriteOffset_stop_usingB
   v9[1] = v12;
   v9[2] = v13;
   v10 = v14;
-  [(PXGLayout *)self _enumerateSpritesInRange:a3 transform:v9 spriteOffset:0 stop:&v15 usingBlock:v8];
+  [(PXGLayout *)self _enumerateSpritesInRange:range transform:v9 spriteOffset:0 stop:&v15 usingBlock:blockCopy];
 }
 
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 applySpriteTransforms:(BOOL)a4 parentTransform:(id *)a5 parentAlpha:(float)a6 parentClippingRect:(CGRect)a7 parentSublayoutOrigin:(id)a8 entities:(id *)a9 geometries:(id *)a10 styles:(id *)a11 infos:(id *)a12
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range applySpriteTransforms:(BOOL)transforms parentTransform:(id *)transform parentAlpha:(float)alpha parentClippingRect:(CGRect)rect parentSublayoutOrigin:(id)origin entities:(id *)entities geometries:(id *)self0 styles:(id *)self1 infos:(id *)self2
 {
-  v15 = a4;
-  var2 = a8.var2;
-  var1 = a8.var1;
-  var0 = a8.var0;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v42 = [(PXGLayout *)self sublayoutDataStore];
-  v27 = [(PXGLayout *)self spriteDataStore];
-  v43 = a9;
-  if (v15)
+  transformsCopy = transforms;
+  var2 = origin.var2;
+  var1 = origin.var1;
+  var0 = origin.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  entitiesCopy = entities;
+  if (transformsCopy)
   {
-    v28 = [(PXGLayout *)self modifiedSpriteDataStore];
+    modifiedSpriteDataStore = [(PXGLayout *)self modifiedSpriteDataStore];
 
-    if (v28)
+    if (modifiedSpriteDataStore)
     {
-      v29 = [(PXGLayout *)self modifiedSpriteDataStore];
+      modifiedSpriteDataStore2 = [(PXGLayout *)self modifiedSpriteDataStore];
 
-      v27 = v29;
+      spriteDataStore = modifiedSpriteDataStore2;
     }
   }
 
-  v30 = [(PXGLayout *)self spriteDataStore];
-  v31 = [v30 count];
-  v32 = [v27 count];
+  spriteDataStore2 = [(PXGLayout *)self spriteDataStore];
+  v31 = [spriteDataStore2 count];
+  v32 = [spriteDataStore count];
 
   if (v31 != v32)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:2309 description:{@"Invalid parameter not satisfying: %@", @"self.spriteDataStore.count == spriteDataStore.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:2309 description:{@"Invalid parameter not satisfying: %@", @"self.spriteDataStore.count == spriteDataStore.count"}];
   }
 
   if ([(PXGLayout *)self appliesAlphaToSublayouts])
   {
     [(PXGLayout *)self alpha];
-    a6 = v33 * a6;
+    alpha = v33 * alpha;
   }
 
   [(PXGLayout *)self clippingRect];
@@ -4045,36 +4045,36 @@ void __77__PXGLayout__enumerateSpritesInRange_transform_spriteOffset_stop_usingB
   v50[2] = __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTransform_parentAlpha_parentClippingRect_parentSublayoutOrigin_entities_geometries_styles_infos___block_invoke;
   v50[3] = &unk_2782AAC18;
   v50[4] = self;
-  v38 = v27;
+  v38 = spriteDataStore;
   v51 = v38;
-  v66 = a3;
+  rangeCopy = range;
   v53 = v72;
-  v54 = v43;
-  v55 = a10;
-  v56 = a11;
-  v57 = a12;
+  v54 = entitiesCopy;
+  geometriesCopy = geometries;
+  stylesCopy = styles;
+  infosCopy = infos;
   v58 = x;
   v59 = y;
   v60 = width;
   v61 = height;
-  v39 = *&a5->var0.c;
-  v62 = *&a5->var0.a;
+  v39 = *&transform->var0.c;
+  v62 = *&transform->var0.a;
   v63 = v39;
-  v64 = *&a5->var0.tx;
-  v65 = a5->var1;
-  v67 = a6;
+  v64 = *&transform->var0.tx;
+  v65 = transform->var1;
+  alphaCopy = alpha;
   v68 = var0;
   v69 = var1;
   v70 = var2;
-  v40 = v42;
+  v40 = sublayoutDataStore;
   v52 = v40;
-  v71 = v15;
-  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 options:0 usingBlock:v50];
-  length = a3.length;
-  v46 = v43;
-  v47 = a10;
-  v48 = a11;
-  v49 = a12;
+  v71 = transformsCopy;
+  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:range options:0 usingBlock:v50];
+  length = range.length;
+  v46 = entitiesCopy;
+  geometriesCopy2 = geometries;
+  stylesCopy2 = styles;
+  infosCopy2 = infos;
   [(PXGLayout *)self adjustCopiedSprites:&length];
 
   _Block_object_dispose(v72, 8);
@@ -4268,39 +4268,39 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   *(*(*(a1 + 56) + 8) + 24) += v5;
 }
 
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 applySpriteTransforms:(BOOL)a4 entities:(id *)a5 geometries:(id *)a6 styles:(id *)a7 infos:(id *)a8
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range applySpriteTransforms:(BOOL)transforms entities:(id *)entities geometries:(id *)geometries styles:(id *)styles infos:(id *)infos
 {
   v9 = 0;
   v8[0] = *PXGSpriteGeometryTransformIdentity;
   v8[1] = *&PXGSpriteGeometryTransformIdentity[16];
   v8[2] = *&PXGSpriteGeometryTransformIdentity[32];
-  [(PXGLayout *)self copyLayoutForSpritesInRange:a3 applySpriteTransforms:a4 parentTransform:v8 parentAlpha:a5 parentClippingRect:a6 parentSublayoutOrigin:a7 entities:COERCE_DOUBLE(__PAIR64__(*&PXGSpriteGeometryTransformIdentity[36] geometries:1.0)) styles:*MEMORY[0x277CBF390] infos:*(MEMORY[0x277CBF390] + 8), *(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24), 0.0, 0.0, 0.0, a8];
+  [(PXGLayout *)self copyLayoutForSpritesInRange:range applySpriteTransforms:transforms parentTransform:v8 parentAlpha:entities parentClippingRect:geometries parentSublayoutOrigin:styles entities:COERCE_DOUBLE(__PAIR64__(*&PXGSpriteGeometryTransformIdentity[36] geometries:1.0)) styles:*MEMORY[0x277CBF390] infos:*(MEMORY[0x277CBF390] + 8), *(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24), 0.0, 0.0, 0.0, infos];
 }
 
-- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)a3 toSpriteDataStore:(id)a4
+- (void)copyLayoutForSpritesInRange:(_PXGSpriteIndexRange)range toSpriteDataStore:(id)store
 {
-  length = a3.length;
-  v7 = a4;
-  [v7 setCount:length];
-  v8 = [v7 entities];
-  v9 = [v7 geometries];
-  v10 = [v7 styles];
-  v11 = [v7 infos];
+  length = range.length;
+  storeCopy = store;
+  [storeCopy setCount:length];
+  entities = [storeCopy entities];
+  geometries = [storeCopy geometries];
+  styles = [storeCopy styles];
+  infos = [storeCopy infos];
 
-  [(PXGLayout *)self copyLayoutForSpritesInRange:a3 entities:v8 geometries:v9 styles:v10 infos:v11];
+  [(PXGLayout *)self copyLayoutForSpritesInRange:range entities:entities geometries:geometries styles:styles infos:infos];
 }
 
-- (void)copySpritesToDataStore:(id)a3
+- (void)copySpritesToDataStore:(id)store
 {
-  v4 = a3;
-  [(PXGLayout *)self copyLayoutForSpritesInRange:[(PXGLayout *)self numberOfSprites]<< 32 toSpriteDataStore:v4];
+  storeCopy = store;
+  [(PXGLayout *)self copyLayoutForSpritesInRange:[(PXGLayout *)self numberOfSprites]<< 32 toSpriteDataStore:storeCopy];
 }
 
-- ($786F7D2F4E5B3A0CBB66DF574B7D98CF)infoForSpriteAtIndex:(SEL)a3
+- ($786F7D2F4E5B3A0CBB66DF574B7D98CF)infoForSpriteAtIndex:(SEL)index
 {
-  v10 = [(PXGLayout *)self spriteDataStore];
-  v6 = v10;
-  v7 = [v10 infos] + 40 * a4;
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v6 = spriteDataStore;
+  v7 = [spriteDataStore infos] + 40 * a4;
   v8 = *(v7 + 16);
   *&retstr->var0 = *v7;
   *&retstr->var4 = v8;
@@ -4309,11 +4309,11 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   return result;
 }
 
-- ($105A79951CE75EB7BB90BCA93995B378)styleForSpriteAtIndex:(SEL)a3
+- ($105A79951CE75EB7BB90BCA93995B378)styleForSpriteAtIndex:(SEL)index
 {
-  v14 = [(PXGLayout *)self spriteDataStore];
-  v6 = v14;
-  v7 = ([v14 styles] + 160 * a4);
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v6 = spriteDataStore;
+  v7 = ([spriteDataStore styles] + 160 * a4);
   v8 = v7[7];
   *(&retstr[2].var1 + 4) = v7[6];
   *&retstr[2].var3 = v8;
@@ -4333,12 +4333,12 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   return result;
 }
 
-- ($C4327F77E24267CF92932F349E1559A2)geometryForSpriteAtIndex:(unsigned int)a3
+- ($C4327F77E24267CF92932F349E1559A2)geometryForSpriteAtIndex:(unsigned int)index
 {
   v5 = v3;
-  v12 = [(PXGLayout *)self spriteDataStore];
-  v6 = v12;
-  v7 = ([v12 geometries] + 32 * a3);
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v6 = spriteDataStore;
+  v7 = ([spriteDataStore geometries] + 32 * index);
   v8 = v7[1];
   *v5 = *v7;
   v5[1] = v8;
@@ -4349,40 +4349,40 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   return result;
 }
 
-- ($738B17BD11CC339B30296C0EA03CEC2B)entityForSpriteAtIndex:(unsigned int)a3
+- ($738B17BD11CC339B30296C0EA03CEC2B)entityForSpriteAtIndex:(unsigned int)index
 {
-  v4 = [(PXGLayout *)self spriteDataStore];
-  v5.var0 = *([v4 entities] + 4 * a3);
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v5.var0 = *([spriteDataStore entities] + 4 * index);
 
   return v5;
 }
 
-- (void)setLastBaseline:(double)a3
+- (void)setLastBaseline:(double)baseline
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_lastBaseline = a3;
-    v5 = [(PXGLayout *)self superlayout];
-    [v5 sublayoutDidChangeLastBaseline:self];
+    self->_lastBaseline = baseline;
+    superlayout = [(PXGLayout *)self superlayout];
+    [superlayout sublayoutDidChangeLastBaseline:self];
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  self->_estimatedContentSize = a3;
-  if (a3.width != self->_contentSize.width || a3.height != self->_contentSize.height)
+  self->_estimatedContentSize = size;
+  if (size.width != self->_contentSize.width || size.height != self->_contentSize.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(PXGLayout *)self contentSizeDidChange];
-    v6 = [(PXGLayout *)self superlayout];
-    [v6 sublayoutDidChangeContentSize:self];
+    superlayout = [(PXGLayout *)self superlayout];
+    [superlayout sublayoutDidChangeContentSize:self];
   }
 }
 
-- (void)_addFences:(id)a3
+- (void)_addFences:(id)fences
 {
-  v7 = a3;
-  if ([v7 count])
+  fencesCopy = fences;
+  if ([fencesCopy count])
   {
     fences = self->_fences;
     if (!fences)
@@ -4394,53 +4394,53 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
       fences = self->_fences;
     }
 
-    [(NSMutableArray *)fences addObjectsFromArray:v7];
+    [(NSMutableArray *)fences addObjectsFromArray:fencesCopy];
     [(PXGLayout *)self _setNeedsUpdateExternally:0];
   }
 }
 
-- (void)addFence:(id)a3
+- (void)addFence:(id)fence
 {
-  v4 = a3;
+  fenceCopy = fence;
   fences = self->_fences;
-  v8 = v4;
+  v8 = fenceCopy;
   if (!fences)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fences;
     self->_fences = v6;
 
-    v4 = v8;
+    fenceCopy = v8;
     fences = self->_fences;
   }
 
-  [(NSMutableArray *)fences addObject:v4];
+  [(NSMutableArray *)fences addObject:fenceCopy];
   [(PXGLayout *)self _setNeedsUpdateExternally:0];
 }
 
-- (void)addTransition:(id)a3
+- (void)addTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   transitions = self->_transitions;
-  v8 = v4;
+  v8 = transitionCopy;
   if (!transitions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_transitions;
     self->_transitions = v6;
 
-    v4 = v8;
+    transitionCopy = v8;
     transitions = self->_transitions;
   }
 
-  [(NSMutableArray *)transitions addObject:v4];
+  [(NSMutableArray *)transitions addObject:transitionCopy];
   [(PXGLayout *)self _setNeedsUpdateExternally:0];
 }
 
-- (void)_addAnimations:(id)a3
+- (void)_addAnimations:(id)animations
 {
-  v7 = a3;
-  if ([v7 count])
+  animationsCopy = animations;
+  if ([animationsCopy count])
   {
     animations = self->_animations;
     if (!animations)
@@ -4452,87 +4452,87 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
       animations = self->_animations;
     }
 
-    [(NSMutableArray *)animations addObjectsFromArray:v7];
+    [(NSMutableArray *)animations addObjectsFromArray:animationsCopy];
     [(PXGLayout *)self _setNeedsUpdateExternally:0];
   }
 }
 
-- (void)removeAnimation:(id)a3
+- (void)removeAnimation:(id)animation
 {
-  [(NSMutableArray *)self->_animations removeObject:a3];
+  [(NSMutableArray *)self->_animations removeObject:animation];
 
   [(PXGLayout *)self _setNeedsUpdateExternally:0];
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   animations = self->_animations;
-  v8 = v4;
+  v8 = animationCopy;
   if (!animations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_animations;
     self->_animations = v6;
 
-    v4 = v8;
+    animationCopy = v8;
     animations = self->_animations;
   }
 
-  [(NSMutableArray *)animations addObject:v4];
+  [(NSMutableArray *)animations addObject:animationCopy];
   [(PXGLayout *)self _setNeedsUpdateExternally:0];
 }
 
-- (void)setInteractions:(id)a3
+- (void)setInteractions:(id)interactions
 {
-  v4 = a3;
+  interactionsCopy = interactions;
   interactions = self->_interactions;
-  if (interactions != v4)
+  if (interactions != interactionsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)interactions isEqual:v4];
-    v4 = v9;
+    v9 = interactionsCopy;
+    v6 = [(NSArray *)interactions isEqual:interactionsCopy];
+    interactionsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
       v8 = self->_interactions;
       self->_interactions = v7;
 
-      v4 = v9;
+      interactionsCopy = v9;
     }
   }
 }
 
-- (void)removePointReference:(id)a3
+- (void)removePointReference:(id)reference
 {
-  v4 = a3;
-  v6 = [(PXGLayout *)self pointReferences];
-  [v6 removeObject:v4];
+  referenceCopy = reference;
+  pointReferences = [(PXGLayout *)self pointReferences];
+  [pointReferences removeObject:referenceCopy];
 
-  if (![v6 count])
+  if (![pointReferences count])
   {
     pointReferences = self->_pointReferences;
     self->_pointReferences = 0;
   }
 }
 
-- (void)addPointReference:(id)a3
+- (void)addPointReference:(id)reference
 {
-  v5 = a3;
-  v4 = [(PXGLayout *)self pointReferences];
-  if (!v4)
+  referenceCopy = reference;
+  pointReferences = [(PXGLayout *)self pointReferences];
+  if (!pointReferences)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    objc_storeStrong(&self->_pointReferences, v4);
+    pointReferences = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&self->_pointReferences, pointReferences);
   }
 
-  [v4 addObject:v5];
+  [pointReferences addObject:referenceCopy];
 }
 
-- (id)navigationObjectReferenceForLocation:(CGPoint)a3
+- (id)navigationObjectReferenceForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -4546,7 +4546,7 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   [(PXGLayout *)self scrollableAxis];
   PXSizeValueForAxis();
   v20[3] = v6;
-  v7 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __50__PXGLayout_navigationObjectReferenceForLocation___block_invoke;
@@ -4556,7 +4556,7 @@ void __165__PXGLayout_copyLayoutForSpritesInRange_applySpriteTransforms_parentTr
   v19[5] = v20;
   v19[6] = &v21;
   v19[4] = self;
-  [v7 enumerateSublayoutGeometriesUsingBlock:v19];
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v19];
 
   v8 = v22[5];
   if (!v8)
@@ -4654,17 +4654,17 @@ uint64_t __50__PXGLayout_navigationObjectReferenceForLocation___block_invoke_2(u
   return result;
 }
 
-- (id)dropTargetObjectReferenceForLocation:(CGPoint)a3
+- (id)dropTargetObjectReferenceForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__14725;
   v14 = __Block_byref_object_dispose__14726;
   v15 = 0;
-  v6 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__PXGLayout_dropTargetObjectReferenceForLocation___block_invoke;
@@ -4673,7 +4673,7 @@ uint64_t __50__PXGLayout_navigationObjectReferenceForLocation___block_invoke_2(u
   *&v9[7] = y;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 enumerateSublayoutsUsingBlock:v9];
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -4700,10 +4700,10 @@ void __50__PXGLayout_dropTargetObjectReferenceForLocation___block_invoke(double 
   }
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
   v21 = 0;
-  v8 = [(PXGLayout *)self sublayoutIndexForObjectReference:a3 options:a4 updatedObjectReference:&v21];
+  v8 = [(PXGLayout *)self sublayoutIndexForObjectReference:reference options:options updatedObjectReference:&v21];
   v9 = v21;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4717,16 +4717,16 @@ void __50__PXGLayout_dropTargetObjectReferenceForLocation___block_invoke(double 
     if (v11)
     {
       v20 = 0;
-      v13 = [v11 spriteIndexForObjectReference:v9 options:a4 updatedObjectReference:&v20];
+      v13 = [v11 spriteIndexForObjectReference:v9 options:options updatedObjectReference:&v20];
       v14 = v20;
 
       v15 = v12;
       v9 = v14;
       if (v13 != -1 && [v15 numberOfSprites] <= v13)
       {
-        v18 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void PXValidateLayoutSpriteIndexForObjectReference(PXGLayout * _Nonnull __strong, PXGSpriteIndex, id  _Nonnull __strong)"}];
-        [v18 handleFailureInFunction:v19 file:@"PXGLayout_Internal.h" lineNumber:227 description:{@"%@ returned invalid spriteIndex %li for objectReference %@", v15, v13, v9}];
+        [currentHandler handleFailureInFunction:v19 file:@"PXGLayout_Internal.h" lineNumber:227 description:{@"%@ returned invalid spriteIndex %li for objectReference %@", v15, v13, v9}];
       }
 
       v10 = [(PXGLayout *)self convertSpriteIndex:v13 fromDescendantLayout:v15];
@@ -4739,12 +4739,12 @@ void __50__PXGLayout_dropTargetObjectReferenceForLocation___block_invoke(double 
   }
 
   v16 = v9;
-  *a5 = v9;
+  *objectReference = v9;
 
   return v10;
 }
 
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3
+- (id)objectReferenceForSpriteIndex:(unsigned int)index
 {
   v6 = 0;
   v7 = &v6;
@@ -4758,7 +4758,7 @@ void __50__PXGLayout_dropTargetObjectReferenceForLocation___block_invoke(double 
   v5[3] = &unk_2782AAC68;
   v5[4] = self;
   v5[5] = &v6;
-  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:a3 | 0x100000000 options:0 usingBlock:v5];
+  [(PXGLayout *)self enumerateLayoutsForSpritesInRange:index | 0x100000000 options:0 usingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -4782,11 +4782,11 @@ void __43__PXGLayout_objectReferenceForSpriteIndex___block_invoke(uint64_t a1, u
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(PXGLayout *)self activeAnchor];
-  if (!v3)
+  activeAnchor = [(PXGLayout *)self activeAnchor];
+  if (!activeAnchor)
   {
-    v4 = [(PXGLayout *)self superlayout];
-    v3 = [v4 activeAnchor];
+    superlayout = [(PXGLayout *)self superlayout];
+    activeAnchor = [superlayout activeAnchor];
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -4795,7 +4795,7 @@ void __43__PXGLayout_objectReferenceForSpriteIndex___block_invoke(uint64_t a1, u
   v7[3] = &unk_2782AABA0;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 enumerateAllSpriteReferencesUsingBlock:v7];
+  [activeAnchor enumerateAllSpriteReferencesUsingBlock:v7];
   v5 = v9[3];
 
   _Block_object_dispose(&v8, 8);
@@ -4828,74 +4828,74 @@ LABEL_5:
 
 - (BOOL)shouldFaultInContentAtAnchoredContentEdges
 {
-  v2 = [(PXGLayout *)self activeAnchor];
-  v3 = [v2 shouldFaultInContentAtAnchoredContentEdges];
+  activeAnchor = [(PXGLayout *)self activeAnchor];
+  shouldFaultInContentAtAnchoredContentEdges = [activeAnchor shouldFaultInContentAtAnchoredContentEdges];
 
-  return v3;
+  return shouldFaultInContentAtAnchoredContentEdges;
 }
 
-- (void)sublayout:(id)a3 didRemoveAnchor:(id)a4
+- (void)sublayout:(id)sublayout didRemoveAnchor:(id)anchor
 {
   --self->_numberOfDescendantAnchors;
-  v5 = a4;
-  v6 = [(PXGLayout *)self superlayout];
-  [v6 sublayout:self didRemoveAnchor:v5];
+  anchorCopy = anchor;
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout sublayout:self didRemoveAnchor:anchorCopy];
 }
 
-- (void)sublayout:(id)a3 didAddAnchor:(id)a4
+- (void)sublayout:(id)sublayout didAddAnchor:(id)anchor
 {
   ++self->_numberOfDescendantAnchors;
-  v5 = a4;
-  v6 = [(PXGLayout *)self superlayout];
-  [v6 sublayout:self didAddAnchor:v5];
+  anchorCopy = anchor;
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout sublayout:self didAddAnchor:anchorCopy];
 
-  v7 = [v5 type];
-  if (v7 <= 5 && ((1 << v7) & 0x34) != 0)
+  type = [anchorCopy type];
+  if (type <= 5 && ((1 << type) & 0x34) != 0)
   {
 
     [(PXGLayout *)self clearLastVisibleAreaAnchoringInformation];
   }
 }
 
-- (void)removeAnchor:(id)a3
+- (void)removeAnchor:(id)anchor
 {
   activeAnchor = self->_activeAnchor;
-  if (activeAnchor == a3)
+  if (activeAnchor == anchor)
   {
     self->_activeAnchor = 0;
-    v5 = a3;
+    anchorCopy = anchor;
 
-    [(PXGLayout *)self sublayout:self didRemoveAnchor:v5];
+    [(PXGLayout *)self sublayout:self didRemoveAnchor:anchorCopy];
   }
 }
 
-- (void)addAnchor:(id)a3
+- (void)addAnchor:(id)anchor
 {
-  v6 = a3;
-  v5 = [v6 priority];
-  if (v5 >= [(PXGAnchor *)self->_activeAnchor priority])
+  anchorCopy = anchor;
+  priority = [anchorCopy priority];
+  if (priority >= [(PXGAnchor *)self->_activeAnchor priority])
   {
     [(PXGAnchor *)self->_activeAnchor invalidate];
-    objc_storeStrong(&self->_activeAnchor, a3);
+    objc_storeStrong(&self->_activeAnchor, anchor);
     [(PXGLayout *)self _setNeedsUpdateExternally:0];
-    [(PXGLayout *)self sublayout:self didAddAnchor:v6];
+    [(PXGLayout *)self sublayout:self didAddAnchor:anchorCopy];
   }
 }
 
-- (BOOL)changeVisibleRectToProposedVisibleRect:(CGRect)a3
+- (BOOL)changeVisibleRectToProposedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   isRequestingVisibleRect = self->_isRequestingVisibleRect;
   self->_isRequestingVisibleRect = 1;
   [(PXGLayout *)self visibleRect];
-  v9 = [(PXGLayout *)self superlayout];
-  v10 = v9;
-  if (v9)
+  superlayout = [(PXGLayout *)self superlayout];
+  v10 = superlayout;
+  if (superlayout)
   {
-    [v9 sublayout:self visibleRectForRequestedVisibleRect:{x, y, width, height}];
+    [superlayout sublayout:self visibleRectForRequestedVisibleRect:{x, y, width, height}];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -4904,11 +4904,11 @@ LABEL_5:
 
   else
   {
-    v19 = [(PXGLayout *)self visibleRectDelegate];
-    v20 = v19;
-    if (v19)
+    visibleRectDelegate = [(PXGLayout *)self visibleRectDelegate];
+    v20 = visibleRectDelegate;
+    if (visibleRectDelegate)
     {
-      [v19 layout:self visibleRectForRequestedVisibleRect:{x, y, width, height}];
+      [visibleRectDelegate layout:self visibleRectForRequestedVisibleRect:{x, y, width, height}];
       v12 = v21;
       v14 = v22;
       v16 = v23;
@@ -4952,9 +4952,9 @@ LABEL_5:
   return v26 ^ 1;
 }
 
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if ([(PXGLayout *)self numberOfSublayouts]&& [(PXGLayout *)self defaultVisibleAnchoringScope]!= 1)
   {
     [(PXGLayout *)self visibleRect];
@@ -4965,7 +4965,7 @@ LABEL_5:
     PXRectGetCenter();
     v15 = v14;
     v17 = v16;
-    v18 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -4979,7 +4979,7 @@ LABEL_5:
     v31 = v15;
     v32 = v17;
     v20 = v19;
-    [v18 enumerateSublayoutsInRect:v25 usingBlock:{v7, v9, v11, v13}];
+    [sublayoutDataStore enumerateSublayoutsInRect:v25 usingBlock:{v7, v9, v11, v13}];
     v21 = [v20 keysSortedByValueUsingSelector:sel_compare_];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -4987,14 +4987,14 @@ LABEL_5:
     v22[3] = &unk_2782AAB78;
     v22[4] = self;
     v24 = a2;
-    v23 = v5;
+    v23 = blockCopy;
     [v21 enumerateObjectsUsingBlock:v22];
   }
 
   else
   {
     v33 = 0;
-    (*(v5 + 2))(v5, self, &v33);
+    (*(blockCopy + 2))(blockCopy, self, &v33);
   }
 }
 
@@ -5023,16 +5023,16 @@ void __56__PXGLayout_enumerateVisibleAnchoringLayoutsUsingBlock___block_invoke_2
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___block_invoke;
   v6[3] = &unk_2782AAB28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PXGLayout *)self enumerateVisibleAnchoringLayoutsUsingBlock:v6];
 }
 
@@ -5124,28 +5124,28 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
   return v3();
 }
 
-- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)a3 appliedToLayout:(id)a4
+- (void)adjustReferencedSpriteIndexesWithChangeDetails:(id)details appliedToLayout:(id)layout
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  layoutCopy = layout;
   if (self->_spriteIndexesWithInvalidatedStyle)
   {
-    v8 = [v6 indexSetAfterApplyingChangesToIndexSet:?];
+    v8 = [detailsCopy indexSetAfterApplyingChangesToIndexSet:?];
     spriteIndexesWithInvalidatedStyle = self->_spriteIndexesWithInvalidatedStyle;
     self->_spriteIndexesWithInvalidatedStyle = v8;
   }
 
   if (self->_localHiddenSpriteIndexes)
   {
-    v10 = [v6 indexSetAfterApplyingChangesToIndexSet:?];
+    v10 = [detailsCopy indexSetAfterApplyingChangesToIndexSet:?];
     [(PXGLayout *)self setLocalHiddenSpriteIndexes:v10];
 
     [(PXGLayout *)self _invalidateStyleOfSpritesWithIndexes:self->_localHiddenSpriteIndexes];
   }
 
-  v11 = [(PXGLayout *)self superlayout];
-  if (v11)
+  superlayout = [(PXGLayout *)self superlayout];
+  if (superlayout)
   {
   }
 
@@ -5172,7 +5172,7 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
           }
 
           v18 = *(*(&v22 + 1) + 8 * i);
-          [v18 adjustReferencedSpriteIndexesWithChangeDetails:v6 appliedToLayout:{v7, v22}];
+          [v18 adjustReferencedSpriteIndexesWithChangeDetails:detailsCopy appliedToLayout:{layoutCopy, v22}];
           v19 = [(PXGLayout *)self spriteIndexForSpriteReference:v18 options:1024];
           if (v19 != -1)
           {
@@ -5192,35 +5192,35 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
     self->_isPropagatingAdjustedReferencedHiddenSpriteIndexes = isPropagatingAdjustedReferencedHiddenSpriteIndexes;
   }
 
-  v21 = [(PXGLayout *)self activeAnchor];
-  [v21 adjustReferencedSpriteIndexesWithChangeDetails:v6 appliedToLayout:v7];
+  activeAnchor = [(PXGLayout *)self activeAnchor];
+  [activeAnchor adjustReferencedSpriteIndexesWithChangeDetails:detailsCopy appliedToLayout:layoutCopy];
 }
 
-- (id)convertChangeDetails:(id)a3 fromSublayout:(id)a4
+- (id)convertChangeDetails:(id)details fromSublayout:(id)sublayout
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 == self)
+  detailsCopy = details;
+  v8 = detailsCopy;
+  if (sublayout == self)
   {
-    v13 = v7;
+    v13 = detailsCopy;
   }
 
   else
   {
-    v9 = a4;
+    sublayoutCopy = sublayout;
     if (([v8 hasIncrementalChanges] & 1) == 0)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1709 description:{@"Invalid parameter not satisfying: %@", @"changeDetails.hasIncrementalChanges"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1709 description:{@"Invalid parameter not satisfying: %@", @"changeDetails.hasIncrementalChanges"}];
     }
 
-    v10 = [(PXGLayout *)self spriteDataStore];
-    v11 = [v10 count];
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    v11 = [spriteDataStore count];
 
-    v12 = [(PXGLayout *)self sublayoutDataStore];
-    LODWORD(v10) = [v12 spriteIndexOriginForSublayout:v9];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+    LODWORD(spriteDataStore) = [sublayoutDataStore spriteIndexOriginForSublayout:sublayoutCopy];
 
-    v13 = [v8 changeDetailsShiftedBy:v10 + v11];
+    v13 = [v8 changeDetailsShiftedBy:spriteDataStore + v11];
   }
 
   v14 = v13;
@@ -5228,90 +5228,90 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
   return v14;
 }
 
-- (_PXGSpriteIndexRange)convertRange:(_PXGSpriteIndexRange)a3 fromSublayout:(id)a4
+- (_PXGSpriteIndexRange)convertRange:(_PXGSpriteIndexRange)range fromSublayout:(id)sublayout
 {
-  location = a3.location;
-  if (a4 != self)
+  location = range.location;
+  if (sublayout != self)
   {
-    v7 = a4;
-    v8 = [(PXGLayout *)self spriteDataStore];
-    v9 = [v8 count];
+    sublayoutCopy = sublayout;
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    v9 = [spriteDataStore count];
 
-    v10 = [(PXGLayout *)self sublayoutDataStore];
-    LODWORD(v8) = [v10 spriteIndexOriginForSublayout:v7];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+    LODWORD(spriteDataStore) = [sublayoutDataStore spriteIndexOriginForSublayout:sublayoutCopy];
 
-    location = a3.location + v9 + v8;
+    location = range.location + v9 + spriteDataStore;
   }
 
-  return (*&a3 & 0xFFFFFFFF00000000 | location);
+  return (*&range & 0xFFFFFFFF00000000 | location);
 }
 
-- (void)sublayout:(id)a3 didApplySpriteChangeDetails:(id)a4 fromDescendentSublayout:(id)a5
+- (void)sublayout:(id)sublayout didApplySpriteChangeDetails:(id)details fromDescendentSublayout:(id)descendentSublayout
 {
-  v22 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v22 == self)
+  sublayoutCopy = sublayout;
+  detailsCopy = details;
+  descendentSublayoutCopy = descendentSublayout;
+  if (sublayoutCopy == self)
   {
-    [(PXGLayout *)self didApplySpriteChangeDetails:v9];
+    [(PXGLayout *)self didApplySpriteChangeDetails:detailsCopy];
   }
 
-  if ([v9 hasAnyChanges])
+  if ([detailsCopy hasAnyChanges])
   {
-    if ([v9 hasAnyInsertionsRemovalsOrMoves])
+    if ([detailsCopy hasAnyInsertionsRemovalsOrMoves])
     {
       [(PXGLayout *)self invalidateVersion];
     }
 
-    if (([v9 hasIncrementalChanges] & 1) == 0)
+    if (([detailsCopy hasIncrementalChanges] & 1) == 0)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1659 description:{@"%@ didn't recieve incremental change details:%@", self, v9}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1659 description:{@"%@ didn't recieve incremental change details:%@", self, detailsCopy}];
     }
 
-    if (v22 != self)
+    if (sublayoutCopy != self)
     {
-      v11 = [v9 insertedIndexes];
-      v12 = [v11 count];
-      v13 = [v9 removedIndexes];
-      v14 = v12 - [v13 count];
+      insertedIndexes = [detailsCopy insertedIndexes];
+      v12 = [insertedIndexes count];
+      removedIndexes = [detailsCopy removedIndexes];
+      v14 = v12 - [removedIndexes count];
 
       [(PXGLayout *)self _incrementNumberOfSprites:v14];
     }
 
-    v15 = [(PXGLayout *)self convertChangeDetails:v9 fromSublayout:v22];
+    v15 = [(PXGLayout *)self convertChangeDetails:detailsCopy fromSublayout:sublayoutCopy];
     [(PXGLayout *)self adjustReferencedSpriteIndexesWithChangeDetails:v15 appliedToLayout:self];
-    v16 = [(PXGLayout *)self superlayout];
-    v17 = v16;
-    if (v16)
+    superlayout = [(PXGLayout *)self superlayout];
+    v17 = superlayout;
+    if (superlayout)
     {
-      [v16 sublayout:self didApplySpriteChangeDetails:v15 fromDescendentSublayout:v10];
+      [superlayout sublayout:self didApplySpriteChangeDetails:v15 fromDescendentSublayout:descendentSublayoutCopy];
     }
 
     else
     {
-      v18 = [(PXGLayout *)self changeDetails];
-      v19 = [v18 lastObject];
-      if ([v19 canPreserveIncrementalChangesWhenAddingChangeDetails:v15])
+      changeDetails = [(PXGLayout *)self changeDetails];
+      lastObject = [changeDetails lastObject];
+      if ([lastObject canPreserveIncrementalChangesWhenAddingChangeDetails:v15])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v19 addChangeDetails:v15];
+          [lastObject addChangeDetails:v15];
         }
 
         else
         {
-          v20 = [v19 mutableCopy];
-          [v18 removeLastObject];
-          [v18 addObject:v20];
+          v20 = [lastObject mutableCopy];
+          [changeDetails removeLastObject];
+          [changeDetails addObject:v20];
           [v20 addChangeDetails:v15];
         }
       }
 
       else
       {
-        [v18 addObject:v15];
+        [changeDetails addObject:v15];
       }
 
       [(PXGLayout *)self _setNeedsUpdateExternally:0];
@@ -5319,107 +5319,107 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
   }
 }
 
-- (void)didApplySpriteChangeDetails:(id)a3
+- (void)didApplySpriteChangeDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self axGroup];
-  [v5 updateLeafsWithChangeDetails:v4];
+  detailsCopy = details;
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup updateLeafsWithChangeDetails:detailsCopy];
 }
 
-- (unsigned)addResizableCapInsets:(id)a3
+- (unsigned)addResizableCapInsets:(id)insets
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = [(PXGLayout *)self spriteMetadataStore];
+  var3 = insets.var3;
+  var2 = insets.var2;
+  var1 = insets.var1;
+  var0 = insets.var0;
+  spriteMetadataStore = [(PXGLayout *)self spriteMetadataStore];
   *&v8 = var0;
   *&v9 = var1;
   *&v10 = var2;
   *&v11 = var3;
-  v12 = [v7 addResizableCapInsets:{v8, v9, v10, v11}];
+  v12 = [spriteMetadataStore addResizableCapInsets:{v8, v9, v10, v11}];
 
   return v12;
 }
 
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyFullState:(id)a6
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyFullState:(id)fullState
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&changes;
+  detailsCopy = details;
+  stateCopy = state;
+  fullStateCopy = fullState;
   [(PXGLayout *)self _ensureSpriteDataStore];
-  v13 = [(PXGLayout *)self spriteModifier];
-  v53 = v12;
-  if (v13)
+  spriteModifier = [(PXGLayout *)self spriteModifier];
+  v53 = fullStateCopy;
+  if (spriteModifier)
   {
     [(PXGLayout *)self _ensureModifiedSpriteDataStore];
   }
 
   else
   {
-    v14 = [(PXGLayout *)self modifiedSpriteDataStore];
+    modifiedSpriteDataStore = [(PXGLayout *)self modifiedSpriteDataStore];
 
-    if (v14)
+    if (modifiedSpriteDataStore)
     {
       [(PXGLayout *)self _destroyModifiedSpriteDataStore];
     }
   }
 
-  v15 = [(PXGLayout *)self spriteDataStore];
-  v16 = [(PXGLayout *)self modifiedSpriteDataStore];
-  v17 = [(PXGLayout *)self localNumberOfSprites];
-  v54 = v13;
-  v50 = v17;
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  modifiedSpriteDataStore2 = [(PXGLayout *)self modifiedSpriteDataStore];
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
+  v54 = spriteModifier;
+  v50 = localNumberOfSprites;
   v51 = v8;
-  if ([v10 hasIncrementalChanges])
+  if ([detailsCopy hasIncrementalChanges])
   {
     v18 = v8;
-    v17 = v17;
+    localNumberOfSprites = localNumberOfSprites;
   }
 
   else
   {
-    v19 = v15;
-    v20 = v16;
-    v21 = v11;
+    v19 = spriteDataStore;
+    v20 = modifiedSpriteDataStore2;
+    v21 = stateCopy;
     v22 = objc_alloc(MEMORY[0x277D3CCC8]);
-    v17 = v17;
-    v23 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v17}];
+    localNumberOfSprites = localNumberOfSprites;
+    v23 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, localNumberOfSprites}];
     v18 = v8;
     v24 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v8}];
     v25 = [v22 initWithIncrementalChangeDetailsRemovedIndexes:v23 insertedIndexes:v24 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
-    v10 = v25;
-    v11 = v21;
-    v16 = v20;
-    v15 = v19;
+    detailsCopy = v25;
+    stateCopy = v21;
+    modifiedSpriteDataStore2 = v20;
+    spriteDataStore = v19;
   }
 
-  v26 = [v10 insertedIndexes];
-  v27 = [v26 count] + v17;
-  v28 = [v10 removedIndexes];
-  v29 = v27 - [v28 count];
+  insertedIndexes = [detailsCopy insertedIndexes];
+  v27 = [insertedIndexes count] + localNumberOfSprites;
+  removedIndexes = [detailsCopy removedIndexes];
+  v29 = v27 - [removedIndexes count];
 
   if (v29 != v18)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1566 description:{@"countBeforeChanges(%d) + spriteChangeDetails(%@) does not match countAfterChanges(%d)", v50, v10, v51}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1566 description:{@"countBeforeChanges(%d) + spriteChangeDetails(%@) does not match countAfterChanges(%d)", v50, detailsCopy, v51}];
   }
 
-  v30 = [v10 removedIndexes];
+  removedIndexes2 = [detailsCopy removedIndexes];
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
   v74[2] = __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke;
   v74[3] = &unk_2782AB638;
   v74[4] = self;
-  v31 = v15;
+  v31 = spriteDataStore;
   v75 = v31;
-  v32 = v16;
+  v32 = modifiedSpriteDataStore2;
   v76 = v32;
-  [v30 enumerateRangesWithOptions:2 usingBlock:v74];
+  [removedIndexes2 enumerateRangesWithOptions:2 usingBlock:v74];
 
-  v33 = [v10 insertedIndexes];
+  insertedIndexes2 = [detailsCopy insertedIndexes];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke_2;
@@ -5428,41 +5428,41 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
   v70 = v34;
   v35 = v32;
   v71 = v35;
-  v72 = self;
-  v36 = v11;
+  selfCopy = self;
+  v36 = stateCopy;
   v73 = v36;
-  [v33 enumerateRangesWithOptions:0 usingBlock:v69];
+  [insertedIndexes2 enumerateRangesWithOptions:0 usingBlock:v69];
 
-  if ([v10 hasMoves])
+  if ([detailsCopy hasMoves])
   {
-    v37 = [v10 movesFromIndexes];
-    v38 = [v10 movesToIndexes];
-    [v34 moveSpritesFromIndexes:v37 toIndexes:v38];
+    movesFromIndexes = [detailsCopy movesFromIndexes];
+    movesToIndexes = [detailsCopy movesToIndexes];
+    [v34 moveSpritesFromIndexes:movesFromIndexes toIndexes:movesToIndexes];
 
-    v39 = [v10 movesFromIndexes];
-    v40 = [v10 movesToIndexes];
-    [v35 moveSpritesFromIndexes:v39 toIndexes:v40];
+    movesFromIndexes2 = [detailsCopy movesFromIndexes];
+    movesToIndexes2 = [detailsCopy movesToIndexes];
+    [v35 moveSpritesFromIndexes:movesFromIndexes2 toIndexes:movesToIndexes2];
   }
 
   if (v53)
   {
-    v41 = [v10 changedIndexes];
+    changedIndexes = [detailsCopy changedIndexes];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke_3;
     v63[3] = &unk_2782AAAB0;
     v68 = a2;
     v64 = v34;
-    v65 = self;
+    selfCopy2 = self;
     v67 = v53;
     v66 = v35;
-    [v41 enumerateRangesUsingBlock:v63];
+    [changedIndexes enumerateRangesUsingBlock:v63];
   }
 
   v42 = v54;
   if (v54)
   {
-    v43 = [v10 insertedIndexes];
+    insertedIndexes3 = [detailsCopy insertedIndexes];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke_4;
@@ -5471,10 +5471,10 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
     v60 = v44;
     v45 = v35;
     v61 = v45;
-    v62 = self;
-    [v43 enumerateRangesUsingBlock:v59];
+    selfCopy3 = self;
+    [insertedIndexes3 enumerateRangesUsingBlock:v59];
 
-    v46 = [v10 changedIndexes];
+    changedIndexes2 = [detailsCopy changedIndexes];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke_5;
@@ -5483,13 +5483,13 @@ uint64_t __62__PXGLayout_enumerateVisibleAnchoringSpriteIndexesUsingBlock___bloc
     v42 = v54;
     v56 = v47;
     v57 = v45;
-    v58 = self;
-    [v46 enumerateRangesUsingBlock:v55];
+    selfCopy4 = self;
+    [changedIndexes2 enumerateRangesUsingBlock:v55];
   }
 
-  [(PXGLayout *)self sublayout:self didApplySpriteChangeDetails:v10 fromDescendentSublayout:self];
-  v48 = [(PXGLayout *)self axGroup];
-  [v48 invalidateLeafs];
+  [(PXGLayout *)self sublayout:self didApplySpriteChangeDetails:detailsCopy fromDescendentSublayout:self];
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup invalidateLeafs];
 }
 
 uint64_t __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyFullState___block_invoke(id *a1, uint64_t a2, uint64_t a3)
@@ -5582,17 +5582,17 @@ uint64_t __85__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState
   return [*(a1 + 48) copySpritesInRange:v4 fromSpriteDataStore:*(a1 + 32)];
 }
 
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState
 {
-  v7 = *&a4;
-  v10 = a6;
+  v7 = *&changes;
+  modifyStateCopy = modifyState;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyState___block_invoke;
   v12[3] = &unk_2782AAA60;
-  v13 = v10;
-  v11 = v10;
-  [(PXGLayout *)self applySpriteChangeDetails:a3 countAfterChanges:v7 initialState:a5 modifyFullState:v12];
+  v13 = modifyStateCopy;
+  v11 = modifyStateCopy;
+  [(PXGLayout *)self applySpriteChangeDetails:details countAfterChanges:v7 initialState:state modifyFullState:v12];
 }
 
 uint64_t __81__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState_modifyState___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -5606,153 +5606,153 @@ uint64_t __81__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState
   return result;
 }
 
-- (void)modifySpritesAtIndexes:(id)a3 fullState:(id)a4
+- (void)modifySpritesAtIndexes:(id)indexes fullState:(id)state
 {
   v6 = MEMORY[0x277D3CCC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v8];
+  stateCopy = state;
+  indexesCopy = indexes;
+  v9 = [[v6 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:indexesCopy];
 
-  [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites] initialState:0 modifyFullState:v7];
+  [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites] initialState:0 modifyFullState:stateCopy];
 }
 
-- (void)modifySpritesAtIndexes:(id)a3 state:(id)a4
+- (void)modifySpritesAtIndexes:(id)indexes state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__PXGLayout_modifySpritesAtIndexes_state___block_invoke;
   v8[3] = &unk_2782AAA60;
-  v9 = v6;
-  v7 = v6;
-  [(PXGLayout *)self modifySpritesAtIndexes:a3 fullState:v8];
+  v9 = stateCopy;
+  v7 = stateCopy;
+  [(PXGLayout *)self modifySpritesAtIndexes:indexes fullState:v8];
 }
 
-- (void)modifySpritesInRange:(_PXGSpriteIndexRange)a3 fullState:(id)a4
+- (void)modifySpritesInRange:(_PXGSpriteIndexRange)range fullState:(id)state
 {
-  length = a3.length;
-  if (a3.length)
+  length = range.length;
+  if (range.length)
   {
     v6 = MEMORY[0x277D3CCC8];
-    location = a3.location;
-    v8 = a4;
+    location = range.location;
+    stateCopy = state;
     v9 = [v6 changeDetailsWithChangedIndexRange:{location, length}];
-    [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites] initialState:0 modifyFullState:v8];
+    [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites] initialState:0 modifyFullState:stateCopy];
   }
 }
 
-- (void)modifySpritesInRange:(_PXGSpriteIndexRange)a3 state:(id)a4
+- (void)modifySpritesInRange:(_PXGSpriteIndexRange)range state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__PXGLayout_modifySpritesInRange_state___block_invoke;
   v8[3] = &unk_2782AAA38;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
-  [(PXGLayout *)self modifySpritesInRange:a3 fullState:v8];
+  v9 = stateCopy;
+  rangeCopy = range;
+  v7 = stateCopy;
+  [(PXGLayout *)self modifySpritesInRange:range fullState:v8];
 }
 
-- (void)modifySpritesInRect:(CGRect)a3 state:(id)a4
+- (void)modifySpritesInRect:(CGRect)rect state:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v9 = [(PXGLayout *)self spriteDataStore];
-  v10 = [v9 spriteIndexesInRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stateCopy = state;
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
+  v10 = [spriteDataStore spriteIndexesInRect:{x, y, width, height}];
 
   if ([v10 count])
   {
     v11 = [MEMORY[0x277D3CCC8] changeDetailsWithChangedIndexes:v10];
-    [(PXGLayout *)self applySpriteChangeDetails:v11 countAfterChanges:[(PXGLayout *)self numberOfSprites] initialState:0 modifyState:v12];
+    [(PXGLayout *)self applySpriteChangeDetails:v11 countAfterChanges:[(PXGLayout *)self numberOfSprites] initialState:0 modifyState:stateCopy];
   }
 }
 
-- (void)moveSpritesInRange:(_PXGSpriteIndexRange)a3 toRange:(_PXGSpriteIndexRange)a4
+- (void)moveSpritesInRange:(_PXGSpriteIndexRange)range toRange:(_PXGSpriteIndexRange)toRange
 {
-  if (a3.length)
+  if (range.length)
   {
-    v6 = [MEMORY[0x277D3CCC8] changeDetailsWithMovedFromIndexRange:a3.location toIndexRange:{a3.length, a4.location, a4.length}];
+    v6 = [MEMORY[0x277D3CCC8] changeDetailsWithMovedFromIndexRange:range.location toIndexRange:{range.length, toRange.location, toRange.length}];
     [(PXGLayout *)self applySpriteChangeDetails:v6 countAfterChanges:[(PXGLayout *)self localNumberOfSprites] initialState:0 modifyState:0];
   }
 }
 
-- (void)removeSpritesAtIndexes:(id)a3
+- (void)removeSpritesAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x277D3CCC8];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v5 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+  indexesCopy = indexes;
+  v7 = [[v4 alloc] initWithIncrementalChangeDetailsRemovedIndexes:indexesCopy insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
   LODWORD(v4) = [(PXGLayout *)self localNumberOfSprites];
-  v6 = [v5 count];
+  v6 = [indexesCopy count];
 
   [(PXGLayout *)self applySpriteChangeDetails:v7 countAfterChanges:(v4 - v6) initialState:0 modifyState:0];
 }
 
-- (void)removeSpritesInRange:(_PXGSpriteIndexRange)a3
+- (void)removeSpritesInRange:(_PXGSpriteIndexRange)range
 {
-  length = a3.length;
-  if (a3.length)
+  length = range.length;
+  if (range.length)
   {
-    v5 = [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{a3.location, a3.length}];
+    v5 = [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{range.location, range.length}];
     [(PXGLayout *)self applySpriteChangeDetails:v5 countAfterChanges:[(PXGLayout *)self localNumberOfSprites]- length initialState:0 modifyState:0];
   }
 }
 
-- (void)addSpritesAtIndexes:(id)a3 initialState:(id)a4
+- (void)addSpritesAtIndexes:(id)indexes initialState:(id)state
 {
   v6 = MEMORY[0x277D3CCC8];
-  v7 = a4;
-  v8 = a3;
-  v10 = [[v6 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:v8 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+  stateCopy = state;
+  indexesCopy = indexes;
+  v10 = [[v6 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:indexesCopy movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
   LODWORD(v6) = [(PXGLayout *)self localNumberOfSprites];
-  v9 = [v8 count];
+  v9 = [indexesCopy count];
 
-  [(PXGLayout *)self applySpriteChangeDetails:v10 countAfterChanges:(v6 + v9) initialState:v7 modifyState:0];
+  [(PXGLayout *)self applySpriteChangeDetails:v10 countAfterChanges:(v6 + v9) initialState:stateCopy modifyState:0];
 }
 
-- (void)addSpritesInRange:(_PXGSpriteIndexRange)a3 initialState:(id)a4
+- (void)addSpritesInRange:(_PXGSpriteIndexRange)range initialState:(id)state
 {
-  length = a3.length;
-  if (a3.length)
+  length = range.length;
+  if (range.length)
   {
     v6 = MEMORY[0x277D3CCC8];
-    location = a3.location;
-    v8 = a4;
+    location = range.location;
+    stateCopy = state;
     v9 = [v6 changeDetailsWithInsertedIndexRange:{location, length}];
-    [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites]+ length initialState:v8 modifyState:0];
+    [(PXGLayout *)self applySpriteChangeDetails:v9 countAfterChanges:[(PXGLayout *)self localNumberOfSprites]+ length initialState:stateCopy modifyState:0];
   }
 }
 
-- (_PXGSpriteIndexRange)addSpriteCount:(unsigned int)a3 withInitialState:(id)a4
+- (_PXGSpriteIndexRange)addSpriteCount:(unsigned int)count withInitialState:(id)state
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&count;
+  stateCopy = state;
   v7 = ([(PXGLayout *)self localNumberOfSprites]| (v4 << 32));
-  [(PXGLayout *)self addSpritesInRange:v7 initialState:v6];
+  [(PXGLayout *)self addSpritesInRange:v7 initialState:stateCopy];
 
   return v7;
 }
 
-- (void)performRepeatedSublayoutsUpdate:(id)a3
+- (void)performRepeatedSublayoutsUpdate:(id)update
 {
   ++self->_numberOfRepeatedSublayoutUpdatesInUpdatePass;
-  v3 = a3;
+  updateCopy = update;
   kdebug_trace();
-  v3[2](v3);
+  updateCopy[2](updateCopy);
 
   kdebug_trace();
 }
 
 - (void)didChangeSublayoutOrigins
 {
-  v2 = [(PXGLayout *)self superlayout];
-  [v2 didChangeSublayoutOrigins];
+  superlayout = [(PXGLayout *)self superlayout];
+  [superlayout didChangeSublayoutOrigins];
 }
 
-- (id)sublayoutAtIndex:(int64_t)a3 loadIfNeeded:(BOOL)a4
+- (id)sublayoutAtIndex:(int64_t)index loadIfNeeded:(BOOL)needed
 {
   v12 = 0;
   v13 = &v12;
@@ -5760,15 +5760,15 @@ uint64_t __81__PXGLayout_applySpriteChangeDetails_countAfterChanges_initialState
   v15 = __Block_byref_object_copy__14725;
   v16 = __Block_byref_object_dispose__14726;
   v17 = 0;
-  v7 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke;
   v10[3] = &unk_2782AAA10;
-  v11 = a4;
+  neededCopy = needed;
   v10[4] = self;
   v10[5] = &v12;
-  [v7 enumerateSublayoutGeometriesInRange:a3 options:1 usingBlock:{0, v10}];
+  [sublayoutDataStore enumerateSublayoutGeometriesInRange:index options:1 usingBlock:{0, v10}];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -5822,53 +5822,53 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)insertSublayoutProvider:(id)a3 atIndexes:(id)a4
+- (void)insertSublayoutProvider:(id)provider atIndexes:(id)indexes
 {
-  v6 = a3;
+  providerCopy = provider;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__PXGLayout_insertSublayoutProvider_atIndexes___block_invoke;
   v8[3] = &unk_2782AA9E8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a4 enumerateRangesUsingBlock:v8];
+  v9 = providerCopy;
+  v7 = providerCopy;
+  [indexes enumerateRangesUsingBlock:v8];
 }
 
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  providerCopy = provider;
   [(PXGLayout *)self invalidateVersion];
   [(PXGLayout *)self _ensureSublayoutDataStore];
-  v8 = [(PXGLayout *)self sublayoutDataStore];
-  [v8 insertSublayoutProvider:v7 inRange:{location, length}];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  [sublayoutDataStore insertSublayoutProvider:providerCopy inRange:{location, length}];
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 superlayout];
+  sublayoutCopy = sublayout;
+  superlayout = [sublayoutCopy superlayout];
 
-  if (v10 != self)
+  if (superlayout != self)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    v18 = [v9 superlayout];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1324 description:{@"unexpected superlayout of removed sublayout (sublayout=%@, superlayout=%@, self=%@)", v9, v18, self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    superlayout2 = [sublayoutCopy superlayout];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1324 description:{@"unexpected superlayout of removed sublayout (sublayout=%@, superlayout=%@, self=%@)", sublayoutCopy, superlayout2, self}];
   }
 
-  [v9 _recursivelyResetHiddenSpriteIndexes];
-  [v9 setSuperlayout:0];
-  [v9 setAxNextResponder:0];
-  [v9 setEntityManager:0];
+  [sublayoutCopy _recursivelyResetHiddenSpriteIndexes];
+  [sublayoutCopy setSuperlayout:0];
+  [sublayoutCopy setAxNextResponder:0];
+  [sublayoutCopy setEntityManager:0];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v9 interactions];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  interactions = [sublayoutCopy interactions];
+  v12 = [interactions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -5879,7 +5879,7 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(interactions);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
@@ -5887,117 +5887,117 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
         [v16 setView:0];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [interactions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
   }
 
-  self->_numberOfDescendantAnchors -= [v9 numberOfDescendantAnchors];
-  [(NSMutableSet *)self->_sublayoutsExpectedToBeUpdatedInUpdatePass removeObject:v9];
-  [(PXGLayout *)self axRemoveSubgroupForSublayout:v9 atIndex:a4 flags:a5];
+  self->_numberOfDescendantAnchors -= [sublayoutCopy numberOfDescendantAnchors];
+  [(NSMutableSet *)self->_sublayoutsExpectedToBeUpdatedInUpdatePass removeObject:sublayoutCopy];
+  [(PXGLayout *)self axRemoveSubgroupForSublayout:sublayoutCopy atIndex:index flags:flags];
 }
 
-- (void)didAddSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)didAddSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
-  v13 = a3;
-  [v13[4] removeAllObjects];
-  if ([v13 needsUpdate])
+  sublayoutCopy = sublayout;
+  [sublayoutCopy[4] removeAllObjects];
+  if ([sublayoutCopy needsUpdate])
   {
-    [(PXGLayout *)self sublayoutNeedsUpdate:v13];
+    [(PXGLayout *)self sublayoutNeedsUpdate:sublayoutCopy];
   }
 
-  self->_numberOfDescendantAnchors += [v13 numberOfDescendantAnchors];
-  v8 = [(PXGLayout *)self rootLayout];
-  v9 = [v13 animations];
-  [v8 _addAnimations:v9];
+  self->_numberOfDescendantAnchors += [sublayoutCopy numberOfDescendantAnchors];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  animations = [sublayoutCopy animations];
+  [rootLayout _addAnimations:animations];
 
-  [v13 removeAllAnimations];
-  v10 = [(PXGLayout *)self rootLayout];
-  v11 = [v13 fences];
-  [v10 _addFences:v11];
+  [sublayoutCopy removeAllAnimations];
+  rootLayout2 = [(PXGLayout *)self rootLayout];
+  fences = [sublayoutCopy fences];
+  [rootLayout2 _addFences:fences];
 
-  [v13 removeAllFences];
-  v12 = [(PXGLayout *)self viewEnvironment];
-  [v13 setViewEnvironment:v12];
+  [sublayoutCopy removeAllFences];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
+  [sublayoutCopy setViewEnvironment:viewEnvironment];
 
-  [(PXGLayout *)self axAddSubgroupForSublayout:v13 atIndex:a4 flags:a5];
+  [(PXGLayout *)self axAddSubgroupForSublayout:sublayoutCopy atIndex:index flags:flags];
 }
 
-- (void)_willAddSublayout:(id)a3
+- (void)_willAddSublayout:(id)sublayout
 {
-  v4 = a3;
-  [v4 setSuperlayout:self];
-  v5 = [(PXGLayout *)self layoutQueue];
-  [v4 setLayoutQueue:v5];
+  sublayoutCopy = sublayout;
+  [sublayoutCopy setSuperlayout:self];
+  layoutQueue = [(PXGLayout *)self layoutQueue];
+  [sublayoutCopy setLayoutQueue:layoutQueue];
 
-  [v4 setAxNextResponder:self];
-  v6 = [(PXGLayout *)self mediaProvider];
-  [v4 setMediaProvider:v6];
+  [sublayoutCopy setAxNextResponder:self];
+  mediaProvider = [(PXGLayout *)self mediaProvider];
+  [sublayoutCopy setMediaProvider:mediaProvider];
 
-  v7 = [(PXGLayout *)self entityManager];
-  [v4 setEntityManager:v7];
+  entityManager = [(PXGLayout *)self entityManager];
+  [sublayoutCopy setEntityManager:entityManager];
 }
 
-- (void)willFaultOutSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)willFaultOutSublayout:(id)sublayout atIndex:(int64_t)index
 {
   v6 = MEMORY[0x277D3CCC8];
-  v8 = a3;
-  v7 = [v6 changeDetailsWithRemovedIndexRange:{0, objc_msgSend(v8, "numberOfSprites")}];
-  [(PXGLayout *)self sublayout:v8 didApplySpriteChangeDetails:v7 fromDescendentSublayout:v8];
+  sublayoutCopy = sublayout;
+  v7 = [v6 changeDetailsWithRemovedIndexRange:{0, objc_msgSend(sublayoutCopy, "numberOfSprites")}];
+  [(PXGLayout *)self sublayout:sublayoutCopy didApplySpriteChangeDetails:v7 fromDescendentSublayout:sublayoutCopy];
 
-  [(PXGLayout *)self willRemoveSublayout:v8 atIndex:a4 flags:1];
+  [(PXGLayout *)self willRemoveSublayout:sublayoutCopy atIndex:index flags:1];
 }
 
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  [v10 setEstimatedContentSize:{width, height}];
-  [(PXGLayout *)self _willAddSublayout:v10];
-  v9 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, objc_msgSend(v10, "numberOfSprites")}];
-  [(PXGLayout *)self sublayout:v10 didApplySpriteChangeDetails:v9 fromDescendentSublayout:v10];
+  height = size.height;
+  width = size.width;
+  sublayoutCopy = sublayout;
+  [sublayoutCopy setEstimatedContentSize:{width, height}];
+  [(PXGLayout *)self _willAddSublayout:sublayoutCopy];
+  v9 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, objc_msgSend(sublayoutCopy, "numberOfSprites")}];
+  [(PXGLayout *)self sublayout:sublayoutCopy didApplySpriteChangeDetails:v9 fromDescendentSublayout:sublayoutCopy];
 
-  [(PXGLayout *)self didAddSublayout:v10 atIndex:a4 flags:1];
+  [(PXGLayout *)self didAddSublayout:sublayoutCopy atIndex:index flags:1];
 }
 
-- (void)didApplySublayoutChangeDetails:(id)a3 axAdjustedSubgroupChangeDetails:(id)a4 countAfterChanges:(int64_t)a5
+- (void)didApplySublayoutChangeDetails:(id)details axAdjustedSubgroupChangeDetails:(id)changeDetails countAfterChanges:(int64_t)changes
 {
-  v6 = a4;
-  v7 = [(PXGLayout *)self axGroup];
-  [v7 updateSubgroupsWithChangeDetails:v6];
+  changeDetailsCopy = changeDetails;
+  axGroup = [(PXGLayout *)self axGroup];
+  [axGroup updateSubgroupsWithChangeDetails:changeDetailsCopy];
 }
 
-- (void)applySublayoutChangeDetails:(id)a3 countAfterChanges:(int64_t)a4 sublayoutProvider:(id)a5
+- (void)applySublayoutChangeDetails:(id)details countAfterChanges:(int64_t)changes sublayoutProvider:(id)provider
 {
   v67 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PXGLayout *)self sublayoutDataStore];
-  v12 = [v11 count];
-  if ([v9 hasIncrementalChanges])
+  detailsCopy = details;
+  providerCopy = provider;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v12 = [sublayoutDataStore count];
+  if ([detailsCopy hasIncrementalChanges])
   {
-    v13 = [v9 insertedIndexes];
-    v14 = [v13 count] + v12;
-    v15 = [v9 removedIndexes];
-    v16 = v14 - [v15 count];
+    insertedIndexes = [detailsCopy insertedIndexes];
+    v14 = [insertedIndexes count] + v12;
+    removedIndexes = [detailsCopy removedIndexes];
+    v16 = v14 - [removedIndexes count];
 
-    if (v16 != a4)
+    if (v16 != changes)
     {
-      v48 = [MEMORY[0x277CCA890] currentHandler];
-      [v48 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1214 description:{@"Invalid parameter not satisfying: %@", @"countBeforeChange + sublayoutChangeDetails.insertedIndexes.count - sublayoutChangeDetails.removedIndexes.count == countAfterChanges"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1214 description:{@"Invalid parameter not satisfying: %@", @"countBeforeChange + sublayoutChangeDetails.insertedIndexes.count - sublayoutChangeDetails.removedIndexes.count == countAfterChanges"}];
     }
 
-    v17 = [v9 removedIndexes];
-    [(PXGLayout *)self removeSublayoutsAtIndexes:v17];
+    removedIndexes2 = [detailsCopy removedIndexes];
+    [(PXGLayout *)self removeSublayoutsAtIndexes:removedIndexes2];
 
-    v18 = [v9 insertedIndexes];
-    [(PXGLayout *)self insertSublayoutProvider:v10 atIndexes:v18];
+    insertedIndexes2 = [detailsCopy insertedIndexes];
+    [(PXGLayout *)self insertSublayoutProvider:providerCopy atIndexes:insertedIndexes2];
 
-    if ([v9 hasMoves])
+    if ([detailsCopy hasMoves])
     {
-      v53 = v10;
+      v53 = providerCopy;
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __77__PXGLayout_applySublayoutChangeDetails_countAfterChanges_sublayoutProvider___block_invoke;
@@ -6007,9 +6007,9 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
       v20 = MEMORY[0x21CEE40A0](v65);
       v21 = (v20 + 16);
       v22 = (*(v20 + 16))();
-      v23 = [v9 movesFromIndexes];
-      v24 = [v9 movesToIndexes];
-      [v11 moveSublayoutsFromIndexes:v23 toIndexes:v24];
+      movesFromIndexes = [detailsCopy movesFromIndexes];
+      movesToIndexes = [detailsCopy movesToIndexes];
+      [sublayoutDataStore moveSublayoutsFromIndexes:movesFromIndexes toIndexes:movesToIndexes];
 
       v54 = v20;
       v25 = v20;
@@ -6031,13 +6031,13 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
       v64 = v26;
       v31 = v29;
       v63 = v31;
-      [v9 enumerateMovedIndexesUsingBlock:v59];
+      [detailsCopy enumerateMovedIndexesUsingBlock:v59];
       v32 = [v31 count];
       v50 = v30;
       if (v32 != [v30 count])
       {
-        v49 = [MEMORY[0x277CCA890] currentHandler];
-        [v49 handleFailureInMethod:v26 object:self file:@"PXGLayout.m" lineNumber:1254 description:@"Count mismatch"];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:v26 object:self file:@"PXGLayout.m" lineNumber:1254 description:@"Count mismatch"];
       }
 
       [v31 count];
@@ -6048,7 +6048,7 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
       v58 = 0u;
       v34 = v31;
       v35 = [v34 countByEnumeratingWithState:&v55 objects:v66 count:16];
-      v10 = v53;
+      providerCopy = v53;
       if (v35)
       {
         v36 = v35;
@@ -6073,37 +6073,37 @@ void __43__PXGLayout_sublayoutAtIndex_loadIfNeeded___block_invoke(uint64_t a1, u
 
       v39 = [objc_alloc(MEMORY[0x277D3CCC8]) initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:v50 movesFromIndexes:v33 changedIndexes:0];
       CFRelease(v33);
-      v40 = [(PXGLayout *)self superlayout];
-      v41 = v40;
-      if (v40)
+      superlayout = [(PXGLayout *)self superlayout];
+      v41 = superlayout;
+      if (superlayout)
       {
-        v42 = v40;
+        selfCopy = superlayout;
       }
 
       else
       {
-        v42 = self;
+        selfCopy = self;
       }
 
-      v43 = v42;
+      v43 = selfCopy;
 
       [(PXGLayout *)v43 sublayout:self didApplySpriteChangeDetails:v39 fromDescendentSublayout:self];
     }
 
     v44 = objc_alloc(MEMORY[0x277D3CCC8]);
-    v45 = [v9 insertedIndexes];
-    v46 = [v9 movesToIndexes];
-    v47 = [v44 initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:v45 movesToIndexes:v46 movesFromIndexes:objc_msgSend(v9 changedIndexes:{"movesFromIndexes"), 0}];
+    insertedIndexes3 = [detailsCopy insertedIndexes];
+    movesToIndexes2 = [detailsCopy movesToIndexes];
+    v47 = [v44 initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:insertedIndexes3 movesToIndexes:movesToIndexes2 movesFromIndexes:objc_msgSend(detailsCopy changedIndexes:{"movesFromIndexes"), 0}];
   }
 
   else
   {
     [(PXGLayout *)self removeSublayoutsInRange:0, v12];
-    [(PXGLayout *)self insertSublayoutProvider:v10 inRange:0, a4];
-    v47 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, a4}];
+    [(PXGLayout *)self insertSublayoutProvider:providerCopy inRange:0, changes];
+    v47 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, changes}];
   }
 
-  [(PXGLayout *)self didApplySublayoutChangeDetails:v9 axAdjustedSubgroupChangeDetails:v47 countAfterChanges:a4];
+  [(PXGLayout *)self didApplySublayoutChangeDetails:detailsCopy axAdjustedSubgroupChangeDetails:v47 countAfterChanges:changes];
 }
 
 id __77__PXGLayout_applySublayoutChangeDetails_countAfterChanges_sublayoutProvider___block_invoke(uint64_t a1)
@@ -6177,29 +6177,29 @@ void __77__PXGLayout_applySublayoutChangeDetails_countAfterChanges_sublayoutProv
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (void)removeSublayoutsAtIndexes:(id)a3
+- (void)removeSublayoutsAtIndexes:(id)indexes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__PXGLayout_removeSublayoutsAtIndexes___block_invoke;
   v3[3] = &unk_2782AA948;
   v3[4] = self;
-  [a3 enumerateRangesWithOptions:2 usingBlock:v3];
+  [indexes enumerateRangesWithOptions:2 usingBlock:v3];
 }
 
-- (void)removeSublayoutsInRange:(_NSRange)a3
+- (void)removeSublayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(PXGLayout *)self invalidateVersion];
-  v6 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__PXGLayout_removeSublayoutsInRange___block_invoke;
   v7[3] = &unk_2782AA878;
   v7[4] = self;
-  [v6 enumerateSublayoutsInRange:location options:length usingBlock:{2, v7}];
-  [v6 removeSublayoutsInRange:{location, length}];
+  [sublayoutDataStore enumerateSublayoutsInRange:location options:length usingBlock:{2, v7}];
+  [sublayoutDataStore removeSublayoutsInRange:{location, length}];
 }
 
 void __37__PXGLayout_removeSublayoutsInRange___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -6213,59 +6213,59 @@ void __37__PXGLayout_removeSublayoutsInRange___block_invoke(uint64_t a1, uint64_
   [*(a1 + 32) willRemoveSublayout:v8 atIndex:a2 flags:0];
 }
 
-- (int64_t)indexOfSublayout:(id)a3
+- (int64_t)indexOfSublayout:(id)sublayout
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self sublayoutDataStore];
-  v6 = [v5 indexOfSublayout:v4];
+  sublayoutCopy = sublayout;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  v6 = [sublayoutDataStore indexOfSublayout:sublayoutCopy];
 
   return v6;
 }
 
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v8 = a3;
-  [(PXGLayout *)self _willAddSublayout:v8];
+  sublayoutCopy = sublayout;
+  [(PXGLayout *)self _willAddSublayout:sublayoutCopy];
   [(PXGLayout *)self _ensureSublayoutDataStore];
-  v6 = [(PXGLayout *)self sublayoutDataStore];
-  [v6 insertSublayout:v8 atIndex:a4];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  [sublayoutDataStore insertSublayout:sublayoutCopy atIndex:index];
 
-  v7 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, objc_msgSend(v8, "numberOfSprites")}];
-  [(PXGLayout *)self sublayout:v8 didApplySpriteChangeDetails:v7 fromDescendentSublayout:v8];
+  v7 = [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, objc_msgSend(sublayoutCopy, "numberOfSprites")}];
+  [(PXGLayout *)self sublayout:sublayoutCopy didApplySpriteChangeDetails:v7 fromDescendentSublayout:sublayoutCopy];
 
-  [(PXGLayout *)self didAddSublayout:v8 atIndex:a4 flags:0];
+  [(PXGLayout *)self didAddSublayout:sublayoutCopy atIndex:index flags:0];
 }
 
-- (int64_t)addSublayout:(id)a3
+- (int64_t)addSublayout:(id)sublayout
 {
-  v5 = a3;
-  if (v5 == self)
+  sublayoutCopy = sublayout;
+  if (sublayoutCopy == self)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"sublayout != self"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1159 description:{@"Invalid parameter not satisfying: %@", @"sublayout != self"}];
   }
 
-  v6 = [(PXGLayout *)self numberOfSublayouts];
-  [(PXGLayout *)self insertSublayout:v5 atIndex:v6];
+  numberOfSublayouts = [(PXGLayout *)self numberOfSublayouts];
+  [(PXGLayout *)self insertSublayout:sublayoutCopy atIndex:numberOfSublayouts];
 
-  return v6;
+  return numberOfSublayouts;
 }
 
-- (void)_invalidateStyleOfSpritesWithIndexes:(id)a3
+- (void)_invalidateStyleOfSpritesWithIndexes:(id)indexes
 {
-  v15 = a3;
-  v5 = [v15 count];
-  v6 = v15;
+  indexesCopy = indexes;
+  v5 = [indexesCopy count];
+  v6 = indexesCopy;
   if (v5)
   {
-    v7 = [v15 lastIndex];
-    if (v7 >= [(PXGLayout *)self localNumberOfSprites])
+    lastIndex = [indexesCopy lastIndex];
+    if (lastIndex >= [(PXGLayout *)self localNumberOfSprites])
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1132 description:{@"Invalid parameter not satisfying: %@", @"indexSet.lastIndex < self.localNumberOfSprites"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:1132 description:{@"Invalid parameter not satisfying: %@", @"indexSet.lastIndex < self.localNumberOfSprites"}];
     }
 
-    v8 = [v15 mutableCopy];
+    v8 = [indexesCopy mutableCopy];
     v9 = v8;
     if (self->_spriteIndexesWithInvalidatedStyle)
     {
@@ -6287,7 +6287,7 @@ LABEL_12:
         self->_updateFlags.needsUpdate = needsUpdate | 1;
 LABEL_13:
 
-        v6 = v15;
+        v6 = indexesCopy;
         goto LABEL_14;
       }
     }
@@ -6306,9 +6306,9 @@ LABEL_13:
 
     if (self->_updateFlags.updated)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGLayout _invalidateStyleOfSpritesWithIndexes:]"];
-      [v13 handleFailureInFunction:v14 file:@"PXGLayout.m" lineNumber:1140 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler2 handleFailureInFunction:v14 file:@"PXGLayout.m" lineNumber:1140 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -6319,15 +6319,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setLocalHiddenSpriteIndexes:(id)a3
+- (void)setLocalHiddenSpriteIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   localHiddenSpriteIndexes = self->_localHiddenSpriteIndexes;
-  if (localHiddenSpriteIndexes != v4)
+  if (localHiddenSpriteIndexes != indexesCopy)
   {
-    v11 = v4;
-    v6 = [(NSIndexSet *)localHiddenSpriteIndexes isEqual:v4];
-    v4 = v11;
+    v11 = indexesCopy;
+    v6 = [(NSIndexSet *)localHiddenSpriteIndexes isEqual:indexesCopy];
+    indexesCopy = v11;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSIndexSet *)self->_localHiddenSpriteIndexes count];
@@ -6335,36 +6335,36 @@ LABEL_14:
       v9 = self->_localHiddenSpriteIndexes;
       self->_localHiddenSpriteIndexes = v8;
 
-      if (v7 > 0 || (v10 = [(NSIndexSet *)v11 count], v4 = v11, v10))
+      if (v7 > 0 || (v10 = [(NSIndexSet *)v11 count], indexesCopy = v11, v10))
       {
         [(PXGLayout *)self localHiddenSpriteIndexesDidChange];
-        v4 = v11;
+        indexesCopy = v11;
       }
     }
   }
 }
 
-- (void)_addHiddenSpriteIndexes:(id)a3
+- (void)_addHiddenSpriteIndexes:(id)indexes
 {
-  v7 = a3;
+  indexesCopy = indexes;
   v4 = [(NSIndexSet *)self->_localHiddenSpriteIndexes count];
   localHiddenSpriteIndexes = self->_localHiddenSpriteIndexes;
   if (localHiddenSpriteIndexes)
   {
     v6 = [(NSIndexSet *)localHiddenSpriteIndexes mutableCopy];
-    [v6 addIndexes:v7];
+    [v6 addIndexes:indexesCopy];
   }
 
   else
   {
-    v6 = [v7 copy];
+    v6 = [indexesCopy copy];
   }
 
   [(PXGLayout *)self setLocalHiddenSpriteIndexes:v6];
 
   if ([(NSIndexSet *)self->_localHiddenSpriteIndexes count]!= v4)
   {
-    [(PXGLayout *)self _invalidateStyleOfSpritesWithIndexes:v7];
+    [(PXGLayout *)self _invalidateStyleOfSpritesWithIndexes:indexesCopy];
   }
 }
 
@@ -6379,21 +6379,21 @@ LABEL_14:
   [(PXGLayout *)self setLocalHiddenSpriteIndexes:0];
 }
 
-- (void)_propagateHiddenSpriteIndexes:(id)a3
+- (void)_propagateHiddenSpriteIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self hiddenSpriteIndexes];
-  v6 = [v5 mutableCopy];
-  [v6 removeIndexes:v4];
+  indexesCopy = indexes;
+  hiddenSpriteIndexes = [(PXGLayout *)self hiddenSpriteIndexes];
+  v6 = [hiddenSpriteIndexes mutableCopy];
+  [v6 removeIndexes:indexesCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke;
   v9[3] = &unk_2782AA948;
   v9[4] = self;
   [v6 enumerateRangesUsingBlock:v9];
-  v7 = [v4 mutableCopy];
+  v7 = [indexesCopy mutableCopy];
 
-  [v7 removeIndexes:v5];
+  [v7 removeIndexes:hiddenSpriteIndexes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke_3;
@@ -6444,13 +6444,13 @@ void __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke_4(uint64_t a1,
   [v6 _addHiddenSpriteIndexes:v7];
 }
 
-- (void)hideSpritesForObjectReferences:(id)a3
+- (void)hideSpritesForObjectReferences:(id)references
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PXGLayout *)self superlayout];
+  referencesCopy = references;
+  superlayout = [(PXGLayout *)self superlayout];
 
-  if (v5)
+  if (superlayout)
   {
     v6 = PXAssertGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -6466,7 +6466,7 @@ void __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke_4(uint64_t a1,
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v4;
+  v9 = referencesCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v10)
   {
@@ -6518,12 +6518,12 @@ void __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke_4(uint64_t a1,
   [(PXGLayout *)self _propagateHiddenSpriteIndexes:v8];
 }
 
-- (void)setHiddenSpriteIndexes:(id)a3
+- (void)setHiddenSpriteIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self superlayout];
+  indexesCopy = indexes;
+  superlayout = [(PXGLayout *)self superlayout];
 
-  if (v5)
+  if (superlayout)
   {
     v6 = PXAssertGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -6538,15 +6538,15 @@ void __43__PXGLayout__propagateHiddenSpriteIndexes___block_invoke_4(uint64_t a1,
   v12 = 3221225472;
   v13 = __36__PXGLayout_setHiddenSpriteIndexes___block_invoke;
   v14 = &unk_2782AAF40;
-  v15 = self;
+  selfCopy = self;
   v8 = v7;
   v16 = v8;
-  [v4 enumerateIndexesUsingBlock:&v11];
+  [indexesCopy enumerateIndexesUsingBlock:&v11];
   spriteReferencesForHiddenSprites = self->_spriteReferencesForHiddenSprites;
   self->_spriteReferencesForHiddenSprites = v8;
   v10 = v8;
 
-  [(PXGLayout *)self _propagateHiddenSpriteIndexes:v4, v11, v12, v13, v14, v15];
+  [(PXGLayout *)self _propagateHiddenSpriteIndexes:indexesCopy, v11, v12, v13, v14, selfCopy];
 }
 
 void __36__PXGLayout_setHiddenSpriteIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -6561,18 +6561,18 @@ void __36__PXGLayout_setHiddenSpriteIndexes___block_invoke(uint64_t a1, uint64_t
 - (NSIndexSet)hiddenSpriteIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v4 = [(PXGLayout *)self numberOfSprites];
+  numberOfSprites = [(PXGLayout *)self numberOfSprites];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __32__PXGLayout_hiddenSpriteIndexes__block_invoke;
   v13 = &unk_2782AA900;
-  v5 = v4 << 32;
-  v14 = self;
+  v5 = numberOfSprites << 32;
+  selfCopy = self;
   v15 = v3;
   v6 = v3;
   [(PXGLayout *)self enumerateLayoutsForSpritesInRange:v5 options:1 usingBlock:&v10];
   v7 = objc_alloc(MEMORY[0x277CCAA78]);
-  v8 = [v7 initWithIndexSet:{v6, v10, v11, v12, v13, v14}];
+  v8 = [v7 initWithIndexSet:{v6, v10, v11, v12, v13, selfCopy}];
 
   return v8;
 }
@@ -6612,11 +6612,11 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   return [v3 addIndexesInRange:{v4, HIDWORD(v4)}];
 }
 
-- (void)setSpriteModifier:(id)a3
+- (void)setSpriteModifier:(id)modifier
 {
-  if (self->_spriteModifier != a3)
+  if (self->_spriteModifier != modifier)
   {
-    v5 = [a3 copy];
+    v5 = [modifier copy];
     spriteModifier = self->_spriteModifier;
     self->_spriteModifier = v5;
 
@@ -6626,40 +6626,40 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)setFloatingOffset:(double)a3
+- (void)setFloatingOffset:(double)offset
 {
-  if (self->_floatingOffset != a3)
+  if (self->_floatingOffset != offset)
   {
-    self->_floatingOffset = a3;
+    self->_floatingOffset = offset;
     [(PXGLayout *)self floatingOffsetDidChange];
   }
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  if (self->_floating != a3)
+  if (self->_floating != floating)
   {
-    self->_floating = a3;
+    self->_floating = floating;
     [(PXGLayout *)self floatingDidChange];
   }
 }
 
-- (void)setUserInterfaceDirection:(unint64_t)a3
+- (void)setUserInterfaceDirection:(unint64_t)direction
 {
-  if (self->_userInterfaceDirection != a3)
+  if (self->_userInterfaceDirection != direction)
   {
-    self->_userInterfaceDirection = a3;
+    self->_userInterfaceDirection = direction;
     [(PXGLayout *)self userInterfaceDirectionDidChange];
   }
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_clippingRect, a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(self->_clippingRect, rect))
   {
     self->_clippingRect.origin.x = x;
     self->_clippingRect.origin.y = y;
@@ -6670,11 +6670,11 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     [(PXGLayout *)self alphaDidChange];
     if ([(PXGLayout *)self appliesAlphaToSublayouts])
     {
@@ -6684,39 +6684,39 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)setScrollSpeedRegime:(int64_t)a3
+- (void)setScrollSpeedRegime:(int64_t)regime
 {
-  if (self->_scrollSpeedRegime != a3)
+  if (self->_scrollSpeedRegime != regime)
   {
-    self->_scrollSpeedRegime = a3;
+    self->_scrollSpeedRegime = regime;
     [(PXGLayout *)self scrollSpeedRegimeDidChange];
   }
 }
 
-- (void)setLastScrollDirection:(CGPoint)a3
+- (void)setLastScrollDirection:(CGPoint)direction
 {
-  if (a3.x != self->_lastScrollDirection.x || a3.y != self->_lastScrollDirection.y)
+  if (direction.x != self->_lastScrollDirection.x || direction.y != self->_lastScrollDirection.y)
   {
-    self->_lastScrollDirection = a3;
+    self->_lastScrollDirection = direction;
     [(PXGLayout *)self lastScrollDirectionDidChange];
   }
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     [(PXGLayout *)self displayScaleDidChange];
   }
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
     self->_safeAreaInsets.top = top;
@@ -6728,27 +6728,27 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)containingScrollViewDidScroll:(CGPoint)a3
+- (void)containingScrollViewDidScroll:(CGPoint)scroll
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXGLayout *)self sublayoutDataStore];
+  y = scroll.y;
+  x = scroll.x;
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__PXGLayout_containingScrollViewDidScroll___block_invoke;
   v6[3] = &__block_descriptor_48_e26_v32__0q8__PXGLayout_16_B24l;
   *&v6[4] = x;
   *&v6[5] = y;
-  [v5 enumerateSublayoutsUsingBlock:v6];
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v6];
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_visibleRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_visibleRect))
   {
     v8 = PXRectApproximatelyEqualToRect();
     self->_visibleRect.origin.x = x;
@@ -6763,119 +6763,119 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)setReferenceOptions:(unsigned __int16)a3
+- (void)setReferenceOptions:(unsigned __int16)options
 {
-  if (self->_referenceOptions != a3)
+  if (self->_referenceOptions != options)
   {
-    self->_referenceOptions = a3;
+    self->_referenceOptions = options;
     [(PXGLayout *)self referenceOptionsDidChange];
   }
 }
 
-- (void)setReferenceDepth:(double)a3
+- (void)setReferenceDepth:(double)depth
 {
-  if (self->_referenceDepth != a3)
+  if (self->_referenceDepth != depth)
   {
-    self->_referenceDepth = a3;
+    self->_referenceDepth = depth;
     [(PXGLayout *)self referenceDepthDidChange];
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  if (a3.width != self->_referenceSize.width || a3.height != self->_referenceSize.height)
+  if (size.width != self->_referenceSize.width || size.height != self->_referenceSize.height)
   {
-    self->_referenceSize = a3;
+    self->_referenceSize = size;
     [(PXGLayout *)self referenceSizeDidChange];
   }
 }
 
-- (void)setLayoutQueue:(id)a3
+- (void)setLayoutQueue:(id)queue
 {
-  v5 = a3;
-  if (self->_layoutQueue != v5)
+  queueCopy = queue;
+  if (self->_layoutQueue != queueCopy)
   {
-    objc_storeStrong(&self->_layoutQueue, a3);
+    objc_storeStrong(&self->_layoutQueue, queue);
     [(PXGLayout *)self layoutQueueDidChange];
-    v6 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__PXGLayout_setLayoutQueue___block_invoke;
     v7[3] = &unk_2782AA878;
-    v8 = v5;
-    [v6 enumerateSublayoutsUsingBlock:v7];
+    v8 = queueCopy;
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
   }
 }
 
-- (void)setAppearState:(unint64_t)a3
+- (void)setAppearState:(unint64_t)state
 {
-  if (self->_appearState != a3)
+  if (self->_appearState != state)
   {
-    self->_appearState = a3;
+    self->_appearState = state;
     [(PXGLayout *)self appearStateDidChange];
   }
 
-  v5 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__PXGLayout_setAppearState___block_invoke;
   v6[3] = &__block_descriptor_40_e26_v32__0q8__PXGLayout_16_B24l;
-  v6[4] = a3;
-  [v5 enumerateSublayoutsUsingBlock:v6];
+  v6[4] = state;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v6];
 }
 
-- (void)setViewEnvironment:(id)a3
+- (void)setViewEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = self->_viewEnvironment;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == environmentCopy)
   {
   }
 
   else
   {
-    v8 = [(PXGViewEnvironment *)v6 isEqual:v5];
+    v8 = [(PXGViewEnvironment *)v6 isEqual:environmentCopy];
 
     if (!v8)
     {
-      [(PXGLayout *)self viewEnvironmentWillChange:v5];
-      objc_storeStrong(&self->_viewEnvironment, a3);
+      [(PXGLayout *)self viewEnvironmentWillChange:environmentCopy];
+      objc_storeStrong(&self->_viewEnvironment, environment);
       [(PXGLayout *)self viewEnvironmentDidChange];
-      v9 = [(PXGLayout *)self sublayoutDataStore];
+      sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __32__PXGLayout_setViewEnvironment___block_invoke;
       v10[3] = &unk_2782AA878;
-      v11 = v5;
-      [v9 enumerateSublayoutsUsingBlock:v10];
+      v11 = environmentCopy;
+      [sublayoutDataStore enumerateSublayoutsUsingBlock:v10];
     }
   }
 }
 
-- (id)viewForSpriteIndex:(unsigned int)a3
+- (id)viewForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXGLayout *)self viewDelegate];
-  v6 = [v5 layout:self viewForSpriteIndex:v3];
+  v3 = *&index;
+  viewDelegate = [(PXGLayout *)self viewDelegate];
+  v6 = [viewDelegate layout:self viewForSpriteIndex:v3];
 
   return v6;
 }
 
 - (void)updateAsRootIfNeeded
 {
-  v4 = [(PXGLayout *)self rootLayout];
+  rootLayout = [(PXGLayout *)self rootLayout];
 
-  if (v4 != self)
+  if (rootLayout != self)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:737 description:{@"Invalid parameter not satisfying: %@", @"self == self.rootLayout"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:737 description:{@"Invalid parameter not satisfying: %@", @"self == self.rootLayout"}];
   }
 
   if (PXGLayoutCanInstallLayoutCompletionBlock)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:738 description:{@"Invalid parameter not satisfying: %@", @"PXGLayoutCanInstallLayoutCompletionBlock == NO"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:738 description:{@"Invalid parameter not satisfying: %@", @"PXGLayoutCanInstallLayoutCompletionBlock == NO"}];
   }
 
   PXGLayoutCanInstallLayoutCompletionBlock = 1;
@@ -6896,11 +6896,11 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
   }
 }
 
-- (void)installLayoutCompletionBlock:(id)a3
+- (void)installLayoutCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self layoutQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  layoutQueue = [(PXGLayout *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   if ((PXGLayoutCanInstallLayoutCompletionBlock & 1) == 0)
   {
@@ -6920,7 +6920,7 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
     v12[2] = __42__PXGLayout_installLayoutCompletionBlock___block_invoke;
     v12[3] = &unk_2782AB8B8;
     v13 = v7;
-    v14 = v4;
+    v14 = blockCopy;
     v8 = v7;
     v9 = [v12 copy];
     v10 = PXGLayoutLayoutCompletionBlock;
@@ -6929,7 +6929,7 @@ uint64_t __32__PXGLayout_hiddenSpriteIndexes__block_invoke_2(uint64_t a1, unsign
 
   else
   {
-    v11 = [v4 copy];
+    v11 = [blockCopy copy];
     v8 = PXGLayoutLayoutCompletionBlock;
     PXGLayoutLayoutCompletionBlock = v11;
   }
@@ -6943,11 +6943,11 @@ uint64_t __42__PXGLayout_installLayoutCompletionBlock___block_invoke(uint64_t a1
   return v2();
 }
 
-- (void)performChangesWithLocalUpdate:(id)a3
+- (void)performChangesWithLocalUpdate:(id)update
 {
   isPerformingWithLocalUpdate = self->_isPerformingWithLocalUpdate;
   self->_isPerformingWithLocalUpdate = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(update + 2))(update, a2);
   self->_isPerformingWithLocalUpdate = isPerformingWithLocalUpdate;
   if (!isPerformingWithLocalUpdate)
   {
@@ -6957,27 +6957,27 @@ uint64_t __42__PXGLayout_installLayoutCompletionBlock___block_invoke(uint64_t a1
   }
 }
 
-- (void)performSpriteStylingUpdate:(id)a3
+- (void)performSpriteStylingUpdate:(id)update
 {
   isUpdatingSpriteStyling = self->_isUpdatingSpriteStyling;
   self->_isUpdatingSpriteStyling = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(update + 2))(update, a2);
   self->_isUpdatingSpriteStyling = isUpdatingSpriteStyling;
 }
 
-- (void)updateStylingForSpritesAtIndexes:(id)a3
+- (void)updateStylingForSpritesAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PXGLayout *)self hiddenSpriteIndexes];
+  indexesCopy = indexes;
+  hiddenSpriteIndexes = [(PXGLayout *)self hiddenSpriteIndexes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__PXGLayout_updateStylingForSpritesAtIndexes___block_invoke;
   v8[3] = &unk_2782ABE78;
   v8[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v6 = v5;
-  v7 = v4;
+  v9 = indexesCopy;
+  v10 = hiddenSpriteIndexes;
+  v6 = hiddenSpriteIndexes;
+  v7 = indexesCopy;
   [(PXGLayout *)self performSpriteStylingUpdate:v8];
 }
 
@@ -7036,19 +7036,19 @@ void __22__PXGLayout_didUpdate__block_invoke()
 - (BOOL)allowsDanglingUpdatesAssertions
 {
   v2 = +[PXTungstenSettings sharedInstance];
-  v3 = [v2 enableLayoutDanglingUpdatesAssertions];
+  enableLayoutDanglingUpdatesAssertions = [v2 enableLayoutDanglingUpdatesAssertions];
 
-  return v3;
+  return enableLayoutDanglingUpdatesAssertions;
 }
 
-- (void)_setNeedsUpdateExternally:(BOOL)a3
+- (void)_setNeedsUpdateExternally:(BOOL)externally
 {
   v11 = *MEMORY[0x277D85DE8];
   if (!self->_isPerformingWithLocalUpdate)
   {
     if (self->_isUpdating)
     {
-      if (a3 && !self->_isUpdatingAnchoring)
+      if (externally && !self->_isUpdatingAnchoring)
       {
         self->_needsUpdate = 1;
         if ([(PXGLayout *)self allowsDanglingUpdatesAssertions])
@@ -7059,7 +7059,7 @@ void __22__PXGLayout_didUpdate__block_invoke()
             if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
             {
               v9 = 138412290;
-              v10 = self;
+              selfCopy = self;
               _os_log_error_impl(&dword_21AD38000, v4, OS_LOG_TYPE_ERROR, "setNeedsUpdate called while performing update pass on %@", &v9, 0xCu);
             }
           }
@@ -7072,35 +7072,35 @@ void __22__PXGLayout_didUpdate__block_invoke()
       self->_needsUpdate = 1;
     }
 
-    v5 = [(PXGLayout *)self superlayout];
-    [v5 sublayoutNeedsUpdate:self];
+    superlayout = [(PXGLayout *)self superlayout];
+    [superlayout sublayoutNeedsUpdate:self];
 
-    v6 = [(PXGLayout *)self rootLayout];
-    v7 = [v6 updateDelegate];
-    [v7 layoutNeedsUpdate:v6];
+    rootLayout = [(PXGLayout *)self rootLayout];
+    updateDelegate = [rootLayout updateDelegate];
+    [updateDelegate layoutNeedsUpdate:rootLayout];
 
-    v8 = [(PXGLayout *)self activeAnchor];
-    [v8 setNeedsUpdate:1];
+    activeAnchor = [(PXGLayout *)self activeAnchor];
+    [activeAnchor setNeedsUpdate:1];
   }
 }
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v3 = [(PXGLayout *)self scrollDelegate];
-  v4 = [v3 contentCoordinateSpaceForLayout:self];
+  scrollDelegate = [(PXGLayout *)self scrollDelegate];
+  v4 = [scrollDelegate contentCoordinateSpaceForLayout:self];
 
   return v4;
 }
 
-- (unsigned)convertSpriteIndex:(unsigned int)a3 fromLayout:(id)a4
+- (unsigned)convertSpriteIndex:(unsigned int)index fromLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [(PXGLayout *)self ancestorSharedWithLayout:v6];
+  v4 = *&index;
+  layoutCopy = layout;
+  v7 = [(PXGLayout *)self ancestorSharedWithLayout:layoutCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 convertSpriteIndex:objc_msgSend(v7 toDescendantLayout:{"convertSpriteIndex:fromDescendantLayout:", v4, v6), self}];
+    v9 = [v7 convertSpriteIndex:objc_msgSend(v7 toDescendantLayout:{"convertSpriteIndex:fromDescendantLayout:", v4, layoutCopy), self}];
   }
 
   else
@@ -7111,71 +7111,71 @@ void __22__PXGLayout_didUpdate__block_invoke()
   return v9;
 }
 
-- (id)ancestorSharedWithLayout:(id)a3
+- (id)ancestorSharedWithLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  if (v5)
+  layoutCopy = layout;
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
-      v6 = v4;
-      if (v4)
+      v6 = layoutCopy;
+      if (layoutCopy)
       {
         break;
       }
 
 LABEL_6:
-      v9 = [(PXGLayout *)v5 superlayout];
+      superlayout = [(PXGLayout *)selfCopy superlayout];
 
-      v5 = v9;
-      if (!v9)
+      selfCopy = superlayout;
+      if (!superlayout)
       {
         goto LABEL_9;
       }
     }
 
     v7 = v6;
-    while (v5 != v7)
+    while (selfCopy != v7)
     {
-      v8 = [(PXGLayout *)v7 superlayout];
+      superlayout2 = [(PXGLayout *)v7 superlayout];
 
-      v7 = v8;
-      if (!v8)
+      v7 = superlayout2;
+      if (!superlayout2)
       {
         goto LABEL_6;
       }
     }
 
-    v5 = v5;
+    selfCopy = selfCopy;
   }
 
 LABEL_9:
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)isDescendantOfLayout:(id)a3
+- (BOOL)isDescendantOfLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  for (i = v5 != 0; v6 != v4 && v6; i = v6 != 0)
+  layoutCopy = layout;
+  selfCopy = self;
+  superlayout = selfCopy;
+  for (i = selfCopy != 0; superlayout != layoutCopy && superlayout; i = superlayout != 0)
   {
-    v8 = v6;
-    v6 = [v6 superlayout];
+    v8 = superlayout;
+    superlayout = [superlayout superlayout];
   }
 
   return i;
 }
 
-- (CGPoint)_offsetToDescendantLayout:(id)a3
+- (CGPoint)_offsetToDescendantLayout:(id)layout
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
-  v7 = v4;
+  v7 = layoutCopy;
   v8 = v7;
   if (v7 == self)
   {
@@ -7202,11 +7202,11 @@ LABEL_9:
       v20 = 0u;
       v21 = 0u;
       memset(v19, 0, sizeof(v19));
-      v12 = [(PXGLayout *)v10 sublayoutDataStore];
-      v13 = v12;
-      if (v12)
+      sublayoutDataStore = [(PXGLayout *)v10 sublayoutDataStore];
+      v13 = sublayoutDataStore;
+      if (sublayoutDataStore)
       {
-        [v12 geometryForSublayout:v9];
+        [sublayoutDataStore geometryForSublayout:v9];
       }
 
       else
@@ -7265,9 +7265,9 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromDescendantLayout:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromDescendantLayout:(id)layout
 {
-  [(PXGLayout *)self convertRect:a4 fromDescendantLayout:a3.x, a3.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+  [(PXGLayout *)self convertRect:layout fromDescendantLayout:point.x, point.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   x = v10.origin.x;
   y = v10.origin.y;
   IsNull = CGRectIsNull(v10);
@@ -7284,9 +7284,9 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toDescendantLayout:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toDescendantLayout:(id)layout
 {
-  [(PXGLayout *)self convertRect:a4 toDescendantLayout:a3.x, a3.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+  [(PXGLayout *)self convertRect:layout toDescendantLayout:point.x, point.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   x = v10.origin.x;
   y = v10.origin.y;
   IsNull = CGRectIsNull(v10);
@@ -7303,9 +7303,9 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromLayout:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromLayout:(id)layout
 {
-  [(PXGLayout *)self convertRect:a4 fromLayout:a3.x, a3.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+  [(PXGLayout *)self convertRect:layout fromLayout:point.x, point.y, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   x = v10.origin.x;
   y = v10.origin.y;
   IsNull = CGRectIsNull(v10);
@@ -7322,18 +7322,18 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromLayout:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PXGLayout *)self ancestorSharedWithLayout:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
+  v10 = [(PXGLayout *)self ancestorSharedWithLayout:layoutCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 convertRect:v9 fromDescendantLayout:{x, y, width, height}];
+    [v10 convertRect:layoutCopy fromDescendantLayout:{x, y, width, height}];
     [v11 convertRect:self toDescendantLayout:?];
     v13 = v12;
     v15 = v14;
@@ -7360,13 +7360,13 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromDescendantLayout:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromDescendantLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
   v20 = *(MEMORY[0x277CBF398] + 8);
   v21 = *MEMORY[0x277CBF398];
   v10 = *(MEMORY[0x277CBF398] + 16);
@@ -7377,7 +7377,7 @@ LABEL_13:
   v22.size.height = height;
   if (!CGRectIsNull(v22))
   {
-    [(PXGLayout *)self _offsetToDescendantLayout:v9];
+    [(PXGLayout *)self _offsetToDescendantLayout:layoutCopy];
     v13 = v12;
     v15 = v14;
     if ((PXPointIsNull() & 1) == 0)
@@ -7405,13 +7405,13 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toDescendantLayout:(id)a4
+- (CGRect)convertRect:(CGRect)rect toDescendantLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutCopy = layout;
   v10 = *MEMORY[0x277CBF398];
   v11 = *(MEMORY[0x277CBF398] + 8);
   v12 = *(MEMORY[0x277CBF398] + 16);
@@ -7422,7 +7422,7 @@ LABEL_13:
   v22.size.height = height;
   if (!CGRectIsNull(v22))
   {
-    [(PXGLayout *)self _offsetToDescendantLayout:v9];
+    [(PXGLayout *)self _offsetToDescendantLayout:layoutCopy];
     v20 = v15;
     v21 = v14;
     if ((PXPointIsNull() & 1) == 0)
@@ -7450,28 +7450,28 @@ LABEL_13:
   return result;
 }
 
-- (id)convertSpriteIndexes:(id)a3 fromDescendantLayout:(id)a4
+- (id)convertSpriteIndexes:(id)indexes fromDescendantLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  indexesCopy = indexes;
+  layoutCopy = layout;
+  v9 = layoutCopy;
+  if (layoutCopy)
   {
-    v10 = v8;
+    v10 = layoutCopy;
     if (v10 != self)
     {
-      v11 = v10;
+      superlayout = v10;
       do
       {
-        v12 = v11;
-        v11 = [(PXGLayout *)v11 superlayout];
-        v13 = [(PXGLayout *)v11 spriteDataStore];
-        v14 = [v13 count];
-        v15 = [(PXGLayout *)v11 sublayoutDataStore];
-        v16 = [v15 spriteIndexOriginForSublayout:v12];
+        v12 = superlayout;
+        superlayout = [(PXGLayout *)superlayout superlayout];
+        spriteDataStore = [(PXGLayout *)superlayout spriteDataStore];
+        v14 = [spriteDataStore count];
+        sublayoutDataStore = [(PXGLayout *)superlayout sublayoutDataStore];
+        v16 = [sublayoutDataStore spriteIndexOriginForSublayout:v12];
       }
 
-      while (v11 != self && v11);
+      while (superlayout != self && superlayout);
       v17 = (v16 + v14);
       goto LABEL_7;
     }
@@ -7479,13 +7479,13 @@ LABEL_13:
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"descendantLayout"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"descendantLayout"}];
 
     if (self)
     {
       v17 = 0;
-      v11 = 0;
+      superlayout = 0;
 LABEL_7:
       v18 = objc_alloc_init(MEMORY[0x277CCAB58]);
       v22[0] = MEMORY[0x277D85DD0];
@@ -7495,44 +7495,44 @@ LABEL_7:
       v24 = v17;
       v19 = v18;
       v23 = v19;
-      [v7 enumerateRangesUsingBlock:v22];
+      [indexesCopy enumerateRangesUsingBlock:v22];
 
       goto LABEL_11;
     }
   }
 
-  v19 = v7;
-  v11 = v9;
+  v19 = indexesCopy;
+  superlayout = v9;
 LABEL_11:
 
   return v19;
 }
 
-- (_PXGSpriteIndexRange)convertSpriteIndexRange:(_PXGSpriteIndexRange)a3 fromDescendantLayout:(id)a4
+- (_PXGSpriteIndexRange)convertSpriteIndexRange:(_PXGSpriteIndexRange)range fromDescendantLayout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v8 = 0;
   location = 0xFFFFFFFFLL;
-  if (a3.location != -1 && v6)
+  if (range.location != -1 && layoutCopy)
   {
-    v10 = HIDWORD(*&a3);
-    v11 = v6;
+    v10 = HIDWORD(*&range);
+    v11 = layoutCopy;
     if (v11 != self)
     {
       while (1)
       {
-        v12 = [(PXGLayout *)v11 superlayout];
-        if (!v12)
+        superlayout = [(PXGLayout *)v11 superlayout];
+        if (!superlayout)
         {
           break;
         }
 
-        v13 = v12;
-        v14 = [(PXGLayout *)v12 spriteDataStore];
-        v15 = [v14 count];
-        v16 = [(PXGLayout *)v13 sublayoutDataStore];
-        a3.location += v15 + [v16 spriteIndexOriginForSublayout:v11];
+        v13 = superlayout;
+        spriteDataStore = [(PXGLayout *)superlayout spriteDataStore];
+        v15 = [spriteDataStore count];
+        sublayoutDataStore = [(PXGLayout *)v13 sublayoutDataStore];
+        range.location += v15 + [sublayoutDataStore spriteIndexOriginForSublayout:v11];
 
         v11 = v13;
         if (v13 == self)
@@ -7543,40 +7543,40 @@ LABEL_11:
       }
 
       v10 = 0;
-      a3.location = -1;
+      range.location = -1;
     }
 
 LABEL_8:
 
     v8 = v10 << 32;
-    location = a3.location;
+    location = range.location;
   }
 
   return (v8 | location);
 }
 
-- (unsigned)convertSpriteIndex:(unsigned int)a3 toDescendantLayout:(id)a4
+- (unsigned)convertSpriteIndex:(unsigned int)index toDescendantLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
+  v4 = *&index;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   v8 = -1;
-  if (v4 != -1 && v6)
+  if (v4 != -1 && layoutCopy)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = -1;
-    if (v6 == self)
+    if (layoutCopy == self)
     {
       v20 = v4;
     }
 
     else
     {
-      v9 = [(PXGLayout *)v6 superlayout];
+      superlayout = [(PXGLayout *)layoutCopy superlayout];
 
-      if (v9 == self)
+      if (superlayout == self)
       {
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
@@ -7589,14 +7589,14 @@ LABEL_8:
 
       else
       {
-        v10 = [(PXGLayout *)v7 superlayout];
-        if (v10)
+        superlayout2 = [(PXGLayout *)v7 superlayout];
+        if (superlayout2)
         {
-          v11 = [(PXGLayout *)self convertSpriteIndex:v4 toDescendantLayout:v10];
+          v11 = [(PXGLayout *)self convertSpriteIndex:v4 toDescendantLayout:superlayout2];
           *(v18 + 6) = v11;
           if (v11 != -1)
           {
-            v12 = [v10 convertSpriteIndex:v11 toDescendantLayout:v7];
+            v12 = [superlayout2 convertSpriteIndex:v11 toDescendantLayout:v7];
             *(v18 + 6) = v12;
           }
         }
@@ -7621,14 +7621,14 @@ uint64_t __51__PXGLayout_convertSpriteIndex_toDescendantLayout___block_invoke(ui
   return result;
 }
 
-- (void)enumerateLayoutsForSpritesInRange:(_PXGSpriteIndexRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateLayoutsForSpritesInRange:(_PXGSpriteIndexRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(PXGLayout *)self spriteDataStore];
+  blockCopy = block;
+  spriteDataStore = [(PXGLayout *)self spriteDataStore];
   v20 = 0;
-  v10 = [v9 count];
+  v10 = [spriteDataStore count];
   v11 = v10;
-  if (!HIDWORD(*&a3))
+  if (!HIDWORD(*&range))
   {
     goto LABEL_8;
   }
@@ -7638,8 +7638,8 @@ uint64_t __51__PXGLayout_convertSpriteIndex_toDescendantLayout___block_invoke(ui
     goto LABEL_8;
   }
 
-  v12 = a3.length + a3.location;
-  if (!(a3.length + a3.location) || v10 <= a3.location)
+  v12 = range.length + range.location;
+  if (!(range.length + range.location) || v10 <= range.location)
   {
     goto LABEL_8;
   }
@@ -7649,7 +7649,7 @@ uint64_t __51__PXGLayout_convertSpriteIndex_toDescendantLayout___block_invoke(ui
     v12 = v10;
   }
 
-  v8[2](v8, a3.location | ((v12 - a3.location) << 32), self, &v20);
+  blockCopy[2](blockCopy, range.location | ((v12 - range.location) << 32), self, &v20);
   if ((v20 & 1) == 0)
   {
 LABEL_8:
@@ -7658,16 +7658,16 @@ LABEL_8:
     v19[2] = 0x2810000000;
     v19[3] = "";
     v19[4] = v11;
-    v13 = [(PXGLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___block_invoke;
     v14[3] = &unk_2782AA828;
-    v17 = a4;
-    v18 = a3;
+    optionsCopy = options;
+    rangeCopy = range;
     v16 = v19;
-    v15 = v8;
-    [v13 enumerateSublayoutsUsingBlock:v14];
+    v15 = blockCopy;
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v14];
 
     _Block_object_dispose(v19, 8);
   }
@@ -7741,9 +7741,9 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
   return result;
 }
 
-- (void)setSuperlayout:(id)a3
+- (void)setSuperlayout:(id)superlayout
 {
-  obj = a3;
+  obj = superlayout;
   WeakRetained = objc_loadWeakRetained(&self->_superlayout);
 
   v5 = obj;
@@ -7755,60 +7755,60 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
   }
 }
 
-- (void)setEntityManager:(id)a3
+- (void)setEntityManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   entityManager = self->_entityManager;
-  if (entityManager != v5)
+  if (entityManager != managerCopy)
   {
-    v16 = v5;
-    v7 = [(PXGLayout *)self spriteDataStore];
-    v8 = [v7 entities];
-    v9 = [(PXGLayout *)self spriteDataStore];
-    -[PXGEntityManager destroyEntities:count:](entityManager, "destroyEntities:count:", v8, [v9 count]);
+    v16 = managerCopy;
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    entities = [spriteDataStore entities];
+    spriteDataStore2 = [(PXGLayout *)self spriteDataStore];
+    -[PXGEntityManager destroyEntities:count:](entityManager, "destroyEntities:count:", entities, [spriteDataStore2 count]);
 
-    objc_storeStrong(&self->_entityManager, a3);
-    v10 = [(PXGLayout *)self spriteDataStore];
+    objc_storeStrong(&self->_entityManager, manager);
+    spriteDataStore3 = [(PXGLayout *)self spriteDataStore];
     if (v16)
     {
-      v11 = [v10 count];
-      v12 = [(PXGLayout *)self spriteDataStore];
-      -[PXGEntityManager createEntitiesWithCount:addingToArray:](v16, "createEntitiesWithCount:addingToArray:", v11, [v12 entities]);
+      v11 = [spriteDataStore3 count];
+      spriteDataStore4 = [(PXGLayout *)self spriteDataStore];
+      -[PXGEntityManager createEntitiesWithCount:addingToArray:](v16, "createEntitiesWithCount:addingToArray:", v11, [spriteDataStore4 entities]);
     }
 
     else
     {
-      [v10 clearEntities];
+      [spriteDataStore3 clearEntities];
     }
 
-    v13 = [(PXGLayout *)self sublayoutDataStore];
-    if ([v13 count] >= 1)
+    sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+    if ([sublayoutDataStore count] >= 1)
     {
       v14 = 0;
       do
       {
-        v15 = [v13 sublayoutAtIndex:v14];
+        v15 = [sublayoutDataStore sublayoutAtIndex:v14];
         [v15 setEntityManager:v16];
 
         ++v14;
       }
 
-      while (v14 < [v13 count]);
+      while (v14 < [sublayoutDataStore count]);
     }
 
     [(PXGLayout *)self entityManagerDidChange];
 
-    v5 = v16;
+    managerCopy = v16;
   }
 }
 
-- (void)setContentSource:(id)a3
+- (void)setContentSource:(id)source
 {
-  v18 = a3;
-  objc_storeWeak(&self->_contentSource, v18);
+  sourceCopy = source;
+  objc_storeWeak(&self->_contentSource, sourceCopy);
   if (objc_opt_respondsToSelector())
   {
-    v4 = v18;
+    v4 = sourceCopy;
   }
 
   else
@@ -7848,7 +7848,7 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = v18;
+    v15 = sourceCopy;
   }
 
   else
@@ -7909,11 +7909,11 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
     modifiedSpriteDataStore = self->_modifiedSpriteDataStore;
     self->_modifiedSpriteDataStore = v5;
 
-    v7 = [(PXGLayout *)self spriteDataStore];
-    v8 = v7;
-    if (v7)
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    v8 = spriteDataStore;
+    if (spriteDataStore)
     {
-      [v7 sprites];
+      [spriteDataStore sprites];
       v9 = self->_modifiedSpriteDataStore;
       v10[0] = v12;
       v10[1] = v13;
@@ -7945,37 +7945,37 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_nextViewHostingLayout);
+    superlayout = objc_loadWeakRetained(&self->_nextViewHostingLayout);
   }
 
   else
   {
-    v4 = [(PXGLayout *)self superlayout];
+    superlayout = [(PXGLayout *)self superlayout];
   }
 
-  return v4;
+  return superlayout;
 }
 
-+ (unint64_t)scrolledEdgesForVisibleEdges:(unint64_t)a3 scrollableAxis:(int64_t)a4
++ (unint64_t)scrolledEdgesForVisibleEdges:(unint64_t)edges scrollableAxis:(int64_t)axis
 {
-  v4 = a3 & ~(4 * a3) & 8;
-  if ((a3 & 0xA) == 2)
+  v4 = edges & ~(4 * edges) & 8;
+  if ((edges & 0xA) == 2)
   {
     v4 = 2;
   }
 
-  if ((a4 & 2) == 0)
+  if ((axis & 2) == 0)
   {
     v4 = 0;
   }
 
-  v5 = v4 | ~(4 * a3) & 4;
-  if ((a3 & 4) == 0)
+  v5 = v4 | ~(4 * edges) & 4;
+  if ((edges & 4) == 0)
   {
     v5 = v4;
   }
 
-  if ((a3 & 5) == 1)
+  if ((edges & 5) == 1)
   {
     v6 = v4 | 1;
   }
@@ -7985,7 +7985,7 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
     v6 = v5;
   }
 
-  if (a4)
+  if (axis)
   {
     return v6;
   }
@@ -7998,47 +7998,47 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
 
 - (PXGDataSourceChange)currentDataSourceChange
 {
-  v3 = [(PXGLayout *)self internalCurrentDataSourceChange];
-  if (!v3)
+  internalCurrentDataSourceChange = [(PXGLayout *)self internalCurrentDataSourceChange];
+  if (!internalCurrentDataSourceChange)
   {
-    v4 = [(PXGLayout *)self superlayout];
-    if (v4)
+    superlayout = [(PXGLayout *)self superlayout];
+    if (superlayout)
     {
       do
       {
-        v5 = v4;
-        v3 = [v4 internalCurrentDataSourceChange];
-        v4 = [v4 superlayout];
+        v5 = superlayout;
+        internalCurrentDataSourceChange = [superlayout internalCurrentDataSourceChange];
+        superlayout = [superlayout superlayout];
       }
 
-      while (v4 && !v3);
+      while (superlayout && !internalCurrentDataSourceChange);
     }
 
     else
     {
-      v3 = 0;
+      internalCurrentDataSourceChange = 0;
     }
 
-    [(PXGLayout *)self setInternalCurrentDataSourceChange:v3];
+    [(PXGLayout *)self setInternalCurrentDataSourceChange:internalCurrentDataSourceChange];
   }
 
-  return v3;
+  return internalCurrentDataSourceChange;
 }
 
-- (void)applySectionedChangeDetailsForSingleSection:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 changeMediaVersionHandler:(id)a6 sectionIndexPathBeforeState:(PXSimpleIndexPath *)a7
+- (void)applySectionedChangeDetailsForSingleSection:(id)section dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges changeMediaVersionHandler:(id)handler sectionIndexPathBeforeState:(PXSimpleIndexPath *)state
 {
   v99 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = [[PXGDataSourceChange alloc] initWithChangeDetails:v13 dataSourceBeforeChanges:v14 dataSourceAfterChanges:v15];
+  sectionCopy = section;
+  changesCopy = changes;
+  afterChangesCopy = afterChanges;
+  handlerCopy = handler;
+  v17 = [[PXGDataSourceChange alloc] initWithChangeDetails:sectionCopy dataSourceBeforeChanges:changesCopy dataSourceAfterChanges:afterChangesCopy];
   [(PXGLayout *)self setInternalCurrentDataSourceChange:v17];
 
-  v73 = [(PXGLayout *)self layoutForItemChanges];
-  if (v16)
+  layoutForItemChanges = [(PXGLayout *)self layoutForItemChanges];
+  if (handlerCopy)
   {
-    v18 = v16;
+    v18 = handlerCopy;
   }
 
   else
@@ -8048,29 +8048,29 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
 
   v19 = MEMORY[0x21CEE40A0](v18);
 
-  v20 = [v13 count];
+  v20 = [sectionCopy count];
   v95 = 0u;
   v96 = 0u;
-  v21 = *&a7->var2;
-  v94[0] = *&a7->var0;
+  v21 = *&state->var2;
+  v94[0] = *&state->var0;
   v94[1] = v21;
-  [MEMORY[0x277D3CDD0] indexPathAfterApplyingChanges:v13 toIndexPath:v94 hasIncrementalChanges:0 objectChanged:0];
-  if (v95 == *MEMORY[0x277D3CF78] || a7->var0 == *MEMORY[0x277D3CF78])
+  [MEMORY[0x277D3CDD0] indexPathAfterApplyingChanges:sectionCopy toIndexPath:v94 hasIncrementalChanges:0 objectChanged:0];
+  if (v95 == *MEMORY[0x277D3CF78] || state->var0 == *MEMORY[0x277D3CF78])
   {
     goto LABEL_31;
   }
 
   v71 = v20;
-  v62 = self;
-  v68 = v13;
-  v69 = v15;
-  v67 = v14;
-  var1 = a7->var1;
+  selfCopy = self;
+  v68 = sectionCopy;
+  v69 = afterChangesCopy;
+  v67 = changesCopy;
+  var1 = state->var1;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v23 = v13;
+  v23 = sectionCopy;
   v24 = [v23 countByEnumeratingWithState:&v90 objects:v98 count:16];
   if (v24)
   {
@@ -8088,25 +8088,25 @@ uint64_t __66__PXGLayout_enumerateLayoutsForSpritesInRange_options_usingBlock___
         }
 
         v28 = *(*(&v90 + 1) + 8 * i);
-        v29 = [v28 sectionChanges];
-        var1 = [v29 indexAfterApplyingChangesToIndex:var1];
+        sectionChanges = [v28 sectionChanges];
+        var1 = [sectionChanges indexAfterApplyingChangesToIndex:var1];
 
-        v30 = [v28 sectionChanges];
-        if (([v30 hasIncrementalChanges] & 1) == 0)
+        sectionChanges2 = [v28 sectionChanges];
+        if (([sectionChanges2 hasIncrementalChanges] & 1) == 0)
         {
 
 LABEL_30:
-          v14 = v67;
-          v13 = v68;
-          v15 = v69;
+          changesCopy = v67;
+          sectionCopy = v68;
+          afterChangesCopy = v69;
           v19 = v65;
           goto LABEL_31;
         }
 
         v31 = [v28 itemChangesInSection:var1];
-        v32 = [v31 hasIncrementalChanges];
+        hasIncrementalChanges = [v31 hasIncrementalChanges];
 
-        if (!v32)
+        if (!hasIncrementalChanges)
         {
           goto LABEL_30;
         }
@@ -8124,33 +8124,33 @@ LABEL_30:
     }
   }
 
-  v14 = v67;
-  v13 = v68;
-  v15 = v69;
+  changesCopy = v67;
+  sectionCopy = v68;
+  afterChangesCopy = v69;
   if (!v71 || ![v69 numberOfSections])
   {
 LABEL_31:
-    if ([v15 numberOfSections] < 1)
+    if ([afterChangesCopy numberOfSections] < 1)
     {
       v54 = 0;
     }
 
     else
     {
-      v54 = [v15 numberOfItemsInSection:a7->var1];
+      v54 = [afterChangesCopy numberOfItemsInSection:state->var1];
     }
 
-    v55 = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
-    v38 = v73;
-    [v73 setNumberOfItems:v54 withChangeDetails:v55];
+    changeDetailsWithNoIncrementalChanges = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
+    v38 = layoutForItemChanges;
+    [layoutForItemChanges setNumberOfItems:v54 withChangeDetails:changeDetailsWithNoIncrementalChanges];
   }
 
   else
   {
     v64 = a2;
     v66 = v19;
-    v33 = [MEMORY[0x277D3CD78] indexPathSet];
-    v34 = a7->var1;
+    indexPathSet = [MEMORY[0x277D3CD78] indexPathSet];
+    v34 = state->var1;
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
@@ -8161,12 +8161,12 @@ LABEL_31:
     {
       v37 = v36;
       v72 = *v87;
-      v38 = v73;
+      v38 = layoutForItemChanges;
       obj = v35;
       do
       {
         v39 = 0;
-        v40 = v33;
+        v40 = indexPathSet;
         do
         {
           if (*v87 != v72)
@@ -8175,41 +8175,41 @@ LABEL_31:
           }
 
           v41 = *(*(&v86 + 1) + 8 * v39);
-          v42 = [v41 sectionChanges];
-          v34 = [v42 indexAfterApplyingChangesToIndex:v34];
+          sectionChanges3 = [v41 sectionChanges];
+          v34 = [sectionChanges3 indexAfterApplyingChangesToIndex:v34];
           v43 = [v41 indexPathSetAfterApplyingChangesToIndexPathSet:v40 hasIncrementalChanges:0];
-          v33 = [v43 mutableCopy];
+          indexPathSet = [v43 mutableCopy];
 
           if (v38)
           {
             v44 = [v41 itemChangesInSection:v34];
             if (([v44 hasIncrementalChanges] & 1) == 0)
             {
-              v53 = [MEMORY[0x277CCA890] currentHandler];
-              [v53 handleFailureInMethod:v64 object:v62 file:@"PXGDataSourceDrivenLayout.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"itemChanges.hasIncrementalChanges"}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v64 object:selfCopy file:@"PXGDataSourceDrivenLayout.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"itemChanges.hasIncrementalChanges"}];
             }
 
-            v45 = [v38 numberOfItems];
-            v46 = [v44 insertedIndexes];
-            v47 = [v46 count] + v45;
-            v48 = [v44 removedIndexes];
-            v49 = v47 - [v48 count];
+            numberOfItems = [v38 numberOfItems];
+            insertedIndexes = [v44 insertedIndexes];
+            v47 = [insertedIndexes count] + numberOfItems;
+            removedIndexes = [v44 removedIndexes];
+            v49 = v47 - [removedIndexes count];
 
             v50 = v49;
-            v38 = v73;
-            [v73 setNumberOfItems:v50 withChangeDetails:v44];
-            v51 = [v41 toDataSourceIdentifier];
+            v38 = layoutForItemChanges;
+            [layoutForItemChanges setNumberOfItems:v50 withChangeDetails:v44];
+            toDataSourceIdentifier = [v41 toDataSourceIdentifier];
             v84[0] = MEMORY[0x277D85DD0];
             v84[1] = 3221225472;
             v84[2] = __185__PXGLayout_PXGDataSourceDrivenLayout__applySectionedChangeDetailsForSingleSection_dataSourceBeforeChanges_dataSourceAfterChanges_changeMediaVersionHandler_sectionIndexPathBeforeState___block_invoke_2;
             v84[3] = &unk_2782AAE58;
             v85 = v44;
             v52 = v44;
-            [v33 modifyItemIndexSetForDataSourceIdentifier:v51 section:v34 usingBlock:v84];
+            [indexPathSet modifyItemIndexSetForDataSourceIdentifier:toDataSourceIdentifier section:v34 usingBlock:v84];
           }
 
           ++v39;
-          v40 = v33;
+          v40 = indexPathSet;
         }
 
         while (v37 != v39);
@@ -8222,15 +8222,15 @@ LABEL_31:
 
     else
     {
-      v38 = v73;
+      v38 = layoutForItemChanges;
     }
 
-    v56 = [v38 numberOfItems];
-    if (v56 != [v69 numberOfItemsInSection:*(&v95 + 1)])
+    numberOfItems2 = [v38 numberOfItems];
+    if (numberOfItems2 != [v69 numberOfItemsInSection:*(&v95 + 1)])
     {
-      v60 = [MEMORY[0x277CCA890] currentHandler];
-      v61 = [v38 numberOfItems];
-      [v60 handleFailureInMethod:v64 object:v62 file:@"PXGDataSourceDrivenLayout.m" lineNumber:197 description:{@"Layout item count %ld does not match data source %ld", v61, objc_msgSend(v69, "numberOfItemsInSection:", *(&v95 + 1))}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      numberOfItems3 = [v38 numberOfItems];
+      [currentHandler2 handleFailureInMethod:v64 object:selfCopy file:@"PXGDataSourceDrivenLayout.m" lineNumber:197 description:{@"Layout item count %ld does not match data source %ld", numberOfItems3, objc_msgSend(v69, "numberOfItemsInSection:", *(&v95 + 1))}];
     }
 
     v79[0] = MEMORY[0x277D85DD0];
@@ -8239,11 +8239,11 @@ LABEL_31:
     v79[3] = &unk_2782AAEA8;
     v57 = v35;
     v80 = v57;
-    v81 = v62;
-    v82 = v33;
+    v81 = selfCopy;
+    v82 = indexPathSet;
     v83 = v64;
-    v55 = v33;
-    [v55 enumerateDataSourceIdentifiers:v79];
+    changeDetailsWithNoIncrementalChanges = indexPathSet;
+    [changeDetailsWithNoIncrementalChanges enumerateDataSourceIdentifiers:v79];
     v58 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
@@ -8255,11 +8255,11 @@ LABEL_31:
     v19 = v66;
     v78 = v66;
     v59 = v58;
-    [v55 enumerateItemIndexSetsUsingBlock:v74];
+    [changeDetailsWithNoIncrementalChanges enumerateItemIndexSetsUsingBlock:v74];
 
-    v14 = v67;
-    v13 = v68;
-    v15 = v69;
+    changesCopy = v67;
+    sectionCopy = v68;
+    afterChangesCopy = v69;
   }
 }
 
@@ -8351,37 +8351,37 @@ uint64_t __185__PXGLayout_PXGDataSourceDrivenLayout__applySectionedChangeDetails
   return [*(a1 + 40) removeAllObjects];
 }
 
-- (void)applySectionedChangeDetailsForSingleSection:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 changeMediaVersionHandler:(id)a6
+- (void)applySectionedChangeDetailsForSingleSection:(id)section dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges changeMediaVersionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 identifier];
+  handlerCopy = handler;
+  afterChangesCopy = afterChanges;
+  changesCopy = changes;
+  sectionCopy = section;
+  identifier = [changesCopy identifier];
   v15 = xmmword_21AE2D500;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  [(PXGLayout *)self applySectionedChangeDetailsForSingleSection:v13 dataSourceBeforeChanges:v12 dataSourceAfterChanges:v11 changeMediaVersionHandler:v10 sectionIndexPathBeforeState:&v14];
+  [(PXGLayout *)self applySectionedChangeDetailsForSingleSection:sectionCopy dataSourceBeforeChanges:changesCopy dataSourceAfterChanges:afterChangesCopy changeMediaVersionHandler:handlerCopy sectionIndexPathBeforeState:&identifier];
 }
 
-- (void)applySectionedChangeDetails:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5 sublayoutProvider:(id)a6 outChangedSections:(id *)a7 outSectionsWithItemChanges:(id *)a8 changeMediaVersionHandler:(id)a9
+- (void)applySectionedChangeDetails:(id)details dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges sublayoutProvider:(id)provider outChangedSections:(id *)sections outSectionsWithItemChanges:(id *)itemChanges changeMediaVersionHandler:(id)handler
 {
   v96 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v68 = a6;
-  v16 = a9;
-  v17 = [[PXGDataSourceChange alloc] initWithChangeDetails:v13 dataSourceBeforeChanges:v14 dataSourceAfterChanges:v15];
+  detailsCopy = details;
+  changesCopy = changes;
+  afterChangesCopy = afterChanges;
+  providerCopy = provider;
+  handlerCopy = handler;
+  v17 = [[PXGDataSourceChange alloc] initWithChangeDetails:detailsCopy dataSourceBeforeChanges:changesCopy dataSourceAfterChanges:afterChangesCopy];
   [(PXGLayout *)self setInternalCurrentDataSourceChange:v17];
 
   v90 = 0u;
   v91 = 0u;
-  v18 = [v13 count] == 0;
+  v18 = [detailsCopy count] == 0;
   v92 = 0u;
   v93 = 0u;
-  v19 = v13;
+  v19 = detailsCopy;
   v20 = [v19 countByEnumeratingWithState:&v90 objects:v95 count:16];
-  v66 = self;
+  selfCopy = self;
   if (v20)
   {
     v21 = v20;
@@ -8395,10 +8395,10 @@ uint64_t __185__PXGLayout_PXGDataSourceDrivenLayout__applySectionedChangeDetails
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v90 + 1) + 8 * i) sectionChanges];
-        v25 = [v24 hasIncrementalChanges];
+        sectionChanges = [*(*(&v90 + 1) + 8 * i) sectionChanges];
+        hasIncrementalChanges = [sectionChanges hasIncrementalChanges];
 
-        if (!v25)
+        if (!hasIncrementalChanges)
         {
           v18 = 1;
           goto LABEL_11;
@@ -8415,15 +8415,15 @@ uint64_t __185__PXGLayout_PXGDataSourceDrivenLayout__applySectionedChangeDetails
     }
 
 LABEL_11:
-    self = v66;
+    self = selfCopy;
   }
 
-  v26 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v27 = v19;
-  v28 = [v26 count];
-  if (v16)
+  v28 = [sublayoutDataStore count];
+  if (handlerCopy)
   {
-    v29 = v16;
+    v29 = handlerCopy;
   }
 
   else
@@ -8435,19 +8435,19 @@ LABEL_11:
 
   if (v18)
   {
-    v31 = v68;
-    -[PXGLayout applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:](self, "applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:", 0, [v15 numberOfSections], v68);
+    v31 = providerCopy;
+    -[PXGLayout applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:](self, "applySublayoutChangeDetails:countAfterChanges:sublayoutProvider:", 0, [afterChangesCopy numberOfSections], providerCopy);
   }
 
   else
   {
     v56 = v30;
-    v65 = v26;
-    v58 = v15;
-    v59 = v14;
-    v32 = [MEMORY[0x277CCAB58] indexSet];
-    v33 = [MEMORY[0x277CCAB58] indexSet];
-    v34 = [MEMORY[0x277D3CD78] indexPathSet];
+    v65 = sublayoutDataStore;
+    v58 = afterChangesCopy;
+    v59 = changesCopy;
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+    indexPathSet = [MEMORY[0x277D3CD78] indexPathSet];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
@@ -8461,56 +8461,56 @@ LABEL_11:
       do
       {
         v35 = 0;
-        v36 = v32;
+        v36 = indexSet;
         do
         {
-          v37 = v34;
+          v37 = indexPathSet;
           if (*v87 != v64)
           {
             objc_enumerationMutation(obj);
           }
 
           v38 = *(*(&v86 + 1) + 8 * v35);
-          v39 = [v38 sectionChanges];
-          v40 = [v39 insertedIndexes];
-          v41 = [v40 count] + v28;
-          v42 = [v39 removedIndexes];
-          v43 = v41 - [v42 count];
+          sectionChanges2 = [v38 sectionChanges];
+          insertedIndexes = [sectionChanges2 insertedIndexes];
+          v41 = [insertedIndexes count] + v28;
+          removedIndexes = [sectionChanges2 removedIndexes];
+          v43 = v41 - [removedIndexes count];
 
-          [(PXGLayout *)v66 applySublayoutChangeDetails:v39 countAfterChanges:v43 sublayoutProvider:v68];
-          v44 = [v39 indexSetAfterApplyingChangesToIndexSet:v36];
-          v32 = [v44 mutableCopy];
+          [(PXGLayout *)selfCopy applySublayoutChangeDetails:sectionChanges2 countAfterChanges:v43 sublayoutProvider:providerCopy];
+          v44 = [sectionChanges2 indexSetAfterApplyingChangesToIndexSet:v36];
+          indexSet = [v44 mutableCopy];
 
-          v45 = [v39 changedIndexes];
-          [v32 addIndexes:v45];
+          changedIndexes = [sectionChanges2 changedIndexes];
+          [indexSet addIndexes:changedIndexes];
 
-          v46 = [v39 indexSetAfterApplyingChangesToIndexSet:v33];
+          v46 = [sectionChanges2 indexSetAfterApplyingChangesToIndexSet:indexSet2];
           v47 = [v46 mutableCopy];
 
-          v48 = [v38 sectionsWithItemChanges];
-          [v47 addIndexes:v48];
+          sectionsWithItemChanges = [v38 sectionsWithItemChanges];
+          [v47 addIndexes:sectionsWithItemChanges];
 
           v49 = [v38 indexPathSetAfterApplyingChangesToIndexPathSet:v37 hasIncrementalChanges:0];
           v50 = [v49 mutableCopy];
 
-          v51 = [v38 sectionsWithItemChanges];
+          sectionsWithItemChanges2 = [v38 sectionsWithItemChanges];
           v79[0] = MEMORY[0x277D85DD0];
           v79[1] = 3221225472;
           v79[2] = __205__PXGLayout_PXGDataSourceDrivenLayout__applySectionedChangeDetails_dataSourceBeforeChanges_dataSourceAfterChanges_sublayoutProvider_outChangedSections_outSectionsWithItemChanges_changeMediaVersionHandler___block_invoke_2;
           v79[3] = &unk_2782AAE80;
           v80 = v65;
-          v81 = v66;
+          v81 = selfCopy;
           v28 = v43;
           v82 = v38;
-          v34 = v50;
-          v83 = v34;
-          v33 = v47;
-          v84 = v33;
-          v85 = v68;
-          [v51 enumerateIndexesUsingBlock:v79];
+          indexPathSet = v50;
+          v83 = indexPathSet;
+          indexSet2 = v47;
+          v84 = indexSet2;
+          v85 = providerCopy;
+          [sectionsWithItemChanges2 enumerateIndexesUsingBlock:v79];
 
           ++v35;
-          v36 = v32;
+          v36 = indexSet;
         }
 
         while (v67 != v35);
@@ -8520,17 +8520,17 @@ LABEL_11:
       while (v67);
     }
 
-    if (a7)
+    if (sections)
     {
-      *a7 = [v32 copy];
+      *sections = [indexSet copy];
     }
 
-    v14 = v59;
+    changesCopy = v59;
     v27 = v57;
-    v26 = v65;
-    if (a8)
+    sublayoutDataStore = v65;
+    if (itemChanges)
     {
-      *a8 = [v33 copy];
+      *itemChanges = [indexSet2 copy];
     }
 
     v74[0] = MEMORY[0x277D85DD0];
@@ -8539,10 +8539,10 @@ LABEL_11:
     v74[3] = &unk_2782AAEA8;
     v52 = obj;
     v75 = v52;
-    v76 = v66;
-    v77 = v34;
+    v76 = selfCopy;
+    v77 = indexPathSet;
     v78 = a2;
-    v53 = v34;
+    v53 = indexPathSet;
     [v53 enumerateDataSourceIdentifiers:v74];
     v54 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v69[0] = MEMORY[0x277D85DD0];
@@ -8557,8 +8557,8 @@ LABEL_11:
     [v53 enumerateItemIndexSetsUsingBlock:v69];
 
     v30 = v56;
-    v15 = v58;
-    v31 = v68;
+    afterChangesCopy = v58;
+    v31 = providerCopy;
   }
 }
 

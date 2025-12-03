@@ -1,35 +1,35 @@
 @interface PHMediaRequestContext
-+ (id)contentEditingInputRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 options:(id)a6 useRAWAsUnadjustedBase:(BOOL)a7 resultHandler:(id)a8;
-+ (id)imageRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 imageRequestOptions:(id)a6 displaySpec:(id)a7 resultHandler:(id)a8;
-+ (id)livePhotoRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 livePhotoRequestOptions:(id)a6 displaySpec:(id)a7 resultHandler:(id)a8;
-+ (id)videoRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 videoRequestOptions:(id)a6 intent:(int64_t)a7 resultHandler:(id)a8;
++ (id)contentEditingInputRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset options:(id)options useRAWAsUnadjustedBase:(BOOL)base resultHandler:(id)handler;
++ (id)imageRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset imageRequestOptions:(id)options displaySpec:(id)spec resultHandler:(id)handler;
++ (id)livePhotoRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset livePhotoRequestOptions:(id)options displaySpec:(id)spec resultHandler:(id)handler;
++ (id)videoRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset videoRequestOptions:(id)options intent:(int64_t)intent resultHandler:(id)handler;
 + (void)initialize;
 - (BOOL)isCancelled;
-- (BOOL)mediaRequestCanRequestRepair:(id)a3;
-- (BOOL)retryMediaRequest:(id)a3 afterFailureWithError:(id)a4;
+- (BOOL)mediaRequestCanRequestRepair:(id)repair;
+- (BOOL)retryMediaRequest:(id)request afterFailureWithError:(id)error;
 - (BOOL)shouldReportProgress;
 - (PHImageResourceChooser)imageResourceChooser;
-- (PHMediaRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 resultHandler:(id)a7;
+- (PHMediaRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec resultHandler:(id)handler;
 - (PHMediaRequestContextDelegate)delegate;
-- (id)_produceChildRequestsForRequest:(id)a3 withResult:(id)a4;
-- (id)_requestWithIdentifier:(id)a3;
+- (id)_produceChildRequestsForRequest:(id)request withResult:(id)result;
+- (id)_requestWithIdentifier:(id)identifier;
 - (id)initialRequests;
 - (int64_t)type;
-- (void)_registerAndStartRequests:(id)a3;
+- (void)_registerAndStartRequests:(id)requests;
 - (void)_setupProgressIfNeeded;
-- (void)adjustmentDataRequest:(id)a3 didReportProgress:(double)a4 completed:(BOOL)a5 error:(id)a6;
-- (void)beginCustomAsyncWorkWithIdentifier:(id)a3;
+- (void)adjustmentDataRequest:(id)request didReportProgress:(double)progress completed:(BOOL)completed error:(id)error;
+- (void)beginCustomAsyncWorkWithIdentifier:(id)identifier;
 - (void)cancel;
-- (void)finishCustomAsyncWorkWithIdentifier:(id)a3;
-- (void)imageRequest:(id)a3 isQueryingCacheAndDidWait:(BOOL *)a4 didFindImage:(BOOL *)a5 resultHandler:(id)a6;
-- (void)imageRequest:(id)a3 isRequestingScheduledWorkBlock:(id)a4;
-- (void)mediaRequest:(id)a3 didFindLocallyAvailableResult:(BOOL)a4 isDegraded:(BOOL)a5;
-- (void)mediaRequest:(id)a3 didFinishWithResult:(id)a4;
-- (void)mediaRequest:(id)a3 didReportProgress:(id)a4;
-- (void)mediaRequest:(id)a3 didRequestRetryWithHintsAllowed:(BOOL)a4;
-- (void)processMediaResult:(id)a3 forRequest:(id)a4;
-- (void)requestWithIdentifier:(id)a3 didReportProgress:(double)a4 completed:(BOOL)a5 error:(id)a6;
-- (void)setProgress:(id)a3 forRequestIdentifier:(id)a4;
+- (void)finishCustomAsyncWorkWithIdentifier:(id)identifier;
+- (void)imageRequest:(id)request isQueryingCacheAndDidWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler;
+- (void)imageRequest:(id)request isRequestingScheduledWorkBlock:(id)block;
+- (void)mediaRequest:(id)request didFindLocallyAvailableResult:(BOOL)result isDegraded:(BOOL)degraded;
+- (void)mediaRequest:(id)request didFinishWithResult:(id)result;
+- (void)mediaRequest:(id)request didReportProgress:(id)progress;
+- (void)mediaRequest:(id)request didRequestRetryWithHintsAllowed:(BOOL)allowed;
+- (void)processMediaResult:(id)result forRequest:(id)request;
+- (void)requestWithIdentifier:(id)identifier didReportProgress:(double)progress completed:(BOOL)completed error:(id)error;
+- (void)setProgress:(id)progress forRequestIdentifier:(id)identifier;
 - (void)start;
 @end
 
@@ -37,7 +37,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     attr = dispatch_queue_attr_make_with_qos_class(v2, QOS_CLASS_USER_INITIATED, 0);
@@ -58,26 +58,26 @@
   {
     managerID = self->_managerID;
     requestID = self->_requestID;
-    v6 = [(PHMediaRequestContext *)self type];
-    if (v6 > 6)
+    type = [(PHMediaRequestContext *)self type];
+    if (type > 6)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_1E75A4190[v6];
+      v7 = off_1E75A4190[type];
     }
 
     v8 = v7;
-    v9 = [(PHMediaRequestContext *)self asset];
-    v10 = [v9 uuid];
-    v11 = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
+    asset = [(PHMediaRequestContext *)self asset];
+    uuid = [asset uuid];
+    isNetworkAccessAllowed = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
     *buf = 134219010;
     v12 = @"N";
     v35 = managerID;
     v36 = 2048;
-    if (v11)
+    if (isNetworkAccessAllowed)
     {
       v12 = @"Y";
     }
@@ -86,7 +86,7 @@
     v38 = 2112;
     v39 = v8;
     v40 = 2112;
-    v41 = v10;
+    v41 = uuid;
     v42 = 2112;
     v43 = v12;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "[RM]: %ld-%ld Starting request with type %@, asset: %@, net: %@", buf, 0x34u);
@@ -96,28 +96,28 @@
   {
     v22 = self->_requestID;
     v23 = self->_managerID;
-    v24 = [(PHMediaRequestContext *)self type];
-    if (v24 > 6)
+    type2 = [(PHMediaRequestContext *)self type];
+    if (type2 > 6)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = off_1E75A4190[v24];
+      v25 = off_1E75A4190[type2];
     }
 
     v26 = v25;
-    v27 = [(PHMediaRequestContext *)self asset];
-    v28 = [v27 uuid];
-    v29 = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
+    asset2 = [(PHMediaRequestContext *)self asset];
+    uuid2 = [asset2 uuid];
+    isNetworkAccessAllowed2 = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
     v30 = @"N";
-    if (v29)
+    if (isNetworkAccessAllowed2)
     {
       v30 = @"Y";
     }
 
-    [PHImageManagerRequestTracer traceMessageForRequestID:v22 message:@"[RM]: %ld-%ld Starting request with type %@, asset: %@, net: %@", v23, v22, v26, v28, v30];
+    [PHImageManagerRequestTracer traceMessageForRequestID:v22 message:@"[RM]: %ld-%ld Starting request with type %@, asset: %@, net: %@", v23, v22, v26, uuid2, v30];
   }
 
   if ([(PHMediaRequestContext *)self shouldReportProgress])
@@ -131,20 +131,20 @@
   aBlock[3] = &unk_1E75AB320;
   aBlock[4] = self;
   v13 = _Block_copy(aBlock);
-  v14 = [(PHMediaRequestContext *)self prestartError];
+  prestartError = [(PHMediaRequestContext *)self prestartError];
 
-  if (v14)
+  if (prestartError)
   {
-    v15 = [(PHMediaRequestContext *)self prestartError];
-    v13[2](v13, v15);
+    prestartError2 = [(PHMediaRequestContext *)self prestartError];
+    v13[2](v13, prestartError2);
   }
 
   else
   {
-    v15 = [(PHMediaRequestContext *)self initialRequests];
-    if ([v15 count])
+    prestartError2 = [(PHMediaRequestContext *)self initialRequests];
+    if ([prestartError2 count])
     {
-      [(PHMediaRequestContext *)self _registerAndStartRequests:v15];
+      [(PHMediaRequestContext *)self _registerAndStartRequests:prestartError2];
     }
 
     else
@@ -179,8 +179,8 @@
 
 - (BOOL)shouldReportProgress
 {
-  v2 = [(PHMediaRequestContext *)self progressHandler];
-  v3 = v2 != 0;
+  progressHandler = [(PHMediaRequestContext *)self progressHandler];
+  v3 = progressHandler != 0;
 
   return v3;
 }
@@ -191,14 +191,14 @@
   if (!self->_totalProgress)
   {
     os_unfair_lock_lock(&self->_lock);
-    v3 = [(PHMediaRequestContext *)self progresses];
-    if ([v3 count])
+    progresses = [(PHMediaRequestContext *)self progresses];
+    if ([progresses count])
     {
-      if ([v3 count] == 1)
+      if ([progresses count] == 1)
       {
-        v4 = [v3 firstObject];
+        firstObject = [progresses firstObject];
         totalProgress = self->_totalProgress;
-        self->_totalProgress = v4;
+        self->_totalProgress = firstObject;
       }
 
       else
@@ -207,7 +207,7 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v6 = v3;
+        v6 = progresses;
         v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v7)
         {
@@ -271,9 +271,9 @@
       }
     }
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     progressByTaskIdentifier = self->_progressByTaskIdentifier;
-    self->_progressByTaskIdentifier = v19;
+    self->_progressByTaskIdentifier = dictionary;
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -319,35 +319,35 @@
   return isCancelled;
 }
 
-- (void)adjustmentDataRequest:(id)a3 didReportProgress:(double)a4 completed:(BOOL)a5 error:(id)a6
+- (void)adjustmentDataRequest:(id)request didReportProgress:(double)progress completed:(BOOL)completed error:(id)error
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [a3 identifierString];
-  [(PHMediaRequestContext *)self requestWithIdentifier:v11 didReportProgress:v6 completed:v10 error:a4];
+  completedCopy = completed;
+  errorCopy = error;
+  identifierString = [request identifierString];
+  [(PHMediaRequestContext *)self requestWithIdentifier:identifierString didReportProgress:completedCopy completed:errorCopy error:progress];
 }
 
-- (void)imageRequest:(id)a3 isRequestingScheduledWorkBlock:(id)a4
+- (void)imageRequest:(id)request isRequestingScheduledWorkBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if ([v5 isSynchronous])
+    if ([requestCopy isSynchronous])
     {
-      v6[2](v6, v5);
+      blockCopy[2](blockCopy, requestCopy);
     }
 
     else
     {
-      objc_initWeak(&location, v5);
+      objc_initWeak(&location, requestCopy);
       v7 = s_backgroundChooserQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__PHMediaRequestContext_imageRequest_isRequestingScheduledWorkBlock___block_invoke;
       block[3] = &unk_1E75A4D08;
       objc_copyWeak(&v10, &location);
-      v9 = v6;
+      v9 = blockCopy;
       dispatch_async(v7, block);
 
       objc_destroyWeak(&v10);
@@ -362,15 +362,15 @@ void __69__PHMediaRequestContext_imageRequest_isRequestingScheduledWorkBlock___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)imageRequest:(id)a3 isQueryingCacheAndDidWait:(BOOL *)a4 didFindImage:(BOOL *)a5 resultHandler:(id)a6
+- (void)imageRequest:(id)request isQueryingCacheAndDidWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(PHMediaRequestContext *)self delegate];
-  [v12 mediaRequestContext:self isQueryingCacheForRequest:v11 didWait:a4 didFindImage:a5 resultHandler:v10];
+  handlerCopy = handler;
+  requestCopy = request;
+  delegate = [(PHMediaRequestContext *)self delegate];
+  [delegate mediaRequestContext:self isQueryingCacheForRequest:requestCopy didWait:wait didFindImage:image resultHandler:handlerCopy];
 }
 
-- (BOOL)mediaRequestCanRequestRepair:(id)a3
+- (BOOL)mediaRequestCanRequestRepair:(id)repair
 {
   v23 = *MEMORY[0x1E69E9840];
   if (([(PHMediaRequestContext *)self maxRepairRequests]& 0x80000000) == 0)
@@ -389,7 +389,7 @@ void __69__PHMediaRequestContext_imageRequest_isRequestingScheduledWorkBlock___b
         v17 = 2048;
         v18 = requestID;
         v19 = 2048;
-        v20 = [(PHMediaRequestContext *)self maxRepairRequests];
+        maxRepairRequests = [(PHMediaRequestContext *)self maxRepairRequests];
         v21 = 1024;
         v22 = v12;
         v11 = "[RM]: %ld-%ld Exceeded context wide limit (%ld) for resource repair requests (%d).";
@@ -402,9 +402,9 @@ LABEL_10:
     }
   }
 
-  v5 = [(PHMediaRequestContext *)self shouldLimitRepairRequestsPerProcess];
+  shouldLimitRepairRequestsPerProcess = [(PHMediaRequestContext *)self shouldLimitRepairRequestsPerProcess];
   result = 1;
-  if (v5 && atomic_fetch_add(sProcessRepairAttemptCount, 1u) == 0x7FFFFFFF)
+  if (shouldLimitRepairRequestsPerProcess && atomic_fetch_add(sProcessRepairAttemptCount, 1u) == 0x7FFFFFFF)
   {
     v7 = atomic_load(sProcessRepairAttemptCount);
     v8 = PLImageManagerGetLog();
@@ -417,7 +417,7 @@ LABEL_10:
       v17 = 2048;
       v18 = v10;
       v19 = 2048;
-      v20 = 0x7FFFFFFFLL;
+      maxRepairRequests = 0x7FFFFFFFLL;
       v21 = 1024;
       v22 = v7;
       v11 = "[RM]: %ld-%ld Exceeded process wide limit (%ld) for resource repair requests (%d).";
@@ -432,22 +432,22 @@ LABEL_9:
   return result;
 }
 
-- (void)mediaRequest:(id)a3 didFinishWithResult:(id)a4
+- (void)mediaRequest:(id)request didFinishWithResult:(id)result
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHMediaRequestContext *)self _produceChildRequestsForRequest:v6 withResult:v7];
+  requestCopy = request;
+  resultCopy = result;
+  v8 = [(PHMediaRequestContext *)self _produceChildRequestsForRequest:requestCopy withResult:resultCopy];
   [(PHMediaRequestContext *)self _registerAndStartRequests:v8];
-  if (([v7 containsValidData] & 1) == 0)
+  if (([resultCopy containsValidData] & 1) == 0)
   {
-    if ([v7 isInCloud])
+    if ([resultCopy isInCloud])
     {
       if (![(PHMediaRequestContext *)self isNetworkAccessAllowed])
       {
-        v9 = [v7 error];
+        error = [resultCopy error];
 
-        if (!v9)
+        if (!error)
         {
           v10 = PLImageManagerGetLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -456,15 +456,15 @@ LABEL_9:
             requestID = self->_requestID;
             v13 = objc_opt_class();
             v14 = NSStringFromClass(v13);
-            v15 = [(PHMediaRequestContext *)self type];
-            if (v15 > 6)
+            type = [(PHMediaRequestContext *)self type];
+            if (type > 6)
             {
               v16 = 0;
             }
 
             else
             {
-              v16 = off_1E75A4190[v15];
+              v16 = off_1E75A4190[type];
             }
 
             v17 = v16;
@@ -485,15 +485,15 @@ LABEL_9:
             v24 = self->_managerID;
             v25 = objc_opt_class();
             v26 = NSStringFromClass(v25);
-            v27 = [(PHMediaRequestContext *)self type];
-            if (v27 > 6)
+            type2 = [(PHMediaRequestContext *)self type];
+            if (type2 > 6)
             {
               v28 = 0;
             }
 
             else
             {
-              v28 = off_1E75A4190[v27];
+              v28 = off_1E75A4190[type2];
             }
 
             v29 = v28;
@@ -501,55 +501,55 @@ LABEL_9:
           }
 
           v18 = PHNetworkAccessAllowedRequiredError();
-          [v7 setErrorIfNone:v18];
+          [resultCopy setErrorIfNone:v18];
         }
       }
     }
   }
 
-  [(PHMediaRequestContext *)self processMediaResult:v7 forRequest:v6];
+  [(PHMediaRequestContext *)self processMediaResult:resultCopy forRequest:requestCopy];
   os_unfair_lock_lock(&self->_lock);
   inflightRequestIdentifiers = self->_inflightRequestIdentifiers;
-  v20 = [v6 identifierString];
-  [(NSMutableSet *)inflightRequestIdentifiers removeObject:v20];
+  identifierString = [requestCopy identifierString];
+  [(NSMutableSet *)inflightRequestIdentifiers removeObject:identifierString];
 
   v21 = [(NSMutableSet *)self->_inflightRequestIdentifiers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v21)
   {
-    v22 = [(PHMediaRequestContext *)self delegate];
-    [v22 mediaRequestContextDidFinish:self];
+    delegate = [(PHMediaRequestContext *)self delegate];
+    [delegate mediaRequestContextDidFinish:self];
   }
 }
 
-- (void)mediaRequest:(id)a3 didReportProgress:(id)a4
+- (void)mediaRequest:(id)request didReportProgress:(id)progress
 {
-  v6 = a4;
-  v9 = [a3 identifierString];
-  [v6 fractionCompleted];
+  progressCopy = progress;
+  identifierString = [request identifierString];
+  [progressCopy fractionCompleted];
   v8 = v7;
 
-  [(PHMediaRequestContext *)self requestWithIdentifier:v9 didReportProgress:0 completed:0 error:v8];
+  [(PHMediaRequestContext *)self requestWithIdentifier:identifierString didReportProgress:0 completed:0 error:v8];
 }
 
-- (void)mediaRequest:(id)a3 didFindLocallyAvailableResult:(BOOL)a4 isDegraded:(BOOL)a5
+- (void)mediaRequest:(id)request didFindLocallyAvailableResult:(BOOL)result isDegraded:(BOOL)degraded
 {
-  v6 = [(PHMediaRequestContext *)self _produceChildRequestsForRequest:a3 reportingIsLocallyAvailable:a4 isDegraded:a5];
+  v6 = [(PHMediaRequestContext *)self _produceChildRequestsForRequest:request reportingIsLocallyAvailable:result isDegraded:degraded];
   [(PHMediaRequestContext *)self _registerAndStartRequests:v6];
 }
 
-- (void)mediaRequest:(id)a3 didRequestRetryWithHintsAllowed:(BOOL)a4
+- (void)mediaRequest:(id)request didRequestRetryWithHintsAllowed:(BOOL)allowed
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = s_backgroundChooserQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PHMediaRequestContext_mediaRequest_didRequestRetryWithHintsAllowed___block_invoke;
   block[3] = &unk_1E75A4170;
-  v11 = a4;
+  allowedCopy = allowed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = requestCopy;
+  v8 = requestCopy;
   dispatch_async(v7, block);
 }
 
@@ -566,36 +566,36 @@ uint64_t __70__PHMediaRequestContext_mediaRequest_didRequestRetryWithHintsAllowe
   return [v4 startRequest];
 }
 
-- (BOOL)retryMediaRequest:(id)a3 afterFailureWithError:(id)a4
+- (BOOL)retryMediaRequest:(id)request afterFailureWithError:(id)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = PHRequestRetryTypeForRequest(v6, v7);
+  requestCopy = request;
+  errorCopy = error;
+  v8 = PHRequestRetryTypeForRequest(requestCopy, errorCopy);
   if ((v8 - 2) < 2)
   {
     v12 = PLImageManagerGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v6 identifierString];
-      [v6 retryInterval];
+      identifierString = [requestCopy identifierString];
+      [requestCopy retryInterval];
       *buf = 138543874;
-      v39 = v13;
+      v39 = identifierString;
       v40 = 2048;
       v41 = v14;
       v42 = 2112;
-      v43 = v7;
+      v43 = errorCopy;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, "[RM] %{public}@ media request retrying after %f due to error: %@", buf, 0x20u);
     }
 
-    [v6 retryInterval];
+    [requestCopy retryInterval];
     v16 = dispatch_time(0, (v15 * 1000000000.0));
     v17 = s_backgroundChooserQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__PHMediaRequestContext_retryMediaRequest_afterFailureWithError___block_invoke;
     block[3] = &unk_1E75AB270;
-    v37 = v6;
+    v37 = requestCopy;
     dispatch_after(v16, v17, block);
     v11 = 1;
     v9 = v37;
@@ -606,22 +606,22 @@ uint64_t __70__PHMediaRequestContext_mediaRequest_didRequestRetryWithHintsAllowe
     v18 = PLImageManagerGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 identifierString];
+      identifierString2 = [requestCopy identifierString];
       *buf = 138543362;
-      v39 = v19;
+      v39 = identifierString2;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ media request requires additional resources to generate adjustment on demand", buf, 0xCu);
     }
 
     v20 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
-    v21 = [v6 lazyProgressContainer];
-    [v21 setRequestProgress:v20];
+    lazyProgressContainer = [requestCopy lazyProgressContainer];
+    [lazyProgressContainer setRequestProgress:v20];
 
     objc_initWeak(buf, self);
-    v22 = [(PHMediaRequestContext *)self asset];
-    v23 = [(PHMediaRequestContext *)self requestID];
-    v24 = [(PHMediaRequestContext *)self managerID];
-    v25 = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
-    v26 = [v6 downloadIntent];
+    asset = [(PHMediaRequestContext *)self asset];
+    requestID = [(PHMediaRequestContext *)self requestID];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    isNetworkAccessAllowed = [(PHMediaRequestContext *)self isNetworkAccessAllowed];
+    downloadIntent = [requestCopy downloadIntent];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __65__PHMediaRequestContext_retryMediaRequest_afterFailureWithError___block_invoke_239;
@@ -633,8 +633,8 @@ uint64_t __70__PHMediaRequestContext_mediaRequest_didRequestRetryWithHintsAllowe
     v31[2] = __65__PHMediaRequestContext_retryMediaRequest_afterFailureWithError___block_invoke_2;
     v31[3] = &unk_1E75A4148;
     objc_copyWeak(&v33, buf);
-    v32 = v6;
-    v27 = [PHContentEditingInputRequestContext contentEditingInputRequestContextForAsset:v22 requestID:v23 managerID:v24 networkAccessAllowed:v25 downloadIntent:v26 progressHandler:v34 resultHandler:v31];
+    v32 = requestCopy;
+    v27 = [PHContentEditingInputRequestContext contentEditingInputRequestContextForAsset:asset requestID:requestID managerID:managerID networkAccessAllowed:isNetworkAccessAllowed downloadIntent:downloadIntent progressHandler:v34 resultHandler:v31];
     supplementaryRequestContext = self->_supplementaryRequestContext;
     self->_supplementaryRequestContext = v27;
 
@@ -661,11 +661,11 @@ uint64_t __70__PHMediaRequestContext_mediaRequest_didRequestRetryWithHintsAllowe
     v9 = PLImageManagerGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v6 identifierString];
+      identifierString3 = [requestCopy identifierString];
       *buf = 138543618;
-      v39 = v10;
+      v39 = identifierString3;
       v40 = 2112;
-      v41 = v7;
+      v41 = errorCopy;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "[RM] %{public}@ media request exceeded retry limit, failing with error: %@", buf, 0x16u);
     }
 
@@ -771,24 +771,24 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
   [WeakRetained mediaRequestContextDidFinish:*(a1 + 32)];
 }
 
-- (void)processMediaResult:(id)a3 forRequest:(id)a4
+- (void)processMediaResult:(id)result forRequest:(id)request
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:359 description:@"Subclasses to implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:359 description:@"Subclasses to implement"];
 }
 
-- (void)requestWithIdentifier:(id)a3 didReportProgress:(double)a4 completed:(BOOL)a5 error:(id)a6
+- (void)requestWithIdentifier:(id)identifier didReportProgress:(double)progress completed:(BOOL)completed error:(id)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v11 = [(PHMediaRequestContext *)self progressHandler];
+  identifierCopy = identifier;
+  errorCopy = error;
+  progressHandler = [(PHMediaRequestContext *)self progressHandler];
   if ([(PHMediaRequestContext *)self shouldReportProgress]&& ![(PHMediaRequestContext *)self isCancelled])
   {
     os_unfair_lock_lock(&self->_lock);
-    v12 = [(NSMutableDictionary *)self->_progressByTaskIdentifier objectForKey:v9];
+    v12 = [(NSMutableDictionary *)self->_progressByTaskIdentifier objectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [v12 setCompletedUnitCount:{vcvtmd_s64_f64(objc_msgSend(v12, "totalUnitCount") * a4)}];
+    [v12 setCompletedUnitCount:{vcvtmd_s64_f64(objc_msgSend(v12, "totalUnitCount") * progress)}];
     [(NSProgress *)self->_totalProgress fractionCompleted];
     v14 = v13;
     v18 = 0;
@@ -797,14 +797,14 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
     v26[0] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-    (v11)[2](v11, v10, &v18, v16, v14);
+    (progressHandler)[2](progressHandler, errorCopy, &v18, v16, v14);
     v17 = PLImageManagerGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v20 = v9;
+      v20 = identifierCopy;
       v21 = 2048;
-      v22 = a4;
+      progressCopy = progress;
       v23 = 2048;
       v24 = v14;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "[RM]: %@ request progress is %f, total progress is %f", buf, 0x20u);
@@ -812,7 +812,7 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
 
     if (PHImageManagerRecordEnabled())
     {
-      [PHImageManagerRequestTracer traceMessageForRequestID:self->_requestID message:@"[RM]: %@ request progress is %f, total progress is %f", v9, *&a4, *&v14];
+      [PHImageManagerRequestTracer traceMessageForRequestID:self->_requestID message:@"[RM]: %@ request progress is %f, total progress is %f", identifierCopy, *&progress, *&v14];
     }
 
     if (v18 == 1)
@@ -822,75 +822,75 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setProgress:(id)a3 forRequestIdentifier:(id)a4
+- (void)setProgress:(id)progress forRequestIdentifier:(id)identifier
 {
-  if (a3)
+  if (progress)
   {
-    v6 = a4;
-    v7 = a3;
+    identifierCopy = identifier;
+    progressCopy = progress;
     [(PHMediaRequestContext *)self _setupProgressIfNeeded];
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_progressByTaskIdentifier setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_progressByTaskIdentifier setObject:progressCopy forKey:identifierCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (id)_produceChildRequestsForRequest:(id)a3 withResult:(id)a4
+- (id)_produceChildRequestsForRequest:(id)request withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[PHMediaRequestContext produceChildRequestsForRequest:reportingIsLocallyAvailable:isDegraded:result:](self, "produceChildRequestsForRequest:reportingIsLocallyAvailable:isDegraded:result:", v7, [v6 containsValidData], objc_msgSend(v6, "isDegraded"), v6);
+  resultCopy = result;
+  requestCopy = request;
+  v8 = -[PHMediaRequestContext produceChildRequestsForRequest:reportingIsLocallyAvailable:isDegraded:result:](self, "produceChildRequestsForRequest:reportingIsLocallyAvailable:isDegraded:result:", requestCopy, [resultCopy containsValidData], objc_msgSend(resultCopy, "isDegraded"), resultCopy);
 
   return v8;
 }
 
 - (id)initialRequests
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:288 description:@"Subclasses to implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:288 description:@"Subclasses to implement"];
 
   return 0;
 }
 
-- (void)finishCustomAsyncWorkWithIdentifier:(id)a3
+- (void)finishCustomAsyncWorkWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_inflightRequestIdentifiers removeObject:v4];
+  [(NSMutableSet *)self->_inflightRequestIdentifiers removeObject:identifierCopy];
 
   v5 = [(NSMutableSet *)self->_inflightRequestIdentifiers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(PHMediaRequestContext *)self delegate];
-    [v6 mediaRequestContextDidFinish:self];
+    delegate = [(PHMediaRequestContext *)self delegate];
+    [delegate mediaRequestContextDidFinish:self];
   }
 }
 
-- (void)beginCustomAsyncWorkWithIdentifier:(id)a3
+- (void)beginCustomAsyncWorkWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_inflightRequestIdentifiers addObject:v4];
+  [(NSMutableSet *)self->_inflightRequestIdentifiers addObject:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (int64_t)type
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:236 description:@"Subclasses to implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaRequestContext.m" lineNumber:236 description:@"Subclasses to implement"];
 
   return 0;
 }
 
-- (void)_registerAndStartRequests:(id)a3
+- (void)_registerAndStartRequests:(id)requests
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   os_unfair_lock_lock(&self->_lock);
-  v31 = v4;
+  v31 = requestsCopy;
   if (self->_isCancelled)
   {
     os_unfair_lock_unlock(&self->_lock);
@@ -898,7 +898,7 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = v4;
+    v5 = requestsCopy;
     v6 = [v5 countByEnumeratingWithState:&v32 objects:v47 count:16];
     if (v6)
     {
@@ -917,17 +917,17 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
           v11 = PLImageManagerGetLog();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v12 = [v10 identifierString];
+            identifierString = [v10 identifierString];
             *buf = 138412290;
-            v46 = v12;
+            v46 = identifierString;
             _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEBUG, "[RM]: %@ Ignoring request start due to cancellation", buf, 0xCu);
           }
 
           if (PHImageManagerRecordEnabled())
           {
-            v13 = [v10 requestID];
-            v14 = [v10 identifierString];
-            [PHImageManagerRequestTracer traceMessageForRequestID:v13 message:@"[RM]: %@ Ignoring request start due to cancellation", v14];
+            requestID = [v10 requestID];
+            identifierString2 = [v10 identifierString];
+            [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ Ignoring request start due to cancellation", identifierString2];
           }
         }
 
@@ -944,7 +944,7 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v15 = v4;
+    v15 = requestsCopy;
     v16 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v16)
     {
@@ -962,8 +962,8 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
           v20 = *(*(&v41 + 1) + 8 * j);
           [(NSMutableArray *)self->_requests addObject:v20];
           inflightRequestIdentifiers = self->_inflightRequestIdentifiers;
-          v22 = [v20 identifierString];
-          [(NSMutableSet *)inflightRequestIdentifiers addObject:v22];
+          identifierString3 = [v20 identifierString];
+          [(NSMutableSet *)inflightRequestIdentifiers addObject:identifierString3];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -995,8 +995,8 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
 
           v28 = *(*(&v37 + 1) + 8 * v27);
           [v28 setSignpostID:self->_signpostID];
-          v29 = [(PHMediaRequestContext *)self progressHandler];
-          [v28 setWantsProgress:v29 != 0];
+          progressHandler = [(PHMediaRequestContext *)self progressHandler];
+          [v28 setWantsProgress:progressHandler != 0];
 
           if ([v28 isSynchronous] || dispatch_get_specific(&s_chooserQueueDispatchSpecificKey))
           {
@@ -1026,10 +1026,10 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)_requestWithIdentifier:(id)a3
+- (id)_requestWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
@@ -1050,8 +1050,8 @@ void __30__PHMediaRequestContext_start__block_invoke(uint64_t a1, void *a2)
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifierString];
-        v11 = [v10 isEqualToString:v4];
+        identifierString = [v9 identifierString];
+        v11 = [identifierString isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -1077,20 +1077,20 @@ LABEL_11:
   return v6;
 }
 
-- (PHMediaRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 resultHandler:(id)a7
+- (PHMediaRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec resultHandler:(id)handler
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  specCopy = spec;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = PHMediaRequestContext;
   v16 = [(PHMediaRequestContext *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_requestID = a3;
-    v16->_managerID = a4;
-    objc_storeStrong(&v16->_asset, a5);
+    v16->_requestID = d;
+    v16->_managerID = iD;
+    objc_storeStrong(&v16->_asset, asset);
     if (!v17->_asset)
     {
       v18 = PLImageManagerGetLog();
@@ -1106,14 +1106,14 @@ LABEL_11:
       }
     }
 
-    objc_storeStrong(&v17->_displaySpec, a6);
+    objc_storeStrong(&v17->_displaySpec, spec);
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     requests = v17->_requests;
     v17->_requests = v19;
 
-    if (v15)
+    if (handlerCopy)
     {
-      v21 = [v15 copy];
+      v21 = [handlerCopy copy];
       resultHandler = v17->_resultHandler;
       v17->_resultHandler = v21;
     }
@@ -1130,64 +1130,64 @@ LABEL_11:
   return v17;
 }
 
-+ (id)contentEditingInputRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 options:(id)a6 useRAWAsUnadjustedBase:(BOOL)a7 resultHandler:(id)a8
++ (id)contentEditingInputRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset options:(id)options useRAWAsUnadjustedBase:(BOOL)base resultHandler:(id)handler
 {
-  v8 = a7;
-  v12 = *&a3;
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = [[PHContentEditingInputRequestContext alloc] initWithRequestID:v12 managerID:a4 asset:v15 options:v14 useRAWAsUnadjustedBase:v8 resultHandler:v13];
+  baseCopy = base;
+  v12 = *&d;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
+  v16 = [[PHContentEditingInputRequestContext alloc] initWithRequestID:v12 managerID:iD asset:assetCopy options:optionsCopy useRAWAsUnadjustedBase:baseCopy resultHandler:handlerCopy];
 
   return v16;
 }
 
-+ (id)livePhotoRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 livePhotoRequestOptions:(id)a6 displaySpec:(id)a7 resultHandler:(id)a8
++ (id)livePhotoRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset livePhotoRequestOptions:(id)options displaySpec:(id)spec resultHandler:(id)handler
 {
-  v12 = *&a3;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = [[PHLivePhotoRequestContext alloc] initWithRequestID:v12 managerID:a4 asset:v16 displaySpec:v14 options:v15 resultHandler:v13];
+  v12 = *&d;
+  handlerCopy = handler;
+  specCopy = spec;
+  optionsCopy = options;
+  assetCopy = asset;
+  v17 = [[PHLivePhotoRequestContext alloc] initWithRequestID:v12 managerID:iD asset:assetCopy displaySpec:specCopy options:optionsCopy resultHandler:handlerCopy];
 
   return v17;
 }
 
-+ (id)videoRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 videoRequestOptions:(id)a6 intent:(int64_t)a7 resultHandler:(id)a8
++ (id)videoRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset videoRequestOptions:(id)options intent:(int64_t)intent resultHandler:(id)handler
 {
-  v12 = *&a3;
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
+  v12 = *&d;
+  handlerCopy = handler;
+  optionsCopy = options;
+  assetCopy = asset;
   v16 = [PHImageDisplaySpec alloc];
-  [v14 targetSize];
-  v19 = -[PHImageDisplaySpec initWithTargetSize:contentMode:](v16, "initWithTargetSize:contentMode:", [v14 contentMode], v17, v18);
-  v20 = [[PHVideoRequestContext alloc] initWithRequestID:v12 managerID:a4 asset:v15 displaySpec:v19 options:v14 intent:a7 resultHandler:v13];
+  [optionsCopy targetSize];
+  v19 = -[PHImageDisplaySpec initWithTargetSize:contentMode:](v16, "initWithTargetSize:contentMode:", [optionsCopy contentMode], v17, v18);
+  v20 = [[PHVideoRequestContext alloc] initWithRequestID:v12 managerID:iD asset:assetCopy displaySpec:v19 options:optionsCopy intent:intent resultHandler:handlerCopy];
 
   return v20;
 }
 
-+ (id)imageRequestContextWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 imageRequestOptions:(id)a6 displaySpec:(id)a7 resultHandler:(id)a8
++ (id)imageRequestContextWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset imageRequestOptions:(id)options displaySpec:(id)spec resultHandler:(id)handler
 {
-  v12 = *&a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  if ([v14 version] == 16)
+  v12 = *&d;
+  assetCopy = asset;
+  optionsCopy = options;
+  specCopy = spec;
+  handlerCopy = handler;
+  if ([optionsCopy version] == 16)
   {
-    v17 = [[PHAdjustmentDataRequestContext alloc] initWithRequestID:v12 managerID:a4 asset:v13 options:v14 resultHandler:v16];
+    v17 = [[PHAdjustmentDataRequestContext alloc] initWithRequestID:v12 managerID:iD asset:assetCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
-  else if ([v14 version] == 17)
+  else if ([optionsCopy version] == 17)
   {
-    v17 = [PHSingleMediaRequestContext originalAdjustmentDataRequestContextWithRequestID:v12 managerID:a4 asset:v13 options:v14 resultHandler:v16];
+    v17 = [PHSingleMediaRequestContext originalAdjustmentDataRequestContextWithRequestID:v12 managerID:iD asset:assetCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   else
   {
-    v17 = [[PHImageRequestContext alloc] initWithRequestID:v12 managerID:a4 asset:v13 displaySpec:v15 options:v14 resultHandler:v16];
+    v17 = [[PHImageRequestContext alloc] initWithRequestID:v12 managerID:iD asset:assetCopy displaySpec:specCopy options:optionsCopy resultHandler:handlerCopy];
   }
 
   v18 = v17;

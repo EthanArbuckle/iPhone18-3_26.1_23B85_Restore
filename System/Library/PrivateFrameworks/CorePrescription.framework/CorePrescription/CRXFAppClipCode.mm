@@ -1,77 +1,77 @@
 @interface CRXFAppClipCode
-+ (id)appClipCodeWithBlock:(id)a3;
++ (id)appClipCodeWithBlock:(id)block;
 - (BOOL)hasLeftAndRightRX;
 - (BOOL)hasLeftRX;
 - (BOOL)hasOnlyLeftRX;
 - (BOOL)hasOnlyRightRX;
 - (BOOL)hasRightRX;
 - (BOOL)hasSingleLensRX;
-- (CRXFAppClipCode)initWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 cylLeftSignFlipped:(BOOL)a5 cylRightSignFlipped:(BOOL)a6 leftRXID:(unint64_t)a7 leftCalibrationRXID:(unint64_t)a8 leftDisplaySphere:(float)a9 leftDisplayCylinder:(float)a10 leftCalibrationSphere:(float)a11 leftCalibrationCylinder:(float)a12 leftAddVR:(float)a13 leftAxisID:(unint64_t)a14 leftDisplayAxis:(unint64_t)a15 leftCalibrationAxis:(unint64_t)a16 leftClamping:(unint64_t)a17 leftHorizPrismBaseDirection:(unint64_t)a18 leftHorizPrism:(float)a19 leftVertPrismBaseDirection:(unint64_t)a20 leftVertPrism:(float)a21 rightRXID:(unint64_t)a22 rightCalibrationRXID:(unint64_t)a23 rightDisplaySphere:(float)a24 rightDisplayCylinder:(float)a25 rightCalibrationSphere:(float)a26 rightCalibrationCylinder:(float)a27 rightAddVR:(float)a28 rightAxisID:(unint64_t)a29 rightDisplayAxis:(unint64_t)a30 rightCalibrationAxis:(unint64_t)a31 rightClamping:(unint64_t)a32 rightHorizPrismBaseDirection:(unint64_t)a33 rightHorizPrism:(float)a34 rightVertPrismBaseDirection:(unint64_t)a35 rightVertPrism:(float)a36 identifyingColor:(unint64_t)a37 secret:(id)a38 randomBits:(unint64_t)a39;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRXFAppClipCode)initWithVersion:(unint64_t)version lensType:(unint64_t)type cylLeftSignFlipped:(BOOL)flipped cylRightSignFlipped:(BOOL)signFlipped leftRXID:(unint64_t)d leftCalibrationRXID:(unint64_t)iD leftDisplaySphere:(float)sphere leftDisplayCylinder:(float)self0 leftCalibrationSphere:(float)self1 leftCalibrationCylinder:(float)self2 leftAddVR:(float)self3 leftAxisID:(unint64_t)self4 leftDisplayAxis:(unint64_t)self5 leftCalibrationAxis:(unint64_t)self6 leftClamping:(unint64_t)self7 leftHorizPrismBaseDirection:(unint64_t)self8 leftHorizPrism:(float)self9 leftVertPrismBaseDirection:(unint64_t)baseDirection leftVertPrism:(float)vertPrism rightRXID:(unint64_t)xID rightCalibrationRXID:(unint64_t)rXID rightDisplaySphere:(float)displaySphere rightDisplayCylinder:(float)displayCylinder rightCalibrationSphere:(float)rightCalibrationSphere rightCalibrationCylinder:(float)rightCalibrationCylinder rightAddVR:(float)vR rightAxisID:(unint64_t)rightAxisID rightDisplayAxis:(unint64_t)version0 rightCalibrationAxis:(unint64_t)version1 rightClamping:(unint64_t)version2 rightHorizPrismBaseDirection:(unint64_t)version3 rightHorizPrism:(float)version4 rightVertPrismBaseDirection:(unint64_t)version5 rightVertPrism:(float)version6 identifyingColor:(unint64_t)version7 secret:(id)version8 randomBits:(unint64_t)version9;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CRXFAppClipCode
 
-- (CRXFAppClipCode)initWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 cylLeftSignFlipped:(BOOL)a5 cylRightSignFlipped:(BOOL)a6 leftRXID:(unint64_t)a7 leftCalibrationRXID:(unint64_t)a8 leftDisplaySphere:(float)a9 leftDisplayCylinder:(float)a10 leftCalibrationSphere:(float)a11 leftCalibrationCylinder:(float)a12 leftAddVR:(float)a13 leftAxisID:(unint64_t)a14 leftDisplayAxis:(unint64_t)a15 leftCalibrationAxis:(unint64_t)a16 leftClamping:(unint64_t)a17 leftHorizPrismBaseDirection:(unint64_t)a18 leftHorizPrism:(float)a19 leftVertPrismBaseDirection:(unint64_t)a20 leftVertPrism:(float)a21 rightRXID:(unint64_t)a22 rightCalibrationRXID:(unint64_t)a23 rightDisplaySphere:(float)a24 rightDisplayCylinder:(float)a25 rightCalibrationSphere:(float)a26 rightCalibrationCylinder:(float)a27 rightAddVR:(float)a28 rightAxisID:(unint64_t)a29 rightDisplayAxis:(unint64_t)a30 rightCalibrationAxis:(unint64_t)a31 rightClamping:(unint64_t)a32 rightHorizPrismBaseDirection:(unint64_t)a33 rightHorizPrism:(float)a34 rightVertPrismBaseDirection:(unint64_t)a35 rightVertPrism:(float)a36 identifyingColor:(unint64_t)a37 secret:(id)a38 randomBits:(unint64_t)a39
+- (CRXFAppClipCode)initWithVersion:(unint64_t)version lensType:(unint64_t)type cylLeftSignFlipped:(BOOL)flipped cylRightSignFlipped:(BOOL)signFlipped leftRXID:(unint64_t)d leftCalibrationRXID:(unint64_t)iD leftDisplaySphere:(float)sphere leftDisplayCylinder:(float)self0 leftCalibrationSphere:(float)self1 leftCalibrationCylinder:(float)self2 leftAddVR:(float)self3 leftAxisID:(unint64_t)self4 leftDisplayAxis:(unint64_t)self5 leftCalibrationAxis:(unint64_t)self6 leftClamping:(unint64_t)self7 leftHorizPrismBaseDirection:(unint64_t)self8 leftHorizPrism:(float)self9 leftVertPrismBaseDirection:(unint64_t)baseDirection leftVertPrism:(float)vertPrism rightRXID:(unint64_t)xID rightCalibrationRXID:(unint64_t)rXID rightDisplaySphere:(float)displaySphere rightDisplayCylinder:(float)displayCylinder rightCalibrationSphere:(float)rightCalibrationSphere rightCalibrationCylinder:(float)rightCalibrationCylinder rightAddVR:(float)vR rightAxisID:(unint64_t)rightAxisID rightDisplayAxis:(unint64_t)version0 rightCalibrationAxis:(unint64_t)version1 rightClamping:(unint64_t)version2 rightHorizPrismBaseDirection:(unint64_t)version3 rightHorizPrism:(float)version4 rightVertPrismBaseDirection:(unint64_t)version5 rightVertPrism:(float)version6 identifyingColor:(unint64_t)version7 secret:(id)version8 randomBits:(unint64_t)version9
 {
-  v54 = a38;
+  secretCopy = secret;
   v57.receiver = self;
   v57.super_class = CRXFAppClipCode;
   v55 = [(CRXFAppClipCode *)&v57 init];
   if (v55)
   {
-    v55->_version = a3;
-    v55->_lensType = a4;
-    v55->_cylLeftSignFlipped = a5;
-    v55->_cylRightSignFlipped = a6;
-    v55->_leftRXID = a7;
-    v55->_leftCalibrationRXID = a8;
-    v55->_leftDisplaySphere = a9;
-    v55->_leftDisplayCylinder = a10;
-    v55->_leftCalibrationSphere = a11;
-    v55->_leftCalibrationCylinder = a12;
-    v55->_leftAxisID = a14;
-    v55->_leftCalibrationAxis = a16;
-    v55->_leftDisplayAxis = a15;
-    v55->_leftClamping = a17;
-    v55->_leftHorizPrismBaseDirection = a18;
-    v55->_leftVertPrismBaseDirection = a20;
-    v55->_leftHorizPrism = a19;
-    v55->_leftVertPrism = a21;
-    v55->_rightRXID = a22;
-    v55->_rightCalibrationRXID = a23;
-    v55->_leftAddVR = a13;
-    v55->_rightDisplaySphere = a24;
-    v55->_rightDisplayCylinder = a25;
-    v55->_rightCalibrationSphere = a26;
-    v55->_rightCalibrationCylinder = a27;
-    v55->_rightAddVR = a28;
-    v55->_rightAxisID = a29;
-    v55->_rightCalibrationAxis = a31;
-    v55->_rightDisplayAxis = a30;
-    v55->_rightClamping = a32;
-    v55->_rightHorizPrismBaseDirection = a33;
-    v55->_rightVertPrismBaseDirection = a35;
-    v55->_rightHorizPrism = a34;
-    v55->_rightVertPrism = a36;
-    v55->_identifyingColor = a37;
-    objc_storeStrong(&v55->_secret, a38);
-    v55->_randomBits = a39;
+    v55->_version = version;
+    v55->_lensType = type;
+    v55->_cylLeftSignFlipped = flipped;
+    v55->_cylRightSignFlipped = signFlipped;
+    v55->_leftRXID = d;
+    v55->_leftCalibrationRXID = iD;
+    v55->_leftDisplaySphere = sphere;
+    v55->_leftDisplayCylinder = cylinder;
+    v55->_leftCalibrationSphere = calibrationSphere;
+    v55->_leftCalibrationCylinder = calibrationCylinder;
+    v55->_leftAxisID = axisID;
+    v55->_leftCalibrationAxis = calibrationAxis;
+    v55->_leftDisplayAxis = axis;
+    v55->_leftClamping = clamping;
+    v55->_leftHorizPrismBaseDirection = direction;
+    v55->_leftVertPrismBaseDirection = baseDirection;
+    v55->_leftHorizPrism = prism;
+    v55->_leftVertPrism = vertPrism;
+    v55->_rightRXID = xID;
+    v55->_rightCalibrationRXID = rXID;
+    v55->_leftAddVR = r;
+    v55->_rightDisplaySphere = displaySphere;
+    v55->_rightDisplayCylinder = displayCylinder;
+    v55->_rightCalibrationSphere = rightCalibrationSphere;
+    v55->_rightCalibrationCylinder = rightCalibrationCylinder;
+    v55->_rightAddVR = vR;
+    v55->_rightAxisID = rightAxisID;
+    v55->_rightCalibrationAxis = rightCalibrationAxis;
+    v55->_rightDisplayAxis = displayAxis;
+    v55->_rightClamping = rightClamping;
+    v55->_rightHorizPrismBaseDirection = prismBaseDirection;
+    v55->_rightVertPrismBaseDirection = vertPrismBaseDirection;
+    v55->_rightHorizPrism = horizPrism;
+    v55->_rightVertPrism = rightVertPrism;
+    v55->_identifyingColor = color;
+    objc_storeStrong(&v55->_secret, secret);
+    v55->_randomBits = bits;
   }
 
   return v55;
 }
 
-+ (id)appClipCodeWithBlock:(id)a3
++ (id)appClipCodeWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(CRXFAppClipCodeBuilder);
-  v3[2](v3, v4);
+  blockCopy[2](blockCopy, v4);
 
-  v5 = [(CRXFAppClipCodeBuilder *)v4 build];
+  build = [(CRXFAppClipCodeBuilder *)v4 build];
 
-  return v5;
+  return build;
 }
 
 - (BOOL)hasLeftRX
@@ -98,24 +98,24 @@
 
 - (BOOL)hasOnlyLeftRX
 {
-  v3 = [(CRXFAppClipCode *)self hasLeftRX];
-  if (v3)
+  hasLeftRX = [(CRXFAppClipCode *)self hasLeftRX];
+  if (hasLeftRX)
   {
-    LOBYTE(v3) = ![(CRXFAppClipCode *)self hasRightRX];
+    LOBYTE(hasLeftRX) = ![(CRXFAppClipCode *)self hasRightRX];
   }
 
-  return v3;
+  return hasLeftRX;
 }
 
 - (BOOL)hasOnlyRightRX
 {
-  v3 = [(CRXFAppClipCode *)self hasRightRX];
-  if (v3)
+  hasRightRX = [(CRXFAppClipCode *)self hasRightRX];
+  if (hasRightRX)
   {
-    LOBYTE(v3) = ![(CRXFAppClipCode *)self hasLeftRX];
+    LOBYTE(hasRightRX) = ![(CRXFAppClipCode *)self hasLeftRX];
   }
 
-  return v3;
+  return hasRightRX;
 }
 
 - (BOOL)hasSingleLensRX
@@ -130,17 +130,17 @@
 
 - (BOOL)hasLeftAndRightRX
 {
-  v3 = [(CRXFAppClipCode *)self hasLeftRX];
-  if (v3)
+  hasLeftRX = [(CRXFAppClipCode *)self hasLeftRX];
+  if (hasLeftRX)
   {
 
-    LOBYTE(v3) = [(CRXFAppClipCode *)self hasRightRX];
+    LOBYTE(hasLeftRX) = [(CRXFAppClipCode *)self hasRightRX];
   }
 
-  return v3;
+  return hasLeftRX;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CRXFAppClipCode allocWithZone:?];
   version = self->_version;
@@ -176,7 +176,7 @@
   rightHorizPrism = self->_rightHorizPrism;
   rightVertPrism = self->_rightVertPrism;
   identifyingColor = self->_identifyingColor;
-  v22 = [(NSData *)self->_secret copyWithZone:a3];
+  v22 = [(NSData *)self->_secret copyWithZone:zone];
   *&v33 = rightVertPrism;
   *&v32 = rightHorizPrism;
   *&v23 = leftDisplayCylinder;
@@ -209,8 +209,8 @@
   [(CRXFAppClipCode *)self leftCalibrationCylinder];
   v39 = v6;
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRXFAppClipCode leftAxisID](self, "leftAxisID")}];
-  v37 = [(CRXFAppClipCode *)self leftDisplayAxis];
-  v36 = [(CRXFAppClipCode *)self leftCalibrationAxis];
+  leftDisplayAxis = [(CRXFAppClipCode *)self leftDisplayAxis];
+  leftCalibrationAxis = [(CRXFAppClipCode *)self leftCalibrationAxis];
   v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRXFAppClipCode leftClamping](self, "leftClamping")}];
   v35 = CRXFPrismBaseDirectionAsString([(CRXFAppClipCode *)self leftHorizPrismBaseDirection]);
   [(CRXFAppClipCode *)self leftHorizPrism];
@@ -229,8 +229,8 @@
   [(CRXFAppClipCode *)self rightCalibrationCylinder];
   v18 = v17;
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRXFAppClipCode rightAxisID](self, "rightAxisID")}];
-  v19 = [(CRXFAppClipCode *)self rightDisplayAxis];
-  v20 = [(CRXFAppClipCode *)self rightCalibrationAxis];
+  rightDisplayAxis = [(CRXFAppClipCode *)self rightDisplayAxis];
+  rightCalibrationAxis = [(CRXFAppClipCode *)self rightCalibrationAxis];
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRXFAppClipCode rightClamping](self, "rightClamping")}];
   v31 = CRXFPrismBaseDirectionAsString([(CRXFAppClipCode *)self rightHorizPrismBaseDirection]);
   [(CRXFAppClipCode *)self rightHorizPrism];
@@ -239,9 +239,9 @@
   [(CRXFAppClipCode *)self rightVertPrism];
   v24 = v23;
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRXFAppClipCode identifyingColor](self, "identifyingColor")}];
-  v26 = [(CRXFAppClipCode *)self secret];
-  v27 = [v26 crxu_asHexString];
-  v28 = [v47 stringWithFormat:@"%@<%p> lensType:%@, cylLeftSignFlipped: %@, cylRightSignFlipped: %@, leftRXID: %@, leftCalibrationRXID: %@, leftDisplaySphere:%.02f, leftDisplayCylinder:%.02f, leftCalibrationSphere:%.02f, leftCalibrationCylinder:%.02f, leftAxisID: %@, leftDisplayAxis: %lu, leftCalibrationAxis: %lu, leftClamping: %@ leftHorizPrismDirection: %@, leftHorizPrism:%.02f, leftVertPrismDirection: %@, leftVertPrism:%.02f, rightRXID: %@, rightCalibrationRXID: %@, rightDisplaySphere: %.02f, rightDisplayCylinder: %.02f, rightCalibrationSphere:%.02f, rightCalibrationCylinder:%.02f, rightAxisID: %@, rightDisplayAxis: %lu, rightCalibrationAxis: %lu, rightClamping: %@ rightHorizPrismDirection: %@, rightHorizPrism:%.02f, rightVertPrismDirection: %@, rightVertPrism:%.02f, identifyingColor: %@, secret: %@", v46, self, v52, v45, v44, v43, v51, *&v42, *&v41, *&v40, *&v39, v38, v37, v36, v50, v35, *&v8, v49, *&v10, v48, v34, *&v12, *&v14, *&v16, *&v18, v33, v19, v20, v32, v31, *&v22, v30, *&v24, v25, v27];
+  secret = [(CRXFAppClipCode *)self secret];
+  crxu_asHexString = [secret crxu_asHexString];
+  v28 = [v47 stringWithFormat:@"%@<%p> lensType:%@, cylLeftSignFlipped: %@, cylRightSignFlipped: %@, leftRXID: %@, leftCalibrationRXID: %@, leftDisplaySphere:%.02f, leftDisplayCylinder:%.02f, leftCalibrationSphere:%.02f, leftCalibrationCylinder:%.02f, leftAxisID: %@, leftDisplayAxis: %lu, leftCalibrationAxis: %lu, leftClamping: %@ leftHorizPrismDirection: %@, leftHorizPrism:%.02f, leftVertPrismDirection: %@, leftVertPrism:%.02f, rightRXID: %@, rightCalibrationRXID: %@, rightDisplaySphere: %.02f, rightDisplayCylinder: %.02f, rightCalibrationSphere:%.02f, rightCalibrationCylinder:%.02f, rightAxisID: %@, rightDisplayAxis: %lu, rightCalibrationAxis: %lu, rightClamping: %@ rightHorizPrismDirection: %@, rightHorizPrism:%.02f, rightVertPrismDirection: %@, rightVertPrism:%.02f, identifyingColor: %@, secret: %@", v46, self, v52, v45, v44, v43, v51, *&v42, *&v41, *&v40, *&v39, v38, leftDisplayAxis, leftCalibrationAxis, v50, v35, *&v8, v49, *&v10, v48, v34, *&v12, *&v14, *&v16, *&v18, v33, rightDisplayAxis, rightCalibrationAxis, v32, v31, *&v22, v30, *&v24, v25, crxu_asHexString];
 
   return v28;
 }

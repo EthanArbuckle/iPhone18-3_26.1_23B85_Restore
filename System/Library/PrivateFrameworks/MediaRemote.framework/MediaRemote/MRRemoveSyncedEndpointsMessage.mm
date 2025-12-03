@@ -1,20 +1,20 @@
 @interface MRRemoveSyncedEndpointsMessage
-- (MRRemoveSyncedEndpointsMessage)initWithEndpointUIDs:(id)a3;
+- (MRRemoveSyncedEndpointsMessage)initWithEndpointUIDs:(id)ds;
 - (NSArray)endpointUIDs;
 @end
 
 @implementation MRRemoveSyncedEndpointsMessage
 
-- (MRRemoveSyncedEndpointsMessage)initWithEndpointUIDs:(id)a3
+- (MRRemoveSyncedEndpointsMessage)initWithEndpointUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = MRRemoveSyncedEndpointsMessage;
   v5 = [(MRProtocolMessage *)&v9 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRRemoveEndpointsMessageProtobuf);
-    v7 = [v4 mutableCopy];
+    v7 = [dsCopy mutableCopy];
     [(_MRRemoveEndpointsMessageProtobuf *)v6 setEndpointUIDs:v7];
 
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
@@ -25,10 +25,10 @@
 
 - (NSArray)endpointUIDs
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 endpointUIDs];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  endpointUIDs = [underlyingCodableMessage endpointUIDs];
 
-  return v3;
+  return endpointUIDs;
 }
 
 @end

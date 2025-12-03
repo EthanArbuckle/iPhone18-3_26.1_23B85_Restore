@@ -1,68 +1,68 @@
 @interface SFDrillDownMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFDrillDownMetadata)initWithCoder:(id)a3;
-- (SFDrillDownMetadata)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFDrillDownMetadata)initWithCoder:(id)coder;
+- (SFDrillDownMetadata)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCardOnlyMetadata:(id)a3;
-- (void)setCardSearchMetadata:(id)a3;
-- (void)setEntitySearchMetadata:(id)a3;
-- (void)setEntitySearchOnlyMetadata:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCardOnlyMetadata:(id)metadata;
+- (void)setCardSearchMetadata:(id)metadata;
+- (void)setEntitySearchMetadata:(id)metadata;
+- (void)setEntitySearchOnlyMetadata:(id)metadata;
 @end
 
 @implementation SFDrillDownMetadata
 
 - (unint64_t)hash
 {
-  v25 = [(SFDrillDownMetadata *)self cardIdentifier];
-  v3 = [v25 hash];
-  v24 = [(SFDrillDownMetadata *)self cardIdentifiers];
-  v4 = [v24 hash] ^ v3;
-  v5 = [(SFDrillDownMetadata *)self cardDomains];
-  v6 = [v5 hash];
-  v7 = [(SFDrillDownMetadata *)self qtype];
-  v8 = v4 ^ v6 ^ [v7 hash];
-  v9 = [(SFDrillDownMetadata *)self viewConfigName];
-  v10 = [v9 hash];
-  v11 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
-  v23 = v8 ^ v12 ^ [v13 hash];
-  v14 = [(SFDrillDownMetadata *)self cardSearchMetadata];
-  v15 = [v14 hash];
-  v16 = [(SFDrillDownMetadata *)self entitySearchMetadata];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFDrillDownMetadata *)self debugParams];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(SFDrillDownMetadata *)self params];
-  v21 = v19 ^ [v20 hash];
+  cardIdentifier = [(SFDrillDownMetadata *)self cardIdentifier];
+  v3 = [cardIdentifier hash];
+  cardIdentifiers = [(SFDrillDownMetadata *)self cardIdentifiers];
+  v4 = [cardIdentifiers hash] ^ v3;
+  cardDomains = [(SFDrillDownMetadata *)self cardDomains];
+  v6 = [cardDomains hash];
+  qtype = [(SFDrillDownMetadata *)self qtype];
+  v8 = v4 ^ v6 ^ [qtype hash];
+  viewConfigName = [(SFDrillDownMetadata *)self viewConfigName];
+  v10 = [viewConfigName hash];
+  cardOnlyMetadata = [(SFDrillDownMetadata *)self cardOnlyMetadata];
+  v12 = v10 ^ [cardOnlyMetadata hash];
+  entitySearchOnlyMetadata = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
+  v23 = v8 ^ v12 ^ [entitySearchOnlyMetadata hash];
+  cardSearchMetadata = [(SFDrillDownMetadata *)self cardSearchMetadata];
+  v15 = [cardSearchMetadata hash];
+  entitySearchMetadata = [(SFDrillDownMetadata *)self entitySearchMetadata];
+  v17 = v15 ^ [entitySearchMetadata hash];
+  debugParams = [(SFDrillDownMetadata *)self debugParams];
+  v19 = v17 ^ [debugParams hash];
+  params = [(SFDrillDownMetadata *)self params];
+  v21 = v19 ^ [params hash];
 
   return v23 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_78;
   }
 
-  if (![(SFDrillDownMetadata *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(SFDrillDownMetadata *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v19 = 0;
     goto LABEL_78;
   }
 
-  v5 = v4;
-  v119 = [(SFDrillDownMetadata *)self cardIdentifier];
-  v118 = [(SFDrillDownMetadata *)v5 cardIdentifier];
-  v116 = v118 == 0;
-  v117 = v119 != 0;
+  v5 = equalCopy;
+  cardIdentifier = [(SFDrillDownMetadata *)self cardIdentifier];
+  cardIdentifier2 = [(SFDrillDownMetadata *)v5 cardIdentifier];
+  v116 = cardIdentifier2 == 0;
+  v117 = cardIdentifier != 0;
   if (v117 == v116)
   {
     v10 = 0;
@@ -83,15 +83,15 @@
     goto LABEL_15;
   }
 
-  v7 = [(SFDrillDownMetadata *)self cardIdentifier];
-  v8 = v7 != 0;
-  v111 = v7;
-  if (v7)
+  cardIdentifier3 = [(SFDrillDownMetadata *)self cardIdentifier];
+  v8 = cardIdentifier3 != 0;
+  v111 = cardIdentifier3;
+  if (cardIdentifier3)
   {
-    v9 = [(SFDrillDownMetadata *)self cardIdentifier];
-    v106 = [(SFDrillDownMetadata *)v5 cardIdentifier];
-    v107 = v9;
-    if (![v9 isEqual:?])
+    cardIdentifier4 = [(SFDrillDownMetadata *)self cardIdentifier];
+    cardIdentifier5 = [(SFDrillDownMetadata *)v5 cardIdentifier];
+    v107 = cardIdentifier4;
+    if (![cardIdentifier4 isEqual:?])
     {
       v10 = 0;
       memset(v114, 0, sizeof(v114));
@@ -113,10 +113,10 @@
     }
   }
 
-  v109 = [(SFDrillDownMetadata *)self cardIdentifiers];
-  v108 = [(SFDrillDownMetadata *)v5 cardIdentifiers];
+  cardIdentifiers = [(SFDrillDownMetadata *)self cardIdentifiers];
+  cardIdentifiers2 = [(SFDrillDownMetadata *)v5 cardIdentifiers];
   *&v115[24] = v8;
-  if ((v109 != 0) == (v108 == 0))
+  if ((cardIdentifiers != 0) == (cardIdentifiers2 == 0))
   {
     v10 = 0;
     v11 = 0;
@@ -137,15 +137,15 @@
     goto LABEL_15;
   }
 
-  v20 = [(SFDrillDownMetadata *)self cardIdentifiers];
-  v21 = v20 != 0;
-  v105 = v20;
-  if (v20)
+  cardIdentifiers3 = [(SFDrillDownMetadata *)self cardIdentifiers];
+  v21 = cardIdentifiers3 != 0;
+  v105 = cardIdentifiers3;
+  if (cardIdentifiers3)
   {
-    v22 = [(SFDrillDownMetadata *)self cardIdentifiers];
-    v101 = [(SFDrillDownMetadata *)v5 cardIdentifiers];
-    v102 = v22;
-    if (![v22 isEqual:?])
+    cardIdentifiers4 = [(SFDrillDownMetadata *)self cardIdentifiers];
+    cardIdentifiers5 = [(SFDrillDownMetadata *)v5 cardIdentifiers];
+    v102 = cardIdentifiers4;
+    if (![cardIdentifiers4 isEqual:?])
     {
       v10 = 0;
       memset(v114, 0, 24);
@@ -175,9 +175,9 @@
     *&v115[20] = 0;
   }
 
-  v104 = [(SFDrillDownMetadata *)self cardDomains];
-  v103 = [(SFDrillDownMetadata *)v5 cardDomains];
-  if ((v104 != 0) == (v103 == 0))
+  cardDomains = [(SFDrillDownMetadata *)self cardDomains];
+  cardDomains2 = [(SFDrillDownMetadata *)v5 cardDomains];
+  if ((cardDomains != 0) == (cardDomains2 == 0))
   {
     v10 = 0;
     v114[1] = 0;
@@ -200,15 +200,15 @@
     goto LABEL_15;
   }
 
-  v35 = [(SFDrillDownMetadata *)self cardDomains];
-  v36 = v35 != 0;
-  v100 = v35;
-  if (v35)
+  cardDomains3 = [(SFDrillDownMetadata *)self cardDomains];
+  v36 = cardDomains3 != 0;
+  v100 = cardDomains3;
+  if (cardDomains3)
   {
-    v37 = [(SFDrillDownMetadata *)self cardDomains];
-    v96 = [(SFDrillDownMetadata *)v5 cardDomains];
-    v97 = v37;
-    if (![v37 isEqual:?])
+    cardDomains4 = [(SFDrillDownMetadata *)self cardDomains];
+    cardDomains5 = [(SFDrillDownMetadata *)v5 cardDomains];
+    v97 = cardDomains4;
+    if (![cardDomains4 isEqual:?])
     {
       v10 = 0;
       v114[1] = 0;
@@ -241,9 +241,9 @@
     *&v115[16] = 0;
   }
 
-  v99 = [(SFDrillDownMetadata *)self qtype];
-  v98 = [(SFDrillDownMetadata *)v5 qtype];
-  if ((v99 != 0) == (v98 == 0))
+  qtype = [(SFDrillDownMetadata *)self qtype];
+  qtype2 = [(SFDrillDownMetadata *)v5 qtype];
+  if ((qtype != 0) == (qtype2 == 0))
   {
     v114[1] = 0;
     *&v115[8] = 0;
@@ -267,15 +267,15 @@
     goto LABEL_15;
   }
 
-  v38 = [(SFDrillDownMetadata *)self qtype];
-  v39 = v38 != 0;
-  v95 = v38;
-  if (v38)
+  qtype3 = [(SFDrillDownMetadata *)self qtype];
+  v39 = qtype3 != 0;
+  v95 = qtype3;
+  if (qtype3)
   {
-    v40 = [(SFDrillDownMetadata *)self qtype];
-    v91 = [(SFDrillDownMetadata *)v5 qtype];
-    v92 = v40;
-    if (![v40 isEqual:?])
+    qtype4 = [(SFDrillDownMetadata *)self qtype];
+    qtype5 = [(SFDrillDownMetadata *)v5 qtype];
+    v92 = qtype4;
+    if (![qtype4 isEqual:?])
     {
       *(v114 + 4) = 0;
       v11 = 0;
@@ -309,9 +309,9 @@
     *&v115[12] = 0;
   }
 
-  v94 = [(SFDrillDownMetadata *)self viewConfigName];
-  v93 = [(SFDrillDownMetadata *)v5 viewConfigName];
-  if ((v94 != 0) == (v93 == 0))
+  viewConfigName = [(SFDrillDownMetadata *)self viewConfigName];
+  viewConfigName2 = [(SFDrillDownMetadata *)v5 viewConfigName];
+  if ((viewConfigName != 0) == (viewConfigName2 == 0))
   {
     v11 = 0;
     *&v115[4] = 0;
@@ -335,15 +335,15 @@
     goto LABEL_15;
   }
 
-  v41 = [(SFDrillDownMetadata *)self viewConfigName];
-  v42 = v41 != 0;
-  v90 = v41;
-  if (v41)
+  viewConfigName3 = [(SFDrillDownMetadata *)self viewConfigName];
+  v42 = viewConfigName3 != 0;
+  v90 = viewConfigName3;
+  if (viewConfigName3)
   {
-    v43 = [(SFDrillDownMetadata *)self viewConfigName];
-    v86 = [(SFDrillDownMetadata *)v5 viewConfigName];
-    v87 = v43;
-    if (![v43 isEqual:?])
+    viewConfigName4 = [(SFDrillDownMetadata *)self viewConfigName];
+    viewConfigName5 = [(SFDrillDownMetadata *)v5 viewConfigName];
+    v87 = viewConfigName4;
+    if (![viewConfigName4 isEqual:?])
     {
       v113 = 0;
       *v115 = 0;
@@ -375,9 +375,9 @@
     *&v115[8] = 0;
   }
 
-  v89 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
-  v88 = [(SFDrillDownMetadata *)v5 cardOnlyMetadata];
-  if ((v89 != 0) == (v88 == 0))
+  cardOnlyMetadata = [(SFDrillDownMetadata *)self cardOnlyMetadata];
+  cardOnlyMetadata2 = [(SFDrillDownMetadata *)v5 cardOnlyMetadata];
+  if ((cardOnlyMetadata != 0) == (cardOnlyMetadata2 == 0))
   {
     v114[1] = 0x100000000;
     *v115 = 0;
@@ -400,15 +400,15 @@
     goto LABEL_15;
   }
 
-  v44 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
-  v45 = v44 != 0;
-  v85 = v44;
-  if (v44)
+  cardOnlyMetadata3 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
+  v45 = cardOnlyMetadata3 != 0;
+  v85 = cardOnlyMetadata3;
+  if (cardOnlyMetadata3)
   {
-    v46 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
-    v81 = [(SFDrillDownMetadata *)v5 cardOnlyMetadata];
-    v82 = v46;
-    if (![v46 isEqual:?])
+    cardOnlyMetadata4 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
+    cardOnlyMetadata5 = [(SFDrillDownMetadata *)v5 cardOnlyMetadata];
+    v82 = cardOnlyMetadata4;
+    if (![cardOnlyMetadata4 isEqual:?])
     {
       v112 = 0;
       v12 = 0;
@@ -439,9 +439,9 @@
     *&v115[4] = 0;
   }
 
-  v84 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
-  v83 = [(SFDrillDownMetadata *)v5 entitySearchOnlyMetadata];
-  if ((v84 != 0) == (v83 == 0))
+  entitySearchOnlyMetadata = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
+  entitySearchOnlyMetadata2 = [(SFDrillDownMetadata *)v5 entitySearchOnlyMetadata];
+  if ((entitySearchOnlyMetadata != 0) == (entitySearchOnlyMetadata2 == 0))
   {
     v12 = 0;
     v112 = 0x100000000;
@@ -464,15 +464,15 @@
     goto LABEL_15;
   }
 
-  v47 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
-  v48 = v47 != 0;
-  v80 = v47;
-  if (v47)
+  entitySearchOnlyMetadata3 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
+  v48 = entitySearchOnlyMetadata3 != 0;
+  v80 = entitySearchOnlyMetadata3;
+  if (entitySearchOnlyMetadata3)
   {
-    v49 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
-    v76 = [(SFDrillDownMetadata *)v5 entitySearchOnlyMetadata];
-    v77 = v49;
-    if (![v49 isEqual:?])
+    entitySearchOnlyMetadata4 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
+    entitySearchOnlyMetadata5 = [(SFDrillDownMetadata *)v5 entitySearchOnlyMetadata];
+    v77 = entitySearchOnlyMetadata4;
+    if (![entitySearchOnlyMetadata4 isEqual:?])
     {
       v112 = 0x100000000;
       v13 = 0;
@@ -503,9 +503,9 @@
     *v115 = 0;
   }
 
-  v79 = [(SFDrillDownMetadata *)self cardSearchMetadata];
-  v78 = [(SFDrillDownMetadata *)v5 cardSearchMetadata];
-  if ((v79 != 0) == (v78 == 0))
+  cardSearchMetadata = [(SFDrillDownMetadata *)self cardSearchMetadata];
+  cardSearchMetadata2 = [(SFDrillDownMetadata *)v5 cardSearchMetadata];
+  if ((cardSearchMetadata != 0) == (cardSearchMetadata2 == 0))
   {
     v13 = 0;
     v14 = 0;
@@ -527,15 +527,15 @@
     goto LABEL_15;
   }
 
-  v50 = [(SFDrillDownMetadata *)self cardSearchMetadata];
-  LODWORD(v120[1]) = v50 != 0;
-  v75 = v50;
+  cardSearchMetadata3 = [(SFDrillDownMetadata *)self cardSearchMetadata];
+  LODWORD(v120[1]) = cardSearchMetadata3 != 0;
+  v75 = cardSearchMetadata3;
   v58 = v5;
-  if (!v50 || (-[SFDrillDownMetadata cardSearchMetadata](self, "cardSearchMetadata"), v51 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata cardSearchMetadata](v5, "cardSearchMetadata"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v51, [v51 isEqual:?]))
+  if (!cardSearchMetadata3 || (-[SFDrillDownMetadata cardSearchMetadata](self, "cardSearchMetadata"), v51 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata cardSearchMetadata](v5, "cardSearchMetadata"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v51, [v51 isEqual:?]))
   {
-    v74 = [(SFDrillDownMetadata *)self entitySearchMetadata];
-    v73 = [(SFDrillDownMetadata *)v58 entitySearchMetadata];
-    if ((v74 != 0) == (v73 == 0))
+    entitySearchMetadata = [(SFDrillDownMetadata *)self entitySearchMetadata];
+    entitySearchMetadata2 = [(SFDrillDownMetadata *)v58 entitySearchMetadata];
+    if ((entitySearchMetadata != 0) == (entitySearchMetadata2 == 0))
     {
       v14 = 0;
       v120[0] = 0;
@@ -558,14 +558,14 @@
 
     else
     {
-      v52 = [(SFDrillDownMetadata *)self entitySearchMetadata];
-      HIDWORD(v120[0]) = v52 != 0;
-      v70 = v52;
-      if (!v52 || (-[SFDrillDownMetadata entitySearchMetadata](self, "entitySearchMetadata"), v53 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata entitySearchMetadata](v58, "entitySearchMetadata"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v53, [v53 isEqual:?]))
+      entitySearchMetadata3 = [(SFDrillDownMetadata *)self entitySearchMetadata];
+      HIDWORD(v120[0]) = entitySearchMetadata3 != 0;
+      v70 = entitySearchMetadata3;
+      if (!entitySearchMetadata3 || (-[SFDrillDownMetadata entitySearchMetadata](self, "entitySearchMetadata"), v53 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata entitySearchMetadata](v58, "entitySearchMetadata"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v53, [v53 isEqual:?]))
       {
-        v69 = [(SFDrillDownMetadata *)self debugParams];
-        v68 = [(SFDrillDownMetadata *)v58 debugParams];
-        if ((v69 != 0) == (v68 == 0))
+        debugParams = [(SFDrillDownMetadata *)self debugParams];
+        debugParams2 = [(SFDrillDownMetadata *)v58 debugParams];
+        if ((debugParams != 0) == (debugParams2 == 0))
         {
           v15 = 0;
           LODWORD(v120[0]) = 0;
@@ -588,14 +588,14 @@
 
         else
         {
-          v54 = [(SFDrillDownMetadata *)self debugParams];
-          LODWORD(v120[0]) = v54 != 0;
-          v65 = v54;
-          if (!v54 || (-[SFDrillDownMetadata debugParams](self, "debugParams"), v55 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata debugParams](v58, "debugParams"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v55, [v55 isEqual:?]))
+          debugParams3 = [(SFDrillDownMetadata *)self debugParams];
+          LODWORD(v120[0]) = debugParams3 != 0;
+          v65 = debugParams3;
+          if (!debugParams3 || (-[SFDrillDownMetadata debugParams](self, "debugParams"), v55 = objc_claimAutoreleasedReturnValue(), -[SFDrillDownMetadata debugParams](v58, "debugParams"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v55, [v55 isEqual:?]))
           {
-            v64 = [(SFDrillDownMetadata *)self params];
-            v63 = [(SFDrillDownMetadata *)v58 params];
-            if ((v64 != 0) == (v63 == 0))
+            params = [(SFDrillDownMetadata *)self params];
+            params2 = [(SFDrillDownMetadata *)v58 params];
+            if ((params != 0) == (params2 == 0))
             {
               v17 = 0;
               v18 = 0;
@@ -617,15 +617,15 @@
 
             else
             {
-              v60 = [(SFDrillDownMetadata *)self params];
-              if (v60)
+              params3 = [(SFDrillDownMetadata *)self params];
+              if (params3)
               {
-                v56 = [(SFDrillDownMetadata *)self params];
+                params4 = [(SFDrillDownMetadata *)self params];
                 v5 = v58;
-                v57 = [(SFDrillDownMetadata *)v58 params];
-                v59 = v56;
-                v19 = [v56 isEqual:v57];
-                v6 = v57;
+                params5 = [(SFDrillDownMetadata *)v58 params];
+                v59 = params4;
+                v19 = [params4 isEqual:params5];
+                v6 = params5;
                 v18 = 1;
                 v114[3] = 0x100000001;
                 v114[2] = 0x100000001;
@@ -644,7 +644,7 @@
                 goto LABEL_15;
               }
 
-              v60 = 0;
+              params3 = 0;
               v18 = 0;
               v114[3] = 0x100000001;
               v114[2] = 0x100000001;
@@ -736,7 +736,7 @@
 LABEL_15:
   if (v18)
   {
-    v110 = v4;
+    v110 = equalCopy;
     v23 = v19;
     v24 = v13;
     v25 = v12;
@@ -758,7 +758,7 @@ LABEL_15:
     v12 = v25;
     v13 = v24;
     v19 = v23;
-    v4 = v110;
+    equalCopy = v110;
     if (!v33)
     {
       goto LABEL_17;
@@ -906,63 +906,63 @@ LABEL_78:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFDrillDownMetadata *)self cardIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  cardIdentifier = [(SFDrillDownMetadata *)self cardIdentifier];
+  v6 = [cardIdentifier copy];
   [v4 setCardIdentifier:v6];
 
-  v7 = [(SFDrillDownMetadata *)self cardIdentifiers];
-  v8 = [v7 copy];
+  cardIdentifiers = [(SFDrillDownMetadata *)self cardIdentifiers];
+  v8 = [cardIdentifiers copy];
   [v4 setCardIdentifiers:v8];
 
-  v9 = [(SFDrillDownMetadata *)self cardDomains];
-  v10 = [v9 copy];
+  cardDomains = [(SFDrillDownMetadata *)self cardDomains];
+  v10 = [cardDomains copy];
   [v4 setCardDomains:v10];
 
-  v11 = [(SFDrillDownMetadata *)self qtype];
-  v12 = [v11 copy];
+  qtype = [(SFDrillDownMetadata *)self qtype];
+  v12 = [qtype copy];
   [v4 setQtype:v12];
 
-  v13 = [(SFDrillDownMetadata *)self viewConfigName];
-  v14 = [v13 copy];
+  viewConfigName = [(SFDrillDownMetadata *)self viewConfigName];
+  v14 = [viewConfigName copy];
   [v4 setViewConfigName:v14];
 
   if ([(SFDrillDownMetadata *)self hasCardOnlyMetadata])
   {
-    v15 = [(SFDrillDownMetadata *)self cardOnlyMetadata];
-    v16 = [v15 copy];
+    cardOnlyMetadata = [(SFDrillDownMetadata *)self cardOnlyMetadata];
+    v16 = [cardOnlyMetadata copy];
     [v4 setCardOnlyMetadata:v16];
   }
 
   if ([(SFDrillDownMetadata *)self hasEntitySearchOnlyMetadata])
   {
-    v17 = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
-    v18 = [v17 copy];
+    entitySearchOnlyMetadata = [(SFDrillDownMetadata *)self entitySearchOnlyMetadata];
+    v18 = [entitySearchOnlyMetadata copy];
     [v4 setEntitySearchOnlyMetadata:v18];
   }
 
   if ([(SFDrillDownMetadata *)self hasCardSearchMetadata])
   {
-    v19 = [(SFDrillDownMetadata *)self cardSearchMetadata];
-    v20 = [v19 copy];
+    cardSearchMetadata = [(SFDrillDownMetadata *)self cardSearchMetadata];
+    v20 = [cardSearchMetadata copy];
     [v4 setCardSearchMetadata:v20];
   }
 
   if ([(SFDrillDownMetadata *)self hasEntitySearchMetadata])
   {
-    v21 = [(SFDrillDownMetadata *)self entitySearchMetadata];
-    v22 = [v21 copy];
+    entitySearchMetadata = [(SFDrillDownMetadata *)self entitySearchMetadata];
+    v22 = [entitySearchMetadata copy];
     [v4 setEntitySearchMetadata:v22];
   }
 
-  v23 = [(SFDrillDownMetadata *)self debugParams];
-  v24 = [v23 copy];
+  debugParams = [(SFDrillDownMetadata *)self debugParams];
+  v24 = [debugParams copy];
   [v4 setDebugParams:v24];
 
-  v25 = [(SFDrillDownMetadata *)self params];
-  v26 = [v25 copy];
+  params = [(SFDrillDownMetadata *)self params];
+  v26 = [params copy];
   [v4 setParams:v26];
 
   return v4;
@@ -971,31 +971,31 @@ LABEL_78:
 - (NSData)jsonData
 {
   v2 = [[_SFPBDrillDownMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBDrillDownMetadata *)v2 jsonData];
+  jsonData = [(_SFPBDrillDownMetadata *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBDrillDownMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBDrillDownMetadata *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBDrillDownMetadata *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBDrillDownMetadata alloc] initWithFacade:self];
-  v5 = [(_SFPBDrillDownMetadata *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBDrillDownMetadata *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFDrillDownMetadata)initWithCoder:(id)a3
+- (SFDrillDownMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBDrillDownMetadata alloc] initWithData:v5];
   v7 = [(SFDrillDownMetadata *)self initWithProtobuf:v6];
@@ -1003,11 +1003,11 @@ LABEL_78:
   return v7;
 }
 
-- (void)setEntitySearchMetadata:(id)a3
+- (void)setEntitySearchMetadata:(id)metadata
 {
   *&self->_has |= 8u;
-  objc_storeStrong(&self->_entitySearchMetadata, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_entitySearchMetadata, metadata);
+  metadataCopy = metadata;
   *&self->_has &= ~1u;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
@@ -1021,11 +1021,11 @@ LABEL_78:
   self->_cardSearchMetadata = 0;
 }
 
-- (void)setCardSearchMetadata:(id)a3
+- (void)setCardSearchMetadata:(id)metadata
 {
   *&self->_has |= 4u;
-  objc_storeStrong(&self->_cardSearchMetadata, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_cardSearchMetadata, metadata);
+  metadataCopy = metadata;
   *&self->_has &= ~1u;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
@@ -1039,11 +1039,11 @@ LABEL_78:
   self->_entitySearchMetadata = 0;
 }
 
-- (void)setEntitySearchOnlyMetadata:(id)a3
+- (void)setEntitySearchOnlyMetadata:(id)metadata
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_entitySearchOnlyMetadata, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_entitySearchOnlyMetadata, metadata);
+  metadataCopy = metadata;
   *&self->_has &= ~1u;
   cardOnlyMetadata = self->_cardOnlyMetadata;
   self->_cardOnlyMetadata = 0;
@@ -1057,11 +1057,11 @@ LABEL_78:
   self->_entitySearchMetadata = 0;
 }
 
-- (void)setCardOnlyMetadata:(id)a3
+- (void)setCardOnlyMetadata:(id)metadata
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_cardOnlyMetadata, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_cardOnlyMetadata, metadata);
+  metadataCopy = metadata;
   *&self->_has &= ~2u;
   entitySearchOnlyMetadata = self->_entitySearchOnlyMetadata;
   self->_entitySearchOnlyMetadata = 0;
@@ -1075,25 +1075,25 @@ LABEL_78:
   self->_entitySearchMetadata = 0;
 }
 
-- (SFDrillDownMetadata)initWithProtobuf:(id)a3
+- (SFDrillDownMetadata)initWithProtobuf:(id)protobuf
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v57.receiver = self;
   v57.super_class = SFDrillDownMetadata;
   v5 = [(SFDrillDownMetadata *)&v57 init];
   if (v5)
   {
-    v6 = [v4 cardIdentifier];
+    cardIdentifier = [protobufCopy cardIdentifier];
 
-    if (v6)
+    if (cardIdentifier)
     {
-      v7 = [v4 cardIdentifier];
-      [(SFDrillDownMetadata *)v5 setCardIdentifier:v7];
+      cardIdentifier2 = [protobufCopy cardIdentifier];
+      [(SFDrillDownMetadata *)v5 setCardIdentifier:cardIdentifier2];
     }
 
-    v8 = [v4 cardIdentifiers];
-    if (v8)
+    cardIdentifiers = [protobufCopy cardIdentifiers];
+    if (cardIdentifiers)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1107,8 +1107,8 @@ LABEL_78:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v10 = [v4 cardIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v53 objects:v59 count:16];
+    cardIdentifiers2 = [protobufCopy cardIdentifiers];
+    v11 = [cardIdentifiers2 countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1119,7 +1119,7 @@ LABEL_78:
         {
           if (*v54 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(cardIdentifiers2);
           }
 
           if (*(*(&v53 + 1) + 8 * i))
@@ -1128,15 +1128,15 @@ LABEL_78:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v53 objects:v59 count:16];
+        v12 = [cardIdentifiers2 countByEnumeratingWithState:&v53 objects:v59 count:16];
       }
 
       while (v12);
     }
 
     [(SFDrillDownMetadata *)v5 setCardIdentifiers:v9];
-    v15 = [v4 cardDomains];
-    if (v15)
+    cardDomains = [protobufCopy cardDomains];
+    if (cardDomains)
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1150,8 +1150,8 @@ LABEL_78:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v17 = [v4 cardDomains];
-    v18 = [v17 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    cardDomains2 = [protobufCopy cardDomains];
+    v18 = [cardDomains2 countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1162,7 +1162,7 @@ LABEL_78:
         {
           if (*v50 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(cardDomains2);
           }
 
           if (*(*(&v49 + 1) + 8 * j))
@@ -1171,83 +1171,83 @@ LABEL_78:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        v19 = [cardDomains2 countByEnumeratingWithState:&v49 objects:v58 count:16];
       }
 
       while (v19);
     }
 
     [(SFDrillDownMetadata *)v5 setCardDomains:v16];
-    v22 = [v4 qtype];
+    qtype = [protobufCopy qtype];
 
-    if (v22)
+    if (qtype)
     {
-      v23 = [v4 qtype];
-      [(SFDrillDownMetadata *)v5 setQtype:v23];
+      qtype2 = [protobufCopy qtype];
+      [(SFDrillDownMetadata *)v5 setQtype:qtype2];
     }
 
-    v24 = [v4 viewConfigName];
+    viewConfigName = [protobufCopy viewConfigName];
 
-    if (v24)
+    if (viewConfigName)
     {
-      v25 = [v4 viewConfigName];
-      [(SFDrillDownMetadata *)v5 setViewConfigName:v25];
+      viewConfigName2 = [protobufCopy viewConfigName];
+      [(SFDrillDownMetadata *)v5 setViewConfigName:viewConfigName2];
     }
 
-    v26 = [v4 cardOnlyMetadata];
+    cardOnlyMetadata = [protobufCopy cardOnlyMetadata];
 
-    if (v26)
+    if (cardOnlyMetadata)
     {
       v27 = [SFCardMetadata alloc];
-      v28 = [v4 cardOnlyMetadata];
-      v29 = [(SFCardMetadata *)v27 initWithProtobuf:v28];
+      cardOnlyMetadata2 = [protobufCopy cardOnlyMetadata];
+      v29 = [(SFCardMetadata *)v27 initWithProtobuf:cardOnlyMetadata2];
       [(SFDrillDownMetadata *)v5 setCardOnlyMetadata:v29];
     }
 
-    v30 = [v4 entitySearchOnlyMetadata];
+    entitySearchOnlyMetadata = [protobufCopy entitySearchOnlyMetadata];
 
-    if (v30)
+    if (entitySearchOnlyMetadata)
     {
       v31 = [SFEntitySearchMetadata alloc];
-      v32 = [v4 entitySearchOnlyMetadata];
-      v33 = [(SFEntitySearchMetadata *)v31 initWithProtobuf:v32];
+      entitySearchOnlyMetadata2 = [protobufCopy entitySearchOnlyMetadata];
+      v33 = [(SFEntitySearchMetadata *)v31 initWithProtobuf:entitySearchOnlyMetadata2];
       [(SFDrillDownMetadata *)v5 setEntitySearchOnlyMetadata:v33];
     }
 
-    v34 = [v4 cardSearchMetadata];
+    cardSearchMetadata = [protobufCopy cardSearchMetadata];
 
-    if (v34)
+    if (cardSearchMetadata)
     {
       v35 = [SFCardSearchMetadata alloc];
-      v36 = [v4 cardSearchMetadata];
-      v37 = [(SFCardSearchMetadata *)v35 initWithProtobuf:v36];
+      cardSearchMetadata2 = [protobufCopy cardSearchMetadata];
+      v37 = [(SFCardSearchMetadata *)v35 initWithProtobuf:cardSearchMetadata2];
       [(SFDrillDownMetadata *)v5 setCardSearchMetadata:v37];
     }
 
-    v38 = [v4 entitySearchMetadata];
+    entitySearchMetadata = [protobufCopy entitySearchMetadata];
 
-    if (v38)
+    if (entitySearchMetadata)
     {
       v39 = [SFEntitySearchMetadata alloc];
-      v40 = [v4 entitySearchMetadata];
-      v41 = [(SFEntitySearchMetadata *)v39 initWithProtobuf:v40];
+      entitySearchMetadata2 = [protobufCopy entitySearchMetadata];
+      v41 = [(SFEntitySearchMetadata *)v39 initWithProtobuf:entitySearchMetadata2];
       [(SFDrillDownMetadata *)v5 setEntitySearchMetadata:v41];
     }
 
-    v42 = [v4 debugParams];
+    debugParams = [protobufCopy debugParams];
 
-    if (v42)
+    if (debugParams)
     {
-      v43 = [v4 debugParams];
-      [(SFDrillDownMetadata *)v5 setDebugParams:v43];
+      debugParams2 = [protobufCopy debugParams];
+      [(SFDrillDownMetadata *)v5 setDebugParams:debugParams2];
     }
 
-    v44 = [v4 params];
+    params = [protobufCopy params];
 
-    if (v44)
+    if (params)
     {
-      v45 = [v4 params];
-      [(SFDrillDownMetadata *)v5 setParams:v45];
+      params2 = [protobufCopy params];
+      [(SFDrillDownMetadata *)v5 setParams:params2];
     }
 
     v46 = v5;

@@ -15,10 +15,10 @@
 - (id)queryParameters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v1 = [a1 query];
-  v2 = [v1 componentsSeparatedByString:@"&"];
+  query = [self query];
+  v2 = [query componentsSeparatedByString:@"&"];
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -58,7 +58,7 @@
 
             if (!v13 && [v11 length])
             {
-              [v3 setObject:v12 forKey:v11];
+              [dictionary setObject:v12 forKey:v11];
             }
           }
         }
@@ -72,7 +72,7 @@
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)URLWithUsername:()CALExtensions withPassword:
@@ -83,58 +83,58 @@
   {
     if (v7)
     {
-      v11 = [a1 scheme];
-      v12 = [v11 stringByAppendingString:@"://"];
+      scheme = [self scheme];
+      v12 = [scheme stringByAppendingString:@"://"];
 
-      v13 = [a1 URLWithoutUsername];
-      v14 = [v13 absoluteString];
-      v15 = [v14 mutableCopy];
+      uRLWithoutUsername = [self URLWithoutUsername];
+      absoluteString = [uRLWithoutUsername absoluteString];
+      v15 = [absoluteString mutableCopy];
 
       if ([v15 hasPrefix:v12])
       {
-        v16 = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
-        v17 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+        uRLUserAllowedCharacterSet = [MEMORY[0x277CCA900] URLUserAllowedCharacterSet];
+        v17 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:uRLUserAllowedCharacterSet];
 
-        v18 = [MEMORY[0x277CCA900] URLPasswordAllowedCharacterSet];
-        v19 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v18];
+        uRLPasswordAllowedCharacterSet = [MEMORY[0x277CCA900] URLPasswordAllowedCharacterSet];
+        v19 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:uRLPasswordAllowedCharacterSet];
 
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@@", v17, v19];
         [v15 insertString:v20 atIndex:{objc_msgSend(v12, "length")}];
 
-        v9 = [MEMORY[0x277CBEBC0] URLWithDirtyString:v15];
+        selfCopy = [MEMORY[0x277CBEBC0] URLWithDirtyString:v15];
       }
 
       else
       {
-        v9 = a1;
+        selfCopy = self;
       }
 
       goto LABEL_5;
     }
 
-    v8 = [a1 URLWithUsername:v6];
+    uRLWithoutUsername2 = [self URLWithUsername:v6];
   }
 
   else
   {
-    v8 = [a1 URLWithoutUsername];
+    uRLWithoutUsername2 = [self URLWithoutUsername];
   }
 
-  v9 = v8;
+  selfCopy = uRLWithoutUsername2;
 LABEL_5:
 
-  return v9;
+  return selfCopy;
 }
 
 + (id)davCompatibleFilenameForFilename:()CALExtensions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [v3 UTF8String];
-  v6 = *v5;
-  if (*v5)
+  string = [MEMORY[0x277CCAB68] string];
+  uTF8String = [v3 UTF8String];
+  v6 = *uTF8String;
+  if (*uTF8String)
   {
-    v7 = v5 + 1;
+    v7 = uTF8String + 1;
     do
     {
       if ((v6 - 48) < 0xA)
@@ -162,7 +162,7 @@ LABEL_5:
         }
       }
 
-      [v4 appendFormat:v8, v6];
+      [string appendFormat:v8, v6];
       v9 = *v7++;
       v6 = v9;
     }
@@ -170,16 +170,16 @@ LABEL_5:
     while (v9);
   }
 
-  return v4;
+  return string;
 }
 
 + (id)iDiskSmallNameCompatibleNameForFilename:()CALExtensions
 {
   v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [v4 stringByDeletingPathExtension];
-  v7 = [v6 mutableCopy];
-  v8 = [a1 davCompatibleFilenameForFilename:v7];
+  pathExtension = [v4 pathExtension];
+  stringByDeletingPathExtension = [v4 stringByDeletingPathExtension];
+  v7 = [stringByDeletingPathExtension mutableCopy];
+  v8 = [self davCompatibleFilenameForFilename:v7];
   if ([v8 length] < 0x1F)
   {
     v10 = v8;
@@ -190,8 +190,8 @@ LABEL_5:
     do
     {
       [v7 deleteCharactersInRange:{objc_msgSend(v7, "length") - 1, 1}];
-      v9 = [v7 stringByAppendingPathExtension:v5];
-      v10 = [a1 davCompatibleFilenameForFilename:v9];
+      v9 = [v7 stringByAppendingPathExtension:pathExtension];
+      v10 = [self davCompatibleFilenameForFilename:v9];
 
       v8 = v10;
     }
@@ -199,7 +199,7 @@ LABEL_5:
     while ([v10 length] > 0x1E);
   }
 
-  v11 = [v7 stringByAppendingPathExtension:v5];
+  v11 = [v7 stringByAppendingPathExtension:pathExtension];
 
   return v11;
 }
@@ -214,62 +214,62 @@ LABEL_5:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"path %@ is not absolute.", v11}];
   }
 
-  v13 = [v10 stringByAddingPercentEscapes];
-  v14 = [v12 stringByAddingPercentEscapes];
+  stringByAddingPercentEscapes = [v10 stringByAddingPercentEscapes];
+  stringByAddingPercentEscapes2 = [v12 stringByAddingPercentEscapes];
 
-  v15 = [v11 standardizedURLPath];
-  v16 = v15;
-  v17 = 0;
-  if (v13 && v14 && v15)
+  standardizedURLPath = [v11 standardizedURLPath];
+  v16 = standardizedURLPath;
+  selfCopy = 0;
+  if (stringByAddingPercentEscapes && stringByAddingPercentEscapes2 && standardizedURLPath)
   {
     v18 = objc_alloc(MEMORY[0x277CCACA8]);
     if (a5)
     {
-      v19 = [v18 initWithFormat:@"%@://%@:%i%@", v13, v14, a5, v16];
+      v19 = [v18 initWithFormat:@"%@://%@:%i%@", stringByAddingPercentEscapes, stringByAddingPercentEscapes2, a5, v16];
     }
 
     else
     {
-      v19 = [v18 initWithFormat:@"%@://%@%@", v13, v14, v16, v22];
+      v19 = [v18 initWithFormat:@"%@://%@%@", stringByAddingPercentEscapes, stringByAddingPercentEscapes2, v16, v22];
     }
 
     v20 = v19;
-    a1 = [a1 initWithString:v19];
+    self = [self initWithString:v19];
 
-    v17 = a1;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)unquotedPassword
 {
-  v1 = [a1 password];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  password = [self password];
+  stringByRemovingPercentEncoding = [password stringByRemovingPercentEncoding];
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (id)serverURL
 {
-  v2 = [a1 port];
+  port = [self port];
 
   v3 = MEMORY[0x277CBEBC0];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a1 scheme];
-  v6 = [a1 host];
-  v7 = v6;
-  if (v2)
+  scheme = [self scheme];
+  host = [self host];
+  v7 = host;
+  if (port)
   {
-    v8 = [a1 port];
-    v9 = [v4 stringWithFormat:@"%@://%@:%@/", v5, v7, v8];
+    port2 = [self port];
+    v9 = [v4 stringWithFormat:@"%@://%@:%@/", scheme, v7, port2];
     v10 = [v3 URLWithString:v9];
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"%@://%@/", v5, v6];
-    v10 = [v3 URLWithString:v8];
+    port2 = [v4 stringWithFormat:@"%@://%@/", scheme, host];
+    v10 = [v3 URLWithString:port2];
   }
 
   return v10;
@@ -277,26 +277,26 @@ LABEL_5:
 
 - (id)pathWithoutTrailingRemovingSlash
 {
-  v2 = [a1 path];
-  if (([v2 hasSuffix:@"/"] & 1) == 0)
+  path = [self path];
+  if (([path hasSuffix:@"/"] & 1) == 0)
   {
-    v3 = [a1 absoluteString];
-    v4 = [v3 hasSuffix:@"/"];
+    absoluteString = [self absoluteString];
+    v4 = [absoluteString hasSuffix:@"/"];
 
     if (v4)
     {
-      v5 = [v2 stringByAppendingString:@"/"];
+      v5 = [path stringByAppendingString:@"/"];
 
-      v2 = v5;
+      path = v5;
     }
   }
 
-  return v2;
+  return path;
 }
 
 - (__CFString)pathWithoutDecodingAndRemovingTrailingSlash
 {
-  v1 = CFURLCopyPath(a1);
+  v1 = CFURLCopyPath(self);
 
   return v1;
 }

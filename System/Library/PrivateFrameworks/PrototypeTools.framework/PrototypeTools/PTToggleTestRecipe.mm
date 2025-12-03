@@ -1,22 +1,22 @@
 @interface PTToggleTestRecipe
-+ (id)recipeWithTitle:(id)a3 prepareBlock:(id)a4 toggleAction:(id)a5 cleanupBlock:(id)a6;
++ (id)recipeWithTitle:(id)title prepareBlock:(id)block toggleAction:(id)action cleanupBlock:(id)cleanupBlock;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_handleEvent:(int64_t)a3;
+- (void)_handleEvent:(int64_t)event;
 - (void)invalidate;
 @end
 
 @implementation PTToggleTestRecipe
 
-+ (id)recipeWithTitle:(id)a3 prepareBlock:(id)a4 toggleAction:(id)a5 cleanupBlock:(id)a6
++ (id)recipeWithTitle:(id)title prepareBlock:(id)block toggleAction:(id)action cleanupBlock:(id)cleanupBlock
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithTitle:v13 prepareBlock:v12 cleanupBlock:v10];
+  cleanupBlockCopy = cleanupBlock;
+  actionCopy = action;
+  blockCopy = block;
+  titleCopy = title;
+  v14 = [[self alloc] _initWithTitle:titleCopy prepareBlock:blockCopy cleanupBlock:cleanupBlockCopy];
 
-  [v14 setToggleAction:v11];
+  [v14 setToggleAction:actionCopy];
 
   return v14;
 }
@@ -37,9 +37,9 @@
   [(PTTestRecipe *)&v2 _deactivate];
 }
 
-- (void)_handleEvent:(int64_t)a3
+- (void)_handleEvent:(int64_t)event
 {
-  if (a3 == 2)
+  if (event == 2)
   {
     v3 = !self->_on;
     self->_on = v3;

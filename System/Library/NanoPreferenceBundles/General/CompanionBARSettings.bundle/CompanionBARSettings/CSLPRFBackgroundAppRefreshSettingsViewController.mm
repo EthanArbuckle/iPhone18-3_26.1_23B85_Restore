@@ -1,14 +1,14 @@
 @interface CSLPRFBackgroundAppRefreshSettingsViewController
 - (CSLPRFBackgroundAppRefreshSettingsViewController)init;
 - (NPSDomainAccessor)backgroundAppRefreshDomainAccessor;
-- (id)backgroundAppRefreshState:(id)a3;
+- (id)backgroundAppRefreshState:(id)state;
 - (id)specifiers;
-- (void)_appsLoaded:(id)a3;
+- (void)_appsLoaded:(id)loaded;
 - (void)_loadApps;
 - (void)backgroundAppRefreshSwitchStateDidChange;
-- (void)dataProviderDidChange:(id)a3;
+- (void)dataProviderDidChange:(id)change;
 - (void)dealloc;
-- (void)setBackgroundAppRefreshState:(id)a3 specifier:(id)a4;
+- (void)setBackgroundAppRefreshState:(id)state specifier:(id)specifier;
 @end
 
 @implementation CSLPRFBackgroundAppRefreshSettingsViewController
@@ -24,8 +24,8 @@
     syncManager = v2->_syncManager;
     v2->_syncManager = v3;
 
-    v5 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 backgroundAppRefreshDomainAccessor];
-    v6 = [v5 arrayForKey:@"DisabledBackgroundAppUpdateBundleIDs"];
+    backgroundAppRefreshDomainAccessor = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 backgroundAppRefreshDomainAccessor];
+    v6 = [backgroundAppRefreshDomainAccessor arrayForKey:@"DisabledBackgroundAppUpdateBundleIDs"];
     v7 = [NSMutableArray arrayWithArray:v6];
     disabledAppList = v2->_disabledAppList;
     v2->_disabledAppList = v7;
@@ -44,16 +44,16 @@
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 table];
+      table = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 table];
       *buf = 138412546;
       v21 = v14;
       v22 = 2112;
-      v23 = v16;
+      v23 = table;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "CSLPRFBackgroundAppRefreshSettingsViewController, registering %@ for reuse with %@", buf, 0x16u);
     }
 
-    v17 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 table];
-    [v17 registerClass:objc_opt_class() forCellReuseIdentifier:@"CSLPRFBackgroundAppRefreshCell"];
+    table2 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 table];
+    [table2 registerClass:objc_opt_class() forCellReuseIdentifier:@"CSLPRFBackgroundAppRefreshCell"];
 
     [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 _loadApps];
   }
@@ -88,11 +88,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_appsLoaded:(id)a3
+- (void)_appsLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [v4 sortedArrayUsingComparator:&stru_4200];
+  v5 = [loadedCopy sortedArrayUsingComparator:&stru_4200];
 
   sortedAppList = self->_sortedAppList;
   self->_sortedAppList = v5;
@@ -102,31 +102,31 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
     v5 = [NSMutableArray alloc];
-    v6 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 loadSpecifiersFromPlistName:@"BackgroundAppRefresh" target:v2];
+    v6 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)selfCopy loadSpecifiersFromPlistName:@"BackgroundAppRefresh" target:selfCopy];
     v7 = [v5 initWithArray:v6];
 
     v8 = +[PSSpecifier emptyGroupSpecifier];
     [v8 setIdentifier:@"INSTALLED_APP_GROUP_ID"];
     [v7 addObject:v8];
-    if (v2->_sortedAppList)
+    if (selfCopy->_sortedAppList)
     {
       v24 = v3;
       v28 = v7;
-      v9 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)v2 backgroundAppRefreshDomainAccessor];
-      v27 = [v9 BOOLForKey:@"DisableBackgroundAppUpdates"];
+      backgroundAppRefreshDomainAccessor = [(CSLPRFBackgroundAppRefreshSettingsViewController *)selfCopy backgroundAppRefreshDomainAccessor];
+      v27 = [backgroundAppRefreshDomainAccessor BOOLForKey:@"DisableBackgroundAppUpdates"];
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v29 = v2;
-      obj = v2->_sortedAppList;
+      v29 = selfCopy;
+      obj = selfCopy->_sortedAppList;
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v10)
       {
@@ -145,11 +145,11 @@
             }
 
             v16 = *(*(&v30 + 1) + 8 * i);
-            v17 = [v16 name];
-            v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:v29 set:"setBackgroundAppRefreshState:specifier:" get:"backgroundAppRefreshState:" detail:0 cell:6 edit:0];
+            name = [v16 name];
+            v18 = [PSSpecifier preferenceSpecifierNamed:name target:v29 set:"setBackgroundAppRefreshState:specifier:" get:"backgroundAppRefreshState:" detail:0 cell:6 edit:0];
 
-            v19 = [v16 bundleID];
-            [v18 setProperty:v19 forKey:v12];
+            bundleID = [v16 bundleID];
+            [v18 setProperty:bundleID forKey:v12];
 
             [v18 setProperty:&__kCFBooleanTrue forKey:v13];
             [v18 setProperty:objc_opt_class() forKey:v14];
@@ -167,20 +167,20 @@
       }
 
       v7 = v28;
-      v2 = v29;
+      selfCopy = v29;
       v3 = v24;
     }
 
     else
     {
-      v21 = [PSSpecifier preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:15 edit:0];
+      v21 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:15 edit:0];
       [v7 addObject:v21];
     }
 
-    v22 = *&v2->PSListController_opaque[v3];
-    *&v2->PSListController_opaque[v3] = v7;
+    v22 = *&selfCopy->PSListController_opaque[v3];
+    *&selfCopy->PSListController_opaque[v3] = v7;
 
-    v4 = *&v2->PSListController_opaque[v3];
+    v4 = *&selfCopy->PSListController_opaque[v3];
   }
 
   return v4;
@@ -188,8 +188,8 @@
 
 - (void)backgroundAppRefreshSwitchStateDidChange
 {
-  v3 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
-  v4 = [v3 BOOLForKey:@"DisableBackgroundAppUpdates"];
+  backgroundAppRefreshDomainAccessor = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
+  v4 = [backgroundAppRefreshDomainAccessor BOOLForKey:@"DisableBackgroundAppUpdates"];
 
   v5 = cslprf_app_library_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -202,29 +202,29 @@
   [(CSLPRFBackgroundAppRefreshSettingsViewController *)self _loadApps];
 }
 
-- (void)setBackgroundAppRefreshState:(id)a3 specifier:(id)a4
+- (void)setBackgroundAppRefreshState:(id)state specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"CSLPRFAppKey"];
-  v8 = [v7 bundleID];
-  v9 = [v6 BOOLValue];
+  stateCopy = state;
+  v7 = [specifier propertyForKey:@"CSLPRFAppKey"];
+  bundleID = [v7 bundleID];
+  bOOLValue = [stateCopy BOOLValue];
 
   disabledAppList = self->_disabledAppList;
-  if (v9)
+  if (bOOLValue)
   {
-    [(NSMutableArray *)disabledAppList removeObject:v8];
+    [(NSMutableArray *)disabledAppList removeObject:bundleID];
   }
 
   else
   {
-    [(NSMutableArray *)disabledAppList addObject:v8];
+    [(NSMutableArray *)disabledAppList addObject:bundleID];
   }
 
-  v11 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
-  [v11 setObject:self->_disabledAppList forKey:@"DisabledBackgroundAppUpdateBundleIDs"];
+  backgroundAppRefreshDomainAccessor = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
+  [backgroundAppRefreshDomainAccessor setObject:self->_disabledAppList forKey:@"DisabledBackgroundAppUpdateBundleIDs"];
 
-  v12 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
-  v13 = [v12 synchronize];
+  backgroundAppRefreshDomainAccessor2 = [(CSLPRFBackgroundAppRefreshSettingsViewController *)self backgroundAppRefreshDomainAccessor];
+  synchronize = [backgroundAppRefreshDomainAccessor2 synchronize];
 
   syncManager = self->_syncManager;
   v17 = @"DisabledBackgroundAppUpdateBundleIDs";
@@ -233,19 +233,19 @@
   [(NPSManager *)syncManager synchronizeNanoDomain:@"com.apple.Carousel" keys:v16];
 }
 
-- (id)backgroundAppRefreshState:(id)a3
+- (id)backgroundAppRefreshState:(id)state
 {
-  v4 = [a3 propertyForKey:@"CSLPRFAppKey"];
+  v4 = [state propertyForKey:@"CSLPRFAppKey"];
   disabledAppList = self->_disabledAppList;
-  v6 = [v4 bundleID];
-  v7 = [(NSMutableArray *)disabledAppList containsObject:v6]^ 1;
+  bundleID = [v4 bundleID];
+  v7 = [(NSMutableArray *)disabledAppList containsObject:bundleID]^ 1;
 
   v8 = cslprf_app_library_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v4 bundleID];
+    bundleID2 = [v4 bundleID];
     v12 = 138412546;
-    v13 = v9;
+    v13 = bundleID2;
     v14 = 1024;
     v15 = v7;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "backgroundAppRefreshState, bar for %@ = %{BOOL}u", &v12, 0x12u);
@@ -271,7 +271,7 @@
   return backgroundAppRefreshDomainAccessor;
 }
 
-- (void)dataProviderDidChange:(id)a3
+- (void)dataProviderDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;

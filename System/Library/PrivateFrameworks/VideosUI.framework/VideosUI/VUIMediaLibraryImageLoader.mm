@@ -1,11 +1,11 @@
 @interface VUIMediaLibraryImageLoader
-+ (id)_scaledImageIdentifierWithImageIdentifier:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
++ (id)_scaledImageIdentifierWithImageIdentifier:(id)identifier scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
 - (VUIMediaLibraryImageLoader)init;
-- (id)_imageIdentifierWithImageLoadParams:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
+- (id)_imageIdentifierWithImageLoadParams:(id)params;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
 - (void)_cancelAllImageLoads;
-- (void)cancelLoad:(id)a3;
+- (void)cancelLoad:(id)load;
 - (void)dealloc;
 @end
 
@@ -36,9 +36,9 @@
   [(VUIMediaLibraryImageLoader *)&v3 dealloc];
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     v4 = [(VUIMediaLibraryImageLoader *)self _imageLoadParamsForImageLoaderObject:?];
     v5 = [(VUIMediaLibraryImageLoader *)self _imageIdentifierWithImageLoadParams:v4];
@@ -52,49 +52,49 @@
   return v5;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  v8 = a5;
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a7;
-  if (!v12)
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  handlerCopy = handler;
+  if (!objectCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"object"}];
   }
 
-  v14 = [(VUIMediaLibraryImageLoader *)self _imageLoadParamsForImageLoaderObject:v12];
+  v14 = [(VUIMediaLibraryImageLoader *)self _imageLoadParamsForImageLoaderObject:objectCopy];
   v15 = [(VUIMediaLibraryImageLoader *)self _imageIdentifierWithImageLoadParams:v14];
-  v16 = [objc_opt_class() _scaledImageIdentifierWithImageIdentifier:v15 scaleToSize:v8 cropToFit:{width, height}];
-  v17 = self;
-  objc_sync_enter(v17);
-  v18 = [(VUIMediaLibraryImageLoader *)v17 imageLoadContextsByImageIdentifier];
-  v19 = [v18 objectForKey:v16];
+  v16 = [objc_opt_class() _scaledImageIdentifierWithImageIdentifier:v15 scaleToSize:fitCopy cropToFit:{width, height}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageLoadContextsByImageIdentifier = [(VUIMediaLibraryImageLoader *)selfCopy imageLoadContextsByImageIdentifier];
+  v19 = [imageLoadContextsByImageIdentifier objectForKey:v16];
 
   if (v19)
   {
-    v20 = [(VUIImageLoadContext *)v19 imageLoadOperation];
+    imageLoadOperation = [(VUIImageLoadContext *)v19 imageLoadOperation];
   }
 
   else
   {
-    v20 = [(VUIMediaLibraryImageLoader *)v17 _imageLoadOperationWithParams:v14 scaleToSize:v8 cropToFit:width, height];
+    imageLoadOperation = [(VUIMediaLibraryImageLoader *)selfCopy _imageLoadOperationWithParams:v14 scaleToSize:fitCopy cropToFit:width, height];
     v19 = objc_alloc_init(VUIImageLoadContext);
-    [(VUIImageLoadContext *)v19 setImageLoadOperation:v20];
-    v21 = [(VUIMediaLibraryImageLoader *)v17 imageLoadContextsByImageIdentifier];
-    [v21 setObject:v19 forKey:v16];
+    [(VUIImageLoadContext *)v19 setImageLoadOperation:imageLoadOperation];
+    imageLoadContextsByImageIdentifier2 = [(VUIMediaLibraryImageLoader *)selfCopy imageLoadContextsByImageIdentifier];
+    [imageLoadContextsByImageIdentifier2 setObject:v19 forKey:v16];
 
-    v22 = [(VUIMediaLibraryImageLoader *)v17 imageLoadOperationQueue];
-    [v22 addOperation:v20];
+    imageLoadOperationQueue = [(VUIMediaLibraryImageLoader *)selfCopy imageLoadOperationQueue];
+    [imageLoadOperationQueue addOperation:imageLoadOperation];
   }
 
   [(VUIImageLoadContext *)v19 setRequestCount:[(VUIImageLoadContext *)v19 requestCount]+ 1];
 
-  objc_sync_exit(v17);
-  if (v20)
+  objc_sync_exit(selfCopy);
+  if (imageLoadOperation)
   {
-    objc_initWeak(location, v17);
+    objc_initWeak(location, selfCopy);
     v23 = MEMORY[0x1E696AAE0];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
@@ -103,41 +103,41 @@
     objc_copyWeak(&v42, location);
     v41 = v16;
     v24 = [v23 blockOperationWithBlock:v40];
-    [v24 addDependency:v20];
-    v25 = [(VUIMediaLibraryImageLoader *)v17 imageLoadOperationQueue];
-    [v25 addOperation:v24];
+    [v24 addDependency:imageLoadOperation];
+    imageLoadOperationQueue2 = [(VUIMediaLibraryImageLoader *)selfCopy imageLoadOperationQueue];
+    [imageLoadOperationQueue2 addOperation:v24];
 
     v26 = MEMORY[0x1E696AAE0];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __104__VUIMediaLibraryImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirection_completionHandler___block_invoke_2;
     v37[3] = &unk_1E872DC10;
-    v39 = v13;
-    v27 = v20;
+    v39 = handlerCopy;
+    v27 = imageLoadOperation;
     v38 = v27;
     v28 = [v26 blockOperationWithBlock:v37];
     [v28 addDependency:v27];
-    v29 = [MEMORY[0x1E696ADC8] mainQueue];
-    [v29 addOperation:v28];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+    [mainQueue addOperation:v28];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(location);
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
     v30 = MEMORY[0x1E696AAE0];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __104__VUIMediaLibraryImageLoader_loadImageForObject_scaleToSize_cropToFit_imageDirection_completionHandler___block_invoke_3;
     v35[3] = &unk_1E872D7E0;
-    v36 = v13;
+    v36 = handlerCopy;
     v31 = [v30 blockOperationWithBlock:v35];
-    v32 = [MEMORY[0x1E696ADC8] mainQueue];
-    [v32 addOperation:v31];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
+    [mainQueue2 addOperation:v31];
   }
 
-  v33 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:v20];
+  v33 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:imageLoadOperation];
 
   return v33;
 }
@@ -180,31 +180,31 @@ void __104__VUIMediaLibraryImageLoader_loadImageForObject_scaleToSize_cropToFit_
   }
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must be an instance of %@", @"requestToken", @"[VUIAsynchronousWorkToken class]"}];
   }
 
-  [v3 cancel];
+  [loadCopy cancel];
 }
 
 - (void)_cancelAllImageLoads
 {
-  v2 = [(VUIMediaLibraryImageLoader *)self imageLoadOperationQueue];
-  [v2 cancelAllOperations];
+  imageLoadOperationQueue = [(VUIMediaLibraryImageLoader *)self imageLoadOperationQueue];
+  [imageLoadOperationQueue cancelAllOperations];
 }
 
-- (id)_imageIdentifierWithImageLoadParams:(id)a3
+- (id)_imageIdentifierWithImageLoadParams:(id)params
 {
-  v4 = [a3 imageIdentifier];
-  if (v4)
+  imageIdentifier = [params imageIdentifier];
+  if (imageIdentifier)
   {
-    v5 = [(VUIMediaLibraryImageLoader *)self _imageLoaderIdentifier];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v5, v4];
+    _imageLoaderIdentifier = [(VUIMediaLibraryImageLoader *)self _imageLoaderIdentifier];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", _imageLoaderIdentifier, imageIdentifier];
   }
 
   else
@@ -215,23 +215,23 @@ void __104__VUIMediaLibraryImageLoader_loadImageForObject_scaleToSize_cropToFit_
   return v6;
 }
 
-+ (id)_scaledImageIdentifierWithImageIdentifier:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
++ (id)_scaledImageIdentifierWithImageIdentifier:(id)identifier scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E695DF70];
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(v8);
-  [v10 addObject:v9];
+  [v10 addObject:identifierCopy];
 
   if (width != 0.0 && height != 0.0)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lux%lu", width, height];
-    [v10 addObject:v11];
+    height = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lux%lu", width, height];
+    [v10 addObject:height];
   }
 
-  if (v5)
+  if (fitCopy)
   {
     [v10 addObject:@"crop"];
   }

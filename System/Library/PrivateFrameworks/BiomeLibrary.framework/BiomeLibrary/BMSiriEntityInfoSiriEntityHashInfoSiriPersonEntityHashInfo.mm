@@ -1,39 +1,39 @@
 @interface BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithHandles:(id)a3 firstName:(id)a4 lastName:(id)a5 source:(int)a6;
-- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithHandles:(id)handles firstName:(id)name lastName:(id)lastName source:(int)source;
+- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_handlesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
-    v7 = [v5 handles];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    handles = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
+    handles2 = [v5 handles];
+    v8 = handles2;
+    if (handles == handles2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
-      v10 = [v5 handles];
-      v11 = [v9 isEqual:v10];
+      handles3 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
+      handles4 = [v5 handles];
+      v11 = [handles3 isEqual:handles4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
-    v14 = [v5 firstName];
-    v15 = v14;
-    if (v13 == v14)
+    firstName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
+    firstName2 = [v5 firstName];
+    v15 = firstName2;
+    if (firstName == firstName2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
-      v17 = [v5 firstName];
-      v18 = [v16 isEqual:v17];
+      firstName3 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
+      firstName4 = [v5 firstName];
+      v18 = [firstName3 isEqual:firstName4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
-    v20 = [v5 lastName];
-    v21 = v20;
-    if (v19 == v20)
+    lastName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
+    lastName2 = [v5 lastName];
+    v21 = lastName2;
+    if (lastName == lastName2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
-      v23 = [v5 lastName];
-      v24 = [v22 isEqual:v23];
+      lastName3 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
+      lastName4 = [v5 lastName];
+      v24 = [lastName3 isEqual:lastName4];
 
       if (!v24)
       {
@@ -83,8 +83,8 @@ LABEL_16:
       }
     }
 
-    v25 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self source];
-    v12 = v25 == [v5 source];
+    source = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self source];
+    v12 = source == [v5 source];
     goto LABEL_16;
   }
 
@@ -97,46 +97,46 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self _handlesJSONArray];
-  v4 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
-  v5 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
+  _handlesJSONArray = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self _handlesJSONArray];
+  firstName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
+  lastName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo source](self, "source")}];
   v14[0] = @"handles";
-  v7 = v3;
-  if (!v3)
+  null = _handlesJSONArray;
+  if (!_handlesJSONArray)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"firstName";
-  v8 = v4;
-  if (!v4)
+  null2 = firstName;
+  if (!firstName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"lastName";
-  v9 = v5;
-  if (!v5)
+  null3 = lastName;
+  if (!lastName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"source";
-  v10 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (v6)
   {
-    if (v5)
+    if (lastName)
     {
       goto LABEL_11;
     }
@@ -145,17 +145,17 @@ LABEL_17:
   else
   {
 
-    if (v5)
+    if (lastName)
     {
 LABEL_11:
-      if (v4)
+      if (firstName)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (_handlesJSONArray)
       {
         goto LABEL_13;
       }
@@ -164,13 +164,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!firstName)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (_handlesJSONArray)
   {
     goto LABEL_13;
   }
@@ -191,8 +191,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  handles = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
+  v5 = [handles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -203,13 +203,13 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(handles);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [handles countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -220,13 +220,13 @@ LABEL_13:
   return v3;
 }
 
-- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"handles"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"handles"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -240,7 +240,7 @@ LABEL_5:
     v56 = 0u;
     v6 = v6;
     v10 = [v6 countByEnumeratingWithState:&v53 objects:v67 count:16];
-    v11 = a4;
+    errorCopy = error;
     if (!v10)
     {
       goto LABEL_14;
@@ -249,7 +249,7 @@ LABEL_5:
     v12 = v10;
     v13 = *v54;
 LABEL_7:
-    v14 = v5;
+    v14 = dictionaryCopy;
     v15 = 0;
     while (1)
     {
@@ -268,7 +268,7 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v11)
+        if (errorCopy)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v26 = *MEMORY[0x1E698F240];
@@ -288,8 +288,8 @@ LABEL_7:
       if (v12 == ++v15)
       {
         v12 = [v6 countByEnumeratingWithState:&v53 objects:v67 count:16];
-        a4 = v11;
-        v5 = v14;
+        error = errorCopy;
+        dictionaryCopy = v14;
         if (v12)
         {
           goto LABEL_7;
@@ -297,8 +297,8 @@ LABEL_7:
 
 LABEL_14:
 
-        v17 = [v5 objectForKeyedSubscript:@"firstName"];
-        v51 = v5;
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"firstName"];
+        v51 = dictionaryCopy;
         if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v18 = 0;
@@ -308,7 +308,7 @@ LABEL_14:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v37 = objc_alloc(MEMORY[0x1E696ABC0]);
             v38 = *MEMORY[0x1E698F240];
@@ -319,19 +319,19 @@ LABEL_14:
             v39 = [v37 initWithDomain:v38 code:2 userInfo:?];
             v18 = 0;
             v28 = 0;
-            *a4 = v39;
+            *error = v39;
             goto LABEL_58;
           }
 
           v18 = 0;
           v28 = 0;
-          v27 = self;
+          selfCopy7 = self;
           goto LABEL_49;
         }
 
         v18 = v17;
 LABEL_17:
-        v19 = [v5 objectForKeyedSubscript:@"lastName"];
+        v19 = [dictionaryCopy objectForKeyedSubscript:@"lastName"];
         v50 = v19;
         if (v19)
         {
@@ -349,7 +349,7 @@ LABEL_17:
             goto LABEL_32;
           }
 
-          if (a4)
+          if (error)
           {
             v40 = objc_alloc(MEMORY[0x1E696ABC0]);
             v41 = *MEMORY[0x1E698F240];
@@ -357,7 +357,7 @@ LABEL_17:
             v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"lastName"];
             v60 = v35;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-            v34 = v42 = a4;
+            v34 = v42 = error;
             v43 = [v40 initWithDomain:v41 code:2 userInfo:v34];
             v19 = 0;
             v28 = 0;
@@ -368,10 +368,10 @@ LABEL_17:
           v19 = 0;
           v28 = 0;
 LABEL_58:
-          v27 = self;
+          selfCopy7 = self;
 LABEL_47:
 
-          v5 = v51;
+          dictionaryCopy = v51;
 LABEL_48:
 
 LABEL_49:
@@ -381,7 +381,7 @@ LABEL_50:
         }
 
 LABEL_32:
-        v34 = [v5 objectForKeyedSubscript:@"source"];
+        v34 = [dictionaryCopy objectForKeyedSubscript:@"source"];
         if (!v34 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v35 = 0;
@@ -395,8 +395,8 @@ LABEL_32:
 LABEL_44:
           v35 = v36;
 LABEL_45:
-          v27 = -[BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo initWithHandles:firstName:lastName:source:](self, "initWithHandles:firstName:lastName:source:", v9, v18, v19, [v35 intValue]);
-          v28 = v27;
+          selfCopy7 = -[BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo initWithHandles:firstName:lastName:source:](self, "initWithHandles:firstName:lastName:source:", v9, v18, v19, [v35 intValue]);
+          v28 = selfCopy7;
         }
 
         else
@@ -408,7 +408,7 @@ LABEL_45:
             goto LABEL_44;
           }
 
-          if (v11)
+          if (errorCopy)
           {
             v49 = objc_alloc(MEMORY[0x1E696ABC0]);
             v48 = *MEMORY[0x1E698F240];
@@ -416,20 +416,20 @@ LABEL_45:
             v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"source"];
             v58 = v46;
             v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-            *v11 = [v49 initWithDomain:v48 code:2 userInfo:v47];
+            *errorCopy = [v49 initWithDomain:v48 code:2 userInfo:v47];
           }
 
           v35 = 0;
           v28 = 0;
 LABEL_56:
-          v27 = self;
+          selfCopy7 = self;
         }
 
         goto LABEL_47;
       }
     }
 
-    if (v11)
+    if (errorCopy)
     {
       v20 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E698F240];
@@ -440,11 +440,11 @@ LABEL_56:
       v23 = v20;
       v24 = v21;
 LABEL_24:
-      v27 = self;
+      selfCopy7 = self;
       v28 = 0;
-      *v11 = [v23 initWithDomain:v24 code:2 userInfo:v19];
+      *errorCopy = [v23 initWithDomain:v24 code:2 userInfo:v19];
       v18 = v6;
-      v5 = v14;
+      dictionaryCopy = v14;
       v17 = v22;
       goto LABEL_48;
     }
@@ -452,8 +452,8 @@ LABEL_24:
 LABEL_25:
     v28 = 0;
     v18 = v6;
-    v27 = self;
-    v5 = v14;
+    selfCopy7 = self;
+    dictionaryCopy = v14;
     goto LABEL_50;
   }
 
@@ -468,26 +468,26 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
     v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v30 = v5;
+    v30 = dictionaryCopy;
     v31 = *MEMORY[0x1E698F240];
     v68 = *MEMORY[0x1E696A578];
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"handles"];
     v69[0] = v9;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:&v68 count:1];
     v32 = v31;
-    v5 = v30;
+    dictionaryCopy = v30;
     v33 = [v29 initWithDomain:v32 code:2 userInfo:v18];
     v28 = 0;
-    *a4 = v33;
-    v27 = self;
+    *error = v33;
+    selfCopy7 = self;
     goto LABEL_50;
   }
 
   v28 = 0;
-  v27 = self;
+  selfCopy7 = self;
 LABEL_51:
 
   v44 = *MEMORY[0x1E69E9840];
@@ -498,15 +498,15 @@ LABEL_51:
 {
   v3 = objc_opt_new();
   [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -555,9 +555,9 @@ LABEL_51:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo;
   v5 = [(BMEventBase *)&v35 init];
@@ -567,12 +567,12 @@ LABEL_51:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_44;
       }
@@ -583,18 +583,18 @@ LABEL_51:
       while (1)
       {
         v36 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36 & 0x7F) << v8;
@@ -611,9 +611,9 @@ LABEL_51:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_44;
       }
@@ -658,8 +658,8 @@ LABEL_48:
       [v6 addObject:v26];
 
 LABEL_43:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_44;
       }
@@ -680,18 +680,18 @@ LABEL_43:
       while (1)
       {
         v36 = 0;
-        v22 = [v4 position] + 1;
-        if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+        v22 = [fromCopy position] + 1;
+        if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v21 |= (v36 & 0x7F) << v19;
@@ -707,7 +707,7 @@ LABEL_43:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v21 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v21 > 2)
       {
 LABEL_41:
         LODWORD(v21) = 0;
@@ -725,8 +725,8 @@ LABEL_44:
   handles = v5->_handles;
   v5->_handles = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_45:
     v33 = 0;
@@ -744,30 +744,30 @@ LABEL_46:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
-  v5 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
-  v6 = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
+  handles = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self handles];
+  firstName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self firstName];
+  lastName = [(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self lastName];
   v7 = BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntitySourceAsString([(BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo *)self source]);
-  v8 = [v3 initWithFormat:@"BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo with handles: %@, firstName: %@, lastName: %@, source: %@", v4, v5, v6, v7];
+  v8 = [v3 initWithFormat:@"BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo with handles: %@, firstName: %@, lastName: %@, source: %@", handles, firstName, lastName, v7];
 
   return v8;
 }
 
-- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithHandles:(id)a3 firstName:(id)a4 lastName:(id)a5 source:(int)a6
+- (BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo)initWithHandles:(id)handles firstName:(id)name lastName:(id)lastName source:(int)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  handlesCopy = handles;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v16.receiver = self;
   v16.super_class = BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_handles, a3);
-    objc_storeStrong(&v14->_firstName, a4);
-    objc_storeStrong(&v14->_lastName, a5);
-    v14->_source = a6;
+    objc_storeStrong(&v14->_handles, handles);
+    objc_storeStrong(&v14->_firstName, name);
+    objc_storeStrong(&v14->_lastName, lastName);
+    v14->_source = source;
   }
 
   return v14;
@@ -818,9 +818,9 @@ id __69__BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo_columns__blo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -828,8 +828,8 @@ id __69__BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo_columns__blo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriEntityInfoSiriEntityHashInfoSiriPersonEntityHashInfo alloc] initByReadFrom:v7];
     v4 = v8;

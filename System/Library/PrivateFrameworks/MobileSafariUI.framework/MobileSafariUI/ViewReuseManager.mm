@@ -1,22 +1,22 @@
 @interface ViewReuseManager
-- (ViewReuseManager)initWithReusableViewClass:(Class)a3;
+- (ViewReuseManager)initWithReusableViewClass:(Class)class;
 - (ViewReuseManagerDelegate)delegate;
 - (id)makeView;
-- (void)_addTrackedViewForRepresentedObjectAtIndex:(unint64_t)a3;
-- (void)_didReceiveMemoryWarning:(id)a3;
-- (void)_recycleView:(id)a3;
-- (void)_recycleViewsInCollection:(id)a3;
+- (void)_addTrackedViewForRepresentedObjectAtIndex:(unint64_t)index;
+- (void)_didReceiveMemoryWarning:(id)warning;
+- (void)_recycleView:(id)view;
+- (void)_recycleViewsInCollection:(id)collection;
 - (void)dealloc;
-- (void)insertView:(id)a3 inTrackedViewsAtIndex:(int64_t)a4;
-- (void)recycleView:(id)a3;
-- (void)removeViewFromTrackedViews:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateTrackedViewsForRepresentedObjectsInRange:(_NSRange)a3;
+- (void)insertView:(id)view inTrackedViewsAtIndex:(int64_t)index;
+- (void)recycleView:(id)view;
+- (void)removeViewFromTrackedViews:(id)views;
+- (void)setDelegate:(id)delegate;
+- (void)updateTrackedViewsForRepresentedObjectsInRange:(_NSRange)range;
 @end
 
 @implementation ViewReuseManager
 
-- (ViewReuseManager)initWithReusableViewClass:(Class)a3
+- (ViewReuseManager)initWithReusableViewClass:(Class)class
 {
   v11.receiver = self;
   v11.super_class = ViewReuseManager;
@@ -24,14 +24,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_reusableViewClass = a3;
+    v4->_reusableViewClass = class;
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     reusableViews = v5->_reusableViews;
     v5->_reusableViews = v6;
 
     v5->_firstPreviouslyVisibleRepresentedObjectIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
 
     v9 = v5;
   }
@@ -42,8 +42,8 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v12 = 0u;
   v13 = 0u;
@@ -80,9 +80,9 @@
   [(ViewReuseManager *)&v9 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -113,29 +113,29 @@
   }
 }
 
-- (void)insertView:(id)a3 inTrackedViewsAtIndex:(int64_t)a4
+- (void)insertView:(id)view inTrackedViewsAtIndex:(int64_t)index
 {
   trackedViews = self->_trackedViews;
-  v7 = a3;
-  [(NSMutableArray *)trackedViews insertObject:v7 atIndex:a4];
-  [(NSMutableSet *)self->_viewsPendingRecycling removeObject:v7];
+  viewCopy = view;
+  [(NSMutableArray *)trackedViews insertObject:viewCopy atIndex:index];
+  [(NSMutableSet *)self->_viewsPendingRecycling removeObject:viewCopy];
 }
 
-- (void)removeViewFromTrackedViews:(id)a3
+- (void)removeViewFromTrackedViews:(id)views
 {
   viewsPendingRecycling = self->_viewsPendingRecycling;
-  v5 = a3;
-  [(NSMutableSet *)viewsPendingRecycling addObject:v5];
-  [(NSMutableArray *)self->_trackedViews removeObject:v5];
+  viewsCopy = views;
+  [(NSMutableSet *)viewsPendingRecycling addObject:viewsCopy];
+  [(NSMutableArray *)self->_trackedViews removeObject:viewsCopy];
 }
 
 - (id)makeView
 {
-  v3 = [(NSMutableSet *)self->_reusableViews anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_reusableViews anyObject];
+  if (anyObject)
   {
-    v4 = v3;
-    [(NSMutableSet *)self->_reusableViews removeObject:v3];
+    v4 = anyObject;
+    [(NSMutableSet *)self->_reusableViews removeObject:anyObject];
     [v4 setHidden:0];
   }
 
@@ -147,18 +147,18 @@
   return v4;
 }
 
-- (void)recycleView:(id)a3
+- (void)recycleView:(id)view
 {
   reusableViews = self->_reusableViews;
-  v4 = a3;
-  [(NSMutableSet *)reusableViews addObject:v4];
-  [v4 setHidden:1];
+  viewCopy = view;
+  [(NSMutableSet *)reusableViews addObject:viewCopy];
+  [viewCopy setHidden:1];
 }
 
-- (void)updateTrackedViewsForRepresentedObjectsInRange:(_NSRange)a3
+- (void)updateTrackedViewsForRepresentedObjectsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([(NSMutableSet *)self->_viewsPendingRecycling count])
@@ -280,7 +280,7 @@
 LABEL_11:
 }
 
-- (void)_didReceiveMemoryWarning:(id)a3
+- (void)_didReceiveMemoryWarning:(id)warning
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -316,15 +316,15 @@ LABEL_11:
   [(NSMutableSet *)self->_reusableViews removeAllObjects];
 }
 
-- (void)_recycleViewsInCollection:(id)a3
+- (void)_recycleViewsInCollection:(id)collection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionCopy = collection;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [collectionCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -336,36 +336,36 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionCopy);
         }
 
         [(ViewReuseManager *)self _recycleView:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [collectionCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 
-  [v4 removeAllObjects];
+  [collectionCopy removeAllObjects];
 }
 
-- (void)_recycleView:(id)a3
+- (void)_recycleView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained viewReuseManager:self willRecycleView:v4];
-  [(ViewReuseManager *)self recycleView:v4];
+  [WeakRetained viewReuseManager:self willRecycleView:viewCopy];
+  [(ViewReuseManager *)self recycleView:viewCopy];
 }
 
-- (void)_addTrackedViewForRepresentedObjectAtIndex:(unint64_t)a3
+- (void)_addTrackedViewForRepresentedObjectAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ViewReuseManager *)self makeView];
-  [WeakRetained viewReuseManager:self prepareView:v5 toRepresentObjectAtIndex:a3];
-  [(NSMutableArray *)self->_trackedViews addObject:v5];
+  makeView = [(ViewReuseManager *)self makeView];
+  [WeakRetained viewReuseManager:self prepareView:makeView toRepresentObjectAtIndex:index];
+  [(NSMutableArray *)self->_trackedViews addObject:makeView];
 }
 
 - (ViewReuseManagerDelegate)delegate

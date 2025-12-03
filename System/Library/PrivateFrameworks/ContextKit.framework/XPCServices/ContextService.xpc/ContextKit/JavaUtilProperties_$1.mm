@@ -1,38 +1,38 @@
 @interface JavaUtilProperties_$1
-- (JavaUtilProperties_$1)initWithJavaUtilProperties:(id)a3;
+- (JavaUtilProperties_$1)initWithJavaUtilProperties:(id)properties;
 - (void)dealloc;
-- (void)startElementWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgXmlSaxAttributes:(id)a6;
+- (void)startElementWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withOrgXmlSaxAttributes:(id)attributes;
 @end
 
 @implementation JavaUtilProperties_$1
 
-- (void)startElementWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgXmlSaxAttributes:(id)a6
+- (void)startElementWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withOrgXmlSaxAttributes:(id)attributes
 {
   JreStrongAssign(&self->key_, 0);
-  if (!a5)
+  if (!nSString)
   {
     goto LABEL_8;
   }
 
-  if (![a5 isEqual:@"entry"])
+  if (![nSString isEqual:@"entry"])
   {
     return;
   }
 
-  if (!a6)
+  if (!attributes)
   {
 LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v9 = [a6 getValueWithNSString:@"key"];
+  v9 = [attributes getValueWithNSString:@"key"];
 
   JreStrongAssign(&self->key_, v9);
 }
 
-- (JavaUtilProperties_$1)initWithJavaUtilProperties:(id)a3
+- (JavaUtilProperties_$1)initWithJavaUtilProperties:(id)properties
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, properties);
   OrgXmlSaxHelpersDefaultHandler_init(self);
   return self;
 }

@@ -1,12 +1,12 @@
 @interface NSAKSerializerStream
-- (BOOL)writeToPath:(id)a3 safely:(BOOL)a4;
-- (unint64_t)writeAlignedDataSize:(unint64_t)a3;
-- (unint64_t)writeData:(const void *)a3 length:(unint64_t)a4;
-- (unint64_t)writeInt:(unint64_t)a3;
-- (unint64_t)writeRoomForInt:(int *)a3;
-- (void)copySerializationInto:(void *)a3;
+- (BOOL)writeToPath:(id)path safely:(BOOL)safely;
+- (unint64_t)writeAlignedDataSize:(unint64_t)size;
+- (unint64_t)writeData:(const void *)data length:(unint64_t)length;
+- (unint64_t)writeInt:(unint64_t)int;
+- (unint64_t)writeRoomForInt:(int *)int;
+- (void)copySerializationInto:(void *)into;
 - (void)dealloc;
-- (void)writeDelayedInt:(unint64_t)a3 for:(int)a4;
+- (void)writeDelayedInt:(unint64_t)int for:(int)for;
 @end
 
 @implementation NSAKSerializerStream
@@ -26,29 +26,29 @@
   [(NSAKSerializerStream *)&v4 dealloc];
 }
 
-- (unint64_t)writeInt:(unint64_t)a3
+- (unint64_t)writeInt:(unint64_t)int
 {
-  if (a3 >= 0x80000001)
+  if (int >= 0x80000001)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSOtherSerializationException" reason:@"can't write int larger than INT_MAX" userInfo:0]);
   }
 
-  v3 = a3;
+  intCopy = int;
   extendStreamFor(self, 4);
-  *(self->memory + self->current) = v3;
+  *(self->memory + self->current) = intCopy;
   self->current += 4;
   return 4;
 }
 
-- (unint64_t)writeAlignedDataSize:(unint64_t)a3
+- (unint64_t)writeAlignedDataSize:(unint64_t)size
 {
   v5 = *MEMORY[0x1E69E9AC8];
-  if (*MEMORY[0x1E69E9AC8] <= a3 && (current = self->current, ((current + 4) & (v5 - 1)) != 0))
+  if (*MEMORY[0x1E69E9AC8] <= size && (current = self->current, ((current + 4) & (v5 - 1)) != 0))
   {
     v7 = v5 - ((current + 12) & (v5 - 1));
     extendStreamFor(self, v7 + 12);
     [(NSAKSerializerStream *)self writeInt:0x80000000];
-    [(NSAKSerializerStream *)self writeInt:a3];
+    [(NSAKSerializerStream *)self writeInt:size];
     [(NSAKSerializerStream *)self writeInt:v7];
     bzero(self->memory + self->current, v7);
     self->current += v7;
@@ -62,26 +62,26 @@
   }
 }
 
-- (unint64_t)writeData:(const void *)a3 length:(unint64_t)a4
+- (unint64_t)writeData:(const void *)data length:(unint64_t)length
 {
-  extendStreamFor(self, a4);
+  extendStreamFor(self, length);
   v7 = self->memory + self->current;
-  if (a4 >= 0x80000)
+  if (length >= 0x80000)
   {
     v8 = MEMORY[0x1E69E9AC8];
-    if (((*MEMORY[0x1E69E9AC8] - 1) & (v7 | a3)) != 0 || (malloc_default_zone(), malloc_zone_claimed_address()))
+    if (((*MEMORY[0x1E69E9AC8] - 1) & (v7 | data)) != 0 || (malloc_default_zone(), malloc_zone_claimed_address()))
     {
-      v9 = a4;
+      lengthCopy2 = length;
     }
 
     else
     {
-      v11 = -*v8 & a4;
-      NSCopyMemoryPages(a3, v7, v11);
-      a3 = a3 + v11;
+      v11 = -*v8 & length;
+      NSCopyMemoryPages(data, v7, v11);
+      data = data + v11;
       v7 += v11;
-      v9 = a4 - v11;
-      if (a4 == v11)
+      lengthCopy2 = length - v11;
+      if (length == v11)
       {
         goto LABEL_7;
       }
@@ -90,19 +90,19 @@
     goto LABEL_6;
   }
 
-  v9 = a4;
-  if (a4)
+  lengthCopy2 = length;
+  if (length)
   {
 LABEL_6:
-    memmove(v7, a3, v9);
+    memmove(v7, data, lengthCopy2);
   }
 
 LABEL_7:
-  self->current += a4;
-  return a4;
+  self->current += length;
+  return length;
 }
 
-- (unint64_t)writeRoomForInt:(int *)a3
+- (unint64_t)writeRoomForInt:(int *)int
 {
   if (!self->roomForIntLocations)
   {
@@ -110,16 +110,16 @@ LABEL_7:
   }
 
   add = atomic_fetch_add(writeRoomForInt__globalSequence, 1u);
-  *a3 = add;
+  *int = add;
   CFDictionarySetValue(self->roomForIntLocations, add, self->current);
 
   return [(NSAKSerializerStream *)self writeInt:0];
 }
 
-- (void)writeDelayedInt:(unint64_t)a3 for:(int)a4
+- (void)writeDelayedInt:(unint64_t)int for:(int)for
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0x80000001)
+  if (int >= 0x80000001)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = @"NSOtherSerializationException";
@@ -130,7 +130,7 @@ LABEL_7:
 
   v11 = 0;
   roomForIntLocations = self->roomForIntLocations;
-  if (!roomForIntLocations || (v6 = a3, v7 = a4, !CFDictionaryGetValueIfPresent(roomForIntLocations, a4, &v11)))
+  if (!roomForIntLocations || (v6 = int, v7 = for, !CFDictionaryGetValueIfPresent(roomForIntLocations, for, &v11)))
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = @"NSSerializeException";
@@ -142,10 +142,10 @@ LABEL_7:
   *(self->memory + v11) = v6;
 }
 
-- (BOOL)writeToPath:(id)a3 safely:(BOOL)a4
+- (BOOL)writeToPath:(id)path safely:(BOOL)safely
 {
-  v4 = a4;
-  if ([a3 isEqualToString:&stru_1EEEFDF90])
+  safelyCopy = safely;
+  if ([path isEqualToString:&stru_1EEEFDF90])
   {
     return 0;
   }
@@ -160,12 +160,12 @@ LABEL_7:
   }
 
   v9 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithBytes:self->memory length:self->current];
-  v10 = [v9 writeToFile:a3 atomically:v4];
+  v10 = [v9 writeToFile:path atomically:safelyCopy];
 
   return v10;
 }
 
-- (void)copySerializationInto:(void *)a3
+- (void)copySerializationInto:(void *)into
 {
   roomForIntLocations = self->roomForIntLocations;
   if (roomForIntLocations && CFDictionaryGetCount(roomForIntLocations))
@@ -187,15 +187,15 @@ LABEL_7:
   }
 
   v8 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (memory | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (memory | into)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v9 = current & -*v8;
-      NSCopyMemoryPages(memory, a3, v9);
+      NSCopyMemoryPages(memory, into, v9);
       memory += v9;
-      a3 = a3 + v9;
+      into = into + v9;
       current -= v9;
       goto LABEL_7;
     }
@@ -203,7 +203,7 @@ LABEL_7:
 
 LABEL_8:
 
-  memmove(a3, memory, current);
+  memmove(into, memory, current);
 }
 
 @end

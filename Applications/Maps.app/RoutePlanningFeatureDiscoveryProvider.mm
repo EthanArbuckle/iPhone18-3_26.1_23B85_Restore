@@ -1,11 +1,11 @@
 @interface RoutePlanningFeatureDiscoveryProvider
-- (BOOL)_updateCurrentModelAndNotify:(BOOL)a3;
-- (BOOL)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4;
+- (BOOL)_updateCurrentModelAndNotify:(BOOL)notify;
+- (BOOL)updateWithTransportType:(int64_t)type routeCollection:(id)collection;
 - (RoutePlanningFeatureDiscoveryProvider)init;
 - (TransitPayActionDelegate)transitPayActionDelegate;
 - (id)_bestModelForCurrentState;
-- (void)setTransitPayActionDelegate:(id)a3;
-- (void)source:(id)a3 didUpdateAvailability:(BOOL)a4;
+- (void)setTransitPayActionDelegate:(id)delegate;
+- (void)source:(id)source didUpdateAvailability:(BOOL)availability;
 @end
 
 @implementation RoutePlanningFeatureDiscoveryProvider
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)source:(id)a3 didUpdateAvailability:(BOOL)a4
+- (void)source:(id)source didUpdateAvailability:(BOOL)availability
 {
-  v4 = a4;
-  v6 = a3;
+  availabilityCopy = availability;
+  sourceCopy = source;
   v7 = sub_10006250C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = @"NO";
-    if (v4)
+    if (availabilityCopy)
     {
       v10 = @"YES";
     }
@@ -43,10 +43,10 @@
   [(RoutePlanningFeatureDiscoveryProvider *)self _updateCurrentModelAndNotify:1];
 }
 
-- (void)setTransitPayActionDelegate:(id)a3
+- (void)setTransitPayActionDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v12 = sub_10003D020();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -83,7 +83,7 @@
 
   if (!WeakRetained)
   {
-    objc_storeWeak(&self->_transitPayActionDelegate, v4);
+    objc_storeWeak(&self->_transitPayActionDelegate, delegateCopy);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -107,7 +107,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v11 setTransitPayActionDelegate:{v4, v13}];
+            [v11 setTransitPayActionDelegate:{delegateCopy, v13}];
           }
         }
 
@@ -124,18 +124,18 @@ LABEL_17:
 - (id)_bestModelForCurrentState
 {
   v2 = sub_100021DB0(self->_sources, &stru_101654020);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)_updateCurrentModelAndNotify:(BOOL)a3
+- (BOOL)_updateCurrentModelAndNotify:(BOOL)notify
 {
-  v3 = a3;
-  v5 = [(RoutePlanningFeatureDiscoveryProvider *)self _bestModelForCurrentState];
+  notifyCopy = notify;
+  _bestModelForCurrentState = [(RoutePlanningFeatureDiscoveryProvider *)self _bestModelForCurrentState];
   os_unfair_lock_lock(&self->_lock);
   suggestedModel = self->_suggestedModel;
-  v7 = v5;
+  v7 = _bestModelForCurrentState;
   v8 = suggestedModel;
   if (v7 | v8 && (v9 = v8, v10 = [v7 isEqual:v8], v9, v7, !v10))
   {
@@ -147,10 +147,10 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Suggestion did change to %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&self->_suggestedModel, v5);
-    v13 = [(RoutePlanningFeatureDiscoveryProvider *)self changeHandler];
+    objc_storeStrong(&self->_suggestedModel, _bestModelForCurrentState);
+    changeHandler = [(RoutePlanningFeatureDiscoveryProvider *)self changeHandler];
     os_unfair_lock_unlock(&self->_lock);
-    if (v3 && v13)
+    if (notifyCopy && changeHandler)
     {
       v14 = sub_10006250C();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -163,7 +163,7 @@ LABEL_17:
       v16[1] = 3221225472;
       v16[2] = sub_100DA1970;
       v16[3] = &unk_101661090;
-      v18 = v13;
+      v18 = changeHandler;
       v17 = v7;
       dispatch_async(&_dispatch_main_q, v16);
     }
@@ -180,11 +180,11 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4
+- (BOOL)updateWithTransportType:(int64_t)type routeCollection:(id)collection
 {
-  v7 = a4;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_transportType == a3 && ((routeCollection = self->_routeCollection, v9 = v7, v10 = routeCollection, !(v9 | v10)) || (v11 = v10, v12 = [v9 isEqual:v10], v11, v9, v12)))
+  if (self->_transportType == type && ((routeCollection = self->_routeCollection, v9 = collectionCopy, v10 = routeCollection, !(v9 | v10)) || (v11 = v10, v12 = [v9 isEqual:v10], v11, v9, v12)))
   {
     os_unfair_lock_unlock(&self->_lock);
     v13 = 0;
@@ -192,11 +192,11 @@ LABEL_17:
 
   else
   {
-    v14 = [v7 routes];
-    v15 = [(RouteCollection *)self->_routeCollection routes];
-    if (v14 | v15)
+    routes = [collectionCopy routes];
+    routes2 = [(RouteCollection *)self->_routeCollection routes];
+    if (routes | routes2)
     {
-      v16 = [v14 isEqual:v15];
+      v16 = [routes isEqual:routes2];
     }
 
     else
@@ -218,14 +218,14 @@ LABEL_17:
         v19 = off_101654080[v18];
       }
 
-      if ((a3 - 1) > 4)
+      if ((type - 1) > 4)
       {
         v20 = @"Undefined";
       }
 
       else
       {
-        v20 = off_101654080[a3 - 1];
+        v20 = off_101654080[type - 1];
       }
 
       v21 = @"NO";
@@ -239,15 +239,15 @@ LABEL_17:
 
       v39 = v20;
       v40 = 2048;
-      v41 = v7;
+      v41 = collectionCopy;
       v42 = 2112;
       v43 = v21;
       v22 = v21;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Updating transport type from %@ to %@, route collection to %p (only route idx changed: %@)", buf, 0x2Au);
     }
 
-    self->_transportType = a3;
-    objc_storeStrong(&self->_routeCollection, a4);
+    self->_transportType = type;
+    objc_storeStrong(&self->_routeCollection, collection);
     v23 = [(NSArray *)self->_sources copy];
     os_unfair_lock_unlock(&self->_lock);
     v33 = 0u;
@@ -272,7 +272,7 @@ LABEL_17:
           v29 = *(*(&v31 + 1) + 8 * i);
           if (!v16 || [*(*(&v31 + 1) + 8 * i) wantsAllRouteCollectionChanges])
           {
-            [v29 setTransportType:a3 routeCollection:{v7, v31}];
+            [v29 setTransportType:type routeCollection:{collectionCopy, v31}];
           }
         }
 

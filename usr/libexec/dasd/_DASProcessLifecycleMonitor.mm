@@ -4,12 +4,12 @@
 - (BPSSink)sink;
 - (NSSet)foregroundedApplications;
 - (_DASProcessLifecycleMonitor)init;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)ensureSink;
 - (void)establishAndSynchronizeDataSources;
-- (void)notifyDelegatesWithSource:(id)a3;
-- (void)refreshDataSourcesWithFileProtection:(id)a3;
-- (void)setSink:(id)a3;
+- (void)notifyDelegatesWithSource:(id)source;
+- (void)refreshDataSourcesWithFileProtection:(id)protection;
+- (void)setSink:(id)sink;
 - (void)setupApplicationSink;
 - (void)synchronizeCurrentlyForegroundedApplications;
 @end
@@ -18,18 +18,18 @@
 
 - (BOOL)isSinkValid
 {
-  v3 = [(_DASProcessLifecycleMonitor *)self sink];
-  v4 = [v3 status];
-  if ([v4 state] == 1)
+  sink = [(_DASProcessLifecycleMonitor *)self sink];
+  status = [sink status];
+  if ([status state] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(_DASProcessLifecycleMonitor *)self sink];
-    v7 = [v6 status];
-    v5 = [v7 state] == 0;
+    sink2 = [(_DASProcessLifecycleMonitor *)self sink];
+    status2 = [sink2 status];
+    v5 = [status2 state] == 0;
   }
 
   return v5;
@@ -37,10 +37,10 @@
 
 - (BPSSink)sink
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sink;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sink;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -159,9 +159,9 @@
   [(_DASProcessLifecycleMonitor *)self synchronizeCurrentlyForegroundedApplications];
 }
 
-- (void)refreshDataSourcesWithFileProtection:(id)a3
+- (void)refreshDataSourcesWithFileProtection:(id)protection
 {
-  v4 = a3;
+  protectionCopy = protection;
   if ([(_DASProcessLifecycleMonitor *)self isSinkValid])
   {
     log = self->_log;
@@ -176,15 +176,15 @@
   {
     v6 = BiomeLibrary();
     v7 = [v6 App];
-    v8 = [v7 InFocus];
-    v9 = [v8 configuration];
-    v10 = [v9 storeConfig];
-    v11 = [v10 protectionClass];
+    inFocus = [v7 InFocus];
+    configuration = [inFocus configuration];
+    storeConfig = [configuration storeConfig];
+    protectionClass = [storeConfig protectionClass];
 
-    v12 = [v4 asBiomeProtectionClass];
+    asBiomeProtectionClass = [protectionCopy asBiomeProtectionClass];
     v13 = self->_log;
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12 >= v11)
+    if (asBiomeProtectionClass >= protectionClass)
     {
       if (v14)
       {
@@ -198,8 +198,8 @@
     else if (v14)
     {
       v15 = v13;
-      v16 = [NSNumber numberWithUnsignedInteger:v12];
-      v17 = [NSNumber numberWithUnsignedInteger:v11];
+      v16 = [NSNumber numberWithUnsignedInteger:asBiomeProtectionClass];
+      v17 = [NSNumber numberWithUnsignedInteger:protectionClass];
       v18 = 138412546;
       v19 = v16;
       v20 = 2112;
@@ -215,12 +215,12 @@
   v4 = objc_opt_new();
   [v4 setLastN:50];
   v5 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v6 = [v5 getConsoleUserUid];
+  getConsoleUserUid = [v5 getConsoleUserUid];
 
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 InFocus];
-  v10 = [v9 publisherWithUser:v6 useCase:@"DASBiomeUtilityUseCase" options:v4];
+  inFocus = [v8 InFocus];
+  v10 = [inFocus publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v4];
 
   v11 = [v10 filterWithIsIncluded:&stru_1001B6E98];
   v20[0] = _NSConcreteStackBlock;
@@ -248,14 +248,14 @@
 
 - (void)setupApplicationSink
 {
-  v3 = [(_DASProcessLifecycleMonitor *)self sink];
-  [v3 cancel];
+  sink = [(_DASProcessLifecycleMonitor *)self sink];
+  [sink cancel];
 
   v4 = [[BMBiomeScheduler alloc] initWithIdentifier:@"com.apple.dasd.appInFocus.subscription" targetQueue:self->_foregroundedApplicationsQueue];
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 InFocus];
-  v8 = [v7 DSLPublisherWithUseCase:@"DuetActivitySchedulerAppPredictions"];
+  inFocus = [v6 InFocus];
+  v8 = [inFocus DSLPublisherWithUseCase:@"DuetActivitySchedulerAppPredictions"];
   v9 = [v8 subscribeOn:v4];
   v10 = [v9 filterWithIsIncluded:&stru_1001B6EB8];
   v19[0] = _NSConcreteStackBlock;
@@ -275,39 +275,39 @@
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = log;
-    v14 = [(_DASProcessLifecycleMonitor *)self sink];
-    v15 = [(_DASProcessLifecycleMonitor *)self sink];
-    v16 = [v15 status];
-    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 state]);
+    sink2 = [(_DASProcessLifecycleMonitor *)self sink];
+    sink3 = [(_DASProcessLifecycleMonitor *)self sink];
+    status = [sink3 status];
+    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [status state]);
     *buf = 138412546;
-    v21 = v14;
+    v21 = sink2;
     v22 = 2112;
     v23 = v17;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Created sink: %@ (status: %@)", buf, 0x16u);
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegatesQueue = self->_delegatesQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100077020;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(delegatesQueue, v7);
 }
 
-- (void)notifyDelegatesWithSource:(id)a3
+- (void)notifyDelegatesWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_100121F08(v4, log, v6, v7, v8, v9, v10, v11);
+    sub_100121F08(sourceCopy, log, v6, v7, v8, v9, v10, v11);
   }
 
   delegatesQueue = self->_delegatesQueue;
@@ -316,18 +316,18 @@
   v14[2] = sub_1000770F4;
   v14[3] = &unk_1001B56E0;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = sourceCopy;
+  v13 = sourceCopy;
   dispatch_sync(delegatesQueue, v14);
 }
 
-- (void)setSink:(id)a3
+- (void)setSink:(id)sink
 {
-  v4 = a3;
+  sinkCopy = sink;
   obj = self;
   objc_sync_enter(obj);
   sink = obj->_sink;
-  obj->_sink = v4;
+  obj->_sink = sinkCopy;
 
   objc_sync_exit(obj);
 }

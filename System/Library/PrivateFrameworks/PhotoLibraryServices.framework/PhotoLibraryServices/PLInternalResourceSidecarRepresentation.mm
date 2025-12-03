@@ -10,14 +10,14 @@
 - (NSString)uniformTypeIdentifier;
 - (NSURL)fileURL;
 - (PLInternalResource)resource;
-- (PLInternalResourceSidecarRepresentation)initWithResource:(id)a3;
+- (PLInternalResourceSidecarRepresentation)initWithResource:(id)resource;
 - (PLManagedAsset)asset;
 - (id)extension;
 - (int64_t)ptpTrashedState;
 - (signed)indexValue;
 - (unint64_t)compressedSizeValue;
 - (unsigned)resourceType;
-- (void)setPtpTrashedState:(int64_t)a3;
+- (void)setPtpTrashedState:(int64_t)state;
 @end
 
 @implementation PLInternalResourceSidecarRepresentation
@@ -31,10 +31,10 @@
 
 - (unsigned)resourceType
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 resourceType];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  resourceType = [resource resourceType];
 
-  return v3;
+  return resourceType;
 }
 
 - (NSString)description
@@ -42,196 +42,196 @@
   v10.receiver = self;
   v10.super_class = PLInternalResourceSidecarRepresentation;
   v3 = [(PLInternalResourceSidecarRepresentation *)&v10 description];
-  v4 = [(PLInternalResourceSidecarRepresentation *)self filename];
-  v5 = [(PLInternalResourceSidecarRepresentation *)self fileURL];
-  v6 = [(PLInternalResourceSidecarRepresentation *)self compressedSize];
-  v7 = [(PLInternalResourceSidecarRepresentation *)self index];
-  v8 = [v3 stringByAppendingFormat:@" filename: %@, fileURL: %@, compressedSize: %@, index: %@, trashedState: %ld", v4, v5, v6, v7, -[PLInternalResourceSidecarRepresentation ptpTrashedState](self, "ptpTrashedState")];
+  filename = [(PLInternalResourceSidecarRepresentation *)self filename];
+  fileURL = [(PLInternalResourceSidecarRepresentation *)self fileURL];
+  compressedSize = [(PLInternalResourceSidecarRepresentation *)self compressedSize];
+  index = [(PLInternalResourceSidecarRepresentation *)self index];
+  v8 = [v3 stringByAppendingFormat:@" filename: %@, fileURL: %@, compressedSize: %@, index: %@, trashedState: %ld", filename, fileURL, compressedSize, index, -[PLInternalResourceSidecarRepresentation ptpTrashedState](self, "ptpTrashedState")];
 
   return v8;
 }
 
 - (NSURL)fileURL
 {
-  v3 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v4 = [v3 fileURL];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  fileURL = [resource fileURL];
 
-  if (!v4)
+  if (!fileURL)
   {
-    v5 = [(PLInternalResourceSidecarRepresentation *)self resource];
-    v6 = [v5 pathManager];
-    v7 = [v6 isUBF];
+    resource2 = [(PLInternalResourceSidecarRepresentation *)self resource];
+    pathManager = [resource2 pathManager];
+    isUBF = [pathManager isUBF];
 
-    v8 = [(PLInternalResourceSidecarRepresentation *)self resource];
-    v9 = v8;
-    if (v7)
+    resource3 = [(PLInternalResourceSidecarRepresentation *)self resource];
+    v9 = resource3;
+    if (isUBF)
     {
-      v10 = [v8 photoLibrary];
-      v11 = [v10 pathManager];
+      photoLibrary = [resource3 photoLibrary];
+      pathManager2 = [photoLibrary pathManager];
 
       v24 = objc_alloc(MEMORY[0x1E69BF298]);
-      v26 = [(PLInternalResourceSidecarRepresentation *)self resource];
-      v25 = [v26 asset];
-      v12 = [v25 uuid];
-      v13 = [(PLInternalResourceSidecarRepresentation *)self resource];
-      v14 = [v13 asset];
-      v15 = [v14 bundleScope];
-      v16 = [(PLInternalResourceSidecarRepresentation *)self resource];
-      v17 = [v16 uniformTypeIdentifier];
-      v18 = [v17 identifier];
-      v19 = [(PLInternalResourceSidecarRepresentation *)self resource];
-      v20 = [v24 initWithAssetUuid:v12 bundleScope:v15 uti:v18 resourceVersion:0 resourceType:{objc_msgSend(v19, "resourceType")}];
+      resource4 = [(PLInternalResourceSidecarRepresentation *)self resource];
+      asset = [resource4 asset];
+      uuid = [asset uuid];
+      resource5 = [(PLInternalResourceSidecarRepresentation *)self resource];
+      asset2 = [resource5 asset];
+      bundleScope = [asset2 bundleScope];
+      resource6 = [(PLInternalResourceSidecarRepresentation *)self resource];
+      uniformTypeIdentifier = [resource6 uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier identifier];
+      resource7 = [(PLInternalResourceSidecarRepresentation *)self resource];
+      filename = [v24 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:0 resourceType:{objc_msgSend(resource7, "resourceType")}];
 
-      [v11 readOnlyUrlWithIdentifier:v20];
+      [pathManager2 readOnlyUrlWithIdentifier:filename];
     }
 
     else
     {
-      v21 = [v8 asset];
-      v22 = [v21 mainFileURL];
-      v11 = [v22 URLByDeletingLastPathComponent];
+      asset3 = [resource3 asset];
+      mainFileURL = [asset3 mainFileURL];
+      pathManager2 = [mainFileURL URLByDeletingLastPathComponent];
 
-      v20 = [(PLInternalResourceSidecarRepresentation *)self filename];
-      [v11 URLByAppendingPathComponent:v20];
+      filename = [(PLInternalResourceSidecarRepresentation *)self filename];
+      [pathManager2 URLByAppendingPathComponent:filename];
     }
-    v4 = ;
+    fileURL = ;
   }
 
-  return v4;
+  return fileURL;
 }
 
 - (NSManagedObjectID)objectID
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 objectID];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  objectID = [resource objectID];
 
-  return v3;
+  return objectID;
 }
 
 - (NSString)originalFilename
 {
-  v3 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v4 = [v3 asset];
-  v5 = [v4 originalFilename];
-  v6 = [v5 stringByDeletingPathExtension];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  asset = [resource asset];
+  originalFilename = [asset originalFilename];
+  stringByDeletingPathExtension = [originalFilename stringByDeletingPathExtension];
 
-  v7 = [(PLInternalResourceSidecarRepresentation *)self extension];
-  v8 = [v6 stringByAppendingPathExtension:v7];
+  extension = [(PLInternalResourceSidecarRepresentation *)self extension];
+  v8 = [stringByDeletingPathExtension stringByAppendingPathExtension:extension];
 
   return v8;
 }
 
 - (NSString)filename
 {
-  v3 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v4 = [v3 asset];
-  v5 = [v4 filename];
-  v6 = [v5 stringByDeletingPathExtension];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  asset = [resource asset];
+  filename = [asset filename];
+  stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
 
-  v7 = [(PLInternalResourceSidecarRepresentation *)self extension];
-  v8 = [v6 stringByAppendingPathExtension:v7];
+  extension = [(PLInternalResourceSidecarRepresentation *)self extension];
+  v8 = [stringByDeletingPathExtension stringByAppendingPathExtension:extension];
 
   return v8;
 }
 
 - (unint64_t)compressedSizeValue
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 dataLength];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  dataLength = [resource dataLength];
 
-  return v3;
+  return dataLength;
 }
 
 - (signed)indexValue
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 sidecarIndex];
-  v4 = [v3 shortValue];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  sidecarIndex = [resource sidecarIndex];
+  shortValue = [sidecarIndex shortValue];
 
-  return v4;
+  return shortValue;
 }
 
 - (int64_t)ptpTrashedState
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 ptpTrashedState];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  ptpTrashedState = [resource ptpTrashedState];
 
-  return v3;
+  return ptpTrashedState;
 }
 
-- (void)setPtpTrashedState:(int64_t)a3
+- (void)setPtpTrashedState:(int64_t)state
 {
-  v4 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  [v4 setPtpTrashedState:a3];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  [resource setPtpTrashedState:state];
 }
 
 - (NSNumber)index
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 sidecarIndex];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  sidecarIndex = [resource sidecarIndex];
 
-  return v3;
+  return sidecarIndex;
 }
 
 - (PLManagedAsset)asset
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 asset];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  asset = [resource asset];
 
-  return v3;
+  return asset;
 }
 
 - (NSNumber)compressedSize
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v4 = [v2 numberWithLongLong:{objc_msgSend(v3, "dataLength")}];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  v4 = [v2 numberWithLongLong:{objc_msgSend(resource, "dataLength")}];
 
   return v4;
 }
 
 - (NSString)uniformTypeIdentifier
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 uniformTypeIdentifier];
-  v4 = [v3 identifier];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  uniformTypeIdentifier = [resource uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSDate)modificationDate
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 asset];
-  v4 = [v3 modificationDate];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  asset = [resource asset];
+  modificationDate = [asset modificationDate];
 
-  return v4;
+  return modificationDate;
 }
 
 - (NSDate)captureDate
 {
-  v2 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v3 = [v2 asset];
-  v4 = [v3 dateCreated];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  asset = [resource asset];
+  dateCreated = [asset dateCreated];
 
-  return v4;
+  return dateCreated;
 }
 
-- (PLInternalResourceSidecarRepresentation)initWithResource:(id)a3
+- (PLInternalResourceSidecarRepresentation)initWithResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   v9.receiver = self;
   v9.super_class = PLInternalResourceSidecarRepresentation;
   v6 = [(PLInternalResourceSidecarRepresentation *)&v9 init];
   if (v6)
   {
-    if (!v5)
+    if (!resourceCopy)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v6 file:@"PLInternalResource+SidecarAdoption.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PLInternalResource+SidecarAdoption.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
     }
 
-    objc_storeWeak(&v6->_resource, v5);
+    objc_storeWeak(&v6->_resource, resourceCopy);
   }
 
   return v6;
@@ -239,72 +239,72 @@
 
 - (id)extension
 {
-  v3 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v4 = [v3 fileURL];
+  resource = [(PLInternalResourceSidecarRepresentation *)self resource];
+  fileURL = [resource fileURL];
 
-  v5 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v6 = v5;
-  if (v4)
+  resource2 = [(PLInternalResourceSidecarRepresentation *)self resource];
+  v6 = resource2;
+  if (fileURL)
   {
-    v7 = [v5 fileURL];
-    v8 = [v7 pathExtension];
+    fileURL2 = [resource2 fileURL];
+    pathExtension = [fileURL2 pathExtension];
 
-    v9 = v6;
+    identifier = v6;
     goto LABEL_11;
   }
 
-  v10 = [v5 uniformTypeIdentifier];
-  v9 = [v10 identifier];
+  uniformTypeIdentifier = [resource2 uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
-  v11 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  if ([v11 resourceType] != 5)
+  resource3 = [(PLInternalResourceSidecarRepresentation *)self resource];
+  if ([resource3 resourceType] != 5)
   {
 
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v9];
+  v12 = [MEMORY[0x1E69C08F0] typeWithIdentifier:identifier];
   v13 = [v12 isEqual:*MEMORY[0x1E6982D60]];
 
   if (!v13)
   {
 LABEL_8:
-    v19 = [(PLInternalResourceSidecarRepresentation *)self resource];
-    v20 = [v19 uniformTypeIdentifier];
-    v8 = [v20 preferredExtension];
+    resource4 = [(PLInternalResourceSidecarRepresentation *)self resource];
+    uniformTypeIdentifier2 = [resource4 uniformTypeIdentifier];
+    pathExtension = [uniformTypeIdentifier2 preferredExtension];
 
     goto LABEL_11;
   }
 
-  v14 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v15 = [v14 pathManager];
-  v16 = [v15 isUBF];
+  resource5 = [(PLInternalResourceSidecarRepresentation *)self resource];
+  pathManager = [resource5 pathManager];
+  isUBF = [pathManager isUBF];
 
   v17 = *MEMORY[0x1E69C0E20];
-  if (v16)
+  if (isUBF)
   {
-    v18 = v17;
+    uppercaseString = v17;
   }
 
   else
   {
-    v18 = [v17 uppercaseString];
+    uppercaseString = [v17 uppercaseString];
   }
 
-  v8 = v18;
+  pathExtension = uppercaseString;
 LABEL_11:
 
-  v21 = [(PLInternalResourceSidecarRepresentation *)self resource];
-  v22 = [v21 resourceType];
+  resource6 = [(PLInternalResourceSidecarRepresentation *)self resource];
+  resourceType = [resource6 resourceType];
 
-  if (v22 == 3)
+  if (resourceType == 3)
   {
-    v23 = [v8 uppercaseString];
+    uppercaseString2 = [pathExtension uppercaseString];
 
-    v8 = v23;
+    pathExtension = uppercaseString2;
   }
 
-  return v8;
+  return pathExtension;
 }
 
 @end

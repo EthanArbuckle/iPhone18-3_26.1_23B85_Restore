@@ -41,8 +41,8 @@ uint64_t __31__TTSVBSettings_sharedInstance__block_invoke()
 
 - (BOOL)allowAppUsage
 {
-  v2 = [(TTSVBSettings *)self defaults];
-  v3 = [v2 BOOLForKey:@"kTTSVBAllowVoiceBankingAppUsage"];
+  defaults = [(TTSVBSettings *)self defaults];
+  v3 = [defaults BOOLForKey:@"kTTSVBAllowVoiceBankingAppUsage"];
 
   return v3;
 }

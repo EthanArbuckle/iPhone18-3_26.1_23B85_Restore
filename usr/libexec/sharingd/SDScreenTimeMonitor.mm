@@ -1,23 +1,23 @@
 @interface SDScreenTimeMonitor
-- (SDScreenTimeMonitor)initWithPoliciesChangedHandler:(id)a3;
-- (id)bundleIDForActivity:(id)a3;
-- (int64_t)cachedPolicyForActivityType:(id)a3;
-- (int64_t)cachedPolicyForBundleID:(id)a3;
+- (SDScreenTimeMonitor)initWithPoliciesChangedHandler:(id)handler;
+- (id)bundleIDForActivity:(id)activity;
+- (int64_t)cachedPolicyForActivityType:(id)type;
+- (int64_t)cachedPolicyForBundleID:(id)d;
 - (void)_handlePolicyChange;
-- (void)_handleUpdateForPoliciesByBundleIdentifier:(id)a3;
+- (void)_handleUpdateForPoliciesByBundleIdentifier:(id)identifier;
 - (void)_retrieveMissingPolicies;
-- (void)_retrievePoliciesForBundleIdentifiers:(id)a3;
+- (void)_retrievePoliciesForBundleIdentifiers:(id)identifiers;
 - (void)_updateBundleIdentifierMappings;
 - (void)invalidate;
-- (void)requestPoliciesForActivities:(id)a3;
-- (void)updateWithActivities:(id)a3;
+- (void)requestPoliciesForActivities:(id)activities;
+- (void)updateWithActivities:(id)activities;
 @end
 
 @implementation SDScreenTimeMonitor
 
-- (SDScreenTimeMonitor)initWithPoliciesChangedHandler:(id)a3
+- (SDScreenTimeMonitor)initWithPoliciesChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v25.receiver = self;
   v25.super_class = SDScreenTimeMonitor;
   v5 = [(SDScreenTimeMonitor *)&v25 init];
@@ -47,7 +47,7 @@
     screenTimeMonitor = v5->_screenTimeMonitor;
     v5->_screenTimeMonitor = v14;
 
-    v16 = [v4 copy];
+    v16 = [handlerCopy copy];
     policiesChangedHandler = v5->_policiesChangedHandler;
     v5->_policiesChangedHandler = v16;
 
@@ -81,9 +81,9 @@
   dispatch_async(workQueue, block);
 }
 
-- (int64_t)cachedPolicyForBundleID:(id)a3
+- (int64_t)cachedPolicyForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -97,7 +97,7 @@
     block[3] = &unk_1008D1580;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     dispatch_sync(workQueue, block);
   }
 
@@ -107,37 +107,37 @@
   return v6;
 }
 
-- (void)updateWithActivities:(id)a3
+- (void)updateWithActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100140794;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activitiesCopy;
+  v6 = activitiesCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)requestPoliciesForActivities:(id)a3
+- (void)requestPoliciesForActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100140930;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activitiesCopy;
+  selfCopy = self;
+  v6 = activitiesCopy;
   dispatch_sync(workQueue, v7);
 }
 
-- (int64_t)cachedPolicyForActivityType:(id)a3
+- (int64_t)cachedPolicyForActivityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -150,7 +150,7 @@
     block[2] = sub_100140C40;
     block[3] = &unk_1008D15A8;
     block[4] = self;
-    v9 = v4;
+    v9 = typeCopy;
     v10 = &v11;
     dispatch_sync(workQueue, block);
   }
@@ -161,68 +161,68 @@
   return v6;
 }
 
-- (id)bundleIDForActivity:(id)a3
+- (id)bundleIDForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 activityType];
-  v5 = v4;
-  if (v4 == UIActivityTypeMessage)
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = activityType;
+  if (activityType == UIActivityTypeMessage)
   {
 
     goto LABEL_6;
   }
 
-  if ((v4 != 0) == (UIActivityTypeMessage == 0))
+  if ((activityType != 0) == (UIActivityTypeMessage == 0))
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(NSString *)v4 isEqual:UIActivityTypeMessage];
+  v6 = [(NSString *)activityType isEqual:UIActivityTypeMessage];
 
   if (v6)
   {
 LABEL_6:
-    v7 = @"com.apple.MobileSMS";
+    containingAppBundleIdentifier = @"com.apple.MobileSMS";
     goto LABEL_30;
   }
 
 LABEL_8:
-  v8 = [v3 activityType];
-  v9 = v8;
-  if (v8 == UIActivityTypeMail)
+  activityType2 = [activityCopy activityType];
+  v9 = activityType2;
+  if (activityType2 == UIActivityTypeMail)
   {
 
     goto LABEL_13;
   }
 
-  if ((v8 != 0) == (UIActivityTypeMail == 0))
+  if ((activityType2 != 0) == (UIActivityTypeMail == 0))
   {
 
     goto LABEL_15;
   }
 
-  v10 = [(NSString *)v8 isEqual:UIActivityTypeMail];
+  v10 = [(NSString *)activityType2 isEqual:UIActivityTypeMail];
 
   if (v10)
   {
 LABEL_13:
-    v7 = @"com.apple.mobilemail";
+    containingAppBundleIdentifier = @"com.apple.mobilemail";
     goto LABEL_30;
   }
 
 LABEL_15:
-  v11 = [v3 activityType];
-  v12 = v11;
-  if (v11 == UIActivityTypeSharePlay)
+  activityType3 = [activityCopy activityType];
+  v12 = activityType3;
+  if (activityType3 == UIActivityTypeSharePlay)
   {
 
     goto LABEL_20;
   }
 
-  if ((v11 != 0) != (UIActivityTypeSharePlay == 0))
+  if ((activityType3 != 0) != (UIActivityTypeSharePlay == 0))
   {
-    v13 = [(NSString *)v11 isEqual:UIActivityTypeSharePlay];
+    v13 = [(NSString *)activityType3 isEqual:UIActivityTypeSharePlay];
 
     if ((v13 & 1) == 0)
     {
@@ -230,18 +230,18 @@ LABEL_15:
     }
 
 LABEL_20:
-    v7 = @"com.apple.telephonyutilities.callservicesd";
+    containingAppBundleIdentifier = @"com.apple.telephonyutilities.callservicesd";
     goto LABEL_30;
   }
 
 LABEL_22:
-  v14 = [v3 applicationExtension];
-  if (v14)
+  applicationExtension = [activityCopy applicationExtension];
+  if (applicationExtension)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v3 containingAppBundleIdentifier];
+      containingAppBundleIdentifier = [activityCopy containingAppBundleIdentifier];
     }
 
     else
@@ -249,26 +249,26 @@ LABEL_22:
       v15 = share_sheet_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
-        sub_100141724(v3);
+        sub_100141724(activityCopy);
       }
 
-      v16 = [v14 _plugIn];
-      v17 = [v16 identifier];
-      v18 = [LSPlugInKitProxy pluginKitProxyForIdentifier:v17];
+      _plugIn = [applicationExtension _plugIn];
+      identifier = [_plugIn identifier];
+      v18 = [LSPlugInKitProxy pluginKitProxyForIdentifier:identifier];
 
-      v19 = [v18 containingBundle];
-      v7 = [v19 bundleIdentifier];
+      containingBundle = [v18 containingBundle];
+      containingAppBundleIdentifier = [containingBundle bundleIdentifier];
     }
   }
 
   else
   {
-    v7 = 0;
+    containingAppBundleIdentifier = 0;
   }
 
 LABEL_30:
 
-  return v7;
+  return containingAppBundleIdentifier;
 }
 
 - (void)_updateBundleIdentifierMappings
@@ -294,8 +294,8 @@ LABEL_30:
 
         v8 = *(*(&v15 + 1) + 8 * i);
         bundleIdentifierByActivityType = self->_bundleIdentifierByActivityType;
-        v10 = [v8 activityType];
-        v11 = [(NSMutableDictionary *)bundleIdentifierByActivityType objectForKeyedSubscript:v10];
+        activityType = [v8 activityType];
+        v11 = [(NSMutableDictionary *)bundleIdentifierByActivityType objectForKeyedSubscript:activityType];
 
         if (!v11)
         {
@@ -309,8 +309,8 @@ LABEL_30:
         }
 
         v13 = self->_bundleIdentifierByActivityType;
-        v14 = [v8 activityType];
-        [(NSMutableDictionary *)v13 setObject:v11 forKeyedSubscript:v14];
+        activityType2 = [v8 activityType];
+        [(NSMutableDictionary *)v13 setObject:v11 forKeyedSubscript:activityType2];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -329,7 +329,7 @@ LABEL_30:
   v7 = 3221225472;
   v8 = sub_1001411A0;
   v9 = &unk_1008D15D0;
-  v10 = self;
+  selfCopy = self;
   v5 = v3;
   v11 = v5;
   [(NSMutableDictionary *)bundleIdentifierByActivityType enumerateKeysAndObjectsUsingBlock:&v6];
@@ -339,43 +339,43 @@ LABEL_30:
   }
 }
 
-- (void)_handleUpdateForPoliciesByBundleIdentifier:(id)a3
+- (void)_handleUpdateForPoliciesByBundleIdentifier:(id)identifier
 {
-  [(NSMutableDictionary *)self->_policiesByBundleIdentifier addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)self->_policiesByBundleIdentifier addEntriesFromDictionary:identifier];
   v4 = [NSMutableArray arrayWithCapacity:[(NSMutableDictionary *)self->_policiesByBundleIdentifier count]];
   policiesByBundleIdentifier = self->_policiesByBundleIdentifier;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100141340;
   v13 = &unk_1008D15F8;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   [(NSMutableDictionary *)policiesByBundleIdentifier enumerateKeysAndObjectsUsingBlock:&v10];
-  [(SDScreenTimeMonitor *)self setRestrictedActivityTypes:v6, v10, v11, v12, v13, v14];
+  [(SDScreenTimeMonitor *)self setRestrictedActivityTypes:v6, v10, v11, v12, v13, selfCopy];
   [(SDScreenTimeMonitor *)self setCacheReady:1];
-  v7 = [(SDScreenTimeMonitor *)self policiesChangedHandler];
+  policiesChangedHandler = [(SDScreenTimeMonitor *)self policiesChangedHandler];
 
-  if (v7)
+  if (policiesChangedHandler)
   {
-    v8 = [(SDScreenTimeMonitor *)self policiesChangedHandler];
+    policiesChangedHandler2 = [(SDScreenTimeMonitor *)self policiesChangedHandler];
     v9 = [v6 copy];
-    (v8)[2](v8, v9);
+    (policiesChangedHandler2)[2](policiesChangedHandler2, v9);
   }
 }
 
-- (void)_retrievePoliciesForBundleIdentifiers:(id)a3
+- (void)_retrievePoliciesForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
   screenTimeMonitor = self->_screenTimeMonitor;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001414C4;
   v7[3] = &unk_1008D1620;
-  v6 = v4;
+  v6 = identifiersCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   objc_copyWeak(&v10, &location);
   [(DMFApplicationPolicyMonitor *)screenTimeMonitor requestPoliciesForBundleIdentifiers:v6 completionHandler:v7];
   objc_destroyWeak(&v10);

@@ -1,25 +1,25 @@
 @interface MPARC4RandomSource
 - (MPARC4RandomSource)init;
-- (MPARC4RandomSource)initWithCoder:(id)a3;
-- (MPARC4RandomSource)initWithSeed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
+- (MPARC4RandomSource)initWithCoder:(id)coder;
+- (MPARC4RandomSource)initWithSeed:(id)seed;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSeed:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSeed:(id)seed;
 @end
 
 @implementation MPARC4RandomSource
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  if (a3 < 2)
+  if (bound < 2)
   {
     return 0;
   }
 
   v18 = 0;
-  if ((a3 & (a3 - 1)) != 0)
+  if ((bound & (bound - 1)) != 0)
   {
     do
     {
@@ -42,10 +42,10 @@
       state->var0 = v13;
       state->var1 = var1;
       v16 = bswap32(v18);
-      v3 = v16 % a3;
+      v3 = v16 % bound;
     }
 
-    while (a3 - 1 + v16 < v16 % a3);
+    while (bound - 1 + v16 < v16 % bound);
   }
 
   else
@@ -68,21 +68,21 @@
     while (v4 != 4);
     v5->var0 = v7;
     v5->var1 = v8;
-    return (bswap32(v18) * a3) >> 32;
+    return (bswap32(v18) * bound) >> 32;
   }
 
   return v3;
 }
 
-- (void)setSeed:(id)a3
+- (void)setSeed:(id)seed
 {
-  v13 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithData:v13];
+  seedCopy = seed;
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithData:seedCopy];
   seed = self->_seed;
   self->_seed = v4;
 
   state = self->_state;
-  v7 = [(NSData *)self->_seed bytes];
+  bytes = [(NSData *)self->_seed bytes];
   v8 = [(NSData *)self->_seed length];
   v9 = 0;
   v10 = 0;
@@ -90,7 +90,7 @@
   do
   {
     v12 = var2[v9];
-    v10 += v12 + v7[v9 % v8];
+    v10 += v12 + bytes[v9 % v8];
     var2[v9] = var2[v10];
     var2[v10] = v12;
     ++v9;
@@ -114,18 +114,18 @@
   [(MPARC4RandomSource *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   var0 = self->_state->var0;
-  v5 = a3;
-  [v5 encodeInt:var0 forKey:@"i"];
-  [v5 encodeInt:self->_state->var1 forKey:@"j"];
-  [v5 encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
+  coderCopy = coder;
+  [coderCopy encodeInt:var0 forKey:@"i"];
+  [coderCopy encodeInt:self->_state->var1 forKey:@"j"];
+  [coderCopy encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
 }
 
-- (MPARC4RandomSource)initWithCoder:(id)a3
+- (MPARC4RandomSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MPARC4RandomSource;
   v5 = [(MPARC4RandomSource *)&v14 init];
@@ -149,10 +149,10 @@
       while (v9 != 256);
     }
 
-    v5->_state->var0 = [v4 decodeIntForKey:@"i"];
-    v5->_state->var1 = [v4 decodeIntForKey:@"j"];
+    v5->_state->var0 = [coderCopy decodeIntForKey:@"i"];
+    v5->_state->var1 = [coderCopy decodeIntForKey:@"j"];
     v13 = 0;
-    v10 = [v4 decodeBytesForKey:@"bytes" returnedLength:&v13];
+    v10 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&v13];
     if (v13 >= 0x100)
     {
       v11 = 256;
@@ -169,7 +169,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   state = self->_state;
@@ -208,9 +208,9 @@
   return result;
 }
 
-- (MPARC4RandomSource)initWithSeed:(id)a3
+- (MPARC4RandomSource)initWithSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v11.receiver = self;
   v11.super_class = MPARC4RandomSource;
   v5 = [(MPARC4RandomSource *)&v11 init];
@@ -234,7 +234,7 @@
       while (v9 != 256);
     }
 
-    [(MPARC4RandomSource *)v5 setSeed:v4];
+    [(MPARC4RandomSource *)v5 setSeed:seedCopy];
   }
 
   return v5;

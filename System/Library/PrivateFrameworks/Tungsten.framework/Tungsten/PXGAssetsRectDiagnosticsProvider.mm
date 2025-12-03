@@ -1,19 +1,19 @@
 @interface PXGAssetsRectDiagnosticsProvider
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4;
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block;
 @end
 
 @implementation PXGAssetsRectDiagnosticsProvider
 
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   v7 = +[PXTungstenSettings sharedInstance];
-  v8 = [v7 enableAssetsRectDiagnostics];
+  enableAssetsRectDiagnostics = [v7 enableAssetsRectDiagnostics];
 
-  if (v8)
+  if (enableAssetsRectDiagnostics)
   {
-    [v5 visibleRect];
+    [layoutCopy visibleRect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -22,8 +22,8 @@
     v17[1] = 3221225472;
     v17[2] = __81__PXGAssetsRectDiagnosticsProvider_enumerateRectDiagnosticsForLayout_usingBlock___block_invoke;
     v17[3] = &unk_2782A99E0;
-    v18 = v6;
-    [v5 enumerateSpritesInRect:v17 usingBlock:{v10, v12, v14, v16}];
+    v18 = blockCopy;
+    [layoutCopy enumerateSpritesInRect:v17 usingBlock:{v10, v12, v14, v16}];
   }
 }
 

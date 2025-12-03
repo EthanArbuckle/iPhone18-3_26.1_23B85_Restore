@@ -1,22 +1,22 @@
 @interface HMDHomeActivityStateMachine
 + (id)logCategory;
-+ (int64_t)reasonForStateEvent:(id)a3;
++ (int64_t)reasonForStateEvent:(id)event;
 - (HMDHomeActivityState)currentHomeActivityState;
-- (HMDHomeActivityStateMachine)initWithDataSource:(id)a3 aggregators:(id)a4 initialStateHoldDetails:(id)a5;
-- (HMDHomeActivityStateMachine)initWithDataSource:(id)a3 aggregators:(id)a4 initialStateHoldDetails:(id)a5 queue:(id)a6;
+- (HMDHomeActivityStateMachine)initWithDataSource:(id)source aggregators:(id)aggregators initialStateHoldDetails:(id)details;
+- (HMDHomeActivityStateMachine)initWithDataSource:(id)source aggregators:(id)aggregators initialStateHoldDetails:(id)details queue:(id)queue;
 - (HMDHomeActivityStateMachineTransitionDelegate)stateTransitionDelegate;
 - (double)holdTimeOutInSeconds;
-- (id)_aggregatorOfType:(unint64_t)a3;
+- (id)_aggregatorOfType:(unint64_t)type;
 - (id)comingHomeAggregator;
 - (id)homeAwayAggregator;
 - (id)logIdentifier;
 - (id)vacationAggregator;
-- (void)cancelOngoingHoldFromUserRequest:(id)a3;
+- (void)cancelOngoingHoldFromUserRequest:(id)request;
 - (void)configure;
 - (void)createStateMachine;
-- (void)handleHomeActivityStateChange:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6;
-- (void)handleStateChangeForAggregatorOfType:(unint64_t)a3;
-- (void)handleUpdateHomeActivityStateFromUserRequest:(id)a3;
+- (void)handleHomeActivityStateChange:(unint64_t)change withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason;
+- (void)handleStateChangeForAggregatorOfType:(unint64_t)type;
+- (void)handleUpdateHomeActivityStateFromUserRequest:(id)request;
 - (void)probeHomeActivityState;
 @end
 
@@ -29,15 +29,15 @@
   return WeakRetained;
 }
 
-- (id)_aggregatorOfType:(unint64_t)a3
+- (id)_aggregatorOfType:(unint64_t)type
 {
-  v4 = [(HMDHomeActivityStateMachine *)self aggregators];
+  aggregators = [(HMDHomeActivityStateMachine *)self aggregators];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__HMDHomeActivityStateMachine__aggregatorOfType___block_invoke;
   v7[3] = &__block_descriptor_40_e47_B32__0__HMDHomeActivityStateAggregator_8Q16_B24l;
-  v7[4] = a3;
-  v5 = [v4 hmf_objectPassingTest:v7];
+  v7[4] = type;
+  v5 = [aggregators hmf_objectPassingTest:v7];
 
   return v5;
 }
@@ -134,16 +134,16 @@
 - (double)holdTimeOutInSeconds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityStateMachine *)self dataSource];
-  v4 = [v3 preferences];
-  v5 = [v4 preferenceForKey:@"HMDHomeActivityStateDefaultHoldTimeoutInSeconds"];
-  v6 = [v5 numberValue];
+  dataSource = [(HMDHomeActivityStateMachine *)self dataSource];
+  preferences = [dataSource preferences];
+  v5 = [preferences preferenceForKey:@"HMDHomeActivityStateDefaultHoldTimeoutInSeconds"];
+  numberValue = [v5 numberValue];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (numberValue)
   {
     if (v10)
     {
@@ -151,12 +151,12 @@
       v17 = 138543618;
       v18 = v11;
       v19 = 2112;
-      v20 = v6;
+      v20 = numberValue;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Using user-defined default hold timeout: %@", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    [v6 doubleValue];
+    [numberValue doubleValue];
     v13 = v12;
   }
 
@@ -182,22 +182,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityStateMachine *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDHomeActivityStateMachine *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)handleStateChangeForAggregatorOfType:(unint64_t)a3
+- (void)handleStateChangeForAggregatorOfType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = HMDHomeActivityStateContributorTypeAsString(a3);
+    v9 = HMDHomeActivityStateContributorTypeAsString(type);
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
@@ -206,19 +206,19 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHomeActivityStateMachine *)v6 probeHomeActivityState];
+  [(HMDHomeActivityStateMachine *)selfCopy probeHomeActivityState];
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (void)probeHomeActivityState
 {
-  v3 = [(HMDHierarchicalStateMachine *)self queue];
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__HMDHomeActivityStateMachine_probeHomeActivityState__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __53__HMDHomeActivityStateMachine_probeHomeActivityState__block_invoke(uint64_t a1)
@@ -235,18 +235,18 @@ void __53__HMDHomeActivityStateMachine_probeHomeActivityState__block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelOngoingHoldFromUserRequest:(id)a3
+- (void)cancelOngoingHoldFromUserRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
+  requestCopy = request;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDHomeActivityStateMachine_cancelOngoingHoldFromUserRequest___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(queue, v7);
 }
 
 void __64__HMDHomeActivityStateMachine_cancelOngoingHoldFromUserRequest___block_invoke(uint64_t a1)
@@ -316,18 +316,18 @@ void __64__HMDHomeActivityStateMachine_cancelOngoingHoldFromUserRequest___block_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdateHomeActivityStateFromUserRequest:(id)a3
+- (void)handleUpdateHomeActivityStateFromUserRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
+  requestCopy = request;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HMDHomeActivityStateMachine_handleUpdateHomeActivityStateFromUserRequest___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  dispatch_async(queue, v7);
 }
 
 void __76__HMDHomeActivityStateMachine_handleUpdateHomeActivityStateFromUserRequest___block_invoke(uint64_t a1)
@@ -451,22 +451,22 @@ LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeActivityStateChange:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6
+- (void)handleHomeActivityStateChange:(unint64_t)change withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HMDHomeActivityStateMachine *)self stateTransitionDelegate];
-  v13 = v12;
-  if (v12)
+  infoCopy = info;
+  dateCopy = date;
+  stateTransitionDelegate = [(HMDHomeActivityStateMachine *)self stateTransitionDelegate];
+  v13 = stateTransitionDelegate;
+  if (stateTransitionDelegate)
   {
-    [v12 stateMachineDidTransitionToActivityState:a3 withHoldInfo:v10 transitionalStateEndDate:v11 reason:a6];
+    [stateTransitionDelegate stateMachineDidTransitionToActivityState:change withHoldInfo:infoCopy transitionalStateEndDate:dateCopy reason:reason];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -484,11 +484,11 @@ LABEL_17:
 
 - (HMDHomeActivityState)currentHomeActivityState
 {
-  v2 = [(HMDHierarchicalStateMachine *)self currentHSMState];
+  currentHSMState = [(HMDHierarchicalStateMachine *)self currentHSMState];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = currentHSMState;
   }
 
   else
@@ -505,8 +505,8 @@ LABEL_17:
 {
   v18[8] = *MEMORY[0x277D85DE8];
   v3 = [HMDHomeActivityRootState alloc];
-  v4 = [(HMDHomeActivityStateMachine *)self dataSource];
-  v5 = [(HMDHomeActivityState *)v3 initWithParent:0 dataSource:v4];
+  dataSource = [(HMDHomeActivityStateMachine *)self dataSource];
+  v5 = [(HMDHomeActivityState *)v3 initWithParent:0 dataSource:dataSource];
 
   v17 = v5;
   v6 = [[HMDHomeActivityPrimaryState alloc] initWithParent:v5];
@@ -536,13 +536,13 @@ LABEL_17:
 
 - (void)configure
 {
-  v3 = [(HMDHierarchicalStateMachine *)self queue];
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__HMDHomeActivityStateMachine_configure__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __40__HMDHomeActivityStateMachine_configure__block_invoke(uint64_t a1)
@@ -559,58 +559,58 @@ uint64_t __40__HMDHomeActivityStateMachine_configure__block_invoke(uint64_t a1)
   return [*(a1 + 32) _start];
 }
 
-- (HMDHomeActivityStateMachine)initWithDataSource:(id)a3 aggregators:(id)a4 initialStateHoldDetails:(id)a5 queue:(id)a6
+- (HMDHomeActivityStateMachine)initWithDataSource:(id)source aggregators:(id)aggregators initialStateHoldDetails:(id)details queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  aggregatorsCopy = aggregators;
+  detailsCopy = details;
   v17.receiver = self;
   v17.super_class = HMDHomeActivityStateMachine;
-  v14 = [(HMDHierarchicalStateMachine *)&v17 initWithQueue:a6 allowSelfStateTransitions:0];
+  v14 = [(HMDHierarchicalStateMachine *)&v17 initWithQueue:queue allowSelfStateTransitions:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_dataSource, a3);
-    objc_storeStrong(&v15->_aggregators, a4);
-    objc_storeStrong(&v15->_initialStateHoldDetails, a5);
+    objc_storeStrong(&v14->_dataSource, source);
+    objc_storeStrong(&v15->_aggregators, aggregators);
+    objc_storeStrong(&v15->_initialStateHoldDetails, details);
   }
 
   return v15;
 }
 
-- (HMDHomeActivityStateMachine)initWithDataSource:(id)a3 aggregators:(id)a4 initialStateHoldDetails:(id)a5
+- (HMDHomeActivityStateMachine)initWithDataSource:(id)source aggregators:(id)aggregators initialStateHoldDetails:(id)details
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  detailsCopy = details;
+  aggregatorsCopy = aggregators;
+  sourceCopy = source;
   v11 = HMDispatchQueueNameString();
-  v12 = [v11 UTF8String];
+  uTF8String = [v11 UTF8String];
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v14 = dispatch_queue_create(v12, v13);
+  v14 = dispatch_queue_create(uTF8String, v13);
 
-  v15 = [(HMDHomeActivityStateMachine *)self initWithDataSource:v10 aggregators:v9 initialStateHoldDetails:v8 queue:v14];
+  v15 = [(HMDHomeActivityStateMachine *)self initWithDataSource:sourceCopy aggregators:aggregatorsCopy initialStateHoldDetails:detailsCopy queue:v14];
   return v15;
 }
 
-+ (int64_t)reasonForStateEvent:(id)a3
++ (int64_t)reasonForStateEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"stateTransitionReason"];
+  eventCopy = event;
+  userInfo = [eventCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"stateTransitionReason"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 hmf_numberForKey:@"stateTransitionReason"];
+    userInfo2 = [eventCopy userInfo];
+    v8 = [userInfo2 hmf_numberForKey:@"stateTransitionReason"];
 
-    v9 = [v8 unsignedIntValue];
+    unsignedIntValue = [v8 unsignedIntValue];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -618,16 +618,16 @@ uint64_t __40__HMDHomeActivityStateMachine_configure__block_invoke(uint64_t a1)
       v16 = 138543618;
       v17 = v13;
       v18 = 2112;
-      v19 = v4;
+      v19 = eventCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Asked to fetch HMDHomeActivityStateTransitionReason from event %@, but key was unset", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v9 = 0;
+    unsignedIntValue = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v9;
+  return unsignedIntValue;
 }
 
 + (id)logCategory

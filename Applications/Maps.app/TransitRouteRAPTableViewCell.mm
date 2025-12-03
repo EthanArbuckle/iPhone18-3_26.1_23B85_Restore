@@ -1,14 +1,14 @@
 @interface TransitRouteRAPTableViewCell
-- (TransitRouteRAPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setChecked:(BOOL)a3;
+- (TransitRouteRAPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation TransitRouteRAPTableViewCell
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  self->_checked = a3;
-  if (a3)
+  self->_checked = checked;
+  if (checked)
   {
     v3 = 3;
   }
@@ -21,11 +21,11 @@
   [(TransitRouteRAPTableViewCell *)self setAccessoryType:v3];
 }
 
-- (TransitRouteRAPTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TransitRouteRAPTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = TransitRouteRAPTableViewCell;
-  v4 = [(TransitRouteTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TransitRouteTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

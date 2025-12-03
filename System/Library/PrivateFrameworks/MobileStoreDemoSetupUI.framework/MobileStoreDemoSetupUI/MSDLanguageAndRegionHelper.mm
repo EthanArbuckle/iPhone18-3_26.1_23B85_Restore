@@ -1,17 +1,17 @@
 @interface MSDLanguageAndRegionHelper
 + (id)sharedInstance;
-- (BOOL)_isCurrentDeviceLanguage:(id)a3 andRegion:(id)a4;
-- (BOOL)_isCurrentDevicePreferredLanguage:(id)a3 andRegion:(id)a4;
+- (BOOL)_isCurrentDeviceLanguage:(id)language andRegion:(id)region;
+- (BOOL)_isCurrentDevicePreferredLanguage:(id)language andRegion:(id)region;
 - (BOOL)isSiriEnabled;
-- (id)_preferredLocalizedLanguageCodeFromArray:(id)a3;
-- (id)_systemLocalizedLanguageCodeFromArray:(id)a3;
+- (id)_preferredLocalizedLanguageCodeFromArray:(id)array;
+- (id)_systemLocalizedLanguageCodeFromArray:(id)array;
 - (id)getCurrentDeviceLanguage;
 - (id)getCurrentDevicePreferredLanguage;
 - (id)getCurrentDeviceRegion;
 - (id)getCurrentLocaleCode;
 - (id)getSiriLanguage;
-- (int)setDeviceLanguage:(id)a3 andRegion:(id)a4 matchToSystemLanguage:(BOOL)a5;
-- (int)setSiriLanguage:(id)a3;
+- (int)setDeviceLanguage:(id)language andRegion:(id)region matchToSystemLanguage:(BOOL)systemLanguage;
+- (int)setSiriLanguage:(id)language;
 @end
 
 @implementation MSDLanguageAndRegionHelper
@@ -35,16 +35,16 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)setDeviceLanguage:(id)a3 andRegion:(id)a4 matchToSystemLanguage:(BOOL)a5
+- (int)setDeviceLanguage:(id)language andRegion:(id)region matchToSystemLanguage:(BOOL)systemLanguage
 {
-  v5 = a5;
+  systemLanguageCopy = systemLanguage;
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  languageCopy = language;
+  regionCopy = region;
+  v10 = languageCopy;
   v11 = defaultLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (systemLanguageCopy)
   {
     if (v12)
     {
@@ -56,7 +56,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     v14 = [(MSDLanguageAndRegionHelper *)self _systemLocalizedLanguageCodeFromArray:v13];
 
-    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDeviceLanguage:v14 andRegion:v9];
+    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDeviceLanguage:v14 andRegion:regionCopy];
   }
 
   else
@@ -67,7 +67,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
       _os_log_impl(&dword_259BCA000, v11, OS_LOG_TYPE_DEFAULT, "Comparing to any localized language variant", &v21, 2u);
     }
 
-    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDevicePreferredLanguage:v10 andRegion:v9];
+    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDevicePreferredLanguage:v10 andRegion:regionCopy];
     v14 = v10;
   }
 
@@ -79,7 +79,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
     v23 = 2114;
     v24 = v14;
     v25 = 2114;
-    v26 = v9;
+    v26 = regionCopy;
     _os_log_impl(&dword_259BCA000, v16, OS_LOG_TYPE_DEFAULT, "Setting device language to %{public}@ (%{public}@) and region code to %{public}@.", &v21, 0x20u);
   }
 
@@ -93,7 +93,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
       v23 = 2114;
       v24 = v14;
       v25 = 2114;
-      v26 = v9;
+      v26 = regionCopy;
       _os_log_impl(&dword_259BCA000, v17, OS_LOG_TYPE_DEFAULT, "Device already has language %{public}@ (%{public}@) and region %{public}@", &v21, 0x20u);
     }
 
@@ -102,7 +102,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
 
   else
   {
-    [MEMORY[0x277D218C8] setRegion:v9];
+    [MEMORY[0x277D218C8] setRegion:regionCopy];
     [MEMORY[0x277D218C8] setLanguage:v14];
     v18 = 0;
   }
@@ -113,42 +113,42 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
 
 - (id)getCurrentDeviceLanguage
 {
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = [(MSDLanguageAndRegionHelper *)self _systemLocalizedLanguageCodeFromArray:v3];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v4 = [(MSDLanguageAndRegionHelper *)self _systemLocalizedLanguageCodeFromArray:preferredLanguages];
 
   return v4;
 }
 
 - (id)getCurrentDevicePreferredLanguage
 {
-  v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v3 = [v2 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)getCurrentDeviceRegion
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (id)getCurrentLocaleCode
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
-  v5 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-  v6 = [v3 stringWithFormat:@"%@_%@", v4, v5];
+  getCurrentDevicePreferredLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
+  getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+  v6 = [v3 stringWithFormat:@"%@_%@", getCurrentDevicePreferredLanguage, getCurrentDeviceRegion];
 
   return v6;
 }
 
-- (int)setSiriLanguage:(id)a3
+- (int)setSiriLanguage:(id)language
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   if (![(MSDLanguageAndRegionHelper *)self isSiriEnabled])
   {
     v5 = defaultLogHandle();
@@ -165,19 +165,19 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = languageCopy;
     _os_log_impl(&dword_259BCA000, v6, OS_LOG_TYPE_DEFAULT, "Setting Siri language to %{public}@", buf, 0xCu);
   }
 
-  v7 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
+  getSiriLanguage = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
 
-  if (v7 == v4)
+  if (getSiriLanguage == languageCopy)
   {
     v10 = defaultLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v4;
+      v21 = languageCopy;
       _os_log_impl(&dword_259BCA000, v10, OS_LOG_TYPE_DEFAULT, "Device already has a Siri language of %{public}@", buf, 0xCu);
     }
 
@@ -187,14 +187,14 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
   else
   {
     v8 = dispatch_semaphore_create(0);
-    v9 = [MEMORY[0x277CEF3A8] sharedInstance];
+    mEMORY[0x277CEF3A8] = [MEMORY[0x277CEF3A8] sharedInstance];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __46__MSDLanguageAndRegionHelper_setSiriLanguage___block_invoke;
     v18[3] = &unk_2798F1C48;
     v10 = v8;
     v19 = v10;
-    [v9 setLanguage:v4 withCompletion:v18];
+    [mEMORY[0x277CEF3A8] setLanguage:languageCopy withCompletion:v18];
 
     v11 = dispatch_time(0, 10000000000);
     if (dispatch_semaphore_wait(v10, v11))
@@ -206,9 +206,9 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
       }
     }
 
-    v13 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
+    getSiriLanguage2 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
 
-    if (v13 == v4)
+    if (getSiriLanguage2 == languageCopy)
     {
       v15 = 0;
     }
@@ -218,7 +218,7 @@ uint64_t __44__MSDLanguageAndRegionHelper_sharedInstance__block_invoke()
       v14 = defaultLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(MSDLanguageAndRegionHelper *)v4 setSiriLanguage:v14];
+        [(MSDLanguageAndRegionHelper *)languageCopy setSiriLanguage:v14];
       }
 
       v15 = 1;
@@ -243,31 +243,31 @@ intptr_t __46__MSDLanguageAndRegionHelper_setSiriLanguage___block_invoke(uint64_
 
 - (id)getSiriLanguage
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 - (BOOL)isSiriEnabled
 {
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
-- (BOOL)_isCurrentDeviceLanguage:(id)a3 andRegion:(id)a4
+- (BOOL)_isCurrentDeviceLanguage:(id)language andRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceLanguage];
-  v9 = [v8 isEqualToString:v7];
+  regionCopy = region;
+  languageCopy = language;
+  getCurrentDeviceLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceLanguage];
+  v9 = [getCurrentDeviceLanguage isEqualToString:languageCopy];
 
   if (v9)
   {
-    v10 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-    v11 = [v10 isEqualToString:v6];
+    getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+    v11 = [getCurrentDeviceRegion isEqualToString:regionCopy];
   }
 
   else
@@ -278,17 +278,17 @@ intptr_t __46__MSDLanguageAndRegionHelper_setSiriLanguage___block_invoke(uint64_
   return v11;
 }
 
-- (BOOL)_isCurrentDevicePreferredLanguage:(id)a3 andRegion:(id)a4
+- (BOOL)_isCurrentDevicePreferredLanguage:(id)language andRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
-  v9 = [v8 isEqualToString:v7];
+  regionCopy = region;
+  languageCopy = language;
+  getCurrentDevicePreferredLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
+  v9 = [getCurrentDevicePreferredLanguage isEqualToString:languageCopy];
 
   if (v9)
   {
-    v10 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-    v11 = [v10 isEqualToString:v6];
+    getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+    v11 = [getCurrentDeviceRegion isEqualToString:regionCopy];
   }
 
   else
@@ -299,30 +299,30 @@ intptr_t __46__MSDLanguageAndRegionHelper_setSiriLanguage___block_invoke(uint64_
   return v11;
 }
 
-- (id)_systemLocalizedLanguageCodeFromArray:(id)a3
+- (id)_systemLocalizedLanguageCodeFromArray:(id)array
 {
   v3 = MEMORY[0x277CCA8D8];
   v4 = MEMORY[0x277CBEAF8];
-  v5 = a3;
-  v6 = [v4 systemLanguages];
-  v7 = [v3 preferredLocalizationsFromArray:v6 forPreferences:v5];
+  arrayCopy = array;
+  systemLanguages = [v4 systemLanguages];
+  v7 = [v3 preferredLocalizationsFromArray:systemLanguages forPreferences:arrayCopy];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)_preferredLocalizedLanguageCodeFromArray:(id)a3
+- (id)_preferredLocalizedLanguageCodeFromArray:(id)array
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x277CBEAF8] availableLocaleIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  availableLocaleIdentifiers = [MEMORY[0x277CBEAF8] availableLocaleIdentifiers];
+  v6 = [availableLocaleIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -333,28 +333,28 @@ intptr_t __46__MSDLanguageAndRegionHelper_setSiriLanguage___block_invoke(uint64_
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableLocaleIdentifiers);
         }
 
         v10 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:*(*(&v18 + 1) + 8 * i)];
-        v11 = [v10 languageIdentifier];
-        [v4 addObject:v11];
+        languageIdentifier = [v10 languageIdentifier];
+        [array addObject:languageIdentifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [availableLocaleIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
   v12 = MEMORY[0x277CCA8D8];
-  v13 = [v4 copy];
-  v14 = [v12 preferredLocalizationsFromArray:v13 forPreferences:v3];
-  v15 = [v14 firstObject];
+  v13 = [array copy];
+  v14 = [v12 preferredLocalizationsFromArray:v13 forPreferences:arrayCopy];
+  firstObject = [v14 firstObject];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
 - (void)setSiriLanguage:(NSObject *)a3 .cold.2(uint64_t a1, void *a2, NSObject *a3)

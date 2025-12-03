@@ -1,41 +1,41 @@
 @interface HDRollingBaselineRelativeDataSource
-- (BOOL)_couldSampleEverResolveToDeterminateValue:(HDRawQuantitySample *)a3;
-- (BOOL)_primeBaselineCalculatorWithPriorSamplesForSample:(HDRawQuantitySample *)a3 baselineCompatibilityID:(id)a4 error:(id *)a5;
-- (BOOL)_shouldContinueWithError:(id *)a3;
-- (BOOL)_supplementCalculatorWithSubsequentSamplesForSample:(HDRawQuantitySample *)a3 baselineCompatibilityID:(id)a4 error:(id *)a5;
+- (BOOL)_couldSampleEverResolveToDeterminateValue:(HDRawQuantitySample *)value;
+- (BOOL)_primeBaselineCalculatorWithPriorSamplesForSample:(HDRawQuantitySample *)sample baselineCompatibilityID:(id)d error:(id *)error;
+- (BOOL)_shouldContinueWithError:(id *)error;
+- (BOOL)_supplementCalculatorWithSubsequentSamplesForSample:(HDRawQuantitySample *)sample baselineCompatibilityID:(id)d error:(id *)error;
 - (HDProfile)profile;
-- (HDRollingBaselineRelativeDataSource)initWithProfile:(id)a3 quantityType:(id)a4 configuration:(id)a5 queryPrefetchWindow:(double)a6 currentDate:(id)a7;
+- (HDRollingBaselineRelativeDataSource)initWithProfile:(id)profile quantityType:(id)type configuration:(id)configuration queryPrefetchWindow:(double)window currentDate:(id)date;
 - (id).cxx_construct;
-- (id)_predicateForSamplesStartingWithinDateInterval:(id)a3 sourceID:(int64_t)a4 isIntervalStartDateInclusive:(BOOL)a5;
-- (id)computeRelativeValueForSample:(HDRawQuantitySample *)a3 error:(id *)a4;
+- (id)_predicateForSamplesStartingWithinDateInterval:(id)interval sourceID:(int64_t)d isIntervalStartDateInclusive:(BOOL)inclusive;
+- (id)computeRelativeValueForSample:(HDRawQuantitySample *)sample error:(id *)error;
 @end
 
 @implementation HDRollingBaselineRelativeDataSource
 
-- (HDRollingBaselineRelativeDataSource)initWithProfile:(id)a3 quantityType:(id)a4 configuration:(id)a5 queryPrefetchWindow:(double)a6 currentDate:(id)a7
+- (HDRollingBaselineRelativeDataSource)initWithProfile:(id)profile quantityType:(id)type configuration:(id)configuration queryPrefetchWindow:(double)window currentDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  profileCopy = profile;
+  typeCopy = type;
+  configurationCopy = configuration;
+  dateCopy = date;
   v26.receiver = self;
   v26.super_class = HDRollingBaselineRelativeDataSource;
   v16 = [(HDRollingBaselineRelativeDataSource *)&v26 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_profile, v12);
-    objc_storeStrong(&v17->_quantityType, a4);
-    v18 = [[HDRollingBaselineRelativeQuantityCalculator alloc] initWithConfiguration:v14];
+    objc_storeWeak(&v16->_profile, profileCopy);
+    objc_storeStrong(&v17->_quantityType, type);
+    v18 = [[HDRollingBaselineRelativeQuantityCalculator alloc] initWithConfiguration:configurationCopy];
     baselineCalculator = v17->_baselineCalculator;
     v17->_baselineCalculator = v18;
 
-    v20 = [[_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap alloc] initWithProfile:v12 quantityType:v13];
+    v20 = [[_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap alloc] initWithProfile:profileCopy quantityType:typeCopy];
     canonicalSourceMap = v17->_canonicalSourceMap;
     v17->_canonicalSourceMap = v20;
 
-    v17->_queryPrefetchWindow = a6;
-    objc_storeStrong(&v17->_currentDate, a7);
+    v17->_queryPrefetchWindow = window;
+    objc_storeStrong(&v17->_currentDate, date);
     if (v17->_prefetchedSamplesByBaselineCompatibilityID.__table_.__size_)
     {
       std::__hash_table<std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,HDStringHash,HDStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,HDStringEqual,HDStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>>>::__deallocate_node(v17->_prefetchedSamplesByBaselineCompatibilityID.__table_.__first_node_.__next_);
@@ -69,21 +69,21 @@
   return v17;
 }
 
-- (id)computeRelativeValueForSample:(HDRawQuantitySample *)a3 error:(id *)a4
+- (id)computeRelativeValueForSample:(HDRawQuantitySample *)sample error:(id *)error
 {
-  v7 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self->_canonicalSourceMap baselineCompatibilityIDForSourceID:a3->var3];
-  v8 = *&a3->var2;
-  v17 = *&a3->var0;
+  v7 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self->_canonicalSourceMap baselineCompatibilityIDForSourceID:sample->var3];
+  v8 = *&sample->var2;
+  v17 = *&sample->var0;
   v18 = v8;
-  v19 = *&a3->var4;
-  if (![(HDRollingBaselineRelativeDataSource *)self _primeBaselineCalculatorWithPriorSamplesForSample:&v17 baselineCompatibilityID:v7 error:a4])
+  v19 = *&sample->var4;
+  if (![(HDRollingBaselineRelativeDataSource *)self _primeBaselineCalculatorWithPriorSamplesForSample:&v17 baselineCompatibilityID:v7 error:error])
   {
     goto LABEL_10;
   }
 
   v9 = [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator hasSufficientDataToBaselineSampleWithSourceID:v7];
   baselineCalculator = self->_baselineCalculator;
-  var0 = a3->var0;
+  var0 = sample->var0;
   if (v9)
   {
     [(HDRollingBaselineRelativeQuantityCalculator *)baselineCalculator baselineRelativeValueForSampleValue:v7 sourceID:var0];
@@ -93,30 +93,30 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  [(HDRollingBaselineRelativeQuantityCalculator *)baselineCalculator addSupplementarySampleValue:v7 startTime:var0 sourceID:a3->var1];
+  [(HDRollingBaselineRelativeQuantityCalculator *)baselineCalculator addSupplementarySampleValue:v7 startTime:var0 sourceID:sample->var1];
   if ([(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator hasSufficientDataToBaselineSampleWithSourceID:v7])
   {
 LABEL_5:
-    [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator baselineRelativeValueForSampleValue:v7 sourceID:a3->var0];
+    [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator baselineRelativeValueForSampleValue:v7 sourceID:sample->var0];
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     goto LABEL_6;
   }
 
-  v14 = *&a3->var2;
-  v17 = *&a3->var0;
+  v14 = *&sample->var2;
+  v17 = *&sample->var0;
   v18 = v14;
-  v19 = *&a3->var4;
-  if ([(HDRollingBaselineRelativeDataSource *)self _supplementCalculatorWithSubsequentSamplesForSample:&v17 baselineCompatibilityID:v7 error:a4])
+  v19 = *&sample->var4;
+  if ([(HDRollingBaselineRelativeDataSource *)self _supplementCalculatorWithSubsequentSamplesForSample:&v17 baselineCompatibilityID:v7 error:error])
   {
     if ([(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator hasSufficientDataToBaselineSampleWithSourceID:v7])
     {
       goto LABEL_5;
     }
 
-    v16 = *&a3->var2;
-    v17 = *&a3->var0;
+    v16 = *&sample->var2;
+    v17 = *&sample->var0;
     v18 = v16;
-    v19 = *&a3->var4;
+    v19 = *&sample->var4;
     if ([(HDRollingBaselineRelativeDataSource *)self _couldSampleEverResolveToDeterminateValue:&v17])
     {
       v13 = &unk_283CB43C0;
@@ -139,11 +139,11 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_primeBaselineCalculatorWithPriorSamplesForSample:(HDRawQuantitySample *)a3 baselineCompatibilityID:(id)a4 error:(id *)a5
+- (BOOL)_primeBaselineCalculatorWithPriorSamplesForSample:(HDRawQuantitySample *)sample baselineCompatibilityID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v33 = v8;
-  [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator pruneForNextSampleStartTime:v8 sourceID:a3->var1];
+  dCopy = d;
+  v33 = dCopy;
+  [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator pruneForNextSampleStartTime:dCopy sourceID:sample->var1];
   if (!std::__hash_table<std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,HDStringHash,HDStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>,HDStringEqual,HDStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},std::deque<HDRawQuantitySample>>>>::find<NSString * {__strong}>(&self->_prefetchedSamplesByBaselineCompatibilityID.__table_.__bucket_list_.__ptr_, &v33))
   {
     goto LABEL_10;
@@ -163,12 +163,12 @@ LABEL_11:
     while (1)
     {
       v12 = (v10[4][v11 / 0x66] + 40 * (v11 % 0x66));
-      if (v12[1] >= a3->var1)
+      if (v12[1] >= sample->var1)
       {
         break;
       }
 
-      [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator addNextSampleValue:v8 startTime:*v12 sourceID:?];
+      [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator addNextSampleValue:dCopy startTime:*v12 sourceID:?];
       v13 = vaddq_s64(*(v10 + 7), xmmword_229166A20);
       *(v10 + 7) = v13;
       v11 = v13.i64[0];
@@ -199,11 +199,11 @@ LABEL_11:
   else
   {
 LABEL_10:
-    [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator mostRecentSampleStartTimeForSourceID:v8, v27];
+    [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator mostRecentSampleStartTimeForSourceID:dCopy, v27];
     v16 = v15;
-    var1 = a3->var1;
-    v18 = [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator configuration];
-    [v18 maximumWindowDuration];
+    var1 = sample->var1;
+    configuration = [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator configuration];
+    [configuration maximumWindowDuration];
     v20 = var1 - v19;
 
     if (v16 >= v20)
@@ -211,20 +211,20 @@ LABEL_10:
       v20 = v16;
     }
 
-    v21 = [MEMORY[0x277CCA970] hk_dateIntervalWithStart:v20 end:a3->var1 + self->_queryPrefetchWindow];
-    v22 = [(HDRollingBaselineRelativeDataSource *)self _predicateForSamplesStartingWithinDateInterval:v21 sourceID:a3->var3 isIntervalStartDateInclusive:v20 != v16];
+    v21 = [MEMORY[0x277CCA970] hk_dateIntervalWithStart:v20 end:sample->var1 + self->_queryPrefetchWindow];
+    v22 = [(HDRollingBaselineRelativeDataSource *)self _predicateForSamplesStartingWithinDateInterval:v21 sourceID:sample->var3 isIntervalStartDateInclusive:v20 != v16];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __119__HDRollingBaselineRelativeDataSource__primeBaselineCalculatorWithPriorSamplesForSample_baselineCompatibilityID_error___block_invoke;
     v28[3] = &unk_27862B710;
-    v24 = *&a3->var2;
-    v30 = *&a3->var0;
+    v24 = *&sample->var2;
+    v30 = *&sample->var0;
     v31 = v24;
-    v32 = *&a3->var4;
+    v32 = *&sample->var4;
     v28[4] = self;
-    v29 = v8;
-    v25 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v22 profile:WeakRetained options:0 error:a5 handler:v28];
+    v29 = dCopy;
+    v25 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v22 profile:WeakRetained options:0 error:error handler:v28];
   }
 
   return v25;
@@ -372,13 +372,13 @@ LABEL_34:
   return [v39 _shouldContinueWithError:a12];
 }
 
-- (BOOL)_supplementCalculatorWithSubsequentSamplesForSample:(HDRawQuantitySample *)a3 baselineCompatibilityID:(id)a4 error:(id *)a5
+- (BOOL)_supplementCalculatorWithSubsequentSamplesForSample:(HDRawQuantitySample *)sample baselineCompatibilityID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v35 = v8;
-  var1 = a3->var1;
-  v10 = [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator configuration];
-  [v10 maximumWindowDuration];
+  dCopy = d;
+  v35 = dCopy;
+  var1 = sample->var1;
+  configuration = [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator configuration];
+  [configuration maximumWindowDuration];
   v12 = v11;
 
   v13 = var1 + v12;
@@ -398,9 +398,9 @@ LABEL_34:
       {
         v18 = (v15[4][(v15[7] + i) / 0x66] + 40 * ((v15[7] + i) % 0x66));
         v19 = v18[1];
-        if (v19 > a3->var1)
+        if (v19 > sample->var1)
         {
-          if (v19 >= v13 || ([(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator addSupplementarySampleValue:v8 startTime:*v18 sourceID:?], [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator hasSufficientDataToBaselineSampleWithSourceID:v8]))
+          if (v19 >= v13 || ([(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator addSupplementarySampleValue:dCopy startTime:*v18 sourceID:?], [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator hasSufficientDataToBaselineSampleWithSourceID:dCopy]))
           {
             v26 = 1;
             goto LABEL_16;
@@ -412,15 +412,15 @@ LABEL_34:
     }
   }
 
-  v20 = a3->var1;
-  [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator mostRecentSupplementarySampleStartTimeForSourceID:v8];
+  v20 = sample->var1;
+  [(HDRollingBaselineRelativeQuantityCalculator *)self->_baselineCalculator mostRecentSupplementarySampleStartTimeForSourceID:dCopy];
   if (v20 >= v21)
   {
     v21 = v20;
   }
 
   v22 = [MEMORY[0x277CCA970] hk_dateIntervalWithStart:v21 end:v13];
-  v23 = [(HDRollingBaselineRelativeDataSource *)self _predicateForSamplesStartingWithinDateInterval:v22 sourceID:a3->var3 isIntervalStartDateInclusive:0];
+  v23 = [(HDRollingBaselineRelativeDataSource *)self _predicateForSamplesStartingWithinDateInterval:v22 sourceID:sample->var3 isIntervalStartDateInclusive:0];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -431,9 +431,9 @@ LABEL_34:
   v28[2] = __121__HDRollingBaselineRelativeDataSource__supplementCalculatorWithSubsequentSamplesForSample_baselineCompatibilityID_error___block_invoke;
   v28[3] = &unk_27862B738;
   v28[4] = self;
-  v29 = v8;
+  v29 = dCopy;
   v30 = &v31;
-  v25 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v23 profile:WeakRetained options:0 error:a5 handler:v28];
+  v25 = [HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v23 profile:WeakRetained options:0 error:error handler:v28];
 
   if (v25)
   {
@@ -468,12 +468,12 @@ uint64_t __121__HDRollingBaselineRelativeDataSource__supplementCalculatorWithSub
   }
 }
 
-- (BOOL)_shouldContinueWithError:(id *)a3
+- (BOOL)_shouldContinueWithError:(id *)error
 {
   shouldContinueHandler = self->_shouldContinueHandler;
   if (shouldContinueHandler)
   {
-    return shouldContinueHandler[2](shouldContinueHandler, a3);
+    return shouldContinueHandler[2](shouldContinueHandler, error);
   }
 
   else
@@ -482,17 +482,17 @@ uint64_t __121__HDRollingBaselineRelativeDataSource__supplementCalculatorWithSub
   }
 }
 
-- (id)_predicateForSamplesStartingWithinDateInterval:(id)a3 sourceID:(int64_t)a4 isIntervalStartDateInclusive:(BOOL)a5
+- (id)_predicateForSamplesStartingWithinDateInterval:(id)interval sourceID:(int64_t)d isIntervalStartDateInclusive:(BOOL)inclusive
 {
-  v5 = a5;
+  inclusiveCopy = inclusive;
   v20[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  intervalCopy = interval;
   v9 = HDSampleEntityPredicateForDataType(self->_quantityType);
-  v10 = [v8 endDate];
+  endDate = [intervalCopy endDate];
   v11 = HDSampleEntityPredicateForStartDate(3);
 
-  v12 = [v8 startDate];
-  if (v5)
+  startDate = [intervalCopy startDate];
+  if (inclusiveCopy)
   {
     HDSampleEntityPredicateForStartDate(6);
   }
@@ -503,7 +503,7 @@ uint64_t __121__HDRollingBaselineRelativeDataSource__supplementCalculatorWithSub
   }
   v13 = ;
 
-  v14 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self->_canonicalSourceMap predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:a4];
+  v14 = [(_HDRollingBaselineRelativeDataSourceBaselineCompatibilityMap *)self->_canonicalSourceMap predicateForDataEntitiesWithSourceIDsCompatibleWithSourceID:d];
   v15 = MEMORY[0x277D10B20];
   v20[0] = v9;
   v20[1] = v11;
@@ -517,17 +517,17 @@ uint64_t __121__HDRollingBaselineRelativeDataSource__supplementCalculatorWithSub
   return v17;
 }
 
-- (BOOL)_couldSampleEverResolveToDeterminateValue:(HDRawQuantitySample *)a3
+- (BOOL)_couldSampleEverResolveToDeterminateValue:(HDRawQuantitySample *)value
 {
-  v4 = self;
+  selfCopy = self;
   [(NSDate *)self->_currentDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  var1 = a3->var1;
-  v8 = [(HDRollingBaselineRelativeQuantityCalculator *)v4->_baselineCalculator configuration];
-  [v8 maximumWindowDuration];
-  LOBYTE(v4) = v6 - var1 <= v9;
+  var1 = value->var1;
+  configuration = [(HDRollingBaselineRelativeQuantityCalculator *)selfCopy->_baselineCalculator configuration];
+  [configuration maximumWindowDuration];
+  LOBYTE(selfCopy) = v6 - var1 <= v9;
 
-  return v4;
+  return selfCopy;
 }
 
 - (HDProfile)profile

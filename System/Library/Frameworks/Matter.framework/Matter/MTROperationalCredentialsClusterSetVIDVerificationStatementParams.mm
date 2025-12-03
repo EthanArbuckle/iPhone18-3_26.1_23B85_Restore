@@ -1,8 +1,8 @@
 @interface MTROperationalCredentialsClusterSetVIDVerificationStatementParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROperationalCredentialsClusterSetVIDVerificationStatementParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterSetVIDVerificationStatementParams);
-  v5 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
-  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVendorID:v5];
+  vendorID = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
+  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVendorID:vendorID];
 
-  v6 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
-  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVidVerificationStatement:v6];
+  vidVerificationStatement = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
+  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVidVerificationStatement:vidVerificationStatement];
 
-  v7 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
-  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVvsc:v7];
+  vvsc = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
+  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setVvsc:vvsc];
 
-  v8 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self serverSideProcessingTimeout];
-  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self serverSideProcessingTimeout];
+  [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -69,7 +69,7 @@
   return v9;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27[0] = 0;
   v29 = 0;
@@ -77,36 +77,36 @@
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
+  vendorID = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
 
-  if (v5)
+  if (vendorID)
   {
     v27[0] = 1;
-    v28 = 0;
-    v6 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
-    v28 = [v6 unsignedShortValue];
+    unsignedShortValue = 0;
+    vendorID2 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vendorID];
+    unsignedShortValue = [vendorID2 unsignedShortValue];
   }
 
-  v7 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
+  vidVerificationStatement = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
 
-  if (v7)
+  if (vidVerificationStatement)
   {
     v29 = 1;
     v30 = 0uLL;
-    v8 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
-    sub_238DB6950(v19, [v8 bytes], objc_msgSend(v8, "length"));
+    vidVerificationStatement2 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vidVerificationStatement];
+    sub_238DB6950(v19, [vidVerificationStatement2 bytes], objc_msgSend(vidVerificationStatement2, "length"));
 
     v30 = v19[0];
   }
 
-  v9 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
+  vvsc = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
 
-  if (v9)
+  if (vvsc)
   {
     v31 = 1;
     v32 = 0uLL;
-    v10 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
-    sub_238DB6950(v19, [v10 bytes], objc_msgSend(v10, "length"));
+    vvsc2 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self vvsc];
+    sub_238DB6950(v19, [vvsc2 bytes], objc_msgSend(vvsc2, "length"));
 
     v32 = v19[0];
   }
@@ -130,8 +130,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -159,19 +159,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROperationalCredentialsClusterSetVIDVerificationStatementParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -182,7 +182,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x261D00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

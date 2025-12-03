@@ -1,29 +1,29 @@
 @interface AWDProactiveAppPredictionLaunchesAtLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLaunchReason:(id)a3;
+- (int)StringAsLaunchReason:(id)reason;
 - (int)launchReason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsClip:(BOOL)a3;
-- (void)setHasIsNegativeSession:(BOOL)a3;
-- (void)setHasIsTourist:(BOOL)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLaunchReason:(BOOL)a3;
-- (void)setHasLocationAccuracy:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasTimeBucket:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsClip:(BOOL)clip;
+- (void)setHasIsNegativeSession:(BOOL)session;
+- (void)setHasIsTourist:(BOOL)tourist;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLaunchReason:(BOOL)reason;
+- (void)setHasLocationAccuracy:(BOOL)accuracy;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasTimeBucket:(BOOL)bucket;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveAppPredictionLaunchesAtLocation
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 2;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 16;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTimeBucket:(BOOL)a3
+- (void)setHasTimeBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 32;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsTourist:(BOOL)a3
+- (void)setHasIsTourist:(BOOL)tourist
 {
-  if (a3)
+  if (tourist)
   {
     v3 = 256;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsClip:(BOOL)a3
+- (void)setHasIsClip:(BOOL)clip
 {
-  if (a3)
+  if (clip)
   {
     v3 = 64;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasLocationAccuracy:(BOOL)a3
+- (void)setHasLocationAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 8;
   }
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)setHasLaunchReason:(BOOL)a3
+- (void)setHasLaunchReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -139,55 +139,55 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsLaunchReason:(id)a3
+- (int)StringAsLaunchReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonNFC"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonNFC"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonQR"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonQR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonLocationBasedSpotlight"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonLocationBasedSpotlight"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonLocationBasedHomescreen"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonLocationBasedHomescreen"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonSpringBoard"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonSpringBoard"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonMaps"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonMaps"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonSafari"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonSafari"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonMessages"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonMessages"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonMail"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonMail"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLaunchReasonOther"])
+  else if ([reasonCopy isEqualToString:@"ProactiveAppPredictionLaunchReasonOther"])
   {
     v4 = 9;
   }
@@ -200,9 +200,9 @@
   return v4;
 }
 
-- (void)setHasIsNegativeSession:(BOOL)a3
+- (void)setHasIsNegativeSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 128;
   }
@@ -221,20 +221,20 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveAppPredictionLaunchesAtLocation;
   v4 = [(AWDProactiveAppPredictionLaunchesAtLocation *)&v8 description];
-  v5 = [(AWDProactiveAppPredictionLaunchesAtLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveAppPredictionLaunchesAtLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v15 forKey:@"timestamp"];
+    [dictionary setObject:v15 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -256,7 +256,7 @@ LABEL_3:
 
   *&v4 = self->_latitude;
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v16 forKey:@"latitude"];
+  [dictionary setObject:v16 forKey:@"latitude"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -273,27 +273,27 @@ LABEL_4:
 LABEL_23:
   *&v4 = self->_longitude;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v17 forKey:@"longitude"];
+  [dictionary setObject:v17 forKey:@"longitude"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_5:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_timeBucket];
-    [v3 setObject:v6 forKey:@"timeBucket"];
+    [dictionary setObject:v6 forKey:@"timeBucket"];
   }
 
 LABEL_6:
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x100) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isTourist];
-    [v3 setObject:v9 forKey:@"isTourist"];
+    [dictionary setObject:v9 forKey:@"isTourist"];
 
     v8 = self->_has;
   }
@@ -301,20 +301,20 @@ LABEL_6:
   if ((v8 & 0x40) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_isClip];
-    [v3 setObject:v10 forKey:@"isClip"];
+    [dictionary setObject:v10 forKey:@"isClip"];
   }
 
   urlHash = self->_urlHash;
   if (urlHash)
   {
-    [v3 setObject:urlHash forKey:@"urlHash"];
+    [dictionary setObject:urlHash forKey:@"urlHash"];
   }
 
   v12 = self->_has;
   if ((v12 & 8) != 0)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_locationAccuracy];
-    [v3 setObject:v18 forKey:@"locationAccuracy"];
+    [dictionary setObject:v18 forKey:@"locationAccuracy"];
 
     v12 = self->_has;
     if ((v12 & 4) == 0)
@@ -345,7 +345,7 @@ LABEL_16:
     v20 = off_2785A1D48[launchReason];
   }
 
-  [v3 setObject:v20 forKey:@"launchReason"];
+  [dictionary setObject:v20 forKey:@"launchReason"];
 
   if ((*&self->_has & 0x80) == 0)
   {
@@ -354,16 +354,16 @@ LABEL_16:
 
 LABEL_17:
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_isNegativeSession];
-  [v3 setObject:v13 forKey:@"isNegativeSession"];
+  [dictionary setObject:v13 forKey:@"isNegativeSession"];
 
 LABEL_18:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -471,14 +471,14 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 30) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 30) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -497,8 +497,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = LODWORD(self->_latitude);
-  *(v4 + 30) |= 2u;
+  *(toCopy + 6) = LODWORD(self->_latitude);
+  *(toCopy + 30) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -512,48 +512,48 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 9) = LODWORD(self->_longitude);
-  *(v4 + 30) |= 0x10u;
+  *(toCopy + 9) = LODWORD(self->_longitude);
+  *(toCopy + 30) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_5:
-    *(v4 + 10) = self->_timeBucket;
-    *(v4 + 30) |= 0x20u;
+    *(toCopy + 10) = self->_timeBucket;
+    *(toCopy + 30) |= 0x20u;
   }
 
 LABEL_6:
-  v8 = v4;
+  v8 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v8;
+    [toCopy setBundleId:?];
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 0x100) != 0)
   {
-    *(v4 + 58) = self->_isTourist;
-    *(v4 + 30) |= 0x100u;
+    *(toCopy + 58) = self->_isTourist;
+    *(toCopy + 30) |= 0x100u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 56) = self->_isClip;
-    *(v4 + 30) |= 0x40u;
+    *(toCopy + 56) = self->_isClip;
+    *(toCopy + 30) |= 0x40u;
   }
 
   if (self->_urlHash)
   {
     [v8 setUrlHash:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
-    *(v4 + 8) = self->_locationAccuracy;
-    *(v4 + 30) |= 8u;
+    *(toCopy + 8) = self->_locationAccuracy;
+    *(toCopy + 30) |= 8u;
     v7 = self->_has;
     if ((v7 & 4) == 0)
     {
@@ -572,21 +572,21 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  *(v4 + 7) = self->_launchReason;
-  *(v4 + 30) |= 4u;
+  *(toCopy + 7) = self->_launchReason;
+  *(toCopy + 30) |= 4u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_17:
-    *(v4 + 57) = self->_isNegativeSession;
-    *(v4 + 30) |= 0x80u;
+    *(toCopy + 57) = self->_isNegativeSession;
+    *(toCopy + 30) |= 0x80u;
   }
 
 LABEL_18:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -636,7 +636,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleId copyWithZone:zone];
   v9 = *(v6 + 16);
   *(v6 + 16) = v8;
 
@@ -654,7 +654,7 @@ LABEL_6:
     *(v6 + 60) |= 0x40u;
   }
 
-  v11 = [(NSString *)self->_urlHash copyWithZone:a3];
+  v11 = [(NSString *)self->_urlHash copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
@@ -696,19 +696,19 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_57;
     }
@@ -721,7 +721,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_latitude != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_latitude != *(equalCopy + 6))
     {
       goto LABEL_57;
     }
@@ -734,7 +734,7 @@ LABEL_13:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_longitude != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_longitude != *(equalCopy + 9))
     {
       goto LABEL_57;
     }
@@ -747,7 +747,7 @@ LABEL_13:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_timeBucket != *(v4 + 10))
+    if ((v6 & 0x20) == 0 || self->_timeBucket != *(equalCopy + 10))
     {
       goto LABEL_57;
     }
@@ -759,7 +759,7 @@ LABEL_13:
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2))
+  if (bundleId | *(equalCopy + 2))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -769,30 +769,30 @@ LABEL_13:
     has = self->_has;
   }
 
-  v8 = *(v4 + 30);
+  v8 = *(equalCopy + 30);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 30) & 0x100) == 0)
+    if ((*(equalCopy + 30) & 0x100) == 0)
     {
       goto LABEL_57;
     }
 
-    v11 = *(v4 + 58);
+    v11 = *(equalCopy + 58);
     if (self->_isTourist)
     {
-      if ((*(v4 + 58) & 1) == 0)
+      if ((*(equalCopy + 58) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 58))
+    else if (*(equalCopy + 58))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 30) & 0x100) != 0)
+  else if ((*(equalCopy + 30) & 0x100) != 0)
   {
     goto LABEL_57;
   }
@@ -804,16 +804,16 @@ LABEL_13:
       goto LABEL_57;
     }
 
-    v12 = *(v4 + 56);
+    v12 = *(equalCopy + 56);
     if (self->_isClip)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_57;
     }
@@ -825,7 +825,7 @@ LABEL_13:
   }
 
   urlHash = self->_urlHash;
-  if (urlHash | *(v4 + 6))
+  if (urlHash | *(equalCopy + 6))
   {
     if (![(NSString *)urlHash isEqual:?])
     {
@@ -835,10 +835,10 @@ LABEL_13:
     has = self->_has;
   }
 
-  v10 = *(v4 + 30);
+  v10 = *(equalCopy + 30);
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_locationAccuracy != *(v4 + 8))
+    if ((v10 & 8) == 0 || self->_locationAccuracy != *(equalCopy + 8))
     {
       goto LABEL_57;
     }
@@ -851,7 +851,7 @@ LABEL_13:
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_launchReason != *(v4 + 7))
+    if ((v10 & 4) == 0 || self->_launchReason != *(equalCopy + 7))
     {
       goto LABEL_57;
     }
@@ -868,13 +868,13 @@ LABEL_13:
     {
       if (self->_isNegativeSession)
       {
-        if ((*(v4 + 57) & 1) == 0)
+        if ((*(equalCopy + 57) & 1) == 0)
         {
           goto LABEL_57;
         }
       }
 
-      else if (*(v4 + 57))
+      else if (*(equalCopy + 57))
       {
         goto LABEL_57;
       }
@@ -1051,15 +1051,15 @@ LABEL_30:
   return v10 ^ v6 ^ v11 ^ v15 ^ v18 ^ v19 ^ v16 ^ v20 ^ v22 ^ v23 ^ v24;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1077,9 +1077,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_latitude = *(v4 + 6);
+  self->_latitude = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1092,49 +1092,49 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_longitude = *(v4 + 9);
+  self->_longitude = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 30) & 0x20) != 0)
+  if ((*(fromCopy + 30) & 0x20) != 0)
   {
 LABEL_5:
-    self->_timeBucket = *(v4 + 10);
+    self->_timeBucket = *(fromCopy + 10);
     *&self->_has |= 0x20u;
   }
 
 LABEL_6:
-  v8 = v4;
-  if (*(v4 + 2))
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(AWDProactiveAppPredictionLaunchesAtLocation *)self setBundleId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 30);
+  v6 = *(fromCopy + 30);
   if ((v6 & 0x100) != 0)
   {
-    self->_isTourist = *(v4 + 58);
+    self->_isTourist = *(fromCopy + 58);
     *&self->_has |= 0x100u;
-    v6 = *(v4 + 30);
+    v6 = *(fromCopy + 30);
   }
 
   if ((v6 & 0x40) != 0)
   {
-    self->_isClip = *(v4 + 56);
+    self->_isClip = *(fromCopy + 56);
     *&self->_has |= 0x40u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(AWDProactiveAppPredictionLaunchesAtLocation *)self setUrlHash:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 30);
+  v7 = *(fromCopy + 30);
   if ((v7 & 8) != 0)
   {
-    self->_locationAccuracy = *(v4 + 8);
+    self->_locationAccuracy = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v7 = *(v4 + 30);
+    v7 = *(fromCopy + 30);
     if ((v7 & 4) == 0)
     {
 LABEL_16:
@@ -1152,12 +1152,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  self->_launchReason = *(v4 + 7);
+  self->_launchReason = *(fromCopy + 7);
   *&self->_has |= 4u;
-  if ((*(v4 + 30) & 0x80) != 0)
+  if ((*(fromCopy + 30) & 0x80) != 0)
   {
 LABEL_17:
-    self->_isNegativeSession = *(v4 + 57);
+    self->_isNegativeSession = *(fromCopy + 57);
     *&self->_has |= 0x80u;
   }
 

@@ -1,36 +1,36 @@
 @interface BuddySoftwareUpdateRestoreFlow
-+ (BOOL)controllerNeedsToRunWithPendingRestoreState:(id)a3 buddyPreferences:(id)a4;
++ (BOOL)controllerNeedsToRunWithPendingRestoreState:(id)state buddyPreferences:(id)preferences;
 + (id)allowedFlowItems;
 - (BuddyRestoreSilentRenewController)silentRenewController;
-- (BuddySoftwareUpdateRestoreFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4;
+- (BuddySoftwareUpdateRestoreFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next;
 - (id)firstItem;
 - (id)precedingItemsClasses;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)startFlowAnimated:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)startFlowAnimated:(BOOL)animated;
 @end
 
 @implementation BuddySoftwareUpdateRestoreFlow
 
-- (BuddySoftwareUpdateRestoreFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddySoftwareUpdateRestoreFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, delegate);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, starter);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
-  v9 = v19;
-  v19 = 0;
+  objc_storeStrong(&v15, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v9;
   v14.super_class = BuddySoftwareUpdateRestoreFlow;
   v10 = [(BuddyRestoreFlow *)&v14 initWithNavigationController:location[0] flowDelegate:v17 flowStarter:v16 dependencyInjector:v15];
-  v19 = v10;
-  objc_storeStrong(&v19, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v20[0] = objc_opt_class();
@@ -38,15 +38,15 @@
     v20[2] = objc_opt_class();
     v20[3] = objc_opt_class();
     v11 = [NSArray arrayWithObjects:v20 count:4];
-    [v19 setClassList:v11];
+    [selfCopy setClassList:v11];
   }
 
-  v12 = v19;
+  v12 = selfCopy;
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
@@ -58,18 +58,18 @@
   return [NSArray arrayWithObjects:v5 count:3, a2, self];
 }
 
-- (void)startFlowAnimated:(BOOL)a3
+- (void)startFlowAnimated:(BOOL)animated
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v3 = [(BuddySoftwareUpdateRestoreFlow *)self seedProgramManager];
-  v19 = [(BYSeedProgramManager *)v3 currentEnrollmentMetadata];
+  animatedCopy = animated;
+  seedProgramManager = [(BuddySoftwareUpdateRestoreFlow *)self seedProgramManager];
+  currentEnrollmentMetadata = [(BYSeedProgramManager *)seedProgramManager currentEnrollmentMetadata];
 
-  v18 = [v19 bySeedProgramManager_valueForProgramKey];
-  v17 = [v19 bySeedProgramManager_valueForAssetAudienceKey];
-  location = [v19 bySeedProgramManager_valueForProgramIDKey];
-  if (v18 && v17)
+  bySeedProgramManager_valueForProgramKey = [currentEnrollmentMetadata bySeedProgramManager_valueForProgramKey];
+  bySeedProgramManager_valueForAssetAudienceKey = [currentEnrollmentMetadata bySeedProgramManager_valueForAssetAudienceKey];
+  location = [currentEnrollmentMetadata bySeedProgramManager_valueForProgramIDKey];
+  if (bySeedProgramManager_valueForProgramKey && bySeedProgramManager_valueForAssetAudienceKey)
   {
     oslog = _BYLoggingFacility();
     v14 = 2;
@@ -82,8 +82,8 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v6 = [(BuddySoftwareUpdateRestoreFlow *)v22 settingsManager];
-    [(BFFSettingsManager *)v6 setSeedEnrollmentProgramName:v18 assetAudience:v17 programID:location];
+    settingsManager = [(BuddySoftwareUpdateRestoreFlow *)selfCopy settingsManager];
+    [(BFFSettingsManager *)settingsManager setSeedEnrollmentProgramName:bySeedProgramManager_valueForProgramKey assetAudience:bySeedProgramManager_valueForAssetAudienceKey programID:location];
   }
 
   else
@@ -101,18 +101,18 @@
     objc_storeStrong(&v12, 0);
   }
 
-  v9.receiver = v22;
+  v9.receiver = selfCopy;
   v9.super_class = BuddySoftwareUpdateRestoreFlow;
-  [(BuddySoftwareUpdateRestoreFlow *)&v9 startFlowAnimated:v20];
+  [(BuddySoftwareUpdateRestoreFlow *)&v9 startFlowAnimated:animatedCopy];
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&bySeedProgramManager_valueForAssetAudienceKey, 0);
+  objc_storeStrong(&bySeedProgramManager_valueForProgramKey, 0);
+  objc_storeStrong(&currentEnrollmentMetadata, 0);
 }
 
 - (id)firstItem
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   v4.receiver = self;
   v4.super_class = BuddySoftwareUpdateRestoreFlow;
@@ -120,7 +120,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BuddySoftwareUpdateRestoreFlow *)v6 setSilentRenewController:location[0]];
+    [(BuddySoftwareUpdateRestoreFlow *)selfCopy setSilentRenewController:location[0]];
   }
 
   v2 = location[0];
@@ -128,21 +128,21 @@
   return v2;
 }
 
-- (id)controllerFollowingControllerClass:(Class)a3 requestedNext:(Class)a4
+- (id)controllerFollowingControllerClass:(Class)class requestedNext:(Class)next
 {
-  v10 = self;
+  selfCopy = self;
   location[3] = a2;
-  location[2] = a3;
-  location[1] = a4;
+  location[2] = class;
+  location[1] = next;
   v8.receiver = self;
   v8.super_class = BuddySoftwareUpdateRestoreFlow;
-  location[0] = [(BuddyRestoreFlow *)&v8 controllerFollowingControllerClass:a3 requestedNext:a4];
+  location[0] = [(BuddyRestoreFlow *)&v8 controllerFollowingControllerClass:class requestedNext:next];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(BuddySoftwareUpdateRestoreFlow *)v10 silentRenewController];
-    v5 = [(BuddyRestoreSilentRenewController *)v4 renewSucceeded];
-    [location[0] setForceReauthentication:(v5 ^ 1) & 1];
+    silentRenewController = [(BuddySoftwareUpdateRestoreFlow *)selfCopy silentRenewController];
+    renewSucceeded = [(BuddyRestoreSilentRenewController *)silentRenewController renewSucceeded];
+    [location[0] setForceReauthentication:(renewSucceeded ^ 1) & 1];
   }
 
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyRestoreFlowItem])
@@ -164,22 +164,22 @@
   return [NSArray arrayWithObjects:v3 count:4];
 }
 
-+ (BOOL)controllerNeedsToRunWithPendingRestoreState:(id)a3 buddyPreferences:(id)a4
++ (BOOL)controllerNeedsToRunWithPendingRestoreState:(id)state buddyPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, preferences);
   v24 = [BuddyRestoreState loadFromPreferences:v25];
   if (v24)
   {
     v7 = +[BYDeviceConfiguration currentConfiguration];
-    v19 = [v7 buildVersion];
+    buildVersion = [v7 buildVersion];
 
-    v8 = [v24 productBuild];
-    v9 = [v8 isEqualToString:v19] ^ 1;
+    productBuild = [v24 productBuild];
+    v9 = [productBuild isEqualToString:buildVersion] ^ 1;
 
     if (v9)
     {
@@ -187,8 +187,8 @@
       v17 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v24 productBuild];
-        sub_100078180(v28, v10, v19);
+        productBuild2 = [v24 productBuild];
+        sub_100078180(v28, productBuild2, buildVersion);
         _os_log_error_impl(&_mh_execute_header, v18, v17, "Expected update to %@, but currently running %@!", v28, 0x16u);
       }
 
@@ -200,14 +200,14 @@
 
     else
     {
-      v11 = [v24 backupUDID];
-      v12 = [v24 backupUUID];
-      v16 = +[RestorableBackupItem restorableBackupItemWithPendingBackupUDID:backupUUID:snapshotID:](RestorableBackupItem, "restorableBackupItemWithPendingBackupUDID:backupUUID:snapshotID:", v11, v12, [v24 snapshotID]);
+      backupUDID = [v24 backupUDID];
+      backupUUID = [v24 backupUUID];
+      v16 = +[RestorableBackupItem restorableBackupItemWithPendingBackupUDID:backupUUID:snapshotID:](RestorableBackupItem, "restorableBackupItemWithPendingBackupUDID:backupUUID:snapshotID:", backupUDID, backupUUID, [v24 snapshotID]);
 
       [location[0] setBackupItem:v16 updateBackupMetadata:1 prefetchAccounts:1];
       v13 = location[0];
-      v14 = [v24 snapshotDate];
-      [v13 setSnapshotDate:v14];
+      snapshotDate = [v24 snapshotDate];
+      [v13 setSnapshotDate:snapshotDate];
 
       [location[0] setUseLatestSnapshot:{objc_msgSend(v24, "useLatestSnapshot") & 1}];
       [location[0] setAllowCellularNetwork:{objc_msgSend(v24, "allowCellularNetwork") & 1}];
@@ -216,7 +216,7 @@
       objc_storeStrong(&v16, 0);
     }
 
-    objc_storeStrong(&v19, 0);
+    objc_storeStrong(&buildVersion, 0);
   }
 
   else
@@ -243,16 +243,16 @@
   return v27;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = location[0];
-  v4 = [(BuddyRestoreFlow *)v7 pendingRestoreState];
-  v5 = [(BuddyRestoreFlow *)v7 buddyPreferences];
-  v3[2](v3, [BuddySoftwareUpdateRestoreFlow controllerNeedsToRunWithPendingRestoreState:v4 buddyPreferences:v5]);
+  pendingRestoreState = [(BuddyRestoreFlow *)selfCopy pendingRestoreState];
+  buddyPreferences = [(BuddyRestoreFlow *)selfCopy buddyPreferences];
+  v3[2](v3, [BuddySoftwareUpdateRestoreFlow controllerNeedsToRunWithPendingRestoreState:pendingRestoreState buddyPreferences:buddyPreferences]);
 
   objc_storeStrong(location, 0);
 }

@@ -1,5 +1,5 @@
 @interface NCDigestSummaryPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -7,28 +7,28 @@
 
 @implementation NCDigestSummaryPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"heading" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"featuredNotificationContentProviders" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCDigestFeaturedNotificationContentProvider" hasInstanceMethod:@"defaultActionBlock" withFullSignature:{"@?", 0}];
-  [v3 validateClass:@"NCDigestFeaturedNotificationContentProvider" isKindOfClass:@"NCNotificationRequestContentProvider"];
-  [v3 validateClass:@"NCNotificationRequestContentProvider" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"content" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationContent" hasInstanceMethod:@"defaultHeader" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationContent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationContent" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationContent" hasInstanceMethod:@"attachmentImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCDigestSummaryPlatterView" hasInstanceVariable:@"_summaryView" withType:"NCDigestSummaryView"];
-  [v3 validateClass:@"NCDigestSummaryView" hasInstanceVariable:@"_timeStampLabel" withType:"UILabel<BSUIDateLabel>"];
-  [v3 validateClass:@"NCDigestSummaryView" hasInstanceVariable:@"_headingLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesTitleWhenLocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesSubtitleWhenLocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesBodyWhenLocked" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"heading" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView" hasInstanceMethod:@"featuredNotificationContentProviders" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCDigestFeaturedNotificationContentProvider" hasInstanceMethod:@"defaultActionBlock" withFullSignature:{"@?", 0}];
+  [validationsCopy validateClass:@"NCDigestFeaturedNotificationContentProvider" isKindOfClass:@"NCNotificationRequestContentProvider"];
+  [validationsCopy validateClass:@"NCNotificationRequestContentProvider" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"content" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRequest" hasInstanceMethod:@"options" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationContent" hasInstanceMethod:@"defaultHeader" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationContent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationContent" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationContent" hasInstanceMethod:@"attachmentImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCDigestSummaryPlatterView" hasInstanceVariable:@"_summaryView" withType:"NCDigestSummaryView"];
+  [validationsCopy validateClass:@"NCDigestSummaryView" hasInstanceVariable:@"_timeStampLabel" withType:"UILabel<BSUIDateLabel>"];
+  [validationsCopy validateClass:@"NCDigestSummaryView" hasInstanceVariable:@"_headingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesTitleWhenLocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesSubtitleWhenLocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationOptions" hasInstanceMethod:@"suppressesBodyWhenLocked" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -46,11 +46,11 @@
     if ([v8 count])
     {
       v25 = v7;
-      v9 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v26 = v4;
       v27 = v3;
       v10 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v3, v4}];
-      [v9 axSafelyAddObjectsFromArray:v10];
+      [array axSafelyAddObjectsFromArray:v10];
 
       v33 = 0u;
       v34 = 0u;
@@ -89,21 +89,21 @@
               v20 = 0;
             }
 
-            [v9 axSafelyAddObject:v15];
+            [array axSafelyAddObject:v15];
             if (!_isDevicePasscodeLocked() || ([v14 safeBoolForKey:@"suppressesTitleWhenLocked"] & 1) == 0)
             {
-              [v9 axSafelyAddObject:v16];
+              [array axSafelyAddObject:v16];
             }
 
             if (!_isDevicePasscodeLocked() || ([v14 safeBoolForKey:@"suppressesSubtitleWhenLocked"] & 1) == 0)
             {
-              [v9 axSafelyAddObject:v17];
+              [array axSafelyAddObject:v17];
             }
 
             if (!_isDevicePasscodeLocked() || ([v14 safeBoolForKey:@"suppressesBodyWhenLocked"] & 1) == 0)
             {
-              [v9 axSafelyAddObject:v18];
-              [v9 axSafelyAddObject:v20];
+              [array axSafelyAddObject:v18];
+              [array axSafelyAddObject:v20];
             }
           }
 
@@ -113,7 +113,7 @@
         while (v30);
       }
 
-      v21 = MEMORY[0x29ED3E8D0](v9);
+      v21 = MEMORY[0x29ED3E8D0](array);
 
       v4 = v26;
       v3 = v27;
@@ -155,7 +155,7 @@
 {
   v30 = *MEMORY[0x29EDCA608];
   v2 = [(NCDigestSummaryPlatterViewAccessibility *)self safeArrayForKey:@"featuredNotificationContentProviders"];
-  v19 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -212,7 +212,7 @@
         v22[3] = &unk_29F316FB0;
         objc_copyWeak(&v23, &location);
         v14 = [v13 initWithName:v12 actionHandler:v22];
-        [v19 axSafelyAddObject:v14];
+        [array axSafelyAddObject:v14];
 
         objc_destroyWeak(&v23);
         objc_destroyWeak(&location);
@@ -226,7 +226,7 @@
 
   v15 = *MEMORY[0x29EDCA608];
 
-  return v19;
+  return array;
 }
 
 uint64_t __69__NCDigestSummaryPlatterViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)

@@ -1,20 +1,20 @@
 @interface HUMatterConnectedServicesItemModuleController
-- (BOOL)canSelectItem:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (BOOL)canSelectItem:(id)item;
+- (unint64_t)didSelectItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUMatterConnectedServicesItemModuleController
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [a4 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13FD0]];
-  v9 = [v8 BOOLValue];
+  cellCopy = cell;
+  latestResults = [item latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FD0]];
+  bOOLValue = [v8 BOOLValue];
 
   objc_opt_class();
-  v12 = v6;
+  v12 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v12;
@@ -29,28 +29,28 @@
 
   [v11 setHideIcon:1];
   [v11 setAccessoryType:1];
-  [v11 setShowSpinner:v9];
+  [v11 setShowSpinner:bOOLValue];
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v3 = [a3 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  latestResults = [item latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
-  LOBYTE(v3) = [v4 BOOLValue];
-  return v3 ^ 1;
+  LOBYTE(latestResults) = [v4 BOOLValue];
+  return latestResults ^ 1;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = [(HUItemModuleController *)self module];
-  v5 = [v4 connectedServicesItemProvider];
+  module = [(HUItemModuleController *)self module];
+  connectedServicesItemProvider = [module connectedServicesItemProvider];
 
-  v6 = [[HUMatterConnectedServicesViewController alloc] initWithConnectedServicesItemProvider:v5];
-  v7 = [(HUItemModuleController *)self host];
-  if ([v7 conformsToProtocol:&unk_28253CF98])
+  v6 = [[HUMatterConnectedServicesViewController alloc] initWithConnectedServicesItemProvider:connectedServicesItemProvider];
+  host = [(HUItemModuleController *)self host];
+  if ([host conformsToProtocol:&unk_28253CF98])
   {
-    v8 = v7;
+    v8 = host;
   }
 
   else
@@ -63,8 +63,8 @@
 
   v10 = [HUViewControllerPresentationRequest requestWithViewController:v6];
   [v10 setPreferredPresentationType:1];
-  v11 = [(HUItemModuleController *)self host];
-  v12 = [v11 moduleController:self presentViewControllerForRequest:v10];
+  host2 = [(HUItemModuleController *)self host];
+  v12 = [host2 moduleController:self presentViewControllerForRequest:v10];
 
   return 0;
 }

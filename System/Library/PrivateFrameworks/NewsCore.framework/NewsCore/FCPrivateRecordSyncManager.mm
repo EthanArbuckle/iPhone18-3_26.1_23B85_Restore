@@ -1,26 +1,26 @@
 @interface FCPrivateRecordSyncManager
 - (BOOL)isAwaitingFirstSync;
-- (BOOL)isCleanUpToDate:(id)a3;
+- (BOOL)isCleanUpToDate:(id)date;
 - (BOOL)isDirty;
 - (FCPrivateRecordSyncManager)init;
 - (NSDate)lastCleanDate;
 - (NSDate)lastDirtyDate;
-- (id)initWithRecordID:(void *)a3 desiredKeys:(void *)a4 currentState:;
+- (id)initWithRecordID:(void *)d desiredKeys:(void *)keys currentState:;
 - (void)_stateDidChange;
-- (void)fetchChangesWithContext:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5;
+- (void)fetchChangesWithContext:(id)context qualityOfService:(int64_t)service completionHandler:(id)handler;
 - (void)markAsDirty;
 - (void)notifyObservers;
 @end
 
 @implementation FCPrivateRecordSyncManager
 
-- (id)initWithRecordID:(void *)a3 desiredKeys:(void *)a4 currentState:
+- (id)initWithRecordID:(void *)d desiredKeys:(void *)keys currentState:
 {
   v34 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  dCopy = d;
+  keysCopy = keys;
+  if (!self)
   {
     goto LABEL_10;
   }
@@ -38,7 +38,7 @@
     v33 = v23;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v8)
+    if (!dCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -57,47 +57,47 @@ LABEL_5:
     }
   }
 
-  else if (!v8)
+  else if (!dCopy)
   {
     goto LABEL_5;
   }
 
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = FCPrivateRecordSyncManager;
-  a1 = objc_msgSendSuper2(&v25, sel_init);
-  if (a1)
+  self = objc_msgSendSuper2(&v25, sel_init);
+  if (self)
   {
     v10 = [v7 copy];
-    v11 = a1[1];
-    a1[1] = v10;
+    v11 = self[1];
+    self[1] = v10;
 
-    v12 = [v8 copy];
-    v13 = a1[3];
-    a1[3] = v12;
+    v12 = [dCopy copy];
+    v13 = self[3];
+    self[3] = v12;
 
-    v14 = [v9 copy];
-    v15 = a1[4];
-    a1[4] = v14;
+    v14 = [keysCopy copy];
+    v15 = self[4];
+    self[4] = v14;
 
-    if (!a1[4])
+    if (!self[4])
     {
       v16 = objc_alloc_init(MEMORY[0x1E69B6F28]);
-      v17 = a1[4];
-      a1[4] = v16;
+      v17 = self[4];
+      self[4] = v16;
 
-      v18 = [v7 recordName];
-      [a1[4] setRecordName:v18];
+      recordName = [v7 recordName];
+      [self[4] setRecordName:recordName];
 
-      v19 = [v7 zoneID];
-      v20 = [v19 zoneName];
-      [a1[4] setRecordZoneName:v20];
+      zoneID = [v7 zoneID];
+      zoneName = [zoneID zoneName];
+      [self[4] setRecordZoneName:zoneName];
     }
   }
 
 LABEL_10:
 
   v21 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (FCPrivateRecordSyncManager)init
@@ -134,8 +134,8 @@ LABEL_10:
     self = self->_currentState;
   }
 
-  v3 = [(FCPrivateRecordSyncManager *)self lastCleanDate];
-  v4 = [v2 dateWithPBDate:v3];
+  lastCleanDate = [(FCPrivateRecordSyncManager *)self lastCleanDate];
+  v4 = [v2 dateWithPBDate:lastCleanDate];
 
   return v4;
 }
@@ -148,32 +148,32 @@ LABEL_10:
     self = self->_currentState;
   }
 
-  v3 = [(FCPrivateRecordSyncManager *)self lastDirtyDate];
-  v4 = [v2 dateWithPBDate:v3];
+  lastDirtyDate = [(FCPrivateRecordSyncManager *)self lastDirtyDate];
+  v4 = [v2 dateWithPBDate:lastDirtyDate];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    distantPast = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v7 = v6;
+  v7 = distantPast;
 
   return v7;
 }
 
-- (BOOL)isCleanUpToDate:(id)a3
+- (BOOL)isCleanUpToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(FCPrivateRecordSyncManager *)self lastCleanDate];
-  v6 = v5;
-  if (v5)
+  dateCopy = date;
+  lastCleanDate = [(FCPrivateRecordSyncManager *)self lastCleanDate];
+  v6 = lastCleanDate;
+  if (lastCleanDate)
   {
-    v7 = [v5 fc_isLaterThanOrEqualTo:v4];
+    v7 = [lastCleanDate fc_isLaterThanOrEqualTo:dateCopy];
   }
 
   else
@@ -198,8 +198,8 @@ LABEL_10:
   }
 
   v4 = currentState;
-  v5 = [(NTPBPrivateRecordSyncState *)v4 lastCleanDate];
-  if (v5)
+  lastCleanDate = [(NTPBPrivateRecordSyncState *)v4 lastCleanDate];
+  if (lastCleanDate)
   {
     if (self)
     {
@@ -212,8 +212,8 @@ LABEL_10:
     }
 
     v7 = v6;
-    v8 = [(NTPBPrivateRecordSyncState *)v7 lastDirtyDate];
-    [v8 timeIntervalSince1970];
+    lastDirtyDate = [(NTPBPrivateRecordSyncState *)v7 lastDirtyDate];
+    [lastDirtyDate timeIntervalSince1970];
     v10 = v9;
     if (self)
     {
@@ -225,8 +225,8 @@ LABEL_10:
       v11 = 0;
     }
 
-    v12 = [(NTPBPrivateRecordSyncState *)v11 lastCleanDate];
-    [v12 timeIntervalSince1970];
+    lastCleanDate2 = [(NTPBPrivateRecordSyncState *)v11 lastCleanDate];
+    [lastCleanDate2 timeIntervalSince1970];
     v14 = v10 > v13;
   }
 
@@ -251,8 +251,8 @@ LABEL_10:
     }
 
     v19 = recordID;
-    v20 = [(CKRecordID *)v19 recordName];
-    v21 = v20;
+    recordName = [(CKRecordID *)v19 recordName];
+    v21 = recordName;
     v22 = " not";
     v25 = 138543874;
     v26 = v17;
@@ -262,7 +262,7 @@ LABEL_10:
     }
 
     v27 = 2114;
-    v28 = v20;
+    v28 = recordName;
     v29 = 2080;
     v30 = v22;
     _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ for %{public}@ is discovering he is%s dirty on being asked", &v25, 0x20u);
@@ -274,7 +274,7 @@ LABEL_10:
 
 - (void)markAsDirty
 {
-  v3 = [MEMORY[0x1E695DF00] pbDate];
+  pbDate = [MEMORY[0x1E695DF00] pbDate];
   if (self)
   {
     currentState = self->_currentState;
@@ -285,31 +285,31 @@ LABEL_10:
     currentState = 0;
   }
 
-  [(NTPBPrivateRecordSyncState *)currentState setLastDirtyDate:v3];
+  [(NTPBPrivateRecordSyncState *)currentState setLastDirtyDate:pbDate];
 
   [(FCPrivateRecordSyncManager *)self _stateDidChange];
 }
 
 - (void)_stateDidChange
 {
-  if (a1)
+  if (self)
   {
-    v3 = [*(a1 + 32) copy];
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    [WeakRetained recordSyncManager:a1 stateDidChange:v3];
+    v3 = [*(self + 32) copy];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    [WeakRetained recordSyncManager:self stateDidChange:v3];
   }
 }
 
 - (void)notifyObservers
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->_delegate);
   }
 
-  v3 = self;
-  [(FCPrivateRecordSyncManager *)self recordSyncManagerNotifyObservers:v2];
+  selfCopy2 = self;
+  [(FCPrivateRecordSyncManager *)self recordSyncManagerNotifyObservers:selfCopy];
 }
 
 - (BOOL)isAwaitingFirstSync
@@ -319,19 +319,19 @@ LABEL_10:
     self = self->_currentState;
   }
 
-  v2 = [(FCPrivateRecordSyncManager *)self lastCleanDate];
-  v3 = v2 == 0;
+  lastCleanDate = [(FCPrivateRecordSyncManager *)self lastCleanDate];
+  v3 = lastCleanDate == 0;
 
   return v3;
 }
 
-- (void)fetchChangesWithContext:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchChangesWithContext:(id)context qualityOfService:(int64_t)service completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E695DF00];
-  v10 = a3;
-  v11 = [v9 pbDate];
+  contextCopy = context;
+  pbDate = [v9 pbDate];
   v12 = objc_alloc_init(FCCKPrivateFetchRecordsOperation);
   if (self)
   {
@@ -354,15 +354,15 @@ LABEL_10:
   }
 
   [(FCCKPrivateFetchRecordsOperation *)v12 setDesiredKeys:desiredKeys];
-  [(FCOperation *)v12 setQualityOfService:a4];
-  if (a4 == 9)
+  [(FCOperation *)v12 setQualityOfService:service];
+  if (service == 9)
   {
     v17 = -1;
   }
 
   else
   {
-    v17 = a4 == 33 || a4 == 25;
+    v17 = service == 33 || service == 25;
   }
 
   [(FCOperation *)v12 setRelativePriority:v17];
@@ -371,14 +371,14 @@ LABEL_10:
   v23[2] = __89__FCPrivateRecordSyncManager_fetchChangesWithContext_qualityOfService_completionHandler___block_invoke;
   v23[3] = &unk_1E7C378E8;
   v23[4] = self;
-  v24 = v11;
-  v25 = v8;
-  v18 = v8;
-  v19 = v11;
+  v24 = pbDate;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = pbDate;
   [(FCCKPrivateFetchRecordsOperation *)v12 setFetchRecordsCompletionBlock:v23];
-  v20 = [v10 privateDatabase];
+  privateDatabase = [contextCopy privateDatabase];
 
-  [(FCCKPrivateDatabase *)v20 addOperation:v12];
+  [(FCCKPrivateDatabase *)privateDatabase addOperation:v12];
   v21 = *MEMORY[0x1E69E9840];
 }
 

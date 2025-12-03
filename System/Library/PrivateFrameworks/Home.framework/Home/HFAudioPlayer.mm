@@ -1,8 +1,8 @@
 @interface HFAudioPlayer
-- (BOOL)_configureAudioSession:(id *)a3;
+- (BOOL)_configureAudioSession:(id *)session;
 - (BOOL)isPlaying;
-- (BOOL)prepareToPlay:(id *)a3;
-- (HFAudioPlayer)initWithAudioFileURL:(id)a3 audioSessionOptions:(unint64_t)a4 delegate:(id)a5;
+- (BOOL)prepareToPlay:(id *)play;
+- (HFAudioPlayer)initWithAudioFileURL:(id)l audioSessionOptions:(unint64_t)options delegate:(id)delegate;
 - (HFAudioPlayerDelegate)delegate;
 - (double)duration;
 - (float)volume;
@@ -11,61 +11,61 @@
 - (void)_cleanup;
 - (void)_deactivateAudioSession;
 - (void)_deregisterAudioSessionObservers;
-- (void)_displayLinkUpdated:(id)a3;
-- (void)_pauseWithReason:(id)a3;
+- (void)_displayLinkUpdated:(id)updated;
+- (void)_pauseWithReason:(id)reason;
 - (void)_registerAudioSessionObservers;
 - (void)_stopWithoutAudioSessionDeactivation;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
-- (void)audioSessionDidInterrupt:(id)a3;
-- (void)audioSessionMediaServicesWereLost:(id)a3;
-- (void)audioSessionMediaServicesWereReset:(id)a3;
-- (void)audioSessionRouteChanged:(id)a3;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
+- (void)audioSessionDidInterrupt:(id)interrupt;
+- (void)audioSessionMediaServicesWereLost:(id)lost;
+- (void)audioSessionMediaServicesWereReset:(id)reset;
+- (void)audioSessionRouteChanged:(id)changed;
 - (void)dealloc;
 - (void)play;
 - (void)resume;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 - (void)stop;
-- (void)updateAudioFileURL:(id)a3;
+- (void)updateAudioFileURL:(id)l;
 @end
 
 @implementation HFAudioPlayer
 
-- (HFAudioPlayer)initWithAudioFileURL:(id)a3 audioSessionOptions:(unint64_t)a4 delegate:(id)a5
+- (HFAudioPlayer)initWithAudioFileURL:(id)l audioSessionOptions:(unint64_t)options delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = HFAudioPlayer;
   v11 = [(HFAudioPlayer *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeStrong(&v12->_audioFileURL, a3);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_audioFileURL, l);
     v12->_playerStopSource = 0;
-    v13 = 2;
-    if ((a4 & 1) == 0)
+    optionsCopy = 2;
+    if ((options & 1) == 0)
     {
-      v13 = a4;
+      optionsCopy = options;
     }
 
-    v12->_audioSessionOptions = v13;
+    v12->_audioSessionOptions = optionsCopy;
   }
 
   return v12;
 }
 
-- (void)updateAudioFileURL:(id)a3
+- (void)updateAudioFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(HFAudioPlayer *)self isPlaying])
   {
     [(HFAudioPlayer *)self _stopWithoutAudioSessionDeactivation];
   }
 
   audioFileURL = self->_audioFileURL;
-  self->_audioFileURL = v4;
+  self->_audioFileURL = lCopy;
 }
 
 - (void)dealloc
@@ -78,70 +78,70 @@
 
 - (void)_registerAudioSessionObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_audioSessionDidInterrupt_ name:*MEMORY[0x277CB8068] object:0];
-  [v3 addObserver:self selector:sel_audioSessionRouteChanged_ name:*MEMORY[0x277CB8210] object:0];
-  [v3 addObserver:self selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x277CB8098] object:0];
-  [v3 addObserver:self selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_audioSessionDidInterrupt_ name:*MEMORY[0x277CB8068] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionRouteChanged_ name:*MEMORY[0x277CB8210] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x277CB8098] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
 }
 
 - (void)_deregisterAudioSessionObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8068] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8210] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8098] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB80A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8068] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8210] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8098] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB80A0] object:0];
 }
 
-- (void)_displayLinkUpdated:(id)a3
+- (void)_displayLinkUpdated:(id)updated
 {
-  v4 = [(HFAudioPlayer *)self audioPlayer];
-  [v4 currentTime];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer currentTime];
   [(HFAudioPlayer *)self setPlayerCurrentTime:?];
 
-  v5 = [(HFAudioPlayer *)self audioPlayer];
-  v6 = [v5 isPlaying];
+  audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
+  isPlaying = [audioPlayer2 isPlaying];
 
-  if (!v6)
+  if (!isPlaying)
   {
     return;
   }
 
-  v7 = [(HFAudioPlayer *)self delegate];
-  if (v7)
+  delegate = [(HFAudioPlayer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(HFAudioPlayer *)self delegate];
-    if (([v9 conformsToProtocol:&unk_2825BAE00] & 1) == 0)
+    delegate4 = delegate;
+    delegate2 = [(HFAudioPlayer *)self delegate];
+    if (([delegate2 conformsToProtocol:&unk_2825BAE00] & 1) == 0)
     {
 
       goto LABEL_7;
     }
 
-    v10 = [(HFAudioPlayer *)self delegate];
+    delegate3 = [(HFAudioPlayer *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v8 = [(HFAudioPlayer *)self delegate];
+      delegate4 = [(HFAudioPlayer *)self delegate];
       [(HFAudioPlayer *)self playerCurrentTime];
-      [v8 audioPlayer:self didUpdatePlaybackTime:?];
+      [delegate4 audioPlayer:self didUpdatePlaybackTime:?];
 LABEL_7:
     }
   }
 
-  v12 = [(HFAudioPlayer *)self delegate];
-  if (!v12)
+  delegate5 = [(HFAudioPlayer *)self delegate];
+  if (!delegate5)
   {
     return;
   }
 
-  v17 = v12;
-  v13 = [(HFAudioPlayer *)self delegate];
-  if ([v13 conformsToProtocol:&unk_2825BAE00])
+  delegate8 = delegate5;
+  delegate6 = [(HFAudioPlayer *)self delegate];
+  if ([delegate6 conformsToProtocol:&unk_2825BAE00])
   {
-    v14 = [(HFAudioPlayer *)self delegate];
+    delegate7 = [(HFAudioPlayer *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if ((v15 & 1) == 0)
@@ -149,44 +149,44 @@ LABEL_7:
       return;
     }
 
-    v17 = [(HFAudioPlayer *)self delegate];
-    v13 = [(HFAudioPlayer *)self audioPlayer];
-    [v13 averagePowerForChannel:0];
-    [v17 audioPlayer:self didUpdateAveragePower:v16];
+    delegate8 = [(HFAudioPlayer *)self delegate];
+    delegate6 = [(HFAudioPlayer *)self audioPlayer];
+    [delegate6 averagePowerForChannel:0];
+    [delegate8 audioPlayer:self didUpdateAveragePower:v16];
   }
 }
 
-- (BOOL)_configureAudioSession:(id *)a3
+- (BOOL)_configureAudioSession:(id *)session
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CB83F8] sharedInstance];
-  [(HFAudioPlayer *)self setAudioSession:v5];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [(HFAudioPlayer *)self setAudioSession:mEMORY[0x277CB83F8]];
 
-  v6 = [(HFAudioPlayer *)self _audioSessionCategory];
-  v7 = [(HFAudioPlayer *)self _audioSessionCategoryOptions];
+  _audioSessionCategory = [(HFAudioPlayer *)self _audioSessionCategory];
+  _audioSessionCategoryOptions = [(HFAudioPlayer *)self _audioSessionCategoryOptions];
   v8 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_audioSessionCategoryOptions];
     *buf = 138412546;
-    v28 = v6;
+    v28 = _audioSessionCategory;
     v29 = 2112;
     v30 = v24;
     _os_log_error_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_ERROR, "Now setting audioSession Category = [%@] with Category Option = [%@]", buf, 0x16u);
   }
 
-  v9 = [(HFAudioPlayer *)self audioSession];
+  audioSession = [(HFAudioPlayer *)self audioSession];
   v10 = *MEMORY[0x277CB80E8];
   v26 = 0;
-  v11 = [v9 setCategory:v6 mode:v10 options:v7 error:&v26];
+  v11 = [audioSession setCategory:_audioSessionCategory mode:v10 options:_audioSessionCategoryOptions error:&v26];
   v12 = v26;
 
   if (v11)
   {
 
-    v13 = [(HFAudioPlayer *)self audioSession];
+    audioSession2 = [(HFAudioPlayer *)self audioSession];
     v25 = 0;
-    v14 = [v13 setActivationContext:MEMORY[0x277CBEC10] error:&v25];
+    v14 = [audioSession2 setActivationContext:MEMORY[0x277CBEC10] error:&v25];
     v12 = v25;
 
     v15 = HFLogForCategory(0xAuLL);
@@ -195,10 +195,10 @@ LABEL_7:
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(HFAudioPlayer *)self audioSession];
-        v18 = [v17 outputDataSources];
+        audioSession3 = [(HFAudioPlayer *)self audioSession];
+        outputDataSources = [audioSession3 outputDataSources];
         *buf = 138412290;
-        v28 = v18;
+        v28 = outputDataSources;
         _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "Successfully configured Audio session with outputDataSources [%@]", buf, 0xCu);
       }
 
@@ -216,7 +216,7 @@ LABEL_7:
 
       v21 = v12;
       v19 = 0;
-      *a3 = v12;
+      *session = v12;
     }
   }
 
@@ -240,9 +240,9 @@ LABEL_7:
 - (void)_deactivateAudioSession
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HFAudioPlayer *)self audioSession];
+  audioSession = [(HFAudioPlayer *)self audioSession];
   v10 = 0;
-  v4 = [v3 setActive:0 withOptions:1 error:&v10];
+  v4 = [audioSession setActive:0 withOptions:1 error:&v10];
   v5 = v10;
 
   if ((v4 & 1) == 0)
@@ -256,9 +256,9 @@ LABEL_7:
     }
   }
 
-  v7 = [(HFAudioPlayer *)self audioSession];
+  audioSession2 = [(HFAudioPlayer *)self audioSession];
   v9 = 0;
-  [v7 setActivationContext:MEMORY[0x277CBEC10] error:&v9];
+  [audioSession2 setActivationContext:MEMORY[0x277CBEC10] error:&v9];
 
   [(HFAudioPlayer *)self setAudioSessionIsActive:0];
   v8 = *MEMORY[0x277D85DE8];
@@ -266,9 +266,9 @@ LABEL_7:
 
 - (id)_audioSessionCategory
 {
-  v3 = [(HFAudioPlayer *)self audioSessionOptions];
-  v4 = [(HFAudioPlayer *)self audioSessionOptions];
-  if ((v3 & 8) != 0)
+  audioSessionOptions = [(HFAudioPlayer *)self audioSessionOptions];
+  audioSessionOptions2 = [(HFAudioPlayer *)self audioSessionOptions];
+  if ((audioSessionOptions & 8) != 0)
   {
     v5 = MEMORY[0x277CB8020];
   }
@@ -276,7 +276,7 @@ LABEL_7:
   else
   {
     v5 = MEMORY[0x277CB8028];
-    if ((v4 & 2) == 0)
+    if ((audioSessionOptions2 & 2) == 0)
     {
       v5 = MEMORY[0x277CB8030];
     }
@@ -302,28 +302,28 @@ LABEL_7:
   return ([(HFAudioPlayer *)self audioSessionOptions]>> 3) & 2 | v3;
 }
 
-- (void)_pauseWithReason:(id)a3
+- (void)_pauseWithReason:(id)reason
 {
-  v12 = a3;
-  v4 = [(HFAudioPlayer *)self audioPlayer];
-  [v4 pause];
+  reasonCopy = reason;
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer pause];
 
-  v5 = [(HFAudioPlayer *)self audioPlayer];
-  [v5 currentTime];
+  audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer2 currentTime];
   [(HFAudioPlayer *)self setPlayerCurrentTime:?];
 
-  v6 = [(HFAudioPlayer *)self displayLink];
-  [v6 setPaused:1];
+  displayLink = [(HFAudioPlayer *)self displayLink];
+  [displayLink setPaused:1];
 
   self->_paused = 1;
-  v7 = [(HFAudioPlayer *)self delegate];
-  if (v7)
+  delegate = [(HFAudioPlayer *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(HFAudioPlayer *)self delegate];
-    if ([v9 conformsToProtocol:&unk_2825BAE00])
+    delegate4 = delegate;
+    delegate2 = [(HFAudioPlayer *)self delegate];
+    if ([delegate2 conformsToProtocol:&unk_2825BAE00])
     {
-      v10 = [(HFAudioPlayer *)self delegate];
+      delegate3 = [(HFAudioPlayer *)self delegate];
       v11 = objc_opt_respondsToSelector();
 
       if ((v11 & 1) == 0)
@@ -331,8 +331,8 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v8 = [(HFAudioPlayer *)self delegate];
-      [v8 audioPlayer:self didPausePlaybackWithReason:v12];
+      delegate4 = [(HFAudioPlayer *)self delegate];
+      [delegate4 audioPlayer:self didPausePlaybackWithReason:reasonCopy];
     }
 
     else
@@ -349,40 +349,40 @@ LABEL_7:
   v3 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFAudioPlayer *)self audioFileURL];
+    audioFileURL = [(HFAudioPlayer *)self audioFileURL];
     v14 = 138412290;
-    v15 = v4;
+    v15 = audioFileURL;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Stopping Audio Player for URL = [%@]", &v14, 0xCu);
   }
 
-  v5 = [(HFAudioPlayer *)self audioPlayer];
-  [v5 pause];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer pause];
 
-  v6 = [(HFAudioPlayer *)self audioPlayer];
-  [v6 stop];
+  audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer2 stop];
 
-  v7 = [(HFAudioPlayer *)self audioPlayer];
-  [v7 setCurrentTime:0.0];
+  audioPlayer3 = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer3 setCurrentTime:0.0];
 
   self->_paused = 0;
-  v8 = [(HFAudioPlayer *)self delegate];
-  if (v8)
+  delegate = [(HFAudioPlayer *)self delegate];
+  if (delegate)
   {
-    v9 = v8;
-    v10 = [(HFAudioPlayer *)self delegate];
-    if (([v10 conformsToProtocol:&unk_2825BAE00] & 1) == 0)
+    delegate4 = delegate;
+    delegate2 = [(HFAudioPlayer *)self delegate];
+    if (([delegate2 conformsToProtocol:&unk_2825BAE00] & 1) == 0)
     {
 
       goto LABEL_8;
     }
 
-    v11 = [(HFAudioPlayer *)self delegate];
+    delegate3 = [(HFAudioPlayer *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v9 = [(HFAudioPlayer *)self delegate];
-      [v9 audioPlayerDidStopPlayback:self];
+      delegate4 = [(HFAudioPlayer *)self delegate];
+      [delegate4 audioPlayerDidStopPlayback:self];
 LABEL_8:
     }
   }
@@ -392,13 +392,13 @@ LABEL_8:
 
 - (void)_cleanup
 {
-  v3 = [(HFAudioPlayer *)self audioPlayer];
-  v4 = [v3 isPlaying];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  isPlaying = [audioPlayer isPlaying];
 
-  if (v4)
+  if (isPlaying)
   {
-    v5 = [(HFAudioPlayer *)self audioPlayer];
-    [v5 stop];
+    audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
+    [audioPlayer2 stop];
   }
 
   [(CADisplayLink *)self->_displayLink invalidate];
@@ -416,21 +416,21 @@ LABEL_8:
   self->_paused = 0;
 }
 
-- (BOOL)prepareToPlay:(id *)a3
+- (BOOL)prepareToPlay:(id *)play
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277CB83D0]);
-  v6 = [(HFAudioPlayer *)self audioFileURL];
+  audioFileURL = [(HFAudioPlayer *)self audioFileURL];
   v27 = 0;
-  v7 = [v5 initWithContentsOfURL:v6 error:&v27];
+  v7 = [v5 initWithContentsOfURL:audioFileURL error:&v27];
   v8 = v27;
   [(HFAudioPlayer *)self setAudioPlayer:v7];
 
-  v9 = [(HFAudioPlayer *)self audioPlayer];
-  [v9 setMeteringEnabled:1];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer setMeteringEnabled:1];
 
-  v10 = [(HFAudioPlayer *)self audioPlayer];
-  [v10 setDelegate:self];
+  audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer2 setDelegate:self];
 
   if (v8)
   {
@@ -444,7 +444,7 @@ LABEL_8:
 
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *play = v8;
   }
 
   else if ([(HFAudioPlayer *)self isAudioSessionActive])
@@ -452,9 +452,9 @@ LABEL_8:
     v14 = HFLogForCategory(0xAuLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HFAudioPlayer *)self audioFileURL];
+      audioFileURL2 = [(HFAudioPlayer *)self audioFileURL];
       *buf = 138412290;
-      v29 = v15;
+      v29 = audioFileURL2;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Audio Session is already active continuining with AVAudioPlayer configured for URL [%@]", buf, 0xCu);
     }
 
@@ -470,17 +470,17 @@ LABEL_8:
     v18 = v17;
     if (v16)
     {
-      v19 = [(HFAudioPlayer *)self audioSession];
+      audioSession = [(HFAudioPlayer *)self audioSession];
       v25 = v18;
-      v20 = [v19 setActive:1 error:&v25];
+      v20 = [audioSession setActive:1 error:&v25];
       v8 = v25;
 
       if (v20)
       {
         v13 = 1;
         [(HFAudioPlayer *)self setAudioSessionIsActive:1];
-        v21 = [(HFAudioPlayer *)self audioPlayer];
-        [v21 prepareToPlay];
+        audioPlayer3 = [(HFAudioPlayer *)self audioPlayer];
+        [audioPlayer3 prepareToPlay];
 
         [(HFAudioPlayer *)self _registerAudioSessionObservers];
       }
@@ -513,34 +513,34 @@ LABEL_8:
 
 - (void)play
 {
-  v3 = [(HFAudioPlayer *)self displayLink];
+  displayLink = [(HFAudioPlayer *)self displayLink];
 
-  if (v3)
+  if (displayLink)
   {
-    v4 = [(HFAudioPlayer *)self displayLink];
-    [v4 invalidate];
+    displayLink2 = [(HFAudioPlayer *)self displayLink];
+    [displayLink2 invalidate];
   }
 
   v5 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel__displayLinkUpdated_];
   [(HFAudioPlayer *)self setDisplayLink:v5];
 
-  v6 = [(HFAudioPlayer *)self displayLink];
-  [v6 setPreferredFramesPerSecond:60];
+  displayLink3 = [(HFAudioPlayer *)self displayLink];
+  [displayLink3 setPreferredFramesPerSecond:60];
 
-  v7 = [(HFAudioPlayer *)self displayLink];
-  v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v7 addToRunLoop:v8 forMode:*MEMORY[0x277CBE738]];
+  displayLink4 = [(HFAudioPlayer *)self displayLink];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [displayLink4 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
-  v9 = [(HFAudioPlayer *)self audioPlayer];
-  [v9 play];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer play];
 }
 
 - (void)resume
 {
-  v3 = [(HFAudioPlayer *)self audioPlayer];
-  [v3 play];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer play];
 
-  v4 = [(HFAudioPlayer *)self audioPlayer];
+  audioPlayer2 = [(HFAudioPlayer *)self audioPlayer];
   [(HFAudioPlayer *)self playerCurrentTime];
   v6 = v5;
   [(HFAudioPlayer *)self playerCurrentTime];
@@ -549,20 +549,20 @@ LABEL_8:
     v7 = v7 + -0.02;
   }
 
-  [v4 setCurrentTime:v7];
+  [audioPlayer2 setCurrentTime:v7];
 
-  v8 = [(HFAudioPlayer *)self displayLink];
-  [v8 setPaused:0];
+  displayLink = [(HFAudioPlayer *)self displayLink];
+  [displayLink setPaused:0];
 
   self->_paused = 0;
-  v9 = [(HFAudioPlayer *)self delegate];
-  if (v9)
+  delegate = [(HFAudioPlayer *)self delegate];
+  if (delegate)
   {
-    v13 = v9;
-    v10 = [(HFAudioPlayer *)self delegate];
-    if ([v10 conformsToProtocol:&unk_2825BAE00])
+    delegate4 = delegate;
+    delegate2 = [(HFAudioPlayer *)self delegate];
+    if ([delegate2 conformsToProtocol:&unk_2825BAE00])
     {
-      v11 = [(HFAudioPlayer *)self delegate];
+      delegate3 = [(HFAudioPlayer *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -570,8 +570,8 @@ LABEL_8:
         return;
       }
 
-      v13 = [(HFAudioPlayer *)self delegate];
-      [v13 audioPlayerDidResumePlayback:self];
+      delegate4 = [(HFAudioPlayer *)self delegate];
+      [delegate4 audioPlayerDidResumePlayback:self];
     }
 
     else
@@ -589,57 +589,57 @@ LABEL_8:
 
 - (BOOL)isPlaying
 {
-  v2 = [(HFAudioPlayer *)self audioPlayer];
-  v3 = [v2 isPlaying];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  isPlaying = [audioPlayer isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 - (double)duration
 {
-  v2 = [(HFAudioPlayer *)self audioPlayer];
-  [v2 duration];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    volumeCopy = volume;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Setting player volume to [%f]", &v9, 0xCu);
   }
 
-  v6 = [(HFAudioPlayer *)self audioPlayer];
-  *&v7 = a3;
-  [v6 setVolume:v7];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  *&v7 = volume;
+  [audioPlayer setVolume:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (float)volume
 {
-  v2 = [(HFAudioPlayer *)self audioPlayer];
-  [v2 volume];
+  audioPlayer = [(HFAudioPlayer *)self audioPlayer];
+  [audioPlayer volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)audioSessionDidInterrupt:(id)a3
+- (void)audioSessionDidInterrupt:(id)interrupt
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = interruptCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Audio Session was interrupted [%@]", &v7, 0xCu);
   }
 
@@ -649,15 +649,15 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereLost:(id)a3
+- (void)audioSessionMediaServicesWereLost:(id)lost
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v5 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = lostCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Media Services Were Lost [%@]", &v7, 0xCu);
   }
 
@@ -667,15 +667,15 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereReset:(id)a3
+- (void)audioSessionMediaServicesWereReset:(id)reset
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   v5 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = resetCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Media Services Were Reset [%@]", &v7, 0xCu);
   }
 
@@ -685,30 +685,30 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionRouteChanged:(id)a3
+- (void)audioSessionRouteChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = changedCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Audio Session Route Changed [%@]", &v12, 0xCu);
   }
 
   if ([(HFAudioPlayer *)self isAudioSessionActive])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277CB8220]];
-    v8 = [v7 unsignedIntegerValue];
+    userInfo = [changedCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x277CB8220]];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if ((v8 - 1) <= 1)
+    if ((unsignedIntegerValue - 1) <= 1)
     {
       v9 = HFLogForCategory(0xAuLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
         v12 = 138412290;
         v13 = v10;
         _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Routes Changed for reason [%@]", &v12, 0xCu);
@@ -722,21 +722,21 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v6 = [(HFAudioPlayer *)self displayLink];
-  [v6 invalidate];
+  successfullyCopy = successfully;
+  displayLink = [(HFAudioPlayer *)self displayLink];
+  [displayLink invalidate];
 
   [(HFAudioPlayer *)self setPlayerCurrentTime:0.0];
-  v7 = [(HFAudioPlayer *)self delegate];
-  if (v7)
+  delegate = [(HFAudioPlayer *)self delegate];
+  if (delegate)
   {
-    v13 = v7;
-    v8 = [(HFAudioPlayer *)self delegate];
-    if ([v8 conformsToProtocol:&unk_2825BAE00])
+    v13 = delegate;
+    delegate2 = [(HFAudioPlayer *)self delegate];
+    if ([delegate2 conformsToProtocol:&unk_2825BAE00])
     {
-      v9 = [(HFAudioPlayer *)self delegate];
+      delegate3 = [(HFAudioPlayer *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
       if ((v10 & 1) == 0)
@@ -744,11 +744,11 @@ LABEL_8:
         return;
       }
 
-      v11 = [(HFAudioPlayer *)self delegate];
-      v13 = v11;
-      if (v4)
+      delegate4 = [(HFAudioPlayer *)self delegate];
+      v13 = delegate4;
+      if (successfullyCopy)
       {
-        [v11 audioPlayerDidFinishPlayback:self withError:0];
+        [delegate4 audioPlayerDidFinishPlayback:self withError:0];
       }
 
       else
@@ -764,15 +764,15 @@ LABEL_8:
   }
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = HFLogForCategory(0xAuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "Audio Player Decode Error [%@]", &v8, 0xCu);
   }
 

@@ -1,14 +1,14 @@
 @interface WFInspectorPaneSegmentedControlHostingView
-- (WFInspectorPaneSegmentedControlHostingView)initWithDelegate:(id)a3 showsDetailsButton:(BOOL)a4;
+- (WFInspectorPaneSegmentedControlHostingView)initWithDelegate:(id)delegate showsDetailsButton:(BOOL)button;
 @end
 
 @implementation WFInspectorPaneSegmentedControlHostingView
 
-- (WFInspectorPaneSegmentedControlHostingView)initWithDelegate:(id)a3 showsDetailsButton:(BOOL)a4
+- (WFInspectorPaneSegmentedControlHostingView)initWithDelegate:(id)delegate showsDetailsButton:(BOOL)button
 {
   swift_unknownObjectRetain();
 
-  return sub_2748DDA58(a3, a4, self);
+  return sub_2748DDA58(delegate, button, self);
 }
 
 @end

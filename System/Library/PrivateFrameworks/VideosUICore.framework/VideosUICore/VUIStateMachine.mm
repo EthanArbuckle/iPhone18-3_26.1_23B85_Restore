@@ -1,33 +1,33 @@
 @interface VUIStateMachine
-+ (id)stateMachinesOfType:(Class)a3;
-+ (void)deregisterStateMachine:(id)a3;
++ (id)stateMachinesOfType:(Class)type;
++ (void)deregisterStateMachine:(id)machine;
 + (void)initialize;
-+ (void)registerStateMachine:(id)a3;
-- (VUIStateMachine)initWithName:(id)a3 initialState:(id)a4 mode:(int64_t)a5;
-- (VUIStateMachine)initWithName:(id)a3 initialState:(id)a4 mode:(int64_t)a5 stateChangeHandler:(id)a6;
-- (id)_eventHandlerForEvent:(id)a3;
-- (void)_dispatchEvent:(id)a3;
++ (void)registerStateMachine:(id)machine;
+- (VUIStateMachine)initWithName:(id)name initialState:(id)state mode:(int64_t)mode;
+- (VUIStateMachine)initWithName:(id)name initialState:(id)state mode:(int64_t)mode stateChangeHandler:(id)handler;
+- (id)_eventHandlerForEvent:(id)event;
+- (void)_dispatchEvent:(id)event;
 - (void)_executePostTransitionBlocks;
-- (void)_processEvent:(id)a3;
+- (void)_processEvent:(id)event;
 - (void)_processNextEvent;
-- (void)_transitionToState:(id)a3 withEvent:(id)a4 context:(id)a5 userInfo:(id)a6;
+- (void)_transitionToState:(id)state withEvent:(id)event context:(id)context userInfo:(id)info;
 - (void)deregisterHandlers;
-- (void)executeBlockAfterCurrentStateTransition:(id)a3;
+- (void)executeBlockAfterCurrentStateTransition:(id)transition;
 - (void)logUnhandledEvents;
-- (void)postEvent:(id)a3 withContext:(id)a4 userInfo:(id)a5;
+- (void)postEvent:(id)event withContext:(id)context userInfo:(id)info;
 - (void)purgeEventQueue;
-- (void)registerDefaultHandlerForEvent:(id)a3 withBlock:(id)a4;
-- (void)registerHandlerForEvent:(id)a3 onState:(id)a4 withBlock:(id)a5;
-- (void)registerHandlerForEvent:(id)a3 onStates:(id)a4 withBlock:(id)a5;
-- (void)registerHandlerForEvents:(id)a3 onStates:(id)a4 withBlock:(id)a5;
-- (void)registerStateTransitionFromState:(id)a3 onEvent:(id)a4 toState:(id)a5;
+- (void)registerDefaultHandlerForEvent:(id)event withBlock:(id)block;
+- (void)registerHandlerForEvent:(id)event onState:(id)state withBlock:(id)block;
+- (void)registerHandlerForEvent:(id)event onStates:(id)states withBlock:(id)block;
+- (void)registerHandlerForEvents:(id)events onStates:(id)states withBlock:(id)block;
+- (void)registerStateTransitionFromState:(id)state onEvent:(id)event toState:(id)toState;
 @end
 
 @implementation VUIStateMachine
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sStateMachines = objc_opt_new();
 
@@ -38,8 +38,8 @@
 - (void)logUnhandledEvents
 {
   v70 = *MEMORY[0x277D85DE8];
-  v35 = [(NSMutableDictionary *)self->_handlers allKeys];
-  v3 = [v35 sortedArrayUsingSelector:?];
+  allKeys = [(NSMutableDictionary *)self->_handlers allKeys];
+  v3 = [allKeys sortedArrayUsingSelector:?];
   v4 = [MEMORY[0x277CBEB58] set];
   v57 = 0u;
   v58 = 0u;
@@ -61,12 +61,12 @@
         }
 
         v9 = [(NSMutableDictionary *)self->_handlers objectForKey:*(*(&v57 + 1) + 8 * i)];
-        v10 = [v9 allKeys];
+        allKeys2 = [v9 allKeys];
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v53 objects:v68 count:16];
+        v11 = [allKeys2 countByEnumeratingWithState:&v53 objects:v68 count:16];
         if (v11)
         {
           v12 = v11;
@@ -77,13 +77,13 @@
             {
               if (*v54 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allKeys2);
               }
 
               [v4 addObject:*(*(&v53 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v53 objects:v68 count:16];
+            v12 = [allKeys2 countByEnumeratingWithState:&v53 objects:v68 count:16];
           }
 
           while (v12);
@@ -100,8 +100,8 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v15 = [(NSMutableDictionary *)self->_defaultHandlers allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v49 objects:v67 count:16];
+  allKeys3 = [(NSMutableDictionary *)self->_defaultHandlers allKeys];
+  v16 = [allKeys3 countByEnumeratingWithState:&v49 objects:v67 count:16];
   if (v16)
   {
     v17 = v16;
@@ -112,20 +112,20 @@
       {
         if (*v50 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys3);
         }
 
         [v4 addObject:*(*(&v49 + 1) + 8 * k)];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v49 objects:v67 count:16];
+      v17 = [allKeys3 countByEnumeratingWithState:&v49 objects:v67 count:16];
     }
 
     while (v17);
   }
 
-  v20 = [v4 allObjects];
-  v21 = [v20 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v4 allObjects];
+  v21 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v47 = 0u;
   v48 = 0u;
@@ -177,18 +177,18 @@
 
                 if (!v32)
                 {
-                  v33 = [(VUIStateMachine *)self logObject];
+                  logObject = [(VUIStateMachine *)self logObject];
 
-                  if (v33)
+                  if (logObject)
                   {
-                    v34 = [(VUIStateMachine *)self logObject];
-                    if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+                    logObject2 = [(VUIStateMachine *)self logObject];
+                    if (os_log_type_enabled(logObject2, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138412546;
                       v62 = v23;
                       v63 = 2112;
                       v64 = v29;
-                      _os_log_impl(&dword_270E6E000, v34, OS_LOG_TYPE_INFO, "[%@] is unhandled for [%@]", buf, 0x16u);
+                      _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_INFO, "[%@] is unhandled for [%@]", buf, 0x16u);
                     }
                   }
                 }
@@ -285,40 +285,40 @@
   }
 }
 
-+ (void)registerStateMachine:(id)a3
++ (void)registerStateMachine:(id)machine
 {
-  v3 = a3;
-  if (v3)
+  machineCopy = machine;
+  if (machineCopy)
   {
-    v7 = v3;
-    v4 = v3;
+    v7 = machineCopy;
+    v4 = machineCopy;
     objc_sync_enter(v4);
     [v4 setShouldAcceptEvents:1];
     v5 = sStateMachines;
-    v6 = [v4 name];
-    [v5 setObject:v4 forKey:v6];
+    name = [v4 name];
+    [v5 setObject:v4 forKey:name];
 
     objc_sync_exit(v4);
-    v3 = v7;
+    machineCopy = v7;
   }
 }
 
-+ (void)deregisterStateMachine:(id)a3
++ (void)deregisterStateMachine:(id)machine
 {
-  if (a3)
+  if (machine)
   {
-    v3 = a3;
-    [v3 setShouldAcceptEvents:0];
-    [v3 purgeEventQueue];
-    [v3 deregisterHandlers];
+    machineCopy = machine;
+    [machineCopy setShouldAcceptEvents:0];
+    [machineCopy purgeEventQueue];
+    [machineCopy deregisterHandlers];
     v4 = sStateMachines;
-    v5 = [v3 name];
+    name = [machineCopy name];
 
-    [v4 removeObjectForKey:v5];
+    [v4 removeObjectForKey:name];
   }
 }
 
-+ (id)stateMachinesOfType:(Class)a3
++ (id)stateMachinesOfType:(Class)type
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
@@ -326,8 +326,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [sStateMachines allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [sStateMachines allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -338,7 +338,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -348,7 +348,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -359,10 +359,10 @@
   return v10;
 }
 
-- (VUIStateMachine)initWithName:(id)a3 initialState:(id)a4 mode:(int64_t)a5
+- (VUIStateMachine)initWithName:(id)name initialState:(id)state mode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  stateCopy = state;
   objc_initWeak(&location, self);
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
@@ -370,7 +370,7 @@
   v16 = &unk_279E21828;
   objc_copyWeak(&v17, &location);
   v10 = MEMORY[0x2743B7C30](&v13);
-  v11 = [(VUIStateMachine *)self initWithName:v8 initialState:v9 mode:a5 stateChangeHandler:v10, v13, v14, v15, v16];
+  v11 = [(VUIStateMachine *)self initWithName:nameCopy initialState:stateCopy mode:mode stateChangeHandler:v10, v13, v14, v15, v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -401,11 +401,11 @@ void __50__VUIStateMachine_initWithName_initialState_mode___block_invoke(uint64_
   [v16 postNotification:v15];
 }
 
-- (VUIStateMachine)initWithName:(id)a3 initialState:(id)a4 mode:(int64_t)a5 stateChangeHandler:(id)a6
+- (VUIStateMachine)initWithName:(id)name initialState:(id)state mode:(int64_t)mode stateChangeHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  stateCopy = state;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = VUIStateMachine;
   v13 = [(VUIStateMachine *)&v31 init];
@@ -416,14 +416,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v10 length] && objc_msgSend(v11, "length"))
+  if ([nameCopy length] && objc_msgSend(stateCopy, "length"))
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    [(VUIStateMachine *)v13 setCurrentState:v11];
-    v13->_mode = a5;
+    [(VUIStateMachine *)v13 setCurrentState:stateCopy];
+    v13->_mode = mode;
     v16 = objc_opt_new();
     events = v13->_events;
     v13->_events = v16;
@@ -440,9 +440,9 @@ LABEL_10:
     blocksToExecuteAfterStateTransition = v13->_blocksToExecuteAfterStateTransition;
     v13->_blocksToExecuteAfterStateTransition = v22;
 
-    if (v12)
+    if (handlerCopy)
     {
-      v24 = [v12 copy];
+      v24 = [handlerCopy copy];
       v25 = MEMORY[0x2743B7C30]();
       stateChangeHandler = v13->_stateChangeHandler;
       v13->_stateChangeHandler = v25;
@@ -455,7 +455,7 @@ LABEL_10:
     }
 
     objc_storeStrong(&v13->_logObject, MEMORY[0x277D86220]);
-    if (a5 == 1)
+    if (mode == 1)
     {
       v28 = dispatch_get_global_queue(21, 0);
       dispatchQueue = v13->_dispatchQueue;
@@ -471,52 +471,52 @@ LABEL_11:
   return v27;
 }
 
-- (void)postEvent:(id)a3 withContext:(id)a4 userInfo:(id)a5
+- (void)postEvent:(id)event withContext:(id)context userInfo:(id)info
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [(VUIStateMachine *)self shouldAcceptEvents])
+  eventCopy = event;
+  contextCopy = context;
+  infoCopy = info;
+  if (eventCopy && [(VUIStateMachine *)self shouldAcceptEvents])
   {
-    v11 = [(VUIStateMachine *)self ignorableEvents];
-    v12 = [v11 containsObject:v8];
+    ignorableEvents = [(VUIStateMachine *)self ignorableEvents];
+    v12 = [ignorableEvents containsObject:eventCopy];
 
     if (!v12)
     {
-      v16 = [MEMORY[0x277CBEB38] dictionaryWithObject:v8 forKey:@"VUIStateMachineEventKey"];
-      v14 = v16;
-      if (v9)
+      v16 = [MEMORY[0x277CBEB38] dictionaryWithObject:eventCopy forKey:@"VUIStateMachineEventKey"];
+      logObject4 = v16;
+      if (contextCopy)
       {
-        [v16 setObject:v9 forKey:@"VUIStateMachineContextKey"];
+        [v16 setObject:contextCopy forKey:@"VUIStateMachineContextKey"];
       }
 
-      if (v10)
+      if (infoCopy)
       {
-        [v14 setObject:v10 forKey:@"VUIStateMachineUserInfoKey"];
+        [logObject4 setObject:infoCopy forKey:@"VUIStateMachineUserInfoKey"];
       }
 
       v17 = self->_events;
       objc_sync_enter(v17);
-      [(NSMutableArray *)self->_events addObject:v14];
+      [(NSMutableArray *)self->_events addObject:logObject4];
       v18 = [(NSMutableArray *)self->_events count];
       objc_sync_exit(v17);
 
       if (v18 == 1)
       {
-        v19 = [(VUIStateMachine *)self logObject];
+        logObject = [(VUIStateMachine *)self logObject];
 
-        if (v19)
+        if (logObject)
         {
-          v20 = [(VUIStateMachine *)self logObject];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+          logObject2 = [(VUIStateMachine *)self logObject];
+          if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [(VUIStateMachine *)self name];
+            name = [(VUIStateMachine *)self name];
             v22 = 138412546;
-            v23 = v21;
+            v23 = name;
             v24 = 2112;
-            v25 = v8;
-            _os_log_impl(&dword_270E6E000, v20, OS_LOG_TYPE_DEFAULT, "State machine [%@] received event [%@], initiating event processing", &v22, 0x16u);
+            v25 = eventCopy;
+            _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] received event [%@], initiating event processing", &v22, 0x16u);
           }
         }
 
@@ -526,19 +526,19 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    v13 = [(VUIStateMachine *)self logObject];
+    logObject3 = [(VUIStateMachine *)self logObject];
 
-    if (v13)
+    if (logObject3)
     {
-      v14 = [(VUIStateMachine *)self logObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      logObject4 = [(VUIStateMachine *)self logObject];
+      if (os_log_type_enabled(logObject4, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(VUIStateMachine *)self name];
+        name2 = [(VUIStateMachine *)self name];
         v22 = 138412546;
-        v23 = v15;
+        v23 = name2;
         v24 = 2112;
-        v25 = v8;
-        _os_log_impl(&dword_270E6E000, v14, OS_LOG_TYPE_DEFAULT, "State machine named [%@] received ignorable event [%@]", &v22, 0x16u);
+        v25 = eventCopy;
+        _os_log_impl(&dword_270E6E000, logObject4, OS_LOG_TYPE_DEFAULT, "State machine named [%@] received ignorable event [%@]", &v22, 0x16u);
       }
 
 LABEL_17:
@@ -554,42 +554,42 @@ LABEL_17:
   objc_sync_exit(obj);
 }
 
-- (void)registerHandlerForEvent:(id)a3 onState:(id)a4 withBlock:(id)a5
+- (void)registerHandlerForEvent:(id)event onState:(id)state withBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  stateCopy = state;
+  blockCopy = block;
   if (![(VUIStateMachine *)self shouldAcceptEvents])
   {
-    if (!v9)
+    if (!stateCopy)
     {
       goto LABEL_16;
     }
 
     v14 = self->_handlers;
     objc_sync_enter(v14);
-    v15 = [(NSMutableDictionary *)self->_handlers objectForKey:v9];
+    v15 = [(NSMutableDictionary *)self->_handlers objectForKey:stateCopy];
     v16 = v15;
-    if (!v15 && v8 && v10)
+    if (!v15 && eventCopy && blockCopy)
     {
       v16 = objc_opt_new();
-      [(NSMutableDictionary *)self->_handlers setObject:v16 forKey:v9];
+      [(NSMutableDictionary *)self->_handlers setObject:v16 forKey:stateCopy];
       goto LABEL_14;
     }
 
-    if (v8)
+    if (eventCopy)
     {
-      if (v10)
+      if (blockCopy)
       {
 LABEL_14:
-        v17 = [v10 copy];
-        [v16 setObject:v17 forKey:v8];
+        v17 = [blockCopy copy];
+        [v16 setObject:v17 forKey:eventCopy];
 
         goto LABEL_15;
       }
 
-      [v15 removeObjectForKey:v8];
+      [v15 removeObjectForKey:eventCopy];
     }
 
 LABEL_15:
@@ -598,36 +598,36 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v11 = [(VUIStateMachine *)self logObject];
+  logObject = [(VUIStateMachine *)self logObject];
 
-  if (v11)
+  if (logObject)
   {
-    v12 = [(VUIStateMachine *)self logObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    logObject2 = [(VUIStateMachine *)self logObject];
+    if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
     {
       name = self->_name;
       v18 = 138412290;
       v19 = name;
-      _os_log_impl(&dword_270E6E000, v12, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register event handlers when it is accepting events", &v18, 0xCu);
+      _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register event handlers when it is accepting events", &v18, 0xCu);
     }
   }
 
 LABEL_16:
 }
 
-- (void)registerHandlerForEvent:(id)a3 onStates:(id)a4 withBlock:(id)a5
+- (void)registerHandlerForEvent:(id)event onStates:(id)states withBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  statesCopy = states;
+  blockCopy = block;
   if (![(VUIStateMachine *)self shouldAcceptEvents])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = v9;
+    v11 = statesCopy;
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
@@ -643,7 +643,7 @@ LABEL_16:
             objc_enumerationMutation(v11);
           }
 
-          [(VUIStateMachine *)self registerHandlerForEvent:v8 onState:*(*(&v16 + 1) + 8 * v15++) withBlock:v10, v16];
+          [(VUIStateMachine *)self registerHandlerForEvent:eventCopy onState:*(*(&v16 + 1) + 8 * v15++) withBlock:blockCopy, v16];
         }
 
         while (v13 != v15);
@@ -655,20 +655,20 @@ LABEL_16:
   }
 }
 
-- (void)registerHandlerForEvents:(id)a3 onStates:(id)a4 withBlock:(id)a5
+- (void)registerHandlerForEvents:(id)events onStates:(id)states withBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v22 = a4;
-  v9 = a5;
+  eventsCopy = events;
+  statesCopy = states;
+  blockCopy = block;
   if (![(VUIStateMachine *)self shouldAcceptEvents])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = v8;
-    obj = v8;
+    v20 = eventsCopy;
+    obj = eventsCopy;
     v10 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
@@ -689,7 +689,7 @@ LABEL_16:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v15 = v22;
+          v15 = statesCopy;
           v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v16)
           {
@@ -705,7 +705,7 @@ LABEL_16:
                   objc_enumerationMutation(v15);
                 }
 
-                [(VUIStateMachine *)self registerHandlerForEvent:v14 onState:*(*(&v23 + 1) + 8 * v19++) withBlock:v9];
+                [(VUIStateMachine *)self registerHandlerForEvent:v14 onState:*(*(&v23 + 1) + 8 * v19++) withBlock:blockCopy];
               }
 
               while (v17 != v19);
@@ -725,28 +725,28 @@ LABEL_16:
       while (v11);
     }
 
-    v8 = v20;
+    eventsCopy = v20;
   }
 }
 
-- (void)registerDefaultHandlerForEvent:(id)a3 withBlock:(id)a4
+- (void)registerDefaultHandlerForEvent:(id)event withBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   if ([(VUIStateMachine *)self shouldAcceptEvents])
   {
-    v8 = [(VUIStateMachine *)self logObject];
+    logObject = [(VUIStateMachine *)self logObject];
 
-    if (v8)
+    if (logObject)
     {
-      v9 = [(VUIStateMachine *)self logObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      logObject2 = [(VUIStateMachine *)self logObject];
+      if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
       {
         name = self->_name;
         v14 = 138412290;
         v15 = name;
-        _os_log_impl(&dword_270E6E000, v9, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register default handlers when it is accepting events", &v14, 0xCu);
+        _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register default handlers when it is accepting events", &v14, 0xCu);
       }
     }
   }
@@ -755,48 +755,48 @@ LABEL_16:
   {
     v11 = self->_handlers;
     objc_sync_enter(v11);
-    if (v6 && v7)
+    if (eventCopy && blockCopy)
     {
       defaultHandlers = self->_defaultHandlers;
-      v13 = [v7 copy];
-      [(NSMutableDictionary *)defaultHandlers setObject:v13 forKey:v6];
+      v13 = [blockCopy copy];
+      [(NSMutableDictionary *)defaultHandlers setObject:v13 forKey:eventCopy];
     }
 
     objc_sync_exit(v11);
   }
 }
 
-- (void)registerStateTransitionFromState:(id)a3 onEvent:(id)a4 toState:(id)a5
+- (void)registerStateTransitionFromState:(id)state onEvent:(id)event toState:(id)toState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  eventCopy = event;
+  toStateCopy = toState;
   if (![(VUIStateMachine *)self shouldAcceptEvents])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__VUIStateMachine_registerStateTransitionFromState_onEvent_toState___block_invoke;
     v14[3] = &unk_279E21850;
-    v15 = v10;
-    [(VUIStateMachine *)self registerHandlerForEvent:v9 onState:v8 withBlock:v14];
-    v12 = v15;
+    v15 = toStateCopy;
+    [(VUIStateMachine *)self registerHandlerForEvent:eventCopy onState:stateCopy withBlock:v14];
+    logObject2 = v15;
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v11 = [(VUIStateMachine *)self logObject];
+  logObject = [(VUIStateMachine *)self logObject];
 
-  if (v11)
+  if (logObject)
   {
-    v12 = [(VUIStateMachine *)self logObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    logObject2 = [(VUIStateMachine *)self logObject];
+    if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
     {
       name = self->_name;
       *buf = 138412290;
       v17 = name;
-      _os_log_impl(&dword_270E6E000, v12, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register state transitions when it is accepting events", buf, 0xCu);
+      _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] can not register state transitions when it is accepting events", buf, 0xCu);
     }
 
     goto LABEL_6;
@@ -805,22 +805,22 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)executeBlockAfterCurrentStateTransition:(id)a3
+- (void)executeBlockAfterCurrentStateTransition:(id)transition
 {
-  v4 = a3;
-  if (v4)
+  transitionCopy = transition;
+  if (transitionCopy)
   {
-    v10 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    handlingEvent = v5->_handlingEvent;
-    objc_sync_exit(v5);
+    v10 = transitionCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    handlingEvent = selfCopy->_handlingEvent;
+    objc_sync_exit(selfCopy);
 
     if (handlingEvent)
     {
-      v7 = v5->_blocksToExecuteAfterStateTransition;
+      v7 = selfCopy->_blocksToExecuteAfterStateTransition;
       objc_sync_enter(v7);
-      blocksToExecuteAfterStateTransition = v5->_blocksToExecuteAfterStateTransition;
+      blocksToExecuteAfterStateTransition = selfCopy->_blocksToExecuteAfterStateTransition;
       v9 = [v10 copy];
       [(NSMutableArray *)blocksToExecuteAfterStateTransition addObject:v9];
 
@@ -832,7 +832,7 @@ LABEL_7:
       v10[2]();
     }
 
-    v4 = v10;
+    transitionCopy = v10;
   }
 }
 
@@ -847,24 +847,24 @@ LABEL_7:
   objc_sync_exit(obj);
 }
 
-- (void)_transitionToState:(id)a3 withEvent:(id)a4 context:(id)a5 userInfo:(id)a6
+- (void)_transitionToState:(id)state withEvent:(id)event context:(id)context userInfo:(id)info
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(VUIStateMachine *)self currentState];
-  v15 = [v14 copy];
+  stateCopy = state;
+  eventCopy = event;
+  contextCopy = context;
+  infoCopy = info;
+  currentState = [(VUIStateMachine *)self currentState];
+  v15 = [currentState copy];
 
-  if ([v15 isEqualToString:v10])
+  if ([v15 isEqualToString:stateCopy])
   {
-    v16 = [(VUIStateMachine *)self logObject];
+    logObject = [(VUIStateMachine *)self logObject];
 
-    if (v16)
+    if (logObject)
     {
-      v17 = [(VUIStateMachine *)self logObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      logObject2 = [(VUIStateMachine *)self logObject];
+      if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
       {
         name = self->_name;
         *buf = 138412802;
@@ -872,21 +872,21 @@ LABEL_7:
         v35 = 2112;
         v36 = v15;
         v37 = 2112;
-        v38 = v11;
-        _os_log_impl(&dword_270E6E000, v17, OS_LOG_TYPE_DEFAULT, "State machine [%@] remaining at state [%@] on event [%@]", buf, 0x20u);
+        v38 = eventCopy;
+        _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] remaining at state [%@] on event [%@]", buf, 0x20u);
       }
     }
   }
 
   else
   {
-    [(VUIStateMachine *)self setCurrentState:v10];
-    v19 = [(VUIStateMachine *)self logObject];
+    [(VUIStateMachine *)self setCurrentState:stateCopy];
+    logObject3 = [(VUIStateMachine *)self logObject];
 
-    if (v19)
+    if (logObject3)
     {
-      v20 = [(VUIStateMachine *)self logObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      logObject4 = [(VUIStateMachine *)self logObject];
+      if (os_log_type_enabled(logObject4, OS_LOG_TYPE_DEFAULT))
       {
         v21 = self->_name;
         *buf = 138412802;
@@ -894,8 +894,8 @@ LABEL_7:
         v35 = 2112;
         v36 = v15;
         v37 = 2112;
-        v38 = v10;
-        _os_log_impl(&dword_270E6E000, v20, OS_LOG_TYPE_DEFAULT, "State machine [%@] transitioning from state [%@] to [%@]", buf, 0x20u);
+        v38 = stateCopy;
+        _os_log_impl(&dword_270E6E000, logObject4, OS_LOG_TYPE_DEFAULT, "State machine [%@] transitioning from state [%@] to [%@]", buf, 0x20u);
       }
     }
 
@@ -904,7 +904,7 @@ LABEL_7:
     {
       if (self->_callsStateChangeHandlerSynchronously)
       {
-        stateChangeHandler[2](stateChangeHandler, self, v15, v10, v11, v12, v13);
+        stateChangeHandler[2](stateChangeHandler, self, v15, stateCopy, eventCopy, contextCopy, infoCopy);
       }
 
       else
@@ -913,12 +913,12 @@ LABEL_7:
         v24 = 3221225472;
         v25 = __74__VUIStateMachine_Private___transitionToState_withEvent_context_userInfo___block_invoke;
         v26 = &unk_279E21878;
-        v27 = self;
+        selfCopy = self;
         v28 = v15;
-        v29 = v10;
-        v30 = v11;
-        v31 = v12;
-        v32 = v13;
+        v29 = stateCopy;
+        v30 = eventCopy;
+        v31 = contextCopy;
+        v32 = infoCopy;
         dispatch_async(MEMORY[0x277D85CD0], &v23);
       }
     }
@@ -927,46 +927,46 @@ LABEL_7:
   [(VUIStateMachine *)self _executePostTransitionBlocks:v23];
 }
 
-- (void)_processEvent:(id)a3
+- (void)_processEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  if (v20)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v4 = v20;
+    v4 = eventCopy;
     do
     {
       v5 = [v4 objectForKey:@"VUIStateMachineEventKey"];
       v6 = [v4 objectForKey:@"VUIStateMachineUserInfoKey"];
       v7 = [v4 objectForKey:@"VUIStateMachineContextKey"];
       v8 = [(VUIStateMachine *)self _eventHandlerForEvent:v5];
-      v9 = [(VUIStateMachine *)self logObject];
-      v10 = v9 == 0;
+      logObject = [(VUIStateMachine *)self logObject];
+      v10 = logObject == 0;
 
       if (!v10)
       {
-        v11 = [(VUIStateMachine *)self logObject];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        logObject2 = [(VUIStateMachine *)self logObject];
+        if (os_log_type_enabled(logObject2, OS_LOG_TYPE_DEFAULT))
         {
           name = self->_name;
-          v13 = [(VUIStateMachine *)self currentState];
+          currentState = [(VUIStateMachine *)self currentState];
           *buf = 138412802;
           v22 = name;
           v23 = 2112;
           v24 = v5;
           v25 = 2112;
-          v26 = v13;
-          _os_log_impl(&dword_270E6E000, v11, OS_LOG_TYPE_DEFAULT, "State machine [%@] processing event [%@] in state [%@]", buf, 0x20u);
+          v26 = currentState;
+          _os_log_impl(&dword_270E6E000, logObject2, OS_LOG_TYPE_DEFAULT, "State machine [%@] processing event [%@] in state [%@]", buf, 0x20u);
         }
       }
 
-      v14 = self;
-      objc_sync_enter(v14);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       self->_handlingEvent = 1;
-      objc_sync_exit(v14);
+      objc_sync_exit(selfCopy);
 
-      v15 = (v8)[2](v8, v14, v5, v7, v6);
-      v16 = v14;
+      v15 = (v8)[2](v8, selfCopy, v5, v7, v6);
+      v16 = selfCopy;
       objc_sync_enter(v16);
       self->_handlingEvent = 0;
       objc_sync_exit(v16);
@@ -998,17 +998,17 @@ LABEL_12:
   }
 }
 
-- (void)_dispatchEvent:(id)a3
+- (void)_dispatchEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__VUIStateMachine_Private___dispatchEvent___block_invoke;
   v7[3] = &unk_279E218C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1045,21 +1045,21 @@ void __43__VUIStateMachine_Private___dispatchEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_eventHandlerForEvent:(id)a3
+- (id)_eventHandlerForEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     v5 = self->_handlers;
     objc_sync_enter(v5);
     handlers = self->_handlers;
-    v7 = [(VUIStateMachine *)self currentState];
-    v8 = [(NSMutableDictionary *)handlers objectForKey:v7];
+    currentState = [(VUIStateMachine *)self currentState];
+    v8 = [(NSMutableDictionary *)handlers objectForKey:currentState];
 
-    v9 = [v8 objectForKey:v4];
+    v9 = [v8 objectForKey:eventCopy];
     if (!v9)
     {
-      v9 = [(NSMutableDictionary *)self->_defaultHandlers objectForKey:v4];
+      v9 = [(NSMutableDictionary *)self->_defaultHandlers objectForKey:eventCopy];
     }
 
     objc_sync_exit(v5);

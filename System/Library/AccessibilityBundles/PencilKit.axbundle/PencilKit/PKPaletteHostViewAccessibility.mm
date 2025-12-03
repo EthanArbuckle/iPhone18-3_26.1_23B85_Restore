@@ -1,48 +1,48 @@
 @interface PKPaletteHostViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)_axToolPaletteLocationAlongEdge:(int64_t)a3;
-- (id)_axToolPaletteLocationAtCorner:(unint64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
+- (id)_axToolPaletteLocationAlongEdge:(int64_t)edge;
+- (id)_axToolPaletteLocationAtCorner:(unint64_t)corner;
 @end
 
 @implementation PKPaletteHostViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteHostView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PKPaletteHostView" hasInstanceMethod:@"_dockPaletteToPosition:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"PKPaletteHostView" hasInstanceMethod:@"isPaletteVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteHostView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PKPaletteHostView" hasInstanceMethod:@"_dockPaletteToPosition:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"PKPaletteHostView" hasInstanceMethod:@"isPaletteVisible" withFullSignature:{"B", 0}];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v7 = MEMORY[0x29EDC8008];
   v8 = *MEMORY[0x29EDC8008];
-  v9 = a4;
+  eventCopy = event;
   [v8 _accessibilitySetBoolValue:1 forKey:@"AXIsHitTestingPKPaletteHostViewKey"];
   v12.receiver = self;
   v12.super_class = PKPaletteHostViewAccessibility;
-  v10 = [(PKPaletteHostViewAccessibility *)&v12 _accessibilityHitTest:v9 withEvent:x, y];
+  v10 = [(PKPaletteHostViewAccessibility *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
 
   [*v7 _accessibilitySetBoolValue:0 forKey:@"AXIsHitTestingPKPaletteHostViewKey"];
 
   return v10;
 }
 
-- (id)_axToolPaletteLocationAlongEdge:(int64_t)a3
+- (id)_axToolPaletteLocationAlongEdge:(int64_t)edge
 {
   v4 = accessibilityPencilKitLocalizedString(@"tool.palette.location.edge.format");
-  if ((a3 - 1) > 7)
+  if ((edge - 1) > 7)
   {
     v5 = @"tool.palette.location.edge.unknown";
   }
 
   else
   {
-    v5 = off_29F2E3F88[a3 - 1];
+    v5 = off_29F2E3F88[edge - 1];
   }
 
   v6 = accessibilityPencilKitLocalizedString(v5);
@@ -51,7 +51,7 @@
   return v7;
 }
 
-- (id)_axToolPaletteLocationAtCorner:(unint64_t)a3
+- (id)_axToolPaletteLocationAtCorner:(unint64_t)corner
 {
   v3 = accessibilityPencilKitLocalizedString(@"tool.palette.location.corner.format");
   v4 = accessibilityPencilKitLocalizedString(@"tool.palette.location.corner.unknown");

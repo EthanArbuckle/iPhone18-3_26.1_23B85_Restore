@@ -1,15 +1,15 @@
 @interface CSClippingLine
-- (CSClippingLine)initWithFrame:(CGRect)a3;
+- (CSClippingLine)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CSClippingLine
 
-- (CSClippingLine)initWithFrame:(CGRect)a3
+- (CSClippingLine)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = CSClippingLine;
   v7 = [(CSClippingLine *)&v14 initWithFrame:?];
@@ -20,8 +20,8 @@
     v7->_realLine = v8;
 
     v10 = v7->_realLine;
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    v12 = [v11 colorWithAlphaComponent:0.25];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v12 = [whiteColor colorWithAlphaComponent:0.25];
     [(UIView *)v10 setBackgroundColor:v12];
 
     [(UIView *)v7->_realLine setAlpha:0.0];

@@ -2,11 +2,11 @@
 - ($948BFCBB2DDE7F94AFEDE1DD48437795)timeRange;
 - (NSString)description;
 - (PVVideoCompositionInstruction)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)videoInstructionDescription;
-- (void)loadInstructionGraphNodes:(HGRef<PVInstructionGraphContext>)a3;
-- (void)setOutputNode:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)loadInstructionGraphNodes:(HGRef<PVInstructionGraphContext>)nodes;
+- (void)setOutputNode:(id)node;
+- (void)setTimeRange:(id *)range;
 - (void)unloadInstructionGraphNodes;
 @end
 
@@ -40,10 +40,10 @@
   return v3;
 }
 
-- (void)setOutputNode:(id)a3
+- (void)setOutputNode:(id)node
 {
-  v15 = a3;
-  objc_storeStrong(&self->m_outputIGNode, a3);
+  nodeCopy = node;
+  objc_storeStrong(&self->m_outputIGNode, node);
   m_requiredSourceTrackIDs = self->m_requiredSourceTrackIDs;
   self->m_requiredSourceTrackIDs = 0;
 
@@ -54,15 +54,15 @@
   m_outputIGNode = self->m_outputIGNode;
   if (m_outputIGNode)
   {
-    v8 = [(PVInstructionGraphNode *)m_outputIGNode requiredSourceTrackIDs];
-    v9 = [v8 allObjects];
+    requiredSourceTrackIDs = [(PVInstructionGraphNode *)m_outputIGNode requiredSourceTrackIDs];
+    allObjects = [requiredSourceTrackIDs allObjects];
     v10 = self->m_requiredSourceTrackIDs;
-    self->m_requiredSourceTrackIDs = v9;
+    self->m_requiredSourceTrackIDs = allObjects;
 
-    v11 = [(PVInstructionGraphNode *)self->m_outputIGNode requiredSourceSampleDataTrackIDs];
-    v12 = [v11 allObjects];
+    requiredSourceSampleDataTrackIDs = [(PVInstructionGraphNode *)self->m_outputIGNode requiredSourceSampleDataTrackIDs];
+    allObjects2 = [requiredSourceSampleDataTrackIDs allObjects];
     v13 = self->m_requiredSourceSampleDataTrackIDs;
-    self->m_requiredSourceSampleDataTrackIDs = v12;
+    self->m_requiredSourceSampleDataTrackIDs = allObjects2;
 
     if (+[PVEnvironment PV_ENABLE_CHECK_PASSTHRUS]&& [(PVInstructionGraphNode *)self->m_outputIGNode isPassthru])
     {
@@ -95,8 +95,8 @@
   v22 = [MEMORY[0x277CCABB0] numberWithInt:self->m_passthroughTrackID];
   v18[5] = @"requiredSourceTrackIDs";
   v13 = v22;
-  v5 = [(PVVideoCompositionInstruction *)self requiredSourceTrackIDs];
-  if (v5)
+  requiredSourceTrackIDs = [(PVVideoCompositionInstruction *)self requiredSourceTrackIDs];
+  if (requiredSourceTrackIDs)
   {
     [(PVVideoCompositionInstruction *)self requiredSourceTrackIDs];
   }
@@ -108,8 +108,8 @@
   v6 = ;
   v23 = v6;
   v18[6] = @"requiredSourceSampleDataTrackIDs";
-  v7 = [(PVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs];
-  if (v7)
+  requiredSourceSampleDataTrackIDs = [(PVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs];
+  if (requiredSourceSampleDataTrackIDs)
   {
     [(PVVideoCompositionInstruction *)self requiredSourceSampleDataTrackIDs];
   }
@@ -143,18 +143,18 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PVVideoCompositionInstruction *)self videoInstructionDescription];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  videoInstructionDescription = [(PVVideoCompositionInstruction *)self videoInstructionDescription];
+  v4 = [v2 stringWithFormat:@"%@", videoInstructionDescription];
 
   return v4;
 }
 
-- (void)loadInstructionGraphNodes:(HGRef<PVInstructionGraphContext>)a3
+- (void)loadInstructionGraphNodes:(HGRef<PVInstructionGraphContext>)nodes
 {
   m_outputIGNode = self->m_outputIGNode;
   if (m_outputIGNode)
   {
-    v4 = *a3.m_Obj;
+    v4 = *nodes.m_Obj;
     v5 = v4;
     if (v4)
     {
@@ -178,7 +178,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PVVideoCompositionInstruction allocWithZone:?]];
   [(PVVideoCompositionInstruction *)self timeRange];
@@ -188,8 +188,8 @@
   [(PVVideoCompositionInstruction *)v4 setTimeRange:v7];
   [(PVVideoCompositionInstruction *)v4 setEnablePostProcessing:[(PVVideoCompositionInstruction *)self enablePostProcessing]];
   [(PVVideoCompositionInstruction *)v4 setContainsTweening:[(PVVideoCompositionInstruction *)self containsTweening]];
-  v5 = [(PVVideoCompositionInstruction *)self outputNode];
-  [(PVVideoCompositionInstruction *)v4 setOutputNode:v5];
+  outputNode = [(PVVideoCompositionInstruction *)self outputNode];
+  [(PVVideoCompositionInstruction *)v4 setOutputNode:outputNode];
 
   return v4;
 }
@@ -203,11 +203,11 @@
   return self;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->m_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->m_timeRange.duration.timescale = *&range->var1.var1;
   *&self->m_timeRange.start.epoch = v4;
   *&self->m_timeRange.start.value = v3;
 }

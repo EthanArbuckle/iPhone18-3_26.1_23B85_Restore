@@ -1,37 +1,37 @@
 @interface _INPBWorkoutAssociatedItem
-- (BOOL)isEqual:(id)a3;
-- (_INPBWorkoutAssociatedItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBWorkoutAssociatedItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsContentRating:(id)a3;
-- (int)StringAsItemLabel:(id)a3;
+- (int)StringAsContentRating:(id)rating;
+- (int)StringAsItemLabel:(id)label;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContentRating:(int)a3;
-- (void)setHasItemLabel:(BOOL)a3;
-- (void)setItemID:(id)a3;
-- (void)setItemLabel:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContentRating:(int)rating;
+- (void)setHasItemLabel:(BOOL)label;
+- (void)setItemID:(id)d;
+- (void)setItemLabel:(int)label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBWorkoutAssociatedItem
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBWorkoutAssociatedItem *)self hasContentRating])
   {
-    v4 = [(_INPBWorkoutAssociatedItem *)self contentRating];
-    if (v4)
+    contentRating = [(_INPBWorkoutAssociatedItem *)self contentRating];
+    if (contentRating)
     {
-      if (v4 == 1)
+      if (contentRating == 1)
       {
         v5 = @"explicit";
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", contentRating];
       }
     }
 
@@ -40,37 +40,37 @@
       v5 = @"clean";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"contentRating"];
+    [dictionary setObject:v5 forKeyedSubscript:@"contentRating"];
   }
 
   if (self->_itemID)
   {
-    v6 = [(_INPBWorkoutAssociatedItem *)self itemID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"itemID"];
+    itemID = [(_INPBWorkoutAssociatedItem *)self itemID];
+    v7 = [itemID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"itemID"];
   }
 
   if ([(_INPBWorkoutAssociatedItem *)self hasItemLabel])
   {
-    v8 = [(_INPBWorkoutAssociatedItem *)self itemLabel];
-    if (v8 >= 5)
+    itemLabel = [(_INPBWorkoutAssociatedItem *)self itemLabel];
+    if (itemLabel >= 5)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", itemLabel];
     }
 
     else
     {
-      v9 = off_1E7288738[v8];
+      v9 = off_1E7288738[itemLabel];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"itemLabel"];
+    [dictionary setObject:v9 forKeyedSubscript:@"itemLabel"];
   }
 
-  v10 = [(_INPBWorkoutAssociatedItem *)self itemName];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"itemName"];
+  itemName = [(_INPBWorkoutAssociatedItem *)self itemName];
+  dictionaryRepresentation = [itemName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"itemName"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -99,46 +99,46 @@
   return v4 ^ v3 ^ v5 ^ [(_INPBDataString *)self->_itemName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(_INPBWorkoutAssociatedItem *)self hasContentRating];
-  if (v5 != [v4 hasContentRating])
+  hasContentRating = [(_INPBWorkoutAssociatedItem *)self hasContentRating];
+  if (hasContentRating != [equalCopy hasContentRating])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBWorkoutAssociatedItem *)self hasContentRating])
   {
-    if ([v4 hasContentRating])
+    if ([equalCopy hasContentRating])
     {
       contentRating = self->_contentRating;
-      if (contentRating != [v4 contentRating])
+      if (contentRating != [equalCopy contentRating])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBWorkoutAssociatedItem *)self itemID];
-  v8 = [v4 itemID];
-  if ((v7 != 0) == (v8 == 0))
+  itemID = [(_INPBWorkoutAssociatedItem *)self itemID];
+  itemID2 = [equalCopy itemID];
+  if ((itemID != 0) == (itemID2 == 0))
   {
     goto LABEL_19;
   }
 
-  v9 = [(_INPBWorkoutAssociatedItem *)self itemID];
-  if (v9)
+  itemID3 = [(_INPBWorkoutAssociatedItem *)self itemID];
+  if (itemID3)
   {
-    v10 = v9;
-    v11 = [(_INPBWorkoutAssociatedItem *)self itemID];
-    v12 = [v4 itemID];
-    v13 = [v11 isEqual:v12];
+    v10 = itemID3;
+    itemID4 = [(_INPBWorkoutAssociatedItem *)self itemID];
+    itemID5 = [equalCopy itemID];
+    v13 = [itemID4 isEqual:itemID5];
 
     if (!v13)
     {
@@ -150,30 +150,30 @@
   {
   }
 
-  v14 = [(_INPBWorkoutAssociatedItem *)self hasItemLabel];
-  if (v14 != [v4 hasItemLabel])
+  hasItemLabel = [(_INPBWorkoutAssociatedItem *)self hasItemLabel];
+  if (hasItemLabel != [equalCopy hasItemLabel])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBWorkoutAssociatedItem *)self hasItemLabel])
   {
-    if ([v4 hasItemLabel])
+    if ([equalCopy hasItemLabel])
     {
       itemLabel = self->_itemLabel;
-      if (itemLabel != [v4 itemLabel])
+      if (itemLabel != [equalCopy itemLabel])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBWorkoutAssociatedItem *)self itemName];
-  v8 = [v4 itemName];
-  if ((v7 != 0) != (v8 == 0))
+  itemID = [(_INPBWorkoutAssociatedItem *)self itemName];
+  itemID2 = [equalCopy itemName];
+  if ((itemID != 0) != (itemID2 == 0))
   {
-    v16 = [(_INPBWorkoutAssociatedItem *)self itemName];
-    if (!v16)
+    itemName = [(_INPBWorkoutAssociatedItem *)self itemName];
+    if (!itemName)
     {
 
 LABEL_23:
@@ -181,10 +181,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v17 = v16;
-    v18 = [(_INPBWorkoutAssociatedItem *)self itemName];
-    v19 = [v4 itemName];
-    v20 = [v18 isEqual:v19];
+    v17 = itemName;
+    itemName2 = [(_INPBWorkoutAssociatedItem *)self itemName];
+    itemName3 = [equalCopy itemName];
+    v20 = [itemName2 isEqual:itemName3];
 
     if (v20)
     {
@@ -204,7 +204,7 @@ LABEL_21:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBWorkoutAssociatedItem allocWithZone:](_INPBWorkoutAssociatedItem init];
   if ([(_INPBWorkoutAssociatedItem *)self hasContentRating])
@@ -212,7 +212,7 @@ LABEL_21:
     [(_INPBWorkoutAssociatedItem *)v5 setContentRating:[(_INPBWorkoutAssociatedItem *)self contentRating]];
   }
 
-  v6 = [(NSString *)self->_itemID copyWithZone:a3];
+  v6 = [(NSString *)self->_itemID copyWithZone:zone];
   [(_INPBWorkoutAssociatedItem *)v5 setItemID:v6];
 
   if ([(_INPBWorkoutAssociatedItem *)self hasItemLabel])
@@ -220,48 +220,48 @@ LABEL_21:
     [(_INPBWorkoutAssociatedItem *)v5 setItemLabel:[(_INPBWorkoutAssociatedItem *)self itemLabel]];
   }
 
-  v7 = [(_INPBDataString *)self->_itemName copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_itemName copyWithZone:zone];
   [(_INPBWorkoutAssociatedItem *)v5 setItemName:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBWorkoutAssociatedItem *)self data];
+  coderCopy = coder;
+  data = [(_INPBWorkoutAssociatedItem *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBWorkoutAssociatedItem)initWithCoder:(id)a3
+- (_INPBWorkoutAssociatedItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBWorkoutAssociatedItem *)self initWithData:v6];
+    self = [(_INPBWorkoutAssociatedItem *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_INPBWorkoutAssociatedItem *)self hasContentRating])
   {
     contentRating = self->_contentRating;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBWorkoutAssociatedItem *)self itemID];
+  itemID = [(_INPBWorkoutAssociatedItem *)self itemID];
 
-  if (v5)
+  if (itemID)
   {
     itemID = self->_itemID;
     PBDataWriterWriteStringField();
@@ -273,42 +273,42 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_INPBWorkoutAssociatedItem *)self itemName];
+  itemName = [(_INPBWorkoutAssociatedItem *)self itemName];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (itemName)
   {
-    v10 = [(_INPBWorkoutAssociatedItem *)self itemName];
+    itemName2 = [(_INPBWorkoutAssociatedItem *)self itemName];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (int)StringAsItemLabel:(id)a3
+- (int)StringAsItemLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"narrator"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"narrator"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"playlist"])
+  else if ([labelCopy isEqualToString:@"playlist"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"song"])
+  else if ([labelCopy isEqualToString:@"song"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"trainer"])
+  else if ([labelCopy isEqualToString:@"trainer"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"workout"])
+  else if ([labelCopy isEqualToString:@"workout"])
   {
     v4 = 4;
   }
@@ -321,9 +321,9 @@ LABEL_21:
   return v4;
 }
 
-- (void)setHasItemLabel:(BOOL)a3
+- (void)setHasItemLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 2;
   }
@@ -336,10 +336,10 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setItemLabel:(int)a3
+- (void)setItemLabel:(int)label
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (label == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -347,39 +347,39 @@ LABEL_21:
   else
   {
     *&self->_has = has | 2;
-    self->_itemLabel = a3;
+    self->_itemLabel = label;
   }
 }
 
-- (void)setItemID:(id)a3
+- (void)setItemID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   itemID = self->_itemID;
   self->_itemID = v4;
 
   MEMORY[0x1EEE66BB8](v4, itemID);
 }
 
-- (int)StringAsContentRating:(id)a3
+- (int)StringAsContentRating:(id)rating
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"clean"])
+  ratingCopy = rating;
+  if ([ratingCopy isEqualToString:@"clean"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"explicit"];
+    v4 = [ratingCopy isEqualToString:@"explicit"];
   }
 
   return v4;
 }
 
-- (void)setContentRating:(int)a3
+- (void)setContentRating:(int)rating
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (rating == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -387,7 +387,7 @@ LABEL_21:
   else
   {
     *&self->_has = has | 1;
-    self->_contentRating = a3;
+    self->_contentRating = rating;
   }
 }
 

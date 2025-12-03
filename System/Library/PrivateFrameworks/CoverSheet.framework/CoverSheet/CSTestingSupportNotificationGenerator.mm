@@ -1,21 +1,21 @@
 @interface CSTestingSupportNotificationGenerator
 - (id)_nextNotificationRequest;
-- (void)postNewNotificationToDestination:(id)a3;
+- (void)postNewNotificationToDestination:(id)destination;
 @end
 
 @implementation CSTestingSupportNotificationGenerator
 
-- (void)postNewNotificationToDestination:(id)a3
+- (void)postNewNotificationToDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(CSTestingSupportNotificationGenerator *)self _nextNotificationRequest];
-  [v4 postNotificationRequest:v5];
+  destinationCopy = destination;
+  _nextNotificationRequest = [(CSTestingSupportNotificationGenerator *)self _nextNotificationRequest];
+  [destinationCopy postNotificationRequest:_nextNotificationRequest];
 }
 
 - (id)_nextNotificationRequest
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = self->_sequenceNumber + 1;
   self->_sequenceNumber = v4;
   v5 = v4 / 2;
@@ -27,7 +27,7 @@
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"This is test notification #%ld", v4];
   [v6 setMessage:v8];
 
-  [v6 setDate:v3];
+  [v6 setDate:date];
   v9 = objc_alloc_init(MEMORY[0x277D77E18]);
   [v9 setSectionIdentifier:@"com.apple.springboard.coversheet.testing"];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"notification-%ld", v4];
@@ -37,7 +37,7 @@
   [v9 setThreadIdentifier:v11];
 
   [v9 setCategoryIdentifier:@"com.apple.springboard.coversheet.testing.testcategory"];
-  [v9 setTimestamp:v3];
+  [v9 setTimestamp:date];
   v12 = MEMORY[0x277CBEB98];
   v13 = *MEMORY[0x277D77FD8];
   v17[0] = *MEMORY[0x277D77FE0];

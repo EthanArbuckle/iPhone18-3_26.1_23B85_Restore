@@ -1,6 +1,6 @@
 @interface VSTestSetupPreparationOperation
 - (VSTestSetupPreparationOperation)init;
-- (void)addError:(id)a3;
+- (void)addError:(id)error;
 - (void)executionDidBegin;
 @end
 
@@ -39,8 +39,8 @@
   v9[3] = &unk_278B733D8;
   v9[4] = self;
   v3 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v9];
-  v4 = [(VSTestSetupPreparationOperation *)self privateQueue];
-  [v4 addOperation:v3];
+  privateQueue = [(VSTestSetupPreparationOperation *)self privateQueue];
+  [privateQueue addOperation:v3];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -54,8 +54,8 @@
   v7[3] = &unk_278B733D8;
   v7[4] = self;
   [v5 setCompletionBlock:v7];
-  v6 = [(VSTestSetupPreparationOperation *)self privateQueue];
-  [v6 addOperation:v5];
+  privateQueue2 = [(VSTestSetupPreparationOperation *)self privateQueue];
+  [privateQueue2 addOperation:v5];
 }
 
 void __52__VSTestSetupPreparationOperation_executionDidBegin__block_invoke(uint64_t a1)
@@ -210,28 +210,28 @@ uint64_t __52__VSTestSetupPreparationOperation_executionDidBegin__block_invoke_2
   return [*(a1 + 32) finishExecutionIfPossible];
 }
 
-- (void)addError:(id)a3
+- (void)addError:(id)error
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VSTestSetupPreparationOperation *)v4 errors];
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  errors = [(VSTestSetupPreparationOperation *)selfCopy errors];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v7 = MEMORY[0x277CBEAD8];
-    v8 = [(VSTestSetupPreparationOperation *)v4 errors];
+    errors2 = [(VSTestSetupPreparationOperation *)selfCopy errors];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     [v7 raise:*MEMORY[0x277CBE660] format:{@"Unexpectedly, [self errors] was %@, instead of NSMutableArray.", v10}];
   }
 
-  v11 = [(VSTestSetupPreparationOperation *)v4 errors];
-  [v11 addObject:v12];
+  errors3 = [(VSTestSetupPreparationOperation *)selfCopy errors];
+  [errors3 addObject:errorCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __52__VSTestSetupPreparationOperation_executionDidBegin__block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

@@ -1,19 +1,19 @@
 @interface SUUIAbstractEntityProviderViewElement
-- (SUUIAbstractEntityProviderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIAbstractEntityProviderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIAbstractEntityProviderViewElement
 
-- (SUUIAbstractEntityProviderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIAbstractEntityProviderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v19.receiver = self;
   v19.super_class = SUUIAbstractEntityProviderViewElement;
-  v9 = [(SUUIViewElement *)&v19 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v19 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"entityType"];
+    v10 = [elementCopy getAttribute:@"entityType"];
     if ([v10 length])
     {
       v11 = [v10 copy];
@@ -21,7 +21,7 @@
       v9->_entityTypeString = v11;
     }
 
-    v13 = [v8 getAttribute:@"prefetchedProperties"];
+    v13 = [elementCopy getAttribute:@"prefetchedProperties"];
     v14 = [v13 mutableCopy];
 
     [v14 replaceOccurrencesOfString:@" " withString:&stru_286AECDE0 options:1 range:{0, objc_msgSend(v14, "length")}];
@@ -46,22 +46,22 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIAbstractEntityProviderViewElement;
-  v5 = [(SUUIViewElement *)&v14 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v14 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    v7 = [(SUUIAbstractEntityProviderViewElement *)v4 entityTypeString];
-    v8 = [v7 copy];
+    entityTypeString = [(SUUIAbstractEntityProviderViewElement *)elementCopy entityTypeString];
+    v8 = [entityTypeString copy];
     entityTypeString = self->_entityTypeString;
     self->_entityTypeString = v8;
 
-    v10 = [(SUUIAbstractEntityProviderViewElement *)v4 prefetchedProperties];
-    v11 = [v10 copy];
+    prefetchedProperties = [(SUUIAbstractEntityProviderViewElement *)elementCopy prefetchedProperties];
+    v11 = [prefetchedProperties copy];
     prefetchedProperties = self->_prefetchedProperties;
     self->_prefetchedProperties = v11;
   }

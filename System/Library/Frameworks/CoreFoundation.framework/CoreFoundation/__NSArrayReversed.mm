@@ -1,25 +1,25 @@
 @interface __NSArrayReversed
-- (__NSArrayReversed)initWithArray:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (__NSArrayReversed)initWithArray:(id)array;
+- (id)objectAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation __NSArrayReversed
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v15[1] = *MEMORY[0x1E69E9840];
   cnt = self->_cnt;
-  if ((a3 & 0x8000000000000000) != 0 || cnt <= a3)
+  if ((index & 0x8000000000000000) != 0 || cnt <= index)
   {
     v9 = _os_log_pack_size();
     v10 = _os_log_pack_fill();
     if (cnt)
     {
       v12 = cnt - 1;
-      v13 = __os_log_helper_1_2_3_8_32_8_0_8_0(v10, "[__NSArrayReversed objectAtIndex:]", a3, v12);
-      v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v13, "[__NSArrayReversed objectAtIndex:]", a3, v12);
+      v13 = __os_log_helper_1_2_3_8_32_8_0_8_0(v10, "[__NSArrayReversed objectAtIndex:]", index, v12);
+      v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v13, "[__NSArrayReversed objectAtIndex:]", index, v12);
     }
 
     else
@@ -27,8 +27,8 @@
       *v10 = 136315394;
       *(v10 + 4) = "[__NSArrayReversed objectAtIndex:]";
       *(v10 + 12) = 2048;
-      *(v10 + 14) = a3;
-      v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[__NSArrayReversed objectAtIndex:]", a3);
+      *(v10 + 14) = index;
+      v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[__NSArrayReversed objectAtIndex:]", index);
     }
 
     v14 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v11) osLogPack:0 size:v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0), v9];
@@ -37,18 +37,18 @@
 
   array = self->_array;
   v5 = *MEMORY[0x1E69E9840];
-  v6 = cnt + ~a3;
+  v6 = cnt + ~index;
 
   return [array objectAtIndex:v6];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  objectsCopy = objects;
   v26[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4.length)
+  if (!objects && range.length)
   {
     v11 = _os_log_pack_size();
     v12 = v26 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -61,7 +61,7 @@
     goto LABEL_12;
   }
 
-  if (a4.length >> 61)
+  if (range.length >> 61)
   {
     v11 = _os_log_pack_size();
     v12 = v26 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -107,7 +107,7 @@ LABEL_12:
     v9 = ~location;
     do
     {
-      *v6++ = [self->_array objectAtIndex:v9 + self->_cnt];
+      *objectsCopy++ = [self->_array objectAtIndex:v9 + self->_cnt];
       --v9;
       --length;
     }
@@ -118,9 +118,9 @@ LABEL_12:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSArrayReversed)initWithArray:(id)a3
+- (__NSArrayReversed)initWithArray:(id)array
 {
-  v4 = [a3 copy];
+  v4 = [array copy];
   self->_array = v4;
   self->_cnt = [v4 count];
   return self;

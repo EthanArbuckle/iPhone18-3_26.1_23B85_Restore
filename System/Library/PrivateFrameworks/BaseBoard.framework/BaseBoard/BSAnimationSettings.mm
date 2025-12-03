@@ -1,11 +1,11 @@
 @interface BSAnimationSettings
-+ (id)settingsWithDuration:(double)a3;
-+ (id)settingsWithDuration:(double)a3 delay:(double)a4;
-+ (id)settingsWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5;
-+ (id)settingsWithDuration:(double)a3 timingFunction:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BSAnimationSettings)initWithCoder:(id)a3;
-- (BSAnimationSettings)initWithXPCDictionary:(id)a3;
++ (id)settingsWithDuration:(double)duration;
++ (id)settingsWithDuration:(double)duration delay:(double)delay;
++ (id)settingsWithDuration:(double)duration delay:(double)delay timingFunction:(id)function;
++ (id)settingsWithDuration:(double)duration timingFunction:(id)function;
+- (BOOL)isEqual:(id)equal;
+- (BSAnimationSettings)initWithCoder:(id)coder;
+- (BSAnimationSettings)initWithXPCDictionary:(id)dictionary;
 - (CAFrameRateRange)preferredFrameRateRange;
 - (CAMediaTimingFunction)timingFunction;
 - (NSString)description;
@@ -18,23 +18,23 @@
 - (double)frameInterval;
 - (double)initialVelocity;
 - (double)mass;
-- (double)progressAtTime:(double)a3;
+- (double)progressAtTime:(double)time;
 - (double)stiffness;
 - (float)speed;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (uint64_t)_initWithStoredDuration:(int)a3 storedDurationIsDirty:(void *)a4 delay:(int)a5 frameInterval:(double)a6 frameRange:(double)a7 highFrameRateReason:(double)a8 timingFunction:(float)a9 speed:(float)a10 beginTime:(float)a11 mass:(float)a12 stiffness:(double)a13 damping:(uint64_t)a14 epsilon:(uint64_t)a15 initialVelocity:(uint64_t)a16 isSpring:(uint64_t)a17;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (uint64_t)_initWithStoredDuration:(int)duration storedDurationIsDirty:(void *)dirty delay:(int)delay frameInterval:(double)interval frameRange:(double)range highFrameRateReason:(double)reason timingFunction:(float)function speed:(float)self0 beginTime:(float)self1 mass:(float)self2 stiffness:(double)self3 damping:(uint64_t)self4 epsilon:(uint64_t)self5 initialVelocity:(uint64_t)self6 isSpring:(uint64_t)self7;
 - (unint64_t)hash;
 - (unsigned)highFrameRateReason;
-- (void)_lock_applyToCAAnimation:(uint64_t)a1;
-- (void)_setEpsilon:(uint64_t)a1;
-- (void)_setFrameInterval:(uint64_t)a1;
-- (void)_setFrameRange:(float)a3;
-- (void)_setSpeed:(uint64_t)a1;
-- (void)_setTimingFunction:(uint64_t)a1;
-- (void)applyToCAAnimation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)_lock_applyToCAAnimation:(uint64_t)animation;
+- (void)_setEpsilon:(uint64_t)epsilon;
+- (void)_setFrameInterval:(uint64_t)interval;
+- (void)_setFrameRange:(float)range;
+- (void)_setSpeed:(uint64_t)speed;
+- (void)_setTimingFunction:(uint64_t)function;
+- (void)applyToCAAnimation:(id)animation;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BSAnimationSettings
@@ -42,9 +42,9 @@
 - (double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSAnimationSettings *)self _lock_duration];
+  _lock_duration = [(BSAnimationSettings *)self _lock_duration];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_duration;
 }
 
 - (CAFrameRateRange)preferredFrameRateRange
@@ -65,18 +65,18 @@
 
 - (double)_lock_duration
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  os_unfair_lock_assert_owner((a1 + 8));
-  if (*(a1 + 114) == 1 && *(a1 + 112) == 1)
+  os_unfair_lock_assert_owner((self + 8));
+  if (*(self + 114) == 1 && *(self + 112) == 1)
   {
     v2 = objc_autoreleasePoolPush();
     CATransactionClass = getCATransactionClass();
-    v4 = [MEMORY[0x1E696AF00] isMainThread];
-    if (v4)
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+    if (isMainThread)
     {
       [CATransactionClass activate];
     }
@@ -88,11 +88,11 @@
     }
 
     v5 = objc_autoreleasePoolPush();
-    v6 = [getCASpringAnimationClass() animation];
-    [(BSAnimationSettings *)a1 _lock_applyToCAAnimation:v6];
+    animation = [getCASpringAnimationClass() animation];
+    [(BSAnimationSettings *)self _lock_applyToCAAnimation:animation];
 
     objc_autoreleasePoolPop(v5);
-    if ((v4 & 1) == 0)
+    if ((isMainThread & 1) == 0)
     {
       [CATransactionClass commit];
     }
@@ -100,7 +100,7 @@
     objc_autoreleasePoolPop(v2);
   }
 
-  return *(a1 + 16);
+  return *(self + 16);
 }
 
 - (double)delay
@@ -156,8 +156,8 @@
 {
   if (!self->_isSpring)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:741 description:@"cannot call mass if not a spring animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:741 description:@"cannot call mass if not a spring animation"];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -170,8 +170,8 @@
 {
   if (!self->_isSpring)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:749 description:@"cannot call stiffness if not a spring animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:749 description:@"cannot call stiffness if not a spring animation"];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -184,8 +184,8 @@
 {
   if (!self->_isSpring)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:757 description:@"cannot call damping if not a spring animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:757 description:@"cannot call damping if not a spring animation"];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -198,8 +198,8 @@
 {
   if (!self->_isSpring)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:773 description:@"cannot call initialVelocity if not a spring animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:773 description:@"cannot call initialVelocity if not a spring animation"];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -252,8 +252,8 @@
 {
   if (!self->_isSpring)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:765 description:@"cannot call epsilon if not a spring animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings.m" lineNumber:765 description:@"cannot call epsilon if not a spring animation"];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -262,24 +262,24 @@
   return lock_epsilon;
 }
 
-- (uint64_t)_initWithStoredDuration:(int)a3 storedDurationIsDirty:(void *)a4 delay:(int)a5 frameInterval:(double)a6 frameRange:(double)a7 highFrameRateReason:(double)a8 timingFunction:(float)a9 speed:(float)a10 beginTime:(float)a11 mass:(float)a12 stiffness:(double)a13 damping:(uint64_t)a14 epsilon:(uint64_t)a15 initialVelocity:(uint64_t)a16 isSpring:(uint64_t)a17
+- (uint64_t)_initWithStoredDuration:(int)duration storedDurationIsDirty:(void *)dirty delay:(int)delay frameInterval:(double)interval frameRange:(double)range highFrameRateReason:(double)reason timingFunction:(float)function speed:(float)self0 beginTime:(float)self1 mass:(float)self2 stiffness:(double)self3 damping:(uint64_t)self4 epsilon:(uint64_t)self5 initialVelocity:(uint64_t)self6 isSpring:(uint64_t)self7
 {
-  v34 = a4;
-  if (!a1)
+  dirtyCopy = dirty;
+  if (!self)
   {
     v39 = 0;
     goto LABEL_13;
   }
 
   v35 = objc_opt_class();
-  if (a5)
+  if (delay)
   {
     if (v35 != objc_opt_class())
     {
       if (v35 != objc_opt_class())
       {
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v36 handleFailureInMethod:sel__initWithStoredDuration_storedDurationIsDirty_delay_frameInterval_frameRange_highFrameRateReason_timingFunction_speed_beginTime_mass_stiffness_damping_epsilon_initialVelocity_isSpring_ object:a1 file:@"BSAnimationSettings.m" lineNumber:85 description:{@"invalid class type: %@", v35}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__initWithStoredDuration_storedDurationIsDirty_delay_frameInterval_frameRange_highFrameRateReason_timingFunction_speed_beginTime_mass_stiffness_damping_epsilon_initialVelocity_isSpring_ object:self file:@"BSAnimationSettings.m" lineNumber:85 description:{@"invalid class type: %@", v35}];
 LABEL_15:
 
         goto LABEL_8;
@@ -300,15 +300,15 @@ LABEL_9:
 
   if (v35 != objc_opt_class())
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:sel__initWithStoredDuration_storedDurationIsDirty_delay_frameInterval_frameRange_highFrameRateReason_timingFunction_speed_beginTime_mass_stiffness_damping_epsilon_initialVelocity_isSpring_ object:a1 file:@"BSAnimationSettings.m" lineNumber:91 description:{@"invalid class type: %@", v35}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__initWithStoredDuration_storedDurationIsDirty_delay_frameInterval_frameRange_highFrameRateReason_timingFunction_speed_beginTime_mass_stiffness_damping_epsilon_initialVelocity_isSpring_ object:self file:@"BSAnimationSettings.m" lineNumber:91 description:{@"invalid class type: %@", v35}];
     goto LABEL_15;
   }
 
 LABEL_8:
   v37 = 0;
 LABEL_10:
-  v41.receiver = a1;
+  v41.receiver = self;
   v41.super_class = BSAnimationSettings;
   v38 = objc_msgSendSuper2(&v41, sel_init);
   v39 = v38;
@@ -316,22 +316,22 @@ LABEL_10:
   {
     *(v38 + 2) = 0;
     *(v38 + 113) = v37;
-    *(v38 + 114) = a5;
+    *(v38 + 114) = delay;
     *(v38 + 112) = a2;
-    *(v38 + 2) = a6;
-    *(v38 + 3) = a7;
-    *(v38 + 4) = a8;
-    *(v38 + 10) = a9;
-    *(v38 + 11) = a10;
-    *(v38 + 12) = a11;
-    *(v38 + 13) = a3;
-    objc_storeStrong(v38 + 7, a4);
+    *(v38 + 2) = interval;
+    *(v38 + 3) = range;
+    *(v38 + 4) = reason;
+    *(v38 + 10) = function;
+    *(v38 + 11) = speed;
+    *(v38 + 12) = time;
+    *(v38 + 13) = duration;
+    objc_storeStrong(v38 + 7, dirty);
     [(BSAnimationSettings *)v39 _setTimingFunction:?];
-    *(v39 + 12) = a12;
-    *(v39 + 64) = a13;
+    *(v39 + 12) = mass;
+    *(v39 + 64) = stiffness;
     if (*(v39 + 114) == 1)
     {
-      *(v39 + 72) = a17;
+      *(v39 + 72) = spring;
       *(v39 + 80) = a18;
       *(v39 + 88) = a19;
       *(v39 + 96) = a20;
@@ -345,14 +345,14 @@ LABEL_13:
   return v39;
 }
 
-- (void)_setTimingFunction:(uint64_t)a1
+- (void)_setTimingFunction:(uint64_t)function
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (function)
   {
-    if (!v3 && (*(a1 + 114) & 1) != 0)
+    if (!v3 && (*(function + 114) & 1) != 0)
     {
       CAMediaTimingFunctionClass = getCAMediaTimingFunctionClass();
       v17 = 0;
@@ -376,9 +376,9 @@ LABEL_13:
       _Block_object_dispose(&v17, 8);
       if (!v6)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkCAMediaTimingFunctionLinear(void)"];
-        [v13 handleFailureInFunction:v14 file:@"BSAnimationSettings.m" lineNumber:24 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v14 file:@"BSAnimationSettings.m" lineNumber:24 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
@@ -387,8 +387,8 @@ LABEL_13:
       v4 = [CAMediaTimingFunctionClass functionWithName:v8];
     }
 
-    os_unfair_lock_lock((a1 + 8));
-    v9 = *(a1 + 56);
+    os_unfair_lock_lock((function + 8));
+    v9 = *(function + 56);
     if (v9 != v4)
     {
       if (v9 && v4)
@@ -400,7 +400,7 @@ LABEL_13:
           v12 = v10;
           v15[0] = 0;
           v17 = 0;
-          [*(a1 + 56) getControlPointAtIndex:v11 values:v15];
+          [*(function + 56) getControlPointAtIndex:v11 values:v15];
           [v4 getControlPointAtIndex:v11 values:&v17];
           if (vabds_f32(*v15, *&v17) >= 0.00000011921 || vabds_f32(*(v15 + 1), *(&v17 + 1)) >= 0.00000011921)
           {
@@ -416,18 +416,18 @@ LABEL_13:
         }
       }
 
-      objc_storeStrong((a1 + 56), v4);
-      *(a1 + 112) = 1;
+      objc_storeStrong((function + 56), v4);
+      *(function + 112) = 1;
     }
 
 LABEL_17:
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((function + 8));
   }
 }
 
-- (void)_setEpsilon:(uint64_t)a1
+- (void)_setEpsilon:(uint64_t)epsilon
 {
-  if (a1)
+  if (epsilon)
   {
     v3 = fabs(a2);
     v4 = fmin(fmax(a2, 0.0001), 0.5);
@@ -441,52 +441,52 @@ LABEL_17:
       v5 = 0.001;
     }
 
-    os_unfair_lock_lock((a1 + 8));
-    if (vabdd_f64(*(a1 + 96), v5) >= 2.22044605e-16)
+    os_unfair_lock_lock((epsilon + 8));
+    if (vabdd_f64(*(epsilon + 96), v5) >= 2.22044605e-16)
     {
-      *(a1 + 96) = v5;
-      *(a1 + 112) = 1;
+      *(epsilon + 96) = v5;
+      *(epsilon + 112) = 1;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((epsilon + 8));
   }
 }
 
-+ (id)settingsWithDuration:(double)a3
++ (id)settingsWithDuration:(double)duration
 {
-  v4 = [a1 alloc];
-  v8 = [(BSAnimationSettings *)v4 _initWithStoredDuration:0 storedDurationIsDirty:0 delay:0 frameInterval:a3 frameRange:0.0 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v5 epsilon:v6 initialVelocity:v7 isSpring:0, 0, 0, 0.0, 0];
+  v4 = [self alloc];
+  v8 = [(BSAnimationSettings *)v4 _initWithStoredDuration:0 storedDurationIsDirty:0 delay:0 frameInterval:duration frameRange:0.0 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v5 epsilon:v6 initialVelocity:v7 isSpring:0, 0, 0, 0.0, 0];
 
   return v8;
 }
 
-+ (id)settingsWithDuration:(double)a3 timingFunction:(id)a4
++ (id)settingsWithDuration:(double)duration timingFunction:(id)function
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v11 = [(BSAnimationSettings *)v7 _initWithStoredDuration:0 storedDurationIsDirty:v6 delay:0 frameInterval:a3 frameRange:0.0 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v8 epsilon:v9 initialVelocity:v10 isSpring:0, 0, 0, 0.0, 0];
+  functionCopy = function;
+  v7 = [self alloc];
+  v11 = [(BSAnimationSettings *)v7 _initWithStoredDuration:0 storedDurationIsDirty:functionCopy delay:0 frameInterval:duration frameRange:0.0 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v8 epsilon:v9 initialVelocity:v10 isSpring:0, 0, 0, 0.0, 0];
 
   return v11;
 }
 
-+ (id)settingsWithDuration:(double)a3 delay:(double)a4
++ (id)settingsWithDuration:(double)duration delay:(double)delay
 {
-  v6 = [a1 alloc];
-  v10 = [(BSAnimationSettings *)v6 _initWithStoredDuration:0 storedDurationIsDirty:0 delay:0 frameInterval:a3 frameRange:a4 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v7 epsilon:v8 initialVelocity:v9 isSpring:0, 0, 0, 0.0, 0];
+  v6 = [self alloc];
+  v10 = [(BSAnimationSettings *)v6 _initWithStoredDuration:0 storedDurationIsDirty:0 delay:0 frameInterval:duration frameRange:delay highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v7 epsilon:v8 initialVelocity:v9 isSpring:0, 0, 0, 0.0, 0];
 
   return v10;
 }
 
-+ (id)settingsWithDuration:(double)a3 delay:(double)a4 timingFunction:(id)a5
++ (id)settingsWithDuration:(double)duration delay:(double)delay timingFunction:(id)function
 {
-  v8 = a5;
-  v9 = [a1 alloc];
-  v13 = [(BSAnimationSettings *)v9 _initWithStoredDuration:0 storedDurationIsDirty:v8 delay:0 frameInterval:a3 frameRange:a4 highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v10 epsilon:v11 initialVelocity:v12 isSpring:0, 0, 0, 0.0, 0];
+  functionCopy = function;
+  v9 = [self alloc];
+  v13 = [(BSAnimationSettings *)v9 _initWithStoredDuration:0 storedDurationIsDirty:functionCopy delay:0 frameInterval:duration frameRange:delay highFrameRateReason:0.0 timingFunction:0.0 speed:0.0 beginTime:0.0 mass:1.0 stiffness:0.0 damping:v10 epsilon:v11 initialVelocity:v12 isSpring:0, 0, 0, 0.0, 0];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   if (self->_mutable)
@@ -498,7 +498,7 @@ LABEL_17:
       v4 = off_1E72CA300;
     }
 
-    v5 = [(__objc2_class *)*v4 allocWithZone:a3];
+    v5 = [(__objc2_class *)*v4 allocWithZone:zone];
     v9 = [(BSAnimationSettings *)v5 _initWithStoredDuration:self->_lock_highFrameRateReason storedDurationIsDirty:self->_lock_timingFunction delay:self->_isSpring frameInterval:self->_lock_storedDuration frameRange:self->_lock_delay highFrameRateReason:self->_lock_frameInterval timingFunction:self->_lock_frameRange.minimum speed:self->_lock_frameRange.maximum beginTime:self->_lock_frameRange.preferred mass:self->_lock_speed stiffness:self->_lock_beginTime damping:v6 epsilon:v7 initialVelocity:v8 isSpring:*&self->_lock_mass, *&self->_lock_stiffness, *&self->_lock_damping, self->_lock_epsilon, *&self->_lock_initialVelocity];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -512,7 +512,7 @@ LABEL_17:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = off_1E72CA468;
@@ -521,45 +521,45 @@ LABEL_17:
     v5 = off_1E72CA420;
   }
 
-  v6 = [(__objc2_class *)*v5 allocWithZone:a3];
+  v6 = [(__objc2_class *)*v5 allocWithZone:zone];
   v10 = [(BSAnimationSettings *)v6 _initWithStoredDuration:self->_lock_highFrameRateReason storedDurationIsDirty:self->_lock_timingFunction delay:self->_isSpring frameInterval:self->_lock_storedDuration frameRange:self->_lock_delay highFrameRateReason:self->_lock_frameInterval timingFunction:self->_lock_frameRange.minimum speed:self->_lock_frameRange.maximum beginTime:self->_lock_frameRange.preferred mass:self->_lock_speed stiffness:self->_lock_beginTime damping:v7 epsilon:v8 initialVelocity:v9 isSpring:*&self->_lock_mass, *&self->_lock_stiffness, *&self->_lock_damping, self->_lock_epsilon, *&self->_lock_initialVelocity];
 
   os_unfair_lock_unlock(&self->_lock);
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_isSpring || !self->_lock_storedDurationIsDirty)
   {
-    [v4 encodeDouble:@"l" forKey:-[BSAnimationSettings _lock_duration](self)];
+    [coderCopy encodeDouble:@"l" forKey:-[BSAnimationSettings _lock_duration](self)];
   }
 
   if (self->_lock_delay != 0.0)
   {
-    [v4 encodeDouble:@"w" forKey:?];
+    [coderCopy encodeDouble:@"w" forKey:?];
   }
 
   if (self->_lock_frameInterval != 0.0)
   {
-    [v4 encodeDouble:@"f" forKey:?];
+    [coderCopy encodeDouble:@"f" forKey:?];
   }
 
   minimum = self->_lock_frameRange.minimum;
   if (minimum != 0.0 || self->_lock_frameRange.maximum != 0.0 || self->_lock_frameRange.preferred != 0.0)
   {
-    [v4 encodeInt:minimum forKey:@"fl"];
-    [v4 encodeInt:self->_lock_frameRange.maximum forKey:@"fh"];
-    [v4 encodeInt:self->_lock_frameRange.preferred forKey:@"fp"];
+    [coderCopy encodeInt:minimum forKey:@"fl"];
+    [coderCopy encodeInt:self->_lock_frameRange.maximum forKey:@"fh"];
+    [coderCopy encodeInt:self->_lock_frameRange.preferred forKey:@"fp"];
   }
 
   lock_highFrameRateReason = self->_lock_highFrameRateReason;
   if (lock_highFrameRateReason)
   {
-    [v4 encodeInt32:lock_highFrameRateReason forKey:@"fr"];
+    [coderCopy encodeInt32:lock_highFrameRateReason forKey:@"fr"];
   }
 
   lock_timingFunction = self->_lock_timingFunction;
@@ -572,61 +572,61 @@ LABEL_17:
     for (i = 0; i != 4; ++i)
     {
       LODWORD(v8) = *(&v12[-1] + i);
-      [v4 encodeFloat:kBSAnimationSettingsTimingPointsStrings[i] forKey:v8];
+      [coderCopy encodeFloat:kBSAnimationSettingsTimingPointsStrings[i] forKey:v8];
     }
   }
 
   lock_speed = self->_lock_speed;
   if (lock_speed != 1.0)
   {
-    [v4 encodeDouble:@"p" forKey:lock_speed];
+    [coderCopy encodeDouble:@"p" forKey:lock_speed];
   }
 
   if (self->_lock_beginTime != 0.0)
   {
-    [v4 encodeDouble:@"t" forKey:?];
+    [coderCopy encodeDouble:@"t" forKey:?];
   }
 
   if (self->_isSpring)
   {
     if (self->_lock_mass != 0.0)
     {
-      [v4 encodeDouble:@"m" forKey:?];
+      [coderCopy encodeDouble:@"m" forKey:?];
     }
 
     if (self->_lock_stiffness != 0.0)
     {
-      [v4 encodeDouble:@"s" forKey:?];
+      [coderCopy encodeDouble:@"s" forKey:?];
     }
 
     if (self->_lock_damping != 0.0)
     {
-      [v4 encodeDouble:@"d" forKey:?];
+      [coderCopy encodeDouble:@"d" forKey:?];
     }
 
-    [v4 encodeDouble:@"e" forKey:self->_lock_epsilon];
+    [coderCopy encodeDouble:@"e" forKey:self->_lock_epsilon];
     if (self->_lock_initialVelocity != 0.0)
     {
-      [v4 encodeDouble:@"v" forKey:?];
+      [coderCopy encodeDouble:@"v" forKey:?];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BSAnimationSettings)initWithCoder:(id)a3
+- (BSAnimationSettings)initWithCoder:(id)coder
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8 = v4;
+  coderCopy = coder;
+  v8 = coderCopy;
   v53 = 0;
-  if (v4)
+  if (coderCopy)
   {
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __37__BSAnimationSettings_initWithCoder___block_invoke;
     v51[3] = &unk_1E72CB910;
-    v9 = v4;
+    v9 = coderCopy;
     v52 = v9;
     v10 = MEMORY[0x193AE5AC0](v51);
     v11 = (v10)[2](v10, @"l", &v53 + 1, 0.0);
@@ -737,20 +737,20 @@ double __37__BSAnimationSettings_initWithCoder___block_invoke(uint64_t a1, void 
   return a4;
 }
 
-- (BSAnimationSettings)initWithXPCDictionary:(id)a3
+- (BSAnimationSettings)initWithXPCDictionary:(id)dictionary
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v72 = 0;
-  v69 = v4;
-  if (v4)
+  v69 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v68 = self;
+    selfCopy = self;
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __45__BSAnimationSettings_initWithXPCDictionary___block_invoke;
     v70[3] = &unk_1E72CB938;
-    v8 = v4;
+    v8 = dictionaryCopy;
     v71 = v8;
     v9 = MEMORY[0x193AE5AC0](v70);
     v10 = (v9)[2](v9, "l", &v72 + 1, 0.0);
@@ -893,7 +893,7 @@ LABEL_49:
               v25 = v59;
               v21 = v72;
               v28 = HIBYTE(v72) ^ 1;
-              self = v68;
+              self = selfCopy;
               v36 = v66;
               v37 = v67;
               v35 = v65;
@@ -994,30 +994,30 @@ double __45__BSAnimationSettings_initWithXPCDictionary___block_invoke(uint64_t a
   return value;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  if (v4)
+  if (dictionaryCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     if (!self->_isSpring || !self->_lock_storedDurationIsDirty)
     {
-      v5 = [(BSAnimationSettings *)self _lock_duration];
-      xpc_dictionary_set_double(v4, "l", v5);
+      _lock_duration = [(BSAnimationSettings *)self _lock_duration];
+      xpc_dictionary_set_double(dictionaryCopy, "l", _lock_duration);
     }
 
     lock_delay = self->_lock_delay;
     if (lock_delay != 0.0)
     {
-      xpc_dictionary_set_double(v4, "w", lock_delay);
+      xpc_dictionary_set_double(dictionaryCopy, "w", lock_delay);
     }
 
     lock_frameInterval = self->_lock_frameInterval;
     if (lock_frameInterval != 0.0)
     {
-      xpc_dictionary_set_double(v4, "f", lock_frameInterval);
+      xpc_dictionary_set_double(dictionaryCopy, "f", lock_frameInterval);
     }
 
     if (self->_lock_frameRange.minimum != 0.0 || self->_lock_frameRange.maximum != 0.0 || self->_lock_frameRange.preferred != 0.0)
@@ -1032,13 +1032,13 @@ double __45__BSAnimationSettings_initWithXPCDictionary___block_invoke(uint64_t a
       v11 = xpc_int64_create(self->_lock_frameRange.preferred);
       xpc_array_append_value(v8, v11);
 
-      xpc_dictionary_set_value(v4, "r", v8);
+      xpc_dictionary_set_value(dictionaryCopy, "r", v8);
     }
 
     lock_highFrameRateReason = self->_lock_highFrameRateReason;
     if (lock_highFrameRateReason)
     {
-      xpc_dictionary_set_int64(v4, "x", lock_highFrameRateReason);
+      xpc_dictionary_set_int64(dictionaryCopy, "x", lock_highFrameRateReason);
     }
 
     lock_timingFunction = self->_lock_timingFunction;
@@ -1055,19 +1055,19 @@ double __45__BSAnimationSettings_initWithXPCDictionary___block_invoke(uint64_t a
         xpc_array_append_value(v14, v16);
       }
 
-      xpc_dictionary_set_value(v4, "t", v14);
+      xpc_dictionary_set_value(dictionaryCopy, "t", v14);
     }
 
     lock_speed = self->_lock_speed;
     if (lock_speed != 1.0)
     {
-      xpc_dictionary_set_double(v4, "p", lock_speed);
+      xpc_dictionary_set_double(dictionaryCopy, "p", lock_speed);
     }
 
     lock_beginTime = self->_lock_beginTime;
     if (lock_beginTime != 0.0)
     {
-      xpc_dictionary_set_double(v4, "t0", lock_beginTime);
+      xpc_dictionary_set_double(dictionaryCopy, "t0", lock_beginTime);
     }
 
     if (self->_isSpring)
@@ -1075,26 +1075,26 @@ double __45__BSAnimationSettings_initWithXPCDictionary___block_invoke(uint64_t a
       lock_mass = self->_lock_mass;
       if (lock_mass != 0.0)
       {
-        xpc_dictionary_set_double(v4, "m", lock_mass);
+        xpc_dictionary_set_double(dictionaryCopy, "m", lock_mass);
       }
 
       lock_stiffness = self->_lock_stiffness;
       if (lock_stiffness != 0.0)
       {
-        xpc_dictionary_set_double(v4, "s", lock_stiffness);
+        xpc_dictionary_set_double(dictionaryCopy, "s", lock_stiffness);
       }
 
       lock_damping = self->_lock_damping;
       if (lock_damping != 0.0)
       {
-        xpc_dictionary_set_double(v4, "d", lock_damping);
+        xpc_dictionary_set_double(dictionaryCopy, "d", lock_damping);
       }
 
-      xpc_dictionary_set_double(v4, "e", self->_lock_epsilon);
+      xpc_dictionary_set_double(dictionaryCopy, "e", self->_lock_epsilon);
       lock_initialVelocity = self->_lock_initialVelocity;
       if (lock_initialVelocity != 0.0)
       {
-        xpc_dictionary_set_double(v4, "v", lock_initialVelocity);
+        xpc_dictionary_set_double(dictionaryCopy, "v", lock_initialVelocity);
       }
     }
 
@@ -1102,65 +1102,65 @@ double __45__BSAnimationSettings_initWithXPCDictionary___block_invoke(uint64_t a
   }
 }
 
-- (void)_lock_applyToCAAnimation:(uint64_t)a1
+- (void)_lock_applyToCAAnimation:(uint64_t)animation
 {
   v3 = a2;
-  if (!a1 || (os_unfair_lock_assert_owner((a1 + 8)), !v3))
+  if (!animation || (os_unfair_lock_assert_owner((animation + 8)), !v3))
   {
 LABEL_24:
 
     return;
   }
 
-  if (*(a1 + 56))
+  if (*(animation + 56))
   {
     [v3 setTimingFunction:?];
   }
 
-  if (*(a1 + 32) != 0.0)
+  if (*(animation + 32) != 0.0)
   {
     [v3 setFrameInterval:?];
   }
 
-  if (*(a1 + 40) != 0.0 || *(a1 + 44) != 0.0 || *(a1 + 48) != 0.0)
+  if (*(animation + 40) != 0.0 || *(animation + 44) != 0.0 || *(animation + 48) != 0.0)
   {
     [v3 setPreferredFrameRateRange:?];
   }
 
-  if (*(a1 + 52) | [v3 highFrameRateReason])
+  if (*(animation + 52) | [v3 highFrameRateReason])
   {
     [v3 setHighFrameRateReason:?];
   }
 
-  v4 = *(a1 + 64);
+  v4 = *(animation + 64);
   if (v4 == 0.0)
   {
 LABEL_18:
-    if (*(a1 + 114) == 1 && (getCASpringAnimationClass(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (*(animation + 114) == 1 && (getCASpringAnimationClass(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = v3;
-      LODWORD(v8) = *(a1 + 12);
+      LODWORD(v8) = *(animation + 12);
       [v7 setSpeed:v8];
-      [v7 setMass:*(a1 + 72)];
-      [v7 setStiffness:*(a1 + 80)];
-      [v7 setDamping:*(a1 + 88)];
-      [v7 setInitialVelocity:*(a1 + 104)];
-      if (*(a1 + 112) == 1)
+      [v7 setMass:*(animation + 72)];
+      [v7 setStiffness:*(animation + 80)];
+      [v7 setDamping:*(animation + 88)];
+      [v7 setInitialVelocity:*(animation + 104)];
+      if (*(animation + 112) == 1)
       {
-        [v7 durationForEpsilon:*(a1 + 96)];
-        *(a1 + 16) = v9;
-        *(a1 + 112) = 0;
+        [v7 durationForEpsilon:*(animation + 96)];
+        *(animation + 16) = v9;
+        *(animation + 112) = 0;
       }
 
-      [(BSAnimationSettings *)a1 _lock_duration];
+      [(BSAnimationSettings *)animation _lock_duration];
       [v7 setDuration:?];
     }
 
     else
     {
-      LODWORD(v4) = *(a1 + 12);
+      LODWORD(v4) = *(animation + 12);
       [v3 setSpeed:v4];
-      [(BSAnimationSettings *)a1 _lock_duration];
+      [(BSAnimationSettings *)animation _lock_duration];
       [v3 setDuration:?];
     }
 
@@ -1188,74 +1188,74 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkCAAnimationNonZero(void)"];
-  [v10 handleFailureInFunction:v11 file:@"BSAnimationSettings.m" lineNumber:25 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v11 file:@"BSAnimationSettings.m" lineNumber:25 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)_setFrameInterval:(uint64_t)a1
+- (void)_setFrameInterval:(uint64_t)interval
 {
-  if (a1)
+  if (interval)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (vabdd_f64(*(a1 + 32), a2) >= 2.22044605e-16)
+    os_unfair_lock_lock((interval + 8));
+    if (vabdd_f64(*(interval + 32), a2) >= 2.22044605e-16)
     {
-      *(a1 + 32) = a2;
-      *(a1 + 112) = 1;
+      *(interval + 32) = a2;
+      *(interval + 112) = 1;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((interval + 8));
   }
 }
 
-- (void)_setFrameRange:(float)a3
+- (void)_setFrameRange:(float)range
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (*(a1 + 40) != a2 || *(a1 + 44) != a3 || *(a1 + 48) != a4)
+    os_unfair_lock_lock((self + 8));
+    if (*(self + 40) != a2 || *(self + 44) != range || *(self + 48) != a4)
     {
-      *(a1 + 40) = a2;
-      *(a1 + 44) = a3;
-      *(a1 + 48) = a4;
-      *(a1 + 112) = 1;
+      *(self + 40) = a2;
+      *(self + 44) = range;
+      *(self + 48) = a4;
+      *(self + 112) = 1;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 }
 
-- (void)_setSpeed:(uint64_t)a1
+- (void)_setSpeed:(uint64_t)speed
 {
-  if (a1)
+  if (speed)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (vabds_f32(*(a1 + 12), a2) >= 0.00000011921)
+    os_unfair_lock_lock((speed + 8));
+    if (vabds_f32(*(speed + 12), a2) >= 0.00000011921)
     {
-      *(a1 + 12) = a2;
-      *(a1 + 112) = 1;
+      *(speed + 12) = a2;
+      *(speed + 112) = 1;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((speed + 8));
   }
 }
 
-- (void)applyToCAAnimation:(id)a3
+- (void)applyToCAAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   os_unfair_lock_lock(&self->_lock);
-  [(BSAnimationSettings *)self _lock_applyToCAAnimation:v4];
+  [(BSAnimationSettings *)self _lock_applyToCAAnimation:animationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (double)progressAtTime:(double)a3
+- (double)progressAtTime:(double)time
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = 0.0;
-  if (self->_lock_delay <= a3)
+  if (self->_lock_delay <= time)
   {
     v6 = objc_autoreleasePoolPush();
     if (self->_isSpring)
@@ -1273,25 +1273,25 @@ LABEL_18:
         [CATransactionClass activateBackground:1];
       }
 
-      v8 = [getCASpringAnimationClass() animation];
-      [(BSAnimationSettings *)self _lock_applyToCAAnimation:v8];
+      animation = [getCASpringAnimationClass() animation];
+      [(BSAnimationSettings *)self _lock_applyToCAAnimation:animation];
     }
 
     else
     {
-      v8 = 0;
+      animation = 0;
       CATransactionClass = 0;
     }
 
-    v9 = [(BSAnimationSettings *)self _lock_duration];
+    _lock_duration = [(BSAnimationSettings *)self _lock_duration];
     lock_delay = self->_lock_delay;
     v5 = 1.0;
-    if (v9 + lock_delay > a3)
+    if (_lock_duration + lock_delay > time)
     {
       v5 = 0.0;
-      if (v9 > 0.0)
+      if (_lock_duration > 0.0)
       {
-        v11 = fmax((a3 - lock_delay) / v9, 0.0);
+        v11 = fmax((time - lock_delay) / _lock_duration, 0.0);
         v5 = fmin(v11, 1.0);
         lock_timingFunction = self->_lock_timingFunction;
         if (lock_timingFunction)
@@ -1302,10 +1302,10 @@ LABEL_18:
           v5 = fmin(v11, 1.0);
         }
 
-        if (v8)
+        if (animation)
         {
           *&v11 = v5;
-          [v8 _solveForInput:v11];
+          [animation _solveForInput:v11];
           v5 = v14;
         }
       }
@@ -1374,13 +1374,13 @@ LABEL_18:
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   p_lock = &self->_lock;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  if (self == v4)
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1390,7 +1390,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (self->_isSpring != v6->_isSpring)
       {
@@ -1418,8 +1418,8 @@ LABEL_41:
       os_unfair_lock_assert_owner(&v10->_lock);
       if (!self->_isSpring)
       {
-        v11 = [(BSAnimationSettings *)self _lock_duration];
-        if (vabdd_f64(v11, [(BSAnimationSettings *)v10 _lock_duration]) >= 2.22044605e-16)
+        _lock_duration = [(BSAnimationSettings *)self _lock_duration];
+        if (vabdd_f64(_lock_duration, [(BSAnimationSettings *)v10 _lock_duration]) >= 2.22044605e-16)
         {
           goto LABEL_34;
         }

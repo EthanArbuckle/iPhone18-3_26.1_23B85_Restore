@@ -7,16 +7,16 @@
 - (id)afui_insertionContext
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [a1 encodedClassName];
-  if (v3)
+  encodedClassName = [self encodedClassName];
+  if (encodedClassName)
   {
-    [v2 setObject:v3 forKey:*MEMORY[0x277D48B30]];
+    [v2 setObject:encodedClassName forKey:*MEMORY[0x277D48B30]];
   }
 
-  v4 = [a1 dialogIdentifier];
-  if (v4)
+  dialogIdentifier = [self dialogIdentifier];
+  if (dialogIdentifier)
   {
-    [v2 setObject:v4 forKey:*MEMORY[0x277D48B38]];
+    [v2 setObject:dialogIdentifier forKey:*MEMORY[0x277D48B38]];
   }
 
   return v2;

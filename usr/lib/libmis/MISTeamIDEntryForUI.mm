@@ -1,6 +1,6 @@
 @interface MISTeamIDEntryForUI
-- (BOOL)isEqual:(id)a3;
-- (MISTeamIDEntryForUI)initWithTeamID:(id)a3 teamName:(id)a4 trusted:(BOOL)a5 hasAuxiliarySignature:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (MISTeamIDEntryForUI)initWithTeamID:(id)d teamName:(id)name trusted:(BOOL)trusted hasAuxiliarySignature:(BOOL)signature;
 - (unint64_t)hash;
 @end
 
@@ -18,12 +18,12 @@
   return v16 ^ hasAuxiliarySignature;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_teamID(self, v6, v7);
     v11 = objc_msgSend_teamID(v5, v9, v10);
     if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -56,20 +56,20 @@
   return v27;
 }
 
-- (MISTeamIDEntryForUI)initWithTeamID:(id)a3 teamName:(id)a4 trusted:(BOOL)a5 hasAuxiliarySignature:(BOOL)a6
+- (MISTeamIDEntryForUI)initWithTeamID:(id)d teamName:(id)name trusted:(BOOL)trusted hasAuxiliarySignature:(BOOL)signature
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = MISTeamIDEntryForUI;
   v13 = [(MISTeamIDEntryForUI *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_teamID, a3);
-    objc_storeStrong(&v14->_teamName, a4);
-    v14->_trusted = a5;
-    v14->_hasAuxiliarySignature = a6;
+    objc_storeStrong(&v13->_teamID, d);
+    objc_storeStrong(&v14->_teamName, name);
+    v14->_trusted = trusted;
+    v14->_hasAuxiliarySignature = signature;
   }
 
   return v14;

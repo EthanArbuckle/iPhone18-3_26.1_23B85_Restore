@@ -1,26 +1,26 @@
 @interface ACCVoiceOverServer
 + (id)sharedServer;
-- (ACCVoiceOverServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (void)accessoryVoiceOverAttached:(id)a3;
-- (void)accessoryVoiceOverDetached:(id)a3;
-- (void)accessoryVoiceOverStartCursorInformationUpdate:(id)a3;
-- (void)accessoryVoiceOverStartInformationUpdate:(id)a3;
-- (void)accessoryVoiceOverStopCursorInformationUpdate:(id)a3;
-- (void)accessoryVoiceOverStopInformationUpdate:(id)a3;
+- (ACCVoiceOverServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (void)accessoryVoiceOverAttached:(id)attached;
+- (void)accessoryVoiceOverDetached:(id)detached;
+- (void)accessoryVoiceOverStartCursorInformationUpdate:(id)update;
+- (void)accessoryVoiceOverStartInformationUpdate:(id)update;
+- (void)accessoryVoiceOverStopCursorInformationUpdate:(id)update;
+- (void)accessoryVoiceOverStopInformationUpdate:(id)update;
 - (void)dealloc;
-- (void)iterateAttachedConnectionsSync:(id)a3;
+- (void)iterateAttachedConnectionsSync:(id)sync;
 @end
 
 @implementation ACCVoiceOverServer
 
-- (ACCVoiceOverServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCVoiceOverServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ACCVoiceOverServer;
-  v7 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -50,9 +50,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = nameCopy;
     v17 = 2080;
-    v18 = a4;
+    notificationCopy = notification;
     v19 = 2112;
     v20 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -99,7 +99,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc: self=%@", buf, 0xCu);
   }
 
@@ -111,15 +111,15 @@
   [(ACCFeatureServer *)&v7 dealloc];
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -130,13 +130,13 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 1;
-      v11 = [v10 accessoryUID];
-      v4[2](v4, v11, &v12);
+      accessoryUID = [v10 accessoryUID];
+      syncCopy[2](syncCopy, accessoryUID, &v12);
 
       if (v12 != 1)
       {
@@ -145,7 +145,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -157,10 +157,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -196,26 +196,26 @@ LABEL_3:
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCVoiceOverXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCVoiceOverServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCVoiceOverServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCVoiceOverXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke;
   v23[3] = &unk_100227718;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  [v7 setInvalidationHandler:v23];
+  [connectionCopy setInvalidationHandler:v23];
   v15 = objc_alloc_init(_ACCVoiceOverProviderInfo);
-  [(_ACCVoiceOverProviderInfo *)v15 setConnection:v7];
+  [(_ACCVoiceOverProviderInfo *)v15 setConnection:connectionCopy];
   [(_ACCVoiceOverProviderInfo *)v15 setServerRemote:v13];
-  v16 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_23];
+  v16 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_23];
   [(_ACCVoiceOverProviderInfo *)v15 setRemoteObject:v16];
 
   objc_storeStrong(&self->_voiceOverProviderInfo, v15);
@@ -243,7 +243,7 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "providerInfo=%@", buf, 0xCu);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   v20 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -438,14 +438,14 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   voiceOverProviderInfo = self->_voiceOverProviderInfo;
   if (voiceOverProviderInfo)
   {
-    v6 = [(_ACCVoiceOverProviderInfo *)voiceOverProviderInfo connection];
-    v7 = [v6 isEqual:v4];
+    connection = [(_ACCVoiceOverProviderInfo *)voiceOverProviderInfo connection];
+    v7 = [connection isEqual:connectionCopy];
   }
 
   else
@@ -487,16 +487,16 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
     v14 = 2112;
     v15 = v11;
     v16 = 2112;
-    v17 = v4;
+    v17 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "VoiceOver server, shouldAcceptConnection=%d _voiceOverProviderInfo=%@ connection=%@", v13, 0x1Cu);
   }
 
   return v7;
 }
 
-- (void)accessoryVoiceOverAttached:(id)a3
+- (void)accessoryVoiceOverAttached:(id)attached
 {
-  v4 = a3;
+  attachedCopy = attached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -526,11 +526,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = attachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, accessoryVoiceOverAttached: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:attachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -551,7 +551,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = attachedCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -561,17 +561,17 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (!v8)
   {
-    v8 = [[_ACCVoiceOverAccessoryInfo alloc] initWithUID:v4];
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v8 forKey:v4];
+    v8 = [[_ACCVoiceOverAccessoryInfo alloc] initWithUID:attachedCopy];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v8 forKey:attachedCopy];
   }
 
-  v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-  [v11 accessoryVoiceOverAttached:v4];
+  remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+  [remoteObject accessoryVoiceOverAttached:attachedCopy];
 }
 
-- (void)accessoryVoiceOverDetached:(id)a3
+- (void)accessoryVoiceOverDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -601,11 +601,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, accessoryVoiceOverDetached: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -626,7 +626,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = detachedCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -636,16 +636,16 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
-  v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-  [v11 accessoryVoiceOverDetached:v4];
+  remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+  [remoteObject accessoryVoiceOverDetached:detachedCopy];
 }
 
-- (void)accessoryVoiceOverStartInformationUpdate:(id)a3
+- (void)accessoryVoiceOverStartInformationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -675,11 +675,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, startInformationUpdate: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:updateCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -700,7 +700,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = updateCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -710,14 +710,14 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (v8)
   {
-    v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-    [v11 accessoryVoiceOverStartInformationUpdate:v4];
+    remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+    [remoteObject accessoryVoiceOverStartInformationUpdate:updateCopy];
   }
 }
 
-- (void)accessoryVoiceOverStopInformationUpdate:(id)a3
+- (void)accessoryVoiceOverStopInformationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -747,11 +747,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, stopInformationUpdate: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:updateCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -772,7 +772,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = updateCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -782,14 +782,14 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (v8)
   {
-    v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-    [v11 accessoryVoiceOverStopInformationUpdate:v4];
+    remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+    [remoteObject accessoryVoiceOverStopInformationUpdate:updateCopy];
   }
 }
 
-- (void)accessoryVoiceOverStartCursorInformationUpdate:(id)a3
+- (void)accessoryVoiceOverStartCursorInformationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -819,11 +819,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, startCursorInformationUpdate: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:updateCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -844,7 +844,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = updateCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -854,14 +854,14 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (v8)
   {
-    v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-    [v11 accessoryVoiceOverStartCursorInformationUpdate:v4];
+    remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+    [remoteObject accessoryVoiceOverStartCursorInformationUpdate:updateCopy];
   }
 }
 
-- (void)accessoryVoiceOverStopCursorInformationUpdate:(id)a3
+- (void)accessoryVoiceOverStopCursorInformationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -891,11 +891,11 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "VoiceOver server, stopCursorInformationUpdate: %@", &v13, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:updateCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -916,7 +916,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   {
     voiceOverProviderInfo = self->_voiceOverProviderInfo;
     v13 = 138412802;
-    v14 = v4;
+    v14 = updateCopy;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -926,8 +926,8 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
 
   if (v8)
   {
-    v11 = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
-    [v11 accessoryVoiceOverStopCursorInformationUpdate:v4];
+    remoteObject = [(_ACCVoiceOverProviderInfo *)self->_voiceOverProviderInfo remoteObject];
+    [remoteObject accessoryVoiceOverStopCursorInformationUpdate:updateCopy];
   }
 }
 
@@ -937,7 +937,7 @@ void __57__ACCVoiceOverServer_listener_shouldAcceptNewConnection___block_invoke_
   block[1] = 3221225472;
   block[2] = __34__ACCVoiceOverServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_6 != -1)
   {
     dispatch_once(&sharedServer_once_6, block);

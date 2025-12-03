@@ -1,49 +1,49 @@
 @interface MUWebMessage
-- (MUWebMessage)initWithJSONObject:(id)a3;
+- (MUWebMessage)initWithJSONObject:(id)object;
 - (NSDictionary)JSONObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MUWebMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MUWebMessage *)self type];
-  [v4 setType:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  type = [(MUWebMessage *)self type];
+  [v4 setType:type];
 
-  v6 = [(MUWebMessage *)self caller];
-  [v4 setCaller:v6];
+  caller = [(MUWebMessage *)self caller];
+  [v4 setCaller:caller];
 
-  v7 = [(MUWebMessage *)self callee];
-  [v4 setCallee:v7];
+  callee = [(MUWebMessage *)self callee];
+  [v4 setCallee:callee];
 
-  v8 = [(MUWebMessage *)self method];
-  [v4 setMethod:v8];
+  method = [(MUWebMessage *)self method];
+  [v4 setMethod:method];
 
-  v9 = [(MUWebMessage *)self callNumber];
-  [v4 setCallNumber:v9];
+  callNumber = [(MUWebMessage *)self callNumber];
+  [v4 setCallNumber:callNumber];
 
-  v10 = [(MUWebMessage *)self status];
-  [v4 setStatus:v10];
+  status = [(MUWebMessage *)self status];
+  [v4 setStatus:status];
 
-  v11 = [(MUWebMessage *)self arguments];
-  [v4 setArguments:v11];
+  arguments = [(MUWebMessage *)self arguments];
+  [v4 setArguments:arguments];
 
-  v12 = [(MUWebMessage *)self result];
-  [v4 setResult:v12];
+  result = [(MUWebMessage *)self result];
+  [v4 setResult:result];
 
-  v13 = [(MUWebMessage *)self errorMessage];
-  [v4 setErrorMessage:v13];
+  errorMessage = [(MUWebMessage *)self errorMessage];
+  [v4 setErrorMessage:errorMessage];
 
   return v4;
 }
 
 - (id)description
 {
-  v2 = [(MUWebMessage *)self JSONObject];
-  v3 = [v2 description];
+  jSONObject = [(MUWebMessage *)self JSONObject];
+  v3 = [jSONObject description];
 
   return v3;
 }
@@ -52,104 +52,104 @@
 {
   v33[9] = *MEMORY[0x1E69E9840];
   v32[0] = @"type";
-  v3 = [(MUWebMessage *)self type];
-  v4 = v3;
-  if (!v3)
+  type = [(MUWebMessage *)self type];
+  v4 = type;
+  if (!type)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    type = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v3;
-  v33[0] = v3;
+  v28 = type;
+  v33[0] = type;
   v32[1] = @"caller";
-  v5 = [(MUWebMessage *)self caller];
-  v6 = v5;
-  if (!v5)
+  caller = [(MUWebMessage *)self caller];
+  v6 = caller;
+  if (!caller)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    caller = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v5;
-  v33[1] = v5;
+  v27 = caller;
+  v33[1] = caller;
   v32[2] = @"callee";
-  v7 = [(MUWebMessage *)self callee];
-  v8 = v7;
-  if (!v7)
+  callee = [(MUWebMessage *)self callee];
+  v8 = callee;
+  if (!callee)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    callee = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v7;
-  v33[2] = v7;
+  v26 = callee;
+  v33[2] = callee;
   v32[3] = @"method";
-  v9 = [(MUWebMessage *)self method];
-  v10 = v9;
-  if (!v9)
+  method = [(MUWebMessage *)self method];
+  v10 = method;
+  if (!method)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    method = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v9;
-  v33[3] = v9;
+  v25 = method;
+  v33[3] = method;
   v32[4] = @"callNumber";
-  v11 = [(MUWebMessage *)self callNumber];
-  v12 = v11;
-  if (!v11)
+  callNumber = [(MUWebMessage *)self callNumber];
+  v12 = callNumber;
+  if (!callNumber)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    callNumber = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v6;
-  v24 = v11;
-  v33[4] = v11;
+  v24 = callNumber;
+  v33[4] = callNumber;
   v32[5] = @"status";
-  v13 = [(MUWebMessage *)self status];
-  v14 = v13;
-  if (!v13)
+  status = [(MUWebMessage *)self status];
+  v14 = status;
+  if (!status)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    status = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v4;
-  v23 = v13;
-  v33[5] = v13;
+  v23 = status;
+  v33[5] = status;
   v32[6] = @"arguments";
-  v15 = [(MUWebMessage *)self arguments];
-  v16 = v15;
-  if (!v15)
+  arguments = [(MUWebMessage *)self arguments];
+  null = arguments;
+  if (!arguments)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[6] = v16;
+  v33[6] = null;
   v32[7] = @"result";
-  v17 = [(MUWebMessage *)self result];
-  v18 = v17;
-  if (!v17)
+  result = [(MUWebMessage *)self result];
+  null2 = result;
+  if (!result)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[7] = v18;
+  v33[7] = null2;
   v32[8] = @"errorMessage";
-  v19 = [(MUWebMessage *)self errorMessage];
-  v20 = v19;
-  if (!v19)
+  errorMessage = [(MUWebMessage *)self errorMessage];
+  null3 = errorMessage;
+  if (!errorMessage)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33[8] = v20;
+  v33[8] = null3;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:9];
-  if (!v19)
+  if (!errorMessage)
   {
   }
 
-  if (!v17)
+  if (!result)
   {
   }
 
-  if (!v15)
+  if (!arguments)
   {
   }
 
@@ -182,16 +182,16 @@
   return v29;
 }
 
-- (MUWebMessage)initWithJSONObject:(id)a3
+- (MUWebMessage)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [(MUWebMessage *)self init];
   if (!v5)
   {
     goto LABEL_30;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"type"];
+  v6 = [objectCopy objectForKeyedSubscript:@"type"];
   if (v6 && ([MEMORY[0x1E695DFB0] null], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, !v8))
   {
     objc_opt_class();
@@ -211,7 +211,7 @@
   }
 
   [(MUWebMessage *)v9 setType:v10];
-  v11 = [v4 objectForKeyedSubscript:@"caller"];
+  v11 = [objectCopy objectForKeyedSubscript:@"caller"];
   if (v11 && ([MEMORY[0x1E695DFB0] null], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqual:", v12), v12, !v13))
   {
     objc_opt_class();
@@ -233,7 +233,7 @@ LABEL_56:
   }
 
   [(MUWebMessage *)v14 setCaller:v15];
-  v16 = [v4 objectForKeyedSubscript:@"callee"];
+  v16 = [objectCopy objectForKeyedSubscript:@"callee"];
   if (v16 && ([MEMORY[0x1E695DFB0] null], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, !v18))
   {
     objc_opt_class();
@@ -255,7 +255,7 @@ LABEL_52:
   }
 
   [(MUWebMessage *)v19 setCallee:v20];
-  v21 = [v4 objectForKeyedSubscript:@"method"];
+  v21 = [objectCopy objectForKeyedSubscript:@"method"];
   if (v21 && ([MEMORY[0x1E695DFB0] null], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqual:", v22), v22, !v23))
   {
     objc_opt_class();
@@ -275,11 +275,11 @@ LABEL_52:
   }
 
   [(MUWebMessage *)v24 setMethod:v25];
-  v26 = [v4 objectForKeyedSubscript:@"callNumber"];
+  v26 = [objectCopy objectForKeyedSubscript:@"callNumber"];
   if (v26)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
-    v28 = [v26 isEqual:v27];
+    null = [MEMORY[0x1E695DFB0] null];
+    v28 = [v26 isEqual:null];
 
     if (!v28)
     {
@@ -302,11 +302,11 @@ LABEL_51:
   v30 = 0;
 LABEL_17:
   [(MUWebMessage *)v29 setCallNumber:v30];
-  v31 = [v4 objectForKeyedSubscript:@"status"];
+  v31 = [objectCopy objectForKeyedSubscript:@"status"];
   if (v31)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
-    v33 = [v31 isEqual:v32];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v33 = [v31 isEqual:null2];
 
     if (!v33)
     {
@@ -328,7 +328,7 @@ LABEL_17:
   v35 = 0;
 LABEL_20:
   [(MUWebMessage *)v34 setStatus:v35];
-  v36 = [v4 objectForKeyedSubscript:@"arguments"];
+  v36 = [objectCopy objectForKeyedSubscript:@"arguments"];
   v54 = v21;
   if (v36 && ([MEMORY[0x1E695DFB0] null], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v36, "isEqual:", v37), v37, !v38))
   {
@@ -351,11 +351,11 @@ LABEL_55:
   }
 
   [(MUWebMessage *)v39 setArguments:v40];
-  v41 = [v4 objectForKeyedSubscript:@"result"];
+  v41 = [objectCopy objectForKeyedSubscript:@"result"];
   if (v41)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
-    v43 = [v41 isEqual:v42];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v43 = [v41 isEqual:null3];
 
     if (!v43)
     {
@@ -373,11 +373,11 @@ LABEL_55:
   [(MUWebMessage *)v5 setResult:0, v11];
 LABEL_26:
   v44 = v54;
-  v45 = [v4 objectForKeyedSubscript:@"errorMessage"];
+  v45 = [objectCopy objectForKeyedSubscript:@"errorMessage"];
   if (v45)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
-    v47 = [v45 isEqual:v46];
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v47 = [v45 isEqual:null4];
 
     v44 = v54;
     if (!v47)

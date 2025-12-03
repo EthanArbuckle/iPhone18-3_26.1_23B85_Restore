@@ -2,7 +2,7 @@
 - (CGRect)contentsRect;
 - (CGRect)frame;
 - (PXDebugHierarchyMutableElement)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)prepareForReuse;
 @end
 
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(PXDebugHierarchyMutableElement *)self frame];
   [v4 setFrame:?];
   [(PXDebugHierarchyMutableElement *)self zPosition];
@@ -46,12 +46,12 @@
   [v4 setPreviewImage:{-[PXDebugHierarchyMutableElement previewImage](self, "previewImage")}];
   [(PXDebugHierarchyMutableElement *)self contentsRect];
   [v4 setContentsRect:?];
-  v5 = [(PXDebugHierarchyMutableElement *)self contentsGravity];
-  [v4 setContentsGravity:v5];
+  contentsGravity = [(PXDebugHierarchyMutableElement *)self contentsGravity];
+  [v4 setContentsGravity:contentsGravity];
 
   [v4 setBackgroundColor:{-[PXDebugHierarchyMutableElement backgroundColor](self, "backgroundColor")}];
-  v6 = [(PXDebugHierarchyMutableElement *)self name];
-  [v4 setName:v6];
+  name = [(PXDebugHierarchyMutableElement *)self name];
+  [v4 setName:name];
 
   [v4 setCanHaveChildren:{-[PXDebugHierarchyMutableElement canHaveChildren](self, "canHaveChildren")}];
   v4[2] = self->_identifier;

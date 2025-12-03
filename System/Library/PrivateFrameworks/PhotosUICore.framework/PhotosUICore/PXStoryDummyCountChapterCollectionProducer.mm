@@ -1,17 +1,17 @@
 @interface PXStoryDummyCountChapterCollectionProducer
-- (PXStoryDummyCountChapterCollectionProducer)initWithCountInterval:(int64_t)a3 storyQueue:(id)a4;
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4;
+- (PXStoryDummyCountChapterCollectionProducer)initWithCountInterval:(int64_t)interval storyQueue:(id)queue;
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset;
 @end
 
 @implementation PXStoryDummyCountChapterCollectionProducer
 
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 count];
-  v7 = [(PXStoryDummyCountChapterCollectionProducer *)self countInterval];
+  assetsCopy = assets;
+  v6 = [assetsCopy count];
+  countInterval = [(PXStoryDummyCountChapterCollectionProducer *)self countInterval];
   v8 = +[PXStoryChapterSettings sharedInstance];
-  v9 = [v8 dummyChaptersIncludeSubtitles];
+  dummyChaptersIncludeSubtitles = [v8 dummyChaptersIncludeSubtitles];
 
   v10 = [PXStoryExplicitChapterCollection alloc];
   v13[0] = MEMORY[0x1E69E9820];
@@ -19,9 +19,9 @@
   v13[2] = __101__PXStoryDummyCountChapterCollectionProducer_workQueue_uneditedChapterCollectionWithAssets_keyAsset___block_invoke;
   v13[3] = &__block_descriptor_49_e51_v16__0___PXStoryMutableExplicitChapterCollection__8l;
   v13[4] = v6;
-  v13[5] = v7;
-  v14 = v9;
-  v11 = [(PXStoryExplicitChapterCollection *)v10 initWithAssets:v5 configuration:v13];
+  v13[5] = countInterval;
+  v14 = dummyChaptersIncludeSubtitles;
+  v11 = [(PXStoryExplicitChapterCollection *)v10 initWithAssets:assetsCopy configuration:v13];
 
   return v11;
 }
@@ -75,14 +75,14 @@ void __101__PXStoryDummyCountChapterCollectionProducer_workQueue_uneditedChapter
   }
 }
 
-- (PXStoryDummyCountChapterCollectionProducer)initWithCountInterval:(int64_t)a3 storyQueue:(id)a4
+- (PXStoryDummyCountChapterCollectionProducer)initWithCountInterval:(int64_t)interval storyQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = PXStoryDummyCountChapterCollectionProducer;
-  result = [(PXStoryTransientChapterCollectionProducer *)&v6 initWithStoryQueue:a4];
+  result = [(PXStoryTransientChapterCollectionProducer *)&v6 initWithStoryQueue:queue];
   if (result)
   {
-    result->_countInterval = a3;
+    result->_countInterval = interval;
   }
 
   return result;

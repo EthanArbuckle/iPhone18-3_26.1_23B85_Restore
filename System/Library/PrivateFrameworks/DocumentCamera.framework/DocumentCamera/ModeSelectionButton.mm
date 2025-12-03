@@ -1,33 +1,33 @@
 @interface ModeSelectionButton
 - (BOOL)isSelected;
-- (_TtC14DocumentCamera19ModeSelectionButton)initWithCoder:(id)a3;
-- (_TtC14DocumentCamera19ModeSelectionButton)initWithFrame:(CGRect)a3;
+- (_TtC14DocumentCamera19ModeSelectionButton)initWithCoder:(id)coder;
+- (_TtC14DocumentCamera19ModeSelectionButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation ModeSelectionButton
 
-- (_TtC14DocumentCamera19ModeSelectionButton)initWithFrame:(CGRect)a3
+- (_TtC14DocumentCamera19ModeSelectionButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ModeSelectionButton();
-  v7 = [(ModeSelectionButton *)&v9 initWithFrame:x, y, width, height];
+  height = [(ModeSelectionButton *)&v9 initWithFrame:x, y, width, height];
   sub_2492E5A68();
 
-  return v7;
+  return height;
 }
 
-- (_TtC14DocumentCamera19ModeSelectionButton)initWithCoder:(id)a3
+- (_TtC14DocumentCamera19ModeSelectionButton)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ModeSelectionButton();
-  v4 = a3;
-  v5 = [(ModeSelectionButton *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ModeSelectionButton *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -45,13 +45,13 @@
   return [(ModeSelectionButton *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ModeSelectionButton();
   v4 = v10.receiver;
-  [(ModeSelectionButton *)&v10 setSelected:v3];
+  [(ModeSelectionButton *)&v10 setSelected:selectedCopy];
   v5 = objc_opt_self();
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
@@ -74,9 +74,9 @@
   v4.super_class = type metadata accessor for ModeSelectionButton();
   v2 = v4.receiver;
   [(ModeSelectionButton *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 @end

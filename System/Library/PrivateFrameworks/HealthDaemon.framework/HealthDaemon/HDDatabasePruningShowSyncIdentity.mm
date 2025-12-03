@@ -1,6 +1,6 @@
 @interface HDDatabasePruningShowSyncIdentity
 - (HDDatabasePruningShowSyncIdentity)init;
-- (HDDatabasePruningShowSyncIdentity)initWithPersistentID:(int64_t)a3 hardwareIdentifier:(id)a4 databaseIdentifier:(id)a5 instanceDiscriminator:(id)a6;
+- (HDDatabasePruningShowSyncIdentity)initWithPersistentID:(int64_t)d hardwareIdentifier:(id)identifier databaseIdentifier:(id)databaseIdentifier instanceDiscriminator:(id)discriminator;
 @end
 
 @implementation HDDatabasePruningShowSyncIdentity
@@ -15,21 +15,21 @@
   return 0;
 }
 
-- (HDDatabasePruningShowSyncIdentity)initWithPersistentID:(int64_t)a3 hardwareIdentifier:(id)a4 databaseIdentifier:(id)a5 instanceDiscriminator:(id)a6
+- (HDDatabasePruningShowSyncIdentity)initWithPersistentID:(int64_t)d hardwareIdentifier:(id)identifier databaseIdentifier:(id)databaseIdentifier instanceDiscriminator:(id)discriminator
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  databaseIdentifierCopy = databaseIdentifier;
+  discriminatorCopy = discriminator;
   v17.receiver = self;
   v17.super_class = HDDatabasePruningShowSyncIdentity;
   v14 = [(HDDatabasePruningShowSyncIdentity *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_persitentID = a3;
-    objc_storeStrong(&v14->_hardwareIdentifier, a4);
-    objc_storeStrong(&v15->_databaseIdentifier, a5);
-    objc_storeStrong(&v15->_instanceDiscriminator, a6);
+    v14->_persitentID = d;
+    objc_storeStrong(&v14->_hardwareIdentifier, identifier);
+    objc_storeStrong(&v15->_databaseIdentifier, databaseIdentifier);
+    objc_storeStrong(&v15->_instanceDiscriminator, discriminator);
   }
 
   return v15;

@@ -6,26 +6,26 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v6 = self;
+  selfCopy = self;
   if (_AXSInvertColorsEnabled())
   {
-    v2 = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)v6 window];
-    v3 = [v2 traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    window = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)selfCopy window];
+    traitCollection = [window traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v4 != &dword_0 + 2)
+    if (userInterfaceStyle != &dword_0 + 2)
     {
       goto LABEL_6;
     }
 
-    v5 = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)v6 layer];
-    [AXInvertColorsAppHelper applyInvertFilterToLayer:v5];
+    layer = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)selfCopy layer];
+    [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
   }
 
   else
   {
-    v5 = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)v6 layer];
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v5];
+    layer = [(HomeScreenPosterCollectionViewCell_InvertColorsAccessibility *)selfCopy layer];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
   }
 
 LABEL_6:

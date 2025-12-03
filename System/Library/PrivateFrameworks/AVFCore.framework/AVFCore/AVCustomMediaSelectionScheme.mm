@@ -1,15 +1,15 @@
 @interface AVCustomMediaSelectionScheme
-- (AVCustomMediaSelectionScheme)initWithGroup:(id)a3 figAssetMediaSelectionGroupCustomMediaSelectionScheme:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_selectorForSetting:(id)a3;
+- (AVCustomMediaSelectionScheme)initWithGroup:(id)group figAssetMediaSelectionGroupCustomMediaSelectionScheme:(id)scheme;
+- (BOOL)isEqual:(id)equal;
+- (id)_selectorForSetting:(id)setting;
 - (id)description;
-- (id)mediaPresentationSettingsForSelector:(id)a3 complementaryToLanguage:(id)a4 settings:(id)a5;
+- (id)mediaPresentationSettingsForSelector:(id)selector complementaryToLanguage:(id)language settings:(id)settings;
 - (void)dealloc;
 @end
 
 @implementation AVCustomMediaSelectionScheme
 
-- (AVCustomMediaSelectionScheme)initWithGroup:(id)a3 figAssetMediaSelectionGroupCustomMediaSelectionScheme:(id)a4
+- (AVCustomMediaSelectionScheme)initWithGroup:(id)group figAssetMediaSelectionGroupCustomMediaSelectionScheme:(id)scheme
 {
   v61 = *MEMORY[0x1E69E9840];
   v56.receiver = self;
@@ -17,17 +17,17 @@
   v6 = [(AVCustomMediaSelectionScheme *)&v56 init];
   if (v6)
   {
-    v6->_weakReferenceToGroup = [a3 _weakReference];
+    v6->_weakReferenceToGroup = [group _weakReference];
     v37 = v6;
-    v6->_options = [objc_msgSend(a3 "options")];
-    v7 = [MEMORY[0x1E695DF70] array];
-    v39 = [MEMORY[0x1E695DF70] array];
-    v36 = a4;
+    v6->_options = [objc_msgSend(group "options")];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    schemeCopy = scheme;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = [a4 objectForKey:@"CustomMediaSelectionSchemeGroupSelectors"];
+    obj = [scheme objectForKey:@"CustomMediaSelectionSchemeGroupSelectors"];
     v8 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
     if (v8)
     {
@@ -50,8 +50,8 @@
             v51 = 0u;
             v48 = 0u;
             v49 = 0u;
-            v14 = [(AVMediaPresentationSelector *)v12 settings];
-            v15 = [(NSArray *)v14 countByEnumeratingWithState:&v48 objects:v59 count:16];
+            settings = [(AVMediaPresentationSelector *)v12 settings];
+            v15 = [(NSArray *)settings countByEnumeratingWithState:&v48 objects:v59 count:16];
             if (v15)
             {
               v16 = v15;
@@ -62,23 +62,23 @@
                 {
                   if (*v49 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(settings);
                   }
 
-                  v19 = [*(*(&v48 + 1) + 8 * j) mediaCharacteristic];
-                  if (([v7 containsObject:v19] & 1) == 0)
+                  mediaCharacteristic = [*(*(&v48 + 1) + 8 * j) mediaCharacteristic];
+                  if (([array containsObject:mediaCharacteristic] & 1) == 0)
                   {
-                    [v7 addObject:v19];
+                    [array addObject:mediaCharacteristic];
                   }
                 }
 
-                v16 = [(NSArray *)v14 countByEnumeratingWithState:&v48 objects:v59 count:16];
+                v16 = [(NSArray *)settings countByEnumeratingWithState:&v48 objects:v59 count:16];
               }
 
               while (v16);
             }
 
-            [v39 addObject:v13];
+            [array2 addObject:v13];
           }
         }
 
@@ -88,8 +88,8 @@
       while (v9);
     }
 
-    v37->_mediaPresentationSelectors = v39;
-    v20 = [MEMORY[0x1E695DF70] array];
+    v37->_mediaPresentationSelectors = array2;
+    array3 = [MEMORY[0x1E695DF70] array];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -114,7 +114,7 @@
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v27 = [v7 countByEnumeratingWithState:&v40 objects:v57 count:16];
+          v27 = [array countByEnumeratingWithState:&v40 objects:v57 count:16];
           if (v27)
           {
             v28 = v27;
@@ -125,18 +125,18 @@
               {
                 if (*v41 != v29)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(array);
                 }
 
                 if ([v26 hasMediaCharacteristic:*(*(&v40 + 1) + 8 * m)])
                 {
-                  v31 = [v26 extendedLanguageTag];
-                  if (v31)
+                  extendedLanguageTag = [v26 extendedLanguageTag];
+                  if (extendedLanguageTag)
                   {
-                    v32 = v31;
-                    if (([v20 containsObject:v31] & 1) == 0)
+                    v32 = extendedLanguageTag;
+                    if (([array3 containsObject:extendedLanguageTag] & 1) == 0)
                     {
-                      [v20 addObject:v32];
+                      [array3 addObject:v32];
                     }
                   }
 
@@ -144,7 +144,7 @@
                 }
               }
 
-              v28 = [v7 countByEnumeratingWithState:&v40 objects:v57 count:16];
+              v28 = [array countByEnumeratingWithState:&v40 objects:v57 count:16];
               if (v28)
               {
                 continue;
@@ -165,19 +165,19 @@ LABEL_37:
     }
 
     v6 = v37;
-    v37->_availableLanguageTags = v20;
-    v33 = [v36 objectForKey:@"CustomMediaSelectionSchemeGroupShouldDisplayLanguages"];
+    v37->_availableLanguageTags = array3;
+    v33 = [schemeCopy objectForKey:@"CustomMediaSelectionSchemeGroupShouldDisplayLanguages"];
     if (v33)
     {
-      v34 = [v33 BOOLValue];
+      bOOLValue = [v33 BOOLValue];
     }
 
     else
     {
-      v34 = 1;
+      bOOLValue = 1;
     }
 
-    v37->_shouldOfferLanguageSelection = v34;
+    v37->_shouldOfferLanguageSelection = bOOLValue;
   }
 
   return v6;
@@ -190,19 +190,19 @@ LABEL_37:
   [(AVCustomMediaSelectionScheme *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = -[NSArray isEqual:](self->_availableLanguageTags, "isEqual:", [a3 availableLanguages]);
+    v5 = -[NSArray isEqual:](self->_availableLanguageTags, "isEqual:", [equal availableLanguages]);
     if (v5)
     {
-      v5 = -[NSArray isEqual:](self->_mediaPresentationSelectors, "isEqual:", [a3 selectors]);
+      v5 = -[NSArray isEqual:](self->_mediaPresentationSelectors, "isEqual:", [equal selectors]);
       if (v5)
       {
         shouldOfferLanguageSelection = self->_shouldOfferLanguageSelection;
-        LOBYTE(v5) = shouldOfferLanguageSelection == [a3 shouldOfferLanguageSelection];
+        LOBYTE(v5) = shouldOfferLanguageSelection == [equal shouldOfferLanguageSelection];
       }
     }
   }
@@ -230,7 +230,7 @@ LABEL_37:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"selectors = %@, languages = %@, offers language selection = %@", self->_mediaPresentationSelectors, self->_availableLanguageTags, v2];
 }
 
-- (id)_selectorForSetting:(id)a3
+- (id)_selectorForSetting:(id)setting
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -274,29 +274,29 @@ LABEL_3:
   }
 }
 
-- (id)mediaPresentationSettingsForSelector:(id)a3 complementaryToLanguage:(id)a4 settings:(id)a5
+- (id)mediaPresentationSettingsForSelector:(id)selector complementaryToLanguage:(id)language settings:(id)settings
 {
   v27[1] = *MEMORY[0x1E69E9840];
   options = self->_options;
-  if (a4)
+  if (language)
   {
-    v27[0] = a4;
+    v27[0] = language;
     v19 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:", options, [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1]);
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E695DF70] array];
+  v9 = array;
+  array2 = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [a5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [settings countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -308,7 +308,7 @@ LABEL_3:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(settings);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
@@ -319,12 +319,12 @@ LABEL_3:
           if (v16)
           {
             v17 = v16;
-            if ([v10 containsObject:v16])
+            if ([array2 containsObject:v16])
             {
               return [MEMORY[0x1E695DEC8] array];
             }
 
-            [v10 addObject:v17];
+            [array2 addObject:v17];
             [v9 addObject:{objc_msgSend(v15, "mediaCharacteristic")}];
           }
         }
@@ -333,7 +333,7 @@ LABEL_3:
       }
 
       while (v12 != v14);
-      v12 = [a5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [settings countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v12)
       {
         continue;
@@ -343,7 +343,7 @@ LABEL_3:
     }
   }
 
-  return [a3 _settingsSatisfiableByOptions:{+[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", v20, v9)}];
+  return [selector _settingsSatisfiableByOptions:{+[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", v20, v9)}];
 }
 
 @end

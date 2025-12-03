@@ -1,12 +1,12 @@
 @interface MUFixedHeightAwareViewController
-- (MUFixedHeightAwareViewController)initWithViewController:(id)a3;
+- (MUFixedHeightAwareViewController)initWithViewController:(id)controller;
 - (void)_setupChildVC;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 @end
 
 @implementation MUFixedHeightAwareViewController
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   [(UIViewController *)self->_childVC preferredContentSize];
   [(MUFixedHeightAwareViewController *)self setPreferredContentSize:?];
@@ -19,56 +19,56 @@
 - (void)_setupChildVC
 {
   v38[5] = *MEMORY[0x1E69E9840];
-  v3 = [(UIViewController *)self->_childVC view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self->_childVC view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(UIViewController *)self->_childVC view];
+  view2 = [(UIViewController *)self->_childVC view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(UIViewController *)self->_childVC view];
-    [v6 setScrollEnabled:0];
+    view3 = [(UIViewController *)self->_childVC view];
+    [view3 setScrollEnabled:0];
   }
 
   [(MUFixedHeightAwareViewController *)self addChildViewController:self->_childVC];
-  v7 = [(MUFixedHeightAwareViewController *)self view];
-  v8 = [(UIViewController *)self->_childVC view];
-  [v7 addSubview:v8];
+  view4 = [(MUFixedHeightAwareViewController *)self view];
+  view5 = [(UIViewController *)self->_childVC view];
+  [view4 addSubview:view5];
 
   [(UIViewController *)self->_childVC didMoveToParentViewController:self];
-  v9 = [(UIViewController *)self->_childVC view];
-  v10 = [v9 heightAnchor];
+  view6 = [(UIViewController *)self->_childVC view];
+  heightAnchor = [view6 heightAnchor];
   [(UIViewController *)self->_childVC preferredContentSize];
-  v12 = [v10 constraintEqualToConstant:v11];
+  v12 = [heightAnchor constraintEqualToConstant:v11];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v12;
 
   v28 = MEMORY[0x1E696ACD8];
-  v37 = [(UIViewController *)self->_childVC view];
-  v35 = [v37 leadingAnchor];
-  v36 = [(MUFixedHeightAwareViewController *)self view];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  view7 = [(UIViewController *)self->_childVC view];
+  leadingAnchor = [view7 leadingAnchor];
+  view8 = [(MUFixedHeightAwareViewController *)self view];
+  leadingAnchor2 = [view8 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v33;
-  v32 = [(UIViewController *)self->_childVC view];
-  v30 = [v32 trailingAnchor];
-  v31 = [(MUFixedHeightAwareViewController *)self view];
-  v29 = [v31 trailingAnchor];
-  v27 = [v30 constraintEqualToAnchor:v29];
+  view9 = [(UIViewController *)self->_childVC view];
+  trailingAnchor = [view9 trailingAnchor];
+  view10 = [(MUFixedHeightAwareViewController *)self view];
+  trailingAnchor2 = [view10 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[1] = v27;
-  v26 = [(UIViewController *)self->_childVC view];
-  v25 = [v26 topAnchor];
-  v14 = [(MUFixedHeightAwareViewController *)self view];
-  v15 = [v14 topAnchor];
-  v16 = [v25 constraintEqualToAnchor:v15];
+  view11 = [(UIViewController *)self->_childVC view];
+  topAnchor = [view11 topAnchor];
+  view12 = [(MUFixedHeightAwareViewController *)self view];
+  topAnchor2 = [view12 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[2] = v16;
-  v17 = [(UIViewController *)self->_childVC view];
-  v18 = [v17 bottomAnchor];
-  v19 = [(MUFixedHeightAwareViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  view13 = [(UIViewController *)self->_childVC view];
+  bottomAnchor = [view13 bottomAnchor];
+  view14 = [(MUFixedHeightAwareViewController *)self view];
+  bottomAnchor2 = [view14 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22 = self->_heightConstraint;
   v38[3] = v21;
   v38[4] = v22;
@@ -78,16 +78,16 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (MUFixedHeightAwareViewController)initWithViewController:(id)a3
+- (MUFixedHeightAwareViewController)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MUFixedHeightAwareViewController;
   v6 = [(MUFixedHeightAwareViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_childVC, a3);
+    objc_storeStrong(&v6->_childVC, controller);
     [(MUFixedHeightAwareViewController *)v7 _setupChildVC];
   }
 

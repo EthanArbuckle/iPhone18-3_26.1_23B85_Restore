@@ -1,12 +1,12 @@
 @interface SFMediaRemoteControlCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMediaRemoteControlCardSection)initWithCoder:(id)a3;
-- (SFMediaRemoteControlCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMediaRemoteControlCardSection)initWithCoder:(id)coder;
+- (SFMediaRemoteControlCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMediaRemoteControlCardSection
@@ -16,49 +16,49 @@
   v24.receiver = self;
   v24.super_class = SFMediaRemoteControlCardSection;
   v3 = [(SFCardSection *)&v24 hash];
-  v4 = [(SFCardSection *)self punchoutOptions];
-  v5 = [v4 hash];
-  v6 = [(SFCardSection *)self punchoutPickerTitle];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFCardSection *)self punchoutPickerDismissText];
-  v9 = v7 ^ [v8 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v5 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v7 = v5 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v9 = v7 ^ [punchoutPickerDismissText hash];
   v10 = v9 ^ [(SFCardSection *)self canBeHidden];
   v11 = v10 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v12 = [(SFCardSection *)self hasBottomPadding];
-  v13 = [(SFMediaRemoteControlCardSection *)self type];
-  v14 = v12 ^ [v13 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFMediaRemoteControlCardSection *)self type];
+  v14 = hasBottomPadding ^ [type hash];
   v15 = v14 ^ [(SFCardSection *)self separatorStyle];
-  v16 = [(SFCardSection *)self backgroundColor];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
-  v19 = v11 ^ v17 ^ [v18 hash];
-  v20 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifierIsEncrypted];
-  v21 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
-  v22 = v20 ^ [v21 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v17 = v15 ^ [backgroundColor hash];
+  playbackRouteUniqueIdentifier = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
+  v19 = v11 ^ v17 ^ [playbackRouteUniqueIdentifier hash];
+  playbackRouteUniqueIdentifierIsEncrypted = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifierIsEncrypted];
+  playbackBundleIdentifier = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
+  v22 = playbackRouteUniqueIdentifierIsEncrypted ^ [playbackBundleIdentifier hash];
 
   return v19 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFMediaRemoteControlCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMediaRemoteControlCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v80.receiver = self;
       v80.super_class = SFMediaRemoteControlCardSection;
-      if ([(SFCardSection *)&v80 isEqual:v5])
+      if ([(SFCardSection *)&v80 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFCardSection *)self punchoutOptions];
-        v8 = [(SFCardSection *)v6 punchoutOptions];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        punchoutOptions = [(SFCardSection *)self punchoutOptions];
+        punchoutOptions2 = [(SFCardSection *)v6 punchoutOptions];
+        if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
         {
           v11 = 0;
 LABEL_58:
@@ -66,32 +66,32 @@ LABEL_58:
           goto LABEL_59;
         }
 
-        v9 = [(SFCardSection *)self punchoutOptions];
-        if (v9)
+        punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+        if (punchoutOptions3)
         {
-          v10 = [(SFCardSection *)self punchoutOptions];
-          v3 = [(SFCardSection *)v6 punchoutOptions];
-          if (![v10 isEqual:v3])
+          punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
+          punchoutOptions5 = [(SFCardSection *)v6 punchoutOptions];
+          if (![punchoutOptions4 isEqual:punchoutOptions5])
           {
             v11 = 0;
             goto LABEL_56;
           }
 
-          v79 = v10;
+          v79 = punchoutOptions4;
         }
 
-        v12 = [(SFCardSection *)self punchoutPickerTitle];
-        v13 = [(SFCardSection *)v6 punchoutPickerTitle];
-        if ((v12 != 0) != (v13 == 0))
+        punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+        punchoutPickerTitle2 = [(SFCardSection *)v6 punchoutPickerTitle];
+        if ((punchoutPickerTitle != 0) != (punchoutPickerTitle2 == 0))
         {
-          v14 = [(SFCardSection *)self punchoutPickerTitle];
-          v76 = v3;
-          if (v14)
+          punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+          v76 = punchoutOptions5;
+          if (punchoutPickerTitle3)
           {
-            v73 = v12;
-            v15 = [(SFCardSection *)self punchoutPickerTitle];
-            v16 = [(SFCardSection *)v6 punchoutPickerTitle];
-            if (([v15 isEqual:v16] & 1) == 0)
+            v73 = punchoutPickerTitle;
+            punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+            punchoutPickerTitle5 = [(SFCardSection *)v6 punchoutPickerTitle];
+            if (([punchoutPickerTitle4 isEqual:punchoutPickerTitle5] & 1) == 0)
             {
 
 LABEL_31:
@@ -99,49 +99,49 @@ LABEL_31:
               goto LABEL_32;
             }
 
-            v71 = v16;
-            v72 = v15;
+            v71 = punchoutPickerTitle5;
+            v72 = punchoutPickerTitle4;
             v77 = v6;
-            v75 = v8;
-            v17 = v7;
-            v18 = v9;
-            v19 = v13;
+            v75 = punchoutOptions2;
+            v17 = punchoutOptions;
+            v18 = punchoutOptions3;
+            v19 = punchoutPickerTitle2;
             v20 = v73;
-            v3 = v76;
-            v21 = v14;
+            punchoutOptions5 = v76;
+            v21 = punchoutPickerTitle3;
           }
 
           else
           {
             v77 = v6;
-            v75 = v8;
-            v17 = v7;
-            v18 = v9;
-            v19 = v13;
-            v20 = v12;
+            v75 = punchoutOptions2;
+            v17 = punchoutOptions;
+            v18 = punchoutOptions3;
+            v19 = punchoutPickerTitle2;
+            v20 = punchoutPickerTitle;
             v21 = 0;
           }
 
-          v22 = [(SFCardSection *)self punchoutPickerDismissText];
-          v23 = [(SFCardSection *)v77 punchoutPickerDismissText];
+          punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+          punchoutPickerDismissText2 = [(SFCardSection *)v77 punchoutPickerDismissText];
           v24 = v21;
-          v12 = v20;
-          v13 = v19;
-          v9 = v18;
-          v7 = v17;
-          v8 = v75;
-          if ((v22 != 0) != (v23 == 0))
+          punchoutPickerTitle = v20;
+          punchoutPickerTitle2 = v19;
+          punchoutOptions3 = v18;
+          punchoutOptions = v17;
+          punchoutOptions2 = v75;
+          if ((punchoutPickerDismissText != 0) != (punchoutPickerDismissText2 == 0))
           {
-            v69 = v23;
-            v70 = v22;
-            v74 = [(SFCardSection *)self punchoutPickerDismissText];
-            if (v74)
+            v69 = punchoutPickerDismissText2;
+            v70 = punchoutPickerDismissText;
+            punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+            if (punchoutPickerDismissText3)
             {
-              v25 = [(SFCardSection *)self punchoutPickerDismissText];
+              punchoutPickerDismissText4 = [(SFCardSection *)self punchoutPickerDismissText];
               v6 = v77;
-              v66 = [(SFCardSection *)v77 punchoutPickerDismissText];
-              v67 = v25;
-              v26 = [v25 isEqual:?];
+              punchoutPickerDismissText5 = [(SFCardSection *)v77 punchoutPickerDismissText];
+              v67 = punchoutPickerDismissText4;
+              v26 = [punchoutPickerDismissText4 isEqual:?];
               v27 = v70;
               if (!v26)
               {
@@ -156,11 +156,11 @@ LABEL_31:
             }
 
             v68 = v24;
-            v28 = [(SFCardSection *)self canBeHidden];
-            if (v28 != [(SFCardSection *)v6 canBeHidden]|| (v29 = [(SFCardSection *)self hasTopPadding], v29 != [(SFCardSection *)v6 hasTopPadding]) || (v30 = [(SFCardSection *)self hasBottomPadding], v30 != [(SFCardSection *)v6 hasBottomPadding]))
+            canBeHidden = [(SFCardSection *)self canBeHidden];
+            if (canBeHidden != [(SFCardSection *)v6 canBeHidden]|| (v29 = [(SFCardSection *)self hasTopPadding], v29 != [(SFCardSection *)v6 hasTopPadding]) || (v30 = [(SFCardSection *)self hasBottomPadding], v30 != [(SFCardSection *)v6 hasBottomPadding]))
             {
               v24 = v68;
-              if (!v74)
+              if (!punchoutPickerDismissText3)
               {
 LABEL_28:
 
@@ -176,28 +176,28 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            v65 = v13;
-            v31 = [(SFMediaRemoteControlCardSection *)self type];
-            v32 = [(SFMediaRemoteControlCardSection *)v6 type];
-            if ((v31 != 0) != (v32 == 0))
+            v65 = punchoutPickerTitle2;
+            type = [(SFMediaRemoteControlCardSection *)self type];
+            type2 = [(SFMediaRemoteControlCardSection *)v6 type];
+            if ((type != 0) != (type2 == 0))
             {
-              v78 = v31;
-              v64 = v32;
-              v33 = [(SFMediaRemoteControlCardSection *)self type];
-              if (v33)
+              v78 = type;
+              v64 = type2;
+              type3 = [(SFMediaRemoteControlCardSection *)self type];
+              if (type3)
               {
-                v34 = [(SFMediaRemoteControlCardSection *)self type];
-                v35 = [(SFMediaRemoteControlCardSection *)v6 type];
-                v62 = v34;
-                v36 = v34;
-                v31 = v35;
-                if (![v36 isEqual:v35])
+                type4 = [(SFMediaRemoteControlCardSection *)self type];
+                type5 = [(SFMediaRemoteControlCardSection *)v6 type];
+                v62 = type4;
+                v36 = type4;
+                type = type5;
+                if (![v36 isEqual:type5])
                 {
                   v11 = 0;
                   goto LABEL_68;
                 }
 
-                v63 = v33;
+                v63 = type3;
               }
 
               else
@@ -205,57 +205,57 @@ LABEL_27:
                 v63 = 0;
               }
 
-              v37 = [(SFCardSection *)self separatorStyle];
-              if (v37 != [(SFCardSection *)v6 separatorStyle])
+              separatorStyle = [(SFCardSection *)self separatorStyle];
+              if (separatorStyle != [(SFCardSection *)v6 separatorStyle])
               {
                 v11 = 0;
                 goto LABEL_67;
               }
 
-              v38 = [(SFCardSection *)self backgroundColor];
-              v39 = [(SFCardSection *)v6 backgroundColor];
-              if ((v38 != 0) != (v39 == 0))
+              backgroundColor = [(SFCardSection *)self backgroundColor];
+              backgroundColor2 = [(SFCardSection *)v6 backgroundColor];
+              if ((backgroundColor != 0) != (backgroundColor2 == 0))
               {
-                v60 = v31;
-                v61 = v39;
-                v59 = v7;
-                v40 = v12;
-                v41 = [(SFCardSection *)self backgroundColor];
-                if (v41)
+                v60 = type;
+                v61 = backgroundColor2;
+                v59 = punchoutOptions;
+                v40 = punchoutPickerTitle;
+                backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                if (backgroundColor3)
                 {
-                  v42 = [(SFCardSection *)self backgroundColor];
-                  v57 = [(SFCardSection *)v6 backgroundColor];
-                  v58 = v42;
-                  if (![v42 isEqual:?])
+                  backgroundColor4 = [(SFCardSection *)self backgroundColor];
+                  backgroundColor5 = [(SFCardSection *)v6 backgroundColor];
+                  v58 = backgroundColor4;
+                  if (![backgroundColor4 isEqual:?])
                   {
                     v11 = 0;
                     goto LABEL_65;
                   }
                 }
 
-                v44 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
-                v45 = [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifier];
-                v46 = v45;
-                if ((v44 != 0) == (v45 == 0))
+                playbackRouteUniqueIdentifier = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
+                playbackRouteUniqueIdentifier2 = [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifier];
+                v46 = playbackRouteUniqueIdentifier2;
+                if ((playbackRouteUniqueIdentifier != 0) == (playbackRouteUniqueIdentifier2 == 0))
                 {
 
                   v11 = 0;
-                  if (!v41)
+                  if (!backgroundColor3)
                   {
 LABEL_66:
 
-                    v12 = v40;
-                    v7 = v59;
-                    v31 = v60;
-                    v8 = v75;
+                    punchoutPickerTitle = v40;
+                    punchoutOptions = v59;
+                    type = v60;
+                    punchoutOptions2 = v75;
                     v27 = v70;
 LABEL_67:
-                    v33 = v63;
+                    type3 = v63;
                     if (!v63)
                     {
 LABEL_69:
 
-                      if (v74)
+                      if (punchoutPickerDismissText3)
                       {
                       }
 
@@ -264,9 +264,9 @@ LABEL_69:
                       }
 
 LABEL_32:
-                      v10 = v79;
-                      v3 = v76;
-                      if (!v9)
+                      punchoutOptions4 = v79;
+                      punchoutOptions5 = v76;
+                      if (!punchoutOptions3)
                       {
                         goto LABEL_57;
                       }
@@ -284,19 +284,19 @@ LABEL_65:
                   goto LABEL_66;
                 }
 
-                v56 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
-                if (v56)
+                playbackRouteUniqueIdentifier3 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
+                if (playbackRouteUniqueIdentifier3)
                 {
-                  v47 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
-                  v54 = [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifier];
-                  v55 = v47;
-                  if (![v47 isEqual:?])
+                  playbackRouteUniqueIdentifier4 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
+                  playbackRouteUniqueIdentifier5 = [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifier];
+                  v55 = playbackRouteUniqueIdentifier4;
+                  if (![playbackRouteUniqueIdentifier4 isEqual:?])
                   {
                     v11 = 0;
 LABEL_81:
 
 LABEL_82:
-                    if (!v41)
+                    if (!backgroundColor3)
                     {
                       goto LABEL_66;
                     }
@@ -305,19 +305,19 @@ LABEL_82:
                   }
                 }
 
-                v48 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifierIsEncrypted];
-                if (v48 == [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifierIsEncrypted])
+                playbackRouteUniqueIdentifierIsEncrypted = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifierIsEncrypted];
+                if (playbackRouteUniqueIdentifierIsEncrypted == [(SFMediaRemoteControlCardSection *)v6 playbackRouteUniqueIdentifierIsEncrypted])
                 {
-                  v53 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
-                  v52 = [(SFMediaRemoteControlCardSection *)v6 playbackBundleIdentifier];
-                  if ((v53 != 0) != (v52 == 0))
+                  playbackBundleIdentifier = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
+                  playbackBundleIdentifier2 = [(SFMediaRemoteControlCardSection *)v6 playbackBundleIdentifier];
+                  if ((playbackBundleIdentifier != 0) != (playbackBundleIdentifier2 == 0))
                   {
-                    v51 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
-                    if (v51)
+                    playbackBundleIdentifier3 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
+                    if (playbackBundleIdentifier3)
                     {
-                      v50 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
-                      v49 = [(SFMediaRemoteControlCardSection *)v6 playbackBundleIdentifier];
-                      v11 = [v50 isEqual:v49];
+                      playbackBundleIdentifier4 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
+                      playbackBundleIdentifier5 = [(SFMediaRemoteControlCardSection *)v6 playbackBundleIdentifier];
+                      v11 = [playbackBundleIdentifier4 isEqual:playbackBundleIdentifier5];
                     }
 
                     else
@@ -327,7 +327,7 @@ LABEL_82:
                     }
 
 LABEL_80:
-                    if (!v56)
+                    if (!playbackRouteUniqueIdentifier3)
                     {
                       goto LABEL_82;
                     }
@@ -344,21 +344,21 @@ LABEL_80:
               {
               }
 
-              v32 = v64;
-              v31 = v78;
+              type2 = v64;
+              type = v78;
             }
 
             v77 = v6;
 
             v24 = v68;
-            if (v74)
+            if (punchoutPickerDismissText3)
             {
             }
 
-            v23 = v69;
-            v22 = v70;
-            v3 = v76;
-            v13 = v65;
+            punchoutPickerDismissText2 = v69;
+            punchoutPickerDismissText = v70;
+            punchoutOptions5 = v76;
+            punchoutPickerTitle2 = v65;
           }
 
           if (v24)
@@ -369,8 +369,8 @@ LABEL_80:
         }
 
         v11 = 0;
-        v10 = v79;
-        if (!v9)
+        punchoutOptions4 = v79;
+        if (!punchoutOptions3)
         {
 LABEL_57:
 
@@ -391,42 +391,42 @@ LABEL_59:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = SFMediaRemoteControlCardSection;
-  v4 = [(SFCardSection *)&v20 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v20 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFMediaRemoteControlCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFMediaRemoteControlCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
-  v16 = [v15 copy];
+  playbackRouteUniqueIdentifier = [(SFMediaRemoteControlCardSection *)self playbackRouteUniqueIdentifier];
+  v16 = [playbackRouteUniqueIdentifier copy];
   [v4 setPlaybackRouteUniqueIdentifier:v16];
 
   [v4 setPlaybackRouteUniqueIdentifierIsEncrypted:{-[SFMediaRemoteControlCardSection playbackRouteUniqueIdentifierIsEncrypted](self, "playbackRouteUniqueIdentifierIsEncrypted")}];
-  v17 = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
-  v18 = [v17 copy];
+  playbackBundleIdentifier = [(SFMediaRemoteControlCardSection *)self playbackBundleIdentifier];
+  v18 = [playbackBundleIdentifier copy];
   [v4 setPlaybackBundleIdentifier:v18];
 
   return v4;
@@ -435,162 +435,162 @@ LABEL_59:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMediaRemoteControlCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaRemoteControlCardSection *)v2 jsonData];
+  jsonData = [(_SFPBMediaRemoteControlCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMediaRemoteControlCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaRemoteControlCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMediaRemoteControlCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFMediaRemoteControlCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFMediaRemoteControlCardSection)initWithCoder:(id)a3
+- (SFMediaRemoteControlCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFMediaRemoteControlCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFMediaRemoteControlCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v14 = [(SFCardSection *)v8 playbackRouteUniqueIdentifier];
-    [(SFMediaRemoteControlCardSection *)v5 setPlaybackRouteUniqueIdentifier:v14];
+    playbackRouteUniqueIdentifier = [(SFCardSection *)v8 playbackRouteUniqueIdentifier];
+    [(SFMediaRemoteControlCardSection *)v5 setPlaybackRouteUniqueIdentifier:playbackRouteUniqueIdentifier];
 
     [(SFMediaRemoteControlCardSection *)v5 setPlaybackRouteUniqueIdentifierIsEncrypted:[(SFCardSection *)v8 playbackRouteUniqueIdentifierIsEncrypted]];
-    v15 = [(SFCardSection *)v8 playbackBundleIdentifier];
-    [(SFMediaRemoteControlCardSection *)v5 setPlaybackBundleIdentifier:v15];
+    playbackBundleIdentifier = [(SFCardSection *)v8 playbackBundleIdentifier];
+    [(SFMediaRemoteControlCardSection *)v5 setPlaybackBundleIdentifier:playbackBundleIdentifier];
 
-    v16 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v16];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v17 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v17];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v18 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v18];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v19 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v19];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v20 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v20];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v21 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v21];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v22 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v22];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v23 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v23];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v24 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v24];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v25 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v25];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v26 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v26];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v27 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v27];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v28 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v28];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v29 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v29];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v30 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v30];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v31 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v31];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v32 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v32];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v33 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v33];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v34 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v34];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v35 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v35];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v36 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v36];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v37 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v37];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v38 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v38];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v39 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v39];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v40 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v40];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFMediaRemoteControlCardSection)initWithProtobuf:(id)a3
+- (SFMediaRemoteControlCardSection)initWithProtobuf:(id)protobuf
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v35.receiver = self;
   v35.super_class = SFMediaRemoteControlCardSection;
   v5 = [(SFCardSection *)&v35 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -604,8 +604,8 @@ LABEL_59:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v9)
     {
       v10 = v9;
@@ -616,7 +616,7 @@ LABEL_59:
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v31 + 1) + 8 * i)];
@@ -626,86 +626,86 @@ LABEL_59:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFMediaRemoteControlCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFMediaRemoteControlCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 playbackRouteUniqueIdentifier];
+    playbackRouteUniqueIdentifier = [protobufCopy playbackRouteUniqueIdentifier];
 
-    if (v24)
+    if (playbackRouteUniqueIdentifier)
     {
-      v25 = [v4 playbackRouteUniqueIdentifier];
-      [(SFMediaRemoteControlCardSection *)v5 setPlaybackRouteUniqueIdentifier:v25];
+      playbackRouteUniqueIdentifier2 = [protobufCopy playbackRouteUniqueIdentifier];
+      [(SFMediaRemoteControlCardSection *)v5 setPlaybackRouteUniqueIdentifier:playbackRouteUniqueIdentifier2];
     }
 
-    if ([v4 playbackRouteUniqueIdentifierIsEncrypted])
+    if ([protobufCopy playbackRouteUniqueIdentifierIsEncrypted])
     {
-      -[SFMediaRemoteControlCardSection setPlaybackRouteUniqueIdentifierIsEncrypted:](v5, "setPlaybackRouteUniqueIdentifierIsEncrypted:", [v4 playbackRouteUniqueIdentifierIsEncrypted]);
+      -[SFMediaRemoteControlCardSection setPlaybackRouteUniqueIdentifierIsEncrypted:](v5, "setPlaybackRouteUniqueIdentifierIsEncrypted:", [protobufCopy playbackRouteUniqueIdentifierIsEncrypted]);
     }
 
-    v26 = [v4 playbackBundleIdentifier];
+    playbackBundleIdentifier = [protobufCopy playbackBundleIdentifier];
 
-    if (v26)
+    if (playbackBundleIdentifier)
     {
-      v27 = [v4 playbackBundleIdentifier];
-      [(SFMediaRemoteControlCardSection *)v5 setPlaybackBundleIdentifier:v27];
+      playbackBundleIdentifier2 = [protobufCopy playbackBundleIdentifier];
+      [(SFMediaRemoteControlCardSection *)v5 setPlaybackBundleIdentifier:playbackBundleIdentifier2];
     }
 
     v28 = v5;

@@ -1,74 +1,74 @@
 @interface CDXSynchronizeExtensionsOperation
-- (CDXSynchronizeExtensionsOperation)initWithStore:(id)a3 firstUnlockStatus:(BOOL)a4 extensionsDataSource:(id)a5 identificationEntriesChangedNotifier:(id)a6 queue:(id)a7;
-- (id)storedExtensionIdentifiersPassingTest:(id)a3 error:(id *)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (CDXSynchronizeExtensionsOperation)initWithStore:(id)store firstUnlockStatus:(BOOL)status extensionsDataSource:(id)source identificationEntriesChangedNotifier:(id)notifier queue:(id)queue;
+- (id)storedExtensionIdentifiersPassingTest:(id)test error:(id *)error;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDXSynchronizeExtensionsOperation
 
-- (CDXSynchronizeExtensionsOperation)initWithStore:(id)a3 firstUnlockStatus:(BOOL)a4 extensionsDataSource:(id)a5 identificationEntriesChangedNotifier:(id)a6 queue:(id)a7
+- (CDXSynchronizeExtensionsOperation)initWithStore:(id)store firstUnlockStatus:(BOOL)status extensionsDataSource:(id)source identificationEntriesChangedNotifier:(id)notifier queue:(id)queue
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  sourceCopy = source;
+  notifierCopy = notifier;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = CDXSynchronizeExtensionsOperation;
   v17 = [(CDXSynchronizeExtensionsOperation *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_queue, a7);
-    objc_storeStrong(&v18->_store, a3);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v18->_store, store);
     v19 = objc_alloc_init(_TtC42com_apple_CallKit_CallDirectoryMaintenance20LiveLookupStoreProxy);
     liveLookupStore = v18->_liveLookupStore;
     v18->_liveLookupStore = v19;
 
-    objc_storeStrong(&v18->_extensionsDataSource, a5);
-    objc_storeStrong(&v18->_identificationEntriesChangedNotifier, a6);
-    v18->_afterFirstUnlock = a4;
+    objc_storeStrong(&v18->_extensionsDataSource, source);
+    objc_storeStrong(&v18->_identificationEntriesChangedNotifier, notifier);
+    v18->_afterFirstUnlock = status;
   }
 
   return v18;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDXSynchronizeExtensionsOperation *)self queue];
+  handlerCopy = handler;
+  queue = [(CDXSynchronizeExtensionsOperation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005FD0;
   v7[3] = &unk_100034B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)storedExtensionIdentifiersPassingTest:(id)a3 error:(id *)a4
+- (id)storedExtensionIdentifiersPassingTest:(id)test error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
+  testCopy = test;
+  cachedCallDirectoryStoreExtensions = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
 
-  if (!v7)
+  if (!cachedCallDirectoryStoreExtensions)
   {
-    v8 = [(CDXSynchronizeExtensionsOperation *)self store];
-    v9 = [v8 prioritizedExtensionsWithError:a4];
+    store = [(CDXSynchronizeExtensionsOperation *)self store];
+    v9 = [store prioritizedExtensionsWithError:error];
     [(CDXSynchronizeExtensionsOperation *)self setCachedCallDirectoryStoreExtensions:v9];
   }
 
-  v10 = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
+  cachedCallDirectoryStoreExtensions2 = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
 
-  if (v10)
+  if (cachedCallDirectoryStoreExtensions2)
   {
     v11 = +[NSMutableSet set];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    cachedCallDirectoryStoreExtensions3 = [(CDXSynchronizeExtensionsOperation *)self cachedCallDirectoryStoreExtensions];
+    v13 = [cachedCallDirectoryStoreExtensions3 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -79,18 +79,18 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(cachedCallDirectoryStoreExtensions3);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          if (v6[2](v6, v17))
+          if (testCopy[2](testCopy, v17))
           {
-            v18 = [v17 identifier];
-            [v11 addObject:v18];
+            identifier = [v17 identifier];
+            [v11 addObject:identifier];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [cachedCallDirectoryStoreExtensions3 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);

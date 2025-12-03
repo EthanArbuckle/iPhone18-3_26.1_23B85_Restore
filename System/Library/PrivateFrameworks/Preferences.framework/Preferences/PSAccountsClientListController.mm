@@ -2,11 +2,11 @@
 - (BOOL)_isAccountModificationDisabledByRestrictions;
 - (PSAccountsClientListController)init;
 - (id)_visibleAccountTypeIDs;
-- (id)specifierForID:(id)a3;
+- (id)specifierForID:(id)d;
 - (void)dealloc;
-- (void)setSpecifiers:(id)a3;
+- (void)setSpecifiers:(id)specifiers;
 - (void)updateAccountSpecifier;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PSAccountsClientListController
@@ -19,8 +19,8 @@
   if (v2)
   {
     objc_initWeak(&location, v2);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v5 = *MEMORY[0x1E69597D8];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -29,7 +29,7 @@
     objc_copyWeak(&v12, &location);
     v6 = v2;
     v11 = v6;
-    v7 = [v3 addObserverForName:v5 object:0 queue:v4 usingBlock:v10];
+    v7 = [defaultCenter addObserverForName:v5 object:0 queue:mainQueue usingBlock:v10];
     acObserver = v6->_acObserver;
     v6->_acObserver = v7;
 
@@ -51,8 +51,8 @@ void __38__PSAccountsClientListController_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_acObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_acObserver];
 
   v4.receiver = self;
   v4.super_class = PSAccountsClientListController;
@@ -88,14 +88,14 @@ void __38__PSAccountsClientListController_init__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PSAccountsClientListController;
   [(PSListController *)&v5 viewWillAppear:?];
   [(PSAccountsClientListController *)self updateAccountSpecifier];
-  [(PSListController *)self reloadSpecifier:self->_accountSpecifier animated:v3];
+  [(PSListController *)self reloadSpecifier:self->_accountSpecifier animated:appearCopy];
 }
 
 - (void)updateAccountSpecifier
@@ -208,9 +208,9 @@ uint64_t __56__PSAccountsClientListController_updateAccountSpecifier__block_invo
   return v6;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   [(PSAccountsClientListController *)self updateAccountSpecifier];
   if (self->_accountSpecifier)
   {
@@ -218,19 +218,19 @@ uint64_t __56__PSAccountsClientListController_updateAccountSpecifier__block_invo
     v6 = [PSSpecifier groupSpecifierWithName:0];
     v7 = [v5 arrayWithObjects:{v6, self->_accountSpecifier, 0}];
 
-    v8 = [v4 firstObject];
-    if ([v8 cellType])
+    firstObject = [specifiersCopy firstObject];
+    if ([firstObject cellType])
     {
       v9 = [PSSpecifier groupSpecifierWithName:0];
       [v7 addObject:v9];
     }
 
-    [v7 addObjectsFromArray:v4];
+    [v7 addObjectsFromArray:specifiersCopy];
   }
 
   else
   {
-    v7 = [v4 mutableCopy];
+    v7 = [specifiersCopy mutableCopy];
   }
 
   v10.receiver = self;
@@ -238,9 +238,9 @@ uint64_t __56__PSAccountsClientListController_updateAccountSpecifier__block_invo
   [(PSListController *)&v10 setSpecifiers:v7];
 }
 
-- (id)specifierForID:(id)a3
+- (id)specifierForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!self->_accountSpecifier || ![(NSArray *)self->super._specifiers count]|| ![(NSArray *)self->super._specifiers containsObject:self->_accountSpecifier])
   {
     [(PSAccountsClientListController *)self setSpecifiers:MEMORY[0x1E695E0F0]];
@@ -248,15 +248,15 @@ uint64_t __56__PSAccountsClientListController_updateAccountSpecifier__block_invo
 
   v7.receiver = self;
   v7.super_class = PSAccountsClientListController;
-  v5 = [(PSListController *)&v7 specifierForID:v4];
+  v5 = [(PSListController *)&v7 specifierForID:dCopy];
 
   return v5;
 }
 
 - (BOOL)_isAccountModificationDisabledByRestrictions
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD70]] == 2;
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface GEOAPUploadPolicies
 + (id)sharedPolicies;
 - (GEOAPUploadPolicies)init;
-- (id)uploadPolicyForUploadPolicyType:(int)a3;
+- (id)uploadPolicyForUploadPolicyType:(int)type;
 @end
 
 @implementation GEOAPUploadPolicies
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (id)uploadPolicyForUploadPolicyType:(int)a3
+- (id)uploadPolicyForUploadPolicyType:(int)type
 {
   v8 = 0;
   v9 = &v8;
@@ -33,7 +33,7 @@
   block[3] = &unk_1E7959660;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  typeCopy = type;
   dispatch_sync(isoQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);

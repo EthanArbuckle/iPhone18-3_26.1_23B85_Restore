@@ -1,7 +1,7 @@
 @interface _PFAutoreleasePoolThunk
-+ (void)thunkWithBlock:(uint64_t)a1;
++ (void)thunkWithBlock:(uint64_t)block;
 - (void)dealloc;
-- (void)initWithBlock:(void *)a1;
+- (void)initWithBlock:(void *)block;
 @end
 
 @implementation _PFAutoreleasePoolThunk
@@ -17,14 +17,14 @@
   [(_PFAutoreleasePoolThunk *)&v4 dealloc];
 }
 
-- (void)initWithBlock:(void *)a1
+- (void)initWithBlock:(void *)block
 {
-  if (!a1)
+  if (!block)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = block;
   v5.super_class = _PFAutoreleasePoolThunk;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -35,7 +35,7 @@
   return v3;
 }
 
-+ (void)thunkWithBlock:(uint64_t)a1
++ (void)thunkWithBlock:(uint64_t)block
 {
   v3 = objc_alloc(objc_opt_self());
   v4 = [(_PFAutoreleasePoolThunk *)v3 initWithBlock:a2];

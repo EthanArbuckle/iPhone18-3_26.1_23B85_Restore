@@ -1,25 +1,25 @@
 @interface MSUUpdateBrainAssetLoader
-- (BOOL)cancel:(id *)a3;
-- (BOOL)purgeUpdateBrains:(id *)a3;
-- (MSUUpdateBrainAssetLoader)initWithUpdateAsset:(id)a3;
-- (int64_t)requiredDiskSpace:(id *)a3;
-- (void)adjustMAOptions:(id)a3 completion:(id)a4;
-- (void)adjustOptions:(id)a3 completion:(id)a4;
+- (BOOL)cancel:(id *)cancel;
+- (BOOL)purgeUpdateBrains:(id *)brains;
+- (MSUUpdateBrainAssetLoader)initWithUpdateAsset:(id)asset;
+- (int64_t)requiredDiskSpace:(id *)space;
+- (void)adjustMAOptions:(id)options completion:(id)completion;
+- (void)adjustOptions:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)loadUpdateBrainWithMAOptions:(id)a3 clientOptionsFromPolicy:(id)a4 progressHandler:(id)a5;
-- (void)loadUpdateBrainWithOptions:(id)a3 progressHandler:(id)a4;
+- (void)loadUpdateBrainWithMAOptions:(id)options clientOptionsFromPolicy:(id)policy progressHandler:(id)handler;
+- (void)loadUpdateBrainWithOptions:(id)options progressHandler:(id)handler;
 @end
 
 @implementation MSUUpdateBrainAssetLoader
 
-- (MSUUpdateBrainAssetLoader)initWithUpdateAsset:(id)a3
+- (MSUUpdateBrainAssetLoader)initWithUpdateAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = MSUUpdateBrainAssetLoader;
   v4 = [(MSUUpdateBrainAssetLoader *)&v6 init];
   if (v4)
   {
-    v4->_updateAsset = a3;
+    v4->_updateAsset = asset;
   }
 
   return v4;
@@ -32,7 +32,7 @@
   [(MSUUpdateBrainLoader *)&v3 dealloc];
 }
 
-- (void)loadUpdateBrainWithMAOptions:(id)a3 clientOptionsFromPolicy:(id)a4 progressHandler:(id)a5
+- (void)loadUpdateBrainWithMAOptions:(id)options clientOptionsFromPolicy:(id)policy progressHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
   v9 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -48,11 +48,11 @@
   block[1] = 3221225472;
   block[2] = __98__MSUUpdateBrainAssetLoader_loadUpdateBrainWithMAOptions_clientOptionsFromPolicy_progressHandler___block_invoke;
   block[3] = &unk_2798EDA40;
-  block[4] = a4;
+  block[4] = policy;
   block[5] = self;
   block[6] = @"loadUpdateBrainWithMAOptions";
-  block[7] = a3;
-  block[8] = a5;
+  block[7] = options;
+  block[8] = handler;
   dispatch_async(global_queue, block);
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -162,7 +162,7 @@ LABEL_6:
   return 0;
 }
 
-- (void)loadUpdateBrainWithOptions:(id)a3 progressHandler:(id)a4
+- (void)loadUpdateBrainWithOptions:(id)options progressHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
   v7 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -180,8 +180,8 @@ LABEL_6:
   v10[3] = &unk_2798EDA68;
   v10[4] = self;
   v10[5] = @"loadUpdateBrainWithOptions";
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[6] = options;
+  v10[7] = handler;
   dispatch_async(global_queue, v10);
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -283,7 +283,7 @@ uint64_t __72__MSUUpdateBrainAssetLoader_loadUpdateBrainWithOptions_progressHand
   return 0;
 }
 
-- (BOOL)cancel:(id *)a3
+- (BOOL)cancel:(id *)cancel
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -294,11 +294,11 @@ uint64_t __72__MSUUpdateBrainAssetLoader_loadUpdateBrainWithOptions_progressHand
     _os_log_impl(&dword_259B51000, v5, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOADER] %{public}@ | BEGIN", buf, 0xCu);
   }
 
-  v13 = [(MAAsset *)[(MSUUpdateBrainAssetLoader *)self updateAsset] attributes];
-  v6 = perform_command("CancelLoadBrain", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v13 forKeys:&v12 count:1], 0, 0, a3);
-  if (a3)
+  attributes = [(MAAsset *)[(MSUUpdateBrainAssetLoader *)self updateAsset] attributes];
+  v6 = perform_command("CancelLoadBrain", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&attributes forKeys:&v12 count:1], 0, 0, cancel);
+  if (cancel)
   {
-    v7 = *a3;
+    v7 = *cancel;
   }
 
   v8 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -315,14 +315,14 @@ uint64_t __72__MSUUpdateBrainAssetLoader_loadUpdateBrainWithOptions_progressHand
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(MSUUpdateBrainAssetLoader *)a3 == 0 cancel:a3];
+    [(MSUUpdateBrainAssetLoader *)cancel == 0 cancel:cancel];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)adjustMAOptions:(id)a3 completion:(id)a4
+- (void)adjustMAOptions:(id)options completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
   v7 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -338,10 +338,10 @@ uint64_t __72__MSUUpdateBrainAssetLoader_loadUpdateBrainWithOptions_progressHand
   v10[1] = 3221225472;
   v10[2] = __56__MSUUpdateBrainAssetLoader_adjustMAOptions_completion___block_invoke;
   v10[3] = &unk_2798EDA68;
-  v10[4] = a3;
+  v10[4] = options;
   v10[5] = @"adjustMAOptions";
   v10[6] = self;
-  v10[7] = a4;
+  v10[7] = completion;
   dispatch_async(global_queue, v10);
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -397,7 +397,7 @@ uint64_t __56__MSUUpdateBrainAssetLoader_adjustMAOptions_completion___block_invo
   return result;
 }
 
-- (void)adjustOptions:(id)a3 completion:(id)a4
+- (void)adjustOptions:(id)options completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
   v7 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -413,10 +413,10 @@ uint64_t __56__MSUUpdateBrainAssetLoader_adjustMAOptions_completion___block_invo
   v10[1] = 3221225472;
   v10[2] = __54__MSUUpdateBrainAssetLoader_adjustOptions_completion___block_invoke;
   v10[3] = &unk_2798EDA68;
-  v10[4] = a3;
+  v10[4] = options;
   v10[5] = self;
   v10[6] = @"adjustOptions";
-  v10[7] = a4;
+  v10[7] = completion;
   dispatch_async(global_queue, v10);
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -455,7 +455,7 @@ uint64_t __54__MSUUpdateBrainAssetLoader_adjustOptions_completion___block_invoke
   return result;
 }
 
-- (BOOL)purgeUpdateBrains:(id *)a3
+- (BOOL)purgeUpdateBrains:(id *)brains
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -466,13 +466,13 @@ uint64_t __54__MSUUpdateBrainAssetLoader_adjustOptions_completion___block_invoke
     _os_log_impl(&dword_259B51000, v4, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOADER] %{public}@ | BEGIN", &v10, 0xCu);
   }
 
-  v5 = perform_command("PurgeBrains", 0, 0, 0, a3);
-  if (a3)
+  v5 = perform_command("PurgeBrains", 0, 0, 0, brains);
+  if (brains)
   {
-    v6 = *a3;
+    v6 = *brains;
     if (os_log_type_enabled([objc_msgSend(MEMORY[0x277D64460] "sharedLogger")], OS_LOG_TYPE_ERROR))
     {
-      [MSUUpdateBrainAssetLoader purgeUpdateBrains:a3];
+      [MSUUpdateBrainAssetLoader purgeUpdateBrains:brains];
     }
   }
 
@@ -491,7 +491,7 @@ uint64_t __54__MSUUpdateBrainAssetLoader_adjustOptions_completion___block_invoke
   return v5;
 }
 
-- (int64_t)requiredDiskSpace:(id *)a3
+- (int64_t)requiredDiskSpace:(id *)space
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v5 = [objc_msgSend(MEMORY[0x277D64460] "sharedLogger")];
@@ -515,16 +515,16 @@ uint64_t __54__MSUUpdateBrainAssetLoader_adjustOptions_completion___block_invoke
   }
 
   v16 = 0;
-  v7 = perform_command("RequiredDiskSpace", v6, 0, &v16, a3);
+  v7 = perform_command("RequiredDiskSpace", v6, 0, &v16, space);
   v8 = v16;
-  if (a3)
+  if (space)
   {
-    v9 = *a3;
+    v9 = *space;
     if ((v7 & 1) == 0)
     {
       if (os_log_type_enabled([objc_msgSend(MEMORY[0x277D64460] "sharedLogger")], OS_LOG_TYPE_ERROR))
       {
-        [MSUUpdateBrainAssetLoader requiredDiskSpace:a3];
+        [MSUUpdateBrainAssetLoader requiredDiskSpace:space];
       }
 
 LABEL_19:
@@ -559,11 +559,11 @@ LABEL_19:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v16 longLongValue];
+    longLongValue = [v16 longLongValue];
     *buf = 138543618;
     v18 = @"requiredDiskSpace";
     v19 = 2048;
-    v20 = v13;
+    v20 = longLongValue;
     _os_log_impl(&dword_259B51000, v12, OS_LOG_TYPE_DEFAULT, "[BRAIN_LOADER] %{public}@ | SUCCESS | Required disk space: %llu bytes", buf, 0x16u);
   }
 

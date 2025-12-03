@@ -1,12 +1,12 @@
 @interface VCPFaceTensorModel
-- (VCPFaceTensorModel)initWithModelFile:(__sFILE *)a3;
-- (void)calculateMesh:(float *)a3 numVertices:(int)a4 blendshapes:(float *)a5 outputMesh:(float *)a6;
+- (VCPFaceTensorModel)initWithModelFile:(__sFILE *)file;
+- (void)calculateMesh:(float *)mesh numVertices:(int)vertices blendshapes:(float *)blendshapes outputMesh:(float *)outputMesh;
 - (void)dealloc;
 @end
 
 @implementation VCPFaceTensorModel
 
-- (VCPFaceTensorModel)initWithModelFile:(__sFILE *)a3
+- (VCPFaceTensorModel)initWithModelFile:(__sFILE *)file
 {
   v32.receiver = self;
   v32.super_class = VCPFaceTensorModel;
@@ -14,22 +14,22 @@
   v5 = v4;
   if (v4)
   {
-    if (fread(&v4->_numBlendshapePlusOne, 4uLL, 1uLL, a3) != 1)
+    if (fread(&v4->_numBlendshapePlusOne, 4uLL, 1uLL, file) != 1)
     {
       goto LABEL_43;
     }
 
-    if (fread(&v5->_numComponents, 4uLL, 1uLL, a3) != 1)
+    if (fread(&v5->_numComponents, 4uLL, 1uLL, file) != 1)
     {
       goto LABEL_43;
     }
 
-    if (fread(&v5->_numIdentities, 4uLL, 1uLL, a3) != 1)
+    if (fread(&v5->_numIdentities, 4uLL, 1uLL, file) != 1)
     {
       goto LABEL_43;
     }
 
-    if (fread(&v5->_numVertices, 4uLL, 1uLL, a3) != 1)
+    if (fread(&v5->_numVertices, 4uLL, 1uLL, file) != 1)
     {
       goto LABEL_43;
     }
@@ -57,7 +57,7 @@
       goto LABEL_43;
     }
 
-    v7 = fread(v6, 4uLL, 0x34uLL, a3);
+    v7 = fread(v6, 4uLL, 0x34uLL, file);
     numBlendshapePlusOne = v5->_numBlendshapePlusOne;
     if (v7 != numBlendshapePlusOne)
     {
@@ -98,7 +98,7 @@
       }
     }
 
-    else if (fread(v13, 4uLL, v9, a3) == v9)
+    else if (fread(v13, 4uLL, v9, file) == v9)
     {
       vcp_matrix_transpose(v14, v5->_meanBlendshape, 3 * v5->_numVertices, v5->_numBlendshapePlusOne);
       v17 = v5->_numComponents * v5->_numIdentities;
@@ -107,7 +107,7 @@
       v5->_tensorCoeff = v19;
       if (v19)
       {
-        if (fread(v19, 4uLL, v17, a3) == v17)
+        if (fread(v19, 4uLL, v17, file) == v17)
         {
           numComponents = v5->_numComponents;
           v21 = 3 * v5->_numVertices * numComponents;
@@ -116,7 +116,7 @@
           v5->_componentsBlendshape = v23;
           if (v23)
           {
-            if (fread(v23, 4uLL, v21, a3) == v21)
+            if (fread(v23, 4uLL, v21, file) == v21)
             {
               v24 = MEMORY[0x1E69E5398];
               v25 = operator new[](0x7D4uLL, MEMORY[0x1E69E5398]);
@@ -219,19 +219,19 @@ LABEL_45:
   [(VCPFaceTensorModel *)&v9 dealloc];
 }
 
-- (void)calculateMesh:(float *)a3 numVertices:(int)a4 blendshapes:(float *)a5 outputMesh:(float *)a6
+- (void)calculateMesh:(float *)mesh numVertices:(int)vertices blendshapes:(float *)blendshapes outputMesh:(float *)outputMesh
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = (3 * a4);
-  matrix_multiplication(a3, &a5[v9], a6, 1, self->_numBlendshapePlusOne - 1, v9);
-  if (a4 >= 1)
+  outputMeshCopy = outputMesh;
+  blendshapesCopy = blendshapes;
+  v9 = (3 * vertices);
+  matrix_multiplication(mesh, &blendshapes[v9], outputMesh, 1, self->_numBlendshapePlusOne - 1, v9);
+  if (vertices >= 1)
   {
     do
     {
-      v10 = *v7++;
-      *v6 = v10 + *v6;
-      ++v6;
+      v10 = *blendshapesCopy++;
+      *outputMeshCopy = v10 + *outputMeshCopy;
+      ++outputMeshCopy;
       --v9;
     }
 

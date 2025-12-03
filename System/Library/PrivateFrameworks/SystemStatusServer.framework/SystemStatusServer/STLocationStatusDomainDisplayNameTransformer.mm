@@ -1,37 +1,37 @@
 @interface STLocationStatusDomainDisplayNameTransformer
-- (STLocationStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3;
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4;
+- (STLocationStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver;
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain;
 @end
 
 @implementation STLocationStatusDomainDisplayNameTransformer
 
-- (STLocationStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)a3
+- (STLocationStatusDomainDisplayNameTransformer)initWithEntityResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = STLocationStatusDomainDisplayNameTransformer;
   v6 = [(STLocationStatusDomainDisplayNameTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityResolver, a3);
+    objc_storeStrong(&v6->_entityResolver, resolver);
   }
 
   return v7;
 }
 
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain
 {
-  v5 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v5;
+  v7 = dataCopy;
   v8 = v7;
   v9 = v7;
   if (isKindOfClass)
   {
-    v10 = [v7 attributions];
-    v11 = [v10 bs_map:&__block_literal_global_2];
+    attributions = [v7 attributions];
+    v11 = [attributions bs_map:&__block_literal_global_2];
     if (self)
     {
       entityResolver = self->_entityResolver;
@@ -50,11 +50,11 @@
     v18[3] = &unk_279D35008;
     v19 = v13;
     v14 = v13;
-    v15 = [v10 bs_map:v18];
+    v15 = [attributions bs_map:v18];
     v9 = objc_alloc_init(MEMORY[0x277D6BA10]);
-    v16 = [v8 activeDisplayModes];
+    activeDisplayModes = [v8 activeDisplayModes];
 
-    [v9 setActiveDisplayModes:v16];
+    [v9 setActiveDisplayModes:activeDisplayModes];
     [v9 setAttributions:v15];
   }
 

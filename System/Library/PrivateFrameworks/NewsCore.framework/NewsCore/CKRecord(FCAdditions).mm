@@ -9,7 +9,7 @@
 {
   if (a3)
   {
-    v4 = [a1 objectForKey:?];
+    v4 = [self objectForKey:?];
   }
 
   else
@@ -24,7 +24,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 objectForKeyedSubscript:v6];
+  v8 = [self objectForKeyedSubscript:v6];
   v9 = [v7 objectForKeyedSubscript:v6];
 
   if (v8 == v9)

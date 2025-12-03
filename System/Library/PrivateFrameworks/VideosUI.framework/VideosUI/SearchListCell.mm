@@ -1,5 +1,5 @@
 @interface SearchListCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (VUIButton)buttonView;
 - (VUILabel)resultsContextLabel;
 - (VUILabel)subtitleLabel;
@@ -7,12 +7,12 @@
 - (id)zoomSourceView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setButtonView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setResultsContextLabel:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (void)setButtonView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setResultsContextLabel:(id)label;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
 @end
 
 @implementation SearchListCell
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)setResultsContextLabel:(id)a3
+- (void)setResultsContextLabel:(id)label
 {
-  OUTLINED_FUNCTION_33_99(self, a2, a3);
+  OUTLINED_FUNCTION_33_99(self, a2, label);
   v4 = v3;
   OUTLINED_FUNCTION_10_0();
   sub_1E41625C8();
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  OUTLINED_FUNCTION_33_99(self, a2, a3);
+  OUTLINED_FUNCTION_33_99(self, a2, label);
   v4 = v3;
   OUTLINED_FUNCTION_10_0();
   sub_1E41627B4();
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  OUTLINED_FUNCTION_33_99(self, a2, a3);
+  OUTLINED_FUNCTION_33_99(self, a2, label);
   v4 = v3;
   OUTLINED_FUNCTION_10_0();
   sub_1E4162974();
@@ -69,19 +69,19 @@
   return v2;
 }
 
-- (void)setButtonView:(id)a3
+- (void)setButtonView:(id)view
 {
-  OUTLINED_FUNCTION_33_99(self, a2, a3);
+  OUTLINED_FUNCTION_33_99(self, a2, view);
   v4 = v3;
   OUTLINED_FUNCTION_10_0();
   sub_1E4163080();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1E41637DC(width, height);
   v8 = v7;
 
@@ -94,31 +94,31 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4164DE0();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4164F80();
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E4165050(a3);
+  selfCopy = self;
+  sub_1E4165050(highlighted);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1E4165214(a3, a4);
+  selfCopy = self;
+  sub_1E4165214(selected, animated);
 }
 
 - (id)zoomSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E41658A0();
 
   return v3;

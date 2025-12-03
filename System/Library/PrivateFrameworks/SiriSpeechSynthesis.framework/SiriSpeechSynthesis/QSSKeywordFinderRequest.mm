@@ -4,8 +4,8 @@
 - (NSString)language;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::KeywordFinderRequest>)addObjectToBuffer:(void *)a3;
-- (QSSKeywordFinderRequest)initWithFlatbuffData:(id)a3 root:(const KeywordFinderRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::KeywordFinderRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSKeywordFinderRequest)initWithFlatbuffData:(id)data root:(const KeywordFinderRequest *)root verify:(BOOL)verify;
 - (QSSRecognitionResult)recognition_result;
 - (id)flatbuffData;
 @end
@@ -41,44 +41,44 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::KeywordFinderRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::KeywordFinderRequest>)addObjectToBuffer:(void *)buffer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSKeywordFinderRequest *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSKeywordFinderRequest *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSKeywordFinderRequest *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(QSSKeywordFinderRequest *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v31 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v31 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v13 = [(QSSKeywordFinderRequest *)self language];
-  v14 = v13;
-  if (!v13)
+  language = [(QSSKeywordFinderRequest *)self language];
+  v14 = language;
+  if (!language)
   {
-    v13 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v30 = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v16 = strlen(uTF8String3);
+  v30 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
-  v17 = [(QSSKeywordFinderRequest *)self keywords];
-  v18 = [v17 count];
+  keywords = [(QSSKeywordFinderRequest *)self keywords];
+  v18 = [keywords count];
   if (v18)
   {
     if (!(v18 >> 62))
@@ -98,33 +98,33 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
   {
     *v35;
     *v35;
-    [**(&v34 + 1) addObjectToBuffer:a3];
+    [**(&v34 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v19 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v20 = [(QSSKeywordFinderRequest *)self recognition_result];
-  v21 = [v20 addObjectToBuffer:a3];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v19 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  recognition_result = [(QSSKeywordFinderRequest *)self recognition_result];
+  v21 = [recognition_result addObjectToBuffer:buffer];
 
-  v22 = [(QSSKeywordFinderRequest *)self enable_sanitization];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v23 = *(a3 + 8);
-  v24 = *(a3 + 12);
-  v25 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v31);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v30);
+  enable_sanitization = [(QSSKeywordFinderRequest *)self enable_sanitization];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v23 = *(buffer + 8);
+  v24 = *(buffer + 12);
+  v25 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v31);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v30);
   if (v19)
   {
-    v26 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v19);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v26);
+    v26 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v19);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v26);
   }
 
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 12, v21);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 14, v22);
-  v27.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v23 - v24 + v25);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 12, v21);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 14, enable_sanitization);
+  v27.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v23 - v24 + v25);
   v28 = *MEMORY[0x277D85DE8];
   return v27;
 }
@@ -163,10 +163,10 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
 
 - (NSArray)keywords
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"keywords"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"keywords"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xBu)
@@ -183,7 +183,7 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
           do
           {
             v11 = [[QSSKeyword alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -194,10 +194,10 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"keywords"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"keywords"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)language
@@ -269,10 +269,10 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
   return v6;
 }
 
-- (QSSKeywordFinderRequest)initWithFlatbuffData:(id)a3 root:(const KeywordFinderRequest *)a4 verify:(BOOL)a5
+- (QSSKeywordFinderRequest)initWithFlatbuffData:(id)data root:(const KeywordFinderRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v45.receiver = self;
   v45.super_class = QSSKeywordFinderRequest;
   v10 = [(QSSKeywordFinderRequest *)&v45 init];
@@ -282,35 +282,35 @@ flatbuffers::DetachedBuffer *__39__QSSKeywordFinderRequest_flatbuffData__block_i
     goto LABEL_53;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_54;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_52;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_54;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v40 = v17;
+  v40 = bytes3;
   v41 = v18;
   v42 = xmmword_26914CD70;
   v43 = 0;
@@ -448,9 +448,9 @@ LABEL_54:
   }
 
 LABEL_52:
-  v36 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v36;
+  v11->_storage = dictionary;
 
 LABEL_53:
   v38 = v11;

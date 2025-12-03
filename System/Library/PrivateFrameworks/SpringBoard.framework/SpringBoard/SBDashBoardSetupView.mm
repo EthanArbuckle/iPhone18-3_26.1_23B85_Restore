@@ -1,83 +1,83 @@
 @interface SBDashBoardSetupView
-- (SBDashBoardSetupView)initWithFrame:(CGRect)a3 usingHomeAffordance:(BOOL)a4 coverSheetContext:(id)a5 isStoreRestricted:(BOOL)a6 isSecurityResearchDevice:(BOOL)a7;
+- (SBDashBoardSetupView)initWithFrame:(CGRect)frame usingHomeAffordance:(BOOL)affordance coverSheetContext:(id)context isStoreRestricted:(BOOL)restricted isSecurityResearchDevice:(BOOL)device;
 - (SBSolariumCursiveTextAnimationDelegate)glassCursiveTextAnimationDelegate;
-- (double)setTitleString:(id)a3 forLanguage:(id)a4;
+- (double)setTitleString:(id)string forLanguage:(id)language;
 - (id)_titleView;
 - (void)_addActivationLockLabels;
 - (void)_addHomeAffordanceCallToAction;
-- (void)_addHomeAffordanceForCoverSheetContext:(id)a3;
+- (void)_addHomeAffordanceForCoverSheetContext:(id)context;
 - (void)_addHomeButtonCallToAction;
 - (void)_addInfoButton;
-- (void)_addResetAnimationForKeyPath:(id)a3 onLayer:(id)a4 dispatchGroup:(id)a5;
+- (void)_addResetAnimationForKeyPath:(id)path onLayer:(id)layer dispatchGroup:(id)group;
 - (void)_addSecurityResearchLabels;
 - (void)_addStoreRestrictedLabels;
 - (void)_addTitleLabel;
 - (void)_adjustTitleVisibilityForInfoViews;
 - (void)_animateCursiveForTimePassed;
-- (void)_animateHomeAffordanceCallToActionToActive:(BOOL)a3 withDispatchGroup:(id)a4;
-- (void)_animateHomeAffordanceToActive:(BOOL)a3 withDispatchGroup:(id)a4;
-- (void)_animateHomeButtonCallToActionToActive:(BOOL)a3 withDispatchGroup:(id)a4;
-- (void)_animateView:(id)a3 toActive:(BOOL)a4 withDispatchGroup:(id)a5;
+- (void)_animateHomeAffordanceCallToActionToActive:(BOOL)active withDispatchGroup:(id)group;
+- (void)_animateHomeAffordanceToActive:(BOOL)active withDispatchGroup:(id)group;
+- (void)_animateHomeButtonCallToActionToActive:(BOOL)active withDispatchGroup:(id)group;
+- (void)_animateView:(id)view toActive:(BOOL)active withDispatchGroup:(id)group;
 - (void)_createDisplayLink;
 - (void)_layoutActivationInfoView;
 - (void)_layoutHomeAffordance;
 - (void)_layoutHomeAffordanceCallToAction;
 - (void)_layoutHomeButtonCallToAction;
 - (void)_layoutRegulatoryInfo;
-- (void)_onDisplayLink:(id)a3;
+- (void)_onDisplayLink:(id)link;
 - (void)_removeDisplayLink;
-- (void)_removeNormalAnimationForKeyPath:(id)a3 onLayer:(id)a4;
-- (void)_removeResetAnimationForKeyPath:(id)a3 onLayer:(id)a4;
+- (void)_removeNormalAnimationForKeyPath:(id)path onLayer:(id)layer;
+- (void)_removeResetAnimationForKeyPath:(id)path onLayer:(id)layer;
 - (void)_setupActivationInfoConstraintsIfNeeded;
 - (void)_setupConstraints;
-- (void)_startupDidFinish:(id)a3;
+- (void)_startupDidFinish:(id)finish;
 - (void)_updateBaselineAndChildIconConstraints;
 - (void)_updateHelloVisibility;
 - (void)_updateLegibilitySettings;
-- (void)animateComponents:(unint64_t)a3 toActive:(BOOL)a4 withCompletion:(id)a5;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateComponents:(unint64_t)components toActive:(BOOL)active withCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)prepareSolariumCursiveTextViewWithDelegate:(id)a3 completion:(id)a4;
-- (void)setActivationInfoView:(id)a3;
-- (void)setActivationLockWarningString:(id)a3 detailString:(id)a4 forLanguage:(id)a5;
-- (void)setActivationLocked:(BOOL)a3;
-- (void)setCallToActionString:(id)a3 forLanguage:(id)a4;
-- (void)setChildIconView:(id)a3;
-- (void)setChildIconVisible:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5;
-- (void)setInfoButtonVisible:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setRegulatoryInfoView:(id)a3;
-- (void)setStoreRestrictedStrings:(id)a3 bodyString:(id)a4 linkString:(id)a5 forLanguage:(id)a6;
-- (void)setSuppressingAllElements:(BOOL)a3;
+- (void)prepareSolariumCursiveTextViewWithDelegate:(id)delegate completion:(id)completion;
+- (void)setActivationInfoView:(id)view;
+- (void)setActivationLockWarningString:(id)string detailString:(id)detailString forLanguage:(id)language;
+- (void)setActivationLocked:(BOOL)locked;
+- (void)setCallToActionString:(id)string forLanguage:(id)language;
+- (void)setChildIconView:(id)view;
+- (void)setChildIconVisible:(BOOL)visible animated:(BOOL)animated withDelay:(double)delay;
+- (void)setInfoButtonVisible:(BOOL)visible animated:(BOOL)animated withDelay:(double)delay;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setRegulatoryInfoView:(id)view;
+- (void)setStoreRestrictedStrings:(id)strings bodyString:(id)string linkString:(id)linkString forLanguage:(id)language;
+- (void)setSuppressingAllElements:(BOOL)elements;
 @end
 
 @implementation SBDashBoardSetupView
 
-- (SBDashBoardSetupView)initWithFrame:(CGRect)a3 usingHomeAffordance:(BOOL)a4 coverSheetContext:(id)a5 isStoreRestricted:(BOOL)a6 isSecurityResearchDevice:(BOOL)a7
+- (SBDashBoardSetupView)initWithFrame:(CGRect)frame usingHomeAffordance:(BOOL)affordance coverSheetContext:(id)context isStoreRestricted:(BOOL)restricted isSecurityResearchDevice:(BOOL)device
 {
-  v9 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a5;
+  affordanceCopy = affordance;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = SBDashBoardSetupView;
-  v16 = [(SBDashBoardSetupView *)&v21 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SBDashBoardSetupView *)&v21 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    v16->_isStoreRestricted = a6;
-    v16->_isSecurityResearchDevice = a7;
-    v16->_customDelayDuration = 4.0;
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v17 selector:sel__startupDidFinish_ name:@"SBStartupDidCompleteNotification" object:0];
+    height->_isStoreRestricted = restricted;
+    height->_isSecurityResearchDevice = device;
+    height->_customDelayDuration = 4.0;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel__startupDidFinish_ name:@"SBStartupDidCompleteNotification" object:0];
 
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(SBDashBoardSetupView *)v17 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBDashBoardSetupView *)v17 setBackgroundColor:clearColor];
 
-    if (a7)
+    if (device)
     {
       [(SBDashBoardSetupView *)v17 _addSecurityResearchLabels];
     }
@@ -98,10 +98,10 @@
       [(SBDashBoardSetupView *)v17 _addStoreRestrictedLabels];
     }
 
-    else if (v9)
+    else if (affordanceCopy)
     {
       [(SBDashBoardSetupView *)v17 _addHomeAffordanceCallToAction];
-      [(SBDashBoardSetupView *)v17 _addHomeAffordanceForCoverSheetContext:v15];
+      [(SBDashBoardSetupView *)v17 _addHomeAffordanceForCoverSheetContext:contextCopy];
     }
 
     else
@@ -134,29 +134,29 @@
   [(SBDashBoardSetupView *)&v6 dealloc];
 }
 
-- (void)setActivationInfoView:(id)a3
+- (void)setActivationInfoView:(id)view
 {
-  v5 = a3;
-  if (self->_activationInfoView != v5)
+  viewCopy = view;
+  if (self->_activationInfoView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_activationInfoView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(&self->_activationInfoView, view);
     [(SBDashBoardSetupView *)self _adjustTitleVisibilityForInfoViews];
     activationInfoViewConstraints = self->_activationInfoViewConstraints;
     self->_activationInfoViewConstraints = 0;
 
     [(SBDashBoardSetupView *)self _setupActivationInfoConstraintsIfNeeded];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setRegulatoryInfoView:(id)a3
+- (void)setRegulatoryInfoView:(id)view
 {
-  v5 = a3;
-  if (self->_regulatoryInfoView != v5)
+  viewCopy = view;
+  if (self->_regulatoryInfoView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_regulatoryInfoView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(&self->_regulatoryInfoView, view);
     if (self->_regulatoryInfoView)
     {
       suppressingElements = 1;
@@ -169,36 +169,36 @@
 
     [(UIView *)self->_activationInfoView setHidden:suppressingElements];
     [(SBDashBoardSetupView *)self _adjustTitleVisibilityForInfoViews];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([v5 sb_isEqualToLegibilitySettings:self->_legibilitySettings] & 1) == 0)
+  settingsCopy = settings;
+  if (([settingsCopy sb_isEqualToLegibilitySettings:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBDashBoardSetupView *)self _updateLegibilitySettings];
   }
 }
 
-- (void)prepareSolariumCursiveTextViewWithDelegate:(id)a3 completion:(id)a4
+- (void)prepareSolariumCursiveTextViewWithDelegate:(id)delegate completion:(id)completion
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   if (self->_glassCursiveTextViewProvider || (WeakRetained = objc_loadWeakRetained(&self->_glassCursiveTextAnimationDelegate), WeakRetained, WeakRetained))
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    objc_storeWeak(&self->_glassCursiveTextAnimationDelegate, v6);
+    objc_storeWeak(&self->_glassCursiveTextAnimationDelegate, delegateCopy);
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x277D4DA78]);
     v41[0] = MEMORY[0x277D85DD0];
@@ -213,31 +213,31 @@
     objc_copyWeak(&v40, &location);
     v32 = [v9 initOnAnimationWillBegin:v41 onAnimationDidFinish:v39];
     v10 = objc_alloc(MEMORY[0x277D4DA80]);
-    v11 = [v6 glassCursiveTextLanguages];
-    v12 = [v10 initWithBookendType:0 firstLanguagesToDisplay:v11 callbacks:v32];
+    glassCursiveTextLanguages = [delegateCopy glassCursiveTextLanguages];
+    v12 = [v10 initWithBookendType:0 firstLanguagesToDisplay:glassCursiveTextLanguages callbacks:v32];
     glassCursiveTextViewProvider = self->_glassCursiveTextViewProvider;
     self->_glassCursiveTextViewProvider = v12;
 
-    v33 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-    [v33 setAlpha:0.0];
-    [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(SBDashBoardSetupView *)self insertSubview:v33 atIndex:0];
+    view = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+    [view setAlpha:0.0];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(SBDashBoardSetupView *)self insertSubview:view atIndex:0];
     v24 = MEMORY[0x277CCAAD0];
-    v31 = [v33 leadingAnchor];
-    v30 = [(SBDashBoardSetupView *)self leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [(SBDashBoardSetupView *)self leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v44[0] = v29;
-    v28 = [v33 trailingAnchor];
-    v27 = [(SBDashBoardSetupView *)self trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [(SBDashBoardSetupView *)self trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v44[1] = v26;
-    v25 = [v33 topAnchor];
-    v14 = [(SBDashBoardSetupView *)self topAnchor];
-    v15 = [v25 constraintEqualToAnchor:v14];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [(SBDashBoardSetupView *)self topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[2] = v15;
-    v16 = [v33 heightAnchor];
-    v17 = [(SBDashBoardSetupView *)self heightAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    heightAnchor = [view heightAnchor];
+    heightAnchor2 = [(SBDashBoardSetupView *)self heightAnchor];
+    v18 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v44[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
     [v24 activateConstraints:v19];
@@ -266,9 +266,9 @@
     block[3] = &unk_2783A8C68;
     objc_copyWeak(&v35, &location);
     dispatch_async(MEMORY[0x277D85CD0], block);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider willAnimateWithLogo]^ 1);
+      completionCopy[2](completionCopy, [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider willAnimateWithLogo]^ 1);
     }
 
     objc_destroyWeak(&v35);
@@ -362,32 +362,32 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)setSuppressingAllElements:(BOOL)a3
+- (void)setSuppressingAllElements:(BOOL)elements
 {
-  if (self->_suppressingElements != a3)
+  if (self->_suppressingElements != elements)
   {
-    v4 = a3;
-    self->_suppressingElements = a3;
+    elementsCopy = elements;
+    self->_suppressingElements = elements;
     [(SBDashBoardSetupView *)self setNeedsLayout];
     [(SBDashBoardSetupView *)self _adjustTitleVisibilityForInfoViews];
-    [(SBDashBoardSetupView *)self setInfoButtonVisible:!v4 animated:1 withDelay:0.0];
+    [(SBDashBoardSetupView *)self setInfoButtonVisible:!elementsCopy animated:1 withDelay:0.0];
 
-    [(SBDashBoardSetupView *)self setChildIconVisible:!v4 animated:1 withDelay:0.0];
+    [(SBDashBoardSetupView *)self setChildIconVisible:!elementsCopy animated:1 withDelay:0.0];
   }
 }
 
-- (double)setTitleString:(id)a3 forLanguage:(id)a4
+- (double)setTitleString:(id)string forLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  languageCopy = language;
   v8 = 0.0;
-  if ([v6 length] && !+[SBSolariumCursiveTextAvailability isFeatureEnabled](SBSolariumCursiveTextAvailability, "isFeatureEnabled"))
+  if ([stringCopy length] && !+[SBSolariumCursiveTextAvailability isFeatureEnabled](SBSolariumCursiveTextAvailability, "isFeatureEnabled"))
   {
     if (_os_feature_enabled_impl())
     {
-      objc_storeStrong(&self->_currentLanguage, a4);
+      objc_storeStrong(&self->_currentLanguage, language);
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v10 = [v9 URLForResource:@"CursiveHello" withExtension:@"plist" subdirectory:0 localization:v7];
+      v10 = [v9 URLForResource:@"CursiveHello" withExtension:@"plist" subdirectory:0 localization:languageCopy];
 
       cursiveTextView = self->_cursiveTextView;
       if (__sb__runningInSpringBoard())
@@ -404,10 +404,10 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
 
       else
       {
-        v15 = [MEMORY[0x277D75418] currentDevice];
-        v16 = [v15 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
         v17 = 64.0;
-        if (v16 == 1)
+        if (userInterfaceIdiom == 1)
         {
           v17 = 106.0;
         }
@@ -415,8 +415,8 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
         [(SBCursiveTextView *)cursiveTextView loadText:v10 pointSize:v17];
       }
 
-      [(SBCursiveTextView *)self->_cursiveTextView setAccessibilityLabel:v6];
-      [(SBCursiveTextView *)self->_cursiveTextView setAccessibilityLanguage:v7];
+      [(SBCursiveTextView *)self->_cursiveTextView setAccessibilityLabel:stringCopy];
+      [(SBCursiveTextView *)self->_cursiveTextView setAccessibilityLanguage:languageCopy];
       self->_startTime = CFAbsoluteTimeGetCurrent();
       [(SBCursiveTextView *)self->_cursiveTextView duration];
       v19 = v18 + 1.0;
@@ -436,11 +436,11 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6];
-      if ([v7 length])
+      v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
+      if ([languageCopy length])
       {
-        v14 = [v10 string];
-        [v10 addAttribute:@"NSLanguage" value:v7 range:{0, objc_msgSend(v14, "length")}];
+        string = [v10 string];
+        [v10 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string, "length")}];
       }
 
       [(UILabel *)self->_titleLabel setAttributedText:v10];
@@ -452,39 +452,39 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   return v8;
 }
 
-- (void)setStoreRestrictedStrings:(id)a3 bodyString:(id)a4 linkString:(id)a5 forLanguage:(id)a6
+- (void)setStoreRestrictedStrings:(id)strings bodyString:(id)string linkString:(id)linkString forLanguage:(id)language
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v12 length])
+  stringsCopy = strings;
+  stringCopy = string;
+  linkStringCopy = linkString;
+  languageCopy = language;
+  if ([languageCopy length])
   {
-    if ([v19 length])
+    if ([stringsCopy length])
     {
-      v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v19];
-      v14 = [v13 string];
-      [v13 addAttribute:@"NSLanguage" value:v12 range:{0, objc_msgSend(v14, "length")}];
+      v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringsCopy];
+      string = [v13 string];
+      [v13 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string, "length")}];
 
       [(UILabel *)self->_storeRestrictedTitleLabel setAttributedText:v13];
       [(SBDashBoardSetupView *)self setNeedsLayout];
     }
 
-    if ([v10 length])
+    if ([stringCopy length])
     {
-      v15 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v10];
-      v16 = [v15 string];
-      [v15 addAttribute:@"NSLanguage" value:v12 range:{0, objc_msgSend(v16, "length")}];
+      v15 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
+      string2 = [v15 string];
+      [v15 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string2, "length")}];
 
       [(UILabel *)self->_storeRestrictedBodyLabel setAttributedText:v15];
       [(SBDashBoardSetupView *)self setNeedsLayout];
     }
 
-    if ([v11 length])
+    if ([linkStringCopy length])
     {
-      v17 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v11];
-      v18 = [v17 string];
-      [v17 addAttribute:@"NSLanguage" value:v12 range:{0, objc_msgSend(v18, "length")}];
+      v17 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:linkStringCopy];
+      string3 = [v17 string];
+      [v17 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string3, "length")}];
 
       [(UILabel *)self->_storeRestrictedLinkLabel setAttributedText:v17];
       [(SBDashBoardSetupView *)self setNeedsLayout];
@@ -492,22 +492,22 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)setActivationLockWarningString:(id)a3 detailString:(id)a4 forLanguage:(id)a5
+- (void)setActivationLockWarningString:(id)string detailString:(id)detailString forLanguage:(id)language
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v14 length] && objc_msgSend(v8, "length"))
+  stringCopy = string;
+  detailStringCopy = detailString;
+  languageCopy = language;
+  if ([stringCopy length] && objc_msgSend(detailStringCopy, "length"))
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v14];
-    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8];
-    if ([v9 length])
+    v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
+    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:detailStringCopy];
+    if ([languageCopy length])
     {
-      v12 = [v10 string];
-      [v10 addAttribute:@"NSLanguage" value:v9 range:{0, objc_msgSend(v12, "length")}];
+      string = [v10 string];
+      [v10 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string, "length")}];
 
-      v13 = [v11 string];
-      [v11 addAttribute:@"NSLanguage" value:v9 range:{0, objc_msgSend(v13, "length")}];
+      string2 = [v11 string];
+      [v11 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string2, "length")}];
     }
 
     [(UILabel *)self->_activationLockWarningLabel setAttributedText:v10];
@@ -516,19 +516,19 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)setCallToActionString:(id)a3 forLanguage:(id)a4
+- (void)setCallToActionString:(id)string forLanguage:(id)language
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 length])
+  stringCopy = string;
+  languageCopy = language;
+  if ([stringCopy length])
   {
     if (self->_homeAffordanceCallToActionLabel)
     {
-      v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v9];
-      if ([v6 length])
+      v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
+      if ([languageCopy length])
       {
-        v8 = [v7 string];
-        [v7 addAttribute:@"NSLanguage" value:v6 range:{0, objc_msgSend(v8, "length")}];
+        string = [v7 string];
+        [v7 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string, "length")}];
       }
 
       [(SBUILegibilityLabel *)self->_homeAffordanceCallToActionLabel setAttributedText:v7];
@@ -536,27 +536,27 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
 
     else
     {
-      [(SBUICallToActionLabel *)self->_homeButtonCallToActionLabel setText:v9 forLanguage:v6 animated:0];
+      [(SBUICallToActionLabel *)self->_homeButtonCallToActionLabel setText:stringCopy forLanguage:languageCopy animated:0];
     }
 
     [(SBDashBoardSetupView *)self setNeedsLayout];
   }
 }
 
-- (void)setInfoButtonVisible:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)setInfoButtonVisible:(BOOL)visible animated:(BOOL)animated withDelay:(double)delay
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(UIButton *)self->_infoButton layer];
-  if (v9)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  layer = [(UIButton *)self->_infoButton layer];
+  if (layer)
   {
-    v21 = v9;
-    v10 = [v9 presentationLayer];
-    [v10 opacity];
+    v21 = layer;
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer opacity];
     v12 = v11;
 
     v14 = 0.0;
-    if (v7)
+    if (visibleCopy)
     {
       v13 = 1.0;
       if (self->_suppressingElements)
@@ -572,14 +572,14 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
 
     *&v13 = v14;
     [v21 setOpacity:v13];
-    v9 = v21;
-    if (v6)
+    layer = v21;
+    if (animatedCopy)
     {
       v15 = v12;
       if (v14 != v15)
       {
         v16 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
-        [v16 setBeginTime:CACurrentMediaTime() + a5];
+        [v16 setBeginTime:CACurrentMediaTime() + delay];
         [v16 setDuration:1.0];
         v17 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
         [v16 setFromValue:v17];
@@ -588,7 +588,7 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
         [v16 setToValue:v18];
 
         [v16 setFillMode:*MEMORY[0x277CDA228]];
-        if (v7)
+        if (visibleCopy)
         {
           v19 = @"SBDashBoardSetupNormalAnimation";
         }
@@ -601,36 +601,36 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
         v20 = [(__CFString *)v19 stringByAppendingFormat:@"-%@", @"opacity"];
         [v21 addAnimation:v16 forKey:v20];
 
-        v9 = v21;
+        layer = v21;
       }
     }
   }
 }
 
-- (void)setChildIconVisible:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)setChildIconVisible:(BOOL)visible animated:(BOOL)animated withDelay:(double)delay
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIView *)self->_childIconView layer];
-  if (v8)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  layer = [(UIView *)self->_childIconView layer];
+  if (layer)
   {
-    v20 = v8;
-    v9 = [v8 presentationLayer];
-    [v9 opacity];
+    v20 = layer;
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer opacity];
     v11 = v10;
 
     HIDWORD(v12) = 0;
-    v13 = v7 ? 1.0 : 0.0;
+    v13 = visibleCopy ? 1.0 : 0.0;
     *&v12 = v13;
     [v20 setOpacity:v12];
-    v8 = v20;
-    if (v6)
+    layer = v20;
+    if (animatedCopy)
     {
       v14 = v11;
       if (v13 != v14)
       {
         v15 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
-        [v15 setBeginTime:CACurrentMediaTime() + a5];
+        [v15 setBeginTime:CACurrentMediaTime() + delay];
         [v15 setDuration:1.0];
         v16 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
         [v15 setFromValue:v16];
@@ -639,7 +639,7 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
         [v15 setToValue:v17];
 
         [v15 setFillMode:*MEMORY[0x277CDA228]];
-        if (v7)
+        if (visibleCopy)
         {
           v18 = @"SBDashBoardSetupNormalAnimation";
         }
@@ -652,17 +652,17 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
         v19 = [(__CFString *)v18 stringByAppendingFormat:@"-%@", @"opacity"];
         [v20 addAnimation:v15 forKey:v19];
 
-        v8 = v20;
+        layer = v20;
       }
     }
   }
 }
 
-- (void)setActivationLocked:(BOOL)a3
+- (void)setActivationLocked:(BOOL)locked
 {
-  if (self->_activationLocked != a3)
+  if (self->_activationLocked != locked)
   {
-    self->_activationLocked = a3;
+    self->_activationLocked = locked;
     [(SBDashBoardSetupView *)self _updateHelloVisibility];
     if (self->_activationLocked && ![(SBDashBoardSetupView *)self _actsLikeStoreRestricted])
     {
@@ -684,14 +684,14 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)setChildIconView:(id)a3
+- (void)setChildIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(UIView *)self->_childIconView removeFromSuperview];
-    objc_storeStrong(&self->_childIconView, a3);
-    [(SBDashBoardSetupView *)self addSubview:v5];
+    objc_storeStrong(&self->_childIconView, view);
+    [(SBDashBoardSetupView *)self addSubview:viewCopy];
     [(SBDashBoardSetupView *)self _updateBaselineAndChildIconConstraints];
     if ([(SBDashBoardSetupView *)self _hasNonCursiveSuppressingUI])
     {
@@ -700,7 +700,7 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)_startupDidFinish:(id)a3
+- (void)_startupDidFinish:(id)finish
 {
   if (self->_isCursiveTitleAnimationDesired)
   {
@@ -717,20 +717,20 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
   }
 }
 
-- (void)animateComponents:(unint64_t)a3 toActive:(BOOL)a4 withCompletion:(id)a5
+- (void)animateComponents:(unint64_t)components toActive:(BOOL)active withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  activeCopy = active;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (components)
   {
     v10 = dispatch_group_create();
-    if (a3)
+    if (components)
     {
       titleLabel = self->_titleLabel;
       if (titleLabel)
       {
-        [(SBDashBoardSetupView *)self _animateView:titleLabel toActive:v5 withDispatchGroup:v10];
+        [(SBDashBoardSetupView *)self _animateView:titleLabel toActive:activeCopy withDispatchGroup:v10];
       }
 
       if (self->_activationLocked)
@@ -746,19 +746,19 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
       v13 = [(SBDashBoardSetupView *)self _isShowingModalTakeoverUI]| v12;
       if (self->_glassCursiveTextViewProvider)
       {
-        self->_isCursiveTitleAnimationDesired = v5;
+        self->_isCursiveTitleAnimationDesired = activeCopy;
         glassCursiveTextViewProvider = self->_glassCursiveTextViewProvider;
-        if (!v5)
+        if (!activeCopy)
         {
           [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider stopAnimation];
-          v19 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-          [v19 setHidden:1];
+          view = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+          [view setHidden:1];
 
           [(UIView *)self->_childIconView setHidden:1];
-          v20 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-          [v20 setAlpha:0.0];
+          view2 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+          [view2 setAlpha:0.0];
 
-          if ((a3 & 8) == 0)
+          if ((components & 8) == 0)
           {
             goto LABEL_27;
           }
@@ -766,14 +766,14 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
           goto LABEL_36;
         }
 
-        v15 = [(SBDashBoardSetupView *)self glassCursiveTextAnimationDelegate];
-        v16 = [v15 glassCursiveTextLanguages];
-        [(SASBookendViewProvider *)glassCursiveTextViewProvider updateLanguages:v16];
+        glassCursiveTextAnimationDelegate = [(SBDashBoardSetupView *)self glassCursiveTextAnimationDelegate];
+        glassCursiveTextLanguages = [glassCursiveTextAnimationDelegate glassCursiveTextLanguages];
+        [(SASBookendViewProvider *)glassCursiveTextViewProvider updateLanguages:glassCursiveTextLanguages];
 
-        LODWORD(v15) = [(SBDashBoardSetupView *)self _canStartGlassCursiveTitleAnimation];
+        LODWORD(glassCursiveTextAnimationDelegate) = [(SBDashBoardSetupView *)self _canStartGlassCursiveTitleAnimation];
         v17 = SBLogDashBoard();
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-        if (v15)
+        if (glassCursiveTextAnimationDelegate)
         {
           if (v18)
           {
@@ -793,8 +793,8 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
           }
         }
 
-        v21 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-        [v21 setHidden:v13 & 1];
+        view3 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+        [view3 setHidden:v13 & 1];
 
         [(UIView *)self->_childIconView setHidden:v13 & 1];
         v22[0] = MEMORY[0x277D85DD0];
@@ -807,14 +807,14 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
 
       else if (self->_cursiveTextView)
       {
-        if (v5)
+        if (activeCopy)
         {
           [(SBDashBoardSetupView *)self _animateCursiveForTimePassed];
           [(SBCursiveTextView *)self->_cursiveTextView setHidden:v13 & 1];
           [(UIView *)self->_childIconView setHidden:v13 & 1];
           [(SBDashBoardSetupView *)self _createDisplayLink];
           [(SBDashBoardSetupView *)self _animateView:self->_cursiveTextView toActive:1 withDispatchGroup:v10];
-          if ((a3 & 8) == 0)
+          if ((components & 8) == 0)
           {
             goto LABEL_27;
           }
@@ -826,10 +826,10 @@ void __78__SBDashBoardSetupView_prepareSolariumCursiveTextViewWithDelegate_compl
           [(SBDashBoardSetupView *)self _animateView:self->_cursiveTextView toActive:0 withDispatchGroup:v10];
           [(SBCursiveTextView *)self->_cursiveTextView setHidden:1];
           [(UIView *)self->_childIconView setHidden:1];
-          if ((a3 & 8) == 0)
+          if ((components & 8) == 0)
           {
 LABEL_27:
-            if ((a3 & 0x10) == 0)
+            if ((components & 0x10) == 0)
             {
               goto LABEL_28;
             }
@@ -839,11 +839,11 @@ LABEL_27:
         }
 
 LABEL_36:
-        [(SBDashBoardSetupView *)self _animateView:self->_storeRestrictedContainer toActive:v5 withDispatchGroup:v10];
-        if ((a3 & 0x10) == 0)
+        [(SBDashBoardSetupView *)self _animateView:self->_storeRestrictedContainer toActive:activeCopy withDispatchGroup:v10];
+        if ((components & 0x10) == 0)
         {
 LABEL_28:
-          if ((a3 & 2) == 0)
+          if ((components & 2) == 0)
           {
             goto LABEL_29;
           }
@@ -852,11 +852,11 @@ LABEL_28:
         }
 
 LABEL_37:
-        [(SBDashBoardSetupView *)self _animateView:self->_securityResearchDeviceContainer toActive:v5 withDispatchGroup:v10];
-        if ((a3 & 2) == 0)
+        [(SBDashBoardSetupView *)self _animateView:self->_securityResearchDeviceContainer toActive:activeCopy withDispatchGroup:v10];
+        if ((components & 2) == 0)
         {
 LABEL_29:
-          if ((a3 & 4) == 0)
+          if ((components & 4) == 0)
           {
             goto LABEL_30;
           }
@@ -865,12 +865,12 @@ LABEL_29:
         }
 
 LABEL_38:
-        [(SBDashBoardSetupView *)self _animateHomeButtonCallToActionToActive:v5 withDispatchGroup:v10];
-        [(SBDashBoardSetupView *)self _animateHomeAffordanceCallToActionToActive:v5 withDispatchGroup:v10];
-        if ((a3 & 4) == 0)
+        [(SBDashBoardSetupView *)self _animateHomeButtonCallToActionToActive:activeCopy withDispatchGroup:v10];
+        [(SBDashBoardSetupView *)self _animateHomeAffordanceCallToActionToActive:activeCopy withDispatchGroup:v10];
+        if ((components & 4) == 0)
         {
 LABEL_30:
-          if ((a3 & 0x20) == 0)
+          if ((components & 0x20) == 0)
           {
             goto LABEL_31;
           }
@@ -879,8 +879,8 @@ LABEL_30:
         }
 
 LABEL_39:
-        [(SBDashBoardSetupView *)self _animateHomeAffordanceToActive:v5 withDispatchGroup:v10];
-        if ((a3 & 0x20) == 0)
+        [(SBDashBoardSetupView *)self _animateHomeAffordanceToActive:activeCopy withDispatchGroup:v10];
+        if ((components & 0x20) == 0)
         {
 LABEL_31:
           if (!v9)
@@ -896,7 +896,7 @@ LABEL_32:
         }
 
 LABEL_40:
-        [(SBDashBoardSetupView *)self _animateView:self->_activationLockStackView toActive:v5 withDispatchGroup:v10];
+        [(SBDashBoardSetupView *)self _animateView:self->_activationLockStackView toActive:activeCopy withDispatchGroup:v10];
         if (!v9)
         {
           goto LABEL_33;
@@ -906,7 +906,7 @@ LABEL_40:
       }
     }
 
-    if ((a3 & 8) == 0)
+    if ((components & 8) == 0)
     {
       goto LABEL_27;
     }
@@ -914,9 +914,9 @@ LABEL_40:
     goto LABEL_36;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
+    (*(completionCopy + 2))(completionCopy);
   }
 
 LABEL_34:
@@ -969,9 +969,9 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   [(SBUICallToActionLabel *)self->_homeButtonCallToActionLabel setHidden:self->_suppressingElements || v12];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [a3 valueForKey:{@"SBDashBoardSetupDispatchGroup", a4}];
+  v4 = [stop valueForKey:{@"SBDashBoardSetupDispatchGroup", finished}];
   if (v4)
   {
     v5 = v4;
@@ -990,8 +990,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   if (_os_feature_enabled_impl())
   {
     v5 = self->_infoButton;
-    v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIButton *)v5 setTintColor:v6];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIButton *)v5 setTintColor:primaryColor];
   }
 
   [(UIButton *)self->_infoButton _setTouchInsets:-5.0, -5.0, -5.0, -5.0];
@@ -1013,8 +1013,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
       self->_cursiveTextView = v3;
 
       v6 = self->_cursiveTextView;
-      v7 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-      [(SBCursiveTextView *)v6 setFillColor:v7];
+      primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+      [(SBCursiveTextView *)v6 setFillColor:primaryColor];
     }
 
     else
@@ -1025,8 +1025,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
       self->_titleLabel = v8;
 
       v10 = self->_titleLabel;
-      v11 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-      [(UILabel *)v10 setTextColor:v11];
+      primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+      [(UILabel *)v10 setTextColor:primaryColor2];
 
       v12 = self->_titleLabel;
       v13 = [MEMORY[0x277D74300] boldSystemFontOfSize:60.0];
@@ -1057,23 +1057,23 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   v70 = [v5 systemImageNamed:@"lock.fill" withConfiguration:v6];
 
   v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v70];
-  v8 = [MEMORY[0x277D75348] systemBlueColor];
-  [v7 setTintColor:v8];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v7 setTintColor:systemBlueColor];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v9 = v7;
   [(UIView *)self->_storeRestrictedContainer addSubview:v7];
-  v10 = [MEMORY[0x277CF0D60] preferredFontProvider];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
   storeRestrictedTitleLabel = self->_storeRestrictedTitleLabel;
   self->_storeRestrictedTitleLabel = v11;
 
   v13 = self->_storeRestrictedTitleLabel;
-  v14 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)v13 setColor:v14];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)v13 setColor:primaryColor];
 
   v15 = self->_storeRestrictedTitleLabel;
-  v16 = [v10 preferredFontForTextStyle:*MEMORY[0x277D769A8] hiFontStyle:4];
+  v16 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D769A8] hiFontStyle:4];
   [(UILabel *)v15 setFont:v16];
 
   [(UILabel *)self->_storeRestrictedTitleLabel setNumberOfLines:0];
@@ -1086,13 +1086,13 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   self->_storeRestrictedBodyLabel = v17;
 
   v19 = self->_storeRestrictedBodyLabel;
-  v20 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)v19 setColor:v20];
+  primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)v19 setColor:primaryColor2];
 
   v21 = self->_storeRestrictedBodyLabel;
   v22 = *MEMORY[0x277D76918];
-  v69 = v10;
-  v23 = [v10 preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
+  v69 = preferredFontProvider;
+  v23 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
   [(UILabel *)v21 setFont:v23];
 
   [(UILabel *)self->_storeRestrictedBodyLabel setNumberOfLines:0];
@@ -1105,11 +1105,11 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   self->_storeRestrictedLinkLabel = v24;
 
   v26 = self->_storeRestrictedLinkLabel;
-  v27 = [MEMORY[0x277D75348] lightGrayColor];
-  [(UILabel *)v26 setColor:v27];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  [(UILabel *)v26 setColor:lightGrayColor];
 
   v28 = self->_storeRestrictedLinkLabel;
-  v29 = [v10 preferredFontForTextStyle:v22 hiFontStyle:1];
+  v29 = [preferredFontProvider preferredFontForTextStyle:v22 hiFontStyle:1];
   [(UILabel *)v28 setFont:v29];
 
   [(UILabel *)self->_storeRestrictedLinkLabel setNumberOfLines:0];
@@ -1119,54 +1119,54 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   [(UIView *)self->_storeRestrictedContainer addSubview:self->_storeRestrictedLinkLabel];
   [(SBDashBoardSetupView *)self addSubview:self->_storeRestrictedContainer];
   v53 = MEMORY[0x277CCAAD0];
-  v68 = [v9 centerXAnchor];
-  v67 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  centerXAnchor = [v9 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
+  v66 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v71[0] = v66;
-  v65 = [(UIView *)self->_storeRestrictedContainer topAnchor];
+  topAnchor = [(UIView *)self->_storeRestrictedContainer topAnchor];
   v63 = v9;
-  v64 = [v9 topAnchor];
-  v62 = [v65 constraintEqualToAnchor:v64];
+  topAnchor2 = [v9 topAnchor];
+  v62 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v71[1] = v62;
-  v61 = [(UILabel *)self->_storeRestrictedTitleLabel centerXAnchor];
-  v60 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  centerXAnchor3 = [(UILabel *)self->_storeRestrictedTitleLabel centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
+  v59 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v71[2] = v59;
-  v58 = [(UILabel *)self->_storeRestrictedTitleLabel topAnchor];
-  v57 = [v9 bottomAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:20.0];
+  topAnchor3 = [(UILabel *)self->_storeRestrictedTitleLabel topAnchor];
+  bottomAnchor = [v9 bottomAnchor];
+  v56 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v71[3] = v56;
-  v55 = [(UILabel *)self->_storeRestrictedBodyLabel centerXAnchor];
-  v54 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
-  v52 = [v55 constraintEqualToAnchor:v54];
+  centerXAnchor5 = [(UILabel *)self->_storeRestrictedBodyLabel centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
+  v52 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v71[4] = v52;
-  v51 = [(UILabel *)self->_storeRestrictedBodyLabel topAnchor];
-  v50 = [(UILabel *)self->_storeRestrictedTitleLabel bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:15.0];
+  topAnchor4 = [(UILabel *)self->_storeRestrictedBodyLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_storeRestrictedTitleLabel bottomAnchor];
+  v49 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:15.0];
   v71[5] = v49;
-  v48 = [(UILabel *)self->_storeRestrictedLinkLabel centerXAnchor];
-  v47 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerXAnchor7 = [(UILabel *)self->_storeRestrictedLinkLabel centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_storeRestrictedContainer centerXAnchor];
+  v46 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v71[6] = v46;
-  v45 = [(UILabel *)self->_storeRestrictedLinkLabel topAnchor];
-  v44 = [(UILabel *)self->_storeRestrictedBodyLabel bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44 constant:15.0];
+  topAnchor5 = [(UILabel *)self->_storeRestrictedLinkLabel topAnchor];
+  bottomAnchor3 = [(UILabel *)self->_storeRestrictedBodyLabel bottomAnchor];
+  v43 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:15.0];
   v71[7] = v43;
-  v42 = [(UIView *)self->_storeRestrictedContainer bottomAnchor];
-  v41 = [(UILabel *)self->_storeRestrictedLinkLabel bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor4 = [(UIView *)self->_storeRestrictedContainer bottomAnchor];
+  bottomAnchor5 = [(UILabel *)self->_storeRestrictedLinkLabel bottomAnchor];
+  v40 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v71[8] = v40;
-  v39 = [(UIView *)self->_storeRestrictedContainer widthAnchor];
-  v38 = [(UILabel *)self->_storeRestrictedTitleLabel widthAnchor];
-  v30 = [v39 constraintGreaterThanOrEqualToAnchor:v38];
+  widthAnchor = [(UIView *)self->_storeRestrictedContainer widthAnchor];
+  widthAnchor2 = [(UILabel *)self->_storeRestrictedTitleLabel widthAnchor];
+  v30 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
   v71[9] = v30;
-  v31 = [(UIView *)self->_storeRestrictedContainer widthAnchor];
-  v32 = [(UILabel *)self->_storeRestrictedBodyLabel widthAnchor];
-  v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32];
+  widthAnchor3 = [(UIView *)self->_storeRestrictedContainer widthAnchor];
+  widthAnchor4 = [(UILabel *)self->_storeRestrictedBodyLabel widthAnchor];
+  v33 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4];
   v71[10] = v33;
-  v34 = [(UIView *)self->_storeRestrictedContainer widthAnchor];
-  v35 = [(UILabel *)self->_storeRestrictedLinkLabel widthAnchor];
-  v36 = [v34 constraintGreaterThanOrEqualToAnchor:v35];
+  widthAnchor5 = [(UIView *)self->_storeRestrictedContainer widthAnchor];
+  widthAnchor6 = [(UILabel *)self->_storeRestrictedLinkLabel widthAnchor];
+  v36 = [widthAnchor5 constraintGreaterThanOrEqualToAnchor:widthAnchor6];
   v71[11] = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:12];
   [v53 activateConstraints:v37];
@@ -1185,8 +1185,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
     self->_activationLockImage = v5;
 
     v7 = self->_activationLockImage;
-    v8 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIImageView *)v7 setTintColor:v8];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIImageView *)v7 setTintColor:primaryColor];
 
     [(UIImageView *)self->_activationLockImage setTranslatesAutoresizingMaskIntoConstraints:0];
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -1194,8 +1194,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
     self->_activationLockWarningLabel = v9;
 
     v11 = self->_activationLockWarningLabel;
-    v12 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UILabel *)v11 setTextColor:v12];
+    primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UILabel *)v11 setTextColor:primaryColor2];
 
     v13 = self->_activationLockWarningLabel;
     v14 = [MEMORY[0x277D74300] systemFontOfSize:32.0 weight:*MEMORY[0x277D743F8]];
@@ -1210,8 +1210,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
     self->_activationLockDetailLabel = v15;
 
     v17 = self->_activationLockDetailLabel;
-    v18 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UILabel *)v17 setTextColor:v18];
+    primaryColor3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UILabel *)v17 setTextColor:primaryColor3];
 
     v19 = self->_activationLockDetailLabel;
     v20 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
@@ -1241,16 +1241,16 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
     [(UIStackView *)self->_activationLockStackView setHidden:1];
     [(SBDashBoardSetupView *)self addSubview:self->_activationLockStackView];
     v26 = MEMORY[0x277CCAAD0];
-    v27 = [(UIStackView *)self->_activationLockStackView widthAnchor];
-    v28 = [v27 constraintLessThanOrEqualToConstant:327.0];
+    widthAnchor = [(UIStackView *)self->_activationLockStackView widthAnchor];
+    v28 = [widthAnchor constraintLessThanOrEqualToConstant:327.0];
     v37[0] = v28;
-    v29 = [(UIStackView *)self->_activationLockStackView centerXAnchor];
-    v30 = [(SBDashBoardSetupView *)self centerXAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerXAnchor = [(UIStackView *)self->_activationLockStackView centerXAnchor];
+    centerXAnchor2 = [(SBDashBoardSetupView *)self centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v37[1] = v31;
-    v32 = [(UIStackView *)self->_activationLockStackView centerYAnchor];
-    v33 = [(SBDashBoardSetupView *)self centerYAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    centerYAnchor = [(UIStackView *)self->_activationLockStackView centerYAnchor];
+    centerYAnchor2 = [(SBDashBoardSetupView *)self centerYAnchor];
+    v34 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v37[2] = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
     [v26 activateConstraints:v35];
@@ -1265,18 +1265,18 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   self->_securityResearchDeviceContainer = v3;
 
   [(UIView *)self->_securityResearchDeviceContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x277CF0D60] preferredFontProvider];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
   v6 = objc_alloc_init(MEMORY[0x277D756B8]);
   securityResearchDeviceTitleLabel = self->_securityResearchDeviceTitleLabel;
   self->_securityResearchDeviceTitleLabel = v6;
 
   v8 = self->_securityResearchDeviceTitleLabel;
-  v9 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)v8 setColor:v9];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)v8 setColor:primaryColor];
 
   v10 = self->_securityResearchDeviceTitleLabel;
-  v54 = v5;
-  v11 = [v5 preferredFontForTextStyle:*MEMORY[0x277D76A08] hiFontStyle:4];
+  v54 = preferredFontProvider;
+  v11 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76A08] hiFontStyle:4];
   [(UILabel *)v10 setFont:v11];
 
   [(UILabel *)self->_securityResearchDeviceTitleLabel setNumberOfLines:0];
@@ -1295,8 +1295,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   self->_securityResearchHeaderIcon = v15;
 
   v17 = self->_securityResearchHeaderIcon;
-  v18 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UIImageView *)v17 setTintColor:v18];
+  primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UIImageView *)v17 setTintColor:primaryColor2];
 
   [(UIImageView *)self->_securityResearchHeaderIcon setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_securityResearchDeviceContainer addSubview:self->_securityResearchHeaderIcon];
@@ -1305,11 +1305,11 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   self->_securityResearchSubtitleLabel = v19;
 
   v21 = self->_securityResearchSubtitleLabel;
-  v22 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)v21 setColor:v22];
+  primaryColor3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)v21 setColor:primaryColor3];
 
   v23 = self->_securityResearchSubtitleLabel;
-  v24 = [v5 preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
+  v24 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76918] hiFontStyle:1];
   [(UILabel *)v23 setFont:v24];
 
   [(UILabel *)self->_securityResearchSubtitleLabel setNumberOfLines:0];
@@ -1320,41 +1320,41 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   [(UIView *)self->_securityResearchDeviceContainer addSubview:self->_securityResearchSubtitleLabel];
   [(SBDashBoardSetupView *)self addSubview:self->_securityResearchDeviceContainer];
   v43 = MEMORY[0x277CCAAD0];
-  v53 = [(UIImageView *)self->_securityResearchHeaderIcon centerXAnchor];
-  v52 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  centerXAnchor = [(UIImageView *)self->_securityResearchHeaderIcon centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
+  v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[0] = v51;
-  v50 = [(UIView *)self->_securityResearchDeviceContainer topAnchor];
-  v49 = [(UIImageView *)self->_securityResearchHeaderIcon topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  topAnchor = [(UIView *)self->_securityResearchDeviceContainer topAnchor];
+  topAnchor2 = [(UIImageView *)self->_securityResearchHeaderIcon topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v56[1] = v48;
-  v47 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerXAnchor];
-  v46 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerXAnchor3 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
+  v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v56[2] = v45;
-  v44 = [(UILabel *)self->_securityResearchDeviceTitleLabel topAnchor];
-  v42 = [(UIImageView *)self->_securityResearchHeaderIcon bottomAnchor];
-  v41 = [v44 constraintEqualToAnchor:v42 constant:20.0];
+  topAnchor3 = [(UILabel *)self->_securityResearchDeviceTitleLabel topAnchor];
+  bottomAnchor = [(UIImageView *)self->_securityResearchHeaderIcon bottomAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v56[3] = v41;
-  v40 = [(UILabel *)self->_securityResearchSubtitleLabel centerXAnchor];
-  v39 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  centerXAnchor5 = [(UILabel *)self->_securityResearchSubtitleLabel centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_securityResearchDeviceContainer centerXAnchor];
+  v38 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v56[4] = v38;
-  v37 = [(UILabel *)self->_securityResearchSubtitleLabel topAnchor];
-  v36 = [(UILabel *)self->_securityResearchDeviceTitleLabel bottomAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:15.0];
+  topAnchor4 = [(UILabel *)self->_securityResearchSubtitleLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_securityResearchDeviceTitleLabel bottomAnchor];
+  v35 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:15.0];
   v56[5] = v35;
-  v34 = [(UIView *)self->_securityResearchDeviceContainer bottomAnchor];
-  v25 = [(UILabel *)self->_securityResearchSubtitleLabel bottomAnchor];
-  v26 = [v34 constraintEqualToAnchor:v25];
+  bottomAnchor3 = [(UIView *)self->_securityResearchDeviceContainer bottomAnchor];
+  bottomAnchor4 = [(UILabel *)self->_securityResearchSubtitleLabel bottomAnchor];
+  v26 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v56[6] = v26;
-  v27 = [(UIView *)self->_securityResearchDeviceContainer widthAnchor];
-  v28 = [(UILabel *)self->_securityResearchDeviceTitleLabel widthAnchor];
-  v29 = [v27 constraintGreaterThanOrEqualToAnchor:v28];
+  widthAnchor = [(UIView *)self->_securityResearchDeviceContainer widthAnchor];
+  widthAnchor2 = [(UILabel *)self->_securityResearchDeviceTitleLabel widthAnchor];
+  v29 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
   v56[7] = v29;
-  v30 = [(UIView *)self->_securityResearchDeviceContainer widthAnchor];
-  v31 = [(UILabel *)self->_securityResearchSubtitleLabel widthAnchor];
-  v32 = [v30 constraintGreaterThanOrEqualToAnchor:v31];
+  widthAnchor3 = [(UIView *)self->_securityResearchDeviceContainer widthAnchor];
+  widthAnchor4 = [(UILabel *)self->_securityResearchSubtitleLabel widthAnchor];
+  v32 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4];
   v56[8] = v32;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:9];
   [v43 activateConstraints:v33];
@@ -1369,8 +1369,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   if (_os_feature_enabled_impl())
   {
     v5 = self->_homeButtonCallToActionLabel;
-    v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(SBUICallToActionLabel *)v5 setTintColor:v6];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(SBUICallToActionLabel *)v5 setTintColor:primaryColor];
   }
 
   [(SBUICallToActionLabel *)self->_homeButtonCallToActionLabel bs_setHitTestingDisabled:1];
@@ -1380,16 +1380,16 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
   [(SBDashBoardSetupView *)self addSubview:v7];
 }
 
-- (void)_addHomeAffordanceForCoverSheetContext:(id)a3
+- (void)_addHomeAffordanceForCoverSheetContext:(id)context
 {
   v4 = MEMORY[0x277D65F80];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
   homeAffordanceContainer = self->_homeAffordanceContainer;
   self->_homeAffordanceContainer = v6;
 
   [(SBDashBoardSetupView *)self addSubview:self->_homeAffordanceContainer];
-  v8 = [objc_alloc(MEMORY[0x277D02C10]) initWithCoverSheetContext:v5];
+  v8 = [objc_alloc(MEMORY[0x277D02C10]) initWithCoverSheetContext:contextCopy];
 
   homeAffordanceView = self->_homeAffordanceView;
   self->_homeAffordanceView = v8;
@@ -1431,9 +1431,9 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
 {
   if (+[SBSolariumCursiveTextAvailability isFeatureEnabled])
   {
-    v3 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-    cursiveTextView = v3;
-    if (!v3)
+    view = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+    cursiveTextView = view;
+    if (!view)
     {
       cursiveTextView = self->_cursiveTextView;
       if (!cursiveTextView)
@@ -1486,8 +1486,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
 
     else
     {
-      v13 = [MEMORY[0x277D75418] currentDevice];
-      if ([v13 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v6 = -160.0;
       }
@@ -1518,8 +1518,8 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
 
     else
     {
-      v15 = [MEMORY[0x277D75418] currentDevice];
-      if ([v15 userInterfaceIdiom] == 1)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1)
       {
         v14 = 32.0;
       }
@@ -1535,31 +1535,31 @@ void __66__SBDashBoardSetupView_animateComponents_toActive_withCompletion___bloc
       }
     }
 
-    v16 = [(SBDashBoardSetupView *)self _titleView];
-    v17 = [v16 lastBaselineAnchor];
-    v18 = [(SBDashBoardSetupView *)self centerYAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:v14];
+    _titleView = [(SBDashBoardSetupView *)self _titleView];
+    lastBaselineAnchor = [_titleView lastBaselineAnchor];
+    centerYAnchor = [(SBDashBoardSetupView *)self centerYAnchor];
+    v19 = [lastBaselineAnchor constraintEqualToAnchor:centerYAnchor constant:v14];
     titleYOffsetConstraint = self->_titleYOffsetConstraint;
     self->_titleYOffsetConstraint = v19;
 
     [(SBDashBoardSetupView *)self addConstraint:self->_titleYOffsetConstraint];
     v14 = 0.0;
 LABEL_26:
-    v38 = [(UIView *)self->_childIconView leadingAnchor];
-    v37 = [(SBDashBoardSetupView *)self leadingAnchor];
-    v36 = [v38 constraintGreaterThanOrEqualToAnchor:v37 constant:30.0];
+    leadingAnchor = [(UIView *)self->_childIconView leadingAnchor];
+    leadingAnchor2 = [(SBDashBoardSetupView *)self leadingAnchor];
+    v36 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:30.0];
     v39[0] = v36;
-    v35 = [(UIView *)self->_childIconView trailingAnchor];
-    v21 = [(SBDashBoardSetupView *)self trailingAnchor];
-    v22 = [v35 constraintLessThanOrEqualToAnchor:v21 constant:-30.0];
+    trailingAnchor = [(UIView *)self->_childIconView trailingAnchor];
+    trailingAnchor2 = [(SBDashBoardSetupView *)self trailingAnchor];
+    v22 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-30.0];
     v39[1] = v22;
-    v23 = [(UIView *)self->_childIconView centerXAnchor];
-    v24 = [(SBDashBoardSetupView *)self centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(UIView *)self->_childIconView centerXAnchor];
+    centerXAnchor2 = [(SBDashBoardSetupView *)self centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v39[2] = v25;
-    v26 = [(UIView *)self->_childIconView centerYAnchor];
-    v27 = [(SBDashBoardSetupView *)self centerYAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:v6 - v14];
+    centerYAnchor2 = [(UIView *)self->_childIconView centerYAnchor];
+    centerYAnchor3 = [(SBDashBoardSetupView *)self centerYAnchor];
+    v28 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3 constant:v6 - v14];
     v39[3] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
     [v34 activateConstraints:v29];
@@ -1569,9 +1569,9 @@ LABEL_26:
 
   if (!v4)
   {
-    v7 = [(SBDashBoardSetupView *)self _titleView];
-    v8 = [v7 lastBaselineAnchor];
-    v9 = [(SBDashBoardSetupView *)self centerYAnchor];
+    _titleView2 = [(SBDashBoardSetupView *)self _titleView];
+    lastBaselineAnchor2 = [_titleView2 lastBaselineAnchor];
+    centerYAnchor4 = [(SBDashBoardSetupView *)self centerYAnchor];
     v10 = __sb__runningInSpringBoard();
     v11 = v10;
     if (v10)
@@ -1581,8 +1581,8 @@ LABEL_26:
 
     else
     {
-      v2 = [MEMORY[0x277D75418] currentDevice];
-      v12 = [v2 userInterfaceIdiom] == 1;
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      v12 = [currentDevice3 userInterfaceIdiom] == 1;
     }
 
     v30 = -16.0;
@@ -1591,7 +1591,7 @@ LABEL_26:
       v30 = 0.0;
     }
 
-    v31 = [v8 constraintEqualToAnchor:v9 constant:v30];
+    v31 = [lastBaselineAnchor2 constraintEqualToAnchor:centerYAnchor4 constant:v30];
     v32 = self->_titleYOffsetConstraint;
     self->_titleYOffsetConstraint = v31;
 
@@ -1608,23 +1608,23 @@ LABEL_26:
 - (void)_setupConstraints
 {
   v55[4] = *MEMORY[0x277D85DE8];
-  v3 = [(SBDashBoardSetupView *)self _titleView];
-  v4 = v3;
-  if (v3)
+  _titleView = [(SBDashBoardSetupView *)self _titleView];
+  v4 = _titleView;
+  if (_titleView)
   {
-    v5 = [v3 leadingAnchor];
-    v6 = [(SBDashBoardSetupView *)self leadingAnchor];
-    v7 = [v5 constraintGreaterThanOrEqualToAnchor:v6 constant:30.0];
+    leadingAnchor = [_titleView leadingAnchor];
+    leadingAnchor2 = [(SBDashBoardSetupView *)self leadingAnchor];
+    v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:30.0];
     [(SBDashBoardSetupView *)self addConstraint:v7];
 
-    v8 = [v4 trailingAnchor];
-    v9 = [(SBDashBoardSetupView *)self trailingAnchor];
-    v10 = [v8 constraintLessThanOrEqualToAnchor:v9 constant:-30.0];
+    trailingAnchor = [v4 trailingAnchor];
+    trailingAnchor2 = [(SBDashBoardSetupView *)self trailingAnchor];
+    v10 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-30.0];
     [(SBDashBoardSetupView *)self addConstraint:v10];
 
-    v11 = [v4 centerXAnchor];
-    v12 = [(SBDashBoardSetupView *)self centerXAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    centerXAnchor = [v4 centerXAnchor];
+    centerXAnchor2 = [(SBDashBoardSetupView *)self centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(SBDashBoardSetupView *)self addConstraint:v13];
 
     [(SBDashBoardSetupView *)self _updateBaselineAndChildIconConstraints];
@@ -1634,21 +1634,21 @@ LABEL_26:
   if (storeRestrictedContainer && self->_storeRestrictedTitleLabel)
   {
     v42 = MEMORY[0x277CCAAD0];
-    v52 = [(UIView *)storeRestrictedContainer leadingAnchor];
-    v50 = [(SBDashBoardSetupView *)self leadingAnchor];
-    v48 = [v52 constraintEqualToAnchor:v50 constant:30.0];
+    leadingAnchor3 = [(UIView *)storeRestrictedContainer leadingAnchor];
+    leadingAnchor4 = [(SBDashBoardSetupView *)self leadingAnchor];
+    v48 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:30.0];
     v55[0] = v48;
-    v46 = [(UIView *)self->_storeRestrictedContainer trailingAnchor];
-    v44 = [(SBDashBoardSetupView *)self trailingAnchor];
-    v15 = [v46 constraintEqualToAnchor:v44 constant:-30.0];
+    trailingAnchor3 = [(UIView *)self->_storeRestrictedContainer trailingAnchor];
+    trailingAnchor4 = [(SBDashBoardSetupView *)self trailingAnchor];
+    v15 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-30.0];
     v55[1] = v15;
-    v16 = [(UILabel *)self->_storeRestrictedTitleLabel centerXAnchor];
-    v17 = [(SBDashBoardSetupView *)self centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerXAnchor3 = [(UILabel *)self->_storeRestrictedTitleLabel centerXAnchor];
+    centerXAnchor4 = [(SBDashBoardSetupView *)self centerXAnchor];
+    v18 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v55[2] = v18;
-    v19 = [(UILabel *)self->_storeRestrictedTitleLabel centerYAnchor];
-    v20 = [(SBDashBoardSetupView *)self centerYAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerYAnchor = [(UILabel *)self->_storeRestrictedTitleLabel centerYAnchor];
+    centerYAnchor2 = [(SBDashBoardSetupView *)self centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:4];
     [v42 activateConstraints:v22];
@@ -1660,21 +1660,21 @@ LABEL_26:
     if (securityResearchDeviceContainer)
     {
       v43 = MEMORY[0x277CCAAD0];
-      v53 = [(UIView *)securityResearchDeviceContainer leadingAnchor];
-      v51 = [(SBDashBoardSetupView *)self leadingAnchor];
-      v49 = [v53 constraintEqualToAnchor:v51 constant:30.0];
+      leadingAnchor5 = [(UIView *)securityResearchDeviceContainer leadingAnchor];
+      leadingAnchor6 = [(SBDashBoardSetupView *)self leadingAnchor];
+      v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:30.0];
       v54[0] = v49;
-      v47 = [(UIView *)self->_securityResearchDeviceContainer trailingAnchor];
-      v45 = [(SBDashBoardSetupView *)self trailingAnchor];
-      v24 = [v47 constraintEqualToAnchor:v45 constant:-30.0];
+      trailingAnchor5 = [(UIView *)self->_securityResearchDeviceContainer trailingAnchor];
+      trailingAnchor6 = [(SBDashBoardSetupView *)self trailingAnchor];
+      v24 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-30.0];
       v54[1] = v24;
-      v25 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerXAnchor];
-      v26 = [(SBDashBoardSetupView *)self centerXAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      centerXAnchor5 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerXAnchor];
+      centerXAnchor6 = [(SBDashBoardSetupView *)self centerXAnchor];
+      v27 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       v54[2] = v27;
-      v28 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerYAnchor];
-      v29 = [(SBDashBoardSetupView *)self centerYAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      centerYAnchor3 = [(UILabel *)self->_securityResearchDeviceTitleLabel centerYAnchor];
+      centerYAnchor4 = [(SBDashBoardSetupView *)self centerYAnchor];
+      v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v54[3] = v30;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
       [v43 activateConstraints:v31];
@@ -1703,8 +1703,8 @@ LABEL_26:
       goto LABEL_18;
     }
 
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    if ([v33 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 
       v32 = 15.0;
@@ -1723,15 +1723,15 @@ LABEL_18:
     }
 
 LABEL_19:
-    v35 = [(UIButton *)self->_infoButton trailingAnchor];
-    v36 = [(SBDashBoardSetupView *)self trailingAnchor];
+    trailingAnchor7 = [(UIButton *)self->_infoButton trailingAnchor];
+    trailingAnchor8 = [(SBDashBoardSetupView *)self trailingAnchor];
     v37 = -v32;
-    v38 = [v35 constraintEqualToAnchor:v36 constant:v37];
+    v38 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:v37];
     [(SBDashBoardSetupView *)self addConstraint:v38];
 
-    v39 = [(UIButton *)self->_infoButton bottomAnchor];
-    v40 = [(SBDashBoardSetupView *)self bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:v37];
+    bottomAnchor = [(UIButton *)self->_infoButton bottomAnchor];
+    bottomAnchor2 = [(SBDashBoardSetupView *)self bottomAnchor];
+    v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v37];
     [(SBDashBoardSetupView *)self addConstraint:v41];
   }
 }
@@ -1766,8 +1766,8 @@ LABEL_19:
 
       else
       {
-        v6 = [MEMORY[0x277D75418] currentDevice];
-        if ([v6 userInterfaceIdiom])
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom])
         {
           v5 = 120.0;
         }
@@ -1783,21 +1783,21 @@ LABEL_19:
         }
       }
 
-      v7 = [(UIView *)self->_activationInfoView centerXAnchor];
-      v8 = [(SBDashBoardSetupView *)self centerXAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      centerXAnchor = [(UIView *)self->_activationInfoView centerXAnchor];
+      centerXAnchor2 = [(SBDashBoardSetupView *)self centerXAnchor];
+      v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-      v10 = [(UIView *)self->_activationInfoView topAnchor];
-      v11 = [(SBDashBoardSetupView *)self topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:v5];
+      topAnchor = [(UIView *)self->_activationInfoView topAnchor];
+      topAnchor2 = [(SBDashBoardSetupView *)self topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v5];
 
-      v13 = [(UIView *)self->_activationInfoView widthAnchor];
-      v14 = [(SBDashBoardSetupView *)self widthAnchor];
-      v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+      widthAnchor = [(UIView *)self->_activationInfoView widthAnchor];
+      widthAnchor2 = [(SBDashBoardSetupView *)self widthAnchor];
+      v15 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
 
-      v16 = [(UIButton *)self->_infoButton topAnchor];
-      v17 = [(UIView *)self->_activationInfoView bottomAnchor];
-      v18 = [v16 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v17 multiplier:1.0];
+      topAnchor3 = [(UIButton *)self->_infoButton topAnchor];
+      bottomAnchor = [(UIView *)self->_activationInfoView bottomAnchor];
+      v18 = [topAnchor3 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
 
       v21[0] = v9;
       v21[1] = v12;
@@ -1822,9 +1822,9 @@ LABEL_19:
   regulatoryInfoView = self->_regulatoryInfoView;
   if (regulatoryInfoView)
   {
-    v4 = [(UIView *)regulatoryInfoView superview];
+    superview = [(UIView *)regulatoryInfoView superview];
 
-    if (!v4)
+    if (!superview)
     {
       v5 = self->_regulatoryInfoView;
 
@@ -1838,9 +1838,9 @@ LABEL_19:
   activationInfoView = self->_activationInfoView;
   if (activationInfoView)
   {
-    v4 = [(UIView *)activationInfoView superview];
+    superview = [(UIView *)activationInfoView superview];
 
-    if (!v4)
+    if (!superview)
     {
       [(SBDashBoardSetupView *)self addSubview:self->_activationInfoView];
     }
@@ -1915,23 +1915,23 @@ LABEL_19:
   }
 }
 
-- (void)_animateView:(id)a3 toActive:(BOOL)a4 withDispatchGroup:(id)a5
+- (void)_animateView:(id)view toActive:(BOOL)active withDispatchGroup:(id)group
 {
-  v5 = a4;
+  activeCopy = active;
   v17[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [a3 layer];
-  if (v9)
+  groupCopy = group;
+  layer = [view layer];
+  if (layer)
   {
-    if (v5)
+    if (activeCopy)
     {
-      dispatch_group_enter(v8);
-      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:v9];
-      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"opacity" onLayer:v9];
+      dispatch_group_enter(groupCopy);
+      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:layer];
+      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"opacity" onLayer:layer];
       v10 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
       [v10 setKeyTimes:&unk_28336EE20];
       v11 = MEMORY[0x277CCABB0];
-      [v9 opacity];
+      [layer opacity];
       v12 = [v11 numberWithFloat:?];
       v17[0] = v12;
       v17[1] = &unk_28336F7D0;
@@ -1943,33 +1943,33 @@ LABEL_19:
       [v10 setCalculationMode:@"linear"];
       [v10 setDuration:self->_customDelayDuration];
       [v10 setDelegate:self];
-      [v10 setValue:v8 forKey:@"SBDashBoardSetupDispatchGroup"];
-      v14 = [v10 keyPath];
-      v15 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", v14];
-      [v9 addAnimation:v10 forKey:v15];
+      [v10 setValue:groupCopy forKey:@"SBDashBoardSetupDispatchGroup"];
+      keyPath = [v10 keyPath];
+      v15 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", keyPath];
+      [layer addAnimation:v10 forKey:v15];
 
-      [v9 setOpacity:0.0];
+      [layer setOpacity:0.0];
     }
 
     else
     {
-      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"opacity" onLayer:v9 dispatchGroup:v8];
+      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"opacity" onLayer:layer dispatchGroup:groupCopy];
       LODWORD(v16) = 1.0;
-      [v9 setOpacity:v16];
+      [layer setOpacity:v16];
     }
   }
 }
 
-- (void)_animateHomeButtonCallToActionToActive:(BOOL)a3 withDispatchGroup:(id)a4
+- (void)_animateHomeButtonCallToActionToActive:(BOOL)active withDispatchGroup:(id)group
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  activeCopy = active;
+  groupCopy = group;
+  v7 = groupCopy;
   if (self->_homeButtonCallToActionLabel)
   {
-    if (v4)
+    if (activeCopy)
     {
-      dispatch_group_enter(v6);
+      dispatch_group_enter(groupCopy);
       dispatch_group_enter(v7);
       homeButtonCallToActionLabel = self->_homeButtonCallToActionLabel;
       v28[0] = MEMORY[0x277D85DD0];
@@ -2051,22 +2051,22 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
   }
 }
 
-- (void)_animateHomeAffordanceCallToActionToActive:(BOOL)a3 withDispatchGroup:(id)a4
+- (void)_animateHomeAffordanceCallToActionToActive:(BOOL)active withDispatchGroup:(id)group
 {
-  v4 = a3;
+  activeCopy = active;
   v20[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(UIView *)self->_homeAffordanceCallToActionContainer layer];
-  if (v7)
+  groupCopy = group;
+  layer = [(UIView *)self->_homeAffordanceCallToActionContainer layer];
+  if (layer)
   {
-    if (v4)
+    if (activeCopy)
     {
-      dispatch_group_enter(v6);
-      dispatch_group_enter(v6);
-      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:v7];
-      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"opacity" onLayer:v7];
-      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:v7];
-      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"position.y" onLayer:v7];
+      dispatch_group_enter(groupCopy);
+      dispatch_group_enter(groupCopy);
+      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"opacity" onLayer:layer];
+      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"opacity" onLayer:layer];
+      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:layer];
+      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"position.y" onLayer:layer];
       v8 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
       [v8 setKeyTimes:&unk_28336EE38];
       [v8 setValues:&unk_28336EE50];
@@ -2074,10 +2074,10 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
       [v8 setBeginTime:CACurrentMediaTime() + 1.0];
       [v8 setDuration:self->_customDelayDuration];
       [v8 setDelegate:self];
-      [v8 setValue:v6 forKey:@"SBDashBoardSetupDispatchGroup"];
-      v9 = [v8 keyPath];
-      v10 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", v9];
-      [v7 addAnimation:v8 forKey:v10];
+      [v8 setValue:groupCopy forKey:@"SBDashBoardSetupDispatchGroup"];
+      keyPath = [v8 keyPath];
+      v10 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", keyPath];
+      [layer addAnimation:v8 forKey:v10];
 
       v11 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position.y"];
       [v11 setKeyTimes:&unk_28336EE68];
@@ -2099,33 +2099,33 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
       [v11 setDuration:self->_customDelayDuration];
       [v11 setAdditive:1];
       [v11 setDelegate:self];
-      [v11 setValue:v6 forKey:@"SBDashBoardSetupDispatchGroup"];
-      v17 = [v11 keyPath];
-      v18 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", v17];
-      [v7 addAnimation:v11 forKey:v18];
+      [v11 setValue:groupCopy forKey:@"SBDashBoardSetupDispatchGroup"];
+      keyPath2 = [v11 keyPath];
+      v18 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", keyPath2];
+      [layer addAnimation:v11 forKey:v18];
     }
 
     else
     {
-      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"opacity" onLayer:v7 dispatchGroup:v6];
-      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"position.y" onLayer:v7 dispatchGroup:v6];
+      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"opacity" onLayer:layer dispatchGroup:groupCopy];
+      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"position.y" onLayer:layer dispatchGroup:groupCopy];
     }
   }
 }
 
-- (void)_animateHomeAffordanceToActive:(BOOL)a3 withDispatchGroup:(id)a4
+- (void)_animateHomeAffordanceToActive:(BOOL)active withDispatchGroup:(id)group
 {
-  v4 = a3;
+  activeCopy = active;
   v17[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SBFTouchPassThroughView *)self->_homeAffordanceContainer layer];
-  if (v7)
+  groupCopy = group;
+  layer = [(SBFTouchPassThroughView *)self->_homeAffordanceContainer layer];
+  if (layer)
   {
-    if (v4)
+    if (activeCopy)
     {
-      dispatch_group_enter(v6);
-      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:v7];
-      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"position.y" onLayer:v7];
+      dispatch_group_enter(groupCopy);
+      [(SBDashBoardSetupView *)self _removeResetAnimationForKeyPath:@"position.y" onLayer:layer];
+      [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:@"position.y" onLayer:layer];
       v8 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position.y"];
       [v8 setKeyTimes:&unk_28336EE80];
       v9 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
@@ -2146,40 +2146,40 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
       [v8 setDuration:self->_customDelayDuration];
       [v8 setAdditive:1];
       [v8 setDelegate:self];
-      [v8 setValue:v6 forKey:@"SBDashBoardSetupDispatchGroup"];
-      v15 = [v8 keyPath];
-      v16 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", v15];
-      [v7 addAnimation:v8 forKey:v16];
+      [v8 setValue:groupCopy forKey:@"SBDashBoardSetupDispatchGroup"];
+      keyPath = [v8 keyPath];
+      v16 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", keyPath];
+      [layer addAnimation:v8 forKey:v16];
     }
 
     else
     {
-      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"position.y" onLayer:v7 dispatchGroup:v6];
+      [(SBDashBoardSetupView *)self _addResetAnimationForKeyPath:@"position.y" onLayer:layer dispatchGroup:groupCopy];
     }
   }
 }
 
-- (void)_addResetAnimationForKeyPath:(id)a3 onLayer:(id)a4 dispatchGroup:(id)a5
+- (void)_addResetAnimationForKeyPath:(id)path onLayer:(id)layer dispatchGroup:(id)group
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 presentationLayer];
-  v11 = [v10 valueForKeyPath:v22];
+  pathCopy = path;
+  layerCopy = layer;
+  groupCopy = group;
+  presentationLayer = [layerCopy presentationLayer];
+  v11 = [presentationLayer valueForKeyPath:pathCopy];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v8 valueForKeyPath:v22];
+  v14 = [layerCopy valueForKeyPath:pathCopy];
   [v14 doubleValue];
   v16 = v15;
 
-  if (v9)
+  if (groupCopy)
   {
-    dispatch_group_enter(v9);
+    dispatch_group_enter(groupCopy);
   }
 
-  [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:v22 onLayer:v8];
-  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:v22];
+  [(SBDashBoardSetupView *)self _removeNormalAnimationForKeyPath:pathCopy onLayer:layerCopy];
+  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
   [v17 setDuration:0.25];
   v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v17 setTimingFunction:v18];
@@ -2190,23 +2190,23 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
   [v17 setToValue:v20];
 
-  [v17 setValue:v9 forKey:@"SBDashBoardSetupDispatchGroup"];
-  v21 = [@"SBDashBoardSetupResetAnimation" stringByAppendingFormat:@"-%@", v22];
-  [v8 addAnimation:v17 forKey:v21];
+  [v17 setValue:groupCopy forKey:@"SBDashBoardSetupDispatchGroup"];
+  pathCopy = [@"SBDashBoardSetupResetAnimation" stringByAppendingFormat:@"-%@", pathCopy];
+  [layerCopy addAnimation:v17 forKey:pathCopy];
 }
 
-- (void)_removeResetAnimationForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_removeResetAnimationForKeyPath:(id)path onLayer:(id)layer
 {
-  v5 = a4;
-  v6 = [@"SBDashBoardSetupResetAnimation" stringByAppendingFormat:@"-%@", a3];
-  [v5 removeAnimationForKey:v6];
+  layerCopy = layer;
+  path = [@"SBDashBoardSetupResetAnimation" stringByAppendingFormat:@"-%@", path];
+  [layerCopy removeAnimationForKey:path];
 }
 
-- (void)_removeNormalAnimationForKeyPath:(id)a3 onLayer:(id)a4
+- (void)_removeNormalAnimationForKeyPath:(id)path onLayer:(id)layer
 {
-  v5 = a4;
-  v6 = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", a3];
-  [v5 removeAnimationForKey:v6];
+  layerCopy = layer;
+  path = [@"SBDashBoardSetupNormalAnimation" stringByAppendingFormat:@"-%@", path];
+  [layerCopy removeAnimationForKey:path];
 }
 
 - (void)_createDisplayLink
@@ -2225,8 +2225,8 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
   [(CADisplayLink *)v5 setPreferredFrameRateRange:*&v9.minimum, *&v9.maximum, *&v9.preferred];
   [(CADisplayLink *)self->_displayLink setHighFrameRateReason:1114135];
   v6 = self->_displayLink;
-  v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
 - (void)_removeDisplayLink
@@ -2236,9 +2236,9 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
   self->_displayLink = 0;
 }
 
-- (void)_onDisplayLink:(id)a3
+- (void)_onDisplayLink:(id)link
 {
-  if (self->_displayLink == a3)
+  if (self->_displayLink == link)
   {
     [(SBDashBoardSetupView *)self _animateCursiveForTimePassed];
   }
@@ -2285,8 +2285,8 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
 
 - (void)_updateHelloVisibility
 {
-  v3 = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
-  [v3 setHidden:{-[SBDashBoardSetupView _hasSuppressingUI](self, "_hasSuppressingUI")}];
+  view = [(SASBookendViewProvider *)self->_glassCursiveTextViewProvider view];
+  [view setHidden:{-[SBDashBoardSetupView _hasSuppressingUI](self, "_hasSuppressingUI")}];
 }
 
 - (void)_updateLegibilitySettings
@@ -2299,56 +2299,56 @@ void __81__SBDashBoardSetupView__animateHomeButtonCallToActionToActive_withDispa
   if (v3)
   {
     cursiveTextView = self->_cursiveTextView;
-    v6 = [(_UILegibilitySettings *)legibilitySettings primaryColor];
-    [(SBCursiveTextView *)cursiveTextView setFillColor:v6];
+    primaryColor = [(_UILegibilitySettings *)legibilitySettings primaryColor];
+    [(SBCursiveTextView *)cursiveTextView setFillColor:primaryColor];
 
     infoButton = self->_infoButton;
-    v8 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIButton *)infoButton setTintColor:v8];
+    primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIButton *)infoButton setTintColor:primaryColor2];
 
     homeButtonCallToActionLabel = self->_homeButtonCallToActionLabel;
-    v10 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(SBUICallToActionLabel *)homeButtonCallToActionLabel setTintColor:v10];
+    primaryColor3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(SBUICallToActionLabel *)homeButtonCallToActionLabel setTintColor:primaryColor3];
   }
 
   else
   {
     titleLabel = self->_titleLabel;
-    v10 = [(_UILegibilitySettings *)legibilitySettings primaryColor];
-    [(UILabel *)titleLabel setTextColor:v10];
+    primaryColor3 = [(_UILegibilitySettings *)legibilitySettings primaryColor];
+    [(UILabel *)titleLabel setTextColor:primaryColor3];
   }
 
   storeRestrictedTitleLabel = self->_storeRestrictedTitleLabel;
-  v13 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)storeRestrictedTitleLabel setColor:v13];
+  primaryColor4 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)storeRestrictedTitleLabel setColor:primaryColor4];
 
   storeRestrictedBodyLabel = self->_storeRestrictedBodyLabel;
-  v15 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)storeRestrictedBodyLabel setColor:v15];
+  primaryColor5 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)storeRestrictedBodyLabel setColor:primaryColor5];
 
   activationLockImage = self->_activationLockImage;
-  v17 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UIImageView *)activationLockImage setTintColor:v17];
+  primaryColor6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UIImageView *)activationLockImage setTintColor:primaryColor6];
 
   activationLockWarningLabel = self->_activationLockWarningLabel;
-  v19 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)activationLockWarningLabel setTextColor:v19];
+  primaryColor7 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)activationLockWarningLabel setTextColor:primaryColor7];
 
   activationLockDetailLabel = self->_activationLockDetailLabel;
-  v21 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)activationLockDetailLabel setTextColor:v21];
+  primaryColor8 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)activationLockDetailLabel setTextColor:primaryColor8];
 
   securityResearchDeviceTitleLabel = self->_securityResearchDeviceTitleLabel;
-  v23 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)securityResearchDeviceTitleLabel setColor:v23];
+  primaryColor9 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)securityResearchDeviceTitleLabel setColor:primaryColor9];
 
   securityResearchHeaderIcon = self->_securityResearchHeaderIcon;
-  v25 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UIImageView *)securityResearchHeaderIcon setTintColor:v25];
+  primaryColor10 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UIImageView *)securityResearchHeaderIcon setTintColor:primaryColor10];
 
   securityResearchSubtitleLabel = self->_securityResearchSubtitleLabel;
-  v27 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UILabel *)securityResearchSubtitleLabel setColor:v27];
+  primaryColor11 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UILabel *)securityResearchSubtitleLabel setColor:primaryColor11];
 }
 
 - (SBSolariumCursiveTextAnimationDelegate)glassCursiveTextAnimationDelegate

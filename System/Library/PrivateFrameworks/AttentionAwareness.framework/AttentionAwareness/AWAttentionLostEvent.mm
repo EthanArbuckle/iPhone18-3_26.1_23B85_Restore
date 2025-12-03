@@ -1,9 +1,9 @@
 @interface AWAttentionLostEvent
-- (AWAttentionLostEvent)initWithCoder:(id)a3;
-- (AWAttentionLostEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 attentionLostTimeout:(double)a5;
+- (AWAttentionLostEvent)initWithCoder:(id)coder;
+- (AWAttentionLostEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index attentionLostTimeout:(double)timeout;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithConfig:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithConfig:(id)config;
 - (void)validateMask;
 @end
 
@@ -25,49 +25,49 @@
   [(AWAttentionEvent *)self timestamp];
   v7 = v6;
   attentionLostTimeout = self->_attentionLostTimeout;
-  v9 = [(AWAttentionEvent *)self tagIndex];
+  tagIndex = [(AWAttentionEvent *)self tagIndex];
   v10 = [(AWAttentionEvent *)self tag];
-  v11 = tagDescription(v9, v10);
+  v11 = tagDescription(tagIndex, v10);
   v12 = [v3 stringWithFormat:@"<%@: %p> (timestamp: %13.5f attentionLostTimeout %13.5f %@)", v5, self, v7, *&attentionLostTimeout, v11];
 
   return v12;
 }
 
-- (void)updateWithConfig:(id)a3
+- (void)updateWithConfig:(id)config
 {
   v9.receiver = self;
   v9.super_class = AWAttentionLostEvent;
-  v4 = a3;
-  [(AWAttentionEvent *)&v9 updateWithConfig:v4];
-  v5 = [v4 attentionLostTimeoutDictionary];
+  configCopy = config;
+  [(AWAttentionEvent *)&v9 updateWithConfig:configCopy];
+  attentionLostTimeoutDictionary = [configCopy attentionLostTimeoutDictionary];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_attentionLostTimeout];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [attentionLostTimeoutDictionary objectForKeyedSubscript:v6];
   associatedObject = self->_associatedObject;
   self->_associatedObject = v7;
 }
 
-- (AWAttentionLostEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 attentionLostTimeout:(double)a5
+- (AWAttentionLostEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index attentionLostTimeout:(double)timeout
 {
   v7.receiver = self;
   v7.super_class = AWAttentionLostEvent;
-  result = [(AWAttentionEvent *)&v7 initWithTimestamp:a4 tagIndex:1 eventMask:a3];
+  result = [(AWAttentionEvent *)&v7 initWithTimestamp:index tagIndex:1 eventMask:timestamp];
   if (result)
   {
-    result->_attentionLostTimeout = a5;
+    result->_attentionLostTimeout = timeout;
   }
 
   return result;
 }
 
-- (AWAttentionLostEvent)initWithCoder:(id)a3
+- (AWAttentionLostEvent)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v4 = a3;
-  v5 = decodeDouble(v4, &v16, @"timestamp");
-  v6 = decodeDouble(v4, &v16, @"attentionLostTimeout");
-  v7 = decodeUInt64(v4, &v16, @"tagIndex");
+  coderCopy = coder;
+  v5 = decodeDouble(coderCopy, &v16, @"timestamp");
+  v6 = decodeDouble(coderCopy, &v16, @"attentionLostTimeout");
+  v7 = decodeUInt64(coderCopy, &v16, @"tagIndex");
 
   if (v16 == 1)
   {
@@ -109,14 +109,14 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AWAttentionEvent *)self timestamp];
-  [v4 encodeDouble:@"timestamp" forKey:?];
-  [v4 encodeDouble:@"attentionLostTimeout" forKey:self->_attentionLostTimeout];
+  [coderCopy encodeDouble:@"timestamp" forKey:?];
+  [coderCopy encodeDouble:@"attentionLostTimeout" forKey:self->_attentionLostTimeout];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AWAttentionEvent tagIndex](self, "tagIndex")}];
-  [v4 encodeObject:v5 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v5 forKey:@"tagIndex"];
 }
 
 @end

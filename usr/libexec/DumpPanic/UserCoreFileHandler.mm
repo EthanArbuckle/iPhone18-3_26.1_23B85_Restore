@@ -1,12 +1,12 @@
 @interface UserCoreFileHandler
-- (UserCoreFileHandler)initWithCoreFilePath:(const char *)a3 :(const char *)a4;
-- (id)saveUserSpaceCoreToDisk:(double)a3;
+- (UserCoreFileHandler)initWithCoreFilePath:(const char *)path :(const char *)a4;
+- (id)saveUserSpaceCoreToDisk:(double)disk;
 - (void)dealloc;
 @end
 
 @implementation UserCoreFileHandler
 
-- (id)saveUserSpaceCoreToDisk:(double)a3
+- (id)saveUserSpaceCoreToDisk:(double)disk
 {
   if (!self->_input_core)
   {
@@ -16,7 +16,7 @@
     goto LABEL_60;
   }
 
-  v6 = self;
+  selfCopy = self;
   v13 = self->_input_corefile_name;
   if (!v13)
   {
@@ -27,7 +27,7 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  v14 = v6->_input_corefile_path;
+  v14 = selfCopy->_input_corefile_path;
   if (!v14)
   {
 LABEL_61:
@@ -37,16 +37,16 @@ LABEL_61:
 LABEL_62:
     if (v77)
     {
-      input_corefile_name = v6->_input_corefile_name;
+      input_corefile_name = selfCopy->_input_corefile_name;
       v86 = v8;
-      v87 = [(NSString *)input_corefile_name UTF8String];
+      uTF8String = [(NSString *)input_corefile_name UTF8String];
       *buf = 136315138;
-      v105 = v87;
+      v105 = uTF8String;
       _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "Removing original %s core", buf, 0xCu);
     }
 
-    v88 = [(NSString *)v6->_input_corefile_path UTF8String];
-    remove(v88, v89);
+    uTF8String2 = [(NSString *)selfCopy->_input_corefile_path UTF8String];
+    remove(uTF8String2, v89);
     goto LABEL_65;
   }
 
@@ -61,9 +61,9 @@ LABEL_62:
     {
       v49 = v17;
       v50 = v38;
-      v51 = [v17 UTF8String];
+      uTF8String3 = [v17 UTF8String];
       *buf = 136315138;
-      v105 = v51;
+      v105 = uTF8String3;
       _os_log_error_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "failed to setup corefile output directory with error: %s", buf, 0xCu);
     }
 
@@ -85,9 +85,9 @@ LABEL_62:
     {
       v52 = v3;
       v53 = v41;
-      v54 = [v3 UTF8String];
+      uTF8String4 = [v3 UTF8String];
       *buf = 136315138;
-      v105 = v54;
+      v105 = uTF8String4;
       _os_log_error_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "failed to setup corefile stage directory with error: %s", buf, 0xCu);
     }
 
@@ -99,7 +99,7 @@ LABEL_62:
 
   v4 = [NSURL fileURLWithPath:@"/private/var/mobile/Library/Logs/CrashReporter/Panics"];
   v11 = &selRef_absoluteString;
-  v5 = [[CoresPruner alloc] initWithCorefileURL:v4 CoresToKeep:1 userspaceCorefileName:v6->_input_corefile_name];
+  v5 = [[CoresPruner alloc] initWithCorefileURL:v4 CoresToKeep:1 userspaceCorefileName:selfCopy->_input_corefile_name];
   [(CoresPruner *)v5 prune];
   v19 = malloc_type_malloc(0x20000uLL, 0xB8C4D073uLL);
   v10 = &unk_100042000;
@@ -108,11 +108,11 @@ LABEL_62:
   {
     if (os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
     {
-      v42 = v6->_input_corefile_name;
+      v42 = selfCopy->_input_corefile_name;
       v43 = v20;
-      v44 = [(NSString *)v42 UTF8String];
+      uTF8String5 = [(NSString *)v42 UTF8String];
       *buf = 136315138;
-      v105 = v44;
+      v105 = uTF8String5;
       _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "Failed to allocate compression buffer for %s core", buf, 0xCu);
     }
 
@@ -133,20 +133,20 @@ LABEL_62:
     v47 = qword_100042B28;
     if (os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
     {
-      v59 = v6->_input_corefile_name;
+      v59 = selfCopy->_input_corefile_name;
       v60 = v47;
-      v61 = [(NSString *)v59 UTF8String];
+      uTF8String6 = [(NSString *)v59 UTF8String];
       v62 = __error();
       v63 = strerror(*v62);
       *buf = 136315394;
-      v105 = v61;
+      v105 = uTF8String6;
       v106 = 2080;
       v107 = v63;
       _os_log_error_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "Failed to open %s core compressed output file with error %s", buf, 0x16u);
     }
 
-    fclose(v6->_input_core);
-    v6->_input_core = 0;
+    fclose(selfCopy->_input_core);
+    selfCopy->_input_core = 0;
     free(v21);
 LABEL_35:
     v39 = 0;
@@ -157,7 +157,7 @@ LABEL_35:
   v23 = v22;
   do
   {
-    v24 = fread(v21, 1uLL, 0x20000uLL, v6->_input_core);
+    v24 = fread(v21, 1uLL, 0x20000uLL, selfCopy->_input_core);
     if (v24)
     {
       v25 = v24;
@@ -185,16 +185,16 @@ LABEL_35:
         goto LABEL_31;
       }
 
-      v55 = v6->_input_corefile_name;
+      v55 = selfCopy->_input_corefile_name;
       v56 = v45;
-      v57 = [(NSString *)v55 UTF8String];
+      uTF8String7 = [(NSString *)v55 UTF8String];
       *buf = 136315138;
-      v105 = v57;
+      v105 = uTF8String7;
       v58 = "gzwrite failed to write %s core";
       goto LABEL_42;
     }
 
-    if (!feof(v6->_input_core))
+    if (!feof(selfCopy->_input_core))
     {
       v64 = qword_100042B28;
       if (!os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
@@ -202,21 +202,21 @@ LABEL_35:
         goto LABEL_31;
       }
 
-      v65 = v6->_input_corefile_name;
+      v65 = selfCopy->_input_corefile_name;
       v56 = v64;
-      v66 = [(NSString *)v65 UTF8String];
+      uTF8String8 = [(NSString *)v65 UTF8String];
       *buf = 136315138;
-      v105 = v66;
+      v105 = uTF8String8;
       v58 = "Failed to read content from %s core";
 LABEL_42:
       _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, v58, buf, 0xCu);
 
 LABEL_31:
-      fclose(v6->_input_core);
+      fclose(selfCopy->_input_core);
       free(v21);
       gzclose(v23);
       remove("/private/var/mobile/Library/Logs/CrashReporter/Panics/staged/tempUserSpaceCore.XXX", v46);
-      fclose(v6->_input_core);
+      fclose(selfCopy->_input_core);
       goto LABEL_35;
     }
 
@@ -224,10 +224,10 @@ LABEL_17:
     ;
   }
 
-  while (!feof(v6->_input_core));
+  while (!feof(selfCopy->_input_core));
   free(v21);
-  fclose(v6->_input_core);
-  v6->_input_core = 0;
+  fclose(selfCopy->_input_core);
+  selfCopy->_input_core = 0;
   v29 = gzclose(v23);
   if (v29)
   {
@@ -237,13 +237,13 @@ LABEL_17:
       v31 = qword_100042B28;
       if (os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
       {
-        v33 = v6->_input_corefile_name;
+        v33 = selfCopy->_input_corefile_name;
         v34 = v31;
-        v35 = [(NSString *)v33 UTF8String];
+        uTF8String9 = [(NSString *)v33 UTF8String];
         v36 = __error();
         v37 = strerror(*v36);
         *buf = 136315394;
-        v105 = v35;
+        v105 = uTF8String9;
         v106 = 2080;
         v107 = v37;
         _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Failed to close compressed %s core with error : %s", buf, 0x16u);
@@ -255,11 +255,11 @@ LABEL_17:
       v75 = qword_100042B28;
       if (os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
       {
-        v95 = v6->_input_corefile_name;
+        v95 = selfCopy->_input_corefile_name;
         v96 = v75;
-        v97 = [(NSString *)v95 UTF8String];
+        uTF8String10 = [(NSString *)v95 UTF8String];
         *buf = 136315394;
-        v105 = v97;
+        v105 = uTF8String10;
         v106 = 1024;
         LODWORD(v107) = v30;
         _os_log_error_impl(&_mh_execute_header, v96, OS_LOG_TYPE_ERROR, "Failed to close compressed %s core with error : %d", buf, 0x12u);
@@ -270,12 +270,12 @@ LABEL_17:
     goto LABEL_35;
   }
 
-  v67 = sub_10001906C(a3);
-  v7 = [NSString stringWithFormat:@"%@.%s%@.core.gz", v67, "", v6->_input_corefile_name];
+  v67 = sub_10001906C(disk);
+  v7 = [NSString stringWithFormat:@"%@.%s%@.core.gz", v67, "", selfCopy->_input_corefile_name];
 
   v68 = [NSString stringWithFormat:@"%s/%@", "/private/var/mobile/Library/Logs/CrashReporter/Panics/staged", v7];
-  v69 = [v68 UTF8String];
-  rename("/private/var/mobile/Library/Logs/CrashReporter/Panics/staged/tempUserSpaceCore.XXX", v69, v70);
+  uTF8String11 = [v68 UTF8String];
+  rename("/private/var/mobile/Library/Logs/CrashReporter/Panics/staged/tempUserSpaceCore.XXX", uTF8String11, v70);
   v72 = v71;
 
   if (v72)
@@ -283,16 +283,16 @@ LABEL_17:
     v73 = qword_100042B28;
     if (os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_ERROR))
     {
-      v98 = v6->_input_corefile_name;
+      v98 = selfCopy->_input_corefile_name;
       v99 = v73;
-      v100 = [(NSString *)v98 UTF8String];
-      v101 = [v7 UTF8String];
+      uTF8String12 = [(NSString *)v98 UTF8String];
+      uTF8String13 = [v7 UTF8String];
       *buf = 136315650;
-      v105 = v100;
+      v105 = uTF8String12;
       v106 = 2080;
       v107 = "/private/var/mobile/Library/Logs/CrashReporter/Panics/staged/tempUserSpaceCore.XXX";
       v108 = 2080;
-      v109 = v101;
+      v109 = uTF8String13;
       _os_log_error_impl(&_mh_execute_header, v99, OS_LOG_TYPE_ERROR, "Failed to rename compressed %s from %s to %s", buf, 0x20u);
     }
 
@@ -311,18 +311,18 @@ LABEL_17:
 
   if (v77)
   {
-    v78 = v6->_input_corefile_name;
+    v78 = selfCopy->_input_corefile_name;
     v79 = v8;
-    v80 = [(NSString *)v78 UTF8String];
+    uTF8String14 = [(NSString *)v78 UTF8String];
     *buf = 136315138;
-    v105 = v80;
+    v105 = uTF8String14;
     _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Detected stress rack device, setting xattr on original %s core", buf, 0xCu);
   }
 
-  if (!setxattr([(NSString *)v6->_input_corefile_path UTF8String], "UserSpaceCoreCompressed", "YES", 4uLL, 0, 0))
+  if (!setxattr([(NSString *)selfCopy->_input_corefile_path UTF8String], "UserSpaceCoreCompressed", "YES", 4uLL, 0, 0))
   {
 LABEL_65:
-    v90 = [objc_alloc((v11 + 415)) initWithCorefileURL:v4 CoresToKeep:1 userspaceCorefileName:v6->_input_corefile_name];
+    v90 = [objc_alloc((v11 + 415)) initWithCorefileURL:v4 CoresToKeep:1 userspaceCorefileName:selfCopy->_input_corefile_name];
 
     [(CoresPruner *)v90 prune];
     v39 = [v9[288] stringWithFormat:@"%s/%@", "/private/var/mobile/Library/Logs/CrashReporter/Panics", v7];
@@ -334,7 +334,7 @@ LABEL_65:
     {
       if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
       {
-        v94 = v6->_input_corefile_name;
+        v94 = selfCopy->_input_corefile_name;
         *buf = 138412546;
         v105 = v94;
         v106 = 2112;
@@ -401,7 +401,7 @@ LABEL_38:
   [(UserCoreFileHandler *)&v4 dealloc];
 }
 
-- (UserCoreFileHandler)initWithCoreFilePath:(const char *)a3 :(const char *)a4
+- (UserCoreFileHandler)initWithCoreFilePath:(const char *)path :(const char *)a4
 {
   self->_input_core = 0;
   v35 = 0;
@@ -410,7 +410,7 @@ LABEL_38:
   input_corefile_path = self->_input_corefile_path;
   self->_input_corefile_path = v7;
 
-  v9 = [NSString stringWithUTF8String:a3];
+  v9 = [NSString stringWithUTF8String:path];
   input_corefile_name = self->_input_corefile_name;
   self->_input_corefile_name = v9;
 
@@ -427,14 +427,14 @@ LABEL_38:
     if (!os_log_type_enabled(qword_100042B28, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_17:
-      v27 = 0;
+      selfCopy = 0;
       goto LABEL_22;
     }
 
     v18 = self->_input_corefile_name;
     v19 = v17;
     *buf = 136315394;
-    v37 = [(NSString *)v18 UTF8String];
+    uTF8String = [(NSString *)v18 UTF8String];
     v38 = 2080;
     v39 = a4;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "No %s core found at %s", buf, 0x16u);
@@ -456,7 +456,7 @@ LABEL_8:
     v30 = __error();
     v31 = strerror(*v30);
     *buf = 136315394;
-    v37 = a4;
+    uTF8String = a4;
     v38 = 2080;
     v39 = v31;
     _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "open %s failed with error: %s", buf, 0x16u);
@@ -474,7 +474,7 @@ LABEL_2:
       v15 = self->_input_corefile_name;
       v16 = v13;
       *buf = 136315138;
-      v37 = [(NSString *)v15 UTF8String];
+      uTF8String = [(NSString *)v15 UTF8String];
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s core is empty", buf, 0xCu);
     }
 
@@ -486,7 +486,7 @@ LABEL_2:
     v20 = self->_input_corefile_name;
     v21 = v13;
     *buf = 136315394;
-    v37 = [(NSString *)v20 UTF8String];
+    uTF8String = [(NSString *)v20 UTF8String];
     v38 = 2080;
     v39 = a4;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found %s core at %s", buf, 0x16u);
@@ -499,16 +499,16 @@ LABEL_2:
     {
 LABEL_21:
       fclose(self->_input_core);
-      v27 = 0;
+      selfCopy = 0;
       self->_input_core = 0;
       goto LABEL_22;
     }
 
     v23 = self->_input_corefile_name;
     v24 = v22;
-    v25 = [(NSString *)v23 UTF8String];
+    uTF8String2 = [(NSString *)v23 UTF8String];
     *buf = 136315138;
-    v37 = v25;
+    uTF8String = uTF8String2;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s core already compressed, skipping collection", buf, 0xCu);
 LABEL_14:
 
@@ -527,17 +527,17 @@ LABEL_14:
     v32 = __error();
     v33 = strerror(*v32);
     *buf = 136315394;
-    v37 = "UserSpaceCoreCompressed";
+    uTF8String = "UserSpaceCoreCompressed";
     v38 = 2080;
     v39 = v33;
     _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "getxattr %s returned error : %s", buf, 0x16u);
     goto LABEL_14;
   }
 
-  v27 = self;
+  selfCopy = self;
 LABEL_22:
 
-  return v27;
+  return selfCopy;
 }
 
 @end

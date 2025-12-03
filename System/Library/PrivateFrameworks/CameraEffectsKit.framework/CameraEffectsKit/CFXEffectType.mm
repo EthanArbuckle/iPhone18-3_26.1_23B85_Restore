@@ -1,7 +1,7 @@
 @interface CFXEffectType
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (CFXEffectType)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CFXEffectType)initWithIdentifier:(id)identifier;
 - (NSOrderedSet)effects;
 - (unint64_t)hash;
 @end
@@ -71,18 +71,18 @@ void __27__CFXEffectType_initialize__block_invoke()
   s_EffectTypeMap = v5;
 }
 
-- (CFXEffectType)initWithIdentifier:(id)a3
+- (CFXEffectType)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = CFXEffectType;
   v6 = [(CFXEffectType *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = @"Filter";
-    if ([v5 isEqualToString:@"Filter"])
+    if ([identifierCopy isEqualToString:@"Filter"])
     {
       v9 = 1;
     }
@@ -90,7 +90,7 @@ void __27__CFXEffectType_initialize__block_invoke()
     else
     {
       v8 = @"Shapes";
-      if ([v5 isEqualToString:@"Shapes"] & 1) != 0 || (v8 = @"Text", (objc_msgSend(v5, "isEqualToString:", @"Text")) || (v8 = @"EmojiStickers", (objc_msgSend(v5, "isEqualToString:", @"EmojiStickers")))
+      if ([identifierCopy isEqualToString:@"Shapes"] & 1) != 0 || (v8 = @"Text", (objc_msgSend(identifierCopy, "isEqualToString:", @"Text")) || (v8 = @"EmojiStickers", (objc_msgSend(identifierCopy, "isEqualToString:", @"EmojiStickers")))
       {
         v9 = 2;
       }
@@ -98,7 +98,7 @@ void __27__CFXEffectType_initialize__block_invoke()
       else
       {
         v8 = @"Animoji";
-        if (![v5 isEqualToString:@"Animoji"])
+        if (![identifierCopy isEqualToString:@"Animoji"])
         {
           goto LABEL_9;
         }
@@ -170,10 +170,10 @@ LABEL_9:
   return effects;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -183,11 +183,11 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CFXEffectType *)self identifier];
-      v7 = [(CFXEffectType *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(CFXEffectType *)self identifier];
+      identifier2 = [(CFXEffectType *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -201,8 +201,8 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(CFXEffectType *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CFXEffectType *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

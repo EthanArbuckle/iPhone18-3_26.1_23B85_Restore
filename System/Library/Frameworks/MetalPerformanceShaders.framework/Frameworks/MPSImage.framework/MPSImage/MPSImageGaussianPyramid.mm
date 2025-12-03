@@ -1,16 +1,16 @@
 @interface MPSImageGaussianPyramid
-- (MPSImageGaussianPyramid)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageGaussianPyramid)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5 weights:(const float *)a6;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
+- (MPSImageGaussianPyramid)initWithCoder:(id)coder device:(id)device;
+- (MPSImageGaussianPyramid)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height weights:(const float *)weights;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
 @end
 
 @implementation MPSImageGaussianPyramid
 
-- (MPSImageGaussianPyramid)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5 weights:(const float *)a6
+- (MPSImageGaussianPyramid)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height weights:(const float *)weights
 {
   v7.receiver = self;
   v7.super_class = MPSImageGaussianPyramid;
-  result = [(MPSImagePyramid *)&v7 initWithDevice:a3 kernelWidth:a4 kernelHeight:a5 weights:a6];
+  result = [(MPSImagePyramid *)&v7 initWithDevice:device kernelWidth:width kernelHeight:height weights:weights];
   if (result)
   {
     result->super.super._encode = sub_23997D4A0;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (MPSImageGaussianPyramid)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageGaussianPyramid)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSImageGaussianPyramid;
-  result = [(MPSImagePyramid *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSImagePyramid *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = sub_23997D4A0;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;

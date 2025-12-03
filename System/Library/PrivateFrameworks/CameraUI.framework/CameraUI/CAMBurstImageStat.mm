@@ -1,41 +1,41 @@
 @interface CAMBurstImageStat
-- (CAMBurstImageStat)initWithIdentifier:(id)a3;
+- (CAMBurstImageStat)initWithIdentifier:(id)identifier;
 - (CGRect)facesRoiRect;
 - (GridROI_t)getSharpnessAndBlurLimits;
-- (float)computeAEMatrixDifference:(id)a3;
+- (float)computeAEMatrixDifference:(id)difference;
 - (float)computeFacialFocusScoreSum;
-- (float)computeImageDistance:(id)a3;
+- (float)computeImageDistance:(id)distance;
 - (float)computeRuleOfThreeDistance;
-- (float)computeScore:(float)a3;
+- (float)computeScore:(float)score;
 - (float)computeSmilePercentage;
-- (float)computeSmoothedGridROI:(id)a3 nextStat:(id)a4;
-- (int)setAEMatrix:(id)a3;
-- (int64_t)compareImageOrder:(id)a3;
-- (void)allocateMeanStdPingPongBuffers:(float *)a3 :(float *)a4 :(float *)a5 :(float *)a6;
-- (void)assignMeanStdBuffers:(float *)a3;
+- (float)computeSmoothedGridROI:(id)i nextStat:(id)stat;
+- (int)setAEMatrix:(id)matrix;
+- (int64_t)compareImageOrder:(id)order;
+- (void)allocateMeanStdPingPongBuffers:(float *)buffers :(float *)a4 :(float *)a5 :(float *)a6;
+- (void)assignMeanStdBuffers:(float *)buffers;
 - (void)collapseSharpnessGrid;
-- (void)computeAEMatrix:(id)a3;
-- (void)computeBlurStatsOnGrid:(id)a3;
-- (void)computeImageColorHistogram:(id)a3;
-- (void)computeImageData:(id)a3 faceIDCounts:(id)a4;
-- (void)computeImageProjections:(id)a3;
-- (void)computeImageSharpnessOnGrid:(id)a3;
+- (void)computeAEMatrix:(id)matrix;
+- (void)computeBlurStatsOnGrid:(id)grid;
+- (void)computeImageColorHistogram:(id)histogram;
+- (void)computeImageData:(id)data faceIDCounts:(id)counts;
+- (void)computeImageProjections:(id)projections;
+- (void)computeImageSharpnessOnGrid:(id)grid;
 - (void)dealloc;
 - (void)flagAsGarbage;
-- (void)performRegistration:(id)a3 deltaCol:(float *)a4 deltaRow:(float *)a5;
-- (void)updateROI:(GridROI_t)a3;
-- (void)writeGridROI:(id)a3;
+- (void)performRegistration:(id)registration deltaCol:(float *)col deltaRow:(float *)row;
+- (void)updateROI:(GridROI_t)i;
+- (void)writeGridROI:(id)i;
 @end
 
 @implementation CAMBurstImageStat
 
-- (void)allocateMeanStdPingPongBuffers:(float *)a3 :(float *)a4 :(float *)a5 :(float *)a6
+- (void)allocateMeanStdPingPongBuffers:(float *)buffers :(float *)a4 :(float *)a5 :(float *)a6
 {
-  if (a3)
+  if (buffers)
   {
     if (a4)
     {
-      *a3 = 0;
+      *buffers = 0;
       *a4 = 0;
       if (self->projectionSignature.piCol)
       {
@@ -46,7 +46,7 @@
           v12 = malloc_type_calloc(1uLL, (5 * v11), 0x100004077774924uLL);
           if (v12)
           {
-            *a3 = v12;
+            *buffers = v12;
             v13 = (v12 + (2 * v11));
             *a4 = v13;
             v14 = (v13 + (2 * v11));
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)assignMeanStdBuffers:(float *)a3
+- (void)assignMeanStdBuffers:(float *)buffers
 {
-  if (a3)
+  if (buffers)
   {
     piCol = self->projectionSignature.piCol;
     if (piCol)
@@ -70,8 +70,8 @@
       {
         nPiCol = self->projectionSignature.nPiCol;
         v6 = (4 * LODWORD(self->projectionSignature.nPiRow) + 35) & 0xFFFFFFE0;
-        self->projectionSignature.piRowTable.sumTable = a3;
-        v7 = (a3 + v6);
+        self->projectionSignature.piRowTable.sumTable = buffers;
+        v7 = (buffers + v6);
         self->projectionSignature.piRowTable.sumSqTable = v7;
         v8 = (v7 + v6);
         self->projectionSignature.piColTable.sumTable = v8;
@@ -86,14 +86,14 @@
   }
 }
 
-- (CAMBurstImageStat)initWithIdentifier:(id)a3
+- (CAMBurstImageStat)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CAMBurstImageStat;
   v4 = [(CAMBurstImageStat *)&v6 init];
   if (v4)
   {
-    v4->imageId = [MEMORY[0x1E696AEC0] stringWithString:a3];
+    v4->imageId = [MEMORY[0x1E696AEC0] stringWithString:identifier];
     v4->faceStatArray = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     v4->orientation = 1;
     v4->sharpnessGrid = 0;
@@ -139,22 +139,22 @@
   [(CAMBurstImageStat *)&v7 dealloc];
 }
 
-- (void)computeImageColorHistogram:(id)a3
+- (void)computeImageColorHistogram:(id)histogram
 {
-  v5 = [a3 bytesPerRow];
-  v6 = [a3 width] >> 1;
-  v7 = [a3 height] >> 1;
+  bytesPerRow = [histogram bytesPerRow];
+  v6 = [histogram width] >> 1;
+  v7 = [histogram height] >> 1;
   self->numEntries = 0;
   colorHistogram = self->colorHistogram;
   bzero(self->colorHistogram, 0x1000uLL);
   v9 = (v6 * 0.05);
-  v10 = [a3 Cbuffer];
+  cbuffer = [histogram Cbuffer];
   v12 = v7 - v9;
   if (v7 - v9 > v9)
   {
     v11 = v7 * 0.05;
     v13 = v11;
-    v14 = v10 + v5 * v9 + 2 * v11;
+    v14 = cbuffer + bytesPerRow * v9 + 2 * v11;
     do
     {
       if (v6 - v11 > v13)
@@ -175,7 +175,7 @@
       }
 
       ++v9;
-      v14 += v5;
+      v14 += bytesPerRow;
     }
 
     while (v9 != v12);
@@ -204,24 +204,24 @@
   return result;
 }
 
-- (void)computeImageSharpnessOnGrid:(id)a3
+- (void)computeImageSharpnessOnGrid:(id)grid
 {
-  v19 = [a3 Ybuffer];
-  v5 = [(CAMBurstImageStat *)self getSharpnessAndBlurLimits];
-  v7 = HIDWORD(v5);
+  ybuffer = [grid Ybuffer];
+  getSharpnessAndBlurLimits = [(CAMBurstImageStat *)self getSharpnessAndBlurLimits];
+  v7 = HIDWORD(getSharpnessAndBlurLimits);
   v8 = HIDWORD(v6);
-  if (SHIDWORD(v5) < SHIDWORD(v6))
+  if (SHIDWORD(getSharpnessAndBlurLimits) < SHIDWORD(v6))
   {
-    v9 = v5;
+    v9 = getSharpnessAndBlurLimits;
     v10 = v6;
-    v18 = v6 - v5;
-    v11 = v5;
+    v18 = v6 - getSharpnessAndBlurLimits;
+    v11 = getSharpnessAndBlurLimits;
     do
     {
-      v12 = [a3 bytesPerRow];
+      bytesPerRow = [grid bytesPerRow];
       if (v10 > v9)
       {
-        v13 = (v19 + 32 * v7 * v12);
+        v13 = (ybuffer + 32 * v7 * bytesPerRow);
         sharpnessGrid = self->sharpnessGrid;
         v15 = v11;
         v16 = v18;
@@ -232,7 +232,7 @@
             break;
           }
 
-          v17 = horzDiff32x32(v13, [a3 bytesPerRow], 32);
+          v17 = horzDiff32x32(v13, [grid bytesPerRow], 32);
           sharpnessGrid = self->sharpnessGrid;
           sharpnessGrid[v15 + self->gridWidth * v7].var2 = v17;
           v13 += 2;
@@ -250,28 +250,28 @@
   }
 }
 
-- (void)computeBlurStatsOnGrid:(id)a3
+- (void)computeBlurStatsOnGrid:(id)grid
 {
   v145[124] = *MEMORY[0x1E69E9840];
-  v5 = [a3 bytesPerRow];
-  v133 = [a3 Ybuffer];
-  v6 = [(CAMBurstImageStat *)self getSharpnessAndBlurLimits];
+  bytesPerRow = [grid bytesPerRow];
+  ybuffer = [grid Ybuffer];
+  getSharpnessAndBlurLimits = [(CAMBurstImageStat *)self getSharpnessAndBlurLimits];
   v138 = v9;
-  v139 = HIDWORD(v6);
+  v139 = HIDWORD(getSharpnessAndBlurLimits);
   v135 = HIDWORD(v9);
-  v136 = v6;
-  if (SHIDWORD(v6) < SHIDWORD(v9))
+  v136 = getSharpnessAndBlurLimits;
+  if (SHIDWORD(getSharpnessAndBlurLimits) < SHIDWORD(v9))
   {
-    v134 = 32 * v5;
-    v10 = 8 * v5;
-    v132 = v133 + 7 * v5;
-    v137 = 32 * v5 * HIDWORD(v6);
-    v130 = v133 + 5 * v5;
-    v131 = v133 + 6 * v5;
-    v128 = v133 + 3 * v5;
-    v129 = v133 + 4 * v5;
-    v126 = v133 + v5;
-    v127 = v133 + 2 * v5;
+    v134 = 32 * bytesPerRow;
+    v10 = 8 * bytesPerRow;
+    v132 = ybuffer + 7 * bytesPerRow;
+    v137 = 32 * bytesPerRow * HIDWORD(getSharpnessAndBlurLimits);
+    v130 = ybuffer + 5 * bytesPerRow;
+    v131 = ybuffer + 6 * bytesPerRow;
+    v128 = ybuffer + 3 * bytesPerRow;
+    v129 = ybuffer + 4 * bytesPerRow;
+    v126 = ybuffer + bytesPerRow;
+    v127 = ybuffer + 2 * bytesPerRow;
     do
     {
       if (v136 < v138)
@@ -293,7 +293,7 @@
             v19 = v16;
             do
             {
-              v20 = *(v133 + v137 + v18);
+              v20 = *(ybuffer + v137 + v18);
               v21 = *(v126 + v137 + v18);
               v22 = vaddl_u8(*v21.i8, *v20.i8);
               v23 = vaddl_high_u8(v21, v20);
@@ -466,7 +466,7 @@
   }
 }
 
-- (float)computeSmoothedGridROI:(id)a3 nextStat:(id)a4
+- (float)computeSmoothedGridROI:(id)i nextStat:(id)stat
 {
   if (self->doLimitedSharpnessAndBlur)
   {
@@ -488,12 +488,12 @@ LABEL_22:
     endX = v12.i32[0];
   }
 
-  if (a4 && (*(a4 + 1184) == -1 || *(a4 + 1185) == -1 || *(a4 + 1186) == -1 || *(a4 + 1187) == -1))
+  if (stat && (*(stat + 1184) == -1 || *(stat + 1185) == -1 || *(stat + 1186) == -1 || *(stat + 1187) == -1))
   {
-    *(a4 + 1184) = 0;
-    *(a4 + 1186) = self->gridWidth - 1;
-    *(a4 + 1185) = 0;
-    *(a4 + 1187) = self->gridHeight - 1;
+    *(stat + 1184) = 0;
+    *(stat + 1186) = self->gridWidth - 1;
+    *(stat + 1185) = 0;
+    *(stat + 1187) = self->gridHeight - 1;
     startX = self->gridROI.startX;
     startY = self->gridROI.startY;
     endX = self->gridROI.endX;
@@ -501,28 +501,28 @@ LABEL_22:
   }
 
   BurstLoggingMessage("Original ROI = %d,%d -> %d,%d\t\t", startX, startY, endX, endY);
-  if (a3 && a4)
+  if (i && stat)
   {
     v13 = self->gridROI;
-    v14 = *(a3 + 296);
+    v14 = *(i + 296);
     v15 = vminq_s32(v13, v14);
-    gridROI = vbslq_s8(vcgtq_s32(v15, *(a4 + 296)), v15, vminq_s32(vmaxq_s32(v13, v14), *(a4 + 296)));
+    gridROI = vbslq_s8(vcgtq_s32(v15, *(stat + 296)), v15, vminq_s32(vmaxq_s32(v13, v14), *(stat + 296)));
     goto LABEL_22;
   }
 
-  if (a3)
+  if (i)
   {
-    v16 = a3;
+    statCopy = i;
   }
 
   else
   {
-    v16 = a4;
+    statCopy = stat;
   }
 
-  if (v16)
+  if (statCopy)
   {
-    gridROI = vshrq_n_s32(vaddq_s32(v16[296], self->gridROI), 1uLL);
+    gridROI = vshrq_n_s32(vaddq_s32(statCopy[296], self->gridROI), 1uLL);
     goto LABEL_22;
   }
 
@@ -534,32 +534,32 @@ LABEL_23:
   return result;
 }
 
-- (void)updateROI:(GridROI_t)a3
+- (void)updateROI:(GridROI_t)i
 {
   if (!self->doLimitedSharpnessAndBlur)
   {
-    startY = a3.startY;
+    startY = i.startY;
     startX = self->gridROI.startX;
     if (startX == -1 || (v5 = self->gridROI.startY, v5 == -1) || (endX = self->gridROI.endX, endX == -1) || (v7 = self->gridROI.endY, v7 == -1))
     {
-      *&self->gridROI.endX = *&a3.endX;
-      endY = a3.endY;
+      *&self->gridROI.endX = *&i.endX;
+      endY = i.endY;
     }
 
     else
     {
-      a3.startX = (a3.startX + startX + 1) >> 1;
-      startY = (a3.startY + v5 + 1) >> 1;
-      self->gridROI.endX = (a3.endX + endX + 1) >> 1;
-      endY = (a3.endY + v7 + 1) >> 1;
+      i.startX = (i.startX + startX + 1) >> 1;
+      startY = (i.startY + v5 + 1) >> 1;
+      self->gridROI.endX = (i.endX + endX + 1) >> 1;
+      endY = (i.endY + v7 + 1) >> 1;
       self->gridROI.endY = endY;
-      a3.endX = (a3.endX + endX + 1) >> 1;
+      i.endX = (i.endX + endX + 1) >> 1;
     }
 
-    self->gridROI.startX = a3.startX & ~(a3.startX >> 31);
+    self->gridROI.startX = i.startX & ~(i.startX >> 31);
     self->gridROI.startY = startY & ~(startY >> 31);
     gridWidth = self->gridWidth;
-    if (a3.endX >= gridWidth)
+    if (i.endX >= gridWidth)
     {
       self->gridROI.endX = gridWidth - 1;
     }
@@ -581,15 +581,15 @@ LABEL_23:
   *&self->registrationErrorY = 0;
 }
 
-- (void)performRegistration:(id)a3 deltaCol:(float *)a4 deltaRow:(float *)a5
+- (void)performRegistration:(id)registration deltaCol:(float *)col deltaRow:(float *)row
 {
   v105[0] = 0x7F7FFFFF7F7FFFFFLL;
-  BurstLoggingMessage("%s REGISTERED AGAINST %s\n", -[NSString UTF8String](self->imageId, "UTF8String"), [objc_msgSend(a3 "imageId")]);
+  BurstLoggingMessage("%s REGISTERED AGAINST %s\n", -[NSString UTF8String](self->imageId, "UTF8String"), [objc_msgSend(registration "imageId")]);
   p_tx = &self->tx;
   p_ty = &self->ty;
   LODWORD(v11) = 0.5;
-  FastRegistration_register(&self->projectionSignature, a3 + 4656, 0, self + 4840, self + 4844, v105 + 4, v105, v12, v11, v13, v14, v15, v16, v17, v18, v19, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, 0x7F7FFFFF7F7FFFFFLL, v105[1], v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, *v116);
-  v20 = [(CAMBurstImageStat *)self AEAverage]- *(a3 + 1198);
+  FastRegistration_register(&self->projectionSignature, registration + 4656, 0, self + 4840, self + 4844, v105 + 4, v105, v12, v11, v13, v14, v15, v16, v17, v18, v19, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, 0x7F7FFFFF7F7FFFFFLL, v105[1], v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, *v116);
+  v20 = [(CAMBurstImageStat *)self AEAverage]- *(registration + 1198);
   if (v20 >= 0)
   {
     v21 = v20;
@@ -601,7 +601,7 @@ LABEL_23:
   }
 
   [(CAMBurstImageStat *)self setAEDelta:v21];
-  if (!a4 || !a5)
+  if (!col || !row)
   {
     return;
   }
@@ -615,10 +615,10 @@ LABEL_23:
   v22 = (self->gridWidth - 1);
   gridHeight = self->gridHeight;
   v24 = (gridHeight - 1);
-  FastRegistration_compareSignatures(&self->projectionSignature, a3 + 582, a4, &v100, a5, &v99, gridHeight, self->tx, self->ty);
+  FastRegistration_compareSignatures(&self->projectionSignature, registration + 582, col, &v100, row, &v99, gridHeight, self->tx, self->ty);
   BurstLoggingMessage("Registration result: tx = %d, ty = %d\n", self->tx, self->ty);
-  *&v26 = computeRegistrationErrorStats(&v103, a5, v99, v25);
-  *&v27 = computeRegistrationErrorStats(&v101, a4, v100, v26);
+  *&v26 = computeRegistrationErrorStats(&v103, row, v99, v25);
+  *&v27 = computeRegistrationErrorStats(&v101, col, v100, v26);
   [(CAMBurstImageStat *)self maxSkewness];
   if (v28 < *&v103)
   {
@@ -650,7 +650,7 @@ LABEL_57:
     }
 
     [(CAMBurstImageStat *)self updateROI:0, v29];
-    v89 = a3;
+    registrationCopy2 = registration;
     v88 = 0;
     v90 = v29;
     goto LABEL_59;
@@ -658,8 +658,8 @@ LABEL_57:
 
   v97 = 0;
   v98 = 0;
-  computeForegroundInterval(&v103, a5, v99, &v98 + 1, &v98);
-  computeForegroundInterval(&v101, a4, v100, &v97 + 1, &v97);
+  computeForegroundInterval(&v103, row, v99, &v98 + 1, &v98);
+  computeForegroundInterval(&v101, col, v100, &v97 + 1, &v97);
   v32 = v98;
   v33 = HIDWORD(v98);
   v34 = v97;
@@ -711,7 +711,7 @@ LABEL_57:
   }
 
   LODWORD(v97) = v34;
-  v50 = &a5[v49];
+  v50 = &row[v49];
   qsort(v50, v32 - v49, 4uLL, compareFloats);
   v51 = ((v98 - HIDWORD(v98)) * 0.2);
   v52 = 0.0;
@@ -736,7 +736,7 @@ LABEL_57:
   }
 
   [(CAMBurstImageStat *)self setRegistrationErrorIntegral:v52];
-  v57 = &a4[SHIDWORD(v97)];
+  v57 = &col[SHIDWORD(v97)];
   qsort(v57, v97 - SHIDWORD(v97), 4uLL, compareFloats);
   v58 = ((v97 - HIDWORD(v97)) * 0.2);
   v59 = 0.0;
@@ -862,10 +862,10 @@ LABEL_57:
         [(CAMBurstImageStat *)self updateROI:v84 | (v86 << 32), v85 | (v87 << 32)];
         BurstLoggingMessage("referenceROI = (%d,%d)->(%d,%d)\n", v84, v86, v85, v87);
         v88 = v75 | (v79 << 32);
-        v89 = a3;
+        registrationCopy2 = registration;
         v90 = v83;
 LABEL_59:
-        [v89 updateROI:{v88, v90}];
+        [registrationCopy2 updateROI:{v88, v90}];
         return;
       }
 
@@ -882,15 +882,15 @@ LABEL_61:
 
   BurstLoggingMessage("Registration rejected due to ROI too large or too small.\n");
   [(CAMBurstImageStat *)self updateROI:0, v29];
-  [a3 updateROI:{0, v29}];
+  [registration updateROI:{0, v29}];
   [(CAMBurstImageStat *)self setRegistrationErrorIntegral:0.0];
 }
 
-- (void)computeImageProjections:(id)a3
+- (void)computeImageProjections:(id)projections
 {
-  v6[2] = ([a3 width] & 0xFFFFFFE0);
-  v6[1] = [a3 height];
-  v6[3] = [a3 bytesPerRow];
+  v6[2] = ([projections width] & 0xFFFFFFE0);
+  v6[1] = [projections height];
+  v6[3] = [projections bytesPerRow];
   SignatureBuffers = allocateSignatureBuffers(&self->projectionSignature, v6, 0);
   self->projectionMemoryBlock = SignatureBuffers;
   if (SignatureBuffers)
@@ -899,25 +899,25 @@ LABEL_61:
   }
 }
 
-- (void)writeGridROI:(id)a3
+- (void)writeGridROI:(id)i
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInt:self->gridROI.startX];
-  [a3 setObject:v5 forKey:kCAMBurstImageProperty_ImageROIGridStartX];
+  [i setObject:v5 forKey:kCAMBurstImageProperty_ImageROIGridStartX];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->gridROI.startY];
-  [a3 setObject:v6 forKey:kCAMBurstImageProperty_ImageROIGridStartY];
+  [i setObject:v6 forKey:kCAMBurstImageProperty_ImageROIGridStartY];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->gridROI.endX];
-  [a3 setObject:v7 forKey:kCAMBurstImageProperty_ImageROIGridEndX];
+  [i setObject:v7 forKey:kCAMBurstImageProperty_ImageROIGridEndX];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->gridROI.endY];
   v9 = kCAMBurstImageProperty_ImageROIGridEndY;
 
-  [a3 setObject:v8 forKey:v9];
+  [i setObject:v8 forKey:v9];
 }
 
-- (void)computeImageData:(id)a3 faceIDCounts:(id)a4
+- (void)computeImageData:(id)data faceIDCounts:(id)counts
 {
-  [(CAMBurstImageStat *)self computeImageColorHistogram:a3, a4];
-  self->gridWidth = [a3 width] >> 5;
-  self->gridHeight = [a3 height] >> 5;
+  [(CAMBurstImageStat *)self computeImageColorHistogram:data, counts];
+  self->gridWidth = [data width] >> 5;
+  self->gridHeight = [data height] >> 5;
   *&self->gridROI.startX = -1;
   *&self->gridROI.endX = -1;
   self->doLimitedSharpnessAndBlur = 0;
@@ -925,9 +925,9 @@ LABEL_61:
   if ([(NSMutableArray *)self->faceStatArray count]|| self->numHWFaces >= 1)
   {
     self->gridROI.startX = self->facesRoiRect.origin.x >> 5;
-    self->gridROI.startY = ([a3 height] - self->facesRoiRect.origin.y - self->facesRoiRect.size.height) >> 5;
+    self->gridROI.startY = ([data height] - self->facesRoiRect.origin.y - self->facesRoiRect.size.height) >> 5;
     self->gridROI.endX = ((self->facesRoiRect.size.width + self->facesRoiRect.origin.x) >> 5) + 1;
-    v6 = (([a3 height] - self->facesRoiRect.origin.y) >> 5) + 1;
+    v6 = (([data height] - self->facesRoiRect.origin.y) >> 5) + 1;
     self->gridROI.endY = v6;
     v7 = vmax_s32(*&self->gridROI.startX, 0);
     *&self->gridROI.startX = v7;
@@ -951,10 +951,10 @@ LABEL_61:
   }
 
   self->sharpnessGrid = malloc_type_calloc(1uLL, 8 * self->gridHeight * self->gridWidth, 0x1000040CE7E837CuLL);
-  [(CAMBurstImageStat *)self computeImageSharpnessOnGrid:a3];
-  [(CAMBurstImageStat *)self computeBlurStatsOnGrid:a3];
+  [(CAMBurstImageStat *)self computeImageSharpnessOnGrid:data];
+  [(CAMBurstImageStat *)self computeBlurStatsOnGrid:data];
 
-  [(CAMBurstImageStat *)self computeImageProjections:a3];
+  [(CAMBurstImageStat *)self computeImageProjections:data];
 }
 
 - (void)collapseSharpnessGrid
@@ -1325,13 +1325,13 @@ LABEL_38:
   return v4;
 }
 
-- (float)computeImageDistance:(id)a3
+- (float)computeImageDistance:(id)distance
 {
   v3 = 0;
   v4 = 0.0;
   do
   {
-    v5 = vsqrtq_f64(vmulq_f64(vcvtq_f64_f32(*&self->colorHistogram[v3]), vcvtq_f64_f32(*(a3 + v3 * 4 + 16))));
+    v5 = vsqrtq_f64(vmulq_f64(vcvtq_f64_f32(*&self->colorHistogram[v3]), vcvtq_f64_f32(*(distance + v3 * 4 + 16))));
     v4 = v4 + v5.f64[0] + v5.f64[1];
     v3 += 2;
   }
@@ -1340,13 +1340,13 @@ LABEL_38:
   return sqrt(1.0 - v4);
 }
 
-- (float)computeAEMatrixDifference:(id)a3
+- (float)computeAEMatrixDifference:(id)difference
 {
   v3 = 0;
   result = 0.0;
   do
   {
-    v5 = vabdq_u16(*&self->aeMatrix[v3], *(a3 + v3 * 2 + 4116));
+    v5 = vabdq_u16(*&self->aeMatrix[v3], *(difference + v3 * 2 + 4116));
     v6 = vmovl_u16(*v5.i8);
     v7 = vcvtq_f32_u32(vmovl_high_u16(v5));
     v8 = vcvtq_f32_u32(v6);
@@ -1358,15 +1358,15 @@ LABEL_38:
   return result;
 }
 
-- (int)setAEMatrix:(id)a3
+- (int)setAEMatrix:(id)matrix
 {
-  if (!a3)
+  if (!matrix)
   {
     return 0;
   }
 
   aeMatrix = self->aeMatrix;
-  [a3 getBytes:self->aeMatrix length:512];
+  [matrix getBytes:self->aeMatrix length:512];
   v4 = 0;
   v5 = 0uLL;
   v6 = 0uLL;
@@ -1390,23 +1390,23 @@ LABEL_38:
   }
 }
 
-- (void)computeAEMatrix:(id)a3
+- (void)computeAEMatrix:(id)matrix
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 Ybuffer];
-  v5 = [a3 height];
-  v6 = [a3 width];
+  ybuffer = [matrix Ybuffer];
+  height = [matrix height];
+  width = [matrix width];
   bzero(v14, 0x400uLL);
-  if (v5)
+  if (height)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != height; ++i)
     {
-      if (v6)
+      if (width)
       {
-        for (j = 0; j != v6; ++j)
+        for (j = 0; j != width; ++j)
         {
-          LOBYTE(v9) = *(v4 + (j + i * [a3 bytesPerRow]));
-          v14[16 * (i / ((v5 + 15) >> 4)) + j / ((v6 + 15) >> 4)] = v14[16 * (i / ((v5 + 15) >> 4)) + j / ((v6 + 15) >> 4)] + v9;
+          LOBYTE(v9) = *(ybuffer + (j + i * [matrix bytesPerRow]));
+          v14[16 * (i / ((height + 15) >> 4)) + j / ((width + 15) >> 4)] = v14[16 * (i / ((height + 15) >> 4)) + j / ((width + 15) >> 4)] + v9;
         }
       }
     }
@@ -1424,7 +1424,7 @@ LABEL_38:
   while (v10 != 256);
 }
 
-- (float)computeScore:(float)a3
+- (float)computeScore:(float)score
 {
   v5 = &self->colorHistogram[1020];
   BurstLoggingMessage("Thumbnail selection score computation for %s\n", [(NSString *)self->imageId UTF8String]);
@@ -1449,7 +1449,7 @@ LABEL_38:
 
   self->actionScore = v7;
   registrationErrorIntegral = self->registrationErrorIntegral;
-  if (registrationErrorIntegral > a3 && (*(v5 + 689) & 1) == 0)
+  if (registrationErrorIntegral > score && (*(v5 + 689) & 1) == 0)
   {
     v10 = (registrationErrorIntegral / 100.0) + (v7 * 4.0);
     self->actionScore = v10;
@@ -1460,11 +1460,11 @@ LABEL_38:
   return v7;
 }
 
-- (int64_t)compareImageOrder:(id)a3
+- (int64_t)compareImageOrder:(id)order
 {
-  v4 = [(CAMBurstImageStat *)self temporalOrder];
-  v5 = [a3 temporalOrder];
-  if (v5 <= v4)
+  temporalOrder = [(CAMBurstImageStat *)self temporalOrder];
+  temporalOrder2 = [order temporalOrder];
+  if (temporalOrder2 <= temporalOrder)
   {
     v6 = 0;
   }
@@ -1474,7 +1474,7 @@ LABEL_38:
     v6 = -1;
   }
 
-  if (v4 > v5)
+  if (temporalOrder > temporalOrder2)
   {
     return 1;
   }

@@ -101,16 +101,16 @@ LABEL_16:
 
 - (NSDictionary)sourcePixelBufferAttributes
 {
-  v2 = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
 
-  return [(AVAssetWriterInput *)v2 _sourcePixelBufferAttributes];
+  return [(AVAssetWriterInput *)assetWriterInput _sourcePixelBufferAttributes];
 }
 
 - (CVPixelBufferPoolRef)pixelBufferPool
 {
-  v2 = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
 
-  return [(AVAssetWriterInput *)v2 _pixelBufferPool];
+  return [(AVAssetWriterInput *)assetWriterInput _pixelBufferPool];
 }
 
 - (BOOL)appendTaggedPixelBufferGroup:(CMTaggedBufferGroupRef)taggedPixelBufferGroup withPresentationTime:(CMTime *)presentationTime
@@ -133,10 +133,10 @@ LABEL_6:
     objc_exception_throw(v15);
   }
 
-  v10 = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)self assetWriterInput];
   v16 = *&presentationTime->value;
   epoch = presentationTime->epoch;
-  return [(AVAssetWriterInput *)v10 _appendTaggedPixelBufferGroup:taggedPixelBufferGroup withPresentationTime:&v16];
+  return [(AVAssetWriterInput *)assetWriterInput _appendTaggedPixelBufferGroup:taggedPixelBufferGroup withPresentationTime:&v16];
 }
 
 @end

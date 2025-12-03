@@ -1,17 +1,17 @@
 @interface PKTextViewTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation PKTextViewTableViewCell
 
-- (PKTextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = PKTextViewTableViewCell;
-  v4 = [(PKTextViewTableViewCell *)&v11 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKTextViewTableViewCell *)&v11 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x1E69DD168] pkui_plainInteractiveTextViewWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -22,8 +22,8 @@
     v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UITextView *)v7 setFont:v8];
 
-    v9 = [(PKTextViewTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_textView];
+    contentView = [(PKTextViewTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
   }
 
   return v4;
@@ -36,8 +36,8 @@
   [(PKTextViewTableViewCell *)&v16 layoutSubviews];
   [(PKTextViewTableViewCell *)self layoutMargins];
   v4 = v3;
-  v5 = [(PKTextViewTableViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(PKTextViewTableViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -65,10 +65,10 @@
   [(UITextView *)self->_textView setDelegate:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(UITextView *)self->_textView font:a3.width];
+  width = fits.width;
+  v4 = [(UITextView *)self->_textView font:fits.width];
   [v4 lineHeight];
   v6 = v5 * 12.0;
 

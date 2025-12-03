@@ -1,11 +1,11 @@
 @interface WBSOnDeviceSearchSuggestionsProvider
-- (BOOL)_findRootNodeForPrefix:(id)a3 rootNode:(_WBSSearchSuggestionCandidate *)a4;
+- (BOOL)_findRootNodeForPrefix:(id)prefix rootNode:(_WBSSearchSuggestionCandidate *)node;
 - (WBSOnDeviceSearchSuggestionsProvider)init;
 - (WBSOnDeviceSearchSuggestionsProviderDelegate)delegate;
 - (id)_loadModel;
-- (void)_doSearch:(id)a3 atRootNode:(_WBSSearchSuggestionCandidate *)a4;
+- (void)_doSearch:(id)search atRootNode:(_WBSSearchSuggestionCandidate *)node;
 - (void)reloadModel;
-- (void)setQueryString:(id)a3;
+- (void)setQueryString:(id)string;
 @end
 
 @implementation WBSOnDeviceSearchSuggestionsProvider
@@ -35,13 +35,13 @@
 - (id)_loadModel
 {
   v2 = +[WBSOnDeviceSearchSuggestionsModelManager sharedManager];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v2 fileURLForModelWithLocaleIfDownloaded:v3];
-  v5 = [v4 path];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [v2 fileURLForModelWithLocaleIfDownloaded:currentLocale];
+  path = [v4 path];
 
-  if (v5)
+  if (path)
   {
-    v6 = [[WBSOnDeviceSearchSuggestionsModel alloc] initWithModelFileAtPath:v5];
+    v6 = [[WBSOnDeviceSearchSuggestionsModel alloc] initWithModelFileAtPath:path];
   }
 
   else
@@ -54,30 +54,30 @@
 
 - (void)reloadModel
 {
-  v3 = [(WBSOnDeviceSearchSuggestionsProvider *)self _loadModel];
+  _loadModel = [(WBSOnDeviceSearchSuggestionsProvider *)self _loadModel];
   searchModel = self->_searchModel;
-  self->_searchModel = v3;
+  self->_searchModel = _loadModel;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_prefixLock);
-  if ([(NSString *)self->_currentPrefix isEqualToString:v5])
+  if ([(NSString *)self->_currentPrefix isEqualToString:stringCopy])
   {
     os_unfair_lock_unlock(&self->_prefixLock);
   }
 
   else
   {
-    objc_storeStrong(&self->_currentPrefix, a3);
+    objc_storeStrong(&self->_currentPrefix, string);
     completionQueue = self->_completionQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__WBSOnDeviceSearchSuggestionsProvider_setQueryString___block_invoke;
     v7[3] = &unk_1E7FB7F10;
     v7[4] = self;
-    v8 = v5;
+    v8 = stringCopy;
     dispatch_async(completionQueue, v7);
     os_unfair_lock_unlock(&self->_prefixLock);
   }
@@ -139,15 +139,15 @@ void __55__WBSOnDeviceSearchSuggestionsProvider_setQueryString___block_invoke_3(
   [WeakRetained onDeviceSearchSuggestionProvider:*(a1 + 32) didFinishWithSuggestions:MEMORY[0x1E695E0F0] forQueryString:*(a1 + 40)];
 }
 
-- (BOOL)_findRootNodeForPrefix:(id)a3 rootNode:(_WBSSearchSuggestionCandidate *)a4
+- (BOOL)_findRootNodeForPrefix:(id)prefix rootNode:(_WBSSearchSuggestionCandidate *)node
 {
-  v6 = a3;
+  prefixCopy = prefix;
 LABEL_2:
-  v7 = [a4->var3 length];
-  if (v7 >= [v6 length])
+  v7 = [node->var3 length];
+  if (v7 >= [prefixCopy length])
   {
-    v12 = [a4->var3 length];
-    v13 = v12 >= [v6 length];
+    v12 = [node->var3 length];
+    v13 = v12 >= [prefixCopy length];
   }
 
   else
@@ -155,18 +155,18 @@ LABEL_2:
     searchModel = self->_searchModel;
     if (searchModel)
     {
-      [(WBSOnDeviceSearchSuggestionsModel *)searchModel readTreeNodeWithCandidate:a4];
+      [(WBSOnDeviceSearchSuggestionsModel *)searchModel readTreeNodeWithCandidate:node];
       v9 = v15;
       v10 = v16;
       while (v9 != v10)
       {
-        if ([*(v9 + 16) length] && ((objc_msgSend(v6, "hasPrefix:", *(v9 + 16)) & 1) != 0 || objc_msgSend(*(v9 + 16), "hasPrefix:", v6)))
+        if ([*(v9 + 16) length] && ((objc_msgSend(prefixCopy, "hasPrefix:", *(v9 + 16)) & 1) != 0 || objc_msgSend(*(v9 + 16), "hasPrefix:", prefixCopy)))
         {
-          if (*(v9 + 8) != 1 || (v11 = [*(v9 + 16) length], v11 >= objc_msgSend(v6, "length")))
+          if (*(v9 + 8) != 1 || (v11 = [*(v9 + 16) length], v11 >= objc_msgSend(prefixCopy, "length")))
           {
-            objc_storeStrong(&a4->var3, *(v9 + 16));
-            a4->var2 = *(v9 + 8);
-            a4->var1 = *(v9 + 4);
+            objc_storeStrong(&node->var3, *(v9 + 16));
+            node->var2 = *(v9 + 8);
+            node->var1 = *(v9 + 4);
             v18 = &v15;
             std::vector<_WBSSearchSuggestionCandidate>::__destroy_vector::operator()[abi:sn200100](&v18);
             goto LABEL_2;
@@ -192,9 +192,9 @@ LABEL_2:
   return v13;
 }
 
-- (void)_doSearch:(id)a3 atRootNode:(_WBSSearchSuggestionCandidate *)a4
+- (void)_doSearch:(id)search atRootNode:(_WBSSearchSuggestionCandidate *)node
 {
-  v26 = a3;
+  searchCopy = search;
   v64 = 0;
   v65 = &v64;
   v66 = 0x6012000000;
@@ -216,9 +216,9 @@ LABEL_2:
   v56[4] = &v64;
   v56[5] = &v57;
   v6 = MEMORY[0x1BFB13CE0](v56);
-  v53 = *&a4->var0;
-  var2 = a4->var2;
-  v55 = a4->var3;
+  v53 = *&node->var0;
+  var2 = node->var2;
+  v55 = node->var3;
   (v6)[2](v6, &v53);
   v7 = v58;
   for (i = v58[5].i64[1]; i; i = v58[5].i64[1])
@@ -323,10 +323,10 @@ LABEL_2:
     v7 = v58;
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   while (v65[5].i64[1])
   {
-    [v23 addObject:*(*(v65[3].i64[1] + 8 * (v65[5].i64[0] / 0xAAuLL)) + 24 * (v65[5].i64[0] % 0xAAuLL) + 16)];
+    [array addObject:*(*(v65[3].i64[1] + 8 * (v65[5].i64[0] / 0xAAuLL)) + 24 * (v65[5].i64[0] % 0xAAuLL) + 16)];
     std::deque<_WBSSearchSuggestionCandidate>::pop_front(v65 + 3);
   }
 
@@ -335,10 +335,10 @@ LABEL_2:
   block[2] = __61__WBSOnDeviceSearchSuggestionsProvider__doSearch_atRootNode___block_invoke_3;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v28 = v23;
-  v29 = v26;
-  v24 = v23;
-  v25 = v26;
+  v28 = array;
+  v29 = searchCopy;
+  v24 = array;
+  v25 = searchCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(&v57, 8);

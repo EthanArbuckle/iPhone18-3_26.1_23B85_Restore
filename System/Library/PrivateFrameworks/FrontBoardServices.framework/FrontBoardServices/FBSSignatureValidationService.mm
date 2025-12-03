@@ -1,12 +1,12 @@
 @interface FBSSignatureValidationService
 - (FBSSignatureValidationService)init;
-- (id)_initWithMISInterfaceWrapper:(id)a3;
-- (unint64_t)_validateApp:(id)a3;
-- (unint64_t)_validateAppStoreApp:(id)a3;
-- (unint64_t)_validateNonAppStoreApp:(id)a3;
-- (unint64_t)trustStateForApplication:(id)a3;
-- (unsigned)signatureVersionForApp:(id)a3;
-- (void)_logTrustState:(unint64_t)a3 forApp:(id)a4 reason:(id)a5;
+- (id)_initWithMISInterfaceWrapper:(id)wrapper;
+- (unint64_t)_validateApp:(id)app;
+- (unint64_t)_validateAppStoreApp:(id)app;
+- (unint64_t)_validateNonAppStoreApp:(id)app;
+- (unint64_t)trustStateForApplication:(id)application;
+- (unsigned)signatureVersionForApp:(id)app;
+- (void)_logTrustState:(unint64_t)state forApp:(id)app reason:(id)reason;
 @end
 
 @implementation FBSSignatureValidationService
@@ -19,30 +19,30 @@
   return v4;
 }
 
-- (id)_initWithMISInterfaceWrapper:(id)a3
+- (id)_initWithMISInterfaceWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = FBSSignatureValidationService;
   v6 = [(FBSSignatureValidationService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_misInterfaceWrapper, a3);
+    objc_storeStrong(&v6->_misInterfaceWrapper, wrapper);
   }
 
   return v7;
 }
 
-- (unint64_t)trustStateForApplication:(id)a3
+- (unint64_t)trustStateForApplication:(id)application
 {
-  v5 = a3;
-  if (!v5)
+  applicationCopy = application;
+  if (!applicationCopy)
   {
     [(FBSSignatureValidationService *)a2 trustStateForApplication:?];
   }
 
-  v6 = v5;
+  v6 = applicationCopy;
   kdebug_trace();
   if ([v6 type] >= 2)
   {
@@ -59,32 +59,32 @@
   return v7;
 }
 
-- (unsigned)signatureVersionForApp:(id)a3
+- (unsigned)signatureVersionForApp:(id)app
 {
   v7 = 0;
   misInterfaceWrapper = self->_misInterfaceWrapper;
-  v4 = [a3 bundleURL];
-  v5 = [v4 path];
-  [(_FBSMISInterfaceWrapper *)misInterfaceWrapper signatureVersion:v5 version:&v7];
+  bundleURL = [app bundleURL];
+  path = [bundleURL path];
+  [(_FBSMISInterfaceWrapper *)misInterfaceWrapper signatureVersion:path version:&v7];
 
   return v7;
 }
 
-- (unint64_t)_validateAppStoreApp:(id)a3
+- (unint64_t)_validateAppStoreApp:(id)app
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   v5 = objc_alloc_init(getMISLaunchWarningDatabaseClass());
-  v6 = [v4 executableURL];
+  executableURL = [appCopy executableURL];
   v13 = 0;
-  v7 = [v5 queryForExecutableURL:v6 withError:&v13];
+  v7 = [v5 queryForExecutableURL:executableURL withError:&v13];
   v8 = v13;
   if (!v7)
   {
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(FBSSignatureValidationService *)v6 _validateAppStoreApp:v8, v11];
+      [(FBSSignatureValidationService *)executableURL _validateAppStoreApp:v8, v11];
     }
 
     goto LABEL_10;
@@ -101,20 +101,20 @@ LABEL_10:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = executableURL;
     _os_log_impl(&dword_1A2DBB000, v9, OS_LOG_TYPE_DEFAULT, "Blocking bundle with outstanding launch warning: %{public}@", buf, 0xCu);
   }
 
   v10 = 2;
-  [(FBSSignatureValidationService *)self _logTrustState:2 forApp:v4 reason:@"Deny-Listed"];
+  [(FBSSignatureValidationService *)self _logTrustState:2 forApp:appCopy reason:@"Deny-Listed"];
 LABEL_11:
 
   return v10;
 }
 
-- (unint64_t)_validateNonAppStoreApp:(id)a3
+- (unint64_t)_validateNonAppStoreApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   if (self->_authoritative)
   {
     v5 = getkMISValidationOptionAuthoritativeLaunch();
@@ -127,18 +127,18 @@ LABEL_11:
 
   v6 = v5;
   v7 = [MEMORY[0x1E695DF90] dictionaryWithObject:MEMORY[0x1E695E118] forKey:v6];
-  v8 = [v4 executableURL];
-  v9 = [v8 path];
+  executableURL = [appCopy executableURL];
+  path = [executableURL path];
 
-  if (v9)
+  if (path)
   {
-    [v7 setObject:v9 forKey:getkMISValidationOptionHintMainExecutablePath()];
+    [v7 setObject:path forKey:getkMISValidationOptionHintMainExecutablePath()];
   }
 
   misInterfaceWrapper = self->_misInterfaceWrapper;
-  v11 = [v4 bundleURL];
-  v12 = [v11 path];
-  v13 = [(_FBSMISInterfaceWrapper *)misInterfaceWrapper validateSignatureForPath:v12 options:v7 userInfo:0];
+  bundleURL = [appCopy bundleURL];
+  path2 = [bundleURL path];
+  v13 = [(_FBSMISInterfaceWrapper *)misInterfaceWrapper validateSignatureForPath:path2 options:v7 userInfo:0];
 
   if (v13)
   {
@@ -162,12 +162,12 @@ LABEL_11:
         v22 = soft_MISCopyErrorStringForErrorCode(v13);
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error - %d: reason: %@", v13, v22];
         v16 = 1;
-        [(FBSSignatureValidationService *)self _logTrustState:1 forApp:v4 reason:v15];
+        [(FBSSignatureValidationService *)self _logTrustState:1 forApp:appCopy reason:v15];
         v17 = 0;
         goto LABEL_9;
       case 0xE8008011:
         v16 = 3;
-        [(FBSSignatureValidationService *)self _logTrustState:3 forApp:v4 reason:@"Provisioning Profile Expired"];
+        [(FBSSignatureValidationService *)self _logTrustState:3 forApp:appCopy reason:@"Provisioning Profile Expired"];
         goto LABEL_21;
       case 0xE8008015:
       case 0xE800801E:
@@ -176,38 +176,38 @@ LABEL_11:
         v14 = @"Profile contains entitlements it's not allowed to have (possibly because we're missing a provisioning profile?)";
 LABEL_19:
         v16 = 4;
-        [(FBSSignatureValidationService *)self _logTrustState:4 forApp:v4 reason:v14];
+        [(FBSSignatureValidationService *)self _logTrustState:4 forApp:appCopy reason:v14];
         goto LABEL_21;
       case 0xE800801D:
         v16 = 2;
-        [(FBSSignatureValidationService *)self _logTrustState:2 forApp:v4 reason:@"Deny-Listed"];
+        [(FBSSignatureValidationService *)self _logTrustState:2 forApp:appCopy reason:@"Deny-Listed"];
         goto LABEL_21;
       case 0xE8008024:
         v16 = 5;
-        [(FBSSignatureValidationService *)self _logTrustState:5 forApp:v4 reason:@"Profile revoked by originator (banned)"];
+        [(FBSSignatureValidationService *)self _logTrustState:5 forApp:appCopy reason:@"Profile revoked by originator (banned)"];
         goto LABEL_21;
       case 0xE8008025:
         v16 = 7;
-        [(FBSSignatureValidationService *)self _logTrustState:7 forApp:v4 reason:@"User hasn't trusted the profile."];
+        [(FBSSignatureValidationService *)self _logTrustState:7 forApp:appCopy reason:@"User hasn't trusted the profile."];
         goto LABEL_21;
       case 0xE8008026:
         v16 = 6;
-        [(FBSSignatureValidationService *)self _logTrustState:6 forApp:v4 reason:@"Requires Network Validation"];
+        [(FBSSignatureValidationService *)self _logTrustState:6 forApp:appCopy reason:@"Requires Network Validation"];
         goto LABEL_21;
       case 0xE8008029:
         v16 = 9;
-        [(FBSSignatureValidationService *)self _logTrustState:9 forApp:v4 reason:@"Signature version no longer supported"];
+        [(FBSSignatureValidationService *)self _logTrustState:9 forApp:appCopy reason:@"Signature version no longer supported"];
         goto LABEL_21;
       case 0xE800802B:
         v16 = 10;
-        [(FBSSignatureValidationService *)self _logTrustState:10 forApp:v4 reason:@"Developer mode is required to run this application"];
+        [(FBSSignatureValidationService *)self _logTrustState:10 forApp:appCopy reason:@"Developer mode is required to run this application"];
 LABEL_21:
         v17 = 0;
         break;
       default:
         v22 = soft_MISCopyErrorStringForErrorCode(v13);
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error - %d: reason: %@", v13, v22];
-        [(FBSSignatureValidationService *)self _logTrustState:0 forApp:v4 reason:v15];
+        [(FBSSignatureValidationService *)self _logTrustState:0 forApp:appCopy reason:v15];
         v16 = 0;
         v17 = 1;
 LABEL_9:
@@ -215,7 +215,7 @@ LABEL_9:
         break;
     }
 
-    if (([v4 isProvisioningProfileValidated] & ((v13 == -402620378) | v17)) == 1)
+    if (([appCopy isProvisioningProfileValidated] & ((v13 == -402620378) | v17)) == 1)
     {
       if (_validateNonAppStoreApp__onceToken != -1)
       {
@@ -228,7 +228,7 @@ LABEL_9:
       block[2] = __57__FBSSignatureValidationService__validateNonAppStoreApp___block_invoke_2;
       block[3] = &unk_1E76BCD60;
       block[4] = self;
-      v21 = v4;
+      v21 = appCopy;
       dispatch_async(v18, block);
     }
 
@@ -261,17 +261,17 @@ void __57__FBSSignatureValidationService__validateNonAppStoreApp___block_invoke_
   [v5 validateSignatureForPath:v7 options:v3 userInfo:0];
 }
 
-- (unint64_t)_validateApp:(id)a3
+- (unint64_t)_validateApp:(id)app
 {
-  v4 = a3;
-  if ([v4 isProvisioningProfileValidated])
+  appCopy = app;
+  if ([appCopy isProvisioningProfileValidated])
   {
-    v5 = [(FBSSignatureValidationService *)self _validateNonAppStoreApp:v4];
+    v5 = [(FBSSignatureValidationService *)self _validateNonAppStoreApp:appCopy];
   }
 
   else
   {
-    v5 = [(FBSSignatureValidationService *)self _validateAppStoreApp:v4];
+    v5 = [(FBSSignatureValidationService *)self _validateAppStoreApp:appCopy];
   }
 
   v6 = v5;
@@ -279,22 +279,22 @@ void __57__FBSSignatureValidationService__validateNonAppStoreApp___block_invoke_
   return v6;
 }
 
-- (void)_logTrustState:(unint64_t)a3 forApp:(id)a4 reason:(id)a5
+- (void)_logTrustState:(unint64_t)state forApp:(id)app reason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  appCopy = app;
+  reasonCopy = reason;
   v9 = FBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 bundleIdentifier];
-    v11 = NSStringFromFBSApplicationTrustState(a3);
+    bundleIdentifier = [appCopy bundleIdentifier];
+    v11 = NSStringFromFBSApplicationTrustState(state);
     v12 = 138543874;
-    v13 = v10;
+    v13 = bundleIdentifier;
     v14 = 2114;
     v15 = v11;
     v16 = 2114;
-    v17 = v8;
+    v17 = reasonCopy;
     _os_log_impl(&dword_1A2DBB000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@ - signature state: %{public}@, reason: %{public}@", &v12, 0x20u);
   }
 }

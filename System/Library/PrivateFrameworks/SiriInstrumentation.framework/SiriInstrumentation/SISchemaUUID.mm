@@ -1,87 +1,87 @@
 @interface SISchemaUUID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUID)initWithBytesAsData:(id)a3;
-- (SISchemaUUID)initWithDictionary:(id)a3;
-- (SISchemaUUID)initWithJSON:(id)a3;
-- (SISchemaUUID)initWithNSUUID:(id)a3;
+- (SISchemaUUID)initWithBytesAsData:(id)data;
+- (SISchemaUUID)initWithDictionary:(id)dictionary;
+- (SISchemaUUID)initWithJSON:(id)n;
+- (SISchemaUUID)initWithNSUUID:(id)d;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (id)toNSUUID;
 - (id)toSafeNSUUID;
-- (void)willProduceDictionaryRepresentation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)willProduceDictionaryRepresentation:(id)representation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUID
 
 - (id)toSafeNSUUID
 {
-  v2 = [(SISchemaUUID *)self value];
-  v3 = [v2 si_asNSUUID];
+  value = [(SISchemaUUID *)self value];
+  si_asNSUUID = [value si_asNSUUID];
 
-  return v3;
+  return si_asNSUUID;
 }
 
 - (id)toNSUUID
 {
-  v2 = [(SISchemaUUID *)self value];
-  v3 = [v2 si_asNSUUID];
+  value = [(SISchemaUUID *)self value];
+  si_asNSUUID = [value si_asNSUUID];
 
-  return v3;
+  return si_asNSUUID;
 }
 
-- (SISchemaUUID)initWithBytesAsData:(id)a3
+- (SISchemaUUID)initWithBytesAsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = SISchemaUUID;
   v5 = [(SISchemaUUID *)&v8 init];
   v6 = v5;
-  if (v4 && v5 && [v4 length] == 16)
+  if (dataCopy && v5 && [dataCopy length] == 16)
   {
-    [(SISchemaUUID *)v6 setValue:v4];
+    [(SISchemaUUID *)v6 setValue:dataCopy];
   }
 
   return v6;
 }
 
-- (SISchemaUUID)initWithNSUUID:(id)a3
+- (SISchemaUUID)initWithNSUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = SISchemaUUID;
   v5 = [(SISchemaUUID *)&v8 init];
   if (v5)
   {
-    v6 = [v4 si_uuidBytes];
-    [(SISchemaUUID *)v5 setValue:v6];
+    si_uuidBytes = [dCopy si_uuidBytes];
+    [(SISchemaUUID *)v5 setValue:si_uuidBytes];
   }
 
   return v5;
 }
 
-- (void)willProduceDictionaryRepresentation:(id)a3
+- (void)willProduceDictionaryRepresentation:(id)representation
 {
-  v7 = a3;
-  v4 = [(SISchemaUUID *)self toSafeNSUUID];
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  toSafeNSUUID = [(SISchemaUUID *)self toSafeNSUUID];
+  v5 = toSafeNSUUID;
+  if (toSafeNSUUID)
   {
-    v6 = [v4 UUIDString];
-    [v7 setObject:v6 forKeyedSubscript:@"value"];
+    uUIDString = [toSafeNSUUID UUIDString];
+    [representationCopy setObject:uUIDString forKeyedSubscript:@"value"];
   }
 }
 
-- (SISchemaUUID)initWithDictionary:(id)a3
+- (SISchemaUUID)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaUUID;
   v5 = [(SISchemaUUID *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,30 +95,30 @@
   return v5;
 }
 
-- (SISchemaUUID)initWithJSON:(id)a3
+- (SISchemaUUID)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUID *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUID *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUID *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -131,40 +131,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_value)
   {
-    v4 = [(SISchemaUUID *)self value];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    value = [(SISchemaUUID *)self value];
+    v5 = [value base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"value"];
+      [dictionary setObject:v5 forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"value"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaUUID *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaUUID *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaUUID *)self value];
-    v6 = [v4 value];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    value = [(SISchemaUUID *)self value];
+    value2 = [equalCopy value];
+    v7 = value2;
+    if ((value != 0) != (value2 == 0))
     {
-      v8 = [(SISchemaUUID *)self value];
-      if (!v8)
+      value3 = [(SISchemaUUID *)self value];
+      if (!value3)
       {
 
 LABEL_10:
@@ -172,10 +172,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaUUID *)self value];
-      v11 = [v4 value];
-      v12 = [v10 isEqual:v11];
+      v9 = value3;
+      value4 = [(SISchemaUUID *)self value];
+      value5 = [equalCopy value];
+      v12 = [value4 isEqual:value5];
 
       if (v12)
       {
@@ -194,12 +194,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaUUID *)self value];
+  toCopy = to;
+  value = [(SISchemaUUID *)self value];
 
-  if (v4)
+  if (value)
   {
     PBDataWriterWriteDataField();
   }

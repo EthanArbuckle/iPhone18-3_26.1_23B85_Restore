@@ -1,35 +1,35 @@
 @interface AMSPurchaseResult
-- (AMSPurchaseResult)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPurchaseResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSPurchaseResult)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPurchaseResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPurchaseResult
 
 - (unint64_t)hash
 {
-  v3 = [(AMSPurchaseResult *)self correlationID];
-  v4 = [v3 hash];
-  v5 = [(AMSPurchaseResult *)self error];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AMSPurchaseResult *)self purchase];
-  v8 = [v7 hash];
-  v9 = [(AMSPurchaseResult *)self responseDictionary];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(AMSPurchaseResult *)self URLResponse];
-  v12 = [v11 hash];
+  correlationID = [(AMSPurchaseResult *)self correlationID];
+  v4 = [correlationID hash];
+  error = [(AMSPurchaseResult *)self error];
+  v6 = [error hash] ^ v4;
+  purchase = [(AMSPurchaseResult *)self purchase];
+  v8 = [purchase hash];
+  responseDictionary = [(AMSPurchaseResult *)self responseDictionary];
+  v10 = v6 ^ v8 ^ [responseDictionary hash];
+  uRLResponse = [(AMSPurchaseResult *)self URLResponse];
+  v12 = [uRLResponse hash];
   v13 = v12 ^ [(AMSPurchaseResult *)self didShowPaymentSheet];
 
   return v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -37,21 +37,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSPurchaseResult *)self isEqualToPurchaseResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSPurchaseResult *)self isEqualToPurchaseResult:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPurchaseResult:(id)a3
+- (BOOL)isEqualToPurchaseResult:(id)result
 {
-  v8 = a3;
-  v9 = [(AMSPurchaseResult *)self correlationID];
-  if (v9 || ([v8 correlationID], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
+  resultCopy = result;
+  correlationID = [(AMSPurchaseResult *)self correlationID];
+  if (correlationID || ([resultCopy correlationID], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(AMSPurchaseResult *)self correlationID];
-    v5 = [v8 correlationID];
-    if (![v4 isEqual:v5])
+    correlationID2 = [(AMSPurchaseResult *)self correlationID];
+    correlationID3 = [resultCopy correlationID];
+    if (![correlationID2 isEqual:correlationID3])
     {
       LOBYTE(v11) = 0;
 LABEL_49:
@@ -68,13 +68,13 @@ LABEL_49:
     v10 = 0;
   }
 
-  v12 = [(AMSPurchaseResult *)self error];
-  if (v12 || ([v8 error], (v36 = objc_claimAutoreleasedReturnValue()) != 0))
+  error = [(AMSPurchaseResult *)self error];
+  if (error || ([resultCopy error], (v36 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(AMSPurchaseResult *)self error];
-    v6 = [v8 error];
-    v40 = v3;
-    if (![v3 isEqual:v6])
+    error2 = [(AMSPurchaseResult *)self error];
+    error3 = [resultCopy error];
+    v40 = error2;
+    if (![error2 isEqual:error3])
     {
       LOBYTE(v11) = 0;
       goto LABEL_47;
@@ -91,15 +91,15 @@ LABEL_49:
     v38 = 0;
   }
 
-  v13 = [(AMSPurchaseResult *)self purchase];
-  if (v13 || ([v8 purchase], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+  purchase = [(AMSPurchaseResult *)self purchase];
+  if (purchase || ([resultCopy purchase], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v14 = [(AMSPurchaseResult *)self purchase];
-    v15 = [v8 purchase];
-    v37 = v14;
-    v16 = v14;
-    v3 = v15;
-    if (![v16 isEqual:v15])
+    purchase2 = [(AMSPurchaseResult *)self purchase];
+    purchase3 = [resultCopy purchase];
+    v37 = purchase2;
+    v16 = purchase2;
+    error2 = purchase3;
+    if (![v16 isEqual:purchase3])
     {
       LOBYTE(v11) = 0;
       goto LABEL_43;
@@ -114,24 +114,24 @@ LABEL_49:
     v35 = 0;
   }
 
-  v34 = [(AMSPurchaseResult *)self responseDictionary];
-  if (v34 || ([v8 responseDictionary], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  responseDictionary = [(AMSPurchaseResult *)self responseDictionary];
+  if (responseDictionary || ([resultCopy responseDictionary], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v17 = v13;
-    v18 = [(AMSPurchaseResult *)self responseDictionary];
-    v32 = [v8 responseDictionary];
-    v33 = v18;
-    if (![v18 isEqual:v32])
+    v17 = purchase;
+    responseDictionary2 = [(AMSPurchaseResult *)self responseDictionary];
+    responseDictionary3 = [resultCopy responseDictionary];
+    v33 = responseDictionary2;
+    if (![responseDictionary2 isEqual:responseDictionary3])
     {
       LOBYTE(v11) = 0;
-      v13 = v17;
+      purchase = v17;
 LABEL_36:
 
       goto LABEL_39;
     }
 
     v30 = 1;
-    v13 = v17;
+    purchase = v17;
   }
 
   else
@@ -140,18 +140,18 @@ LABEL_36:
     v30 = 0;
   }
 
-  v29 = v3;
-  v19 = [(AMSPurchaseResult *)self URLResponse];
-  if (!v19)
+  v29 = error2;
+  uRLResponse = [(AMSPurchaseResult *)self URLResponse];
+  if (!uRLResponse)
   {
-    v24 = [v8 URLResponse];
-    if (!v24)
+    uRLResponse2 = [resultCopy URLResponse];
+    if (!uRLResponse2)
     {
-      v24 = 0;
+      uRLResponse2 = 0;
       v25 = 0;
 LABEL_31:
-      v21 = [(AMSPurchaseResult *)self didShowPaymentSheet];
-      v11 = v21 ^ [v8 didShowPaymentSheet] ^ 1;
+      didShowPaymentSheet = [(AMSPurchaseResult *)self didShowPaymentSheet];
+      v11 = didShowPaymentSheet ^ [resultCopy didShowPaymentSheet] ^ 1;
       if (!v25)
       {
         goto LABEL_33;
@@ -161,27 +161,27 @@ LABEL_31:
     }
   }
 
-  v28 = v19;
-  v20 = [(AMSPurchaseResult *)self URLResponse];
-  v3 = [v8 URLResponse];
-  v27 = v20;
-  if ([v20 isEqual:v3])
+  v28 = uRLResponse;
+  uRLResponse3 = [(AMSPurchaseResult *)self URLResponse];
+  error2 = [resultCopy URLResponse];
+  v27 = uRLResponse3;
+  if ([uRLResponse3 isEqual:error2])
   {
     v25 = 1;
-    v19 = v28;
+    uRLResponse = v28;
     goto LABEL_31;
   }
 
   LOBYTE(v11) = 0;
-  v19 = v28;
+  uRLResponse = v28;
 LABEL_32:
 
 LABEL_33:
-  if (v19)
+  if (uRLResponse)
   {
 
     v22 = v41;
-    v3 = v29;
+    error2 = v29;
     if (v30)
     {
 LABEL_35:
@@ -194,7 +194,7 @@ LABEL_35:
   {
 
     v22 = v41;
-    v3 = v29;
+    error2 = v29;
     if (v30)
     {
       goto LABEL_35;
@@ -203,13 +203,13 @@ LABEL_35:
 
   v41 = v22;
 LABEL_39:
-  if (v34)
+  if (responseDictionary)
   {
 
     if (!v35)
     {
 LABEL_44:
-      if (v13)
+      if (purchase)
       {
         goto LABEL_45;
       }
@@ -234,7 +234,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (!v13)
+  if (!purchase)
   {
     goto LABEL_54;
   }
@@ -247,7 +247,7 @@ LABEL_46:
     v10 = v39;
 LABEL_47:
 
-    if (v12)
+    if (error)
     {
       goto LABEL_48;
     }
@@ -257,7 +257,7 @@ LABEL_47:
 
 LABEL_55:
   v10 = v39;
-  if (v12)
+  if (error)
   {
 LABEL_48:
 
@@ -277,43 +277,43 @@ LABEL_56:
   }
 
 LABEL_50:
-  if (!v9)
+  if (!correlationID)
   {
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(AMSPurchaseResult);
-  v6 = [(AMSPurchaseResult *)self correlationID];
-  v7 = [v6 copyWithZone:a3];
+  correlationID = [(AMSPurchaseResult *)self correlationID];
+  v7 = [correlationID copyWithZone:zone];
   correlationID = v5->_correlationID;
   v5->_correlationID = v7;
 
-  v9 = [(AMSPurchaseResult *)self error];
-  v10 = [v9 copyWithZone:a3];
+  error = [(AMSPurchaseResult *)self error];
+  v10 = [error copyWithZone:zone];
   error = v5->_error;
   v5->_error = v10;
 
-  v12 = [(AMSPurchaseResult *)self loadURLEventDictionary];
-  v13 = [v12 copyWithZone:a3];
+  loadURLEventDictionary = [(AMSPurchaseResult *)self loadURLEventDictionary];
+  v13 = [loadURLEventDictionary copyWithZone:zone];
   loadURLEventDictionary = v5->_loadURLEventDictionary;
   v5->_loadURLEventDictionary = v13;
 
-  v15 = [(AMSPurchaseResult *)self purchase];
-  v16 = [v15 copyWithZone:a3];
+  purchase = [(AMSPurchaseResult *)self purchase];
+  v16 = [purchase copyWithZone:zone];
   purchase = v5->_purchase;
   v5->_purchase = v16;
 
-  v18 = [(AMSPurchaseResult *)self responseDictionary];
-  v19 = [v18 copyWithZone:a3];
+  responseDictionary = [(AMSPurchaseResult *)self responseDictionary];
+  v19 = [responseDictionary copyWithZone:zone];
   responseDictionary = v5->_responseDictionary;
   v5->_responseDictionary = v19;
 
-  v21 = [(AMSPurchaseResult *)self URLResponse];
-  v22 = [v21 copyWithZone:a3];
+  uRLResponse = [(AMSPurchaseResult *)self URLResponse];
+  v22 = [uRLResponse copyWithZone:zone];
   URLResponse = v5->_URLResponse;
   v5->_URLResponse = v22;
 
@@ -321,73 +321,73 @@ LABEL_50:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(AMSPurchaseResult *)self correlationID];
-  [v12 encodeObject:v4 forKey:@"correlationID"];
+  coderCopy = coder;
+  correlationID = [(AMSPurchaseResult *)self correlationID];
+  [coderCopy encodeObject:correlationID forKey:@"correlationID"];
 
-  v5 = [(AMSPurchaseResult *)self error];
-  [v12 encodeObject:v5 forKey:@"error"];
+  error = [(AMSPurchaseResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v6 = [(AMSPurchaseResult *)self loadURLEventDictionary];
+  loadURLEventDictionary = [(AMSPurchaseResult *)self loadURLEventDictionary];
 
-  if (v6)
+  if (loadURLEventDictionary)
   {
-    v7 = [(AMSPurchaseResult *)self loadURLEventDictionary];
-    [v12 ams_encodePropertyListDictionary:v7 format:200 forKey:@"loadURLEventDictionary"];
+    loadURLEventDictionary2 = [(AMSPurchaseResult *)self loadURLEventDictionary];
+    [coderCopy ams_encodePropertyListDictionary:loadURLEventDictionary2 format:200 forKey:@"loadURLEventDictionary"];
   }
 
-  v8 = [(AMSPurchaseResult *)self purchase];
-  [v12 encodeObject:v8 forKey:@"purchase"];
+  purchase = [(AMSPurchaseResult *)self purchase];
+  [coderCopy encodeObject:purchase forKey:@"purchase"];
 
-  v9 = [(AMSPurchaseResult *)self responseDictionary];
+  responseDictionary = [(AMSPurchaseResult *)self responseDictionary];
 
-  if (v9)
+  if (responseDictionary)
   {
-    v10 = [(AMSPurchaseResult *)self responseDictionary];
-    [v12 ams_encodePropertyListDictionary:v10 format:200 forKey:@"responseDictionary"];
+    responseDictionary2 = [(AMSPurchaseResult *)self responseDictionary];
+    [coderCopy ams_encodePropertyListDictionary:responseDictionary2 format:200 forKey:@"responseDictionary"];
   }
 
-  v11 = [(AMSPurchaseResult *)self URLResponse];
-  [v12 encodeObject:v11 forKey:@"URLResponse"];
+  uRLResponse = [(AMSPurchaseResult *)self URLResponse];
+  [coderCopy encodeObject:uRLResponse forKey:@"URLResponse"];
 
-  [v12 encodeBool:-[AMSPurchaseResult didShowPaymentSheet](self forKey:{"didShowPaymentSheet"), @"didShowPaymentSheet"}];
+  [coderCopy encodeBool:-[AMSPurchaseResult didShowPaymentSheet](self forKey:{"didShowPaymentSheet"), @"didShowPaymentSheet"}];
 }
 
-- (AMSPurchaseResult)initWithCoder:(id)a3
+- (AMSPurchaseResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = AMSPurchaseResult;
   v5 = [(AMSPurchaseResult *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"correlationID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"correlationID"];
     correlationID = v5->_correlationID;
     v5->_correlationID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchase"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchase"];
     purchase = v5->_purchase;
     v5->_purchase = v10;
 
-    v12 = [v4 ams_decodePropertyListDictionaryForKey:@"responseDictionary"];
+    v12 = [coderCopy ams_decodePropertyListDictionaryForKey:@"responseDictionary"];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URLResponse"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URLResponse"];
     URLResponse = v5->_URLResponse;
     v5->_URLResponse = v14;
 
-    v16 = [v4 ams_decodePropertyListDictionaryForKey:@"loadURLEventDictionary"];
+    v16 = [coderCopy ams_decodePropertyListDictionaryForKey:@"loadURLEventDictionary"];
     loadURLEventDictionary = v5->_loadURLEventDictionary;
     v5->_loadURLEventDictionary = v16;
 
-    v5->_didShowPaymentSheet = [v4 decodeBoolForKey:@"didShowPaymentSheet"];
+    v5->_didShowPaymentSheet = [coderCopy decodeBoolForKey:@"didShowPaymentSheet"];
   }
 
   return v5;

@@ -1,43 +1,43 @@
 @interface VNTrackerManager
-+ (id)_trackerClassToNameMapTableObjectForKey:(Class)a3;
++ (id)_trackerClassToNameMapTableObjectForKey:(Class)key;
 + (id)_trackerTypeToClassDictionary;
-+ (id)trackerClassForOptions:(void *)a3 error:;
++ (id)trackerClassForOptions:(void *)options error:;
 - (VNTrackerManager)init;
-- (id)_createTracker:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)_getTracker:(id)a3;
-- (id)_supportedComputeDeviceTypesForTrackerType:(id)a3 options:(id)a4 error:(id *)a5;
-- (int64_t)_maximumTrackersOfType:(id)a3;
-- (void)_releaseTracker_NO_LOCK_DO_NOT_EXECUTE_DIRECTLY:(id)a3;
+- (id)_createTracker:(id)tracker type:(id)type options:(id)options error:(id *)error;
+- (id)_getTracker:(id)tracker;
+- (id)_supportedComputeDeviceTypesForTrackerType:(id)type options:(id)options error:(id *)error;
+- (int64_t)_maximumTrackersOfType:(id)type;
+- (void)_releaseTracker_NO_LOCK_DO_NOT_EXECUTE_DIRECTLY:(id)y;
 @end
 
 @implementation VNTrackerManager
 
-- (void)_releaseTracker_NO_LOCK_DO_NOT_EXECUTE_DIRECTLY:(id)a3
+- (void)_releaseTracker_NO_LOCK_DO_NOT_EXECUTE_DIRECTLY:(id)y
 {
-  v4 = a3;
-  if (v4)
+  yCopy = y;
+  if (yCopy)
   {
     trackers = self->_trackers;
-    v12 = v4;
-    v6 = [v4 key];
+    v12 = yCopy;
+    v6 = [yCopy key];
     [(NSMutableDictionary *)trackers removeObjectForKey:v6];
 
     v7 = objc_opt_class();
     v8 = [v7 _trackerClassToNameMapTableObjectForKey:objc_opt_class()];
     v9 = [(NSMutableDictionary *)self->_liveTrackerCounter objectForKey:v8];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10 - 1];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue - 1];
     [(NSMutableDictionary *)self->_liveTrackerCounter setObject:v11 forKeyedSubscript:v8];
 
-    v4 = v12;
+    yCopy = v12;
   }
 }
 
-- (id)_createTracker:(id)a3 type:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_createTracker:(id)tracker type:(id)type options:(id)options error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  optionsCopy = options;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -50,26 +50,26 @@
   v28 = __Block_byref_object_copy__12646;
   v29 = __Block_byref_object_dispose__12647;
   v30 = 0;
-  v11 = [objc_opt_class() _trackerTypeToClassDictionary];
+  _trackerTypeToClassDictionary = [objc_opt_class() _trackerTypeToClassDictionary];
   trackersCollectionManagementQueue = self->_trackersCollectionManagementQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __54__VNTrackerManager__createTracker_type_options_error___block_invoke;
   v19[3] = &unk_1E77B3A58;
   v19[4] = self;
-  v13 = v9;
+  v13 = typeCopy;
   v20 = v13;
   v23 = &v25;
-  v14 = v10;
+  v14 = optionsCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = _trackerTypeToClassDictionary;
   v22 = v15;
   v24 = &v31;
   dispatch_sync(trackersCollectionManagementQueue, v19);
   v16 = v32[5];
-  if (a6 && !v16)
+  if (error && !v16)
   {
-    *a6 = v26[5];
+    *error = v26[5];
     v16 = v32[5];
   }
 
@@ -153,9 +153,9 @@ LABEL_9:
   *(v20 + 40) = v19;
 }
 
-- (id)_getTracker:(id)a3
+- (id)_getTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -167,10 +167,10 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __32__VNTrackerManager__getTracker___block_invoke;
   block[3] = &unk_1E77B3A28;
-  v10 = v4;
+  v10 = trackerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = trackerCopy;
   dispatch_sync(trackersCollectionManagementQueue, block);
   v7 = v13[5];
 
@@ -186,12 +186,12 @@ uint64_t __32__VNTrackerManager__getTracker___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (int64_t)_maximumTrackersOfType:(id)a3
+- (int64_t)_maximumTrackersOfType:(id)type
 {
-  v3 = [(NSDictionary *)self->_liveTrackerCounterLimit objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSDictionary *)self->_liveTrackerCounterLimit objectForKeyedSubscript:type];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (VNTrackerManager)init
@@ -217,9 +217,9 @@ uint64_t __32__VNTrackerManager__getTracker___block_invoke(void *a1)
 
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.trackersCollectionManagementQueue_%lu", v2];
     v7 = v6;
-    v8 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     trackersCollectionManagementQueue = v2->_trackersCollectionManagementQueue;
     v2->_trackersCollectionManagementQueue = v10;
 
@@ -237,9 +237,9 @@ uint64_t __32__VNTrackerManager__getTracker___block_invoke(void *a1)
 
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.VN.trackingProcessingQueue_%lu", v2];
     v15 = v14;
-    v16 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String2, v17);
     trackingProcessingQueue = v2->_trackingProcessingQueue;
     v2->_trackingProcessingQueue = v18;
 
@@ -253,41 +253,41 @@ uint64_t __32__VNTrackerManager__getTracker___block_invoke(void *a1)
   return v2;
 }
 
-- (id)_supportedComputeDeviceTypesForTrackerType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_supportedComputeDeviceTypesForTrackerType:(id)type options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _trackerTypeToClassDictionary];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  typeCopy = type;
+  optionsCopy = options;
+  _trackerTypeToClassDictionary = [objc_opt_class() _trackerTypeToClassDictionary];
+  v10 = [_trackerTypeToClassDictionary objectForKeyedSubscript:typeCopy];
   if (v10)
   {
-    a5 = [v10 supportedComputeDevicesForOptions:v8 error:a5];
+    error = [v10 supportedComputeDevicesForOptions:optionsCopy error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown tracker type %@", v7];
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v11];
+    typeCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown tracker type %@", typeCopy];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:typeCopy];
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
-+ (id)_trackerClassToNameMapTableObjectForKey:(Class)a3
++ (id)_trackerClassToNameMapTableObjectForKey:(Class)key
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__VNTrackerManager__trackerClassToNameMapTableObjectForKey___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNTrackerManager _trackerClassToNameMapTableObjectForKey:]::onceToken != -1)
   {
     dispatch_once(&+[VNTrackerManager _trackerClassToNameMapTableObjectForKey:]::onceToken, block);
   }
 
-  v4 = [+[VNTrackerManager _trackerClassToNameMapTableObjectForKey:]::trackerClassToNameMapTable objectForKey:a3];
+  v4 = [+[VNTrackerManager _trackerClassToNameMapTableObjectForKey:]::trackerClassToNameMapTable objectForKey:key];
 
   return v4;
 }
@@ -330,25 +330,25 @@ void __49__VNTrackerManager__trackerTypeToClassDictionary__block_invoke()
   +[VNTrackerManager _trackerTypeToClassDictionary]::trackerTypeToClassDictionary = v0;
 }
 
-+ (id)trackerClassForOptions:(void *)a3 error:
++ (id)trackerClassForOptions:(void *)options error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackerType" inOptions:v4 error:a3];
+  v5 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackerType" inOptions:v4 error:options];
   if (v5)
   {
-    v6 = [objc_opt_class() _trackerTypeToClassDictionary];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    _trackerTypeToClassDictionary = [objc_opt_class() _trackerTypeToClassDictionary];
+    v7 = [_trackerTypeToClassDictionary objectForKeyedSubscript:v5];
     v8 = v7;
     if (v7)
     {
       v9 = v7;
     }
 
-    else if (a3)
+    else if (options)
     {
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown tracker type %@", v5];
-      *a3 = [VNError errorForInvalidOptionWithLocalizedDescription:v10];
+      *options = [VNError errorForInvalidOptionWithLocalizedDescription:v10];
     }
   }
 

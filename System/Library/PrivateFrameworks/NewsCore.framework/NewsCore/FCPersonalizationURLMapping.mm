@@ -1,32 +1,32 @@
 @interface FCPersonalizationURLMapping
-+ (id)domainForURL:(id)a3;
-- (FCPersonalizationURLMapping)initWithCoder:(id)a3;
-- (FCPersonalizationURLMapping)initWithPBURLMapping:(id)a3;
++ (id)domainForURL:(id)l;
+- (FCPersonalizationURLMapping)initWithCoder:(id)coder;
+- (FCPersonalizationURLMapping)initWithPBURLMapping:(id)mapping;
 - (id)jsonEncodableObject;
-- (id)popularityForURL:(id)a3;
-- (id)tagScoresForURL:(id)a3;
+- (id)popularityForURL:(id)l;
+- (id)tagScoresForURL:(id)l;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationURLMapping
 
-- (FCPersonalizationURLMapping)initWithPBURLMapping:(id)a3
+- (FCPersonalizationURLMapping)initWithPBURLMapping:(id)mapping
 {
-  v5 = a3;
+  mappingCopy = mapping;
   v14.receiver = self;
   v14.super_class = FCPersonalizationURLMapping;
   v6 = [(FCPersonalizationURLMapping *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbURLMapping, a3);
+    objc_storeStrong(&v6->_pbURLMapping, mapping);
     v8 = MEMORY[0x1E695DF20];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke;
     v12[3] = &unk_1E7C36EC8;
-    v13 = v5;
+    v13 = mappingCopy;
     v9 = [v8 fc_dictionary:v12];
     urlMappingByDomain = v7->_urlMappingByDomain;
     v7->_urlMappingByDomain = v9;
@@ -60,30 +60,30 @@ void __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke_2(uin
 
 - (unint64_t)count
 {
-  v2 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
-  v3 = [v2 count];
+  urlMappingByDomain = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
+  v3 = [urlMappingByDomain count];
 
   return v3;
 }
 
-+ (id)domainForURL:(id)a3
++ (id)domainForURL:(id)l
 {
-  v3 = a3;
-  v4 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:v3];
+  lCopy = l;
+  v4 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:lCopy];
 
-  v5 = [(FCPersonalizationDecomposedURL *)v4 domain];
+  domain = [(FCPersonalizationDecomposedURL *)v4 domain];
 
-  return v5;
+  return domain;
 }
 
-- (id)tagScoresForURL:(id)a3
+- (id)tagScoresForURL:(id)l
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:v4];
-  v6 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
-  v7 = [(FCPersonalizationDecomposedURL *)v5 domain];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  lCopy = l;
+  v5 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:lCopy];
+  urlMappingByDomain = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
+  domain = [(FCPersonalizationDecomposedURL *)v5 domain];
+  v8 = [urlMappingByDomain objectForKeyedSubscript:domain];
 
   if (v8)
   {
@@ -118,7 +118,7 @@ void __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke_2(uin
     *&v34 = __Block_byref_object_copy__48;
     *(&v34 + 1) = __Block_byref_object_dispose__48;
     v35 = 0;
-    v11 = [(FCPersonalizationDecomposedURL *)v5 paths];
+    paths = [(FCPersonalizationDecomposedURL *)v5 paths];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __47__FCPersonalizationURLMapping_tagScoresForURL___block_invoke;
@@ -126,7 +126,7 @@ void __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke_2(uin
     v24 = v8;
     v25 = v36;
     v26 = v33;
-    [v11 enumerateObjectsUsingBlock:v23];
+    [paths enumerateObjectsUsingBlock:v23];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -139,7 +139,7 @@ void __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke_2(uin
     {
       v14 = *(*&v33[8] + 40);
       *buf = 138412802;
-      v28 = v4;
+      v28 = lCopy;
       v29 = 2112;
       v30 = v14;
       v31 = 2112;
@@ -157,14 +157,14 @@ void __52__FCPersonalizationURLMapping_initWithPBURLMapping___block_invoke_2(uin
     if (os_log_type_enabled(FCProgressivePersonalizationLog, OS_LOG_TYPE_DEBUG))
     {
       v16 = v15;
-      v17 = [(FCPersonalizationDecomposedURL *)v5 domain];
-      v18 = [(FCPersonalizationDecomposedURL *)v5 paths];
+      domain2 = [(FCPersonalizationDecomposedURL *)v5 domain];
+      paths2 = [(FCPersonalizationDecomposedURL *)v5 paths];
       *v36 = 138412802;
-      *&v36[4] = v4;
+      *&v36[4] = lCopy;
       *&v36[12] = 2112;
-      *&v36[14] = v17;
+      *&v36[14] = domain2;
       *&v36[22] = 2112;
-      v37 = v18;
+      v37 = paths2;
       _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEBUG, "Failed to find mapping for URL String %@ with domain %@ and paths %@", v36, 0x20u);
     }
 
@@ -242,21 +242,21 @@ void __47__FCPersonalizationURLMapping_tagScoresForURL___block_invoke_4(uint64_t
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)popularityForURL:(id)a3
+- (id)popularityForURL:(id)l
 {
-  v4 = a3;
-  v5 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:v4];
+  lCopy = l;
+  v5 = [[FCPersonalizationDecomposedURL alloc] initWithURLString:lCopy];
 
-  v6 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
-  v7 = [(FCPersonalizationDecomposedURL *)v5 domain];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  urlMappingByDomain = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
+  domain = [(FCPersonalizationDecomposedURL *)v5 domain];
+  v8 = [urlMappingByDomain objectForKeyedSubscript:domain];
 
   if (v8)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
-    v11 = [(FCPersonalizationDecomposedURL *)v5 domain];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    urlMappingByDomain2 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
+    domain2 = [(FCPersonalizationDecomposedURL *)v5 domain];
+    v12 = [urlMappingByDomain2 objectForKeyedSubscript:domain2];
     [v12 averageSafariVisitsPerDay];
     v13 = [v9 numberWithDouble:?];
   }
@@ -269,28 +269,28 @@ void __47__FCPersonalizationURLMapping_tagScoresForURL___block_invoke_4(uint64_t
   return v13;
 }
 
-- (FCPersonalizationURLMapping)initWithCoder:(id)a3
+- (FCPersonalizationURLMapping)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlMapping"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlMapping"];
 
   v6 = [(FCPersonalizationURLMapping *)self initWithPBURLMapping:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pbURLMapping = self->_pbURLMapping;
   if (pbURLMapping)
   {
-    [a3 encodeObject:pbURLMapping forKey:@"urlMapping"];
+    [coder encodeObject:pbURLMapping forKey:@"urlMapping"];
   }
 }
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
-  v3 = [v2 fc_jsonEncodableDictionaryWithObjectHandler:&__block_literal_global_102 arrayObjectHandler:0 dictionaryKeyHandler:0 dictionaryValueHandler:0];
+  urlMappingByDomain = [(FCPersonalizationURLMapping *)self urlMappingByDomain];
+  v3 = [urlMappingByDomain fc_jsonEncodableDictionaryWithObjectHandler:&__block_literal_global_102 arrayObjectHandler:0 dictionaryKeyHandler:0 dictionaryValueHandler:0];
 
   return v3;
 }

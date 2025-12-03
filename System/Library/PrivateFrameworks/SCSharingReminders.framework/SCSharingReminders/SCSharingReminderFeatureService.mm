@@ -2,10 +2,10 @@
 + (id)interface;
 - (id)initConnection;
 - (void)disconnect;
-- (void)fetchStatusWithCompletion:(id)a3;
-- (void)postWifiSyncNotificationWithCompletion:(id)a3;
-- (void)resetFeatureWithCompletion:(id)a3;
-- (void)setReminderDelays:(id)a3 completion:(id)a4;
+- (void)fetchStatusWithCompletion:(id)completion;
+- (void)postWifiSyncNotificationWithCompletion:(id)completion;
+- (void)resetFeatureWithCompletion:(id)completion;
+- (void)setReminderDelays:(id)delays completion:(id)completion;
 @end
 
 @implementation SCSharingReminderFeatureService
@@ -72,37 +72,37 @@ void __49__SCSharingReminderFeatureService_initConnection__block_invoke_2()
   return v2;
 }
 
-- (void)fetchStatusWithCompletion:(id)a3
+- (void)fetchStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(SCSharingReminderFeatureService *)self xpcConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchStatusWithCompletion:v4];
+  completionCopy = completion;
+  xpcConnection = [(SCSharingReminderFeatureService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy fetchStatusWithCompletion:completionCopy];
 }
 
-- (void)resetFeatureWithCompletion:(id)a3
+- (void)resetFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(SCSharingReminderFeatureService *)self xpcConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 resetFeatureWithCompletion:v4];
+  completionCopy = completion;
+  xpcConnection = [(SCSharingReminderFeatureService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy resetFeatureWithCompletion:completionCopy];
 }
 
-- (void)setReminderDelays:(id)a3 completion:(id)a4
+- (void)setReminderDelays:(id)delays completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SCSharingReminderFeatureService *)self xpcConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 setReminderDelays:v7 completion:v6];
+  completionCopy = completion;
+  delaysCopy = delays;
+  xpcConnection = [(SCSharingReminderFeatureService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy setReminderDelays:delaysCopy completion:completionCopy];
 }
 
-- (void)postWifiSyncNotificationWithCompletion:(id)a3
+- (void)postWifiSyncNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(SCSharingReminderFeatureService *)self xpcConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 postWifiSyncNotificationWithCompletion:v4];
+  completionCopy = completion;
+  xpcConnection = [(SCSharingReminderFeatureService *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy postWifiSyncNotificationWithCompletion:completionCopy];
 }
 
 void __49__SCSharingReminderFeatureService_initConnection__block_invoke_cold_1(os_log_t log)

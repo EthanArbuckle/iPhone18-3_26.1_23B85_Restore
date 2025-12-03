@@ -6,146 +6,146 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDMatterThirdPartyPairingLogEvent *)self pairingDuration];
-  [v3 setObject:v4 forKeyedSubscript:@"pairingDuration"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  pairingDuration = [(HMDMatterThirdPartyPairingLogEvent *)self pairingDuration];
+  [dictionary setObject:pairingDuration forKeyedSubscript:@"pairingDuration"];
 
-  v5 = [(HMDMatterThirdPartyPairingLogEvent *)self success];
-  [v3 setObject:v5 forKeyedSubscript:@"success"];
+  success = [(HMDMatterThirdPartyPairingLogEvent *)self success];
+  [dictionary setObject:success forKeyedSubscript:@"success"];
 
-  v6 = [(HMDMatterThirdPartyPairingLogEvent *)self errorDomain];
-  [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+  errorDomain = [(HMDMatterThirdPartyPairingLogEvent *)self errorDomain];
+  [dictionary setObject:errorDomain forKeyedSubscript:@"errorDomain"];
 
-  v7 = [(HMDMatterThirdPartyPairingLogEvent *)self errorCode];
-  [v3 setObject:v7 forKeyedSubscript:@"errorCode"];
+  errorCode = [(HMDMatterThirdPartyPairingLogEvent *)self errorCode];
+  [dictionary setObject:errorCode forKeyedSubscript:@"errorCode"];
 
-  v8 = [(HMDMatterThirdPartyPairingLogEvent *)self underlyingErrorDomain];
-  [v3 setObject:v8 forKeyedSubscript:@"underlyingErrorDomain"];
+  underlyingErrorDomain = [(HMDMatterThirdPartyPairingLogEvent *)self underlyingErrorDomain];
+  [dictionary setObject:underlyingErrorDomain forKeyedSubscript:@"underlyingErrorDomain"];
 
-  v9 = [(HMDMatterThirdPartyPairingLogEvent *)self underlyingErrorCode];
-  [v3 setObject:v9 forKeyedSubscript:@"underlyingErrorCode"];
+  underlyingErrorCode = [(HMDMatterThirdPartyPairingLogEvent *)self underlyingErrorCode];
+  [dictionary setObject:underlyingErrorCode forKeyedSubscript:@"underlyingErrorCode"];
 
-  v10 = [(HMDMatterThirdPartyPairingLogEvent *)self longestStateName];
-  [v3 setObject:v10 forKeyedSubscript:@"longestStateName"];
+  longestStateName = [(HMDMatterThirdPartyPairingLogEvent *)self longestStateName];
+  [dictionary setObject:longestStateName forKeyedSubscript:@"longestStateName"];
 
-  v11 = [(HMDMatterThirdPartyPairingLogEvent *)self longestStateDuration];
-  [v3 setObject:v11 forKeyedSubscript:@"longestStateDuration"];
+  longestStateDuration = [(HMDMatterThirdPartyPairingLogEvent *)self longestStateDuration];
+  [dictionary setObject:longestStateDuration forKeyedSubscript:@"longestStateDuration"];
 
-  v12 = [(HMDMatterThirdPartyPairingLogEvent *)self matterCategoryNumber];
-  [v3 setObject:v12 forKeyedSubscript:@"matterCategoryNumber"];
+  matterCategoryNumber = [(HMDMatterThirdPartyPairingLogEvent *)self matterCategoryNumber];
+  [dictionary setObject:matterCategoryNumber forKeyedSubscript:@"matterCategoryNumber"];
 
-  v13 = [(HMDMatterThirdPartyPairingLogEvent *)self matterVendorNumber];
-  [v3 setObject:v13 forKeyedSubscript:@"matterVendorNumber"];
+  matterVendorNumber = [(HMDMatterThirdPartyPairingLogEvent *)self matterVendorNumber];
+  [dictionary setObject:matterVendorNumber forKeyedSubscript:@"matterVendorNumber"];
 
-  v14 = [(HMDMatterThirdPartyPairingLogEvent *)self matterProductNumber];
-  [v3 setObject:v14 forKeyedSubscript:@"matterProductNumber"];
+  matterProductNumber = [(HMDMatterThirdPartyPairingLogEvent *)self matterProductNumber];
+  [dictionary setObject:matterProductNumber forKeyedSubscript:@"matterProductNumber"];
 
-  v15 = [(HMDMatterThirdPartyPairingLogEvent *)self matterProductID];
-  [v3 setObject:v15 forKeyedSubscript:@"matterProductID"];
+  matterProductID = [(HMDMatterThirdPartyPairingLogEvent *)self matterProductID];
+  [dictionary setObject:matterProductID forKeyedSubscript:@"matterProductID"];
 
-  v16 = [(HMDMatterThirdPartyPairingLogEvent *)self firmwareVersion];
-  [v3 setObject:v16 forKeyedSubscript:@"firmwareVersion"];
+  firmwareVersion = [(HMDMatterThirdPartyPairingLogEvent *)self firmwareVersion];
+  [dictionary setObject:firmwareVersion forKeyedSubscript:@"firmwareVersion"];
 
-  v17 = [(HMDMatterThirdPartyPairingLogEvent *)self supportsSoftAP];
-  [v3 setObject:v17 forKeyedSubscript:@"supportsSoftAP"];
+  supportsSoftAP = [(HMDMatterThirdPartyPairingLogEvent *)self supportsSoftAP];
+  [dictionary setObject:supportsSoftAP forKeyedSubscript:@"supportsSoftAP"];
 
-  v18 = [(HMDMatterThirdPartyPairingLogEvent *)self hasShortDiscriminator];
-  [v3 setObject:v18 forKeyedSubscript:@"hasShortDiscriminator"];
+  hasShortDiscriminator = [(HMDMatterThirdPartyPairingLogEvent *)self hasShortDiscriminator];
+  [dictionary setObject:hasShortDiscriminator forKeyedSubscript:@"hasShortDiscriminator"];
 
-  v19 = [(HMDMatterThirdPartyPairingLogEvent *)self client];
-  [v3 setObject:v19 forKeyedSubscript:@"client"];
+  client = [(HMDMatterThirdPartyPairingLogEvent *)self client];
+  [dictionary setObject:client forKeyedSubscript:@"client"];
 
-  v20 = [(HMDMatterThirdPartyPairingLogEvent *)self communicationProtocol];
-  [v3 setObject:v20 forKeyedSubscript:@"communicationProtocol"];
+  communicationProtocol = [(HMDMatterThirdPartyPairingLogEvent *)self communicationProtocol];
+  [dictionary setObject:communicationProtocol forKeyedSubscript:@"communicationProtocol"];
 
-  v21 = [(HMDMatterThirdPartyPairingLogEvent *)self requiresMatterCustomCommissioningFlow];
-  [v3 setObject:v21 forKeyedSubscript:@"requiresMatterCustomCommissioningFlow"];
+  requiresMatterCustomCommissioningFlow = [(HMDMatterThirdPartyPairingLogEvent *)self requiresMatterCustomCommissioningFlow];
+  [dictionary setObject:requiresMatterCustomCommissioningFlow forKeyedSubscript:@"requiresMatterCustomCommissioningFlow"];
 
-  v22 = [(HMDMatterThirdPartyPairingLogEvent *)self credentialsSentToClient];
-  if (v22)
+  credentialsSentToClient = [(HMDMatterThirdPartyPairingLogEvent *)self credentialsSentToClient];
+  if (credentialsSentToClient)
   {
-    v23 = [(HMDMatterThirdPartyPairingLogEvent *)self credentialsSentToClient];
-    [v3 setObject:v23 forKeyedSubscript:@"credentialsSentToClient"];
+    credentialsSentToClient2 = [(HMDMatterThirdPartyPairingLogEvent *)self credentialsSentToClient];
+    [dictionary setObject:credentialsSentToClient2 forKeyedSubscript:@"credentialsSentToClient"];
   }
 
   else
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"credentialsSentToClient"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"credentialsSentToClient"];
   }
 
-  v24 = [(HMDMatterThirdPartyPairingLogEvent *)self providedWiFiScanResults];
-  if (v24)
+  providedWiFiScanResults = [(HMDMatterThirdPartyPairingLogEvent *)self providedWiFiScanResults];
+  if (providedWiFiScanResults)
   {
-    v25 = [(HMDMatterThirdPartyPairingLogEvent *)self providedWiFiScanResults];
-    [v3 setObject:v25 forKeyedSubscript:@"providedWiFiScanResults"];
-  }
-
-  else
-  {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"providedWiFiScanResults"];
-  }
-
-  v26 = [(HMDMatterThirdPartyPairingLogEvent *)self providedThreadScanResults];
-  if (v26)
-  {
-    v27 = [(HMDMatterThirdPartyPairingLogEvent *)self providedThreadScanResults];
-    [v3 setObject:v27 forKeyedSubscript:@"providedThreadScanResults"];
+    providedWiFiScanResults2 = [(HMDMatterThirdPartyPairingLogEvent *)self providedWiFiScanResults];
+    [dictionary setObject:providedWiFiScanResults2 forKeyedSubscript:@"providedWiFiScanResults"];
   }
 
   else
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"providedThreadScanResults"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"providedWiFiScanResults"];
   }
 
-  v28 = [(HMDMatterThirdPartyPairingLogEvent *)self discoveredOverBLE];
-  if (v28)
+  providedThreadScanResults = [(HMDMatterThirdPartyPairingLogEvent *)self providedThreadScanResults];
+  if (providedThreadScanResults)
   {
-    v29 = [(HMDMatterThirdPartyPairingLogEvent *)self discoveredOverBLE];
-    [v3 setObject:v29 forKeyedSubscript:@"discoveredOverBLE"];
-  }
-
-  else
-  {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"discoveredOverBLE"];
-  }
-
-  v30 = [(HMDMatterThirdPartyPairingLogEvent *)self knownToSystemCommissioner];
-  if (v30)
-  {
-    v31 = [(HMDMatterThirdPartyPairingLogEvent *)self knownToSystemCommissioner];
-    [v3 setObject:v31 forKeyedSubscript:@"knownToSystemCommissioner"];
+    providedThreadScanResults2 = [(HMDMatterThirdPartyPairingLogEvent *)self providedThreadScanResults];
+    [dictionary setObject:providedThreadScanResults2 forKeyedSubscript:@"providedThreadScanResults"];
   }
 
   else
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"knownToSystemCommissioner"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"providedThreadScanResults"];
   }
 
-  v32 = [(HMDMatterThirdPartyPairingLogEvent *)self caseSessionSanityCheckPassed];
-  if (v32)
+  discoveredOverBLE = [(HMDMatterThirdPartyPairingLogEvent *)self discoveredOverBLE];
+  if (discoveredOverBLE)
   {
-    v33 = [(HMDMatterThirdPartyPairingLogEvent *)self caseSessionSanityCheckPassed];
-    [v3 setObject:v33 forKeyedSubscript:@"CASAESessionSanityCheckPassed"];
+    discoveredOverBLE2 = [(HMDMatterThirdPartyPairingLogEvent *)self discoveredOverBLE];
+    [dictionary setObject:discoveredOverBLE2 forKeyedSubscript:@"discoveredOverBLE"];
   }
 
   else
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"CASAESessionSanityCheckPassed"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"discoveredOverBLE"];
+  }
+
+  knownToSystemCommissioner = [(HMDMatterThirdPartyPairingLogEvent *)self knownToSystemCommissioner];
+  if (knownToSystemCommissioner)
+  {
+    knownToSystemCommissioner2 = [(HMDMatterThirdPartyPairingLogEvent *)self knownToSystemCommissioner];
+    [dictionary setObject:knownToSystemCommissioner2 forKeyedSubscript:@"knownToSystemCommissioner"];
+  }
+
+  else
+  {
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"knownToSystemCommissioner"];
+  }
+
+  caseSessionSanityCheckPassed = [(HMDMatterThirdPartyPairingLogEvent *)self caseSessionSanityCheckPassed];
+  if (caseSessionSanityCheckPassed)
+  {
+    caseSessionSanityCheckPassed2 = [(HMDMatterThirdPartyPairingLogEvent *)self caseSessionSanityCheckPassed];
+    [dictionary setObject:caseSessionSanityCheckPassed2 forKeyedSubscript:@"CASAESessionSanityCheckPassed"];
+  }
+
+  else
+  {
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"CASAESessionSanityCheckPassed"];
   }
 
   v34 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDMatterThirdPartyPairingLogEvent cleanClose](self, "cleanClose")}];
-  [v3 setObject:v34 forKeyedSubscript:@"cleanClose"];
+  [dictionary setObject:v34 forKeyedSubscript:@"cleanClose"];
 
-  v35 = [(HMDMatterThirdPartyPairingLogEvent *)self threadSetupDuration];
-  [v3 setObject:v35 forKeyedSubscript:@"threadSetupDuration"];
+  threadSetupDuration = [(HMDMatterThirdPartyPairingLogEvent *)self threadSetupDuration];
+  [dictionary setObject:threadSetupDuration forKeyedSubscript:@"threadSetupDuration"];
 
-  v36 = [(HMDMatterThirdPartyPairingLogEvent *)self pairingWindowOpenedWithPasscodeDuration];
-  [v3 setObject:v36 forKeyedSubscript:@"pairingWindowOpenedWithPasscodeDuration"];
+  pairingWindowOpenedWithPasscodeDuration = [(HMDMatterThirdPartyPairingLogEvent *)self pairingWindowOpenedWithPasscodeDuration];
+  [dictionary setObject:pairingWindowOpenedWithPasscodeDuration forKeyedSubscript:@"pairingWindowOpenedWithPasscodeDuration"];
 
-  v37 = [(HMDMatterThirdPartyPairingLogEvent *)self accessoryTransportType];
-  [v3 setObject:v37 forKeyedSubscript:@"accessoryTransport"];
+  accessoryTransportType = [(HMDMatterThirdPartyPairingLogEvent *)self accessoryTransportType];
+  [dictionary setObject:accessoryTransportType forKeyedSubscript:@"accessoryTransport"];
 
-  v38 = [v3 copy];
+  v38 = [dictionary copy];
 
   return v38;
 }

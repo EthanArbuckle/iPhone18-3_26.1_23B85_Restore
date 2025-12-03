@@ -1,5 +1,5 @@
 @interface AFUISiriViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFuzzyHitTestElements;
 - (id)accessibilityElements;
 - (id)automationElements;
@@ -10,34 +10,34 @@
 
 @implementation AFUISiriViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_reportBugButton" withType:"SiriUIContentButton"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_siriStatusView" withType:"UIView<SiriUISiriStatusViewProtocol>"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_helpButton" withType:"SiriUIHelpButton"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_audioRoutePickerButton" withType:"SiriUIAudioRoutePickerButton"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_lockContainerView" withType:"AFUIPasscodeContainerView"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceVariable:@"_lockViewHidden" withType:"BOOL"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceMethod:@"configureReportBugButtonToShowHoldToTalkState:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"AFUISiriView" hasInstanceMethod:@"remoteContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriView" hasInstanceMethod:@"_animateButtonsHidden:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_reportBugButton" withType:"SiriUIContentButton"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_siriStatusView" withType:"UIView<SiriUISiriStatusViewProtocol>"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_helpButton" withType:"SiriUIHelpButton"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_audioRoutePickerButton" withType:"SiriUIAudioRoutePickerButton"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_lockContainerView" withType:"AFUIPasscodeContainerView"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceVariable:@"_lockViewHidden" withType:"BOOL"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceMethod:@"configureReportBugButtonToShowHoldToTalkState:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceMethod:@"remoteContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceMethod:@"_animateButtonsHidden:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)automationElements
 {
   v7.receiver = self;
   v7.super_class = AFUISiriViewAccessibility;
-  v3 = [(AFUISiriViewAccessibility *)&v7 automationElements];
+  automationElements = [(AFUISiriViewAccessibility *)&v7 automationElements];
   v4 = [(AFUISiriViewAccessibility *)self safeValueForKey:@"remoteContentView"];
-  if (v4 && ([v3 containsObject:v4] & 1) == 0)
+  if (v4 && ([automationElements containsObject:v4] & 1) == 0)
   {
-    v5 = [v3 arrayByAddingObject:v4];
+    v5 = [automationElements arrayByAddingObject:v4];
 
-    v3 = v5;
+    automationElements = v5;
   }
 
-  return v3;
+  return automationElements;
 }
 
 - (id)accessibilityElements
@@ -78,11 +78,11 @@
 
 - (id)_accessibilityFuzzyHitTestElements
 {
-  v2 = [(AFUISiriViewAccessibility *)self accessibilityElements];
-  v3 = [v2 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
+  accessibilityElements = [(AFUISiriViewAccessibility *)self accessibilityElements];
+  reverseObjectEnumerator = [accessibilityElements reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (void)layoutSubviews

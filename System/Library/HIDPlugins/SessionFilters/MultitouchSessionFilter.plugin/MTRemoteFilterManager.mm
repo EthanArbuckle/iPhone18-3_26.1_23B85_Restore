@@ -1,18 +1,18 @@
 @interface MTRemoteFilterManager
 - (BOOL)dpadButtonIsPressed;
-- (BOOL)isSiriRemoteButtonService:(id)a3;
-- (BOOL)isSiriRemoteCircularTouchService:(id)a3;
+- (BOOL)isSiriRemoteButtonService:(id)service;
+- (BOOL)isSiriRemoteCircularTouchService:(id)service;
 - (MTRemoteFilterManager)init;
 - (id)createXpcServiceConnection;
-- (id)filterButtonEvent:(id)a3 fromService:(id)a4;
-- (id)filterDigitizerEvent:(id)a3 fromService:(id)a4;
-- (id)filterEvent:(id)a3 fromService:(id)a4;
-- (id)getPathIDs:(id)a3;
+- (id)filterButtonEvent:(id)event fromService:(id)service;
+- (id)filterDigitizerEvent:(id)event fromService:(id)service;
+- (id)filterEvent:(id)event fromService:(id)service;
+- (id)getPathIDs:(id)ds;
 - (void)dealloc;
-- (void)registerService:(id)a3;
-- (void)setQueue:(id)a3;
-- (void)unregisterService:(id)a3;
-- (void)updateDPadButtonStatesForEvent:(id)a3 fromService:(id)a4;
+- (void)registerService:(id)service;
+- (void)setQueue:(id)queue;
+- (void)unregisterService:(id)service;
+- (void)updateDPadButtonStatesForEvent:(id)event fromService:(id)service;
 - (void)updateTouchDisabledPreference;
 @end
 
@@ -63,15 +63,15 @@
 
 - (void)dealloc
 {
-  v3 = [(MTRemoteFilterManager *)self xpcServiceConnection];
+  xpcServiceConnection = [(MTRemoteFilterManager *)self xpcServiceConnection];
 
-  if (v3)
+  if (xpcServiceConnection)
   {
-    v4 = [(MTRemoteFilterManager *)self xpcServiceConnection];
-    [v4 suspend];
+    xpcServiceConnection2 = [(MTRemoteFilterManager *)self xpcServiceConnection];
+    [xpcServiceConnection2 suspend];
 
-    v5 = [(MTRemoteFilterManager *)self xpcServiceConnection];
-    [v5 invalidate];
+    xpcServiceConnection3 = [(MTRemoteFilterManager *)self xpcServiceConnection];
+    [xpcServiceConnection3 invalidate];
 
     [(MTRemoteFilterManager *)self setXpcServiceConnection:0];
   }
@@ -81,29 +81,29 @@
   [(MTRemoteFilterManager *)&v6 dealloc];
 }
 
-- (BOOL)isSiriRemoteButtonService:(id)a3
+- (BOOL)isSiriRemoteButtonService:(id)service
 {
-  v3 = a3;
-  if ([v3 conformsToUsagePage:12 usage:1])
+  serviceCopy = service;
+  if ([serviceCopy conformsToUsagePage:12 usage:1])
   {
-    v4 = [v3 propertyForKey:@"AppleBluetoothRemote"];
-    v5 = [v4 BOOLValue];
+    v4 = [serviceCopy propertyForKey:@"AppleBluetoothRemote"];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)isSiriRemoteCircularTouchService:(id)a3
+- (BOOL)isSiriRemoteCircularTouchService:(id)service
 {
-  v4 = a3;
-  if ([v4 conformsToUsagePage:12 usage:5])
+  serviceCopy = service;
+  if ([serviceCopy conformsToUsagePage:12 usage:5])
   {
-    v5 = IORegistryEntryIDMatching([v4 serviceID]);
+    v5 = IORegistryEntryIDMatching([serviceCopy serviceID]);
     MatchingService = IOServiceGetMatchingService(0, v5);
     if (MatchingService)
     {
@@ -115,74 +115,74 @@
         v10 = CFGetTypeID(CFProperty);
         if (v10 == CFBooleanGetTypeID())
         {
-          v11 = [(MTRemoteFilterManager *)self logHandle];
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+          logHandle = [(MTRemoteFilterManager *)self logHandle];
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            [(MTRemoteFilterManager *)v9 isSiriRemoteCircularTouchService:v11];
+            [(MTRemoteFilterManager *)v9 isSiriRemoteCircularTouchService:logHandle];
           }
 
-          v12 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
           goto LABEL_11;
         }
 
         CFRelease(v9);
       }
 
-      v12 = 0;
+      bOOLValue = 0;
 LABEL_11:
       IOObjectRelease(v7);
       goto LABEL_12;
     }
   }
 
-  v12 = 0;
+  bOOLValue = 0;
 LABEL_12:
 
-  return v12;
+  return bOOLValue;
 }
 
-- (void)registerService:(id)a3
+- (void)registerService:(id)service
 {
-  v4 = a3;
-  if ([(MTRemoteFilterManager *)self isSiriRemoteCircularTouchService:v4])
+  serviceCopy = service;
+  if ([(MTRemoteFilterManager *)self isSiriRemoteCircularTouchService:serviceCopy])
   {
-    v5 = [(MTRemoteFilterManager *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(MTRemoteFilterManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
-      _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Added circular touch service %@", &v7, 0xCu);
+      v8 = serviceCopy;
+      _os_log_impl(&dword_0, logHandle, OS_LOG_TYPE_DEFAULT, "Added circular touch service %@", &v7, 0xCu);
     }
 
-    [(MTRemoteFilterManager *)self setCircularTouchService:v4];
+    [(MTRemoteFilterManager *)self setCircularTouchService:serviceCopy];
   }
 
-  else if ([(MTRemoteFilterManager *)self isSiriRemoteButtonService:v4])
+  else if ([(MTRemoteFilterManager *)self isSiriRemoteButtonService:serviceCopy])
   {
-    v6 = [(MTRemoteFilterManager *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(MTRemoteFilterManager *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Added button service %@", &v7, 0xCu);
+      v8 = serviceCopy;
+      _os_log_impl(&dword_0, logHandle2, OS_LOG_TYPE_DEFAULT, "Added button service %@", &v7, 0xCu);
     }
 
-    [(MTRemoteFilterManager *)self setButtonService:v4];
+    [(MTRemoteFilterManager *)self setButtonService:serviceCopy];
   }
 }
 
-- (void)unregisterService:(id)a3
+- (void)unregisterService:(id)service
 {
-  v4 = a3;
-  v5 = [(MTRemoteFilterManager *)self circularTouchService];
+  serviceCopy = service;
+  circularTouchService = [(MTRemoteFilterManager *)self circularTouchService];
 
-  if (v5 == v4)
+  if (circularTouchService == serviceCopy)
   {
-    v8 = [(MTRemoteFilterManager *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(MTRemoteFilterManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Removed circular touch service", buf, 2u);
+      _os_log_impl(&dword_0, logHandle, OS_LOG_TYPE_DEFAULT, "Removed circular touch service", buf, 2u);
     }
 
     [(MTRemoteFilterManager *)self setCircularTouchService:0];
@@ -190,15 +190,15 @@ LABEL_12:
 
   else
   {
-    v6 = [(MTRemoteFilterManager *)self buttonService];
+    buttonService = [(MTRemoteFilterManager *)self buttonService];
 
-    if (v6 == v4)
+    if (buttonService == serviceCopy)
     {
-      v7 = [(MTRemoteFilterManager *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(MTRemoteFilterManager *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         *v9 = 0;
-        _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Removed button service", v9, 2u);
+        _os_log_impl(&dword_0, logHandle2, OS_LOG_TYPE_DEFAULT, "Removed button service", v9, 2u);
       }
 
       [(MTRemoteFilterManager *)self setButtonService:0];
@@ -246,9 +246,9 @@ void __51__MTRemoteFilterManager_createXpcServiceConnection__block_invoke(uint64
   xpcServiceConnection = self->_xpcServiceConnection;
   if (!xpcServiceConnection)
   {
-    v4 = [(MTRemoteFilterManager *)self createXpcServiceConnection];
+    createXpcServiceConnection = [(MTRemoteFilterManager *)self createXpcServiceConnection];
     v5 = self->_xpcServiceConnection;
-    self->_xpcServiceConnection = v4;
+    self->_xpcServiceConnection = createXpcServiceConnection;
 
     [(NSXPCConnection *)self->_xpcServiceConnection resume];
     xpcServiceConnection = self->_xpcServiceConnection;
@@ -301,12 +301,12 @@ void __54__MTRemoteFilterManager_updateTouchDisabledPreference__block_invoke_22(
   }
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = MTRemoteFilterManager;
   [(MTSessionFilterManager *)&v8 setQueue:?];
-  if (a3)
+  if (queue)
   {
     [(MTRemoteFilterManager *)self setXpcErrorRetry:1];
     [(MTRemoteFilterManager *)self updateTouchDisabledPreference];
@@ -316,8 +316,8 @@ void __54__MTRemoteFilterManager_updateTouchDisabledPreference__block_invoke_22(
     v7[3] = &unk_8360;
     v7[4] = self;
     v5 = objc_retainBlock(v7);
-    v6 = [(MTSessionFilterManager *)self queue];
-    notify_register_dispatch("com.apple.TVPeripheralAgent.RemoteClickpadModeDidChange", &self->_touchDisabledToken, v6, v5);
+    queue = [(MTSessionFilterManager *)self queue];
+    notify_register_dispatch("com.apple.TVPeripheralAgent.RemoteClickpadModeDidChange", &self->_touchDisabledToken, queue, v5);
   }
 
   else
@@ -339,24 +339,24 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
   return [*(a1 + 32) updateTouchDisabledPreference];
 }
 
-- (id)filterEvent:(id)a3 fromService:(id)a4
+- (id)filterEvent:(id)event fromService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v8 == 11)
+  eventCopy = event;
+  serviceCopy = service;
+  type = [eventCopy type];
+  if (type == 11)
   {
-    v9 = [(MTRemoteFilterManager *)self filterDigitizerEvent:v6 fromService:v7];
+    v9 = [(MTRemoteFilterManager *)self filterDigitizerEvent:eventCopy fromService:serviceCopy];
   }
 
-  else if (v8 == 3)
+  else if (type == 3)
   {
-    v9 = [(MTRemoteFilterManager *)self filterButtonEvent:v6 fromService:v7];
+    v9 = [(MTRemoteFilterManager *)self filterButtonEvent:eventCopy fromService:serviceCopy];
   }
 
   else
   {
-    v9 = v6;
+    v9 = eventCopy;
   }
 
   v10 = v9;
@@ -364,16 +364,16 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)getPathIDs:(id)a3
+- (id)getPathIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 children];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [dsCopy children];
+  v6 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -384,7 +384,7 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -395,7 +395,7 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -404,24 +404,24 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)filterDigitizerEvent:(id)a3 fromService:(id)a4
+- (id)filterDigitizerEvent:(id)event fromService:(id)service
 {
-  v61 = a3;
-  v6 = a4;
-  v7 = [(MTRemoteFilterManager *)self circularTouchService];
-  if (!v7 || (v8 = v7, [(MTRemoteFilterManager *)self circularTouchService], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 != v6))
+  eventCopy = event;
+  serviceCopy = service;
+  circularTouchService = [(MTRemoteFilterManager *)self circularTouchService];
+  if (!circularTouchService || (v8 = circularTouchService, [(MTRemoteFilterManager *)self circularTouchService], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 != serviceCopy))
   {
-    v10 = v61;
+    v10 = eventCopy;
     goto LABEL_57;
   }
 
-  v57 = v6;
+  v57 = serviceCopy;
   v58 = objc_alloc_init(NSMutableArray);
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = [v61 children];
+  obj = [eventCopy children];
   v11 = [obj countByEnumeratingWithState:&v68 objects:v79 count:16];
   if (!v11)
   {
@@ -452,8 +452,8 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
         v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 integerValueForField:720901]);
         v18 = [v16 integerValueForField:720903];
         v19 = [v16 integerValueForField:720905];
-        v20 = [(MTRemoteFilterManager *)self cancelPathIDs];
-        if ([v20 count])
+        cancelPathIDs = [(MTRemoteFilterManager *)self cancelPathIDs];
+        if ([cancelPathIDs count])
         {
           v21 = 1;
         }
@@ -463,41 +463,41 @@ id __34__MTRemoteFilterManager_setQueue___block_invoke(uint64_t a1)
           v21 = [(NSMutableSet *)self->_consumePathIDs count]!= 0;
         }
 
-        v22 = [(MTRemoteFilterManager *)self cancelPathIDs];
-        v23 = [v22 containsObject:v17];
+        cancelPathIDs2 = [(MTRemoteFilterManager *)self cancelPathIDs];
+        v23 = [cancelPathIDs2 containsObject:v17];
 
-        v24 = [(MTRemoteFilterManager *)self consumePathIDs];
-        if ([v24 containsObject:v17])
+        consumePathIDs = [(MTRemoteFilterManager *)self consumePathIDs];
+        if ([consumePathIDs containsObject:v17])
         {
 
           if (!v23)
           {
 LABEL_24:
-            v30 = [(MTRemoteFilterManager *)self consumePathIDs];
-            [v30 addObject:v17];
+            consumePathIDs2 = [(MTRemoteFilterManager *)self consumePathIDs];
+            [consumePathIDs2 addObject:v17];
 
-            v31 = [(MTRemoteFilterManager *)self activePathIDs];
-            [v31 removeObject:v17];
+            activePathIDs = [(MTRemoteFilterManager *)self activePathIDs];
+            [activePathIDs removeObject:v17];
 
             [v58 addObject:v16];
             goto LABEL_25;
           }
 
 LABEL_20:
-          v26 = [(MTRemoteFilterManager *)self consumePathIDs];
-          [v26 addObject:v17];
+          consumePathIDs3 = [(MTRemoteFilterManager *)self consumePathIDs];
+          [consumePathIDs3 addObject:v17];
 
-          v27 = [(MTRemoteFilterManager *)self activePathIDs];
-          [v27 removeObject:v17];
+          activePathIDs2 = [(MTRemoteFilterManager *)self activePathIDs];
+          [activePathIDs2 removeObject:v17];
 
-          v28 = [(MTRemoteFilterManager *)self cancelPathIDs];
-          [v28 removeObject:v17];
+          cancelPathIDs3 = [(MTRemoteFilterManager *)self cancelPathIDs];
+          [cancelPathIDs3 removeObject:v17];
 
           [v16 setIntegerValue:0 forField:720905];
           [v16 setIntegerValue:0 forField:720904];
           [v16 setIntegerValue:v18 | 0x83 forField:720903];
-          v29 = [(MTRemoteFilterManager *)self logHandle];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+          logHandle = [(MTRemoteFilterManager *)self logHandle];
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
             [v16 doubleValueForField:720896];
             v38 = v37;
@@ -508,7 +508,7 @@ LABEL_20:
             v76 = v38;
             v77 = 2048;
             v78 = v39;
-            _os_log_debug_impl(&dword_0, v29, OS_LOG_TYPE_DEBUG, "Cancel path ID %@ at (%f, %f)", buf, 0x20u);
+            _os_log_debug_impl(&dword_0, logHandle, OS_LOG_TYPE_DEBUG, "Cancel path ID %@ at (%f, %f)", buf, 0x20u);
           }
 
           ++v60;
@@ -516,10 +516,10 @@ LABEL_20:
 
         else
         {
-          v25 = [(MTRemoteFilterManager *)self dpadButtonIsPressed]|| v21;
-          if ((v25 & 1) == 0 && (v18 & 2) != 0)
+          touchDisabled = [(MTRemoteFilterManager *)self dpadButtonIsPressed]|| v21;
+          if ((touchDisabled & 1) == 0 && (v18 & 2) != 0)
           {
-            v25 = [(MTRemoteFilterManager *)self touchDisabled];
+            touchDisabled = [(MTRemoteFilterManager *)self touchDisabled];
           }
 
           if (v23)
@@ -527,7 +527,7 @@ LABEL_20:
             goto LABEL_20;
           }
 
-          if (v25)
+          if (touchDisabled)
           {
             goto LABEL_24;
           }
@@ -536,27 +536,27 @@ LABEL_20:
 LABEL_25:
         if (v19 == &dword_0 + 1)
         {
-          v32 = [(MTRemoteFilterManager *)self consumePathIDs];
-          v33 = [v32 containsObject:v17];
+          consumePathIDs4 = [(MTRemoteFilterManager *)self consumePathIDs];
+          v33 = [consumePathIDs4 containsObject:v17];
 
           if ((v33 & 1) == 0)
           {
-            v34 = [(MTRemoteFilterManager *)self activePathIDs];
-            [v34 addObject:v17];
+            activePathIDs3 = [(MTRemoteFilterManager *)self activePathIDs];
+            [activePathIDs3 addObject:v17];
             goto LABEL_29;
           }
         }
 
         else
         {
-          v35 = [(MTRemoteFilterManager *)self activePathIDs];
-          [v35 removeObject:v17];
+          activePathIDs4 = [(MTRemoteFilterManager *)self activePathIDs];
+          [activePathIDs4 removeObject:v17];
 
-          v36 = [(MTRemoteFilterManager *)self cancelPathIDs];
-          [v36 removeObject:v17];
+          cancelPathIDs4 = [(MTRemoteFilterManager *)self cancelPathIDs];
+          [cancelPathIDs4 removeObject:v17];
 
-          v34 = [(MTRemoteFilterManager *)self consumePathIDs];
-          [v34 removeObject:v17];
+          activePathIDs3 = [(MTRemoteFilterManager *)self consumePathIDs];
+          [activePathIDs3 removeObject:v17];
 LABEL_29:
         }
 
@@ -579,15 +579,15 @@ LABEL_35:
   v40 = v58;
   if ([v58 count] == v13)
   {
-    v41 = [(MTRemoteFilterManager *)self logHandle];
-    v6 = v57;
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(MTRemoteFilterManager *)self logHandle];
+    serviceCopy = v57;
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       [MTRemoteFilterManager filterDigitizerEvent:fromService:];
     }
 
-    v42 = v61;
-    v61 = 0;
+    logHandle4 = eventCopy;
+    eventCopy = 0;
     goto LABEL_52;
   }
 
@@ -611,8 +611,8 @@ LABEL_35:
         }
 
         v48 = *(*(&v64 + 1) + 8 * i);
-        v49 = [(MTRemoteFilterManager *)self logHandle];
-        if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
+        logHandle3 = [(MTRemoteFilterManager *)self logHandle];
+        if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
         {
           v50 = [v48 integerValueForField:720901];
           [v48 doubleValueForField:720896];
@@ -624,10 +624,10 @@ LABEL_35:
           v76 = v52;
           v77 = 2048;
           v78 = v53;
-          _os_log_debug_impl(&dword_0, v49, OS_LOG_TYPE_DEBUG, "Remove path ID %ld at (%f, %f)", buf, 0x20u);
+          _os_log_debug_impl(&dword_0, logHandle3, OS_LOG_TYPE_DEBUG, "Remove path ID %ld at (%f, %f)", buf, 0x20u);
         }
 
-        [v61 removeEvent:v48];
+        [eventCopy removeEvent:v48];
       }
 
       v45 = [v43 countByEnumeratingWithState:&v64 objects:v72 count:16];
@@ -638,13 +638,13 @@ LABEL_35:
 
   if (v60 == v13 - [v43 count])
   {
-    v54 = [v61 integerValueForField:720903];
-    [v61 setIntegerValue:0 forField:720905];
-    [v61 setIntegerValue:0 forField:720904];
-    [v61 setIntegerValue:v54 | 0x83 forField:720903];
-    v42 = [(MTRemoteFilterManager *)self logHandle];
-    v6 = v57;
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
+    v54 = [eventCopy integerValueForField:720903];
+    [eventCopy setIntegerValue:0 forField:720905];
+    [eventCopy setIntegerValue:0 forField:720904];
+    [eventCopy setIntegerValue:v54 | 0x83 forField:720903];
+    logHandle4 = [(MTRemoteFilterManager *)self logHandle];
+    serviceCopy = v57;
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
     {
       [MTRemoteFilterManager filterDigitizerEvent:fromService:];
     }
@@ -655,74 +655,74 @@ LABEL_52:
 
   else
   {
-    v6 = v57;
+    serviceCopy = v57;
     v40 = v58;
   }
 
-  v55 = [(MTRemoteFilterManager *)self logHandle];
-  if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
+  logHandle5 = [(MTRemoteFilterManager *)self logHandle];
+  if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEBUG))
   {
     [MTRemoteFilterManager filterDigitizerEvent:? fromService:?];
   }
 
-  v10 = v61;
+  v10 = eventCopy;
 LABEL_57:
 
   return v10;
 }
 
-- (id)filterButtonEvent:(id)a3 fromService:(id)a4
+- (id)filterButtonEvent:(id)event fromService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTRemoteFilterManager *)self buttonService];
+  eventCopy = event;
+  serviceCopy = service;
+  buttonService = [(MTRemoteFilterManager *)self buttonService];
 
-  if (v8 == v7)
+  if (buttonService == serviceCopy)
   {
-    v9 = [(MTRemoteFilterManager *)self dpadButtonIsPressed];
-    [(MTRemoteFilterManager *)self updateDPadButtonStatesForEvent:v6 fromService:v7];
-    v10 = [(MTRemoteFilterManager *)self dpadButtonIsPressed];
-    v11 = v10;
-    if ((v9 & 1) == 0 && v10)
+    dpadButtonIsPressed = [(MTRemoteFilterManager *)self dpadButtonIsPressed];
+    [(MTRemoteFilterManager *)self updateDPadButtonStatesForEvent:eventCopy fromService:serviceCopy];
+    dpadButtonIsPressed2 = [(MTRemoteFilterManager *)self dpadButtonIsPressed];
+    v11 = dpadButtonIsPressed2;
+    if ((dpadButtonIsPressed & 1) == 0 && dpadButtonIsPressed2)
     {
-      v12 = [(MTRemoteFilterManager *)self cancelPathIDs];
-      v13 = [(MTRemoteFilterManager *)self activePathIDs];
-      [v12 unionSet:v13];
+      cancelPathIDs = [(MTRemoteFilterManager *)self cancelPathIDs];
+      activePathIDs = [(MTRemoteFilterManager *)self activePathIDs];
+      [cancelPathIDs unionSet:activePathIDs];
 
-      v14 = [(MTRemoteFilterManager *)self activePathIDs];
-      [v14 removeAllObjects];
+      activePathIDs2 = [(MTRemoteFilterManager *)self activePathIDs];
+      [activePathIDs2 removeAllObjects];
 
-      v15 = [(MTRemoteFilterManager *)self logHandle];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      logHandle = [(MTRemoteFilterManager *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
         [MTRemoteFilterManager filterDigitizerEvent:? fromService:?];
       }
     }
 
-    if (v11 && [v6 integerValueForField:196608] == &dword_C && objc_msgSend(v6, "integerValueForField:", 196609) == &stru_68.segname[8])
+    if (v11 && [eventCopy integerValueForField:196608] == &dword_C && objc_msgSend(eventCopy, "integerValueForField:", 196609) == &stru_68.segname[8])
     {
-      v16 = [(MTRemoteFilterManager *)self logHandle];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      logHandle2 = [(MTRemoteFilterManager *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
       {
         [MTRemoteFilterManager filterButtonEvent:? fromService:?];
       }
 
-      v6 = 0;
+      eventCopy = 0;
     }
   }
 
-  v17 = v6;
+  v17 = eventCopy;
 
-  return v6;
+  return eventCopy;
 }
 
-- (void)updateDPadButtonStatesForEvent:(id)a3 fromService:(id)a4
+- (void)updateDPadButtonStatesForEvent:(id)event fromService:(id)service
 {
-  v5 = a3;
-  if ([v5 integerValueForField:196608] == &dword_C)
+  eventCopy = event;
+  if ([eventCopy integerValueForField:196608] == &dword_C)
   {
-    v6 = [v5 integerValueForField:196610];
-    v7 = [v5 integerValueForField:196609];
+    v6 = [eventCopy integerValueForField:196610];
+    v7 = [eventCopy integerValueForField:196609];
     if (v7 > 67)
     {
       if (v7 == &stru_20.vmsize + 4)
@@ -756,8 +756,8 @@ LABEL_57:
       [(MTRemoteFilterManager *)self setDownButton:v6 != 0];
     }
 
-    v8 = [(MTRemoteFilterManager *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    logHandle = [(MTRemoteFilterManager *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       [MTRemoteFilterManager updateDPadButtonStatesForEvent:? fromService:?];
     }

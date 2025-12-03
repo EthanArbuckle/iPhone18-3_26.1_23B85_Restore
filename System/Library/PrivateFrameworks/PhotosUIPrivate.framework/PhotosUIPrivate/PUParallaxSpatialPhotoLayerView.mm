@@ -1,21 +1,21 @@
 @interface PUParallaxSpatialPhotoLayerView
 - (PUParallaxLayerLayoutInfo)currentLayoutInfo;
 - (UIView)primaryContentView;
-- (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)initWithParallaxSpatialPhotoLayer:(id)a3 inactiveStyleDataLayer:(id)a4 isEditing:(BOOL)a5;
+- (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)initWithParallaxSpatialPhotoLayer:(id)layer inactiveStyleDataLayer:(id)dataLayer isEditing:(BOOL)editing;
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)occlusionLayerView;
 - (id)parallaxSpatialPhotoLayer;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
 - (void)didMoveToWindow;
-- (void)layoutWithInfo:(id)a3;
-- (void)setAttitude:(id)a3;
-- (void)setBacklightProgress:(double)a3;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setEnableGyroAnimator:(BOOL)a3;
-- (void)setEnableOcclusion:(BOOL)a3;
-- (void)setIsGeneratingPoster:(BOOL)a3;
-- (void)setOcclusionLayerView:(id)a3;
-- (void)setParallaxSpatialPhotoLayer:(id)a3;
-- (void)setUnlockProgress:(double)a3;
+- (void)layoutWithInfo:(id)info;
+- (void)setAttitude:(id)attitude;
+- (void)setBacklightProgress:(double)progress;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setEnableGyroAnimator:(BOOL)animator;
+- (void)setEnableOcclusion:(BOOL)occlusion;
+- (void)setIsGeneratingPoster:(BOOL)poster;
+- (void)setOcclusionLayerView:(id)view;
+- (void)setParallaxSpatialPhotoLayer:(id)layer;
+- (void)setUnlockProgress:(double)progress;
 @end
 
 @implementation PUParallaxSpatialPhotoLayerView
@@ -27,31 +27,31 @@
   return v0;
 }
 
-- (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)initWithParallaxSpatialPhotoLayer:(id)a3 inactiveStyleDataLayer:(id)a4 isEditing:(BOOL)a5
+- (_TtC15PhotosUIPrivate31PUParallaxSpatialPhotoLayerView)initWithParallaxSpatialPhotoLayer:(id)layer inactiveStyleDataLayer:(id)dataLayer isEditing:(BOOL)editing
 {
-  v7 = a3;
-  v8 = a4;
-  return sub_1B3870B2C(v7, a4, a5);
+  layerCopy = layer;
+  dataLayerCopy = dataLayer;
+  return sub_1B3870B2C(layerCopy, dataLayer, editing);
 }
 
-- (void)setParallaxSpatialPhotoLayer:(id)a3
+- (void)setParallaxSpatialPhotoLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3871B58(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1B3871B58(layerCopy);
 }
 
-- (void)layoutWithInfo:(id)a3
+- (void)layoutWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3871C68(v4);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1B3871C68(infoCopy);
 }
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v4 = self;
-  v5 = sub_1B3871D24(a3);
+  selfCopy = self;
+  v5 = sub_1B3871D24(updates);
 
   return v5;
 }
@@ -70,47 +70,47 @@
   return v2;
 }
 
-- (void)setAttitude:(id)a3
+- (void)setAttitude:(id)attitude
 {
-  v3 = *(a3.var1 + 32);
-  v4 = self;
+  v3 = *(attitude.var1 + 32);
+  selfCopy = self;
   sub_1B3871F6C(v3);
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  v4 = self;
-  sub_1B3872088(a3);
+  selfCopy = self;
+  sub_1B3872088(orientation);
 }
 
-- (void)setUnlockProgress:(double)a3
+- (void)setUnlockProgress:(double)progress
 {
-  v4 = self;
-  sub_1B387216C(a3);
+  selfCopy = self;
+  sub_1B387216C(progress);
 }
 
-- (void)setBacklightProgress:(double)a3
+- (void)setBacklightProgress:(double)progress
 {
-  v4 = self;
-  sub_1B387222C(a3);
+  selfCopy = self;
+  sub_1B387222C(progress);
 }
 
-- (void)setIsGeneratingPoster:(BOOL)a3
+- (void)setIsGeneratingPoster:(BOOL)poster
 {
-  v4 = self;
-  sub_1B3872310(a3);
+  selfCopy = self;
+  sub_1B3872310(poster);
 }
 
-- (void)setEnableOcclusion:(BOOL)a3
+- (void)setEnableOcclusion:(BOOL)occlusion
 {
-  v4 = self;
-  sub_1B38725DC(a3);
+  selfCopy = self;
+  sub_1B38725DC(occlusion);
 }
 
-- (void)setEnableGyroAnimator:(BOOL)a3
+- (void)setEnableGyroAnimator:(BOOL)animator
 {
-  v4 = self;
-  sub_1B387269C(a3);
+  selfCopy = self;
+  sub_1B387269C(animator);
 }
 
 - (_TtC15PhotosUIPrivate40PUParallaxSpatialPhotoOcclusionLayerView)occlusionLayerView
@@ -120,16 +120,16 @@
   return v2;
 }
 
-- (void)setOcclusionLayerView:(id)a3
+- (void)setOcclusionLayerView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3872794(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1B3872794(view);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B38727D8();
 }
 

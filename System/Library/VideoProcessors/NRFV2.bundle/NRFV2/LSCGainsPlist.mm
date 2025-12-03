@@ -1,15 +1,15 @@
 @interface LSCGainsPlist
-- (LSCGainsPlist)initWithDictionary:(id)a3 metal:(id)a4;
-- (id)getTextureMaxValueForPortType:(id)a3;
-- (int)fillLSCGainsTextureFrom:(id *)a3 tex:(id)a4 maxValuesRGBA:(float *)a5;
+- (LSCGainsPlist)initWithDictionary:(id)dictionary metal:(id)metal;
+- (id)getTextureMaxValueForPortType:(id)type;
+- (int)fillLSCGainsTextureFrom:(id *)from tex:(id)tex maxValuesRGBA:(float *)a;
 @end
 
 @implementation LSCGainsPlist
 
-- (LSCGainsPlist)initWithDictionary:(id)a3 metal:(id)a4
+- (LSCGainsPlist)initWithDictionary:(id)dictionary metal:(id)metal
 {
-  v6 = a3;
-  v74 = a4;
+  dictionaryCopy = dictionary;
+  metalCopy = metal;
   v87.receiver = self;
   v87.super_class = LSCGainsPlist;
   v7 = [(LSCGainsPlist *)&v87 init];
@@ -19,7 +19,7 @@
   }
 
   v8 = objc_alloc(MEMORY[0x29EDB8E00]);
-  v12 = objc_msgSend_count(v6, v9, v10, v11);
+  v12 = objc_msgSend_count(dictionaryCopy, v9, v10, v11);
   v15 = objc_msgSend_initWithCapacity_(v8, v13, v12, v14);
   lscGainsByPortType = v7->_lscGainsByPortType;
   v7->_lscGainsByPortType = v15;
@@ -28,14 +28,14 @@
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v73 = v6;
-  v17 = v6;
+  v73 = dictionaryCopy;
+  v17 = dictionaryCopy;
   v77 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v83, v82, 16);
   if (!v77)
   {
 LABEL_13:
 
-    v6 = v73;
+    dictionaryCopy = v73;
 LABEL_14:
     v70 = v7;
     goto LABEL_15;
@@ -78,7 +78,7 @@ LABEL_11:
   v27 = v26;
   v31 = objc_msgSend_bytes(v27, v28, v29, v30);
   v33 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], v32, 115, *(v31 + 20), *(v31 + 24), 0);
-  v37 = objc_msgSend_device(v74, v34, v35, v36);
+  v37 = objc_msgSend_device(metalCopy, v34, v35, v36);
   v40 = objc_msgSend_newTextureWithDescriptor_(v37, v38, v33, v39);
 
   if (v40)
@@ -88,7 +88,7 @@ LABEL_11:
       FigDebugAssert3();
 
       v70 = 0;
-      v6 = v73;
+      dictionaryCopy = v73;
       goto LABEL_15;
     }
 
@@ -118,7 +118,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v6 = v73;
+  dictionaryCopy = v73;
   if (sub_29589D4CC(v33, v26, v17))
   {
     goto LABEL_14;
@@ -131,34 +131,34 @@ LABEL_15:
   return v71;
 }
 
-- (int)fillLSCGainsTextureFrom:(id *)a3 tex:(id)a4 maxValuesRGBA:(float *)a5
+- (int)fillLSCGainsTextureFrom:(id *)from tex:(id)tex maxValuesRGBA:(float *)a
 {
-  v30 = a4;
-  var4 = a3->var1.var0.var4;
-  var5 = a3->var1.var0.var5;
-  var6 = a3->var1.var0.var6;
-  var7 = a3->var1.var0.var7;
-  var8 = a3->var1.var0.var8;
-  var9 = a3->var1.var0.var9;
+  texCopy = tex;
+  var4 = from->var1.var0.var4;
+  var5 = from->var1.var0.var5;
+  var6 = from->var1.var0.var6;
+  var7 = from->var1.var0.var7;
+  var8 = from->var1.var0.var8;
+  var9 = from->var1.var0.var9;
   v13 = (var5 * var4);
   v14 = malloc_type_malloc(8 * v13, 0x1000040BDFB0063uLL);
   if (v14)
   {
     v15 = v14;
-    memset_pattern16(a5, &unk_2959D5F30, 0x10uLL);
+    memset_pattern16(a, &unk_2959D5F30, 0x10uLL);
     if (v13)
     {
       v17 = 0;
-      v18 = &a3->var1.var1.var10 + var6;
-      v19 = &a3->var1.var1.var10 + var9;
-      v21 = *a5;
-      v22 = a5[1];
-      v23 = a5[2];
-      v24 = a5[3];
-      v25 = &a3->var1.var1.var10 + var8;
+      v18 = &from->var1.var1.var10 + var6;
+      v19 = &from->var1.var1.var10 + var9;
+      v21 = *a;
+      v22 = a[1];
+      v23 = a[2];
+      v24 = a[3];
+      v25 = &from->var1.var1.var10 + var8;
       do
       {
-        v20 = &a3->var1.var1.var10 + var7;
+        v20 = &from->var1.var1.var10 + var7;
         v26.i32[0] = v20[v17];
         if (v21 <= v26.f32[0])
         {
@@ -169,25 +169,25 @@ LABEL_15:
         v26.i32[2] = v25[v17];
         v26.i32[3] = v19[v17];
         *&v15[2 * ((v17 * 4) & 0xFFFFFFFC)] = vcvt_f16_f32(v26);
-        *a5 = v21;
+        *a = v21;
         if (v22 <= *&v18[v17])
         {
           v22 = *&v18[v17];
         }
 
-        a5[1] = v22;
+        a[1] = v22;
         if (v23 <= *&v25[v17])
         {
           v23 = *&v25[v17];
         }
 
-        a5[2] = v23;
+        a[2] = v23;
         if (v24 <= *&v19[v17])
         {
           v24 = *&v19[v17];
         }
 
-        a5[3] = v24;
+        a[3] = v24;
         ++v17;
       }
 
@@ -198,8 +198,8 @@ LABEL_15:
     v31[3] = var4;
     v31[4] = var5;
     v31[5] = 1;
-    v27 = v30;
-    objc_msgSend_replaceRegion_mipmapLevel_withBytes_bytesPerRow_(v30, v16, v31, 0, v15, 8 * var4);
+    v27 = texCopy;
+    objc_msgSend_replaceRegion_mipmapLevel_withBytes_bytesPerRow_(texCopy, v16, v31, 0, v15, 8 * var4);
     free(v15);
     v28 = 0;
   }
@@ -208,15 +208,15 @@ LABEL_15:
   {
     sub_29589D598();
     v28 = -12786;
-    v27 = v30;
+    v27 = texCopy;
   }
 
   return v28;
 }
 
-- (id)getTextureMaxValueForPortType:(id)a3
+- (id)getTextureMaxValueForPortType:(id)type
 {
-  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"%@#max", v3, a3);
+  v5 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], a2, @"%@#max", v3, type);
   v8 = objc_msgSend_objectForKeyedSubscript_(self->_lscGainsByPortType, v6, v5, v7);
 
   return v8;

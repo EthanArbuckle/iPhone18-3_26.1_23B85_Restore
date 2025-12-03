@@ -8,7 +8,7 @@
 
 - (id)tsu_uncommentedAddress
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = NSZoneMalloc(0, 2 * v2 + 2);
   v4 = v3;
   v5 = MEMORY[0x277D85DE0];
@@ -23,7 +23,7 @@
     v6 = v3;
     do
     {
-      v10 = [a1 characterAtIndex:v7];
+      v10 = [self characterAtIndex:v7];
       v11 = v10;
       if (v10 == 92)
       {
@@ -50,7 +50,7 @@ LABEL_10:
         }
 
         *v6 = 92;
-        *(v6 + 1) = [a1 characterAtIndex:v7 + 1];
+        *(v6 + 1) = [self characterAtIndex:v7 + 1];
         v6 += 4;
         ++v7;
       }
@@ -154,24 +154,24 @@ LABEL_24:
 
 - (id)tsu_uncommentedAddressRespectingGroups
 {
-  v2 = [a1 rangeOfString:@"@"];
-  v3 = [a1 rangeOfString:@"<"];
+  v2 = [self rangeOfString:@"@"];
+  v3 = [self rangeOfString:@"<"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL && v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 tsu_uncommentedAddress];
+    selfCopy = [self tsu_uncommentedAddress];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)tsu_isLegalEmailAddress
 {
-  v2 = [a1 tsu_uncommentedAddressRespectingGroups];
+  tsu_uncommentedAddressRespectingGroups = [self tsu_uncommentedAddressRespectingGroups];
   v3 = tsu_isLegalEmailAddress_re;
   if (!tsu_isLegalEmailAddress_re)
   {
@@ -182,12 +182,12 @@ LABEL_24:
     v3 = tsu_isLegalEmailAddress_re;
   }
 
-  v6 = [v3 getBytesForString:v2 lossByte:10];
-  v7 = [v2 length];
+  v6 = [v3 getBytesForString:tsu_uncommentedAddressRespectingGroups lossByte:10];
+  v7 = [tsu_uncommentedAddressRespectingGroups length];
   v8 = [tsu_isLegalEmailAddress_re matchedRangeForCString:v6 range:0 subexpressionRanges:v7 count:{0, 0}];
   v10 = v9;
-  v11 = [a1 rangeOfString:@"@"];
-  v12 = [a1 rangeOfString:@"." options:4];
+  v11 = [self rangeOfString:@"@"];
+  v12 = [self rangeOfString:@"." options:4];
   v13 = 0;
   if (!v8)
   {

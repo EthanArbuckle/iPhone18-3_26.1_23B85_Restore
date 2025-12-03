@@ -1,27 +1,27 @@
 @interface COMTActionRequestHandler
-- (COMTActionRequestHandler)initWithType:(id)a3 actions:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
+- (COMTActionRequestHandler)initWithType:(id)type actions:(id)actions delegate:(id)delegate dispatchQueue:(id)queue;
 - (COMTActionRequestHandlerDelegate)delegate;
 - (id)description;
 @end
 
 @implementation COMTActionRequestHandler
 
-- (COMTActionRequestHandler)initWithType:(id)a3 actions:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (COMTActionRequestHandler)initWithType:(id)type actions:(id)actions delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  actionsCopy = actions;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = COMTActionRequestHandler;
   v15 = [(COMTActionRequestHandler *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_targetType, a3);
-    objc_storeStrong(&v16->_actions, a4);
-    objc_storeWeak(&v16->_delegate, v13);
-    objc_storeStrong(&v16->_delegateQueue, a6);
+    objc_storeStrong(&v15->_targetType, type);
+    objc_storeStrong(&v16->_actions, actions);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_delegateQueue, queue);
   }
 
   return v16;
@@ -32,8 +32,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COMTActionRequestHandler *)self delegate];
-  v7 = [v3 stringWithFormat:@"<%@: %p, delegate = %p>", v5, self, v6];
+  delegate = [(COMTActionRequestHandler *)self delegate];
+  v7 = [v3 stringWithFormat:@"<%@: %p, delegate = %p>", v5, self, delegate];
 
   return v7;
 }

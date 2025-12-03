@@ -1,91 +1,91 @@
 @interface SBHIconGridPath
-- (BOOL)isEqual:(id)a3;
-- (SBHIconGridPath)iconGridPathWithGridCellIndex:(unint64_t)a3;
-- (SBHIconGridPath)iconGridPathWithListIdentifier:(id)a3 gridCellIndex:(unint64_t)a4;
-- (SBHIconGridPath)initWithCoder:(id)a3;
-- (SBHIconGridPath)initWithFolderIdentifier:(id)a3 listIdentifier:(id)a4 gridCellIndex:(unint64_t)a5 gridCellInfoOptions:(unint64_t)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBHIconGridPath)iconGridPathWithGridCellIndex:(unint64_t)index;
+- (SBHIconGridPath)iconGridPathWithListIdentifier:(id)identifier gridCellIndex:(unint64_t)index;
+- (SBHIconGridPath)initWithCoder:(id)coder;
+- (SBHIconGridPath)initWithFolderIdentifier:(id)identifier listIdentifier:(id)listIdentifier gridCellIndex:(unint64_t)index gridCellInfoOptions:(unint64_t)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHIconGridPath
 
-- (SBHIconGridPath)initWithFolderIdentifier:(id)a3 listIdentifier:(id)a4 gridCellIndex:(unint64_t)a5 gridCellInfoOptions:(unint64_t)a6
+- (SBHIconGridPath)initWithFolderIdentifier:(id)identifier listIdentifier:(id)listIdentifier gridCellIndex:(unint64_t)index gridCellInfoOptions:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  listIdentifierCopy = listIdentifier;
   v18.receiver = self;
   v18.super_class = SBHIconGridPath;
   v12 = [(SBHIconGridPath *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     folderIdentifier = v12->_folderIdentifier;
     v12->_folderIdentifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [listIdentifierCopy copy];
     listIdentifier = v12->_listIdentifier;
     v12->_listIdentifier = v15;
 
-    v12->_gridCellIndex = a5;
-    v12->_gridCellInfoOptions = a6;
+    v12->_gridCellIndex = index;
+    v12->_gridCellInfoOptions = options;
   }
 
   return v12;
 }
 
-- (SBHIconGridPath)iconGridPathWithListIdentifier:(id)a3 gridCellIndex:(unint64_t)a4
+- (SBHIconGridPath)iconGridPathWithListIdentifier:(id)identifier gridCellIndex:(unint64_t)index
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(SBHIconGridPath *)self folderIdentifier];
-  v9 = [v7 initWithFolderIdentifier:v8 listIdentifier:v6 gridCellIndex:a4 gridCellInfoOptions:{-[SBHIconGridPath gridCellInfoOptions](self, "gridCellInfoOptions")}];
+  folderIdentifier = [(SBHIconGridPath *)self folderIdentifier];
+  v9 = [v7 initWithFolderIdentifier:folderIdentifier listIdentifier:identifierCopy gridCellIndex:index gridCellInfoOptions:{-[SBHIconGridPath gridCellInfoOptions](self, "gridCellInfoOptions")}];
 
   return v9;
 }
 
-- (SBHIconGridPath)iconGridPathWithGridCellIndex:(unint64_t)a3
+- (SBHIconGridPath)iconGridPathWithGridCellIndex:(unint64_t)index
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(SBHIconGridPath *)self folderIdentifier];
-  v7 = [(SBHIconGridPath *)self listIdentifier];
-  v8 = [v5 initWithFolderIdentifier:v6 listIdentifier:v7 gridCellIndex:a3 gridCellInfoOptions:{-[SBHIconGridPath gridCellInfoOptions](self, "gridCellInfoOptions")}];
+  folderIdentifier = [(SBHIconGridPath *)self folderIdentifier];
+  listIdentifier = [(SBHIconGridPath *)self listIdentifier];
+  v8 = [v5 initWithFolderIdentifier:folderIdentifier listIdentifier:listIdentifier gridCellIndex:index gridCellInfoOptions:{-[SBHIconGridPath gridCellInfoOptions](self, "gridCellInfoOptions")}];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   folderIdentifier = self->_folderIdentifier;
-  v5 = a3;
-  [v5 encodeObject:folderIdentifier forKey:@"folderIdentifier"];
-  [v5 encodeObject:self->_listIdentifier forKey:@"listIdentifier"];
-  [v5 encodeInteger:self->_gridCellIndex forKey:@"gridCellIndex"];
-  [v5 encodeInteger:self->_gridCellInfoOptions forKey:@"gridCellInfoOptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:folderIdentifier forKey:@"folderIdentifier"];
+  [coderCopy encodeObject:self->_listIdentifier forKey:@"listIdentifier"];
+  [coderCopy encodeInteger:self->_gridCellIndex forKey:@"gridCellIndex"];
+  [coderCopy encodeInteger:self->_gridCellInfoOptions forKey:@"gridCellInfoOptions"];
 }
 
-- (SBHIconGridPath)initWithCoder:(id)a3
+- (SBHIconGridPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"folderIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"folderIdentifier"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"listIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"listIdentifier"];
 
-  v9 = [v4 decodeIntegerForKey:@"gridCellIndex"];
-  v10 = [v4 decodeIntegerForKey:@"gridCellInfoOptions"];
+  v9 = [coderCopy decodeIntegerForKey:@"gridCellIndex"];
+  v10 = [coderCopy decodeIntegerForKey:@"gridCellInfoOptions"];
 
   v11 = [(SBHIconGridPath *)self initWithFolderIdentifier:v6 listIdentifier:v8 gridCellIndex:v9 gridCellInfoOptions:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -97,7 +97,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = BSEqualStrings() && BSEqualStrings() && self->_gridCellIndex == v7->_gridCellIndex && self->_gridCellInfoOptions == v7->_gridCellInfoOptions;
     }
 
@@ -112,34 +112,34 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconGridPath *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconGridPath *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconGridPath *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconGridPath *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconGridPath *)self succinctDescriptionBuilder];
-  v5 = [(SBHIconGridPath *)self folderIdentifier];
-  [v4 appendString:v5 withName:@"folderIdentifier"];
+  succinctDescriptionBuilder = [(SBHIconGridPath *)self succinctDescriptionBuilder];
+  folderIdentifier = [(SBHIconGridPath *)self folderIdentifier];
+  [succinctDescriptionBuilder appendString:folderIdentifier withName:@"folderIdentifier"];
 
-  v6 = [(SBHIconGridPath *)self listIdentifier];
-  [v4 appendString:v6 withName:@"listIdentifier"];
+  listIdentifier = [(SBHIconGridPath *)self listIdentifier];
+  [succinctDescriptionBuilder appendString:listIdentifier withName:@"listIdentifier"];
 
-  v7 = [v4 appendUnsignedInteger:-[SBHIconGridPath gridCellIndex](self withName:{"gridCellIndex"), @"gridCellIndex"}];
+  v7 = [succinctDescriptionBuilder appendUnsignedInteger:-[SBHIconGridPath gridCellIndex](self withName:{"gridCellIndex"), @"gridCellIndex"}];
   v8 = SBHStringForGridCellInfoOptions([(SBHIconGridPath *)self gridCellInfoOptions]);
-  [v4 appendString:v8 withName:@"gridCellInfoOptions"];
+  [succinctDescriptionBuilder appendString:v8 withName:@"gridCellInfoOptions"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface RTSCAdaptiveFilterStrength
-- (RTSCAdaptiveFilterStrength)initWithMaxTimescale:(float)a3 minTimescale:(float)a4 transitionTime:(float)a5;
+- (RTSCAdaptiveFilterStrength)initWithMaxTimescale:(float)timescale minTimescale:(float)minTimescale transitionTime:(float)time;
 - (void)reset;
-- (void)update:(float)a3 order:(int)a4 atTime:(double)a5;
+- (void)update:(float)update order:(int)order atTime:(double)time;
 @end
 
 @implementation RTSCAdaptiveFilterStrength
 
-- (RTSCAdaptiveFilterStrength)initWithMaxTimescale:(float)a3 minTimescale:(float)a4 transitionTime:(float)a5
+- (RTSCAdaptiveFilterStrength)initWithMaxTimescale:(float)timescale minTimescale:(float)minTimescale transitionTime:(float)time
 {
   v13.receiver = self;
   v13.super_class = RTSCAdaptiveFilterStrength;
@@ -20,19 +20,19 @@ LABEL_7:
   }
 
   v10 = 0;
-  if (a4 > 0.0 && a5 > 0.0)
+  if (minTimescale > 0.0 && time > 0.0)
   {
-    v8->_maxTimescale = a3;
-    v8->_minTimescale = a4;
-    if (a3 < a4)
+    v8->_maxTimescale = timescale;
+    v8->_minTimescale = minTimescale;
+    if (timescale < minTimescale)
     {
-      v8->_maxTimescale = a4;
-      a3 = a4;
+      v8->_maxTimescale = minTimescale;
+      timescale = minTimescale;
     }
 
-    v11 = a3 / a4;
-    v8->_rampDownFactorPerSecond = powf(v11, 1.0 / a5);
-    v9->_rampUpFactorPerSecond = powf(v11, 1.0 / (a5 * 5.0));
+    v11 = timescale / minTimescale;
+    v8->_rampDownFactorPerSecond = powf(v11, 1.0 / time);
+    v9->_rampUpFactorPerSecond = powf(v11, 1.0 / (time * 5.0));
     v9->_angleLimit = 0.001;
     [(RTSCAdaptiveFilterStrength *)v9 reset];
     goto LABEL_7;
@@ -52,13 +52,13 @@ LABEL_8:
   self->_smoothingPole = maxTimescale / (maxTimescale + 0.03333);
 }
 
-- (void)update:(float)a3 order:(int)a4 atTime:(double)a5
+- (void)update:(float)update order:(int)order atTime:(double)time
 {
   maxTimescale = self->_maxTimescale;
   currentTimescale = self->_currentTimescale;
-  v10 = self->_angleLimit / fmaxf(self->_angleLimit / maxTimescale, a3);
+  v10 = self->_angleLimit / fmaxf(self->_angleLimit / maxTimescale, update);
   self->_targetTimescale = v10;
-  v11 = a5 - self->_prevTime;
+  v11 = time - self->_prevTime;
   v12 = v11;
   if (v10 <= currentTimescale)
   {
@@ -74,8 +74,8 @@ LABEL_8:
 
   v15 = fminf(fmaxf(currentTimescale * powf(rampDownFactorPerSecond, v14), self->_minTimescale), maxTimescale);
   self->_currentTimescale = v15;
-  self->_smoothingPole = (v15 / a4) / ((v15 / a4) + v12);
-  self->_prevTime = a5;
+  self->_smoothingPole = (v15 / order) / ((v15 / order) + v12);
+  self->_prevTime = time;
 }
 
 @end

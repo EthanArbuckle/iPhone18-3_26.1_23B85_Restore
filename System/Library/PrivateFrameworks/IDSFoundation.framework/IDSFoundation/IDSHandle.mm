@@ -1,17 +1,17 @@
 @interface IDSHandle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandle:(id)a3;
-- (IDSHandle)initWithURI:(id)a3 isUserVisible:(BOOL)a4 validationStatus:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandle:(id)handle;
+- (IDSHandle)initWithURI:(id)i isUserVisible:(BOOL)visible validationStatus:(int64_t)status;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSHandle
 
-- (IDSHandle)initWithURI:(id)a3 isUserVisible:(BOOL)a4 validationStatus:(int64_t)a5
+- (IDSHandle)initWithURI:(id)i isUserVisible:(BOOL)visible validationStatus:(int64_t)status
 {
-  v9 = a3;
-  if (v9)
+  iCopy = i;
+  if (iCopy)
   {
     v14.receiver = self;
     v14.super_class = IDSHandle;
@@ -19,21 +19,21 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_URI, a3);
-      v11->_isUserVisible = a4;
-      v11->_validationStatus = a5;
+      objc_storeStrong(&v10->_URI, i);
+      v11->_isUserVisible = visible;
+      v11->_validationStatus = status;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)description
@@ -53,30 +53,30 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSHandle *)self isEqualToHandle:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSHandle *)self isEqualToHandle:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToHandle:(id)a3
+- (BOOL)isEqualToHandle:(id)handle
 {
-  v4 = a3;
-  if (self == v4)
+  handleCopy = handle;
+  if (self == handleCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(IDSHandle *)self isUserVisible];
-    if (v5 == [(IDSHandle *)v4 isUserVisible]&& (v6 = [(IDSHandle *)self validationStatus], v6 == [(IDSHandle *)v4 validationStatus]))
+    isUserVisible = [(IDSHandle *)self isUserVisible];
+    if (isUserVisible == [(IDSHandle *)handleCopy isUserVisible]&& (v6 = [(IDSHandle *)self validationStatus], v6 == [(IDSHandle *)handleCopy validationStatus]))
     {
       v7 = [(IDSHandle *)self URI];
-      v8 = [(IDSHandle *)v4 URI];
+      v8 = [(IDSHandle *)handleCopy URI];
       v9 = [v7 isEqual:v8];
     }
 
@@ -95,9 +95,9 @@
   v4 = [v3 hash];
 
   v5 = [(IDSHandle *)self validationStatus]- v4 + 32 * v4;
-  v6 = [(IDSHandle *)self isUserVisible];
+  isUserVisible = [(IDSHandle *)self isUserVisible];
   v7 = 1237;
-  if (v6)
+  if (isUserVisible)
   {
     v7 = 1231;
   }

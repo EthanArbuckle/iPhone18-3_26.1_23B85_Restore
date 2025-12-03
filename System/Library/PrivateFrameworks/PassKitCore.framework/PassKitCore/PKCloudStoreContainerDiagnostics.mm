@@ -1,8 +1,8 @@
 @interface PKCloudStoreContainerDiagnostics
 + (id)turnedOff;
-- (PKCloudStoreContainerDiagnostics)initWithCoder:(id)a3;
-- (PKCloudStoreContainerDiagnostics)initWithIsEnabled:(BOOL)a3 isSetup:(BOOL)a4 status:(id)a5 isSyncEnabled:(BOOL)a6 syncToken:(id)a7 lastSyncDate:(id)a8 didFinishInitialSync:(BOOL)a9 isAccountManateeCapable:(BOOL)a10 isDeviceManateeCapable:(BOOL)a11 isManateeEnabled:(BOOL)a12;
-- (void)encodeWithCoder:(id)a3;
+- (PKCloudStoreContainerDiagnostics)initWithCoder:(id)coder;
+- (PKCloudStoreContainerDiagnostics)initWithIsEnabled:(BOOL)enabled isSetup:(BOOL)setup status:(id)status isSyncEnabled:(BOOL)syncEnabled syncToken:(id)token lastSyncDate:(id)date didFinishInitialSync:(BOOL)sync isAccountManateeCapable:(BOOL)self0 isDeviceManateeCapable:(BOOL)self1 isManateeEnabled:(BOOL)self2;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreContainerDiagnostics
@@ -15,78 +15,78 @@
   return v2;
 }
 
-- (PKCloudStoreContainerDiagnostics)initWithIsEnabled:(BOOL)a3 isSetup:(BOOL)a4 status:(id)a5 isSyncEnabled:(BOOL)a6 syncToken:(id)a7 lastSyncDate:(id)a8 didFinishInitialSync:(BOOL)a9 isAccountManateeCapable:(BOOL)a10 isDeviceManateeCapable:(BOOL)a11 isManateeEnabled:(BOOL)a12
+- (PKCloudStoreContainerDiagnostics)initWithIsEnabled:(BOOL)enabled isSetup:(BOOL)setup status:(id)status isSyncEnabled:(BOOL)syncEnabled syncToken:(id)token lastSyncDate:(id)date didFinishInitialSync:(BOOL)sync isAccountManateeCapable:(BOOL)self0 isDeviceManateeCapable:(BOOL)self1 isManateeEnabled:(BOOL)self2
 {
-  v19 = a5;
-  v20 = a7;
-  v21 = a8;
+  statusCopy = status;
+  tokenCopy = token;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = PKCloudStoreContainerDiagnostics;
   v22 = [(PKCloudStoreContainerDiagnostics *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    v22->_isEnabled = a3;
-    v22->_isSetup = a4;
-    objc_storeStrong(&v22->_status, a5);
-    v23->_isSyncEnabled = a6;
-    objc_storeStrong(&v23->_syncToken, a7);
-    objc_storeStrong(&v23->_lastSyncDate, a8);
-    v23->_didFinishInitialSync = a9;
-    v23->_isAccountManateeCapable = a10;
-    v23->_isDeviceManateeCapable = a11;
-    v23->_isManateeEnabled = a12;
+    v22->_isEnabled = enabled;
+    v22->_isSetup = setup;
+    objc_storeStrong(&v22->_status, status);
+    v23->_isSyncEnabled = syncEnabled;
+    objc_storeStrong(&v23->_syncToken, token);
+    objc_storeStrong(&v23->_lastSyncDate, date);
+    v23->_didFinishInitialSync = sync;
+    v23->_isAccountManateeCapable = capable;
+    v23->_isDeviceManateeCapable = manateeCapable;
+    v23->_isManateeEnabled = manateeEnabled;
   }
 
   return v23;
 }
 
-- (PKCloudStoreContainerDiagnostics)initWithCoder:(id)a3
+- (PKCloudStoreContainerDiagnostics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCloudStoreContainerDiagnostics;
   v5 = [(PKCloudStoreContainerDiagnostics *)&v13 init];
   if (v5)
   {
-    v5->_isEnabled = [v4 decodeBoolForKey:@"isEnabled"];
-    v5->_isSetup = [v4 decodeBoolForKey:@"isSetup"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v5->_isEnabled = [coderCopy decodeBoolForKey:@"isEnabled"];
+    v5->_isSetup = [coderCopy decodeBoolForKey:@"isSetup"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     status = v5->_status;
     v5->_status = v6;
 
-    v5->_isSyncEnabled = [v4 decodeBoolForKey:@"isSyncEnabled"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"syncToken"];
+    v5->_isSyncEnabled = [coderCopy decodeBoolForKey:@"isSyncEnabled"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"syncToken"];
     syncToken = v5->_syncToken;
     v5->_syncToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSyncDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSyncDate"];
     lastSyncDate = v5->_lastSyncDate;
     v5->_lastSyncDate = v10;
 
-    v5->_didFinishInitialSync = [v4 decodeBoolForKey:@"didFinishInitialSync"];
-    v5->_isAccountManateeCapable = [v4 decodeBoolForKey:@"isAccountManateeCapable"];
-    v5->_isDeviceManateeCapable = [v4 decodeBoolForKey:@"isDeviceManateeCapable"];
-    v5->_isManateeEnabled = [v4 decodeBoolForKey:@"isManateeEnabled"];
+    v5->_didFinishInitialSync = [coderCopy decodeBoolForKey:@"didFinishInitialSync"];
+    v5->_isAccountManateeCapable = [coderCopy decodeBoolForKey:@"isAccountManateeCapable"];
+    v5->_isDeviceManateeCapable = [coderCopy decodeBoolForKey:@"isDeviceManateeCapable"];
+    v5->_isManateeEnabled = [coderCopy decodeBoolForKey:@"isManateeEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isEnabled = self->_isEnabled;
-  v5 = a3;
-  [v5 encodeBool:isEnabled forKey:@"isEnabled"];
-  [v5 encodeBool:self->_isSetup forKey:@"isSetup"];
-  [v5 encodeObject:self->_status forKey:@"status"];
-  [v5 encodeBool:self->_isSyncEnabled forKey:@"isSyncEnabled"];
-  [v5 encodeObject:self->_syncToken forKey:@"syncToken"];
-  [v5 encodeObject:self->_lastSyncDate forKey:@"lastSyncDate"];
-  [v5 encodeBool:self->_didFinishInitialSync forKey:@"didFinishInitialSync"];
-  [v5 encodeBool:self->_isAccountManateeCapable forKey:@"isAccountManateeCapable"];
-  [v5 encodeBool:self->_isDeviceManateeCapable forKey:@"isDeviceManateeCapable"];
-  [v5 encodeBool:self->_isManateeEnabled forKey:@"isManateeEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isEnabled forKey:@"isEnabled"];
+  [coderCopy encodeBool:self->_isSetup forKey:@"isSetup"];
+  [coderCopy encodeObject:self->_status forKey:@"status"];
+  [coderCopy encodeBool:self->_isSyncEnabled forKey:@"isSyncEnabled"];
+  [coderCopy encodeObject:self->_syncToken forKey:@"syncToken"];
+  [coderCopy encodeObject:self->_lastSyncDate forKey:@"lastSyncDate"];
+  [coderCopy encodeBool:self->_didFinishInitialSync forKey:@"didFinishInitialSync"];
+  [coderCopy encodeBool:self->_isAccountManateeCapable forKey:@"isAccountManateeCapable"];
+  [coderCopy encodeBool:self->_isDeviceManateeCapable forKey:@"isDeviceManateeCapable"];
+  [coderCopy encodeBool:self->_isManateeEnabled forKey:@"isManateeEnabled"];
 }
 
 @end

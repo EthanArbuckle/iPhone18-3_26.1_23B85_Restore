@@ -13,7 +13,7 @@
   *(inited + 16) = xmmword_1009AC700;
   *(inited + 32) = 0x476567617373656DLL;
   *(inited + 40) = 0xEB00000000444955;
-  v4 = self;
+  selfCopy = self;
 
   v5 = sub_100936B28();
 

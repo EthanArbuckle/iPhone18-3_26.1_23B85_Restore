@@ -8,12 +8,12 @@
 - (uint64_t)mixingTypeWithObject:()TSDMixingAdditions
 {
   objc_opt_class();
-  if ([a1 isEqualToValue:TSUCheckedDynamicCast()])
+  if ([self isEqualToValue:TSUCheckedDynamicCast()])
   {
     return 5;
   }
 
-  if (!strcmp([a1 objCType], objc_msgSend(a1, "objCType")))
+  if (!strcmp([self objCType], objc_msgSend(self, "objCType")))
   {
     return 3;
   }
@@ -25,9 +25,9 @@
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
-  if (!strcmp([a1 objCType], "{CGPoint=dd}"))
+  if (!strcmp([self objCType], "{CGPoint=dd}"))
   {
-    [a1 CGPointValue];
+    [self CGPointValue];
     [v4 CGPointValue];
     v9 = MEMORY[0x277CCAE60];
     TSUMixPoints();
@@ -35,9 +35,9 @@
     return [v9 valueWithCGPoint:?];
   }
 
-  else if (!strcmp([a1 objCType], "{CGSize=dd}"))
+  else if (!strcmp([self objCType], "{CGSize=dd}"))
   {
-    [a1 CGSizeValue];
+    [self CGSizeValue];
     [v4 CGSizeValue];
     v10 = MEMORY[0x277CCAE60];
     TSUMixSizes();
@@ -45,9 +45,9 @@
     return [v10 valueWithCGSize:?];
   }
 
-  else if (!strcmp([a1 objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+  else if (!strcmp([self objCType], "{CGRect={CGPoint=dd}{CGSize=dd}}"))
   {
-    [a1 CGRectValue];
+    [self CGRectValue];
     [v4 CGRectValue];
     v11 = MEMORY[0x277CCAE60];
     TSUMixRects();
@@ -55,15 +55,15 @@
     return [v11 valueWithCGRect:?];
   }
 
-  else if (!strcmp([a1 objCType], "{CGAffineTransform=dddddd}"))
+  else if (!strcmp([self objCType], "{CGAffineTransform=dddddd}"))
   {
     v12 = 0uLL;
     v44 = 0u;
     v45 = 0u;
     v43 = 0u;
-    if (a1)
+    if (self)
     {
-      [a1 CGAffineTransformValue];
+      [self CGAffineTransformValue];
       v12 = 0uLL;
     }
 
@@ -86,7 +86,7 @@
     return [v13 valueWithCGAffineTransform:&v27];
   }
 
-  else if (!strcmp([a1 objCType], "{CATransform3D=dddddddddddddddd}"))
+  else if (!strcmp([self objCType], "{CATransform3D=dddddddddddddddd}"))
   {
     v14 = 0uLL;
     v49 = 0u;
@@ -97,9 +97,9 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    if (a1)
+    if (self)
     {
-      [a1 CATransform3DValue];
+      [self CATransform3DValue];
       v14 = 0uLL;
     }
 
@@ -142,10 +142,10 @@
 
   else
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSValue(TSDMixingAdditions) mixedObjectWithFraction:ofObject:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:347 description:{@"Unknown objcType in NSValue: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", objc_msgSend(a1, "objCType"))}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:347 description:{@"Unknown objcType in NSValue: %@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", objc_msgSend(self, "objCType"))}];
     return 0;
   }
 }

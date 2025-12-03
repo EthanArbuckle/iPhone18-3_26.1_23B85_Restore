@@ -1,19 +1,19 @@
 @interface MTLIOAccelFence
-- (MTLIOAccelFence)initWithDevice:(id)a3 fenceIndex:(unsigned int)a4;
+- (MTLIOAccelFence)initWithDevice:(id)device fenceIndex:(unsigned int)index;
 - (void)dealloc;
 @end
 
 @implementation MTLIOAccelFence
 
-- (MTLIOAccelFence)initWithDevice:(id)a3 fenceIndex:(unsigned int)a4
+- (MTLIOAccelFence)initWithDevice:(id)device fenceIndex:(unsigned int)index
 {
   v8.receiver = self;
   v8.super_class = MTLIOAccelFence;
   v6 = [(_MTLObjectWithLabel *)&v8 init];
   if (v6)
   {
-    v6->_device = a3;
-    v6->_fenceIndex = a4;
+    v6->_device = device;
+    v6->_fenceIndex = index;
   }
 
   return v6;

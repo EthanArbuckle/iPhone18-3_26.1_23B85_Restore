@@ -1,14 +1,14 @@
 @interface HMDHomeMatterServicesCoordinatorFactory
 - (HMDHomeMatterServicesCoordinatorFactory)init;
-- (id)createHomeMatterServicesCoordinatorWithHome:(id)a3;
+- (id)createHomeMatterServicesCoordinatorWithHome:(id)home;
 @end
 
 @implementation HMDHomeMatterServicesCoordinatorFactory
 
-- (id)createHomeMatterServicesCoordinatorWithHome:(id)a3
+- (id)createHomeMatterServicesCoordinatorWithHome:(id)home
 {
-  v3 = a3;
-  v4 = sub_22979F7A8(v3);
+  homeCopy = home;
+  v4 = sub_22979F7A8(homeCopy);
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface _UILabelSynthesizedContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)reverseNaturalAlignment;
 - (id)_synthesizedAttributedString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mutableCopy;
 - (id)synthesizedAttributedString;
 - (id)synthesizedAttributes;
 - (unint64_t)length;
-- (void)_disablingHyphenationIfURLsDetectedInAttributedString:(id)a3;
-- (void)_isolateStringWritingDirectionInAttributedString:(id)a3;
+- (void)_disablingHyphenationIfURLsDetectedInAttributedString:(id)string;
+- (void)_isolateStringWritingDirectionInAttributedString:(id)string;
 @end
 
 @implementation _UILabelSynthesizedContent
@@ -17,39 +17,39 @@
 - (BOOL)reverseNaturalAlignment
 {
   content = self->_content;
-  v3 = [(_UILabelSynthesizedContent *)self semanticContentAttribute];
+  semanticContentAttribute = [(_UILabelSynthesizedContent *)self semanticContentAttribute];
 
-  return _UILabelShouldReverseNaturalAlignment(content, v3);
+  return _UILabelShouldReverseNaturalAlignment(content, semanticContentAttribute);
 }
 
 - (unint64_t)length
 {
-  v2 = [(_UILabelSynthesizedContent *)self synthesizedAttributedString];
-  v3 = [v2 length];
+  synthesizedAttributedString = [(_UILabelSynthesizedContent *)self synthesizedAttributedString];
+  v3 = [synthesizedAttributedString length];
 
   return v3;
 }
 
 - (id)synthesizedAttributes
 {
-  v3 = objc_getAssociatedObject(self, &_MergedGlobals_1406);
-  if (!v3)
+  defaultAttributes2 = objc_getAssociatedObject(self, &_MergedGlobals_1406);
+  if (!defaultAttributes2)
   {
-    v4 = [(_UILabelSynthesizedContent *)self overrideTextColor];
-    v5 = [(_UILabelSynthesizedContent *)self eliminateShadows];
-    v6 = [(_UILabelSynthesizedContent *)self reverseNaturalAlignment];
-    v7 = v6;
-    if (v4 || v5 || v6 || self->_textEncapsulation)
+    overrideTextColor = [(_UILabelSynthesizedContent *)self overrideTextColor];
+    eliminateShadows = [(_UILabelSynthesizedContent *)self eliminateShadows];
+    reverseNaturalAlignment = [(_UILabelSynthesizedContent *)self reverseNaturalAlignment];
+    v7 = reverseNaturalAlignment;
+    if (overrideTextColor || eliminateShadows || reverseNaturalAlignment || self->_textEncapsulation)
     {
-      v8 = [(_UILabelContent *)self->_content defaultAttributes];
-      v9 = [v8 mutableCopy];
+      defaultAttributes = [(_UILabelContent *)self->_content defaultAttributes];
+      v9 = [defaultAttributes mutableCopy];
 
-      if (v4)
+      if (overrideTextColor)
       {
-        [v9 setObject:v4 forKeyedSubscript:*off_1E70EC920];
+        [v9 setObject:overrideTextColor forKeyedSubscript:*off_1E70EC920];
       }
 
-      if (v5)
+      if (eliminateShadows)
       {
         v10 = objc_opt_new();
         [v10 setShadowColor:0];
@@ -69,30 +69,30 @@
         objc_claimAutoreleasedReturnValue();
       }
 
-      v3 = [v9 copy];
+      defaultAttributes2 = [v9 copy];
     }
 
     else
     {
-      v3 = [(_UILabelContent *)self->_content defaultAttributes];
+      defaultAttributes2 = [(_UILabelContent *)self->_content defaultAttributes];
     }
 
-    objc_setAssociatedObject(self, &_MergedGlobals_1406, v3, 1);
+    objc_setAssociatedObject(self, &_MergedGlobals_1406, defaultAttributes2, 1);
   }
 
-  return v3;
+  return defaultAttributes2;
 }
 
 - (id)synthesizedAttributedString
 {
-  v3 = objc_getAssociatedObject(self, &unk_1ED4A3138);
-  if (!v3)
+  _synthesizedAttributedString = objc_getAssociatedObject(self, &unk_1ED4A3138);
+  if (!_synthesizedAttributedString)
   {
-    v3 = [(_UILabelSynthesizedContent *)self _synthesizedAttributedString];
-    objc_setAssociatedObject(self, &unk_1ED4A3138, v3, 0x301);
-    if ([v3 length])
+    _synthesizedAttributedString = [(_UILabelSynthesizedContent *)self _synthesizedAttributedString];
+    objc_setAssociatedObject(self, &unk_1ED4A3138, _synthesizedAttributedString, 0x301);
+    if ([_synthesizedAttributedString length])
     {
-      v4 = [v3 attribute:*off_1E70EC8D8 atIndex:0 longestEffectiveRange:0 inRange:{0, objc_msgSend(v3, "length")}];
+      v4 = [_synthesizedAttributedString attribute:*off_1E70EC8D8 atIndex:0 longestEffectiveRange:0 inRange:{0, objc_msgSend(_synthesizedAttributedString, "length")}];
       *&self->_flags = *&self->_flags & 0xF7 | (8 * (v4 != 0));
     }
 
@@ -102,7 +102,7 @@
     }
   }
 
-  return v3;
+  return _synthesizedAttributedString;
 }
 
 - (id)_synthesizedAttributedString
@@ -112,25 +112,25 @@
     goto LABEL_2;
   }
 
-  v4 = [(_UILabelContent *)self->_content isAttributed];
+  isAttributed = [(_UILabelContent *)self->_content isAttributed];
   content = self->_content;
-  if (v4)
+  if (isAttributed)
   {
-    v6 = [(_UILabelContent *)content attributedString];
-    v7 = [(_UILabelContent *)self->_content defaultAttributes];
-    v8 = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
+    attributedString = [(_UILabelContent *)content attributedString];
+    defaultAttributes = [(_UILabelContent *)self->_content defaultAttributes];
+    synthesizedAttributes = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
     v9 = [(_UILabelContent *)self->_content length];
-    if (v7 == v8)
+    if (defaultAttributes == synthesizedAttributes)
     {
-      v24 = [(NSAttributedString *)v6 _ui_synthesizeAttributedSubstringFromRange:v9 usingDefaultAttributes:v8];
+      v24 = [(NSAttributedString *)attributedString _ui_synthesizeAttributedSubstringFromRange:v9 usingDefaultAttributes:synthesizedAttributes];
       v19 = [v24 mutableCopy];
     }
 
     else
     {
-      v10 = [v6 mutableCopy];
+      v10 = [attributedString mutableCopy];
       v11 = *off_1E70EC920;
-      v12 = [v7 objectForKey:*off_1E70EC920];
+      v12 = [defaultAttributes objectForKey:*off_1E70EC920];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __58___UILabelSynthesizedContent__synthesizedAttributedString__block_invoke;
@@ -143,7 +143,7 @@
       if (*&self->_flags)
       {
         v15 = *off_1E70EC9B0;
-        v16 = [v7 objectForKey:*off_1E70EC9B0];
+        v16 = [defaultAttributes objectForKey:*off_1E70EC9B0];
         v27 = MEMORY[0x1E69E9820];
         v28 = 3221225472;
         v29 = __58___UILabelSynthesizedContent__synthesizedAttributedString__block_invoke_2;
@@ -154,26 +154,26 @@
         [v32 enumerateAttribute:v15 inRange:0 options:v9 usingBlock:{0, &v27}];
       }
 
-      v18 = [(NSAttributedString *)v14 _ui_synthesizeAttributedSubstringFromRange:v9 usingDefaultAttributes:v8];
+      v18 = [(NSAttributedString *)v14 _ui_synthesizeAttributedSubstringFromRange:v9 usingDefaultAttributes:synthesizedAttributes];
       v19 = [v18 mutableCopy];
     }
   }
 
   else
   {
-    v20 = [(_UILabelContent *)content string];
-    if (!v20)
+    string = [(_UILabelContent *)content string];
+    if (!string)
     {
 LABEL_2:
       v3 = 0;
       goto LABEL_17;
     }
 
-    v6 = v20;
+    attributedString = string;
     v21 = objc_alloc(MEMORY[0x1E696AD40]);
-    v22 = [(_UILabelContent *)self->_content string];
-    v23 = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
-    v19 = [v21 initWithString:v22 attributes:v23];
+    string2 = [(_UILabelContent *)self->_content string];
+    synthesizedAttributes2 = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
+    v19 = [v21 initWithString:string2 attributes:synthesizedAttributes2];
   }
 
   flags = self->_flags;
@@ -195,7 +195,7 @@ LABEL_17:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong((v4 + 8), self->_content);
@@ -225,27 +225,27 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       LOBYTE(v12) = 1;
       goto LABEL_22;
     }
 
-    if (((*&v4->_flags ^ *&self->_flags) & 7) == 0)
+    if (((*&equalCopy->_flags ^ *&self->_flags) & 7) == 0)
     {
       semanticContentAttribute = self->_semanticContentAttribute;
-      if (semanticContentAttribute == [(_UILabelSynthesizedContent *)v4 semanticContentAttribute])
+      if (semanticContentAttribute == [(_UILabelSynthesizedContent *)equalCopy semanticContentAttribute])
       {
         overrideTextColor = self->_overrideTextColor;
-        v8 = [(_UILabelSynthesizedContent *)v5 overrideTextColor];
+        overrideTextColor = [(_UILabelSynthesizedContent *)v5 overrideTextColor];
         v9 = overrideTextColor;
-        v10 = v8;
+        v10 = overrideTextColor;
         v11 = v10;
         if (v9 == v10)
         {
@@ -272,9 +272,9 @@ LABEL_21:
         }
 
         content = self->_content;
-        v14 = [(_UILabelSynthesizedContent *)v5 content];
+        content = [(_UILabelSynthesizedContent *)v5 content];
         v15 = content;
-        v16 = v14;
+        v16 = content;
         v9 = v16;
         if (v15 == v16)
         {
@@ -301,13 +301,13 @@ LABEL_22:
   return v12;
 }
 
-- (void)_disablingHyphenationIfURLsDetectedInAttributedString:(id)a3
+- (void)_disablingHyphenationIfURLsDetectedInAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 string];
-  v5 = [v4 length];
+  stringCopy = string;
+  string = [stringCopy string];
+  v5 = [string length];
   v6 = [objc_alloc(MEMORY[0x1E696AB60]) initWithTypes:32 error:0];
-  v7 = [v6 matchesInString:v4 options:0 range:{0, v5}];
+  v7 = [v6 matchesInString:string options:0 range:{0, v5}];
   if ([v7 count])
   {
     v8 = *off_1E70EC988;
@@ -315,15 +315,15 @@ LABEL_22:
     v9[1] = 3221225472;
     v9[2] = __84___UILabelSynthesizedContent__disablingHyphenationIfURLsDetectedInAttributedString___block_invoke;
     v9[3] = &unk_1E7126A88;
-    v10 = v3;
+    v10 = stringCopy;
     [v10 enumerateAttribute:v8 inRange:0 options:v5 usingBlock:{0, v9}];
   }
 }
 
-- (void)_isolateStringWritingDirectionInAttributedString:(id)a3
+- (void)_isolateStringWritingDirectionInAttributedString:(id)string
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v6 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self->_semanticContentAttribute]!= UIUserInterfaceLayoutDirectionLeftToRight;
     v46 = 0;
@@ -334,23 +334,23 @@ LABEL_22:
     v43 = &v42;
     v44 = 0x2020000000;
     v45 = 0;
-    v7 = [(_UILabelContent *)self->_content paragraphStyle];
-    v8 = [v5 length];
+    paragraphStyle = [(_UILabelContent *)self->_content paragraphStyle];
+    v8 = [stringCopy length];
     v9 = *off_1E70EC988;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __79___UILabelSynthesizedContent__isolateStringWritingDirectionInAttributedString___block_invoke;
     v38[3] = &unk_1E7129EC0;
-    v10 = v7;
+    v10 = paragraphStyle;
     v39 = v10;
     v40 = &v42;
     v41 = &v46;
-    [v5 enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v38}];
+    [stringCopy enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v38}];
     v11 = v47[3];
     if (!v11)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"_UILabelSynthesizedContent.m" lineNumber:297 description:@"should have at least one isolate range (beginning to end)"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UILabelSynthesizedContent.m" lineNumber:297 description:@"should have at least one isolate range (beginning to end)"];
 
       v11 = v47[3];
     }
@@ -362,7 +362,7 @@ LABEL_22:
     v36 = 0x2020000000;
     v37 = 0;
     *(v43 + 12) = 0;
-    v13 = [v5 length];
+    v13 = [stringCopy length];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __79___UILabelSynthesizedContent__isolateStringWritingDirectionInAttributedString___block_invoke_2;
@@ -372,14 +372,14 @@ LABEL_22:
     v31 = &v34;
     v32 = v12;
     v33 = v6;
-    v14 = v5;
+    v14 = stringCopy;
     v29 = v14;
     [v14 enumerateAttribute:v9 inRange:0 options:v13 usingBlock:{0, v28}];
     v15 = v35[3];
     if (v15 != v47[3])
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"_UILabelSynthesizedContent.m" lineNumber:324 description:@"Number of writing direction changes was inconsistent"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UILabelSynthesizedContent.m" lineNumber:324 description:@"Number of writing direction changes was inconsistent"];
 
       v15 = v47[3];
     }
@@ -488,9 +488,9 @@ LABEL_6:
 
   v9 = MEMORY[0x1E696AEC0];
   v10 = objc_opt_class();
-  v11 = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
-  v12 = [(_UILabelSynthesizedContent *)self synthesizedAttributedString];
-  v13 = [v9 stringWithFormat:@"<%@:%p attributes=%@ text=%@ semanticContentAttribute=%@ overrideTextColor=%@ flags=(%@)>", v10, self, v11, v12, v8, self->_overrideTextColor, v6];
+  synthesizedAttributes = [(_UILabelSynthesizedContent *)self synthesizedAttributes];
+  synthesizedAttributedString = [(_UILabelSynthesizedContent *)self synthesizedAttributedString];
+  v13 = [v9 stringWithFormat:@"<%@:%p attributes=%@ text=%@ semanticContentAttribute=%@ overrideTextColor=%@ flags=(%@)>", v10, self, synthesizedAttributes, synthesizedAttributedString, v8, self->_overrideTextColor, v6];
 
   return v13;
 }

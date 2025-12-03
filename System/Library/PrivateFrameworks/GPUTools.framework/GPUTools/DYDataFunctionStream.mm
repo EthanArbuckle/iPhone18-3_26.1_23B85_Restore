@@ -1,11 +1,11 @@
 @interface DYDataFunctionStream
-- (BOOL)resetToFunction:(const Function *)a3;
+- (BOOL)resetToFunction:(const Function *)function;
 - (DYDataFunctionStream)init;
-- (DYDataFunctionStream)initWithData:(id)a3 header:(const void *)a4 error:(id *)a5;
+- (DYDataFunctionStream)initWithData:(id)data header:(const void *)header error:(id *)error;
 - (const)peekFunction;
 - (const)readFunction;
 - (id).cxx_construct;
-- (unint64_t)readFunctions:(Function *)a3 maxCount:(unint64_t)a4;
+- (unint64_t)readFunctions:(Function *)functions maxCount:(unint64_t)count;
 - (void)clearResetMarker;
 - (void)dealloc;
 - (void)reset;
@@ -21,14 +21,14 @@
   return 0;
 }
 
-- (DYDataFunctionStream)initWithData:(id)a3 header:(const void *)a4 error:(id *)a5
+- (DYDataFunctionStream)initWithData:(id)data header:(const void *)header error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = DYDataFunctionStream;
   v6 = [(DYDataFunctionStream *)&v8 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
+    *(v6 + 1) = data;
     GPUTools::FD::TFunctionStream<GPUTools::FD::Function,void>::Create();
   }
 
@@ -68,13 +68,13 @@
   GPUTools::FD::Function::~Function(v3);
 }
 
-- (BOOL)resetToFunction:(const Function *)a3
+- (BOOL)resetToFunction:(const Function *)function
 {
   v4 = *(self + 2);
-  v5 = *(a3 + 55);
+  v5 = *(function + 55);
   if (v5 < *(v4 + 24) && v5 >= *(v4 + 16))
   {
-    v7 = *(a3 + 55);
+    v7 = *(function + 55);
   }
 
   else
@@ -94,11 +94,11 @@
   return v8;
 }
 
-- (unint64_t)readFunctions:(Function *)a3 maxCount:(unint64_t)a4
+- (unint64_t)readFunctions:(Function *)functions maxCount:(unint64_t)count
 {
   GPUTools::FD::TFunctionStream<GPUTools::FD::Function,void>::_Iterator<GPUTools::FD::Function>::_Iterator(v11, *(self + 2), *(*(self + 2) + 24));
-  v7 = 0;
-  if (a4)
+  countCopy = 0;
+  if (count)
   {
     v8 = self + 32;
     while (1)
@@ -116,18 +116,18 @@
 
       GPUTools::FD::Function::operator=();
       GPUTools::FD::TFunctionStream<GPUTools::FD::Function,void>::_Iterator<GPUTools::FD::Function>::operator++(v8);
-      ++v7;
-      a3 = (a3 + 536);
-      if (a4 == v7)
+      ++countCopy;
+      functions = (functions + 536);
+      if (count == countCopy)
       {
-        v7 = a4;
+        countCopy = count;
         break;
       }
     }
   }
 
   GPUTools::FD::Function::~Function(v11);
-  return v7;
+  return countCopy;
 }
 
 - (id).cxx_construct

@@ -1,26 +1,26 @@
 @interface PPPBContactNameRecordCache
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBContactNameRecordCache
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -46,9 +46,9 @@
     while (v7);
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_createdAt = *(v4 + 1);
+    self->_createdAt = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -71,16 +71,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   records = self->_records;
-  if (records | *(v4 + 2))
+  if (records | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)records isEqual:?])
     {
@@ -88,10 +88,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_createdAt == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_createdAt == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -106,10 +106,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -130,7 +130,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addRecords:v11];
 
         ++v10;
@@ -153,35 +153,35 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(PPPBContactNameRecordCache *)self recordsCount])
   {
-    [v8 clearRecords];
-    v4 = [(PPPBContactNameRecordCache *)self recordsCount];
-    if (v4)
+    [toCopy clearRecords];
+    recordsCount = [(PPPBContactNameRecordCache *)self recordsCount];
+    if (recordsCount)
     {
-      v5 = v4;
+      v5 = recordsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PPPBContactNameRecordCache *)self recordsAtIndex:i];
-        [v8 addRecords:v7];
+        [toCopy addRecords:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 1) = self->_createdAt;
-    *(v8 + 24) |= 1u;
+    *(toCopy + 1) = self->_createdAt;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -226,7 +226,7 @@ LABEL_9:
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_records count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_records, "count")}];
@@ -249,8 +249,8 @@ LABEL_9:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -259,18 +259,18 @@ LABEL_9:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"records"];
+    [dictionary setObject:v4 forKey:@"records"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_createdAt];
-    [v3 setObject:v11 forKey:@"created_at"];
+    [dictionary setObject:v11 forKey:@"created_at"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -279,28 +279,28 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = PPPBContactNameRecordCache;
   v4 = [(PPPBContactNameRecordCache *)&v8 description];
-  v5 = [(PPPBContactNameRecordCache *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBContactNameRecordCache *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   records = self->_records;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!records)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_records;
     self->_records = v6;
 
-    v4 = v8;
+    recordsCopy = v8;
     records = self->_records;
   }
 
-  [(NSMutableArray *)records addObject:v4];
+  [(NSMutableArray *)records addObject:recordsCopy];
 }
 
 @end

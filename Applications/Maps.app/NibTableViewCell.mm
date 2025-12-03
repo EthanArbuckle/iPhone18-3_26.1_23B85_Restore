@@ -1,17 +1,17 @@
 @interface NibTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSBundle)bundle;
 - (NSString)nibName;
-- (NibTableViewCell)initWithNibName:(id)a3 bundle:(id)a4 reuseIdentifier:(id)a5;
-- (void)setCellContentView:(id)a3;
+- (NibTableViewCell)initWithNibName:(id)name bundle:(id)bundle reuseIdentifier:(id)identifier;
+- (void)setCellContentView:(id)view;
 @end
 
 @implementation NibTableViewCell
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(NibTableViewCell *)self cellContentView:a3.width];
+  width = fits.width;
+  v4 = [(NibTableViewCell *)self cellContentView:fits.width];
   LODWORD(v5) = 1144750080;
   LODWORD(v6) = 1112014848;
   [v4 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v5, v6}];
@@ -25,47 +25,47 @@
   return result;
 }
 
-- (void)setCellContentView:(id)a3
+- (void)setCellContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   cellContentView = self->_cellContentView;
-  if (cellContentView != v5)
+  if (cellContentView != viewCopy)
   {
-    v23 = v5;
-    v7 = [(UIView *)cellContentView superview];
-    v8 = [(NibTableViewCell *)self contentView];
+    v23 = viewCopy;
+    superview = [(UIView *)cellContentView superview];
+    contentView = [(NibTableViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_cellContentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_cellContentView, a3);
-    v9 = [(NibTableViewCell *)self contentView];
-    [v9 addSubview:self->_cellContentView];
+    objc_storeStrong(&self->_cellContentView, view);
+    contentView2 = [(NibTableViewCell *)self contentView];
+    [contentView2 addSubview:self->_cellContentView];
 
     [(UIView *)self->_cellContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [(UIView *)self->_cellContentView leftAnchor];
-    v21 = [(NibTableViewCell *)self leftAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leftAnchor = [(UIView *)self->_cellContentView leftAnchor];
+    leftAnchor2 = [(NibTableViewCell *)self leftAnchor];
+    v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v24[0] = v20;
-    v19 = [(UIView *)self->_cellContentView topAnchor];
-    v18 = [(NibTableViewCell *)self topAnchor];
-    v10 = [v19 constraintEqualToAnchor:v18];
+    topAnchor = [(UIView *)self->_cellContentView topAnchor];
+    topAnchor2 = [(NibTableViewCell *)self topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[1] = v10;
-    v11 = [(UIView *)self->_cellContentView rightAnchor];
-    v12 = [(NibTableViewCell *)self rightAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    rightAnchor = [(UIView *)self->_cellContentView rightAnchor];
+    rightAnchor2 = [(NibTableViewCell *)self rightAnchor];
+    v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v24[2] = v13;
-    v14 = [(UIView *)self->_cellContentView bottomAnchor];
-    v15 = [(NibTableViewCell *)self bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIView *)self->_cellContentView bottomAnchor];
+    bottomAnchor2 = [(NibTableViewCell *)self bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v16;
     v17 = [NSArray arrayWithObjects:v24 count:4];
     [NSLayoutConstraint activateConstraints:v17];
 
     [(UIView *)self->_cellContentView setPreservesSuperviewLayoutMargins:1];
-    v5 = v23;
+    viewCopy = v23;
   }
 }
 
@@ -100,23 +100,23 @@
   return nibName;
 }
 
-- (NibTableViewCell)initWithNibName:(id)a3 bundle:(id)a4 reuseIdentifier:(id)a5
+- (NibTableViewCell)initWithNibName:(id)name bundle:(id)bundle reuseIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v17.receiver = self;
   v17.super_class = NibTableViewCell;
-  v10 = [(NibTableViewCell *)&v17 initWithStyle:0 reuseIdentifier:a5];
+  v10 = [(NibTableViewCell *)&v17 initWithStyle:0 reuseIdentifier:identifier];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     nibName = v10->_nibName;
     v10->_nibName = v11;
 
-    objc_storeStrong(&v10->_bundle, a4);
-    v13 = [(NibTableViewCell *)v10 bundle];
-    v14 = [(NibTableViewCell *)v10 nibName];
-    v15 = [v13 loadNibNamed:v14 owner:v10 options:0];
+    objc_storeStrong(&v10->_bundle, bundle);
+    bundle = [(NibTableViewCell *)v10 bundle];
+    nibName = [(NibTableViewCell *)v10 nibName];
+    v15 = [bundle loadNibNamed:nibName owner:v10 options:0];
 
     [(NibTableViewCell *)v10 cellContentViewDidLoad];
   }

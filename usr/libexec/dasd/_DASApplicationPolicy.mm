@@ -1,19 +1,19 @@
 @interface _DASApplicationPolicy
-+ (id)focalApplicationsWithContext:(id)a3;
++ (id)focalApplicationsWithContext:(id)context;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)isDaemon:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)isDaemon:(id)daemon;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASApplicationPolicy)init;
 - (_DASPredictionTimeline)topNPrediction;
-- (double)scoreForActivity:(id)a3 atDate:(id)a4 withRationale:(id)a5;
-- (double)scoreForAnyAppActivity:(id)a3 atDate:(id)a4;
-- (double)weightForActivity:(id)a3;
+- (double)scoreForActivity:(id)activity atDate:(id)date withRationale:(id)rationale;
+- (double)scoreForAnyAppActivity:(id)activity atDate:(id)date;
+- (double)weightForActivity:(id)activity;
 - (id)initializeTriggers;
-- (id)predictionTimelineForBundleID:(id)a3;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)predictionTimelineForBundleID:(id)d;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (unsigned)jitter;
-- (void)updateAppLaunchedRecently:(id)a3;
+- (void)updateAppLaunchedRecently:(id)recently;
 - (void)updateRecentApplications;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004267C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B010 != -1)
   {
     dispatch_once(&qword_10020B010, block);
@@ -108,9 +108,9 @@
     daemons = v3->_daemons;
     v3->_daemons = v17;
 
-    v19 = [(_DASApplicationPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASApplicationPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v19;
+    v3->_triggers = initializeTriggers;
 
     v21 = +[NSMutableSet set];
     recentlyUsedApplications = v3->_recentlyUsedApplications;
@@ -149,36 +149,36 @@
   dispatch_resume(qword_10020B020);
 }
 
-+ (id)focalApplicationsWithContext:(id)a3
++ (id)focalApplicationsWithContext:(id)context
 {
   v3 = +[_DASProcessLifecycleMonitor sharedMonitor];
-  v4 = [v3 foregroundedApplications];
+  foregroundedApplications = [v3 foregroundedApplications];
 
-  return v4;
+  return foregroundedApplications;
 }
 
-- (void)updateAppLaunchedRecently:(id)a3
+- (void)updateAppLaunchedRecently:(id)recently
 {
-  v4 = a3;
+  recentlyCopy = recently;
   v5 = self->_recentlyUsedApplications;
   objc_sync_enter(v5);
   v6 = [(NSMutableSet *)self->_recentlyUsedApplications count];
   recentlyUsedApplications = self->_recentlyUsedApplications;
   if (v6 >= 0x19)
   {
-    if (([(NSMutableSet *)recentlyUsedApplications containsObject:v4]& 1) != 0)
+    if (([(NSMutableSet *)recentlyUsedApplications containsObject:recentlyCopy]& 1) != 0)
     {
       goto LABEL_5;
     }
 
     v8 = self->_recentlyUsedApplications;
-    v9 = [(NSMutableSet *)v8 anyObject];
-    [(NSMutableSet *)v8 removeObject:v9];
+    anyObject = [(NSMutableSet *)v8 anyObject];
+    [(NSMutableSet *)v8 removeObject:anyObject];
 
     recentlyUsedApplications = self->_recentlyUsedApplications;
   }
 
-  [(NSMutableSet *)recentlyUsedApplications addObject:v4];
+  [(NSMutableSet *)recentlyUsedApplications addObject:recentlyCopy];
 LABEL_5:
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -192,14 +192,14 @@ LABEL_5:
   objc_sync_exit(v5);
 }
 
-- (BOOL)isDaemon:(id)a3
+- (BOOL)isDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
+  daemonCopy = daemon;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:daemonCopy allowPlaceholder:0 error:0];
 
-  v5 = [v4 compatibilityObject];
+  compatibilityObject = [v4 compatibilityObject];
 
-  return v5 == 0;
+  return compatibilityObject == 0;
 }
 
 - (_DASPredictionTimeline)topNPrediction
@@ -224,9 +224,9 @@ LABEL_5:
   return v3;
 }
 
-- (id)predictionTimelineForBundleID:(id)a3
+- (id)predictionTimelineForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -239,9 +239,9 @@ LABEL_5:
   block[2] = sub_1000432C0;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(predictionQueue, block);
   v7 = v13[5];
 
@@ -250,31 +250,31 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  if (![a3 isEqualToString:{@"com.apple.das.apppolicy.appchanged", a4}])
+  if (![trigger isEqualToString:{@"com.apple.das.apppolicy.appchanged", state}])
   {
     return 0;
   }
 
-  v5 = [(_DASProcessLifecycleMonitor *)self->_processMonitor foregroundedApplications];
-  v6 = [v5 count] == 0;
+  foregroundedApplications = [(_DASProcessLifecycleMonitor *)self->_processMonitor foregroundedApplications];
+  v6 = [foregroundedApplications count] == 0;
 
   return v6;
 }
 
-- (double)weightForActivity:(id)a3
+- (double)weightForActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requestsApplicationLaunch])
+  activityCopy = activity;
+  if ([activityCopy requestsApplicationLaunch])
   {
     v4 = 50.0;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    if (v5 >= _DASSchedulingPriorityUtility)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority >= _DASSchedulingPriorityUtility)
     {
       v4 = 25.0;
     }
@@ -288,48 +288,48 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 launchReason];
-  if ([v4 isEqualToString:_DASLaunchReasonBackgroundProcessing])
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  if ([launchReason isEqualToString:_DASLaunchReasonBackgroundProcessing])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 launchReason];
-    if ([v6 isEqualToString:_DASLaunchReasonHealthResearch])
+    launchReason2 = [activityCopy launchReason];
+    if ([launchReason2 isEqualToString:_DASLaunchReasonHealthResearch])
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [v3 launchReason];
-      if ([v7 isEqualToString:_DASLaunchReasonHealthKit])
+      launchReason3 = [activityCopy launchReason];
+      if ([launchReason3 isEqualToString:_DASLaunchReasonHealthKit])
       {
         v5 = 0;
       }
 
       else
       {
-        v8 = [v3 widgetID];
-        if (v8 || ([v3 requestsImmediateRuntime] & 1) != 0)
+        widgetID = [activityCopy widgetID];
+        if (widgetID || ([activityCopy requestsImmediateRuntime] & 1) != 0)
         {
           v5 = 0;
         }
 
-        else if ([v3 supportsAnyApplication] & 1) != 0 || (objc_msgSend(v3, "requestsApplicationLaunch"))
+        else if ([activityCopy supportsAnyApplication] & 1) != 0 || (objc_msgSend(activityCopy, "requestsApplicationLaunch"))
         {
           v5 = 1;
         }
 
         else
         {
-          v10 = [v3 relatedApplications];
-          v5 = [v10 count] != 0;
+          relatedApplications = [activityCopy relatedApplications];
+          v5 = [relatedApplications count] != 0;
         }
       }
     }
@@ -338,19 +338,19 @@ LABEL_5:
   return v5;
 }
 
-- (double)scoreForAnyAppActivity:(id)a3 atDate:(id)a4
+- (double)scoreForAnyAppActivity:(id)activity atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASApplicationPolicy *)self topNPrediction];
-  v28 = v7;
-  v9 = [v7 dateByAddingTimeInterval:450.0];
-  v27 = v8;
-  v10 = [v8 valueAtDate:v9];
-  v11 = [v6 relatedApplications];
-  if ([v11 count])
+  activityCopy = activity;
+  dateCopy = date;
+  topNPrediction = [(_DASApplicationPolicy *)self topNPrediction];
+  v28 = dateCopy;
+  v9 = [dateCopy dateByAddingTimeInterval:450.0];
+  v27 = topNPrediction;
+  v10 = [topNPrediction valueAtDate:v9];
+  relatedApplications = [activityCopy relatedApplications];
+  if ([relatedApplications count])
   {
-    [v6 relatedApplications];
+    [activityCopy relatedApplications];
   }
 
   else
@@ -406,7 +406,7 @@ LABEL_5:
   if ([v13 count])
   {
     v25 = [NSArray arrayWithArray:v13];
-    [v6 setSchedulerRecommendedApplications:v25];
+    [activityCopy setSchedulerRecommendedApplications:v25];
   }
 
   objc_autoreleasePoolPop(v24);
@@ -414,16 +414,16 @@ LABEL_5:
   return fmax(sqrt(1.0 - v18), 0.01);
 }
 
-- (double)scoreForActivity:(id)a3 atDate:(id)a4 withRationale:(id)a5
+- (double)scoreForActivity:(id)activity atDate:(id)date withRationale:(id)rationale
 {
-  v8 = a3;
-  v9 = a4;
-  v51 = a5;
-  v53 = v8;
-  v50 = v9;
-  if ([v8 supportsAnyApplication])
+  activityCopy = activity;
+  dateCopy = date;
+  rationaleCopy = rationale;
+  v53 = activityCopy;
+  v50 = dateCopy;
+  if ([activityCopy supportsAnyApplication])
   {
-    [(_DASApplicationPolicy *)self scoreForAnyAppActivity:v8 atDate:v9];
+    [(_DASApplicationPolicy *)self scoreForAnyAppActivity:activityCopy atDate:dateCopy];
     v11 = v10;
     goto LABEL_63;
   }
@@ -432,8 +432,8 @@ LABEL_5:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v12 = [v8 relatedApplications];
-  v13 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
+  relatedApplications = [activityCopy relatedApplications];
+  v13 = [relatedApplications countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v13)
   {
     v14 = *v59;
@@ -443,7 +443,7 @@ LABEL_5:
       {
         if (*v59 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(relatedApplications);
         }
 
         if ([(_DASComplicationManager *)self->_complicationManager isActiveComplication:*(*(&v58 + 1) + 8 * i)])
@@ -454,7 +454,7 @@ LABEL_5:
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
+      v13 = [relatedApplications countByEnumeratingWithState:&v58 objects:v65 count:16];
     }
 
     while (v13);
@@ -466,8 +466,8 @@ LABEL_5:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v16 = [v53 relatedApplications];
-  v17 = [v16 countByEnumeratingWithState:&v54 objects:v64 count:16];
+  relatedApplications2 = [v53 relatedApplications];
+  v17 = [relatedApplications2 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (!v17)
   {
     v19 = 1.0;
@@ -482,7 +482,7 @@ LABEL_5:
     {
       if (*v55 != v18)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(relatedApplications2);
       }
 
       v21 = *(*(&v54 + 1) + 8 * j);
@@ -490,9 +490,9 @@ LABEL_5:
       objc_sync_enter(v22);
       if ([(NSMutableSet *)self->_daemons containsObject:v21])
       {
-        v23 = [v53 schedulingPriority];
+        schedulingPriority = [v53 schedulingPriority];
         v19 = v19 * 0.99;
-        if (v23 > _DASSchedulingPriorityUtility)
+        if (schedulingPriority > _DASSchedulingPriorityUtility)
         {
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -536,11 +536,11 @@ LABEL_24:
         {
           [v26 doubleValue];
           v28 = v29;
-          if (v51)
+          if (rationaleCopy)
           {
             v30 = [NSNumber numberWithDouble:v29];
             v31 = [NSPredicate predicateWithFormat:@"%@.likelihood == %@", v21, v30];
-            [v51 addRationaleWithCondition:v31];
+            [rationaleCopy addRationaleWithCondition:v31];
           }
         }
       }
@@ -549,15 +549,15 @@ LABEL_24:
 LABEL_30:
     }
 
-    v17 = [v16 countByEnumeratingWithState:&v54 objects:v64 count:16];
+    v17 = [relatedApplications2 countByEnumeratingWithState:&v54 objects:v64 count:16];
   }
 
   while (v17);
 LABEL_35:
 
-  v32 = [v53 requestsApplicationLaunch];
+  requestsApplicationLaunch = [v53 requestsApplicationLaunch];
   v33 = sqrt(1.0 - v19);
-  if ((v32 & (v33 > 0.25)) != 0)
+  if ((requestsApplicationLaunch & (v33 > 0.25)) != 0)
   {
     v34 = 1.0;
   }
@@ -569,11 +569,11 @@ LABEL_35:
 
   if (v34 > 2.22044605e-16 && [v53 requestsApplicationLaunch])
   {
-    v35 = [v53 relatedApplications];
-    v36 = [v35 firstObject];
+    relatedApplications3 = [v53 relatedApplications];
+    firstObject = [relatedApplications3 firstObject];
 
     v37 = +[_DASDaemon sharedInstance];
-    v38 = [v37 requestCountForApplication:v36];
+    v38 = [v37 requestCountForApplication:firstObject];
 
     if (v38)
     {
@@ -601,11 +601,11 @@ LABEL_35:
     {
       v43 = self->_recentlyUsedApplications;
       objc_sync_enter(v43);
-      v44 = [v53 relatedApplications];
-      v45 = [v44 firstObject];
+      relatedApplications4 = [v53 relatedApplications];
+      firstObject2 = [relatedApplications4 firstObject];
 
       v34 = v34 * 0.65;
-      if (v45 && [(NSMutableSet *)self->_recentlyUsedApplications containsObject:v45])
+      if (firstObject2 && [(NSMutableSet *)self->_recentlyUsedApplications containsObject:firstObject2])
       {
         v34 = v34 + 0.35;
       }
@@ -618,8 +618,8 @@ LABEL_35:
       v34 = 1.0;
     }
 
-    v46 = [v53 schedulingPriority];
-    if (v46 < _DASSchedulingPriorityUserInitiated && ![v53 requestsNewsstandLaunch])
+    schedulingPriority2 = [v53 schedulingPriority];
+    if (schedulingPriority2 < _DASSchedulingPriorityUserInitiated && ![v53 requestsNewsstandLaunch])
     {
       v39 = 0.0;
     }
@@ -645,17 +645,17 @@ LABEL_63:
   return v11;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASProcessLifecycleMonitor *)self->_processMonitor foregroundedApplications];
+  activityCopy = activity;
+  stateCopy = state;
+  foregroundedApplications = [(_DASProcessLifecycleMonitor *)self->_processMonitor foregroundedApplications];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v9 = [v6 relatedApplications];
-  v10 = [v9 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  relatedApplications = [activityCopy relatedApplications];
+  v10 = [relatedApplications countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v10)
   {
     v11 = *v62;
@@ -665,17 +665,17 @@ LABEL_3:
     {
       if (*v62 != v11)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(relatedApplications);
       }
 
-      if ([v8 containsObject:*(*(&v61 + 1) + 8 * v12)])
+      if ([foregroundedApplications containsObject:*(*(&v61 + 1) + 8 * v12)])
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [v9 countByEnumeratingWithState:&v61 objects:v66 count:16];
+        v10 = [relatedApplications countByEnumeratingWithState:&v61 objects:v66 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -685,7 +685,7 @@ LABEL_3:
       }
     }
 
-    if ([v6 isContinuedProcessingTask])
+    if ([activityCopy isContinuedProcessingTask])
     {
       v14 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Application Policy"];
       [(_DASPolicyResponseRationale *)v14 addRationaleForCondition:@"appIsForegrounded" withRequiredValue:1.0 withCurrentValue:1.0];
@@ -705,17 +705,17 @@ LABEL_9:
     v13 = 0;
   }
 
-  if ([v6 requestsApplicationLaunch])
+  if ([activityCopy requestsApplicationLaunch])
   {
-    v16 = [v6 launchReason];
-    if ([v16 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
+    launchReason = [activityCopy launchReason];
+    if ([launchReason isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
     {
     }
 
     else
     {
-      v17 = [v6 launchReason];
-      v18 = [v17 isEqualToString:_DASLaunchReasonBackgroundNewsstand];
+      launchReason2 = [activityCopy launchReason];
+      v18 = [launchReason2 isEqualToString:_DASLaunchReasonBackgroundNewsstand];
 
       if (!v18)
       {
@@ -725,10 +725,10 @@ LABEL_9:
 
     v60 = 0;
     v19 = +[_DASDaemon sharedInstance];
-    v20 = [v19 barScheduler];
-    v21 = [v6 relatedApplications];
-    v22 = [v21 firstObject];
-    v23 = [v20 pushLaunchAllowedForApp:v22 immediately:&v60];
+    barScheduler = [v19 barScheduler];
+    relatedApplications2 = [activityCopy relatedApplications];
+    firstObject = [relatedApplications2 firstObject];
+    v23 = [barScheduler pushLaunchAllowedForApp:firstObject immediately:&v60];
 
     if (v60 == 1)
     {
@@ -754,10 +754,10 @@ LABEL_27:
 LABEL_20:
   if (v13)
   {
-    if ([v6 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
-      v26 = [v6 launchReason];
-      if ([v26 isEqualToString:_DASLaunchReasonBackgroundFetch])
+      launchReason3 = [activityCopy launchReason];
+      if ([launchReason3 isEqualToString:_DASLaunchReasonBackgroundFetch])
       {
 
 LABEL_29:
@@ -768,15 +768,15 @@ LABEL_29:
         goto LABEL_35;
       }
 
-      v28 = [v6 isBackgroundTaskActivity];
+      isBackgroundTaskActivity = [activityCopy isBackgroundTaskActivity];
 
-      if (v28)
+      if (isBackgroundTaskActivity)
       {
         goto LABEL_29;
       }
     }
 
-    else if ([v6 runOnAppForeground])
+    else if ([activityCopy runOnAppForeground])
     {
       [0 addRationaleForCondition:@"appIsForeground" withRequiredValue:1.0 withCurrentValue:1.0];
       v27 = [_DASPolicyResponse policyResponseWithDecision:67 validityDuration:0 rationale:86400.0];
@@ -786,8 +786,8 @@ LABEL_34:
     }
   }
 
-  v30 = [v6 launchReason];
-  if ([v30 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
+  launchReason4 = [activityCopy launchReason];
+  if ([launchReason4 isEqualToString:_DASLaunchReasonBackgroundRemoteNotification])
   {
 
 LABEL_33:
@@ -795,8 +795,8 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v31 = [v6 launchReason];
-  v32 = [v31 isEqualToString:_DASLaunchReasonBackgroundNewsstand];
+  launchReason5 = [activityCopy launchReason];
+  v32 = [launchReason5 isEqualToString:_DASLaunchReasonBackgroundNewsstand];
 
   if (v32)
   {
@@ -804,9 +804,9 @@ LABEL_33:
   }
 
   v34 = +[_DASFileProtectionPolicy policyInstance];
-  v35 = [v34 isClassCLocked];
+  isClassCLocked = [v34 isClassCLocked];
 
-  if (v35)
+  if (isClassCLocked)
   {
     v36 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Application Policy"];
     [(_DASPolicyResponseRationale *)v36 addRationaleForCondition:@"classCLocked" withRequiredValue:1.0 withCurrentValue:0.0];
@@ -816,23 +816,23 @@ LABEL_33:
   }
 
   v37 = +[NSDate date];
-  [(_DASApplicationPolicy *)self scoreForActivity:v6 atDate:v37 withRationale:0];
+  [(_DASApplicationPolicy *)self scoreForActivity:activityCopy atDate:v37 withRationale:0];
   v39 = v38;
   v40 = self->_recentlyUsedApplications;
   objc_sync_enter(v40);
-  v41 = [v6 relatedApplications];
-  if ([v41 count])
+  relatedApplications3 = [activityCopy relatedApplications];
+  if ([relatedApplications3 count])
   {
-    v42 = [v6 runWhenAppLaunchUnlikely];
+    runWhenAppLaunchUnlikely = [activityCopy runWhenAppLaunchUnlikely];
 
-    if (v42)
+    if (runWhenAppLaunchUnlikely)
     {
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v43 = [v6 relatedApplications];
-      v44 = [v43 countByEnumeratingWithState:&v56 objects:v65 count:16];
+      relatedApplications4 = [activityCopy relatedApplications];
+      v44 = [relatedApplications4 countByEnumeratingWithState:&v56 objects:v65 count:16];
       if (v44)
       {
         v45 = *v57;
@@ -842,7 +842,7 @@ LABEL_33:
           {
             if (*v57 != v45)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(relatedApplications4);
             }
 
             if ([(NSMutableSet *)self->_recentlyUsedApplications containsObject:*(*(&v56 + 1) + 8 * i)])
@@ -856,7 +856,7 @@ LABEL_33:
             }
           }
 
-          v44 = [v43 countByEnumeratingWithState:&v56 objects:v65 count:16];
+          v44 = [relatedApplications4 countByEnumeratingWithState:&v56 objects:v65 count:16];
           if (v44)
           {
             continue;
@@ -886,10 +886,10 @@ LABEL_60:
 
   objc_sync_exit(v40);
 
-  v48 = [v6 beforeApplicationLaunch];
+  beforeApplicationLaunch = [activityCopy beforeApplicationLaunch];
   if (v39 <= 0.05)
   {
-    v49 = v48;
+    v49 = beforeApplicationLaunch;
   }
 
   else
@@ -897,7 +897,7 @@ LABEL_60:
     v49 = 0;
   }
 
-  if (v49 == 1 && (+[_CDContextQueries keyPathForPluginStatus](_CDContextQueries, "keyPathForPluginStatus"), v50 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v50], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "BOOLValue"), v51, v50, (v52 & 1) == 0))
+  if (v49 == 1 && (+[_CDContextQueries keyPathForPluginStatus](_CDContextQueries, "keyPathForPluginStatus"), v50 = objc_claimAutoreleasedReturnValue(), [stateCopy objectForKeyedSubscript:v50], v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v51, "BOOLValue"), v51, v50, (v52 & 1) == 0))
   {
     v55 = [NSPredicate predicateWithFormat:@"isPluggedIn == %@ AND likelihood == %lf", &__kCFBooleanFalse, *&v39];
     [0 addRationaleWithCondition:v55];

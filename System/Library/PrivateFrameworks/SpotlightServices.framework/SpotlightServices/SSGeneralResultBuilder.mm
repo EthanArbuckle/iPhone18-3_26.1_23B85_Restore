@@ -1,5 +1,5 @@
 @interface SSGeneralResultBuilder
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
 - (id)buildDescriptions;
 - (id)buildDetailedRowCardSection;
 - (id)buildFootnote;
@@ -9,11 +9,11 @@
 
 @implementation SSGeneralResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = [a3 sectionBundleIdentifier];
-  v5 = [a1 bundleId];
-  v6 = [v4 isEqual:v5];
+  sectionBundleIdentifier = [result sectionBundleIdentifier];
+  bundleId = [self bundleId];
+  v6 = [sectionBundleIdentifier isEqual:bundleId];
 
   return v6;
 }
@@ -23,19 +23,19 @@
   v20[2] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = SSGeneralResultBuilder;
-  v3 = [(SSResultBuilder *)&v19 buildTitle];
+  buildTitle = [(SSResultBuilder *)&v19 buildTitle];
   if (isMacOS())
   {
-    v4 = [(SSResultBuilder *)self result];
-    v5 = [v4 valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
+    result = [(SSResultBuilder *)self result];
+    v5 = [result valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
     [v5 doubleValue];
     v7 = v6;
 
     if (v7 != 0.0)
     {
       v8 = MEMORY[0x1E69CA0F0];
-      v9 = [v3 text];
-      v10 = [v8 textWithString:v9];
+      text = [buildTitle text];
+      v10 = [v8 textWithString:text];
 
       [v10 setIsEmphasized:1];
       v11 = MEMORY[0x1E69CA0F0];
@@ -47,13 +47,13 @@
       v20[0] = v10;
       v20[1] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
-      [v3 setFormattedTextPieces:v16];
+      [buildTitle setFormattedTextPieces:v16];
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return buildTitle;
 }
 
 - (id)buildSecondaryTitle
@@ -63,12 +63,12 @@
     [SSGeneralResultBuilder buildSecondaryTitle];
   }
 
-  v3 = [(SSResultBuilder *)self result];
+  result = [(SSResultBuilder *)self result];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [v3 contentTypeTree];
-  v6 = [v4 setWithArray:v5];
+  contentTypeTree = [result contentTypeTree];
+  v6 = [v4 setWithArray:contentTypeTree];
 
-  v7 = [v3 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+  v7 = [result valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
   if (v7 && [buildSecondaryTitle_utiTypesWithSecondaryTitle intersectsSet:v6])
   {
     v8 = [SSDateFormatManager dynamicCompactStringFromDate:v7];
@@ -108,14 +108,14 @@ void __45__SSGeneralResultBuilder_buildSecondaryTitle__block_invoke()
 
 - (id)buildDescriptions
 {
-  v3 = [(SSResultBuilder *)self result];
-  v38 = [v3 valueForAttribute:*MEMORY[0x1E6963C90] withType:objc_opt_class()];
-  v4 = [v3 valueForAttribute:*MEMORY[0x1E6963BF8] withType:objc_opt_class()];
-  v5 = [v3 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
-  v40 = [v3 valueForAttribute:*MEMORY[0x1E6964990] withType:objc_opt_class()];
-  v44 = [v3 valueForAttribute:*MEMORY[0x1E6963E58] withType:objc_opt_class()];
-  v39 = [v3 valueForAttribute:*MEMORY[0x1E6964B28] withType:objc_opt_class()];
-  v6 = [v3 valueForAttribute:*MEMORY[0x1E6964628] withType:objc_opt_class()];
+  result = [(SSResultBuilder *)self result];
+  v38 = [result valueForAttribute:*MEMORY[0x1E6963C90] withType:objc_opt_class()];
+  v4 = [result valueForAttribute:*MEMORY[0x1E6963BF8] withType:objc_opt_class()];
+  v5 = [result valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+  v40 = [result valueForAttribute:*MEMORY[0x1E6964990] withType:objc_opt_class()];
+  v44 = [result valueForAttribute:*MEMORY[0x1E6963E58] withType:objc_opt_class()];
+  v39 = [result valueForAttribute:*MEMORY[0x1E6964B28] withType:objc_opt_class()];
+  v6 = [result valueForAttribute:*MEMORY[0x1E6964628] withType:objc_opt_class()];
   v7 = isMacOS();
   v8 = MEMORY[0x1E6964590];
   if (!v7)
@@ -123,19 +123,19 @@ void __45__SSGeneralResultBuilder_buildSecondaryTitle__block_invoke()
     v8 = MEMORY[0x1E6964340];
   }
 
-  v42 = [v3 valueForAttribute:*v8 withType:objc_opt_class()];
-  *(&v45 + 1) = [v3 valueForAttribute:*MEMORY[0x1E6963E30] withType:objc_opt_class()];
-  *&v45 = [v3 valueForAttribute:*MEMORY[0x1E6963F98] withType:objc_opt_class()];
-  v9 = [v3 valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
-  v41 = [v3 valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
-  v10 = [v3 valueForAttribute:*MEMORY[0x1E69644B0] withType:objc_opt_class()];
-  v11 = [v10 BOOLValue];
+  v42 = [result valueForAttribute:*v8 withType:objc_opt_class()];
+  *(&v45 + 1) = [result valueForAttribute:*MEMORY[0x1E6963E30] withType:objc_opt_class()];
+  *&v45 = [result valueForAttribute:*MEMORY[0x1E6963F98] withType:objc_opt_class()];
+  v9 = [result valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
+  v41 = [result valueForAttribute:*MEMORY[0x1E6963FE8] withType:objc_opt_class()];
+  v10 = [result valueForAttribute:*MEMORY[0x1E69644B0] withType:objc_opt_class()];
+  bOOLValue = [v10 BOOLValue];
 
   v12 = MEMORY[0x1E695DF70];
   v46.receiver = self;
   v46.super_class = SSGeneralResultBuilder;
-  v13 = [(SSResultBuilder *)&v46 buildDescriptions];
-  v14 = [v12 arrayWithArray:v13];
+  buildDescriptions = [(SSResultBuilder *)&v46 buildDescriptions];
+  v14 = [v12 arrayWithArray:buildDescriptions];
 
   if (!v14)
   {
@@ -176,7 +176,7 @@ void __45__SSGeneralResultBuilder_buildSecondaryTitle__block_invoke()
 
   if (v9)
   {
-    v25 = [SSCalendarResultBuilder stringWithStartDate:v9 endDate:v41 isAllDay:v11];
+    v25 = [SSCalendarResultBuilder stringWithStartDate:v9 endDate:v41 isAllDay:bOOLValue];
     v26 = [MEMORY[0x1E69CA3A0] textWithString:v25];
     [v14 addObject:v26];
   }
@@ -234,18 +234,18 @@ void __45__SSGeneralResultBuilder_buildSecondaryTitle__block_invoke()
     goto LABEL_15;
   }
 
-  v4 = [(SSResultBuilder *)self result];
-  v5 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
-  v6 = [v4 valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
+  result = [(SSResultBuilder *)self result];
+  v5 = [result valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+  v6 = [result valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
-  v10 = [v4 contentTypeTree];
-  v11 = [*MEMORY[0x1E6982D30] identifier];
-  v12 = [v10 containsObject:v11];
+  v9 = [result valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
+  contentTypeTree = [result contentTypeTree];
+  identifier = [*MEMORY[0x1E6982D30] identifier];
+  v12 = [contentTypeTree containsObject:identifier];
 
-  v13 = [v4 valueForAttribute:*MEMORY[0x1E6963C08] withType:objc_opt_class()];
+  v13 = [result valueForAttribute:*MEMORY[0x1E6963C08] withType:objc_opt_class()];
   v14 = [v13 objectAtIndexedSubscript:0];
   objc_opt_class();
   v15 = 0;
@@ -294,11 +294,11 @@ LABEL_15:
 {
   v6.receiver = self;
   v6.super_class = SSGeneralResultBuilder;
-  v3 = [(SSResultBuilder *)&v6 buildDetailedRowCardSection];
-  v4 = [(SSGeneralResultBuilder *)self buildSecondaryTitle];
-  [v3 setIsSecondaryTitleDetached:v4 != 0];
+  buildDetailedRowCardSection = [(SSResultBuilder *)&v6 buildDetailedRowCardSection];
+  buildSecondaryTitle = [(SSGeneralResultBuilder *)self buildSecondaryTitle];
+  [buildDetailedRowCardSection setIsSecondaryTitleDetached:buildSecondaryTitle != 0];
 
-  return v3;
+  return buildDetailedRowCardSection;
 }
 
 @end

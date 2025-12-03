@@ -1,40 +1,40 @@
 @interface WFAlarmTriggerConfigurationViewController
-- (WFAlarmTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFAlarmTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)extraTextForCellInSection:(id)a3 item:(id)a4;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)extraTextForCellInSection:(id)section item:(id)item;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (id)titleForCellInSection:(id)a3 item:(id)a4;
-- (int64_t)accessoryTypeForCellInSection:(id)a3 item:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)alarmChooserViewController:(id)a3 didFinishWithChosenAlarms:(id)a4;
+- (id)titleForCellInSection:(id)section item:(id)item;
+- (int64_t)accessoryTypeForCellInSection:(id)section item:(id)item;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)alarmChooserViewController:(id)controller didFinishWithChosenAlarms:(id)alarms;
 - (void)presentAlarmChooserViewController;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFAlarmTriggerConfigurationViewController
 
-- (void)alarmChooserViewController:(id)a3 didFinishWithChosenAlarms:(id)a4
+- (void)alarmChooserViewController:(id)controller didFinishWithChosenAlarms:(id)alarms
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  alarmsCopy = alarms;
   v6 = getWFTriggersLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v18 = "[WFAlarmTriggerConfigurationViewController alarmChooserViewController:didFinishWithChosenAlarms:]";
     v19 = 2048;
-    v20 = [v5 count];
+    v20 = [alarmsCopy count];
     _os_log_impl(&dword_274719000, v6, OS_LOG_TYPE_INFO, "%s Got %lu alarms from the chooser", buf, 0x16u);
   }
 
-  v7 = [v5 if_map:&__block_literal_global_2141];
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setAlarmIDs:v7];
+  v7 = [alarmsCopy if_map:&__block_literal_global_2141];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setAlarmIDs:v7];
 
   v9 = objc_opt_new();
   [v9 setDateStyle:0];
@@ -45,15 +45,15 @@
   v15[3] = &unk_279EE77D0;
   v16 = v9;
   v10 = v9;
-  v11 = [v5 if_map:v15];
-  v12 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v12 setCachedAlarmDescriptions:v11];
+  v11 = [alarmsCopy if_map:v15];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setCachedAlarmDescriptions:v11];
 
-  v13 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v13 setAlarmType:1];
+  trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger3 setAlarmType:1];
 
-  v14 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v14 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFAlarmTriggerConfigurationViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -83,52 +83,52 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
 - (void)presentAlarmChooserViewController
 {
   v3 = [WFAlarmChooserViewController alloc];
-  v4 = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
-  v5 = [(WFTriggerConfigurationViewController *)self trigger];
-  v6 = [v5 alarmIDs];
-  v8 = [(WFAlarmChooserViewController *)v3 initWithAlarmDataSource:v4 checkedAlarmIDs:v6];
+  alarmDataSource = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  alarmIDs = [trigger alarmIDs];
+  v8 = [(WFAlarmChooserViewController *)v3 initWithAlarmDataSource:alarmDataSource checkedAlarmIDs:alarmIDs];
 
   [(WFAlarmChooserViewController *)v8 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [(WFAlarmTriggerConfigurationViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  pathCopy = path;
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  v7 = -[WFAlarmTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v5 section]);
+  v7 = -[WFAlarmTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   if (([v8 isEqualToString:@"triggerDescription"] & 1) == 0)
   {
     if ([v8 isEqualToString:@"chooseAlarm"])
     {
       v9 = [v7 objectForKeyedSubscript:@"items"];
-      v10 = [v9 objectAtIndex:{objc_msgSend(v5, "row")}];
+      v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v11 = [v10 integerValue];
-      switch(v11)
+      integerValue = [v10 integerValue];
+      switch(integerValue)
       {
         case 2:
-          v20 = [(WFTriggerConfigurationViewController *)self trigger];
-          [v20 setAlarmType:2];
+          trigger = [(WFTriggerConfigurationViewController *)self trigger];
+          [trigger setAlarmType:2];
 
-          v21 = [(WFTriggerConfigurationViewController *)self trigger];
-          [v21 setCachedAlarmDescriptions:MEMORY[0x277CBEBF8]];
+          trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+          [trigger2 setCachedAlarmDescriptions:MEMORY[0x277CBEBF8]];
 
-          v22 = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
-          v23 = [v22 sleepAlarm];
-          v24 = [v23 alarmID];
+          alarmDataSource = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
+          sleepAlarm = [alarmDataSource sleepAlarm];
+          alarmID = [sleepAlarm alarmID];
 
-          if (v24)
+          if (alarmID)
           {
-            v55[0] = v24;
-            v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
-            v26 = [(WFTriggerConfigurationViewController *)self trigger];
-            [v26 setAlarmIDs:v25];
+            v55[0] = alarmID;
+            trigger4 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
+            trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+            [trigger3 setAlarmIDs:trigger4];
           }
 
           else
@@ -141,8 +141,8 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
               _os_log_impl(&dword_274719000, v27, OS_LOG_TYPE_ERROR, "%s Failed to find wake up alarm", buf, 0xCu);
             }
 
-            v25 = [(WFTriggerConfigurationViewController *)self trigger];
-            [v25 setAlarmIDs:MEMORY[0x277CBEBF8]];
+            trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+            [trigger4 setAlarmIDs:MEMORY[0x277CBEBF8]];
           }
 
           break;
@@ -150,15 +150,15 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
           [(WFAlarmTriggerConfigurationViewController *)self presentAlarmChooserViewController];
           break;
         case 0:
-          v12 = [(WFTriggerConfigurationViewController *)self trigger];
-          [v12 setAlarmType:0];
+          trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+          [trigger5 setAlarmType:0];
 
-          v13 = [(WFTriggerConfigurationViewController *)self trigger];
+          trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
           v14 = MEMORY[0x277CBEBF8];
-          [v13 setAlarmIDs:MEMORY[0x277CBEBF8]];
+          [trigger6 setAlarmIDs:MEMORY[0x277CBEBF8]];
 
-          v15 = [(WFTriggerConfigurationViewController *)self trigger];
-          [v15 setCachedAlarmDescriptions:v14];
+          trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+          [trigger7 setCachedAlarmDescriptions:v14];
 
           break;
       }
@@ -167,24 +167,24 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
     else if ([v8 isEqualToString:@"chooseEvent"])
     {
       v16 = [v7 objectForKeyedSubscript:@"items"];
-      v17 = [v16 objectAtIndex:{objc_msgSend(v5, "row")}];
+      v17 = [v16 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v18 = [v17 integerValue];
-      v19 = [(WFTriggerConfigurationViewController *)self trigger];
-      [v19 setAlarmState:v18];
+      integerValue2 = [v17 integerValue];
+      trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+      [trigger8 setAlarmState:integerValue2];
     }
 
     v45 = v7;
-    v46 = v5;
+    v46 = pathCopy;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v28 = [(WFTriggerConfigurationViewController *)self tableView];
-    v29 = [v28 indexPathsForVisibleRows];
+    tableView2 = [(WFTriggerConfigurationViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView2 indexPathsForVisibleRows];
 
-    obj = v29;
-    v30 = [v29 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    obj = indexPathsForVisibleRows;
+    v30 = [indexPathsForVisibleRows countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v30)
     {
       v31 = v30;
@@ -208,8 +208,8 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
             v39 = v38 = v33;
             v40 = [v39 objectAtIndex:{objc_msgSend(v35, "row")}];
 
-            v41 = [(WFTriggerConfigurationViewController *)self tableView];
-            v42 = [v41 cellForRowAtIndexPath:v35];
+            tableView3 = [(WFTriggerConfigurationViewController *)self tableView];
+            v42 = [tableView3 cellForRowAtIndexPath:v35];
 
             v33 = v38;
             [v42 setAccessoryType:{-[WFAlarmTriggerConfigurationViewController accessoryTypeForCellInSection:item:](self, "accessoryTypeForCellInSection:item:", v37, v40)}];
@@ -223,44 +223,44 @@ id __98__WFAlarmTriggerConfigurationViewController_alarmChooserViewController_di
     }
 
     v7 = v45;
-    v5 = v46;
+    pathCopy = v46;
     [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v46 withSectionInfo:v45];
     [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
-    v43 = [(WFTriggerConfigurationViewController *)self tableView];
-    [v43 reloadData];
+    tableView4 = [(WFTriggerConfigurationViewController *)self tableView];
+    [tableView4 reloadData];
 
     v8 = v44;
   }
 }
 
-- (int64_t)accessoryTypeForCellInSection:(id)a3 item:(id)a4
+- (int64_t)accessoryTypeForCellInSection:(id)section item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"chooseAlarm"])
+  sectionCopy = section;
+  itemCopy = item;
+  if ([sectionCopy isEqualToString:@"chooseAlarm"])
   {
-    v8 = [v7 integerValue];
-    v9 = [(WFTriggerConfigurationViewController *)self trigger];
-    v10 = [v9 alarmType];
+    integerValue = [itemCopy integerValue];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    alarmType = [trigger alarmType];
   }
 
   else
   {
-    if (![v6 isEqualToString:@"chooseEvent"])
+    if (![sectionCopy isEqualToString:@"chooseEvent"])
     {
 LABEL_7:
       v12 = 0;
       goto LABEL_8;
     }
 
-    v8 = [v7 integerValue];
-    v9 = [(WFTriggerConfigurationViewController *)self trigger];
-    v10 = [v9 alarmState];
+    integerValue = [itemCopy integerValue];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    alarmType = [trigger alarmState];
   }
 
-  v11 = v10;
+  v11 = alarmType;
 
-  if (v11 != v8)
+  if (v11 != integerValue)
   {
     goto LABEL_7;
   }
@@ -271,15 +271,15 @@ LABEL_8:
   return v12;
 }
 
-- (id)extraTextForCellInSection:(id)a3 item:(id)a4
+- (id)extraTextForCellInSection:(id)section item:(id)item
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"chooseAlarm"] && objc_msgSend(v6, "integerValue") == 1)
+  itemCopy = item;
+  if ([section isEqualToString:@"chooseAlarm"] && objc_msgSend(itemCopy, "integerValue") == 1)
   {
     v7 = objc_opt_new();
-    v8 = [(WFTriggerConfigurationViewController *)self trigger];
-    v9 = [v8 cachedAlarmDescriptions];
-    v10 = [v7 stringForObjectValue:v9];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    cachedAlarmDescriptions = [trigger cachedAlarmDescriptions];
+    v10 = [v7 stringForObjectValue:cachedAlarmDescriptions];
   }
 
   else
@@ -290,14 +290,14 @@ LABEL_8:
   return v10;
 }
 
-- (id)titleForCellInSection:(id)a3 item:(id)a4
+- (id)titleForCellInSection:(id)section item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"chooseEvent"])
+  sectionCopy = section;
+  itemCopy = item;
+  if ([sectionCopy isEqualToString:@"chooseEvent"])
   {
-    v7 = [v6 integerValue];
-    switch(v7)
+    integerValue = [itemCopy integerValue];
+    switch(integerValue)
     {
       case 2:
         v8 = @"Is Stopped";
@@ -317,25 +317,25 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  if (![v5 isEqualToString:@"chooseAlarm"])
+  if (![sectionCopy isEqualToString:@"chooseAlarm"])
   {
     goto LABEL_11;
   }
 
-  v9 = [v6 integerValue];
-  if (v9 == 2)
+  integerValue2 = [itemCopy integerValue];
+  if (integerValue2 == 2)
   {
     v8 = @"Wake-Up";
     goto LABEL_16;
   }
 
-  if (v9 == 1)
+  if (integerValue2 == 1)
   {
     v8 = @"Existing";
     goto LABEL_16;
   }
 
-  if (v9)
+  if (integerValue2)
   {
     goto LABEL_11;
   }
@@ -348,17 +348,17 @@ LABEL_18:
   return v11;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFAlarmTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFAlarmTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"identifier"];
   v6 = [v5 isEqualToString:@"triggerDescription"];
 
@@ -375,14 +375,14 @@ LABEL_18:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFAlarmTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFAlarmTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"identifier"];
   v10 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v11 = [v7 dequeueReusableCellWithIdentifier:v10 forIndexPath:v6];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
   if ([v9 isEqual:@"triggerDescription"])
   {
@@ -394,27 +394,27 @@ LABEL_18:
   else
   {
     v12 = [v8 objectForKeyedSubscript:@"items"];
-    v13 = [v12 objectAtIndex:{objc_msgSend(v6, "row")}];
+    v13 = [v12 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v14 = [(WFAlarmTriggerConfigurationViewController *)self titleForCellInSection:v9 item:v13];
-    v15 = [v11 textLabel];
-    [v15 setText:v14];
+    textLabel = [v11 textLabel];
+    [textLabel setText:v14];
 
     v16 = [(WFAlarmTriggerConfigurationViewController *)self extraTextForCellInSection:v9 item:v13];
-    v17 = [v11 detailTextLabel];
-    [v17 setText:v16];
+    detailTextLabel = [v11 detailTextLabel];
+    [detailTextLabel setText:v16];
 
     [v11 setAccessoryType:{-[WFAlarmTriggerConfigurationViewController accessoryTypeForCellInSection:item:](self, "accessoryTypeForCellInSection:item:", v9, v13)}];
   }
 
-  v18 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v11 indexPath:v6 sectionInfo:v8];
+  v18 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v11 indexPath:pathCopy sectionInfo:v8];
 
   return v18;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFAlarmTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFAlarmTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   if ([v6 isEqual:@"triggerDescription"])
   {
@@ -435,24 +435,24 @@ LABEL_18:
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WFAlarmTriggerConfigurationViewController;
-  [(WFAlarmTriggerConfigurationViewController *)&v7 viewWillAppear:a3];
-  v4 = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
-  v5 = [v4 reloadAlarms];
+  [(WFAlarmTriggerConfigurationViewController *)&v7 viewWillAppear:appear];
+  alarmDataSource = [(WFAlarmTriggerConfigurationViewController *)self alarmDataSource];
+  reloadAlarms = [alarmDataSource reloadAlarms];
 
-  v6 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -487,10 +487,10 @@ LABEL_18:
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v17 count:4];
   v13 = [v8 dictionaryWithDictionary:{v12, v17, v18, v19}];
 
-  v14 = [MEMORY[0x277D79F18] currentDevice];
-  v15 = [v14 idiom];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  idiom = [currentDevice idiom];
 
-  if (v15 == 1)
+  if (idiom == 1)
   {
     [v13 setObject:&unk_2883C2198 forKey:@"items"];
   }
@@ -512,19 +512,19 @@ LABEL_18:
   return v4;
 }
 
-- (WFAlarmTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFAlarmTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFAlarmTriggerConfigurationViewController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFAlarmTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAlarmTriggerConfigurationViewController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFAlarmTrigger class]]"}];
   }
 
   v19.receiver = self;
   v19.super_class = WFAlarmTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v19 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v19 initWithTrigger:triggerCopy mode:mode];
   if (v8)
   {
     v25 = 0;

@@ -2,32 +2,32 @@
 + (OS_os_log)log;
 - (BOOL)hasDrafts;
 - (NSDirectionalEdgeInsets)mf_extraContentMargins;
-- (PreviousDraftPickerController)initWithMessageRepository:(id)a3;
+- (PreviousDraftPickerController)initWithMessageRepository:(id)repository;
 - (double)draftRowHeight;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_cancel:(id)a3;
-- (void)_configureCell:(id)a3 itemID:(id)a4;
-- (void)_contentSizeCategoryChanged:(id)a3;
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 completionHandler:(id)a5;
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completionHandler:(id)a6;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_cancel:(id)_cancel;
+- (void)_configureCell:(id)cell itemID:(id)d;
+- (void)_contentSizeCategoryChanged:(id)changed;
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection completionHandler:(id)handler;
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completionHandler:(id)handler;
 - (void)_reloadDataSource;
 - (void)_updateHeaderViewDraftsState;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 changedItemIDs:(id)a4;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5;
-- (void)collectionDidFinishInitialLoad:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection changedItemIDs:(id)ds;
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before;
+- (void)collectionDidFinishInitialLoad:(id)load;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PreviousDraftPickerController
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_1002400F8;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD7C8 != -1)
   {
     dispatch_once(&qword_1006DD7C8, block);
@@ -49,16 +49,16 @@
   return v2;
 }
 
-- (PreviousDraftPickerController)initWithMessageRepository:(id)a3
+- (PreviousDraftPickerController)initWithMessageRepository:(id)repository
 {
-  v5 = a3;
+  repositoryCopy = repository;
   v27.receiver = self;
   v27.super_class = PreviousDraftPickerController;
   v6 = [(PreviousDraftPickerController *)&v27 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageRepository, a3);
+    objc_storeStrong(&v6->_messageRepository, repository);
     v8 = [[MessageListCollectionHelper alloc] initWithLoggableClient:v7 updateQueueName:@"com.apple.mobilemail.PreviousDraftPickerController.tableViewUpdate" section:0];
     collectionHelper = v7->_collectionHelper;
     v7->_collectionHelper = v8;
@@ -71,8 +71,8 @@
     [(MessageListCellLayoutValuesHelper *)v7->_layoutValuesHelper setDefaultBackgroundConfiguration:v12];
 
     v13 = +[LocalAccount localAccount];
-    v14 = [v13 transientDraftsFolder];
-    v15 = [v14 URL];
+    transientDraftsFolder = [v13 transientDraftsFolder];
+    v15 = [transientDraftsFolder URL];
 
     v16 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxWithURL:v15];
     v17 = +[NSBundle mainBundle];
@@ -84,9 +84,9 @@
     v7->_mailboxes = v20;
 
     v22 = +[NSUUID UUID];
-    v23 = [v22 UUIDString];
+    uUIDString = [v22 UUIDString];
     composeSection = v7->_composeSection;
-    v7->_composeSection = v23;
+    v7->_composeSection = uUIDString;
 
     v25 = +[NSNotificationCenter defaultCenter];
     [v25 addObserver:v7 selector:"_contentSizeCategoryChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -95,26 +95,26 @@
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = PreviousDraftPickerController;
-  [(PreviousDraftPickerController *)&v12 traitCollectionDidChange:v4];
-  v5 = [(PreviousDraftPickerController *)self traitCollection];
-  v6 = [(PreviousDraftPickerController *)self mf_supportsPopoverPresentation];
-  v7 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  [v7 setSupportsPopover:v6];
+  [(PreviousDraftPickerController *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PreviousDraftPickerController *)self traitCollection];
+  mf_supportsPopoverPresentation = [(PreviousDraftPickerController *)self mf_supportsPopoverPresentation];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  [layoutValuesHelper setSupportsPopover:mf_supportsPopoverPresentation];
 
-  if ([v5 mf_traitDifferenceAffectsTextLayout:v4])
+  if ([traitCollection mf_traitDifferenceAffectsTextLayout:changeCopy])
   {
-    v8 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-    [v8 setTraitCollection:v5];
+    layoutValuesHelper2 = [(PreviousDraftPickerController *)self layoutValuesHelper];
+    [layoutValuesHelper2 setTraitCollection:traitCollection];
   }
 
-  v9 = [(PreviousDraftPickerController *)self tableView];
+  tableView = [(PreviousDraftPickerController *)self tableView];
   v10 = [NSIndexPath indexPathForRow:0 inSection:0];
-  v11 = [v9 cellForRowAtIndexPath:v10];
+  v11 = [tableView cellForRowAtIndexPath:v10];
 
   if (v11)
   {
@@ -132,14 +132,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  [v11 setSystemLayoutMargins:{v4, v6, v8, v10}];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  [layoutValuesHelper setSystemLayoutMargins:{v4, v6, v8, v10}];
 }
 
 - (NSDirectionalEdgeInsets)mf_extraContentMargins
 {
-  v2 = [(PreviousDraftPickerController *)self traitCollection];
-  [v2 mf_leadingEdgeToBackButtonText];
+  traitCollection = [(PreviousDraftPickerController *)self traitCollection];
+  [traitCollection mf_leadingEdgeToBackButtonText];
   v4 = v3;
 
   v5 = 0.0;
@@ -163,58 +163,58 @@
   [(PreviousDraftPickerController *)self setTitle:v4];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancel:"];
-  v6 = [(PreviousDraftPickerController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(PreviousDraftPickerController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(PreviousDraftPickerController *)self tableView];
+  tableView = [(PreviousDraftPickerController *)self tableView];
   v8 = objc_opt_class();
   v9 = +[MessageListTableViewCell reusableIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [tableView registerClass:v8 forCellReuseIdentifier:v9];
 
-  v10 = [(PreviousDraftPickerController *)self tableView];
-  [v10 registerClass:objc_opt_class() forCellReuseIdentifier:@"PreviousDraftPickerNewMessageCellIdentifier"];
+  tableView2 = [(PreviousDraftPickerController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"PreviousDraftPickerNewMessageCellIdentifier"];
 
   [(PreviousDraftPickerController *)self _reloadDataSource];
-  v11 = [(PreviousDraftPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
-  [(PreviousDraftPickerController *)self setTableViewObserver:v11];
+  mf_updatePreferredContentSizeBasedOnTableView = [(PreviousDraftPickerController *)self mf_updatePreferredContentSizeBasedOnTableView];
+  [(PreviousDraftPickerController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PreviousDraftPickerController;
-  [(PreviousDraftPickerController *)&v6 viewWillAppear:a3];
-  v4 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  v5 = [(PreviousDraftPickerController *)self traitCollection];
-  [v4 setTraitCollection:v5];
+  [(PreviousDraftPickerController *)&v6 viewWillAppear:appear];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  traitCollection = [(PreviousDraftPickerController *)self traitCollection];
+  [layoutValuesHelper setTraitCollection:traitCollection];
 
   [(PreviousDraftPickerController *)self systemMinimumLayoutMargins];
-  [v4 setSystemLayoutMargins:?];
+  [layoutValuesHelper setSystemLayoutMargins:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PreviousDraftPickerController;
-  [(PreviousDraftPickerController *)&v4 viewDidAppear:a3];
+  [(PreviousDraftPickerController *)&v4 viewDidAppear:appear];
   [(PreviousDraftPickerController *)self mf_updateAlertSuppressionContextsForReason:@"showed previous drafts picker"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PreviousDraftPickerController;
-  [(PreviousDraftPickerController *)&v3 viewWillDisappear:a3];
+  [(PreviousDraftPickerController *)&v3 viewWillDisappear:disappear];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
   if (!headerView)
   {
     v8 = [PreviousDraftPickerHeaderView alloc];
-    [(PreviousDraftPickerController *)self tableView:v6 heightForHeaderInSection:a4];
+    [(PreviousDraftPickerController *)self tableView:viewCopy heightForHeaderInSection:section];
     v10 = [(PreviousDraftPickerHeaderView *)v8 initWithFrame:0.0, 0.0, 320.0, v9];
     v11 = self->_headerView;
     self->_headerView = v10;
@@ -228,10 +228,10 @@
   return headerView;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 36.0;
-  if (a4 != 1)
+  if (section != 1)
   {
     return 20.0;
   }
@@ -239,24 +239,24 @@
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
     [(PreviousDraftPickerController *)self draftRowHeight];
     v7 = v6;
   }
 
-  else if (MUISolariumFeatureEnabled() && (+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v5 isEqual:v8], v8, v9))
+  else if (MUISolariumFeatureEnabled() && (+[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", 0, 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = [pathCopy isEqual:v8], v8, v9))
   {
     v7 = UITableViewAutomaticDimension;
   }
 
   else
   {
-    v10 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -272,21 +272,21 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PreviousDraftPickerController *)self actionBlock];
+  pathCopy = path;
+  actionBlock = [(PreviousDraftPickerController *)self actionBlock];
 
-  if (v6)
+  if (actionBlock)
   {
-    if ([v5 section])
+    if ([pathCopy section])
     {
-      v7 = [(PreviousDraftPickerController *)self tableViewDataSource];
-      v8 = [v7 itemIdentifierForIndexPath:v5];
+      tableViewDataSource = [(PreviousDraftPickerController *)self tableViewDataSource];
+      actionBlock2 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
       objc_initWeak(&location, self);
-      v9 = [(PreviousDraftPickerController *)self messageList];
-      v10 = [v9 messageListItemForItemID:v8];
+      messageList = [(PreviousDraftPickerController *)self messageList];
+      v10 = [messageList messageListItemForItemID:actionBlock2];
       v11 = +[EFScheduler mainThreadScheduler];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -301,28 +301,28 @@
 
     else
     {
-      v8 = [(PreviousDraftPickerController *)self actionBlock];
-      v8[2](v8, 0, 0);
+      actionBlock2 = [(PreviousDraftPickerController *)self actionBlock];
+      actionBlock2[2](actionBlock2, 0, 0);
     }
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PreviousDraftPickerController *)self tableViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  tableViewDataSource = [(PreviousDraftPickerController *)self tableViewDataSource];
+  v7 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v8 = [(PreviousDraftPickerController *)self messageList];
-  v9 = [v8 messageListItemForItemID:v7];
-  v10 = [v9 result];
+  messageList = [(PreviousDraftPickerController *)self messageList];
+  v9 = [messageList messageListItemForItemID:v7];
+  result = [v9 result];
 
-  if (v10)
+  if (result)
   {
-    v21 = v10;
+    v21 = result;
     v11 = [NSArray arrayWithObjects:&v21 count:1];
-    v12 = [(PreviousDraftPickerController *)self undoManager];
-    v13 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItems:v11 undoManager:v12 origin:5 actor:2];
+    undoManager = [(PreviousDraftPickerController *)self undoManager];
+    v13 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItems:v11 undoManager:undoManager origin:5 actor:2];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -346,9 +346,9 @@
 
 - (double)draftRowHeight
 {
-  v2 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  v3 = [v2 defaultLayoutValues];
-  [v3 defaultRowHeight];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  defaultLayoutValues = [layoutValuesHelper defaultLayoutValues];
+  [defaultLayoutValues defaultRowHeight];
   v5 = v4;
 
   return v5;
@@ -356,9 +356,9 @@
 
 - (void)_reloadDataSource
 {
-  v3 = [(PreviousDraftPickerController *)self mailboxes];
-  v4 = [(PreviousDraftPickerController *)self messageRepository];
-  v5 = [EMMessageList simpleMessageListForMailboxes:v3 withRepository:v4 additionalQueryOptions:0 shouldUpdateDisplayDate:0];
+  mailboxes = [(PreviousDraftPickerController *)self mailboxes];
+  messageRepository = [(PreviousDraftPickerController *)self messageRepository];
+  v5 = [EMMessageList simpleMessageListForMailboxes:mailboxes withRepository:messageRepository additionalQueryOptions:0 shouldUpdateDisplayDate:0];
   [(PreviousDraftPickerController *)self setMessageList:v5];
 
   objc_initWeak(&location, self);
@@ -369,62 +369,62 @@
   objc_copyWeak(&v15, &location);
   v6 = objc_retainBlock(v14);
   v7 = [UITableViewDiffableDataSource alloc];
-  v8 = [(PreviousDraftPickerController *)self tableView];
-  v9 = [v7 initWithTableView:v8 cellProvider:v6];
+  tableView = [(PreviousDraftPickerController *)self tableView];
+  v9 = [v7 initWithTableView:tableView cellProvider:v6];
   [(PreviousDraftPickerController *)self setTableViewDataSource:v9];
 
-  v10 = [(PreviousDraftPickerController *)self collectionHelper];
-  v11 = [v10 updateQueue];
+  collectionHelper = [(PreviousDraftPickerController *)self collectionHelper];
+  updateQueue = [collectionHelper updateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002417CC;
   block[3] = &unk_10064C7E8;
   block[4] = self;
-  dispatch_sync(v11, block);
+  dispatch_sync(updateQueue, block);
 
-  v12 = [(PreviousDraftPickerController *)self messageList];
-  [v12 beginObserving:self];
+  messageList = [(PreviousDraftPickerController *)self messageList];
+  [messageList beginObserving:self];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_configureCell:(id)a3 itemID:(id)a4
+- (void)_configureCell:(id)cell itemID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  cellCopy = cell;
+  dCopy = d;
+  if (cellCopy)
   {
     objc_opt_class();
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v21 = [NSAssertionHandler currentHandler:v8];
+      v21 = [NSAssertionHandler currentHandler:dCopy];
       [v21 handleFailureInMethod:a2 object:self file:@"PreviousDraftPickerController.m" lineNumber:353 description:@"cell must be an instance of [MessageListTableViewCell class]"];
     }
   }
 
-  v9 = v7;
-  v10 = [v9 cellHelper];
-  v11 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  v12 = [v10 cellView];
-  [v12 setLayoutValuesHelper:v11];
+  v9 = cellCopy;
+  cellHelper = [v9 cellHelper];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  cellView = [cellHelper cellView];
+  [cellView setLayoutValuesHelper:layoutValuesHelper];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100241D18;
   v25[3] = &unk_100654578;
-  v13 = v8;
+  v13 = dCopy;
   v26 = v13;
-  v14 = v10;
+  v14 = cellHelper;
   v27 = v14;
   v15 = objc_retainBlock(v25);
-  v16 = [(PreviousDraftPickerController *)self messageList];
-  v17 = [v16 messageListItemForItemID:v13];
-  v18 = [v17 resultIfAvailable];
-  if (v18)
+  messageList = [(PreviousDraftPickerController *)self messageList];
+  v17 = [messageList messageListItemForItemID:v13];
+  resultIfAvailable = [v17 resultIfAvailable];
+  if (resultIfAvailable)
   {
-    (v15[2])(v15, v18);
+    (v15[2])(v15, resultIfAvailable);
   }
 
   else
@@ -439,7 +439,7 @@
     v22[2] = sub_100241DF4;
     v22[3] = &unk_10064DD80;
     v23 = v13;
-    v24 = v16;
+    v24 = messageList;
     [v17 onScheduler:v20 addFailureBlock:v22];
   }
 }
@@ -447,111 +447,111 @@
 - (void)_updateHeaderViewDraftsState
 {
   headerView = self->_headerView;
-  v3 = [(PreviousDraftPickerController *)self hasDrafts];
+  hasDrafts = [(PreviousDraftPickerController *)self hasDrafts];
 
-  [(PreviousDraftPickerHeaderView *)headerView setHasDrafts:v3];
+  [(PreviousDraftPickerHeaderView *)headerView setHasDrafts:hasDrafts];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(PreviousDraftPickerController *)self actionBlock];
+  actionBlock = [(PreviousDraftPickerController *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(PreviousDraftPickerController *)self actionBlock];
-    v5[2](v5, 2, 0);
+    actionBlock2 = [(PreviousDraftPickerController *)self actionBlock];
+    actionBlock2[2](actionBlock2, 2, 0);
   }
 }
 
-- (void)_contentSizeCategoryChanged:(id)a3
+- (void)_contentSizeCategoryChanged:(id)changed
 {
-  v4 = [(PreviousDraftPickerController *)self layoutValuesHelper];
-  [v4 invalidate];
+  layoutValuesHelper = [(PreviousDraftPickerController *)self layoutValuesHelper];
+  [layoutValuesHelper invalidate];
 
-  v5 = [(PreviousDraftPickerController *)self tableView];
-  [v5 reloadData];
+  tableView = [(PreviousDraftPickerController *)self tableView];
+  [tableView reloadData];
 }
 
 - (BOOL)hasDrafts
 {
-  v3 = [(PreviousDraftPickerController *)self tableViewDataSource];
-  v4 = [v3 snapshot];
+  tableViewDataSource = [(PreviousDraftPickerController *)self tableViewDataSource];
+  snapshot = [tableViewDataSource snapshot];
 
-  v5 = [(PreviousDraftPickerController *)self collectionHelper];
-  v6 = [v5 section];
-  v7 = [v4 numberOfItemsInSection:v6] > 0;
+  collectionHelper = [(PreviousDraftPickerController *)self collectionHelper];
+  section = [collectionHelper section];
+  v7 = [snapshot numberOfItemsInSection:section] > 0;
 
   return v7;
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1002421B8;
   v9[3] = &unk_10064CF88;
-  v10 = self;
-  v11 = a4;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(PreviousDraftPickerController *)v10 _performDataSourceUpdateAnimated:1 collection:a3 update:v9];
+  selfCopy = self;
+  dsCopy = ds;
+  afterCopy = after;
+  v7 = afterCopy;
+  v8 = dsCopy;
+  [(PreviousDraftPickerController *)selfCopy _performDataSourceUpdateAnimated:1 collection:collection update:v9];
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100242358;
   v9[3] = &unk_10064CF88;
-  v10 = self;
-  v11 = a4;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(PreviousDraftPickerController *)v10 _performDataSourceUpdateAnimated:1 collection:a3 update:v9];
+  selfCopy = self;
+  dsCopy = ds;
+  beforeCopy = before;
+  v7 = beforeCopy;
+  v8 = dsCopy;
+  [(PreviousDraftPickerController *)selfCopy _performDataSourceUpdateAnimated:1 collection:collection update:v9];
 }
 
-- (void)collection:(id)a3 changedItemIDs:(id)a4
+- (void)collection:(id)collection changedItemIDs:(id)ds
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002424C0;
   v7[3] = &unk_10064CCA0;
-  v8 = a4;
-  v6 = v8;
-  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v7];
+  dsCopy = ds;
+  v6 = dsCopy;
+  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v7];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002425D8;
   v10[3] = &unk_10064CF88;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
-  v8 = v13;
-  v9 = v11;
-  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v10];
+  dsCopy = ds;
+  selfCopy = self;
+  afterCopy = after;
+  v8 = afterCopy;
+  v9 = dsCopy;
+  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v10];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100242844;
   v10[3] = &unk_10064CF88;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
-  v8 = v13;
-  v9 = v11;
-  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v10];
+  dsCopy = ds;
+  selfCopy = self;
+  beforeCopy = before;
+  v8 = beforeCopy;
+  v9 = dsCopy;
+  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v10];
 }
 
-- (void)collectionDidFinishInitialLoad:(id)a3
+- (void)collectionDidFinishInitialLoad:(id)load
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -562,33 +562,33 @@
   [v3 performBlock:v4];
 }
 
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 completionHandler:(id)a5
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100242B90;
   v9[3] = &unk_10064CCA0;
-  v10 = a3;
-  v8 = v10;
-  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:a4 update:v9 completionHandler:a5];
+  dsCopy = ds;
+  v8 = dsCopy;
+  [(PreviousDraftPickerController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v9 completionHandler:handler];
 }
 
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completionHandler:(id)a6
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  collectionCopy = collection;
+  updateCopy = update;
+  handlerCopy = handler;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100242E04;
   v17[3] = &unk_10064CCC8;
-  v13 = v10;
+  v13 = collectionCopy;
   v18 = v13;
-  v19 = self;
-  v14 = v11;
+  selfCopy = self;
+  v14 = updateCopy;
   v20 = v14;
-  v22 = a3;
-  v15 = v12;
+  animatedCopy = animated;
+  v15 = handlerCopy;
   v21 = v15;
   v16 = +[EFScheduler mainThreadScheduler];
   [v16 performBlock:v17];

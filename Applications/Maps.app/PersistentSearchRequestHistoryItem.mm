@@ -1,27 +1,27 @@
 @interface PersistentSearchRequestHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLatitudeSpan:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasLongitudeSpan:(BOOL)a3;
-- (void)setHasPosition:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLatitudeSpan:(BOOL)span;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasLongitudeSpan:(BOOL)span;
+- (void)setHasPosition:(BOOL)position;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentSearchRequestHistoryItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   request = self->_request;
-  v6 = *(v4 + 9);
-  v11 = v4;
+  v6 = *(fromCopy + 9);
+  v11 = fromCopy;
   if (request)
   {
     if (!v6)
@@ -42,26 +42,26 @@
     [(PersistentSearchRequestHistoryItem *)self setRequest:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PersistentSearchRequestHistoryItem *)self setDisplayQuery:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PersistentSearchRequestHistoryItem *)self setDisplayLocation:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v7 = *(v4 + 96);
+  v7 = *(fromCopy + 96);
   if (v7)
   {
-    self->_latitude = *(v4 + 1);
+    self->_latitude = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 96);
+    v7 = *(fromCopy + 96);
     if ((v7 & 4) == 0)
     {
 LABEL_13:
@@ -74,14 +74,14 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 96) & 4) == 0)
+  else if ((*(fromCopy + 96) & 4) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_longitude = *(v4 + 3);
+  self->_longitude = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v7 = *(v4 + 96);
+  v7 = *(fromCopy + 96);
   if ((v7 & 2) == 0)
   {
 LABEL_14:
@@ -94,18 +94,18 @@ LABEL_14:
   }
 
 LABEL_21:
-  self->_latitudeSpan = *(v4 + 2);
+  self->_latitudeSpan = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 96) & 8) != 0)
+  if ((*(fromCopy + 96) & 8) != 0)
   {
 LABEL_15:
-    self->_longitudeSpan = *(v4 + 4);
+    self->_longitudeSpan = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_16:
   response = self->_response;
-  v9 = *(v4 + 10);
+  v9 = *(fromCopy + 10);
   if (response)
   {
     if (!v9)
@@ -126,25 +126,25 @@ LABEL_16:
     [(PersistentSearchRequestHistoryItem *)self setResponse:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_26:
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PersistentSearchRequestHistoryItem *)self setSyncIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v10 = *(v4 + 96);
+  v10 = *(fromCopy + 96);
   if ((v10 & 0x10) != 0)
   {
-    self->_position = *(v4 + 5);
+    self->_position = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v10 = *(v4 + 96);
+    v10 = *(fromCopy + 96);
   }
 
   if ((v10 & 0x20) != 0)
   {
-    self->_timestamp = *(v4 + 6);
+    self->_timestamp = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 }
@@ -309,16 +309,16 @@ LABEL_26:
   return v3 ^ v32 ^ v4 ^ v5 ^ v9 ^ v13 ^ v17 ^ v21 ^ v22 ^ v23 ^ v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   request = self->_request;
-  if (request | *(v4 + 9))
+  if (request | *(equalCopy + 9))
   {
     if (![(GEOPlaceSearchRequest *)request isEqual:?])
     {
@@ -327,7 +327,7 @@ LABEL_26:
   }
 
   displayQuery = self->_displayQuery;
-  if (displayQuery | *(v4 + 8))
+  if (displayQuery | *(equalCopy + 8))
   {
     if (![(NSString *)displayQuery isEqual:?])
     {
@@ -336,7 +336,7 @@ LABEL_26:
   }
 
   displayLocation = self->_displayLocation;
-  if (displayLocation | *(v4 + 7))
+  if (displayLocation | *(equalCopy + 7))
   {
     if (![(NSString *)displayLocation isEqual:?])
     {
@@ -346,13 +346,13 @@ LABEL_26:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_latitude != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_latitude != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
 LABEL_41:
     v10 = 0;
@@ -361,51 +361,51 @@ LABEL_41:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_longitude != *(v4 + 3))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_longitude != *(equalCopy + 3))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_latitudeSpan != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_latitudeSpan != *(equalCopy + 2))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_longitudeSpan != *(v4 + 4))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_longitudeSpan != *(equalCopy + 4))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_41;
   }
 
   response = self->_response;
-  if (response | *(v4 + 10) && ![(GEOPlaceSearchResponse *)response isEqual:?])
+  if (response | *(equalCopy + 10) && ![(GEOPlaceSearchResponse *)response isEqual:?])
   {
     goto LABEL_41;
   }
 
   syncIdentifier = self->_syncIdentifier;
-  if (syncIdentifier | *(v4 + 11))
+  if (syncIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)syncIdentifier isEqual:?])
     {
@@ -415,21 +415,21 @@ LABEL_41:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 96) & 0x10) == 0 || self->_position != *(v4 + 5))
+    if ((*(equalCopy + 96) & 0x10) == 0 || self->_position != *(equalCopy + 5))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 96) & 0x10) != 0)
+  else if ((*(equalCopy + 96) & 0x10) != 0)
   {
     goto LABEL_41;
   }
 
-  v10 = (*(v4 + 96) & 0x20) == 0;
+  v10 = (*(equalCopy + 96) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 96) & 0x20) == 0 || self->_timestamp != *(v4 + 6))
+    if ((*(equalCopy + 96) & 0x20) == 0 || self->_timestamp != *(equalCopy + 6))
     {
       goto LABEL_41;
     }
@@ -442,18 +442,18 @@ LABEL_42:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOPlaceSearchRequest *)self->_request copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOPlaceSearchRequest *)self->_request copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(NSString *)self->_displayQuery copyWithZone:a3];
+  v8 = [(NSString *)self->_displayQuery copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(NSString *)self->_displayLocation copyWithZone:a3];
+  v10 = [(NSString *)self->_displayLocation copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
@@ -505,11 +505,11 @@ LABEL_5:
   }
 
 LABEL_6:
-  v13 = [(GEOPlaceSearchResponse *)self->_response copyWithZone:a3];
+  v13 = [(GEOPlaceSearchResponse *)self->_response copyWithZone:zone];
   v14 = v5[10];
   v5[10] = v13;
 
-  v15 = [(NSString *)self->_syncIdentifier copyWithZone:a3];
+  v15 = [(NSString *)self->_syncIdentifier copyWithZone:zone];
   v16 = v5[11];
   v5[11] = v15;
 
@@ -530,33 +530,33 @@ LABEL_6:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_request)
   {
-    [v4 setRequest:?];
-    v4 = v7;
+    [toCopy setRequest:?];
+    toCopy = v7;
   }
 
   if (self->_displayQuery)
   {
     [v7 setDisplayQuery:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayLocation)
   {
     [v7 setDisplayLocation:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_latitude;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = *&self->_latitude;
+    *(toCopy + 96) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -575,8 +575,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 3) = *&self->_longitude;
-  *(v4 + 96) |= 4u;
+  *(toCopy + 3) = *&self->_longitude;
+  *(toCopy + 96) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -590,70 +590,70 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(v4 + 2) = *&self->_latitudeSpan;
-  *(v4 + 96) |= 2u;
+  *(toCopy + 2) = *&self->_latitudeSpan;
+  *(toCopy + 96) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 4) = *&self->_longitudeSpan;
-    *(v4 + 96) |= 8u;
+    *(toCopy + 4) = *&self->_longitudeSpan;
+    *(toCopy + 96) |= 8u;
   }
 
 LABEL_12:
   if (self->_response)
   {
     [v7 setResponse:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_syncIdentifier)
   {
     [v7 setSyncIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_position;
-    *(v4 + 96) |= 0x10u;
+    *(toCopy + 5) = *&self->_position;
+    *(toCopy + 96) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
-    *(v4 + 6) = *&self->_timestamp;
-    *(v4 + 96) |= 0x20u;
+    *(toCopy + 6) = *&self->_timestamp;
+    *(toCopy + 96) |= 0x20u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayQuery)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayLocation)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -673,7 +673,7 @@ LABEL_9:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v7;
+  toCopy = v7;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -688,39 +688,39 @@ LABEL_10:
 
 LABEL_25:
   PBDataWriterWriteDoubleField();
-  v4 = v7;
+  toCopy = v7;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
 LABEL_12:
   if (self->_response)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_syncIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
@@ -730,8 +730,8 @@ LABEL_12:
   request = self->_request;
   if (request)
   {
-    v5 = [(GEOPlaceSearchRequest *)request dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request"];
+    dictionaryRepresentation = [(GEOPlaceSearchRequest *)request dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"request"];
   }
 
   displayQuery = self->_displayQuery;
@@ -800,8 +800,8 @@ LABEL_12:
   response = self->_response;
   if (response)
   {
-    v11 = [(GEOPlaceSearchResponse *)response dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"response"];
+    dictionaryRepresentation2 = [(GEOPlaceSearchResponse *)response dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"response"];
   }
 
   syncIdentifier = self->_syncIdentifier;
@@ -833,15 +833,15 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = PersistentSearchRequestHistoryItem;
   v3 = [(PersistentSearchRequestHistoryItem *)&v7 description];
-  v4 = [(PersistentSearchRequestHistoryItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentSearchRequestHistoryItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 32;
   }
@@ -854,9 +854,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPosition:(BOOL)a3
+- (void)setHasPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 16;
   }
@@ -869,9 +869,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasLongitudeSpan:(BOOL)a3
+- (void)setHasLongitudeSpan:(BOOL)span
 {
-  if (a3)
+  if (span)
   {
     v3 = 8;
   }
@@ -884,9 +884,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLatitudeSpan:(BOOL)a3
+- (void)setHasLatitudeSpan:(BOOL)span
 {
-  if (a3)
+  if (span)
   {
     v3 = 2;
   }
@@ -899,9 +899,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 4;
   }

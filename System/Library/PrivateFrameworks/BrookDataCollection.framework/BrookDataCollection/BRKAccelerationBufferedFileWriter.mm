@@ -1,47 +1,47 @@
 @interface BRKAccelerationBufferedFileWriter
 - (void)_lock_close;
-- (void)_lock_writeX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6;
+- (void)_lock_writeX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp;
 - (void)close;
-- (void)writeX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6;
+- (void)writeX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp;
 @end
 
 @implementation BRKAccelerationBufferedFileWriter
 
-- (void)writeX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6
+- (void)writeX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__BRKAccelerationBufferedFileWriter_writeX_y_z_timestamp___block_invoke;
   v6[3] = &unk_278D27DC0;
   v6[4] = self;
-  *&v6[5] = a3;
-  *&v6[6] = a4;
-  *&v6[7] = a5;
-  *&v6[8] = a6;
+  *&v6[5] = x;
+  *&v6[6] = y;
+  *&v6[7] = z;
+  *&v6[8] = timestamp;
   [(BRKWriter *)self performWithLock:v6];
 }
 
-- (void)_lock_writeX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6
+- (void)_lock_writeX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp
 {
   v20[4] = *MEMORY[0x277D85DE8];
   if (!self->_values)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     values = self->_values;
-    self->_values = v11;
+    self->_values = array;
   }
 
   v19[0] = @"timestamp";
-  v13 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+  v13 = [MEMORY[0x277CCABB0] numberWithDouble:timestamp];
   v20[0] = v13;
   v19[1] = @"x";
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:x];
   v20[1] = v14;
   v19[2] = @"y";
-  v15 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithDouble:y];
   v20[2] = v15;
   v19[3] = @"z";
-  v16 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:z];
   v20[3] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
@@ -65,15 +65,15 @@
   if (self->_values)
   {
     v3 = [BRKAccelerationFileWriter alloc];
-    v4 = [(BRKWriter *)self path];
-    v5 = [(BRKWriter *)v3 initWithPath:v4];
+    path = [(BRKWriter *)self path];
+    v5 = [(BRKWriter *)v3 initWithPath:path];
 
     [(BRKAccelerationFileWriter *)v5 openWithDataCount:[(NSMutableArray *)self->_values count]];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v25 = self;
+    selfCopy = self;
     obj = self->_values;
     v6 = [(NSMutableArray *)obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v6)
@@ -116,8 +116,8 @@
     }
 
     [(BRKAccelerationFileWriter *)v5 close];
-    values = v25->_values;
-    v25->_values = 0;
+    values = selfCopy->_values;
+    selfCopy->_values = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];

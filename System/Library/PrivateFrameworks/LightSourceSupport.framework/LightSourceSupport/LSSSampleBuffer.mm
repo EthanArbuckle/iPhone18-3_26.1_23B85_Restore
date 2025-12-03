@@ -1,6 +1,6 @@
 @interface LSSSampleBuffer
 - (LSSSampleBuffer)init;
-- (__n128)intervalContaining:(double)a3@<D0>;
+- (__n128)intervalContaining:(double)containing@<D0>;
 - (uint64_t)removeStartingAt:(uint64_t)result;
 - (void)append:(void *)result;
 @end
@@ -54,16 +54,16 @@
   return result;
 }
 
-- (__n128)intervalContaining:(double)a3@<D0>
+- (__n128)intervalContaining:(double)containing@<D0>
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_16;
   }
 
-  v3 = *(a1 + 3088);
-  v4 = *(a1 + 3096);
-  v5 = a1 + 16;
+  v3 = *(self + 3088);
+  v4 = *(self + 3096);
+  v5 = self + 16;
   v6 = v3;
   while (1)
   {
@@ -80,7 +80,7 @@
     }
   }
 
-  v9 = *(a1 + 3088);
+  v9 = *(self + 3088);
   while (1)
   {
     v10 = v9 + 1;
@@ -101,12 +101,12 @@
     goto LABEL_16;
   }
 
-  v12 = *(a1 + 3088);
-  while (*(v5 + 96 * (v12 & 0x1F)) < a3)
+  v12 = *(self + 3088);
+  while (*(v5 + 96 * (v12 & 0x1F)) < containing)
   {
     if (v4 == ++v12)
     {
-      v12 = *(a1 + 3096);
+      v12 = *(self + 3096);
       break;
     }
   }

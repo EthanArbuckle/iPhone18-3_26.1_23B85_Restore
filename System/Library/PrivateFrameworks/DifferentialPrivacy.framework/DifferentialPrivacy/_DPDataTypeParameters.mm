@@ -1,17 +1,17 @@
 @interface _DPDataTypeParameters
 + (id)allDataTypeNames;
-+ (id)dataTypeParametersFromDictionary:(id)a3;
-+ (id)initParametersForDataType:(id)a3;
-+ (id)parametersFromFile:(id)a3;
-- (_DPDataTypeParameters)initWithDictionary:(id)a3;
++ (id)dataTypeParametersFromDictionary:(id)dictionary;
++ (id)initParametersForDataType:(id)type;
++ (id)parametersFromFile:(id)file;
+- (_DPDataTypeParameters)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation _DPDataTypeParameters
 
-- (_DPDataTypeParameters)initWithDictionary:(id)a3
+- (_DPDataTypeParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _DPDataTypeParameters;
   v5 = [(_DPDataTypeParameters *)&v14 init];
@@ -20,13 +20,13 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"LocalPrivacyBudget"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"LocalPrivacyBudget"];
   v7 = v6;
   if (v6)
   {
     [(_DPDataTypeParameters *)v6 floatValue];
     v5->_localPrivacyBudget = v8;
-    v9 = [v4 objectForKeyedSubscript:@"BudgetKeyName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"BudgetKeyName"];
     if (v9)
     {
       v10 = v9;
@@ -50,21 +50,21 @@ LABEL_9:
   return v7;
 }
 
-+ (id)dataTypeParametersFromDictionary:(id)a3
++ (id)dataTypeParametersFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-+ (id)initParametersForDataType:(id)a3
++ (id)initParametersForDataType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[_DPStrings dataTypeParametersPath];
-  v6 = [a1 parametersFromFile:v5];
+  v6 = [self parametersFromFile:v5];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:typeCopy];
 
   return v7;
 }
@@ -80,17 +80,17 @@ LABEL_9:
   return v7;
 }
 
-+ (id)parametersFromFile:(id)a3
++ (id)parametersFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44___DPDataTypeParameters_parametersFromFile___block_invoke;
   v10[3] = &unk_27858ABB8;
-  v11 = v4;
-  v12 = a1;
+  v11 = fileCopy;
+  selfCopy = self;
   v5 = parametersFromFile__onceToken_1;
-  v6 = v4;
+  v6 = fileCopy;
   if (v5 != -1)
   {
     dispatch_once(&parametersFromFile__onceToken_1, v10);
@@ -105,11 +105,11 @@ LABEL_9:
 + (id)allDataTypeNames
 {
   v3 = +[_DPStrings dataTypeParametersPath];
-  v4 = [a1 parametersFromFile:v3];
+  v4 = [self parametersFromFile:v3];
 
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 @end

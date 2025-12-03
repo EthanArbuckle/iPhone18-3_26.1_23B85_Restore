@@ -1,189 +1,189 @@
 @interface ACProtobufAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dataclassPropertiesDictionary;
 - (NSDictionary)propertiesDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDataclassProperties:(id)a3;
-- (void)addDirtyAccountProperties:(id)a3;
-- (void)addDirtyDataclassProperties:(id)a3;
-- (void)addDirtyProperties:(id)a3;
-- (void)addEnabledDataclasses:(id)a3;
-- (void)addEnabledEnumDataclasses:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)addProvisionedDataclasses:(id)a3;
-- (void)addProvisionedEnumDataclasses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setDataclassPropertiesDictionary:(id)a3;
-- (void)setPropertiesDictionary:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDataclassProperties:(id)properties;
+- (void)addDirtyAccountProperties:(id)properties;
+- (void)addDirtyDataclassProperties:(id)properties;
+- (void)addDirtyProperties:(id)properties;
+- (void)addEnabledDataclasses:(id)dataclasses;
+- (void)addEnabledEnumDataclasses:(id)dataclasses;
+- (void)addProperties:(id)properties;
+- (void)addProvisionedDataclasses:(id)dataclasses;
+- (void)addProvisionedEnumDataclasses:(id)dataclasses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setDataclassPropertiesDictionary:(id)dictionary;
+- (void)setPropertiesDictionary:(id)dictionary;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufAccount
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_properties;
     self->_properties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSMutableArray *)properties addObject:v4];
+  [(NSMutableArray *)properties addObject:propertiesCopy];
 }
 
-- (void)addDataclassProperties:(id)a3
+- (void)addDataclassProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dataclassProperties = self->_dataclassProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dataclassProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dataclassProperties;
     self->_dataclassProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dataclassProperties = self->_dataclassProperties;
   }
 
-  [(NSMutableArray *)dataclassProperties addObject:v4];
+  [(NSMutableArray *)dataclassProperties addObject:propertiesCopy];
 }
 
-- (void)addEnabledDataclasses:(id)a3
+- (void)addEnabledDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   enabledDataclasses = self->_enabledDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!enabledDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_enabledDataclasses;
     self->_enabledDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     enabledDataclasses = self->_enabledDataclasses;
   }
 
-  [(NSMutableArray *)enabledDataclasses addObject:v4];
+  [(NSMutableArray *)enabledDataclasses addObject:dataclassesCopy];
 }
 
-- (void)addProvisionedDataclasses:(id)a3
+- (void)addProvisionedDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   provisionedDataclasses = self->_provisionedDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!provisionedDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_provisionedDataclasses;
     self->_provisionedDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     provisionedDataclasses = self->_provisionedDataclasses;
   }
 
-  [(NSMutableArray *)provisionedDataclasses addObject:v4];
+  [(NSMutableArray *)provisionedDataclasses addObject:dataclassesCopy];
 }
 
-- (void)addDirtyProperties:(id)a3
+- (void)addDirtyProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dirtyProperties = self->_dirtyProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dirtyProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableArray *)dirtyProperties addObject:v4];
+  [(NSMutableArray *)dirtyProperties addObject:propertiesCopy];
 }
 
-- (void)addDirtyAccountProperties:(id)a3
+- (void)addDirtyAccountProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dirtyAccountProperties = self->_dirtyAccountProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dirtyAccountProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dirtyAccountProperties;
     self->_dirtyAccountProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dirtyAccountProperties = self->_dirtyAccountProperties;
   }
 
-  [(NSMutableArray *)dirtyAccountProperties addObject:v4];
+  [(NSMutableArray *)dirtyAccountProperties addObject:propertiesCopy];
 }
 
-- (void)addDirtyDataclassProperties:(id)a3
+- (void)addDirtyDataclassProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   dirtyDataclassProperties = self->_dirtyDataclassProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!dirtyDataclassProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dirtyDataclassProperties;
     self->_dirtyDataclassProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     dirtyDataclassProperties = self->_dirtyDataclassProperties;
   }
 
-  [(NSMutableArray *)dirtyDataclassProperties addObject:v4];
+  [(NSMutableArray *)dirtyDataclassProperties addObject:propertiesCopy];
 }
 
-- (void)addEnabledEnumDataclasses:(id)a3
+- (void)addEnabledEnumDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   enabledEnumDataclasses = self->_enabledEnumDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!enabledEnumDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_enabledEnumDataclasses;
     self->_enabledEnumDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     enabledEnumDataclasses = self->_enabledEnumDataclasses;
   }
 
-  [(NSMutableArray *)enabledEnumDataclasses addObject:v4];
+  [(NSMutableArray *)enabledEnumDataclasses addObject:dataclassesCopy];
 }
 
-- (void)addProvisionedEnumDataclasses:(id)a3
+- (void)addProvisionedEnumDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   provisionedEnumDataclasses = self->_provisionedEnumDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!provisionedEnumDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_provisionedEnumDataclasses;
     self->_provisionedEnumDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     provisionedEnumDataclasses = self->_provisionedEnumDataclasses;
   }
 
-  [(NSMutableArray *)provisionedEnumDataclasses addObject:v4];
+  [(NSMutableArray *)provisionedEnumDataclasses addObject:dataclassesCopy];
 }
 
 - (id)description
@@ -192,8 +192,8 @@
   v8.receiver = self;
   v8.super_class = ACProtobufAccount;
   v4 = [(ACProtobufAccount *)&v8 description];
-  v5 = [(ACProtobufAccount *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufAccount *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -201,37 +201,37 @@
 - (id)dictionaryRepresentation
 {
   v83 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   accountType = self->_accountType;
   if (accountType)
   {
-    v5 = [(ACProtobufAccountType *)accountType dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"accountType"];
+    dictionaryRepresentation = [(ACProtobufAccountType *)accountType dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"accountType"];
   }
 
   credential = self->_credential;
   if (credential)
   {
-    v7 = [(ACProtobufAccountCredential *)credential dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"credential"];
+    dictionaryRepresentation2 = [(ACProtobufAccountCredential *)credential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"credential"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   accountDescription = self->_accountDescription;
   if (accountDescription)
   {
-    [v3 setObject:accountDescription forKey:@"accountDescription"];
+    [dictionary setObject:accountDescription forKey:@"accountDescription"];
   }
 
   username = self->_username;
   if (username)
   {
-    [v3 setObject:username forKey:@"username"];
+    [dictionary setObject:username forKey:@"username"];
   }
 
   if ([(NSMutableArray *)self->_properties count])
@@ -256,8 +256,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation3 = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation3];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v75 objects:v82 count:16];
@@ -266,27 +266,27 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"properties"];
+    [dictionary setObject:v11 forKey:@"properties"];
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_authenticated];
-  [v3 setObject:v18 forKey:@"authenticated"];
+  [dictionary setObject:v18 forKey:@"authenticated"];
 
   lastCredentialRenewalRejectionDate = self->_lastCredentialRenewalRejectionDate;
   if (lastCredentialRenewalRejectionDate)
   {
-    v20 = [(ACProtobufDate *)lastCredentialRenewalRejectionDate dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"lastCredentialRenewalRejectionDate"];
+    dictionaryRepresentation4 = [(ACProtobufDate *)lastCredentialRenewalRejectionDate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"lastCredentialRenewalRejectionDate"];
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:self->_active];
-  [v3 setObject:v21 forKey:@"active"];
+  [dictionary setObject:v21 forKey:@"active"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:self->_visible];
-  [v3 setObject:v22 forKey:@"visible"];
+  [dictionary setObject:v22 forKey:@"visible"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsAuthentication];
-  [v3 setObject:v23 forKey:@"supportsAuthentication"];
+  [dictionary setObject:v23 forKey:@"supportsAuthentication"];
 
   if ([(NSMutableArray *)self->_dataclassProperties count])
   {
@@ -310,8 +310,8 @@
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v71 + 1) + 8 * j) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation5 = [*(*(&v71 + 1) + 8 * j) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation5];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v71 objects:v81 count:16];
@@ -320,88 +320,88 @@
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"dataclassProperties"];
+    [dictionary setObject:v24 forKey:@"dataclassProperties"];
   }
 
   objectID = self->_objectID;
   if (objectID)
   {
-    v32 = [(ACProtobufURL *)objectID dictionaryRepresentation];
-    [v3 setObject:v32 forKey:@"objectID"];
+    dictionaryRepresentation6 = [(ACProtobufURL *)objectID dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"objectID"];
   }
 
   parentAccount = self->_parentAccount;
   if (parentAccount)
   {
-    v34 = [(ACProtobufAccount *)parentAccount dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"parentAccount"];
+    dictionaryRepresentation7 = [(ACProtobufAccount *)parentAccount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"parentAccount"];
   }
 
   enabledDataclasses = self->_enabledDataclasses;
   if (enabledDataclasses)
   {
-    [v3 setObject:enabledDataclasses forKey:@"enabledDataclasses"];
+    [dictionary setObject:enabledDataclasses forKey:@"enabledDataclasses"];
   }
 
   provisionedDataclasses = self->_provisionedDataclasses;
   if (provisionedDataclasses)
   {
-    [v3 setObject:provisionedDataclasses forKey:@"provisionedDataclasses"];
+    [dictionary setObject:provisionedDataclasses forKey:@"provisionedDataclasses"];
   }
 
   authenticationType = self->_authenticationType;
   if (authenticationType)
   {
-    [v3 setObject:authenticationType forKey:@"authenticationType"];
+    [dictionary setObject:authenticationType forKey:@"authenticationType"];
   }
 
   credentialType = self->_credentialType;
   if (credentialType)
   {
-    [v3 setObject:credentialType forKey:@"credentialType"];
+    [dictionary setObject:credentialType forKey:@"credentialType"];
   }
 
   date = self->_date;
   if (date)
   {
-    v40 = [(ACProtobufDate *)date dictionaryRepresentation];
-    [v3 setObject:v40 forKey:@"date"];
+    dictionaryRepresentation8 = [(ACProtobufDate *)date dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"date"];
   }
 
   owningBundleID = self->_owningBundleID;
   if (owningBundleID)
   {
-    [v3 setObject:owningBundleID forKey:@"owningBundleID"];
+    [dictionary setObject:owningBundleID forKey:@"owningBundleID"];
   }
 
   dirtyProperties = self->_dirtyProperties;
   if (dirtyProperties)
   {
-    [v3 setObject:dirtyProperties forKey:@"dirtyProperties"];
+    [dictionary setObject:dirtyProperties forKey:@"dirtyProperties"];
   }
 
   dirtyAccountProperties = self->_dirtyAccountProperties;
   if (dirtyAccountProperties)
   {
-    [v3 setObject:dirtyAccountProperties forKey:@"dirtyAccountProperties"];
+    [dictionary setObject:dirtyAccountProperties forKey:@"dirtyAccountProperties"];
   }
 
   dirtyDataclassProperties = self->_dirtyDataclassProperties;
   if (dirtyDataclassProperties)
   {
-    [v3 setObject:dirtyDataclassProperties forKey:@"dirtyDataclassProperties"];
+    [dictionary setObject:dirtyDataclassProperties forKey:@"dirtyDataclassProperties"];
   }
 
   if (*&self->_has)
   {
     v45 = [MEMORY[0x1E696AD98] numberWithBool:self->_warmingUp];
-    [v3 setObject:v45 forKey:@"warmingUp"];
+    [dictionary setObject:v45 forKey:@"warmingUp"];
   }
 
   modificationID = self->_modificationID;
   if (modificationID)
   {
-    [v3 setObject:modificationID forKey:@"modificationID"];
+    [dictionary setObject:modificationID forKey:@"modificationID"];
   }
 
   if ([(NSMutableArray *)self->_enabledEnumDataclasses count])
@@ -426,8 +426,8 @@
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v67 + 1) + 8 * k) dictionaryRepresentation];
-          [v47 addObject:v53];
+          dictionaryRepresentation9 = [*(*(&v67 + 1) + 8 * k) dictionaryRepresentation];
+          [v47 addObject:dictionaryRepresentation9];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v67 objects:v80 count:16];
@@ -436,7 +436,7 @@
       while (v50);
     }
 
-    [v3 setObject:v47 forKey:@"enabledEnumDataclasses"];
+    [dictionary setObject:v47 forKey:@"enabledEnumDataclasses"];
   }
 
   if ([(NSMutableArray *)self->_provisionedEnumDataclasses count])
@@ -461,8 +461,8 @@
             objc_enumerationMutation(v55);
           }
 
-          v60 = [*(*(&v63 + 1) + 8 * m) dictionaryRepresentation];
-          [v54 addObject:v60];
+          dictionaryRepresentation10 = [*(*(&v63 + 1) + 8 * m) dictionaryRepresentation];
+          [v54 addObject:dictionaryRepresentation10];
         }
 
         v57 = [(NSMutableArray *)v55 countByEnumeratingWithState:&v63 objects:v79 count:16];
@@ -471,18 +471,18 @@
       while (v57);
     }
 
-    [v3 setObject:v54 forKey:@"provisionedEnumDataclasses"];
+    [dictionary setObject:v54 forKey:@"provisionedEnumDataclasses"];
   }
 
   v61 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v112 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   accountType = self->_accountType;
   PBDataWriterWriteSubmessage();
   if (self->_credential)
@@ -847,47 +847,47 @@
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v41 = a3;
-  [v41 setAccountType:self->_accountType];
+  toCopy = to;
+  [toCopy setAccountType:self->_accountType];
   if (self->_credential)
   {
-    [v41 setCredential:?];
+    [toCopy setCredential:?];
   }
 
-  [v41 setIdentifier:self->_identifier];
+  [toCopy setIdentifier:self->_identifier];
   if (self->_accountDescription)
   {
-    [v41 setAccountDescription:?];
+    [toCopy setAccountDescription:?];
   }
 
   if (self->_username)
   {
-    [v41 setUsername:?];
+    [toCopy setUsername:?];
   }
 
   if ([(ACProtobufAccount *)self propertiesCount])
   {
-    [v41 clearProperties];
-    v4 = [(ACProtobufAccount *)self propertiesCount];
-    if (v4)
+    [toCopy clearProperties];
+    propertiesCount = [(ACProtobufAccount *)self propertiesCount];
+    if (propertiesCount)
     {
-      v5 = v4;
+      v5 = propertiesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ACProtobufAccount *)self propertiesAtIndex:i];
-        [v41 addProperties:v7];
+        [toCopy addProperties:v7];
       }
     }
   }
 
-  v8 = v41;
-  v41[185] = self->_authenticated;
+  v8 = toCopy;
+  toCopy[185] = self->_authenticated;
   if (self->_lastCredentialRenewalRejectionDate)
   {
-    [v41 setLastCredentialRenewalRejectionDate:?];
-    v8 = v41;
+    [toCopy setLastCredentialRenewalRejectionDate:?];
+    v8 = toCopy;
   }
 
   v8[184] = self->_active;
@@ -895,187 +895,187 @@
   v8[186] = self->_supportsAuthentication;
   if ([(ACProtobufAccount *)self dataclassPropertiesCount])
   {
-    [v41 clearDataclassProperties];
-    v9 = [(ACProtobufAccount *)self dataclassPropertiesCount];
-    if (v9)
+    [toCopy clearDataclassProperties];
+    dataclassPropertiesCount = [(ACProtobufAccount *)self dataclassPropertiesCount];
+    if (dataclassPropertiesCount)
     {
-      v10 = v9;
+      v10 = dataclassPropertiesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(ACProtobufAccount *)self dataclassPropertiesAtIndex:j];
-        [v41 addDataclassProperties:v12];
+        [toCopy addDataclassProperties:v12];
       }
     }
   }
 
   if (self->_objectID)
   {
-    [v41 setObjectID:?];
+    [toCopy setObjectID:?];
   }
 
   if (self->_parentAccount)
   {
-    [v41 setParentAccount:?];
+    [toCopy setParentAccount:?];
   }
 
   if ([(ACProtobufAccount *)self enabledDataclassesCount])
   {
-    [v41 clearEnabledDataclasses];
-    v13 = [(ACProtobufAccount *)self enabledDataclassesCount];
-    if (v13)
+    [toCopy clearEnabledDataclasses];
+    enabledDataclassesCount = [(ACProtobufAccount *)self enabledDataclassesCount];
+    if (enabledDataclassesCount)
     {
-      v14 = v13;
+      v14 = enabledDataclassesCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(ACProtobufAccount *)self enabledDataclassesAtIndex:k];
-        [v41 addEnabledDataclasses:v16];
+        [toCopy addEnabledDataclasses:v16];
       }
     }
   }
 
   if ([(ACProtobufAccount *)self provisionedDataclassesCount])
   {
-    [v41 clearProvisionedDataclasses];
-    v17 = [(ACProtobufAccount *)self provisionedDataclassesCount];
-    if (v17)
+    [toCopy clearProvisionedDataclasses];
+    provisionedDataclassesCount = [(ACProtobufAccount *)self provisionedDataclassesCount];
+    if (provisionedDataclassesCount)
     {
-      v18 = v17;
+      v18 = provisionedDataclassesCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(ACProtobufAccount *)self provisionedDataclassesAtIndex:m];
-        [v41 addProvisionedDataclasses:v20];
+        [toCopy addProvisionedDataclasses:v20];
       }
     }
   }
 
   if (self->_authenticationType)
   {
-    [v41 setAuthenticationType:?];
+    [toCopy setAuthenticationType:?];
   }
 
   if (self->_credentialType)
   {
-    [v41 setCredentialType:?];
+    [toCopy setCredentialType:?];
   }
 
   if (self->_date)
   {
-    [v41 setDate:?];
+    [toCopy setDate:?];
   }
 
   if (self->_owningBundleID)
   {
-    [v41 setOwningBundleID:?];
+    [toCopy setOwningBundleID:?];
   }
 
   if ([(ACProtobufAccount *)self dirtyPropertiesCount])
   {
-    [v41 clearDirtyProperties];
-    v21 = [(ACProtobufAccount *)self dirtyPropertiesCount];
-    if (v21)
+    [toCopy clearDirtyProperties];
+    dirtyPropertiesCount = [(ACProtobufAccount *)self dirtyPropertiesCount];
+    if (dirtyPropertiesCount)
     {
-      v22 = v21;
+      v22 = dirtyPropertiesCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(ACProtobufAccount *)self dirtyPropertiesAtIndex:n];
-        [v41 addDirtyProperties:v24];
+        [toCopy addDirtyProperties:v24];
       }
     }
   }
 
   if ([(ACProtobufAccount *)self dirtyAccountPropertiesCount])
   {
-    [v41 clearDirtyAccountProperties];
-    v25 = [(ACProtobufAccount *)self dirtyAccountPropertiesCount];
-    if (v25)
+    [toCopy clearDirtyAccountProperties];
+    dirtyAccountPropertiesCount = [(ACProtobufAccount *)self dirtyAccountPropertiesCount];
+    if (dirtyAccountPropertiesCount)
     {
-      v26 = v25;
+      v26 = dirtyAccountPropertiesCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(ACProtobufAccount *)self dirtyAccountPropertiesAtIndex:ii];
-        [v41 addDirtyAccountProperties:v28];
+        [toCopy addDirtyAccountProperties:v28];
       }
     }
   }
 
   if ([(ACProtobufAccount *)self dirtyDataclassPropertiesCount])
   {
-    [v41 clearDirtyDataclassProperties];
-    v29 = [(ACProtobufAccount *)self dirtyDataclassPropertiesCount];
-    if (v29)
+    [toCopy clearDirtyDataclassProperties];
+    dirtyDataclassPropertiesCount = [(ACProtobufAccount *)self dirtyDataclassPropertiesCount];
+    if (dirtyDataclassPropertiesCount)
     {
-      v30 = v29;
+      v30 = dirtyDataclassPropertiesCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(ACProtobufAccount *)self dirtyDataclassPropertiesAtIndex:jj];
-        [v41 addDirtyDataclassProperties:v32];
+        [toCopy addDirtyDataclassProperties:v32];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v41[188] = self->_warmingUp;
-    v41[192] |= 1u;
+    toCopy[188] = self->_warmingUp;
+    toCopy[192] |= 1u;
   }
 
   if (self->_modificationID)
   {
-    [v41 setModificationID:?];
+    [toCopy setModificationID:?];
   }
 
   if ([(ACProtobufAccount *)self enabledEnumDataclassesCount])
   {
-    [v41 clearEnabledEnumDataclasses];
-    v33 = [(ACProtobufAccount *)self enabledEnumDataclassesCount];
-    if (v33)
+    [toCopy clearEnabledEnumDataclasses];
+    enabledEnumDataclassesCount = [(ACProtobufAccount *)self enabledEnumDataclassesCount];
+    if (enabledEnumDataclassesCount)
     {
-      v34 = v33;
+      v34 = enabledEnumDataclassesCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(ACProtobufAccount *)self enabledEnumDataclassesAtIndex:kk];
-        [v41 addEnabledEnumDataclasses:v36];
+        [toCopy addEnabledEnumDataclasses:v36];
       }
     }
   }
 
   if ([(ACProtobufAccount *)self provisionedEnumDataclassesCount])
   {
-    [v41 clearProvisionedEnumDataclasses];
-    v37 = [(ACProtobufAccount *)self provisionedEnumDataclassesCount];
-    if (v37)
+    [toCopy clearProvisionedEnumDataclasses];
+    provisionedEnumDataclassesCount = [(ACProtobufAccount *)self provisionedEnumDataclassesCount];
+    if (provisionedEnumDataclassesCount)
     {
-      v38 = v37;
+      v38 = provisionedEnumDataclassesCount;
       for (mm = 0; mm != v38; ++mm)
       {
         v40 = [(ACProtobufAccount *)self provisionedEnumDataclassesAtIndex:mm];
-        [v41 addProvisionedEnumDataclasses:v40];
+        [toCopy addProvisionedEnumDataclasses:v40];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v133 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ACProtobufAccountType *)self->_accountType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ACProtobufAccountType *)self->_accountType copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(ACProtobufAccountCredential *)self->_credential copyWithZone:a3];
+  v8 = [(ACProtobufAccountCredential *)self->_credential copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = *(v5 + 104);
   *(v5 + 104) = v10;
 
-  v12 = [(NSString *)self->_accountDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_accountDescription copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
-  v14 = [(NSString *)self->_username copyWithZone:a3];
+  v14 = [(NSString *)self->_username copyWithZone:zone];
   v15 = *(v5 + 176);
   *(v5 + 176) = v14;
 
@@ -1099,7 +1099,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v120 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v120 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addProperties:v21];
 
         ++v20;
@@ -1113,7 +1113,7 @@
   }
 
   *(v5 + 185) = self->_authenticated;
-  v22 = [(ACProtobufDate *)self->_lastCredentialRenewalRejectionDate copyWithZone:a3];
+  v22 = [(ACProtobufDate *)self->_lastCredentialRenewalRejectionDate copyWithZone:zone];
   v23 = *(v5 + 112);
   *(v5 + 112) = v22;
 
@@ -1140,7 +1140,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v116 + 1) + 8 * v28) copyWithZone:a3];
+        v29 = [*(*(&v116 + 1) + 8 * v28) copyWithZone:zone];
         [v5 addDataclassProperties:v29];
 
         ++v28;
@@ -1153,11 +1153,11 @@
     while (v26);
   }
 
-  v30 = [(ACProtobufURL *)self->_objectID copyWithZone:a3];
+  v30 = [(ACProtobufURL *)self->_objectID copyWithZone:zone];
   v31 = *(v5 + 128);
   *(v5 + 128) = v30;
 
-  v32 = [(ACProtobufAccount *)self->_parentAccount copyWithZone:a3];
+  v32 = [(ACProtobufAccount *)self->_parentAccount copyWithZone:zone];
   v33 = *(v5 + 144);
   *(v5 + 144) = v32;
 
@@ -1181,7 +1181,7 @@
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v112 + 1) + 8 * v38) copyWithZone:a3];
+        v39 = [*(*(&v112 + 1) + 8 * v38) copyWithZone:zone];
         [v5 addEnabledDataclasses:v39];
 
         ++v38;
@@ -1214,7 +1214,7 @@
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v108 + 1) + 8 * v44) copyWithZone:a3];
+        v45 = [*(*(&v108 + 1) + 8 * v44) copyWithZone:zone];
         [v5 addProvisionedDataclasses:v45];
 
         ++v44;
@@ -1227,19 +1227,19 @@
     while (v42);
   }
 
-  v46 = [(NSString *)self->_authenticationType copyWithZone:a3];
+  v46 = [(NSString *)self->_authenticationType copyWithZone:zone];
   v47 = *(v5 + 24);
   *(v5 + 24) = v46;
 
-  v48 = [(NSString *)self->_credentialType copyWithZone:a3];
+  v48 = [(NSString *)self->_credentialType copyWithZone:zone];
   v49 = *(v5 + 40);
   *(v5 + 40) = v48;
 
-  v50 = [(ACProtobufDate *)self->_date copyWithZone:a3];
+  v50 = [(ACProtobufDate *)self->_date copyWithZone:zone];
   v51 = *(v5 + 56);
   *(v5 + 56) = v50;
 
-  v52 = [(NSString *)self->_owningBundleID copyWithZone:a3];
+  v52 = [(NSString *)self->_owningBundleID copyWithZone:zone];
   v53 = *(v5 + 136);
   *(v5 + 136) = v52;
 
@@ -1263,7 +1263,7 @@
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v104 + 1) + 8 * v58) copyWithZone:a3];
+        v59 = [*(*(&v104 + 1) + 8 * v58) copyWithZone:zone];
         [v5 addDirtyProperties:v59];
 
         ++v58;
@@ -1296,7 +1296,7 @@
           objc_enumerationMutation(v60);
         }
 
-        v65 = [*(*(&v100 + 1) + 8 * v64) copyWithZone:a3];
+        v65 = [*(*(&v100 + 1) + 8 * v64) copyWithZone:zone];
         [v5 addDirtyAccountProperties:v65];
 
         ++v64;
@@ -1329,7 +1329,7 @@
           objc_enumerationMutation(v66);
         }
 
-        v71 = [*(*(&v96 + 1) + 8 * v70) copyWithZone:a3];
+        v71 = [*(*(&v96 + 1) + 8 * v70) copyWithZone:zone];
         [v5 addDirtyDataclassProperties:v71];
 
         ++v70;
@@ -1348,7 +1348,7 @@
     *(v5 + 192) |= 1u;
   }
 
-  v72 = [(NSString *)self->_modificationID copyWithZone:a3];
+  v72 = [(NSString *)self->_modificationID copyWithZone:zone];
   v73 = *(v5 + 120);
   *(v5 + 120) = v72;
 
@@ -1372,7 +1372,7 @@
           objc_enumerationMutation(v74);
         }
 
-        v79 = [*(*(&v92 + 1) + 8 * v78) copyWithZone:a3];
+        v79 = [*(*(&v92 + 1) + 8 * v78) copyWithZone:zone];
         [v5 addEnabledEnumDataclasses:v79];
 
         ++v78;
@@ -1405,7 +1405,7 @@
           objc_enumerationMutation(v80);
         }
 
-        v85 = [*(*(&v88 + 1) + 8 * v84) copyWithZone:{a3, v88}];
+        v85 = [*(*(&v88 + 1) + 8 * v84) copyWithZone:{zone, v88}];
         [v5 addProvisionedEnumDataclasses:v85];
 
         ++v84;
@@ -1422,16 +1422,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
   accountType = self->_accountType;
-  if (accountType | *(v4 + 2))
+  if (accountType | *(equalCopy + 2))
   {
     if (![(ACProtobufAccountType *)accountType isEqual:?])
     {
@@ -1440,7 +1440,7 @@
   }
 
   credential = self->_credential;
-  if (credential | *(v4 + 4))
+  if (credential | *(equalCopy + 4))
   {
     if (![(ACProtobufAccountCredential *)credential isEqual:?])
     {
@@ -1449,7 +1449,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 13))
+  if (identifier | *(equalCopy + 13))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1458,7 +1458,7 @@
   }
 
   accountDescription = self->_accountDescription;
-  if (accountDescription | *(v4 + 1))
+  if (accountDescription | *(equalCopy + 1))
   {
     if (![(NSString *)accountDescription isEqual:?])
     {
@@ -1467,7 +1467,7 @@
   }
 
   username = self->_username;
-  if (username | *(v4 + 22))
+  if (username | *(equalCopy + 22))
   {
     if (![(NSString *)username isEqual:?])
     {
@@ -1476,7 +1476,7 @@
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 19))
+  if (properties | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)properties isEqual:?])
     {
@@ -1484,76 +1484,76 @@
     }
   }
 
-  v11 = *(v4 + 185);
+  v11 = *(equalCopy + 185);
   if (self->_authenticated)
   {
-    if ((*(v4 + 185) & 1) == 0)
+    if ((*(equalCopy + 185) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 185))
+  else if (*(equalCopy + 185))
   {
     goto LABEL_65;
   }
 
   lastCredentialRenewalRejectionDate = self->_lastCredentialRenewalRejectionDate;
-  if (lastCredentialRenewalRejectionDate | *(v4 + 14) && ![(ACProtobufDate *)lastCredentialRenewalRejectionDate isEqual:?])
+  if (lastCredentialRenewalRejectionDate | *(equalCopy + 14) && ![(ACProtobufDate *)lastCredentialRenewalRejectionDate isEqual:?])
   {
     goto LABEL_65;
   }
 
-  v13 = *(v4 + 184);
+  v13 = *(equalCopy + 184);
   if (self->_active)
   {
-    if ((*(v4 + 184) & 1) == 0)
+    if ((*(equalCopy + 184) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 184))
+  else if (*(equalCopy + 184))
   {
     goto LABEL_65;
   }
 
-  v14 = *(v4 + 187);
+  v14 = *(equalCopy + 187);
   if (self->_visible)
   {
-    if ((*(v4 + 187) & 1) == 0)
+    if ((*(equalCopy + 187) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 187))
+  else if (*(equalCopy + 187))
   {
     goto LABEL_65;
   }
 
-  v15 = *(v4 + 186);
+  v15 = *(equalCopy + 186);
   if (self->_supportsAuthentication)
   {
-    if ((*(v4 + 186) & 1) == 0)
+    if ((*(equalCopy + 186) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 186))
+  else if (*(equalCopy + 186))
   {
     goto LABEL_65;
   }
 
   dataclassProperties = self->_dataclassProperties;
-  if (dataclassProperties | *(v4 + 6) && ![(NSMutableArray *)dataclassProperties isEqual:?])
+  if (dataclassProperties | *(equalCopy + 6) && ![(NSMutableArray *)dataclassProperties isEqual:?])
   {
     goto LABEL_65;
   }
 
   objectID = self->_objectID;
-  if (objectID | *(v4 + 16))
+  if (objectID | *(equalCopy + 16))
   {
     if (![(ACProtobufURL *)objectID isEqual:?])
     {
@@ -1562,7 +1562,7 @@
   }
 
   parentAccount = self->_parentAccount;
-  if (parentAccount | *(v4 + 18))
+  if (parentAccount | *(equalCopy + 18))
   {
     if (![(ACProtobufAccount *)parentAccount isEqual:?])
     {
@@ -1571,7 +1571,7 @@
   }
 
   enabledDataclasses = self->_enabledDataclasses;
-  if (enabledDataclasses | *(v4 + 11))
+  if (enabledDataclasses | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)enabledDataclasses isEqual:?])
     {
@@ -1580,7 +1580,7 @@
   }
 
   provisionedDataclasses = self->_provisionedDataclasses;
-  if (provisionedDataclasses | *(v4 + 20))
+  if (provisionedDataclasses | *(equalCopy + 20))
   {
     if (![(NSMutableArray *)provisionedDataclasses isEqual:?])
     {
@@ -1589,7 +1589,7 @@
   }
 
   authenticationType = self->_authenticationType;
-  if (authenticationType | *(v4 + 3))
+  if (authenticationType | *(equalCopy + 3))
   {
     if (![(NSString *)authenticationType isEqual:?])
     {
@@ -1598,7 +1598,7 @@
   }
 
   credentialType = self->_credentialType;
-  if (credentialType | *(v4 + 5))
+  if (credentialType | *(equalCopy + 5))
   {
     if (![(NSString *)credentialType isEqual:?])
     {
@@ -1607,7 +1607,7 @@
   }
 
   date = self->_date;
-  if (date | *(v4 + 7))
+  if (date | *(equalCopy + 7))
   {
     if (![(ACProtobufDate *)date isEqual:?])
     {
@@ -1616,7 +1616,7 @@
   }
 
   owningBundleID = self->_owningBundleID;
-  if (owningBundleID | *(v4 + 17))
+  if (owningBundleID | *(equalCopy + 17))
   {
     if (![(NSString *)owningBundleID isEqual:?])
     {
@@ -1625,7 +1625,7 @@
   }
 
   dirtyProperties = self->_dirtyProperties;
-  if (dirtyProperties | *(v4 + 10))
+  if (dirtyProperties | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)dirtyProperties isEqual:?])
     {
@@ -1634,7 +1634,7 @@
   }
 
   dirtyAccountProperties = self->_dirtyAccountProperties;
-  if (dirtyAccountProperties | *(v4 + 8))
+  if (dirtyAccountProperties | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)dirtyAccountProperties isEqual:?])
     {
@@ -1643,7 +1643,7 @@
   }
 
   dirtyDataclassProperties = self->_dirtyDataclassProperties;
-  if (dirtyDataclassProperties | *(v4 + 9))
+  if (dirtyDataclassProperties | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)dirtyDataclassProperties isEqual:?])
     {
@@ -1651,18 +1651,18 @@
     }
   }
 
-  v28 = *(v4 + 192);
+  v28 = *(equalCopy + 192);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_57;
   }
 
-  if ((*(v4 + 192) & 1) == 0)
+  if ((*(equalCopy + 192) & 1) == 0)
   {
     goto LABEL_65;
   }
 
-  v28 = *(v4 + 188);
+  v28 = *(equalCopy + 188);
   if (!self->_warmingUp)
   {
 LABEL_57:
@@ -1676,20 +1676,20 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  if ((*(v4 + 188) & 1) == 0)
+  if ((*(equalCopy + 188) & 1) == 0)
   {
     goto LABEL_65;
   }
 
 LABEL_58:
   modificationID = self->_modificationID;
-  if (modificationID | *(v4 + 15) && ![(NSString *)modificationID isEqual:?])
+  if (modificationID | *(equalCopy + 15) && ![(NSString *)modificationID isEqual:?])
   {
     goto LABEL_65;
   }
 
   enabledEnumDataclasses = self->_enabledEnumDataclasses;
-  if (enabledEnumDataclasses | *(v4 + 12))
+  if (enabledEnumDataclasses | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)enabledEnumDataclasses isEqual:?])
     {
@@ -1698,7 +1698,7 @@ LABEL_58:
   }
 
   provisionedEnumDataclasses = self->_provisionedEnumDataclasses;
-  if (provisionedEnumDataclasses | *(v4 + 21))
+  if (provisionedEnumDataclasses | *(equalCopy + 21))
   {
     v32 = [(NSMutableArray *)provisionedEnumDataclasses isEqual:?];
   }
@@ -1756,12 +1756,12 @@ LABEL_66:
   return v16 ^ v18 ^ [(NSMutableArray *)self->_provisionedEnumDataclasses hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v108 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   accountType = self->_accountType;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (accountType)
   {
     if (v6)
@@ -1776,7 +1776,7 @@ LABEL_66:
   }
 
   credential = self->_credential;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (credential)
   {
     if (v8)
@@ -1790,17 +1790,17 @@ LABEL_66:
     [(ACProtobufAccount *)self setCredential:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ACProtobufAccount *)self setIdentifier:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ACProtobufAccount *)self setAccountDescription:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(ACProtobufAccount *)self setUsername:?];
   }
@@ -1809,7 +1809,7 @@ LABEL_66:
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v9 = *(v4 + 19);
+  v9 = *(fromCopy + 19);
   v10 = [v9 countByEnumeratingWithState:&v95 objects:v107 count:16];
   if (v10)
   {
@@ -1833,9 +1833,9 @@ LABEL_66:
     while (v11);
   }
 
-  self->_authenticated = *(v4 + 185);
+  self->_authenticated = *(fromCopy + 185);
   lastCredentialRenewalRejectionDate = self->_lastCredentialRenewalRejectionDate;
-  v15 = *(v4 + 14);
+  v15 = *(fromCopy + 14);
   if (lastCredentialRenewalRejectionDate)
   {
     if (v15)
@@ -1849,14 +1849,14 @@ LABEL_66:
     [(ACProtobufAccount *)self setLastCredentialRenewalRejectionDate:?];
   }
 
-  self->_active = *(v4 + 184);
-  self->_visible = *(v4 + 187);
-  self->_supportsAuthentication = *(v4 + 186);
+  self->_active = *(fromCopy + 184);
+  self->_visible = *(fromCopy + 187);
+  self->_supportsAuthentication = *(fromCopy + 186);
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v16 = *(v4 + 6);
+  v16 = *(fromCopy + 6);
   v17 = [v16 countByEnumeratingWithState:&v91 objects:v106 count:16];
   if (v17)
   {
@@ -1881,7 +1881,7 @@ LABEL_66:
   }
 
   objectID = self->_objectID;
-  v22 = *(v4 + 16);
+  v22 = *(fromCopy + 16);
   if (objectID)
   {
     if (v22)
@@ -1896,7 +1896,7 @@ LABEL_66:
   }
 
   parentAccount = self->_parentAccount;
-  v24 = *(v4 + 18);
+  v24 = *(fromCopy + 18);
   if (parentAccount)
   {
     if (v24)
@@ -1914,7 +1914,7 @@ LABEL_66:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v25 = *(v4 + 11);
+  v25 = *(fromCopy + 11);
   v26 = [v25 countByEnumeratingWithState:&v87 objects:v105 count:16];
   if (v26)
   {
@@ -1942,7 +1942,7 @@ LABEL_66:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v30 = *(v4 + 20);
+  v30 = *(fromCopy + 20);
   v31 = [v30 countByEnumeratingWithState:&v83 objects:v104 count:16];
   if (v31)
   {
@@ -1966,18 +1966,18 @@ LABEL_66:
     while (v32);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ACProtobufAccount *)self setAuthenticationType:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ACProtobufAccount *)self setCredentialType:?];
   }
 
   date = self->_date;
-  v36 = *(v4 + 7);
+  v36 = *(fromCopy + 7);
   if (date)
   {
     if (v36)
@@ -1991,7 +1991,7 @@ LABEL_66:
     [(ACProtobufAccount *)self setDate:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(ACProtobufAccount *)self setOwningBundleID:?];
   }
@@ -2000,7 +2000,7 @@ LABEL_66:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v37 = *(v4 + 10);
+  v37 = *(fromCopy + 10);
   v38 = [v37 countByEnumeratingWithState:&v79 objects:v103 count:16];
   if (v38)
   {
@@ -2028,7 +2028,7 @@ LABEL_66:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v42 = *(v4 + 8);
+  v42 = *(fromCopy + 8);
   v43 = [v42 countByEnumeratingWithState:&v75 objects:v102 count:16];
   if (v43)
   {
@@ -2056,7 +2056,7 @@ LABEL_66:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v47 = *(v4 + 9);
+  v47 = *(fromCopy + 9);
   v48 = [v47 countByEnumeratingWithState:&v71 objects:v101 count:16];
   if (v48)
   {
@@ -2080,13 +2080,13 @@ LABEL_66:
     while (v49);
   }
 
-  if (*(v4 + 192))
+  if (*(fromCopy + 192))
   {
-    self->_warmingUp = *(v4 + 188);
+    self->_warmingUp = *(fromCopy + 188);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(ACProtobufAccount *)self setModificationID:?];
   }
@@ -2095,7 +2095,7 @@ LABEL_66:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v52 = *(v4 + 12);
+  v52 = *(fromCopy + 12);
   v53 = [v52 countByEnumeratingWithState:&v67 objects:v100 count:16];
   if (v53)
   {
@@ -2123,7 +2123,7 @@ LABEL_66:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v57 = *(v4 + 21);
+  v57 = *(fromCopy + 21);
   v58 = [v57 countByEnumeratingWithState:&v63 objects:v99 count:16];
   if (v58)
   {
@@ -2150,16 +2150,16 @@ LABEL_66:
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPropertiesDictionary:(id)a3
+- (void)setPropertiesDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(ACProtobufAccount *)self clearProperties];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__ACProtobufAccount_Helpers__setPropertiesDictionary___block_invoke;
   v5[3] = &unk_1E7977500;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __54__ACProtobufAccount_Helpers__setPropertiesDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2179,8 +2179,8 @@ void __54__ACProtobufAccount_Helpers__setPropertiesDictionary___block_invoke(uin
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(ACProtobufAccount *)self properties];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  properties = [(ACProtobufAccount *)self properties];
+  v5 = [properties countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2191,17 +2191,17 @@ void __54__ACProtobufAccount_Helpers__setPropertiesDictionary___block_invoke(uin
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(properties);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 value];
-        v11 = [v10 object];
+        value = [v9 value];
+        object = [value object];
         v12 = [v9 key];
-        [v3 setObject:v11 forKeyedSubscript:v12];
+        [v3 setObject:object forKeyedSubscript:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [properties countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -2212,16 +2212,16 @@ void __54__ACProtobufAccount_Helpers__setPropertiesDictionary___block_invoke(uin
   return v3;
 }
 
-- (void)setDataclassPropertiesDictionary:(id)a3
+- (void)setDataclassPropertiesDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(ACProtobufAccount *)self clearDataclassProperties];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__ACProtobufAccount_Helpers__setDataclassPropertiesDictionary___block_invoke;
   v5[3] = &unk_1E7977500;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __63__ACProtobufAccount_Helpers__setDataclassPropertiesDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2241,8 +2241,8 @@ void __63__ACProtobufAccount_Helpers__setDataclassPropertiesDictionary___block_i
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(ACProtobufAccount *)self dataclassProperties];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataclassProperties = [(ACProtobufAccount *)self dataclassProperties];
+  v5 = [dataclassProperties countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2253,17 +2253,17 @@ void __63__ACProtobufAccount_Helpers__setDataclassPropertiesDictionary___block_i
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataclassProperties);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 value];
-        v11 = [v10 object];
+        value = [v9 value];
+        object = [value object];
         v12 = [v9 key];
-        [v3 setObject:v11 forKeyedSubscript:v12];
+        [v3 setObject:object forKeyedSubscript:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [dataclassProperties countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

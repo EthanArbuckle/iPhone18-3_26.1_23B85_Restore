@@ -1,5 +1,5 @@
 @interface UIPanelBorderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_accessibilityColumnWidth;
 - (double)_accessibilityMaxValue;
 - (double)_accessibilityMaximumColumnWidth;
@@ -10,16 +10,16 @@
 - (id)_accessibilityUIViewAccessibilityFrame;
 - (id)_axSplitViewControllerImplementation;
 - (uint64_t)_axIsPrimaryBorder;
-- (void)_accessibilitySetBorderFloatValue:(void *)a1;
-- (void)_accessibilitySetValue:(id)a3;
-- (void)setAccessibilityValue:(id)a3;
+- (void)_accessibilitySetBorderFloatValue:(void *)value;
+- (void)_accessibilitySetValue:(id)value;
+- (void)setAccessibilityValue:(id)value;
 @end
 
 @implementation UIPanelBorderViewAccessibility
 
 - (id)_axSplitViewControllerImplementation
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedNonRetainedObject();
   }
@@ -34,7 +34,7 @@
 
 - (uint64_t)_axIsPrimaryBorder
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -47,14 +47,14 @@
   return v2 & 1;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIPanelBorderView" isKindOfClass:@"UIView"];
   v7 = @"UISplitViewControllerPanelImpl";
   v3 = @"_svc";
@@ -97,42 +97,42 @@
   return [MEMORY[0x29EDBA168] valueWithCGRect:{v13, v14}];
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v6;
+  objc_storeStrong(location, value);
+  v4 = selfCopy;
   [location[0] floatValue];
   [(UIPanelBorderViewAccessibility *)v4 _accessibilitySetBorderFloatValue:v3];
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilitySetBorderFloatValue:(void *)a1
+- (void)_accessibilitySetBorderFloatValue:(void *)value
 {
-  v8 = a1;
+  valueCopy = value;
   v7 = a2;
-  if (a1)
+  if (value)
   {
-    [v8 _accessibilityMinValue];
+    [valueCopy _accessibilityMinValue];
     v4 = v2;
-    [v8 _accessibilityMaxValue];
+    [valueCopy _accessibilityMaxValue];
     v6 = CGFloatMinMax(v7, v4, v3) / 100.0;
-    v5[0] = MEMORY[0x29EDC9748](v8);
+    v5[0] = MEMORY[0x29EDC9748](valueCopy);
     v5[1] = *&v6;
     AXPerformSafeBlock();
     objc_storeStrong(v5, 0);
   }
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v6;
+  objc_storeStrong(location, value);
+  v4 = selfCopy;
   [location[0] floatValue];
   [(UIPanelBorderViewAccessibility *)v4 _accessibilitySetBorderFloatValue:v3];
   objc_storeStrong(location, 0);
@@ -140,20 +140,20 @@
 
 - (double)_accessibilityNumberValue
 {
-  v4 = [(UIPanelBorderViewAccessibility *)self _accessibilityColumnWidth];
-  v2 = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
-  return CGFloatMinMax(v4 / v2, 0.0, 1.0) * 100.0;
+  _accessibilityColumnWidth = [(UIPanelBorderViewAccessibility *)self _accessibilityColumnWidth];
+  _accessibilitySplitViewControllerWidth = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
+  return CGFloatMinMax(_accessibilityColumnWidth / _accessibilitySplitViewControllerWidth, 0.0, 1.0) * 100.0;
 }
 
 - (double)_accessibilityColumnWidth
 {
-  v6 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0.0;
   }
 
-  if (([(UIPanelBorderViewAccessibility *)v6 _axIsPrimaryBorder]& 1) != 0)
+  if (([(UIPanelBorderViewAccessibility *)selfCopy _axIsPrimaryBorder]& 1) != 0)
   {
     v1 = @"primaryColumnWidth";
   }
@@ -164,56 +164,56 @@
   }
 
   v5 = MEMORY[0x29EDC9748](v1);
-  v4 = [(UIPanelBorderViewAccessibility *)v6 _axSplitViewControllerImplementation];
-  [v4 safeCGFloatForKey:v5];
+  _axSplitViewControllerImplementation = [(UIPanelBorderViewAccessibility *)selfCopy _axSplitViewControllerImplementation];
+  [_axSplitViewControllerImplementation safeCGFloatForKey:v5];
   v7 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_axSplitViewControllerImplementation);
   objc_storeStrong(&v5, 0);
   return v7;
 }
 
 - (double)_accessibilitySplitViewControllerWidth
 {
-  v10 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0.0;
   }
 
   v8 = 0;
   objc_opt_class();
-  v5 = [(UIPanelBorderViewAccessibility *)v10 _axSplitViewControllerImplementation];
-  v4 = [v5 safeValueForKey:@"_svc"];
+  _axSplitViewControllerImplementation = [(UIPanelBorderViewAccessibility *)selfCopy _axSplitViewControllerImplementation];
+  v4 = [_axSplitViewControllerImplementation safeValueForKey:@"_svc"];
   v7 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
+  MEMORY[0x29EDC9740](_axSplitViewControllerImplementation);
   v6 = MEMORY[0x29EDC9748](v7);
   objc_storeStrong(&v7, 0);
   v9 = v6;
-  v3 = [v6 view];
-  [v3 bounds];
+  view = [v6 view];
+  [view bounds];
   v11 = v1;
-  MEMORY[0x29EDC9740](v3);
+  MEMORY[0x29EDC9740](view);
   objc_storeStrong(&v9, 0);
   return v11;
 }
 
 - (double)_accessibilityMinValue
 {
-  v4 = [(UIPanelBorderViewAccessibility *)self _accessibilityMinimumColumnWidth];
-  v2 = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
-  return CGFloatMax(v4 / v2, 0.0) * 100.0;
+  _accessibilityMinimumColumnWidth = [(UIPanelBorderViewAccessibility *)self _accessibilityMinimumColumnWidth];
+  _accessibilitySplitViewControllerWidth = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
+  return CGFloatMax(_accessibilityMinimumColumnWidth / _accessibilitySplitViewControllerWidth, 0.0) * 100.0;
 }
 
 - (double)_accessibilityMinimumColumnWidth
 {
-  v8 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0.0;
   }
 
-  if (([(UIPanelBorderViewAccessibility *)v8 _axIsPrimaryBorder]& 1) != 0)
+  if (([(UIPanelBorderViewAccessibility *)selfCopy _axIsPrimaryBorder]& 1) != 0)
   {
     v1 = @"minimumPrimaryColumnWidth";
   }
@@ -224,14 +224,14 @@
   }
 
   location = MEMORY[0x29EDC9748](v1);
-  v4 = [(UIPanelBorderViewAccessibility *)v8 _axSplitViewControllerImplementation];
-  [v4 safeCGFloatForKey:location];
+  _axSplitViewControllerImplementation = [(UIPanelBorderViewAccessibility *)selfCopy _axSplitViewControllerImplementation];
+  [_axSplitViewControllerImplementation safeCGFloatForKey:location];
   v5 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_axSplitViewControllerImplementation);
   v6 = v5;
   if (v5 == *MEMORY[0x29EDC8220])
   {
-    v6 = 0.01 * [(UIPanelBorderViewAccessibility *)v8 _accessibilitySplitViewControllerWidth];
+    v6 = 0.01 * [(UIPanelBorderViewAccessibility *)selfCopy _accessibilitySplitViewControllerWidth];
   }
 
   v9 = v6;
@@ -241,20 +241,20 @@
 
 - (double)_accessibilityMaxValue
 {
-  v4 = [(UIPanelBorderViewAccessibility *)self _accessibilityMaximumColumnWidth];
-  v2 = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
-  return CGFloatMin(v4 / v2, 1.0) * 100.0;
+  _accessibilityMaximumColumnWidth = [(UIPanelBorderViewAccessibility *)self _accessibilityMaximumColumnWidth];
+  _accessibilitySplitViewControllerWidth = [(UIPanelBorderViewAccessibility *)self _accessibilitySplitViewControllerWidth];
+  return CGFloatMin(_accessibilityMaximumColumnWidth / _accessibilitySplitViewControllerWidth, 1.0) * 100.0;
 }
 
 - (double)_accessibilityMaximumColumnWidth
 {
-  v8 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     return 0.0;
   }
 
-  if (([(UIPanelBorderViewAccessibility *)v8 _axIsPrimaryBorder]& 1) != 0)
+  if (([(UIPanelBorderViewAccessibility *)selfCopy _axIsPrimaryBorder]& 1) != 0)
   {
     v1 = @"maximumPrimaryColumnWidth";
   }
@@ -265,14 +265,14 @@
   }
 
   location = MEMORY[0x29EDC9748](v1);
-  v4 = [(UIPanelBorderViewAccessibility *)v8 _axSplitViewControllerImplementation];
-  [v4 safeCGFloatForKey:location];
+  _axSplitViewControllerImplementation = [(UIPanelBorderViewAccessibility *)selfCopy _axSplitViewControllerImplementation];
+  [_axSplitViewControllerImplementation safeCGFloatForKey:location];
   v5 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_axSplitViewControllerImplementation);
   v6 = v5;
   if (v5 == *MEMORY[0x29EDC8220])
   {
-    v6 = 0.4 * [(UIPanelBorderViewAccessibility *)v8 _accessibilitySplitViewControllerWidth];
+    v6 = 0.4 * [(UIPanelBorderViewAccessibility *)selfCopy _accessibilitySplitViewControllerWidth];
   }
 
   v9 = v6;

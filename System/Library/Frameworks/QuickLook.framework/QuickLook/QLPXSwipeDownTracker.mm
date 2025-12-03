@@ -3,22 +3,22 @@
 - (CGPoint)trackedCenter;
 - (CGRect)trackedBounds;
 - (QLPXDisplayVelocity)trackedVelocity;
-- (QLPXSwipeDownTracker)initWithOptions:(unint64_t)a3;
-- (void)setTrackedTransform:(CGAffineTransform *)a3;
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6;
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
+- (QLPXSwipeDownTracker)initWithOptions:(unint64_t)options;
+- (void)setTrackedTransform:(CGAffineTransform *)transform;
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location;
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 @end
 
 @implementation QLPXSwipeDownTracker
 
-- (QLPXSwipeDownTracker)initWithOptions:(unint64_t)a3
+- (QLPXSwipeDownTracker)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = QLPXSwipeDownTracker;
   result = [(QLPXSwipeDownTracker *)&v5 init];
   if (result)
   {
-    result->_options = a3;
+    result->_options = options;
     *&result->_trackedVelocity.x = QLPXDisplayVelocityZero;
     *&result->_trackedVelocity.scale = unk_23A7FC498;
     *&result->_finalAnimationDuration = xmmword_23A7FC2F0;
@@ -27,39 +27,39 @@
   return result;
 }
 
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   self->_didStartTracking = 1;
-  self->_initialTouchLocation = a6;
-  self->_initialCenter = a3;
-  self->_initialBounds = a4;
-  v12 = *&a5->a;
-  v13 = *&a5->tx;
-  *&self->_initialTransform.c = *&a5->c;
+  self->_initialTouchLocation = location;
+  self->_initialCenter = center;
+  self->_initialBounds = bounds;
+  v12 = *&transform->a;
+  v13 = *&transform->tx;
+  *&self->_initialTransform.c = *&transform->c;
   *&self->_initialTransform.tx = v13;
   *&self->_initialTransform.a = v12;
   [(QLPXSwipeDownTracker *)self setTrackedCenter:?];
   [(QLPXSwipeDownTracker *)self setTrackedBounds:x, y, width, height];
-  v14 = *&a5->c;
-  v15[0] = *&a5->a;
+  v14 = *&transform->c;
+  v15[0] = *&transform->a;
   v15[1] = v14;
-  v15[2] = *&a5->tx;
+  v15[2] = *&transform->tx;
   [(QLPXSwipeDownTracker *)self setTrackedTransform:v15];
 }
 
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(QLPXSwipeDownTracker *)self options];
-  v10 = v9 & 1;
-  if (v9)
+  y = velocity.y;
+  x = velocity.x;
+  v6 = translation.y;
+  v7 = translation.x;
+  options = [(QLPXSwipeDownTracker *)self options];
+  v10 = options & 1;
+  if (options)
   {
     v11 = 0.0;
   }
@@ -69,13 +69,13 @@
     v11 = x;
   }
 
-  if (v9)
+  if (options)
   {
     v7 = 0.0;
   }
 
-  v12 = [(QLPXSwipeDownTracker *)self verticalDirectionFilter];
-  if (!v12)
+  verticalDirectionFilter = [(QLPXSwipeDownTracker *)self verticalDirectionFilter];
+  if (!verticalDirectionFilter)
   {
     v13 = objc_alloc_init(QLPXChangeDirectionNumberFilter);
     [(QLPXChangeDirectionNumberFilter *)v13 setMinimumChange:5.0];
@@ -83,10 +83,10 @@
     v89[1] = 3221225472;
     v89[2] = __57__QLPXSwipeDownTracker_trackGestureTranslation_velocity___block_invoke;
     v89[3] = &unk_278B57CA8;
-    v12 = v13;
-    v90 = v12;
-    [(QLPXNumberFilter *)v12 performChanges:v89];
-    [(QLPXSwipeDownTracker *)self setVerticalDirectionFilter:v12];
+    verticalDirectionFilter = v13;
+    v90 = verticalDirectionFilter;
+    [(QLPXNumberFilter *)verticalDirectionFilter performChanges:v89];
+    [(QLPXSwipeDownTracker *)self setVerticalDirectionFilter:verticalDirectionFilter];
   }
 
   v88[0] = MEMORY[0x277D85DD0];
@@ -95,17 +95,17 @@
   v88[3] = &__block_descriptor_48_e35_v16__0___QLPXMutableNumberFilter__8l;
   *&v88[4] = v7;
   *&v88[5] = v6;
-  [(QLPXNumberFilter *)v12 performChanges:v88];
-  [(QLPXNumberFilter *)v12 output];
+  [(QLPXNumberFilter *)verticalDirectionFilter performChanges:v88];
+  [(QLPXNumberFilter *)verticalDirectionFilter output];
   if (self->_didStartTracking)
   {
     v36 = v14;
-    v15 = [(QLPXSwipeDownTracker *)self horizontalTranslationFilter];
-    if (!v15)
+    horizontalTranslationFilter = [(QLPXSwipeDownTracker *)self horizontalTranslationFilter];
+    if (!horizontalTranslationFilter)
     {
-      v15 = objc_alloc_init(QLPXInitialHysteresisNumberFilter);
-      [(QLPXInitialHysteresisNumberFilter *)v15 setHysteresis:20.0];
-      [(QLPXSwipeDownTracker *)self setHorizontalTranslationFilter:v15];
+      horizontalTranslationFilter = objc_alloc_init(QLPXInitialHysteresisNumberFilter);
+      [(QLPXInitialHysteresisNumberFilter *)horizontalTranslationFilter setHysteresis:20.0];
+      [(QLPXSwipeDownTracker *)self setHorizontalTranslationFilter:horizontalTranslationFilter];
     }
 
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -123,8 +123,8 @@
     v85[3] = &__block_descriptor_48_e35_v16__0___QLPXMutableNumberFilter__8l;
     *&v85[4] = v7;
     *&v85[5] = v6;
-    [(QLPXNumberFilter *)v15 performChanges:v85];
-    [(QLPXNumberFilter *)v15 output];
+    [(QLPXNumberFilter *)horizontalTranslationFilter performChanges:v85];
+    [(QLPXNumberFilter *)horizontalTranslationFilter output];
     v18 = v17;
     v80 = 0;
     v81 = &v80;
@@ -165,7 +165,7 @@
     v66 = v24;
     v68 = v7;
     v69 = v6;
-    v25 = v15;
+    v25 = horizontalTranslationFilter;
     v65 = v25;
     v67 = &v80;
     v35 = QLPXDerivative(v64, 0.0);
@@ -417,11 +417,11 @@ double __57__QLPXSwipeDownTracker_trackGestureTranslation_velocity___block_invok
   return self;
 }
 
-- (void)setTrackedTransform:(CGAffineTransform *)a3
+- (void)setTrackedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_trackedTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_trackedTransform.c = *&transform->c;
   *&self->_trackedTransform.tx = v4;
   *&self->_trackedTransform.a = v3;
 }

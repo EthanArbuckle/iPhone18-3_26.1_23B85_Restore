@@ -1,23 +1,23 @@
 @interface UICoreGraphicsView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC5UIKit18UICoreGraphicsView)initWithCoder:(id)a3;
-- (_TtC5UIKit18UICoreGraphicsView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC5UIKit18UICoreGraphicsView)initWithCoder:(id)coder;
+- (_TtC5UIKit18UICoreGraphicsView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UICoreGraphicsView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(UIView *)v5 layer];
-  v7 = [(CALayer *)v6 hasBeenCommitted];
+  keyCopy = key;
+  selfCopy = self;
+  layer = [(UIView *)selfCopy layer];
+  hasBeenCommitted = [(CALayer *)layer hasBeenCommitted];
 
-  if (v7)
+  if (hasBeenCommitted)
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = type metadata accessor for UICoreGraphicsView();
-    v8 = [(UIView *)&v10 _shouldAnimatePropertyWithKey:v4];
+    v8 = [(UIView *)&v10 _shouldAnimatePropertyWithKey:keyCopy];
 
     return v8;
   }
@@ -29,23 +29,23 @@
   }
 }
 
-- (_TtC5UIKit18UICoreGraphicsView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit18UICoreGraphicsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for UICoreGraphicsView();
   return [(UIView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5UIKit18UICoreGraphicsView)initWithCoder:(id)a3
+- (_TtC5UIKit18UICoreGraphicsView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UICoreGraphicsView();
-  v4 = a3;
-  v5 = [(UIView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UIView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,34 +1,34 @@
 @interface NWSClient
 - (id)prepareRemoteConnection;
-- (void)deleteAllNWActivities:(id)a3;
-- (void)deleteAllScores:(id)a3;
-- (void)deleteAllScoresForBundleID:(id)a3 start:(id)a4 end:(id)a5 completion:(id)a6;
-- (void)getAlgosScoreByUUID:(id)a3 completion:(id)a4;
-- (void)getAllScoresForBundleID:(id)a3 start:(id)a4 end:(id)a5 completion:(id)a6;
-- (void)getAllScoresForBundleIDAndType:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)getCountofNWActivityObjects:(id)a3;
-- (void)getCountofScoreObjects:(id)a3;
-- (void)getCountofScoreObjectsByType:(int64_t)a3 :(id)a4;
-- (void)getCountofScoreObjectsForBundleID:(id)a3 completion:(id)a4;
-- (void)getCountofScoreObjectsPerBundleID:(id)a3;
-- (void)getMostRecentScores:(id)a3;
-- (void)getNWActivityByUUID:(id)a3 completion:(id)a4;
+- (void)deleteAllNWActivities:(id)activities;
+- (void)deleteAllScores:(id)scores;
+- (void)deleteAllScoresForBundleID:(id)d start:(id)start end:(id)end completion:(id)completion;
+- (void)getAlgosScoreByUUID:(id)d completion:(id)completion;
+- (void)getAllScoresForBundleID:(id)d start:(id)start end:(id)end completion:(id)completion;
+- (void)getAllScoresForBundleIDAndType:(id)type type:(int64_t)a4 completion:(id)completion;
+- (void)getCountofNWActivityObjects:(id)objects;
+- (void)getCountofScoreObjects:(id)objects;
+- (void)getCountofScoreObjectsByType:(int64_t)type :(id)a4;
+- (void)getCountofScoreObjectsForBundleID:(id)d completion:(id)completion;
+- (void)getCountofScoreObjectsPerBundleID:(id)d;
+- (void)getMostRecentScores:(id)scores;
+- (void)getNWActivityByUUID:(id)d completion:(id)completion;
 @end
 
 @implementation NWSClient
 
-- (void)getCountofScoreObjects:(id)a3
+- (void)getCountofScoreObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (v5)
+  objectsCopy = objects;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__NWSClient_getCountofScoreObjects___block_invoke;
     v7[3] = &unk_27996D100;
-    v8 = v4;
-    [v5 getTotalAlgosScoreObjectCountWithCompletion:v7];
+    v8 = objectsCopy;
+    [prepareRemoteConnection getTotalAlgosScoreObjectCountWithCompletion:v7];
     v6 = v8;
   }
 
@@ -42,19 +42,19 @@
   }
 }
 
-- (void)getCountofScoreObjectsForBundleID:(id)a3 completion:(id)a4
+- (void)getCountofScoreObjectsForBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWSClient *)self prepareRemoteConnection];
-  if (v8)
+  dCopy = d;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __58__NWSClient_getCountofScoreObjectsForBundleID_completion___block_invoke;
     v10[3] = &unk_27996D100;
-    v11 = v7;
-    [v8 getTotalAlgosScoreObjectCountForBundleIDWithBundleID:v6 completion:v10];
+    v11 = completionCopy;
+    [prepareRemoteConnection getTotalAlgosScoreObjectCountForBundleIDWithBundleID:dCopy completion:v10];
     v9 = v11;
   }
 
@@ -68,18 +68,18 @@
   }
 }
 
-- (void)getCountofScoreObjectsPerBundleID:(id)a3
+- (void)getCountofScoreObjectsPerBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (v5)
+  dCopy = d;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__NWSClient_getCountofScoreObjectsPerBundleID___block_invoke;
     v7[3] = &unk_27996D128;
-    v8 = v4;
-    [v5 getTotalAlgosScoreObjectCountPerBundleIDWithCompletion:v7];
+    v8 = dCopy;
+    [prepareRemoteConnection getTotalAlgosScoreObjectCountPerBundleIDWithCompletion:v7];
     v6 = v8;
   }
 
@@ -93,19 +93,19 @@
   }
 }
 
-- (void)getCountofScoreObjectsByType:(int64_t)a3 :(id)a4
+- (void)getCountofScoreObjectsByType:(int64_t)type :(id)a4
 {
-  v4 = a3;
+  typeCopy = type;
   v6 = a4;
-  v7 = [(NWSClient *)self prepareRemoteConnection];
-  if (v7)
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __43__NWSClient_getCountofScoreObjectsByType::__block_invoke;
     v9[3] = &unk_27996D100;
     v10 = v6;
-    [v7 getAlgosScoreObjectCountByTypeWithType:v4 completion:v9];
+    [prepareRemoteConnection getAlgosScoreObjectCountByTypeWithType:typeCopy completion:v9];
     v8 = v10;
   }
 
@@ -119,19 +119,19 @@
   }
 }
 
-- (void)getAlgosScoreByUUID:(id)a3 completion:(id)a4
+- (void)getAlgosScoreByUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWSClient *)self prepareRemoteConnection];
-  if (v8)
+  dCopy = d;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__NWSClient_getAlgosScoreByUUID_completion___block_invoke;
     v10[3] = &unk_27996D150;
-    v11 = v7;
-    [v8 getAlgosScoreByUUIDWithUuid:v6 completion:v10];
+    v11 = completionCopy;
+    [prepareRemoteConnection getAlgosScoreByUUIDWithUuid:dCopy completion:v10];
     v9 = v11;
   }
 
@@ -145,20 +145,20 @@
   }
 }
 
-- (void)getAllScoresForBundleIDAndType:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)getAllScoresForBundleIDAndType:(id)type type:(int64_t)a4 completion:(id)completion
 {
   v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NWSClient *)self prepareRemoteConnection];
-  if (v10)
+  typeCopy = type;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__NWSClient_getAllScoresForBundleIDAndType_type_completion___block_invoke;
     v12[3] = &unk_27996D150;
-    v13 = v9;
-    [v10 getAllAlgosScoreDataForBundleIDAndTypeWithBundleID:v8 type:v6 completion:v12];
+    v13 = completionCopy;
+    [prepareRemoteConnection getAllAlgosScoreDataForBundleIDAndTypeWithBundleID:typeCopy type:v6 completion:v12];
     v11 = v13;
   }
 
@@ -172,21 +172,21 @@
   }
 }
 
-- (void)getAllScoresForBundleID:(id)a3 start:(id)a4 end:(id)a5 completion:(id)a6
+- (void)getAllScoresForBundleID:(id)d start:(id)start end:(id)end completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NWSClient *)self prepareRemoteConnection];
-  if (v14)
+  dCopy = d;
+  startCopy = start;
+  endCopy = end;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __58__NWSClient_getAllScoresForBundleID_start_end_completion___block_invoke;
     v16[3] = &unk_27996D150;
-    v17 = v13;
-    [v14 getAllAlgosScoreDataForBundleIDWithBundleID:v10 start:v11 end:v12 completion:v16];
+    v17 = completionCopy;
+    [prepareRemoteConnection getAllAlgosScoreDataForBundleIDWithBundleID:dCopy start:startCopy end:endCopy completion:v16];
     v15 = v17;
   }
 
@@ -200,18 +200,18 @@
   }
 }
 
-- (void)getMostRecentScores:(id)a3
+- (void)getMostRecentScores:(id)scores
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (v5)
+  scoresCopy = scores;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__NWSClient_getMostRecentScores___block_invoke;
     v7[3] = &unk_27996D150;
-    v8 = v4;
-    [v5 getMostRecentAlgosScorePerBundleIDWithCompletion:v7];
+    v8 = scoresCopy;
+    [prepareRemoteConnection getMostRecentAlgosScorePerBundleIDWithCompletion:v7];
     v6 = v8;
   }
 
@@ -225,18 +225,18 @@
   }
 }
 
-- (void)deleteAllScores:(id)a3
+- (void)deleteAllScores:(id)scores
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (v5)
+  scoresCopy = scores;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__NWSClient_deleteAllScores___block_invoke;
     v7[3] = &unk_27996D178;
-    v8 = v4;
-    [v5 deleteAllAlgosScoreDataWithCompletion:v7];
+    v8 = scoresCopy;
+    [prepareRemoteConnection deleteAllAlgosScoreDataWithCompletion:v7];
     v6 = v8;
   }
 
@@ -250,21 +250,21 @@
   }
 }
 
-- (void)deleteAllScoresForBundleID:(id)a3 start:(id)a4 end:(id)a5 completion:(id)a6
+- (void)deleteAllScoresForBundleID:(id)d start:(id)start end:(id)end completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NWSClient *)self prepareRemoteConnection];
-  if (v14)
+  dCopy = d;
+  startCopy = start;
+  endCopy = end;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (prepareRemoteConnection)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__NWSClient_deleteAllScoresForBundleID_start_end_completion___block_invoke;
     v16[3] = &unk_27996D100;
-    v17 = v13;
-    [v14 deleteAllAlgosScoreDataForBundleIDWithBundleID:v10 start:v11 end:v12 completion:v16];
+    v17 = completionCopy;
+    [prepareRemoteConnection deleteAllAlgosScoreDataForBundleIDWithBundleID:dCopy start:startCopy end:endCopy completion:v16];
     v15 = v17;
   }
 
@@ -278,11 +278,11 @@
   }
 }
 
-- (void)getCountofNWActivityObjects:(id)a3
+- (void)getCountofNWActivityObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (!v5)
+  objectsCopy = objects;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (!prepareRemoteConnection)
   {
     v6 = nws_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -295,17 +295,17 @@
   v8[1] = 3221225472;
   v8[2] = __41__NWSClient_getCountofNWActivityObjects___block_invoke;
   v8[3] = &unk_27996D100;
-  v9 = v4;
-  v7 = v4;
-  [v5 getTotalNWActivityCountWithCompletion:v8];
+  v9 = objectsCopy;
+  v7 = objectsCopy;
+  [prepareRemoteConnection getTotalNWActivityCountWithCompletion:v8];
 }
 
-- (void)getNWActivityByUUID:(id)a3 completion:(id)a4
+- (void)getNWActivityByUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWSClient *)self prepareRemoteConnection];
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (!prepareRemoteConnection)
   {
     v9 = nws_log_obj();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -318,16 +318,16 @@
   v11[1] = 3221225472;
   v11[2] = __44__NWSClient_getNWActivityByUUID_completion___block_invoke;
   v11[3] = &unk_27996D150;
-  v12 = v7;
-  v10 = v7;
-  [v8 getNWActivityByUUIDWithUuid:v6 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [prepareRemoteConnection getNWActivityByUUIDWithUuid:dCopy completion:v11];
 }
 
-- (void)deleteAllNWActivities:(id)a3
+- (void)deleteAllNWActivities:(id)activities
 {
-  v4 = a3;
-  v5 = [(NWSClient *)self prepareRemoteConnection];
-  if (!v5)
+  activitiesCopy = activities;
+  prepareRemoteConnection = [(NWSClient *)self prepareRemoteConnection];
+  if (!prepareRemoteConnection)
   {
     v6 = nws_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -340,27 +340,27 @@
   v8[1] = 3221225472;
   v8[2] = __35__NWSClient_deleteAllNWActivities___block_invoke;
   v8[3] = &unk_27996D178;
-  v9 = v4;
-  v7 = v4;
-  [v5 deleteAllNWActivityDataWithCompletion:v8];
+  v9 = activitiesCopy;
+  v7 = activitiesCopy;
+  [prepareRemoteConnection deleteAllNWActivityDataWithCompletion:v8];
 }
 
 - (id)prepareRemoteConnection
 {
-  v3 = [(NWSClientConnection *)self connection];
+  connection = [(NWSClientConnection *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     [(NWSClientConnection *)self activateConnectionOn:0];
   }
 
-  v4 = [(NWSClientConnection *)self connection];
+  connection2 = [(NWSClientConnection *)self connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__NWSClient_prepareRemoteConnection__block_invoke;
   v7[3] = &unk_27996CFE0;
   v7[4] = self;
-  v5 = [v4 remoteObjectProxyWithErrorHandler:v7];
+  v5 = [connection2 remoteObjectProxyWithErrorHandler:v7];
 
   return v5;
 }

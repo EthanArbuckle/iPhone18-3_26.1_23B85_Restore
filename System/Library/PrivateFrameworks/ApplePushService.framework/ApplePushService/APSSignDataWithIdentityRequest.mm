@@ -1,31 +1,31 @@
 @interface APSSignDataWithIdentityRequest
-- (APSSignDataWithIdentityRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (APSSignDataWithIdentityRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APSSignDataWithIdentityRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"dataKey"];
-  [v5 encodeObject:self->_time forKey:@"timeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"dataKey"];
+  [coderCopy encodeObject:self->_time forKey:@"timeKey"];
 }
 
-- (APSSignDataWithIdentityRequest)initWithCoder:(id)a3
+- (APSSignDataWithIdentityRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = APSSignDataWithIdentityRequest;
   v5 = [(APSSignDataWithIdentityRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataKey"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeKey"];
     time = v5->_time;
     v5->_time = v8;
   }

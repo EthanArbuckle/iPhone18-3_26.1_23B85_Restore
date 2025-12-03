@@ -1,7 +1,7 @@
 @interface PSResourceRequest
-+ (id)requestWithKey:(id)a3 stride:(id)a4 inputType:(int64_t)a5 graph:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (PSResourceRequest)initWithKey:(id)a3 stride:(id)a4 inputType:(int64_t)a5 graph:(id)a6;
++ (id)requestWithKey:(id)key stride:(id)stride inputType:(int64_t)type graph:(id)graph;
+- (BOOL)isEqual:(id)equal;
+- (PSResourceRequest)initWithKey:(id)key stride:(id)stride inputType:(int64_t)type graph:(id)graph;
 - (id)description;
 - (id)resourceRequestEntry;
 - (unint64_t)hash;
@@ -9,31 +9,31 @@
 
 @implementation PSResourceRequest
 
-+ (id)requestWithKey:(id)a3 stride:(id)a4 inputType:(int64_t)a5 graph:(id)a6
++ (id)requestWithKey:(id)key stride:(id)stride inputType:(int64_t)type graph:(id)graph
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PSResourceRequest alloc] initWithKey:v11 stride:v10 inputType:a5 graph:v9];
+  graphCopy = graph;
+  strideCopy = stride;
+  keyCopy = key;
+  v12 = [[PSResourceRequest alloc] initWithKey:keyCopy stride:strideCopy inputType:type graph:graphCopy];
 
   return v12;
 }
 
-- (PSResourceRequest)initWithKey:(id)a3 stride:(id)a4 inputType:(int64_t)a5 graph:(id)a6
+- (PSResourceRequest)initWithKey:(id)key stride:(id)stride inputType:(int64_t)type graph:(id)graph
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  keyCopy = key;
+  strideCopy = stride;
+  graphCopy = graph;
   v18.receiver = self;
   v18.super_class = PSResourceRequest;
   v14 = [(PSResourceRequest *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_resourceKey, a3);
-    objc_storeStrong(&v15->_stride, a4);
-    v15->_inputType = a5;
-    objc_storeStrong(&v15->_graph, a6);
+    objc_storeStrong(&v14->_resourceKey, key);
+    objc_storeStrong(&v15->_stride, stride);
+    v15->_inputType = type;
+    objc_storeStrong(&v15->_graph, graph);
     v16 = v15;
   }
 
@@ -43,37 +43,37 @@
 - (id)resourceRequestEntry
 {
   v3 = +[PLSSettings currentSettings];
-  v4 = [v3 enableFastTransition];
+  enableFastTransition = [v3 enableFastTransition];
 
   v5 = MEMORY[0x277D3E828];
-  v6 = [(PSResourceRequest *)self resourceKey];
-  v7 = [(PSResourceRequest *)self stride];
-  if (v4)
+  resourceKey = [(PSResourceRequest *)self resourceKey];
+  stride = [(PSResourceRequest *)self stride];
+  if (enableFastTransition)
   {
-    v8 = [(PSResourceRequest *)self graph];
-    v9 = [v8 name];
-    v10 = [v5 entryWithKey:v6 stride:v7 graphName:v9];
+    graph = [(PSResourceRequest *)self graph];
+    name = [graph name];
+    v10 = [v5 entryWithKey:resourceKey stride:stride graphName:name];
   }
 
   else
   {
-    v10 = [v5 entryWithKey:v6 stride:v7 graphName:0];
+    v10 = [v5 entryWithKey:resourceKey stride:stride graphName:0];
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSResourceRequest *)self stride];
-  v6 = [v5 unsignedIntValue];
-  v7 = [v4 stride];
-  if (v6 == [v7 unsignedIntValue] && (v8 = -[PSResourceRequest inputType](self, "inputType"), v8 == objc_msgSend(v4, "inputType")))
+  equalCopy = equal;
+  stride = [(PSResourceRequest *)self stride];
+  unsignedIntValue = [stride unsignedIntValue];
+  stride2 = [equalCopy stride];
+  if (unsignedIntValue == [stride2 unsignedIntValue] && (v8 = -[PSResourceRequest inputType](self, "inputType"), v8 == objc_msgSend(equalCopy, "inputType")))
   {
-    v9 = [(PSResourceRequest *)self resourceKey];
-    v10 = [v4 resourceKey];
-    v11 = [v9 isEqual:v10];
+    resourceKey = [(PSResourceRequest *)self resourceKey];
+    resourceKey2 = [equalCopy resourceKey];
+    v11 = [resourceKey isEqual:resourceKey2];
   }
 
   else
@@ -86,10 +86,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PSResourceRequest *)self resourceKey];
-  v4 = [v3 hash];
-  v5 = [(PSResourceRequest *)self stride];
-  v6 = [v5 hash] ^ v4;
+  resourceKey = [(PSResourceRequest *)self resourceKey];
+  v4 = [resourceKey hash];
+  stride = [(PSResourceRequest *)self stride];
+  v6 = [stride hash] ^ v4;
   v7 = v6 ^ ([(PSResourceRequest *)self inputType]<< 24);
 
   return v7;
@@ -100,9 +100,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PSResourceRequest *)self resourceKey];
-  v7 = [(PSResourceRequest *)self stride];
-  v8 = [v3 stringWithFormat:@"<%@: %p, key %@, stride %@>", v5, self, v6, v7];
+  resourceKey = [(PSResourceRequest *)self resourceKey];
+  stride = [(PSResourceRequest *)self stride];
+  v8 = [v3 stringWithFormat:@"<%@: %p, key %@, stride %@>", v5, self, resourceKey, stride];
 
   return v8;
 }

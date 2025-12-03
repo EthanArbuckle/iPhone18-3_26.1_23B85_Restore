@@ -1,6 +1,6 @@
 @interface HMDCharacteristicThresholdRegistration
-- (BOOL)isEqual:(id)a3;
-- (HMDCharacteristicThresholdRegistration)initWithClientID:(id)a3 updateThreshold:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDCharacteristicThresholdRegistration)initWithClientID:(id)d updateThreshold:(id)threshold;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCharacteristicThresholdRegistration *)self clientID];
-  v3 = [v2 hash];
+  clientID = [(HMDCharacteristicThresholdRegistration *)self clientID];
+  v3 = [clientID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -27,7 +27,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -38,9 +38,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDCharacteristicThresholdRegistration *)self clientID];
-      v8 = [(HMDCharacteristicThresholdRegistration *)v6 clientID];
-      v9 = [v7 isEqualToString:v8];
+      clientID = [(HMDCharacteristicThresholdRegistration *)self clientID];
+      clientID2 = [(HMDCharacteristicThresholdRegistration *)v6 clientID];
+      v9 = [clientID isEqualToString:clientID2];
     }
 
     else
@@ -52,20 +52,20 @@
   return v9;
 }
 
-- (HMDCharacteristicThresholdRegistration)initWithClientID:(id)a3 updateThreshold:(id)a4
+- (HMDCharacteristicThresholdRegistration)initWithClientID:(id)d updateThreshold:(id)threshold
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  thresholdCopy = threshold;
   v14.receiver = self;
   v14.super_class = HMDCharacteristicThresholdRegistration;
   v8 = [(HMDCharacteristicThresholdRegistration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     clientID = v8->_clientID;
     v8->_clientID = v9;
 
-    v11 = [v7 copy];
+    v11 = [thresholdCopy copy];
     updateThreshold = v8->_updateThreshold;
     v8->_updateThreshold = v11;
   }

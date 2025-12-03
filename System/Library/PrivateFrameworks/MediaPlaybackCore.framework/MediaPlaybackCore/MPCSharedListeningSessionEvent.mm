@@ -1,5 +1,5 @@
 @interface MPCSharedListeningSessionEvent
-- (MPCSharedListeningSessionEvent)initWithKind:(int64_t)a3;
+- (MPCSharedListeningSessionEvent)initWithKind:(int64_t)kind;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v6;
 }
 
-- (MPCSharedListeningSessionEvent)initWithKind:(int64_t)a3
+- (MPCSharedListeningSessionEvent)initWithKind:(int64_t)kind
 {
   v5.receiver = self;
   v5.super_class = MPCSharedListeningSessionEvent;
   result = [(MPCSharedListeningSessionEvent *)&v5 init];
   if (result)
   {
-    result->_kind = a3;
+    result->_kind = kind;
   }
 
   return result;

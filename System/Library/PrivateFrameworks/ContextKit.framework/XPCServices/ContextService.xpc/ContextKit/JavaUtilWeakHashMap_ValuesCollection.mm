@@ -1,6 +1,6 @@
 @interface JavaUtilWeakHashMap_ValuesCollection
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilWeakHashMap_ValuesCollection)initWithJavaUtilWeakHashMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilWeakHashMap_ValuesCollection)initWithJavaUtilWeakHashMap:(id)map;
 - (id)iterator;
 - (int)size;
 - (void)__javaClone;
@@ -23,11 +23,11 @@
   [Weak clear];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsValueWithId:a3];
+  return [Weak containsValueWithId:id];
 }
 
 - (id)iterator
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (JavaUtilWeakHashMap_ValuesCollection)initWithJavaUtilWeakHashMap:(id)a3
+- (JavaUtilWeakHashMap_ValuesCollection)initWithJavaUtilWeakHashMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractCollection_init(self, v4);
   return self;
 }

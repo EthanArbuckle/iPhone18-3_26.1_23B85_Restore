@@ -1,6 +1,6 @@
 @interface BDSBookWidgetDataSource
 + (id)sharedServiceProxy;
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4;
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion;
 @end
 
 @implementation BDSBookWidgetDataSource
@@ -17,9 +17,9 @@
   return v3;
 }
 
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = BDSWidgetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,10 +28,10 @@
   }
 
   v7 = +[BDSBookWidgetDataFile sharedInstance];
-  v8 = [v7 load];
+  load = [v7 load];
   v9 = BDSWidgetLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (load)
   {
     if (v10)
     {
@@ -39,19 +39,19 @@
       _os_log_impl(&dword_1E45E0000, v9, OS_LOG_TYPE_DEFAULT, "BDSBookWidgetDataSource getBookWidgetDataWithLimit - Using saved data", v16, 2u);
     }
 
-    v11 = [v8 count];
-    if (v11 >= a3)
+    v11 = [load count];
+    if (v11 >= limit)
     {
-      v12 = a3;
+      limitCopy = limit;
     }
 
     else
     {
-      v12 = v11;
+      limitCopy = v11;
     }
 
-    v13 = [v8 subarrayWithRange:{0, v12}];
-    v14 = _Block_copy(v5);
+    v13 = [load subarrayWithRange:{0, limitCopy}];
+    v14 = _Block_copy(completionCopy);
     v15 = v14;
     if (v14)
     {
@@ -68,7 +68,7 @@
     }
 
     v13 = +[BDSBookWidgetDataSource sharedServiceProxy];
-    [v13 getBookWidgetDataWithLimit:a3 completion:v5];
+    [v13 getBookWidgetDataWithLimit:limit completion:completionCopy];
   }
 }
 

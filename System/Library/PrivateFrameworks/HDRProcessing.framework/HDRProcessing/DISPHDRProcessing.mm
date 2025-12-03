@@ -1,33 +1,33 @@
 @interface DISPHDRProcessing
-- (BOOL)processFrameByDISPWithComposerData:(id *)a3 DM:(id)a4 constraintDM:(id)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 hdr10InfoFrame:(id *)a9 layer0:(__IOSurface *)a10 layer1:(__IOSurface *)a11 frameNumebr:(unint64_t)a12;
+- (BOOL)processFrameByDISPWithComposerData:(id *)data DM:(id)m constraintDM:(id)dM DMData:(id *)mData tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl hdr10InfoFrame:(id *)frame layer0:(__IOSurface *)self0 layer1:(__IOSurface *)self1 frameNumebr:(unint64_t)self2;
 - (DISPHDRProcessing)init;
-- (int64_t)iterateDISPColorConfig:(int)a3 config:(id)a4;
-- (void)decideStageStatus:(BOOL *)a3 DMConfig:(id *)a4 AlgoMode:(int *)a5 DISPHDRContext:(EngineHDRContext *)a6;
-- (void)getDISPColorConfigOutputScale:(id *)a3 DMData:(id *)a4 tcControl:(ToneCurve_Control *)a5 hdrControl:(id *)a6 DISPHDRContext:(EngineHDRContext *)a7;
+- (int64_t)iterateDISPColorConfig:(int)config config:(id)a4;
+- (void)decideStageStatus:(BOOL *)status DMConfig:(id *)config AlgoMode:(int *)mode DISPHDRContext:(EngineHDRContext *)context;
+- (void)getDISPColorConfigOutputScale:(id *)scale DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context;
 - (void)getTmLutInput;
-- (void)hdr10_createLUTFromDMConfig:(id *)a3 DM:(id)a4 TCControl:(ToneCurve_Control *)a5 HDRControl:(id *)a6 TMParam:(_HDR10TMParam *)a7 TMParam:(_HDR10TMParam *)a8 EdrAdaptationParam:(_EdrAdaptationParam *)a9 AmbAdaptationParam:(_AmbAdaptationParam *)a10;
-- (void)hdr10_mixLUTFromTCControl:(ToneCurve_Control *)a3 TCControlConstr:(ToneCurve_Control *)a4 withFactor:(float)a5;
-- (void)hdr10_tm_createLUTFromDMConfig:(id *)a3 TMParam:(_HDR10TMParam *)a4 TMParam:(_HDR10TMParam *)a5 TCControl:(ToneCurve_Control *)a6 EdrAdaptationParam:(_EdrAdaptationParam *)a7 AmbAdaptationParam:(_AmbAdaptationParam *)a8 DM:(id)a9;
-- (void)hlg_createLUTFromDMConfig:(id *)a3 DM:(id)a4 HDRControl:(id *)a5 TCControl:(ToneCurve_Control *)a6 TMParam:(_HLGTMParam *)a7 EdrAdaptationParam:(_EdrAdaptationParam *)a8 AmbAdaptationParam:(_AmbAdaptationParam *)a9 TMMode:(int)a10;
-- (void)hlg_mixLUTFromTCControl:(ToneCurve_Control *)a3 TCControlConstr:(ToneCurve_Control *)a4 withFactor:(float)a5;
-- (void)hlg_tm_createLUTFromDMConfig:(id *)a3 DM:(id)a4 TCControl:(ToneCurve_Control *)a5 TMParam:(_HLGTMParam *)a6 EdrAdaptationParam:(_EdrAdaptationParam *)a7 AmbAdaptationParam:(_AmbAdaptationParam *)a8 TMMode:(int)a9;
+- (void)hdr10_createLUTFromDMConfig:(id *)config DM:(id)m TCControl:(ToneCurve_Control *)control HDRControl:(id *)rControl TMParam:(_HDR10TMParam *)param TMParam:(_HDR10TMParam *)mParam EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)self0;
+- (void)hdr10_mixLUTFromTCControl:(ToneCurve_Control *)control TCControlConstr:(ToneCurve_Control *)constr withFactor:(float)factor;
+- (void)hdr10_tm_createLUTFromDMConfig:(id *)config TMParam:(_HDR10TMParam *)param TMParam:(_HDR10TMParam *)mParam TCControl:(ToneCurve_Control *)control EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam DM:(id)m;
+- (void)hlg_createLUTFromDMConfig:(id *)config DM:(id)m HDRControl:(id *)control TCControl:(ToneCurve_Control *)cControl TMParam:(_HLGTMParam *)param EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam TMMode:(int)self0;
+- (void)hlg_mixLUTFromTCControl:(ToneCurve_Control *)control TCControlConstr:(ToneCurve_Control *)constr withFactor:(float)factor;
+- (void)hlg_tm_createLUTFromDMConfig:(id *)config DM:(id)m TCControl:(ToneCurve_Control *)control TMParam:(_HLGTMParam *)param EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam TMMode:(int)mode;
 - (void)iterateDISPColorConfigCleanUp;
-- (void)populateDISPColorConfig:(id *)a3 DMData:(id *)a4 tcControl:(ToneCurve_Control *)a5 hdrControl:(id *)a6 MSRHDRContext:(EngineHDRContext *)a7;
-- (void)populateDISPColorConfigFixedDegamma:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10;
-- (void)populateDISPColorConfigPostToneMapCSC:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10;
-- (void)populateDISPColorConfigPreToneMapCSC:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10;
-- (void)populateDISPColorConfigToneMapDpc:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9;
-- (void)populateDISPColorConfigToneMapLUT:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9;
-- (void)populateDISPColorConfigToneMapParametric:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9;
-- (void)populateDISPToneMapConfig:(char *)a3 DMConfig:(id *)a4 DMData:(id *)a5 tcControl:(ToneCurve_Control *)a6 hdrControl:(id *)a7 DISPHDRContext:(EngineHDRContext *)a8;
-- (void)processDISPColorConfig:(__IOMobileFramebuffer *)a3 layer:(unsigned int)a4;
-- (void)setDisplayManagementParametricConfig:(ToneCurve_Control *)a3 HDRControl:(id *)a4;
-- (void)setDisplayManagementParametricConfigToneMap:(ToneCurve_Control *)a3 HDRControl:(id *)a4;
-- (void)setDisplayManagementParametricConfigToneMapBezier:(_ebzCurveParam *)a3 TMSendC:(float)a4;
-- (void)setDisplayManagementParametricConfigToneMapHDR10:(ToneCurve_Control *)a3 HDRControl:(id *)a4;
-- (void)setDisplayManagementParametricConfigToneMapHLG:(ToneCurve_Control *)a3 HDRControl:(id *)a4;
-- (void)setDisplayManagementParametricConfigToneMapSpline:(_splCurveParam *)a3;
-- (void)setupDISPHDRContext:(id *)a3 TCControl:(ToneCurve_Control *)a4 DMData:(id *)a5 input:(__IOSurface *)a6;
+- (void)populateDISPColorConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(EngineHDRContext *)context;
+- (void)populateDISPColorConfigFixedDegamma:(BOOL)degamma AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0;
+- (void)populateDISPColorConfigPostToneMapCSC:(BOOL)c AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0;
+- (void)populateDISPColorConfigPreToneMapCSC:(BOOL)c AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0;
+- (void)populateDISPColorConfigToneMapDpc:(BOOL)dpc Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context;
+- (void)populateDISPColorConfigToneMapLUT:(BOOL)t Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context;
+- (void)populateDISPColorConfigToneMapParametric:(BOOL)parametric Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context;
+- (void)populateDISPToneMapConfig:(char *)config DMConfig:(id *)mConfig DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context;
+- (void)processDISPColorConfig:(__IOMobileFramebuffer *)config layer:(unsigned int)layer;
+- (void)setDisplayManagementParametricConfig:(ToneCurve_Control *)config HDRControl:(id *)control;
+- (void)setDisplayManagementParametricConfigToneMap:(ToneCurve_Control *)map HDRControl:(id *)control;
+- (void)setDisplayManagementParametricConfigToneMapBezier:(_ebzCurveParam *)bezier TMSendC:(float)c;
+- (void)setDisplayManagementParametricConfigToneMapHDR10:(ToneCurve_Control *)r10 HDRControl:(id *)control;
+- (void)setDisplayManagementParametricConfigToneMapHLG:(ToneCurve_Control *)g HDRControl:(id *)control;
+- (void)setDisplayManagementParametricConfigToneMapSpline:(_splCurveParam *)spline;
+- (void)setupDISPHDRContext:(id *)context TCControl:(ToneCurve_Control *)control DMData:(id *)data input:(__IOSurface *)input;
 @end
 
 @implementation DISPHDRProcessing
@@ -47,11 +47,11 @@
   return v3;
 }
 
-- (BOOL)processFrameByDISPWithComposerData:(id *)a3 DM:(id)a4 constraintDM:(id)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 hdr10InfoFrame:(id *)a9 layer0:(__IOSurface *)a10 layer1:(__IOSurface *)a11 frameNumebr:(unint64_t)a12
+- (BOOL)processFrameByDISPWithComposerData:(id *)data DM:(id)m constraintDM:(id)dM DMData:(id *)mData tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl hdr10InfoFrame:(id *)frame layer0:(__IOSurface *)self0 layer1:(__IOSurface *)self1 frameNumebr:(unint64_t)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = [(DISPHDRProcessing *)self isContentSupported:a8];
+  mCopy = m;
+  dMCopy = dM;
+  v19 = [(DISPHDRProcessing *)self isContentSupported:hdrControl];
   if (v19)
   {
     if (GetConfig())
@@ -74,7 +74,7 @@
     *&self->_dispHC.dpcParam.alphaPrime = 0u;
     *&self->_dispHC.dpcParam.gcpcGamma = 0u;
     bzero(self->super._anon_90, 0x210uLL);
-    self->super._frameNumber = a12;
+    self->super._frameNumber = numebr;
     sDispDumpContext = v21 & 1;
     if (v21)
     {
@@ -82,17 +82,17 @@
       unk_27F3DDDB0 = ccDumpStart + ccDumpNumber - 1;
     }
 
-    [(ProcessingEngine *)self setupToneMappingWithDmData:a6 tcControl:a7 hdrControl:a8 dmConfig:self->super._anon_90 DM:v17 constraintDM:v18 hdr10InfoFrame:a9];
-    [(DISPHDRProcessing *)self setupDISPHDRContext:a8 TCControl:a7 DMData:a6 input:a10];
-    [(DISPHDRProcessing *)self runPreFrameDumpActions:&self->_dispHC tcControl:a7 hdrControl:a8];
-    [(DISPHDRProcessing *)self populateDISPColorConfig:self->super._anon_90 DMData:a6 tcControl:a7 hdrControl:a8 MSRHDRContext:&self->_dispHC];
+    [(ProcessingEngine *)self setupToneMappingWithDmData:mData tcControl:control hdrControl:hdrControl dmConfig:self->super._anon_90 DM:mCopy constraintDM:dMCopy hdr10InfoFrame:frame];
+    [(DISPHDRProcessing *)self setupDISPHDRContext:hdrControl TCControl:control DMData:mData input:layer0];
+    [(DISPHDRProcessing *)self runPreFrameDumpActions:&self->_dispHC tcControl:control hdrControl:hdrControl];
+    [(DISPHDRProcessing *)self populateDISPColorConfig:self->super._anon_90 DMData:mData tcControl:control hdrControl:hdrControl MSRHDRContext:&self->_dispHC];
     [(DISPHDRProcessing *)self runPostFrameDumpActions];
   }
 
   return v19;
 }
 
-- (void)processDISPColorConfig:(__IOMobileFramebuffer *)a3 layer:(unsigned int)a4
+- (void)processDISPColorConfig:(__IOMobileFramebuffer *)config layer:(unsigned int)layer
 {
   IOMobileFramebufferSwapSetToneMapConfig();
   if (self->FixedDegamma.mode == 1)
@@ -153,7 +153,7 @@
   }
 }
 
-- (int64_t)iterateDISPColorConfig:(int)a3 config:(id)a4
+- (int64_t)iterateDISPColorConfig:(int)config config:(id)a4
 {
   v5 = a4;
   (*(v5 + 2))(v5, 0, 0, &self->ToneMapConfig);
@@ -228,51 +228,51 @@
   return -17000;
 }
 
-- (void)setupDISPHDRContext:(id *)a3 TCControl:(ToneCurve_Control *)a4 DMData:(id *)a5 input:(__IOSurface *)a6
+- (void)setupDISPHDRContext:(id *)context TCControl:(ToneCurve_Control *)control DMData:(id *)data input:(__IOSurface *)input
 {
   p_dispHC = &self->_dispHC;
-  var10 = a3->var10;
-  self->_dispHC.contentType = a3->var0;
+  var10 = context->var10;
+  self->_dispHC.contentType = context->var0;
   self->_dispHC.displayType = var10;
-  var3 = a3->var3;
-  self->_dispHC.processingType = a4->tmData.processingType;
+  var3 = context->var3;
+  self->_dispHC.processingType = control->tmData.processingType;
   self->_dispHC.operation = var3;
-  PixelFormat = IOSurfaceGetPixelFormat(a6);
+  PixelFormat = IOSurfaceGetPixelFormat(input);
   p_dispHC->inputFormatRaw = PixelFormat;
   p_dispHC->inputFormat = getFourCCforType(PixelFormat);
-  var17 = a3->var17;
-  p_dispHC->inputColorSpace = a3->var18;
+  var17 = context->var17;
+  p_dispHC->inputColorSpace = context->var18;
   p_dispHC->inputTransferFunction = var17;
-  p_dispHC->originalInputTransferFunction = a3->var28;
+  p_dispHC->originalInputTransferFunction = context->var28;
   *&p_dispHC->enableReshaping = 0;
-  p_dispHC->inputWidth = IOSurfaceGetWidth(a6);
-  p_dispHC->inputHeight = IOSurfaceGetHeight(a6);
+  p_dispHC->inputWidth = IOSurfaceGetWidth(input);
+  p_dispHC->inputHeight = IOSurfaceGetHeight(input);
 }
 
-- (void)decideStageStatus:(BOOL *)a3 DMConfig:(id *)a4 AlgoMode:(int *)a5 DISPHDRContext:(EngineHDRContext *)a6
+- (void)decideStageStatus:(BOOL *)status DMConfig:(id *)config AlgoMode:(int *)mode DISPHDRContext:(EngineHDRContext *)context
 {
-  if ((a6->contentType & 0xFFFFFFFE) == 2)
+  if ((context->contentType & 0xFFFFFFFE) == 2)
   {
-    *a3 = 16843009;
-    a3[4] = LOBYTE(a4[1].var42);
+    *status = 16843009;
+    status[4] = LOBYTE(config[1].var42);
     if (GetConfig() && (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0x55u, 0) == 1))
     {
       *&v8 = 0x100000001;
       *(&v8 + 1) = 0x100000001;
-      *a5 = v8;
-      a5[4] = 1;
+      *mode = v8;
+      mode[4] = 1;
     }
 
     else
     {
-      *a5 = 0;
-      *(a5 + 1) = 0;
-      a5[4] = 0;
+      *mode = 0;
+      *(mode + 1) = 0;
+      mode[4] = 0;
     }
   }
 }
 
-- (void)populateDISPToneMapConfig:(char *)a3 DMConfig:(id *)a4 DMData:(id *)a5 tcControl:(ToneCurve_Control *)a6 hdrControl:(id *)a7 DISPHDRContext:(EngineHDRContext *)a8
+- (void)populateDISPToneMapConfig:(char *)config DMConfig:(id *)mConfig DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context
 {
   contentType = self->_dispHC.contentType;
   if (contentType == 2)
@@ -283,7 +283,7 @@
     v19 = -3;
     do
     {
-      *&v18[-3].msbPos2 = (((*(&a4[1].var22 + ((v19 - 1) & 3)) / 100.0) * 16384.0) + 0.5);
+      *&v18[-3].msbPos2 = (((*(&mConfig[1].var22 + ((v19 - 1) & 3)) / 100.0) * 16384.0) + 0.5);
       *&v18->msbPos0 = 164;
       v18 = (v18 + 4);
     }
@@ -305,7 +305,7 @@
     self->ToneMapConfig.toneMapMode_Enable = 2;
     do
     {
-      var15 = a7->var15;
+      var15 = hdrControl->var15;
       v12 = p_ToneMapConfig + v9;
       if (var15 == 1)
       {
@@ -348,19 +348,19 @@
   p_ToneMapConfig->var0.toneMapMode1.lumaAvgOffset = 0;
 }
 
-- (void)populateDISPColorConfigFixedDegamma:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10
+- (void)populateDISPColorConfigFixedDegamma:(BOOL)degamma AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0
 {
   p_FixedDegamma = &self->FixedDegamma;
-  if (a3)
+  if (degamma)
   {
     *&p_FixedDegamma->mode = 0x700000001;
-    if (a10->contentType == 2)
+    if (context->contentType == 2)
     {
       v11 = 11;
       goto LABEL_8;
     }
 
-    if (a10->contentType == 3)
+    if (context->contentType == 3)
     {
       v11 = 10;
 LABEL_8:
@@ -374,28 +374,28 @@ LABEL_8:
   }
 }
 
-- (void)populateDISPColorConfigPreToneMapCSC:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10
+- (void)populateDISPColorConfigPreToneMapCSC:(BOOL)c AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0
 {
   p_PreToneMapCSC = &self->PreToneMapCSC;
-  if (a3)
+  if (c)
   {
     *&p_PreToneMapCSC->mode = 0x200000001;
-    if (a10->contentType == 2)
+    if (context->contentType == 2)
     {
       *self->PreToneMapCSC.colorMatrix.in_offset = 0;
       self->PreToneMapCSC.colorMatrix.in_offset[2] = 0.0;
       *self->PreToneMapCSC.colorMatrix.out_offset = 0;
       self->PreToneMapCSC.colorMatrix.out_offset[2] = 0.0;
-      v18 = *&a6[1].var10;
-      v19 = *&a6[1].var14;
-      v20 = *&a6[1].var18;
+      v18 = *&config[1].var10;
+      v19 = *&config[1].var14;
+      v20 = *&config[1].var18;
       HIDWORD(v18) = v19.i32[0];
       *self->PreToneMapCSC.colorMatrix.matrix = v18;
       *&self->PreToneMapCSC.colorMatrix.matrix[4] = vextq_s8(vextq_s8(v19, v19, 0xCuLL), v20, 8uLL);
       LODWORD(self->PreToneMapCSC.colorMatrix.matrix[8]) = v20.i32[2];
     }
 
-    else if (a10->contentType == 3)
+    else if (context->contentType == 3)
     {
       v11 = 0;
       *self->PreToneMapCSC.colorMatrix.in_offset = 0;
@@ -443,26 +443,26 @@ LABEL_8:
   }
 }
 
-- (void)getDISPColorConfigOutputScale:(id *)a3 DMData:(id *)a4 tcControl:(ToneCurve_Control *)a5 hdrControl:(id *)a6 DISPHDRContext:(EngineHDRContext *)a7
+- (void)getDISPColorConfigOutputScale:(id *)scale DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context
 {
   v10 = 1.0;
-  if (a5->atmEnable && (targetMaxLinear = a5->targetMaxLinearOutput, targetMaxLinear > a5->diffuseInNits))
+  if (control->atmEnable && (targetMaxLinear = control->targetMaxLinearOutput, targetMaxLinear > control->diffuseInNits))
   {
-    if (a7->processingType == 2)
+    if (context->processingType == 2)
     {
-      v10 = a5->targetMaxLinear / targetMaxLinear;
+      v10 = control->targetMaxLinear / targetMaxLinear;
     }
   }
 
   else
   {
-    targetMaxLinear = a5->targetMaxLinear;
+    targetMaxLinear = control->targetMaxLinear;
   }
 
-  processingType = a7->processingType;
+  processingType = context->processingType;
   if (processingType == 1)
   {
-    if (a7->outputTransferFunction != 16)
+    if (context->outputTransferFunction != 16)
     {
       v10 = 10000.0 / targetMaxLinear;
     }
@@ -476,7 +476,7 @@ LABEL_8:
       v18 = 21.0;
       if (*ConfigEntryValue == 1)
       {
-        tmOutputScale = tmOutputScale * a5->maxEDRValue;
+        tmOutputScale = tmOutputScale * control->maxEDRValue;
         self->_tmOutputScale = tmOutputScale;
       }
     }
@@ -495,7 +495,7 @@ LABEL_8:
     return;
   }
 
-  outputTransferFunction = a7->outputTransferFunction;
+  outputTransferFunction = context->outputTransferFunction;
   if (outputTransferFunction == 13)
   {
     v10 = 1.0;
@@ -504,16 +504,16 @@ LABEL_8:
 
   if (outputTransferFunction != 16)
   {
-    if (BYTE1(a3[1].var49))
+    if (BYTE1(scale[1].var49))
     {
       goto LABEL_23;
     }
 
-    v14 = *&a3->var66 / targetMaxLinear;
+    v14 = *&scale->var66 / targetMaxLinear;
     goto LABEL_21;
   }
 
-  if (BYTE1(a3[1].var49) == 1)
+  if (BYTE1(scale[1].var49) == 1)
   {
     v14 = targetMaxLinear / 10000.0;
 LABEL_21:
@@ -521,7 +521,7 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v10 = *&a3->var66 / 10000.0;
+  v10 = *&scale->var66 / 10000.0;
 LABEL_23:
   self->_tmOutputScale = v10;
   if (GetConfig())
@@ -529,14 +529,14 @@ LABEL_23:
     v19 = GetConfig();
     if (*HDRConfig::GetConfigEntryValue(v19, 0x58u, 0) == 1)
     {
-      if (a7->displayType == 2 && (Sdiv_nits = a5->tmData.Sdiv_nits, targetMaxLinear > Sdiv_nits))
+      if (context->displayType == 2 && (Sdiv_nits = control->tmData.Sdiv_nits, targetMaxLinear > Sdiv_nits))
       {
         v21 = targetMaxLinear / Sdiv_nits * self->_tmOutputScale;
       }
 
       else
       {
-        v21 = a5->maxEDRValue * self->_tmOutputScale;
+        v21 = control->maxEDRValue * self->_tmOutputScale;
       }
 
       self->_tmOutputScale = v21;
@@ -549,11 +549,11 @@ LABEL_31:
   self->_scaleShiftBits = (v18 - ceilf(log2f(tmOutputScale)));
 }
 
-- (void)populateDISPColorConfigToneMapLUT:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9
+- (void)populateDISPColorConfigToneMapLUT:(BOOL)t Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context
 {
   v33 = *MEMORY[0x277D85DE8];
   p_ToneMapLUT = &self->ToneMapLUT;
-  if (!a3)
+  if (!t)
   {
     p_ToneMapLUT->mode = 0;
     goto LABEL_48;
@@ -644,7 +644,7 @@ LABEL_48:
   }
 
   p_ToneMapLUT->curveData.var0.nonuniformtable.ysamples = v16;
-  [(DISPHDRProcessing *)self getDISPColorConfigOutputScale:a5 DMData:a6 tcControl:a7 hdrControl:a8 DISPHDRContext:a9];
+  [(DISPHDRProcessing *)self getDISPColorConfigOutputScale:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
   lutInput = self->_lutInput;
   p_ToneMapLUT->curveData.var0.polycurve.segcurvorder[0] = LODWORD(self->_lutInput[753]);
   p_ToneMapLUT->curveData.var0.param.d = self->_scalingFactorTableBuffer[753] * self->_tmOutputScale;
@@ -654,7 +654,7 @@ LABEL_48:
     p_ToneMapLUT->curveData.var0.nonuniformtable.ysamples[i] = self->_scalingFactorTableBuffer[i] * self->_tmOutputScale;
   }
 
-  if (a9->contentType != 2)
+  if (context->contentType != 2)
   {
     goto LABEL_48;
   }
@@ -759,10 +759,10 @@ LABEL_47:
   memcpy(ysamples, lumaMixFactorTableBuffer, 0xBC8uLL);
 }
 
-- (void)populateDISPColorConfigToneMapParametric:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9
+- (void)populateDISPColorConfigToneMapParametric:(BOOL)parametric Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!parametric)
   {
     v11 = 28752;
 LABEL_40:
@@ -770,22 +770,22 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (a9->contentType == 3)
+  if (context->contentType == 3)
   {
-    p_artisticOOTFParam = &a7->hlgTmParam.artisticOOTFParam;
+    p_artisticOOTFParam = &control->hlgTmParam.artisticOOTFParam;
     *&self->ToneMapOotf.mode = 0x200000001;
     self->ToneMapOotf.curveData.type = 1;
-    self->ToneMapOotf.curveData.var0.table.count = LODWORD(a7->hlgTmParam.systemGamma);
+    self->ToneMapOotf.curveData.var0.table.count = LODWORD(control->hlgTmParam.systemGamma);
   }
 
   else
   {
-    p_artisticOOTFParam = &a7->hdr10TmParam;
+    p_artisticOOTFParam = &control->hdr10TmParam;
   }
 
   *&self->ToneMapOetf.mode = 0x800000001;
   self->ToneMapOetf.curveData.type = 16;
-  self->ToneMapOetf.curveData.var0.table.count = a7->tmData.Smax_nits;
+  self->ToneMapOetf.curveData.var0.table.count = control->tmData.Smax_nits;
   curveType = p_artisticOOTFParam->tmCurveParam.curveType;
   if (curveType > 1)
   {
@@ -793,15 +793,15 @@ LABEL_40:
     {
       *&self->ToneMapPolyCurve.mode = 0x300000001;
       self->ToneMapPolyCurve.curveData.type = 14;
-      *&self->ToneMapPolyCurve.curveData.var0.param.gamma = *&a5->var37;
-      self->ToneMapPolyCurve.curveData.var0.polycurve.segcurvorder[1] = LODWORD(a5->var39);
+      *&self->ToneMapPolyCurve.curveData.var0.param.gamma = *&config->var37;
+      self->ToneMapPolyCurve.curveData.var0.polycurve.segcurvorder[1] = LODWORD(config->var39);
       self->ToneMapPolyCurve.curveData.var0.polycurve.segcurvorder[2] = 1051372203;
-      self->ToneMapPolyCurve.curveData.var0.polycurve.segcurvorder[3] = LODWORD(a5->var36);
+      self->ToneMapPolyCurve.curveData.var0.polycurve.segcurvorder[3] = LODWORD(config->var36);
     }
 
     else if (curveType == 3)
     {
-      [(DolbyVisionDM4 *)self->_dm40 getDM4Params:v54, a4, a5, a6];
+      [(DolbyVisionDM4 *)self->_dm40 getDM4Params:v54, prefix, config, data];
       *&self->ToneMapPolyCurve.mode = 0x300000001;
       self->ToneMapPolyCurve.curveData.type = 12;
       *&self->ToneMapPolyCurve.curveData.var0.param.gamma = 0x100000004;
@@ -915,7 +915,7 @@ LABEL_25:
     *&v23[44 * p_artisticOOTFParam->tmCurveParam.param.spl.n + 4] = p_artisticOOTFParam->tmCurveParam.param.spl.linCs[1][1];
   }
 
-  if (a9->contentType == 2)
+  if (context->contentType == 2)
   {
     *&self->ToneMapMixFactorCurve.mode = 0x600000001;
     self->ToneMapMixFactorCurve.curveData.type = 15;
@@ -928,21 +928,21 @@ LABEL_25:
   }
 
   p_ToneMapEdrPolyCurve = &self->ToneMapEdrPolyCurve;
-  if (a7->edrAdaptationParam.on)
+  if (control->edrAdaptationParam.on)
   {
     *&p_ToneMapEdrPolyCurve->mode = 0x400000001;
     *&self->ToneMapEdrPolyCurve.curveData.var0.param.gamma = 0x100000004;
-    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvebound[0] = a7->edrAdaptationParam.Xs[0];
-    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][0] = a7->edrAdaptationParam.linCs[0][0];
+    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvebound[0] = control->edrAdaptationParam.Xs[0];
+    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][0] = control->edrAdaptationParam.linCs[0][0];
     self->ToneMapEdrPolyCurve.curveData.type = 12;
-    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][1] = a7->edrAdaptationParam.linCs[0][1];
-    v34 = a7->edrAdaptationParam.n;
+    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][1] = control->edrAdaptationParam.linCs[0][1];
+    v34 = control->edrAdaptationParam.n;
     if (v34 > 1)
     {
       v35 = &self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvebound[1];
-      v36 = &a7->edrAdaptationParam.Xs[1];
+      v36 = &control->edrAdaptationParam.Xs[1];
       v37 = &self->ToneMapEdrPolyCurve.curveData.var0.tmcurve + 7;
-      v38 = &a7->edrAdaptationParam.polyCs[0][1];
+      v38 = &control->edrAdaptationParam.polyCs[0][1];
       for (i = 1; i < v34; ++i)
       {
         *(v35 - 10) = 3;
@@ -956,13 +956,13 @@ LABEL_25:
         v38 += 4;
         v37->c1 = v42;
         v37 = (v37 + 44);
-        v34 = a7->edrAdaptationParam.n;
+        v34 = control->edrAdaptationParam.n;
       }
     }
 
     self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvorder[v34] = 1;
-    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvebound[a7->edrAdaptationParam.n] = 1.0;
-    *(&self->ToneMapEdrPolyCurve.curveData.var0.tmcurve + 44 * a7->edrAdaptationParam.n + 84) = *&a7->edrAdaptationParam.linCs[1][0];
+    self->ToneMapEdrPolyCurve.curveData.var0.polycurve.segcurvebound[control->edrAdaptationParam.n] = 1.0;
+    *(&self->ToneMapEdrPolyCurve.curveData.var0.tmcurve + 44 * control->edrAdaptationParam.n + 84) = *&control->edrAdaptationParam.linCs[1][0];
   }
 
   else
@@ -971,7 +971,7 @@ LABEL_25:
   }
 
   p_ToneMapAmbPolyCurve = &self->ToneMapAmbPolyCurve;
-  if (!a7->ambAdaptationParam.on)
+  if (!control->ambAdaptationParam.on)
   {
     p_ToneMapAmbPolyCurve->mode = 0;
     self->ToneMapAmbEOTFCurve.mode = 0;
@@ -981,17 +981,17 @@ LABEL_25:
 
   *&p_ToneMapAmbPolyCurve->mode = 0x500000001;
   *&self->ToneMapAmbPolyCurve.curveData.var0.param.gamma = 0x100000004;
-  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvebound[0] = a7->ambAdaptationParam.XsC[0];
-  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][0] = a7->ambAdaptationParam.linCs[0][0];
+  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvebound[0] = control->ambAdaptationParam.XsC[0];
+  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][0] = control->ambAdaptationParam.linCs[0][0];
   self->ToneMapAmbPolyCurve.curveData.type = 12;
-  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][1] = a7->ambAdaptationParam.linCs[0][1];
-  v44 = a7->ambAdaptationParam.n;
+  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvcoeff[0][1] = control->ambAdaptationParam.linCs[0][1];
+  v44 = control->ambAdaptationParam.n;
   if (v44 > 1)
   {
     v45 = &self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvebound[1];
-    v46 = &a7->ambAdaptationParam.XsC[1];
+    v46 = &control->ambAdaptationParam.XsC[1];
     v47 = &self->ToneMapAmbPolyCurve.curveData.var0.tmcurve + 7;
-    v48 = &a7->ambAdaptationParam.polyCs[0][1];
+    v48 = &control->ambAdaptationParam.polyCs[0][1];
     for (j = 1; j < v44; ++j)
     {
       *(v45 - 10) = 3;
@@ -1005,35 +1005,35 @@ LABEL_25:
       v48 += 4;
       v47->c1 = v52;
       v47 = (v47 + 44);
-      v44 = a7->ambAdaptationParam.n;
+      v44 = control->ambAdaptationParam.n;
     }
   }
 
   self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvorder[v44] = 1;
-  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvebound[a7->ambAdaptationParam.n] = 1.0;
-  *(&self->ToneMapAmbPolyCurve.curveData.var0.tmcurve + 44 * a7->ambAdaptationParam.n + 84) = *&a7->ambAdaptationParam.linCs[1][0];
+  self->ToneMapAmbPolyCurve.curveData.var0.polycurve.segcurvebound[control->ambAdaptationParam.n] = 1.0;
+  *(&self->ToneMapAmbPolyCurve.curveData.var0.tmcurve + 44 * control->ambAdaptationParam.n + 84) = *&control->ambAdaptationParam.linCs[1][0];
   *&self->ToneMapAmbEOTFCurve.mode = 0x900000001;
   self->ToneMapAmbEOTFCurve.curveData.type = 7;
   *&self->ToneMapAmbientCurve.mode = 0xA00000001;
   self->ToneMapAmbientCurve.curveData.type = 13;
-  self->ToneMapAmbientCurve.curveData.var0.polycurve.segcurvorder[0] = LODWORD(a7->ambAdaptationParam.aL);
-  self->ToneMapAmbientCurve.curveData.var0.table.count = LODWORD(a7->ambAdaptationParam.bL);
+  self->ToneMapAmbientCurve.curveData.var0.polycurve.segcurvorder[0] = LODWORD(control->ambAdaptationParam.aL);
+  self->ToneMapAmbientCurve.curveData.var0.table.count = LODWORD(control->ambAdaptationParam.bL);
   self->ToneMapAmbientCurve.curveData.var0.polycurve.segcurvorder[1] = 1;
 LABEL_41:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateDISPColorConfigPostToneMapCSC:(BOOL)a3 AlgoMode:(int)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 DISPHDRContext:(EngineHDRContext *)a10
+- (void)populateDISPColorConfigPostToneMapCSC:(BOOL)c AlgoMode:(int)mode Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)self0
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (c)
   {
     v12 = 1.0;
-    if (a8->atmEnable && (targetMaxLinear = a8->targetMaxLinearOutput, targetMaxLinear > a8->diffuseInNits))
+    if (control->atmEnable && (targetMaxLinear = control->targetMaxLinearOutput, targetMaxLinear > control->diffuseInNits))
     {
-      if (a10->processingType == 2)
+      if (context->processingType == 2)
       {
-        v14 = a8->targetMaxLinear / targetMaxLinear;
+        v14 = control->targetMaxLinear / targetMaxLinear;
       }
 
       else
@@ -1045,22 +1045,22 @@ LABEL_41:
     else
     {
       v14 = 1.0;
-      targetMaxLinear = a8->targetMaxLinear;
+      targetMaxLinear = control->targetMaxLinear;
     }
 
-    processingType = a10->processingType;
+    processingType = context->processingType;
     if (processingType == 1)
     {
-      if (a10->outputTransferFunction != 16)
+      if (context->outputTransferFunction != 16)
       {
         v14 = 10000.0 / targetMaxLinear;
       }
 
       snprintf(__str, 0x3FFuLL, "postRGB2RGB: from DM config, scaler=%f", v14);
-      v16 = *&a6[1].var26;
-      LODWORD(v12) = *&a6[1].var36;
-      HIDWORD(v16) = *&a6[1].var30;
-      v19 = vextq_s8(vextq_s8(*&a6[1].var30, *&a6[1].var30, 0xCuLL), *&a6[1].var34, 8uLL);
+      v16 = *&config[1].var26;
+      LODWORD(v12) = *&config[1].var36;
+      HIDWORD(v16) = *&config[1].var30;
+      v19 = vextq_s8(vextq_s8(*&config[1].var30, *&config[1].var30, 0xCuLL), *&config[1].var34, 8uLL);
       goto LABEL_31;
     }
 
@@ -1081,10 +1081,10 @@ LABEL_31:
     }
 
     v16 = xmmword_2508CDDF0;
-    var15 = a9->var15;
+    var15 = hdrControl->var15;
     if (var15 == 9)
     {
-      targetColorPrimaries = a8->targetColorPrimaries;
+      targetColorPrimaries = control->targetColorPrimaries;
       if (targetColorPrimaries == *MEMORY[0x277CC4C30])
       {
         v20 = &RGB2020toRGBP3_coeff;
@@ -1110,7 +1110,7 @@ LABEL_31:
         goto LABEL_27;
       }
 
-      v18 = a8->targetColorPrimaries;
+      v18 = control->targetColorPrimaries;
       if (v18 == *MEMORY[0x277CC4C18])
       {
         v20 = &RGBP3toRGB2020_coeff;
@@ -1132,7 +1132,7 @@ LABEL_31:
     v19 = v20[1];
     v12 = *(v20 + 8);
 LABEL_27:
-    if (a10->outputTransferFunction == 13)
+    if (context->outputTransferFunction == 13)
     {
       v24 = v19;
       v25 = v16;
@@ -1154,22 +1154,22 @@ LABEL_32:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateDISPColorConfigToneMapDpc:(BOOL)a3 Prefix:(char *)a4 DMConfig:(id *)a5 DMData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8 DISPHDRContext:(EngineHDRContext *)a9
+- (void)populateDISPColorConfigToneMapDpc:(BOOL)dpc Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl DISPHDRContext:(EngineHDRContext *)context
 {
   p_DpcCurve = &self->DpcCurve;
-  if (a3)
+  if (dpc)
   {
     *&p_DpcCurve->mode = 0xB00000001;
     self->DpcCurve.curveData.type = 17;
-    *&self->DpcCurve.curveData.var0.param.gamma = *&a5[1].var38;
+    *&self->DpcCurve.curveData.var0.param.gamma = *&config[1].var38;
     maxEDRValue = 1.0;
-    if (a8->var25 != 1)
+    if (hdrControl->var25 != 1)
     {
-      maxEDRValue = a7->maxEDRValue;
+      maxEDRValue = control->maxEDRValue;
     }
 
     self->DpcCurve.curveData.var0.param.b = maxEDRValue;
-    self->DpcCurve.curveData.var0.polycurve.segcurvorder[2] = LODWORD(a5[1].var41);
+    self->DpcCurve.curveData.var0.polycurve.segcurvorder[2] = LODWORD(config[1].var41);
   }
 
   else
@@ -1178,7 +1178,7 @@ LABEL_32:
   }
 }
 
-- (void)populateDISPColorConfig:(id *)a3 DMData:(id *)a4 tcControl:(ToneCurve_Control *)a5 hdrControl:(id *)a6 MSRHDRContext:(EngineHDRContext *)a7
+- (void)populateDISPColorConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(EngineHDRContext *)context
 {
   v20 = *MEMORY[0x277D85DE8];
   v16 = 0;
@@ -1187,23 +1187,23 @@ LABEL_32:
   v17 = 0;
   v18 = 0;
   v19 = 0;
-  [(DISPHDRProcessing *)self decideStageStatus:&v14 DMConfig:a3 AlgoMode:&v17 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPColorConfigFixedDegamma:v14 AlgoMode:v17 Prefix:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPColorConfigPreToneMapCSC:BYTE1(v14) AlgoMode:HIDWORD(v17) Prefix:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPColorConfigToneMap:BYTE2(v14) AlgoMode:v18 Prefix:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPToneMapConfig:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPColorConfigPostToneMapCSC:HIBYTE(v14) AlgoMode:HIDWORD(v18) Prefix:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
-  [(DISPHDRProcessing *)self populateDISPColorConfigToneMapDpc:v15 Prefix:&v16 DMConfig:a3 DMData:a4 tcControl:a5 hdrControl:a6 DISPHDRContext:a7];
+  [(DISPHDRProcessing *)self decideStageStatus:&v14 DMConfig:config AlgoMode:&v17 DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPColorConfigFixedDegamma:v14 AlgoMode:v17 Prefix:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPColorConfigPreToneMapCSC:BYTE1(v14) AlgoMode:HIDWORD(v17) Prefix:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPColorConfigToneMap:BYTE2(v14) AlgoMode:v18 Prefix:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPToneMapConfig:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPColorConfigPostToneMapCSC:HIBYTE(v14) AlgoMode:HIDWORD(v18) Prefix:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
+  [(DISPHDRProcessing *)self populateDISPColorConfigToneMapDpc:v15 Prefix:&v16 DMConfig:config DMData:data tcControl:control hdrControl:hdrControl DISPHDRContext:context];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hdr10_createLUTFromDMConfig:(id *)a3 DM:(id)a4 TCControl:(ToneCurve_Control *)a5 HDRControl:(id *)a6 TMParam:(_HDR10TMParam *)a7 TMParam:(_HDR10TMParam *)a8 EdrAdaptationParam:(_EdrAdaptationParam *)a9 AmbAdaptationParam:(_AmbAdaptationParam *)a10
+- (void)hdr10_createLUTFromDMConfig:(id *)config DM:(id)m TCControl:(ToneCurve_Control *)control HDRControl:(id *)rControl TMParam:(_HDR10TMParam *)param TMParam:(_HDR10TMParam *)mParam EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)self0
 {
-  v16 = a4;
-  if ([(ProcessingEngine *)self hdr10_tm_configChanged:a7 HDRControl:a6 TCControl:a5 EdrAdaptationParam:a9 AmbAdaptationParam:a10])
+  mCopy = m;
+  if ([(ProcessingEngine *)self hdr10_tm_configChanged:param HDRControl:rControl TCControl:control EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam])
   {
-    [(DISPHDRProcessing *)self hdr10_tm_createLUTFromDMConfig:a3 TMParam:a7 TMParam:a8 TCControl:a5 EdrAdaptationParam:a9 AmbAdaptationParam:a10 DM:v16];
-    [(ProcessingEngine *)self hdr10_tm_reserveConfig:a7 HDRControl:a6 TCControl:a5 EdrAdaptationParam:a9 AmbAdaptationParam:a10];
+    [(DISPHDRProcessing *)self hdr10_tm_createLUTFromDMConfig:config TMParam:param TMParam:mParam TCControl:control EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam DM:mCopy];
+    [(ProcessingEngine *)self hdr10_tm_reserveConfig:param HDRControl:rControl TCControl:control EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam];
   }
 }
 
@@ -1274,28 +1274,28 @@ LABEL_11:
   while (v2 != 18);
 }
 
-- (void)hdr10_tm_createLUTFromDMConfig:(id *)a3 TMParam:(_HDR10TMParam *)a4 TMParam:(_HDR10TMParam *)a5 TCControl:(ToneCurve_Control *)a6 EdrAdaptationParam:(_EdrAdaptationParam *)a7 AmbAdaptationParam:(_AmbAdaptationParam *)a8 DM:(id)a9
+- (void)hdr10_tm_createLUTFromDMConfig:(id *)config TMParam:(_HDR10TMParam *)param TMParam:(_HDR10TMParam *)mParam TCControl:(ToneCurve_Control *)control EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam DM:(id)m
 {
-  v16 = [a9 getDolbyVisionDM4];
+  getDolbyVisionDM4 = [m getDolbyVisionDM4];
   v17 = 27;
-  if (a6->tcForHdrConstraint)
+  if (control->tcForHdrConstraint)
   {
     v17 = 26;
   }
 
   v18 = OBJC_IVAR___DISPHDRProcessing__dispHC[v17];
   v19 = 29;
-  if (a6->tcForHdrConstraint)
+  if (control->tcForHdrConstraint)
   {
     v19 = 28;
   }
 
   v20 = OBJC_IVAR___DISPHDRProcessing__dispHC[v19];
   lutInput = self->_lutInput;
-  v29 = v16;
-  hdr10_setScalingFactorTableS_L_NormIn(self + v18, self->_lutInput, 0x2F2uLL, a4, a5, a7, a8, a3, v16);
+  v29 = getDolbyVisionDM4;
+  hdr10_setScalingFactorTableS_L_NormIn(self + v18, self->_lutInput, 0x2F2uLL, param, mParam, adaptationParam, ambAdaptationParam, config, getDolbyVisionDM4);
   v22 = self + v20;
-  if (a7->RWTMO_v2_on && GetConfig() && (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0xB0u, 0) == 1))
+  if (adaptationParam->RWTMO_v2_on && GetConfig() && (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0xB0u, 0) == 1))
   {
     bzero(v22, 0xBC8uLL);
   }
@@ -1303,10 +1303,10 @@ LABEL_11:
   else
   {
     v24 = 0;
-    v25 = (((a4->tm_Tmax_C + -0.41928) * 0.3) / 0.1072) + 0.1;
+    v25 = (((param->tm_Tmax_C + -0.41928) * 0.3) / 0.1072) + 0.1;
     if (v25 <= 0.4)
     {
-      v26 = (((a4->tm_Tmax_C + -0.41928) * 0.3) / 0.1072) + 0.1;
+      v26 = (((param->tm_Tmax_C + -0.41928) * 0.3) / 0.1072) + 0.1;
     }
 
     else
@@ -1335,7 +1335,7 @@ LABEL_11:
   }
 }
 
-- (void)hdr10_mixLUTFromTCControl:(ToneCurve_Control *)a3 TCControlConstr:(ToneCurve_Control *)a4 withFactor:(float)a5
+- (void)hdr10_mixLUTFromTCControl:(ToneCurve_Control *)control TCControlConstr:(ToneCurve_Control *)constr withFactor:(float)factor
 {
   if (GetConfig())
   {
@@ -1350,7 +1350,7 @@ LABEL_11:
 
   v9 = 0;
   scalingFactorTableBufferFull = self->_scalingFactorTableBufferFull;
-  v11 = 1.0 - a5;
+  v11 = 1.0 - factor;
   do
   {
     v12 = self->_scalingFactorTableBufferConstr[v9];
@@ -1370,43 +1370,43 @@ LABEL_11:
       v12 = v14;
     }
 
-    self->_scalingFactorTableBuffer[v9] = (v11 * v13) + (a5 * v12);
-    self->_lumaMixFactorTableBuffer[v9] = (v11 * self->_lumaMixFactorTableBufferFull[v9]) + (a5 * self->_lumaMixFactorTableBufferConstr[v9]);
+    self->_scalingFactorTableBuffer[v9] = (v11 * v13) + (factor * v12);
+    self->_lumaMixFactorTableBuffer[v9] = (v11 * self->_lumaMixFactorTableBufferFull[v9]) + (factor * self->_lumaMixFactorTableBufferConstr[v9]);
     ++v9;
   }
 
   while (v9 != 754);
 }
 
-- (void)hlg_createLUTFromDMConfig:(id *)a3 DM:(id)a4 HDRControl:(id *)a5 TCControl:(ToneCurve_Control *)a6 TMParam:(_HLGTMParam *)a7 EdrAdaptationParam:(_EdrAdaptationParam *)a8 AmbAdaptationParam:(_AmbAdaptationParam *)a9 TMMode:(int)a10
+- (void)hlg_createLUTFromDMConfig:(id *)config DM:(id)m HDRControl:(id *)control TCControl:(ToneCurve_Control *)cControl TMParam:(_HLGTMParam *)param EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam TMMode:(int)self0
 {
-  v17 = a4;
-  if ([(ProcessingEngine *)self hlg_tm_configChanged:a3 HDRControl:a5 TCControl:a6 TMParam:a7 EdrAdaptationParam:a8 AmbAdaptationParam:a9])
+  mCopy = m;
+  if ([(ProcessingEngine *)self hlg_tm_configChanged:config HDRControl:control TCControl:cControl TMParam:param EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam])
   {
-    LODWORD(v16) = a10;
-    [(DISPHDRProcessing *)self hlg_tm_createLUTFromDMConfig:a3 DM:v17 TCControl:a6 TMParam:a7 EdrAdaptationParam:a8 AmbAdaptationParam:a9 TMMode:v16];
-    [(ProcessingEngine *)self hlg_tm_reserveConfig:a3 HDRControl:a5 TCControl:a6 TMParam:a7 EdrAdaptationParam:a8 AmbAdaptationParam:a9];
+    LODWORD(v16) = mode;
+    [(DISPHDRProcessing *)self hlg_tm_createLUTFromDMConfig:config DM:mCopy TCControl:cControl TMParam:param EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam TMMode:v16];
+    [(ProcessingEngine *)self hlg_tm_reserveConfig:config HDRControl:control TCControl:cControl TMParam:param EdrAdaptationParam:adaptationParam AmbAdaptationParam:ambAdaptationParam];
   }
 }
 
-- (void)hlg_tm_createLUTFromDMConfig:(id *)a3 DM:(id)a4 TCControl:(ToneCurve_Control *)a5 TMParam:(_HLGTMParam *)a6 EdrAdaptationParam:(_EdrAdaptationParam *)a7 AmbAdaptationParam:(_AmbAdaptationParam *)a8 TMMode:(int)a9
+- (void)hlg_tm_createLUTFromDMConfig:(id *)config DM:(id)m TCControl:(ToneCurve_Control *)control TMParam:(_HLGTMParam *)param EdrAdaptationParam:(_EdrAdaptationParam *)adaptationParam AmbAdaptationParam:(_AmbAdaptationParam *)ambAdaptationParam TMMode:(int)mode
 {
-  v19 = a4;
-  v15 = [v19 getDolbyVisionDM4];
+  mCopy = m;
+  getDolbyVisionDM4 = [mCopy getDolbyVisionDM4];
   dm40 = self->_dm40;
-  self->_dm40 = v15;
+  self->_dm40 = getDolbyVisionDM4;
 
-  v17 = [(DISPHDRProcessing *)self getTmLutSize];
+  getTmLutSize = [(DISPHDRProcessing *)self getTmLutSize];
   v18 = 27;
-  if (a5->tcForHdrConstraint)
+  if (control->tcForHdrConstraint)
   {
     v18 = 26;
   }
 
-  hlg_setScalingFactorTable(self + OBJC_IVAR___DISPHDRProcessing__dispHC[v18], self->_lutInput, v17, a3, a6, a7, a8, a9, self->_dm40);
+  hlg_setScalingFactorTable(self + OBJC_IVAR___DISPHDRProcessing__dispHC[v18], self->_lutInput, getTmLutSize, config, param, adaptationParam, ambAdaptationParam, mode, self->_dm40);
 }
 
-- (void)hlg_mixLUTFromTCControl:(ToneCurve_Control *)a3 TCControlConstr:(ToneCurve_Control *)a4 withFactor:(float)a5
+- (void)hlg_mixLUTFromTCControl:(ToneCurve_Control *)control TCControlConstr:(ToneCurve_Control *)constr withFactor:(float)factor
 {
   if (GetConfig())
   {
@@ -1419,164 +1419,164 @@ LABEL_11:
     v10 = 0;
   }
 
-  v11 = [(DISPHDRProcessing *)self getTmLutSize];
-  if (v11)
+  getTmLutSize = [(DISPHDRProcessing *)self getTmLutSize];
+  if (getTmLutSize)
   {
-    v12 = 1.0 - a5;
+    v12 = 1.0 - factor;
     do
     {
       v13 = self->_scalingFactorTableBufferConstr[0];
       if (v10)
       {
-        v14 = a4->targetMaxLinear * v13 / a3->targetMaxLinear;
+        v14 = constr->targetMaxLinear * v13 / control->targetMaxLinear;
         v15 = self->_scalingFactorTableBufferFull[0];
         if (v14 >= v15)
         {
           v14 = v15;
         }
 
-        v16 = (v12 * v15) + a5 * v14;
+        v16 = (v12 * v15) + factor * v14;
       }
 
       else
       {
-        v16 = a4->targetMaxLinear * (v13 * a5) / a3->targetMaxLinear + (v12 * self->_scalingFactorTableBufferFull[0]);
+        v16 = constr->targetMaxLinear * (v13 * factor) / control->targetMaxLinear + (v12 * self->_scalingFactorTableBufferFull[0]);
       }
 
       v17 = v16;
       self->_scalingFactorTableBuffer[0] = v17;
       self = (self + 4);
-      --v11;
+      --getTmLutSize;
     }
 
-    while (v11);
+    while (getTmLutSize);
   }
 }
 
-- (void)setDisplayManagementParametricConfigToneMapBezier:(_ebzCurveParam *)a3 TMSendC:(float)a4
+- (void)setDisplayManagementParametricConfigToneMapBezier:(_ebzCurveParam *)bezier TMSendC:(float)c
 {
   for (i = 0; i != 6; ++i)
   {
-    a3->XsCA[i] = a3->XsC[i] * a4;
+    bezier->XsCA[i] = bezier->XsC[i] * c;
   }
 
-  getBezierAnchors(&a3->n);
+  getBezierAnchors(&bezier->n);
 
-  convertBezierToPoly(&a3->n);
+  convertBezierToPoly(&bezier->n);
 }
 
-- (void)setDisplayManagementParametricConfigToneMapSpline:(_splCurveParam *)a3
+- (void)setDisplayManagementParametricConfigToneMapSpline:(_splCurveParam *)spline
 {
   v11 = *MEMORY[0x277D85DE8];
-  n = a3->n;
+  n = spline->n;
   v5 = n > 1;
   v6 = n - 1;
   if (v5)
   {
-    v7 = a3->polyCs[0];
-    calcCubicSplineParam(a3->splCs, a3->XsC[0], a3->YsC[0], a3->MsC[0], a3->XsC[1], a3->YsC[1], a3->MsC[1]);
-    v10[0] = -a3->XsC[0];
+    v7 = spline->polyCs[0];
+    calcCubicSplineParam(spline->splCs, spline->XsC[0], spline->YsC[0], spline->MsC[0], spline->XsC[1], spline->YsC[1], spline->MsC[1]);
+    v10[0] = -spline->XsC[0];
     v10[1] = 1.0;
     PolyGeneric2PolyStd(v10, 2, 3, v7 - 20, v7);
   }
 
-  v8 = a3->MsC[0];
-  a3->linCs[0][0] = a3->YsC[0] - (v8 * a3->XsC[0]);
-  a3->linCs[0][1] = v8;
-  a3->linCs[1][0] = a3->YsC[v6] - (a3->MsC[v6] * a3->XsC[v6]);
-  a3->linCs[1][1] = a3->MsC[v6];
+  v8 = spline->MsC[0];
+  spline->linCs[0][0] = spline->YsC[0] - (v8 * spline->XsC[0]);
+  spline->linCs[0][1] = v8;
+  spline->linCs[1][0] = spline->YsC[v6] - (spline->MsC[v6] * spline->XsC[v6]);
+  spline->linCs[1][1] = spline->MsC[v6];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayManagementParametricConfigToneMapHLG:(ToneCurve_Control *)a3 HDRControl:(id *)a4
+- (void)setDisplayManagementParametricConfigToneMapHLG:(ToneCurve_Control *)g HDRControl:(id *)control
 {
-  curveType = a3->hlgTmParam.artisticOOTFParam.tmCurveParam.curveType;
+  curveType = g->hlgTmParam.artisticOOTFParam.tmCurveParam.curveType;
   if (curveType)
   {
     if (curveType == 1)
     {
-      *&v4 = a3->hlgTmParam.artisticOOTFParam.tm_Send_C;
-      [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapBezier:&a3->hlgTmParam.artisticOOTFParam.tmCurveParam.param TMSendC:a4, v4];
+      *&v4 = g->hlgTmParam.artisticOOTFParam.tm_Send_C;
+      [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapBezier:&g->hlgTmParam.artisticOOTFParam.tmCurveParam.param TMSendC:control, v4];
     }
   }
 
   else
   {
-    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapSpline:&a3->hlgTmParam.artisticOOTFParam.tmCurveParam.param, a4];
+    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapSpline:&g->hlgTmParam.artisticOOTFParam.tmCurveParam.param, control];
   }
 }
 
-- (void)setDisplayManagementParametricConfigToneMapHDR10:(ToneCurve_Control *)a3 HDRControl:(id *)a4
+- (void)setDisplayManagementParametricConfigToneMapHDR10:(ToneCurve_Control *)r10 HDRControl:(id *)control
 {
   HIDWORD(v4) = 1065353216;
-  *&a3->hdr10TmParam.lumaMixXMinRatio = xmmword_2508CDE00;
-  a3->hdr10TmParam.lumaMixPower = 2.0;
-  curveType = a3->hdr10TmParam.tmCurveParam.curveType;
+  *&r10->hdr10TmParam.lumaMixXMinRatio = xmmword_2508CDE00;
+  r10->hdr10TmParam.lumaMixPower = 2.0;
+  curveType = r10->hdr10TmParam.tmCurveParam.curveType;
   if (curveType)
   {
     if (curveType == 1)
     {
-      *&v4 = a3->hdr10TmParam.tm_Send_C;
-      [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapBezier:&a3->hdr10TmParam.tmCurveParam.param TMSendC:a4, v4];
+      *&v4 = r10->hdr10TmParam.tm_Send_C;
+      [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapBezier:&r10->hdr10TmParam.tmCurveParam.param TMSendC:control, v4];
     }
   }
 
   else
   {
-    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapSpline:&a3->hdr10TmParam.tmCurveParam.param, a4];
+    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapSpline:&r10->hdr10TmParam.tmCurveParam.param, control];
   }
 }
 
-- (void)setDisplayManagementParametricConfigToneMap:(ToneCurve_Control *)a3 HDRControl:(id *)a4
+- (void)setDisplayManagementParametricConfigToneMap:(ToneCurve_Control *)map HDRControl:(id *)control
 {
-  if (a4->var0 == 2)
+  if (control->var0 == 2)
   {
-    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapHDR10:a3 HDRControl:?];
+    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapHDR10:map HDRControl:?];
   }
 
-  else if (a4->var0 == 3)
+  else if (control->var0 == 3)
   {
-    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapHLG:a3 HDRControl:?];
+    [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMapHLG:map HDRControl:?];
   }
 }
 
-- (void)setDisplayManagementParametricConfig:(ToneCurve_Control *)a3 HDRControl:(id *)a4
+- (void)setDisplayManagementParametricConfig:(ToneCurve_Control *)config HDRControl:(id *)control
 {
   v15 = *MEMORY[0x277D85DE8];
-  [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMap:a3 HDRControl:a4];
-  n = a3->edrAdaptationParam.n;
+  [(DISPHDRProcessing *)self setDisplayManagementParametricConfigToneMap:config HDRControl:control];
+  n = config->edrAdaptationParam.n;
   v6 = n > 1;
   v7 = n - 1;
   if (v6)
   {
-    calcCubicSplineParam(a3->edrAdaptationParam.splCs, a3->edrAdaptationParam.Xs[0], a3->edrAdaptationParam.Ys[0], a3->edrAdaptationParam.Ms[0], a3->edrAdaptationParam.Xs[1], a3->edrAdaptationParam.Ys[1], a3->edrAdaptationParam.Ms[1]);
-    v13 = -a3->edrAdaptationParam.Xs[0];
+    calcCubicSplineParam(config->edrAdaptationParam.splCs, config->edrAdaptationParam.Xs[0], config->edrAdaptationParam.Ys[0], config->edrAdaptationParam.Ms[0], config->edrAdaptationParam.Xs[1], config->edrAdaptationParam.Ys[1], config->edrAdaptationParam.Ms[1]);
+    v13 = -config->edrAdaptationParam.Xs[0];
     v14 = 1065353216;
-    PolyGeneric2PolyStd(&v13, 2, 3, a3->edrAdaptationParam.splCs[0], a3->edrAdaptationParam.polyCs[0]);
+    PolyGeneric2PolyStd(&v13, 2, 3, config->edrAdaptationParam.splCs[0], config->edrAdaptationParam.polyCs[0]);
   }
 
-  v8 = a3->edrAdaptationParam.Ms[0];
-  a3->edrAdaptationParam.linCs[0][0] = a3->edrAdaptationParam.Ys[0] - (v8 * a3->edrAdaptationParam.Xs[0]);
-  a3->edrAdaptationParam.linCs[0][1] = v8;
-  a3->edrAdaptationParam.linCs[1][0] = a3->edrAdaptationParam.Ys[v7] - (a3->edrAdaptationParam.Ms[v7] * a3->edrAdaptationParam.Xs[v7]);
-  a3->edrAdaptationParam.linCs[1][1] = a3->edrAdaptationParam.Ms[v7];
-  v9 = a3->ambAdaptationParam.n;
+  v8 = config->edrAdaptationParam.Ms[0];
+  config->edrAdaptationParam.linCs[0][0] = config->edrAdaptationParam.Ys[0] - (v8 * config->edrAdaptationParam.Xs[0]);
+  config->edrAdaptationParam.linCs[0][1] = v8;
+  config->edrAdaptationParam.linCs[1][0] = config->edrAdaptationParam.Ys[v7] - (config->edrAdaptationParam.Ms[v7] * config->edrAdaptationParam.Xs[v7]);
+  config->edrAdaptationParam.linCs[1][1] = config->edrAdaptationParam.Ms[v7];
+  v9 = config->ambAdaptationParam.n;
   v6 = v9 > 1;
   v10 = v9 - 1;
   if (v6)
   {
-    calcCubicSplineParam(a3->ambAdaptationParam.splCs, a3->ambAdaptationParam.XsC[0], a3->ambAdaptationParam.YsC[0], a3->ambAdaptationParam.MsC[0], a3->ambAdaptationParam.XsC[1], a3->ambAdaptationParam.YsC[1], a3->ambAdaptationParam.MsC[1]);
-    v13 = -a3->ambAdaptationParam.XsC[0];
+    calcCubicSplineParam(config->ambAdaptationParam.splCs, config->ambAdaptationParam.XsC[0], config->ambAdaptationParam.YsC[0], config->ambAdaptationParam.MsC[0], config->ambAdaptationParam.XsC[1], config->ambAdaptationParam.YsC[1], config->ambAdaptationParam.MsC[1]);
+    v13 = -config->ambAdaptationParam.XsC[0];
     v14 = 1065353216;
-    PolyGeneric2PolyStd(&v13, 2, 3, a3->ambAdaptationParam.splCs[0], a3->ambAdaptationParam.polyCs[0]);
+    PolyGeneric2PolyStd(&v13, 2, 3, config->ambAdaptationParam.splCs[0], config->ambAdaptationParam.polyCs[0]);
   }
 
-  v11 = a3->ambAdaptationParam.MsC[0];
-  a3->ambAdaptationParam.linCs[0][0] = a3->ambAdaptationParam.YsC[0] - (v11 * a3->ambAdaptationParam.XsC[0]);
-  a3->ambAdaptationParam.linCs[0][1] = v11;
-  a3->ambAdaptationParam.linCs[1][0] = a3->ambAdaptationParam.YsC[v10] - (a3->ambAdaptationParam.MsC[v10] * a3->ambAdaptationParam.XsC[v10]);
-  a3->ambAdaptationParam.linCs[1][1] = a3->ambAdaptationParam.MsC[v10];
-  a3->ambAdaptationParam.TmaxNits = 1.0;
+  v11 = config->ambAdaptationParam.MsC[0];
+  config->ambAdaptationParam.linCs[0][0] = config->ambAdaptationParam.YsC[0] - (v11 * config->ambAdaptationParam.XsC[0]);
+  config->ambAdaptationParam.linCs[0][1] = v11;
+  config->ambAdaptationParam.linCs[1][0] = config->ambAdaptationParam.YsC[v10] - (config->ambAdaptationParam.MsC[v10] * config->ambAdaptationParam.XsC[v10]);
+  config->ambAdaptationParam.linCs[1][1] = config->ambAdaptationParam.MsC[v10];
+  config->ambAdaptationParam.TmaxNits = 1.0;
   v12 = *MEMORY[0x277D85DE8];
 }
 

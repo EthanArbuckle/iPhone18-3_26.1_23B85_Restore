@@ -1,17 +1,17 @@
 @interface SBFDeviceLockOutController
 - (BOOL)isLockedOut;
-- (SBFDeviceLockOutController)initWithThermalController:(id)a3 authenticationController:(id)a4;
+- (SBFDeviceLockOutController)initWithThermalController:(id)controller authenticationController:(id)authenticationController;
 - (double)timeIntervalUntilUnblockedSinceReferenceDate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)deviceBlockStatus;
 - (void)_noteLockedOutReasonsMayHaveChanged;
-- (void)_noteLockedOutStateMayHaveChanged:(BOOL)a3;
+- (void)_noteLockedOutStateMayHaveChanged:(BOOL)changed;
 - (void)dealloc;
-- (void)setLiquidDetectionBlockProvider:(id)a3;
-- (void)setProximityReaderBlockProvider:(id)a3;
+- (void)setLiquidDetectionBlockProvider:(id)provider;
+- (void)setProximityReaderBlockProvider:(id)provider;
 @end
 
 @implementation SBFDeviceLockOutController
@@ -31,54 +31,54 @@
 
 - (unint64_t)deviceBlockStatus
 {
-  v3 = [(SBFDeviceLockOutController *)self isPermanentlyBlocked];
+  isPermanentlyBlocked = [(SBFDeviceLockOutController *)self isPermanentlyBlocked];
   if ([(SBFDeviceLockOutController *)self isTemporarilyBlocked])
   {
-    v3 |= 2uLL;
+    isPermanentlyBlocked |= 2uLL;
   }
 
   if ([(SBFDeviceLockOutController *)self isThermallyBlocked])
   {
-    v3 |= 4uLL;
+    isPermanentlyBlocked |= 4uLL;
   }
 
   if ([(SBFDeviceLockOutController *)self isLiquidDetectionCriticalUIBlocked])
   {
-    return v3 | 8;
+    return isPermanentlyBlocked | 8;
   }
 
   else
   {
-    return v3;
+    return isPermanentlyBlocked;
   }
 }
 
 - (void)_noteLockedOutReasonsMayHaveChanged
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"SBFDeviceBlockStateDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBFDeviceBlockStateDidChangeNotification" object:0];
 
   [(SBFDeviceLockOutController *)self _noteLockedOutStateMayHaveChanged:0];
 }
 
-- (SBFDeviceLockOutController)initWithThermalController:(id)a3 authenticationController:(id)a4
+- (SBFDeviceLockOutController)initWithThermalController:(id)controller authenticationController:(id)authenticationController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  authenticationControllerCopy = authenticationController;
   v15.receiver = self;
   v15.super_class = SBFDeviceLockOutController;
   v9 = [(SBFDeviceLockOutController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_thermalProvider, a3);
+    objc_storeStrong(&v9->_thermalProvider, controller);
     thermalProvider = v10->_thermalProvider;
     if (thermalProvider)
     {
       [(SBFThermalBlockProvider *)thermalProvider addThermalObserver:v10];
     }
 
-    objc_storeStrong(&v10->_authenticationController, a4);
+    objc_storeStrong(&v10->_authenticationController, authenticationController);
     [(SBFUserAuthenticationController *)v10->_authenticationController _addPrivateAuthenticationObserver:v10];
     liquidDetectionBlockProvider = v10->_liquidDetectionBlockProvider;
     v10->_liquidDetectionBlockProvider = 0;
@@ -99,60 +99,60 @@
   [(SBFLiquidDetectionBlockProvider *)self->_liquidDetectionBlockProvider removeLiquidDetectionObserver:self];
   [(SBFProximityReaderBlockProvider *)self->_proximityReaderBlockProvider removeProximityReaderObserver:self];
   [(SBFUserAuthenticationController *)self->_authenticationController _removePrivateAuthenticationObserver:self];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBFDeviceLockOutController;
   [(SBFDeviceLockOutController *)&v4 dealloc];
 }
 
-- (void)setLiquidDetectionBlockProvider:(id)a3
+- (void)setLiquidDetectionBlockProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   liquidDetectionBlockProvider = self->_liquidDetectionBlockProvider;
-  if (liquidDetectionBlockProvider != v5)
+  if (liquidDetectionBlockProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     if (liquidDetectionBlockProvider)
     {
       [(SBFLiquidDetectionBlockProvider *)liquidDetectionBlockProvider removeLiquidDetectionObserver:self];
     }
 
-    objc_storeStrong(&self->_liquidDetectionBlockProvider, a3);
+    objc_storeStrong(&self->_liquidDetectionBlockProvider, provider);
     liquidDetectionBlockProvider = [(SBFLiquidDetectionBlockProvider *)self->_liquidDetectionBlockProvider addLiquidDetectionObserver:self];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](liquidDetectionBlockProvider, v5);
+  MEMORY[0x1EEE66BB8](liquidDetectionBlockProvider, providerCopy);
 }
 
-- (void)setProximityReaderBlockProvider:(id)a3
+- (void)setProximityReaderBlockProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   proximityReaderBlockProvider = self->_proximityReaderBlockProvider;
-  if (proximityReaderBlockProvider != v5)
+  if (proximityReaderBlockProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     if (proximityReaderBlockProvider)
     {
       [(SBFProximityReaderBlockProvider *)proximityReaderBlockProvider removeProximityReaderObserver:self];
     }
 
-    objc_storeStrong(&self->_proximityReaderBlockProvider, a3);
+    objc_storeStrong(&self->_proximityReaderBlockProvider, provider);
     proximityReaderBlockProvider = [(SBFProximityReaderBlockProvider *)self->_proximityReaderBlockProvider addProximityReaderObserver:self];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](proximityReaderBlockProvider, v5);
+  MEMORY[0x1EEE66BB8](proximityReaderBlockProvider, providerCopy);
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFDeviceLockOutController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFDeviceLockOutController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -167,20 +167,20 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFDeviceLockOutController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFDeviceLockOutController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFDeviceLockOutController *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_thermalProvider withName:@"thermalProvider"];
+  succinctDescriptionBuilder = [(SBFDeviceLockOutController *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_thermalProvider withName:@"thermalProvider"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (double)timeIntervalUntilUnblockedSinceReferenceDate
@@ -190,22 +190,22 @@
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   if (v3 < v4)
   {
-    v5 = [MEMORY[0x1E695DF00] distantPast];
-    [v5 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v3 = v6;
   }
 
   return v3;
 }
 
-- (void)_noteLockedOutStateMayHaveChanged:(BOOL)a3
+- (void)_noteLockedOutStateMayHaveChanged:(BOOL)changed
 {
   lockedOutCached = [(SBFDeviceLockOutController *)self isLockedOut];
-  v6 = [(SBFDeviceLockOutController *)self deviceBlockStatus];
-  if (a3 || self->_lockedOutCached != lockedOutCached || v6 != self->_lastBlockedStatus)
+  deviceBlockStatus = [(SBFDeviceLockOutController *)self deviceBlockStatus];
+  if (changed || self->_lockedOutCached != lockedOutCached || deviceBlockStatus != self->_lastBlockedStatus)
   {
     self->_lockedOutCached = lockedOutCached;
-    self->_lastBlockedStatus = v6;
+    self->_lastBlockedStatus = deviceBlockStatus;
     v7 = _noteLockedOutStateMayHaveChanged__token;
     if (_noteLockedOutStateMayHaveChanged__token == -1)
     {

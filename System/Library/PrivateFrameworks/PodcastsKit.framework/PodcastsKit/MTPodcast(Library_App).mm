@@ -15,21 +15,21 @@
 - (void)setTitle:()Library_App
 {
   v9 = a3;
-  v4 = [a1 title];
-  v5 = v9 | v4;
+  title = [self title];
+  v5 = v9 | title;
 
   if (v5)
   {
-    v6 = [a1 title];
-    v7 = [v6 isEqualToString:v9];
+    title2 = [self title];
+    v7 = [title2 isEqualToString:v9];
 
     if ((v7 & 1) == 0)
     {
       v8 = *MEMORY[0x277D3DEE0];
-      [a1 willChangeValueForKey:*MEMORY[0x277D3DEE0]];
-      [a1 setPrimitiveValue:v9 forKey:v8];
-      [a1 didChangeValueForKey:v8];
-      [a1 updateEpisodesMetadataIdentifiers];
+      [self willChangeValueForKey:*MEMORY[0x277D3DEE0]];
+      [self setPrimitiveValue:v9 forKey:v8];
+      [self didChangeValueForKey:v8];
+      [self updateEpisodesMetadataIdentifiers];
     }
   }
 }
@@ -38,46 +38,46 @@
 {
   v4 = *MEMORY[0x277D3DF08];
   v5 = a3;
-  [a1 willChangeValueForKey:v4];
-  [a1 setPrimitiveValue:v5 forKey:v4];
+  [self willChangeValueForKey:v4];
+  [self setPrimitiveValue:v5 forKey:v4];
 
-  [a1 didChangeValueForKey:v4];
-  [a1 updateEpisodesMetadataIdentifiers];
-  v6 = [MEMORY[0x277D3DB80] shared];
-  [v6 markSubscriptionSyncDirty:1 for:{objc_msgSend(a1, "syncType")}];
+  [self didChangeValueForKey:v4];
+  [self updateEpisodesMetadataIdentifiers];
+  mEMORY[0x277D3DB80] = [MEMORY[0x277D3DB80] shared];
+  [mEMORY[0x277D3DB80] markSubscriptionSyncDirty:1 for:{objc_msgSend(self, "syncType")}];
 }
 
 - (void)setSubscribed:()Library_App
 {
-  if ([a1 subscribed] != a3)
+  if ([self subscribed] != a3)
   {
     v5 = *MEMORY[0x277D3DED8];
-    [a1 willChangeValueForKey:*MEMORY[0x277D3DED8]];
+    [self willChangeValueForKey:*MEMORY[0x277D3DED8]];
     v6 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-    [a1 setPrimitiveValue:v6 forKey:v5];
+    [self setPrimitiveValue:v6 forKey:v5];
 
-    [a1 didChangeValueForKey:v5];
-    v7 = [MEMORY[0x277D3DB80] shared];
-    [v7 markSubscriptionSyncDirty:1 for:{objc_msgSend(a1, "syncType")}];
+    [self didChangeValueForKey:v5];
+    mEMORY[0x277D3DB80] = [MEMORY[0x277D3DB80] shared];
+    [mEMORY[0x277D3DB80] markSubscriptionSyncDirty:1 for:{objc_msgSend(self, "syncType")}];
   }
 }
 
 - (void)setChannel:()Library_App
 {
   v8 = a3;
-  v4 = [a1 channel];
-  v5 = [v8 isEqual:v4];
+  channel = [self channel];
+  v5 = [v8 isEqual:channel];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [a1 channel];
+    channel2 = [self channel];
     v7 = *MEMORY[0x277D3DE30];
-    [a1 willChangeValueForKey:*MEMORY[0x277D3DE30]];
-    [a1 setPrimitiveValue:v8 forKey:v7];
-    [a1 didChangeValueForKey:v7];
-    [a1 setChannelStoreId:{objc_msgSend(v8, "storeId")}];
-    [a1 _updateChannelRelationship:v6 deassociate:1];
-    [a1 _updateChannelRelationship:v8 deassociate:0];
+    [self willChangeValueForKey:*MEMORY[0x277D3DE30]];
+    [self setPrimitiveValue:v8 forKey:v7];
+    [self didChangeValueForKey:v7];
+    [self setChannelStoreId:{objc_msgSend(v8, "storeId")}];
+    [self _updateChannelRelationship:channel2 deassociate:1];
+    [self _updateChannelRelationship:v8 deassociate:0];
   }
 }
 
@@ -86,8 +86,8 @@
   if (a3)
   {
     v6 = a3;
-    v7 = [v6 podcastUuids];
-    v10 = [v7 mutableCopy];
+    podcastUuids = [v6 podcastUuids];
+    v10 = [podcastUuids mutableCopy];
 
     v8 = v10;
     if (!v10)
@@ -96,15 +96,15 @@
     }
 
     v11 = v8;
-    v9 = [a1 uuid];
+    uuid = [self uuid];
     if (a4)
     {
-      [v11 removeObject:v9];
+      [v11 removeObject:uuid];
     }
 
     else
     {
-      [v11 addObject:v9];
+      [v11 addObject:uuid];
     }
 
     [v6 setPodcastUuids:v11];
@@ -118,8 +118,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 episodes];
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  episodes = [self episodes];
+  v2 = [episodes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = v2;
@@ -131,14 +131,14 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(episodes);
         }
 
         [*(*(&v7 + 1) + 8 * v5++) updateUPPIdentifierIfNeeded];
       }
 
       while (v3 != v5);
-      v3 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [episodes countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v3);
@@ -149,10 +149,10 @@
 
 - (id)prepareForDeletion
 {
-  v2 = [a1 channel];
-  [a1 _updateChannelRelationship:v2 deassociate:1];
+  channel = [self channel];
+  [self _updateChannelRelationship:channel deassociate:1];
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &off_2870BFEC0;
   return objc_msgSendSuper2(&v4, sel_prepareForDeletion);
 }
@@ -160,18 +160,18 @@
 + (void)setRemovePlayedDownloadsSetting:()Library_App forPodcastUuid:
 {
   v5 = a4;
-  v6 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__MTPodcast_Library_App__setRemovePlayedDownloadsSetting_forPodcastUuid___block_invoke;
   v10[3] = &unk_279A44F90;
-  v11 = v7;
+  v11 = mainOrPrivateContext;
   v12 = v5;
   v13 = a3;
   v8 = v5;
-  v9 = v7;
+  v9 = mainOrPrivateContext;
   [v9 performBlockAndWaitWithSave:v10];
 }
 
@@ -181,14 +181,14 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__MTPodcast_Library_App__countOfUnplayedRssEpisodes__block_invoke;
   v6[3] = &unk_279A44D88;
-  v6[4] = a1;
+  v6[4] = self;
   v8 = &v9;
-  v3 = v2;
+  v3 = managedObjectContext;
   v7 = v3;
   [v3 performBlockAndWait:v6];
   v4 = v10[3];

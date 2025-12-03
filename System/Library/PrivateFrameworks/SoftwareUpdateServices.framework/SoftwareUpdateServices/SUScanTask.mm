@@ -1,36 +1,36 @@
 @interface SUScanTask
 - (BOOL)cancelTask;
-- (SUScanTask)initWithOptions:(id)a3;
-- (int64_t)_scanPriorityForOptions:(id)a3;
+- (SUScanTask)initWithOptions:(id)options;
+- (int64_t)_scanPriorityForOptions:(id)options;
 - (int64_t)scanPriority;
-- (void)_queue_CollectDocumentation:(id)a3 sessionID:(id)a4 completion:(id)a5;
-- (void)_queue_scanForUpdates:(id)a3 sessionID:(id)a4 completion:(id)a5;
-- (void)scanForDocumentationAssetWithDescriptor:(id)a3 completion:(id)a4;
-- (void)scanForSUAssetWithCompletion:(id)a3;
+- (void)_queue_CollectDocumentation:(id)documentation sessionID:(id)d completion:(id)completion;
+- (void)_queue_scanForUpdates:(id)updates sessionID:(id)d completion:(id)completion;
+- (void)scanForDocumentationAssetWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)scanForSUAssetWithCompletion:(id)completion;
 @end
 
 @implementation SUScanTask
 
-- (SUScanTask)initWithOptions:(id)a3
+- (SUScanTask)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = SUScanTask;
   v6 = [(SUScanTask *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    v6->_scanPriority = [(SUScanTask *)v6 _scanPriorityForOptions:v5];
-    objc_storeStrong(&v7->_scanOptions, a3);
+    v6->_scanPriority = [(SUScanTask *)v6 _scanPriorityForOptions:optionsCopy];
+    objc_storeStrong(&v7->_scanOptions, options);
     coreScanner = v7->_coreScanner;
     v7->_coreScanner = 0;
 
     suScanPolicy = v7->_suScanPolicy;
     v7->_suScanPolicy = 0;
 
-    v10 = [v5 sessionID];
+    sessionID = [optionsCopy sessionID];
     sessionID = v7->_sessionID;
-    v7->_sessionID = v10;
+    v7->_sessionID = sessionID;
 
     v7->_cancelRequested = 0;
     v12 = dispatch_queue_create("com.apple.softwareupdateservices.SUScanTaskQueue", 0);
@@ -45,17 +45,17 @@
   return v7;
 }
 
-- (void)scanForSUAssetWithCompletion:(id)a3
+- (void)scanForSUAssetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   scanQueue = self->_scanQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SUScanTask_scanForSUAssetWithCompletion___block_invoke;
   v7[3] = &unk_279CAA8D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(scanQueue, v7);
 }
 
@@ -73,20 +73,20 @@ void __43__SUScanTask_scanForSUAssetWithCompletion___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)scanForDocumentationAssetWithDescriptor:(id)a3 completion:(id)a4
+- (void)scanForDocumentationAssetWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   scanQueue = self->_scanQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__SUScanTask_scanForDocumentationAssetWithDescriptor_completion___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptorCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = descriptorCopy;
   dispatch_async(scanQueue, block);
 }
 
@@ -106,23 +106,23 @@ void __65__SUScanTask_scanForDocumentationAssetWithDescriptor_completion___block
 
 - (BOOL)cancelTask
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_scanQueue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  scanQueue = v2->_scanQueue;
+  scanQueue = selfCopy->_scanQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __24__SUScanTask_cancelTask__block_invoke;
   v5[3] = &unk_279CAA948;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(scanQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __24__SUScanTask_cancelTask__block_invoke(uint64_t a1)
@@ -164,14 +164,14 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
   return dispatch_semaphore_signal(v9);
 }
 
-- (int64_t)_scanPriorityForOptions:(id)a3
+- (int64_t)_scanPriorityForOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 isSplatOnlyScan];
-  v5 = [v3 isForced];
-  if (v4)
+  optionsCopy = options;
+  isSplatOnlyScan = [optionsCopy isSplatOnlyScan];
+  isForced = [optionsCopy isForced];
+  if (isSplatOnlyScan)
   {
-    if (v5)
+    if (isForced)
     {
       v6 = 3;
     }
@@ -184,7 +184,7 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
 
   else
   {
-    if (v5)
+    if (isForced)
     {
       v7 = 4;
     }
@@ -194,9 +194,9 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
       v7 = 2;
     }
 
-    v8 = [v3 requestedPMV];
+    requestedPMV = [optionsCopy requestedPMV];
 
-    if (v8)
+    if (requestedPMV)
     {
       v6 = 5;
     }
@@ -230,29 +230,29 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
   return v4;
 }
 
-- (void)_queue_scanForUpdates:(id)a3 sessionID:(id)a4 completion:(id)a5
+- (void)_queue_scanForUpdates:(id)updates sessionID:(id)d completion:(id)completion
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v37 = a4;
-  v38 = a5;
+  updatesCopy = updates;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_scanQueue);
   v9 = objc_alloc_init(SUPolicyFactory);
-  v40 = v8;
-  [(SUPolicyFactory *)v9 setScanOptions:v8];
-  v10 = [(SUPolicyFactory *)v9 corePolicy];
+  v40 = updatesCopy;
+  [(SUPolicyFactory *)v9 setScanOptions:updatesCopy];
+  corePolicy = [(SUPolicyFactory *)v9 corePolicy];
   suScanPolicy = self->_suScanPolicy;
-  self->_suScanPolicy = v10;
+  self->_suScanPolicy = corePolicy;
 
-  v12 = [(SUPolicyFactory *)v9 globalOptions];
+  globalOptions = [(SUPolicyFactory *)v9 globalOptions];
   v47 = *MEMORY[0x277D647C0];
-  v48[0] = v37;
+  v48[0] = dCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
-  [v12 appendUpdateMetricEventFields:v13];
+  [globalOptions appendUpdateMetricEventFields:v13];
 
   v41 = v9;
-  v39 = v12;
-  [(SUPolicyFactory *)v9 setGlobalOptions:v12];
+  v39 = globalOptions;
+  [(SUPolicyFactory *)v9 setGlobalOptions:globalOptions];
   v45[0] = @"AutomaticDownloadOver3G";
   v36 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v46[0] = v36;
@@ -292,7 +292,7 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
   coreScanner = self->_coreScanner;
   if (!coreScanner)
   {
-    v27 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:v37];
+    v27 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:dCopy];
     v28 = self->_coreScanner;
     self->_coreScanner = v27;
 
@@ -306,8 +306,8 @@ intptr_t __24__SUScanTask_cancelTask__block_invoke_2(uint64_t a1, uint64_t a2, u
   v42[3] = &unk_279CAA970;
   v42[4] = self;
   v43 = v40;
-  v44 = v38;
-  v30 = v38;
+  v44 = completionCopy;
+  v30 = completionCopy;
   v31 = v40;
   [(SUCoreScan *)coreScanner checkForAvailableSlowReleaseUpdatesWithPolicy:v29 completion:v42];
 
@@ -408,37 +408,37 @@ LABEL_23:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_CollectDocumentation:(id)a3 sessionID:(id)a4 completion:(id)a5
+- (void)_queue_CollectDocumentation:(id)documentation sessionID:(id)d completion:(id)completion
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  documentationCopy = documentation;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_scanQueue);
   if (!self->_coreScanner)
   {
-    v11 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:v9];
+    v11 = [objc_alloc(MEMORY[0x277D641E0]) initWithUUID:dCopy];
     coreScanner = self->_coreScanner;
     self->_coreScanner = v11;
   }
 
   v13 = objc_alloc_init(SUPolicyFactory);
-  v14 = [(SUPolicyFactory *)v13 globalOptions];
+  globalOptions = [(SUPolicyFactory *)v13 globalOptions];
   v60 = *MEMORY[0x277D647C0];
-  v61[0] = v9;
+  v61[0] = dCopy;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:&v60 count:1];
-  [v14 appendUpdateMetricEventFields:v15];
+  [globalOptions appendUpdateMetricEventFields:v15];
 
-  [(SUPolicyFactory *)v13 setGlobalOptions:v14];
+  [(SUPolicyFactory *)v13 setGlobalOptions:globalOptions];
   [(SUPolicyFactory *)v13 setScanOptions:self->_scanOptions];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __63__SUScanTask__queue_CollectDocumentation_sessionID_completion___block_invoke;
   v57[3] = &unk_279CAA998;
-  v16 = v10;
+  v16 = completionCopy;
   v59 = v16;
   v57[4] = self;
-  v17 = v8;
+  v17 = documentationCopy;
   v58 = v17;
   v18 = MEMORY[0x26D668B30](v57);
   v19 = +[SUUtility currentReleaseType];
@@ -447,28 +447,28 @@ LABEL_23:
   if (v20 && (SULogInfo(@"Searching documentation from override path", v21, v22, v23, v24, v25, v26, v27, v55), +[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), v28 = objc_claimAutoreleasedReturnValue(), [v28 overrideDocumentationPath], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
   {
     v30 = +[SUPreferences sharedInstance];
-    v31 = [v30 overrideDocumentationPath];
-    SULogInfo(@"Override path was set in: %@, collecting documentation", v32, v33, v34, v35, v36, v37, v38, v31);
+    overrideDocumentationPath = [v30 overrideDocumentationPath];
+    SULogInfo(@"Override path was set in: %@, collecting documentation", v32, v33, v34, v35, v36, v37, v38, overrideDocumentationPath);
 
     v39 = objc_alloc(MEMORY[0x277CBEBC0]);
     v40 = +[SUPreferences sharedInstance];
-    v41 = [v40 overrideDocumentationPath];
-    v42 = [v39 initFileURLWithPath:v41];
+    overrideDocumentationPath2 = [v40 overrideDocumentationPath];
+    corePolicy2 = [v39 initFileURLWithPath:overrideDocumentationPath2];
 
     v43 = objc_alloc(MEMORY[0x277D64188]);
-    v44 = [v43 initWithLocalBundleURL:v42 attributes:MEMORY[0x277CBEC10]];
+    v44 = [v43 initWithLocalBundleURL:corePolicy2 attributes:MEMORY[0x277CBEC10]];
     [v17 setDocumentation:v44];
     SULogInfo(@"Documentation was collected", v45, v46, v47, v48, v49, v50, v51, v56);
-    v52 = [(SUPolicyFactory *)v13 corePolicy];
-    (v18)[2](v18, v52, v17, 0);
+    corePolicy = [(SUPolicyFactory *)v13 corePolicy];
+    (v18)[2](v18, corePolicy, v17, 0);
   }
 
   else
   {
     SULogInfo(@"Searching documentation metadata", v21, v22, v23, v24, v25, v26, v27, v55);
     v53 = self->_coreScanner;
-    v42 = [(SUPolicyFactory *)v13 corePolicy];
-    [(SUCoreScan *)v53 collectDocumentationMetadataWithPolicy:v42 descriptor:v17 downloadDocumentation:1 completion:v18];
+    corePolicy2 = [(SUPolicyFactory *)v13 corePolicy];
+    [(SUCoreScan *)v53 collectDocumentationMetadataWithPolicy:corePolicy2 descriptor:v17 downloadDocumentation:1 completion:v18];
   }
 
   v54 = *MEMORY[0x277D85DE8];

@@ -1,6 +1,6 @@
 @interface MaterialView
 + (Class)layerClass;
-- (_TtC12GameStoreKit12MaterialView)initWithFrame:(CGRect)a3;
+- (_TtC12GameStoreKit12MaterialView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MaterialView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC12GameStoreKit12MaterialView)initWithFrame:(CGRect)a3
+- (_TtC12GameStoreKit12MaterialView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

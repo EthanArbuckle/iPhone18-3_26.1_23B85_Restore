@@ -1,5 +1,5 @@
 @interface UIPhysicalKeyboardEvent
-+ (id)_eventWithInput:(id)a3 inputFlags:(int)a4;
++ (id)_eventWithInput:(id)input inputFlags:(int)flags;
 - (BOOL)_isARepeat;
 - (BOOL)_isDeleteKey;
 - (BOOL)_isEjectKey;
@@ -7,134 +7,134 @@
 - (BOOL)_isKeyDown;
 - (BOOL)_isModifierKey;
 - (BOOL)_shouldAttemptSecurePasteAuthentication;
-- (BOOL)isEqual:(id)a3;
-- (UIPhysicalKeyboardEvent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIPhysicalKeyboardEvent)initWithCoder:(id)coder;
 - (id)_cloneEvent;
 - (int64_t)_keyCode;
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3;
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4;
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4 additionalModifiers:(int64_t)a5;
-- (int64_t)_matchFidelityFromKeyMapForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4 translator:(id)a5 addingModifiers:(int64_t)a6 ignoringModifiers:(int64_t)a7;
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf;
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map;
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map additionalModifiers:(int64_t)modifiers;
+- (int64_t)_matchFidelityFromKeyMapForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map translator:(id)translator addingModifiers:(int64_t)modifiers ignoringModifiers:(int64_t)ignoringModifiers;
 - (void)_prepareKeyTranslationMapIfNeeded;
 - (void)_privatize;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3 keyboard:(__GSKeyboard *)a4;
-- (void)_setModifierFlags:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setHIDEvent:(__IOHIDEvent *)event keyboard:(__GSKeyboard *)keyboard;
+- (void)_setModifierFlags:(int64_t)flags;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIPhysicalKeyboardEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  v4 = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
+  coderCopy = coder;
+  _modifiedInput = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
 
-  if (v4)
+  if (_modifiedInput)
   {
-    v5 = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
-    [v19 encodeObject:v5 forKey:@"modifiedInput"];
+    _modifiedInput2 = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
+    [coderCopy encodeObject:_modifiedInput2 forKey:@"modifiedInput"];
   }
 
-  v6 = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
+  _unmodifiedInput = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
 
-  if (v6)
+  if (_unmodifiedInput)
   {
-    v7 = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
-    [v19 encodeObject:v7 forKey:@"unmodifiedInput"];
+    _unmodifiedInput2 = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
+    [coderCopy encodeObject:_unmodifiedInput2 forKey:@"unmodifiedInput"];
   }
 
-  v8 = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
+  _shiftModifiedInput = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
 
-  if (v8)
+  if (_shiftModifiedInput)
   {
-    v9 = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
-    [v19 encodeObject:v9 forKey:@"shiftModifiedInput"];
+    _shiftModifiedInput2 = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
+    [coderCopy encodeObject:_shiftModifiedInput2 forKey:@"shiftModifiedInput"];
   }
 
-  v10 = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
+  _commandModifiedInput = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
 
-  if (v10)
+  if (_commandModifiedInput)
   {
-    v11 = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
-    [v19 encodeObject:v11 forKey:@"commandModifiedInput"];
+    _commandModifiedInput2 = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
+    [coderCopy encodeObject:_commandModifiedInput2 forKey:@"commandModifiedInput"];
   }
 
-  v12 = [(UIPhysicalKeyboardEvent *)self _markedInput];
+  _markedInput = [(UIPhysicalKeyboardEvent *)self _markedInput];
 
-  if (v12)
+  if (_markedInput)
   {
-    v13 = [(UIPhysicalKeyboardEvent *)self _markedInput];
-    [v19 encodeObject:v13 forKey:@"markedInput"];
+    _markedInput2 = [(UIPhysicalKeyboardEvent *)self _markedInput];
+    [coderCopy encodeObject:_markedInput2 forKey:@"markedInput"];
   }
 
-  v14 = [(UIPhysicalKeyboardEvent *)self _privateInput];
+  _privateInput = [(UIPhysicalKeyboardEvent *)self _privateInput];
 
-  if (v14)
+  if (_privateInput)
   {
-    v15 = [(UIPhysicalKeyboardEvent *)self _privateInput];
-    [v19 encodeObject:v15 forKey:@"privateInput"];
+    _privateInput2 = [(UIPhysicalKeyboardEvent *)self _privateInput];
+    [coderCopy encodeObject:_privateInput2 forKey:@"privateInput"];
   }
 
-  v16 = [(UIPhysicalKeyboardEvent *)self _hint];
+  _hint = [(UIPhysicalKeyboardEvent *)self _hint];
 
-  if (v16)
+  if (_hint)
   {
-    v17 = [(UIPhysicalKeyboardEvent *)self _hint];
-    [v19 encodeObject:v17 forKey:@"hint"];
+    _hint2 = [(UIPhysicalKeyboardEvent *)self _hint];
+    [coderCopy encodeObject:_hint2 forKey:@"hint"];
   }
 
-  [v19 encodeInteger:-[UIPhysicalKeyboardEvent _modifierFlags](self forKey:{"_modifierFlags"), @"modifiedFlags"}];
-  [v19 encodeInteger:-[UIPhysicalKeyboardEvent _privateModifierFlags](self forKey:{"_privateModifierFlags"), @"privateModifierFlags"}];
-  [v19 encodeInt32:-[UIPhysicalKeyboardEvent _keyCode](self forKey:{"_keyCode"), @"keyCode"}];
-  [v19 encodeInt:-[UIPhysicalKeyboardEvent _inputFlags](self forKey:{"_inputFlags"), @"inputFlags"}];
-  [v19 encodeInteger:-[UIPhysicalKeyboardEvent source](self forKey:{"source"), @"source"}];
-  [v19 encodeBool:-[UIPhysicalKeyboardEvent _isExternalEvent](self forKey:{"_isExternalEvent"), @"externalEvent"}];
+  [coderCopy encodeInteger:-[UIPhysicalKeyboardEvent _modifierFlags](self forKey:{"_modifierFlags"), @"modifiedFlags"}];
+  [coderCopy encodeInteger:-[UIPhysicalKeyboardEvent _privateModifierFlags](self forKey:{"_privateModifierFlags"), @"privateModifierFlags"}];
+  [coderCopy encodeInt32:-[UIPhysicalKeyboardEvent _keyCode](self forKey:{"_keyCode"), @"keyCode"}];
+  [coderCopy encodeInt:-[UIPhysicalKeyboardEvent _inputFlags](self forKey:{"_inputFlags"), @"inputFlags"}];
+  [coderCopy encodeInteger:-[UIPhysicalKeyboardEvent source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeBool:-[UIPhysicalKeyboardEvent _isExternalEvent](self forKey:{"_isExternalEvent"), @"externalEvent"}];
   [(UIEvent *)self _hidEvent];
   Data = IOHIDEventCreateData();
-  [v19 encodeObject:Data forKey:@"hidEvent"];
-  [v19 encodeInt:-[UIPhysicalKeyboardEvent keyCommandCode](self forKey:{"keyCommandCode"), @"keyCommandCode"}];
-  [v19 encodeBool:-[UIPhysicalKeyboardEvent keyCommandHandlingBeforePublic](self forKey:{"keyCommandHandlingBeforePublic"), @"keyCommandHandlingBeforePublic"}];
-  [v19 encodeBool:-[UIPhysicalKeyboardEvent shiftDown](self forKey:{"shiftDown"), @"shiftDown"}];
-  [v19 encodeBool:-[UIPhysicalKeyboardEvent keyEventForwardedFromInputUIHost](self forKey:{"keyEventForwardedFromInputUIHost"), @"keyEventForwardedFromInputUIHost"}];
-  [v19 encodeObject:self->_keyTranslationMap forKey:@"keyTranslationMap"];
+  [coderCopy encodeObject:Data forKey:@"hidEvent"];
+  [coderCopy encodeInt:-[UIPhysicalKeyboardEvent keyCommandCode](self forKey:{"keyCommandCode"), @"keyCommandCode"}];
+  [coderCopy encodeBool:-[UIPhysicalKeyboardEvent keyCommandHandlingBeforePublic](self forKey:{"keyCommandHandlingBeforePublic"), @"keyCommandHandlingBeforePublic"}];
+  [coderCopy encodeBool:-[UIPhysicalKeyboardEvent shiftDown](self forKey:{"shiftDown"), @"shiftDown"}];
+  [coderCopy encodeBool:-[UIPhysicalKeyboardEvent keyEventForwardedFromInputUIHost](self forKey:{"keyEventForwardedFromInputUIHost"), @"keyEventForwardedFromInputUIHost"}];
+  [coderCopy encodeObject:self->_keyTranslationMap forKey:@"keyTranslationMap"];
 }
 
-- (UIPhysicalKeyboardEvent)initWithCoder:(id)a3
+- (UIPhysicalKeyboardEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = UIPhysicalKeyboardEvent;
   v5 = [(UIPhysicalKeyboardEvent *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedInput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_modifiedInput:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unmodifiedInput"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unmodifiedInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_unmodifiedInput:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shiftModifiedInput"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shiftModifiedInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_shiftModifiedInput:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"commandModifiedInput"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"commandModifiedInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_commandModifiedInput:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"markedInput"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"markedInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_markedInput:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateInput"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateInput"];
     [(UIPhysicalKeyboardEvent *)v5 set_privateInput:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
     [(UIPhysicalKeyboardEvent *)v5 set_hint:v12];
 
-    -[UIPhysicalKeyboardEvent _setModifierFlags:](v5, "_setModifierFlags:", [v4 decodeIntegerForKey:@"modifiedFlags"]);
-    -[UIPhysicalKeyboardEvent set_privateModifierFlags:](v5, "set_privateModifierFlags:", [v4 decodeIntegerForKey:@"privateModifierFlags"]);
-    -[UIPhysicalKeyboardEvent set_keyCode:](v5, "set_keyCode:", [v4 decodeInt32ForKey:@"keyCode"]);
-    -[UIPhysicalKeyboardEvent set_inputFlags:](v5, "set_inputFlags:", [v4 decodeIntForKey:@"inputFlags"]);
-    -[UIPhysicalKeyboardEvent setSource:](v5, "setSource:", [v4 decodeIntegerForKey:@"source"]);
-    -[UIPhysicalKeyboardEvent set_externalEvent:](v5, "set_externalEvent:", [v4 decodeBoolForKey:@"externalEvent"]);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hidEvent"];
+    -[UIPhysicalKeyboardEvent _setModifierFlags:](v5, "_setModifierFlags:", [coderCopy decodeIntegerForKey:@"modifiedFlags"]);
+    -[UIPhysicalKeyboardEvent set_privateModifierFlags:](v5, "set_privateModifierFlags:", [coderCopy decodeIntegerForKey:@"privateModifierFlags"]);
+    -[UIPhysicalKeyboardEvent set_keyCode:](v5, "set_keyCode:", [coderCopy decodeInt32ForKey:@"keyCode"]);
+    -[UIPhysicalKeyboardEvent set_inputFlags:](v5, "set_inputFlags:", [coderCopy decodeIntForKey:@"inputFlags"]);
+    -[UIPhysicalKeyboardEvent setSource:](v5, "setSource:", [coderCopy decodeIntegerForKey:@"source"]);
+    -[UIPhysicalKeyboardEvent set_externalEvent:](v5, "set_externalEvent:", [coderCopy decodeBoolForKey:@"externalEvent"]);
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hidEvent"];
     v14 = IOHIDEventCreateWithData();
     if (v14)
     {
@@ -145,25 +145,25 @@
       CFRelease(v15);
     }
 
-    -[UIPhysicalKeyboardEvent setKeyCommandCode:](v5, "setKeyCommandCode:", [v4 decodeIntForKey:@"keyCommandCode"]);
-    -[UIPhysicalKeyboardEvent setKeyCommandHandlingBeforePublic:](v5, "setKeyCommandHandlingBeforePublic:", [v4 decodeBoolForKey:@"keyCommandHandlingBeforePublic"]);
-    -[UIPhysicalKeyboardEvent setShiftDown:](v5, "setShiftDown:", [v4 decodeBoolForKey:@"shiftDown"]);
-    -[UIPhysicalKeyboardEvent setKeyEventForwardedFromInputUIHost:](v5, "setKeyEventForwardedFromInputUIHost:", [v4 decodeBoolForKey:@"keyEventForwardedFromInputUIHost"]);
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyTranslationMap"];
+    -[UIPhysicalKeyboardEvent setKeyCommandCode:](v5, "setKeyCommandCode:", [coderCopy decodeIntForKey:@"keyCommandCode"]);
+    -[UIPhysicalKeyboardEvent setKeyCommandHandlingBeforePublic:](v5, "setKeyCommandHandlingBeforePublic:", [coderCopy decodeBoolForKey:@"keyCommandHandlingBeforePublic"]);
+    -[UIPhysicalKeyboardEvent setShiftDown:](v5, "setShiftDown:", [coderCopy decodeBoolForKey:@"shiftDown"]);
+    -[UIPhysicalKeyboardEvent setKeyEventForwardedFromInputUIHost:](v5, "setKeyEventForwardedFromInputUIHost:", [coderCopy decodeBoolForKey:@"keyEventForwardedFromInputUIHost"]);
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyTranslationMap"];
     keyTranslationMap = v5->_keyTranslationMap;
     v5->_keyTranslationMap = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalEscapeKeyTranslationMap"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalEscapeKeyTranslationMap"];
     originalEscapeKeyTranslationMap = v5->_originalEscapeKeyTranslationMap;
     v5->_originalEscapeKeyTranslationMap = v18;
 
-    v20 = [(UIPhysicalKeyboardEvent *)v5 _shiftModifiedInput];
+    _shiftModifiedInput = [(UIPhysicalKeyboardEvent *)v5 _shiftModifiedInput];
 
-    if (v20)
+    if (_shiftModifiedInput)
     {
       v21 = v5->_keyTranslationMap;
-      v22 = [(UIPhysicalKeyboardEvent *)v5 _shiftModifiedInput];
-      [(_UIPhysicalKeyTranslationMap *)v21 setKeyTranslation:v22 modifiers:0x20000];
+      _shiftModifiedInput2 = [(UIPhysicalKeyboardEvent *)v5 _shiftModifiedInput];
+      [(_UIPhysicalKeyTranslationMap *)v21 setKeyTranslation:_shiftModifiedInput2 modifiers:0x20000];
     }
 
     if ([(UIEvent *)v5 _hidEvent])
@@ -206,33 +206,33 @@
 
 - (BOOL)_isEjectKey
 {
-  v3 = [(UIEvent *)self _hidEvent];
-  if (v3)
+  _hidEvent = [(UIEvent *)self _hidEvent];
+  if (_hidEvent)
   {
     [(UIEvent *)self _hidEvent];
     IntegerValue = IOHIDEventGetIntegerValue();
     [(UIEvent *)self _hidEvent];
     v5 = IOHIDEventGetIntegerValue();
     v7 = v5 == 430 || v5 == 184;
-    LOBYTE(v3) = IntegerValue == 12 && v7;
+    LOBYTE(_hidEvent) = IntegerValue == 12 && v7;
   }
 
-  return v3;
+  return _hidEvent;
 }
 
 - (BOOL)_isGlobeKey
 {
-  v3 = [(UIEvent *)self _hidEvent];
-  if (v3)
+  _hidEvent = [(UIEvent *)self _hidEvent];
+  if (_hidEvent)
   {
     [(UIEvent *)self _hidEvent];
     IOHIDEventGetIntegerValue();
     [(UIEvent *)self _hidEvent];
     IOHIDEventGetIntegerValue();
-    LOBYTE(v3) = GSKeyboardIsGlobeKeyUsagePair() != 0;
+    LOBYTE(_hidEvent) = GSKeyboardIsGlobeKeyUsagePair() != 0;
   }
 
-  return v3;
+  return _hidEvent;
 }
 
 - (int64_t)_keyCode
@@ -248,61 +248,61 @@
   return result;
 }
 
-- (void)_setModifierFlags:(int64_t)a3
+- (void)_setModifierFlags:(int64_t)flags
 {
   keyTranslationMap = self->_keyTranslationMap;
-  if (keyTranslationMap && [(_UIPhysicalKeyTranslationMap *)keyTranslationMap originalModifiers]!= a3)
+  if (keyTranslationMap && [(_UIPhysicalKeyTranslationMap *)keyTranslationMap originalModifiers]!= flags)
   {
-    v6 = [[_UIPhysicalKeyTranslationMap alloc] initWithKeyCode:[(UIPhysicalKeyboardEvent *)self _keyCode] action:[(UIPhysicalKeyboardEvent *)self _isKeyDown]^ 1 modifiers:a3];
+    v6 = [[_UIPhysicalKeyTranslationMap alloc] initWithKeyCode:[(UIPhysicalKeyboardEvent *)self _keyCode] action:[(UIPhysicalKeyboardEvent *)self _isKeyDown]^ 1 modifiers:flags];
     v7 = self->_keyTranslationMap;
     self->_keyTranslationMap = v6;
 
     self->_needToPrepareKeyTranslationMap = 0;
   }
 
-  self->_modifierFlags = a3;
+  self->_modifierFlags = flags;
 }
 
 - (BOOL)_isModifierKey
 {
-  v3 = [(UIEvent *)self _hidEvent];
-  if (v3)
+  _hidEvent = [(UIEvent *)self _hidEvent];
+  if (_hidEvent)
   {
-    v4 = [(UIPhysicalKeyboardEvent *)self _keyCode];
+    _keyCode = [(UIPhysicalKeyboardEvent *)self _keyCode];
 
-    LOBYTE(v3) = isModifierFlag(v4);
+    LOBYTE(_hidEvent) = isModifierFlag(_keyCode);
   }
 
-  return v3;
+  return _hidEvent;
 }
 
 - (BOOL)_isARepeat
 {
-  v3 = [(UIPhysicalKeyboardEvent *)self _isKeyDown];
-  if (v3)
+  _isKeyDown = [(UIPhysicalKeyboardEvent *)self _isKeyDown];
+  if (_isKeyDown)
   {
-    LOBYTE(v3) = [(UIPhysicalKeyboardEvent *)self _inputFlags]& 1;
+    LOBYTE(_isKeyDown) = [(UIPhysicalKeyboardEvent *)self _inputFlags]& 1;
   }
 
-  return v3;
+  return _isKeyDown;
 }
 
 - (BOOL)_isDeleteKey
 {
-  v3 = [(UIEvent *)self _hidEvent];
-  if (v3)
+  _hidEvent = [(UIEvent *)self _hidEvent];
+  if (_hidEvent)
   {
     [(UIEvent *)self _hidEvent];
     IntegerValue = IOHIDEventGetIntegerValue();
     [(UIEvent *)self _hidEvent];
     v5 = IOHIDEventGetIntegerValue();
-    LOBYTE(v3) = IntegerValue == 7 && v5 == 42;
+    LOBYTE(_hidEvent) = IntegerValue == 7 && v5 == 42;
   }
 
-  return v3;
+  return _hidEvent;
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3 keyboard:(__GSKeyboard *)a4
+- (void)_setHIDEvent:(__IOHIDEvent *)event keyboard:(__GSKeyboard *)keyboard
 {
   v91 = *MEMORY[0x1E69E9840];
   v88.receiver = self;
@@ -310,7 +310,7 @@
   [(UIEvent *)&v88 _setHIDEvent:?];
   TimeStamp = IOHIDEventGetTimeStamp();
   [(UIEvent *)self _setTimestamp:_UIMediaTimeForMachTime(TimeStamp)];
-  if (!a4)
+  if (!keyboard)
   {
     return;
   }
@@ -387,17 +387,17 @@
   if (!isModifierFlag(v11))
   {
     v19 = [UIKeyboardImpl activeInstance:*v72];
-    v20 = [v19 isCapsLockSwitchEnabled];
+    isCapsLockSwitchEnabled = [v19 isCapsLockSwitchEnabled];
 
-    if ((v20 & 1) == 0)
+    if ((isCapsLockSwitchEnabled & 1) == 0)
     {
       v21 = BKSHIDEventGetKeyboardAttributes();
-      v22 = [v21 GSModifierState];
+      gSModifierState = [v21 GSModifierState];
 
-      if (((v22 ^ ModifierState) & 0x40000) != 0)
+      if (((gSModifierState ^ ModifierState) & 0x40000) != 0)
       {
         v23 = +[UIKeyboardImpl activeInstance];
-        [v23 _setCapsLockIfNeeded:a4 event:a3];
+        [v23 _setCapsLockIfNeeded:keyboard event:event];
 
         ModifierState = GSKeyboardGetModifierState();
       }
@@ -408,7 +408,7 @@
       if ((v25 & 1) == 0)
       {
         v26 = +[UIKeyboardImpl activeInstance];
-        [v26 _setCapsLockIfNeeded:a4 event:a3];
+        [v26 _setCapsLockIfNeeded:keyboard event:event];
       }
     }
   }
@@ -568,7 +568,7 @@
   }
 
   v46 = v85 | (*&v72[64] >> 3) & 0x800000 | (*&v72[64] >> 2) & 0x10000u | v45;
-  v85 = [[_UIPhysicalKeyTranslator alloc] initWithGSKeyboard:a4];
+  v85 = [[_UIPhysicalKeyTranslator alloc] initWithGSKeyboard:keyboard];
   v47 = &OBJC_METACLASS___UIKeyboardDicationBackground;
   if (v87)
   {
@@ -668,8 +668,8 @@ LABEL_82:
     [(UIPhysicalKeyboardEvent *)self set_shiftModifiedInput:v65];
 
     v66 = self->_keyTranslationMap;
-    v67 = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
-    [(_UIPhysicalKeyTranslationMap *)v66 setKeyTranslation:v67 modifiers:0x20000];
+    _shiftModifiedInput = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
+    [(_UIPhysicalKeyTranslationMap *)v66 setKeyTranslation:_shiftModifiedInput modifiers:0x20000];
   }
 
   else
@@ -691,24 +691,24 @@ LABEL_82:
   else
   {
     [(UIPhysicalKeyboardEvent *)self set_privateInput:self->_modifiedInput];
-    v71 = [(UIPhysicalKeyboardEvent *)self _modifierFlags];
-    v70 = v71 != [(UIPhysicalKeyboardEvent *)self _privateModifierFlags];
+    _modifierFlags = [(UIPhysicalKeyboardEvent *)self _modifierFlags];
+    v70 = _modifierFlags != [(UIPhysicalKeyboardEvent *)self _privateModifierFlags];
   }
 
   self->_canPrivatize = v70;
 }
 
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf
 {
-  v4 = a3;
-  v5 = [v4 _keyboardShortcut];
+  leafCopy = leaf;
+  _keyboardShortcut = [leafCopy _keyboardShortcut];
 
-  if (v5)
+  if (_keyboardShortcut)
   {
     if (self->_keyTranslationMap)
     {
       [(UIPhysicalKeyboardEvent *)self _prepareKeyTranslationMapIfNeeded];
-      v6 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:v4 translationMap:self->_keyTranslationMap];
+      v6 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:leafCopy translationMap:self->_keyTranslationMap];
       if (v6 == 3)
       {
         goto LABEL_13;
@@ -717,14 +717,14 @@ LABEL_82:
 
     else
     {
-      v8 = [v4 _keyboardShortcut];
-      v9 = [v8 currentLocalizedKeyCombination];
-      if ([v9 modifierFlags] == self->_modifierFlags)
+      _keyboardShortcut2 = [leafCopy _keyboardShortcut];
+      currentLocalizedKeyCombination = [_keyboardShortcut2 currentLocalizedKeyCombination];
+      if ([currentLocalizedKeyCombination modifierFlags] == self->_modifierFlags)
       {
-        v10 = [v4 _keyboardShortcut];
-        v11 = [v10 currentLocalizedKeyCombination];
-        v12 = [v11 keyEquivalent];
-        v13 = [v12 isEqualToString:self->_modifiedInput];
+        _keyboardShortcut3 = [leafCopy _keyboardShortcut];
+        currentLocalizedKeyCombination2 = [_keyboardShortcut3 currentLocalizedKeyCombination];
+        keyEquivalent = [currentLocalizedKeyCombination2 keyEquivalent];
+        v13 = [keyEquivalent isEqualToString:self->_modifiedInput];
 
         if (v13)
         {
@@ -741,7 +741,7 @@ LABEL_82:
 
     if (self->_originalEscapeKeyTranslationMap)
     {
-      v14 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:v4 translationMap:?];
+      v14 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:leafCopy translationMap:?];
       if (v14 == 3)
       {
 LABEL_13:
@@ -776,22 +776,22 @@ LABEL_18:
   return v7;
 }
 
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:v6 translationMap:v7 additionalModifiers:0];
+  leafCopy = leaf;
+  mapCopy = map;
+  v8 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:leafCopy translationMap:mapCopy additionalModifiers:0];
   v9 = _UIMenuLeafKeyboardShortcutGetLocalizedKeyEquivalent(@"+");
-  v10 = [v6 _keyboardShortcut];
-  v11 = [v10 currentLocalizedKeyCombination];
-  v12 = [v11 keyEquivalent];
-  v13 = [v9 isEqualToString:v12];
+  _keyboardShortcut = [leafCopy _keyboardShortcut];
+  currentLocalizedKeyCombination = [_keyboardShortcut currentLocalizedKeyCombination];
+  keyEquivalent = [currentLocalizedKeyCombination keyEquivalent];
+  v13 = [v9 isEqualToString:keyEquivalent];
 
   if (!v8 && v13)
   {
-    if ([v7 originalModifiers] == 0x100000)
+    if ([mapCopy originalModifiers] == 0x100000)
     {
-      v8 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:v6 translationMap:v7 additionalModifiers:0x20000];
+      v8 = [(UIPhysicalKeyboardEvent *)self _matchFidelityForKeyboardShortcutLeaf:leafCopy translationMap:mapCopy additionalModifiers:0x20000];
     }
 
     else
@@ -803,37 +803,37 @@ LABEL_18:
   return v8;
 }
 
-- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4 additionalModifiers:(int64_t)a5
+- (int64_t)_matchFidelityForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map additionalModifiers:(int64_t)modifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 _keyboardShortcut];
-  v11 = [v10 currentLocalizedKeyCombination];
-  v12 = [v11 modifierFlags];
+  leafCopy = leaf;
+  mapCopy = map;
+  _keyboardShortcut = [leafCopy _keyboardShortcut];
+  currentLocalizedKeyCombination = [_keyboardShortcut currentLocalizedKeyCombination];
+  modifierFlags = [currentLocalizedKeyCombination modifierFlags];
 
-  if ((v12 & 0x800000) == 0 || [v8 _allowsGlobeKeyModifier])
+  if ((modifierFlags & 0x800000) == 0 || [leafCopy _allowsGlobeKeyModifier])
   {
-    v39 = v9;
-    v13 = [v9 originalModifiers] | a5;
-    v14 = [v8 _keyboardShortcut];
-    v15 = [v14 currentLocalizedKeyCombination];
-    v16 = [v15 modifierFlags];
+    v39 = mapCopy;
+    v13 = [mapCopy originalModifiers] | modifiers;
+    _keyboardShortcut2 = [leafCopy _keyboardShortcut];
+    currentLocalizedKeyCombination2 = [_keyboardShortcut2 currentLocalizedKeyCombination];
+    modifierFlags2 = [currentLocalizedKeyCombination2 modifierFlags];
 
-    v17 = [v8 _keyboardShortcut];
-    v18 = [v17 currentLocalizedKeyCombination];
-    v19 = [v18 keyEquivalent];
+    _keyboardShortcut3 = [leafCopy _keyboardShortcut];
+    currentLocalizedKeyCombination3 = [_keyboardShortcut3 currentLocalizedKeyCombination];
+    keyEquivalent = [currentLocalizedKeyCombination3 keyEquivalent];
 
-    v20 = [v8 _keyboardShortcut];
-    v21 = [v20 currentLocalizedKeyCombination];
-    v22 = [v21 keyCodes];
+    _keyboardShortcut4 = [leafCopy _keyboardShortcut];
+    currentLocalizedKeyCombination4 = [_keyboardShortcut4 currentLocalizedKeyCombination];
+    keyCodes = [currentLocalizedKeyCombination4 keyCodes];
 
-    if ((v16 & ~v13) != 0)
+    if ((modifierFlags2 & ~v13) != 0)
     {
       goto LABEL_19;
     }
 
     v23 = dyld_program_sdk_at_least();
-    v24 = v16 | 0xFFFFFFFFFFDEFFFFLL;
+    v24 = modifierFlags2 | 0xFFFFFFFFFFDEFFFFLL;
     if (!v23)
     {
       v24 = -1;
@@ -850,16 +850,16 @@ LABEL_18:
       v26 = 0;
     }
 
-    if (v25 == v16 && ([v22 containsIndex:{objc_msgSend(v39, "keyCode")}] & 1) != 0)
+    if (v25 == modifierFlags2 && ([keyCodes containsIndex:{objc_msgSend(v39, "keyCode")}] & 1) != 0)
     {
       v27 = 3;
 LABEL_30:
 
-      v9 = v39;
+      mapCopy = v39;
       goto LABEL_31;
     }
 
-    if (!v19)
+    if (!keyEquivalent)
     {
 LABEL_19:
       v27 = 0;
@@ -867,16 +867,16 @@ LABEL_19:
     }
 
     v28 = -[_UIPhysicalKeyTranslator initWithGSKeyboard:]([_UIPhysicalKeyTranslator alloc], "initWithGSKeyboard:", [UIApp _hardwareKeyboardForPhysicalKeyboardEvent:self createIfNeeded:1]);
-    v38 = [v19 lowercaseString];
+    lowercaseString = [keyEquivalent lowercaseString];
     v46 = 0;
     v47 = &v46;
     v48 = 0x2020000000;
-    v49 = [(UIPhysicalKeyboardEvent *)self _matchFidelityFromKeyMapForKeyboardShortcutLeaf:v8 translationMap:v39 translator:v28 addingModifiers:a5 ignoringModifiers:v26];
+    v49 = [(UIPhysicalKeyboardEvent *)self _matchFidelityFromKeyMapForKeyboardShortcutLeaf:leafCopy translationMap:v39 translator:v28 addingModifiers:modifiers ignoringModifiers:v26];
     v29 = v47[3] == 2;
-    v30 = [(_UIPhysicalKeyTranslator *)v28 layoutName];
-    v31 = [_UIKeyCommandMatchingCache keyCommandMatchingCacheForLayout:v30];
+    layoutName = [(_UIPhysicalKeyTranslator *)v28 layoutName];
+    v31 = [_UIKeyCommandMatchingCache keyCommandMatchingCacheForLayout:layoutName];
 
-    v32 = [(_UIKeyCommandMatchingCache *)v31 conflictStateForCommandKeyPlaneSwitchForInput:v38 modifiers:917504];
+    v32 = [(_UIKeyCommandMatchingCache *)v31 conflictStateForCommandKeyPlaneSwitchForInput:lowercaseString modifiers:917504];
     v33 = v32;
     v34 = v47;
     v35 = v47[3];
@@ -894,7 +894,7 @@ LABEL_29:
       v45 = 0;
       if ((v13 & 0x100000) == 0)
       {
-        if ([v39 areModifiers:v25 | 0x100000 minimalExcessOfMask:v16 matching:v38 translator:v28 matchedModifierSubset:0 betterMatchFound:&v45])
+        if ([v39 areModifiers:v25 | 0x100000 minimalExcessOfMask:modifierFlags2 matching:lowercaseString translator:v28 matchedModifierSubset:0 betterMatchFound:&v45])
         {
           v34 = v47;
           if ((v45 & 1) == 0)
@@ -919,9 +919,9 @@ LABEL_29:
         v34[3] = 0;
       }
 
-      else if (!v33 && [v38 length] == 1)
+      else if (!v33 && [lowercaseString length] == 1)
       {
-        v36 = [v38 characterAtIndex:0];
+        v36 = [lowercaseString characterAtIndex:0];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __100__UIPhysicalKeyboardEvent__matchFidelityForKeyboardShortcutLeaf_translationMap_additionalModifiers___block_invoke;
@@ -931,7 +931,7 @@ LABEL_29:
         v42 = v39;
         v43 = &v46;
         [_UIPhysicalKeyTranslationMap enumerateAllCombinationsOfModifiers:917504 staticModifiers:v29 << 20 usingBlock:v40];
-        [(_UIKeyCommandMatchingCache *)v31 setCommandKeyPlaneHasSwitchingConflict:v38 input:917504 modifiers:?];
+        [(_UIKeyCommandMatchingCache *)v31 setCommandKeyPlaneHasSwitchingConflict:lowercaseString input:917504 modifiers:?];
       }
     }
 
@@ -961,26 +961,26 @@ uint64_t __100__UIPhysicalKeyboardEvent__matchFidelityForKeyboardShortcutLeaf_tr
   return result;
 }
 
-- (int64_t)_matchFidelityFromKeyMapForKeyboardShortcutLeaf:(id)a3 translationMap:(id)a4 translator:(id)a5 addingModifiers:(int64_t)a6 ignoringModifiers:(int64_t)a7
+- (int64_t)_matchFidelityFromKeyMapForKeyboardShortcutLeaf:(id)leaf translationMap:(id)map translator:(id)translator addingModifiers:(int64_t)modifiers ignoringModifiers:(int64_t)ignoringModifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 _keyboardShortcut];
-  v15 = [v14 currentLocalizedKeyCombination];
-  v16 = [v15 modifierFlags];
+  leafCopy = leaf;
+  mapCopy = map;
+  translatorCopy = translator;
+  _keyboardShortcut = [leafCopy _keyboardShortcut];
+  currentLocalizedKeyCombination = [_keyboardShortcut currentLocalizedKeyCombination];
+  modifierFlags = [currentLocalizedKeyCombination modifierFlags];
 
-  v17 = ([v12 originalModifiers] | a6) & ~a7;
-  v18 = [v11 _keyboardShortcut];
-  v19 = [v18 currentLocalizedKeyCombination];
-  v20 = [v19 keyEquivalent];
-  v21 = [v20 lowercaseString];
+  v17 = ([mapCopy originalModifiers] | modifiers) & ~ignoringModifiers;
+  _keyboardShortcut2 = [leafCopy _keyboardShortcut];
+  currentLocalizedKeyCombination2 = [_keyboardShortcut2 currentLocalizedKeyCombination];
+  keyEquivalent = [currentLocalizedKeyCombination2 keyEquivalent];
+  lowercaseString = [keyEquivalent lowercaseString];
 
-  v22 = [v12 keyTranslationWithModifiers:objc_msgSend(v12 translator:{"originalModifiers"), v13}];
-  v23 = [v22 lowercaseString];
+  v22 = [mapCopy keyTranslationWithModifiers:objc_msgSend(mapCopy translator:{"originalModifiers"), translatorCopy}];
+  lowercaseString2 = [v22 lowercaseString];
 
   v24 = v17 & 0xBF0000;
-  v25 = [v21 isEqualToString:v23] & (v16 == (v17 & 0xBF0000));
+  v25 = [lowercaseString isEqualToString:lowercaseString2] & (modifierFlags == (v17 & 0xBF0000));
   if (v25)
   {
     v26 = 3;
@@ -994,51 +994,51 @@ uint64_t __100__UIPhysicalKeyboardEvent__matchFidelityForKeyboardShortcutLeaf_tr
   if ((v25 & 1) == 0 && v17)
   {
     v43 = v17;
-    v44 = v16;
-    v27 = [v11 _keyboardShortcut];
-    v45 = v13;
-    v28 = v13;
-    v29 = [v27 baseKeyCombination];
-    v30 = [v29 modifierFlags];
+    v44 = modifierFlags;
+    _keyboardShortcut3 = [leafCopy _keyboardShortcut];
+    v45 = translatorCopy;
+    v28 = translatorCopy;
+    baseKeyCombination = [_keyboardShortcut3 baseKeyCombination];
+    modifierFlags2 = [baseKeyCombination modifierFlags];
 
-    v31 = [v27 currentLocalizedKeyCombination];
-    v32 = [v31 keyEquivalent];
+    currentLocalizedKeyCombination3 = [_keyboardShortcut3 currentLocalizedKeyCombination];
+    keyEquivalent2 = [currentLocalizedKeyCombination3 keyEquivalent];
 
     v46 = v28;
-    v33 = [v28 layoutName];
-    v34 = [_UIKeyCommandMatchingCache keyCommandMatchingCacheForLayout:v33];
+    layoutName = [v28 layoutName];
+    v34 = [_UIKeyCommandMatchingCache keyCommandMatchingCacheForLayout:layoutName];
 
-    v35 = [(_UIKeyCommandMatchingCache *)v34 directReachabilityStateForInput:v32 modifiers:v30];
+    v35 = [(_UIKeyCommandMatchingCache *)v34 directReachabilityStateForInput:keyEquivalent2 modifiers:modifierFlags2];
     if (v35 == 1)
     {
 
       v26 = 0;
-      v13 = v45;
+      translatorCopy = v45;
     }
 
     else
     {
-      if (v35 || ![v32 length])
+      if (v35 || ![keyEquivalent2 length])
       {
 
         v37 = v46;
         v39 = v44;
-        v13 = v45;
+        translatorCopy = v45;
         v40 = v43;
       }
 
       else
       {
-        v42 = [v32 lowercaseString];
-        v36 = [v46 HIDUsageCodeForCharacter:objc_msgSend(v42 modifiers:{"characterAtIndex:", 0), v30}];
+        lowercaseString3 = [keyEquivalent2 lowercaseString];
+        v36 = [v46 HIDUsageCodeForCharacter:objc_msgSend(lowercaseString3 modifiers:{"characterAtIndex:", 0), modifierFlags2}];
 
-        [(_UIKeyCommandMatchingCache *)v34 setDirectlyReachable:v32 input:v30 modifiers:?];
+        [(_UIKeyCommandMatchingCache *)v34 setDirectlyReachable:keyEquivalent2 input:modifierFlags2 modifiers:?];
         v37 = v46;
 
         v26 = 0;
         v38 = v36 == -1;
         v39 = v44;
-        v13 = v45;
+        translatorCopy = v45;
         v40 = v43;
         if (!v38)
         {
@@ -1048,7 +1048,7 @@ uint64_t __100__UIPhysicalKeyboardEvent__matchFidelityForKeyboardShortcutLeaf_tr
 
       v48 = 0;
       v47 = 0;
-      if ([v12 areModifiers:v24 minimalExcessOfMask:v39 matching:v21 translator:v37 matchedModifierSubset:&v47 betterMatchFound:&v48])
+      if ([mapCopy areModifiers:v24 minimalExcessOfMask:v39 matching:lowercaseString translator:v37 matchedModifierSubset:&v47 betterMatchFound:&v48])
       {
         if ((v40 & 0x100000) == 0 || (v47 & 0x100000) != 0)
         {
@@ -1085,8 +1085,8 @@ LABEL_20:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [MEMORY[0x1E69DEC00] allVariants];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allVariants = [MEMORY[0x1E69DEC00] allVariants];
+  v4 = [allVariants countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1097,17 +1097,17 @@ LABEL_20:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allVariants);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [(UIPhysicalKeyboardEvent *)self _modifierFlags];
-        if (v9 == [v8 keyModifierFlags])
+        _modifierFlags = [(UIPhysicalKeyboardEvent *)self _modifierFlags];
+        if (_modifierFlags == [v8 keyModifierFlags])
         {
-          v10 = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
-          v11 = [v8 keyInput];
-          v12 = v10;
-          v13 = v11;
+          _commandModifiedInput = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
+          keyInput = [v8 keyInput];
+          v12 = _commandModifiedInput;
+          v13 = keyInput;
           v14 = v13;
           if (v12 == v13)
           {
@@ -1133,7 +1133,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [allVariants countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -1149,19 +1149,19 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UIPhysicalKeyboardEvent *)self _isKeyDown];
-    if (v6 == [v5 _isKeyDown] && (v7 = -[UIPhysicalKeyboardEvent _modifierFlags](self, "_modifierFlags"), v7 == objc_msgSend(v5, "_modifierFlags")))
+    v5 = equalCopy;
+    _isKeyDown = [(UIPhysicalKeyboardEvent *)self _isKeyDown];
+    if (_isKeyDown == [v5 _isKeyDown] && (v7 = -[UIPhysicalKeyboardEvent _modifierFlags](self, "_modifierFlags"), v7 == objc_msgSend(v5, "_modifierFlags")))
     {
-      v8 = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
-      v9 = [v5 _modifiedInput];
-      v10 = [v8 isEqual:v9];
+      _modifiedInput = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
+      _modifiedInput2 = [v5 _modifiedInput];
+      v10 = [_modifiedInput isEqual:_modifiedInput2];
     }
 
     else
@@ -1180,74 +1180,74 @@ LABEL_20:
 
 - (id)_cloneEvent
 {
-  v3 = [objc_alloc(objc_opt_class()) _init];
+  _init = [objc_alloc(objc_opt_class()) _init];
   if ([(UIEvent *)self _hidEvent])
   {
-    [v3 _setHIDEvent:-[UIEvent _hidEvent](self keyboard:{"_hidEvent"), 0}];
+    [_init _setHIDEvent:-[UIEvent _hidEvent](self keyboard:{"_hidEvent"), 0}];
   }
 
-  v4 = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
-  v5 = [v4 copy];
-  [v3 set_modifiedInput:v5];
+  _modifiedInput = [(UIPhysicalKeyboardEvent *)self _modifiedInput];
+  v5 = [_modifiedInput copy];
+  [_init set_modifiedInput:v5];
 
-  v6 = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
-  v7 = [v6 copy];
-  [v3 set_unmodifiedInput:v7];
+  _unmodifiedInput = [(UIPhysicalKeyboardEvent *)self _unmodifiedInput];
+  v7 = [_unmodifiedInput copy];
+  [_init set_unmodifiedInput:v7];
 
-  v8 = [(UIPhysicalKeyboardEvent *)self _privateInput];
-  v9 = [v8 copy];
-  [v3 set_privateInput:v9];
+  _privateInput = [(UIPhysicalKeyboardEvent *)self _privateInput];
+  v9 = [_privateInput copy];
+  [_init set_privateInput:v9];
 
-  *(v3 + 248) = self->_privateModifierFlags;
-  v10 = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
-  v11 = [v10 copy];
-  [v3 set_shiftModifiedInput:v11];
+  *(_init + 248) = self->_privateModifierFlags;
+  _shiftModifiedInput = [(UIPhysicalKeyboardEvent *)self _shiftModifiedInput];
+  v11 = [_shiftModifiedInput copy];
+  [_init set_shiftModifiedInput:v11];
 
-  v12 = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
-  v13 = [v12 copy];
-  [v3 set_commandModifiedInput:v13];
+  _commandModifiedInput = [(UIPhysicalKeyboardEvent *)self _commandModifiedInput];
+  v13 = [_commandModifiedInput copy];
+  [_init set_commandModifiedInput:v13];
 
-  v14 = [(UIPhysicalKeyboardEvent *)self _markedInput];
-  v15 = [v14 copy];
-  [v3 set_markedInput:v15];
+  _markedInput = [(UIPhysicalKeyboardEvent *)self _markedInput];
+  v15 = [_markedInput copy];
+  [_init set_markedInput:v15];
 
-  v16 = [(UIPhysicalKeyboardEvent *)self _hint];
-  v17 = [v16 copy];
-  [v3 set_hint:v17];
+  _hint = [(UIPhysicalKeyboardEvent *)self _hint];
+  v17 = [_hint copy];
+  [_init set_hint:v17];
 
-  [v3 _setModifierFlags:{-[UIPhysicalKeyboardEvent _modifierFlags](self, "_modifierFlags")}];
-  [v3 set_inputFlags:{-[UIPhysicalKeyboardEvent _inputFlags](self, "_inputFlags")}];
-  [v3 setSource:{-[UIPhysicalKeyboardEvent source](self, "source")}];
-  [v3 set_externalEvent:{-[UIPhysicalKeyboardEvent _isExternalEvent](self, "_isExternalEvent")}];
+  [_init _setModifierFlags:{-[UIPhysicalKeyboardEvent _modifierFlags](self, "_modifierFlags")}];
+  [_init set_inputFlags:{-[UIPhysicalKeyboardEvent _inputFlags](self, "_inputFlags")}];
+  [_init setSource:{-[UIPhysicalKeyboardEvent source](self, "source")}];
+  [_init set_externalEvent:{-[UIPhysicalKeyboardEvent _isExternalEvent](self, "_isExternalEvent")}];
   [(UIEvent *)self timestamp];
-  [v3 _setTimestamp:?];
-  *(v3 + 152) = self->_canPrivatize;
+  [_init _setTimestamp:?];
+  *(_init + 152) = self->_canPrivatize;
   v18 = [(_UIPhysicalKeyTranslationMap *)self->_keyTranslationMap copy];
-  v19 = *(v3 + 168);
-  *(v3 + 168) = v18;
+  v19 = *(_init + 168);
+  *(_init + 168) = v18;
 
-  *(v3 + 176) = self->_needToPrepareKeyTranslationMap;
+  *(_init + 176) = self->_needToPrepareKeyTranslationMap;
   v20 = [(_UIPhysicalKeyTranslationMap *)self->_originalEscapeKeyTranslationMap copy];
-  v21 = *(v3 + 160);
-  *(v3 + 160) = v20;
+  v21 = *(_init + 160);
+  *(_init + 160) = v20;
 
-  *(v3 + 179) = [(UIPhysicalKeyboardEvent *)self keyEventForwardedFromInputUIHost];
-  *(v3 + 176) = self->_needToPrepareKeyTranslationMap;
-  return v3;
+  *(_init + 179) = [(UIPhysicalKeyboardEvent *)self keyEventForwardedFromInputUIHost];
+  *(_init + 176) = self->_needToPrepareKeyTranslationMap;
+  return _init;
 }
 
-+ (id)_eventWithInput:(id)a3 inputFlags:(int)a4
++ (id)_eventWithInput:(id)input inputFlags:(int)flags
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [(UIPressesEvent *)[UIPhysicalKeyboardEvent alloc] _init];
-  [v6 set_modifiedInput:v5];
-  [v6 set_unmodifiedInput:v5];
+  v4 = *&flags;
+  inputCopy = input;
+  _init = [(UIPressesEvent *)[UIPhysicalKeyboardEvent alloc] _init];
+  [_init set_modifiedInput:inputCopy];
+  [_init set_unmodifiedInput:inputCopy];
 
-  [v6 set_inputFlags:v4];
-  [v6 _setTimestamp:GSCurrentEventTimestamp() / 1000000000.0];
+  [_init set_inputFlags:v4];
+  [_init _setTimestamp:GSCurrentEventTimestamp() / 1000000000.0];
 
-  return v6;
+  return _init;
 }
 
 - (void)_privatize

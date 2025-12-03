@@ -1,15 +1,15 @@
 @interface SDAirDropClassroomTransferManager
 - (SDAirDropClassroomTransferManager)init;
 - (id)exportedInterface;
-- (id)makeDestinationDirectoryWithIdentifier:(id)a3 error:(id *)a4;
+- (id)makeDestinationDirectoryWithIdentifier:(id)identifier error:(id *)error;
 - (void)activate;
-- (void)alertManager:(id)a3 acceptingTransferWithRecordID:(id)a4 withDestinationURL:(id)a5 shouldExtractMediaFromPhotosBundlesForRecordID:(BOOL)a6;
-- (void)alertManager:(id)a3 cancelingTransferWithRecordID:(id)a4 withFailureReason:(unint64_t)a5;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
+- (void)alertManager:(id)manager acceptingTransferWithRecordID:(id)d withDestinationURL:(id)l shouldExtractMediaFromPhotosBundlesForRecordID:(BOOL)iD;
+- (void)alertManager:(id)manager cancelingTransferWithRecordID:(id)d withFailureReason:(unint64_t)reason;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
 - (void)invalidate;
-- (void)replaceIconValue:(id)a3 forKey:(id)a4;
-- (void)updateTransferWithIdentifier:(id)a3 withState:(int64_t)a4 information:(id)a5 completionHandler:(id)a6;
+- (void)replaceIconValue:(id)value forKey:(id)key;
+- (void)updateTransferWithIdentifier:(id)identifier withState:(int64_t)state information:(id)information completionHandler:(id)handler;
 @end
 
 @implementation SDAirDropClassroomTransferManager
@@ -43,16 +43,16 @@
   [(SDXPCDaemon *)&v2 _invalidate];
 }
 
-- (id)makeDestinationDirectoryWithIdentifier:(id)a3 error:(id *)a4
+- (id)makeDestinationDirectoryWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = sub_1001F17F4();
   if (v6)
   {
     v7 = v6;
     v8 = [v6 URLByAppendingPathComponent:@"com.apple.AirDrop" isDirectory:1];
 
-    v9 = [v8 URLByAppendingPathComponent:v5 isDirectory:1];
+    v9 = [v8 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v10 = [v9 URLByAppendingPathComponent:@"Files" isDirectory:1];
 
@@ -60,14 +60,14 @@
     v20 = NSFileProtectionCompleteUntilFirstUserAuthentication;
     v11 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v12 = +[NSFileManager defaultManager];
-    v13 = [v12 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:v11 error:a4];
+    v13 = [v12 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:v11 error:error];
 
     if ((v13 & 1) == 0)
     {
       v14 = airdrop_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_10026BD44(a4);
+        sub_10026BD44(error);
       }
     }
 
@@ -78,16 +78,16 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v17 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-6709 userInfo:0];
-      *a4 = v17;
+      *error = v17;
     }
 
     v15 = airdrop_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_10026BDBC(a4);
+      sub_10026BDBC(error);
     }
 
     v16 = 0;
@@ -96,11 +96,11 @@
   return v16;
 }
 
-- (void)replaceIconValue:(id)a3 forKey:(id)a4
+- (void)replaceIconValue:(id)value forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v7 = [valueCopy objectForKeyedSubscript:keyCopy];
   if (v7)
   {
     objc_opt_class();
@@ -110,7 +110,7 @@
       if (v8)
       {
         v9 = v8;
-        [v5 setObject:v8 forKeyedSubscript:v6];
+        [valueCopy setObject:v8 forKeyedSubscript:keyCopy];
         CFRelease(v9);
         goto LABEL_10;
       }
@@ -135,54 +135,54 @@
 LABEL_10:
 }
 
-- (void)updateTransferWithIdentifier:(id)a3 withState:(int64_t)a4 information:(id)a5 completionHandler:(id)a6
+- (void)updateTransferWithIdentifier:(id)identifier withState:(int64_t)state information:(id)information completionHandler:(id)handler
 {
-  v10 = a3;
-  v36 = a5;
-  v35 = a6;
-  v11 = [(SDXPCDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  informationCopy = information;
+  handlerCopy = handler;
+  dispatchQueue = [(SDXPCDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v12 = airdrop_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v48 = v10;
+    v48 = identifierCopy;
     v49 = 1024;
-    v50 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Update transfer %@ with state %d", buf, 0x12u);
   }
 
-  v13 = [v36 mutableCopy];
+  v13 = [informationCopy mutableCopy];
   [v13 setObject:&__kCFBooleanFalse forKeyedSubscript:kSFOperationSenderIsMeKey];
   [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:kSFOperationVerifiableIdentityKey];
   [(SDAirDropClassroomTransferManager *)self replaceIconValue:v13 forKey:kSFOperationSmallFileIconKey];
   [(SDAirDropClassroomTransferManager *)self replaceIconValue:v13 forKey:kSFOperationFileIconKey];
   [(SDAirDropClassroomTransferManager *)self replaceIconValue:v13 forKey:kSFOperationSenderIconKey];
   [(SDAirDropClassroomTransferManager *)self replaceIconValue:v13 forKey:kSFOperationReceiverIconKey];
-  v14 = [(NSMutableDictionary *)self->_transferIDToProgress objectForKeyedSubscript:v10];
+  v14 = [(NSMutableDictionary *)self->_transferIDToProgress objectForKeyedSubscript:identifierCopy];
   objc_initWeak(buf, self);
-  if (a4 > 2)
+  if (state > 2)
   {
-    switch(a4)
+    switch(state)
     {
       case 3:
         [v14 setSf_transferState:4];
-        v15 = [(SDAirDropClassroomTransferManager *)self alertManager];
-        [v15 cancelEventForRecordID:v10 withResults:v13];
+        alertManager = [(SDAirDropClassroomTransferManager *)self alertManager];
+        [alertManager cancelEventForRecordID:identifierCopy withResults:v13];
         goto LABEL_13;
       case 4:
         v20 = [v13 objectForKeyedSubscript:kSFOperationErrorKey];
-        v21 = [v20 localizedDescription];
-        [v14 sf_failedWithError:v21];
+        localizedDescription = [v20 localizedDescription];
+        [v14 sf_failedWithError:localizedDescription];
 
-        v15 = [(SDAirDropClassroomTransferManager *)self alertManager];
-        [v15 errorEventForRecordID:v10 withResults:v13];
+        alertManager = [(SDAirDropClassroomTransferManager *)self alertManager];
+        [alertManager errorEventForRecordID:identifierCopy withResults:v13];
         goto LABEL_13;
       case 5:
         [v14 setSf_transferState:6];
-        v15 = [(SDAirDropClassroomTransferManager *)self alertManager];
-        [v15 finishedEventForRecordID:v10 withResults:v13];
+        alertManager = [(SDAirDropClassroomTransferManager *)self alertManager];
+        [alertManager finishedEventForRecordID:identifierCopy withResults:v13];
 LABEL_13:
 
         objc_initWeak(&location, v14);
@@ -194,7 +194,7 @@ LABEL_13:
         block[3] = &unk_1008D64F8;
         objc_copyWeak(&v39, &location);
         block[4] = self;
-        v38 = v10;
+        v38 = identifierCopy;
         dispatch_after(v22, v23, block);
 
         objc_destroyWeak(&v39);
@@ -205,24 +205,24 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
     v44 = 0;
-    v24 = [(SDAirDropClassroomTransferManager *)self makeDestinationDirectoryWithIdentifier:v10 error:&v44];
+    v24 = [(SDAirDropClassroomTransferManager *)self makeDestinationDirectoryWithIdentifier:identifierCopy error:&v44];
     v25 = v44;
     [v13 setObject:v24 forKeyedSubscript:kSFOperationReceiverClassroomDestination];
     v27 = [NSProgress alloc];
-    v28 = [v24 URLByDeletingLastPathComponent];
-    v29 = [v27 sf_initWithFileURL:v28];
+    uRLByDeletingLastPathComponent = [v24 URLByDeletingLastPathComponent];
+    v29 = [v27 sf_initWithFileURL:uRLByDeletingLastPathComponent];
 
-    [(NSMutableDictionary *)self->_transferIDToProgress setObject:v29 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_transferIDToProgress setObject:v29 forKeyedSubscript:identifierCopy];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10026B554;
     v41[3] = &unk_1008D64F8;
     objc_copyWeak(&v43, buf);
     v41[4] = self;
-    v30 = v10;
+    v30 = identifierCopy;
     v42 = v30;
     [v29 setCancellationHandler:v41];
     [v29 _publish];
@@ -231,8 +231,8 @@ LABEL_13:
     [v29 setTotalUnitCount:{objc_msgSend(v31, "longLongValue")}];
 
     [v29 setCompletedUnitCount:0];
-    v32 = [(SDAirDropClassroomTransferManager *)self alertManager];
-    [v32 askEventForRecordID:v30 withResults:v13];
+    alertManager2 = [(SDAirDropClassroomTransferManager *)self alertManager];
+    [alertManager2 askEventForRecordID:v30 withResults:v13];
 
     objc_destroyWeak(&v43);
     if (!v25)
@@ -255,7 +255,7 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (a4 != 2)
+  if (state != 2)
   {
 LABEL_19:
     v45 = NSLocalizedDescriptionKey;
@@ -282,30 +282,30 @@ LABEL_19:
   v18 = [v13 objectForKeyedSubscript:kSFOperationTimeRemainingKey];
   [v14 setUserInfoObject:v18 forKey:NSProgressEstimatedTimeRemainingKey];
 
-  v19 = [(SDAirDropClassroomTransferManager *)self alertManager];
-  [v19 progressEventForRecordID:v10 withResults:v13];
+  alertManager3 = [(SDAirDropClassroomTransferManager *)self alertManager];
+  [alertManager3 progressEventForRecordID:identifierCopy withResults:v13];
 
 LABEL_14:
   v24 = 0;
   v25 = 0;
   v26 = 1;
 LABEL_22:
-  v35[2](v35, v26, v24, v25);
+  handlerCopy[2](handlerCopy, v26, v24, v25);
 
   objc_destroyWeak(buf);
 }
 
-- (void)alertManager:(id)a3 acceptingTransferWithRecordID:(id)a4 withDestinationURL:(id)a5 shouldExtractMediaFromPhotosBundlesForRecordID:(BOOL)a6
+- (void)alertManager:(id)manager acceptingTransferWithRecordID:(id)d withDestinationURL:(id)l shouldExtractMediaFromPhotosBundlesForRecordID:(BOOL)iD
 {
-  v7 = a4;
+  dCopy = d;
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SDXPCDaemon *)self activeConnections];
+    activeConnections = [(SDXPCDaemon *)self activeConnections];
     *buf = 67109378;
-    v14 = [v9 count];
+    v14 = [activeConnections count];
     v15 = 2112;
-    v16 = v7;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Notifying %d clients that transfer %@ was accepted", buf, 0x12u);
   }
 
@@ -314,22 +314,22 @@ LABEL_22:
   v11[2] = sub_10026B74C;
   v11[3] = &unk_1008D6520;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = dCopy;
+  v10 = dCopy;
   [(SDAirDropClassroomTransferManager *)self _enumerateRemoteObjectProxiesUsingBlock:v11];
 }
 
-- (void)alertManager:(id)a3 cancelingTransferWithRecordID:(id)a4 withFailureReason:(unint64_t)a5
+- (void)alertManager:(id)manager cancelingTransferWithRecordID:(id)d withFailureReason:(unint64_t)reason
 {
-  v7 = a4;
+  dCopy = d;
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SDXPCDaemon *)self activeConnections];
+    activeConnections = [(SDXPCDaemon *)self activeConnections];
     *buf = 67109378;
-    v15 = [v9 count];
+    v15 = [activeConnections count];
     v16 = 2112;
-    v17 = v7;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Notifying %d clients that transfer %@ was declined", buf, 0x12u);
   }
 
@@ -338,9 +338,9 @@ LABEL_22:
   v11[2] = sub_10026B908;
   v11[3] = &unk_1008D6548;
   v11[4] = self;
-  v12 = v7;
-  v13 = a5;
-  v10 = v7;
+  v12 = dCopy;
+  reasonCopy = reason;
+  v10 = dCopy;
   [(SDAirDropClassroomTransferManager *)self _enumerateRemoteObjectProxiesUsingBlock:v11];
 }
 
@@ -360,41 +360,41 @@ LABEL_22:
   return v2;
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
-  v4 = a3;
+  establishedCopy = established;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sd_description];
+    sd_description = [establishedCopy sd_description];
     v8 = 138412290;
-    v9 = v6;
+    v9 = sd_description;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "connection established %@", &v8, 0xCu);
   }
 
-  v7 = [(SDAirDropClassroomTransferManager *)self alertManager];
-  [v7 setClassroomDelegate:self];
+  alertManager = [(SDAirDropClassroomTransferManager *)self alertManager];
+  [alertManager setClassroomDelegate:self];
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = airdrop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sd_description];
+    sd_description = [invalidatedCopy sd_description];
     v10 = 138412290;
-    v11 = v6;
+    v11 = sd_description;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "connection invalidated %@", &v10, 0xCu);
   }
 
-  v7 = [(SDXPCDaemon *)self activeConnections];
-  v8 = [v7 count];
+  activeConnections = [(SDXPCDaemon *)self activeConnections];
+  v8 = [activeConnections count];
 
   if (!v8)
   {
-    v9 = [(SDAirDropClassroomTransferManager *)self alertManager];
-    [v9 setClassroomDelegate:0];
+    alertManager = [(SDAirDropClassroomTransferManager *)self alertManager];
+    [alertManager setClassroomDelegate:0];
   }
 }
 

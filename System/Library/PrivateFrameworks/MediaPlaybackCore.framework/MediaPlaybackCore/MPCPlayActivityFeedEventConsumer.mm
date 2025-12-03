@@ -1,44 +1,44 @@
 @interface MPCPlayActivityFeedEventConsumer
-- (BOOL)_finalizePAFEvents:(id)a3;
-- (BOOL)_handleApplicationTerminationEvent:(id)a3 cursor:(id)a4;
-- (BOOL)_handleItemEndEvent:(id)a3 cursor:(id)a4;
-- (BOOL)_handleItemPauseEvent:(id)a3 cursor:(id)a4;
-- (BOOL)_handleItemPositionJumpEvent:(id)a3 cursor:(id)a4;
-- (BOOL)_handleItemResumeEvent:(id)a3 cursor:(id)a4;
-- (BOOL)_itemBeginOccuredDuringOverlappingTransition:(id)a3 cursor:(id)a4;
-- (BOOL)_itemEndOccuredDuringOverlappingTransition:(id)a3 cursor:(id)a4;
-- (BOOL)_itemIsPlaceholderFromQueueSectionIdentifier:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5;
-- (BOOL)_itemIsPlayingFromQueueSectionIdentifier:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5;
-- (BOOL)_itemWithinHLSTimedMetadataBeginFromQueueSection:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5;
-- (BOOL)_queueSectionIsAODFromSectionIdentifier:(id)a3 cursor:(id)a4;
-- (BOOL)_vocalControlIsOnForEvent:(id)a3;
+- (BOOL)_finalizePAFEvents:(id)events;
+- (BOOL)_handleApplicationTerminationEvent:(id)event cursor:(id)cursor;
+- (BOOL)_handleItemEndEvent:(id)event cursor:(id)cursor;
+- (BOOL)_handleItemPauseEvent:(id)event cursor:(id)cursor;
+- (BOOL)_handleItemPositionJumpEvent:(id)event cursor:(id)cursor;
+- (BOOL)_handleItemResumeEvent:(id)event cursor:(id)cursor;
+- (BOOL)_itemBeginOccuredDuringOverlappingTransition:(id)transition cursor:(id)cursor;
+- (BOOL)_itemEndOccuredDuringOverlappingTransition:(id)transition cursor:(id)cursor;
+- (BOOL)_itemIsPlaceholderFromQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor;
+- (BOOL)_itemIsPlayingFromQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor;
+- (BOOL)_itemWithinHLSTimedMetadataBeginFromQueueSection:(id)section itemIdentifier:(id)identifier cursor:(id)cursor;
+- (BOOL)_queueSectionIsAODFromSectionIdentifier:(id)identifier cursor:(id)cursor;
+- (BOOL)_vocalControlIsOnForEvent:(id)event;
 - (MPCPlayActivityFeedEventConsumer)init;
-- (double)_getPlaybackDurationForHLSStreamFromStartEvent:(id)a3 toEndEvent:(id)a4 withLimitedCursor:(id)a5;
-- (double)_getStartTimeForMostRecentPlaybackStart:(id)a3 withItemBeginEvent:(id)a4 containerBeginEvent:(id)a5 cursor:(id)a6;
-- (double)_incomingDurationBeforePivotForTransition:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_incomingPivotTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_incomingStartTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_outgoingDurationAfterPivotForTransition:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_outgoingEndTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_outgoingPivotTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4;
-- (double)_wallClockPlayDurationForEndEvent:(id)a3 endReasonType:(int64_t)a4 itemBeginEvent:(id)a5 cursor:(id)a6;
-- (id)_fetchField:(id)a3 fromTransitionEvent:(id)a4 inParametersDictionary:(id)a5;
-- (id)_findRecentPlaybackStartFromTypes:(id)a3 matchingPayload:(id)a4 cursor:(id)a5;
-- (id)_generateAggregateNoncatalogEndEventForCursor:(id)a3;
-- (id)_generatePlaybackEndEventFromEvent:(id)a3 withQueueSectionIdentifier:(id)a4 itemIdentifier:(id)a5 cursor:(id)a6;
-- (void)_clampTimeValuesForPAFEvent:(id)a3 withDuration:(double)a4;
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3;
-- (void)_sendPlayEndNotificationWithStartTime:(double)a3 endTime:(double)a4 pafEvent:(id)a5 cursor:(id)a6;
-- (void)_updateAllowedBundleIdsIfNecessary:(id)a3;
-- (void)_updatePAFEvent:(id)a3 withAccountIdentifier:(id)a4 cursor:(id)a5;
-- (void)_updatePAFEvent:(id)a3 withAudioChangeEvent:(id)a4;
-- (void)_updatePAFEvent:(id)a3 withDeviceInfoFromCursor:(id)a4;
-- (void)_updatePAFEvent:(id)a3 withEnqueuerAccountIdentifier:(id)a4 queueAddEvent:(id)a5 cursor:(id)a6;
-- (void)_updatePAFEvent:(id)a3 withItemBeginEvent:(id)a4 containerBeginPayload:(id)a5 cursor:(id)a6 forEventType:(id)a7;
-- (void)_updatePAFEvent:(id)a3 withQueueAddEvent:(id)a4 queueSectionIdentifier:(id)a5 cursor:(id)a6;
-- (void)_updatePAFEvent:(id)a3 withSharedListeningInfoFromCursor:(id)a4;
-- (void)_updatePAFEvent:(id)a3 withVocalAttenuationInfoForEndEvent:(id)a4 cursor:(id)a5;
-- (void)subscribeToEventStream:(id)a3;
+- (double)_getPlaybackDurationForHLSStreamFromStartEvent:(id)event toEndEvent:(id)endEvent withLimitedCursor:(id)cursor;
+- (double)_getStartTimeForMostRecentPlaybackStart:(id)start withItemBeginEvent:(id)event containerBeginEvent:(id)beginEvent cursor:(id)cursor;
+- (double)_incomingDurationBeforePivotForTransition:(id)transition useSourceTime:(BOOL)time;
+- (double)_incomingPivotTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time;
+- (double)_incomingStartTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time;
+- (double)_outgoingDurationAfterPivotForTransition:(id)transition useSourceTime:(BOOL)time;
+- (double)_outgoingEndTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time;
+- (double)_outgoingPivotTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time;
+- (double)_wallClockPlayDurationForEndEvent:(id)event endReasonType:(int64_t)type itemBeginEvent:(id)beginEvent cursor:(id)cursor;
+- (id)_fetchField:(id)field fromTransitionEvent:(id)event inParametersDictionary:(id)dictionary;
+- (id)_findRecentPlaybackStartFromTypes:(id)types matchingPayload:(id)payload cursor:(id)cursor;
+- (id)_generateAggregateNoncatalogEndEventForCursor:(id)cursor;
+- (id)_generatePlaybackEndEventFromEvent:(id)event withQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor;
+- (void)_clampTimeValuesForPAFEvent:(id)event withDuration:(double)duration;
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification;
+- (void)_sendPlayEndNotificationWithStartTime:(double)time endTime:(double)endTime pafEvent:(id)event cursor:(id)cursor;
+- (void)_updateAllowedBundleIdsIfNecessary:(id)necessary;
+- (void)_updatePAFEvent:(id)event withAccountIdentifier:(id)identifier cursor:(id)cursor;
+- (void)_updatePAFEvent:(id)event withAudioChangeEvent:(id)changeEvent;
+- (void)_updatePAFEvent:(id)event withDeviceInfoFromCursor:(id)cursor;
+- (void)_updatePAFEvent:(id)event withEnqueuerAccountIdentifier:(id)identifier queueAddEvent:(id)addEvent cursor:(id)cursor;
+- (void)_updatePAFEvent:(id)event withItemBeginEvent:(id)beginEvent containerBeginPayload:(id)payload cursor:(id)cursor forEventType:(id)type;
+- (void)_updatePAFEvent:(id)event withQueueAddEvent:(id)addEvent queueSectionIdentifier:(id)identifier cursor:(id)cursor;
+- (void)_updatePAFEvent:(id)event withSharedListeningInfoFromCursor:(id)cursor;
+- (void)_updatePAFEvent:(id)event withVocalAttenuationInfoForEndEvent:(id)endEvent cursor:(id)cursor;
+- (void)subscribeToEventStream:(id)stream;
 @end
 
 @implementation MPCPlayActivityFeedEventConsumer
@@ -60,8 +60,8 @@
   v9 = v5;
   dispatch_async(v4, block);
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:v5 selector:sel__handleURLBagProviderDidUpdateBagNotification_ name:*MEMORY[0x1E69E4348] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v5 selector:sel__handleURLBagProviderDidUpdateBagNotification_ name:*MEMORY[0x1E69E4348] object:0];
 
   return v5;
 }
@@ -100,18 +100,18 @@ void __40__MPCPlayActivityFeedEventConsumer_init__block_invoke(uint64_t a1)
   [v5 getBagForRequestContext:v4 withCompletionHandler:v6];
 }
 
-- (BOOL)_finalizePAFEvents:(id)a3
+- (BOOL)_finalizePAFEvents:(id)events
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69E4510] shared];
+  eventsCopy = events;
+  mEMORY[0x1E69E4510] = [MEMORY[0x1E69E4510] shared];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__MPCPlayActivityFeedEventConsumer__finalizePAFEvents___block_invoke;
   v8[3] = &unk_1E8238628;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
-  [v5 recordPlayActivityEvents:v6 shouldFlush:0 withCompletionHandler:v8];
+  v9 = eventsCopy;
+  selfCopy = self;
+  v6 = eventsCopy;
+  [mEMORY[0x1E69E4510] recordPlayActivityEvents:v6 shouldFlush:0 withCompletionHandler:v8];
 
   return 1;
 }
@@ -345,73 +345,73 @@ void __55__MPCPlayActivityFeedEventConsumer__finalizePAFEvents___block_invoke_14
   }
 }
 
-- (BOOL)_queueSectionIsAODFromSectionIdentifier:(id)a3 cursor:(id)a4
+- (BOOL)_queueSectionIsAODFromSectionIdentifier:(id)identifier cursor:(id)cursor
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     v24 = @"queue-section-id";
-    v25[0] = a3;
+    v25[0] = identifier;
     v5 = MEMORY[0x1E695DF20];
-    v6 = a4;
-    v7 = a3;
+    cursorCopy = cursor;
+    identifierCopy = identifier;
     v8 = [v5 dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v9 = [v6 findPreviousEventWithType:@"container-begin" matchingPayload:v8];
+    v9 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v8];
 
     v23[0] = @"item-hls-stream-begin";
     v23[1] = @"item-hls-stream-end";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v21 = @"queue-section-id";
-    v22 = v7;
+    v22 = identifierCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
-    v12 = [v6 findPreviousEventWithTypes:v10 matchingPayload:v11];
+    v12 = [cursorCopy findPreviousEventWithTypes:v10 matchingPayload:v11];
 
     if (v9)
     {
-      v16 = [v9 payload];
-      v13 = [v16 objectForKeyedSubscript:@"container-metadata"];
+      payload = [v9 payload];
+      v13 = [payload objectForKeyedSubscript:@"container-metadata"];
       v14 = [v13 objectForKeyedSubscript:@"container-radio-type"];
-      v15 = [v14 intValue];
+      intValue = [v14 intValue];
 
-      LOBYTE(v16) = 0;
-      if (v15 == 4 && v12)
+      LOBYTE(payload) = 0;
+      if (intValue == 4 && v12)
       {
-        v17 = [v12 type];
-        if ([v17 isEqualToString:@"item-hls-stream-begin"])
+        type = [v12 type];
+        if ([type isEqualToString:@"item-hls-stream-begin"])
         {
-          v18 = [v12 payload];
-          v19 = [v18 objectForKeyedSubscript:@"container-indeterminate-duration"];
-          LODWORD(v16) = [v19 BOOLValue] ^ 1;
+          payload2 = [v12 payload];
+          v19 = [payload2 objectForKeyedSubscript:@"container-indeterminate-duration"];
+          LODWORD(payload) = [v19 BOOLValue] ^ 1;
         }
 
         else
         {
-          LOBYTE(v16) = 0;
+          LOBYTE(payload) = 0;
         }
       }
     }
 
     else
     {
-      LOBYTE(v16) = 0;
+      LOBYTE(payload) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v16) = 0;
+    LOBYTE(payload) = 0;
   }
 
-  return v16;
+  return payload;
 }
 
-- (void)_clampTimeValuesForPAFEvent:(id)a3 withDuration:(double)a4
+- (void)_clampTimeValuesForPAFEvent:(id)event withDuration:(double)duration
 {
-  v11 = a3;
-  [v11 itemStartTime];
+  eventCopy = event;
+  [eventCopy itemStartTime];
   v6 = v5;
-  [v11 itemEndTime];
+  [eventCopy itemEndTime];
   v8 = 0.0;
   if (v6 >= 0.0)
   {
@@ -428,53 +428,53 @@ void __55__MPCPlayActivityFeedEventConsumer__finalizePAFEvents___block_invoke_14
     v8 = v7;
   }
 
-  if (v9 >= a4)
+  if (v9 >= duration)
   {
-    v10 = a4;
+    durationCopy = duration;
   }
 
   else
   {
-    v10 = v9;
+    durationCopy = v9;
   }
 
-  if (v8 < a4)
+  if (v8 < duration)
   {
-    a4 = v8;
+    duration = v8;
   }
 
-  [v11 setItemStartTime:v10];
-  [v11 setItemEndTime:a4];
+  [eventCopy setItemStartTime:durationCopy];
+  [eventCopy setItemEndTime:duration];
 }
 
-- (void)_updatePAFEvent:(id)a3 withSharedListeningInfoFromCursor:(id)a4
+- (void)_updatePAFEvent:(id)event withSharedListeningInfoFromCursor:(id)cursor
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-  v8 = [v7 payload];
-  v9 = [v8 objectForKeyedSubscript:@"behavior-type"];
-  v10 = [v9 integerValue];
+  eventCopy = event;
+  cursorCopy = cursor;
+  v7 = [cursorCopy findPreviousEventWithType:@"session-begin" matchingPayload:0];
+  payload = [v7 payload];
+  v9 = [payload objectForKeyedSubscript:@"behavior-type"];
+  integerValue = [v9 integerValue];
 
   v30[0] = @"shared-session-begin";
   v30[1] = @"shared-session-end";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  v12 = [v6 findPreviousEventWithTypes:v11 matchingPayload:0];
+  v12 = [cursorCopy findPreviousEventWithTypes:v11 matchingPayload:0];
 
   if (v12)
   {
-    v13 = [v12 type];
-    if ([v13 isEqualToString:@"shared-session-begin"])
+    type = [v12 type];
+    if ([type isEqualToString:@"shared-session-begin"])
     {
-      v14 = [v12 payload];
-      v15 = [v14 objectForKeyedSubscript:@"shared-session-type"];
+      payload2 = [v12 payload];
+      v15 = [payload2 objectForKeyedSubscript:@"shared-session-type"];
       v16 = [v15 integerValue] == 2;
 
       if (v16)
       {
-        v17 = v6;
-        v18 = v10 == 3;
+        v17 = cursorCopy;
+        v18 = integerValue == 3;
         goto LABEL_8;
       }
     }
@@ -484,14 +484,14 @@ void __55__MPCPlayActivityFeedEventConsumer__finalizePAFEvents___block_invoke_14
     }
   }
 
-  v17 = [v6 cursorUntilEvent:v7];
-  if (v10 == 3)
+  v17 = [cursorCopy cursorUntilEvent:v7];
+  if (integerValue == 3)
   {
     v18 = 1;
 LABEL_8:
     v19 = [v17 findPreviousEventWithType:@"shared-session-participants-changed" matchingPayload:0];
-    v20 = [v19 payload];
-    v21 = [v20 objectForKeyedSubscript:@"shared-session-event-route-type"];
+    payload3 = [v19 payload];
+    v21 = [payload3 objectForKeyedSubscript:@"shared-session-event-route-type"];
 
     if (v21)
     {
@@ -537,10 +537,10 @@ LABEL_18:
     else if (!v18)
     {
 LABEL_17:
-      v23 = [v19 payload];
-      v24 = [v23 objectForKeyedSubscript:@"participants"];
+      payload4 = [v19 payload];
+      v24 = [payload4 objectForKeyedSubscript:@"participants"];
 
-      [v5 setSharedActivityGroupSizeCurrent:{objc_msgSend(v24, "count")}];
+      [eventCopy setSharedActivityGroupSizeCurrent:{objc_msgSend(v24, "count")}];
       v26 = 0;
       v27 = &v26;
       v28 = 0x2020000000;
@@ -551,7 +551,7 @@ LABEL_17:
       v25[3] = &unk_1E82322F0;
       v25[4] = &v26;
       [v17 enumeratePreviousEventsWithType:@"shared-session-participants-changed" usingBlock:v25];
-      [v5 setSharedActivityGroupSizeMax:v27[3]];
+      [eventCopy setSharedActivityGroupSizeMax:v27[3]];
       _Block_object_dispose(&v26, 8);
 
       goto LABEL_18;
@@ -559,7 +559,7 @@ LABEL_17:
 
     v22 = 1;
 LABEL_16:
-    [v5 setSharedActivityType:v22];
+    [eventCopy setSharedActivityType:v22];
     goto LABEL_17;
   }
 
@@ -586,27 +586,27 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
   *(*(*(a1 + 32) + 8) + 24) = v6;
 }
 
-- (void)_updatePAFEvent:(id)a3 withAudioChangeEvent:(id)a4
+- (void)_updatePAFEvent:(id)event withAudioChangeEvent:(id)changeEvent
 {
-  v5 = a3;
-  if (a4)
+  eventCopy = event;
+  if (changeEvent)
   {
-    v20 = v5;
-    v6 = [a4 payload];
-    v7 = [v6 objectForKeyedSubscript:@"item-audio-format-metadata"];
+    v20 = eventCopy;
+    payload = [changeEvent payload];
+    v7 = [payload objectForKeyedSubscript:@"item-audio-format-metadata"];
 
     v8 = [v7 objectForKeyedSubscript:@"active-format"];
     v9 = [v7 objectForKeyedSubscript:@"target-format"];
     v10 = [v7 objectForKeyedSubscript:@"preferred-tiers"];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
     if ([v9 codec])
     {
       v12 = objc_alloc_init(MEMORY[0x1E69E44E8]);
       [v12 setBitDepth:{objc_msgSend(v9, "bitDepth")}];
       [v12 setBitRate:{objc_msgSend(v9, "bitrate")}];
-      v13 = [v9 audioChannelLayoutDescription];
-      [v12 setChannelLayoutDescription:v13];
+      audioChannelLayoutDescription = [v9 audioChannelLayoutDescription];
+      [v12 setChannelLayoutDescription:audioChannelLayoutDescription];
 
       [v12 setCodec:{objc_msgSend(v9, "codec")}];
       [v12 setSampleRate:{objc_msgSend(v9, "sampleRate")}];
@@ -619,8 +619,8 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
       v14 = objc_alloc_init(MEMORY[0x1E69E44E8]);
       [v14 setBitDepth:{objc_msgSend(v8, "bitDepth")}];
       [v14 setBitRate:{objc_msgSend(v8, "bitrate")}];
-      v15 = [v8 audioChannelLayoutDescription];
-      [v14 setChannelLayoutDescription:v15];
+      audioChannelLayoutDescription2 = [v8 audioChannelLayoutDescription];
+      [v14 setChannelLayoutDescription:audioChannelLayoutDescription2];
 
       [v14 setCodec:{objc_msgSend(v8, "codec")}];
       [v14 setSampleRate:{objc_msgSend(v8, "sampleRate")}];
@@ -630,17 +630,17 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
 
     v16 = 2;
     v17 = 3;
-    if ((v11 & 4) == 0)
+    if ((integerValue & 4) == 0)
     {
-      v17 = (v11 >> 1) & 4;
+      v17 = (integerValue >> 1) & 4;
     }
 
-    if ((v11 & 2) == 0)
+    if ((integerValue & 2) == 0)
     {
       v16 = v17;
     }
 
-    if (v11)
+    if (integerValue)
     {
       v18 = 1;
     }
@@ -651,7 +651,7 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
     }
 
     [v20 setAudioQualityPreference:v18];
-    if ((v11 & 0x10) != 0)
+    if ((integerValue & 0x10) != 0)
     {
       v19 = 2;
     }
@@ -663,27 +663,27 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
 
     [v20 setPlaybackFormatPreference:v19];
 
-    v5 = v20;
+    eventCopy = v20;
   }
 }
 
-- (void)_updatePAFEvent:(id)a3 withDeviceInfoFromCursor:(id)a4
+- (void)_updatePAFEvent:(id)event withDeviceInfoFromCursor:(id)cursor
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v70 = a3;
-  v68 = a4;
+  eventCopy = event;
+  cursorCopy = cursor;
   v79[0] = @"device-changed";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:1];
-  v67 = [v68 findPreviousEventWithTypes:v5 matchingPayload:0];
+  v67 = [cursorCopy findPreviousEventWithTypes:v5 matchingPayload:0];
 
-  v6 = [v67 payload];
-  v69 = [v6 objectForKeyedSubscript:@"device-metadata"];
+  payload = [v67 payload];
+  v69 = [payload objectForKeyedSubscript:@"device-metadata"];
 
-  v7 = [v67 payload];
-  v8 = [v7 objectForKeyedSubscript:@"internal-carry"];
-  v9 = [v8 BOOLValue];
+  payload2 = [v67 payload];
+  v8 = [payload2 objectForKeyedSubscript:@"internal-carry"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [&unk_1F45997F0 arrayByAddingObject:@"CARRY"];
   }
@@ -736,7 +736,7 @@ void __86__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withSharedListeningI
     v13 |= [v19 isEqualToString:@"9999.99.99"] | v23 | v21;
   }
 
-  if ((v9 & 1) != 0 || ((v13 | v12) & 1) == 0)
+  if ((bOOLValue & 1) != 0 || ((v13 | v12) & 1) == 0)
   {
     v24 = v10;
     if ((v13 & 1) == 0)
@@ -764,42 +764,42 @@ LABEL_19:
   }
 
   v63 = v24;
-  [v70 setBuildFeatures:v24];
+  [eventCopy setBuildFeatures:v24];
   v27 = [v69 objectForKeyedSubscript:@"user-agent"];
-  [v70 setBuildVersion:v27];
+  [eventCopy setBuildVersion:v27];
 
   v28 = [v69 objectForKeyedSubscript:@"device-name"];
-  [v70 setDeviceName:v28];
+  [eventCopy setDeviceName:v28];
 
-  v29 = [v70 requestingBundleVersion];
-  if (v29)
+  requestingBundleVersion = [eventCopy requestingBundleVersion];
+  if (requestingBundleVersion)
   {
     goto LABEL_22;
   }
 
-  v30 = [v70 requestingBundleIdentifier];
-  v31 = v30 == 0;
+  requestingBundleIdentifier = [eventCopy requestingBundleIdentifier];
+  v31 = requestingBundleIdentifier == 0;
 
   if (v31)
   {
-    v29 = [v69 objectForKeyedSubscript:@"application-bundle-id"];
+    requestingBundleVersion = [v69 objectForKeyedSubscript:@"application-bundle-id"];
     v57 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
     v58 = MRMediaRemoteCopyLocalDeviceSystemClassicalRoomApplicationDisplayID();
     v77[0] = v57;
     v77[1] = v58;
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:2];
-    v60 = [v59 containsObject:v29];
+    v60 = [v59 containsObject:requestingBundleVersion];
 
-    v61 = self;
-    objc_sync_enter(v61);
-    if ((v60 & 1) != 0 || [(NSArray *)v61->_allowedBundleIds containsObject:v29])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ((v60 & 1) != 0 || [(NSArray *)selfCopy->_allowedBundleIds containsObject:requestingBundleVersion])
     {
-      [v70 setRequestingBundleIdentifier:v29];
+      [eventCopy setRequestingBundleIdentifier:requestingBundleVersion];
       v62 = [v69 objectForKeyedSubscript:@"application-version"];
-      [v70 setRequestingBundleVersion:v62];
+      [eventCopy setRequestingBundleVersion:v62];
     }
 
-    objc_sync_exit(v61);
+    objc_sync_exit(selfCopy);
 
 LABEL_22:
   }
@@ -825,173 +825,173 @@ LABEL_22:
     v33 = 1;
   }
 
-  [v70 setSystemReleaseType:v33];
-  v66 = [v68 findPreviousEventWithType:@"network-reachability-changed" matchingPayload:0];
-  v34 = [v66 payload];
-  v64 = [v34 objectForKeyedSubscript:@"network-reachability"];
+  [eventCopy setSystemReleaseType:v33];
+  v66 = [cursorCopy findPreviousEventWithType:@"network-reachability-changed" matchingPayload:0];
+  payload3 = [v66 payload];
+  v64 = [payload3 objectForKeyedSubscript:@"network-reachability"];
 
-  [v70 setOffline:{objc_msgSend(v64, "integerValue") == 0}];
-  v35 = [v68 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-  v36 = [v35 payload];
-  v37 = [v36 objectForKeyedSubscript:@"session-id"];
+  [eventCopy setOffline:{objc_msgSend(v64, "integerValue") == 0}];
+  v35 = [cursorCopy findPreviousEventWithType:@"session-begin" matchingPayload:0];
+  payload4 = [v35 payload];
+  v37 = [payload4 objectForKeyedSubscript:@"session-id"];
 
   v75 = @"session-id";
   v76 = v37;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-  v39 = [v68 findPreviousEventWithType:@"playback-behavior-changed" matchingPayload:v38];
+  v39 = [cursorCopy findPreviousEventWithType:@"playback-behavior-changed" matchingPayload:v38];
 
-  v40 = [v39 payload];
-  v41 = [v40 objectForKeyedSubscript:@"playback-behavior-metadata"];
+  payload5 = [v39 payload];
+  v41 = [payload5 objectForKeyedSubscript:@"playback-behavior-metadata"];
   v42 = [v41 objectForKeyedSubscript:@"repeat-type"];
-  v43 = [v42 intValue];
+  intValue = [v42 intValue];
 
-  if (v43 <= 2)
+  if (intValue <= 2)
   {
-    [v70 setRepeatPlayMode:v43 + 1];
+    [eventCopy setRepeatPlayMode:intValue + 1];
   }
 
-  v44 = [v39 payload];
-  v45 = [v44 objectForKeyedSubscript:@"playback-behavior-metadata"];
+  payload6 = [v39 payload];
+  v45 = [payload6 objectForKeyedSubscript:@"playback-behavior-metadata"];
   v46 = [v45 objectForKeyedSubscript:@"shuffle-type"];
-  v47 = [v46 intValue];
+  intValue2 = [v46 intValue];
 
-  if (v47 <= 2)
+  if (intValue2 <= 2)
   {
-    [v70 setShufflePlayMode:qword_1C6045250[v47]];
+    [eventCopy setShufflePlayMode:qword_1C6045250[intValue2]];
   }
 
-  v48 = [v39 payload];
-  v49 = [v48 objectForKeyedSubscript:@"playback-behavior-metadata"];
+  payload7 = [v39 payload];
+  v49 = [payload7 objectForKeyedSubscript:@"playback-behavior-metadata"];
   v50 = [v49 objectForKeyedSubscript:@"autoplay-mode"];
-  v51 = [v50 intValue];
+  intValue3 = [v50 intValue];
 
-  if (v51 <= 3)
+  if (intValue3 <= 3)
   {
-    [v70 setAutoPlayMode:v51];
+    [eventCopy setAutoPlayMode:intValue3];
   }
 
-  v52 = [v39 payload];
-  v53 = [v52 objectForKeyedSubscript:@"playback-behavior-metadata"];
+  payload8 = [v39 payload];
+  v53 = [payload8 objectForKeyedSubscript:@"playback-behavior-metadata"];
   v54 = [v53 objectForKeyedSubscript:@"user-transition-preference"];
-  v55 = [v54 intValue];
+  intValue4 = [v54 intValue];
 
-  if (v55 <= 3)
+  if (intValue4 <= 3)
   {
-    [v70 setUserTransitionTypePreference:v55];
+    [eventCopy setUserTransitionTypePreference:intValue4];
   }
 
-  v56 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v70 setEventTimeZone:v56];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [eventCopy setEventTimeZone:systemTimeZone];
 }
 
-- (BOOL)_vocalControlIsOnForEvent:(id)a3
+- (BOOL)_vocalControlIsOnForEvent:(id)event
 {
-  v5 = a3;
-  v6 = [v5 type];
-  if (([v6 isEqualToString:@"item-resume"] & 1) == 0)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (([type isEqualToString:@"item-resume"] & 1) == 0)
   {
-    v7 = [v5 type];
-    v8 = [v7 isEqualToString:@"item-vocal-attenuation-changed"];
+    type2 = [eventCopy type];
+    v8 = [type2 isEqualToString:@"item-vocal-attenuation-changed"];
 
     if (v8)
     {
       goto LABEL_5;
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPCPlayActivityFeedEventConsumer.m" lineNumber:1892 description:@"Only Item Resume and Vocal Attenuation Changed events contain vocal attenuation fields."];
+    type = [MEMORY[0x1E696AAA8] currentHandler];
+    [type handleFailureInMethod:a2 object:self file:@"MPCPlayActivityFeedEventConsumer.m" lineNumber:1892 description:@"Only Item Resume and Vocal Attenuation Changed events contain vocal attenuation fields."];
   }
 
 LABEL_5:
-  v9 = [v5 payload];
-  v10 = [v9 objectForKeyedSubscript:@"vocal-attenuation-available"];
+  payload = [eventCopy payload];
+  v10 = [payload objectForKeyedSubscript:@"vocal-attenuation-available"];
   if ([v10 BOOLValue])
   {
-    v11 = [v5 payload];
-    v12 = [v11 objectForKeyedSubscript:@"vocal-attenuation-configured"];
+    payload2 = [eventCopy payload];
+    v12 = [payload2 objectForKeyedSubscript:@"vocal-attenuation-configured"];
     if ([v12 BOOLValue])
     {
-      v13 = [v5 payload];
-      v14 = [v13 objectForKeyedSubscript:@"supports-vocal-attenuation"];
+      payload3 = [eventCopy payload];
+      v14 = [payload3 objectForKeyedSubscript:@"supports-vocal-attenuation"];
       if ([v14 BOOLValue])
       {
-        v15 = [v5 payload];
-        v16 = [v15 objectForKeyedSubscript:@"vocal-attenuation-enabled"];
-        v17 = [v16 BOOLValue];
+        payload4 = [eventCopy payload];
+        v16 = [payload4 objectForKeyedSubscript:@"vocal-attenuation-enabled"];
+        bOOLValue = [v16 BOOLValue];
       }
 
       else
       {
-        v17 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    bOOLValue = 0;
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-- (void)_updatePAFEvent:(id)a3 withVocalAttenuationInfoForEndEvent:(id)a4 cursor:(id)a5
+- (void)_updatePAFEvent:(id)event withVocalAttenuationInfoForEndEvent:(id)endEvent cursor:(id)cursor
 {
   v82[2] = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  endEventCopy = endEvent;
+  cursorCopy = cursor;
+  payload = [endEventCopy payload];
+  v10 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v11 = [v7 payload];
-  v12 = [v11 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [endEventCopy payload];
+  v12 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v82[0] = @"item-resume";
   v82[1] = @"item-vocal-attenuation-changed";
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
-  v14 = [v8 findPreviousEventWithTypes:v13 matchingPayload:0];
+  v14 = [cursorCopy findPreviousEventWithTypes:v13 matchingPayload:0];
 
   if (v14)
   {
-    v15 = [v14 payload];
-    v16 = [v15 objectForKeyedSubscript:@"vocal-attenuation-available"];
+    payload3 = [v14 payload];
+    v16 = [payload3 objectForKeyedSubscript:@"vocal-attenuation-available"];
     v17 = [v16 BOOLValue] ? 1 : 2;
 
-    [v56 setVocalAttenuationAvailability:v17];
+    [eventCopy setVocalAttenuationAvailability:v17];
     if (v10)
     {
-      if (v12 && [(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:v10 itemIdentifier:v12 cursor:v8])
+      if (v12 && [(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:v10 itemIdentifier:v12 cursor:cursorCopy])
       {
         v80 = @"queue-section-id";
         v81 = v10;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-        v53 = [v8 findPreviousEventWithType:@"container-begin" matchingPayload:v18];
+        v53 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v18];
 
         v78 = @"queue-section-id";
         v79 = v10;
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
-        v54 = [v8 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v19];
+        v54 = [cursorCopy findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v19];
 
-        v20 = [v54 payload];
-        v21 = [v20 objectForKeyedSubscript:@"container-indeterminate-duration"];
+        payload4 = [v54 payload];
+        v21 = [payload4 objectForKeyedSubscript:@"container-indeterminate-duration"];
         if ([v21 BOOLValue])
         {
 
 LABEL_11:
-          [v56 setVocalAttenuationDuration:{0.0, v50}];
+          [eventCopy setVocalAttenuationDuration:{0.0, v50}];
 LABEL_27:
 
           goto LABEL_28;
         }
 
-        v22 = [v53 payload];
-        v23 = [v22 objectForKeyedSubscript:@"container-metadata"];
+        payload5 = [v53 payload];
+        v23 = [payload5 objectForKeyedSubscript:@"container-metadata"];
         v24 = [v23 objectForKeyedSubscript:@"container-radio-subtype"];
         LODWORD(v50) = [v24 integerValue] == 2;
 
@@ -1008,40 +1008,40 @@ LABEL_27:
         v76[0] = v10;
         v76[1] = v12;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v76 forKeys:v75 count:2];
-        v51 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v25 matchingPayload:v26 cursor:v8];
+        v51 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v25 matchingPayload:v26 cursor:cursorCopy];
 
         v68 = 0;
         v69 = &v68;
         v70 = 0x2020000000;
-        v27 = [v7 payload];
-        v28 = [v27 objectForKeyedSubscript:@"item-end-position"];
+        payload6 = [endEventCopy payload];
+        v28 = [payload6 objectForKeyedSubscript:@"item-end-position"];
         [v28 doubleValue];
         v30 = v29;
 
         v71 = v30;
-        v31 = [v7 type];
-        if ([v31 isEqualToString:@"item-end"])
+        type = [endEventCopy type];
+        if ([type isEqualToString:@"item-end"])
         {
-          v32 = [v7 payload];
-          v33 = [v32 objectForKeyedSubscript:@"item-did-play-to-end"];
-          v34 = [v33 BOOLValue];
+          payload7 = [endEventCopy payload];
+          v33 = [payload7 objectForKeyedSubscript:@"item-did-play-to-end"];
+          bOOLValue = [v33 BOOLValue];
 
-          if (v34)
+          if (bOOLValue)
           {
             v73[0] = @"queue-section-id";
             v73[1] = @"queue-item-id";
             v74[0] = v10;
             v74[1] = v12;
             v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
-            v36 = [v8 findPreviousEventWithType:@"item-begin" matchingPayload:v35];
+            payload10 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v35];
 
-            v37 = [v36 payload];
-            v38 = [v37 objectForKeyedSubscript:@"item-metadata"];
+            payload8 = [payload10 payload];
+            v38 = [payload8 objectForKeyedSubscript:@"item-metadata"];
 
             v39 = [v38 objectForKeyedSubscript:@"item-end-boundary"];
-            LOBYTE(v37) = v39 == 0;
+            LOBYTE(payload8) = v39 == 0;
 
-            if (v37)
+            if (payload8)
             {
               [v38 objectForKeyedSubscript:@"item-duration"];
             }
@@ -1062,8 +1062,8 @@ LABEL_27:
         {
         }
 
-        v41 = [v7 type];
-        v42 = [v41 isEqualToString:@"item-position-jump"];
+        type2 = [endEventCopy type];
+        v42 = [type2 isEqualToString:@"item-position-jump"];
 
         if (!v42)
         {
@@ -1072,12 +1072,12 @@ LABEL_22:
           {
             if ([(MPCPlayActivityFeedEventConsumer *)self _vocalControlIsOnForEvent:v52])
             {
-              v45 = [v52 payload];
-              v46 = [v45 objectForKeyedSubscript:@"item-start-position"];
+              payload9 = [v52 payload];
+              v46 = [payload9 objectForKeyedSubscript:@"item-start-position"];
               [v46 doubleValue];
               v48 = v47;
 
-              [v56 setVocalAttenuationDuration:v69[3] - v48];
+              [eventCopy setVocalAttenuationDuration:v69[3] - v48];
             }
           }
 
@@ -1099,13 +1099,13 @@ LABEL_22:
             v57[2] = __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuationInfoForEndEvent_cursor___block_invoke;
             v57[3] = &unk_1E8231A50;
             v58 = v52;
-            v59 = self;
+            selfCopy = self;
             v60 = v63;
             v61 = &v68;
             v62 = &v64;
-            [v8 enumeratePreviousEventsWithTypes:v49 usingBlock:v57];
+            [cursorCopy enumeratePreviousEventsWithTypes:v49 usingBlock:v57];
 
-            [v56 setVocalAttenuationDuration:v65[3]];
+            [eventCopy setVocalAttenuationDuration:v65[3]];
             _Block_object_dispose(v63, 8);
             _Block_object_dispose(&v64, 8);
           }
@@ -1115,8 +1115,8 @@ LABEL_22:
           goto LABEL_27;
         }
 
-        v36 = [v7 payload];
-        v38 = [v36 objectForKeyedSubscript:@"item-start-position"];
+        payload10 = [endEventCopy payload];
+        v38 = [payload10 objectForKeyedSubscript:@"item-start-position"];
         [v38 doubleValue];
         *(v69 + 3) = v43;
 LABEL_21:
@@ -1191,17 +1191,17 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
   }
 }
 
-- (void)_updatePAFEvent:(id)a3 withEnqueuerAccountIdentifier:(id)a4 queueAddEvent:(id)a5 cursor:(id)a6
+- (void)_updatePAFEvent:(id)event withEnqueuerAccountIdentifier:(id)identifier queueAddEvent:(id)addEvent cursor:(id)cursor
 {
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  eventCopy = event;
+  identifierCopy = identifier;
+  addEventCopy = addEvent;
+  cursorCopy = cursor;
+  if (identifierCopy)
   {
-    v14 = [v12 payload];
-    v15 = [v14 objectForKeyedSubscript:@"queue-reporting-metadata"];
+    payload = [addEventCopy payload];
+    v15 = [payload objectForKeyedSubscript:@"queue-reporting-metadata"];
 
     v47 = v15;
     v16 = [v15 objectForKeyedSubscript:@"device-metadata"];
@@ -1209,13 +1209,13 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
     v50[1] = @"account-begin";
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
     v48 = @"account-id";
-    v49 = v11;
+    v49 = identifierCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    v19 = [v13 findPreviousEventWithTypes:v17 matchingPayload:v18];
+    v19 = [cursorCopy findPreviousEventWithTypes:v17 matchingPayload:v18];
 
     v46 = v19;
-    v20 = [v19 payload];
-    v21 = [v20 objectForKeyedSubscript:@"account-metadata"];
+    payload2 = [v19 payload];
+    v21 = [payload2 objectForKeyedSubscript:@"account-metadata"];
 
     v22 = objc_alloc_init(MEMORY[0x1E69E44F0]);
     v23 = [v21 objectForKeyedSubscript:@"store-account-id"];
@@ -1234,11 +1234,11 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
     v27 = [v16 objectForKeyedSubscript:@"device-name"];
     [v22 setDeviceName:v27];
 
-    v28 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    [v22 setTimeZone:v28];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    [v22 setTimeZone:systemTimeZone];
 
-    v29 = [v12 payload];
-    v30 = [v29 objectForKeyedSubscript:@"queue-delegated-account-metadata"];
+    payload3 = [addEventCopy payload];
+    v30 = [payload3 objectForKeyedSubscript:@"queue-delegated-account-metadata"];
     v31 = [v30 objectForKeyedSubscript:@"private-listening-enabled"];
 
     if (v31)
@@ -1252,17 +1252,17 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
     }
 
     [v22 setPrivateListeningEnabled:v32];
-    v33 = [v12 payload];
-    v34 = [v33 objectForKeyedSubscript:@"private-listening-source"];
-    v35 = [v34 integerValue];
+    payload4 = [addEventCopy payload];
+    v34 = [payload4 objectForKeyedSubscript:@"private-listening-source"];
+    integerValue = [v34 integerValue];
 
-    if (v35 == 1)
+    if (integerValue == 1)
     {
-      v44 = v11;
-      v36 = v10;
-      v37 = [v13 findPreviousEventWithType:@"device-changed" matchingPayload:0];
-      v38 = [v37 payload];
-      v39 = [v38 objectForKeyedSubscript:@"device-metadata"];
+      v44 = identifierCopy;
+      v36 = eventCopy;
+      v37 = [cursorCopy findPreviousEventWithType:@"device-changed" matchingPayload:0];
+      payload5 = [v37 payload];
+      v39 = [payload5 objectForKeyedSubscript:@"device-metadata"];
       v40 = [v39 objectForKeyedSubscript:@"private-listening-enabled"];
 
       if ([v40 BOOLValue])
@@ -1271,8 +1271,8 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
       }
 
       v31 = v40;
-      v10 = v36;
-      v11 = v44;
+      eventCopy = v36;
+      identifierCopy = v44;
     }
 
     v41 = [v16 objectForKeyedSubscript:@"device-software-variant"];
@@ -1299,7 +1299,7 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
 
     [v22 setSystemReleaseType:v43];
     [v22 setSBEnabled:1];
-    [v10 setEnqueuerProperties:v22];
+    [eventCopy setEnqueuerProperties:v22];
   }
 
   else
@@ -1308,45 +1308,45 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v52 = self;
+      selfCopy = self;
       v53 = 2114;
-      v54 = v10;
+      v54 = eventCopy;
       v55 = 2114;
-      v56 = v13;
+      v56 = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v42, OS_LOG_TYPE_ERROR, "MPCPlayActivityFeedEventConsumer %p - Unable to update PAF event [missing account identifier for delegated playback] - event:%{public}@ - cursor:%{public}@", buf, 0x20u);
     }
   }
 }
 
-- (void)_updatePAFEvent:(id)a3 withAccountIdentifier:(id)a4 cursor:(id)a5
+- (void)_updatePAFEvent:(id)event withAccountIdentifier:(id)identifier cursor:(id)cursor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  eventCopy = event;
+  identifierCopy = identifier;
+  cursorCopy = cursor;
+  if (identifierCopy)
   {
     v22[0] = @"account-update";
     v22[1] = @"account-begin";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v20 = @"account-id";
-    v21 = v9;
+    v21 = identifierCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v13 = [v10 findPreviousEventWithTypes:v11 matchingPayload:v12];
+    v13 = [cursorCopy findPreviousEventWithTypes:v11 matchingPayload:v12];
 
-    v14 = [v13 payload];
-    v15 = [v14 objectForKeyedSubscript:@"account-metadata"];
+    payload = [v13 payload];
+    v15 = [payload objectForKeyedSubscript:@"account-metadata"];
 
     v16 = [v15 objectForKeyedSubscript:@"subscription-status"];
-    [v8 setSBEnabled:{objc_msgSend(v16, "hasCapability:", 128)}];
+    [eventCopy setSBEnabled:{objc_msgSend(v16, "hasCapability:", 128)}];
     v17 = [v15 objectForKeyedSubscript:@"store-front-id"];
-    [v8 setStoreFrontID:v17];
+    [eventCopy setStoreFrontID:v17];
 
     v18 = [v15 objectForKeyedSubscript:@"store-account-id"];
-    [v8 setStoreAccountID:{objc_msgSend(v18, "unsignedLongLongValue")}];
+    [eventCopy setStoreAccountID:{objc_msgSend(v18, "unsignedLongLongValue")}];
 
     v19 = [v15 objectForKeyedSubscript:@"household-id"];
-    [v8 setHouseholdID:v19];
+    [eventCopy setHouseholdID:v19];
   }
 
   else
@@ -1355,63 +1355,63 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
-      v26 = v8;
+      v26 = eventCopy;
       v27 = 2114;
-      v28 = v10;
+      v28 = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_ERROR, "MPCPlayActivityFeedEventConsumer %p - Unable to update PAF event [missing account identifier] - event:%{public}@ - cursor:%{public}@", buf, 0x20u);
     }
   }
 }
 
-- (void)_updatePAFEvent:(id)a3 withItemBeginEvent:(id)a4 containerBeginPayload:(id)a5 cursor:(id)a6 forEventType:(id)a7
+- (void)_updatePAFEvent:(id)event withItemBeginEvent:(id)beginEvent containerBeginPayload:(id)payload cursor:(id)cursor forEventType:(id)type
 {
   v183 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 payload];
-  v18 = [v17 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  beginEventCopy = beginEvent;
+  payloadCopy = payload;
+  cursorCopy = cursor;
+  typeCopy = type;
+  payload = [beginEventCopy payload];
+  v18 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v19 = [v13 payload];
-  v20 = [v19 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [beginEventCopy payload];
+  v20 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (v18 && v20)
   {
-    v151 = v16;
+    v151 = typeCopy;
     v175[0] = @"queue-section-id";
     v175[1] = @"queue-item-id";
     v155 = v18;
     v176[0] = v18;
     v176[1] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v176 forKeys:v175 count:2];
-    v160 = [v15 findPreviousEventWithType:@"item-update" matchingPayload:v21];
+    v160 = [cursorCopy findPreviousEventWithType:@"item-update" matchingPayload:v21];
 
-    v22 = [v13 payload];
-    v161 = [v14 objectForKeyedSubscript:@"container-metadata"];
-    v162 = [v22 objectForKeyedSubscript:@"item-metadata"];
+    payload3 = [beginEventCopy payload];
+    v161 = [payloadCopy objectForKeyedSubscript:@"container-metadata"];
+    v162 = [payload3 objectForKeyedSubscript:@"item-metadata"];
     v173 = @"queue-section-id";
-    v159 = v22;
-    v23 = [v22 objectForKeyedSubscript:@"queue-section-id"];
+    v159 = payload3;
+    v23 = [payload3 objectForKeyedSubscript:@"queue-section-id"];
     v174 = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v174 forKeys:&v173 count:1];
-    v25 = [v15 findPreviousEventWithType:@"queue-add" matchingPayload:v24];
+    v25 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v24];
 
     v157 = v25;
-    v26 = [v25 payload];
-    v27 = [v26 objectForKeyedSubscript:@"private-listening-source"];
-    v28 = [v27 integerValue];
+    payload4 = [v25 payload];
+    v27 = [payload4 objectForKeyedSubscript:@"private-listening-source"];
+    integerValue = [v27 integerValue];
 
     v154 = v20;
-    if (v28 > 1)
+    if (integerValue > 1)
     {
-      if (v28 == 2)
+      if (integerValue == 2)
       {
-        v48 = [v157 payload];
-        v49 = [v48 objectForKeyedSubscript:@"account-id"];
+        payload5 = [v157 payload];
+        v49 = [payload5 objectForKeyedSubscript:@"account-id"];
 
         if (!v49)
         {
@@ -1420,47 +1420,47 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
           if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218498;
-            v178 = self;
+            selfCopy2 = self;
             v179 = 2114;
             v180 = v157;
             v181 = 2114;
-            v182 = v15;
+            v182 = cursorCopy;
             _os_log_impl(&dword_1C5C61000, v65, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _updatePafEvent:withItemBeginEvent:containerBeginPayload:cursor:forEventType: - could not find accountIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
           }
 
-          v16 = v151;
+          typeCopy = v151;
           v18 = v155;
           v43 = v160;
           v66 = v161;
           goto LABEL_92;
         }
 
-        v145 = v13;
+        v145 = beginEventCopy;
         v172[0] = @"account-begin";
         v172[1] = @"account-update";
         v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v172 count:2];
         v170 = @"account-id";
         v171 = v49;
         v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
-        v52 = [v15 findPreviousEventWithTypes:v50 matchingPayload:v51];
+        v52 = [cursorCopy findPreviousEventWithTypes:v50 matchingPayload:v51];
 
-        v147 = v15;
-        v53 = [v15 findPreviousEventWithType:@"device-changed" matchingPayload:0];
+        v147 = cursorCopy;
+        v53 = [cursorCopy findPreviousEventWithType:@"device-changed" matchingPayload:0];
         v54 = v52;
-        v55 = [v52 payload];
-        v56 = [v55 objectForKeyedSubscript:@"account-metadata"];
+        payload6 = [v52 payload];
+        v56 = [payload6 objectForKeyedSubscript:@"account-metadata"];
         v57 = [v56 objectForKeyedSubscript:@"private-listening-enabled"];
 
         v58 = v53;
-        v59 = [v53 payload];
-        v60 = [v59 objectForKeyedSubscript:@"device-metadata"];
+        payload7 = [v53 payload];
+        v60 = [payload7 objectForKeyedSubscript:@"device-metadata"];
         v61 = [v60 objectForKeyedSubscript:@"focus-mode-private-listening-enabled"];
-        v62 = [v61 integerValue];
+        integerValue2 = [v61 integerValue];
 
-        if (v62)
+        if (integerValue2)
         {
-          v63 = [MEMORY[0x1E696AD98] numberWithInt:v62 == 1];
-          [v12 setPrivateListeningEnabled:v63];
+          v63 = [MEMORY[0x1E696AD98] numberWithInt:integerValue2 == 1];
+          [eventCopy setPrivateListeningEnabled:v63];
         }
 
         else
@@ -1475,13 +1475,13 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
             v67 = MEMORY[0x1E695E118];
           }
 
-          [v12 setPrivateListeningEnabled:v67];
+          [eventCopy setPrivateListeningEnabled:v67];
         }
 
         v29 = v159;
 
-        v13 = v145;
-        v15 = v147;
+        beginEventCopy = v145;
+        cursorCopy = v147;
         v30 = v160;
       }
 
@@ -1489,10 +1489,10 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
       {
         v29 = v159;
         v30 = v160;
-        if (v28 == 3)
+        if (integerValue == 3)
         {
-          v44 = [v157 payload];
-          v45 = [v44 objectForKeyedSubscript:@"queue-reporting-metadata"];
+          payload8 = [v157 payload];
+          v45 = [payload8 objectForKeyedSubscript:@"queue-reporting-metadata"];
           v46 = [v45 objectForKeyedSubscript:@"private-listening-enabled"];
 
           if (v46)
@@ -1505,38 +1505,38 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
             v47 = MEMORY[0x1E695E118];
           }
 
-          [v12 setPrivateListeningEnabled:v47];
+          [eventCopy setPrivateListeningEnabled:v47];
         }
       }
     }
 
     else
     {
-      if (v28)
+      if (integerValue)
       {
         v29 = v159;
         v30 = v160;
-        if (v28 != 1)
+        if (integerValue != 1)
         {
           goto LABEL_35;
         }
 
-        v31 = v13;
-        v32 = v15;
-        v33 = [v15 findPreviousEventWithType:@"device-changed" matchingPayload:0];
-        v34 = [v33 payload];
-        v35 = [v34 objectForKeyedSubscript:@"device-metadata"];
+        v31 = beginEventCopy;
+        v32 = cursorCopy;
+        v33 = [cursorCopy findPreviousEventWithType:@"device-changed" matchingPayload:0];
+        payload9 = [v33 payload];
+        v35 = [payload9 objectForKeyedSubscript:@"device-metadata"];
         v36 = [v35 objectForKeyedSubscript:@"private-listening-enabled"];
 
-        v37 = [v33 payload];
-        v38 = [v37 objectForKeyedSubscript:@"device-metadata"];
+        payload10 = [v33 payload];
+        v38 = [payload10 objectForKeyedSubscript:@"device-metadata"];
         v39 = [v38 objectForKeyedSubscript:@"focus-mode-private-listening-enabled"];
-        v40 = [v39 integerValue];
+        integerValue3 = [v39 integerValue];
 
-        if (v40)
+        if (integerValue3)
         {
-          v41 = [MEMORY[0x1E696AD98] numberWithInt:v40 == 1];
-          [v12 setPrivateListeningEnabled:v41];
+          v41 = [MEMORY[0x1E696AD98] numberWithInt:integerValue3 == 1];
+          [eventCopy setPrivateListeningEnabled:v41];
         }
 
         else
@@ -1551,16 +1551,16 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
             v64 = MEMORY[0x1E695E118];
           }
 
-          [v12 setPrivateListeningEnabled:v64];
+          [eventCopy setPrivateListeningEnabled:v64];
         }
 
-        v15 = v32;
-        v13 = v31;
+        cursorCopy = v32;
+        beginEventCopy = v31;
       }
 
       else
       {
-        [v12 setPrivateListeningEnabled:MEMORY[0x1E695E118]];
+        [eventCopy setPrivateListeningEnabled:MEMORY[0x1E695E118]];
       }
 
       v29 = v159;
@@ -1570,20 +1570,20 @@ void __95__MPCPlayActivityFeedEventConsumer__updatePAFEvent_withVocalAttenuation
 LABEL_35:
     v68 = [v162 objectForKeyedSubscript:@"item-duration"];
     [v68 doubleValue];
-    [v12 setItemDuration:?];
+    [eventCopy setItemDuration:?];
 
     v69 = [v162 objectForKeyedSubscript:@"item-has-video"];
-    v70 = [v69 BOOLValue];
+    bOOLValue = [v69 BOOLValue];
 
-    [v12 setMediaType:v70];
+    [eventCopy setMediaType:bOOLValue];
     v71 = [v29 objectForKeyedSubscript:@"radio-track-info"];
-    [v12 setTrackInfo:v71];
+    [eventCopy setTrackInfo:v71];
 
-    v72 = [v14 objectForKeyedSubscript:@"container-kind"];
-    v152 = v14;
-    v73 = [v14 objectForKeyedSubscript:@"container-ids"];
-    v74 = [v30 payload];
-    v75 = [v74 objectForKeyedSubscript:@"item-kind"];
+    v72 = [payloadCopy objectForKeyedSubscript:@"container-kind"];
+    v152 = payloadCopy;
+    v73 = [payloadCopy objectForKeyedSubscript:@"container-ids"];
+    payload11 = [v30 payload];
+    v75 = [payload11 objectForKeyedSubscript:@"item-kind"];
     v76 = v75;
     if (v75)
     {
@@ -1597,8 +1597,8 @@ LABEL_35:
 
     v150 = v77;
 
-    v78 = [v30 payload];
-    v79 = [v78 objectForKeyedSubscript:@"item-ids"];
+    payload12 = [v30 payload];
+    v79 = [payload12 objectForKeyedSubscript:@"item-ids"];
     v80 = v79;
     v158 = v72;
     if (v79)
@@ -1614,83 +1614,83 @@ LABEL_35:
     v82 = v81;
 
     v83 = objc_alloc_init(MEMORY[0x1E69E4500]);
-    v84 = [v158 modelClass];
+    modelClass = [v158 modelClass];
     v153 = v82;
     v156 = v83;
-    if (v84 == objc_opt_class())
+    if (modelClass == objc_opt_class())
     {
-      [v12 setContainerType:1];
+      [eventCopy setContainerType:1];
       v86 = v73;
-      v93 = [v73 radio];
-      v94 = [v93 stationHash];
-      [v83 setStationHash:v94];
+      radio = [v73 radio];
+      stationHash = [radio stationHash];
+      [v83 setStationHash:stationHash];
 
-      v95 = [v73 radio];
-      v96 = [v95 stationStringID];
-      [v83 setStationStringID:v96];
+      radio2 = [v73 radio];
+      stationStringID = [radio2 stationStringID];
+      [v83 setStationStringID:stationStringID];
 
-      v14 = v152;
+      payloadCopy = v152;
       goto LABEL_57;
     }
 
-    v85 = [v158 modelClass];
+    modelClass2 = [v158 modelClass];
     v86 = v73;
-    if (v85 != objc_opt_class())
+    if (modelClass2 != objc_opt_class())
     {
-      v87 = [v158 modelClass];
-      if (v87 == objc_opt_class())
+      modelClass3 = [v158 modelClass];
+      if (modelClass3 == objc_opt_class())
       {
-        [v12 setContainerType:3];
+        [eventCopy setContainerType:3];
       }
 
       else
       {
-        v88 = [v158 modelClass];
-        if (v88 == objc_opt_class())
+        modelClass4 = [v158 modelClass];
+        if (modelClass4 == objc_opt_class())
         {
-          [v12 setContainerType:4];
-          v89 = [v82 personalizedStore];
-          v90 = [v89 cloudAlbumID];
-          v91 = v90;
-          if (v90)
+          [eventCopy setContainerType:4];
+          personalizedStore = [v82 personalizedStore];
+          cloudAlbumID = [personalizedStore cloudAlbumID];
+          v91 = cloudAlbumID;
+          if (cloudAlbumID)
           {
-            v92 = v90;
+            cloudAlbumID2 = cloudAlbumID;
           }
 
           else
           {
-            v109 = [v73 personalizedStore];
-            v92 = [v109 cloudAlbumID];
+            personalizedStore2 = [v73 personalizedStore];
+            cloudAlbumID2 = [personalizedStore2 cloudAlbumID];
           }
 
-          [v83 setCloudAlbumID:v92];
+          [v83 setCloudAlbumID:cloudAlbumID2];
           v86 = v73;
-          v14 = v152;
+          payloadCopy = v152;
 LABEL_56:
           v82 = v153;
 LABEL_57:
           v149 = v86;
-          v110 = [v86 universalStore];
-          [v83 setAdamID:{objc_msgSend(v110, "adamID")}];
+          universalStore = [v86 universalStore];
+          [v83 setAdamID:{objc_msgSend(universalStore, "adamID")}];
 
-          [v12 setContainerIDs:v83];
+          [eventCopy setContainerIDs:v83];
           v111 = objc_alloc_init(MEMORY[0x1E69E4508]);
           v112 = [v162 objectForKeyedSubscript:@"item-artist-uploaded"];
-          v113 = [v112 BOOLValue];
+          bOOLValue2 = [v112 BOOLValue];
 
-          if (v113)
+          if (bOOLValue2)
           {
-            v114 = [v82 universalStore];
-            v115 = [v114 subscriptionAdamID];
-            if (v115)
+            universalStore2 = [v82 universalStore];
+            subscriptionAdamID = [universalStore2 subscriptionAdamID];
+            if (subscriptionAdamID)
             {
-              [v111 setSubscriptionAdamID:v115];
+              [v111 setSubscriptionAdamID:subscriptionAdamID];
             }
 
             else
             {
-              v126 = [v82 universalStore];
-              [v111 setSubscriptionAdamID:{objc_msgSend(v126, "adamID")}];
+              universalStore3 = [v82 universalStore];
+              [v111 setSubscriptionAdamID:{objc_msgSend(universalStore3, "adamID")}];
             }
 
             v125 = 6;
@@ -1698,21 +1698,21 @@ LABEL_57:
 
           else
           {
-            v116 = [v12 containerType];
-            v117 = [v82 universalStore];
-            v118 = v117;
-            if (v116 == 1)
+            containerType = [eventCopy containerType];
+            universalStore4 = [v82 universalStore];
+            v118 = universalStore4;
+            if (containerType == 1)
             {
-              v119 = [v117 adamID];
-              if (v119)
+              adamID = [universalStore4 adamID];
+              if (adamID)
               {
-                [v111 setRadioAdamID:v119];
+                [v111 setRadioAdamID:adamID];
               }
 
               else
               {
-                v127 = [v82 universalStore];
-                [v111 setRadioAdamID:{objc_msgSend(v127, "subscriptionAdamID")}];
+                universalStore5 = [v82 universalStore];
+                [v111 setRadioAdamID:{objc_msgSend(universalStore5, "subscriptionAdamID")}];
               }
 
               v125 = [v111 radioAdamID] != 0;
@@ -1720,27 +1720,27 @@ LABEL_57:
 
             else
             {
-              [v111 setSubscriptionAdamID:{objc_msgSend(v117, "subscriptionAdamID")}];
+              [v111 setSubscriptionAdamID:{objc_msgSend(universalStore4, "subscriptionAdamID")}];
 
-              v120 = [v82 universalStore];
-              [v111 setPurchasedAdamID:{objc_msgSend(v120, "purchasedAdamID")}];
+              universalStore6 = [v82 universalStore];
+              [v111 setPurchasedAdamID:{objc_msgSend(universalStore6, "purchasedAdamID")}];
 
-              v121 = [v82 personalizedStore];
-              [v111 setCloudID:{objc_msgSend(v121, "cloudID")}];
+              personalizedStore3 = [v82 personalizedStore];
+              [v111 setCloudID:{objc_msgSend(personalizedStore3, "cloudID")}];
 
-              v122 = [v82 universalStore];
-              [v111 setReportingAdamID:{objc_msgSend(v122, "reportingAdamID")}];
+              universalStore7 = [v82 universalStore];
+              [v111 setReportingAdamID:{objc_msgSend(universalStore7, "reportingAdamID")}];
 
-              v123 = [v150 modelClass];
-              if (v123 == objc_opt_class())
+              modelClass5 = [v150 modelClass];
+              if (modelClass5 == objc_opt_class())
               {
                 v125 = 9;
               }
 
               else
               {
-                v124 = [v150 modelClass];
-                if (v124 != objc_opt_class())
+                modelClass6 = [v150 modelClass];
+                if (modelClass6 != objc_opt_class())
                 {
                   v66 = v161;
                   v125 = [v111 subscriptionAdamID] || objc_msgSend(v111, "purchasedAdamID") || objc_msgSend(v111, "reportingAdamID");
@@ -1758,14 +1758,14 @@ LABEL_76:
           if (v128)
           {
             v129 = v128;
-            v146 = v13;
-            v148 = v15;
+            v146 = beginEventCopy;
+            v148 = cursorCopy;
             [v66 objectForKeyedSubscript:@"container-radio-type"];
             v131 = v130 = v66;
-            v132 = [v131 intValue];
+            intValue = [v131 intValue];
 
             v43 = v160;
-            if (v132 == 4)
+            if (intValue == 4)
             {
               v169[0] = @"item-hls-stream-begin";
               v169[1] = @"item-hls-stream-end";
@@ -1782,13 +1782,13 @@ LABEL_76:
               v136 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v166 forKeys:v165 count:2];
               v137 = [v148 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v136];
 
-              v138 = [v135 type];
-              v139 = [v138 isEqualToString:@"item-hls-stream-begin"];
+              type = [v135 type];
+              v139 = [type isEqualToString:@"item-hls-stream-begin"];
 
               v140 = [v130 objectForKeyedSubscript:@"container-radio-subtype"];
-              v141 = [v140 integerValue];
+              integerValue4 = [v140 integerValue];
 
-              if ((v139 & 1) != 0 || v141 == 2)
+              if ((v139 & 1) != 0 || integerValue4 == 2)
               {
                 v83 = v156;
                 if (v137 && ([v151 isEqualToString:@"item-end"] & 1) != 0)
@@ -1820,17 +1820,17 @@ LABEL_76:
                 }
               }
 
-              v14 = v152;
+              payloadCopy = v152;
               v43 = v160;
               v66 = v161;
 
-              v13 = v146;
-              v15 = v148;
+              beginEventCopy = v146;
+              cursorCopy = v148;
             }
 
             else
             {
-              v15 = v148;
+              cursorCopy = v148;
               v66 = v130;
               v83 = v156;
             }
@@ -1841,10 +1841,10 @@ LABEL_76:
             v43 = v160;
           }
 
-          [v12 setItemIDs:v111];
-          [v12 setItemType:v125];
+          [eventCopy setItemIDs:v111];
+          [eventCopy setItemType:v125];
 
-          v16 = v151;
+          typeCopy = v151;
           v20 = v154;
           v18 = v155;
 LABEL_92:
@@ -1853,22 +1853,22 @@ LABEL_92:
         }
       }
 
-      v14 = v152;
+      payloadCopy = v152;
       goto LABEL_57;
     }
 
-    [v12 setContainerType:2];
+    [eventCopy setContainerType:2];
     v97 = [v161 objectForKeyedSubscript:@"container-is-playlist-folder"];
     v98 = v161;
-    v99 = [v97 BOOLValue];
+    bOOLValue3 = [v97 BOOLValue];
 
-    if (v99)
+    if (bOOLValue3)
     {
-      [v12 setContainerType:6];
-      v100 = [v73 personalizedStore];
-      [v83 setCloudPlaylistFolderID:{objc_msgSend(v100, "cloudID")}];
+      [eventCopy setContainerType:6];
+      personalizedStore4 = [v73 personalizedStore];
+      [v83 setCloudPlaylistFolderID:{objc_msgSend(personalizedStore4, "cloudID")}];
 
-      v14 = v152;
+      payloadCopy = v152;
       v101 = [v152 objectForKeyedSubscript:@"nested-container"];
       v102 = [v101 objectForKeyedSubscript:@"container-ids"];
 
@@ -1880,22 +1880,22 @@ LABEL_92:
 
     else
     {
-      v14 = v152;
+      payloadCopy = v152;
     }
 
-    v104 = [v86 personalizedStore];
-    [v83 setCloudPlaylistID:{objc_msgSend(v104, "cloudID")}];
+    personalizedStore5 = [v86 personalizedStore];
+    [v83 setCloudPlaylistID:{objc_msgSend(personalizedStore5, "cloudID")}];
 
-    v105 = [v86 universalStore];
-    v106 = [v105 globalPlaylistID];
-    [v83 setGlobalPlaylistID:v106];
+    universalStore8 = [v86 universalStore];
+    globalPlaylistID = [universalStore8 globalPlaylistID];
+    [v83 setGlobalPlaylistID:globalPlaylistID];
 
     v107 = [v98 objectForKeyedSubscript:@"container-playlist-version-hash"];
     [v83 setPlaylistVersionHash:v107];
 
     v161 = v98;
     v108 = [v98 objectForKeyedSubscript:@"container-is-collaborative-playlist"];
-    [v12 setCollaborativePlaylist:{objc_msgSend(v108, "BOOLValue")}];
+    [eventCopy setCollaborativePlaylist:{objc_msgSend(v108, "BOOLValue")}];
 
     goto LABEL_56;
   }
@@ -1904,11 +1904,11 @@ LABEL_92:
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218498;
-    v178 = self;
+    selfCopy2 = self;
     v179 = 2114;
-    v180 = v13;
+    v180 = beginEventCopy;
     v181 = 2114;
-    v182 = v15;
+    v182 = cursorCopy;
     _os_log_impl(&dword_1C5C61000, v42, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _updatePafEvent:withItemBeginEvent:containerBeginPayload:cursor:forEventType: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
   }
 
@@ -1916,29 +1916,29 @@ LABEL_92:
 LABEL_93:
 }
 
-- (void)_updatePAFEvent:(id)a3 withQueueAddEvent:(id)a4 queueSectionIdentifier:(id)a5 cursor:(id)a6
+- (void)_updatePAFEvent:(id)event withQueueAddEvent:(id)addEvent queueSectionIdentifier:(id)identifier cursor:(id)cursor
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  v12 = a6;
-  v13 = [v11 payload];
-  v14 = [v13 objectForKeyedSubscript:@"queue-reporting-metadata"];
+  eventCopy = event;
+  addEventCopy = addEvent;
+  identifierCopy = identifier;
+  cursorCopy = cursor;
+  payload = [addEventCopy payload];
+  v14 = [payload objectForKeyedSubscript:@"queue-reporting-metadata"];
 
   v15 = [v14 objectForKeyedSubscript:@"feature-name"];
-  [v10 setFeatureName:v15];
+  [eventCopy setFeatureName:v15];
 
   v16 = [v14 objectForKeyedSubscript:@"queue-grouping-id"];
-  [v10 setQueueGroupingID:v16];
+  [eventCopy setQueueGroupingID:v16];
 
   v17 = [v14 objectForKeyedSubscript:@"reco-data"];
-  [v10 setRecommendationData:v17];
+  [eventCopy setRecommendationData:v17];
 
   v18 = MEMORY[0x1E696AD98];
   v19 = [v14 objectForKeyedSubscript:@"siri-ref-id"];
   v20 = [v18 numberWithBool:v19 != 0];
-  [v10 setSiriInitiated:v20];
+  [eventCopy setSiriInitiated:v20];
 
   v21 = [v14 objectForKeyedSubscript:@"application-bundle-id"];
   v33 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
@@ -1948,77 +1948,77 @@ LABEL_93:
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
   LOBYTE(v19) = [v22 containsObject:v21];
 
-  v23 = self;
-  objc_sync_enter(v23);
-  if ((v19 & 1) != 0 || [(NSArray *)v23->_allowedBundleIds containsObject:v21])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((v19 & 1) != 0 || [(NSArray *)selfCopy->_allowedBundleIds containsObject:v21])
   {
-    [v10 setRequestingBundleIdentifier:v21];
+    [eventCopy setRequestingBundleIdentifier:v21];
     v24 = [v14 objectForKeyedSubscript:@"application-version"];
-    [v10 setRequestingBundleVersion:v24];
+    [eventCopy setRequestingBundleVersion:v24];
   }
 
-  objc_sync_exit(v23);
+  objc_sync_exit(selfCopy);
 
-  v25 = [v11 payload];
-  v26 = [v25 objectForKeyedSubscript:@"account-id"];
+  payload2 = [addEventCopy payload];
+  v26 = [payload2 objectForKeyedSubscript:@"account-id"];
 
   v36 = @"rectification-section-id";
-  v37 = v35;
+  v37 = identifierCopy;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-  v28 = [v12 findPreviousEventWithType:@"account-rectification" matchingPayload:v27];
+  v28 = [cursorCopy findPreviousEventWithType:@"account-rectification" matchingPayload:v27];
 
   if (v28)
   {
-    v29 = [v28 payload];
-    v30 = [v29 objectForKeyedSubscript:@"account-id"];
+    payload3 = [v28 payload];
+    v30 = [payload3 objectForKeyedSubscript:@"account-id"];
 
     v26 = v30;
   }
 
-  [(MPCPlayActivityFeedEventConsumer *)v23 _updatePAFEvent:v10 withAccountIdentifier:v26 cursor:v12];
-  v31 = [v11 payload];
-  v32 = [v31 objectForKeyedSubscript:@"queue-delegated-account-id"];
+  [(MPCPlayActivityFeedEventConsumer *)selfCopy _updatePAFEvent:eventCopy withAccountIdentifier:v26 cursor:cursorCopy];
+  payload4 = [addEventCopy payload];
+  v32 = [payload4 objectForKeyedSubscript:@"queue-delegated-account-id"];
 
   if (v32)
   {
-    [(MPCPlayActivityFeedEventConsumer *)v23 _updatePAFEvent:v10 withEnqueuerAccountIdentifier:v32 queueAddEvent:v11 cursor:v12];
+    [(MPCPlayActivityFeedEventConsumer *)selfCopy _updatePAFEvent:eventCopy withEnqueuerAccountIdentifier:v32 queueAddEvent:addEventCopy cursor:cursorCopy];
   }
 }
 
-- (void)_sendPlayEndNotificationWithStartTime:(double)a3 endTime:(double)a4 pafEvent:(id)a5 cursor:(id)a6
+- (void)_sendPlayEndNotificationWithStartTime:(double)time endTime:(double)endTime pafEvent:(id)event cursor:(id)cursor
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  eventCopy = event;
+  cursorCopy = cursor;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [v11 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-  v14 = [v13 payload];
-  v15 = [v14 objectForKeyedSubscript:@"behavior-type"];
-  v16 = [v15 integerValue];
+  v13 = [cursorCopy findPreviousEventWithType:@"session-begin" matchingPayload:0];
+  payload = [v13 payload];
+  v15 = [payload objectForKeyedSubscript:@"behavior-type"];
+  integerValue = [v15 integerValue];
 
   v40[0] = @"shared-session-begin";
   v40[1] = @"shared-session-end";
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
-  v18 = [v11 findPreviousEventWithTypes:v17 matchingPayload:0];
+  v18 = [cursorCopy findPreviousEventWithTypes:v17 matchingPayload:0];
 
   if (v18)
   {
-    v19 = [v18 type];
-    if ([v19 isEqualToString:@"shared-session-begin"])
+    type = [v18 type];
+    if ([type isEqualToString:@"shared-session-begin"])
     {
       [v18 payload];
-      v20 = v39 = v10;
+      v20 = v39 = eventCopy;
       [v20 objectForKeyedSubscript:@"shared-session-type"];
-      v21 = v11;
+      v21 = cursorCopy;
       v22 = v13;
       v24 = v23 = self;
       v25 = [v24 integerValue] == 2;
 
       self = v23;
       v13 = v22;
-      v11 = v21;
+      cursorCopy = v21;
 
-      v10 = v39;
+      eventCopy = v39;
     }
 
     else
@@ -2033,22 +2033,22 @@ LABEL_93:
   }
 
   v26 = 0x1E696A000;
-  if (v16 == 3 || v25)
+  if (integerValue == 3 || v25)
   {
-    v27 = [v11 findPreviousEventWithType:@"shared-session-participants-changed" matchingPayload:0];
+    v27 = [cursorCopy findPreviousEventWithType:@"shared-session-participants-changed" matchingPayload:0];
     [v27 payload];
-    v29 = v28 = v10;
+    v29 = v28 = eventCopy;
     v30 = [v29 objectForKeyedSubscript:@"participants"];
 
-    v31 = [v27 payload];
-    [v31 objectForKeyedSubscript:@"shared-session-id"];
+    payload2 = [v27 payload];
+    [payload2 objectForKeyedSubscript:@"shared-session-id"];
     v32 = v13;
     v34 = v33 = self;
 
     v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
     [v12 setObject:v35 forKeyedSubscript:@"MPCPlayActivityUtilitiesPlayEndEventSharedSessionParticipantCountKey"];
 
-    v10 = v28;
+    eventCopy = v28;
     [v12 setObject:v34 forKeyedSubscript:@"MPCPlayActivityUtilitiesPlayEndEventSharedSessionIdKey"];
 
     self = v33;
@@ -2056,33 +2056,33 @@ LABEL_93:
     v26 = 0x1E696A000uLL;
   }
 
-  if ([v10 endReasonType] == 11)
+  if ([eventCopy endReasonType] == 11)
   {
     [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"MPCPlayActivityUtilitiesPlayEndEventIsNaturalTransitionKey"];
   }
 
-  v36 = [*(v26 + 3480) numberWithDouble:a3];
+  v36 = [*(v26 + 3480) numberWithDouble:time];
   [v12 setObject:v36 forKeyedSubscript:@"MPCPlayActivityUtilitiesPlayEndEventStartTimeKey"];
 
-  v37 = [*(v26 + 3480) numberWithDouble:a4];
+  v37 = [*(v26 + 3480) numberWithDouble:endTime];
   [v12 setObject:v37 forKeyedSubscript:@"MPCPlayActivityUtilitiesPlayEndEventEndTimeKey"];
 
-  v38 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v38 postNotificationName:@"MPCPlayActivityUtilitiesPlayEndNotification" object:self userInfo:v12];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPCPlayActivityUtilitiesPlayEndNotification" object:self userInfo:v12];
 }
 
-- (double)_getPlaybackDurationForHLSStreamFromStartEvent:(id)a3 toEndEvent:(id)a4 withLimitedCursor:(id)a5
+- (double)_getPlaybackDurationForHLSStreamFromStartEvent:(id)event toEndEvent:(id)endEvent withLimitedCursor:(id)cursor
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 timeIntervalSinceEvent:v7];
+  eventCopy = event;
+  endEventCopy = endEvent;
+  cursorCopy = cursor;
+  [endEventCopy timeIntervalSinceEvent:eventCopy];
   v11 = v10;
-  v12 = [v9 findPreviousEventWithType:@"item-buffer-stall" matchingPayload:0];
+  v12 = [cursorCopy findPreviousEventWithType:@"item-buffer-stall" matchingPayload:0];
   if (v12)
   {
-    v13 = [v9 cursorUntilEvent:v12];
+    v13 = [cursorCopy cursorUntilEvent:v12];
     v14 = [v13 countOfPreviousEventsWithType:@"item-buffer-ready" matchingPayload:0];
     v22 = 0;
     v23 = &v22;
@@ -2090,7 +2090,7 @@ LABEL_93:
     v15 = 0;
     if (!v14)
     {
-      [v8 timeIntervalSinceEvent:{v12, 0.0}];
+      [endEventCopy timeIntervalSinceEvent:{v12, 0.0}];
     }
 
     v25 = v15;
@@ -2102,8 +2102,8 @@ LABEL_93:
     v18[1] = 3221225472;
     v18[2] = __112__MPCPlayActivityFeedEventConsumer__getPlaybackDurationForHLSStreamFromStartEvent_toEndEvent_withLimitedCursor___block_invoke;
     v18[3] = &unk_1E8231F38;
-    v19 = v9;
-    v20 = v7;
+    v19 = cursorCopy;
+    v20 = eventCopy;
     v21 = &v22;
     [v19 enumeratePreviousEventsWithTypes:v16 usingBlock:v18];
 
@@ -2155,23 +2155,23 @@ void __112__MPCPlayActivityFeedEventConsumer__getPlaybackDurationForHLSStreamFro
   }
 }
 
-- (double)_getStartTimeForMostRecentPlaybackStart:(id)a3 withItemBeginEvent:(id)a4 containerBeginEvent:(id)a5 cursor:(id)a6
+- (double)_getStartTimeForMostRecentPlaybackStart:(id)start withItemBeginEvent:(id)event containerBeginEvent:(id)beginEvent cursor:(id)cursor
 {
   v106 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 payload];
-  v13 = [v12 objectForKeyedSubscript:@"queue-section-id"];
+  startCopy = start;
+  eventCopy = event;
+  cursorCopy = cursor;
+  payload = [startCopy payload];
+  v13 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v14 = [v9 payload];
-  v15 = [v14 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [startCopy payload];
+  v15 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (v13 && v15)
   {
     v85 = v15;
-    v16 = [(MPCPlayActivityFeedEventConsumer *)self _queueSectionIsAODFromSectionIdentifier:v13 cursor:v11];
-    v17 = [v11 cursorUntilEvent:v10];
+    v16 = [(MPCPlayActivityFeedEventConsumer *)self _queueSectionIsAODFromSectionIdentifier:v13 cursor:cursorCopy];
+    v17 = [cursorCopy cursorUntilEvent:eventCopy];
     if (v16)
     {
       v99[0] = @"item-hls-stream-begin";
@@ -2180,9 +2180,9 @@ void __112__MPCPlayActivityFeedEventConsumer__getPlaybackDurationForHLSStreamFro
       v97 = @"queue-section-id";
       v98 = v13;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-      v20 = [v11 findPreviousEventWithTypes:v18 matchingPayload:v19];
+      v20 = [cursorCopy findPreviousEventWithTypes:v18 matchingPayload:v19];
 
-      v21 = [v11 cursorUntilEvent:v20];
+      v21 = [cursorCopy cursorUntilEvent:v20];
       v22 = [v21 countOfPreviousEventsWithType:@"item-resume" matchingPayload:0];
       v82 = v21;
       v23 = [v21 countOfPreviousEventsWithType:@"item-timed-metadata-ping" matchingPayload:0];
@@ -2194,8 +2194,8 @@ void __112__MPCPlayActivityFeedEventConsumer__getPlaybackDurationForHLSStreamFro
           goto LABEL_28;
         }
 
-        v25 = [v9 type];
-        if ([v25 isEqualToString:@"item-resume"])
+        type = [startCopy type];
+        if ([type isEqualToString:@"item-resume"])
         {
 
           goto LABEL_28;
@@ -2204,16 +2204,16 @@ void __112__MPCPlayActivityFeedEventConsumer__getPlaybackDurationForHLSStreamFro
         if (v24 < 2)
         {
           v81 = v20;
-          v55 = [v82 findPreviousEventWithType:@"item-resume" matchingPayload:0];
+          payload4 = [v82 findPreviousEventWithType:@"item-resume" matchingPayload:0];
 LABEL_49:
-          if (!v55)
+          if (!payload4)
           {
             v26 = 0.0;
             goto LABEL_42;
           }
 
-          v58 = [v55 payload];
-          v77 = [v58 objectForKeyedSubscript:@"item-start-position"];
+          payload3 = [payload4 payload];
+          v77 = [payload3 objectForKeyedSubscript:@"item-start-position"];
           [v77 doubleValue];
           v26 = v78;
 
@@ -2234,8 +2234,8 @@ LABEL_43:
           goto LABEL_43;
         }
 
-        v75 = [v9 type];
-        v76 = [v75 isEqualToString:@"item-resume"];
+        type2 = [startCopy type];
+        v76 = [type2 isEqualToString:@"item-resume"];
 
         if (!v76)
         {
@@ -2243,20 +2243,20 @@ LABEL_43:
         }
 
         v81 = v20;
-        v55 = v9;
+        payload4 = startCopy;
         goto LABEL_49;
       }
 
 LABEL_28:
       v81 = v20;
-      v56 = [v9 type];
-      v57 = [v56 isEqualToString:@"item-resume"];
+      type3 = [startCopy type];
+      v57 = [type3 isEqualToString:@"item-resume"];
 
       if (v57)
       {
-        v55 = [v9 payload];
-        v58 = [v55 objectForKeyedSubscript:@"item-start-position"];
-        [v58 doubleValue];
+        payload4 = [startCopy payload];
+        payload3 = [payload4 objectForKeyedSubscript:@"item-start-position"];
+        [payload3 doubleValue];
         v26 = v59;
         goto LABEL_41;
       }
@@ -2267,41 +2267,41 @@ LABEL_28:
       v94 = @"queue-section-id";
       v95 = v13;
       v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-      v55 = [v11 findPreviousEventWithTypes:v60 matchingPayload:v61];
+      payload4 = [cursorCopy findPreviousEventWithTypes:v60 matchingPayload:v61];
 
       v92[0] = @"queue-section-id";
       v92[1] = @"item-jump-user-initiated";
       v93[0] = v13;
       v93[1] = MEMORY[0x1E695E118];
       v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v93 forKeys:v92 count:2];
-      v58 = [v17 findPreviousEventWithType:@"item-position-jump" matchingPayload:v62];
+      payload3 = [v17 findPreviousEventWithType:@"item-position-jump" matchingPayload:v62];
 
-      if (v58 && (!v55 || [v58 compare:v55] == 1))
+      if (payload3 && (!payload4 || [payload3 compare:payload4] == 1))
       {
-        v63 = v58;
+        v63 = payload3;
 
-        v55 = v63;
+        payload4 = v63;
       }
 
-      v64 = [v55 type];
-      v65 = [v64 isEqualToString:@"item-begin"];
+      type4 = [payload4 type];
+      v65 = [type4 isEqualToString:@"item-begin"];
 
       if (v65)
       {
-        v66 = [v55 payload];
-        v67 = [v66 objectForKeyedSubscript:@"item-metadata"];
+        v55Payload = [payload4 payload];
+        v67 = [v55Payload objectForKeyedSubscript:@"item-metadata"];
         v68 = [v67 objectForKeyedSubscript:@"item-initial-position"];
       }
 
       else
       {
-        v69 = [v55 type];
-        v70 = [v69 isEqualToString:@"item-resume"];
+        type5 = [payload4 type];
+        v70 = [type5 isEqualToString:@"item-resume"];
 
         if (!v70)
         {
-          v73 = [v55 type];
-          v74 = [v73 isEqualToString:@"item-position-jump"];
+          type6 = [payload4 type];
+          v74 = [type6 isEqualToString:@"item-position-jump"];
 
           if (!v74)
           {
@@ -2309,8 +2309,8 @@ LABEL_28:
             goto LABEL_40;
           }
 
-          v66 = [v55 payload];
-          v68 = [v66 objectForKeyedSubscript:@"item-end-position"];
+          v55Payload = [payload4 payload];
+          v68 = [v55Payload objectForKeyedSubscript:@"item-end-position"];
 LABEL_39:
 
 LABEL_40:
@@ -2320,21 +2320,21 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        v66 = [v55 payload];
-        v68 = [v66 objectForKeyedSubscript:@"item-start-position"];
+        v55Payload = [payload4 payload];
+        v68 = [v55Payload objectForKeyedSubscript:@"item-start-position"];
       }
 
       v15 = v85;
       goto LABEL_39;
     }
 
-    v27 = [v9 type];
-    v28 = [v27 isEqualToString:@"item-resume"];
+    type7 = [startCopy type];
+    v28 = [type7 isEqualToString:@"item-resume"];
 
     if (v28)
     {
-      v84 = v10;
-      v29 = [v11 cursorFromEvent:v9 untilEvent:v10];
+      v84 = eventCopy;
+      v29 = [cursorCopy cursorFromEvent:startCopy untilEvent:eventCopy];
       v90[0] = @"queue-section-id";
       v90[1] = @"queue-item-id";
       v91[0] = v13;
@@ -2346,13 +2346,13 @@ LABEL_40:
       v89[0] = MEMORY[0x1E695E118];
       v88[0] = @"item-jump-user-initiated";
       v88[1] = @"queue-section-id";
-      v31 = [v9 payload];
-      [v31 objectForKeyedSubscript:@"queue-section-id"];
+      payload5 = [startCopy payload];
+      [payload5 objectForKeyedSubscript:@"queue-section-id"];
       v33 = v32 = v17;
       v89[1] = v33;
       v88[2] = @"queue-item-id";
-      v34 = [v9 payload];
-      v35 = [v34 objectForKeyedSubscript:@"queue-item-id"];
+      payload6 = [startCopy payload];
+      v35 = [payload6 objectForKeyedSubscript:@"queue-item-id"];
       v89[2] = v35;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:3];
       v80 = v32;
@@ -2360,11 +2360,11 @@ LABEL_40:
 
       if (v79 || !v37)
       {
-        v10 = v84;
-        if (v79 || ![(MPCPlayActivityFeedEventConsumer *)self _itemBeginOccuredDuringOverlappingTransition:v84 cursor:v11])
+        eventCopy = v84;
+        if (v79 || ![(MPCPlayActivityFeedEventConsumer *)self _itemBeginOccuredDuringOverlappingTransition:v84 cursor:cursorCopy])
         {
-          v38 = [v9 payload];
-          v53 = [v38 objectForKeyedSubscript:@"item-start-position"];
+          payload7 = [startCopy payload];
+          v53 = [payload7 objectForKeyedSubscript:@"item-start-position"];
           [v53 doubleValue];
           v26 = v54;
         }
@@ -2376,21 +2376,21 @@ LABEL_40:
           v87[0] = v13;
           v87[1] = v85;
           v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:2];
-          v38 = [v11 findPreviousEventWithType:@"item-transition-created" matchingPayload:v48];
+          payload7 = [cursorCopy findPreviousEventWithType:@"item-transition-created" matchingPayload:v48];
 
-          [(MPCPlayActivityFeedEventConsumer *)self _incomingStartTimeForTransitionEvent:v38 useSourceTime:1];
+          [(MPCPlayActivityFeedEventConsumer *)self _incomingStartTimeForTransitionEvent:payload7 useSourceTime:1];
           v26 = v49;
         }
       }
 
       else
       {
-        v38 = [v37 payload];
-        v39 = [v38 objectForKeyedSubscript:@"item-end-position"];
+        payload7 = [v37 payload];
+        v39 = [payload7 objectForKeyedSubscript:@"item-end-position"];
         [v39 doubleValue];
         v26 = v40;
 
-        v10 = v84;
+        eventCopy = v84;
       }
 
       v17 = v80;
@@ -2398,29 +2398,29 @@ LABEL_40:
 
     else
     {
-      v41 = v10;
-      v42 = [v9 type];
-      v43 = [v42 isEqualToString:@"item-begin"];
+      v41 = eventCopy;
+      type8 = [startCopy type];
+      v43 = [type8 isEqualToString:@"item-begin"];
 
       if (v43)
       {
-        v44 = [v41 payload];
-        v45 = [v44 objectForKeyedSubscript:@"item-metadata"];
+        payload8 = [v41 payload];
+        v45 = [payload8 objectForKeyedSubscript:@"item-metadata"];
         v46 = [v45 objectForKeyedSubscript:@"item-initial-position"];
         [v46 doubleValue];
         v26 = v47;
 
-        v10 = v41;
+        eventCopy = v41;
       }
 
       else
       {
-        v50 = [v9 payload];
-        v51 = [v50 objectForKeyedSubscript:@"item-end-position"];
+        payload9 = [startCopy payload];
+        v51 = [payload9 objectForKeyedSubscript:@"item-end-position"];
         [v51 doubleValue];
         v26 = v52;
 
-        v10 = v41;
+        eventCopy = v41;
       }
     }
 
@@ -2434,11 +2434,11 @@ LABEL_40:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v101 = self;
+      selfCopy = self;
       v102 = 2114;
-      v103 = v9;
+      v103 = startCopy;
       v104 = 2114;
-      v105 = v11;
+      v105 = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _getStartTimeForMostRecentPlaybackStart:withItemBeginEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
     }
   }
@@ -2448,24 +2448,24 @@ LABEL_44:
   return v26;
 }
 
-- (double)_wallClockPlayDurationForEndEvent:(id)a3 endReasonType:(int64_t)a4 itemBeginEvent:(id)a5 cursor:(id)a6
+- (double)_wallClockPlayDurationForEndEvent:(id)event endReasonType:(int64_t)type itemBeginEvent:(id)beginEvent cursor:(id)cursor
 {
   v97[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v72 = a5;
-  v11 = a6;
-  v12 = [v10 payload];
-  v13 = [v12 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  beginEventCopy = beginEvent;
+  cursorCopy = cursor;
+  payload = [eventCopy payload];
+  v13 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v14 = [v10 payload];
-  v15 = [v14 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v15 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v16 = 0.0;
   if (v13 && v15)
   {
-    v68 = a4;
-    v17 = [v11 cursorFromEvent:v10 untilEvent:0];
-    v18 = [(MPCPlayActivityFeedEventConsumer *)self _queueSectionIsAODFromSectionIdentifier:v13 cursor:v11];
+    typeCopy = type;
+    v17 = [cursorCopy cursorFromEvent:eventCopy untilEvent:0];
+    v18 = [(MPCPlayActivityFeedEventConsumer *)self _queueSectionIsAODFromSectionIdentifier:v13 cursor:cursorCopy];
     v97[0] = @"item-begin";
     v97[1] = @"item-resume";
     v97[2] = @"item-position-jump";
@@ -2477,7 +2477,7 @@ LABEL_44:
     v71 = v15;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:2];
     v69 = v17;
-    v70 = self;
+    selfCopy = self;
     v21 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v19 matchingPayload:v20 cursor:v17];
 
     if (v18)
@@ -2489,13 +2489,13 @@ LABEL_44:
       v92 = @"queue-section-id";
       v93 = v13;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-      v25 = [v11 findPreviousEventWithTypes:v23 matchingPayload:v24];
+      type4 = [cursorCopy findPreviousEventWithTypes:v23 matchingPayload:v24];
 
-      v26 = [v11 cursorUntilEvent:v25];
+      v26 = [cursorCopy cursorUntilEvent:type4];
       if ([v26 countOfPreviousEventsWithType:@"item-resume" matchingPayload:0] <= 1)
       {
-        v27 = [v22 type];
-        if ([v27 isEqualToString:@"item-resume"])
+        type = [v22 type];
+        if ([type isEqualToString:@"item-resume"])
         {
         }
 
@@ -2512,9 +2512,9 @@ LABEL_44:
             v90 = v13;
             v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
             v31 = v69;
-            v32 = [(MPCPlayActivityFeedEventConsumer *)v70 _findRecentPlaybackStartFromTypes:v29 matchingPayload:v30 cursor:v69];
+            v32 = [(MPCPlayActivityFeedEventConsumer *)selfCopy _findRecentPlaybackStartFromTypes:v29 matchingPayload:v30 cursor:v69];
 
-            [v10 timeIntervalSinceEvent:v32];
+            [eventCopy timeIntervalSinceEvent:v32];
             v16 = v33;
 
             v34 = v32;
@@ -2527,38 +2527,38 @@ LABEL_44:
       v21 = v22;
     }
 
-    [v10 timeIntervalSinceEvent:v21];
+    [eventCopy timeIntervalSinceEvent:v21];
     v16 = v35;
     v36 = os_log_create("com.apple.amp.mediaplaybackcore", "PAF");
-    v37 = v70;
+    v37 = selfCopy;
     v34 = v21;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v38 = [v10 monotonicDate];
-      v39 = [v34 monotonicDate];
+      monotonicDate = [eventCopy monotonicDate];
+      monotonicDate2 = [v34 monotonicDate];
       *buf = 134218754;
-      v82 = v70;
+      v82 = selfCopy;
       v83 = 2114;
-      v84 = v38;
+      v84 = monotonicDate;
       v85 = 2114;
-      v86 = *&v39;
+      v86 = *&monotonicDate2;
       v87 = 2048;
       v88 = v16;
       _os_log_impl(&dword_1C5C61000, v36, OS_LOG_TYPE_INFO, "PlayActivityFeedEventConsumer %p: Adding wall clock duration from end event %{public}@ - start event %{public}@ = %.3fs", buf, 0x2Au);
     }
 
-    v40 = [v34 type];
-    v41 = [v40 isEqualToString:@"item-resume"];
+    type2 = [v34 type];
+    v41 = [type2 isEqualToString:@"item-resume"];
 
     if (v41)
     {
-      v42 = [v11 cursorFromEvent:v34 untilEvent:v72];
+      type3 = [cursorCopy cursorFromEvent:v34 untilEvent:beginEventCopy];
       v79[0] = @"queue-section-id";
       v79[1] = @"queue-item-id";
       v80[0] = v13;
       v80[1] = v71;
       v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:v79 count:2];
-      v44 = [v42 countOfPreviousEventsWithType:@"item-resume" matchingPayload:v43];
+      v44 = [type3 countOfPreviousEventsWithType:@"item-resume" matchingPayload:v43];
 
       if (v44)
       {
@@ -2568,26 +2568,26 @@ LABEL_44:
       else
       {
         v31 = v69;
-        if ([(MPCPlayActivityFeedEventConsumer *)v70 _itemBeginOccuredDuringOverlappingTransition:v72 cursor:v11])
+        if ([(MPCPlayActivityFeedEventConsumer *)selfCopy _itemBeginOccuredDuringOverlappingTransition:beginEventCopy cursor:cursorCopy])
         {
           v77[0] = @"incoming-item-section-id";
           v77[1] = @"incoming-item-id";
           v78[0] = v13;
           v78[1] = v71;
           v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v78 forKeys:v77 count:2];
-          v53 = [v11 findPreviousEventWithType:@"item-transition-created" matchingPayload:v52];
+          v53 = [cursorCopy findPreviousEventWithType:@"item-transition-created" matchingPayload:v52];
 
           if (v53)
           {
-            [(MPCPlayActivityFeedEventConsumer *)v70 _incomingDurationBeforePivotForTransition:v53 useSourceTime:1];
+            [(MPCPlayActivityFeedEventConsumer *)selfCopy _incomingDurationBeforePivotForTransition:v53 useSourceTime:1];
             v55 = v54;
             v56 = os_log_create("com.apple.amp.mediaplaybackcore", "PAF");
             if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
             {
-              v57 = [v53 payload];
-              v58 = [v57 objectForKeyedSubscript:@"transition-parameters"];
+              payload3 = [v53 payload];
+              v58 = [payload3 objectForKeyedSubscript:@"transition-parameters"];
               *buf = 134218498;
-              v82 = v70;
+              v82 = selfCopy;
               v83 = 2114;
               v84 = v58;
               v85 = 2048;
@@ -2595,7 +2595,7 @@ LABEL_44:
               _os_log_impl(&dword_1C5C61000, v56, OS_LOG_TYPE_INFO, "PlayActivityFeedEventConsumer %p: Adding wall clock duration from incoming pivot %{public}@ = %.3fs", buf, 0x20u);
 
               v31 = v69;
-              v37 = v70;
+              v37 = selfCopy;
             }
 
             v16 = v16 + v55;
@@ -2608,21 +2608,21 @@ LABEL_44:
 
     else
     {
-      v42 = [v34 type];
+      type3 = [v34 type];
       v31 = v69;
       v15 = v71;
-      if ([v42 isEqualToString:@"item-begin"])
+      if ([type3 isEqualToString:@"item-begin"])
       {
-        v45 = [(MPCPlayActivityFeedEventConsumer *)v70 _itemBeginOccuredDuringOverlappingTransition:v72 cursor:v11];
+        v45 = [(MPCPlayActivityFeedEventConsumer *)selfCopy _itemBeginOccuredDuringOverlappingTransition:beginEventCopy cursor:cursorCopy];
 
         if (!v45)
         {
 LABEL_29:
-          v25 = [v10 type];
-          if ([v25 isEqualToString:@"item-end"] && -[MPCPlayActivityFeedEventConsumer _itemEndOccuredDuringOverlappingTransition:cursor:](v37, "_itemEndOccuredDuringOverlappingTransition:cursor:", v10, v11))
+          type4 = [eventCopy type];
+          if ([type4 isEqualToString:@"item-end"] && -[MPCPlayActivityFeedEventConsumer _itemEndOccuredDuringOverlappingTransition:cursor:](v37, "_itemEndOccuredDuringOverlappingTransition:cursor:", eventCopy, cursorCopy))
           {
 
-            if (v68 != 11)
+            if (typeCopy != 11)
             {
 LABEL_36:
 
@@ -2634,15 +2634,15 @@ LABEL_36:
             v74[0] = v13;
             v74[1] = v15;
             v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
-            v25 = [v11 findPreviousEventWithType:@"item-transition-created" matchingPayload:v59];
+            type4 = [cursorCopy findPreviousEventWithType:@"item-transition-created" matchingPayload:v59];
 
-            [(MPCPlayActivityFeedEventConsumer *)v37 _outgoingDurationAfterPivotForTransition:v25 useSourceTime:1];
+            [(MPCPlayActivityFeedEventConsumer *)v37 _outgoingDurationAfterPivotForTransition:type4 useSourceTime:1];
             v61 = v60;
             v62 = os_log_create("com.apple.amp.mediaplaybackcore", "PAF");
             if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
             {
-              v63 = [v25 payload];
-              v64 = [v63 objectForKeyedSubscript:@"transition-parameters"];
+              payload4 = [type4 payload];
+              v64 = [payload4 objectForKeyedSubscript:@"transition-parameters"];
               v65 = v37;
               v66 = v64;
               *buf = 134218498;
@@ -2669,26 +2669,26 @@ LABEL_35:
         v76[0] = v13;
         v76[1] = v71;
         v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v76 forKeys:v75 count:2];
-        v42 = [v11 findPreviousEventWithType:@"item-transition-created" matchingPayload:v46];
+        type3 = [cursorCopy findPreviousEventWithType:@"item-transition-created" matchingPayload:v46];
 
-        if (v42)
+        if (type3)
         {
-          [(MPCPlayActivityFeedEventConsumer *)v70 _incomingDurationBeforePivotForTransition:v42 useSourceTime:1];
+          [(MPCPlayActivityFeedEventConsumer *)selfCopy _incomingDurationBeforePivotForTransition:type3 useSourceTime:1];
           v48 = v47;
           v49 = os_log_create("com.apple.amp.mediaplaybackcore", "PAF");
           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
           {
-            v50 = [v42 payload];
-            v51 = [v50 objectForKeyedSubscript:@"transition-parameters"];
+            payload5 = [type3 payload];
+            v51 = [payload5 objectForKeyedSubscript:@"transition-parameters"];
             *buf = 134218498;
-            v82 = v70;
+            v82 = selfCopy;
             v83 = 2114;
             v84 = v51;
             v85 = 2048;
             v86 = v48;
             _os_log_impl(&dword_1C5C61000, v49, OS_LOG_TYPE_INFO, "PlayActivityFeedEventConsumer %p: Adding wall clock duration from incoming pivot %{public}@ = %.3fs", buf, 0x20u);
 
-            v37 = v70;
+            v37 = selfCopy;
             v15 = v71;
           }
 
@@ -2705,13 +2705,13 @@ LABEL_37:
   return v16;
 }
 
-- (double)_outgoingDurationAfterPivotForTransition:(id)a3 useSourceTime:(BOOL)a4
+- (double)_outgoingDurationAfterPivotForTransition:(id)transition useSourceTime:(BOOL)time
 {
-  v4 = a4;
-  v6 = a3;
-  [(MPCPlayActivityFeedEventConsumer *)self _outgoingPivotTimeForTransitionEvent:v6 useSourceTime:v4];
+  timeCopy = time;
+  transitionCopy = transition;
+  [(MPCPlayActivityFeedEventConsumer *)self _outgoingPivotTimeForTransitionEvent:transitionCopy useSourceTime:timeCopy];
   v8 = v7;
-  [(MPCPlayActivityFeedEventConsumer *)self _outgoingEndTimeForTransitionEvent:v6 useSourceTime:v4];
+  [(MPCPlayActivityFeedEventConsumer *)self _outgoingEndTimeForTransitionEvent:transitionCopy useSourceTime:timeCopy];
   v10 = v9;
 
   result = 0.0;
@@ -2723,13 +2723,13 @@ LABEL_37:
   return result;
 }
 
-- (double)_incomingDurationBeforePivotForTransition:(id)a3 useSourceTime:(BOOL)a4
+- (double)_incomingDurationBeforePivotForTransition:(id)transition useSourceTime:(BOOL)time
 {
-  v4 = a4;
-  v6 = a3;
-  [(MPCPlayActivityFeedEventConsumer *)self _incomingStartTimeForTransitionEvent:v6 useSourceTime:v4];
+  timeCopy = time;
+  transitionCopy = transition;
+  [(MPCPlayActivityFeedEventConsumer *)self _incomingStartTimeForTransitionEvent:transitionCopy useSourceTime:timeCopy];
   v8 = v7;
-  [(MPCPlayActivityFeedEventConsumer *)self _incomingPivotTimeForTransitionEvent:v6 useSourceTime:v4];
+  [(MPCPlayActivityFeedEventConsumer *)self _incomingPivotTimeForTransitionEvent:transitionCopy useSourceTime:timeCopy];
   v10 = v9;
 
   result = 0.0;
@@ -2741,16 +2741,16 @@ LABEL_37:
   return result;
 }
 
-- (double)_outgoingEndTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4
+- (double)_outgoingEndTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time
 {
-  v4 = a4;
+  timeCopy = time;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionEndSourceTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
-  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionEndTargetTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
-  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"endTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
+  eventCopy = event;
+  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionEndSourceTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
+  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionEndTargetTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
+  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"endTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
   v10 = v9;
-  if (v4 && v7)
+  if (timeCopy && v7)
   {
     v9 = v7;
 LABEL_8:
@@ -2759,7 +2759,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4 && v8)
+  if (!timeCopy && v8)
   {
     v9 = v8;
     goto LABEL_8;
@@ -2774,9 +2774,9 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = eventCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _outgoingEndTimeForTransitionEvent: - could not find Outgoing Item end time in ItemTransitionParameters event=%{public}@", &v15, 0x16u);
   }
 
@@ -2786,16 +2786,16 @@ LABEL_9:
   return v12;
 }
 
-- (double)_outgoingPivotTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4
+- (double)_outgoingPivotTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time
 {
-  v4 = a4;
+  timeCopy = time;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotSourceTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
-  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotTargetTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
-  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:v6 inParametersDictionary:@"outgoing"];
+  eventCopy = event;
+  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotSourceTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
+  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotTargetTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
+  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:eventCopy inParametersDictionary:@"outgoing"];
   v10 = v9;
-  if (v4 && v7)
+  if (timeCopy && v7)
   {
     v9 = v7;
 LABEL_8:
@@ -2804,7 +2804,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4 && v8)
+  if (!timeCopy && v8)
   {
     v9 = v8;
     goto LABEL_8;
@@ -2819,9 +2819,9 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = eventCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _outgoingPivotTimeForTransitionEvent: - could not find Outgoing Item pivot time in ItemTransitionParameters event=%{public}@", &v15, 0x16u);
   }
 
@@ -2831,16 +2831,16 @@ LABEL_9:
   return v12;
 }
 
-- (double)_incomingPivotTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4
+- (double)_incomingPivotTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time
 {
-  v4 = a4;
+  timeCopy = time;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotSourceTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
-  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotTargetTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
-  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
+  eventCopy = event;
+  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotSourceTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
+  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"pivotTargetTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
+  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
   v10 = v9;
-  if (v4 && v7)
+  if (timeCopy && v7)
   {
     v9 = v7;
 LABEL_8:
@@ -2849,7 +2849,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4 && v8)
+  if (!timeCopy && v8)
   {
     v9 = v8;
     goto LABEL_8;
@@ -2864,9 +2864,9 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = eventCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _incomingPivotTimeForTransitionEvent: - could not find Incoming Item pivot time in ItemTransitionParameters event=%{public}@", &v15, 0x16u);
   }
 
@@ -2876,16 +2876,16 @@ LABEL_9:
   return v12;
 }
 
-- (double)_incomingStartTimeForTransitionEvent:(id)a3 useSourceTime:(BOOL)a4
+- (double)_incomingStartTimeForTransitionEvent:(id)event useSourceTime:(BOOL)time
 {
-  v4 = a4;
+  timeCopy = time;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionStartSourceTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
-  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionStartTargetTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
-  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:v6 inParametersDictionary:@"incoming"];
+  eventCopy = event;
+  v7 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionStartSourceTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
+  v8 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"transitionStartTargetTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
+  v9 = [(MPCPlayActivityFeedEventConsumer *)self _fetchField:@"startTime" fromTransitionEvent:eventCopy inParametersDictionary:@"incoming"];
   v10 = v9;
-  if (v4 && v7)
+  if (timeCopy && v7)
   {
     v9 = v7;
 LABEL_8:
@@ -2894,7 +2894,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4 && v8)
+  if (!timeCopy && v8)
   {
     v9 = v8;
     goto LABEL_8;
@@ -2909,9 +2909,9 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = eventCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _incomingStartTimeForTransitionEvent: - could not find Incoming Item start time in ItemTransitionParameters event=%{public}@", &v15, 0x16u);
   }
 
@@ -2921,22 +2921,22 @@ LABEL_9:
   return v12;
 }
 
-- (id)_fetchField:(id)a3 fromTransitionEvent:(id)a4 inParametersDictionary:(id)a5
+- (id)_fetchField:(id)field fromTransitionEvent:(id)event inParametersDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 payload];
-  v12 = [v11 objectForKeyedSubscript:@"transition-parameters"];
+  fieldCopy = field;
+  eventCopy = event;
+  dictionaryCopy = dictionary;
+  payload = [eventCopy payload];
+  v12 = [payload objectForKeyedSubscript:@"transition-parameters"];
 
   if (v12)
   {
-    v13 = [v12 objectForKeyedSubscript:v10];
+    v13 = [v12 objectForKeyedSubscript:dictionaryCopy];
     if (v13)
     {
       v14 = v13;
-      v15 = [v13 objectForKeyedSubscript:v8];
+      v15 = [v13 objectForKeyedSubscript:fieldCopy];
       goto LABEL_10;
     }
 
@@ -2944,11 +2944,11 @@ LABEL_9:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v18 = 134218498;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v10;
+      v21 = dictionaryCopy;
       v22 = 2114;
-      v23 = v9;
+      v23 = eventCopy;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _fetchField:fromTransitionEvent:inParametersDictionary: - could not find Item parameters for key=%{public}@ in ItemTransitionParameters event=%{public}@", &v18, 0x20u);
     }
 
@@ -2961,9 +2961,9 @@ LABEL_9:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v18 = 134218242;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v9;
+      v21 = eventCopy;
       _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _fetchField:fromTransitionEvent:inParametersDictionary: - could not find ItemTransitionParameters event=%{public}@", &v18, 0x16u);
     }
   }
@@ -2974,21 +2974,21 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)_itemEndOccuredDuringOverlappingTransition:(id)a3 cursor:(id)a4
+- (BOOL)_itemEndOccuredDuringOverlappingTransition:(id)transition cursor:(id)cursor
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 payload];
-  v8 = [v7 objectForKeyedSubscript:@"queue-section-id"];
+  transitionCopy = transition;
+  cursorCopy = cursor;
+  payload = [transitionCopy payload];
+  v8 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v9 = [v5 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [transitionCopy payload];
+  v10 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v11 = 0;
   if (v8 && v10)
   {
-    v12 = [v6 cursorFromEvent:v5 untilEvent:0];
+    v12 = [cursorCopy cursorFromEvent:transitionCopy untilEvent:0];
     v20[0] = @"transition-will-start";
     v20[1] = @"transition-did-reach-pivot-point";
     v20[2] = @"transition-did-end";
@@ -3003,8 +3003,8 @@ LABEL_10:
 
     if (v15)
     {
-      v16 = [v15 type];
-      v11 = [v16 isEqualToString:@"transition-did-reach-pivot-point"];
+      type = [v15 type];
+      v11 = [type isEqualToString:@"transition-did-reach-pivot-point"];
     }
 
     else
@@ -3016,21 +3016,21 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_itemBeginOccuredDuringOverlappingTransition:(id)a3 cursor:(id)a4
+- (BOOL)_itemBeginOccuredDuringOverlappingTransition:(id)transition cursor:(id)cursor
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 payload];
-  v8 = [v7 objectForKeyedSubscript:@"queue-section-id"];
+  transitionCopy = transition;
+  cursorCopy = cursor;
+  payload = [transitionCopy payload];
+  v8 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v9 = [v5 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [transitionCopy payload];
+  v10 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v11 = 0;
   if (v8 && v10)
   {
-    v12 = [v6 cursorFromEvent:v5 untilEvent:0];
+    v12 = [cursorCopy cursorFromEvent:transitionCopy untilEvent:0];
     v20[0] = @"transition-will-start";
     v20[1] = @"transition-did-reach-pivot-point";
     v20[2] = @"transition-did-end";
@@ -3045,8 +3045,8 @@ LABEL_10:
 
     if (v15)
     {
-      v16 = [v15 type];
-      v11 = [v16 isEqualToString:@"transition-did-reach-pivot-point"];
+      type = [v15 type];
+      v11 = [type isEqualToString:@"transition-did-reach-pivot-point"];
     }
 
     else
@@ -3058,11 +3058,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)_findRecentPlaybackStartFromTypes:(id)a3 matchingPayload:(id)a4 cursor:(id)a5
+- (id)_findRecentPlaybackStartFromTypes:(id)types matchingPayload:(id)payload cursor:(id)cursor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typesCopy = types;
+  payloadCopy = payload;
+  cursorCopy = cursor;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -3073,10 +3073,10 @@ LABEL_10:
   v13[1] = 3221225472;
   v13[2] = __93__MPCPlayActivityFeedEventConsumer__findRecentPlaybackStartFromTypes_matchingPayload_cursor___block_invoke;
   v13[3] = &unk_1E8231A28;
-  v10 = v9;
+  v10 = cursorCopy;
   v14 = v10;
   v15 = &v16;
-  [v10 enumeratePreviousEventsWithTypes:v7 matchingPayload:v8 usingBlock:v13];
+  [v10 enumeratePreviousEventsWithTypes:typesCopy matchingPayload:payloadCopy usingBlock:v13];
   v11 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -3131,18 +3131,18 @@ LABEL_5:
 LABEL_8:
 }
 
-- (id)_generateAggregateNoncatalogEndEventForCursor:(id)a3
+- (id)_generateAggregateNoncatalogEndEventForCursor:(id)cursor
 {
   v82[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cursorCopy = cursor;
   v82[0] = @"item-begin";
   v82[1] = @"item-pause";
   v82[2] = @"item-end";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:3];
-  v6 = [v4 findPreviousEventWithTypes:v5 matchingPayload:0];
+  v6 = [cursorCopy findPreviousEventWithTypes:v5 matchingPayload:0];
 
-  v7 = [v6 type];
-  v8 = [v7 isEqualToString:@"item-begin"];
+  type = [v6 type];
+  v8 = [type isEqualToString:@"item-begin"];
 
   if (!v8)
   {
@@ -3151,9 +3151,9 @@ LABEL_8:
   }
 
   v9 = v6;
-  v53 = [v4 cursorUntilEvent:v9];
-  v10 = [v9 payload];
-  v11 = [v10 objectForKeyedSubscript:@"queue-item-id"];
+  v53 = [cursorCopy cursorUntilEvent:v9];
+  payload = [v9 payload];
+  v11 = [payload objectForKeyedSubscript:@"queue-item-id"];
   v12 = v11 == 0;
 
   if (v12)
@@ -3164,7 +3164,7 @@ LABEL_8:
       *buf = 134218242;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _generateAggregateNoncatalogEndEventForCursor: - could not find queueItemIdentifier - cursor:%{public}@", buf, 0x16u);
     }
   }
@@ -3175,15 +3175,15 @@ LABEL_8:
     v80[1] = @"queue-item-id";
     v81[0] = MEMORY[0x1E695E118];
     v80[0] = @"item-jump-user-initiated";
-    v14 = [v9 payload];
-    v15 = [v14 objectForKeyedSubscript:@"queue-item-id"];
+    payload2 = [v9 payload];
+    v15 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
     v81[1] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:2];
     v17 = [v53 findPreviousEventWithType:@"item-position-jump" matchingPayload:v16];
 
     if (!v17)
     {
-      v52 = [v4 cursorFromEvent:v9 untilEvent:0];
+      v52 = [cursorCopy cursorFromEvent:v9 untilEvent:0];
       v77 = v13;
       v78 = @"item-metadata";
       v76 = @"requires-mpaf";
@@ -3194,8 +3194,8 @@ LABEL_8:
 
       if (v51)
       {
-        v20 = [v51 payload];
-        v21 = [v20 objectForKeyedSubscript:@"queue-item-id"];
+        payload3 = [v51 payload];
+        v21 = [payload3 objectForKeyedSubscript:@"queue-item-id"];
         v22 = v21 == 0;
 
         if (v22)
@@ -3206,7 +3206,7 @@ LABEL_8:
             *buf = 134218242;
             *&buf[4] = self;
             *&buf[12] = 2114;
-            *&buf[14] = v4;
+            *&buf[14] = cursorCopy;
             _os_log_impl(&dword_1C5C61000, v43, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _generateAggregateNoncatalogEndEventForCursor: - could not find queueItemIdentifier - cursor:%{public}@", buf, 0x16u);
           }
 
@@ -3215,8 +3215,8 @@ LABEL_8:
         }
 
         v74 = @"queue-item-id";
-        v23 = [v51 payload];
-        v24 = [v23 objectForKeyedSubscript:@"queue-item-id"];
+        payload4 = [v51 payload];
+        v24 = [payload4 objectForKeyedSubscript:@"queue-item-id"];
         v75 = v24;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v26 = [v52 findPreviousEventWithType:@"item-end" matchingPayload:v25];
@@ -3251,21 +3251,21 @@ LABEL_28:
       {
         v32 = objc_alloc_init(MEMORY[0x1E69E44F8]);
         [v32 setEventType:0];
-        v33 = [MEMORY[0x1E695DF00] date];
-        [v32 setEventDate:v33];
+        date = [MEMORY[0x1E695DF00] date];
+        [v32 setEventDate:date];
 
         [v32 setItemType:7];
         [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v32 withDeviceInfoFromCursor:v52];
-        v34 = [v50 payload];
-        v35 = [v34 objectForKeyedSubscript:@"queue-section-id"];
+        payload5 = [v50 payload];
+        v35 = [payload5 objectForKeyedSubscript:@"queue-section-id"];
 
         v68 = @"queue-section-id";
         v69 = v35;
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
         v49 = [v52 findPreviousEventWithType:@"queue-add" matchingPayload:v36];
 
-        v37 = [v49 payload];
-        v38 = [v37 objectForKeyedSubscript:@"account-id"];
+        payload6 = [v49 payload];
+        v38 = [payload6 objectForKeyedSubscript:@"account-id"];
 
         v66 = @"rectification-section-id";
         v67 = v35;
@@ -3274,8 +3274,8 @@ LABEL_28:
 
         if (v48)
         {
-          v40 = [v48 payload];
-          v41 = [v40 objectForKeyedSubscript:@"account-id"];
+          payload7 = [v48 payload];
+          v41 = [payload7 objectForKeyedSubscript:@"account-id"];
 
           v42 = v41;
         }
@@ -3303,7 +3303,7 @@ LABEL_28:
         v54[2] = __82__MPCPlayActivityFeedEventConsumer__generateAggregateNoncatalogEndEventForCursor___block_invoke;
         v54[3] = &unk_1E8231A00;
         v54[4] = self;
-        v55 = v4;
+        v55 = cursorCopy;
         v27 = v27;
         v56 = v27;
         v57 = &v59;
@@ -3572,20 +3572,20 @@ LABEL_29:
 LABEL_30:
 }
 
-- (BOOL)_itemIsPlaceholderFromQueueSectionIdentifier:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5
+- (BOOL)_itemIsPlaceholderFromQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MPCPlayActivityFeedEventConsumer *)self _itemWithinHLSTimedMetadataBeginFromQueueSection:v8 itemIdentifier:v9 cursor:v10])
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  cursorCopy = cursor;
+  if ([(MPCPlayActivityFeedEventConsumer *)self _itemWithinHLSTimedMetadataBeginFromQueueSection:identifierCopy itemIdentifier:itemIdentifierCopy cursor:cursorCopy])
   {
     v15[0] = @"queue-section-id";
     v15[1] = @"queue-item-id";
-    v16[0] = v8;
-    v16[1] = v9;
+    v16[0] = identifierCopy;
+    v16[1] = itemIdentifierCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-    v12 = [v10 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v11];
+    v12 = [cursorCopy findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v11];
 
     v13 = v12 == 0;
   }
@@ -3598,15 +3598,15 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)_itemWithinHLSTimedMetadataBeginFromQueueSection:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5
+- (BOOL)_itemWithinHLSTimedMetadataBeginFromQueueSection:(id)section itemIdentifier:(id)identifier cursor:(id)cursor
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  sectionCopy = section;
+  cursorCopy = cursor;
   v21 = @"queue-section-id";
-  v22[0] = v6;
+  v22[0] = sectionCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  v9 = [v7 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v8];
+  v9 = [cursorCopy findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v8];
 
   if (v9)
   {
@@ -3614,14 +3614,14 @@ LABEL_30:
     v20[1] = @"item-hls-timed-metadata-end";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v18 = @"item-stream-id";
-    v11 = [v9 payload];
-    v12 = [v11 objectForKeyedSubscript:@"item-stream-id"];
+    payload = [v9 payload];
+    v12 = [payload objectForKeyedSubscript:@"item-stream-id"];
     v19 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v14 = [v7 findPreviousEventWithTypes:v10 matchingPayload:v13];
+    v14 = [cursorCopy findPreviousEventWithTypes:v10 matchingPayload:v13];
 
-    v15 = [v14 type];
-    v16 = [v15 isEqualToString:@"item-hls-timed-metadata-begin"];
+    type = [v14 type];
+    v16 = [type isEqualToString:@"item-hls-timed-metadata-begin"];
   }
 
   else
@@ -3632,27 +3632,27 @@ LABEL_30:
   return v16;
 }
 
-- (BOOL)_itemIsPlayingFromQueueSectionIdentifier:(id)a3 itemIdentifier:(id)a4 cursor:(id)a5
+- (BOOL)_itemIsPlayingFromQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  cursorCopy = cursor;
   v29[0] = @"queue-section-id";
   v29[1] = @"queue-item-id";
-  v30[0] = v8;
-  v30[1] = v9;
+  v30[0] = identifierCopy;
+  v30[1] = itemIdentifierCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-  v12 = [v10 findPreviousEventWithType:@"item-begin" matchingPayload:v11];
+  v12 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v11];
 
   if (v12)
   {
-    v13 = [v10 cursorFromEvent:v12 untilEvent:0];
-    if ([(MPCPlayActivityFeedEventConsumer *)self _itemWithinHLSTimedMetadataBeginFromQueueSection:v8 itemIdentifier:v9 cursor:v13])
+    v13 = [cursorCopy cursorFromEvent:v12 untilEvent:0];
+    if ([(MPCPlayActivityFeedEventConsumer *)self _itemWithinHLSTimedMetadataBeginFromQueueSection:identifierCopy itemIdentifier:itemIdentifierCopy cursor:v13])
     {
-      v14 = v10;
+      v14 = cursorCopy;
       v27 = @"queue-section-id";
-      v28 = v8;
+      v28 = identifierCopy;
       v15 = MEMORY[0x1E695DF20];
       v16 = &v28;
       v17 = &v27;
@@ -3661,11 +3661,11 @@ LABEL_30:
 
     else
     {
-      v14 = [v10 cursorUntilEvent:v12];
+      v14 = [cursorCopy cursorUntilEvent:v12];
       v25[0] = @"queue-section-id";
       v25[1] = @"queue-item-id";
-      v26[0] = v8;
-      v26[1] = v9;
+      v26[0] = identifierCopy;
+      v26[1] = itemIdentifierCopy;
       v15 = MEMORY[0x1E695DF20];
       v16 = v26;
       v17 = v25;
@@ -3696,21 +3696,21 @@ LABEL_30:
   return v19;
 }
 
-- (BOOL)_handleApplicationTerminationEvent:(id)a3 cursor:(id)a4
+- (BOOL)_handleApplicationTerminationEvent:(id)event cursor:(id)cursor
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  cursorCopy = cursor;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v7 findPreviousEventWithType:@"item-begin" matchingPayload:0];
+  v9 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:0];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 payload];
-    v12 = [v11 objectForKeyedSubscript:@"queue-section-id"];
+    payload = [v9 payload];
+    v12 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-    v13 = [v10 payload];
-    v14 = [v13 objectForKeyedSubscript:@"queue-item-id"];
+    payload2 = [v10 payload];
+    v14 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
     if (v14 && v12)
     {
@@ -3719,25 +3719,25 @@ LABEL_30:
       v34[0] = v12;
       v34[1] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
-      v16 = [v7 findPreviousEventWithType:@"item-resume" matchingPayload:v15];
+      v16 = [cursorCopy findPreviousEventWithType:@"item-resume" matchingPayload:v15];
 
       if (v16)
       {
-        v17 = [(MPCPlayActivityFeedEventConsumer *)self _generatePlaybackEndEventFromEvent:v6 withQueueSectionIdentifier:v12 itemIdentifier:v14 cursor:v7];
+        v17 = [(MPCPlayActivityFeedEventConsumer *)self _generatePlaybackEndEventFromEvent:eventCopy withQueueSectionIdentifier:v12 itemIdentifier:v14 cursor:cursorCopy];
         if ([v17 itemType] != 4 || (objc_msgSend(v17, "itemDuration"), v18 != 0.0))
         {
-          v19 = [v6 date];
+          date = [eventCopy date];
           [v16 date];
-          v20 = v32 = v6;
-          [v19 timeIntervalSinceDate:v20];
+          v20 = v32 = eventCopy;
+          [date timeIntervalSinceDate:v20];
           v22 = v21;
 
-          v23 = [v16 payload];
-          v24 = [v23 objectForKeyedSubscript:@"item-start-position"];
+          payload3 = [v16 payload];
+          v24 = [payload3 objectForKeyedSubscript:@"item-start-position"];
           [v24 doubleValue];
           [v17 setItemEndTime:v22 + v25];
 
-          v6 = v32;
+          eventCopy = v32;
         }
 
         if (v17)
@@ -3745,12 +3745,12 @@ LABEL_30:
           [v17 itemStartTime];
           v27 = v26;
           [v17 itemEndTime];
-          [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v17 endTime:v7 pafEvent:v27 cursor:v28];
+          [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v17 endTime:cursorCopy pafEvent:v27 cursor:v28];
           [v8 addObject:v17];
         }
       }
 
-      v29 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:v7];
+      v29 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:cursorCopy];
       if (v29)
       {
         [v8 addObject:v29];
@@ -3773,11 +3773,11 @@ LABEL_30:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v36 = self;
+        selfCopy = self;
         v37 = 2114;
-        v38 = v6;
+        v38 = eventCopy;
         v39 = 2114;
-        v40 = v7;
+        v40 = cursorCopy;
         _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _handleApplicationTerminationEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
       }
 
@@ -3793,15 +3793,15 @@ LABEL_30:
   return v30;
 }
 
-- (id)_generatePlaybackEndEventFromEvent:(id)a3 withQueueSectionIdentifier:(id)a4 itemIdentifier:(id)a5 cursor:(id)a6
+- (id)_generatePlaybackEndEventFromEvent:(id)event withQueueSectionIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier cursor:(id)cursor
 {
   v126[2] = *MEMORY[0x1E69E9840];
-  v86 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v85 = v11;
-  if (![(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:v10 itemIdentifier:v11 cursor:v12]|| [(MPCPlayActivityFeedEventConsumer *)self _itemIsPlaceholderFromQueueSectionIdentifier:v10 itemIdentifier:v11 cursor:v12])
+  eventCopy = event;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  cursorCopy = cursor;
+  v85 = itemIdentifierCopy;
+  if (![(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:identifierCopy itemIdentifier:itemIdentifierCopy cursor:cursorCopy]|| [(MPCPlayActivityFeedEventConsumer *)self _itemIsPlaceholderFromQueueSectionIdentifier:identifierCopy itemIdentifier:itemIdentifierCopy cursor:cursorCopy])
   {
     v13 = 0;
     goto LABEL_32;
@@ -3809,82 +3809,82 @@ LABEL_30:
 
   v125[0] = @"queue-section-id";
   v125[1] = @"queue-item-id";
-  v126[0] = v10;
-  v126[1] = v11;
+  v126[0] = identifierCopy;
+  v126[1] = itemIdentifierCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v126 forKeys:v125 count:2];
-  v84 = [v12 findPreviousEventWithType:@"item-begin" matchingPayload:v14];
+  v84 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v14];
 
-  v15 = [v84 payload];
-  v81 = [v15 objectForKeyedSubscript:@"item-metadata"];
+  payload = [v84 payload];
+  v81 = [payload objectForKeyedSubscript:@"item-metadata"];
 
   v16 = objc_alloc_init(MEMORY[0x1E69E44F8]);
-  v17 = [v86 date];
-  [v16 setEventDate:v17];
+  date = [eventCopy date];
+  [v16 setEventDate:date];
 
   [v16 setEventType:0];
   v123 = @"queue-section-id";
-  v124 = v10;
+  v124 = identifierCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
-  v83 = [v12 findPreviousEventWithType:@"container-begin" matchingPayload:v18];
+  v83 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v18];
 
-  v19 = [v83 payload];
-  v20 = [v86 type];
-  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withItemBeginEvent:v84 containerBeginPayload:v19 cursor:v12 forEventType:v20];
+  payload2 = [v83 payload];
+  type = [eventCopy type];
+  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withItemBeginEvent:v84 containerBeginPayload:payload2 cursor:cursorCopy forEventType:type];
 
   v121 = @"queue-section-id";
-  v122 = v10;
+  v122 = identifierCopy;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
-  v80 = [v12 findPreviousEventWithType:@"queue-add" matchingPayload:v21];
+  v80 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v21];
 
-  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withQueueAddEvent:v80 queueSectionIdentifier:v10 cursor:v12];
-  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withDeviceInfoFromCursor:v12];
+  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withQueueAddEvent:v80 queueSectionIdentifier:identifierCopy cursor:cursorCopy];
+  [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withDeviceInfoFromCursor:cursorCopy];
   v120[0] = @"item-begin";
   v120[1] = @"item-resume";
   v120[2] = @"item-position-jump";
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:3];
   v118[0] = @"queue-section-id";
   v118[1] = @"queue-item-id";
-  v119[0] = v10;
-  v119[1] = v11;
+  v119[0] = identifierCopy;
+  v119[1] = itemIdentifierCopy;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v119 forKeys:v118 count:2];
-  v82 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v22 matchingPayload:v23 cursor:v12];
+  v82 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v22 matchingPayload:v23 cursor:cursorCopy];
 
-  [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v82 withItemBeginEvent:v84 containerBeginEvent:v83 cursor:v12];
+  [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v82 withItemBeginEvent:v84 containerBeginEvent:v83 cursor:cursorCopy];
   v25 = v24;
-  if ([(MPCPlayActivityFeedEventConsumer *)self _itemEndOccuredDuringOverlappingTransition:v86 cursor:v12])
+  if ([(MPCPlayActivityFeedEventConsumer *)self _itemEndOccuredDuringOverlappingTransition:eventCopy cursor:cursorCopy])
   {
     v116[0] = @"outgoing-item-section-id";
     v116[1] = @"outgoing-item-id";
-    v117[0] = v10;
-    v117[1] = v11;
+    v117[0] = identifierCopy;
+    v117[1] = itemIdentifierCopy;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:v116 count:2];
-    v27 = [v12 findPreviousEventWithType:@"item-transition-created" matchingPayload:v26];
+    payload4 = [cursorCopy findPreviousEventWithType:@"item-transition-created" matchingPayload:v26];
 
-    v28 = [v27 payload];
-    v29 = [v28 objectForKeyedSubscript:@"transition-provided"];
-    v30 = [v29 integerValue];
+    payload3 = [payload4 payload];
+    v29 = [payload3 objectForKeyedSubscript:@"transition-provided"];
+    integerValue = [v29 integerValue];
 
-    if (v30 <= 5)
+    if (integerValue <= 5)
     {
-      [v16 setTransitionTypeProvided:v30];
+      [v16 setTransitionTypeProvided:integerValue];
     }
 
-    [(MPCPlayActivityFeedEventConsumer *)self _outgoingEndTimeForTransitionEvent:v27 useSourceTime:1];
+    [(MPCPlayActivityFeedEventConsumer *)self _outgoingEndTimeForTransitionEvent:payload4 useSourceTime:1];
     v32 = v31;
   }
 
   else
   {
-    v27 = [v86 payload];
-    v33 = [v27 objectForKeyedSubscript:@"item-end-position"];
+    payload4 = [eventCopy payload];
+    v33 = [payload4 objectForKeyedSubscript:@"item-end-position"];
     [v33 doubleValue];
     v32 = v34;
   }
 
   [v16 setItemStartTime:v25];
   [v16 setItemEndTime:v32];
-  v35 = [v86 type];
-  v36 = [v35 isEqualToString:@"application-termination"];
+  type2 = [eventCopy type];
+  v36 = [type2 isEqualToString:@"application-termination"];
 
   if (v36)
   {
@@ -3898,7 +3898,7 @@ LABEL_30:
     goto LABEL_21;
   }
 
-  v37 = [v12 cursorUntilEvent:v82];
+  v37 = [cursorCopy cursorUntilEvent:v82];
   v88 = 0;
   v89 = &v88;
   v90 = 0x2020000000;
@@ -3927,16 +3927,16 @@ LABEL_30:
   if (*(v89 + 24) == 1)
   {
     [v16 setEndReasonType:3];
-    v38 = [v86 payload];
-    v39 = [v38 objectForKeyedSubscript:@"item-end-position"];
+    payload5 = [eventCopy payload];
+    v39 = [payload5 objectForKeyedSubscript:@"item-end-position"];
     [v39 doubleValue];
   }
 
   else if (*(v104 + 24) == 1)
   {
     [v16 setEndReasonType:2];
-    v38 = [v86 payload];
-    v39 = [v38 objectForKeyedSubscript:@"item-end-position"];
+    payload5 = [eventCopy payload];
+    v39 = [payload5 objectForKeyedSubscript:@"item-end-position"];
     [v39 doubleValue];
   }
 
@@ -3944,11 +3944,11 @@ LABEL_30:
   {
     if (*(v100 + 24) != 1)
     {
-      v70 = [v86 payload];
-      v71 = [v70 objectForKeyedSubscript:@"item-did-play-to-end"];
-      v72 = [v71 BOOLValue];
+      payload6 = [eventCopy payload];
+      v71 = [payload6 objectForKeyedSubscript:@"item-did-play-to-end"];
+      bOOLValue = [v71 BOOLValue];
 
-      if (v72)
+      if (bOOLValue)
       {
         v73 = [v81 objectForKeyedSubscript:@"item-end-boundary"];
         v74 = v73 == 0;
@@ -3972,7 +3972,7 @@ LABEL_30:
 
       if (*(v96 + 24) != 1)
       {
-        if ([(MPCPlayActivityFeedEventConsumer *)self _itemEndOccuredDuringOverlappingTransition:v86 cursor:v12])
+        if ([(MPCPlayActivityFeedEventConsumer *)self _itemEndOccuredDuringOverlappingTransition:eventCopy cursor:cursorCopy])
         {
           v76 = 11;
         }
@@ -3988,8 +3988,8 @@ LABEL_30:
     }
 
     [v16 setEndReasonType:4];
-    v38 = [v86 payload];
-    v39 = [v38 objectForKeyedSubscript:@"item-end-position"];
+    payload5 = [eventCopy payload];
+    v39 = [payload5 objectForKeyedSubscript:@"item-end-position"];
     [v39 doubleValue];
   }
 
@@ -4003,8 +4003,8 @@ LABEL_20:
 
 LABEL_21:
   [v16 setItemEndTime:v32];
-  v41 = [v84 payload];
-  v42 = [v41 objectForKeyedSubscript:@"item-metadata"];
+  payload7 = [v84 payload];
+  v42 = [payload7 objectForKeyedSubscript:@"item-metadata"];
   v43 = [v42 objectForKeyedSubscript:@"item-end-boundary"];
   v44 = v43;
   if (v43)
@@ -4015,8 +4015,8 @@ LABEL_21:
 
   else
   {
-    v47 = [v84 payload];
-    v48 = [v47 objectForKeyedSubscript:@"item-metadata"];
+    payload8 = [v84 payload];
+    v48 = [payload8 objectForKeyedSubscript:@"item-metadata"];
     v49 = [v48 objectForKeyedSubscript:@"item-duration"];
     [v49 doubleValue];
     v46 = v50;
@@ -4025,13 +4025,13 @@ LABEL_21:
   [(MPCPlayActivityFeedEventConsumer *)self _clampTimeValuesForPAFEvent:v16 withDuration:v46];
   v114[0] = @"queue-section-id";
   v114[1] = @"queue-item-id";
-  v115[0] = v10;
+  v115[0] = identifierCopy;
   v115[1] = v85;
   v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:v114 count:2];
-  v79 = [v12 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v51];
+  v79 = [cursorCopy findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v51];
 
-  v52 = [v79 payload];
-  v53 = [v52 objectForKeyedSubscript:@"item-timed-metadata"];
+  payload9 = [v79 payload];
+  v53 = [payload9 objectForKeyedSubscript:@"item-timed-metadata"];
   [v16 setTimedMetadata:v53];
 
   v54 = [v81 objectForKeyedSubscript:@"requires-mpaf"];
@@ -4047,7 +4047,7 @@ LABEL_21:
     v93 = 0;
     v112[0] = @"queue-section-id";
     v112[1] = @"queue-item-id";
-    v113[0] = v10;
+    v113[0] = identifierCopy;
     v113[1] = v85;
     v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:v112 count:2];
     v87[0] = MEMORY[0x1E69E9820];
@@ -4055,28 +4055,28 @@ LABEL_21:
     v87[2] = __120__MPCPlayActivityFeedEventConsumer__generatePlaybackEndEventFromEvent_withQueueSectionIdentifier_itemIdentifier_cursor___block_invoke_2;
     v87[3] = &unk_1E82322F0;
     v87[4] = &v88;
-    [v12 enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:v55 usingBlock:v87];
+    [cursorCopy enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:v55 usingBlock:v87];
 
     [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withAudioChangeEvent:v89[5]];
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withSharedListeningInfoFromCursor:v12];
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withVocalAttenuationInfoForEndEvent:v86 cursor:v12];
-    -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", v86, [v16 endReasonType], v84, v12);
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withSharedListeningInfoFromCursor:cursorCopy];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v16 withVocalAttenuationInfoForEndEvent:eventCopy cursor:cursorCopy];
+    -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", eventCopy, [v16 endReasonType], v84, cursorCopy);
     [v16 setWallClockPlayDuration:?];
     v110 = @"queue-section-id";
-    v111 = v10;
+    v111 = identifierCopy;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
-    v78 = [v12 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v56];
+    v78 = [cursorCopy findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v56];
 
-    v57 = [v78 payload];
-    v58 = [v57 objectForKeyedSubscript:@"container-indeterminate-duration"];
+    payload10 = [v78 payload];
+    v58 = [payload10 objectForKeyedSubscript:@"container-indeterminate-duration"];
     if ([v58 BOOLValue])
     {
     }
 
     else
     {
-      v59 = [v83 payload];
-      v60 = [v59 objectForKeyedSubscript:@"container-metadata"];
+      payload11 = [v83 payload];
+      v60 = [payload11 objectForKeyedSubscript:@"container-metadata"];
       v61 = [v60 objectForKeyedSubscript:@"container-radio-subtype"];
       v62 = [v61 integerValue] == 2;
 
@@ -4094,13 +4094,13 @@ LABEL_30:
     v109[1] = @"item-timed-metadata-ping";
     v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v109 count:2];
     v107 = @"queue-section-id";
-    v108 = v10;
+    v108 = identifierCopy;
     v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-    v65 = [v12 findPreviousEventWithTypes:v63 matchingPayload:v64];
+    v65 = [cursorCopy findPreviousEventWithTypes:v63 matchingPayload:v64];
 
     [v16 setItemStartTime:0.0];
-    v66 = [v12 cursorFromEvent:v86 untilEvent:v65];
-    [(MPCPlayActivityFeedEventConsumer *)self _getPlaybackDurationForHLSStreamFromStartEvent:v65 toEndEvent:v86 withLimitedCursor:v66];
+    v66 = [cursorCopy cursorFromEvent:eventCopy untilEvent:v65];
+    [(MPCPlayActivityFeedEventConsumer *)self _getPlaybackDurationForHLSStreamFromStartEvent:v65 toEndEvent:eventCopy withLimitedCursor:v66];
     v68 = v67;
 
     [v16 setItemEndTime:v68];
@@ -4109,7 +4109,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v16 endTime:v12 pafEvent:v25 cursor:v32];
+  [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v16 endTime:cursorCopy pafEvent:v25 cursor:v32];
   v13 = 0;
 LABEL_31:
 
@@ -4175,16 +4175,16 @@ void __120__MPCPlayActivityFeedEventConsumer__generatePlaybackEndEventFromEvent_
   }
 }
 
-- (BOOL)_handleItemEndEvent:(id)a3 cursor:(id)a4
+- (BOOL)_handleItemEndEvent:(id)event cursor:(id)cursor
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 payload];
-  v9 = [v8 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  cursorCopy = cursor;
+  payload = [eventCopy payload];
+  v9 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v10 = [v6 payload];
-  v11 = [v10 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v11 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (!v11 || !v9)
   {
@@ -4192,18 +4192,18 @@ void __120__MPCPlayActivityFeedEventConsumer__generatePlaybackEndEventFromEvent_
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
-      v30 = v6;
+      v30 = eventCopy;
       v31 = 2114;
-      v32 = v7;
+      v32 = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _handleItemEndEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
     }
 
     goto LABEL_8;
   }
 
-  v12 = [(MPCPlayActivityFeedEventConsumer *)self _generatePlaybackEndEventFromEvent:v6 withQueueSectionIdentifier:v9 itemIdentifier:v11 cursor:v7];
+  v12 = [(MPCPlayActivityFeedEventConsumer *)self _generatePlaybackEndEventFromEvent:eventCopy withQueueSectionIdentifier:v9 itemIdentifier:v11 cursor:cursorCopy];
   v13 = v12;
   if (!v12)
   {
@@ -4215,8 +4215,8 @@ LABEL_8:
   [v12 itemStartTime];
   v15 = v14;
   [v13 itemEndTime];
-  [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v13 endTime:v7 pafEvent:v15 cursor:v16];
-  v17 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:v7];
+  [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v13 endTime:cursorCopy pafEvent:v15 cursor:v16];
+  v17 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:cursorCopy];
   v18 = v17;
   if (v17)
   {
@@ -4242,16 +4242,16 @@ LABEL_11:
   return v22;
 }
 
-- (BOOL)_handleItemPauseEvent:(id)a3 cursor:(id)a4
+- (BOOL)_handleItemPauseEvent:(id)event cursor:(id)cursor
 {
   v113[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 payload];
-  v9 = [v8 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  cursorCopy = cursor;
+  payload = [eventCopy payload];
+  v9 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v10 = [v6 payload];
-  v11 = [v10 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v11 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (!v11 || !v9)
   {
@@ -4261,9 +4261,9 @@ LABEL_11:
       *buf = 134218498;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v6;
+      *&buf[14] = eventCopy;
       *&buf[22] = 2114;
-      v93 = v7;
+      v93 = cursorCopy;
       _os_log_impl(&dword_1C5C61000, v33, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _handleItemPauseEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
     }
 
@@ -4271,14 +4271,14 @@ LABEL_11:
     goto LABEL_32;
   }
 
-  if ([(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:v9 itemIdentifier:v11 cursor:v7])
+  if ([(MPCPlayActivityFeedEventConsumer *)self _itemIsPlayingFromQueueSectionIdentifier:v9 itemIdentifier:v11 cursor:cursorCopy])
   {
     v112[0] = @"queue-section-id";
     v112[1] = @"queue-item-id";
     v113[0] = v9;
     v113[1] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v113 forKeys:v112 count:2];
-    v79 = [v7 findPreviousEventWithType:@"item-begin" matchingPayload:v12];
+    v79 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v12];
 
     v111[0] = @"item-begin";
     v111[1] = @"item-resume";
@@ -4289,28 +4289,28 @@ LABEL_11:
     v110[0] = v9;
     v110[1] = v11;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:v109 count:2];
-    v76 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v13 matchingPayload:v14 cursor:v7];
+    v76 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v13 matchingPayload:v14 cursor:cursorCopy];
 
     v107 = @"queue-section-id";
     v108 = v9;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-    v77 = [v7 findPreviousEventWithType:@"container-begin" matchingPayload:v15];
+    v77 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v15];
 
-    [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v76 withItemBeginEvent:v79 containerBeginEvent:v77 cursor:v7];
+    [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v76 withItemBeginEvent:v79 containerBeginEvent:v77 cursor:cursorCopy];
     v17 = v16;
-    v18 = [v6 payload];
-    v19 = [v18 objectForKeyedSubscript:@"item-end-position"];
+    payload3 = [eventCopy payload];
+    v19 = [payload3 objectForKeyedSubscript:@"item-end-position"];
     [v19 doubleValue];
     v21 = v20;
 
-    v22 = [v79 payload];
-    v23 = [v22 objectForKeyedSubscript:@"item-metadata"];
+    payload4 = [v79 payload];
+    v23 = [payload4 objectForKeyedSubscript:@"item-metadata"];
     v24 = [v23 objectForKeyedSubscript:@"requires-mpaf"];
-    v25 = [v24 BOOLValue];
+    bOOLValue = [v24 BOOLValue];
 
-    if ((v25 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:0 endTime:v7 pafEvent:v17 cursor:v21];
+      [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:0 endTime:cursorCopy pafEvent:v17 cursor:v21];
       v34 = 1;
 LABEL_31:
 
@@ -4321,15 +4321,15 @@ LABEL_32:
     }
 
     v26 = objc_alloc_init(MEMORY[0x1E69E44F8]);
-    v27 = [v6 date];
-    [v26 setEventDate:v27];
+    date = [eventCopy date];
+    [v26 setEventDate:date];
 
     [v26 setEventType:0];
-    v28 = [v77 payload];
-    v29 = [v6 type];
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withItemBeginEvent:v79 containerBeginPayload:v28 cursor:v7 forEventType:v29];
+    payload5 = [v77 payload];
+    type = [eventCopy type];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withItemBeginEvent:v79 containerBeginPayload:payload5 cursor:cursorCopy forEventType:type];
 
-    v74 = [v7 cursorUntilEvent:v79];
+    v74 = [cursorCopy cursorUntilEvent:v79];
     if ([v26 itemType] != 4)
     {
       v105[0] = @"queue-section-id";
@@ -4351,13 +4351,13 @@ LABEL_30:
     v103 = @"queue-section-id";
     v104 = v9;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
-    v73 = [v7 findPreviousEventWithType:@"queue-add" matchingPayload:v32];
+    v73 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v32];
 
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withQueueAddEvent:v73 queueSectionIdentifier:v9 cursor:v7];
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withDeviceInfoFromCursor:v7];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withQueueAddEvent:v73 queueSectionIdentifier:v9 cursor:cursorCopy];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withDeviceInfoFromCursor:cursorCopy];
     [v26 setItemStartTime:v17];
     [v26 setItemEndTime:v21];
-    v75 = [v7 cursorUntilEvent:v76];
+    v75 = [cursorCopy cursorUntilEvent:v76];
     v84 = 0;
     v85 = &v84;
     v86 = 0x2020000000;
@@ -4367,7 +4367,7 @@ LABEL_30:
     v81[2] = __65__MPCPlayActivityFeedEventConsumer__handleItemPauseEvent_cursor___block_invoke;
     v81[3] = &unk_1E8231A28;
     v83 = &v84;
-    v78 = v7;
+    v78 = cursorCopy;
     v82 = v78;
     [v75 enumeratePreviousEventsWithType:@"remote-control-begin" usingBlock:v81];
     if (*(v85 + 24) == 1)
@@ -4391,14 +4391,14 @@ LABEL_30:
       [v26 setEndReasonType:v36];
     }
 
-    v37 = [v79 payload];
-    v38 = [v37 objectForKeyedSubscript:@"item-metadata"];
+    payload6 = [v79 payload];
+    v38 = [payload6 objectForKeyedSubscript:@"item-metadata"];
     v39 = [v38 objectForKeyedSubscript:@"item-end-boundary"];
     v40 = v39;
     if (!v39)
     {
-      v71 = [v79 payload];
-      v69 = [v71 objectForKeyedSubscript:@"item-metadata"];
+      payload7 = [v79 payload];
+      v69 = [payload7 objectForKeyedSubscript:@"item-metadata"];
       v40 = [v69 objectForKeyedSubscript:@"item-duration"];
     }
 
@@ -4414,8 +4414,8 @@ LABEL_30:
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     v72 = [v78 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v43];
 
-    v44 = [v72 payload];
-    v45 = [v44 objectForKeyedSubscript:@"item-timed-metadata"];
+    payload8 = [v72 payload];
+    v45 = [payload8 objectForKeyedSubscript:@"item-timed-metadata"];
     [v26 setTimedMetadata:v45];
 
     v99 = @"queue-section-id";
@@ -4423,16 +4423,16 @@ LABEL_30:
     v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
     v70 = [v78 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v46];
 
-    v47 = [v70 payload];
-    v48 = [v47 objectForKeyedSubscript:@"container-indeterminate-duration"];
+    payload9 = [v70 payload];
+    v48 = [payload9 objectForKeyedSubscript:@"container-indeterminate-duration"];
     if ([v48 BOOLValue])
     {
     }
 
     else
     {
-      v68 = [v77 payload];
-      v49 = [v68 objectForKeyedSubscript:@"container-metadata"];
+      payload10 = [v77 payload];
+      v49 = [payload10 objectForKeyedSubscript:@"container-metadata"];
       v50 = [v49 objectForKeyedSubscript:@"container-radio-subtype"];
       v67 = [v50 integerValue] == 2;
 
@@ -4463,8 +4463,8 @@ LABEL_26:
 
         [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withAudioChangeEvent:*(*&buf[8] + 40)];
         [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withSharedListeningInfoFromCursor:v78];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withVocalAttenuationInfoForEndEvent:v6 cursor:v78];
-        -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", v6, [v26 endReasonType], v79, v78);
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v26 withVocalAttenuationInfoForEndEvent:eventCopy cursor:v78];
+        -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", eventCopy, [v26 endReasonType], v79, v78);
         [v26 setWallClockPlayDuration:?];
         v61 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:v78];
         v62 = v61;
@@ -4502,8 +4502,8 @@ LABEL_26:
     v53 = [v78 findPreviousEventWithTypes:v51 matchingPayload:v52];
 
     [v26 setItemStartTime:0.0];
-    v54 = [v78 cursorFromEvent:v6 untilEvent:v53];
-    [(MPCPlayActivityFeedEventConsumer *)self _getPlaybackDurationForHLSStreamFromStartEvent:v53 toEndEvent:v6 withLimitedCursor:v54];
+    v54 = [v78 cursorFromEvent:eventCopy untilEvent:v53];
+    [(MPCPlayActivityFeedEventConsumer *)self _getPlaybackDurationForHLSStreamFromStartEvent:v53 toEndEvent:eventCopy withLimitedCursor:v54];
     v56 = v55;
 
     [v26 setItemEndTime:v56];
@@ -4545,20 +4545,20 @@ void __65__MPCPlayActivityFeedEventConsumer__handleItemPauseEvent_cursor___block
   }
 }
 
-- (BOOL)_handleItemPositionJumpEvent:(id)a3 cursor:(id)a4
+- (BOOL)_handleItemPositionJumpEvent:(id)event cursor:(id)cursor
 {
   v106[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  cursorCopy = cursor;
   v106[0] = @"remote-control-begin";
   v106[1] = @"remote-control-end";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
-  v9 = [v7 findPreviousEventWithTypes:v8 matchingPayload:0];
+  v9 = [cursorCopy findPreviousEventWithTypes:v8 matchingPayload:0];
 
   if (v9)
   {
-    v10 = [v9 type];
-    if ([v10 isEqualToString:@"remote-control-end"])
+    type = [v9 type];
+    if ([type isEqualToString:@"remote-control-end"])
     {
       v11 = 1;
 LABEL_30:
@@ -4566,19 +4566,19 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v12 = [v6 payload];
-    v13 = [v12 objectForKeyedSubscript:@"item-jump-user-initiated"];
-    v14 = [v13 BOOLValue];
+    payload = [eventCopy payload];
+    v13 = [payload objectForKeyedSubscript:@"item-jump-user-initiated"];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
-      v15 = [v6 payload];
-      v10 = [v15 objectForKeyedSubscript:@"queue-section-id"];
+      payload2 = [eventCopy payload];
+      type = [payload2 objectForKeyedSubscript:@"queue-section-id"];
 
-      v16 = [v6 payload];
-      v83 = [v16 objectForKeyedSubscript:@"queue-item-id"];
+      payload3 = [eventCopy payload];
+      v83 = [payload3 objectForKeyedSubscript:@"queue-item-id"];
 
-      if (!v83 || !v10)
+      if (!v83 || !type)
       {
         v18 = os_log_create("com.apple.amp.mediaplaybackcore", "PAF");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -4586,9 +4586,9 @@ LABEL_30:
           *buf = 134218498;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v6;
+          *&buf[14] = eventCopy;
           *&buf[22] = 2114;
-          v90 = v7;
+          v90 = cursorCopy;
           _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _handleItemPositionJumpEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
         }
 
@@ -4598,10 +4598,10 @@ LABEL_30:
 
       v104[0] = @"queue-section-id";
       v104[1] = @"queue-item-id";
-      v105[0] = v10;
+      v105[0] = type;
       v105[1] = v83;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:2];
-      v18 = [v7 findPreviousEventWithType:@"item-begin" matchingPayload:v17];
+      v18 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v17];
 
       v103[0] = @"item-begin";
       v103[1] = @"item-resume";
@@ -4610,31 +4610,31 @@ LABEL_30:
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:4];
       v101[0] = @"queue-section-id";
       v101[1] = @"queue-item-id";
-      v102[0] = v10;
+      v102[0] = type;
       v102[1] = v83;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:2];
-      v79 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v19 matchingPayload:v20 cursor:v7];
+      v79 = [(MPCPlayActivityFeedEventConsumer *)self _findRecentPlaybackStartFromTypes:v19 matchingPayload:v20 cursor:cursorCopy];
 
       v99 = @"queue-section-id";
-      v100 = v10;
+      v100 = type;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
-      v80 = [v7 findPreviousEventWithType:@"container-begin" matchingPayload:v21];
+      v80 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v21];
 
-      [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v79 withItemBeginEvent:v18 containerBeginEvent:v80 cursor:v7];
+      [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v79 withItemBeginEvent:v18 containerBeginEvent:v80 cursor:cursorCopy];
       v23 = v22;
-      v24 = [v6 payload];
-      v25 = [v24 objectForKeyedSubscript:@"item-start-position"];
+      payload4 = [eventCopy payload];
+      v25 = [payload4 objectForKeyedSubscript:@"item-start-position"];
       [v25 doubleValue];
       v27 = v26;
 
-      v28 = [v18 payload];
-      v29 = [v28 objectForKeyedSubscript:@"item-metadata"];
+      payload5 = [v18 payload];
+      v29 = [payload5 objectForKeyedSubscript:@"item-metadata"];
       v30 = [v29 objectForKeyedSubscript:@"requires-mpaf"];
-      v31 = [v30 BOOLValue];
+      bOOLValue2 = [v30 BOOLValue];
 
-      if ((v31 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
-        [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:0 endTime:v7 pafEvent:v23 cursor:v27];
+        [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:0 endTime:cursorCopy pafEvent:v23 cursor:v27];
         v11 = 1;
 LABEL_28:
 
@@ -4643,12 +4643,12 @@ LABEL_29:
       }
 
       v97 = @"queue-section-id";
-      v98 = v10;
+      v98 = type;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-      v78 = [v7 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v32];
+      v78 = [cursorCopy findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v32];
 
-      v82 = [v78 payload];
-      v81 = [v82 objectForKeyedSubscript:@"container-indeterminate-duration"];
+      payload6 = [v78 payload];
+      v81 = [payload6 objectForKeyedSubscript:@"container-indeterminate-duration"];
       if ([v81 BOOLValue])
       {
         v11 = 1;
@@ -4656,8 +4656,8 @@ LABEL_29:
 
       else
       {
-        v33 = [v80 payload];
-        v34 = [v33 objectForKeyedSubscript:@"container-metadata"];
+        payload7 = [v80 payload];
+        v34 = [payload7 objectForKeyedSubscript:@"container-metadata"];
         v35 = [v34 objectForKeyedSubscript:@"container-radio-subtype"];
         v36 = [v35 integerValue] == 2;
 
@@ -4669,70 +4669,70 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v82 = objc_alloc_init(MEMORY[0x1E69E44F8]);
-        v37 = [v6 date];
-        [v82 setEventDate:v37];
+        payload6 = objc_alloc_init(MEMORY[0x1E69E44F8]);
+        date = [eventCopy date];
+        [payload6 setEventDate:date];
 
-        [v82 setEventType:0];
-        [v82 setEndReasonType:9];
+        [payload6 setEventType:0];
+        [payload6 setEndReasonType:9];
         v81 = objc_alloc_init(MEMORY[0x1E69E44F8]);
-        v38 = [v6 date];
-        [v81 setEventDate:v38];
+        date2 = [eventCopy date];
+        [v81 setEventDate:date2];
 
         [v81 setEventType:0];
         [v81 setEndReasonType:10];
-        v39 = [v80 payload];
-        v40 = [v6 type];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withItemBeginEvent:v18 containerBeginPayload:v39 cursor:v7 forEventType:v40];
+        payload8 = [v80 payload];
+        type2 = [eventCopy type];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withItemBeginEvent:v18 containerBeginPayload:payload8 cursor:cursorCopy forEventType:type2];
 
-        v41 = [v80 payload];
-        v42 = [v6 type];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withItemBeginEvent:v18 containerBeginPayload:v41 cursor:v7 forEventType:v42];
+        payload9 = [v80 payload];
+        type3 = [eventCopy type];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withItemBeginEvent:v18 containerBeginPayload:payload9 cursor:cursorCopy forEventType:type3];
 
         v95 = @"queue-section-id";
-        v96 = v10;
+        v96 = type;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-        v76 = [v7 findPreviousEventWithType:@"queue-add" matchingPayload:v43];
+        v76 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v43];
 
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withQueueAddEvent:v76 queueSectionIdentifier:v10 cursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withQueueAddEvent:v76 queueSectionIdentifier:v10 cursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withDeviceInfoFromCursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withDeviceInfoFromCursor:v7];
-        [v82 setItemStartTime:v23];
-        v44 = [v6 payload];
-        v45 = [v44 objectForKeyedSubscript:@"item-start-position"];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withQueueAddEvent:v76 queueSectionIdentifier:type cursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withQueueAddEvent:v76 queueSectionIdentifier:type cursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withDeviceInfoFromCursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withDeviceInfoFromCursor:cursorCopy];
+        [payload6 setItemStartTime:v23];
+        payload10 = [eventCopy payload];
+        v45 = [payload10 objectForKeyedSubscript:@"item-start-position"];
         [v45 doubleValue];
-        [v82 setItemEndTime:?];
+        [payload6 setItemEndTime:?];
 
-        v46 = [v6 payload];
-        v47 = [v46 objectForKeyedSubscript:@"item-start-position"];
+        payload11 = [eventCopy payload];
+        v47 = [payload11 objectForKeyedSubscript:@"item-start-position"];
         [v47 doubleValue];
         [v81 setItemStartTime:?];
 
-        v48 = [v6 payload];
-        v49 = [v48 objectForKeyedSubscript:@"item-end-position"];
+        payload12 = [eventCopy payload];
+        v49 = [payload12 objectForKeyedSubscript:@"item-end-position"];
         [v49 doubleValue];
         v51 = v50;
 
         [v81 setItemEndTime:v51];
         v93 = @"queue-section-id";
-        v94 = v10;
+        v94 = type;
         v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-        v77 = [v7 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v52];
+        v77 = [cursorCopy findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v52];
 
         if (v77)
         {
-          v53 = [v77 payload];
-          v54 = [v53 objectForKeyedSubscript:@"item-timed-metadata"];
-          [v82 setTimedMetadata:v54];
+          payload13 = [v77 payload];
+          v54 = [payload13 objectForKeyedSubscript:@"item-timed-metadata"];
+          [payload6 setTimedMetadata:v54];
 
-          v55 = [v77 payload];
-          v56 = [v55 objectForKeyedSubscript:@"item-timed-metadata"];
+          payload14 = [v77 payload];
+          v56 = [payload14 objectForKeyedSubscript:@"item-timed-metadata"];
           [v81 setTimedMetadata:v56];
         }
 
-        v57 = [v18 payload];
-        v75 = [v57 objectForKeyedSubscript:@"item-metadata"];
+        payload15 = [v18 payload];
+        v75 = [payload15 objectForKeyedSubscript:@"item-metadata"];
         v58 = [v75 objectForKeyedSubscript:@"item-end-boundary"];
         v59 = v58;
         if (v58)
@@ -4743,19 +4743,19 @@ LABEL_27:
 
         else
         {
-          v74 = [v18 payload];
-          v62 = [v74 objectForKeyedSubscript:@"item-metadata"];
+          payload16 = [v18 payload];
+          v62 = [payload16 objectForKeyedSubscript:@"item-metadata"];
           v63 = [v62 objectForKeyedSubscript:@"item-duration"];
           [v63 doubleValue];
           v61 = v64;
         }
 
-        [(MPCPlayActivityFeedEventConsumer *)self _clampTimeValuesForPAFEvent:v82 withDuration:v61];
+        [(MPCPlayActivityFeedEventConsumer *)self _clampTimeValuesForPAFEvent:payload6 withDuration:v61];
         [(MPCPlayActivityFeedEventConsumer *)self _clampTimeValuesForPAFEvent:v81 withDuration:v61];
-        [v82 itemStartTime];
+        [payload6 itemStartTime];
         v66 = v65;
-        [v82 itemEndTime];
-        [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:v82 endTime:v7 pafEvent:v66 cursor:v67];
+        [payload6 itemEndTime];
+        [(MPCPlayActivityFeedEventConsumer *)self _sendPlayEndNotificationWithStartTime:payload6 endTime:cursorCopy pafEvent:v66 cursor:v67];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x3032000000;
@@ -4764,7 +4764,7 @@ LABEL_27:
         v92 = 0;
         v87[0] = @"queue-section-id";
         v87[1] = @"queue-item-id";
-        v88[0] = v10;
+        v88[0] = type;
         v88[1] = v83;
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:v87 count:2];
         v84[0] = MEMORY[0x1E69E9820];
@@ -4772,30 +4772,30 @@ LABEL_27:
         v84[2] = __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor___block_invoke;
         v84[3] = &unk_1E82322F0;
         v84[4] = buf;
-        [v7 enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:v68 usingBlock:v84];
+        [cursorCopy enumeratePreviousEventsWithType:@"audio-format-changed" matchingPayload:v68 usingBlock:v84];
 
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withAudioChangeEvent:*(*&buf[8] + 40)];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withAudioChangeEvent:*(*&buf[8] + 40)];
         [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withAudioChangeEvent:*(*&buf[8] + 40)];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withSharedListeningInfoFromCursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withSharedListeningInfoFromCursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v82 withVocalAttenuationInfoForEndEvent:v6 cursor:v7];
-        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withVocalAttenuationInfoForEndEvent:v6 cursor:v7];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withSharedListeningInfoFromCursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withSharedListeningInfoFromCursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:payload6 withVocalAttenuationInfoForEndEvent:eventCopy cursor:cursorCopy];
+        [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v81 withVocalAttenuationInfoForEndEvent:eventCopy cursor:cursorCopy];
         [v81 setVocalAttenuationDuration:0.0];
         [v81 setWallClockPlayDuration:0.0];
-        -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", v6, [v82 endReasonType], v18, v7);
-        [v82 setWallClockPlayDuration:?];
-        v69 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:v7];
+        -[MPCPlayActivityFeedEventConsumer _wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:](self, "_wallClockPlayDurationForEndEvent:endReasonType:itemBeginEvent:cursor:", eventCopy, [payload6 endReasonType], v18, cursorCopy);
+        [payload6 setWallClockPlayDuration:?];
+        v69 = [(MPCPlayActivityFeedEventConsumer *)self _generateAggregateNoncatalogEndEventForCursor:cursorCopy];
         v70 = v69;
         if (v69)
         {
           v85[1] = v69;
-          v85[2] = v82;
+          v85[2] = payload6;
           v71 = &v86;
         }
 
         else
         {
-          v84[5] = v82;
+          v84[5] = payload6;
           v71 = v85;
         }
 
@@ -4830,16 +4830,16 @@ void __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor_
   }
 }
 
-- (BOOL)_handleItemResumeEvent:(id)a3 cursor:(id)a4
+- (BOOL)_handleItemResumeEvent:(id)event cursor:(id)cursor
 {
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 payload];
-  v8 = [v7 objectForKeyedSubscript:@"queue-section-id"];
+  eventCopy = event;
+  cursorCopy = cursor;
+  payload = [eventCopy payload];
+  v8 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v9 = [v5 payload];
-  v10 = [v9 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v10 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   if (v10 && v8)
   {
@@ -4847,28 +4847,28 @@ void __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor_
     v96 = v8;
     v72 = 1;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-    v79 = [v6 findPreviousEventWithType:@"queue-add" matchingPayload:v11];
+    v79 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v11];
 
     v93 = @"queue-section-id";
     v94 = v8;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
-    v76 = [v6 findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v12];
+    v76 = [cursorCopy findPreviousEventWithType:@"item-hls-stream-begin" matchingPayload:v12];
 
     v13 = objc_alloc_init(MEMORY[0x1E69E44F8]);
-    v14 = [v5 date];
-    [v13 setEventDate:v14];
+    date = [eventCopy date];
+    [v13 setEventDate:date];
 
     [v13 setEventType:1];
     v77 = v13;
     [v13 setEndReasonType:0];
-    v74 = [v6 findPreviousEventWithType:@"item-end" matchingPayload:0];
-    v15 = [v6 cursorUntilEvent:?];
+    v74 = [cursorCopy findPreviousEventWithType:@"item-end" matchingPayload:0];
+    v15 = [cursorCopy cursorUntilEvent:?];
     v91[0] = @"queue-section-id";
     v91[1] = @"queue-item-id";
     v92[0] = v8;
     v92[1] = v10;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
-    v75 = [v6 findPreviousEventWithType:@"item-begin" matchingPayload:v16];
+    v75 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v16];
 
     v89[0] = @"queue-section-id";
     v89[1] = @"queue-item-id";
@@ -4884,8 +4884,8 @@ void __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor_
     v70 = v15;
     v20 = [v15 findPreviousEventWithType:@"remote-control-end" matchingPayload:v19];
 
-    v69 = [v6 findPreviousEventWithType:@"session-begin" matchingPayload:0];
-    v21 = [v6 cursorUntilEvent:?];
+    v69 = [cursorCopy findPreviousEventWithType:@"session-begin" matchingPayload:0];
+    v21 = [cursorCopy cursorUntilEvent:?];
     v22 = [v21 findPreviousEventWithType:@"item-resume" matchingPayload:0];
     if (!v22)
     {
@@ -4898,10 +4898,10 @@ void __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor_
     v24 = v76;
     if (!v18 && v72 && !v20)
     {
-      v25 = [v5 payload];
-      v26 = [v25 objectForKeyedSubscript:@"queue-section-id"];
-      v27 = [v74 payload];
-      v28 = [v27 objectForKeyedSubscript:@"queue-section-id"];
+      payload3 = [eventCopy payload];
+      v26 = [payload3 objectForKeyedSubscript:@"queue-section-id"];
+      payload4 = [v74 payload];
+      v28 = [payload4 objectForKeyedSubscript:@"queue-section-id"];
       v29 = [v26 isEqualToString:v28];
 
       v24 = v76;
@@ -4915,47 +4915,47 @@ void __72__MPCPlayActivityFeedEventConsumer__handleItemPositionJumpEvent_cursor_
     v85 = @"queue-section-id";
     v86 = v8;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-    v31 = [v6 findPreviousEventWithType:@"container-begin" matchingPayload:v30];
+    v31 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v30];
 
-    v32 = [v31 payload];
-    v33 = [v5 type];
+    payload5 = [v31 payload];
+    type = [eventCopy type];
     v34 = v75;
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withItemBeginEvent:v75 containerBeginPayload:v32 cursor:v6 forEventType:v33];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withItemBeginEvent:v75 containerBeginPayload:payload5 cursor:cursorCopy forEventType:type];
 
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withQueueAddEvent:v79 queueSectionIdentifier:v8 cursor:v6];
-    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withDeviceInfoFromCursor:v6];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withQueueAddEvent:v79 queueSectionIdentifier:v8 cursor:cursorCopy];
+    [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withDeviceInfoFromCursor:cursorCopy];
     v35 = v31;
-    [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:v5 withItemBeginEvent:v75 containerBeginEvent:v31 cursor:v6];
+    [(MPCPlayActivityFeedEventConsumer *)self _getStartTimeForMostRecentPlaybackStart:eventCopy withItemBeginEvent:v75 containerBeginEvent:v31 cursor:cursorCopy];
     [v77 setItemStartTime:?];
     v83 = @"queue-section-id";
     v84 = v8;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-    v37 = [v6 findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v36];
+    v37 = [cursorCopy findPreviousEventWithType:@"item-timed-metadata-ping" matchingPayload:v36];
 
     v67 = v37;
-    v38 = [v37 payload];
-    v39 = [v38 objectForKeyedSubscript:@"item-timed-metadata"];
+    payload6 = [v37 payload];
+    v39 = [payload6 objectForKeyedSubscript:@"item-timed-metadata"];
     [v77 setTimedMetadata:v39];
 
-    v40 = [v24 payload];
-    v41 = [v40 objectForKeyedSubscript:@"container-indeterminate-duration"];
+    payload7 = [v24 payload];
+    v41 = [payload7 objectForKeyedSubscript:@"container-indeterminate-duration"];
     if ([v41 BOOLValue])
     {
     }
 
     else
     {
-      v43 = [v31 payload];
-      v44 = [v43 objectForKeyedSubscript:@"container-metadata"];
+      payload8 = [v31 payload];
+      v44 = [payload8 objectForKeyedSubscript:@"container-metadata"];
       v45 = [v44 objectForKeyedSubscript:@"container-radio-subtype"];
-      v65 = [v45 integerValue];
+      integerValue = [v45 integerValue];
 
       v34 = v75;
-      if (v65 != 2)
+      if (integerValue != 2)
       {
 LABEL_17:
-        v46 = [v34 payload];
-        [v46 objectForKeyedSubscript:@"item-metadata"];
+        payload9 = [v34 payload];
+        [payload9 objectForKeyedSubscript:@"item-metadata"];
         v48 = v47 = v34;
         v49 = [v48 objectForKeyedSubscript:@"item-end-boundary"];
         v50 = v49;
@@ -4967,8 +4967,8 @@ LABEL_17:
 
         else
         {
-          v66 = [v47 payload];
-          v53 = [v66 objectForKeyedSubscript:@"item-metadata"];
+          payload10 = [v47 payload];
+          v53 = [payload10 objectForKeyedSubscript:@"item-metadata"];
           v54 = [v53 objectForKeyedSubscript:@"item-duration"];
           [v54 doubleValue];
           v52 = v55;
@@ -4982,10 +4982,10 @@ LABEL_17:
           v82[0] = v8;
           v82[1] = v71;
           v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v82 forKeys:v81 count:2];
-          v57 = [v6 findPreviousEventWithType:@"item-update" matchingPayload:v56];
+          v57 = [cursorCopy findPreviousEventWithType:@"item-update" matchingPayload:v56];
 
-          v58 = [v57 payload];
-          v59 = [v58 objectForKeyedSubscript:@"item-metadata"];
+          payload11 = [v57 payload];
+          v59 = [payload11 objectForKeyedSubscript:@"item-metadata"];
           v60 = [v59 objectForKeyedSubscript:@"item-duration"];
           [v60 doubleValue];
           v52 = v61;
@@ -4994,9 +4994,9 @@ LABEL_17:
         [(MPCPlayActivityFeedEventConsumer *)self _clampTimeValuesForPAFEvent:v77 withDuration:v52];
         if ([v77 isSBEnabled])
         {
-          [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withSharedListeningInfoFromCursor:v6];
-          v62 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v62 postNotificationName:@"MPCPlayActivityUtilitiesPlayStartNotification" object:self];
+          [(MPCPlayActivityFeedEventConsumer *)self _updatePAFEvent:v77 withSharedListeningInfoFromCursor:cursorCopy];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter postNotificationName:@"MPCPlayActivityUtilitiesPlayStartNotification" object:self];
 
           v80 = v77;
           v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
@@ -5012,7 +5012,7 @@ LABEL_17:
       }
     }
 
-    [v77 setItemStartTime:{0.0, v65}];
+    [v77 setItemStartTime:{0.0, integerValue}];
     [v77 setItemDuration:0.0];
     goto LABEL_17;
   }
@@ -5021,11 +5021,11 @@ LABEL_17:
   if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218498;
-    v98 = self;
+    selfCopy = self;
     v99 = 2114;
-    v100 = v5;
+    v100 = eventCopy;
     v101 = 2114;
-    v102 = v6;
+    v102 = cursorCopy;
     _os_log_impl(&dword_1C5C61000, v79, OS_LOG_TYPE_ERROR, "PlayActivityFeedEventConsumer %p: _handleItemResumeEvent:cursor: - could not find queueSectionIdentifier/itemIdentifier event=%{public}@ - cursor:%{public}@", buf, 0x20u);
   }
 
@@ -5035,10 +5035,10 @@ LABEL_26:
   return v42;
 }
 
-- (void)_updateAllowedBundleIdsIfNecessary:(id)a3
+- (void)_updateAllowedBundleIdsIfNecessary:(id)necessary
 {
-  v12 = a3;
-  v4 = [v12 dictionaryForBagKey:@"metrics"];
+  necessaryCopy = necessary;
+  v4 = [necessaryCopy dictionaryForBagKey:@"metrics"];
   v5 = v4;
   if (v4)
   {
@@ -5051,61 +5051,61 @@ LABEL_26:
         v8 = [v7 valueForKeyPath:@"fieldActions.bundle-id.allowedValues"];
         if (v8 && _NSIsNSArray())
         {
-          v9 = self;
-          objc_sync_enter(v9);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           v10 = [v8 msv_filter:&__block_literal_global_2155];
-          allowedBundleIds = v9->_allowedBundleIds;
-          v9->_allowedBundleIds = v10;
+          allowedBundleIds = selfCopy->_allowedBundleIds;
+          selfCopy->_allowedBundleIds = v10;
 
-          objc_sync_exit(v9);
+          objc_sync_exit(selfCopy);
         }
       }
     }
   }
 }
 
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69E4358]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69E4358]];
 
   [(MPCPlayActivityFeedEventConsumer *)self _updateAllowedBundleIdsIfNecessary:v5];
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  objc_storeStrong(&self->_subscription, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_subscription, stream);
+  streamCopy = stream;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__MPCPlayActivityFeedEventConsumer_subscribeToEventStream___block_invoke;
   v10[3] = &unk_1E8232330;
   v10[4] = self;
-  [v5 subscribeToEventType:@"item-resume" handler:v10];
+  [streamCopy subscribeToEventType:@"item-resume" handler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__MPCPlayActivityFeedEventConsumer_subscribeToEventStream___block_invoke_2;
   v9[3] = &unk_1E8232330;
   v9[4] = self;
-  [v5 subscribeToEventType:@"item-position-jump" handler:v9];
+  [streamCopy subscribeToEventType:@"item-position-jump" handler:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__MPCPlayActivityFeedEventConsumer_subscribeToEventStream___block_invoke_3;
   v8[3] = &unk_1E8232330;
   v8[4] = self;
-  [v5 subscribeToEventType:@"item-pause" handler:v8];
+  [streamCopy subscribeToEventType:@"item-pause" handler:v8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MPCPlayActivityFeedEventConsumer_subscribeToEventStream___block_invoke_4;
   v7[3] = &unk_1E8232330;
   v7[4] = self;
-  [v5 subscribeToEventType:@"item-end" handler:v7];
+  [streamCopy subscribeToEventType:@"item-end" handler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__MPCPlayActivityFeedEventConsumer_subscribeToEventStream___block_invoke_5;
   v6[3] = &unk_1E8232330;
   v6[4] = self;
-  [v5 subscribeToEventType:@"application-termination" handler:v6];
+  [streamCopy subscribeToEventType:@"application-termination" handler:v6];
 }
 
 @end

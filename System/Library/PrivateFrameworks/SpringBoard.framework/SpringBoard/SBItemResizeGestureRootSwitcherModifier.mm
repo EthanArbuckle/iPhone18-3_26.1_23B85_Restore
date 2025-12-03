@@ -1,47 +1,47 @@
 @interface SBItemResizeGestureRootSwitcherModifier
-- (SBItemResizeGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 selectedLayoutRole:(int64_t)a4;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBItemResizeGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode selectedLayoutRole:(int64_t)role;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBItemResizeGestureRootSwitcherModifier
 
-- (SBItemResizeGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 selectedLayoutRole:(int64_t)a4
+- (SBItemResizeGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode selectedLayoutRole:(int64_t)role
 {
   v6.receiver = self;
   v6.super_class = SBItemResizeGestureRootSwitcherModifier;
-  result = [(SBGestureRootSwitcherModifier *)&v6 initWithStartingEnvironmentMode:a3];
+  result = [(SBGestureRootSwitcherModifier *)&v6 initWithStartingEnvironmentMode:mode];
   if (result)
   {
-    result->_selectedLayoutRole = a4;
+    result->_selectedLayoutRole = role;
   }
 
   return result;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [SBFlexibleWindowingItemResizeGestureSwitcherModifier alloc];
-  v6 = [v4 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)v5 initWithGestureID:v6];
+  v7 = [(SBFlexibleWindowingItemResizeGestureSwitcherModifier *)v5 initWithGestureID:gestureID];
 
   return v7;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v6 = a4;
-  v7 = a3;
+  modifierCopy = modifier;
+  eventCopy = event;
   v8 = objc_opt_class();
-  v9 = SBSafeCast(v8, v6);
+  v9 = SBSafeCast(v8, modifierCopy);
 
   v10 = [SBItemResizeTransitionSwitcherModifier alloc];
-  v11 = [v7 transitionID];
+  transitionID = [eventCopy transitionID];
 
-  v12 = [v9 selectedAppLayout];
-  v13 = [(SBItemResizeTransitionSwitcherModifier *)v10 initWithTransitionID:v11 selectedAppLayout:v12 selectedLayoutRole:self->_selectedLayoutRole];
+  selectedAppLayout = [v9 selectedAppLayout];
+  v13 = [(SBItemResizeTransitionSwitcherModifier *)v10 initWithTransitionID:transitionID selectedAppLayout:selectedAppLayout selectedLayoutRole:self->_selectedLayoutRole];
 
   return v13;
 }

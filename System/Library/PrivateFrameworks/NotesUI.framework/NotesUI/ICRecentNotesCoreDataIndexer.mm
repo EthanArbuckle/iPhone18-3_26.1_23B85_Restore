@@ -1,5 +1,5 @@
 @interface ICRecentNotesCoreDataIndexer
-- (ICRecentNotesCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
+- (ICRecentNotesCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (NSArray)sortedSectionIdentifiers;
 - (NSFetchedResultsController)legacyNoteFetchedResultsController;
 - (NSFetchedResultsController)modernNoteFetchedResultsController;
@@ -7,29 +7,29 @@
 - (OS_dispatch_queue)indexAccessQueue;
 - (id)activeFetchedResultsControllers;
 - (id)firstRelevantItemIdentifier;
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5;
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
-- (id)nextRelevantItemIdentifierAfter:(id)a3;
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3;
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3;
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5;
-- (void)setChecklistsOnly:(BOOL)a3;
-- (void)setMaximumNumberOfNotesPerAccount:(unint64_t)a3;
-- (void)setNonPasswordProtectedOnly:(BOOL)a3;
-- (void)setPasswordProtectedOnly:(BOOL)a3;
-- (void)setPinnedOnly:(BOOL)a3;
-- (void)setShouldIncludeOutlineParentItems:(BOOL)a3;
-- (void)setSortType:(int64_t)a3;
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller;
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (id)nextRelevantItemIdentifierAfter:(id)after;
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section;
+- (id)sectionIdentifiersForSectionType:(unint64_t)type;
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (void)setChecklistsOnly:(BOOL)only;
+- (void)setMaximumNumberOfNotesPerAccount:(unint64_t)account;
+- (void)setNonPasswordProtectedOnly:(BOOL)only;
+- (void)setPasswordProtectedOnly:(BOOL)only;
+- (void)setPinnedOnly:(BOOL)only;
+- (void)setShouldIncludeOutlineParentItems:(BOOL)items;
+- (void)setSortType:(int64_t)type;
 - (void)willIndex;
 @end
 
 @implementation ICRecentNotesCoreDataIndexer
 
-- (ICRecentNotesCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (ICRecentNotesCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
   v6.receiver = self;
   v6.super_class = ICRecentNotesCoreDataIndexer;
-  v4 = [(ICCoreDataIndexer *)&v6 initWithLegacyManagedObjectContext:a3 modernManagedObjectContext:a4];
+  v4 = [(ICCoreDataIndexer *)&v6 initWithLegacyManagedObjectContext:context modernManagedObjectContext:objectContext];
   if (v4)
   {
     -[ICRecentNotesCoreDataIndexer setSortType:](v4, "setSortType:", [MEMORY[0x1E69B7A88] currentNoteListSortType]);
@@ -38,9 +38,9 @@
   return v4;
 }
 
-- (void)setShouldIncludeOutlineParentItems:(BOOL)a3
+- (void)setShouldIncludeOutlineParentItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
@@ -49,26 +49,26 @@
 
   v6.receiver = self;
   v6.super_class = ICRecentNotesCoreDataIndexer;
-  [(ICCoreDataIndexer *)&v6 setShouldIncludeOutlineParentItems:v3];
+  [(ICCoreDataIndexer *)&v6 setShouldIncludeOutlineParentItems:itemsCopy];
 }
 
-- (void)setMaximumNumberOfNotesPerAccount:(unint64_t)a3
+- (void)setMaximumNumberOfNotesPerAccount:(unint64_t)account
 {
-  self->_maximumNumberOfNotesPerAccount = a3;
-  v5 = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
-  v6 = [v5 fetchRequest];
-  [v6 setFetchBatchSize:a3];
+  self->_maximumNumberOfNotesPerAccount = account;
+  legacyNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
+  fetchRequest = [legacyNoteFetchedResultsController fetchRequest];
+  [fetchRequest setFetchBatchSize:account];
 
-  v8 = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
-  v7 = [v8 fetchRequest];
-  [v7 setFetchBatchSize:a3];
+  modernNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
+  fetchRequest2 = [modernNoteFetchedResultsController fetchRequest];
+  [fetchRequest2 setFetchBatchSize:account];
 }
 
-- (void)setChecklistsOnly:(BOOL)a3
+- (void)setChecklistsOnly:(BOOL)only
 {
-  if (self->_checklistsOnly != a3)
+  if (self->_checklistsOnly != only)
   {
-    self->_checklistsOnly = a3;
+    self->_checklistsOnly = only;
     legacyNoteFetchedResultsController = self->_legacyNoteFetchedResultsController;
     self->_legacyNoteFetchedResultsController = 0;
 
@@ -77,11 +77,11 @@
   }
 }
 
-- (void)setPinnedOnly:(BOOL)a3
+- (void)setPinnedOnly:(BOOL)only
 {
-  if (self->_pinnedOnly != a3)
+  if (self->_pinnedOnly != only)
   {
-    self->_pinnedOnly = a3;
+    self->_pinnedOnly = only;
     legacyNoteFetchedResultsController = self->_legacyNoteFetchedResultsController;
     self->_legacyNoteFetchedResultsController = 0;
 
@@ -90,11 +90,11 @@
   }
 }
 
-- (void)setPasswordProtectedOnly:(BOOL)a3
+- (void)setPasswordProtectedOnly:(BOOL)only
 {
-  if (self->_passwordProtectedOnly != a3)
+  if (self->_passwordProtectedOnly != only)
   {
-    self->_passwordProtectedOnly = a3;
+    self->_passwordProtectedOnly = only;
     legacyNoteFetchedResultsController = self->_legacyNoteFetchedResultsController;
     self->_legacyNoteFetchedResultsController = 0;
 
@@ -103,11 +103,11 @@
   }
 }
 
-- (void)setNonPasswordProtectedOnly:(BOOL)a3
+- (void)setNonPasswordProtectedOnly:(BOOL)only
 {
-  if (self->_nonPasswordProtectedOnly != a3)
+  if (self->_nonPasswordProtectedOnly != only)
   {
-    self->_nonPasswordProtectedOnly = a3;
+    self->_nonPasswordProtectedOnly = only;
     legacyNoteFetchedResultsController = self->_legacyNoteFetchedResultsController;
     self->_legacyNoteFetchedResultsController = 0;
 
@@ -116,18 +116,18 @@
   }
 }
 
-- (void)setSortType:(int64_t)a3
+- (void)setSortType:(int64_t)type
 {
-  self->_sortType = a3;
+  self->_sortType = type;
   v4 = [MEMORY[0x1E69B7A88] legacySortDescriptorsForType:{-[ICRecentNotesCoreDataIndexer sortType](self, "sortType")}];
-  v5 = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
-  v6 = [v5 fetchRequest];
-  [v6 setSortDescriptors:v4];
+  legacyNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
+  fetchRequest = [legacyNoteFetchedResultsController fetchRequest];
+  [fetchRequest setSortDescriptors:v4];
 
   v9 = [MEMORY[0x1E69B7A88] sortDescriptorsForType:{-[ICRecentNotesCoreDataIndexer sortType](self, "sortType")}];
-  v7 = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
-  v8 = [v7 fetchRequest];
-  [v8 setSortDescriptors:v9];
+  modernNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
+  fetchRequest2 = [modernNoteFetchedResultsController fetchRequest];
+  [fetchRequest2 setSortDescriptors:v9];
 }
 
 - (OS_dispatch_queue)indexAccessQueue
@@ -157,12 +157,12 @@
     v6 = [MEMORY[0x1E69B7A88] legacySortDescriptorsForType:{-[ICRecentNotesCoreDataIndexer sortType](self, "sortType")}];
     [v5 setSortDescriptors:v6];
 
-    v7 = [MEMORY[0x1E69B7140] visibleNotesPredicate];
-    [v5 setPredicate:v7];
+    visibleNotesPredicate = [MEMORY[0x1E69B7140] visibleNotesPredicate];
+    [v5 setPredicate:visibleNotesPredicate];
 
     v8 = objc_alloc(MEMORY[0x1E695D600]);
-    v9 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
-    v10 = [v8 initWithFetchRequest:v5 managedObjectContext:v9 sectionNameKeyPath:0 cacheName:0];
+    legacyManagedObjectContext = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+    v10 = [v8 initWithFetchRequest:v5 managedObjectContext:legacyManagedObjectContext sectionNameKeyPath:0 cacheName:0];
     legacyNoteFetchedResultsController = self->_legacyNoteFetchedResultsController;
     self->_legacyNoteFetchedResultsController = v10;
   }
@@ -180,11 +180,11 @@
   {
     v4 = MEMORY[0x1E696AB28];
     v5 = MEMORY[0x1E69B77F0];
-    v6 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
-    v7 = [v5 predicateForVisibleNotesInContext:v6];
+    modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+    v7 = [v5 predicateForVisibleNotesInContext:modernManagedObjectContext];
     v39[0] = v7;
-    v8 = [MEMORY[0x1E69B77F0] predicateForSystemPaperNotesNotInTrash];
-    v39[1] = v8;
+    predicateForSystemPaperNotesNotInTrash = [MEMORY[0x1E69B77F0] predicateForSystemPaperNotesNotInTrash];
+    v39[1] = predicateForSystemPaperNotesNotInTrash;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     v10 = [v4 orPredicateWithSubpredicates:v9];
 
@@ -192,8 +192,8 @@
     {
       v11 = MEMORY[0x1E696AB28];
       v38[0] = v10;
-      v12 = [MEMORY[0x1E69B77F0] predicateForNotesWithChecklists];
-      v38[1] = v12;
+      predicateForNotesWithChecklists = [MEMORY[0x1E69B77F0] predicateForNotesWithChecklists];
+      v38[1] = predicateForNotesWithChecklists;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
       v14 = [v11 andPredicateWithSubpredicates:v13];
 
@@ -204,8 +204,8 @@
     {
       v15 = MEMORY[0x1E696AB28];
       v37[0] = v10;
-      v16 = [MEMORY[0x1E69B77F0] predicateForPinnedNotes];
-      v37[1] = v16;
+      predicateForPinnedNotes = [MEMORY[0x1E69B77F0] predicateForPinnedNotes];
+      v37[1] = predicateForPinnedNotes;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
       v18 = [v15 andPredicateWithSubpredicates:v17];
 
@@ -216,8 +216,8 @@
     {
       v19 = MEMORY[0x1E696AB28];
       v36[0] = v10;
-      v20 = [MEMORY[0x1E69B7700] predicateForPasswordProtectedObjects];
-      v36[1] = v20;
+      predicateForPasswordProtectedObjects = [MEMORY[0x1E69B7700] predicateForPasswordProtectedObjects];
+      v36[1] = predicateForPasswordProtectedObjects;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
       v22 = [v19 andPredicateWithSubpredicates:v21];
 
@@ -228,8 +228,8 @@
     {
       v23 = MEMORY[0x1E696AB28];
       v35[0] = v10;
-      v24 = [MEMORY[0x1E69B7700] predicateForPasswordProtectedObjects];
-      v25 = [v23 notPredicateWithSubpredicate:v24];
+      predicateForPasswordProtectedObjects2 = [MEMORY[0x1E69B7700] predicateForPasswordProtectedObjects];
+      v25 = [v23 notPredicateWithSubpredicate:predicateForPasswordProtectedObjects2];
       v35[1] = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
       v27 = [v23 andPredicateWithSubpredicates:v26];
@@ -243,8 +243,8 @@
 
     [v28 setPredicate:v10];
     v30 = objc_alloc(MEMORY[0x1E695D600]);
-    v31 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
-    v32 = [v30 initWithFetchRequest:v28 managedObjectContext:v31 sectionNameKeyPath:0 cacheName:0];
+    modernManagedObjectContext2 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+    v32 = [v30 initWithFetchRequest:v28 managedObjectContext:modernManagedObjectContext2 sectionNameKeyPath:0 cacheName:0];
     v33 = self->_modernNoteFetchedResultsController;
     self->_modernNoteFetchedResultsController = v32;
 
@@ -259,9 +259,9 @@
   sectionIdentifiersToManagedObjectIDs = self->_sectionIdentifiersToManagedObjectIDs;
   if (!sectionIdentifiersToManagedObjectIDs)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_sectionIdentifiersToManagedObjectIDs;
-    self->_sectionIdentifiersToManagedObjectIDs = v4;
+    self->_sectionIdentifiersToManagedObjectIDs = dictionary;
 
     sectionIdentifiersToManagedObjectIDs = self->_sectionIdentifiersToManagedObjectIDs;
   }
@@ -272,20 +272,20 @@
 - (id)activeFetchedResultsControllers
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
+  legacyNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
 
-  if (v4)
+  if (legacyNoteFetchedResultsController)
   {
-    v5 = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
-    [v3 addObject:v5];
+    legacyNoteFetchedResultsController2 = [(ICRecentNotesCoreDataIndexer *)self legacyNoteFetchedResultsController];
+    [v3 addObject:legacyNoteFetchedResultsController2];
   }
 
-  v6 = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
+  modernNoteFetchedResultsController = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
 
-  if (v6)
+  if (modernNoteFetchedResultsController)
   {
-    v7 = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
-    [v3 addObject:v7];
+    modernNoteFetchedResultsController2 = [(ICRecentNotesCoreDataIndexer *)self modernNoteFetchedResultsController];
+    [v3 addObject:modernNoteFetchedResultsController2];
   }
 
   v8 = [v3 copy];
@@ -295,13 +295,13 @@
 
 - (void)willIndex
 {
-  v3 = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__ICRecentNotesCoreDataIndexer_willIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __41__ICRecentNotesCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
@@ -310,26 +310,26 @@ void __41__ICRecentNotesCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller
 {
-  v7 = a3;
-  v8 = a5;
+  sectionCopy = section;
+  controllerCopy = controller;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__62;
   v21 = __Block_byref_object_dispose__62;
-  v22 = [MEMORY[0x1E695DF70] array];
-  v9 = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  indexAccessQueue = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__ICRecentNotesCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResultsController___block_invoke;
   block[3] = &unk_1E8469190;
-  v10 = v7;
+  v10 = sectionCopy;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
-  dispatch_sync(v9, block);
+  dispatch_sync(indexAccessQueue, block);
 
   v11 = [v18[5] copy];
   _Block_object_dispose(&v17, 8);
@@ -445,18 +445,18 @@ LABEL_18:
   }
 }
 
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v6 = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __110__ICRecentNotesCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectContext_modernManagedObjectContext___block_invoke;
   v10[3] = &unk_1E8468F80;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  dispatch_sync(v6, v10);
+  selfCopy = self;
+  dispatch_sync(indexAccessQueue, v10);
 
   v8 = v7;
   return v8;
@@ -510,18 +510,18 @@ void __110__ICRecentNotesCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedOb
   }
 }
 
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  indexAccessQueue = [(ICRecentNotesCoreDataIndexer *)self indexAccessQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __117__ICRecentNotesCoreDataIndexer_sectionSnapshotsForSectionType_legacyManagedObjectContext_modernManagedObjectContext___block_invoke;
   v12[3] = &unk_1E8468F80;
   v12[4] = self;
-  v8 = v6;
+  v8 = dictionary;
   v13 = v8;
-  dispatch_sync(v7, v12);
+  dispatch_sync(indexAccessQueue, v12);
 
   v9 = v13;
   v10 = v8;
@@ -577,21 +577,21 @@ void __117__ICRecentNotesCoreDataIndexer_sectionSnapshotsForSectionType_legacyMa
 
 - (NSArray)sortedSectionIdentifiers
 {
-  v2 = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v3 = [v2 allKeys];
+  sectionIdentifiersToManagedObjectIDs = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
   v4 = +[ICFolderListSectionIdentifier sortDescriptors];
-  v5 = [v3 sortedArrayUsingDescriptors:v4];
+  v5 = [allKeys sortedArrayUsingDescriptors:v4];
 
   return v5;
 }
 
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section
 {
-  if (a3 < 0 || (-[ICRecentNotesCoreDataIndexer sectionIdentifiersToManagedObjectIDs](self, "sectionIdentifiersToManagedObjectIDs"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (section < 0 || (-[ICRecentNotesCoreDataIndexer sectionIdentifiersToManagedObjectIDs](self, "sectionIdentifiersToManagedObjectIDs"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= section))
   {
-    v8 = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v9 = [v8 allKeys];
-    v7 = [v9 objectAtIndexedSubscript:a3];
+    sectionIdentifiersToManagedObjectIDs = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
+    v7 = [allKeys objectAtIndexedSubscript:section];
   }
 
   else
@@ -602,26 +602,26 @@ void __117__ICRecentNotesCoreDataIndexer_sectionSnapshotsForSectionType_legacyMa
   return v7;
 }
 
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3
+- (id)sectionIdentifiersForSectionType:(unint64_t)type
 {
-  v3 = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v4 = [v3 allKeys];
+  sectionIdentifiersToManagedObjectIDs = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
 
-  return v4;
+  return allKeys;
 }
 
 - (id)firstRelevantItemIdentifier
 {
-  v3 = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v4 = [(ICRecentNotesCoreDataIndexer *)self sortedSectionIdentifiers];
-  v5 = [v4 firstObject];
-  v6 = [v3 objectForKeyedSubscript:v5];
-  v7 = [v6 firstObject];
+  sectionIdentifiersToManagedObjectIDs = [(ICRecentNotesCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  sortedSectionIdentifiers = [(ICRecentNotesCoreDataIndexer *)self sortedSectionIdentifiers];
+  firstObject = [sortedSectionIdentifiers firstObject];
+  v6 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:firstObject];
+  firstObject2 = [v6 firstObject];
 
-  return v7;
+  return firstObject2;
 }
 
-- (id)nextRelevantItemIdentifierAfter:(id)a3
+- (id)nextRelevantItemIdentifierAfter:(id)after
 {
   v3 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))

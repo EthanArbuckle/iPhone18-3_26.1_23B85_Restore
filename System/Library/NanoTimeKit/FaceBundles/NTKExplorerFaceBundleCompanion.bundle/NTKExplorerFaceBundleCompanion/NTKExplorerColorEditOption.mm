@@ -1,5 +1,5 @@
 @interface NTKExplorerColorEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -9,22 +9,22 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKExplorerColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKExplorerColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_10420[a3];
+    return off_10420[value];
   }
 }
 
@@ -52,8 +52,8 @@
     v2 = NTKNameForDuotones();
   }
 
-  v3 = [objc_opt_class() pigmentFaceDomain];
-  v4 = [[NTKPigmentEditOption alloc] initWithOptionName:v2 collectionName:v3];
+  pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
+  v4 = [[NTKPigmentEditOption alloc] initWithOptionName:v2 collectionName:pigmentFaceDomain];
 
   return v4;
 }

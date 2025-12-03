@@ -1,17 +1,17 @@
 @interface RUIObjectModel
-+ (id)objectModelForXMLNamed:(id)a3;
-- (BOOL)_shouldDisplayNamedElement:(id)a3 page:(id)a4;
-- (BOOL)goBack:(BOOL)a3;
-- (BOOL)hasAttributeOrAttributeFunctionNamed:(id)a3 withAttributes:(id)a4;
-- (BOOL)hasConfirmationAttributes:(id)a3;
-- (BOOL)hasSecondConfirmationAttributes:(id)a3;
++ (id)objectModelForXMLNamed:(id)named;
+- (BOOL)_shouldDisplayNamedElement:(id)element page:(id)page;
+- (BOOL)goBack:(BOOL)back;
+- (BOOL)hasAttributeOrAttributeFunctionNamed:(id)named withAttributes:(id)attributes;
+- (BOOL)hasConfirmationAttributes:(id)attributes;
+- (BOOL)hasSecondConfirmationAttributes:(id)attributes;
 - (BOOL)prepareScriptContext;
-- (BOOL)tableViewOM:(id)a3 deleteRowAtIndexPath:(id)a4;
-- (BOOL)validateWithFunction:(id)a3;
-- (BOOL)webViewOM:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5;
-- (Class)customFooterClassForSection:(id)a3;
-- (Class)customHeaderClassForSection:(id)a3;
-- (Class)customTableCellClassForTableViewRow:(id)a3;
+- (BOOL)tableViewOM:(id)m deleteRowAtIndexPath:(id)path;
+- (BOOL)validateWithFunction:(id)function;
+- (BOOL)webViewOM:(id)m shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type;
+- (Class)customFooterClassForSection:(id)section;
+- (Class)customHeaderClassForSection:(id)section;
+- (Class)customTableCellClassForTableViewRow:(id)row;
 - (NSArray)allPages;
 - (NSArray)pages;
 - (NSString)description;
@@ -22,87 +22,87 @@
 - (RemoteUITelemetryDelegate)telemetryDelegate;
 - (UIPopoverPresentationControllerSourceItem)popoverSourceItem;
 - (id)_firstPageForPresentation;
-- (id)_pageContainingTableView:(id)a3;
+- (id)_pageContainingTableView:(id)view;
 - (id)_parentNavigationController;
 - (id)_parentViewController;
-- (id)_viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:(BOOL)a3;
-- (id)absoluteURLWithString:(id)a3;
+- (id)_viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:(BOOL)animated;
+- (id)absoluteURLWithString:(id)string;
 - (id)alertController;
-- (id)elementForActivityIndicatorAnchorId:(id)a3;
-- (id)elementForActivityIndicatorWithActivatedElement:(id)a3;
-- (id)elementForActivityIndicatorWithAttributes:(id)a3;
-- (id)elementsWithName:(id)a3;
-- (id)invokeScriptFunction:(id)a3 withArguments:(id)a4;
+- (id)elementForActivityIndicatorAnchorId:(id)id;
+- (id)elementForActivityIndicatorWithActivatedElement:(id)element;
+- (id)elementForActivityIndicatorWithAttributes:(id)attributes;
+- (id)elementsWithName:(id)name;
+- (id)invokeScriptFunction:(id)function withArguments:(id)arguments;
 - (id)newNavigationControllerForPresentation;
-- (id)objectForJSValue:(OpaqueJSValue *)a3;
+- (id)objectForJSValue:(OpaqueJSValue *)value;
 - (id)postbackData;
 - (id)postbackDictionary;
-- (id)relativeURLWithString:(id)a3;
-- (id)rowForFormField:(id)a3;
-- (id)stringForAttributeName:(id)a3 withAttributes:(id)a4;
-- (id)subElementWithID:(id)a3;
-- (id)tableFooterViewForAttributes:(id)a3;
-- (id)tableHeaderViewForAttributes:(id)a3;
-- (id)textInRowWithIdentifier:(id)a3;
-- (unint64_t)supportedInterfaceOrientationsForRUIPage:(id)a3;
-- (void)RUIPage:(id)a3 pressedNavBarButton:(id)a4;
-- (void)RUIPage:(id)a3 toggledEditing:(BOOL)a4;
-- (void)_displayNamedPage:(id)a3 animated:(BOOL)a4;
-- (void)_displaySupplementalPage:(id)a3;
-- (void)_handleElementChange:(id)a3 completion:(id)a4;
-- (void)_handleLinkPress:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)_navigateBackWithPop:(BOOL)a3 fromViewController:(id)a4;
-- (void)_populatePageNavItem:(id)a3 withNextButton:(BOOL)a4;
-- (void)_populateRequest:(id)a3;
-- (void)_presentConfirmationWithAttributes:(id)a3 completion:(id)a4;
-- (void)_presentSecondConfirmationWithAttributes:(id)a3 completion:(id)a4;
-- (void)_startNavigationBarSpinnerIfNeededForAttributes:(id)a3;
-- (void)_stopNavigationBarSpinnerIfNeededForAttributes:(id)a3;
-- (void)_unsafe_setPages:(id)a3;
-- (void)activateElement:(id)a3 completion:(id)a4;
-- (void)activateElement:(id)a3 sender:(id)a4 completion:(id)a5;
-- (void)addAlertElement:(id)a3;
-- (void)alertView:(id)a3 pressedButton:(id)a4 completion:(id)a5;
+- (id)relativeURLWithString:(id)string;
+- (id)rowForFormField:(id)field;
+- (id)stringForAttributeName:(id)name withAttributes:(id)attributes;
+- (id)subElementWithID:(id)d;
+- (id)tableFooterViewForAttributes:(id)attributes;
+- (id)tableHeaderViewForAttributes:(id)attributes;
+- (id)textInRowWithIdentifier:(id)identifier;
+- (unint64_t)supportedInterfaceOrientationsForRUIPage:(id)page;
+- (void)RUIPage:(id)page pressedNavBarButton:(id)button;
+- (void)RUIPage:(id)page toggledEditing:(BOOL)editing;
+- (void)_displayNamedPage:(id)page animated:(BOOL)animated;
+- (void)_displaySupplementalPage:(id)page;
+- (void)_handleElementChange:(id)change completion:(id)completion;
+- (void)_handleLinkPress:(id)press attributes:(id)attributes completion:(id)completion;
+- (void)_navigateBackWithPop:(BOOL)pop fromViewController:(id)controller;
+- (void)_populatePageNavItem:(id)item withNextButton:(BOOL)button;
+- (void)_populateRequest:(id)request;
+- (void)_presentConfirmationWithAttributes:(id)attributes completion:(id)completion;
+- (void)_presentSecondConfirmationWithAttributes:(id)attributes completion:(id)completion;
+- (void)_startNavigationBarSpinnerIfNeededForAttributes:(id)attributes;
+- (void)_stopNavigationBarSpinnerIfNeededForAttributes:(id)attributes;
+- (void)_unsafe_setPages:(id)pages;
+- (void)activateElement:(id)element completion:(id)completion;
+- (void)activateElement:(id)element sender:(id)sender completion:(id)completion;
+- (void)addAlertElement:(id)element;
+- (void)alertView:(id)view pressedButton:(id)button completion:(id)completion;
 - (void)cleanupRefreshTimer;
-- (void)configureRow:(id)a3;
-- (void)configureSection:(id)a3;
-- (void)configureTableView:(id)a3;
+- (void)configureRow:(id)row;
+- (void)configureSection:(id)section;
+- (void)configureTableView:(id)view;
 - (void)dealloc;
-- (void)handleAppleIDAuthenticationIfNeededForAttributes:(id)a3 completion:(id)a4;
-- (void)handleElementChange:(id)a3 action:(int)a4 completion:(id)a5;
+- (void)handleAppleIDAuthenticationIfNeededForAttributes:(id)attributes completion:(id)completion;
+- (void)handleElementChange:(id)change action:(int)action completion:(id)completion;
 - (void)initializeSwift;
-- (void)jsInterfaceForElementId:(id)a3;
-- (void)navigateToNextPageAnimated:(BOOL)a3;
+- (void)jsInterfaceForElementId:(id)id;
+- (void)navigateToNextPageAnimated:(BOOL)animated;
 - (void)notifyXMLUIDataChange;
-- (void)openLink:(id)a3 HTTPMethod:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (void)pageDidDisappear:(id)a3;
+- (void)openLink:(id)link HTTPMethod:(id)method attributes:(id)attributes completion:(id)completion;
+- (void)pageDidDisappear:(id)disappear;
 - (void)parseDidFinish;
-- (void)populatePostbackDictionary:(id)a3;
-- (void)presentConfirmationIfNeededForElement:(id)a3 completion:(id)a4;
-- (void)presentInParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentPage:(id)a3 inViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)presentWithBlock:(id)a3;
+- (void)populatePostbackDictionary:(id)dictionary;
+- (void)presentConfirmationIfNeededForElement:(id)element completion:(id)completion;
+- (void)presentInParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentPage:(id)page inViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentWithBlock:(id)block;
 - (void)refreshTimeout;
-- (void)refreshWithObjectModel:(id)a3;
-- (void)remoteUIWebViewController:(id)a3 dismissWithPayload:(id)a4;
-- (void)remoteUIWebViewControllerDidDismiss:(id)a3;
+- (void)refreshWithObjectModel:(id)model;
+- (void)remoteUIWebViewController:(id)controller dismissWithPayload:(id)payload;
+- (void)remoteUIWebViewControllerDidDismiss:(id)dismiss;
 - (void)runScript;
-- (void)setActivityIndicatorStatus:(BOOL)a3 forElement:(id)a4;
-- (void)setDecodingUserInfo:(id)a3;
-- (void)setJSGlobalContext:(OpaqueJSContext *)a3;
-- (void)setPages:(id)a3;
-- (void)setPopoverSourceItem:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setUpdateInfo:(id)a3;
-- (void)showModalWebViewWithLinkURL:(id)a3 dismissButtonLabel:(id)a4 dismissButtonAlignment:(id)a5 scaleToFit:(BOOL)a6 loadCompletion:(id)a7 dismissHandler:(id)a8;
+- (void)setActivityIndicatorStatus:(BOOL)status forElement:(id)element;
+- (void)setDecodingUserInfo:(id)info;
+- (void)setJSGlobalContext:(OpaqueJSContext *)context;
+- (void)setPages:(id)pages;
+- (void)setPopoverSourceItem:(id)item;
+- (void)setStyle:(id)style;
+- (void)setUpdateInfo:(id)info;
+- (void)showModalWebViewWithLinkURL:(id)l dismissButtonLabel:(id)label dismissButtonAlignment:(id)alignment scaleToFit:(BOOL)fit loadCompletion:(id)completion dismissHandler:(id)handler;
 - (void)startActivityIndicator;
-- (void)startActivityIndicatorForElement:(id)a3;
-- (void)startActivityIndicatorWithAttributes:(id)a3;
-- (void)startNavigationBarSpinnerWithTitle:(id)a3;
+- (void)startActivityIndicatorForElement:(id)element;
+- (void)startActivityIndicatorWithAttributes:(id)attributes;
+- (void)startNavigationBarSpinnerWithTitle:(id)title;
 - (void)stopActivityIndicator;
 - (void)stopNavigationBarSpinner;
-- (void)tableViewOM:(id)a3 elementDidChange:(id)a4 action:(int)a5 completion:(id)a6;
-- (void)tableViewOMDidChange:(id)a3;
+- (void)tableViewOM:(id)m elementDidChange:(id)change action:(int)action completion:(id)completion;
+- (void)tableViewOMDidChange:(id)change;
 @end
 
 @implementation RUIObjectModel
@@ -174,9 +174,9 @@
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 objectModel];
+        objectModel = [v8 objectModel];
 
-        if (v9 == self)
+        if (objectModel == self)
         {
           [v8 setObjectModel:0];
         }
@@ -188,12 +188,12 @@
     while (v5);
   }
 
-  v10 = [(NSMutableDictionary *)self->_namedPages allValues];
+  allValues = [(NSMutableDictionary *)self->_namedPages allValues];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -204,19 +204,19 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 objectModel];
+        objectModel2 = [v15 objectModel];
 
-        if (v16 == self)
+        if (objectModel2 == self)
         {
           [v15 setObjectModel:0];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -234,45 +234,45 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(RUIObjectModel *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p ID '%@', Source: %@\nDisplayed Pages: %@ Default Pages: %@ Named Pages: %@>", v4, self, v5, self->_sourceURL, self->_displayedPages, self->_defaultPages, self->_namedPages];
+  identifier = [(RUIObjectModel *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p ID '%@', Source: %@\nDisplayed Pages: %@ Default Pages: %@ Named Pages: %@>", v4, self, identifier, self->_sourceURL, self->_displayedPages, self->_defaultPages, self->_namedPages];
 
   return v6;
 }
 
-+ (id)objectModelForXMLNamed:(id)a3
++ (id)objectModelForXMLNamed:(id)named
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 URLForResource:v4 withExtension:@"xml"];
+  namedCopy = named;
+  mainBundle = [v3 mainBundle];
+  v6 = [mainBundle URLForResource:namedCopy withExtension:@"xml"];
 
   v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6];
   v8 = [[RUIParser alloc] initWithXML:v7 baseURL:v6 delegate:0];
-  v9 = [(RUIParser *)v8 uiObjectModel];
-  [v9 setName:v4];
+  uiObjectModel = [(RUIParser *)v8 uiObjectModel];
+  [uiObjectModel setName:namedCopy];
 
-  return v9;
+  return uiObjectModel;
 }
 
 - (void)parseDidFinish
 {
   self->_parseFinished = 1;
-  v3 = [(RUIObjectModel *)self style];
-  [v3 applyToObjectModel:self];
+  style = [(RUIObjectModel *)self style];
+  [style applyToObjectModel:self];
 }
 
-- (void)_populatePageNavItem:(id)a3 withNextButton:(BOOL)a4
+- (void)_populatePageNavItem:(id)item withNextButton:(BOOL)button
 {
-  v4 = a4;
-  v23 = a3;
-  v6 = [v23 navigationItem];
-  v7 = v6;
-  if (v4)
+  buttonCopy = button;
+  itemCopy = item;
+  navigationItem = [itemCopy navigationItem];
+  v7 = navigationItem;
+  if (buttonCopy)
   {
-    v8 = [v6 rightBarButtonItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (!v8)
+    if (!rightBarButtonItem)
     {
       v9 = objc_alloc(MEMORY[0x277D751E0]);
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -291,66 +291,66 @@
     v16 = [v13 initWithTitle:v15 style:0 target:self action:sel_back_];
     [v7 setBackBarButtonItem:v16];
 
-    v17 = [v23 backButtonTitle];
+    backButtonTitle = [itemCopy backButtonTitle];
 
-    if (v17)
+    if (backButtonTitle)
     {
-      v18 = [v7 backBarButtonItem];
-      v19 = [v23 backButtonTitle];
+      backBarButtonItem = [v7 backBarButtonItem];
+      backButtonTitle2 = [itemCopy backButtonTitle];
     }
 
     else
     {
-      v20 = [v23 navTitle];
-      v21 = [v20 length];
+      navTitle = [itemCopy navTitle];
+      v21 = [navTitle length];
 
       if (!v21)
       {
         goto LABEL_10;
       }
 
-      v18 = [v7 backBarButtonItem];
-      v19 = [v23 navTitle];
+      backBarButtonItem = [v7 backBarButtonItem];
+      backButtonTitle2 = [itemCopy navTitle];
     }
 
-    v22 = v19;
-    [v18 setTitle:v19];
+    v22 = backButtonTitle2;
+    [backBarButtonItem setTitle:backButtonTitle2];
   }
 
 LABEL_10:
 }
 
-- (void)setPopoverSourceItem:(id)a3
+- (void)setPopoverSourceItem:(id)item
 {
-  v8 = a3;
-  objc_storeStrong(&self->_popoverSourceItem, a3);
-  v5 = [(RUIObjectModel *)self delegate];
+  itemCopy = item;
+  objc_storeStrong(&self->_popoverSourceItem, item);
+  delegate = [(RUIObjectModel *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(RUIObjectModel *)self delegate];
-    [v7 setPopoverSourceItem:v8];
+    delegate2 = [(RUIObjectModel *)self delegate];
+    [delegate2 setPopoverSourceItem:itemCopy];
   }
 }
 
 - (UIPopoverPresentationControllerSourceItem)popoverSourceItem
 {
-  v3 = [(RUIObjectModel *)self delegate];
+  delegate = [(RUIObjectModel *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RUIObjectModel *)self delegate];
-    v6 = [v5 popoverSourceItem];
+    delegate2 = [(RUIObjectModel *)self delegate];
+    popoverSourceItem = [delegate2 popoverSourceItem];
   }
 
   else
   {
-    v6 = self->_popoverSourceItem;
+    popoverSourceItem = self->_popoverSourceItem;
   }
 
-  return v6;
+  return popoverSourceItem;
 }
 
 - (void)refreshTimeout
@@ -402,58 +402,58 @@ LABEL_10:
   return v5;
 }
 
-- (void)presentWithBlock:(id)a3
+- (void)presentWithBlock:(id)block
 {
-  v10 = a3;
-  if (!v10)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(RUIObjectModel *)a2 presentWithBlock:?];
   }
 
-  v5 = [(RUIObjectModel *)self _firstPageForPresentation];
-  v6 = [(RUIObjectModel *)self defaultPages];
-  v7 = [v6 firstObject];
+  _firstPageForPresentation = [(RUIObjectModel *)self _firstPageForPresentation];
+  defaultPages = [(RUIObjectModel *)self defaultPages];
+  firstObject = [defaultPages firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(RUIObjectModel *)self defaultPages];
-    v9 = [v8 firstObject];
-    [v9 addDidAppearBlock:v10];
+    defaultPages2 = [(RUIObjectModel *)self defaultPages];
+    firstObject2 = [defaultPages2 firstObject];
+    [firstObject2 addDidAppearBlock:blockCopy];
   }
 
   else
   {
-    v10[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)presentInParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentInParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(RUIObjectModel *)self _firstPageForPresentation];
-  [(RUIObjectModel *)self presentPage:v10 inViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  _firstPageForPresentation = [(RUIObjectModel *)self _firstPageForPresentation];
+  [(RUIObjectModel *)self presentPage:_firstPageForPresentation inViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentPage:(id)a3 inViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentPage:(id)page inViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v9 = a4;
-  v10 = a6;
-  if (v11)
+  animatedCopy = animated;
+  pageCopy = page;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (pageCopy)
   {
-    if (v10 && v7)
+    if (completionCopy && animatedCopy)
     {
-      [v11 addDidAppearBlock:v10];
+      [pageCopy addDidAppearBlock:completionCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 settingsCompatiblePushViewController:v11];
-      if (!v10)
+      [controllerCopy settingsCompatiblePushViewController:pageCopy];
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
@@ -461,16 +461,16 @@ LABEL_10:
 
     else
     {
-      [v9 pushViewController:v11 animated:v7];
-      if (!v10)
+      [controllerCopy pushViewController:pageCopy animated:animatedCopy];
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
     }
 
-    if (!v7)
+    if (!animatedCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -479,15 +479,15 @@ LABEL_11:
 
 - (id)newNavigationControllerForPresentation
 {
-  v3 = [(RUIObjectModel *)self _firstPageForPresentation];
-  if (v3)
+  _firstPageForPresentation = [(RUIObjectModel *)self _firstPageForPresentation];
+  if (_firstPageForPresentation)
   {
-    v4 = [[RUINavigationController alloc] initWithRootViewController:v3];
-    v5 = [(RUIObjectModel *)self style];
-    [(RUINavigationController *)v4 setStyle:v5];
+    v4 = [[RUINavigationController alloc] initWithRootViewController:_firstPageForPresentation];
+    style = [(RUIObjectModel *)self style];
+    [(RUINavigationController *)v4 setStyle:style];
 
-    v6 = [(RUIObjectModel *)self style];
-    [v6 applyToNavigationController:v4];
+    style2 = [(RUIObjectModel *)self style];
+    [style2 applyToNavigationController:v4];
 
     if (+[RUIPlatform isAppleTV])
     {
@@ -505,9 +505,9 @@ LABEL_11:
 
 - (id)_parentViewController
 {
-  v3 = [(RUIObjectModel *)self primaryAlert];
+  primaryAlert = [(RUIObjectModel *)self primaryAlert];
 
-  if (!v3 || (v4 = objc_loadWeakRetained(&self->_delegate), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) == 0) || (v6 = objc_loadWeakRetained(&self->_delegate), [v6 viewControllerForAlertPresentation], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!primaryAlert || (v4 = objc_loadWeakRetained(&self->_delegate), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) == 0) || (v6 = objc_loadWeakRetained(&self->_delegate), [v6 viewControllerForAlertPresentation], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = [WeakRetained parentViewControllerForObjectModel:self];
@@ -518,11 +518,11 @@ LABEL_11:
 
 - (id)_parentNavigationController
 {
-  v2 = [(RUIObjectModel *)self _parentViewController];
+  _parentViewController = [(RUIObjectModel *)self _parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _parentViewController;
   }
 
   else
@@ -533,39 +533,39 @@ LABEL_11:
   return v3;
 }
 
-- (void)_displaySupplementalPage:(id)a3
+- (void)_displaySupplementalPage:(id)page
 {
-  v6 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained parentViewControllerForObjectModel:self];
-  [v5 settingsCompatiblePushViewController:v6];
+  [v5 settingsCompatiblePushViewController:pageCopy];
 
-  [(NSMutableArray *)self->_displayedPages addObject:v6];
+  [(NSMutableArray *)self->_displayedPages addObject:pageCopy];
 }
 
-- (void)_displayNamedPage:(id)a3 animated:(BOOL)a4
+- (void)_displayNamedPage:(id)page animated:(BOOL)animated
 {
   displayedPages = self->_displayedPages;
-  v6 = a3;
-  [(NSMutableArray *)displayedPages addObject:v6];
-  [(RUIObjectModel *)self _populatePageNavItem:v6 withNextButton:0];
+  pageCopy = page;
+  [(NSMutableArray *)displayedPages addObject:pageCopy];
+  [(RUIObjectModel *)self _populatePageNavItem:pageCopy withNextButton:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [WeakRetained parentViewControllerForObjectModel:self];
-  [v7 settingsCompatiblePushViewController:v6];
+  [v7 settingsCompatiblePushViewController:pageCopy];
 }
 
-- (void)pageDidDisappear:(id)a3
+- (void)pageDidDisappear:(id)disappear
 {
-  v9 = a3;
-  v4 = [(RUIObjectModel *)self visiblePage];
-  if (v4 == v9)
+  disappearCopy = disappear;
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  if (visiblePage == disappearCopy)
   {
     [(NSMutableArray *)self->_displayedPages removeLastObject];
-    v5 = [v4 parentPage];
+    parentPage = [visiblePage parentPage];
 
-    if (v5)
+    if (parentPage)
     {
-      [v4 _updateParentPage];
+      [visiblePage _updateParentPage];
     }
 
     else
@@ -576,22 +576,22 @@ LABEL_11:
       if (v7)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
-        [v8 objectModel:self didNavigateBackFromController:v9 withGesture:1];
+        [v8 objectModel:self didNavigateBackFromController:disappearCopy withGesture:1];
       }
     }
   }
 }
 
-- (void)_navigateBackWithPop:(BOOL)a3 fromViewController:(id)a4
+- (void)_navigateBackWithPop:(BOOL)pop fromViewController:(id)controller
 {
-  v4 = a3;
-  v18 = a4;
-  v6 = [(RUIObjectModel *)self visiblePage];
-  v7 = [v6 parentPage];
+  popCopy = pop;
+  controllerCopy = controller;
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  parentPage = [visiblePage parentPage];
 
-  if (v7)
+  if (parentPage)
   {
-    if (v4)
+    if (popCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v9 = [WeakRetained parentViewControllerForObjectModel:self];
@@ -599,7 +599,7 @@ LABEL_11:
     }
 
     [(NSMutableArray *)self->_displayedPages removeLastObject];
-    [v6 _updateParentPage];
+    [visiblePage _updateParentPage];
   }
 
   else
@@ -609,24 +609,24 @@ LABEL_11:
 
     if (v11)
     {
-      v12 = v18;
-      if (!v18 && v4)
+      v12 = controllerCopy;
+      if (!controllerCopy && popCopy)
       {
         v12 = [(RUIObjectModel *)self _viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:(gAnimatedNavigationTransitions & 1) == 0];
       }
 
-      v18 = v12;
-      if (v4 && !v12)
+      controllerCopy = v12;
+      if (popCopy && !v12)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
         v14 = [v13 parentViewControllerForObjectModel:self];
 
-        v18 = [v14 topViewController];
+        controllerCopy = [v14 topViewController];
         [v14 settingsCompatiblePopViewController];
       }
 
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 objectModel:self didNavigateBackFromController:v18 withGesture:0];
+      [v15 objectModel:self didNavigateBackFromController:controllerCopy withGesture:0];
     }
 
     else
@@ -647,11 +647,11 @@ LABEL_11:
 LABEL_16:
 }
 
-- (id)_viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:(BOOL)a3
+- (id)_viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:(BOOL)animated
 {
   if ([(NSMutableArray *)self->_displayedPages count]< 2)
   {
-    v6 = 0;
+    topViewController = 0;
   }
 
   else
@@ -659,14 +659,14 @@ LABEL_16:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = [WeakRetained parentViewControllerForObjectModel:self];
 
-    v6 = [v5 topViewController];
+    topViewController = [v5 topViewController];
     [v5 settingsCompatiblePopViewController];
-    v7 = [(NSMutableArray *)self->_displayedPages lastObject];
-    v8 = v7;
-    if (v7 == v6)
+    lastObject = [(NSMutableArray *)self->_displayedPages lastObject];
+    v8 = lastObject;
+    if (lastObject == topViewController)
     {
-      v9 = [v7 pageID];
-      v10 = [v9 length];
+      pageID = [lastObject pageID];
+      v10 = [pageID length];
 
       if (!v10)
       {
@@ -677,12 +677,12 @@ LABEL_16:
     }
   }
 
-  return v6;
+  return topViewController;
 }
 
-- (BOOL)goBack:(BOOL)a3
+- (BOOL)goBack:(BOOL)back
 {
-  v3 = [(RUIObjectModel *)self _viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:a3];
+  v3 = [(RUIObjectModel *)self _viewControllerFromNavigatingBackWithinDisplayedPagesAnimated:back];
   v4 = v3 != 0;
 
   return v4;
@@ -691,16 +691,16 @@ LABEL_16:
 - (id)postbackData
 {
   v2 = MEMORY[0x277CCAC58];
-  v3 = [(RUIObjectModel *)self postbackDictionary];
-  v4 = [v2 dataWithPropertyList:v3 format:100 options:0 error:0];
+  postbackDictionary = [(RUIObjectModel *)self postbackDictionary];
+  v4 = [v2 dataWithPropertyList:postbackDictionary format:100 options:0 error:0];
 
   return v4;
 }
 
-- (void)populatePostbackDictionary:(id)a3
+- (void)populatePostbackDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -721,7 +721,7 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v16 + 1) + 8 * v9++) populatePostbackDictionary:{v4, v16}];
+        [*(*(&v16 + 1) + 8 * v9++) populatePostbackDictionary:{dictionaryCopy, v16}];
       }
 
       while (v7 != v9);
@@ -733,33 +733,33 @@ LABEL_16:
 
   if (self->_updateInfo)
   {
-    [v4 addEntriesFromDictionary:?];
+    [dictionaryCopy addEntriesFromDictionary:?];
   }
 
-  v10 = [(RUIObjectModel *)self authPasswordEquivalent];
-  if (v10)
+  authPasswordEquivalent = [(RUIObjectModel *)self authPasswordEquivalent];
+  if (authPasswordEquivalent)
   {
-    v11 = v10;
-    v12 = [(RUIObjectModel *)self authPasswordFieldID];
+    v11 = authPasswordEquivalent;
+    authPasswordFieldID = [(RUIObjectModel *)self authPasswordFieldID];
 
-    if (v12)
+    if (authPasswordFieldID)
     {
-      v13 = [(RUIObjectModel *)self authPasswordEquivalent];
-      v14 = [(RUIObjectModel *)self authPasswordFieldID];
-      [v4 setObject:v13 forKey:v14];
+      authPasswordEquivalent2 = [(RUIObjectModel *)self authPasswordEquivalent];
+      authPasswordFieldID2 = [(RUIObjectModel *)self authPasswordFieldID];
+      [dictionaryCopy setObject:authPasswordEquivalent2 forKey:authPasswordFieldID2];
     }
   }
 
   serverInfo = self->_serverInfo;
   if (serverInfo)
   {
-    [v4 setObject:serverInfo forKey:@"serverInfo"];
+    [dictionaryCopy setObject:serverInfo forKey:@"serverInfo"];
   }
 }
 
-- (void)setUpdateInfo:(id)a3
+- (void)setUpdateInfo:(id)info
 {
-  objc_storeStrong(&self->_updateInfo, a3);
+  objc_storeStrong(&self->_updateInfo, info);
 
   [(RUIObjectModel *)self notifyXMLUIDataChange];
 }
@@ -772,10 +772,10 @@ LABEL_16:
   return v3;
 }
 
-- (void)_populateRequest:(id)a3
+- (void)_populateRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -797,7 +797,7 @@ LABEL_16:
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_httpHeaders objectForKeyedSubscript:v10, v12];
-        [v4 setValue:v11 forHTTPHeaderField:v10];
+        [requestCopy setValue:v11 forHTTPHeaderField:v10];
       }
 
       v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -807,22 +807,22 @@ LABEL_16:
   }
 }
 
-- (void)refreshWithObjectModel:(id)a3
+- (void)refreshWithObjectModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(RUIObjectModel *)self identifier];
-  v7 = [v5 isEqualToString:v6];
+  modelCopy = model;
+  identifier = [modelCopy identifier];
+  identifier2 = [(RUIObjectModel *)self identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
-    v8 = [v4 serverInfo];
-    [(RUIObjectModel *)self setServerInfo:v8];
+    serverInfo = [modelCopy serverInfo];
+    [(RUIObjectModel *)self setServerInfo:serverInfo];
 
-    v9 = [v4 clientInfo];
-    [(RUIObjectModel *)self setClientInfo:v9];
+    clientInfo = [modelCopy clientInfo];
+    [(RUIObjectModel *)self setClientInfo:clientInfo];
 
-    objc_storeStrong(&self->_namedAlerts, v4[19]);
+    objc_storeStrong(&self->_namedAlerts, modelCopy[19]);
     namedAlerts = self->_namedAlerts;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -830,57 +830,57 @@ LABEL_16:
     v37[3] = &unk_2782E8780;
     v37[4] = self;
     [(NSMutableDictionary *)namedAlerts enumerateKeysAndObjectsUsingBlock:v37];
-    v11 = [v4 primaryAlert];
+    primaryAlert = [modelCopy primaryAlert];
     primaryAlert = self->_primaryAlert;
-    self->_primaryAlert = v11;
+    self->_primaryAlert = primaryAlert;
 
     [(RUIAlertView *)self->_primaryAlert setObjectModel:self];
-    v13 = [(RUIObjectModel *)self visiblePage];
-    v14 = [v13 tableViewOM];
-    v15 = [v14 tableView];
-    [v15 contentOffset];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    tableViewOM = [visiblePage tableViewOM];
+    tableView = [tableViewOM tableView];
+    [tableView contentOffset];
     v17 = v16;
 
-    v18 = [(RUIObjectModel *)self displayedPages];
-    v19 = [v18 copy];
+    displayedPages = [(RUIObjectModel *)self displayedPages];
+    v19 = [displayedPages copy];
 
     currentPage = self->_currentPage;
     self->_currentPage = -1;
-    v21 = [(RUIObjectModel *)self _parentNavigationController];
-    [v21 settingsCompatibleReplaceViewControllers:v19 byViewControllers:MEMORY[0x277CBEBF8] animated:0];
-    v22 = [v4 allPages];
-    [(RUIObjectModel *)self _unsafe_setPages:v22];
+    _parentNavigationController = [(RUIObjectModel *)self _parentNavigationController];
+    [_parentNavigationController settingsCompatibleReplaceViewControllers:v19 byViewControllers:MEMORY[0x277CBEBF8] animated:0];
+    allPages = [modelCopy allPages];
+    [(RUIObjectModel *)self _unsafe_setPages:allPages];
 
-    v23 = [v4 defaultPages];
+    defaultPages = [modelCopy defaultPages];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __41__RUIObjectModel_refreshWithObjectModel___block_invoke_2;
     v36[3] = &unk_2782E87A8;
     v36[4] = self;
     v36[5] = currentPage;
-    [v23 enumerateObjectsUsingBlock:v36];
+    [defaultPages enumerateObjectsUsingBlock:v36];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __41__RUIObjectModel_refreshWithObjectModel___block_invoke_3;
     v33[3] = &unk_2782E87D0;
-    v34 = v4;
-    v35 = self;
+    v34 = modelCopy;
+    selfCopy = self;
     [v19 enumerateObjectsUsingBlock:v33];
-    v24 = [(RUIObjectModel *)self _parentViewController];
-    v25 = [v24 view];
-    [v25 layoutBelowIfNeeded];
+    _parentViewController = [(RUIObjectModel *)self _parentViewController];
+    view = [_parentViewController view];
+    [view layoutBelowIfNeeded];
 
-    v26 = [(RUIObjectModel *)self visiblePage];
-    v27 = [v26 tableViewOM];
-    v28 = [v27 tableView];
+    visiblePage2 = [(RUIObjectModel *)self visiblePage];
+    tableViewOM2 = [visiblePage2 tableViewOM];
+    tableView2 = [tableViewOM2 tableView];
 
-    [v28 contentSize];
+    [tableView2 contentSize];
     v30 = v29;
-    [v28 bounds];
+    [tableView2 bounds];
     v31 = v30 - CGRectGetHeight(v38);
     v32 = v17;
-    [v28 setContentOffset:0 animated:{0.0, fminf(fmaxf(v31, 0.0), v32)}];
+    [tableView2 setContentOffset:0 animated:{0.0, fminf(fmaxf(v31, 0.0), v32)}];
   }
 }
 
@@ -915,10 +915,10 @@ void __41__RUIObjectModel_refreshWithObjectModel___block_invoke_3(uint64_t a1, v
 
 - (RUIPage)visiblePage
 {
-  v2 = [(RUIObjectModel *)self displayedPages];
-  v3 = [v2 lastObject];
+  displayedPages = [(RUIObjectModel *)self displayedPages];
+  lastObject = [displayedPages lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSArray)pages
@@ -932,38 +932,38 @@ void __41__RUIObjectModel_refreshWithObjectModel___block_invoke_3(uint64_t a1, v
 - (NSArray)allPages
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(RUIObjectModel *)self defaultPages];
-  v5 = [v3 initWithArray:v4];
+  defaultPages = [(RUIObjectModel *)self defaultPages];
+  v5 = [v3 initWithArray:defaultPages];
 
-  v6 = [(RUIObjectModel *)self namedPages];
-  v7 = [v6 allValues];
-  [v5 addObjectsFromArray:v7];
+  namedPages = [(RUIObjectModel *)self namedPages];
+  allValues = [namedPages allValues];
+  [v5 addObjectsFromArray:allValues];
 
   return v5;
 }
 
-- (void)setPages:(id)a3
+- (void)setPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   if ([(NSMutableArray *)self->_displayedPages count])
   {
     [(RUIObjectModel *)a2 setPages:?];
   }
 
-  [(RUIObjectModel *)self _unsafe_setPages:v5];
+  [(RUIObjectModel *)self _unsafe_setPages:pagesCopy];
 }
 
-- (void)_unsafe_setPages:(id)a3
+- (void)_unsafe_setPages:(id)pages
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pagesCopy = pages;
   [(NSMutableDictionary *)self->_namedPages removeAllObjects];
   [(NSMutableArray *)self->_defaultPages removeAllObjects];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = pagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -980,18 +980,18 @@ void __41__RUIObjectModel_refreshWithObjectModel___block_invoke_3(uint64_t a1, v
 
         v10 = *(*(&v19 + 1) + 8 * i);
         [v10 setObjectModel:{self, v19}];
-        v11 = [v10 pageID];
-        v12 = [v11 length];
+        pageID = [v10 pageID];
+        v12 = [pageID length];
 
         if (v12)
         {
           namedPages = self->_namedPages;
-          v14 = [v10 pageID];
-          [(NSMutableDictionary *)namedPages setObject:v10 forKey:v14];
+          pageID2 = [v10 pageID];
+          [(NSMutableDictionary *)namedPages setObject:v10 forKey:pageID2];
         }
 
-        v15 = [v10 pageID];
-        if (![v15 length])
+        pageID3 = [v10 pageID];
+        if (![pageID3 length])
         {
 
 LABEL_12:
@@ -999,11 +999,11 @@ LABEL_12:
           continue;
         }
 
-        v16 = [v10 attributes];
-        v17 = [v16 objectForKeyedSubscript:@"default"];
-        v18 = [v17 BOOLValue];
+        attributes = [v10 attributes];
+        v17 = [attributes objectForKeyedSubscript:@"default"];
+        bOOLValue = [v17 BOOLValue];
 
-        if (v18)
+        if (bOOLValue)
         {
           goto LABEL_12;
         }
@@ -1016,19 +1016,19 @@ LABEL_12:
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    objc_storeStrong(&self->_style, a3);
+    objc_storeStrong(&self->_style, style);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(RUIObjectModel *)self allPages];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allPages = [(RUIObjectModel *)self allPages];
+    v7 = [allPages countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1039,13 +1039,13 @@ LABEL_12:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allPages);
           }
 
-          [*(*(&v11 + 1) + 8 * i) setStyle:v5];
+          [*(*(&v11 + 1) + 8 * i) setStyle:styleCopy];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allPages countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -1053,94 +1053,94 @@ LABEL_12:
 
     if (self->_parseFinished)
     {
-      [(RUIStyle *)v5 applyToObjectModel:self];
+      [(RUIStyle *)styleCopy applyToObjectModel:self];
     }
   }
 }
 
 - (id)alertController
 {
-  v2 = [(RUIObjectModel *)self primaryAlert];
-  v3 = [v2 alertController];
+  primaryAlert = [(RUIObjectModel *)self primaryAlert];
+  alertController = [primaryAlert alertController];
 
-  return v3;
+  return alertController;
 }
 
-- (void)addAlertElement:(id)a3
+- (void)addAlertElement:(id)element
 {
-  v10 = a3;
-  [v10 setObjectModel:self];
-  v4 = [v10 identifier];
-  v5 = [v4 length];
+  elementCopy = element;
+  [elementCopy setObjectModel:self];
+  identifier = [elementCopy identifier];
+  v5 = [identifier length];
 
   if (v5)
   {
     namedAlerts = self->_namedAlerts;
-    primaryAlert = [v10 attributes];
+    primaryAlert = [elementCopy attributes];
     v8 = [primaryAlert objectForKeyedSubscript:@"id"];
-    [(NSMutableDictionary *)namedAlerts setObject:v10 forKey:v8];
+    [(NSMutableDictionary *)namedAlerts setObject:elementCopy forKey:v8];
   }
 
   else
   {
-    v9 = v10;
+    v9 = elementCopy;
     primaryAlert = self->_primaryAlert;
     self->_primaryAlert = v9;
   }
 }
 
-- (void)configureTableView:(id)a3
+- (void)configureTableView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(RUIObjectModel *)self visiblePage];
-    [v6 objectModel:self configureTableView:v8 page:v7];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    [v6 objectModel:self configureTableView:viewCopy page:visiblePage];
   }
 }
 
-- (void)configureRow:(id)a3
+- (void)configureRow:(id)row
 {
-  v8 = a3;
+  rowCopy = row;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(RUIObjectModel *)self visiblePage];
-    [v6 objectModel:self configureTableRow:v8 page:v7];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    [v6 objectModel:self configureTableRow:rowCopy page:visiblePage];
   }
 }
 
-- (void)configureSection:(id)a3
+- (void)configureSection:(id)section
 {
-  v8 = a3;
+  sectionCopy = section;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(RUIObjectModel *)self visiblePage];
-    [v6 objectModel:self configureTableSection:v8 page:v7];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    [v6 objectModel:self configureTableSection:sectionCopy page:visiblePage];
   }
 }
 
-- (Class)customHeaderClassForSection:(id)a3
+- (Class)customHeaderClassForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 objectModel:self customHeaderClassForSection:v4];
+    v8 = [v7 objectModel:self customHeaderClassForSection:sectionCopy];
   }
 
   else
@@ -1151,16 +1151,16 @@ LABEL_12:
   return v8;
 }
 
-- (Class)customFooterClassForSection:(id)a3
+- (Class)customFooterClassForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 objectModel:self customFooterClassForSection:v4];
+    v8 = [v7 objectModel:self customFooterClassForSection:sectionCopy];
   }
 
   else
@@ -1171,16 +1171,16 @@ LABEL_12:
   return v8;
 }
 
-- (Class)customTableCellClassForTableViewRow:(id)a3
+- (Class)customTableCellClassForTableViewRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 objectModel:self customTableCellClassForTableViewRow:v4];
+    v8 = [v7 objectModel:self customTableCellClassForTableViewRow:rowCopy];
   }
 
   else
@@ -1191,11 +1191,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)tableHeaderViewForAttributes:(id)a3
+- (id)tableHeaderViewForAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self style];
-  v6 = [v5 tableHeaderViewWithAttributes:v4];
+  attributesCopy = attributes;
+  style = [(RUIObjectModel *)self style];
+  v6 = [style tableHeaderViewWithAttributes:attributesCopy];
 
   if (v6)
   {
@@ -1210,8 +1210,8 @@ LABEL_12:
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      v11 = [(RUIObjectModel *)self visiblePage];
-      v7 = [v10 objectModel:self tableHeaderViewForAttributes:v4 page:v11];
+      visiblePage = [(RUIObjectModel *)self visiblePage];
+      v7 = [v10 objectModel:self tableHeaderViewForAttributes:attributesCopy page:visiblePage];
     }
 
     else
@@ -1223,17 +1223,17 @@ LABEL_12:
   return v7;
 }
 
-- (id)tableFooterViewForAttributes:(id)a3
+- (id)tableFooterViewForAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [(RUIObjectModel *)self visiblePage];
-    v9 = [v7 objectModel:self tableFooterViewForAttributes:v4 page:v8];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    v9 = [v7 objectModel:self tableFooterViewForAttributes:attributesCopy page:visiblePage];
   }
 
   else
@@ -1244,10 +1244,10 @@ LABEL_12:
   return v9;
 }
 
-- (id)rowForFormField:(id)a3
+- (id)rowForFormField:(id)field
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fieldCopy = field;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -1257,7 +1257,7 @@ LABEL_12:
   if (v26)
   {
     v6 = *v43;
-    v33 = v4;
+    v33 = fieldCopy;
     v28 = v5;
     v25 = *v43;
     do
@@ -1271,14 +1271,14 @@ LABEL_12:
         }
 
         v27 = v7;
-        v8 = [*(*(&v42 + 1) + 8 * v7) tableViewOM];
-        v9 = [v8 sections];
+        tableViewOM = [*(*(&v42 + 1) + 8 * v7) tableViewOM];
+        sections = [tableViewOM sections];
 
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        obj = v9;
+        obj = sections;
         v31 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v31)
         {
@@ -1292,12 +1292,12 @@ LABEL_12:
                 objc_enumerationMutation(obj);
               }
 
-              v11 = [*(*(&v38 + 1) + 8 * i) rows];
+              rows = [*(*(&v38 + 1) + 8 * i) rows];
               v34 = 0u;
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v12 = v11;
+              v12 = rows;
               v13 = [v12 countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v13)
               {
@@ -1314,16 +1314,16 @@ LABEL_13:
                   }
 
                   v17 = *(*(&v34 + 1) + 8 * v16);
-                  v18 = [v17 attributes];
-                  v19 = [v18 objectForKey:@"postback"];
-                  if ([v19 isEqualToString:v4])
+                  attributes = [v17 attributes];
+                  v19 = [attributes objectForKey:@"postback"];
+                  if ([v19 isEqualToString:fieldCopy])
                   {
                     break;
                   }
 
-                  v20 = [v17 attributes];
-                  v21 = [v20 objectForKey:@"id"];
-                  v22 = [v21 isEqualToString:v4];
+                  attributes2 = [v17 attributes];
+                  v21 = [attributes2 objectForKey:@"id"];
+                  v22 = [v21 isEqualToString:fieldCopy];
 
                   if (v22)
                   {
@@ -1331,7 +1331,7 @@ LABEL_13:
                   }
 
                   ++v16;
-                  v4 = v33;
+                  fieldCopy = v33;
                   if (v14 == v16)
                   {
                     v14 = [v12 countByEnumeratingWithState:&v34 objects:v46 count:16];
@@ -1349,7 +1349,7 @@ LABEL_22:
                 v23 = v17;
 
                 i = v32;
-                v4 = v33;
+                fieldCopy = v33;
                 if (!v23)
                 {
                   continue;
@@ -1395,26 +1395,26 @@ LABEL_30:
   return v23;
 }
 
-- (id)absoluteURLWithString:(id)a3
+- (id)absoluteURLWithString:(id)string
 {
   if (self->_sourceURL)
   {
-    [MEMORY[0x277CBEBC0] URLWithString:a3 relativeToURL:?];
+    [MEMORY[0x277CBEBC0] URLWithString:string relativeToURL:?];
   }
 
   else
   {
-    [MEMORY[0x277CBEBC0] URLWithString:a3];
+    [MEMORY[0x277CBEBC0] URLWithString:string];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)relativeURLWithString:(id)a3
+- (id)relativeURLWithString:(id)string
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   if (_isInternalInstall())
   {
     v5 = _RUILoggingFacility();
@@ -1426,22 +1426,22 @@ LABEL_30:
     }
   }
 
-  v6 = [(RUIObjectModel *)self absoluteURLWithString:v4];
+  v6 = [(RUIObjectModel *)self absoluteURLWithString:stringCopy];
 
   return v6;
 }
 
-- (id)elementsWithName:(id)a3
+- (id)elementsWithName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(RUIObjectModel *)self allPages];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allPages = [(RUIObjectModel *)self allPages];
+  v7 = [allPages countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1452,14 +1452,14 @@ LABEL_30:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allPages);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) elementsWithName:v4];
+        v11 = [*(*(&v13 + 1) + 8 * i) elementsWithName:nameCopy];
         [v5 addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allPages countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1468,43 +1468,43 @@ LABEL_30:
   return v5;
 }
 
-- (void)startNavigationBarSpinnerWithTitle:(id)a3
+- (void)startNavigationBarSpinnerWithTitle:(id)title
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (title)
   {
-    v4 = a3;
+    titleCopy = title;
   }
 
   else
   {
-    v4 = &stru_282D68F58;
+    titleCopy = &stru_282D68F58;
   }
 
   v10 = @"titleLoadingMessage";
-  v11[0] = v4;
+  v11[0] = titleCopy;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  titleCopy2 = title;
   v7 = [v5 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   [(RUIObjectModel *)self _startNavigationBarSpinnerIfNeededForAttributes:v7];
-  v8 = [(RUIObjectModel *)self visiblePage];
-  v9 = [v8 view];
-  [v9 setUserInteractionEnabled:0];
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  view = [visiblePage view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)stopNavigationBarSpinner
 {
   [(RUIObjectModel *)self _stopNavigationBarSpinnerIfNeededForAttributes:&unk_282D7AC98];
-  v4 = [(RUIObjectModel *)self visiblePage];
-  v3 = [v4 view];
-  [v3 setUserInteractionEnabled:1];
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  view = [visiblePage view];
+  [view setUserInteractionEnabled:1];
 }
 
-- (void)_startNavigationBarSpinnerIfNeededForAttributes:(id)a3
+- (void)_startNavigationBarSpinnerIfNeededForAttributes:(id)attributes
 {
-  v16 = a3;
-  v4 = [v16 objectForKeyedSubscript:@"activityIndicatorAnchorId"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:@"activityIndicatorAnchorId"];
   v5 = [(RUIObjectModel *)self elementForActivityIndicatorAnchorId:v4];
 
   if (!v5)
@@ -1512,7 +1512,7 @@ LABEL_30:
     v5 = [(RUIObjectModel *)self elementForActivityIndicatorWithActivatedElement:self->_activeElement];
   }
 
-  v6 = [v16 objectForKeyedSubscript:@"titleLoadingMessage"];
+  v6 = [attributesCopy objectForKeyedSubscript:@"titleLoadingMessage"];
   v7 = v6;
   if (v5)
   {
@@ -1526,29 +1526,29 @@ LABEL_30:
 
   if (!v8)
   {
-    v9 = [(RUIObjectModel *)self _parentViewController];
+    _parentViewController = [(RUIObjectModel *)self _parentViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 topViewController];
+      topViewController = [_parentViewController topViewController];
 
-      v9 = v10;
+      _parentViewController = topViewController;
     }
 
-    v11 = [v9 navigationItem];
+    navigationItem = [_parentViewController navigationItem];
     v12 = +[RUINavBarSpinnerManager sharedSpinnerManager];
-    v13 = [(RUIObjectModel *)self style];
-    [v12 setActivityIndicatorViewStyle:{objc_msgSend(v13, "navBarActivityIndicatorStyle")}];
+    style = [(RUIObjectModel *)self style];
+    [v12 setActivityIndicatorViewStyle:{objc_msgSend(style, "navBarActivityIndicatorStyle")}];
 
     v14 = +[RUINavBarSpinnerManager sharedSpinnerManager];
-    v15 = [(RUIObjectModel *)self visiblePage];
-    [v14 startAnimatingInNavItem:v11 title:v7 forIdentifier:@"RemoteUI" hideBackButton:1 hideLeftItems:{objc_msgSend(v15, "navBarIndicatorHidesLeftButton")}];
+    visiblePage = [(RUIObjectModel *)self visiblePage];
+    [v14 startAnimatingInNavItem:navigationItem title:v7 forIdentifier:@"RemoteUI" hideBackButton:1 hideLeftItems:{objc_msgSend(visiblePage, "navBarIndicatorHidesLeftButton")}];
   }
 }
 
-- (void)_stopNavigationBarSpinnerIfNeededForAttributes:(id)a3
+- (void)_stopNavigationBarSpinnerIfNeededForAttributes:(id)attributes
 {
-  v3 = [a3 objectForKeyedSubscript:@"titleLoadingMessage"];
+  v3 = [attributes objectForKeyedSubscript:@"titleLoadingMessage"];
 
   if (v3)
   {
@@ -1559,8 +1559,8 @@ LABEL_30:
 
 - (void)startActivityIndicator
 {
-  v2 = [(RUIObjectModel *)self visiblePage];
-  [v2 setLoading:1];
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  [visiblePage setLoading:1];
 }
 
 - (void)stopActivityIndicator
@@ -1570,8 +1570,8 @@ LABEL_30:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(RUIObjectModel *)self allPages];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allPages = [(RUIObjectModel *)self allPages];
+  v4 = [allPages countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1582,7 +1582,7 @@ LABEL_30:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allPages);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1592,7 +1592,7 @@ LABEL_30:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allPages countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1603,12 +1603,12 @@ LABEL_30:
   self->_elementForActivityIndicator = 0;
 }
 
-- (BOOL)hasAttributeOrAttributeFunctionNamed:(id)a3 withAttributes:(id)a4
+- (BOOL)hasAttributeOrAttributeFunctionNamed:(id)named withAttributes:(id)attributes
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 stringByAppendingString:@"Function"];
-  v8 = [v5 objectForKeyedSubscript:v6];
+  attributesCopy = attributes;
+  namedCopy = named;
+  v7 = [namedCopy stringByAppendingString:@"Function"];
+  v8 = [attributesCopy objectForKeyedSubscript:namedCopy];
 
   if ([v8 length])
   {
@@ -1617,32 +1617,32 @@ LABEL_30:
 
   else
   {
-    v10 = [v5 objectForKeyedSubscript:v7];
+    v10 = [attributesCopy objectForKeyedSubscript:v7];
     v9 = [v10 length] != 0;
   }
 
   return v9;
 }
 
-- (id)stringForAttributeName:(id)a3 withAttributes:(id)a4
+- (id)stringForAttributeName:(id)name withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stringByAppendingString:@"Function"];
-  v9 = [(__CFString *)v7 objectForKeyedSubscript:v8];
+  nameCopy = name;
+  attributesCopy = attributes;
+  v8 = [nameCopy stringByAppendingString:@"Function"];
+  v9 = [(__CFString *)attributesCopy objectForKeyedSubscript:v8];
   v10 = [v9 length];
 
   if (v10)
   {
-    v11 = [(__CFString *)v7 objectForKeyedSubscript:v8];
+    v11 = [(__CFString *)attributesCopy objectForKeyedSubscript:v8];
 
-    v7 = [(RUIObjectModel *)self invokeScriptFunction:v11 withArguments:0];
+    attributesCopy = [(RUIObjectModel *)self invokeScriptFunction:v11 withArguments:0];
 
     objc_opt_class();
     v12 = &stru_282D68F58;
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(__CFString *)v7 length])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(__CFString *)attributesCopy length])
     {
-      v12 = v7;
+      v12 = attributesCopy;
     }
 
     v13 = v12;
@@ -1650,7 +1650,7 @@ LABEL_30:
 
   else
   {
-    v13 = [(__CFString *)v7 objectForKeyedSubscript:v6];
+    v13 = [(__CFString *)attributesCopy objectForKeyedSubscript:nameCopy];
   }
 
   v14 = v13;
@@ -1658,45 +1658,45 @@ LABEL_30:
   return v14;
 }
 
-- (BOOL)hasConfirmationAttributes:(id)a3
+- (BOOL)hasConfirmationAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationTitle" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationBody" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationCancel" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationOK" withAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationTitle" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationBody" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationCancel" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"confirmationOK" withAttributes:attributesCopy];
 
   return v5;
 }
 
-- (BOOL)hasSecondConfirmationAttributes:(id)a3
+- (BOOL)hasSecondConfirmationAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationTitle" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationBody" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationCancel" withAttributes:v4]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationOK" withAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationTitle" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationBody" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationCancel" withAttributes:attributesCopy]&& [(RUIObjectModel *)self hasAttributeOrAttributeFunctionNamed:@"secondConfirmationOK" withAttributes:attributesCopy];
 
   return v5;
 }
 
-- (void)presentConfirmationIfNeededForElement:(id)a3 completion:(id)a4
+- (void)presentConfirmationIfNeededForElement:(id)element completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attributes];
-  v9 = [(RUIObjectModel *)self hasConfirmationAttributes:v8];
+  elementCopy = element;
+  completionCopy = completion;
+  attributes = [elementCopy attributes];
+  v9 = [(RUIObjectModel *)self hasConfirmationAttributes:attributes];
 
   if (v9)
   {
-    v10 = [v6 attributes];
+    attributes2 = [elementCopy attributes];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __67__RUIObjectModel_presentConfirmationIfNeededForElement_completion___block_invoke;
     v11[3] = &unk_2782E8820;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    [(RUIObjectModel *)self _presentConfirmationWithAttributes:v10 completion:v11];
+    v12 = elementCopy;
+    v13 = completionCopy;
+    [(RUIObjectModel *)self _presentConfirmationWithAttributes:attributes2 completion:v11];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 1);
+    (*(completionCopy + 2))(completionCopy, 0, 1);
   }
 }
 
@@ -1737,27 +1737,27 @@ uint64_t __67__RUIObjectModel_presentConfirmationIfNeededForElement_completion__
   return result;
 }
 
-- (void)_presentConfirmationWithAttributes:(id)a3 completion:(id)a4
+- (void)_presentConfirmationWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationTitle" withAttributes:v7];
-  v9 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationBody" withAttributes:v7];
-  v10 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationOK" withAttributes:v7];
-  v11 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationCancel" withAttributes:v7];
-  v12 = [v7 objectForKey:@"confirmationOKIsDestructive"];
-  v13 = [v12 BOOLValue];
+  completionCopy = completion;
+  attributesCopy = attributes;
+  v8 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationTitle" withAttributes:attributesCopy];
+  v9 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationBody" withAttributes:attributesCopy];
+  v10 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationOK" withAttributes:attributesCopy];
+  v11 = [(RUIObjectModel *)self stringForAttributeName:@"confirmationCancel" withAttributes:attributesCopy];
+  v12 = [attributesCopy objectForKey:@"confirmationOKIsDestructive"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [(RUIObjectModel *)self _parentNavigationController];
-  v15 = [v7 objectForKeyedSubscript:@"confirmationIsSheet"];
+  _parentNavigationController = [(RUIObjectModel *)self _parentNavigationController];
+  v15 = [attributesCopy objectForKeyedSubscript:@"confirmationIsSheet"];
 
-  LODWORD(v7) = [v15 BOOLValue];
-  if (v7)
+  LODWORD(attributesCopy) = [v15 BOOLValue];
+  if (attributesCopy)
   {
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v18 = (v17 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v18 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   else
@@ -1772,10 +1772,10 @@ uint64_t __67__RUIObjectModel_presentConfirmationIfNeededForElement_completion__
   v31[1] = 3221225472;
   v31[2] = __64__RUIObjectModel__presentConfirmationWithAttributes_completion___block_invoke;
   v31[3] = &unk_2782E8848;
-  v21 = v6;
+  v21 = completionCopy;
   v32 = v21;
   v22 = [v20 actionWithTitle:v11 style:1 handler:v31];
-  if (v13)
+  if (bOOLValue)
   {
     v23 = 2;
   }
@@ -1796,12 +1796,12 @@ uint64_t __67__RUIObjectModel_presentConfirmationIfNeededForElement_completion__
   v26 = [v24 actionWithTitle:v10 style:v23 handler:v29];
   [v19 addAction:v26];
 
-  if (v13)
+  if (bOOLValue)
   {
     [v19 addAction:v22];
   }
 
-  [v14 presentViewController:v19 animated:1 completion:0];
+  [_parentNavigationController presentViewController:v19 animated:1 completion:0];
 }
 
 uint64_t __64__RUIObjectModel__presentConfirmationWithAttributes_completion___block_invoke(uint64_t a1)
@@ -1826,27 +1826,27 @@ uint64_t __64__RUIObjectModel__presentConfirmationWithAttributes_completion___bl
   return result;
 }
 
-- (void)_presentSecondConfirmationWithAttributes:(id)a3 completion:(id)a4
+- (void)_presentSecondConfirmationWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationTitle" withAttributes:v7];
-  v9 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationBody" withAttributes:v7];
-  v10 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationOK" withAttributes:v7];
-  v11 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationCancel" withAttributes:v7];
-  v12 = [v7 objectForKey:@"secondConfirmationOKIsDestructive"];
-  v13 = [v12 BOOLValue];
+  completionCopy = completion;
+  attributesCopy = attributes;
+  v8 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationTitle" withAttributes:attributesCopy];
+  v9 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationBody" withAttributes:attributesCopy];
+  v10 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationOK" withAttributes:attributesCopy];
+  v11 = [(RUIObjectModel *)self stringForAttributeName:@"secondConfirmationCancel" withAttributes:attributesCopy];
+  v12 = [attributesCopy objectForKey:@"secondConfirmationOKIsDestructive"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [(RUIObjectModel *)self _parentNavigationController];
-  v15 = [v7 objectForKeyedSubscript:@"secondConfirmationIsSheet"];
+  _parentNavigationController = [(RUIObjectModel *)self _parentNavigationController];
+  v15 = [attributesCopy objectForKeyedSubscript:@"secondConfirmationIsSheet"];
 
-  LODWORD(v7) = [v15 BOOLValue];
-  if (v7)
+  LODWORD(attributesCopy) = [v15 BOOLValue];
+  if (attributesCopy)
   {
-    v16 = [MEMORY[0x277D75418] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v18 = (v17 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v18 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   else
@@ -1861,10 +1861,10 @@ uint64_t __64__RUIObjectModel__presentConfirmationWithAttributes_completion___bl
   v31[1] = 3221225472;
   v31[2] = __70__RUIObjectModel__presentSecondConfirmationWithAttributes_completion___block_invoke;
   v31[3] = &unk_2782E8848;
-  v21 = v6;
+  v21 = completionCopy;
   v32 = v21;
   v22 = [v20 actionWithTitle:v11 style:1 handler:v31];
-  if (v13)
+  if (bOOLValue)
   {
     v23 = 2;
   }
@@ -1885,12 +1885,12 @@ uint64_t __64__RUIObjectModel__presentConfirmationWithAttributes_completion___bl
   v26 = [v24 actionWithTitle:v10 style:v23 handler:v29];
   [v19 addAction:v26];
 
-  if (v13)
+  if (bOOLValue)
   {
     [v19 addAction:v22];
   }
 
-  [v14 presentViewController:v19 animated:1 completion:0];
+  [_parentNavigationController presentViewController:v19 animated:1 completion:0];
 }
 
 uint64_t __70__RUIObjectModel__presentSecondConfirmationWithAttributes_completion___block_invoke(uint64_t a1)
@@ -1915,50 +1915,50 @@ uint64_t __70__RUIObjectModel__presentSecondConfirmationWithAttributes_completio
   return result;
 }
 
-- (id)textInRowWithIdentifier:(id)a3
+- (id)textInRowWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self visiblePage];
-  v6 = [v5 tableViewOM];
-  v7 = [v6 rowWithIdentifier:v4];
+  identifierCopy = identifier;
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  tableViewOM = [visiblePage tableViewOM];
+  v7 = [tableViewOM rowWithIdentifier:identifierCopy];
 
-  v8 = [v7 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"class"];
-  LODWORD(v6) = [v9 isEqualToString:@"editableText"];
+  attributes = [v7 attributes];
+  v9 = [attributes objectForKeyedSubscript:@"class"];
+  LODWORD(tableViewOM) = [v9 isEqualToString:@"editableText"];
 
-  v10 = [v7 tableCell];
-  v11 = v10;
-  if (v6)
+  tableCell = [v7 tableCell];
+  v11 = tableCell;
+  if (tableViewOM)
   {
-    [v10 ruiEditableTextField];
+    [tableCell ruiEditableTextField];
   }
 
   else
   {
-    [v10 ruiTextLabel];
+    [tableCell ruiTextLabel];
   }
   v12 = ;
-  v13 = [v12 text];
+  text = [v12 text];
 
-  return v13;
+  return text;
 }
 
-- (void)handleAppleIDAuthenticationIfNeededForAttributes:(id)a3 completion:(id)a4
+- (void)handleAppleIDAuthenticationIfNeededForAttributes:(id)attributes completion:(id)completion
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"authRequired"];
+  attributesCopy = attributes;
+  completionCopy = completion;
+  v8 = [attributesCopy objectForKeyedSubscript:@"authRequired"];
   if ([v8 BOOLValue])
   {
 
     goto LABEL_4;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"authCredentialRecoveryRequired"];
-  v10 = [v9 BOOLValue];
+  v9 = [attributesCopy objectForKeyedSubscript:@"authCredentialRecoveryRequired"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
 LABEL_4:
     v58 = 0;
@@ -1985,10 +1985,10 @@ LABEL_4:
     v12 = v11;
     _Block_object_dispose(&v64, 8);
     v63 = objc_opt_new();
-    v13 = [v6 objectForKeyedSubscript:@"authAccountIsPrimary"];
-    v14 = [v13 BOOLValue];
+    v13 = [attributesCopy objectForKeyedSubscript:@"authAccountIsPrimary"];
+    bOOLValue2 = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue2)
     {
       v64 = 0;
       v65 = &v64;
@@ -2009,19 +2009,19 @@ LABEL_4:
       v16 = v15;
       _Block_object_dispose(&v64, 8);
       v17 = objc_opt_new();
-      v18 = [v17 aa_primaryAppleAccount];
-      v19 = [v18 username];
+      aa_primaryAppleAccount = [v17 aa_primaryAppleAccount];
+      username = [aa_primaryAppleAccount username];
 
-      if ([v19 length])
+      if ([username length])
       {
-        [v59[5] setUsername:v19];
+        [v59[5] setUsername:username];
       }
     }
 
-    v20 = [v59[5] username];
-    if (![v20 length])
+    username2 = [v59[5] username];
+    if (![username2 length])
     {
-      v21 = [v6 objectForKeyedSubscript:@"authUsername"];
+      v21 = [attributesCopy objectForKeyedSubscript:@"authUsername"];
       v22 = [v21 length] == 0;
 
       if (v22)
@@ -2030,15 +2030,15 @@ LABEL_4:
       }
 
       v23 = v59[5];
-      v20 = [v6 objectForKeyedSubscript:@"authUsername"];
-      [v23 setUsername:v20];
+      username2 = [attributesCopy objectForKeyedSubscript:@"authUsername"];
+      [v23 setUsername:username2];
     }
 
 LABEL_16:
-    v24 = [v59[5] username];
-    if (![v24 length])
+    username3 = [v59[5] username];
+    if (![username3 length])
     {
-      v29 = [v6 objectForKeyedSubscript:@"authUsernameFieldID"];
+      v29 = [attributesCopy objectForKeyedSubscript:@"authUsernameFieldID"];
       v30 = [v29 length] == 0;
 
       if (v30)
@@ -2046,12 +2046,12 @@ LABEL_16:
         goto LABEL_18;
       }
 
-      v31 = [v6 objectForKeyedSubscript:@"authUsernameFieldID"];
-      v24 = [(RUIObjectModel *)self textInRowWithIdentifier:v31];
+      v31 = [attributesCopy objectForKeyedSubscript:@"authUsernameFieldID"];
+      username3 = [(RUIObjectModel *)self textInRowWithIdentifier:v31];
 
-      if ([v24 length])
+      if ([username3 length])
       {
-        [v59[5] setUsername:v24];
+        [v59[5] setUsername:username3];
       }
 
       else if (_isInternalInstall())
@@ -2059,7 +2059,7 @@ LABEL_16:
         v51 = _RUILoggingFacility();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
-          v52 = [v6 objectForKeyedSubscript:@"authUsernameFieldID"];
+          v52 = [attributesCopy objectForKeyedSubscript:@"authUsernameFieldID"];
           LODWORD(buf) = 138412290;
           *(&buf + 4) = v52;
           _os_log_impl(&dword_21B93D000, v51, OS_LOG_TYPE_DEFAULT, "Could not find a username in usernameFieldID %@", &buf, 0xCu);
@@ -2068,12 +2068,12 @@ LABEL_16:
     }
 
 LABEL_18:
-    v25 = [v6 objectForKeyedSubscript:@"authPasswordFieldID"];
+    v25 = [attributesCopy objectForKeyedSubscript:@"authPasswordFieldID"];
     v26 = [v25 length] == 0;
 
     if (!v26)
     {
-      v27 = [v6 objectForKeyedSubscript:@"authPasswordFieldID"];
+      v27 = [attributesCopy objectForKeyedSubscript:@"authPasswordFieldID"];
       v28 = [(RUIObjectModel *)self textInRowWithIdentifier:v27];
 
       if ([v28 length])
@@ -2086,7 +2086,7 @@ LABEL_18:
         v32 = _RUILoggingFacility();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [v6 objectForKeyedSubscript:@"authPasswordFieldID"];
+          v33 = [attributesCopy objectForKeyedSubscript:@"authPasswordFieldID"];
           LODWORD(buf) = 138412290;
           *(&buf + 4) = v33;
           _os_log_impl(&dword_21B93D000, v32, OS_LOG_TYPE_DEFAULT, "Could not find a password in passwordFieldID %@", &buf, 0xCu);
@@ -2095,26 +2095,26 @@ LABEL_18:
     }
 
     v34 = v59[5];
-    v35 = [v6 objectForKeyedSubscript:@"authReason"];
+    v35 = [attributesCopy objectForKeyedSubscript:@"authReason"];
     [v34 setReason:v35];
 
-    v36 = [(RUIObjectModel *)self _parentNavigationController];
-    [v59[5] setPresentingViewController:v36];
-    v37 = [v6 objectForKeyedSubscript:@"authIsEphemeral"];
-    v38 = [v37 BOOLValue];
+    _parentNavigationController = [(RUIObjectModel *)self _parentNavigationController];
+    [v59[5] setPresentingViewController:_parentNavigationController];
+    v37 = [attributesCopy objectForKeyedSubscript:@"authIsEphemeral"];
+    bOOLValue3 = [v37 BOOLValue];
 
-    [v59[5] setIsEphemeral:v38];
-    v39 = [v6 objectForKeyedSubscript:@"authCredentialRecoveryRequired"];
-    v40 = [v39 BOOLValue];
+    [v59[5] setIsEphemeral:bOOLValue3];
+    v39 = [attributesCopy objectForKeyedSubscript:@"authCredentialRecoveryRequired"];
+    bOOLValue4 = [v39 BOOLValue];
 
-    [v59[5] setNeedsCredentialRecovery:v40];
-    v41 = [v6 objectForKeyedSubscript:@"authIsTwoFactor"];
+    [v59[5] setNeedsCredentialRecovery:bOOLValue4];
+    v41 = [attributesCopy objectForKeyedSubscript:@"authIsTwoFactor"];
     if (v41)
     {
-      v42 = [v6 objectForKeyedSubscript:@"authIsTwoFactor"];
-      v43 = [v42 BOOLValue];
+      v42 = [attributesCopy objectForKeyedSubscript:@"authIsTwoFactor"];
+      bOOLValue5 = [v42 BOOLValue];
 
-      v44 = v43 ^ 1u;
+      v44 = bOOLValue5 ^ 1u;
     }
 
     else
@@ -2123,8 +2123,8 @@ LABEL_18:
     }
 
     [v59[5] setShouldPromptForPasswordOnly:v44];
-    v45 = [v59[5] username];
-    v46 = [v45 length] == 0;
+    username4 = [v59[5] username];
+    v46 = [username4 length] == 0;
 
     if (!v46)
     {
@@ -2162,8 +2162,8 @@ LABEL_18:
     v53[2] = __78__RUIObjectModel_handleAppleIDAuthenticationIfNeededForAttributes_completion___block_invoke;
     v53[3] = &unk_2782E8898;
     v53[4] = self;
-    v54 = v6;
-    v55 = v7;
+    v54 = attributesCopy;
+    v55 = completionCopy;
     p_buf = &buf;
     v57 = &v58;
     [v49 authenticateWithContext:v50 completion:v53];
@@ -2174,9 +2174,9 @@ LABEL_18:
     goto LABEL_39;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_39:
@@ -2358,17 +2358,17 @@ LABEL_25:
   *(v37 + 40) = 0;
 }
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self primaryAlert];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  primaryAlert = [(RUIObjectModel *)self primaryAlert];
+  identifier = [primaryAlert identifier];
+  v7 = [identifier isEqualToString:dCopy];
 
   if (v7)
   {
-    v8 = [(RUIObjectModel *)self primaryAlert];
+    primaryAlert2 = [(RUIObjectModel *)self primaryAlert];
   }
 
   else
@@ -2392,20 +2392,20 @@ LABEL_25:
             objc_enumerationMutation(v9);
           }
 
-          v8 = [(NSMutableDictionary *)self->_namedAlerts objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
-          v14 = [v8 identifier];
-          v15 = [v14 isEqualToString:v4];
+          primaryAlert2 = [(NSMutableDictionary *)self->_namedAlerts objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
+          identifier2 = [primaryAlert2 identifier];
+          v15 = [identifier2 isEqualToString:dCopy];
 
           if (v15)
           {
             goto LABEL_23;
           }
 
-          v16 = [v8 subElementWithID:v4];
+          v16 = [primaryAlert2 subElementWithID:dCopy];
 
           if (v16)
           {
-            v8 = v16;
+            primaryAlert2 = v16;
 LABEL_23:
 
             goto LABEL_26;
@@ -2426,8 +2426,8 @@ LABEL_23:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = [(RUIObjectModel *)self allPages];
-    v18 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    allPages = [(RUIObjectModel *)self allPages];
+    v18 = [allPages countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v18)
     {
       v19 = v18;
@@ -2438,31 +2438,31 @@ LABEL_23:
         {
           if (*v29 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allPages);
           }
 
           v22 = *(*(&v28 + 1) + 8 * j);
-          v23 = [v22 pageElement];
-          v24 = [v23 identifier];
-          v25 = [v24 isEqualToString:v4];
+          pageElement = [v22 pageElement];
+          identifier3 = [pageElement identifier];
+          v25 = [identifier3 isEqualToString:dCopy];
 
           if (v25)
           {
-            v26 = [v22 pageElement];
+            pageElement2 = [v22 pageElement];
 LABEL_25:
-            v8 = v26;
+            primaryAlert2 = pageElement2;
 
             goto LABEL_26;
           }
 
-          v26 = [v22 subElementWithID:v4];
-          if (v26)
+          pageElement2 = [v22 subElementWithID:dCopy];
+          if (pageElement2)
           {
             goto LABEL_25;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v19 = [allPages countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v19)
         {
           continue;
@@ -2472,50 +2472,50 @@ LABEL_25:
       }
     }
 
-    v8 = 0;
+    primaryAlert2 = 0;
   }
 
 LABEL_26:
 
-  return v8;
+  return primaryAlert2;
 }
 
-- (void)startActivityIndicatorWithAttributes:(id)a3
+- (void)startActivityIndicatorWithAttributes:(id)attributes
 {
-  v4 = [(RUIObjectModel *)self elementForActivityIndicatorWithAttributes:a3];
+  v4 = [(RUIObjectModel *)self elementForActivityIndicatorWithAttributes:attributes];
   [(RUIObjectModel *)self startActivityIndicatorForElement:v4];
 }
 
-- (void)startActivityIndicatorForElement:(id)a3
+- (void)startActivityIndicatorForElement:(id)element
 {
-  v5 = a3;
-  v4 = [(RUIObjectModel *)self elementForActivityIndicatorWithActivatedElement:v5];
+  elementCopy = element;
+  v4 = [(RUIObjectModel *)self elementForActivityIndicatorWithActivatedElement:elementCopy];
   objc_storeStrong(&self->_elementForActivityIndicator, v4);
   [(RUIElement *)self->_elementForActivityIndicator startActivityIndicator];
-  if (v5)
+  if (elementCopy)
   {
-    [(RUIObjectModel *)self setActivityIndicatorStatus:1 forElement:v5];
+    [(RUIObjectModel *)self setActivityIndicatorStatus:1 forElement:elementCopy];
   }
 }
 
-- (void)activateElement:(id)a3 sender:(id)a4 completion:(id)a5
+- (void)activateElement:(id)element sender:(id)sender completion:(id)completion
 {
-  v9 = a3;
-  v8 = a5;
-  if (a4)
+  elementCopy = element;
+  completionCopy = completion;
+  if (sender)
   {
-    [(RUIObjectModel *)self setPopoverSourceItem:a4];
+    [(RUIObjectModel *)self setPopoverSourceItem:sender];
   }
 
-  [(RUIObjectModel *)self activateElement:v9 completion:v8];
+  [(RUIObjectModel *)self activateElement:elementCopy completion:completionCopy];
 }
 
-- (void)activateElement:(id)a3 completion:(id)a4
+- (void)activateElement:(id)element completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([(RUIElement *)self->_activeElement isEqual:v7])
+  elementCopy = element;
+  completionCopy = completion;
+  if ([(RUIElement *)self->_activeElement isEqual:elementCopy])
   {
     if (_isInternalInstall())
     {
@@ -2523,32 +2523,32 @@ LABEL_26:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v23 = v7;
+        v23 = elementCopy;
         _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "Already handling activation for element: %@", buf, 0xCu);
       }
     }
 
-    if (v8)
+    if (completionCopy)
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.RemoteUI" code:4 userInfo:0];
-      v8[2](v8, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_activeElement, a3);
-    [(RUIObjectModel *)self startActivityIndicatorForElement:v7];
-    v11 = [(RUIElement *)v7 sourceXMLElement];
+    objc_storeStrong(&self->_activeElement, element);
+    [(RUIObjectModel *)self startActivityIndicatorForElement:elementCopy];
+    sourceXMLElement = [(RUIElement *)elementCopy sourceXMLElement];
 
-    if (v11)
+    if (sourceXMLElement)
     {
-      v12 = [(RUIObjectModel *)self telemetryDelegate];
+      telemetryDelegate = [(RUIObjectModel *)self telemetryDelegate];
       v13 = [RUITelemetryElement alloc];
-      v14 = [(RUIElement *)v7 sourceXMLElement];
-      v15 = [(RUIObjectModel *)self sourceURL];
-      v16 = [(RUITelemetryElement *)v13 initWithXMLElement:v14 url:v15];
-      [v12 willActivateElement:v16];
+      sourceXMLElement2 = [(RUIElement *)elementCopy sourceXMLElement];
+      sourceURL = [(RUIObjectModel *)self sourceURL];
+      v16 = [(RUITelemetryElement *)v13 initWithXMLElement:sourceXMLElement2 url:sourceURL];
+      [telemetryDelegate willActivateElement:v16];
     }
 
     if (_isInternalInstall())
@@ -2568,8 +2568,8 @@ LABEL_26:
     v19[2] = __45__RUIObjectModel_activateElement_completion___block_invoke;
     v19[3] = &unk_2782E88C0;
     v19[4] = self;
-    v20 = v7;
-    v21 = v8;
+    v20 = elementCopy;
+    v21 = completionCopy;
     [(RUIObjectModel *)self handleElementChange:v20 action:2 completion:v19];
   }
 }
@@ -2621,35 +2621,35 @@ void __45__RUIObjectModel_activateElement_completion___block_invoke(uint64_t a1,
   }
 }
 
-- (id)elementForActivityIndicatorWithAttributes:(id)a3
+- (id)elementForActivityIndicatorWithAttributes:(id)attributes
 {
-  v4 = [a3 objectForKeyedSubscript:@"activityIndicatorAnchorId"];
+  v4 = [attributes objectForKeyedSubscript:@"activityIndicatorAnchorId"];
   v5 = [(RUIObjectModel *)self elementForActivityIndicatorAnchorId:v4];
 
   return v5;
 }
 
-- (id)elementForActivityIndicatorWithActivatedElement:(id)a3
+- (id)elementForActivityIndicatorWithActivatedElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [(RUIObjectModel *)self elementForActivityIndicatorWithAttributes:v5];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v6 = [(RUIObjectModel *)self elementForActivityIndicatorWithAttributes:attributes];
 
   if (v6)
   {
     v7 = v6;
-    v8 = [v7 pageElement];
-    v9 = [v8 page];
+    pageElement = [v7 pageElement];
+    page = [pageElement page];
   }
 
   else
   {
-    v7 = v4;
-    v9 = [(RUIObjectModel *)self visiblePage];
+    v7 = elementCopy;
+    page = [(RUIObjectModel *)self visiblePage];
   }
 
-  v10 = [v9 activityIndicatorStyle];
-  v11 = [v10 isEqualToString:@"activeElement"];
+  activityIndicatorStyle = [page activityIndicatorStyle];
+  v11 = [activityIndicatorStyle isEqualToString:@"activeElement"];
 
   if (v11)
   {
@@ -2664,16 +2664,16 @@ void __45__RUIObjectModel_activateElement_completion___block_invoke(uint64_t a1,
   return v12;
 }
 
-- (id)elementForActivityIndicatorAnchorId:(id)a3
+- (id)elementForActivityIndicatorAnchorId:(id)id
 {
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self delegate];
+  idCopy = id;
+  delegate = [(RUIObjectModel *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(RUIObjectModel *)self delegate];
-    v8 = [v7 visibleElementWithIdentifier:v4];
+    delegate2 = [(RUIObjectModel *)self delegate];
+    v8 = [delegate2 visibleElementWithIdentifier:idCopy];
   }
 
   else
@@ -2684,20 +2684,20 @@ void __45__RUIObjectModel_activateElement_completion___block_invoke(uint64_t a1,
   return v8;
 }
 
-- (void)handleElementChange:(id)a3 action:(int)a4 completion:(id)a5
+- (void)handleElementChange:(id)change action:(int)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  changeCopy = change;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__RUIObjectModel_handleElementChange_action_completion___block_invoke;
   v12[3] = &unk_2782E8938;
-  v13 = v8;
-  v14 = v9;
+  v13 = changeCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v15 = a4;
-  v10 = v8;
-  v11 = v9;
+  actionCopy = action;
+  v10 = changeCopy;
+  v11 = completionCopy;
   [(RUIObjectModel *)self presentConfirmationIfNeededForElement:v10 completion:v12];
 }
 
@@ -2889,40 +2889,40 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
   return result;
 }
 
-- (void)openLink:(id)a3 HTTPMethod:(id)a4 attributes:(id)a5 completion:(id)a6
+- (void)openLink:(id)link HTTPMethod:(id)method attributes:(id)attributes completion:(id)completion
 {
   v9 = MEMORY[0x277CBEB38];
-  if (a5)
+  if (attributes)
   {
-    v10 = a5;
+    attributesCopy = attributes;
   }
 
   else
   {
-    v10 = MEMORY[0x277CBEC10];
+    attributesCopy = MEMORY[0x277CBEC10];
   }
 
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v15 = [v9 dictionaryWithDictionary:v10];
-  [v15 setObject:v12 forKeyedSubscript:@"httpMethod"];
+  completionCopy = completion;
+  methodCopy = method;
+  linkCopy = link;
+  v15 = [v9 dictionaryWithDictionary:attributesCopy];
+  [v15 setObject:methodCopy forKeyedSubscript:@"httpMethod"];
 
   v14 = [v15 copy];
-  [(RUIObjectModel *)self _handleLinkPress:v13 attributes:v14 completion:v11];
+  [(RUIObjectModel *)self _handleLinkPress:linkCopy attributes:v14 completion:completionCopy];
 }
 
-- (BOOL)_shouldDisplayNamedElement:(id)a3 page:(id)a4
+- (BOOL)_shouldDisplayNamedElement:(id)element page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUIObjectModel *)self delegate];
+  elementCopy = element;
+  pageCopy = page;
+  delegate = [(RUIObjectModel *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(RUIObjectModel *)self delegate];
-    v11 = [v10 objectModel:self shouldDisplayNamedElement:v6 page:v7];
+    delegate2 = [(RUIObjectModel *)self delegate];
+    v11 = [delegate2 objectModel:self shouldDisplayNamedElement:elementCopy page:pageCopy];
   }
 
   else
@@ -2933,15 +2933,15 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
   return v11;
 }
 
-- (void)_handleLinkPress:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)_handleLinkPress:(id)press attributes:(id)attributes completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(RUIElement *)v8 hasPrefix:@"#"])
+  pressCopy = press;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if ([(RUIElement *)pressCopy hasPrefix:@"#"])
   {
-    v11 = [(RUIElement *)v8 substringFromIndex:1];
+    v11 = [(RUIElement *)pressCopy substringFromIndex:1];
     v12 = [(NSMutableDictionary *)self->_namedPages objectForKey:v11];
     if (v12)
     {
@@ -2950,7 +2950,7 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
         v13 = 1;
         [(RUIObjectModel *)self _displayNamedPage:v12 animated:(gAnimatedNavigationTransitions & 1) == 0];
         v14 = 0;
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_38;
         }
@@ -2960,7 +2960,7 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
       {
         v14 = 0;
         v13 = 0;
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_38;
         }
@@ -2972,11 +2972,11 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
       v22 = [(NSMutableDictionary *)self->_namedAlerts objectForKey:v11];
       if (v22 && [(RUIObjectModel *)self _shouldDisplayNamedElement:0 page:0])
       {
-        v23 = [(RUIObjectModel *)self _parentViewController];
-        v13 = v23 != 0;
-        if (v23)
+        _parentViewController = [(RUIObjectModel *)self _parentViewController];
+        v13 = _parentViewController != 0;
+        if (_parentViewController)
         {
-          [v22 runAlertInController:v23 completion:0];
+          [v22 runAlertInController:_parentViewController completion:0];
         }
 
         v14 = 0;
@@ -2990,7 +2990,7 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v53 = v8;
+            v53 = pressCopy;
             _os_log_impl(&dword_21B93D000, v24, OS_LOG_TYPE_DEFAULT, "Link press for named element %@ did not find an element", buf, 0xCu);
           }
         }
@@ -2999,32 +2999,32 @@ uint64_t __56__RUIObjectModel_handleElementChange_action_completion___block_invo
         v13 = 0;
       }
 
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_38;
       }
     }
 
-    v10[2](v10, v13, v14);
+    completionCopy[2](completionCopy, v13, v14);
 LABEL_38:
 
 LABEL_39:
     goto LABEL_40;
   }
 
-  v11 = [(RUIObjectModel *)self absoluteURLWithString:v8];
-  v15 = [v9 objectForKeyedSubscript:@"openInSafari"];
+  v11 = [(RUIObjectModel *)self absoluteURLWithString:pressCopy];
+  v15 = [attributesCopy objectForKeyedSubscript:@"openInSafari"];
   if ([v15 BOOLValue])
   {
-    v16 = [v11 rui_isSupportedSafariURL];
+    rui_isSupportedSafariURL = [v11 rui_isSupportedSafariURL];
   }
 
   else
   {
-    v16 = 0;
+    rui_isSupportedSafariURL = 0;
   }
 
-  if (([v11 rui_isSupportedNativeURL] & 1) != 0 || v16)
+  if (([v11 rui_isSupportedNativeURL] & 1) != 0 || rui_isSupportedSafariURL)
   {
     if (_isInternalInstall())
     {
@@ -3036,9 +3036,9 @@ LABEL_39:
       }
     }
 
-    v19 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v51 = 0;
-    [v19 openSensitiveURL:v11 withOptions:0 error:&v51];
+    [defaultWorkspace openSensitiveURL:v11 withOptions:0 error:&v51];
     v20 = v51;
 
     if (v20)
@@ -3050,25 +3050,25 @@ LABEL_39:
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v20 == 0, v20);
+      completionCopy[2](completionCopy, v20 == 0, v20);
     }
 
     goto LABEL_40;
   }
 
-  v17 = [v9 objectForKeyedSubscript:@"fetchLinksInModalWebView"];
+  v17 = [attributesCopy objectForKeyedSubscript:@"fetchLinksInModalWebView"];
   if ([v17 BOOLValue])
   {
   }
 
   else
   {
-    v25 = [v9 objectForKeyedSubscript:@"isModalHTMLView"];
-    v26 = [v25 BOOLValue];
+    v25 = [attributesCopy objectForKeyedSubscript:@"isModalHTMLView"];
+    bOOLValue = [v25 BOOLValue];
 
-    if (!v26)
+    if (!bOOLValue)
     {
       if (v11)
       {
@@ -3077,25 +3077,25 @@ LABEL_39:
 
         if (v34)
         {
-          [(RUIObjectModel *)self _startNavigationBarSpinnerIfNeededForAttributes:v9];
+          [(RUIObjectModel *)self _startNavigationBarSpinnerIfNeededForAttributes:attributesCopy];
           v35 = objc_loadWeakRetained(&self->_delegate);
           v36 = objc_opt_respondsToSelector();
 
           if (v36)
           {
             v37 = objc_loadWeakRetained(&self->_delegate);
-            [v37 objectModel:self willLoadLinkURL:v11 attributes:v9];
+            [v37 objectModel:self willLoadLinkURL:v11 attributes:attributesCopy];
           }
 
           v38 = objc_loadWeakRetained(&self->_delegate);
-          v39 = [v9 objectForKeyedSubscript:@"httpMethod"];
+          v39 = [attributesCopy objectForKeyedSubscript:@"httpMethod"];
           v48[0] = MEMORY[0x277D85DD0];
           v48[1] = 3221225472;
           v48[2] = __57__RUIObjectModel__handleLinkPress_attributes_completion___block_invoke;
           v48[3] = &unk_2782E88C0;
           v48[4] = self;
-          v49 = v9;
-          v50 = v10;
+          v49 = attributesCopy;
+          v50 = completionCopy;
           [v38 objectModel:self pressedLink:v11 httpMethod:v39 completion:v48];
 
           v40 = v49;
@@ -3112,7 +3112,7 @@ LABEL_39:
           }
 
           v43 = objc_loadWeakRetained(&self->_delegate);
-          v44 = [v9 objectForKeyedSubscript:@"httpMethod"];
+          v44 = [attributesCopy objectForKeyedSubscript:@"httpMethod"];
           [v43 objectModel:self pressedLink:v11 httpMethod:v44];
 
           if (_isInternalInstall())
@@ -3144,7 +3144,7 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      NSLog(&cfstr_WarningInvalid.isa, v8);
+      NSLog(&cfstr_WarningInvalid.isa, pressCopy);
       goto LABEL_40;
     }
   }
@@ -3156,10 +3156,10 @@ LABEL_39:
 
     if ((v28 & 1) == 0 || (v29 = objc_loadWeakRetained(&self->_delegate), v30 = [v29 objectModel:self shouldShowModalHTMLViewWithURL:v11], v29, v30))
     {
-      v12 = [v9 objectForKeyedSubscript:@"dismissButtonLabel"];
-      v31 = [v9 objectForKeyedSubscript:@"dismissButtonAlignment"];
-      v32 = [v9 objectForKeyedSubscript:@"shouldScaleHTMLPageToFit"];
-      -[RUIObjectModel showModalWebViewWithLinkURL:dismissButtonLabel:dismissButtonAlignment:scaleToFit:loadCompletion:dismissHandler:](self, "showModalWebViewWithLinkURL:dismissButtonLabel:dismissButtonAlignment:scaleToFit:loadCompletion:dismissHandler:", v11, v12, v31, [v32 BOOLValue], v10, 0);
+      v12 = [attributesCopy objectForKeyedSubscript:@"dismissButtonLabel"];
+      v31 = [attributesCopy objectForKeyedSubscript:@"dismissButtonAlignment"];
+      v32 = [attributesCopy objectForKeyedSubscript:@"shouldScaleHTMLPageToFit"];
+      -[RUIObjectModel showModalWebViewWithLinkURL:dismissButtonLabel:dismissButtonAlignment:scaleToFit:loadCompletion:dismissHandler:](self, "showModalWebViewWithLinkURL:dismissButtonLabel:dismissButtonAlignment:scaleToFit:loadCompletion:dismissHandler:", v11, v12, v31, [v32 BOOLValue], completionCopy, 0);
 
       goto LABEL_39;
     }
@@ -3179,27 +3179,27 @@ void __57__RUIObjectModel__handleLinkPress_attributes_completion___block_invoke(
   }
 }
 
-- (void)_handleElementChange:(id)a3 completion:(id)a4
+- (void)_handleElementChange:(id)change completion:(id)completion
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"validationFunction"];
+  changeCopy = change;
+  completionCopy = completion;
+  attributes = [changeCopy attributes];
+  v9 = [attributes objectForKeyedSubscript:@"validationFunction"];
 
   if (![v9 length] || (objc_msgSend(MEMORY[0x277D75658], "activeKeyboard"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "acceptAutocorrection"), v10, -[RUIObjectModel validateWithFunction:](self, "validateWithFunction:", v9)))
   {
-    v11 = [v6 attributes];
-    v12 = [v11 objectForKeyedSubscript:@"activationFunction"];
+    attributes2 = [changeCopy attributes];
+    v12 = [attributes2 objectForKeyedSubscript:@"activationFunction"];
 
     if ([v12 length])
     {
-      v13 = [MEMORY[0x277D75658] activeKeyboard];
-      [v13 acceptAutocorrection];
+      activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+      [activeKeyboard acceptAutocorrection];
 
-      if (v6)
+      if (changeCopy)
       {
-        v29[0] = v6;
+        v29[0] = changeCopy;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
         v15 = [(RUIObjectModel *)self invokeScriptFunction:v12 withArguments:v14];
       }
@@ -3217,7 +3217,7 @@ void __57__RUIObjectModel__handleLinkPress_attributes_completion___block_invoke(
     v25 = v24;
     if (v23)
     {
-      [v24 objectModel:self elementDidChange:v6];
+      [v24 objectModel:self elementDidChange:changeCopy];
     }
 
     else
@@ -3230,45 +3230,45 @@ void __57__RUIObjectModel__handleLinkPress_attributes_completion___block_invoke(
       }
 
       v25 = objc_loadWeakRetained(&self->_delegate);
-      v27 = [v6 name];
-      v28 = [v6 attributes];
-      [v25 objectModel:self pressedButton:v27 attributes:v28];
+      name = [changeCopy name];
+      attributes3 = [changeCopy attributes];
+      [v25 objectModel:self pressedButton:name attributes:attributes3];
     }
 
 LABEL_14:
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     goto LABEL_16;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.RemoteUI" code:1 userInfo:0];
-    v16 = [(RUIObjectModel *)self telemetryDelegate];
+    telemetryDelegate = [(RUIObjectModel *)self telemetryDelegate];
     v17 = [RUITelemetryElement alloc];
-    v18 = [v6 sourceXMLElement];
-    v19 = [(RUIObjectModel *)self sourceURL];
-    v20 = [(RUITelemetryElement *)v17 initWithXMLElement:v18 url:v19];
-    [v16 processedElementWithError:v12 forElement:v20];
+    sourceXMLElement = [changeCopy sourceXMLElement];
+    sourceURL = [(RUIObjectModel *)self sourceURL];
+    v20 = [(RUITelemetryElement *)v17 initWithXMLElement:sourceXMLElement url:sourceURL];
+    [telemetryDelegate processedElementWithError:v12 forElement:v20];
 
-    (v7)[2](v7, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
 LABEL_16:
   }
 }
 
-- (id)_pageContainingTableView:(id)a3
+- (id)_pageContainingTableView:(id)view
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(RUIObjectModel *)self allPages];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allPages = [(RUIObjectModel *)self allPages];
+  v6 = [allPages countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -3278,20 +3278,20 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allPages);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 tableViewOM];
+        tableViewOM = [v9 tableViewOM];
 
-        if (v10 == v4)
+        if (tableViewOM == viewCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allPages countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -3306,15 +3306,15 @@ LABEL_11:
   return v6;
 }
 
-- (void)showModalWebViewWithLinkURL:(id)a3 dismissButtonLabel:(id)a4 dismissButtonAlignment:(id)a5 scaleToFit:(BOOL)a6 loadCompletion:(id)a7 dismissHandler:(id)a8
+- (void)showModalWebViewWithLinkURL:(id)l dismissButtonLabel:(id)label dismissButtonAlignment:(id)alignment scaleToFit:(BOOL)fit loadCompletion:(id)completion dismissHandler:(id)handler
 {
-  v10 = a6;
+  fitCopy = fit;
   v30 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  labelCopy = label;
+  alignmentCopy = alignment;
+  completionCopy = completion;
+  handlerCopy = handler;
   webViewDismissHandler = self->_webViewDismissHandler;
   isInternalInstall = _isInternalInstall();
   if (!webViewDismissHandler)
@@ -3324,29 +3324,29 @@ LABEL_11:
       v22 = _RUILoggingFacility();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 host];
+        host = [lCopy host];
         v28 = 138412290;
-        v29 = v23;
+        v29 = host;
         _os_log_impl(&dword_21B93D000, v22, OS_LOG_TYPE_DEFAULT, "Showing modal web view with domain '%@'", &v28, 0xCu);
       }
     }
 
-    v24 = _Block_copy(v18);
+    v24 = _Block_copy(handlerCopy);
     v25 = self->_webViewDismissHandler;
     self->_webViewDismissHandler = v24;
 
     v21 = [[RemoteUIWebViewController alloc] initWithNibName:0 bundle:0];
-    v26 = [(RUIObjectModel *)self style];
-    [(RemoteUIWebViewController *)v21 setStyle:v26];
+    style = [(RUIObjectModel *)self style];
+    [(RemoteUIWebViewController *)v21 setStyle:style];
 
-    [(RemoteUIWebViewController *)v21 setDismissButtonAlignment:v16];
-    [(RemoteUIWebViewController *)v21 setDismissButtonLabel:v15];
-    [(RemoteUIWebViewController *)v21 setScalesPageToFit:v10];
+    [(RemoteUIWebViewController *)v21 setDismissButtonAlignment:alignmentCopy];
+    [(RemoteUIWebViewController *)v21 setDismissButtonLabel:labelCopy];
+    [(RemoteUIWebViewController *)v21 setScalesPageToFit:fitCopy];
     [(RemoteUIWebViewController *)v21 setDelegate:self];
-    v27 = [(RUIObjectModel *)self _parentViewController];
-    [v27 presentViewController:v21 animated:1 completion:0];
+    _parentViewController = [(RUIObjectModel *)self _parentViewController];
+    [_parentViewController presentViewController:v21 animated:1 completion:0];
 
-    [(RemoteUIWebViewController *)v21 loadURL:v14 completion:v17];
+    [(RemoteUIWebViewController *)v21 loadURL:lCopy completion:completionCopy];
     goto LABEL_10;
   }
 
@@ -3363,65 +3363,65 @@ LABEL_10:
   }
 }
 
-- (void)remoteUIWebViewController:(id)a3 dismissWithPayload:(id)a4
+- (void)remoteUIWebViewController:(id)controller dismissWithPayload:(id)payload
 {
-  v10 = a4;
+  payloadCopy = payload;
   webViewDismissHandler = self->_webViewDismissHandler;
-  v7 = a3;
+  controllerCopy = controller;
   v8 = _Block_copy(webViewDismissHandler);
   v9 = self->_webViewDismissHandler;
   self->_webViewDismissHandler = 0;
 
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
   if (v8)
   {
-    v8[2](v8, v10);
+    v8[2](v8, payloadCopy);
   }
 }
 
-- (void)remoteUIWebViewControllerDidDismiss:(id)a3
+- (void)remoteUIWebViewControllerDidDismiss:(id)dismiss
 {
   webViewDismissHandler = self->_webViewDismissHandler;
   if (webViewDismissHandler)
   {
-    webViewDismissHandler[2](webViewDismissHandler, 0, a3);
+    webViewDismissHandler[2](webViewDismissHandler, 0, dismiss);
     v5 = self->_webViewDismissHandler;
     self->_webViewDismissHandler = 0;
   }
 }
 
-- (void)alertView:(id)a3 pressedButton:(id)a4 completion:(id)a5
+- (void)alertView:(id)view pressedButton:(id)button completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(RUIObjectModel *)self _parentNavigationController];
-  v12 = [v11 topViewController];
+  viewCopy = view;
+  completionCopy = completion;
+  buttonCopy = button;
+  _parentNavigationController = [(RUIObjectModel *)self _parentNavigationController];
+  topViewController = [_parentNavigationController topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v11 viewControllers];
-    v14 = [v13 lastObject];
+    viewControllers = [_parentNavigationController viewControllers];
+    lastObject = [viewControllers lastObject];
   }
 
   else
   {
-    v14 = 0;
+    lastObject = 0;
   }
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __53__RUIObjectModel_alertView_pressedButton_completion___block_invoke;
   v19[3] = &unk_2782E8960;
-  v20 = v14;
-  v21 = v11;
-  v22 = v8;
-  v23 = v9;
-  v15 = v9;
-  v16 = v8;
-  v17 = v11;
-  v18 = v14;
-  [(RUIObjectModel *)self activateElement:v10 completion:v19];
+  v20 = lastObject;
+  v21 = _parentNavigationController;
+  v22 = viewCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = viewCopy;
+  v17 = _parentNavigationController;
+  v18 = lastObject;
+  [(RUIObjectModel *)self activateElement:buttonCopy completion:v19];
 }
 
 void __53__RUIObjectModel_alertView_pressedButton_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3476,32 +3476,32 @@ LABEL_7:
   }
 }
 
-- (BOOL)tableViewOM:(id)a3 deleteRowAtIndexPath:(id)a4
+- (BOOL)tableViewOM:(id)m deleteRowAtIndexPath:(id)path
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectModelRowForIndexPath:v6];
-  v9 = [(RUIObjectModel *)self _pageContainingTableView:v7];
+  pathCopy = path;
+  mCopy = m;
+  v8 = [mCopy objectModelRowForIndexPath:pathCopy];
+  v9 = [(RUIObjectModel *)self _pageContainingTableView:mCopy];
 
-  v10 = [v8 deleteAction];
-  v11 = [v8 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"deletionFunction"];
+  deleteAction = [v8 deleteAction];
+  attributes = [v8 attributes];
+  v12 = [attributes objectForKeyedSubscript:@"deletionFunction"];
 
-  v13 = 0;
+  bOOLValue = 0;
   if (!v9 || !v8)
   {
     goto LABEL_15;
   }
 
-  if (!(v10 | v12))
+  if (!(deleteAction | v12))
   {
     goto LABEL_14;
   }
 
   if (![v12 length])
   {
-    v16 = [v10 objectForKey:@"type"];
+    v16 = [deleteAction objectForKey:@"type"];
     v17 = [v16 isEqualToString:@"linkDeleteAction"];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -3511,14 +3511,14 @@ LABEL_7:
 
       if (v19)
       {
-        v20 = [v10 objectForKey:@"url"];
-        v21 = [v10 objectForKey:@"httpMethod"];
+        v20 = [deleteAction objectForKey:@"url"];
+        v21 = [deleteAction objectForKey:@"httpMethod"];
         v22 = [(RUIObjectModel *)self absoluteURLWithString:v20];
         if (v22)
         {
           v28 = v20;
           v23 = objc_loadWeakRetained(&self->_delegate);
-          v13 = [v23 objectModel:self page:v9 deletedTableRow:v8 atIndexPath:v6 withURL:v22 httpMethod:v21];
+          bOOLValue = [v23 objectModel:self page:v9 deletedTableRow:v8 atIndexPath:pathCopy withURL:v22 httpMethod:v21];
 
           v20 = v28;
         }
@@ -3526,7 +3526,7 @@ LABEL_7:
         else
         {
           NSLog(&cfstr_DeleteActionHa.isa, v20);
-          v13 = 0;
+          bOOLValue = 0;
         }
 
         goto LABEL_15;
@@ -3539,52 +3539,52 @@ LABEL_7:
 
       if (v24)
       {
-        v25 = [v10 objectForKey:@"name"];
+        v25 = [deleteAction objectForKey:@"name"];
         v26 = objc_loadWeakRetained(&self->_delegate);
-        v13 = [v26 objectModel:self page:v9 deletedTableRow:v8 atIndexPath:v6 withName:v25];
+        bOOLValue = [v26 objectModel:self page:v9 deletedTableRow:v8 atIndexPath:pathCopy withName:v25];
 
         goto LABEL_15;
       }
     }
 
 LABEL_14:
-    v13 = 0;
+    bOOLValue = 0;
     goto LABEL_15;
   }
 
   v29[0] = v8;
-  v13 = 1;
+  bOOLValue = 1;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
   v15 = [(RUIObjectModel *)self invokeScriptFunction:v12 withArguments:v14];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
   }
 
 LABEL_15:
-  return v13;
+  return bOOLValue;
 }
 
-- (void)tableViewOMDidChange:(id)a3
+- (void)tableViewOMDidChange:(id)change
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RUIObjectModel *)self visiblePage];
-  v6 = [(RUIObjectModel *)self updateInfo];
-  v7 = [v6 mutableCopy];
+  changeCopy = change;
+  visiblePage = [(RUIObjectModel *)self visiblePage];
+  updateInfo = [(RUIObjectModel *)self updateInfo];
+  v7 = [updateInfo mutableCopy];
 
-  v47 = v4;
-  [v4 populatePostbackDictionary:v7];
+  v47 = changeCopy;
+  [changeCopy populatePostbackDictionary:v7];
   v46 = v7;
   [(RUIObjectModel *)self setUpdateInfo:v7];
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = [v5 buttonItems];
-  v48 = v5;
+  obj = [visiblePage buttonItems];
+  v48 = visiblePage;
   v54 = [obj countByEnumeratingWithState:&v68 objects:v75 count:16];
   if (v54)
   {
@@ -3601,18 +3601,18 @@ LABEL_15:
         }
 
         v10 = *(*(&v68 + 1) + 8 * v9);
-        v11 = [v10 attributes];
-        v12 = [v11 objectForKey:@"enabledFunction"];
+        attributes = [v10 attributes];
+        v12 = [attributes objectForKey:@"enabledFunction"];
 
         v13 = [v12 length];
-        v14 = [v10 attributes];
-        v15 = [v14 objectForKeyedSubscript:@"authRequired"];
-        v16 = [v15 BOOLValue];
+        attributes2 = [v10 attributes];
+        v15 = [attributes2 objectForKeyedSubscript:@"authRequired"];
+        bOOLValue = [v15 BOOLValue];
 
         if (v13)
         {
           v17 = [(RUIObjectModel *)self validateWithFunction:v12];
-          if (!v16)
+          if (!bOOLValue)
           {
             goto LABEL_21;
           }
@@ -3620,7 +3620,7 @@ LABEL_15:
 
         else
         {
-          if ((v16 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             goto LABEL_22;
           }
@@ -3628,11 +3628,11 @@ LABEL_15:
           LODWORD(v17) = 1;
         }
 
-        v18 = [v10 attributes];
-        v19 = [v18 objectForKeyedSubscript:@"authUsernameFieldID"];
+        attributes3 = [v10 attributes];
+        v19 = [attributes3 objectForKeyedSubscript:@"authUsernameFieldID"];
 
-        v20 = [v10 attributes];
-        v21 = [v20 objectForKeyedSubscript:@"authPasswordFieldID"];
+        attributes4 = [v10 attributes];
+        v21 = [attributes4 objectForKeyedSubscript:@"authPasswordFieldID"];
 
         v22 = [v19 length];
         if (!v22)
@@ -3647,7 +3647,7 @@ LABEL_16:
           v24 = [(RUIObjectModel *)self textInRowWithIdentifier:v21];
           v23 = [v24 length] == 0;
 
-          v5 = v48;
+          visiblePage = v48;
           if (!v22)
           {
             goto LABEL_20;
@@ -3679,8 +3679,8 @@ LABEL_20:
 
         v8 = v49;
 LABEL_21:
-        v25 = [v10 attributes];
-        [v5 setButton:v25 enabled:v17];
+        attributes5 = [v10 attributes];
+        [visiblePage setButton:attributes5 enabled:v17];
 
 LABEL_22:
         ++v9;
@@ -3698,8 +3698,8 @@ LABEL_22:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v27 = [v5 accessoryViews];
-  v28 = [v27 countByEnumeratingWithState:&v64 objects:v74 count:16];
+  accessoryViews = [visiblePage accessoryViews];
+  v28 = [accessoryViews countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v28)
   {
     v29 = v28;
@@ -3710,7 +3710,7 @@ LABEL_22:
       {
         if (*v65 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(accessoryViews);
         }
 
         v32 = *(*(&v64 + 1) + 8 * i);
@@ -3720,7 +3720,7 @@ LABEL_22:
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v64 objects:v74 count:16];
+      v29 = [accessoryViews countByEnumeratingWithState:&v64 objects:v74 count:16];
     }
 
     while (v29);
@@ -3749,8 +3749,8 @@ LABEL_22:
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v35 = [v34 rows];
-        v36 = [v35 countByEnumeratingWithState:&v56 objects:v72 count:16];
+        rows = [v34 rows];
+        v36 = [rows countByEnumeratingWithState:&v56 objects:v72 count:16];
         if (v36)
         {
           v37 = v36;
@@ -3761,12 +3761,12 @@ LABEL_22:
             {
               if (*v57 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(rows);
               }
 
               v40 = *(*(&v56 + 1) + 8 * k);
-              v41 = [v40 attributes];
-              v42 = [v41 objectForKey:@"enabledFunction"];
+              attributes6 = [v40 attributes];
+              v42 = [attributes6 objectForKey:@"enabledFunction"];
 
               if ([v42 length])
               {
@@ -3774,7 +3774,7 @@ LABEL_22:
               }
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v56 objects:v72 count:16];
+            v37 = [rows countByEnumeratingWithState:&v56 objects:v72 count:16];
           }
 
           while (v37);
@@ -3798,21 +3798,21 @@ LABEL_22:
   }
 }
 
-- (void)tableViewOM:(id)a3 elementDidChange:(id)a4 action:(int)a5 completion:(id)a6
+- (void)tableViewOM:(id)m elementDidChange:(id)change action:(int)action completion:(id)completion
 {
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a6;
-  objc_storeStrong(&self->_activeElement, a4);
+  v7 = *&action;
+  changeCopy = change;
+  completionCopy = completion;
+  objc_storeStrong(&self->_activeElement, change);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__RUIObjectModel_tableViewOM_elementDidChange_action_completion___block_invoke;
   v14[3] = &unk_2782E88C0;
   v14[4] = self;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  v15 = changeCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = changeCopy;
   [(RUIObjectModel *)self handleElementChange:v13 action:v7 completion:v14];
 }
 
@@ -3840,38 +3840,38 @@ void __65__RUIObjectModel_tableViewOM_elementDidChange_action_completion___block
   }
 }
 
-- (BOOL)webViewOM:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5
+- (BOOL)webViewOM:(id)m shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type
 {
-  v8 = a3;
-  if (a5)
+  mCopy = m;
+  if (type)
   {
     goto LABEL_11;
   }
 
-  v9 = a4;
-  v10 = [v9 URL];
-  v11 = [v10 fragment];
-  v12 = [v10 scheme];
-  if (![v12 isEqualToString:@"xmlui"])
+  requestCopy = request;
+  v10 = [requestCopy URL];
+  fragment = [v10 fragment];
+  scheme = [v10 scheme];
+  if (![scheme isEqualToString:@"xmlui"])
   {
 
     goto LABEL_6;
   }
 
-  v13 = [v11 length];
+  v13 = [fragment length];
 
   if (!v13)
   {
 LABEL_6:
-    v14 = [v10 relativeString];
+    relativeString = [v10 relativeString];
     goto LABEL_7;
   }
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%@", v11];
+  relativeString = [MEMORY[0x277CCACA8] stringWithFormat:@"#%@", fragment];
 LABEL_7:
-  v15 = v14;
-  v16 = [v8 attributes];
-  v17 = [v16 mutableCopy];
+  v15 = relativeString;
+  attributes = [mCopy attributes];
+  v17 = [attributes mutableCopy];
   v18 = v17;
   if (v17)
   {
@@ -3886,17 +3886,17 @@ LABEL_7:
   v20 = v19;
 
   [v20 setObject:v15 forKeyedSubscript:@"url"];
-  v21 = [v9 HTTPMethod];
+  hTTPMethod = [requestCopy HTTPMethod];
 
-  [v20 setObject:v21 forKeyedSubscript:@"httpMethod"];
-  v22 = [[RUIElement alloc] initWithAttributes:v20 parent:v8];
+  [v20 setObject:hTTPMethod forKeyedSubscript:@"httpMethod"];
+  v22 = [[RUIElement alloc] initWithAttributes:v20 parent:mCopy];
   [(RUIObjectModel *)self handleElementChange:v22 action:2 completion:0];
 
 LABEL_11:
-  return a5 != 0;
+  return type != 0;
 }
 
-- (void)navigateToNextPageAnimated:(BOOL)a3
+- (void)navigateToNextPageAnimated:(BOOL)animated
 {
   v4 = [(NSMutableArray *)self->_defaultPages count];
   currentPage = self->_currentPage;
@@ -3918,21 +3918,21 @@ LABEL_11:
   }
 }
 
-- (void)RUIPage:(id)a3 pressedNavBarButton:(id)a4
+- (void)RUIPage:(id)page pressedNavBarButton:(id)button
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(RUIElement *)v6 attributes];
-  v8 = [v7 objectForKey:@"validationFunction"];
+  buttonCopy = button;
+  attributes = [(RUIElement *)buttonCopy attributes];
+  v8 = [attributes objectForKey:@"validationFunction"];
   if (![v8 length] || (objc_msgSend(MEMORY[0x277D75658], "activeKeyboard"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "acceptAutocorrection"), v9, -[RUIObjectModel validateWithFunction:](self, "validateWithFunction:", v8)))
   {
-    v10 = [v7 objectForKey:@"type"];
+    v10 = [attributes objectForKey:@"type"];
     if ([v10 isEqualToString:@"nextBarItem"])
     {
       [(RUIObjectModel *)self _navigateToNextPageAnimated];
     }
 
-    if ([(RUIElement *)self->_activeElement isEqual:v6])
+    if ([(RUIElement *)self->_activeElement isEqual:buttonCopy])
     {
       if (_isInternalInstall())
       {
@@ -3940,7 +3940,7 @@ LABEL_11:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v17 = v6;
+          v17 = buttonCopy;
           _os_log_impl(&dword_21B93D000, v11, OS_LOG_TYPE_DEFAULT, "Already handling activation for barButtonItem: %@", buf, 0xCu);
         }
       }
@@ -3948,9 +3948,9 @@ LABEL_11:
 
     else
     {
-      objc_storeStrong(&self->_activeElement, a4);
-      v12 = [(RUIElement *)v6 barButtonItem];
-      [(RUIObjectModel *)self setPopoverSourceItem:v12];
+      objc_storeStrong(&self->_activeElement, button);
+      barButtonItem = [(RUIElement *)buttonCopy barButtonItem];
+      [(RUIObjectModel *)self setPopoverSourceItem:barButtonItem];
 
       if (_isInternalInstall())
       {
@@ -3969,7 +3969,7 @@ LABEL_11:
       v15[2] = __46__RUIObjectModel_RUIPage_pressedNavBarButton___block_invoke;
       v15[3] = &unk_2782E8018;
       v15[4] = self;
-      [(RUIObjectModel *)self handleElementChange:v6 action:2 completion:v15];
+      [(RUIObjectModel *)self handleElementChange:buttonCopy action:2 completion:v15];
     }
   }
 }
@@ -4005,30 +4005,30 @@ void __46__RUIObjectModel_RUIPage_pressedNavBarButton___block_invoke(uint64_t a1
   *(v12 + 216) = 0;
 }
 
-- (void)RUIPage:(id)a3 toggledEditing:(BOOL)a4
+- (void)RUIPage:(id)page toggledEditing:(BOOL)editing
 {
-  v4 = a4;
-  v9 = a3;
+  editingCopy = editing;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 objectModel:self page:v9 toggledEditing:v4];
+    [v8 objectModel:self page:pageCopy toggledEditing:editingCopy];
   }
 }
 
-- (unint64_t)supportedInterfaceOrientationsForRUIPage:(id)a3
+- (unint64_t)supportedInterfaceOrientationsForRUIPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 supportedInterfaceOrientationsForObjectModel:self page:v4];
+    v8 = [v7 supportedInterfaceOrientationsForObjectModel:self page:pageCopy];
   }
 
   else
@@ -4065,10 +4065,10 @@ void __46__RUIObjectModel_RUIPage_pressedNavBarButton___block_invoke(uint64_t a1
   return v3 != 0;
 }
 
-- (BOOL)validateWithFunction:(id)a3
+- (BOOL)validateWithFunction:(id)function
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  functionCopy = function;
   if (![(RUIObjectModel *)self prepareScriptContext])
   {
     if (!_isInternalInstall())
@@ -4083,14 +4083,14 @@ void __46__RUIObjectModel_RUIPage_pressedNavBarButton___block_invoke(uint64_t a1
     }
 
     *buf = 138412290;
-    v16 = v4;
+    v16 = functionCopy;
     v12 = "Validation with '%@': No script context!";
 LABEL_19:
     _os_log_impl(&dword_21B93D000, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
     goto LABEL_20;
   }
 
-  if (![(__CFString *)v4 length])
+  if (![(__CFString *)functionCopy length])
   {
     if (!_isInternalInstall())
     {
@@ -4104,13 +4104,13 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    v16 = v4;
+    v16 = functionCopy;
     v12 = "Validation with '%@': Empty function!";
     goto LABEL_19;
   }
 
   GlobalObject = JSContextGetGlobalObject(self->_ctx);
-  ObjectProperty = getObjectProperty(self->_ctx, GlobalObject, v4);
+  ObjectProperty = getObjectProperty(self->_ctx, GlobalObject, functionCopy);
   if (!ObjectProperty)
   {
     if (_isInternalInstall())
@@ -4119,7 +4119,7 @@ LABEL_19:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = functionCopy;
         v12 = "Validation with '%@': Invalid script!";
         goto LABEL_19;
       }
@@ -4143,7 +4143,7 @@ LABEL_21:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = functionCopy;
         _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "Validation with '%@': Didn't return a BOOL!", buf, 0xCu);
       }
 
@@ -4167,7 +4167,7 @@ LABEL_21:
       }
 
       *buf = 138412546;
-      v16 = v4;
+      v16 = functionCopy;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "Validation with '%@': %@", buf, 0x16u);
@@ -4181,26 +4181,26 @@ LABEL_22:
   return v8;
 }
 
-- (id)objectForJSValue:(OpaqueJSValue *)a3
+- (id)objectForJSValue:(OpaqueJSValue *)value
 {
-  IsString = JSValueIsString(self->_ctx, a3);
+  IsString = JSValueIsString(self->_ctx, value);
   ctx = self->_ctx;
   if (!IsString)
   {
-    IsBoolean = JSValueIsBoolean(ctx, a3);
+    IsBoolean = JSValueIsBoolean(ctx, value);
     v13 = self->_ctx;
     if (IsBoolean)
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithBool:{JSValueToBoolean(v13, a3)}];
+      v14 = [MEMORY[0x277CCABB0] numberWithBool:{JSValueToBoolean(v13, value)}];
     }
 
     else
     {
-      IsNumber = JSValueIsNumber(v13, a3);
+      IsNumber = JSValueIsNumber(v13, value);
       v16 = self->_ctx;
       if (!IsNumber)
       {
-        IsObject = JSValueIsObject(v16, a3);
+        IsObject = JSValueIsObject(v16, value);
         v19 = self->_ctx;
         if (IsObject)
         {
@@ -4208,17 +4208,17 @@ LABEL_22:
           v21 = JSStringCreateWithUTF8CString("Array");
           Property = JSObjectGetProperty(self->_ctx, GlobalObject, v21, 0);
           v10 = 0;
-          if (JSValueIsInstanceOfConstructor(self->_ctx, a3, Property, 0))
+          if (JSValueIsInstanceOfConstructor(self->_ctx, value, Property, 0))
           {
             v23 = JSStringCreateWithUTF8CString("length");
-            v24 = JSObjectGetProperty(self->_ctx, a3, v23, 0);
+            v24 = JSObjectGetProperty(self->_ctx, value, v23, 0);
             if (JSValueIsNumber(self->_ctx, v24) && (v25 = JSValueToNumber(self->_ctx, v24, 0), v25 >= 1))
             {
               v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v25];
               v26 = 0;
               do
               {
-                v27 = [(RUIObjectModel *)self objectForJSValue:JSObjectGetPropertyAtIndex(self->_ctx, a3, v26, 0)];
+                v27 = [(RUIObjectModel *)self objectForJSValue:JSObjectGetPropertyAtIndex(self->_ctx, value, v26, 0)];
                 if (v27)
                 {
                   [(__CFString *)v10 addObject:v27];
@@ -4242,7 +4242,7 @@ LABEL_22:
           goto LABEL_4;
         }
 
-        if (!JSValueIsUndefined(v19, a3))
+        if (!JSValueIsUndefined(v19, value))
         {
           NSLog(&cfstr_XmluiObjectfor.isa);
         }
@@ -4250,7 +4250,7 @@ LABEL_22:
         goto LABEL_21;
       }
 
-      v17 = JSValueToNumber(v16, a3, 0);
+      v17 = JSValueToNumber(v16, value, 0);
       *&v17 = v17;
       v14 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
     }
@@ -4259,7 +4259,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v7 = JSValueToStringCopy(ctx, a3, 0);
+  v7 = JSValueToStringCopy(ctx, value, 0);
   if (v7)
   {
     v8 = v7;
@@ -4278,11 +4278,11 @@ LABEL_22:
   return v10;
 }
 
-- (id)invokeScriptFunction:(id)a3 withArguments:(id)a4
+- (id)invokeScriptFunction:(id)function withArguments:(id)arguments
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  functionCopy = function;
+  argumentsCopy = arguments;
   if (![(RUIObjectModel *)self prepareScriptContext])
   {
     if (_isInternalInstall())
@@ -4296,7 +4296,7 @@ LABEL_41:
       }
 
       *buf = 138412290;
-      *&buf[4] = v6;
+      *&buf[4] = functionCopy;
       v30 = "Script invocation for '%@': No script context!";
 LABEL_40:
       _os_log_impl(&dword_21B93D000, v29, OS_LOG_TYPE_DEFAULT, v30, buf, 0xCu);
@@ -4308,13 +4308,13 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (![(__CFString *)v6 length])
+  if (![(__CFString *)functionCopy length])
   {
     goto LABEL_42;
   }
 
   GlobalObject = JSContextGetGlobalObject(self->_ctx);
-  ObjectProperty = getObjectProperty(self->_ctx, GlobalObject, v6);
+  ObjectProperty = getObjectProperty(self->_ctx, GlobalObject, functionCopy);
   if (!ObjectProperty)
   {
     if (!_isInternalInstall())
@@ -4329,7 +4329,7 @@ LABEL_42:
     }
 
     *buf = 138412290;
-    *&buf[4] = v6;
+    *&buf[4] = functionCopy;
     v30 = "Script invocation for '%@': Invalid script!";
     goto LABEL_40;
   }
@@ -4339,12 +4339,12 @@ LABEL_42:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v11 = v7;
+  v11 = argumentsCopy;
   v12 = [v11 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v12)
   {
-    v41 = self;
-    v34 = v6;
+    selfCopy = self;
+    v34 = functionCopy;
     v13 = 0;
     v14 = *v47;
     do
@@ -4390,7 +4390,7 @@ LABEL_42:
       v44 = 0u;
       v45 = 0u;
       obj = v11;
-      self = v41;
+      self = selfCopy;
       v40 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
       if (!v40)
       {
@@ -4412,7 +4412,7 @@ LABEL_19:
         if (v16 == v13)
         {
 LABEL_36:
-          v6 = v34;
+          functionCopy = v34;
           v12 = v38;
           goto LABEL_51;
         }
@@ -4425,7 +4425,7 @@ LABEL_36:
           String = JSValueMakeString(self->_ctx, v19);
           JSStringRelease(v19);
           v38[v16] = String;
-          self = v41;
+          self = selfCopy;
         }
 
         else
@@ -4433,10 +4433,10 @@ LABEL_36:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            ctx = v41->_ctx;
+            ctx = selfCopy->_ctx;
             [(__CFString *)v18 floatValue];
             v23 = ctx;
-            self = v41;
+            self = selfCopy;
             Number = JSValueMakeNumber(v23, v22);
           }
 
@@ -4452,7 +4452,7 @@ LABEL_36:
               v27 = [v35 valueWithObject:v26 inContext:v25];
 
               v38[v16++] = [v27 JSValueRef];
-              self = v41;
+              self = selfCopy;
 
               goto LABEL_29;
             }
@@ -4486,7 +4486,7 @@ LABEL_29:
     }
 
     v12 = 0;
-    self = v41;
+    self = selfCopy;
   }
 
   else
@@ -4526,59 +4526,59 @@ LABEL_43:
 - (void)runScript
 {
   v3 = self->_inlineScript;
-  v4 = [(RUIObjectModel *)self jsContextRef];
-  GlobalObject = JSContextGetGlobalObject(v4);
+  jsContextRef = [(RUIObjectModel *)self jsContextRef];
+  GlobalObject = JSContextGetGlobalObject(jsContextRef);
   v6 = RUIJSObjectModel_class();
-  v7 = JSObjectMake(v4, v6, self);
+  v7 = JSObjectMake(jsContextRef, v6, self);
   v8 = JSStringCreateWithCFString(@"xmlui");
   exception = 0;
-  JSObjectSetProperty(v4, GlobalObject, v8, v7, 0xAu, &exception);
+  JSObjectSetProperty(jsContextRef, GlobalObject, v8, v7, 0xAu, &exception);
   [(RUIObjectModel *)self _logException:exception];
   JSStringRelease(v8);
   v10 = 0;
   v9 = JSStringCreateWithCFString(v3);
-  JSEvaluateScript(v4, v9, 0, 0, 0, &v10);
+  JSEvaluateScript(jsContextRef, v9, 0, 0, 0, &v10);
   [(RUIObjectModel *)self _logException:v10];
 
   JSStringRelease(v9);
 }
 
-- (void)setJSGlobalContext:(OpaqueJSContext *)a3
+- (void)setJSGlobalContext:(OpaqueJSContext *)context
 {
   ctx = self->_ctx;
-  if (ctx != a3)
+  if (ctx != context)
   {
     if (ctx)
     {
       JSGlobalContextRelease(ctx);
     }
 
-    if (a3)
+    if (context)
     {
-      JSGlobalContextRetain(a3);
+      JSGlobalContextRetain(context);
     }
 
-    self->_ctx = a3;
+    self->_ctx = context;
   }
 }
 
 - (void)initializeSwift
 {
-  v2 = self;
+  selfCopy = self;
   RUIObjectModel.initializeSwift()();
 }
 
-- (void)setDecodingUserInfo:(id)a3
+- (void)setDecodingUserInfo:(id)info
 {
-  v6 = a3;
-  v4 = a3;
-  v5 = self;
-  sub_21B9C095C(&v6, &type metadata for DecodingUserInfoAssociatedKey, &type metadata for DecodingUserInfoAssociatedKey, &off_28172C550);
+  infoCopy = info;
+  infoCopy2 = info;
+  selfCopy = self;
+  sub_21B9C095C(&infoCopy, &type metadata for DecodingUserInfoAssociatedKey, &type metadata for DecodingUserInfoAssociatedKey, &off_28172C550);
 }
 
-- (void)jsInterfaceForElementId:(id)a3
+- (void)jsInterfaceForElementId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_21BA87CBC();
     v6 = v5;
@@ -4590,7 +4590,7 @@ LABEL_43:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   RUIObjectModel.jsInterface(for:)(v4, v6);
   v9 = v8;
 
@@ -4599,7 +4599,7 @@ LABEL_43:
 
 - (void)notifyXMLUIDataChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B9C07A0(&type metadata for XMLUIDataAssociatedKey, &off_28172B2C0, &v3);
   type metadata accessor for XMLUIData();
   sub_21B9AFCD8();
@@ -4608,11 +4608,11 @@ LABEL_43:
   sub_21BA8692C();
 }
 
-- (void)setActivityIndicatorStatus:(BOOL)a3 forElement:(id)a4
+- (void)setActivityIndicatorStatus:(BOOL)status forElement:(id)element
 {
-  v6 = a4;
-  v7 = self;
-  RUIObjectModel.setActivityIndicatorStatus(_:forElement:)(a3, v6);
+  elementCopy = element;
+  selfCopy = self;
+  RUIObjectModel.setActivityIndicatorStatus(_:forElement:)(status, elementCopy);
 }
 
 - (void)presentWithBlock:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

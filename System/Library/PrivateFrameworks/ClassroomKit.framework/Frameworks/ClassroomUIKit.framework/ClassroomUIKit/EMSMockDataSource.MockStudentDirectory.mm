@@ -1,13 +1,13 @@
 @interface EMSMockDataSource.MockStudentDirectory
 - (_TtCC14ClassroomUIKit17EMSMockDataSource20MockStudentDirectory)init;
-- (id)iteratorForSearchString:(id)a3 sortingGivenNameFirst:(BOOL)a4 pageSize:(int64_t)a5;
+- (id)iteratorForSearchString:(id)string sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
 @end
 
 @implementation EMSMockDataSource.MockStudentDirectory
 
-- (id)iteratorForSearchString:(id)a3 sortingGivenNameFirst:(BOOL)a4 pageSize:(int64_t)a5
+- (id)iteratorForSearchString:(id)string sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  if (a3)
+  if (string)
   {
     v7 = sub_2436CBD38();
     v9 = v8;
@@ -19,8 +19,8 @@
     v9 = 0;
   }
 
-  v10 = self;
-  v11 = sub_2436990E8(v7, v9, a5);
+  selfCopy = self;
+  v11 = sub_2436990E8(v7, v9, size);
 
   return v11;
 }

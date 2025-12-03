@@ -1,13 +1,13 @@
 @interface HUDynamicFormattingLabel
-- (id)_formattedValueWithFont:(id)a3;
-- (void)_updateFormattedValueIncludingFont:(BOOL)a3;
+- (id)_formattedValueWithFont:(id)font;
+- (void)_updateFormattedValueIncludingFont:(BOOL)font;
 - (void)_updateFormattedValueObservation;
-- (void)_updatePreferredFontIncludingValue:(BOOL)a3;
+- (void)_updatePreferredFontIncludingValue:(BOOL)value;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setDefaultAttributes:(id)a3;
-- (void)setDynamicFormattingValue:(id)a3;
-- (void)setPreferredFonts:(id)a3;
+- (void)setDefaultAttributes:(id)attributes;
+- (void)setDynamicFormattingValue:(id)value;
+- (void)setPreferredFonts:(id)fonts;
 @end
 
 @implementation HUDynamicFormattingLabel
@@ -20,11 +20,11 @@
   [(HUDynamicFormattingLabel *)self _updateFormattedValueObservation];
 }
 
-- (void)setDynamicFormattingValue:(id)a3
+- (void)setDynamicFormattingValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = self->_dynamicFormattingValue;
-  v7 = v5;
+  v7 = valueCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -43,7 +43,7 @@
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_dynamicFormattingValue, a3);
+    objc_storeStrong(&self->_dynamicFormattingValue, value);
     [(HUDynamicFormattingLabel *)self _updateFormattedValueIncludingFont:1];
     [(HUDynamicFormattingLabel *)self _updateFormattedValueObservation];
   }
@@ -51,11 +51,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setDefaultAttributes:(id)a3
+- (void)setDefaultAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = self->_defaultAttributes;
-  v6 = v4;
+  v6 = attributesCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -84,11 +84,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setPreferredFonts:(id)a3
+- (void)setPreferredFonts:(id)fonts
 {
-  v5 = a3;
+  fontsCopy = fonts;
   v6 = self->_preferredFonts;
-  v7 = v5;
+  v7 = fontsCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -107,7 +107,7 @@ LABEL_8:
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_preferredFonts, a3);
+    objc_storeStrong(&self->_preferredFonts, fonts);
     [(HUDynamicFormattingLabel *)self _updatePreferredFontIncludingValue:1];
   }
 
@@ -116,25 +116,25 @@ LABEL_8:
 
 - (void)_updateFormattedValueObservation
 {
-  v3 = [(HUDynamicFormattingLabel *)self formattedValueObservationCancellationToken];
-  [v3 cancel];
+  formattedValueObservationCancellationToken = [(HUDynamicFormattingLabel *)self formattedValueObservationCancellationToken];
+  [formattedValueObservationCancellationToken cancel];
 
-  v4 = [(HUDynamicFormattingLabel *)self window];
-  if (v4)
+  window = [(HUDynamicFormattingLabel *)self window];
+  if (window)
   {
-    v5 = v4;
-    v6 = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
+    v5 = window;
+    dynamicFormattingValue = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
 
-    if (v6)
+    if (dynamicFormattingValue)
     {
       objc_initWeak(&location, self);
-      v7 = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
+      dynamicFormattingValue2 = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invoke;
       v12 = &unk_277DC1988;
       objc_copyWeak(&v13, &location);
-      v8 = [v7 observeFormattedValueChangesWithBlock:&v9];
+      v8 = [dynamicFormattingValue2 observeFormattedValueChangesWithBlock:&v9];
       [(HUDynamicFormattingLabel *)self setFormattedValueObservationCancellationToken:v8, v9, v10, v11, v12];
 
       objc_destroyWeak(&v13);
@@ -149,44 +149,44 @@ void __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invo
   [WeakRetained _updateFormattedValueIncludingFont:1];
 }
 
-- (id)_formattedValueWithFont:(id)a3
+- (id)_formattedValueWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(HUDynamicFormattingLabel *)self defaultAttributes];
-  v6 = v5;
-  if (!v5)
+  fontCopy = font;
+  defaultAttributes = [(HUDynamicFormattingLabel *)self defaultAttributes];
+  v6 = defaultAttributes;
+  if (!defaultAttributes)
   {
-    v5 = MEMORY[0x277CBEC10];
+    defaultAttributes = MEMORY[0x277CBEC10];
   }
 
-  v7 = [v5 mutableCopy];
+  v7 = [defaultAttributes mutableCopy];
 
-  [v7 na_safeSetObject:v4 forKey:*MEMORY[0x277D740A8]];
-  v8 = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
-  v9 = [v8 currentFormattedValue];
-  v10 = [v9 stringWithAttributes:v7];
+  [v7 na_safeSetObject:fontCopy forKey:*MEMORY[0x277D740A8]];
+  dynamicFormattingValue = [(HUDynamicFormattingLabel *)self dynamicFormattingValue];
+  currentFormattedValue = [dynamicFormattingValue currentFormattedValue];
+  v10 = [currentFormattedValue stringWithAttributes:v7];
 
   return v10;
 }
 
-- (void)_updateFormattedValueIncludingFont:(BOOL)a3
+- (void)_updateFormattedValueIncludingFont:(BOOL)font
 {
-  if (a3)
+  if (font)
   {
     [(HUDynamicFormattingLabel *)self _updatePreferredFontIncludingValue:0];
   }
 
-  v5 = [(HUDynamicFormattingLabel *)self preferredFontForCurrentSize];
-  v4 = [(HUDynamicFormattingLabel *)self _formattedValueWithFont:v5];
+  preferredFontForCurrentSize = [(HUDynamicFormattingLabel *)self preferredFontForCurrentSize];
+  v4 = [(HUDynamicFormattingLabel *)self _formattedValueWithFont:preferredFontForCurrentSize];
   [(HUDynamicFormattingLabel *)self setAttributedText:v4];
 }
 
-- (void)_updatePreferredFontIncludingValue:(BOOL)a3
+- (void)_updatePreferredFontIncludingValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [(HUDynamicFormattingLabel *)self preferredFonts];
-  v6 = [v5 lastObject];
+  preferredFonts = [(HUDynamicFormattingLabel *)self preferredFonts];
+  lastObject = [preferredFonts lastObject];
 
   [(HUDynamicFormattingLabel *)self bounds];
   if (v8 != *MEMORY[0x277CBF3A8] || v7 != *(MEMORY[0x277CBF3A8] + 8))
@@ -195,8 +195,8 @@ void __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invo
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [(HUDynamicFormattingLabel *)self preferredFonts];
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    preferredFonts2 = [(HUDynamicFormattingLabel *)self preferredFonts];
+    v11 = [preferredFonts2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -207,7 +207,7 @@ void __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invo
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(preferredFonts2);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
@@ -231,13 +231,13 @@ void __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invo
             {
               v23 = v15;
 
-              v6 = v23;
+              lastObject = v23;
               goto LABEL_16;
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [preferredFonts2 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v12)
         {
           continue;
@@ -250,18 +250,18 @@ void __60__HUDynamicFormattingLabel__updateFormattedValueObservation__block_invo
 LABEL_16:
   }
 
-  v24 = [(HUDynamicFormattingLabel *)self preferredFontForCurrentSize];
-  v25 = v6;
+  preferredFontForCurrentSize = [(HUDynamicFormattingLabel *)self preferredFontForCurrentSize];
+  v25 = lastObject;
   v26 = v25;
-  if (v24 == v25)
+  if (preferredFontForCurrentSize == v25)
   {
   }
 
   else
   {
-    if (v24)
+    if (preferredFontForCurrentSize)
     {
-      v27 = [v24 isEqual:v25];
+      v27 = [preferredFontForCurrentSize isEqual:v25];
 
       if (v27)
       {
@@ -274,7 +274,7 @@ LABEL_16:
     }
 
     [(HUDynamicFormattingLabel *)self setPreferredFontForCurrentSize:v26];
-    if (v3)
+    if (valueCopy)
     {
       [(HUDynamicFormattingLabel *)self _updateFormattedValueIncludingFont:0];
     }

@@ -2,9 +2,9 @@
 - (BOOL)shouldHideCanvasLayer;
 - (CRLWPTextMagnifierVerticalRanged)init;
 - (double)currentOffset;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrame;
 - (void)zoomLeftAnimation;
 - (void)zoomRightAnimation;
@@ -70,15 +70,15 @@
 
 - (void)updateFrame
 {
-  v3 = [(CRLWPTextMagnifierVerticalRanged *)self superview];
+  superview = [(CRLWPTextMagnifierVerticalRanged *)self superview];
   [(CRLWPTextMagnifierRanged *)self magnificationPoint];
   v5 = v4;
   v7 = v6;
-  v8 = [(CRLWPTextMagnifierRanged *)self target];
-  v9 = [v8 interactiveCanvasController];
-  v10 = [v9 layerHost];
-  v11 = [v10 canvasView];
-  [v3 convertPoint:v11 fromView:{v5, v7}];
+  target = [(CRLWPTextMagnifierRanged *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  canvasView = [layerHost canvasView];
+  [superview convertPoint:canvasView fromView:{v5, v7}];
   v13 = v12;
   v15 = v14;
 
@@ -98,17 +98,17 @@
   [(CRLWPTextMagnifierVerticalRanged *)self setCenter:v20, v21];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v9 = point.y;
+  v10 = point.x;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = CRLWPTextMagnifierVerticalRanged;
-  [(CRLWPTextMagnifierRanged *)&v14 beginMagnifyingTarget:v12 magnificationPoint:v6 offset:v10 animated:v9, x, y];
+  [(CRLWPTextMagnifierRanged *)&v14 beginMagnifyingTarget:targetCopy magnificationPoint:animatedCopy offset:v10 animated:v9, x, y];
   v13 = 0.0;
   if (x >= 0.0)
   {
@@ -117,15 +117,15 @@
 
   [(CRLWPTextMagnifierRanged *)self setOffset:round(v13), round(y)];
   [(CRLWPTextMagnifierRanged *)self setMagnificationPoint:v10, v9];
-  if (v6)
+  if (animatedCopy)
   {
     [(CRLWPTextMagnifierVerticalRanged *)self zoomLeftAnimation];
   }
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  if (a3)
+  if (magnifying)
   {
     [(CRLWPTextMagnifierVerticalRanged *)self zoomRightAnimation];
   }
@@ -144,102 +144,102 @@
 
 - (BOOL)shouldHideCanvasLayer
 {
-  v2 = [(CRLWPTextMagnifierRanged *)self target];
-  v3 = [v2 interactiveCanvasController];
+  target = [(CRLWPTextMagnifierRanged *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
 
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, interactiveCanvasController);
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v5 layerHost];
-    v8 = sub_100014370(v6, v7);
+    layerHost = [v5 layerHost];
+    v8 = sub_100014370(v6, layerHost);
   }
 
   return 1;
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [(CRLWPTextMagnifierRanged *)self target];
-  if (v6)
+  target = [(CRLWPTextMagnifierRanged *)self target];
+  if (target)
   {
-    v7 = [(CRLWPTextMagnifierRanged *)self isMagnifierStopping];
+    isMagnifierStopping = [(CRLWPTextMagnifierRanged *)self isMagnifierStopping];
 
-    if ((v7 & 1) == 0)
+    if ((isMagnifierStopping & 1) == 0)
     {
-      v8 = [(CRLWPTextMagnifierRanged *)self target];
-      v9 = [v8 interactiveCanvasController];
+      target2 = [(CRLWPTextMagnifierRanged *)self target];
+      interactiveCanvasController = [target2 interactiveCanvasController];
 
-      v10 = [v9 layerHost];
-      v70 = [v10 canvasView];
+      layerHost = [interactiveCanvasController layerHost];
+      canvasView = [layerHost canvasView];
 
       [(CRLWPTextMagnifierVerticalRanged *)self frame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(CRLWPTextMagnifierVerticalRanged *)self superview];
-      [v70 convertRect:v19 fromView:{v12 + -3.0, v14, v16 + -3.0 + -18.0, v18}];
+      superview = [(CRLWPTextMagnifierVerticalRanged *)self superview];
+      [canvasView convertRect:superview fromView:{v12 + -3.0, v14, v16 + -3.0 + -18.0, v18}];
       v68 = v21;
       v69 = v20;
       v23 = v22;
       v25 = v24;
 
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       [(CRLWPTextMagnifierVerticalRanged *)self frame];
       v27 = v26;
       [(CRLWPTextMagnifierVerticalRanged *)self frame];
       v29 = v28;
-      v30 = [(CRLWPTextMagnifierVerticalRanged *)self maskImageName];
-      v31 = [UIImage imageNamed:v30];
+      maskImageName = [(CRLWPTextMagnifierVerticalRanged *)self maskImageName];
+      v31 = [UIImage imageNamed:maskImageName];
 
       v67 = v31;
-      v32 = [v31 CGImage];
+      cGImage = [v31 CGImage];
       v82.origin.x = 0.0;
       v82.origin.y = -5.0;
       v82.size.width = v27;
       v82.size.height = v29;
-      CGContextClipToMask(a4, v82, v32);
-      CGContextScaleCTM(a4, 1.2, 1.2);
+      CGContextClipToMask(context, v82, cGImage);
+      CGContextScaleCTM(context, 1.2, 1.2);
       [(CRLWPTextMagnifierVerticalRanged *)self currentOffset];
       v34 = v33;
       v35 = objc_opt_class();
-      v36 = [(CRLWPTextMagnifierRanged *)self target];
-      v37 = sub_100014370(v35, v36);
+      target3 = [(CRLWPTextMagnifierRanged *)self target];
+      v37 = sub_100014370(v35, target3);
       v38 = v23 + v34;
 
       if (v37)
       {
         v39 = objc_opt_class();
-        v40 = [v9 editorController];
-        v41 = [v40 textInputEditor];
-        v42 = sub_100014370(v39, v41);
+        editorController = [interactiveCanvasController editorController];
+        textInputEditor = [editorController textInputEditor];
+        v42 = sub_100014370(v39, textInputEditor);
 
         v65 = v42;
-        v43 = [v42 selection];
-        v66 = v9;
-        v44 = [v37 currentKnobTracker];
-        v45 = [v44 knob];
-        v46 = [v45 tag];
+        selection = [v42 selection];
+        v66 = interactiveCanvasController;
+        currentKnobTracker = [v37 currentKnobTracker];
+        knob = [currentKnobTracker knob];
+        v46 = [knob tag];
 
         if (v46 == 11)
         {
-          v47 = [v43 start];
+          start = [selection start];
         }
 
         else
         {
-          v47 = [v43 end];
+          start = [selection end];
         }
 
-        v48 = v47;
+        v48 = start;
         v79 = 0u;
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v49 = [v37 columns];
-        v50 = [v49 countByEnumeratingWithState:&v77 objects:v81 count:16];
+        columns = [v37 columns];
+        v50 = [columns countByEnumeratingWithState:&v77 objects:v81 count:16];
         if (v50)
         {
           v51 = *v78;
@@ -250,16 +250,16 @@
             {
               if (*v78 != v51)
               {
-                objc_enumerationMutation(v49);
+                objc_enumerationMutation(columns);
               }
 
               v53 = *(*(&v77 + 1) + 8 * i);
-              v54 = [v53 lineFragmentForCharIndex:v48 knobTag:v46 selectionType:{objc_msgSend(v43, "type")}];
+              v54 = [v53 lineFragmentForCharIndex:v48 knobTag:v46 selectionType:{objc_msgSend(selection, "type")}];
               if (v54)
               {
                 if (v53)
                 {
-                  v9 = v66;
+                  interactiveCanvasController = v66;
                   v37 = v64;
                   [v53 transformFromWP];
                   v55 = v71;
@@ -278,12 +278,12 @@
                   v57 = 0.0;
                   v56 = 0.0;
                   v55 = 0.0;
-                  v9 = v66;
+                  interactiveCanvasController = v66;
                   v37 = v64;
                 }
 
                 [v37 convertNaturalPointToUnscaledCanvas:{v60 + v57 * v54[4] + v55 * 0.0, v59 + v58 * v54[4] + v56 * 0.0}];
-                [v9 convertUnscaledToBoundsPoint:?];
+                [interactiveCanvasController convertUnscaledToBoundsPoint:?];
                 v62 = v61;
                 v83.origin.x = v23;
                 v83.origin.y = v25;
@@ -294,7 +294,7 @@
               }
             }
 
-            v50 = [v49 countByEnumeratingWithState:&v77 objects:v81 count:16];
+            v50 = [columns countByEnumeratingWithState:&v77 objects:v81 count:16];
             v37 = v64;
             if (v50)
             {
@@ -305,16 +305,16 @@
           }
         }
 
-        v9 = v66;
+        interactiveCanvasController = v66;
 LABEL_20:
       }
 
-      CGContextTranslateCTM(a4, v38, -v25);
-      CGContextTranslateCTM(a4, v68 * -0.100000001, v69 * -0.100000001);
-      v63 = [v70 canvasLayer];
-      [v63 renderInContext:a4];
+      CGContextTranslateCTM(context, v38, -v25);
+      CGContextTranslateCTM(context, v68 * -0.100000001, v69 * -0.100000001);
+      canvasLayer = [canvasView canvasLayer];
+      [canvasLayer renderInContext:context];
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 }

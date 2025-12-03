@@ -1,35 +1,35 @@
 @interface NTKLeghornCircularDataSource
-+ (double)_visibleHeadingChangeForDevice:(id)a3;
++ (double)_visibleHeadingChangeForDevice:(id)device;
 + (id)_waypointsDataSource;
 + (id)sharedInstance;
 + (id)sharedWaypointsDataSource;
 - (NTKLeghornCircularDataSource)init;
-- (NTKLeghornCircularDataSource)initWithDevice:(id)a3;
+- (NTKLeghornCircularDataSource)initWithDevice:(id)device;
 - (double)value;
 - (id)updateHandler;
 - (void)_startClockTimer;
 - (void)_stopClockTimer;
-- (void)setUpdateMode:(unint64_t)a3;
+- (void)setUpdateMode:(unint64_t)mode;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation NTKLeghornCircularDataSource
 
-+ (double)_visibleHeadingChangeForDevice:(id)a3
++ (double)_visibleHeadingChangeForDevice:(id)device
 {
-  v3 = a3;
-  objc_msgSend_screenBounds(v3, v4, v5);
+  deviceCopy = device;
+  objc_msgSend_screenBounds(deviceCopy, v4, v5);
   v7 = v6;
-  objc_msgSend_screenScale(v3, v8, v9);
+  objc_msgSend_screenScale(deviceCopy, v8, v9);
   v11 = v10;
 
   return 1.0 / (v11 + v11) / (v7 * 0.5 * 6.28318531 / 360.0);
 }
 
-- (NTKLeghornCircularDataSource)initWithDevice:(id)a3
+- (NTKLeghornCircularDataSource)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v27.receiver = self;
   v27.super_class = NTKLeghornCircularDataSource;
   v5 = [(NTKLeghornCircularDataSource *)&v27 init];
@@ -57,7 +57,7 @@
 
     objc_msgSend_setUpdateMode_(v5, v20, v21, 2);
     v22 = objc_opt_class();
-    objc_msgSend__visibleHeadingChangeForDevice_(v22, v23, v24, v4);
+    objc_msgSend__visibleHeadingChangeForDevice_(v22, v23, v24, deviceCopy);
     v5->_visibleHeadingChange = v25;
   }
 
@@ -138,8 +138,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_27E1DF638);
   if (!WeakRetained)
   {
@@ -147,7 +147,7 @@
     objc_storeWeak(&qword_27E1DF638, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -170,16 +170,16 @@
 
 + (id)sharedWaypointsDataSource
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_27E1DF640);
   if (!WeakRetained)
   {
-    WeakRetained = objc_msgSend__waypointsDataSource(v2, v3, v5);
+    WeakRetained = objc_msgSend__waypointsDataSource(selfCopy, v3, v5);
     objc_storeWeak(&qword_27E1DF640, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -221,22 +221,22 @@
 {
   v4.receiver = self;
   v4.super_class = NTKLeghornCircularDataSource;
-  v2 = [(NTKFoghornDataSource *)&v4 updateHandler];
+  updateHandler = [(NTKFoghornDataSource *)&v4 updateHandler];
 
-  return v2;
+  return updateHandler;
 }
 
-- (void)setUpdateMode:(unint64_t)a3
+- (void)setUpdateMode:(unint64_t)mode
 {
   updated = objc_msgSend_updateMode(self, a2, v3);
   v16.receiver = self;
   v16.super_class = NTKLeghornCircularDataSource;
-  [(NTKFoghornDataSource *)&v16 setUpdateMode:a3];
+  [(NTKFoghornDataSource *)&v16 setUpdateMode:mode];
   objc_msgSend_setUpdateMode_(self->_seconds, v7, v8, 0);
   objc_msgSend_setUpdateMode_(self->_compass, v9, v10, 0);
   if (self->_clockTimerToken)
   {
-    v13 = updated == a3;
+    v13 = updated == mode;
   }
 
   else

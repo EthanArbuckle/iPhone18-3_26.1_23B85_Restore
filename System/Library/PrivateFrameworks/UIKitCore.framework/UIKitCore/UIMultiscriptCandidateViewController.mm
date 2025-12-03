@@ -1,10 +1,10 @@
 @interface UIMultiscriptCandidateViewController
 - (BOOL)hidesExpandableButton;
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4;
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views;
 - (BOOL)requiresKeyboard;
 - (NSArray)displayedCandidates;
-- (UIMultiscriptCandidateViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)preferredHeightForTraitCollection:(id)a3;
+- (UIMultiscriptCandidateViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)preferredHeightForTraitCollection:(id)collection;
 - (id)alternativeCandidateAction;
 - (id)alternativeCandidates;
 - (id)predictionView;
@@ -13,16 +13,16 @@
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadArrangedSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIMultiscriptCandidateViewController
 
-- (UIMultiscriptCandidateViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIMultiscriptCandidateViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = UIMultiscriptCandidateViewController;
-  v4 = [(UIViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[UIPredictionViewController alloc] initWithNibName:0 bundle:0];
@@ -34,27 +34,27 @@
 
 - (id)predictionView
 {
-  v2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v3 = [v2 view];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  view = [currentViewController view];
 
-  return v3;
+  return view;
 }
 
-- (BOOL)isVisibleForInputDelegate:(id)a3 inputViews:(id)a4
+- (BOOL)isVisibleForInputDelegate:(id)delegate inputViews:(id)views
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v9 = [v8 isVisibleForInputDelegate:v7 inputViews:v6];
+  viewsCopy = views;
+  delegateCopy = delegate;
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  v9 = [currentViewController isVisibleForInputDelegate:delegateCopy inputViews:viewsCopy];
 
   return v9;
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3
+- (double)preferredHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  [v5 preferredHeightForTraitCollection:v4];
+  collectionCopy = collection;
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  [currentViewController preferredHeightForTraitCollection:collectionCopy];
   v7 = v6;
 
   return v7;
@@ -62,26 +62,26 @@
 
 - (BOOL)hidesExpandableButton
 {
-  v2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v3 = [v2 hidesExpandableButton];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  hidesExpandableButton = [currentViewController hidesExpandableButton];
 
-  return v3;
+  return hidesExpandableButton;
 }
 
 - (NSArray)displayedCandidates
 {
-  v2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v3 = [v2 displayedCandidates];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  displayedCandidates = [currentViewController displayedCandidates];
 
-  return v3;
+  return displayedCandidates;
 }
 
 - (BOOL)requiresKeyboard
 {
-  v2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v3 = [v2 requiresKeyboard];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  requiresKeyboard = [currentViewController requiresKeyboard];
 
-  return v3;
+  return requiresKeyboard;
 }
 
 - (void)loadView
@@ -90,76 +90,76 @@
   [(UIMultiscriptCandidateViewController *)self setCandidateView:v3];
   [(UIViewController *)self setView:v3];
 
-  v4 = [(UIMultiscriptCandidateViewController *)self alternativeCandidateAction];
-  v5 = [(UIMultiscriptCandidateViewController *)self candidateView];
-  [v5 setAlternativeCandidateAction:v4];
+  alternativeCandidateAction = [(UIMultiscriptCandidateViewController *)self alternativeCandidateAction];
+  candidateView = [(UIMultiscriptCandidateViewController *)self candidateView];
+  [candidateView setAlternativeCandidateAction:alternativeCandidateAction];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_reloadArrangedSubviews name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_reloadArrangedSubviews name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_reloadArrangedSubviews name:@"UIKeyboardLayoutDidChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_reloadArrangedSubviews name:@"UIKeyboardLayoutDidChangedNotification" object:0];
 
   [(UIMultiscriptCandidateViewController *)self reloadArrangedSubviews];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIKeyboardLayoutDidChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"UIKeyboardLayoutDidChangedNotification" object:0];
 
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 autocorrectionController];
-  [v6 removeAutocorrectionObserver:self];
+  autocorrectionController = [v5 autocorrectionController];
+  [autocorrectionController removeAutocorrectionObserver:self];
 
   v7.receiver = self;
   v7.super_class = UIMultiscriptCandidateViewController;
   [(UIViewController *)&v7 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIMultiscriptCandidateViewController;
-  [(UIViewController *)&v4 viewWillAppear:a3];
+  [(UIViewController *)&v4 viewWillAppear:appear];
   [(UIMultiscriptCandidateViewController *)self reloadArrangedSubviews];
 }
 
 - (id)alternativeCandidates
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 autocorrectionController];
-  v4 = [v3 autocorrectionList];
+  autocorrectionController = [v2 autocorrectionController];
+  autocorrectionList = [autocorrectionController autocorrectionList];
 
-  v5 = [v4 corrections];
-  v6 = [v5 autocorrection];
+  corrections = [autocorrectionList corrections];
+  autocorrection = [corrections autocorrection];
 
-  if (!v6)
+  if (!autocorrection)
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 predictions];
-  v8 = [v7 count];
+  predictions = [autocorrectionList predictions];
+  v8 = [predictions count];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v4 emojiList];
-  v10 = [v9 count] == 0;
+  emojiList = [autocorrectionList emojiList];
+  v10 = [emojiList count] == 0;
 
   v11 = v8 > v10;
   v12 = &v8[-v10];
   if (v11)
   {
     v13 = MEMORY[0x1E69D9570];
-    v14 = [v4 predictions];
-    v15 = [v14 subarrayWithRange:{v10, v12}];
+    predictions2 = [autocorrectionList predictions];
+    v15 = [predictions2 subarrayWithRange:{v10, v12}];
     v8 = [v13 listWithCorrections:0 predictions:v15];
   }
 
@@ -230,24 +230,24 @@ LABEL_6:
     [(UIMultiscriptCandidateViewController *)self setCachedCandidates:0];
   }
 
-  v3 = [(UIMultiscriptCandidateViewController *)self cachedCandidates];
+  cachedCandidates = [(UIMultiscriptCandidateViewController *)self cachedCandidates];
 
-  if (v3)
+  if (cachedCandidates)
   {
-    v8 = [(UIMultiscriptCandidateViewController *)self candidateView];
-    v4 = [v8 alternativeCandidatesButton];
-    v5 = v4;
+    candidateView = [(UIMultiscriptCandidateViewController *)self candidateView];
+    alternativeCandidatesButton = [candidateView alternativeCandidatesButton];
+    v5 = alternativeCandidatesButton;
     v6 = 1;
   }
 
   else
   {
-    v7 = [(UIMultiscriptCandidateViewController *)self alternativeCandidates];
+    alternativeCandidates = [(UIMultiscriptCandidateViewController *)self alternativeCandidates];
 
-    v8 = [(UIMultiscriptCandidateViewController *)self candidateView];
-    v4 = [v8 alternativeCandidatesButton];
-    v5 = v4;
-    if (v7)
+    candidateView = [(UIMultiscriptCandidateViewController *)self candidateView];
+    alternativeCandidatesButton = [candidateView alternativeCandidatesButton];
+    v5 = alternativeCandidatesButton;
+    if (alternativeCandidates)
     {
       v6 = 2;
     }
@@ -258,55 +258,55 @@ LABEL_6:
     }
   }
 
-  [v4 setButtonState:v6];
+  [alternativeCandidatesButton setButtonState:v6];
 }
 
 - (void)reloadArrangedSubviews
 {
-  v3 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
-  v6 = [(UIMultiscriptCandidateViewController *)self candidateView];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  view = [currentViewController view];
+  superview = [view superview];
+  candidateView = [(UIMultiscriptCandidateViewController *)self candidateView];
 
-  if (v5 == v6)
+  if (superview == candidateView)
   {
-    v11 = [(UIMultiscriptCandidateViewController *)self candidateView];
-    v12 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-    v13 = [v12 view];
-    [v11 reloadArrangedSubviews:v13];
+    candidateView2 = [(UIMultiscriptCandidateViewController *)self candidateView];
+    currentViewController2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
+    view2 = [currentViewController2 view];
+    [candidateView2 reloadArrangedSubviews:view2];
   }
 
   else
   {
-    v7 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-    [(UIViewController *)self addChildViewController:v7];
+    currentViewController3 = [(UIMultiscriptCandidateViewController *)self currentViewController];
+    [(UIViewController *)self addChildViewController:currentViewController3];
 
-    v8 = [(UIMultiscriptCandidateViewController *)self candidateView];
-    v9 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-    v10 = [v9 view];
-    [v8 reloadArrangedSubviews:v10];
+    candidateView3 = [(UIMultiscriptCandidateViewController *)self candidateView];
+    currentViewController4 = [(UIMultiscriptCandidateViewController *)self currentViewController];
+    view3 = [currentViewController4 view];
+    [candidateView3 reloadArrangedSubviews:view3];
 
-    v11 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-    [v11 didMoveToParentViewController:self];
+    candidateView2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
+    [candidateView2 didMoveToParentViewController:self];
   }
 
-  v14 = [(UIMultiscriptCandidateViewController *)self candidateView];
-  v15 = [v14 requiresAlternativeCandidatesButton];
+  candidateView4 = [(UIMultiscriptCandidateViewController *)self candidateView];
+  requiresAlternativeCandidatesButton = [candidateView4 requiresAlternativeCandidatesButton];
 
-  if (v15)
+  if (requiresAlternativeCandidatesButton)
   {
     v17 = +[UIKeyboardImpl activeInstance];
-    v16 = [v17 autocorrectionController];
-    [v16 addAutocorrectionObserver:self];
+    autocorrectionController = [v17 autocorrectionController];
+    [autocorrectionController addAutocorrectionObserver:self];
   }
 }
 
 - (int64_t)overrideUserInterfaceStyle
 {
-  v2 = [(UIMultiscriptCandidateViewController *)self currentViewController];
-  v3 = [v2 overrideUserInterfaceStyle];
+  currentViewController = [(UIMultiscriptCandidateViewController *)self currentViewController];
+  overrideUserInterfaceStyle = [currentViewController overrideUserInterfaceStyle];
 
-  return v3;
+  return overrideUserInterfaceStyle;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface RUITableViewHeaderFooterView
 - (BOOL)_useLegacyLayout;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)insetsForHeaderFooter;
-- (void)_embedContentView:(id)a3;
-- (void)embedFooterView:(id)a3;
-- (void)embedHeaderView:(id)a3;
+- (void)_embedContentView:(id)view;
+- (void)embedFooterView:(id)view;
+- (void)embedHeaderView:(id)view;
 - (void)layoutSubviews;
 - (void)removeEmbeddedView;
 @end
@@ -13,8 +13,8 @@
 
 - (BOOL)_useLegacyLayout
 {
-  v2 = [(RUITableViewHeaderFooterView *)self tableView];
-  v3 = [v2 style] != 2;
+  tableView = [(RUITableViewHeaderFooterView *)self tableView];
+  v3 = [tableView style] != 2;
 
   return v3;
 }
@@ -24,25 +24,25 @@
   v46.receiver = self;
   v46.super_class = RUITableViewHeaderFooterView;
   [(RUITableViewHeaderFooterView *)&v46 layoutSubviews];
-  v3 = [(RUITableViewHeaderFooterView *)self headerView];
-  v4 = v3;
-  if (v3)
+  headerView = [(RUITableViewHeaderFooterView *)self headerView];
+  v4 = headerView;
+  if (headerView)
   {
-    v5 = v3;
+    footerView = headerView;
   }
 
   else
   {
-    v5 = [(RUITableViewHeaderFooterView *)self footerView];
+    footerView = [(RUITableViewHeaderFooterView *)self footerView];
   }
 
-  v6 = v5;
+  v6 = footerView;
 
   [v6 bounds];
   if ([(RUITableViewHeaderFooterView *)self _useLegacyLayout])
   {
-    v7 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v7 frame];
+    contentView = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -52,11 +52,11 @@
     v19 = v11 + v18;
     v21 = v13 - (v16 + v20);
     v23 = v15 - (v18 + v22);
-    v24 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    contentView2 = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView2 setFrame:{v17, v19, v21, v23}];
 
-    v25 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v25 bounds];
+    contentView3 = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView3 bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -67,16 +67,16 @@
   {
     v34 = *MEMORY[0x277D768C8];
     v35 = *(MEMORY[0x277D768C8] + 16);
-    v36 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v36 layoutMargins];
+    contentView4 = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView4 layoutMargins];
     v38 = v37;
 
-    v39 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v39 layoutMargins];
+    contentView5 = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView5 layoutMargins];
     v41 = v40;
 
-    v25 = [(RUITableViewHeaderFooterView *)self contentView];
-    [v25 bounds];
+    contentView3 = [(RUITableViewHeaderFooterView *)self contentView];
+    [contentView3 bounds];
     v27 = v38 + v42;
     v29 = v34 + v43;
     v31 = v44 - (v38 + v41);
@@ -86,20 +86,20 @@
   [v6 setFrame:{v27, v29, v31, v33}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(RUITableViewHeaderFooterView *)self headerView];
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  headerView = [(RUITableViewHeaderFooterView *)self headerView];
+  if (headerView)
   {
 
     goto LABEL_4;
   }
 
-  v7 = [(RUITableViewHeaderFooterView *)self footerView];
+  footerView = [(RUITableViewHeaderFooterView *)self footerView];
 
-  if (v7)
+  if (footerView)
   {
 LABEL_4:
     if ([(RUITableViewHeaderFooterView *)self _useLegacyLayout])
@@ -123,15 +123,15 @@ LABEL_4:
     }
 
     v19 = width - (v8 + v12);
-    v20 = [(RUITableViewHeaderFooterView *)self headerView];
+    headerView2 = [(RUITableViewHeaderFooterView *)self headerView];
 
-    if (v20)
+    if (headerView2)
     {
-      v21 = [(RUITableViewHeaderFooterView *)self headerView];
+      headerView3 = [(RUITableViewHeaderFooterView *)self headerView];
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(RUITableViewHeaderFooterView *)self tableView];
-        [v21 headerHeightForWidth:v22 inView:v19];
+        tableView = [(RUITableViewHeaderFooterView *)self tableView];
+        [headerView3 headerHeightForWidth:tableView inView:v19];
 LABEL_18:
         height = v23;
 
@@ -140,35 +140,35 @@ LABEL_18:
 
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(RUITableViewHeaderFooterView *)self tableView];
-        [v21 headerHeightForWidth:v22 inTableView:v19];
+        tableView = [(RUITableViewHeaderFooterView *)self tableView];
+        [headerView3 headerHeightForWidth:tableView inTableView:v19];
         goto LABEL_18;
       }
     }
 
     else
     {
-      v24 = [(RUITableViewHeaderFooterView *)self footerView];
+      footerView2 = [(RUITableViewHeaderFooterView *)self footerView];
 
-      if (!v24)
+      if (!footerView2)
       {
 LABEL_20:
         v25 = v14 + v10 + height;
         goto LABEL_21;
       }
 
-      v21 = [(RUITableViewHeaderFooterView *)self footerView];
+      headerView3 = [(RUITableViewHeaderFooterView *)self footerView];
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(RUITableViewHeaderFooterView *)self tableView];
-        [v21 footerHeightForWidth:v22 inView:v19];
+        tableView = [(RUITableViewHeaderFooterView *)self tableView];
+        [headerView3 footerHeightForWidth:tableView inView:v19];
         goto LABEL_18;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(RUITableViewHeaderFooterView *)self tableView];
-        [v21 footerHeightForWidth:v22 inTableView:v19];
+        tableView = [(RUITableViewHeaderFooterView *)self tableView];
+        [headerView3 footerHeightForWidth:tableView inTableView:v19];
         goto LABEL_18;
       }
     }
@@ -191,55 +191,55 @@ LABEL_21:
 
 - (void)removeEmbeddedView
 {
-  v3 = [(RUITableViewHeaderFooterView *)self headerView];
-  [v3 removeFromSuperview];
+  headerView = [(RUITableViewHeaderFooterView *)self headerView];
+  [headerView removeFromSuperview];
 
-  v4 = [(RUITableViewHeaderFooterView *)self footerView];
-  [v4 removeFromSuperview];
+  footerView = [(RUITableViewHeaderFooterView *)self footerView];
+  [footerView removeFromSuperview];
 
   [(RUITableViewHeaderFooterView *)self setHeaderView:0];
 
   [(RUITableViewHeaderFooterView *)self setFooterView:0];
 }
 
-- (void)embedHeaderView:(id)a3
+- (void)embedHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(RUITableViewHeaderFooterView *)self removeEmbeddedView];
-  [(RUITableViewHeaderFooterView *)self setHeaderView:v4];
-  [(RUITableViewHeaderFooterView *)self _embedContentView:v4];
+  [(RUITableViewHeaderFooterView *)self setHeaderView:viewCopy];
+  [(RUITableViewHeaderFooterView *)self _embedContentView:viewCopy];
 }
 
-- (void)embedFooterView:(id)a3
+- (void)embedFooterView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(RUITableViewHeaderFooterView *)self removeEmbeddedView];
-  [(RUITableViewHeaderFooterView *)self setFooterView:v4];
-  [(RUITableViewHeaderFooterView *)self _embedContentView:v4];
+  [(RUITableViewHeaderFooterView *)self setFooterView:viewCopy];
+  [(RUITableViewHeaderFooterView *)self _embedContentView:viewCopy];
 }
 
-- (void)_embedContentView:(id)a3
+- (void)_embedContentView:(id)view
 {
-  v4 = a3;
-  v5 = [(RUITableViewHeaderFooterView *)self contentView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  contentView = [(RUITableViewHeaderFooterView *)self contentView];
+  [contentView addSubview:viewCopy];
 
   [(RUITableViewHeaderFooterView *)self setNeedsLayout];
 }
 
 - (UIEdgeInsets)insetsForHeaderFooter
 {
-  v3 = [(RUITableViewHeaderFooterView *)self tableView];
-  [v3 separatorInset];
+  tableView = [(RUITableViewHeaderFooterView *)self tableView];
+  [tableView separatorInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(RUITableViewHeaderFooterView *)self tableView];
-  v13 = [v12 style];
+  tableView2 = [(RUITableViewHeaderFooterView *)self tableView];
+  style = [tableView2 style];
 
-  if (v13 == 2)
+  if (style == 2)
   {
     if (insetsForHeaderFooter_onceToken != -1)
     {

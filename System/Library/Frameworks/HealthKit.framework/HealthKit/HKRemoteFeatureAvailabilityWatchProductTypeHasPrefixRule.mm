@@ -1,29 +1,29 @@
 @interface HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"ProductTypePrefix"];
+  v4 = [info objectForKeyedSubscript:@"ProductTypePrefix"];
   [(HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule *)self setProductType:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule *)self productType];
+  productType = [(HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule *)self productType];
 
-  if (!v3)
+  if (!productType)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 watchProductType];
-  v6 = [(HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule *)self productType];
-  v7 = [v5 hasPrefix:v6];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchProductType = [dataSource watchProductType];
+  productType2 = [(HKRemoteFeatureAvailabilityWatchProductTypeHasPrefixRule *)self productType];
+  v7 = [watchProductType hasPrefix:productType2];
 
   return v7;
 }

@@ -1,31 +1,31 @@
 @interface WFCoreDuetListener
-- (BOOL)isCallbackRegisteredWithIdentifier:(id)a3;
-- (BOOL)registerTrigger:(id)a3 error:(id *)a4;
-- (WFCoreDuetListener)initWithDatabaseProvider:(id)a3 eventQueue:(id)a4;
-- (id)databaseWithError:(id *)a3;
-- (void)checkTriggerStateWithIdentifier:(id)a3 completion:(id)a4;
-- (void)checkTriggerStateWithKeyPath:(id)a3 completion:(id)a4;
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6;
-- (void)handleCallbackForTriggerWithIdentifier:(id)a3 info:(id)a4;
+- (BOOL)isCallbackRegisteredWithIdentifier:(id)identifier;
+- (BOOL)registerTrigger:(id)trigger error:(id *)error;
+- (WFCoreDuetListener)initWithDatabaseProvider:(id)provider eventQueue:(id)queue;
+- (id)databaseWithError:(id *)error;
+- (void)checkTriggerStateWithIdentifier:(id)identifier completion:(id)completion;
+- (void)checkTriggerStateWithKeyPath:(id)path completion:(id)completion;
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion;
+- (void)handleCallbackForTriggerWithIdentifier:(id)identifier info:(id)info;
 - (void)handleSunriseSunsetChanged;
-- (void)queue_unregisterCallbackForIdentifier:(id)a3;
-- (void)registerCallback:(id)a3 withIdentifier:(id)a4;
-- (void)registerConfiguredTrigger:(id)a3 completion:(id)a4;
+- (void)queue_unregisterCallbackForIdentifier:(id)identifier;
+- (void)registerCallback:(id)callback withIdentifier:(id)identifier;
+- (void)registerConfiguredTrigger:(id)trigger completion:(id)completion;
 - (void)registerSunriseSunsetCallbackIfNeeded;
-- (void)unregisterConfiguredTriggerWithIdentifier:(id)a3;
+- (void)unregisterConfiguredTriggerWithIdentifier:(id)identifier;
 @end
 
 @implementation WFCoreDuetListener
 
-- (void)checkTriggerStateWithKeyPath:(id)a3 completion:(id)a4
+- (void)checkTriggerStateWithKeyPath:(id)path completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (pathCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -33,8 +33,8 @@
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"keyPathName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"keyPathName"}];
 
     if (v9)
     {
@@ -42,38 +42,38 @@
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v10 = [MEMORY[0x277CFE358] keyPathWithKey:v7];
+  v10 = [MEMORY[0x277CFE358] keyPathWithKey:pathCopy];
   if (!v10)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Triggers] Couldn't find keyPath for: %@", v7];
+    pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[Triggers] Couldn't find keyPath for: %@", pathCopy];
     v17 = getWFGeneralLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v25 = "[WFCoreDuetListener checkTriggerStateWithKeyPath:completion:]";
       v26 = 2112;
-      v27 = v12;
+      v27 = pathCopy;
       _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
     }
 
-    v16 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1001 reason:{@"%@", v12}];
+    v16 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1001 reason:{@"%@", pathCopy}];
     (v9)[2](v9, 0, v16);
     goto LABEL_9;
   }
 
-  v11 = [(WFCoreDuetListener *)self userContext];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  userContext = [(WFCoreDuetListener *)self userContext];
+  pathCopy = [userContext objectForKeyedSubscript:v10];
 
   v13 = MEMORY[0x277CCACA8];
-  if (v12)
+  if (pathCopy)
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v13 stringWithFormat:@"(%@) %@", v15, v12];
+    v16 = [v13 stringWithFormat:@"(%@) %@", v15, pathCopy];
 
     (v9)[2](v9, v16, 0);
 LABEL_9:
@@ -95,21 +95,21 @@ LABEL_9:
   v20 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6001 reason:{@"%@", v18}];
   (v9)[2](v9, 0, v20);
 
-  v12 = 0;
+  pathCopy = 0;
 LABEL_13:
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkTriggerStateWithIdentifier:(id)a3 completion:(id)a4
+- (void)checkTriggerStateWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
 
     if (v9)
     {
@@ -117,29 +117,29 @@ LABEL_13:
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [(WFCoreDuetListener *)self queue];
+  queue = [(WFCoreDuetListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WFCoreDuetListener_checkTriggerStateWithIdentifier_completion___block_invoke;
   block[3] = &unk_2788FFF98;
-  v16 = v7;
+  v16 = identifierCopy;
   v17 = v9;
   block[4] = self;
-  v11 = v7;
+  v11 = identifierCopy;
   v12 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 }
 
 void __65__WFCoreDuetListener_checkTriggerStateWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -228,16 +228,16 @@ void __65__WFCoreDuetListener_checkTriggerStateWithIdentifier_completion___block
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fireTriggerWithIdentifier:(id)a3 force:(BOOL)a4 eventInfo:(id)a5 completion:(id)a6
+- (void)fireTriggerWithIdentifier:(id)identifier force:(BOOL)force eventInfo:(id)info completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (!identifierCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:282 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v14)
     {
@@ -245,39 +245,39 @@ void __65__WFCoreDuetListener_checkTriggerStateWithIdentifier_completion___block
     }
 
 LABEL_5:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v15 = [(WFCoreDuetListener *)self queue];
+  queue = [(WFCoreDuetListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__WFCoreDuetListener_fireTriggerWithIdentifier_force_eventInfo_completion___block_invoke;
   block[3] = &unk_2788FFFE8;
   block[4] = self;
-  v22 = v11;
-  v25 = a4;
-  v23 = v12;
+  v22 = identifierCopy;
+  forceCopy = force;
+  v23 = infoCopy;
   v24 = v14;
   v16 = v14;
-  v17 = v12;
-  v18 = v11;
-  dispatch_async(v15, block);
+  v17 = infoCopy;
+  v18 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 - (void)handleSunriseSunsetChanged
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v26 = 0;
   v4 = [(WFCoreDuetListener *)self databaseWithError:&v26];
@@ -287,9 +287,9 @@ LABEL_3:
   {
     v19 = v5;
     v20 = v4;
-    v7 = [v4 allConfiguredTriggers];
-    v8 = [v7 descriptors];
-    v9 = [v8 if_compactMap:&__block_literal_global_1016];
+    allConfiguredTriggers = [v4 allConfiguredTriggers];
+    descriptors = [allConfiguredTriggers descriptors];
+    v9 = [descriptors if_compactMap:&__block_literal_global_1016];
 
     v24 = 0u;
     v25 = 0u;
@@ -384,8 +384,8 @@ void *__48__WFCoreDuetListener_handleSunriseSunsetChanged__block_invoke(uint64_t
 - (void)registerSunriseSunsetCallbackIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(WFCoreDuetListener *)self isCallbackRegisteredWithIdentifier:@"com.apple.siriactionsd.registrationForSunsetSunrise"];
   v5 = getWFTriggersLogObject();
@@ -410,8 +410,8 @@ void *__48__WFCoreDuetListener_handleSunriseSunsetChanged__block_invoke(uint64_t
     }
 
     v7 = MEMORY[0x277CFE360];
-    v8 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-    v5 = [v7 predicateForChangeAtKeyPath:v8];
+    keyPathForSunriseSunsetDataDictionary = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+    v5 = [v7 predicateForChangeAtKeyPath:keyPathForSunriseSunsetDataDictionary];
 
     objc_initWeak(buf, self);
     v9 = MEMORY[0x277CFE350];
@@ -442,15 +442,15 @@ void __59__WFCoreDuetListener_registerSunriseSunsetCallbackIfNeeded__block_invok
   dispatch_async(v2, block);
 }
 
-- (void)queue_unregisterCallbackForIdentifier:(id)a3
+- (void)queue_unregisterCallbackForIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFCoreDuetListener *)self registrations];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  registrations = [(WFCoreDuetListener *)self registrations];
+  v7 = [registrations objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
@@ -460,31 +460,31 @@ void __59__WFCoreDuetListener_registerSunriseSunsetCallbackIfNeeded__block_invok
       v12 = 136315394;
       v13 = "[WFCoreDuetListener queue_unregisterCallbackForIdentifier:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = identifierCopy;
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_DEBUG, "%s Deleting context store registration for identifier: %{public}@", &v12, 0x16u);
     }
 
-    v9 = [(WFCoreDuetListener *)self userContext];
-    [v9 deregisterCallback:v7];
+    userContext = [(WFCoreDuetListener *)self userContext];
+    [userContext deregisterCallback:v7];
 
-    v10 = [(WFCoreDuetListener *)self registrations];
-    [v10 setObject:0 forKeyedSubscript:v4];
+    registrations2 = [(WFCoreDuetListener *)self registrations];
+    [registrations2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCallback:(id)a3 withIdentifier:(id)a4
+- (void)registerCallback:(id)callback withIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v9);
+  identifierCopy = identifier;
+  callbackCopy = callback;
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v8)
+  if (callbackCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -492,63 +492,63 @@ void __59__WFCoreDuetListener_registerSunriseSunsetCallbackIfNeeded__block_invok
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"registration"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"registration"}];
 
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_3:
-  [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:v7];
+  [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:identifierCopy];
   v10 = getWFTriggersLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v17 = "[WFCoreDuetListener registerCallback:withIdentifier:]";
     v18 = 2114;
-    v19 = v7;
+    v19 = identifierCopy;
     _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_DEBUG, "%s Creating context store registration for identifier: %{public}@", buf, 0x16u);
   }
 
-  v11 = [(WFCoreDuetListener *)self userContext];
-  [v11 registerCallback:v8];
+  userContext = [(WFCoreDuetListener *)self userContext];
+  [userContext registerCallback:callbackCopy];
 
-  v12 = [(WFCoreDuetListener *)self registrations];
-  [v12 setObject:v8 forKeyedSubscript:v7];
+  registrations = [(WFCoreDuetListener *)self registrations];
+  [registrations setObject:callbackCopy forKeyedSubscript:identifierCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCallbackRegisteredWithIdentifier:(id)a3
+- (BOOL)isCallbackRegisteredWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFCoreDuetListener *)self registrations];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  registrations = [(WFCoreDuetListener *)self registrations];
+  v7 = [registrations objectForKeyedSubscript:identifierCopy];
 
   return v7 != 0;
 }
 
-- (void)handleCallbackForTriggerWithIdentifier:(id)a3 info:(id)a4
+- (void)handleCallbackForTriggerWithIdentifier:(id)identifier info:(id)info
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v9);
+  identifierCopy = identifier;
+  infoCopy = info;
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v7)
+  if (!identifierCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v10 = getWFTriggersLogObject();
@@ -557,13 +557,13 @@ LABEL_3:
     *buf = 136315650;
     *&buf[4] = "[WFCoreDuetListener handleCallbackForTriggerWithIdentifier:info:]";
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = identifierCopy;
     v33 = 2112;
-    v34 = v8;
+    v34 = infoCopy;
     _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_DEFAULT, "%s 🤖 Handling callback for registration with identifier (%{public}@) and info: %@", buf, 0x20u);
   }
 
-  v11 = v8;
+  v11 = infoCopy;
   v12 = getWFTriggersLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -583,12 +583,12 @@ LABEL_3:
     v16 = MEMORY[0x277CBEC10];
     if (isKindOfClass)
     {
-      v17 = [v13 value];
-      v18 = [v14 value];
-      v29 = v17;
-      v19 = VCSerializedEventInfo(v17);
-      v28 = v18;
-      v20 = VCSerializedEventInfo(v18);
+      value = [v13 value];
+      value2 = [v14 value];
+      v29 = value;
+      v19 = VCSerializedEventInfo(value);
+      v28 = value2;
+      v20 = VCSerializedEventInfo(value2);
       v21 = v20;
       if (v19 | v20)
       {
@@ -646,8 +646,8 @@ LABEL_3:
   v30[2] = __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___block_invoke;
   v30[3] = &unk_2788FE608;
   v30[4] = self;
-  v31 = v7;
-  v25 = v7;
+  v31 = identifierCopy;
+  v25 = identifierCopy;
   [(WFCoreDuetListener *)self fireTriggerWithIdentifier:v25 force:0 eventInfo:v16 completion:v30];
 
   v26 = *MEMORY[0x277D85DE8];
@@ -748,43 +748,43 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterConfiguredTriggerWithIdentifier:(id)a3
+- (void)unregisterConfiguredTriggerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFCoreDuetListener *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFCoreDuetListener *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__WFCoreDuetListener_unregisterConfiguredTriggerWithIdentifier___block_invoke;
   v7[3] = &unk_2788FFFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
-- (BOOL)registerTrigger:(id)a3 error:(id *)a4
+- (BOOL)registerTrigger:(id)trigger error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v7);
+  triggerCopy = trigger;
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v6)
+  if (!triggerCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
   }
 
-  v8 = [v6 identifier];
-  if ([v6 isEnabled])
+  identifier = [triggerCopy identifier];
+  if ([triggerCopy isEnabled])
   {
-    v9 = [v6 trigger];
-    if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    trigger = [triggerCopy trigger];
+    if (trigger && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if (![v9 event] || (v10 = objc_msgSend(v9, "event"), v11 = v9, v10 == 1))
+      if (![trigger event] || (v10 = objc_msgSend(trigger, "event"), v11 = trigger, v10 == 1))
       {
         [(WFCoreDuetListener *)self registerSunriseSunsetCallbackIfNeeded];
-        v11 = v9;
+        v11 = trigger;
       }
     }
 
@@ -795,16 +795,16 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
     }
 
     v37 = v11;
-    v13 = [v9 contextStorePredicate];
-    v38 = v13 != 0;
-    if (v13)
+    contextStorePredicate = [trigger contextStorePredicate];
+    v38 = contextStorePredicate != 0;
+    if (contextStorePredicate)
     {
-      v36 = [v9 contextStoreQualityOfService];
-      v14 = [v9 contextStoreRegistrationIsForWatch];
+      contextStoreQualityOfService = [trigger contextStoreQualityOfService];
+      contextStoreRegistrationIsForWatch = [trigger contextStoreRegistrationIsForWatch];
       v15 = getWFTriggersLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        if (v14)
+        if (contextStoreRegistrationIsForWatch)
         {
           v16 = @"watch";
         }
@@ -814,19 +814,19 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
           v16 = @"phone";
         }
 
-        v17 = [v6 identifier];
+        identifier2 = [triggerCopy identifier];
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         *buf = 136316418;
         v43 = "[WFCoreDuetListener registerTrigger:error:]";
         v44 = 2112;
-        v45 = v13;
+        v45 = contextStorePredicate;
         v46 = 1024;
-        *v47 = v36;
+        *v47 = contextStoreQualityOfService;
         *&v47[4] = 2112;
         *&v47[6] = v16;
         v48 = 2112;
-        v49 = v17;
+        v49 = identifier2;
         v50 = 2114;
         v51 = v19;
         _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_DEFAULT, "%s Registering predicate (%@) with QoS (%u) device (%@) for trigger: (%@) of trigger type: (%{public}@)", buf, 0x3Au);
@@ -839,9 +839,9 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
       aBlock[3] = &unk_278900258;
       objc_copyWeak(&v40, &location);
       v20 = _Block_copy(aBlock);
-      if (v14)
+      if (contextStoreRegistrationIsForWatch)
       {
-        v21 = v13;
+        v21 = contextStorePredicate;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         if (isKindOfClass)
@@ -858,7 +858,7 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
 
         if (isKindOfClass)
         {
-          v25 = [MEMORY[0x277CFE350] registrationWithIdentifier:v8 contextualPredicate:v21 deviceTypes:64 clientIdentifier:@"com.apple.siriactionsd.contextstore-registration" mustWake:1 qualityOfService:v36 callback:v20];
+          v25 = [MEMORY[0x277CFE350] registrationWithIdentifier:identifier contextualPredicate:v21 deviceTypes:64 clientIdentifier:@"com.apple.siriactionsd.contextstore-registration" mustWake:1 qualityOfService:contextStoreQualityOfService callback:v20];
         }
 
         else
@@ -881,8 +881,8 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
 
       else
       {
-        LODWORD(v35) = v36;
-        v25 = [MEMORY[0x277CFE350] registrationWithIdentifier:v8 contextualPredicate:v13 dismissalPolicy:0 deviceSet:0 clientIdentifier:@"com.apple.siriactionsd.contextstore-registration" mustWake:1 qualityOfService:v35 callback:v20];
+        LODWORD(v35) = contextStoreQualityOfService;
+        v25 = [MEMORY[0x277CFE350] registrationWithIdentifier:identifier contextualPredicate:contextStorePredicate dismissalPolicy:0 deviceSet:0 clientIdentifier:@"com.apple.siriactionsd.contextstore-registration" mustWake:1 qualityOfService:v35 callback:v20];
       }
 
       objc_opt_class();
@@ -891,7 +891,7 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
         [v25 setLocationManagerEffectiveBundleID:*MEMORY[0x277D7A338]];
       }
 
-      [(WFCoreDuetListener *)self registerCallback:v25 withIdentifier:v8];
+      [(WFCoreDuetListener *)self registerCallback:v25 withIdentifier:identifier];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
@@ -907,20 +907,20 @@ void __66__WFCoreDuetListener_handleCallbackForTriggerWithIdentifier_info___bloc
         *buf = 136315650;
         v43 = "[WFCoreDuetListener registerTrigger:error:]";
         v44 = 2112;
-        v45 = v9;
+        v45 = trigger;
         v46 = 2114;
         *v47 = v28;
         _os_log_impl(&dword_23103C000, v26, OS_LOG_TYPE_FAULT, "%s Unable to generate predicate for trigger: %@ of type: %{public}@, unregistering.", buf, 0x20u);
       }
 
-      [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:v8];
+      [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:identifier];
     }
   }
 
   else
   {
-    v12 = [v6 identifier];
-    [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:v12];
+    identifier3 = [triggerCopy identifier];
+    [(WFCoreDuetListener *)self queue_unregisterCallbackForIdentifier:identifier3];
 
     v38 = 0;
   }
@@ -947,21 +947,21 @@ void __44__WFCoreDuetListener_registerTrigger_error___block_invoke(uint64_t a1, 
   dispatch_async(v8, block);
 }
 
-- (void)registerConfiguredTrigger:(id)a3 completion:(id)a4
+- (void)registerConfiguredTrigger:(id)trigger completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFCoreDuetListener *)self queue];
+  triggerCopy = trigger;
+  completionCopy = completion;
+  queue = [(WFCoreDuetListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__WFCoreDuetListener_registerConfiguredTrigger_completion___block_invoke;
   block[3] = &unk_2788FFF98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = triggerCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = triggerCopy;
+  dispatch_async(queue, block);
 }
 
 void __59__WFCoreDuetListener_registerConfiguredTrigger_completion___block_invoke(void *a1)
@@ -974,25 +974,25 @@ void __59__WFCoreDuetListener_registerConfiguredTrigger_completion___block_invok
   (*(a1[6] + 16))();
 }
 
-- (id)databaseWithError:(id *)a3
+- (id)databaseWithError:(id *)error
 {
-  v5 = [(WFCoreDuetListener *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(WFCoreDuetListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFCoreDuetListener *)self databaseProvider];
-  v7 = [v6 databaseWithError:a3];
+  databaseProvider = [(WFCoreDuetListener *)self databaseProvider];
+  v7 = [databaseProvider databaseWithError:error];
 
   return v7;
 }
 
-- (WFCoreDuetListener)initWithDatabaseProvider:(id)a3 eventQueue:(id)a4
+- (WFCoreDuetListener)initWithDatabaseProvider:(id)provider eventQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  providerCopy = provider;
+  queueCopy = queue;
+  if (!providerCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoreDuetListener.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v22.receiver = self;
@@ -1007,12 +1007,12 @@ void __59__WFCoreDuetListener_registerConfiguredTrigger_completion___block_invok
     queue = v10->_queue;
     v10->_queue = v13;
 
-    v15 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     userContext = v10->_userContext;
-    v10->_userContext = v15;
+    v10->_userContext = userContext;
 
-    objc_storeStrong(&v10->_databaseProvider, a3);
-    objc_storeStrong(&v10->_eventQueue, a4);
+    objc_storeStrong(&v10->_databaseProvider, provider);
+    objc_storeStrong(&v10->_eventQueue, queue);
     v17 = objc_opt_new();
     registrations = v10->_registrations;
     v10->_registrations = v17;

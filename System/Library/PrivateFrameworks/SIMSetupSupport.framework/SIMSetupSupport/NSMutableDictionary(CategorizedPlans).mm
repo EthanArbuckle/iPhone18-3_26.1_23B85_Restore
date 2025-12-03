@@ -85,23 +85,23 @@
           v13 = *(*(&v23 + 1) + 8 * i);
           if (([v13 isEqualToNumber:v7] & 1) == 0)
           {
-            v14 = [a1 objectForKey:v13];
+            v14 = [self objectForKey:v13];
 
             if (v14)
             {
-              v15 = [a1 objectForKey:v7];
+              v15 = [self objectForKey:v7];
 
               if (!v15)
               {
                 v16 = objc_opt_new();
-                [a1 setObject:v16 forKeyedSubscript:v7];
+                [self setObject:v16 forKeyedSubscript:v7];
               }
 
-              v17 = [a1 objectForKeyedSubscript:v7];
-              v18 = [a1 objectForKeyedSubscript:v13];
+              v17 = [self objectForKeyedSubscript:v7];
+              v18 = [self objectForKeyedSubscript:v13];
               [v17 addObjectsFromArray:v18];
 
-              [a1 removeObjectForKey:v13];
+              [self removeObjectForKey:v13];
             }
           }
         }
@@ -112,18 +112,18 @@
       while (v10);
     }
 
-    v19 = a1;
+    selfCopy = self;
     v5 = v22;
   }
 
   else
   {
-    v6 = a1;
+    selfCopy2 = self;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 @end

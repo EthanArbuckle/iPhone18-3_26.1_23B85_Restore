@@ -1,9 +1,9 @@
 @interface NSMetaphone
 - (NSMetaphone)init;
-- (id)_translateWord:(id)a3;
-- (id)translate:(id)a3;
-- (void)_append:(id)a3;
-- (void)_append:(id)a3 alt:(id)a4;
+- (id)_translateWord:(id)word;
+- (id)translate:(id)translate;
+- (void)_append:(id)_append;
+- (void)_append:(id)_append alt:(id)alt;
 - (void)reset;
 @end
 
@@ -44,32 +44,32 @@
   self->_isAlternate = 0;
 }
 
-- (void)_append:(id)a3
+- (void)_append:(id)_append
 {
   primary = self->_primary;
-  v5 = a3;
-  [(NSMutableString *)primary appendString:v5];
-  [(NSMutableString *)self->_secondary appendString:v5];
+  _appendCopy = _append;
+  [(NSMutableString *)primary appendString:_appendCopy];
+  [(NSMutableString *)self->_secondary appendString:_appendCopy];
 }
 
-- (void)_append:(id)a3 alt:(id)a4
+- (void)_append:(id)_append alt:(id)alt
 {
   primary = self->_primary;
-  v7 = a4;
-  [(NSMutableString *)primary appendString:a3];
-  [(NSMutableString *)self->_secondary appendString:v7];
+  altCopy = alt;
+  [(NSMutableString *)primary appendString:_append];
+  [(NSMutableString *)self->_secondary appendString:altCopy];
 }
 
-- (id)_translateWord:(id)a3
+- (id)_translateWord:(id)word
 {
-  v4 = a3;
+  wordCopy = word;
   v5 = +[NSCharacterSet punctuationCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [wordCopy componentsSeparatedByCharactersInSet:v5];
   v7 = &stru_9A9C8;
   v8 = [v6 componentsJoinedByString:&stru_9A9C8];
 
-  v9 = [v8 uppercaseString];
-  v10 = [&stru_9A9C8 stringByAppendingFormat:@" %@ ", v9];
+  uppercaseString = [v8 uppercaseString];
+  v10 = [&stru_9A9C8 stringByAppendingFormat:@" %@ ", uppercaseString];
 
   v11 = [v10 length];
   v12 = v11;
@@ -104,7 +104,7 @@
         switch(v17)
         {
           case ' ':
-            v18 = self;
+            selfCopy43 = self;
             v19 = @" ";
             goto LABEL_94;
           case '!':
@@ -151,7 +151,7 @@
               goto LABEL_95;
             }
 
-            v18 = self;
+            selfCopy43 = self;
             v19 = @"A";
             goto LABEL_94;
           case 'B':
@@ -171,7 +171,7 @@
 
                 if (v58)
                 {
-                  v41 = self;
+                  selfCopy23 = self;
                   v42 = @"S";
                   goto LABEL_236;
                 }
@@ -190,10 +190,10 @@
                 {
 
 LABEL_67:
-                  v43 = self;
+                  selfCopy44 = self;
                   v44 = @"K";
 LABEL_225:
-                  [(NSMetaphone *)v43 _append:v44];
+                  [(NSMetaphone *)selfCopy44 _append:v44];
                   goto LABEL_226;
                 }
 
@@ -232,7 +232,7 @@ LABEL_155:
 
                 if (v69)
                 {
-                  v37 = self;
+                  selfCopy28 = self;
                   v38 = @"K";
 LABEL_217:
                   v39 = @"X";
@@ -259,7 +259,7 @@ LABEL_217:
                       goto LABEL_67;
                     }
 
-                    v53 = self;
+                    selfCopy38 = self;
                     v54 = @"X";
                     v55 = @"K";
                     goto LABEL_254;
@@ -273,7 +273,7 @@ LABEL_217:
             if (sub_3DBC(v10, v13, 2, &off_9C548) && (sub_3DBC(v10, (v13 - 2), 4, &off_9C560) & 1) == 0)
             {
 LABEL_216:
-              v37 = self;
+              selfCopy28 = self;
               v38 = @"S";
               goto LABEL_217;
             }
@@ -282,7 +282,7 @@ LABEL_216:
             if (sub_3DBC(v10, v20, 3, &off_9C578))
             {
 LABEL_166:
-              v48 = self;
+              selfCopy37 = self;
               v49 = @"X";
               goto LABEL_167;
             }
@@ -308,9 +308,9 @@ LABEL_166:
                 }
               }
 
-              v48 = self;
+              selfCopy37 = self;
 LABEL_167:
-              [(NSMetaphone *)v48 _append:v49];
+              [(NSMetaphone *)selfCopy37 _append:v49];
               goto LABEL_168;
             }
 
@@ -342,10 +342,10 @@ LABEL_168:
               goto LABEL_216;
             }
 
-            v33 = self;
+            selfCopy41 = self;
             v34 = @"S";
 LABEL_157:
-            [(NSMetaphone *)v33 _append:v34];
+            [(NSMetaphone *)selfCopy41 _append:v34];
             goto LABEL_158;
           case 'D':
             if (!sub_3DBC(v10, v13, 2, &off_9C680))
@@ -371,12 +371,12 @@ LABEL_108:
             v20 = (v13 + 2);
             if (sub_3DBC(v10, v20, 1, &off_9C698))
             {
-              v48 = self;
+              selfCopy37 = self;
               v49 = @"J";
               goto LABEL_167;
             }
 
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"TK";
             goto LABEL_225;
           case 'F':
@@ -392,11 +392,11 @@ LABEL_108:
               {
                 if (v13 == 1 && sub_3DBC(v10, 0, 1, &off_9CC50) && !sub_3FC8(v10))
                 {
-                  v60 = self;
+                  selfCopy17 = self;
                   v61 = @"KN";
                   v62 = @"N";
 LABEL_243:
-                  [(NSMetaphone *)v60 _append:v61 alt:v62];
+                  [(NSMetaphone *)selfCopy17 _append:v61 alt:v62];
 LABEL_244:
                   v20 = 3;
                   goto LABEL_226;
@@ -405,22 +405,22 @@ LABEL_244:
                 v20 = (v13 + 2);
                 if ((sub_3DBC(v10, v20, 2, &off_9C728) & 1) != 0 || sub_3F74(v10, (v13 + 1)) == 89 || sub_3FC8(v10))
                 {
-                  v43 = self;
+                  selfCopy44 = self;
                   v44 = @"KN";
                   goto LABEL_225;
                 }
 
-                v53 = self;
+                selfCopy38 = self;
                 v54 = @"N";
                 v55 = @"KN";
 LABEL_254:
-                [(NSMetaphone *)v53 _append:v54 alt:v55];
+                [(NSMetaphone *)selfCopy38 _append:v54 alt:v55];
                 goto LABEL_226;
               }
 
               if (sub_3DBC(v10, v40, 2, &off_9C740) && !sub_3FC8(v10))
               {
-                v37 = self;
+                selfCopy28 = self;
                 v38 = @"KL";
                 v39 = @"L";
                 goto LABEL_219;
@@ -428,7 +428,7 @@ LABEL_254:
 
               if (v13 == 1 && (sub_3F74(v10, (v13 + 1)) == 89 || sub_3DBC(v10, v40, 2, &off_9C758)))
               {
-                v60 = self;
+                selfCopy17 = self;
                 v61 = @"K";
                 v62 = @"J";
                 goto LABEL_243;
@@ -436,11 +436,11 @@ LABEL_254:
 
               if (((sub_3DBC(v10, v40, 2, &off_9C770) & 1) != 0 || sub_3F74(v10, (v13 + 1)) == 89) && (sub_3DBC(v10, 0, 6, &off_9C788) & 1) == 0 && (sub_3DBC(v10, (v13 - 1), 1, &off_9C7A0) & 1) == 0 && (sub_3DBC(v10, (v13 - 1), 3, &off_9C7B8) & 1) == 0)
               {
-                v37 = self;
+                selfCopy28 = self;
                 v38 = @"K";
                 v39 = @"J";
 LABEL_219:
-                [(NSMetaphone *)v37 _append:v38 alt:v39];
+                [(NSMetaphone *)selfCopy28 _append:v38 alt:v39];
                 goto LABEL_158;
               }
 
@@ -464,19 +464,19 @@ LABEL_219:
                 if (sub_3DBC(v10, v40, 4, &off_9C848))
                 {
 LABEL_92:
-                  v33 = self;
+                  selfCopy41 = self;
                   v34 = @"J";
                   goto LABEL_157;
                 }
 
-                v37 = self;
+                selfCopy28 = self;
                 v38 = @"J";
                 v39 = @"K";
                 goto LABEL_219;
               }
 
 LABEL_156:
-              v33 = self;
+              selfCopy41 = self;
               v34 = @"K";
               goto LABEL_157;
             }
@@ -495,18 +495,18 @@ LABEL_156:
             {
               if (sub_3F74(v10, 3u) == 73)
               {
-                v41 = self;
+                selfCopy23 = self;
                 v42 = @"J";
               }
 
               else
               {
-                v41 = self;
+                selfCopy23 = self;
                 v42 = @"K";
               }
 
 LABEL_236:
-              [(NSMetaphone *)v41 _append:v42];
+              [(NSMetaphone *)selfCopy23 _append:v42];
               goto LABEL_244;
             }
 
@@ -543,7 +543,7 @@ LABEL_208:
               }
 
 LABEL_123:
-              v33 = self;
+              selfCopy41 = self;
               goto LABEL_157;
             }
 
@@ -570,7 +570,7 @@ LABEL_226:
               goto LABEL_226;
             }
 
-            v33 = self;
+            selfCopy41 = self;
             v34 = @"H";
             goto LABEL_157;
           case 'J':
@@ -606,12 +606,12 @@ LABEL_226:
 
             if (v13 == 1 && sub_3F74(v10, 5u) == 32 || sub_3DBC(v10, 0, 4, &off_9C890))
             {
-              v18 = self;
+              selfCopy43 = self;
               v19 = @"H";
               goto LABEL_94;
             }
 
-            v21 = self;
+            selfCopy42 = self;
             v22 = @"J";
             v23 = @"H";
             goto LABEL_198;
@@ -629,7 +629,7 @@ LABEL_226:
 
             if (v12 - 3 == v16 && (sub_3DBC(v10, (v13 - 1), 4, &off_9C8F0) & 1) != 0 || (sub_3DBC(v10, v82, 2, &off_9C908) & 1) != 0 || sub_3DBC(v10, v81, 1, &off_9C920) && sub_3DBC(v10, (v13 - 1), 4, &off_9C938))
             {
-              v37 = self;
+              selfCopy28 = self;
               v38 = @"L";
               v39 = @" ";
               goto LABEL_219;
@@ -637,7 +637,7 @@ LABEL_226:
 
             v20 = v13 + 2;
 LABEL_148:
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"L";
             goto LABEL_225;
           case 'M':
@@ -646,7 +646,7 @@ LABEL_148:
               v20 = v13 + 2;
             }
 
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"M";
             goto LABEL_225;
           case 'N':
@@ -673,7 +673,7 @@ LABEL_148:
               v20 = v13 + 1;
             }
 
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"P";
             goto LABEL_225;
           case 'Q':
@@ -717,7 +717,7 @@ LABEL_69:
 
             if (sub_3DBC(v10, v13, 5, &off_9C9B0))
             {
-              v21 = self;
+              selfCopy42 = self;
               v22 = @"X";
               v23 = @"S";
               goto LABEL_198;
@@ -761,7 +761,7 @@ LABEL_269:
                   v20 = v13 + 3;
                   if (sub_3DBC(v10, (v13 + 2), 1, &off_9CAB8))
                   {
-                    v43 = self;
+                    selfCopy44 = self;
                     v44 = @"S";
                     goto LABEL_225;
                   }
@@ -774,14 +774,14 @@ LABEL_269:
                 {
                   if (sub_3DBC(v10, (v13 + 3), 2, &off_9CAA0))
                   {
-                    v53 = self;
+                    selfCopy38 = self;
                     v54 = @"X";
                     v55 = @"SK";
                     goto LABEL_254;
                   }
 
 LABEL_275:
-                  v43 = self;
+                  selfCopy44 = self;
                   v44 = @"SK";
                   goto LABEL_225;
                 }
@@ -793,14 +793,14 @@ LABEL_275:
                   goto LABEL_226;
                 }
 
-                v43 = self;
+                selfCopy44 = self;
                 v44 = @"X";
                 goto LABEL_225;
               }
 
               if (sub_3FC8(v10))
               {
-                v48 = self;
+                selfCopy37 = self;
                 v49 = @"S";
                 goto LABEL_167;
               }
@@ -831,7 +831,7 @@ LABEL_275:
               v20 = (v13 + 2);
               if ((sub_3DBC(v10, v20, 2, &off_9CB48) & 1) == 0 && (sub_3DBC(v10, 0, 4, &off_9CB60) & 1) == 0 && !sub_3DBC(v10, 0, 3, &off_9CB78))
               {
-                v53 = self;
+                selfCopy38 = self;
                 v54 = @"0";
                 v55 = @"T";
                 goto LABEL_254;
@@ -848,7 +848,7 @@ LABEL_275:
               v20 = v13 + 1;
             }
 
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"T";
             goto LABEL_225;
           case 'V':
@@ -867,13 +867,13 @@ LABEL_79:
             }
 
 LABEL_82:
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"F";
             goto LABEL_225;
           case 'W':
             if (sub_3DBC(v10, v13, 2, &off_9CBA8))
             {
-              v33 = self;
+              selfCopy41 = self;
               v34 = @"R";
               goto LABEL_157;
             }
@@ -893,11 +893,11 @@ LABEL_82:
 
             if ((sub_3DBC(v10, (v13 - 1), 5, &off_9CBD8) & 1) != 0 || sub_3DBC(v10, 0, 3, &off_9CBF0))
             {
-              v21 = self;
+              selfCopy42 = self;
               v22 = &stru_9A9C8;
               v23 = @"F";
 LABEL_198:
-              [(NSMetaphone *)v21 _append:v22 alt:v23];
+              [(NSMetaphone *)selfCopy42 _append:v22 alt:v23];
               goto LABEL_95;
             }
 
@@ -945,10 +945,10 @@ LABEL_198:
           default:
             if (v17 == 199)
             {
-              v18 = self;
+              selfCopy43 = self;
               v19 = @"S";
 LABEL_94:
-              [(NSMetaphone *)v18 _append:v19];
+              [(NSMetaphone *)selfCopy43 _append:v19];
 LABEL_95:
               v20 = v13 + 1;
               goto LABEL_226;
@@ -961,7 +961,7 @@ LABEL_95:
 
             v20 = v13 + 1;
 LABEL_77:
-            v43 = self;
+            selfCopy44 = self;
             v44 = @"N";
             goto LABEL_225;
         }
@@ -983,19 +983,19 @@ LABEL_77:
   return v7;
 }
 
-- (id)translate:(id)a3
+- (id)translate:(id)translate
 {
-  v4 = a3;
+  translateCopy = translate;
   v5 = objc_alloc_init(NSMutableString);
-  v6 = [v4 length];
+  v6 = [translateCopy length];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_4138;
   v10[3] = &unk_971D0;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  [v4 enumerateSubstringsInRange:0 options:v6 usingBlock:{3, v10}];
+  selfCopy = self;
+  [translateCopy enumerateSubstringsInRange:0 options:v6 usingBlock:{3, v10}];
 
   v8 = v7;
   return v7;

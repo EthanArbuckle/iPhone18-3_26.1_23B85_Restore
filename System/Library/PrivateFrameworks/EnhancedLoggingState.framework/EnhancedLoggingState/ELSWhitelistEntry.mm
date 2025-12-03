@@ -1,52 +1,52 @@
 @interface ELSWhitelistEntry
-- (ELSWhitelistEntry)initWithBundleIdentifier:(id)a3 parameterName:(id)a4 displayNameLocalizationKey:(id)a5 descriptionLocalizationKey:(id)a6 sensitiveInformationLocalizationKey:(id)a7 needsWAPIKeys:(BOOL)a8 requiresFollowup:(BOOL)a9 retry:(BOOL)a10 platforms:(id)a11;
+- (ELSWhitelistEntry)initWithBundleIdentifier:(id)identifier parameterName:(id)name displayNameLocalizationKey:(id)key descriptionLocalizationKey:(id)localizationKey sensitiveInformationLocalizationKey:(id)informationLocalizationKey needsWAPIKeys:(BOOL)keys requiresFollowup:(BOOL)followup retry:(BOOL)self0 platforms:(id)self1;
 @end
 
 @implementation ELSWhitelistEntry
 
-- (ELSWhitelistEntry)initWithBundleIdentifier:(id)a3 parameterName:(id)a4 displayNameLocalizationKey:(id)a5 descriptionLocalizationKey:(id)a6 sensitiveInformationLocalizationKey:(id)a7 needsWAPIKeys:(BOOL)a8 requiresFollowup:(BOOL)a9 retry:(BOOL)a10 platforms:(id)a11
+- (ELSWhitelistEntry)initWithBundleIdentifier:(id)identifier parameterName:(id)name displayNameLocalizationKey:(id)key descriptionLocalizationKey:(id)localizationKey sensitiveInformationLocalizationKey:(id)informationLocalizationKey needsWAPIKeys:(BOOL)keys requiresFollowup:(BOOL)followup retry:(BOOL)self0 platforms:(id)self1
 {
-  v11 = a8;
-  v31 = a3;
-  v30 = a4;
-  v32 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  nameCopy = name;
+  keyCopy = key;
+  localizationKeyCopy = localizationKey;
+  informationLocalizationKeyCopy = informationLocalizationKey;
+  platformsCopy = platforms;
   v33.receiver = self;
   v33.super_class = ELSWhitelistEntry;
   v21 = [(ELSWhitelistEntry *)&v33 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_bundleIdentifier, a3);
-    objc_storeStrong(&v22->_parameterName, a4);
-    objc_storeStrong(&v22->_platformAvailability, a11);
-    if (v11 && MGGetBoolAnswer())
+    objc_storeStrong(&v21->_bundleIdentifier, identifier);
+    objc_storeStrong(&v22->_parameterName, name);
+    objc_storeStrong(&v22->_platformAvailability, platforms);
+    if (keysCopy && MGGetBoolAnswer())
     {
-      v23 = [v32 stringByAppendingString:@"_WAPI"];
+      v23 = [keyCopy stringByAppendingString:@"_WAPI"];
       displayNameLocalizationKey = v22->_displayNameLocalizationKey;
       v22->_displayNameLocalizationKey = v23;
 
-      v25 = [v18 stringByAppendingString:@"_WAPI"];
+      v25 = [localizationKeyCopy stringByAppendingString:@"_WAPI"];
       descriptionLocalizationKey = v22->_descriptionLocalizationKey;
       v22->_descriptionLocalizationKey = v25;
 
-      v27 = [v19 stringByAppendingString:@"_WAPI"];
+      v27 = [informationLocalizationKeyCopy stringByAppendingString:@"_WAPI"];
     }
 
     else
     {
-      objc_storeStrong(&v22->_displayNameLocalizationKey, a5);
-      objc_storeStrong(&v22->_descriptionLocalizationKey, a6);
-      v27 = v19;
+      objc_storeStrong(&v22->_displayNameLocalizationKey, key);
+      objc_storeStrong(&v22->_descriptionLocalizationKey, localizationKey);
+      v27 = informationLocalizationKeyCopy;
     }
 
     sensitiveInformationLocalizationKey = v22->_sensitiveInformationLocalizationKey;
     v22->_sensitiveInformationLocalizationKey = v27;
 
-    v22->_requiresFollowup = a9;
-    v22->_retry = a10;
+    v22->_requiresFollowup = followup;
+    v22->_retry = retry;
   }
 
   return v22;

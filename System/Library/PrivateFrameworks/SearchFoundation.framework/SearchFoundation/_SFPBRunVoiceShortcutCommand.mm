@@ -1,37 +1,37 @@
 @interface _SFPBRunVoiceShortcutCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRunVoiceShortcutCommand)initWithDictionary:(id)a3;
-- (_SFPBRunVoiceShortcutCommand)initWithFacade:(id)a3;
-- (_SFPBRunVoiceShortcutCommand)initWithJSON:(id)a3;
+- (_SFPBRunVoiceShortcutCommand)initWithDictionary:(id)dictionary;
+- (_SFPBRunVoiceShortcutCommand)initWithFacade:(id)facade;
+- (_SFPBRunVoiceShortcutCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setVoiceShortcutIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setVoiceShortcutIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRunVoiceShortcutCommand
 
-- (_SFPBRunVoiceShortcutCommand)initWithFacade:(id)a3
+- (_SFPBRunVoiceShortcutCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRunVoiceShortcutCommand *)self init];
   if (v5)
   {
-    v6 = [v4 voiceShortcutIdentifier];
+    voiceShortcutIdentifier = [facadeCopy voiceShortcutIdentifier];
 
-    if (v6)
+    if (voiceShortcutIdentifier)
     {
-      v7 = [v4 voiceShortcutIdentifier];
-      [(_SFPBRunVoiceShortcutCommand *)v5 setVoiceShortcutIdentifier:v7];
+      voiceShortcutIdentifier2 = [facadeCopy voiceShortcutIdentifier];
+      [(_SFPBRunVoiceShortcutCommand *)v5 setVoiceShortcutIdentifier:voiceShortcutIdentifier2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(_SFPBRunVoiceShortcutCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBRunVoiceShortcutCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v10 = v5;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (_SFPBRunVoiceShortcutCommand)initWithDictionary:(id)a3
+- (_SFPBRunVoiceShortcutCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRunVoiceShortcutCommand;
   v5 = [(_SFPBRunVoiceShortcutCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceShortcutIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceShortcutIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(_SFPBRunVoiceShortcutCommand *)v5 setVoiceShortcutIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (_SFPBRunVoiceShortcutCommand)initWithJSON:(id)a3
+- (_SFPBRunVoiceShortcutCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRunVoiceShortcutCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRunVoiceShortcutCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRunVoiceShortcutCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,46 +106,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_voiceShortcutIdentifier)
   {
-    v6 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"voiceShortcutIdentifier"];
+    voiceShortcutIdentifier = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
+    v7 = [voiceShortcutIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"voiceShortcutIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
-  v6 = [v4 voiceShortcutIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  voiceShortcutIdentifier = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
+  voiceShortcutIdentifier2 = [equalCopy voiceShortcutIdentifier];
+  if ((voiceShortcutIdentifier != 0) == (voiceShortcutIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
-  if (v7)
+  voiceShortcutIdentifier3 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
+  if (voiceShortcutIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
-    v10 = [v4 voiceShortcutIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = voiceShortcutIdentifier3;
+    voiceShortcutIdentifier4 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
+    voiceShortcutIdentifier5 = [equalCopy voiceShortcutIdentifier];
+    v11 = [voiceShortcutIdentifier4 isEqual:voiceShortcutIdentifier5];
 
     if (!v11)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  voiceShortcutIdentifier = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
+  voiceShortcutIdentifier2 = [equalCopy applicationBundleIdentifier];
+  if ((voiceShortcutIdentifier != 0) != (voiceShortcutIdentifier2 == 0))
   {
-    v12 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
-    if (!v12)
+    applicationBundleIdentifier = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
+    if (!applicationBundleIdentifier)
     {
 
 LABEL_15:
@@ -170,10 +170,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
-    v15 = [v4 applicationBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationBundleIdentifier;
+    applicationBundleIdentifier2 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+    v16 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
     if (v16)
     {
@@ -193,34 +193,34 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
-  if (v4)
+  toCopy = to;
+  voiceShortcutIdentifier = [(_SFPBRunVoiceShortcutCommand *)self voiceShortcutIdentifier];
+  if (voiceShortcutIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
-  if (v5)
+  applicationBundleIdentifier = [(_SFPBRunVoiceShortcutCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setVoiceShortcutIdentifier:(id)a3
+- (void)setVoiceShortcutIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   voiceShortcutIdentifier = self->_voiceShortcutIdentifier;
   self->_voiceShortcutIdentifier = v4;
 

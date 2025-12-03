@@ -1,88 +1,88 @@
 @interface KGElementCollection
-- (BOOL)containsCollection:(id)a3;
-- (BOOL)intersectsCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollection:(id)a3;
-- (BOOL)isSubsetOfCollection:(id)a3;
+- (BOOL)containsCollection:(id)collection;
+- (BOOL)intersectsCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollection:(id)collection;
+- (BOOL)isSubsetOfCollection:(id)collection;
 - (KGElement)anyObject;
-- (KGElementCollection)initWithIdentifiers:(id)a3 graph:(id)a4;
+- (KGElementCollection)initWithIdentifiers:(id)identifiers graph:(id)graph;
 - (NSArray)allObjects;
 - (NSSet)set;
-- (id)collectionByFormingUnionWithCollection:(id)a3;
-- (id)collectionByIntersectingCollection:(id)a3;
-- (id)collectionBySubtractingCollection:(id)a3;
+- (id)collectionByFormingUnionWithCollection:(id)collection;
+- (id)collectionByIntersectingCollection:(id)collection;
+- (id)collectionBySubtractingCollection:(id)collection;
 - (id)description;
-- (void)enumerateElementIdentifierBatchesWithBatchSize:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateElementsWithBatchSize:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumeratePropertyValuesForKey:(id)a3 withBlock:(id)a4;
+- (void)enumerateElementIdentifierBatchesWithBatchSize:(unint64_t)size usingBlock:(id)block;
+- (void)enumerateElementsWithBatchSize:(unint64_t)size usingBlock:(id)block;
+- (void)enumeratePropertyValuesForKey:(id)key withBlock:(id)block;
 @end
 
 @implementation KGElementCollection
 
-- (BOOL)containsCollection:(id)a3
+- (BOOL)containsCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v4 = [a3 identifiers];
-  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers containsIdentifierSet:v4];
+  identifiers = [collection identifiers];
+  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers containsIdentifierSet:identifiers];
 
   return identifiers;
 }
 
-- (BOOL)isSubsetOfCollection:(id)a3
+- (BOOL)isSubsetOfCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v4 = [a3 identifiers];
-  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers isSubsetOfIdentifierSet:v4];
+  identifiers = [collection identifiers];
+  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers isSubsetOfIdentifierSet:identifiers];
 
   return identifiers;
 }
 
-- (BOOL)intersectsCollection:(id)a3
+- (BOOL)intersectsCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v4 = [a3 identifiers];
-  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers intersectsIdentifierSet:v4];
+  identifiers = [collection identifiers];
+  LOBYTE(identifiers) = [(KGElementIdentifierSet *)identifiers intersectsIdentifierSet:identifiers];
 
   return identifiers;
 }
 
-- (id)collectionBySubtractingCollection:(id)a3
+- (id)collectionBySubtractingCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v5 = [a3 identifiers];
-  v6 = [(KGElementIdentifierSet *)identifiers identifierSetBySubtractingIdentifierSet:v5];
+  identifiers = [collection identifiers];
+  v6 = [(KGElementIdentifierSet *)identifiers identifierSetBySubtractingIdentifierSet:identifiers];
 
   v7 = [objc_alloc(objc_opt_class()) initWithIdentifiers:v6 graph:self->_graph];
 
   return v7;
 }
 
-- (id)collectionByIntersectingCollection:(id)a3
+- (id)collectionByIntersectingCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v5 = [a3 identifiers];
-  v6 = [(KGElementIdentifierSet *)identifiers identifierSetByIntersectingIdentifierSet:v5];
+  identifiers = [collection identifiers];
+  v6 = [(KGElementIdentifierSet *)identifiers identifierSetByIntersectingIdentifierSet:identifiers];
 
   v7 = [objc_alloc(objc_opt_class()) initWithIdentifiers:v6 graph:self->_graph];
 
   return v7;
 }
 
-- (id)collectionByFormingUnionWithCollection:(id)a3
+- (id)collectionByFormingUnionWithCollection:(id)collection
 {
   identifiers = self->_identifiers;
-  v5 = [a3 identifiers];
-  v6 = [(KGElementIdentifierSet *)identifiers identifierSetByFormingUnion:v5];
+  identifiers = [collection identifiers];
+  v6 = [(KGElementIdentifierSet *)identifiers identifierSetByFormingUnion:identifiers];
 
   v7 = [objc_alloc(objc_opt_class()) initWithIdentifiers:v6 graph:self->_graph];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -91,9 +91,9 @@
   {
     v7.receiver = self;
     v7.super_class = KGElementCollection;
-    if ([(KGElementCollection *)&v7 isEqual:v4])
+    if ([(KGElementCollection *)&v7 isEqual:equalCopy])
     {
-      v5 = [(KGElementCollection *)self isEqualToCollection:v4];
+      v5 = [(KGElementCollection *)self isEqualToCollection:equalCopy];
     }
 
     else
@@ -105,19 +105,19 @@
   return v5;
 }
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   identifiers = self->_identifiers;
-  v6 = [v4 identifiers];
-  LODWORD(identifiers) = [(KGElementIdentifierSet *)identifiers isEqualToElementIdentifierSet:v6];
+  identifiers = [collectionCopy identifiers];
+  LODWORD(identifiers) = [(KGElementIdentifierSet *)identifiers isEqualToElementIdentifierSet:identifiers];
 
   if (identifiers)
   {
-    v7 = [(KGGraph *)self->_graph implementation];
-    v8 = [v4 graph];
-    v9 = [v8 implementation];
-    v10 = [v7 isEqual:v9];
+    implementation = [(KGGraph *)self->_graph implementation];
+    graph = [collectionCopy graph];
+    implementation2 = [graph implementation];
+    v10 = [implementation isEqual:implementation2];
   }
 
   else
@@ -136,26 +136,26 @@
   return v3;
 }
 
-- (void)enumeratePropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumeratePropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v9 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v9);
 }
 
-- (void)enumerateElementsWithBatchSize:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateElementsWithBatchSize:(unint64_t)size usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v7);
 }
 
-- (void)enumerateElementIdentifierBatchesWithBatchSize:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateElementIdentifierBatchesWithBatchSize:(unint64_t)size usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(KGElementCollection *)self identifiers];
-  v8 = [v7 mutableCopy];
+  blockCopy = block;
+  identifiers = [(KGElementCollection *)self identifiers];
+  v8 = [identifiers mutableCopy];
 
   v12 = 0;
   do
@@ -166,9 +166,9 @@
     }
 
     v9 = objc_autoreleasePoolPush();
-    v10 = [v8 prefix:a3];
+    v10 = [v8 prefix:size];
     [v8 subtractIdentifierSet:v10];
-    v6[2](v6, v10, &v12);
+    blockCopy[2](blockCopy, v10, &v12);
     v11 = v12;
 
     objc_autoreleasePoolPop(v9);
@@ -217,18 +217,18 @@
   return v4;
 }
 
-- (KGElementCollection)initWithIdentifiers:(id)a3 graph:(id)a4
+- (KGElementCollection)initWithIdentifiers:(id)identifiers graph:(id)graph
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
   v12.receiver = self;
   v12.super_class = KGElementCollection;
   v9 = [(KGElementCollection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifiers, a3);
-    objc_storeStrong(&v10->_graph, a4);
+    objc_storeStrong(&v9->_identifiers, identifiers);
+    objc_storeStrong(&v10->_graph, graph);
   }
 
   return v10;

@@ -22,7 +22,7 @@
   v4 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables22DOC_FIArchiveOperation_destinationFolder);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables22DOC_FIArchiveOperation_undoManager);
   swift_getObjectType();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v7 = specialized makeDOCArchiveOperation(nodes:destinationFolder:undoManager:)(v3, v4, v5);
 
@@ -33,7 +33,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FIArchiveOperation.operationForUndoing()();
 
   return v3;

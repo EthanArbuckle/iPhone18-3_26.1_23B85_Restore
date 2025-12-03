@@ -1,52 +1,52 @@
 @interface CSOpportuneSpeakListnerTestService
 - (CSOpportuneSpeakListnerTestService)init;
-- (void)opportuneSpeakListener:(id)a3 didStopUnexpectedly:(BOOL)a4;
-- (void)opportuneSpeakListener:(id)a3 hasRemoteVADAvailable:(BOOL)a4;
-- (void)opportuneSpeakListener:(id)a3 hasVADAvailable:(BOOL)a4;
+- (void)opportuneSpeakListener:(id)listener didStopUnexpectedly:(BOOL)unexpectedly;
+- (void)opportuneSpeakListener:(id)listener hasRemoteVADAvailable:(BOOL)available;
+- (void)opportuneSpeakListener:(id)listener hasVADAvailable:(BOOL)available;
 - (void)receiveOpportuneSpeakListenerStart;
 - (void)start;
 @end
 
 @implementation CSOpportuneSpeakListnerTestService
 
-- (void)opportuneSpeakListener:(id)a3 didStopUnexpectedly:(BOOL)a4
+- (void)opportuneSpeakListener:(id)listener didStopUnexpectedly:(BOOL)unexpectedly
 {
-  v4 = a4;
+  unexpectedlyCopy = unexpectedly;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSOpportuneSpeakListnerTestService opportuneSpeakListener:didStopUnexpectedly:]";
     v8 = 1024;
-    v9 = v4;
+    v9 = unexpectedlyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s didStopUnexpectedly : %d", &v6, 0x12u);
   }
 }
 
-- (void)opportuneSpeakListener:(id)a3 hasVADAvailable:(BOOL)a4
+- (void)opportuneSpeakListener:(id)listener hasVADAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSOpportuneSpeakListnerTestService opportuneSpeakListener:hasVADAvailable:]";
     v8 = 1024;
-    v9 = v4;
+    v9 = availableCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s hasVADAvailable : %d", &v6, 0x12u);
   }
 }
 
-- (void)opportuneSpeakListener:(id)a3 hasRemoteVADAvailable:(BOOL)a4
+- (void)opportuneSpeakListener:(id)listener hasRemoteVADAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSOpportuneSpeakListnerTestService opportuneSpeakListener:hasRemoteVADAvailable:]";
     v8 = 1024;
-    v9 = v4;
+    v9 = availableCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s hasRemoteVADAvailable : %d", &v6, 0x12u);
   }
 }

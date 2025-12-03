@@ -3,9 +3,9 @@
 - (MPRequest)init;
 - (NSString)description;
 - (id)_stateDumpObject;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)performWithCompletion:(id)a3;
-- (void)_performWithCompletion:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)performWithCompletion:(id)completion;
+- (void)_performWithCompletion:(id)completion;
 - (void)cancel;
 @end
 
@@ -15,8 +15,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPRequest *)self label];
-  v6 = [v3 stringWithFormat:@"<%@: %p label=%@>", v4, self, v5];
+  label = [(MPRequest *)self label];
+  v6 = [v3 stringWithFormat:@"<%@: %p label=%@>", v4, self, label];
 
   return v6;
 }
@@ -48,10 +48,10 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   queue = self->_queue;
   self->_queue = v5;
@@ -91,7 +91,7 @@
   v48[1] = 3221225472;
   v48[2] = __36__MPRequest__performWithCompletion___block_invoke;
   v48[3] = &unk_1E767CAD0;
-  v31 = v4;
+  v31 = completionCopy;
   v51 = v31;
   v48[4] = self;
   v32 = v11;
@@ -102,11 +102,11 @@
   v53 = v54;
   v15 = [v14 blockOperationWithBlock:v48];
   [v15 setQualityOfService:{-[MPRequest qualityOfService](self, "qualityOfService")}];
-  v16 = [v32 allOperations];
+  allOperations = [v32 allOperations];
   v17 = os_log_create("com.apple.amp.mediaplayer", "Middleware");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v16 valueForKeyPath:@"class.description"];
+    v18 = [allOperations valueForKeyPath:@"class.description"];
     v19 = [v18 componentsJoinedByString:{@", "}];
     *buf = 138543362;
     v60 = v19;
@@ -117,7 +117,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v16;
+  obj = allOperations;
   v20 = [obj countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v20)
   {
@@ -144,7 +144,7 @@
           v42 = v54;
           v27 = v26;
           v39 = v27;
-          v40 = self;
+          selfCopy = self;
           v41 = v33;
           v43 = v56;
           [v24 setInvalidationHandler:v38];
@@ -439,12 +439,12 @@ void __36__MPRequest__performWithCompletion___block_invoke_3(uint64_t a1)
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"label";
-  v2 = [(MPRequest *)self label];
-  v3 = v2;
+  label = [(MPRequest *)self label];
+  v3 = label;
   v4 = @"<NULL>";
-  if (v2)
+  if (label)
   {
-    v4 = v2;
+    v4 = label;
   }
 
   v8[0] = v4;
@@ -453,26 +453,26 @@ void __36__MPRequest__performWithCompletion___block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (id)performWithCompletion:(id)a3
+- (id)performWithCompletion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [(MPRequest *)self copy];
-  v7 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v8 = os_log_create("com.apple.amp.mediaplayer", "Middleware");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v50 = v6;
     v51 = 2114;
-    v52 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_INFO, "START Request: %{public}@ aka [%{public}@]", buf, 0x16u);
   }
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.MediaPlaybackCore/%@.cleanup", objc_opt_class()];
-  v10 = [v9 UTF8String];
+  uTF8String = [v9 UTF8String];
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v12 = dispatch_queue_create(v10, v11);
+  v12 = dispatch_queue_create(uTF8String, v11);
   v13 = v6[6];
   v6[6] = v12;
 
@@ -482,8 +482,8 @@ void __36__MPRequest__performWithCompletion___block_invoke_3(uint64_t a1)
   v16 = 0;
   if (v15 >= v17)
   {
-    v18 = [v6 cleanupQueue];
-    v19 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v18);
+    cleanupQueue = [v6 cleanupQueue];
+    v19 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, cleanupQueue);
 
     v20 = dispatch_time(0, (v15 * 1000000000.0));
     dispatch_source_set_timer(v19, v20, 0x3B9ACA00uLL, 0x3B9ACA00uLL);
@@ -518,7 +518,7 @@ void __36__MPRequest__performWithCompletion___block_invoke_3(uint64_t a1)
     v42[3] = &unk_1E76800A0;
     v26 = v23;
     v43 = v26;
-    v44 = self;
+    selfCopy2 = self;
     v45 = v6;
     dispatch_source_set_event_handler(v26, v42);
     dispatch_resume(v26);
@@ -528,18 +528,18 @@ void __36__MPRequest__performWithCompletion___block_invoke_3(uint64_t a1)
   v35[1] = 3221225472;
   v35[2] = __35__MPRequest_performWithCompletion___block_invoke_84;
   v35[3] = &unk_1E767A600;
-  v40 = v5;
+  v40 = completionCopy;
   v41 = a2;
   v35[4] = self;
   v27 = v6;
   v36 = v27;
   v37 = v16;
   v38 = v26;
-  v39 = v7;
-  v28 = v7;
+  v39 = date;
+  v28 = date;
   v29 = v26;
   v30 = v16;
-  v31 = v5;
+  v31 = completionCopy;
   [v27 prepareForResponseWithCompletion:v35];
   v32 = v39;
   v33 = v27;
@@ -780,15 +780,15 @@ void __35__MPRequest_performWithCompletion___block_invoke_3(uint64_t a1, void *a
   (*(*(a1 + 72) + 16))();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(MPRequest *)self label];
-  v6 = [v5 copy];
+  label = [(MPRequest *)self label];
+  v6 = [label copy];
   [v4 setLabel:v6];
 
-  v7 = [(MPRequest *)self middlewareClasses];
-  v8 = [v7 copy];
+  middlewareClasses = [(MPRequest *)self middlewareClasses];
+  v8 = [middlewareClasses copy];
   [v4 setMiddlewareClasses:v8];
 
   [v4 setQualityOfService:{-[MPRequest qualityOfService](self, "qualityOfService")}];
@@ -802,11 +802,11 @@ void __35__MPRequest_performWithCompletion___block_invoke_3(uint64_t a1, void *a
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"MPRequest.m" lineNumber:26 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPRequest class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRequest.m" lineNumber:26 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPRequest class]"}];
   }
 
   return objc_opt_class();

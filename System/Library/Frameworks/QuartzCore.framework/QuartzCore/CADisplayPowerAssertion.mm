@@ -1,7 +1,7 @@
 @interface CADisplayPowerAssertion
-- (id)_initWithDisplayId:(unsigned int)a3 reason:(int64_t)a4 identifier:(id)a5;
+- (id)_initWithDisplayId:(unsigned int)id reason:(int64_t)reason identifier:(id)identifier;
 - (id)description;
-- (void)_acquireAndWait:(BOOL)a3;
+- (void)_acquireAndWait:(BOOL)wait;
 - (void)_ensureValid;
 - (void)cancel;
 - (void)dealloc;
@@ -69,9 +69,9 @@
   self->_active = 0;
 }
 
-- (void)_acquireAndWait:(BOOL)a3
+- (void)_acquireAndWait:(BOOL)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v19 = *MEMORY[0x1E69E9840];
   [(CADisplayPowerAssertion *)self _ensureValid];
   if (self->_active)
@@ -84,7 +84,7 @@
   v7 = getpid();
   client_port = self->_client_port;
   reason = self->_reason;
-  if (v3)
+  if (waitCopy)
   {
     memset(&msg[4], 0, 32);
     *&msg[24] = 1;
@@ -152,12 +152,12 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
-  [v3 appendFormat:@"active: %i, invalidated: %i, reason: %@, identifier: %@", self->_active, self->_invalidated, NSStringFromCADisplayPowerAssertionReason(self->_reason), self->_identifier];
-  [v3 appendString:@">"];
-  return v3;
+  [string appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
+  [string appendFormat:@"active: %i, invalidated: %i, reason: %@, identifier: %@", self->_active, self->_invalidated, NSStringFromCADisplayPowerAssertionReason(self->_reason), self->_identifier];
+  [string appendString:@">"];
+  return string;
 }
 
 - (void)dealloc
@@ -182,7 +182,7 @@
   [(CADisplayPowerAssertion *)&v5 dealloc];
 }
 
-- (id)_initWithDisplayId:(unsigned int)a3 reason:(int64_t)a4 identifier:(id)a5
+- (id)_initWithDisplayId:(unsigned int)id reason:(int64_t)reason identifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -191,9 +191,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_display_id = a3;
-    v8->_reason = a4;
-    v8->_identifier = [a5 copy];
+    v8->_display_id = id;
+    v8->_reason = reason;
+    v8->_identifier = [identifier copy];
     ServerPort = CARenderServerGetServerPort(0);
     v9->_server_port = ServerPort;
     if (ServerPort)

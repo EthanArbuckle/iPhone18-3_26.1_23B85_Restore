@@ -1,9 +1,9 @@
 @interface ICDPlaybackPositionSyncCoordinator
-- (ICDPlaybackPositionSyncCoordinator)initWithOperationQueue:(id)a3;
-- (void)_onQueue_addSyncBlockWithIdentifier:(id)a3 block:(id)a4;
+- (ICDPlaybackPositionSyncCoordinator)initWithOperationQueue:(id)queue;
+- (void)_onQueue_addSyncBlockWithIdentifier:(id)identifier block:(id)block;
 - (void)_onQueue_flushSyncBlocks;
-- (void)_onQueue_scheduleBlockWithIdentifier:(id)a3 isCheckpoint:(BOOL)a4 block:(id)a5;
-- (void)scheduleSyncForContext:(id)a3 isCheckpoint:(BOOL)a4;
+- (void)_onQueue_scheduleBlockWithIdentifier:(id)identifier isCheckpoint:(BOOL)checkpoint block:(id)block;
+- (void)scheduleSyncForContext:(id)context isCheckpoint:(BOOL)checkpoint;
 @end
 
 @implementation ICDPlaybackPositionSyncCoordinator
@@ -11,13 +11,13 @@
 - (void)_onQueue_flushSyncBlocks
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(NSMutableDictionary *)self->_pendingSyncBlocks allValues];
+  allValues = [(NSMutableDictionary *)self->_pendingSyncBlocks allValues];
   [(NSMutableDictionary *)self->_pendingSyncBlocks removeAllObjects];
   v4 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Flushing sync blocks", buf, 0xCu);
   }
 
@@ -25,7 +25,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v3;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -53,13 +53,13 @@
   }
 }
 
-- (void)_onQueue_scheduleBlockWithIdentifier:(id)a3 isCheckpoint:(BOOL)a4 block:(id)a5
+- (void)_onQueue_scheduleBlockWithIdentifier:(id)identifier isCheckpoint:(BOOL)checkpoint block:(id)block
 {
   serialQueue = self->_serialQueue;
-  v9 = a5;
-  v10 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(serialQueue);
-  [(ICDPlaybackPositionSyncCoordinator *)self _onQueue_addSyncBlockWithIdentifier:v10 block:v9];
+  [(ICDPlaybackPositionSyncCoordinator *)self _onQueue_addSyncBlockWithIdentifier:identifierCopy block:blockCopy];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -67,7 +67,7 @@
   v20[3] = &unk_1001DF578;
   v20[4] = self;
   v11 = objc_retainBlock(v20);
-  if (a4)
+  if (checkpoint)
   {
     syncTimerSource = self->_syncTimerSource;
     v13 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
@@ -77,7 +77,7 @@
       if (v14)
       {
         *buf = 138543618;
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2048;
         v24 = 0x4024000000000000;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ New checkpoint sync request. Delaying sync by %f seconds", buf, 0x16u);
@@ -91,7 +91,7 @@
     else if (v14)
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2048;
       v24 = 0x4024000000000000;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Scheduling sync %f seconds from now...", buf, 0x16u);
@@ -114,7 +114,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing sync NOW.", buf, 0xCu);
     }
 
@@ -122,12 +122,12 @@
   }
 }
 
-- (void)_onQueue_addSyncBlockWithIdentifier:(id)a3 block:(id)a4
+- (void)_onQueue_addSyncBlockWithIdentifier:(id)identifier block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v8 = [(NSMutableDictionary *)self->_pendingSyncBlocks objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_pendingSyncBlocks objectForKeyedSubscript:identifierCopy];
 
   v9 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -136,9 +136,9 @@
     if (v10)
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Sync already pending with identifier %{public}@.", &v11, 0x16u);
     }
   }
@@ -148,35 +148,35 @@
     if (v10)
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding pending sync block for identifier %{public}@.", &v11, 0x16u);
     }
 
-    v9 = objc_retainBlock(v7);
-    [(NSMutableDictionary *)self->_pendingSyncBlocks setObject:v9 forKeyedSubscript:v6];
+    v9 = objc_retainBlock(blockCopy);
+    [(NSMutableDictionary *)self->_pendingSyncBlocks setObject:v9 forKeyedSubscript:identifierCopy];
   }
 }
 
-- (void)scheduleSyncForContext:(id)a3 isCheckpoint:(BOOL)a4
+- (void)scheduleSyncForContext:(id)context isCheckpoint:(BOOL)checkpoint
 {
-  v6 = a3;
+  contextCopy = context;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A350;
   block[3] = &unk_1001DB9F8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = contextCopy;
+  selfCopy = self;
+  checkpointCopy = checkpoint;
+  v8 = contextCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (ICDPlaybackPositionSyncCoordinator)initWithOperationQueue:(id)a3
+- (ICDPlaybackPositionSyncCoordinator)initWithOperationQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = ICDPlaybackPositionSyncCoordinator;
   v6 = [(ICDPlaybackPositionSyncCoordinator *)&v16 init];
@@ -194,9 +194,9 @@
     inFlightSyncIDs = v6->_inFlightSyncIDs;
     v6->_inFlightSyncIDs = v11;
 
-    if (v5)
+    if (queueCopy)
     {
-      objc_storeStrong(&v6->_operationQueue, a3);
+      objc_storeStrong(&v6->_operationQueue, queue);
     }
 
     else

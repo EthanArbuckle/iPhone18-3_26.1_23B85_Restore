@@ -1,61 +1,61 @@
 @interface BKCollection
-+ (BKCollection)collectionWithID:(id)a3 inManagedObjectContext:(id)a4;
-+ (BOOL)allowsManualAdditionToCollectionWithID:(id)a3;
-+ (BOOL)isDefaultCollection:(id)a3;
-+ (BOOL)isSelectableDefaultCollectionID:(id)a3;
-+ (BOOL)isValidForDeserialization:(id)a3;
-+ (BOOL)shouldSyncCollectionID:(id)a3;
++ (BKCollection)collectionWithID:(id)d inManagedObjectContext:(id)context;
++ (BOOL)allowsManualAdditionToCollectionWithID:(id)d;
++ (BOOL)isDefaultCollection:(id)collection;
++ (BOOL)isSelectableDefaultCollectionID:(id)d;
++ (BOOL)isValidForDeserialization:(id)deserialization;
++ (BOOL)shouldSyncCollectionID:(id)d;
 + (id)availableDefaultCollectionIDs;
 + (id)availableDefaultCollectionIDsForOS;
 + (id)availableSelectableDefaultCollectionIDsForOS;
-+ (id)contentTypesForDefaultCollectionWithID:(id)a3;
-+ (id)insertNewCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4;
++ (id)contentTypesForDefaultCollectionWithID:(id)d;
++ (id)insertNewCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context;
 + (id)mapContentTypeToDefaultCollectionIDForOS;
 + (id)predicateForAllDefaultCollections;
 + (id)predicateForDeletedDefaultCollections;
 + (id)predicateForSelectableDefaultCollections;
-+ (id)seriesIDFromSeriesCollectionID:(id)a3;
-+ (unint64_t)defaultSortModeForCollectionID:(id)a3;
-+ (unint64_t)defaultViewModeForCollectionID:(id)a3;
++ (id)seriesIDFromSeriesCollectionID:(id)d;
++ (unint64_t)defaultSortModeForCollectionID:(id)d;
++ (unint64_t)defaultViewModeForCollectionID:(id)d;
 + (unint64_t)sortModeForSeriesCollections;
-+ (void)addCollections:(id)a3 moc:(id)a4;
-+ (void)cleanupDefaultCollections:(id)a3;
-+ (void)setSortModeForSeriesCollections:(unint64_t)a3;
++ (void)addCollections:(id)collections moc:(id)moc;
++ (void)cleanupDefaultCollections:(id)collections;
++ (void)setSortModeForSeriesCollections:(unint64_t)collections;
 - (BKLibraryManagedObjectContext)managedObjectContext;
-- (BOOL)acceptsContentType:(signed __int16)a3;
+- (BOOL)acceptsContentType:(signed __int16)type;
 - (BOOL)allowsManualAddition;
-- (BOOL)canDeleteLibraryAsset:(id)a3;
+- (BOOL)canDeleteLibraryAsset:(id)asset;
 - (BOOL)deleteRemovesFromCollection;
 - (BOOL)isDefaultCollection;
-- (BOOL)isEqualToCollection:(id)a3;
+- (BOOL)isEqualToCollection:(id)collection;
 - (BOOL)isValidForSerialization;
 - (BOOL)shouldSyncCollectionMembers;
 - (NSNumber)maxSortKey;
 - (NSString)debugDescription;
 - (NSString)description;
 - (OS_dispatch_queue)sortKeyQueue;
-- (id)addCollectionMemberAvoidingDupesWithAsset:(id)a3 assetID:(id)a4 temporaryAssetID:(id)a5 sortKey:(id)a6 forceToTop:(BOOL)a7;
+- (id)addCollectionMemberAvoidingDupesWithAsset:(id)asset assetID:(id)d temporaryAssetID:(id)iD sortKey:(id)key forceToTop:(BOOL)top;
 - (id)collectionDetailRepresentation;
 - (id)contentTypePredicate;
 - (unint64_t)resolvedSortMode;
 - (unint64_t)resolvedViewMode;
-- (void)addLibraryAssets:(id)a3;
-- (void)addLibraryAssets:(id)a3 hideAssets:(BOOL)a4 inManagedObjectContext:(id)a5 forceToTop:(BOOL)a6;
+- (void)addLibraryAssets:(id)assets;
+- (void)addLibraryAssets:(id)assets hideAssets:(BOOL)hideAssets inManagedObjectContext:(id)context forceToTop:(BOOL)top;
 - (void)awakeFromInsert;
 - (void)clearMaxSortKey;
-- (void)configureFromBackupSummary:(id)a3;
-- (void)configureFromCollectionDetail:(id)a3 shouldCompareModificationDate:(BOOL)a4;
-- (void)configureFromDictionary:(id)a3;
-- (void)mergeWithDictionaryRepresentation:(id)a3;
-- (void)setDeletedFlag:(id)a3;
-- (void)setHidden:(id)a3;
-- (void)setLocalizedTitle:(id)a3;
-- (void)setSortKey:(id)a3;
-- (void)setSortMode:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setViewMode:(id)a3;
+- (void)configureFromBackupSummary:(id)summary;
+- (void)configureFromCollectionDetail:(id)detail shouldCompareModificationDate:(BOOL)date;
+- (void)configureFromDictionary:(id)dictionary;
+- (void)mergeWithDictionaryRepresentation:(id)representation;
+- (void)setDeletedFlag:(id)flag;
+- (void)setHidden:(id)hidden;
+- (void)setLocalizedTitle:(id)title;
+- (void)setSortKey:(id)key;
+- (void)setSortMode:(id)mode;
+- (void)setTitle:(id)title;
+- (void)setViewMode:(id)mode;
 - (void)updateLastModification;
-- (void)updateMaxSortKeyWithMember:(id)a3;
+- (void)updateMaxSortKeyWithMember:(id)member;
 @end
 
 @implementation BKCollection
@@ -69,20 +69,20 @@
   [(BKCollection *)self setLastModification:v3];
 }
 
-+ (id)insertNewCollectionWithCollectionID:(id)a3 inManagedObjectContext:(id)a4
++ (id)insertNewCollectionWithCollectionID:(id)d inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 libraryManager];
-  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"BKCollection" inManagedObjectContext:v6];
-  if (!v5)
+  dCopy = d;
+  contextCopy = context;
+  libraryManager = [contextCopy libraryManager];
+  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"BKCollection" inManagedObjectContext:contextCopy];
+  if (!dCopy)
   {
-    v5 = +[NSString UUID];
+    dCopy = +[NSString UUID];
   }
 
-  v9 = [v7 copyNextCollectionSortKey:v6];
+  v9 = [libraryManager copyNextCollectionSortKey:contextCopy];
   [v8 setSortKey:v9];
-  [v8 setCollectionID:v5];
+  [v8 setCollectionID:dCopy];
   v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 resolvedSortMode]);
   [v8 setSortMode:v10];
 
@@ -95,11 +95,11 @@
 {
   v2 = +[BKLibraryManager defaultManager];
   v3 = [v2 metadataObjectForKey:@"BKCollectionSeriesSortMode"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if ((v4 - 11) >= 0xFFFFFFFE)
+  if ((intValue - 11) >= 0xFFFFFFFE)
   {
-    return v4;
+    return intValue;
   }
 
   else
@@ -108,36 +108,36 @@
   }
 }
 
-+ (void)setSortModeForSeriesCollections:(unint64_t)a3
++ (void)setSortModeForSeriesCollections:(unint64_t)collections
 {
-  if (a3 - 9 <= 1)
+  if (collections - 9 <= 1)
   {
     v6 = +[BKLibraryManager defaultManager];
-    v5 = [NSNumber numberWithUnsignedInteger:a3];
+    v5 = [NSNumber numberWithUnsignedInteger:collections];
     [v6 setMetadataObject:v5 forKey:@"BKCollectionSeriesSortMode"];
 
     [v6 saveMetaData];
   }
 }
 
-+ (BKCollection)collectionWithID:(id)a3 inManagedObjectContext:(id)a4
++ (BKCollection)collectionWithID:(id)d inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  contextCopy = context;
   v7 = [[NSFetchRequest alloc] initWithEntityName:@"BKCollection"];
   [v7 setFetchLimit:1];
-  v23 = v5;
+  v23 = dCopy;
   v8 = [NSArray arrayWithObjects:&v23 count:1];
   v9 = [BKCollection predicateForCollectionWithCollectionIDInList:v8];
   [v7 setPredicate:v9];
 
   v16 = 0;
-  v10 = [v6 executeFetchRequest:v7 error:&v16];
+  v10 = [contextCopy executeFetchRequest:v7 error:&v16];
 
   v11 = v16;
   if (v10)
   {
-    v12 = [v10 lastObject];
+    lastObject = [v10 lastObject];
   }
 
   else
@@ -158,24 +158,24 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = v5;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "@Failed to fetch LibraryAsset with AssetID {%@}{%@}", buf, 0x16u);
     }
 
-    v12 = 0;
+    lastObject = 0;
   }
 
-  return v12;
+  return lastObject;
 }
 
-- (void)addLibraryAssets:(id)a3 hideAssets:(BOOL)a4 inManagedObjectContext:(id)a5 forceToTop:(BOOL)a6
+- (void)addLibraryAssets:(id)assets hideAssets:(BOOL)hideAssets inManagedObjectContext:(id)context forceToTop:(BOOL)top
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(BKCollection *)self collectionID];
-  v13 = [v12 isEqualToString:kBKCollectionDefaultIDWantToRead];
+  assetsCopy = assets;
+  contextCopy = context;
+  collectionID = [(BKCollection *)self collectionID];
+  v13 = [collectionID isEqualToString:kBKCollectionDefaultIDWantToRead];
 
   if (v13)
   {
@@ -183,27 +183,27 @@
     [v14 postNotificationName:@"BKLibraryAssetAddToWTRCollectionNotification" object:self userInfo:0];
   }
 
-  [v11 setSaveContext:2];
-  if (v11 && [v10 count])
+  [contextCopy setSaveContext:2];
+  if (contextCopy && [assetsCopy count])
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_52C40;
     v15[3] = &unk_D69D8;
-    v16 = v11;
-    v19 = a4;
-    v17 = v10;
-    v18 = self;
-    v20 = a6;
+    v16 = contextCopy;
+    hideAssetsCopy = hideAssets;
+    v17 = assetsCopy;
+    selfCopy = self;
+    topCopy = top;
     _os_activity_initiate(&dword_0, "Collection add library assets", OS_ACTIVITY_FLAG_DEFAULT, v15);
   }
 }
 
-- (void)addLibraryAssets:(id)a3
+- (void)addLibraryAssets:(id)assets
 {
-  v8 = a3;
-  v4 = [(BKCollection *)self collectionID];
-  v5 = [v4 isEqualToString:kBKCollectionDefaultIDWantToRead];
+  assetsCopy = assets;
+  collectionID = [(BKCollection *)self collectionID];
+  v5 = [collectionID isEqualToString:kBKCollectionDefaultIDWantToRead];
 
   if (v5)
   {
@@ -211,13 +211,13 @@
     [v6 postNotificationName:@"BKLibraryAssetAddToWTRCollectionNotification" object:self userInfo:0];
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v7 = [(BKCollection *)self managedObjectContext];
-    [(BKCollection *)self addLibraryAssets:v8 hideAssets:0 inManagedObjectContext:v7 forceToTop:0];
-    if ([v7 hasChanges])
+    managedObjectContext = [(BKCollection *)self managedObjectContext];
+    [(BKCollection *)self addLibraryAssets:assetsCopy hideAssets:0 inManagedObjectContext:managedObjectContext forceToTop:0];
+    if ([managedObjectContext hasChanges])
     {
-      [v7 saveLibrary];
+      [managedObjectContext saveLibrary];
     }
   }
 }
@@ -242,14 +242,14 @@
   v10 = sub_53280;
   v11 = sub_53290;
   v12 = 0;
-  v3 = [(BKCollection *)self sortKeyQueue];
+  sortKeyQueue = [(BKCollection *)self sortKeyQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_53298;
   v6[3] = &unk_D6410;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(sortKeyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -259,52 +259,52 @@
 
 - (void)clearMaxSortKey
 {
-  v3 = [(BKCollection *)self sortKeyQueue];
+  sortKeyQueue = [(BKCollection *)self sortKeyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_534A4;
   block[3] = &unk_D5528;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(sortKeyQueue, block);
 }
 
-- (void)updateMaxSortKeyWithMember:(id)a3
+- (void)updateMaxSortKeyWithMember:(id)member
 {
-  v4 = a3;
-  v5 = [(BKCollection *)self sortKeyQueue];
+  memberCopy = member;
+  sortKeyQueue = [(BKCollection *)self sortKeyQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_53570;
   v7[3] = &unk_D5420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = memberCopy;
+  selfCopy = self;
+  v6 = memberCopy;
+  dispatch_sync(sortKeyQueue, v7);
 }
 
-- (id)addCollectionMemberAvoidingDupesWithAsset:(id)a3 assetID:(id)a4 temporaryAssetID:(id)a5 sortKey:(id)a6 forceToTop:(BOOL)a7
+- (id)addCollectionMemberAvoidingDupesWithAsset:(id)asset assetID:(id)d temporaryAssetID:(id)iD sortKey:(id)key forceToTop:(BOOL)top
 {
-  v56 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  topCopy = top;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  keyCopy = key;
   v15 = +[BULogUtilities shared];
-  v16 = [v15 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v15 verboseLoggingEnabled];
 
-  if (v16)
+  if (verboseLoggingEnabled)
   {
     v17 = BKLibraryCollectionDevelopmentLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(BKCollection *)self collectionID];
-      v19 = [v11 assetID];
-      v20 = self;
-      v21 = v19;
+      collectionID = [(BKCollection *)self collectionID];
+      assetID = [assetCopy assetID];
+      selfCopy = self;
+      v21 = assetID;
       v22 = @"null";
-      if (v19)
+      if (assetID)
       {
-        v23 = v19;
+        v23 = assetID;
       }
 
       else
@@ -313,11 +313,11 @@
       }
 
       *buf = 138412802;
-      v64 = v18;
+      v64 = collectionID;
       v65 = 2112;
-      if (v12)
+      if (dCopy)
       {
-        v22 = v12;
+        v22 = dCopy;
       }
 
       v66 = v23;
@@ -325,16 +325,16 @@
       v68 = v22;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "\\addCollectionMemberAvoidingDupesWithAsset for collectionID: %@ asset.assetID: %@ assetID: %@\\"", buf, 0x20u);
 
-      self = v20;
+      self = selfCopy;
     }
   }
 
-  if (![(__CFString *)v12 length])
+  if (![(__CFString *)dCopy length])
   {
-    v33 = [v11 permlink];
-    if ([v33 length])
+    permlink = [assetCopy permlink];
+    if ([permlink length])
     {
-      v34 = [(__CFString *)v13 length];
+      v34 = [(__CFString *)iDCopy length];
 
       if (v34)
       {
@@ -351,37 +351,37 @@
   }
 
 LABEL_11:
-  v57 = v14;
+  v57 = keyCopy;
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v24 = [(BKCollection *)self members];
-  v25 = [v24 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  members = [(BKCollection *)self members];
+  v25 = [members countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v25)
   {
     v26 = v25;
     v27 = *v59;
-    v54 = self;
-    v55 = v11;
+    selfCopy2 = self;
+    v55 = assetCopy;
 LABEL_13:
     v28 = 0;
     while (1)
     {
       if (*v59 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(members);
       }
 
       v29 = *(*(&v58 + 1) + 8 * v28);
-      v30 = [v29 assetID];
-      if ([v30 isEqualToString:v12])
+      assetID2 = [v29 assetID];
+      if ([assetID2 isEqualToString:dCopy])
       {
         break;
       }
 
-      v31 = [v29 temporaryAssetID];
-      v32 = [v31 isEqualToString:v13];
+      temporaryAssetID = [v29 temporaryAssetID];
+      v32 = [temporaryAssetID isEqualToString:iDCopy];
 
       if (v32)
       {
@@ -390,9 +390,9 @@ LABEL_13:
 
       if (v26 == ++v28)
       {
-        v26 = [v24 countByEnumeratingWithState:&v58 objects:v62 count:16];
-        self = v54;
-        v11 = v55;
+        v26 = [members countByEnumeratingWithState:&v58 objects:v62 count:16];
+        self = selfCopy2;
+        assetCopy = v55;
         if (v26)
         {
           goto LABEL_13;
@@ -405,8 +405,8 @@ LABEL_13:
 LABEL_25:
     v35 = v29;
 
-    self = v54;
-    v11 = v55;
+    self = selfCopy2;
+    assetCopy = v55;
     if (v35)
     {
       goto LABEL_29;
@@ -418,85 +418,85 @@ LABEL_25:
 LABEL_20:
   }
 
-  v36 = [(BKCollection *)self managedObjectContext];
-  v35 = [NSEntityDescription insertNewObjectForEntityForName:@"BKCollectionMember" inManagedObjectContext:v36];
+  managedObjectContext = [(BKCollection *)self managedObjectContext];
+  v35 = [NSEntityDescription insertNewObjectForEntityForName:@"BKCollectionMember" inManagedObjectContext:managedObjectContext];
 
   [v35 setCollection:self];
-  [v35 setAssetID:v12];
-  [v35 setTemporaryAssetID:v13];
+  [v35 setAssetID:dCopy];
+  [v35 setTemporaryAssetID:iDCopy];
   v37 = BKLibraryCollectionLog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
-    v38 = [(BKCollection *)self collectionID];
+    collectionID2 = [(BKCollection *)self collectionID];
     *buf = 138412546;
-    v64 = v38;
+    v64 = collectionID2;
     v65 = 2112;
-    v66 = v12;
+    v66 = dCopy;
     _os_log_impl(&dword_0, v37, OS_LOG_TYPE_INFO, "Collection Member Inserted.  Creating BKCollectionMember for collectionID: %@ assetID: %@", buf, 0x16u);
   }
 
 LABEL_29:
-  v39 = [v35 asset];
-  if (v39)
+  asset = [v35 asset];
+  if (asset)
   {
 
-    v14 = v57;
+    keyCopy = v57;
     if (!v35)
     {
       goto LABEL_48;
     }
 
 LABEL_40:
-    v42 = [v35 sortKey];
-    if (!v42 || (v43 = v42, [v35 sortKey], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "unsignedLongValue"), v44, v43, !v45) || v56)
+    sortKey = [v35 sortKey];
+    if (!sortKey || (v43 = sortKey, [v35 sortKey], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "unsignedLongValue"), v44, v43, !v45) || topCopy)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![v14 unsignedLongValue] || v56)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![keyCopy unsignedLongValue] || topCopy)
       {
         v46 = [BKUserSortOrderManager nextSortKeyForCollection:self];
 
-        v14 = v46;
+        keyCopy = v46;
       }
 
-      [v35 setDifferentNumber:v14 forKey:@"sortKey"];
+      [v35 setDifferentNumber:keyCopy forKey:@"sortKey"];
     }
 
     goto LABEL_48;
   }
 
-  v40 = [v35 assetID];
-  v14 = v57;
-  if (v40)
+  assetID3 = [v35 assetID];
+  keyCopy = v57;
+  if (assetID3)
   {
   }
 
   else
   {
-    v41 = [v35 temporaryAssetID];
+    temporaryAssetID2 = [v35 temporaryAssetID];
 
-    if (!v41)
+    if (!temporaryAssetID2)
     {
       goto LABEL_39;
     }
   }
 
-  if (!v11)
+  if (!assetCopy)
   {
-    v48 = [(BKCollection *)self managedObjectContext];
-    v49 = [v48 libraryManager];
-    if (v12)
+    managedObjectContext2 = [(BKCollection *)self managedObjectContext];
+    libraryManager = [managedObjectContext2 libraryManager];
+    if (dCopy)
     {
-      v50 = v12;
+      v50 = dCopy;
     }
 
     else
     {
-      v50 = v13;
+      v50 = iDCopy;
     }
 
     [(BKCollection *)self managedObjectContext];
     v52 = v51 = self;
-    v53 = [v49 libraryMutableAssetWithPermanentOrTemporaryAssetID:v50 inManagedObjectContext:v52];
+    v53 = [libraryManager libraryMutableAssetWithPermanentOrTemporaryAssetID:v50 inManagedObjectContext:v52];
     [v35 setAsset:v53];
 
     self = v51;
@@ -508,7 +508,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  [v35 setAsset:v11];
+  [v35 setAsset:assetCopy];
 LABEL_39:
   if (v35)
   {
@@ -523,24 +523,24 @@ LABEL_49:
   return v35;
 }
 
-- (BOOL)acceptsContentType:(signed __int16)a3
+- (BOOL)acceptsContentType:(signed __int16)type
 {
-  v3 = a3;
-  v4 = [(BKCollection *)self collectionID];
-  if ([v4 isEqualToString:kBKCollectionDefaultIDBooks])
+  typeCopy = type;
+  collectionID = [(BKCollection *)self collectionID];
+  if ([collectionID isEqualToString:kBKCollectionDefaultIDBooks])
   {
-    v6 = v3 == 4 || (v3 - 1) < 2;
+    v6 = typeCopy == 4 || (typeCopy - 1) < 2;
   }
 
-  else if ([v4 isEqualToString:kBKCollectionDefaultIDPDFs])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDPDFs])
   {
-    v6 = v3 == 3;
+    v6 = typeCopy == 3;
   }
 
   else
   {
-    v7 = [v4 isEqualToString:kBKCollectionDefaultIDAudiobooks] ^ 1;
-    if (v3 == 6)
+    v7 = [collectionID isEqualToString:kBKCollectionDefaultIDAudiobooks] ^ 1;
+    if (typeCopy == 6)
     {
       v6 = 1;
     }
@@ -554,14 +554,14 @@ LABEL_49:
   return v6;
 }
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(BKCollection *)self collectionID];
-  v6 = [v4 collectionID];
+  collectionCopy = collection;
+  collectionID = [(BKCollection *)self collectionID];
+  collectionID2 = [collectionCopy collectionID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(collectionCopy) = [collectionID isEqualToString:collectionID2];
+  return collectionCopy;
 }
 
 - (void)updateLastModification
@@ -575,42 +575,42 @@ LABEL_49:
 
 + (id)predicateForAllDefaultCollections
 {
-  v3 = [a1 availableDefaultCollectionIDsForOS];
-  v4 = [a1 predicateForCollectionWithCollectionIDInList:v3];
+  availableDefaultCollectionIDsForOS = [self availableDefaultCollectionIDsForOS];
+  v4 = [self predicateForCollectionWithCollectionIDInList:availableDefaultCollectionIDsForOS];
 
   return v4;
 }
 
 + (id)predicateForSelectableDefaultCollections
 {
-  v3 = [a1 availableSelectableDefaultCollectionIDsForOS];
-  v4 = [a1 predicateForCollectionWithCollectionIDInList:v3];
+  availableSelectableDefaultCollectionIDsForOS = [self availableSelectableDefaultCollectionIDsForOS];
+  v4 = [self predicateForCollectionWithCollectionIDInList:availableSelectableDefaultCollectionIDsForOS];
 
   return v4;
 }
 
 + (id)predicateForDeletedDefaultCollections
 {
-  v2 = [a1 availableDefaultCollectionIDsForOS];
-  v3 = [NSPredicate predicateWithFormat:@"(%K in %@) AND %K == 1", @"collectionID", v2, @"deletedFlag"];
+  availableDefaultCollectionIDsForOS = [self availableDefaultCollectionIDsForOS];
+  v3 = [NSPredicate predicateWithFormat:@"(%K in %@) AND %K == 1", @"collectionID", availableDefaultCollectionIDsForOS, @"deletedFlag"];
 
   return v3;
 }
 
-+ (unint64_t)defaultSortModeForCollectionID:(id)a3
++ (unint64_t)defaultSortModeForCollectionID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kBKCollectionDefaultIDFinished])
+  dCopy = d;
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDFinished])
   {
     v5 = 8;
   }
 
-  else if ([v4 isEqualToString:kBKCollectionDefaultIDWantToRead] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", kBKCollectionDefaultIDSamples))
+  else if ([dCopy isEqualToString:kBKCollectionDefaultIDWantToRead] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", kBKCollectionDefaultIDSamples))
   {
     v5 = 6;
   }
 
-  else if ([a1 isSeriesCollectionID:v4])
+  else if ([self isSeriesCollectionID:dCopy])
   {
     v5 = 7;
   }
@@ -623,10 +623,10 @@ LABEL_49:
   return v5;
 }
 
-+ (unint64_t)defaultViewModeForCollectionID:(id)a3
++ (unint64_t)defaultViewModeForCollectionID:(id)d
 {
-  v3 = a3;
-  if (([v3 isEqualToString:kBKCollectionDefaultIDFinished] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", kBKCollectionDefaultIDWantToRead) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", kBKCollectionDefaultIDSamples))
+  dCopy = d;
+  if (([dCopy isEqualToString:kBKCollectionDefaultIDFinished] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", kBKCollectionDefaultIDWantToRead) & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", kBKCollectionDefaultIDSamples))
   {
     v4 = 2;
   }
@@ -639,33 +639,33 @@ LABEL_49:
   return v4;
 }
 
-- (void)setSortKey:(id)a3
+- (void)setSortKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(BKCollection *)self willChangeValueForKey:@"sortKey"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"sortKey"];
+  [(BKCollection *)self setPrimitiveValue:keyCopy forKey:@"sortKey"];
 
   [(BKCollection *)self updateLastModification];
 
   [(BKCollection *)self didChangeValueForKey:@"sortKey"];
 }
 
-- (void)setSortMode:(id)a3
+- (void)setSortMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   [(BKCollection *)self willChangeValueForKey:@"sortMode"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"sortMode"];
+  [(BKCollection *)self setPrimitiveValue:modeCopy forKey:@"sortMode"];
 
   [(BKCollection *)self updateLastModification];
 
   [(BKCollection *)self didChangeValueForKey:@"sortMode"];
 }
 
-- (void)setViewMode:(id)a3
+- (void)setViewMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   [(BKCollection *)self willChangeValueForKey:@"viewMode"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"viewMode"];
+  [(BKCollection *)self setPrimitiveValue:modeCopy forKey:@"viewMode"];
 
   [(BKCollection *)self updateLastModification];
 
@@ -674,46 +674,46 @@ LABEL_49:
 
 - (unint64_t)resolvedSortMode
 {
-  v3 = [(BKCollection *)self sortMode];
-  v4 = v3;
-  if (v3)
+  sortMode = [(BKCollection *)self sortMode];
+  v4 = sortMode;
+  if (sortMode)
   {
-    v5 = [v3 intValue];
+    intValue = [sortMode intValue];
   }
 
   else
   {
-    v6 = [(BKCollection *)self collectionID];
-    v5 = [BKCollection defaultSortModeForCollectionID:v6];
+    collectionID = [(BKCollection *)self collectionID];
+    intValue = [BKCollection defaultSortModeForCollectionID:collectionID];
   }
 
-  return v5;
+  return intValue;
 }
 
 - (unint64_t)resolvedViewMode
 {
-  v3 = [(BKCollection *)self viewMode];
-  v4 = v3;
-  if (v3)
+  viewMode = [(BKCollection *)self viewMode];
+  v4 = viewMode;
+  if (viewMode)
   {
-    v5 = [v3 intValue];
+    intValue = [viewMode intValue];
   }
 
   else
   {
-    v6 = [(BKCollection *)self collectionID];
-    v5 = [BKCollection defaultViewModeForCollectionID:v6];
+    collectionID = [(BKCollection *)self collectionID];
+    intValue = [BKCollection defaultViewModeForCollectionID:collectionID];
   }
 
-  return v5;
+  return intValue;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(BKCollection *)self willChangeValueForKey:@"title"];
   [(BKCollection *)self willChangeValueForKey:@"localizedTitle"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"title"];
+  [(BKCollection *)self setPrimitiveValue:titleCopy forKey:@"title"];
 
   [(BKCollection *)self updateLastModification];
   [(BKCollection *)self didChangeValueForKey:@"localizedTitle"];
@@ -721,37 +721,37 @@ LABEL_49:
   [(BKCollection *)self didChangeValueForKey:@"title"];
 }
 
-- (void)setDeletedFlag:(id)a3
+- (void)setDeletedFlag:(id)flag
 {
-  v4 = a3;
+  flagCopy = flag;
   [(BKCollection *)self willChangeValueForKey:@"deletedFlag"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"deletedFlag"];
+  [(BKCollection *)self setPrimitiveValue:flagCopy forKey:@"deletedFlag"];
 
   [(BKCollection *)self updateLastModification];
 
   [(BKCollection *)self didChangeValueForKey:@"deletedFlag"];
 }
 
-- (void)setHidden:(id)a3
+- (void)setHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   [(BKCollection *)self willChangeValueForKey:@"hidden"];
-  [(BKCollection *)self setPrimitiveValue:v4 forKey:@"hidden"];
+  [(BKCollection *)self setPrimitiveValue:hiddenCopy forKey:@"hidden"];
 
   [(BKCollection *)self updateLastModification];
 
   [(BKCollection *)self didChangeValueForKey:@"hidden"];
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_545E0;
   v4[3] = &unk_D5420;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  titleCopy = title;
+  v3 = titleCopy;
   _os_activity_initiate(&dword_0, "Set Collection Title", OS_ACTIVITY_FLAG_DEFAULT, v4);
 }
 
@@ -759,18 +759,18 @@ LABEL_49:
 {
   v4.receiver = self;
   v4.super_class = BKCollection;
-  v2 = [(BKCollection *)&v4 managedObjectContext];
+  managedObjectContext = [(BKCollection *)&v4 managedObjectContext];
 
-  return v2;
+  return managedObjectContext;
 }
 
 - (BOOL)isValidForSerialization
 {
-  v3 = [(BKCollection *)self deletedFlag];
-  if ([v3 BOOLValue])
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  if ([deletedFlag BOOLValue])
   {
-    v4 = [(BKCollection *)self lastModification];
-    [v4 timeIntervalSince1970];
+    lastModification = [(BKCollection *)self lastModification];
+    [lastModification timeIntervalSince1970];
     v6 = v5;
 
     v7 = [IMUserDataCull isTimestampNewerThanMaxDeletedAge:v6];
@@ -784,13 +784,13 @@ LABEL_49:
   return v7;
 }
 
-+ (BOOL)isDefaultCollection:(id)a3
++ (BOOL)isDefaultCollection:(id)collection
 {
-  v3 = [a3 objectForKey:@"serverSyncUniqueId"];
+  v3 = [collection objectForKey:@"serverSyncUniqueId"];
   if (v3)
   {
-    v4 = [objc_opt_class() availableDefaultCollectionIDs];
-    v5 = [v4 containsObject:v3];
+    availableDefaultCollectionIDs = [objc_opt_class() availableDefaultCollectionIDs];
+    v5 = [availableDefaultCollectionIDs containsObject:v3];
   }
 
   else
@@ -801,21 +801,21 @@ LABEL_49:
   return v5;
 }
 
-+ (BOOL)isValidForDeserialization:(id)a3
++ (BOOL)isValidForDeserialization:(id)deserialization
 {
-  v4 = a3;
+  deserializationCopy = deserialization;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"deletedFlag"];
+  v5 = [deserializationCopy objectForKey:@"deletedFlag"];
   v6 = BUDynamicCast();
 
   if ([v6 BOOLValue])
   {
-    v7 = [v4 objectForKey:@"lastModification_Since1970"];
-    v8 = [v7 unsignedLongLongValue];
+    v7 = [deserializationCopy objectForKey:@"lastModification_Since1970"];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-    if ([IMUserDataCull isTimestampNewerThanMaxDeletedAge:v8])
+    if ([IMUserDataCull isTimestampNewerThanMaxDeletedAge:unsignedLongLongValue])
     {
-      v9 = [a1 isDefaultCollection:v4] ^ 1;
+      v9 = [self isDefaultCollection:deserializationCopy] ^ 1;
     }
 
     else
@@ -832,57 +832,57 @@ LABEL_49:
   return v9;
 }
 
-- (void)mergeWithDictionaryRepresentation:(id)a3
+- (void)mergeWithDictionaryRepresentation:(id)representation
 {
-  v11 = a3;
+  representationCopy = representation;
   [(BKCollection *)self clearMaxSortKey];
-  v4 = [v11 objectForKey:@"lastModification_Since1970"];
+  v4 = [representationCopy objectForKey:@"lastModification_Since1970"];
   v5 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v4 unsignedLongLongValue]);
 
-  v6 = [v11 objectForKey:@"deletedFlag"];
-  v7 = [(BKCollection *)self deletedFlag];
-  v8 = [v7 BOOLValue];
+  v6 = [representationCopy objectForKey:@"deletedFlag"];
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  bOOLValue = [deletedFlag BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if ([v6 BOOLValue])
     {
-      [BKCollection isDefaultCollection:v11];
+      [BKCollection isDefaultCollection:representationCopy];
     }
 
     else
     {
-      v9 = [(BKCollection *)self lastModification];
-      v10 = [v5 compare:v9];
+      lastModification = [(BKCollection *)self lastModification];
+      v10 = [v5 compare:lastModification];
 
       if (v10 == &dword_0 + 1)
       {
-        [(BKCollection *)self configureFromDictionary:v11];
+        [(BKCollection *)self configureFromDictionary:representationCopy];
       }
     }
   }
 }
 
-+ (void)cleanupDefaultCollections:(id)a3
++ (void)cleanupDefaultCollections:(id)collections
 {
-  v3 = a3;
+  collectionsCopy = collections;
   v4 = +[BKCollection predicateForDeletedDefaultCollections];
-  [v3 batchDeleteEntity:@"BKCollection" matching:v4 prefetchRelationships:0];
+  [collectionsCopy batchDeleteEntity:@"BKCollection" matching:v4 prefetchRelationships:0];
 }
 
-- (void)configureFromDictionary:(id)a3
+- (void)configureFromDictionary:(id)dictionary
 {
-  v9 = a3;
+  dictionaryCopy = dictionary;
   [(BKCollection *)self configureFromBackupSummary:?];
-  v4 = [(BKCollection *)self deletedFlag];
-  if ([v4 BOOLValue])
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  if ([deletedFlag BOOLValue])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v9 objectForKey:@"databaseKeys"];
+    v5 = [dictionaryCopy objectForKey:@"databaseKeys"];
   }
 
   if ([v5 count])
@@ -891,63 +891,63 @@ LABEL_49:
     [(BKCollection *)self addCollectionMemberDictionaries:v6 forceToTop:0];
   }
 
-  v7 = [v9 objectForKey:@"lastModification_Since1970"];
+  v7 = [dictionaryCopy objectForKey:@"lastModification_Since1970"];
   v8 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v7 unsignedLongLongValue]);
   [(BKCollection *)self setLastModification:v8];
 }
 
 - (id)collectionDetailRepresentation
 {
-  v3 = [(BKCollection *)self collectionID];
-  v4 = [[BCMutableCollectionDetail alloc] initWithCollectionID:v3];
-  v5 = [(BKCollection *)self title];
-  [v4 setName:v5];
+  collectionID = [(BKCollection *)self collectionID];
+  v4 = [[BCMutableCollectionDetail alloc] initWithCollectionID:collectionID];
+  title = [(BKCollection *)self title];
+  [v4 setName:title];
 
-  v6 = [(BKCollection *)self details];
-  [v4 setCollectionDescription:v6];
+  details = [(BKCollection *)self details];
+  [v4 setCollectionDescription:details];
 
-  v7 = [(BKCollection *)self hidden];
-  [v4 setHidden:{objc_msgSend(v7, "BOOLValue")}];
+  hidden = [(BKCollection *)self hidden];
+  [v4 setHidden:{objc_msgSend(hidden, "BOOLValue")}];
 
-  v8 = [(BKCollection *)self sortKey];
-  [v4 setSortOrder:{objc_msgSend(v8, "intValue")}];
+  sortKey = [(BKCollection *)self sortKey];
+  [v4 setSortOrder:{objc_msgSend(sortKey, "intValue")}];
 
   v9 = [NSNumber numberWithUnsignedInteger:[(BKCollection *)self resolvedSortMode]];
   [v4 setSortMode:{objc_msgSend(v9, "intValue")}];
 
-  v10 = [(BKCollection *)self deletedFlag];
-  [v4 setDeletedFlag:{objc_msgSend(v10, "BOOLValue")}];
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  [v4 setDeletedFlag:{objc_msgSend(deletedFlag, "BOOLValue")}];
 
-  v11 = [(BKCollection *)self localModDate];
-  [v4 setModificationDate:v11];
+  localModDate = [(BKCollection *)self localModDate];
+  [v4 setModificationDate:localModDate];
 
   return v4;
 }
 
-- (void)configureFromCollectionDetail:(id)a3 shouldCompareModificationDate:(BOOL)a4
+- (void)configureFromCollectionDetail:(id)detail shouldCompareModificationDate:(BOOL)date
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKCollection *)self localModDate];
-  v8 = [v6 modificationDate];
-  v9 = v8;
-  if (v7 | v8)
+  dateCopy = date;
+  detailCopy = detail;
+  localModDate = [(BKCollection *)self localModDate];
+  modificationDate = [detailCopy modificationDate];
+  v9 = modificationDate;
+  if (localModDate | modificationDate)
   {
-    if (!v7 && v8)
+    if (!localModDate && modificationDate)
     {
       v10 = +[BULogUtilities shared];
-      v11 = [v10 verboseLoggingEnabled];
+      verboseLoggingEnabled = [v10 verboseLoggingEnabled];
 
-      if (v11)
+      if (verboseLoggingEnabled)
       {
         v12 = BKLibraryCollectionDevelopmentLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(BKCollection *)self title];
+          title = [(BKCollection *)self title];
           *v47 = 138412546;
           *&v47[4] = v9;
           *&v47[12] = 2112;
-          *&v47[14] = v13;
+          *&v47[14] = title;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "\\No local modDate, collectionDetail has modDate:%@  for collectionDetail %@ \\"", v47, 0x16u);
         }
       }
@@ -955,23 +955,23 @@ LABEL_49:
       goto LABEL_24;
     }
 
-    if (v7 && v8)
+    if (localModDate && modificationDate)
     {
       v18 = +[BULogUtilities shared];
-      v19 = [v18 verboseLoggingEnabled];
+      verboseLoggingEnabled2 = [v18 verboseLoggingEnabled];
 
-      if (v19)
+      if (verboseLoggingEnabled2)
       {
         v20 = BKLibraryCollectionDevelopmentLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(BKCollection *)self title];
+          title2 = [(BKCollection *)self title];
           *v47 = 138412802;
-          *&v47[4] = v7;
+          *&v47[4] = localModDate;
           *&v47[12] = 2112;
           *&v47[14] = v9;
           *&v47[22] = 2112;
-          v48 = v21;
+          v48 = title2;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "\\local has modDate:%@, collectionDetail has modDate:%@ for collectionDetail %@\\"", v47, 0x20u);
         }
       }
@@ -983,48 +983,48 @@ LABEL_49:
   else
   {
     v14 = +[BULogUtilities shared];
-    v15 = [v14 verboseLoggingEnabled];
+    verboseLoggingEnabled3 = [v14 verboseLoggingEnabled];
 
-    if (v15)
+    if (verboseLoggingEnabled3)
     {
       v16 = BKLibraryCollectionDevelopmentLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(BKCollection *)self title];
+        title3 = [(BKCollection *)self title];
         *v47 = 138412290;
-        *&v47[4] = v17;
+        *&v47[4] = title3;
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "\\configureFromCollectionDetail No local modDate, No collectionDetail modDate for collectionDetail %@\\"", v47, 0xCu);
       }
     }
   }
 
-  if (v4 && !v9)
+  if (dateCopy && !v9)
   {
     goto LABEL_39;
   }
 
 LABEL_21:
-  if (v7)
+  if (localModDate)
   {
-    if (v4)
+    if (dateCopy)
     {
       [v9 timeIntervalSinceReferenceDate];
       v23 = v22;
-      [v7 timeIntervalSinceReferenceDate];
+      [localModDate timeIntervalSinceReferenceDate];
       if (v23 <= v24)
       {
         [v9 timeIntervalSinceReferenceDate];
         v43 = v42;
-        [v7 timeIntervalSinceReferenceDate];
+        [localModDate timeIntervalSinceReferenceDate];
         if (v43 >= v44)
         {
           goto LABEL_34;
         }
 
         v45 = +[BULogUtilities shared];
-        v46 = [v45 verboseLoggingEnabled];
+        verboseLoggingEnabled4 = [v45 verboseLoggingEnabled];
 
-        if (!v46)
+        if (!verboseLoggingEnabled4)
         {
           goto LABEL_34;
         }
@@ -1035,12 +1035,12 @@ LABEL_21:
           goto LABEL_33;
         }
 
-        v35 = [(BKCollection *)self title];
-        v36 = [(BKCollection *)self collectionID];
+        title4 = [(BKCollection *)self title];
+        collectionID = [(BKCollection *)self collectionID];
         *v47 = 138412546;
-        *&v47[4] = v35;
+        *&v47[4] = title4;
         *&v47[12] = 2112;
-        *&v47[14] = v36;
+        *&v47[14] = collectionID;
         v37 = "\\BKCollection Not Taking changes from collectiond detail as my mod date is > detail mod date for collectionTitle: %@ collectionID:%@\\"";
         goto LABEL_31;
       }
@@ -1048,32 +1048,32 @@ LABEL_21:
   }
 
 LABEL_24:
-  v25 = [v6 name];
-  [(BKCollection *)self setDifferentString:v25 forKey:@"title"];
+  name = [detailCopy name];
+  [(BKCollection *)self setDifferentString:name forKey:@"title"];
 
-  v26 = [v6 collectionDescription];
-  [(BKCollection *)self setDifferentString:v26 forKey:@"details"];
+  collectionDescription = [detailCopy collectionDescription];
+  [(BKCollection *)self setDifferentString:collectionDescription forKey:@"details"];
 
-  v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 hidden]);
+  v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [detailCopy hidden]);
   [(BKCollection *)self setDifferentNumber:v27 forKey:@"hidden"];
 
-  v28 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sortOrder]);
+  v28 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [detailCopy sortOrder]);
   [(BKCollection *)self setDifferentNumber:v28 forKey:@"sortKey"];
 
-  v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sortMode]);
+  v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [detailCopy sortMode]);
   [(BKCollection *)self setDifferentNumber:v29 forKey:@"sortMode"];
 
-  v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 deletedFlag]);
+  v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [detailCopy deletedFlag]);
   [(BKCollection *)self setDifferentNumber:v30 forKey:@"deletedFlag"];
 
-  v31 = [(BKCollection *)self hasChanges];
+  hasChanges = [(BKCollection *)self hasChanges];
   [(BKCollection *)self setDifferentDate:v9 forKey:@"localModDate"];
   v32 = +[BULogUtilities shared];
-  v33 = [v32 verboseLoggingEnabled];
+  verboseLoggingEnabled5 = [v32 verboseLoggingEnabled];
 
-  if (!v31)
+  if (!hasChanges)
   {
-    if (!v33)
+    if (!verboseLoggingEnabled5)
     {
       goto LABEL_34;
     }
@@ -1084,12 +1084,12 @@ LABEL_24:
       goto LABEL_33;
     }
 
-    v35 = [(BKCollection *)self title];
-    v36 = [(BKCollection *)self collectionID];
+    title4 = [(BKCollection *)self title];
+    collectionID = [(BKCollection *)self collectionID];
     *v47 = 138412546;
-    *&v47[4] = v35;
+    *&v47[4] = title4;
     *&v47[12] = 2112;
-    *&v47[14] = v36;
+    *&v47[14] = collectionID;
     v37 = "\\BKCollection No changes besides date for collectionTitle: %@ collectionID:%@\\"";
 LABEL_31:
     _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, v37, v47, 0x16u);
@@ -1097,14 +1097,14 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (v33)
+  if (verboseLoggingEnabled5)
   {
     v34 = BKLibraryCollectionDevelopmentLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [(BKCollection *)self description];
+      title4 = [(BKCollection *)self description];
       *v47 = 138412290;
-      *&v47[4] = v35;
+      *&v47[4] = title4;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "\\BKCollection configured with changes: %@\\"", v47, 0xCu);
 LABEL_32:
     }
@@ -1114,16 +1114,16 @@ LABEL_33:
 
 LABEL_34:
   v38 = [(BKCollection *)self placeholder:*v47];
-  v39 = [v38 BOOLValue];
+  bOOLValue = [v38 BOOLValue];
 
-  if (v39)
+  if (bOOLValue)
   {
     v40 = BKLibraryCollectionLog();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
-      v41 = [(BKCollection *)self collectionID];
+      collectionID2 = [(BKCollection *)self collectionID];
       *v47 = 138412290;
-      *&v47[4] = v41;
+      *&v47[4] = collectionID2;
       _os_log_impl(&dword_0, v40, OS_LOG_TYPE_INFO, "Un-hiding user collection BKCollection: %@", v47, 0xCu);
     }
   }
@@ -1134,10 +1134,10 @@ LABEL_39:
 
 - (id)contentTypePredicate
 {
-  v2 = [(BKCollection *)self sortKey];
-  v3 = [v2 intValue];
+  sortKey = [(BKCollection *)self sortKey];
+  intValue = [sortKey intValue];
 
-  switch(v3)
+  switch(intValue)
   {
     case 0xFFFFFFFC:
       v4 = 6;
@@ -1161,9 +1161,9 @@ LABEL_10:
 
 - (BOOL)isDefaultCollection
 {
-  v3 = [objc_opt_class() availableDefaultCollectionIDsForOS];
-  v4 = [(BKCollection *)self collectionID];
-  v5 = [v3 containsObject:v4];
+  availableDefaultCollectionIDsForOS = [objc_opt_class() availableDefaultCollectionIDsForOS];
+  collectionID = [(BKCollection *)self collectionID];
+  v5 = [availableDefaultCollectionIDsForOS containsObject:collectionID];
 
   return v5;
 }
@@ -1171,21 +1171,21 @@ LABEL_10:
 - (BOOL)allowsManualAddition
 {
   v3 = objc_opt_class();
-  v4 = [(BKCollection *)self collectionID];
-  LOBYTE(v3) = [v3 allowsManualAdditionToCollectionWithID:v4];
+  collectionID = [(BKCollection *)self collectionID];
+  LOBYTE(v3) = [v3 allowsManualAdditionToCollectionWithID:collectionID];
 
   return v3;
 }
 
-+ (BOOL)allowsManualAdditionToCollectionWithID:(id)a3
++ (BOOL)allowsManualAdditionToCollectionWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [a1 availableDefaultCollectionIDs];
-    if ([v5 containsObject:v4] && (objc_msgSend(v4, "isEqualToString:", kBKCollectionDefaultIDWantToRead) & 1) == 0)
+    availableDefaultCollectionIDs = [self availableDefaultCollectionIDs];
+    if ([availableDefaultCollectionIDs containsObject:dCopy] && (objc_msgSend(dCopy, "isEqualToString:", kBKCollectionDefaultIDWantToRead) & 1) == 0)
     {
-      v6 = [v4 isEqualToString:kBKCollectionDefaultIDFinished];
+      v6 = [dCopy isEqualToString:kBKCollectionDefaultIDFinished];
     }
 
     else
@@ -1204,32 +1204,32 @@ LABEL_10:
 
 - (BOOL)shouldSyncCollectionMembers
 {
-  v2 = [(BKCollection *)self collectionID];
-  v3 = [BKCollection shouldSyncCollectionID:v2];
+  collectionID = [(BKCollection *)self collectionID];
+  v3 = [BKCollection shouldSyncCollectionID:collectionID];
 
   return v3;
 }
 
-+ (BOOL)shouldSyncCollectionID:(id)a3
++ (BOOL)shouldSyncCollectionID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kBKCollectionDefaultIDDownloaded])
+  dCopy = d;
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDDownloaded])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:kBKCollectionDefaultIDFinished] ^ 1;
+    v4 = [dCopy isEqualToString:kBKCollectionDefaultIDFinished] ^ 1;
   }
 
   return v4;
 }
 
-- (BOOL)canDeleteLibraryAsset:(id)a3
+- (BOOL)canDeleteLibraryAsset:(id)asset
 {
-  v4 = a3;
-  v5 = !-[BKCollection isDefaultCollection](self, "isDefaultCollection") || ([v4 isSeriesItem] & 1) == 0 && (!objc_msgSend(v4, "isCloud") || (objc_msgSend(v4, "iTunesU") & 1) != 0 || objc_msgSend(v4, "isUbiquitousBook"));
+  assetCopy = asset;
+  v5 = !-[BKCollection isDefaultCollection](self, "isDefaultCollection") || ([assetCopy isSeriesItem] & 1) == 0 && (!objc_msgSend(assetCopy, "isCloud") || (objc_msgSend(assetCopy, "iTunesU") & 1) != 0 || objc_msgSend(assetCopy, "isUbiquitousBook"));
 
   return v5;
 }
@@ -1241,40 +1241,40 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [(BKCollection *)self collectionID];
-  if ([v3 isEqualToString:kBKCollectionDefaultIDFinished])
+  collectionID = [(BKCollection *)self collectionID];
+  if ([collectionID isEqualToString:kBKCollectionDefaultIDFinished])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BKCollection *)self collectionID];
-    if ([v5 isEqualToString:kBKCollectionDefaultIDWantToRead])
+    collectionID2 = [(BKCollection *)self collectionID];
+    if ([collectionID2 isEqualToString:kBKCollectionDefaultIDWantToRead])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(BKCollection *)self collectionID];
-      v4 = [v6 isEqualToString:kBKCollectionDefaultIDSamples];
+      collectionID3 = [(BKCollection *)self collectionID];
+      v4 = [collectionID3 isEqualToString:kBKCollectionDefaultIDSamples];
     }
   }
 
   return v4;
 }
 
-+ (void)addCollections:(id)a3 moc:(id)a4
++ (void)addCollections:(id)collections moc:(id)moc
 {
-  v5 = a3;
-  v6 = a4;
-  v15 = [v6 libraryManager];
+  collectionsCopy = collections;
+  mocCopy = moc;
+  libraryManager = [mocCopy libraryManager];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = collectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1293,7 +1293,7 @@ LABEL_10:
         if ([BKCollection isValidForDeserialization:v12])
         {
           v13 = [v12 objectForKeyedSubscript:@"serverSyncUniqueId"];
-          v14 = [BKCollection insertNewCollectionWithCollectionID:v13 inManagedObjectContext:v6];
+          v14 = [BKCollection insertNewCollectionWithCollectionID:v13 inManagedObjectContext:mocCopy];
           [v14 configureFromDictionary:v12];
         }
       }
@@ -1304,15 +1304,15 @@ LABEL_10:
     while (v9);
   }
 
-  [v15 resetNextCollectionSort];
+  [libraryManager resetNextCollectionSort];
 }
 
-- (void)configureFromBackupSummary:(id)a3
+- (void)configureFromBackupSummary:(id)summary
 {
-  v20 = a3;
-  v4 = [v20 objectForKey:@"serverSyncUniqueId"];
+  summaryCopy = summary;
+  v4 = [summaryCopy objectForKey:@"serverSyncUniqueId"];
   [(BKCollection *)self setCollectionID:v4];
-  v5 = [v20 objectForKey:@"title"];
+  v5 = [summaryCopy objectForKey:@"title"];
   v6 = v5;
   if (v5)
   {
@@ -1326,23 +1326,23 @@ LABEL_10:
 
   [(BKCollection *)self setTitle:v7];
 
-  v8 = [v20 objectForKey:@"sortKey"];
+  v8 = [summaryCopy objectForKey:@"sortKey"];
   [(BKCollection *)self setSortKey:v8];
 
-  v9 = [v20 objectForKey:@"sortMode"];
+  v9 = [summaryCopy objectForKey:@"sortMode"];
   if (v9)
   {
     [(BKCollection *)self setSortMode:v9];
   }
 
-  v10 = [v20 objectForKey:@"viewMode"];
+  v10 = [summaryCopy objectForKey:@"viewMode"];
   if (v10)
   {
     [(BKCollection *)self setViewMode:v10];
   }
 
   [(BKCollection *)self clearMaxSortKey];
-  v11 = [v20 objectForKey:@"deletedFlag"];
+  v11 = [summaryCopy objectForKey:@"deletedFlag"];
   if (v11)
   {
     [(BKCollection *)self setDeletedFlag:v11];
@@ -1354,16 +1354,16 @@ LABEL_10:
     [(BKCollection *)self setDeletedFlag:v12];
   }
 
-  v13 = [(BKCollection *)self deletedFlag];
-  if ([v13 BOOLValue])
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  if ([deletedFlag BOOLValue])
   {
   }
 
   else
   {
-    v14 = [(BKCollection *)self sortKey];
+    sortKey = [(BKCollection *)self sortKey];
 
-    if (v14)
+    if (sortKey)
     {
       goto LABEL_15;
     }
@@ -1373,39 +1373,39 @@ LABEL_10:
   [(BKCollection *)self setSortKey:v15];
 
 LABEL_15:
-  v16 = [(BKCollection *)self title];
+  title = [(BKCollection *)self title];
 
-  if (!v16)
+  if (!title)
   {
     [(BKCollection *)self setTitle:&stru_D8298];
   }
 
-  v17 = [v20 objectForKey:@"lastModification"];
+  v17 = [summaryCopy objectForKey:@"lastModification"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(BKCollection *)self setLastModification:v17];
   }
 
-  v18 = [(BKCollection *)self lastModification];
+  lastModification = [(BKCollection *)self lastModification];
 
-  if (!v18)
+  if (!lastModification)
   {
     v19 = [NSDate dateWithTimeIntervalSince1970:0.0];
     [(BKCollection *)self setLastModification:v19];
   }
 }
 
-+ (BOOL)isSelectableDefaultCollectionID:(id)a3
++ (BOOL)isSelectableDefaultCollectionID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [a1 availableSelectableDefaultCollectionIDsForOS];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  availableSelectableDefaultCollectionIDsForOS = [self availableSelectableDefaultCollectionIDsForOS];
+  v6 = [availableSelectableDefaultCollectionIDsForOS containsObject:dCopy];
 
   return v6;
 }
@@ -1466,20 +1466,20 @@ LABEL_15:
   return v3;
 }
 
-+ (id)contentTypesForDefaultCollectionWithID:(id)a3
++ (id)contentTypesForDefaultCollectionWithID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kBKCollectionDefaultIDBooks])
+  dCopy = d;
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDBooks])
   {
     v4 = &off_DE240;
   }
 
-  else if ([v3 isEqualToString:kBKCollectionDefaultIDPDFs])
+  else if ([dCopy isEqualToString:kBKCollectionDefaultIDPDFs])
   {
     v4 = &off_DE258;
   }
 
-  else if ([v3 isEqualToString:kBKCollectionDefaultIDAudiobooks])
+  else if ([dCopy isEqualToString:kBKCollectionDefaultIDAudiobooks])
   {
     v4 = &off_DE270;
   }
@@ -1492,12 +1492,12 @@ LABEL_15:
   return v4;
 }
 
-+ (id)seriesIDFromSeriesCollectionID:(id)a3
++ (id)seriesIDFromSeriesCollectionID:(id)d
 {
-  v3 = a3;
-  if ([BKCollection isSeriesCollectionID:v3])
+  dCopy = d;
+  if ([BKCollection isSeriesCollectionID:dCopy])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"iBooks_Series_", "length")}];
+    v4 = [dCopy substringFromIndex:{objc_msgSend(@"iBooks_Series_", "length")}];
   }
 
   else
@@ -1510,37 +1510,37 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(BKCollection *)self collectionID];
-  v4 = [(BKCollection *)self title];
-  v5 = [NSString stringWithFormat:@"<%@ (%p) collectionID=%@ title=%@>", @"self", self, v3, v4];
+  collectionID = [(BKCollection *)self collectionID];
+  title = [(BKCollection *)self title];
+  v5 = [NSString stringWithFormat:@"<%@ (%p) collectionID=%@ title=%@>", @"self", self, collectionID, title];
 
   return v5;
 }
 
 - (NSString)debugDescription
 {
-  v19 = [(BKCollection *)self title];
-  v18 = [(BKCollection *)self details];
-  v20 = [(BKCollection *)self collectionID];
-  v17 = [(BKCollection *)self sortKey];
-  v3 = [(BKCollection *)self sortMode];
-  v4 = [(BKCollection *)self viewMode];
-  v5 = [(BKCollection *)self isDefaultCollection];
+  title = [(BKCollection *)self title];
+  details = [(BKCollection *)self details];
+  collectionID = [(BKCollection *)self collectionID];
+  sortKey = [(BKCollection *)self sortKey];
+  sortMode = [(BKCollection *)self sortMode];
+  viewMode = [(BKCollection *)self viewMode];
+  isDefaultCollection = [(BKCollection *)self isDefaultCollection];
   v6 = @"NO";
-  if (v5)
+  if (isDefaultCollection)
   {
     v6 = @"YES";
   }
 
   v16 = v6;
-  v7 = [(BKCollection *)self deletedFlag];
-  v15 = [(BKCollection *)self hidden];
-  v8 = [(BKCollection *)self placeholder];
-  v9 = [(BKCollection *)self lastModification];
-  v10 = [(BKCollection *)self members];
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 count]);
-  v12 = [(BKCollection *)self seriesID];
-  v13 = [NSString stringWithFormat:@"   %@ (%p) \n title: %@\n details:%@ collectionID: %@\n sortKey: %@\n sortMode: %@\n viewMode: %@\n isDefault: %@\n deletedFlag: %@\n hidden: %@\n placeholder: %@ lastModification: %@\n member count: %@\n seriesID: %@", @"self", self, v19, v18, v20, v17, v3, v4, v16, v7, v15, v8, v9, v11, v12];
+  deletedFlag = [(BKCollection *)self deletedFlag];
+  hidden = [(BKCollection *)self hidden];
+  placeholder = [(BKCollection *)self placeholder];
+  lastModification = [(BKCollection *)self lastModification];
+  members = [(BKCollection *)self members];
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [members count]);
+  seriesID = [(BKCollection *)self seriesID];
+  v13 = [NSString stringWithFormat:@"   %@ (%p) \n title: %@\n details:%@ collectionID: %@\n sortKey: %@\n sortMode: %@\n viewMode: %@\n isDefault: %@\n deletedFlag: %@\n hidden: %@\n placeholder: %@ lastModification: %@\n member count: %@\n seriesID: %@", @"self", self, title, details, collectionID, sortKey, sortMode, viewMode, v16, deletedFlag, hidden, placeholder, lastModification, v11, seriesID];
 
   return v13;
 }

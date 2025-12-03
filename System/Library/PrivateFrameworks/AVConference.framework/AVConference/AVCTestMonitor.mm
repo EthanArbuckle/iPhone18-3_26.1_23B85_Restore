@@ -1,22 +1,22 @@
 @interface AVCTestMonitor
-- (AVCTestMonitor)initWithDelegate:(id)a3 queue:(id)a4;
+- (AVCTestMonitor)initWithDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)forceNetworkCellular:(BOOL)a3;
+- (void)forceNetworkCellular:(BOOL)cellular;
 - (void)registerBlocksForNotifications;
 - (void)requestSessionMediaDaemonStatsReport;
-- (void)setEmulatedNetworkConfigurationPath:(id)a3;
-- (void)setEmulatedRxPLR:(double)a3;
-- (void)setEnableAudioPowerSpectrumReport:(BOOL)a3;
-- (void)setEnableLoopbackInterface:(BOOL)a3;
-- (void)setForcedCapBitrate:(int)a3;
-- (void)setForcedTargetBitrate:(int)a3;
-- (void)setupNotificationQueue:(id)a3;
-- (void)updateAudioInjectConfig:(id)a3;
+- (void)setEmulatedNetworkConfigurationPath:(id)path;
+- (void)setEmulatedRxPLR:(double)r;
+- (void)setEnableAudioPowerSpectrumReport:(BOOL)report;
+- (void)setEnableLoopbackInterface:(BOOL)interface;
+- (void)setForcedCapBitrate:(int)bitrate;
+- (void)setForcedTargetBitrate:(int)bitrate;
+- (void)setupNotificationQueue:(id)queue;
+- (void)updateAudioInjectConfig:(id)config;
 @end
 
 @implementation AVCTestMonitor
 
-- (AVCTestMonitor)initWithDelegate:(id)a3 queue:(id)a4
+- (AVCTestMonitor)initWithDelegate:(id)delegate queue:(id)queue
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -32,9 +32,9 @@
       v16 = 1024;
       v17 = 47;
       v18 = 2112;
-      v19 = a3;
+      delegateCopy = delegate;
       v20 = 2112;
-      v21 = a4;
+      queueCopy = queue;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d inDelegate=%@, queue=%@", buf, 0x30u);
     }
   }
@@ -45,9 +45,9 @@
   if (v9)
   {
     v9->_connection = objc_alloc_init(AVConferenceXPCClient);
-    objc_storeWeak(&v9->_delegate, a3);
+    objc_storeWeak(&v9->_delegate, delegate);
     v9->_reportToken = VCUniqueIDGenerator_GenerateID();
-    [(AVCTestMonitor *)v9 setupNotificationQueue:a4];
+    [(AVCTestMonitor *)v9 setupNotificationQueue:queue];
     [(AVCTestMonitor *)v9 registerBlocksForNotifications];
   }
 
@@ -203,13 +203,13 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
   return [v2 didReceiveReport:v3];
 }
 
-- (void)setupNotificationQueue:(id)a3
+- (void)setupNotificationQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    self->_delegateNotificationQueue = a3;
+    self->_delegateNotificationQueue = queue;
 
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   else
@@ -228,7 +228,7 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
   -[AVConferenceXPCClient sendMessageSync:arguments:](connection, "sendMessageSync:arguments:", "vcTestMonitorRequestSessionStatsReport", [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1]);
 }
 
-- (void)updateAudioInjectConfig:(id)a3
+- (void)updateAudioInjectConfig:(id)config
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -244,19 +244,19 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
       v12 = 1024;
       v13 = 127;
       v14 = 2112;
-      v15 = a3;
+      configCopy = config;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d injectAudioConfig=%@", &v8, 0x26u);
     }
   }
 
   v7 = objc_opt_new();
-  [v7 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(a3, "injectAudioConfigType") == 1), @"vcTestMonitorInjectAudioToneSwitch"}];
+  [v7 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", objc_msgSend(config, "injectAudioConfigType") == 1), @"vcTestMonitorInjectAudioToneSwitch"}];
   [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcTestMonitorInjectAudio" arguments:v7];
 }
 
-- (void)forceNetworkCellular:(BOOL)a3
+- (void)forceNetworkCellular:(BOOL)cellular
 {
-  v3 = a3;
+  cellularCopy = cellular;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -271,18 +271,18 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
       v13 = 1024;
       v14 = 136;
       v15 = 1024;
-      v16 = v3;
+      v16 = cellularCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d forceCellular=%d", buf, 0x22u);
     }
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:{v3, @"vcTestMonitorForceNetworkCellSwitch"}];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{cellularCopy, @"vcTestMonitorForceNetworkCellSwitch"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorForceNetworkCell", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v8 forKeys:&v7 count:1]);
 }
 
-- (void)setEnableLoopbackInterface:(BOOL)a3
+- (void)setEnableLoopbackInterface:(BOOL)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -297,16 +297,16 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
       v13 = 1024;
       v14 = 142;
       v15 = 1024;
-      v16 = v3;
+      v16 = interfaceCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d enableLoopbackInterface=%d", buf, 0x22u);
     }
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:{v3, @"vcTestMonitorSetEnableLoopbackValue"}];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{interfaceCopy, @"vcTestMonitorSetEnableLoopbackValue"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorSetEnableLoopback", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v8 forKeys:&v7 count:1]);
 }
 
-- (void)setEmulatedRxPLR:(double)a3
+- (void)setEmulatedRxPLR:(double)r
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -322,42 +322,42 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
       v13 = 1024;
       v14 = 148;
       v15 = 2048;
-      v16 = a3;
+      rCopy = r;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d emulatedRxPLR=%f", buf, 0x26u);
     }
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:{a3, @"vcTestMonitorSetEmulatedRxPLR"}];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:{r, @"vcTestMonitorSetEmulatedRxPLR"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorSetEmulatedRxPLR", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v8 forKeys:&v7 count:1]);
 }
 
-- (void)setForcedTargetBitrate:(int)a3
+- (void)setForcedTargetBitrate:(int)bitrate
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"vcTestMonitorSetForcedTargetBitrate";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithInt:*&bitrate];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorSetForcedTargetBitrate", [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
 }
 
-- (void)setForcedCapBitrate:(int)a3
+- (void)setForcedCapBitrate:(int)bitrate
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"vcTestMonitorSetForcedCapBitrate";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithInt:*&bitrate];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorSetForcedCapBitrate", [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
 }
 
-- (void)setEmulatedNetworkConfigurationPath:(id)a3
+- (void)setEmulatedNetworkConfigurationPath:(id)path
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v3 = @"vcTestMonitorEmulatedNetworkConfigPath";
-  v4[0] = a3;
+  v4[0] = path;
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorEmulatedNetworkConfigPath", [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1]);
 }
 
-- (void)setEnableAudioPowerSpectrumReport:(BOOL)a3
+- (void)setEnableAudioPowerSpectrumReport:(BOOL)report
 {
-  v3 = a3;
+  reportCopy = report;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -372,12 +372,12 @@ uint64_t __48__AVCTestMonitor_registerBlocksForNotifications__block_invoke_80(ui
       v13 = 1024;
       v14 = 169;
       v15 = 1024;
-      v16 = v3;
+      v16 = reportCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d enableAudioPowerSpectrumReport=%d", buf, 0x22u);
     }
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:{v3, @"vcTestMonitorSetEnableAudioPowerSpectrumReport"}];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{reportCopy, @"vcTestMonitorSetEnableAudioPowerSpectrumReport"}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcTestMonitorSetEnableAudioPowerSpectrumReport", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v8 forKeys:&v7 count:1]);
 }
 

@@ -1,6 +1,6 @@
 @interface DIIdentityProvisioningSession
 - (DIIdentityProvisioningSession)init;
-- (void)generateIdentityProvisioningAttestationsWithCredential:(id)a3 pairingID:(id)a4 completion:(id)a5;
+- (void)generateIdentityProvisioningAttestationsWithCredential:(id)credential pairingID:(id)d completion:(id)completion;
 @end
 
 @implementation DIIdentityProvisioningSession
@@ -19,13 +19,13 @@
   return v2;
 }
 
-- (void)generateIdentityProvisioningAttestationsWithCredential:(id)a3 pairingID:(id)a4 completion:(id)a5
+- (void)generateIdentityProvisioningAttestationsWithCredential:(id)credential pairingID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DIIdentityProvisioningSession *)self provisioningSession];
-  [v11 generateIdentityProvisioningAttestationsWithCredentialIdentifier:v10 pairingID:v9 completionHandler:v8];
+  completionCopy = completion;
+  dCopy = d;
+  credentialCopy = credential;
+  provisioningSession = [(DIIdentityProvisioningSession *)self provisioningSession];
+  [provisioningSession generateIdentityProvisioningAttestationsWithCredentialIdentifier:credentialCopy pairingID:dCopy completionHandler:completionCopy];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface WiFiLocaleManagerUser
-- (WiFiLocaleManagerUser)initWithContext:(__WiFiManager *)a3;
-- (id)get80211dCountryCodes:(unint64_t *)a3;
+- (WiFiLocaleManagerUser)initWithContext:(__WiFiManager *)context;
+- (id)get80211dCountryCodes:(unint64_t *)codes;
 - (id)getCompanionCountryCode;
 - (id)getCountryCodeFromUserDefaults;
 - (id)getDeviceCountryCode;
-- (unsigned)setDeviceCountryCode:(id)a3;
-- (unsigned)setUserDefaultCountryCode:(id)a3;
+- (unsigned)setDeviceCountryCode:(id)code;
+- (unsigned)setUserDefaultCountryCode:(id)code;
 - (unsigned)suspendLocaleCheck;
 - (void)dealloc;
-- (void)update80211dCountryCodes:(id)a3;
-- (void)updatePeerCountryCode:(id)a3;
-- (void)updateRemoteClientCountryCode:(id)a3;
+- (void)update80211dCountryCodes:(id)codes;
+- (void)updatePeerCountryCode:(id)code;
+- (void)updateRemoteClientCountryCode:(id)code;
 @end
 
 @implementation WiFiLocaleManagerUser
@@ -88,13 +88,13 @@
   return v4;
 }
 
-- (WiFiLocaleManagerUser)initWithContext:(__WiFiManager *)a3
+- (WiFiLocaleManagerUser)initWithContext:(__WiFiManager *)context
 {
   v8.receiver = self;
   v8.super_class = WiFiLocaleManagerUser;
   v4 = [(WiFiLocaleManagerUser *)&v8 init];
   v5 = v4;
-  if (v4 && (v4->_manager = a3, v6 = objc_alloc_init(WiFiLocaleManager), (v5->_localeManager = v6) != 0))
+  if (v4 && (v4->_manager = context, v6 = objc_alloc_init(WiFiLocaleManager), (v5->_localeManager = v6) != 0))
   {
     [v6 setDelegate:v5];
     v5->_countryCodeList = [[NSCountedSet alloc] initWithCapacity:0];
@@ -122,9 +122,9 @@
   [(WiFiLocaleManagerUser *)&v3 dealloc];
 }
 
-- (void)update80211dCountryCodes:(id)a3
+- (void)update80211dCountryCodes:(id)codes
 {
-  v4 = [a3 objectForKey:@"scanResults"];
+  v4 = [codes objectForKey:@"scanResults"];
   if ([v4 count])
   {
     [(NSCountedSet *)self->_countryCodeList removeAllObjects];
@@ -168,9 +168,9 @@
   }
 }
 
-- (void)updatePeerCountryCode:(id)a3
+- (void)updatePeerCountryCode:(id)code
 {
-  self->_peerCountryCode = [a3 copy];
+  self->_peerCountryCode = [code copy];
   v5 = [(WiFiLocaleManager *)self->_localeManager isDefaultCountryCode:[(WiFiLocaleManager *)self->_localeManager getLocaleCountryCode]];
   if (self->_peerCountryCode)
   {
@@ -190,11 +190,11 @@
   }
 }
 
-- (void)updateRemoteClientCountryCode:(id)a3
+- (void)updateRemoteClientCountryCode:(id)code
 {
-  if (a3)
+  if (code)
   {
-    v5 = [a3 copy];
+    v5 = [code copy];
     self->_remoteClientCountryCode = v5;
     if (v5)
     {
@@ -259,7 +259,7 @@
   return v4;
 }
 
-- (id)get80211dCountryCodes:(unint64_t *)a3
+- (id)get80211dCountryCodes:(unint64_t *)codes
 {
   v5 = sub_10000EEE0(self->_manager);
   v15 = 0;
@@ -287,7 +287,7 @@
     v7 = v12[3];
   }
 
-  *a3 = v7;
+  *codes = v7;
   v8 = v16[5];
   _Block_object_dispose(&v11, 8);
   _Block_object_dispose(&v15, 8);
@@ -349,7 +349,7 @@
   return v5;
 }
 
-- (unsigned)setUserDefaultCountryCode:(id)a3
+- (unsigned)setUserDefaultCountryCode:(id)code
 {
   v5 = sub_10000EEE0(self->_manager);
   manager = self->_manager;
@@ -359,7 +359,7 @@
     v8[1] = 3221225472;
     v8[2] = sub_10011A398;
     v8[3] = &unk_100261330;
-    v8[4] = a3;
+    v8[4] = code;
     v8[5] = self;
     dispatch_sync(v5, v8);
   }
@@ -367,10 +367,10 @@
   return 1;
 }
 
-- (unsigned)setDeviceCountryCode:(id)a3
+- (unsigned)setDeviceCountryCode:(id)code
 {
   v5 = sub_10000EEE0(self->_manager);
-  [(WiFiLocaleManager *)self->_localeManager isDefaultCountryCode:a3];
+  [(WiFiLocaleManager *)self->_localeManager isDefaultCountryCode:code];
   v6 = 0;
   v11 = 0;
   v12 = &v11;
@@ -382,7 +382,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_10011A4B0;
     v9[3] = &unk_100263410;
-    v9[5] = a3;
+    v9[5] = code;
     v9[6] = &v11;
     v9[4] = self;
     v10 = v7 ^ 1;

@@ -1,5 +1,5 @@
 @interface RAPDisplayUserContentTableViewCell
-- (RAPDisplayUserContentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RAPDisplayUserContentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_configureViews;
 - (void)_retrieveUserInformation;
 @end
@@ -12,14 +12,14 @@
   v3 = +[UserInformationManager sharedInstance];
   if (v7)
   {
-    v4 = [v3 userName];
-    [(UILabel *)self->_userNameLabel setText:v4];
+    userName = [v3 userName];
+    [(UILabel *)self->_userNameLabel setText:userName];
 
-    v5 = [v3 userEmail];
-    [(UILabel *)self->_userEmailLabel setText:v5];
+    userEmail = [v3 userEmail];
+    [(UILabel *)self->_userEmailLabel setText:userEmail];
 
-    v6 = [v3 userIcon];
-    [(UIImageView *)self->_userImageView setImage:v6];
+    userIcon = [v3 userIcon];
+    [(UIImageView *)self->_userImageView setImage:userIcon];
   }
 }
 
@@ -70,45 +70,45 @@
   self->_userImageView = v20;
 
   [(UIImageView *)self->_userImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [(RAPDisplayUserContentTableViewCell *)self contentView];
-  [v22 addSubview:self->_labelsStackView];
-  [v22 addSubview:self->_userImageView];
+  contentView = [(RAPDisplayUserContentTableViewCell *)self contentView];
+  [contentView addSubview:self->_labelsStackView];
+  [contentView addSubview:self->_userImageView];
   if (sub_10000FA08(self) == 5)
   {
     v23 = +[UIColor systemBackgroundColor];
-    [v22 setBackgroundColor:v23];
+    [contentView setBackgroundColor:v23];
   }
 
-  v47 = [(UIImageView *)self->_userImageView widthAnchor];
-  v46 = [v47 constraintEqualToConstant:36.0];
+  widthAnchor = [(UIImageView *)self->_userImageView widthAnchor];
+  v46 = [widthAnchor constraintEqualToConstant:36.0];
   v48[0] = v46;
-  v45 = [(UIImageView *)self->_userImageView heightAnchor];
-  v44 = [(UIImageView *)self->_userImageView widthAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  heightAnchor = [(UIImageView *)self->_userImageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_userImageView widthAnchor];
+  v43 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v48[1] = v43;
-  v42 = [(UIImageView *)self->_userImageView centerYAnchor];
-  v41 = [v22 centerYAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  centerYAnchor = [(UIImageView *)self->_userImageView centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v48[2] = v40;
-  v39 = [(UIImageView *)self->_userImageView leadingAnchor];
-  v38 = [v22 leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:15.0];
+  leadingAnchor = [(UIImageView *)self->_userImageView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v48[3] = v37;
-  v36 = [(UIStackView *)self->_labelsStackView leadingAnchor];
-  v35 = [(UIImageView *)self->_userImageView trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:6.0];
+  leadingAnchor3 = [(UIStackView *)self->_labelsStackView leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_userImageView trailingAnchor];
+  v34 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
   v48[4] = v34;
-  v33 = [(UIStackView *)self->_labelsStackView trailingAnchor];
-  v32 = [v22 trailingAnchor];
-  v24 = [v33 constraintLessThanOrEqualToAnchor:v32 constant:-15.0];
+  trailingAnchor2 = [(UIStackView *)self->_labelsStackView trailingAnchor];
+  trailingAnchor3 = [contentView trailingAnchor];
+  v24 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-15.0];
   v48[5] = v24;
-  v25 = [(UIStackView *)self->_labelsStackView topAnchor];
-  v26 = [v22 topAnchor];
-  v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26 constant:15.0];
+  topAnchor = [(UIStackView *)self->_labelsStackView topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v27 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:15.0];
   v48[6] = v27;
-  v28 = [(UIStackView *)self->_labelsStackView bottomAnchor];
-  v29 = [v22 bottomAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:-15.0];
+  bottomAnchor = [(UIStackView *)self->_labelsStackView bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
   v48[7] = v30;
   v31 = [NSArray arrayWithObjects:v48 count:8];
   [NSLayoutConstraint activateConstraints:v31];
@@ -116,11 +116,11 @@
   [(RAPDisplayUserContentTableViewCell *)self setSelectionStyle:0];
 }
 
-- (RAPDisplayUserContentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPDisplayUserContentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = RAPDisplayUserContentTableViewCell;
-  v4 = [(RAPDisplayUserContentTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPDisplayUserContentTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

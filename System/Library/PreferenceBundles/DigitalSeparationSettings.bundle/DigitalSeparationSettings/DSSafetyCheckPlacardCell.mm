@@ -1,13 +1,13 @@
 @interface DSSafetyCheckPlacardCell
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithCoder:(id)a3;
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithCoder:(id)coder;
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation DSSafetyCheckPlacardCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   sub_8A18();
   sub_8A08();
@@ -17,12 +17,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_4E4C();
 }
 
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   sub_8A18();
   sub_8A08();
@@ -32,10 +32,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v8 = sub_89C8();
-    a4 = v9;
+    identifier = v9;
   }
 
   else
@@ -43,13 +43,13 @@
     v8 = 0;
   }
 
-  v10 = a5;
-  v11 = sub_48D4(a3, v8, a4, a5);
+  specifierCopy = specifier;
+  v11 = sub_48D4(style, v8, identifier, specifier);
 
   return v11;
 }
 
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   sub_8A18();
@@ -60,20 +60,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     sub_89C8();
-    a4 = sub_89B8();
+    identifier = sub_89B8();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(DSSafetyCheckPlacardCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(DSSafetyCheckPlacardCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithCoder:(id)a3
+- (_TtC25DigitalSeparationSettings24DSSafetyCheckPlacardCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_8A18();
@@ -86,8 +86,8 @@
 
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DSSafetyCheckPlacardCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DSSafetyCheckPlacardCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

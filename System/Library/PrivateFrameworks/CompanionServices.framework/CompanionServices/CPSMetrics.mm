@@ -1,22 +1,22 @@
 @interface CPSMetrics
-+ (void)_sendEvent:(id)a3 withPayloadBuilder:(id)a4;
-+ (void)sendAppSignInSessionActivatedEvent:(id)a3;
-+ (void)sendAppSignInSessionCompletedEvent:(id)a3;
-+ (void)sendProviderDeviceUsageEvent:(id)a3;
-+ (void)sendStorePurchaseSessionCompletedEvent:(id)a3;
-+ (void)sendSystemSessionCompletedEvent:(id)a3;
++ (void)_sendEvent:(id)event withPayloadBuilder:(id)builder;
++ (void)sendAppSignInSessionActivatedEvent:(id)event;
++ (void)sendAppSignInSessionCompletedEvent:(id)event;
++ (void)sendProviderDeviceUsageEvent:(id)event;
++ (void)sendStorePurchaseSessionCompletedEvent:(id)event;
++ (void)sendSystemSessionCompletedEvent:(id)event;
 @end
 
 @implementation CPSMetrics
 
-+ (void)sendAppSignInSessionActivatedEvent:(id)a3
++ (void)sendAppSignInSessionActivatedEvent:(id)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __49__CPSMetrics_sendAppSignInSessionActivatedEvent___block_invoke;
   v3[3] = &__block_descriptor_33_e26___NSMutableDictionary_8__0l;
-  v4 = a3;
-  [a1 _sendEvent:@"com.apple.appletv.comp-auth.app-sign-in.activated" withPayloadBuilder:v3];
+  eventCopy = event;
+  [self _sendEvent:@"com.apple.appletv.comp-auth.app-sign-in.activated" withPayloadBuilder:v3];
 }
 
 id __49__CPSMetrics_sendAppSignInSessionActivatedEvent___block_invoke(uint64_t a1)
@@ -43,14 +43,14 @@ id __49__CPSMetrics_sendAppSignInSessionActivatedEvent___block_invoke(uint64_t a
   return v2;
 }
 
-+ (void)sendAppSignInSessionCompletedEvent:(id)a3
++ (void)sendAppSignInSessionCompletedEvent:(id)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __49__CPSMetrics_sendAppSignInSessionCompletedEvent___block_invoke;
   v3[3] = &__block_descriptor_40_e26___NSMutableDictionary_8__0l;
-  v3[4] = a3.var0;
-  [a1 _sendEvent:@"com.apple.appletv.comp-auth.app-sign-in.completed" withPayloadBuilder:v3];
+  v3[4] = event.var0;
+  [self _sendEvent:@"com.apple.appletv.comp-auth.app-sign-in.completed" withPayloadBuilder:v3];
 }
 
 id __49__CPSMetrics_sendAppSignInSessionCompletedEvent___block_invoke(uint64_t a1)
@@ -73,15 +73,15 @@ id __49__CPSMetrics_sendAppSignInSessionCompletedEvent___block_invoke(uint64_t a
   return v3;
 }
 
-+ (void)sendProviderDeviceUsageEvent:(id)a3
++ (void)sendProviderDeviceUsageEvent:(id)event
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3254779904;
   v5[2] = __43__CPSMetrics_sendProviderDeviceUsageEvent___block_invoke;
   v5[3] = &__block_descriptor_48_e8_32n11_8_8_s0_t8w8_e19___NSDictionary_8__0l;
-  v6 = a3;
-  v4 = a3.var0;
-  [a1 _sendEvent:@"com.apple.appletv.comp-auth.provider-device-usage" withPayloadBuilder:v5];
+  eventCopy = event;
+  v4 = event.var0;
+  [self _sendEvent:@"com.apple.appletv.comp-auth.provider-device-usage" withPayloadBuilder:v5];
 }
 
 id __43__CPSMetrics_sendProviderDeviceUsageEvent___block_invoke(uint64_t a1)
@@ -121,14 +121,14 @@ LABEL_6:
   return v2;
 }
 
-+ (void)sendStorePurchaseSessionCompletedEvent:(id)a3
++ (void)sendStorePurchaseSessionCompletedEvent:(id)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __53__CPSMetrics_sendStorePurchaseSessionCompletedEvent___block_invoke;
   v3[3] = &__block_descriptor_40_e26___NSMutableDictionary_8__0l;
-  v3[4] = a3.var0;
-  [a1 _sendEvent:@"com.apple.appletv.comp-auth.store-purchase.completed" withPayloadBuilder:v3];
+  v3[4] = event.var0;
+  [self _sendEvent:@"com.apple.appletv.comp-auth.store-purchase.completed" withPayloadBuilder:v3];
 }
 
 id __53__CPSMetrics_sendStorePurchaseSessionCompletedEvent___block_invoke(uint64_t a1)
@@ -151,14 +151,14 @@ id __53__CPSMetrics_sendStorePurchaseSessionCompletedEvent___block_invoke(uint64
   return v3;
 }
 
-+ (void)sendSystemSessionCompletedEvent:(id)a3
++ (void)sendSystemSessionCompletedEvent:(id)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__CPSMetrics_sendSystemSessionCompletedEvent___block_invoke;
   v3[3] = &__block_descriptor_48_e26___NSMutableDictionary_8__0l;
-  v4 = a3;
-  [a1 _sendEvent:@"com.apple.appletv.comp-auth.system-auth.completed" withPayloadBuilder:v3];
+  eventCopy = event;
+  [self _sendEvent:@"com.apple.appletv.comp-auth.system-auth.completed" withPayloadBuilder:v3];
 }
 
 id __46__CPSMetrics_sendSystemSessionCompletedEvent___block_invoke(uint64_t a1)
@@ -193,11 +193,11 @@ id __46__CPSMetrics_sendSystemSessionCompletedEvent___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)_sendEvent:(id)a3 withPayloadBuilder:(id)a4
++ (void)_sendEvent:(id)event withPayloadBuilder:(id)builder
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  builderCopy = builder;
   if (MetricsLog_token != -1)
   {
     +[CPSMetrics _sendEvent:withPayloadBuilder:];
@@ -207,11 +207,11 @@ id __46__CPSMetrics_sendSystemSessionCompletedEvent___block_invoke(uint64_t a1)
   if (os_log_type_enabled(MetricsLog_log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v5;
+    v10 = eventCopy;
     _os_log_impl(&dword_243D1C000, v7, OS_LOG_TYPE_DEFAULT, "Send event: %{public}@", &v9, 0xCu);
   }
 
-  if (v6)
+  if (builderCopy)
   {
     AnalyticsSendEventLazy();
   }

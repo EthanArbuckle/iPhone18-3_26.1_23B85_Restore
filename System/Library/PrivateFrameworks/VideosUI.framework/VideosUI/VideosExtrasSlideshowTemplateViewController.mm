@@ -1,47 +1,47 @@
 @interface VideosExtrasSlideshowTemplateViewController
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)shouldPerformZoomingImageTransitionFromImageElement:(id)a3 toImageAtIndex:(unint64_t)a4;
+- (BOOL)shouldPerformZoomingImageTransitionFromImageElement:(id)element toImageAtIndex:(unint64_t)index;
 - (IKSlideshowElement)templateElement;
-- (VideosExtrasSlideshowTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5;
-- (unint64_t)numberOfImagesForSlideshowViewController:(id)a3;
+- (VideosExtrasSlideshowTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context;
+- (unint64_t)numberOfImagesForSlideshowViewController:(id)controller;
 - (void)_firstImageLoadedHideNavigationBar;
 - (void)_toggleVisibilityOfNavigationBar;
 - (void)dealloc;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)slideshowViewController:(id)a3 loadImageAtIndex:(unint64_t)a4 withCompletionHandler:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
+- (void)performZoomingImageTransitionWithContext:(id)context;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)slideshowViewController:(id)controller loadImageAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VideosExtrasSlideshowTemplateViewController
 
-- (VideosExtrasSlideshowTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5
+- (VideosExtrasSlideshowTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = VideosExtrasSlideshowTemplateViewController;
-  v5 = [(VideosExtrasTemplateViewController *)&v27 initWithDocument:a3 options:a4 context:a5];
+  v5 = [(VideosExtrasTemplateViewController *)&v27 initWithDocument:document options:options context:context];
   v6 = v5;
   if (v5)
   {
-    v7 = [(VideosExtrasSlideshowTemplateViewController *)v5 templateElement];
-    v8 = [v7 transition];
-    if ((v8 - 2) >= 3)
+    templateElement = [(VideosExtrasSlideshowTemplateViewController *)v5 templateElement];
+    transition = [templateElement transition];
+    if ((transition - 2) >= 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v8 - 1;
+      v9 = transition - 1;
     }
 
-    [v7 transitionInterval];
+    [templateElement transitionInterval];
     if (v10 >= 2.22044605e-16)
     {
       v11 = v10;
@@ -53,12 +53,12 @@
     }
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v13 = [v7 images];
+    images = [templateElement images];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v14 = [images countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -70,7 +70,7 @@
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(images);
           }
 
           v18 = *(*(&v23 + 1) + 8 * v17);
@@ -84,7 +84,7 @@
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v15 = [images countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v15);
@@ -99,8 +99,8 @@
     [(VideosExtrasSlideshowTemplateViewController *)v6 addChildViewController:v19];
     [(VideosExtrasSlideshowViewController *)v19 didMoveToParentViewController:v6];
     [(VideosExtrasSlideshowTemplateViewController *)v6 setSlideshowViewController:v19];
-    v20 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-    v21 = [v20 localizedStringForKey:@"SLIDESHOW_TITLE" value:0 table:@"VideosExtras"];
+    vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+    v21 = [vui_videosUIBundle localizedStringForKey:@"SLIDESHOW_TITLE" value:0 table:@"VideosExtras"];
     [(VideosExtrasSlideshowTemplateViewController *)v6 setTitle:v21];
   }
 
@@ -109,18 +109,18 @@
 
 - (void)dealloc
 {
-  v3 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  [v3 willMoveToParentViewController:0];
-  if ([v3 isViewLoaded])
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  [slideshowViewController willMoveToParentViewController:0];
+  if ([slideshowViewController isViewLoaded])
   {
-    v4 = [v3 view];
-    [v4 removeFromSuperview];
+    view = [slideshowViewController view];
+    [view removeFromSuperview];
   }
 
-  [v3 removeFromParentViewController];
-  [v3 setDataSource:0];
-  v5 = [(VideosExtrasSlideshowTemplateViewController *)self tapGestureRecognizer];
-  [v5 removeTarget:self action:0];
+  [slideshowViewController removeFromParentViewController];
+  [slideshowViewController setDataSource:0];
+  tapGestureRecognizer = [(VideosExtrasSlideshowTemplateViewController *)self tapGestureRecognizer];
+  [tapGestureRecognizer removeTarget:self action:0];
 
   v6.receiver = self;
   v6.super_class = VideosExtrasSlideshowTemplateViewController;
@@ -129,54 +129,54 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
-  v3 = [v2 isNavigationBarHidden];
+  navigationController = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  return v3;
+  return isNavigationBarHidden;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = VideosExtrasSlideshowTemplateViewController;
-  [(VideosExtrasElementViewController *)&v12 viewWillAppear:a3];
-  v4 = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 mutableCopy];
+  [(VideosExtrasElementViewController *)&v12 viewWillAppear:appear];
+  navigationController = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers mutableCopy];
 
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  if (v7 == self)
+  if (lastObject == self)
   {
     [v6 removeLastObject];
   }
 
-  v8 = [v6 lastObject];
+  lastObject2 = [v6 lastObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-    v11 = [v9 indexOfVisibleItem];
+    v9 = lastObject2;
+    slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+    indexOfVisibleItem = [v9 indexOfVisibleItem];
 
-    [v10 setVisibleImageIndex:v11];
+    [slideshowViewController setVisibleImageIndex:indexOfVisibleItem];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = VideosExtrasSlideshowTemplateViewController;
-  [(VideosExtrasTemplateViewController *)&v3 viewDidAppear:a3];
+  [(VideosExtrasTemplateViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = VideosExtrasSlideshowTemplateViewController;
-  [(VideosExtrasTemplateViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(VideosExtrasSlideshowTemplateViewController *)self view];
-  [v4 clearArtworkCatalogs];
+  [(VideosExtrasTemplateViewController *)&v5 viewDidDisappear:disappear];
+  view = [(VideosExtrasSlideshowTemplateViewController *)self view];
+  [view clearArtworkCatalogs];
 }
 
 - (void)viewDidLoad
@@ -184,29 +184,29 @@
   v10.receiver = self;
   v10.super_class = VideosExtrasSlideshowTemplateViewController;
   [(VideosExtrasTemplateViewController *)&v10 viewDidLoad];
-  v3 = [(VideosExtrasSlideshowTemplateViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VideosExtrasSlideshowTemplateViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  v6 = [v5 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v6];
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  view2 = [slideshowViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v6 toView:v3 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  v8 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:view2 toView:view alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   [v7 addObjectsFromArray:v8];
 
-  [v3 addConstraints:v7];
+  [view addConstraints:v7];
   v9 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTap_];
-  [v3 addGestureRecognizer:v9];
+  [view addGestureRecognizer:v9];
   [(VideosExtrasSlideshowTemplateViewController *)self setTapGestureRecognizer:v9];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasSlideshowTemplateViewController;
-  [(VideosExtrasSlideshowTemplateViewController *)&v4 viewWillDisappear:a3];
+  [(VideosExtrasSlideshowTemplateViewController *)&v4 viewWillDisappear:disappear];
   if (self->_overlayHidden)
   {
     [(VideosExtrasSlideshowTemplateViewController *)self _toggleVisibilityOfNavigationBar];
@@ -215,36 +215,36 @@
 
 - (IKSlideshowElement)templateElement
 {
-  v2 = [(VideosExtrasTemplateViewController *)self document];
-  v3 = [v2 templateElement];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  templateElement = [document templateElement];
 
-  return v3;
+  return templateElement;
 }
 
-- (unint64_t)numberOfImagesForSlideshowViewController:(id)a3
+- (unint64_t)numberOfImagesForSlideshowViewController:(id)controller
 {
-  v3 = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
-  v4 = [v3 count];
+  imageElements = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
+  v4 = [imageElements count];
 
   return v4;
 }
 
-- (void)slideshowViewController:(id)a3 loadImageAtIndex:(unint64_t)a4 withCompletionHandler:(id)a5
+- (void)slideshowViewController:(id)controller loadImageAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
-  v11 = [v10 objectAtIndex:a4];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  imageElements = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
+  v11 = [imageElements objectAtIndex:index];
 
-  v12 = [(VideosExtrasSlideshowTemplateViewController *)self view];
-  [v12 bounds];
+  view = [(VideosExtrasSlideshowTemplateViewController *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
-  [v12 clearArtworkCatalogs];
-  v17 = [v11 artworkCatalog];
-  [v17 setFittingSize:{v14, v16}];
+  [view clearArtworkCatalogs];
+  artworkCatalog = [v11 artworkCatalog];
+  [artworkCatalog setFittingSize:{v14, v16}];
   v18 = objc_alloc_init(VideosExtrasSlideshowArtworkCatalogHelper);
-  [(VideosExtrasSlideshowArtworkCatalogHelper *)v18 setArtworkCatalog:v17];
+  [(VideosExtrasSlideshowArtworkCatalogHelper *)v18 setArtworkCatalog:artworkCatalog];
   objc_initWeak(&location, self);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -252,10 +252,10 @@
   v21[3] = &unk_1E8731888;
   v19 = v18;
   v22 = v19;
-  v20 = v9;
+  v20 = handlerCopy;
   v23 = v20;
   objc_copyWeak(&v24, &location);
-  [v17 setDestination:v12 configurationBlock:v21];
+  [artworkCatalog setDestination:view configurationBlock:v21];
   objc_destroyWeak(&v24);
 
   objc_destroyWeak(&location);
@@ -279,51 +279,51 @@ void __110__VideosExtrasSlideshowTemplateViewController_slideshowViewController_
   }
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  [v5 prepareZoomingImageTransitionWithContext:v4];
+  contextCopy = context;
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  [slideshowViewController prepareZoomingImageTransitionWithContext:contextCopy];
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  [v5 performZoomingImageTransitionWithContext:v4];
+  contextCopy = context;
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  [slideshowViewController performZoomingImageTransitionWithContext:contextCopy];
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  [v7 finalizeZoomingImageTransitionWithContext:v6 transitionFinished:v4];
+  finishedCopy = finished;
+  contextCopy = context;
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  [slideshowViewController finalizeZoomingImageTransitionWithContext:contextCopy transitionFinished:finishedCopy];
 }
 
-- (BOOL)shouldPerformZoomingImageTransitionFromImageElement:(id)a3 toImageAtIndex:(unint64_t)a4
+- (BOOL)shouldPerformZoomingImageTransitionFromImageElement:(id)element toImageAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
-  if ([v7 isAnimatingTransition])
+  elementCopy = element;
+  slideshowViewController = [(VideosExtrasSlideshowTemplateViewController *)self slideshowViewController];
+  if ([slideshowViewController isAnimatingTransition])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
-    if ([v9 count] <= a4)
+    imageElements = [(VideosExtrasSlideshowTemplateViewController *)self imageElements];
+    if ([imageElements count] <= index)
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [v9 objectAtIndex:a4];
-      v11 = [v10 bestURL];
-      v12 = [v6 bestURL];
-      v8 = [v11 isEqual:v12];
+      v10 = [imageElements objectAtIndex:index];
+      bestURL = [v10 bestURL];
+      bestURL2 = [elementCopy bestURL];
+      v8 = [bestURL isEqual:bestURL2];
     }
   }
 
@@ -335,14 +335,14 @@ void __110__VideosExtrasSlideshowTemplateViewController_slideshowViewController_
   if (!self->_preventNavbarAutohide)
   {
     self->_preventNavbarAutohide = 1;
-    v4 = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
-    v5 = v4;
-    if (v4)
+    navigationController = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
+    v5 = navigationController;
+    if (navigationController)
     {
-      v7 = v4;
-      v6 = [v4 isNavigationBarHidden];
+      v7 = navigationController;
+      isNavigationBarHidden = [navigationController isNavigationBarHidden];
       v5 = v7;
-      if ((v6 & 1) == 0)
+      if ((isNavigationBarHidden & 1) == 0)
       {
         [(VideosExtrasSlideshowTemplateViewController *)self _toggleVisibilityOfNavigationBar];
         v5 = v7;
@@ -354,18 +354,18 @@ void __110__VideosExtrasSlideshowTemplateViewController_slideshowViewController_
 - (void)_toggleVisibilityOfNavigationBar
 {
   self->_overlayHidden ^= 1u;
-  v6 = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
-  if (v6)
+  navigationController = [(VideosExtrasSlideshowTemplateViewController *)self navigationController];
+  if (navigationController)
   {
-    [v6 _setNavigationBarHidden:self->_overlayHidden edge:15 duration:0.3];
+    [navigationController _setNavigationBarHidden:self->_overlayHidden edge:15 duration:0.3];
     [(VideosExtrasSlideshowTemplateViewController *)self setNeedsStatusBarAppearanceUpdate];
     self->_preventNavbarAutohide = 1;
   }
 
-  v3 = [(VideosExtrasTemplateViewController *)self context];
-  v4 = [v3 extrasRootViewController];
-  v5 = [v4 mainMenuBar];
-  [v5 setHidden:self->_overlayHidden];
+  context = [(VideosExtrasTemplateViewController *)self context];
+  extrasRootViewController = [context extrasRootViewController];
+  mainMenuBar = [extrasRootViewController mainMenuBar];
+  [mainMenuBar setHidden:self->_overlayHidden];
 }
 
 @end

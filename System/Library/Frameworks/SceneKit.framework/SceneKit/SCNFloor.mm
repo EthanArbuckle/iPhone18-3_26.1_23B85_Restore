@@ -8,19 +8,19 @@
 - (CGFloat)width;
 - (NSUInteger)reflectionCategoryBitMask;
 - (SCNFloor)init;
-- (SCNFloor)initWithCoder:(id)a3;
-- (SCNFloor)initWithFloorGeometryRef:(__C3DFloor *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNFloor)initWithCoder:(id)coder;
+- (SCNFloor)initWithFloorGeometryRef:(__C3DFloor *)ref;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)reflectionSampleCount;
 - (void)_syncObjCModel;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLength:(CGFloat)length;
 - (void)setReflectionCategoryBitMask:(NSUInteger)reflectionCategoryBitMask;
 - (void)setReflectionFalloffEnd:(CGFloat)reflectionFalloffEnd;
 - (void)setReflectionFalloffStart:(CGFloat)reflectionFalloffStart;
 - (void)setReflectionResolutionScaleFactor:(CGFloat)reflectionResolutionScaleFactor;
-- (void)setReflectionSampleCount:(unint64_t)a3;
+- (void)setReflectionSampleCount:(unint64_t)count;
 - (void)setReflectivity:(CGFloat)reflectivity;
 - (void)setWidth:(CGFloat)width;
 @end
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (SCNFloor)initWithFloorGeometryRef:(__C3DFloor *)a3
+- (SCNFloor)initWithFloorGeometryRef:(__C3DFloor *)ref
 {
   v6.receiver = self;
   v6.super_class = SCNFloor;
-  v3 = [(SCNGeometry *)&v6 initWithGeometryRef:a3];
+  v3 = [(SCNGeometry *)&v6 initWithGeometryRef:ref];
   v4 = v3;
   if (v3)
   {
@@ -72,7 +72,7 @@
 
 + (SCNFloor)floor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -103,14 +103,14 @@
     }
 
     *(self + 168) = *(self + 168) & 0xFD | (2 * (reflectionResolutionScaleFactor != 0.0));
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__SCNFloor_setReflectionResolutionScaleFactor___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = v5;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -136,14 +136,14 @@ void __47__SCNFloor_setReflectionResolutionScaleFactor___block_invoke(uint64_t a
   else if (self->_reflectionCategoryBitMask != reflectionCategoryBitMask)
   {
     self->_reflectionCategoryBitMask = reflectionCategoryBitMask;
-    v5 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNFloor_setReflectionCategoryBitMask___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = reflectionCategoryBitMask;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -162,11 +162,11 @@ uint64_t __41__SCNFloor_setReflectionCategoryBitMask___block_invoke(uint64_t a1)
     return self->_reflectionCategoryBitMask;
   }
 
-  v4 = [(SCNGeometry *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   ReflectionCategoryBitMask = C3DFloorGetReflectionCategoryBitMask([(SCNGeometry *)self geometryRef]);
@@ -192,14 +192,14 @@ uint64_t __41__SCNFloor_setReflectionCategoryBitMask___block_invoke(uint64_t a1)
   else if (self->_width != width)
   {
     self->_width = width;
-    v5 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __21__SCNFloor_setWidth___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = width;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"width" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"width" applyBlock:v7];
   }
 }
 
@@ -218,11 +218,11 @@ uint64_t __21__SCNFloor_setWidth___block_invoke(uint64_t a1)
     return self->_width;
   }
 
-  v4 = [(SCNGeometry *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   Width = C3DFloorGetWidth([(SCNGeometry *)self geometryRef]);
@@ -248,14 +248,14 @@ uint64_t __21__SCNFloor_setWidth___block_invoke(uint64_t a1)
   else if (self->_length != length)
   {
     self->_length = length;
-    v5 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __22__SCNFloor_setLength___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = length;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"length" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"length" applyBlock:v7];
   }
 }
 
@@ -274,11 +274,11 @@ uint64_t __22__SCNFloor_setLength___block_invoke(uint64_t a1)
     return self->_length;
   }
 
-  v4 = [(SCNGeometry *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   Length = C3DFloorGetLength([(SCNGeometry *)self geometryRef]);
@@ -294,11 +294,11 @@ uint64_t __22__SCNFloor_setLength___block_invoke(uint64_t a1)
 {
   if (*(self + 168))
   {
-    v4 = [(SCNGeometry *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     ReflectionFalloffEnd = C3DFloorGetReflectionFalloffEnd([(SCNGeometry *)self geometryRef]);
@@ -331,14 +331,14 @@ uint64_t __22__SCNFloor_setLength___block_invoke(uint64_t a1)
   {
     v5 = reflectionFalloffEnd;
     self->_reflectionFalloffEnd = v5;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __36__SCNFloor_setReflectionFalloffEnd___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = reflectionFalloffEnd;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"reflectionFalloffEnd" applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"reflectionFalloffEnd" applyBlock:v8];
   }
 }
 
@@ -354,11 +354,11 @@ void __36__SCNFloor_setReflectionFalloffEnd___block_invoke(uint64_t a1)
 {
   if (*(self + 168))
   {
-    v4 = [(SCNGeometry *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     ReflectionFalloffStart = C3DFloorGetReflectionFalloffStart([(SCNGeometry *)self geometryRef]);
@@ -391,14 +391,14 @@ void __36__SCNFloor_setReflectionFalloffEnd___block_invoke(uint64_t a1)
   {
     v5 = reflectionFalloffStart;
     self->_reflectionFalloffStart = v5;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __38__SCNFloor_setReflectionFalloffStart___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = reflectionFalloffStart;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"reflectionFalloffStart" applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"reflectionFalloffStart" applyBlock:v8];
   }
 }
 
@@ -414,11 +414,11 @@ void __38__SCNFloor_setReflectionFalloffStart___block_invoke(uint64_t a1)
 {
   if (*(self + 168))
   {
-    v4 = [(SCNGeometry *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     ReflectionResolutionScaleFactor = C3DFloorGetReflectionResolutionScaleFactor([(SCNGeometry *)self geometryRef]);
@@ -443,11 +443,11 @@ void __38__SCNFloor_setReflectionFalloffStart___block_invoke(uint64_t a1)
     return self->_reflectionSampleCount;
   }
 
-  v4 = [(SCNGeometry *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   ReflectionSampleCount = C3DFloorGetReflectionSampleCount([(SCNGeometry *)self geometryRef]);
@@ -459,7 +459,7 @@ void __38__SCNFloor_setReflectionFalloffStart___block_invoke(uint64_t a1)
   return ReflectionSampleCount;
 }
 
-- (void)setReflectionSampleCount:(unint64_t)a3
+- (void)setReflectionSampleCount:(unint64_t)count
 {
   if (*(self + 168))
   {
@@ -470,17 +470,17 @@ void __38__SCNFloor_setReflectionFalloffStart___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_reflectionSampleCount != a3)
+  else if (self->_reflectionSampleCount != count)
   {
-    self->_reflectionSampleCount = a3;
-    v5 = [(SCNGeometry *)self sceneRef];
+    self->_reflectionSampleCount = count;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNFloor_setReflectionSampleCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    v7[5] = count;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -496,11 +496,11 @@ void __37__SCNFloor_setReflectionSampleCount___block_invoke(uint64_t a1)
 {
   if (*(self + 168))
   {
-    v4 = [(SCNGeometry *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     Reflectivity = C3DFloorGetReflectivity([(SCNGeometry *)self geometryRef]);
@@ -533,14 +533,14 @@ void __37__SCNFloor_setReflectionSampleCount___block_invoke(uint64_t a1)
   {
     v5 = reflectivity;
     self->_reflectivity = v5;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __28__SCNFloor_setReflectivity___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = reflectivity;
-    [SCNTransaction postCommandWithContext:v6 object:self key:@"reflectivity" applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"reflectivity" applyBlock:v8];
   }
 }
 
@@ -552,7 +552,7 @@ void __28__SCNFloor_setReflectivity___block_invoke(uint64_t a1)
   C3DFloorSetReflectivity(v2, v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   +[SCNTransaction begin];
@@ -577,32 +577,32 @@ void __28__SCNFloor_setReflectivity___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SCNFloor;
   [(SCNGeometry *)&v11 encodeWithCoder:?];
   *&v5 = self->_reflectivity;
-  [a3 encodeFloat:@"reflectivity" forKey:v5];
+  [coder encodeFloat:@"reflectivity" forKey:v5];
   *&v6 = self->_reflectionFalloffStart;
-  [a3 encodeFloat:@"reflectionFalloffStart" forKey:v6];
+  [coder encodeFloat:@"reflectionFalloffStart" forKey:v6];
   *&v7 = self->_reflectionFalloffEnd;
-  [a3 encodeFloat:@"reflectionFalloffEnd" forKey:v7];
+  [coder encodeFloat:@"reflectionFalloffEnd" forKey:v7];
   width = self->_width;
   *&width = width;
-  [a3 encodeFloat:@"width" forKey:width];
+  [coder encodeFloat:@"width" forKey:width];
   length = self->_length;
   *&length = length;
-  [a3 encodeFloat:@"length" forKey:length];
-  [a3 encodeInteger:self->_reflectionCategoryBitMask forKey:@"reflectionCategoryBitMask"];
+  [coder encodeFloat:@"length" forKey:length];
+  [coder encodeInteger:self->_reflectionCategoryBitMask forKey:@"reflectionCategoryBitMask"];
   if ((*(self + 168) & 2) != 0)
   {
     *&v10 = self->_reflectionResolutionScaleFactor;
-    [a3 encodeFloat:@"reflectionResolutionScaleFactor" forKey:v10];
+    [coder encodeFloat:@"reflectionResolutionScaleFactor" forKey:v10];
   }
 }
 
-- (SCNFloor)initWithCoder:(id)a3
+- (SCNFloor)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = SCNFloor;
@@ -611,25 +611,25 @@ void __28__SCNFloor_setReflectivity___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNFloor *)v4 _customDecodingOfSCNFloor:a3];
-    [a3 decodeFloatForKey:@"reflectivity"];
+    [(SCNFloor *)v4 _customDecodingOfSCNFloor:coder];
+    [coder decodeFloatForKey:@"reflectivity"];
     [(SCNFloor *)v4 setReflectivity:v6];
-    [a3 decodeFloatForKey:@"reflectionFalloffStart"];
+    [coder decodeFloatForKey:@"reflectionFalloffStart"];
     [(SCNFloor *)v4 setReflectionFalloffStart:v7];
-    [a3 decodeFloatForKey:@"reflectionFalloffEnd"];
+    [coder decodeFloatForKey:@"reflectionFalloffEnd"];
     [(SCNFloor *)v4 setReflectionFalloffEnd:v8];
-    [a3 decodeFloatForKey:@"width"];
+    [coder decodeFloatForKey:@"width"];
     [(SCNFloor *)v4 setWidth:v9];
-    [a3 decodeFloatForKey:@"length"];
+    [coder decodeFloatForKey:@"length"];
     [(SCNFloor *)v4 setLength:v10];
-    if ([a3 containsValueForKey:@"reflectionCategoryBitMask"])
+    if ([coder containsValueForKey:@"reflectionCategoryBitMask"])
     {
-      -[SCNFloor setReflectionCategoryBitMask:](v4, "setReflectionCategoryBitMask:", [a3 decodeIntegerForKey:@"reflectionCategoryBitMask"]);
+      -[SCNFloor setReflectionCategoryBitMask:](v4, "setReflectionCategoryBitMask:", [coder decodeIntegerForKey:@"reflectionCategoryBitMask"]);
     }
 
-    if ([a3 containsValueForKey:@"reflectionResolutionScaleFactor"])
+    if ([coder containsValueForKey:@"reflectionResolutionScaleFactor"])
     {
-      [a3 decodeFloatForKey:@"reflectionResolutionScaleFactor"];
+      [coder decodeFloatForKey:@"reflectionResolutionScaleFactor"];
       if (v11 != 0.0)
       {
         [(SCNFloor *)v4 setReflectionResolutionScaleFactor:v11];

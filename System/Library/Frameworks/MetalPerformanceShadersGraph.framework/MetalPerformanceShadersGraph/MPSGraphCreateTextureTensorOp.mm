@@ -1,26 +1,26 @@
 @interface MPSGraphCreateTextureTensorOp
-- (MPSGraphCreateTextureTensorOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 pixelFormat:(unint64_t)a6 isCompressed:(BOOL)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphCreateTextureTensorOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies pixelFormat:(unint64_t)format isCompressed:(BOOL)compressed name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphCreateTextureTensorOp
 
-- (MPSGraphCreateTextureTensorOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 pixelFormat:(unint64_t)a6 isCompressed:(BOOL)a7 name:(id)a8
+- (MPSGraphCreateTextureTensorOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies pixelFormat:(unint64_t)format isCompressed:(BOOL)compressed name:(id)name
 {
-  self->_mtlPixelFormat = a6;
-  *(&self->_compressed + 1) = a7;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a8];
+  self->_mtlPixelFormat = format;
+  *(&self->_compressed + 1) = compressed;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphCreateTextureTensorOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphMemoryOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v47 = 260;
   v46[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v46);
+  StringAttr = mlir::Builder::getStringAttr(builder, v46);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x153u, 0);
   if (!v12)
   {
@@ -28,8 +28,8 @@
   }
 
   v15 = v12;
-  v16 = [v12 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v12 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -44,11 +44,11 @@
   HIBYTE(v45) = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &v41);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &v41);
   v20 = v41.__r_.__value_.__r.__words[0];
   if ((v41.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -64,7 +64,7 @@
   }
 
   LOBYTE(v47) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v46);
+  v22 = mlir::Builder::getStringAttr(builder, v46);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v41.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -89,8 +89,8 @@ LABEL_15:
   }
 
   MLIRMetalPixelFormat = getMLIRMetalPixelFormat(self->_mtlPixelFormat);
-  v25 = *a5;
-  if (*(a5 + 1) == *a5)
+  v25 = *values;
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -110,8 +110,8 @@ LABEL_15:
   }
 
   mlir::OperationState::OperationState(v46, v23, v28);
-  mlir::mps::CreateTextureTensorOp::build(a3, v46, *v25, v26, *(&self->_compressed + 1));
-  v30 = mlir::OpBuilder::create(a3, v46);
+  mlir::mps::CreateTextureTensorOp::build(builder, v46, *v25, v26, *(&self->_compressed + 1));
+  v30 = mlir::OpBuilder::create(builder, v46);
   v31 = *(*(v30 + 48) + 16);
   mlir::OperationState::~OperationState(v46);
   if (v31 == &mlir::detail::TypeIDResolver<mlir::mps::CreateTextureTensorOp,void>::id)

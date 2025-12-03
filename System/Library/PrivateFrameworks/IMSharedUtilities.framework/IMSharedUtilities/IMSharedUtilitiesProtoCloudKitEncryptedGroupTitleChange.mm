@@ -1,13 +1,13 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedGroupTitleChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedGroupTitleChange
@@ -31,34 +31,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
   }
 
   groupTitle = self->_groupTitle;
   if (groupTitle)
   {
-    [v3 setObject:groupTitle forKey:@"group_title"];
+    [dictionary setObject:groupTitle forKey:@"group_title"];
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    [v3 setObject:otherHandle forKey:@"other_handle"];
+    [dictionary setObject:otherHandle forKey:@"other_handle"];
   }
 
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -82,34 +82,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 8) = self->_version;
-    *(a3 + 36) |= 1u;
+    *(to + 8) = self->_version;
+    *(to + 36) |= 1u;
   }
 
   if (self->_groupTitle)
   {
-    [a3 setGroupTitle:?];
+    [to setGroupTitle:?];
   }
 
   if (self->_otherHandle)
   {
-    [a3 setOtherHandle:?];
+    [to setOtherHandle:?];
   }
 
   if (self->_padding)
   {
 
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -117,27 +117,27 @@
     *(v5 + 36) |= 1u;
   }
 
-  *(v6 + 8) = [(NSString *)self->_groupTitle copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_otherHandle copyWithZone:a3];
+  *(v6 + 8) = [(NSString *)self->_groupTitle copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_otherHandle copyWithZone:zone];
 
-  *(v6 + 24) = [(NSData *)self->_padding copyWithZone:a3];
+  *(v6 + 24) = [(NSData *)self->_padding copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_version != *(a3 + 8))
+      if ((*(equal + 36) & 1) == 0 || self->_version != *(equal + 8))
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_13:
       LOBYTE(v5) = 0;
@@ -145,13 +145,13 @@ LABEL_13:
     }
 
     groupTitle = self->_groupTitle;
-    if (!(groupTitle | *(a3 + 1)) || (v5 = [(NSString *)groupTitle isEqual:?]) != 0)
+    if (!(groupTitle | *(equal + 1)) || (v5 = [(NSString *)groupTitle isEqual:?]) != 0)
     {
       otherHandle = self->_otherHandle;
-      if (!(otherHandle | *(a3 + 2)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
+      if (!(otherHandle | *(equal + 2)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
       {
         padding = self->_padding;
-        if (padding | *(a3 + 3))
+        if (padding | *(equal + 3))
         {
 
           LOBYTE(v5) = [(NSData *)padding isEqual:?];
@@ -185,25 +185,25 @@ LABEL_13:
   return v4 ^ v5 ^ [(NSData *)self->_padding hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_version = *(a3 + 8);
+    self->_version = *(from + 8);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedGroupTitleChange *)self setGroupTitle:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedGroupTitleChange *)self setOtherHandle:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
 
     [(IMSharedUtilitiesProtoCloudKitEncryptedGroupTitleChange *)self setPadding:?];

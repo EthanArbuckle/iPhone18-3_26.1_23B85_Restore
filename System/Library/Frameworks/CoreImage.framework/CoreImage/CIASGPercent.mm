@@ -1,6 +1,6 @@
 @interface CIASGPercent
 + (id)customAttributes;
-- (id)outputImageScale:(double)a3 outset:(int)a4 hKernel:(id)a5 vKernel:(id)a6;
+- (id)outputImageScale:(double)scale outset:(int)outset hKernel:(id)kernel vKernel:(id)vKernel;
 @end
 
 @implementation CIASGPercent
@@ -22,10 +22,10 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
 }
 
-- (id)outputImageScale:(double)a3 outset:(int)a4 hKernel:(id)a5 vKernel:(id)a6
+- (id)outputImageScale:(double)scale outset:(int)outset hKernel:(id)kernel vKernel:(id)vKernel
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = [[(CIImage *)self->inputImage imageByClampingToExtent] imageBySamplingNearest];
+  imageBySamplingNearest = [[(CIImage *)self->inputImage imageByClampingToExtent] imageBySamplingNearest];
   v12 = MEMORY[0x1E695F040];
   v13 = *MEMORY[0x1E695F040];
   v14 = *(MEMORY[0x1E695F040] + 8);
@@ -35,10 +35,10 @@
   v30[1] = 3221225472;
   v30[2] = __56__CIASGPercent_outputImageScale_outset_hKernel_vKernel___block_invoke;
   v30[3] = &__block_descriptor_44_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
-  *&v30[4] = a3;
-  v31 = a4;
-  v33[0] = v11;
-  v17 = [objc_msgSend(a5 applyWithExtent:v30 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 1), v13, v14, v15, v16), "imageBySamplingNearest"}];
+  *&v30[4] = scale;
+  outsetCopy = outset;
+  v33[0] = imageBySamplingNearest;
+  v17 = [objc_msgSend(kernel applyWithExtent:v30 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 1), v13, v14, v15, v16), "imageBySamplingNearest"}];
   v18 = *v12;
   v19 = v12[1];
   v20 = v12[2];
@@ -47,18 +47,18 @@
   v28[1] = 3221225472;
   v28[2] = __56__CIASGPercent_outputImageScale_outset_hKernel_vKernel___block_invoke_2;
   v28[3] = &__block_descriptor_44_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
-  *&v28[4] = a3;
-  v29 = a4;
+  *&v28[4] = scale;
+  outsetCopy2 = outset;
   v32 = v17;
-  v22 = [a6 applyWithExtent:v28 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v32, 1), v18, v19, v20, v21}];
+  v22 = [vKernel applyWithExtent:v28 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v32, 1), v18, v19, v20, v21}];
   [(CIImage *)self->inputImage extent];
   if (!CGRectIsInfinite(v34))
   {
     [(CIImage *)self->inputImage extent];
-    v35.origin.x = v23 * a3;
-    v35.origin.y = v24 * a3;
-    v35.size.width = v25 * a3;
-    v35.size.height = v26 * a3;
+    v35.origin.x = v23 * scale;
+    v35.origin.y = v24 * scale;
+    v35.size.width = v25 * scale;
+    v35.size.height = v26 * scale;
     v36 = CGRectIntegral(v35);
     return [v22 imageByCroppingToRect:{v36.origin.x, v36.origin.y, v36.size.width, v36.size.height}];
   }

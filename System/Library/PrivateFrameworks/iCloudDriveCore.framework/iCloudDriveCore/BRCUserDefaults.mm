@@ -1,36 +1,36 @@
 @interface BRCUserDefaults
 + (id)_userDefaultsManager;
 + (id)cachedServerConfigurationPath;
-+ (id)defaultsForMangledID:(id)a3;
++ (id)defaultsForMangledID:(id)d;
 + (id)defaultsForMetadataContainer;
 + (id)defaultsForSharedZone;
 + (id)defaultsForSideCar;
-+ (id)generateThrottleTTRIdentifiersForTriggerRootCause:(id)a3;
++ (id)generateThrottleTTRIdentifiersForTriggerRootCause:(id)cause;
 + (void)loadCachedServerConfiguration;
 + (void)reset;
-+ (void)setServerConfigurationURL:(id)a3 whenLoaded:(id)a4;
-- (BOOL)_shouldRampForKey:(id)a3 accountFacade:(id)a4;
-- (BOOL)aggressivelyPCSChainWithAccountFacade:(id)a3;
++ (void)setServerConfigurationURL:(id)l whenLoaded:(id)loaded;
+- (BOOL)_shouldRampForKey:(id)key accountFacade:(id)facade;
+- (BOOL)aggressivelyPCSChainWithAccountFacade:(id)facade;
 - (BOOL)allowsDirectoryListBeforeInitialChangeToken;
 - (BOOL)canSaveRecordsDirectlyForDeltaSync;
 - (BOOL)dbIntegrityCheckBasehashSalting;
 - (BOOL)fpfsOptimizeStorageAndSpeculativeDownload;
 - (BOOL)fpfsOptimizeStorageAndSpeculativeDownloadCandidate;
 - (BOOL)isBlacklistedFromFolderSharing;
-- (BOOL)optimisticallyPCSChainDuringResetWithAccountFacade:(id)a3;
-- (BOOL)optimisticallyPCSChainWithAccountFacade:(id)a3;
+- (BOOL)optimisticallyPCSChainDuringResetWithAccountFacade:(id)facade;
+- (BOOL)optimisticallyPCSChainWithAccountFacade:(id)facade;
 - (BOOL)requestForAccess;
 - (BOOL)requestForAccessNotifications;
-- (BOOL)saveLocalContentVersionIdentifierOnDiskWithAccountFacade:(id)a3;
+- (BOOL)saveLocalContentVersionIdentifierOnDiskWithAccountFacade:(id)facade;
 - (BOOL)scheduleDeepScanOnFSEventsReset;
 - (BOOL)shouldAppLibraryBeGreedy;
 - (BOOL)shouldAutoMigrateToCloudDocs;
 - (BOOL)shouldBoostDefaultAndSharedZones;
 - (BOOL)shouldPerformPeriodicSyncInvestigation;
-- (BOOL)shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:(id)a3;
+- (BOOL)shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:(id)facade;
 - (BOOL)signpostEnabled;
 - (BOOL)syncConsistencyCheckerEnabled;
-- (BRCUserDefaults)initWithServerConfiguration:(id)a3 globalUserDefaults:(id)a4 clientZoneIdentifier:(id)a5;
+- (BRCUserDefaults)initWithServerConfiguration:(id)configuration globalUserDefaults:(id)defaults clientZoneIdentifier:(id)identifier;
 - (NSArray)bundleIDsExcludedFromAppLibraryExtraction;
 - (NSArray)carryPartitions;
 - (NSArray)containersWithContentPolicyDownloadLazilyAndEvictOnRemoteUpdate;
@@ -69,7 +69,7 @@
 - (NSSet)iworkShareableExtensions;
 - (NSString)fakeEtagForFailIfOutdated;
 - (NSURL)idsDecisionServiceURL;
-- (double)doubleForKey:(id)a3 min:(double)a4 max:(double)a5 byDefault:(double)a6;
+- (double)doubleForKey:(id)key min:(double)min max:(double)max byDefault:(double)default;
 - (float)_defaultSyncUpDailyBudget;
 - (float)_defaultSyncUpHourlyBudget;
 - (float)_defaultSyncUpMinutelyBudget;
@@ -93,21 +93,21 @@
 - (float)syncUpStructureCreateCost;
 - (float)syncUpStructureDeleteCost;
 - (float)syncUpStructureEditCost;
-- (id)_UTISetFor:(id)a3 startingWithExtensions:(id)a4;
-- (id)_brErrorSetForKey:(id)a3 byDefault:(id)a4;
-- (id)_extensionSetForKey:(id)a3 startingWithExtensions:(id)a4;
-- (id)_healthErrorSetForKey:(id)a3 byDefault:(id)a4;
-- (id)_loadObjectForKey:(id)a3 inheritFromGlobal:(BOOL)a4 suiteName:(id)a5 validateWithBlock:(id)a6;
-- (id)_serverDefaultForKey:(id)a3;
-- (id)bgSystemTaskParamsForKey:(id)a3 byDefault:(id)a4;
-- (id)discretionaryOperationBGSystemTaskConfigWithForegroundState:(BOOL)a3;
-- (id)getBirdBGSTActivitiesConfigsWithAccountFacade:(id)a3;
-- (int)intForKey:(id)a3 min:(int)a4 max:(int)a5 byDefault:(int)a6;
-- (unint64_t)unsignedLongLongForKey:(id)a3 min:(unint64_t)a4 max:(unint64_t)a5 byDefault:(unint64_t)a6;
+- (id)_UTISetFor:(id)for startingWithExtensions:(id)extensions;
+- (id)_brErrorSetForKey:(id)key byDefault:(id)default;
+- (id)_extensionSetForKey:(id)key startingWithExtensions:(id)extensions;
+- (id)_healthErrorSetForKey:(id)key byDefault:(id)default;
+- (id)_loadObjectForKey:(id)key inheritFromGlobal:(BOOL)global suiteName:(id)name validateWithBlock:(id)block;
+- (id)_serverDefaultForKey:(id)key;
+- (id)bgSystemTaskParamsForKey:(id)key byDefault:(id)default;
+- (id)discretionaryOperationBGSystemTaskConfigWithForegroundState:(BOOL)state;
+- (id)getBirdBGSTActivitiesConfigsWithAccountFacade:(id)facade;
+- (int)intForKey:(id)key min:(int)min max:(int)max byDefault:(int)default;
+- (unint64_t)unsignedLongLongForKey:(id)key min:(unint64_t)min max:(unint64_t)max byDefault:(unint64_t)default;
 - (unint64_t)uploadV1PerformanceTrackerCap;
 - (unsigned)fpfsImportStatusTelemetryDaysThreshold;
 - (unsigned)maxSyncPathDepth;
-- (void)_overrideDefaultValueIfPossibleWithValidationValue:(char)a3 userValue:(id)a4 key:(id)a5 dictionary:(id)a6 invalidKeys:(id)a7;
+- (void)_overrideDefaultValueIfPossibleWithValidationValue:(char)value userValue:(id)userValue key:(id)key dictionary:(id)dictionary invalidKeys:(id)keys;
 @end
 
 @implementation BRCUserDefaults
@@ -119,16 +119,16 @@
     +[BRCUserDefaults _userDefaultsManager];
   }
 
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 br_currentPersonaID];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
   v4 = _userDefaultsManager_userDefaultsManagers;
   objc_sync_enter(v4);
-  v5 = [_userDefaultsManager_userDefaultsManagers objectForKeyedSubscript:v3];
+  v5 = [_userDefaultsManager_userDefaultsManagers objectForKeyedSubscript:br_currentPersonaID];
   if (!v5)
   {
-    v5 = [[BRCUserDefaultsManager alloc] initWithPersonaID:v3];
-    [_userDefaultsManager_userDefaultsManagers setObject:v5 forKeyedSubscript:v3];
+    v5 = [[BRCUserDefaultsManager alloc] initWithPersonaID:br_currentPersonaID];
+    [_userDefaultsManager_userDefaultsManagers setObject:v5 forKeyedSubscript:br_currentPersonaID];
   }
 
   objc_sync_exit(v4);
@@ -257,61 +257,61 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)defaultsForMangledID:(id)a3
++ (id)defaultsForMangledID:(id)d
 {
-  v4 = a3;
-  if ([v4 isShared])
+  dCopy = d;
+  if ([dCopy isShared])
   {
-    v5 = [a1 defaultsForSharedZone];
+    defaultsForSharedZone = [self defaultsForSharedZone];
   }
 
   else
   {
-    v6 = [a1 _userDefaultsManager];
-    v7 = [v4 appLibraryOrZoneName];
-    v5 = [v6 defaultsForIdentifier:v7];
+    _userDefaultsManager = [self _userDefaultsManager];
+    appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+    defaultsForSharedZone = [_userDefaultsManager defaultsForIdentifier:appLibraryOrZoneName];
   }
 
-  return v5;
+  return defaultsForSharedZone;
 }
 
 + (id)defaultsForMetadataContainer
 {
-  v2 = [a1 _userDefaultsManager];
-  v3 = [v2 defaultsForIdentifier:@"container-metadata"];
+  _userDefaultsManager = [self _userDefaultsManager];
+  v3 = [_userDefaultsManager defaultsForIdentifier:@"container-metadata"];
 
   return v3;
 }
 
 + (id)defaultsForSharedZone
 {
-  v2 = [a1 _userDefaultsManager];
-  v3 = [v2 defaultsForIdentifier:*MEMORY[0x277CFADA8]];
+  _userDefaultsManager = [self _userDefaultsManager];
+  v3 = [_userDefaultsManager defaultsForIdentifier:*MEMORY[0x277CFADA8]];
 
   return v3;
 }
 
 + (id)defaultsForSideCar
 {
-  v2 = [a1 _userDefaultsManager];
-  v3 = [v2 defaultsForIdentifier:*MEMORY[0x277CFB070]];
+  _userDefaultsManager = [self _userDefaultsManager];
+  v3 = [_userDefaultsManager defaultsForIdentifier:*MEMORY[0x277CFB070]];
 
   return v3;
 }
 
-+ (void)setServerConfigurationURL:(id)a3 whenLoaded:(id)a4
++ (void)setServerConfigurationURL:(id)l whenLoaded:(id)loaded
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _userDefaultsManager];
-  [v8 setServerConfigurationURL:v7 whenLoaded:v6];
+  loadedCopy = loaded;
+  lCopy = l;
+  _userDefaultsManager = [self _userDefaultsManager];
+  [_userDefaultsManager setServerConfigurationURL:lCopy whenLoaded:loadedCopy];
 }
 
 + (id)cachedServerConfigurationPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"CloudDocs"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"CloudDocs"];
 
   v5 = [v4 stringByAppendingPathComponent:@"server-conflig.plist"];
 
@@ -320,21 +320,21 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
 
 + (void)loadCachedServerConfiguration
 {
-  v2 = [a1 _userDefaultsManager];
-  [v2 loadCachedServerConfiguration];
+  _userDefaultsManager = [self _userDefaultsManager];
+  [_userDefaultsManager loadCachedServerConfiguration];
 }
 
 + (void)reset
 {
-  v2 = [a1 _userDefaultsManager];
-  [v2 reset];
+  _userDefaultsManager = [self _userDefaultsManager];
+  [_userDefaultsManager reset];
 }
 
-- (BRCUserDefaults)initWithServerConfiguration:(id)a3 globalUserDefaults:(id)a4 clientZoneIdentifier:(id)a5
+- (BRCUserDefaults)initWithServerConfiguration:(id)configuration globalUserDefaults:(id)defaults clientZoneIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  defaultsCopy = defaults;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = BRCUserDefaults;
   v12 = [(BRCUserDefaults *)&v16 init];
@@ -344,22 +344,22 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
     cache = v12->_cache;
     v12->_cache = v13;
 
-    objc_storeStrong(&v12->_serverContainerConfigurationDict, a3);
-    objc_storeStrong(&v12->_globalUserDefault, a4);
-    objc_storeStrong(&v12->_clientZoneIdentifier, a5);
+    objc_storeStrong(&v12->_serverContainerConfigurationDict, configuration);
+    objc_storeStrong(&v12->_globalUserDefault, defaults);
+    objc_storeStrong(&v12->_clientZoneIdentifier, identifier);
   }
 
   return v12;
 }
 
-- (id)_loadObjectForKey:(id)a3 inheritFromGlobal:(BOOL)a4 suiteName:(id)a5 validateWithBlock:(id)a6
+- (id)_loadObjectForKey:(id)key inheritFromGlobal:(BOOL)global suiteName:(id)name validateWithBlock:(id)block
 {
-  v8 = a4;
+  globalCopy = global;
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(BRCUserDefaults *)self _serverDefaultForKey:v10];
+  keyCopy = key;
+  nameCopy = name;
+  blockCopy = block;
+  v13 = [(BRCUserDefaults *)self _serverDefaultForKey:keyCopy];
   if (v13)
   {
     v14 = brc_bread_crumbs();
@@ -367,7 +367,7 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v25 = 138412802;
-      v26 = v10;
+      v26 = keyCopy;
       v27 = 2112;
       v28 = v13;
       v29 = 2112;
@@ -376,21 +376,21 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
     }
   }
 
-  if (v11)
+  if (nameCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v11];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
-  v17 = v16;
+  v17 = standardUserDefaults;
   if (self->_clientZoneIdentifier)
   {
-    v18 = [v16 dictionaryForKey:?];
-    v19 = [v18 objectForKey:v10];
+    v18 = [standardUserDefaults dictionaryForKey:?];
+    v19 = [v18 objectForKey:keyCopy];
 
     if (v19)
     {
@@ -398,20 +398,20 @@ uint64_t __39__BRCUserDefaults__userDefaultsManager__block_invoke()
     }
   }
 
-  else if (([v10 containsString:@"server-only"] & 1) == 0)
+  else if (([keyCopy containsString:@"server-only"] & 1) == 0)
   {
-    v19 = [v17 valueForKey:v10];
+    v19 = [v17 valueForKey:keyCopy];
     if (v19)
     {
 LABEL_24:
-      [BRCUserDefaults _loadObjectForKey:v10 inheritFromGlobal:v19 suiteName:? validateWithBlock:?];
-      if (!v12)
+      [BRCUserDefaults _loadObjectForKey:keyCopy inheritFromGlobal:v19 suiteName:? validateWithBlock:?];
+      if (!blockCopy)
       {
         goto LABEL_21;
       }
 
 LABEL_20:
-      v21 = v12[2](v12, v19);
+      v21 = blockCopy[2](blockCopy, v19);
 
       v19 = v21;
       goto LABEL_21;
@@ -419,12 +419,12 @@ LABEL_20:
   }
 
   v19 = v13;
-  if (!v13 && v8)
+  if (!v13 && globalCopy)
   {
     globalUserDefault = self->_globalUserDefault;
     if (globalUserDefault)
     {
-      v19 = [(BRCUserDefaults *)globalUserDefault objectForKey:v10 inheritFromGlobal:1 validateWithBlock:v12];
+      v19 = [(BRCUserDefaults *)globalUserDefault objectForKey:keyCopy inheritFromGlobal:1 validateWithBlock:blockCopy];
       if (v19)
       {
         goto LABEL_21;
@@ -437,7 +437,7 @@ LABEL_20:
     }
   }
 
-  if (v12)
+  if (blockCopy)
   {
     goto LABEL_20;
   }
@@ -450,10 +450,10 @@ LABEL_21:
   return v22;
 }
 
-- (id)_serverDefaultForKey:(id)a3
+- (id)_serverDefaultForKey:(id)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = BRVersion();
   v6 = v5;
   if (!v5)
@@ -462,13 +462,13 @@ LABEL_21:
   }
 
   v25 = v5;
-  v26 = v4;
+  v26 = keyCopy;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v27 = self;
+  selfCopy = self;
   v8 = self->_serverContainerConfigurationDict;
   v9 = [(NSDictionary *)v8 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v9)
@@ -518,14 +518,14 @@ LABEL_21:
   [v7 sortUsingComparator:&__block_literal_global_408];
   v17 = [v7 count];
   v6 = v25;
-  v4 = v26;
+  keyCopy = v26;
   if (v17 - 1 < 0)
   {
 LABEL_23:
 
-    self = v27;
+    self = selfCopy;
 LABEL_24:
-    v22 = [(NSDictionary *)self->_serverContainerConfigurationDict valueForKey:v4, v25, v26];
+    v22 = [(NSDictionary *)self->_serverContainerConfigurationDict valueForKey:keyCopy, v25, v26];
     goto LABEL_25;
   }
 
@@ -536,13 +536,13 @@ LABEL_24:
     if ([v6 compare:v19 options:64] != -1)
     {
       v20 = [@"defaults.clouddocs." stringByAppendingString:v19];
-      v21 = [(NSDictionary *)v27->_serverContainerConfigurationDict objectForKeyedSubscript:v20];
+      v21 = [(NSDictionary *)selfCopy->_serverContainerConfigurationDict objectForKeyedSubscript:v20];
       if (!v21)
       {
         [BRCUserDefaults _serverDefaultForKey:];
       }
 
-      v22 = [v21 valueForKey:v4];
+      v22 = [v21 valueForKey:keyCopy];
 
       if (v22)
       {
@@ -562,20 +562,20 @@ LABEL_25:
   return v22;
 }
 
-- (int)intForKey:(id)a3 min:(int)a4 max:(int)a5 byDefault:(int)a6
+- (int)intForKey:(id)key min:(int)min max:(int)max byDefault:(int)default
 {
-  v10 = a3;
-  if (a4 >= a5)
+  keyCopy = key;
+  if (min >= max)
   {
     [BRCUserDefaults intForKey:min:max:byDefault:];
   }
 
-  if (a4 > a6)
+  if (min > default)
   {
     [BRCUserDefaults intForKey:min:max:byDefault:];
   }
 
-  if (a6 > a5)
+  if (default > max)
   {
     [BRCUserDefaults intForKey:min:max:byDefault:];
   }
@@ -584,15 +584,15 @@ LABEL_25:
   v15[1] = 3221225472;
   v15[2] = __47__BRCUserDefaults_intForKey_min_max_byDefault___block_invoke;
   v15[3] = &unk_278507C40;
-  v17 = a6;
-  v18 = a4;
-  v19 = a5;
-  v16 = v10;
-  v11 = v10;
+  defaultCopy = default;
+  minCopy = min;
+  maxCopy = max;
+  v16 = keyCopy;
+  v11 = keyCopy;
   v12 = [(BRCUserDefaults *)self objectForKey:v11 inheritFromGlobal:1 validateWithBlock:v15];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
-  return v13;
+  return intValue;
 }
 
 id __47__BRCUserDefaults_intForKey_min_max_byDefault___block_invoke(uint64_t a1, void *a2)
@@ -695,20 +695,20 @@ LABEL_4:
   return v8;
 }
 
-- (unint64_t)unsignedLongLongForKey:(id)a3 min:(unint64_t)a4 max:(unint64_t)a5 byDefault:(unint64_t)a6
+- (unint64_t)unsignedLongLongForKey:(id)key min:(unint64_t)min max:(unint64_t)max byDefault:(unint64_t)default
 {
-  v10 = a3;
-  if (a4 >= a5)
+  keyCopy = key;
+  if (min >= max)
   {
     [BRCUserDefaults unsignedLongLongForKey:min:max:byDefault:];
   }
 
-  if (a4 > a6)
+  if (min > default)
   {
     [BRCUserDefaults unsignedLongLongForKey:min:max:byDefault:];
   }
 
-  if (a6 > a5)
+  if (default > max)
   {
     [BRCUserDefaults unsignedLongLongForKey:min:max:byDefault:];
   }
@@ -717,15 +717,15 @@ LABEL_4:
   v16 = 3221225472;
   v17 = __60__BRCUserDefaults_unsignedLongLongForKey_min_max_byDefault___block_invoke;
   v18 = &unk_278507C68;
-  v21 = a4;
-  v22 = a5;
-  v19 = v10;
-  v20 = a6;
-  v11 = v10;
+  minCopy = min;
+  maxCopy = max;
+  v19 = keyCopy;
+  defaultCopy = default;
+  v11 = keyCopy;
   v12 = [(BRCUserDefaults *)self objectForKey:v11 inheritFromGlobal:1 validateWithBlock:&v15];
-  v13 = [v12 unsignedLongLongValue];
+  unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-  return v13;
+  return unsignedLongLongValue;
 }
 
 id __60__BRCUserDefaults_unsignedLongLongForKey_min_max_byDefault___block_invoke(void *a1, void *a2)
@@ -865,20 +865,20 @@ void *__60__BRCUserDefaults_stringForKey_inheritFromGlobal_byDefault___block_inv
   return v4;
 }
 
-- (double)doubleForKey:(id)a3 min:(double)a4 max:(double)a5 byDefault:(double)a6
+- (double)doubleForKey:(id)key min:(double)min max:(double)max byDefault:(double)default
 {
-  v10 = a3;
-  if (a4 >= a5)
+  keyCopy = key;
+  if (min >= max)
   {
     [BRCUserDefaults doubleForKey:min:max:byDefault:];
   }
 
-  if (a4 > a6)
+  if (min > default)
   {
     [BRCUserDefaults doubleForKey:min:max:byDefault:];
   }
 
-  if (a6 > a5)
+  if (default > max)
   {
     [BRCUserDefaults doubleForKey:min:max:byDefault:];
   }
@@ -887,11 +887,11 @@ void *__60__BRCUserDefaults_stringForKey_inheritFromGlobal_byDefault___block_inv
   v17 = 3221225472;
   v18 = __50__BRCUserDefaults_doubleForKey_min_max_byDefault___block_invoke;
   v19 = &unk_278507C68;
-  v21 = a6;
-  v22 = a4;
-  v23 = a5;
-  v20 = v10;
-  v11 = v10;
+  defaultCopy = default;
+  minCopy = min;
+  maxCopy = max;
+  v20 = keyCopy;
+  v11 = keyCopy;
   v12 = [(BRCUserDefaults *)self objectForKey:v11 inheritFromGlobal:1 validateWithBlock:&v16];
   [v12 doubleValue];
   v14 = v13;
@@ -1000,11 +1000,11 @@ id __62__BRCUserDefaults_indexSetForKey_inheritFromGlobal_byDefault___block_invo
 
 - (float)modifyRecordsCountAdditiveIncreaseFraction
 {
-  v3 = [(BRCUserDefaults *)self maxRecordCountInModifyRecordsOperation];
+  maxRecordCountInModifyRecordsOperation = [(BRCUserDefaults *)self maxRecordCountInModifyRecordsOperation];
   v4 = [(BRCUserDefaults *)self unsignedIntForKey:@"sync.up.batchsize.increase" min:1 max:100 byDefault:10];
-  if (v3)
+  if (maxRecordCountInModifyRecordsOperation)
   {
-    return v4 / v3;
+    return v4 / maxRecordCountInModifyRecordsOperation;
   }
 
   else
@@ -1013,16 +1013,16 @@ id __62__BRCUserDefaults_indexSetForKey_inheritFromGlobal_byDefault___block_invo
   }
 }
 
-- (id)_extensionSetForKey:(id)a3 startingWithExtensions:(id)a4
+- (id)_extensionSetForKey:(id)key startingWithExtensions:(id)extensions
 {
-  v6 = a4;
+  extensionsCopy = extensions;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__BRCUserDefaults__extensionSetForKey_startingWithExtensions___block_invoke;
   v10[3] = &unk_278507C90;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BRCUserDefaults *)self objectForKey:a3 inheritFromGlobal:1 validateWithBlock:v10];
+  v11 = extensionsCopy;
+  v7 = extensionsCopy;
+  v8 = [(BRCUserDefaults *)self objectForKey:key inheritFromGlobal:1 validateWithBlock:v10];
 
   return v8;
 }
@@ -1046,16 +1046,16 @@ id __62__BRCUserDefaults__extensionSetForKey_startingWithExtensions___block_invo
   return v5;
 }
 
-- (id)_UTISetFor:(id)a3 startingWithExtensions:(id)a4
+- (id)_UTISetFor:(id)for startingWithExtensions:(id)extensions
 {
-  v6 = a4;
+  extensionsCopy = extensions;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__BRCUserDefaults__UTISetFor_startingWithExtensions___block_invoke;
   v10[3] = &unk_278507C90;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BRCUserDefaults *)self objectForKey:a3 inheritFromGlobal:1 validateWithBlock:v10];
+  v11 = extensionsCopy;
+  v7 = extensionsCopy;
+  v8 = [(BRCUserDefaults *)self objectForKey:for inheritFromGlobal:1 validateWithBlock:v10];
 
   return v8;
 }
@@ -1081,8 +1081,8 @@ id __53__BRCUserDefaults__UTISetFor_startingWithExtensions___block_invoke(uint64
 
 - (NSSet)iworkShareableExtensions
 {
-  v3 = [MEMORY[0x277CFAEE0] iWorkShareableExtensions];
-  v4 = [(BRCUserDefaults *)self _extensionSetForKey:@"fs.shareable.iwork.extensions" startingWithExtensions:v3];
+  iWorkShareableExtensions = [MEMORY[0x277CFAEE0] iWorkShareableExtensions];
+  v4 = [(BRCUserDefaults *)self _extensionSetForKey:@"fs.shareable.iwork.extensions" startingWithExtensions:iWorkShareableExtensions];
 
   return v4;
 }
@@ -1104,38 +1104,38 @@ id __32__BRCUserDefaults_syncThrottles__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_overrideDefaultValueIfPossibleWithValidationValue:(char)a3 userValue:(id)a4 key:(id)a5 dictionary:(id)a6 invalidKeys:(id)a7
+- (void)_overrideDefaultValueIfPossibleWithValidationValue:(char)value userValue:(id)userValue key:(id)key dictionary:(id)dictionary invalidKeys:(id)keys
 {
-  v10 = a3;
-  v15 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
-  if (v10 == 2)
+  valueCopy = value;
+  userValueCopy = userValue;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
+  v14 = keysCopy;
+  if (valueCopy == 2)
   {
-    [v13 addObject:v11];
+    [keysCopy addObject:keyCopy];
   }
 
-  else if (v10 == 1)
+  else if (valueCopy == 1)
   {
-    [v12 setObject:v15 forKeyedSubscript:v11];
+    [dictionaryCopy setObject:userValueCopy forKeyedSubscript:keyCopy];
   }
 }
 
-- (id)bgSystemTaskParamsForKey:(id)a3 byDefault:(id)a4
+- (id)bgSystemTaskParamsForKey:(id)key byDefault:(id)default
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  defaultCopy = default;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__BRCUserDefaults_bgSystemTaskParamsForKey_byDefault___block_invoke;
   v12[3] = &unk_278507D00;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v8 = v6;
-  v9 = v7;
+  v13 = defaultCopy;
+  selfCopy = self;
+  v15 = keyCopy;
+  v8 = keyCopy;
+  v9 = defaultCopy;
   v10 = [(BRCUserDefaults *)self objectForKey:v8 inheritFromGlobal:1 validateWithBlock:v12];
 
   return v10;
@@ -1317,9 +1317,9 @@ LABEL_25:
   return v4;
 }
 
-- (id)discretionaryOperationBGSystemTaskConfigWithForegroundState:(BOOL)a3
+- (id)discretionaryOperationBGSystemTaskConfigWithForegroundState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [(BRCUserDefaults *)self discretionaryOperationBGSystemTaskConfigForForegroundContext];
   }
@@ -1551,63 +1551,63 @@ LABEL_25:
   return v4;
 }
 
-- (id)getBirdBGSTActivitiesConfigsWithAccountFacade:(id)a3
+- (id)getBirdBGSTActivitiesConfigsWithAccountFacade:(id)facade
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  v6 = [v5 br_currentPersonaID];
+  facadeCopy = facade;
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
-  [v6 isEqualToString:@"__defaultPersonaID__"];
+  [br_currentPersonaID isEqualToString:@"__defaultPersonaID__"];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __65__BRCUserDefaults_getBirdBGSTActivitiesConfigsWithAccountFacade___block_invoke;
   v29[3] = &unk_278507D28;
-  v7 = v6;
+  v7 = br_currentPersonaID;
   v30 = v7;
   v8 = MEMORY[0x22AA4A310](v29);
   v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:10];
-  v10 = [(BRCUserDefaults *)self configurationUpdateBGSystemTaskConfig];
-  [v9 setObject:v10 forKeyedSubscript:@"com.apple.bird.configuration-server-update"];
+  configurationUpdateBGSystemTaskConfig = [(BRCUserDefaults *)self configurationUpdateBGSystemTaskConfig];
+  [v9 setObject:configurationUpdateBGSystemTaskConfig forKeyedSubscript:@"com.apple.bird.configuration-server-update"];
 
-  v11 = [(BRCUserDefaults *)self cacheDeletePushBGSystemTaskConfig];
-  [v9 setObject:v11 forKeyedSubscript:@"com.apple.bird.cache-delete.push"];
+  cacheDeletePushBGSystemTaskConfig = [(BRCUserDefaults *)self cacheDeletePushBGSystemTaskConfig];
+  [v9 setObject:cacheDeletePushBGSystemTaskConfig forKeyedSubscript:@"com.apple.bird.cache-delete.push"];
 
-  v12 = [(BRCUserDefaults *)self analyticsReportBGSystemTaskConfig];
+  analyticsReportBGSystemTaskConfig = [(BRCUserDefaults *)self analyticsReportBGSystemTaskConfig];
   v13 = (v8)[2](v8, @"com.apple.bird.analytics-report");
-  [v9 setObject:v12 forKeyedSubscript:v13];
+  [v9 setObject:analyticsReportBGSystemTaskConfig forKeyedSubscript:v13];
 
-  v14 = [(BRCUserDefaults *)self appTelemetryGatherBGSystemTaskConfig];
+  appTelemetryGatherBGSystemTaskConfig = [(BRCUserDefaults *)self appTelemetryGatherBGSystemTaskConfig];
   v15 = (v8)[2](v8, @"com.apple.bird.app-telemetry");
-  [v9 setObject:v14 forKeyedSubscript:v15];
+  [v9 setObject:appTelemetryGatherBGSystemTaskConfig forKeyedSubscript:v15];
 
-  v16 = [(BRCUserDefaults *)self dbIntegrityCheckBGSystemTaskConfig];
+  dbIntegrityCheckBGSystemTaskConfig = [(BRCUserDefaults *)self dbIntegrityCheckBGSystemTaskConfig];
   v17 = (v8)[2](v8, @"com.apple.bird.db-integrity-check");
-  [v9 setObject:v16 forKeyedSubscript:v17];
+  [v9 setObject:dbIntegrityCheckBGSystemTaskConfig forKeyedSubscript:v17];
 
-  v18 = [(BRCUserDefaults *)self finishSaltingPartiallySaltedDirectoriesBGSystemTaskConfig];
+  finishSaltingPartiallySaltedDirectoriesBGSystemTaskConfig = [(BRCUserDefaults *)self finishSaltingPartiallySaltedDirectoriesBGSystemTaskConfig];
   v19 = (v8)[2](v8, @"com.apple.bird.finish-salting-partially-salted-directories");
-  [v9 setObject:v18 forKeyedSubscript:v19];
+  [v9 setObject:finishSaltingPartiallySaltedDirectoriesBGSystemTaskConfig forKeyedSubscript:v19];
 
-  v20 = [(BRCUserDefaults *)self rescheduleSuspendedNeedsUploadItemsBGSystemTaskConfig];
+  rescheduleSuspendedNeedsUploadItemsBGSystemTaskConfig = [(BRCUserDefaults *)self rescheduleSuspendedNeedsUploadItemsBGSystemTaskConfig];
   v21 = (v8)[2](v8, @"com.apple.bird.reschedule-suspended-needs-upload-items");
-  [v9 setObject:v20 forKeyedSubscript:v21];
+  [v9 setObject:rescheduleSuspendedNeedsUploadItemsBGSystemTaskConfig forKeyedSubscript:v21];
 
-  v22 = [(BRCUserDefaults *)self stageGCBGSystemTaskConfig];
+  stageGCBGSystemTaskConfig = [(BRCUserDefaults *)self stageGCBGSystemTaskConfig];
   v23 = (v8)[2](v8, @"com.apple.bird.stage.gc");
-  [v9 setObject:v22 forKeyedSubscript:v23];
+  [v9 setObject:stageGCBGSystemTaskConfig forKeyedSubscript:v23];
 
   if ([(BRCUserDefaults *)self syncConsistencyCheckerEnabled])
   {
-    v24 = [(BRCUserDefaults *)self syncConsistencyCheckerBGSystemTaskConfig];
+    syncConsistencyCheckerBGSystemTaskConfig = [(BRCUserDefaults *)self syncConsistencyCheckerBGSystemTaskConfig];
     v25 = (v8)[2](v8, @"com.apple.bird.sync-consistency-check");
-    [v9 setObject:v24 forKeyedSubscript:v25];
+    [v9 setObject:syncConsistencyCheckerBGSystemTaskConfig forKeyedSubscript:v25];
   }
 
-  if ([(BRCUserDefaults *)self aggressivelyPCSChainWithAccountFacade:v4])
+  if ([(BRCUserDefaults *)self aggressivelyPCSChainWithAccountFacade:facadeCopy])
   {
-    v26 = [(BRCUserDefaults *)self aggressivePCSChainBGSystemTaskConfig];
+    aggressivePCSChainBGSystemTaskConfig = [(BRCUserDefaults *)self aggressivePCSChainBGSystemTaskConfig];
     v27 = (v8)[2](v8, @"com.apple.bird.aggressive-pcs-chain");
-    [v9 setObject:v26 forKeyedSubscript:v27];
+    [v9 setObject:aggressivePCSChainBGSystemTaskConfig forKeyedSubscript:v27];
   }
 
   return v9;
@@ -2286,28 +2286,28 @@ id __52__BRCUserDefaults_excludedExtensionsWorthPreserving__block_invoke(uint64_
   }
 }
 
-- (BOOL)_shouldRampForKey:(id)a3 accountFacade:(id)a4
+- (BOOL)_shouldRampForKey:(id)key accountFacade:(id)facade
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCUserDefaults *)self intForKey:v6 min:0 max:100 byDefault:0];
-  v9 = [v6 stringByAppendingString:@".carry"];
+  keyCopy = key;
+  facadeCopy = facade;
+  v8 = [(BRCUserDefaults *)self intForKey:keyCopy min:0 max:100 byDefault:0];
+  v9 = [keyCopy stringByAppendingString:@".carry"];
   v10 = [(BRCUserDefaults *)self intForKey:v9 min:0 max:100 byDefault:0];
 
-  v11 = [v6 stringByAppendingString:@".internal"];
+  v11 = [keyCopy stringByAppendingString:@".internal"];
   v12 = [(BRCUserDefaults *)self intForKey:v11 min:0 max:100 byDefault:0];
 
-  v13 = [v6 stringByAppendingString:@".internal+carry"];
+  v13 = [keyCopy stringByAppendingString:@".internal+carry"];
   v14 = [(BRCUserDefaults *)self intForKey:v13 min:0 max:100 byDefault:0];
 
   if (v8 > 0 || v10 > 0 || v12 > 0 || (v15 = 0, v14 >= 1))
   {
-    v16 = [v7 rampNumber];
-    if (v16 >= v8)
+    rampNumber = [facadeCopy rampNumber];
+    if (rampNumber >= v8)
     {
-      v19 = v16;
-      if ([v7 isInCarry] && v19 < v10)
+      v19 = rampNumber;
+      if ([facadeCopy isInCarry] && v19 < v10)
       {
         v17 = brc_bread_crumbs();
         v15 = 1;
@@ -2329,7 +2329,7 @@ id __52__BRCUserDefaults_excludedExtensionsWorthPreserving__block_invoke(uint64_
         }
       }
 
-      else if ([v7 isInCarry] && os_variant_has_internal_content() && v19 < v14)
+      else if ([facadeCopy isInCarry] && os_variant_has_internal_content() && v19 < v14)
       {
         v17 = brc_bread_crumbs();
         v15 = 1;
@@ -2347,7 +2347,7 @@ id __52__BRCUserDefaults_excludedExtensionsWorthPreserving__block_invoke(uint64_
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           v22 = 138413314;
-          v23 = v6;
+          v23 = keyCopy;
           v24 = 1024;
           v25 = v19;
           v26 = 1024;
@@ -2379,30 +2379,30 @@ id __52__BRCUserDefaults_excludedExtensionsWorthPreserving__block_invoke(uint64_
   return v15;
 }
 
-- (BOOL)optimisticallyPCSChainWithAccountFacade:(id)a3
+- (BOOL)optimisticallyPCSChainWithAccountFacade:(id)facade
 {
-  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.optimistic-chain-ramp" accountFacade:a3];
+  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.optimistic-chain-ramp" accountFacade:facade];
 
   return [(BRCUserDefaults *)self BOOLForKey:@"sync.optimistic-pcs-chaining" byDefault:v4];
 }
 
-- (BOOL)optimisticallyPCSChainDuringResetWithAccountFacade:(id)a3
+- (BOOL)optimisticallyPCSChainDuringResetWithAccountFacade:(id)facade
 {
-  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.reset.optimistic-chain-ramp" accountFacade:a3];
+  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.reset.optimistic-chain-ramp" accountFacade:facade];
 
   return [(BRCUserDefaults *)self BOOLForKey:@"sync.reset.optimistic-chain" byDefault:v4];
 }
 
-- (BOOL)aggressivelyPCSChainWithAccountFacade:(id)a3
+- (BOOL)aggressivelyPCSChainWithAccountFacade:(id)facade
 {
-  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.aggressive-chain-ramp" accountFacade:a3];
+  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.aggressive-chain-ramp" accountFacade:facade];
 
   return [(BRCUserDefaults *)self BOOLForKey:@"aggressive-pcs-chaining" byDefault:v4];
 }
 
-- (BOOL)saveLocalContentVersionIdentifierOnDiskWithAccountFacade:(id)a3
+- (BOOL)saveLocalContentVersionIdentifierOnDiskWithAccountFacade:(id)facade
 {
-  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.save-local-content-version-on-disk-ramp" accountFacade:a3];
+  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"sync.save-local-content-version-on-disk-ramp" accountFacade:facade];
 
   return [(BRCUserDefaults *)self BOOLForKey:@"sync.save-local-content-version-on-disk" byDefault:v4];
 }
@@ -2412,18 +2412,18 @@ id __52__BRCUserDefaults_excludedExtensionsWorthPreserving__block_invoke(uint64_
   if ([(BRCUserDefaults *)self _isSharedDefaults])
   {
     v3 = @"allows-shared-directory-list-before-initial-change";
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
   }
 
   else
   {
     v3 = @"allows-private-directory-list-before-initial-change";
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
-  return [(BRCUserDefaults *)v4 BOOLForKey:v3 byDefault:v5];
+  return [(BRCUserDefaults *)selfCopy2 BOOLForKey:v3 byDefault:v5];
 }
 
 - (BOOL)canSaveRecordsDirectlyForDeltaSync
@@ -2595,16 +2595,16 @@ id __51__BRCUserDefaults_benignTelemetryErrorDescriptions__block_invoke(uint64_t
   return v2;
 }
 
-- (id)_healthErrorSetForKey:(id)a3 byDefault:(id)a4
+- (id)_healthErrorSetForKey:(id)key byDefault:(id)default
 {
-  v6 = a4;
+  defaultCopy = default;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__BRCUserDefaults__healthErrorSetForKey_byDefault___block_invoke;
   v10[3] = &unk_278507C90;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BRCUserDefaults *)self objectForKey:a3 inheritFromGlobal:1 validateWithBlock:v10];
+  v11 = defaultCopy;
+  v7 = defaultCopy;
+  v8 = [(BRCUserDefaults *)self objectForKey:key inheritFromGlobal:1 validateWithBlock:v10];
 
   return v8;
 }
@@ -2677,21 +2677,21 @@ id __44__BRCUserDefaults_recordsToIgnoreOnSyncDown__block_invoke(uint64_t a1, vo
 
 - (BOOL)dbIntegrityCheckBasehashSalting
 {
-  v3 = [(BRCUserDefaults *)self supportsEnhancedDrivePrivacy];
-  if (v3)
+  supportsEnhancedDrivePrivacy = [(BRCUserDefaults *)self supportsEnhancedDrivePrivacy];
+  if (supportsEnhancedDrivePrivacy)
   {
 
-    LOBYTE(v3) = [(BRCUserDefaults *)self BOOLForKey:@"db.integrity-check.basehash-salting" byDefault:1];
+    LOBYTE(supportsEnhancedDrivePrivacy) = [(BRCUserDefaults *)self BOOLForKey:@"db.integrity-check.basehash-salting" byDefault:1];
   }
 
-  return v3;
+  return supportsEnhancedDrivePrivacy;
 }
 
 - (BOOL)shouldPerformPeriodicSyncInvestigation
 {
-  v3 = [MEMORY[0x277CFAEB0] isInternalBuild];
+  isInternalBuild = [MEMORY[0x277CFAEB0] isInternalBuild];
 
-  return [(BRCUserDefaults *)self BOOLForKey:@"sync.should-perform-periodic-sync-investigations" byDefault:v3];
+  return [(BRCUserDefaults *)self BOOLForKey:@"sync.should-perform-periodic-sync-investigations" byDefault:isInternalBuild];
 }
 
 - (BOOL)fpfsOptimizeStorageAndSpeculativeDownload
@@ -2731,9 +2731,9 @@ id __44__BRCUserDefaults_recordsToIgnoreOnSyncDown__block_invoke(uint64_t a1, vo
 
 - (BOOL)requestForAccessNotifications
 {
-  v3 = [MEMORY[0x277CFAEB0] isInternalBuild];
+  isInternalBuild = [MEMORY[0x277CFAEB0] isInternalBuild];
 
-  return [(BRCUserDefaults *)self BOOLForKey:@"notifications.request-for-access" byDefault:v3];
+  return [(BRCUserDefaults *)self BOOLForKey:@"notifications.request-for-access" byDefault:isInternalBuild];
 }
 
 - (BOOL)syncConsistencyCheckerEnabled
@@ -2816,16 +2816,16 @@ id __44__BRCUserDefaults_recordsToIgnoreOnSyncDown__block_invoke(uint64_t a1, vo
   return [(BRCUserDefaults *)self BOOLForKey:@"test.schedule-deep-scan-on-fsevents-reset" byDefault:1];
 }
 
-- (id)_brErrorSetForKey:(id)a3 byDefault:(id)a4
+- (id)_brErrorSetForKey:(id)key byDefault:(id)default
 {
-  v6 = a4;
+  defaultCopy = default;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__BRCUserDefaults__brErrorSetForKey_byDefault___block_invoke;
   v10[3] = &unk_278507C90;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BRCUserDefaults *)self objectForKey:a3 inheritFromGlobal:1 suiteName:@"com.apple.bird" validateWithBlock:v10];
+  v11 = defaultCopy;
+  v7 = defaultCopy;
+  v8 = [(BRCUserDefaults *)self objectForKey:key inheritFromGlobal:1 suiteName:@"com.apple.bird" validateWithBlock:v10];
 
   return v8;
 }
@@ -2958,14 +2958,14 @@ void __36__BRCUserDefaults_dumpDateFormatter__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)generateThrottleTTRIdentifiersForTriggerRootCause:(id)a3
++ (id)generateThrottleTTRIdentifiersForTriggerRootCause:(id)cause
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v4 code];
+  causeCopy = cause;
+  domain = [causeCopy domain];
+  code = [causeCopy code];
 
-  v7 = [v3 stringWithFormat:@"%@_%ld", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@_%ld", domain, code];
 
   return v7;
 }
@@ -3012,9 +3012,9 @@ id __46__BRCUserDefaults_weeklyThrottledErrorsForTTR__block_invoke(uint64_t a1, 
   return v12;
 }
 
-- (BOOL)shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:(id)a3
+- (BOOL)shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:(id)facade
 {
-  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"download.prime-mmcs-cache-ramp" accountFacade:a3];
+  v4 = [(BRCUserDefaults *)self _shouldRampForKey:@"download.prime-mmcs-cache-ramp" accountFacade:facade];
 
   return [(BRCUserDefaults *)self BOOLForKey:@"download.prime-mmcs-cache" byDefault:v4];
 }
@@ -3031,15 +3031,15 @@ id __46__BRCUserDefaults_weeklyThrottledErrorsForTTR__block_invoke(uint64_t a1, 
 {
   if ([MEMORY[0x277CFAEB0] isInternalBuild])
   {
-    v3 = 1;
+    isSeedBuild = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CFAEB0] isSeedBuild];
+    isSeedBuild = [MEMORY[0x277CFAEB0] isSeedBuild];
   }
 
-  return [(BRCUserDefaults *)self BOOLForKey:@"signpost.enabled" byDefault:v3];
+  return [(BRCUserDefaults *)self BOOLForKey:@"signpost.enabled" byDefault:isSeedBuild];
 }
 
 - (unint64_t)uploadV1PerformanceTrackerCap

@@ -1,22 +1,22 @@
 @interface NTKBigNumeralsDigitalTypefaceEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForLocale:(id)a3 device:(id)a4;
-+ (id)localeForTypeface:(unint64_t)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForLocale:(id)locale device:(id)device;
++ (id)localeForTypeface:(unint64_t)typeface;
 - (NSLocale)locale;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKBigNumeralsDigitalTypefaceEditOption
 
-+ (id)defaultOptionForLocale:(id)a3 device:(id)a4
++ (id)defaultOptionForLocale:(id)locale device:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = +[NSLocale currentLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [IntlUtility numberingSystemForLocaleID:v7];
+  localeIdentifier = [v6 localeIdentifier];
+  v8 = [IntlUtility numberingSystemForLocaleID:localeIdentifier];
 
   if ([v8 isEqualToString:@"latn"])
   {
@@ -38,34 +38,34 @@
     v9 = 0;
   }
 
-  v10 = [a1 optionWithTypeface:v9 forDevice:v5];
+  v10 = [self optionWithTypeface:v9 forDevice:deviceCopy];
 
   return v10;
 }
 
-+ (id)localeForTypeface:(unint64_t)a3
++ (id)localeForTypeface:(unint64_t)typeface
 {
-  if (a3 <= 3)
+  if (typeface <= 3)
   {
-    a1 = [NSLocale localeWithLocaleIdentifier:*(&off_C590 + a3), v3];
+    self = [NSLocale localeWithLocaleIdentifier:*(&off_C590 + typeface), v3];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_3FA8;
   v5[3] = &unk_C460;
-  v5[4] = a1;
-  v3 = sub_3FA8(v5, a3);
+  v5[4] = self;
+  v3 = sub_3FA8(v5, device);
 
   return v3;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
   v3 = _EnumValueRange();
   v4 = [v3 arrayByExcludingObjectsInArray:&off_D640];
@@ -73,29 +73,29 @@
   return v4;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C5B0 + a3);
+    return *(&off_C5B0 + value);
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C5D0 + a3);
+    return *(&off_C5D0 + value);
   }
 }
 
@@ -113,9 +113,9 @@
 
 - (NSLocale)locale
 {
-  v2 = [(NTKBigNumeralsDigitalTypefaceEditOption *)self typeface];
+  typeface = [(NTKBigNumeralsDigitalTypefaceEditOption *)self typeface];
 
-  return [NTKBigNumeralsDigitalTypefaceEditOption localeForTypeface:v2];
+  return [NTKBigNumeralsDigitalTypefaceEditOption localeForTypeface:typeface];
 }
 
 @end

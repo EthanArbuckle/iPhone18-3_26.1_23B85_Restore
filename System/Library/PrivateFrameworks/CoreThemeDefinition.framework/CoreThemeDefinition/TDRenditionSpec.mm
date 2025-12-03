@@ -1,12 +1,12 @@
 @interface TDRenditionSpec
-- (BOOL)canBePackedWithDocument:(id)a3;
+- (BOOL)canBePackedWithDocument:(id)document;
 - (CGPoint)packedPoint;
 - (TDRenditionType)renditionType;
 - (id)propertiesAsDictionary;
 - (void)awakeFromInsert;
 - (void)resetToBaseKeySpec;
-- (void)setPackedPoint:(CGPoint)a3;
-- (void)setRenditionType:(id)a3;
+- (void)setPackedPoint:(CGPoint)point;
+- (void)setRenditionType:(id)type;
 @end
 
 @implementation TDRenditionSpec
@@ -25,22 +25,22 @@
   if ([(TDRenditionSpec *)self production]&& [(TDRenditionSpec *)self keySpec])
   {
     v3 = [objc_msgSend(-[TDRenditionSpec production](self "production")];
-    v4 = [(TDRenditionSpec *)self keySpec];
+    keySpec = [(TDRenditionSpec *)self keySpec];
 
-    [v4 setValuesForKeysWithDictionary:v3];
+    [keySpec setValuesForKeysWithDictionary:v3];
   }
 }
 
 - (id)propertiesAsDictionary
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(TDRenditionSpec *)self properties];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  properties = [(TDRenditionSpec *)self properties];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [properties countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -52,45 +52,45 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(properties);
         }
 
-        [*(*(&v11 + 1) + 8 * v8++) addToDictionary:v3];
+        [*(*(&v11 + 1) + 8 * v8++) addToDictionary:dictionary];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [properties countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
 - (TDRenditionType)renditionType
 {
   [(TDRenditionSpec *)self willAccessValueForKey:@"renditionType"];
-  v3 = [(TDRenditionSpec *)self primitiveRenditionType];
+  primitiveRenditionType = [(TDRenditionSpec *)self primitiveRenditionType];
   [(TDRenditionSpec *)self didAccessValueForKey:@"renditionType"];
-  if (v3)
+  if (primitiveRenditionType)
   {
-    return v3;
+    return primitiveRenditionType;
   }
 
-  v5 = [(TDRenditionSpec *)self production];
+  production = [(TDRenditionSpec *)self production];
 
-  return [v5 renditionType];
+  return [production renditionType];
 }
 
-- (void)setRenditionType:(id)a3
+- (void)setRenditionType:(id)type
 {
-  v5 = [a3 identifier];
-  if (v5 == [objc_msgSend(-[TDRenditionSpec production](self "production")] || v5 == 1010 || v5 == 6)
+  identifier = [type identifier];
+  if (identifier == [objc_msgSend(-[TDRenditionSpec production](self "production")] || identifier == 1010 || identifier == 6)
   {
     [(TDRenditionSpec *)self willChangeValueForKey:@"renditionType"];
-    [(TDRenditionSpec *)self setPrimitiveRenditionType:a3];
+    [(TDRenditionSpec *)self setPrimitiveRenditionType:type];
 
     [(TDRenditionSpec *)self didChangeValueForKey:@"renditionType"];
   }
@@ -109,40 +109,40 @@
   }
 }
 
-- (void)setPackedPoint:(CGPoint)a3
+- (void)setPackedPoint:(CGPoint)point
 {
-  y = a3.y;
-  [(TDRenditionSpec *)self setPackedPointX:a3.x];
+  y = point.y;
+  [(TDRenditionSpec *)self setPackedPointX:point.x];
 
   [(TDRenditionSpec *)self setPackedPointY:y];
 }
 
 - (CGPoint)packedPoint
 {
-  v3 = [(TDRenditionSpec *)self packedPointX];
-  v4 = [(TDRenditionSpec *)self packedPointY];
-  v5 = v3;
-  result.y = v4;
+  packedPointX = [(TDRenditionSpec *)self packedPointX];
+  packedPointY = [(TDRenditionSpec *)self packedPointY];
+  v5 = packedPointX;
+  result.y = packedPointY;
   result.x = v5;
   return result;
 }
 
-- (BOOL)canBePackedWithDocument:(id)a3
+- (BOOL)canBePackedWithDocument:(id)document
 {
-  v4 = [(TDRenditionSpec *)self width];
-  v5 = [(TDRenditionSpec *)self height];
+  width = [(TDRenditionSpec *)self width];
+  height = [(TDRenditionSpec *)self height];
   result = 0;
-  if (v4 && v5)
+  if (width && height)
   {
     v7 = [-[TDRenditionSpec keySpec](self "keySpec")];
-    if (([(TDRenditionSpec *)self alphaCrop]& 1) == 0 && v5 * v4 > [CoreThemeDocument maximumAreaOfPackableImageForScale:v7])
+    if (([(TDRenditionSpec *)self alphaCrop]& 1) == 0 && height * width > [CoreThemeDocument maximumAreaOfPackableImageForScale:v7])
     {
       return 0;
     }
 
-    v8 = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
-    v9 = v8;
-    if (v8 > 9)
+    identifier = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
+    v9 = identifier;
+    if (identifier > 9)
     {
       return 0;
     }

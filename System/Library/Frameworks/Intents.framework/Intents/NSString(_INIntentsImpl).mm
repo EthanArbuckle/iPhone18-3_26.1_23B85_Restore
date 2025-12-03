@@ -11,15 +11,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 widgetPlistableRepresentationWithParameters:v4 error:0];
+    selfCopy = [self widgetPlistableRepresentationWithParameters:v4 error:0];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }

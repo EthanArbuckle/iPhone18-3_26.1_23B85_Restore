@@ -1,26 +1,26 @@
 @interface TVLAudioLatencyEstimator
-- (TVLAudioLatencyEstimator)initWithMessageSession:(id)a3;
-- (id)networkInterfaceOfType:(unint64_t)a3 fromInterfaces:(id)a4;
-- (void)_estimateAudioLatencyWithOptions:(id)a3 withResponseHandler:(id)a4;
-- (void)_initWithMessageSession:(id)a3;
-- (void)_invalidateWithError:(id)a3;
-- (void)_postInternalProgressEvent:(unint64_t)a3 withInfo:(id)a4;
-- (void)_postProgressEvent:(unint64_t)a3 withInfo:(id)a4;
-- (void)_respondAndInvalidateWithError:(id)a3 responseHandler:(id)a4;
-- (void)_sendMessage:(id)a3 withResponse:(id)a4;
-- (void)_synchronizeClocksWithOptions:(id)a3 withResponseHandler:(id)a4;
+- (TVLAudioLatencyEstimator)initWithMessageSession:(id)session;
+- (id)networkInterfaceOfType:(unint64_t)type fromInterfaces:(id)interfaces;
+- (void)_estimateAudioLatencyWithOptions:(id)options withResponseHandler:(id)handler;
+- (void)_initWithMessageSession:(id)session;
+- (void)_invalidateWithError:(id)error;
+- (void)_postInternalProgressEvent:(unint64_t)event withInfo:(id)info;
+- (void)_postProgressEvent:(unint64_t)event withInfo:(id)info;
+- (void)_respondAndInvalidateWithError:(id)error responseHandler:(id)handler;
+- (void)_sendMessage:(id)message withResponse:(id)response;
+- (void)_synchronizeClocksWithOptions:(id)options withResponseHandler:(id)handler;
 - (void)_tearDown;
 - (void)activate;
-- (void)estimateAudioLatencyWithToneIdentifier:(id)a3;
-- (void)networkMonitorInterfacesDidUpdate:(id)a3;
+- (void)estimateAudioLatencyWithToneIdentifier:(id)identifier;
+- (void)networkMonitorInterfacesDidUpdate:(id)update;
 - (void)startNetworkMonitoring;
 @end
 
 @implementation TVLAudioLatencyEstimator
 
-- (TVLAudioLatencyEstimator)initWithMessageSession:(id)a3
+- (TVLAudioLatencyEstimator)initWithMessageSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = TVLAudioLatencyEstimator;
   v5 = [(TVLAudioLatencyEstimator *)&v8 init];
@@ -29,7 +29,7 @@
   {
     v5->_version = 1.2;
     v5->_role = 1;
-    [(TVLAudioLatencyEstimator *)v5 _initWithMessageSession:v4];
+    [(TVLAudioLatencyEstimator *)v5 _initWithMessageSession:sessionCopy];
   }
 
   return v6;
@@ -60,22 +60,22 @@ void __50__TVLAudioLatencyEstimator_startNetworkMonitoring__block_invoke(uint64_
   [WeakRetained networkMonitorInterfacesDidUpdate:v3];
 }
 
-- (void)networkMonitorInterfacesDidUpdate:(id)a3
+- (void)networkMonitorInterfacesDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(TVLAudioLatencyEstimator *)self networkInterfaceOfType:3 fromInterfaces:v4];
+  updateCopy = update;
+  v5 = [(TVLAudioLatencyEstimator *)self networkInterfaceOfType:3 fromInterfaces:updateCopy];
   awdlInterface = self->_awdlInterface;
   self->_awdlInterface = v5;
 
-  v7 = [(TVLAudioLatencyEstimator *)self networkInterfaceOfType:2 fromInterfaces:v4];
+  v7 = [(TVLAudioLatencyEstimator *)self networkInterfaceOfType:2 fromInterfaces:updateCopy];
 
   wifiInterface = self->_wifiInterface;
   self->_wifiInterface = v7;
 }
 
-- (id)networkInterfaceOfType:(unint64_t)a3 fromInterfaces:(id)a4
+- (id)networkInterfaceOfType:(unint64_t)type fromInterfaces:(id)interfaces
 {
-  v5 = a4;
+  interfacesCopy = interfaces;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -87,8 +87,8 @@ void __50__TVLAudioLatencyEstimator_startNetworkMonitoring__block_invoke(uint64_
   v8[2] = __66__TVLAudioLatencyEstimator_networkInterfaceOfType_fromInterfaces___block_invoke;
   v8[3] = &unk_279D6BF00;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v5 enumerateObjectsUsingBlock:v8];
+  v8[5] = type;
+  [interfacesCopy enumerateObjectsUsingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -122,20 +122,20 @@ void __66__TVLAudioLatencyEstimator_networkInterfaceOfType_fromInterfaces___bloc
 LABEL_6:
 }
 
-- (void)_initWithMessageSession:(id)a3
+- (void)_initWithMessageSession:(id)session
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D02880]) initWithTemplate:v4];
+  sessionCopy = session;
+  v5 = [objc_alloc(MEMORY[0x277D02880]) initWithTemplate:sessionCopy];
   [(TVLAudioLatencyEstimator *)self setSession:v5];
 
   objc_initWeak(&location, self);
-  v6 = [(TVLAudioLatencyEstimator *)self session];
+  session = [(TVLAudioLatencyEstimator *)self session];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__TVLAudioLatencyEstimator__initWithMessageSession___block_invoke;
   v7[3] = &unk_279D6BBD8;
   objc_copyWeak(&v8, &location);
-  [v6 registerRequestID:@"com.apple.tvlatency" options:0 handler:v7];
+  [session registerRequestID:@"com.apple.tvlatency" options:0 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -246,17 +246,17 @@ void __52__TVLAudioLatencyEstimator__initWithMessageSession___block_invoke_16(ui
 
 - (void)activate
 {
-  v2 = [(TVLAudioLatencyEstimator *)self session];
-  [v2 activate];
+  session = [(TVLAudioLatencyEstimator *)self session];
+  [session activate];
 }
 
-- (void)estimateAudioLatencyWithToneIdentifier:(id)a3
+- (void)estimateAudioLatencyWithToneIdentifier:(id)identifier
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [(TVLAudioLatencyEstimator *)self _postProgressEvent:0 withInfo:0];
   v5 = objc_alloc(MEMORY[0x277CBEB38]);
-  v20[0] = v4;
+  v20[0] = identifierCopy;
   v19[0] = @"TONE";
   v19[1] = @"VERSION";
   *&v6 = self->_version;
@@ -350,15 +350,15 @@ void __67__TVLAudioLatencyEstimator_estimateAudioLatencyWithToneIdentifier___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   [(TVLAudioLatencyEstimator *)self _tearDown];
-  if (v4)
+  if (errorCopy)
   {
     v7 = @"TVLAudioLatencyEstimationProgressEventErrorObjectKey";
-    v8[0] = v4;
+    v8[0] = errorCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     [(TVLAudioLatencyEstimator *)self _postProgressEvent:2 withInfo:v5];
   }
@@ -382,11 +382,11 @@ void __67__TVLAudioLatencyEstimator_estimateAudioLatencyWithToneIdentifier___blo
   self->_networkMonitor = 0;
 }
 
-- (void)_sendMessage:(id)a3 withResponse:(id)a4
+- (void)_sendMessage:(id)message withResponse:(id)response
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  responseCopy = response;
   if (_TVLLogDefault_onceToken_3 != -1)
   {
     __52__TVLAudioLatencyEstimator__initWithMessageSession___block_invoke_cold_1();
@@ -396,22 +396,22 @@ void __67__TVLAudioLatencyEstimator_estimateAudioLatencyWithToneIdentifier___blo
   if (os_log_type_enabled(_TVLLogDefault_log_3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v6;
+    v18 = messageCopy;
     _os_log_impl(&dword_26CD78000, v8, OS_LOG_TYPE_DEFAULT, "Outgoing Message: %{public}@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(TVLAudioLatencyEstimator *)self session];
+  session = [(TVLAudioLatencyEstimator *)self session];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__TVLAudioLatencyEstimator__sendMessage_withResponse___block_invoke;
   v13[3] = &unk_279D6BF50;
   objc_copyWeak(&v16, buf);
-  v10 = v6;
+  v10 = messageCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = responseCopy;
   v15 = v11;
-  [v9 sendRequestID:@"com.apple.tvlatency" options:0 request:v10 responseHandler:v13];
+  [session sendRequestID:@"com.apple.tvlatency" options:0 request:v10 responseHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -516,27 +516,27 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_synchronizeClocksWithOptions:(id)a3 withResponseHandler:(id)a4
+- (void)_synchronizeClocksWithOptions:(id)options withResponseHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v21 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(TVLNetworkInterface *)self->_wifiInterface ipv6];
-  v8 = [(TVLNetworkInterface *)self->_wifiInterface ipv4];
-  if (v8)
+  ipv6 = [(TVLNetworkInterface *)self->_wifiInterface ipv6];
+  ipv4 = [(TVLNetworkInterface *)self->_wifiInterface ipv4];
+  if (ipv4)
   {
-    [v6 setObject:v8 forKey:@"IPV4"];
+    [v6 setObject:ipv4 forKey:@"IPV4"];
   }
 
-  if (v7)
+  if (ipv6)
   {
-    [v6 setObject:v7 forKey:@"IPV6"];
+    [v6 setObject:ipv6 forKey:@"IPV6"];
   }
 
-  v9 = [v24 objectForKey:{@"IPV6", v21}];
-  v10 = [v24 objectForKey:@"IPV4"];
-  v23 = [(TVLNetworkInterface *)self->_wifiInterface interfaceName];
+  v9 = [optionsCopy objectForKey:{@"IPV6", handlerCopy}];
+  v10 = [optionsCopy objectForKey:@"IPV4"];
+  interfaceName = [(TVLNetworkInterface *)self->_wifiInterface interfaceName];
   if (_TVLLogDefault_onceToken_3 != -1)
   {
     __52__TVLAudioLatencyEstimator__initWithMessageSession___block_invoke_cold_1();
@@ -547,15 +547,15 @@ LABEL_15:
   {
     wifiInterface = self->_wifiInterface;
     v13 = v11;
-    v14 = [(TVLNetworkInterface *)wifiInterface interfaceName];
-    v15 = [(TVLNetworkInterface *)self->_wifiInterface ipv4];
-    v16 = [(TVLNetworkInterface *)self->_wifiInterface ipv6];
+    interfaceName2 = [(TVLNetworkInterface *)wifiInterface interfaceName];
+    ipv42 = [(TVLNetworkInterface *)self->_wifiInterface ipv4];
+    ipv62 = [(TVLNetworkInterface *)self->_wifiInterface ipv6];
     *buf = 138543874;
-    v30 = v14;
+    v30 = interfaceName2;
     v31 = 2114;
-    v32 = v15;
+    v32 = ipv42;
     v33 = 2114;
-    v34 = v16;
+    v34 = ipv62;
     _os_log_impl(&dword_26CD78000, v13, OS_LOG_TYPE_INFO, "synchronizeClocksWithOptions WIFI %{public}@,%{public}@,%{public}@", buf, 0x20u);
   }
 
@@ -566,7 +566,7 @@ LABEL_15:
   v25[3] = &unk_279D6BF78;
   objc_copyWeak(&v26, buf);
   v17 = MEMORY[0x26D6AEC20](v25);
-  if (v10 | v9 && v23 && (-[TVLAudioLatencyEstimator session](self, "session"), v18 = objc_claimAutoreleasedReturnValue(), +[TVLTimeSync timeSyncWithRemoteIPv4:IPv6:interface:session:master:completion:](TVLTimeSync, "timeSyncWithRemoteIPv4:IPv6:interface:session:master:completion:", v10, v9, v23, v18, 0, v17), v18, [v6 count]))
+  if (v10 | v9 && interfaceName && (-[TVLAudioLatencyEstimator session](self, "session"), v18 = objc_claimAutoreleasedReturnValue(), +[TVLTimeSync timeSyncWithRemoteIPv4:IPv6:interface:session:master:completion:](TVLTimeSync, "timeSyncWithRemoteIPv4:IPv6:interface:session:master:completion:", v10, v9, interfaceName, v18, 0, v17), v18, [v6 count]))
   {
     v27[0] = @"MESSAGE";
     v27[1] = @"OPTIONS";
@@ -608,15 +608,15 @@ void __78__TVLAudioLatencyEstimator__synchronizeClocksWithOptions_withResponseHa
   }
 }
 
-- (void)_estimateAudioLatencyWithOptions:(id)a3 withResponseHandler:(id)a4
+- (void)_estimateAudioLatencyWithOptions:(id)options withResponseHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"TONE"];
-  if (v8 && ([v6 objectForKey:@"TIME"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = [optionsCopy objectForKey:@"TONE"];
+  if (v8 && ([optionsCopy objectForKey:@"TIME"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [v6 objectForKey:@"TONE"];
+    v10 = [optionsCopy objectForKey:@"TONE"];
     v29 = 0;
     v11 = [TVLToneProvider provideToneWithIdentifier:v10 error:&v29];
     v12 = v29;
@@ -634,17 +634,17 @@ void __78__TVLAudioLatencyEstimator__synchronizeClocksWithOptions_withResponseHa
         [TVLAudioLatencyEstimator _estimateAudioLatencyWithOptions:v12 withResponseHandler:v13];
       }
 
-      [(TVLAudioLatencyEstimator *)self _respondAndInvalidateWithError:v12 responseHandler:v7];
+      [(TVLAudioLatencyEstimator *)self _respondAndInvalidateWithError:v12 responseHandler:handlerCopy];
     }
 
     else
     {
-      v15 = [v6 objectForKey:@"TIME"];
-      v16 = [v15 unsignedLongLongValue];
+      v15 = [optionsCopy objectForKey:@"TIME"];
+      unsignedLongLongValue = [v15 unsignedLongLongValue];
 
       v28 = 0;
-      v17 = [(TVLAudioLatencyEstimator *)self timeSync];
-      v18 = [v17 convertToHostTimeFromDomainTime:v16 grandmasterIdentity:&v28];
+      timeSync = [(TVLAudioLatencyEstimator *)self timeSync];
+      v18 = [timeSync convertToHostTimeFromDomainTime:unsignedLongLongValue grandmasterIdentity:&v28];
 
       if (_TVLLogDefault_onceToken_3 != -1)
       {
@@ -657,7 +657,7 @@ void __78__TVLAudioLatencyEstimator__synchronizeClocksWithOptions_withResponseHa
         *buf = 134218496;
         v31 = v18;
         v32 = 2048;
-        v33 = v16;
+        v33 = unsignedLongLongValue;
         v34 = 2048;
         v35 = v28;
         _os_log_impl(&dword_26CD78000, v19, OS_LOG_TYPE_DEFAULT, "Estimate audio latency with startTime=%llu PTPtime=%llu GM=%llu", buf, 0x20u);
@@ -684,7 +684,7 @@ void __78__TVLAudioLatencyEstimator__synchronizeClocksWithOptions_withResponseHa
       v23[2] = __81__TVLAudioLatencyEstimator__estimateAudioLatencyWithOptions_withResponseHandler___block_invoke;
       v23[3] = &unk_279D6C018;
       objc_copyWeak(v27, buf);
-      v26 = v7;
+      v26 = handlerCopy;
       v27[1] = v18;
       v24 = v11;
       v21 = v20;
@@ -699,7 +699,7 @@ void __78__TVLAudioLatencyEstimator__synchronizeClocksWithOptions_withResponseHa
   else
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVLatencyErrorDomain" code:1207 userInfo:0];
-    [(TVLAudioLatencyEstimator *)self _respondAndInvalidateWithError:v14 responseHandler:v7];
+    [(TVLAudioLatencyEstimator *)self _respondAndInvalidateWithError:v14 responseHandler:handlerCopy];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -910,7 +910,7 @@ LABEL_4:
 LABEL_19:
 }
 
-- (void)_respondAndInvalidateWithError:(id)a3 responseHandler:(id)a4
+- (void)_respondAndInvalidateWithError:(id)error responseHandler:(id)handler
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v17[0] = @"MESSAGE";
@@ -918,33 +918,33 @@ LABEL_19:
   v18[0] = @"FAILURE";
   v15[0] = @"ERROR_CODE";
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 numberWithInteger:{objc_msgSend(v9, "code")}];
+  handlerCopy = handler;
+  errorCopy = error;
+  v10 = [v7 numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v15[1] = @"ERROR_DOMAIN";
   v16[0] = v10;
-  v11 = [v9 domain];
-  v16[1] = v11;
+  domain = [errorCopy domain];
+  v16[1] = domain;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v18[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  (*(a4 + 2))(v8, 0, 0, v13);
+  (*(handler + 2))(handlerCopy, 0, 0, v13);
 
-  [(TVLAudioLatencyEstimator *)self _invalidateWithError:v9];
+  [(TVLAudioLatencyEstimator *)self _invalidateWithError:errorCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postProgressEvent:(unint64_t)a3 withInfo:(id)a4
+- (void)_postProgressEvent:(unint64_t)event withInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__TVLAudioLatencyEstimator__postProgressEvent_withInfo___block_invoke;
   block[3] = &unk_279D6C040;
-  v9 = v6;
-  v10 = a3;
+  v9 = infoCopy;
+  eventCopy = event;
   block[4] = self;
-  v7 = v6;
+  v7 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1016,10 +1016,10 @@ void __56__TVLAudioLatencyEstimator__postProgressEvent_withInfo___block_invoke(u
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postInternalProgressEvent:(unint64_t)a3 withInfo:(id)a4
+- (void)_postInternalProgressEvent:(unint64_t)event withInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   if (_TVLLogDefault_onceToken_3 != -1)
   {
     __52__TVLAudioLatencyEstimator__initWithMessageSession___block_invoke_cold_1();
@@ -1029,12 +1029,12 @@ void __56__TVLAudioLatencyEstimator__postProgressEvent_withInfo___block_invoke(u
   if (os_log_type_enabled(_TVLLogDefault_log_3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(TVLAudioLatencyEstimator *)self internalProgressEventHandler];
+    internalProgressEventHandler = [(TVLAudioLatencyEstimator *)self internalProgressEventHandler];
     v10 = MEMORY[0x26D6AEC20]();
     v11 = "Final Estimation";
     *buf = 138412802;
     v18 = v10;
-    if (!a3)
+    if (!event)
     {
       v11 = "New Estimation";
     }
@@ -1042,7 +1042,7 @@ void __56__TVLAudioLatencyEstimator__postProgressEvent_withInfo___block_invoke(u
     v19 = 2082;
     v20 = v11;
     v21 = 2112;
-    v22 = v6;
+    v22 = infoCopy;
     _os_log_impl(&dword_26CD78000, v8, OS_LOG_TYPE_DEFAULT, "Calling Internal Progress Event Handler: %@ with Event: %{public}s | Info: %@", buf, 0x20u);
   }
 
@@ -1050,10 +1050,10 @@ void __56__TVLAudioLatencyEstimator__postProgressEvent_withInfo___block_invoke(u
   block[1] = 3221225472;
   block[2] = __64__TVLAudioLatencyEstimator__postInternalProgressEvent_withInfo___block_invoke;
   block[3] = &unk_279D6C040;
-  v15 = v6;
-  v16 = a3;
+  v15 = infoCopy;
+  eventCopy = event;
   block[4] = self;
-  v12 = v6;
+  v12 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v13 = *MEMORY[0x277D85DE8];

@@ -1,14 +1,14 @@
 @interface WBSRemotelyUpdatableDataController
-- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)a3;
-- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)a3 builtInListURL:(id)a4 downloadsDirectoryURL:(id)a5 resourceName:(id)a6 resourceVersion:(id)a7 updateDateDefaultsKey:(id)a8 updateInterval:(double)a9 snapshotClass:(Class)a10 snapshotTransformerClass:(Class)a11;
-- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8 snapshotClass:(Class)a9 snapshotTransformerClass:(Class)a10 builtInDataProvider:(id)a11;
+- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)date;
+- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)format builtInListURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval snapshotClass:(Class)self0 snapshotTransformerClass:(Class)self1;
+- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)format downloadsDirectoryURL:(id)l resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval snapshotClass:(Class)class snapshotTransformerClass:(Class)self0 builtInDataProvider:(id)self1;
 - (WBSRemotelyUpdatableDataControllerDelegate)delegate;
 - (id)_fileExtensionForData;
 - (id)_lastConfigurationUpdateAttemptDate;
 - (id)_urlOfDownloadedList;
 - (id)_urlOfInternalOverrideList;
-- (id)fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:(id)a3;
-- (void)_didDownloadSnapshot:(id)a3;
+- (id)fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:(id)snapshot;
+- (void)_didDownloadSnapshot:(id)snapshot;
 - (void)_loadBuiltInSnapshotIfNeeded;
 - (void)_loadDownloadedSnapshotIfNeeded;
 - (void)_resetUpdateTimer;
@@ -16,14 +16,14 @@
 - (void)_setUpDownloadedFileMonitoring;
 - (void)_stopDownloadedFileMonitoring;
 - (void)_updateDownloadedDataIfNecessary;
-- (void)_writeConfigurationData:(id)a3;
-- (void)accessBuiltInAndRemotelyLoadedSnapshots:(id)a3;
-- (void)accessCurrentSnapshot:(id)a3;
-- (void)accessSnapshotLoadingItIfNeeded:(id)a3;
+- (void)_writeConfigurationData:(id)data;
+- (void)accessBuiltInAndRemotelyLoadedSnapshots:(id)snapshots;
+- (void)accessCurrentSnapshot:(id)snapshot;
+- (void)accessSnapshotLoadingItIfNeeded:(id)needed;
 - (void)dealloc;
 - (void)prepareForTermination;
-- (void)setDataIsUsedByMultipleProcesses:(BOOL)a3;
-- (void)setShouldAttemptToUpdateConfiguration:(BOOL)a3;
+- (void)setDataIsUsedByMultipleProcesses:(BOOL)processes;
+- (void)setShouldAttemptToUpdateConfiguration:(BOOL)configuration;
 @end
 
 @implementation WBSRemotelyUpdatableDataController
@@ -32,8 +32,8 @@
 {
   downloadsDirectoryURL = self->_downloadsDirectoryURL;
   resourceName = self->_resourceName;
-  v4 = [(WBSRemotelyUpdatableDataController *)self _fileExtensionForData];
-  v5 = [(NSString *)resourceName stringByAppendingPathExtension:v4];
+  _fileExtensionForData = [(WBSRemotelyUpdatableDataController *)self _fileExtensionForData];
+  v5 = [(NSString *)resourceName stringByAppendingPathExtension:_fileExtensionForData];
   v6 = [(NSURL *)downloadsDirectoryURL URLByAppendingPathComponent:v5 isDirectory:0];
 
   return v6;
@@ -56,11 +56,11 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = [a3 safari_privacyPreservingDescription];
+  safari_privacyPreservingDescription = [a3 safari_privacyPreservingDescription];
   v8 = 138412546;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2114;
-  v11 = v6;
+  v11 = safari_privacyPreservingDescription;
   _os_log_error_impl(&dword_1B8447000, v5, OS_LOG_TYPE_ERROR, "The downloaded data file (%@) could not be loaded: %{public}@", &v8, 0x16u);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -69,12 +69,12 @@
 - (id)_urlOfInternalOverrideList
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WBSRemotelyUpdatableDataController *)self _fileExtensionForData];
-  v5 = [v3 stringWithFormat:@"Override%@.%@", v4, self->_resourceName];
+  _fileExtensionForData = [(WBSRemotelyUpdatableDataController *)self _fileExtensionForData];
+  v5 = [v3 stringWithFormat:@"Override%@.%@", _fileExtensionForData, self->_resourceName];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 safari_settingsDirectoryURL];
-  v8 = [v7 URLByAppendingPathComponent:v5 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v8 = [safari_settingsDirectoryURL URLByAppendingPathComponent:v5 isDirectory:0];
 
   return v8;
 }
@@ -94,8 +94,8 @@
 - (void)_loadBuiltInSnapshotIfNeeded
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v10 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_7();
   _os_log_error_impl(v4, v5, v6, v7, v8, 0xCu);
 
@@ -106,16 +106,16 @@
 {
   if (self->_shouldAttemptToDownloadConfiguration)
   {
-    v3 = [(WBSRemotelyUpdatableDataController *)self _lastConfigurationUpdateAttemptDate];
-    v4 = [(WBSRemotelyUpdatableDataController *)self _shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:v3];
+    _lastConfigurationUpdateAttemptDate = [(WBSRemotelyUpdatableDataController *)self _lastConfigurationUpdateAttemptDate];
+    v4 = [(WBSRemotelyUpdatableDataController *)self _shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:_lastConfigurationUpdateAttemptDate];
 
     if (v4)
     {
       [(WBSConfigurationDownloader *)self->_configurationDownloader cancel];
       v5 = [WBSConfigurationDownloader alloc];
-      v6 = [(WBSRemotelyUpdatableDataController *)self _downloadedListResourceName];
+      _downloadedListResourceName = [(WBSRemotelyUpdatableDataController *)self _downloadedListResourceName];
       v7 = objc_alloc_init(self->_snapshotTransformerClass);
-      v8 = [(WBSConfigurationDownloader *)v5 initWithFileName:v6 dataTransformer:v7];
+      v8 = [(WBSConfigurationDownloader *)v5 initWithFileName:_downloadedListResourceName dataTransformer:v7];
       configurationDownloader = self->_configurationDownloader;
       self->_configurationDownloader = v8;
 
@@ -136,22 +136,22 @@
 
 - (id)_lastConfigurationUpdateAttemptDate
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 safari_dateForKey:self->_updateDateDefaultsKey];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults safari_dateForKey:self->_updateDateDefaultsKey];
 
   return v4;
 }
 
-- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)a3 builtInListURL:(id)a4 downloadsDirectoryURL:(id)a5 resourceName:(id)a6 resourceVersion:(id)a7 updateDateDefaultsKey:(id)a8 updateInterval:(double)a9 snapshotClass:(Class)a10 snapshotTransformerClass:(Class)a11
+- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)format builtInListURL:(id)l downloadsDirectoryURL:(id)rL resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval snapshotClass:(Class)self0 snapshotTransformerClass:(Class)self1
 {
-  v18 = a4;
+  lCopy = l;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __199__WBSRemotelyUpdatableDataController_initWithDataFormat_builtInListURL_downloadsDirectoryURL_resourceName_resourceVersion_updateDateDefaultsKey_updateInterval_snapshotClass_snapshotTransformerClass___block_invoke;
   v22[3] = &unk_1E7CF3D50;
-  v23 = v18;
-  v19 = v18;
-  v20 = [(WBSRemotelyUpdatableDataController *)self initWithDataFormat:a3 downloadsDirectoryURL:a5 resourceName:a6 resourceVersion:a7 updateDateDefaultsKey:a8 updateInterval:a10 snapshotClass:a9 snapshotTransformerClass:a11 builtInDataProvider:v22];
+  v23 = lCopy;
+  v19 = lCopy;
+  v20 = [(WBSRemotelyUpdatableDataController *)self initWithDataFormat:format downloadsDirectoryURL:rL resourceName:name resourceVersion:version updateDateDefaultsKey:key updateInterval:class snapshotClass:interval snapshotTransformerClass:transformerClass builtInDataProvider:v22];
 
   return v20;
 }
@@ -182,40 +182,40 @@ id __199__WBSRemotelyUpdatableDataController_initWithDataFormat_builtInListURL_d
   return v2;
 }
 
-- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)a3 downloadsDirectoryURL:(id)a4 resourceName:(id)a5 resourceVersion:(id)a6 updateDateDefaultsKey:(id)a7 updateInterval:(double)a8 snapshotClass:(Class)a9 snapshotTransformerClass:(Class)a10 builtInDataProvider:(id)a11
+- (WBSRemotelyUpdatableDataController)initWithDataFormat:(int64_t)format downloadsDirectoryURL:(id)l resourceName:(id)name resourceVersion:(id)version updateDateDefaultsKey:(id)key updateInterval:(double)interval snapshotClass:(Class)class snapshotTransformerClass:(Class)self0 builtInDataProvider:(id)self1
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a11;
+  lCopy = l;
+  nameCopy = name;
+  versionCopy = version;
+  keyCopy = key;
+  providerCopy = provider;
   v41.receiver = self;
   v41.super_class = WBSRemotelyUpdatableDataController;
   v24 = [(WBSRemotelyUpdatableDataController *)&v41 init];
   v25 = v24;
   if (v24)
   {
-    v24->_dataFormat = a3;
-    v26 = [v23 copy];
+    v24->_dataFormat = format;
+    v26 = [providerCopy copy];
     builtInListDataProvider = v25->_builtInListDataProvider;
     v25->_builtInListDataProvider = v26;
 
-    objc_storeStrong(&v25->_downloadsDirectoryURL, a4);
-    v28 = [v20 copy];
+    objc_storeStrong(&v25->_downloadsDirectoryURL, l);
+    v28 = [nameCopy copy];
     resourceName = v25->_resourceName;
     v25->_resourceName = v28;
 
-    v30 = [v21 copy];
+    v30 = [versionCopy copy];
     resourceVersion = v25->_resourceVersion;
     v25->_resourceVersion = v30;
 
-    v32 = [v22 copy];
+    v32 = [keyCopy copy];
     updateDateDefaultsKey = v25->_updateDateDefaultsKey;
     v25->_updateDateDefaultsKey = v32;
 
-    v25->_snapshotClass = a9;
-    v25->_snapshotTransformerClass = a10;
-    v25->_updateInterval = a8;
+    v25->_snapshotClass = class;
+    v25->_snapshotTransformerClass = transformerClass;
+    v25->_updateInterval = interval;
     v25->_shouldAttemptToDownloadConfiguration = 1;
     v34 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v35 = dispatch_queue_create("com.apple.SafariCore.RemotelyUpdatableDataController.internalQueue", v34);
@@ -301,7 +301,7 @@ void __68__WBSRemotelyUpdatableDataController__setUpDownloadedFileMonitoring__bl
   self->_downloadedFileChangedSource = 0;
 }
 
-- (void)setShouldAttemptToUpdateConfiguration:(BOOL)a3
+- (void)setShouldAttemptToUpdateConfiguration:(BOOL)configuration
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -309,7 +309,7 @@ void __68__WBSRemotelyUpdatableDataController__setUpDownloadedFileMonitoring__bl
   v4[2] = __76__WBSRemotelyUpdatableDataController_setShouldAttemptToUpdateConfiguration___block_invoke;
   v4[3] = &unk_1E7CF3D78;
   v4[4] = self;
-  v5 = a3;
+  configurationCopy = configuration;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -383,12 +383,12 @@ void __76__WBSRemotelyUpdatableDataController_setShouldAttemptToUpdateConfigurat
   }
 }
 
-- (void)setDataIsUsedByMultipleProcesses:(BOOL)a3
+- (void)setDataIsUsedByMultipleProcesses:(BOOL)processes
 {
-  if (self->_dataIsUsedByMultipleProcesses != a3)
+  if (self->_dataIsUsedByMultipleProcesses != processes)
   {
-    self->_dataIsUsedByMultipleProcesses = a3;
-    if (a3)
+    self->_dataIsUsedByMultipleProcesses = processes;
+    if (processes)
     {
       [(WBSRemotelyUpdatableDataController *)self _setUpDownloadedFileMonitoring];
     }
@@ -444,23 +444,23 @@ void __70__WBSRemotelyUpdatableDataController__updateDownloadedDataIfNecessary__
   }
 }
 
-- (void)_didDownloadSnapshot:(id)a3
+- (void)_didDownloadSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v5 = [(WBSRemotelyUpdatableDataController *)self _urlOfDownloadedList];
+  snapshotCopy = snapshot;
+  _urlOfDownloadedList = [(WBSRemotelyUpdatableDataController *)self _urlOfDownloadedList];
 
-  if (v5 && ([v7 isEqual:self->_currentSnapshot] & 1) == 0)
+  if (_urlOfDownloadedList && ([snapshotCopy isEqual:self->_currentSnapshot] & 1) == 0)
   {
-    objc_storeStrong(&self->_remotelyLoadedSnapshot, a3);
-    objc_storeStrong(&self->_currentSnapshot, a3);
-    v6 = [(WBSRemotelyUpdatableDataSnapshot *)self->_currentSnapshot snapshotData];
-    [(WBSRemotelyUpdatableDataController *)self _writeConfigurationData:v6];
+    objc_storeStrong(&self->_remotelyLoadedSnapshot, snapshot);
+    objc_storeStrong(&self->_currentSnapshot, snapshot);
+    snapshotData = [(WBSRemotelyUpdatableDataSnapshot *)self->_currentSnapshot snapshotData];
+    [(WBSRemotelyUpdatableDataController *)self _writeConfigurationData:snapshotData];
   }
 }
 
-- (void)_writeConfigurationData:(id)a3
+- (void)_writeConfigurationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   [(WBSRemotelyUpdatableDataController *)self _stopDownloadedFileMonitoring];
   diskWriteQueue = self->_diskWriteQueue;
@@ -469,8 +469,8 @@ void __70__WBSRemotelyUpdatableDataController__updateDownloadedDataIfNecessary__
   block[2] = __62__WBSRemotelyUpdatableDataController__writeConfigurationData___block_invoke;
   block[3] = &unk_1E7CF3DA0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(diskWriteQueue, block);
 
   objc_destroyWeak(&v9);
@@ -515,37 +515,37 @@ void __59__WBSRemotelyUpdatableDataController_prepareForTermination__block_invok
   *(v2 + 120) = 0;
 }
 
-- (void)accessCurrentSnapshot:(id)a3
+- (void)accessCurrentSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__WBSRemotelyUpdatableDataController_accessCurrentSnapshot___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (void)accessBuiltInAndRemotelyLoadedSnapshots:(id)a3
+- (void)accessBuiltInAndRemotelyLoadedSnapshots:(id)snapshots
 {
-  v4 = a3;
+  snapshotsCopy = snapshots;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSRemotelyUpdatableDataController_accessBuiltInAndRemotelyLoadedSnapshots___block_invoke;
   v7[3] = &unk_1E7CF1888;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotsCopy;
+  v6 = snapshotsCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (id)fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:(id)a3
+- (id)fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -557,7 +557,7 @@ void __59__WBSRemotelyUpdatableDataController_prepareForTermination__block_invok
   v8[2] = __102__WBSRemotelyUpdatableDataController_fetchDataFromRemotelyLoadedSnapshotFallingBackToBuiltInSnapshot___block_invoke;
   v8[3] = &unk_1E7CF3DF0;
   v10 = &v11;
-  v5 = v4;
+  v5 = snapshotCopy;
   v9 = v5;
   [(WBSRemotelyUpdatableDataController *)self accessBuiltInAndRemotelyLoadedSnapshots:v8];
   v6 = v12[5];
@@ -583,17 +583,17 @@ void __102__WBSRemotelyUpdatableDataController_fetchDataFromRemotelyLoadedSnapsh
   }
 }
 
-- (void)accessSnapshotLoadingItIfNeeded:(id)a3
+- (void)accessSnapshotLoadingItIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__WBSRemotelyUpdatableDataController_accessSnapshotLoadingItIfNeeded___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -608,22 +608,22 @@ uint64_t __70__WBSRemotelyUpdatableDataController_accessSnapshotLoadingItIfNeede
   return v3();
 }
 
-- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)a3
+- (BOOL)_shouldUpdateConfigurationGivenLastConfigurationUpdateAttemptDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     return 1;
   }
 
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   return self->_updateInterval < -v4;
 }
 
 - (void)_setCurrentDateAsLastConfigurationUpdateAttemptDate
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v4 setObject:v3 forKey:self->_updateDateDefaultsKey];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  date = [MEMORY[0x1E695DF00] date];
+  [standardUserDefaults setObject:date forKey:self->_updateDateDefaultsKey];
 }
 
 - (WBSRemotelyUpdatableDataControllerDelegate)delegate

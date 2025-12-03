@@ -1,15 +1,15 @@
 @interface WCQueuedMessage
-- (WCQueuedMessage)initWithMessage:(id)a3 completionHandler:(id)a4;
+- (WCQueuedMessage)initWithMessage:(id)message completionHandler:(id)handler;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation WCQueuedMessage
 
-- (WCQueuedMessage)initWithMessage:(id)a3 completionHandler:(id)a4
+- (WCQueuedMessage)initWithMessage:(id)message completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = WCQueuedMessage;
   v9 = [(WCQueuedMessage *)&v16 init];
@@ -17,12 +17,12 @@
   if (v9)
   {
     v9->_retryCount = 0;
-    objc_storeStrong(&v9->_message, a3);
+    objc_storeStrong(&v9->_message, message);
     v11 = objc_opt_new();
     creationDate = v10->_creationDate;
     v10->_creationDate = v11;
 
-    v13 = [v8 copy];
+    v13 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v13;
   }
@@ -35,21 +35,21 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCQueuedMessage *)self message];
-  v7 = [v6 identifier];
-  v8 = [(WCQueuedMessage *)self creationDate];
-  v9 = [v3 stringWithFormat:@"<%@: %p, message id: %@, creation date: %@>", v5, self, v7, v8];
+  message = [(WCQueuedMessage *)self message];
+  identifier = [message identifier];
+  creationDate = [(WCQueuedMessage *)self creationDate];
+  v9 = [v3 stringWithFormat:@"<%@: %p, message id: %@, creation date: %@>", v5, self, identifier, creationDate];
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WCQueuedMessage *)self creationDate];
-  v6 = [v4 creationDate];
+  compareCopy = compare;
+  creationDate = [(WCQueuedMessage *)self creationDate];
+  creationDate2 = [compareCopy creationDate];
 
-  v7 = [v5 compare:v6];
+  v7 = [creationDate compare:creationDate2];
   return v7;
 }
 

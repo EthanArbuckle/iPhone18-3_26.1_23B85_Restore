@@ -1,8 +1,8 @@
 @interface WKWebViewContentProviderRegistry
-- (Class)providerForMIMEType:(const void *)a3;
+- (Class)providerForMIMEType:(const void *)type;
 - (Vector<WTF::String,)_mimeTypesWithCustomContentProviders;
-- (WKWebViewContentProviderRegistry)initWithConfiguration:(id)a3;
-- (void)registerProvider:(Class)a3 forMIMEType:(const void *)a4;
+- (WKWebViewContentProviderRegistry)initWithConfiguration:(id)configuration;
+- (void)registerProvider:(Class)provider forMIMEType:(const void *)type;
 @end
 
 @implementation WKWebViewContentProviderRegistry
@@ -112,7 +112,7 @@ LABEL_27:
   return result;
 }
 
-- (WKWebViewContentProviderRegistry)initWithConfiguration:(id)a3
+- (WKWebViewContentProviderRegistry)initWithConfiguration:(id)configuration
 {
   v24.receiver = self;
   v24.super_class = WKWebViewContentProviderRegistry;
@@ -121,19 +121,19 @@ LABEL_27:
   {
     if (+[WKPDFView platformSupportsPDFView])
     {
-      BoolValueForKey = [a3 preferences];
+      BoolValueForKey = [configuration preferences];
       if (!BoolValueForKey)
       {
         goto LABEL_7;
       }
 
-      v6 = [a3 preferences];
+      preferences = [configuration preferences];
       {
         atomic_fetch_add_explicit(WebKit::WebPreferencesKey::unifiedPDFEnabledKey(void)::$_0::operator() const(void)::impl, 2u, memory_order_relaxed);
         WebKit::WebPreferencesKey::unifiedPDFEnabledKey(void)::key = WebKit::WebPreferencesKey::unifiedPDFEnabledKey(void)::$_0::operator() const(void)::impl;
       }
 
-      BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey((v6 + 48), &WebKit::WebPreferencesKey::unifiedPDFEnabledKey(void)::key, v7);
+      BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey((preferences + 48), &WebKit::WebPreferencesKey::unifiedPDFEnabledKey(void)::key, v7);
       if ((BoolValueForKey & 1) == 0)
       {
 LABEL_7:
@@ -188,9 +188,9 @@ LABEL_7:
       }
     }
 
-    if ([a3 _systemPreviewEnabled])
+    if ([configuration _systemPreviewEnabled])
     {
-      v14 = [objc_msgSend(a3 "preferences")];
+      v14 = [objc_msgSend(configuration "preferences")];
       if ((v14 & 1) == 0)
       {
         WebCore::MIMETypeRegistry::usdMIMETypes(&v23, v14);
@@ -248,9 +248,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)registerProvider:(Class)a3 forMIMEType:(const void *)a4
+- (void)registerProvider:(Class)provider forMIMEType:(const void *)type
 {
-  if (*a4 == -1 || !*a4)
+  if (*type == -1 || !*type)
   {
     __break(0xC471u);
     JUMPOUT(0x19DCD87CCLL);
@@ -267,7 +267,7 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = WTF::ASCIICaseInsensitiveHash::hash(*a4, a2);
+  v9 = WTF::ASCIICaseInsensitiveHash::hash(*type, a2);
   v10 = 0;
   for (i = 1; ; ++i)
   {
@@ -285,9 +285,9 @@ LABEL_7:
       break;
     }
 
-    if (WTF::equalIgnoringASCIICaseCommon<WTF::StringImpl,WTF::StringImpl>(v14, *a4))
+    if (WTF::equalIgnoringASCIICaseCommon<WTF::StringImpl,WTF::StringImpl>(v14, *type))
     {
-      v13[1] = a3;
+      v13[1] = provider;
       return;
     }
 
@@ -303,8 +303,8 @@ LABEL_12:
     v13 = v10;
   }
 
-  WTF::String::operator=(v13, a4);
-  v13[1] = a3;
+  WTF::String::operator=(v13, type);
+  v13[1] = provider;
   v15 = self->_contentProviderForMIMEType.m_impl.m_table;
   if (v15)
   {
@@ -340,10 +340,10 @@ LABEL_23:
   }
 }
 
-- (Class)providerForMIMEType:(const void *)a3
+- (Class)providerForMIMEType:(const void *)type
 {
-  result = *a3;
-  if (*a3)
+  result = *type;
+  if (*type)
   {
     if (!*(result + 1))
     {
@@ -382,7 +382,7 @@ LABEL_23:
           goto LABEL_14;
         }
 
-        if (WTF::equalIgnoringASCIICaseCommon<WTF::StringImpl,WTF::StringImpl>(v11, *a3))
+        if (WTF::equalIgnoringASCIICaseCommon<WTF::StringImpl,WTF::StringImpl>(v11, *type))
         {
           break;
         }

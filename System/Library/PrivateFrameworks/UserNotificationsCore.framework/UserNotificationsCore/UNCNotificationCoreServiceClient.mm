@@ -1,21 +1,21 @@
 @interface UNCNotificationCoreServiceClient
 - (UNCNotificationCoreServiceClient)init;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
-- (id)categoriesForBundleIdentifier:(id)a3;
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (id)notificationRecordsForBundleIdentifier:(id)a3;
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4;
-- (void)removeAllNotificationRecordsForBundleIdentifier:(id)a3;
-- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)a3;
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4;
-- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)a3;
-- (void)removeSimilarNotificationRecords:(id)a3 forBundleIdentifier:(id)a4;
-- (void)removeStoreForBundleIdentifier:(id)a3;
-- (void)setBadgeCount:(int64_t)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
+- (id)categoriesForBundleIdentifier:(id)identifier;
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)notificationRecordsForBundleIdentifier:(id)identifier;
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier;
+- (void)removeAllNotificationRecordsForBundleIdentifier:(id)identifier;
+- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)identifier;
+- (void)removeSimilarNotificationRecords:(id)records forBundleIdentifier:(id)identifier;
+- (void)removeStoreForBundleIdentifier:(id)identifier;
+- (void)setBadgeCount:(int64_t)count forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNCNotificationCoreServiceClient
@@ -35,24 +35,24 @@
   return v2;
 }
 
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = *MEMORY[0x1E6983358];
   if (os_log_type_enabled(*MEMORY[0x1E6983358], OS_LOG_TYPE_ERROR))
   {
     [UNCNotificationCoreServiceClient categoryRepository:v6 didChangeCategoriesForBundleIdentifier:?];
   }
 
-  [(UNCNotificationCoreServiceClientImpl *)self->_client categoryRepositoryDidChangeCategories:v5];
+  [(UNCNotificationCoreServiceClientImpl *)self->_client categoryRepositoryDidChangeCategories:identifierCopy];
 }
 
-- (id)notificationRecordsForBundleIdentifier:(id)a3
+- (id)notificationRecordsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client notificationRecordsForBundleIdentifier:v4];
+    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client notificationRecordsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -69,16 +69,16 @@
   return v5;
 }
 
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v8 = bundleIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v7)
+    if (bundleIdentifierCopy)
     {
-      v9 = [(UNCNotificationCoreServiceClientImpl *)self->_client notificationRecordForIdentifier:v6 bundleIdentifier:v7];
+      v9 = [(UNCNotificationCoreServiceClientImpl *)self->_client notificationRecordForIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy];
       goto LABEL_9;
     }
 
@@ -104,16 +104,16 @@ LABEL_9:
   return v9;
 }
 
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifiersCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
-      [(UNCNotificationCoreServiceClientImpl *)self->_client removeNotificationRecordsForIdentifiersWithIdentifiers:v6 bundleIdentifier:v7];
+      [(UNCNotificationCoreServiceClientImpl *)self->_client removeNotificationRecordsForIdentifiersWithIdentifiers:identifiersCopy bundleIdentifier:identifierCopy];
     }
 
     else
@@ -136,16 +136,16 @@ LABEL_9:
   }
 }
 
-- (void)removeSimilarNotificationRecords:(id)a3 forBundleIdentifier:(id)a4
+- (void)removeSimilarNotificationRecords:(id)records forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  recordsCopy = records;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (recordsCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
-      [(UNCNotificationCoreServiceClientImpl *)self->_client removeSimilarNotificationRecords:v6 forBundleIdentifier:v7];
+      [(UNCNotificationCoreServiceClientImpl *)self->_client removeSimilarNotificationRecords:recordsCopy forBundleIdentifier:identifierCopy];
     }
 
     else
@@ -168,12 +168,12 @@ LABEL_9:
   }
 }
 
-- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)a3
+- (void)removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(UNCNotificationCoreServiceClientImpl *)self->_client removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:v4];
+    [(UNCNotificationCoreServiceClientImpl *)self->_client removeNotificationRecordsWithNonPushTriggerForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -186,12 +186,12 @@ LABEL_9:
   }
 }
 
-- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)a3
+- (void)removeInvalidNotificationRecordsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(UNCNotificationCoreServiceClientImpl *)self->_client removeInvalidNotificationRecordsForBundleIdentifier:v4];
+    [(UNCNotificationCoreServiceClientImpl *)self->_client removeInvalidNotificationRecordsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -204,12 +204,12 @@ LABEL_9:
   }
 }
 
-- (void)removeAllNotificationRecordsForBundleIdentifier:(id)a3
+- (void)removeAllNotificationRecordsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(UNCNotificationCoreServiceClientImpl *)self->_client removeAllNotificationRecordsForBundleIdentifier:v4];
+    [(UNCNotificationCoreServiceClientImpl *)self->_client removeAllNotificationRecordsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -222,12 +222,12 @@ LABEL_9:
   }
 }
 
-- (void)removeStoreForBundleIdentifier:(id)a3
+- (void)removeStoreForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    [(UNCNotificationCoreServiceClientImpl *)self->_client removeStoreForBundleIdentifier:v4];
+    [(UNCNotificationCoreServiceClientImpl *)self->_client removeStoreForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -240,12 +240,12 @@ LABEL_9:
   }
 }
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client badgeNumberForBundleIdentifier:v4];
+    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client badgeNumberForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -262,111 +262,111 @@ LABEL_9:
   return v5;
 }
 
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  numberCopy = number;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v11 = *MEMORY[0x1E6983358];
     if (os_log_type_enabled(*MEMORY[0x1E6983358], OS_LOG_TYPE_ERROR))
     {
       [UNCNotificationCoreServiceClient setBadgeNumber:v11 forBundleIdentifier:? completionHandler:?];
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v10)
+    else if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v12 = _UNCNilArgumentError("[UNCNotificationCoreServiceClient setBadgeNumber:forBundleIdentifier:completionHandler:]", @"bundleIdentifier");
-    v10[2](v10, v12);
+    handlerCopy[2](handlerCopy, v12);
 
     goto LABEL_6;
   }
 
-  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeNumber:v8 forBundleIdentifier:v9 completionHandler:v10];
+  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeNumber:numberCopy forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 LABEL_6:
 }
 
-- (void)setBadgeCount:(int64_t)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeCount:(int64_t)count forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v10 = *MEMORY[0x1E6983358];
     if (os_log_type_enabled(*MEMORY[0x1E6983358], OS_LOG_TYPE_ERROR))
     {
       [UNCNotificationCoreServiceClient setBadgeCount:v10 forBundleIdentifier:? completionHandler:?];
-      if (!v9)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v9)
+    else if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v11 = _UNCNilArgumentError("[UNCNotificationCoreServiceClient setBadgeCount:forBundleIdentifier:completionHandler:]", @"bundleIdentifier");
-    v9[2](v9, v11);
+    handlerCopy[2](handlerCopy, v11);
 
     goto LABEL_6;
   }
 
-  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeCount:a3 forBundleIdentifier:v8 completionHandler:v9];
+  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeCount:count forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 LABEL_6:
 }
 
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  stringCopy = string;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     v11 = *MEMORY[0x1E6983358];
     if (os_log_type_enabled(*MEMORY[0x1E6983358], OS_LOG_TYPE_ERROR))
     {
       [UNCNotificationCoreServiceClient setBadgeString:v11 forBundleIdentifier:? completionHandler:?];
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v10)
+    else if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v12 = _UNCNilArgumentError("[UNCNotificationCoreServiceClient setBadgeString:forBundleIdentifier:completionHandler:]", @"bundleIdentifier");
-    v10[2](v10, v12);
+    handlerCopy[2](handlerCopy, v12);
 
     goto LABEL_6;
   }
 
-  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeString:v8 forBundleIdentifier:v9 completionHandler:v10];
+  [(UNCNotificationCoreServiceClientImpl *)self->_client setBadgeString:stringCopy forBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 LABEL_6:
 }
 
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v8 = bundleIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v7)
+    if (bundleIdentifierCopy)
     {
-      v9 = [(UNCNotificationCoreServiceClientImpl *)self->_client categoryForIdentifier:v6 bundleIdentifier:v7];
+      v9 = [(UNCNotificationCoreServiceClientImpl *)self->_client categoryForIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy];
       goto LABEL_9;
     }
 
@@ -392,12 +392,12 @@ LABEL_9:
   return v9;
 }
 
-- (id)categoriesForBundleIdentifier:(id)a3
+- (id)categoriesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client categoriesForBundleIdentifier:v4];
+    v5 = [(UNCNotificationCoreServiceClientImpl *)self->_client categoriesForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -414,16 +414,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  categoriesCopy = categories;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (categoriesCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
-      [(UNCNotificationCoreServiceClientImpl *)self->_client setCategories:v6 forBundleIdentifier:v7];
+      [(UNCNotificationCoreServiceClientImpl *)self->_client setCategories:categoriesCopy forBundleIdentifier:identifierCopy];
     }
 
     else

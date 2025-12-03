@@ -1,32 +1,32 @@
 @interface TrackedFlow
 + (id)currentCellUsers;
 + (id)getPolledFlowInfo;
-+ (id)ownersOfFlowsPassingTest:(id)a3;
-+ (id)startTrackingForKey:(id)a3;
-+ (unint64_t)activeFlowsCountForType:(int64_t)a3;
-+ (unint64_t)cellExpensiveUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)cellUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)countFlowsPassingTest:(id)a3;
-+ (unint64_t)foregroundNonLocalUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)reverseRnfUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)rnfExpensiveUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)rnfUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (unint64_t)wifiNonLocalUsageGrandTallyAfterAdding:(unint64_t)a3;
-+ (void)_dumpStateOfType:(int64_t)a3;
++ (id)ownersOfFlowsPassingTest:(id)test;
++ (id)startTrackingForKey:(id)key;
++ (unint64_t)activeFlowsCountForType:(int64_t)type;
++ (unint64_t)cellExpensiveUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)cellUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)countFlowsPassingTest:(id)test;
++ (unint64_t)foregroundNonLocalUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)reverseRnfUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)rnfExpensiveUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)rnfUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (unint64_t)wifiNonLocalUsageGrandTallyAfterAdding:(unint64_t)adding;
++ (void)_dumpStateOfType:(int64_t)type;
 + (void)_notifyPollingEnd;
 + (void)_wifiStallCheck;
 + (void)_wifiStallCheckStarted;
 + (void)dumpState;
 + (void)initialize;
-+ (void)removeTrackingForKey:(id)a3 fromSnapshot:(id)a4;
-+ (void)startPollingWifiFlows:(unsigned int)a3;
++ (void)removeTrackingForKey:(id)key fromSnapshot:(id)snapshot;
++ (void)startPollingWifiFlows:(unsigned int)flows;
 + (void)stopPollingWifiFlows;
-- (BOOL)inheritEarlyProperties:(id)a3;
+- (BOOL)inheritEarlyProperties:(id)properties;
 - (TrackedFlow)init;
 - (id)description;
 - (void)_decrementCounters;
 - (void)_takeSnapshot;
-- (void)_updateScoreholder:(scoreHolder *)a3;
+- (void)_updateScoreholder:(scoreHolder *)scoreholder;
 @end
 
 @implementation TrackedFlow
@@ -38,9 +38,9 @@
   v2 = [(TrackedFlow *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startingTimestamp = v2->_startingTimestamp;
-    v2->_startingTimestamp = v3;
+    v2->_startingTimestamp = date;
   }
 
   return v2;
@@ -123,8 +123,8 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [(TrackedFlow *)self immediateUser];
-  v4 = [(TrackedFlow *)self ultimateUser];
+  immediateUser = [(TrackedFlow *)self immediateUser];
+  ultimateUser = [(TrackedFlow *)self ultimateUser];
   flags = self->_flags;
   if (flags)
   {
@@ -188,33 +188,33 @@ LABEL_18:
     v17 = timeStringMillisecondsFromTimeInterval(v23);
     [(NSDate *)self->_startingTimestamp timeIntervalSinceNow];
     v25 = v24;
-    if (v3)
+    if (immediateUser)
     {
-      v26 = [v3 userName];
+      userName = [immediateUser userName];
     }
 
     else
     {
-      v26 = @"-";
+      userName = @"-";
     }
 
     v27 = -v25;
-    if (v4)
+    if (ultimateUser)
     {
-      v28 = [v4 userName];
+      userName2 = [ultimateUser userName];
     }
 
     else
     {
-      v28 = @"-";
+      userName2 = @"-";
     }
 
-    v19 = [v20 stringWithFormat:@"TrackedFlow %llu %s %s flow owner %@ start %@ duration %.3f trackers: self %p %@ other %p %@ rx pkts %lld tx pkts %lld", flowId, v30, v31, ownerKey, v17, *&v27, v3, v26, v4, v28, -[TrackedFlowCounts rxPkts](self, "rxPkts"), -[TrackedFlowCounts txPkts](self, "txPkts")];
-    if (v4)
+    v19 = [v20 stringWithFormat:@"TrackedFlow %llu %s %s flow owner %@ start %@ duration %.3f trackers: self %p %@ other %p %@ rx pkts %lld tx pkts %lld", flowId, v30, v31, ownerKey, v17, *&v27, immediateUser, userName, ultimateUser, userName2, -[TrackedFlowCounts rxPkts](self, "rxPkts"), -[TrackedFlowCounts txPkts](self, "txPkts")];
+    if (ultimateUser)
     {
     }
 
-    if (v3)
+    if (immediateUser)
     {
     }
   }
@@ -222,24 +222,24 @@ LABEL_18:
   else
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(TrackedFlow *)self flowId];
+    flowId = [(TrackedFlow *)self flowId];
     [(NSDate *)self->_startingTimestamp timeIntervalSince1970];
     v17 = formattedDateStringForTimeInterval(v16);
     [(NSDate *)self->_startingTimestamp timeIntervalSinceNow];
-    v19 = [v14 stringWithFormat:@"TrackedFlow %llu uninitialized, created %@ duration %f", v15, v17, -v18];
+    v19 = [v14 stringWithFormat:@"TrackedFlow %llu uninitialized, created %@ duration %f", flowId, v17, -v18];
   }
 
   return v19;
 }
 
-- (BOOL)inheritEarlyProperties:(id)a3
+- (BOOL)inheritEarlyProperties:(id)properties
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
   if ((self->_flags & 0x200) == 0)
   {
-    if ([v4 interfaceWiFi])
+    if ([propertiesCopy interfaceWiFi])
     {
       v6 = 1;
     }
@@ -251,9 +251,9 @@ LABEL_18:
 
     else
     {
-      v9 = [v5 interfaceWired];
+      interfaceWired = [v5 interfaceWired];
       v6 = 3;
-      if (!v9)
+      if (!interfaceWired)
       {
         v6 = 0;
       }
@@ -270,8 +270,8 @@ LABEL_18:
     {
       self->_flags |= 2u;
       v10 = v5;
-      v11 = [v10 TCPState];
-      v12 = [v11 isEqualToString:*MEMORY[0x277D2CB78]];
+      tCPState = [v10 TCPState];
+      v12 = [tCPState isEqualToString:*MEMORY[0x277D2CB78]];
 
       if (v12)
       {
@@ -292,9 +292,9 @@ LABEL_18:
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
         {
           v19 = v18;
-          v20 = [v10 verboseDescription];
+          verboseDescription = [v10 verboseDescription];
           *v51 = 138412290;
-          *&v51[4] = v20;
+          *&v51[4] = verboseDescription;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "Ignoring TCP source of unknown interface type, not companionlink %@", v51, 0xCu);
         }
 
@@ -305,9 +305,9 @@ LABEL_18:
         }
 
         v22 = +[SystemProperties sharedInstance];
-        v23 = [v22 internalBuild];
+        internalBuild = [v22 internalBuild];
 
-        if (v23)
+        if (internalBuild)
         {
           v24 = objc_alloc_init(MEMORY[0x277D6AFC8]);
           v21 = v24;
@@ -379,11 +379,11 @@ LABEL_39:
         goto LABEL_37;
       }
 
-      v31 = [v5 remoteAddress];
-      v32 = [v31 bytes];
-      if (v32)
+      remoteAddress = [v5 remoteAddress];
+      bytes = [remoteAddress bytes];
+      if (bytes)
       {
-        v33 = *(v32 + 1);
+        v33 = *(bytes + 1);
         if (v33 == 30)
         {
           v34 = self->_flags | 0x40;
@@ -411,9 +411,9 @@ LABEL_50:
       if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v38 = v37;
-        v39 = [v5 flowStartTimestamp];
-        v40 = [(TrackedFlow *)self startingTimestamp];
-        [v39 timeIntervalSinceDate:v40];
+        flowStartTimestamp = [v5 flowStartTimestamp];
+        startingTimestamp = [(TrackedFlow *)self startingTimestamp];
+        [flowStartTimestamp timeIntervalSinceDate:startingTimestamp];
         *v51 = 134218240;
         *&v51[4] = self;
         *&v51[12] = 2048;
@@ -421,8 +421,8 @@ LABEL_50:
         _os_log_impl(&dword_23255B000, v38, OS_LOG_TYPE_DEBUG, "Adjusting flow start time for %p, delta: %f", v51, 0x16u);
       }
 
-      v42 = [v5 flowStartTimestamp];
-      [(TrackedFlow *)self setStartingTimestamp:v42];
+      flowStartTimestamp2 = [v5 flowStartTimestamp];
+      [(TrackedFlow *)self setStartingTimestamp:flowStartTimestamp2];
 
       self->_flags |= 0x200u;
       ifType = self->_ifType;
@@ -584,19 +584,19 @@ void __38__TrackedFlow_inheritEarlyProperties___block_invoke(uint64_t a1, void *
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)activeFlowsCountForType:(int64_t)a3
++ (unint64_t)activeFlowsCountForType:(int64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v4 = &wiredFlowCount;
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = &cellFlowCount;
       goto LABEL_13;
@@ -605,13 +605,13 @@ void __38__TrackedFlow_inheritEarlyProperties___block_invoke(uint64_t a1, void *
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       v4 = &otherFlowCount;
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = &wifiFlowCount;
 LABEL_13:
@@ -624,7 +624,7 @@ LABEL_13:
   if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_ERROR))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = typeCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "Unexpected interface type %d when requesting current flow counts", v8, 8u);
   }
 
@@ -634,94 +634,94 @@ LABEL_14:
   return result;
 }
 
-+ (unint64_t)cellUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)cellUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&cellUsageGrandTally, a3);
+    atomic_fetch_add(&cellUsageGrandTally, adding);
   }
 
   return atomic_load(&cellUsageGrandTally);
 }
 
-+ (unint64_t)cellExpensiveUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)cellExpensiveUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&cellExpensiveUsageGrandTally, a3);
+    atomic_fetch_add(&cellExpensiveUsageGrandTally, adding);
   }
 
   return atomic_load(&cellExpensiveUsageGrandTally);
 }
 
-+ (unint64_t)rnfUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)rnfUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&rnfUsageGrandTally, a3);
+    atomic_fetch_add(&rnfUsageGrandTally, adding);
   }
 
   return atomic_load(&rnfUsageGrandTally);
 }
 
-+ (unint64_t)rnfExpensiveUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)rnfExpensiveUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&rnfExpensiveUsageGrandTally, a3);
+    atomic_fetch_add(&rnfExpensiveUsageGrandTally, adding);
   }
 
   return atomic_load(&rnfExpensiveUsageGrandTally);
 }
 
-+ (unint64_t)reverseRnfUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)reverseRnfUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&reverseRnfUsageGrandTally, a3);
+    atomic_fetch_add(&reverseRnfUsageGrandTally, adding);
   }
 
   return atomic_load(&reverseRnfUsageGrandTally);
 }
 
-+ (unint64_t)wifiNonLocalUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)wifiNonLocalUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&wifiNonLocalUsageGrandTally, a3);
+    atomic_fetch_add(&wifiNonLocalUsageGrandTally, adding);
   }
 
   return atomic_load(&wifiNonLocalUsageGrandTally);
 }
 
-+ (unint64_t)foregroundNonLocalUsageGrandTallyAfterAdding:(unint64_t)a3
++ (unint64_t)foregroundNonLocalUsageGrandTallyAfterAdding:(unint64_t)adding
 {
-  if (a3)
+  if (adding)
   {
-    atomic_fetch_add(&foregroundNonLocalUsageGrandTally, a3);
+    atomic_fetch_add(&foregroundNonLocalUsageGrandTally, adding);
   }
 
   return atomic_load(&foregroundNonLocalUsageGrandTally);
 }
 
-+ (id)startTrackingForKey:(id)a3
++ (id)startTrackingForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [liveSocketCache objectForKey:v3];
+  keyCopy = key;
+  v4 = [liveSocketCache objectForKey:keyCopy];
   if (v4)
   {
     v5 = rnfLogHandle;
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
     {
       v6 = v5;
-      v7 = [v3 description];
-      v8 = [v7 UTF8String];
+      v7 = [keyCopy description];
+      uTF8String = [v7 UTF8String];
       v9 = [v4 description];
       v14 = 136315394;
-      v15 = v8;
+      v15 = uTF8String;
       v16 = 2080;
-      v17 = [v9 UTF8String];
+      uTF8String2 = [v9 UTF8String];
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "startTrackingForKey: creating flow in place of existing flow for same key: %s, flow: %s", &v14, 0x16u);
     }
   }
@@ -731,13 +731,13 @@ LABEL_14:
   if (v10)
   {
     atomic_fetch_add_explicit(&allFlows, 1u, memory_order_relaxed);
-    [liveSocketCache setObject:v10 forKey:v3];
-    -[TrackedFlow setFlowId:](v10, "setFlowId:", [v3 unsignedLongLongValue]);
+    [liveSocketCache setObject:v10 forKey:keyCopy];
+    -[TrackedFlow setFlowId:](v10, "setFlowId:", [keyCopy unsignedLongLongValue]);
     v11 = attributionLogHandle;
     if (os_log_type_enabled(attributionLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v14 = 138412290;
-      v15 = v3;
+      v15 = keyCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "startTrackingForKey: creating flow for %@", &v14, 0xCu);
     }
   }
@@ -747,17 +747,17 @@ LABEL_14:
   return v10;
 }
 
-+ (void)removeTrackingForKey:(id)a3 fromSnapshot:(id)a4
++ (void)removeTrackingForKey:(id)key fromSnapshot:(id)snapshot
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [liveSocketCache objectForKey:v8];
+  keyCopy = key;
+  snapshotCopy = snapshot;
+  v6 = [liveSocketCache objectForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
     [v6 _decrementCounters];
-    [AppTracker noteFlowEnding:v7 withSnapshot:v5];
-    [liveSocketCache removeObjectForKey:v8];
+    [AppTracker noteFlowEnding:v7 withSnapshot:snapshotCopy];
+    [liveSocketCache removeObjectForKey:keyCopy];
   }
 }
 
@@ -838,19 +838,19 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (id)ownersOfFlowsPassingTest:(id)a3
++ (id)ownersOfFlowsPassingTest:(id)test
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  testCopy = test;
   v4 = objc_autoreleasePoolPush();
-  v5 = [liveSocketCache allValues];
-  v6 = [v5 indexesOfObjectsPassingTest:v3];
-  v7 = [v5 objectsAtIndexes:v6];
+  allValues = [liveSocketCache allValues];
+  v6 = [allValues indexesOfObjectsPassingTest:testCopy];
+  v7 = [allValues objectsAtIndexes:v6];
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
   if ([v7 count])
   {
     v20 = v4;
-    v21 = v3;
+    v21 = testCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -871,12 +871,12 @@ LABEL_8:
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 ownerKey];
+          ownerKey = [v14 ownerKey];
 
-          if (v15)
+          if (ownerKey)
           {
-            v16 = [v14 ownerKey];
-            [v8 addObject:v16];
+            ownerKey2 = [v14 ownerKey];
+            [v8 addObject:ownerKey2];
           }
         }
 
@@ -887,7 +887,7 @@ LABEL_8:
     }
 
     v4 = v20;
-    v3 = v21;
+    testCopy = v21;
   }
 
   v17 = rnfLogHandle;
@@ -904,13 +904,13 @@ LABEL_8:
   return v8;
 }
 
-+ (unint64_t)countFlowsPassingTest:(id)a3
++ (unint64_t)countFlowsPassingTest:(id)test
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  testCopy = test;
   v4 = objc_autoreleasePoolPush();
-  v5 = [liveSocketCache allValues];
-  v6 = [v5 indexesOfObjectsPassingTest:v3];
+  allValues = [liveSocketCache allValues];
+  v6 = [allValues indexesOfObjectsPassingTest:testCopy];
   v7 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -939,37 +939,37 @@ LABEL_8:
   self->_snapshotTxUnacked = [(TrackedFlow *)self txUnacked];
 }
 
-- (void)_updateScoreholder:(scoreHolder *)a3
+- (void)_updateScoreholder:(scoreHolder *)scoreholder
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = [(TrackedFlowCounts *)self rxWiFiBytes];
+  rxWiFiBytes = [(TrackedFlowCounts *)self rxWiFiBytes];
   snapshotRxWiFiBytes = self->_snapshotRxWiFiBytes;
-  v44 = v5;
-  v6 = [(TrackedFlowCounts *)self txWiFiBytes];
+  v44 = rxWiFiBytes;
+  txWiFiBytes = [(TrackedFlowCounts *)self txWiFiBytes];
   snapshotTxWiFiBytes = self->_snapshotTxWiFiBytes;
-  v42 = v6 - snapshotTxWiFiBytes;
-  v8 = [(TrackedFlowCounts *)self rxPkts];
+  v42 = txWiFiBytes - snapshotTxWiFiBytes;
+  rxPkts = [(TrackedFlowCounts *)self rxPkts];
   snapshotRxPkts = self->_snapshotRxPkts;
-  v40 = v8;
-  v41 = v8 - snapshotRxPkts;
-  v38 = [(TrackedFlowCounts *)self txPkts];
+  v40 = rxPkts;
+  v41 = rxPkts - snapshotRxPkts;
+  txPkts = [(TrackedFlowCounts *)self txPkts];
   snapshotTxPkts = self->_snapshotTxPkts;
-  v10 = [(TrackedFlowCounts *)self rxDupeBytes];
+  rxDupeBytes = [(TrackedFlowCounts *)self rxDupeBytes];
   snapshotRxDupeBytes = self->_snapshotRxDupeBytes;
-  v37 = v10 - snapshotRxDupeBytes;
-  v12 = [(TrackedFlowCounts *)self rxOOOBytes];
+  v37 = rxDupeBytes - snapshotRxDupeBytes;
+  rxOOOBytes = [(TrackedFlowCounts *)self rxOOOBytes];
   snapshotRxOOOBytes = self->_snapshotRxOOOBytes;
-  v14 = v12 - snapshotRxOOOBytes;
-  v15 = [(TrackedFlowCounts *)self txReTxBytes];
+  v14 = rxOOOBytes - snapshotRxOOOBytes;
+  txReTxBytes = [(TrackedFlowCounts *)self txReTxBytes];
   snapshotTxReTxBytes = self->_snapshotTxReTxBytes;
-  v17 = v15 - snapshotTxReTxBytes;
+  v17 = txReTxBytes - snapshotTxReTxBytes;
   v18 = v44 - snapshotRxWiFiBytes;
   v35 = snapshotTxWiFiBytes;
-  v36 = v6;
-  if (v44 != snapshotRxWiFiBytes || v6 != snapshotTxWiFiBytes || v40 != snapshotRxPkts || v38 != snapshotTxPkts || v10 != snapshotRxDupeBytes || v12 != snapshotRxOOOBytes || v15 != snapshotTxReTxBytes)
+  v36 = txWiFiBytes;
+  if (v44 != snapshotRxWiFiBytes || txWiFiBytes != snapshotTxWiFiBytes || v40 != snapshotRxPkts || txPkts != snapshotTxPkts || rxDupeBytes != snapshotRxDupeBytes || rxOOOBytes != snapshotRxOOOBytes || txReTxBytes != snapshotTxReTxBytes)
   {
     v25 = evaluationLogHandle;
-    v26 = v15 - snapshotTxReTxBytes;
+    v26 = txReTxBytes - snapshotTxReTxBytes;
     v27 = os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG);
     v18 = v44 - snapshotRxWiFiBytes;
     v17 = v26;
@@ -977,7 +977,7 @@ LABEL_8:
     {
       txUnacked = self->_txUnacked;
       *buf = 134220032;
-      v46 = self;
+      selfCopy = self;
       v47 = 2048;
       v48 = v44 - snapshotRxWiFiBytes;
       v49 = 2048;
@@ -985,11 +985,11 @@ LABEL_8:
       v51 = 2048;
       v52 = v41;
       v53 = 2048;
-      v54 = v38 - snapshotTxPkts;
+      v54 = txPkts - snapshotTxPkts;
       v55 = 2048;
-      v56 = v10 - snapshotRxDupeBytes;
+      v56 = rxDupeBytes - snapshotRxDupeBytes;
       v57 = 2048;
-      v58 = v12 - snapshotRxOOOBytes;
+      v58 = rxOOOBytes - snapshotRxOOOBytes;
       v59 = 2048;
       v60 = v26;
       v61 = 1024;
@@ -1000,30 +1000,30 @@ LABEL_8:
     }
   }
 
-  v29 = a3->var0.var1 + v42;
-  a3->var0.var0 += v18;
-  a3->var0.var1 = v29;
-  v30 = a3->var0.var3 + v38 - snapshotTxPkts;
+  v29 = scoreholder->var0.var1 + v42;
+  scoreholder->var0.var0 += v18;
+  scoreholder->var0.var1 = v29;
+  v30 = scoreholder->var0.var3 + txPkts - snapshotTxPkts;
   v31 = self->_txUnacked;
-  a3->var0.var2 += v41;
-  a3->var0.var3 = v30;
-  v32 = a3->var0.var5 + v37;
-  a3->var0.var4 += v31;
-  a3->var0.var5 = v32;
-  v33 = a3->var0.var7 + v17;
-  a3->var0.var6 += v14;
-  a3->var0.var7 = v33;
-  ++a3->var1;
+  scoreholder->var0.var2 += v41;
+  scoreholder->var0.var3 = v30;
+  v32 = scoreholder->var0.var5 + v37;
+  scoreholder->var0.var4 += v31;
+  scoreholder->var0.var5 = v32;
+  v33 = scoreholder->var0.var7 + v17;
+  scoreholder->var0.var6 += v14;
+  scoreholder->var0.var7 = v33;
+  ++scoreholder->var1;
   if (self->_txUnacked)
   {
     if (v44 != snapshotRxWiFiBytes || v36 != v35)
     {
-      ++a3->var4;
+      ++scoreholder->var4;
       goto LABEL_30;
     }
 
 LABEL_29:
-    ++a3->var3;
+    ++scoreholder->var3;
     goto LABEL_30;
   }
 
@@ -1031,7 +1031,7 @@ LABEL_29:
   {
     if (!(v18 + v42))
     {
-      ++a3->var2;
+      ++scoreholder->var2;
       goto LABEL_30;
     }
 
@@ -1040,33 +1040,33 @@ LABEL_29:
 
   if (v14 + v37 + v17)
   {
-    ++a3->var6;
+    ++scoreholder->var6;
   }
 
   else
   {
-    ++a3->var5;
+    ++scoreholder->var5;
   }
 
 LABEL_30:
   if ([(TrackedFlowCounts *)self probedFlow])
   {
-    ++a3->var7;
+    ++scoreholder->var7;
   }
 
   if ([(TrackedFlowCounts *)self probed3WHSStuckFlow])
   {
-    ++a3->var8;
+    ++scoreholder->var8;
   }
 
   if ([(TrackedFlowCounts *)self probedReadStuckFlow])
   {
-    ++a3->var9;
+    ++scoreholder->var9;
   }
 
   if ([(TrackedFlowCounts *)self probedWriteStuckFlow])
   {
-    ++a3->var10;
+    ++scoreholder->var10;
   }
 
   [(TrackedFlow *)self _takeSnapshot];
@@ -1334,20 +1334,20 @@ LABEL_39:
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "Notify ending assessment %@", buf, 0xCu);
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"kNotificationPolledFlowAssessment" object:a1 userInfo:v11];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"kNotificationPolledFlowAssessment" object:self userInfo:v11];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_dumpStateOfType:(int64_t)a3
++ (void)_dumpStateOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __32__TrackedFlow__dumpStateOfType___block_invoke;
   v3[3] = &__block_descriptor_40_e15_v32__0_8_16_B24l;
-  v3[4] = a3;
+  v3[4] = type;
   [liveSocketCache enumerateKeysAndObjectsUsingBlock:v3];
 }
 
@@ -1410,7 +1410,7 @@ void __32__TrackedFlow__dumpStateOfType___block_invoke(uint64_t a1, uint64_t a2,
   v10 = v6;
   v11 = v4;
   v9[4] = v5;
-  v9[5] = a1;
+  v9[5] = self;
   [FlowRefreshScheduler refreshDataUsageMaxStale:@"WiFiStallCheck" maxDelay:v9 logAs:0.0 callback:0.0];
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1479,16 +1479,16 @@ void __30__TrackedFlow__wifiStallCheck__block_invoke_2(uint64_t a1, uint64_t a2,
   }
 }
 
-+ (void)startPollingWifiFlows:(unsigned int)a3
++ (void)startPollingWifiFlows:(unsigned int)flows
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3 + 1;
+  v5 = flows + 1;
   add = atomic_fetch_add(&gPolledFlowClientCount, 1uLL);
   v7 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v29 = a3;
+    *v29 = flows;
     *&v29[4] = 2048;
     *&v29[6] = add;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "startPollingWifiFlows, secs %u number of existing clients is %llu", buf, 0x12u);
@@ -1580,7 +1580,7 @@ void __30__TrackedFlow__wifiStallCheck__block_invoke_2(uint64_t a1, uint64_t a2,
   block[1] = 3221225472;
   block[2] = __37__TrackedFlow_startPollingWifiFlows___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v20, block);
 
   v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
@@ -1594,13 +1594,13 @@ void __30__TrackedFlow__wifiStallCheck__block_invoke_2(uint64_t a1, uint64_t a2,
   handler[1] = 3221225472;
   handler[2] = __37__TrackedFlow_startPollingWifiFlows___block_invoke_166;
   handler[3] = &__block_descriptor_40_e5_v8__0l;
-  handler[4] = a1;
+  handler[4] = self;
   dispatch_source_set_event_handler(gPolledFlowTimer, handler);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __37__TrackedFlow_startPollingWifiFlows___block_invoke_2;
   v25[3] = &__block_descriptor_40_e5_v8__0l;
-  v25[4] = a1;
+  v25[4] = self;
   dispatch_source_set_cancel_handler(gPolledFlowTimer, v25);
   dispatch_resume(gPolledFlowTimer);
   v12 = rnfLogHandle;

@@ -1,16 +1,16 @@
 @interface THGlossaryEntryLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)footerIndexDividerFrame;
 - (CGRect)footerIndexTitleFrame;
 - (CGRect)footerTermsDividerFrame;
 - (CGRect)footerTermsTitleFrame;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGRect)p_columnFrameBasedOnStyle;
 - (CGRect)p_unscaledViewFrameBasedOnStyle;
 - (CGRect)p_viewFrameBasedOnStyle;
 - (CGSize)adjustedInsets;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
-- (Class)repClassForTextLayout:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
+- (Class)repClassForTextLayout:(id)layout;
 - (THGlossaryDividerLayout)indexDividerLayout;
 - (THGlossaryDividerLayout)relatedTermsDividerLayout;
 - (THGlossaryEntryFloatingLayout)floatingLayout;
@@ -20,16 +20,16 @@
 - (THGlossaryWPLayout)relatedTermsLayout;
 - (THWLabelControlLayout)indexLabelLayout;
 - (THWLabelControlLayout)relatedTermsLabelLayout;
-- (double)p_heightForPortion:(int)a3;
-- (double)p_topCoordinateForPortion:(int)a3;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (double)p_heightForPortion:(int)portion;
+- (double)p_topCoordinateForPortion:(int)portion;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)computeLayoutGeometry;
-- (id)p_layoutForPortion:(int)a3;
+- (id)p_layoutForPortion:(int)portion;
 - (id)reliedOnLayouts;
-- (id)reliedOnLayoutsForLayout:(id)a3;
+- (id)reliedOnLayoutsForLayout:(id)layout;
 - (id)textWrapper;
-- (int)p_portionForLayout:(id)a3;
+- (int)p_portionForLayout:(id)layout;
 - (int64_t)p_portionCount;
 - (void)dealloc;
 - (void)p_updateFloatingPositionsIfRequired;
@@ -248,42 +248,42 @@
   return result;
 }
 
-- (int)p_portionForLayout:(id)a3
+- (int)p_portionForLayout:(id)layout
 {
-  if (self->mHeaderLayout == a3)
+  if (self->mHeaderLayout == layout)
   {
     return 1;
   }
 
-  if (self->mBodyLayout == a3)
+  if (self->mBodyLayout == layout)
   {
     return 2;
   }
 
-  if (self->mRelatedTermsLayout == a3)
+  if (self->mRelatedTermsLayout == layout)
   {
     return 3;
   }
 
-  return 4 * (self->mIndexLayout == a3);
+  return 4 * (self->mIndexLayout == layout);
 }
 
-- (id)p_layoutForPortion:(int)a3
+- (id)p_layoutForPortion:(int)portion
 {
-  if ((a3 - 1) > 3)
+  if ((portion - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return *&self->TSDLayout_opaque[*off_45D0A8[a3 - 1]];
+    return *&self->TSDLayout_opaque[*off_45D0A8[portion - 1]];
   }
 }
 
-- (double)p_heightForPortion:(int)a3
+- (double)p_heightForPortion:(int)portion
 {
-  v3 = *&a3;
+  v3 = *&portion;
   v5 = 0.0;
   if ([(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutIncludePortion:?])
   {
@@ -303,8 +303,8 @@
     if (v3 == 2)
     {
       [(THGlossaryEntryLayout *)self p_updateFloatingPositionsIfRequired];
-      v9 = [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutFloatingStyle];
-      if (v9 == 1)
+      glossaryEntryLayoutFloatingStyle = [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutFloatingStyle];
+      if (glossaryEntryLayoutFloatingStyle == 1)
       {
         [(THGlossaryEntryFloatingLayout *)self->mFloatingLayout boundingBoxForChildren];
         MaxY = CGRectGetMaxY(v17);
@@ -312,7 +312,7 @@
 
       else
       {
-        if (v9 != 2)
+        if (glossaryEntryLayoutFloatingStyle != 2)
         {
           return v5;
         }
@@ -335,11 +335,11 @@
   return v5;
 }
 
-- (double)p_topCoordinateForPortion:(int)a3
+- (double)p_topCoordinateForPortion:(int)portion
 {
   [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutTopMarginForPortion:?];
   v6 = v5;
-  if (a3 >= 2)
+  if (portion >= 2)
   {
     v7 = 1;
     do
@@ -351,7 +351,7 @@
       v6 = (v10 + v9);
     }
 
-    while (a3 != v7);
+    while (portion != v7);
   }
 
   return v6;
@@ -363,44 +363,44 @@
   v4 = [[TSUNoCopyDictionary alloc] initWithCapacity:5];
   if ([(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutIncludePortion:1])
   {
-    v5 = [(THGlossaryEntryLayout *)self headerLayout];
-    if ([(THGlossaryWPLayout *)v5 info])
+    headerLayout = [(THGlossaryEntryLayout *)self headerLayout];
+    if ([(THGlossaryWPLayout *)headerLayout info])
     {
-      [v4 setObject:v5 forUncopiedKey:{-[THGlossaryWPLayout info](v5, "info")}];
+      [v4 setObject:headerLayout forUncopiedKey:{-[THGlossaryWPLayout info](headerLayout, "info")}];
     }
   }
 
   if ([(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutIncludePortion:2])
   {
-    v6 = [(THGlossaryEntryLayout *)self bodyLayout];
-    if ([(THGlossaryWPLayout *)v6 info])
+    bodyLayout = [(THGlossaryEntryLayout *)self bodyLayout];
+    if ([(THGlossaryWPLayout *)bodyLayout info])
     {
-      [v4 setObject:v6 forUncopiedKey:{-[THGlossaryWPLayout info](v6, "info")}];
+      [v4 setObject:bodyLayout forUncopiedKey:{-[THGlossaryWPLayout info](bodyLayout, "info")}];
     }
   }
 
   if ([(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutIncludePortion:3])
   {
-    v7 = [(THGlossaryEntryLayout *)self relatedTermsLayout];
-    if ([(THGlossaryWPLayout *)v7 info])
+    relatedTermsLayout = [(THGlossaryEntryLayout *)self relatedTermsLayout];
+    if ([(THGlossaryWPLayout *)relatedTermsLayout info])
     {
-      [v4 setObject:v7 forUncopiedKey:{-[THGlossaryWPLayout info](v7, "info")}];
+      [v4 setObject:relatedTermsLayout forUncopiedKey:{-[THGlossaryWPLayout info](relatedTermsLayout, "info")}];
     }
   }
 
   if ([(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutIncludePortion:4])
   {
-    v8 = [(THGlossaryEntryLayout *)self indexLayout];
-    if ([(THGlossaryWPLayout *)v8 info])
+    indexLayout = [(THGlossaryEntryLayout *)self indexLayout];
+    if ([(THGlossaryWPLayout *)indexLayout info])
     {
-      [v4 setObject:v8 forUncopiedKey:{-[THGlossaryWPLayout info](v8, "info")}];
+      [v4 setObject:indexLayout forUncopiedKey:{-[THGlossaryWPLayout info](indexLayout, "info")}];
     }
   }
 
-  v9 = [(THGlossaryEntryLayout *)self floatingLayout];
-  if ([(THGlossaryEntryFloatingLayout *)v9 info])
+  floatingLayout = [(THGlossaryEntryLayout *)self floatingLayout];
+  if ([(THGlossaryEntryFloatingLayout *)floatingLayout info])
   {
-    [v4 setObject:v9 forUncopiedKey:{-[THGlossaryEntryFloatingLayout info](v9, "info")}];
+    [v4 setObject:floatingLayout forUncopiedKey:{-[THGlossaryEntryFloatingLayout info](floatingLayout, "info")}];
   }
 
   v10 = [-[THGlossaryEntryLayout children](self "children")];
@@ -624,9 +624,9 @@
 
 - (id)reliedOnLayouts
 {
-  v2 = [(THGlossaryEntryLayout *)self children];
+  children = [(THGlossaryEntryLayout *)self children];
 
-  return [NSSet setWithArray:v2];
+  return [NSSet setWithArray:children];
 }
 
 - (void)p_updateFloatingPositionsIfRequired
@@ -646,8 +646,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(THGlossaryEntryFloatingLayout *)[(THGlossaryEntryLayout *)self floatingLayout] floatingLayouts];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    floatingLayouts = [(THGlossaryEntryFloatingLayout *)[(THGlossaryEntryLayout *)self floatingLayout] floatingLayouts];
+    v12 = [floatingLayouts countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -659,7 +659,7 @@
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(floatingLayouts);
           }
 
           v17 = *(*(&v20 + 1) + 8 * i);
@@ -670,7 +670,7 @@
           v14 = v14 + v4 + v19;
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [floatingLayouts countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -695,26 +695,26 @@
 {
   [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutValueForDistance:1];
   v4 = v3;
-  v5 = [(THGlossaryEntryLayout *)self p_portionCount];
-  if (v5 >= 3)
+  p_portionCount = [(THGlossaryEntryLayout *)self p_portionCount];
+  if (p_portionCount >= 3)
   {
     v6 = 3;
   }
 
   else
   {
-    v6 = v5;
+    v6 = p_portionCount;
   }
 
   v7 = 0.0;
-  if (v5 < 2)
+  if (p_portionCount < 2)
   {
     v10 = v4;
   }
 
   else
   {
-    v8 = v5;
+    v8 = p_portionCount;
     v9 = 1;
     v10 = v4;
     do
@@ -779,10 +779,10 @@
   {
     [(THGlossaryEntryLayout *)self p_topCoordinateForPortion:3];
     v31 = v30 + self->mFooterOffset;
-    v32 = [(THGlossaryWPLayout *)self->mRelatedTermsLayout geometry];
-    if (v32)
+    geometry = [(THGlossaryWPLayout *)self->mRelatedTermsLayout geometry];
+    if (geometry)
     {
-      [v32 transform];
+      [geometry transform];
       v33 = *(&v62 + 1);
     }
 
@@ -801,10 +801,10 @@
   {
     [(THGlossaryEntryLayout *)self p_topCoordinateForPortion:4];
     v35 = v34 + self->mFooterOffset;
-    v36 = [(THGlossaryWPLayout *)self->mIndexLayout geometry];
-    if (v36)
+    geometry2 = [(THGlossaryWPLayout *)self->mIndexLayout geometry];
+    if (geometry2)
     {
-      [v36 transform];
+      [geometry2 transform];
       v37 = *(&v59 + 1);
     }
 
@@ -832,10 +832,10 @@
   return v39;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
   result = 0.0;
-  if (!a3)
+  if (!index)
   {
     [objc_msgSend(-[THGlossaryEntryLayout info](self info];
   }
@@ -852,7 +852,7 @@
   return result;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v5 = [(THGlossaryEntryLayout *)self p_portionForLayout:?];
   if (v5)
@@ -861,7 +861,7 @@
     [(THGlossaryEntryLayout *)self p_viewFrameBasedOnStyle];
     v8 = v7;
     [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutDefaultHeightForPortion:v6];
-    [(THGlossaryEntryLayout *)self autosizedFrameForTextLayout:a3 textSize:v8, v9];
+    [(THGlossaryEntryLayout *)self autosizedFrameForTextLayout:layout textSize:v8, v9];
   }
 
   else
@@ -879,10 +879,10 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  v6 = [(THGlossaryEntryLayout *)self p_portionForLayout:a3, a4.width];
+  height = size.height;
+  v6 = [(THGlossaryEntryLayout *)self p_portionForLayout:layout, size.width];
   [(THGlossaryEntryLayout *)self p_columnFrameBasedOnStyle];
   v8 = v7;
   v10 = v9;
@@ -898,11 +898,11 @@
   return result;
 }
 
-- (Class)repClassForTextLayout:(id)a3
+- (Class)repClassForTextLayout:(id)layout
 {
-  v3 = [a3 info];
+  info = [layout info];
 
-  return [v3 repClass];
+  return [info repClass];
 }
 
 - (id)textWrapper
@@ -912,9 +912,9 @@
   return v2;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  if ([(THGlossaryEntryLayout *)self floatingLayout]!= a3)
+  if ([(THGlossaryEntryLayout *)self floatingLayout]!= layout)
   {
     return 0;
   }
@@ -922,10 +922,10 @@
   return [NSArray arrayWithObject:self];
 }
 
-- (id)reliedOnLayoutsForLayout:(id)a3
+- (id)reliedOnLayoutsForLayout:(id)layout
 {
   v5 = +[NSMutableSet set];
-  if ([(THGlossaryEntryLayout *)self bodyLayout]== a3)
+  if ([(THGlossaryEntryLayout *)self bodyLayout]== layout)
   {
     if (![(THGlossaryEntryLayout *)self floatingLayout])
     {
@@ -933,13 +933,13 @@
     }
 
     [v5 addObjectsFromArray:{-[THGlossaryEntryFloatingLayout childrenForWrappingDependents](-[THGlossaryEntryLayout floatingLayout](self, "floatingLayout"), "childrenForWrappingDependents")}];
-    v6 = [(THGlossaryEntryLayout *)self floatingLayout];
+    floatingLayout = [(THGlossaryEntryLayout *)self floatingLayout];
     goto LABEL_10;
   }
 
-  if ([(THGlossaryEntryLayout *)self relatedTermsLayout]!= a3)
+  if ([(THGlossaryEntryLayout *)self relatedTermsLayout]!= layout)
   {
-    if ([(THGlossaryEntryLayout *)self indexLayout]!= a3)
+    if ([(THGlossaryEntryLayout *)self indexLayout]!= layout)
     {
       return v5;
     }
@@ -952,9 +952,9 @@
 
   if ([(THGlossaryEntryLayout *)self bodyLayout])
   {
-    v6 = [(THGlossaryEntryLayout *)self bodyLayout];
+    floatingLayout = [(THGlossaryEntryLayout *)self bodyLayout];
 LABEL_10:
-    [v5 addObject:v6];
+    [v5 addObject:floatingLayout];
   }
 
 LABEL_11:
@@ -966,15 +966,15 @@ LABEL_11:
   return v5;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   v13.receiver = self;
   v13.super_class = THGlossaryEntryLayout;
   [(THGlossaryEntryLayout *)&v13 maximumFrameSizeForChild:?];
   v6 = v5;
   v8 = v7;
-  v9 = [a3 parent];
-  if (v9 == [(THGlossaryEntryLayout *)self floatingLayout]&& [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutFloatingStyle]== 2)
+  parent = [child parent];
+  if (parent == [(THGlossaryEntryLayout *)self floatingLayout]&& [(THGlossaryEntryLayoutStyleProvider *)self->mLayoutStyleProvider glossaryEntryLayoutFloatingStyle]== 2)
   {
     [(THGlossaryEntryLayout *)self p_columnFrameBasedOnStyle];
     v6 = v10;

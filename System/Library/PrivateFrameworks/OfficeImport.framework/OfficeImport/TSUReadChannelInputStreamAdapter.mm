@@ -1,23 +1,23 @@
 @interface TSUReadChannelInputStreamAdapter
-- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation TSUReadChannelInputStreamAdapter
 
-- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)a3
+- (TSUReadChannelInputStreamAdapter)initWithReadChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = TSUReadChannelInputStreamAdapter;
   v6 = [(TSUReadChannelInputStreamAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readChannel, a3);
+    objc_storeStrong(&v6->_readChannel, channel);
     objc_storeStrong(&v7->_leftoverData, MEMORY[0x277D85CC8]);
   }
 
@@ -32,19 +32,19 @@
   [(TSUReadChannelInputStreamAdapter *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
-  v41 = a4;
+  sizeCopy = size;
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x2020000000;
-  v37[3] = a3;
+  v37[3] = buffer;
   leftoverData = self->_leftoverData;
   size = dispatch_data_get_size(leftoverData);
-  v8 = a4;
+  sizeCopy2 = size;
   if (size)
   {
     applier[0] = MEMORY[0x277D85DD0];
@@ -65,16 +65,16 @@
     {
       v11 = self->_leftoverData;
       v12 = dispatch_data_get_size(v11);
-      subrange = dispatch_data_create_subrange(v11, a4, v12 - a4);
+      subrange = dispatch_data_create_subrange(v11, size, v12 - size);
     }
 
     v13 = self->_leftoverData;
     self->_leftoverData = subrange;
 
-    v8 = v39[3];
+    sizeCopy2 = v39[3];
   }
 
-  if (v8 && self->_readChannel)
+  if (sizeCopy2 && self->_readChannel)
   {
     v30 = 0;
     v31 = &v30;
@@ -124,10 +124,10 @@
     _Block_object_dispose(v28, 8);
     _Block_object_dispose(&v30, 8);
 
-    v8 = v39[3];
+    sizeCopy2 = v39[3];
   }
 
-  v20 = a4 - v8;
+  v20 = size - sizeCopy2;
   _Block_object_dispose(v37, 8);
   _Block_object_dispose(&v38, 8);
   return v20;
@@ -237,11 +237,11 @@ BOOL __54__TSUReadChannelInputStreamAdapter_readToBuffer_size___block_invoke_2(v
   self->_readChannel = 0;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   if (self->_readChannel)
   {
-    self->_offset = a3;
+    self->_offset = offset;
     v4 = MEMORY[0x277D85CC8];
     p_leftoverData = &self->_leftoverData;
 

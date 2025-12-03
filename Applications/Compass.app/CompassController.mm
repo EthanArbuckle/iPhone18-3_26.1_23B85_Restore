@@ -3,14 +3,14 @@
 - (void)_setSharedLocationManagerOnPagesIfNeeded;
 - (void)dealloc;
 - (void)loadView;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)startAnimations;
 - (void)startLocationUpdatesIfNecessary;
 - (void)stopAnimations;
 - (void)stopLocationUpdates;
-- (void)updateDisplay:(id)a3;
+- (void)updateDisplay:(id)display;
 - (void)viewDidLoad;
 @end
 
@@ -30,29 +30,29 @@
 
   [(CompassController *)self _setSharedLocationManagerOnPagesIfNeeded];
   [(CompassController *)self addChildViewController:self->_compassPageController];
-  v6 = [(CompassPageViewController *)self->_compassPageController view];
-  [v6 setAutoresizingMask:18];
+  view = [(CompassPageViewController *)self->_compassPageController view];
+  [view setAutoresizingMask:18];
 
-  v7 = [(CompassPageViewController *)self->_compassPageController view];
+  view2 = [(CompassPageViewController *)self->_compassPageController view];
   [v9 bounds];
-  [v7 setFrame:?];
+  [view2 setFrame:?];
 
-  v8 = [(CompassPageViewController *)self->_compassPageController view];
-  [v9 addSubview:v8];
+  view3 = [(CompassPageViewController *)self->_compassPageController view];
+  [v9 addSubview:view3];
 }
 
 - (void)_setSharedLocationManagerOnPagesIfNeeded
 {
-  v3 = [(CompassController *)self sharedLocManager];
+  sharedLocManager = [(CompassController *)self sharedLocManager];
 
-  if (v3)
+  if (sharedLocManager)
   {
     compassPageController = self->_compassPageController;
     if (objc_opt_respondsToSelector())
     {
       v5 = self->_compassPageController;
-      v6 = [(CompassController *)self sharedLocManager];
-      [(CompassPageViewController *)v5 setSharedLocationManager:v6];
+      sharedLocManager2 = [(CompassController *)self sharedLocManager];
+      [(CompassPageViewController *)v5 setSharedLocationManager:sharedLocManager2];
     }
   }
 }
@@ -88,13 +88,13 @@
 {
   if (self->_canUseLocation)
   {
-    v3 = [(CompassController *)self sharedLocManager];
-    [v3 startUpdatingLocation];
+    sharedLocManager = [(CompassController *)self sharedLocManager];
+    [sharedLocManager startUpdatingLocation];
   }
 
   else
   {
-    v2 = [(CompassController *)self sharedLocManager];
+    sharedLocManager2 = [(CompassController *)self sharedLocManager];
   }
 }
 
@@ -127,29 +127,29 @@
   [(CompassController *)&v3 dealloc];
 }
 
-- (void)updateDisplay:(id)a3
+- (void)updateDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if ([(CompassController *)self isViewLoaded])
   {
-    [(CompassPageViewController *)self->_compassPageController updateDisplay:v4];
+    [(CompassPageViewController *)self->_compassPageController updateDisplay:displayCopy];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [v4 authorizationStatus];
-  self->_canUseLocation = (v5 - 3) < 0xFFFFFFFE;
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
+  self->_canUseLocation = (authorizationStatus - 3) < 0xFFFFFFFE;
   compassPageController = self->_compassPageController;
   if (objc_opt_respondsToSelector())
   {
-    [(CompassPageViewController *)self->_compassPageController locationAuthorizationDidChange:v5];
+    [(CompassPageViewController *)self->_compassPageController locationAuthorizationDidChange:authorizationStatus];
   }
 
-  if ((v5 - 3) >= 2)
+  if ((authorizationStatus - 3) >= 2)
   {
-    if (v5)
+    if (authorizationStatus)
     {
       [(CompassController *)self stopLocationUpdates];
       block[0] = _NSConcreteStackBlock;
@@ -162,17 +162,17 @@
 
     else
     {
-      [v4 requestWhenInUseAuthorization];
+      [authorizationCopy requestWhenInUseAuthorization];
     }
   }
 
   else
   {
-    [v4 startUpdatingLocation];
+    [authorizationCopy startUpdatingLocation];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -182,10 +182,10 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v5, "count") - 1}];
+  locationsCopy = locations;
+  v6 = [locationsCopy objectAtIndexedSubscript:{objc_msgSend(locationsCopy, "count") - 1}];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -199,8 +199,8 @@
 
 - (void)stopLocationUpdates
 {
-  v2 = [(CompassController *)self sharedLocManager];
-  [v2 stopUpdatingLocation];
+  sharedLocManager = [(CompassController *)self sharedLocManager];
+  [sharedLocManager stopUpdatingLocation];
 }
 
 @end

@@ -4,8 +4,8 @@
 - (id)preferredContentSizeCategoryOrOverride;
 - (id)viewHierarchyOrOverride;
 - (int64_t)layoutDirectionOrOverride;
-- (void)setLayoutDirectionOverride:(int64_t)a3;
-- (void)setPreferredContentSizeCategoryOverride:(id)a3;
+- (void)setLayoutDirectionOverride:(int64_t)override;
+- (void)setPreferredContentSizeCategoryOverride:(id)override;
 @end
 
 @implementation EKUIApplicationExtensionOverrides
@@ -32,10 +32,10 @@ void __43__EKUIApplicationExtensionOverrides_shared__block_invoke()
 - (id)viewHierarchyOrOverride
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69933F8] shared];
-  v3 = [v2 isCurrentProcessAnApplicationExtension];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  isCurrentProcessAnApplicationExtension = [mEMORY[0x1E69933F8] isCurrentProcessAnApplicationExtension];
 
-  if ((v3 & 1) == 0)
+  if ((isCurrentProcessAnApplicationExtension & 1) == 0)
   {
     v4 = [MEMORY[0x1E69DC668] performSelector:sel_sharedApplication];
     [v4 connectedScenes];
@@ -62,12 +62,12 @@ void __43__EKUIApplicationExtensionOverrides_shared__block_invoke()
           if (objc_opt_isKindOfClass())
           {
             v11 = v10;
-            v12 = [v11 windows];
-            v13 = [v12 firstObject];
+            windows = [v11 windows];
+            firstObject = [windows firstObject];
 
-            if (v13)
+            if (firstObject)
             {
-              v14 = [v12 firstObject];
+              firstObject2 = [windows firstObject];
 
               goto LABEL_15;
             }
@@ -85,10 +85,10 @@ void __43__EKUIApplicationExtensionOverrides_shared__block_invoke()
     }
   }
 
-  v14 = _overrideViewHierarchy;
+  firstObject2 = _overrideViewHierarchy;
 LABEL_15:
 
-  return v14;
+  return firstObject2;
 }
 
 - (EKUIApplicationExtensionOverrides)init
@@ -116,34 +116,34 @@ LABEL_15:
 
 - (int64_t)layoutDirectionOrOverride
 {
-  v2 = [MEMORY[0x1E69933F8] shared];
-  v3 = [v2 layoutDirectionOrOverride];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  layoutDirectionOrOverride = [mEMORY[0x1E69933F8] layoutDirectionOrOverride];
 
-  return v3;
+  return layoutDirectionOrOverride;
 }
 
-- (void)setLayoutDirectionOverride:(int64_t)a3
+- (void)setLayoutDirectionOverride:(int64_t)override
 {
-  v4 = [MEMORY[0x1E69933F8] shared];
-  [v4 setLayoutDirectionOverride:a3];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  [mEMORY[0x1E69933F8] setLayoutDirectionOverride:override];
 
   CalUpdateUserInterfaceDirection();
 }
 
 - (id)preferredContentSizeCategoryOrOverride
 {
-  v2 = [MEMORY[0x1E69933F8] shared];
-  v3 = [v2 preferredContentSizeCategoryOrOverride];
+  mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+  preferredContentSizeCategoryOrOverride = [mEMORY[0x1E69933F8] preferredContentSizeCategoryOrOverride];
 
-  return v3;
+  return preferredContentSizeCategoryOrOverride;
 }
 
-- (void)setPreferredContentSizeCategoryOverride:(id)a3
+- (void)setPreferredContentSizeCategoryOverride:(id)override
 {
   v3 = MEMORY[0x1E69933F8];
-  v4 = a3;
-  v5 = [v3 shared];
-  [v5 setPreferredContentSizeCategoryOverride:v4];
+  overrideCopy = override;
+  shared = [v3 shared];
+  [shared setPreferredContentSizeCategoryOverride:overrideCopy];
 }
 
 @end

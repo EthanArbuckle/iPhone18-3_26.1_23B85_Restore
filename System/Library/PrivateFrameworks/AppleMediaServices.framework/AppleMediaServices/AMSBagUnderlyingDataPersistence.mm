@@ -1,9 +1,9 @@
 @interface AMSBagUnderlyingDataPersistence
 + (id)persistenceWithDefaultDirectory;
-- (AMSBagUnderlyingDataPersistence)initWithDirectoryURL:(id)a3;
-- (BOOL)persist:(id)a3 error:(id *)a4;
-- (BOOL)removeUnderlyingDataFor:(id)a3 error:(id *)a4;
-- (id)underlyingDataFor:(id)a3 error:(id *)a4;
+- (AMSBagUnderlyingDataPersistence)initWithDirectoryURL:(id)l;
+- (BOOL)persist:(id)persist error:(id *)error;
+- (BOOL)removeUnderlyingDataFor:(id)for error:(id *)error;
+- (id)underlyingDataFor:(id)for error:(id *)error;
 @end
 
 @implementation AMSBagUnderlyingDataPersistence
@@ -16,25 +16,25 @@
   return v2;
 }
 
-- (id)underlyingDataFor:(id)a3 error:(id *)a4
+- (id)underlyingDataFor:(id)for error:(id *)error
 {
   sub_192F967CC();
-  v5 = self;
+  selfCopy = self;
   v6 = BagUnderlyingDataPersistence.underlyingData(for:)();
 
   return v6;
 }
 
-- (BOOL)persist:(id)a3 error:(id *)a4
+- (BOOL)persist:(id)persist error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  persistCopy = persist;
+  selfCopy = self;
   BagUnderlyingDataPersistence.persist(_:)();
 
   return 1;
 }
 
-- (AMSBagUnderlyingDataPersistence)initWithDirectoryURL:(id)a3
+- (AMSBagUnderlyingDataPersistence)initWithDirectoryURL:(id)l
 {
   v3 = sub_192F95A8C();
   MEMORY[0x1EEE9AC00](v3 - 8, v4);
@@ -43,23 +43,23 @@
   return BagUnderlyingDataPersistence.init(directoryURL:)(v6);
 }
 
-- (BOOL)removeUnderlyingDataFor:(id)a3 error:(id *)a4
+- (BOOL)removeUnderlyingDataFor:(id)for error:(id *)error
 {
   v6 = sub_192F967CC();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
   BagUnderlyingDataPersistence.removeUnderlyingData(for:)(v10);
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = sub_192F958CC();
 
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     else

@@ -1,19 +1,19 @@
 @interface CDMNLUPreprocessRequestCommand
-- (CDMNLUPreprocessRequestCommand)initWithNLURequest:(id)a3;
+- (CDMNLUPreprocessRequestCommand)initWithNLURequest:(id)request;
 @end
 
 @implementation CDMNLUPreprocessRequestCommand
 
-- (CDMNLUPreprocessRequestCommand)initWithNLURequest:(id)a3
+- (CDMNLUPreprocessRequestCommand)initWithNLURequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CDMNLUPreprocessRequestCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_siriNLUTypeObj, a3);
+    objc_storeStrong(&v6->_siriNLUTypeObj, request);
   }
 
   return v7;

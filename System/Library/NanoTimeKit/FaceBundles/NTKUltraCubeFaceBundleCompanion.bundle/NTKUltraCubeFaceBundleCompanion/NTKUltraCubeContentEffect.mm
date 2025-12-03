@@ -1,15 +1,15 @@
 @interface NTKUltraCubeContentEffect
-+ (id)contentEffectWithColorEffect:(unint64_t)a3 colorPalette:(id)a4;
++ (id)contentEffectWithColorEffect:(unint64_t)effect colorPalette:(id)palette;
 @end
 
 @implementation NTKUltraCubeContentEffect
 
-+ (id)contentEffectWithColorEffect:(unint64_t)a3 colorPalette:(id)a4
++ (id)contentEffectWithColorEffect:(unint64_t)effect colorPalette:(id)palette
 {
-  v5 = a4;
+  paletteCopy = palette;
   v6 = objc_alloc_init(NTKUltraCubeContentEffect);
-  [(NTKUltraCubeContentEffect *)v6 setColorEffect:a3];
-  [(NTKUltraCubeContentEffect *)v6 setPalette:v5];
+  [(NTKUltraCubeContentEffect *)v6 setColorEffect:effect];
+  [(NTKUltraCubeContentEffect *)v6 setPalette:paletteCopy];
 
   return v6;
 }

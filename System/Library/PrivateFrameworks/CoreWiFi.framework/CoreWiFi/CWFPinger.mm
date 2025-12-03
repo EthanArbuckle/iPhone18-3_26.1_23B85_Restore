@@ -1,11 +1,11 @@
 @interface CWFPinger
 - (CWFPinger)init;
 - (double)percentLoss;
-- (unsigned)checksumForData:(id)a3;
-- (void)completePingWithError:(id)a3;
+- (unsigned)checksumForData:(id)data;
+- (void)completePingWithError:(id)error;
 - (void)receiveReply;
 - (void)sendPing;
-- (void)startPingingToHost:(id)a3 withNumberOfPings:(unint64_t)a4 completion:(id)a5;
+- (void)startPingingToHost:(id)host withNumberOfPings:(unint64_t)pings completion:(id)completion;
 - (void)stop;
 @end
 
@@ -35,17 +35,17 @@
   return v3;
 }
 
-- (void)startPingingToHost:(id)a3 withNumberOfPings:(unint64_t)a4 completion:(id)a5
+- (void)startPingingToHost:(id)host withNumberOfPings:(unint64_t)pings completion:(id)completion
 {
   v73 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  [(CWFPinger *)self setMaxPings:a4];
+  hostCopy = host;
+  completionCopy = completion;
+  [(CWFPinger *)self setMaxPings:pings];
   [(CWFPinger *)self setCurrentPingCount:0];
-  [(CWFPinger *)self setCompletion:v9];
+  [(CWFPinger *)self setCompletion:completionCopy];
 
-  v10 = [(CWFPinger *)self latencyValues];
-  [v10 removeAllObjects];
+  latencyValues = [(CWFPinger *)self latencyValues];
+  [latencyValues removeAllObjects];
 
   [(CWFPinger *)self setRawSocket:socket(2, 2, 1)];
   if ([(CWFPinger *)self rawSocket]< 0)
@@ -87,7 +87,7 @@
     goto LABEL_26;
   }
 
-  v11 = gethostbyname([v8 UTF8String]);
+  v11 = gethostbyname([hostCopy UTF8String]);
   if (!v11)
   {
     v22 = CWFGetOSLog();
@@ -105,7 +105,7 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v69 = 138412290;
-      v70 = v8;
+      v70 = hostCopy;
       LODWORD(v57) = 12;
       v56 = &v69;
       _os_log_send_and_compose_impl();
@@ -177,9 +177,9 @@ LABEL_32:
   v14 = nw_connection_create_with_connected_socket();
   [(CWFPinger *)self setConnection:v14];
 
-  v15 = [(CWFPinger *)self connection];
+  connection = [(CWFPinger *)self connection];
 
-  if (!v15)
+  if (!connection)
   {
     v38 = CWFGetOSLog();
     if (v38)
@@ -214,20 +214,20 @@ LABEL_31:
   }
 
   [(CWFPinger *)self setRawSocket:0xFFFFFFFFLL];
-  v16 = [(CWFPinger *)self connection];
-  v17 = [(CWFPinger *)self networkQueue];
-  nw_connection_set_queue(v16, v17);
+  connection2 = [(CWFPinger *)self connection];
+  networkQueue = [(CWFPinger *)self networkQueue];
+  nw_connection_set_queue(connection2, networkQueue);
 
-  v18 = [(CWFPinger *)self connection];
+  connection3 = [(CWFPinger *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = sub_1E0CE7AC8;
   handler[3] = &unk_1E86E8D98;
   handler[4] = self;
-  nw_connection_set_state_changed_handler(v18, handler);
+  nw_connection_set_state_changed_handler(connection3, handler);
 
-  v19 = [(CWFPinger *)self connection];
-  nw_connection_start(v19);
+  connection4 = [(CWFPinger *)self connection];
+  nw_connection_start(connection4);
 
 LABEL_33:
   v55 = *MEMORY[0x1E69E9840];
@@ -236,8 +236,8 @@ LABEL_33:
 - (void)sendPing
 {
   *&v25[9] = *MEMORY[0x1E69E9840];
-  v3 = [(CWFPinger *)self connection];
-  if (v3 && (v4 = v3, v5 = [(CWFPinger *)self stopped], v4, !v5))
+  connection = [(CWFPinger *)self connection];
+  if (connection && (v4 = connection, v5 = [(CWFPinger *)self stopped], v4, !v5))
   {
     if ([(CWFPinger *)self maxPings]&& (v8 = [(CWFPinger *)self currentPingCount], v8 >= [(CWFPinger *)self maxPings]))
     {
@@ -269,11 +269,11 @@ LABEL_33:
       memset(&v25[1], 0, 20);
       v24 = 8;
       LOWORD(v25[0]) = __rev16([(CWFPinger *)self identifier]);
-      v9 = [(CWFPinger *)self sequenceNumber];
-      [(CWFPinger *)self setSequenceNumber:(v9 + 1)];
-      HIWORD(v25[0]) = __rev16(v9);
-      v10 = [MEMORY[0x1E695DF00] date];
-      [v10 timeIntervalSince1970];
+      sequenceNumber = [(CWFPinger *)self sequenceNumber];
+      [(CWFPinger *)self setSequenceNumber:(sequenceNumber + 1)];
+      HIWORD(v25[0]) = __rev16(sequenceNumber);
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v12 = v11;
 
       v23 = v12;
@@ -282,14 +282,14 @@ LABEL_33:
       HIWORD(v24) = [(CWFPinger *)self checksumForData:v13];
       [v13 replaceBytesInRange:0 withBytes:{28, &v24}];
       v14 = dispatch_data_create([v13 bytes], objc_msgSend(v13, "length"), 0, 0);
-      v15 = [(CWFPinger *)self connection];
+      connection2 = [(CWFPinger *)self connection];
       v16 = *MEMORY[0x1E6977E88];
       completion[0] = MEMORY[0x1E69E9820];
       completion[1] = 3221225472;
       completion[2] = sub_1E0CE8180;
       completion[3] = &unk_1E86E8DC0;
       completion[4] = self;
-      nw_connection_send(v15, v14, v16, 1, completion);
+      nw_connection_send(connection2, v14, v16, 1, completion);
     }
   }
 
@@ -319,13 +319,13 @@ LABEL_33:
 
 - (void)receiveReply
 {
-  v3 = [(CWFPinger *)self connection];
+  connection = [(CWFPinger *)self connection];
   completion[0] = MEMORY[0x1E69E9820];
   completion[1] = 3221225472;
   completion[2] = sub_1E0CE83A0;
   completion[3] = &unk_1E86E8E08;
   completion[4] = self;
-  nw_connection_receive(v3, 1u, 0xFFFFFFFF, completion);
+  nw_connection_receive(connection, 1u, 0xFFFFFFFF, completion);
 }
 
 - (double)percentLoss
@@ -335,44 +335,44 @@ LABEL_33:
     return 0.0;
   }
 
-  v3 = [(CWFPinger *)self latencyValues];
-  v4 = [v3 count];
+  latencyValues = [(CWFPinger *)self latencyValues];
+  v4 = [latencyValues count];
   v5 = v4 / [(CWFPinger *)self maxPings];
 
   return (1.0 - v5) * 100.0;
 }
 
-- (void)completePingWithError:(id)a3
+- (void)completePingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CWFPinger *)self stop];
-  v5 = [(CWFPinger *)self completion];
+  completion = [(CWFPinger *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(CWFPinger *)self networkQueue];
+    networkQueue = [(CWFPinger *)self networkQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_1E0CE8840;
     v7[3] = &unk_1E86E6420;
-    v8 = v4;
-    v9 = self;
-    dispatch_async(v6, v7);
+    v8 = errorCopy;
+    selfCopy = self;
+    dispatch_async(networkQueue, v7);
   }
 }
 
-- (unsigned)checksumForData:(id)a3
+- (unsigned)checksumForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
   if (v5 < 2)
   {
     v6 = 0;
     if (v5)
     {
 LABEL_5:
-      v6 += *v4 << 8;
+      v6 += *bytes << 8;
     }
   }
 
@@ -381,8 +381,8 @@ LABEL_5:
     v6 = 0;
     do
     {
-      v7 = *v4;
-      v4 += 2;
+      v7 = *bytes;
+      bytes += 2;
       v6 += v7;
       v5 -= 2;
     }
@@ -412,12 +412,12 @@ LABEL_5:
   if (![(CWFPinger *)self stopped])
   {
     [(CWFPinger *)self setStopped:1];
-    v3 = [(CWFPinger *)self connection];
+    connection = [(CWFPinger *)self connection];
 
-    if (v3)
+    if (connection)
     {
-      v4 = [(CWFPinger *)self connection];
-      nw_connection_cancel(v4);
+      connection2 = [(CWFPinger *)self connection];
+      nw_connection_cancel(connection2);
 
       [(CWFPinger *)self setConnection:0];
     }

@@ -1,10 +1,10 @@
 @interface THWOverlayableZoomableCanvasController
 - (BOOL)allowsPinchZoom;
-- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)a3;
-- (BOOL)createViewIfNeededWithFrame:(CGRect)a3;
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4;
-- (BOOL)interactiveCanvasController:(id)a3 canvasViewShouldBecomeFirstResponder:(id)a4;
-- (BOOL)interactiveCanvasControllerShouldResampleImages:(id)a3;
+- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)frame;
+- (BOOL)createViewIfNeededWithFrame:(CGRect)frame;
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep;
+- (BOOL)interactiveCanvasController:(id)controller canvasViewShouldBecomeFirstResponder:(id)responder;
+- (BOOL)interactiveCanvasControllerShouldResampleImages:(id)images;
 - (BOOL)isDragging;
 - (BOOL)isScrollEnabled;
 - (BOOL)isZoomedOut;
@@ -16,50 +16,50 @@
 - (CGAffineTransform)p_contentBoundsToUnscaledTransform;
 - (CGAffineTransform)p_contentUnscaledToBoundsTransform;
 - (CGPoint)contentOffset;
-- (CGPoint)p_clampContentOffset:(CGPoint)a3 forViewScale:(double)a4;
-- (CGPoint)scaledContainerPointFromUnscaledContentPoint:(CGPoint)a3;
-- (CGPoint)unscaledContainerPointFromUnscaledContentPoint:(CGPoint)a3;
+- (CGPoint)p_clampContentOffset:(CGPoint)offset forViewScale:(double)scale;
+- (CGPoint)scaledContainerPointFromUnscaledContentPoint:(CGPoint)point;
+- (CGPoint)unscaledContainerPointFromUnscaledContentPoint:(CGPoint)point;
 - (CGRect)contentViewFrame;
 - (CGRect)frame;
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4;
-- (CGRect)scaledContentRectFromUnscaledContainerRect:(CGRect)a3;
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing;
+- (CGRect)scaledContentRectFromUnscaledContainerRect:(CGRect)rect;
 - (CGRect)targetVisibleRect;
-- (CGRect)unscaledContentRectFromUnscaledContainerRect:(CGRect)a3;
-- (THWOverlayableZoomableCanvasController)initWithFrame:(CGRect)a3 documentRoot:(id)a4 delegate:(id)a5;
+- (CGRect)unscaledContentRectFromUnscaledContainerRect:(CGRect)rect;
+- (THWOverlayableZoomableCanvasController)initWithFrame:(CGRect)frame documentRoot:(id)root delegate:(id)delegate;
 - (UIEdgeInsets)contentInset;
-- (id)additionalGestureTargetsForInteractiveCanvasController:(id)a3 gesture:(id)a4;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4;
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
+- (id)additionalGestureTargetsForInteractiveCanvasController:(id)controller gesture:(id)gesture;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout;
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
 - (void)dealloc;
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4;
-- (void)interactiveCanvasController:(id)a3 layoutUnregistered:(id)a4;
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4;
-- (void)interactiveCanvasController:(id)a3 willLayoutRep:(id)a4;
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
-- (void)interactiveCanvasControllerDidScroll:(id)a3;
-- (void)interactiveCanvasControllerDidZoom:(id)a3;
-- (void)interactiveCanvasControllerWillZoom:(id)a3;
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered;
+- (void)interactiveCanvasController:(id)controller layoutUnregistered:(id)unregistered;
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect;
+- (void)interactiveCanvasController:(id)controller willLayoutRep:(id)rep;
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
+- (void)interactiveCanvasControllerDidScroll:(id)scroll;
+- (void)interactiveCanvasControllerDidZoom:(id)zoom;
+- (void)interactiveCanvasControllerWillZoom:(id)zoom;
 - (void)invalidateLayers;
 - (void)p_rebuild;
-- (void)p_setViewScale:(double)a3 contentOffset:(CGPoint)a4 completion:(id)a5;
+- (void)p_setViewScale:(double)scale contentOffset:(CGPoint)offset completion:(id)completion;
 - (void)p_updateContainerInfosToDisplay;
 - (void)p_updateContentInfosToDisplay;
-- (void)p_updateInfosToDisplay:(id)a3 forICC:(id)a4;
+- (void)p_updateInfosToDisplay:(id)display forICC:(id)c;
 - (void)p_updateRasterizeOnLayer;
 - (void)p_updateScrollViewWithDelegate;
 - (void)p_updateSubviewsOrLayers;
 - (void)p_updateWithDelegate;
 - (void)screenScaleDidChange;
-- (void)setAllowsPinchZoom:(BOOL)a3;
-- (void)setBackgroundLayer:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setNaturalFrame:(CGRect)a3 scale:(double)a4;
-- (void)setRasterize:(BOOL)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animationDuration:(double)a5 completion:(id)a6;
+- (void)setAllowsPinchZoom:(BOOL)zoom;
+- (void)setBackgroundLayer:(id)layer;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setDelegate:(id)delegate;
+- (void)setNaturalFrame:(CGRect)frame scale:(double)scale;
+- (void)setRasterize:(BOOL)rasterize;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animationDuration:(double)duration completion:(id)completion;
 - (void)setupImmediatePressGesture;
 - (void)teardownController;
 - (void)teardownView;
@@ -96,9 +96,9 @@
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(THWOverlayableZoomableCanvasController *)self scrollView];
+  scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
 
-  [(TSKScrollView *)v2 contentInset];
+  [(TSKScrollView *)scrollView contentInset];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -106,15 +106,15 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(THWOverlayableZoomableCanvasController *)self scrollView];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
 
-  [(TSKScrollView *)v7 setContentInset:top, left, bottom, right];
+  [(TSKScrollView *)scrollView setContentInset:top, left, bottom, right];
 }
 
 - (CGPoint)contentOffset
@@ -130,9 +130,9 @@
 
 - (CGRect)contentViewFrame
 {
-  v2 = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasView];
+  canvasView = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasView];
 
-  [v2 frame];
+  [canvasView frame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -149,24 +149,24 @@
 
 - (BOOL)isScrollEnabled
 {
-  v2 = [(THWOverlayableZoomableCanvasController *)self scrollView];
+  scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
 
-  return [(TSKScrollView *)v2 isScrollEnabled];
+  return [(TSKScrollView *)scrollView isScrollEnabled];
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(THWOverlayableZoomableCanvasController *)self scrollView];
+  enabledCopy = enabled;
+  scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
 
-  [(TSKScrollView *)v4 setScrollEnabled:v3];
+  [(TSKScrollView *)scrollView setScrollEnabled:enabledCopy];
 }
 
-- (THWOverlayableZoomableCanvasController)initWithFrame:(CGRect)a3 documentRoot:(id)a4 delegate:(id)a5
+- (THWOverlayableZoomableCanvasController)initWithFrame:(CGRect)frame documentRoot:(id)root delegate:(id)delegate
 {
   v15.receiver = self;
   v15.super_class = THWOverlayableZoomableCanvasController;
-  v7 = [(THWOverlayableZoomableCanvasController *)&v15 init:a3.origin.x];
+  v7 = [(THWOverlayableZoomableCanvasController *)&v15 init:frame.origin.x];
   v8 = v7;
   if (v7)
   {
@@ -174,8 +174,8 @@
     __asm { FMOV            V0.2D, #1.0 }
 
     *&v8->mUniformScale = _Q0;
-    v8->_documentRoot = a4;
-    v8->_delegate = a5;
+    v8->_documentRoot = root;
+    v8->_delegate = delegate;
   }
 
   return v8;
@@ -211,7 +211,7 @@
   [(THWOverlayableZoomableCanvasController *)&v3 dealloc];
 }
 
-- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)a3
+- (BOOL)createLayerHostIfNeededWithFrame:(CGRect)frame
 {
   p_mScrollContainerICC = &self->mScrollContainerICC;
   if (self->mScrollContainerICC)
@@ -225,10 +225,10 @@
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12 = objc_alloc_init(TSDNoDefaultImplicitActionLayer);
   self->_containerLayer = v12;
   [(CALayer *)v12 setFrame:x, y, width, height];
@@ -249,12 +249,12 @@
   [(TSDInteractiveCanvasController *)self->mScrollContentICC setCreateRepsForOffscreenLayouts:1];
   [(THWClippingLayerHost *)self->mContentClippingLayerHost setFrame:v15, v17, v19, v21];
   [(CALayer *)[(THWClippingLayerHost *)self->mContentClippingLayerHost clippingLayer] setMasksToBounds:0];
-  v22 = [(TSDInteractiveCanvasController *)self->mScrollContainerICC canvas];
+  canvas = [(TSDInteractiveCanvasController *)self->mScrollContainerICC canvas];
   [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasControllerContentsScale:self];
-  [v22 i_setContentsScale:?];
-  v23 = [(TSDInteractiveCanvasController *)self->mScrollContentICC canvas];
+  [canvas i_setContentsScale:?];
+  canvas2 = [(TSDInteractiveCanvasController *)self->mScrollContentICC canvas];
   [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasControllerContentsScale:self];
-  [v23 i_setContentsScale:?];
+  [canvas2 i_setContentsScale:?];
   [(THWOverlayableZoomableCanvasController *)self setNaturalFrame:x scale:y, width, height, 1.0];
   [(THWOverlayableZoomableCanvasController *)self p_updateRasterizeOnLayer];
   [(THWOverlayableZoomableCanvasController *)self p_updateSubviewsOrLayers];
@@ -344,19 +344,19 @@
         self->mChildViewControllers = objc_alloc_init(NSMutableArray);
       }
 
-      v16 = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost viewController];
-      if (v16)
+      viewController = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost viewController];
+      if (viewController)
       {
-        v17 = v16;
-        [(UIViewController *)self->_containerViewController addChildViewController:v16];
+        v17 = viewController;
+        [(UIViewController *)self->_containerViewController addChildViewController:viewController];
         [(NSMutableArray *)self->mChildViewControllers addObject:v17];
       }
 
-      v18 = [(TSDCanvasLayerHosting *)self->mScrollContainerLayerHost viewController];
-      if (v18)
+      viewController2 = [(TSDCanvasLayerHosting *)self->mScrollContainerLayerHost viewController];
+      if (viewController2)
       {
-        v19 = v18;
-        [(UIViewController *)self->_containerViewController addChildViewController:v18];
+        v19 = viewController2;
+        [(UIViewController *)self->_containerViewController addChildViewController:viewController2];
         [(NSMutableArray *)self->mChildViewControllers addObject:v19];
       }
 
@@ -386,12 +386,12 @@
 
 - (void)screenScaleDidChange
 {
-  v3 = [(TSDInteractiveCanvasController *)self->mScrollContainerICC canvas];
+  canvas = [(TSDInteractiveCanvasController *)self->mScrollContainerICC canvas];
   [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasControllerContentsScale:self];
-  [v3 i_setContentsScale:?];
-  v4 = [(TSDInteractiveCanvasController *)self->mScrollContentICC canvas];
+  [canvas i_setContentsScale:?];
+  canvas2 = [(TSDInteractiveCanvasController *)self->mScrollContentICC canvas];
   [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasControllerContentsScale:self];
-  [v4 i_setContentsScale:?];
+  [canvas2 i_setContentsScale:?];
   height = self->mNaturalFrame.size.height;
   mUniformScale = self->mUniformScale;
   x = self->mNaturalFrame.origin.x;
@@ -406,15 +406,15 @@
   mContainerClippingLayerHost = self->mContainerClippingLayerHost;
   if (mContainerClippingLayerHost)
   {
-    v4 = [(THWClippingLayerHost *)mContainerClippingLayerHost clippingLayer];
+    clippingLayer = [(THWClippingLayerHost *)mContainerClippingLayerHost clippingLayer];
   }
 
   else
   {
-    v4 = [(UIView *)[(THWOverlayableZoomableCanvasController *)self view] layer];
+    clippingLayer = [(UIView *)[(THWOverlayableZoomableCanvasController *)self view] layer];
   }
 
-  v5 = v4;
+  v5 = clippingLayer;
   [-[TSDInteractiveCanvasController canvas](self->mScrollContainerICC "canvas")];
   [(CALayer *)v5 setRasterizationScale:?];
   [(CALayer *)v5 setShouldRasterize:self->_rasterize];
@@ -423,16 +423,16 @@
   [(CALayer *)v5 spi_setPreloadsCache:rasterize];
 }
 
-- (void)setRasterize:(BOOL)a3
+- (void)setRasterize:(BOOL)rasterize
 {
-  if (self->_rasterize != a3)
+  if (self->_rasterize != rasterize)
   {
-    self->_rasterize = a3;
+    self->_rasterize = rasterize;
     [(THWOverlayableZoomableCanvasController *)self p_updateRasterizeOnLayer];
   }
 }
 
-- (BOOL)createViewIfNeededWithFrame:(CGRect)a3
+- (BOOL)createViewIfNeededWithFrame:(CGRect)frame
 {
   p_mScrollContainerLayerHost = &self->mScrollContainerLayerHost;
   if (self->mScrollContainerLayerHost)
@@ -451,10 +451,10 @@
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (([(THWOverlayableZoomableCanvasControllerDelegate *)self->_delegate overlayableZoomableCanvasControllerDeferViewCreation:self]& 1) != 0)
   {
     return 0;
@@ -526,23 +526,23 @@
   return 1;
 }
 
-- (void)setNaturalFrame:(CGRect)a3 scale:(double)a4
+- (void)setNaturalFrame:(CGRect)frame scale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_containerView)
   {
     memset(&v52, 0, sizeof(v52));
-    CGAffineTransformMakeScale(&v52, a4, a4);
+    CGAffineTransformMakeScale(&v52, scale, scale);
     v51 = v52;
     v53.origin.x = x;
     v53.origin.y = y;
     v53.size.width = width;
     v53.size.height = height;
     CGRectApplyAffineTransform(v53, &v51);
-    v49 = a4;
+    scaleCopy = scale;
     v10 = width;
     [-[TSDInteractiveCanvasController canvas](self->mScrollContainerICC "canvas")];
     TSDRoundedRectForScale();
@@ -554,7 +554,7 @@
     v56.origin.y = y;
     v56.size.width = v10;
     v56.size.height = height;
-    if (!CGRectEqualToRect(self->mNaturalFrame, v56) || (mUniformScale = self->mUniformScale, mUniformScale != v49) && vabdd_f64(mUniformScale, v49) >= fabs(v49 * 0.000000999999997) || (([(UIView *)self->_containerView frame], v50 == v20) ? (v21 = v13 == v19) : (v21 = 0), !v21))
+    if (!CGRectEqualToRect(self->mNaturalFrame, v56) || (mUniformScale = self->mUniformScale, mUniformScale != scaleCopy) && vabdd_f64(mUniformScale, scaleCopy) >= fabs(scaleCopy * 0.000000999999997) || (([(UIView *)self->_containerView frame], v50 == v20) ? (v21 = v13 == v19) : (v21 = 0), !v21))
     {
       if ([(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] animatingViewScale])
       {
@@ -566,7 +566,7 @@
       self->mNaturalFrame.origin.y = y;
       self->mNaturalFrame.size.width = v10;
       self->mNaturalFrame.size.height = height;
-      self->mUniformScale = v49;
+      self->mUniformScale = scaleCopy;
       [(UIView *)self->_containerView setFrame:v50, v13, v15, v17];
       TSDRectWithSize();
       v23 = v22;
@@ -590,7 +590,7 @@ LABEL_19:
 
   else if (self->mContainerClippingLayerHost)
   {
-    if (!CGRectEqualToRect(self->mNaturalFrame, a3) || (v34 = self->mUniformScale, v34 != a4) && vabdd_f64(v34, a4) >= fabs(a4 * 0.000000999999997))
+    if (!CGRectEqualToRect(self->mNaturalFrame, frame) || (v34 = self->mUniformScale, v34 != scale) && vabdd_f64(v34, scale) >= fabs(scale * 0.000000999999997))
     {
       if ([(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] animatingViewScale])
       {
@@ -602,9 +602,9 @@ LABEL_19:
       self->mNaturalFrame.origin.y = y;
       self->mNaturalFrame.size.width = width;
       self->mNaturalFrame.size.height = height;
-      self->mUniformScale = a4;
+      self->mUniformScale = scale;
       memset(&v52, 0, sizeof(v52));
-      CGAffineTransformMakeScale(&v52, a4, a4);
+      CGAffineTransformMakeScale(&v52, scale, scale);
       v51 = v52;
       v54.origin.x = x;
       v54.origin.y = y;
@@ -614,7 +614,7 @@ LABEL_19:
       v35 = width;
       [(CALayer *)self->_containerLayer setFrame:v55.origin.x, v55.origin.y];
       [(TSDCanvasLayer *)[(THWClippingLayerHost *)self->mContainerClippingLayerHost canvasLayer] setUnscaledSize:width, height];
-      [(TSDCanvasLayer *)[(THWClippingLayerHost *)self->mContainerClippingLayerHost canvasLayer] setViewScale:a4];
+      [(TSDCanvasLayer *)[(THWClippingLayerHost *)self->mContainerClippingLayerHost canvasLayer] setViewScale:scale];
       TSDRectWithSize();
       v37 = v36;
       v39 = v38;
@@ -637,31 +637,31 @@ LABEL_19:
   }
 }
 
-- (void)p_setViewScale:(double)a3 contentOffset:(CGPoint)a4 completion:(id)a5
+- (void)p_setViewScale:(double)scale contentOffset:(CGPoint)offset completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [(THWOverlayableZoomableCanvasController *)self contentClippingLayerHost];
-  [(CALayer *)[(THWClippingLayerHost *)v10 clippingLayer] bounds];
-  [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] setViewScale:a3];
+  y = offset.y;
+  x = offset.x;
+  contentClippingLayerHost = [(THWOverlayableZoomableCanvasController *)self contentClippingLayerHost];
+  [(CALayer *)[(THWClippingLayerHost *)contentClippingLayerHost clippingLayer] bounds];
+  [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] setViewScale:scale];
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] convertUnscaledToBoundsPoint:x, y];
   TSDRectWithOriginAndSize();
-  [(CALayer *)[(THWClippingLayerHost *)v10 clippingLayer] setBounds:v11, v12, v13, v14];
-  if (a5)
+  [(CALayer *)[(THWClippingLayerHost *)contentClippingLayerHost clippingLayer] setBounds:v11, v12, v13, v14];
+  if (completion)
   {
-    v15 = *(a5 + 2);
+    v15 = *(completion + 2);
 
-    v15(a5, 1);
+    v15(completion, 1);
   }
 }
 
-- (CGPoint)p_clampContentOffset:(CGPoint)a3 forViewScale:(double)a4
+- (CGPoint)p_clampContentOffset:(CGPoint)offset forViewScale:(double)scale
 {
   [objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWOverlayableZoomableCanvasController scrollContentICC](self "scrollContentICC")];
   TSDMultiplySizeScalar();
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
   TSDRectWithOriginAndSize();
-  [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self contentInsetsForViewScale:a4 viewportBounds:v7, v8, v9, v10];
+  [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self contentInsetsForViewScale:scale viewportBounds:v7, v8, v9, v10];
   [objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWOverlayableZoomableCanvasController scrollContentICC](self "scrollContentICC")];
   TSDMultiplySizeScalar();
   TSUClamp();
@@ -674,20 +674,20 @@ LABEL_19:
   return result;
 }
 
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animationDuration:(double)a5 completion:(id)a6
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animationDuration:(double)duration completion:(id)completion
 {
-  self->mContentScale = a3;
-  v9 = self->mUniformScale * a3;
-  [(THWOverlayableZoomableCanvasController *)self p_clampContentOffset:a4.x forViewScale:a4.y, a3];
+  self->mContentScale = scale;
+  v9 = self->mUniformScale * scale;
+  [(THWOverlayableZoomableCanvasController *)self p_clampContentOffset:offset.x forViewScale:offset.y, scale];
   TSDMultiplyPointScalar();
   if (self->mScrollView)
   {
-    [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] setViewScale:0 contentOffset:a5 > 0.0 clampOffset:a6 animationDuration:v9 forceAnimation:v10 completion:v11, a5];
+    [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] setViewScale:0 contentOffset:duration > 0.0 clampOffset:completion animationDuration:v9 forceAnimation:v10 completion:v11, duration];
   }
 
   else
   {
-    [(THWOverlayableZoomableCanvasController *)self p_setViewScale:a6 contentOffset:v9 completion:v10, v11];
+    [(THWOverlayableZoomableCanvasController *)self p_setViewScale:completion contentOffset:v9 completion:v10, v11];
   }
 
   self->mAnimatingToViewScale = v9;
@@ -698,9 +698,9 @@ LABEL_19:
 
 - (CGRect)frame
 {
-  v2 = [(THWOverlayableZoomableCanvasController *)self view];
+  view = [(THWOverlayableZoomableCanvasController *)self view];
 
-  [(UIView *)v2 frame];
+  [(UIView *)view frame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -708,14 +708,14 @@ LABEL_19:
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  self->_delegate = a3;
+  self->_delegate = delegate;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v5 = sub_18D088;
   v6 = &unk_45AE00;
-  v7 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v5(v4);
@@ -812,18 +812,18 @@ LABEL_19:
 - (void)invalidateLayers
 {
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContainerICC] invalidateLayers];
-  v3 = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
+  scrollContentICC = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
 
-  [(TSDInteractiveCanvasController *)v3 invalidateLayers];
+  [(TSDInteractiveCanvasController *)scrollContentICC invalidateLayers];
 }
 
-- (void)p_updateInfosToDisplay:(id)a3 forICC:(id)a4
+- (void)p_updateInfosToDisplay:(id)display forICC:(id)c
 {
-  v6 = [a4 infosToDisplay];
-  v7 = [a3 count];
-  if (v7 == [v6 count])
+  infosToDisplay = [c infosToDisplay];
+  v7 = [display count];
+  if (v7 == [infosToDisplay count])
   {
-    v8 = [a3 count];
+    v8 = [display count];
     if (!v8)
     {
       return;
@@ -833,8 +833,8 @@ LABEL_19:
     v10 = 0;
     while (1)
     {
-      v11 = [a3 objectAtIndexedSubscript:v10];
-      if (v11 != [v6 objectAtIndexedSubscript:v10])
+      v11 = [display objectAtIndexedSubscript:v10];
+      if (v11 != [infosToDisplay objectAtIndexedSubscript:v10])
       {
         break;
       }
@@ -846,7 +846,7 @@ LABEL_19:
     }
   }
 
-  [a4 setInfosToDisplay:a3];
+  [c setInfosToDisplay:display];
 }
 
 - (void)p_updateContentInfosToDisplay
@@ -855,13 +855,13 @@ LABEL_19:
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(THWOverlayableZoomableCanvasController *)self delegate];
-  if (v7)
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
+  if (delegate)
   {
-    v8 = [(THWOverlayableZoomableCanvasController *)self scrollView];
-    if (v8)
+    scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
+    if (scrollView)
     {
-      [(TSKScrollView *)v8 tsk_bounds];
+      [(TSKScrollView *)scrollView tsk_bounds];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -883,29 +883,29 @@ LABEL_19:
     }
   }
 
-  v21 = [(THWOverlayableZoomableCanvasControllerDelegate *)v7 overlayableZoomableCanvasController:self infosToDisplayForContentViewport:x, y, width, height];
-  v22 = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
+  height = [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self infosToDisplayForContentViewport:x, y, width, height];
+  scrollContentICC = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
 
-  [(THWOverlayableZoomableCanvasController *)self p_updateInfosToDisplay:v21 forICC:v22];
+  [(THWOverlayableZoomableCanvasController *)self p_updateInfosToDisplay:height forICC:scrollContentICC];
 }
 
 - (void)p_updateContainerInfosToDisplay
 {
   v3 = [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] infosToDisplayForContainerInOverlayableZoomableCanvasController:self];
-  v4 = [(THWOverlayableZoomableCanvasController *)self scrollContainerICC];
+  scrollContainerICC = [(THWOverlayableZoomableCanvasController *)self scrollContainerICC];
 
-  [(THWOverlayableZoomableCanvasController *)self p_updateInfosToDisplay:v3 forICC:v4];
+  [(THWOverlayableZoomableCanvasController *)self p_updateInfosToDisplay:v3 forICC:scrollContainerICC];
 }
 
 - (void)p_rebuild
 {
   if (self->_delegate)
   {
-    v3 = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
-    v4 = [(THWOverlayableZoomableCanvasController *)self delegate];
-    if (v4)
+    scrollContentICC = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
+    delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
+    if (delegate)
     {
-      [(THWOverlayableZoomableCanvasControllerDelegate *)v4 sizeOfContentCanvasForOverlayableZoomableCanvasController:self];
+      [(THWOverlayableZoomableCanvasControllerDelegate *)delegate sizeOfContentCanvasForOverlayableZoomableCanvasController:self];
       v6 = v5;
       v8 = v7;
     }
@@ -917,111 +917,111 @@ LABEL_19:
       v8 = v10;
     }
 
-    [objc_msgSend(-[TSDInteractiveCanvasController layerHost](v3 "layerHost")];
+    [objc_msgSend(-[TSDInteractiveCanvasController layerHost](scrollContentICC "layerHost")];
     [(THWOverlayableZoomableCanvasController *)self p_updateContentInfosToDisplay];
 
     [(THWOverlayableZoomableCanvasController *)self p_updateContainerInfosToDisplay];
   }
 }
 
-- (void)setAllowsPinchZoom:(BOOL)a3
+- (void)setAllowsPinchZoom:(BOOL)zoom
 {
-  v3 = a3;
-  v4 = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasLayer];
+  zoomCopy = zoom;
+  canvasLayer = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasLayer];
 
-  [v4 setAllowsPinchZoom:v3];
+  [canvasLayer setAllowsPinchZoom:zoomCopy];
 }
 
 - (BOOL)allowsPinchZoom
 {
-  v2 = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasLayer];
+  canvasLayer = [(TSDCanvasLayerHosting *)self->mScrollContentLayerHost canvasLayer];
 
-  return [v2 allowsPinchZoom];
+  return [canvasLayer allowsPinchZoom];
 }
 
-- (void)interactiveCanvasController:(id)a3 willAnimateScrollToVisibleUnscaledRect:(CGRect)a4
+- (void)interactiveCanvasController:(id)controller willAnimateScrollToVisibleUnscaledRect:(CGRect)rect
 {
-  [(THWOverlayableZoomableCanvasController *)self setTargetVisibleRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && -[THWOverlayableZoomableCanvasController scrollContentICC](self, "scrollContentICC") == a3)
+  [(THWOverlayableZoomableCanvasController *)self setTargetVisibleRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  if (([controller currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && -[THWOverlayableZoomableCanvasController scrollContentICC](self, "scrollContentICC") == controller)
   {
 
     [(THWOverlayableZoomableCanvasController *)self p_updateContentInfosToDisplay];
   }
 }
 
-- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)a3 stillAnimating:(BOOL)a4
+- (void)interactiveCanvasControllerDidEndScrollingAnimation:(id)animation stillAnimating:(BOOL)animating
 {
-  if (!a4)
+  if (!animating)
   {
-    [(THWOverlayableZoomableCanvasController *)self setTargetVisibleRect:a3, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
+    [(THWOverlayableZoomableCanvasController *)self setTargetVisibleRect:animation, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
   }
 }
 
-- (void)interactiveCanvasControllerDidScroll:(id)a3
+- (void)interactiveCanvasControllerDidScroll:(id)scroll
 {
   [(THWOverlayableZoomableCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self interactiveCanvasControllerDidScroll:a3];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self interactiveCanvasControllerDidScroll:scroll];
   }
 
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && -[THWOverlayableZoomableCanvasController scrollContentICC](self, "scrollContentICC") == a3)
+  if (([scroll currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0 && -[THWOverlayableZoomableCanvasController scrollContentICC](self, "scrollContentICC") == scroll)
   {
 
     [(THWOverlayableZoomableCanvasController *)self p_updateContentInfosToDisplay];
   }
 }
 
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout
 {
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-  return [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self geometryProviderForLayout:a4];
+  return [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self geometryProviderForLayout:layout];
 }
 
-- (void)interactiveCanvasController:(id)a3 layoutRegistered:(id)a4
+- (void)interactiveCanvasController:(id)controller layoutRegistered:(id)registered
 {
-  if ([(THWOverlayableZoomableCanvasController *)self scrollContainerICC]== a3)
+  if ([(THWOverlayableZoomableCanvasController *)self scrollContainerICC]== controller)
   {
     [(THWOverlayableZoomableCanvasController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+      delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-      [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self registeredLayoutInContainerICC:a4];
+      [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self registeredLayoutInContainerICC:registered];
     }
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 layoutUnregistered:(id)a4
+- (void)interactiveCanvasController:(id)controller layoutUnregistered:(id)unregistered
 {
-  if ([(THWOverlayableZoomableCanvasController *)self scrollContainerICC]== a3)
+  if ([(THWOverlayableZoomableCanvasController *)self scrollContainerICC]== controller)
   {
     [(THWOverlayableZoomableCanvasController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+      delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-      [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self unregisteredLayoutInContainerICC:a4];
+      [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self unregisteredLayoutInContainerICC:unregistered];
     }
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 willLayoutRep:(id)a4
+- (void)interactiveCanvasController:(id)controller willLayoutRep:(id)rep
 {
   [(THWOverlayableZoomableCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+    delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-    [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self willLayoutRep:a4];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self willLayoutRep:rep];
   }
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate:a3];
-  if ([(THWOverlayableZoomableCanvasControllerDelegate *)v6 conformsToProtocol:a4])
+  v6 = [(THWOverlayableZoomableCanvasController *)self delegate:controller];
+  if ([(THWOverlayableZoomableCanvasControllerDelegate *)v6 conformsToProtocol:protocol])
   {
     return v6;
   }
@@ -1032,11 +1032,11 @@ LABEL_19:
   }
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
-  if (([a3 currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
+  if (([thread currentlyWaitingOnThreadedLayoutAndRender] & 1) == 0)
   {
-    if ([(THWOverlayableZoomableCanvasController *)self scrollContentICC]== a3)
+    if ([(THWOverlayableZoomableCanvasController *)self scrollContentICC]== thread)
     {
 
       [(THWOverlayableZoomableCanvasController *)self p_updateContentInfosToDisplay];
@@ -1050,9 +1050,9 @@ LABEL_19:
   }
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandBoundsForHitTesting:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandBoundsForHitTesting:(CGRect)testing
 {
-  if (self->mScrollContainerICC == a3)
+  if (self->mScrollContainerICC == controller)
   {
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
@@ -1062,7 +1062,7 @@ LABEL_19:
 
   else
   {
-    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self expandBoundsForHitTesting:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self expandBoundsForHitTesting:testing.origin.x, testing.origin.y, testing.size.width, testing.size.height];
   }
 
   result.size.height = height;
@@ -1072,63 +1072,63 @@ LABEL_19:
   return result;
 }
 
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-  return [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self primaryTargetForGesture:a4];
+  return [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self primaryTargetForGesture:gesture];
 }
 
-- (void)interactiveCanvasControllerWillZoom:(id)a3
+- (void)interactiveCanvasControllerWillZoom:(id)zoom
 {
   [(THWOverlayableZoomableCanvasController *)self setZooming:1];
-  v5 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [a3 viewScale];
+    [zoom viewScale];
 
-    [(THWOverlayableZoomableCanvasControllerDelegate *)v5 overlayableZoomableCanvasController:self willZoomAtScale:?];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self willZoomAtScale:?];
   }
 }
 
-- (void)interactiveCanvasControllerDidZoom:(id)a3
+- (void)interactiveCanvasControllerDidZoom:(id)zoom
 {
-  v5 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [a3 viewScale];
-    [(THWOverlayableZoomableCanvasControllerDelegate *)v5 overlayableZoomableCanvasController:self didEndZoomingAtScale:?];
+    [zoom viewScale];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self didEndZoomingAtScale:?];
   }
 
   [(THWOverlayableZoomableCanvasController *)self setZooming:0];
 }
 
-- (BOOL)interactiveCanvasControllerShouldResampleImages:(id)a3
+- (BOOL)interactiveCanvasControllerShouldResampleImages:(id)images
 {
-  v4 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-  return [(THWOverlayableZoomableCanvasControllerDelegate *)v4 overlayableZoomableCanvasControllerShouldResampleImages:self];
+  return [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasControllerShouldResampleImages:self];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep
 {
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-  return [(THWOverlayableZoomableCanvasControllerDelegate *)v6 overlayableZoomableCanvasController:self allowsEditMenuForRep:a4];
+  return [(THWOverlayableZoomableCanvasControllerDelegate *)delegate overlayableZoomableCanvasController:self allowsEditMenuForRep:rep];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 canvasViewShouldBecomeFirstResponder:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller canvasViewShouldBecomeFirstResponder:(id)responder
 {
   [(THWOverlayableZoomableCanvasController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self canvasViewShouldBecomeFirstResponder:a4];
+    [(THWOverlayableZoomableCanvasControllerDelegate *)[(THWOverlayableZoomableCanvasController *)self delegate] overlayableZoomableCanvasController:self canvasViewShouldBecomeFirstResponder:responder];
   }
 
   return 0;
 }
 
-- (id)additionalGestureTargetsForInteractiveCanvasController:(id)a3 gesture:(id)a4
+- (id)additionalGestureTargetsForInteractiveCanvasController:(id)controller gesture:(id)gesture
 {
   [(THWOverlayableZoomableCanvasController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1136,28 +1136,28 @@ LABEL_19:
     return 0;
   }
 
-  v6 = [(THWOverlayableZoomableCanvasController *)self delegate];
+  delegate = [(THWOverlayableZoomableCanvasController *)self delegate];
 
-  return [(THWOverlayableZoomableCanvasControllerDelegate *)v6 additionalGestureTargetsForZoomableCanvasController:self gesture:a4];
+  return [(THWOverlayableZoomableCanvasControllerDelegate *)delegate additionalGestureTargetsForZoomableCanvasController:self gesture:gesture];
 }
 
 - (void)setupImmediatePressGesture
 {
-  v3 = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
+  scrollContentICC = [(THWOverlayableZoomableCanvasController *)self scrollContentICC];
   v4 = TSWPImmediatePress;
   v6 = TSWPImmediatePress;
-  [(TSDInteractiveCanvasController *)v3 enableGestureKinds:[NSArray arrayWithObjects:&v6 count:1]];
-  v5 = [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] gestureDispatcher];
+  [(TSDInteractiveCanvasController *)scrollContentICC enableGestureKinds:[NSArray arrayWithObjects:&v6 count:1]];
+  gestureDispatcher = [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] gestureDispatcher];
   objc_opt_class();
   [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContentICC] gestureWithKind:v4];
-  [v5 allowSimultaneousRecognitionByRecognizers:{TSUDynamicCast(), -[TSKScrollView panGestureRecognizer](-[THWOverlayableZoomableCanvasController scrollView](self, "scrollView"), "panGestureRecognizer"), 0}];
+  [gestureDispatcher allowSimultaneousRecognitionByRecognizers:{TSUDynamicCast(), -[TSKScrollView panGestureRecognizer](-[THWOverlayableZoomableCanvasController scrollView](self, "scrollView"), "panGestureRecognizer"), 0}];
 }
 
 - (BOOL)isDragging
 {
-  v2 = [(THWOverlayableZoomableCanvasController *)self scrollView];
+  scrollView = [(THWOverlayableZoomableCanvasController *)self scrollView];
 
-  return [(TSKScrollView *)v2 isDragging];
+  return [(TSKScrollView *)scrollView isDragging];
 }
 
 - (BOOL)isZoomedOut
@@ -1169,10 +1169,10 @@ LABEL_19:
   return vabdd_f64(v5, v6) < 0.00999999978;
 }
 
-- (void)setBackgroundLayer:(id)a3
+- (void)setBackgroundLayer:(id)layer
 {
   backgroundLayer = self->_backgroundLayer;
-  if (backgroundLayer != a3)
+  if (backgroundLayer != layer)
   {
     if (backgroundLayer)
     {
@@ -1181,11 +1181,11 @@ LABEL_19:
       self->_backgroundLayer = 0;
     }
 
-    if (a3)
+    if (layer)
     {
-      v6 = a3;
-      self->_backgroundLayer = v6;
-      [(THLayerContainingView *)self->_backgroundView addSublayer:v6];
+      layerCopy = layer;
+      self->_backgroundLayer = layerCopy;
+      [(THLayerContainingView *)self->_backgroundView addSublayer:layerCopy];
     }
 
     [(THWOverlayableZoomableCanvasController *)self p_updateSubviewsOrLayers];
@@ -1263,10 +1263,10 @@ LABEL_19:
   return CGAffineTransformInvert(retstr, &v5);
 }
 
-- (CGPoint)unscaledContainerPointFromUnscaledContentPoint:(CGPoint)a3
+- (CGPoint)unscaledContainerPointFromUnscaledContentPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (self)
   {
     [(THWOverlayableZoomableCanvasController *)self p_contentUnscaledToBoundsTransform];
@@ -1302,22 +1302,22 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)scaledContainerPointFromUnscaledContentPoint:(CGPoint)a3
+- (CGPoint)scaledContainerPointFromUnscaledContentPoint:(CGPoint)point
 {
-  [(THWOverlayableZoomableCanvasController *)self unscaledContainerPointFromUnscaledContentPoint:a3.x, a3.y];
+  [(THWOverlayableZoomableCanvasController *)self unscaledContainerPointFromUnscaledContentPoint:point.x, point.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(THWOverlayableZoomableCanvasController *)self scrollContainerICC];
+  scrollContainerICC = [(THWOverlayableZoomableCanvasController *)self scrollContainerICC];
 
-  [(TSDInteractiveCanvasController *)v8 convertUnscaledToBoundsPoint:v5, v7];
+  [(TSDInteractiveCanvasController *)scrollContainerICC convertUnscaledToBoundsPoint:v5, v7];
   result.y = v10;
   result.x = v9;
   return result;
 }
 
-- (CGRect)unscaledContentRectFromUnscaledContainerRect:(CGRect)a3
+- (CGRect)unscaledContentRectFromUnscaledContainerRect:(CGRect)rect
 {
-  [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContainerICC] convertUnscaledToBoundsRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSDInteractiveCanvasController *)[(THWOverlayableZoomableCanvasController *)self scrollContainerICC] convertUnscaledToBoundsRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1358,9 +1358,9 @@ LABEL_19:
   return CGRectApplyAffineTransform(v19, &v16);
 }
 
-- (CGRect)scaledContentRectFromUnscaledContainerRect:(CGRect)a3
+- (CGRect)scaledContentRectFromUnscaledContainerRect:(CGRect)rect
 {
-  [(THWOverlayableZoomableCanvasController *)self unscaledContentRectFromUnscaledContainerRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(THWOverlayableZoomableCanvasController *)self unscaledContentRectFromUnscaledContainerRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;

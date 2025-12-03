@@ -1,14 +1,14 @@
 @interface WFHTMLFromRichTextAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFHTMLFromRichTextAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = MEMORY[0x277D79F68];
   v5 = *MEMORY[0x277CE1DA0];
-  v6 = a3;
+  inputCopy = input;
   v7 = [v4 typeWithUTType:v5];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -20,7 +20,7 @@
   v8[2] = __55__WFHTMLFromRichTextAction_runAsynchronouslyWithInput___block_invoke_2;
   v8[3] = &unk_278C21E70;
   v8[4] = self;
-  [v6 transformFirstFileRepresentationForType:v7 usingBlock:v9 completionHandler:v8];
+  [inputCopy transformFirstFileRepresentationForType:v7 usingBlock:v9 completionHandler:v8];
 }
 
 void __55__WFHTMLFromRichTextAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

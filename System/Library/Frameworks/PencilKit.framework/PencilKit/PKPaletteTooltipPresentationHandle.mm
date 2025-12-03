@@ -1,42 +1,42 @@
 @interface PKPaletteTooltipPresentationHandle
-- (PKPaletteTooltipPresentationHandle)initWithHostingView:(id)a3;
+- (PKPaletteTooltipPresentationHandle)initWithHostingView:(id)view;
 - (void)hideFloatingLabel;
-- (void)showWithText:(id)a3 fromView:(id)a4 rect:(CGRect)a5 atEdge:(unint64_t)a6 offset:(double)a7 traitCollection:(id)a8;
+- (void)showWithText:(id)text fromView:(id)view rect:(CGRect)rect atEdge:(unint64_t)edge offset:(double)offset traitCollection:(id)collection;
 @end
 
 @implementation PKPaletteTooltipPresentationHandle
 
-- (PKPaletteTooltipPresentationHandle)initWithHostingView:(id)a3
+- (PKPaletteTooltipPresentationHandle)initWithHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = PKPaletteTooltipPresentationHandle;
   v5 = [(PKPaletteTooltipPresentationHandle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostingView, v4);
+    objc_storeWeak(&v5->_hostingView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)showWithText:(id)a3 fromView:(id)a4 rect:(CGRect)a5 atEdge:(unint64_t)a6 offset:(double)a7 traitCollection:(id)a8
+- (void)showWithText:(id)text fromView:(id)view rect:(CGRect)rect atEdge:(unint64_t)edge offset:(double)offset traitCollection:(id)collection
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v49 = a3;
-  v17 = a4;
-  v18 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textCopy = text;
+  viewCopy = view;
+  collectionCopy = collection;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_hideFloatingLabel object:0];
   [(PKPaletteTooltipPresentationHandle *)self hideFloatingLabel];
   WeakRetained = objc_loadWeakRetained(&self->_hostingView);
   if (WeakRetained)
   {
-    v48 = a7;
-    v51.origin.x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v17, WeakRetained, x, y, width, height);
+    offsetCopy = offset;
+    v51.origin.x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(viewCopy, WeakRetained, x, y, width, height);
     v20 = v51.origin.x;
     v21 = v51.origin.y;
     v22 = v51.size.width;
@@ -47,7 +47,7 @@
     v52.size.width = v22;
     v52.size.height = v23;
     MidY = CGRectGetMidY(v52);
-    v26 = [(PKFloatingLabelView *)MidX floatingLabelViewWithString:PKFloatingLabelView font:v49 location:0 traitCollection:v18];
+    v26 = [(PKFloatingLabelView *)MidX floatingLabelViewWithString:PKFloatingLabelView font:textCopy location:0 traitCollection:collectionCopy];
     floatingLabel = self->_floatingLabel;
     self->_floatingLabel = v26;
 
@@ -56,9 +56,9 @@
     v31 = v28;
     v33 = v32;
     v35 = v34;
-    if (a6 > 3)
+    if (edge > 3)
     {
-      if (a6 == 4)
+      if (edge == 4)
       {
         v64.origin.x = v20;
         v64.origin.y = v21;
@@ -69,7 +69,7 @@
         v65.origin.y = v21;
         v65.size.width = v22;
         v65.size.height = v23;
-        v36 = CGRectGetMinY(v65) - v48;
+        v36 = CGRectGetMinY(v65) - offsetCopy;
         v66.origin.x = v30;
         v66.origin.y = v31;
         v66.size.width = v33;
@@ -83,13 +83,13 @@
         goto LABEL_13;
       }
 
-      if (a6 == 8)
+      if (edge == 8)
       {
         v56.origin.x = v20;
         v56.origin.y = v21;
         v56.size.width = v22;
         v56.size.height = v23;
-        v47 = CGRectGetMinX(v56) - v48;
+        v47 = CGRectGetMinX(v56) - offsetCopy;
         v57.origin.x = v20;
         v57.origin.y = v21;
         v57.size.width = v22;
@@ -106,7 +106,7 @@
 
     else
     {
-      if (a6 == 1)
+      if (edge == 1)
       {
         v60.origin.x = v20;
         v60.origin.y = v21;
@@ -117,7 +117,7 @@
         v61.origin.y = v21;
         v61.size.width = v22;
         v61.size.height = v23;
-        v36 = CGRectGetMaxY(v61) + v48;
+        v36 = CGRectGetMaxY(v61) + offsetCopy;
         v62.origin.x = v30;
         v62.origin.y = v31;
         v62.size.width = v33;
@@ -131,13 +131,13 @@
         goto LABEL_13;
       }
 
-      if (a6 == 2)
+      if (edge == 2)
       {
         v53.origin.x = v20;
         v53.origin.y = v21;
         v53.size.width = v22;
         v53.size.height = v23;
-        v47 = CGRectGetMaxX(v53) + v48;
+        v47 = CGRectGetMaxX(v53) + offsetCopy;
         v54.origin.x = v20;
         v54.origin.y = v21;
         v54.size.width = v22;

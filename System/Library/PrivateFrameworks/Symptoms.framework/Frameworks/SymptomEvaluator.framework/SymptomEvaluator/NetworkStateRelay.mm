@@ -1,56 +1,56 @@
 @interface NetworkStateRelay
-+ (id)getStateRelayFor:(unsigned __int8)a3;
++ (id)getStateRelayFor:(unsigned __int8)for;
 - (NSSet)defaultGateways;
 - (NetworkAnalyticsQueueStatistics)queueStatistics;
 - (id)description;
-- (id)initForInternalType:(unsigned __int8)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)addDefaultGateway:(id)a3;
-- (void)registerDelegate:(id)a3 lowerRSSIThreshold:(int)a4 upperRSSIThreshold:(int)a5 lowerSNRThreshold:(int)a6 upperSNRThreshold:(int)a7;
+- (id)initForInternalType:(unsigned __int8)type;
+- (id)valueForUndefinedKey:(id)key;
+- (void)addDefaultGateway:(id)gateway;
+- (void)registerDelegate:(id)delegate lowerRSSIThreshold:(int)threshold upperRSSIThreshold:(int)iThreshold lowerSNRThreshold:(int)rThreshold upperSNRThreshold:(int)nRThreshold;
 - (void)removeAllDefaultGateways;
-- (void)setActive:(BOOL)a3;
-- (void)setAdvisory:(int)a3;
-- (void)setAppleServicesConnectionFriction:(BOOL)a3;
-- (void)setApsdFailure:(BOOL)a3;
-- (void)setArpOut:(BOOL)a3;
-- (void)setConstrained:(BOOL)a3;
-- (void)setDnsOut:(BOOL)a3;
-- (void)setExpensive:(BOOL)a3;
-- (void)setFirstAttachment:(BOOL)a3;
-- (void)setInterfaceIndex:(unint64_t)a3;
-- (void)setInterfaceName:(id)a3;
-- (void)setInternetDnsOut:(BOOL)a3;
-- (void)setKnowableSporadic:(BOOL)a3;
-- (void)setKnownGood:(BOOL)a3;
-- (void)setKnownSporadic:(BOOL)a3;
-- (void)setLinkQuality:(int)a3;
-- (void)setLoi:(int64_t)a3;
-- (void)setLqmAsystole:(BOOL)a3;
-- (void)setNoCostAdvantage:(BOOL)a3;
-- (void)setPowerCostDL:(unsigned __int8)a3;
-- (void)setPowerCostUL:(unsigned __int8)a3;
-- (void)setPrimary:(BOOL)a3;
-- (void)setRadioTechnology:(unsigned __int8)a3;
-- (void)setRpmAvg:(double)a3;
-- (void)setRpmCount:(double)a3;
-- (void)setRpmExitAvg:(double)a3;
-- (void)setRpmExitCount:(double)a3;
-- (void)setRpmExitVar:(double)a3;
-- (void)setRpmVar:(double)a3;
-- (void)setRxRate:(double)a3;
-- (void)setRxSignalExemptions:(unsigned int)a3;
-- (void)setRxSignalFullBars:(BOOL)a3;
-- (void)setRxSignalThresholded:(BOOL)a3;
-- (void)setSignalBars:(unsigned __int8)a3;
-- (void)setStuckDefRoute:(BOOL)a3;
-- (void)setTcpExtraStatsPositive:(BOOL)a3;
-- (void)setTcpProgressHintsScore:(unsigned int)a3;
-- (void)setTxRate:(double)a3;
-- (void)setTxThresholded:(BOOL)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)unregisterDelegate:(id)a3;
-- (void)updateSNR:(int)a3 RSSI:(int)a4;
-- (void)updateSignalStrength:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setAdvisory:(int)advisory;
+- (void)setAppleServicesConnectionFriction:(BOOL)friction;
+- (void)setApsdFailure:(BOOL)failure;
+- (void)setArpOut:(BOOL)out;
+- (void)setConstrained:(BOOL)constrained;
+- (void)setDnsOut:(BOOL)out;
+- (void)setExpensive:(BOOL)expensive;
+- (void)setFirstAttachment:(BOOL)attachment;
+- (void)setInterfaceIndex:(unint64_t)index;
+- (void)setInterfaceName:(id)name;
+- (void)setInternetDnsOut:(BOOL)out;
+- (void)setKnowableSporadic:(BOOL)sporadic;
+- (void)setKnownGood:(BOOL)good;
+- (void)setKnownSporadic:(BOOL)sporadic;
+- (void)setLinkQuality:(int)quality;
+- (void)setLoi:(int64_t)loi;
+- (void)setLqmAsystole:(BOOL)asystole;
+- (void)setNoCostAdvantage:(BOOL)advantage;
+- (void)setPowerCostDL:(unsigned __int8)l;
+- (void)setPowerCostUL:(unsigned __int8)l;
+- (void)setPrimary:(BOOL)primary;
+- (void)setRadioTechnology:(unsigned __int8)technology;
+- (void)setRpmAvg:(double)avg;
+- (void)setRpmCount:(double)count;
+- (void)setRpmExitAvg:(double)avg;
+- (void)setRpmExitCount:(double)count;
+- (void)setRpmExitVar:(double)var;
+- (void)setRpmVar:(double)var;
+- (void)setRxRate:(double)rate;
+- (void)setRxSignalExemptions:(unsigned int)exemptions;
+- (void)setRxSignalFullBars:(BOOL)bars;
+- (void)setRxSignalThresholded:(BOOL)thresholded;
+- (void)setSignalBars:(unsigned __int8)bars;
+- (void)setStuckDefRoute:(BOOL)route;
+- (void)setTcpExtraStatsPositive:(BOOL)positive;
+- (void)setTcpProgressHintsScore:(unsigned int)score;
+- (void)setTxRate:(double)rate;
+- (void)setTxThresholded:(BOOL)thresholded;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)unregisterDelegate:(id)delegate;
+- (void)updateSNR:(int)r RSSI:(int)i;
+- (void)updateSignalStrength:(id)strength;
 @end
 
 @implementation NetworkStateRelay
@@ -62,8 +62,8 @@
     if (self->_interfaceName)
     {
       v3 = [NetworkAnalyticsQueueStatistics alloc];
-      v4 = [(NetworkStateRelay *)self interfaceName];
-      v5 = [(NetworkAnalyticsQueueStatistics *)v3 initWithInterfaceName:v4];
+      interfaceName = [(NetworkStateRelay *)self interfaceName];
+      v5 = [(NetworkAnalyticsQueueStatistics *)v3 initWithInterfaceName:interfaceName];
       queueStatistics = self->_queueStatistics;
       self->_queueStatistics = v5;
     }
@@ -84,23 +84,23 @@
   return v8;
 }
 
-+ (id)getStateRelayFor:(unsigned __int8)a3
++ (id)getStateRelayFor:(unsigned __int8)for
 {
-  v3 = a3;
+  forCopy = for;
   *&v10[5] = *MEMORY[0x277D85DE8];
   if (getStateRelayFor__onceToken != -1)
   {
     +[NetworkStateRelay getStateRelayFor:];
   }
 
-  if (v3 <= 7 && ((1 << v3) & 0xAC) != 0)
+  if (forCopy <= 7 && ((1 << forCopy) & 0xAC) != 0)
   {
-    v4 = [getStateRelayFor___interfaceRelays objectAtIndexedSubscript:v3];
+    v4 = [getStateRelayFor___interfaceRelays objectAtIndexedSubscript:forCopy];
     v5 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v9 = 67109378;
-      v10[0] = v3;
+      v10[0] = forCopy;
       LOWORD(v10[1]) = 2112;
       *(&v10[1] + 2) = v4;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "StateRelay for type %d: %@", &v9, 0x12u);
@@ -113,7 +113,7 @@
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      *v10 = v3;
+      *v10 = forCopy;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "StateRelay for interface type %ld is invalid", &v9, 0xCu);
     }
 
@@ -179,7 +179,7 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForInternalType:(unsigned __int8)a3
+- (id)initForInternalType:(unsigned __int8)type
 {
   v10.receiver = self;
   v10.super_class = NetworkStateRelay;
@@ -191,7 +191,7 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
     configurableThresholdDelegates = v4->_configurableThresholdDelegates;
     v4->_configurableThresholdDelegates = v5;
 
-    v4->_functionalInterfaceType = a3;
+    v4->_functionalInterfaceType = type;
     v4->_linkQuality = -2;
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     defaultGateways = v4->_defaultGateways;
@@ -205,9 +205,9 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
 
 - (id)description
 {
-  v3 = [(NetworkStateRelay *)self functionalInterfaceType];
+  functionalInterfaceType = [(NetworkStateRelay *)self functionalInterfaceType];
   v4 = "";
-  if (v3 == 3)
+  if (functionalInterfaceType == 3)
   {
     if ([(NetworkStateRelay *)self loi])
     {
@@ -228,7 +228,7 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
   v44 = v4;
   v46 = objc_alloc(MEMORY[0x277CCACA8]);
   v45 = [MEMORY[0x277D6B3E0] stringForFunctionalInterfaceType:{-[NetworkStateRelay functionalInterfaceType](self, "functionalInterfaceType")}];
-  v43 = [v45 UTF8String];
+  uTF8String = [v45 UTF8String];
   v6 = "-no";
   if ([(NetworkStateRelay *)self active])
   {
@@ -352,7 +352,7 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
   }
 
   v32 = v18;
-  v31 = [(NetworkStateRelay *)self rxSignalExemptions];
+  rxSignalExemptions = [(NetworkStateRelay *)self rxSignalExemptions];
   if ([(NetworkStateRelay *)self tcpExtraStatsPositive])
   {
     v6 = "";
@@ -373,39 +373,39 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
     v14 = "-err";
   }
 
-  v20 = [(NetworkStateRelay *)self tcpProgressHintsScore];
-  v21 = [(NetworkStateRelay *)self linkQuality];
-  v22 = [(NetworkStateRelay *)self advisory];
+  tcpProgressHintsScore = [(NetworkStateRelay *)self tcpProgressHintsScore];
+  linkQuality = [(NetworkStateRelay *)self linkQuality];
+  advisory = [(NetworkStateRelay *)self advisory];
   v23 = [NetworkAnalyticsEngine mapPowerCost:[(NetworkStateRelay *)self powerCostDL]];
   v24 = [NetworkAnalyticsEngine mapPowerCost:[(NetworkStateRelay *)self powerCostUL]];
   v25 = [NetworkAnalyticsEngine mapRadioTechnology:[(NetworkStateRelay *)self radioTechnology]];
   [(NetworkStateRelay *)self txRate];
   v27 = v26;
   [(NetworkStateRelay *)self rxRate];
-  v29 = [v46 initWithFormat:@"%s (active%s/primary%s/constrained%s/expensive%s/rssifull%s/rssithresh%s/txthresh%s/arp%s/dns%s/i-dns%s/i-stuck%s/rssiexempt:%d/tcp%s/apsd%s/1ppservconnfric%s/tcphints:%ld/lqm:%ld/advisory:%d/pwrDL:%ld/pwrUL:%ld/ic:%ld%s/txRate:%.1f/rxRate:%.1f)", v43, v42, v41, v40, v39, v38, v37, v36, v35, v34, v33, v32, v31, v6, v19, v14, v20, v21, v22, v23, v24, v25, v44, v27, v28];
+  v29 = [v46 initWithFormat:@"%s (active%s/primary%s/constrained%s/expensive%s/rssifull%s/rssithresh%s/txthresh%s/arp%s/dns%s/i-dns%s/i-stuck%s/rssiexempt:%d/tcp%s/apsd%s/1ppservconnfric%s/tcphints:%ld/lqm:%ld/advisory:%d/pwrDL:%ld/pwrUL:%ld/ic:%ld%s/txRate:%.1f/rxRate:%.1f)", uTF8String, v42, v41, v40, v39, v38, v37, v36, v35, v34, v33, v32, rxSignalExemptions, v6, v19, v14, tcpProgressHintsScore, linkQuality, advisory, v23, v24, v25, v44, v27, v28];
 
   return v29;
 }
 
-- (void)registerDelegate:(id)a3 lowerRSSIThreshold:(int)a4 upperRSSIThreshold:(int)a5 lowerSNRThreshold:(int)a6 upperSNRThreshold:(int)a7
+- (void)registerDelegate:(id)delegate lowerRSSIThreshold:(int)threshold upperRSSIThreshold:(int)iThreshold lowerSNRThreshold:(int)rThreshold upperSNRThreshold:(int)nRThreshold
 {
   v31 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  delegateCopy = delegate;
   v13 = netepochsLogHandle;
-  if (v12)
+  if (delegateCopy)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v22 = v12;
+      v22 = delegateCopy;
       v23 = 1024;
-      v24 = a4;
+      thresholdCopy = threshold;
       v25 = 1024;
-      v26 = a5;
+      iThresholdCopy = iThreshold;
       v27 = 1024;
-      v28 = a6;
+      rThresholdCopy = rThreshold;
       v29 = 1024;
-      v30 = a7;
+      nRThresholdCopy = nRThreshold;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "Registering delegate %@ for threshold crossed notifications (RSSI: %d %d) (SNR: %d %d)", buf, 0x24u);
     }
 
@@ -413,12 +413,12 @@ void __38__NetworkStateRelay_getStateRelayFor___block_invoke()
     v15[1] = 3221225472;
     v15[2] = __112__NetworkStateRelay_registerDelegate_lowerRSSIThreshold_upperRSSIThreshold_lowerSNRThreshold_upperSNRThreshold___block_invoke;
     v15[3] = &unk_27898F7B0;
-    v17 = a6;
-    v18 = a7;
-    v19 = a4;
-    v20 = a5;
+    rThresholdCopy2 = rThreshold;
+    nRThresholdCopy2 = nRThreshold;
+    thresholdCopy2 = threshold;
+    iThresholdCopy2 = iThreshold;
     v15[4] = self;
-    v16 = v12;
+    v16 = delegateCopy;
     sf_synchronize(&configurableThresholdLock, v15);
   }
 
@@ -437,17 +437,17 @@ void __112__NetworkStateRelay_registerDelegate_lowerRSSIThreshold_upperRSSIThres
   [*(*(a1 + 32) + 16) setObject:v2 forKey:*(a1 + 40)];
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = netepochsLogHandle;
-  if (v4)
+  if (delegateCopy)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = delegateCopy;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Unregistering delegate %@", buf, 0xCu);
     }
 
@@ -456,7 +456,7 @@ void __112__NetworkStateRelay_registerDelegate_lowerRSSIThreshold_upperRSSIThres
     v7[2] = __40__NetworkStateRelay_unregisterDelegate___block_invoke;
     v7[3] = &unk_27898A7D0;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     sf_synchronize(&configurableThresholdLock, v7);
   }
 
@@ -469,20 +469,20 @@ void __112__NetworkStateRelay_registerDelegate_lowerRSSIThreshold_upperRSSIThres
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSNR:(int)a3 RSSI:(int)a4
+- (void)updateSNR:(int)r RSSI:(int)i
 {
   lastReportedSignalToNoiseRatio = self->_lastReportedSignalToNoiseRatio;
   lastReportedRxSignalStrength = self->_lastReportedRxSignalStrength;
-  self->_lastReportedSignalToNoiseRatio = a3;
-  self->_lastReportedRxSignalStrength = a4;
+  self->_lastReportedSignalToNoiseRatio = r;
+  self->_lastReportedRxSignalStrength = i;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__NetworkStateRelay_updateSNR_RSSI___block_invoke;
   v6[3] = &unk_27898D158;
   v6[4] = self;
-  v7 = a3;
+  rCopy = r;
   v8 = lastReportedSignalToNoiseRatio;
-  v9 = a4;
+  iCopy = i;
   v10 = lastReportedRxSignalStrength;
   sf_synchronize(&configurableThresholdLock, v6);
 }
@@ -624,36 +624,36 @@ LABEL_46:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInterfaceName:(id)a3
+- (void)setInterfaceName:(id)name
 {
-  v5 = a3;
-  if (self->_interfaceName != v5)
+  nameCopy = name;
+  if (self->_interfaceName != nameCopy)
   {
-    v6 = v5;
+    v6 = nameCopy;
     [(NetworkStateRelay *)self willChangeValueForKey:@"interfaceName"];
-    objc_storeStrong(&self->_interfaceName, a3);
+    objc_storeStrong(&self->_interfaceName, name);
     [(NetworkStateRelay *)self didChangeValueForKey:@"interfaceName"];
-    v5 = v6;
+    nameCopy = v6;
   }
 }
 
-- (void)setInterfaceIndex:(unint64_t)a3
+- (void)setInterfaceIndex:(unint64_t)index
 {
-  if (self->_interfaceIndex != a3)
+  if (self->_interfaceIndex != index)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"interfaceIndex"];
-    self->_interfaceIndex = a3;
+    self->_interfaceIndex = index;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"interfaceIndex"];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"active"];
-    self->_active = a3;
+    self->_active = active;
     [(NetworkStateRelay *)self didChangeValueForKey:@"active"];
     v6 = [MEMORY[0x277D6B3E0] nwInterfaceTypeForNWFunctionalInterfaceType:self->_functionalInterfaceType];
     v7 = +[NetworkAnalyticsEngine sharedInstance];
@@ -661,25 +661,25 @@ LABEL_46:
   }
 }
 
-- (void)setPrimary:(BOOL)a3
+- (void)setPrimary:(BOOL)primary
 {
-  if (self->_primary != a3)
+  if (self->_primary != primary)
   {
-    v4 = a3;
+    primaryCopy = primary;
     [(NetworkStateRelay *)self willChangeValueForKey:@"primary"];
-    self->_primary = v4;
-    if (v4)
+    self->_primary = primaryCopy;
+    if (primaryCopy)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     else
     {
-      v6 = 0;
+      date = 0;
     }
 
     madePrimaryDate = self->_madePrimaryDate;
-    self->_madePrimaryDate = v6;
+    self->_madePrimaryDate = date;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"primary"];
     v8 = [MEMORY[0x277D6B3E0] nwInterfaceTypeForNWFunctionalInterfaceType:self->_functionalInterfaceType];
@@ -688,276 +688,276 @@ LABEL_46:
   }
 }
 
-- (void)setKnownGood:(BOOL)a3
+- (void)setKnownGood:(BOOL)good
 {
-  if (self->_knownGood != a3)
+  if (self->_knownGood != good)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"knownGood"];
-    self->_knownGood = a3;
+    self->_knownGood = good;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"knownGood"];
   }
 }
 
-- (void)setKnownSporadic:(BOOL)a3
+- (void)setKnownSporadic:(BOOL)sporadic
 {
-  if (self->_knownSporadic != a3)
+  if (self->_knownSporadic != sporadic)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"knownSporadic"];
-    self->_knownSporadic = a3;
+    self->_knownSporadic = sporadic;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"knownSporadic"];
   }
 }
 
-- (void)setKnowableSporadic:(BOOL)a3
+- (void)setKnowableSporadic:(BOOL)sporadic
 {
-  if (self->_knowableSporadic != a3)
+  if (self->_knowableSporadic != sporadic)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"knowableSporadic"];
-    self->_knowableSporadic = a3;
+    self->_knowableSporadic = sporadic;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"knowableSporadic"];
   }
 }
 
-- (void)setFirstAttachment:(BOOL)a3
+- (void)setFirstAttachment:(BOOL)attachment
 {
-  if (self->_firstAttachment != a3)
+  if (self->_firstAttachment != attachment)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"firstAttachment"];
-    self->_firstAttachment = a3;
+    self->_firstAttachment = attachment;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"firstAttachment"];
   }
 }
 
-- (void)setConstrained:(BOOL)a3
+- (void)setConstrained:(BOOL)constrained
 {
-  if (self->_constrained != a3)
+  if (self->_constrained != constrained)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"constrained"];
-    self->_constrained = a3;
+    self->_constrained = constrained;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"constrained"];
   }
 }
 
-- (void)setExpensive:(BOOL)a3
+- (void)setExpensive:(BOOL)expensive
 {
-  if (self->_expensive != a3)
+  if (self->_expensive != expensive)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"expensive"];
-    self->_expensive = a3;
+    self->_expensive = expensive;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"expensive"];
   }
 }
 
-- (void)setNoCostAdvantage:(BOOL)a3
+- (void)setNoCostAdvantage:(BOOL)advantage
 {
-  if (self->_noCostAdvantage != a3)
+  if (self->_noCostAdvantage != advantage)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"noCostAdvantage"];
-    self->_noCostAdvantage = a3;
+    self->_noCostAdvantage = advantage;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"noCostAdvantage"];
   }
 }
 
-- (void)setRxSignalThresholded:(BOOL)a3
+- (void)setRxSignalThresholded:(BOOL)thresholded
 {
-  if (self->_rxSignalThresholded != a3)
+  if (self->_rxSignalThresholded != thresholded)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rxSignalThresholded"];
-    self->_rxSignalThresholded = a3;
+    self->_rxSignalThresholded = thresholded;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rxSignalThresholded"];
   }
 }
 
-- (void)setRxSignalFullBars:(BOOL)a3
+- (void)setRxSignalFullBars:(BOOL)bars
 {
-  if (self->_rxSignalFullBars != a3)
+  if (self->_rxSignalFullBars != bars)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rxSignalFullBars"];
-    self->_rxSignalFullBars = a3;
+    self->_rxSignalFullBars = bars;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rxSignalFullBars"];
   }
 }
 
-- (void)setTxThresholded:(BOOL)a3
+- (void)setTxThresholded:(BOOL)thresholded
 {
-  if (self->_txThresholded != a3)
+  if (self->_txThresholded != thresholded)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"txThresholded"];
-    self->_txThresholded = a3;
+    self->_txThresholded = thresholded;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"txThresholded"];
   }
 }
 
-- (void)setArpOut:(BOOL)a3
+- (void)setArpOut:(BOOL)out
 {
-  if (self->_arpOut != a3)
+  if (self->_arpOut != out)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"arpOut"];
-    self->_arpOut = a3;
+    self->_arpOut = out;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"arpOut"];
   }
 }
 
-- (void)setDnsOut:(BOOL)a3
+- (void)setDnsOut:(BOOL)out
 {
-  if (self->_dnsOut != a3)
+  if (self->_dnsOut != out)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"dnsOut"];
-    self->_dnsOut = a3;
+    self->_dnsOut = out;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"dnsOut"];
   }
 }
 
-- (void)setInternetDnsOut:(BOOL)a3
+- (void)setInternetDnsOut:(BOOL)out
 {
-  if (self->_internetDnsOut != a3)
+  if (self->_internetDnsOut != out)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"internetDnsOut"];
-    self->_internetDnsOut = a3;
+    self->_internetDnsOut = out;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"internetDnsOut"];
   }
 }
 
-- (void)setStuckDefRoute:(BOOL)a3
+- (void)setStuckDefRoute:(BOOL)route
 {
-  if (self->_stuckDefRoute != a3)
+  if (self->_stuckDefRoute != route)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"stuckDefRoute"];
-    self->_stuckDefRoute = a3;
+    self->_stuckDefRoute = route;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"stuckDefRoute"];
   }
 }
 
-- (void)setRxSignalExemptions:(unsigned int)a3
+- (void)setRxSignalExemptions:(unsigned int)exemptions
 {
-  if (self->_rxSignalExemptions != a3)
+  if (self->_rxSignalExemptions != exemptions)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rxSignalExemptions"];
-    self->_rxSignalExemptions = a3;
+    self->_rxSignalExemptions = exemptions;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rxSignalExemptions"];
   }
 }
 
-- (void)setTcpExtraStatsPositive:(BOOL)a3
+- (void)setTcpExtraStatsPositive:(BOOL)positive
 {
-  if (self->_tcpExtraStatsPositive != a3)
+  if (self->_tcpExtraStatsPositive != positive)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"tcpExtraStatsPositive"];
-    self->_tcpExtraStatsPositive = a3;
+    self->_tcpExtraStatsPositive = positive;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"tcpExtraStatsPositive"];
   }
 }
 
-- (void)setApsdFailure:(BOOL)a3
+- (void)setApsdFailure:(BOOL)failure
 {
-  if (self->_apsdFailure != a3)
+  if (self->_apsdFailure != failure)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"apsdFailure"];
-    self->_apsdFailure = a3;
+    self->_apsdFailure = failure;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"apsdFailure"];
   }
 }
 
-- (void)setAppleServicesConnectionFriction:(BOOL)a3
+- (void)setAppleServicesConnectionFriction:(BOOL)friction
 {
-  if (self->_appleServicesConnectionFriction != a3)
+  if (self->_appleServicesConnectionFriction != friction)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"appleServicesConnectionFriction"];
-    self->_appleServicesConnectionFriction = a3;
+    self->_appleServicesConnectionFriction = friction;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"appleServicesConnectionFriction"];
   }
 }
 
-- (void)setTcpProgressHintsScore:(unsigned int)a3
+- (void)setTcpProgressHintsScore:(unsigned int)score
 {
-  if (self->_tcpProgressHintsScore != a3)
+  if (self->_tcpProgressHintsScore != score)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"tcpProgressHintsScore"];
-    self->_tcpProgressHintsScore = a3;
+    self->_tcpProgressHintsScore = score;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"tcpProgressHintsScore"];
   }
 }
 
-- (void)setLinkQuality:(int)a3
+- (void)setLinkQuality:(int)quality
 {
-  if (self->_linkQuality != a3)
+  if (self->_linkQuality != quality)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"linkQuality"];
-    self->_linkQuality = a3;
+    self->_linkQuality = quality;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"linkQuality"];
   }
 }
 
-- (void)setAdvisory:(int)a3
+- (void)setAdvisory:(int)advisory
 {
-  if (self->_advisory != a3)
+  if (self->_advisory != advisory)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"advisory"];
-    self->_advisory = a3;
+    self->_advisory = advisory;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"advisory"];
   }
 }
 
-- (void)setPowerCostDL:(unsigned __int8)a3
+- (void)setPowerCostDL:(unsigned __int8)l
 {
-  if (self->_powerCostDL != a3)
+  if (self->_powerCostDL != l)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"powerCostDL"];
-    self->_powerCostDL = a3;
+    self->_powerCostDL = l;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"powerCostDL"];
   }
 }
 
-- (void)setPowerCostUL:(unsigned __int8)a3
+- (void)setPowerCostUL:(unsigned __int8)l
 {
-  if (self->_powerCostUL != a3)
+  if (self->_powerCostUL != l)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"powerCostUL"];
-    self->_powerCostUL = a3;
+    self->_powerCostUL = l;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"powerCostUL"];
   }
 }
 
-- (void)setSignalBars:(unsigned __int8)a3
+- (void)setSignalBars:(unsigned __int8)bars
 {
-  if (self->_signalBars != a3)
+  if (self->_signalBars != bars)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"signalBars"];
-    self->_signalBars = a3;
+    self->_signalBars = bars;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"signalBars"];
   }
 }
 
-- (void)setRadioTechnology:(unsigned __int8)a3
+- (void)setRadioTechnology:(unsigned __int8)technology
 {
-  if (self->_radioTechnology != a3)
+  if (self->_radioTechnology != technology)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"radioTechnology"];
-    self->_radioTechnology = a3;
+    self->_radioTechnology = technology;
     [(NetworkStateRelay *)self didChangeValueForKey:@"radioTechnology"];
     v6 = [MEMORY[0x277D6B3E0] nwInterfaceTypeForNWFunctionalInterfaceType:self->_functionalInterfaceType];
     v7 = +[NetworkAnalyticsEngine sharedInstance];
@@ -965,100 +965,100 @@ LABEL_46:
   }
 }
 
-- (void)setTxRate:(double)a3
+- (void)setTxRate:(double)rate
 {
-  if (self->_txRate != a3)
+  if (self->_txRate != rate)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"txRate"];
-    self->_txRate = a3;
+    self->_txRate = rate;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"txRate"];
   }
 }
 
-- (void)setRxRate:(double)a3
+- (void)setRxRate:(double)rate
 {
-  if (self->_rxRate != a3)
+  if (self->_rxRate != rate)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rxRate"];
-    self->_rxRate = a3;
+    self->_rxRate = rate;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rxRate"];
   }
 }
 
-- (void)setRpmAvg:(double)a3
+- (void)setRpmAvg:(double)avg
 {
-  if (self->_rpmAvg != a3)
+  if (self->_rpmAvg != avg)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmAvg"];
-    self->_rpmAvg = a3;
+    self->_rpmAvg = avg;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmAvg"];
   }
 }
 
-- (void)setRpmCount:(double)a3
+- (void)setRpmCount:(double)count
 {
-  if (self->_rpmCount != a3)
+  if (self->_rpmCount != count)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmCount"];
-    self->_rpmCount = a3;
+    self->_rpmCount = count;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmCount"];
   }
 }
 
-- (void)setRpmVar:(double)a3
+- (void)setRpmVar:(double)var
 {
-  if (self->_rpmVar != a3)
+  if (self->_rpmVar != var)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmVar"];
-    self->_rpmVar = a3;
+    self->_rpmVar = var;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmVar"];
   }
 }
 
-- (void)setRpmExitAvg:(double)a3
+- (void)setRpmExitAvg:(double)avg
 {
-  if (self->_rpmExitAvg != a3)
+  if (self->_rpmExitAvg != avg)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmExitAvg"];
-    self->_rpmExitAvg = a3;
+    self->_rpmExitAvg = avg;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmExitAvg"];
   }
 }
 
-- (void)setRpmExitCount:(double)a3
+- (void)setRpmExitCount:(double)count
 {
-  if (self->_rpmExitCount != a3)
+  if (self->_rpmExitCount != count)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmExitCount"];
-    self->_rpmExitCount = a3;
+    self->_rpmExitCount = count;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmExitCount"];
   }
 }
 
-- (void)setRpmExitVar:(double)a3
+- (void)setRpmExitVar:(double)var
 {
-  if (self->_rpmExitVar != a3)
+  if (self->_rpmExitVar != var)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"rpmExitVar"];
-    self->_rpmExitVar = a3;
+    self->_rpmExitVar = var;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"rpmExitVar"];
   }
 }
 
-- (void)setLqmAsystole:(BOOL)a3
+- (void)setLqmAsystole:(BOOL)asystole
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_lqmAsystole != a3)
+  if (self->_lqmAsystole != asystole)
   {
-    v3 = a3;
+    asystoleCopy = asystole;
     v5 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -1066,40 +1066,40 @@ LABEL_46:
       v8[0] = 67109376;
       v8[1] = lqmAsystole;
       v9 = 1024;
-      v10 = v3;
+      v10 = asystoleCopy;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "lqmAsystole %d -> %d", v8, 0xEu);
     }
 
     [(NetworkStateRelay *)self willChangeValueForKey:@"lqmAsystole"];
-    self->_lqmAsystole = v3;
+    self->_lqmAsystole = asystoleCopy;
     [(NetworkStateRelay *)self didChangeValueForKey:@"lqmAsystole"];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLoi:(int64_t)a3
+- (void)setLoi:(int64_t)loi
 {
-  if (self->_loi != a3)
+  if (self->_loi != loi)
   {
     [(NetworkStateRelay *)self willChangeValueForKey:@"loi"];
-    self->_loi = a3;
+    self->_loi = loi;
 
     [(NetworkStateRelay *)self didChangeValueForKey:@"loi"];
   }
 }
 
-- (void)updateSignalStrength:(id)a3
+- (void)updateSignalStrength:(id)strength
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  strengthCopy = strength;
+  v5 = strengthCopy;
+  if (strengthCopy)
   {
-    LOBYTE(v4) = [v4 unsignedIntValue];
+    LOBYTE(strengthCopy) = [strengthCopy unsignedIntValue];
   }
 
-  [(NetworkStateRelay *)self setSignalBars:v4];
+  [(NetworkStateRelay *)self setSignalBars:strengthCopy];
   v6 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -1122,12 +1122,12 @@ LABEL_46:
   return v4;
 }
 
-- (void)addDefaultGateway:(id)a3
+- (void)addDefaultGateway:(id)gateway
 {
-  v5 = a3;
+  gatewayCopy = gateway;
   v4 = self->_defaultGateways;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_defaultGateways addObject:v5];
+  [(NSMutableSet *)self->_defaultGateways addObject:gatewayCopy];
   objc_sync_exit(v4);
 }
 
@@ -1139,17 +1139,17 @@ LABEL_46:
   objc_sync_exit(obj);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = keyCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "%p attempt to fetch non-existent property %@", &v8, 0x16u);
   }
 
@@ -1157,17 +1157,17 @@ LABEL_46:
   return 0;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  keyCopy = key;
   v6 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = keyCopy;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "%p attempt to set non-existent property %@, drop request", &v8, 0x16u);
   }
 

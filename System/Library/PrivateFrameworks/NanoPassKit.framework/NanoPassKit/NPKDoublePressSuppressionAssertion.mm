@@ -1,18 +1,18 @@
 @interface NPKDoublePressSuppressionAssertion
-- (NPKDoublePressSuppressionAssertion)initWithQueue:(id)a3;
+- (NPKDoublePressSuppressionAssertion)initWithQueue:(id)queue;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
-- (void)_resyncStateWithCompletion:(id)a3;
+- (void)_resyncStateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation NPKDoublePressSuppressionAssertion
 
-- (NPKDoublePressSuppressionAssertion)initWithQueue:(id)a3
+- (NPKDoublePressSuppressionAssertion)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = NPKDoublePressSuppressionAssertion;
-  v3 = [(NPKTransientAssertion *)&v6 initWithQueue:a3];
+  v3 = [(NPKTransientAssertion *)&v6 initWithQueue:queue];
   v4 = v3;
   if (v3)
   {
@@ -92,10 +92,10 @@ id __48__NPKDoublePressSuppressionAssertion_invalidate__block_invoke(uint64_t a1
   return objc_msgSendSuper2(&v6, sel_invalidate);
 }
 
-- (void)_resyncStateWithCompletion:(id)a3
+- (void)_resyncStateWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_stateLock);
   requestSuppression = self->_requestSuppression;
   os_unfair_lock_unlock(&self->_stateLock);
@@ -108,7 +108,7 @@ id __48__NPKDoublePressSuppressionAssertion_invalidate__block_invoke(uint64_t a1
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = NSStringFromBOOL();
-      v10 = _Block_copy(v4);
+      v10 = _Block_copy(completionCopy);
       *buf = 138412546;
       v21 = v9;
       v22 = 2112;
@@ -123,7 +123,7 @@ id __48__NPKDoublePressSuppressionAssertion_invalidate__block_invoke(uint64_t a1
   v17[2] = __65__NPKDoublePressSuppressionAssertion__resyncStateWithCompletion___block_invoke;
   v17[3] = &unk_279945A70;
   objc_copyWeak(&v19, buf);
-  v11 = v4;
+  v11 = completionCopy;
   v18 = v11;
   v12 = [(NPKTransientAssertion *)self _remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -291,13 +291,13 @@ LABEL_12:
     }
 
     objc_initWeak(buf, self);
-    v8 = [(NPKTransientAssertion *)self _remoteObjectProxy];
+    _remoteObjectProxy = [(NPKTransientAssertion *)self _remoteObjectProxy];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__NPKDoublePressSuppressionAssertion__handleInvalidation__block_invoke;
     v9[3] = &unk_279945030;
     objc_copyWeak(&v10, buf);
-    [v8 setDoublePressSuppressionRequested:0 withCompletion:v9];
+    [_remoteObjectProxy setDoublePressSuppressionRequested:0 withCompletion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);

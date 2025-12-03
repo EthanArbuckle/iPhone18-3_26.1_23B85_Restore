@@ -1,13 +1,13 @@
 @interface TKSlotParameters
-- (TKSlotParameters)initWithEntriesFromDictionary:(id)a3;
-- (TKSlotParameters)initWithMaxBlockSize:(int64_t)a3;
+- (TKSlotParameters)initWithEntriesFromDictionary:(id)dictionary;
+- (TKSlotParameters)initWithMaxBlockSize:(int64_t)size;
 - (id)description;
 - (id)getDictionaryParameters;
 @end
 
 @implementation TKSlotParameters
 
-- (TKSlotParameters)initWithMaxBlockSize:(int64_t)a3
+- (TKSlotParameters)initWithMaxBlockSize:(int64_t)size
 {
   v7.receiver = self;
   v7.super_class = TKSlotParameters;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    [(TKSlotParameters *)v4 setMaxInputLength:a3];
-    [(TKSlotParameters *)v5 setMaxOutputLength:a3];
+    [(TKSlotParameters *)v4 setMaxInputLength:size];
+    [(TKSlotParameters *)v5 setMaxOutputLength:size];
     [(TKSlotParameters *)v5 setSecurePINVerificationSupported:0];
     [(TKSlotParameters *)v5 setSecurePINChangeSupported:0];
   }
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (TKSlotParameters)initWithEntriesFromDictionary:(id)a3
+- (TKSlotParameters)initWithEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TKSlotParameters;
   v5 = [(TKSlotParameters *)&v15 init];
@@ -41,7 +41,7 @@
       {
         Name = property_getName(v7[i]);
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:Name];
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [dictionaryCopy objectForKeyedSubscript:v10];
 
         if (v11)
         {
@@ -59,46 +59,46 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"{\n    maxInputLength: %ld\n", -[TKSlotParameters maxInputLength](self, "maxInputLength")];
-  [v3 appendFormat:@"    maxOutputLength: %ld\n", -[TKSlotParameters maxOutputLength](self, "maxOutputLength")];
-  v4 = [(TKSlotParameters *)self productID];
-  [v3 appendFormat:@"    productID: %@\n", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"{\n    maxInputLength: %ld\n", -[TKSlotParameters maxInputLength](self, "maxInputLength")];
+  [string appendFormat:@"    maxOutputLength: %ld\n", -[TKSlotParameters maxOutputLength](self, "maxOutputLength")];
+  productID = [(TKSlotParameters *)self productID];
+  [string appendFormat:@"    productID: %@\n", productID];
 
-  v5 = [(TKSlotParameters *)self vendorID];
-  [v3 appendFormat:@"    vendorID: %@\n", v5];
+  vendorID = [(TKSlotParameters *)self vendorID];
+  [string appendFormat:@"    vendorID: %@\n", vendorID];
 
-  v6 = [(TKSlotParameters *)self firmwareVersion];
-  [v3 appendFormat:@"    firmwareVersion: %@\n", v6];
+  firmwareVersion = [(TKSlotParameters *)self firmwareVersion];
+  [string appendFormat:@"    firmwareVersion: %@\n", firmwareVersion];
 
-  [v3 appendFormat:@"    securePINVerificationSupported: %d\n", -[TKSlotParameters securePINVerificationSupported](self, "securePINVerificationSupported")];
-  [v3 appendFormat:@"    securePINChangeSupported: %d\n", -[TKSlotParameters securePINChangeSupported](self, "securePINChangeSupported")];
-  v7 = [(TKSlotParameters *)self displayMaxCharacters];
-  [v3 appendFormat:@"    displayMaxCharacters: %@\n", v7];
+  [string appendFormat:@"    securePINVerificationSupported: %d\n", -[TKSlotParameters securePINVerificationSupported](self, "securePINVerificationSupported")];
+  [string appendFormat:@"    securePINChangeSupported: %d\n", -[TKSlotParameters securePINChangeSupported](self, "securePINChangeSupported")];
+  displayMaxCharacters = [(TKSlotParameters *)self displayMaxCharacters];
+  [string appendFormat:@"    displayMaxCharacters: %@\n", displayMaxCharacters];
 
-  v8 = [(TKSlotParameters *)self displayMaxLines];
-  [v3 appendFormat:@"    displayMaxLines: %@ \n", v8];
+  displayMaxLines = [(TKSlotParameters *)self displayMaxLines];
+  [string appendFormat:@"    displayMaxLines: %@ \n", displayMaxLines];
 
-  v9 = [(TKSlotParameters *)self pinValidationCondition];
-  [v3 appendFormat:@"    pinValidationCondition: %@ \n", v9];
+  pinValidationCondition = [(TKSlotParameters *)self pinValidationCondition];
+  [string appendFormat:@"    pinValidationCondition: %@ \n", pinValidationCondition];
 
   [(TKSlotParameters *)self interactionTimeout];
-  [v3 appendFormat:@"    interactionTimeout: %f\n", v10];
-  v11 = [(TKSlotParameters *)self minPINLength];
-  [v3 appendFormat:@"    minPINLength: %@\n", v11];
+  [string appendFormat:@"    interactionTimeout: %f\n", v10];
+  minPINLength = [(TKSlotParameters *)self minPINLength];
+  [string appendFormat:@"    minPINLength: %@\n", minPINLength];
 
-  v12 = [(TKSlotParameters *)self maxPINLength];
-  [v3 appendFormat:@"    maxPINLength: %@\n", v12];
+  maxPINLength = [(TKSlotParameters *)self maxPINLength];
+  [string appendFormat:@"    maxPINLength: %@\n", maxPINLength];
 
-  [v3 appendFormat:@"    delegateWithControlMethod: %d\n", -[TKSlotParameters delegateWithControlMethod](self, "delegateWithControlMethod")];
-  [v3 appendFormat:@"    delegateWithEscapeMethod: %d\n}\n", -[TKSlotParameters delegateWithEscapeMethod](self, "delegateWithEscapeMethod")];
+  [string appendFormat:@"    delegateWithControlMethod: %d\n", -[TKSlotParameters delegateWithControlMethod](self, "delegateWithControlMethod")];
+  [string appendFormat:@"    delegateWithEscapeMethod: %d\n}\n", -[TKSlotParameters delegateWithEscapeMethod](self, "delegateWithEscapeMethod")];
 
-  return v3;
+  return string;
 }
 
 - (id)getDictionaryParameters
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   outCount = 0;
   v4 = objc_opt_class();
   v5 = class_copyPropertyList(v4, &outCount);
@@ -113,14 +113,14 @@
       if (v9)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:Name];
-        [v3 setObject:v9 forKey:v10];
+        [dictionary setObject:v9 forKey:v10];
       }
     }
   }
 
   free(v5);
 
-  return v3;
+  return dictionary;
 }
 
 @end

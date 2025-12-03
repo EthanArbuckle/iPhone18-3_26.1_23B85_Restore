@@ -1,24 +1,24 @@
 @interface PXPeopleDataSource
 - (NSArray)persons;
-- (PXPeopleDataSource)initWithName:(id)a3 objects:(id)a4;
-- (PXPeopleDataSource)initWithName:(id)a3 objectsReloadBlock:(id)a4 asynchronousLoad:(BOOL)a5 callbackDelegate:(id)a6;
+- (PXPeopleDataSource)initWithName:(id)name objects:(id)objects;
+- (PXPeopleDataSource)initWithName:(id)name objectsReloadBlock:(id)block asynchronousLoad:(BOOL)load callbackDelegate:(id)delegate;
 - (PXPeopleDataSourceDelegate)delegate;
-- (id)_itemsArrayFromObjects:(id)a3;
+- (id)_itemsArrayFromObjects:(id)objects;
 - (id)localizedTitle;
-- (id)memberAtIndex:(unint64_t)a3;
-- (id)personAtIndex:(unint64_t)a3;
-- (id)titleAtIndex:(unint64_t)a3;
+- (id)memberAtIndex:(unint64_t)index;
+- (id)personAtIndex:(unint64_t)index;
+- (id)titleAtIndex:(unint64_t)index;
 - (unint64_t)numberOfMembers;
-- (unint64_t)photoQuantityAtIndex:(unint64_t)a3;
-- (void)_asyncLoadImageForItem:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 resultHandler:(id)a6;
+- (unint64_t)photoQuantityAtIndex:(unint64_t)index;
+- (void)_asyncLoadImageForItem:(id)item targetSize:(CGSize)size displayScale:(double)scale resultHandler:(id)handler;
 - (void)_updateMembers;
 - (void)dealloc;
-- (void)imageAtIndex:(unint64_t)a3 targetSize:(CGSize)a4 displayScale:(double)a5 resultHandler:(id)a6;
-- (void)loadObjectsAndUpdateMembersWithCompletion:(id)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setObjects:(id)a3;
-- (void)setReloadBlock:(id)a3;
-- (void)setSortComparator:(id)a3;
+- (void)imageAtIndex:(unint64_t)index targetSize:(CGSize)size displayScale:(double)scale resultHandler:(id)handler;
+- (void)loadObjectsAndUpdateMembersWithCompletion:(id)completion;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setObjects:(id)objects;
+- (void)setReloadBlock:(id)block;
+- (void)setSortComparator:(id)comparator;
 @end
 
 @implementation PXPeopleDataSource
@@ -30,27 +30,27 @@
   return WeakRetained;
 }
 
-- (void)_asyncLoadImageForItem:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 resultHandler:(id)a6
+- (void)_asyncLoadImageForItem:(id)item targetSize:(CGSize)size displayScale:(double)scale resultHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
     v7 = MEMORY[0x1E696ABC0];
-    v8 = a6;
+    handlerCopy = handler;
     v9 = [v7 px_genericErrorWithDebugDescription:{@"Self isn't subclassed, returning a nil image: %@", self}];
-    v8[2](v8, 0, v9, *off_1E77221F8, *(off_1E77221F8 + 1), *(off_1E77221F8 + 2), *(off_1E77221F8 + 3));
+    handlerCopy[2](handlerCopy, 0, v9, *off_1E77221F8, *(off_1E77221F8 + 1), *(off_1E77221F8 + 2), *(off_1E77221F8 + 3));
   }
 }
 
-- (id)_itemsArrayFromObjects:(id)a3
+- (id)_itemsArrayFromObjects:(id)objects
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  objectsCopy = objects;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = objectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -88,15 +88,15 @@
   aBlock[3] = &unk_1E774C648;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PXPeopleDataSource *)self reloadQueue];
-  if (!v4 || (label = dispatch_queue_get_label(0)) != 0 && !strcmp(label, "com.apple.Photos.PeopleDataSourceReloadQueue"))
+  reloadQueue = [(PXPeopleDataSource *)self reloadQueue];
+  if (!reloadQueue || (label = dispatch_queue_get_label(0)) != 0 && !strcmp(label, "com.apple.Photos.PeopleDataSourceReloadQueue"))
   {
     v3[2](v3);
   }
 
   else
   {
-    dispatch_sync(v4, v3);
+    dispatch_sync(reloadQueue, v3);
   }
 }
 
@@ -152,11 +152,11 @@ void __36__PXPeopleDataSource__updateMembers__block_invoke(uint64_t a1)
   [*(a1 + 32) setMembers:v9];
 }
 
-- (void)loadObjectsAndUpdateMembersWithCompletion:(id)a3
+- (void)loadObjectsAndUpdateMembersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PXPeopleDataSource *)self reloadQueue];
-  if (v5)
+  completionCopy = completion;
+  reloadQueue = [(PXPeopleDataSource *)self reloadQueue];
+  if (reloadQueue)
   {
     if ([(PXPeopleDataSource *)self useAsynchronousLoad])
     {
@@ -168,9 +168,9 @@ void __36__PXPeopleDataSource__updateMembers__block_invoke(uint64_t a1)
       v6 = MEMORY[0x1E69E97D0];
     }
 
-    v7 = [(PXPeopleDataSource *)self reloadBlock];
-    v8 = v7;
-    if (v7)
+    reloadBlock = [(PXPeopleDataSource *)self reloadBlock];
+    v8 = reloadBlock;
+    if (reloadBlock)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -178,9 +178,9 @@ void __36__PXPeopleDataSource__updateMembers__block_invoke(uint64_t a1)
       v12[3] = &unk_1E7744FE0;
       v12[4] = self;
       v9 = &v13;
-      v13 = v7;
-      v14 = v4;
-      v6(v5, v12);
+      v13 = reloadBlock;
+      v14 = completionCopy;
+      v6(reloadQueue, v12);
     }
 
     else
@@ -191,14 +191,14 @@ void __36__PXPeopleDataSource__updateMembers__block_invoke(uint64_t a1)
       v10[3] = &unk_1E774C2F0;
       v10[4] = self;
       v9 = &v11;
-      v11 = v4;
-      v6(v5, v10);
+      v11 = completionCopy;
+      v6(reloadQueue, v10);
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -233,32 +233,32 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
   return result;
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  objc_storeStrong(&self->_filterPredicate, a3);
+  objc_storeStrong(&self->_filterPredicate, predicate);
 
   [(PXPeopleDataSource *)self _updateMembers];
 }
 
-- (void)setSortComparator:(id)a3
+- (void)setSortComparator:(id)comparator
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(comparator);
   sortComparator = self->_sortComparator;
   self->_sortComparator = v4;
 
   [(PXPeopleDataSource *)self _updateMembers];
 }
 
-- (void)setReloadBlock:(id)a3
+- (void)setReloadBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   reloadBlock = self->_reloadBlock;
   self->_reloadBlock = v4;
 }
 
-- (void)setObjects:(id)a3
+- (void)setObjects:(id)objects
 {
-  objc_storeStrong(&self->_objects, a3);
+  objc_storeStrong(&self->_objects, objects);
 
   [(PXPeopleDataSource *)self _updateMembers];
 }
@@ -279,50 +279,50 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
   return v3;
 }
 
-- (unint64_t)photoQuantityAtIndex:(unint64_t)a3
+- (unint64_t)photoQuantityAtIndex:(unint64_t)index
 {
-  v3 = [(PXPeopleDataSource *)self personAtIndex:a3];
-  v4 = [v3 faceCount];
+  v3 = [(PXPeopleDataSource *)self personAtIndex:index];
+  faceCount = [v3 faceCount];
 
-  return v4;
+  return faceCount;
 }
 
-- (void)imageAtIndex:(unint64_t)a3 targetSize:(CGSize)a4 displayScale:(double)a5 resultHandler:(id)a6
+- (void)imageAtIndex:(unint64_t)index targetSize:(CGSize)size displayScale:(double)scale resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = [(PXPeopleDataSource *)self memberAtIndex:a3];
-  [(PXPeopleDataSource *)self _asyncLoadImageForItem:v12 targetSize:v11 displayScale:width resultHandler:height, a5];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  v12 = [(PXPeopleDataSource *)self memberAtIndex:index];
+  [(PXPeopleDataSource *)self _asyncLoadImageForItem:v12 targetSize:handlerCopy displayScale:width resultHandler:height, scale];
 }
 
-- (id)titleAtIndex:(unint64_t)a3
+- (id)titleAtIndex:(unint64_t)index
 {
-  v3 = [(PXPeopleDataSource *)self personAtIndex:a3];
-  v4 = [v3 name];
+  v3 = [(PXPeopleDataSource *)self personAtIndex:index];
+  name = [v3 name];
 
-  return v4;
+  return name;
 }
 
-- (id)personAtIndex:(unint64_t)a3
+- (id)personAtIndex:(unint64_t)index
 {
-  v3 = [(PXPeopleDataSource *)self memberAtIndex:a3];
-  v4 = [v3 modelObject];
+  v3 = [(PXPeopleDataSource *)self memberAtIndex:index];
+  modelObject = [v3 modelObject];
 
-  return v4;
+  return modelObject;
 }
 
-- (id)memberAtIndex:(unint64_t)a3
+- (id)memberAtIndex:(unint64_t)index
 {
-  v4 = [(PXPeopleDataSource *)self members];
-  if ([v4 count] <= a3)
+  members = [(PXPeopleDataSource *)self members];
+  if ([members count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [members objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -330,13 +330,13 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
 
 - (unint64_t)numberOfMembers
 {
-  v3 = [(PXPeopleDataSource *)self members];
-  v4 = [v3 count];
+  members = [(PXPeopleDataSource *)self members];
+  v4 = [members count];
 
-  v5 = [(PXPeopleDataSource *)self maximumNumberOfMembers];
-  if (v4 >= v5)
+  maximumNumberOfMembers = [(PXPeopleDataSource *)self maximumNumberOfMembers];
+  if (v4 >= maximumNumberOfMembers)
   {
-    v6 = v5;
+    v6 = maximumNumberOfMembers;
   }
 
   else
@@ -344,7 +344,7 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
     v6 = v4;
   }
 
-  if (v5)
+  if (maximumNumberOfMembers)
   {
     return v6;
   }
@@ -357,7 +357,7 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
 
 - (NSArray)persons
 {
-  v2 = [(PXPeopleDataSource *)self members];
+  members = [(PXPeopleDataSource *)self members];
   v3 = PFMap();
 
   return v3;
@@ -372,55 +372,55 @@ uint64_t __64__PXPeopleDataSource_loadObjectsAndUpdateMembersWithCompletion___bl
   [(PXPeopleDataSource *)&v3 dealloc];
 }
 
-- (PXPeopleDataSource)initWithName:(id)a3 objects:(id)a4
+- (PXPeopleDataSource)initWithName:(id)name objects:(id)objects
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  objectsCopy = objects;
   v14.receiver = self;
   v14.super_class = PXPeopleDataSource;
   v9 = [(PXPeopleDataSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_objects, a4);
-    v11 = [(PXPeopleDataSource *)v10 defaultComparator];
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_objects, objects);
+    defaultComparator = [(PXPeopleDataSource *)v10 defaultComparator];
     sortComparator = v10->_sortComparator;
-    v10->_sortComparator = v11;
+    v10->_sortComparator = defaultComparator;
   }
 
   return v10;
 }
 
-- (PXPeopleDataSource)initWithName:(id)a3 objectsReloadBlock:(id)a4 asynchronousLoad:(BOOL)a5 callbackDelegate:(id)a6
+- (PXPeopleDataSource)initWithName:(id)name objectsReloadBlock:(id)block asynchronousLoad:(BOOL)load callbackDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  blockCopy = block;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = PXPeopleDataSource;
   v14 = [(PXPeopleDataSource *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeWeak(&v15->_delegate, v13);
-    v15->_useAsynchronousLoad = a5;
-    if (v12)
+    objc_storeStrong(&v14->_name, name);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    v15->_useAsynchronousLoad = load;
+    if (blockCopy)
     {
       v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
       v17 = dispatch_queue_create("com.apple.Photos.PeopleDataSourceReloadQueue", v16);
       reloadQueue = v15->_reloadQueue;
       v15->_reloadQueue = v17;
 
-      v19 = _Block_copy(v12);
+      v19 = _Block_copy(blockCopy);
       reloadBlock = v15->_reloadBlock;
       v15->_reloadBlock = v19;
     }
 
-    v21 = [(PXPeopleDataSource *)v15 defaultComparator];
+    defaultComparator = [(PXPeopleDataSource *)v15 defaultComparator];
     sortComparator = v15->_sortComparator;
-    v15->_sortComparator = v21;
+    v15->_sortComparator = defaultComparator;
   }
 
   return v15;

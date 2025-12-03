@@ -5,31 +5,31 @@
 + (id)_BAACertTTLInMinutesFromServerBag;
 + (id)_BAAFetchTimeoutFromServerBag;
 + (id)retrieveLocalUDID;
-+ (void)absintheValidationSessionOnQueue:(id)a3 withCompletion:(id)a4;
-+ (void)baaOnlyValidationSessionOnQueue:(id)a3 withCompletion:(id)a4;
-+ (void)validationSessionOnQueue:(id)a3 mechanism:(int64_t)a4 withCompletion:(id)a5;
++ (void)absintheValidationSessionOnQueue:(id)queue withCompletion:(id)completion;
++ (void)baaOnlyValidationSessionOnQueue:(id)queue withCompletion:(id)completion;
++ (void)validationSessionOnQueue:(id)queue mechanism:(int64_t)mechanism withCompletion:(id)completion;
 - (BOOL)_shouldUseAbsintheV4;
 - (BOOL)_shouldUseBAACertOption;
 - (BOOL)_shouldUseDebugPiscoLogging;
-- (IDSValidationSession)initWithQueue:(id)a3 mechanism:(int64_t)a4;
+- (IDSValidationSession)initWithQueue:(id)queue mechanism:(int64_t)mechanism;
 - (id)_deviceAbsintheIMEI;
 - (id)_deviceAbsintheMEID;
 - (id)_deviceAbsintheSerialNumber;
-- (id)activateWithValidationData:(id)a3 serverKey:(id)a4;
+- (id)activateWithValidationData:(id)data serverKey:(id)key;
 - (id)description;
-- (void)_fetchDeviceIdentityIfNeededWithCompletion:(id)a3;
+- (void)_fetchDeviceIdentityIfNeededWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)headersBySigningData:(id)a3 completion:(id)a4;
+- (void)headersBySigningData:(id)data completion:(id)completion;
 - (void)invalidate;
-- (void)purgeCachedCertsForSubsystemMechanism:(int64_t)a3;
-- (void)signData:(id)a3 completion:(id)a4;
+- (void)purgeCachedCertsForSubsystemMechanism:(int64_t)mechanism;
+- (void)signData:(id)data completion:(id)completion;
 @end
 
 @implementation IDSValidationSession
 
-- (IDSValidationSession)initWithQueue:(id)a3 mechanism:(int64_t)a4
+- (IDSValidationSession)initWithQueue:(id)queue mechanism:(int64_t)mechanism
 {
-  v7 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = IDSValidationSession;
   v8 = [(IDSValidationSession *)&v13 init];
@@ -37,9 +37,9 @@
   if (v8)
   {
     v8->_stateFlags = 0;
-    objc_storeStrong(&v8->_queue, a3);
-    v9->_mechanism = a4;
-    v10 = [[IDSBAASigner alloc] initWithQueue:v7];
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_mechanism = mechanism;
+    v10 = [[IDSBAASigner alloc] initWithQueue:queueCopy];
     baaSigner = v9->_baaSigner;
     v9->_baaSigner = v10;
   }
@@ -50,9 +50,9 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSValidationSession *)self isInitializedForSigning];
+  isInitializedForSigning = [(IDSValidationSession *)self isInitializedForSigning];
   v5 = @"NO";
-  if (v4)
+  if (isInitializedForSigning)
   {
     v5 = @"YES";
   }
@@ -68,46 +68,46 @@
   [(IDSValidationSession *)&v3 dealloc];
 }
 
-+ (void)validationSessionOnQueue:(id)a3 mechanism:(int64_t)a4 withCompletion:(id)a5
++ (void)validationSessionOnQueue:(id)queue mechanism:(int64_t)mechanism withCompletion:(id)completion
 {
-  v9 = a3;
-  v8 = a5;
-  if (a4 == 1)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (mechanism == 1)
   {
-    [a1 baaOnlyValidationSessionOnQueue:v9 withCompletion:v8];
+    [self baaOnlyValidationSessionOnQueue:queueCopy withCompletion:completionCopy];
   }
 
-  else if (!a4)
+  else if (!mechanism)
   {
-    [a1 absintheValidationSessionOnQueue:v9 withCompletion:v8];
+    [self absintheValidationSessionOnQueue:queueCopy withCompletion:completionCopy];
   }
 }
 
-+ (void)baaOnlyValidationSessionOnQueue:(id)a3 withCompletion:(id)a4
++ (void)baaOnlyValidationSessionOnQueue:(id)queue withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[IDSValidationSession alloc] initWithQueue:v6 mechanism:1];
+  completionCopy = completion;
+  queueCopy = queue;
+  v7 = [[IDSValidationSession alloc] initWithQueue:queueCopy mechanism:1];
 
-  v8 = [(IDSValidationSession *)v7 baaSigner];
+  baaSigner = [(IDSValidationSession *)v7 baaSigner];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1004582BC;
   v11[3] = &unk_100BDCC30;
   v12 = v7;
-  v13 = v5;
-  v9 = v5;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
-  [v8 fetchBAAIdentityIfNeededWithCompletion:v11];
+  [baaSigner fetchBAAIdentityIfNeededWithCompletion:v11];
 }
 
-+ (void)absintheValidationSessionOnQueue:(id)a3 withCompletion:(id)a4
++ (void)absintheValidationSessionOnQueue:(id)queue withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[IDSValidationSession alloc] initWithQueue:v5 mechanism:0];
-  v8 = [(IDSValidationSession *)v7 queue];
-  dispatch_assert_queue_V2(v8);
+  queueCopy = queue;
+  completionCopy = completion;
+  v7 = [[IDSValidationSession alloc] initWithQueue:queueCopy mechanism:0];
+  queue = [(IDSValidationSession *)v7 queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = +[IMRGLog registration];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -118,13 +118,13 @@
   }
 
   [(IDSValidationSession *)v7 setHelloMessage:0];
-  v10 = [(IDSValidationSession *)v7 _deviceAbsintheUDID];
-  [(IDSValidationSession *)v7 setUDID:v10];
+  _deviceAbsintheUDID = [(IDSValidationSession *)v7 _deviceAbsintheUDID];
+  [(IDSValidationSession *)v7 setUDID:_deviceAbsintheUDID];
 
-  v11 = [(IDSValidationSession *)v7 UDID];
-  LODWORD(v10) = v11 == 0;
+  uDID = [(IDSValidationSession *)v7 UDID];
+  LODWORD(_deviceAbsintheUDID) = uDID == 0;
 
-  if (v10)
+  if (_deviceAbsintheUDID)
   {
     v16 = +[IMRGLog warning];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -133,19 +133,19 @@
     }
 
     v17 = [NSError errorWithDomain:@"IDSValidationSessionErrorDomain" code:-3000 userInfo:0];
-    v6[2](v6, v7, v17);
+    completionCopy[2](completionCopy, v7, v17);
   }
 
   else
   {
-    v12 = [(IDSValidationSession *)v7 _deviceAbsintheSerialNumber];
-    [(IDSValidationSession *)v7 setSerialNumber:v12];
+    _deviceAbsintheSerialNumber = [(IDSValidationSession *)v7 _deviceAbsintheSerialNumber];
+    [(IDSValidationSession *)v7 setSerialNumber:_deviceAbsintheSerialNumber];
 
-    v13 = [(IDSValidationSession *)v7 _deviceAbsintheIMEI];
-    [(IDSValidationSession *)v7 setIMEI:v13];
+    _deviceAbsintheIMEI = [(IDSValidationSession *)v7 _deviceAbsintheIMEI];
+    [(IDSValidationSession *)v7 setIMEI:_deviceAbsintheIMEI];
 
-    v14 = [(IDSValidationSession *)v7 _deviceAbsintheMEID];
-    [(IDSValidationSession *)v7 setMEID:v14];
+    _deviceAbsintheMEID = [(IDSValidationSession *)v7 _deviceAbsintheMEID];
+    [(IDSValidationSession *)v7 setMEID:_deviceAbsintheMEID];
 
     if ([(IDSValidationSession *)v7 pscSession])
     {
@@ -168,38 +168,38 @@
       }
     }
 
-    v15 = [(IDSValidationSession *)v7 baaSigner];
+    baaSigner = [(IDSValidationSession *)v7 baaSigner];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1004587B0;
     v18[3] = &unk_100BDCC58;
     p_buf = &buf;
     v19 = v7;
-    v20 = v6;
-    [v15 fetchBAAIdentityIfNeededWithCompletion:v18];
+    v20 = completionCopy;
+    [baaSigner fetchBAAIdentityIfNeededWithCompletion:v18];
 
     _Block_object_dispose(&buf, 8);
   }
 }
 
-- (void)purgeCachedCertsForSubsystemMechanism:(int64_t)a3
+- (void)purgeCachedCertsForSubsystemMechanism:(int64_t)mechanism
 {
-  if (a3 == 1)
+  if (mechanism == 1)
   {
-    v4 = [(IDSValidationSession *)self baaSigner];
-    [v4 purgeBAACertForTopic:0];
+    baaSigner = [(IDSValidationSession *)self baaSigner];
+    [baaSigner purgeBAACertForTopic:0];
   }
 }
 
-- (id)activateWithValidationData:(id)a3 serverKey:(id)a4
+- (id)activateWithValidationData:(id)data serverKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"YES";
-    if (v6)
+    if (dataCopy)
     {
       v10 = @"YES";
     }
@@ -213,7 +213,7 @@
     *&buf[4] = self;
     v36 = v10;
     v35 = 2112;
-    if (!v7)
+    if (!keyCopy)
     {
       v9 = @"NO";
     }
@@ -229,7 +229,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v6;
+      *&buf[4] = dataCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Pisco] {validationData: %@}", buf, 0xCu);
     }
 
@@ -237,22 +237,22 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = keyCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[Pisco] {serverKey: %@}", buf, 0xCu);
     }
   }
 
-  v13 = 0;
-  if (v6 && v7)
+  bAACert = 0;
+  if (dataCopy && keyCopy)
   {
     if (![(IDSValidationSession *)self pscSession]|| [(IDSValidationSession *)self _shouldUsePSCBAA])
     {
 LABEL_18:
-      v13 = 0;
+      bAACert = 0;
       goto LABEL_25;
     }
 
-    v14 = sub_100913FB4(-[IDSValidationSession pscSession](self, "pscSession"), [v6 bytes], objc_msgSend(v6, "length"), objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"));
+    v14 = sub_100913FB4(-[IDSValidationSession pscSession](self, "pscSession"), [dataCopy bytes], objc_msgSend(dataCopy, "length"), objc_msgSend(keyCopy, "bytes"), objc_msgSend(keyCopy, "length"));
     v15 = +[IMRGLog registration];
     v16 = v15;
     if (v14)
@@ -268,7 +268,7 @@ LABEL_18:
         [(IDSValidationSession *)self setPscSession:0];
       }
 
-      v13 = [NSError errorWithDomain:@"IDSValidationSessionErrorDomain" code:-4000 userInfo:0];
+      bAACert = [NSError errorWithDomain:@"IDSValidationSessionErrorDomain" code:-4000 userInfo:0];
     }
 
     else
@@ -280,16 +280,16 @@ LABEL_18:
       }
 
       [(IDSValidationSession *)self setStateFlags:[(IDSValidationSession *)self stateFlags]| 1];
-      v13 = [(IDSValidationSession *)self BAACert];
-      if (v13)
+      bAACert = [(IDSValidationSession *)self BAACert];
+      if (bAACert)
       {
-        v18 = [(IDSValidationSession *)self intermediateRootCert];
-        if (v18)
+        intermediateRootCert = [(IDSValidationSession *)self intermediateRootCert];
+        if (intermediateRootCert)
         {
-          v19 = v18;
-          v20 = [(IDSValidationSession *)self BIKKeyRef];
+          v19 = intermediateRootCert;
+          bIKKeyRef = [(IDSValidationSession *)self BIKKeyRef];
 
-          if (v20)
+          if (bIKKeyRef)
           {
             v21 = +[IMRGLog registration];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -299,15 +299,15 @@ LABEL_18:
             }
 
             *buf = [(IDSValidationSession *)self pscSession];
-            v32 = [(IDSValidationSession *)self BIKKeyRef];
-            v22 = [(IDSValidationSession *)self BAACert];
-            v31 = [v22 bytes];
-            v23 = [(IDSValidationSession *)self BAACert];
-            v24 = [v23 length];
-            v25 = [(IDSValidationSession *)self intermediateRootCert];
-            v26 = [v25 bytes];
-            v27 = [(IDSValidationSession *)self intermediateRootCert];
-            v28 = sub_100913E5C(buf, v32, v31, v24, v26, [v27 length]);
+            bIKKeyRef2 = [(IDSValidationSession *)self BIKKeyRef];
+            bAACert2 = [(IDSValidationSession *)self BAACert];
+            bytes = [bAACert2 bytes];
+            bAACert3 = [(IDSValidationSession *)self BAACert];
+            v24 = [bAACert3 length];
+            intermediateRootCert2 = [(IDSValidationSession *)self intermediateRootCert];
+            bytes2 = [intermediateRootCert2 bytes];
+            intermediateRootCert3 = [(IDSValidationSession *)self intermediateRootCert];
+            v28 = sub_100913E5C(buf, bIKKeyRef2, bytes, v24, bytes2, [intermediateRootCert3 length]);
 
             if (v28 || !*buf)
             {
@@ -344,44 +344,44 @@ LABEL_18:
 
 LABEL_25:
 
-  return v13;
+  return bAACert;
 }
 
-- (void)signData:(id)a3 completion:(id)a4
+- (void)signData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Signing data using validation session { self: %@ }", buf, 0xCu);
   }
 
-  v9 = [v6 sha256Digest];
-  if (([(IDSValidationSession *)self stateFlags]& 1) == 0 || !v9)
+  sha256Digest = [dataCopy sha256Digest];
+  if (([(IDSValidationSession *)self stateFlags]& 1) == 0 || !sha256Digest)
   {
     goto LABEL_12;
   }
 
-  v10 = [(IDSValidationSession *)self mechanism];
-  if (v10 == 1)
+  mechanism = [(IDSValidationSession *)self mechanism];
+  if (mechanism == 1)
   {
-    v17 = [(IDSValidationSession *)self baaSigner];
-    v18 = [(IDSValidationSession *)self BIKKeyRef];
+    baaSigner = [(IDSValidationSession *)self baaSigner];
+    bIKKeyRef = [(IDSValidationSession *)self BIKKeyRef];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100459B30;
     v26[3] = &unk_100BDCCA8;
-    v27 = v7;
-    [v17 signData:v6 withKey:v18 completion:v26];
+    v27 = completionCopy;
+    [baaSigner signData:dataCopy withKey:bIKKeyRef completion:v26];
 
     v15 = v27;
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!mechanism)
   {
     if ([(IDSValidationSession *)self pscSession])
     {
@@ -389,7 +389,7 @@ LABEL_25:
       v35 = 0;
       v34 = 0;
       v33 = 0;
-      if (sub_1009143C8([(IDSValidationSession *)self pscSession], [(IDSValidationSession *)v9 bytes], [(IDSValidationSession *)v9 length], &v36, &v35, &v34, &v33))
+      if (sub_1009143C8([(IDSValidationSession *)self pscSession], [(IDSValidationSession *)sha256Digest bytes], [(IDSValidationSession *)sha256Digest length], &v36, &v35, &v34, &v33))
       {
         v11 = +[IMRGLog warning];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -419,7 +419,7 @@ LABEL_25:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v38 = v9;
+            selfCopy = sha256Digest;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[Pisco] {dataToSign: %@}", buf, 0xCu);
           }
 
@@ -427,7 +427,7 @@ LABEL_25:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v38 = v14;
+            selfCopy = v14;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[Pisco] {absintheSignature: %@}", buf, 0xCu);
           }
 
@@ -435,7 +435,7 @@ LABEL_25:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v38 = v13;
+            selfCopy = v13;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[Pisco] {outServKey: %@}", buf, 0xCu);
           }
         }
@@ -455,8 +455,8 @@ LABEL_25:
         v34 = 0;
       }
 
-      v23 = [(IDSValidationSession *)self baaSigner];
-      v24 = [(IDSValidationSession *)self BIKKeyRef];
+      baaSigner2 = [(IDSValidationSession *)self baaSigner];
+      bIKKeyRef2 = [(IDSValidationSession *)self BIKKeyRef];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100459AA4;
@@ -464,11 +464,11 @@ LABEL_25:
       v29 = v14;
       v30 = v13;
       v31 = v12;
-      v32 = v7;
+      v32 = completionCopy;
       v15 = v12;
       v25 = v13;
       v16 = v14;
-      [v23 signData:v6 withKey:v24 completion:v28];
+      [baaSigner2 signData:dataCopy withKey:bIKKeyRef2 completion:v28];
 
       goto LABEL_13;
     }
@@ -476,25 +476,25 @@ LABEL_25:
 LABEL_12:
     v15 = [NSError errorWithDomain:@"IDSValidationSessionErrorDomain" code:-6000 userInfo:0];
     v16 = [[IDSValidationSigningResult alloc] initWithAbsintheResultData:0 absintheServerKey:0 absintheError:v15 baaResult:0];
-    (*(v7 + 2))(v7, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
 LABEL_13:
 
 LABEL_14:
   }
 }
 
-- (void)headersBySigningData:(id)a3 completion:(id)a4
+- (void)headersBySigningData:(id)data completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100459C80;
   v7[3] = &unk_100BDCCD0;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(IDSValidationSession *)v8 signData:v6 completion:v7];
+  selfCopy = self;
+  dataCopy = data;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = dataCopy;
+  [(IDSValidationSession *)selfCopy signData:v6 completion:v7];
 }
 
 - (void)invalidate
@@ -503,7 +503,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating validation session { self: %@ }", &v4, 0xCu);
   }
 
@@ -530,7 +530,7 @@ LABEL_14:
 
 + (BOOL)isSigningSupported
 {
-  if ([a1 _isAbsintheV3EnabledByServerBag])
+  if ([self _isAbsintheV3EnabledByServerBag])
   {
     if (+[IMUserDefaults isPiscoDisabled])
     {
@@ -558,15 +558,15 @@ LABEL_14:
   v3 = [v2 objectForKey:@"absinthe-v3-enabled"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)_isBAAOptionEnabledByServerBag
@@ -584,7 +584,7 @@ LABEL_14:
     if (!v4)
     {
 LABEL_6:
-      v5 = 1;
+      bOOLValue = 1;
       goto LABEL_7;
     }
   }
@@ -595,10 +595,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 LABEL_7:
 
-  return v5;
+  return bOOLValue;
 }
 
 + (id)_BAAFetchTimeoutFromServerBag
@@ -643,9 +643,9 @@ LABEL_7:
   }
 
   v2 = +[IMLockdownManager sharedInstance];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
 - (BOOL)_shouldUseBAACertOption
@@ -678,25 +678,25 @@ LABEL_7:
   if (v2)
   {
     v3 = +[IMLockdownManager sharedInstance];
-    v4 = [v3 isInternalInstall];
+    isInternalInstall = [v3 isInternalInstall];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isInternalInstall;
   }
 
   return v2;
 }
 
-- (void)_fetchDeviceIdentityIfNeededWithCompletion:(id)a3
+- (void)_fetchDeviceIdentityIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSValidationSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSValidationSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(IDSValidationSession *)self _shouldUseBAACertOption])
   {
-    v6 = [(IDSValidationSession *)self BAAQueue];
+    bAAQueue = [(IDSValidationSession *)self BAAQueue];
 
-    if (!v6)
+    if (!bAAQueue)
     {
       v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v8 = dispatch_queue_create("com.apple.IDS.IDSValidationSession.BAA", v7);
@@ -719,12 +719,12 @@ LABEL_7:
     v37[3] = sub_10000A9A4;
     v37[4] = sub_10000BC44;
     v38 = 0;
-    v9 = [objc_opt_class() _BAACertTTLInMinutesFromServerBag];
-    v10 = v9;
+    _BAACertTTLInMinutesFromServerBag = [objc_opt_class() _BAACertTTLInMinutesFromServerBag];
+    v10 = _BAACertTTLInMinutesFromServerBag;
     v11 = &off_100C3DE20;
-    if (v9)
+    if (_BAACertTTLInMinutesFromServerBag)
     {
-      v11 = v9;
+      v11 = _BAACertTTLInMinutesFromServerBag;
     }
 
     v31[0] = _NSConcreteStackBlock;
@@ -733,7 +733,7 @@ LABEL_7:
     v31[3] = &unk_100BDCD48;
     v12 = v11;
     v32 = v12;
-    v33 = self;
+    selfCopy = self;
     v34 = v41;
     v35 = v39;
     v36 = v37;
@@ -742,17 +742,17 @@ LABEL_7:
     v23 = 3221225472;
     v24 = sub_10045B114;
     v25 = &unk_100BDCDC0;
-    v26 = self;
+    selfCopy2 = self;
     v28 = v41;
     v29 = v39;
     v30 = v37;
-    v27 = v4;
+    v27 = completionCopy;
     v14 = objc_retainBlock(&v22);
-    v15 = [objc_opt_class() _BAAFetchTimeoutFromServerBag];
-    v16 = v15;
-    if (v15)
+    _BAAFetchTimeoutFromServerBag = [objc_opt_class() _BAAFetchTimeoutFromServerBag];
+    v16 = _BAAFetchTimeoutFromServerBag;
+    if (_BAAFetchTimeoutFromServerBag)
     {
-      [v15 doubleValue];
+      [_BAAFetchTimeoutFromServerBag doubleValue];
       v18 = v17;
     }
 
@@ -778,14 +778,14 @@ LABEL_7:
     _Block_object_dispose(v41, 8);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v42 = NSDebugDescriptionErrorKey;
     v43 = @"Device identity fetch disabled";
     v19 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v20 = [NSError errorWithDomain:@"IDSValidationSessionInternalErrorDomain" code:-12000 userInfo:v19];
 
-    (*(v4 + 2))(v4, 0, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v20);
   }
 }
 

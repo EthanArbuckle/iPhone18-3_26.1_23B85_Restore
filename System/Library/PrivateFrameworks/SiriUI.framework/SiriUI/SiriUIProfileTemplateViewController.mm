@@ -9,8 +9,8 @@
   v4.receiver = self;
   v4.super_class = SiriUIProfileTemplateViewController;
   [(SiriUIBaseTemplateViewController *)&v4 loadView];
-  v3 = [(SiriUIProfileTemplateViewController *)self view];
-  [v3 setDelegate:self];
+  view = [(SiriUIProfileTemplateViewController *)self view];
+  [view setDelegate:self];
 }
 
 @end

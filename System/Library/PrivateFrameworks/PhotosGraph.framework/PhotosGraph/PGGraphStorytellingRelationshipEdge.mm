@@ -1,21 +1,21 @@
 @interface PGGraphStorytellingRelationshipEdge
 + (id)filter;
-+ (id)reducedRelationshipNameForLabels:(id)a3;
-+ (id)relationshipNameForLabel:(id)a3;
-- (PGGraphStorytellingRelationshipEdge)initWithRelationship:(id)a3 fromMeNode:(id)a4 toPersonNode:(id)a5;
++ (id)reducedRelationshipNameForLabels:(id)labels;
++ (id)relationshipNameForLabel:(id)label;
+- (PGGraphStorytellingRelationshipEdge)initWithRelationship:(id)relationship fromMeNode:(id)node toPersonNode:(id)personNode;
 @end
 
 @implementation PGGraphStorytellingRelationshipEdge
 
-- (PGGraphStorytellingRelationshipEdge)initWithRelationship:(id)a3 fromMeNode:(id)a4 toPersonNode:(id)a5
+- (PGGraphStorytellingRelationshipEdge)initWithRelationship:(id)relationship fromMeNode:(id)node toPersonNode:(id)personNode
 {
-  v8 = a3;
+  relationshipCopy = relationship;
   v13.receiver = self;
   v13.super_class = PGGraphStorytellingRelationshipEdge;
-  v9 = [(PGGraphEdge *)&v13 initWithSourceNode:a4 targetNode:a5];
+  v9 = [(PGGraphEdge *)&v13 initWithSourceNode:node targetNode:personNode];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [relationshipCopy copy];
     relationship = v9->_relationship;
     v9->_relationship = v10;
   }
@@ -23,24 +23,24 @@
   return v9;
 }
 
-+ (id)reducedRelationshipNameForLabels:(id)a3
++ (id)reducedRelationshipNameForLabels:(id)labels
 {
-  v4 = [PGGraphBuilder reducedRelationshipLabelForRelationshipLabels:a3];
-  v5 = [a1 relationshipNameForLabel:v4];
+  v4 = [PGGraphBuilder reducedRelationshipLabelForRelationshipLabels:labels];
+  v5 = [self relationshipNameForLabel:v4];
 
   return v5;
 }
 
-+ (id)relationshipNameForLabel:(id)a3
++ (id)relationshipNameForLabel:(id)label
 {
   v3 = relationshipNameForLabel__onceToken;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     dispatch_once(&relationshipNameForLabel__onceToken, &__block_literal_global_61919);
   }
 
-  v5 = [relationshipNameForLabel__multiWordRelationshipNameForLabel objectForKeyedSubscript:v4];
+  v5 = [relationshipNameForLabel__multiWordRelationshipNameForLabel objectForKeyedSubscript:labelCopy];
   v6 = v5;
   if (v5)
   {
@@ -49,7 +49,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = labelCopy;
   }
 
   v8 = v7;

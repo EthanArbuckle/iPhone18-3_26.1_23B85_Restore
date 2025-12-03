@@ -1,51 +1,51 @@
 @interface CBEDRModule
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (CBEDRModule)initWithQueue:(id)a3 display:(id)a4 colorModule:(id)a5 andDisplayModule:(id)a6;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (CBEDRModule)initWithQueue:(id)queue display:(id)display colorModule:(id)module andDisplayModule:(id)displayModule;
 - (void)dealloc;
-- (void)handleALSEvent:(id)a3;
-- (void)handleBrightnessUpdate:(id)a3;
-- (void)handleHIDEventInternal:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
-- (void)handleTargetWhitepointUpdate:(id)a3;
+- (void)handleALSEvent:(id)event;
+- (void)handleBrightnessUpdate:(id)update;
+- (void)handleHIDEventInternal:(__IOHIDEvent *)internal from:(__IOHIDServiceClient *)from;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
+- (void)handleTargetWhitepointUpdate:(id)update;
 - (void)start;
 - (void)updateEDRState;
 @end
 
 @implementation CBEDRModule
 
-- (CBEDRModule)initWithQueue:(id)a3 display:(id)a4 colorModule:(id)a5 andDisplayModule:(id)a6
+- (CBEDRModule)initWithQueue:(id)queue display:(id)display colorModule:(id)module andDisplayModule:(id)displayModule
 {
   v52 = *MEMORY[0x1E69E9840];
-  v49 = self;
+  selfCopy = self;
   v48 = a2;
-  v47 = a3;
-  v46 = a4;
-  v45 = a5;
-  v44 = a6;
+  queueCopy = queue;
+  displayCopy = display;
+  moduleCopy = module;
+  displayModuleCopy = displayModule;
   v43.receiver = self;
   v43.super_class = CBEDRModule;
-  v49 = [(CBModule *)&v43 initWithQueue:a3];
-  if (!v49)
+  selfCopy = [(CBModule *)&v43 initWithQueue:queue];
+  if (!selfCopy)
   {
     goto LABEL_41;
   }
 
-  if (v46)
+  if (displayCopy)
   {
     context = objc_autoreleasePoolPush();
-    v6 = os_log_create("com.apple.CoreBrightness.EDR", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v46, "displayId")), "UTF8String"]);
-    *(v49 + 2) = v6;
+    v6 = os_log_create("com.apple.CoreBrightness.EDR", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(displayCopy, "displayId")), "UTF8String"]);
+    *(selfCopy + 2) = v6;
     objc_autoreleasePoolPop(context);
   }
 
   else
   {
     v7 = os_log_create("com.apple.CoreBrightness.EDR", "default");
-    *(v49 + 2) = v7;
+    *(selfCopy + 2) = v7;
   }
 
-  if (!*(v49 + 2))
+  if (!*(selfCopy + 2))
   {
     v28 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v42 = v28;
@@ -59,31 +59,31 @@
     }
   }
 
-  v8 = MEMORY[0x1E69E5928](v46);
-  *(v49 + 8) = v8;
-  v9 = MEMORY[0x1E69E5928](v44);
-  *(v49 + 9) = v9;
-  v10 = MEMORY[0x1E69E5928](v45);
-  *(v49 + 10) = v10;
+  v8 = MEMORY[0x1E69E5928](displayCopy);
+  *(selfCopy + 8) = v8;
+  v9 = MEMORY[0x1E69E5928](displayModuleCopy);
+  *(selfCopy + 9) = v9;
+  v10 = MEMORY[0x1E69E5928](moduleCopy);
+  *(selfCopy + 10) = v10;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  *(v49 + 11) = v11;
+  *(selfCopy + 11) = v11;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  *(v49 + 12) = v12;
+  *(selfCopy + 12) = v12;
   v39 = objc_alloc_init(CBBrightestALSFilter);
   if (v39)
   {
-    [*(v49 + 11) addObject:v39];
+    [*(selfCopy + 11) addObject:v39];
   }
 
-  v25 = [MEMORY[0x1E6979550] serverIfRunning];
-  v38 = [v25 displayWithDisplayId:{objc_msgSend(v46, "displayId")}];
+  serverIfRunning = [MEMORY[0x1E6979550] serverIfRunning];
+  v38 = [serverIfRunning displayWithDisplayId:{objc_msgSend(displayCopy, "displayId")}];
   if (v38)
   {
     [v38 maximumLuminance];
-    *(v49 + 10) = v13;
-    if (*(v49 + 2))
+    *(selfCopy + 10) = v13;
+    if (*(selfCopy + 2))
     {
-      v24 = *(v49 + 2);
+      v24 = *(selfCopy + 2);
     }
 
     else
@@ -105,17 +105,17 @@
     v36 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_8_0(v51, COERCE__INT64(*(v49 + 10)));
+      __os_log_helper_16_0_1_8_0(v51, COERCE__INT64(*(selfCopy + 10)));
       _os_log_impl(&dword_1DE8E5000, v37, v36, "maximum luminance if %f", v51, 0xCu);
     }
   }
 
   else
   {
-    *(v49 + 10) = 1153138688;
-    if (*(v49 + 2))
+    *(selfCopy + 10) = 1153138688;
+    if (*(selfCopy + 2))
     {
-      v22 = *(v49 + 2);
+      v22 = *(selfCopy + 2);
     }
 
     else
@@ -144,24 +144,24 @@
     }
   }
 
-  *(v49 + 8) = 1133903872;
-  *(v49 + 11) = 1.0;
-  *(v49 + 9) = 0;
-  *(v49 + 12) = -1.0;
-  *(v49 + 13) = -1.0;
-  *(v49 + 14) = -1.0;
-  *(v49 + 15) = -1.0;
+  *(selfCopy + 8) = 1133903872;
+  *(selfCopy + 11) = 1.0;
+  *(selfCopy + 9) = 0;
+  *(selfCopy + 12) = -1.0;
+  *(selfCopy + 13) = -1.0;
+  *(selfCopy + 14) = -1.0;
+  *(selfCopy + 15) = -1.0;
   if (CBEDRServerStartServer())
   {
 LABEL_41:
-    v50 = v49;
+    v50 = selfCopy;
   }
 
   else
   {
-    if (*(v49 + 2))
+    if (*(selfCopy + 2))
     {
-      v18 = *(v49 + 2);
+      v18 = *(selfCopy + 2);
     }
 
     else
@@ -189,7 +189,7 @@ LABEL_41:
       _os_log_impl(&dword_1DE8E5000, v15, v16, "Lib EDR missing. Not creating CBEDRModule", v30, 2u);
     }
 
-    MEMORY[0x1E69E5920](v49);
+    MEMORY[0x1E69E5920](selfCopy);
     v50 = 0;
   }
 
@@ -199,39 +199,39 @@ LABEL_41:
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_cadisplay);
-  MEMORY[0x1E69E5920](v5->_displayModule);
-  MEMORY[0x1E69E5920](v5->_colorModule);
-  MEMORY[0x1E69E5920](v5->_filters);
-  *&v2 = MEMORY[0x1E69E5920](v5->_alsNodes).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_displayModule);
+  MEMORY[0x1E69E5920](selfCopy->_colorModule);
+  MEMORY[0x1E69E5920](selfCopy->_filters);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_alsNodes).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBEDRModule;
   [(CBModule *)&v3 dealloc];
 }
 
-- (void)handleBrightnessUpdate:(id)a3
+- (void)handleBrightnessUpdate:(id)update
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  updateCopy = update;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v20 objectForKeyedSubscript:@"NitsPhysical"];
+    v19 = [updateCopy objectForKeyedSubscript:@"NitsPhysical"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v19 floatValue];
-      v22->_currentNits = v3;
+      selfCopy->_currentNits = v3;
     }
 
     else
     {
-      if (v22->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v22->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -266,15 +266,15 @@ LABEL_41:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v20 floatValue];
-      v22->_currentNits = v4;
+      [updateCopy floatValue];
+      selfCopy->_currentNits = v4;
     }
 
     else
     {
-      if (v22->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v8 = v22->super._logHandle;
+        v8 = selfCopy->super._logHandle;
       }
 
       else
@@ -305,12 +305,12 @@ LABEL_41:
   }
 }
 
-- (void)handleTargetWhitepointUpdate:(id)a3
+- (void)handleTargetWhitepointUpdate:(id)update
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a3 objectForKey:@"YWP"];
+    v8 = [update objectForKey:@"YWP"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,28 +324,28 @@ LABEL_41:
   }
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
-  if ([a3 isEqual:@"DisplayBrightness"])
+  if ([key isEqual:@"DisplayBrightness"])
   {
-    [(CBEDRModule *)self handleBrightnessUpdate:a4];
+    [(CBEDRModule *)self handleBrightnessUpdate:property];
     [(CBEDRModule *)self updateEDRState];
   }
 
-  else if ([a3 isEqual:@"CBTargetWhitePoint"])
+  else if ([key isEqual:@"CBTargetWhitePoint"])
   {
-    [(CBEDRModule *)self handleTargetWhitepointUpdate:a4];
+    [(CBEDRModule *)self handleTargetWhitepointUpdate:property];
     [(CBEDRModule *)self updateEDRState];
   }
 }
 
 - (void)start
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   if (self->super._logHandle)
   {
-    logHandle = v14->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -373,25 +373,25 @@ LABEL_41:
     _os_log_impl(&dword_1DE8E5000, log, type, &unk_1DEAD656F, v10, 2u);
   }
 
-  CBEDRServerAddDisplay([(CADisplay *)v14->_cadisplay displayId]);
-  v9 = [(CBContainerModuleProtocol *)v14->_colorModule copyPropertyForKey:@"CBTargetWhitePoint"];
+  CBEDRServerAddDisplay([(CADisplay *)selfCopy->_cadisplay displayId]);
+  v9 = [(CBContainerModuleProtocol *)selfCopy->_colorModule copyPropertyForKey:@"CBTargetWhitePoint"];
   if (v9)
   {
-    [(CBEDRModule *)v14 handleTargetWhitepointUpdate:v9];
+    [(CBEDRModule *)selfCopy handleTargetWhitepointUpdate:v9];
   }
 
   *&v2 = MEMORY[0x1E69E5920](v9).n128_u64[0];
-  v8 = [(CBDisplayModuleHID *)v14->_displayModule copyPropertyForKey:@"DisplayBrightness", v2];
+  v8 = [(CBDisplayModuleHID *)selfCopy->_displayModule copyPropertyForKey:@"DisplayBrightness", v2];
   if (v8)
   {
-    [(CBEDRModule *)v14 handleBrightnessUpdate:v8];
+    [(CBEDRModule *)selfCopy handleBrightnessUpdate:v8];
   }
 
   *&v3 = MEMORY[0x1E69E5920](v8).n128_u64[0];
-  [(CBEDRModule *)v14 updateEDRState];
+  [(CBEDRModule *)selfCopy updateEDRState];
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->super._logHandle)
@@ -416,21 +416,21 @@ LABEL_41:
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    RegistryID = IOHIDServiceClientGetRegistryID(a3);
+    RegistryID = IOHIDServiceClientGetRegistryID(client);
     __os_log_helper_16_2_1_8_66(v14, RegistryID);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "new service ID = %{public}@", v14, 0xCu);
   }
 
-  if (IOHIDServiceClientConformsTo(a3, 0x20u, 0x41u))
+  if (IOHIDServiceClientConformsTo(client, 0x20u, 0x41u))
   {
-    v10 = [[CBALSNode alloc] initWithALSServiceClient:a3];
+    v10 = [[CBALSNode alloc] initWithALSServiceClient:client];
     if (v10)
     {
       [(NSMutableArray *)self->_alsNodes addObject:v10];
       cf = IOHIDServiceClientCopyEvent();
       if (cf)
       {
-        [(CBEDRModule *)self handleHIDEventInternal:cf from:a3];
+        [(CBEDRModule *)self handleHIDEventInternal:cf from:client];
         CFRelease(cf);
       }
 
@@ -458,7 +458,7 @@ LABEL_41:
 
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_0_1_8_0(v13, a3);
+          __os_log_helper_16_0_1_8_0(v13, client);
           _os_log_error_impl(&dword_1DE8E5000, v6, OS_LOG_TYPE_ERROR, "failed to copy event for ALS (%p)", v13, 0xCu);
         }
       }
@@ -471,26 +471,26 @@ LABEL_41:
   return 1;
 }
 
-- (void)handleALSEvent:(id)a3
+- (void)handleALSEvent:(id)event
 {
-  [a3 illuminance];
+  [event illuminance];
   *&v3 = v3;
   self->_currentLux = *&v3;
   [(CBEDRModule *)self updateEDRState];
 }
 
-- (void)handleHIDEventInternal:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (void)handleHIDEventInternal:(__IOHIDEvent *)internal from:(__IOHIDServiceClient *)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
-  v14 = [CBHIDEvent newEvent:a3 andService:a4];
+  internalCopy = internal;
+  fromCopy = from;
+  v14 = [CBHIDEvent newEvent:internal andService:from];
   if (v14)
   {
     memset(__b, 0, sizeof(__b));
-    obj = v18->_filters;
+    obj = selfCopy->_filters;
     v10 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v19 count:16];
     if (v10)
     {
@@ -532,7 +532,7 @@ LABEL_41:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CBEDRModule *)v18 handleALSEvent:v14];
+      [(CBEDRModule *)selfCopy handleALSEvent:v14];
     }
   }
 
@@ -551,11 +551,11 @@ uint64_t __35__CBEDRModule_handleHIDEvent_from___block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  clientCopy = client;
   v4 = 0;
   v5 = &v4;
   v6 = 1375731712;
@@ -566,8 +566,8 @@ uint64_t __35__CBEDRModule_handleHIDEvent_from___block_invoke(uint64_t a1, void 
   [(NSMutableArray *)self->_alsNodes enumerateObjectsUsingBlock:?];
   if (v5[5])
   {
-    [(NSMutableArray *)v13->_filters enumerateObjectsUsingBlock:?];
-    [(NSMutableArray *)v13->_alsNodes removeObject:v5[5]];
+    [(NSMutableArray *)selfCopy->_filters enumerateObjectsUsingBlock:?];
+    [(NSMutableArray *)selfCopy->_alsNodes removeObject:v5[5]];
   }
 
   _Block_object_dispose(&v4, 8);

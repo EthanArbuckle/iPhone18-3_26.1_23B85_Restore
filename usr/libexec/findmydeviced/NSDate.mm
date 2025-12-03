@@ -1,30 +1,30 @@
 @interface NSDate
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4;
-- (NSDate)initWithFMDCoder:(id)a3 error:(id *)a4;
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error;
+- (NSDate)initWithFMDCoder:(id)coder error:(id *)error;
 - (id)stringValueForServer;
 @end
 
 @implementation NSDate
 
-- (BOOL)encodeWithFMDCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithFMDCoder:(id)coder error:(id *)error
 {
-  v5 = a3;
-  v6 = [(NSDate *)self fm_epochObject];
+  coderCopy = coder;
+  fm_epochObject = [(NSDate *)self fm_epochObject];
   v7 = +[NSDate objectType];
-  [v5 encodeNumber:v6 forKey:v7];
+  [coderCopy encodeNumber:fm_epochObject forKey:v7];
 
   return 1;
 }
 
-- (NSDate)initWithFMDCoder:(id)a3 error:(id *)a4
+- (NSDate)initWithFMDCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = +[NSDate objectType];
-  v8 = [v6 decodeNumberForKey:v7];
+  v8 = [coderCopy decodeNumberForKey:v7];
 
   if (!v8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -32,10 +32,10 @@
     v11 = NSLocalizedFailureReasonErrorKey;
     v12 = @"Key FM.date not found.";
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = [NSError errorWithDomain:@"FMDateErrorDomain" code:0 userInfo:v9];
+    *error = [NSError errorWithDomain:@"FMDateErrorDomain" code:0 userInfo:v9];
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
     goto LABEL_7;
   }
 
@@ -45,10 +45,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  a4 = +[NSDate fm_dateFromEpoch:](NSDate, "fm_dateFromEpoch:", [v8 longLongValue]);
+  error = +[NSDate fm_dateFromEpoch:](NSDate, "fm_dateFromEpoch:", [v8 longLongValue]);
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
 - (id)stringValueForServer

@@ -1,16 +1,16 @@
 @interface MXIRecording
-- (MXIRecording)initWithURL:(id)a3 device:(id)a4;
-- (id)captureTexture:(id)a3;
-- (id)captureTexture:(id)a3 commandBuffer:(id)a4;
-- (void)captureCommand:(id)a3 withArgs:(id)a4;
+- (MXIRecording)initWithURL:(id)l device:(id)device;
+- (id)captureTexture:(id)texture;
+- (id)captureTexture:(id)texture commandBuffer:(id)buffer;
+- (void)captureCommand:(id)command withArgs:(id)args;
 @end
 
 @implementation MXIRecording
 
-- (MXIRecording)initWithURL:(id)a3 device:(id)a4
+- (MXIRecording)initWithURL:(id)l device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  deviceCopy = device;
   v61.receiver = self;
   v61.super_class = MXIRecording;
   v13 = [(MXIRecording *)&v61 init];
@@ -21,14 +21,14 @@
 
   v14 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v9, v10, v11, v12);
   v60 = 0;
-  v19 = objc_msgSend_path(v7, v15, v16, v17, v18);
+  v19 = objc_msgSend_path(lCopy, v15, v16, v17, v18);
   isDirectory = objc_msgSend_fileExistsAtPath_isDirectory_(v14, v20, v19, &v60, v21);
 
-  v26 = objc_msgSend_URLByAppendingPathComponent_(v7, v23, @"mxi_recording.json", v24, v25);
+  v26 = objc_msgSend_URLByAppendingPathComponent_(lCopy, v23, @"mxi_recording.json", v24, v25);
   v31 = v26;
   if (v60 == 1 && (objc_msgSend_path(v26, v27, v28, v29, v30), v32 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend_fileExistsAtPath_(v14, v33, v32, v34, v35), v32, v36))
   {
-    v40 = objc_msgSend_path(v7, v27, v37, v38, v39);
+    v40 = objc_msgSend_path(lCopy, v27, v37, v38, v39);
     objc_msgSend_removeItemAtPath_error_(v14, v41, v40, 0, v42);
   }
 
@@ -40,19 +40,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v14, v27, v7, 1, 0, 0))
+  if (!objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v14, v27, lCopy, 1, 0, 0))
   {
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v13->_directoryURL, a3);
+  objc_storeStrong(&v13->_directoryURL, l);
   objc_storeStrong(&v13->_jsonURL, v31);
   v43 = objc_opt_new();
   commands = v13->_commands;
   v13->_commands = v43;
 
   v45 = dispatch_queue_create("com.apple.mxi.recording", 0);
-  v50 = objc_msgSend_newSharedEvent(v8, v46, v47, v48, v49);
+  v50 = objc_msgSend_newSharedEvent(deviceCopy, v46, v47, v48, v49);
   event = v13->_event;
   v13->_event = v50;
 
@@ -69,16 +69,16 @@ LABEL_10:
   return v58;
 }
 
-- (void)captureCommand:(id)a3 withArgs:(id)a4
+- (void)captureCommand:(id)command withArgs:(id)args
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  argsCopy = args;
   commands = self->_commands;
   v18[0] = @"command";
   v18[1] = @"args";
-  v19[0] = v6;
-  v19[1] = v7;
+  v19[0] = commandCopy;
+  v19[1] = argsCopy;
   v10 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v9, v19, v18, 2);
   objc_msgSend_addObject_(commands, v11, v10, v12, v13);
 
@@ -86,10 +86,10 @@ LABEL_10:
   objc_msgSend_writeToURL_atomically_(v15, v16, self->_jsonURL, 1, v17);
 }
 
-- (id)captureTexture:(id)a3
+- (id)captureTexture:(id)texture
 {
-  v8 = a3;
-  if (v8)
+  textureCopy = texture;
+  if (textureCopy)
   {
     v9 = MEMORY[0x277CCACA8];
     texureIndex = self->_texureIndex;
@@ -102,7 +102,7 @@ LABEL_10:
     v29 = &unk_28449BD98;
     v30 = fopen(v26, "wb");
 
-    if (image::WriteKTX(&v29, v8))
+    if (image::WriteKTX(&v29, textureCopy))
     {
       v27 = v11;
     }
@@ -124,11 +124,11 @@ LABEL_10:
   return v27;
 }
 
-- (id)captureTexture:(id)a3 commandBuffer:(id)a4
+- (id)captureTexture:(id)texture commandBuffer:(id)buffer
 {
-  v6 = a3;
-  v11 = a4;
-  if (v6)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  if (textureCopy)
   {
     v12 = MEMORY[0x277CCACA8];
     texureIndex = self->_texureIndex;
@@ -139,8 +139,8 @@ LABEL_10:
     v20 = nextValue + 1;
     v21 = nextValue + 2;
     self->_nextValue = v21;
-    objc_msgSend_encodeSignalEvent_value_(v11, v22, self->_event, v20, v23);
-    objc_msgSend_encodeWaitForEvent_value_(v11, v24, self->_event, v21, v25);
+    objc_msgSend_encodeSignalEvent_value_(bufferCopy, v22, self->_event, v20, v23);
+    objc_msgSend_encodeWaitForEvent_value_(bufferCopy, v24, self->_event, v21, v25);
     event = self->_event;
     listener = self->_listener;
     v33[0] = MEMORY[0x277D85DD0];
@@ -149,7 +149,7 @@ LABEL_10:
     v33[3] = &unk_2788ADD20;
     v28 = v18;
     v34 = v28;
-    v35 = v6;
+    v35 = textureCopy;
     v36 = v21;
     objc_msgSend_notifyListener_atValue_block_(event, v29, listener, v20, v33);
     v30 = v35;

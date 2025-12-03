@@ -1,11 +1,11 @@
 @interface WFCoreDataChangeNotification
-- (BOOL)appliesToResultState:(id)a3;
+- (BOOL)appliesToResultState:(id)state;
 - (BOOL)hasChanges;
-- (WFCoreDataChangeNotification)initWithDictionaryRepresentation:(id)a3;
-- (WFCoreDataChangeNotification)initWithInvalidatedAllObjects:(BOOL)a3 updated:(id)a4 inserted:(id)a5 deleted:(id)a6 processIdentifier:(int)a7;
+- (WFCoreDataChangeNotification)initWithDictionaryRepresentation:(id)representation;
+- (WFCoreDataChangeNotification)initWithInvalidatedAllObjects:(BOOL)objects updated:(id)updated inserted:(id)inserted deleted:(id)deleted processIdentifier:(int)identifier;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
-- (id)notificationByMergingChangesFromNotification:(id)a3;
+- (id)notificationByMergingChangesFromNotification:(id)notification;
 @end
 
 @implementation WFCoreDataChangeNotification
@@ -17,24 +17,24 @@
     return 1;
   }
 
-  v4 = [(WFCoreDataChangeNotification *)self updated];
-  if ([v4 count])
+  updated = [(WFCoreDataChangeNotification *)self updated];
+  if ([updated count])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(WFCoreDataChangeNotification *)self inserted];
-    if ([v5 count])
+    inserted = [(WFCoreDataChangeNotification *)self inserted];
+    if ([inserted count])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(WFCoreDataChangeNotification *)self deleted];
-      v3 = [v6 count] != 0;
+      deleted = [(WFCoreDataChangeNotification *)self deleted];
+      v3 = [deleted count] != 0;
     }
   }
 
@@ -43,16 +43,16 @@
 
 - (id)debugDescription
 {
-  v2 = [(WFCoreDataChangeNotification *)self dictionaryRepresentation];
-  v3 = [v2 debugDescription];
+  dictionaryRepresentation = [(WFCoreDataChangeNotification *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation debugDescription];
 
   return v3;
 }
 
-- (BOOL)appliesToResultState:(id)a3
+- (BOOL)appliesToResultState:(id)state
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if ([(WFCoreDataChangeNotification *)self invalidatedAllObjects])
   {
     LOBYTE(v5) = 1;
@@ -64,8 +64,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(WFCoreDataChangeNotification *)self inserted];
-    v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    inserted = [(WFCoreDataChangeNotification *)self inserted];
+    v7 = [inserted countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v7)
     {
       v8 = v7;
@@ -76,11 +76,11 @@
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(inserted);
           }
 
-          v11 = [*(*(&v26 + 1) + 8 * i) objectType];
-          if (v11 == [v4 objectType])
+          objectType = [*(*(&v26 + 1) + 8 * i) objectType];
+          if (objectType == [stateCopy objectType])
           {
 LABEL_22:
             LOBYTE(v5) = 1;
@@ -88,7 +88,7 @@ LABEL_22:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v8 = [inserted countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v8)
         {
           continue;
@@ -102,11 +102,11 @@ LABEL_22:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(WFCoreDataChangeNotification *)self updated];
-    v13 = [(WFCoreDataChangeNotification *)self deleted];
-    v6 = [v12 setByAddingObjectsFromSet:v13];
+    updated = [(WFCoreDataChangeNotification *)self updated];
+    deleted = [(WFCoreDataChangeNotification *)self deleted];
+    inserted = [updated setByAddingObjectsFromSet:deleted];
 
-    v5 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    v5 = [inserted countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v5)
     {
       v14 = *v23;
@@ -116,19 +116,19 @@ LABEL_22:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(inserted);
           }
 
           v16 = *(*(&v22 + 1) + 8 * j);
-          v17 = [v4 state];
-          if ([v17 containsObject:v16])
+          state = [stateCopy state];
+          if ([state containsObject:v16])
           {
 
             goto LABEL_22;
           }
 
-          v18 = [v4 state];
-          v19 = [v18 count];
+          state2 = [stateCopy state];
+          v19 = [state2 count];
 
           if (!v19)
           {
@@ -136,7 +136,7 @@ LABEL_22:
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v5 = [inserted countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v5)
         {
           continue;
@@ -160,16 +160,16 @@ LABEL_23:
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFCoreDataChangeNotification invalidatedAllObjects](self, "invalidatedAllObjects")}];
   v15[0] = v3;
   v14[1] = @"updated";
-  v4 = [(WFCoreDataChangeNotification *)self updated];
-  v5 = WFArrayFromChanges(v4);
+  updated = [(WFCoreDataChangeNotification *)self updated];
+  v5 = WFArrayFromChanges(updated);
   v15[1] = v5;
   v14[2] = @"inserted";
-  v6 = [(WFCoreDataChangeNotification *)self inserted];
-  v7 = WFArrayFromChanges(v6);
+  inserted = [(WFCoreDataChangeNotification *)self inserted];
+  v7 = WFArrayFromChanges(inserted);
   v15[2] = v7;
   v14[3] = @"deleted";
-  v8 = [(WFCoreDataChangeNotification *)self deleted];
-  v9 = WFArrayFromChanges(v8);
+  deleted = [(WFCoreDataChangeNotification *)self deleted];
+  v9 = WFArrayFromChanges(deleted);
   v15[3] = v9;
   v14[4] = @"processIdentifier";
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[WFCoreDataChangeNotification processIdentifier](self, "processIdentifier")}];
@@ -181,76 +181,76 @@ LABEL_23:
   return v11;
 }
 
-- (id)notificationByMergingChangesFromNotification:(id)a3
+- (id)notificationByMergingChangesFromNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v16 = [WFCoreDataChangeNotification alloc];
   if ([(WFCoreDataChangeNotification *)self invalidatedAllObjects])
   {
-    v15 = 1;
+    invalidatedAllObjects = 1;
   }
 
   else
   {
-    v15 = [v4 invalidatedAllObjects];
+    invalidatedAllObjects = [notificationCopy invalidatedAllObjects];
   }
 
-  v17 = [(WFCoreDataChangeNotification *)self updated];
-  v5 = [v4 updated];
-  v6 = [v17 setByAddingObjectsFromSet:v5];
-  v7 = [(WFCoreDataChangeNotification *)self inserted];
-  v8 = [v4 inserted];
-  v9 = [v7 setByAddingObjectsFromSet:v8];
-  v10 = [(WFCoreDataChangeNotification *)self deleted];
-  v11 = [v4 deleted];
-  v12 = [v10 setByAddingObjectsFromSet:v11];
-  v13 = [(WFCoreDataChangeNotification *)v16 initWithInvalidatedAllObjects:v15 updated:v6 inserted:v9 deleted:v12 processIdentifier:[(WFCoreDataChangeNotification *)self processIdentifier]];
+  updated = [(WFCoreDataChangeNotification *)self updated];
+  updated2 = [notificationCopy updated];
+  v6 = [updated setByAddingObjectsFromSet:updated2];
+  inserted = [(WFCoreDataChangeNotification *)self inserted];
+  inserted2 = [notificationCopy inserted];
+  v9 = [inserted setByAddingObjectsFromSet:inserted2];
+  deleted = [(WFCoreDataChangeNotification *)self deleted];
+  deleted2 = [notificationCopy deleted];
+  v12 = [deleted setByAddingObjectsFromSet:deleted2];
+  v13 = [(WFCoreDataChangeNotification *)v16 initWithInvalidatedAllObjects:invalidatedAllObjects updated:v6 inserted:v9 deleted:v12 processIdentifier:[(WFCoreDataChangeNotification *)self processIdentifier]];
 
   return v13;
 }
 
-- (WFCoreDataChangeNotification)initWithDictionaryRepresentation:(id)a3
+- (WFCoreDataChangeNotification)initWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"invalidatedAllObjects"];
-  v5 = [v4 BOOLValue];
-  v6 = [v3 objectForKeyedSubscript:@"updated"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKeyedSubscript:@"invalidatedAllObjects"];
+  bOOLValue = [v4 BOOLValue];
+  v6 = [representationCopy objectForKeyedSubscript:@"updated"];
   v7 = WFChangesFromArray(v6);
-  v8 = [v3 objectForKeyedSubscript:@"inserted"];
+  v8 = [representationCopy objectForKeyedSubscript:@"inserted"];
   v9 = WFChangesFromArray(v8);
-  v10 = [v3 objectForKeyedSubscript:@"deleted"];
+  v10 = [representationCopy objectForKeyedSubscript:@"deleted"];
   v11 = WFChangesFromArray(v10);
-  v12 = [v3 objectForKeyedSubscript:@"processIdentifier"];
+  v12 = [representationCopy objectForKeyedSubscript:@"processIdentifier"];
 
-  v13 = -[WFCoreDataChangeNotification initWithInvalidatedAllObjects:updated:inserted:deleted:processIdentifier:](self, "initWithInvalidatedAllObjects:updated:inserted:deleted:processIdentifier:", v5, v7, v9, v11, [v12 integerValue]);
+  v13 = -[WFCoreDataChangeNotification initWithInvalidatedAllObjects:updated:inserted:deleted:processIdentifier:](self, "initWithInvalidatedAllObjects:updated:inserted:deleted:processIdentifier:", bOOLValue, v7, v9, v11, [v12 integerValue]);
   return v13;
 }
 
-- (WFCoreDataChangeNotification)initWithInvalidatedAllObjects:(BOOL)a3 updated:(id)a4 inserted:(id)a5 deleted:(id)a6 processIdentifier:(int)a7
+- (WFCoreDataChangeNotification)initWithInvalidatedAllObjects:(BOOL)objects updated:(id)updated inserted:(id)inserted deleted:(id)deleted processIdentifier:(int)identifier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  updatedCopy = updated;
+  insertedCopy = inserted;
+  deletedCopy = deleted;
   v25.receiver = self;
   v25.super_class = WFCoreDataChangeNotification;
   v15 = [(WFCoreDataChangeNotification *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    v15->_invalidatedAllObjects = a3;
-    v17 = [v12 copy];
+    v15->_invalidatedAllObjects = objects;
+    v17 = [updatedCopy copy];
     updated = v16->_updated;
     v16->_updated = v17;
 
-    v19 = [v13 copy];
+    v19 = [insertedCopy copy];
     inserted = v16->_inserted;
     v16->_inserted = v19;
 
-    v21 = [v14 copy];
+    v21 = [deletedCopy copy];
     deleted = v16->_deleted;
     v16->_deleted = v21;
 
-    v16->_processIdentifier = a7;
+    v16->_processIdentifier = identifier;
     v23 = v16;
   }
 

@@ -1,23 +1,23 @@
 @interface FCAudioTrackFetchOperation
-- (FCAudioTrackFetchOperation)initWithContext:(id)a3 audioTrack:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCAudioTrackFetchOperation)initWithContext:(id)context audioTrack:(id)track;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCAudioTrackFetchOperation
 
-- (FCAudioTrackFetchOperation)initWithContext:(id)a3 audioTrack:(id)a4
+- (FCAudioTrackFetchOperation)initWithContext:(id)context audioTrack:(id)track
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  trackCopy = track;
   v12.receiver = self;
   v12.super_class = FCAudioTrackFetchOperation;
   v9 = [(FCOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_audioTrack, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_audioTrack, track);
   }
 
   return v10;
@@ -25,13 +25,13 @@
 
 - (void)performOperation
 {
-  v3 = [(FCAudioTrackFetchOperation *)self context];
-  v4 = [v3 internalContentContext];
-  v5 = [v4 avAssetDownloadManager];
+  context = [(FCAudioTrackFetchOperation *)self context];
+  internalContentContext = [context internalContentContext];
+  avAssetDownloadManager = [internalContentContext avAssetDownloadManager];
 
-  v6 = [(FCAudioTrackFetchOperation *)self audioTrack];
-  v7 = [v6 asset];
-  v8 = [(FCAVAssetDownloadManager *)v5 interestTokenForCachedAsset:v7];
+  audioTrack = [(FCAudioTrackFetchOperation *)self audioTrack];
+  asset = [audioTrack asset];
+  v8 = [(FCAVAssetDownloadManager *)avAssetDownloadManager interestTokenForCachedAsset:asset];
 
   if (v8)
   {
@@ -54,8 +54,8 @@ LABEL_6:
     v10[1] = 3221225472;
     v10[2] = __46__FCAudioTrackFetchOperation_performOperation__block_invoke_3;
     v10[3] = &unk_1E7C36C58;
-    v11 = v5;
-    v12 = self;
+    v11 = avAssetDownloadManager;
+    selfCopy = self;
     [(FCAVAssetDownloadManager *)v11 restoreBackgroundDownloadsWithCompletionHandler:v10];
     v9 = v11;
     goto LABEL_6;
@@ -140,39 +140,39 @@ void __46__FCAudioTrackFetchOperation_performOperation__block_invoke_4(uint64_t 
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__FCAudioTrackFetchOperation_operationWillFinishWithError___block_invoke;
     v12[3] = &unk_1E7C36C58;
     v12[4] = self;
-    v13 = v4;
+    v13 = errorCopy;
     __59__FCAudioTrackFetchOperation_operationWillFinishWithError___block_invoke(v12);
   }
 
   else
   {
-    v6 = [(FCAudioTrackFetchOperation *)self archiveHandler];
+    archiveHandler = [(FCAudioTrackFetchOperation *)self archiveHandler];
 
-    if (v6)
+    if (archiveHandler)
     {
-      v7 = [(FCAudioTrackFetchOperation *)self archiveHandler];
-      v8 = [(FCAudioTrackFetchOperation *)self audioTrack];
-      v9 = [v8 contentArchive];
-      (v7)[2](v7, v9);
+      archiveHandler2 = [(FCAudioTrackFetchOperation *)self archiveHandler];
+      audioTrack = [(FCAudioTrackFetchOperation *)self audioTrack];
+      contentArchive = [audioTrack contentArchive];
+      (archiveHandler2)[2](archiveHandler2, contentArchive);
     }
 
-    v10 = [(FCAudioTrackFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler = [(FCAudioTrackFetchOperation *)self fetchCompletionHandler];
 
-    if (v10)
+    if (fetchCompletionHandler)
     {
-      v11 = [(FCAudioTrackFetchOperation *)self fetchCompletionHandler];
-      v11[2](v11, 0);
+      fetchCompletionHandler2 = [(FCAudioTrackFetchOperation *)self fetchCompletionHandler];
+      fetchCompletionHandler2[2](fetchCompletionHandler2, 0);
     }
   }
 }

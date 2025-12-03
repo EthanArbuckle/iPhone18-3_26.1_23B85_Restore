@@ -1,37 +1,37 @@
 @interface NTKProteusFaceColorPalette
-- (NTKProteusFaceColorPalette)initWithFaceClass:(Class)a3 device:(id)a4;
+- (NTKProteusFaceColorPalette)initWithFaceClass:(Class)class device:(id)device;
 - (double)_contrastRatio;
 - (id)_background;
 - (id)_simpleTextComplicationColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)digitColor;
 - (id)identifier;
-- (void)configurationDidChange:(id)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
+- (void)configurationDidChange:(id)change;
+- (void)setBackgroundStyle:(unint64_t)style;
 @end
 
 @implementation NTKProteusFaceColorPalette
 
-- (NTKProteusFaceColorPalette)initWithFaceClass:(Class)a3 device:(id)a4
+- (NTKProteusFaceColorPalette)initWithFaceClass:(Class)class device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKProteusFaceColorPalette;
-  v8 = [(NTKProteusFaceColorPalette *)&v11 initWithFaceClass:a3];
+  v8 = [(NTKProteusFaceColorPalette *)&v11 initWithFaceClass:class];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a4);
+    objc_storeStrong(&v8->_device, device);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKProteusFaceColorPalette;
-  v4 = [(NTKProteusFaceColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKProteusFaceColorPalette *)&v6 copyWithZone:zone];
   [v4 setBackgroundStyle:{-[NTKProteusFaceColorPalette backgroundStyle](self, "backgroundStyle")}];
   objc_storeStrong(v4 + 1, self->_device);
   return v4;
@@ -44,8 +44,8 @@
   {
     v8.receiver = self;
     v8.super_class = NTKProteusFaceColorPalette;
-    v4 = [(NTKProteusFaceColorPalette *)&v8 identifier];
-    v5 = [NSString stringWithFormat:@"%@-%lu", v4, self->_backgroundStyle];
+    identifier = [(NTKProteusFaceColorPalette *)&v8 identifier];
+    v5 = [NSString stringWithFormat:@"%@-%lu", identifier, self->_backgroundStyle];
     v6 = self->_cachedIdentifier;
     self->_cachedIdentifier = v5;
 
@@ -55,18 +55,18 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKProteusFaceColorPalette;
-  [(NTKProteusFaceColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKProteusFaceColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  self->_backgroundStyle = a3;
+  self->_backgroundStyle = style;
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
   _objc_release_x1();
@@ -90,18 +90,18 @@
 
 - (id)_simpleTextComplicationColor
 {
-  v3 = [(NTKProteusFaceColorPalette *)self simpleTextComplication];
-  v4 = v3;
+  simpleTextComplication = [(NTKProteusFaceColorPalette *)self simpleTextComplication];
+  v4 = simpleTextComplication;
   if (self->_backgroundStyle != 1)
   {
-    v12 = v3;
+    v12 = simpleTextComplication;
     v5 = v12;
     goto LABEL_6;
   }
 
   v5 = +[UIColor whiteColor];
 
-  v6 = [(NTKProteusFaceColorPalette *)self primaryColor];
+  primaryColor = [(NTKProteusFaceColorPalette *)self primaryColor];
   CLKContrastRatioForColors();
   v8 = v7;
 
@@ -115,9 +115,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v15 = [(NTKProteusFaceColorPalette *)self simpleTextComplicationContrast];
-  v16 = v15;
-  if (!v15 || v15 == NTKFaceColorPaletteNotFoundColor)
+  simpleTextComplicationContrast = [(NTKProteusFaceColorPalette *)self simpleTextComplicationContrast];
+  v16 = simpleTextComplicationContrast;
+  if (!simpleTextComplicationContrast || simpleTextComplicationContrast == NTKFaceColorPaletteNotFoundColor)
   {
     if (([(NTKProteusFaceColorPalette *)self hasPrimaryColorRange]& 1) != 0)
     {
@@ -127,14 +127,14 @@ LABEL_6:
       goto LABEL_4;
     }
 
-    v18 = [(NTKProteusFaceColorPalette *)self primaryColor];
-    v19 = [v18 colorWithAlphaComponent:1.0];
+    primaryColor2 = [(NTKProteusFaceColorPalette *)self primaryColor];
+    v19 = [primaryColor2 colorWithAlphaComponent:1.0];
     v13 = [v19 ntk_colorWithSaturationDelta:0.18 brightnessDelta:-0.2];
   }
 
   else
   {
-    v13 = v15;
+    v13 = simpleTextComplicationContrast;
   }
 
 LABEL_7:
@@ -144,14 +144,14 @@ LABEL_7:
 
 - (id)digitColor
 {
-  v3 = [(NTKProteusFaceColorPalette *)self digit];
-  v4 = v3;
-  if (v3 && v3 != NTKFaceColorPaletteNotFoundColor)
+  digit = [(NTKProteusFaceColorPalette *)self digit];
+  v4 = digit;
+  if (digit && digit != NTKFaceColorPaletteNotFoundColor)
   {
-    v5 = v3;
+    v5 = digit;
     v6 = v5;
 LABEL_4:
-    v7 = v5;
+    primaryColor2 = v5;
     goto LABEL_14;
   }
 
@@ -159,14 +159,14 @@ LABEL_4:
   {
     device = self->_device;
     v9 = NTKEnableAODVibrancy();
-    v10 = [(NTKProteusFaceColorPalette *)self primaryColor];
-    v7 = v10;
+    primaryColor = [(NTKProteusFaceColorPalette *)self primaryColor];
+    primaryColor2 = primaryColor;
     if ((v9 & 1) == 0)
     {
-      v11 = [v10 colorWithAlphaComponent:0.7];
+      v11 = [primaryColor colorWithAlphaComponent:0.7];
 
       v6 = v4;
-      v7 = v11;
+      primaryColor2 = v11;
       goto LABEL_14;
     }
 
@@ -175,7 +175,7 @@ LABEL_4:
 
   if (self->_backgroundStyle != 1)
   {
-    v7 = [(NTKProteusFaceColorPalette *)self primaryColor];
+    primaryColor2 = [(NTKProteusFaceColorPalette *)self primaryColor];
 LABEL_13:
     v6 = v4;
     goto LABEL_14;
@@ -183,7 +183,7 @@ LABEL_13:
 
   v6 = +[UIColor whiteColor];
 
-  v12 = [(NTKProteusFaceColorPalette *)self primaryColor];
+  primaryColor3 = [(NTKProteusFaceColorPalette *)self primaryColor];
   CLKContrastRatioForColors();
   v14 = v13;
 
@@ -195,9 +195,9 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  v19 = [(NTKProteusFaceColorPalette *)self digitContrast];
-  v20 = v19;
-  if (!v19 || v19 == NTKFaceColorPaletteNotFoundColor)
+  digitContrast = [(NTKProteusFaceColorPalette *)self digitContrast];
+  v20 = digitContrast;
+  if (!digitContrast || digitContrast == NTKFaceColorPaletteNotFoundColor)
   {
     if (([(NTKProteusFaceColorPalette *)self hasPrimaryColorRange]& 1) != 0)
     {
@@ -207,26 +207,26 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v22 = [(NTKProteusFaceColorPalette *)self primaryColor];
-    v23 = [v22 colorWithAlphaComponent:1.0];
-    v7 = [v23 ntk_colorWithSaturationDelta:0.18 brightnessDelta:-0.2];
+    primaryColor4 = [(NTKProteusFaceColorPalette *)self primaryColor];
+    v23 = [primaryColor4 colorWithAlphaComponent:1.0];
+    primaryColor2 = [v23 ntk_colorWithSaturationDelta:0.18 brightnessDelta:-0.2];
   }
 
   else
   {
-    v7 = v19;
+    primaryColor2 = digitContrast;
   }
 
 LABEL_14:
 
-  return v7;
+  return primaryColor2;
 }
 
 - (double)_contrastRatio
 {
-  v2 = [(NTKProteusFaceColorPalette *)self pigmentEditOption];
-  v3 = [v2 fullname];
-  v4 = [v3 isEqualToString:ntk_standard_lightYellow];
+  pigmentEditOption = [(NTKProteusFaceColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v4 = [fullname isEqualToString:ntk_standard_lightYellow];
 
   result = 1.3;
   if (!v4)

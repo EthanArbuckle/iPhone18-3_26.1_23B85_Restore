@@ -1,56 +1,56 @@
 @interface ACHDataStore
-- (ACHDataStore)initWithHealthStore:(id)a3 assertionClient:(id)a4;
+- (ACHDataStore)initWithHealthStore:(id)store assertionClient:(id)client;
 - (BOOL)_forceDatabasePopulate;
 - (BOOL)_queue_populateAllPropertiesFromDatabase;
-- (BOOL)_queue_populateFromDatabaseForProviders:(id)a3 error:(id *)a4;
-- (BOOL)clearAllInMemoryPropertiesWithError:(id *)a3;
-- (BOOL)commitAllPropertiesWithError:(id *)a3;
-- (BOOL)commitPropertiesForProvider:(id)a3 withError:(id *)a4;
-- (BOOL)commitSnapshotForProvider:(id)a3 withError:(id *)a4;
-- (BOOL)removeSnapshotForProvider:(id)a3 withError:(id *)a4;
+- (BOOL)_queue_populateFromDatabaseForProviders:(id)providers error:(id *)error;
+- (BOOL)clearAllInMemoryPropertiesWithError:(id *)error;
+- (BOOL)commitAllPropertiesWithError:(id *)error;
+- (BOOL)commitPropertiesForProvider:(id)provider withError:(id *)error;
+- (BOOL)commitSnapshotForProvider:(id)provider withError:(id *)error;
+- (BOOL)removeSnapshotForProvider:(id)provider withError:(id *)error;
 - (id)_queue_allPropertyProviderKeys;
 - (id)_queue_dictionaryRepresentationOfAllProviderProperties;
-- (id)snapshotForProvider:(id)a3 maxAgeInDays:(unint64_t)a4 currentDate:(id)a5 withError:(id *)a6;
-- (id)snapshotForProvider:(id)a3 withError:(id *)a4;
+- (id)snapshotForProvider:(id)provider maxAgeInDays:(unint64_t)days currentDate:(id)date withError:(id *)error;
+- (id)snapshotForProvider:(id)provider withError:(id *)error;
 - (void)_listenForNotifications;
 - (void)_protectedDataStateDidChange;
 - (void)_queue_populateAllPropertiesFromDatabase;
 - (void)_startUp;
-- (void)_syncEntityDidReceiveValues:(id)a3;
+- (void)_syncEntityDidReceiveValues:(id)values;
 - (void)activate;
-- (void)addObserver:(id)a3;
-- (void)addPropertyProvider:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addPropertyProvider:(id)provider;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ACHDataStore
 
-- (ACHDataStore)initWithHealthStore:(id)a3 assertionClient:(id)a4
+- (ACHDataStore)initWithHealthStore:(id)store assertionClient:(id)client
 {
-  v6 = a3;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = ACHDataStore;
   v7 = [(ACHDataStore *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_healthStore, a3);
-    v9 = [objc_alloc(MEMORY[0x277CE8CC8]) initWithHealthStore:v6];
+    objc_storeStrong(&v7->_healthStore, store);
+    v9 = [objc_alloc(MEMORY[0x277CE8CC8]) initWithHealthStore:storeCopy];
     keyValueClient = v8->_keyValueClient;
     v8->_keyValueClient = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     propertyProviders = v8->_propertyProviders;
-    v8->_propertyProviders = v11;
+    v8->_propertyProviders = weakObjectsHashTable;
 
     v13 = HKCreateSerialDispatchQueue();
     internalQueue = v8->_internalQueue;
     v8->_internalQueue = v13;
 
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v8->_observers;
-    v8->_observers = v15;
+    v8->_observers = weakObjectsHashTable2;
 
     v17 = HKCreateSerialDispatchQueue();
     notificationQueue = v8->_notificationQueue;
@@ -84,18 +84,18 @@
   [(ACHDataStore *)&v3 dealloc];
 }
 
-- (void)addPropertyProvider:(id)a3
+- (void)addPropertyProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(ACHDataStore *)self internalQueue];
+  providerCopy = provider;
+  internalQueue = [(ACHDataStore *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ACHDataStore_addPropertyProvider___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  v6 = providerCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __36__ACHDataStore_addPropertyProvider___block_invoke(uint64_t a1)
@@ -118,7 +118,7 @@ void __36__ACHDataStore_addPropertyProvider___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_syncEntityDidReceiveValues:(id)a3
+- (void)_syncEntityDidReceiveValues:(id)values
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -144,22 +144,22 @@ uint64_t __44__ACHDataStore__syncEntityDidReceiveValues___block_invoke(uint64_t 
 - (void)_listenForNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [*MEMORY[0x277CE8C10] UTF8String];
+  uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
   internalQueue = self->_internalQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __39__ACHDataStore__listenForNotifications__block_invoke;
   handler[3] = &unk_2784907F8;
   objc_copyWeak(&v10, &location);
-  notify_register_dispatch(v3, &self->_protectedDataToken, internalQueue, handler);
-  v5 = [*MEMORY[0x277CE8AF8] UTF8String];
+  notify_register_dispatch(uTF8String, &self->_protectedDataToken, internalQueue, handler);
+  uTF8String2 = [*MEMORY[0x277CE8AF8] UTF8String];
   v6 = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__ACHDataStore__listenForNotifications__block_invoke_2;
   v7[3] = &unk_2784907F8;
   objc_copyWeak(&v8, &location);
-  notify_register_dispatch(v5, &self->_syncToken, v6, v7);
+  notify_register_dispatch(uTF8String2, &self->_syncToken, v6, v7);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -199,13 +199,13 @@ void __39__ACHDataStore__listenForNotifications__block_invoke_2(uint64_t a1)
 
 - (void)_startUp
 {
-  v3 = [(ACHDataStore *)self internalQueue];
+  internalQueue = [(ACHDataStore *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__ACHDataStore__startUp__block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
 uint64_t __24__ACHDataStore__startUp__block_invoke(uint64_t a1)
@@ -228,13 +228,13 @@ uint64_t __24__ACHDataStore__startUp__block_invoke(uint64_t a1)
 
 - (void)_protectedDataStateDidChange
 {
-  v3 = [(ACHDataStore *)self internalQueue];
+  internalQueue = [(ACHDataStore *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__ACHDataStore__protectedDataStateDidChange__block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
 void __44__ACHDataStore__protectedDataStateDidChange__block_invoke(uint64_t a1)
@@ -263,22 +263,22 @@ void __44__ACHDataStore__protectedDataStateDidChange__block_invoke(uint64_t a1)
   }
 }
 
-- (id)snapshotForProvider:(id)a3 withError:(id *)a4
+- (id)snapshotForProvider:(id)provider withError:(id *)error
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 date];
-  v9 = [(ACHDataStore *)self snapshotForProvider:v7 maxAgeInDays:14 currentDate:v8 withError:a4];
+  providerCopy = provider;
+  date = [v6 date];
+  v9 = [(ACHDataStore *)self snapshotForProvider:providerCopy maxAgeInDays:14 currentDate:date withError:error];
 
   return v9;
 }
 
-- (id)snapshotForProvider:(id)a3 maxAgeInDays:(unint64_t)a4 currentDate:(id)a5 withError:(id *)a6
+- (id)snapshotForProvider:(id)provider maxAgeInDays:(unint64_t)days currentDate:(id)date withError:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v12);
+  providerCopy = provider;
+  dateCopy = date;
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v33 = 0;
   v34 = &v33;
@@ -292,29 +292,29 @@ void __44__ACHDataStore__protectedDataStateDidChange__block_invoke(uint64_t a1)
   v30 = __Block_byref_object_copy__18;
   v31 = __Block_byref_object_dispose__18;
   v32 = 0;
-  v13 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__ACHDataStore_snapshotForProvider_maxAgeInDays_currentDate_withError___block_invoke;
   v21[3] = &unk_278491E50;
   v21[4] = self;
   v24 = &v33;
-  v14 = v10;
+  v14 = providerCopy;
   v22 = v14;
   v25 = &v27;
-  v26 = a4;
-  v15 = v11;
+  daysCopy = days;
+  v15 = dateCopy;
   v23 = v15;
-  dispatch_sync(v13, v21);
+  dispatch_sync(internalQueue2, v21);
 
   v16 = v34[5];
   v17 = v16;
   if (v16)
   {
-    if (a6)
+    if (error)
     {
       v18 = v16;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -494,10 +494,10 @@ LABEL_25:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearAllInMemoryPropertiesWithError:(id *)a3
+- (BOOL)clearAllInMemoryPropertiesWithError:(id *)error
 {
-  v5 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v5);
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v17 = 0;
   v18 = &v17;
@@ -509,7 +509,7 @@ LABEL_25:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v6 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__ACHDataStore_clearAllInMemoryPropertiesWithError___block_invoke;
@@ -517,16 +517,16 @@ LABEL_25:
   block[4] = self;
   block[5] = &v17;
   block[6] = &v13;
-  dispatch_sync(v6, block);
+  dispatch_sync(internalQueue2, block);
 
   v7 = v18[5];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -668,11 +668,11 @@ void __52__ACHDataStore_clearAllInMemoryPropertiesWithError___block_invoke_3(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)commitSnapshotForProvider:(id)a3 withError:(id *)a4
+- (BOOL)commitSnapshotForProvider:(id)provider withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  providerCopy = provider;
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v23 = 0;
   v24 = &v23;
@@ -684,26 +684,26 @@ void __52__ACHDataStore_clearAllInMemoryPropertiesWithError___block_invoke_3(uin
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v8 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__ACHDataStore_commitSnapshotForProvider_withError___block_invoke;
   v15[3] = &unk_278491580;
   v15[4] = self;
-  v9 = v6;
+  v9 = providerCopy;
   v16 = v9;
   v17 = &v19;
   v18 = &v23;
-  dispatch_sync(v8, v15);
+  dispatch_sync(internalQueue2, v15);
 
   v10 = v24[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -851,11 +851,11 @@ void __52__ACHDataStore_commitSnapshotForProvider_withError___block_invoke(uint6
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeSnapshotForProvider:(id)a3 withError:(id *)a4
+- (BOOL)removeSnapshotForProvider:(id)provider withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  providerCopy = provider;
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v23 = 0;
   v24 = &v23;
@@ -867,7 +867,7 @@ void __52__ACHDataStore_commitSnapshotForProvider_withError___block_invoke(uint6
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v8 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__ACHDataStore_removeSnapshotForProvider_withError___block_invoke;
@@ -875,18 +875,18 @@ void __52__ACHDataStore_commitSnapshotForProvider_withError___block_invoke(uint6
   v15[4] = self;
   v17 = &v23;
   v18 = &v19;
-  v9 = v6;
+  v9 = providerCopy;
   v16 = v9;
-  dispatch_sync(v8, v15);
+  dispatch_sync(internalQueue2, v15);
 
   v10 = v24[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -977,10 +977,10 @@ void __52__ACHDataStore_removeSnapshotForProvider_withError___block_invoke(uint6
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)commitAllPropertiesWithError:(id *)a3
+- (BOOL)commitAllPropertiesWithError:(id *)error
 {
-  v5 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v5);
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v17 = 0;
   v18 = &v17;
@@ -992,7 +992,7 @@ void __52__ACHDataStore_removeSnapshotForProvider_withError___block_invoke(uint6
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v6 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ACHDataStore_commitAllPropertiesWithError___block_invoke;
@@ -1000,16 +1000,16 @@ void __52__ACHDataStore_removeSnapshotForProvider_withError___block_invoke(uint6
   block[4] = self;
   block[5] = &v17;
   block[6] = &v13;
-  dispatch_sync(v6, block);
+  dispatch_sync(internalQueue2, block);
 
   v7 = v18[5];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1150,11 +1150,11 @@ void __45__ACHDataStore_commitAllPropertiesWithError___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)commitPropertiesForProvider:(id)a3 withError:(id *)a4
+- (BOOL)commitPropertiesForProvider:(id)provider withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  providerCopy = provider;
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v23 = 0;
   v24 = &v23;
@@ -1166,26 +1166,26 @@ void __45__ACHDataStore_commitAllPropertiesWithError___block_invoke(uint64_t a1)
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v8 = [(ACHDataStore *)self internalQueue];
+  internalQueue2 = [(ACHDataStore *)self internalQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__ACHDataStore_commitPropertiesForProvider_withError___block_invoke;
   v15[3] = &unk_278491668;
   v15[4] = self;
   v17 = &v23;
-  v9 = v6;
+  v9 = providerCopy;
   v16 = v9;
   v18 = &v19;
-  dispatch_sync(v8, v15);
+  dispatch_sync(internalQueue2, v15);
 
   v10 = v24[5];
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -1306,33 +1306,33 @@ void __54__ACHDataStore_commitPropertiesForProvider_withError___block_invoke(uin
 
 - (BOOL)_queue_populateAllPropertiesFromDatabase
 {
-  v3 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(ACHDataStore *)self injectedError];
-  v5 = [(ACHDataStore *)self propertyProviders];
-  v6 = [v5 allObjects];
-  v14 = v4;
-  v7 = [(ACHDataStore *)self _queue_populateFromDatabaseForProviders:v6 error:&v14];
+  injectedError = [(ACHDataStore *)self injectedError];
+  propertyProviders = [(ACHDataStore *)self propertyProviders];
+  allObjects = [propertyProviders allObjects];
+  v14 = injectedError;
+  v7 = [(ACHDataStore *)self _queue_populateFromDatabaseForProviders:allObjects error:&v14];
   v8 = v14;
 
   v9 = ACHLogDatabase();
-  v10 = v9;
+  notificationQueue = v9;
   if (v7)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_221DDC000, v10, OS_LOG_TYPE_DEFAULT, "Data store population complete, notifying observers", buf, 2u);
+      _os_log_impl(&dword_221DDC000, notificationQueue, OS_LOG_TYPE_DEFAULT, "Data store population complete, notifying observers", buf, 2u);
     }
 
-    v10 = [(ACHDataStore *)self notificationQueue];
+    notificationQueue = [(ACHDataStore *)self notificationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke;
     block[3] = &unk_278490870;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(notificationQueue, block);
   }
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1382,15 +1382,15 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
 - (id)_queue_dictionaryRepresentationOfAllProviderProperties
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ACHDataStore *)self propertyProviders];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  propertyProviders = [(ACHDataStore *)self propertyProviders];
+  v5 = [propertyProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1404,12 +1404,12 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertyProviders);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v9) dataStoreProperties];
+        dataStoreProperties = [*(*(&v15 + 1) + 8 * v9) dataStoreProperties];
         v12 = [v10 mutableCopy];
-        [v12 addEntriesFromDictionary:v11];
+        [v12 addEntriesFromDictionary:dataStoreProperties];
         v8 = [v12 copy];
 
         ++v9;
@@ -1417,7 +1417,7 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [propertyProviders countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -1436,15 +1436,15 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
 - (id)_queue_allPropertyProviderKeys
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ACHDataStore *)self propertyProviders];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  propertyProviders = [(ACHDataStore *)self propertyProviders];
+  v5 = [propertyProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1458,18 +1458,18 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertyProviders);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v9) dataStorePropertyKeys];
-        v8 = [v10 arrayByAddingObjectsFromArray:v11];
+        dataStorePropertyKeys = [*(*(&v14 + 1) + 8 * v9) dataStorePropertyKeys];
+        v8 = [v10 arrayByAddingObjectsFromArray:dataStorePropertyKeys];
 
         ++v9;
         v10 = v8;
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [propertyProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1485,21 +1485,21 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
   return v8;
 }
 
-- (BOOL)_queue_populateFromDatabaseForProviders:(id)a3 error:(id *)a4
+- (BOOL)_queue_populateFromDatabaseForProviders:(id)providers error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ACHDataStore *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  providersCopy = providers;
+  internalQueue = [(ACHDataStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v8 = [(ACHDataStore *)self keyValueClient];
-  v9 = [v8 protectedDataAvailable];
+  keyValueClient = [(ACHDataStore *)self keyValueClient];
+  protectedDataAvailable = [keyValueClient protectedDataAvailable];
 
-  if (v9)
+  if (protectedDataAvailable)
   {
-    v10 = [(ACHDataStore *)self assertionClient];
+    assertionClient = [(ACHDataStore *)self assertionClient];
     v44 = 0;
-    v11 = [v10 acquireDatabaseAssertionWithIdentifier:@"Populate" error:&v44];
+    v11 = [assertionClient acquireDatabaseAssertionWithIdentifier:@"Populate" error:&v44];
     v12 = v44;
 
     if (v12)
@@ -1519,14 +1519,14 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v15 = v6;
+      v15 = providersCopy;
       v16 = [v15 countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v16)
       {
         v17 = v16;
-        v34 = a4;
+        errorCopy = error;
         v35 = v11;
-        v36 = v6;
+        v36 = providersCopy;
         obj = v15;
         v18 = *v41;
         while (2)
@@ -1539,11 +1539,11 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
             }
 
             v20 = *(*(&v40 + 1) + 8 * i);
-            v21 = [(ACHDataStore *)self keyValueClient];
-            v22 = [v20 dataStorePropertyKeys];
-            v23 = [v20 uniqueName];
+            keyValueClient2 = [(ACHDataStore *)self keyValueClient];
+            dataStorePropertyKeys = [v20 dataStorePropertyKeys];
+            uniqueName = [v20 uniqueName];
             v39 = 0;
-            v24 = [v21 valuesForKeys:v22 domain:v23 error:&v39];
+            v24 = [keyValueClient2 valuesForKeys:dataStorePropertyKeys domain:uniqueName error:&v39];
             v25 = v39;
 
             if (v25)
@@ -1551,11 +1551,11 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
 
               v26 = v25;
               v15 = v26;
-              if (v34)
+              if (errorCopy)
               {
                 v27 = v26;
                 v14 = 0;
-                *v34 = v15;
+                *errorCopy = v15;
               }
 
               else
@@ -1585,7 +1585,7 @@ void __56__ACHDataStore__queue_populateAllPropertiesFromDatabase__block_invoke(u
         v14 = 1;
 LABEL_21:
         v11 = v35;
-        v6 = v36;
+        providersCopy = v36;
       }
 
       else
@@ -1594,9 +1594,9 @@ LABEL_21:
         v14 = 1;
       }
 
-      v28 = [(ACHDataStore *)self assertionClient];
+      assertionClient2 = [(ACHDataStore *)self assertionClient];
       v38 = 0;
-      [v28 invalidateAssertionWithToken:v11 error:&v38];
+      [assertionClient2 invalidateAssertionWithToken:v11 error:&v38];
       v12 = v38;
 
       if (v12)
@@ -1611,13 +1611,13 @@ LABEL_21:
       if (v14)
       {
         [(ACHDataStore *)self setHasCompletedFirstPopulateFromDatabase:1];
-        v30 = [(ACHDataStore *)self populationCompleteBlock];
+        populationCompleteBlock = [(ACHDataStore *)self populationCompleteBlock];
 
-        if (v30)
+        if (populationCompleteBlock)
         {
-          v31 = [(ACHDataStore *)self populationCompleteBlock];
+          populationCompleteBlock2 = [(ACHDataStore *)self populationCompleteBlock];
           [(ACHDataStore *)self setPopulationCompleteBlock:0];
-          v31[2](v31);
+          populationCompleteBlock2[2](populationCompleteBlock2);
         }
       }
     }
@@ -1632,19 +1632,19 @@ LABEL_21:
   return v14;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2835633E0])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2835633E0])
   {
-    v5 = [(ACHDataStore *)self notificationQueue];
+    notificationQueue = [(ACHDataStore *)self notificationQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__ACHDataStore_addObserver___block_invoke;
     v7[3] = &unk_278490898;
     v7[4] = self;
-    v8 = v4;
-    dispatch_sync(v5, v7);
+    v8 = observerCopy;
+    dispatch_sync(notificationQueue, v7);
   }
 
   else
@@ -1674,18 +1674,18 @@ uint64_t __28__ACHDataStore_addObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACHDataStore *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(ACHDataStore *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ACHDataStore_removeObserver___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __31__ACHDataStore_removeObserver___block_invoke(uint64_t a1)
@@ -1702,23 +1702,23 @@ void __31__ACHDataStore_removeObserver___block_invoke(uint64_t a1)
 
 - (BOOL)_forceDatabasePopulate
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ACHDataStore *)self internalQueue];
+  internalQueue = [(ACHDataStore *)self internalQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__ACHDataStore__forceDatabasePopulate__block_invoke;
   v5[3] = &unk_278490FE8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(internalQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __38__ACHDataStore__forceDatabasePopulate__block_invoke(uint64_t a1)

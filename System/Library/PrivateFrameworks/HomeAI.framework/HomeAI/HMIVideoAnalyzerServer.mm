@@ -1,130 +1,130 @@
 @interface HMIVideoAnalyzerServer
-- (HMIVideoAnalyzerServer)initWithConfiguration:(id)a3 identifier:(id)a4;
+- (HMIVideoAnalyzerServer)initWithConfiguration:(id)configuration identifier:(id)identifier;
 - (double)delay;
 - (double)timeSinceAnalyzerStarted;
 - (double)timeSinceLastFragmentWasReceived;
-- (id)_filterFrameResult:(id)a3 dynamicConfiguration:(id)a4 motionDetections:(id)a5;
-- (id)dynamicConfigurationForTime:(id *)a3;
+- (id)_filterFrameResult:(id)result dynamicConfiguration:(id)configuration motionDetections:(id)detections;
+- (id)dynamicConfigurationForTime:(id *)time;
 - (id)state;
-- (opaqueCMSampleBuffer)frameSelector:(id)a3 prepareFrame:(opaqueCMSampleBuffer *)a4;
+- (opaqueCMSampleBuffer)frameSelector:(id)selector prepareFrame:(opaqueCMSampleBuffer *)frame;
 - (unint64_t)status;
 - (void)_configureAssetWriter;
 - (void)_configureEncoder;
 - (void)_configureTimelapseAssetWriter;
 - (void)_configureTimelapseEncoder;
-- (void)_handleDecodedSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_notifyDelegateDidAnalyzeFragmentWithResult:(id)a3;
-- (void)_notifyDelegateDidAnalyzeFrameWithResult:(id)a3;
-- (void)_notifyDelegateDidCreateTimelapseFragment:(id)a3;
-- (void)_notifyDelegateDidFailWithError:(id)a3;
-- (void)_notifyDelegateDidProduceAnalysisStateUpdate:(id)a3;
-- (void)_prepareForInputVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4;
-- (void)_prepareForTimelapseOutputVideoFormat:(opaqueCMFormatDescription *)a3;
-- (void)_produceResult:(SEL)a3 withArguments:(id)a4;
-- (void)_saveFragmentDataToDisk:(id)a3 diskBufferSize:(unint64_t)a4;
-- (void)_updateDecoderAndEncodersForFragment:(id)a3 withConfiguration:(id)a4;
-- (void)_updateDecoderForFragment:(id)a3 decodeMode:(int64_t)a4;
-- (void)_updateEncoder:(BOOL)a3;
-- (void)_updateTimelapseEncoder:(id *)a3;
-- (void)analyzeFragment:(id)a3 configuration:(id)a4;
-- (void)assetWriter:(id)a3 didOutputInitializationSegment:(id)a4;
-- (void)assetWriter:(id)a3 didOutputSeparableSegment:(id)a4 segmentReport:(id)a5;
-- (void)buffer:(id)a3 willHandleSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)bufferWillFlush:(id)a3;
+- (void)_handleDecodedSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_notifyDelegateDidAnalyzeFragmentWithResult:(id)result;
+- (void)_notifyDelegateDidAnalyzeFrameWithResult:(id)result;
+- (void)_notifyDelegateDidCreateTimelapseFragment:(id)fragment;
+- (void)_notifyDelegateDidFailWithError:(id)error;
+- (void)_notifyDelegateDidProduceAnalysisStateUpdate:(id)update;
+- (void)_prepareForInputVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat;
+- (void)_prepareForTimelapseOutputVideoFormat:(opaqueCMFormatDescription *)format;
+- (void)_produceResult:(SEL)result withArguments:(id)arguments;
+- (void)_saveFragmentDataToDisk:(id)disk diskBufferSize:(unint64_t)size;
+- (void)_updateDecoderAndEncodersForFragment:(id)fragment withConfiguration:(id)configuration;
+- (void)_updateDecoderForFragment:(id)fragment decodeMode:(int64_t)mode;
+- (void)_updateEncoder:(BOOL)encoder;
+- (void)_updateTimelapseEncoder:(id *)encoder;
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration;
+- (void)assetWriter:(id)writer didOutputInitializationSegment:(id)segment;
+- (void)assetWriter:(id)writer didOutputSeparableSegment:(id)segment segmentReport:(id)report;
+- (void)buffer:(id)buffer willHandleSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)bufferWillFlush:(id)flush;
 - (void)dealloc;
-- (void)decoder:(id)a3 didDecodeSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)encoder:(id)a3 didEncodeSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)encoder:(id)a3 didFailWithError:(id)a4;
-- (void)finishWithCompletionHandler:(id)a3;
+- (void)decoder:(id)decoder didDecodeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)encoder:(id)encoder didEncodeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)encoder:(id)encoder didFailWithError:(id)error;
+- (void)finishWithCompletionHandler:(id)handler;
 - (void)flush;
 - (void)flushAsync;
-- (void)frameAnalyzer:(id)a3 didAnalyzeFrame:(id)a4;
-- (void)frameSampler:(id)a3 didSampleFrame:(opaqueCMSampleBuffer *)a4;
-- (void)frameSelector:(id)a3 didSelectFrame:(opaqueCMSampleBuffer *)a4 reference:(opaqueCMSampleBuffer *)a5;
-- (void)frameSelector:(id)a3 didSkipFrame:(opaqueCMSampleBuffer *)a4;
-- (void)frameTracker:(id)a3 didTrackFrame:(opaqueCMSampleBuffer *)a4 background:(opaqueCMSampleBuffer *)a5 motionDetections:(id)a6 tracks:(id)a7;
-- (void)handleMessageWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3 errorHandler:(id)a4;
-- (void)setAnalysisFPS:(double)a3;
-- (void)setBoosted:(BOOL)a3;
-- (void)setDecodeMode:(int64_t)a3;
-- (void)timerDidFire:(id)a3;
+- (void)frameAnalyzer:(id)analyzer didAnalyzeFrame:(id)frame;
+- (void)frameSampler:(id)sampler didSampleFrame:(opaqueCMSampleBuffer *)frame;
+- (void)frameSelector:(id)selector didSelectFrame:(opaqueCMSampleBuffer *)frame reference:(opaqueCMSampleBuffer *)reference;
+- (void)frameSelector:(id)selector didSkipFrame:(opaqueCMSampleBuffer *)frame;
+- (void)frameTracker:(id)tracker didTrackFrame:(opaqueCMSampleBuffer *)frame background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks;
+- (void)handleMessageWithOptions:(id)options completionHandler:(id)handler;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer errorHandler:(id)handler;
+- (void)setAnalysisFPS:(double)s;
+- (void)setBoosted:(BOOL)boosted;
+- (void)setDecodeMode:(int64_t)mode;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIVideoAnalyzerServer
 
-- (HMIVideoAnalyzerServer)initWithConfiguration:(id)a3 identifier:(id)a4
+- (HMIVideoAnalyzerServer)initWithConfiguration:(id)configuration identifier:(id)identifier
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v85.receiver = self;
   v85.super_class = HMIVideoAnalyzerServer;
-  v7 = [(HMIVideoAnalyzer *)&v85 initWithConfiguration:v6 identifier:a4];
+  v7 = [(HMIVideoAnalyzer *)&v85 initWithConfiguration:configurationCopy identifier:identifier];
   if (v7)
   {
     v8 = +[HMIPreference sharedInstance];
-    v9 = [v8 analysisQOS];
+    analysisQOS = [v8 analysisQOS];
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_attr_make_with_qos_class(v10, v9, 0);
+    v11 = dispatch_queue_attr_make_with_qos_class(v10, analysisQOS, 0);
     v12 = dispatch_queue_create("HMIVideoAnalyzerServer", v11);
     v13 = *(v7 + 21);
     *(v7 + 21) = v12;
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v7 identifier];
-    v16 = [v14 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Input", v15];
-    v17 = [v16 UTF8String];
+    identifier = [v7 identifier];
+    v16 = [v14 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Input", identifier];
+    uTF8String = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     v20 = *(v7 + 20);
     *(v7 + 20) = v19;
 
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v7 identifier];
-    v23 = [v21 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Encoder", v22];
-    v24 = [v23 UTF8String];
+    identifier2 = [v7 identifier];
+    v23 = [v21 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Encoder", identifier2];
+    uTF8String2 = [v23 UTF8String];
     v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v26 = dispatch_queue_create(v24, v25);
+    v26 = dispatch_queue_create(uTF8String2, v25);
     v27 = *(v7 + 22);
     *(v7 + 22) = v26;
 
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v7 identifier];
-    v30 = [v28 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Boost", v29];
-    v31 = [v30 UTF8String];
+    identifier3 = [v7 identifier];
+    v30 = [v28 stringWithFormat:@"HMIVideoAnalyzerServer(%@) - Boost", identifier3];
+    uTF8String3 = [v30 UTF8String];
     v32 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v33 = dispatch_queue_attr_make_with_qos_class(v32, QOS_CLASS_USER_INTERACTIVE, 0);
-    v34 = dispatch_queue_create(v31, v33);
+    v34 = dispatch_queue_create(uTF8String3, v33);
     v35 = *(v7 + 16);
     *(v7 + 16) = v34;
 
-    v7[137] = [v6 transcode];
-    *(v7 + 19) = [v6 initialDecodeMode];
+    v7[137] = [configurationCopy transcode];
+    *(v7 + 19) = [configurationCopy initialDecodeMode];
     v36 = [[HMIVideoCommandBuffer alloc] initWithMaxCapacity:0x800000];
     v37 = *(v7 + 27);
     *(v7 + 27) = v36;
 
     v38 = *(v7 + 27);
-    v39 = [v7 inputQueue];
-    [v38 setDelegate:v7 queue:v39];
+    inputQueue = [v7 inputQueue];
+    [v38 setDelegate:v7 queue:inputQueue];
 
     v40 = [HMIVideoFrameSelector alloc];
-    v41 = [v7 workQueue];
-    v42 = [(HMIVideoFrameSelector *)v40 initWithConfiguration:v6 workQueue:v41];
+    workQueue = [v7 workQueue];
+    v42 = [(HMIVideoFrameSelector *)v40 initWithConfiguration:configurationCopy workQueue:workQueue];
     v43 = *(v7 + 33);
     *(v7 + 33) = v42;
 
     [*(v7 + 33) setDelegate:v7];
     v44 = [HMIVideoFrameTracker alloc];
-    v45 = [v7 workQueue];
-    v46 = [(HMIVideoFrameTracker *)v44 initWithConfiguration:v6 workQueue:v45];
+    workQueue2 = [v7 workQueue];
+    v46 = [(HMIVideoFrameTracker *)v44 initWithConfiguration:configurationCopy workQueue:workQueue2];
     v47 = *(v7 + 34);
     *(v7 + 34) = v46;
 
     [*(v7 + 34) setDelegate:v7];
     v48 = [HMIVideoFrameAnalyzer alloc];
-    v49 = [v7 workQueue];
-    v50 = [(HMIVideoFrameAnalyzer *)v48 initWithConfiguration:v6 workQueue:v49];
+    workQueue3 = [v7 workQueue];
+    v50 = [(HMIVideoFrameAnalyzer *)v48 initWithConfiguration:configurationCopy workQueue:workQueue3];
     v51 = *(v7 + 35);
     *(v7 + 35) = v50;
 
@@ -133,13 +133,13 @@
     v53 = *(v7 + 43);
     *(v7 + 43) = v52;
 
-    if (v6)
+    if (configurationCopy)
     {
-      [v6 thumbnailInterval];
+      [configurationCopy thumbnailInterval];
       if ((v83 & 0x100000000) != 0)
       {
         v54 = [HMIVideoFrameIntervalSampler alloc];
-        [v6 thumbnailInterval];
+        [configurationCopy thumbnailInterval];
         v55 = [(HMIVideoFrameIntervalSampler *)v54 initWithInterval:v81];
         v56 = *(v7 + 29);
         *(v7 + 29) = v55;
@@ -147,11 +147,11 @@
         [*(v7 + 29) setDelegate:v7];
       }
 
-      [v6 timelapseInterval];
+      [configurationCopy timelapseInterval];
       if (v80)
       {
         v57 = [HMIVideoFrameIntervalSampler alloc];
-        [v6 timelapseInterval];
+        [configurationCopy timelapseInterval];
         v58 = [(HMIVideoFrameIntervalSampler *)v57 initWithInterval:v81];
         v59 = *(v7 + 30);
         *(v7 + 30) = v58;
@@ -190,9 +190,9 @@
     v70 = *(v7 + 44);
     *(v7 + 44) = v69;
 
-    [v6 analysisFPS];
+    [configurationCopy analysisFPS];
     *(v7 + 18) = v71;
-    [v6 analysisFPS];
+    [configurationCopy analysisFPS];
     [*(v7 + 33) setSampleRate:v72 * 3.0];
     *(v7 + 11) = 0;
     *(v7 + 12) = 0;
@@ -221,27 +221,27 @@
   return v7;
 }
 
-- (id)dynamicConfigurationForTime:(id *)a3
+- (id)dynamicConfigurationForTime:(id *)time
 {
   v19 = *MEMORY[0x277D85DE8];
   dynamicConfigurationBuffer = self->_dynamicConfigurationBuffer;
   start = **&MEMORY[0x277CC08F0];
-  v16 = *a3;
+  v16 = *time;
   CMTimeRangeFromTimeToTime(&v18, &start, &v16);
   v6 = [(HMIVideoEventBuffer *)dynamicConfigurationBuffer objectsInTimeRange:&v18 includeEnd:1];
-  v7 = [v6 lastObject];
-  v8 = [v7 value];
+  lastObject = [v6 lastObject];
+  value = [lastObject value];
 
-  if (!v8)
+  if (!value)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      *&v18.start.value = *&a3->var0;
-      v18.start.epoch = a3->var3;
+      *&v18.start.value = *&time->var0;
+      v18.start.epoch = time->var3;
       v13 = HMICMTimeDescription(&v18.start);
       LODWORD(v18.start.value) = 138543618;
       *(&v18.start.value + 4) = v12;
@@ -251,20 +251,20 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    v14 = [(HMIVideoEventBuffer *)self->_dynamicConfigurationBuffer firstObject];
-    v8 = [v14 value];
+    firstObject = [(HMIVideoEventBuffer *)self->_dynamicConfigurationBuffer firstObject];
+    value = [firstObject value];
   }
 
-  return v8;
+  return value;
 }
 
-- (void)handleMessageWithOptions:(id)a3 completionHandler:(id)a4
+- (void)handleMessageWithOptions:(id)options completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -272,22 +272,22 @@
     *buf = 138543618;
     v29 = v11;
     v30 = 2112;
-    v31 = v6;
+    v31 = optionsCopy;
     _os_log_impl(&dword_22D12F000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Received Message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(NSString *)v6 objectForKeyedSubscript:@"selector"];
-  v13 = [(NSString *)v6 objectForKeyedSubscript:@"arguments"];
+  v12 = [(NSString *)optionsCopy objectForKeyedSubscript:@"selector"];
+  v13 = [(NSString *)optionsCopy objectForKeyedSubscript:@"arguments"];
   v14 = NSSelectorFromString(v12);
   if (v14 == sel_flush)
   {
-    [(HMIVideoAnalyzerServer *)v9 flush];
+    [(HMIVideoAnalyzerServer *)selfCopy flush];
   }
 
   else if (v14 == sel_flushAsync)
   {
-    [(HMIVideoAnalyzerServer *)v9 flushAsync];
+    [(HMIVideoAnalyzerServer *)selfCopy flushAsync];
   }
 
   else
@@ -298,17 +298,17 @@
       v25[1] = 3221225472;
       v25[2] = __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___block_invoke;
       v25[3] = &unk_278755D98;
-      v27 = v7;
-      v25[4] = v9;
-      v26 = v6;
-      [(HMIVideoAnalyzerServer *)v9 finishWithCompletionHandler:v25];
+      v27 = handlerCopy;
+      v25[4] = selfCopy;
+      v26 = optionsCopy;
+      [(HMIVideoAnalyzerServer *)selfCopy finishWithCompletionHandler:v25];
 
       goto LABEL_29;
     }
 
     if (v14 == sel_cancel)
     {
-      [(HMIVideoAnalyzerServer *)v9 cancel];
+      [(HMIVideoAnalyzerServer *)selfCopy cancel];
     }
 
     else
@@ -317,25 +317,25 @@
       {
         v19 = [v13 objectAtIndexedSubscript:0];
         [v19 doubleValue];
-        [(HMIVideoAnalyzerServer *)v9 setAnalysisFPS:?];
+        [(HMIVideoAnalyzerServer *)selfCopy setAnalysisFPS:?];
       }
 
       else if (v14 == sel_setMonitored_)
       {
         v19 = [v13 objectAtIndexedSubscript:0];
-        -[HMIVideoAnalyzerServer setMonitored:](v9, "setMonitored:", [v19 BOOLValue]);
+        -[HMIVideoAnalyzerServer setMonitored:](selfCopy, "setMonitored:", [v19 BOOLValue]);
       }
 
       else if (v14 == sel_setDecodeMode_)
       {
         v19 = [v13 objectAtIndexedSubscript:0];
-        -[HMIVideoAnalyzerServer setDecodeMode:](v9, "setDecodeMode:", [v19 integerValue]);
+        -[HMIVideoAnalyzerServer setDecodeMode:](selfCopy, "setDecodeMode:", [v19 integerValue]);
       }
 
       else if (v14 == sel_setBoosted_)
       {
         v19 = [v13 objectAtIndexedSubscript:0];
-        -[HMIVideoAnalyzerServer setBoosted:](v9, "setBoosted:", [v19 BOOLValue]);
+        -[HMIVideoAnalyzerServer setBoosted:](selfCopy, "setBoosted:", [v19 BOOLValue]);
       }
 
       else
@@ -343,7 +343,7 @@
         if (v14 != sel_analyzeFragment_configuration_)
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = v9;
+          v16 = selfCopy;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
@@ -361,16 +361,16 @@
 
         v19 = [v13 objectAtIndexedSubscript:0];
         v20 = [v13 objectAtIndexedSubscript:1];
-        [(HMIVideoAnalyzerServer *)v9 analyzeFragment:v19 configuration:v20];
+        [(HMIVideoAnalyzerServer *)selfCopy analyzeFragment:v19 configuration:v20];
       }
     }
   }
 
 LABEL_25:
-  if (v7)
+  if (handlerCopy)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v9;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
@@ -378,12 +378,12 @@ LABEL_25:
       *buf = 138543618;
       v29 = v24;
       v30 = 2112;
-      v31 = v6;
+      v31 = optionsCopy;
       _os_log_impl(&dword_22D12F000, v23, OS_LOG_TYPE_DEBUG, "%{public}@Sent Message Reply: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_29:
@@ -414,15 +414,15 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
   }
 }
 
-- (void)analyzeFragment:(id)a3 configuration:(id)a4
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v62 = a4;
+  fragmentCopy = fragment;
+  configurationCopy = configuration;
   v7 = [MEMORY[0x277CBEAA8] now];
   [(HMIVideoAnalyzerServer *)self setLastFragmentReceivedDate:v7];
 
-  v61 = [v6 data];
+  data = [fragmentCopy data];
   v8 = +[HMIPreference sharedInstance];
   v9 = [v8 hasPreferenceForKey:@"eventTriggers"];
 
@@ -430,21 +430,21 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
   {
     v10 = +[HMIPreference sharedInstance];
     v11 = [v10 numberPreferenceForKey:@"eventTriggers"];
-    [v62 setEventTriggers:{objc_msgSend(v11, "integerValue")}];
+    [configurationCopy setEventTriggers:{objc_msgSend(v11, "integerValue")}];
   }
 
   v12 = +[HMIPreference sharedInstance];
   v13 = [v12 numberPreferenceForKey:@"fragmentDiskBufferSize" defaultValue:&unk_284075450];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
-  if (v14)
+  if (integerValue)
   {
-    [(HMIVideoAnalyzerServer *)self _saveFragmentDataToDisk:v61 diskBufferSize:v14 << 20];
+    [(HMIVideoAnalyzerServer *)self _saveFragmentDataToDisk:data diskBufferSize:integerValue << 20];
   }
 
-  if (v6)
+  if (fragmentCopy)
   {
-    [v6 duration];
+    [fragmentCopy duration];
   }
 
   else
@@ -452,11 +452,11 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
     memset(&time1, 0, sizeof(time1));
   }
 
-  v15 = [(HMIVideoAnalyzer *)self configuration];
-  v16 = v15;
-  if (v15)
+  configuration = [(HMIVideoAnalyzer *)self configuration];
+  v16 = configuration;
+  if (configuration)
   {
-    [v15 maxFragmentDuration];
+    [configuration maxFragmentDuration];
   }
 
   else
@@ -472,9 +472,9 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
   }
 
   v18 = MEMORY[0x277CCACA8];
-  if (v6)
+  if (fragmentCopy)
   {
-    [v6 duration];
+    [fragmentCopy duration];
   }
 
   else
@@ -483,11 +483,11 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
   }
 
   Seconds = CMTimeGetSeconds(&time1);
-  v20 = [(HMIVideoAnalyzer *)self configuration];
-  v21 = v20;
-  if (v20)
+  configuration2 = [(HMIVideoAnalyzer *)self configuration];
+  v21 = configuration2;
+  if (configuration2)
   {
-    [v20 maxFragmentDuration];
+    [configuration2 maxFragmentDuration];
   }
 
   else
@@ -499,30 +499,30 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
 
   if (+[HMIPreference isInternalInstall])
   {
-    v23 = [v6 sanitizedData];
-    v60 = [v23 base64EncodedDataWithOptions:0];
+    sanitizedData = [fragmentCopy sanitizedData];
+    v60 = [sanitizedData base64EncodedDataWithOptions:0];
 
     v59 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v60 encoding:4];
     context = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v55 = HMFGetLogIdentifier();
-      v57 = [(HMIVideoAnalyzer *)v24 configuration];
-      v56 = [v57 camera];
-      v26 = [v56 manufacturer];
-      v27 = [(HMIVideoAnalyzer *)v24 configuration];
-      v28 = [v27 camera];
-      v29 = [v28 model];
+      configuration3 = [(HMIVideoAnalyzer *)selfCopy configuration];
+      camera = [configuration3 camera];
+      manufacturer = [camera manufacturer];
+      configuration4 = [(HMIVideoAnalyzer *)selfCopy configuration];
+      camera2 = [configuration4 camera];
+      model = [camera2 model];
       LODWORD(time1.value) = 138544386;
       *(&time1.value + 4) = v55;
       LOWORD(time1.flags) = 2112;
-      *(&time1.flags + 2) = v26;
+      *(&time1.flags + 2) = manufacturer;
       HIWORD(time1.epoch) = 2112;
-      v77 = v29;
+      v77 = model;
       v78 = 2112;
-      v79 = v6;
+      v79 = fragmentCopy;
       v80 = 2112;
       v81 = v59;
       _os_log_impl(&dword_22D12F000, v25, OS_LOG_TYPE_ERROR, "%{public}@Camera, Manufacturer: %@, Model: %@, Fragment: %@, Sanitized Fragment Data: %@", &time1, 0x34u);
@@ -536,18 +536,18 @@ void __69__HMIVideoAnalyzerServer_handleMessageWithOptions_completionHandler___b
   if (!v30)
   {
 LABEL_24:
-    v33 = [(HMIVideoAnalyzerServer *)self decodeMode];
-    v34 = [(HMIVideoAnalyzerServer *)self encode];
-    [v62 setDecodeMode:v33];
-    [v62 setShouldEncode:v34 & (v33 != 0)];
+    decodeMode = [(HMIVideoAnalyzerServer *)self decodeMode];
+    encode = [(HMIVideoAnalyzerServer *)self encode];
+    [configurationCopy setDecodeMode:decodeMode];
+    [configurationCopy setShouldEncode:encode & (decodeMode != 0)];
     v35 = MEMORY[0x277CC0898];
-    if (v33)
+    if (decodeMode)
     {
-      v36 = [(HMIVideoAnalyzer *)self configuration];
-      v37 = v36;
-      if (v36)
+      configuration5 = [(HMIVideoAnalyzer *)self configuration];
+      v37 = configuration5;
+      if (configuration5)
       {
-        [v36 timelapseInterval];
+        [configuration5 timelapseInterval];
       }
 
       else
@@ -556,7 +556,7 @@ LABEL_24:
       }
 
       time1 = *&location[1];
-      [v62 setTimelapseInterval:&time1];
+      [configurationCopy setTimelapseInterval:&time1];
     }
 
     else
@@ -564,33 +564,33 @@ LABEL_24:
       *&location[1] = *MEMORY[0x277CC0898];
       location[3] = *(MEMORY[0x277CC0898] + 16);
       time1 = *&location[1];
-      [v62 setTimelapseInterval:&time1];
+      [configurationCopy setTimelapseInterval:&time1];
     }
 
-    v38 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationBuffer];
+    dynamicConfigurationBuffer = [(HMIVideoAnalyzerServer *)self dynamicConfigurationBuffer];
     v39 = [HMIVideoEventEntry alloc];
     p_currentDTS = &self->_currentDTS;
     time1 = self->_currentDTS;
-    v41 = [(HMIVideoEventEntry *)v39 initWithValue:v62 time:&time1];
-    [v38 addObject:v41];
+    v41 = [(HMIVideoEventEntry *)v39 initWithValue:configurationCopy time:&time1];
+    [dynamicConfigurationBuffer addObject:v41];
 
     objc_initWeak(location, self);
-    v42 = [(HMIVideoAnalyzerServer *)self commandBuffer];
+    commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __56__HMIVideoAnalyzerServer_analyzeFragment_configuration___block_invoke_2;
     v65[3] = &unk_278752AC0;
     objc_copyWeak(&v68, location);
-    v43 = v6;
+    v43 = fragmentCopy;
     v66 = v43;
-    v67 = v62;
-    [v42 handleBlock:v65];
+    v67 = configurationCopy;
+    [commandBuffer handleBlock:v65];
 
-    v44 = [[HMIMemoryAVAsset alloc] initWithData:v61];
+    v44 = [[HMIMemoryAVAsset alloc] initWithData:data];
     [(HMIMemoryAVAsset *)v44 loadValuesSynchronously];
-    v45 = [v43 videoFormatDescription];
-    v46 = [(HMIVideoAnalyzer *)self configuration];
-    if ([v46 passthroughAudio])
+    videoFormatDescription = [v43 videoFormatDescription];
+    configuration6 = [(HMIVideoAnalyzer *)self configuration];
+    if ([configuration6 passthroughAudio])
     {
       v47 = [v43 audioFormatDescription] != 0;
     }
@@ -600,7 +600,7 @@ LABEL_24:
       v47 = 0;
     }
 
-    v48 = [[HMIVideoAssetReader alloc] initWithAsset:v44 readVideoTrack:v45 != 0 readAudioTrack:v47];
+    v48 = [[HMIVideoAssetReader alloc] initWithAsset:v44 readVideoTrack:videoFormatDescription != 0 readAudioTrack:v47];
     *&time1.value = *&p_currentDTS->value;
     time1.epoch = self->_currentDTS.epoch;
     value = *v35;
@@ -609,15 +609,15 @@ LABEL_24:
     epoch = *(v35 + 16);
     while (1)
     {
-      v51 = [(HMIVideoAssetReader *)v48 copyNextSampleBuffer];
-      v52 = v51;
-      if (!v51)
+      copyNextSampleBuffer = [(HMIVideoAssetReader *)v48 copyNextSampleBuffer];
+      v52 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
       time2 = time1;
-      v53 = HMICMSampleBufferCreateCopyWithTimingOffset(v51, &time2);
+      v53 = HMICMSampleBufferCreateCopyWithTimingOffset(copyNextSampleBuffer, &time2);
       if (HMICMSampleBufferIsVideo(v52))
       {
         CMSampleBufferGetDuration(&time2, v52);
@@ -652,21 +652,21 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v54 = [(HMIVideoNode *)v48 error];
-      [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:v54];
+      error = [(HMIVideoNode *)v48 error];
+      [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:error];
     }
 
     else
     {
-      v54 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:4 description:{@"Fragment had no video samples, fragment is likely corrupted."}];
-      [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:v54];
+      error = [MEMORY[0x277CCA9B8] hmiErrorWithCode:4 description:{@"Fragment had no video samples, fragment is likely corrupted."}];
+      [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:error];
     }
 
     goto LABEL_43;
   }
 
   objc_initWeak(&time1, self);
-  v31 = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  commandBuffer2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __56__HMIVideoAnalyzerServer_analyzeFragment_configuration___block_invoke;
@@ -674,7 +674,7 @@ LABEL_43:
   objc_copyWeak(&v72, &time1);
   v32 = v30;
   v71 = v32;
-  [v31 handleBlock:v70];
+  [commandBuffer2 handleBlock:v70];
 
   objc_destroyWeak(&v72);
   objc_destroyWeak(&time1);
@@ -716,53 +716,53 @@ uint64_t __56__HMIVideoAnalyzerServer_analyzeFragment_configuration___block_invo
   return MEMORY[0x2821F96F8](WeakRetained, v3);
 }
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3 errorHandler:(id)a4
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer errorHandler:(id)handler
 {
-  if (HMICMSampleBufferIsAudio(a3))
+  if (HMICMSampleBufferIsAudio(buffer))
   {
-    v9 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-    [v9 handleSampleBuffer:a3];
+    commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+    [commandBuffer handleSampleBuffer:buffer];
   }
 
-  else if (CMSampleBufferGetImageBuffer(a3))
+  else if (CMSampleBufferGetImageBuffer(buffer))
   {
 
-    [(HMIVideoAnalyzerServer *)self _handleDecodedSampleBuffer:a3];
+    [(HMIVideoAnalyzerServer *)self _handleDecodedSampleBuffer:buffer];
   }
 
   else
   {
     memset(&v11, 0, sizeof(v11));
-    CMSampleBufferGetDecodeTimeStamp(&v11, a3);
+    CMSampleBufferGetDecodeTimeStamp(&v11, buffer);
     self->_currentDTS = v11;
-    v6 = [(HMIVideoAnalyzerServer *)self timeline];
+    timeline = [(HMIVideoAnalyzerServer *)self timeline];
     v7 = [MEMORY[0x277CBEAA8] now];
-    CMSampleBufferGetPresentationTimeStamp(&v10, a3);
-    [v6 addDate:v7 atTime:&v10];
+    CMSampleBufferGetPresentationTimeStamp(&v10, buffer);
+    [timeline addDate:v7 atTime:&v10];
 
-    v8 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-    [v8 handleSampleBuffer:a3];
+    commandBuffer2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
+    [commandBuffer2 handleSampleBuffer:buffer];
   }
 }
 
 - (void)flush
 {
-  v2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  [v2 flush];
+  commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  [commandBuffer flush];
 }
 
 - (void)flushAsync
 {
-  v2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  [v2 flushAsync];
+  commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  [commandBuffer flushAsync];
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -773,15 +773,15 @@ uint64_t __56__HMIVideoAnalyzerServer_analyzeFragment_configuration___block_invo
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIVideoAnalyzerServer *)v6 commandBuffer];
+  commandBuffer = [(HMIVideoAnalyzerServer *)selfCopy commandBuffer];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke;
   v11[3] = &unk_278752DF8;
-  v11[4] = v6;
-  v12 = v4;
-  v10 = v4;
-  [v9 handleBlock:v11];
+  v11[4] = selfCopy;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [commandBuffer handleBlock:v11];
 }
 
 void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uint64_t a1)
@@ -832,29 +832,29 @@ void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uin
   }
 }
 
-- (void)_saveFragmentDataToDisk:(id)a3 diskBufferSize:(unint64_t)a4
+- (void)_saveFragmentDataToDisk:(id)disk diskBufferSize:(unint64_t)size
 {
-  v45 = a3;
-  v5 = [(HMIVideoAnalyzer *)self configuration];
-  v6 = [v5 camera];
-  v7 = [v6 name];
-  v8 = v7;
+  diskCopy = disk;
+  configuration = [(HMIVideoAnalyzer *)self configuration];
+  camera = [configuration camera];
+  name = [camera name];
+  v8 = name;
   v9 = @"Unknown";
-  if (v7)
+  if (name)
   {
-    v9 = v7;
+    v9 = name;
   }
 
   v44 = v9;
 
   v41 = MEMORY[0x277CCACA8];
-  v43 = [(HMIVideoAnalyzer *)self configuration];
-  v42 = [v43 camera];
-  v10 = [v42 manufacturer];
-  v11 = v10;
-  if (v10)
+  configuration2 = [(HMIVideoAnalyzer *)self configuration];
+  camera2 = [configuration2 camera];
+  manufacturer = [camera2 manufacturer];
+  v11 = manufacturer;
+  if (manufacturer)
   {
-    v12 = v10;
+    v12 = manufacturer;
   }
 
   else
@@ -862,13 +862,13 @@ void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uin
     v12 = @"UnknownManufacturer";
   }
 
-  v13 = [(HMIVideoAnalyzer *)self configuration];
-  v14 = [v13 camera];
-  v15 = [v14 model];
-  v16 = v15;
-  if (v15)
+  configuration3 = [(HMIVideoAnalyzer *)self configuration];
+  camera3 = [configuration3 camera];
+  model = [camera3 model];
+  v16 = model;
+  if (model)
   {
-    v17 = v15;
+    v17 = model;
   }
 
   else
@@ -876,14 +876,14 @@ void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uin
     v17 = @"UnknownModel";
   }
 
-  v18 = [(HMIVideoAnalyzer *)self configuration];
-  v19 = [v18 camera];
-  v20 = [v19 firmwareVersion];
-  v21 = v20;
+  configuration4 = [(HMIVideoAnalyzer *)self configuration];
+  camera4 = [configuration4 camera];
+  firmwareVersion = [camera4 firmwareVersion];
+  v21 = firmwareVersion;
   v22 = @"UnknownFirmware";
-  if (v20)
+  if (firmwareVersion)
   {
-    v22 = v20;
+    v22 = firmwareVersion;
   }
 
   v23 = [v41 stringWithFormat:@"%@_%@_%@", v12, v17, v22];
@@ -893,8 +893,8 @@ void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uin
   v25 = NSTemporaryDirectory();
   v26 = [v25 stringByAppendingPathComponent:v44];
 
-  v27 = [MEMORY[0x277CCAA00] defaultManager];
-  [v27 createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:0];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -902,18 +902,18 @@ void __54__HMIVideoAnalyzerServer_finishWithCompletionHandler___block_invoke(uin
   v47[3] = &unk_278755DE8;
   v47[4] = self;
   v48 = v26;
-  v49 = v45;
-  v50 = a4;
-  v28 = v45;
+  v49 = diskCopy;
+  sizeCopy = size;
+  v28 = diskCopy;
   v29 = v26;
   v30 = MEMORY[0x2318CB8E0](v47);
   v31 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v31 setDateFormat:@"YYYY-MM-dd-HH-mm-ss"];
   v32 = MEMORY[0x277CCACA8];
-  v33 = [(HMIVideoAnalyzerServer *)self startDate];
-  v34 = [v31 stringFromDate:v33];
-  v35 = [(HMIVideoAnalyzer *)self identifier];
-  v36 = [v32 stringWithFormat:@"%@_%@_%@", v34, v35, v24];
+  startDate = [(HMIVideoAnalyzerServer *)self startDate];
+  v34 = [v31 stringFromDate:startDate];
+  identifier = [(HMIVideoAnalyzer *)self identifier];
+  v36 = [v32 stringWithFormat:@"%@_%@_%@", v34, identifier, v24];
 
   v37 = [v29 stringByAppendingPathComponent:v36];
   v38 = [v37 stringByAppendingPathExtension:@"mp4"];
@@ -1169,22 +1169,22 @@ LABEL_12:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_prepareForInputVideoFormat:(opaqueCMFormatDescription *)a3 audioFormat:(opaqueCMFormatDescription *)a4
+- (void)_prepareForInputVideoFormat:(opaqueCMFormatDescription *)format audioFormat:(opaqueCMFormatDescription *)audioFormat
 {
   v18 = *MEMORY[0x277D85DE8];
   if (![(HMIVideoAnalyzerServer *)self inputVideoFormat])
   {
-    self->_inputVideoFormat = a3;
-    if (a3)
+    self->_inputVideoFormat = format;
+    if (format)
     {
-      CFRetain(a3);
+      CFRetain(format);
     }
   }
 
-  if (!CMFormatDescriptionEqual(a3, [(HMIVideoAnalyzerServer *)self inputVideoFormat]))
+  if (!CMFormatDescriptionEqual(format, [(HMIVideoAnalyzerServer *)self inputVideoFormat]))
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1199,17 +1199,17 @@ LABEL_12:
 
   if (![(HMIVideoAnalyzerServer *)self inputAudioFormat])
   {
-    self->_inputAudioFormat = a4;
-    if (a4)
+    self->_inputAudioFormat = audioFormat;
+    if (audioFormat)
     {
-      CFRetain(a4);
+      CFRetain(audioFormat);
     }
   }
 
-  if (!CMFormatDescriptionEqual(a4, [(HMIVideoAnalyzerServer *)self inputAudioFormat]))
+  if (!CMFormatDescriptionEqual(audioFormat, [(HMIVideoAnalyzerServer *)self inputAudioFormat]))
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1222,17 +1222,17 @@ LABEL_12:
     objc_autoreleasePoolPop(v11);
   }
 
-  v15 = [(HMIVideoAnalyzerServer *)self assetWriter];
+  assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-  if (!v15)
+  if (!assetWriter)
   {
     [(HMIVideoAnalyzerServer *)self _configureAssetWriter];
   }
 }
 
-- (void)_prepareForTimelapseOutputVideoFormat:(opaqueCMFormatDescription *)a3
+- (void)_prepareForTimelapseOutputVideoFormat:(opaqueCMFormatDescription *)format
 {
-  if (!CMFormatDescriptionEqual(a3, [(HMIVideoAnalyzerServer *)self timelapseOutputVideoFormat]))
+  if (!CMFormatDescriptionEqual(format, [(HMIVideoAnalyzerServer *)self timelapseOutputVideoFormat]))
   {
     timelapseOutputVideoFormat = self->_timelapseOutputVideoFormat;
     if (timelapseOutputVideoFormat)
@@ -1240,7 +1240,7 @@ LABEL_12:
       CFRelease(timelapseOutputVideoFormat);
     }
 
-    self->_timelapseOutputVideoFormat = CFRetain(a3);
+    self->_timelapseOutputVideoFormat = CFRetain(format);
 
     [(HMIVideoAnalyzerServer *)self _configureTimelapseAssetWriter];
   }
@@ -1250,7 +1250,7 @@ LABEL_12:
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1261,37 +1261,37 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v3);
-  inputVideoFormat = v4->_inputVideoFormat;
+  inputVideoFormat = selfCopy->_inputVideoFormat;
   if (inputVideoFormat)
   {
     CFRelease(inputVideoFormat);
   }
 
-  inputAudioFormat = v4->_inputAudioFormat;
+  inputAudioFormat = selfCopy->_inputAudioFormat;
   if (inputAudioFormat)
   {
     CFRelease(inputAudioFormat);
   }
 
-  timelapseOutputVideoFormat = v4->_timelapseOutputVideoFormat;
+  timelapseOutputVideoFormat = selfCopy->_timelapseOutputVideoFormat;
   if (timelapseOutputVideoFormat)
   {
     CFRelease(timelapseOutputVideoFormat);
   }
 
-  v10.receiver = v4;
+  v10.receiver = selfCopy;
   v10.super_class = HMIVideoAnalyzerServer;
   [(HMIVideoAnalyzer *)&v10 dealloc];
 }
 
 - (void)_configureAssetWriter
 {
-  v3 = [(HMIVideoAnalyzerServer *)self assetWriter];
+  assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-  if (v3)
+  if (assetWriter)
   {
-    v7 = [HMIVideoAnalyzerServer _configureAssetWriter];
-    [(HMIVideoAnalyzerServer *)v7 _configureTimelapseAssetWriter];
+    _configureAssetWriter = [HMIVideoAnalyzerServer _configureAssetWriter];
+    [(HMIVideoAnalyzerServer *)_configureAssetWriter _configureTimelapseAssetWriter];
   }
 
   else
@@ -1299,12 +1299,12 @@ LABEL_12:
     v4 = [[HMIVideoAssetWriter alloc] initWithVideoFormat:[(HMIVideoAnalyzerServer *)self inputVideoFormat] audioFormat:[(HMIVideoAnalyzerServer *)self inputAudioFormat]];
     [(HMIVideoAnalyzerServer *)self setAssetWriter:v4];
 
-    v5 = [(HMIVideoAnalyzer *)self logIdentifier];
-    v6 = [(HMIVideoAnalyzerServer *)self assetWriter];
-    [v6 setLogIdentifier:v5];
+    logIdentifier = [(HMIVideoAnalyzer *)self logIdentifier];
+    assetWriter2 = [(HMIVideoAnalyzerServer *)self assetWriter];
+    [assetWriter2 setLogIdentifier:logIdentifier];
 
-    v9 = [(HMIVideoAnalyzerServer *)self assetWriter];
-    [v9 setDelegate:self];
+    assetWriter3 = [(HMIVideoAnalyzerServer *)self assetWriter];
+    [assetWriter3 setDelegate:self];
   }
 }
 
@@ -1313,12 +1313,12 @@ LABEL_12:
   if ([(HMIVideoAnalyzerServer *)self timelapseOutputVideoFormat])
   {
     v3 = [HMIVideoAssetWriter alloc];
-    v4 = [(HMIVideoAnalyzerServer *)self timelapseOutputVideoFormat];
-    v5 = [(HMIVideoAnalyzer *)self configuration];
-    v6 = v5;
-    if (v5)
+    timelapseOutputVideoFormat = [(HMIVideoAnalyzerServer *)self timelapseOutputVideoFormat];
+    configuration = [(HMIVideoAnalyzer *)self configuration];
+    v6 = configuration;
+    if (configuration)
     {
-      [v5 timelapsePreferredFragmentDuration];
+      [configuration timelapsePreferredFragmentDuration];
     }
 
     else
@@ -1326,23 +1326,23 @@ LABEL_12:
       memset(v15, 0, sizeof(v15));
     }
 
-    v7 = [(HMIVideoAssetWriter *)v3 initWithVideoFormat:v4 audioFormat:0 initialFragmentSequenceNumber:1 preferredOutputSegmentInterval:v15];
+    v7 = [(HMIVideoAssetWriter *)v3 initWithVideoFormat:timelapseOutputVideoFormat audioFormat:0 initialFragmentSequenceNumber:1 preferredOutputSegmentInterval:v15];
     [(HMIVideoAnalyzerServer *)self setTimelapseAssetWriter:v7];
 
-    v8 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
-    [v8 setDelegate:self];
+    timelapseAssetWriter = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+    [timelapseAssetWriter setDelegate:self];
 
-    v9 = [(HMIVideoAnalyzer *)self identifier];
-    v10 = [v9 UUIDString];
-    v11 = [v10 stringByAppendingString:@" Timelapse"];
-    v12 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
-    [v12 setLogIdentifier:v11];
+    identifier = [(HMIVideoAnalyzer *)self identifier];
+    uUIDString = [identifier UUIDString];
+    v11 = [uUIDString stringByAppendingString:@" Timelapse"];
+    timelapseAssetWriter2 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+    [timelapseAssetWriter2 setLogIdentifier:v11];
   }
 
   else
   {
-    v13 = [HMIVideoAnalyzerServer _configureTimelapseAssetWriter];
-    [(HMIVideoAnalyzerServer *)v13 _configureEncoder];
+    _configureTimelapseAssetWriter = [HMIVideoAnalyzerServer _configureTimelapseAssetWriter];
+    [(HMIVideoAnalyzerServer *)_configureTimelapseAssetWriter _configureEncoder];
   }
 }
 
@@ -1354,9 +1354,9 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v3 = [(HMIVideoAnalyzerServer *)self encoder];
+  encoder = [(HMIVideoAnalyzerServer *)self encoder];
 
-  if (v3)
+  if (encoder)
   {
 LABEL_9:
     [HMIVideoAnalyzerServer _configureEncoder];
@@ -1366,36 +1366,36 @@ LABEL_9:
   if (![(HMIVideoAnalyzerServer *)self inputVideoFormat])
   {
 LABEL_10:
-    v16 = [HMIVideoAnalyzerServer _configureEncoder];
-    [(HMIVideoAnalyzerServer *)v16 _configureTimelapseEncoder];
+    _configureEncoder = [HMIVideoAnalyzerServer _configureEncoder];
+    [(HMIVideoAnalyzerServer *)_configureEncoder _configureTimelapseEncoder];
     return;
   }
 
   v4 = [HMIVideoEncoder alloc];
   Dimensions = CMVideoFormatDescriptionGetDimensions([(HMIVideoAnalyzerServer *)self inputVideoFormat]);
-  v6 = [(HMIVideoAnalyzer *)self configuration];
+  configuration = [(HMIVideoAnalyzer *)self configuration];
   v18 = 0;
-  v7 = -[HMIVideoEncoder initWithDimensions:codecType:useHardwareAcceleration:error:](v4, "initWithDimensions:codecType:useHardwareAcceleration:error:", Dimensions, [v6 transcodeCodecType], 1, &v18);
+  v7 = -[HMIVideoEncoder initWithDimensions:codecType:useHardwareAcceleration:error:](v4, "initWithDimensions:codecType:useHardwareAcceleration:error:", Dimensions, [configuration transcodeCodecType], 1, &v18);
   v8 = v18;
   [(HMIVideoAnalyzerServer *)self setEncoder:v7];
 
-  v9 = [(HMIVideoAnalyzerServer *)self encoder];
+  encoder2 = [(HMIVideoAnalyzerServer *)self encoder];
 
-  if (v9)
+  if (encoder2)
   {
-    v10 = [(HMIVideoAnalyzer *)self logIdentifier];
-    v11 = [(HMIVideoAnalyzerServer *)self encoder];
-    [v11 setLogIdentifier:v10];
+    logIdentifier = [(HMIVideoAnalyzer *)self logIdentifier];
+    encoder3 = [(HMIVideoAnalyzerServer *)self encoder];
+    [encoder3 setLogIdentifier:logIdentifier];
 
-    v12 = [(HMIVideoAnalyzerServer *)self encoder];
-    [v12 setAverageBitRate:1000000];
+    encoder4 = [(HMIVideoAnalyzerServer *)self encoder];
+    [encoder4 setAverageBitRate:1000000];
 
-    v13 = [(HMIVideoAnalyzerServer *)self encoder];
-    [v13 setDataRateLimit:{0x80000, 4}];
+    encoder5 = [(HMIVideoAnalyzerServer *)self encoder];
+    [encoder5 setDataRateLimit:{0x80000, 4}];
 
-    v14 = [(HMIVideoAnalyzerServer *)self encoder];
-    v15 = [(HMIVideoAnalyzerServer *)self encoderQueue];
-    [v14 setDelegate:self queue:v15];
+    encoder6 = [(HMIVideoAnalyzerServer *)self encoder];
+    encoderQueue = [(HMIVideoAnalyzerServer *)self encoderQueue];
+    [encoder6 setDelegate:self queue:encoderQueue];
   }
 
   else
@@ -1407,9 +1407,9 @@ LABEL_10:
 - (void)_configureTimelapseEncoder
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  timelapseEncoder = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
 
-  if (v3)
+  if (timelapseEncoder)
   {
     [HMIVideoAnalyzerServer _configureTimelapseEncoder];
 LABEL_25:
@@ -1461,7 +1461,7 @@ LABEL_7:
     }
 
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -1483,29 +1483,29 @@ LABEL_7:
 
 LABEL_10:
   v10 = [HMIVideoEncoder alloc];
-  v11 = [(HMIVideoAnalyzer *)self configuration];
+  configuration = [(HMIVideoAnalyzer *)self configuration];
   v30 = 0;
-  v12 = -[HMIVideoEncoder initWithDimensions:codecType:useHardwareAcceleration:error:](v10, "initWithDimensions:codecType:useHardwareAcceleration:error:", v9 | v8, [v11 timelapseCodecType], 1, &v30);
+  v12 = -[HMIVideoEncoder initWithDimensions:codecType:useHardwareAcceleration:error:](v10, "initWithDimensions:codecType:useHardwareAcceleration:error:", v9 | v8, [configuration timelapseCodecType], 1, &v30);
   v13 = v30;
   [(HMIVideoAnalyzerServer *)self setTimelapseEncoder:v12];
 
-  v14 = [(HMIVideoAnalyzer *)self logIdentifier];
-  v15 = [v14 stringByAppendingString:@" Timelapse"];
-  v16 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
-  [v16 setLogIdentifier:v15];
+  logIdentifier = [(HMIVideoAnalyzer *)self logIdentifier];
+  v15 = [logIdentifier stringByAppendingString:@" Timelapse"];
+  timelapseEncoder2 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  [timelapseEncoder2 setLogIdentifier:v15];
 
-  v17 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
-  [v17 setAverageBitRate:100000];
+  timelapseEncoder3 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  [timelapseEncoder3 setAverageBitRate:100000];
 
-  v18 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  timelapseEncoder4 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
 
-  if (v18)
+  if (timelapseEncoder4)
   {
-    v19 = [(HMIVideoAnalyzer *)self configuration];
-    v20 = v19;
-    if (v19)
+    configuration2 = [(HMIVideoAnalyzer *)self configuration];
+    v20 = configuration2;
+    if (configuration2)
     {
-      [v19 timelapsePreferredFragmentDuration];
+      [configuration2 timelapsePreferredFragmentDuration];
     }
 
     else
@@ -1514,12 +1514,12 @@ LABEL_10:
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    v22 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
-    [v22 setMaxKeyFrameIntervalDuration:Seconds];
+    timelapseEncoder5 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+    [timelapseEncoder5 setMaxKeyFrameIntervalDuration:Seconds];
 
-    v23 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
-    v24 = [(HMIVideoAnalyzerServer *)self encoderQueue];
-    [v23 setDelegate:self queue:v24];
+    timelapseEncoder6 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+    encoderQueue = [(HMIVideoAnalyzerServer *)self encoderQueue];
+    [timelapseEncoder6 setDelegate:self queue:encoderQueue];
   }
 
   else
@@ -1528,23 +1528,23 @@ LABEL_10:
   }
 }
 
-- (void)buffer:(id)a3 willHandleSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)buffer:(id)buffer willHandleSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMIVideoAnalyzerServer *)self inputQueue];
-  dispatch_assert_queue_V2(v7);
+  bufferCopy = buffer;
+  inputQueue = [(HMIVideoAnalyzerServer *)self inputQueue];
+  dispatch_assert_queue_V2(inputQueue);
 
   if (![(HMIVideoAnalyzerServer *)self hasFailed]&& ![(HMIVideoAnalyzerServer *)self isCancelled])
   {
-    if (HMICMSampleBufferIsAudio(a4))
+    if (HMICMSampleBufferIsAudio(sampleBuffer))
     {
-      v12 = [(HMIVideoAnalyzerServer *)self assetWriter];
+      assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-      if (v12)
+      if (assetWriter)
       {
-        v13 = [(HMIVideoAnalyzerServer *)self assetWriter];
-        [v13 handleSampleBuffer:a4];
+        assetWriter2 = [(HMIVideoAnalyzerServer *)self assetWriter];
+        [assetWriter2 handleSampleBuffer:sampleBuffer];
         goto LABEL_15;
       }
 
@@ -1553,39 +1553,39 @@ LABEL_18:
       [HMIVideoAnalyzerServer buffer:willHandleSampleBuffer:];
     }
 
-    v14 = [(HMIVideoAnalyzerServer *)self encoder];
+    encoder = [(HMIVideoAnalyzerServer *)self encoder];
 
-    if (!v14)
+    if (!encoder)
     {
-      v15 = [(HMIVideoAnalyzerServer *)self assetWriter];
+      assetWriter3 = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-      if (!v15)
+      if (!assetWriter3)
       {
         goto LABEL_18;
       }
 
-      v16 = [(HMIVideoAnalyzerServer *)self assetWriter];
-      [v16 handleSampleBuffer:a4];
+      assetWriter4 = [(HMIVideoAnalyzerServer *)self assetWriter];
+      [assetWriter4 handleSampleBuffer:sampleBuffer];
     }
 
-    CMSampleBufferGetPresentationTimeStamp(&v19, a4);
+    CMSampleBufferGetPresentationTimeStamp(&v19, sampleBuffer);
     v17 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationForTime:&v19];
-    v18 = [v17 decodeMode];
+    decodeMode = [v17 decodeMode];
 
-    if (v18 == 1 && !HMICMSampleBufferIsSync(a4))
+    if (decodeMode == 1 && !HMICMSampleBufferIsSync(sampleBuffer))
     {
       goto LABEL_16;
     }
 
-    v13 = [(HMIVideoAnalyzerServer *)self decoder];
-    [v13 handleSampleBuffer:a4 outputFrame:1];
+    assetWriter2 = [(HMIVideoAnalyzerServer *)self decoder];
+    [assetWriter2 handleSampleBuffer:sampleBuffer outputFrame:1];
 LABEL_15:
 
     goto LABEL_16;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1599,17 +1599,17 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)bufferWillFlush:(id)a3
+- (void)bufferWillFlush:(id)flush
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerServer *)self inputQueue];
-  dispatch_assert_queue_V2(v5);
+  flushCopy = flush;
+  inputQueue = [(HMIVideoAnalyzerServer *)self inputQueue];
+  dispatch_assert_queue_V2(inputQueue);
 
   if ([(HMIVideoAnalyzerServer *)self hasFailed]|| [(HMIVideoAnalyzerServer *)self isCancelled])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -1624,36 +1624,36 @@ LABEL_16:
 
   else
   {
-    v10 = [(HMIVideoAnalyzerServer *)self decoder];
-    [v10 flush];
+    decoder = [(HMIVideoAnalyzerServer *)self decoder];
+    [decoder flush];
 
-    v11 = [(HMIVideoAnalyzerServer *)self frameSelector];
-    [v11 flush];
+    frameSelector = [(HMIVideoAnalyzerServer *)self frameSelector];
+    [frameSelector flush];
 
-    v12 = [(HMIVideoAnalyzerServer *)self frameTracker];
-    [v12 flush];
+    frameTracker = [(HMIVideoAnalyzerServer *)self frameTracker];
+    [frameTracker flush];
 
-    v13 = [(HMIVideoAnalyzerServer *)self encoder];
-    [v13 flush];
+    encoder = [(HMIVideoAnalyzerServer *)self encoder];
+    [encoder flush];
 
-    v14 = [(HMIVideoAnalyzerServer *)self assetWriter];
-    [v14 flush];
+    assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
+    [assetWriter flush];
 
-    v15 = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
-    [v15 flush];
+    frameAnalyzer = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
+    [frameAnalyzer flush];
   }
 }
 
-- (void)_updateDecoderAndEncodersForFragment:(id)a3 withConfiguration:(id)a4
+- (void)_updateDecoderAndEncodersForFragment:(id)fragment withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  -[HMIVideoAnalyzerServer _updateDecoderForFragment:decodeMode:](self, "_updateDecoderForFragment:decodeMode:", v7, [v6 decodeMode]);
+  configurationCopy = configuration;
+  fragmentCopy = fragment;
+  -[HMIVideoAnalyzerServer _updateDecoderForFragment:decodeMode:](self, "_updateDecoderForFragment:decodeMode:", fragmentCopy, [configurationCopy decodeMode]);
 
-  -[HMIVideoAnalyzerServer _updateEncoder:](self, "_updateEncoder:", [v6 shouldEncode]);
-  if (v6)
+  -[HMIVideoAnalyzerServer _updateEncoder:](self, "_updateEncoder:", [configurationCopy shouldEncode]);
+  if (configurationCopy)
   {
-    [v6 timelapseInterval];
+    [configurationCopy timelapseInterval];
   }
 
   else
@@ -1664,21 +1664,21 @@ LABEL_16:
   [(HMIVideoAnalyzerServer *)self _updateTimelapseEncoder:v8];
 }
 
-- (void)_updateDecoderForFragment:(id)a3 decodeMode:(int64_t)a4
+- (void)_updateDecoderForFragment:(id)fragment decodeMode:(int64_t)mode
 {
-  v11 = a3;
-  if (a4)
+  fragmentCopy = fragment;
+  if (mode)
   {
-    v6 = [(HMIVideoAnalyzerServer *)self decoder];
+    decoder = [(HMIVideoAnalyzerServer *)self decoder];
 
-    if (!v6)
+    if (!decoder)
     {
-      v7 = -[HMIVideoDecoder initWithFrameReordering:]([HMIVideoDecoder alloc], "initWithFrameReordering:", [v11 frameReorderingRequired]);
+      v7 = -[HMIVideoDecoder initWithFrameReordering:]([HMIVideoDecoder alloc], "initWithFrameReordering:", [fragmentCopy frameReorderingRequired]);
       decoder = self->_decoder;
       self->_decoder = v7;
 
-      v9 = [(HMIVideoAnalyzer *)self logIdentifier];
-      [(HMIVideoDecoder *)self->_decoder setLogIdentifier:v9];
+      logIdentifier = [(HMIVideoAnalyzer *)self logIdentifier];
+      [(HMIVideoDecoder *)self->_decoder setLogIdentifier:logIdentifier];
 
       [(HMIVideoDecoder *)self->_decoder setDelegate:self];
     }
@@ -1691,13 +1691,13 @@ LABEL_16:
   }
 }
 
-- (void)_updateEncoder:(BOOL)a3
+- (void)_updateEncoder:(BOOL)encoder
 {
-  if (a3)
+  if (encoder)
   {
-    v4 = [(HMIVideoAnalyzerServer *)self encoder];
+    encoder = [(HMIVideoAnalyzerServer *)self encoder];
 
-    if (!v4)
+    if (!encoder)
     {
 
       [(HMIVideoAnalyzerServer *)self _configureEncoder];
@@ -1711,29 +1711,29 @@ LABEL_16:
   }
 }
 
-- (void)_updateTimelapseEncoder:(id *)a3
+- (void)_updateTimelapseEncoder:(id *)encoder
 {
-  if (a3->var2)
+  if (encoder->var2)
   {
-    v5 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+    timelapseEncoder = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
 
-    if (!v5)
+    if (!timelapseEncoder)
     {
       [(HMIVideoAnalyzerServer *)self _configureTimelapseEncoder];
     }
 
-    v6 = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
+    frameTimelapseSampler = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
 
-    if (!v6)
+    if (!frameTimelapseSampler)
     {
       v7 = [HMIVideoFrameIntervalSampler alloc];
-      v10 = *&a3->var0;
-      var3 = a3->var3;
+      v10 = *&encoder->var0;
+      var3 = encoder->var3;
       v8 = [(HMIVideoFrameIntervalSampler *)v7 initWithInterval:&v10];
       [(HMIVideoAnalyzerServer *)self setFrameTimelapseSampler:v8];
 
-      v9 = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
-      [v9 setDelegate:self];
+      frameTimelapseSampler2 = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
+      [frameTimelapseSampler2 setDelegate:self];
     }
   }
 
@@ -1745,30 +1745,30 @@ LABEL_16:
   }
 }
 
-- (void)decoder:(id)a3 didDecodeSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)decoder:(id)decoder didDecodeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v6 = [(HMIVideoAnalyzerServer *)self workQueue];
+  workQueue = [(HMIVideoAnalyzerServer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMIVideoAnalyzerServer_decoder_didDecodeSampleBuffer___block_invoke;
   v7[3] = &unk_278754838;
   v7[4] = self;
-  v7[5] = a4;
-  dispatch_sync(v6, v7);
+  v7[5] = buffer;
+  dispatch_sync(workQueue, v7);
 }
 
-- (void)encoder:(id)a3 didEncodeSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)encoder:(id)encoder didEncodeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v16 = a3;
-  v6 = [(HMIVideoAnalyzerServer *)self encoder];
+  encoderCopy = encoder;
+  encoder = [(HMIVideoAnalyzerServer *)self encoder];
 
-  if (v6 == v16)
+  if (encoder == encoderCopy)
   {
-    v11 = [(HMIVideoAnalyzerServer *)self assetWriter];
+    assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-    if (v11)
+    if (assetWriter)
     {
-      v10 = [(HMIVideoAnalyzerServer *)self assetWriter];
+      assetWriter2 = [(HMIVideoAnalyzerServer *)self assetWriter];
       goto LABEL_7;
     }
 
@@ -1779,22 +1779,22 @@ LABEL_12:
     return;
   }
 
-  v7 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  timelapseEncoder = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
 
-  v8 = v16;
-  if (v7 == v16)
+  v8 = encoderCopy;
+  if (timelapseEncoder == encoderCopy)
   {
-    [(HMIVideoAnalyzerServer *)self _prepareForTimelapseOutputVideoFormat:CMSampleBufferGetFormatDescription(a4)];
-    v9 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+    [(HMIVideoAnalyzerServer *)self _prepareForTimelapseOutputVideoFormat:CMSampleBufferGetFormatDescription(buffer)];
+    timelapseAssetWriter = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
 
-    if (v9)
+    if (timelapseAssetWriter)
     {
-      v10 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+      assetWriter2 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
 LABEL_7:
-      v12 = v10;
-      [v10 handleSampleBuffer:a4];
+      v12 = assetWriter2;
+      [assetWriter2 handleSampleBuffer:buffer];
 
-      v8 = v16;
+      v8 = encoderCopy;
       goto LABEL_8;
     }
 
@@ -1804,42 +1804,42 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_handleDecodedSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_handleDecodedSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(HMIVideoAnalyzerServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMIVideoAnalyzerServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   memset(&v13, 0, sizeof(v13));
-  CMSampleBufferGetDuration(&v13, a3);
+  CMSampleBufferGetDuration(&v13, buffer);
   sampleBufferOut = 0;
   if ((v13.flags & 1) == 0)
   {
     memset(&sampleTimingArray, 0, sizeof(sampleTimingArray));
-    CMSampleBufferGetDecodeTimeStamp(&sampleTimingArray.decodeTimeStamp, a3);
-    CMSampleBufferGetPresentationTimeStamp(&v10, a3);
+    CMSampleBufferGetDecodeTimeStamp(&sampleTimingArray.decodeTimeStamp, buffer);
+    CMSampleBufferGetPresentationTimeStamp(&v10, buffer);
     sampleTimingArray.presentationTimeStamp = v10;
     CMTimeMake(&v10, 1, 30);
     sampleTimingArray.duration = v10;
-    CMSampleBufferCreateCopyWithNewTiming(0, a3, 1, &sampleTimingArray, &sampleBufferOut);
-    a3 = sampleBufferOut;
+    CMSampleBufferCreateCopyWithNewTiming(0, buffer, 1, &sampleTimingArray, &sampleBufferOut);
+    buffer = sampleBufferOut;
   }
 
-  self->_numDecodedSamples += CMSampleBufferGetNumSamples(a3);
+  self->_numDecodedSamples += CMSampleBufferGetNumSamples(buffer);
   memset(&sampleTimingArray, 0, 24);
-  CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.duration, a3);
+  CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.duration, buffer);
   *&self->_currentPTS.value = *&sampleTimingArray.duration.value;
   self->_currentPTS.epoch = sampleTimingArray.duration.epoch;
-  v6 = [(HMIVideoAnalyzerServer *)self encoder];
-  [v6 handleSampleBuffer:a3];
+  encoder = [(HMIVideoAnalyzerServer *)self encoder];
+  [encoder handleSampleBuffer:buffer];
 
-  v7 = [(HMIVideoAnalyzerServer *)self frameSelector];
-  [v7 handleSampleBuffer:a3];
+  frameSelector = [(HMIVideoAnalyzerServer *)self frameSelector];
+  [frameSelector handleSampleBuffer:buffer];
 
-  v8 = [(HMIVideoAnalyzerServer *)self frameThumbnailSampler];
-  [v8 handleSampleBuffer:a3];
+  frameThumbnailSampler = [(HMIVideoAnalyzerServer *)self frameThumbnailSampler];
+  [frameThumbnailSampler handleSampleBuffer:buffer];
 
-  v9 = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
-  [v9 handleSampleBuffer:a3];
+  frameTimelapseSampler = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
+  [frameTimelapseSampler handleSampleBuffer:buffer];
 
   if (sampleBufferOut)
   {
@@ -1847,60 +1847,60 @@ LABEL_8:
   }
 }
 
-- (opaqueCMSampleBuffer)frameSelector:(id)a3 prepareFrame:(opaqueCMSampleBuffer *)a4
+- (opaqueCMSampleBuffer)frameSelector:(id)selector prepareFrame:(opaqueCMSampleBuffer *)frame
 {
-  v5 = [(HMIVideoAnalyzerServer *)self frameTracker];
-  v6 = [v5 prepareSampleBuffer:a4];
+  frameTracker = [(HMIVideoAnalyzerServer *)self frameTracker];
+  v6 = [frameTracker prepareSampleBuffer:frame];
 
   return v6;
 }
 
-- (void)frameSelector:(id)a3 didSelectFrame:(opaqueCMSampleBuffer *)a4 reference:(opaqueCMSampleBuffer *)a5
+- (void)frameSelector:(id)selector didSelectFrame:(opaqueCMSampleBuffer *)frame reference:(opaqueCMSampleBuffer *)reference
 {
-  CMSampleBufferGetPresentationTimeStamp(&v11, a4);
+  CMSampleBufferGetPresentationTimeStamp(&v11, frame);
   v8 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationForTime:&v11];
-  v9 = [(HMIVideoAnalyzerServer *)self frameTracker];
-  [v9 setDynamicConfiguration:v8];
+  frameTracker = [(HMIVideoAnalyzerServer *)self frameTracker];
+  [frameTracker setDynamicConfiguration:v8];
 
-  v10 = [(HMIVideoAnalyzerServer *)self frameTracker];
-  [v10 handleSampleBuffer:a4 reference:a5];
+  frameTracker2 = [(HMIVideoAnalyzerServer *)self frameTracker];
+  [frameTracker2 handleSampleBuffer:frame reference:reference];
 }
 
-- (void)frameSelector:(id)a3 didSkipFrame:(opaqueCMSampleBuffer *)a4
+- (void)frameSelector:(id)selector didSkipFrame:(opaqueCMSampleBuffer *)frame
 {
-  v5 = [(HMIVideoAnalyzerServer *)self frameTracker];
-  [v5 handleSampleBuffer:a4];
+  frameTracker = [(HMIVideoAnalyzerServer *)self frameTracker];
+  [frameTracker handleSampleBuffer:frame];
 }
 
-- (void)frameTracker:(id)a3 didTrackFrame:(opaqueCMSampleBuffer *)a4 background:(opaqueCMSampleBuffer *)a5 motionDetections:(id)a6 tracks:(id)a7
+- (void)frameTracker:(id)tracker didTrackFrame:(opaqueCMSampleBuffer *)frame background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks
 {
-  v11 = a7;
-  v12 = a6;
-  CMSampleBufferGetPresentationTimeStamp(&v16, a4);
+  tracksCopy = tracks;
+  detectionsCopy = detections;
+  CMSampleBufferGetPresentationTimeStamp(&v16, frame);
   v13 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationForTime:&v16];
-  v14 = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
-  [v14 setDynamicConfiguration:v13];
+  frameAnalyzer = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
+  [frameAnalyzer setDynamicConfiguration:v13];
 
-  v15 = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
-  [v15 handleSampleBuffer:a4 background:a5 motionDetections:v12 tracks:v11];
+  frameAnalyzer2 = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
+  [frameAnalyzer2 handleSampleBuffer:frame background:background motionDetections:detectionsCopy tracks:tracksCopy];
 }
 
-- (id)_filterFrameResult:(id)a3 dynamicConfiguration:(id)a4 motionDetections:(id)a5
+- (id)_filterFrameResult:(id)result dynamicConfiguration:(id)configuration motionDetections:(id)detections
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  configurationCopy = configuration;
+  detectionsCopy = detections;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__11;
   v30 = __Block_byref_object_dispose__11;
-  v11 = v8;
+  v11 = resultCopy;
   v31 = v11;
   v12 = [HMIVideoAnalyzerResultActivityZoneFilter alloc];
-  v13 = [v9 activityZones];
-  v14 = [(HMIVideoAnalyzerResultActivityZoneFilter *)v12 initWithActivityZones:v13 motionDetections:v10];
+  activityZones = [configurationCopy activityZones];
+  v14 = [(HMIVideoAnalyzerResultActivityZoneFilter *)v12 initWithActivityZones:activityZones motionDetections:detectionsCopy];
   v32[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
 
@@ -1915,14 +1915,14 @@ LABEL_8:
 
   if ((v14 & 1) == 0)
   {
-    v17 = [(HMIVideoAnalyzer *)self configuration];
-    v18 = [v17 enableTemporalEventFiltering];
+    configuration = [(HMIVideoAnalyzer *)self configuration];
+    enableTemporalEventFiltering = [configuration enableTemporalEventFiltering];
 
-    if (v18)
+    if (enableTemporalEventFiltering)
     {
-      v19 = [HMIMotionDetection firstMotionDetectionInArray:v10 withMode:2];
-      v20 = [(HMIVideoAnalyzerServer *)self temporalEventFilter];
-      v21 = [v20 applyFilterWithFrameResult:v27[5] motionDetection:v19];
+      v19 = [HMIMotionDetection firstMotionDetectionInArray:detectionsCopy withMode:2];
+      temporalEventFilter = [(HMIVideoAnalyzerServer *)self temporalEventFilter];
+      v21 = [temporalEventFilter applyFilterWithFrameResult:v27[5] motionDetection:v19];
       v22 = v27[5];
       v27[5] = v21;
     }
@@ -1945,19 +1945,19 @@ uint64_t __83__HMIVideoAnalyzerServer__filterFrameResult_dynamicConfiguration_mo
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (void)frameAnalyzer:(id)a3 didAnalyzeFrame:(id)a4
+- (void)frameAnalyzer:(id)analyzer didAnalyzeFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  analyzerCopy = analyzer;
+  frameCopy = frame;
   ++self->_numDidAnalyzeFrames;
-  v8 = [(HMIVideoAnalyzerServer *)self frameTracker];
-  [v8 handleFrameAnalyzerResult:v7];
+  frameTracker = [(HMIVideoAnalyzerServer *)self frameTracker];
+  [frameTracker handleFrameAnalyzerResult:frameCopy];
 
-  v9 = [v7 frame];
-  v10 = v9;
-  if (v9)
+  frame = [frameCopy frame];
+  v10 = frame;
+  if (frame)
   {
-    [v9 presentationTimeStamp];
+    [frame presentationTimeStamp];
   }
 
   else
@@ -1969,14 +1969,14 @@ uint64_t __83__HMIVideoAnalyzerServer__filterFrameResult_dynamicConfiguration_mo
 
   v11 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationForTime:&v38];
 
-  v12 = [v7 frame];
-  v13 = [(HMIVideoAnalyzer *)self configuration];
-  [v13 minFrameScale];
+  frame2 = [frameCopy frame];
+  configuration = [(HMIVideoAnalyzer *)self configuration];
+  [configuration minFrameScale];
   v15 = v14;
-  v16 = [(HMIVideoAnalyzer *)self configuration];
-  [v16 minFrameQuality];
+  configuration2 = [(HMIVideoAnalyzer *)self configuration];
+  [configuration2 minFrameQuality];
   v44 = 0;
-  v18 = [v12 compressedFrameWithScale:&v44 quality:v15 error:v17];
+  v18 = [frame2 compressedFrameWithScale:&v44 quality:v15 error:v17];
   v19 = v44;
 
   v38 = 0;
@@ -1985,34 +1985,34 @@ uint64_t __83__HMIVideoAnalyzerServer__filterFrameResult_dynamicConfiguration_mo
   v41 = __Block_byref_object_copy__11;
   v42 = __Block_byref_object_dispose__11;
   v20 = [HMIVideoAnalyzerFrameResult alloc];
-  v21 = [v7 events];
-  [v7 regionOfInterest];
-  v43 = [(HMIVideoAnalyzerFrameResult *)v20 initWithFrame:v18 events:v21 regionOfInterest:?];
+  events = [frameCopy events];
+  [frameCopy regionOfInterest];
+  v43 = [(HMIVideoAnalyzerFrameResult *)v20 initWithFrame:v18 events:events regionOfInterest:?];
 
   v22 = v39[5];
-  v23 = [v7 motionDetections];
-  v24 = [(HMIVideoAnalyzerServer *)self _filterFrameResult:v22 dynamicConfiguration:v11 motionDetections:v23];
+  motionDetections = [frameCopy motionDetections];
+  v24 = [(HMIVideoAnalyzerServer *)self _filterFrameResult:v22 dynamicConfiguration:v11 motionDetections:motionDetections];
   v25 = v39[5];
   v39[5] = v24;
 
-  v26 = [v7 events];
+  events2 = [frameCopy events];
   v31 = MEMORY[0x277D85DD0];
   v32 = 3221225472;
   v33 = __56__HMIVideoAnalyzerServer_frameAnalyzer_didAnalyzeFrame___block_invoke;
   v34 = &unk_278755210;
-  v35 = self;
-  v27 = v7;
+  selfCopy = self;
+  v27 = frameCopy;
   v36 = v27;
   v37 = &v38;
-  [v26 na_each:&v31];
+  [events2 na_each:&v31];
 
-  v28 = [v39[5] events];
-  v29 = [v28 count];
+  events3 = [v39[5] events];
+  v29 = [events3 count];
 
   if (v29)
   {
-    v30 = [(HMIVideoAnalyzerServer *)self frameAnalyzerFrameResultBuffer];
-    [v30 addObject:v39[5]];
+    frameAnalyzerFrameResultBuffer = [(HMIVideoAnalyzerServer *)self frameAnalyzerFrameResultBuffer];
+    [frameAnalyzerFrameResultBuffer addObject:v39[5]];
 
     [(HMIVideoAnalyzerServer *)self _notifyDelegateDidAnalyzeFrameWithResult:v39[5]];
   }
@@ -2084,21 +2084,21 @@ void __56__HMIVideoAnalyzerServer_frameAnalyzer_didAnalyzeFrame___block_invoke(u
   }
 }
 
-- (void)frameSampler:(id)a3 didSampleFrame:(opaqueCMSampleBuffer *)a4
+- (void)frameSampler:(id)sampler didSampleFrame:(opaqueCMSampleBuffer *)frame
 {
-  v6 = a3;
-  v7 = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
+  samplerCopy = sampler;
+  frameTimelapseSampler = [(HMIVideoAnalyzerServer *)self frameTimelapseSampler];
 
-  if (v7 == v6)
+  if (frameTimelapseSampler == samplerCopy)
   {
-    v19 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
-    [v19 handleSampleBuffer:a4];
+    timelapseEncoder = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+    [timelapseEncoder handleSampleBuffer:frame];
 
     goto LABEL_9;
   }
 
-  v8 = [(HMIVideoAnalyzerServer *)self frameThumbnailSampler];
-  if (v8 != v6)
+  frameThumbnailSampler = [(HMIVideoAnalyzerServer *)self frameThumbnailSampler];
+  if (frameThumbnailSampler != samplerCopy)
   {
     goto LABEL_7;
   }
@@ -2109,22 +2109,22 @@ void __56__HMIVideoAnalyzerServer_frameAnalyzer_didAnalyzeFrame___block_invoke(u
 
   if (v10)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(frame);
     Size = HMICVPixelBufferGetSize(ImageBuffer);
     v14 = 1.0;
     if (v13 > 0.0)
     {
       v15 = v13;
-      v16 = [(HMIVideoAnalyzer *)self configuration];
-      v14 = [v16 thumbnailHeight] / v15;
+      configuration = [(HMIVideoAnalyzer *)self configuration];
+      v14 = [configuration thumbnailHeight] / v15;
     }
 
-    v17 = [[HMIVideoFrame alloc] initWithSampleBuffer:a4];
+    v17 = [[HMIVideoFrame alloc] initWithSampleBuffer:frame];
     v20 = 0;
-    v8 = [(HMIVideoFrame *)v17 compressedFrameWithScale:&v20 quality:v14 error:1.0];
+    frameThumbnailSampler = [(HMIVideoFrame *)v17 compressedFrameWithScale:&v20 quality:v14 error:1.0];
 
-    v18 = [(HMIVideoAnalyzerServer *)self thumbnailBuffer];
-    [v18 addObject:v8];
+    thumbnailBuffer = [(HMIVideoAnalyzerServer *)self thumbnailBuffer];
+    [thumbnailBuffer addObject:frameThumbnailSampler];
 
 LABEL_7:
   }
@@ -2132,43 +2132,43 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)assetWriter:(id)a3 didOutputInitializationSegment:(id)a4
+- (void)assetWriter:(id)writer didOutputInitializationSegment:(id)segment
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerServer *)self assetWriter];
+  writerCopy = writer;
+  segmentCopy = segment;
+  assetWriter = [(HMIVideoAnalyzerServer *)self assetWriter];
 
-  if (v7 == v9)
+  if (assetWriter == writerCopy)
   {
-    [(HMIVideoAnalyzerServer *)self setInitializationSegment:v6];
+    [(HMIVideoAnalyzerServer *)self setInitializationSegment:segmentCopy];
   }
 
   else
   {
-    v8 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+    timelapseAssetWriter = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
 
-    if (v8 == v9)
+    if (timelapseAssetWriter == writerCopy)
     {
-      [(HMIVideoAnalyzerServer *)self setTimelapseInitializationSegment:v6];
+      [(HMIVideoAnalyzerServer *)self setTimelapseInitializationSegment:segmentCopy];
     }
   }
 }
 
-- (void)assetWriter:(id)a3 didOutputSeparableSegment:(id)a4 segmentReport:(id)a5
+- (void)assetWriter:(id)writer didOutputSeparableSegment:(id)segment segmentReport:(id)report
 {
   v68 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 trackReports];
-  v12 = [v11 na_firstObjectPassingTest:&__block_literal_global_392];
+  writerCopy = writer;
+  segmentCopy = segment;
+  reportCopy = report;
+  trackReports = [reportCopy trackReports];
+  v12 = [trackReports na_firstObjectPassingTest:&__block_literal_global_392];
 
   memset(&v66, 0, sizeof(v66));
-  v13 = [v12 firstVideoSampleInformation];
-  v14 = v13;
-  if (v13)
+  firstVideoSampleInformation = [v12 firstVideoSampleInformation];
+  v14 = firstVideoSampleInformation;
+  if (firstVideoSampleInformation)
   {
-    [v13 presentationTimeStamp];
+    [firstVideoSampleInformation presentationTimeStamp];
     if (v12)
     {
 LABEL_3:
@@ -2190,78 +2190,78 @@ LABEL_3:
 LABEL_6:
   CMTimeRangeMake(&v66, &start.start, &duration);
 
-  v15 = [v12 firstVideoSampleInformation];
-  v16 = [v15 offset];
-  v17 = [v15 length];
-  v18 = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
+  firstVideoSampleInformation2 = [v12 firstVideoSampleInformation];
+  offset = [firstVideoSampleInformation2 offset];
+  v17 = [firstVideoSampleInformation2 length];
+  timelapseAssetWriter = [(HMIVideoAnalyzerServer *)self timelapseAssetWriter];
 
-  if (v18 != v8)
+  if (timelapseAssetWriter != writerCopy)
   {
-    v61 = v16;
-    v62 = v10;
-    v63 = v8;
-    v64 = v9;
+    v61 = offset;
+    v62 = reportCopy;
+    v63 = writerCopy;
+    v64 = segmentCopy;
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       v22 = HMFGetLogIdentifier();
       start = v66;
       v23 = HMICMTimeRangeDescription(&start);
-      v24 = [(HMIVideoAnalyzerServer *)v20 frameAnalyzerFrameResultBuffer];
-      v25 = [(HMIVideoAnalyzerServer *)v20 thumbnailBuffer];
+      frameAnalyzerFrameResultBuffer = [(HMIVideoAnalyzerServer *)selfCopy frameAnalyzerFrameResultBuffer];
+      thumbnailBuffer = [(HMIVideoAnalyzerServer *)selfCopy thumbnailBuffer];
       LODWORD(start.start.value) = 138544130;
       *(&start.start.value + 4) = v22;
       LOWORD(start.start.flags) = 2112;
       *(&start.start.flags + 2) = v23;
       HIWORD(start.start.epoch) = 2112;
-      start.duration.value = v24;
+      start.duration.value = frameAnalyzerFrameResultBuffer;
       LOWORD(start.duration.timescale) = 2112;
-      *(&start.duration.timescale + 2) = v25;
+      *(&start.duration.timescale + 2) = thumbnailBuffer;
       _os_log_impl(&dword_22D12F000, v21, OS_LOG_TYPE_DEBUG, "%{public}@Bundling Fragment Result, timeRange: %@, frames: [%@], thumbnails [%@]", &start, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v19);
-    v26 = [(HMIVideoAnalyzerServer *)v20 frameAnalyzerFrameResultBuffer];
+    frameAnalyzerFrameResultBuffer2 = [(HMIVideoAnalyzerServer *)selfCopy frameAnalyzerFrameResultBuffer];
     start = v66;
-    v27 = [v26 extractObjectsInTimeRange:&start];
+    v27 = [frameAnalyzerFrameResultBuffer2 extractObjectsInTimeRange:&start];
 
-    v28 = [(HMIVideoAnalyzerServer *)v20 frameAnalyzerFrameResultBuffer];
-    v29 = [v28 count];
+    frameAnalyzerFrameResultBuffer3 = [(HMIVideoAnalyzerServer *)selfCopy frameAnalyzerFrameResultBuffer];
+    v29 = [frameAnalyzerFrameResultBuffer3 count];
 
     if (v29)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = v20;
+      v31 = selfCopy;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v33 = HMFGetLogIdentifier();
-        v34 = [(HMIVideoAnalyzerServer *)v31 frameAnalyzerFrameResultBuffer];
+        frameAnalyzerFrameResultBuffer4 = [(HMIVideoAnalyzerServer *)v31 frameAnalyzerFrameResultBuffer];
         LODWORD(start.start.value) = 138543618;
         *(&start.start.value + 4) = v33;
         LOWORD(start.start.flags) = 2112;
-        *(&start.start.flags + 2) = v34;
+        *(&start.start.flags + 2) = frameAnalyzerFrameResultBuffer4;
         _os_log_impl(&dword_22D12F000, v32, OS_LOG_TYPE_ERROR, "%{public}@Analyzer frame result buffer should be empty. %@", &start, 0x16u);
       }
 
       objc_autoreleasePoolPop(v30);
-      v35 = [(HMIVideoAnalyzerServer *)v31 frameAnalyzerFrameResultBuffer];
-      [v35 removeAllObjects];
+      frameAnalyzerFrameResultBuffer5 = [(HMIVideoAnalyzerServer *)v31 frameAnalyzerFrameResultBuffer];
+      [frameAnalyzerFrameResultBuffer5 removeAllObjects];
     }
 
-    v36 = [(HMIVideoAnalyzerServer *)v20 thumbnailBuffer];
+    thumbnailBuffer2 = [(HMIVideoAnalyzerServer *)selfCopy thumbnailBuffer];
     start = v66;
-    v37 = [v36 extractObjectsInTimeRange:&start];
+    v37 = [thumbnailBuffer2 extractObjectsInTimeRange:&start];
 
-    v38 = [(HMIVideoAnalyzerServer *)v20 thumbnailBuffer];
-    v39 = [v38 count];
+    thumbnailBuffer3 = [(HMIVideoAnalyzerServer *)selfCopy thumbnailBuffer];
+    v39 = [thumbnailBuffer3 count];
 
     if (v39)
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = v20;
+      v41 = selfCopy;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -2275,37 +2275,37 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v40);
-      v45 = [(HMIVideoAnalyzerServer *)v41 thumbnailBuffer];
-      [v45 removeAllObjects];
+      thumbnailBuffer4 = [(HMIVideoAnalyzerServer *)v41 thumbnailBuffer];
+      [thumbnailBuffer4 removeAllObjects];
     }
 
     v46 = [HMIVideoFragment alloc];
-    v47 = [(HMIVideoAnalyzerServer *)v20 initializationSegment];
+    initializationSegment = [(HMIVideoAnalyzerServer *)selfCopy initializationSegment];
     start = v66;
-    v48 = [(HMIVideoFragment *)v46 initWithInitializationSegment:v47 separableSegment:v64 timeRange:&start firstVideoSampleByteRange:v61, v17];
+    v48 = [(HMIVideoFragment *)v46 initWithInitializationSegment:initializationSegment separableSegment:v64 timeRange:&start firstVideoSampleByteRange:v61, v17];
 
     *&start.start.value = *&v66.start.value;
     start.start.epoch = v66.start.epoch;
-    v49 = [(HMIVideoAnalyzerServer *)v20 dynamicConfigurationForTime:&start];
+    v49 = [(HMIVideoAnalyzerServer *)selfCopy dynamicConfigurationForTime:&start];
     v50 = [HMIVideoAnalyzerResultOutcome alloc];
-    [(HMIVideoAnalyzerServer *)v20 analysisFPS];
+    [(HMIVideoAnalyzerServer *)selfCopy analysisFPS];
     v51 = [(HMIVideoAnalyzerResultOutcome *)v50 initWithCode:1 analysisFPS:0 message:?];
-    v52 = [v49 decodeMode];
-    if (v52)
+    decodeMode = [v49 decodeMode];
+    if (decodeMode)
     {
-      if (v52 != 1)
+      if (decodeMode != 1)
       {
 LABEL_23:
         v58 = [HMIVideoAnalyzerFragmentResult alloc];
         v59 = [MEMORY[0x277CBEB98] set];
         v60 = [(HMIVideoAnalyzerFragmentResult *)v58 initWithFragment:v48 events:v59 frameResults:v27 thumbnails:v37 configuration:v49 outcome:v51];
 
-        [(HMIVideoAnalyzerServer *)v20 _notifyDelegateDidAnalyzeFragmentWithResult:v60];
-        ++v20->_numDidAnalyzeFragments;
+        [(HMIVideoAnalyzerServer *)selfCopy _notifyDelegateDidAnalyzeFragmentWithResult:v60];
+        ++selfCopy->_numDidAnalyzeFragments;
 
-        v8 = v63;
-        v9 = v64;
-        v10 = v62;
+        writerCopy = v63;
+        segmentCopy = v64;
+        reportCopy = v62;
         goto LABEL_24;
       }
 
@@ -2318,7 +2318,7 @@ LABEL_23:
     }
 
     v56 = [HMIVideoAnalyzerResultOutcome alloc];
-    [(HMIVideoAnalyzerServer *)v20 analysisFPS];
+    [(HMIVideoAnalyzerServer *)selfCopy analysisFPS];
     v57 = [(HMIVideoAnalyzerResultOutcome *)v56 initWithCode:0 analysisFPS:v53 message:?];
 
     v51 = v57;
@@ -2326,9 +2326,9 @@ LABEL_23:
   }
 
   v54 = [HMIVideoFragment alloc];
-  v55 = [(HMIVideoAnalyzerServer *)self timelapseInitializationSegment];
+  timelapseInitializationSegment = [(HMIVideoAnalyzerServer *)self timelapseInitializationSegment];
   start = v66;
-  v27 = [(HMIVideoFragment *)v54 initWithInitializationSegment:v55 separableSegment:v9 timeRange:&start firstVideoSampleByteRange:v16, v17];
+  v27 = [(HMIVideoFragment *)v54 initWithInitializationSegment:timelapseInitializationSegment separableSegment:segmentCopy timeRange:&start firstVideoSampleByteRange:offset, v17];
 
   [(HMIVideoAnalyzerServer *)self _notifyDelegateDidCreateTimelapseFragment:v27];
   ++self->_numDidCreateTimelapseFragments;
@@ -2343,17 +2343,17 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   return v3;
 }
 
-- (void)encoder:(id)a3 didFailWithError:(id)a4
+- (void)encoder:(id)encoder didFailWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
+  encoderCopy = encoder;
+  errorCopy = error;
+  timelapseEncoder = [(HMIVideoAnalyzerServer *)self timelapseEncoder];
 
-  if (v8 == v6)
+  if (timelapseEncoder == encoderCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2361,26 +2361,26 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
       v13 = 138543618;
       v14 = v12;
       v15 = 2112;
-      v16 = v7;
+      v16 = errorCopy;
       _os_log_impl(&dword_22D12F000, v11, OS_LOG_TYPE_ERROR, "%{public}@Timelapse encoder failed, ignoring: error: %@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMIVideoAnalyzerServer *)v10 setTimelapseEncoder:0];
+    [(HMIVideoAnalyzerServer *)selfCopy setTimelapseEncoder:0];
   }
 
   else
   {
-    [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:v7];
+    [(HMIVideoAnalyzerServer *)self _notifyDelegateDidFailWithError:errorCopy];
   }
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerServer *)self watchdogTimer];
+  fireCopy = fire;
+  watchdogTimer = [(HMIVideoAnalyzerServer *)self watchdogTimer];
 
-  if (v5 == v4)
+  if (watchdogTimer == fireCopy)
   {
     [(HMIVideoAnalyzerServer *)self timeSinceLastFragmentWasReceived];
     if (v6 > 60.0)
@@ -2394,84 +2394,84 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   }
 }
 
-- (void)_notifyDelegateDidAnalyzeFragmentWithResult:(id)a3
+- (void)_notifyDelegateDidAnalyzeFragmentWithResult:(id)result
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 fragment];
-    v10 = [v4 outcome];
-    v11 = [v4 maxConfidenceEvents];
+    fragment = [resultCopy fragment];
+    outcome = [resultCopy outcome];
+    maxConfidenceEvents = [resultCopy maxConfidenceEvents];
     *buf = 138544130;
     v17 = v8;
     v18 = 2112;
-    v19 = v9;
+    v19 = fragment;
     v20 = 2112;
-    v21 = v10;
+    v21 = outcome;
     v22 = 2112;
-    v23 = v11;
+    v23 = maxConfidenceEvents;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@Generated Fragment: %@ Outcome: %@ Max Confidence Events: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v5);
-  v12 = [(HMIVideoAnalyzerServer *)v6 state];
-  [HMIAnalytics videoAnalyzerDidAnalyzeFragmentWithResult:v4 state:v12];
+  state = [(HMIVideoAnalyzerServer *)selfCopy state];
+  [HMIAnalytics videoAnalyzerDidAnalyzeFragmentWithResult:resultCopy state:state];
 
-  v13 = [(HMIVideoAnalyzer *)v6 delegate];
+  delegate = [(HMIVideoAnalyzer *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 analyzer:v6 didAnalyzeFragmentWithResult:v4];
+    [delegate analyzer:selfCopy didAnalyzeFragmentWithResult:resultCopy];
   }
 
-  v15 = v4;
+  v15 = resultCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  [(HMIVideoAnalyzerServer *)v6 _produceResult:sel_analyzer_didAnalyzeFragmentWithResult_ withArguments:v14];
+  [(HMIVideoAnalyzerServer *)selfCopy _produceResult:sel_analyzer_didAnalyzeFragmentWithResult_ withArguments:v14];
 }
 
-- (void)_notifyDelegateDidAnalyzeFrameWithResult:(id)a3
+- (void)_notifyDelegateDidAnalyzeFrameWithResult:(id)result
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzer *)self delegate];
+  resultCopy = result;
+  delegate = [(HMIVideoAnalyzer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 analyzer:self didAnalyzeFrameWithResult:v4];
+    [delegate analyzer:self didAnalyzeFrameWithResult:resultCopy];
   }
 
-  v7[0] = v4;
+  v7[0] = resultCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerServer *)self _produceResult:sel_analyzer_didAnalyzeFrameWithResult_ withArguments:v6];
 }
 
-- (void)_notifyDelegateDidCreateTimelapseFragment:(id)a3
+- (void)_notifyDelegateDidCreateTimelapseFragment:(id)fragment
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzerServer *)self state];
-  [HMIAnalytics videoAnalyzerDidCreateTimelapseFragment:v4 state:v5];
+  fragmentCopy = fragment;
+  state = [(HMIVideoAnalyzerServer *)self state];
+  [HMIAnalytics videoAnalyzerDidCreateTimelapseFragment:fragmentCopy state:state];
 
-  v6 = [(HMIVideoAnalyzer *)self delegate];
+  delegate = [(HMIVideoAnalyzer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 analyzer:self didCreateTimelapseFragment:v4];
+    [delegate analyzer:self didCreateTimelapseFragment:fragmentCopy];
   }
 
-  v8[0] = v4;
+  v8[0] = fragmentCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   [(HMIVideoAnalyzerServer *)self _produceResult:sel_analyzer_didCreateTimelapseFragment_ withArguments:v7];
 }
 
-- (void)_notifyDelegateDidFailWithError:(id)a3
+- (void)_notifyDelegateDidFailWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -2479,15 +2479,15 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
     *buf = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = errorCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_ERROR, "%{public}@Analyzer Failed: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMIVideoAnalyzerServer *)v6 hasFailed])
+  if ([(HMIVideoAnalyzerServer *)selfCopy hasFailed])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v6;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2502,45 +2502,45 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
 
   else
   {
-    v13 = [(HMIVideoAnalyzerServer *)v6 state];
-    [HMIAnalytics videoAnalyzerDidTerminateWithError:v4 state:v13];
+    state = [(HMIVideoAnalyzerServer *)selfCopy state];
+    [HMIAnalytics videoAnalyzerDidTerminateWithError:errorCopy state:state];
 
-    [(HMIVideoAnalyzerServer *)v6 setHasFailed:1];
-    v14 = [(HMIVideoAnalyzer *)v6 delegate];
+    [(HMIVideoAnalyzerServer *)selfCopy setHasFailed:1];
+    delegate = [(HMIVideoAnalyzer *)selfCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v14 analyzer:v6 didFailWithError:v4];
+      [delegate analyzer:selfCopy didFailWithError:errorCopy];
     }
 
-    v16 = v4;
+    v16 = errorCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-    [(HMIVideoAnalyzerServer *)v6 _produceResult:sel_analyzer_didFailWithError_ withArguments:v15];
+    [(HMIVideoAnalyzerServer *)selfCopy _produceResult:sel_analyzer_didFailWithError_ withArguments:v15];
   }
 }
 
-- (void)_notifyDelegateDidProduceAnalysisStateUpdate:(id)a3
+- (void)_notifyDelegateDidProduceAnalysisStateUpdate:(id)update
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMIVideoAnalyzer *)self delegate];
+  updateCopy = update;
+  delegate = [(HMIVideoAnalyzer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 analyzer:self didProduceAnalysisStateUpdate:v4];
+    [delegate analyzer:self didProduceAnalysisStateUpdate:updateCopy];
   }
 
-  v7[0] = v4;
+  v7[0] = updateCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerServer *)self _produceResult:sel_analyzer_didProduceAnalysisStateUpdate_ withArguments:v6];
 }
 
-- (void)_produceResult:(SEL)a3 withArguments:(id)a4
+- (void)_produceResult:(SEL)result withArguments:(id)arguments
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzer *)self delegate];
-  if ([v7 conformsToProtocol:&unk_28408D330])
+  argumentsCopy = arguments;
+  delegate = [(HMIVideoAnalyzer *)self delegate];
+  if ([delegate conformsToProtocol:&unk_28408D330])
   {
-    v8 = v7;
+    v8 = delegate;
   }
 
   else
@@ -2553,14 +2553,14 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   if (objc_opt_respondsToSelector())
   {
     v20[0] = @"selector";
-    v10 = NSStringFromSelector(a3);
+    v10 = NSStringFromSelector(result);
     v20[1] = @"arguments";
     v21[0] = v10;
-    v21[1] = v6;
+    v21[1] = argumentsCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -2573,7 +2573,7 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
     }
 
     objc_autoreleasePoolPop(v12);
-    [v9 analyzer:v13 didProduceResult:v11];
+    [v9 analyzer:selfCopy didProduceResult:v11];
   }
 }
 
@@ -2582,20 +2582,20 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   currentPTS = self->_currentPTS;
   v33 = [(HMIVideoAnalyzerServer *)self dynamicConfigurationForTime:&currentPTS];
   v31 = [HMIVideoAnalyzerState alloc];
-  v32 = [(HMIVideoAnalyzer *)self configuration];
-  v30 = [(HMIVideoAnalyzer *)self identifier];
-  v29 = [(HMIVideoAnalyzerServer *)self monitored];
+  configuration = [(HMIVideoAnalyzer *)self configuration];
+  identifier = [(HMIVideoAnalyzer *)self identifier];
+  monitored = [(HMIVideoAnalyzerServer *)self monitored];
   [(HMIVideoAnalyzerServer *)self analysisFPS];
   v4 = v3;
   [(HMIVideoAnalyzerServer *)self timeSinceAnalyzerStarted];
   v6 = v5;
   [(HMIVideoAnalyzerServer *)self timeSinceLastFragmentWasReceived];
   v8 = v7;
-  v28 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  [v28 fillRatio];
+  commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  [commandBuffer fillRatio];
   v10 = v9;
-  v11 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  v27 = [v11 size];
+  commandBuffer2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  v27 = [commandBuffer2 size];
   [(HMIVideoAnalyzerServer *)self delay];
   v13 = v12;
   [(HMIVideoAnalyzerServer *)self currentPTS];
@@ -2604,22 +2604,22 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   numDidAnalyzeFragments = self->_numDidAnalyzeFragments;
   numDidAnalyzePackages = self->_numDidAnalyzePackages;
   numDidCreateTimelapseFragments = self->_numDidCreateTimelapseFragments;
-  v18 = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
-  [v18 averageAnalysisTime];
+  frameAnalyzer = [(HMIVideoAnalyzerServer *)self frameAnalyzer];
+  [frameAnalyzer averageAnalysisTime];
   v20 = v19;
-  v21 = [(HMIVideoAnalyzerServer *)self encode];
-  v22 = [(HMIVideoAnalyzerServer *)self encoder];
-  BYTE1(v25) = v22 != 0;
-  LOBYTE(v25) = v21;
-  v23 = [(HMIVideoAnalyzerState *)v31 initWithConfiguration:v32 dynamicConfiguration:v33 identifier:v30 monitored:v29 analysisFPS:v27 timeSinceAnalyzerStarted:&currentPTS timeSinceLastFragmentWasReceived:v4 bufferFillRatio:v6 bufferSize:v8 delay:v10 currentPTS:v13 numDecodedSamples:v20 numDidAnalyzeFrames:numDecodedSamples numDidAnalyzeFragments:numDidAnalyzeFrames numDidAnalyzePackages:numDidAnalyzeFragments numDidCreateTimelapseFragments:numDidAnalyzePackages averageAnalysisTime:numDidCreateTimelapseFragments encode:v25 encoder:[(HMIVideoAnalyzerServer *)self decodeMode] decodeMode:?];
+  encode = [(HMIVideoAnalyzerServer *)self encode];
+  encoder = [(HMIVideoAnalyzerServer *)self encoder];
+  BYTE1(v25) = encoder != 0;
+  LOBYTE(v25) = encode;
+  v23 = [(HMIVideoAnalyzerState *)v31 initWithConfiguration:configuration dynamicConfiguration:v33 identifier:identifier monitored:monitored analysisFPS:v27 timeSinceAnalyzerStarted:&currentPTS timeSinceLastFragmentWasReceived:v4 bufferFillRatio:v6 bufferSize:v8 delay:v10 currentPTS:v13 numDecodedSamples:v20 numDidAnalyzeFrames:numDecodedSamples numDidAnalyzeFragments:numDidAnalyzeFrames numDidAnalyzePackages:numDidAnalyzeFragments numDidCreateTimelapseFragments:numDidAnalyzePackages averageAnalysisTime:numDidCreateTimelapseFragments encode:v25 encoder:[(HMIVideoAnalyzerServer *)self decodeMode] decodeMode:?];
 
   return v23;
 }
 
 - (double)timeSinceAnalyzerStarted
 {
-  v2 = [(HMIVideoAnalyzerServer *)self startDate];
-  [v2 timeIntervalSinceNow];
+  startDate = [(HMIVideoAnalyzerServer *)self startDate];
+  [startDate timeIntervalSinceNow];
   v4 = -v3;
 
   return v4;
@@ -2627,8 +2627,8 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
 
 - (double)timeSinceLastFragmentWasReceived
 {
-  v2 = [(HMIVideoAnalyzerServer *)self lastFragmentReceivedDate];
-  [v2 timeIntervalSinceNow];
+  lastFragmentReceivedDate = [(HMIVideoAnalyzerServer *)self lastFragmentReceivedDate];
+  [lastFragmentReceivedDate timeIntervalSinceNow];
   v4 = -v3;
 
   return v4;
@@ -2636,20 +2636,20 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
 
 - (double)delay
 {
-  v2 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  [v2 delay];
+  commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  [commandBuffer delay];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAnalysisFPS:(double)a3
+- (void)setAnalysisFPS:(double)s
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_analysisFPS != a3)
+  if (self->_analysisFPS != s)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -2660,31 +2660,31 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
       v13 = 2048;
       v14 = analysisFPS;
       v15 = 2048;
-      v16 = a3;
+      sCopy = s;
       _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@analysisFPS changing from: %f to: %f", &v11, 0x20u);
     }
 
     objc_autoreleasePoolPop(v5);
   }
 
-  self->_analysisFPS = a3;
-  v10 = [(HMIVideoAnalyzerServer *)self frameSelector];
-  [v10 setSampleRate:a3 * 3.0];
+  self->_analysisFPS = s;
+  frameSelector = [(HMIVideoAnalyzerServer *)self frameSelector];
+  [frameSelector setSampleRate:s * 3.0];
 }
 
-- (void)setDecodeMode:(int64_t)a3
+- (void)setDecodeMode:(int64_t)mode
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_decodeMode != a3)
+  if (self->_decodeMode != mode)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
       v9 = HMIVideoAnalyzerDecodeModeAsString(self->_decodeMode);
-      v10 = HMIVideoAnalyzerDecodeModeAsString(a3);
+      v10 = HMIVideoAnalyzerDecodeModeAsString(mode);
       v11 = 138543874;
       v12 = v8;
       v13 = 2112;
@@ -2697,14 +2697,14 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
     objc_autoreleasePoolPop(v5);
   }
 
-  self->_decodeMode = a3;
+  self->_decodeMode = mode;
 }
 
-- (void)setBoosted:(BOOL)a3
+- (void)setBoosted:(BOOL)boosted
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -2715,7 +2715,7 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
   }
 
   objc_autoreleasePoolPop(v5);
-  v6->_boosted = a3;
+  selfCopy->_boosted = boosted;
 }
 
 - (unint64_t)status
@@ -2730,10 +2730,10 @@ uint64_t __78__HMIVideoAnalyzerServer_assetWriter_didOutputSeparableSegment_segm
     return 2;
   }
 
-  v4 = [(HMIVideoAnalyzerServer *)self commandBuffer];
-  v5 = [v4 isEmpty];
+  commandBuffer = [(HMIVideoAnalyzerServer *)self commandBuffer];
+  isEmpty = [commandBuffer isEmpty];
 
-  return v5 ^ 1u;
+  return isEmpty ^ 1u;
 }
 
 @end

@@ -3,9 +3,9 @@
 - (THModelPageInfo)lastPage;
 - (id)childInfos;
 - (void)dealloc;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)setParentInfo:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation THSectionInfo
@@ -20,7 +20,7 @@
   [(THSectionInfo *)&v3 dealloc];
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THSectionInfo setOwningAttachment:]"];
@@ -29,7 +29,7 @@
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:47 description:@"Can't put a section info in an attachment. What does that even mean!"];
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THSectionInfo setParentInfo:]"];
@@ -38,7 +38,7 @@
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:83 description:@"Can't set the parent info of a THSectionInfo"];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THSectionInfo setGeometry:]"];
@@ -49,9 +49,9 @@
 
 - (id)childInfos
 {
-  v2 = [(THSectionInfo *)self pages];
+  pages = [(THSectionInfo *)self pages];
 
-  return [NSArray arrayWithArray:v2];
+  return [NSArray arrayWithArray:pages];
 }
 
 - (THModelPageInfo)lastPage
@@ -60,8 +60,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(THSectionInfo *)self pages];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pages = [(THSectionInfo *)self pages];
+  v3 = [(NSArray *)pages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v3)
   {
     return 0;
@@ -76,14 +76,14 @@
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(pages);
       }
 
       v8 = *(*(&v11 + 1) + 8 * i);
       if (v5)
       {
-        v9 = [*(*(&v11 + 1) + 8 * i) relativePageIndexInParent];
-        if (v9 <= [(THModelPageInfo *)v5 relativePageIndexInParent])
+        relativePageIndexInParent = [*(*(&v11 + 1) + 8 * i) relativePageIndexInParent];
+        if (relativePageIndexInParent <= [(THModelPageInfo *)v5 relativePageIndexInParent])
         {
           continue;
         }
@@ -92,7 +92,7 @@
       v5 = v8;
     }
 
-    v4 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [(NSArray *)pages countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v4);
@@ -101,9 +101,9 @@
 
 - (THModelContentNode)contentNode
 {
-  v2 = [(THSectionInfo *)self pageController];
+  pageController = [(THSectionInfo *)self pageController];
 
-  return [(THPageController *)v2 contentNode];
+  return [(THPageController *)pageController contentNode];
 }
 
 @end

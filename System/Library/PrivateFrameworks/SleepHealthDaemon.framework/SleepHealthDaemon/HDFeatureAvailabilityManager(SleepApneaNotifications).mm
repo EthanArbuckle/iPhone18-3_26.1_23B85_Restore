@@ -10,8 +10,8 @@
   v4 = *MEMORY[0x277CCC0D8];
   v5 = MEMORY[0x277CCDD30];
   v6 = a3;
-  v7 = [v5 sharedBehavior];
-  LODWORD(v5) = [v7 isAppleWatch];
+  sharedBehavior = [v5 sharedBehavior];
+  LODWORD(v5) = [sharedBehavior isAppleWatch];
 
   v8 = objc_alloc(MEMORY[0x277CCAD78]);
   if (v5)
@@ -26,9 +26,9 @@
 
   v76 = [v8 initWithUUIDString:v9];
   v10 = objc_alloc(MEMORY[0x277D10728]);
-  v11 = [MEMORY[0x277CCD260] localAvailabilityForSleepApneaNotifications];
-  v12 = [v6 daemon];
-  v78 = [v10 initWithFeatureIdentifier:v4 defaultCountrySet:v11 healthDaemon:v12];
+  localAvailabilityForSleepApneaNotifications = [MEMORY[0x277CCD260] localAvailabilityForSleepApneaNotifications];
+  daemon = [v6 daemon];
+  v78 = [v10 initWithFeatureIdentifier:v4 defaultCountrySet:localAvailabilityForSleepApneaNotifications healthDaemon:daemon];
 
   v13 = objc_alloc(MEMORY[0x277D107D8]);
   v14 = [MEMORY[0x277CCD3D8] featureAttributesDerivedFromOSBuildAndFeatureVersion:*MEMORY[0x277CCCDB0] watchDeviceIdentifier:*MEMORY[0x277CCCDC0] phoneDeviceIdentifier:*MEMORY[0x277CCCDB8]];
@@ -40,8 +40,8 @@
   v74 = v6;
   v75 = [v16 initWithAllowedCountriesDataSource:v15 profile:v6 featureCapability:v76 loggingCategory:*MEMORY[0x277CCC320]];
   v17 = objc_alloc(MEMORY[0x277D107C0]);
-  v18 = [v6 daemon];
-  v73 = [v17 initWithDaemon:v18 featureIdentifier:v4];
+  daemon2 = [v6 daemon];
+  v73 = [v17 initWithDaemon:daemon2 featureIdentifier:v4];
 
   v72 = objc_alloc(MEMORY[0x277D106D8]);
   v58 = objc_alloc(MEMORY[0x277CCD420]);
@@ -52,13 +52,13 @@
   v85[1] = v70;
   v69 = [MEMORY[0x277CCD428] someRegionIsSupportedForFeatureWithIdentifier:v4];
   v85[2] = v69;
-  v68 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v85[3] = v68;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v85[3] = healthAppIsNotHidden;
   v19 = *MEMORY[0x277CCC248];
   v67 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC248]];
   v85[4] = v67;
-  v66 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v85[5] = v66;
+  wristDetectionIsEnabledForActiveWatch = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v85[5] = wristDetectionIsEnabledForActiveWatch;
   v20 = MEMORY[0x277CCD428];
   v21 = objc_alloc(MEMORY[0x277CCD408]);
   v22 = *MEMORY[0x277CCC0E8];
@@ -81,8 +81,8 @@
   v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:4];
   v87[1] = v55;
   v86[2] = *MEMORY[0x277CCBEA0];
-  v54 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v82[0] = v54;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v82[0] = profileIsNotFamilySetupPairingProfile;
   v53 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v4];
   v82[1] = v53;
   v52 = [MEMORY[0x277CCD428] activeRemoteDeviceIsPresentWhenRequiredForRegionAvailabilityOrDeviceCapabilityForFeatureWithIdentifier:v4];
@@ -99,10 +99,10 @@
   v82[7] = v47;
   v46 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:v19];
   v82[8] = v46;
-  v45 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v82[9] = v45;
-  v44 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v82[10] = v44;
+  healthAppIsNotHidden2 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v82[9] = healthAppIsNotHidden2;
+  wristDetectionIsEnabledForActiveWatch2 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v82[10] = wristDetectionIsEnabledForActiveWatch2;
   v23 = MEMORY[0x277CCD428];
   v43 = [objc_alloc(MEMORY[0x277CCD408]) initWithFeatureIdentifier:v22 isOnWhenSettingIsAbsent:0];
   v81 = v43;
@@ -118,8 +118,8 @@
   v80[0] = v38;
   v37 = [MEMORY[0x277CCD428] capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v4 supportedOnLocalDevice:MGGetBoolAnswer()];
   v80[1] = v37;
-  v36 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v80[2] = v36;
+  healthAppIsNotHidden3 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v80[2] = healthAppIsNotHidden3;
   v24 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:v19];
   v80[3] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:4];

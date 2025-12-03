@@ -14,7 +14,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1B7A49FDC();
 }
 

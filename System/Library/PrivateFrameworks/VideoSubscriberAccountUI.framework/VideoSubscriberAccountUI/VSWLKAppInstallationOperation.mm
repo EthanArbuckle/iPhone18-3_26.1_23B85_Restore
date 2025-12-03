@@ -1,33 +1,33 @@
 @interface VSWLKAppInstallationOperation
 - (void)executionDidBegin;
-- (void)setInstallable:(id)a3;
+- (void)setInstallable:(id)installable;
 @end
 
 @implementation VSWLKAppInstallationOperation
 
-- (void)setInstallable:(id)a3
+- (void)setInstallable:(id)installable
 {
-  v9 = a3;
-  objc_storeStrong(&self->_installable, a3);
-  v5 = [v9 appAdamIDs];
-  v6 = [v5 firstObject];
+  installableCopy = installable;
+  objc_storeStrong(&self->_installable, installable);
+  appAdamIDs = [installableCopy appAdamIDs];
+  firstObject = [appAdamIDs firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[installable appAdamIDs] firstObject] parameter must not be nil."];
   }
 
-  v7 = [v9 appAdamIDs];
-  v8 = [v7 firstObject];
+  appAdamIDs2 = [installableCopy appAdamIDs];
+  firstObject2 = [appAdamIDs2 firstObject];
 
-  [(VSWLKAppInstallationOperation *)self setAppAdamID:v8];
+  [(VSWLKAppInstallationOperation *)self setAppAdamID:firstObject2];
 }
 
 - (void)executionDidBegin
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277D7A930] defaultAppInstaller];
-  v4 = [(VSWLKAppInstallationOperation *)self installable];
+  defaultAppInstaller = [MEMORY[0x277D7A930] defaultAppInstaller];
+  installable = [(VSWLKAppInstallationOperation *)self installable];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__VSWLKAppInstallationOperation_executionDidBegin__block_invoke;
@@ -38,7 +38,7 @@
   v5[2] = __50__VSWLKAppInstallationOperation_executionDidBegin__block_invoke_15;
   v5[3] = &unk_279E194D0;
   objc_copyWeak(&v6, &location);
-  [v3 installAppForInstallable:v4 progressHandler:v7 completion:v5];
+  [defaultAppInstaller installAppForInstallable:installable progressHandler:v7 completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);

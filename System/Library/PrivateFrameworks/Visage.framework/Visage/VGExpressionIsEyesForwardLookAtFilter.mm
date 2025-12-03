@@ -1,11 +1,11 @@
 @interface VGExpressionIsEyesForwardLookAtFilter
-- (VGExpressionIsEyesForwardLookAtFilter)initWithEyesForwardYawSensitivity:(float)a3 eyesForwardPitchSensitivity:(float)a4;
-- (float)filter:(id)a3;
+- (VGExpressionIsEyesForwardLookAtFilter)initWithEyesForwardYawSensitivity:(float)sensitivity eyesForwardPitchSensitivity:(float)pitchSensitivity;
+- (float)filter:(id)filter;
 @end
 
 @implementation VGExpressionIsEyesForwardLookAtFilter
 
-- (VGExpressionIsEyesForwardLookAtFilter)initWithEyesForwardYawSensitivity:(float)a3 eyesForwardPitchSensitivity:(float)a4
+- (VGExpressionIsEyesForwardLookAtFilter)initWithEyesForwardYawSensitivity:(float)sensitivity eyesForwardPitchSensitivity:(float)pitchSensitivity
 {
   v10.receiver = self;
   v10.super_class = VGExpressionIsEyesForwardLookAtFilter;
@@ -13,18 +13,18 @@
   v7 = v6;
   if (v6)
   {
-    v6->_eyesForwardYawSensitivityInRadians = a3;
-    v6->_eyesForwardPitchSensitivityInRadians = a4;
+    v6->_eyesForwardYawSensitivityInRadians = sensitivity;
+    v6->_eyesForwardPitchSensitivityInRadians = pitchSensitivity;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (float)filter:(id)a3
+- (float)filter:(id)filter
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"tracked_faces"];
+  v4 = [filter objectForKeyedSubscript:@"tracked_faces"];
   v5 = v4;
   v6 = 0.0;
   if (v4 && [v4 count])

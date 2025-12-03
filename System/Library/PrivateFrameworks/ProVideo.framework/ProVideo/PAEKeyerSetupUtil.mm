@@ -1,12 +1,12 @@
 @interface PAEKeyerSetupUtil
-- (PAEKeyerSetupUtil)initWithAPIManager:(id)a3 colorPrimaries:(int)a4 atTime:(id)a5;
-- (PAEKeyerSetupUtil)initWithOMSamples:(void *)a3 colorPrimaries:(int)a4 atTime:(id)a5;
+- (PAEKeyerSetupUtil)initWithAPIManager:(id)manager colorPrimaries:(int)primaries atTime:(id)time;
+- (PAEKeyerSetupUtil)initWithOMSamples:(void *)samples colorPrimaries:(int)primaries atTime:(id)time;
 - (void)dealloc;
 @end
 
 @implementation PAEKeyerSetupUtil
 
-- (PAEKeyerSetupUtil)initWithAPIManager:(id)a3 colorPrimaries:(int)a4 atTime:(id)a5
+- (PAEKeyerSetupUtil)initWithAPIManager:(id)manager colorPrimaries:(int)primaries atTime:(id)time
 {
   v6.receiver = self;
   v6.super_class = PAEKeyerSetupUtil;
@@ -18,14 +18,14 @@
   return 0;
 }
 
-- (PAEKeyerSetupUtil)initWithOMSamples:(void *)a3 colorPrimaries:(int)a4 atTime:(id)a5
+- (PAEKeyerSetupUtil)initWithOMSamples:(void *)samples colorPrimaries:(int)primaries atTime:(id)time
 {
   v8.receiver = self;
   v8.super_class = PAEKeyerSetupUtil;
   v6 = [(PAEKeyerSetupUtil *)&v8 init];
   if (v6)
   {
-    v6->_omSamples = a3;
+    v6->_omSamples = samples;
     operator new();
   }
 

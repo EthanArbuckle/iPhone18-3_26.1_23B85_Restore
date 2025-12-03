@@ -1,38 +1,38 @@
 @interface HAECGSample
-- (BOOL)parseRepresentation:(id)a3 withMetadata:(id)a4;
-- (HAECGSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4;
-- (HAECGSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (id)decodeHALV1Payload:(id *)a3 withMetadata:(id)a4;
-- (id)decodeHALV2Payload:(id *)a3 withMetadata:(id)a4 withPayloadVersion2:(BOOL)a5;
-- (void)setTimestampWithRtpTicks:(unint64_t)a3 withMetadata:(id)a4;
+- (BOOL)parseRepresentation:(id)representation withMetadata:(id)metadata;
+- (HAECGSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata;
+- (HAECGSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (id)decodeHALV1Payload:(id *)payload withMetadata:(id)metadata;
+- (id)decodeHALV2Payload:(id *)payload withMetadata:(id)metadata withPayloadVersion2:(BOOL)version2;
+- (void)setTimestampWithRtpTicks:(unint64_t)ticks withMetadata:(id)metadata;
 @end
 
 @implementation HAECGSample
 
-- (void)setTimestampWithRtpTicks:(unint64_t)a3 withMetadata:(id)a4
+- (void)setTimestampWithRtpTicks:(unint64_t)ticks withMetadata:(id)metadata
 {
-  v14 = a4;
-  v6 = [v14 objectForKeyedSubscript:@"timestampReference"];
-  v7 = [v6 unsignedLongLongValue];
-  v8 = [v14 objectForKeyedSubscript:@"rtpTicksPerSecond"];
-  v9 = [v8 unsignedIntValue];
-  v10 = [v14 objectForKeyedSubscript:@"wallclockTimeReference"];
+  metadataCopy = metadata;
+  v6 = [metadataCopy objectForKeyedSubscript:@"timestampReference"];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
+  v8 = [metadataCopy objectForKeyedSubscript:@"rtpTicksPerSecond"];
+  unsignedIntValue = [v8 unsignedIntValue];
+  v10 = [metadataCopy objectForKeyedSubscript:@"wallclockTimeReference"];
   [v10 doubleValue];
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:(a3 - v7) / v9 + v11];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:(ticks - unsignedLongLongValue) / unsignedIntValue + v11];
   timestamp = self->_timestamp;
   self->_timestamp = v12;
 }
 
-- (id)decodeHALV2Payload:(id *)a3 withMetadata:(id)a4 withPayloadVersion2:(BOOL)a5
+- (id)decodeHALV2Payload:(id *)payload withMetadata:(id)metadata withPayloadVersion2:(BOOL)version2
 {
-  v5 = a5;
-  self->_frequency = *(&a3->var5 + 1) * 0.000015259;
-  [(HAECGSample *)self setTimestampWithRtpTicks:*(&a3->var4 + 1) withMetadata:a4];
+  version2Copy = version2;
+  self->_frequency = *(&payload->var5 + 1) * 0.000015259;
+  [(HAECGSample *)self setTimestampWithRtpTicks:*(&payload->var4 + 1) withMetadata:metadata];
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:16];
-  if (a3->var2)
+  if (payload->var2)
   {
     v8 = 0;
-    v9 = (&a3->var6.var4 + 3);
+    v9 = (&payload->var6.var4 + 3);
     do
     {
       v10 = (*v9 >> 6) & 2;
@@ -46,7 +46,7 @@
         v11 = v10;
       }
 
-      v12 = CinnAlgs::convertAdcAcVolt(a3, v8, v5);
+      v12 = CinnAlgs::convertAdcAcVolt(payload, v8, version2Copy);
       v13 = [HAECGData alloc];
       *&v14 = v12;
       v15 = [(HAECGData *)v13 initWithFlags:v11 value:v14];
@@ -56,15 +56,15 @@
       ++v8;
     }
 
-    while (v8 < a3->var2);
+    while (v8 < payload->var2);
   }
 
   return v7;
 }
 
-- (id)decodeHALV1Payload:(id *)a3 withMetadata:(id)a4
+- (id)decodeHALV1Payload:(id *)payload withMetadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v39 = 0u;
   memset(v40, 0, sizeof(v40));
   v37 = 0u;
@@ -94,15 +94,15 @@
   *&v13[16] = 0u;
   v14 = 0u;
   *v13 = 0u;
-  v13[4] = a3->var2;
-  *&v13[9] = *(&a3->var4 + 1);
-  *&v13[17] = *(&a3->var5 + 1);
-  *&v13[25] = *(&a3->var5 + 5);
+  v13[4] = payload->var2;
+  *&v13[9] = *(&payload->var4 + 1);
+  *&v13[17] = *(&payload->var5 + 1);
+  *&v13[25] = *(&payload->var5 + 5);
   if (v13[4])
   {
     v7 = 0;
     v8 = 28 * v13[4];
-    v9 = &a3->var6 + 1;
+    v9 = &payload->var6 + 1;
     do
     {
       v10 = &v13[v7];
@@ -116,29 +116,29 @@
     while (v8 != v7);
   }
 
-  v11 = [(HAECGSample *)self decodeHALV2Payload:v13 withMetadata:v6 withPayloadVersion2:0];
+  v11 = [(HAECGSample *)self decodeHALV2Payload:v13 withMetadata:metadataCopy withPayloadVersion2:0];
 
   return v11;
 }
 
-- (BOOL)parseRepresentation:(id)a3 withMetadata:(id)a4
+- (BOOL)parseRepresentation:(id)representation withMetadata:(id)metadata
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  metadataCopy = metadata;
   v35 = 0;
-  if ([v6 length] <= 1)
+  if ([representationCopy length] <= 1)
   {
     v8 = ha_get_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      -[HAECGSample parseRepresentation:withMetadata:].cold.7(&v36, [v6 length]);
+      -[HAECGSample parseRepresentation:withMetadata:].cold.7(&v36, [representationCopy length]);
     }
 
     goto LABEL_28;
   }
 
-  if (!v7)
+  if (!metadataCopy)
   {
     v19 = ha_get_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -149,7 +149,7 @@
     goto LABEL_27;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"timestampReference"];
+  v9 = [metadataCopy objectForKeyedSubscript:@"timestampReference"];
   if (!v9)
   {
 LABEL_25:
@@ -164,7 +164,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"rtpTicksPerSecond"];
+  v10 = [metadataCopy objectForKeyedSubscript:@"rtpTicksPerSecond"];
   if (!v10)
   {
 LABEL_24:
@@ -172,7 +172,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"wallclockTimeReference"];
+  v11 = [metadataCopy objectForKeyedSubscript:@"wallclockTimeReference"];
   if (!v11)
   {
 LABEL_23:
@@ -180,7 +180,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"sessionIdentifier"];
+  v12 = [metadataCopy objectForKeyedSubscript:@"sessionIdentifier"];
   if (!v12)
   {
 LABEL_22:
@@ -188,46 +188,46 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"ecgApp"];
+  v13 = [metadataCopy objectForKeyedSubscript:@"ecgApp"];
   if (!v13)
   {
 
     goto LABEL_22;
   }
 
-  v14 = [v7 objectForKeyedSubscript:@"contactDetected"];
+  v14 = [metadataCopy objectForKeyedSubscript:@"contactDetected"];
 
   if (!v14)
   {
     goto LABEL_25;
   }
 
-  v15 = [v7 objectForKeyedSubscript:@"contactDetected"];
-  v16 = [v15 BOOLValue];
+  v15 = [metadataCopy objectForKeyedSubscript:@"contactDetected"];
+  bOOLValue = [v15 BOOLValue];
 
-  if ((v16 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_28;
   }
 
-  [v6 getBytes:&v35 length:2];
+  [representationCopy getBytes:&v35 length:2];
   if (v35 > 0x105u)
   {
     if (v35 == 262)
     {
-      if ([v6 length] != 13)
+      if ([representationCopy length] != 13)
       {
         v34 = ha_get_log();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
         {
-          -[HAECGSample parseRepresentation:withMetadata:].cold.1(&v36, [v6 length]);
+          -[HAECGSample parseRepresentation:withMetadata:].cold.1(&v36, [representationCopy length]);
         }
 
         goto LABEL_57;
       }
 
-      [v6 getBytes:&v38 length:13];
-      [(HAECGSample *)self setTimestampWithRtpTicks:v40 withMetadata:v7];
+      [representationCopy getBytes:&v38 length:13];
+      [(HAECGSample *)self setTimestampWithRtpTicks:v40 withMetadata:metadataCopy];
       if (!v39)
       {
         goto LABEL_41;
@@ -243,19 +243,19 @@ LABEL_22:
         goto LABEL_28;
       }
 
-      if ([v6 length] != 13)
+      if ([representationCopy length] != 13)
       {
         v34 = ha_get_log();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
         {
-          -[HAECGSample parseRepresentation:withMetadata:].cold.1(&v36, [v6 length]);
+          -[HAECGSample parseRepresentation:withMetadata:].cold.1(&v36, [representationCopy length]);
         }
 
         goto LABEL_57;
       }
 
-      [v6 getBytes:&v38 length:13];
-      [(HAECGSample *)self setTimestampWithRtpTicks:v40 withMetadata:v7];
+      [representationCopy getBytes:&v38 length:13];
+      [(HAECGSample *)self setTimestampWithRtpTicks:v40 withMetadata:metadataCopy];
       if (!v39)
       {
         goto LABEL_41;
@@ -270,10 +270,10 @@ LABEL_22:
 
   if (v35 == 170)
   {
-    if ([v6 length] == 315)
+    if ([representationCopy length] == 315)
     {
-      [v6 getBytes:&v36 length:315];
-      v24 = [(HAECGSample *)self decodeHALV1Payload:v37 withMetadata:v7];
+      [representationCopy getBytes:&v36 length:315];
+      v24 = [(HAECGSample *)self decodeHALV1Payload:v37 withMetadata:metadataCopy];
       ecgData = self->_ecgData;
       self->_ecgData = v24;
 
@@ -283,7 +283,7 @@ LABEL_22:
     v34 = ha_get_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
     {
-      -[HAECGSample parseRepresentation:withMetadata:].cold.4(&v38, [v6 length]);
+      -[HAECGSample parseRepresentation:withMetadata:].cold.4(&v38, [representationCopy length]);
     }
 
     goto LABEL_57;
@@ -296,12 +296,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ([v6 length] != 483)
+  if ([representationCopy length] != 483)
   {
     v34 = ha_get_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
     {
-      -[HAECGSample parseRepresentation:withMetadata:].cold.3(&v38, [v6 length]);
+      -[HAECGSample parseRepresentation:withMetadata:].cold.3(&v38, [representationCopy length]);
     }
 
 LABEL_57:
@@ -309,30 +309,30 @@ LABEL_57:
     goto LABEL_28;
   }
 
-  [v6 getBytes:&v36 length:483];
-  v17 = [(HAECGSample *)self decodeHALV2Payload:v37 withMetadata:v7 withPayloadVersion2:1];
+  [representationCopy getBytes:&v36 length:483];
+  v17 = [(HAECGSample *)self decodeHALV2Payload:v37 withMetadata:metadataCopy withPayloadVersion2:1];
   v18 = self->_ecgData;
   self->_ecgData = v17;
 
 LABEL_41:
-  v26 = [v7 objectForKeyedSubscript:@"sessionIdentifier"];
+  v26 = [metadataCopy objectForKeyedSubscript:@"sessionIdentifier"];
   sessionIdentifier = self->_sessionIdentifier;
   self->_sessionIdentifier = v26;
 
-  v28 = [v7 objectForKeyedSubscript:@"ecgApp"];
-  v29 = [v28 BOOLValue];
+  v28 = [metadataCopy objectForKeyedSubscript:@"ecgApp"];
+  bOOLValue2 = [v28 BOOLValue];
   v30 = 4;
-  if (!v29)
+  if (!bOOLValue2)
   {
     v30 = 0;
   }
 
   self->_flags |= v30;
 
-  v31 = [v7 objectForKeyedSubscript:@"rightWrist"];
-  v32 = [v31 BOOLValue];
+  v31 = [metadataCopy objectForKeyedSubscript:@"rightWrist"];
+  bOOLValue3 = [v31 BOOLValue];
   v33 = 8;
-  if (v32)
+  if (bOOLValue3)
   {
     v33 = 0;
   }
@@ -346,32 +346,32 @@ LABEL_29:
   return v20;
 }
 
-- (HAECGSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (HAECGSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  v7 = a3;
-  v8 = a4;
+  representationCopy = representation;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = HAECGSample;
   v9 = [(HAECGSample *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    [(HAECGSample *)v9 parseRepresentation:v7 withMetadata:v8];
+    [(HAECGSample *)v9 parseRepresentation:representationCopy withMetadata:metadataCopy];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (HAECGSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4
+- (HAECGSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = HAECGSample;
   v8 = [(HAECGSample *)&v12 init];
   v9 = v8;
-  if (v8 && [(HAECGSample *)v8 parseRepresentation:v6 withMetadata:v7])
+  if (v8 && [(HAECGSample *)v8 parseRepresentation:representationCopy withMetadata:metadataCopy])
   {
     v10 = v9;
   }

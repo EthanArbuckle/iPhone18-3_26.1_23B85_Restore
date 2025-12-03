@@ -1,29 +1,29 @@
 @interface PIVideoReframeNode
 - ($721907E0E1CDE8B6CD3FA271A8B25860)stabCropRect;
-- (PIVideoReframeNode)initWithKeyframes:(id)a3 stabCropRect:(id *)a4 input:(id)a5;
-- (PIVideoReframeNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)_stabilizeImage:(void *)a3 cleanRect:(void *)a4 cropRect:(uint64_t)a5 transform:(uint64_t)a6 geometry:(uint64_t)a7;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (void)setFrameDuration:(id *)a3;
-- (void)setStabCropRect:(id *)a3;
+- (PIVideoReframeNode)initWithKeyframes:(id)keyframes stabCropRect:(id *)rect input:(id)input;
+- (PIVideoReframeNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)_stabilizeImage:(void *)image cleanRect:(void *)rect cropRect:(uint64_t)cropRect transform:(uint64_t)transform geometry:(uint64_t)geometry;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
+- (void)setFrameDuration:(id *)duration;
+- (void)setStabCropRect:(id *)rect;
 @end
 
 @implementation PIVideoReframeNode
 
-- (void)setFrameDuration:(id *)a3
+- (void)setFrameDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_frameDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_frameDuration.value = *&duration->var0;
   self->_frameDuration.epoch = var3;
 }
 
-- (void)setStabCropRect:(id *)a3
+- (void)setStabCropRect:(id *)rect
 {
-  var1 = a3->var1;
-  self->_stabCropRect.origin = a3->var0;
+  var1 = rect->var1;
+  self->_stabCropRect.origin = rect->var0;
   self->_stabCropRect.size = var1;
 }
 
@@ -35,18 +35,18 @@
   return self;
 }
 
-- (id)_stabilizeImage:(void *)a3 cleanRect:(void *)a4 cropRect:(uint64_t)a5 transform:(uint64_t)a6 geometry:(uint64_t)a7
+- (id)_stabilizeImage:(void *)image cleanRect:(void *)rect cropRect:(uint64_t)cropRect transform:(uint64_t)transform geometry:(uint64_t)geometry
 {
   v62[4] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a3;
-  [v13 renderScale];
+  rectCopy = rect;
+  imageCopy = image;
+  [rectCopy renderScale];
   NUScaleToDouble();
   v59 = v15;
   NUScaleRect();
   v17 = v16;
   v19 = v18;
-  v20 = [v14 imageByCroppingToRect:?];
+  v20 = [imageCopy imageByCroppingToRect:?];
 
   CGAffineTransformMakeTranslation(&v60, -v17, -v19);
   v21 = [v20 imageByApplyingTransform:&v60];
@@ -101,24 +101,24 @@
   NUScaleRect();
   v46 = v45;
   v48 = v47;
-  v49 = [v13 scaledSize];
+  scaledSize = [rectCopy scaledSize];
   v51 = v50;
 
-  v52 = [v44 imageByCroppingToRect:{v46, v48, v49, v51}];
+  v52 = [v44 imageByCroppingToRect:{v46, v48, scaledSize, v51}];
   CGAffineTransformMakeTranslation(&v60, -v46, -v48);
   v53 = [v52 imageByApplyingTransform:&v60];
 
-  if (*(a1 + 168) == 1)
+  if (*(self + 168) == 1)
   {
-    v54 = [v53 pi_imageByApplyingStabilizationWatermark];
+    pi_imageByApplyingStabilizationWatermark = [v53 pi_imageByApplyingStabilizationWatermark];
 
-    v53 = v54;
+    v53 = pi_imageByApplyingStabilizationWatermark;
   }
 
   return v53;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v5 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
   v48 = 0;
@@ -127,7 +127,7 @@
   if (!v6)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Could not get the input image" object:self underlyingError:v7];
-    *a3 = v13 = 0;
+    *image = v13 = 0;
     goto LABEL_20;
   }
 
@@ -144,14 +144,14 @@
     if (!v10)
     {
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Could not get the input image properties" object:self underlyingError:v7];
-      *a3 = v13 = 0;
+      *image = v13 = 0;
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v11 = [(NURenderNode *)self settings];
-    v12 = [v11 objectForKeyedSubscript:@"pipelineState"];
+    settings = [(NURenderNode *)self settings];
+    v12 = [settings objectForKeyedSubscript:@"pipelineState"];
 
     v44 = 0uLL;
     v45 = 0;
@@ -161,11 +161,11 @@ LABEL_18:
       if (BYTE12(v44))
       {
 LABEL_12:
-        v14 = [(PIVideoReframeNode *)self inputVideoProperties];
-        v15 = v14;
-        if (v14)
+        inputVideoProperties = [(PIVideoReframeNode *)self inputVideoProperties];
+        v15 = inputVideoProperties;
+        if (inputVideoProperties)
         {
-          [v14 cleanAperture];
+          [inputVideoProperties cleanAperture];
         }
 
         else
@@ -186,10 +186,10 @@ LABEL_12:
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        v32 = [(PIVideoReframeNode *)self keyframeSequence];
+        keyframeSequence = [(PIVideoReframeNode *)self keyframeSequence];
         v42 = v44;
         *&v43 = v45;
-        [v32 homographyAtTime:&v42];
+        [keyframeSequence homographyAtTime:&v42];
         v33.i32[3] = 0;
         v34.i32[3] = 0;
         v39 = v34;
@@ -227,7 +227,7 @@ LABEL_12:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Could not get the input geometry" object:self underlyingError:v9];
-  *a3 = v13 = 0;
+  *image = v13 = 0;
   v7 = v9;
 LABEL_19:
 
@@ -236,10 +236,10 @@ LABEL_20:
   return v13;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!geometry)
   {
     v16 = NUAssertLogger_26400();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -261,8 +261,8 @@ LABEL_20:
         v24 = dispatch_get_specific(*v18);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v24;
         *&buf[12] = 2114;
@@ -273,8 +273,8 @@ LABEL_20:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v23;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -283,8 +283,8 @@ LABEL_20:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   v30 = 0;
   v7 = [v6 outputImageGeometry:&v30];
@@ -295,27 +295,27 @@ LABEL_20:
     [(PIVideoReframeNode *)self stabCropRect];
     *buf = *MEMORY[0x1E69B38F8];
     v9 = objc_alloc(MEMORY[0x1E69B3B18]);
-    v10 = [v7 renderScale];
+    renderScale = [v7 renderScale];
     v12 = v11;
-    v13 = [v7 orientation];
+    orientation = [v7 orientation];
     v29[0] = *buf;
     v29[1] = *&buf[16];
-    v14 = [v9 initWithExtent:v29 renderScale:v10 orientation:{v12, v13}];
+    v14 = [v9 initWithExtent:v29 renderScale:renderScale orientation:{v12, orientation}];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to get input geometry" object:self underlyingError:v8];
-    *a3 = v14 = 0;
+    *geometry = v14 = 0;
   }
 
   return v14;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v15 = NUAssertLogger_26400();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -337,8 +337,8 @@ LABEL_20:
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v23;
         *&buf[12] = 2114;
@@ -349,8 +349,8 @@ LABEL_20:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -359,25 +359,25 @@ LABEL_20:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v7 = [v6 videoProperties:a3];
+  v7 = [v6 videoProperties:properties];
   if (v7)
   {
-    v8 = [(NURenderNode *)self outputImageGeometry:a3];
+    v8 = [(NURenderNode *)self outputImageGeometry:properties];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 scaledSize];
+      scaledSize = [v8 scaledSize];
       v12 = v11;
       v13 = [objc_alloc(MEMORY[0x1E69B3D68]) initWithProperties:v7];
       *buf = 0;
       *&buf[8] = 0;
-      *&buf[16] = v10;
+      *&buf[16] = scaledSize;
       v29 = v12;
       [v13 setCleanAperture:buf];
-      [v13 setSize:{v10, v12}];
+      [v13 setSize:{scaledSize, v12}];
     }
 
     else
@@ -394,16 +394,16 @@ LABEL_20:
   return v13;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v19.receiver = self;
   v19.super_class = PIVideoReframeNode;
-  v8 = [(NURenderNode *)&v19 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:?];
-  v9 = [(NURenderNode *)self inputs];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
-  v11 = [v10 videoProperties:a6];
+  v8 = [(NURenderNode *)&v19 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:?];
+  inputs = [(NURenderNode *)self inputs];
+  v10 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  v11 = [v10 videoProperties:error];
 
-  v12 = [(NURenderNode *)self outputVideoComposition:a6];
+  v12 = [(NURenderNode *)self outputVideoComposition:error];
   if (v8)
   {
     [v8 setKeyframeSequence:self->_keyframeSequence];
@@ -432,11 +432,11 @@ LABEL_20:
   return v8;
 }
 
-- (PIVideoReframeNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIVideoReframeNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -475,8 +475,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -503,8 +503,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -522,18 +522,18 @@ LABEL_14:
   }
 }
 
-- (PIVideoReframeNode)initWithKeyframes:(id)a3 stabCropRect:(id *)a4 input:(id)a5
+- (PIVideoReframeNode)initWithKeyframes:(id)keyframes stabCropRect:(id *)rect input:(id)input
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  var1 = a4->var1;
-  var0 = a4->var0;
+  keyframesCopy = keyframes;
+  inputCopy = input;
+  var1 = rect->var1;
+  var0 = rect->var0;
   v28 = var1;
   if (NUPixelRectIsEmpty())
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PIVideoReframeNode.m" lineNumber:62 description:@"invalid crop rect"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PIVideoReframeNode.m" lineNumber:62 description:@"invalid crop rect"];
   }
 
   v31 = @"pipelineState";
@@ -542,24 +542,24 @@ LABEL_14:
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
 
   v29 = *MEMORY[0x1E695FAB0];
-  v30 = v10;
+  v30 = inputCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v26.receiver = self;
   v26.super_class = PIVideoReframeNode;
   v15 = [(NURenderNode *)&v26 initWithSettings:v13 inputs:v14];
   if (v15)
   {
-    v16 = [[PIReframeKeyframeSequence alloc] initWithKeyframeArray:v9];
+    v16 = [[PIReframeKeyframeSequence alloc] initWithKeyframeArray:keyframesCopy];
     [(PIVideoReframeNode *)v15 setKeyframeSequence:v16];
 
-    v17 = a4->var1;
-    var0 = a4->var0;
+    v17 = rect->var1;
+    var0 = rect->var0;
     v28 = v17;
     [(PIVideoReframeNode *)v15 setStabCropRect:&var0];
     if (NUIsAppleInternal())
     {
-      v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v19 = [v18 dictionaryForKey:@"PURootSettings"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v19 = [standardUserDefaults dictionaryForKey:@"PURootSettings"];
 
       v20 = [v19 objectForKey:@"PXSettingsArchiveKey"];
 

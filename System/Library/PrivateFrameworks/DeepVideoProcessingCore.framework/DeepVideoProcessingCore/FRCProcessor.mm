@@ -1,10 +1,10 @@
 @interface FRCProcessor
 - (BOOL)finishProcessing;
-- (BOOL)initFlowAdaptationWithError:(id *)a3;
-- (BOOL)initOpticalFlowWithQualityPrioritization:(int64_t)a3 revision:(int64_t)a4 error:(id *)a5;
-- (BOOL)processWithFrameRateParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithFrameRateConfig:(id)a3 error:(id *)a4;
-- (FRCProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 revision:(int64_t)a6;
+- (BOOL)initFlowAdaptationWithError:(id *)error;
+- (BOOL)initOpticalFlowWithQualityPrioritization:(int64_t)prioritization revision:(int64_t)revision error:(id *)error;
+- (BOOL)processWithFrameRateParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithFrameRateConfig:(id)config error:(id *)error;
+- (FRCProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow revision:(int64_t)revision;
 - (void)dealloc;
 - (void)releaseInternalBuffers;
 @end
@@ -19,12 +19,12 @@
   [(FRCProcessor *)&v3 dealloc];
 }
 
-- (BOOL)initOpticalFlowWithQualityPrioritization:(int64_t)a3 revision:(int64_t)a4 error:(id *)a5
+- (BOOL)initOpticalFlowWithQualityPrioritization:(int64_t)prioritization revision:(int64_t)revision error:(id *)error
 {
   if (!self->_opticalFlowProcessor)
   {
-    v8 = [[DVPOpticalFlowConfiguration alloc] initWithFrameWidth:self->_frameWidth frameHeight:self->_frameHeight qualityPrioritization:a3 revision:a4];
-    v9 = [[OpticalFlowProcessor alloc] initWithFrameWidth:[(DVPOpticalFlowConfiguration *)v8 frameWidth] FrameHeight:[(DVPOpticalFlowConfiguration *)v8 frameHeight] revision:a4];
+    v8 = [[DVPOpticalFlowConfiguration alloc] initWithFrameWidth:self->_frameWidth frameHeight:self->_frameHeight qualityPrioritization:prioritization revision:revision];
+    v9 = [[OpticalFlowProcessor alloc] initWithFrameWidth:[(DVPOpticalFlowConfiguration *)v8 frameWidth] FrameHeight:[(DVPOpticalFlowConfiguration *)v8 frameHeight] revision:revision];
     opticalFlowProcessor = self->_opticalFlowProcessor;
     self->_opticalFlowProcessor = v9;
 
@@ -32,7 +32,7 @@
     if (v11)
     {
       [(OpticalFlowProcessor *)v11 setFlowOnlyMode:0];
-      if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:v8 error:a5])
+      if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:v8 error:error])
       {
         v12 = 1;
 LABEL_5:
@@ -40,19 +40,19 @@ LABEL_5:
         return v12;
       }
 
-      if (a5)
+      if (error)
       {
         v14 = @"Could not start the session";
         goto LABEL_13;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v14 = @"Could not init OpticalFlowProcessor";
 LABEL_13:
       errorMessage(7, v14);
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_5;
     }
 
@@ -60,26 +60,26 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
 
   errorMessage(4, @"OpticalFlowProcessor already initialized");
-  *a5 = v12 = 0;
+  *error = v12 = 0;
   return v12;
 }
 
-- (BOOL)initFlowAdaptationWithError:(id *)a3
+- (BOOL)initFlowAdaptationWithError:(id *)error
 {
   if (self->_flowAdaptation)
   {
-    if (a3)
+    if (error)
     {
       v5 = errorMessage(4, @"FlowAdaptation already initialized");
       v6 = v5;
       result = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else
@@ -90,26 +90,26 @@ LABEL_13:
 
   else
   {
-    [(FRCProcessor *)&self->_flowAdaptation initFlowAdaptationWithError:a3, self, &v7];
+    [(FRCProcessor *)&self->_flowAdaptation initFlowAdaptationWithError:error, self, &v7];
     return v7;
   }
 
   return result;
 }
 
-- (BOOL)startSessionWithFrameRateConfig:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithFrameRateConfig:(id)config error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  configCopy = config;
+  v7 = configCopy;
   if (self->_synthesis)
   {
-    if (a4)
+    if (error)
     {
       v17 = @"VEFrameSynthesizer already initialized";
       v18 = 4;
 LABEL_26:
       errorMessage(v18, v17);
-      *a4 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_16;
     }
 
@@ -119,9 +119,9 @@ LABEL_26:
   if (!self->_usePrecomputedFlow)
   {
     v8 = self->_adaptationLayerNeeded ? 1 : -1;
-    if (!-[FRCProcessor initOpticalFlowWithQualityPrioritization:revision:error:](self, "initOpticalFlowWithQualityPrioritization:revision:error:", [v6 qualityPrioritization], v8, a4))
+    if (!-[FRCProcessor initOpticalFlowWithQualityPrioritization:revision:error:](self, "initOpticalFlowWithQualityPrioritization:revision:error:", [configCopy qualityPrioritization], v8, error))
     {
-      if (a4)
+      if (error)
       {
         v17 = @"initOpticalFlowWithQualityPrioritization fail";
         goto LABEL_25;
@@ -134,9 +134,9 @@ LABEL_27:
   }
 
   kdebug_trace();
-  if (self->_adaptationLayerNeeded && ![(FRCProcessor *)self initFlowAdaptationWithError:a4])
+  if (self->_adaptationLayerNeeded && ![(FRCProcessor *)self initFlowAdaptationWithError:error])
   {
-    if (a4)
+    if (error)
     {
       v17 = @"initFlowAdaptationWithError fail";
       goto LABEL_25;
@@ -145,8 +145,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v9 = [v7 qualityPrioritization];
-  if (v9 == -1)
+  qualityPrioritization = [v7 qualityPrioritization];
+  if (qualityPrioritization == -1)
   {
     v10 = 1;
   }
@@ -157,7 +157,7 @@ LABEL_27:
   }
 
   v11 = off_278F53318;
-  if (v9 != -1)
+  if (qualityPrioritization != -1)
   {
     v11 = &off_278F53320;
   }
@@ -169,7 +169,7 @@ LABEL_27:
   v14 = self->_synthesis;
   if (!v14)
   {
-    if (a4)
+    if (error)
     {
       v17 = @"Could not init VEFrameSynthesizer";
 LABEL_25:
@@ -188,13 +188,13 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)processWithFrameRateParams:(id)a3 error:(id *)a4
+- (BOOL)processWithFrameRateParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  paramsCopy = params;
+  v7 = paramsCopy;
+  if (!paramsCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -205,7 +205,7 @@ LABEL_16:
 
   if (!self->_synthesis || !self->_usePrecomputedFlow && !self->_opticalFlowProcessor)
   {
-    if (a4)
+    if (error)
     {
       v26 = @"Error: Session Not Started";
       v27 = 3;
@@ -215,13 +215,13 @@ LABEL_16:
     goto LABEL_60;
   }
 
-  v8 = [v6 sourceFrame];
-  PixelFormatType = CVPixelBufferGetPixelFormatType([v8 buffer]);
+  sourceFrame = [paramsCopy sourceFrame];
+  PixelFormatType = CVPixelBufferGetPixelFormatType([sourceFrame buffer]);
   v10 = isPixelFormatSupported(PixelFormatType);
 
   if ((v10 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -230,12 +230,12 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v11 = [v7 sourceFrame];
-  v12 = [(BaseProcessor *)self matchPixelFormat:v11];
+  sourceFrame2 = [v7 sourceFrame];
+  v12 = [(BaseProcessor *)self matchPixelFormat:sourceFrame2];
 
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -244,12 +244,12 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v13 = [v7 sourceFrame];
-  v14 = [(BaseProcessor *)self matchBufferResolution:v13];
+  sourceFrame3 = [v7 sourceFrame];
+  v14 = [(BaseProcessor *)self matchBufferResolution:sourceFrame3];
 
   if (!v14)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -259,12 +259,12 @@ LABEL_16:
   }
 
   kdebug_trace();
-  v15 = [v7 destinationFrames];
-  v16 = [v15 count];
+  destinationFrames = [v7 destinationFrames];
+  v16 = [destinationFrames count];
 
   if (!v16 || ([v7 interpolationPhase], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v16 != v18))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -275,8 +275,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v19 = [v7 submissionMode];
-  v64 = v19 == 2;
+  submissionMode = [v7 submissionMode];
+  v64 = submissionMode == 2;
   if (!self->_usePrecomputedFlow)
   {
     if ([v7 submissionMode] != 3)
@@ -297,13 +297,13 @@ LABEL_18:
 
       v34 = [[DVPFrameOpticalFlow alloc] initWithForwardFlow:forwardFlow backwardFlow:backwardFlow];
       v35 = [DVPOpticalFlowParameters alloc];
-      v36 = [v7 sourceFrame];
-      v37 = [v7 nextFrame];
-      v38 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v35, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", v36, v37, [v7 submissionMode], v34);
+      sourceFrame4 = [v7 sourceFrame];
+      nextFrame = [v7 nextFrame];
+      v38 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v35, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", sourceFrame4, nextFrame, [v7 submissionMode], v34);
 
-      if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:v38 error:a4])
+      if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:v38 error:error])
       {
-        [(FRCProcessor *)a4 processWithFrameRateParams:v38 error:v34];
+        [(FRCProcessor *)error processWithFrameRateParams:v38 error:v34];
         goto LABEL_60;
       }
     }
@@ -315,25 +315,25 @@ LABEL_29:
   }
 
   adaptationLayerNeeded = self->_adaptationLayerNeeded;
-  v21 = [v7 opticalFlow];
-  v22 = [v21 forwardFlow];
+  opticalFlow = [v7 opticalFlow];
+  forwardFlow = [opticalFlow forwardFlow];
   if (adaptationLayerNeeded)
   {
-    self->_sharedForwardFlow = v22;
+    self->_sharedForwardFlow = forwardFlow;
 
-    v23 = [v7 opticalFlow];
-    self->_sharedBackwardFlow = [v23 backwardFlow];
+    opticalFlow2 = [v7 opticalFlow];
+    self->_sharedBackwardFlow = [opticalFlow2 backwardFlow];
 
     width = self->_sharedFlowDimension.width;
     if (width != CVPixelBufferGetWidth(self->_sharedForwardFlow) || (height = self->_sharedFlowDimension.height, height != CVPixelBufferGetHeight(self->_sharedForwardFlow)))
     {
-      if (a4)
+      if (error)
       {
         v26 = @"Error: invalid precomputed optical flow, expect Rev2 flow 2C0h";
         v27 = 8;
 LABEL_19:
         errorMessage(v27, v26);
-        *a4 = v28 = 0;
+        *error = v28 = 0;
         goto LABEL_61;
       }
 
@@ -345,16 +345,16 @@ LABEL_60:
     goto LABEL_29;
   }
 
-  self->_synthesisForwardFlow = v22;
+  self->_synthesisForwardFlow = forwardFlow;
 
-  v31 = [v7 opticalFlow];
-  self->_synthesisBackwardFlow = [v31 backwardFlow];
+  opticalFlow3 = [v7 opticalFlow];
+  self->_synthesisBackwardFlow = [opticalFlow3 backwardFlow];
 
   v32 = self->_synthesisFlowDimension.width;
   if (v32 != CVPixelBufferGetWidth(self->_synthesisForwardFlow) || (v33 = self->_synthesisFlowDimension.height + self->_synthesisFlowDimension.height, v33 != CVPixelBufferGetHeight(self->_synthesisForwardFlow)))
   {
-    v60 = a4;
-    if (!a4)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_60;
     }
@@ -362,7 +362,7 @@ LABEL_60:
     v61 = errorMessage(8, @"Error: invalid precomputed optical flow, expect Rev1 flow L00h");
 LABEL_59:
     v28 = 0;
-    *v60 = v61;
+    *errorCopy2 = v61;
     goto LABEL_61;
   }
 
@@ -372,11 +372,11 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  [(VEOpticalFlowEstimator *)self->_flowAdaptation setStreamingMode:v19 == 2];
-  [(FrameSynthesizerProtocol *)self->_synthesis setStreamingMode:v19 == 2];
+  [(VEOpticalFlowEstimator *)self->_flowAdaptation setStreamingMode:submissionMode == 2];
+  [(FrameSynthesizerProtocol *)self->_synthesis setStreamingMode:submissionMode == 2];
   if (self->_streamingMode != v64)
   {
-    v39 = v19 == 2;
+    v39 = submissionMode == 2;
     [(VEOpticalFlowEstimator *)self->_flowAdaptation setIsFirstFrameInStream:v39];
     [(FrameSynthesizerProtocol *)self->_synthesis setIsFirstFrameInStream:v39];
     self->_streamingMode = v64;
@@ -384,19 +384,19 @@ LABEL_30:
 
   kdebug_trace();
   flowAdaptation = self->_flowAdaptation;
-  v41 = [v7 sourceFrame];
-  v42 = [v41 buffer];
-  v43 = [v7 nextFrame];
-  v44 = -[VEOpticalFlowEstimator flowAdaptationFrom:to:inputForwardFlow:inputBackwardFlow:outputForwardFlow:outputBackwardFlow:](flowAdaptation, "flowAdaptationFrom:to:inputForwardFlow:inputBackwardFlow:outputForwardFlow:outputBackwardFlow:", v42, [v43 buffer], self->_sharedForwardFlow, self->_sharedBackwardFlow, self->_synthesisForwardFlow, self->_synthesisBackwardFlow);
+  sourceFrame5 = [v7 sourceFrame];
+  buffer = [sourceFrame5 buffer];
+  nextFrame2 = [v7 nextFrame];
+  v44 = -[VEOpticalFlowEstimator flowAdaptationFrom:to:inputForwardFlow:inputBackwardFlow:outputForwardFlow:outputBackwardFlow:](flowAdaptation, "flowAdaptationFrom:to:inputForwardFlow:inputBackwardFlow:outputForwardFlow:outputBackwardFlow:", buffer, [nextFrame2 buffer], self->_sharedForwardFlow, self->_sharedBackwardFlow, self->_synthesisForwardFlow, self->_synthesisBackwardFlow);
 
   if (v44)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_60;
     }
 
-    v60 = a4;
+    errorCopy2 = error;
     v62 = veErrorCodeFromOF(v44);
     v61 = _VEError(v62, 0);
     goto LABEL_59;
@@ -408,10 +408,10 @@ LABEL_36:
   {
     kdebug_trace();
     synthesis = self->_synthesis;
-    v46 = [v7 sourceFrame];
-    v47 = [v46 buffer];
-    v48 = [v7 nextFrame];
-    -[FrameSynthesizerProtocol setFirstFrame:secondFrame:forwardFlow:backwardFlow:](synthesis, "setFirstFrame:secondFrame:forwardFlow:backwardFlow:", v47, [v48 buffer], self->_synthesisForwardFlow, self->_synthesisBackwardFlow);
+    sourceFrame6 = [v7 sourceFrame];
+    buffer2 = [sourceFrame6 buffer];
+    nextFrame3 = [v7 nextFrame];
+    -[FrameSynthesizerProtocol setFirstFrame:secondFrame:forwardFlow:backwardFlow:](synthesis, "setFirstFrame:secondFrame:forwardFlow:backwardFlow:", buffer2, [nextFrame3 buffer], self->_synthesisForwardFlow, self->_synthesisBackwardFlow);
 
     kdebug_trace();
   }
@@ -424,15 +424,15 @@ LABEL_36:
     {
       kdebug_trace();
       v51 = self->_synthesis;
-      v52 = [v7 interpolationPhase];
-      v53 = [v52 objectAtIndexedSubscript:v49];
+      interpolationPhase = [v7 interpolationPhase];
+      v53 = [interpolationPhase objectAtIndexedSubscript:v49];
       [v53 floatValue];
       v55 = v54;
-      v56 = [v7 destinationFrames];
-      v57 = [v56 objectAtIndexedSubscript:v49];
-      v58 = [v57 buffer];
+      destinationFrames2 = [v7 destinationFrames];
+      v57 = [destinationFrames2 objectAtIndexedSubscript:v49];
+      buffer3 = [v57 buffer];
       LODWORD(v59) = v55;
-      [(FrameSynthesizerProtocol *)v51 synthesizeFrameForTimeScale:v58 destination:v59];
+      [(FrameSynthesizerProtocol *)v51 synthesizeFrameForTimeScale:buffer3 destination:v59];
 
       kdebug_trace();
       ++v49;
@@ -502,7 +502,7 @@ LABEL_61:
   return 1;
 }
 
-- (FRCProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5 revision:(int64_t)a6
+- (FRCProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow revision:(int64_t)revision
 {
   v45.receiver = self;
   v45.super_class = FRCProcessor;
@@ -513,9 +513,9 @@ LABEL_61:
     goto LABEL_19;
   }
 
-  v10->_frameWidth = a3;
-  v10->_frameHeight = a4;
-  v10->_usePrecomputedFlow = a5;
+  v10->_frameWidth = width;
+  v10->_frameHeight = height;
+  v10->_usePrecomputedFlow = flow;
   opticalFlowProcessor = v10->_opticalFlowProcessor;
   v10->_opticalFlowProcessor = 0;
 
@@ -527,7 +527,7 @@ LABEL_61:
 
   v11->_streamingMode = 0;
   VELoggerInit(16, 0);
-  v11->_adaptationLayerNeeded = a6 != -1;
+  v11->_adaptationLayerNeeded = revision != -1;
   UsageFromSize = getUsageFromSize(v11->_frameWidth, v11->_frameHeight);
   v11->_flowUsage = UsageFromSize;
   if (UsageFromSize == -1)

@@ -1,8 +1,8 @@
 @interface _UIKeyboardWindowScene
-- (_UIKeyboardWindowScene)initWithScreen:(id)a3 session:(id)a4 lookupKey:(id)a5;
-- (id)_fixupInheritedSettings:(id)a3;
+- (_UIKeyboardWindowScene)initWithScreen:(id)screen session:(id)session lookupKey:(id)key;
+- (id)_fixupInheritedSettings:(id)settings;
 - (id)_homeAffordanceSceneNotifier;
-- (void)_setSettingsScene:(id)a3;
+- (void)_setSettingsScene:(id)scene;
 @end
 
 @implementation _UIKeyboardWindowScene
@@ -15,34 +15,34 @@
   }
 
   v3 = _UIApplicationSupportsHomeAffordanceObservation();
-  v4 = 0;
+  _existingHomeAffordanceSceneNotifier = 0;
   if (self && v3)
   {
     if (![(UIScene *)self _hostsWindows]|| [(UIScene *)self _hasInvalidated])
     {
 LABEL_6:
-      v4 = 0;
+      _existingHomeAffordanceSceneNotifier = 0;
       goto LABEL_7;
     }
 
-    v4 = [(UIScene *)self _existingHomeAffordanceSceneNotifier];
-    if (!v4)
+    _existingHomeAffordanceSceneNotifier = [(UIScene *)self _existingHomeAffordanceSceneNotifier];
+    if (!_existingHomeAffordanceSceneNotifier)
     {
-      v4 = [[_UIHomeAffordanceSceneNotifierProxy alloc] initWithScene:self];
-      [(UIWindowScene *)self _registerSceneComponent:v4 forKey:@"_UIHomeAffordanceSceneNotifierComponentKey"];
+      _existingHomeAffordanceSceneNotifier = [[_UIHomeAffordanceSceneNotifierProxy alloc] initWithScene:self];
+      [(UIWindowScene *)self _registerSceneComponent:_existingHomeAffordanceSceneNotifier forKey:@"_UIHomeAffordanceSceneNotifierComponentKey"];
     }
   }
 
 LABEL_7:
 
-  return v4;
+  return _existingHomeAffordanceSceneNotifier;
 }
 
-- (_UIKeyboardWindowScene)initWithScreen:(id)a3 session:(id)a4 lookupKey:(id)a5
+- (_UIKeyboardWindowScene)initWithScreen:(id)screen session:(id)session lookupKey:(id)key
 {
   v9.receiver = self;
   v9.super_class = _UIKeyboardWindowScene;
-  v5 = [(_UIScreenBasedWindowScene *)&v9 initWithScreen:a3 session:a4 lookupKey:a5];
+  v5 = [(_UIScreenBasedWindowScene *)&v9 initWithScreen:screen session:session lookupKey:key];
   if (v5)
   {
     v6 = [(_UIFocusSystemSceneComponent *)[_UIFocusSystemKeyboardSceneComponent alloc] initWithScene:v5];
@@ -54,42 +54,42 @@ LABEL_7:
   return v5;
 }
 
-- (void)_setSettingsScene:(id)a3
+- (void)_setSettingsScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   if ([(UIScene *)self _hasSettingsScene])
   {
-    v6 = [(UIScene *)self _settingsScene];
+    _settingsScene = [(UIScene *)self _settingsScene];
   }
 
   else
   {
-    v6 = 0;
+    _settingsScene = 0;
   }
 
   v13.receiver = self;
   v13.super_class = _UIKeyboardWindowScene;
-  [(UIScene *)&v13 _setSettingsScene:v5];
+  [(UIScene *)&v13 _setSettingsScene:sceneCopy];
   if ([(UIScene *)self _hasSettingsScene])
   {
-    v7 = [(UIScene *)self _settingsScene];
+    _settingsScene2 = [(UIScene *)self _settingsScene];
   }
 
   else
   {
-    v7 = 0;
+    _settingsScene2 = 0;
   }
 
   if (_UIDeviceSupportsGlobalEdgeSwipeTouches() && _UIApplicationSupportsHomeAffordanceObservation())
   {
-    v8 = v6;
-    v9 = v7;
-    v10 = v9;
-    if (v8 != v9)
+    _homeAffordanceSceneNotifier = _settingsScene;
+    v9 = _settingsScene2;
+    currentHandler = v9;
+    if (_homeAffordanceSceneNotifier != v9)
     {
-      if (v8 && v9)
+      if (_homeAffordanceSceneNotifier && v9)
       {
-        v11 = [v8 isEqual:v9];
+        v11 = [_homeAffordanceSceneNotifier isEqual:v9];
 
         if (v11)
         {
@@ -101,28 +101,28 @@ LABEL_7:
       {
       }
 
-      v8 = [(_UIKeyboardWindowScene *)self _homeAffordanceSceneNotifier];
+      _homeAffordanceSceneNotifier = [(_UIKeyboardWindowScene *)self _homeAffordanceSceneNotifier];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v8;
-        if (!v8)
+        _homeAffordanceSceneNotifier = _homeAffordanceSceneNotifier;
+        if (!_homeAffordanceSceneNotifier)
         {
 LABEL_19:
 
           goto LABEL_20;
         }
 
-        v12 = [v10 _homeAffordanceSceneNotifier];
-        [(_UIHomeAffordanceSceneNotifierProxy *)v8 setTargetHomeAffordanceNotifier:v12];
+        _homeAffordanceSceneNotifier2 = [currentHandler _homeAffordanceSceneNotifier];
+        [(_UIHomeAffordanceSceneNotifierProxy *)_homeAffordanceSceneNotifier setTargetHomeAffordanceNotifier:_homeAffordanceSceneNotifier2];
 
-        v10 = v8;
+        currentHandler = _homeAffordanceSceneNotifier;
       }
 
       else
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"_UIScreenBasedWindowScene.m" lineNumber:573 description:{@"Invalid home affordance notifier class for scene: %@; notifier: %@", self, v8}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScreenBasedWindowScene.m" lineNumber:573 description:{@"Invalid home affordance notifier class for scene: %@; notifier: %@", self, _homeAffordanceSceneNotifier}];
       }
     }
 
@@ -132,33 +132,33 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)_fixupInheritedSettings:(id)a3
+- (id)_fixupInheritedSettings:(id)settings
 {
-  v4 = [(_UIScreenBasedWindowScene *)self screen];
-  [v4 _referenceBounds];
+  screen = [(_UIScreenBasedWindowScene *)self screen];
+  [screen _referenceBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  [a3 frame];
+  [settings frame];
   v18.origin.x = v6;
   v18.origin.y = v8;
   v18.size.width = v10;
   v18.size.height = v12;
   if (CGRectEqualToRect(v17, v18))
   {
-    v13 = a3;
+    settingsCopy = settings;
   }
 
   else
   {
-    v14 = [a3 mutableCopy];
+    v14 = [settings mutableCopy];
     [v14 setFrame:{v6, v8, v10, v12}];
-    v13 = [v14 copy];
+    settingsCopy = [v14 copy];
   }
 
-  return v13;
+  return settingsCopy;
 }
 
 @end

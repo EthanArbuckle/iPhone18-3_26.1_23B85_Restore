@@ -1,26 +1,26 @@
 @interface PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3;
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5;
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance;
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type;
 @end
 
 @implementation PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator
 
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance
 {
-  v4 = a3;
+  disappearanceCopy = disappearance;
   if ([(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self shouldSlideAccessory])
   {
-    v5 = [v4 tileKind];
-    v6 = [v5 isEqualToString:PUTileKindAccessory];
+    tileKind = [disappearanceCopy tileKind];
+    v6 = [tileKind isEqualToString:PUTileKindAccessory];
 
     if (v6)
     {
-      v7 = v4;
-      v8 = [(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self viewModel];
-      v9 = [v8 assetsDataSource];
-      v10 = [v7 dataSourceIdentifier];
-      v11 = [v9 identifier];
-      v12 = [v10 isEqualToString:v11];
+      viewModel2 = disappearanceCopy;
+      viewModel = [(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self viewModel];
+      assetsDataSource = [viewModel assetsDataSource];
+      dataSourceIdentifier = [viewModel2 dataSourceIdentifier];
+      identifier = [assetsDataSource identifier];
+      v12 = [dataSourceIdentifier isEqualToString:identifier];
 
       if (!v12)
       {
@@ -28,26 +28,26 @@
         goto LABEL_20;
       }
 
-      v13 = [v7 indexPath];
-      v14 = [v9 assetReferenceAtIndexPath:v13];
+      indexPath = [viewModel2 indexPath];
+      coordinateSystem = [assetsDataSource assetReferenceAtIndexPath:indexPath];
 
-      v15 = [v8 assetViewModelForAssetReference:v14];
+      v15 = [viewModel assetViewModelForAssetReference:coordinateSystem];
       [v15 contentOffset];
       v17 = v16;
 
-      [v7 untransformedContentFrame];
+      [viewModel2 untransformedContentFrame];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      [v7 size];
+      [viewModel2 size];
       v27 = v26;
       v72.origin.x = v19;
       v72.origin.y = v21;
       v72.size.width = v23;
       v72.size.height = v25;
       v28 = v27 - (v17 + CGRectGetMaxY(v72));
-      [v7 minimumVisibleHeight];
+      [viewModel2 minimumVisibleHeight];
       if (v28 >= v29)
       {
         v30 = v28;
@@ -58,15 +58,15 @@
         v30 = v29;
       }
 
-      [v7 center];
+      [viewModel2 center];
       v32 = v31;
       v34 = v33 + v30;
-      [v7 size];
+      [viewModel2 size];
       v36 = v35;
       v38 = v37;
-      if (v7)
+      if (viewModel2)
       {
-        [v7 transform];
+        [viewModel2 transform];
       }
 
       else
@@ -76,7 +76,7 @@
         v68 = 0u;
       }
 
-      v60 = [v7 layoutInfoWithCenter:&v68 size:v32 alpha:v34 transform:{v36, v38, 0.0}];
+      v60 = [viewModel2 layoutInfoWithCenter:&v68 size:v32 alpha:v34 transform:{v36, v38, 0.0}];
 LABEL_19:
       v61 = v60;
 
@@ -92,37 +92,37 @@ LABEL_20:
 
   if ([(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self shouldSlideAccessory])
   {
-    v39 = [v4 tileKind];
-    v40 = [v39 isEqualToString:PUTileKindPeople];
+    tileKind2 = [disappearanceCopy tileKind];
+    v40 = [tileKind2 isEqualToString:PUTileKindPeople];
 
     if (v40)
     {
-      v7 = [(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self viewModel];
-      v8 = [v7 assetsDataSource];
-      v41 = [v4 dataSourceIdentifier];
-      v42 = [v8 identifier];
-      v43 = [v41 isEqualToString:v42];
+      viewModel2 = [(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self viewModel];
+      viewModel = [viewModel2 assetsDataSource];
+      dataSourceIdentifier2 = [disappearanceCopy dataSourceIdentifier];
+      identifier2 = [viewModel identifier];
+      v43 = [dataSourceIdentifier2 isEqualToString:identifier2];
 
       if (v43)
       {
-        v44 = [v4 indexPath];
-        v9 = [v8 assetReferenceAtIndexPath:v44];
+        indexPath2 = [disappearanceCopy indexPath];
+        assetsDataSource = [viewModel assetReferenceAtIndexPath:indexPath2];
 
-        v45 = [v7 assetViewModelForAssetReference:v9];
+        v45 = [viewModel2 assetViewModelForAssetReference:assetsDataSource];
         [v45 contentOffset];
         v47 = v46;
 
-        [v4 size];
+        [disappearanceCopy size];
         v49 = v48 - v47;
-        [v4 center];
+        [disappearanceCopy center];
         v51 = v50;
         v69 = 0u;
         v70 = 0u;
         v53 = v52 + v49;
         v68 = 0u;
-        if (v4)
+        if (disappearanceCopy)
         {
-          [v4 transform];
+          [disappearanceCopy transform];
         }
 
         v64[0] = v68;
@@ -132,16 +132,16 @@ LABEL_20:
         v68 = v65;
         v69 = v66;
         v70 = v67;
-        [v4 size];
+        [disappearanceCopy size];
         v55 = v54;
         v57 = v56;
-        [v4 zPosition];
+        [disappearanceCopy zPosition];
         v59 = v58;
-        v14 = [v4 coordinateSystem];
+        coordinateSystem = [disappearanceCopy coordinateSystem];
         v65 = v68;
         v66 = v69;
         v67 = v70;
-        v60 = [v4 layoutInfoWithCenter:&v65 size:v14 alpha:v51 transform:v53 zPosition:v55 coordinateSystem:{v57, 0.0, v59}];
+        v60 = [disappearanceCopy layoutInfoWithCenter:&v65 size:coordinateSystem alpha:v51 transform:v53 zPosition:v55 coordinateSystem:{v57, 0.0, v59}];
         goto LABEL_19;
       }
     }
@@ -150,15 +150,15 @@ LABEL_20:
 LABEL_21:
   v63.receiver = self;
   v63.super_class = PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator;
-  v61 = [(PUDefaultTileTransitionCoordinator *)&v63 _layoutInfoWithDefaultDisappearance:v4];
+  v61 = [(PUDefaultTileTransitionCoordinator *)&v63 _layoutInfoWithDefaultDisappearance:disappearanceCopy];
 LABEL_22:
 
   return v61;
 }
 
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type
 {
-  v6 = a4;
+  infoCopy = info;
   if ([(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self shouldAnimateContent])
   {
     goto LABEL_2;
@@ -166,19 +166,19 @@ LABEL_22:
 
   if ([(PUDefaultAccessoryViewVisibilityChangeTileTransitionCoordinator *)self shouldAnimateAccessory])
   {
-    v8 = [v6 tileKind];
-    if ([v8 isEqualToString:PUTileKindAccessory])
+    tileKind = [infoCopy tileKind];
+    if ([tileKind isEqualToString:PUTileKindAccessory])
     {
 
 LABEL_2:
-      v7 = [(PUTileTransitionCoordinator *)self newTileAnimationOptions];
-      [v7 setKind:1001];
-      [v7 setHighFrameRateReason:2228225];
+      newTileAnimationOptions = [(PUTileTransitionCoordinator *)self newTileAnimationOptions];
+      [newTileAnimationOptions setKind:1001];
+      [newTileAnimationOptions setHighFrameRateReason:2228225];
       goto LABEL_8;
     }
 
-    v9 = [v6 tileKind];
-    v10 = [v9 isEqualToString:PUTileKindPeople];
+    tileKind2 = [infoCopy tileKind];
+    v10 = [tileKind2 isEqualToString:PUTileKindPeople];
 
     if (v10)
     {
@@ -186,10 +186,10 @@ LABEL_2:
     }
   }
 
-  v7 = 0;
+  newTileAnimationOptions = 0;
 LABEL_8:
 
-  return v7;
+  return newTileAnimationOptions;
 }
 
 @end

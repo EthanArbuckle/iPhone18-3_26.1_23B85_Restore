@@ -1,9 +1,9 @@
 @interface Library.PinsCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithCoder:(id)a3;
-- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)dragStateDidChange:(int64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithCoder:(id)coder;
+- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)dragStateDidChange:(int64_t)change;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation Library.PinsCollectionViewCell
@@ -15,46 +15,46 @@
   return [(Library.PinsCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   ObjectType = swift_getObjectType();
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v6 = self;
-  if ([(Library.PinsCollectionViewCell *)&v11 isHighlighted]!= v3)
+  selfCopy = self;
+  if ([(Library.PinsCollectionViewCell *)&v11 isHighlighted]!= highlightedCopy)
   {
-    v7 = [(Library.PinsCollectionViewCell *)v6 contentView];
-    v8 = v7;
+    contentView = [(Library.PinsCollectionViewCell *)selfCopy contentView];
+    v8 = contentView;
     v9 = 0.35;
-    if (!v3)
+    if (!highlightedCopy)
     {
       v9 = 1.0;
     }
 
-    [v7 setAlpha:v9];
+    [contentView setAlpha:v9];
   }
 
-  v10.receiver = v6;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  [(Library.PinsCollectionViewCell *)&v10 setHighlighted:v3];
+  [(Library.PinsCollectionViewCell *)&v10 setHighlighted:highlightedCopy];
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(Library.PinsCollectionViewCell *)&v5 dragStateDidChange:a3];
+  [(Library.PinsCollectionViewCell *)&v5 dragStateDidChange:change];
   [v4 setNeedsUpdateConfiguration];
 }
 
-- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell_shouldAnimateJiggle) = 0;
   v10.receiver = self;
@@ -62,14 +62,14 @@
   return [(Library.PinsCollectionViewCell *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithCoder:(id)a3
+- (_TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCE5MusicO9MusicCore7Library22PinsCollectionViewCell_shouldAnimateJiggle) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(Library.PinsCollectionViewCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(Library.PinsCollectionViewCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

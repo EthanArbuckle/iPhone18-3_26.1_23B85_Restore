@@ -1,12 +1,12 @@
 @interface IMScheduledUpdater
 - (BOOL)isHoldingUpdates;
-- (BOOL)isHoldingUpdatesForKey:(id)a3;
-- (IMScheduledUpdater)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)isHoldingUpdatesForKey:(id)key;
+- (IMScheduledUpdater)initWithTarget:(id)target action:(SEL)action;
 - (id)description;
-- (void)beginHoldingUpdatesForKey:(id)a3;
+- (void)beginHoldingUpdatesForKey:(id)key;
 - (void)dealloc;
 - (void)endHoldingUpdatesForAllKeys;
-- (void)endHoldingUpdatesForKey:(id)a3;
+- (void)endHoldingUpdatesForKey:(id)key;
 - (void)invalidate;
 - (void)setNeedsUpdate;
 - (void)updateIfNeeded;
@@ -67,17 +67,17 @@
   return v9;
 }
 
-- (IMScheduledUpdater)initWithTarget:(id)a3 action:(SEL)a4
+- (IMScheduledUpdater)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = IMScheduledUpdater;
   v7 = [(IMScheduledUpdater *)&v14 init];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_setTarget_(v7, v8, v6);
-    objc_msgSend_setAction_(v9, v10, a4);
+    objc_msgSend_setTarget_(v7, v8, targetCopy);
+    objc_msgSend_setAction_(v9, v10, action);
     v11 = objc_alloc_init(MEMORY[0x1E696AB50]);
     objc_msgSend_setHoldingUpdatesKeys_(v9, v12, v11);
   }
@@ -85,18 +85,18 @@
   return v9;
 }
 
-- (void)beginHoldingUpdatesForKey:(id)a3
+- (void)beginHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8 = objc_msgSend_holdingUpdatesKeys(self, v5, v6);
-  objc_msgSend_addObject_(v8, v7, v4);
+  objc_msgSend_addObject_(v8, v7, keyCopy);
 }
 
-- (void)endHoldingUpdatesForKey:(id)a3
+- (void)endHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_holdingUpdatesKeys(self, v5, v6);
-  objc_msgSend_removeObject_(v7, v8, v4);
+  objc_msgSend_removeObject_(v7, v8, keyCopy);
 
   if ((objc_msgSend_isHoldingUpdates(self, v9, v10) & 1) == 0 && objc_msgSend_needsUpdate(self, v11, v12))
   {
@@ -119,16 +119,16 @@
   }
 }
 
-- (BOOL)isHoldingUpdatesForKey:(id)a3
+- (BOOL)isHoldingUpdatesForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_holdingUpdatesKeys(self, v5, v6);
-  v9 = objc_msgSend_countForObject_(v7, v8, v4);
+  v9 = objc_msgSend_countForObject_(v7, v8, keyCopy);
 
   v10 = v9 != 0;
   return v10;

@@ -1,81 +1,81 @@
 @interface RFSummaryItemPlayerCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFSummaryItemPlayerCardSection)initWithCoder:(id)a3;
-- (RFSummaryItemPlayerCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFSummaryItemPlayerCardSection)initWithCoder:(id)coder;
+- (RFSummaryItemPlayerCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFSummaryItemPlayerCardSection
 
-- (RFSummaryItemPlayerCardSection)initWithProtobuf:(id)a3
+- (RFSummaryItemPlayerCardSection)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v32.receiver = self;
   v32.super_class = RFSummaryItemPlayerCardSection;
   v5 = [(SFCardSection *)&v32 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [protobufCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [RFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(RFTextProperty *)v7 initWithProtobuf:v8];
+      text2 = [protobufCopy text];
+      v9 = [(RFTextProperty *)v7 initWithProtobuf:text2];
       [(RFSummaryItemPlayerCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [protobufCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [RFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(RFTextProperty *)v11 initWithProtobuf:v12];
+      text4 = [protobufCopy text];
+      v13 = [(RFTextProperty *)v11 initWithProtobuf:text4];
       [(RFSummaryItemPlayerCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 text];
+    text5 = [protobufCopy text];
 
-    if (v14)
+    if (text5)
     {
       v15 = [RFTextProperty alloc];
-      v16 = [v4 text];
-      v17 = [(RFTextProperty *)v15 initWithProtobuf:v16];
+      text6 = [protobufCopy text];
+      v17 = [(RFTextProperty *)v15 initWithProtobuf:text6];
       [(RFSummaryItemPlayerCardSection *)v5 setText_3:v17];
     }
 
-    v18 = [v4 text];
+    text7 = [protobufCopy text];
 
-    if (v18)
+    if (text7)
     {
       v19 = [RFTextProperty alloc];
-      v20 = [v4 text];
-      v21 = [(RFTextProperty *)v19 initWithProtobuf:v20];
+      text8 = [protobufCopy text];
+      v21 = [(RFTextProperty *)v19 initWithProtobuf:text8];
       [(RFSummaryItemPlayerCardSection *)v5 setText_4:v21];
     }
 
-    v22 = [v4 thumbnail];
+    thumbnail = [protobufCopy thumbnail];
 
-    if (v22)
+    if (thumbnail)
     {
       v23 = [RFVisualProperty alloc];
-      v24 = [v4 thumbnail];
-      v25 = [(RFVisualProperty *)v23 initWithProtobuf:v24];
+      thumbnail2 = [protobufCopy thumbnail];
+      v25 = [(RFVisualProperty *)v23 initWithProtobuf:thumbnail2];
       [(RFSummaryItemPlayerCardSection *)v5 setThumbnail:v25];
     }
 
-    v26 = [v4 player];
+    player = [protobufCopy player];
 
-    if (v26)
+    if (player)
     {
       v27 = [SFButtonItem alloc];
-      v28 = [v4 player];
-      v29 = [(SFButtonItem *)v27 initWithProtobuf:v28];
+      player2 = [protobufCopy player];
+      v29 = [(SFButtonItem *)v27 initWithProtobuf:player2];
       [(RFSummaryItemPlayerCardSection *)v5 setPlayer:v29];
     }
 
@@ -90,42 +90,42 @@
   v17.receiver = self;
   v17.super_class = RFSummaryItemPlayerCardSection;
   v3 = [(SFCardSection *)&v17 hash];
-  v4 = [(RFSummaryItemPlayerCardSection *)self text];
-  v5 = [v4 hash];
-  v6 = [(RFSummaryItemPlayerCardSection *)self text];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(RFSummaryItemPlayerCardSection *)self text];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(RFSummaryItemPlayerCardSection *)self text];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(RFSummaryItemPlayerCardSection *)self thumbnail];
-  v13 = v11 ^ [v12 hash] ^ v3;
-  v14 = [(RFSummaryItemPlayerCardSection *)self player];
-  v15 = [v14 hash];
+  text = [(RFSummaryItemPlayerCardSection *)self text];
+  v5 = [text hash];
+  text2 = [(RFSummaryItemPlayerCardSection *)self text];
+  v7 = v5 ^ [text2 hash];
+  text3 = [(RFSummaryItemPlayerCardSection *)self text];
+  v9 = v7 ^ [text3 hash];
+  text4 = [(RFSummaryItemPlayerCardSection *)self text];
+  v11 = v9 ^ [text4 hash];
+  thumbnail = [(RFSummaryItemPlayerCardSection *)self thumbnail];
+  v13 = v11 ^ [thumbnail hash] ^ v3;
+  player = [(RFSummaryItemPlayerCardSection *)self player];
+  v15 = [player hash];
 
   return v13 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFSummaryItemPlayerCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFSummaryItemPlayerCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v58.receiver = self;
       v58.super_class = RFSummaryItemPlayerCardSection;
-      if ([(SFCardSection *)&v58 isEqual:v5])
+      if ([(SFCardSection *)&v58 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(RFSummaryItemPlayerCardSection *)self text];
-        v8 = [(RFSummaryItemPlayerCardSection *)v6 text];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        text = [(RFSummaryItemPlayerCardSection *)self text];
+        text2 = [(RFSummaryItemPlayerCardSection *)v6 text];
+        if ((text != 0) == (text2 == 0))
         {
           v11 = 0;
 LABEL_37:
@@ -133,33 +133,33 @@ LABEL_37:
           goto LABEL_38;
         }
 
-        v9 = [(RFSummaryItemPlayerCardSection *)self text];
-        if (v9)
+        text3 = [(RFSummaryItemPlayerCardSection *)self text];
+        if (text3)
         {
-          v10 = [(RFSummaryItemPlayerCardSection *)self text];
-          v57 = [(RFSummaryItemPlayerCardSection *)v6 text];
-          if (![v10 isEqual:?])
+          text4 = [(RFSummaryItemPlayerCardSection *)self text];
+          text5 = [(RFSummaryItemPlayerCardSection *)v6 text];
+          if (![text4 isEqual:?])
           {
             v11 = 0;
             goto LABEL_35;
           }
 
-          v54 = v10;
+          v54 = text4;
         }
 
-        v56 = [(RFSummaryItemPlayerCardSection *)self text];
-        v55 = [(RFSummaryItemPlayerCardSection *)v6 text];
-        if ((v56 != 0) == (v55 == 0))
+        text6 = [(RFSummaryItemPlayerCardSection *)self text];
+        text7 = [(RFSummaryItemPlayerCardSection *)v6 text];
+        if ((text6 != 0) == (text7 == 0))
         {
           goto LABEL_33;
         }
 
-        v12 = [(RFSummaryItemPlayerCardSection *)self text];
-        if (v12)
+        text8 = [(RFSummaryItemPlayerCardSection *)self text];
+        if (text8)
         {
-          v13 = [(RFSummaryItemPlayerCardSection *)self text];
-          v3 = [(RFSummaryItemPlayerCardSection *)v6 text];
-          if (([v13 isEqual:v3] & 1) == 0)
+          text9 = [(RFSummaryItemPlayerCardSection *)self text];
+          text10 = [(RFSummaryItemPlayerCardSection *)v6 text];
+          if (([text9 isEqual:text10] & 1) == 0)
           {
 
 LABEL_32:
@@ -169,38 +169,38 @@ LABEL_33:
             goto LABEL_34;
           }
 
-          v51 = v13;
-          v53 = v8;
-          v14 = v57;
-          v15 = v12;
+          v51 = text9;
+          v53 = text2;
+          v14 = text5;
+          v15 = text8;
         }
 
         else
         {
-          v53 = v8;
-          v14 = v57;
+          v53 = text2;
+          v14 = text5;
           v15 = 0;
         }
 
-        v52 = v3;
-        v57 = v14;
-        v16 = [(RFSummaryItemPlayerCardSection *)self text];
-        v17 = [(RFSummaryItemPlayerCardSection *)v6 text];
-        v12 = v15;
-        v8 = v53;
-        if ((v16 != 0) != (v17 == 0))
+        v52 = text10;
+        text5 = v14;
+        text11 = [(RFSummaryItemPlayerCardSection *)self text];
+        text12 = [(RFSummaryItemPlayerCardSection *)v6 text];
+        text8 = v15;
+        text2 = v53;
+        if ((text11 != 0) != (text12 == 0))
         {
-          v50 = v17;
-          v49 = [(RFSummaryItemPlayerCardSection *)self text];
-          if (v49)
+          v50 = text12;
+          text13 = [(RFSummaryItemPlayerCardSection *)self text];
+          if (text13)
           {
-            v18 = [(RFSummaryItemPlayerCardSection *)self text];
-            v46 = [(RFSummaryItemPlayerCardSection *)v6 text];
-            v47 = v18;
-            if (![v18 isEqual:?])
+            text14 = [(RFSummaryItemPlayerCardSection *)self text];
+            text15 = [(RFSummaryItemPlayerCardSection *)v6 text];
+            v47 = text14;
+            if (![text14 isEqual:?])
             {
               v11 = 0;
-              v24 = v49;
+              v24 = text13;
               goto LABEL_57;
             }
 
@@ -212,38 +212,38 @@ LABEL_33:
             v48 = v15;
           }
 
-          v19 = [(RFSummaryItemPlayerCardSection *)self text];
-          v20 = [(RFSummaryItemPlayerCardSection *)v6 text];
-          if ((v19 != 0) != (v20 == 0))
+          text16 = [(RFSummaryItemPlayerCardSection *)self text];
+          text17 = [(RFSummaryItemPlayerCardSection *)v6 text];
+          if ((text16 != 0) != (text17 == 0))
           {
-            v45 = v20;
+            v45 = text17;
             [(RFSummaryItemPlayerCardSection *)self text];
-            v12 = v48;
-            v44 = v43 = v19;
+            text8 = v48;
+            v44 = v43 = text16;
             if (v44)
             {
-              v21 = [(RFSummaryItemPlayerCardSection *)self text];
-              v41 = [(RFSummaryItemPlayerCardSection *)v6 text];
-              v42 = v21;
-              if (![v21 isEqual:?])
+              text18 = [(RFSummaryItemPlayerCardSection *)self text];
+              text19 = [(RFSummaryItemPlayerCardSection *)v6 text];
+              v42 = text18;
+              if (![text18 isEqual:?])
               {
                 v11 = 0;
                 v22 = v44;
 LABEL_55:
 
 LABEL_56:
-                v24 = v49;
-                if (!v49)
+                v24 = text13;
+                if (!text13)
                 {
 LABEL_58:
 
-                  if (v12)
+                  if (text8)
                   {
                   }
 
 LABEL_34:
-                  v10 = v54;
-                  if (!v9)
+                  text4 = v54;
+                  if (!text3)
                   {
 LABEL_36:
 
@@ -261,20 +261,20 @@ LABEL_57:
               }
             }
 
-            v25 = [(RFSummaryItemPlayerCardSection *)self thumbnail];
-            v26 = [(RFSummaryItemPlayerCardSection *)v6 thumbnail];
-            if ((v25 != 0) == (v26 == 0))
+            thumbnail = [(RFSummaryItemPlayerCardSection *)self thumbnail];
+            thumbnail2 = [(RFSummaryItemPlayerCardSection *)v6 thumbnail];
+            if ((thumbnail != 0) == (thumbnail2 == 0))
             {
 
               v11 = 0;
-              v12 = v48;
+              text8 = v48;
               goto LABEL_54;
             }
 
-            v39 = v25;
-            v40 = v26;
+            v39 = thumbnail;
+            v40 = thumbnail2;
             [(RFSummaryItemPlayerCardSection *)self thumbnail];
-            v38 = v12 = v48;
+            v38 = text8 = v48;
             if (v38 && (-[RFSummaryItemPlayerCardSection thumbnail](self, "thumbnail"), v27 = objc_claimAutoreleasedReturnValue(), -[RFSummaryItemPlayerCardSection thumbnail](v6, "thumbnail"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v27, ![v27 isEqual:?]))
             {
               v11 = 0;
@@ -283,26 +283,26 @@ LABEL_57:
 
             else
             {
-              v28 = [(RFSummaryItemPlayerCardSection *)self player];
-              v29 = [(RFSummaryItemPlayerCardSection *)v6 player];
-              if ((v28 != 0) == (v29 == 0))
+              player = [(RFSummaryItemPlayerCardSection *)self player];
+              player2 = [(RFSummaryItemPlayerCardSection *)v6 player];
+              if ((player != 0) == (player2 == 0))
               {
 
                 v11 = 0;
-                v12 = v48;
+                text8 = v48;
               }
 
               else
               {
-                v35 = v29;
-                v30 = [(RFSummaryItemPlayerCardSection *)self player];
-                v12 = v48;
-                if (v30)
+                v35 = player2;
+                player3 = [(RFSummaryItemPlayerCardSection *)self player];
+                text8 = v48;
+                if (player3)
                 {
-                  v34 = v30;
-                  v33 = [(RFSummaryItemPlayerCardSection *)self player];
-                  v31 = [(RFSummaryItemPlayerCardSection *)v6 player];
-                  v11 = [v33 isEqual:?];
+                  v34 = player3;
+                  player4 = [(RFSummaryItemPlayerCardSection *)self player];
+                  player5 = [(RFSummaryItemPlayerCardSection *)v6 player];
+                  v11 = [player4 isEqual:?];
                 }
 
                 else
@@ -330,15 +330,15 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          v12 = v48;
-          if (v49)
+          text8 = v48;
+          if (text13)
           {
           }
 
-          v17 = v50;
+          text12 = v50;
         }
 
-        if (v12)
+        if (text8)
         {
         }
 
@@ -354,33 +354,33 @@ LABEL_38:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = RFSummaryItemPlayerCardSection;
-  v4 = [(SFCardSection *)&v18 copyWithZone:a3];
-  v5 = [(RFSummaryItemPlayerCardSection *)self text];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v18 copyWithZone:zone];
+  text = [(RFSummaryItemPlayerCardSection *)self text];
+  v6 = [text copy];
   [v4 setText_1:v6];
 
-  v7 = [(RFSummaryItemPlayerCardSection *)self text];
-  v8 = [v7 copy];
+  text2 = [(RFSummaryItemPlayerCardSection *)self text];
+  v8 = [text2 copy];
   [v4 setText_2:v8];
 
-  v9 = [(RFSummaryItemPlayerCardSection *)self text];
-  v10 = [v9 copy];
+  text3 = [(RFSummaryItemPlayerCardSection *)self text];
+  v10 = [text3 copy];
   [v4 setText_3:v10];
 
-  v11 = [(RFSummaryItemPlayerCardSection *)self text];
-  v12 = [v11 copy];
+  text4 = [(RFSummaryItemPlayerCardSection *)self text];
+  v12 = [text4 copy];
   [v4 setText_4:v12];
 
-  v13 = [(RFSummaryItemPlayerCardSection *)self thumbnail];
-  v14 = [v13 copy];
+  thumbnail = [(RFSummaryItemPlayerCardSection *)self thumbnail];
+  v14 = [thumbnail copy];
   [v4 setThumbnail:v14];
 
-  v15 = [(RFSummaryItemPlayerCardSection *)self player];
-  v16 = [v15 copy];
+  player = [(RFSummaryItemPlayerCardSection *)self player];
+  v16 = [player copy];
   [v4 setPlayer:v16];
 
   return v4;
@@ -389,138 +389,138 @@ LABEL_38:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFSummaryItemPlayerCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSummaryItemPlayerCardSection *)v2 jsonData];
+  jsonData = [(_SFPBRFSummaryItemPlayerCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFSummaryItemPlayerCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSummaryItemPlayerCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFSummaryItemPlayerCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = RFSummaryItemPlayerCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (RFSummaryItemPlayerCardSection)initWithCoder:(id)a3
+- (RFSummaryItemPlayerCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 text];
-    [(RFSummaryItemPlayerCardSection *)v5 setText_1:v9];
+    text = [(SFCardSection *)v8 text];
+    [(RFSummaryItemPlayerCardSection *)v5 setText_1:text];
 
-    v10 = [(SFCardSection *)v8 text];
-    [(RFSummaryItemPlayerCardSection *)v5 setText_2:v10];
+    text2 = [(SFCardSection *)v8 text];
+    [(RFSummaryItemPlayerCardSection *)v5 setText_2:text2];
 
-    v11 = [(SFCardSection *)v8 text];
-    [(RFSummaryItemPlayerCardSection *)v5 setText_3:v11];
+    text3 = [(SFCardSection *)v8 text];
+    [(RFSummaryItemPlayerCardSection *)v5 setText_3:text3];
 
-    v12 = [(SFCardSection *)v8 text];
-    [(RFSummaryItemPlayerCardSection *)v5 setText_4:v12];
+    text4 = [(SFCardSection *)v8 text];
+    [(RFSummaryItemPlayerCardSection *)v5 setText_4:text4];
 
-    v13 = [(SFCardSection *)v8 thumbnail];
-    [(RFSummaryItemPlayerCardSection *)v5 setThumbnail:v13];
+    thumbnail = [(SFCardSection *)v8 thumbnail];
+    [(RFSummaryItemPlayerCardSection *)v5 setThumbnail:thumbnail];
 
-    v14 = [(SFCardSection *)v8 player];
-    [(RFSummaryItemPlayerCardSection *)v5 setPlayer:v14];
+    player = [(SFCardSection *)v8 player];
+    [(RFSummaryItemPlayerCardSection *)v5 setPlayer:player];
 
-    v15 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v15];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v16 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v16];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v17 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v17];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v18 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v18];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v19 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v19];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v20 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v20];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v21 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v21];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v22 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v22];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v23 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v23];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v24 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v24];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v25 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v25];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v26 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v26];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v27 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v27];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v28 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v28];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v29 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v29];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v30 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v30];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v31 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v31];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v32 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v32];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v33 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v33];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v34 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v34];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v35 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v35];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v36 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v36];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v37 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v37];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v38 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v38];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v39 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v39];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

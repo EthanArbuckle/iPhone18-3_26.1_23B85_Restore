@@ -1,7 +1,7 @@
 @interface WFSplitScreenAppAction
 - (OS_dispatch_queue)queue;
 - (id)disabledOnPlatforms;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSplitScreenAppAction
@@ -10,26 +10,26 @@
 {
   v5.receiver = self;
   v5.super_class = WFSplitScreenAppAction;
-  v2 = [(WFSplitScreenAppAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFSplitScreenAppAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v55[4] = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  inputCopy = input;
   v4 = [(WFSplitScreenAppAction *)self parameterValueForKey:@"WFPrimaryAppIdentifier" ofClass:objc_opt_class()];
-  v5 = [v4 bundleIdentifier];
-  if (!v5)
+  bundleIdentifier = [v4 bundleIdentifier];
+  if (!bundleIdentifier)
   {
     [(WFSplitScreenAppAction *)self finishRunningWithError:0];
     goto LABEL_19;
   }
 
   v36 = [(WFSplitScreenAppAction *)self parameterValueForKey:@"WFSecondaryAppIdentifier" ofClass:objc_opt_class()];
-  v6 = [v36 bundleIdentifier];
+  bundleIdentifier2 = [v36 bundleIdentifier];
   v35 = [(WFSplitScreenAppAction *)self parameterValueForKey:@"WFAppRatio" ofClass:objc_opt_class()];
   v7 = MEMORY[0x277CBEB38];
   v44 = 0;
@@ -53,9 +53,9 @@
   _Block_object_dispose(&v44, 8);
   if (!v8)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getSBSOpenApplicationOptionKeyLayoutRole(void)"];
-    [v31 handleFailureInFunction:v32 file:@"WFSplitScreenAppAction.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v32 file:@"WFSplitScreenAppAction.m" lineNumber:27 description:{@"%s", dlerror()}];
 
     goto LABEL_22;
   }
@@ -83,9 +83,9 @@
   _Block_object_dispose(&v44, 8);
   if (!v11)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getSBSOpenApplicationLayoutRolePrimary(void)"];
-    [v33 handleFailureInFunction:v34 file:@"WFSplitScreenAppAction.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v34 file:@"WFSplitScreenAppAction.m" lineNumber:28 description:{@"%s", dlerror()}];
 
 LABEL_22:
     __break(1u);
@@ -107,7 +107,7 @@ LABEL_22:
   v18 = [v7 dictionaryWithDictionary:v17];
 
   v19 = [v35 isEqualToString:@"½ + ½"];
-  if (v6)
+  if (bundleIdentifier2)
   {
     if (v19)
     {
@@ -121,9 +121,9 @@ LABEL_22:
 
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:v20];
     v22 = getSBSOpenApplicationOptionKeyLaunchBundleIdentifiers();
-    v51[1] = v6;
+    v51[1] = bundleIdentifier2;
     v52[0] = v22;
-    v51[0] = v5;
+    v51[0] = bundleIdentifier;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
     v53[0] = v23;
     v24 = getSBSOpenApplicationOptionKeyWindowingFormat();
@@ -146,7 +146,7 @@ LABEL_22:
 
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:v26];
     v22 = getSBSOpenApplicationOptionKeyLaunchBundleIdentifiers();
-    v48 = v5;
+    v48 = bundleIdentifier;
     v49[0] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
     v50[0] = v23;
@@ -159,14 +159,14 @@ LABEL_22:
   v27 = v25;
 
   [v18 addEntriesFromDictionary:v27];
-  v28 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v29 = [MEMORY[0x277D0AD60] optionsWithDictionary:v18];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __53__WFSplitScreenAppAction_runAsynchronouslyWithInput___block_invoke;
   v38[3] = &unk_278C19820;
   v38[4] = self;
-  [v28 openApplication:v5 withOptions:v29 completion:v38];
+  [serviceWithDefaultShellEndpoint openApplication:bundleIdentifier withOptions:v29 completion:v38];
 
 LABEL_19:
   v30 = *MEMORY[0x277D85DE8];

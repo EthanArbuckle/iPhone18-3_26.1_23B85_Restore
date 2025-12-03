@@ -1,5 +1,5 @@
 @interface _SpotlightPunchInURLHandlingTask
-- (_SpotlightPunchInURLHandlingTask)initWithURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7;
+- (_SpotlightPunchInURLHandlingTask)initWithURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions;
 - (void)performTask;
 @end
 
@@ -17,8 +17,8 @@
 
   v4 = objc_alloc_init(SearchFieldItem);
   punchInDetails = self->_punchInDetails;
-  v6 = [(GEOSpotlightSearchPunchIn *)punchInDetails completedSearchQuery];
-  [(SearchFieldItem *)v4 setPunchInDetails:punchInDetails searchString:v6];
+  completedSearchQuery = [(GEOSpotlightSearchPunchIn *)punchInDetails completedSearchQuery];
+  [(SearchFieldItem *)v4 setPunchInDetails:punchInDetails searchString:completedSearchQuery];
 
   v7 = [[SearchAction alloc] initWithSearchItem:v4 alongRoute:0];
   [(MapsAction *)v7 setUserLocationAccuracy:kCLLocationAccuracyKilometer];
@@ -26,23 +26,23 @@
   v9 = objc_alloc_init(GEOURLOptions);
   [(MapsActivity *)v8 setDisplayOptions:v9];
 
-  v10 = [(MapsActivity *)v8 displayOptions];
-  [v10 setUserTrackingMode:1];
+  displayOptions = [(MapsActivity *)v8 displayOptions];
+  [displayOptions setUserTrackingMode:1];
 
   v11 = [[RichMapsActivity alloc] initWithMapsActivity:v8 mapsAction:v7];
   [(RichMapsActivityCreatingTaskImpl *)self taskFinished:v11];
 }
 
-- (_SpotlightPunchInURLHandlingTask)initWithURL:(id)a3 referringURL:(id)a4 sourceApplication:(id)a5 sceneOptions:(id)a6 mkOptions:(id)a7
+- (_SpotlightPunchInURLHandlingTask)initWithURL:(id)l referringURL:(id)rL sourceApplication:(id)application sceneOptions:(id)options mkOptions:(id)mkOptions
 {
-  v12 = a3;
+  lCopy = l;
   v33.receiver = self;
   v33.super_class = _SpotlightPunchInURLHandlingTask;
-  v13 = [(URLHandlingTask *)&v33 initWithURL:v12 referringURL:a4 sourceApplication:a5 sceneOptions:a6 mkOptions:a7];
+  v13 = [(URLHandlingTask *)&v33 initWithURL:lCopy referringURL:rL sourceApplication:application sceneOptions:options mkOptions:mkOptions];
   if (v13)
   {
-    v14 = [v12 absoluteString];
-    v15 = [NSURLComponents componentsWithString:v14];
+    absoluteString = [lCopy absoluteString];
+    v15 = [NSURLComponents componentsWithString:absoluteString];
 
     v28 = v15;
     [v15 queryItems];
@@ -65,8 +65,8 @@ LABEL_4:
         }
 
         v21 = *(*(&v29 + 1) + 8 * v20);
-        v22 = [v21 name];
-        v23 = [v22 isEqualToString:@"pm"];
+        name = [v21 name];
+        v23 = [name isEqualToString:@"pm"];
 
         if (v23)
         {
@@ -85,14 +85,14 @@ LABEL_4:
         }
       }
 
-      v24 = [v21 value];
+      value = [v21 value];
 
-      if (!v24)
+      if (!value)
       {
         goto LABEL_13;
       }
 
-      v25 = [[GEOSpotlightSearchPunchIn alloc] initWithEncodedString:v24];
+      v25 = [[GEOSpotlightSearchPunchIn alloc] initWithEncodedString:value];
       punchInDetails = v13->_punchInDetails;
       v13->_punchInDetails = v25;
     }
@@ -102,12 +102,12 @@ LABEL_4:
 LABEL_10:
 
 LABEL_13:
-      v24 = sub_100005610();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      value = sub_100005610();
+      if (os_log_type_enabled(value, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v35 = v12;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "_SpotlightPunchInURLHandlingTask open url: %@", buf, 0xCu);
+        v35 = lCopy;
+        _os_log_impl(&_mh_execute_header, value, OS_LOG_TYPE_DEFAULT, "_SpotlightPunchInURLHandlingTask open url: %@", buf, 0xCu);
       }
     }
   }

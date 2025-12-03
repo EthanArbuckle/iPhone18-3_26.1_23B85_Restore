@@ -1,6 +1,6 @@
 @interface FMPFSKShapeNode
 - (_TtC11FMFindingUI15FMPFSKShapeNode)init;
-- (_TtC11FMFindingUI15FMPFSKShapeNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI15FMPFSKShapeNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKShapeNode
@@ -15,15 +15,15 @@
   return [(SKShapeNode *)&v4 init];
 }
 
-- (_TtC11FMFindingUI15FMPFSKShapeNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI15FMPFSKShapeNode)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC11FMFindingUI15FMPFSKShapeNode_previousBrightness;
   *v4 = 0;
   v4[8] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMPFSKShapeNode();
-  v5 = a3;
-  v6 = [(SKShapeNode *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SKShapeNode *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

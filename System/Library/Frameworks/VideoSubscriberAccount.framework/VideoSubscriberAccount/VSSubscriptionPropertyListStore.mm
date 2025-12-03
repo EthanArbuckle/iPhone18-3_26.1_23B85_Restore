@@ -1,26 +1,26 @@
 @interface VSSubscriptionPropertyListStore
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 error:(id *)a5;
-+ (id)metadataForPersistentStoreWithURL:(id)a3 error:(id *)a4;
-- (BOOL)load:(id *)a3;
-- (BOOL)save:(id *)a3;
-- (VSSubscriptionPropertyListStore)initWithPersistentStoreCoordinator:(id)a3 configurationName:(id)a4 URL:(id)a5 options:(id)a6;
-- (id)newCacheNodeForManagedObject:(id)a3;
-- (id)newReferenceObjectForManagedObject:(id)a3;
-- (void)updateCacheNode:(id)a3 fromManagedObject:(id)a4;
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l error:(id *)error;
++ (id)metadataForPersistentStoreWithURL:(id)l error:(id *)error;
+- (BOOL)load:(id *)load;
+- (BOOL)save:(id *)save;
+- (VSSubscriptionPropertyListStore)initWithPersistentStoreCoordinator:(id)coordinator configurationName:(id)name URL:(id)l options:(id)options;
+- (id)newCacheNodeForManagedObject:(id)object;
+- (id)newReferenceObjectForManagedObject:(id)object;
+- (void)updateCacheNode:(id)node fromManagedObject:(id)object;
 @end
 
 @implementation VSSubscriptionPropertyListStore
 
-- (VSSubscriptionPropertyListStore)initWithPersistentStoreCoordinator:(id)a3 configurationName:(id)a4 URL:(id)a5 options:(id)a6
+- (VSSubscriptionPropertyListStore)initWithPersistentStoreCoordinator:(id)coordinator configurationName:(id)name URL:(id)l options:(id)options
 {
   v12.receiver = self;
   v12.super_class = VSSubscriptionPropertyListStore;
-  v6 = [(NSAtomicStore *)&v12 initWithPersistentStoreCoordinator:a3 configurationName:a4 URL:a5 options:a6];
+  v6 = [(NSAtomicStore *)&v12 initWithPersistentStoreCoordinator:coordinator configurationName:name URL:l options:options];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277CBEB38]);
-    v8 = [(NSAtomicStore *)v6 metadata];
-    v9 = [v7 initWithDictionary:v8];
+    metadata = [(NSAtomicStore *)v6 metadata];
+    v9 = [v7 initWithDictionary:metadata];
 
     v10 = VSSubscriptionPropertyListStoreType();
     [v9 setObject:v10 forKey:*MEMORY[0x277CBE2F8]];
@@ -31,39 +31,39 @@
   return v6;
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
   v5 = [(VSSubscriptionPropertyListStore *)self URL];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v5 options:0 error:a3];
+    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v5 options:0 error:load];
     if (v6)
     {
-      v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:a3];
+      v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:load];
       v8 = v7 != 0;
       if (v7)
       {
         v9 = [MEMORY[0x277CBE408] vs_subscriptionEntityForVersion:0];
-        v10 = [(VSSubscriptionPropertyListStore *)self persistentStoreCoordinator];
-        v11 = [v10 managedObjectModel];
-        v12 = [v11 entitiesByName];
-        v13 = [v9 name];
-        v24 = v12;
-        if (v13)
+        persistentStoreCoordinator = [(VSSubscriptionPropertyListStore *)self persistentStoreCoordinator];
+        managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+        entitiesByName = [managedObjectModel entitiesByName];
+        name = [v9 name];
+        v24 = entitiesByName;
+        if (name)
         {
-          v14 = [v12 objectForKey:{v13, v12}];
+          v14 = [entitiesByName objectForKey:{name, entitiesByName}];
           v15 = v14;
           if (v14)
           {
             v16 = v14;
             v17 = v9;
-            v18 = v11;
-            v19 = v10;
+            v18 = managedObjectModel;
+            v19 = persistentStoreCoordinator;
             v20 = v16;
 
             v21 = v20;
-            v10 = v19;
-            v11 = v18;
+            persistentStoreCoordinator = v19;
+            managedObjectModel = v18;
             v9 = v21;
           }
         }
@@ -76,13 +76,13 @@
           v27 = 3221225472;
           v28 = __40__VSSubscriptionPropertyListStore_load___block_invoke;
           v29 = &unk_278B751F8;
-          v30 = self;
+          selfCopy = self;
           v31 = v9;
           v32 = v22;
           [v7 enumerateKeysAndObjectsUsingBlock:&v26];
         }
 
-        [(NSAtomicStore *)self addCacheNodes:v22, v24, v26, v27, v28, v29, v30];
+        [(NSAtomicStore *)self addCacheNodes:v22, v24, v26, v27, v28, v29, selfCopy];
       }
     }
 
@@ -92,10 +92,10 @@
     }
   }
 
-  else if (a3)
+  else if (load)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:258 userInfo:0];
-    *a3 = v8 = 0;
+    *load = v8 = 0;
   }
 
   else
@@ -157,7 +157,7 @@ void __40__VSSubscriptionPropertyListStore_load___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v34 = *MEMORY[0x277D85DE8];
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -165,7 +165,7 @@ void __40__VSSubscriptionPropertyListStore_load___block_invoke_2(uint64_t a1, vo
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(NSAtomicStore *)self cacheNodes];
   v4 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
@@ -182,10 +182,10 @@ void __40__VSSubscriptionPropertyListStore_load___block_invoke_2(uint64_t a1, vo
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 objectID];
-        v10 = [v9 entity];
+        objectID = [v8 objectID];
+        entity = [objectID entity];
         v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v12 = [v10 attributesByName];
+        attributesByName = [entity attributesByName];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __40__VSSubscriptionPropertyListStore_save___block_invoke;
@@ -193,13 +193,13 @@ void __40__VSSubscriptionPropertyListStore_load___block_invoke_2(uint64_t a1, vo
         v27[4] = v8;
         v13 = v11;
         v28 = v13;
-        [v12 enumerateKeysAndObjectsUsingBlock:v27];
+        [attributesByName enumerateKeysAndObjectsUsingBlock:v27];
 
-        v14 = [v10 vs_referenceValueAttribute];
-        v15 = [v14 vs_propertyListKey];
-        if (v15)
+        vs_referenceValueAttribute = [entity vs_referenceValueAttribute];
+        vs_propertyListKey = [vs_referenceValueAttribute vs_propertyListKey];
+        if (vs_propertyListKey)
         {
-          v16 = [v13 objectForKey:v15];
+          v16 = [v13 objectForKey:vs_propertyListKey];
           if (v16)
           {
             [v25 setObject:v13 forKey:v16];
@@ -213,32 +213,32 @@ void __40__VSSubscriptionPropertyListStore_load___block_invoke_2(uint64_t a1, vo
     while (v5);
   }
 
-  v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:v25 format:200 options:0 error:a3];
+  v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:v25 format:200 options:0 error:save];
   if (v17)
   {
-    v18 = [(VSSubscriptionPropertyListStore *)v23 URL];
+    v18 = [(VSSubscriptionPropertyListStore *)selfCopy URL];
     v19 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v20 = [v18 URLByDeletingLastPathComponent];
-    if (v20)
+    uRLByDeletingLastPathComponent = [v18 URLByDeletingLastPathComponent];
+    if (uRLByDeletingLastPathComponent)
     {
-      if (![v19 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:a3])
+      if (![v19 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:save])
       {
         goto LABEL_20;
       }
 
       if (v18)
       {
-        v21 = [v17 writeToURL:v18 options:1073741825 error:a3];
+        v21 = [v17 writeToURL:v18 options:1073741825 error:save];
 LABEL_21:
 
         goto LABEL_22;
       }
     }
 
-    if (a3)
+    if (save)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:514 userInfo:0];
-      *a3 = v21 = 0;
+      *save = v21 = 0;
       goto LABEL_21;
     }
 
@@ -284,36 +284,36 @@ void __40__VSSubscriptionPropertyListStore_save___block_invoke(uint64_t a1, uint
   }
 }
 
-- (id)newCacheNodeForManagedObject:(id)a3
+- (id)newCacheNodeForManagedObject:(id)object
 {
   v4 = MEMORY[0x277CBE350];
-  v5 = a3;
+  objectCopy = object;
   v6 = [v4 alloc];
-  v7 = [v5 objectID];
-  v8 = [v6 initWithObjectID:v7];
+  objectID = [objectCopy objectID];
+  v8 = [v6 initWithObjectID:objectID];
 
-  [(VSSubscriptionPropertyListStore *)self updateCacheNode:v8 fromManagedObject:v5];
+  [(VSSubscriptionPropertyListStore *)self updateCacheNode:v8 fromManagedObject:objectCopy];
   v9 = [MEMORY[0x277CBEB98] setWithObject:v8];
   [(NSAtomicStore *)self addCacheNodes:v9];
 
   return v8;
 }
 
-- (void)updateCacheNode:(id)a3 fromManagedObject:(id)a4
+- (void)updateCacheNode:(id)node fromManagedObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 entity];
-  v8 = [v7 attributesByName];
+  nodeCopy = node;
+  objectCopy = object;
+  entity = [objectCopy entity];
+  attributesByName = [entity attributesByName];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__VSSubscriptionPropertyListStore_updateCacheNode_fromManagedObject___block_invoke;
   v11[3] = &unk_278B73898;
-  v12 = v6;
-  v13 = v5;
-  v9 = v5;
-  v10 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = objectCopy;
+  v13 = nodeCopy;
+  v9 = nodeCopy;
+  v10 = objectCopy;
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __69__VSSubscriptionPropertyListStore_updateCacheNode_fromManagedObject___block_invoke(uint64_t a1, void *a2)
@@ -324,47 +324,47 @@ void __69__VSSubscriptionPropertyListStore_updateCacheNode_fromManagedObject___b
   [*(a1 + 40) setValue:v5 forKey:v4];
 }
 
-- (id)newReferenceObjectForManagedObject:(id)a3
+- (id)newReferenceObjectForManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 entity];
-  v5 = [v4 vs_referenceValueAttribute];
-  v6 = [v5 name];
-  v7 = [v3 valueForKey:v6];
+  objectCopy = object;
+  entity = [objectCopy entity];
+  vs_referenceValueAttribute = [entity vs_referenceValueAttribute];
+  name = [vs_referenceValueAttribute name];
+  v7 = [objectCopy valueForKey:name];
 
-  v8 = [v5 vs_propertyListValueTransformer];
-  v9 = v8;
-  if (v8)
+  vs_propertyListValueTransformer = [vs_referenceValueAttribute vs_propertyListValueTransformer];
+  v9 = vs_propertyListValueTransformer;
+  if (vs_propertyListValueTransformer)
   {
-    v10 = [v8 transformedValue:v7];
+    v10 = [vs_propertyListValueTransformer transformedValue:v7];
 
     v7 = v10;
   }
 
   if (!v7)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to construct reference object for managed object: %@", v3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to construct reference object for managed object: %@", objectCopy}];
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The value parameter must not be nil."];
   }
 
   return v7;
 }
 
-+ (id)metadataForPersistentStoreWithURL:(id)a3 error:(id *)a4
++ (id)metadataForPersistentStoreWithURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:134000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:134000 userInfo:0];
   }
 
   return 0;
 }
 
-+ (BOOL)setMetadata:(id)a3 forPersistentStoreWithURL:(id)a4 error:(id *)a5
++ (BOOL)setMetadata:(id)metadata forPersistentStoreWithURL:(id)l error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:134000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:134000 userInfo:0];
   }
 
   return 0;

@@ -1,66 +1,66 @@
 @interface RTPlaceInference
-+ (id)placeTypeToString:(unint64_t)a3;
-+ (id)userSpecificPlaceTypeSourceToString:(unint64_t)a3;
-+ (id)userSpecificPlaceTypeToString:(unint64_t)a3;
-+ (unint64_t)placeInferencePlaceTypeFromMapItem:(id)a3 userType:(unint64_t)a4 source:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPlaceInference:(id)a3;
-- (RTPlaceInference)initWithCoder:(id)a3;
-- (RTPlaceInference)initWithMapItem:(id)a3 finerGranularityMapItem:(id)a4 userType:(unint64_t)a5 userTypeSource:(unint64_t)a6 placeType:(unint64_t)a7 referenceLocation:(id)a8 confidence:(double)a9 finerGranularityMapItemConfidence:(double)a10 loiIdentifier:(id)a11;
-- (RTPlaceInference)initWithMapItem:(id)a3 finerGranularityMapItem:(id)a4 userType:(unint64_t)a5 userTypeSource:(unint64_t)a6 placeType:(unint64_t)a7 referenceLocation:(id)a8 confidence:(double)a9 finerGranularityMapItemConfidence:(double)a10 loiIdentifier:(id)a11 preferredName:(id)a12;
-- (RTPlaceInference)initWithMapItem:(id)a3 userType:(unint64_t)a4 userTypeSource:(unint64_t)a5 placeType:(unint64_t)a6 referenceLocation:(id)a7 confidence:(double)a8 loiIdentifier:(id)a9;
++ (id)placeTypeToString:(unint64_t)string;
++ (id)userSpecificPlaceTypeSourceToString:(unint64_t)string;
++ (id)userSpecificPlaceTypeToString:(unint64_t)string;
++ (unint64_t)placeInferencePlaceTypeFromMapItem:(id)item userType:(unint64_t)type source:(unint64_t)source;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPlaceInference:(id)inference;
+- (RTPlaceInference)initWithCoder:(id)coder;
+- (RTPlaceInference)initWithMapItem:(id)item finerGranularityMapItem:(id)mapItem userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence finerGranularityMapItemConfidence:(double)self0 loiIdentifier:(id)self1;
+- (RTPlaceInference)initWithMapItem:(id)item finerGranularityMapItem:(id)mapItem userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence finerGranularityMapItemConfidence:(double)self0 loiIdentifier:(id)self1 preferredName:(id)self2;
+- (RTPlaceInference)initWithMapItem:(id)item userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence loiIdentifier:(id)identifier;
 - (id)description;
-- (id)nameFromUserType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)nameFromUserType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPlaceInference
 
-- (RTPlaceInference)initWithMapItem:(id)a3 userType:(unint64_t)a4 userTypeSource:(unint64_t)a5 placeType:(unint64_t)a6 referenceLocation:(id)a7 confidence:(double)a8 loiIdentifier:(id)a9
+- (RTPlaceInference)initWithMapItem:(id)item userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence loiIdentifier:(id)identifier
 {
-  v16 = a3;
-  v17 = a7;
-  v18 = a9;
-  v19 = [(RTPlaceInference *)self nameFromUserType:a4];
+  itemCopy = item;
+  locationCopy = location;
+  identifierCopy = identifier;
+  v19 = [(RTPlaceInference *)self nameFromUserType:type];
   if (![v19 length])
   {
-    v20 = [v16 name];
+    name = [itemCopy name];
 
-    v19 = v20;
+    v19 = name;
   }
 
-  v21 = [(RTPlaceInference *)self initWithMapItem:v16 userType:a4 userTypeSource:a5 placeType:a6 referenceLocation:v17 confidence:v18 loiIdentifier:a8 preferredName:v19];
+  v21 = [(RTPlaceInference *)self initWithMapItem:itemCopy userType:type userTypeSource:source placeType:placeType referenceLocation:locationCopy confidence:identifierCopy loiIdentifier:confidence preferredName:v19];
 
   return v21;
 }
 
-- (RTPlaceInference)initWithMapItem:(id)a3 finerGranularityMapItem:(id)a4 userType:(unint64_t)a5 userTypeSource:(unint64_t)a6 placeType:(unint64_t)a7 referenceLocation:(id)a8 confidence:(double)a9 finerGranularityMapItemConfidence:(double)a10 loiIdentifier:(id)a11
+- (RTPlaceInference)initWithMapItem:(id)item finerGranularityMapItem:(id)mapItem userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence finerGranularityMapItemConfidence:(double)self0 loiIdentifier:(id)self1
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a8;
-  v22 = a11;
-  v23 = [(RTPlaceInference *)self nameFromUserType:a5];
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  locationCopy = location;
+  identifierCopy = identifier;
+  v23 = [(RTPlaceInference *)self nameFromUserType:type];
   if (![v23 length])
   {
-    v24 = [v19 name];
+    name = [itemCopy name];
 
-    v23 = v24;
+    v23 = name;
   }
 
-  v25 = [(RTPlaceInference *)self initWithMapItem:v19 finerGranularityMapItem:v20 userType:a5 userTypeSource:a6 placeType:a7 referenceLocation:v21 confidence:a9 finerGranularityMapItemConfidence:a10 loiIdentifier:v22 preferredName:v23];
+  v25 = [(RTPlaceInference *)self initWithMapItem:itemCopy finerGranularityMapItem:mapItemCopy userType:type userTypeSource:source placeType:placeType referenceLocation:locationCopy confidence:confidence finerGranularityMapItemConfidence:itemConfidence loiIdentifier:identifierCopy preferredName:v23];
 
   return v25;
 }
 
-- (RTPlaceInference)initWithMapItem:(id)a3 finerGranularityMapItem:(id)a4 userType:(unint64_t)a5 userTypeSource:(unint64_t)a6 placeType:(unint64_t)a7 referenceLocation:(id)a8 confidence:(double)a9 finerGranularityMapItemConfidence:(double)a10 loiIdentifier:(id)a11 preferredName:(id)a12
+- (RTPlaceInference)initWithMapItem:(id)item finerGranularityMapItem:(id)mapItem userType:(unint64_t)type userTypeSource:(unint64_t)source placeType:(unint64_t)placeType referenceLocation:(id)location confidence:(double)confidence finerGranularityMapItemConfidence:(double)self0 loiIdentifier:(id)self1 preferredName:(id)self2
 {
-  v31 = a3;
-  v30 = a4;
-  v21 = a8;
-  v29 = a11;
-  v28 = a12;
-  if (a5 >= 8)
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  locationCopy = location;
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (type >= 8)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a6 >= 0x20)
+  if (source >= 0x20)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a7 >= 8)
+  if (placeType >= 8)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -101,7 +101,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (!v21)
+  if (!locationCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a9 < 0.0 || a9 > 1.0)
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -127,7 +127,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a10 < 0.0 || a10 > 1.0)
+  if (itemConfidence < 0.0 || itemConfidence > 1.0)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -139,101 +139,101 @@ LABEL_24:
 
 LABEL_25:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
   v32.receiver = self;
   v32.super_class = RTPlaceInference;
-  v22 = [(RTPlaceInference *)&v32 init:v28];
+  v22 = [(RTPlaceInference *)&v32 init:nameCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_mapItem, a3);
-    objc_storeStrong(&v23->_finerGranularityMapItem, a4);
-    v23->_userType = a5;
-    v23->_userTypeSource = a6;
-    v23->_placeType = a7;
-    objc_storeStrong(&v23->_referenceLocation, a8);
-    v23->_confidence = a9;
-    v23->_finerGranularityMapItemConfidence = a10;
-    objc_storeStrong(&v23->_loiIdentifier, a11);
-    objc_storeStrong(&v23->_preferredName, a12);
+    objc_storeStrong(&v22->_mapItem, item);
+    objc_storeStrong(&v23->_finerGranularityMapItem, mapItem);
+    v23->_userType = type;
+    v23->_userTypeSource = source;
+    v23->_placeType = placeType;
+    objc_storeStrong(&v23->_referenceLocation, location);
+    v23->_confidence = confidence;
+    v23->_finerGranularityMapItemConfidence = itemConfidence;
+    objc_storeStrong(&v23->_loiIdentifier, identifier);
+    objc_storeStrong(&v23->_preferredName, name);
   }
 
   self = v23;
-  v24 = self;
+  selfCopy = self;
 LABEL_26:
 
-  return v24;
+  return selfCopy;
 }
 
-- (RTPlaceInference)initWithCoder:(id)a3
+- (RTPlaceInference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finerGranularityMapItem"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userType"];
-  v8 = [v7 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finerGranularityMapItem"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userType"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userTypeSource"];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userTypeSource"];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeType"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeType"];
+  unsignedIntegerValue3 = [v11 unsignedIntegerValue];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confidence"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confidence"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finerGranularityMapItemConfidence"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finerGranularityMapItemConfidence"];
   [v17 doubleValue];
   v19 = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loiIdentifier"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredName"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loiIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredName"];
 
-  v22 = [(RTPlaceInference *)self initWithMapItem:v5 finerGranularityMapItem:v6 userType:v8 userTypeSource:v10 placeType:v12 referenceLocation:v13 confidence:v16 finerGranularityMapItemConfidence:v19 loiIdentifier:v20 preferredName:v21];
+  v22 = [(RTPlaceInference *)self initWithMapItem:v5 finerGranularityMapItem:v6 userType:unsignedIntegerValue userTypeSource:unsignedIntegerValue2 placeType:unsignedIntegerValue3 referenceLocation:v13 confidence:v16 finerGranularityMapItemConfidence:v19 loiIdentifier:v20 preferredName:v21];
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapItem = self->_mapItem;
-  v10 = a3;
-  [v10 encodeObject:mapItem forKey:@"mapItem"];
-  [v10 encodeObject:self->_finerGranularityMapItem forKey:@"finerGranularityMapItem"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapItem forKey:@"mapItem"];
+  [coderCopy encodeObject:self->_finerGranularityMapItem forKey:@"finerGranularityMapItem"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_userType];
-  [v10 encodeObject:v5 forKey:@"userType"];
+  [coderCopy encodeObject:v5 forKey:@"userType"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_userTypeSource];
-  [v10 encodeObject:v6 forKey:@"userTypeSource"];
+  [coderCopy encodeObject:v6 forKey:@"userTypeSource"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_placeType];
-  [v10 encodeObject:v7 forKey:@"placeType"];
+  [coderCopy encodeObject:v7 forKey:@"placeType"];
 
-  [v10 encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
+  [coderCopy encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidence];
-  [v10 encodeObject:v8 forKey:@"confidence"];
+  [coderCopy encodeObject:v8 forKey:@"confidence"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_finerGranularityMapItemConfidence];
-  [v10 encodeObject:v9 forKey:@"finerGranularityMapItemConfidence"];
+  [coderCopy encodeObject:v9 forKey:@"finerGranularityMapItemConfidence"];
 
-  [v10 encodeObject:self->_loiIdentifier forKey:@"loiIdentifier"];
-  [v10 encodeObject:self->_preferredName forKey:@"preferredName"];
+  [coderCopy encodeObject:self->_loiIdentifier forKey:@"loiIdentifier"];
+  [coderCopy encodeObject:self->_preferredName forKey:@"preferredName"];
 }
 
-- (id)nameFromUserType:(unint64_t)a3
+- (id)nameFromUserType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] _coreroutine_LocalizedStringForKey:{off_1E80B3D00[a3 - 1], v3}];
+    v5 = [MEMORY[0x1E696AAE8] _coreroutine_LocalizedStringForKey:{off_1E80B3D00[type - 1], v3}];
   }
 
   return v5;
@@ -242,42 +242,42 @@ LABEL_26:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTPlaceInference *)self referenceLocation];
+  referenceLocation = [(RTPlaceInference *)self referenceLocation];
   v5 = [objc_opt_class() userSpecificPlaceTypeToString:{-[RTPlaceInference userType](self, "userType")}];
   v6 = [objc_opt_class() userSpecificPlaceTypeSourceToString:{-[RTPlaceInference userTypeSource](self, "userTypeSource")}];
   v7 = [objc_opt_class() placeTypeToString:{-[RTPlaceInference placeType](self, "placeType")}];
-  v8 = [(RTPlaceInference *)self mapItem];
-  v9 = [(RTPlaceInference *)self finerGranularityMapItem];
-  v10 = [(RTPlaceInference *)self preferredName];
+  mapItem = [(RTPlaceInference *)self mapItem];
+  finerGranularityMapItem = [(RTPlaceInference *)self finerGranularityMapItem];
+  preferredName = [(RTPlaceInference *)self preferredName];
   [(RTPlaceInference *)self confidence];
   v12 = v11;
   [(RTPlaceInference *)self finerGranularityMapItemConfidence];
   v14 = v13;
-  v15 = [(RTPlaceInference *)self loiIdentifier];
-  v16 = [v3 stringWithFormat:@"location, %@, userType, %@, userTypeSource, %@, placeType, %@, map item, %@, finerGranularityMapItem, %@, preferredName, %@, confidence, %f, finerGranularityMapItemConfidence, %f, related LOI identifier, %@", v4, v5, v6, v7, v8, v9, v10, v12, v14, v15];
+  loiIdentifier = [(RTPlaceInference *)self loiIdentifier];
+  v16 = [v3 stringWithFormat:@"location, %@, userType, %@, userTypeSource, %@, placeType, %@, map item, %@, finerGranularityMapItem, %@, preferredName, %@, confidence, %f, finerGranularityMapItemConfidence, %f, related LOI identifier, %@", referenceLocation, v5, v6, v7, mapItem, finerGranularityMapItem, preferredName, v12, v14, loiIdentifier];
 
   return v16;
 }
 
-+ (id)userSpecificPlaceTypeToString:(unint64_t)a3
++ (id)userSpecificPlaceTypeToString:(unint64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"Home";
   }
 
   else
   {
-    return off_1E80B3D20[a3];
+    return off_1E80B3D20[string];
   }
 }
 
-+ (id)userSpecificPlaceTypeSourceToString:(unint64_t)a3
++ (id)userSpecificPlaceTypeSourceToString:(unint64_t)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = array;
+  if (!string)
   {
     v7 = @"Unknown";
 LABEL_14:
@@ -285,13 +285,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (string)
   {
-    [v5 addObject:@"Inferred"];
-    if ((a3 & 2) == 0)
+    [array addObject:@"Inferred"];
+    if ((string & 2) == 0)
     {
 LABEL_4:
-      if ((a3 & 4) == 0)
+      if ((string & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -300,23 +300,23 @@ LABEL_4:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((string & 2) == 0)
   {
     goto LABEL_4;
   }
 
   [v6 addObject:@"MeCard"];
-  if ((a3 & 4) == 0)
+  if ((string & 4) == 0)
   {
 LABEL_5:
-    if ((a3 & 8) == 0)
+    if ((string & 8) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_12:
     [v6 addObject:@"Fallback"];
-    if ((a3 & 0x10) == 0)
+    if ((string & 0x10) == 0)
     {
       goto LABEL_15;
     }
@@ -326,13 +326,13 @@ LABEL_12:
 
 LABEL_11:
   [v6 addObject:@"User"];
-  if ((a3 & 8) != 0)
+  if ((string & 8) != 0)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  if ((a3 & 0x10) != 0)
+  if ((string & 0x10) != 0)
   {
 LABEL_13:
     v7 = @"Maps";
@@ -349,7 +349,7 @@ LABEL_15:
       v13 = 138413058;
       v14 = v12;
       v15 = 2048;
-      v16 = a3;
+      stringCopy = string;
       v17 = 2080;
       v18 = "+[RTPlaceInference userSpecificPlaceTypeSourceToString:]";
       v19 = 1024;
@@ -373,35 +373,35 @@ LABEL_15:
   return v9;
 }
 
-+ (id)placeTypeToString:(unint64_t)a3
++ (id)placeTypeToString:(unint64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"NonClassified";
   }
 
   else
   {
-    return off_1E80B3D48[a3];
+    return off_1E80B3D48[string];
   }
 }
 
-+ (unint64_t)placeInferencePlaceTypeFromMapItem:(id)a3 userType:(unint64_t)a4 source:(unint64_t)a5
++ (unint64_t)placeInferencePlaceTypeFromMapItem:(id)item userType:(unint64_t)type source:(unint64_t)source
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  sourceCopy = source;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (type)
   {
     v9 = 1;
   }
 
-  else if ([v7 mapItemPlaceType] == 1)
+  else if ([itemCopy mapItemPlaceType] == 1)
   {
     v9 = 2;
   }
 
-  else if ((v5 & 1) != 0 || ([v8 validMUID] & 1) == 0)
+  else if ((sourceCopy & 1) != 0 || ([v8 validMUID] & 1) == 0)
   {
     v9 = 4;
   }
@@ -414,17 +414,17 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isEqualToPlaceInference:(id)a3
+- (BOOL)isEqualToPlaceInference:(id)inference
 {
-  v7 = a3;
-  v8 = v7;
+  inferenceCopy = inference;
+  v8 = inferenceCopy;
   referenceLocation = self->_referenceLocation;
   v10 = referenceLocation;
   if (referenceLocation)
   {
 LABEL_4:
-    v4 = [v8 referenceLocation];
-    v40 = [(RTLocation *)v10 isEqual:v4];
+    referenceLocation = [v8 referenceLocation];
+    v40 = [(RTLocation *)v10 isEqual:referenceLocation];
 
     if (referenceLocation)
     {
@@ -434,8 +434,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v3 = [v7 referenceLocation];
-  if (v3)
+  referenceLocation2 = [inferenceCopy referenceLocation];
+  if (referenceLocation2)
   {
     v10 = self->_referenceLocation;
     goto LABEL_4;
@@ -452,8 +452,8 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v4 = [v8 mapItem];
-  if (v4)
+  referenceLocation = [v8 mapItem];
+  if (referenceLocation)
   {
     v12 = self->_mapItem;
 LABEL_11:
@@ -484,8 +484,8 @@ LABEL_15:
   {
     v14 = self->_finerGranularityMapItem;
 LABEL_18:
-    v5 = [v8 finerGranularityMapItem];
-    v38 = [(RTMapItem *)v14 isEqual:v5];
+    finerGranularityMapItem = [v8 finerGranularityMapItem];
+    v38 = [(RTMapItem *)v14 isEqual:finerGranularityMapItem];
 
     if (finerGranularityMapItem)
     {
@@ -590,13 +590,13 @@ LABEL_42:
     goto LABEL_45;
   }
 
-  v5 = [v8 preferredName];
-  if (v5)
+  finerGranularityMapItem = [v8 preferredName];
+  if (finerGranularityMapItem)
   {
     v28 = self->_preferredName;
 LABEL_45:
-    v29 = [v8 preferredName];
-    v30 = [(NSString *)v28 isEqualToString:v29];
+    preferredName = [v8 preferredName];
+    v30 = [(NSString *)v28 isEqualToString:preferredName];
 
     if (preferredName)
     {
@@ -614,8 +614,8 @@ LABEL_54:
   v32 = loiIdentifier;
   if (!loiIdentifier)
   {
-    v5 = [v8 loiIdentifier];
-    if (!v5)
+    finerGranularityMapItem = [v8 loiIdentifier];
+    if (!finerGranularityMapItem)
     {
       v34 = 1;
 LABEL_60:
@@ -626,8 +626,8 @@ LABEL_60:
     v32 = self->_loiIdentifier;
   }
 
-  v33 = [v8 loiIdentifier];
-  v34 = [(NSUUID *)v32 isEqual:v33];
+  loiIdentifier = [v8 loiIdentifier];
+  v34 = [(NSUUID *)v32 isEqual:loiIdentifier];
 
   if (!loiIdentifier)
   {
@@ -639,18 +639,18 @@ LABEL_61:
   return v30 & ~(v40 & v39 & v38 ^ 1 | (v37 || v36 || v18 || v22 || v26)) & v34 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTPlaceInference *)self isEqualToPlaceInference:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTPlaceInference *)self isEqualToPlaceInference:v5];
   }
 
   return v6;

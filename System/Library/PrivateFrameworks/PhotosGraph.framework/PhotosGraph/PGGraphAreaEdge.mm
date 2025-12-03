@@ -1,10 +1,10 @@
 @interface PGGraphAreaEdge
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (MAEdgeFilter)uniquelyIdentifyingFilter;
-- (PGGraphAreaEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphAreaEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)edgeDescription;
-- (id)initFromAddressNode:(id)a3 toAreaNode:(id)a4 relevance:(double)a5;
+- (id)initFromAddressNode:(id)node toAreaNode:(id)areaNode relevance:(double)relevance;
 - (id)propertyDictionary;
 @end
 
@@ -22,8 +22,8 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = PGGraphAreaEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
-  v5 = [v3 stringWithFormat:@"%@ (%.2f)", v4, *&self->_relevance];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
+  v5 = [v3 stringWithFormat:@"%@ (%.2f)", edgeDescription, *&self->_relevance];
 
   return v5;
 }
@@ -41,11 +41,11 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"relevance"];
     v7 = v6;
@@ -68,26 +68,26 @@
   return v9;
 }
 
-- (PGGraphAreaEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphAreaEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a7 objectForKeyedSubscript:@"relevance"];
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v12 = [properties objectForKeyedSubscript:@"relevance"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(PGGraphAreaEdge *)self initFromAddressNode:v11 toAreaNode:v10 relevance:v14];
+  v15 = [(PGGraphAreaEdge *)self initFromAddressNode:nodeCopy toAreaNode:targetNodeCopy relevance:v14];
   return v15;
 }
 
-- (id)initFromAddressNode:(id)a3 toAreaNode:(id)a4 relevance:(double)a5
+- (id)initFromAddressNode:(id)node toAreaNode:(id)areaNode relevance:(double)relevance
 {
   v7.receiver = self;
   v7.super_class = PGGraphAreaEdge;
-  result = [(PGGraphEdge *)&v7 initWithSourceNode:a3 targetNode:a4];
+  result = [(PGGraphEdge *)&v7 initWithSourceNode:node targetNode:areaNode];
   if (result)
   {
-    *(result + 5) = a5;
+    *(result + 5) = relevance;
   }
 
   return result;

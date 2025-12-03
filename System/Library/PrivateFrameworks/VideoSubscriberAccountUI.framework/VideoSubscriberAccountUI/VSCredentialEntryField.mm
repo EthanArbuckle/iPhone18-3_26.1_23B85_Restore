@@ -20,10 +20,10 @@
     title = v3->_title;
     v3->_title = &stru_2880B8BB0;
 
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v7;
+    v3->_identifier = uUIDString;
   }
 
   return v3;

@@ -1,55 +1,55 @@
 @interface TNFormViewerSelection
 + (id)selection;
-+ (id)selectionForRecordIndex:(unsigned int)a3;
-+ (id)selectionForRecordIndex:(unsigned int)a3 fieldIndex:(unsigned __int16)a4;
-- (BOOL)isEqual:(id)a3;
-- (TNFormViewerSelection)initWithRecordIndex:(unsigned int)a3 fieldIndex:(unsigned __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)selectionForRecordIndex:(unsigned int)index;
++ (id)selectionForRecordIndex:(unsigned int)index fieldIndex:(unsigned __int16)fieldIndex;
+- (BOOL)isEqual:(id)equal;
+- (TNFormViewerSelection)initWithRecordIndex:(unsigned int)index fieldIndex:(unsigned __int16)fieldIndex;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TNFormViewerSelection
 
 + (id)selection
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)selectionForRecordIndex:(unsigned int)a3
++ (id)selectionForRecordIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [a1 alloc];
+  v3 = *&index;
+  v4 = [self alloc];
   v6 = objc_msgSend_initWithRecordIndex_(v4, v5, v3);
 
   return v6;
 }
 
-+ (id)selectionForRecordIndex:(unsigned int)a3 fieldIndex:(unsigned __int16)a4
++ (id)selectionForRecordIndex:(unsigned int)index fieldIndex:(unsigned __int16)fieldIndex
 {
-  v4 = a4;
-  v5 = *&a3;
-  v6 = [a1 alloc];
-  v8 = objc_msgSend_initWithRecordIndex_fieldIndex_(v6, v7, v5, v4);
+  fieldIndexCopy = fieldIndex;
+  v5 = *&index;
+  v6 = [self alloc];
+  v8 = objc_msgSend_initWithRecordIndex_fieldIndex_(v6, v7, v5, fieldIndexCopy);
 
   return v8;
 }
 
-- (TNFormViewerSelection)initWithRecordIndex:(unsigned int)a3 fieldIndex:(unsigned __int16)a4
+- (TNFormViewerSelection)initWithRecordIndex:(unsigned int)index fieldIndex:(unsigned __int16)fieldIndex
 {
   v7.receiver = self;
   v7.super_class = TNFormViewerSelection;
   result = [(TNFormViewerSelection *)&v7 init];
   if (result)
   {
-    result->_recordIndex = a3;
-    result->_fieldIndex = a4;
+    result->_recordIndex = index;
+    result->_fieldIndex = fieldIndex;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_recordIndex(self, v5, v6);
@@ -58,10 +58,10 @@
   return objc_msgSend_initWithRecordIndex_fieldIndex_(v4, v10, v7, v11);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_recordIndex(self, v6, v7);
       if (v8 == objc_msgSend_recordIndex(v5, v9, v10))
       {

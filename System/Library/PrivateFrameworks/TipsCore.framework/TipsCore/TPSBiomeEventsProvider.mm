@@ -1,14 +1,14 @@
 @interface TPSBiomeEventsProvider
-+ (id)_eventSinceDateForContextualEvent:(id)a3;
-+ (unint64_t)_limitForContextualBiomeEvent:(id)a3;
++ (id)_eventSinceDateForContextualEvent:(id)event;
++ (unint64_t)_limitForContextualBiomeEvent:(id)event;
 - (TPSBiomeEventsProvider)init;
-- (TPSBiomeEventsProvider)initWithBiomeDataProvider:(id)a3;
-- (id)_registrationIDForEvent:(id)a3;
-- (id)_wakingRegistrationIDForEvent:(id)a3;
-- (void)_processProviderResults:(id)a3 bookmark:(id)a4 forEvent:(id)a5;
-- (void)_registerToGetNotifiedWithEvents:(id)a3 clientIdentifier:(id)a4;
-- (void)deregisterEventsForCallback:(id)a3;
-- (void)queryEvents:(id)a3;
+- (TPSBiomeEventsProvider)initWithBiomeDataProvider:(id)provider;
+- (id)_registrationIDForEvent:(id)event;
+- (id)_wakingRegistrationIDForEvent:(id)event;
+- (void)_processProviderResults:(id)results bookmark:(id)bookmark forEvent:(id)event;
+- (void)_registerToGetNotifiedWithEvents:(id)events clientIdentifier:(id)identifier;
+- (void)deregisterEventsForCallback:(id)callback;
+- (void)queryEvents:(id)events;
 @end
 
 @implementation TPSBiomeEventsProvider
@@ -21,29 +21,29 @@
   return v4;
 }
 
-- (TPSBiomeEventsProvider)initWithBiomeDataProvider:(id)a3
+- (TPSBiomeEventsProvider)initWithBiomeDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = TPSBiomeEventsProvider;
   v6 = [(TPSBiomeEventsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_biomeDataProvider, a3);
+    objc_storeStrong(&v6->_biomeDataProvider, provider);
   }
 
   return v7;
 }
 
-- (void)queryEvents:(id)a3
+- (void)queryEvents:(id)events
 {
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = events;
   v22 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v22)
   {
@@ -66,14 +66,14 @@
         }
 
         v7 = v6;
-        v8 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v9 = [objc_opt_class() _eventSinceDateForContextualEvent:v5];
         [v9 timeIntervalSinceReferenceDate];
         v11 = v10;
 
         v12 = [v5 publisherFromStartTime:v11];
-        v13 = [v5 bookmark];
-        v14 = [v13 sinkBookmark];
+        bookmark = [v5 bookmark];
+        sinkBookmark = [bookmark sinkBookmark];
         objc_initWeak(&location, self);
         v15 = dispatch_get_global_queue(21, 0);
         block[0] = MEMORY[0x1E69E9820];
@@ -83,11 +83,11 @@
         objc_copyWeak(v27, &location);
         block[4] = v5;
         v24 = v12;
-        v25 = v14;
-        v26 = v8;
+        v25 = sinkBookmark;
+        v26 = dictionary;
         v27[1] = v7;
-        v16 = v8;
-        v17 = v14;
+        v16 = dictionary;
+        v17 = sinkBookmark;
         v18 = v12;
         dispatch_async(v15, block);
 
@@ -236,19 +236,19 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
   return v9;
 }
 
-- (void)_processProviderResults:(id)a3 bookmark:(id)a4 forEvent:(id)a5
+- (void)_processProviderResults:(id)results bookmark:(id)bookmark forEvent:(id)event
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  resultsCopy = results;
+  eventCopy = event;
+  bookmarkCopy = bookmark;
   v11 = objc_alloc_init(TPSEventProviderResult);
-  v12 = [v9 identifier];
+  identifier = [eventCopy identifier];
 
-  [(TPSEventProviderResult *)v11 setIdentifier:v12];
-  if (v8)
+  [(TPSEventProviderResult *)v11 setIdentifier:identifier];
+  if (resultsCopy)
   {
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v8];
+    v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:resultsCopy];
     [(TPSEventProviderResult *)v11 setObservationMap:v13];
   }
 
@@ -257,28 +257,28 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
     [(TPSEventProviderResult *)v11 setObservationMap:MEMORY[0x1E695E0F8]];
   }
 
-  [(TPSEventProviderResult *)v11 setBookmark:v10];
+  [(TPSEventProviderResult *)v11 setBookmark:bookmarkCopy];
 
-  v14 = [MEMORY[0x1E695DF00] date];
-  [(TPSEventProviderResult *)v11 setResultDate:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  [(TPSEventProviderResult *)v11 setResultDate:date];
 
-  v15 = [(TPSEventsProvider *)self delegate];
+  delegate = [(TPSEventsProvider *)self delegate];
   v18[0] = v11;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  [v15 dataProvider:self didFinishQueryWithResults:v16];
+  [delegate dataProvider:self didFinishQueryWithResults:v16];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deregisterEventsForCallback:(id)a3
+- (void)deregisterEventsForCallback:(id)callback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [callbackCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -290,7 +290,7 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(callbackCopy);
         }
 
         v9 = [(TPSBiomeEventsProvider *)self _registrationIDForEvent:*(*(&v11 + 1) + 8 * v8)];
@@ -300,7 +300,7 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [callbackCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -309,16 +309,16 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerToGetNotifiedWithEvents:(id)a3 clientIdentifier:(id)a4
+- (void)_registerToGetNotifiedWithEvents:(id)events clientIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = eventsCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -334,7 +334,7 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
 
         v11 = *(*(&v19 + 1) + 8 * i);
         objc_initWeak(&location, self);
-        if (v7)
+        if (identifierCopy)
         {
           [(TPSBiomeEventsProvider *)self _wakingRegistrationIDForEvent:v11];
         }
@@ -351,7 +351,7 @@ BOOL __38__TPSBiomeEventsProvider_queryEvents___block_invoke_6(uint64_t a1, void
         v16[3] = &unk_1E8102850;
         objc_copyWeak(&v17, &location);
         v16[4] = v11;
-        [(TPSBiomeDataProvider *)biomeDataProvider registerWakingForEventWithEvent:v11 registrationID:v12 clientIdentifier:v7 completion:v16];
+        [(TPSBiomeDataProvider *)biomeDataProvider registerWakingForEventWithEvent:v11 registrationID:v12 clientIdentifier:identifierCopy completion:v16];
         objc_destroyWeak(&v17);
 
         objc_destroyWeak(&location);
@@ -395,69 +395,69 @@ void __76__TPSBiomeEventsProvider__registerToGetNotifiedWithEvents_clientIdentif
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_registrationIDForEvent:(id)a3
+- (id)_registrationIDForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[TPSCommonDefines mainBundleIdentifier];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v4 identifier];
+  identifier = [eventCopy identifier];
 
-  v8 = [v6 stringWithFormat:@"%@-%p%@%@", v5, self, @"-event-", v7];
+  v8 = [v6 stringWithFormat:@"%@-%p%@%@", v5, self, @"-event-", identifier];
 
   return v8;
 }
 
-- (id)_wakingRegistrationIDForEvent:(id)a3
+- (id)_wakingRegistrationIDForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[TPSCommonDefines mainBundleIdentifier];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v3 identifier];
+  identifier = [eventCopy identifier];
 
-  v7 = [v5 stringWithFormat:@"%@%@%@", v4, @"-event-", v6];
+  v7 = [v5 stringWithFormat:@"%@%@%@", v4, @"-event-", identifier];
 
   return v7;
 }
 
-+ (unint64_t)_limitForContextualBiomeEvent:(id)a3
++ (unint64_t)_limitForContextualBiomeEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 status])
+  eventCopy = event;
+  if ([eventCopy status])
   {
-    v4 = [v3 currentObservationCount];
-    if (v4 >= [v3 minObservationCount])
+    currentObservationCount = [eventCopy currentObservationCount];
+    if (currentObservationCount >= [eventCopy minObservationCount])
     {
-      v5 = -1;
+      minObservationCount = -1;
     }
 
     else
     {
-      v5 = [v3 minObservationCount];
-      if (([v3 hasLookBackDays] & 1) == 0)
+      minObservationCount = [eventCopy minObservationCount];
+      if (([eventCopy hasLookBackDays] & 1) == 0)
       {
-        v5 -= [v3 currentObservationCount];
+        minObservationCount -= [eventCopy currentObservationCount];
       }
     }
   }
 
   else
   {
-    v5 = 1;
+    minObservationCount = 1;
   }
 
-  return v5;
+  return minObservationCount;
 }
 
-+ (id)_eventSinceDateForContextualEvent:(id)a3
++ (id)_eventSinceDateForContextualEvent:(id)event
 {
-  v3 = [a3 eventSinceDate];
-  if (!v3)
+  eventSinceDate = [event eventSinceDate];
+  if (!eventSinceDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v3 = [v4 dateByAddingTimeInterval:-63072000.0];
+    date = [MEMORY[0x1E695DF00] date];
+    eventSinceDate = [date dateByAddingTimeInterval:-63072000.0];
   }
 
-  return v3;
+  return eventSinceDate;
 }
 
 @end

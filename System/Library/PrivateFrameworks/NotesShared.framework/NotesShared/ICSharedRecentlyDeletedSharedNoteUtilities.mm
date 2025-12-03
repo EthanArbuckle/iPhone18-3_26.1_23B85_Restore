@@ -1,34 +1,34 @@
 @interface ICSharedRecentlyDeletedSharedNoteUtilities
-+ (unint64_t)sharedNoteTypeForNotes:(id)a3;
-+ (void)showAlertsIfNecessaryForDeletingSharedNotes:(id)a3 noteDeleteType:(unint64_t)a4 displayWindow:(id)a5 completionHandler:(id)a6;
++ (unint64_t)sharedNoteTypeForNotes:(id)notes;
++ (void)showAlertsIfNecessaryForDeletingSharedNotes:(id)notes noteDeleteType:(unint64_t)type displayWindow:(id)window completionHandler:(id)handler;
 @end
 
 @implementation ICSharedRecentlyDeletedSharedNoteUtilities
 
-+ (void)showAlertsIfNecessaryForDeletingSharedNotes:(id)a3 noteDeleteType:(unint64_t)a4 displayWindow:(id)a5 completionHandler:(id)a6
++ (void)showAlertsIfNecessaryForDeletingSharedNotes:(id)notes noteDeleteType:(unint64_t)type displayWindow:(id)window completionHandler:(id)handler
 {
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 || (v12 = [a1 sharedNoteTypeForNotes:v13], v12 == 1))
+  notesCopy = notes;
+  windowCopy = window;
+  handlerCopy = handler;
+  if (type || (v12 = [self sharedNoteTypeForNotes:notesCopy], v12 == 1))
   {
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
-    [a1 showDeletingSharedNotesAlertWithType:v12 displayWindow:v10 completionHandler:v11];
+    [self showDeletingSharedNotesAlertWithType:v12 displayWindow:windowCopy completionHandler:handlerCopy];
   }
 }
 
-+ (unint64_t)sharedNoteTypeForNotes:(id)a3
++ (unint64_t)sharedNoteTypeForNotes:(id)notes
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 notesSharedViaICloudFromNotes:v4];
+  notesCopy = notes;
+  v5 = [self notesSharedViaICloudFromNotes:notesCopy];
   if (![v5 count])
   {
     v11 = 1;
@@ -91,7 +91,7 @@
               else
               {
                 v20 = v13;
-                v21 = v4;
+                v21 = notesCopy;
               }
 
               [v20 addObject:v21];
@@ -103,7 +103,7 @@
           while (v16);
         }
 
-        if ([v4 count] == 1)
+        if ([notesCopy count] == 1)
         {
           v22 = [v12 count] == 1;
           v23 = 7;
@@ -112,7 +112,7 @@
 
         else
         {
-          v25 = [v4 count];
+          v25 = [notesCopy count];
           v26 = [v14 count];
           v27 = [v12 count];
           if (v25 == v26)

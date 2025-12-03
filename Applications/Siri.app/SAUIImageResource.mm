@@ -1,18 +1,18 @@
 @interface SAUIImageResource
-- (id)_convertedImageOfSize:(CGSize)a3;
+- (id)_convertedImageOfSize:(CGSize)size;
 @end
 
 @implementation SAUIImageResource
 
-- (id)_convertedImageOfSize:(CGSize)a3
+- (id)_convertedImageOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SAUIImageResource *)self resourceUrl];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  resourceUrl = [(SAUIImageResource *)self resourceUrl];
+  if (resourceUrl)
   {
     v7 = objc_alloc_init(SFURLImage);
-    [v7 setUrlValue:v6];
+    [v7 setUrlValue:resourceUrl];
   }
 
   else

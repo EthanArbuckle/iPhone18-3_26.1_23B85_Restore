@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneCodecsLucene50ForUtil
 + (void)initialize;
 - (void)dealloc;
-- (void)readBlockWithOrgApacheLuceneStoreIndexInput:(id)a3 withByteArray:(id)a4 withIntArray:(id)a5;
-- (void)skipBlockWithOrgApacheLuceneStoreIndexInput:(id)a3;
-- (void)writeBlockWithIntArray:(id)a3 withByteArray:(id)a4 withOrgApacheLuceneStoreIndexOutput:(id)a5;
+- (void)readBlockWithOrgApacheLuceneStoreIndexInput:(id)input withByteArray:(id)array withIntArray:(id)intArray;
+- (void)skipBlockWithOrgApacheLuceneStoreIndexInput:(id)input;
+- (void)writeBlockWithIntArray:(id)array withByteArray:(id)byteArray withOrgApacheLuceneStoreIndexOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50ForUtil
 
-- (void)writeBlockWithIntArray:(id)a3 withByteArray:(id)a4 withOrgApacheLuceneStoreIndexOutput:(id)a5
+- (void)writeBlockWithIntArray:(id)array withByteArray:(id)byteArray withOrgApacheLuceneStoreIndexOutput:(id)output
 {
   if (atomic_load_explicit(OrgApacheLuceneCodecsLucene50ForUtil__initialized, memory_order_acquire))
   {
-    if (!a3)
+    if (!array)
     {
       goto LABEL_43;
     }
@@ -21,13 +21,13 @@
   else
   {
     sub_100040A10();
-    if (!a3)
+    if (!array)
     {
       goto LABEL_43;
     }
   }
 
-  v12 = *(a3 + 2);
+  v12 = *(array + 2);
   if (v12 <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(v12, 0);
@@ -36,13 +36,13 @@
   v13 = 0;
   for (i = 1; i != 128; ++i)
   {
-    v15 = *(a3 + 2);
+    v15 = *(array + 2);
     if (i >= v15)
     {
       IOSArray_throwOutOfBoundsWithMsg(v15, i);
     }
 
-    if (*(a3 + i + 3) != *(a3 + 3))
+    if (*(array + i + 3) != *(array + 3))
     {
       break;
     }
@@ -52,18 +52,18 @@
 
   if (v13)
   {
-    if (a5)
+    if (output)
     {
-      [a5 writeByteWithByte:0];
-      v16 = *(a3 + 2);
+      [output writeByteWithByte:0];
+      v16 = *(array + 2);
       if (v16 <= 0)
       {
         IOSArray_throwOutOfBoundsWithMsg(v16, 0);
       }
 
-      v17 = *(a3 + 3);
+      v17 = *(array + 3);
 
-      [a5 writeVIntWithInt:v17];
+      [output writeVIntWithInt:v17];
       return;
     }
 
@@ -80,17 +80,17 @@ LABEL_43:
   v19 = 0;
   do
   {
-    v20 = *(a3 + 2);
+    v20 = *(array + 2);
     if (v18 >= v20)
     {
       IOSArray_throwOutOfBoundsWithMsg(v20, v18);
     }
 
-    v19 |= *(a3 + v18++ + 3);
+    v19 |= *(array + v18++ + 3);
   }
 
   while (v18 != 128);
-  v21 = OrgApacheLuceneUtilPackedPackedInts_bitsRequiredWithLong_(v19, a2, a3, a4, a5, v5, v6, v7);
+  v21 = OrgApacheLuceneUtilPackedPackedInts_bitsRequiredWithLong_(v19, a2, array, byteArray, output, v5, v6, v7);
   encoders = self->encoders_;
   if (!encoders)
   {
@@ -130,39 +130,39 @@ LABEL_43:
     IOSArray_throwOutOfBoundsWithMsg(v30, v23);
   }
 
-  if (!a5)
+  if (!output)
   {
     goto LABEL_43;
   }
 
   v31 = *(&encodedSizes->super.size_ + v23 + 1);
-  [a5 writeByteWithByte:v23];
-  [(IOSClass *)v26 encodeWithIntArray:a3 withInt:0 withByteArray:a4 withInt:0 withInt:v29];
+  [output writeByteWithByte:v23];
+  [(IOSClass *)v26 encodeWithIntArray:array withInt:0 withByteArray:byteArray withInt:0 withInt:v29];
 
-  [a5 writeBytesWithByteArray:a4 withInt:v31];
+  [output writeBytesWithByteArray:byteArray withInt:v31];
 }
 
-- (void)readBlockWithOrgApacheLuceneStoreIndexInput:(id)a3 withByteArray:(id)a4 withIntArray:(id)a5
+- (void)readBlockWithOrgApacheLuceneStoreIndexInput:(id)input withByteArray:(id)array withIntArray:(id)intArray
 {
-  if (!a3)
+  if (!input)
   {
     goto LABEL_18;
   }
 
-  v9 = [a3 readByte];
-  if (v9)
+  readByte = [input readByte];
+  if (readByte)
   {
     encodedSizes = self->encodedSizes_;
     if (encodedSizes)
     {
-      v11 = v9;
+      v11 = readByte;
       size = encodedSizes->super.size_;
       if ((v11 & 0x80000000) != 0 || size <= v11)
       {
         IOSArray_throwOutOfBoundsWithMsg(size, v11);
       }
 
-      [a3 readBytesWithByteArray:a4 withInt:0 withInt:*(&encodedSizes->super.size_ + v11 + 1)];
+      [input readBytesWithByteArray:array withInt:0 withInt:*(&encodedSizes->super.size_ + v11 + 1)];
       decoders = self->decoders_;
       if (decoders)
       {
@@ -184,7 +184,7 @@ LABEL_43:
           v17 = *(&iterations->super.size_ + v11 + 1);
           v18 = (&decoders->elementType_)[v11];
 
-          [(IOSClass *)v18 decodeWithByteArray:a4 withInt:0 withIntArray:a5 withInt:0 withInt:v17];
+          [(IOSClass *)v18 decodeWithByteArray:array withInt:0 withIntArray:intArray withInt:0 withInt:v17];
           return;
         }
       }
@@ -194,25 +194,25 @@ LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v19 = [a3 readVInt];
+  readVInt = [input readVInt];
 
-  JavaUtilArrays_fillWithIntArray_withInt_withInt_withInt_(a5, 0, 128, v19, v20, v21, v22, v23);
+  JavaUtilArrays_fillWithIntArray_withInt_withInt_withInt_(intArray, 0, 128, readVInt, v20, v21, v22, v23);
 }
 
-- (void)skipBlockWithOrgApacheLuceneStoreIndexInput:(id)a3
+- (void)skipBlockWithOrgApacheLuceneStoreIndexInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     goto LABEL_12;
   }
 
-  v5 = [a3 readByte];
-  if (v5)
+  readByte = [input readByte];
+  if (readByte)
   {
     encodedSizes = self->encodedSizes_;
     if (encodedSizes)
     {
-      v7 = v5;
+      v7 = readByte;
       size = encodedSizes->super.size_;
       if ((v7 & 0x80000000) != 0 || size <= v7)
       {
@@ -220,9 +220,9 @@ LABEL_18:
       }
 
       v9 = *(&encodedSizes->super.size_ + v7 + 1);
-      v10 = [a3 getFilePointer] + v9;
+      v10 = [input getFilePointer] + v9;
 
-      [a3 seekWithLong:v10];
+      [input seekWithLong:v10];
       return;
     }
 
@@ -230,7 +230,7 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  [a3 readVInt];
+  [input readVInt];
 }
 
 - (void)dealloc
@@ -242,7 +242,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = 0;
     v3 = 0;

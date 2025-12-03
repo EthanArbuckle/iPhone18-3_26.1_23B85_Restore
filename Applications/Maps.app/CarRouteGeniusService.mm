@@ -5,18 +5,18 @@
 - (CarRouteGeniusService)init;
 - (id).cxx_construct;
 - (id)suggestion;
-- (void)_didUpdateRouteGeniusEntry:(id)a3;
-- (void)_isActive:(BOOL)a3;
-- (void)didUpdateRouteGenius:(id)a3;
-- (void)didUpdateRouteGeniusEntry:(id)a3;
+- (void)_didUpdateRouteGeniusEntry:(id)entry;
+- (void)_isActive:(BOOL)active;
+- (void)didUpdateRouteGenius:(id)genius;
+- (void)didUpdateRouteGeniusEntry:(id)entry;
 - (void)forceReroute;
-- (void)forceSuggestionWithMapItem:(id)a3;
-- (void)forceSuggestionWithRoute:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4;
+- (void)forceSuggestionWithMapItem:(id)item;
+- (void)forceSuggestionWithRoute:(id)route;
+- (void)registerObserver:(id)observer;
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response;
 - (void)start;
 - (void)stop;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CarRouteGeniusService
@@ -32,9 +32,9 @@
 - (BOOL)isForcingDestination
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  return (v4 & 1) != 0 && self->_forcingDestination;
+  return (isInternalInstall & 1) != 0 && self->_forcingDestination;
 }
 
 - (id)suggestion
@@ -74,20 +74,20 @@
   return v7;
 }
 
-- (void)_didUpdateRouteGeniusEntry:(id)a3
+- (void)_didUpdateRouteGeniusEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   entry = self->_state.entry;
   self->_state.entry = 0;
 
-  if (v5)
+  if (entryCopy)
   {
-    objc_storeStrong(&self->_state.entry, a3);
+    objc_storeStrong(&self->_state.entry, entry);
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v13 = v5;
+      v13 = entryCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "received entry: %{private}@", buf, 0xCu);
     }
 
@@ -96,7 +96,7 @@
     v10[1] = 3221225472;
     v10[2] = sub_10093E4DC;
     v10[3] = &unk_10162F368;
-    v11 = v5;
+    v11 = entryCopy;
     [(MapsSuggestionsObservers *)observers callBlock:v10];
   }
 
@@ -114,30 +114,30 @@
   }
 }
 
-- (void)didUpdateRouteGeniusEntry:(id)a3
+- (void)didUpdateRouteGeniusEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10093E704;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
+  v8 = entryCopy;
   innerQueue = self->_state.queue._innerQueue;
-  v6 = v4;
+  v6 = entryCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v5 = a3;
+  geniusCopy = genius;
   if (![(CarRouteGeniusService *)self isForcingDestination])
   {
-    if (v5)
+    if (geniusCopy)
     {
       v4 = [MapsSuggestionsRouteGeniusEntry entryWithData:?];
     }
@@ -151,48 +151,48 @@
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Unregistering observer: %@", &v6, 0xCu);
   }
 
-  [(MapsSuggestionsObservers *)self->_state.observers unregisterObserver:v4 handler:&stru_10162F340];
+  [(MapsSuggestionsObservers *)self->_state.observers unregisterObserver:observerCopy handler:&stru_10162F340];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Registering observer: %@", &v6, 0xCu);
   }
 
-  [(MapsSuggestionsObservers *)self->_state.observers registerObserver:v4 handler:&stru_10162F320];
+  [(MapsSuggestionsObservers *)self->_state.observers registerObserver:observerCopy handler:&stru_10162F320];
 }
 
-- (void)_isActive:(BOOL)a3
+- (void)_isActive:(BOOL)active
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_state.isActive = a3;
+  obj->_state.isActive = active;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isActive = v2->_state.isActive;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isActive = selfCopy->_state.isActive;
+  objc_sync_exit(selfCopy);
 
   return isActive;
 }
@@ -278,38 +278,38 @@
   return v3;
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = [a4 routes];
-  v8 = [v7 firstObject];
+  sessionCopy = session;
+  routes = [response routes];
+  firstObject = [routes firstObject];
 
-  [(CarRouteGeniusService *)self forceSuggestionWithRoute:v8];
-  [v6 invalidate];
+  [(CarRouteGeniusService *)self forceSuggestionWithRoute:firstObject];
+  [sessionCopy invalidate];
 }
 
-- (void)forceSuggestionWithRoute:(id)a3
+- (void)forceSuggestionWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = +[GEOPlatform sharedPlatform];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
-    if (v4)
+    if (routeCopy)
     {
-      v7 = [v4 destination];
-      v8 = [v7 name];
-      v9 = [MapsSuggestionsEntry entryWithType:0 title:v8 subtitle:0 weight:0 expires:0 sourceSpecificInfo:1.0];
+      destination = [routeCopy destination];
+      name = [destination name];
+      v9 = [MapsSuggestionsEntry entryWithType:0 title:name subtitle:0 weight:0 expires:0 sourceSpecificInfo:1.0];
 
       v10 = objc_alloc_init(GEOStorageRouteRequestStorage);
-      [v10 setTransportType:{objc_msgSend(v4, "transportType")}];
+      [v10 setTransportType:{objc_msgSend(routeCopy, "transportType")}];
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v11 = [v4 userRequestedWaypoints];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      userRequestedWaypoints = [routeCopy userRequestedWaypoints];
+      v12 = [userRequestedWaypoints countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = v12;
@@ -321,7 +321,7 @@
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(userRequestedWaypoints);
             }
 
             [v10 addWaypoints:*(*(&v17 + 1) + 8 * v15)];
@@ -329,14 +329,14 @@
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v13 = [userRequestedWaypoints countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v13);
       }
 
       [v9 setRouteRequestStorage:v10 forKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
-      v16 = [[MapsSuggestionsRouteGeniusEntry alloc] initWithEntry:v9 route:v4];
+      v16 = [[MapsSuggestionsRouteGeniusEntry alloc] initWithEntry:v9 route:routeCopy];
       [(CarRouteGeniusService *)self setForcingDestination:1];
       [(CarRouteGeniusService *)self didUpdateRouteGeniusEntry:v16];
     }
@@ -348,15 +348,15 @@
   }
 }
 
-- (void)forceSuggestionWithMapItem:(id)a3
+- (void)forceSuggestionWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[GEOPlatform sharedPlatform];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
-    if (v4)
+    if (itemCopy)
     {
       if ([(CarRouteGeniusService *)self isActive])
       {
@@ -365,13 +365,13 @@
 
       v7 = [NanoDirectionWaypoint directionWaypointForCurrentLocation:0];
       v15[0] = v7;
-      v8 = [NanoDirectionWaypoint directionWaypointWithGEOMapItem:v4];
+      v8 = [NanoDirectionWaypoint directionWaypointWithGEOMapItem:itemCopy];
       v15[1] = v8;
       v9 = [NSArray arrayWithObjects:v15 count:2];
       v10 = +[CarDisplayController sharedInstance];
-      v11 = [v10 chromeViewController];
-      v12 = [v11 currentTraits];
-      v13 = [NanoRoutePlanningRequest requestWithWaypoints:v9 viaTransportType:0 traits:v12 companionRouteContext:0];
+      chromeViewController = [v10 chromeViewController];
+      currentTraits = [chromeViewController currentTraits];
+      v13 = [NanoRoutePlanningRequest requestWithWaypoints:v9 viaTransportType:0 traits:currentTraits companionRouteContext:0];
 
       v14 = [[NanoRoutePlanningSession alloc] initWithOrigin:2];
       [(NanoRoutePlanningSession *)v14 setShouldBroadcast:0];

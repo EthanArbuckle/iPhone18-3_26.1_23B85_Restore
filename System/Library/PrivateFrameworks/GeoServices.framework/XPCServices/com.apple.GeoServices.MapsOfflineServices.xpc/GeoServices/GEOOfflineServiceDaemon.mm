@@ -1,10 +1,10 @@
 @interface GEOOfflineServiceDaemon
-- (BOOL)shouldAllowIncomingConnection:(id)a3;
+- (BOOL)shouldAllowIncomingConnection:(id)connection;
 @end
 
 @implementation GEOOfflineServiceDaemon
 
-- (BOOL)shouldAllowIncomingConnection:(id)a3
+- (BOOL)shouldAllowIncomingConnection:(id)connection
 {
   v3 = xpc_connection_copy_entitlement_value();
   v4 = v3;

@@ -2,26 +2,26 @@
 - (CGAffineTransform)transform;
 - (CGRect)sourceRect;
 - (CGSize)targetSize;
-- (TSCHGridPartitioner)initWithSourceRect:(CGRect)a3 gridWidth:(unint64_t)a4 gridHeight:(unint64_t)a5;
-- (TSCHGridPartitioner)initWithSourceSize:(CGSize)a3 gridWidth:(unint64_t)a4 gridHeight:(unint64_t)a5;
-- (unint64_t)gridKeyForSourcePoint:(CGPoint)a3;
+- (TSCHGridPartitioner)initWithSourceRect:(CGRect)rect gridWidth:(unint64_t)width gridHeight:(unint64_t)height;
+- (TSCHGridPartitioner)initWithSourceSize:(CGSize)size gridWidth:(unint64_t)width gridHeight:(unint64_t)height;
+- (unint64_t)gridKeyForSourcePoint:(CGPoint)point;
 @end
 
 @implementation TSCHGridPartitioner
 
-- (TSCHGridPartitioner)initWithSourceRect:(CGRect)a3 gridWidth:(unint64_t)a4 gridHeight:(unint64_t)a5
+- (TSCHGridPartitioner)initWithSourceRect:(CGRect)rect gridWidth:(unint64_t)width gridHeight:(unint64_t)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v94.receiver = self;
   v94.super_class = TSCHGridPartitioner;
   v12 = [(TSCHGridPartitioner *)&v94 init];
   if (v12)
   {
-    v16 = sub_27635F98C(a4, v11, v13, v14, v15);
-    v21 = sub_27635F98C(a5, v17, v18, v19, v20);
+    v16 = sub_27635F98C(width, v11, v13, v14, v15);
+    v21 = sub_27635F98C(height, v17, v18, v19, v20);
     v95.origin.x = x;
     v95.origin.y = y;
     v95.size.width = width;
@@ -92,18 +92,18 @@
   return v12;
 }
 
-- (TSCHGridPartitioner)initWithSourceSize:(CGSize)a3 gridWidth:(unint64_t)a4 gridHeight:(unint64_t)a5
+- (TSCHGridPartitioner)initWithSourceSize:(CGSize)size gridWidth:(unint64_t)width gridHeight:(unint64_t)height
 {
   TSURectWithSize();
 
-  return objc_msgSend_initWithSourceRect_gridWidth_gridHeight_(self, v8, v9, v10, v11, a4, a5);
+  return objc_msgSend_initWithSourceRect_gridWidth_gridHeight_(self, v8, v9, v10, v11, width, height);
 }
 
-- (unint64_t)gridKeyForSourcePoint:(CGPoint)a3
+- (unint64_t)gridKeyForSourcePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_sourceRect(self, a2, a3.x, a3.y, v3);
+  y = point.y;
+  x = point.x;
+  objc_msgSend_sourceRect(self, a2, point.x, point.y, v3);
   v27.x = x;
   v27.y = y;
   if (!CGRectContainsPoint(v28, v27))

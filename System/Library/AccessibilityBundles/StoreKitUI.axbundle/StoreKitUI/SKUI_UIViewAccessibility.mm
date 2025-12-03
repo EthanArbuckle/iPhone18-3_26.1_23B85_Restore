@@ -1,53 +1,53 @@
 @interface SKUI_UIViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:(id)item;
 @end
 
 @implementation SKUI_UIViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUINavigationBarButtonsController" hasInstanceVariable:@"_buttonItemElements" withType:"NSMapTable"];
-  [v3 validateClass:@"SKUIButtonViewElement"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUINavigationBarButtonsController" hasInstanceVariable:@"_buttonItemElements" withType:"NSMapTable"];
+  [validationsCopy validateClass:@"SKUIButtonViewElement"];
 }
 
-- (id)_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:(id)a3
+- (id)_accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = SKUI_UIViewAccessibility;
-  v5 = [(SKUI_UIViewAccessibility *)&v14 _accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:v4];
+  v5 = [(SKUI_UIViewAccessibility *)&v14 _accessibilityComputedLabelForNavigationBarWithAssociatedBarButtonItem:itemCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    accessibilityLabel = v5;
   }
 
   else
   {
-    v8 = [v4 target];
+    target = [itemCopy target];
     NSClassFromString(&cfstr_Skuinavigation.isa);
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v9 = [v8 safeValueForKey:@"_buttonItemElements"];
+      v9 = [target safeValueForKey:@"_buttonItemElements"];
       v10 = __UIAccessibilityCastAsClass();
 
-      v11 = [v10 objectForKey:v4];
+      v11 = [v10 objectForKey:itemCopy];
       v12 = __UIAccessibilitySafeClass();
 
-      v7 = [v12 accessibilityLabel];
+      accessibilityLabel = [v12 accessibilityLabel];
     }
 
     else
     {
-      v7 = 0;
+      accessibilityLabel = 0;
     }
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface SGExtractionInfo
-+ (SGExtractionInfo)extractionInfoWithExtractionType:(unint64_t)a3 modelVersion:(id)a4 confidence:(id)a5;
-- (SGExtractionInfo)initWithCoder:(id)a3;
-- (SGExtractionInfo)initWithExtractionType:(unint64_t)a3 modelVersion:(id)a4 confidence:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (SGExtractionInfo)extractionInfoWithExtractionType:(unint64_t)type modelVersion:(id)version confidence:(id)confidence;
+- (SGExtractionInfo)initWithCoder:(id)coder;
+- (SGExtractionInfo)initWithExtractionType:(unint64_t)type modelVersion:(id)version confidence:(id)confidence;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGExtractionInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(SGExtractionInfo *)self extractionType];
-  v6 = [(SGExtractionInfo *)self modelVersion];
-  v7 = [(SGExtractionInfo *)self confidence];
-  v8 = [v4 initWithExtractionType:v5 modelVersion:v6 confidence:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  extractionType = [(SGExtractionInfo *)self extractionType];
+  modelVersion = [(SGExtractionInfo *)self modelVersion];
+  confidence = [(SGExtractionInfo *)self confidence];
+  v8 = [v4 initWithExtractionType:extractionType modelVersion:modelVersion confidence:confidence];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extractionType = self->_extractionType;
-  v5 = a3;
-  [v5 encodeInt64:extractionType forKey:@"extractionType"];
-  [v5 encodeObject:self->_modelVersion forKey:@"modelVersion"];
-  [v5 encodeObject:self->_confidence forKey:@"confidence"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:extractionType forKey:@"extractionType"];
+  [coderCopy encodeObject:self->_modelVersion forKey:@"modelVersion"];
+  [coderCopy encodeObject:self->_confidence forKey:@"confidence"];
 }
 
-- (SGExtractionInfo)initWithCoder:(id)a3
+- (SGExtractionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SGExtractionInfo;
   v5 = [(SGExtractionInfo *)&v15 init];
   if (v5)
   {
-    v5->_extractionType = [v4 decodeInt64ForKey:@"extractionType"];
+    v5->_extractionType = [coderCopy decodeInt64ForKey:@"extractionType"];
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"modelVersion"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"modelVersion"];
 
     if (v7)
     {
@@ -54,7 +54,7 @@
     v5->_modelVersion = v8;
 
     v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"confidence"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"confidence"];
 
     if (v11)
     {
@@ -73,10 +73,10 @@
   return v5;
 }
 
-- (SGExtractionInfo)initWithExtractionType:(unint64_t)a3 modelVersion:(id)a4 confidence:(id)a5
+- (SGExtractionInfo)initWithExtractionType:(unint64_t)type modelVersion:(id)version confidence:(id)confidence
 {
-  v9 = a4;
-  v10 = a5;
+  versionCopy = version;
+  confidenceCopy = confidence;
   v22.receiver = self;
   v22.super_class = SGExtractionInfo;
   v11 = [(SGExtractionInfo *)&v22 init];
@@ -86,14 +86,14 @@
     goto LABEL_12;
   }
 
-  v11->_extractionType = a3;
-  [v10 floatValue];
-  if (v13 < 0.0 || ([v10 floatValue], v14 > 1.0))
+  v11->_extractionType = type;
+  [confidenceCopy floatValue];
+  if (v13 < 0.0 || ([confidenceCopy floatValue], v14 > 1.0))
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:v12 file:@"SGExtractionInfo.m" lineNumber:29 description:@"Extraction confidence must be between 0 and 1"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v12 file:@"SGExtractionInfo.m" lineNumber:29 description:@"Extraction confidence must be between 0 and 1"];
 
-    if (v9)
+    if (versionCopy)
     {
       goto LABEL_5;
     }
@@ -103,20 +103,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!versionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v15 = v9;
+  v15 = versionCopy;
 LABEL_8:
   modelVersion = v12->_modelVersion;
   v12->_modelVersion = v15;
 
-  if (v10)
+  if (confidenceCopy)
   {
-    v19 = v10;
+    v19 = confidenceCopy;
   }
 
   else
@@ -132,11 +132,11 @@ LABEL_12:
   return v12;
 }
 
-+ (SGExtractionInfo)extractionInfoWithExtractionType:(unint64_t)a3 modelVersion:(id)a4 confidence:(id)a5
++ (SGExtractionInfo)extractionInfoWithExtractionType:(unint64_t)type modelVersion:(id)version confidence:(id)confidence
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithExtractionType:a3 modelVersion:v9 confidence:v8];
+  confidenceCopy = confidence;
+  versionCopy = version;
+  v10 = [[self alloc] initWithExtractionType:type modelVersion:versionCopy confidence:confidenceCopy];
 
   return v10;
 }

@@ -1,7 +1,7 @@
 @interface SagaSetAlbumItemPropertyOperation
-- (SagaSetAlbumItemPropertyOperation)initWithCoder:(id)a3;
-- (SagaSetAlbumItemPropertyOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 albumPersistentID:(int64_t)a5 albumItemProperties:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SagaSetAlbumItemPropertyOperation)initWithCoder:(id)coder;
+- (SagaSetAlbumItemPropertyOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity albumPersistentID:(int64_t)d albumItemProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -29,20 +29,20 @@
     v7 = [NSString stringWithFormat:@"SagaSetAlbumItemPropertyOperation - (album_persistent_id = %lld)", self->_albumPersistentID];
     v8 = [[MSVXPCTransaction alloc] initWithName:v7];
     [v8 beginTransaction];
-    v9 = [(CloudLibraryOperation *)self musicLibrary];
-    v10 = [(CloudLibraryOperation *)self clientIdentity];
-    [v9 setClientIdentity:v10];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
     albumPersistentID = self->_albumPersistentID;
-    v12 = [(CloudLibraryOperation *)self musicLibrary];
-    v13 = [ML3Album newWithPersistentID:albumPersistentID inLibrary:v12];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+    v13 = [ML3Album newWithPersistentID:albumPersistentID inLibrary:musicLibrary2];
 
     if ([v13 existsInLibrary])
     {
       v39 = v7;
-      v14 = [(CloudLibraryOperation *)self musicLibrary];
+      musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
       v15 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyAlbumPersistentID equalToInt64:self->_albumPersistentID];
-      v16 = [ML3Track queryWithLibrary:v14 predicate:v15];
+      v16 = [ML3Track queryWithLibrary:musicLibrary3 predicate:v15];
 
       if ([v16 countOfEntities])
       {
@@ -75,8 +75,8 @@
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Sending edit request for %lu items", buf, 0xCu);
           }
 
-          v26 = [(CloudLibraryOperation *)self connection];
-          v27 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [v26 databaseID], v20, v21, 0);
+          connection = [(CloudLibraryOperation *)self connection];
+          v27 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [connection databaseID], v20, v21, 0);
           [v27 setVerificationInteractionLevel:2];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
@@ -86,7 +86,7 @@
           v41 = dispatch_semaphore_create(0);
           v28 = v21;
           v29 = v41;
-          [v26 sendRequest:v27 withResponseHandler:v40];
+          [connection sendRequest:v27 withResponseHandler:v40];
           dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
 
           v21 = v28;
@@ -139,9 +139,9 @@
       [(CloudLibraryOperation *)self setStatus:1];
     }
 
-    v36 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
     v37 = MSVTCCIdentityForCurrentProcess();
-    [v36 setClientIdentity:v37];
+    [musicLibrary4 setClientIdentity:v37];
 
     [v8 endTransaction];
   }
@@ -161,30 +161,30 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaSetAlbumItemPropertyOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_albumPersistentID forKey:{@"SagaSetAlbumItemPropertyOperationAlbumPersistentIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_albumItemProperties forKey:@"SagaSetAlbumItemPropertyOperationAlbumItemPropertiesKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_albumPersistentID forKey:{@"SagaSetAlbumItemPropertyOperationAlbumPersistentIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_albumItemProperties forKey:@"SagaSetAlbumItemPropertyOperationAlbumItemPropertiesKey"];
 }
 
-- (SagaSetAlbumItemPropertyOperation)initWithCoder:(id)a3
+- (SagaSetAlbumItemPropertyOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SagaSetAlbumItemPropertyOperation;
-  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_albumPersistentID = [v4 decodeInt64ForKey:@"SagaSetAlbumItemPropertyOperationAlbumPersistentIDKey"];
+    v5->_albumPersistentID = [coderCopy decodeInt64ForKey:@"SagaSetAlbumItemPropertyOperationAlbumPersistentIDKey"];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"SagaSetAlbumItemPropertyOperationAlbumItemPropertiesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"SagaSetAlbumItemPropertyOperationAlbumItemPropertiesKey"];
     albumItemProperties = v5->_albumItemProperties;
     v5->_albumItemProperties = v10;
   }
@@ -192,17 +192,17 @@
   return v5;
 }
 
-- (SagaSetAlbumItemPropertyOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 albumPersistentID:(int64_t)a5 albumItemProperties:(id)a6
+- (SagaSetAlbumItemPropertyOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity albumPersistentID:(int64_t)d albumItemProperties:(id)properties
 {
-  v10 = a6;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = SagaSetAlbumItemPropertyOperation;
-  v11 = [(CloudLibraryOperation *)&v16 initWithConfiguration:a3 clientIdentity:a4];
+  v11 = [(CloudLibraryOperation *)&v16 initWithConfiguration:configuration clientIdentity:identity];
   v12 = v11;
   if (v11)
   {
-    v11->_albumPersistentID = a5;
-    v13 = [v10 copy];
+    v11->_albumPersistentID = d;
+    v13 = [propertiesCopy copy];
     albumItemProperties = v12->_albumItemProperties;
     v12->_albumItemProperties = v13;
   }

@@ -7,7 +7,7 @@
 
 - (void)updateKeyboardAvoidance
 {
-  v2 = self;
+  selfCopy = self;
   sub_189091178();
 }
 

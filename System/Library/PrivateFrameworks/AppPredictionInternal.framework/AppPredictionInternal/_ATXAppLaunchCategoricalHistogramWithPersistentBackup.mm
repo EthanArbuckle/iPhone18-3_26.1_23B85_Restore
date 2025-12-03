@@ -1,13 +1,13 @@
 @interface _ATXAppLaunchCategoricalHistogramWithPersistentBackup
-- (BOOL)removeHistoryForBundleId:(id)a3;
-- (BOOL)removeHistoryForCategory:(id)a3;
-- (_ATXAppLaunchCategoricalHistogramWithPersistentBackup)initWithDataStore:(id)a3 histogramType:(int64_t)a4;
-- (int)removeHistoryForBundleIds:(id)a3;
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 category:(id)a5;
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 category:(id)a5 weight:(float)a6;
+- (BOOL)removeHistoryForBundleId:(id)id;
+- (BOOL)removeHistoryForCategory:(id)category;
+- (_ATXAppLaunchCategoricalHistogramWithPersistentBackup)initWithDataStore:(id)store histogramType:(int64_t)type;
+- (int)removeHistoryForBundleIds:(id)ids;
+- (void)addLaunchWithBundleId:(id)id date:(id)date category:(id)category;
+- (void)addLaunchWithBundleId:(id)id date:(id)date category:(id)category weight:(float)weight;
 - (void)flush;
 - (void)resetData;
-- (void)resetHistogram:(id)a3;
+- (void)resetHistogram:(id)histogram;
 @end
 
 @implementation _ATXAppLaunchCategoricalHistogramWithPersistentBackup
@@ -20,42 +20,42 @@
   [(_ATXAppLaunchCategoricalHistogram *)self encodeWithCoder:v4];
   objc_autoreleasePoolPop(v5);
   datastore = self->_datastore;
-  v7 = [v4 encodedData];
-  [(_ATXDataStore *)datastore addCategoricalHistogramData:v7 forHistogramOfType:self->_histogramType];
+  encodedData = [v4 encodedData];
+  [(_ATXDataStore *)datastore addCategoricalHistogramData:encodedData forHistogramOfType:self->_histogramType];
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (_ATXAppLaunchCategoricalHistogramWithPersistentBackup)initWithDataStore:(id)a3 histogramType:(int64_t)a4
+- (_ATXAppLaunchCategoricalHistogramWithPersistentBackup)initWithDataStore:(id)store histogramType:(int64_t)type
 {
-  v6 = a3;
+  storeCopy = store;
   v7 = dispatch_queue_create("com.apple.duetexpertd.histogramSaver", 0);
-  v8 = [(_ATXAppLaunchCategoricalHistogramWithPersistentBackup *)self initWithDataStore:v6 histogramType:a4 saveOnBackgroundQueue:v7 maxCategoryCount:30 pruningMethod:1];
+  v8 = [(_ATXAppLaunchCategoricalHistogramWithPersistentBackup *)self initWithDataStore:storeCopy histogramType:type saveOnBackgroundQueue:v7 maxCategoryCount:30 pruningMethod:1];
 
   return v8;
 }
 
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 category:(id)a5
+- (void)addLaunchWithBundleId:(id)id date:(id)date category:(id)category
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  [(_ATXAppLaunchCategoricalHistogram *)&v6 addLaunchWithBundleId:a3 date:a4 category:a5];
+  [(_ATXAppLaunchCategoricalHistogram *)&v6 addLaunchWithBundleId:id date:date category:category];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)addLaunchWithBundleId:(id)a3 date:(id)a4 category:(id)a5 weight:(float)a6
+- (void)addLaunchWithBundleId:(id)id date:(id)date category:(id)category weight:(float)weight
 {
   v7.receiver = self;
   v7.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  [(_ATXAppLaunchCategoricalHistogram *)&v7 addLaunchWithBundleId:a3 date:a4 category:a5 weight:?];
+  [(_ATXAppLaunchCategoricalHistogram *)&v7 addLaunchWithBundleId:id date:date category:category weight:?];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (BOOL)removeHistoryForBundleId:(id)a3
+- (BOOL)removeHistoryForBundleId:(id)id
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForBundleId:a3];
+  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForBundleId:id];
   if (v4)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (int)removeHistoryForBundleIds:(id)a3
+- (int)removeHistoryForBundleIds:(id)ids
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForBundleIds:a3];
+  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForBundleIds:ids];
   if (v4)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
@@ -77,11 +77,11 @@
   return v4;
 }
 
-- (BOOL)removeHistoryForCategory:(id)a3
+- (BOOL)removeHistoryForCategory:(id)category
 {
   v6.receiver = self;
   v6.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForCategory:a3];
+  v4 = [(_ATXAppLaunchCategoricalHistogram *)&v6 removeHistoryForCategory:category];
   if (v4)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
@@ -98,11 +98,11 @@
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 
-- (void)resetHistogram:(id)a3
+- (void)resetHistogram:(id)histogram
 {
   v4.receiver = self;
   v4.super_class = _ATXAppLaunchCategoricalHistogramWithPersistentBackup;
-  [(_ATXAppLaunchCategoricalHistogram *)&v4 resetHistogram:a3];
+  [(_ATXAppLaunchCategoricalHistogram *)&v4 resetHistogram:histogram];
   [(ATXBackgroundSaver *)self->_saver scheduleSave];
 }
 

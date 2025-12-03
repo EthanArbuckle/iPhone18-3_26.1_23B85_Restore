@@ -1,25 +1,25 @@
 @interface TRIRotateSubjectIdTask
-+ (id)parseFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TRIRotateSubjectIdTask)initWithCoder:(id)a3;
-- (TRIRotateSubjectIdTask)initWithDeviceId:(id)a3 nextRotationDate:(id)a4 forceUpdate:(BOOL)a5;
++ (id)parseFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (TRIRotateSubjectIdTask)initWithCoder:(id)coder;
+- (TRIRotateSubjectIdTask)initWithDeviceId:(id)id nextRotationDate:(id)date forceUpdate:(BOOL)update;
 - (id)_asPersistedTask;
-- (id)runTaskUsingContext:(id)a3;
+- (id)runTaskUsingContext:(id)context;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRotateSubjectIdTask
 
-- (TRIRotateSubjectIdTask)initWithDeviceId:(id)a3 nextRotationDate:(id)a4 forceUpdate:(BOOL)a5
+- (TRIRotateSubjectIdTask)initWithDeviceId:(id)id nextRotationDate:(id)date forceUpdate:(BOOL)update
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10 && [v10 length] <= 7)
+  idCopy = id;
+  dateCopy = date;
+  if (idCopy && [idCopy length] <= 7)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:50 description:{@"TRIRotateSubjectIdTask instantiated with unreasonably short deviceId: %@", v10}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:50 description:{@"TRIRotateSubjectIdTask instantiated with unreasonably short deviceId: %@", idCopy}];
   }
 
   v16.receiver = self;
@@ -28,51 +28,51 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deviceId, a3);
-    objc_storeStrong(&v13->_nextRotationDate, a4);
-    v13->_forceUpdate = a5;
+    objc_storeStrong(&v12->_deviceId, id);
+    objc_storeStrong(&v13->_nextRotationDate, date);
+    v13->_forceUpdate = update;
   }
 
   return v13;
 }
 
-- (id)runTaskUsingContext:(id)a3
+- (id)runTaskUsingContext:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x277D737E8];
-  v6 = [v4 paths];
-  v7 = [v5 defaultProviderWithPaths:v6];
+  paths = [contextCopy paths];
+  v7 = [v5 defaultProviderWithPaths:paths];
 
   if (self->_forceUpdate)
   {
     goto LABEL_8;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v7 nextRotationDate];
-  if (!v9 || (v10 = v9, [v7 nextRotationDate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "compare:", v8), v11, v10, v12 != 1))
+  date = [MEMORY[0x277CBEAA8] date];
+  nextRotationDate = [v7 nextRotationDate];
+  if (!nextRotationDate || (v10 = nextRotationDate, [v7 nextRotationDate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "compare:", date), v11, v10, v12 != 1))
   {
 
 LABEL_8:
-    v15 = [v4 client];
-    v8 = [v15 trackingId];
+    client = [contextCopy client];
+    date = [client trackingId];
 
-    v16 = [v7 subject];
+    subject = [v7 subject];
     [v7 rotateSubject];
     deviceId = self->_deviceId;
-    v18 = [v7 subject];
-    v19 = v18;
+    subject2 = [v7 subject];
+    v19 = subject2;
     if (deviceId)
     {
-      [v18 setDeviceId:deviceId];
+      [subject2 setDeviceId:deviceId];
     }
 
     else
     {
-      v20 = [v18 deviceId];
+      deviceId = [subject2 deviceId];
       v21 = self->_deviceId;
-      self->_deviceId = v20;
+      self->_deviceId = deviceId;
     }
 
     if (self->_nextRotationDate)
@@ -82,9 +82,9 @@ LABEL_8:
 
     else
     {
-      v22 = [v7 nextRotationDate];
+      nextRotationDate2 = [v7 nextRotationDate];
       nextRotationDate = self->_nextRotationDate;
-      self->_nextRotationDate = v22;
+      self->_nextRotationDate = nextRotationDate2;
     }
 
     if (![v7 save])
@@ -99,26 +99,26 @@ LABEL_30:
     }
 
     v24 = MEMORY[0x277D737E8];
-    v25 = [v4 paths];
-    v26 = [v24 defaultProviderWithPaths:v25];
+    paths2 = [contextCopy paths];
+    v26 = [v24 defaultProviderWithPaths:paths2];
 
-    v27 = [v26 subject];
-    v28 = [v27 hasDeviceId];
-    v29 = v28;
-    if (v28 && v16)
+    subject3 = [v26 subject];
+    hasDeviceId = [subject3 hasDeviceId];
+    v29 = hasDeviceId;
+    if (hasDeviceId && subject)
     {
-      v30 = [v26 subject];
-      v31 = [v16 isEqual:v30];
+      subject4 = [v26 subject];
+      v31 = [subject isEqual:subject4];
 
       if (v31)
       {
 LABEL_25:
-        v39 = [v26 subject];
-        v40 = [v39 deviceId];
+        subject5 = [v26 subject];
+        deviceId2 = [subject5 deviceId];
 
         v41 = TRILogCategory_Server();
         v42 = os_log_type_enabled(v41, OS_LOG_TYPE_ERROR);
-        if (v40)
+        if (deviceId2)
         {
           if (v42)
           {
@@ -149,23 +149,23 @@ LABEL_35:
         goto LABEL_25;
       }
 
-      if (!v16)
+      if (!subject)
       {
         goto LABEL_24;
       }
     }
 
-    v33 = [v4 client];
-    v34 = [v33 shouldLogAtLevel:20];
+    client2 = [contextCopy client];
+    v34 = [client2 shouldLogAtLevel:20];
 
     if (v34)
     {
-      v35 = [v4 client];
-      v36 = [v35 logger];
+      client3 = [contextCopy client];
+      logger = [client3 logger];
       v37 = [MEMORY[0x277D73B40] metricWithName:@"SubjectIdEnd"];
       v47 = v37;
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
-      [v36 logWithTrackingId:v8 metrics:v38 dimensions:0 trialSystemTelemetry:0];
+      [logger logWithTrackingId:date metrics:v38 dimensions:0 trialSystemTelemetry:0];
     }
 
 LABEL_24:
@@ -177,9 +177,9 @@ LABEL_24:
   v13 = TRILogCategory_Server();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v46 = [v7 nextRotationDate];
+    nextRotationDate3 = [v7 nextRotationDate];
     *buf = 138412290;
-    v49 = v46;
+    v49 = nextRotationDate3;
     _os_log_debug_impl(&dword_26F567000, v13, OS_LOG_TYPE_DEBUG, "Not yet rotating subject id.  Next rotation date is %@", buf, 0xCu);
   }
 
@@ -191,10 +191,10 @@ LABEL_31:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -203,9 +203,9 @@ LABEL_31:
   {
     v13.receiver = self;
     v13.super_class = TRIRotateSubjectIdTask;
-    if ([(TRIBaseTask *)&v13 isEqual:v4])
+    if ([(TRIBaseTask *)&v13 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_forceUpdate == v5->_forceUpdate)
       {
         v6 = self->_deviceId;
@@ -304,25 +304,25 @@ LABEL_18:
 
 - (id)serialize
 {
-  v4 = [(TRIRotateSubjectIdTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIRotateSubjectIdTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:187 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:187 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
   v16 = 0;
-  v4 = [(TRIPBMessage *)TRIRotateSubjectIdPersistedTask parseFromData:a3 error:&v16];
+  v4 = [(TRIPBMessage *)TRIRotateSubjectIdPersistedTask parseFromData:data error:&v16];
   v5 = v16;
   if (!v4)
   {
@@ -360,26 +360,26 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v6 = [v4 deviceId];
-  v7 = v6;
-  if (!v6 || [v6 length]> 7)
+  deviceId = [v4 deviceId];
+  v7 = deviceId;
+  if (!deviceId || [deviceId length]> 7)
   {
 LABEL_15:
     v9 = objc_opt_class();
-    v10 = [v4 hasNextRotationTimestamp];
-    if (v10)
+    hasNextRotationTimestamp = [v4 hasNextRotationTimestamp];
+    if (hasNextRotationTimestamp)
     {
-      a1 = [v4 nextRotationTimestamp];
-      v11 = [a1 date];
+      self = [v4 nextRotationTimestamp];
+      date = [self date];
     }
 
     else
     {
-      v11 = 0;
+      date = 0;
     }
 
-    v8 = [v9 taskWithDeviceId:v7 nextRotationDate:v11 forceUpdate:{objc_msgSend(v4, "forceUpdate")}];
-    if (!v10)
+    v8 = [v9 taskWithDeviceId:v7 nextRotationDate:date forceUpdate:{objc_msgSend(v4, "forceUpdate")}];
+    if (!hasNextRotationTimestamp)
     {
       goto LABEL_21;
     }
@@ -387,12 +387,12 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  a1 = TRILogCategory_Server();
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  self = TRILogCategory_Server();
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v18 = v7;
-    _os_log_error_impl(&dword_26F567000, a1, OS_LOG_TYPE_ERROR, "TRIRotateSubjectIdPersistedTask contains unreasonably short deviceId: %@", buf, 0xCu);
+    _os_log_error_impl(&dword_26F567000, self, OS_LOG_TYPE_ERROR, "TRIRotateSubjectIdPersistedTask contains unreasonably short deviceId: %@", buf, 0xCu);
   }
 
   v8 = 0;
@@ -404,15 +404,15 @@ LABEL_21:
   return v8;
 }
 
-- (TRIRotateSubjectIdTask)initWithCoder:(id)a3
+- (TRIRotateSubjectIdTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIRotateSubjectIdTask;
   v5 = [(TRIRotateSubjectIdTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -432,18 +432,18 @@ LABEL_21:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:216 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRotateSubjectIdTask.m" lineNumber:216 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIRotateSubjectIdTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIRotateSubjectIdTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

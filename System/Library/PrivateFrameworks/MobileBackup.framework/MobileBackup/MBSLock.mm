@@ -1,11 +1,11 @@
 @interface MBSLock
-- (MBSLock)initWithState:(int)a3 type:(int)a4 owner:(id)a5 timeout:(unint64_t)a6;
+- (MBSLock)initWithState:(int)state type:(int)type owner:(id)owner timeout:(unint64_t)timeout;
 - (void)dealloc;
 @end
 
 @implementation MBSLock
 
-- (MBSLock)initWithState:(int)a3 type:(int)a4 owner:(id)a5 timeout:(unint64_t)a6
+- (MBSLock)initWithState:(int)state type:(int)type owner:(id)owner timeout:(unint64_t)timeout
 {
   v13.receiver = self;
   v13.super_class = MBSLock;
@@ -13,10 +13,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_state = a3;
-    v10->_type = a4;
-    v10->_owner = [a5 copy];
-    v11->_timeout = a6;
+    v10->_state = state;
+    v10->_type = type;
+    v10->_owner = [owner copy];
+    v11->_timeout = timeout;
   }
 
   return v11;

@@ -10,15 +10,15 @@
   v7[1] = *MEMORY[0x1E69E9840];
   if ([a3 allowsKeyedCoding])
   {
-    [a3 encodeObject:objc_msgSend(a1 forKey:{"name"), @"NS.name"}];
-    v5 = [a1 data];
+    [a3 encodeObject:objc_msgSend(self forKey:{"name"), @"NS.name"}];
+    data = [self data];
 
-    return [a3 encodeObject:v5 forKey:@"NS.data"];
+    return [a3 encodeObject:data forKey:@"NS.data"];
   }
 
   else
   {
-    v7[0] = [a1 name];
+    v7[0] = [self name];
     return [a3 encodeValueOfObjCType:"@" at:v7];
   }
 }
@@ -46,7 +46,7 @@
         {
           v8 = v12;
 LABEL_18:
-          v10 = [a1 initWithName:v13[0] data:v8];
+          v10 = [self initWithName:v13[0] data:v8];
 
           v11 = v12;
 LABEL_21:
@@ -70,7 +70,7 @@ LABEL_21:
 
         else
         {
-          v10 = [a1 initWithName:v13[0]];
+          v10 = [self initWithName:v13[0]];
         }
 
         v11 = v13[0];
@@ -91,7 +91,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  return [a1 initWithName:v5 data:v6];
+  return [self initWithName:v5 data:v6];
 }
 
 @end

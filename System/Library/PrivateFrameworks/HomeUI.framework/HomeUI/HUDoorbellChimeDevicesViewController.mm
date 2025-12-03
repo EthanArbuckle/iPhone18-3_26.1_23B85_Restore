@@ -1,8 +1,8 @@
 @interface HUDoorbellChimeDevicesViewController
 - (HUDoorbellChimeDevicesViewController)init;
-- (HUDoorbellChimeDevicesViewController)initWithAccessorySettingItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (HUDoorbellChimeDevicesViewController)initWithAccessorySettingItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HUDoorbellChimeDevicesViewController
@@ -24,20 +24,20 @@
   return v4;
 }
 
-- (HUDoorbellChimeDevicesViewController)initWithAccessorySettingItem:(id)a3
+- (HUDoorbellChimeDevicesViewController)initWithAccessorySettingItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithAccessorySettingItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUDoorbellChimeDevicesViewController.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUDoorbellChimeDevicesViewController initWithAccessorySettingItem:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUDoorbellChimeDevicesViewController.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUDoorbellChimeDevicesViewController initWithAccessorySettingItem:]", v6}];
 
   return 0;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v9 = v6;
+  v9 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v9;
@@ -53,15 +53,15 @@
   [v8 setDelegate:self];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
+  onCopy = on;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [v6 item];
+  item = [cellCopy item];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = item;
   }
 
   else
@@ -71,28 +71,28 @@
 
   v9 = v8;
 
-  v10 = [v9 sourceItem];
+  sourceItem = [v9 sourceItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_7:
-    v13 = [(HUDoorbellChimeDevicesViewController *)self doorbellChimeDevicesItemManager];
-    v14 = [v6 item];
-    v15 = [v13 enableDoorbellChime:v4 forItem:v14];
+    doorbellChimeDevicesItemManager = [(HUDoorbellChimeDevicesViewController *)self doorbellChimeDevicesItemManager];
+    item2 = [cellCopy item];
+    v15 = [doorbellChimeDevicesItemManager enableDoorbellChime:onCopy forItem:item2];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __61__HUDoorbellChimeDevicesViewController_switchCell_didTurnOn___block_invoke;
     v17[3] = &unk_277DBC098;
-    v18 = v6;
-    v19 = v4;
+    v18 = cellCopy;
+    v19 = onCopy;
     v16 = [v15 addFailureBlock:v17];
 
     goto LABEL_8;
   }
 
-  v11 = [v9 sourceItem];
+  sourceItem2 = [v9 sourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

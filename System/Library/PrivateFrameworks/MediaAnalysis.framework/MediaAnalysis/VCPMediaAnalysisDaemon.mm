@@ -1,10 +1,10 @@
 @interface VCPMediaAnalysisDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (VCPMediaAnalysisDaemon)init;
-- (int)run:(int)a3 argv:(const char *)a4;
-- (void)registerClient:(id)a3 forPhotoLibraryURL:(id)a4 withReply:(id)a5;
+- (int)run:(int)run argv:(const char *)argv;
+- (void)registerClient:(id)client forPhotoLibraryURL:(id)l withReply:(id)reply;
 - (void)registerPhotosTasks;
-- (void)storeAnalysis:(id)a3 forAsset:(id)a4 fromPhotoLibraryURL:(id)a5 withReply:(id)a6;
+- (void)storeAnalysis:(id)analysis forAsset:(id)asset fromPhotoLibraryURL:(id)l withReply:(id)reply;
 @end
 
 @implementation VCPMediaAnalysisDaemon
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_publicServiceListener == v6 || self->_videoSessionListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_publicServiceListener == listenerCopy || self->_videoSessionListener == listenerCopy)
   {
     goto LABEL_21;
   }
@@ -55,9 +55,9 @@
     }
   }
 
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -111,17 +111,17 @@
     sub_100002CBC(&error);
     sub_100002CBC(&v27);
 LABEL_21:
-    if (self->_storageListener == v6)
+    if (self->_storageListener == listenerCopy)
     {
       v19 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VCPStorageServiceProtocol];
-      [v7 setExportedInterface:v19];
+      [connectionCopy setExportedInterface:v19];
 
-      [v7 setExportedObject:self];
+      [connectionCopy setExportedObject:self];
     }
 
     else
     {
-      if (self->_realTimeListener != v6 && self->_analysisListener != v6 && self->_publicServiceListener != v6 && self->_homeKitListener != v6 && self->_homeKitSessionListener != v6 && self->_macsListener != v6 && self->_videoSessionListener != v6 && self->_embeddingStoreListener != v6)
+      if (self->_realTimeListener != listenerCopy && self->_analysisListener != listenerCopy && self->_publicServiceListener != listenerCopy && self->_homeKitListener != listenerCopy && self->_homeKitSessionListener != listenerCopy && self->_macsListener != listenerCopy && self->_videoSessionListener != listenerCopy && self->_embeddingStoreListener != listenerCopy)
       {
         if (MediaAnalysisLogLevel() < 4)
         {
@@ -139,7 +139,7 @@ LABEL_21:
         goto LABEL_50;
       }
 
-      v22 = [objc_opt_class() clientHandlerWithXPCConnection:v7];
+      v22 = [objc_opt_class() clientHandlerWithXPCConnection:connectionCopy];
       if (!v22)
       {
         if (MediaAnalysisLogLevel() < 4)
@@ -164,7 +164,7 @@ LABEL_50:
       [v23 addClientHandler:v22];
     }
 
-    [v7 resume];
+    [connectionCopy resume];
     v21 = 1;
     goto LABEL_46;
   }
@@ -199,21 +199,21 @@ LABEL_46:
   return v21;
 }
 
-- (void)storeAnalysis:(id)a3 forAsset:(id)a4 fromPhotoLibraryURL:(id)a5 withReply:(id)a6
+- (void)storeAnalysis:(id)analysis forAsset:(id)asset fromPhotoLibraryURL:(id)l withReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  analysisCopy = analysis;
+  assetCopy = asset;
+  lCopy = l;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v13 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v13))
     {
-      [v9 vcp_types];
+      [analysisCopy vcp_types];
       v14 = MediaAnalysisTypeDescription();
       *buf = 138412546;
-      v66 = v10;
+      v66 = assetCopy;
       v67 = 2112;
       v68 = v14;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "  [%@] Received storage request with analysis types: (%@)", buf, 0x16u);
@@ -221,7 +221,7 @@ LABEL_46:
   }
 
   v15 = +[VCPPhotoLibraryManager sharedManager];
-  v16 = [v15 photoLibraryWithURL:v11];
+  v16 = [v15 photoLibraryWithURL:lCopy];
 
   if (!v16)
   {
@@ -230,9 +230,9 @@ LABEL_46:
       v19 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v19))
       {
-        v20 = [v11 path];
+        path = [lCopy path];
         *buf = 138412290;
-        v66 = v20;
+        v66 = path;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v19, " Failed to open Photos Library at %@; cannot store analysis", buf, 0xCu);
       }
     }
@@ -254,7 +254,7 @@ LABEL_46:
           if (os_log_type_enabled(&_os_log_default, v18))
           {
             *buf = 138412290;
-            v66 = v10;
+            v66 = assetCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v18, " [%@] Failed to initialize MADVectorDatabaseChangeManager", buf, 0xCu);
           }
         }
@@ -269,7 +269,7 @@ LABEL_46:
     }
 
     v58 = [PHAsset vcp_fetchOptionsForLibrary:v16 forTaskID:1];
-    v64 = v10;
+    v64 = assetCopy;
     v21 = [NSArray arrayWithObjects:&v64 count:1];
     v59 = [PHAsset fetchAssetsWithLocalIdentifiers:v21 options:v58];
 
@@ -285,10 +285,10 @@ LABEL_46:
         v22 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v22))
         {
-          v23 = [v59 firstObject];
-          v24 = [v23 localIdentifier];
+          firstObject = [v59 firstObject];
+          localIdentifier = [firstObject localIdentifier];
           *buf = 138412290;
-          v66 = v24;
+          v66 = localIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[%@][MACD] Persisting results to CoreData", buf, 0xCu);
         }
       }
@@ -311,7 +311,7 @@ LABEL_46:
       v61[2] = sub_1000050D8;
       v61[3] = &unk_100282938;
       v62 = v59;
-      v63 = v9;
+      v63 = analysisCopy;
       v60 = 0;
       v30 = [v16 mad_performAnalysisDataStoreChanges:v61 error:&v60];
       v31 = v60;
@@ -326,19 +326,19 @@ LABEL_46:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_INTERVAL_END, spid, "VCPMediaAnalysisDaemon_PublishCoreData_Single", "", buf, 2u);
         }
 
-        v35 = 0;
+        code = 0;
       }
 
       else
       {
-        v35 = [v31 code];
+        code = [v31 code];
       }
 
       if ((v30 & 1) == 0)
       {
 LABEL_67:
 
-        if (!v35)
+        if (!code)
         {
           goto LABEL_71;
         }
@@ -349,7 +349,7 @@ LABEL_67:
 
     else
     {
-      v35 = 0;
+      code = 0;
     }
 
     if (+[VCPDatabaseWriter isLegacyPersistEnabled])
@@ -359,10 +359,10 @@ LABEL_67:
         v36 = VCPLogToOSLogType[6];
         if (os_log_type_enabled(&_os_log_default, v36))
         {
-          v37 = [v59 firstObject];
-          v38 = [v37 localIdentifier];
+          firstObject2 = [v59 firstObject];
+          localIdentifier2 = [firstObject2 localIdentifier];
           *buf = 138412290;
-          v66 = v38;
+          v66 = localIdentifier2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "[%@][MACD] Persisting results to MA DB", buf, 0xCu);
         }
       }
@@ -380,7 +380,7 @@ LABEL_67:
       }
 
       v43 = [v59 objectAtIndexedSubscript:0];
-      v44 = [v17 storeAnalysisForAsset:v43 analysis:v9];
+      v44 = [v17 storeAnalysisForAsset:v43 analysis:analysisCopy];
 
       v45 = 6;
       if (v44 == -108 || v44 == -36)
@@ -394,30 +394,30 @@ LABEL_67:
         if (v44 != -23)
         {
           v45 = 0;
-          v46 = v35;
+          v46 = code;
         }
       }
 
       if (v44 != -108 && v44 != -36 && v44 != -23)
       {
-        v47 = [v17 commit];
+        commit = [v17 commit];
         v45 = 6;
-        if (v47 == -108 || v47 == -36)
+        if (commit == -108 || commit == -36)
         {
-          v35 = v47;
+          code = commit;
         }
 
         else
         {
-          v35 = v47;
-          if (v47 != -23)
+          code = commit;
+          if (commit != -23)
           {
             v45 = 0;
-            v35 = v46;
+            code = v46;
           }
         }
 
-        if (v47 != -108 && v47 != -36 && v47 != -23)
+        if (commit != -108 && commit != -36 && commit != -23)
         {
           v53 = VCPSignPostLog();
           v54 = v53;
@@ -430,10 +430,10 @@ LABEL_67:
           goto LABEL_57;
         }
 
-        v46 = v35;
+        v46 = code;
       }
 
-      v35 = v46;
+      code = v46;
       if (v45)
       {
         goto LABEL_67;
@@ -442,7 +442,7 @@ LABEL_67:
 
 LABEL_57:
     v48 = [v59 objectAtIndexedSubscript:{0, spida}];
-    v49 = [v57 updateAsset:v48 analysis:v9 imageOnly:0 vskResults:0];
+    v49 = [v57 updateAsset:v48 analysis:analysisCopy imageOnly:0 vskResults:0];
 
     if (v49)
     {
@@ -458,7 +458,7 @@ LABEL_57:
       }
 
       *buf = 138412290;
-      v66 = v10;
+      v66 = assetCopy;
       v51 = " [%@] Failed to update vector database changes";
     }
 
@@ -481,13 +481,13 @@ LABEL_57:
       }
 
       *buf = 138412290;
-      v66 = v10;
+      v66 = assetCopy;
       v51 = " [%@] Failed to publish vector database changes";
     }
 
     _os_log_impl(&_mh_execute_header, &_os_log_default, v50, v51, buf, 0xCu);
 LABEL_66:
-    v35 = -18;
+    code = -18;
     goto LABEL_67;
   }
 
@@ -498,27 +498,27 @@ LABEL_68:
     if (os_log_type_enabled(&_os_log_default, v52))
     {
       *buf = 138412290;
-      v66 = v10;
+      v66 = assetCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v52, "  [%@] Failed to store analysis", buf, 0xCu);
     }
   }
 
 LABEL_71:
-  v12[2](v12);
+  replyCopy[2](replyCopy);
 }
 
-- (void)registerClient:(id)a3 forPhotoLibraryURL:(id)a4 withReply:(id)a5
+- (void)registerClient:(id)client forPhotoLibraryURL:(id)l withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  clientCopy = client;
+  lCopy = l;
+  replyCopy = reply;
   v10 = +[VCPPhotoLibraryManager sharedManager];
-  v11 = [v10 photoLibraryWithURL:v8];
+  v11 = [v10 photoLibraryWithURL:lCopy];
 
   if (v11)
   {
-    v12 = [v11 vcp_mediaAnalysisDirectory];
-    [v12 UTF8String];
+    vcp_mediaAnalysisDirectory = [v11 vcp_mediaAnalysisDirectory];
+    [vcp_mediaAnalysisDirectory UTF8String];
     v13 = sandbox_extension_issue_file();
     if (v13)
     {
@@ -528,15 +528,15 @@ LABEL_71:
         if (os_log_type_enabled(&_os_log_default, v14))
         {
           v19 = 138412546;
-          v20 = v12;
+          v20 = vcp_mediaAnalysisDirectory;
           v21 = 2112;
-          v22 = v7;
+          v22 = clientCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "Issuing sandbox extension for %@ to %@", &v19, 0x16u);
         }
       }
 
       v15 = [NSString stringWithUTF8String:v13];
-      v9[2](v9, v15);
+      replyCopy[2](replyCopy, v15);
 
       free(v13);
     }
@@ -549,14 +549,14 @@ LABEL_71:
         if (os_log_type_enabled(&_os_log_default, v18))
         {
           v19 = 138412546;
-          v20 = v12;
+          v20 = vcp_mediaAnalysisDirectory;
           v21 = 2112;
-          v22 = v7;
+          v22 = clientCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v18, "Failed to issue sandbox extension on %@ for %@", &v19, 0x16u);
         }
       }
 
-      v9[2](v9, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -567,14 +567,14 @@ LABEL_71:
       v16 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v16))
       {
-        v17 = [v8 path];
+        path = [lCopy path];
         v19 = 138412290;
-        v20 = v17;
+        v20 = path;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "Failed to open Photos Library at %@; cannot issue sandbox extension", &v19, 0xCu);
       }
     }
 
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
@@ -626,12 +626,12 @@ LABEL_71:
   [v14 registerTask];
 }
 
-- (int)run:(int)a3 argv:(const char *)a4
+- (int)run:(int)run argv:(const char *)argv
 {
-  v5 = [MADSystemXPCStoreContainer sharedContainer:*&a3];
+  v5 = [MADSystemXPCStoreContainer sharedContainer:*&run];
   +[PHPhotoLibrary enableMultiLibraryMode];
   v6 = +[VCPPhotoLibraryManager sharedManager];
-  v7 = [v6 allPhotoLibraries];
+  allPhotoLibraries = [v6 allPhotoLibraries];
 
   v8 = +[MADPhotosDeferredBackgroundSystemTask sharedTask];
   [v8 registerTask];

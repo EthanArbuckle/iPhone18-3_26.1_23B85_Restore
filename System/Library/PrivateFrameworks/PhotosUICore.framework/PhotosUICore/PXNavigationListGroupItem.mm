@@ -1,26 +1,26 @@
 @interface PXNavigationListGroupItem
-+ (id)titleForIdentifier:(id)a3;
++ (id)titleForIdentifier:(id)identifier;
 - (BOOL)canRearrangeContent;
-- (PXNavigationListGroupItem)initWithCollectionList:(id)a3;
-- (PXNavigationListGroupItem)initWithIdentifier:(id)a3 defaultsToExpanded:(BOOL)a4;
-- (PXNavigationListGroupItem)initWithIdentifier:(id)a3 displayInline:(BOOL)a4;
+- (PXNavigationListGroupItem)initWithCollectionList:(id)list;
+- (PXNavigationListGroupItem)initWithIdentifier:(id)identifier defaultsToExpanded:(BOOL)expanded;
+- (PXNavigationListGroupItem)initWithIdentifier:(id)identifier displayInline:(BOOL)inline;
 - (id)accessibilityIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXNavigationListGroupItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PXNavigationListGroupItem;
-  v4 = [(PXNavigationListItem *)&v8 copyWithZone:a3];
+  v4 = [(PXNavigationListItem *)&v8 copyWithZone:zone];
   v4[48] = [(PXNavigationListGroupItem *)self isGroup];
   v4[49] = [(PXNavigationListGroupItem *)self isDraggable];
   v4[50] = [(PXNavigationListGroupItem *)self isExpandable];
-  v5 = [(PXNavigationListGroupItem *)self collection];
+  collection = [(PXNavigationListGroupItem *)self collection];
   v6 = *(v4 + 7);
-  *(v4 + 7) = v5;
+  *(v4 + 7) = collection;
 
   v4[51] = [(PXNavigationListGroupItem *)self displayInline];
   return v4;
@@ -28,10 +28,10 @@
 
 - (BOOL)canRearrangeContent
 {
-  v2 = [(PXNavigationListGroupItem *)self collection];
-  v3 = [v2 px_canRearrangeContent];
+  collection = [(PXNavigationListGroupItem *)self collection];
+  px_canRearrangeContent = [collection px_canRearrangeContent];
 
-  return v3;
+  return px_canRearrangeContent;
 }
 
 - (id)accessibilityIdentifier
@@ -41,8 +41,8 @@
     dispatch_once(&accessibilityIdentifier_onceToken, &__block_literal_global_451);
   }
 
-  v3 = [(PXNavigationListItem *)self identifier];
-  v4 = [accessibilityIdentifier_mapping objectForKeyedSubscript:v3];
+  identifier = [(PXNavigationListItem *)self identifier];
+  v4 = [accessibilityIdentifier_mapping objectForKeyedSubscript:identifier];
   v5 = v4;
   if (v4)
   {
@@ -51,7 +51,7 @@
 
   else
   {
-    v6 = v3;
+    v6 = identifier;
   }
 
   v7 = v6;
@@ -75,90 +75,90 @@ void __52__PXNavigationListGroupItem_accessibilityIdentifier__block_invoke()
   accessibilityIdentifier_mapping = v0;
 }
 
-- (PXNavigationListGroupItem)initWithCollectionList:(id)a3
+- (PXNavigationListGroupItem)initWithCollectionList:(id)list
 {
-  v5 = a3;
-  v6 = [v5 transientIdentifier];
-  v7 = v6;
-  if (v6)
+  listCopy = list;
+  transientIdentifier = [listCopy transientIdentifier];
+  v7 = transientIdentifier;
+  if (transientIdentifier)
   {
-    v8 = v6;
+    localIdentifier = transientIdentifier;
   }
 
   else
   {
-    v8 = [v5 localIdentifier];
+    localIdentifier = [listCopy localIdentifier];
   }
 
-  v9 = v8;
+  v9 = localIdentifier;
 
-  v10 = [v5 px_localizedTitle];
+  px_localizedTitle = [listCopy px_localizedTitle];
   v16.receiver = self;
   v16.super_class = PXNavigationListGroupItem;
-  v11 = [(PXNavigationListItem *)&v16 initWithIdentifier:v9 title:v10 accessoryTitle:0 reorderable:1 topLevelIdentifier:0];
+  v11 = [(PXNavigationListItem *)&v16 initWithIdentifier:v9 title:px_localizedTitle accessoryTitle:0 reorderable:1 topLevelIdentifier:0];
   v12 = v11;
   if (v11)
   {
     v11->_expandable = 1;
     v11->_group = 1;
-    objc_storeStrong(&v11->_collection, a3);
-    v13 = PXNavigationListItemCollectionIdentifier(v5);
+    objc_storeStrong(&v11->_collection, list);
+    v13 = PXNavigationListItemCollectionIdentifier(listCopy);
     collectionIdentifier = v12->_collectionIdentifier;
     v12->_collectionIdentifier = v13;
 
-    v12->_defaultsToExpanded = [v5 px_isBookmarksFolder];
+    v12->_defaultsToExpanded = [listCopy px_isBookmarksFolder];
   }
 
   return v12;
 }
 
-- (PXNavigationListGroupItem)initWithIdentifier:(id)a3 defaultsToExpanded:(BOOL)a4
+- (PXNavigationListGroupItem)initWithIdentifier:(id)identifier defaultsToExpanded:(BOOL)expanded
 {
-  v6 = a3;
-  v7 = [objc_opt_class() titleForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() titleForIdentifier:identifierCopy];
   v10.receiver = self;
   v10.super_class = PXNavigationListGroupItem;
-  v8 = [(PXNavigationListItem *)&v10 initWithIdentifier:v6 title:v7 accessoryTitle:0 reorderable:1 topLevelIdentifier:0];
+  v8 = [(PXNavigationListItem *)&v10 initWithIdentifier:identifierCopy title:v7 accessoryTitle:0 reorderable:1 topLevelIdentifier:0];
 
   if (v8)
   {
     v8->_expandable = 1;
     v8->_group = 1;
-    v8->_defaultsToExpanded = a4;
+    v8->_defaultsToExpanded = expanded;
   }
 
   return v8;
 }
 
-- (PXNavigationListGroupItem)initWithIdentifier:(id)a3 displayInline:(BOOL)a4
+- (PXNavigationListGroupItem)initWithIdentifier:(id)identifier displayInline:(BOOL)inline
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() titleForIdentifier:v6];
+  inlineCopy = inline;
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() titleForIdentifier:identifierCopy];
   v10.receiver = self;
   v10.super_class = PXNavigationListGroupItem;
-  v8 = [(PXNavigationListItem *)&v10 initWithIdentifier:v6 title:v7 accessoryTitle:0 reorderable:!v4 topLevelIdentifier:0];
+  v8 = [(PXNavigationListItem *)&v10 initWithIdentifier:identifierCopy title:v7 accessoryTitle:0 reorderable:!inlineCopy topLevelIdentifier:0];
 
   if (v8)
   {
     v8->_expandable = 1;
     v8->_group = 1;
-    v8->_displayInline = v4;
+    v8->_displayInline = inlineCopy;
   }
 
   return v8;
 }
 
-+ (id)titleForIdentifier:(id)a3
++ (id)titleForIdentifier:(id)identifier
 {
   v3 = titleForIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&titleForIdentifier__onceToken, &__block_literal_global_84617);
   }
 
-  v5 = [titleForIdentifier__titles objectForKeyedSubscript:v4];
+  v5 = [titleForIdentifier__titles objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }

@@ -1,23 +1,23 @@
 @interface SBSAccidentalActivationMitigationSessionServiceServer
 - (BSServiceConnection)_connection;
 - (SBAccidentalActivationMitigationHostSession)_hostSession;
-- (SBSAccidentalActivationMitigationSessionServiceServer)initWithDelegate:(id)a3;
+- (SBSAccidentalActivationMitigationSessionServiceServer)initWithDelegate:(id)delegate;
 - (SBSAccidentalActivationMitigationSessionServiceServerDelegate)delegate;
-- (void)_setConnection:(id)a3;
-- (void)_setHostSession:(id)a3;
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3;
-- (void)activateSessionForBundleIdentifier:(id)a3 durationNum:(id)a4 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a5;
+- (void)_setConnection:(id)connection;
+- (void)_setHostSession:(id)session;
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change;
+- (void)activateSessionForBundleIdentifier:(id)identifier durationNum:(id)num accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)requestSessionCancellation;
 - (void)startServer;
 @end
 
 @implementation SBSAccidentalActivationMitigationSessionServiceServer
 
-- (SBSAccidentalActivationMitigationSessionServiceServer)initWithDelegate:(id)a3
+- (SBSAccidentalActivationMitigationSessionServiceServer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBSAccidentalActivationMitigationSessionServiceServer;
   v5 = [(SBSAccidentalActivationMitigationSessionServiceServer *)&v8 init];
@@ -25,7 +25,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -64,29 +64,29 @@ void __68__SBSAccidentalActivationMitigationSessionServiceServer_startServer__bl
   [(SBSAccidentalActivationMitigationSessionServiceServer *)&v3 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v11 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
-  v12 = v11 == 0;
+  _hostSession = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
+  v12 = _hostSession == 0;
 
   if (v12)
   {
-    v15 = [v9 remoteProcess];
-    v16 = [v15 auditToken];
-    if ([v16 hasEntitlement:@"com.apple.springboard.private.accidental-mitigation-session-service"])
+    remoteProcess = [connectionCopy remoteProcess];
+    auditToken = [remoteProcess auditToken];
+    if ([auditToken hasEntitlement:@"com.apple.springboard.private.accidental-mitigation-session-service"])
     {
     }
 
     else
     {
-      v17 = [v9 remoteProcess];
-      v18 = [v17 auditToken];
-      v19 = [v18 hasEntitlement:@"com.apple.springboard.private.3CAD882F-D615-43E4-89A9-34720441BC23"];
+      remoteProcess2 = [connectionCopy remoteProcess];
+      auditToken2 = [remoteProcess2 auditToken];
+      v19 = [auditToken2 hasEntitlement:@"com.apple.springboard.private.3CAD882F-D615-43E4-89A9-34720441BC23"];
 
       if (!v19)
       {
@@ -97,7 +97,7 @@ void __68__SBSAccidentalActivationMitigationSessionServiceServer_startServer__bl
         }
 
         *buf = 138412290;
-        v29 = v9;
+        v29 = connectionCopy;
         v14 = "Invalidating connection because client process is missing required entitlement %@.";
         goto LABEL_4;
       }
@@ -107,13 +107,13 @@ void __68__SBSAccidentalActivationMitigationSessionServiceServer_startServer__bl
     v22 = 3221225472;
     v23 = __99__SBSAccidentalActivationMitigationSessionServiceServer_listener_didReceiveConnection_withContext___block_invoke;
     v24 = &unk_1E735F0A8;
-    v25 = self;
+    selfCopy = self;
     objc_copyWeak(&v26, &location);
-    [v9 configureConnection:&v21];
+    [connectionCopy configureConnection:&v21];
     v20 = MEMORY[0x1E69E9820];
     BSDispatchMain();
-    [(SBSAccidentalActivationMitigationSessionServiceServer *)self _setConnection:v9, v20, 3221225472, __99__SBSAccidentalActivationMitigationSessionServiceServer_listener_didReceiveConnection_withContext___block_invoke_19, &unk_1E735F9D0, self, v21, v22, v23, v24, v25];
-    [v9 activate];
+    [(SBSAccidentalActivationMitigationSessionServiceServer *)self _setConnection:connectionCopy, v20, 3221225472, __99__SBSAccidentalActivationMitigationSessionServiceServer_listener_didReceiveConnection_withContext___block_invoke_19, &unk_1E735F9D0, self, v21, v22, v23, v24, selfCopy];
+    [connectionCopy activate];
     objc_destroyWeak(&v26);
     goto LABEL_10;
   }
@@ -122,7 +122,7 @@ void __68__SBSAccidentalActivationMitigationSessionServiceServer_startServer__bl
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v9;
+    v29 = connectionCopy;
     v14 = "Refuse to connect since there is already a host session %@.";
 LABEL_4:
     _os_log_impl(&dword_19169D000, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 0xCu);
@@ -130,7 +130,7 @@ LABEL_4:
 
 LABEL_5:
 
-  [v9 invalidate];
+  [connectionCopy invalidate];
 LABEL_10:
   objc_destroyWeak(&location);
 }
@@ -238,16 +238,16 @@ void __99__SBSAccidentalActivationMitigationSessionServiceServer_listener_didRec
   return v3;
 }
 
-- (void)_setConnection:(id)a3
+- (void)_setConnection:(id)connection
 {
-  v7 = a3;
-  v5 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
+  connectionCopy = connection;
+  _connection = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
   v6 = BSEqualObjects();
 
   if ((v6 & 1) == 0)
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_lock_connection, a3);
+    objc_storeStrong(&self->_lock_connection, connection);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
@@ -261,64 +261,64 @@ void __99__SBSAccidentalActivationMitigationSessionServiceServer_listener_didRec
   return v3;
 }
 
-- (void)_setHostSession:(id)a3
+- (void)_setHostSession:(id)session
 {
-  v7 = a3;
-  v5 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
+  sessionCopy = session;
+  _hostSession = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
   v6 = BSEqualObjects();
 
   if ((v6 & 1) == 0)
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_lock_host_session, a3);
+    objc_storeStrong(&self->_lock_host_session, session);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
-  v5 = [v10 isEqual:v4];
+  changeCopy = change;
+  _hostSession = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _hostSession];
+  v5 = [changeCopy isEqual:_hostSession];
 
   if (v5)
   {
-    v6 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
-    v7 = [v6 remoteTarget];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "state")}];
-    [v7 mitigationSessionDidTransitionToState:v8];
+    _connection = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
+    remoteTarget = [_connection remoteTarget];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(changeCopy, "state")}];
+    [remoteTarget mitigationSessionDidTransitionToState:v8];
 
-    if (([v10 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if (([changeCopy state] & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       [(SBSAccidentalActivationMitigationSessionServiceServer *)self _setHostSession:0];
-      v9 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
-      [v9 invalidate];
+      _connection2 = [(SBSAccidentalActivationMitigationSessionServiceServer *)self _connection];
+      [_connection2 invalidate];
     }
   }
 }
 
-- (void)activateSessionForBundleIdentifier:(id)a3 durationNum:(id)a4 accidentalActivationMitigationSessionCancellationPolicyClassName:(id)a5
+- (void)activateSessionForBundleIdentifier:(id)identifier durationNum:(id)num accidentalActivationMitigationSessionCancellationPolicyClassName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  [a4 doubleValue];
+  identifierCopy = identifier;
+  nameCopy = name;
+  [num doubleValue];
   v10 = v9;
   v11 = SBLogCameraCaptureAccidentalActivationMitigationSession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v7;
+    v16 = identifierCopy;
     v17 = 2048;
     v18 = v10;
     v19 = 2112;
-    v20 = v8;
+    v20 = nameCopy;
     _os_log_impl(&dword_19169D000, v11, OS_LOG_TYPE_DEFAULT, "Activate host session with bundle identifier: %@ with duration: %f and accidental activation mitigation session cancellation policy: %@", buf, 0x20u);
   }
 
-  v14 = v7;
-  v12 = v8;
-  v13 = v7;
+  v14 = identifierCopy;
+  v12 = nameCopy;
+  v13 = identifierCopy;
   BSDispatchMain();
 }
 

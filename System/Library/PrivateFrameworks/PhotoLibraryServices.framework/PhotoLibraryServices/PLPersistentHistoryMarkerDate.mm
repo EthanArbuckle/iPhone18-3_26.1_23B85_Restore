@@ -1,18 +1,18 @@
 @interface PLPersistentHistoryMarkerDate
-- (PLPersistentHistoryMarkerDate)initWithDate:(id)a3;
+- (PLPersistentHistoryMarkerDate)initWithDate:(id)date;
 @end
 
 @implementation PLPersistentHistoryMarkerDate
 
-- (PLPersistentHistoryMarkerDate)initWithDate:(id)a3
+- (PLPersistentHistoryMarkerDate)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = PLPersistentHistoryMarkerDate;
   v5 = [(PLPersistentHistoryMarkerDate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dateCopy copy];
     date = v5->_date;
     v5->_date = v6;
 

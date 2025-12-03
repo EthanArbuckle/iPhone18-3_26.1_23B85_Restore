@@ -1,71 +1,71 @@
 @interface _BCCardStackTransitionCoverController
-- (void)_observeImageChangeForCoverSource:(id)a3;
+- (void)_observeImageChangeForCoverSource:(id)source;
 - (void)dealloc;
-- (void)setupWithCoverSource:(id)a3 cardCoverSource:(id)a4 coverView:(id)a5 isDismiss:(BOOL)a6;
-- (void)setupWithCoverSource:(id)a3 coverView:(id)a4;
+- (void)setupWithCoverSource:(id)source cardCoverSource:(id)coverSource coverView:(id)view isDismiss:(BOOL)dismiss;
+- (void)setupWithCoverSource:(id)source coverView:(id)view;
 @end
 
 @implementation _BCCardStackTransitionCoverController
 
-- (void)setupWithCoverSource:(id)a3 cardCoverSource:(id)a4 coverView:(id)a5 isDismiss:(BOOL)a6
+- (void)setupWithCoverSource:(id)source cardCoverSource:(id)coverSource coverView:(id)view isDismiss:(BOOL)dismiss
 {
-  v6 = a6;
-  v20 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_coverView, a5);
-  v11 = a5;
-  if (v6)
+  dismissCopy = dismiss;
+  sourceCopy = source;
+  coverSourceCopy = coverSource;
+  objc_storeStrong(&self->_coverView, view);
+  viewCopy = view;
+  if (dismissCopy)
   {
-    v12 = v10;
+    v12 = coverSourceCopy;
   }
 
   else
   {
-    v12 = v20;
+    v12 = sourceCopy;
   }
 
-  if (v6)
+  if (dismissCopy)
   {
-    v13 = v20;
+    v13 = sourceCopy;
   }
 
   else
   {
-    v13 = v10;
+    v13 = coverSourceCopy;
   }
 
   v14 = v12;
   v15 = v13;
-  v16 = [v15 cardStackTransitioningCoverSourceImage];
-  v17 = v16;
-  if (v16)
+  cardStackTransitioningCoverSourceImage = [v15 cardStackTransitioningCoverSourceImage];
+  v17 = cardStackTransitioningCoverSourceImage;
+  if (cardStackTransitioningCoverSourceImage)
   {
-    v18 = v16;
+    cardStackTransitioningCoverSourceImage2 = cardStackTransitioningCoverSourceImage;
   }
 
   else
   {
-    v18 = [v14 cardStackTransitioningCoverSourceImage];
+    cardStackTransitioningCoverSourceImage2 = [v14 cardStackTransitioningCoverSourceImage];
   }
 
-  v19 = v18;
+  v19 = cardStackTransitioningCoverSourceImage2;
 
-  [v11 setImage:v19];
+  [viewCopy setImage:v19];
   [(_BCCardStackTransitionCoverController *)self _observeImageChangeForCoverSource:v15];
 }
 
-- (void)setupWithCoverSource:(id)a3 coverView:(id)a4
+- (void)setupWithCoverSource:(id)source coverView:(id)view
 {
-  v8 = a3;
-  v6 = a4;
-  objc_storeStrong(&self->_coverView, a4);
-  v7 = [v8 cardStackTransitioningCoverSourceImage];
-  if (!v7)
+  sourceCopy = source;
+  viewCopy = view;
+  objc_storeStrong(&self->_coverView, view);
+  cardStackTransitioningCoverSourceImage = [sourceCopy cardStackTransitioningCoverSourceImage];
+  if (!cardStackTransitioningCoverSourceImage)
   {
-    [(_BCCardStackTransitionCoverController *)self _observeImageChangeForCoverSource:v8];
+    [(_BCCardStackTransitionCoverController *)self _observeImageChangeForCoverSource:sourceCopy];
   }
 
-  [v6 setImage:v7];
+  [viewCopy setImage:cardStackTransitioningCoverSourceImage];
 }
 
 - (void)dealloc
@@ -76,19 +76,19 @@
   [(_BCCardStackTransitionCoverController *)&v3 dealloc];
 }
 
-- (void)_observeImageChangeForCoverSource:(id)a3
+- (void)_observeImageChangeForCoverSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    [(_BCCardStackTransitionCoverController *)self setObservedCoverSource:v4];
+    [(_BCCardStackTransitionCoverController *)self setObservedCoverSource:sourceCopy];
     objc_initWeak(&location, self);
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_ACDC0;
     v5[3] = &unk_2CA028;
     objc_copyWeak(&v6, &location);
-    [v4 setCardStackTransitioningCoverSourceImageChangeObserverBlock:v5];
+    [sourceCopy setCardStackTransitioningCoverSourceImageChangeObserverBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }

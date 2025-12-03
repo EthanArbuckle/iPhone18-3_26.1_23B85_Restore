@@ -1,11 +1,11 @@
 @interface VoiceOverAwarenessController
-- (id)_imageDescriptionsEnabled:(id)a3;
-- (id)_neuralEnabled:(id)a3;
-- (id)_neuralFeedback:(id)a3;
-- (id)_ocrEnabled:(id)a3;
+- (id)_imageDescriptionsEnabled:(id)enabled;
+- (id)_neuralEnabled:(id)enabled;
+- (id)_neuralFeedback:(id)feedback;
+- (id)_ocrEnabled:(id)enabled;
 - (id)specifiers;
 - (void)loadView;
-- (void)setDiscoveredTextEnabled:(id)a3 specifier:(id)a4;
+- (void)setDiscoveredTextEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation VoiceOverAwarenessController
@@ -182,7 +182,7 @@ void __40__VoiceOverAwarenessController_loadView__block_invoke_3(uint64_t a1)
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)_imageDescriptionsEnabled:(id)a3
+- (id)_imageDescriptionsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 voiceOverImageCaptionsEnabled])
@@ -200,7 +200,7 @@ void __40__VoiceOverAwarenessController_loadView__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (id)_neuralEnabled:(id)a3
+- (id)_neuralEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 automaticAccessibilityEnabled])
@@ -218,14 +218,14 @@ void __40__VoiceOverAwarenessController_loadView__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (void)setDiscoveredTextEnabled:(id)a3 specifier:(id)a4
+- (void)setDiscoveredTextEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverShouldSpeakDiscoveredText:v4];
+  [v5 setVoiceOverShouldSpeakDiscoveredText:bOOLValue];
 }
 
-- (id)_ocrEnabled:(id)a3
+- (id)_ocrEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverShouldSpeakDiscoveredText]);
@@ -233,18 +233,18 @@ void __40__VoiceOverAwarenessController_loadView__block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (id)_neuralFeedback:(id)a3
+- (id)_neuralFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverNeuralElementFeedback];
+  voiceOverNeuralElementFeedback = [v3 voiceOverNeuralElementFeedback];
 
   v5 = @"FEEDBACK_PLAY_TONE";
-  if (!v4)
+  if (!voiceOverNeuralElementFeedback)
   {
     v5 = @"FEEDBACK_SPEAK";
   }
 
-  if (v4 == &dword_0 + 2)
+  if (voiceOverNeuralElementFeedback == &dword_0 + 2)
   {
     v6 = @"FEEDBACK_DO_NOTHING";
   }

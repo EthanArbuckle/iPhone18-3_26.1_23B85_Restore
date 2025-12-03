@@ -1,12 +1,12 @@
 @interface AXStickyKeysController
 - (AXStickyKeysController)init;
 - (id)specifiers;
-- (id)stickyKeysBeepEnabled:(id)a3;
-- (id)stickyKeysEnabled:(id)a3;
-- (id)stickyKeysShiftToggleEnabled:(id)a3;
-- (void)setStickyKeysBeepEnabled:(id)a3 specifier:(id)a4;
-- (void)setStickyKeysEnabled:(id)a3 specifier:(id)a4;
-- (void)setStickyKeysShiftToggleEnabled:(id)a3 specifier:(id)a4;
+- (id)stickyKeysBeepEnabled:(id)enabled;
+- (id)stickyKeysEnabled:(id)enabled;
+- (id)stickyKeysShiftToggleEnabled:(id)enabled;
+- (void)setStickyKeysBeepEnabled:(id)enabled specifier:(id)specifier;
+- (void)setStickyKeysEnabled:(id)enabled specifier:(id)specifier;
+- (void)setStickyKeysShiftToggleEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AXStickyKeysController
@@ -88,14 +88,14 @@ void __30__AXStickyKeysController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setStickyKeysEnabled:(id)a3 specifier:(id)a4
+- (void)setStickyKeysEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setStickyKeysEnabled:v4];
+  [v5 setStickyKeysEnabled:bOOLValue];
 }
 
-- (id)stickyKeysEnabled:(id)a3
+- (id)stickyKeysEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 stickyKeysEnabled]);
@@ -103,14 +103,14 @@ void __30__AXStickyKeysController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setStickyKeysShiftToggleEnabled:(id)a3 specifier:(id)a4
+- (void)setStickyKeysShiftToggleEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setStickyKeysShiftToggleEnabled:v4];
+  [v5 setStickyKeysShiftToggleEnabled:bOOLValue];
 }
 
-- (id)stickyKeysShiftToggleEnabled:(id)a3
+- (id)stickyKeysShiftToggleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 stickyKeysShiftToggleEnabled]);
@@ -118,14 +118,14 @@ void __30__AXStickyKeysController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setStickyKeysBeepEnabled:(id)a3 specifier:(id)a4
+- (void)setStickyKeysBeepEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setStickyKeysBeepEnabled:v4];
+  [v5 setStickyKeysBeepEnabled:bOOLValue];
 }
 
-- (id)stickyKeysBeepEnabled:(id)a3
+- (id)stickyKeysBeepEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 stickyKeysBeepEnabled]);

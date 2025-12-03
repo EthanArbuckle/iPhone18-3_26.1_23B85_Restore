@@ -1,22 +1,22 @@
 @interface PSUICellularDataOptionsController
 - (PSUICellularDataOptionsController)init;
-- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)a3;
-- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)a3 simStatusCache:(id)a4 planManagerCache:(id)a5 dataCache:(id)a6;
-- (id)getCDMARoamingStatus:(id)a3;
-- (id)getDataRoamingStatus:(id)a3;
-- (id)getDataRoamingStatusForService:(id)a3;
-- (id)roamingSettingsDescription:(id)a3;
+- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)specifier;
+- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)specifier simStatusCache:(id)cache planManagerCache:(id)managerCache dataCache:(id)dataCache;
+- (id)getCDMARoamingStatus:(id)status;
+- (id)getDataRoamingStatus:(id)status;
+- (id)getDataRoamingStatusForService:(id)service;
+- (id)roamingSettingsDescription:(id)description;
 - (id)roamingSpecifiers;
 - (id)specifiers;
-- (void)createSatelliteSubgroupIfRequired:(id)a3;
+- (void)createSatelliteSubgroupIfRequired:(id)required;
 - (void)dealloc;
 - (void)emitNavigationEvent;
 - (void)launchDataRoamingWarningFlow;
 - (void)roamingOptionsDidChange;
-- (void)setCDMARoamingEnabled:(id)a3 specifier:(id)a4;
-- (void)setDataRoamingEnabled:(id)a3 specifier:(id)a4;
-- (void)setDataRoamingEnabledForService:(id)a3 specifier:(id)a4;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)setCDMARoamingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDataRoamingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDataRoamingEnabledForService:(id)service specifier:(id)specifier;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 - (void)viewDidLoad;
 @end
 
@@ -29,9 +29,9 @@
   v2 = [(PSUICellularDataOptionsController *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D4D868] sharedInstance];
+    mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
     simStatusCache = v2->_simStatusCache;
-    v2->_simStatusCache = v3;
+    v2->_simStatusCache = mEMORY[0x277D4D868];
 
     v5 = +[PSUICellularPlanManagerCache sharedInstance];
     planManagerCache = v2->_planManagerCache;
@@ -54,8 +54,8 @@
     ctClient = v2->_ctClient;
     v2->_ctClient = v14;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel_airplaneModeChanged name:0x287739438 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_airplaneModeChanged name:0x287739438 object:0];
   }
 
   return v2;
@@ -78,16 +78,16 @@
   v4 = objc_alloc(MEMORY[0x277CCAEB8]);
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CELLULAR_DATA_OPTIONS" value:&stru_287733598 table:@"Cellular"];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleURL];
-  v10 = [v4 initWithKey:v6 table:0 locale:v7 bundleURL:v9];
+  bundleURL = [v8 bundleURL];
+  v10 = [v4 initWithKey:v6 table:0 locale:currentLocale bundleURL:bundleURL];
 
   v11 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v14 = [v13 bundleURL];
-  v15 = [v11 initWithKey:@"Cellular" table:0 locale:v12 bundleURL:v14];
+  bundleURL2 = [v13 bundleURL];
+  v15 = [v11 initWithKey:@"Cellular" table:0 locale:currentLocale2 bundleURL:bundleURL2];
 
   v18[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
@@ -96,39 +96,39 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)a3
+- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)specifier
 {
   v4 = MEMORY[0x277D4D868];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
+  specifierCopy = specifier;
+  sharedInstance = [v4 sharedInstance];
   v7 = +[PSUICellularPlanManagerCache sharedInstance];
   v8 = +[PSUICoreTelephonyDataCache sharedInstance];
-  v9 = [(PSUICellularDataOptionsController *)self initWithParentSpecifier:v5 simStatusCache:v6 planManagerCache:v7 dataCache:v8];
+  v9 = [(PSUICellularDataOptionsController *)self initWithParentSpecifier:specifierCopy simStatusCache:sharedInstance planManagerCache:v7 dataCache:v8];
 
   return v9;
 }
 
-- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)a3 simStatusCache:(id)a4 planManagerCache:(id)a5 dataCache:(id)a6
+- (PSUICellularDataOptionsController)initWithParentSpecifier:(id)specifier simStatusCache:(id)cache planManagerCache:(id)managerCache dataCache:(id)dataCache
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  specifierCopy = specifier;
+  cacheCopy = cache;
+  managerCacheCopy = managerCache;
+  dataCacheCopy = dataCache;
   v27.receiver = self;
   v27.super_class = PSUICellularDataOptionsController;
   v15 = [(PSUICellularDataOptionsController *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_parentSpecifier, a3);
-    v17 = [v11 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeStrong(&v15->_parentSpecifier, specifier);
+    v17 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
     v18 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v17];
     serviceDescriptor = v16->_serviceDescriptor;
     v16->_serviceDescriptor = v18;
 
-    objc_storeStrong(&v16->_simStatusCache, a4);
-    objc_storeStrong(&v16->_planManagerCache, a5);
-    objc_storeStrong(&v16->_dataCache, a6);
+    objc_storeStrong(&v16->_simStatusCache, cache);
+    objc_storeStrong(&v16->_planManagerCache, managerCache);
+    objc_storeStrong(&v16->_dataCache, dataCache);
     v20 = *MEMORY[0x277CBECE8];
     v21 = [MEMORY[0x277D4D878] createCTClientSerialQueue:@"cellular_data_options_controller"];
     v16->_serverConnection = _CTServerConnectionCreateOnTargetQueue();
@@ -138,8 +138,8 @@
     ctClient = v16->_ctClient;
     v16->_ctClient = v23;
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v16 selector:sel_airplaneModeChanged name:0x287739438 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel_airplaneModeChanged name:0x287739438 object:0];
   }
 
   return v16;
@@ -153,8 +153,8 @@
     CFRelease(serverConnection);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PSUICellularDataOptionsController;
@@ -174,41 +174,41 @@
   v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DATA_RATE_GROUP"];
   [v4 addObject:v5];
   v6 = v5;
-  v7 = [(PSSimStatusCache *)self->_simStatusCache subscriptionsInUse];
-  v32 = v7;
-  if ([v7 count])
+  subscriptionsInUse = [(PSSimStatusCache *)self->_simStatusCache subscriptionsInUse];
+  v32 = subscriptionsInUse;
+  if ([subscriptionsInUse count])
   {
-    v8 = [v7 objectAtIndexedSubscript:0];
+    v8 = [subscriptionsInUse objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v9 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-    v8 = [v9 objectAtIndexedSubscript:0];
+    subscriptionContexts = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+    v8 = [subscriptionContexts objectAtIndexedSubscript:0];
   }
 
   v10 = *MEMORY[0x277D3FD20];
   [*(&self->super.super.super.super.super.isa + v10) setProperty:v8 forKey:*MEMORY[0x277D40128]];
-  v11 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
-  if ([v11 count] <= 1)
+  subscriptionContexts2 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+  if ([subscriptionContexts2 count] <= 1)
   {
 
     goto LABEL_9;
   }
 
-  v12 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
-  v13 = [v12 count];
+  planItems = [(PSUICellularPlanManagerCache *)self->_planManagerCache planItems];
+  v13 = [planItems count];
 
   if (v13 < 2)
   {
 LABEL_9:
     if (![(PSUICoreTelephonyDataCache *)self->_dataCache isAirplaneModeEnabled])
     {
-      v14 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_debug_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEBUG, "Adding enable LTE/3G/etc group", buf, 2u);
+        _os_log_debug_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEBUG, "Adding enable LTE/3G/etc group", buf, 2u);
       }
 
       v15 = [[PSUIVoiceAndDataSpecifier alloc] initWithHostController:self subscriptionContext:v8 groupSpecifierToUpdateFooterFor:0];
@@ -226,10 +226,10 @@ LABEL_9:
 LABEL_16:
   if ([(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled]|| PSIsVoiceRoamingOptionAvailable())
   {
-    v16 = [(PSUICellularDataOptionsController *)self roamingSpecifiers];
-    if ([v16 count])
+    roamingSpecifiers = [(PSUICellularDataOptionsController *)self roamingSpecifiers];
+    if ([roamingSpecifiers count])
     {
-      [v4 ps_insertObjectsFromArray:v16 afterObject:v6];
+      [v4 ps_insertObjectsFromArray:roamingSpecifiers afterObject:v6];
     }
   }
 
@@ -244,8 +244,8 @@ LABEL_16:
   dataModeSubgroup = self->_dataModeSubgroup;
   self->_dataModeSubgroup = v24;
 
-  v26 = [(PSUIDataModeSubgroup *)self->_dataModeSubgroup specifiers];
-  [v4 addObjectsFromArray:v26];
+  specifiers = [(PSUIDataModeSubgroup *)self->_dataModeSubgroup specifiers];
+  [v4 addObjectsFromArray:specifiers];
 
   [MEMORY[0x277D4D878] logSpecifiers:v4 origin:@"[PSUICellularDataOptionsController specifiers] end"];
   v27 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
@@ -254,8 +254,8 @@ LABEL_16:
   if ((v31 & v17) == 1)
   {
     [(PSUICellularDataOptionsController *)self createSatelliteSubgroupIfRequired:v8];
-    v28 = [(PSUISatelliteSubgroup *)self->_satelliteSubgroup specifiers];
-    [v4 addObjectsFromArray:v28];
+    specifiers2 = [(PSUISatelliteSubgroup *)self->_satelliteSubgroup specifiers];
+    [v4 addObjectsFromArray:specifiers2];
   }
 
   v29 = *(&self->super.super.super.super.super.isa + v33);
@@ -267,16 +267,16 @@ LABEL_24:
   return v3;
 }
 
-- (void)createSatelliteSubgroupIfRequired:(id)a3
+- (void)createSatelliteSubgroupIfRequired:(id)required
 {
   if (!self->_satelliteSubgroup)
   {
     planManagerCache = self->_planManagerCache;
-    v5 = a3;
-    v6 = [(PSUICellularPlanManagerCache *)planManagerCache selectedPlanItem];
-    v9 = [PSUICellularPlanUniversalReference referenceFromPlanItem:v6];
+    requiredCopy = required;
+    selectedPlanItem = [(PSUICellularPlanManagerCache *)planManagerCache selectedPlanItem];
+    v9 = [PSUICellularPlanUniversalReference referenceFromPlanItem:selectedPlanItem];
 
-    v7 = [[PSUISatelliteSubgroup alloc] initWithHostController:self context:v5 planReference:v9 mode:1];
+    v7 = [[PSUISatelliteSubgroup alloc] initWithHostController:self context:requiredCopy planReference:v9 mode:1];
     satelliteSubgroup = self->_satelliteSubgroup;
     self->_satelliteSubgroup = v7;
   }
@@ -284,46 +284,46 @@ LABEL_24:
 
 - (id)roamingSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled]|| PSIsVoiceRoamingOptionAvailable())
   {
     if (PSIsVoiceRoamingOptionAvailable())
     {
-      v4 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+      getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_debug_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEBUG, "Adding voice roaming specifiers", buf, 2u);
+        _os_log_debug_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEBUG, "Adding voice roaming specifiers", buf, 2u);
       }
 
       v5 = PSRoamingSubMenuSpecifiers(self);
 LABEL_15:
       v9 = v5;
-      [v3 addObjectsFromArray:v5];
+      [array addObjectsFromArray:v5];
 
       goto LABEL_16;
     }
 
     if (PSIsDataRoamingOptionAvailable())
     {
-      v6 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+      getLogger2 = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEBUG))
       {
         *v12 = 0;
-        _os_log_debug_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEBUG, "Adding data roaming specifiers", v12, 2u);
+        _os_log_debug_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEBUG, "Adding data roaming specifiers", v12, 2u);
       }
 
       v7 = PSDataRoamingSpecifiers(self);
-      [v3 addObjectsFromArray:v7];
+      [array addObjectsFromArray:v7];
     }
 
     if (PSIsCDMARoamingOptionAvailable())
     {
-      v8 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      getLogger3 = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEBUG))
       {
         *v11 = 0;
-        _os_log_debug_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEBUG, "Adding CDMA roaming specifiers", v11, 2u);
+        _os_log_debug_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEBUG, "Adding CDMA roaming specifiers", v11, 2u);
       }
 
       v5 = PSCDMARoamingSpecifiers(self);
@@ -333,14 +333,14 @@ LABEL_15:
 
 LABEL_16:
 
-  return v3;
+  return array;
 }
 
-- (id)roamingSettingsDescription:(id)a3
+- (id)roamingSettingsDescription:(id)description
 {
-  v3 = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
+  isCellularDataEnabled = [(PSUICoreTelephonyDataCache *)self->_dataCache isCellularDataEnabled];
   v4 = PSIsVoiceRoamingEnabled();
-  if (v3 && (v4 & PSIsDataRoamingEnabled()) == 1)
+  if (isCellularDataEnabled && (v4 & PSIsDataRoamingEnabled()) == 1)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -367,11 +367,11 @@ LABEL_16:
   return v8;
 }
 
-- (id)getDataRoamingStatus:(id)a3
+- (id)getDataRoamingStatus:(id)status
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = PSIsDataRoamingEnabled();
     v5 = @"disabled";
@@ -384,7 +384,7 @@ LABEL_16:
     v10 = "[PSUICellularDataOptionsController getDataRoamingStatus:]";
     v11 = 2112;
     v12 = v5;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s roaming is %@", &v9, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s roaming is %@", &v9, 0x16u);
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:PSIsDataRoamingEnabled()];
@@ -393,11 +393,11 @@ LABEL_16:
   return v6;
 }
 
-- (id)getDataRoamingStatusForService:(id)a3
+- (id)getDataRoamingStatusForService:(id)service
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     serviceDescriptor = self->_serviceDescriptor;
     v6 = PSIsDataRoamingEnabledForService(serviceDescriptor);
@@ -413,7 +413,7 @@ LABEL_16:
 
     v15 = 2112;
     v16 = v7;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s For service %@, roaming is %@", &v11, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s For service %@, roaming is %@", &v11, 0x20u);
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:PSIsDataRoamingEnabledForService(self->_serviceDescriptor)];
@@ -422,17 +422,17 @@ LABEL_16:
   return v8;
 }
 
-- (void)setDataRoamingEnabled:(id)a3 specifier:(id)a4
+- (void)setDataRoamingEnabled:(id)enabled specifier:(id)specifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 BOOLValue];
-  objc_storeStrong(&self->_roamingSpecifier, a4);
-  v9 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  specifierCopy = specifier;
+  bOOLValue = [enabled BOOLValue];
+  objc_storeStrong(&self->_roamingSpecifier, specifier);
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"disabled";
-    if (v8)
+    if (bOOLValue)
     {
       v10 = @"enabled";
     }
@@ -441,17 +441,17 @@ LABEL_16:
     v22 = "[PSUICellularDataOptionsController setDataRoamingEnabled:specifier:]";
     v23 = 2112;
     v24 = v10;
-    _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "%s setting roaming = %@", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s setting roaming = %@", buf, 0x16u);
   }
 
-  if (v8)
+  if (bOOLValue)
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    if ([v11 sf_isiPad])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice sf_isiPad])
     {
 
 LABEL_13:
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1;
       goto LABEL_14;
     }
@@ -477,50 +477,50 @@ LABEL_21:
         goto LABEL_15;
       }
 
-      v19 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2658DE000, v19, OS_LOG_TYPE_DEFAULT, "Rate limited", buf, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Rate limited", buf, 2u);
       }
     }
 
     else
     {
-      v19 = [(PSUICellularDataOptionsController *)self getLogger];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      getLogger2 = [(PSUICellularDataOptionsController *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v22 = v17;
-        _os_log_error_impl(&dword_2658DE000, v19, OS_LOG_TYPE_ERROR, "Error with checking setup eSIM: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Error with checking setup eSIM: %@", buf, 0xCu);
       }
     }
 
-    [(PSUICellularDataOptionsController *)self _setDataRoamingEnabledHelper:1 specifier:v7];
+    [(PSUICellularDataOptionsController *)self _setDataRoamingEnabledHelper:1 specifier:specifierCopy];
     goto LABEL_21;
   }
 
-  v12 = self;
+  selfCopy2 = self;
   v13 = 0;
 LABEL_14:
-  [(PSUICellularDataOptionsController *)v12 _setDataRoamingEnabledHelper:v13 specifier:v7];
+  [(PSUICellularDataOptionsController *)selfCopy2 _setDataRoamingEnabledHelper:v13 specifier:specifierCopy];
 LABEL_15:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDataRoamingEnabledForService:(id)a3 specifier:(id)a4
+- (void)setDataRoamingEnabledForService:(id)service specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
-  v6 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  bOOLValue = [service BOOLValue];
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     serviceDescriptor = self->_serviceDescriptor;
     v8 = @"disabled";
     v11 = "[PSUICellularDataOptionsController setDataRoamingEnabledForService:specifier:]";
     v10 = 136315650;
-    if (v5)
+    if (bOOLValue)
     {
       v8 = @"enabled";
     }
@@ -529,24 +529,24 @@ LABEL_15:
     v13 = serviceDescriptor;
     v14 = 2112;
     v15 = v8;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s For service %@, setting roaming = %@", &v10, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s For service %@, setting roaming = %@", &v10, 0x20u);
   }
 
-  PSSetDataRoamingEnabledForService(self->_serviceDescriptor, v5);
+  PSSetDataRoamingEnabledForService(self->_serviceDescriptor, bOOLValue);
   [(PSUICellularDataOptionsController *)self roamingOptionsDidChange];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCDMARoamingEnabled:(id)a3 specifier:(id)a4
+- (void)setCDMARoamingEnabled:(id)enabled specifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  enabledCopy = enabled;
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     v8 = @"disabled";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = @"enabled";
     }
@@ -555,21 +555,21 @@ LABEL_15:
     v11 = "[PSUICellularDataOptionsController setCDMARoamingEnabled:specifier:]";
     v12 = 2112;
     v13 = v8;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s setting CDMA roaming = %@", &v10, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s setting CDMA roaming = %@", &v10, 0x16u);
   }
 
-  [v5 BOOLValue];
+  [enabledCopy BOOLValue];
   PSSetCDMARoamingEnabled();
   [(PSUICellularDataOptionsController *)self roamingOptionsDidChange];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getCDMARoamingStatus:(id)a3
+- (id)getCDMARoamingStatus:(id)status
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUICellularPlanManagerCache *)self->_planManagerCache selectedPlanItem];
-  [v4 isBackedByCellularPlan];
+  selectedPlanItem = [(PSUICellularPlanManagerCache *)self->_planManagerCache selectedPlanItem];
+  [selectedPlanItem isBackedByCellularPlan];
 
   serverConnection = self->_serverConnection;
   CDMAInternationalRoaming = _CTServerConnectionGetCDMAInternationalRoaming();
@@ -577,14 +577,14 @@ LABEL_15:
   if (HIDWORD(CDMAInternationalRoaming))
   {
     v9 = CDMAInternationalRoaming;
-    v10 = [(PSUICellularDataOptionsController *)self getLogger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
       v14 = v9;
       v15 = 1024;
       v16 = v7;
-      _os_log_error_impl(&dword_2658DE000, v10, OS_LOG_TYPE_ERROR, "Failed to get CDMAInternationalRoaming setting with error %i:%i", buf, 0xEu);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Failed to get CDMAInternationalRoaming setting with error %i:%i", buf, 0xEu);
     }
 
     v8 = MEMORY[0x277CBEC28];
@@ -666,15 +666,15 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(PSUICellularDataOptionsController *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICellularDataOptionsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Data roaming warning flow completed with type %lu", buf, 0xCu);
+    completedCopy = completed;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Data roaming warning flow completed with type %lu", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -683,7 +683,7 @@ LABEL_8:
   block[2] = __59__PSUICellularDataOptionsController_simSetupFlowCompleted___block_invoke;
   block[3] = &unk_279BA9FE0;
   objc_copyWeak(v8, buf);
-  v8[1] = a3;
+  v8[1] = completed;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v8);

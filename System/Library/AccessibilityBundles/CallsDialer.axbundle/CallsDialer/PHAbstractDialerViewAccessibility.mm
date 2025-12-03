@@ -1,5 +1,5 @@
 @interface PHAbstractDialerViewAccessibility
-- (PHAbstractDialerViewAccessibility)initWithFrame:(CGRect)a3;
+- (PHAbstractDialerViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
@@ -25,11 +25,11 @@
   [v8 setAccessibilityIdentifier:@"DeleteButton"];
 }
 
-- (PHAbstractDialerViewAccessibility)initWithFrame:(CGRect)a3
+- (PHAbstractDialerViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PHAbstractDialerViewAccessibility;
-  v3 = [(PHAbstractDialerViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHAbstractDialerViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PHAbstractDialerViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

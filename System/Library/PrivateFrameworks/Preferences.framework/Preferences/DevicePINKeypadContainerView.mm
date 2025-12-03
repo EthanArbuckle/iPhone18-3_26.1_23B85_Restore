@@ -1,14 +1,14 @@
 @interface DevicePINKeypadContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DevicePINKeypadContainerView)initWithKeypad:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DevicePINKeypadContainerView)initWithKeypad:(id)keypad;
 - (void)layoutSubviews;
 @end
 
 @implementation DevicePINKeypadContainerView
 
-- (DevicePINKeypadContainerView)initWithKeypad:(id)a3
+- (DevicePINKeypadContainerView)initWithKeypad:(id)keypad
 {
-  v5 = a3;
+  keypadCopy = keypad;
   v17.receiver = self;
   v17.super_class = DevicePINKeypadContainerView;
   v6 = [(DevicePINKeypadContainerView *)&v17 init];
@@ -22,22 +22,22 @@
       backdropView = v6->_backdropView;
       v6->_backdropView = v9;
 
-      v11 = [MEMORY[0x1E69DC888] systemFillColor];
-      v12 = [(UIVisualEffectView *)v6->_backdropView contentView];
-      [v12 setBackgroundColor:v11];
+      systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+      contentView = [(UIVisualEffectView *)v6->_backdropView contentView];
+      [contentView setBackgroundColor:systemFillColor];
 
       [(DevicePINKeypadContainerView *)v6 addSubview:v6->_backdropView];
       v6->_iPadKeypadHeight = 226.0;
     }
 
-    objc_storeStrong(&v6->_keypad, a3);
-    v13 = [MEMORY[0x1E69DC938] currentDevice];
-    v14 = [v13 sf_isiPad];
+    objc_storeStrong(&v6->_keypad, keypad);
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
 
-    if (v14)
+    if (sf_isiPad)
     {
-      v15 = [(UIVisualEffectView *)v6->_backdropView contentView];
-      [v15 addSubview:v6->_keypad];
+      contentView2 = [(UIVisualEffectView *)v6->_backdropView contentView];
+      [contentView2 addSubview:v6->_keypad];
     }
 
     else
@@ -66,8 +66,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = [(DevicePINKeypad *)self->_keypad subviews];
-    v12 = [v11 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    subviews = [(DevicePINKeypad *)self->_keypad subviews];
+    v12 = [subviews countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v12)
     {
       v13 = v12;
@@ -79,7 +79,7 @@
         {
           if (*v35 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subviews);
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
@@ -87,8 +87,8 @@
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v18 = [v17 subviews];
-          v19 = [v18 countByEnumeratingWithState:&v30 objects:v39 count:16];
+          subviews2 = [v17 subviews];
+          v19 = [subviews2 countByEnumeratingWithState:&v30 objects:v39 count:16];
           if (v19)
           {
             v20 = v19;
@@ -99,7 +99,7 @@
               {
                 if (*v31 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(subviews2);
                 }
 
                 [*(*(&v30 + 1) + 8 * j) frame];
@@ -110,14 +110,14 @@
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v30 objects:v39 count:16];
+              v20 = [subviews2 countByEnumeratingWithState:&v30 objects:v39 count:16];
             }
 
             while (v20);
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
       while (v13);
@@ -168,10 +168,10 @@
   [(UIKeyboard *)self->_keypad setFrame:v4, v25, v8, v24];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (PSUsePadStylePIN())
   {
     v6 = 220.0;

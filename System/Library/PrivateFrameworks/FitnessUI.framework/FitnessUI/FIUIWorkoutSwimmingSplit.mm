@@ -2,7 +2,7 @@
 - (double)_fractionToFillTotalSplitDistance;
 - (double)durationScaledToFillSplit;
 - (id)description;
-- (id)formattedPaceWithFormattingManager:(id)a3;
+- (id)formattedPaceWithFormattingManager:(id)manager;
 - (id)formattedStrokeCount;
 @end
 
@@ -10,9 +10,9 @@
 
 - (double)_fractionToFillTotalSplitDistance
 {
-  v3 = [(FIUIWorkoutSwimmingSplit *)self splitDistance];
+  splitDistance = [(FIUIWorkoutSwimmingSplit *)self splitDistance];
   [(FIUIWorkoutSwimmingSplit *)self distanceInUserUnit];
-  return v3 / v4;
+  return splitDistance / v4;
 }
 
 - (double)durationScaledToFillSplit
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (id)formattedPaceWithFormattingManager:(id)a3
+- (id)formattedPaceWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(FIUIWorkoutSwimmingSplit *)self durationScaledToFillSplit];
-  v5 = [v4 stringWithDuration:1 durationFormat:?];
+  v5 = [managerCopy stringWithDuration:1 durationFormat:?];
 
   return v5;
 }

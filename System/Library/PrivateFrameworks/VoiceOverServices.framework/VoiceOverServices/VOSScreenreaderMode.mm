@@ -4,24 +4,24 @@
 + (VOSScreenreaderMode)Default;
 + (VOSScreenreaderMode)Handwriting;
 + (VOSScreenreaderMode)Invalid;
-+ (VOSScreenreaderMode)modeWithStringValue:(id)a3;
++ (VOSScreenreaderMode)modeWithStringValue:(id)value;
 - (NSString)localizedName;
-- (id)_initWithRawValue:(id)a3;
+- (id)_initWithRawValue:(id)value;
 - (id)description;
 @end
 
 @implementation VOSScreenreaderMode
 
-- (id)_initWithRawValue:(id)a3
+- (id)_initWithRawValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = VOSScreenreaderMode;
   v6 = [(VOSScreenreaderMode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValue, a3);
+    objc_storeStrong(&v6->_rawValue, value);
   }
 
   return v7;
@@ -136,16 +136,16 @@ void __31__VOSScreenreaderMode_allModes__block_invoke()
   allModes__AllModes = v3;
 }
 
-+ (VOSScreenreaderMode)modeWithStringValue:(id)a3
++ (VOSScreenreaderMode)modeWithStringValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 allModes];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allModes = [self allModes];
+  v6 = [allModes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -155,18 +155,18 @@ void __31__VOSScreenreaderMode_allModes__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allModes);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9[1] isEqualToString:v4])
+        if ([v9[1] isEqualToString:valueCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allModes countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

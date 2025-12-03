@@ -1,13 +1,13 @@
 @interface InteractiveBackgroundContentView
 - (UIColor)backgroundColor;
-- (_TtC20ProductPageExtensionP33_77054DFF2A0EE1186124695D301FA42432InteractiveBackgroundContentView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtensionP33_77054DFF2A0EE1186124695D301FA42432InteractiveBackgroundContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation InteractiveBackgroundContentView
 
-- (_TtC20ProductPageExtensionP33_77054DFF2A0EE1186124695D301FA42432InteractiveBackgroundContentView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtensionP33_77054DFF2A0EE1186124695D301FA42432InteractiveBackgroundContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtensionP33_77054DFF2A0EE1186124695D301FA42432InteractiveBackgroundContentView_artworkView;
   sub_10075FD2C();
@@ -21,19 +21,19 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for InteractiveBackgroundContentView();
-  v2 = [(InteractiveBackgroundContentView *)&v4 backgroundColor];
+  backgroundColor = [(InteractiveBackgroundContentView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for InteractiveBackgroundContentView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v7.receiver;
-  [(InteractiveBackgroundContentView *)&v7 setBackgroundColor:v4];
-  v6 = [v5 backgroundColor];
+  [(InteractiveBackgroundContentView *)&v7 setBackgroundColor:colorCopy];
+  backgroundColor = [v5 backgroundColor];
   sub_10075FB8C();
 }
 

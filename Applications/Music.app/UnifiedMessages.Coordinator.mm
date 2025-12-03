@@ -1,10 +1,10 @@
 @interface UnifiedMessages.Coordinator
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
 @end
 
 @implementation UnifiedMessages.Coordinator
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
   v8 = sub_10010FC20(&unk_101181520);
   __chkstk_darwin(v8 - 8);
@@ -19,9 +19,9 @@
   v15[4] = self;
   v15[5] = v11;
   v15[6] = v13;
-  v15[7] = a4;
-  v16 = a4;
-  v17 = self;
+  v15[7] = request;
+  requestCopy = request;
+  selfCopy = self;
   sub_1001F4CB8(0, 0, v10, &unk_100EC0208, v15);
 }
 

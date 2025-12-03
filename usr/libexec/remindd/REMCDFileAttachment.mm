@@ -16,56 +16,56 @@
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
     v8 = [NSString stringWithFormat:@"%@.%@", v6, v7];
-    v9 = [(REMCDObject *)self remObjectID];
+    remObjectID = [(REMCDObject *)self remObjectID];
     *buf = 138543618;
     v22 = v8;
     v23 = 2114;
-    v24 = v9;
+    v24 = remObjectID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] prepareForDeletion {attachmentID: %{public}@}", buf, 0x16u);
   }
 
-  v10 = [(REMCDObject *)self storeControllerManagedObjectContext];
-  if (v10)
+  storeControllerManagedObjectContext = [(REMCDObject *)self storeControllerManagedObjectContext];
+  if (storeControllerManagedObjectContext)
   {
-    v11 = [(REMCDFileAttachment *)self identifier];
-    if (v11)
+    identifier = [(REMCDFileAttachment *)self identifier];
+    if (identifier)
     {
-      v12 = [(REMCDFileAttachment *)self account];
-      v13 = [v12 identifier];
+      account = [(REMCDFileAttachment *)self account];
+      identifier2 = [account identifier];
 
-      if (v13)
+      if (identifier2)
       {
-        v14 = [(REMCDFileAttachment *)self sha512Sum];
+        sha512Sum = [(REMCDFileAttachment *)self sha512Sum];
 
-        if (v14)
+        if (sha512Sum)
         {
-          v15 = [(REMCDFileAttachment *)self sha512Sum];
-          v16 = [(REMCDFileAttachment *)self fileName];
-          v17 = [v16 pathExtension];
+          sha512Sum2 = [(REMCDFileAttachment *)self sha512Sum];
+          fileName = [(REMCDFileAttachment *)self fileName];
+          pathExtension = [fileName pathExtension];
 
-          [v10 proposePurgingFileAttachmentWithSha512Sum:v15 fileExtension:v17 account:v13];
+          [storeControllerManagedObjectContext proposePurgingFileAttachmentWithSha512Sum:sha512Sum2 fileExtension:pathExtension account:identifier2];
         }
 
         else
         {
-          v18 = [v10 fileAttachmentIdentifiersToPurgeByAccountIdentifier];
-          v15 = [v18 objectForKey:v13];
+          fileAttachmentIdentifiersToPurgeByAccountIdentifier = [storeControllerManagedObjectContext fileAttachmentIdentifiersToPurgeByAccountIdentifier];
+          sha512Sum2 = [fileAttachmentIdentifiersToPurgeByAccountIdentifier objectForKey:identifier2];
 
-          if (!v15)
+          if (!sha512Sum2)
           {
-            v15 = +[NSMutableSet set];
-            v19 = [v10 fileAttachmentIdentifiersToPurgeByAccountIdentifier];
-            [v19 setObject:v15 forKey:v13];
+            sha512Sum2 = +[NSMutableSet set];
+            fileAttachmentIdentifiersToPurgeByAccountIdentifier2 = [storeControllerManagedObjectContext fileAttachmentIdentifiersToPurgeByAccountIdentifier];
+            [fileAttachmentIdentifiersToPurgeByAccountIdentifier2 setObject:sha512Sum2 forKey:identifier2];
           }
 
-          [v15 addObject:v11];
+          [sha512Sum2 addObject:identifier];
         }
       }
 
       else
       {
-        v15 = +[REMLogStore write];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        sha512Sum2 = +[REMLogStore write];
+        if (os_log_type_enabled(sha512Sum2, OS_LOG_TYPE_ERROR))
         {
           sub_10076A808();
         }
@@ -74,8 +74,8 @@
 
     else
     {
-      v13 = +[REMLogStore write];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      identifier2 = +[REMLogStore write];
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
       {
         sub_10076A8F0();
       }
@@ -84,8 +84,8 @@
 
   else
   {
-    v11 = +[REMLogStore write];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    identifier = +[REMLogStore write];
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
       sub_10076A9D8();
     }

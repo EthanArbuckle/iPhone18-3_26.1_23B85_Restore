@@ -1,16 +1,16 @@
 @interface _LTTextLanguageDetectorScorer
-- (_LTTextLanguageDetectorScorer)initWithSupportedLocales:(id)a3;
-- (id)weightedLocaleWithStrategy:(unint64_t)a3;
-- (void)append:(id)a3;
-- (void)append:(id)a3 recognizer:(id)a4;
+- (_LTTextLanguageDetectorScorer)initWithSupportedLocales:(id)locales;
+- (id)weightedLocaleWithStrategy:(unint64_t)strategy;
+- (void)append:(id)append;
+- (void)append:(id)append recognizer:(id)recognizer;
 @end
 
 @implementation _LTTextLanguageDetectorScorer
 
-- (_LTTextLanguageDetectorScorer)initWithSupportedLocales:(id)a3
+- (_LTTextLanguageDetectorScorer)initWithSupportedLocales:(id)locales
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  localesCopy = locales;
   v24.receiver = self;
   v24.super_class = _LTTextLanguageDetectorScorer;
   v6 = [(_LTTextLanguageDetectorScorer *)&v24 init];
@@ -20,12 +20,12 @@
     items = v6->_items;
     v6->_items = v7;
 
-    objc_storeStrong(&v6->_supportedLocales, a3);
+    objc_storeStrong(&v6->_supportedLocales, locales);
     v9 = _LTOSLogLID();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = v6->_supportedLocales;
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -46,8 +46,8 @@
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v25 + 1) + 8 * v16) localeIdentifier];
-            [v11 addObject:v17];
+            localeIdentifier = [*(*(&v25 + 1) + 8 * v16) localeIdentifier];
+            [array addObject:localeIdentifier];
 
             ++v16;
           }
@@ -60,7 +60,7 @@
       }
 
       v18 = MEMORY[0x277CCACA8];
-      v19 = [v11 componentsJoinedByString:{@", \n"}];
+      v19 = [array componentsJoinedByString:{@", \n"}];
       v20 = [v18 stringWithFormat:@"[ %@ ]", v19];
 
       *buf = 138543362;
@@ -75,19 +75,19 @@
   return v6;
 }
 
-- (void)append:(id)a3 recognizer:(id)a4
+- (void)append:(id)append recognizer:(id)recognizer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dominantLanguage];
-  if (v8)
+  appendCopy = append;
+  recognizerCopy = recognizer;
+  dominantLanguage = [recognizerCopy dominantLanguage];
+  if (dominantLanguage)
   {
     supportedLocales = self->_supportedLocales;
     v10 = _LTLanguageCodeToSupportedLocale();
-    v11 = [v7 languageHypothesesWithMaximum:4];
-    v12 = [v11 objectForKeyedSubscript:v8];
-    v13 = [_LTTokenizer _wordCount:v6 inLocale:v10];
+    v11 = [recognizerCopy languageHypothesesWithMaximum:4];
+    v12 = [v11 objectForKeyedSubscript:dominantLanguage];
+    v13 = [_LTTokenizer _wordCount:appendCopy inLocale:v10];
     v14 = [_LTTextLanguageDetectorScorerItem alloc];
     [v12 doubleValue];
     v15 = [(_LTTextLanguageDetectorScorerItem *)v14 initWithLocale:v10 confidence:v13 wordCount:?];
@@ -104,7 +104,7 @@
     {
       v17 = v16;
       v19 = 134217984;
-      v20 = [v6 length];
+      v20 = [appendCopy length];
       _os_log_impl(&dword_232E53000, v17, OS_LOG_TYPE_INFO, "no scorable dominant language for text length: %zu", &v19, 0xCu);
     }
   }
@@ -112,15 +112,15 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)append:(id)a3
+- (void)append:(id)append
 {
-  if (a3)
+  if (append)
   {
     [(NSMutableArray *)self->_items addObject:?];
   }
 }
 
-- (id)weightedLocaleWithStrategy:(unint64_t)a3
+- (id)weightedLocaleWithStrategy:(unint64_t)strategy
 {
   v62 = *MEMORY[0x277D85DE8];
   v5 = _LTOSLogLID();
@@ -129,8 +129,8 @@
     [(_LTTextLanguageDetectorScorer *)self weightedLocaleWithStrategy:v5];
   }
 
-  v46 = a3;
-  if (a3 == 3)
+  strategyCopy = strategy;
+  if (strategy == 3)
   {
     v6 = 0.99;
   }
@@ -174,17 +174,17 @@
         }
 
         v17 = *(*(&v49 + 1) + 8 * i);
-        v18 = [v17 wordCount];
+        wordCount = [v17 wordCount];
         [v17 confidence];
         if (v19 >= v6)
         {
-          v23 = [v17 locale];
-          v24 = [v8 objectForKeyedSubscript:v23];
+          locale = [v17 locale];
+          v24 = [v8 objectForKeyedSubscript:locale];
           [v24 doubleValue];
           v26 = v25;
-          if (v46 == 3)
+          if (strategyCopy == 3)
           {
-            v27 = [v17 wordCount];
+            wordCount2 = [v17 wordCount];
           }
 
           else
@@ -192,18 +192,18 @@
             [v17 score];
           }
 
-          v28 = v26 + v27;
+          v28 = v26 + wordCount2;
 
           v29 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-          v30 = [v17 locale];
-          [v8 setObject:v29 forKeyedSubscript:v30];
+          locale2 = [v17 locale];
+          [v8 setObject:v29 forKeyedSubscript:locale2];
 
           v12 += [v17 wordCount];
           if (v28 > v15)
           {
-            v31 = [v17 locale];
+            locale3 = [v17 locale];
 
-            v47 = v31;
+            v47 = locale3;
             v15 = v28;
           }
         }
@@ -223,7 +223,7 @@
           }
         }
 
-        v13 += v18;
+        v13 += wordCount;
       }
 
       v11 = [(NSMutableArray *)obj countByEnumeratingWithState:&v49 objects:v61 count:16];
@@ -240,7 +240,7 @@
     v15 = 0.0;
   }
 
-  if (v46 != 3)
+  if (strategyCopy != 3)
   {
     v38 = _LTOSLogLID();
     v32 = v47;

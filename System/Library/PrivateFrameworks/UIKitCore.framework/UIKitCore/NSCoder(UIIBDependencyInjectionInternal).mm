@@ -9,12 +9,12 @@
 
 - (void)_createStoryboardDecodingContextIfNeeded
 {
-  v2 = [a1 _storyboardDecodingContext];
+  _storyboardDecodingContext = [self _storyboardDecodingContext];
 
-  if (!v2)
+  if (!_storyboardDecodingContext)
   {
     v3 = objc_alloc_init(UIStoryboardDecodingContext);
-    objc_setAssociatedObject(a1, &UIStoryboardDecodingContextKey, v3, 1);
+    objc_setAssociatedObject(self, &UIStoryboardDecodingContextKey, v3, 1);
   }
 }
 
@@ -24,35 +24,35 @@
   v11 = a5;
   v12 = a4;
   v13 = a3;
-  v14 = [a1 _storyboardDecodingContext];
-  v15 = [v14 sourceSegueTemplate];
+  _storyboardDecodingContext = [self _storyboardDecodingContext];
+  sourceSegueTemplate = [_storyboardDecodingContext sourceSegueTemplate];
 
-  v16 = [a1 _storyboardDecodingContext];
-  v17 = [v16 sender];
+  _storyboardDecodingContext2 = [self _storyboardDecodingContext];
+  sender = [_storyboardDecodingContext2 sender];
 
-  v18 = [a1 _storyboardDecodingContext];
-  v19 = [v18 creator];
+  _storyboardDecodingContext3 = [self _storyboardDecodingContext];
+  creator = [_storyboardDecodingContext3 creator];
 
-  [a1 _createStoryboardDecodingContextIfNeeded];
-  v20 = [a1 _storyboardDecodingContext];
-  [v20 setSourceSegueTemplate:v13];
+  [self _createStoryboardDecodingContextIfNeeded];
+  _storyboardDecodingContext4 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext4 setSourceSegueTemplate:v13];
 
-  v21 = [a1 _storyboardDecodingContext];
-  [v21 setSender:v11];
+  _storyboardDecodingContext5 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext5 setSender:v11];
 
-  v22 = [a1 _storyboardDecodingContext];
-  [v22 setCreator:v12];
+  _storyboardDecodingContext6 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext6 setCreator:v12];
 
-  v23 = [a1 decodeObjectForKey:v10];
+  v23 = [self decodeObjectForKey:v10];
 
-  v24 = [a1 _storyboardDecodingContext];
-  [v24 setSourceSegueTemplate:v15];
+  _storyboardDecodingContext7 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext7 setSourceSegueTemplate:sourceSegueTemplate];
 
-  v25 = [a1 _storyboardDecodingContext];
-  [v25 setSender:v17];
+  _storyboardDecodingContext8 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext8 setSender:sender];
 
-  v26 = [a1 _storyboardDecodingContext];
-  [v26 setCreator:v19];
+  _storyboardDecodingContext9 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext9 setCreator:creator];
 
   return v23;
 }
@@ -61,26 +61,26 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _storyboardDecodingContext];
-  v9 = [v8 parentViewController];
+  _storyboardDecodingContext = [self _storyboardDecodingContext];
+  parentViewController = [_storyboardDecodingContext parentViewController];
 
-  v10 = [a1 _storyboardDecodingContext];
-  v11 = [v10 childViewControllerIndex];
+  _storyboardDecodingContext2 = [self _storyboardDecodingContext];
+  childViewControllerIndex = [_storyboardDecodingContext2 childViewControllerIndex];
 
-  [a1 _createStoryboardDecodingContextIfNeeded];
-  v12 = [a1 _storyboardDecodingContext];
-  [v12 setParentViewController:v7];
+  [self _createStoryboardDecodingContextIfNeeded];
+  _storyboardDecodingContext3 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext3 setParentViewController:v7];
 
-  v13 = [a1 _storyboardDecodingContext];
-  [v13 setChildViewControllerIndex:0];
+  _storyboardDecodingContext4 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext4 setChildViewControllerIndex:0];
 
-  v14 = [a1 decodeObjectForKey:v6];
+  v14 = [self decodeObjectForKey:v6];
 
-  v15 = [a1 _storyboardDecodingContext];
-  [v15 setParentViewController:v9];
+  _storyboardDecodingContext5 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext5 setParentViewController:parentViewController];
 
-  v16 = [a1 _storyboardDecodingContext];
-  [v16 setChildViewControllerIndex:v11];
+  _storyboardDecodingContext6 = [self _storyboardDecodingContext];
+  [_storyboardDecodingContext6 setChildViewControllerIndex:childViewControllerIndex];
 
   return v14;
 }
@@ -88,28 +88,28 @@
 - (void)_initializeClassSwapperWithCurrentDecodingViewControllerIfNeeded:()UIIBDependencyInjectionInternal
 {
   v14 = a3;
-  v4 = [a1 _storyboardDecodingContext];
-  v5 = [v4 classSwapperTemplate];
+  _storyboardDecodingContext = [self _storyboardDecodingContext];
+  classSwapperTemplate = [_storyboardDecodingContext classSwapperTemplate];
 
-  if (v5)
+  if (classSwapperTemplate)
   {
-    v6 = [a1 _storyboardDecodingContext];
-    v7 = [v6 classSwapperTemplate];
-    [a1 replaceObject:v7 withObject:v14];
+    _storyboardDecodingContext2 = [self _storyboardDecodingContext];
+    classSwapperTemplate2 = [_storyboardDecodingContext2 classSwapperTemplate];
+    [self replaceObject:classSwapperTemplate2 withObject:v14];
 
-    v8 = [a1 _storyboardDecodingContext];
-    [v8 setClassSwapperTemplate:0];
+    _storyboardDecodingContext3 = [self _storyboardDecodingContext];
+    [_storyboardDecodingContext3 setClassSwapperTemplate:0];
   }
 
-  v9 = [a1 _storyboardDecodingContext];
-  v10 = [v9 parentViewController];
+  _storyboardDecodingContext4 = [self _storyboardDecodingContext];
+  parentViewController = [_storyboardDecodingContext4 parentViewController];
 
-  if (v10)
+  if (parentViewController)
   {
-    v11 = [a1 _storyboardDecodingContext];
-    v12 = [v11 childViewControllerIndex];
-    v13 = [a1 _storyboardDecodingContext];
-    [v13 setChildViewControllerIndex:v12 + 1];
+    _storyboardDecodingContext5 = [self _storyboardDecodingContext];
+    childViewControllerIndex = [_storyboardDecodingContext5 childViewControllerIndex];
+    _storyboardDecodingContext6 = [self _storyboardDecodingContext];
+    [_storyboardDecodingContext6 setChildViewControllerIndex:childViewControllerIndex + 1];
   }
 }
 

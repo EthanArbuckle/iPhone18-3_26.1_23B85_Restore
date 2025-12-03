@@ -1,17 +1,17 @@
 @interface CASecureFlipBookLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)secureFlipBookWithType:(id)a3;
-- (BOOL)canTransitionToState:(id)a3;
-- (BOOL)forceTransitionToState:(id)a3;
-- (BOOL)transitionToState:(id)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)secureFlipBookWithType:(id)type;
+- (BOOL)canTransitionToState:(id)state;
+- (BOOL)forceTransitionToState:(id)state;
+- (BOOL)transitionToState:(id)state;
 - (NSArray)validDynamicPositions;
 - (NSArray)validPositions;
 - (NSDictionary)userInfo;
 - (NSString)currentState;
 - (NSString)nextState;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
 - (void)dealloc;
-- (void)tick:(double)a3;
+- (void)tick:(double)tick;
 @end
 
 @implementation CASecureFlipBookLayer
@@ -30,7 +30,7 @@
   }
 }
 
-- (BOOL)forceTransitionToState:(id)a3
+- (BOOL)forceTransitionToState:(id)state
 {
   if (CADeviceHasInternalBuild::once != -1)
   {
@@ -45,7 +45,7 @@
       LODWORD(v5) = SILStateMachineForceTransitionToState();
       if (v5)
       {
-        v5 = [a3 copy];
+        v5 = [state copy];
         self->_nextState = v5;
         self->_currentState = v5;
         LOBYTE(v5) = 1;
@@ -56,7 +56,7 @@
   return v5;
 }
 
-- (BOOL)transitionToState:(id)a3
+- (BOOL)transitionToState:(id)state
 {
   nextState = self->_nextState;
   if (nextState != self->_currentState)
@@ -75,7 +75,7 @@
     v6 = SILStateMachineTransitionToState();
     if (v6)
     {
-      self->_nextState = [a3 copy];
+      self->_nextState = [state copy];
       goto LABEL_10;
     }
   }
@@ -85,7 +85,7 @@
     v6 = SILStateMachineForceTransitionToState();
     if (v6)
     {
-      v7 = [a3 copy];
+      v7 = [state copy];
       self->_nextState = v7;
       self->_currentState = v7;
 LABEL_10:
@@ -96,7 +96,7 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)canTransitionToState:(id)a3
+- (BOOL)canTransitionToState:(id)state
 {
   nextState = self->_nextState;
   currentState = self->_currentState;
@@ -111,11 +111,11 @@ LABEL_10:
     currentState = self->_currentState;
   }
 
-  LOBYTE(v7) = [(CASecureFlipBookLayer *)self validTransitionFromState:currentState toState:a3];
+  LOBYTE(v7) = [(CASecureFlipBookLayer *)self validTransitionFromState:currentState toState:state];
   return v7;
 }
 
-- (void)tick:(double)a3
+- (void)tick:(double)tick
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = SILStateMachineTick();
@@ -143,21 +143,21 @@ LABEL_10:
     v9 = x_log_get_api::log;
     if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_INFO))
     {
-      v10 = [(NSString *)self->_currentState UTF8String];
+      uTF8String = [(NSString *)self->_currentState UTF8String];
       *buf = 136315138;
-      v12 = v10;
+      v12 = uTF8String;
       _os_log_impl(&dword_183AA6000, v9, OS_LOG_TYPE_INFO, "SILStateMachine finished transition %s", buf, 0xCu);
     }
   }
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v19 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CASecureFlipBookLayer;
-  v7 = [(CALayer *)&v16 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v7 && (*(a5 + 2) & 1) != 0)
+  v7 = [(CALayer *)&v16 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v7 && (*(commitFlags + 2) & 1) != 0)
   {
     v8 = indicator_id_from_name([(CASecureFlipBookLayer *)self type]);
     if (v8 == -1)
@@ -170,11 +170,11 @@ LABEL_10:
       v12 = x_log_get_api::log;
       if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(NSString *)[(CASecureFlipBookLayer *)self type] UTF8String];
+        uTF8String = [(NSString *)[(CASecureFlipBookLayer *)self type] UTF8String];
         v15 = "<null>";
-        if (v14)
+        if (uTF8String)
         {
-          v15 = v14;
+          v15 = uTF8String;
         }
 
         *buf = 136315138;
@@ -234,16 +234,16 @@ LABEL_10:
 
 - (NSArray)validDynamicPositions
 {
-  v2 = [(CASecureFlipBookLayer *)self type];
+  type = [(CASecureFlipBookLayer *)self type];
 
-  return CASecureIndicatorLayerValidDynamicPositionsForIndicator(v2);
+  return CASecureIndicatorLayerValidDynamicPositionsForIndicator(type);
 }
 
 - (NSArray)validPositions
 {
-  v2 = [(CASecureFlipBookLayer *)self type];
+  type = [(CASecureFlipBookLayer *)self type];
 
-  return CASecureIndicatorLayerValidPositionsForIndicator(v2);
+  return CASecureIndicatorLayerValidPositionsForIndicator(type);
 }
 
 - (NSString)nextState
@@ -260,20 +260,20 @@ LABEL_10:
   return v2;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASecureFlipBookLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-+ (id)secureFlipBookWithType:(id)a3
++ (id)secureFlipBookWithType:(id)type
 {
   v15[1] = *MEMORY[0x1E69E9840];
   if (CADeviceSupportsMedina::once != -1)
@@ -285,16 +285,16 @@ LABEL_10:
   if (MEMORY[0x1EEE91170] && MEMORY[0x1EEE91188] && MEMORY[0x1EEE91180] && MEMORY[0x1EEE91178] && MEMORY[0x1EEE91160] && (CADeviceSupportsMedina::medina & 1) != 0)
   {
     v14 = *MEMORY[0x1E69C8740];
-    v15[0] = a3;
+    v15[0] = type;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v6 = SILStateMachineCreate();
     if (v6)
     {
       v7 = v6;
-      v5 = objc_alloc_init(a1);
+      v5 = objc_alloc_init(self);
       if (v5)
       {
-        v5[7] = [a3 copy];
+        v5[7] = [type copy];
         v5[6] = v7;
         v8 = SILStateMachineStateList();
         v5[11] = v8;
@@ -329,7 +329,7 @@ LABEL_10:
       if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412290;
-        v13 = a3;
+        typeCopy = type;
         _os_log_error_impl(&dword_183AA6000, v9, OS_LOG_TYPE_ERROR, "Invalid Secure Flipbook type %@", &v12, 0xCu);
       }
 

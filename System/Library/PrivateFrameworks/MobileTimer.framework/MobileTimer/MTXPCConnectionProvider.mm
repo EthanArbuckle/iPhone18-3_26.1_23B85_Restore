@@ -1,21 +1,21 @@
 @interface MTXPCConnectionProvider
-+ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)a3 errorHandler:(id)a4;
-+ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)a3 reconnectHandler:(id)a4;
-- (MTXPCConnectionProvider)initWithConnectionInfo:(id)a3 errorHandler:(id)a4 reconnectHandler:(id)a5;
-- (id)_asyncRemoteObjectProxyWithErrorHandler:(id)a3;
++ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)info errorHandler:(id)handler;
++ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)info reconnectHandler:(id)handler;
+- (MTXPCConnectionProvider)initWithConnectionInfo:(id)info errorHandler:(id)handler reconnectHandler:(id)reconnectHandler;
+- (id)_asyncRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)_connectionRebuildingIfNecessary;
-- (id)_remoteObjectProxyWithXPCConnectionProvider:(id)a3 remoteObjectProxyProvider:(id)a4 errorHandler:(id)a5;
+- (id)_remoteObjectProxyWithXPCConnectionProvider:(id)provider remoteObjectProxyProvider:(id)proxyProvider errorHandler:(id)handler;
 - (id)_retryConnection;
-- (id)_syncRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)_syncRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)connection;
 - (id)description;
 - (void)_didInterruptConnection;
 - (void)_didInvalidateConnection;
-- (void)_retryConnectionWithRecover:(BOOL)a3;
+- (void)_retryConnectionWithRecover:(BOOL)recover;
 - (void)dealloc;
 - (void)didReceiveLifecycleNotification;
 - (void)invalidate;
-- (void)performRemoteBlock:(id)a3 withErrorHandler:(id)a4 isSynchronous:(BOOL)a5;
+- (void)performRemoteBlock:(id)block withErrorHandler:(id)handler isSynchronous:(BOOL)synchronous;
 @end
 
 @implementation MTXPCConnectionProvider
@@ -24,9 +24,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTXPCConnectionProvider *)self info];
-  v6 = [v5 machServiceName];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v6];
+  info = [(MTXPCConnectionProvider *)self info];
+  machServiceName = [info machServiceName];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, machServiceName];
 
   return v7;
 }
@@ -41,15 +41,15 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_INFO, "%{public}@ rebuilding connection", buf, 0xCu);
     }
 
     v5 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v6 = [(MTXPCConnectionProvider *)self info];
-    v7 = [v6 machServiceName];
-    v8 = [(MTXPCConnectionProvider *)self info];
-    v9 = [v5 initWithMachServiceName:v7 options:{objc_msgSend(v8, "options")}];
+    info = [(MTXPCConnectionProvider *)self info];
+    machServiceName = [info machServiceName];
+    info2 = [(MTXPCConnectionProvider *)self info];
+    v9 = [v5 initWithMachServiceName:machServiceName options:{objc_msgSend(info2, "options")}];
     v10 = self->_connection;
     self->_connection = v9;
 
@@ -65,22 +65,22 @@
     v21[3] = &unk_1E7B0C9D8;
     v21[4] = self;
     [(NSXPCConnection *)self->_connection setInvalidationHandler:v21];
-    v11 = [(MTXPCConnectionProvider *)self info];
-    v12 = [v11 remoteObjectInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v12];
+    info3 = [(MTXPCConnectionProvider *)self info];
+    remoteObjectInterface = [info3 remoteObjectInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:remoteObjectInterface];
 
-    v13 = [(MTXPCConnectionProvider *)self info];
-    v14 = [v13 exportedObject];
+    info4 = [(MTXPCConnectionProvider *)self info];
+    exportedObject = [info4 exportedObject];
 
-    if (v14)
+    if (exportedObject)
     {
-      v15 = [(MTXPCConnectionProvider *)self info];
-      v16 = [v15 exportedObjectInterface];
-      [(NSXPCConnection *)self->_connection setExportedInterface:v16];
+      info5 = [(MTXPCConnectionProvider *)self info];
+      exportedObjectInterface = [info5 exportedObjectInterface];
+      [(NSXPCConnection *)self->_connection setExportedInterface:exportedObjectInterface];
 
-      v17 = [(MTXPCConnectionProvider *)self info];
-      v18 = [v17 exportedObject];
-      [(NSXPCConnection *)self->_connection setExportedObject:v18];
+      info6 = [(MTXPCConnectionProvider *)self info];
+      exportedObject2 = [info6 exportedObject];
+      [(NSXPCConnection *)self->_connection setExportedObject:exportedObject2];
     }
 
     [(NSXPCConnection *)self->_connection resume];
@@ -95,37 +95,37 @@
 - (id)connection
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(MTXPCConnectionProvider *)self _connectionRebuildingIfNecessary];
+  _connectionRebuildingIfNecessary = [(MTXPCConnectionProvider *)self _connectionRebuildingIfNecessary];
   os_unfair_lock_unlock(&self->_connectionLock);
 
-  return v3;
+  return _connectionRebuildingIfNecessary;
 }
 
-+ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)a3 errorHandler:(id)a4
++ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)info errorHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:v6 errorHandler:v5 reconnectHandler:0];
+  handlerCopy = handler;
+  infoCopy = info;
+  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:infoCopy errorHandler:handlerCopy reconnectHandler:0];
 
   return v7;
 }
 
-+ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)a3 reconnectHandler:(id)a4
++ (MTXPCConnectionProvider)providerWithConnectionInfo:(id)info reconnectHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:v6 errorHandler:0 reconnectHandler:v5];
+  handlerCopy = handler;
+  infoCopy = info;
+  v7 = [objc_alloc(objc_opt_class()) initWithConnectionInfo:infoCopy errorHandler:0 reconnectHandler:handlerCopy];
 
   return v7;
 }
 
-- (MTXPCConnectionProvider)initWithConnectionInfo:(id)a3 errorHandler:(id)a4 reconnectHandler:(id)a5
+- (MTXPCConnectionProvider)initWithConnectionInfo:(id)info errorHandler:(id)handler reconnectHandler:(id)reconnectHandler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  infoCopy = info;
+  handlerCopy = handler;
+  reconnectHandlerCopy = reconnectHandler;
+  if (!infoCopy)
   {
     [MTXPCConnectionProvider initWithConnectionInfo:a2 errorHandler:self reconnectHandler:?];
   }
@@ -141,32 +141,32 @@
       *buf = 138543618;
       v28 = v13;
       v29 = 2114;
-      v30 = v10;
+      v30 = infoCopy;
       _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_INFO, "Initializing %{public}@ with info %{public}@", buf, 0x16u);
     }
 
     v13->_connectionLock._os_unfair_lock_opaque = 0;
-    v15 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+    mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
     callbackScheduler = v13->_callbackScheduler;
-    v13->_callbackScheduler = v15;
+    v13->_callbackScheduler = mtMainThreadScheduler;
 
-    objc_storeStrong(&v13->_info, a3);
-    v17 = [v11 copy];
+    objc_storeStrong(&v13->_info, info);
+    v17 = [handlerCopy copy];
     errorHandler = v13->_errorHandler;
     v13->_errorHandler = v17;
 
-    v19 = [v12 copy];
+    v19 = [reconnectHandlerCopy copy];
     reconnectHandler = v13->_reconnectHandler;
     v13->_reconnectHandler = v19;
 
     v13->_alive = 1;
-    v21 = [v10 lifecycleNotification];
+    lifecycleNotification = [infoCopy lifecycleNotification];
 
-    if (v21)
+    if (lifecycleNotification)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      v23 = [v10 lifecycleNotification];
-      CFNotificationCenterAddObserver(DarwinNotifyCenter, v13, _handleLifeCycleNotification, v23, v13, 1025);
+      lifecycleNotification2 = [infoCopy lifecycleNotification];
+      CFNotificationCenterAddObserver(DarwinNotifyCenter, v13, _handleLifeCycleNotification, lifecycleNotification2, v13, 1025);
     }
   }
 
@@ -181,7 +181,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing...", buf, 0xCu);
   }
 
@@ -273,19 +273,19 @@ void __43__MTXPCConnectionProvider__retryConnection__block_invoke_2(uint64_t a1,
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (void)_retryConnectionWithRecover:(BOOL)a3
+- (void)_retryConnectionWithRecover:(BOOL)recover
 {
-  v3 = a3;
-  v5 = [(MTXPCConnectionProvider *)self _retryConnection];
-  v6 = v5;
-  if (v3)
+  recoverCopy = recover;
+  _retryConnection = [(MTXPCConnectionProvider *)self _retryConnection];
+  v6 = _retryConnection;
+  if (recoverCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __55__MTXPCConnectionProvider__retryConnectionWithRecover___block_invoke;
     v10[3] = &unk_1E7B0D170;
     v10[4] = self;
-    v7 = [v5 recover:v10];
+    v7 = [_retryConnection recover:v10];
 
     v6 = v7;
   }
@@ -360,25 +360,25 @@ void __55__MTXPCConnectionProvider__retryConnectionWithRecover___block_invoke_20
   v1[2]();
 }
 
-- (void)performRemoteBlock:(id)a3 withErrorHandler:(id)a4 isSynchronous:(BOOL)a5
+- (void)performRemoteBlock:(id)block withErrorHandler:(id)handler isSynchronous:(BOOL)synchronous
 {
-  v8 = a3;
-  if (a5)
+  blockCopy = block;
+  if (synchronous)
   {
-    [(MTXPCConnectionProvider *)self _syncRemoteObjectProxyWithErrorHandler:a4];
+    [(MTXPCConnectionProvider *)self _syncRemoteObjectProxyWithErrorHandler:handler];
   }
 
   else
   {
-    [(MTXPCConnectionProvider *)self _asyncRemoteObjectProxyWithErrorHandler:a4];
+    [(MTXPCConnectionProvider *)self _asyncRemoteObjectProxyWithErrorHandler:handler];
   }
   v9 = ;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__MTXPCConnectionProvider_performRemoteBlock_withErrorHandler_isSynchronous___block_invoke;
   v12[3] = &unk_1E7B0D1C0;
-  v13 = v8;
-  v10 = v8;
+  v13 = blockCopy;
+  v10 = blockCopy;
   v11 = [v9 addSuccessBlock:v12];
 }
 
@@ -394,14 +394,14 @@ void __77__MTXPCConnectionProvider_performRemoteBlock_withErrorHandler_isSynchro
   }
 }
 
-- (id)_asyncRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_asyncRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__MTXPCConnectionProvider__asyncRemoteObjectProxyWithErrorHandler___block_invoke;
   v5[3] = &unk_1E7B0D1E8;
   v5[4] = self;
-  v3 = [(MTXPCConnectionProvider *)self _remoteObjectProxyWithXPCConnectionProvider:v5 remoteObjectProxyProvider:&__block_literal_global_11 errorHandler:a3];
+  v3 = [(MTXPCConnectionProvider *)self _remoteObjectProxyWithXPCConnectionProvider:v5 remoteObjectProxyProvider:&__block_literal_global_11 errorHandler:handler];
 
   return v3;
 }
@@ -415,14 +415,14 @@ id __67__MTXPCConnectionProvider__asyncRemoteObjectProxyWithErrorHandler___block
   return v3;
 }
 
-- (id)_syncRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_syncRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__MTXPCConnectionProvider__syncRemoteObjectProxyWithErrorHandler___block_invoke;
   v5[3] = &unk_1E7B0D1E8;
   v5[4] = self;
-  v3 = [(MTXPCConnectionProvider *)self _remoteObjectProxyWithXPCConnectionProvider:v5 remoteObjectProxyProvider:&__block_literal_global_25 errorHandler:a3];
+  v3 = [(MTXPCConnectionProvider *)self _remoteObjectProxyWithXPCConnectionProvider:v5 remoteObjectProxyProvider:&__block_literal_global_25 errorHandler:handler];
 
   return v3;
 }
@@ -436,20 +436,20 @@ id __66__MTXPCConnectionProvider__syncRemoteObjectProxyWithErrorHandler___block_
   return v3;
 }
 
-- (id)_remoteObjectProxyWithXPCConnectionProvider:(id)a3 remoteObjectProxyProvider:(id)a4 errorHandler:(id)a5
+- (id)_remoteObjectProxyWithXPCConnectionProvider:(id)provider remoteObjectProxyProvider:(id)proxyProvider errorHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = (*(a3 + 2))(a3);
+  proxyProviderCopy = proxyProvider;
+  handlerCopy = handler;
+  v10 = (*(provider + 2))(provider);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __110__MTXPCConnectionProvider__remoteObjectProxyWithXPCConnectionProvider_remoteObjectProxyProvider_errorHandler___block_invoke;
   v15[3] = &unk_1E7B0D258;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v11 = v8;
-  v12 = v9;
+  v16 = handlerCopy;
+  v17 = proxyProviderCopy;
+  v11 = proxyProviderCopy;
+  v12 = handlerCopy;
   v13 = [v10 flatMap:v15];
 
   return v13;
@@ -527,14 +527,14 @@ void __110__MTXPCConnectionProvider__remoteObjectProxyWithXPCConnectionProvider_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ invalidating", &v9, 0xCu);
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v5 = [(MTXPCConnectionProvider *)self info];
-  v6 = [v5 lifecycleNotification];
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v6, self);
+  info = [(MTXPCConnectionProvider *)self info];
+  lifecycleNotification = [info lifecycleNotification];
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, lifecycleNotification, self);
 
   os_unfair_lock_lock(&self->_connectionLock);
   [(NSXPCConnection *)self->_connection setInterruptionHandler:0];

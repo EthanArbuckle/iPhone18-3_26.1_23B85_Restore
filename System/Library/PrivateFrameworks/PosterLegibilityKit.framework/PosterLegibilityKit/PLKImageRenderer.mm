@@ -1,33 +1,33 @@
 @interface PLKImageRenderer
-+ (CGContext)contextWithFormat:(id)a3;
-+ (void)prepareCGContext:(CGContext *)a3 withRendererContext:(id)a4;
-- (id)imageWithActions:(id)a3;
-- (id)imageWithRenderable:(id)a3;
++ (CGContext)contextWithFormat:(id)format;
++ (void)prepareCGContext:(CGContext *)context withRendererContext:(id)rendererContext;
+- (id)imageWithActions:(id)actions;
+- (id)imageWithRenderable:(id)renderable;
 @end
 
 @implementation PLKImageRenderer
 
-+ (CGContext)contextWithFormat:(id)a3
++ (CGContext)contextWithFormat:(id)format
 {
-  v4 = a3;
-  if (([v4 plk_isPLKImageRendererFormat] & 1) == 0)
+  formatCopy = format;
+  if (([formatCopy plk_isPLKImageRendererFormat] & 1) == 0)
   {
-    v34.receiver = a1;
+    v34.receiver = self;
     v34.super_class = &OBJC_METACLASS___PLKImageRenderer;
-    v19 = objc_msgSendSuper2(&v34, sel_contextWithFormat_, v4);
+    v19 = objc_msgSendSuper2(&v34, sel_contextWithFormat_, formatCopy);
 LABEL_30:
 
     return v19;
   }
 
-  [v4 bounds];
+  [formatCopy bounds];
   v6 = v5;
   v8 = v7;
-  [v4 scale];
+  [formatCopy scale];
   v10 = v9;
-  v11 = [v4 contextType];
-  v12 = [v4 colorSpace];
-  v13 = [v4 memoryPool];
+  contextType = [formatCopy contextType];
+  colorSpace = [formatCopy colorSpace];
+  memoryPool = [formatCopy memoryPool];
   if (v6 <= 0.0 || v8 <= 0.0)
   {
     v35.width = v6;
@@ -42,13 +42,13 @@ LABEL_29:
   }
 
   v14 = vcvtpd_u64_f64(v10 * v6);
-  PLKGraphicsContextComponentsCountForType(v11);
+  PLKGraphicsContextComponentsCountForType(contextType);
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   v16 = 0;
   DeviceGray = 0;
-  if (v11 > 1)
+  if (contextType > 1)
   {
-    if (v11 == 2)
+    if (contextType == 2)
     {
       v16 = 1;
       DeviceGray = CGColorSpaceCreateDeviceGray();
@@ -56,10 +56,10 @@ LABEL_29:
 
     else
     {
-      if (v11 != 3)
+      if (contextType != 3)
       {
         v18 = 0;
-        if (v11 == 4)
+        if (contextType == 4)
         {
           DeviceGray = 0;
           v18 = 0;
@@ -77,17 +77,17 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  if (v11)
+  if (contextType)
   {
     v18 = 0;
-    if (v11 != 1)
+    if (contextType != 1)
     {
       goto LABEL_23;
     }
 
-    if (v12)
+    if (colorSpace)
     {
-      DeviceGray = CGColorSpaceRetain(v12);
+      DeviceGray = CGColorSpaceRetain(colorSpace);
       v18 = 0x2000;
       v16 = 6;
       goto LABEL_23;
@@ -99,9 +99,9 @@ LABEL_29:
 
   else
   {
-    if (v12)
+    if (colorSpace)
     {
-      DeviceGray = CGColorSpaceRetain(v12);
+      DeviceGray = CGColorSpaceRetain(colorSpace);
       v18 = 0x2000;
       v16 = 2;
       goto LABEL_23;
@@ -114,7 +114,7 @@ LABEL_29:
   DeviceGray = CGColorSpaceCreateDeviceRGB();
 LABEL_23:
   v21 = vcvtpd_u64_f64(v10 * v8);
-  if (!v13)
+  if (!memoryPool)
   {
     Data = 0;
 LABEL_27:
@@ -131,8 +131,8 @@ LABEL_27:
   v23 = v14;
   v24 = AlignedBytesPerRow;
   v25 = AlignedBytesPerRow * v21;
-  v26 = [v13 slotLength];
-  if (v25 <= v26)
+  slotLength = [memoryPool slotLength];
+  if (v25 <= slotLength)
   {
     Data = CGBitmapAllocateData();
     AlignedBytesPerRow = v24;
@@ -142,8 +142,8 @@ LABEL_27:
   }
 
   v29 = MEMORY[0x277CCACA8];
-  v30 = v26;
-  v31 = PLKGraphicsContextTypeDescription(v11);
+  v30 = slotLength;
+  v31 = PLKGraphicsContextTypeDescription(contextType);
   v36.width = v6;
   v36.height = v8;
   v32 = NSStringFromCGSize(v36);
@@ -160,12 +160,12 @@ LABEL_27:
   return result;
 }
 
-+ (void)prepareCGContext:(CGContext *)a3 withRendererContext:(id)a4
++ (void)prepareCGContext:(CGContext *)context withRendererContext:(id)rendererContext
 {
-  v5 = [a4 format];
-  [v5 scale];
+  format = [rendererContext format];
+  [format scale];
   v7 = v6;
-  [v5 bounds];
+  [format bounds];
   v9 = v8;
   v11 = v10;
   v17.size.width = ceil(v7 * v12);
@@ -173,27 +173,27 @@ LABEL_27:
   v17.origin.x = 0.0;
   v17.origin.y = 0.0;
   v17.size.height = v14;
-  CGContextClearRect(a3, v17);
-  CGContextTranslateCTM(a3, 0.0, v14);
-  CGContextScaleCTM(a3, v7, -v7);
+  CGContextClearRect(context, v17);
+  CGContextTranslateCTM(context, 0.0, v14);
+  CGContextScaleCTM(context, v7, -v7);
   if (v9 != *MEMORY[0x277CBF348] || v11 != *(MEMORY[0x277CBF348] + 8))
   {
-    CGContextTranslateCTM(a3, -v9, -v11);
+    CGContextTranslateCTM(context, -v9, -v11);
   }
 
-  CGContextGetCTM(&v16, a3);
+  CGContextGetCTM(&v16, context);
   CGContextSetBaseCTM();
 }
 
-- (id)imageWithActions:(id)a3
+- (id)imageWithActions:(id)actions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = PLKLogRendering();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E5D5000, v5, OS_LOG_TYPE_INFO, "<PLKImageRenderer:%p imageWithActions>", buf, 0xCu);
   }
 
@@ -201,7 +201,7 @@ LABEL_27:
   v14[1] = 3221225472;
   v14[2] = __37__PLKImageRenderer_imageWithActions___block_invoke;
   v14[3] = &unk_27835B730;
-  v6 = v4;
+  v6 = actionsCopy;
   v15 = v6;
   v13.receiver = self;
   v13.super_class = PLKImageRenderer;
@@ -224,17 +224,17 @@ LABEL_27:
   return v10;
 }
 
-- (id)imageWithRenderable:(id)a3
+- (id)imageWithRenderable:(id)renderable
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  renderableCopy = renderable;
   v5 = PLKLogRendering();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = renderableCopy;
     _os_log_impl(&dword_21E5D5000, v5, OS_LOG_TYPE_INFO, "<PLKImageRenderer:%p imageWithRenderable:%@>", buf, 0x16u);
   }
 
@@ -242,8 +242,8 @@ LABEL_27:
   v10[1] = 3221225472;
   v10[2] = __40__PLKImageRenderer_imageWithRenderable___block_invoke;
   v10[3] = &unk_27835B6C8;
-  v11 = v4;
-  v6 = v4;
+  v11 = renderableCopy;
+  v6 = renderableCopy;
   v7 = [(PLKImageRenderer *)self imageWithActions:v10];
 
   v8 = *MEMORY[0x277D85DE8];

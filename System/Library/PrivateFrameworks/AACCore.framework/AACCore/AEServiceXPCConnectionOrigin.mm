@@ -1,27 +1,27 @@
 @interface AEServiceXPCConnectionOrigin
 - (id)makeConnection;
-- (void)initWithServiceName:(void *)a1;
+- (void)initWithServiceName:(void *)name;
 @end
 
 @implementation AEServiceXPCConnectionOrigin
 
-- (void)initWithServiceName:(void *)a1
+- (void)initWithServiceName:(void *)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    v7.receiver = a1;
+    v7.receiver = name;
     v7.super_class = AEServiceXPCConnectionOrigin;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    name = objc_msgSendSuper2(&v7, sel_init);
+    if (name)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = name[1];
+      name[1] = v4;
     }
   }
 
-  return a1;
+  return name;
 }
 
 - (id)makeConnection

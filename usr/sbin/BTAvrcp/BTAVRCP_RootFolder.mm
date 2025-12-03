@@ -1,10 +1,10 @@
 @interface BTAVRCP_RootFolder
 - (BTAVRCP_RootFolder)init;
 - (id)baseQuery;
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 @end
 
 @implementation BTAVRCP_RootFolder
@@ -30,24 +30,24 @@
   return v2;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  if (a3 != 1)
+  if (uid != 1)
   {
     return 9;
   }
 
   v5 = [BTAVRCP_CategoriesFolder alloc];
   v6 = +[MPMediaLibrary defaultMediaLibrary];
-  v7 = [v6 name];
-  *a4 = [(BTAVRCP_CategoriesFolder *)v5 initWithName:v7 uid:1];
+  name = [v6 name];
+  *folder = [(BTAVRCP_CategoriesFolder *)v5 initWithName:name uid:1];
 
   return 4;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  if (a3)
+  if (index)
   {
     v4 = 0;
   }
@@ -55,16 +55,16 @@
   else
   {
     v6 = [MPMediaLibrary defaultMediaLibrary:0];
-    v7 = [v6 name];
-    v4 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:0 uid:&off_100019BD0 name:v7];
+    name = [v6 name];
+    v4 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:0 uid:&off_100019BD0 name:name];
   }
 
   return v4;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  if (a3 == 1)
+  if (uid == 1)
   {
     return &__NSDictionary0__struct;
   }
@@ -75,9 +75,9 @@
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  if (a3 == 1)
+  if (uid == 1)
   {
     return 12;
   }

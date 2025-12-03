@@ -1,17 +1,17 @@
 @interface CADisplayPreset
-- (CADisplayPreset)initWithIsReference:(BOOL)a3 userAdjustment:(id)a4 autoLuminanceBoost:(float)a5;
+- (CADisplayPreset)initWithIsReference:(BOOL)reference userAdjustment:(id)adjustment autoLuminanceBoost:(float)boost;
 - (id)userAdjustmentCommand;
-- (void)applyUserAdjustmentCommand:(id)a3;
+- (void)applyUserAdjustmentCommand:(id)command;
 - (void)dealloc;
 @end
 
 @implementation CADisplayPreset
 
-- (void)applyUserAdjustmentCommand:(id)a3
+- (void)applyUserAdjustmentCommand:(id)command
 {
-  v5 = [a3 userAdjustment];
+  userAdjustment = [command userAdjustment];
 
-  self->_userAdjustment = [a3 userAdjustment];
+  self->_userAdjustment = [command userAdjustment];
 }
 
 - (id)userAdjustmentCommand
@@ -37,9 +37,9 @@
   [(CADisplayPreset *)&v3 dealloc];
 }
 
-- (CADisplayPreset)initWithIsReference:(BOOL)a3 userAdjustment:(id)a4 autoLuminanceBoost:(float)a5
+- (CADisplayPreset)initWithIsReference:(BOOL)reference userAdjustment:(id)adjustment autoLuminanceBoost:(float)boost
 {
-  v7 = a3;
+  referenceCopy = reference;
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CADisplayPreset;
@@ -47,10 +47,10 @@
   v9 = v8;
   if (v8)
   {
-    v8->_autoLuminanceBoost = a5;
+    v8->_autoLuminanceBoost = boost;
     v10 = 100.0;
     v11 = 2.0;
-    if (v7)
+    if (referenceCopy)
     {
       v11 = 100.0;
     }
@@ -60,13 +60,13 @@
       v10 = 600.0;
     }
 
-    v8->_allowTrueTone = !v7;
-    v8->_allowNightShift = !v7;
-    v8->_allowAutoBrightness = !v7;
+    v8->_allowTrueTone = !referenceCopy;
+    v8->_allowNightShift = !referenceCopy;
+    v8->_allowAutoBrightness = !referenceCopy;
     v8->_minSliderBrightness = v11;
     v8->_maxSliderBrightness = v10;
-    v8->_isReference = v7;
-    v8->_userAdjustment = a4;
+    v8->_isReference = referenceCopy;
+    v8->_userAdjustment = adjustment;
   }
 
   return v9;

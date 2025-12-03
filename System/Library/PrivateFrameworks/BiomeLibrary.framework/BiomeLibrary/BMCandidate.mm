@@ -1,38 +1,38 @@
 @interface BMCandidate
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMCandidate)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMCandidate)initWithPrivatizedIdentifier:(id)a3 feedbackDeprecated:(int)a4 privatizedTransportBundleId:(id)a5 timeSinceLastOutgoingInteraction:(id)a6 timeSinceOutgoingInteractionNumber10:(id)a7 timeSinceLastIncomingInteraction:(id)a8 deprecatedField1:(id)a9 deprecatedField2:(id)a10 deprecatedField3:(id)a11 numberOfSharesWithConversation:(id)a12 numberOfSharesFromCurrentAppWithConversation:(id)a13 numberOfSharesOfTopDomainURLWithConversation:(id)a14 numberOfSharesOfDetectedPeopleWithConversation:(id)a15 numberOfSharesOfPeopleInPhotoWithConversation:(id)a16 numberOfOutgoingInteractionsWithConversation:(id)a17 numberOfIncomingInteractionsWithConversation:(id)a18 numberOfInteractionsDuringTimePeriodWithConversation:(id)a19 numberOfEngagedSuggestionsWithConversation:(id)a20 numberOfEngagedSuggestionsFromCurrentAppWithConversation:(id)a21 numberOfEngagedSuggestionsOfTopDomainURLWithConversation:(id)a22 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:(id)a23 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:(id)a24 hasEverSharePlayedWithConversation:(id)a25 suggestedRank:(id)a26 coreMLModelScore:(id)a27 foundInChunk:(id)a28 updatedInChunk:(id)a29 numberOfSharesOfPeopleInPhotoIoUWithConversation:(id)a30 numberOfSharesOfPetsWithConversation:(id)a31 numberOfSharesOfPetsInCurrentPhotoWithConversation:(id)a32 numberOfSharesOfScenesInPhotoWithConversation:(id)a33 numberOfSharesOfDetectedScenesInPhotoWithConversation:(id)a34 numberOfTopicsSharedWithConversation:(id)a35 numberOfAppsSharedFromWithConversation:(id)a36 timeSinceLastPhotoShareWithConversation:(id)a37 hasSharedSensitiveContentWIthConversation:(id)a38 isInPhoneCallWithConversation:(id)a39 numberOfSharesFromAlbumPhotoBelongsToWithConversation:(id)a40 isFirstPartyApp:(id)a41 numberOfTimesSharedToTargetAppWithConversation:(id)a42 timeSinceLastShareWithConversation:(id)a43 timeSinceLastPhoneCallWithConversation:(id)a44 numberOfDifferentFacesSharedWithConversation:(id)a45 numberOfTotalSharesToTargetApp:(id)a46;
-- (BOOL)isEqual:(id)a3;
+- (BMCandidate)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMCandidate)initWithPrivatizedIdentifier:(id)identifier feedbackDeprecated:(int)deprecated privatizedTransportBundleId:(id)id timeSinceLastOutgoingInteraction:(id)interaction timeSinceOutgoingInteractionNumber10:(id)number10 timeSinceLastIncomingInteraction:(id)incomingInteraction deprecatedField1:(id)field1 deprecatedField2:(id)self0 deprecatedField3:(id)self1 numberOfSharesWithConversation:(id)self2 numberOfSharesFromCurrentAppWithConversation:(id)self3 numberOfSharesOfTopDomainURLWithConversation:(id)self4 numberOfSharesOfDetectedPeopleWithConversation:(id)self5 numberOfSharesOfPeopleInPhotoWithConversation:(id)self6 numberOfOutgoingInteractionsWithConversation:(id)self7 numberOfIncomingInteractionsWithConversation:(id)self8 numberOfInteractionsDuringTimePeriodWithConversation:(id)self9 numberOfEngagedSuggestionsWithConversation:(id)suggestionsWithConversation numberOfEngagedSuggestionsFromCurrentAppWithConversation:(id)appWithConversation numberOfEngagedSuggestionsOfTopDomainURLWithConversation:(id)rLWithConversation numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:(id)detectedPeopleWithConversation numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:(id)inPhotoWithConversation hasEverSharePlayedWithConversation:(id)playedWithConversation suggestedRank:(id)rank coreMLModelScore:(id)score foundInChunk:(id)chunk updatedInChunk:(id)inChunk numberOfSharesOfPeopleInPhotoIoUWithConversation:(id)identifier0 numberOfSharesOfPetsWithConversation:(id)identifier1 numberOfSharesOfPetsInCurrentPhotoWithConversation:(id)identifier2 numberOfSharesOfScenesInPhotoWithConversation:(id)identifier3 numberOfSharesOfDetectedScenesInPhotoWithConversation:(id)identifier4 numberOfTopicsSharedWithConversation:(id)identifier5 numberOfAppsSharedFromWithConversation:(id)identifier6 timeSinceLastPhotoShareWithConversation:(id)identifier7 hasSharedSensitiveContentWIthConversation:(id)identifier8 isInPhoneCallWithConversation:(id)identifier9 numberOfSharesFromAlbumPhotoBelongsToWithConversation:(id)deprecated0 isFirstPartyApp:(id)deprecated1 numberOfTimesSharedToTargetAppWithConversation:(id)deprecated2 timeSinceLastShareWithConversation:(id)deprecated3 timeSinceLastPhoneCallWithConversation:(id)deprecated4 numberOfDifferentFacesSharedWithConversation:(id)deprecated5 numberOfTotalSharesToTargetApp:(id)deprecated6;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMCandidate
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMCandidate *)self privatizedIdentifier];
-    v7 = [v5 privatizedIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    privatizedIdentifier = [(BMCandidate *)self privatizedIdentifier];
+    privatizedIdentifier2 = [v5 privatizedIdentifier];
+    v8 = privatizedIdentifier2;
+    if (privatizedIdentifier == privatizedIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMCandidate *)self privatizedIdentifier];
-      v10 = [v5 privatizedIdentifier];
-      v11 = [v9 isEqual:v10];
+      privatizedIdentifier3 = [(BMCandidate *)self privatizedIdentifier];
+      privatizedIdentifier4 = [v5 privatizedIdentifier];
+      v11 = [privatizedIdentifier3 isEqual:privatizedIdentifier4];
 
       if (!v11)
       {
@@ -40,21 +40,21 @@
       }
     }
 
-    v13 = [(BMCandidate *)self feedbackDeprecated];
-    if (v13 == [v5 feedbackDeprecated])
+    feedbackDeprecated = [(BMCandidate *)self feedbackDeprecated];
+    if (feedbackDeprecated == [v5 feedbackDeprecated])
     {
-      v14 = [(BMCandidate *)self privatizedTransportBundleId];
-      v15 = [v5 privatizedTransportBundleId];
-      v16 = v15;
-      if (v14 == v15)
+      privatizedTransportBundleId = [(BMCandidate *)self privatizedTransportBundleId];
+      privatizedTransportBundleId2 = [v5 privatizedTransportBundleId];
+      v16 = privatizedTransportBundleId2;
+      if (privatizedTransportBundleId == privatizedTransportBundleId2)
       {
       }
 
       else
       {
-        v17 = [(BMCandidate *)self privatizedTransportBundleId];
-        v18 = [v5 privatizedTransportBundleId];
-        v19 = [v17 isEqual:v18];
+        privatizedTransportBundleId3 = [(BMCandidate *)self privatizedTransportBundleId];
+        privatizedTransportBundleId4 = [v5 privatizedTransportBundleId];
+        v19 = [privatizedTransportBundleId3 isEqual:privatizedTransportBundleId4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
-      v21 = [v5 timeSinceLastOutgoingInteraction];
-      v22 = v21;
-      if (v20 == v21)
+      timeSinceLastOutgoingInteraction = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
+      timeSinceLastOutgoingInteraction2 = [v5 timeSinceLastOutgoingInteraction];
+      v22 = timeSinceLastOutgoingInteraction2;
+      if (timeSinceLastOutgoingInteraction == timeSinceLastOutgoingInteraction2)
       {
       }
 
       else
       {
-        v23 = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
-        v24 = [v5 timeSinceLastOutgoingInteraction];
-        v25 = [v23 isEqual:v24];
+        timeSinceLastOutgoingInteraction3 = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
+        timeSinceLastOutgoingInteraction4 = [v5 timeSinceLastOutgoingInteraction];
+        v25 = [timeSinceLastOutgoingInteraction3 isEqual:timeSinceLastOutgoingInteraction4];
 
         if (!v25)
         {
@@ -81,18 +81,18 @@
         }
       }
 
-      v26 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
-      v27 = [v5 timeSinceOutgoingInteractionNumber10];
-      v28 = v27;
-      if (v26 == v27)
+      timeSinceOutgoingInteractionNumber10 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
+      timeSinceOutgoingInteractionNumber102 = [v5 timeSinceOutgoingInteractionNumber10];
+      v28 = timeSinceOutgoingInteractionNumber102;
+      if (timeSinceOutgoingInteractionNumber10 == timeSinceOutgoingInteractionNumber102)
       {
       }
 
       else
       {
-        v29 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
-        v30 = [v5 timeSinceOutgoingInteractionNumber10];
-        v31 = [v29 isEqual:v30];
+        timeSinceOutgoingInteractionNumber103 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
+        timeSinceOutgoingInteractionNumber104 = [v5 timeSinceOutgoingInteractionNumber10];
+        v31 = [timeSinceOutgoingInteractionNumber103 isEqual:timeSinceOutgoingInteractionNumber104];
 
         if (!v31)
         {
@@ -100,18 +100,18 @@
         }
       }
 
-      v32 = [(BMCandidate *)self timeSinceLastIncomingInteraction];
-      v33 = [v5 timeSinceLastIncomingInteraction];
-      v34 = v33;
-      if (v32 == v33)
+      timeSinceLastIncomingInteraction = [(BMCandidate *)self timeSinceLastIncomingInteraction];
+      timeSinceLastIncomingInteraction2 = [v5 timeSinceLastIncomingInteraction];
+      v34 = timeSinceLastIncomingInteraction2;
+      if (timeSinceLastIncomingInteraction == timeSinceLastIncomingInteraction2)
       {
       }
 
       else
       {
-        v35 = [(BMCandidate *)self timeSinceLastIncomingInteraction];
-        v36 = [v5 timeSinceLastIncomingInteraction];
-        v37 = [v35 isEqual:v36];
+        timeSinceLastIncomingInteraction3 = [(BMCandidate *)self timeSinceLastIncomingInteraction];
+        timeSinceLastIncomingInteraction4 = [v5 timeSinceLastIncomingInteraction];
+        v37 = [timeSinceLastIncomingInteraction3 isEqual:timeSinceLastIncomingInteraction4];
 
         if (!v37)
         {
@@ -182,18 +182,18 @@
         }
       }
 
-      v47 = [(BMCandidate *)self numberOfSharesWithConversation];
-      v48 = [v5 numberOfSharesWithConversation];
-      v49 = v48;
-      if (v47 == v48)
+      numberOfSharesWithConversation = [(BMCandidate *)self numberOfSharesWithConversation];
+      numberOfSharesWithConversation2 = [v5 numberOfSharesWithConversation];
+      v49 = numberOfSharesWithConversation2;
+      if (numberOfSharesWithConversation == numberOfSharesWithConversation2)
       {
       }
 
       else
       {
-        v50 = [(BMCandidate *)self numberOfSharesWithConversation];
-        v51 = [v5 numberOfSharesWithConversation];
-        v52 = [v50 isEqual:v51];
+        numberOfSharesWithConversation3 = [(BMCandidate *)self numberOfSharesWithConversation];
+        numberOfSharesWithConversation4 = [v5 numberOfSharesWithConversation];
+        v52 = [numberOfSharesWithConversation3 isEqual:numberOfSharesWithConversation4];
 
         if (!v52)
         {
@@ -201,18 +201,18 @@
         }
       }
 
-      v53 = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
-      v54 = [v5 numberOfSharesFromCurrentAppWithConversation];
-      v55 = v54;
-      if (v53 == v54)
+      numberOfSharesFromCurrentAppWithConversation = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
+      numberOfSharesFromCurrentAppWithConversation2 = [v5 numberOfSharesFromCurrentAppWithConversation];
+      v55 = numberOfSharesFromCurrentAppWithConversation2;
+      if (numberOfSharesFromCurrentAppWithConversation == numberOfSharesFromCurrentAppWithConversation2)
       {
       }
 
       else
       {
-        v56 = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
-        v57 = [v5 numberOfSharesFromCurrentAppWithConversation];
-        v58 = [v56 isEqual:v57];
+        numberOfSharesFromCurrentAppWithConversation3 = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
+        numberOfSharesFromCurrentAppWithConversation4 = [v5 numberOfSharesFromCurrentAppWithConversation];
+        v58 = [numberOfSharesFromCurrentAppWithConversation3 isEqual:numberOfSharesFromCurrentAppWithConversation4];
 
         if (!v58)
         {
@@ -220,18 +220,18 @@
         }
       }
 
-      v59 = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
-      v60 = [v5 numberOfSharesOfTopDomainURLWithConversation];
-      v61 = v60;
-      if (v59 == v60)
+      numberOfSharesOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
+      numberOfSharesOfTopDomainURLWithConversation2 = [v5 numberOfSharesOfTopDomainURLWithConversation];
+      v61 = numberOfSharesOfTopDomainURLWithConversation2;
+      if (numberOfSharesOfTopDomainURLWithConversation == numberOfSharesOfTopDomainURLWithConversation2)
       {
       }
 
       else
       {
-        v62 = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
-        v63 = [v5 numberOfSharesOfTopDomainURLWithConversation];
-        v64 = [v62 isEqual:v63];
+        numberOfSharesOfTopDomainURLWithConversation3 = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
+        numberOfSharesOfTopDomainURLWithConversation4 = [v5 numberOfSharesOfTopDomainURLWithConversation];
+        v64 = [numberOfSharesOfTopDomainURLWithConversation3 isEqual:numberOfSharesOfTopDomainURLWithConversation4];
 
         if (!v64)
         {
@@ -239,18 +239,18 @@
         }
       }
 
-      v65 = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
-      v66 = [v5 numberOfSharesOfDetectedPeopleWithConversation];
-      v67 = v66;
-      if (v65 == v66)
+      numberOfSharesOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
+      numberOfSharesOfDetectedPeopleWithConversation2 = [v5 numberOfSharesOfDetectedPeopleWithConversation];
+      v67 = numberOfSharesOfDetectedPeopleWithConversation2;
+      if (numberOfSharesOfDetectedPeopleWithConversation == numberOfSharesOfDetectedPeopleWithConversation2)
       {
       }
 
       else
       {
-        v68 = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
-        v69 = [v5 numberOfSharesOfDetectedPeopleWithConversation];
-        v70 = [v68 isEqual:v69];
+        numberOfSharesOfDetectedPeopleWithConversation3 = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
+        numberOfSharesOfDetectedPeopleWithConversation4 = [v5 numberOfSharesOfDetectedPeopleWithConversation];
+        v70 = [numberOfSharesOfDetectedPeopleWithConversation3 isEqual:numberOfSharesOfDetectedPeopleWithConversation4];
 
         if (!v70)
         {
@@ -258,18 +258,18 @@
         }
       }
 
-      v71 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
-      v72 = [v5 numberOfSharesOfPeopleInPhotoWithConversation];
-      v73 = v72;
-      if (v71 == v72)
+      numberOfSharesOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
+      numberOfSharesOfPeopleInPhotoWithConversation2 = [v5 numberOfSharesOfPeopleInPhotoWithConversation];
+      v73 = numberOfSharesOfPeopleInPhotoWithConversation2;
+      if (numberOfSharesOfPeopleInPhotoWithConversation == numberOfSharesOfPeopleInPhotoWithConversation2)
       {
       }
 
       else
       {
-        v74 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
-        v75 = [v5 numberOfSharesOfPeopleInPhotoWithConversation];
-        v76 = [v74 isEqual:v75];
+        numberOfSharesOfPeopleInPhotoWithConversation3 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
+        numberOfSharesOfPeopleInPhotoWithConversation4 = [v5 numberOfSharesOfPeopleInPhotoWithConversation];
+        v76 = [numberOfSharesOfPeopleInPhotoWithConversation3 isEqual:numberOfSharesOfPeopleInPhotoWithConversation4];
 
         if (!v76)
         {
@@ -277,18 +277,18 @@
         }
       }
 
-      v77 = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
-      v78 = [v5 numberOfOutgoingInteractionsWithConversation];
-      v79 = v78;
-      if (v77 == v78)
+      numberOfOutgoingInteractionsWithConversation = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
+      numberOfOutgoingInteractionsWithConversation2 = [v5 numberOfOutgoingInteractionsWithConversation];
+      v79 = numberOfOutgoingInteractionsWithConversation2;
+      if (numberOfOutgoingInteractionsWithConversation == numberOfOutgoingInteractionsWithConversation2)
       {
       }
 
       else
       {
-        v80 = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
-        v81 = [v5 numberOfOutgoingInteractionsWithConversation];
-        v82 = [v80 isEqual:v81];
+        numberOfOutgoingInteractionsWithConversation3 = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
+        numberOfOutgoingInteractionsWithConversation4 = [v5 numberOfOutgoingInteractionsWithConversation];
+        v82 = [numberOfOutgoingInteractionsWithConversation3 isEqual:numberOfOutgoingInteractionsWithConversation4];
 
         if (!v82)
         {
@@ -296,18 +296,18 @@
         }
       }
 
-      v83 = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
-      v84 = [v5 numberOfIncomingInteractionsWithConversation];
-      v85 = v84;
-      if (v83 == v84)
+      numberOfIncomingInteractionsWithConversation = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
+      numberOfIncomingInteractionsWithConversation2 = [v5 numberOfIncomingInteractionsWithConversation];
+      v85 = numberOfIncomingInteractionsWithConversation2;
+      if (numberOfIncomingInteractionsWithConversation == numberOfIncomingInteractionsWithConversation2)
       {
       }
 
       else
       {
-        v86 = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
-        v87 = [v5 numberOfIncomingInteractionsWithConversation];
-        v88 = [v86 isEqual:v87];
+        numberOfIncomingInteractionsWithConversation3 = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
+        numberOfIncomingInteractionsWithConversation4 = [v5 numberOfIncomingInteractionsWithConversation];
+        v88 = [numberOfIncomingInteractionsWithConversation3 isEqual:numberOfIncomingInteractionsWithConversation4];
 
         if (!v88)
         {
@@ -315,18 +315,18 @@
         }
       }
 
-      v89 = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
-      v90 = [v5 numberOfInteractionsDuringTimePeriodWithConversation];
-      v91 = v90;
-      if (v89 == v90)
+      numberOfInteractionsDuringTimePeriodWithConversation = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
+      numberOfInteractionsDuringTimePeriodWithConversation2 = [v5 numberOfInteractionsDuringTimePeriodWithConversation];
+      v91 = numberOfInteractionsDuringTimePeriodWithConversation2;
+      if (numberOfInteractionsDuringTimePeriodWithConversation == numberOfInteractionsDuringTimePeriodWithConversation2)
       {
       }
 
       else
       {
-        v92 = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
-        v93 = [v5 numberOfInteractionsDuringTimePeriodWithConversation];
-        v94 = [v92 isEqual:v93];
+        numberOfInteractionsDuringTimePeriodWithConversation3 = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
+        numberOfInteractionsDuringTimePeriodWithConversation4 = [v5 numberOfInteractionsDuringTimePeriodWithConversation];
+        v94 = [numberOfInteractionsDuringTimePeriodWithConversation3 isEqual:numberOfInteractionsDuringTimePeriodWithConversation4];
 
         if (!v94)
         {
@@ -334,18 +334,18 @@
         }
       }
 
-      v95 = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
-      v96 = [v5 numberOfEngagedSuggestionsWithConversation];
-      v97 = v96;
-      if (v95 == v96)
+      numberOfEngagedSuggestionsWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
+      numberOfEngagedSuggestionsWithConversation2 = [v5 numberOfEngagedSuggestionsWithConversation];
+      v97 = numberOfEngagedSuggestionsWithConversation2;
+      if (numberOfEngagedSuggestionsWithConversation == numberOfEngagedSuggestionsWithConversation2)
       {
       }
 
       else
       {
-        v98 = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
-        v99 = [v5 numberOfEngagedSuggestionsWithConversation];
-        v100 = [v98 isEqual:v99];
+        numberOfEngagedSuggestionsWithConversation3 = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
+        numberOfEngagedSuggestionsWithConversation4 = [v5 numberOfEngagedSuggestionsWithConversation];
+        v100 = [numberOfEngagedSuggestionsWithConversation3 isEqual:numberOfEngagedSuggestionsWithConversation4];
 
         if (!v100)
         {
@@ -353,18 +353,18 @@
         }
       }
 
-      v101 = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-      v102 = [v5 numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-      v103 = v102;
-      if (v101 == v102)
+      numberOfEngagedSuggestionsFromCurrentAppWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+      numberOfEngagedSuggestionsFromCurrentAppWithConversation2 = [v5 numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+      v103 = numberOfEngagedSuggestionsFromCurrentAppWithConversation2;
+      if (numberOfEngagedSuggestionsFromCurrentAppWithConversation == numberOfEngagedSuggestionsFromCurrentAppWithConversation2)
       {
       }
 
       else
       {
-        v104 = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-        v105 = [v5 numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-        v106 = [v104 isEqual:v105];
+        numberOfEngagedSuggestionsFromCurrentAppWithConversation3 = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+        numberOfEngagedSuggestionsFromCurrentAppWithConversation4 = [v5 numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+        v106 = [numberOfEngagedSuggestionsFromCurrentAppWithConversation3 isEqual:numberOfEngagedSuggestionsFromCurrentAppWithConversation4];
 
         if (!v106)
         {
@@ -372,18 +372,18 @@
         }
       }
 
-      v107 = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-      v108 = [v5 numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-      v109 = v108;
-      if (v107 == v108)
+      numberOfEngagedSuggestionsOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+      numberOfEngagedSuggestionsOfTopDomainURLWithConversation2 = [v5 numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+      v109 = numberOfEngagedSuggestionsOfTopDomainURLWithConversation2;
+      if (numberOfEngagedSuggestionsOfTopDomainURLWithConversation == numberOfEngagedSuggestionsOfTopDomainURLWithConversation2)
       {
       }
 
       else
       {
-        v110 = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-        v111 = [v5 numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-        v112 = [v110 isEqual:v111];
+        numberOfEngagedSuggestionsOfTopDomainURLWithConversation3 = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+        numberOfEngagedSuggestionsOfTopDomainURLWithConversation4 = [v5 numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+        v112 = [numberOfEngagedSuggestionsOfTopDomainURLWithConversation3 isEqual:numberOfEngagedSuggestionsOfTopDomainURLWithConversation4];
 
         if (!v112)
         {
@@ -391,18 +391,18 @@
         }
       }
 
-      v113 = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-      v114 = [v5 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-      v115 = v114;
-      if (v113 == v114)
+      numberOfEngagedSuggestionsOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+      numberOfEngagedSuggestionsOfDetectedPeopleWithConversation2 = [v5 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+      v115 = numberOfEngagedSuggestionsOfDetectedPeopleWithConversation2;
+      if (numberOfEngagedSuggestionsOfDetectedPeopleWithConversation == numberOfEngagedSuggestionsOfDetectedPeopleWithConversation2)
       {
       }
 
       else
       {
-        v116 = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-        v117 = [v5 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-        v118 = [v116 isEqual:v117];
+        numberOfEngagedSuggestionsOfDetectedPeopleWithConversation3 = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+        numberOfEngagedSuggestionsOfDetectedPeopleWithConversation4 = [v5 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+        v118 = [numberOfEngagedSuggestionsOfDetectedPeopleWithConversation3 isEqual:numberOfEngagedSuggestionsOfDetectedPeopleWithConversation4];
 
         if (!v118)
         {
@@ -410,18 +410,18 @@
         }
       }
 
-      v119 = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-      v120 = [v5 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-      v121 = v120;
-      if (v119 == v120)
+      numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+      numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation2 = [v5 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+      v121 = numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation2;
+      if (numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation == numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation2)
       {
       }
 
       else
       {
-        v122 = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-        v123 = [v5 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-        v124 = [v122 isEqual:v123];
+        numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation3 = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+        numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation4 = [v5 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+        v124 = [numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation3 isEqual:numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation4];
 
         if (!v124)
         {
@@ -429,18 +429,18 @@
         }
       }
 
-      v125 = [(BMCandidate *)self hasEverSharePlayedWithConversation];
-      v126 = [v5 hasEverSharePlayedWithConversation];
-      v127 = v126;
-      if (v125 == v126)
+      hasEverSharePlayedWithConversation = [(BMCandidate *)self hasEverSharePlayedWithConversation];
+      hasEverSharePlayedWithConversation2 = [v5 hasEverSharePlayedWithConversation];
+      v127 = hasEverSharePlayedWithConversation2;
+      if (hasEverSharePlayedWithConversation == hasEverSharePlayedWithConversation2)
       {
       }
 
       else
       {
-        v128 = [(BMCandidate *)self hasEverSharePlayedWithConversation];
-        v129 = [v5 hasEverSharePlayedWithConversation];
-        v130 = [v128 isEqual:v129];
+        hasEverSharePlayedWithConversation3 = [(BMCandidate *)self hasEverSharePlayedWithConversation];
+        hasEverSharePlayedWithConversation4 = [v5 hasEverSharePlayedWithConversation];
+        v130 = [hasEverSharePlayedWithConversation3 isEqual:hasEverSharePlayedWithConversation4];
 
         if (!v130)
         {
@@ -460,8 +460,8 @@
           goto LABEL_179;
         }
 
-        v131 = [(BMCandidate *)self suggestedRank];
-        if (v131 != [v5 suggestedRank])
+        suggestedRank = [(BMCandidate *)self suggestedRank];
+        if (suggestedRank != [v5 suggestedRank])
         {
           goto LABEL_179;
         }
@@ -500,8 +500,8 @@
           goto LABEL_179;
         }
 
-        v135 = [(BMCandidate *)self foundInChunk];
-        if (v135 != [v5 foundInChunk])
+        foundInChunk = [(BMCandidate *)self foundInChunk];
+        if (foundInChunk != [v5 foundInChunk])
         {
           goto LABEL_179;
         }
@@ -519,25 +519,25 @@
           goto LABEL_179;
         }
 
-        v136 = [(BMCandidate *)self updatedInChunk];
-        if (v136 != [v5 updatedInChunk])
+        updatedInChunk = [(BMCandidate *)self updatedInChunk];
+        if (updatedInChunk != [v5 updatedInChunk])
         {
           goto LABEL_179;
         }
       }
 
-      v137 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
-      v138 = [v5 numberOfSharesOfPeopleInPhotoIoUWithConversation];
-      v139 = v138;
-      if (v137 == v138)
+      numberOfSharesOfPeopleInPhotoIoUWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
+      numberOfSharesOfPeopleInPhotoIoUWithConversation2 = [v5 numberOfSharesOfPeopleInPhotoIoUWithConversation];
+      v139 = numberOfSharesOfPeopleInPhotoIoUWithConversation2;
+      if (numberOfSharesOfPeopleInPhotoIoUWithConversation == numberOfSharesOfPeopleInPhotoIoUWithConversation2)
       {
       }
 
       else
       {
-        v140 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
-        v141 = [v5 numberOfSharesOfPeopleInPhotoIoUWithConversation];
-        v142 = [v140 isEqual:v141];
+        numberOfSharesOfPeopleInPhotoIoUWithConversation3 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
+        numberOfSharesOfPeopleInPhotoIoUWithConversation4 = [v5 numberOfSharesOfPeopleInPhotoIoUWithConversation];
+        v142 = [numberOfSharesOfPeopleInPhotoIoUWithConversation3 isEqual:numberOfSharesOfPeopleInPhotoIoUWithConversation4];
 
         if (!v142)
         {
@@ -545,18 +545,18 @@
         }
       }
 
-      v143 = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
-      v144 = [v5 numberOfSharesOfPetsWithConversation];
-      v145 = v144;
-      if (v143 == v144)
+      numberOfSharesOfPetsWithConversation = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
+      numberOfSharesOfPetsWithConversation2 = [v5 numberOfSharesOfPetsWithConversation];
+      v145 = numberOfSharesOfPetsWithConversation2;
+      if (numberOfSharesOfPetsWithConversation == numberOfSharesOfPetsWithConversation2)
       {
       }
 
       else
       {
-        v146 = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
-        v147 = [v5 numberOfSharesOfPetsWithConversation];
-        v148 = [v146 isEqual:v147];
+        numberOfSharesOfPetsWithConversation3 = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
+        numberOfSharesOfPetsWithConversation4 = [v5 numberOfSharesOfPetsWithConversation];
+        v148 = [numberOfSharesOfPetsWithConversation3 isEqual:numberOfSharesOfPetsWithConversation4];
 
         if (!v148)
         {
@@ -564,18 +564,18 @@
         }
       }
 
-      v149 = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
-      v150 = [v5 numberOfSharesOfPetsInCurrentPhotoWithConversation];
-      v151 = v150;
-      if (v149 == v150)
+      numberOfSharesOfPetsInCurrentPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
+      numberOfSharesOfPetsInCurrentPhotoWithConversation2 = [v5 numberOfSharesOfPetsInCurrentPhotoWithConversation];
+      v151 = numberOfSharesOfPetsInCurrentPhotoWithConversation2;
+      if (numberOfSharesOfPetsInCurrentPhotoWithConversation == numberOfSharesOfPetsInCurrentPhotoWithConversation2)
       {
       }
 
       else
       {
-        v152 = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
-        v153 = [v5 numberOfSharesOfPetsInCurrentPhotoWithConversation];
-        v154 = [v152 isEqual:v153];
+        numberOfSharesOfPetsInCurrentPhotoWithConversation3 = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
+        numberOfSharesOfPetsInCurrentPhotoWithConversation4 = [v5 numberOfSharesOfPetsInCurrentPhotoWithConversation];
+        v154 = [numberOfSharesOfPetsInCurrentPhotoWithConversation3 isEqual:numberOfSharesOfPetsInCurrentPhotoWithConversation4];
 
         if (!v154)
         {
@@ -583,18 +583,18 @@
         }
       }
 
-      v155 = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
-      v156 = [v5 numberOfSharesOfScenesInPhotoWithConversation];
-      v157 = v156;
-      if (v155 == v156)
+      numberOfSharesOfScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
+      numberOfSharesOfScenesInPhotoWithConversation2 = [v5 numberOfSharesOfScenesInPhotoWithConversation];
+      v157 = numberOfSharesOfScenesInPhotoWithConversation2;
+      if (numberOfSharesOfScenesInPhotoWithConversation == numberOfSharesOfScenesInPhotoWithConversation2)
       {
       }
 
       else
       {
-        v158 = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
-        v159 = [v5 numberOfSharesOfScenesInPhotoWithConversation];
-        v160 = [v158 isEqual:v159];
+        numberOfSharesOfScenesInPhotoWithConversation3 = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
+        numberOfSharesOfScenesInPhotoWithConversation4 = [v5 numberOfSharesOfScenesInPhotoWithConversation];
+        v160 = [numberOfSharesOfScenesInPhotoWithConversation3 isEqual:numberOfSharesOfScenesInPhotoWithConversation4];
 
         if (!v160)
         {
@@ -602,18 +602,18 @@
         }
       }
 
-      v161 = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
-      v162 = [v5 numberOfSharesOfDetectedScenesInPhotoWithConversation];
-      v163 = v162;
-      if (v161 == v162)
+      numberOfSharesOfDetectedScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
+      numberOfSharesOfDetectedScenesInPhotoWithConversation2 = [v5 numberOfSharesOfDetectedScenesInPhotoWithConversation];
+      v163 = numberOfSharesOfDetectedScenesInPhotoWithConversation2;
+      if (numberOfSharesOfDetectedScenesInPhotoWithConversation == numberOfSharesOfDetectedScenesInPhotoWithConversation2)
       {
       }
 
       else
       {
-        v164 = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
-        v165 = [v5 numberOfSharesOfDetectedScenesInPhotoWithConversation];
-        v166 = [v164 isEqual:v165];
+        numberOfSharesOfDetectedScenesInPhotoWithConversation3 = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
+        numberOfSharesOfDetectedScenesInPhotoWithConversation4 = [v5 numberOfSharesOfDetectedScenesInPhotoWithConversation];
+        v166 = [numberOfSharesOfDetectedScenesInPhotoWithConversation3 isEqual:numberOfSharesOfDetectedScenesInPhotoWithConversation4];
 
         if (!v166)
         {
@@ -621,18 +621,18 @@
         }
       }
 
-      v167 = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
-      v168 = [v5 numberOfTopicsSharedWithConversation];
-      v169 = v168;
-      if (v167 == v168)
+      numberOfTopicsSharedWithConversation = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
+      numberOfTopicsSharedWithConversation2 = [v5 numberOfTopicsSharedWithConversation];
+      v169 = numberOfTopicsSharedWithConversation2;
+      if (numberOfTopicsSharedWithConversation == numberOfTopicsSharedWithConversation2)
       {
       }
 
       else
       {
-        v170 = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
-        v171 = [v5 numberOfTopicsSharedWithConversation];
-        v172 = [v170 isEqual:v171];
+        numberOfTopicsSharedWithConversation3 = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
+        numberOfTopicsSharedWithConversation4 = [v5 numberOfTopicsSharedWithConversation];
+        v172 = [numberOfTopicsSharedWithConversation3 isEqual:numberOfTopicsSharedWithConversation4];
 
         if (!v172)
         {
@@ -640,18 +640,18 @@
         }
       }
 
-      v173 = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
-      v174 = [v5 numberOfAppsSharedFromWithConversation];
-      v175 = v174;
-      if (v173 == v174)
+      numberOfAppsSharedFromWithConversation = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
+      numberOfAppsSharedFromWithConversation2 = [v5 numberOfAppsSharedFromWithConversation];
+      v175 = numberOfAppsSharedFromWithConversation2;
+      if (numberOfAppsSharedFromWithConversation == numberOfAppsSharedFromWithConversation2)
       {
       }
 
       else
       {
-        v176 = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
-        v177 = [v5 numberOfAppsSharedFromWithConversation];
-        v178 = [v176 isEqual:v177];
+        numberOfAppsSharedFromWithConversation3 = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
+        numberOfAppsSharedFromWithConversation4 = [v5 numberOfAppsSharedFromWithConversation];
+        v178 = [numberOfAppsSharedFromWithConversation3 isEqual:numberOfAppsSharedFromWithConversation4];
 
         if (!v178)
         {
@@ -659,18 +659,18 @@
         }
       }
 
-      v179 = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
-      v180 = [v5 timeSinceLastPhotoShareWithConversation];
-      v181 = v180;
-      if (v179 == v180)
+      timeSinceLastPhotoShareWithConversation = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
+      timeSinceLastPhotoShareWithConversation2 = [v5 timeSinceLastPhotoShareWithConversation];
+      v181 = timeSinceLastPhotoShareWithConversation2;
+      if (timeSinceLastPhotoShareWithConversation == timeSinceLastPhotoShareWithConversation2)
       {
       }
 
       else
       {
-        v182 = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
-        v183 = [v5 timeSinceLastPhotoShareWithConversation];
-        v184 = [v182 isEqual:v183];
+        timeSinceLastPhotoShareWithConversation3 = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
+        timeSinceLastPhotoShareWithConversation4 = [v5 timeSinceLastPhotoShareWithConversation];
+        v184 = [timeSinceLastPhotoShareWithConversation3 isEqual:timeSinceLastPhotoShareWithConversation4];
 
         if (!v184)
         {
@@ -678,18 +678,18 @@
         }
       }
 
-      v185 = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
-      v186 = [v5 hasSharedSensitiveContentWIthConversation];
-      v187 = v186;
-      if (v185 == v186)
+      hasSharedSensitiveContentWIthConversation = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
+      hasSharedSensitiveContentWIthConversation2 = [v5 hasSharedSensitiveContentWIthConversation];
+      v187 = hasSharedSensitiveContentWIthConversation2;
+      if (hasSharedSensitiveContentWIthConversation == hasSharedSensitiveContentWIthConversation2)
       {
       }
 
       else
       {
-        v188 = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
-        v189 = [v5 hasSharedSensitiveContentWIthConversation];
-        v190 = [v188 isEqual:v189];
+        hasSharedSensitiveContentWIthConversation3 = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
+        hasSharedSensitiveContentWIthConversation4 = [v5 hasSharedSensitiveContentWIthConversation];
+        v190 = [hasSharedSensitiveContentWIthConversation3 isEqual:hasSharedSensitiveContentWIthConversation4];
 
         if (!v190)
         {
@@ -709,25 +709,25 @@
           goto LABEL_179;
         }
 
-        v191 = [(BMCandidate *)self isInPhoneCallWithConversation];
-        if (v191 != [v5 isInPhoneCallWithConversation])
+        isInPhoneCallWithConversation = [(BMCandidate *)self isInPhoneCallWithConversation];
+        if (isInPhoneCallWithConversation != [v5 isInPhoneCallWithConversation])
         {
           goto LABEL_179;
         }
       }
 
-      v192 = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
-      v193 = [v5 numberOfSharesFromAlbumPhotoBelongsToWithConversation];
-      v194 = v193;
-      if (v192 == v193)
+      numberOfSharesFromAlbumPhotoBelongsToWithConversation = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+      numberOfSharesFromAlbumPhotoBelongsToWithConversation2 = [v5 numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+      v194 = numberOfSharesFromAlbumPhotoBelongsToWithConversation2;
+      if (numberOfSharesFromAlbumPhotoBelongsToWithConversation == numberOfSharesFromAlbumPhotoBelongsToWithConversation2)
       {
       }
 
       else
       {
-        v195 = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
-        v196 = [v5 numberOfSharesFromAlbumPhotoBelongsToWithConversation];
-        v197 = [v195 isEqual:v196];
+        numberOfSharesFromAlbumPhotoBelongsToWithConversation3 = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+        numberOfSharesFromAlbumPhotoBelongsToWithConversation4 = [v5 numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+        v197 = [numberOfSharesFromAlbumPhotoBelongsToWithConversation3 isEqual:numberOfSharesFromAlbumPhotoBelongsToWithConversation4];
 
         if (!v197)
         {
@@ -747,25 +747,25 @@
           goto LABEL_179;
         }
 
-        v198 = [(BMCandidate *)self isFirstPartyApp];
-        if (v198 != [v5 isFirstPartyApp])
+        isFirstPartyApp = [(BMCandidate *)self isFirstPartyApp];
+        if (isFirstPartyApp != [v5 isFirstPartyApp])
         {
           goto LABEL_179;
         }
       }
 
-      v199 = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
-      v200 = [v5 numberOfTimesSharedToTargetAppWithConversation];
-      v201 = v200;
-      if (v199 == v200)
+      numberOfTimesSharedToTargetAppWithConversation = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
+      numberOfTimesSharedToTargetAppWithConversation2 = [v5 numberOfTimesSharedToTargetAppWithConversation];
+      v201 = numberOfTimesSharedToTargetAppWithConversation2;
+      if (numberOfTimesSharedToTargetAppWithConversation == numberOfTimesSharedToTargetAppWithConversation2)
       {
       }
 
       else
       {
-        v202 = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
-        v203 = [v5 numberOfTimesSharedToTargetAppWithConversation];
-        v204 = [v202 isEqual:v203];
+        numberOfTimesSharedToTargetAppWithConversation3 = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
+        numberOfTimesSharedToTargetAppWithConversation4 = [v5 numberOfTimesSharedToTargetAppWithConversation];
+        v204 = [numberOfTimesSharedToTargetAppWithConversation3 isEqual:numberOfTimesSharedToTargetAppWithConversation4];
 
         if (!v204)
         {
@@ -773,18 +773,18 @@
         }
       }
 
-      v205 = [(BMCandidate *)self timeSinceLastShareWithConversation];
-      v206 = [v5 timeSinceLastShareWithConversation];
-      v207 = v206;
-      if (v205 == v206)
+      timeSinceLastShareWithConversation = [(BMCandidate *)self timeSinceLastShareWithConversation];
+      timeSinceLastShareWithConversation2 = [v5 timeSinceLastShareWithConversation];
+      v207 = timeSinceLastShareWithConversation2;
+      if (timeSinceLastShareWithConversation == timeSinceLastShareWithConversation2)
       {
       }
 
       else
       {
-        v208 = [(BMCandidate *)self timeSinceLastShareWithConversation];
-        v209 = [v5 timeSinceLastShareWithConversation];
-        v210 = [v208 isEqual:v209];
+        timeSinceLastShareWithConversation3 = [(BMCandidate *)self timeSinceLastShareWithConversation];
+        timeSinceLastShareWithConversation4 = [v5 timeSinceLastShareWithConversation];
+        v210 = [timeSinceLastShareWithConversation3 isEqual:timeSinceLastShareWithConversation4];
 
         if (!v210)
         {
@@ -792,18 +792,18 @@
         }
       }
 
-      v211 = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
-      v212 = [v5 timeSinceLastPhoneCallWithConversation];
-      v213 = v212;
-      if (v211 == v212)
+      timeSinceLastPhoneCallWithConversation = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
+      timeSinceLastPhoneCallWithConversation2 = [v5 timeSinceLastPhoneCallWithConversation];
+      v213 = timeSinceLastPhoneCallWithConversation2;
+      if (timeSinceLastPhoneCallWithConversation == timeSinceLastPhoneCallWithConversation2)
       {
       }
 
       else
       {
-        v214 = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
-        v215 = [v5 timeSinceLastPhoneCallWithConversation];
-        v216 = [v214 isEqual:v215];
+        timeSinceLastPhoneCallWithConversation3 = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
+        timeSinceLastPhoneCallWithConversation4 = [v5 timeSinceLastPhoneCallWithConversation];
+        v216 = [timeSinceLastPhoneCallWithConversation3 isEqual:timeSinceLastPhoneCallWithConversation4];
 
         if (!v216)
         {
@@ -811,18 +811,18 @@
         }
       }
 
-      v217 = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
-      v218 = [v5 numberOfDifferentFacesSharedWithConversation];
-      v219 = v218;
-      if (v217 == v218)
+      numberOfDifferentFacesSharedWithConversation = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
+      numberOfDifferentFacesSharedWithConversation2 = [v5 numberOfDifferentFacesSharedWithConversation];
+      v219 = numberOfDifferentFacesSharedWithConversation2;
+      if (numberOfDifferentFacesSharedWithConversation == numberOfDifferentFacesSharedWithConversation2)
       {
       }
 
       else
       {
-        v220 = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
-        v221 = [v5 numberOfDifferentFacesSharedWithConversation];
-        v222 = [v220 isEqual:v221];
+        numberOfDifferentFacesSharedWithConversation3 = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
+        numberOfDifferentFacesSharedWithConversation4 = [v5 numberOfDifferentFacesSharedWithConversation];
+        v222 = [numberOfDifferentFacesSharedWithConversation3 isEqual:numberOfDifferentFacesSharedWithConversation4];
 
         if (!v222)
         {
@@ -830,18 +830,18 @@
         }
       }
 
-      v224 = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
-      v225 = [v5 numberOfTotalSharesToTargetApp];
-      if (v224 == v225)
+      numberOfTotalSharesToTargetApp = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
+      numberOfTotalSharesToTargetApp2 = [v5 numberOfTotalSharesToTargetApp];
+      if (numberOfTotalSharesToTargetApp == numberOfTotalSharesToTargetApp2)
       {
         v12 = 1;
       }
 
       else
       {
-        v226 = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
-        v227 = [v5 numberOfTotalSharesToTargetApp];
-        v12 = [v226 isEqual:v227];
+        numberOfTotalSharesToTargetApp3 = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
+        numberOfTotalSharesToTargetApp4 = [v5 numberOfTotalSharesToTargetApp];
+        v12 = [numberOfTotalSharesToTargetApp3 isEqual:numberOfTotalSharesToTargetApp4];
       }
 
       goto LABEL_180;
@@ -863,17 +863,17 @@ LABEL_181:
 - (id)jsonDictionary
 {
   v185[44] = *MEMORY[0x1E69E9840];
-  v3 = [(BMCandidate *)self privatizedIdentifier];
+  privatizedIdentifier = [(BMCandidate *)self privatizedIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCandidate feedbackDeprecated](self, "feedbackDeprecated")}];
-  v5 = [(BMCandidate *)self privatizedTransportBundleId];
-  v6 = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
-  v7 = [v6 jsonDictionary];
+  privatizedTransportBundleId = [(BMCandidate *)self privatizedTransportBundleId];
+  timeSinceLastOutgoingInteraction = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
+  jsonDictionary = [timeSinceLastOutgoingInteraction jsonDictionary];
 
-  v8 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
-  v9 = [v8 jsonDictionary];
+  timeSinceOutgoingInteractionNumber10 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
+  jsonDictionary2 = [timeSinceOutgoingInteractionNumber10 jsonDictionary];
 
-  v10 = [(BMCandidate *)self timeSinceLastIncomingInteraction];
-  v147 = [v10 jsonDictionary];
+  timeSinceLastIncomingInteraction = [(BMCandidate *)self timeSinceLastIncomingInteraction];
+  jsonDictionary3 = [timeSinceLastIncomingInteraction jsonDictionary];
 
   if (![(BMCandidate *)self hasDeprecatedField1]|| ([(BMCandidate *)self deprecatedField1], fabs(v11) == INFINITY))
   {
@@ -914,47 +914,47 @@ LABEL_181:
     v182 = [v17 numberWithDouble:?];
   }
 
-  v18 = [(BMCandidate *)self numberOfSharesWithConversation];
-  v181 = [v18 jsonDictionary];
+  numberOfSharesWithConversation = [(BMCandidate *)self numberOfSharesWithConversation];
+  jsonDictionary4 = [numberOfSharesWithConversation jsonDictionary];
 
-  v19 = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
-  v180 = [v19 jsonDictionary];
+  numberOfSharesFromCurrentAppWithConversation = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
+  jsonDictionary5 = [numberOfSharesFromCurrentAppWithConversation jsonDictionary];
 
-  v20 = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
-  v179 = [v20 jsonDictionary];
+  numberOfSharesOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
+  jsonDictionary6 = [numberOfSharesOfTopDomainURLWithConversation jsonDictionary];
 
-  v21 = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
-  v178 = [v21 jsonDictionary];
+  numberOfSharesOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
+  jsonDictionary7 = [numberOfSharesOfDetectedPeopleWithConversation jsonDictionary];
 
-  v22 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
-  v177 = [v22 jsonDictionary];
+  numberOfSharesOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
+  jsonDictionary8 = [numberOfSharesOfPeopleInPhotoWithConversation jsonDictionary];
 
-  v23 = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
-  v176 = [v23 jsonDictionary];
+  numberOfOutgoingInteractionsWithConversation = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
+  jsonDictionary9 = [numberOfOutgoingInteractionsWithConversation jsonDictionary];
 
-  v24 = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
-  v175 = [v24 jsonDictionary];
+  numberOfIncomingInteractionsWithConversation = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
+  jsonDictionary10 = [numberOfIncomingInteractionsWithConversation jsonDictionary];
 
-  v25 = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
-  v174 = [v25 jsonDictionary];
+  numberOfInteractionsDuringTimePeriodWithConversation = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
+  jsonDictionary11 = [numberOfInteractionsDuringTimePeriodWithConversation jsonDictionary];
 
-  v26 = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
-  v173 = [v26 jsonDictionary];
+  numberOfEngagedSuggestionsWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
+  jsonDictionary12 = [numberOfEngagedSuggestionsWithConversation jsonDictionary];
 
-  v27 = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-  v172 = [v27 jsonDictionary];
+  numberOfEngagedSuggestionsFromCurrentAppWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+  jsonDictionary13 = [numberOfEngagedSuggestionsFromCurrentAppWithConversation jsonDictionary];
 
-  v28 = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-  v171 = [v28 jsonDictionary];
+  numberOfEngagedSuggestionsOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+  jsonDictionary14 = [numberOfEngagedSuggestionsOfTopDomainURLWithConversation jsonDictionary];
 
-  v29 = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-  v170 = [v29 jsonDictionary];
+  numberOfEngagedSuggestionsOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+  jsonDictionary15 = [numberOfEngagedSuggestionsOfDetectedPeopleWithConversation jsonDictionary];
 
-  v30 = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-  v169 = [v30 jsonDictionary];
+  numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+  jsonDictionary16 = [numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation jsonDictionary];
 
-  v31 = [(BMCandidate *)self hasEverSharePlayedWithConversation];
-  v168 = [v31 jsonDictionary];
+  hasEverSharePlayedWithConversation = [(BMCandidate *)self hasEverSharePlayedWithConversation];
+  jsonDictionary17 = [hasEverSharePlayedWithConversation jsonDictionary];
 
   if ([(BMCandidate *)self hasSuggestedRank])
   {
@@ -999,32 +999,32 @@ LABEL_181:
     v164 = 0;
   }
 
-  v34 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
-  v163 = [v34 jsonDictionary];
+  numberOfSharesOfPeopleInPhotoIoUWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
+  jsonDictionary18 = [numberOfSharesOfPeopleInPhotoIoUWithConversation jsonDictionary];
 
-  v35 = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
-  v162 = [v35 jsonDictionary];
+  numberOfSharesOfPetsWithConversation = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
+  jsonDictionary19 = [numberOfSharesOfPetsWithConversation jsonDictionary];
 
-  v36 = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
-  v161 = [v36 jsonDictionary];
+  numberOfSharesOfPetsInCurrentPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
+  jsonDictionary20 = [numberOfSharesOfPetsInCurrentPhotoWithConversation jsonDictionary];
 
-  v37 = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
-  v160 = [v37 jsonDictionary];
+  numberOfSharesOfScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
+  jsonDictionary21 = [numberOfSharesOfScenesInPhotoWithConversation jsonDictionary];
 
-  v38 = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
-  v159 = [v38 jsonDictionary];
+  numberOfSharesOfDetectedScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
+  jsonDictionary22 = [numberOfSharesOfDetectedScenesInPhotoWithConversation jsonDictionary];
 
-  v39 = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
-  v158 = [v39 jsonDictionary];
+  numberOfTopicsSharedWithConversation = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
+  jsonDictionary23 = [numberOfTopicsSharedWithConversation jsonDictionary];
 
-  v40 = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
-  v157 = [v40 jsonDictionary];
+  numberOfAppsSharedFromWithConversation = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
+  jsonDictionary24 = [numberOfAppsSharedFromWithConversation jsonDictionary];
 
-  v41 = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
-  v156 = [v41 jsonDictionary];
+  timeSinceLastPhotoShareWithConversation = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
+  jsonDictionary25 = [timeSinceLastPhotoShareWithConversation jsonDictionary];
 
-  v42 = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
-  v155 = [v42 jsonDictionary];
+  hasSharedSensitiveContentWIthConversation = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
+  jsonDictionary26 = [hasSharedSensitiveContentWIthConversation jsonDictionary];
 
   if ([(BMCandidate *)self hasIsInPhoneCallWithConversation])
   {
@@ -1036,8 +1036,8 @@ LABEL_181:
     v154 = 0;
   }
 
-  v43 = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
-  v153 = [v43 jsonDictionary];
+  numberOfSharesFromAlbumPhotoBelongsToWithConversation = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+  jsonDictionary27 = [numberOfSharesFromAlbumPhotoBelongsToWithConversation jsonDictionary];
 
   if ([(BMCandidate *)self hasIsFirstPartyApp])
   {
@@ -1049,446 +1049,446 @@ LABEL_181:
     v152 = 0;
   }
 
-  v44 = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
-  v151 = [v44 jsonDictionary];
+  numberOfTimesSharedToTargetAppWithConversation = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
+  jsonDictionary28 = [numberOfTimesSharedToTargetAppWithConversation jsonDictionary];
 
-  v45 = [(BMCandidate *)self timeSinceLastShareWithConversation];
-  v150 = [v45 jsonDictionary];
+  timeSinceLastShareWithConversation = [(BMCandidate *)self timeSinceLastShareWithConversation];
+  jsonDictionary29 = [timeSinceLastShareWithConversation jsonDictionary];
 
-  v46 = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
-  v149 = [v46 jsonDictionary];
+  timeSinceLastPhoneCallWithConversation = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
+  jsonDictionary30 = [timeSinceLastPhoneCallWithConversation jsonDictionary];
 
-  v47 = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
-  v148 = [v47 jsonDictionary];
+  numberOfDifferentFacesSharedWithConversation = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
+  jsonDictionary31 = [numberOfDifferentFacesSharedWithConversation jsonDictionary];
 
-  v48 = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
-  v49 = [v48 jsonDictionary];
+  numberOfTotalSharesToTargetApp = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
+  jsonDictionary32 = [numberOfTotalSharesToTargetApp jsonDictionary];
 
   v184[0] = @"privatizedIdentifier";
-  v50 = v3;
-  if (!v3)
+  null = privatizedIdentifier;
+  if (!privatizedIdentifier)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v140 = v50;
-  v185[0] = v50;
+  v140 = null;
+  v185[0] = null;
   v184[1] = @"feedbackDeprecated";
-  v51 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v139 = v51;
-  v185[1] = v51;
+  v139 = null2;
+  v185[1] = null2;
   v184[2] = @"privatizedTransportBundleId";
-  v52 = v5;
-  if (!v5)
+  null3 = privatizedTransportBundleId;
+  if (!privatizedTransportBundleId)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v138 = v52;
-  v185[2] = v52;
+  v138 = null3;
+  v185[2] = null3;
   v184[3] = @"timeSinceLastOutgoingInteraction";
-  v53 = v7;
-  if (!v7)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v137 = v53;
-  v185[3] = v53;
+  v137 = null4;
+  v185[3] = null4;
   v184[4] = @"timeSinceOutgoingInteractionNumber10";
-  v54 = v9;
-  v55 = v9;
-  if (!v9)
+  null5 = jsonDictionary2;
+  v55 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v7;
-  v136 = v54;
-  v185[4] = v54;
+  v56 = jsonDictionary;
+  v136 = null5;
+  v185[4] = null5;
   v184[5] = @"timeSinceLastIncomingInteraction";
-  v57 = v147;
-  if (!v147)
+  null6 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v57 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v3;
-  v135 = v57;
-  v185[5] = v57;
+  v58 = privatizedIdentifier;
+  v135 = null6;
+  v185[5] = null6;
   v184[6] = @"deprecatedField1";
-  v59 = v13;
+  null7 = v13;
   if (!v13)
   {
-    v59 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v60 = v4;
-  v134 = v59;
-  v185[6] = v59;
+  v134 = null7;
+  v185[6] = null7;
   v184[7] = @"deprecatedField2";
-  v61 = v183;
+  null8 = v183;
   if (!v183)
   {
-    v61 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185[7] = v61;
+  v185[7] = null8;
   v184[8] = @"deprecatedField3";
-  v62 = v182;
+  null9 = v182;
   if (!v182)
   {
-    v62 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185[8] = v62;
+  v185[8] = null9;
   v184[9] = @"numberOfSharesWithConversation";
-  v63 = v181;
-  if (!v181)
+  null10 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v63 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v142 = v63;
-  v185[9] = v63;
+  v142 = null10;
+  v185[9] = null10;
   v184[10] = @"numberOfSharesFromCurrentAppWithConversation";
-  v64 = v180;
-  if (!v180)
+  null11 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v64 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v132 = v64;
-  v185[10] = v64;
+  v132 = null11;
+  v185[10] = null11;
   v184[11] = @"numberOfSharesOfTopDomainURLWithConversation";
-  v65 = v179;
-  if (!v179)
+  null12 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v65 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66 = v65;
-  v185[11] = v65;
+  v66 = null12;
+  v185[11] = null12;
   v184[12] = @"numberOfSharesOfDetectedPeopleWithConversation";
-  v67 = v178;
-  if (!v178)
+  null13 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v67 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v131 = v67;
-  v185[12] = v67;
+  v131 = null13;
+  v185[12] = null13;
   v184[13] = @"numberOfSharesOfPeopleInPhotoWithConversation";
-  v68 = v177;
-  if (!v177)
+  null14 = jsonDictionary8;
+  if (!jsonDictionary8)
   {
-    v68 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v130 = v68;
-  v185[13] = v68;
+  v130 = null14;
+  v185[13] = null14;
   v184[14] = @"numberOfOutgoingInteractionsWithConversation";
-  v69 = v176;
-  if (!v176)
+  null15 = jsonDictionary9;
+  if (!jsonDictionary9)
   {
-    v69 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v129 = v69;
-  v185[14] = v69;
+  v129 = null15;
+  v185[14] = null15;
   v184[15] = @"numberOfIncomingInteractionsWithConversation";
-  v70 = v175;
-  if (!v175)
+  null16 = jsonDictionary10;
+  if (!jsonDictionary10)
   {
-    v70 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v128 = v70;
-  v185[15] = v70;
+  v128 = null16;
+  v185[15] = null16;
   v184[16] = @"numberOfInteractionsDuringTimePeriodWithConversation";
-  v71 = v174;
-  if (!v174)
+  null17 = jsonDictionary11;
+  if (!jsonDictionary11)
   {
-    v71 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v127 = v71;
-  v185[16] = v71;
+  v127 = null17;
+  v185[16] = null17;
   v184[17] = @"numberOfEngagedSuggestionsWithConversation";
-  v72 = v173;
-  if (!v173)
+  null18 = jsonDictionary12;
+  if (!jsonDictionary12)
   {
-    v72 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v126 = v72;
-  v185[17] = v72;
+  v126 = null18;
+  v185[17] = null18;
   v184[18] = @"numberOfEngagedSuggestionsFromCurrentAppWithConversation";
-  v73 = v172;
-  if (!v172)
+  null19 = jsonDictionary13;
+  if (!jsonDictionary13)
   {
-    v73 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v125 = v73;
-  v185[18] = v73;
+  v125 = null19;
+  v185[18] = null19;
   v184[19] = @"numberOfEngagedSuggestionsOfTopDomainURLWithConversation";
-  v74 = v171;
-  if (!v171)
+  null20 = jsonDictionary14;
+  if (!jsonDictionary14)
   {
-    v74 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v124 = v74;
-  v185[19] = v74;
+  v124 = null20;
+  v185[19] = null20;
   v184[20] = @"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation";
-  v75 = v170;
-  if (!v170)
+  null21 = jsonDictionary15;
+  if (!jsonDictionary15)
   {
-    v75 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v123 = v75;
-  v185[20] = v75;
+  v123 = null21;
+  v185[20] = null21;
   v184[21] = @"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation";
-  v76 = v169;
-  if (!v169)
+  null22 = jsonDictionary16;
+  if (!jsonDictionary16)
   {
-    v76 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v122 = v76;
-  v185[21] = v76;
+  v122 = null22;
+  v185[21] = null22;
   v184[22] = @"hasEverSharePlayedWithConversation";
-  v77 = v168;
-  if (!v168)
+  null23 = jsonDictionary17;
+  if (!jsonDictionary17)
   {
-    v77 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v121 = v77;
-  v185[22] = v77;
+  v121 = null23;
+  v185[22] = null23;
   v184[23] = @"suggestedRank";
-  v78 = v167;
+  null24 = v167;
   if (!v167)
   {
-    v78 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v120 = v78;
-  v185[23] = v78;
+  v120 = null24;
+  v185[23] = null24;
   v184[24] = @"coreMLModelScore";
-  v79 = v166;
+  null25 = v166;
   if (!v166)
   {
-    v79 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v119 = v79;
-  v185[24] = v79;
+  v119 = null25;
+  v185[24] = null25;
   v184[25] = @"foundInChunk";
-  v80 = v165;
+  null26 = v165;
   if (!v165)
   {
-    v80 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v118 = v80;
-  v185[25] = v80;
+  v118 = null26;
+  v185[25] = null26;
   v184[26] = @"updatedInChunk";
-  v81 = v164;
+  null27 = v164;
   if (!v164)
   {
-    v81 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v117 = v81;
-  v185[26] = v81;
+  v117 = null27;
+  v185[26] = null27;
   v184[27] = @"numberOfSharesOfPeopleInPhotoIoUWithConversation";
-  v82 = v163;
-  if (!v163)
+  null28 = jsonDictionary18;
+  if (!jsonDictionary18)
   {
-    v82 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v116 = v82;
-  v185[27] = v82;
+  v116 = null28;
+  v185[27] = null28;
   v184[28] = @"numberOfSharesOfPetsWithConversation";
-  v83 = v162;
-  if (!v162)
+  null29 = jsonDictionary19;
+  if (!jsonDictionary19)
   {
-    v83 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v115 = v83;
-  v185[28] = v83;
+  v115 = null29;
+  v185[28] = null29;
   v184[29] = @"numberOfSharesOfPetsInCurrentPhotoWithConversation";
-  v84 = v161;
-  if (!v161)
+  null30 = jsonDictionary20;
+  if (!jsonDictionary20)
   {
-    v84 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v114 = v84;
-  v185[29] = v84;
+  v114 = null30;
+  v185[29] = null30;
   v184[30] = @"numberOfSharesOfScenesInPhotoWithConversation";
-  v85 = v160;
-  if (!v160)
+  null31 = jsonDictionary21;
+  if (!jsonDictionary21)
   {
-    v85 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v113 = v85;
-  v185[30] = v85;
+  v113 = null31;
+  v185[30] = null31;
   v184[31] = @"numberOfSharesOfDetectedScenesInPhotoWithConversation";
-  v86 = v159;
-  if (!v159)
+  null32 = jsonDictionary22;
+  if (!jsonDictionary22)
   {
-    v86 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v112 = v86;
-  v185[31] = v86;
+  v112 = null32;
+  v185[31] = null32;
   v184[32] = @"numberOfTopicsSharedWithConversation";
-  v87 = v158;
-  if (!v158)
+  null33 = jsonDictionary23;
+  if (!jsonDictionary23)
   {
-    v87 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v111 = v87;
-  v185[32] = v87;
+  v111 = null33;
+  v185[32] = null33;
   v184[33] = @"numberOfAppsSharedFromWithConversation";
-  v88 = v157;
-  if (!v157)
+  null34 = jsonDictionary24;
+  if (!jsonDictionary24)
   {
-    v88 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v110 = v88;
-  v185[33] = v88;
+  v110 = null34;
+  v185[33] = null34;
   v184[34] = @"timeSinceLastPhotoShareWithConversation";
-  v89 = v156;
-  if (!v156)
+  null35 = jsonDictionary25;
+  if (!jsonDictionary25)
   {
-    v89 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v109 = v89;
-  v185[34] = v89;
+  v109 = null35;
+  v185[34] = null35;
   v184[35] = @"hasSharedSensitiveContentWIthConversation";
-  v90 = v155;
-  if (!v155)
+  null36 = jsonDictionary26;
+  if (!jsonDictionary26)
   {
-    v90 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v145 = v5;
-  v108 = v90;
-  v185[35] = v90;
+  v145 = privatizedTransportBundleId;
+  v108 = null36;
+  v185[35] = null36;
   v184[36] = @"isInPhoneCallWithConversation";
-  v91 = v154;
+  null37 = v154;
   if (!v154)
   {
-    v91 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v107 = v91;
-  v185[36] = v91;
+  v107 = null37;
+  v185[36] = null37;
   v184[37] = @"numberOfSharesFromAlbumPhotoBelongsToWithConversation";
-  v92 = v153;
-  if (!v153)
+  null38 = jsonDictionary27;
+  if (!jsonDictionary27)
   {
-    v92 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v133 = v61;
-  v106 = v92;
-  v185[37] = v92;
+  v133 = null8;
+  v106 = null38;
+  v185[37] = null38;
   v184[38] = @"isFirstPartyApp";
-  v93 = v152;
+  null39 = v152;
   if (!v152)
   {
-    v93 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v146 = v49;
-  v104 = v93;
-  v185[38] = v93;
+  v146 = jsonDictionary32;
+  v104 = null39;
+  v185[38] = null39;
   v184[39] = @"numberOfTimesSharedToTargetAppWithConversation";
-  v94 = v151;
-  if (!v151)
+  null40 = jsonDictionary28;
+  if (!jsonDictionary28)
   {
-    v94 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
   v143 = v55;
   v144 = v13;
-  v185[39] = v94;
+  v185[39] = null40;
   v184[40] = @"timeSinceLastShareWithConversation";
-  v95 = v150;
-  if (!v150)
+  null41 = jsonDictionary29;
+  if (!jsonDictionary29)
   {
-    v95 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
   v96 = v58;
-  v185[40] = v95;
+  v185[40] = null41;
   v184[41] = @"timeSinceLastPhoneCallWithConversation";
-  v97 = v149;
-  if (!v149)
+  null42 = jsonDictionary30;
+  if (!jsonDictionary30)
   {
-    v97 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
   v98 = v60;
-  v185[41] = v97;
+  v185[41] = null42;
   v184[42] = @"numberOfDifferentFacesSharedWithConversation";
-  v99 = v148;
-  if (!v148)
+  null43 = jsonDictionary31;
+  if (!jsonDictionary31)
   {
-    v99 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185[42] = v99;
+  v185[42] = null43;
   v184[43] = @"numberOfTotalSharesToTargetApp";
-  v100 = v146;
+  null44 = v146;
   if (!v146)
   {
-    v100 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v185[43] = v100;
+  v185[43] = null44;
   v141 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v185 forKeys:v184 count:{44, v104}];
   if (!v146)
   {
   }
 
   v101 = v66;
-  if (!v148)
+  if (!jsonDictionary31)
   {
 
     v101 = v66;
   }
 
-  if (!v149)
+  if (!jsonDictionary30)
   {
 
     v101 = v66;
   }
 
-  if (!v150)
+  if (!jsonDictionary29)
   {
 
     v101 = v66;
   }
 
-  if (!v151)
+  if (!jsonDictionary28)
   {
 
     v101 = v66;
@@ -1500,7 +1500,7 @@ LABEL_181:
     v101 = v66;
   }
 
-  if (!v153)
+  if (!jsonDictionary27)
   {
 
     v101 = v66;
@@ -1512,55 +1512,55 @@ LABEL_181:
     v101 = v66;
   }
 
-  if (!v155)
+  if (!jsonDictionary26)
   {
 
     v101 = v66;
   }
 
-  if (!v156)
+  if (!jsonDictionary25)
   {
 
     v101 = v66;
   }
 
-  if (!v157)
+  if (!jsonDictionary24)
   {
 
     v101 = v66;
   }
 
-  if (!v158)
+  if (!jsonDictionary23)
   {
 
     v101 = v66;
   }
 
-  if (!v159)
+  if (!jsonDictionary22)
   {
 
     v101 = v66;
   }
 
-  if (!v160)
+  if (!jsonDictionary21)
   {
 
     v101 = v66;
   }
 
-  if (!v161)
+  if (!jsonDictionary20)
   {
 
     v101 = v66;
   }
 
-  if (!v162)
+  if (!jsonDictionary19)
   {
 
     v101 = v66;
   }
 
-  if (!v163)
+  if (!jsonDictionary18)
   {
 
     v101 = v66;
@@ -1590,81 +1590,81 @@ LABEL_181:
     v101 = v66;
   }
 
-  if (!v168)
+  if (!jsonDictionary17)
   {
 
     v101 = v66;
   }
 
-  if (!v169)
+  if (!jsonDictionary16)
   {
 
     v101 = v66;
   }
 
-  if (!v170)
+  if (!jsonDictionary15)
   {
 
     v101 = v66;
   }
 
-  if (!v171)
+  if (!jsonDictionary14)
   {
 
     v101 = v66;
   }
 
-  if (!v172)
+  if (!jsonDictionary13)
   {
 
     v101 = v66;
   }
 
-  if (!v173)
+  if (!jsonDictionary12)
   {
 
     v101 = v66;
   }
 
-  if (!v174)
+  if (!jsonDictionary11)
   {
 
     v101 = v66;
   }
 
-  if (!v175)
+  if (!jsonDictionary10)
   {
 
     v101 = v66;
   }
 
-  if (!v176)
+  if (!jsonDictionary9)
   {
 
     v101 = v66;
   }
 
-  if (!v177)
+  if (!jsonDictionary8)
   {
 
     v101 = v66;
   }
 
-  if (!v178)
+  if (!jsonDictionary7)
   {
 
     v101 = v66;
   }
 
-  if (!v179)
+  if (!jsonDictionary6)
   {
   }
 
-  if (!v180)
+  if (!jsonDictionary5)
   {
   }
 
-  if (!v181)
+  if (!jsonDictionary4)
   {
   }
 
@@ -1686,7 +1686,7 @@ LABEL_181:
     if (v144)
     {
 LABEL_194:
-      if (v147)
+      if (jsonDictionary3)
       {
         goto LABEL_195;
       }
@@ -1695,7 +1695,7 @@ LABEL_194:
     }
   }
 
-  if (v147)
+  if (jsonDictionary3)
   {
 LABEL_195:
     if (v143)
@@ -1773,11 +1773,11 @@ LABEL_200:
   return v141;
 }
 
-- (BMCandidate)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMCandidate)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v645[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"privatizedIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"privatizedIdentifier"];
   v8 = 0x1E695D000uLL;
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1791,7 +1791,7 @@ LABEL_200:
     v525 = v7;
     v8 = 0x1E695D000;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"feedbackDeprecated"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"feedbackDeprecated"];
     if (!v9 || (v10 = *(v8 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v11 = 0;
@@ -1806,7 +1806,7 @@ LABEL_15:
 
       v8 = 0x1E695D000uLL;
 LABEL_16:
-      v19 = [v6 objectForKeyedSubscript:@"privatizedTransportBundleId"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"privatizedTransportBundleId"];
       v522 = v19;
       v524 = v9;
       if (!v19 || (v20 = *(v8 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1821,20 +1821,20 @@ LABEL_16:
         v521 = v19;
         v8 = 0x1E695D000;
 LABEL_19:
-        v21 = [v6 objectForKeyedSubscript:@"timeSinceLastOutgoingInteraction"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastOutgoingInteraction"];
         if (!v21 || (v22 = *(v8 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v519 = 0;
 LABEL_22:
-          v23 = [v6 objectForKeyedSubscript:@"timeSinceOutgoingInteractionNumber10"];
-          v518 = self;
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceOutgoingInteractionNumber10"];
+          selfCopy = self;
           if (v23 && (v24 = *(v8 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             v475 = v11;
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v16 = v525;
                 v46 = v521;
@@ -1848,12 +1848,12 @@ LABEL_552:
               v500 = objc_alloc(MEMORY[0x1E696ABC0]);
               v498 = *MEMORY[0x1E698F240];
               v636 = *MEMORY[0x1E696A578];
-              v57 = a4;
+              errorCopy = error;
               v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"timeSinceOutgoingInteractionNumber10"];
               v637 = v58;
               v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v637 forKeys:&v636 count:1];
-              a4 = 0;
-              *v57 = [v500 initWithDomain:v498 code:2 userInfo:v59];
+              error = 0;
+              *errorCopy = [v500 initWithDomain:v498 code:2 userInfo:v59];
               v60 = v58;
               v26 = v59;
               v16 = v525;
@@ -1870,13 +1870,13 @@ LABEL_552:
             if (v45)
             {
               v46 = v521;
-              if (a4)
+              if (error)
               {
                 v45 = v45;
-                *a4 = v45;
+                *error = v45;
               }
 
-              a4 = 0;
+              error = 0;
               v16 = v525;
               v25 = v44;
               v11 = v475;
@@ -1893,7 +1893,7 @@ LABEL_552:
             v25 = 0;
           }
 
-          v26 = [v6 objectForKeyedSubscript:@"timeSinceLastIncomingInteraction"];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastIncomingInteraction"];
           v517 = v7;
           if (!v26 || (v27 = *(v8 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -1914,10 +1914,10 @@ LABEL_552:
               v497 = v51;
               v46 = v521;
               v16 = v525;
-              if (a4)
+              if (error)
               {
                 v53 = v53;
-                *a4 = v53;
+                *error = v53;
               }
 
               p_isa = 0;
@@ -1927,14 +1927,14 @@ LABEL_552:
             }
 
 LABEL_28:
-            v29 = [v6 objectForKeyedSubscript:@"deprecatedField1"];
+            v29 = [dictionaryCopy objectForKeyedSubscript:@"deprecatedField1"];
             v471 = v29;
             if (v29 && (v30 = v29, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v497 = 0;
                   p_isa = 0;
@@ -1955,7 +1955,7 @@ LABEL_549:
                 v129 = v28;
                 v130 = *MEMORY[0x1E698F240];
                 v632 = *MEMORY[0x1E696A578];
-                v131 = a4;
+                errorCopy2 = error;
                 v125 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"deprecatedField1"];
                 v633 = v125;
                 v132 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v633 forKeys:&v632 count:1];
@@ -1968,7 +1968,7 @@ LABEL_549:
                 v470 = v132;
                 v497 = 0;
                 p_isa = 0;
-                *v131 = [v503 initWithDomain:v133 code:2 userInfo:?];
+                *errorCopy2 = [v503 initWithDomain:v133 code:2 userInfo:?];
                 v46 = v521;
                 goto LABEL_197;
               }
@@ -1981,7 +1981,7 @@ LABEL_549:
               v497 = 0;
             }
 
-            v31 = [v6 objectForKeyedSubscript:@"deprecatedField2"];
+            v31 = [dictionaryCopy objectForKeyedSubscript:@"deprecatedField2"];
             v468 = v25;
             v470 = v31;
             if (!v31 || (v32 = v31, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2001,15 +2001,15 @@ LABEL_549:
               v35 = v21;
               v466 = v32;
 LABEL_34:
-              v36 = [v6 objectForKeyedSubscript:@"deprecatedField3"];
+              v36 = [dictionaryCopy objectForKeyedSubscript:@"deprecatedField3"];
               v467 = v28;
               v469 = v36;
-              v472 = a4;
+              errorCopy3 = error;
               if (!v36 || (v37 = v36, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v461 = 0;
 LABEL_37:
-                v38 = [v6 objectForKeyedSubscript:@"numberOfSharesWithConversation"];
+                v38 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesWithConversation"];
                 v21 = v35;
                 v474 = v11;
                 v460 = v35;
@@ -2035,7 +2035,7 @@ LABEL_71:
                 }
 
                 v463 = v34;
-                v502 = v6;
+                v502 = dictionaryCopy;
                 objc_opt_class();
                 v26 = v33;
                 if (objc_opt_isKindOfClass())
@@ -2049,10 +2049,10 @@ LABEL_71:
                   {
                     v46 = v521;
                     v125 = v466;
-                    if (v472)
+                    if (errorCopy3)
                     {
                       v124 = v124;
-                      *v472 = v124;
+                      *errorCopy3 = v124;
                     }
 
                     p_isa = 0;
@@ -2072,19 +2072,19 @@ LABEL_71:
                   v458 = v123;
                   v21 = v460;
 LABEL_72:
-                  v64 = [v6 objectForKeyedSubscript:@"numberOfSharesFromCurrentAppWithConversation"];
+                  v64 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesFromCurrentAppWithConversation"];
                   v459 = v64;
                   if (v64 && (v65 = v64, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                   {
                     v453 = v26;
                     v465 = v23;
-                    v504 = v6;
+                    v504 = dictionaryCopy;
                     v134 = v11;
                     v135 = v7;
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      if (!v472)
+                      if (!errorCopy3)
                       {
                         p_isa = 0;
                         v11 = v134;
@@ -2107,7 +2107,7 @@ LABEL_544:
                       v625 = v138;
                       v173 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v625 forKeys:&v624 count:1];
                       p_isa = 0;
-                      *v472 = [v171 initWithDomain:v172 code:2 userInfo:v173];
+                      *errorCopy3 = [v171 initWithDomain:v172 code:2 userInfo:v173];
                       v7 = v135;
                       v66 = v173;
                       v46 = v521;
@@ -2129,15 +2129,15 @@ LABEL_544:
                       v140 = v136;
                       v46 = v521;
                       v125 = v466;
-                      if (v472)
+                      if (errorCopy3)
                       {
                         v139 = v139;
-                        *v472 = v139;
+                        *errorCopy3 = v139;
                       }
 
                       p_isa = 0;
                       v21 = v460;
-                      v6 = v504;
+                      dictionaryCopy = v504;
                       v23 = v465;
                       v66 = v140;
                       v54 = v467;
@@ -2147,7 +2147,7 @@ LABEL_544:
                     v450 = v138;
 
                     v21 = v460;
-                    v6 = v504;
+                    dictionaryCopy = v504;
                     v23 = v465;
                     v54 = v467;
                   }
@@ -2157,36 +2157,36 @@ LABEL_544:
                     v450 = 0;
                   }
 
-                  v66 = [v6 objectForKeyedSubscript:@"numberOfSharesOfTopDomainURLWithConversation"];
+                  v66 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfTopDomainURLWithConversation"];
                   if (!v66 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v67 = 0;
 LABEL_78:
-                    v68 = [v6 objectForKeyedSubscript:@"numberOfSharesOfDetectedPeopleWithConversation"];
+                    v68 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfDetectedPeopleWithConversation"];
                     if (!v68 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
                       v462 = v23;
                       v446 = 0;
 LABEL_81:
-                      v69 = [v6 objectForKeyedSubscript:@"numberOfSharesOfPeopleInPhotoWithConversation"];
+                      v69 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfPeopleInPhotoWithConversation"];
                       v447 = v69;
                       if (!v69 || (v70 = v69, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
                         v443 = 0;
 LABEL_84:
-                        v71 = [v6 objectForKeyedSubscript:@"numberOfOutgoingInteractionsWithConversation"];
+                        v71 = [dictionaryCopy objectForKeyedSubscript:@"numberOfOutgoingInteractionsWithConversation"];
                         v444 = v71;
                         if (!v71 || (v72 = v71, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
                           v440 = 0;
 LABEL_87:
-                          v73 = [v6 objectForKeyedSubscript:@"numberOfIncomingInteractionsWithConversation"];
+                          v73 = [dictionaryCopy objectForKeyedSubscript:@"numberOfIncomingInteractionsWithConversation"];
                           v441 = v73;
                           if (!v73 || (v74 = v73, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
                             v437 = 0;
 LABEL_90:
-                            v75 = [v6 objectForKeyedSubscript:@"numberOfInteractionsDuringTimePeriodWithConversation"];
+                            v75 = [dictionaryCopy objectForKeyedSubscript:@"numberOfInteractionsDuringTimePeriodWithConversation"];
                             v438 = v75;
                             if (!v75 || (v76 = v75, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -2208,10 +2208,10 @@ LABEL_90:
                                 v433 = v198;
                                 v46 = v521;
                                 v125 = v466;
-                                if (v472)
+                                if (errorCopy3)
                                 {
                                   v201 = v201;
-                                  *v472 = v201;
+                                  *errorCopy3 = v201;
                                 }
 
                                 p_isa = 0;
@@ -2222,13 +2222,13 @@ LABEL_283:
                               }
 
 LABEL_93:
-                              v77 = [v6 objectForKeyedSubscript:@"numberOfEngagedSuggestionsWithConversation"];
+                              v77 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEngagedSuggestionsWithConversation"];
                               v433 = v77;
                               if (!v77 || (v78 = v77, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                               {
                                 v429 = 0;
 LABEL_96:
-                                v79 = [v6 objectForKeyedSubscript:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation"];
+                                v79 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation"];
                                 v430 = v79;
                                 if (!v79 || (v80 = v79, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
@@ -2250,10 +2250,10 @@ LABEL_96:
                                     v426 = v211;
                                     v46 = v521;
                                     v125 = v466;
-                                    if (v472)
+                                    if (errorCopy3)
                                     {
                                       v214 = v214;
-                                      *v472 = v214;
+                                      *errorCopy3 = v214;
                                     }
 
                                     p_isa = 0;
@@ -2264,26 +2264,26 @@ LABEL_298:
                                   }
 
 LABEL_99:
-                                  v81 = [v6 objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation"];
+                                  v81 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation"];
                                   v426 = v81;
                                   if (!v81 || (v82 = v81, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
                                     v422 = 0;
 LABEL_102:
-                                    v83 = [v6 objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation"];
+                                    v83 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation"];
                                     v423 = v83;
                                     if (!v83 || (v84 = v83, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
                                       v419 = 0;
 LABEL_105:
-                                      v85 = [v6 objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation"];
+                                      v85 = [dictionaryCopy objectForKeyedSubscript:@"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation"];
                                       v23 = v462;
                                       v420 = v85;
                                       if (!v85 || (v86 = v85, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
                                         v417 = 0;
 LABEL_108:
-                                        v87 = [v6 objectForKeyedSubscript:@"hasEverSharePlayedWithConversation"];
+                                        v87 = [dictionaryCopy objectForKeyedSubscript:@"hasEverSharePlayedWithConversation"];
                                         v418 = v87;
                                         if (!v87 || (v88 = v87, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                         {
@@ -2304,10 +2304,10 @@ LABEL_108:
                                             v414 = v242;
                                             v46 = v521;
                                             v125 = v466;
-                                            if (v472)
+                                            if (errorCopy3)
                                             {
                                               v244 = v244;
-                                              *v472 = v244;
+                                              *errorCopy3 = v244;
                                             }
 
                                             p_isa = 0;
@@ -2317,14 +2317,14 @@ LABEL_108:
                                           }
 
 LABEL_111:
-                                          v89 = [v6 objectForKeyedSubscript:@"suggestedRank"];
+                                          v89 = [dictionaryCopy objectForKeyedSubscript:@"suggestedRank"];
                                           v415 = v89;
                                           if (v89 && (v90 = v89, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                           {
                                             objc_opt_class();
                                             if ((objc_opt_isKindOfClass() & 1) == 0)
                                             {
-                                              if (!v472)
+                                              if (!errorCopy3)
                                               {
                                                 v245 = 0;
                                                 p_isa = 0;
@@ -2345,7 +2345,7 @@ LABEL_530:
                                               v265 = [v262 initWithDomain:v263 code:2 userInfo:v264];
                                               v245 = 0;
                                               p_isa = 0;
-                                              *v472 = v265;
+                                              *errorCopy3 = v265;
                                               v266 = v264;
                                               v46 = v521;
                                               v125 = v466;
@@ -2361,7 +2361,7 @@ LABEL_530:
                                             v413 = 0;
                                           }
 
-                                          v91 = [v6 objectForKeyedSubscript:@"coreMLModelScore"];
+                                          v91 = [dictionaryCopy objectForKeyedSubscript:@"coreMLModelScore"];
                                           v411 = v91;
                                           if (!v91 || (v92 = v91, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -2374,7 +2374,7 @@ LABEL_530:
                                           {
                                             v412 = v92;
 LABEL_117:
-                                            v93 = [v6 objectForKeyedSubscript:@"foundInChunk"];
+                                            v93 = [dictionaryCopy objectForKeyedSubscript:@"foundInChunk"];
                                             v410 = v93;
                                             if (!v93 || (v94 = v93, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -2387,7 +2387,7 @@ LABEL_117:
                                             {
                                               v409 = v94;
 LABEL_120:
-                                              v95 = [v6 objectForKeyedSubscript:@"updatedInChunk"];
+                                              v95 = [dictionaryCopy objectForKeyedSubscript:@"updatedInChunk"];
                                               v408 = v95;
                                               if (!v95 || (v96 = v95, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
@@ -2400,13 +2400,13 @@ LABEL_120:
                                               {
                                                 v407 = v96;
 LABEL_123:
-                                                v97 = [v6 objectForKeyedSubscript:@"numberOfSharesOfPeopleInPhotoIoUWithConversation"];
+                                                v97 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfPeopleInPhotoIoUWithConversation"];
                                                 v405 = v97;
                                                 if (!v97 || (v98 = v97, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                 {
                                                   v406 = 0;
 LABEL_126:
-                                                  v99 = [v6 objectForKeyedSubscript:@"numberOfSharesOfPetsWithConversation"];
+                                                  v99 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfPetsWithConversation"];
                                                   v435 = v66;
                                                   v428 = v67;
                                                   v436 = v68;
@@ -2417,8 +2417,8 @@ LABEL_126:
                                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                                     {
                                                       v456 = v26;
-                                                      v284 = v6;
-                                                      if (!v472)
+                                                      v284 = dictionaryCopy;
+                                                      if (!errorCopy3)
                                                       {
                                                         p_isa = 0;
                                                         v46 = v521;
@@ -2437,7 +2437,7 @@ LABEL_524:
                                                       v589 = v404;
                                                       v101 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v589 forKeys:&v588 count:1];
                                                       p_isa = 0;
-                                                      *v472 = [v285 initWithDomain:v286 code:2 userInfo:v101];
+                                                      *errorCopy3 = [v285 initWithDomain:v286 code:2 userInfo:v101];
                                                       goto LABEL_413;
                                                     }
 
@@ -2449,10 +2449,10 @@ LABEL_524:
                                                     v271 = v539;
                                                     if (v271)
                                                     {
-                                                      if (v472)
+                                                      if (errorCopy3)
                                                       {
                                                         v271 = v271;
-                                                        *v472 = v271;
+                                                        *errorCopy3 = v271;
                                                       }
 
                                                       p_isa = 0;
@@ -2469,19 +2469,19 @@ LABEL_524:
                                                     v404 = 0;
                                                   }
 
-                                                  v101 = [v6 objectForKeyedSubscript:@"numberOfSharesOfPetsInCurrentPhotoWithConversation"];
+                                                  v101 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfPetsInCurrentPhotoWithConversation"];
                                                   if (!v101 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                   {
                                                     v401 = 0;
 LABEL_132:
-                                                    v102 = [v6 objectForKeyedSubscript:@"numberOfSharesOfScenesInPhotoWithConversation"];
+                                                    v102 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfScenesInPhotoWithConversation"];
                                                     v398 = v101;
                                                     v402 = v102;
                                                     if (!v102 || (v103 = v102, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                     {
                                                       v399 = 0;
 LABEL_135:
-                                                      v104 = [v6 objectForKeyedSubscript:@"numberOfSharesOfDetectedScenesInPhotoWithConversation"];
+                                                      v104 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesOfDetectedScenesInPhotoWithConversation"];
                                                       v400 = v104;
                                                       if (!v104 || (v105 = v104, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                       {
@@ -2489,7 +2489,7 @@ LABEL_135:
                                                         goto LABEL_138;
                                                       }
 
-                                                      v287 = v6;
+                                                      v287 = dictionaryCopy;
                                                       objc_opt_class();
                                                       if (objc_opt_isKindOfClass())
                                                       {
@@ -2501,21 +2501,21 @@ LABEL_135:
                                                         v290 = v536;
                                                         if (v290)
                                                         {
-                                                          if (v472)
+                                                          if (errorCopy3)
                                                           {
                                                             v290 = v290;
-                                                            *v472 = v290;
+                                                            *errorCopy3 = v290;
                                                           }
 
                                                           p_isa = 0;
                                                           v46 = v521;
-                                                          v6 = v287;
+                                                          dictionaryCopy = v287;
                                                           goto LABEL_447;
                                                         }
 
-                                                        v6 = v287;
+                                                        dictionaryCopy = v287;
 LABEL_138:
-                                                        [v6 objectForKeyedSubscript:@"numberOfTopicsSharedWithConversation"];
+                                                        [dictionaryCopy objectForKeyedSubscript:@"numberOfTopicsSharedWithConversation"];
                                                         v501 = v451 = v26;
                                                         if (v501)
                                                         {
@@ -2523,7 +2523,7 @@ LABEL_138:
                                                           objc_opt_class();
                                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                                           {
-                                                            v107 = v6;
+                                                            v107 = dictionaryCopy;
                                                             objc_opt_class();
                                                             if (objc_opt_isKindOfClass())
                                                             {
@@ -2535,19 +2535,19 @@ LABEL_138:
                                                               v110 = v535;
                                                               if (v110)
                                                               {
-                                                                if (v472)
+                                                                if (errorCopy3)
                                                                 {
                                                                   v110 = v110;
-                                                                  *v472 = v110;
+                                                                  *errorCopy3 = v110;
                                                                 }
 
                                                                 goto LABEL_423;
                                                               }
 
-                                                              v6 = v107;
+                                                              dictionaryCopy = v107;
                                                               v106 = v443;
 LABEL_354:
-                                                              [v6 objectForKeyedSubscript:@"numberOfAppsSharedFromWithConversation"];
+                                                              [dictionaryCopy objectForKeyedSubscript:@"numberOfAppsSharedFromWithConversation"];
                                                               v396 = v443 = v106;
                                                               if (!v396 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                               {
@@ -2561,7 +2561,7 @@ LABEL_354:
                                                                 goto LABEL_357;
                                                               }
 
-                                                              v107 = v6;
+                                                              v107 = dictionaryCopy;
                                                               objc_opt_class();
                                                               if (objc_opt_isKindOfClass())
                                                               {
@@ -2574,7 +2574,7 @@ LABEL_354:
                                                                 if (!v310)
                                                                 {
 
-                                                                  v6 = v107;
+                                                                  dictionaryCopy = v107;
                                                                   v293 = v446;
                                                                   v294 = v440;
                                                                   v295 = v437;
@@ -2588,7 +2588,7 @@ LABEL_357:
                                                                   v437 = v295;
                                                                   v440 = v294;
                                                                   v446 = v293;
-                                                                  v394 = [v6 objectForKeyedSubscript:@"timeSinceLastPhotoShareWithConversation"];
+                                                                  v394 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastPhotoShareWithConversation"];
                                                                   if (v394)
                                                                   {
                                                                     v299 = v474;
@@ -2607,17 +2607,17 @@ LABEL_357:
                                                                         v304 = v533;
                                                                         if (v304)
                                                                         {
-                                                                          if (v472)
+                                                                          if (errorCopy3)
                                                                           {
                                                                             v304 = v304;
-                                                                            *v472 = v304;
+                                                                            *errorCopy3 = v304;
                                                                           }
 
                                                                           goto LABEL_442;
                                                                         }
 
 LABEL_379:
-                                                                        v313 = [v6 objectForKeyedSubscript:@"hasSharedSensitiveContentWIthConversation"];
+                                                                        v313 = [dictionaryCopy objectForKeyedSubscript:@"hasSharedSensitiveContentWIthConversation"];
                                                                         v525 = v300;
                                                                         if (v313 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                         {
@@ -2625,7 +2625,7 @@ LABEL_379:
                                                                           v303 = v313;
                                                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                           {
-                                                                            if (!v472)
+                                                                            if (!errorCopy3)
                                                                             {
 LABEL_442:
                                                                               p_isa = 0;
@@ -2639,7 +2639,7 @@ LABEL_442:
                                                                             v575 = v326;
                                                                             v323 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v575 forKeys:&v574 count:1];
                                                                             p_isa = 0;
-                                                                            *v472 = [v334 initWithDomain:v335 code:2 userInfo:v323];
+                                                                            *errorCopy3 = [v334 initWithDomain:v335 code:2 userInfo:v323];
 LABEL_515:
 
                                                                             goto LABEL_516;
@@ -2652,10 +2652,10 @@ LABEL_515:
                                                                           v325 = v532;
                                                                           if (v325)
                                                                           {
-                                                                            if (v472)
+                                                                            if (errorCopy3)
                                                                             {
                                                                               v325 = v325;
-                                                                              *v472 = v325;
+                                                                              *errorCopy3 = v325;
                                                                             }
 
                                                                             p_isa = 0;
@@ -2670,20 +2670,20 @@ LABEL_515:
                                                                           v390 = 0;
                                                                         }
 
-                                                                        v314 = v6;
-                                                                        v391 = [v6 objectForKeyedSubscript:@"isInPhoneCallWithConversation"];
+                                                                        v314 = dictionaryCopy;
+                                                                        v391 = [dictionaryCopy objectForKeyedSubscript:@"isInPhoneCallWithConversation"];
                                                                         if (v391 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                         {
                                                                           objc_opt_class();
                                                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                           {
-                                                                            if (!v472)
+                                                                            if (!errorCopy3)
                                                                             {
                                                                               v389 = 0;
                                                                               p_isa = 0;
 LABEL_514:
 
-                                                                              v6 = v314;
+                                                                              dictionaryCopy = v314;
                                                                               v323 = v389;
                                                                               v326 = v390;
                                                                               goto LABEL_515;
@@ -2697,7 +2697,7 @@ LABEL_514:
                                                                             v387 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v573 forKeys:&v572 count:1];
                                                                             v389 = 0;
                                                                             p_isa = 0;
-                                                                            *v472 = [v339 initWithDomain:v340 code:2 userInfo:?];
+                                                                            *errorCopy3 = [v339 initWithDomain:v340 code:2 userInfo:?];
 
                                                                             goto LABEL_513;
                                                                           }
@@ -2710,18 +2710,18 @@ LABEL_514:
                                                                           v389 = 0;
                                                                         }
 
-                                                                        v388 = [v6 objectForKeyedSubscript:@"numberOfSharesFromAlbumPhotoBelongsToWithConversation"];
+                                                                        v388 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSharesFromAlbumPhotoBelongsToWithConversation"];
                                                                         if (!v388 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                         {
                                                                           v386 = 0;
 LABEL_388:
-                                                                          v315 = [v6 objectForKeyedSubscript:@"isFirstPartyApp"];
+                                                                          v315 = [dictionaryCopy objectForKeyedSubscript:@"isFirstPartyApp"];
                                                                           if (v315 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
                                                                             objc_opt_class();
                                                                             if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                             {
-                                                                              if (!v472)
+                                                                              if (!errorCopy3)
                                                                               {
                                                                                 v385 = 0;
                                                                                 p_isa = 0;
@@ -2739,7 +2739,7 @@ LABEL_511:
                                                                               v383 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v569 forKeys:&v568 count:1];
                                                                               v385 = 0;
                                                                               p_isa = 0;
-                                                                              *v472 = [v347 initWithDomain:v348 code:2 userInfo:?];
+                                                                              *errorCopy3 = [v347 initWithDomain:v348 code:2 userInfo:?];
                                                                               goto LABEL_509;
                                                                             }
 
@@ -2751,13 +2751,13 @@ LABEL_511:
                                                                             v385 = 0;
                                                                           }
 
-                                                                          v316 = [v6 objectForKeyedSubscript:@"numberOfTimesSharedToTargetAppWithConversation"];
+                                                                          v316 = [dictionaryCopy objectForKeyedSubscript:@"numberOfTimesSharedToTargetAppWithConversation"];
                                                                           if (v316 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
                                                                             objc_opt_class();
                                                                             if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                             {
-                                                                              if (!v472)
+                                                                              if (!errorCopy3)
                                                                               {
                                                                                 p_isa = 0;
 LABEL_510:
@@ -2771,7 +2771,7 @@ LABEL_510:
                                                                               v383 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"numberOfTimesSharedToTargetAppWithConversation"];
                                                                               v567 = v383;
                                                                               v353 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v567 forKeys:&v566 count:1];
-                                                                              *v472 = [v491 initWithDomain:v352 code:2 userInfo:v353];
+                                                                              *errorCopy3 = [v491 initWithDomain:v352 code:2 userInfo:v353];
 
                                                                               p_isa = 0;
                                                                               goto LABEL_508;
@@ -2784,10 +2784,10 @@ LABEL_510:
                                                                             v338 = v530;
                                                                             if (v338)
                                                                             {
-                                                                              if (v472)
+                                                                              if (errorCopy3)
                                                                               {
                                                                                 v338 = v338;
-                                                                                *v472 = v338;
+                                                                                *errorCopy3 = v338;
                                                                               }
 
                                                                               p_isa = 0;
@@ -2806,7 +2806,7 @@ LABEL_510:
                                                                             objc_opt_class();
                                                                             if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                             {
-                                                                              if (!v472)
+                                                                              if (!errorCopy3)
                                                                               {
                                                                                 p_isa = 0;
                                                                                 goto LABEL_507;
@@ -2822,7 +2822,7 @@ LABEL_510:
                                                                               v317 = v358;
                                                                               v360 = [v359 initWithDomain:v492 code:2 userInfo:?];
                                                                               p_isa = 0;
-                                                                              *v472 = v360;
+                                                                              *errorCopy3 = v360;
 LABEL_506:
 
 LABEL_507:
@@ -2842,10 +2842,10 @@ LABEL_509:
                                                                             v346 = v529;
                                                                             if (v346)
                                                                             {
-                                                                              if (v472)
+                                                                              if (errorCopy3)
                                                                               {
                                                                                 v346 = v346;
-                                                                                *v472 = v346;
+                                                                                *errorCopy3 = v346;
                                                                               }
 
 LABEL_493:
@@ -2877,10 +2877,10 @@ LABEL_493:
                                                                             v351 = v528;
                                                                             if (v351)
                                                                             {
-                                                                              if (v472)
+                                                                              if (errorCopy3)
                                                                               {
                                                                                 v351 = v351;
-                                                                                *v472 = v351;
+                                                                                *errorCopy3 = v351;
                                                                               }
 
 LABEL_497:
@@ -2907,10 +2907,10 @@ LABEL_400:
                                                                               v356 = v527;
                                                                               if (v356)
                                                                               {
-                                                                                if (v472)
+                                                                                if (errorCopy3)
                                                                                 {
                                                                                   v356 = v356;
-                                                                                  *v472 = v356;
+                                                                                  *errorCopy3 = v356;
                                                                                 }
 
                                                                                 goto LABEL_558;
@@ -2922,8 +2922,8 @@ LABEL_403:
                                                                               {
                                                                                 v320 = 0;
 LABEL_406:
-                                                                                v518 = -[BMCandidate initWithPrivatizedIdentifier:feedbackDeprecated:privatizedTransportBundleId:timeSinceLastOutgoingInteraction:timeSinceOutgoingInteractionNumber10:timeSinceLastIncomingInteraction:deprecatedField1:deprecatedField2:deprecatedField3:numberOfSharesWithConversation:numberOfSharesFromCurrentAppWithConversation:numberOfSharesOfTopDomainURLWithConversation:numberOfSharesOfDetectedPeopleWithConversation:numberOfSharesOfPeopleInPhotoWithConversation:numberOfOutgoingInteractionsWithConversation:numberOfIncomingInteractionsWithConversation:numberOfInteractionsDuringTimePeriodWithConversation:numberOfEngagedSuggestionsWithConversation:numberOfEngagedSuggestionsFromCurrentAppWithConversation:numberOfEngagedSuggestionsOfTopDomainURLWithConversation:numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:hasEverSharePlayedWithConversation:suggestedRank:coreMLModelScore:foundInChunk:updatedInChunk:numberOfSharesOfPeopleInPhotoIoUWithConversation:numberOfSharesOfPetsWithConversation:numberOfSharesOfPetsInCurrentPhotoWithConversation:numberOfSharesOfScenesInPhotoWithConversation:numberOfSharesOfDetectedScenesInPhotoWithConversation:numberOfTopicsSharedWithConversation:numberOfAppsSharedFromWithConversation:timeSinceLastPhotoShareWithConversation:hasSharedSensitiveContentWIthConversation:isInPhoneCallWithConversation:numberOfSharesFromAlbumPhotoBelongsToWithConversation:isFirstPartyApp:numberOfTimesSharedToTargetAppWithConversation:timeSinceLastShareWithConversation:timeSinceLastPhoneCallWithConversation:numberOfDifferentFacesSharedWithConversation:numberOfTotalSharesToTargetApp:](v518, "initWithPrivatizedIdentifier:feedbackDeprecated:privatizedTransportBundleId:timeSinceLastOutgoingInteraction:timeSinceOutgoingInteractionNumber10:timeSinceLastIncomingInteraction:deprecatedField1:deprecatedField2:deprecatedField3:numberOfSharesWithConversation:numberOfSharesFromCurrentAppWithConversation:numberOfSharesOfTopDomainURLWithConversation:numberOfSharesOfDetectedPeopleWithConversation:numberOfSharesOfPeopleInPhotoWithConversation:numberOfOutgoingInteractionsWithConversation:numberOfIncomingInteractionsWithConversation:numberOfInteractionsDuringTimePeriodWithConversation:numberOfEngagedSuggestionsWithConversation:numberOfEngagedSuggestionsFromCurrentAppWithConversation:numberOfEngagedSuggestionsOfTopDomainURLWithConversation:numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:hasEverSharePlayedWithConversation:suggestedRank:coreMLModelScore:foundInChunk:updatedInChunk:numberOfSharesOfPeopleInPhotoIoUWithConversation:numberOfSharesOfPetsWithConversation:numberOfSharesOfPetsInCurrentPhotoWithConversation:numberOfSharesOfScenesInPhotoWithConversation:numberOfSharesOfDetectedScenesInPhotoWithConversation:numberOfTopicsSharedWithConversation:numberOfAppsSharedFromWithConversation:timeSinceLastPhotoShareWithConversation:hasSharedSensitiveContentWIthConversation:isInPhoneCallWithConversation:numberOfSharesFromAlbumPhotoBelongsToWithConversation:isFirstPartyApp:numberOfTimesSharedToTargetAppWithConversation:timeSinceLastShareWithConversation:timeSinceLastPhoneCallWithConversation:numberOfDifferentFacesSharedWithConversation:numberOfTotalSharesToTargetApp:", v300, [v299 intValue], v521, v519, v468, v467, v497, v466, v461, v458, v450, v428, v446, v443, v440, v437, v432, v429, v425, v422, v419, v417, v416, v413, v412, v409, v407, v406, v404, v401, v399, v397, v395, v393, v392, v390, v389, v386, v385, v383, v382, v381, v379, v320);
-                                                                                p_isa = &v518->super.super.isa;
+                                                                                selfCopy = -[BMCandidate initWithPrivatizedIdentifier:feedbackDeprecated:privatizedTransportBundleId:timeSinceLastOutgoingInteraction:timeSinceOutgoingInteractionNumber10:timeSinceLastIncomingInteraction:deprecatedField1:deprecatedField2:deprecatedField3:numberOfSharesWithConversation:numberOfSharesFromCurrentAppWithConversation:numberOfSharesOfTopDomainURLWithConversation:numberOfSharesOfDetectedPeopleWithConversation:numberOfSharesOfPeopleInPhotoWithConversation:numberOfOutgoingInteractionsWithConversation:numberOfIncomingInteractionsWithConversation:numberOfInteractionsDuringTimePeriodWithConversation:numberOfEngagedSuggestionsWithConversation:numberOfEngagedSuggestionsFromCurrentAppWithConversation:numberOfEngagedSuggestionsOfTopDomainURLWithConversation:numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:hasEverSharePlayedWithConversation:suggestedRank:coreMLModelScore:foundInChunk:updatedInChunk:numberOfSharesOfPeopleInPhotoIoUWithConversation:numberOfSharesOfPetsWithConversation:numberOfSharesOfPetsInCurrentPhotoWithConversation:numberOfSharesOfScenesInPhotoWithConversation:numberOfSharesOfDetectedScenesInPhotoWithConversation:numberOfTopicsSharedWithConversation:numberOfAppsSharedFromWithConversation:timeSinceLastPhotoShareWithConversation:hasSharedSensitiveContentWIthConversation:isInPhoneCallWithConversation:numberOfSharesFromAlbumPhotoBelongsToWithConversation:isFirstPartyApp:numberOfTimesSharedToTargetAppWithConversation:timeSinceLastShareWithConversation:timeSinceLastPhoneCallWithConversation:numberOfDifferentFacesSharedWithConversation:numberOfTotalSharesToTargetApp:](selfCopy, "initWithPrivatizedIdentifier:feedbackDeprecated:privatizedTransportBundleId:timeSinceLastOutgoingInteraction:timeSinceOutgoingInteractionNumber10:timeSinceLastIncomingInteraction:deprecatedField1:deprecatedField2:deprecatedField3:numberOfSharesWithConversation:numberOfSharesFromCurrentAppWithConversation:numberOfSharesOfTopDomainURLWithConversation:numberOfSharesOfDetectedPeopleWithConversation:numberOfSharesOfPeopleInPhotoWithConversation:numberOfOutgoingInteractionsWithConversation:numberOfIncomingInteractionsWithConversation:numberOfInteractionsDuringTimePeriodWithConversation:numberOfEngagedSuggestionsWithConversation:numberOfEngagedSuggestionsFromCurrentAppWithConversation:numberOfEngagedSuggestionsOfTopDomainURLWithConversation:numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:hasEverSharePlayedWithConversation:suggestedRank:coreMLModelScore:foundInChunk:updatedInChunk:numberOfSharesOfPeopleInPhotoIoUWithConversation:numberOfSharesOfPetsWithConversation:numberOfSharesOfPetsInCurrentPhotoWithConversation:numberOfSharesOfScenesInPhotoWithConversation:numberOfSharesOfDetectedScenesInPhotoWithConversation:numberOfTopicsSharedWithConversation:numberOfAppsSharedFromWithConversation:timeSinceLastPhotoShareWithConversation:hasSharedSensitiveContentWIthConversation:isInPhoneCallWithConversation:numberOfSharesFromAlbumPhotoBelongsToWithConversation:isFirstPartyApp:numberOfTimesSharedToTargetAppWithConversation:timeSinceLastShareWithConversation:timeSinceLastPhoneCallWithConversation:numberOfDifferentFacesSharedWithConversation:numberOfTotalSharesToTargetApp:", v300, [v299 intValue], v521, v519, v468, v467, v497, v466, v461, v458, v450, v428, v446, v443, v440, v437, v432, v429, v425, v422, v419, v417, v416, v413, v412, v409, v407, v406, v404, v401, v399, v397, v395, v393, v392, v390, v389, v386, v385, v383, v382, v381, v379, v320);
+                                                                                p_isa = &selfCopy->super.super.isa;
 LABEL_503:
 
                                                                                 goto LABEL_504;
@@ -2944,10 +2944,10 @@ LABEL_503:
                                                                                   goto LABEL_406;
                                                                                 }
 
-                                                                                if (v472)
+                                                                                if (errorCopy3)
                                                                                 {
                                                                                   v363 = v363;
-                                                                                  *v472 = v363;
+                                                                                  *errorCopy3 = v363;
                                                                                 }
 
                                                                                 v364 = v493;
@@ -2957,7 +2957,7 @@ LABEL_502:
                                                                                 goto LABEL_503;
                                                                               }
 
-                                                                              if (v472)
+                                                                              if (errorCopy3)
                                                                               {
                                                                                 v496 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                 v378 = *MEMORY[0x1E698F240];
@@ -2965,7 +2965,7 @@ LABEL_502:
                                                                                 v320 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"numberOfTotalSharesToTargetApp"];
                                                                                 v559 = v320;
                                                                                 v376 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v559 forKeys:&v558 count:1];
-                                                                                *v472 = [v496 initWithDomain:v378 code:2 userInfo:v376];
+                                                                                *errorCopy3 = [v496 initWithDomain:v378 code:2 userInfo:v376];
                                                                                 v364 = v376;
                                                                                 goto LABEL_502;
                                                                               }
@@ -2975,7 +2975,7 @@ LABEL_558:
                                                                               goto LABEL_504;
                                                                             }
 
-                                                                            if (v472)
+                                                                            if (errorCopy3)
                                                                             {
                                                                               v495 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                               v377 = *MEMORY[0x1E698F240];
@@ -2985,7 +2985,7 @@ LABEL_558:
                                                                               v319 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v561 forKeys:&v560 count:1];
                                                                               v366 = [v495 initWithDomain:v377 code:2 userInfo:?];
                                                                               p_isa = 0;
-                                                                              *v472 = v366;
+                                                                              *errorCopy3 = v366;
 LABEL_504:
 
                                                                               goto LABEL_505;
@@ -2994,7 +2994,7 @@ LABEL_504:
                                                                             goto LABEL_497;
                                                                           }
 
-                                                                          if (v472)
+                                                                          if (errorCopy3)
                                                                           {
                                                                             v494 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                             v380 = *MEMORY[0x1E698F240];
@@ -3004,7 +3004,7 @@ LABEL_504:
                                                                             v318 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v563 forKeys:&v562 count:1];
                                                                             v365 = [v494 initWithDomain:v380 code:2 userInfo:?];
                                                                             p_isa = 0;
-                                                                            *v472 = v365;
+                                                                            *errorCopy3 = v365;
 LABEL_505:
 
                                                                             goto LABEL_506;
@@ -3027,10 +3027,10 @@ LABEL_505:
                                                                             goto LABEL_388;
                                                                           }
 
-                                                                          if (v472)
+                                                                          if (errorCopy3)
                                                                           {
                                                                             v333 = v333;
-                                                                            *v472 = v333;
+                                                                            *errorCopy3 = v333;
                                                                           }
 
 LABEL_458:
@@ -3040,7 +3040,7 @@ LABEL_512:
                                                                           goto LABEL_513;
                                                                         }
 
-                                                                        if (v472)
+                                                                        if (errorCopy3)
                                                                         {
                                                                           v341 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                           v342 = *MEMORY[0x1E698F240];
@@ -3049,7 +3049,7 @@ LABEL_512:
                                                                           v386 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"numberOfSharesFromAlbumPhotoBelongsToWithConversation"];
                                                                           v571 = v386;
                                                                           v343 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v571 forKeys:&v570 count:1];
-                                                                          *v472 = [v341 initWithDomain:v342 code:2 userInfo:v343];
+                                                                          *errorCopy3 = [v341 initWithDomain:v342 code:2 userInfo:v343];
 
                                                                           goto LABEL_458;
                                                                         }
@@ -3061,7 +3061,7 @@ LABEL_513:
                                                                         goto LABEL_514;
                                                                       }
 
-                                                                      if (v472)
+                                                                      if (errorCopy3)
                                                                       {
                                                                         v329 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                         v330 = *MEMORY[0x1E698F240];
@@ -3070,7 +3070,7 @@ LABEL_513:
                                                                         v577 = v392;
                                                                         v303 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v577 forKeys:&v576 count:1];
                                                                         p_isa = 0;
-                                                                        *v472 = [v329 initWithDomain:v330 code:2 userInfo:?];
+                                                                        *errorCopy3 = [v329 initWithDomain:v330 code:2 userInfo:?];
 LABEL_516:
                                                                         v46 = v521;
                                                                         v26 = v451;
@@ -3106,10 +3106,10 @@ LABEL_517:
                                                                   goto LABEL_379;
                                                                 }
 
-                                                                if (v472)
+                                                                if (errorCopy3)
                                                                 {
                                                                   v310 = v310;
-                                                                  *v472 = v310;
+                                                                  *errorCopy3 = v310;
                                                                 }
 
                                                                 p_isa = 0;
@@ -3117,7 +3117,7 @@ LABEL_517:
 
                                                               else
                                                               {
-                                                                if (!v472)
+                                                                if (!errorCopy3)
                                                                 {
 LABEL_423:
                                                                   p_isa = 0;
@@ -3131,15 +3131,15 @@ LABEL_423:
                                                                 v579 = v393;
                                                                 v394 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v579 forKeys:&v578 count:1];
                                                                 p_isa = 0;
-                                                                *v472 = [v327 initWithDomain:v328 code:2 userInfo:?];
+                                                                *errorCopy3 = [v327 initWithDomain:v328 code:2 userInfo:?];
                                                               }
 
                                                               v46 = v521;
-                                                              v6 = v107;
+                                                              dictionaryCopy = v107;
                                                               goto LABEL_422;
                                                             }
 
-                                                            if (v472)
+                                                            if (errorCopy3)
                                                             {
                                                               v321 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                               v322 = *MEMORY[0x1E698F240];
@@ -3148,10 +3148,10 @@ LABEL_423:
                                                               v581 = v395;
                                                               v396 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v581 forKeys:&v580 count:1];
                                                               p_isa = 0;
-                                                              *v472 = [v321 initWithDomain:v322 code:2 userInfo:?];
+                                                              *errorCopy3 = [v321 initWithDomain:v322 code:2 userInfo:?];
 LABEL_424:
                                                               v46 = v521;
-                                                              v6 = v107;
+                                                              dictionaryCopy = v107;
                                                               v125 = v466;
                                                               v138 = v450;
 LABEL_518:
@@ -3179,7 +3179,7 @@ LABEL_519:
                                                         goto LABEL_354;
                                                       }
 
-                                                      if (v472)
+                                                      if (errorCopy3)
                                                       {
                                                         v311 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                         v312 = *MEMORY[0x1E698F240];
@@ -3188,9 +3188,9 @@ LABEL_519:
                                                         v583 = v397;
                                                         v501 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v583 forKeys:&v582 count:1];
                                                         p_isa = 0;
-                                                        *v472 = [v311 initWithDomain:v312 code:2 userInfo:?];
+                                                        *errorCopy3 = [v311 initWithDomain:v312 code:2 userInfo:?];
                                                         v46 = v521;
-                                                        v6 = v287;
+                                                        dictionaryCopy = v287;
                                                         v125 = v466;
                                                         v138 = v450;
 LABEL_520:
@@ -3220,10 +3220,10 @@ LABEL_521:
                                                       if (v283)
                                                       {
                                                         v400 = v281;
-                                                        if (v472)
+                                                        if (errorCopy3)
                                                         {
                                                           v283 = v283;
-                                                          *v472 = v283;
+                                                          *errorCopy3 = v283;
                                                         }
 
                                                         p_isa = 0;
@@ -3236,8 +3236,8 @@ LABEL_521:
                                                       goto LABEL_135;
                                                     }
 
-                                                    v516 = v6;
-                                                    if (v472)
+                                                    v516 = dictionaryCopy;
+                                                    if (errorCopy3)
                                                     {
                                                       v305 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                       v306 = *MEMORY[0x1E698F240];
@@ -3246,9 +3246,9 @@ LABEL_521:
                                                       v585 = v399;
                                                       v400 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v585 forKeys:&v584 count:1];
                                                       p_isa = 0;
-                                                      *v472 = [v305 initWithDomain:v306 code:2 userInfo:?];
+                                                      *errorCopy3 = [v305 initWithDomain:v306 code:2 userInfo:?];
                                                       v46 = v521;
-                                                      v6 = v516;
+                                                      dictionaryCopy = v516;
                                                       goto LABEL_439;
                                                     }
 
@@ -3274,10 +3274,10 @@ LABEL_522:
                                                     v276 = v538;
                                                     if (v276)
                                                     {
-                                                      if (v472)
+                                                      if (errorCopy3)
                                                       {
                                                         v276 = v276;
-                                                        *v472 = v276;
+                                                        *errorCopy3 = v276;
                                                       }
 
                                                       p_isa = 0;
@@ -3291,8 +3291,8 @@ LABEL_522:
                                                   }
 
                                                   v456 = v26;
-                                                  v284 = v6;
-                                                  if (v472)
+                                                  v284 = dictionaryCopy;
+                                                  if (errorCopy3)
                                                   {
                                                     v291 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v292 = *MEMORY[0x1E698F240];
@@ -3301,16 +3301,16 @@ LABEL_522:
                                                     v587 = v401;
                                                     v402 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v587 forKeys:&v586 count:1];
                                                     p_isa = 0;
-                                                    *v472 = [v291 initWithDomain:v292 code:2 userInfo:?];
+                                                    *errorCopy3 = [v291 initWithDomain:v292 code:2 userInfo:?];
                                                     v46 = v521;
-                                                    v6 = v284;
+                                                    dictionaryCopy = v284;
                                                     goto LABEL_427;
                                                   }
 
                                                   p_isa = 0;
 LABEL_413:
                                                   v46 = v521;
-                                                  v6 = v284;
+                                                  dictionaryCopy = v284;
                                                   v26 = v456;
                                                   v125 = v466;
                                                   v138 = v450;
@@ -3334,10 +3334,10 @@ LABEL_523:
                                                   }
 
                                                   v125 = v466;
-                                                  if (v472)
+                                                  if (errorCopy3)
                                                   {
                                                     v261 = v261;
-                                                    *v472 = v261;
+                                                    *errorCopy3 = v261;
                                                   }
 
                                                   p_isa = 0;
@@ -3350,7 +3350,7 @@ LABEL_525:
                                                   goto LABEL_526;
                                                 }
 
-                                                if (!v472)
+                                                if (!errorCopy3)
                                                 {
                                                   p_isa = 0;
                                                   v46 = v521;
@@ -3366,16 +3366,16 @@ LABEL_526:
                                                 v277 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v490 = *MEMORY[0x1E698F240];
                                                 v590 = *MEMORY[0x1E696A578];
-                                                v515 = v6;
+                                                v515 = dictionaryCopy;
                                                 v278 = objc_alloc(MEMORY[0x1E696AEC0]);
                                                 v259 = v405;
                                                 v375 = objc_opt_class();
                                                 v279 = v278;
-                                                v6 = v515;
+                                                dictionaryCopy = v515;
                                                 v406 = [v279 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v375, @"numberOfSharesOfPeopleInPhotoIoUWithConversation"];
                                                 v591 = v406;
                                                 v280 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v591 forKeys:&v590 count:1];
-                                                *v472 = [v277 initWithDomain:v490 code:2 userInfo:v280];
+                                                *errorCopy3 = [v277 initWithDomain:v490 code:2 userInfo:v280];
 
                                                 p_isa = 0;
 LABEL_331:
@@ -3384,7 +3384,7 @@ LABEL_331:
                                                 goto LABEL_332;
                                               }
 
-                                              if (v472)
+                                              if (errorCopy3)
                                               {
                                                 v273 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v514 = *MEMORY[0x1E698F240];
@@ -3394,7 +3394,7 @@ LABEL_331:
                                                 v406 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v593 forKeys:&v592 count:1];
                                                 v407 = 0;
                                                 p_isa = 0;
-                                                *v472 = [v273 initWithDomain:v514 code:2 userInfo:?];
+                                                *errorCopy3 = [v273 initWithDomain:v514 code:2 userInfo:?];
                                                 goto LABEL_331;
                                               }
 
@@ -3409,7 +3409,7 @@ LABEL_527:
                                               goto LABEL_528;
                                             }
 
-                                            if (v472)
+                                            if (errorCopy3)
                                             {
                                               v272 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v513 = *MEMORY[0x1E698F240];
@@ -3420,7 +3420,7 @@ LABEL_527:
                                               v408 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v595 forKeys:&v594 count:1];
                                               v409 = 0;
                                               p_isa = 0;
-                                              *v472 = [v272 initWithDomain:v513 code:2 userInfo:?];
+                                              *errorCopy3 = [v272 initWithDomain:v513 code:2 userInfo:?];
                                               v46 = v521;
                                               v125 = v466;
                                               v138 = v450;
@@ -3439,7 +3439,7 @@ LABEL_528:
                                             goto LABEL_529;
                                           }
 
-                                          if (v472)
+                                          if (errorCopy3)
                                           {
                                             v267 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v512 = *MEMORY[0x1E698F240];
@@ -3450,7 +3450,7 @@ LABEL_528:
                                             v410 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v597 forKeys:&v596 count:1];
                                             v412 = 0;
                                             p_isa = 0;
-                                            *v472 = [v267 initWithDomain:v512 code:2 userInfo:?];
+                                            *errorCopy3 = [v267 initWithDomain:v512 code:2 userInfo:?];
                                             v46 = v521;
                                             v125 = v466;
                                             v138 = v450;
@@ -3469,22 +3469,22 @@ LABEL_529:
                                           goto LABEL_530;
                                         }
 
-                                        if (v472)
+                                        if (errorCopy3)
                                         {
                                           v255 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v489 = *MEMORY[0x1E698F240];
                                           v600 = *MEMORY[0x1E696A578];
-                                          v511 = v6;
+                                          v511 = dictionaryCopy;
                                           v256 = objc_alloc(MEMORY[0x1E696AEC0]);
                                           v374 = objc_opt_class();
                                           v257 = v256;
-                                          v6 = v511;
+                                          dictionaryCopy = v511;
                                           v416 = [v257 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v374, @"hasEverSharePlayedWithConversation"];
                                           v601 = v416;
                                           v245 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v601 forKeys:&v600 count:1];
                                           v258 = [v255 initWithDomain:v489 code:2 userInfo:v245];
                                           p_isa = 0;
-                                          *v472 = v258;
+                                          *errorCopy3 = v258;
                                           v46 = v521;
                                           v125 = v466;
                                           v138 = v450;
@@ -3517,10 +3517,10 @@ LABEL_532:
                                           v418 = v234;
                                           v46 = v521;
                                           v125 = v466;
-                                          if (v472)
+                                          if (errorCopy3)
                                           {
                                             v236 = v236;
-                                            *v472 = v236;
+                                            *errorCopy3 = v236;
                                           }
 
                                           p_isa = 0;
@@ -3531,23 +3531,23 @@ LABEL_532:
                                         goto LABEL_108;
                                       }
 
-                                      if (v472)
+                                      if (errorCopy3)
                                       {
                                         v251 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v488 = *MEMORY[0x1E698F240];
                                         v602 = *MEMORY[0x1E696A578];
-                                        v510 = v6;
+                                        v510 = dictionaryCopy;
                                         v252 = objc_alloc(MEMORY[0x1E696AEC0]);
                                         v373 = objc_opt_class();
                                         v253 = v252;
                                         v23 = v462;
-                                        v6 = v510;
+                                        dictionaryCopy = v510;
                                         v417 = [v253 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v373, @"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation"];
                                         v603 = v417;
                                         v418 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v603 forKeys:&v602 count:1];
                                         v254 = [v251 initWithDomain:v488 code:2 userInfo:?];
                                         p_isa = 0;
-                                        *v472 = v254;
+                                        *errorCopy3 = v254;
                                         goto LABEL_335;
                                       }
 
@@ -3574,10 +3574,10 @@ LABEL_533:
                                         v420 = v226;
                                         v46 = v521;
                                         v125 = v466;
-                                        if (v472)
+                                        if (errorCopy3)
                                         {
                                           v228 = v228;
-                                          *v472 = v228;
+                                          *errorCopy3 = v228;
                                         }
 
                                         p_isa = 0;
@@ -3589,17 +3589,17 @@ LABEL_533:
                                       goto LABEL_105;
                                     }
 
-                                    if (v472)
+                                    if (errorCopy3)
                                     {
                                       v487 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v421 = *MEMORY[0x1E698F240];
                                       v604 = *MEMORY[0x1E696A578];
-                                      v509 = v6;
+                                      v509 = dictionaryCopy;
                                       v246 = objc_alloc(MEMORY[0x1E696AEC0]);
                                       v372 = objc_opt_class();
                                       v247 = v246;
                                       v23 = v462;
-                                      v6 = v509;
+                                      dictionaryCopy = v509;
                                       v419 = [v247 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v372, @"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation"];
                                       v605 = v419;
                                       v248 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v605 forKeys:&v604 count:1];
@@ -3607,7 +3607,7 @@ LABEL_533:
                                       v420 = v248;
                                       v250 = [v487 initWithDomain:v249 code:2 userInfo:?];
                                       p_isa = 0;
-                                      *v472 = v250;
+                                      *errorCopy3 = v250;
                                       goto LABEL_321;
                                     }
 
@@ -3635,10 +3635,10 @@ LABEL_534:
                                       v46 = v521;
                                       v125 = v466;
                                       v23 = v462;
-                                      if (v472)
+                                      if (errorCopy3)
                                       {
                                         v220 = v220;
-                                        *v472 = v220;
+                                        *errorCopy3 = v220;
                                       }
 
                                       p_isa = 0;
@@ -3649,17 +3649,17 @@ LABEL_534:
                                     goto LABEL_102;
                                   }
 
-                                  if (v472)
+                                  if (errorCopy3)
                                   {
                                     v486 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v424 = *MEMORY[0x1E698F240];
                                     v606 = *MEMORY[0x1E696A578];
-                                    v508 = v6;
+                                    v508 = dictionaryCopy;
                                     v237 = objc_alloc(MEMORY[0x1E696AEC0]);
                                     v371 = objc_opt_class();
                                     v238 = v237;
                                     v23 = v462;
-                                    v6 = v508;
+                                    dictionaryCopy = v508;
                                     v422 = [v238 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v371, @"numberOfEngagedSuggestionsOfTopDomainURLWithConversation"];
                                     v607 = v422;
                                     v239 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v607 forKeys:&v606 count:1];
@@ -3667,7 +3667,7 @@ LABEL_534:
                                     v423 = v239;
                                     v241 = [v486 initWithDomain:v240 code:2 userInfo:?];
                                     p_isa = 0;
-                                    *v472 = v241;
+                                    *errorCopy3 = v241;
                                     v46 = v521;
                                     v125 = v466;
                                     v138 = v450;
@@ -3681,17 +3681,17 @@ LABEL_534:
                                   goto LABEL_298;
                                 }
 
-                                if (v472)
+                                if (errorCopy3)
                                 {
                                   v485 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v427 = *MEMORY[0x1E698F240];
                                   v608 = *MEMORY[0x1E696A578];
-                                  v507 = v6;
+                                  v507 = dictionaryCopy;
                                   v229 = objc_alloc(MEMORY[0x1E696AEC0]);
                                   v370 = objc_opt_class();
                                   v230 = v229;
                                   v23 = v462;
-                                  v6 = v507;
+                                  dictionaryCopy = v507;
                                   v425 = [v230 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v370, @"numberOfEngagedSuggestionsFromCurrentAppWithConversation"];
                                   v609 = v425;
                                   v231 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v609 forKeys:&v608 count:1];
@@ -3699,7 +3699,7 @@ LABEL_534:
                                   v426 = v231;
                                   v233 = [v485 initWithDomain:v232 code:2 userInfo:?];
                                   p_isa = 0;
-                                  *v472 = v233;
+                                  *errorCopy3 = v233;
                                   v46 = v521;
                                   v125 = v466;
                                   v138 = v450;
@@ -3732,10 +3732,10 @@ LABEL_536:
                                   v46 = v521;
                                   v125 = v466;
                                   v23 = v462;
-                                  if (v472)
+                                  if (errorCopy3)
                                   {
                                     v207 = v207;
-                                    *v472 = v207;
+                                    *errorCopy3 = v207;
                                   }
 
                                   p_isa = 0;
@@ -3746,17 +3746,17 @@ LABEL_536:
                                 goto LABEL_96;
                               }
 
-                              if (v472)
+                              if (errorCopy3)
                               {
                                 v484 = objc_alloc(MEMORY[0x1E696ABC0]);
                                 v431 = *MEMORY[0x1E698F240];
                                 v610 = *MEMORY[0x1E696A578];
-                                v506 = v6;
+                                v506 = dictionaryCopy;
                                 v221 = objc_alloc(MEMORY[0x1E696AEC0]);
                                 v369 = objc_opt_class();
                                 v222 = v221;
                                 v23 = v462;
-                                v6 = v506;
+                                dictionaryCopy = v506;
                                 v429 = [v222 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v369, @"numberOfEngagedSuggestionsWithConversation"];
                                 v611 = v429;
                                 v223 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v611 forKeys:&v610 count:1];
@@ -3764,7 +3764,7 @@ LABEL_536:
                                 v430 = v223;
                                 v225 = [v484 initWithDomain:v224 code:2 userInfo:?];
                                 p_isa = 0;
-                                *v472 = v225;
+                                *errorCopy3 = v225;
                                 v46 = v521;
                                 v125 = v466;
                                 v138 = v450;
@@ -3778,7 +3778,7 @@ LABEL_536:
                               goto LABEL_283;
                             }
 
-                            if (v472)
+                            if (errorCopy3)
                             {
                               v483 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v434 = *MEMORY[0x1E698F240];
@@ -3791,7 +3791,7 @@ LABEL_536:
                               v433 = v215;
                               v217 = [v483 initWithDomain:v216 code:2 userInfo:?];
                               p_isa = 0;
-                              *v472 = v217;
+                              *errorCopy3 = v217;
                               v46 = v521;
                               v125 = v466;
                               v138 = v450;
@@ -3824,10 +3824,10 @@ LABEL_538:
                               v46 = v521;
                               v125 = v466;
                               v23 = v462;
-                              if (v472)
+                              if (errorCopy3)
                               {
                                 v194 = v194;
-                                *v472 = v194;
+                                *errorCopy3 = v194;
                               }
 
                               p_isa = 0;
@@ -3838,7 +3838,7 @@ LABEL_538:
                             goto LABEL_90;
                           }
 
-                          if (v472)
+                          if (errorCopy3)
                           {
                             v482 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v439 = *MEMORY[0x1E698F240];
@@ -3851,7 +3851,7 @@ LABEL_538:
                             v438 = v208;
                             v210 = [v482 initWithDomain:v209 code:2 userInfo:?];
                             p_isa = 0;
-                            *v472 = v210;
+                            *errorCopy3 = v210;
                             v46 = v521;
                             v125 = v466;
                             v138 = v450;
@@ -3881,10 +3881,10 @@ LABEL_539:
                             v441 = v178;
                             v46 = v521;
                             v125 = v466;
-                            if (v472)
+                            if (errorCopy3)
                             {
                               v180 = v180;
-                              *v472 = v180;
+                              *errorCopy3 = v180;
                             }
 
                             p_isa = 0;
@@ -3896,7 +3896,7 @@ LABEL_539:
                           goto LABEL_87;
                         }
 
-                        if (v472)
+                        if (errorCopy3)
                         {
                           v481 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v442 = *MEMORY[0x1E698F240];
@@ -3908,7 +3908,7 @@ LABEL_539:
                           v441 = v202;
                           v204 = [v481 initWithDomain:v203 code:2 userInfo:?];
                           p_isa = 0;
-                          *v472 = v204;
+                          *errorCopy3 = v204;
                           v46 = v521;
                           v23 = v462;
                           v125 = v466;
@@ -3941,10 +3941,10 @@ LABEL_540:
                           v46 = v521;
                           v125 = v466;
                           v23 = v462;
-                          if (v472)
+                          if (errorCopy3)
                           {
                             v176 = v176;
-                            *v472 = v176;
+                            *errorCopy3 = v176;
                           }
 
                           p_isa = 0;
@@ -3955,7 +3955,7 @@ LABEL_540:
                         goto LABEL_84;
                       }
 
-                      if (v472)
+                      if (errorCopy3)
                       {
                         v480 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v445 = *MEMORY[0x1E698F240];
@@ -3968,7 +3968,7 @@ LABEL_540:
                         v444 = v195;
                         v197 = [v480 initWithDomain:v196 code:2 userInfo:?];
                         p_isa = 0;
-                        *v472 = v197;
+                        *errorCopy3 = v197;
                         v46 = v521;
                         goto LABEL_255;
                       }
@@ -3997,10 +3997,10 @@ LABEL_541:
                         v447 = v167;
                         v46 = v521;
                         v125 = v466;
-                        if (v472)
+                        if (errorCopy3)
                         {
                           v170 = v170;
-                          *v472 = v170;
+                          *errorCopy3 = v170;
                         }
 
                         p_isa = 0;
@@ -4013,7 +4013,7 @@ LABEL_541:
                       goto LABEL_81;
                     }
 
-                    if (v472)
+                    if (errorCopy3)
                     {
                       v479 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v449 = *MEMORY[0x1E698F240];
@@ -4034,7 +4034,7 @@ LABEL_541:
                       v447 = v188;
                       v190 = [v479 initWithDomain:v189 code:2 userInfo:?];
                       p_isa = 0;
-                      *v472 = v190;
+                      *errorCopy3 = v190;
                       v46 = v521;
                       v125 = v466;
                       v138 = v450;
@@ -4070,10 +4070,10 @@ LABEL_542:
                       v67 = v159;
                       v46 = v521;
                       v125 = v466;
-                      if (v472)
+                      if (errorCopy3)
                       {
                         v160 = v160;
-                        *v472 = v160;
+                        *errorCopy3 = v160;
                       }
 
                       p_isa = 0;
@@ -4088,7 +4088,7 @@ LABEL_542:
                     goto LABEL_78;
                   }
 
-                  if (v472)
+                  if (errorCopy3)
                   {
                     v478 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v448 = *MEMORY[0x1E698F240];
@@ -4098,7 +4098,7 @@ LABEL_542:
                     v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v623 forKeys:&v622 count:1];
                     v177 = [v478 initWithDomain:v448 code:2 userInfo:v68];
                     p_isa = 0;
-                    *v472 = v177;
+                    *errorCopy3 = v177;
                     goto LABEL_236;
                   }
 
@@ -4112,7 +4112,7 @@ LABEL_543:
                   goto LABEL_544;
                 }
 
-                if (!v472)
+                if (!errorCopy3)
                 {
                   p_isa = 0;
                   v7 = v517;
@@ -4134,7 +4134,7 @@ LABEL_546:
                 v165 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"numberOfSharesWithConversation"];
                 v627 = v165;
                 v166 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v627 forKeys:&v626 count:1];
-                *v472 = [v163 initWithDomain:v164 code:2 userInfo:v166];
+                *errorCopy3 = [v163 initWithDomain:v164 code:2 userInfo:v166];
 
                 v126 = v165;
                 p_isa = 0;
@@ -4142,7 +4142,7 @@ LABEL_546:
                 v7 = v517;
                 v46 = v521;
                 v21 = v460;
-                v6 = v502;
+                dictionaryCopy = v502;
                 v23 = v463;
                 v54 = v467;
                 v125 = v466;
@@ -4160,11 +4160,11 @@ LABEL_545:
                 goto LABEL_37;
               }
 
-              if (a4)
+              if (error)
               {
                 v149 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v150 = v33;
-                v151 = a4;
+                errorCopy4 = error;
                 v152 = *MEMORY[0x1E698F240];
                 v628 = *MEMORY[0x1E696A578];
                 v121 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"deprecatedField3"];
@@ -4176,7 +4176,7 @@ LABEL_545:
                 v126 = v153;
                 v461 = 0;
                 p_isa = 0;
-                *v151 = v156;
+                *errorCopy4 = v156;
                 v46 = v521;
                 v125 = v466;
                 v21 = v35;
@@ -4203,7 +4203,7 @@ LABEL_547:
               goto LABEL_548;
             }
 
-            if (a4)
+            if (error)
             {
               v505 = objc_alloc(MEMORY[0x1E696ABC0]);
               v454 = v26;
@@ -4211,7 +4211,7 @@ LABEL_547:
               v142 = v28;
               v143 = *MEMORY[0x1E698F240];
               v630 = *MEMORY[0x1E696A578];
-              v144 = a4;
+              errorCopy5 = error;
               v145 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"deprecatedField2"];
               v631 = v145;
               v146 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v631 forKeys:&v630 count:1];
@@ -4223,7 +4223,7 @@ LABEL_547:
               v469 = v146;
               v125 = 0;
               p_isa = 0;
-              *v144 = [v505 initWithDomain:v147 code:2 userInfo:?];
+              *errorCopy5 = [v505 initWithDomain:v147 code:2 userInfo:?];
               v46 = v521;
               goto LABEL_204;
             }
@@ -4239,7 +4239,7 @@ LABEL_548:
             goto LABEL_549;
           }
 
-          if (a4)
+          if (error)
           {
             v499 = objc_alloc(MEMORY[0x1E696ABC0]);
             v477 = *MEMORY[0x1E698F240];
@@ -4248,7 +4248,7 @@ LABEL_548:
             v112 = v23;
             v113 = v11;
             v114 = v112;
-            v473 = a4;
+            errorCopy6 = error;
             v115 = v111;
             v116 = objc_opt_class();
             v16 = v525;
@@ -4262,11 +4262,11 @@ LABEL_548:
             v497 = v118;
             v120 = [v119 initWithDomain:v477 code:2 userInfo:?];
             p_isa = 0;
-            *v473 = v120;
+            *errorCopy6 = v120;
             v46 = v521;
 LABEL_550:
 
-            a4 = p_isa;
+            error = p_isa;
             goto LABEL_551;
           }
 
@@ -4274,7 +4274,7 @@ LABEL_550:
           v16 = v525;
 LABEL_551:
 
-          self = v518;
+          self = selfCopy;
           goto LABEL_552;
         }
 
@@ -4295,18 +4295,18 @@ LABEL_551:
             goto LABEL_22;
           }
 
-          if (a4)
+          if (error)
           {
             v42 = v42;
-            *a4 = v42;
+            *error = v42;
           }
 
-          a4 = 0;
+          error = 0;
         }
 
         else
         {
-          if (!a4)
+          if (!error)
           {
             v16 = v525;
             v46 = v521;
@@ -4322,9 +4322,9 @@ LABEL_554:
           v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"timeSinceLastOutgoingInteraction"];
           v639 = v41;
           v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v639 forKeys:&v638 count:1];
-          *a4 = [v520 initWithDomain:v55 code:2 userInfo:v56];
+          *error = [v520 initWithDomain:v55 code:2 userInfo:v56];
 
-          a4 = 0;
+          error = 0;
           v40 = v39;
         }
 
@@ -4337,7 +4337,7 @@ LABEL_553:
         goto LABEL_554;
       }
 
-      if (a4)
+      if (error)
       {
         v47 = objc_alloc(MEMORY[0x1E696ABC0]);
         v48 = *MEMORY[0x1E698F240];
@@ -4348,8 +4348,8 @@ LABEL_553:
         v50 = v47;
         v41 = v49;
         v46 = 0;
-        *a4 = [v50 initWithDomain:v48 code:2 userInfo:v49];
-        a4 = 0;
+        *error = [v50 initWithDomain:v48 code:2 userInfo:v49];
+        error = 0;
         v16 = v525;
         goto LABEL_553;
       }
@@ -4371,7 +4371,7 @@ LABEL_555:
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
       v61 = objc_alloc(MEMORY[0x1E696ABC0]);
       v523 = *MEMORY[0x1E698F240];
@@ -4381,8 +4381,8 @@ LABEL_555:
       v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v643 forKeys:&v642 count:1];
       v63 = v61;
       v19 = v62;
-      *a4 = [v63 initWithDomain:v523 code:2 userInfo:v62];
-      a4 = 0;
+      *error = [v63 initWithDomain:v523 code:2 userInfo:v62];
+      error = 0;
       v16 = v525;
       v11 = 0;
       goto LABEL_555;
@@ -4395,20 +4395,20 @@ LABEL_556:
     goto LABEL_557;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v13 = self;
+    selfCopy2 = self;
     v14 = *MEMORY[0x1E698F240];
     v644 = *MEMORY[0x1E696A578];
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"privatizedIdentifier"];
     v645[0] = v11;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v645 forKeys:&v644 count:1];
     v15 = v14;
-    self = v13;
+    self = selfCopy2;
     v16 = 0;
-    *a4 = [v12 initWithDomain:v15 code:2 userInfo:v9];
-    a4 = 0;
+    *error = [v12 initWithDomain:v15 code:2 userInfo:v9];
+    error = 0;
     goto LABEL_556;
   }
 
@@ -4416,21 +4416,21 @@ LABEL_556:
 LABEL_557:
 
   v367 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMCandidate *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_privatizedIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -4446,21 +4446,21 @@ LABEL_557:
   if (self->_timeSinceLastOutgoingInteraction)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceLastOutgoingInteraction writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceLastOutgoingInteraction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_timeSinceOutgoingInteractionNumber10)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceOutgoingInteractionNumber10 writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceOutgoingInteractionNumber10 writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_timeSinceLastIncomingInteraction)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceLastIncomingInteraction writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceLastIncomingInteraction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -4485,98 +4485,98 @@ LABEL_557:
   if (self->_numberOfSharesWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesFromCurrentAppWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesFromCurrentAppWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesFromCurrentAppWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfTopDomainURLWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfTopDomainURLWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfTopDomainURLWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfDetectedPeopleWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfDetectedPeopleWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfDetectedPeopleWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfPeopleInPhotoWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfPeopleInPhotoWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfPeopleInPhotoWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfOutgoingInteractionsWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfOutgoingInteractionsWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfOutgoingInteractionsWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfIncomingInteractionsWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfIncomingInteractionsWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfIncomingInteractionsWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfInteractionsDuringTimePeriodWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfInteractionsDuringTimePeriodWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfInteractionsDuringTimePeriodWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfEngagedSuggestionsWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfEngagedSuggestionsFromCurrentAppWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsFromCurrentAppWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsFromCurrentAppWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfEngagedSuggestionsOfTopDomainURLWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfTopDomainURLWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfTopDomainURLWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfEngagedSuggestionsOfDetectedPeopleWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfDetectedPeopleWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfDetectedPeopleWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_hasEverSharePlayedWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_hasEverSharePlayedWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_hasEverSharePlayedWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -4607,63 +4607,63 @@ LABEL_557:
   if (self->_numberOfSharesOfPeopleInPhotoIoUWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfPeopleInPhotoIoUWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfPeopleInPhotoIoUWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfPetsWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfPetsWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfPetsWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfPetsInCurrentPhotoWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfPetsInCurrentPhotoWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfPetsInCurrentPhotoWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfScenesInPhotoWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfScenesInPhotoWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfScenesInPhotoWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfSharesOfDetectedScenesInPhotoWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesOfDetectedScenesInPhotoWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesOfDetectedScenesInPhotoWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfTopicsSharedWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfTopicsSharedWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfTopicsSharedWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfAppsSharedFromWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfAppsSharedFromWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfAppsSharedFromWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_timeSinceLastPhotoShareWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceLastPhotoShareWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceLastPhotoShareWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_hasSharedSensitiveContentWIthConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_hasSharedSensitiveContentWIthConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_hasSharedSensitiveContentWIthConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -4676,7 +4676,7 @@ LABEL_557:
   if (self->_numberOfSharesFromAlbumPhotoBelongsToWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfSharesFromAlbumPhotoBelongsToWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfSharesFromAlbumPhotoBelongsToWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -4689,42 +4689,42 @@ LABEL_557:
   if (self->_numberOfTimesSharedToTargetAppWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfTimesSharedToTargetAppWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfTimesSharedToTargetAppWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_timeSinceLastShareWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceLastShareWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceLastShareWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_timeSinceLastPhoneCallWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_timeSinceLastPhoneCallWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_timeSinceLastPhoneCallWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfDifferentFacesSharedWithConversation)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfDifferentFacesSharedWithConversation writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfDifferentFacesSharedWithConversation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_numberOfTotalSharesToTargetApp)
   {
     PBDataWriterPlaceMark();
-    [(BMFeatureDouble *)self->_numberOfTotalSharesToTargetApp writeTo:v4];
+    [(BMFeatureDouble *)self->_numberOfTotalSharesToTargetApp writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v80.receiver = self;
   v80.super_class = BMCandidate;
   v5 = [(BMEventBase *)&v80 init];
@@ -4733,12 +4733,12 @@ LABEL_557:
     goto LABEL_226;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_224;
       }
@@ -4749,18 +4749,18 @@ LABEL_557:
       while (1)
       {
         LOBYTE(v81) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v81 & 0x7F) << v7;
@@ -4778,9 +4778,9 @@ LABEL_557:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_224;
       }
@@ -4798,7 +4798,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4814,7 +4814,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4830,7 +4830,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4841,18 +4841,18 @@ LABEL_16:
           case 104:
             v5->_hasDeprecatedField1 = 1;
             v81 = 0;
-            v43 = [v4 position] + 8;
-            if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 8, v44 <= objc_msgSend(v4, "length")))
+            v43 = [fromCopy position] + 8;
+            if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 8, v44 <= objc_msgSend(fromCopy, "length")))
             {
-              v75 = [v4 data];
-              [v75 getBytes:&v81 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v73 = v81;
@@ -4861,18 +4861,18 @@ LABEL_16:
           case 105:
             v5->_hasDeprecatedField2 = 1;
             v81 = 0;
-            v41 = [v4 position] + 8;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 8, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 8;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 8, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v72 = [v4 data];
-              [v72 getBytes:&v81 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v73 = v81;
@@ -4881,18 +4881,18 @@ LABEL_16:
           case 106:
             v5->_hasDeprecatedField3 = 1;
             v81 = 0;
-            v52 = [v4 position] + 8;
-            if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 8, v53 <= objc_msgSend(v4, "length")))
+            v52 = [fromCopy position] + 8;
+            if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 8, v53 <= objc_msgSend(fromCopy, "length")))
             {
-              v76 = [v4 data];
-              [v76 getBytes:&v81 range:{objc_msgSend(v4, "position"), 8}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v73 = v81;
@@ -4906,7 +4906,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4922,7 +4922,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4938,7 +4938,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4954,7 +4954,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4970,7 +4970,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -4986,7 +4986,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5002,7 +5002,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5018,7 +5018,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5034,7 +5034,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5050,7 +5050,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5066,7 +5066,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5082,7 +5082,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5098,7 +5098,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5114,7 +5114,7 @@ LABEL_16:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5130,18 +5130,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v81) = 0;
-              v48 = [v4 position] + 1;
-              if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 1, v49 <= objc_msgSend(v4, "length")))
+              v48 = [fromCopy position] + 1;
+              if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 1, v49 <= objc_msgSend(fromCopy, "length")))
               {
-                v50 = [v4 data];
-                [v50 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v47 |= (v81 & 0x7F) << v45;
@@ -5159,7 +5159,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v51 = 0;
             }
@@ -5175,18 +5175,18 @@ LABEL_205:
           case 122:
             v5->_hasCoreMLModelScore = 1;
             v81 = 0;
-            v54 = [v4 position] + 8;
-            if (v54 >= [v4 position] && (v55 = objc_msgSend(v4, "position") + 8, v55 <= objc_msgSend(v4, "length")))
+            v54 = [fromCopy position] + 8;
+            if (v54 >= [fromCopy position] && (v55 = objc_msgSend(fromCopy, "position") + 8, v55 <= objc_msgSend(fromCopy, "length")))
             {
-              v77 = [v4 data];
-              [v77 getBytes:&v81 range:{objc_msgSend(v4, "position"), 8}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v73 = v81;
@@ -5202,18 +5202,18 @@ LABEL_223:
             while (1)
             {
               LOBYTE(v81) = 0;
-              v59 = [v4 position] + 1;
-              if (v59 >= [v4 position] && (v60 = objc_msgSend(v4, "position") + 1, v60 <= objc_msgSend(v4, "length")))
+              v59 = [fromCopy position] + 1;
+              if (v59 >= [fromCopy position] && (v60 = objc_msgSend(fromCopy, "position") + 1, v60 <= objc_msgSend(fromCopy, "length")))
               {
-                v61 = [v4 data];
-                [v61 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+                data7 = [fromCopy data];
+                [data7 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v58 |= (v81 & 0x7F) << v56;
@@ -5231,7 +5231,7 @@ LABEL_223:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v51 = 0;
             }
@@ -5252,18 +5252,18 @@ LABEL_209:
             while (1)
             {
               LOBYTE(v81) = 0;
-              v65 = [v4 position] + 1;
-              if (v65 >= [v4 position] && (v66 = objc_msgSend(v4, "position") + 1, v66 <= objc_msgSend(v4, "length")))
+              v65 = [fromCopy position] + 1;
+              if (v65 >= [fromCopy position] && (v66 = objc_msgSend(fromCopy, "position") + 1, v66 <= objc_msgSend(fromCopy, "length")))
               {
-                v67 = [v4 data];
-                [v67 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+                data8 = [fromCopy data];
+                [data8 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v64 |= (v81 & 0x7F) << v62;
@@ -5281,7 +5281,7 @@ LABEL_209:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v51 = 0;
             }
@@ -5304,7 +5304,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5320,7 +5320,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5336,7 +5336,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5352,7 +5352,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5368,7 +5368,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5384,7 +5384,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5400,7 +5400,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5416,7 +5416,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5432,7 +5432,7 @@ LABEL_214:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5448,18 +5448,18 @@ LABEL_214:
             while (1)
             {
               LOBYTE(v81) = 0;
-              v37 = [v4 position] + 1;
-              if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+              v37 = [fromCopy position] + 1;
+              if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
               {
-                v39 = [v4 data];
-                [v39 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+                data9 = [fromCopy data];
+                [data9 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v36 |= (v81 & 0x7F) << v34;
@@ -5477,7 +5477,7 @@ LABEL_214:
               }
             }
 
-            v26 = (v36 != 0) & ~[v4 hasError];
+            v26 = (v36 != 0) & ~[fromCopy hasError];
 LABEL_200:
             v70 = 20;
             goto LABEL_201;
@@ -5489,7 +5489,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5511,7 +5511,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5527,7 +5527,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5543,7 +5543,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5559,7 +5559,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5575,7 +5575,7 @@ LABEL_200:
               goto LABEL_225;
             }
 
-            v16 = [[BMFeatureDouble alloc] initByReadFrom:v4];
+            v16 = [[BMFeatureDouble alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_225;
@@ -5595,18 +5595,18 @@ LABEL_188:
         while (1)
         {
           LOBYTE(v81) = 0;
-          v23 = [v4 position] + 1;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 1;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+            data10 = [fromCopy data];
+            [data10 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v22 |= (v81 & 0x7F) << v20;
@@ -5624,7 +5624,7 @@ LABEL_188:
           }
         }
 
-        v26 = (v22 != 0) & ~[v4 hasError];
+        v26 = (v22 != 0) & ~[fromCopy hasError];
 LABEL_194:
         v70 = 22;
 LABEL_201:
@@ -5645,18 +5645,18 @@ LABEL_201:
         while (1)
         {
           LOBYTE(v81) = 0;
-          v30 = [v4 position] + 1;
-          if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+          v30 = [fromCopy position] + 1;
+          if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
           {
-            v32 = [v4 data];
-            [v32 getBytes:&v81 range:{objc_msgSend(v4, "position"), 1}];
+            data11 = [fromCopy data];
+            [data11 getBytes:&v81 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v29 |= (v81 & 0x7F) << v27;
@@ -5672,7 +5672,7 @@ LABEL_201:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v29 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v29 > 4)
         {
 LABEL_197:
           LODWORD(v29) = 0;
@@ -5700,8 +5700,8 @@ LABEL_191:
       }
 
 LABEL_189:
-      v69 = [v4 position];
-      if (v69 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_224;
       }
@@ -5713,7 +5713,7 @@ LABEL_189:
   }
 
 LABEL_224:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_225:
     v78 = 0;
@@ -5731,12 +5731,12 @@ LABEL_226:
 - (NSString)description
 {
   v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v53 = [(BMCandidate *)self privatizedIdentifier];
+  privatizedIdentifier = [(BMCandidate *)self privatizedIdentifier];
   v52 = BMFeedbackTypeAsString([(BMCandidate *)self feedbackDeprecated]);
-  v51 = [(BMCandidate *)self privatizedTransportBundleId];
-  v50 = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
-  v49 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
-  v48 = [(BMCandidate *)self timeSinceLastIncomingInteraction];
+  privatizedTransportBundleId = [(BMCandidate *)self privatizedTransportBundleId];
+  timeSinceLastOutgoingInteraction = [(BMCandidate *)self timeSinceLastOutgoingInteraction];
+  timeSinceOutgoingInteractionNumber10 = [(BMCandidate *)self timeSinceOutgoingInteractionNumber10];
+  timeSinceLastIncomingInteraction = [(BMCandidate *)self timeSinceLastIncomingInteraction];
   v3 = MEMORY[0x1E696AD98];
   [(BMCandidate *)self deprecatedField1];
   v47 = [v3 numberWithDouble:?];
@@ -5746,115 +5746,115 @@ LABEL_226:
   v5 = MEMORY[0x1E696AD98];
   [(BMCandidate *)self deprecatedField3];
   v45 = [v5 numberWithDouble:?];
-  v44 = [(BMCandidate *)self numberOfSharesWithConversation];
-  v43 = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
-  v42 = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
-  v41 = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
-  v39 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
-  v40 = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
-  v36 = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
-  v38 = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
-  v33 = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
-  v37 = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
-  v35 = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
-  v19 = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
-  v34 = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
-  v32 = [(BMCandidate *)self hasEverSharePlayedWithConversation];
+  numberOfSharesWithConversation = [(BMCandidate *)self numberOfSharesWithConversation];
+  numberOfSharesFromCurrentAppWithConversation = [(BMCandidate *)self numberOfSharesFromCurrentAppWithConversation];
+  numberOfSharesOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfSharesOfTopDomainURLWithConversation];
+  numberOfSharesOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedPeopleWithConversation];
+  numberOfSharesOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoWithConversation];
+  numberOfOutgoingInteractionsWithConversation = [(BMCandidate *)self numberOfOutgoingInteractionsWithConversation];
+  numberOfIncomingInteractionsWithConversation = [(BMCandidate *)self numberOfIncomingInteractionsWithConversation];
+  numberOfInteractionsDuringTimePeriodWithConversation = [(BMCandidate *)self numberOfInteractionsDuringTimePeriodWithConversation];
+  numberOfEngagedSuggestionsWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsWithConversation];
+  numberOfEngagedSuggestionsFromCurrentAppWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsFromCurrentAppWithConversation];
+  numberOfEngagedSuggestionsOfTopDomainURLWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfTopDomainURLWithConversation];
+  numberOfEngagedSuggestionsOfDetectedPeopleWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfDetectedPeopleWithConversation];
+  numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation = [(BMCandidate *)self numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation];
+  hasEverSharePlayedWithConversation = [(BMCandidate *)self hasEverSharePlayedWithConversation];
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCandidate suggestedRank](self, "suggestedRank")}];
   v6 = MEMORY[0x1E696AD98];
   [(BMCandidate *)self coreMLModelScore];
   v31 = [v6 numberWithDouble:?];
   v30 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCandidate foundInChunk](self, "foundInChunk")}];
   v29 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCandidate updatedInChunk](self, "updatedInChunk")}];
-  v28 = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
-  v27 = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
-  v26 = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
-  v25 = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
-  v24 = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
-  v23 = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
-  v22 = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
-  v17 = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
-  v7 = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
+  numberOfSharesOfPeopleInPhotoIoUWithConversation = [(BMCandidate *)self numberOfSharesOfPeopleInPhotoIoUWithConversation];
+  numberOfSharesOfPetsWithConversation = [(BMCandidate *)self numberOfSharesOfPetsWithConversation];
+  numberOfSharesOfPetsInCurrentPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfPetsInCurrentPhotoWithConversation];
+  numberOfSharesOfScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfScenesInPhotoWithConversation];
+  numberOfSharesOfDetectedScenesInPhotoWithConversation = [(BMCandidate *)self numberOfSharesOfDetectedScenesInPhotoWithConversation];
+  numberOfTopicsSharedWithConversation = [(BMCandidate *)self numberOfTopicsSharedWithConversation];
+  numberOfAppsSharedFromWithConversation = [(BMCandidate *)self numberOfAppsSharedFromWithConversation];
+  timeSinceLastPhotoShareWithConversation = [(BMCandidate *)self timeSinceLastPhotoShareWithConversation];
+  hasSharedSensitiveContentWIthConversation = [(BMCandidate *)self hasSharedSensitiveContentWIthConversation];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMCandidate isInPhoneCallWithConversation](self, "isInPhoneCallWithConversation")}];
-  v8 = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
+  numberOfSharesFromAlbumPhotoBelongsToWithConversation = [(BMCandidate *)self numberOfSharesFromAlbumPhotoBelongsToWithConversation];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMCandidate isFirstPartyApp](self, "isFirstPartyApp")}];
-  v10 = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
-  v11 = [(BMCandidate *)self timeSinceLastShareWithConversation];
-  v12 = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
-  v13 = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
-  v14 = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
-  v21 = [v20 initWithFormat:@"BMCandidate with privatizedIdentifier: %@, feedbackDeprecated: %@, privatizedTransportBundleId: %@, timeSinceLastOutgoingInteraction: %@, timeSinceOutgoingInteractionNumber10: %@, timeSinceLastIncomingInteraction: %@, deprecatedField1: %@, deprecatedField2: %@, deprecatedField3: %@, numberOfSharesWithConversation: %@, numberOfSharesFromCurrentAppWithConversation: %@, numberOfSharesOfTopDomainURLWithConversation: %@, numberOfSharesOfDetectedPeopleWithConversation: %@, numberOfSharesOfPeopleInPhotoWithConversation: %@, numberOfOutgoingInteractionsWithConversation: %@, numberOfIncomingInteractionsWithConversation: %@, numberOfInteractionsDuringTimePeriodWithConversation: %@, numberOfEngagedSuggestionsWithConversation: %@, numberOfEngagedSuggestionsFromCurrentAppWithConversation: %@, numberOfEngagedSuggestionsOfTopDomainURLWithConversation: %@, numberOfEngagedSuggestionsOfDetectedPeopleWithConversation: %@, numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation: %@, hasEverSharePlayedWithConversation: %@, suggestedRank: %@, coreMLModelScore: %@, foundInChunk: %@, updatedInChunk: %@, numberOfSharesOfPeopleInPhotoIoUWithConversation: %@, numberOfSharesOfPetsWithConversation: %@, numberOfSharesOfPetsInCurrentPhotoWithConversation: %@, numberOfSharesOfScenesInPhotoWithConversation: %@, numberOfSharesOfDetectedScenesInPhotoWithConversation: %@, numberOfTopicsSharedWithConversation: %@, numberOfAppsSharedFromWithConversation: %@, timeSinceLastPhotoShareWithConversation: %@, hasSharedSensitiveContentWIthConversation: %@, isInPhoneCallWithConversation: %@, numberOfSharesFromAlbumPhotoBelongsToWithConversation: %@, isFirstPartyApp: %@, numberOfTimesSharedToTargetAppWithConversation: %@, timeSinceLastShareWithConversation: %@, timeSinceLastPhoneCallWithConversation: %@, numberOfDifferentFacesSharedWithConversation: %@, numberOfTotalSharesToTargetApp: %@", v53, v52, v51, v50, v49, v48, v47, v46, v45, v44, v43, v42, v41, v39, v40, v36, v38, v33, v37, v35, v19, v34, v32, v18, v31, v30, v29, v28, v27, v26, v25, v24, v23, v22, v17, v7, v16, v8, v9, v10, v11, v12, v13, v14];
+  numberOfTimesSharedToTargetAppWithConversation = [(BMCandidate *)self numberOfTimesSharedToTargetAppWithConversation];
+  timeSinceLastShareWithConversation = [(BMCandidate *)self timeSinceLastShareWithConversation];
+  timeSinceLastPhoneCallWithConversation = [(BMCandidate *)self timeSinceLastPhoneCallWithConversation];
+  numberOfDifferentFacesSharedWithConversation = [(BMCandidate *)self numberOfDifferentFacesSharedWithConversation];
+  numberOfTotalSharesToTargetApp = [(BMCandidate *)self numberOfTotalSharesToTargetApp];
+  v21 = [v20 initWithFormat:@"BMCandidate with privatizedIdentifier: %@, feedbackDeprecated: %@, privatizedTransportBundleId: %@, timeSinceLastOutgoingInteraction: %@, timeSinceOutgoingInteractionNumber10: %@, timeSinceLastIncomingInteraction: %@, deprecatedField1: %@, deprecatedField2: %@, deprecatedField3: %@, numberOfSharesWithConversation: %@, numberOfSharesFromCurrentAppWithConversation: %@, numberOfSharesOfTopDomainURLWithConversation: %@, numberOfSharesOfDetectedPeopleWithConversation: %@, numberOfSharesOfPeopleInPhotoWithConversation: %@, numberOfOutgoingInteractionsWithConversation: %@, numberOfIncomingInteractionsWithConversation: %@, numberOfInteractionsDuringTimePeriodWithConversation: %@, numberOfEngagedSuggestionsWithConversation: %@, numberOfEngagedSuggestionsFromCurrentAppWithConversation: %@, numberOfEngagedSuggestionsOfTopDomainURLWithConversation: %@, numberOfEngagedSuggestionsOfDetectedPeopleWithConversation: %@, numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation: %@, hasEverSharePlayedWithConversation: %@, suggestedRank: %@, coreMLModelScore: %@, foundInChunk: %@, updatedInChunk: %@, numberOfSharesOfPeopleInPhotoIoUWithConversation: %@, numberOfSharesOfPetsWithConversation: %@, numberOfSharesOfPetsInCurrentPhotoWithConversation: %@, numberOfSharesOfScenesInPhotoWithConversation: %@, numberOfSharesOfDetectedScenesInPhotoWithConversation: %@, numberOfTopicsSharedWithConversation: %@, numberOfAppsSharedFromWithConversation: %@, timeSinceLastPhotoShareWithConversation: %@, hasSharedSensitiveContentWIthConversation: %@, isInPhoneCallWithConversation: %@, numberOfSharesFromAlbumPhotoBelongsToWithConversation: %@, isFirstPartyApp: %@, numberOfTimesSharedToTargetAppWithConversation: %@, timeSinceLastShareWithConversation: %@, timeSinceLastPhoneCallWithConversation: %@, numberOfDifferentFacesSharedWithConversation: %@, numberOfTotalSharesToTargetApp: %@", privatizedIdentifier, v52, privatizedTransportBundleId, timeSinceLastOutgoingInteraction, timeSinceOutgoingInteractionNumber10, timeSinceLastIncomingInteraction, v47, v46, v45, numberOfSharesWithConversation, numberOfSharesFromCurrentAppWithConversation, numberOfSharesOfTopDomainURLWithConversation, numberOfSharesOfDetectedPeopleWithConversation, numberOfSharesOfPeopleInPhotoWithConversation, numberOfOutgoingInteractionsWithConversation, numberOfIncomingInteractionsWithConversation, numberOfInteractionsDuringTimePeriodWithConversation, numberOfEngagedSuggestionsWithConversation, numberOfEngagedSuggestionsFromCurrentAppWithConversation, numberOfEngagedSuggestionsOfTopDomainURLWithConversation, numberOfEngagedSuggestionsOfDetectedPeopleWithConversation, numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation, hasEverSharePlayedWithConversation, v18, v31, v30, v29, numberOfSharesOfPeopleInPhotoIoUWithConversation, numberOfSharesOfPetsWithConversation, numberOfSharesOfPetsInCurrentPhotoWithConversation, numberOfSharesOfScenesInPhotoWithConversation, numberOfSharesOfDetectedScenesInPhotoWithConversation, numberOfTopicsSharedWithConversation, numberOfAppsSharedFromWithConversation, timeSinceLastPhotoShareWithConversation, hasSharedSensitiveContentWIthConversation, v16, numberOfSharesFromAlbumPhotoBelongsToWithConversation, v9, numberOfTimesSharedToTargetAppWithConversation, timeSinceLastShareWithConversation, timeSinceLastPhoneCallWithConversation, numberOfDifferentFacesSharedWithConversation, numberOfTotalSharesToTargetApp];
 
   return v21;
 }
 
-- (BMCandidate)initWithPrivatizedIdentifier:(id)a3 feedbackDeprecated:(int)a4 privatizedTransportBundleId:(id)a5 timeSinceLastOutgoingInteraction:(id)a6 timeSinceOutgoingInteractionNumber10:(id)a7 timeSinceLastIncomingInteraction:(id)a8 deprecatedField1:(id)a9 deprecatedField2:(id)a10 deprecatedField3:(id)a11 numberOfSharesWithConversation:(id)a12 numberOfSharesFromCurrentAppWithConversation:(id)a13 numberOfSharesOfTopDomainURLWithConversation:(id)a14 numberOfSharesOfDetectedPeopleWithConversation:(id)a15 numberOfSharesOfPeopleInPhotoWithConversation:(id)a16 numberOfOutgoingInteractionsWithConversation:(id)a17 numberOfIncomingInteractionsWithConversation:(id)a18 numberOfInteractionsDuringTimePeriodWithConversation:(id)a19 numberOfEngagedSuggestionsWithConversation:(id)a20 numberOfEngagedSuggestionsFromCurrentAppWithConversation:(id)a21 numberOfEngagedSuggestionsOfTopDomainURLWithConversation:(id)a22 numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:(id)a23 numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:(id)a24 hasEverSharePlayedWithConversation:(id)a25 suggestedRank:(id)a26 coreMLModelScore:(id)a27 foundInChunk:(id)a28 updatedInChunk:(id)a29 numberOfSharesOfPeopleInPhotoIoUWithConversation:(id)a30 numberOfSharesOfPetsWithConversation:(id)a31 numberOfSharesOfPetsInCurrentPhotoWithConversation:(id)a32 numberOfSharesOfScenesInPhotoWithConversation:(id)a33 numberOfSharesOfDetectedScenesInPhotoWithConversation:(id)a34 numberOfTopicsSharedWithConversation:(id)a35 numberOfAppsSharedFromWithConversation:(id)a36 timeSinceLastPhotoShareWithConversation:(id)a37 hasSharedSensitiveContentWIthConversation:(id)a38 isInPhoneCallWithConversation:(id)a39 numberOfSharesFromAlbumPhotoBelongsToWithConversation:(id)a40 isFirstPartyApp:(id)a41 numberOfTimesSharedToTargetAppWithConversation:(id)a42 timeSinceLastShareWithConversation:(id)a43 timeSinceLastPhoneCallWithConversation:(id)a44 numberOfDifferentFacesSharedWithConversation:(id)a45 numberOfTotalSharesToTargetApp:(id)a46
+- (BMCandidate)initWithPrivatizedIdentifier:(id)identifier feedbackDeprecated:(int)deprecated privatizedTransportBundleId:(id)id timeSinceLastOutgoingInteraction:(id)interaction timeSinceOutgoingInteractionNumber10:(id)number10 timeSinceLastIncomingInteraction:(id)incomingInteraction deprecatedField1:(id)field1 deprecatedField2:(id)self0 deprecatedField3:(id)self1 numberOfSharesWithConversation:(id)self2 numberOfSharesFromCurrentAppWithConversation:(id)self3 numberOfSharesOfTopDomainURLWithConversation:(id)self4 numberOfSharesOfDetectedPeopleWithConversation:(id)self5 numberOfSharesOfPeopleInPhotoWithConversation:(id)self6 numberOfOutgoingInteractionsWithConversation:(id)self7 numberOfIncomingInteractionsWithConversation:(id)self8 numberOfInteractionsDuringTimePeriodWithConversation:(id)self9 numberOfEngagedSuggestionsWithConversation:(id)suggestionsWithConversation numberOfEngagedSuggestionsFromCurrentAppWithConversation:(id)appWithConversation numberOfEngagedSuggestionsOfTopDomainURLWithConversation:(id)rLWithConversation numberOfEngagedSuggestionsOfDetectedPeopleWithConversation:(id)detectedPeopleWithConversation numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation:(id)inPhotoWithConversation hasEverSharePlayedWithConversation:(id)playedWithConversation suggestedRank:(id)rank coreMLModelScore:(id)score foundInChunk:(id)chunk updatedInChunk:(id)inChunk numberOfSharesOfPeopleInPhotoIoUWithConversation:(id)identifier0 numberOfSharesOfPetsWithConversation:(id)identifier1 numberOfSharesOfPetsInCurrentPhotoWithConversation:(id)identifier2 numberOfSharesOfScenesInPhotoWithConversation:(id)identifier3 numberOfSharesOfDetectedScenesInPhotoWithConversation:(id)identifier4 numberOfTopicsSharedWithConversation:(id)identifier5 numberOfAppsSharedFromWithConversation:(id)identifier6 timeSinceLastPhotoShareWithConversation:(id)identifier7 hasSharedSensitiveContentWIthConversation:(id)identifier8 isInPhoneCallWithConversation:(id)identifier9 numberOfSharesFromAlbumPhotoBelongsToWithConversation:(id)deprecated0 isFirstPartyApp:(id)deprecated1 numberOfTimesSharedToTargetAppWithConversation:(id)deprecated2 timeSinceLastShareWithConversation:(id)deprecated3 timeSinceLastPhoneCallWithConversation:(id)deprecated4 numberOfDifferentFacesSharedWithConversation:(id)deprecated5 numberOfTotalSharesToTargetApp:(id)deprecated6
 {
-  v106 = a3;
-  v71 = a5;
-  v105 = a5;
-  v72 = a6;
-  v104 = a6;
-  v73 = a7;
-  v103 = a7;
-  v74 = a8;
-  v102 = a8;
-  v110 = a9;
-  v109 = a10;
-  v108 = a11;
-  v101 = a12;
-  v100 = a13;
-  v99 = a14;
-  v98 = a15;
-  v97 = a16;
-  v96 = a17;
-  v95 = a18;
-  v94 = a19;
-  v93 = a20;
-  v92 = a21;
-  v91 = a22;
-  v90 = a23;
-  v89 = a24;
-  v88 = a25;
-  v107 = a26;
-  v50 = a27;
-  v51 = a28;
-  v52 = a29;
-  v87 = a30;
-  v86 = a31;
-  v85 = a32;
-  v84 = a33;
-  v83 = a34;
-  v82 = a35;
-  v81 = a36;
-  v80 = a37;
-  v79 = a38;
-  v53 = a39;
-  v78 = a40;
-  v54 = a41;
-  v55 = a42;
-  v56 = a43;
-  v57 = a44;
-  v77 = a45;
-  v58 = v52;
-  v59 = v53;
-  v76 = a46;
+  identifierCopy = identifier;
+  idCopy = id;
+  idCopy2 = id;
+  interactionCopy = interaction;
+  interactionCopy2 = interaction;
+  number10Copy = number10;
+  number10Copy2 = number10;
+  incomingInteractionCopy = incomingInteraction;
+  incomingInteractionCopy2 = incomingInteraction;
+  field1Copy = field1;
+  field2Copy = field2;
+  field3Copy = field3;
+  conversationCopy = conversation;
+  withConversationCopy = withConversation;
+  lWithConversationCopy = lWithConversation;
+  peopleWithConversationCopy = peopleWithConversation;
+  photoWithConversationCopy = photoWithConversation;
+  interactionsWithConversationCopy = interactionsWithConversation;
+  incomingInteractionsWithConversationCopy = incomingInteractionsWithConversation;
+  periodWithConversationCopy = periodWithConversation;
+  suggestionsWithConversationCopy = suggestionsWithConversation;
+  appWithConversationCopy = appWithConversation;
+  rLWithConversationCopy = rLWithConversation;
+  detectedPeopleWithConversationCopy = detectedPeopleWithConversation;
+  inPhotoWithConversationCopy = inPhotoWithConversation;
+  playedWithConversationCopy = playedWithConversation;
+  rankCopy = rank;
+  scoreCopy = score;
+  chunkCopy = chunk;
+  inChunkCopy = inChunk;
+  uWithConversationCopy = uWithConversation;
+  petsWithConversationCopy = petsWithConversation;
+  currentPhotoWithConversationCopy = currentPhotoWithConversation;
+  scenesInPhotoWithConversationCopy = scenesInPhotoWithConversation;
+  detectedScenesInPhotoWithConversationCopy = detectedScenesInPhotoWithConversation;
+  sharedWithConversationCopy = sharedWithConversation;
+  fromWithConversationCopy = fromWithConversation;
+  shareWithConversationCopy = shareWithConversation;
+  ithConversationCopy = ithConversation;
+  callWithConversationCopy = callWithConversation;
+  toWithConversationCopy = toWithConversation;
+  appCopy = app;
+  targetAppWithConversationCopy = targetAppWithConversation;
+  lastShareWithConversationCopy = lastShareWithConversation;
+  phoneCallWithConversationCopy = phoneCallWithConversation;
+  facesSharedWithConversationCopy = facesSharedWithConversation;
+  v58 = inChunkCopy;
+  v59 = callWithConversationCopy;
+  targetAppCopy = targetApp;
   v111.receiver = self;
   v111.super_class = BMCandidate;
   v60 = [(BMEventBase *)&v111 init];
   if (v60)
   {
     v60->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v60->_privatizedIdentifier, a3);
-    v60->_feedbackDeprecated = a4;
-    objc_storeStrong(&v60->_privatizedTransportBundleId, v71);
-    objc_storeStrong(&v60->_timeSinceLastOutgoingInteraction, v72);
-    objc_storeStrong(&v60->_timeSinceOutgoingInteractionNumber10, v73);
-    objc_storeStrong(&v60->_timeSinceLastIncomingInteraction, v74);
-    if (v110)
+    objc_storeStrong(&v60->_privatizedIdentifier, identifier);
+    v60->_feedbackDeprecated = deprecated;
+    objc_storeStrong(&v60->_privatizedTransportBundleId, idCopy);
+    objc_storeStrong(&v60->_timeSinceLastOutgoingInteraction, interactionCopy);
+    objc_storeStrong(&v60->_timeSinceOutgoingInteractionNumber10, number10Copy);
+    objc_storeStrong(&v60->_timeSinceLastIncomingInteraction, incomingInteractionCopy);
+    if (field1Copy)
     {
       v60->_hasDeprecatedField1 = 1;
-      [v110 doubleValue];
+      [field1Copy doubleValue];
     }
 
     else
@@ -5864,10 +5864,10 @@ LABEL_226:
     }
 
     v60->_deprecatedField1 = v61;
-    if (v109)
+    if (field2Copy)
     {
       v60->_hasDeprecatedField2 = 1;
-      [v109 doubleValue];
+      [field2Copy doubleValue];
     }
 
     else
@@ -5877,10 +5877,10 @@ LABEL_226:
     }
 
     v60->_deprecatedField2 = v62;
-    if (v108)
+    if (field3Copy)
     {
       v60->_hasDeprecatedField3 = 1;
-      [v108 doubleValue];
+      [field3Copy doubleValue];
     }
 
     else
@@ -5890,37 +5890,37 @@ LABEL_226:
     }
 
     v60->_deprecatedField3 = v63;
-    objc_storeStrong(&v60->_numberOfSharesWithConversation, a12);
-    objc_storeStrong(&v60->_numberOfSharesFromCurrentAppWithConversation, a13);
-    objc_storeStrong(&v60->_numberOfSharesOfTopDomainURLWithConversation, a14);
-    objc_storeStrong(&v60->_numberOfSharesOfDetectedPeopleWithConversation, a15);
-    objc_storeStrong(&v60->_numberOfSharesOfPeopleInPhotoWithConversation, a16);
-    objc_storeStrong(&v60->_numberOfOutgoingInteractionsWithConversation, a17);
-    objc_storeStrong(&v60->_numberOfIncomingInteractionsWithConversation, a18);
-    objc_storeStrong(&v60->_numberOfInteractionsDuringTimePeriodWithConversation, a19);
-    objc_storeStrong(&v60->_numberOfEngagedSuggestionsWithConversation, a20);
-    objc_storeStrong(&v60->_numberOfEngagedSuggestionsFromCurrentAppWithConversation, a21);
-    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfTopDomainURLWithConversation, a22);
-    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfDetectedPeopleWithConversation, a23);
-    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation, a24);
-    objc_storeStrong(&v60->_hasEverSharePlayedWithConversation, a25);
-    if (v107)
+    objc_storeStrong(&v60->_numberOfSharesWithConversation, conversation);
+    objc_storeStrong(&v60->_numberOfSharesFromCurrentAppWithConversation, withConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfTopDomainURLWithConversation, lWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfDetectedPeopleWithConversation, peopleWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfPeopleInPhotoWithConversation, photoWithConversation);
+    objc_storeStrong(&v60->_numberOfOutgoingInteractionsWithConversation, interactionsWithConversation);
+    objc_storeStrong(&v60->_numberOfIncomingInteractionsWithConversation, incomingInteractionsWithConversation);
+    objc_storeStrong(&v60->_numberOfInteractionsDuringTimePeriodWithConversation, periodWithConversation);
+    objc_storeStrong(&v60->_numberOfEngagedSuggestionsWithConversation, suggestionsWithConversation);
+    objc_storeStrong(&v60->_numberOfEngagedSuggestionsFromCurrentAppWithConversation, appWithConversation);
+    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfTopDomainURLWithConversation, rLWithConversation);
+    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfDetectedPeopleWithConversation, detectedPeopleWithConversation);
+    objc_storeStrong(&v60->_numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation, inPhotoWithConversation);
+    objc_storeStrong(&v60->_hasEverSharePlayedWithConversation, playedWithConversation);
+    if (rankCopy)
     {
       v60->_hasSuggestedRank = 1;
-      v64 = [v107 intValue];
+      intValue = [rankCopy intValue];
     }
 
     else
     {
       v60->_hasSuggestedRank = 0;
-      v64 = -1;
+      intValue = -1;
     }
 
-    v60->_suggestedRank = v64;
-    if (v50)
+    v60->_suggestedRank = intValue;
+    if (scoreCopy)
     {
       v60->_hasCoreMLModelScore = 1;
-      [v50 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -5930,41 +5930,41 @@ LABEL_226:
     }
 
     v60->_coreMLModelScore = v65;
-    if (v51)
+    if (chunkCopy)
     {
       v60->_hasFoundInChunk = 1;
-      v66 = [v51 intValue];
+      intValue2 = [chunkCopy intValue];
     }
 
     else
     {
       v60->_hasFoundInChunk = 0;
-      v66 = -1;
+      intValue2 = -1;
     }
 
-    v60->_foundInChunk = v66;
+    v60->_foundInChunk = intValue2;
     if (v58)
     {
       v60->_hasUpdatedInChunk = 1;
-      v67 = [v58 intValue];
+      intValue3 = [v58 intValue];
     }
 
     else
     {
       v60->_hasUpdatedInChunk = 0;
-      v67 = -1;
+      intValue3 = -1;
     }
 
-    v60->_updatedInChunk = v67;
-    objc_storeStrong(&v60->_numberOfSharesOfPeopleInPhotoIoUWithConversation, a30);
-    objc_storeStrong(&v60->_numberOfSharesOfPetsWithConversation, a31);
-    objc_storeStrong(&v60->_numberOfSharesOfPetsInCurrentPhotoWithConversation, a32);
-    objc_storeStrong(&v60->_numberOfSharesOfScenesInPhotoWithConversation, a33);
-    objc_storeStrong(&v60->_numberOfSharesOfDetectedScenesInPhotoWithConversation, a34);
-    objc_storeStrong(&v60->_numberOfTopicsSharedWithConversation, a35);
-    objc_storeStrong(&v60->_numberOfAppsSharedFromWithConversation, a36);
-    objc_storeStrong(&v60->_timeSinceLastPhotoShareWithConversation, a37);
-    objc_storeStrong(&v60->_hasSharedSensitiveContentWIthConversation, a38);
+    v60->_updatedInChunk = intValue3;
+    objc_storeStrong(&v60->_numberOfSharesOfPeopleInPhotoIoUWithConversation, uWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfPetsWithConversation, petsWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfPetsInCurrentPhotoWithConversation, currentPhotoWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfScenesInPhotoWithConversation, scenesInPhotoWithConversation);
+    objc_storeStrong(&v60->_numberOfSharesOfDetectedScenesInPhotoWithConversation, detectedScenesInPhotoWithConversation);
+    objc_storeStrong(&v60->_numberOfTopicsSharedWithConversation, sharedWithConversation);
+    objc_storeStrong(&v60->_numberOfAppsSharedFromWithConversation, fromWithConversation);
+    objc_storeStrong(&v60->_timeSinceLastPhotoShareWithConversation, shareWithConversation);
+    objc_storeStrong(&v60->_hasSharedSensitiveContentWIthConversation, ithConversation);
     if (v59)
     {
       v60->_hasIsInPhoneCallWithConversation = 1;
@@ -5977,11 +5977,11 @@ LABEL_226:
       v60->_isInPhoneCallWithConversation = 0;
     }
 
-    objc_storeStrong(&v60->_numberOfSharesFromAlbumPhotoBelongsToWithConversation, a40);
-    if (v54)
+    objc_storeStrong(&v60->_numberOfSharesFromAlbumPhotoBelongsToWithConversation, toWithConversation);
+    if (appCopy)
     {
       v60->_hasIsFirstPartyApp = 1;
-      v60->_isFirstPartyApp = [v54 BOOLValue];
+      v60->_isFirstPartyApp = [appCopy BOOLValue];
     }
 
     else
@@ -5990,11 +5990,11 @@ LABEL_226:
       v60->_isFirstPartyApp = 0;
     }
 
-    objc_storeStrong(&v60->_numberOfTimesSharedToTargetAppWithConversation, a42);
-    objc_storeStrong(&v60->_timeSinceLastShareWithConversation, a43);
-    objc_storeStrong(&v60->_timeSinceLastPhoneCallWithConversation, a44);
-    objc_storeStrong(&v60->_numberOfDifferentFacesSharedWithConversation, a45);
-    objc_storeStrong(&v60->_numberOfTotalSharesToTargetApp, a46);
+    objc_storeStrong(&v60->_numberOfTimesSharedToTargetAppWithConversation, targetAppWithConversation);
+    objc_storeStrong(&v60->_timeSinceLastShareWithConversation, lastShareWithConversation);
+    objc_storeStrong(&v60->_timeSinceLastPhoneCallWithConversation, phoneCallWithConversation);
+    objc_storeStrong(&v60->_numberOfDifferentFacesSharedWithConversation, facesSharedWithConversation);
+    objc_storeStrong(&v60->_numberOfTotalSharesToTargetApp, targetApp);
   }
 
   return v60;
@@ -6516,9 +6516,9 @@ id __22__BMCandidate_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -6526,8 +6526,8 @@ id __22__BMCandidate_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMCandidate alloc] initByReadFrom:v7];
     v4 = v8;

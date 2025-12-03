@@ -1,7 +1,7 @@
 @interface TextClock
 - (_TtC11ClockPosterP33_379590E2B70ADE273C4445A41EC495429TextClock)init;
 - (void)dealloc;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation TextClock
@@ -30,18 +30,18 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E493F0D0();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for TextClock(0);
   [(TextClock *)&v3 dealloc];
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E493FCCC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1E493FCCC(change);
 }
 
 @end

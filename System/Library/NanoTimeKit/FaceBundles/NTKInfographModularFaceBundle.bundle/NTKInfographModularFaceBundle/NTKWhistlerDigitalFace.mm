@@ -1,27 +1,27 @@
 @interface NTKWhistlerDigitalFace
 + (id)_complicationSlotDescriptors;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_customEditModes;
 - (id)_defaultBackgroundOption;
 - (id)_defaultColorOption;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)faceSharingName;
 - (id)pigmentOptionProvider;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKWhistlerDigitalFace
 
 - (id)faceSharingName
 {
-  v2 = [(NTKWhistlerDigitalFace *)self device];
+  device = [(NTKWhistlerDigitalFace *)self device];
   v3 = NTKShowBlueRidgeUI();
 
   if (v3)
@@ -41,7 +41,7 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKWhistlerDigitalFace *)self device];
+  device = [(NTKWhistlerDigitalFace *)self device];
   v3 = NTKShowBlueRidgeUI();
 
   if (v3)
@@ -132,13 +132,13 @@
   return v15;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isRunningGraceOrLater])
+  slotCopy = slot;
+  deviceCopy = device;
+  if ([deviceCopy isRunningGraceOrLater])
   {
-    if ([v5 isEqualToString:NTKComplicationSlotCenter])
+    if ([slotCopy isEqualToString:NTKComplicationSlotCenter])
     {
       v7 = &NTKBundleComplicationNoiseAppBundleIdentifier;
       v8 = &NTKBundleComplicationNoiseBundleIdentifier;
@@ -147,7 +147,7 @@ LABEL_4:
       goto LABEL_9;
     }
 
-    if ([v5 isEqualToString:NTKComplicationSlotBottomCenter] && objc_msgSend(v6, "supportsUrsa"))
+    if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter] && objc_msgSend(deviceCopy, "supportsUrsa"))
     {
       v7 = &NTKBundleComplicationUrsaAppBundleIdentifier;
       v8 = &NTKBundleComplicationUrsaCompassBundleIdentifier;
@@ -174,7 +174,7 @@ LABEL_9:
   return v2;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotBottomLeft;
@@ -189,7 +189,7 @@ LABEL_9:
 - (id)_customEditModes
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(NTKWhistlerDigitalFace *)self device];
+  device = [(NTKWhistlerDigitalFace *)self device];
   v5 = NTKShowGossamerUI();
 
   if (v5)
@@ -197,7 +197,7 @@ LABEL_9:
     [v3 addObject:&off_12618];
   }
 
-  v6 = [(NTKWhistlerDigitalFace *)self device];
+  device2 = [(NTKWhistlerDigitalFace *)self device];
   v7 = NTKShowIndicScriptNumerals();
 
   if (v7)
@@ -210,25 +210,25 @@ LABEL_9:
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  switch(a3)
+  slotCopy = slot;
+  switch(mode)
   {
     case 19:
       CLKLocaleNumberSystemForFirstLanguage();
       v9 = NTKNumeralOptionFromCLKLocaleNumberSystem();
-      v10 = [(NTKWhistlerDigitalFace *)self device];
-      v8 = [NTKNumeralEditOption optionWithNumeral:v9 forDevice:v10];
+      device = [(NTKWhistlerDigitalFace *)self device];
+      v8 = [NTKNumeralEditOption optionWithNumeral:v9 forDevice:device];
 
       break;
     case 17:
-      v7 = [(NTKWhistlerDigitalFace *)self _defaultBackgroundOption];
+      _defaultBackgroundOption = [(NTKWhistlerDigitalFace *)self _defaultBackgroundOption];
       goto LABEL_6;
     case 10:
-      v7 = [(NTKWhistlerDigitalFace *)self _defaultColorOption];
+      _defaultBackgroundOption = [(NTKWhistlerDigitalFace *)self _defaultColorOption];
 LABEL_6:
-      v8 = v7;
+      v8 = _defaultBackgroundOption;
       break;
     default:
       v8 = 0;
@@ -238,37 +238,37 @@ LABEL_6:
   return v8;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKWhistlerDigitalFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKWhistlerDigitalFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKWhistlerDigitalFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKWhistlerDigitalFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKWhistlerDigitalFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKWhistlerDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKWhistlerDigitalFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 10:
       v4 = NTKFaceColorMonochromeEditOption_ptr;
@@ -292,26 +292,26 @@ LABEL_7:
 
 - (id)_defaultColorOption
 {
-  v3 = [(NTKWhistlerDigitalFace *)self device];
+  device = [(NTKWhistlerDigitalFace *)self device];
   v4 = NTKDefaultFaceColorForDeviceCollection();
 
-  v5 = [(NTKWhistlerDigitalFace *)self device];
-  v6 = [NTKFaceColorMonochromeEditOption optionWithFaceColor:v4 forDevice:v5];
+  device2 = [(NTKWhistlerDigitalFace *)self device];
+  v6 = [NTKFaceColorMonochromeEditOption optionWithFaceColor:v4 forDevice:device2];
 
   return v6;
 }
 
 - (id)_defaultBackgroundOption
 {
-  v2 = [(NTKWhistlerDigitalFace *)self device];
-  v3 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:0 forDevice:v2];
+  device = [(NTKWhistlerDigitalFace *)self device];
+  v3 = [NTKFaceBackgroundStyleEditOption optionWithBackgroundStyle:0 forDevice:device];
 
   return v3;
 }
 
 - (id)pigmentOptionProvider
 {
-  v3 = [(NTKWhistlerDigitalFace *)self device];
+  device = [(NTKWhistlerDigitalFace *)self device];
   v4 = NTKShowGossamerUI();
 
   if (self->_isGossamerPigmentEditOptionProvider != v4)
@@ -324,11 +324,11 @@ LABEL_7:
   if (!v6)
   {
     self->_isGossamerPigmentEditOptionProvider = v4;
-    v7 = [objc_opt_class() pigmentFaceDomain];
-    v8 = v7;
+    pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
+    v8 = pigmentFaceDomain;
     if (self->_isGossamerPigmentEditOptionProvider)
     {
-      v9 = [v7 stringByAppendingString:@"-Gossamer"];
+      v9 = [pigmentFaceDomain stringByAppendingString:@"-Gossamer"];
 
       v8 = v9;
     }
@@ -344,10 +344,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBottomCenter] || objc_msgSend(v4, "isEqualToString:", NTKComplicationSlotDate))
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter] || objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotDate))
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -356,7 +356,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = NTKWhistlerDigitalFace;
-    v5 = [(NTKWhistlerDigitalFace *)&v8 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKWhistlerDigitalFace *)&v8 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;

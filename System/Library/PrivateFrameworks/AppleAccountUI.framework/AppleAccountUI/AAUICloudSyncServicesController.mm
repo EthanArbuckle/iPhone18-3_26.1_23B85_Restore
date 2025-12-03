@@ -1,17 +1,17 @@
 @interface AAUICloudSyncServicesController
-+ (id)_domainFromAddress:(id)a3;
-+ (id)_usernameFromAddress:(id)a3;
++ (id)_domainFromAddress:(id)address;
++ (id)_usernameFromAddress:(id)address;
 - (AAUICloudSyncServicesController)init;
 - (id)_account;
-- (void)_addMailAccount:(id)a3;
-- (void)_presentMergeConfirmationForDataclasses:(id)a3 account:(id)a4;
-- (void)_validateMailAccount:(id)a3;
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5;
-- (void)completeEnablingCloudServicesWithCompletion:(id)a3;
-- (void)setBackupEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setCloudServicesEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setDeviceLocatorEnabled:(BOOL)a3;
-- (void)verifyAccountWithAppleID:(id)a3 completion:(id)a4;
+- (void)_addMailAccount:(id)account;
+- (void)_presentMergeConfirmationForDataclasses:(id)dataclasses account:(id)account;
+- (void)_validateMailAccount:(id)account;
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l;
+- (void)completeEnablingCloudServicesWithCompletion:(id)completion;
+- (void)setBackupEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setCloudServicesEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setDeviceLocatorEnabled:(BOOL)enabled;
+- (void)verifyAccountWithAppleID:(id)d completion:(id)completion;
 @end
 
 @implementation AAUICloudSyncServicesController
@@ -40,9 +40,9 @@
   account = self->_account;
   if (!account)
   {
-    v4 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
     v5 = self->_account;
-    self->_account = v4;
+    self->_account = aa_primaryAppleAccount;
 
     account = self->_account;
   }
@@ -50,28 +50,28 @@
   return account;
 }
 
-- (void)setCloudServicesEnabled:(BOOL)a3 completion:(id)a4
+- (void)setCloudServicesEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v52 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  completionCopy = completion;
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
   v7 = _AAUILogSystem();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (enabledCopy)
   {
-    v48 = v6;
+    v48 = completionCopy;
     if (v8)
     {
       *buf = 0;
       _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "User chose to use iCloud", buf, 2u);
     }
 
-    v9 = [v52 provisionedDataclasses];
-    v10 = [v9 mutableCopy];
+    provisionedDataclasses = [aa_primaryAppleAccount provisionedDataclasses];
+    v10 = [provisionedDataclasses mutableCopy];
 
-    v11 = [v52 enabledDataclasses];
-    [v10 minusSet:v11];
+    enabledDataclasses = [aa_primaryAppleAccount enabledDataclasses];
+    [v10 minusSet:enabledDataclasses];
 
     v63 = 0u;
     v64 = 0u;
@@ -94,12 +94,12 @@
           }
 
           v17 = *(*(&v61 + 1) + 8 * i);
-          v18 = [MEMORY[0x1E698B888] sharedManager];
-          v19 = [v18 canAutoEnableDataclass:v17 forAccount:v52];
+          mEMORY[0x1E698B888] = [MEMORY[0x1E698B888] sharedManager];
+          v19 = [mEMORY[0x1E698B888] canAutoEnableDataclass:v17 forAccount:aa_primaryAppleAccount];
 
           if (v19)
           {
-            [v52 setEnabled:1 forDataclass:v17];
+            [aa_primaryAppleAccount setEnabled:1 forDataclass:v17];
             [(NSMutableDictionary *)self->_queuedDataclassStates setObject:v15 forKeyedSubscript:v17];
           }
         }
@@ -124,25 +124,25 @@
       self->_dataclassesRequiringMergeDecision = v22;
     }
 
-    v24 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:v52, v48];
+    v24 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:aa_primaryAppleAccount, v48];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v25 = [v24 allKeys];
-    v26 = [v25 countByEnumeratingWithState:&v57 objects:v67 count:16];
+    allKeys = [v24 allKeys];
+    v26 = [allKeys countByEnumeratingWithState:&v57 objects:v67 count:16];
     if (v26)
     {
       v27 = v26;
       v28 = *v58;
-      v50 = v25;
+      v50 = allKeys;
       do
       {
         for (j = 0; j != v27; ++j)
         {
           if (*v58 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(allKeys);
           }
 
           v30 = *(*(&v57 + 1) + 8 * j);
@@ -157,13 +157,13 @@
                 v32 = v28;
                 v33 = v24;
                 v34 = self->_queuedDataclassActions;
-                v35 = [v31 lastObject];
+                lastObject = [v31 lastObject];
                 v36 = v34;
                 v24 = v33;
                 v28 = v32;
-                [(NSMutableDictionary *)v36 setObject:v35 forKey:v30];
+                [(NSMutableDictionary *)v36 setObject:lastObject forKey:v30];
 
-                v25 = v50;
+                allKeys = v50;
               }
             }
 
@@ -174,7 +174,7 @@
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v57 objects:v67 count:16];
+        v27 = [allKeys countByEnumeratingWithState:&v57 objects:v67 count:16];
       }
 
       while (v27);
@@ -182,7 +182,7 @@
 
     if ([(NSMutableArray *)self->_dataclassesRequiringMergeDecision count])
     {
-      v6 = v49;
+      completionCopy = v49;
       if (self->_handler != v49)
       {
         v37 = [v49 copy];
@@ -190,12 +190,12 @@
         self->_handler = v37;
       }
 
-      [(AAUICloudSyncServicesController *)self _presentMergeConfirmationForDataclasses:self->_dataclassesRequiringMergeDecision account:v52];
+      [(AAUICloudSyncServicesController *)self _presentMergeConfirmationForDataclasses:self->_dataclassesRequiringMergeDecision account:aa_primaryAppleAccount];
     }
 
     else
     {
-      v6 = v49;
+      completionCopy = v49;
       v49[2](v49, 1, 0);
     }
   }
@@ -208,8 +208,8 @@
       _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "User chose not to use iCloud", buf, 2u);
     }
 
-    v39 = [v52 enabledDataclasses];
-    v40 = [v39 copy];
+    enabledDataclasses2 = [aa_primaryAppleAccount enabledDataclasses];
+    v40 = [enabledDataclasses2 copy];
 
     v55 = 0u;
     v56 = 0u;
@@ -232,7 +232,7 @@
           }
 
           v46 = *(*(&v53 + 1) + 8 * k);
-          [v52 setEnabled:0 forDataclass:v46];
+          [aa_primaryAppleAccount setEnabled:0 forDataclass:v46];
           [(NSMutableDictionary *)self->_queuedDataclassStates setObject:v44 forKeyedSubscript:v46];
         }
 
@@ -248,15 +248,15 @@
       self->_queuedDataclassActions = 0;
     }
 
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_presentMergeConfirmationForDataclasses:(id)a3 account:(id)a4
+- (void)_presentMergeConfirmationForDataclasses:(id)dataclasses account:(id)account
 {
   v5 = MEMORY[0x1E696AEC0];
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a3;
+  dataclassesCopy = dataclasses;
   v8 = [v6 bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"BATCH_MERGE_TITLE" value:&stru_1F447F790 table:@"Localizable"];
   v20 = [v5 stringWithFormat:v9, @"iCloud"];
@@ -265,7 +265,7 @@
   v11 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"BATCH_MERGE_FORMAT"];
   v12 = [v10 localizedStringForKey:v11 value:&stru_1F447F790 table:@"Localizable"];
 
-  v13 = [MEMORY[0x1E69898E0] localizedTextForDataclasses:v7 usedAtBeginningOfSentence:0];
+  v13 = [MEMORY[0x1E69898E0] localizedTextForDataclasses:dataclassesCopy usedAtBeginningOfSentence:0];
 
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:v12, v13, @"iCloud"];
   v15 = MEMORY[0x1E698B9E0];
@@ -352,35 +352,35 @@ uint64_t __83__AAUICloudSyncServicesController__presentMergeConfirmationForDatac
   return (*(*(*(a1 + 32) + 72) + 16))();
 }
 
-- (void)setDeviceLocatorEnabled:(BOOL)a3
+- (void)setDeviceLocatorEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7 = *MEMORY[0x1E69E9840];
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = enabledCopy;
     _os_log_impl(&dword_1C5355000, v4, OS_LOG_TYPE_DEFAULT, "AASetupAssistantServiceDelegate setDeviceLocatorEnabled:%d.", v6, 8u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v5 = +[AAUIDeviceLocatorService sharedInstance];
     [v5 enableInContext:5];
   }
 }
 
-- (void)setBackupEnabled:(BOOL)a3 completion:(id)a4
+- (void)setBackupEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
-  v8 = v7;
-  if (v4)
+  completionCopy = completion;
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_accountStore aa_primaryAppleAccount];
+  v8 = aa_primaryAppleAccount;
+  if (enabledCopy)
   {
-    if ([v7 aa_isPrimaryEmailVerified])
+    if ([aa_primaryAppleAccount aa_isPrimaryEmailVerified])
     {
       v9 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -388,7 +388,7 @@ uint64_t __83__AAUICloudSyncServicesController__presentMergeConfirmationForDatac
       block[2] = __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_invoke;
       block[3] = &unk_1E820B780;
       block[4] = self;
-      v14 = v6;
+      v14 = completionCopy;
       dispatch_async(v9, block);
     }
 
@@ -399,14 +399,14 @@ uint64_t __83__AAUICloudSyncServicesController__presentMergeConfirmationForDatac
       v16[0] = @"Primary email not verified.";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v12 = [v10 aa_errorWithCode:0 userInfo:v11];
-      (*(v6 + 2))(v6, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
     }
   }
 
   else
   {
     [(NSMutableDictionary *)self->_queuedDataclassStates setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E6959AD8]];
-    (*(v6 + 2))(v6, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -424,10 +424,10 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)completeEnablingCloudServicesWithCompletion:(id)a3
+- (void)completeEnablingCloudServicesWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -435,9 +435,9 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "complete enabling cloud services", buf, 2u);
   }
 
-  v6 = [(AAUICloudSyncServicesController *)self _account];
-  [v6 refresh];
-  if ([v6 aa_isPrimaryEmailVerified])
+  _account = [(AAUICloudSyncServicesController *)self _account];
+  [_account refresh];
+  if ([_account aa_isPrimaryEmailVerified])
   {
     v37 = 0u;
     v38 = 0u;
@@ -460,7 +460,7 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
 
           v12 = *(*(&v35 + 1) + 8 * i);
           v13 = [(NSMutableDictionary *)self->_queuedDataclassStates objectForKeyedSubscript:v12];
-          [v6 setEnabled:objc_msgSend(v13 forDataclass:{"BOOLValue"), v12}];
+          [_account setEnabled:objc_msgSend(v13 forDataclass:{"BOOLValue"), v12}];
         }
 
         v9 = [(NSMutableDictionary *)v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -475,15 +475,15 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
     v33[1] = 3221225472;
     v33[2] = __79__AAUICloudSyncServicesController_completeEnablingCloudServicesWithCompletion___block_invoke;
     v33[3] = &unk_1E820C308;
-    v34 = v4;
-    [(ACAccountStore *)accountStore saveAccount:v6 withDataclassActions:queuedDataclassActions completion:v33];
+    v34 = completionCopy;
+    [(ACAccountStore *)accountStore saveAccount:_account withDataclassActions:queuedDataclassActions completion:v33];
     v16 = v34;
   }
 
-  else if (v6)
+  else if (_account)
   {
-    v17 = [v6 enabledDataclasses];
-    v18 = [v17 copy];
+    enabledDataclasses = [_account enabledDataclasses];
+    v18 = [enabledDataclasses copy];
 
     v31 = 0u;
     v32 = 0u;
@@ -508,7 +508,7 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
           v24 = *(*(&v29 + 1) + 8 * j);
           if (([v24 isEqualToString:v22] & 1) == 0)
           {
-            [v6 setEnabled:0 forDataclass:v24];
+            [_account setEnabled:0 forDataclass:v24];
           }
         }
 
@@ -523,8 +523,8 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
     v27[1] = 3221225472;
     v27[2] = __79__AAUICloudSyncServicesController_completeEnablingCloudServicesWithCompletion___block_invoke_105;
     v27[3] = &unk_1E820C308;
-    v28 = v4;
-    [(ACAccountStore *)v25 saveAccount:v6 withCompletionHandler:v27];
+    v28 = completionCopy;
+    [(ACAccountStore *)v25 saveAccount:_account withCompletionHandler:v27];
   }
 
   else
@@ -536,7 +536,7 @@ void __63__AAUICloudSyncServicesController_setBackupEnabled_completion___block_i
     }
 
     v16 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4404];
-    (*(v4 + 2))(v4, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -576,17 +576,17 @@ void __79__AAUICloudSyncServicesController_completeEnablingCloudServicesWithComp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)verifyAccountWithAppleID:(id)a3 completion:(id)a4
+- (void)verifyAccountWithAppleID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AAUICloudSyncServicesController *)self _account];
-  v9 = [v8 username];
-  v10 = [v9 isEqualToString:v7];
+  completionCopy = completion;
+  dCopy = d;
+  _account = [(AAUICloudSyncServicesController *)self _account];
+  username = [_account username];
+  v10 = [username isEqualToString:dCopy];
 
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E698B818]) initWithAccount:v8];
+    v11 = [objc_alloc(MEMORY[0x1E698B818]) initWithAccount:_account];
     verifier = self->_verifier;
     self->_verifier = v11;
 
@@ -603,9 +603,9 @@ void __79__AAUICloudSyncServicesController_completeEnablingCloudServicesWithComp
     v17[1] = 3221225472;
     v17[2] = __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion___block_invoke;
     v17[3] = &unk_1E820C960;
-    v18 = v8;
-    v19 = self;
-    v20 = v6;
+    v18 = _account;
+    selfCopy = self;
+    v20 = completionCopy;
     [(AAAutoAccountVerifier *)v14 verifyWithHandler:v17];
 
     v15 = v18;
@@ -621,7 +621,7 @@ void __79__AAUICloudSyncServicesController_completeEnablingCloudServicesWithComp
     }
 
     v15 = [MEMORY[0x1E696ABC0] aa_errorWithCode:111 userInfo:0];
-    (*(v6 + 2))(v6, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
@@ -750,9 +750,9 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_validateMailAccount:(id)a3
+- (void)_validateMailAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -765,15 +765,15 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
   self->_validator = v6;
 
   [(MFAccountValidator *)self->_validator setDelegate:self];
-  [(MFAccountValidator *)self->_validator validateAccount:v4 useSSL:1];
+  [(MFAccountValidator *)self->_validator validateAccount:accountCopy useSSL:1];
 }
 
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 accountIsValid])
+  validatorCopy = validator;
+  accountCopy = account;
+  if ([validatorCopy accountIsValid])
   {
     v9 = _AAUILogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -793,17 +793,17 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
 
     else
     {
-      [(AAUICloudSyncServicesController *)self _addMailAccount:v8];
+      [(AAUICloudSyncServicesController *)self _addMailAccount:accountCopy];
     }
   }
 
   else
   {
-    v11 = [v7 error];
-    v12 = [v11 code];
+    error = [validatorCopy error];
+    code = [error code];
     v13 = MEMORY[0x1E696ABC0];
-    v14 = [v11 userInfo];
-    if (v12 == 1032)
+    userInfo = [error userInfo];
+    if (code == 1032)
     {
       v15 = 111;
     }
@@ -813,7 +813,7 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
       v15 = 112;
     }
 
-    v16 = [v13 aa_errorWithCode:v15 userInfo:v14];
+    v16 = [v13 aa_errorWithCode:v15 userInfo:userInfo];
 
     v17 = self->_handler;
     if (v17)
@@ -824,9 +824,9 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
     v18 = _AAUILogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v11 localizedDescription];
+      localizedDescription = [error localizedDescription];
       v21 = 138412290;
-      v22 = v19;
+      v22 = localizedDescription;
       _os_log_impl(&dword_1C5355000, v18, OS_LOG_TYPE_DEFAULT, "Email account verification failed: %@", &v21, 0xCu);
     }
   }
@@ -835,12 +835,12 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
   self->_validator = 0;
 }
 
-- (void)_addMailAccount:(id)a3
+- (void)_addMailAccount:(id)account
 {
   v4 = MEMORY[0x1E69B16A8];
-  v5 = a3;
-  v6 = [v4 mailAccounts];
-  v7 = [v6 arrayByAddingObject:v5];
+  accountCopy = account;
+  mailAccounts = [v4 mailAccounts];
+  v7 = [mailAccounts arrayByAddingObject:accountCopy];
 
   [MEMORY[0x1E69B16A8] setMailAccounts:v7];
   if (self->_handler)
@@ -856,31 +856,31 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
   }
 }
 
-+ (id)_domainFromAddress:(id)a3
++ (id)_domainFromAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"@"];
+  addressCopy = address;
+  v4 = [addressCopy rangeOfString:@"@"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    lowercaseString = 0;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v4 + 1];
-    v5 = [v6 lowercaseString];
+    v6 = [addressCopy substringFromIndex:v4 + 1];
+    lowercaseString = [v6 lowercaseString];
   }
 
-  return v5;
+  return lowercaseString;
 }
 
-+ (id)_usernameFromAddress:(id)a3
++ (id)_usernameFromAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"+"];
+  addressCopy = address;
+  v4 = [addressCopy rangeOfString:@"+"];
   if (!v5)
   {
-    v4 = [v3 rangeOfString:@"@"];
+    v4 = [addressCopy rangeOfString:@"@"];
   }
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
@@ -890,7 +890,7 @@ void __71__AAUICloudSyncServicesController_verifyAccountWithAppleID_completion__
 
   else
   {
-    v6 = [v3 substringToIndex:v4];
+    v6 = [addressCopy substringToIndex:v4];
   }
 
   return v6;

@@ -8,7 +8,7 @@
 {
   v4 = a3;
   [v4 addString:@"NSData<"];
-  [v4 addBytes:objc_msgSend(a1 length:{"bytes"), objc_msgSend(a1, "length")}];
+  [v4 addBytes:objc_msgSend(self length:{"bytes"), objc_msgSend(self, "length")}];
   [v4 addString:@">"];
 }
 

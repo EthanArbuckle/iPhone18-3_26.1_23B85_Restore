@@ -1,27 +1,27 @@
 @interface HUTimerIntervalPickerView
-- (HUTimerIntervalPickerView)initWithFrame:(CGRect)a3;
+- (HUTimerIntervalPickerView)initWithFrame:(CGRect)frame;
 - (HUTimerIntervalPickerViewDelegate)delegate;
 - (double)selectedDuration;
-- (id)_hoursStringForHour:(int64_t)a3;
-- (id)_labelForComponent:(int64_t)a3 createIfNecessary:(BOOL)a4;
+- (id)_hoursStringForHour:(int64_t)hour;
+- (id)_labelForComponent:(int64_t)component createIfNecessary:(BOOL)necessary;
 - (id)_makeNewComponentLabel;
-- (id)_minutesStringForMinutes:(int64_t)a3;
-- (id)_secondsStringForSeconds:(int64_t)a3;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)_fadeLabelForComponent:(int64_t)a3 toText:(id)a4 animated:(BOOL)a5;
-- (void)_positionLabel:(id)a3 forComponent:(int64_t)a4;
-- (void)_setLabel:(id)a3 forComponent:(int64_t)a4;
-- (void)_updateLabels:(BOOL)a3;
+- (id)_minutesStringForMinutes:(int64_t)minutes;
+- (id)_secondsStringForSeconds:(int64_t)seconds;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)_fadeLabelForComponent:(int64_t)component toText:(id)text animated:(BOOL)animated;
+- (void)_positionLabel:(id)label forComponent:(int64_t)component;
+- (void)_setLabel:(id)label forComponent:(int64_t)component;
+- (void)_updateLabels:(BOOL)labels;
 - (void)layoutSubviews;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setDuration:(double)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setDuration:(double)duration;
 - (void)updateConstraints;
 @end
 
 @implementation HUTimerIntervalPickerView
 
-- (HUTimerIntervalPickerView)initWithFrame:(CGRect)a3
+- (HUTimerIntervalPickerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUTimerIntervalPickerView;
@@ -96,15 +96,15 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
   [(HUTimerIntervalPickerView *)self _updateLabels:1];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   v4 = 60;
-  if (a4 >= 3)
+  if (component >= 3)
   {
     v4 = 0;
   }
 
-  if (a4)
+  if (component)
   {
     return v4;
   }
@@ -115,14 +115,14 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
   }
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v9 = a6;
+  reusingViewCopy = reusingView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = reusingViewCopy;
   }
 
   else
@@ -132,67 +132,67 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
 
   v11 = v10;
   v12 = 2 * ([(HUTimerIntervalPickerView *)self effectiveUserInterfaceLayoutDirection]== 0);
-  v13 = [(HUTimerIntervalPickerCell *)v11 textLabel];
-  [v13 setTextAlignment:v12];
+  textLabel = [(HUTimerIntervalPickerCell *)v11 textLabel];
+  [textLabel setTextAlignment:v12];
 
   v14 = [MEMORY[0x277D74300] systemFontOfSize:22.0];
-  v15 = [(HUTimerIntervalPickerCell *)v11 textLabel];
-  [v15 setFont:v14];
+  textLabel2 = [(HUTimerIntervalPickerCell *)v11 textLabel];
+  [textLabel2 setFont:v14];
 
-  [(HUTimerIntervalPickerView *)self pickerView:self->_timePicker widthForComponent:a5];
+  [(HUTimerIntervalPickerView *)self pickerView:self->_timePicker widthForComponent:component];
   v17 = v16;
-  [(HUTimerIntervalPickerView *)self pickerView:self->_timePicker rowHeightForComponent:a5];
+  [(HUTimerIntervalPickerView *)self pickerView:self->_timePicker rowHeightForComponent:component];
   [(HUTimerIntervalPickerCell *)v11 setFrame:0.0, 0.0, v17, v18];
-  v19 = [MEMORY[0x277D75348] labelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
   v20 = MEMORY[0x277CCABB8];
-  v21 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v21 = [MEMORY[0x277CCABB0] numberWithInteger:row];
   v22 = [v20 localizedStringFromNumber:v21 numberStyle:0];
 
   v23 = objc_alloc(MEMORY[0x277CCA898]);
   v28 = *MEMORY[0x277D740C0];
-  v29[0] = v19;
+  v29[0] = labelColor;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   v25 = [v23 initWithString:v22 attributes:v24];
 
-  v26 = [(HUTimerIntervalPickerCell *)v11 textLabel];
-  [v26 setAttributedText:v25];
+  textLabel3 = [(HUTimerIntervalPickerCell *)v11 textLabel];
+  [textLabel3 setAttributedText:v25];
 
   return v11;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  [(HUTimerIntervalPickerView *)self _updateLabels:1, a4, a5];
-  v6 = [(HUTimerIntervalPickerView *)self delegate];
-  if (v6)
+  [(HUTimerIntervalPickerView *)self _updateLabels:1, row, component];
+  delegate = [(HUTimerIntervalPickerView *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(HUTimerIntervalPickerView *)self delegate];
+    v7 = delegate;
+    delegate2 = [(HUTimerIntervalPickerView *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(HUTimerIntervalPickerView *)self delegate];
+      delegate3 = [(HUTimerIntervalPickerView *)self delegate];
       [(HUTimerIntervalPickerView *)self selectedDuration];
-      [v10 pickerView:self didChangeSelectedDuration:?];
+      [delegate3 pickerView:self didChangeSelectedDuration:?];
     }
   }
 }
 
-- (void)_updateLabels:(BOOL)a3
+- (void)_updateLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v5 = [(UIPickerView *)self->_timePicker selectedRowInComponent:0];
   v6 = [(UIPickerView *)self->_timePicker selectedRowInComponent:1];
   v7 = [(UIPickerView *)self->_timePicker selectedRowInComponent:2];
   v8 = [(HUTimerIntervalPickerView *)self _hoursStringForHour:v5];
-  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:0 toText:v8 animated:v3];
+  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:0 toText:v8 animated:labelsCopy];
 
   v9 = [(HUTimerIntervalPickerView *)self _minutesStringForMinutes:v6];
-  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:1 toText:v9 animated:v3];
+  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:1 toText:v9 animated:labelsCopy];
 
   v10 = [(HUTimerIntervalPickerView *)self _secondsStringForSeconds:v7];
-  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:2 toText:v10 animated:v3];
+  [(HUTimerIntervalPickerView *)self _fadeLabelForComponent:2 toText:v10 animated:labelsCopy];
 }
 
 - (id)_makeNewComponentLabel
@@ -202,8 +202,8 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
   v4 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
   [v3 setFont:v4];
 
-  v5 = [MEMORY[0x277D75348] labelColor];
-  [v3 setTextColor:v5];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v3 setTextColor:labelColor];
 
   [v3 setTextAlignment:4];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -211,9 +211,9 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_labelForComponent:(int64_t)a3 createIfNecessary:(BOOL)a4
+- (id)_labelForComponent:(int64_t)component createIfNecessary:(BOOL)necessary
 {
-  switch(a3)
+  switch(component)
   {
     case 2:
       p_secondsLabel = &self->_secondsLabel;
@@ -225,7 +225,7 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
 
       else
       {
-        v12 = !a4;
+        v12 = !necessary;
       }
 
       if (v12)
@@ -233,8 +233,8 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
         goto LABEL_20;
       }
 
-      v8 = [(HUTimerIntervalPickerView *)self _secondsStringForSeconds:0, a4];
-      v9 = self;
+      necessary = [(HUTimerIntervalPickerView *)self _secondsStringForSeconds:0, necessary];
+      selfCopy3 = self;
       v10 = 2;
       goto LABEL_19;
     case 1:
@@ -247,7 +247,7 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
 
       else
       {
-        v11 = !a4;
+        v11 = !necessary;
       }
 
       if (v11)
@@ -255,8 +255,8 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
         goto LABEL_20;
       }
 
-      v8 = [(HUTimerIntervalPickerView *)self _minutesStringForMinutes:0, a4];
-      v9 = self;
+      necessary = [(HUTimerIntervalPickerView *)self _minutesStringForMinutes:0, necessary];
+      selfCopy3 = self;
       v10 = 1;
       goto LABEL_19;
     case 0:
@@ -269,7 +269,7 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
 
       else
       {
-        v7 = !a4;
+        v7 = !necessary;
       }
 
       if (v7)
@@ -277,11 +277,11 @@ id __46__HUTimerIntervalPickerView_updateConstraints__block_invoke(uint64_t a1)
         goto LABEL_20;
       }
 
-      v8 = [(HUTimerIntervalPickerView *)self _hoursStringForHour:0, a4];
-      v9 = self;
+      necessary = [(HUTimerIntervalPickerView *)self _hoursStringForHour:0, necessary];
+      selfCopy3 = self;
       v10 = 0;
 LABEL_19:
-      [(HUTimerIntervalPickerView *)v9 _fadeLabelForComponent:v10 toText:v8 animated:0];
+      [(HUTimerIntervalPickerView *)selfCopy3 _fadeLabelForComponent:v10 toText:necessary animated:0];
 
       secondsLabel = *p_secondsLabel;
 LABEL_20:
@@ -295,28 +295,28 @@ LABEL_22:
   return v13;
 }
 
-- (void)_setLabel:(id)a3 forComponent:(int64_t)a4
+- (void)_setLabel:(id)label forComponent:(int64_t)component
 {
-  v7 = a3;
-  if (a4 <= 2)
+  labelCopy = label;
+  if (component <= 2)
   {
-    v8 = v7;
-    objc_storeStrong((&self->super.super.super.super.isa + *off_277DB97C8[a4]), a3);
-    v7 = v8;
+    v8 = labelCopy;
+    objc_storeStrong((&self->super.super.super.super.isa + *off_277DB97C8[component]), label);
+    labelCopy = v8;
   }
 }
 
-- (void)_positionLabel:(id)a3 forComponent:(int64_t)a4
+- (void)_positionLabel:(id)label forComponent:(int64_t)component
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HUTimerIntervalPickerView *)self effectiveUserInterfaceLayoutDirection];
-  [(UIPickerView *)self->_timePicker _contentSizeForRow:0 inComponent:a4];
-  if (a4 == 2)
+  labelCopy = label;
+  effectiveUserInterfaceLayoutDirection = [(HUTimerIntervalPickerView *)self effectiveUserInterfaceLayoutDirection];
+  [(UIPickerView *)self->_timePicker _contentSizeForRow:0 inComponent:component];
+  if (component == 2)
   {
     v13 = v8 * 2.0 + 18.0;
     v14 = v8 * 2.0 + 23.0;
-    if (v7 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v14 = v13;
     }
@@ -326,10 +326,10 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (component == 1)
   {
     v10 = 7.0;
-    if (v7 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v10 = 4.0;
     }
@@ -343,49 +343,49 @@ LABEL_11:
   }
 
   v9 = 9.0;
-  if (!a4)
+  if (!component)
   {
-    v9 = dbl_20D5CA680[v7 == 1];
+    v9 = dbl_20D5CA680[effectiveUserInterfaceLayoutDirection == 1];
   }
 
 LABEL_12:
   LODWORD(v8) = 1148846080;
-  [v6 setContentHuggingPriority:0 forAxis:v8];
+  [labelCopy setContentHuggingPriority:0 forAxis:v8];
   LODWORD(v15) = 1148846080;
-  [v6 setContentCompressionResistancePriority:0 forAxis:v15];
+  [labelCopy setContentCompressionResistancePriority:0 forAxis:v15];
   v16 = MEMORY[0x277CCAAD0];
-  v17 = [v6 leadingAnchor];
-  v18 = [(UIPickerView *)self->_timePicker leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:v9 + 4.0];
+  leadingAnchor = [labelCopy leadingAnchor];
+  leadingAnchor2 = [(UIPickerView *)self->_timePicker leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9 + 4.0];
   v24[0] = v19;
-  v20 = [v6 centerYAnchor];
+  centerYAnchor = [labelCopy centerYAnchor];
 
-  v21 = [(UIPickerView *)self->_timePicker centerYAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:1.0];
+  centerYAnchor2 = [(UIPickerView *)self->_timePicker centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:1.0];
   v24[1] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   [v16 activateConstraints:v23];
 }
 
-- (void)_fadeLabelForComponent:(int64_t)a3 toText:(id)a4 animated:(BOOL)a5
+- (void)_fadeLabelForComponent:(int64_t)component toText:(id)text animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(HUTimerIntervalPickerView *)self _labelForComponent:a3 createIfNecessary:0];
-  v10 = [v9 text];
-  v11 = [v10 isEqualToString:v8];
+  animatedCopy = animated;
+  textCopy = text;
+  v9 = [(HUTimerIntervalPickerView *)self _labelForComponent:component createIfNecessary:0];
+  text = [v9 text];
+  v11 = [text isEqualToString:textCopy];
 
-  v12 = v9;
+  _makeNewComponentLabel2 = v9;
   if ((v11 & 1) == 0)
   {
-    if (v5)
+    if (animatedCopy)
     {
-      v13 = [(HUTimerIntervalPickerView *)self _makeNewComponentLabel];
+      _makeNewComponentLabel = [(HUTimerIntervalPickerView *)self _makeNewComponentLabel];
 
-      [v13 setText:v8];
-      [(HUTimerIntervalPickerView *)self addSubview:v13];
-      [(HUTimerIntervalPickerView *)self _positionLabel:v13 forComponent:a3];
-      [v13 setAlpha:0.0];
+      [_makeNewComponentLabel setText:textCopy];
+      [(HUTimerIntervalPickerView *)self addSubview:_makeNewComponentLabel];
+      [(HUTimerIntervalPickerView *)self _positionLabel:_makeNewComponentLabel forComponent:component];
+      [_makeNewComponentLabel setAlpha:0.0];
       v14 = MEMORY[0x277D75D18];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -403,26 +403,26 @@ LABEL_12:
       v16[1] = 3221225472;
       v16[2] = __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated___block_invoke_3;
       v16[3] = &unk_277DB8488;
-      v12 = v13;
-      v17 = v12;
+      _makeNewComponentLabel2 = _makeNewComponentLabel;
+      v17 = _makeNewComponentLabel2;
       [v15 animateWithDuration:0x20000 delay:v16 options:0 animations:0.2 completion:0.0];
     }
 
     else
     {
-      v12 = v9;
+      _makeNewComponentLabel2 = v9;
       if (!v9)
       {
-        v12 = [(HUTimerIntervalPickerView *)self _makeNewComponentLabel];
-        [(HUTimerIntervalPickerView *)self addSubview:v12];
+        _makeNewComponentLabel2 = [(HUTimerIntervalPickerView *)self _makeNewComponentLabel];
+        [(HUTimerIntervalPickerView *)self addSubview:_makeNewComponentLabel2];
       }
 
-      [v12 setText:v8];
-      [(HUTimerIntervalPickerView *)self _positionLabel:v12 forComponent:a3];
+      [_makeNewComponentLabel2 setText:textCopy];
+      [(HUTimerIntervalPickerView *)self _positionLabel:_makeNewComponentLabel2 forComponent:component];
     }
   }
 
-  [(HUTimerIntervalPickerView *)self _setLabel:v12 forComponent:a3];
+  [(HUTimerIntervalPickerView *)self _setLabel:_makeNewComponentLabel2 forComponent:component];
 }
 
 uint64_t __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated___block_invoke_2(uint64_t result, int a2)
@@ -435,11 +435,11 @@ uint64_t __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated_
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  [(UIPickerView *)self->_timePicker selectRow:(a3 / 3600.0) inComponent:0 animated:0];
-  [(UIPickerView *)self->_timePicker selectRow:((((34953 * (a3 % 3600)) >> 16) >> 5) + (((a3 % 3600 + ((-30583 * (a3 % 3600)) >> 16)) & 0x8000) >> 15)) inComponent:1 animated:0];
-  [(UIPickerView *)self->_timePicker selectRow:a3 % 60 inComponent:2 animated:0];
+  [(UIPickerView *)self->_timePicker selectRow:(duration / 3600.0) inComponent:0 animated:0];
+  [(UIPickerView *)self->_timePicker selectRow:((((34953 * (duration % 3600)) >> 16) >> 5) + (((duration % 3600 + ((-30583 * (duration % 3600)) >> 16)) & 0x8000) >> 15)) inComponent:1 animated:0];
+  [(UIPickerView *)self->_timePicker selectRow:duration % 60 inComponent:2 animated:0];
 
   [(HUTimerIntervalPickerView *)self _updateLabels:1];
 }
@@ -451,15 +451,15 @@ uint64_t __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated_
   return v4 + [(UIPickerView *)self->_timePicker selectedRowInComponent:2];
 }
 
-- (id)_hoursStringForHour:(int64_t)a3
+- (id)_hoursStringForHour:(int64_t)hour
 {
   v3 = @"HUHourPlural";
-  if (a3 == 1)
+  if (hour == 1)
   {
     v3 = @"HUHourSingular";
   }
 
-  if (a3)
+  if (hour)
   {
     v4 = v3;
   }
@@ -474,15 +474,15 @@ uint64_t __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated_
   return v5;
 }
 
-- (id)_minutesStringForMinutes:(int64_t)a3
+- (id)_minutesStringForMinutes:(int64_t)minutes
 {
   v3 = @"HUMinPlural";
-  if (a3 == 1)
+  if (minutes == 1)
   {
     v3 = @"HUMinSingular";
   }
 
-  if (a3)
+  if (minutes)
   {
     v4 = v3;
   }
@@ -497,15 +497,15 @@ uint64_t __68__HUTimerIntervalPickerView__fadeLabelForComponent_toText_animated_
   return v5;
 }
 
-- (id)_secondsStringForSeconds:(int64_t)a3
+- (id)_secondsStringForSeconds:(int64_t)seconds
 {
   v3 = @"HUSecPlural";
-  if (a3 == 1)
+  if (seconds == 1)
   {
     v3 = @"HUSecSingular";
   }
 
-  if (a3)
+  if (seconds)
   {
     v4 = v3;
   }

@@ -1,63 +1,63 @@
 @interface ICLSinfInfo
-- (BOOL)isEqual:(id)a3;
-- (ICLSinfInfo)initWithCoder:(id)a3;
-- (ICLSinfInfo)initWithLegacySinfInfoDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLSinfInfo)initWithCoder:(id)coder;
+- (ICLSinfInfo)initWithLegacySinfInfoDictionary:(id)dictionary;
 - (NSDictionary)legacySinfInfoDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLSinfInfo
 
-- (ICLSinfInfo)initWithCoder:(id)a3
+- (ICLSinfInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICLSinfInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationDSID"];
     applicationDSID = v5->_applicationDSID;
     v5->_applicationDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyID"];
     familyID = v5->_familyID;
     v5->_familyID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloaderDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloaderDSID"];
     downloaderDSID = v5->_downloaderDSID;
     v5->_downloaderDSID = v10;
 
-    v5->_hasMIDBasedSINF = [v4 decodeBoolForKey:@"hasMIDBasedSINF"];
-    v5->_isMissingRequiredSINF = [v4 decodeBoolForKey:@"isMissingRequiredSINF"];
+    v5->_hasMIDBasedSINF = [coderCopy decodeBoolForKey:@"hasMIDBasedSINF"];
+    v5->_isMissingRequiredSINF = [coderCopy decodeBoolForKey:@"isMissingRequiredSINF"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ICLSinfInfo *)self applicationDSID];
-  [v7 encodeObject:v4 forKey:@"applicationDSID"];
+  coderCopy = coder;
+  applicationDSID = [(ICLSinfInfo *)self applicationDSID];
+  [coderCopy encodeObject:applicationDSID forKey:@"applicationDSID"];
 
-  v5 = [(ICLSinfInfo *)self familyID];
-  [v7 encodeObject:v5 forKey:@"familyID"];
+  familyID = [(ICLSinfInfo *)self familyID];
+  [coderCopy encodeObject:familyID forKey:@"familyID"];
 
-  v6 = [(ICLSinfInfo *)self downloaderDSID];
-  [v7 encodeObject:v6 forKey:@"downloaderDSID"];
+  downloaderDSID = [(ICLSinfInfo *)self downloaderDSID];
+  [coderCopy encodeObject:downloaderDSID forKey:@"downloaderDSID"];
 
-  [v7 encodeBool:-[ICLSinfInfo hasMIDBasedSINF](self forKey:{"hasMIDBasedSINF"), @"hasMIDBasedSINF"}];
-  [v7 encodeBool:-[ICLSinfInfo isMissingRequiredSINF](self forKey:{"isMissingRequiredSINF"), @"isMissingRequiredSINF"}];
+  [coderCopy encodeBool:-[ICLSinfInfo hasMIDBasedSINF](self forKey:{"hasMIDBasedSINF"), @"hasMIDBasedSINF"}];
+  [coderCopy encodeBool:-[ICLSinfInfo isMissingRequiredSINF](self forKey:{"isMissingRequiredSINF"), @"isMissingRequiredSINF"}];
 }
 
-- (ICLSinfInfo)initWithLegacySinfInfoDictionary:(id)a3
+- (ICLSinfInfo)initWithLegacySinfInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICLSinfInfo *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ApplicationDSID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ApplicationDSID"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -71,7 +71,7 @@
     }
 
     [(ICLSinfInfo *)v5 setApplicationDSID:v8];
-    v9 = [v4 objectForKeyedSubscript:@"FamilyID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"FamilyID"];
     objc_opt_class();
     v10 = v9;
     if (objc_opt_isKindOfClass())
@@ -85,7 +85,7 @@
     }
 
     [(ICLSinfInfo *)v5 setFamilyID:v11];
-    v12 = [v4 objectForKeyedSubscript:@"DownloaderDSID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"DownloaderDSID"];
     objc_opt_class();
     v13 = v12;
     if (objc_opt_isKindOfClass())
@@ -99,27 +99,27 @@
     }
 
     [(ICLSinfInfo *)v5 setDownloaderDSID:v14];
-    v15 = [v4 objectForKeyedSubscript:@"HasMIDBasedSINF"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"HasMIDBasedSINF"];
     [(ICLSinfInfo *)v5 setHasMIDBasedSINF:MIBooleanValue(v15, 0)];
 
-    v16 = [v4 objectForKeyedSubscript:@"MissingSINF"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"MissingSINF"];
     [(ICLSinfInfo *)v5 setIsMissingRequiredSINF:MIBooleanValue(v16, 0)];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(ICLSinfInfo *)self applicationDSID];
-  [v4 setApplicationDSID:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  applicationDSID = [(ICLSinfInfo *)self applicationDSID];
+  [v4 setApplicationDSID:applicationDSID];
 
-  v6 = [(ICLSinfInfo *)self familyID];
-  [v4 setFamilyID:v6];
+  familyID = [(ICLSinfInfo *)self familyID];
+  [v4 setFamilyID:familyID];
 
-  v7 = [(ICLSinfInfo *)self downloaderDSID];
-  [v4 setDownloaderDSID:v7];
+  downloaderDSID = [(ICLSinfInfo *)self downloaderDSID];
+  [v4 setDownloaderDSID:downloaderDSID];
 
   [v4 setHasMIDBasedSINF:{-[ICLSinfInfo hasMIDBasedSINF](self, "hasMIDBasedSINF")}];
   [v4 setIsMissingRequiredSINF:{-[ICLSinfInfo isMissingRequiredSINF](self, "isMissingRequiredSINF")}];
@@ -129,28 +129,28 @@
 - (NSDictionary)legacySinfInfoDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(ICLSinfInfo *)self applicationDSID];
-  if (v4)
+  applicationDSID = [(ICLSinfInfo *)self applicationDSID];
+  if (applicationDSID)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"ApplicationDSID"];
+    [v3 setObject:applicationDSID forKeyedSubscript:@"ApplicationDSID"];
   }
 
-  v5 = [(ICLSinfInfo *)self familyID];
-  if (v5)
+  familyID = [(ICLSinfInfo *)self familyID];
+  if (familyID)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"FamilyID"];
+    [v3 setObject:familyID forKeyedSubscript:@"FamilyID"];
   }
 
-  v6 = [(ICLSinfInfo *)self downloaderDSID];
-  if (v6)
+  downloaderDSID = [(ICLSinfInfo *)self downloaderDSID];
+  if (downloaderDSID)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"DownloaderDSID"];
+    [v3 setObject:downloaderDSID forKeyedSubscript:@"DownloaderDSID"];
   }
 
-  v7 = [(ICLSinfInfo *)self hasMIDBasedSINF];
+  hasMIDBasedSINF = [(ICLSinfInfo *)self hasMIDBasedSINF];
   v8 = MEMORY[0x1E695E110];
   v9 = MEMORY[0x1E695E118];
-  if (v7)
+  if (hasMIDBasedSINF)
   {
     if ([(ICLSinfInfo *)self hasMIDBasedSINF])
     {
@@ -185,10 +185,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -198,30 +198,30 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ICLSinfInfo *)self applicationDSID];
-      v7 = [(ICLSinfInfo *)v5 applicationDSID];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      applicationDSID = [(ICLSinfInfo *)self applicationDSID];
+      applicationDSID2 = [(ICLSinfInfo *)v5 applicationDSID];
+      v8 = MICompareObjects(applicationDSID, applicationDSID2);
 
       if (v8)
       {
-        v9 = [(ICLSinfInfo *)self familyID];
-        v10 = [(ICLSinfInfo *)v5 familyID];
-        v11 = MICompareObjects(v9, v10);
+        familyID = [(ICLSinfInfo *)self familyID];
+        familyID2 = [(ICLSinfInfo *)v5 familyID];
+        v11 = MICompareObjects(familyID, familyID2);
 
         if (v11)
         {
-          v12 = [(ICLSinfInfo *)self downloaderDSID];
-          v13 = [(ICLSinfInfo *)v5 downloaderDSID];
-          v14 = MICompareObjects(v12, v13);
+          downloaderDSID = [(ICLSinfInfo *)self downloaderDSID];
+          downloaderDSID2 = [(ICLSinfInfo *)v5 downloaderDSID];
+          v14 = MICompareObjects(downloaderDSID, downloaderDSID2);
 
           if (v14)
           {
-            v15 = [(ICLSinfInfo *)self hasMIDBasedSINF];
-            if (v15 == [(ICLSinfInfo *)v5 hasMIDBasedSINF])
+            hasMIDBasedSINF = [(ICLSinfInfo *)self hasMIDBasedSINF];
+            if (hasMIDBasedSINF == [(ICLSinfInfo *)v5 hasMIDBasedSINF])
             {
-              v18 = [(ICLSinfInfo *)self isMissingRequiredSINF];
-              if (v18 == [(ICLSinfInfo *)v5 isMissingRequiredSINF])
+              isMissingRequiredSINF = [(ICLSinfInfo *)self isMissingRequiredSINF];
+              if (isMissingRequiredSINF == [(ICLSinfInfo *)v5 isMissingRequiredSINF])
               {
                 v16 = 1;
                 goto LABEL_22;
@@ -274,23 +274,23 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLSinfInfo *)self hasMIDBasedSINF];
-  v4 = [(ICLSinfInfo *)self isMissingRequiredSINF];
+  hasMIDBasedSINF = [(ICLSinfInfo *)self hasMIDBasedSINF];
+  isMissingRequiredSINF = [(ICLSinfInfo *)self isMissingRequiredSINF];
   v5 = 2;
-  if (!v4)
+  if (!isMissingRequiredSINF)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
-  v7 = [(ICLSinfInfo *)self applicationDSID];
-  v8 = [v7 hash];
+  v6 = v5 | hasMIDBasedSINF;
+  applicationDSID = [(ICLSinfInfo *)self applicationDSID];
+  v8 = [applicationDSID hash];
 
-  v9 = [(ICLSinfInfo *)self familyID];
-  v10 = v8 ^ [v9 hash];
+  familyID = [(ICLSinfInfo *)self familyID];
+  v10 = v8 ^ [familyID hash];
 
-  v11 = [(ICLSinfInfo *)self downloaderDSID];
-  v12 = v10 ^ [v11 hash];
+  downloaderDSID = [(ICLSinfInfo *)self downloaderDSID];
+  v12 = v10 ^ [downloaderDSID hash];
 
   return v12 ^ v6;
 }

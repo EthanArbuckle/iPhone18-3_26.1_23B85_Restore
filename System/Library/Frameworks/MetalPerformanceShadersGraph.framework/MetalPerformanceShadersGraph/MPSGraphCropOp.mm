@@ -1,34 +1,34 @@
 @interface MPSGraphCropOp
-- (MPSGraphCropOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 dimension_index:(int64_t)a6 amount_before:(unint64_t)a7 amount_after:(unint64_t)a8 name:(id)a9;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphCropOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies dimension_index:(int64_t)dimension_index amount_before:(unint64_t)amount_before amount_after:(unint64_t)amount_after name:(id)name;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphCropOp
 
-- (MPSGraphCropOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 dimension_index:(int64_t)a6 amount_before:(unint64_t)a7 amount_after:(unint64_t)a8 name:(id)a9
+- (MPSGraphCropOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies dimension_index:(int64_t)dimension_index amount_before:(unint64_t)amount_before amount_after:(unint64_t)amount_after name:(id)name
 {
-  self->_amount_after = a8;
-  self->_amount_before = a7;
-  self->_dimensionIndex = a6;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a9];
+  self->_amount_after = amount_after;
+  self->_amount_before = amount_before;
+  self->_dimensionIndex = dimension_index;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphCropOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v47 = 260;
   v46[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v46);
+  StringAttr = mlir::Builder::getStringAttr(builder, v46);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x1BBu, 0);
   if (v12)
   {
     v16 = v12;
-    v17 = [v12 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v12 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -43,7 +43,7 @@
     v45 = v18;
     if (v18)
     {
-      memmove(&__dst, v17, v18);
+      memmove(&__dst, uTF8String, v18);
     }
 
     v20 = (&__dst + v19);
@@ -57,7 +57,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v14, &v40);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v14, &v40);
   v21 = v40.__r_.__value_.__r.__words[0];
   if ((v40.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -73,7 +73,7 @@
   }
 
   LOBYTE(v47) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v46);
+  v23 = mlir::Builder::getStringAttr(builder, v46);
   v24 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v40.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -97,8 +97,8 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  v25 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -117,8 +117,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v46, v24, v27);
-  mlir::mps::CropOp::build(a3, v46, *v25, v25[1], self->_amount_before, self->_amount_after);
-  v29 = mlir::OpBuilder::create(a3, v46);
+  mlir::mps::CropOp::build(builder, v46, *v25, v25[1], self->_amount_before, self->_amount_after);
+  v29 = mlir::OpBuilder::create(builder, v46);
   v30 = *(*(v29 + 48) + 16);
   mlir::OperationState::~OperationState(v46);
   if (v30 == &mlir::detail::TypeIDResolver<mlir::mps::CropOp,void>::id)
@@ -137,24 +137,24 @@ LABEL_16:
   return DefiningOp;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v9 = a3;
-  v26 = a4;
-  v10 = a6;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
+  nameCopy = name;
   dimensionIndex = self->_dimensionIndex;
   if (dimensionIndex < 0)
   {
-    v12 = [v9 shape];
-    dimensionIndex = self->_dimensionIndex + [v12 count];
+    shape = [tensorCopy shape];
+    dimensionIndex = self->_dimensionIndex + [shape count];
   }
 
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (i = 0; ; ++i)
   {
-    v16 = [v9 shape];
-    v17 = [v16 count];
+    shape2 = [tensorCopy shape];
+    v17 = [shape2 count];
 
     if (i >= v17)
     {
@@ -164,24 +164,24 @@ LABEL_16:
     if (dimensionIndex == i)
     {
       v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_amount_before];
-      [v13 addObject:v18];
+      [array addObject:v18];
 
       v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_amount_after];
-      [v14 addObject:v19];
+      [array2 addObject:v19];
     }
 
     else
     {
-      [v13 addObject:&unk_1F5B75B18];
-      [v14 addObject:&unk_1F5B75B18];
+      [array addObject:&unk_1F5B75B18];
+      [array2 addObject:&unk_1F5B75B18];
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
   v21 = MEMORY[0x1E696AEC0];
-  v22 = [(MPSGraphOperation *)self name];
-  v23 = [v21 stringWithFormat:@"%@/%@/pad", v10, v22];
-  v24 = [WeakRetained padTensor:v26 withPaddingMode:0 leftPadding:v13 rightPadding:v14 constantValue:v23 name:0.0];
+  name = [(MPSGraphOperation *)self name];
+  v23 = [v21 stringWithFormat:@"%@/%@/pad", nameCopy, name];
+  v24 = [WeakRetained padTensor:gradientCopy withPaddingMode:0 leftPadding:array rightPadding:array2 constantValue:v23 name:0.0];
 
   return v24;
 }

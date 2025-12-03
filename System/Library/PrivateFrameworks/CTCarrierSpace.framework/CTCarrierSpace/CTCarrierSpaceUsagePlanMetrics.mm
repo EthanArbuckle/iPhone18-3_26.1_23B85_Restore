@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceUsagePlanMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceUsagePlanMetrics)init;
-- (CTCarrierSpaceUsagePlanMetrics)initWithCoder:(id)a3;
+- (CTCarrierSpaceUsagePlanMetrics)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceUsagePlanMetrics
@@ -44,36 +44,36 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
-  [v3 appendFormat:@", planLabel=%@", v4];
+  planLabel = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
+  [v3 appendFormat:@", planLabel=%@", planLabel];
 
   [v3 appendFormat:@", planCategory=%s", CTCarrierSpacePlanCategoryAsString(-[CTCarrierSpaceUsagePlanMetrics planCategory](self, "planCategory"))];
   [v3 appendFormat:@", currentUsedPlan=%d", -[CTCarrierSpaceUsagePlanMetrics currentUsedPlan](self, "currentUsedPlan")];
-  v5 = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
-  [v3 appendFormat:@", data=%@", v5];
+  dataUsage = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
+  [v3 appendFormat:@", data=%@", dataUsage];
 
-  v6 = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
-  [v3 appendFormat:@", messages=%@", v6];
+  messages = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
+  [v3 appendFormat:@", messages=%@", messages];
 
-  v7 = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
-  [v3 appendFormat:@", voice=%@", v7];
+  voice = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
+  [v3 appendFormat:@", voice=%@", voice];
 
-  v8 = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
-  [v3 appendFormat:@", remainingBalance=%@", v8];
+  remainingBalance = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
+  [v3 appendFormat:@", remainingBalance=%@", remainingBalance];
 
   [v3 appendFormat:@", throttled=%d", -[CTCarrierSpaceUsagePlanMetrics throttled](self, "throttled")];
-  v9 = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
-  [v3 appendFormat:@", lastUpdatedAt=%@", v9];
+  lastUpdatedAt = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
+  [v3 appendFormat:@", lastUpdatedAt=%@", lastUpdatedAt];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -83,59 +83,59 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
-      v9 = [(CTCarrierSpaceUsagePlanMetrics *)v7 planLabel];
-      if (v8 != v9)
+      planLabel = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
+      planLabel2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy planLabel];
+      if (planLabel != planLabel2)
       {
-        v3 = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
-        v4 = [(CTCarrierSpaceUsagePlanMetrics *)v7 planLabel];
-        if (![v3 isEqualToString:v4])
+        planLabel3 = [(CTCarrierSpaceUsagePlanMetrics *)self planLabel];
+        planLabel4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy planLabel];
+        if (![planLabel3 isEqualToString:planLabel4])
         {
           v10 = 0;
           goto LABEL_44;
         }
       }
 
-      v11 = [(CTCarrierSpaceUsagePlanMetrics *)self planCategory];
-      if (v11 != [(CTCarrierSpaceUsagePlanMetrics *)v7 planCategory]|| (v12 = [(CTCarrierSpaceUsagePlanMetrics *)self currentUsedPlan], v12 != [(CTCarrierSpaceUsagePlanMetrics *)v7 currentUsedPlan]))
+      planCategory = [(CTCarrierSpaceUsagePlanMetrics *)self planCategory];
+      if (planCategory != [(CTCarrierSpaceUsagePlanMetrics *)equalCopy planCategory]|| (v12 = [(CTCarrierSpaceUsagePlanMetrics *)self currentUsedPlan], v12 != [(CTCarrierSpaceUsagePlanMetrics *)equalCopy currentUsedPlan]))
       {
         v10 = 0;
         goto LABEL_43;
       }
 
-      v13 = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
-      v14 = [(CTCarrierSpaceUsagePlanMetrics *)v7 dataUsage];
-      if (v13 != v14)
+      dataUsage = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
+      dataUsage2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy dataUsage];
+      if (dataUsage != dataUsage2)
       {
-        v5 = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
-        v15 = [(CTCarrierSpaceUsagePlanMetrics *)v7 dataUsage];
-        if (![v5 isEqual:v15])
+        dataUsage3 = [(CTCarrierSpaceUsagePlanMetrics *)self dataUsage];
+        dataUsage4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy dataUsage];
+        if (![dataUsage3 isEqual:dataUsage4])
         {
           v10 = 0;
           goto LABEL_41;
         }
 
-        v53 = v15;
+        v53 = dataUsage4;
       }
 
-      v16 = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
-      v17 = [(CTCarrierSpaceUsagePlanMetrics *)v7 messages];
-      v55 = v13;
-      v56 = v16;
-      v18 = v16 == v17;
-      v19 = v17;
+      messages = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
+      messages2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy messages];
+      v55 = dataUsage;
+      v56 = messages;
+      v18 = messages == messages2;
+      v19 = messages2;
       if (v18)
       {
-        v54 = v17;
+        v54 = messages2;
       }
 
       else
       {
-        v20 = v5;
-        v21 = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
-        v48 = [(CTCarrierSpaceUsagePlanMetrics *)v7 messages];
-        v49 = v21;
-        if (![v21 isEqual:?])
+        v20 = dataUsage3;
+        messages3 = [(CTCarrierSpaceUsagePlanMetrics *)self messages];
+        messages4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy messages];
+        v49 = messages3;
+        if (![messages3 isEqual:?])
         {
           v10 = 0;
           v24 = v19;
@@ -143,15 +143,15 @@
 LABEL_39:
 
 LABEL_40:
-          v15 = v53;
-          v5 = v20;
-          v13 = v55;
-          if (v55 == v14)
+          dataUsage4 = v53;
+          dataUsage3 = v20;
+          dataUsage = v55;
+          if (v55 == dataUsage2)
           {
 LABEL_42:
 
 LABEL_43:
-            if (v8 == v9)
+            if (planLabel == planLabel2)
             {
 LABEL_45:
 
@@ -169,30 +169,30 @@ LABEL_41:
         }
 
         v54 = v19;
-        v5 = v20;
+        dataUsage3 = v20;
       }
 
-      v22 = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
-      v51 = [(CTCarrierSpaceUsagePlanMetrics *)v7 voice];
-      v52 = v22;
-      v50 = v14;
-      if (v22 != v51)
+      voice = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
+      voice2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy voice];
+      v52 = voice;
+      v50 = dataUsage2;
+      if (voice != voice2)
       {
-        v23 = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
-        v44 = [(CTCarrierSpaceUsagePlanMetrics *)v7 voice];
-        v45 = v23;
-        if (![v23 isEqual:?])
+        voice3 = [(CTCarrierSpaceUsagePlanMetrics *)self voice];
+        voice4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy voice];
+        v45 = voice3;
+        if (![voice3 isEqual:?])
         {
-          v20 = v5;
+          v20 = dataUsage3;
           v24 = v54;
           v10 = 0;
-          v26 = v51;
+          v26 = voice2;
           v25 = v52;
 LABEL_37:
 
 LABEL_38:
           v27 = v56;
-          v14 = v50;
+          dataUsage2 = v50;
           if (v56 == v24)
           {
             goto LABEL_40;
@@ -202,40 +202,40 @@ LABEL_38:
         }
       }
 
-      v28 = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
-      v46 = [(CTCarrierSpaceUsagePlanMetrics *)v7 remainingBalance];
-      v47 = v28;
-      if (v28 == v46)
+      remainingBalance = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
+      remainingBalance2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy remainingBalance];
+      v47 = remainingBalance;
+      if (remainingBalance == remainingBalance2)
       {
-        v43 = v5;
+        v43 = dataUsage3;
       }
 
       else
       {
-        v29 = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
-        v41 = [(CTCarrierSpaceUsagePlanMetrics *)v7 remainingBalance];
-        v42 = v29;
-        v30 = [v29 isEqualToString:?];
+        remainingBalance3 = [(CTCarrierSpaceUsagePlanMetrics *)self remainingBalance];
+        remainingBalance4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy remainingBalance];
+        v42 = remainingBalance3;
+        v30 = [remainingBalance3 isEqualToString:?];
         v31 = v54;
         if (!v30)
         {
-          v20 = v5;
+          v20 = dataUsage3;
           v10 = 0;
-          v39 = v46;
+          v39 = remainingBalance2;
           v38 = v47;
           goto LABEL_34;
         }
 
-        v43 = v5;
+        v43 = dataUsage3;
       }
 
-      v32 = [(CTCarrierSpaceUsagePlanMetrics *)self throttled];
-      if (v32 == [(CTCarrierSpaceUsagePlanMetrics *)v7 throttled])
+      throttled = [(CTCarrierSpaceUsagePlanMetrics *)self throttled];
+      if (throttled == [(CTCarrierSpaceUsagePlanMetrics *)equalCopy throttled])
       {
-        v33 = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
-        v34 = [(CTCarrierSpaceUsagePlanMetrics *)v7 lastUpdatedAt];
-        v35 = v34;
-        if (v33 == v34)
+        lastUpdatedAt = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
+        lastUpdatedAt2 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy lastUpdatedAt];
+        v35 = lastUpdatedAt2;
+        if (lastUpdatedAt == lastUpdatedAt2)
         {
 
           v10 = 1;
@@ -243,9 +243,9 @@ LABEL_38:
 
         else
         {
-          v36 = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
-          v37 = [(CTCarrierSpaceUsagePlanMetrics *)v7 lastUpdatedAt];
-          v10 = [v36 isEqualToDate:v37];
+          lastUpdatedAt3 = [(CTCarrierSpaceUsagePlanMetrics *)self lastUpdatedAt];
+          lastUpdatedAt4 = [(CTCarrierSpaceUsagePlanMetrics *)equalCopy lastUpdatedAt];
+          v10 = [lastUpdatedAt3 isEqualToDate:lastUpdatedAt4];
         }
       }
 
@@ -254,18 +254,18 @@ LABEL_38:
         v10 = 0;
       }
 
-      v39 = v46;
+      v39 = remainingBalance2;
       v38 = v47;
       v20 = v43;
       v31 = v54;
-      if (v47 == v46)
+      if (v47 == remainingBalance2)
       {
         v24 = v54;
 LABEL_36:
 
-        v26 = v51;
+        v26 = voice2;
         v25 = v52;
-        if (v52 == v51)
+        if (v52 == voice2)
         {
           goto LABEL_38;
         }
@@ -287,53 +287,53 @@ LABEL_46:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   planLabel = self->_planLabel;
-  v5 = a3;
-  [v5 encodeObject:planLabel forKey:@"planLabel"];
-  [v5 encodeInteger:self->_planCategory forKey:@"planCategory"];
-  [v5 encodeBool:self->_currentUsedPlan forKey:@"currentUsedPlan"];
-  [v5 encodeObject:self->_dataUsage forKey:@"dataUsage"];
-  [v5 encodeObject:self->_messages forKey:@"messages"];
-  [v5 encodeObject:self->_voice forKey:@"voice"];
-  [v5 encodeObject:self->_remainingBalance forKey:@"remainingBalance"];
-  [v5 encodeBool:self->_throttled forKey:@"throttled"];
-  [v5 encodeObject:self->_lastUpdatedAt forKey:@"lastUpdatedAt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:planLabel forKey:@"planLabel"];
+  [coderCopy encodeInteger:self->_planCategory forKey:@"planCategory"];
+  [coderCopy encodeBool:self->_currentUsedPlan forKey:@"currentUsedPlan"];
+  [coderCopy encodeObject:self->_dataUsage forKey:@"dataUsage"];
+  [coderCopy encodeObject:self->_messages forKey:@"messages"];
+  [coderCopy encodeObject:self->_voice forKey:@"voice"];
+  [coderCopy encodeObject:self->_remainingBalance forKey:@"remainingBalance"];
+  [coderCopy encodeBool:self->_throttled forKey:@"throttled"];
+  [coderCopy encodeObject:self->_lastUpdatedAt forKey:@"lastUpdatedAt"];
 }
 
-- (CTCarrierSpaceUsagePlanMetrics)initWithCoder:(id)a3
+- (CTCarrierSpaceUsagePlanMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTCarrierSpaceUsagePlanMetrics;
   v5 = [(CTCarrierSpaceUsagePlanMetrics *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planLabel"];
     planLabel = v5->_planLabel;
     v5->_planLabel = v6;
 
-    v5->_planCategory = [v4 decodeIntegerForKey:@"planCategory"];
-    v5->_currentUsedPlan = [v4 decodeBoolForKey:@"currentUsedPlan"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataUsage"];
+    v5->_planCategory = [coderCopy decodeIntegerForKey:@"planCategory"];
+    v5->_currentUsedPlan = [coderCopy decodeBoolForKey:@"currentUsedPlan"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataUsage"];
     dataUsage = v5->_dataUsage;
     v5->_dataUsage = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messages"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messages"];
     messages = v5->_messages;
     v5->_messages = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voice"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voice"];
     voice = v5->_voice;
     v5->_voice = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remainingBalance"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remainingBalance"];
     remainingBalance = v5->_remainingBalance;
     v5->_remainingBalance = v14;
 
-    v5->_throttled = [v4 decodeBoolForKey:@"throttled"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedAt"];
+    v5->_throttled = [coderCopy decodeBoolForKey:@"throttled"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedAt"];
     lastUpdatedAt = v5->_lastUpdatedAt;
     v5->_lastUpdatedAt = v16;
   }

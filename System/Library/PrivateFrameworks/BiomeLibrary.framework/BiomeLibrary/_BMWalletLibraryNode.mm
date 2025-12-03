@@ -5,26 +5,26 @@
 + (id)configurationForTransaction;
 + (id)storeConfigurationForSettledTransaction;
 + (id)storeConfigurationForTransaction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMWalletLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SettledTransaction"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"SettledTransaction"])
   {
-    v5 = [a1 SettledTransaction];
+    settledTransaction = [self SettledTransaction];
 LABEL_5:
-    v6 = v5;
+    v6 = settledTransaction;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Transaction"])
+  if ([nameCopy isEqualToString:@"Transaction"])
   {
-    v5 = [a1 Transaction];
+    settledTransaction = [self Transaction];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForTransaction
 {
-  v3 = [a1 storeConfigurationForTransaction];
-  v4 = [a1 syncPolicyForTransaction];
+  storeConfigurationForTransaction = [self storeConfigurationForTransaction];
+  syncPolicyForTransaction = [self syncPolicyForTransaction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B5D7D18C-D5BF-4A5B-84E2-243225E9E434"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Wallet.Transaction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Wallet.Transaction" eventClass:objc_opt_class() storeConfig:storeConfigurationForTransaction syncPolicy:syncPolicyForTransaction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForSettledTransaction
 {
-  v3 = [a1 storeConfigurationForSettledTransaction];
-  v4 = [a1 syncPolicyForSettledTransaction];
+  storeConfigurationForSettledTransaction = [self storeConfigurationForSettledTransaction];
+  syncPolicyForSettledTransaction = [self syncPolicyForSettledTransaction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8B6D95DC-4558-4C80-B88B-870671A5C1E0"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Wallet.SettledTransaction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Wallet.SettledTransaction" eventClass:objc_opt_class() storeConfig:storeConfigurationForSettledTransaction syncPolicy:syncPolicyForSettledTransaction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.Passbook" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)Transaction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTransaction];
+  configurationForTransaction = [self configurationForTransaction];
   v3 = +[BMWalletTransaction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Wallet.Transaction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Wallet.Transaction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Wallet.Transaction" schema:v9 configuration:configurationForTransaction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)SettledTransaction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSettledTransaction];
+  configurationForSettledTransaction = [self configurationForSettledTransaction];
   v3 = +[BMWalletSettledTransaction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Wallet.SettledTransaction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Wallet.SettledTransaction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Wallet.SettledTransaction" schema:v9 configuration:configurationForSettledTransaction];
 
   v11 = *MEMORY[0x1E69E9840];
 

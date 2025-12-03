@@ -1,19 +1,19 @@
 @interface _UIViewServiceSessionActivityRecord
-+ (_UIViewServiceSessionActivityRecord)activityRecordForProvider:(uint64_t)a3 userInterfaceIdiom:;
++ (_UIViewServiceSessionActivityRecord)activityRecordForProvider:(uint64_t)provider userInterfaceIdiom:;
 - (_UIViewServiceSessionActivityRecord)init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)associateHostedWindow:(uint64_t)a1;
-- (void)disassociateHostedWindow:(uint64_t)a1;
+- (void)associateHostedWindow:(uint64_t)window;
+- (void)disassociateHostedWindow:(uint64_t)window;
 - (void)invalidate;
 @end
 
 @implementation _UIViewServiceSessionActivityRecord
 
-+ (_UIViewServiceSessionActivityRecord)activityRecordForProvider:(uint64_t)a3 userInterfaceIdiom:
++ (_UIViewServiceSessionActivityRecord)activityRecordForProvider:(uint64_t)provider userInterfaceIdiom:
 {
   v5 = objc_opt_self();
   if (_NSIsNSObject() && [a2 __isKindOfUIViewController])
@@ -21,8 +21,8 @@
     if (!a2)
     {
 LABEL_21:
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [(_UIViewServiceSessionActivityRecord *)v24 handleFailureInMethod:sel_activityRecordForProvider_userInterfaceIdiom_ object:v5 file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:206 description:@"Attempting to obtain a view service session activity record with an invalid provider: %@", a2];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [(_UIViewServiceSessionActivityRecord *)currentHandler handleFailureInMethod:sel_activityRecordForProvider_userInterfaceIdiom_ object:v5 file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:206 description:@"Attempting to obtain a view service session activity record with an invalid provider: %@", a2];
       v25 = 0;
       goto LABEL_18;
     }
@@ -40,12 +40,12 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v7 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(a3);
+  v7 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(provider);
   IsPrimary = _UIActiveViewServiceSessionProviderIsPrimary(a2);
-  v9 = [a2 _sessionIdentifier];
+  _sessionIdentifier = [a2 _sessionIdentifier];
   v10 = _UIViewServiceSessionActivityRecordsByUUID();
   v11 = _UIViewServiceSessionActivityRecordsByUUID();
-  v12 = [v11 objectForKey:v9];
+  v12 = [v11 objectForKey:_sessionIdentifier];
 
   if (!v12 && IsPrimary)
   {
@@ -53,11 +53,11 @@ LABEL_21:
     v12 = [_UIViewServiceSessionActivityRecord alloc];
     if (v12)
     {
-      v14 = [v13 _primaryHostedWindow];
-      if (!v14)
+      _primaryHostedWindow = [v13 _primaryHostedWindow];
+      if (!_primaryHostedWindow)
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v27 handleFailureInMethod:sel__initWithPrimaryActivityProvider_userInterfaceIdiom_ object:v12 file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"primaryHostedWindow"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__initWithPrimaryActivityProvider_userInterfaceIdiom_ object:v12 file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"primaryHostedWindow"}];
       }
 
       v28.receiver = v12;
@@ -67,12 +67,12 @@ LABEL_21:
       if (v15)
       {
         v15[16] = 0;
-        v17 = [v13 _sessionIdentifier];
+        _sessionIdentifier2 = [v13 _sessionIdentifier];
         v18 = *(v16 + 7);
-        *(v16 + 7) = v17;
+        *(v16 + 7) = _sessionIdentifier2;
 
         *(v16 + 8) = v7;
-        objc_storeWeak(v16 + 9, v14);
+        objc_storeWeak(v16 + 9, _primaryHostedWindow);
         v19 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
         v20 = *(v16 + 1);
         *(v16 + 1) = v19;
@@ -87,14 +87,14 @@ LABEL_21:
       v12 = v16;
     }
 
-    [v10 setObject:v12 forKey:v9];
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 postNotificationName:@"_UIViewServiceSessionWasCreatedNotification" object:v12];
+    [v10 setObject:v12 forKey:_sessionIdentifier];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIViewServiceSessionWasCreatedNotification" object:v12];
   }
 
-  v24 = v12;
+  currentHandler = v12;
 
-  v25 = v24;
+  v25 = currentHandler;
 LABEL_18:
 
   return v25;
@@ -102,8 +102,8 @@ LABEL_18:
 
 - (_UIViewServiceSessionActivityRecord)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:229 description:{@"%s: init is not allowed on %@", "-[_UIViewServiceSessionActivityRecord init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIActiveViewServiceSessionTracker.m" lineNumber:229 description:{@"%s: init is not allowed on %@", "-[_UIViewServiceSessionActivityRecord init]", objc_opt_class()}];
 
   return 0;
 }
@@ -111,23 +111,23 @@ LABEL_18:
 - (void)invalidate
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    *(a1 + 16) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    *(self + 16) = 1;
+    WeakRetained = objc_loadWeakRetained((self + 24));
     if (WeakRetained)
     {
       v3 = *(__UILogGetCategoryCachedImpl("ViewServiceSessionActivityTracking", &_removeViewServiceSessionActivityRecord____s_category) + 8);
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [a1 succinctDescription];
+        succinctDescription = [self succinctDescription];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = succinctDescription;
         _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "Removing session: %{public}@", &buf, 0xCu);
       }
 
-      v6 = *(a1 + 64);
+      v6 = *(self + 64);
       v7 = WeakRetained[1];
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
       v9 = [v7 objectForKey:v8];
@@ -137,39 +137,39 @@ LABEL_18:
       v15 = __78___UIActiveViewServiceSessionTracker__removeViewServiceSessionActivityRecord___block_invoke;
       v16 = &unk_1E70F35B8;
       v17 = v9;
-      v18 = a1;
+      selfCopy = self;
       v10 = v9;
       [(_UIActiveViewServiceSessionTracker *)WeakRetained _notifyChangeOfTopEvaluatedObjectIfNeededForIdiom:v6 withSortedActivityRecords:v10 mutatedByBlock:&buf];
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"_UIViewServiceSessionDidInvalidateNotification" object:a1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIViewServiceSessionDidInvalidateNotification" object:self];
 
     v13 = _UIViewServiceSessionActivityRecordsByUUID();
-    [v13 removeObjectForKey:*(a1 + 56)];
-    objc_storeWeak((a1 + 24), 0);
-    objc_storeWeak((a1 + 72), 0);
-    v12 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    [v13 removeObjectForKey:*(self + 56)];
+    objc_storeWeak((self + 24), 0);
+    objc_storeWeak((self + 72), 0);
+    v12 = *(self + 8);
+    *(self + 8) = 0;
 
-    objc_storeWeak((a1 + 32), 0);
+    objc_storeWeak((self + 32), 0);
   }
 }
 
-- (void)associateHostedWindow:(uint64_t)a1
+- (void)associateHostedWindow:(uint64_t)window
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (window)
   {
     if (a2)
     {
-      v4 = [a2 _isHostedInAnotherProcess];
+      _isHostedInAnotherProcess = [a2 _isHostedInAnotherProcess];
       v5 = (a2[89] & 8) == 0;
     }
 
     else
     {
-      v4 = 0;
+      _isHostedInAnotherProcess = 0;
       v5 = 0;
     }
 
@@ -225,14 +225,14 @@ LABEL_18:
       while (v15);
     }
 
-    if (v4 & v5)
+    if (_isHostedInAnotherProcess & v5)
     {
-      if ([*(a1 + 8) containsObject:a2])
+      if ([*(window + 8) containsObject:a2])
       {
         return;
       }
 
-      [*(a1 + 8) addObject:a2];
+      [*(window + 8) addObject:a2];
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("ViewServiceSessionActivityTracking", &qword_1ED49C768);
       if (*CategoryCachedImpl)
       {
@@ -253,7 +253,7 @@ LABEL_18:
             v30 = @"(nil)";
           }
 
-          v31 = *(a1 + 56);
+          v31 = *(window + 56);
           *buf = 138412546;
           v39 = v30;
           v40 = 2112;
@@ -265,8 +265,8 @@ LABEL_18:
       v36 = @"_UIViewServiceSessionAssociatedNonPrimaryWindowKey";
       v37 = a2;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      v18 = [MEMORY[0x1E696AD88] defaultCenter];
-      [(__CFString *)v18 postNotificationName:@"_UIViewServiceSessionDidAssociateNonPrimaryHostedWindowNotification" object:a1 userInfo:v17];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [(__CFString *)defaultCenter postNotificationName:@"_UIViewServiceSessionDidAssociateNonPrimaryHostedWindowNotification" object:window userInfo:v17];
     }
 
     else
@@ -285,19 +285,19 @@ LABEL_23:
         v21 = a2;
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
-        v18 = [v20 stringWithFormat:@"<%@: %p>", v23, v21, v32];
+        defaultCenter = [v20 stringWithFormat:@"<%@: %p>", v23, v21, v32];
       }
 
       else
       {
-        v18 = @"(nil)";
+        defaultCenter = @"(nil)";
       }
 
-      v24 = *(a1 + 56);
+      v24 = *(window + 56);
       *buf = 138413314;
-      v39 = v18;
+      v39 = defaultCenter;
       v40 = 1024;
-      *v41 = v4;
+      *v41 = _isHostedInAnotherProcess;
       *&v41[4] = 1024;
       *&v41[6] = v5;
       v42 = 1024;
@@ -311,10 +311,10 @@ LABEL_29:
   }
 }
 
-- (void)disassociateHostedWindow:(uint64_t)a1
+- (void)disassociateHostedWindow:(uint64_t)window
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (window)
   {
     v31 = 0u;
     v32 = 0u;
@@ -365,17 +365,17 @@ LABEL_29:
               v18 = a2;
               v19 = objc_opt_class();
               v20 = NSStringFromClass(v19);
-              v16 = [v17 stringWithFormat:@"<%@: %p>", v20, v18, v29];
+              defaultCenter = [v17 stringWithFormat:@"<%@: %p>", v20, v18, v29];
             }
 
             else
             {
-              v16 = @"(nil)";
+              defaultCenter = @"(nil)";
             }
 
-            v21 = *(a1 + 56);
+            v21 = *(window + 56);
             *buf = 138412802;
-            v36 = v16;
+            v36 = defaultCenter;
             v37 = 1024;
             LODWORD(v38[0]) = 1;
             WORD2(v38[0]) = 2112;
@@ -399,9 +399,9 @@ LABEL_29:
       }
     }
 
-    if ([*(a1 + 8) containsObject:a2])
+    if ([*(window + 8) containsObject:a2])
     {
-      [*(a1 + 8) removeObject:a2];
+      [*(window + 8) removeObject:a2];
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("ViewServiceSessionActivityTracking", &qword_1ED49C778);
       if (*CategoryCachedImpl)
       {
@@ -422,7 +422,7 @@ LABEL_29:
             v27 = @"(nil)";
           }
 
-          v28 = *(a1 + 56);
+          v28 = *(window + 56);
           *buf = 138412546;
           v36 = v27;
           v37 = 2112;
@@ -434,8 +434,8 @@ LABEL_29:
       v33 = @"_UIViewServiceSessionAssociatedNonPrimaryWindowKey";
       v34 = a2;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [(__CFString *)v16 postNotificationName:@"_UIViewServiceSessionDidDisassociateNonPrimaryHostedWindowNotification" object:a1 userInfo:v15];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [(__CFString *)defaultCenter postNotificationName:@"_UIViewServiceSessionDidDisassociateNonPrimaryHostedWindowNotification" object:window userInfo:v15];
 LABEL_22:
 
 LABEL_23:
@@ -445,17 +445,17 @@ LABEL_23:
 
 - (id)succinctDescription
 {
-  v2 = [(_UIViewServiceSessionActivityRecord *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIViewServiceSessionActivityRecord *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(NSUUID *)self->_sessionIdentifier UUIDString];
-  v5 = [v3 appendObject:v4 withName:@"sessionIdentifier"];
+  uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
+  v5 = [v3 appendObject:uUIDString withName:@"sessionIdentifier"];
 
   v6 = objc_loadWeakRetained(&self->_tracker);
   if (v6)
@@ -491,36 +491,36 @@ LABEL_23:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIViewServiceSessionActivityRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIViewServiceSessionActivityRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIViewServiceSessionActivityRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIViewServiceSessionActivityRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v6 = [(NSUUID *)self->_sessionIdentifier UUIDString];
-  v7 = [v5 appendObject:v6 withName:@"sessionIdentifier"];
+  uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
+  v7 = [v5 appendObject:uUIDString withName:@"sessionIdentifier"];
 
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77___UIViewServiceSessionActivityRecord_descriptionBuilderWithMultilinePrefix___block_invoke;
   v12[3] = &unk_1E70F35B8;
   v8 = v5;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v9 = [v8 modifyBody:v12];
   v10 = v8;
 

@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B2B938();
 
   v3 = sub_1E4205ED4();
@@ -18,13 +18,13 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B2C4B0();
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B2C6A8();
 }
 

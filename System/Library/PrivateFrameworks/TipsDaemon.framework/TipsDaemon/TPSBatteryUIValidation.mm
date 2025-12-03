@@ -1,20 +1,20 @@
 @interface TPSBatteryUIValidation
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSBatteryUIValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TPSBatteryUIValidation_validateWithCompletion___block_invoke;
   v6[3] = &unk_2789AF8C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TPSBatteryUIValidation *)self getCurrentStateWithCompletion:v6];
 }
 
@@ -32,12 +32,12 @@ void __49__TPSBatteryUIValidation_validateWithCompletion___block_invoke(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
+  completionCopy = completion;
   v7 = [v5 numberWithBool:{-[TPSBatteryUIValidation getCurrentState](self, "getCurrentState")}];
-  (*(a3 + 2))(v6, v7, 0);
+  (*(completion + 2))(completionCopy, v7, 0);
 }
 
 @end

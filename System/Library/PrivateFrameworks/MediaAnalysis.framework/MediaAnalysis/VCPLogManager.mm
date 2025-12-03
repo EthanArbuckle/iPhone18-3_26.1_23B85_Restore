@@ -35,22 +35,22 @@ void __33__VCPLogManager_sharedLogManager__block_invoke()
   if (v2)
   {
     v2->_logLevel = 6;
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 persistentDomainForName:@"com.apple.mediaanalysis"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults persistentDomainForName:@"com.apple.mediaanalysis"];
 
     v6 = [v5 objectForKey:@"LogLevel"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 intValue];
-      if (v8 >= 7)
+      intValue = [v6 intValue];
+      if (intValue >= 7)
       {
         v9 = 7;
       }
 
       else
       {
-        v9 = v8;
+        v9 = intValue;
       }
 
       v3->_logLevel = v9 & ~(v9 >> 31);

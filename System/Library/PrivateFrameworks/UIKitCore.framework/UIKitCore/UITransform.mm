@@ -1,16 +1,16 @@
 @interface UITransform
 + (id)identity;
-+ (id)rotationWithDegrees:(int64_t)a3;
-+ (id)rotationWithRadians:(double)a3;
-+ (id)scale:(double)a3;
-+ (id)scaleX:(double)a3 scaleY:(double)a4;
-+ (id)transformWithCGAffineTransform:(CGAffineTransform *)a3;
-+ (id)translation:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)rotationWithDegrees:(int64_t)degrees;
++ (id)rotationWithRadians:(double)radians;
++ (id)scale:(double)scale;
++ (id)scaleX:(double)x scaleY:(double)y;
++ (id)transformWithCGAffineTransform:(CGAffineTransform *)transform;
++ (id)translation:(CGPoint)translation;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (UITransform)init;
-- (id)_initWithTransform:(CGAffineTransform *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithTransform:(CGAffineTransform *)transform;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -26,16 +26,16 @@
   return [(UITransform *)self _initWithTransform:v4];
 }
 
-- (id)_initWithTransform:(CGAffineTransform *)a3
+- (id)_initWithTransform:(CGAffineTransform *)transform
 {
   v7.receiver = self;
   v7.super_class = UITransform;
   result = [(UITransform *)&v7 init];
   if (result)
   {
-    v5 = *&a3->a;
-    v6 = *&a3->c;
-    *(result + 40) = *&a3->tx;
+    v5 = *&transform->a;
+    v6 = *&transform->c;
+    *(result + 40) = *&transform->tx;
     *(result + 24) = v6;
     *(result + 8) = v5;
   }
@@ -50,38 +50,38 @@
   return v2;
 }
 
-+ (id)transformWithCGAffineTransform:(CGAffineTransform *)a3
++ (id)transformWithCGAffineTransform:(CGAffineTransform *)transform
 {
   v4 = [UITransform alloc];
-  v5 = *&a3->c;
-  v8[0] = *&a3->a;
+  v5 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v5;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   v6 = [(UITransform *)v4 _initWithTransform:v8];
 
   return v6;
 }
 
-+ (id)rotationWithDegrees:(int64_t)a3
++ (id)rotationWithDegrees:(int64_t)degrees
 {
   BSDegreesToRadians();
 
-  return [a1 rotationWithRadians:?];
+  return [self rotationWithRadians:?];
 }
 
-+ (id)rotationWithRadians:(double)a3
++ (id)rotationWithRadians:(double)radians
 {
   v4 = [UITransform alloc];
-  CGAffineTransformMakeRotation(&v7, a3);
+  CGAffineTransformMakeRotation(&v7, radians);
   v5 = [(UITransform *)v4 _initWithTransform:&v7];
 
   return v5;
 }
 
-+ (id)translation:(CGPoint)a3
++ (id)translation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   v5 = [UITransform alloc];
   CGAffineTransformMakeTranslation(&v8, x, y);
   v6 = [(UITransform *)v5 _initWithTransform:&v8];
@@ -89,34 +89,34 @@
   return v6;
 }
 
-+ (id)scaleX:(double)a3 scaleY:(double)a4
++ (id)scaleX:(double)x scaleY:(double)y
 {
   v6 = [UITransform alloc];
-  CGAffineTransformMakeScale(&v9, a3, a4);
+  CGAffineTransformMakeScale(&v9, x, y);
   v7 = [(UITransform *)v6 _initWithTransform:&v9];
 
   return v7;
 }
 
-+ (id)scale:(double)a3
++ (id)scale:(double)scale
 {
   v4 = [UITransform alloc];
-  CGAffineTransformMakeScale(&v7, a3, a3);
+  CGAffineTransformMakeScale(&v7, scale, scale);
   v5 = [(UITransform *)v4 _initWithTransform:&v7];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -143,10 +143,10 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v2 = [(UITransform *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UITransform *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -158,7 +158,7 @@ LABEL_7:
   v8[3] = &unk_1E70F35B8;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -176,12 +176,12 @@ void __41__UITransform_succinctDescriptionBuilder__block_invoke(uint64_t a1)
   [v2 appendString:v3 withName:{@"transform", v4, v5, v6}];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UITransform *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UITransform *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (CGAffineTransform)transform

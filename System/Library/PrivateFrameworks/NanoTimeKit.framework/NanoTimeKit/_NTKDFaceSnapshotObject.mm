@@ -1,44 +1,44 @@
 @interface _NTKDFaceSnapshotObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _NTKDFaceSnapshotObject
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_NTKDFaceSnapshotObject *)self face];
-    v6 = [v4 face];
-    if ([v5 isEquivalentToFace:v6])
+    face = [(_NTKDFaceSnapshotObject *)self face];
+    face2 = [equalCopy face];
+    if ([face isEquivalentToFace:face2])
     {
       v7 = [(_NTKDFaceSnapshotObject *)self key];
-      v8 = [v4 key];
+      v8 = [equalCopy key];
       if ([v7 isEqualToString:v8])
       {
-        v9 = [(_NTKDFaceSnapshotObject *)self options];
-        v10 = [v4 options];
-        if ([v9 isEqualToDictionary:v10])
+        options = [(_NTKDFaceSnapshotObject *)self options];
+        options2 = [equalCopy options];
+        if ([options isEqualToDictionary:options2])
         {
-          v11 = [(_NTKDFaceSnapshotObject *)self face];
-          v12 = [(_NTKDFaceSnapshotObject *)self context];
-          v13 = [v4 context];
-          v20 = v11;
-          v14 = v11;
-          v15 = v12;
-          v16 = v13;
-          if ([v14 snapshotContext:v15 isStaleRelativeToContext:v13])
+          face3 = [(_NTKDFaceSnapshotObject *)self face];
+          context = [(_NTKDFaceSnapshotObject *)self context];
+          context2 = [equalCopy context];
+          v20 = face3;
+          v14 = face3;
+          v15 = context;
+          v16 = context2;
+          if ([v14 snapshotContext:v15 isStaleRelativeToContext:context2])
           {
             LOBYTE(v17) = 0;
           }
 
           else
           {
-            v18 = [(_NTKDFaceSnapshotObject *)self snapshotStale];
-            v17 = v18 ^ [v4 snapshotStale] ^ 1;
+            snapshotStale = [(_NTKDFaceSnapshotObject *)self snapshotStale];
+            v17 = snapshotStale ^ [equalCopy snapshotStale] ^ 1;
           }
         }
 

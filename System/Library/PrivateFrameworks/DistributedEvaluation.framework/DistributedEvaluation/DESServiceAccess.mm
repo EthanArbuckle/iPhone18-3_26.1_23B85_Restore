@@ -1,32 +1,32 @@
 @interface DESServiceAccess
-+ (BOOL)hasMLRCtlEntitlement:(id)a3;
-+ (BOOL)hasOnDemandLaunchEntitlement:(id)a3;
++ (BOOL)hasMLRCtlEntitlement:(id)entitlement;
++ (BOOL)hasOnDemandLaunchEntitlement:(id)entitlement;
 @end
 
 @implementation DESServiceAccess
 
-+ (BOOL)hasMLRCtlEntitlement:(id)a3
++ (BOOL)hasMLRCtlEntitlement:(id)entitlement
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.mlruntime.mlrctl"];
+  v3 = [entitlement valueForEntitlement:@"com.apple.mlruntime.mlrctl"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)hasOnDemandLaunchEntitlement:(id)a3
++ (BOOL)hasOnDemandLaunchEntitlement:(id)entitlement
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 hasMLRCtlEntitlement:v4])
+  entitlementCopy = entitlement;
+  if ([self hasMLRCtlEntitlement:entitlementCopy])
   {
     v5 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -39,12 +39,12 @@
 
   else
   {
-    v5 = [v4 valueForEntitlement:@"com.apple.mlruntime.host.ondemandplugin"];
+    v5 = [entitlementCopy valueForEntitlement:@"com.apple.mlruntime.host.ondemandplugin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v7 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
       v19 = 0u;
       v20 = 0u;
@@ -67,7 +67,7 @@
 
             v14 = *(*(&v17 + 1) + 8 * i);
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 isEqualToString:v14, v17]& 1) != 0)
+            if ((objc_opt_isKindOfClass() & 1) != 0 && ([bundleIdentifier isEqualToString:v14, v17]& 1) != 0)
             {
               v6 = 1;
               goto LABEL_22;
@@ -87,7 +87,7 @@
       v9 = +[DESLogging coreChannel];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(DESServiceAccess *)v8 hasOnDemandLaunchEntitlement:v9];
+        [(DESServiceAccess *)bundleIdentifier hasOnDemandLaunchEntitlement:v9];
       }
 
       v6 = 0;
@@ -96,10 +96,10 @@ LABEL_22:
 
     else
     {
-      v8 = +[DESLogging coreChannel];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      bundleIdentifier = +[DESLogging coreChannel];
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
       {
-        [DESServiceAccess hasOnDemandLaunchEntitlement:v8];
+        [DESServiceAccess hasOnDemandLaunchEntitlement:bundleIdentifier];
       }
 
       v6 = 0;

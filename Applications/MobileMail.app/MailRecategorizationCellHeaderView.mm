@@ -1,6 +1,6 @@
 @interface MailRecategorizationCellHeaderView
 - (NSString)title;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MailRecategorizationCellHeaderView
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  _objc_retain(a3);
+  _objc_retain(title);
   _objc_retain(self);
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v3;
-    _objc_release(a3);
+    _objc_release(title);
     v6 = v4;
     v7 = v5;
   }

@@ -1,38 +1,38 @@
 @interface CHActivityApplicationInstallationManager
-- (CHActivityApplicationInstallationManager)initWithProfile:(id)a3;
-- (void)_applicationsInstalled:(id)a3;
-- (void)_applicationsUninstalled:(id)a3;
+- (CHActivityApplicationInstallationManager)initWithProfile:(id)profile;
+- (void)_applicationsInstalled:(id)installed;
+- (void)_applicationsUninstalled:(id)uninstalled;
 - (void)_cleanupInstallRequest;
 - (void)_queue_cleanupInstallRequest;
-- (void)_queue_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3;
+- (void)_queue_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot;
 - (void)_queue_startInstalling;
-- (void)_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3;
+- (void)_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation CHActivityApplicationInstallationManager
 
-- (CHActivityApplicationInstallationManager)initWithProfile:(id)a3
+- (CHActivityApplicationInstallationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = CHActivityApplicationInstallationManager;
   v5 = [(CHActivityApplicationInstallationManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialUtilityDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
     [(CHActivityApplicationInstallationManager *)v6 _setAndNotifyStickersAvailable:CHIsFitnessInstalled()];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__applicationsInstalled_ name:*MEMORY[0x277D10448] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__applicationsInstalled_ name:*MEMORY[0x277D10448] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v6 selector:sel__applicationsUninstalled_ name:*MEMORY[0x277D10458] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__applicationsUninstalled_ name:*MEMORY[0x277D10458] object:0];
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
     [WeakRetained registerProfileReadyObserver:v6 queue:0];
@@ -44,31 +44,31 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained nanoSyncManager];
-  [v4 removeObserver:self];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  [nanoSyncManager removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = CHActivityApplicationInstallationManager;
   [(CHActivityApplicationInstallationManager *)&v5 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained nanoSyncManager];
-  [v5 addObserver:self];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  [nanoSyncManager addObserver:self];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 nanoSyncManager];
-  v8 = [v7 pairedDevicesSnapshot];
+  nanoSyncManager2 = [v6 nanoSyncManager];
+  pairedDevicesSnapshot = [nanoSyncManager2 pairedDevicesSnapshot];
 
-  [(CHActivityApplicationInstallationManager *)self _requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:v8];
+  [(CHActivityApplicationInstallationManager *)self _requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:pairedDevicesSnapshot];
 }
 
-- (void)_applicationsInstalled:(id)a3
+- (void)_applicationsInstalled:(id)installed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D10440]];
+  userInfo = [installed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10440]];
   v6 = [v5 containsObject:@"com.apple.Fitness"];
 
   if (v6)
@@ -86,10 +86,10 @@
   }
 }
 
-- (void)_applicationsUninstalled:(id)a3
+- (void)_applicationsUninstalled:(id)uninstalled
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D10450]];
+  userInfo = [uninstalled userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10450]];
   v6 = [v5 containsObject:@"com.apple.Fitness"];
 
   if (v6)
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3
+- (void)_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -116,8 +116,8 @@
   block[2] = __106__CHActivityApplicationInstallationManager__requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot___block_invoke;
   block[3] = &unk_278DF0278;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -130,14 +130,14 @@ void __106__CHActivityApplicationInstallationManager__requestActivityAppInstallI
   [WeakRetained _queue_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:*(a1 + 32)];
 }
 
-- (void)_queue_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)a3
+- (void)_queue_requestActivityAppInstallIfNecessaryWithPairedDeviceSnapshot:(id)snapshot
 {
   if (!self->_installationRequestInProgress)
   {
-    v4 = [a3 allDeviceInfos];
-    v5 = [v4 count] != 0;
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 BOOLForKey:@"ForceInstallActivityApp"];
+    allDeviceInfos = [snapshot allDeviceInfos];
+    v5 = [allDeviceInfos count] != 0;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults BOOLForKey:@"ForceInstallActivityApp"];
     v8 = MEMORY[0x277CCC270];
     if (v7)
     {
@@ -152,8 +152,8 @@ void __106__CHActivityApplicationInstallationManager__requestActivityAppInstallI
       v5 = 1;
     }
 
-    v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v11 = [v10 applicationIsInstalled:@"com.apple.Fitness"];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v11 = [defaultWorkspace applicationIsInstalled:@"com.apple.Fitness"];
 
     _HKInitializeLogging();
     v12 = *v8;

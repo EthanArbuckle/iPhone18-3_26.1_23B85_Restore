@@ -1,22 +1,22 @@
 @interface WADeviceAnalytics_DHCPServerInfo
-+ (id)dhcpServerInfoWithv4Signature:(id)a3 v6Signature:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)dhcpServerInfoWithv4Signature:(id)signature v6Signature:(id)v6Signature;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation WADeviceAnalytics_DHCPServerInfo
 
-+ (id)dhcpServerInfoWithv4Signature:(id)a3 v6Signature:(id)a4
++ (id)dhcpServerInfoWithv4Signature:(id)signature v6Signature:(id)v6Signature
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  signatureCopy = signature;
+  v6SignatureCopy = v6Signature;
+  if (signatureCopy | v6SignatureCopy)
   {
     v7 = objc_opt_new();
-    [v7 setIpv4networkSignature:v5];
-    [v7 setIpv6networkSignature:v6];
+    [v7 setIpv4networkSignature:signatureCopy];
+    [v7 setIpv6networkSignature:v6SignatureCopy];
   }
 
   else
@@ -39,35 +39,35 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  v8 = [v7 ipv4networkSignature];
-  if (!v8)
+  equalCopy = equal;
+  ipv4networkSignature = [equalCopy ipv4networkSignature];
+  if (!ipv4networkSignature)
   {
-    v15 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
-    if (!v15)
+    ipv4networkSignature2 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
+    if (!ipv4networkSignature2)
     {
-      v15 = 0;
+      ipv4networkSignature2 = 0;
       v9 = 0;
       goto LABEL_7;
     }
   }
 
-  v3 = [v7 ipv4networkSignature];
-  v4 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
-  if ([v3 isEqualToString:v4])
+  ipv4networkSignature3 = [equalCopy ipv4networkSignature];
+  ipv4networkSignature4 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
+  if ([ipv4networkSignature3 isEqualToString:ipv4networkSignature4])
   {
     v9 = 1;
 LABEL_7:
-    v11 = [v7 ipv6networkSignature];
-    if (v11 || ([(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    ipv6networkSignature = [equalCopy ipv6networkSignature];
+    if (ipv6networkSignature || ([(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [v7 ipv6networkSignature];
-      v13 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature];
-      v10 = [v12 isEqualToString:v13];
+      ipv6networkSignature2 = [equalCopy ipv6networkSignature];
+      ipv6networkSignature3 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature];
+      v10 = [ipv6networkSignature2 isEqualToString:ipv6networkSignature3];
 
-      if (v11)
+      if (ipv6networkSignature)
       {
         goto LABEL_13;
       }
@@ -91,7 +91,7 @@ LABEL_13:
 LABEL_14:
 
 LABEL_15:
-  if (!v8)
+  if (!ipv4networkSignature)
   {
   }
 
@@ -106,11 +106,11 @@ LABEL_15:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
-  v5 = [(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature];
-  v6 = [WADeviceAnalytics_DHCPServerInfo dhcpServerInfoWithv4Signature:v4 v6Signature:v5];
+  ipv4networkSignature = [(WADeviceAnalytics_DHCPServerInfo *)self ipv4networkSignature];
+  ipv6networkSignature = [(WADeviceAnalytics_DHCPServerInfo *)self ipv6networkSignature];
+  v6 = [WADeviceAnalytics_DHCPServerInfo dhcpServerInfoWithv4Signature:ipv4networkSignature v6Signature:ipv6networkSignature];
 
   return v6;
 }

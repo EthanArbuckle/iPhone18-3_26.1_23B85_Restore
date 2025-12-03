@@ -1,14 +1,14 @@
 @interface HUCameraCloudStorageItemProvider
 - (HUCameraCloudStorageItemProvider)init;
-- (HUCameraCloudStorageItemProvider)initWithCameraProfile:(id)a3;
+- (HUCameraCloudStorageItemProvider)initWithCameraProfile:(id)profile;
 @end
 
 @implementation HUCameraCloudStorageItemProvider
 
-- (HUCameraCloudStorageItemProvider)initWithCameraProfile:(id)a3
+- (HUCameraCloudStorageItemProvider)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
-  v6 = [[HUCameraEraseRecordingsItem alloc] initWithCameraProfile:v5];
+  profileCopy = profile;
+  v6 = [[HUCameraEraseRecordingsItem alloc] initWithCameraProfile:profileCopy];
   v7 = [MEMORY[0x277CBEB98] setWithObjects:{v6, 0}];
   v11.receiver = self;
   v11.super_class = HUCameraCloudStorageItemProvider;
@@ -16,10 +16,10 @@
 
   if (v8)
   {
-    v9 = [(HFStaticItemProvider *)v8 reloadItems];
-    [v9 finishWithNoResult];
+    reloadItems = [(HFStaticItemProvider *)v8 reloadItems];
+    [reloadItems finishWithNoResult];
 
-    objc_storeStrong(&v8->_cameraProfile, a3);
+    objc_storeStrong(&v8->_cameraProfile, profile);
   }
 
   return v8;
@@ -27,9 +27,9 @@
 
 - (HUCameraCloudStorageItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCameraProfile_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageItemProvider.m" lineNumber:94 description:{@"%s is unavailable; use %@ instead", "-[HUCameraCloudStorageItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageItemProvider.m" lineNumber:94 description:{@"%s is unavailable; use %@ instead", "-[HUCameraCloudStorageItemProvider init]", v5}];
 
   return 0;
 }

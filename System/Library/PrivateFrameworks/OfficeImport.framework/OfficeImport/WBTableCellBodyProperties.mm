@@ -1,65 +1,65 @@
 @interface WBTableCellBodyProperties
-+ (void)mapProperties:(id)a3 toWordProperties:(void *)a4 index:(unint64_t)a5;
-+ (void)mapWordProperties:(void *)a3 toProperties:(id)a4 index:(unint64_t)a5;
-+ (void)readFrom:(void *)a3 tracked:(void *)a4 properties:(id)a5 index:(unint64_t)a6;
-+ (void)write:(id)a3 wrdProperties:(void *)a4 tracked:(void *)a5 index:(unint64_t)a6;
++ (void)mapProperties:(id)properties toWordProperties:(void *)wordProperties index:(unint64_t)index;
++ (void)mapWordProperties:(void *)properties toProperties:(id)toProperties index:(unint64_t)index;
++ (void)readFrom:(void *)from tracked:(void *)tracked properties:(id)properties index:(unint64_t)index;
++ (void)write:(id)write wrdProperties:(void *)properties tracked:(void *)tracked index:(unint64_t)index;
 @end
 
 @implementation WBTableCellBodyProperties
 
-+ (void)readFrom:(void *)a3 tracked:(void *)a4 properties:(id)a5 index:(unint64_t)a6
++ (void)readFrom:(void *)from tracked:(void *)tracked properties:(id)properties index:(unint64_t)index
 {
-  v12 = a5;
-  if (a3 && v12)
+  propertiesCopy = properties;
+  if (from && propertiesCopy)
   {
-    [v12 setResolveMode:0];
-    [a1 mapWordProperties:a3 toProperties:v12 index:a6];
-    PositionOfCell = WrdTableProperties::getPositionOfCell(a3, (a6 + 1));
-    [v12 setWidth:{(PositionOfCell - WrdTableProperties::getPositionOfCell(a3, a6))}];
-    if (a4)
+    [propertiesCopy setResolveMode:0];
+    [self mapWordProperties:from toProperties:propertiesCopy index:index];
+    PositionOfCell = WrdTableProperties::getPositionOfCell(from, (index + 1));
+    [propertiesCopy setWidth:{(PositionOfCell - WrdTableProperties::getPositionOfCell(from, index))}];
+    if (tracked)
     {
-      [v12 setResolveMode:1];
-      [a1 mapWordProperties:a4 toProperties:v12 index:a6];
-      if ((*(a4 + 23) & 0x40) != 0)
+      [propertiesCopy setResolveMode:1];
+      [self mapWordProperties:tracked toProperties:propertiesCopy index:index];
+      if ((*(tracked + 23) & 0x40) != 0)
       {
-        v11 = WrdTableProperties::getPositionOfCell(a4, (a6 + 1));
-        [v12 setWidth:{(v11 - WrdTableProperties::getPositionOfCell(a4, a6))}];
+        v11 = WrdTableProperties::getPositionOfCell(tracked, (index + 1));
+        [propertiesCopy setWidth:{(v11 - WrdTableProperties::getPositionOfCell(tracked, index))}];
       }
     }
 
-    [v12 setResolveMode:2];
+    [propertiesCopy setResolveMode:2];
   }
 }
 
-+ (void)write:(id)a3 wrdProperties:(void *)a4 tracked:(void *)a5 index:(unint64_t)a6
++ (void)write:(id)write wrdProperties:(void *)properties tracked:(void *)tracked index:(unint64_t)index
 {
-  v10 = a3;
-  if (v10 && a4)
+  writeCopy = write;
+  if (writeCopy && properties)
   {
-    [v10 setResolveMode:0];
-    [a1 mapProperties:v10 toWordProperties:a4 index:a6];
-    if (a5)
+    [writeCopy setResolveMode:0];
+    [self mapProperties:writeCopy toWordProperties:properties index:index];
+    if (tracked)
     {
-      [v10 setResolveMode:1];
-      [a1 mapProperties:v10 toWordProperties:a5 index:a6];
+      [writeCopy setResolveMode:1];
+      [self mapProperties:writeCopy toWordProperties:tracked index:index];
     }
 
-    [v10 setResolveMode:2];
+    [writeCopy setResolveMode:2];
   }
 }
 
-+ (void)mapWordProperties:(void *)a3 toProperties:(id)a4 index:(unint64_t)a5
++ (void)mapWordProperties:(void *)properties toProperties:(id)toProperties index:(unint64_t)index
 {
-  v5 = a5;
-  v33 = a4;
-  TableCellDescriptorReference = WrdTableProperties::getTableCellDescriptorReference(a3, v5);
-  [v33 setPosition:v5];
+  indexCopy = index;
+  toPropertiesCopy = toProperties;
+  TableCellDescriptorReference = WrdTableProperties::getTableCellDescriptorReference(properties, indexCopy);
+  [toPropertiesCopy setPosition:indexCopy];
   v9 = *(TableCellDescriptorReference + 8);
   if ((v9 & 2) != 0)
   {
     TopBorderReference = WrdTableCellDescriptor::getTopBorderReference(TableCellDescriptorReference);
-    v11 = [v33 mutableTopBorder];
-    [WBBorder readFrom:TopBorderReference to:v11];
+    mutableTopBorder = [toPropertiesCopy mutableTopBorder];
+    [WBBorder readFrom:TopBorderReference to:mutableTopBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -67,8 +67,8 @@
   if ((v9 & 4) != 0)
   {
     LeftBorderReference = WrdTableCellDescriptor::getLeftBorderReference(TableCellDescriptorReference);
-    v13 = [v33 mutableLeftBorder];
-    [WBBorder readFrom:LeftBorderReference to:v13];
+    mutableLeftBorder = [toPropertiesCopy mutableLeftBorder];
+    [WBBorder readFrom:LeftBorderReference to:mutableLeftBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -76,8 +76,8 @@
   if ((v9 & 8) != 0)
   {
     BottomBorderReference = WrdTableCellDescriptor::getBottomBorderReference(TableCellDescriptorReference);
-    v15 = [v33 mutableBottomBorder];
-    [WBBorder readFrom:BottomBorderReference to:v15];
+    mutableBottomBorder = [toPropertiesCopy mutableBottomBorder];
+    [WBBorder readFrom:BottomBorderReference to:mutableBottomBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -85,8 +85,8 @@
   if ((v9 & 0x10) != 0)
   {
     RightBorderReference = WrdTableCellDescriptor::getRightBorderReference(TableCellDescriptorReference);
-    v17 = [v33 mutableRightBorder];
-    [WBBorder readFrom:RightBorderReference to:v17];
+    mutableRightBorder = [toPropertiesCopy mutableRightBorder];
+    [WBBorder readFrom:RightBorderReference to:mutableRightBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -94,8 +94,8 @@
   if (v9)
   {
     ShadingReference = WrdTableCellDescriptor::getShadingReference(TableCellDescriptorReference);
-    v19 = [v33 mutableShading];
-    [WBShading readFrom:ShadingReference to:v19];
+    mutableShading = [toPropertiesCopy mutableShading];
+    [WBShading readFrom:ShadingReference to:mutableShading];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -103,8 +103,8 @@
   if ((v9 & 0x40) != 0)
   {
     DiagonalUpBorderReference = WrdTableCellDescriptor::getDiagonalUpBorderReference(TableCellDescriptorReference);
-    v21 = [v33 mutableDiagonalUpBorder];
-    [WBBorder readFrom:DiagonalUpBorderReference to:v21];
+    mutableDiagonalUpBorder = [toPropertiesCopy mutableDiagonalUpBorder];
+    [WBBorder readFrom:DiagonalUpBorderReference to:mutableDiagonalUpBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
@@ -112,59 +112,59 @@
   if ((v9 & 0x20) != 0)
   {
     DiagonalDownBorderReference = WrdTableCellDescriptor::getDiagonalDownBorderReference(TableCellDescriptorReference);
-    v23 = [v33 mutableDiagonalDownBorder];
-    [WBBorder readFrom:DiagonalDownBorderReference to:v23];
+    mutableDiagonalDownBorder = [toPropertiesCopy mutableDiagonalDownBorder];
+    [WBBorder readFrom:DiagonalDownBorderReference to:mutableDiagonalDownBorder];
 
     v9 = *(TableCellDescriptorReference + 8);
   }
 
   if ((v9 & 0x2000) != 0)
   {
-    [v33 setWidthType:*(TableCellDescriptorReference + 76)];
+    [toPropertiesCopy setWidthType:*(TableCellDescriptorReference + 76)];
     v9 = *(TableCellDescriptorReference + 8);
   }
 
-  v24 = v33;
+  v24 = toPropertiesCopy;
   if ((v9 & 0x1000000) != 0)
   {
-    [v33 setTopMargin:*(TableCellDescriptorReference + 116)];
+    [toPropertiesCopy setTopMargin:*(TableCellDescriptorReference + 116)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x8000) != 0)
   {
     [v24 setTopMarginType:*(TableCellDescriptorReference + 84)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x2000000) != 0)
   {
     [v24 setBottomMargin:*(TableCellDescriptorReference + 118)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x10000) != 0)
   {
     [v24 setBottomMarginType:*(TableCellDescriptorReference + 88)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x800000) != 0)
   {
     [v24 setLeftMargin:*(TableCellDescriptorReference + 114)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x4000) != 0)
   {
     [v24 setLeftMarginType:*(TableCellDescriptorReference + 80)];
     v9 = *(TableCellDescriptorReference + 8);
-    v24 = v33;
+    v24 = toPropertiesCopy;
   }
 
   if ((v9 & 0x4000000) != 0)
@@ -175,13 +175,13 @@
 
   if ((v9 & 0x20000) != 0)
   {
-    [v33 setRightMarginType:*(TableCellDescriptorReference + 92)];
+    [toPropertiesCopy setRightMarginType:*(TableCellDescriptorReference + 92)];
     v9 = *(TableCellDescriptorReference + 8);
   }
 
   if ((v9 & 0x1000) != 0)
   {
-    [v33 setVerticalAlignment:*(TableCellDescriptorReference + 72)];
+    [toPropertiesCopy setVerticalAlignment:*(TableCellDescriptorReference + 72)];
   }
 
   if ((*(TableCellDescriptorReference + 12) & 0xE) != 0)
@@ -219,198 +219,198 @@
         v28 = v26;
       }
 
-      [v33 setTextDirection:v28];
+      [toPropertiesCopy setTextDirection:v28];
     }
 
     else
     {
-      [v33 setTextDirection:0];
+      [toPropertiesCopy setTextDirection:0];
     }
   }
 
   v29 = *(TableCellDescriptorReference + 12);
   if ((v29 & 0x10) != 0)
   {
-    [v33 setVerticallyMergedCell:(*(TableCellDescriptorReference + 130) >> 5) & 1];
+    [toPropertiesCopy setVerticallyMergedCell:(*(TableCellDescriptorReference + 130) >> 5) & 1];
     v29 = *(TableCellDescriptorReference + 12);
   }
 
   if ((v29 & 0x20) != 0)
   {
-    [v33 setFirstInSetOfVerticallyMergedCells:(*(TableCellDescriptorReference + 130) >> 6) & 1];
+    [toPropertiesCopy setFirstInSetOfVerticallyMergedCells:(*(TableCellDescriptorReference + 130) >> 6) & 1];
   }
 
-  if (WrdTableProperties::doRevisionsExist(a3))
+  if (WrdTableProperties::doRevisionsExist(properties))
   {
-    if ((*(a3 + 16) & 2) != 0)
+    if ((*(properties + 16) & 2) != 0)
     {
-      [v33 setIndexToAuthorIDOfFormattingChange:*(a3 + 166)];
+      [toPropertiesCopy setIndexToAuthorIDOfFormattingChange:*(properties + 166)];
     }
 
-    [v33 setFormattingChanged:1];
-    if ((*(a3 + 16) & 4) != 0)
+    [toPropertiesCopy setFormattingChanged:1];
+    if ((*(properties + 16) & 4) != 0)
     {
-      v30 = [a1 formattingChangeDate:*(a3 + 15)];
-      [v33 setFormattingChangeDate:v30];
+      v30 = [self formattingChangeDate:*(properties + 15)];
+      [toPropertiesCopy setFormattingChangeDate:v30];
     }
 
-    if ([v33 isFormattingChangeDateOverridden] && objc_msgSend(v33, "isIndexToAuthorIDOfFormattingChangeOverridden"))
+    if ([toPropertiesCopy isFormattingChangeDateOverridden] && objc_msgSend(toPropertiesCopy, "isIndexToAuthorIDOfFormattingChangeOverridden"))
     {
-      v31 = [v33 document];
-      v32 = [v33 formattingChangeDate];
-      [v31 addChangeTrackingEditAtDate:v32 authorIndex:{objc_msgSend(v33, "indexToAuthorIDOfFormattingChange")}];
+      document = [toPropertiesCopy document];
+      formattingChangeDate = [toPropertiesCopy formattingChangeDate];
+      [document addChangeTrackingEditAtDate:formattingChangeDate authorIndex:{objc_msgSend(toPropertiesCopy, "indexToAuthorIDOfFormattingChange")}];
     }
   }
 }
 
-+ (void)mapProperties:(id)a3 toWordProperties:(void *)a4 index:(unint64_t)a5
++ (void)mapProperties:(id)properties toWordProperties:(void *)wordProperties index:(unint64_t)index
 {
-  v5 = a5;
-  v24 = a3;
-  WrdTableProperties::setPositionOfCell(a4, (v5 + 1), [v24 position]);
-  TableCellDescriptorReference = WrdTableProperties::getTableCellDescriptorReference(a4, v5);
-  if ([v24 isShadingOverridden])
+  indexCopy = index;
+  propertiesCopy = properties;
+  WrdTableProperties::setPositionOfCell(wordProperties, (indexCopy + 1), [propertiesCopy position]);
+  TableCellDescriptorReference = WrdTableProperties::getTableCellDescriptorReference(wordProperties, indexCopy);
+  if ([propertiesCopy isShadingOverridden])
   {
     ShadingReference = WrdTableCellDescriptor::getShadingReference(TableCellDescriptorReference);
-    v9 = [v24 shading];
-    [WBShading write:v9 to:ShadingReference];
+    shading = [propertiesCopy shading];
+    [WBShading write:shading to:ShadingReference];
   }
 
-  if ([v24 isTopBorderOverridden])
+  if ([propertiesCopy isTopBorderOverridden])
   {
     TopBorderReference = WrdTableCellDescriptor::getTopBorderReference(TableCellDescriptorReference);
-    v11 = [v24 topBorder];
-    [WBBorder write:v11 to:TopBorderReference];
+    topBorder = [propertiesCopy topBorder];
+    [WBBorder write:topBorder to:TopBorderReference];
 
     *(TableCellDescriptorReference + 2) |= 0x80u;
   }
 
-  if ([v24 isLeftBorderOverridden])
+  if ([propertiesCopy isLeftBorderOverridden])
   {
     LeftBorderReference = WrdTableCellDescriptor::getLeftBorderReference(TableCellDescriptorReference);
-    v13 = [v24 leftBorder];
-    [WBBorder write:v13 to:LeftBorderReference];
+    leftBorder = [propertiesCopy leftBorder];
+    [WBBorder write:leftBorder to:LeftBorderReference];
 
     *(TableCellDescriptorReference + 2) |= 0x100u;
   }
 
-  if ([v24 isBottomBorderOverridden])
+  if ([propertiesCopy isBottomBorderOverridden])
   {
     BottomBorderReference = WrdTableCellDescriptor::getBottomBorderReference(TableCellDescriptorReference);
-    v15 = [v24 bottomBorder];
-    [WBBorder write:v15 to:BottomBorderReference];
+    bottomBorder = [propertiesCopy bottomBorder];
+    [WBBorder write:bottomBorder to:BottomBorderReference];
 
     *(TableCellDescriptorReference + 2) |= 0x200u;
   }
 
-  if ([v24 isRightBorderOverridden])
+  if ([propertiesCopy isRightBorderOverridden])
   {
     RightBorderReference = WrdTableCellDescriptor::getRightBorderReference(TableCellDescriptorReference);
-    v17 = [v24 rightBorder];
-    [WBBorder write:v17 to:RightBorderReference];
+    rightBorder = [propertiesCopy rightBorder];
+    [WBBorder write:rightBorder to:RightBorderReference];
 
     *(TableCellDescriptorReference + 2) |= 0x400u;
   }
 
-  if ([v24 isDiagonalDownBorderOverridden])
+  if ([propertiesCopy isDiagonalDownBorderOverridden])
   {
     DiagonalDownBorderReference = WrdTableCellDescriptor::getDiagonalDownBorderReference(TableCellDescriptorReference);
-    v19 = [v24 diagonalDownBorder];
-    [WBBorder write:v19 to:DiagonalDownBorderReference];
+    diagonalDownBorder = [propertiesCopy diagonalDownBorder];
+    [WBBorder write:diagonalDownBorder to:DiagonalDownBorderReference];
   }
 
-  if ([v24 isDiagonalUpBorderOverridden])
+  if ([propertiesCopy isDiagonalUpBorderOverridden])
   {
     DiagonalUpBorderReference = WrdTableCellDescriptor::getDiagonalUpBorderReference(TableCellDescriptorReference);
-    v21 = [v24 diagonalUpBorder];
-    [WBBorder write:v21 to:DiagonalUpBorderReference];
+    diagonalUpBorder = [propertiesCopy diagonalUpBorder];
+    [WBBorder write:diagonalUpBorder to:DiagonalUpBorderReference];
   }
 
-  WrdTableCellDescriptor::setWidth(TableCellDescriptorReference, [v24 width]);
-  if ([v24 isWidthTypeOverridden])
+  WrdTableCellDescriptor::setWidth(TableCellDescriptorReference, [propertiesCopy width]);
+  if ([propertiesCopy isWidthTypeOverridden])
   {
-    WrdTableCellDescriptor::setWidthUnit(TableCellDescriptorReference, [v24 widthType]);
+    WrdTableCellDescriptor::setWidthUnit(TableCellDescriptorReference, [propertiesCopy widthType]);
   }
 
-  if ([v24 isTopMarginOverridden])
+  if ([propertiesCopy isTopMarginOverridden])
   {
-    WrdTableCellDescriptor::setTopPadding(TableCellDescriptorReference, [v24 topMargin]);
+    WrdTableCellDescriptor::setTopPadding(TableCellDescriptorReference, [propertiesCopy topMargin]);
   }
 
-  if ([v24 isTopMarginTypeOverridden])
+  if ([propertiesCopy isTopMarginTypeOverridden])
   {
-    WrdTableCellDescriptor::setTopPaddingUnit(TableCellDescriptorReference, [v24 topMarginType]);
+    WrdTableCellDescriptor::setTopPaddingUnit(TableCellDescriptorReference, [propertiesCopy topMarginType]);
   }
 
-  if ([v24 isLeftMarginOverridden])
+  if ([propertiesCopy isLeftMarginOverridden])
   {
-    WrdTableCellDescriptor::setLeftPadding(TableCellDescriptorReference, [v24 leftMargin]);
+    WrdTableCellDescriptor::setLeftPadding(TableCellDescriptorReference, [propertiesCopy leftMargin]);
   }
 
-  if ([v24 isLeftMarginTypeOverridden])
+  if ([propertiesCopy isLeftMarginTypeOverridden])
   {
-    WrdTableCellDescriptor::setLeftPaddingUnit(TableCellDescriptorReference, [v24 leftMarginType]);
+    WrdTableCellDescriptor::setLeftPaddingUnit(TableCellDescriptorReference, [propertiesCopy leftMarginType]);
   }
 
-  if ([v24 isBottomMarginOverridden])
+  if ([propertiesCopy isBottomMarginOverridden])
   {
-    WrdTableCellDescriptor::setBottomPadding(TableCellDescriptorReference, [v24 bottomMargin]);
+    WrdTableCellDescriptor::setBottomPadding(TableCellDescriptorReference, [propertiesCopy bottomMargin]);
   }
 
-  if ([v24 isBottomMarginTypeOverridden])
+  if ([propertiesCopy isBottomMarginTypeOverridden])
   {
-    WrdTableCellDescriptor::setBottomPaddingUnit(TableCellDescriptorReference, [v24 bottomMarginType]);
+    WrdTableCellDescriptor::setBottomPaddingUnit(TableCellDescriptorReference, [propertiesCopy bottomMarginType]);
   }
 
-  if ([v24 isRightMarginOverridden])
+  if ([propertiesCopy isRightMarginOverridden])
   {
-    WrdTableCellDescriptor::setRightPadding(TableCellDescriptorReference, [v24 rightMargin]);
+    WrdTableCellDescriptor::setRightPadding(TableCellDescriptorReference, [propertiesCopy rightMargin]);
   }
 
-  if ([v24 isRightMarginTypeOverridden])
+  if ([propertiesCopy isRightMarginTypeOverridden])
   {
-    WrdTableCellDescriptor::setRightPaddingUnit(TableCellDescriptorReference, [v24 rightMarginType]);
+    WrdTableCellDescriptor::setRightPaddingUnit(TableCellDescriptorReference, [propertiesCopy rightMarginType]);
   }
 
-  if ([v24 isVerticalAlignmentOverridden])
+  if ([propertiesCopy isVerticalAlignmentOverridden])
   {
-    WrdTableCellDescriptor::setVerticalCellAlignment(TableCellDescriptorReference, [v24 verticalAlignment]);
+    WrdTableCellDescriptor::setVerticalCellAlignment(TableCellDescriptorReference, [propertiesCopy verticalAlignment]);
   }
 
-  if ([v24 isVerticallyMergedCellOverridden])
+  if ([propertiesCopy isVerticallyMergedCellOverridden])
   {
-    WrdTableCellDescriptor::setIsVerticallyMergedCell(TableCellDescriptorReference, [v24 verticallyMergedCell]);
+    WrdTableCellDescriptor::setIsVerticallyMergedCell(TableCellDescriptorReference, [propertiesCopy verticallyMergedCell]);
   }
 
-  if ([v24 isFirstInSetOfVerticallyMergedCellsOverridden])
+  if ([propertiesCopy isFirstInSetOfVerticallyMergedCellsOverridden])
   {
-    WrdTableCellDescriptor::setIsFirstInSetOfVerticallyMergedCells(TableCellDescriptorReference, [v24 firstInSetOfVerticallyMergedCells]);
+    WrdTableCellDescriptor::setIsFirstInSetOfVerticallyMergedCells(TableCellDescriptorReference, [propertiesCopy firstInSetOfVerticallyMergedCells]);
   }
 
-  if ([v24 isFormattingChangedOverridden])
+  if ([propertiesCopy isFormattingChangedOverridden])
   {
-    WrdTableProperties::setRevisionMark(a4, [v24 formattingChanged]);
+    WrdTableProperties::setRevisionMark(wordProperties, [propertiesCopy formattingChanged]);
   }
 
-  if ([v24 isIndexToAuthorIDOfFormattingChangeOverridden])
+  if ([propertiesCopy isIndexToAuthorIDOfFormattingChangeOverridden])
   {
-    WrdTableProperties::setAuthorIDForRevision(a4, [v24 indexToAuthorIDOfFormattingChange]);
+    WrdTableProperties::setAuthorIDForRevision(wordProperties, [propertiesCopy indexToAuthorIDOfFormattingChange]);
   }
 
-  if ([v24 isFormattingChangeDateOverridden])
+  if ([propertiesCopy isFormattingChangeDateOverridden])
   {
-    v22 = [v24 formattingChangeDate];
-    [v22 tc_copyToWordDate:WrdTableProperties::getDttmRevisionMarkReference(a4)];
+    formattingChangeDate = [propertiesCopy formattingChangeDate];
+    [formattingChangeDate tc_copyToWordDate:WrdTableProperties::getDttmRevisionMarkReference(wordProperties)];
   }
 
-  if ([v24 isTextDirectionOverridden])
+  if ([propertiesCopy isTextDirectionOverridden])
   {
-    v23 = [v24 textDirection];
-    if (v23 > 3)
+    textDirection = [propertiesCopy textDirection];
+    if (textDirection > 3)
     {
-      if (v23 != 4)
+      if (textDirection != 4)
       {
-        if (v23 != 5)
+        if (textDirection != 5)
         {
           goto LABEL_55;
         }
@@ -421,9 +421,9 @@
 
     else
     {
-      if (v23)
+      if (textDirection)
       {
-        if (v23 == 2)
+        if (textDirection == 2)
         {
           WrdTableCellDescriptor::setRotateFont(TableCellDescriptorReference, 1);
         }

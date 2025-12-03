@@ -1,24 +1,24 @@
 @interface ISPlayerItemChef
 + (ISPlayerItemChef)defaultChef;
 - (ISPlayerItemChef)init;
-- (int64_t)prepareIrisVideoWithAsset:(id)a3 photoTime:(id *)a4 trimmedTimeRange:(id *)a5 completion:(id)a6;
-- (void)cancelPreparationOfIrisAssetWithRequestID:(int64_t)a3;
+- (int64_t)prepareIrisVideoWithAsset:(id)asset photoTime:(id *)time trimmedTimeRange:(id *)range completion:(id)completion;
+- (void)cancelPreparationOfIrisAssetWithRequestID:(int64_t)d;
 @end
 
 @implementation ISPlayerItemChef
 
-- (void)cancelPreparationOfIrisAssetWithRequestID:(int64_t)a3
+- (void)cancelPreparationOfIrisAssetWithRequestID:(int64_t)d
 {
-  v5 = [(ISPlayerItemChef *)self _operationsByRequestID];
-  v6 = [(ISPlayerItemChef *)self _isolationQueue];
+  _operationsByRequestID = [(ISPlayerItemChef *)self _operationsByRequestID];
+  _isolationQueue = [(ISPlayerItemChef *)self _isolationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__ISPlayerItemChef_cancelPreparationOfIrisAssetWithRequestID___block_invoke;
   v8[3] = &unk_279A2A410;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = _operationsByRequestID;
+  dCopy = d;
+  v7 = _operationsByRequestID;
+  dispatch_sync(_isolationQueue, v8);
 }
 
 void __62__ISPlayerItemChef_cancelPreparationOfIrisAssetWithRequestID___block_invoke(uint64_t a1)
@@ -72,18 +72,18 @@ void __115__ISPlayerItemChef_prepareIrisPlayerItemWithAsset_trimmedTimeRange_pho
   [v1 removeObjectForKey:v2];
 }
 
-- (int64_t)prepareIrisVideoWithAsset:(id)a3 photoTime:(id *)a4 trimmedTimeRange:(id *)a5 completion:(id)a6
+- (int64_t)prepareIrisVideoWithAsset:(id)asset photoTime:(id *)time trimmedTimeRange:(id *)range completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
+  completionCopy = completion;
+  assetCopy = asset;
   v12 = +[ISPlayerSettings sharedInstance];
-  v13 = [v12 audioEnabled];
-  v14 = *&a5->var0.var3;
-  v18[0] = *&a5->var0.var0;
+  audioEnabled = [v12 audioEnabled];
+  v14 = *&range->var0.var3;
+  v18[0] = *&range->var0.var0;
   v18[1] = v14;
-  v18[2] = *&a5->var1.var1;
-  v17 = *a4;
-  v15 = [(ISPlayerItemChef *)self prepareIrisPlayerItemWithAsset:v11 trimmedTimeRange:v18 photoTime:&v17 includeVideo:1 includeAudio:v13 completion:v10];
+  v18[2] = *&range->var1.var1;
+  v17 = *time;
+  v15 = [(ISPlayerItemChef *)self prepareIrisPlayerItemWithAsset:assetCopy trimmedTimeRange:v18 photoTime:&v17 includeVideo:1 includeAudio:audioEnabled completion:completionCopy];
 
   return v15;
 }

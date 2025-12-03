@@ -1,86 +1,86 @@
 @interface ModalHostViewController
 - (NSArray)keyCommands;
-- (_TtC5TeaUI23ModalHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)closeButtonPressedWithSender:(id)a3;
+- (_TtC5TeaUI23ModalHostViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)closeButtonPressedWithSender:(id)sender;
 - (void)dismissKeyCommand;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ModalHostViewController
 
-- (void)closeButtonPressedWithSender:(id)a3
+- (void)closeButtonPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1D8169BE0();
 }
 
-- (_TtC5TeaUI23ModalHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI23ModalHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ModalHostViewController.init(nibName:bundle:)();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ModalHostViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ModalHostViewController.viewWillLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   ModalHostViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ModalHostViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ModalHostViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ModalHostViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  ModalHostViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  ModalHostViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  ModalHostViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ModalHostViewController.keyCommands.getter();
 
   if (v3)
@@ -99,35 +99,35 @@
 
 - (void)dismissKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D816B818();
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = ModalHostViewController.animationController(forPresented:presenting:source:)(v11, v9);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
+  v12 = ModalHostViewController.animationController(forPresented:presenting:source:)(selfCopy, presentingControllerCopy);
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = ModalHostViewController.animationController(forDismissed:)();
 
   return v6;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  ModalHostViewController.presentationControllerDidDismiss(_:)(v5);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  ModalHostViewController.presentationControllerDidDismiss(_:)(selfCopy);
 }
 
 @end

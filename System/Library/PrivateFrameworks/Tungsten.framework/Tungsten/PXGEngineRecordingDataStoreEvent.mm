@@ -1,6 +1,6 @@
 @interface PXGEngineRecordingDataStoreEvent
-+ (id)eventWithTextures:(id)a3 dataStore:(id)a4 spriteIndexes:(id)a5 screenScale:(double)a6;
-- (PXGEngineRecordingDataStoreEvent)initWithTextures:(id)a3 dataStore:(id)a4 spriteIndexes:(id)a5 screenScale:(double)a6;
++ (id)eventWithTextures:(id)textures dataStore:(id)store spriteIndexes:(id)indexes screenScale:(double)scale;
+- (PXGEngineRecordingDataStoreEvent)initWithTextures:(id)textures dataStore:(id)store spriteIndexes:(id)indexes screenScale:(double)scale;
 - (id)serializable;
 - (void)dealloc;
 @end
@@ -149,17 +149,17 @@ void __48__PXGEngineRecordingDataStoreEvent_serializable__block_invoke(void *a1,
   [(PXGEngineRecordingDataStoreEvent *)&v3 dealloc];
 }
 
-- (PXGEngineRecordingDataStoreEvent)initWithTextures:(id)a3 dataStore:(id)a4 spriteIndexes:(id)a5 screenScale:(double)a6
+- (PXGEngineRecordingDataStoreEvent)initWithTextures:(id)textures dataStore:(id)store spriteIndexes:(id)indexes screenScale:(double)scale
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  texturesCopy = textures;
+  storeCopy = store;
+  indexesCopy = indexes;
   v24.receiver = self;
   v24.super_class = PXGEngineRecordingDataStoreEvent;
   v13 = [(PXGTungstenRecordingEvent *)&v24 initWithComponent:0 eventName:@"dataStore"];
   if (v13)
   {
-    v14 = [v11 count];
+    v14 = [storeCopy count];
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x2020000000;
@@ -171,21 +171,21 @@ void __48__PXGEngineRecordingDataStoreEvent_serializable__block_invoke(void *a1,
     v13->_infos = malloc_type_malloc(40 * v14, 0x100004081CBAE78uLL);
     v13->_textureInfos = malloc_type_malloc(v14 << 6, 0x1000040FB6E31C6uLL);
     v13->_textureInfoSprites = malloc_type_malloc(v15, 0x100004052888210uLL);
-    memcpy(v13->_entities, [v11 entities], v15);
-    memcpy(v13->_geometries, [v11 geometries], 32 * v14);
-    memcpy(v13->_styles, [v11 styles], 160 * v14);
-    memcpy(v13->_infos, [v11 infos], 40 * v14);
+    memcpy(v13->_entities, [storeCopy entities], v15);
+    memcpy(v13->_geometries, [storeCopy geometries], 32 * v14);
+    memcpy(v13->_styles, [storeCopy styles], 160 * v14);
+    memcpy(v13->_infos, [storeCopy infos], 40 * v14);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __89__PXGEngineRecordingDataStoreEvent_initWithTextures_dataStore_spriteIndexes_screenScale___block_invoke;
     v18[3] = &unk_2782AB258;
-    v19 = v12;
+    v19 = indexesCopy;
     v21 = v23;
     v16 = v13;
     v20 = v16;
-    v22 = a6;
-    [v10 enumerateKeysAndObjectsUsingBlock:v18];
-    objc_storeStrong(v16 + 11, a5);
+    scaleCopy = scale;
+    [texturesCopy enumerateKeysAndObjectsUsingBlock:v18];
+    objc_storeStrong(v16 + 11, indexes);
 
     _Block_object_dispose(v23, 8);
   }
@@ -290,12 +290,12 @@ void __89__PXGEngineRecordingDataStoreEvent_initWithTextures_dataStore_spriteInd
   }
 }
 
-+ (id)eventWithTextures:(id)a3 dataStore:(id)a4 spriteIndexes:(id)a5 screenScale:(double)a6
++ (id)eventWithTextures:(id)textures dataStore:(id)store spriteIndexes:(id)indexes screenScale:(double)scale
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PXGEngineRecordingDataStoreEvent alloc] initWithTextures:v11 dataStore:v10 spriteIndexes:v9 screenScale:a6];
+  indexesCopy = indexes;
+  storeCopy = store;
+  texturesCopy = textures;
+  v12 = [[PXGEngineRecordingDataStoreEvent alloc] initWithTextures:texturesCopy dataStore:storeCopy spriteIndexes:indexesCopy screenScale:scale];
 
   return v12;
 }

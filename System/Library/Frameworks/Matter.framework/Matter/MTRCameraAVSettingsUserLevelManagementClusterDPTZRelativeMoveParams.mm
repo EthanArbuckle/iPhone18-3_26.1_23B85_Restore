@@ -1,8 +1,8 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -38,26 +38,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams);
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self videoStreamID];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setVideoStreamID:v5];
+  videoStreamID = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self videoStreamID];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setVideoStreamID:videoStreamID];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setDeltaX:v6];
+  deltaX = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setDeltaX:deltaX];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setDeltaY:v7];
+  deltaY = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setDeltaY:deltaY];
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setZoomDelta:v8];
+  zoomDelta = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setZoomDelta:zoomDelta];
 
-  v9 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -72,45 +72,45 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v28 = 0;
+  unsignedShortValue = 0;
   v29 = 0;
   v31 = 0;
   LOBYTE(v33) = 0;
   v27[0] = 0;
   v27[1] = 0;
   v26 = v27;
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self videoStreamID];
-  v28 = [v5 unsignedShortValue];
+  videoStreamID = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self videoStreamID];
+  unsignedShortValue = [videoStreamID unsignedShortValue];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
+  deltaX = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
 
-  if (v6)
+  if (deltaX)
   {
     v29 = 1;
-    v30 = 0;
-    v7 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
-    v30 = [v7 shortValue];
+    shortValue = 0;
+    deltaX2 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaX];
+    shortValue = [deltaX2 shortValue];
   }
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
+  deltaY = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
 
-  if (v8)
+  if (deltaY)
   {
     v31 = 1;
-    v32 = 0;
-    v9 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
-    v32 = [v9 shortValue];
+    shortValue2 = 0;
+    deltaY2 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self deltaY];
+    shortValue2 = [deltaY2 shortValue];
   }
 
-  v10 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
+  zoomDelta = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
 
-  if (v10)
+  if (zoomDelta)
   {
     v33 = 1;
-    v11 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
-    HIBYTE(v33) = [v11 charValue];
+    zoomDelta2 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self zoomDelta];
+    HIBYTE(v33) = [zoomDelta2 charValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v25);
@@ -123,7 +123,7 @@
     v24 = 0;
     sub_238EA16C4(&v21, &v25, 0);
     sub_2393C7BF0(v20, &v21, 0xFFFFFFFF);
-    v12 = sub_238F031A0(&v28, v20, 0x100uLL);
+    v12 = sub_238F031A0(&unsignedShortValue, v20, 0x100uLL);
     v14 = v12;
     if (v12 || (v12 = sub_238DD2EFC(v20, &v25), v14 = v12, v12))
     {
@@ -132,8 +132,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v25);
-      v12 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v25);
+      v12 = sub_2393C7114(reader, 21, 256);
       v15 = v19;
       v14 = v12;
     }
@@ -161,19 +161,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZRelativeMoveParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -184,7 +184,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8C2900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

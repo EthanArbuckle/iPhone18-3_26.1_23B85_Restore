@@ -1,16 +1,16 @@
 @interface RadioMutableRecentStationsGroup
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setLocalizedTitle:(id)a3;
-- (void)setStations:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setLocalizedTitle:(id)title;
+- (void)setStations:(id)stations;
 @end
 
 @implementation RadioMutableRecentStationsGroup
 
-- (void)setStations:(id)a3
+- (void)setStations:(id)stations
 {
-  if (self->super._stations != a3)
+  if (self->super._stations != stations)
   {
-    v5 = [a3 copy];
+    v5 = [stations copy];
     stations = self->super._stations;
     self->super._stations = v5;
 
@@ -18,11 +18,11 @@
   }
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  if (self->super._localizedTitle != a3)
+  if (self->super._localizedTitle != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     localizedTitle = self->super._localizedTitle;
     self->super._localizedTitle = v5;
 
@@ -30,7 +30,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 

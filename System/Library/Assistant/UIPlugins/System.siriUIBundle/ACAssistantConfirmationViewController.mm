@@ -1,9 +1,9 @@
 @interface ACAssistantConfirmationViewController
-- (BOOL)_sendCommands:(id)a3;
+- (BOOL)_sendCommands:(id)commands;
 - (BOOL)triggerConfirmation;
 - (BOOL)triggerDenial;
 - (UIEdgeInsets)defaultViewInsets;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (void)_emitButtonInteraction;
 - (void)loadView;
 - (void)viewDidLoad;
@@ -22,44 +22,44 @@
   v12.receiver = self;
   v12.super_class = ACAssistantConfirmationViewController;
   [(ACAssistantConfirmationViewController *)&v12 viewDidLoad];
-  v3 = [(ACAssistantConfirmationViewController *)self view];
-  v4 = [v3 cancelButton];
-  [v4 addTarget:self action:"_cancelButtonHit:" forControlEvents:64];
+  view = [(ACAssistantConfirmationViewController *)self view];
+  cancelButton = [view cancelButton];
+  [cancelButton addTarget:self action:"_cancelButtonHit:" forControlEvents:64];
 
-  v5 = [v3 confirmButton];
-  [v5 addTarget:self action:"_confirmButtonHit:" forControlEvents:64];
+  confirmButton = [view confirmButton];
+  [confirmButton addTarget:self action:"_confirmButtonHit:" forControlEvents:64];
 
-  v6 = [(ACAssistantConfirmationViewController *)self aceObject];
-  v7 = [v6 denyText];
-  [v3 setCancelText:v7];
+  aceObject = [(ACAssistantConfirmationViewController *)self aceObject];
+  denyText = [aceObject denyText];
+  [view setCancelText:denyText];
 
-  v8 = [v6 confirmText];
-  [v3 setConfirmText:v8];
+  confirmText = [aceObject confirmText];
+  [view setConfirmText:confirmText];
 
-  v9 = [v3 confirmButton];
-  v10 = [(ACAssistantConfirmationViewController *)self aceObject];
-  v11 = [v10 allConfirmationOptions];
-  [v9 configureRoleForConfirmationOptions:v11];
+  confirmButton2 = [view confirmButton];
+  aceObject2 = [(ACAssistantConfirmationViewController *)self aceObject];
+  allConfirmationOptions = [aceObject2 allConfirmationOptions];
+  [confirmButton2 configureRoleForConfirmationOptions:allConfirmationOptions];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(ACAssistantConfirmationViewController *)self view];
-  [v4 sizeThatFits:{a3, 1.79769313e308}];
+  view = [(ACAssistantConfirmationViewController *)self view];
+  [view sizeThatFits:{width, 1.79769313e308}];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)_sendCommands:(id)a3
+- (BOOL)_sendCommands:(id)commands
 {
   hasSentCommands = self->_hasSentCommands;
   if (!hasSentCommands)
   {
     self->_hasSentCommands = 1;
-    v5 = a3;
-    v6 = [(ACAssistantConfirmationViewController *)self delegate];
-    [v6 siriViewController:self performAceCommands:v5];
+    commandsCopy = commands;
+    delegate = [(ACAssistantConfirmationViewController *)self delegate];
+    [delegate siriViewController:self performAceCommands:commandsCopy];
   }
 
   return !hasSentCommands;
@@ -67,42 +67,42 @@
 
 - (BOOL)triggerDenial
 {
-  v2 = self;
+  selfCopy = self;
   [(ACAssistantConfirmationViewController *)self _emitButtonInteraction];
-  v3 = [(ACAssistantConfirmationViewController *)v2 aceObject];
-  v4 = [v3 denyCommands];
-  LOBYTE(v2) = [(ACAssistantConfirmationViewController *)v2 _sendCommands:v4];
+  aceObject = [(ACAssistantConfirmationViewController *)selfCopy aceObject];
+  denyCommands = [aceObject denyCommands];
+  LOBYTE(selfCopy) = [(ACAssistantConfirmationViewController *)selfCopy _sendCommands:denyCommands];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)triggerConfirmation
 {
-  v2 = self;
+  selfCopy = self;
   [(ACAssistantConfirmationViewController *)self _emitButtonInteraction];
-  v3 = [(ACAssistantConfirmationViewController *)v2 aceObject];
-  v4 = [v3 confirmCommands];
-  LOBYTE(v2) = [(ACAssistantConfirmationViewController *)v2 _sendCommands:v4];
+  aceObject = [(ACAssistantConfirmationViewController *)selfCopy aceObject];
+  confirmCommands = [aceObject confirmCommands];
+  LOBYTE(selfCopy) = [(ACAssistantConfirmationViewController *)selfCopy _sendCommands:confirmCommands];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_emitButtonInteraction
 {
   v3 = +[SRUIFInstrumentationManager sharedManager];
-  v4 = [(ACAssistantConfirmationViewController *)self instrumentationTurnIdentifier];
-  v5 = [AFAnalyticsTurnBasedInstrumentationContext newTurnBasedContextWithPreviousTurnID:v4];
+  instrumentationTurnIdentifier = [(ACAssistantConfirmationViewController *)self instrumentationTurnIdentifier];
+  v5 = [AFAnalyticsTurnBasedInstrumentationContext newTurnBasedContextWithPreviousTurnID:instrumentationTurnIdentifier];
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 turnIdentifier];
+    turnIdentifier = [v5 turnIdentifier];
     v10 = 136315650;
     v11 = "[ACAssistantConfirmationViewController _emitButtonInteraction]";
     v12 = 2112;
-    v13 = v8;
+    v13 = turnIdentifier;
     v14 = 2112;
-    v15 = v4;
+    v15 = instrumentationTurnIdentifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v10, 0x20u);
   }
 

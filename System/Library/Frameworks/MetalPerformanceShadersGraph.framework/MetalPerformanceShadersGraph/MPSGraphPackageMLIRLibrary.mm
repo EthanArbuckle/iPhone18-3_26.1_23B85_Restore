@@ -1,16 +1,16 @@
 @interface MPSGraphPackageMLIRLibrary
-- (BOOL)optimizedModuleWithSignature:(id)a3;
-- (BOOL)optimizedNoDeviceModuleWithSignature:(id)a3;
+- (BOOL)optimizedModuleWithSignature:(id)signature;
+- (BOOL)optimizedNoDeviceModuleWithSignature:(id)signature;
 - (BOOL)originalFileExists;
 - (MPSGraphPackageMLIRLibrary)init;
-- (MPSGraphPackageMLIRLibrary)initWithMLIRLibraryDict:(id)a3;
+- (MPSGraphPackageMLIRLibrary)initWithMLIRLibraryDict:(id)dict;
 - (unint64_t)getResourceStorageMode;
-- (void)addOptimizedNoDeviceResourcesUsed:(id)a3 withSignature:(id)a4;
-- (void)addOptimizedResourcesUsed:(id)a3 withSignature:(id)a4;
-- (void)setOptimizedModule:(id)a3 withSignature:(id)a4;
-- (void)setOptimizedNoDeviceModule:(id)a3 withSignature:(id)a4;
-- (void)setResourceStorageMode:(unint64_t)a3;
-- (void)updateWithMLIRLibrary:(id)a3;
+- (void)addOptimizedNoDeviceResourcesUsed:(id)used withSignature:(id)signature;
+- (void)addOptimizedResourcesUsed:(id)used withSignature:(id)signature;
+- (void)setOptimizedModule:(id)module withSignature:(id)signature;
+- (void)setOptimizedNoDeviceModule:(id)module withSignature:(id)signature;
+- (void)setResourceStorageMode:(unint64_t)mode;
+- (void)updateWithMLIRLibrary:(id)library;
 @end
 
 @implementation MPSGraphPackageMLIRLibrary
@@ -45,13 +45,13 @@
   return v2;
 }
 
-- (MPSGraphPackageMLIRLibrary)initWithMLIRLibraryDict:(id)a3
+- (MPSGraphPackageMLIRLibrary)initWithMLIRLibraryDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v9.receiver = self;
   v9.super_class = MPSGraphPackageMLIRLibrary;
   v5 = [(MPSGraphPackageMLIRLibrary *)&v9 init];
-  v6 = [v4 mutableCopy];
+  v6 = [dictCopy mutableCopy];
   mlirLibrary = v5->_mlirLibrary;
   v5->_mlirLibrary = v6;
 
@@ -64,9 +64,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-    return v4;
+    return unsignedLongLongValue;
   }
 
   else
@@ -76,26 +76,26 @@
   }
 }
 
-- (void)updateWithMLIRLibrary:(id)a3
+- (void)updateWithMLIRLibrary:(id)library
 {
-  v23 = a3;
-  v4 = [v23 getDict];
+  libraryCopy = library;
+  getDict = [libraryCopy getDict];
   v5 = [(NSMutableDictionary *)self->_mlirLibrary objectForKey:@"Original"];
-  if (v5 && ([v4 objectForKeyedSubscript:@"Original"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6))
+  if (v5 && ([getDict objectForKeyedSubscript:@"Original"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6))
   {
     v9 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Optimized Modules"];
-    v10 = [v4 objectForKeyedSubscript:@"Optimized Modules"];
+    v10 = [getDict objectForKeyedSubscript:@"Optimized Modules"];
     [v9 addEntriesFromDictionary:v10];
 
     v11 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Optimized No Device Modules"];
-    v12 = [v4 objectForKeyedSubscript:@"Optimized No Device Modules"];
+    v12 = [getDict objectForKeyedSubscript:@"Optimized No Device Modules"];
     [v11 addEntriesFromDictionary:v12];
 
     v13 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Resource Storage Mode"];
-    [v4 objectForKeyedSubscript:@"Resource Storage Mode"];
+    [getDict objectForKeyedSubscript:@"Resource Storage Mode"];
 
     v14 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Resource Storage Mode"];
-    v15 = [v4 objectForKeyedSubscript:@"Resource Storage Mode"];
+    v15 = [getDict objectForKeyedSubscript:@"Resource Storage Mode"];
 
     if (v14 != v15 && MTLReportFailureTypeEnabled())
     {
@@ -103,25 +103,25 @@
     }
 
     v16 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Optimized Resources Used"];
-    v17 = [v4 objectForKeyedSubscript:@"Optimized Resources Used"];
+    v17 = [getDict objectForKeyedSubscript:@"Optimized Resources Used"];
     [v16 addEntriesFromDictionary:v17];
 
     v18 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Optimized No Device Resources Used"];
-    v19 = [v4 objectForKeyedSubscript:@"Optimized No Device Resources Used"];
+    v19 = [getDict objectForKeyedSubscript:@"Optimized No Device Resources Used"];
     [v18 addEntriesFromDictionary:v19];
 
     v20 = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Resource Offsets"];
-    v21 = [v4 objectForKeyedSubscript:@"Resource Offsets"];
+    v21 = [getDict objectForKeyedSubscript:@"Resource Offsets"];
     [v20 addEntriesFromDictionary:v21];
 
     mlirLibrary = [(NSMutableDictionary *)self->_mlirLibrary objectForKeyedSubscript:@"Binary File Resources"];
-    v22 = [v4 objectForKeyedSubscript:@"Binary File Resources"];
+    v22 = [getDict objectForKeyedSubscript:@"Binary File Resources"];
     [mlirLibrary addEntriesFromDictionary:v22];
   }
 
   else
   {
-    v7 = [v4 mutableCopy];
+    v7 = [getDict mutableCopy];
     mlirLibrary = self->_mlirLibrary;
     self->_mlirLibrary = v7;
   }
@@ -135,62 +135,62 @@
   return v3;
 }
 
-- (BOOL)optimizedModuleWithSignature:(id)a3
+- (BOOL)optimizedModuleWithSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedModules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  signatureCopy = signature;
+  getOptimizedModules = [(MPSGraphPackageMLIRLibrary *)self getOptimizedModules];
+  v6 = [getOptimizedModules objectForKeyedSubscript:signatureCopy];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (BOOL)optimizedNoDeviceModuleWithSignature:(id)a3
+- (BOOL)optimizedNoDeviceModuleWithSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceModules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  signatureCopy = signature;
+  getOptimizedNoDeviceModules = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceModules];
+  v6 = [getOptimizedNoDeviceModules objectForKeyedSubscript:signatureCopy];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (void)setOptimizedModule:(id)a3 withSignature:(id)a4
+- (void)setOptimizedModule:(id)module withSignature:(id)signature
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedModules];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  moduleCopy = module;
+  signatureCopy = signature;
+  getOptimizedModules = [(MPSGraphPackageMLIRLibrary *)self getOptimizedModules];
+  [getOptimizedModules setObject:moduleCopy forKeyedSubscript:signatureCopy];
 }
 
-- (void)setOptimizedNoDeviceModule:(id)a3 withSignature:(id)a4
+- (void)setOptimizedNoDeviceModule:(id)module withSignature:(id)signature
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceModules];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  moduleCopy = module;
+  signatureCopy = signature;
+  getOptimizedNoDeviceModules = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceModules];
+  [getOptimizedNoDeviceModules setObject:moduleCopy forKeyedSubscript:signatureCopy];
 }
 
-- (void)setResourceStorageMode:(unint64_t)a3
+- (void)setResourceStorageMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mode];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)addOptimizedResourcesUsed:(id)a3 withSignature:(id)a4
+- (void)addOptimizedResourcesUsed:(id)used withSignature:(id)signature
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedResourcesUsedLibrary];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  usedCopy = used;
+  signatureCopy = signature;
+  getOptimizedResourcesUsedLibrary = [(MPSGraphPackageMLIRLibrary *)self getOptimizedResourcesUsedLibrary];
+  [getOptimizedResourcesUsedLibrary setObject:usedCopy forKeyedSubscript:signatureCopy];
 }
 
-- (void)addOptimizedNoDeviceResourcesUsed:(id)a3 withSignature:(id)a4
+- (void)addOptimizedNoDeviceResourcesUsed:(id)used withSignature:(id)signature
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceResourcesUsedLibrary];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  usedCopy = used;
+  signatureCopy = signature;
+  getOptimizedNoDeviceResourcesUsedLibrary = [(MPSGraphPackageMLIRLibrary *)self getOptimizedNoDeviceResourcesUsedLibrary];
+  [getOptimizedNoDeviceResourcesUsedLibrary setObject:usedCopy forKeyedSubscript:signatureCopy];
 }
 
 @end

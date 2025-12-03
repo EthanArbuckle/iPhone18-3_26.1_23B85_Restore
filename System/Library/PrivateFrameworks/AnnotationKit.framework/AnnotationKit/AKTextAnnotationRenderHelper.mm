@@ -1,30 +1,30 @@
 @interface AKTextAnnotationRenderHelper
-+ (BOOL)_hitTestPoint:(CGPoint)a3 againstActualTextForAnnotation:(id)a4 onPageController:(id)a5 contextForVisualDebugging:(CGContext *)a6;
-+ (CGSize)unconstrainedSizeForText:(id)a3;
++ (BOOL)_hitTestPoint:(CGPoint)point againstActualTextForAnnotation:(id)annotation onPageController:(id)controller contextForVisualDebugging:(CGContext *)debugging;
++ (CGSize)unconstrainedSizeForText:(id)text;
 + (id)_sharedLayoutManager;
-+ (void)getAnnotationRectangle:(CGRect *)a3 textBounds:(CGRect *)a4 containerSize:(CGSize *)a5 exclusionPaths:(id *)a6 isTextClipped:(BOOL *)a7 forAnnotation:(id)a8 onPageController:(id)a9 orInContext:(CGContext *)a10 shouldAlignToPixels:(BOOL)a11 optionalText:(id)a12 optionalCenter:(CGPoint)a13 optionalProposedRectangle:(CGRect)a14;
-+ (void)renderAnnotationText:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (void)getAnnotationRectangle:(CGRect *)rectangle textBounds:(CGRect *)bounds containerSize:(CGSize *)size exclusionPaths:(id *)paths isTextClipped:(BOOL *)clipped forAnnotation:(id)annotation onPageController:(id)controller orInContext:(CGContext *)self0 shouldAlignToPixels:(BOOL)self1 optionalText:(id)self2 optionalCenter:(CGPoint)self3 optionalProposedRectangle:(CGRect)self4;
++ (void)renderAnnotationText:(id)text intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKTextAnnotationRenderHelper
 
-+ (void)getAnnotationRectangle:(CGRect *)a3 textBounds:(CGRect *)a4 containerSize:(CGSize *)a5 exclusionPaths:(id *)a6 isTextClipped:(BOOL *)a7 forAnnotation:(id)a8 onPageController:(id)a9 orInContext:(CGContext *)a10 shouldAlignToPixels:(BOOL)a11 optionalText:(id)a12 optionalCenter:(CGPoint)a13 optionalProposedRectangle:(CGRect)a14
++ (void)getAnnotationRectangle:(CGRect *)rectangle textBounds:(CGRect *)bounds containerSize:(CGSize *)size exclusionPaths:(id *)paths isTextClipped:(BOOL *)clipped forAnnotation:(id)annotation onPageController:(id)controller orInContext:(CGContext *)self0 shouldAlignToPixels:(BOOL)self1 optionalText:(id)self2 optionalCenter:(CGPoint)self3 optionalProposedRectangle:(CGRect)self4
 {
-  height = a14.size.height;
-  width = a14.size.width;
-  y = a14.origin.y;
-  x = a14.origin.x;
-  v22 = a13.y;
-  v23 = a13.x;
+  height = proposedRectangle.size.height;
+  width = proposedRectangle.size.width;
+  y = proposedRectangle.origin.y;
+  x = proposedRectangle.origin.x;
+  v22 = center.y;
+  v23 = center.x;
   v188[1] = *MEMORY[0x277D85DE8];
-  v25 = a8;
-  v26 = a9;
-  v27 = a12;
-  v162 = a4;
-  v163 = a5;
-  v165 = a3;
-  v28 = a3 | a4 | a5;
-  if (!v28 && !a6 && !a7)
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  textCopy = text;
+  boundsCopy = bounds;
+  sizeCopy = size;
+  rectangleCopy = rectangle;
+  v28 = rectangle | bounds | size;
+  if (!v28 && !paths && !clipped)
   {
     v29 = 0;
     goto LABEL_142;
@@ -38,7 +38,7 @@
   v31 = *(MEMORY[0x277CBF3A0] + 8);
   v33 = *(MEMORY[0x277CBF3A0] + 16);
   v32 = *(MEMORY[0x277CBF3A0] + 24);
-  v34 = [v25 conformsToAKRectangularAnnotationProtocol];
+  conformsToAKRectangularAnnotationProtocol = [annotationCopy conformsToAKRectangularAnnotationProtocol];
   v35 = MEMORY[0x277CBF348];
   v152 = v32;
   v154 = v31;
@@ -46,7 +46,7 @@
   v36 = v33;
   v156 = v30;
   rect1 = height;
-  if (v34)
+  if (conformsToAKRectangularAnnotationProtocol)
   {
     v208.origin.x = v30;
     v30 = v158;
@@ -61,7 +61,7 @@
     v208.size.width = v33;
     if (CGRectEqualToRect(v189, v208))
     {
-      [v25 rectangle];
+      [annotationCopy rectangle];
       v30 = v37;
       v31 = v38;
       v36 = v39;
@@ -100,8 +100,8 @@
     }
   }
 
-  v151 = v26;
-  [AKAnnotationRenderer textBoundsOfAnnotation:v25 withOptionalAnnotationRect:v27 optionalText:v30, v31, v36, v175];
+  v151 = controllerCopy;
+  [AKAnnotationRenderer textBoundsOfAnnotation:annotationCopy withOptionalAnnotationRect:textCopy optionalText:v30, v31, v36, v175];
   MidY = v47;
   tx = v46;
   v167 = v48;
@@ -129,8 +129,8 @@
   v160 = v30;
   if (!v52)
   {
-    v53 = [v25 conformsToAKRectangularAnnotationProtocol];
-    if (v53)
+    conformsToAKRectangularAnnotationProtocol2 = [annotationCopy conformsToAKRectangularAnnotationProtocol];
+    if (conformsToAKRectangularAnnotationProtocol2)
     {
       v54 = v30;
     }
@@ -141,7 +141,7 @@
     }
 
     v55 = v31;
-    if (v53)
+    if (conformsToAKRectangularAnnotationProtocol2)
     {
       v56 = v164;
     }
@@ -152,7 +152,7 @@
       v56 = v167;
     }
 
-    if (v53)
+    if (conformsToAKRectangularAnnotationProtocol2)
     {
       v57 = v175;
     }
@@ -176,7 +176,7 @@
     v22 = CGRectGetMidY(v196);
   }
 
-  v143 = [v25 originalExifOrientation];
+  originalExifOrientation = [annotationCopy originalExifOrientation];
   v58 = [AKGeometryHelper inverseExifOrientation:?];
   v144 = MidX;
   [AKGeometryHelper adjustRect:v58 forExifOrientation:tx aboutCenter:MidY, v167, v169, MidX, v22];
@@ -197,17 +197,17 @@
   v141 = v58;
   if (v52 && v64)
   {
-    v179 = 0;
+    textIsFixedHeight = 0;
     v155 = 0;
   }
 
   else
   {
     v66 = v64;
-    v179 = [v25 textIsFixedHeight];
+    textIsFixedHeight = [annotationCopy textIsFixedHeight];
     if (v66)
     {
-      v67 = [v25 textIsFixedWidth] | a11;
+      v67 = [annotationCopy textIsFixedWidth] | pixels;
     }
 
     else
@@ -218,14 +218,14 @@
     v155 = v67;
   }
 
-  if (v27)
+  if (textCopy)
   {
-    v68 = v27;
+    v68 = textCopy;
   }
 
   else
   {
-    v68 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v25];
+    v68 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:annotationCopy];
     if (!v68)
     {
       goto LABEL_40;
@@ -239,15 +239,15 @@
   }
 
 LABEL_40:
-  v70 = a7;
-  v71 = [v25 typingAttributes];
-  v72 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"|" attributes:v71];
+  clippedCopy = clipped;
+  typingAttributes = [annotationCopy typingAttributes];
+  v72 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"|" attributes:typingAttributes];
 
   v68 = v72;
-  a7 = v70;
+  clipped = clippedCopy;
   v69 = 1;
 LABEL_41:
-  v147 = v27;
+  v147 = textCopy;
   if ([v68 length])
   {
     [v68 attributesAtIndex:0 effectiveRange:0];
@@ -255,21 +255,21 @@ LABEL_41:
 
   else
   {
-    [v25 typingAttributes];
+    [annotationCopy typingAttributes];
   }
   v73 = ;
-  [v25 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v157 = v73;
   v159 = [AKTextAnnotationAttributeHelper typingAttributes:v73 byApplyingScaleFactor:?];
-  [v25 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v74 = [AKTextAnnotationAttributeHelper newTextStorage:v68 byApplyingScaleFactor:?];
 
-  v75 = [AKAnnotationRenderer newTextExclusionPathForAnnotation:v25 withOptionalAnnotationRect:v30, v31, v36, v175];
-  v148 = a6;
-  if (v75)
+  v175 = [AKAnnotationRenderer newTextExclusionPathForAnnotation:annotationCopy withOptionalAnnotationRect:v30, v31, v36, v175];
+  pathsCopy = paths;
+  if (v175)
   {
-    v76 = v75;
-    if (CGPathIsEmpty(v75))
+    v76 = v175;
+    if (CGPathIsEmpty(v175))
     {
       CGPathRelease(v76);
       v77 = 0;
@@ -278,7 +278,7 @@ LABEL_41:
 
     Mutable = CGPathCreateMutable();
     memset(&m, 0, sizeof(m));
-    [AKGeometryHelper affineTransformForExifOrientation:v143 aboutCenter:MidX, v22];
+    [AKGeometryHelper affineTransformForExifOrientation:originalExifOrientation aboutCenter:MidX, v22];
     CGPathAddPath(Mutable, &m, v76);
     v200.origin.x = v166;
     v200.origin.y = v177;
@@ -374,10 +374,10 @@ LABEL_51:
     v170 = CGRectGetWidth(v205);
   }
 
-  v90 = a1;
+  selfCopy = self;
   if (!v77)
   {
-    [a1 unconstrainedSizeForText:v74];
+    [self unconstrainedSizeForText:v74];
     v92 = v170;
     if (v170 >= v91)
     {
@@ -387,40 +387,40 @@ LABEL_51:
     v170 = v92;
   }
 
-  v139 = a7;
-  v150 = v25;
+  clippedCopy2 = clipped;
+  v150 = annotationCopy;
   v153 = v69;
   v140 = v31;
   if (v65)
   {
-    v93 = 1;
+    alignment = 1;
   }
 
   else
   {
     v94 = [v74 length];
     v95 = *MEMORY[0x277D74118];
-    if (!v94 || ([v74 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0], (v96 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v94 || ([v74 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0], (defaultParagraphStyle = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v96 = [v159 objectForKey:v95];
-      if (!v96)
+      defaultParagraphStyle = [v159 objectForKey:v95];
+      if (!defaultParagraphStyle)
       {
-        v96 = [MEMORY[0x277D74248] defaultParagraphStyle];
+        defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
       }
     }
 
-    v97 = v96;
-    v93 = [v96 alignment];
+    v97 = defaultParagraphStyle;
+    alignment = [defaultParagraphStyle alignment];
   }
 
   rect1a = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" attributes:v159];
-  [v90 unconstrainedSizeForText:?];
+  [selfCopy unconstrainedSizeForText:?];
   v99 = v98;
   v168 = v63;
   v100 = v98 * floor(v63 / v98);
-  v101 = [v90 _sharedLayoutManager];
-  v102 = [v101 textContainers];
-  v103 = [v102 objectAtIndex:0];
+  _sharedLayoutManager = [selfCopy _sharedLayoutManager];
+  textContainers = [_sharedLayoutManager textContainers];
+  v103 = [textContainers objectAtIndex:0];
 
   [v103 akSetContainerSize:{v170, 10000000.0}];
   [v103 setExclusionPaths:MEMORY[0x277CBEBF8]];
@@ -448,7 +448,7 @@ LABEL_70:
       goto LABEL_71;
     }
 
-    if (v93 == 2)
+    if (alignment == 2)
     {
       v207.origin.x = v166;
       v207.size.height = v168;
@@ -460,7 +460,7 @@ LABEL_70:
 
     else
     {
-      if (v93)
+      if (alignment)
       {
         v29 = 0;
         goto LABEL_70;
@@ -482,11 +482,11 @@ LABEL_71:
     }
 
     v107 = v22;
-    [v74 addLayoutManager:v101];
-    [v101 glyphRangeForTextContainer:v103];
-    [v101 usedRectForTextContainer:v103];
+    [v74 addLayoutManager:_sharedLayoutManager];
+    [_sharedLayoutManager glyphRangeForTextContainer:v103];
+    [_sharedLayoutManager usedRectForTextContainer:v103];
     v109 = v108;
-    [v74 removeLayoutManager:v101];
+    [v74 removeLayoutManager:_sharedLayoutManager];
     if (vabdd_f64(v81 / v99, ceil(v109 / v99)) < 0.0005)
     {
       v110 = 1;
@@ -539,7 +539,7 @@ LABEL_84:
 
     v110 = 0;
 LABEL_91:
-    v82 = v111 > v100 ? v110 & v179 : 0;
+    v82 = v111 > v100 ? v110 & textIsFixedHeight : 0;
     if (!v105 || (v110 & (v82 ^ 1) & 1) != 0)
     {
       break;
@@ -562,8 +562,8 @@ LABEL_91:
   v22 = v107;
 LABEL_102:
   v117 = 0.0;
-  v25 = v150;
-  a7 = v139;
+  annotationCopy = v150;
+  clipped = clippedCopy2;
   v118 = v153;
   v83 = v170;
   if (!v142)
@@ -576,14 +576,14 @@ LABEL_102:
     goto LABEL_128;
   }
 
-  [AKGeometryHelper adjustRect:v143 forExifOrientation:MinX aboutCenter:v78, v170, v81, v144, v22];
+  [AKGeometryHelper adjustRect:originalExifOrientation forExifOrientation:MinX aboutCenter:v78, v170, v81, v144, v22];
   v78 = v120;
   v83 = v121;
   v81 = v122;
-  if (a11)
+  if (pixels)
   {
-    v123 = v139;
-    [AKGeometryHelper renderingAlignedTextRectForRect:v151 alignToScreenUsingPageController:a10 orAlignToContext:v150 usingAnnotation:?];
+    v123 = clippedCopy2;
+    [AKGeometryHelper renderingAlignedTextRectForRect:v151 alignToScreenUsingPageController:context orAlignToContext:v150 usingAnnotation:?];
     MinX = v124;
     v78 = v125;
     v83 = v126;
@@ -593,7 +593,7 @@ LABEL_102:
   else
   {
     MinX = v119;
-    v123 = v139;
+    v123 = clippedCopy2;
   }
 
   v129 = [AKGeometryHelper exifOrientationHasReversedAxes:v141];
@@ -617,21 +617,21 @@ LABEL_102:
     v80 = v83;
   }
 
-  if (!v165)
+  if (!rectangleCopy)
   {
     v175 = 0.0;
     v140 = 0.0;
     v128 = 0.0;
 LABEL_127:
-    a7 = v123;
+    clipped = v123;
     v118 = v153;
     goto LABEL_128;
   }
 
   v130 = v129;
-  v131 = v179 ^ 1;
+  v131 = textIsFixedHeight ^ 1;
   v132 = v155 ^ 1;
-  if (((v179 ^ 1) & 1) == 0 && !v132)
+  if (((textIsFixedHeight ^ 1) & 1) == 0 && !v132)
   {
     v117 = v164;
     goto LABEL_126;
@@ -645,14 +645,14 @@ LABEL_127:
     v140 = v134;
 LABEL_126:
     v128 = v160;
-    v25 = v150;
+    annotationCopy = v150;
     goto LABEL_127;
   }
 
   v128 = v133;
   v117 = v135;
   v137 = v130 | v131;
-  v25 = v150;
+  annotationCopy = v150;
   v118 = v153;
   if (v137 == 1 && (!v130 || !v155))
   {
@@ -660,7 +660,7 @@ LABEL_126:
     v140 = v134;
   }
 
-  a7 = v123;
+  clipped = v123;
 LABEL_128:
 
   v164 = v117;
@@ -681,40 +681,40 @@ LABEL_129:
 
 LABEL_131:
 
-  if (v165)
+  if (rectangleCopy)
   {
-    v165->origin.x = v160;
-    v165->origin.y = v31;
-    v165->size.width = v164;
-    v165->size.height = v175;
+    rectangleCopy->origin.x = v160;
+    rectangleCopy->origin.y = v31;
+    rectangleCopy->size.width = v164;
+    rectangleCopy->size.height = v175;
   }
 
-  v26 = v151;
-  v27 = v147;
-  if (v162)
+  controllerCopy = v151;
+  textCopy = v147;
+  if (boundsCopy)
   {
-    v162->origin.x = MinX;
-    v162->origin.y = v78;
-    v162->size.width = v83;
-    v162->size.height = v81;
+    boundsCopy->origin.x = MinX;
+    boundsCopy->origin.y = v78;
+    boundsCopy->size.width = v83;
+    boundsCopy->size.height = v81;
   }
 
-  if (v163)
+  if (sizeCopy)
   {
-    v163->width = ceil(v80);
-    v163->height = ceil(v79);
+    sizeCopy->width = ceil(v80);
+    sizeCopy->height = ceil(v79);
   }
 
-  if (!v148)
+  if (!pathsCopy)
   {
 LABEL_140:
-    if (!a7)
+    if (!clipped)
     {
       goto LABEL_142;
     }
 
 LABEL_141:
-    *a7 = v82;
+    *clipped = v82;
     goto LABEL_142;
   }
 
@@ -722,13 +722,13 @@ LABEL_141:
   {
     v187 = v29;
     v138 = [MEMORY[0x277CBEA60] arrayWithObjects:&v187 count:1];
-    *v148 = v138;
+    *pathsCopy = v138;
 
     goto LABEL_140;
   }
 
-  *v148 = 0;
-  if (a7)
+  *pathsCopy = 0;
+  if (clipped)
   {
     goto LABEL_141;
   }
@@ -736,23 +736,23 @@ LABEL_141:
 LABEL_142:
 }
 
-+ (BOOL)_hitTestPoint:(CGPoint)a3 againstActualTextForAnnotation:(id)a4 onPageController:(id)a5 contextForVisualDebugging:(CGContext *)a6
++ (BOOL)_hitTestPoint:(CGPoint)point againstActualTextForAnnotation:(id)annotation onPageController:(id)controller contextForVisualDebugging:(CGContext *)debugging
 {
-  point = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v9];
+  point = point.y;
+  x = point.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  v11 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:annotationCopy];
   if (![v11 length])
   {
-    if ([v9 isMemberOfClass:objc_opt_class()])
+    if ([annotationCopy isMemberOfClass:objc_opt_class()])
     {
-      v38 = [v9 typingAttributes];
-      [v9 originalModelBaseScaleFactor];
-      v39 = [AKTextAnnotationAttributeHelper typingAttributes:v38 byApplyingScaleFactor:?];
+      typingAttributes = [annotationCopy typingAttributes];
+      [annotationCopy originalModelBaseScaleFactor];
+      v39 = [AKTextAnnotationAttributeHelper typingAttributes:typingAttributes byApplyingScaleFactor:?];
 
       v40 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"AAAA" attributes:v39];
-      [AKAnnotationRenderer textBoundsOfAnnotation:v9 withOptionalAnnotationRect:v40 optionalText:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      [AKAnnotationRenderer textBoundsOfAnnotation:annotationCopy withOptionalAnnotationRect:v40 optionalText:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       v76.y = point;
       v76.x = x;
       v37 = CGRectContainsPoint(v79, v76);
@@ -770,16 +770,16 @@ LABEL_12:
   v72 = 0.0;
   v70 = 0;
   LOBYTE(v59) = 0;
-  [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:&v73 containerSize:&v71 exclusionPaths:&v70 isTextClipped:0 forAnnotation:v9 onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), v10, 0, v59, v11];
+  [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:&v73 containerSize:&v71 exclusionPaths:&v70 isTextClipped:0 forAnnotation:annotationCopy onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), controllerCopy, 0, v59, v11];
   v12 = v70;
-  v13 = [v9 conformsToAKRotatableAnnotationProtocol];
+  conformsToAKRotatableAnnotationProtocol = [annotationCopy conformsToAKRotatableAnnotationProtocol];
   v14.x = x;
   v14.y = point;
-  if (v13)
+  if (conformsToAKRotatableAnnotationProtocol)
   {
     memset(&m, 0, sizeof(m));
     pointa = v14;
-    [v9 rotationAngle];
+    [annotationCopy rotationAngle];
     [AKGeometryHelper rotationTransformForRect:*&v73.origin withAngle:*&v73.size, v15];
     t1 = m;
     CGAffineTransformInvert(&t2, &t1);
@@ -797,11 +797,11 @@ LABEL_12:
 
   if ([v12 count] && (objc_msgSend(v12, "firstObject"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "newCGPathForPlatformBezierPath"), v18, v19))
   {
-    v20 = [v9 originalExifOrientation];
-    v21 = [AKGeometryHelper inverseExifOrientation:v20];
+    originalExifOrientation = [annotationCopy originalExifOrientation];
+    v21 = [AKGeometryHelper inverseExifOrientation:originalExifOrientation];
     MidX = CGRectGetMidX(v73);
     MidY = CGRectGetMidY(v73);
-    [AKGeometryHelper adjustRect:v20 forExifOrientation:*&v73.origin aboutCenter:*&v73.size, MidX, MidY];
+    [AKGeometryHelper adjustRect:originalExifOrientation forExifOrientation:*&v73.origin aboutCenter:*&v73.size, MidX, MidY];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -855,20 +855,20 @@ LABEL_12:
     else
     {
       v42 = v11;
-      v43 = [a1 _sharedLayoutManager];
-      v44 = [v43 textContainers];
-      v45 = [v44 objectAtIndex:0];
+      _sharedLayoutManager = [self _sharedLayoutManager];
+      textContainers = [_sharedLayoutManager textContainers];
+      v45 = [textContainers objectAtIndex:0];
 
       [v45 akSetContainerSize:{v71, v72}];
       [v45 setExclusionPaths:v12];
-      [v42 addLayoutManager:v43];
-      [v43 glyphRangeForTextContainer:v45];
-      [v43 usedRectForTextContainer:v45];
+      [v42 addLayoutManager:_sharedLayoutManager];
+      [_sharedLayoutManager glyphRangeForTextContainer:v45];
+      [_sharedLayoutManager usedRectForTextContainer:v45];
       v47 = v46;
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      [v42 removeLayoutManager:v43];
+      [v42 removeLayoutManager:_sharedLayoutManager];
       v80.origin.x = v47;
       v80.origin.y = v49;
       v80.size.width = v51;
@@ -877,20 +877,20 @@ LABEL_12:
       if (v54)
       {
         v55 = v54;
-        if (a6)
+        if (debugging)
         {
           [MEMORY[0x277D75348] blueColor];
           v56 = v63 = v42;
-          CGContextSetFillColorWithColor(a6, [v56 CGColor]);
+          CGContextSetFillColorWithColor(debugging, [v56 CGColor]);
 
-          CGContextAddPath(a6, v55);
-          CGContextFillPath(a6);
-          v57 = [MEMORY[0x277D75348] redColor];
-          CGContextSetFillColorWithColor(a6, [v57 CGColor]);
+          CGContextAddPath(debugging, v55);
+          CGContextFillPath(debugging);
+          redColor = [MEMORY[0x277D75348] redColor];
+          CGContextSetFillColorWithColor(debugging, [redColor CGColor]);
 
           v42 = v63;
-          CGContextAddPath(a6, Mutable);
-          CGContextEOFillPath(a6);
+          CGContextAddPath(debugging, Mutable);
+          CGContextEOFillPath(debugging);
         }
 
         v75.x = v17.x;
@@ -910,12 +910,12 @@ LABEL_12:
 
   else
   {
-    if (a6)
+    if (debugging)
     {
-      v41 = [MEMORY[0x277D75348] blueColor];
-      CGContextSetFillColorWithColor(a6, [v41 CGColor]);
+      blueColor = [MEMORY[0x277D75348] blueColor];
+      CGContextSetFillColorWithColor(debugging, [blueColor CGColor]);
 
-      CGContextFillRect(a6, v73);
+      CGContextFillRect(debugging, v73);
     }
 
     v37 = 1;
@@ -925,23 +925,23 @@ LABEL_23:
   return v37;
 }
 
-+ (CGSize)unconstrainedSizeForText:(id)a3
++ (CGSize)unconstrainedSizeForText:(id)text
 {
-  if (a3)
+  if (text)
   {
-    v4 = a3;
-    v5 = [a1 _sharedLayoutManager];
-    v6 = [v5 textContainers];
-    v7 = [v6 objectAtIndex:0];
+    textCopy = text;
+    _sharedLayoutManager = [self _sharedLayoutManager];
+    textContainers = [_sharedLayoutManager textContainers];
+    v7 = [textContainers objectAtIndex:0];
 
     [v7 akSetContainerSize:{10000000.0, 10000000.0}];
     [v7 setExclusionPaths:MEMORY[0x277CBEBF8]];
-    [v4 addLayoutManager:v5];
-    [v5 glyphRangeForTextContainer:v7];
-    [v5 usedRectForTextContainer:v7];
+    [textCopy addLayoutManager:_sharedLayoutManager];
+    [_sharedLayoutManager glyphRangeForTextContainer:v7];
+    [_sharedLayoutManager usedRectForTextContainer:v7];
     v9 = v8;
     v11 = v10;
-    [v4 removeLayoutManager:v5];
+    [textCopy removeLayoutManager:_sharedLayoutManager];
   }
 
   else
@@ -957,19 +957,19 @@ LABEL_23:
   return result;
 }
 
-+ (void)renderAnnotationText:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)renderAnnotationText:(id)text intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![v11 forDisplay] || (objc_msgSend(v10, "isEditingText") & 1) == 0)
+  textCopy = text;
+  optionsCopy = options;
+  nilCopy = nil;
+  if (![optionsCopy forDisplay] || (objc_msgSend(textCopy, "isEditingText") & 1) == 0)
   {
-    v13 = [v10 foregroundColor];
+    foregroundColor = [textCopy foregroundColor];
 
-    if (v13)
+    if (foregroundColor)
     {
-      v14 = [v10 annotationText];
-      v15 = [v14 mutableCopy];
+      annotationText = [textCopy annotationText];
+      v15 = [annotationText mutableCopy];
 
       if ([v15 length])
       {
@@ -978,23 +978,23 @@ LABEL_23:
         v16 = [v15 attributesAtIndex:0 effectiveRange:&v50];
         v17 = [v16 mutableCopy];
 
-        v18 = [v10 foregroundColorForOptions:v11];
+        v18 = [textCopy foregroundColorForOptions:optionsCopy];
         [v17 setObject:v18 forKey:@"NSColor"];
 
-        v19 = [v10 annotationText];
-        [v15 setAttributes:v17 range:{0, objc_msgSend(v19, "length")}];
+        annotationText2 = [textCopy annotationText];
+        [v15 setAttributes:v17 range:{0, objc_msgSend(annotationText2, "length")}];
 
-        v20 = [v10 annotationText];
-        [v20 setAttributedString:v15];
+        annotationText3 = [textCopy annotationText];
+        [annotationText3 setAttributedString:v15];
       }
     }
 
-    v21 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v10];
+    v21 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:textCopy];
     if ([v21 length])
     {
-      if ([v11 forDisplay])
+      if ([optionsCopy forDisplay])
       {
-        v22 = v12;
+        v22 = nilCopy;
       }
 
       else
@@ -1003,14 +1003,14 @@ LABEL_23:
       }
 
       v23 = v22;
-      if ([v11 forDisplay])
+      if ([optionsCopy forDisplay])
       {
-        v24 = 0;
+        contextCopy = 0;
       }
 
       else
       {
-        v24 = a4;
+        contextCopy = context;
       }
 
       v54 = 0u;
@@ -1019,26 +1019,26 @@ LABEL_23:
       v53 = 0.0;
       v51 = 0;
       LOBYTE(v41) = 1;
-      [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:&v54 containerSize:&v52 exclusionPaths:&v51 isTextClipped:0 forAnnotation:v10 onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), v23, v24, v41, v21];
+      [AKTextAnnotationRenderHelper getAnnotationRectangle:0 textBounds:&v54 containerSize:&v52 exclusionPaths:&v51 isTextClipped:0 forAnnotation:textCopy onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), v23, contextCopy, v41, v21];
 
       v25 = v51;
       if (v52 > 0.5 && v53 > 0.5)
       {
-        UIGraphicsPushContext(a4);
-        CGContextSaveGState(a4);
-        CGContextSetShouldSmoothFonts(a4, 0);
-        CGContextSetShouldSubpixelPositionFonts(a4, 1);
-        CGContextSetShouldSubpixelQuantizeFonts(a4, 1);
-        v26 = [a1 _sharedLayoutManager];
-        v27 = [v26 textContainers];
-        v28 = [v27 firstObject];
+        UIGraphicsPushContext(context);
+        CGContextSaveGState(context);
+        CGContextSetShouldSmoothFonts(context, 0);
+        CGContextSetShouldSubpixelPositionFonts(context, 1);
+        CGContextSetShouldSubpixelQuantizeFonts(context, 1);
+        _sharedLayoutManager = [self _sharedLayoutManager];
+        textContainers = [_sharedLayoutManager textContainers];
+        firstObject = [textContainers firstObject];
 
-        [v28 akSetContainerSize:{v52, v53}];
-        [v28 setExclusionPaths:v25];
-        [v10 originalModelBaseScaleFactor];
+        [firstObject akSetContainerSize:{v52, v53}];
+        [firstObject setExclusionPaths:v25];
+        [textCopy originalModelBaseScaleFactor];
         v29 = [AKTextAnnotationAttributeHelper newTextStorage:v21 byApplyingScaleFactor:?];
-        [v29 addLayoutManager:v26];
-        v30 = [v26 glyphRangeForTextContainer:v28];
+        [v29 addLayoutManager:_sharedLayoutManager];
+        v30 = [_sharedLayoutManager glyphRangeForTextContainer:firstObject];
         if (v31)
         {
           v45 = v31;
@@ -1047,9 +1047,9 @@ LABEL_23:
           x = *&v54;
           height = v55[1];
           width = v55[0];
-          if ([v10 conformsToAKRectangularAnnotationProtocol])
+          if ([textCopy conformsToAKRectangularAnnotationProtocol])
           {
-            [v10 rectangle];
+            [textCopy rectangle];
             v59.origin.x = v36;
             v59.origin.y = v37;
             v59.size.width = v38;
@@ -1069,8 +1069,8 @@ LABEL_23:
           v58.origin.y = y;
           v58.size.width = width;
           v58.size.height = height;
-          CGContextClipToRect(a4, v58);
-          v40 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [v10 originalExifOrientation]);
+          CGContextClipToRect(context, v58);
+          v40 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [textCopy originalExifOrientation]);
           v43 = *(MEMORY[0x277CBF2C0] + 16);
           *&v50.a = *MEMORY[0x277CBF2C0];
           v44 = *&v50.a;
@@ -1090,16 +1090,16 @@ LABEL_23:
           v47 = v50;
           CGAffineTransformConcat(&t2, &v47, &t1);
           v50 = t2;
-          CGContextConcatCTM(a4, &t2);
-          CGContextTranslateCTM(a4, 0.0, *(&v54 + 1));
-          CGContextTranslateCTM(a4, 0.0, v53);
-          CGContextScaleCTM(a4, 1.0, -1.0);
-          CGContextTranslateCTM(a4, 0.0, -*(&v54 + 1));
-          [v26 drawGlyphsForGlyphRange:v46 atPoint:{v45, x, y}];
+          CGContextConcatCTM(context, &t2);
+          CGContextTranslateCTM(context, 0.0, *(&v54 + 1));
+          CGContextTranslateCTM(context, 0.0, v53);
+          CGContextScaleCTM(context, 1.0, -1.0);
+          CGContextTranslateCTM(context, 0.0, -*(&v54 + 1));
+          [_sharedLayoutManager drawGlyphsForGlyphRange:v46 atPoint:{v45, x, y}];
         }
 
-        [v29 removeLayoutManager:v26];
-        CGContextRestoreGState(a4);
+        [v29 removeLayoutManager:_sharedLayoutManager];
+        CGContextRestoreGState(context);
         UIGraphicsPopContext();
       }
     }
@@ -1108,10 +1108,10 @@ LABEL_23:
 
 + (id)_sharedLayoutManager
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"com.apple.AnnotationKit.AKTextAnnotationRenderHelper.sharedLayoutManager"];
+  v4 = [threadDictionary objectForKey:@"com.apple.AnnotationKit.AKTextAnnotationRenderHelper.sharedLayoutManager"];
   if (!v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D74278]) initWithSize:{10000000.0, 10000000.0}];
@@ -1120,7 +1120,7 @@ LABEL_23:
     [v5 setHeightTracksTextView:0];
     [v5 setLineFragmentPadding:0.0];
     [(AKTextLayoutManager *)v4 addTextContainer:v5];
-    [v3 setObject:v4 forKey:@"com.apple.AnnotationKit.AKTextAnnotationRenderHelper.sharedLayoutManager"];
+    [threadDictionary setObject:v4 forKey:@"com.apple.AnnotationKit.AKTextAnnotationRenderHelper.sharedLayoutManager"];
   }
 
   return v4;

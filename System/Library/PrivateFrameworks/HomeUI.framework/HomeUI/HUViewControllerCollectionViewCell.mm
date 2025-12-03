@@ -1,23 +1,23 @@
 @interface HUViewControllerCollectionViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIViewController)parentViewController;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)a3;
-- (void)addToParentViewController:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)property;
+- (void)addToParentViewController:(id)controller;
 - (void)prepareForReuse;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation HUViewControllerCollectionViewCell
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_viewController != v5)
+  controllerCopy = controller;
+  if (self->_viewController != controllerCopy)
   {
-    v10 = v5;
-    v6 = [(HUViewControllerCollectionViewCell *)self parentViewController];
-    if (v6)
+    v10 = controllerCopy;
+    parentViewController = [(HUViewControllerCollectionViewCell *)self parentViewController];
+    if (parentViewController)
     {
       viewController = self->_viewController;
 
@@ -27,16 +27,16 @@
       }
     }
 
-    objc_storeStrong(&self->_viewController, a3);
-    v8 = [(HUViewControllerCollectionViewCell *)self parentViewController];
+    objc_storeStrong(&self->_viewController, controller);
+    parentViewController2 = [(HUViewControllerCollectionViewCell *)self parentViewController];
 
-    v5 = v10;
-    if (v10 && v8)
+    controllerCopy = v10;
+    if (v10 && parentViewController2)
     {
-      v9 = [(HUViewControllerCollectionViewCell *)self parentViewController];
-      [(HUViewControllerCollectionViewCell *)self addToParentViewController:v9];
+      parentViewController3 = [(HUViewControllerCollectionViewCell *)self parentViewController];
+      [(HUViewControllerCollectionViewCell *)self addToParentViewController:parentViewController3];
 
-      v5 = v10;
+      controllerCopy = v10;
     }
   }
 }
@@ -50,16 +50,16 @@
   [(HUViewControllerCollectionViewCell *)&v3 prepareForReuse];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(HUViewControllerCollectionViewCell *)self allowSelfSizing])
   {
     v45.receiver = self;
     v45.super_class = HUViewControllerCollectionViewCell;
-    *&v10 = a4;
-    *&v11 = a5;
+    *&v10 = priority;
+    *&v11 = fittingPriority;
     [(HUViewControllerCollectionViewCell *)&v45 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
     v30 = v43;
     v32 = v44;
@@ -69,28 +69,28 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v13 = [v12 view];
-  [v13 frame];
+  viewController = [(HUViewControllerCollectionViewCell *)self viewController];
+  view = [viewController view];
+  [view frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v23 = [v22 view];
-  [v23 setFrame:{v15, v17, width, v21}];
+  viewController2 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view2 = [viewController2 view];
+  [view2 setFrame:{v15, v17, width, v21}];
 
-  v24 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v25 = [v24 view];
-  [v25 layoutIfNeeded];
+  viewController3 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view3 = [viewController3 view];
+  [view3 layoutIfNeeded];
 
-  v26 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v27 = [v26 view];
-  [v27 setFrame:{v15, v17, v19, v21}];
+  viewController4 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view4 = [viewController4 view];
+  [view4 setFrame:{v15, v17, v19, v21}];
 
-  v28 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v28 preferredContentSize];
+  viewController5 = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController5 preferredContentSize];
   v30 = v29;
   v32 = v31;
 
@@ -99,11 +99,11 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v33 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v34 = [v33 view];
-  *&v35 = a4;
-  *&v36 = a5;
-  [v34 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v35, v36}];
+  viewController6 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view5 = [viewController6 view];
+  *&v35 = priority;
+  *&v36 = fittingPriority;
+  [view5 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v35, v36}];
   v38 = v37;
   v40 = v39;
 
@@ -115,19 +115,19 @@ LABEL_7:
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([(HUViewControllerCollectionViewCell *)self allowSelfSizing])
   {
     v8.receiver = self;
     v8.super_class = HUViewControllerCollectionViewCell;
-    v5 = [(HUViewControllerCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+    v5 = [(HUViewControllerCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   }
 
   else
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   v6 = v5;
@@ -135,11 +135,11 @@ LABEL_7:
   return v6;
 }
 
-- (void)addToParentViewController:(id)a3
+- (void)addToParentViewController:(id)controller
 {
-  v25 = a3;
-  v4 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v25 addChildViewController:v4];
+  controllerCopy = controller;
+  viewController = [(HUViewControllerCollectionViewCell *)self viewController];
+  [controllerCopy addChildViewController:viewController];
 
   if ([(HUViewControllerCollectionViewCell *)self useDefaultCellBackgroundColor])
   {
@@ -153,49 +153,49 @@ LABEL_7:
   v5 = ;
   [(HUViewControllerCollectionViewCell *)self setBackgroundColor:v5];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  v7 = [(HUViewControllerCollectionViewCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  contentView = [(HUViewControllerCollectionViewCell *)self contentView];
+  [contentView setBackgroundColor:clearColor];
 
-  v8 = [(HUViewControllerCollectionViewCell *)self contentView];
-  [v8 bounds];
+  contentView2 = [(HUViewControllerCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v18 = [v17 view];
-  [v18 setFrame:{v10, v12, v14, v16}];
+  viewController2 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view = [viewController2 view];
+  [view setFrame:{v10, v12, v14, v16}];
 
-  v19 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v20 = [v19 view];
-  [v20 setAutoresizingMask:18];
+  viewController3 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view2 = [viewController3 view];
+  [view2 setAutoresizingMask:18];
 
-  v21 = [(HUViewControllerCollectionViewCell *)self contentView];
-  v22 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v23 = [v22 view];
-  [v21 insertSubview:v23 atIndex:0];
+  contentView3 = [(HUViewControllerCollectionViewCell *)self contentView];
+  viewController4 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view3 = [viewController4 view];
+  [contentView3 insertSubview:view3 atIndex:0];
 
-  v24 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v24 didMoveToParentViewController:v25];
+  viewController5 = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController5 didMoveToParentViewController:controllerCopy];
 
-  [(HUViewControllerCollectionViewCell *)self setParentViewController:v25];
+  [(HUViewControllerCollectionViewCell *)self setParentViewController:controllerCopy];
 }
 
-- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)a3
+- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)property
 {
-  v3 = a3;
-  v5 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v5 willMoveToParentViewController:0];
+  propertyCopy = property;
+  viewController = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController willMoveToParentViewController:0];
 
-  v6 = [(HUViewControllerCollectionViewCell *)self viewController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  viewController2 = [(HUViewControllerCollectionViewCell *)self viewController];
+  view = [viewController2 view];
+  [view removeFromSuperview];
 
-  v8 = [(HUViewControllerCollectionViewCell *)self viewController];
-  [v8 removeFromParentViewController];
+  viewController3 = [(HUViewControllerCollectionViewCell *)self viewController];
+  [viewController3 removeFromParentViewController];
 
-  if (v3)
+  if (propertyCopy)
   {
 
     [(HUViewControllerCollectionViewCell *)self setParentViewController:0];

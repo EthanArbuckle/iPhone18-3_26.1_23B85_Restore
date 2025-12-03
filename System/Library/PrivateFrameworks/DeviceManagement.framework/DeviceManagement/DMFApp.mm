@@ -1,33 +1,33 @@
 @interface DMFApp
-+ (id)descriptionForBool:(id)a3 showWhenUnassigned:(BOOL)a4 valueWhenUnassigned:(BOOL)a5;
-+ (id)stringForInstallationState:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (DMFApp)initWithCoder:(id)a3;
-- (id)_stringForType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionForBool:(id)bool showWhenUnassigned:(BOOL)unassigned valueWhenUnassigned:(BOOL)whenUnassigned;
++ (id)stringForInstallationState:(unint64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (DMFApp)initWithCoder:(id)coder;
+- (id)_stringForType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFApp
 
-+ (id)stringForInstallationState:(unint64_t)a3
++ (id)stringForInstallationState:(unint64_t)state
 {
-  if (a3 > 8)
+  if (state > 8)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E8615F10[a3];
+    return off_1E8615F10[state];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -37,9 +37,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(DMFApp *)self bundleIdentifier];
-      v6 = [(DMFApp *)v4 bundleIdentifier];
-      v7 = [v5 isEqualToString:v6];
+      bundleIdentifier = [(DMFApp *)self bundleIdentifier];
+      bundleIdentifier2 = [(DMFApp *)equalCopy bundleIdentifier];
+      v7 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
 
     else
@@ -51,42 +51,42 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setType:{-[DMFApp type](self, "type")}];
-  v5 = [(DMFApp *)self displayName];
-  [v4 setDisplayName:v5];
+  displayName = [(DMFApp *)self displayName];
+  [v4 setDisplayName:displayName];
 
-  v6 = [(DMFApp *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v6];
+  bundleIdentifier = [(DMFApp *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
-  v7 = [(DMFApp *)self storeItemIdentifier];
-  [v4 setStoreItemIdentifier:v7];
+  storeItemIdentifier = [(DMFApp *)self storeItemIdentifier];
+  [v4 setStoreItemIdentifier:storeItemIdentifier];
 
-  v8 = [(DMFApp *)self externalVersionIdentifier];
-  [v4 setExternalVersionIdentifier:v8];
+  externalVersionIdentifier = [(DMFApp *)self externalVersionIdentifier];
+  [v4 setExternalVersionIdentifier:externalVersionIdentifier];
 
-  v9 = [(DMFApp *)self distributorIdentifier];
-  [v4 setDistributorIdentifier:v9];
+  distributorIdentifier = [(DMFApp *)self distributorIdentifier];
+  [v4 setDistributorIdentifier:distributorIdentifier];
 
-  v10 = [(DMFApp *)self version];
-  [v4 setVersion:v10];
+  version = [(DMFApp *)self version];
+  [v4 setVersion:version];
 
-  v11 = [(DMFApp *)self shortVersion];
-  [v4 setShortVersion:v11];
+  shortVersion = [(DMFApp *)self shortVersion];
+  [v4 setShortVersion:shortVersion];
 
-  v12 = [(DMFApp *)self staticUsage];
-  [v4 setStaticUsage:v12];
+  staticUsage = [(DMFApp *)self staticUsage];
+  [v4 setStaticUsage:staticUsage];
 
-  v13 = [(DMFApp *)self dynamicUsage];
-  [v4 setDynamicUsage:v13];
+  dynamicUsage = [(DMFApp *)self dynamicUsage];
+  [v4 setDynamicUsage:dynamicUsage];
 
-  v14 = [(DMFApp *)self onDemandResourcesUsage];
-  [v4 setOnDemandResourcesUsage:v14];
+  onDemandResourcesUsage = [(DMFApp *)self onDemandResourcesUsage];
+  [v4 setOnDemandResourcesUsage:onDemandResourcesUsage];
 
-  v15 = [(DMFApp *)self sharedUsage];
-  [v4 setSharedUsage:v15];
+  sharedUsage = [(DMFApp *)self sharedUsage];
+  [v4 setSharedUsage:sharedUsage];
 
   [v4 setInstallationState:{-[DMFApp installationState](self, "installationState")}];
   [v4 setIsPlaceholder:{-[DMFApp isPlaceholder](self, "isPlaceholder")}];
@@ -103,219 +103,219 @@
   [v4 setIsBetaApp:{-[DMFApp isBetaApp](self, "isBetaApp")}];
   [v4 setIsAdHocCodeSigned:{-[DMFApp isAdHocCodeSigned](self, "isAdHocCodeSigned")}];
   [v4 setHasUpdateAvailable:{-[DMFApp hasUpdateAvailable](self, "hasUpdateAvailable")}];
-  v16 = [(DMFApp *)self VPNUUIDString];
-  [v4 setVPNUUIDString:v16];
+  vPNUUIDString = [(DMFApp *)self VPNUUIDString];
+  [v4 setVPNUUIDString:vPNUUIDString];
 
-  v17 = [(DMFApp *)self cellularSliceUUIDString];
-  [v4 setCellularSliceUUIDString:v17];
+  cellularSliceUUIDString = [(DMFApp *)self cellularSliceUUIDString];
+  [v4 setCellularSliceUUIDString:cellularSliceUUIDString];
 
-  v18 = [(DMFApp *)self contentFilterUUIDString];
-  [v4 setContentFilterUUIDString:v18];
+  contentFilterUUIDString = [(DMFApp *)self contentFilterUUIDString];
+  [v4 setContentFilterUUIDString:contentFilterUUIDString];
 
-  v19 = [(DMFApp *)self DNSProxyUUIDString];
-  [v4 setDNSProxyUUIDString:v19];
+  dNSProxyUUIDString = [(DMFApp *)self DNSProxyUUIDString];
+  [v4 setDNSProxyUUIDString:dNSProxyUUIDString];
 
-  v20 = [(DMFApp *)self relayUUIDString];
-  [v4 setRelayUUIDString:v20];
+  relayUUIDString = [(DMFApp *)self relayUUIDString];
+  [v4 setRelayUUIDString:relayUUIDString];
 
-  v21 = [(DMFApp *)self associatedDomains];
-  [v4 setAssociatedDomains:v21];
+  associatedDomains = [(DMFApp *)self associatedDomains];
+  [v4 setAssociatedDomains:associatedDomains];
 
-  v22 = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
-  [v4 setAssociatedDomainsEnableDirectDownloads:v22];
+  associatedDomainsEnableDirectDownloads = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
+  [v4 setAssociatedDomainsEnableDirectDownloads:associatedDomainsEnableDirectDownloads];
 
-  v23 = [(DMFApp *)self removable];
-  [v4 setRemovable:v23];
+  removable = [(DMFApp *)self removable];
+  [v4 setRemovable:removable];
 
-  v24 = [(DMFApp *)self tapToPayScreenLock];
-  [v4 setTapToPayScreenLock:v24];
+  tapToPayScreenLock = [(DMFApp *)self tapToPayScreenLock];
+  [v4 setTapToPayScreenLock:tapToPayScreenLock];
 
-  v25 = [(DMFApp *)self allowUserToHide];
-  [v4 setAllowUserToHide:v25];
+  allowUserToHide = [(DMFApp *)self allowUserToHide];
+  [v4 setAllowUserToHide:allowUserToHide];
 
-  v26 = [(DMFApp *)self allowUserToLock];
-  [v4 setAllowUserToLock:v26];
+  allowUserToLock = [(DMFApp *)self allowUserToLock];
+  [v4 setAllowUserToLock:allowUserToLock];
 
-  v27 = [(DMFApp *)self configuration];
-  [v4 setConfiguration:v27];
+  configuration = [(DMFApp *)self configuration];
+  [v4 setConfiguration:configuration];
 
-  v28 = [(DMFApp *)self feedback];
-  [v4 setFeedback:v28];
+  feedback = [(DMFApp *)self feedback];
+  [v4 setFeedback:feedback];
 
-  v29 = [(DMFApp *)self sourceIdentifier];
-  [v4 setSourceIdentifier:v29];
+  sourceIdentifier = [(DMFApp *)self sourceIdentifier];
+  [v4 setSourceIdentifier:sourceIdentifier];
 
-  v30 = [(DMFApp *)self managementInformation];
-  [v4 setManagementInformation:v30];
+  managementInformation = [(DMFApp *)self managementInformation];
+  [v4 setManagementInformation:managementInformation];
 
   return v4;
 }
 
-- (DMFApp)initWithCoder:(id)a3
+- (DMFApp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v125.receiver = self;
   v125.super_class = DMFApp;
   v5 = [(DMFApp *)&v125 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 integerValue];
 
     v7 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
     v10 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"bundleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v11;
 
     v13 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"storeItemIdentifier"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"storeItemIdentifier"];
     storeItemIdentifier = v5->_storeItemIdentifier;
     v5->_storeItemIdentifier = v14;
 
     v16 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"externalVersionIdentifier"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"externalVersionIdentifier"];
     externalVersionIdentifier = v5->_externalVersionIdentifier;
     v5->_externalVersionIdentifier = v17;
 
     v19 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"distributorIdentifier"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"distributorIdentifier"];
     distributorIdentifier = v5->_distributorIdentifier;
     v5->_distributorIdentifier = v20;
 
     v22 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"version"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"version"];
     version = v5->_version;
     v5->_version = v23;
 
     v25 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"shortVersion"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"shortVersion"];
     shortVersion = v5->_shortVersion;
     v5->_shortVersion = v26;
 
     v28 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"staticUsage"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"staticUsage"];
     staticUsage = v5->_staticUsage;
     v5->_staticUsage = v29;
 
     v31 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"dynamicUsage"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"dynamicUsage"];
     dynamicUsage = v5->_dynamicUsage;
     v5->_dynamicUsage = v32;
 
     v34 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"onDemandResourcesUsage"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"onDemandResourcesUsage"];
     onDemandResourcesUsage = v5->_onDemandResourcesUsage;
     v5->_onDemandResourcesUsage = v35;
 
     v37 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"sharedUsage"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"sharedUsage"];
     sharedUsage = v5->_sharedUsage;
     v5->_sharedUsage = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installationState"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installationState"];
     v5->_installationState = [v40 integerValue];
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isPlaceholder"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isPlaceholder"];
     v5->_isPlaceholder = [v41 BOOLValue];
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isRestricted"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isRestricted"];
     v5->_isRestricted = [v42 BOOLValue];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBlocked"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBlocked"];
     v5->_isBlocked = [v43 BOOLValue];
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isUserBasedVPP"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isUserBasedVPP"];
     v5->_isUserBasedVPP = [v44 BOOLValue];
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isDeviceBasedVPP"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isDeviceBasedVPP"];
     v5->_isDeviceBasedVPP = [v45 BOOLValue];
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isLicenseExpired"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isLicenseExpired"];
     v5->_isLicenseExpired = [v46 BOOLValue];
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isLicenseRevoked"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isLicenseRevoked"];
     v5->_isLicenseRevoked = [v47 BOOLValue];
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isUPP"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isUPP"];
     v5->_isUPP = [v48 BOOLValue];
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isValidated"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isValidated"];
     v5->_isValidated = [v49 BOOLValue];
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAppClip"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAppClip"];
     v5->_isAppClip = [v50 BOOLValue];
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAppStoreVendable"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAppStoreVendable"];
     v5->_isAppStoreVendable = [v51 BOOLValue];
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBetaApp"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBetaApp"];
     v5->_isBetaApp = [v52 BOOLValue];
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAdHocCodeSigned"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAdHocCodeSigned"];
     v5->_isAdHocCodeSigned = [v53 BOOLValue];
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasUpdateAvailable"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasUpdateAvailable"];
     v5->_hasUpdateAvailable = [v54 BOOLValue];
 
     v55 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v56 = [v4 decodeObjectOfClasses:v55 forKey:@"VPNUUIDString"];
+    v56 = [coderCopy decodeObjectOfClasses:v55 forKey:@"VPNUUIDString"];
     VPNUUIDString = v5->_VPNUUIDString;
     v5->_VPNUUIDString = v56;
 
     v58 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v59 = [v4 decodeObjectOfClasses:v58 forKey:@"cellularSliceUUIDString"];
+    v59 = [coderCopy decodeObjectOfClasses:v58 forKey:@"cellularSliceUUIDString"];
     cellularSliceUUIDString = v5->_cellularSliceUUIDString;
     v5->_cellularSliceUUIDString = v59;
 
     v61 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v62 = [v4 decodeObjectOfClasses:v61 forKey:@"contentFilterUUIDString"];
+    v62 = [coderCopy decodeObjectOfClasses:v61 forKey:@"contentFilterUUIDString"];
     contentFilterUUIDString = v5->_contentFilterUUIDString;
     v5->_contentFilterUUIDString = v62;
 
     v64 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v65 = [v4 decodeObjectOfClasses:v64 forKey:@"DNSProxyUUIDString"];
+    v65 = [coderCopy decodeObjectOfClasses:v64 forKey:@"DNSProxyUUIDString"];
     DNSProxyUUIDString = v5->_DNSProxyUUIDString;
     v5->_DNSProxyUUIDString = v65;
 
     v67 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v68 = [v4 decodeObjectOfClasses:v67 forKey:@"relayUUIDString"];
+    v68 = [coderCopy decodeObjectOfClasses:v67 forKey:@"relayUUIDString"];
     relayUUIDString = v5->_relayUUIDString;
     v5->_relayUUIDString = v68;
 
     v70 = MEMORY[0x1E695DFD8];
     v71 = objc_opt_class();
     v72 = [v70 setWithObjects:{v71, objc_opt_class(), 0}];
-    v73 = [v4 decodeObjectOfClasses:v72 forKey:@"associatedDomains"];
+    v73 = [coderCopy decodeObjectOfClasses:v72 forKey:@"associatedDomains"];
     associatedDomains = v5->_associatedDomains;
     v5->_associatedDomains = v73;
 
     v75 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v76 = [v4 decodeObjectOfClasses:v75 forKey:@"associatedDomainsEnableDirectDownloads"];
+    v76 = [coderCopy decodeObjectOfClasses:v75 forKey:@"associatedDomainsEnableDirectDownloads"];
     associatedDomainsEnableDirectDownloads = v5->_associatedDomainsEnableDirectDownloads;
     v5->_associatedDomainsEnableDirectDownloads = v76;
 
     v78 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v79 = [v4 decodeObjectOfClasses:v78 forKey:@"removable"];
+    v79 = [coderCopy decodeObjectOfClasses:v78 forKey:@"removable"];
     removable = v5->_removable;
     v5->_removable = v79;
 
     v81 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v82 = [v4 decodeObjectOfClasses:v81 forKey:@"tapToPayScreenLock"];
+    v82 = [coderCopy decodeObjectOfClasses:v81 forKey:@"tapToPayScreenLock"];
     tapToPayScreenLock = v5->_tapToPayScreenLock;
     v5->_tapToPayScreenLock = v82;
 
     v84 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v85 = [v4 decodeObjectOfClasses:v84 forKey:@"allowUserToHide"];
+    v85 = [coderCopy decodeObjectOfClasses:v84 forKey:@"allowUserToHide"];
     allowUserToHide = v5->_allowUserToHide;
     v5->_allowUserToHide = v85;
 
     v87 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v88 = [v4 decodeObjectOfClasses:v87 forKey:@"allowUserToLock"];
+    v88 = [coderCopy decodeObjectOfClasses:v87 forKey:@"allowUserToLock"];
     allowUserToLock = v5->_allowUserToLock;
     v5->_allowUserToLock = v88;
 
@@ -331,7 +331,7 @@
     v96 = objc_opt_class();
     v97 = objc_opt_class();
     v98 = [v123 setWithObjects:{v121, v119, v90, v91, v92, v93, v94, v95, v96, v97, objc_opt_class(), 0}];
-    v99 = [v4 decodeObjectOfClasses:v98 forKey:@"configuration"];
+    v99 = [coderCopy decodeObjectOfClasses:v98 forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v99;
 
@@ -347,17 +347,17 @@
     v107 = objc_opt_class();
     v108 = objc_opt_class();
     v109 = [v124 setWithObjects:{v122, v120, v101, v102, v103, v104, v105, v106, v107, v108, objc_opt_class(), 0}];
-    v110 = [v4 decodeObjectOfClasses:v109 forKey:@"feedback"];
+    v110 = [coderCopy decodeObjectOfClasses:v109 forKey:@"feedback"];
     feedback = v5->_feedback;
     v5->_feedback = v110;
 
     v112 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v113 = [v4 decodeObjectOfClasses:v112 forKey:@"sourceIdentifier"];
+    v113 = [coderCopy decodeObjectOfClasses:v112 forKey:@"sourceIdentifier"];
     sourceIdentifier = v5->_sourceIdentifier;
     v5->_sourceIdentifier = v113;
 
     v115 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v116 = [v4 decodeObjectOfClasses:v115 forKey:@"managementInformation"];
+    v116 = [coderCopy decodeObjectOfClasses:v115 forKey:@"managementInformation"];
     managementInformation = v5->_managementInformation;
     v5->_managementInformation = v116;
   }
@@ -365,135 +365,135 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[DMFApp type](self, "type")}];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
-  v7 = [(DMFApp *)self displayName];
-  [v5 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(DMFApp *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(DMFApp *)self bundleIdentifier];
-  [v5 encodeObject:v8 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(DMFApp *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v9 = [(DMFApp *)self storeItemIdentifier];
-  [v5 encodeObject:v9 forKey:@"storeItemIdentifier"];
+  storeItemIdentifier = [(DMFApp *)self storeItemIdentifier];
+  [coderCopy encodeObject:storeItemIdentifier forKey:@"storeItemIdentifier"];
 
-  v10 = [(DMFApp *)self externalVersionIdentifier];
-  [v5 encodeObject:v10 forKey:@"externalVersionIdentifier"];
+  externalVersionIdentifier = [(DMFApp *)self externalVersionIdentifier];
+  [coderCopy encodeObject:externalVersionIdentifier forKey:@"externalVersionIdentifier"];
 
-  v11 = [(DMFApp *)self distributorIdentifier];
-  [v5 encodeObject:v11 forKey:@"distributorIdentifier"];
+  distributorIdentifier = [(DMFApp *)self distributorIdentifier];
+  [coderCopy encodeObject:distributorIdentifier forKey:@"distributorIdentifier"];
 
-  v12 = [(DMFApp *)self version];
-  [v5 encodeObject:v12 forKey:@"version"];
+  version = [(DMFApp *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v13 = [(DMFApp *)self shortVersion];
-  [v5 encodeObject:v13 forKey:@"shortVersion"];
+  shortVersion = [(DMFApp *)self shortVersion];
+  [coderCopy encodeObject:shortVersion forKey:@"shortVersion"];
 
-  v14 = [(DMFApp *)self staticUsage];
-  [v5 encodeObject:v14 forKey:@"staticUsage"];
+  staticUsage = [(DMFApp *)self staticUsage];
+  [coderCopy encodeObject:staticUsage forKey:@"staticUsage"];
 
-  v15 = [(DMFApp *)self dynamicUsage];
-  [v5 encodeObject:v15 forKey:@"dynamicUsage"];
+  dynamicUsage = [(DMFApp *)self dynamicUsage];
+  [coderCopy encodeObject:dynamicUsage forKey:@"dynamicUsage"];
 
-  v16 = [(DMFApp *)self onDemandResourcesUsage];
-  [v5 encodeObject:v16 forKey:@"onDemandResourcesUsage"];
+  onDemandResourcesUsage = [(DMFApp *)self onDemandResourcesUsage];
+  [coderCopy encodeObject:onDemandResourcesUsage forKey:@"onDemandResourcesUsage"];
 
-  v17 = [(DMFApp *)self sharedUsage];
-  [v5 encodeObject:v17 forKey:@"sharedUsage"];
+  sharedUsage = [(DMFApp *)self sharedUsage];
+  [coderCopy encodeObject:sharedUsage forKey:@"sharedUsage"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFApp installationState](self, "installationState")}];
-  [v5 encodeObject:v18 forKey:@"installationState"];
+  [coderCopy encodeObject:v18 forKey:@"installationState"];
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isPlaceholder](self, "isPlaceholder")}];
-  [v5 encodeObject:v19 forKey:@"isPlaceholder"];
+  [coderCopy encodeObject:v19 forKey:@"isPlaceholder"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isRestricted](self, "isRestricted")}];
-  [v5 encodeObject:v20 forKey:@"isRestricted"];
+  [coderCopy encodeObject:v20 forKey:@"isRestricted"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isBlocked](self, "isBlocked")}];
-  [v5 encodeObject:v21 forKey:@"isBlocked"];
+  [coderCopy encodeObject:v21 forKey:@"isBlocked"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isUserBasedVPP](self, "isUserBasedVPP")}];
-  [v5 encodeObject:v22 forKey:@"isUserBasedVPP"];
+  [coderCopy encodeObject:v22 forKey:@"isUserBasedVPP"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isDeviceBasedVPP](self, "isDeviceBasedVPP")}];
-  [v5 encodeObject:v23 forKey:@"isDeviceBasedVPP"];
+  [coderCopy encodeObject:v23 forKey:@"isDeviceBasedVPP"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isLicenseExpired](self, "isLicenseExpired")}];
-  [v5 encodeObject:v24 forKey:@"isLicenseExpired"];
+  [coderCopy encodeObject:v24 forKey:@"isLicenseExpired"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isLicenseRevoked](self, "isLicenseRevoked")}];
-  [v5 encodeObject:v25 forKey:@"isLicenseRevoked"];
+  [coderCopy encodeObject:v25 forKey:@"isLicenseRevoked"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isUPP](self, "isUPP")}];
-  [v5 encodeObject:v26 forKey:@"isUPP"];
+  [coderCopy encodeObject:v26 forKey:@"isUPP"];
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isValidated](self, "isValidated")}];
-  [v5 encodeObject:v27 forKey:@"isValidated"];
+  [coderCopy encodeObject:v27 forKey:@"isValidated"];
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isAppClip](self, "isAppClip")}];
-  [v5 encodeObject:v28 forKey:@"isAppClip"];
+  [coderCopy encodeObject:v28 forKey:@"isAppClip"];
 
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isAppStoreVendable](self, "isAppStoreVendable")}];
-  [v5 encodeObject:v29 forKey:@"isAppStoreVendable"];
+  [coderCopy encodeObject:v29 forKey:@"isAppStoreVendable"];
 
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isBetaApp](self, "isBetaApp")}];
-  [v5 encodeObject:v30 forKey:@"isBetaApp"];
+  [coderCopy encodeObject:v30 forKey:@"isBetaApp"];
 
   v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp isAdHocCodeSigned](self, "isAdHocCodeSigned")}];
-  [v5 encodeObject:v31 forKey:@"isAdHocCodeSigned"];
+  [coderCopy encodeObject:v31 forKey:@"isAdHocCodeSigned"];
 
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFApp hasUpdateAvailable](self, "hasUpdateAvailable")}];
-  [v5 encodeObject:v32 forKey:@"hasUpdateAvailable"];
+  [coderCopy encodeObject:v32 forKey:@"hasUpdateAvailable"];
 
-  v33 = [(DMFApp *)self VPNUUIDString];
-  [v5 encodeObject:v33 forKey:@"VPNUUIDString"];
+  vPNUUIDString = [(DMFApp *)self VPNUUIDString];
+  [coderCopy encodeObject:vPNUUIDString forKey:@"VPNUUIDString"];
 
-  v34 = [(DMFApp *)self cellularSliceUUIDString];
-  [v5 encodeObject:v34 forKey:@"cellularSliceUUIDString"];
+  cellularSliceUUIDString = [(DMFApp *)self cellularSliceUUIDString];
+  [coderCopy encodeObject:cellularSliceUUIDString forKey:@"cellularSliceUUIDString"];
 
-  v35 = [(DMFApp *)self contentFilterUUIDString];
-  [v5 encodeObject:v35 forKey:@"contentFilterUUIDString"];
+  contentFilterUUIDString = [(DMFApp *)self contentFilterUUIDString];
+  [coderCopy encodeObject:contentFilterUUIDString forKey:@"contentFilterUUIDString"];
 
-  v36 = [(DMFApp *)self DNSProxyUUIDString];
-  [v5 encodeObject:v36 forKey:@"DNSProxyUUIDString"];
+  dNSProxyUUIDString = [(DMFApp *)self DNSProxyUUIDString];
+  [coderCopy encodeObject:dNSProxyUUIDString forKey:@"DNSProxyUUIDString"];
 
-  v37 = [(DMFApp *)self relayUUIDString];
-  [v5 encodeObject:v37 forKey:@"relayUUIDString"];
+  relayUUIDString = [(DMFApp *)self relayUUIDString];
+  [coderCopy encodeObject:relayUUIDString forKey:@"relayUUIDString"];
 
-  v38 = [(DMFApp *)self associatedDomains];
-  [v5 encodeObject:v38 forKey:@"associatedDomains"];
+  associatedDomains = [(DMFApp *)self associatedDomains];
+  [coderCopy encodeObject:associatedDomains forKey:@"associatedDomains"];
 
-  v39 = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
-  [v5 encodeObject:v39 forKey:@"associatedDomainsEnableDirectDownloads"];
+  associatedDomainsEnableDirectDownloads = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
+  [coderCopy encodeObject:associatedDomainsEnableDirectDownloads forKey:@"associatedDomainsEnableDirectDownloads"];
 
-  v40 = [(DMFApp *)self removable];
-  [v5 encodeObject:v40 forKey:@"removable"];
+  removable = [(DMFApp *)self removable];
+  [coderCopy encodeObject:removable forKey:@"removable"];
 
-  v41 = [(DMFApp *)self tapToPayScreenLock];
-  [v5 encodeObject:v41 forKey:@"tapToPayScreenLock"];
+  tapToPayScreenLock = [(DMFApp *)self tapToPayScreenLock];
+  [coderCopy encodeObject:tapToPayScreenLock forKey:@"tapToPayScreenLock"];
 
-  v42 = [(DMFApp *)self allowUserToHide];
-  [v5 encodeObject:v42 forKey:@"allowUserToHide"];
+  allowUserToHide = [(DMFApp *)self allowUserToHide];
+  [coderCopy encodeObject:allowUserToHide forKey:@"allowUserToHide"];
 
-  v43 = [(DMFApp *)self allowUserToLock];
-  [v5 encodeObject:v43 forKey:@"allowUserToLock"];
+  allowUserToLock = [(DMFApp *)self allowUserToLock];
+  [coderCopy encodeObject:allowUserToLock forKey:@"allowUserToLock"];
 
-  v44 = [(DMFApp *)self configuration];
-  [v5 encodeObject:v44 forKey:@"configuration"];
+  configuration = [(DMFApp *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  v45 = [(DMFApp *)self feedback];
-  [v5 encodeObject:v45 forKey:@"feedback"];
+  feedback = [(DMFApp *)self feedback];
+  [coderCopy encodeObject:feedback forKey:@"feedback"];
 
-  v46 = [(DMFApp *)self sourceIdentifier];
-  [v5 encodeObject:v46 forKey:@"sourceIdentifier"];
+  sourceIdentifier = [(DMFApp *)self sourceIdentifier];
+  [coderCopy encodeObject:sourceIdentifier forKey:@"sourceIdentifier"];
 
-  v47 = [(DMFApp *)self managementInformation];
-  [v5 encodeObject:v47 forKey:@"managementInformation"];
+  managementInformation = [(DMFApp *)self managementInformation];
+  [coderCopy encodeObject:managementInformation forKey:@"managementInformation"];
 }
 
 - (id)description
@@ -502,38 +502,38 @@
   v4 = [(DMFApp *)self _stringForType:[(DMFApp *)self type]];
   [v3 appendFormat:@"Type                           : %@\n", v4];
 
-  v5 = [(DMFApp *)self displayName];
-  [v3 appendFormat:@"Display Name                   : %@\n", v5];
+  displayName = [(DMFApp *)self displayName];
+  [v3 appendFormat:@"Display Name                   : %@\n", displayName];
 
-  v6 = [(DMFApp *)self bundleIdentifier];
-  [v3 appendFormat:@"Bundle Identifier              : %@\n", v6];
+  bundleIdentifier = [(DMFApp *)self bundleIdentifier];
+  [v3 appendFormat:@"Bundle Identifier              : %@\n", bundleIdentifier];
 
-  v7 = [(DMFApp *)self storeItemIdentifier];
-  [v3 appendFormat:@"Store Item Identifier          : %@\n", v7];
+  storeItemIdentifier = [(DMFApp *)self storeItemIdentifier];
+  [v3 appendFormat:@"Store Item Identifier          : %@\n", storeItemIdentifier];
 
-  v8 = [(DMFApp *)self externalVersionIdentifier];
-  [v3 appendFormat:@"External Version Identifier    : %@\n", v8];
+  externalVersionIdentifier = [(DMFApp *)self externalVersionIdentifier];
+  [v3 appendFormat:@"External Version Identifier    : %@\n", externalVersionIdentifier];
 
-  v9 = [(DMFApp *)self distributorIdentifier];
-  [v3 appendFormat:@"Distributor Identifier         : %@\n", v9];
+  distributorIdentifier = [(DMFApp *)self distributorIdentifier];
+  [v3 appendFormat:@"Distributor Identifier         : %@\n", distributorIdentifier];
 
-  v10 = [(DMFApp *)self version];
-  [v3 appendFormat:@"Version                        : %@\n", v10];
+  version = [(DMFApp *)self version];
+  [v3 appendFormat:@"Version                        : %@\n", version];
 
-  v11 = [(DMFApp *)self shortVersion];
-  [v3 appendFormat:@"Short Version                  : %@\n", v11];
+  shortVersion = [(DMFApp *)self shortVersion];
+  [v3 appendFormat:@"Short Version                  : %@\n", shortVersion];
 
-  v12 = [(DMFApp *)self staticUsage];
-  [v3 appendFormat:@"Static Usage                   : %@\n", v12];
+  staticUsage = [(DMFApp *)self staticUsage];
+  [v3 appendFormat:@"Static Usage                   : %@\n", staticUsage];
 
-  v13 = [(DMFApp *)self dynamicUsage];
-  [v3 appendFormat:@"Dynamic Usage                  : %@\n", v13];
+  dynamicUsage = [(DMFApp *)self dynamicUsage];
+  [v3 appendFormat:@"Dynamic Usage                  : %@\n", dynamicUsage];
 
-  v14 = [(DMFApp *)self onDemandResourcesUsage];
-  [v3 appendFormat:@"On Demand Resources Usage      : %@\n", v14];
+  onDemandResourcesUsage = [(DMFApp *)self onDemandResourcesUsage];
+  [v3 appendFormat:@"On Demand Resources Usage      : %@\n", onDemandResourcesUsage];
 
-  v15 = [(DMFApp *)self sharedUsage];
-  [v3 appendFormat:@"Shared Usage                   : %@\n", v15];
+  sharedUsage = [(DMFApp *)self sharedUsage];
+  [v3 appendFormat:@"Shared Usage                   : %@\n", sharedUsage];
 
   v16 = [DMFApp stringForInstallationState:[(DMFApp *)self installationState]];
   [v3 appendFormat:@"Installation State             : %@\n", v16];
@@ -692,26 +692,26 @@
   }
 
   [v3 appendFormat:@"Has Update Available           : %@\n", v30];
-  v31 = [(DMFApp *)self VPNUUIDString];
-  [v3 appendFormat:@"VPN UUID String                : %@\n", v31];
+  vPNUUIDString = [(DMFApp *)self VPNUUIDString];
+  [v3 appendFormat:@"VPN UUID String                : %@\n", vPNUUIDString];
 
-  v32 = [(DMFApp *)self cellularSliceUUIDString];
-  [v3 appendFormat:@"CellularSlice UUID String      : %@\n", v32];
+  cellularSliceUUIDString = [(DMFApp *)self cellularSliceUUIDString];
+  [v3 appendFormat:@"CellularSlice UUID String      : %@\n", cellularSliceUUIDString];
 
-  v33 = [(DMFApp *)self contentFilterUUIDString];
-  [v3 appendFormat:@"ContentFilter UUID String      : %@\n", v33];
+  contentFilterUUIDString = [(DMFApp *)self contentFilterUUIDString];
+  [v3 appendFormat:@"ContentFilter UUID String      : %@\n", contentFilterUUIDString];
 
-  v34 = [(DMFApp *)self DNSProxyUUIDString];
-  [v3 appendFormat:@"DNS Proxy UUID String          : %@\n", v34];
+  dNSProxyUUIDString = [(DMFApp *)self DNSProxyUUIDString];
+  [v3 appendFormat:@"DNS Proxy UUID String          : %@\n", dNSProxyUUIDString];
 
-  v35 = [(DMFApp *)self relayUUIDString];
-  [v3 appendFormat:@"Relay UUID String              : %@\n", v35];
+  relayUUIDString = [(DMFApp *)self relayUUIDString];
+  [v3 appendFormat:@"Relay UUID String              : %@\n", relayUUIDString];
 
-  v36 = [(DMFApp *)self associatedDomains];
-  [v3 appendFormat:@"Associated Domains             : %@\n", v36];
+  associatedDomains = [(DMFApp *)self associatedDomains];
+  [v3 appendFormat:@"Associated Domains             : %@\n", associatedDomains];
 
-  v37 = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
-  if ([v37 BOOLValue])
+  associatedDomainsEnableDirectDownloads = [(DMFApp *)self associatedDomainsEnableDirectDownloads];
+  if ([associatedDomainsEnableDirectDownloads BOOLValue])
   {
     v38 = @"YES";
   }
@@ -723,11 +723,11 @@
 
   [v3 appendFormat:@"AD Enabled Direct Downloads    : %@\n", v38];
 
-  v39 = [(DMFApp *)self removable];
-  if (v39)
+  removable = [(DMFApp *)self removable];
+  if (removable)
   {
-    v40 = [(DMFApp *)self removable];
-    if ([v40 BOOLValue])
+    removable2 = [(DMFApp *)self removable];
+    if ([removable2 BOOLValue])
     {
       v41 = @"YES";
     }
@@ -745,11 +745,11 @@
     [v3 appendFormat:@"Is Removable                   : %@\n", @"YES"];
   }
 
-  v42 = [(DMFApp *)self tapToPayScreenLock];
-  if (v42)
+  tapToPayScreenLock = [(DMFApp *)self tapToPayScreenLock];
+  if (tapToPayScreenLock)
   {
-    v43 = [(DMFApp *)self tapToPayScreenLock];
-    if ([v43 BOOLValue])
+    tapToPayScreenLock2 = [(DMFApp *)self tapToPayScreenLock];
+    if ([tapToPayScreenLock2 BOOLValue])
     {
       v44 = @"YES";
     }
@@ -768,26 +768,26 @@
   }
 
   v45 = objc_opt_class();
-  v46 = [(DMFApp *)self allowUserToHide];
-  v47 = [v45 descriptionForBool:v46 showWhenUnassigned:1 valueWhenUnassigned:1];
+  allowUserToHide = [(DMFApp *)self allowUserToHide];
+  v47 = [v45 descriptionForBool:allowUserToHide showWhenUnassigned:1 valueWhenUnassigned:1];
   [v3 appendFormat:@"Allow User To Hide             : %@\n", v47];
 
   v48 = objc_opt_class();
-  v49 = [(DMFApp *)self allowUserToLock];
-  v50 = [v48 descriptionForBool:v49 showWhenUnassigned:1 valueWhenUnassigned:1];
+  allowUserToLock = [(DMFApp *)self allowUserToLock];
+  v50 = [v48 descriptionForBool:allowUserToLock showWhenUnassigned:1 valueWhenUnassigned:1];
   [v3 appendFormat:@"Allow User To Lock             : %@\n", v50];
 
-  v51 = [(DMFApp *)self configuration];
-  [v3 appendFormat:@"Configuration                  : %@\n", v51];
+  configuration = [(DMFApp *)self configuration];
+  [v3 appendFormat:@"Configuration                  : %@\n", configuration];
 
-  v52 = [(DMFApp *)self feedback];
-  [v3 appendFormat:@"Feedback                       : %@\n", v52];
+  feedback = [(DMFApp *)self feedback];
+  [v3 appendFormat:@"Feedback                       : %@\n", feedback];
 
-  v53 = [(DMFApp *)self sourceIdentifier];
-  [v3 appendFormat:@"sourceIdentifier               : %@\n", v53];
+  sourceIdentifier = [(DMFApp *)self sourceIdentifier];
+  [v3 appendFormat:@"sourceIdentifier               : %@\n", sourceIdentifier];
 
-  v54 = [(DMFApp *)self managementInformation];
-  [v3 appendFormat:@"Management Information         : %@\n", v54];
+  managementInformation = [(DMFApp *)self managementInformation];
+  [v3 appendFormat:@"Management Information         : %@\n", managementInformation];
 
   [v3 appendString:@"}>"];
   v55 = [v3 copy];
@@ -795,18 +795,18 @@
   return v55;
 }
 
-+ (id)descriptionForBool:(id)a3 showWhenUnassigned:(BOOL)a4 valueWhenUnassigned:(BOOL)a5
++ (id)descriptionForBool:(id)bool showWhenUnassigned:(BOOL)unassigned valueWhenUnassigned:(BOOL)whenUnassigned
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  whenUnassignedCopy = whenUnassigned;
+  unassignedCopy = unassigned;
+  boolCopy = bool;
+  v8 = boolCopy;
+  if (boolCopy)
   {
-    v5 = [v7 BOOLValue];
+    whenUnassignedCopy = [boolCopy BOOLValue];
   }
 
-  else if (v6)
+  else if (unassignedCopy)
   {
     v9 = @"Unassigned (NO)";
     v10 = @"Unassigned (YES)";
@@ -816,7 +816,7 @@
   v9 = @"NO";
   v10 = @"YES";
 LABEL_6:
-  if (v5)
+  if (whenUnassignedCopy)
   {
     v11 = v10;
   }
@@ -831,16 +831,16 @@ LABEL_6:
   return v11;
 }
 
-- (id)_stringForType:(unint64_t)a3
+- (id)_stringForType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E8615F58[a3 - 1];
+    return off_1E8615F58[type - 1];
   }
 }
 

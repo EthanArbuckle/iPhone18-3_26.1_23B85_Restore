@@ -9,9 +9,9 @@
 
 + (NSNumber)ageGroup
 {
-  [a1 _updateGenderAndAgeGroupValues];
-  v3 = [a1 _classProperties];
-  v4 = [v3 objectForKey:@"ageGroup"];
+  [self _updateGenderAndAgeGroupValues];
+  _classProperties = [self _classProperties];
+  v4 = [_classProperties objectForKey:@"ageGroup"];
 
   return v4;
 }
@@ -19,12 +19,12 @@
 + (void)_updateGenderAndAgeGroupValues
 {
   v7 = objc_alloc_init(PCSupportRequester);
-  v3 = [(PCSupportRequester *)v7 fetchGenderAndAgeGroupData];
-  v4 = [v3 objectForKey:@"gender"];
-  v5 = [v3 objectForKey:@"ageGroup"];
-  v6 = [a1 _classProperties];
-  [v6 setValue:v4 forKey:@"gender"];
-  [v6 setValue:v5 forKey:@"ageGroup"];
+  fetchGenderAndAgeGroupData = [(PCSupportRequester *)v7 fetchGenderAndAgeGroupData];
+  v4 = [fetchGenderAndAgeGroupData objectForKey:@"gender"];
+  v5 = [fetchGenderAndAgeGroupData objectForKey:@"ageGroup"];
+  _classProperties = [self _classProperties];
+  [_classProperties setValue:v4 forKey:@"gender"];
+  [_classProperties setValue:v5 forKey:@"ageGroup"];
 }
 
 + (id)_classProperties
@@ -41,9 +41,9 @@
 
 + (NSNumber)gender
 {
-  [a1 _updateGenderAndAgeGroupValues];
-  v3 = [a1 _classProperties];
-  v4 = [v3 objectForKey:@"gender"];
+  [self _updateGenderAndAgeGroupValues];
+  _classProperties = [self _classProperties];
+  v4 = [_classProperties objectForKey:@"gender"];
 
   return v4;
 }

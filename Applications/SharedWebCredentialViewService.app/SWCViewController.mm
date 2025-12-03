@@ -1,55 +1,55 @@
 @interface SWCViewController
 - (id)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setCredentials:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setCredentials:(id)credentials;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SWCViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NSMutableArray *)self->_credentials objectAtIndex:[(NSIndexPath *)v5 row]];
+  pathCopy = path;
+  v6 = [(NSMutableArray *)self->_credentials objectAtIndex:[(NSIndexPath *)pathCopy row]];
   v7 = [[SWCItemCell alloc] initWithDictionary:v6];
-  if ([(NSMutableArray *)self->_credentials count]< 3 || ([(SWCItemCell *)v7 setShowSeparator:1], ![(NSIndexPath *)v5 row]))
+  if ([(NSMutableArray *)self->_credentials count]< 3 || ([(SWCItemCell *)v7 setShowSeparator:1], ![(NSIndexPath *)pathCopy row]))
   {
     [(SWCItemCell *)v7 setShowTopSeparator:1];
   }
 
-  [(SWCItemCell *)v7 setTicked:self->_selectedCell == v5];
+  [(SWCItemCell *)v7 setTicked:self->_selectedCell == pathCopy];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   [v4 setTicked:0];
   [v4 layoutSubviews];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSMutableArray *)self->_credentials objectAtIndex:[(NSIndexPath *)v6 row]];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(NSMutableArray *)self->_credentials objectAtIndex:[(NSIndexPath *)pathCopy row]];
   objc_storeStrong(&self->_selectedDict, v8);
   v14 = 0;
   memset(v13, 0, sizeof(v13));
   if (!sub_100002D24(v13, v8, &v14))
   {
-    v9 = [v14 localizedDescription];
-    NSLog(@"Unable to select item: %@", v9);
+    localizedDescription = [v14 localizedDescription];
+    NSLog(@"Unable to select item: %@", localizedDescription);
   }
 
   selectedCell = self->_selectedCell;
-  self->_selectedCell = v6;
-  v11 = v6;
+  self->_selectedCell = pathCopy;
+  v11 = pathCopy;
 
-  v12 = [v7 cellForRowAtIndexPath:v11];
+  v12 = [viewCopy cellForRowAtIndexPath:v11];
 
   [v12 setTicked:1];
   [v12 layoutSubviews];
@@ -58,10 +58,10 @@
 - (void)loadView
 {
   v3 = objc_alloc_init(UIView);
-  v4 = [(SWCViewController *)self tableView];
-  [v4 setDelegate:self];
-  [v4 setDataSource:self];
-  [v3 addSubview:v4];
+  tableView = [(SWCViewController *)self tableView];
+  [tableView setDelegate:self];
+  [tableView setDataSource:self];
+  [v3 addSubview:tableView];
   CFErrorWithXPCObject = 0;
   memset(bytes, 0, sizeof(bytes));
   v5 = sub_100002C64(5u, &CFErrorWithXPCObject);
@@ -119,8 +119,8 @@ LABEL_15:
 LABEL_16:
   if (CFErrorWithXPCObject)
   {
-    v12 = [(__CFString *)CFErrorWithXPCObject localizedDescription];
-    NSLog(@"Unable to get accounts: %@", v12);
+    localizedDescription = [(__CFString *)CFErrorWithXPCObject localizedDescription];
+    NSLog(@"Unable to get accounts: %@", localizedDescription);
   }
 
   [(SWCViewController *)self setCredentials:v9];
@@ -130,18 +130,18 @@ LABEL_16:
   }
 
   Height = 45.0;
-  [v4 setFrame:{0.0, 0.0, 300.0, 45.0}];
-  [v4 layoutIfNeeded];
-  v14 = [v4 visibleCells];
-  v15 = [v14 firstObject];
+  [tableView setFrame:{0.0, 0.0, 300.0, 45.0}];
+  [tableView layoutIfNeeded];
+  visibleCells = [tableView visibleCells];
+  firstObject = [visibleCells firstObject];
 
-  if (v15)
+  if (firstObject)
   {
-    [v15 frame];
+    [firstObject frame];
     Height = CGRectGetHeight(v44);
   }
 
-  v16 = _NSDictionaryOfVariableBindings(@"table", v4, 0);
+  v16 = _NSDictionaryOfVariableBindings(@"table", tableView, 0);
   if ([(NSMutableArray *)self->_credentials count]< 3)
   {
     if ([(NSMutableArray *)self->_credentials count]== 2)
@@ -175,7 +175,7 @@ LABEL_16:
     [v3 addConstraints:v34];
 
     [(SWCViewController *)self setPreferredContentSize:0.0, Height];
-    [v4 setScrollEnabled:0];
+    [tableView setScrollEnabled:0];
   }
 
   else
@@ -196,13 +196,13 @@ LABEL_16:
     [v22 scale];
     v24 = v23;
 
-    v25 = [v4 layer];
-    [v25 setBorderWidth:1.0 / v24];
+    layer = [tableView layer];
+    [layer setBorderWidth:1.0 / v24];
 
     v26 = +[UIColor opaqueSeparatorColor];
-    v27 = [v26 CGColor];
-    v28 = [v4 layer];
-    [v28 setBorderColor:v27];
+    cGColor = [v26 CGColor];
+    layer2 = [tableView layer];
+    [layer2 setBorderColor:cGColor];
 
     [(SWCViewController *)self setPreferredContentSize:0.0, v17 + 20.0];
   }
@@ -235,10 +235,10 @@ LABEL_16:
   return v8;
 }
 
-- (void)setCredentials:(id)a3
+- (void)setCredentials:(id)credentials
 {
-  v4 = a3;
-  obj = [[NSMutableArray alloc] initWithArray:v4];
+  credentialsCopy = credentials;
+  obj = [[NSMutableArray alloc] initWithArray:credentialsCopy];
 
   [obj sortUsingSelector:"compareCredentialDictionaryAscending:"];
   objc_storeStrong(&self->_credentials, obj);

@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 + (void)accessibilityInitialize;
 + (void)accessibilityNeedsReload;
-- (void)addSafeCategoryNamesToCollection:(id)a3;
+- (void)addSafeCategoryNamesToCollection:(id)collection;
 - (void)loadAccessibilitySupport;
 - (void)loadAccessibilitySupportWithDelay;
 @end
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_BEE4;
   block[3] = &unk_208C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_26D78 != -1)
   {
     dispatch_once(&qword_26D78, block);
@@ -29,23 +29,23 @@
 
 + (void)accessibilityInitialize
 {
-  v2 = [a1 sharedInstance];
-  [v2 loadAccessibilitySupport];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance loadAccessibilitySupport];
 }
 
 + (BOOL)isAccessibilityLoaded
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 isAccessibilityLoaded];
+  sharedInstance = [self sharedInstance];
+  isAccessibilityLoaded = [sharedInstance isAccessibilityLoaded];
 
-  return v3;
+  return isAccessibilityLoaded;
 }
 
 + (void)accessibilityNeedsReload
 {
-  v2 = [a1 sharedInstance];
-  [v2 setIsAccessibilitySupportLoaded:0];
-  [v2 loadAccessibilitySupportWithDelay];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance setIsAccessibilitySupportLoaded:0];
+  [sharedInstance loadAccessibilitySupportWithDelay];
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
 }
 
@@ -76,16 +76,16 @@
   }
 }
 
-- (void)addSafeCategoryNamesToCollection:(id)a3
+- (void)addSafeCategoryNamesToCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    [v3 addObject:@"BAXObjectWrapper"];
+    [collectionCopy addObject:@"BAXObjectWrapper"];
   }
 
-  [v3 addObject:@"BEAXObjectWrapper_Notifications"];
-  [v3 addObject:@"BAXWebPageAccessibilityObjectWrapper"];
+  [collectionCopy addObject:@"BEAXObjectWrapper_Notifications"];
+  [collectionCopy addObject:@"BAXWebPageAccessibilityObjectWrapper"];
 }
 
 @end

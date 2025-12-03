@@ -1,29 +1,29 @@
 @interface UserID
 + (id)local;
-+ (id)remoteWithAltDSID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)remoteWithAltDSID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC14ScreenTimeCore6UserID)init;
-- (id)altDSIDAndReturnError:(id *)a3;
+- (id)altDSIDAndReturnError:(id *)error;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UserID
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID_type);
-  v5 = a3;
-  v6 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_1B83DDCBC();
-  [v5 encodeInteger:v4 forKey:v7];
+  [coderCopy encodeInteger:v4 forKey:v7];
 
-  v8 = *(&v6->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
-  v9 = *(&v6->type + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
+  v9 = *(&selfCopy->type + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
   v10 = sub_1B83DDCBC();
   v11 = sub_1B83DDCBC();
-  [v5 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:v10 forKey:v11];
 }
 
 + (id)local
@@ -41,7 +41,7 @@
   return v5;
 }
 
-+ (id)remoteWithAltDSID:(id)a3
++ (id)remoteWithAltDSID:(id)d
 {
   v3 = sub_1B83DDCEC();
   v5 = v4;
@@ -58,7 +58,7 @@
   return v9;
 }
 
-- (id)altDSIDAndReturnError:(id *)a3
+- (id)altDSIDAndReturnError:(id *)error
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID_type))
   {
@@ -74,13 +74,13 @@
     v7 = swift_allocError();
     *v8 = 0;
     swift_willThrow();
-    if (a3)
+    if (error)
     {
       v9 = sub_1B83DD8BC();
 
       v10 = v9;
       v5 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -93,11 +93,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B83DDF5C();
     swift_unknownObjectRelease();
@@ -106,7 +106,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B83B9F64(v8);
@@ -121,7 +121,7 @@
   MEMORY[0x1B8CBD740](*(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID_type));
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
   v4 = *(&self->type + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
-  v5 = self;
+  selfCopy = self;
   sub_1B83DDD5C();
   v6 = sub_1B83DE23C();
 
@@ -136,7 +136,7 @@
     if (v2 != 1)
     {
       v9 = *(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID_type);
-      v8 = self;
+      selfCopy = self;
       result = sub_1B83DE19C();
       __break(1u);
       return result;
@@ -144,7 +144,7 @@
 
     v3 = *(&self->super.isa + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
     v4 = *(&self->type + OBJC_IVAR____TtC14ScreenTimeCore6UserID__altDSID);
-    v5 = self;
+    selfCopy2 = self;
     MEMORY[0x1B8CBD290](v3, v4);
   }
 

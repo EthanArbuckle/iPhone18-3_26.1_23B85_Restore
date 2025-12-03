@@ -6,11 +6,11 @@
 - (id)mapView;
 - (id)personalizedItemSources;
 - (void)_doneButtonPressed;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carMapPanningViewControllerDidPan:(id)a3 inDirection:(int64_t)a4;
-- (void)configureNavigationDisplay:(id)a3;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carMapPanningViewControllerDidPan:(id)pan inDirection:(int64_t)direction;
+- (void)configureNavigationDisplay:(id)display;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation CarMapPanningModeController
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (void)carMapPanningViewControllerDidPan:(id)a3 inDirection:(int64_t)a4
+- (void)carMapPanningViewControllerDidPan:(id)pan inDirection:(int64_t)direction
 {
-  v6 = [(CarMapPanningModeController *)self chromeViewController];
-  [v6 captureUserActionPannedInDirection:a4];
+  chromeViewController = [(CarMapPanningModeController *)self chromeViewController];
+  [chromeViewController captureUserActionPannedInDirection:direction];
 
   self->_mapWasPanned = 1;
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  if (!a4)
+  if (!gesture)
   {
     self->_mapWasPanned = 1;
   }
@@ -41,11 +41,11 @@
 - (void)_doneButtonPressed
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 isCarAppSceneHostingNavigation];
+  isCarAppSceneHostingNavigation = [v3 isCarAppSceneHostingNavigation];
 
-  v5 = [(CarMapPanningModeController *)self chromeViewController];
-  v6 = v5;
-  if (v4)
+  chromeViewController = [(CarMapPanningModeController *)self chromeViewController];
+  v6 = chromeViewController;
+  if (isCarAppSceneHostingNavigation)
   {
     v7 = 3051;
   }
@@ -55,54 +55,54 @@
     v7 = 4;
   }
 
-  [v5 captureUserAction:v7];
+  [chromeViewController captureUserAction:v7];
 
   v8 = +[CarChromeModeCoordinator sharedInstance];
   [v8 popFromContext:self];
 }
 
-- (void)configureNavigationDisplay:(id)a3
+- (void)configureNavigationDisplay:(id)display
 {
-  v3 = a3;
-  [v3 setCameraStyle:0];
-  [v3 setCameraPaused:&__kCFBooleanTrue];
+  displayCopy = display;
+  [displayCopy setCameraStyle:0];
+  [displayCopy setCameraPaused:&__kCFBooleanTrue];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100E92F48;
   v7[3] = &unk_101661B18;
   v7[4] = self;
-  v5 = a4;
-  [v5 addPreparation:v7];
+  animationCopy = animation;
+  [animationCopy addPreparation:v7];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100E92FE4;
   v6[3] = &unk_101661738;
   v6[4] = self;
-  [v5 addCompletion:v6];
+  [animationCopy addCompletion:v6];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100E93084;
   v6[3] = &unk_101661AE0;
   v6[4] = self;
-  v7 = [v5 isAnimated];
-  [v5 addPreparation:v6];
+  isAnimated = [animationCopy isAnimated];
+  [animationCopy addPreparation:v6];
 }
 
 - (NSArray)carFocusOrderSequences
 {
-  v2 = [(CarMapPanningModeController *)self fullscreenViewController];
-  v3 = [v2 carFocusOrderSequences];
+  fullscreenViewController = [(CarMapPanningModeController *)self fullscreenViewController];
+  carFocusOrderSequences = [fullscreenViewController carFocusOrderSequences];
 
-  return v3;
+  return carFocusOrderSequences;
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)mapControlsConfiguration
@@ -115,13 +115,13 @@
 
 - (id)personalizedItemSources
 {
-  v2 = [(CarMapPanningModeController *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
+  chromeViewController = [(CarMapPanningModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v3)
+  if (searchPinsManager)
   {
-    v4 = [v3 searchResultsItemSource];
-    v7 = v4;
+    searchResultsItemSource = [searchPinsManager searchResultsItemSource];
+    v7 = searchResultsItemSource;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -135,10 +135,10 @@
 
 - (id)mapView
 {
-  v2 = [(CarMapPanningModeController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarMapPanningModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (CarMapPanningModeController)init

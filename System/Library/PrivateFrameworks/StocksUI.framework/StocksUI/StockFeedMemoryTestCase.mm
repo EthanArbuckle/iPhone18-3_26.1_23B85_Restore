@@ -1,7 +1,7 @@
 @interface StockFeedMemoryTestCase
 - (NSString)testName;
 - (_TtC8StocksUI23StockFeedMemoryTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation StockFeedMemoryTestCase
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_22069CFC4(v8, sub_2204C9E0C, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_22069CFC4(contextCopy, sub_2204C9E0C, v7);
 }
 
 @end

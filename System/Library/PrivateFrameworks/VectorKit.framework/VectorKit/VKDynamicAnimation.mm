@@ -1,12 +1,12 @@
 @interface VKDynamicAnimation
 - (VKDynamicAnimation)init;
-- (void)onTimerFired:(double)a3;
-- (void)stopAnimation:(BOOL)a3;
+- (void)onTimerFired:(double)fired;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation VKDynamicAnimation
 
-- (void)onTimerFired:(double)a3
+- (void)onTimerFired:(double)fired
 {
   state = self->super._state;
   if (state == 1)
@@ -14,7 +14,7 @@
     if (self->_resuming)
     {
       self->_resuming = 0;
-      lastTimestamp = a3;
+      lastTimestamp = fired;
     }
 
     else
@@ -22,9 +22,9 @@
       lastTimestamp = self->_lastTimestamp;
     }
 
-    self->_lastTimestamp = a3;
+    self->_lastTimestamp = fired;
     dynamicStepHandler = self->_dynamicStepHandler;
-    if (dynamicStepHandler && fmax(lastTimestamp, a3) - lastTimestamp > 0.0 && dynamicStepHandler[2](dynamicStepHandler, a2))
+    if (dynamicStepHandler && fmax(lastTimestamp, fired) - lastTimestamp > 0.0 && dynamicStepHandler[2](dynamicStepHandler, a2))
     {
       self->super._state = 3;
     }
@@ -33,15 +33,15 @@
   else if (state == 3)
   {
 
-    [(VKDynamicAnimation *)self stopAnimation:1, a3];
+    [(VKDynamicAnimation *)self stopAnimation:1, fired];
   }
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
   v4.receiver = self;
   v4.super_class = VKDynamicAnimation;
-  [(VKAnimation *)&v4 stopAnimation:a3];
+  [(VKAnimation *)&v4 stopAnimation:animation];
   self->_resuming = 0;
 }
 

@@ -1,12 +1,12 @@
 @interface VTPhraseSpotterControlConnection
 - (VTPhraseSpotterControlConnection)init;
-- (void)remoteConnection:(id)a3 handleMessageType:(unint64_t)a4 completion:(id)a5;
-- (void)updateRemotePhraseSpotterEnabled:(BOOL)a3;
+- (void)remoteConnection:(id)connection handleMessageType:(unint64_t)type completion:(id)completion;
+- (void)updateRemotePhraseSpotterEnabled:(BOOL)enabled;
 @end
 
 @implementation VTPhraseSpotterControlConnection
 
-- (void)remoteConnection:(id)a3 handleMessageType:(unint64_t)a4 completion:(id)a5
+- (void)remoteConnection:(id)connection handleMessageType:(unint64_t)type completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = VTLogContextFacilityVoiceTrigger;
@@ -14,29 +14,29 @@
   {
     v7 = MEMORY[0x277CCABB0];
     v8 = v6;
-    v9 = [v7 numberWithUnsignedInteger:a4];
+    v9 = [v7 numberWithUnsignedInteger:type];
     v10 = 138543362;
     v11 = v9;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "Connection received incoming IDS message: {%{public}@} - dropping it on the floor.", &v10, 0xCu);
   }
 }
 
-- (void)updateRemotePhraseSpotterEnabled:(BOOL)a3
+- (void)updateRemotePhraseSpotterEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x277D85DE8];
   v8 = +[VTPreferences sharedPreferences];
   if ([v8 voiceTriggerEnabled])
   {
     remotePhraseSpotterEnabled = self->_remotePhraseSpotterEnabled;
 
-    if (remotePhraseSpotterEnabled != v3)
+    if (remotePhraseSpotterEnabled != enabledCopy)
     {
       v6 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v7 = @"disabled";
-        if (v3)
+        if (enabledCopy)
         {
           v7 = @"enabled";
         }
@@ -46,8 +46,8 @@
         _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "Notifying connection that remote phrase spotter should be %{public}@", buf, 0xCu);
       }
 
-      self->_remotePhraseSpotterEnabled = v3;
-      [(VTPeerRemoteConnection *)self->_peerConnection sendRequestType:v3 ^ 1u nonWaking:1];
+      self->_remotePhraseSpotterEnabled = enabledCopy;
+      [(VTPeerRemoteConnection *)self->_peerConnection sendRequestType:enabledCopy ^ 1u nonWaking:1];
     }
   }
 

@@ -2,27 +2,27 @@
 - (NSString)description;
 - (NSString)uuidString;
 - (SFSearchResult)sfSearchResultValue;
-- (WBSURLCompletionMatch)initWithMatchLocation:(int64_t)a3 userInput:(id)a4 forQueryID:(int64_t)a5;
-- (id)matchingStringWithUserTypedPrefix:(id)a3;
+- (WBSURLCompletionMatch)initWithMatchLocation:(int64_t)location userInput:(id)input forQueryID:(int64_t)d;
+- (id)matchingStringWithUserTypedPrefix:(id)prefix;
 @end
 
 @implementation WBSURLCompletionMatch
 
-- (WBSURLCompletionMatch)initWithMatchLocation:(int64_t)a3 userInput:(id)a4 forQueryID:(int64_t)a5
+- (WBSURLCompletionMatch)initWithMatchLocation:(int64_t)location userInput:(id)input forQueryID:(int64_t)d
 {
-  v8 = a4;
+  inputCopy = input;
   v15.receiver = self;
   v15.super_class = WBSURLCompletionMatch;
   v9 = [(WBSURLCompletionMatch *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v9->_matchLocation = a3;
-    v11 = [v8 copy];
+    v9->_matchLocation = location;
+    v11 = [inputCopy copy];
     userInput = v10->_userInput;
     v10->_userInput = v11;
 
-    v10->_parsecQueryID = a5;
+    v10->_parsecQueryID = d;
     v13 = v10;
   }
 
@@ -34,9 +34,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBSURLCompletionMatch *)self title];
-  v7 = [(WBSURLCompletionMatch *)self userVisibleURLString];
-  v8 = [v3 stringWithFormat:@"<%@: %p title = %@; URL = %@>", v5, self, v6, v7];;
+  title = [(WBSURLCompletionMatch *)self title];
+  userVisibleURLString = [(WBSURLCompletionMatch *)self userVisibleURLString];
+  v8 = [v3 stringWithFormat:@"<%@: %p title = %@; URL = %@>", v5, self, title, userVisibleURLString];;
 
   return v8;
 }
@@ -46,10 +46,10 @@
   uuidString = self->_uuidString;
   if (!uuidString)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_uuidString;
-    self->_uuidString = v5;
+    self->_uuidString = uUIDString;
 
     uuidString = self->_uuidString;
   }
@@ -62,21 +62,21 @@
   sfSearchResultValue = self->_sfSearchResultValue;
   if (!sfSearchResultValue)
   {
-    v4 = [MEMORY[0x1E69CA3E8] safari_sfSearchResultWithUniqueIdentifier];
+    safari_sfSearchResultWithUniqueIdentifier = [MEMORY[0x1E69CA3E8] safari_sfSearchResultWithUniqueIdentifier];
     v5 = self->_sfSearchResultValue;
-    self->_sfSearchResultValue = v4;
+    self->_sfSearchResultValue = safari_sfSearchResultWithUniqueIdentifier;
 
-    v6 = [(WBSURLCompletionMatch *)self parsecDomainIdentifier];
-    [(SFSearchResult *)self->_sfSearchResultValue setResultBundleId:v6];
+    parsecDomainIdentifier = [(WBSURLCompletionMatch *)self parsecDomainIdentifier];
+    [(SFSearchResult *)self->_sfSearchResultValue setResultBundleId:parsecDomainIdentifier];
 
-    v7 = [(WBSURLCompletionMatch *)self parsecDomainIdentifier];
-    [(SFSearchResult *)self->_sfSearchResultValue setSectionBundleIdentifier:v7];
+    parsecDomainIdentifier2 = [(WBSURLCompletionMatch *)self parsecDomainIdentifier];
+    [(SFSearchResult *)self->_sfSearchResultValue setSectionBundleIdentifier:parsecDomainIdentifier2];
 
     [(SFSearchResult *)self->_sfSearchResultValue setType:2];
     [(SFSearchResult *)self->_sfSearchResultValue setUserInput:self->_userInput];
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [(WBSURLCompletionMatch *)self originalURLString];
-    v10 = [v8 URLWithString:v9];
+    originalURLString = [(WBSURLCompletionMatch *)self originalURLString];
+    v10 = [v8 URLWithString:originalURLString];
 
     if (v10)
     {
@@ -97,52 +97,52 @@
   return v12;
 }
 
-- (id)matchingStringWithUserTypedPrefix:(id)a3
+- (id)matchingStringWithUserTypedPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(WBSURLCompletionMatch *)self userVisibleURLString];
-  if (![v5 length] || !objc_msgSend(v4, "length"))
+  prefixCopy = prefix;
+  userVisibleURLString = [(WBSURLCompletionMatch *)self userVisibleURLString];
+  if (![userVisibleURLString length] || !objc_msgSend(prefixCopy, "length"))
   {
     goto LABEL_19;
   }
 
-  v6 = [(WBSURLCompletionMatch *)self matchLocation];
-  if ((v6 - 6) < 3 || v6 == 3)
+  matchLocation = [(WBSURLCompletionMatch *)self matchLocation];
+  if ((matchLocation - 6) < 3 || matchLocation == 3)
   {
-    v8 = [(WBSURLCompletionMatch *)self title];
-    if ([v8 safari_isRightToLeft])
+    title = [(WBSURLCompletionMatch *)self title];
+    if ([title safari_isRightToLeft])
     {
       v9 = 0;
     }
 
     else
     {
-      v10 = [v8 rangeOfString:v4 options:1];
+      v10 = [title rangeOfString:prefixCopy options:1];
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v9 = v8;
-        v8 = 0;
+        v9 = title;
+        title = 0;
       }
 
       else
       {
-        v11 = [v8 substringFromIndex:v10];
-        v9 = v8;
-        v8 = v11;
+        v11 = [title substringFromIndex:v10];
+        v9 = title;
+        title = v11;
       }
     }
 
     goto LABEL_20;
   }
 
-  if (v6 == 4)
+  if (matchLocation == 4)
   {
     goto LABEL_19;
   }
 
-  if ([v4 rangeOfString:@":"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([prefixCopy rangeOfString:@":"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 rangeOfString:@":"] + 1;
+    v7 = [userVisibleURLString rangeOfString:@":"] + 1;
   }
 
   else
@@ -150,26 +150,26 @@
     v7 = 0;
   }
 
-  v12 = [v5 rangeOfString:v4 options:1 range:{v7, objc_msgSend(v5, "length") - v7}];
+  v12 = [userVisibleURLString rangeOfString:prefixCopy options:1 range:{v7, objc_msgSend(userVisibleURLString, "length") - v7}];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL && v7)
   {
-    v12 = [v5 rangeOfString:v4 options:1];
+    v12 = [userVisibleURLString rangeOfString:prefixCopy options:1];
   }
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_19:
-    v8 = 0;
+    title = 0;
     goto LABEL_20;
   }
 
   v19 = 0;
-  v14 = [v5 safari_simplifiedUserVisibleURLStringWithSimplifications:133 forDisplayOnly:0 simplifiedStringOffset:&v19];
-  v15 = [v4 length];
+  v14 = [userVisibleURLString safari_simplifiedUserVisibleURLStringWithSimplifications:133 forDisplayOnly:0 simplifiedStringOffset:&v19];
+  v15 = [prefixCopy length];
   v16 = v19;
   if (v15 + v12 > [v14 length] + v16)
   {
-    v17 = v5;
+    v17 = userVisibleURLString;
 LABEL_28:
     v18 = [v17 substringFromIndex:v12];
     goto LABEL_29;
@@ -182,13 +182,13 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v18 = [v5 substringWithRange:{v12, v19 - v12 + objc_msgSend(v14, "length")}];
+  v18 = [userVisibleURLString substringWithRange:{v12, v19 - v12 + objc_msgSend(v14, "length")}];
 LABEL_29:
-  v8 = v18;
+  title = v18;
 
 LABEL_20:
 
-  return v8;
+  return title;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface EDAddBrandIndicatorsTableUpgradeStep
 + (id)_brandIndicatorsTableSchema;
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4;
++ (int)runWithConnection:(id)connection databaseName:(id)name;
 @end
 
 @implementation EDAddBrandIndicatorsTableUpgradeStep
 
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4
++ (int)runWithConnection:(id)connection databaseName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sqlite3_exec([v6 sqlDB], "DROP TABLE IF EXISTS brand_indicators", 0, 0, 0);
+  connectionCopy = connection;
+  nameCopy = name;
+  v8 = sqlite3_exec([connectionCopy sqlDB], "DROP TABLE IF EXISTS brand_indicators", 0, 0, 0);
   if (!v8)
   {
-    v9 = [a1 _brandIndicatorsTableSchema];
-    v10 = [v9 definitionWithDatabaseName:v7];
-    v8 = sqlite3_exec([v6 sqlDB], objc_msgSend(v10, "UTF8String"), 0, 0, 0);
+    _brandIndicatorsTableSchema = [self _brandIndicatorsTableSchema];
+    v10 = [_brandIndicatorsTableSchema definitionWithDatabaseName:nameCopy];
+    v8 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v10, "UTF8String"), 0, 0, 0);
   }
 
   return v8;

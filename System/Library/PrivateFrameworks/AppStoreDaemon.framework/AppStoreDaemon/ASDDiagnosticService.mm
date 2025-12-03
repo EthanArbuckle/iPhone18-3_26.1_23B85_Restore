@@ -1,12 +1,12 @@
 @interface ASDDiagnosticService
 + (id)defaultService;
-- (BOOL)pingWithError:(id *)a3;
-- (BOOL)sendCommand:(int64_t)a3 withError:(id *)a4;
-- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)activeClientsWithError:(id *)a3;
-- (id)sendDetailsCommand:(int64_t)a3 timeout:(id)a4 withError:(id *)a5;
-- (void)addSubscriberWithEndpoint:(id)a3;
+- (BOOL)pingWithError:(id *)error;
+- (BOOL)sendCommand:(int64_t)command withError:(id *)error;
+- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)activeClientsWithError:(id *)error;
+- (id)sendDetailsCommand:(int64_t)command timeout:(id)timeout withError:(id *)error;
+- (void)addSubscriberWithEndpoint:(id)endpoint;
 @end
 
 @implementation ASDDiagnosticService
@@ -44,7 +44,7 @@ void __38__ASDDiagnosticService_defaultService__block_invoke()
   _MergedGlobals_47 = v0;
 }
 
-- (id)activeClientsWithError:(id *)a3
+- (id)activeClientsWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -70,12 +70,12 @@ void __38__ASDDiagnosticService_defaultService__block_invoke()
   v8[3] = &unk_1E7CDD288;
   v8[4] = &v9;
   [v4 activeClientsWithReplyHandler:v8];
-  if (a3)
+  if (error)
   {
     v5 = v17[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -87,11 +87,11 @@ void __38__ASDDiagnosticService_defaultService__block_invoke()
   return v6;
 }
 
-- (void)addSubscriberWithEndpoint:(id)a3
+- (void)addSubscriberWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = [(ASDDiagnosticService *)self _synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18];
-  [v5 addSubscriberWithEndpoint:v4];
+  [v5 addSubscriberWithEndpoint:endpointCopy];
 }
 
 void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_t a1, void *a2)
@@ -109,7 +109,7 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)pingWithError:(id *)a3
+- (BOOL)pingWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -133,12 +133,12 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   v8[3] = &unk_1E7CDBA78;
   v8[4] = &v9;
   [v4 pingWithReplyHandler:v8];
-  if (a3)
+  if (error)
   {
     v5 = v15[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -149,7 +149,7 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   return v6;
 }
 
-- (BOOL)sendCommand:(int64_t)a3 withError:(id *)a4
+- (BOOL)sendCommand:(int64_t)command withError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -172,11 +172,11 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   v9[2] = __46__ASDDiagnosticService_sendCommand_withError___block_invoke_2;
   v9[3] = &unk_1E7CDBA78;
   v9[4] = &v10;
-  [v6 sendCommandWithReplyHandler:a3 handler:v9];
+  [v6 sendCommandWithReplyHandler:command handler:v9];
   v7 = *(v11 + 24);
-  if (a4 && (v11[3] & 1) == 0)
+  if (error && (v11[3] & 1) == 0)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v7 = *(v11 + 24);
   }
 
@@ -186,10 +186,10 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   return v7 & 1;
 }
 
-- (id)sendDetailsCommand:(int64_t)a3 timeout:(id)a4 withError:(id *)a5
+- (id)sendDetailsCommand:(int64_t)command timeout:(id)timeout withError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  timeoutCopy = timeout;
   v9 = dispatch_semaphore_create(0);
   v31 = 0;
   v32 = &v31;
@@ -216,11 +216,11 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
   v23 = &v24;
   v11 = v9;
   v22 = v11;
-  [v10 sendCommandWithDetailedReplyHandler:a3 handler:v21];
-  if ([v8 intValue] < 1)
+  [v10 sendCommandWithDetailedReplyHandler:command handler:v21];
+  if ([timeoutCopy intValue] < 1)
   {
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -228,7 +228,7 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
     goto LABEL_9;
   }
 
-  v12 = dispatch_time(0, 1000000000 * [v8 integerValue]);
+  v12 = dispatch_time(0, 1000000000 * [timeoutCopy integerValue]);
   if (dispatch_semaphore_wait(v11, v12))
   {
     v13 = ASDLogHandleForCategory(13);
@@ -238,7 +238,7 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
       *buf = 138543618;
       v38 = v19;
       v39 = 2048;
-      v40 = a3;
+      commandCopy = command;
       v20 = v19;
       _os_log_error_impl(&dword_1B8220000, v13, OS_LOG_TYPE_ERROR, "[%{public}@]: Timed out attempting to diagnostic command %ld", buf, 0x16u);
     }
@@ -248,10 +248,10 @@ void __50__ASDDiagnosticService_addSubscriberWithEndpoint___block_invoke(uint64_
     v32[5] = v14;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
-    *a5 = v32[5];
+    *error = v32[5];
   }
 
 LABEL_10:
@@ -272,42 +272,42 @@ void __61__ASDDiagnosticService_sendDetailsCommand_timeout_withError___block_inv
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   serviceBroker = self->_serviceBroker;
   v9 = 0;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ASDServiceBroker *)serviceBroker getDiagnosticServiceWithError:&v9];
   v6 = v9;
   if (v5)
   {
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v7 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
     v7 = 0;
   }
 
   return v7;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   serviceBroker = self->_serviceBroker;
   v9 = 0;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ASDServiceBroker *)serviceBroker getDiagnosticServiceWithError:&v9];
   v6 = v9;
   if (v5)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
     v7 = 0;
   }
 

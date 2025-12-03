@@ -1,14 +1,14 @@
 @interface CNActionMenuHelper
-- (id)configurationActionProviderWithActionBlock:(id)a3;
+- (id)configurationActionProviderWithActionBlock:(id)block;
 - (id)menuForProviders;
-- (id)menuProviderWithActionBlock:(id)a3;
-- (id)targetedPreviewForSourceView:(id)a3;
-- (void)replaceDeferredMenuItemWithMenuItems:(id)a3;
+- (id)menuProviderWithActionBlock:(id)block;
+- (id)targetedPreviewForSourceView:(id)view;
+- (void)replaceDeferredMenuItemWithMenuItems:(id)items;
 - (void)setupDeferredMenuItem;
-- (void)updateVisibleMenuWithMenuItems:(id)a3 contextMenuInteraction:(id)a4;
-- (void)updateWithMenuItems:(id)a3 contextMenuInteraction:(id)a4;
+- (void)updateVisibleMenuWithMenuItems:(id)items contextMenuInteraction:(id)interaction;
+- (void)updateWithMenuItems:(id)items contextMenuInteraction:(id)interaction;
 - (void)willDismissMenu;
-- (void)willDisplayMenuWithContextMenuInteraction:(id)a3;
+- (void)willDisplayMenuWithContextMenuInteraction:(id)interaction;
 @end
 
 @implementation CNActionMenuHelper
@@ -23,27 +23,27 @@
   [(CNActionMenuHelper *)self setDeferredMenuElementCompletionBlock:0];
 }
 
-- (void)willDisplayMenuWithContextMenuInteraction:(id)a3
+- (void)willDisplayMenuWithContextMenuInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   [(CNActionMenuHelper *)self setIsMenuDisplayed:1];
-  v5 = [(CNActionMenuHelper *)self deferredMenuItem];
+  deferredMenuItem = [(CNActionMenuHelper *)self deferredMenuItem];
 
-  if (!v5)
+  if (!deferredMenuItem)
   {
-    v6 = [(CNActionMenuHelper *)self displayedMenuItems];
-    v7 = [(CNActionMenuHelper *)self currentMenuItems];
+    displayedMenuItems = [(CNActionMenuHelper *)self displayedMenuItems];
+    currentMenuItems = [(CNActionMenuHelper *)self currentMenuItems];
 
-    if (v6 != v7)
+    if (displayedMenuItems != currentMenuItems)
     {
-      v8 = [MEMORY[0x1E6996818] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __64__CNActionMenuHelper_willDisplayMenuWithContextMenuInteraction___block_invoke;
       v10[3] = &unk_1E74E77C0;
       v10[4] = self;
-      v11 = v4;
-      v9 = [v8 afterDelay:v10 performBlock:0.1];
+      v11 = interactionCopy;
+      v9 = [mainThreadScheduler afterDelay:v10 performBlock:0.1];
     }
   }
 }
@@ -55,17 +55,17 @@ void __64__CNActionMenuHelper_willDisplayMenuWithContextMenuInteraction___block_
   [v2 updateVisibleMenuWithMenuItems:v3 contextMenuInteraction:*(a1 + 40)];
 }
 
-- (void)replaceDeferredMenuItemWithMenuItems:(id)a3
+- (void)replaceDeferredMenuItemWithMenuItems:(id)items
 {
-  v7 = a3;
-  v4 = [(CNActionMenuHelper *)self deferredMenuElementCompletionBlock];
+  itemsCopy = items;
+  deferredMenuElementCompletionBlock = [(CNActionMenuHelper *)self deferredMenuElementCompletionBlock];
 
-  if (v4)
+  if (deferredMenuElementCompletionBlock)
   {
-    [(CNActionMenuHelper *)self setDisplayedMenuItems:v7];
-    v5 = [(CNActionMenuHelper *)self deferredMenuElementCompletionBlock];
-    v6 = [(CNActionMenuHelper *)self displayedMenuItems];
-    (v5)[2](v5, v6);
+    [(CNActionMenuHelper *)self setDisplayedMenuItems:itemsCopy];
+    deferredMenuElementCompletionBlock2 = [(CNActionMenuHelper *)self deferredMenuElementCompletionBlock];
+    displayedMenuItems = [(CNActionMenuHelper *)self displayedMenuItems];
+    (deferredMenuElementCompletionBlock2)[2](deferredMenuElementCompletionBlock2, displayedMenuItems);
 
     [(CNActionMenuHelper *)self setDeferredMenuItem:0];
     [(CNActionMenuHelper *)self setDeferredMenuElementCompletionBlock:0];
@@ -115,10 +115,10 @@ LABEL_3:
 LABEL_6:
 }
 
-- (void)updateVisibleMenuWithMenuItems:(id)a3 contextMenuInteraction:(id)a4
+- (void)updateVisibleMenuWithMenuItems:(id)items contextMenuInteraction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  interactionCopy = interaction;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -129,9 +129,9 @@ LABEL_6:
   v9[3] = &unk_1E74E7770;
   v11 = v12;
   v9[4] = self;
-  v8 = v6;
+  v8 = itemsCopy;
   v10 = v8;
-  [v7 updateVisibleMenuWithBlock:v9];
+  [interactionCopy updateVisibleMenuWithBlock:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -157,36 +157,36 @@ id __76__CNActionMenuHelper_updateVisibleMenuWithMenuItems_contextMenuInteractio
   return v6;
 }
 
-- (void)updateWithMenuItems:(id)a3 contextMenuInteraction:(id)a4
+- (void)updateWithMenuItems:(id)items contextMenuInteraction:(id)interaction
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  itemsCopy = items;
+  interactionCopy = interaction;
+  if ([itemsCopy count])
   {
-    v7 = [(CNActionMenuHelper *)self deferredMenuItem];
+    deferredMenuItem = [(CNActionMenuHelper *)self deferredMenuItem];
 
-    if (v7)
+    if (deferredMenuItem)
     {
-      [(CNActionMenuHelper *)self replaceDeferredMenuItemWithMenuItems:v8];
+      [(CNActionMenuHelper *)self replaceDeferredMenuItemWithMenuItems:itemsCopy];
     }
 
     else if ([(CNActionMenuHelper *)self isMenuDisplayed])
     {
-      [(CNActionMenuHelper *)self updateVisibleMenuWithMenuItems:v8 contextMenuInteraction:v6];
+      [(CNActionMenuHelper *)self updateVisibleMenuWithMenuItems:itemsCopy contextMenuInteraction:interactionCopy];
     }
 
-    [(CNActionMenuHelper *)self setCurrentMenuItems:v8];
+    [(CNActionMenuHelper *)self setCurrentMenuItems:itemsCopy];
   }
 }
 
-- (id)targetedPreviewForSourceView:(id)a3
+- (id)targetedPreviewForSourceView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
-  v6 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v3 parameters:v4];
+  v6 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:viewCopy parameters:v4];
 
   return v6;
 }
@@ -194,27 +194,27 @@ id __76__CNActionMenuHelper_updateVisibleMenuWithMenuItems_contextMenuInteractio
 - (id)menuForProviders
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNActionMenuHelper *)self currentMenuItems];
-  [(CNActionMenuHelper *)self setDisplayedMenuItems:v3];
+  currentMenuItems = [(CNActionMenuHelper *)self currentMenuItems];
+  [(CNActionMenuHelper *)self setDisplayedMenuItems:currentMenuItems];
 
-  v4 = [(CNActionMenuHelper *)self displayedMenuItems];
-  v5 = [v4 count];
+  displayedMenuItems = [(CNActionMenuHelper *)self displayedMenuItems];
+  v5 = [displayedMenuItems count];
 
   if (!v5)
   {
     [(CNActionMenuHelper *)self setupDeferredMenuItem];
-    v6 = [(CNActionMenuHelper *)self deferredMenuItem];
-    v15[0] = v6;
+    deferredMenuItem = [(CNActionMenuHelper *)self deferredMenuItem];
+    v15[0] = deferredMenuItem;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     [(CNActionMenuHelper *)self setDisplayedMenuItems:v7];
   }
 
   v8 = MEMORY[0x1E69DCC60];
-  v9 = [(CNActionMenuHelper *)self menuTitle];
-  v10 = v9;
-  if (v9)
+  menuTitle = [(CNActionMenuHelper *)self menuTitle];
+  v10 = menuTitle;
+  if (menuTitle)
   {
-    v11 = v9;
+    v11 = menuTitle;
   }
 
   else
@@ -222,22 +222,22 @@ id __76__CNActionMenuHelper_updateVisibleMenuWithMenuItems_contextMenuInteractio
     v11 = &stru_1F0CE7398;
   }
 
-  v12 = [(CNActionMenuHelper *)self displayedMenuItems];
-  v13 = [v8 menuWithTitle:v11 children:v12];
+  displayedMenuItems2 = [(CNActionMenuHelper *)self displayedMenuItems];
+  v13 = [v8 menuWithTitle:v11 children:displayedMenuItems2];
 
   return v13;
 }
 
-- (id)menuProviderWithActionBlock:(id)a3
+- (id)menuProviderWithActionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__CNActionMenuHelper_menuProviderWithActionBlock___block_invoke;
   v8[3] = &unk_1E74E7748;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -251,16 +251,16 @@ uint64_t __50__CNActionMenuHelper_menuProviderWithActionBlock___block_invoke(uin
   return [v2 menuForProviders];
 }
 
-- (id)configurationActionProviderWithActionBlock:(id)a3
+- (id)configurationActionProviderWithActionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__CNActionMenuHelper_configurationActionProviderWithActionBlock___block_invoke;
   v8[3] = &unk_1E74E7720;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = _Block_copy(v8);
 
   return v6;

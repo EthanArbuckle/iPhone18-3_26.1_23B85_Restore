@@ -4,12 +4,12 @@
 + (id)entryEventForwardDefinitions;
 + (void)load;
 - (PLSmartConnectorAgent)init;
-- (void)externalAccessoryConnected:(id)a3;
-- (void)externalAccessoryDisconnected:(id)a3;
+- (void)externalAccessoryConnected:(id)connected;
+- (void)externalAccessoryDisconnected:(id)disconnected;
 - (void)initOperatorDependancies;
 - (void)log;
-- (void)logEventForwardEAAccessory:(id)a3;
-- (void)logEventForwardStatus:(id)a3 withName:(id)a4 withModel:(id)a5 andVersionInfo:(id)a6;
+- (void)logEventForwardEAAccessory:(id)accessory;
+- (void)logEventForwardStatus:(id)status withName:(id)name withModel:(id)model andVersionInfo:(id)info;
 - (void)reArmCallback;
 @end
 
@@ -17,7 +17,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSmartConnectorAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -53,13 +53,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"ConnectState";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
   v12[1] = @"AccessoryID";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_BoolFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -84,13 +84,13 @@
     v17[0] = v3;
     v16[1] = *MEMORY[0x277D3F540];
     v12[0] = @"ConnectState";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
     v12[1] = @"AccessoryID";
-    v13[0] = v5;
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v13[1] = v7;
+    v13[0] = commonTypeDict_BoolFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v13[1] = commonTypeDict_IntegerFormat;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v17[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -136,15 +136,15 @@
     }
 
     self = v4;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 void __29__PLSmartConnectorAgent_init__block_invoke(uint64_t a1, uint64_t a2)
@@ -221,35 +221,35 @@ void __29__PLSmartConnectorAgent_init__block_invoke_2(uint64_t a1)
 {
   if ([MEMORY[0x277D3F208] isiPad])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_externalAccessoryConnected_ name:*MEMORY[0x277CC5E88] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_externalAccessoryConnected_ name:*MEMORY[0x277CC5E88] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_externalAccessoryDisconnected_ name:*MEMORY[0x277CC5E90] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_externalAccessoryDisconnected_ name:*MEMORY[0x277CC5E90] object:0];
   }
 }
 
 - (void)reArmCallback
 {
-  v6 = [(PLSmartConnectorAgent *)self curStatus];
-  v3 = [(PLSmartConnectorAgent *)self curName];
-  v4 = [(PLSmartConnectorAgent *)self curModel];
-  v5 = [(PLSmartConnectorAgent *)self curVersion];
-  [(PLSmartConnectorAgent *)self logEventForwardStatus:v6 withName:v3 withModel:v4 andVersionInfo:v5];
+  curStatus = [(PLSmartConnectorAgent *)self curStatus];
+  curName = [(PLSmartConnectorAgent *)self curName];
+  curModel = [(PLSmartConnectorAgent *)self curModel];
+  curVersion = [(PLSmartConnectorAgent *)self curVersion];
+  [(PLSmartConnectorAgent *)self logEventForwardStatus:curStatus withName:curName withModel:curModel andVersionInfo:curVersion];
 }
 
-- (void)externalAccessoryConnected:(id)a3
+- (void)externalAccessoryConnected:(id)connected
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  connectedCopy = connected;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__PLSmartConnectorAgent_externalAccessoryConnected___block_invoke;
   v7[3] = &unk_278259658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = connectedCopy;
+  selfCopy = self;
+  v6 = connectedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __52__PLSmartConnectorAgent_externalAccessoryConnected___block_invoke(uint64_t a1)
@@ -272,18 +272,18 @@ void __52__PLSmartConnectorAgent_externalAccessoryConnected___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)externalAccessoryDisconnected:(id)a3
+- (void)externalAccessoryDisconnected:(id)disconnected
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  disconnectedCopy = disconnected;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__PLSmartConnectorAgent_externalAccessoryDisconnected___block_invoke;
   v7[3] = &unk_278259658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = disconnectedCopy;
+  selfCopy = self;
+  v6 = disconnectedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __55__PLSmartConnectorAgent_externalAccessoryDisconnected___block_invoke(uint64_t a1)
@@ -309,8 +309,8 @@ void __55__PLSmartConnectorAgent_externalAccessoryDisconnected___block_invoke(ui
 - (void)log
 {
   v3 = MEMORY[0x277D3F1C8];
-  v4 = [(PLSmartConnectorAgent *)self iokitOrion];
-  v9 = [v3 snapshotFromIOEntry:{objc_msgSend(v4, "service")}];
+  iokitOrion = [(PLSmartConnectorAgent *)self iokitOrion];
+  v9 = [v3 snapshotFromIOEntry:{objc_msgSend(iokitOrion, "service")}];
 
   v5 = [v9 objectForKeyedSubscript:@"IOAccessoryDetect"];
   v6 = [v9 objectForKeyedSubscript:@"IOAccessoryAccessoryName"];
@@ -319,22 +319,22 @@ void __55__PLSmartConnectorAgent_externalAccessoryDisconnected___block_invoke(ui
   [(PLSmartConnectorAgent *)self logEventForwardStatus:v5 withName:v6 withModel:v7 andVersionInfo:v8];
 }
 
-- (void)logEventForwardStatus:(id)a3 withName:(id)a4 withModel:(id)a5 andVersionInfo:(id)a6
+- (void)logEventForwardStatus:(id)status withName:(id)name withModel:(id)model andVersionInfo:(id)info
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v20)
+  statusCopy = status;
+  nameCopy = name;
+  modelCopy = model;
+  infoCopy = info;
+  if (statusCopy)
   {
-    v13 = [(PLSmartConnectorAgent *)self preStatus];
-    v14 = [v13 isEqualToNumber:v20];
+    preStatus = [(PLSmartConnectorAgent *)self preStatus];
+    v14 = [preStatus isEqualToNumber:statusCopy];
 
     if ((v14 & 1) == 0)
     {
-      if (v10)
+      if (nameCopy)
       {
-        if (v11)
+        if (modelCopy)
         {
           goto LABEL_5;
         }
@@ -342,55 +342,55 @@ void __55__PLSmartConnectorAgent_externalAccessoryDisconnected___block_invoke(ui
 
       else
       {
-        v10 = [(PLSmartConnectorAgent *)self preName];
-        if (v11)
+        nameCopy = [(PLSmartConnectorAgent *)self preName];
+        if (modelCopy)
         {
 LABEL_5:
-          if (v12)
+          if (infoCopy)
           {
             goto LABEL_6;
           }
 
 LABEL_12:
-          v12 = [(PLSmartConnectorAgent *)self preVersion];
+          infoCopy = [(PLSmartConnectorAgent *)self preVersion];
 LABEL_6:
           v15 = [(PLOperator *)PLSmartConnectorAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Status"];
           v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v15];
-          [v16 setObject:v20 forKeyedSubscript:@"ConnectState"];
-          if ([v11 isEqualToString:@"A2261"])
+          [v16 setObject:statusCopy forKeyedSubscript:@"ConnectState"];
+          if ([modelCopy isEqualToString:@"A2261"])
           {
             v17 = 2;
           }
 
-          else if ([v11 isEqualToString:@"A1998"])
+          else if ([modelCopy isEqualToString:@"A1998"])
           {
             v17 = 3;
           }
 
-          else if ([v11 isEqualToString:@"A2480"])
+          else if ([modelCopy isEqualToString:@"A2480"])
           {
             v17 = 7;
           }
 
-          else if ([v11 isEqualToString:@"YU0040"])
+          else if ([modelCopy isEqualToString:@"YU0040"])
           {
             v17 = 4;
           }
 
           else
           {
-            if (![v11 isEqualToString:@"YU0043"])
+            if (![modelCopy isEqualToString:@"YU0043"])
             {
               goto LABEL_24;
             }
 
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || ![v12 bytes] || !objc_msgSend(v12, "length"))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || ![infoCopy bytes] || !objc_msgSend(infoCopy, "length"))
             {
               goto LABEL_24;
             }
 
-            v18 = *[v12 bytes];
+            v18 = *[infoCopy bytes];
             if (v18 == 23)
             {
               v17 = 5;
@@ -400,14 +400,14 @@ LABEL_6:
             if (v18 != 25)
             {
 LABEL_24:
-              if ([v10 isEqualToString:@"Apple iPad Pro Smart Keyboard"])
+              if ([nameCopy isEqualToString:@"Apple iPad Pro Smart Keyboard"])
               {
                 v17 = 0;
               }
 
               else
               {
-                v17 = [v10 isEqualToString:@"Magic Keyboard"] ^ 1;
+                v17 = [nameCopy isEqualToString:@"Magic Keyboard"] ^ 1;
               }
 
               goto LABEL_27;
@@ -421,17 +421,17 @@ LABEL_27:
           [v16 setObject:v19 forKeyedSubscript:@"AccessoryID"];
 
           [(PLOperator *)self logEntry:v16];
-          [(PLSmartConnectorAgent *)self setPreStatus:v20];
-          [(PLSmartConnectorAgent *)self setPreName:v10];
-          [(PLSmartConnectorAgent *)self setPreModel:v11];
-          [(PLSmartConnectorAgent *)self setPreVersion:v12];
+          [(PLSmartConnectorAgent *)self setPreStatus:statusCopy];
+          [(PLSmartConnectorAgent *)self setPreName:nameCopy];
+          [(PLSmartConnectorAgent *)self setPreModel:modelCopy];
+          [(PLSmartConnectorAgent *)self setPreVersion:infoCopy];
 
           goto LABEL_28;
         }
       }
 
-      v11 = [(PLSmartConnectorAgent *)self preModel];
-      if (v12)
+      modelCopy = [(PLSmartConnectorAgent *)self preModel];
+      if (infoCopy)
       {
         goto LABEL_6;
       }
@@ -443,11 +443,11 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)logEventForwardEAAccessory:(id)a3
+- (void)logEventForwardEAAccessory:(id)accessory
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  accessoryCopy = accessory;
+  if (!accessoryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v15 = PLLogCommon();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -464,8 +464,8 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  v5 = [v4 modelNumber];
-  if (!v5 || (v6 = v5, [v4 firmwareRevision], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  modelNumber = [accessoryCopy modelNumber];
+  if (!modelNumber || (v6 = modelNumber, [accessoryCopy firmwareRevision], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v15 = PLLogCommon();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -474,25 +474,25 @@ LABEL_12:
     }
 
     v26 = 138412290;
-    v27 = v4;
+    v27 = accessoryCopy;
     v16 = "[SC]: EAAccessory missing info, %@";
     v17 = v15;
     v18 = 12;
     goto LABEL_12;
   }
 
-  v8 = [v4 modelNumber];
-  v9 = [v8 isEqualToString:@"Y-U0040"];
+  modelNumber2 = [accessoryCopy modelNumber];
+  v9 = [modelNumber2 isEqualToString:@"Y-U0040"];
 
   if ((v9 & 1) == 0)
   {
-    v19 = [v4 modelNumber];
-    v20 = [v19 isEqualToString:@"Y-U0043"];
+    modelNumber3 = [accessoryCopy modelNumber];
+    v20 = [modelNumber3 isEqualToString:@"Y-U0043"];
 
     if (v20)
     {
-      v21 = [v4 firmwareRevision];
-      v22 = [v21 hasPrefix:@"23."];
+      firmwareRevision = [accessoryCopy firmwareRevision];
+      v22 = [firmwareRevision hasPrefix:@"23."];
 
       if (v22)
       {
@@ -500,8 +500,8 @@ LABEL_12:
         goto LABEL_7;
       }
 
-      v23 = [v4 firmwareRevision];
-      v24 = [v23 hasPrefix:@"25."];
+      firmwareRevision2 = [accessoryCopy firmwareRevision];
+      v24 = [firmwareRevision2 hasPrefix:@"25."];
 
       if (v24)
       {
@@ -526,7 +526,7 @@ LABEL_20:
 LABEL_7:
   v11 = [(PLOperator *)PLSmartConnectorAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"EAStatus"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isConnected")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(accessoryCopy, "isConnected")}];
   [v12 setObject:v13 forKeyedSubscript:@"ConnectState"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithShort:v10];

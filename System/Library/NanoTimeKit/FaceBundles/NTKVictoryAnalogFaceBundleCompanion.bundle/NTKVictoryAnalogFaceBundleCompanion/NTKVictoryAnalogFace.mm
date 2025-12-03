@@ -1,14 +1,14 @@
 @interface NTKVictoryAnalogFace
 + (id)_complicationSlotDescriptors;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionThatHidesAllComplications;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKVictoryAnalogFace
@@ -44,9 +44,9 @@
   return v2;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomCenter, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomCenter, device}])
   {
     v4 = +[NTKVictoryAppLauncher complication];
   }
@@ -59,20 +59,20 @@
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 11)
+  slotCopy = slot;
+  if (mode == 11)
   {
-    v7 = [(NTKVictoryAnalogFace *)self device];
-    v8 = [NTKVictoryAnalogStyleEditOption optionWithStyle:3 forDevice:v7];
+    device = [(NTKVictoryAnalogFace *)self device];
+    v8 = [NTKVictoryAnalogStyleEditOption optionWithStyle:3 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKVictoryAnalogFace *)self device];
-    v8 = [NTKVictoryAnalogColorEditOption optionWithVictoryColor:2 forDevice:v7];
+    device = [(NTKVictoryAnalogFace *)self device];
+    v8 = [NTKVictoryAnalogColorEditOption optionWithVictoryColor:2 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -85,37 +85,37 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKVictoryAnalogFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKVictoryAnalogFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKVictoryAnalogFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKVictoryAnalogFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKVictoryAnalogFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKVictoryAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKVictoryAnalogFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = off_C250;
 LABEL_5:
@@ -125,7 +125,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = &off_C258;
     goto LABEL_5;
@@ -138,21 +138,21 @@ LABEL_5:
 
 - (id)editOptionThatHidesAllComplications
 {
-  v2 = [(NTKVictoryAnalogFace *)self device];
-  v3 = [NTKVictoryAnalogStyleEditOption optionWithStyle:4 forDevice:v2];
+  device = [(NTKVictoryAnalogFace *)self device];
+  v3 = [NTKVictoryAnalogStyleEditOption optionWithStyle:4 forDevice:device];
 
   return v3;
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
   v3 = 10;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }

@@ -1,17 +1,17 @@
 @interface HKCodableSummaryStateOfMindValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)domainsAtIndex:(unint64_t)a3;
-- (int64_t)labelsAtIndex:(unint64_t)a3;
+- (int64_t)domainsAtIndex:(unint64_t)index;
+- (int64_t)labelsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReflectiveInterval:(BOOL)a3;
-- (void)setHasValence:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasReflectiveInterval:(BOOL)interval;
+- (void)setHasValence:(BOOL)valence;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryStateOfMindValue
@@ -25,9 +25,9 @@
   [(HKCodableSummaryStateOfMindValue *)&v3 dealloc];
 }
 
-- (void)setHasReflectiveInterval:(BOOL)a3
+- (void)setHasReflectiveInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasValence:(BOOL)a3
+- (void)setHasValence:(BOOL)valence
 {
-  if (a3)
+  if (valence)
   {
     v3 = 4;
   }
@@ -55,36 +55,36 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int64_t)labelsAtIndex:(unint64_t)a3
+- (int64_t)labelsAtIndex:(unint64_t)index
 {
   p_labels = &self->_labels;
   count = self->_labels.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_labels->list[a3];
+  return p_labels->list[index];
 }
 
-- (int64_t)domainsAtIndex:(unint64_t)a3
+- (int64_t)domainsAtIndex:(unint64_t)index
 {
   p_domains = &self->_domains;
   count = self->_domains.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_domains->list[a3];
+  return p_domains->list[index];
 }
 
 - (id)description
@@ -93,20 +93,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryStateOfMindValue;
   v4 = [(HKCodableSummaryStateOfMindValue *)&v8 description];
-  v5 = [(HKCodableSummaryStateOfMindValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryStateOfMindValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateData];
-    [v3 setObject:v9 forKey:@"dateData"];
+    [dictionary setObject:v9 forKey:@"dateData"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -127,34 +127,34 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_reflectiveInterval];
-  [v3 setObject:v10 forKey:@"reflectiveInterval"];
+  [dictionary setObject:v10 forKey:@"reflectiveInterval"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_valence];
-    [v3 setObject:v5 forKey:@"valence"];
+    [dictionary setObject:v5 forKey:@"valence"];
   }
 
 LABEL_5:
   v6 = PBRepeatedInt64NSArray();
-  [v3 setObject:v6 forKey:@"labels"];
+  [dictionary setObject:v6 forKey:@"labels"];
 
   v7 = PBRepeatedInt64NSArray();
-  [v3 setObject:v7 forKey:@"domains"];
+  [dictionary setObject:v7 forKey:@"domains"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -174,12 +174,12 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
@@ -189,7 +189,7 @@ LABEL_5:
     do
     {
       PBDataWriterWriteInt64Field();
-      v4 = v9;
+      toCopy = v9;
       ++v6;
     }
 
@@ -203,7 +203,7 @@ LABEL_5:
     do
     {
       PBDataWriterWriteInt64Field();
-      v4 = v9;
+      toCopy = v9;
       ++v8;
     }
 
@@ -211,9 +211,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -223,8 +223,8 @@ LABEL_5:
     }
 
 LABEL_17:
-    v4[8] = self->_reflectiveInterval;
-    *(v4 + 80) |= 2u;
+    toCopy[8] = self->_reflectiveInterval;
+    *(toCopy + 80) |= 2u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_5;
@@ -233,8 +233,8 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  v4[7] = *&self->_dateData;
-  *(v4 + 80) |= 1u;
+  toCopy[7] = *&self->_dateData;
+  *(toCopy + 80) |= 1u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -245,19 +245,19 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    v4[9] = *&self->_valence;
-    *(v4 + 80) |= 4u;
+    toCopy[9] = *&self->_valence;
+    *(toCopy + 80) |= 4u;
   }
 
 LABEL_5:
-  v12 = v4;
+  v12 = toCopy;
   if ([(HKCodableSummaryStateOfMindValue *)self labelsCount])
   {
     [v12 clearLabels];
-    v6 = [(HKCodableSummaryStateOfMindValue *)self labelsCount];
-    if (v6)
+    labelsCount = [(HKCodableSummaryStateOfMindValue *)self labelsCount];
+    if (labelsCount)
     {
-      v7 = v6;
+      v7 = labelsCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addLabels:{-[HKCodableSummaryStateOfMindValue labelsAtIndex:](self, "labelsAtIndex:", i)}];
@@ -268,10 +268,10 @@ LABEL_5:
   if ([(HKCodableSummaryStateOfMindValue *)self domainsCount])
   {
     [v12 clearDomains];
-    v9 = [(HKCodableSummaryStateOfMindValue *)self domainsCount];
-    if (v9)
+    domainsCount = [(HKCodableSummaryStateOfMindValue *)self domainsCount];
+    if (domainsCount)
     {
-      v10 = v9;
+      v10 = domainsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addDomains:{-[HKCodableSummaryStateOfMindValue domainsAtIndex:](self, "domainsAtIndex:", j)}];
@@ -280,9 +280,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 1) == 0)
@@ -325,49 +325,49 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_dateData != *(v4 + 7))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_dateData != *(equalCopy + 7))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_reflectiveInterval != *(v4 + 8))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_reflectiveInterval != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_valence != *(v4 + 9))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_valence != *(equalCopy + 9))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_19;
   }
@@ -471,15 +471,15 @@ LABEL_17:
   return v13 ^ PBRepeatedInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 80);
+  fromCopy = from;
+  v5 = *(fromCopy + 80);
   if (v5)
   {
-    self->_dateData = *(v4 + 7);
+    self->_dateData = *(fromCopy + 7);
     *&self->_has |= 1u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -492,36 +492,36 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 80) & 2) == 0)
+  else if ((*(fromCopy + 80) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_reflectiveInterval = *(v4 + 8);
+  self->_reflectiveInterval = *(fromCopy + 8);
   *&self->_has |= 2u;
-  if ((*(v4 + 80) & 4) != 0)
+  if ((*(fromCopy + 80) & 4) != 0)
   {
 LABEL_4:
-    self->_valence = *(v4 + 9);
+    self->_valence = *(fromCopy + 9);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v12 = v4;
-  v6 = [v4 labelsCount];
-  if (v6)
+  v12 = fromCopy;
+  labelsCount = [fromCopy labelsCount];
+  if (labelsCount)
   {
-    v7 = v6;
+    v7 = labelsCount;
     for (i = 0; i != v7; ++i)
     {
       -[HKCodableSummaryStateOfMindValue addLabels:](self, "addLabels:", [v12 labelsAtIndex:i]);
     }
   }
 
-  v9 = [v12 domainsCount];
-  if (v9)
+  domainsCount = [v12 domainsCount];
+  if (domainsCount)
   {
-    v10 = v9;
+    v10 = domainsCount;
     for (j = 0; j != v10; ++j)
     {
       -[HKCodableSummaryStateOfMindValue addDomains:](self, "addDomains:", [v12 domainsAtIndex:j]);

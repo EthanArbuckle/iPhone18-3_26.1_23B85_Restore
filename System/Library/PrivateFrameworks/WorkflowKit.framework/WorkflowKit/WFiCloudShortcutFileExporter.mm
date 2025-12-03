@@ -1,26 +1,26 @@
 @interface WFiCloudShortcutFileExporter
-- (void)exportWorkflowWithCompletion:(id)a3;
+- (void)exportWorkflowWithCompletion:(id)completion;
 @end
 
 @implementation WFiCloudShortcutFileExporter
 
-- (void)exportWorkflowWithCompletion:(id)a3
+- (void)exportWorkflowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[WFGallerySessionManager sharedManager];
-  v6 = [(WFShortcutExporter *)self workflowRecord];
-  v7 = [(WFShortcutExporter *)self workflowRecord];
-  v8 = [v7 name];
+  workflowRecord = [(WFShortcutExporter *)self workflowRecord];
+  workflowRecord2 = [(WFShortcutExporter *)self workflowRecord];
+  name = [workflowRecord2 name];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__WFiCloudShortcutFileExporter_exportWorkflowWithCompletion___block_invoke;
   v11[3] = &unk_1E8377F28;
-  v13 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = completionCopy;
   v12 = v5;
   v9 = v5;
-  v10 = v4;
-  [v9 uploadWorkflow:v6 withName:v8 shortDescription:0 longDescription:0 private:1 completionHandler:v11];
+  v10 = completionCopy;
+  [v9 uploadWorkflow:workflowRecord withName:name shortDescription:0 longDescription:0 private:1 completionHandler:v11];
 }
 
 void __61__WFiCloudShortcutFileExporter_exportWorkflowWithCompletion___block_invoke(uint64_t a1, void *a2)

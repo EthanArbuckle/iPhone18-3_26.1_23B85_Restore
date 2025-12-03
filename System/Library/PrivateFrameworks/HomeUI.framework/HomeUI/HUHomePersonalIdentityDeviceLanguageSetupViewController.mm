@@ -1,19 +1,19 @@
 @interface HUHomePersonalIdentityDeviceLanguageSetupViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomePersonalIdentityDeviceLanguageSetupViewController)initWithHome:(id)a3;
+- (HUHomePersonalIdentityDeviceLanguageSetupViewController)initWithHome:(id)home;
 - (id)hu_preloadContent;
 - (void)_cancelLanguageSetup;
 - (void)_changeSiriLanguage;
 - (void)_completeLanguageSetup;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomePersonalIdentityDeviceLanguageSetupViewController
 
-- (HUHomePersonalIdentityDeviceLanguageSetupViewController)initWithHome:(id)a3
+- (HUHomePersonalIdentityDeviceLanguageSetupViewController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = HULocalizedModelString(@"HULanguagePersonalIdentityDevice_LanguageMismatch_Title");
   v7 = HULocalizedModelString(@"HULanguagePersonalIdentityDevice_LanguageMultipleMismatch_Detail");
   v8 = _HULocalizedStringWithDefaultValue(@"HULanguagePersonalIdentityDevice_LanguageMismatch_Title", @"HULanguagePersonalIdentityDevice_LanguageMismatch_Title", 1);
@@ -26,15 +26,15 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_home, a3);
-    v12 = [MEMORY[0x277D37618] boldButton];
+    objc_storeStrong(&v10->_home, home);
+    boldButton = [MEMORY[0x277D37618] boldButton];
     continueButton = v11->_continueButton;
-    v11->_continueButton = v12;
+    v11->_continueButton = boldButton;
 
     [(OBTrayButton *)v11->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     customizeButton = v11->_customizeButton;
-    v11->_customizeButton = v14;
+    v11->_customizeButton = linkButton;
 
     [(OBLinkTrayButton *)v11->_customizeButton setTranslatesAutoresizingMaskIntoConstraints:0];
   }
@@ -50,7 +50,7 @@
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -61,17 +61,17 @@
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@: Cancelling Personal Identity Device Language Setup", buf, 0x16u);
   }
 
-  v8 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
+  delegate = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
   v10 = @"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput";
   v11 = &unk_2824921B0;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v8 viewController:self didFinishWithConfigurationResults:v9];
+  [delegate viewController:self didFinishWithConfigurationResults:v9];
 }
 
 - (void)_completeLanguageSetup
@@ -82,7 +82,7 @@
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -93,17 +93,17 @@
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@: Finishing Personal Identity Device Language Setup", buf, 0x16u);
   }
 
-  v8 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
+  delegate = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
   v10 = @"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput";
   v11 = &unk_2824921C8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v8 viewController:self didFinishWithConfigurationResults:v9];
+  [delegate viewController:self didFinishWithConfigurationResults:v9];
 }
 
 - (void)_changeSiriLanguage
@@ -114,52 +114,52 @@
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v6 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
+  targetLanguage = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
 
-  if (v6)
+  if (targetLanguage)
   {
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NSStringFromSelector(a2);
-      v9 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
+      targetLanguage2 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
-      v23 = v9;
+      v23 = targetLanguage2;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@: Setting Siri language of Personal Identity Device to %@", buf, 0x20u);
     }
 
-    v10 = objc_alloc_init(MEMORY[0x277CEF3A8]);
-    v11 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
+    delegate = objc_alloc_init(MEMORY[0x277CEF3A8]);
+    targetLanguage3 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self targetLanguage];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __78__HUHomePersonalIdentityDeviceLanguageSetupViewController__changeSiriLanguage__block_invoke;
     v15[3] = &unk_277DB7BA8;
     v15[4] = self;
     v15[5] = a2;
-    [v10 setLanguage:v11 withCompletion:v15];
+    [delegate setLanguage:targetLanguage3 withCompletion:v15];
   }
 
   else
   {
-    v10 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
+    delegate = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
     v17[0] = &unk_2824921E0;
     v16[0] = @"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput";
     v16[1] = @"HULanguageOnboardingKey_MediaProfileAndLanguageInfo";
-    v12 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self languageToHomePodsMapping];
-    v13 = [v12 copy];
+    languageToHomePodsMapping = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self languageToHomePodsMapping];
+    v13 = [languageToHomePodsMapping copy];
     v17[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-    [v10 viewController:self didFinishWithConfigurationResults:v14];
+    [delegate viewController:self didFinishWithConfigurationResults:v14];
   }
 }
 
@@ -306,11 +306,11 @@ void __78__HUHomePersonalIdentityDeviceLanguageSetupViewController__changeSiriLa
 - (id)hu_preloadContent
 {
   objc_initWeak(&location, self);
-  v4 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self home];
-  v5 = [v4 hf_hasHomePods];
+  home = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self home];
+  hf_hasHomePods = [home hf_hasHomePods];
 
   v6 = MEMORY[0x277D2C900];
-  if (v5)
+  if (hf_hasHomePods)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -484,37 +484,37 @@ void __76__HUHomePersonalIdentityDeviceLanguageSetupViewController_hu_preloadCon
   v12.receiver = self;
   v12.super_class = HUHomePersonalIdentityDeviceLanguageSetupViewController;
   [(OBBaseWelcomeController *)&v12 viewDidLoad];
-  v4 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_2824931E8];
+  headerView = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824931E8];
 
   [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self setModalInPresentation:1];
-  v6 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self buttonTray];
-  v7 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self continueButton];
-  [v6 addButton:v7];
+  buttonTray = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self buttonTray];
+  continueButton = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self continueButton];
+  [buttonTray addButton:continueButton];
 
-  v8 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self buttonTray];
-  v9 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self customizeButton];
-  [v8 addButton:v9];
+  buttonTray2 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self buttonTray];
+  customizeButton = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self customizeButton];
+  [buttonTray2 addButton:customizeButton];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v11;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HPIDLSVC", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUHomePersonalIdentityDeviceLanguageSetupViewController;
-  [(OBBaseWelcomeController *)&v8 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v8 viewWillDisappear:disappear];
   if ([(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self isMovingFromParentViewController])
   {
     v5 = HFLogForCategory();
@@ -522,14 +522,14 @@ void __76__HUHomePersonalIdentityDeviceLanguageSetupViewController_hu_preloadCon
     {
       v6 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped BACK button", buf, 0x16u);
     }
 
-    v7 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
-    [v7 viewControllerDidGoBack:self];
+    delegate = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 

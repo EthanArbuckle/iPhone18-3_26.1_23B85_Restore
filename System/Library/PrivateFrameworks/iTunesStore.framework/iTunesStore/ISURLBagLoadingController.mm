@@ -2,17 +2,17 @@
 + (id)sharedBagLoadingController;
 - (ISURLBagLoadingController)init;
 - (NSDictionary)bagDictionary;
-- (void)_didCompleteLoadingBagDictionary:(id)a3 withError:(id)a4;
-- (void)_handleAccountStoreDidChangeNotification:(id)a3;
-- (void)_handleNetworkReachabilityFlagsDidChangeNotification:(id)a3;
-- (void)_handleStoreFrontDidChangeNotification:(id)a3;
-- (void)_reloadURLBagAllowingUpdateUsingExistingBagDictionary:(BOOL)a3;
-- (void)_updateBagWithDictionary:(id)a3 error:(id)a4;
-- (void)addBagObserver:(id)a3;
+- (void)_didCompleteLoadingBagDictionary:(id)dictionary withError:(id)error;
+- (void)_handleAccountStoreDidChangeNotification:(id)notification;
+- (void)_handleNetworkReachabilityFlagsDidChangeNotification:(id)notification;
+- (void)_handleStoreFrontDidChangeNotification:(id)notification;
+- (void)_reloadURLBagAllowingUpdateUsingExistingBagDictionary:(BOOL)dictionary;
+- (void)_updateBagWithDictionary:(id)dictionary error:(id)error;
+- (void)addBagObserver:(id)observer;
 - (void)dealloc;
 - (void)reloadBag;
-- (void)removeBagObserver:(id)a3;
-- (void)requestAccessToBagUsingBlock:(id)a3;
+- (void)removeBagObserver:(id)observer;
+- (void)requestAccessToBagUsingBlock:(id)block;
 @end
 
 @implementation ISURLBagLoadingController
@@ -60,17 +60,17 @@ uint64_t __55__ISURLBagLoadingController_sharedBagLoadingController__block_invok
     v9 = v3;
     v18 = v9;
     dispatch_barrier_sync(v8, block);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = +[ISNetworkObserver sharedInstance];
-    [v10 addObserver:v9 selector:sel__handleNetworkReachabilityFlagsDidChangeNotification_ name:@"ISNetworkReachabilityFlagsChangedNotification" object:v11];
+    [defaultCenter addObserver:v9 selector:sel__handleNetworkReachabilityFlagsDidChangeNotification_ name:@"ISNetworkReachabilityFlagsChangedNotification" object:v11];
 
     v12 = *MEMORY[0x277D69D70];
-    v13 = [MEMORY[0x277D69A20] defaultStore];
-    [v10 addObserver:v9 selector:sel__handleAccountStoreDidChangeNotification_ name:v12 object:v13];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    [defaultCenter addObserver:v9 selector:sel__handleAccountStoreDidChangeNotification_ name:v12 object:defaultStore];
 
     v14 = *MEMORY[0x277D69E18];
-    v15 = [MEMORY[0x277D69A80] currentDevice];
-    [v10 addObserver:v9 selector:sel__handleStoreFrontDidChangeNotification_ name:v14 object:v15];
+    currentDevice = [MEMORY[0x277D69A80] currentDevice];
+    [defaultCenter addObserver:v9 selector:sel__handleStoreFrontDidChangeNotification_ name:v14 object:currentDevice];
   }
 
   return v3;
@@ -78,17 +78,17 @@ uint64_t __55__ISURLBagLoadingController_sharedBagLoadingController__block_invok
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = +[ISNetworkObserver sharedInstance];
-  [v3 removeObserver:self name:@"ISNetworkReachabilityFlagsChangedNotification" object:v4];
+  [defaultCenter removeObserver:self name:@"ISNetworkReachabilityFlagsChangedNotification" object:v4];
 
   v5 = *MEMORY[0x277D69D70];
-  v6 = [MEMORY[0x277D69A20] defaultStore];
-  [v3 removeObserver:self name:v5 object:v6];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  [defaultCenter removeObserver:self name:v5 object:defaultStore];
 
   v7 = *MEMORY[0x277D69E18];
-  v8 = [MEMORY[0x277D69A80] currentDevice];
-  [v3 removeObserver:self name:v7 object:v8];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  [defaultCenter removeObserver:self name:v7 object:currentDevice];
 
   v9.receiver = self;
   v9.super_class = ISURLBagLoadingController;
@@ -117,11 +117,11 @@ uint64_t __55__ISURLBagLoadingController_sharedBagLoadingController__block_invok
   return v3;
 }
 
-- (void)addBagObserver:(id)a3
+- (void)addBagObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -129,7 +129,7 @@ uint64_t __55__ISURLBagLoadingController_sharedBagLoadingController__block_invok
     v7[2] = __44__ISURLBagLoadingController_addBagObserver___block_invoke;
     v7[3] = &unk_27A670868;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_barrier_sync(accessQueue, v7);
   }
 }
@@ -158,11 +158,11 @@ uint64_t __44__ISURLBagLoadingController_addBagObserver___block_invoke(uint64_t 
   return result;
 }
 
-- (void)removeBagObserver:(id)a3
+- (void)removeBagObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -170,7 +170,7 @@ uint64_t __44__ISURLBagLoadingController_addBagObserver___block_invoke(uint64_t 
     v7[2] = __47__ISURLBagLoadingController_removeBagObserver___block_invoke;
     v7[3] = &unk_27A670868;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_barrier_sync(accessQueue, v7);
   }
 }
@@ -189,9 +189,9 @@ uint64_t __47__ISURLBagLoadingController_removeBagObserver___block_invoke(uint64
   return result;
 }
 
-- (void)requestAccessToBagUsingBlock:(id)a3
+- (void)requestAccessToBagUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -212,7 +212,7 @@ uint64_t __47__ISURLBagLoadingController_removeBagObserver___block_invoke(uint64
   v9 = &v17;
   v10 = &v11;
   v7[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   dispatch_barrier_sync(accessQueue, v7);
   if (v18[5] | v12[5])
@@ -258,7 +258,7 @@ void __58__ISURLBagLoadingController_requestAccessToBagUsingBlock___block_invoke
   dispatch_barrier_sync(accessQueue, block);
 }
 
-- (void)_handleAccountStoreDidChangeNotification:(id)a3
+- (void)_handleAccountStoreDidChangeNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -269,7 +269,7 @@ void __58__ISURLBagLoadingController_requestAccessToBagUsingBlock___block_invoke
   dispatch_barrier_async(accessQueue, block);
 }
 
-- (void)_handleNetworkReachabilityFlagsDidChangeNotification:(id)a3
+- (void)_handleNetworkReachabilityFlagsDidChangeNotification:(id)notification
 {
   v4 = +[ISNetworkObserver sharedInstance];
   v5 = +[ISNetworkObserver isLikelyToReachRemoteServerWithReachabilityFlags:](ISNetworkObserver, "isLikelyToReachRemoteServerWithReachabilityFlags:", [v4 networkReachabilityFlags]);
@@ -297,7 +297,7 @@ _BYTE *__82__ISURLBagLoadingController__handleNetworkReachabilityFlagsDidChangeN
   return result;
 }
 
-- (void)_handleStoreFrontDidChangeNotification:(id)a3
+- (void)_handleStoreFrontDidChangeNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -308,20 +308,20 @@ _BYTE *__82__ISURLBagLoadingController__handleNetworkReachabilityFlagsDidChangeN
   dispatch_barrier_async(accessQueue, block);
 }
 
-- (void)_didCompleteLoadingBagDictionary:(id)a3 withError:(id)a4
+- (void)_didCompleteLoadingBagDictionary:(id)dictionary withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__ISURLBagLoadingController__didCompleteLoadingBagDictionary_withError___block_invoke;
   block[3] = &unk_27A670890;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionaryCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = dictionaryCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -345,18 +345,18 @@ void __72__ISURLBagLoadingController__didCompleteLoadingBagDictionary_withError_
   [v2 postNotificationName:@"ISURLBagLoadingControllerIsLoadingBagDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_reloadURLBagAllowingUpdateUsingExistingBagDictionary:(BOOL)a3
+- (void)_reloadURLBagAllowingUpdateUsingExistingBagDictionary:(BOOL)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v5 = [MEMORY[0x277D69C90] contextWithBagType:0];
   v6 = [[ISSSURLBag alloc] initWithURLBagContext:v5];
   URLBag = self->_URLBag;
   self->_URLBag = &v6->super;
 
-  if (v3)
+  if (dictionaryCopy)
   {
-    v8 = [(SSURLBag *)self->_URLBag existingBagDictionary];
-    [(ISURLBagLoadingController *)self _updateBagWithDictionary:v8 error:0];
+    existingBagDictionary = [(SSURLBag *)self->_URLBag existingBagDictionary];
+    [(ISURLBagLoadingController *)self _updateBagWithDictionary:existingBagDictionary error:0];
   }
 
   self->_loadingBag = 1;
@@ -393,27 +393,27 @@ void __83__ISURLBagLoadingController__reloadURLBagAllowingUpdateUsingExistingBag
   [v7 _didCompleteLoadingBagDictionary:v6 withError:v5];
 }
 
-- (void)_updateBagWithDictionary:(id)a3 error:(id)a4
+- (void)_updateBagWithDictionary:(id)dictionary error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
   v8 = [(NSDictionary *)self->_bagDictionary copy];
   bagDictionary = self->_bagDictionary;
-  if (bagDictionary == v6 || [(NSDictionary *)bagDictionary isEqualToDictionary:v6])
+  if (bagDictionary == dictionaryCopy || [(NSDictionary *)bagDictionary isEqualToDictionary:dictionaryCopy])
   {
-    v10 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v11 = [(NSDictionary *)v6 copy];
+    v11 = [(NSDictionary *)dictionaryCopy copy];
 
     objc_storeStrong(&self->_bagDictionary, v11);
-    v10 = [(NSHashTable *)self->_bagObservers allObjects];
+    allObjects = [(NSHashTable *)self->_bagObservers allObjects];
     v8 = v11;
   }
 
-  objc_storeStrong(&self->_bagLoadingError, a4);
+  objc_storeStrong(&self->_bagLoadingError, error);
   v12 = [(NSMutableArray *)self->_bagAccessRequestBlocks copy];
   bagAccessRequestBlocks = self->_bagAccessRequestBlocks;
   self->_bagAccessRequestBlocks = 0;
@@ -425,10 +425,10 @@ void __83__ISURLBagLoadingController__reloadURLBagAllowingUpdateUsingExistingBag
   v19[3] = &unk_27A670938;
   v20 = v12;
   v21 = v8;
-  v22 = v7;
-  v23 = v10;
-  v15 = v10;
-  v16 = v7;
+  v22 = errorCopy;
+  v23 = allObjects;
+  v15 = allObjects;
+  v16 = errorCopy;
   v17 = v8;
   v18 = v12;
   dispatch_async(v14, v19);

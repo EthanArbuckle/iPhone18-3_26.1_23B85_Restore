@@ -1,14 +1,14 @@
 @interface ACDKeychainMigrator
 + (id)sharedInstance;
 - (ACDKeychainMigrator)init;
-- (BOOL)migrateKeychainItem:(id)a3 toKeybag:(BOOL)a4;
-- (id)_keychainItemFromAttributes:(id)a3;
-- (id)_keychainItemFromAttributesArray:(id)a3;
-- (id)_keychainItemsForAccount:(id)a3 accountTypeIdentifiers:(id)a4;
+- (BOOL)migrateKeychainItem:(id)item toKeybag:(BOOL)keybag;
+- (id)_keychainItemFromAttributes:(id)attributes;
+- (id)_keychainItemFromAttributesArray:(id)array;
+- (id)_keychainItemsForAccount:(id)account accountTypeIdentifiers:(id)identifiers;
 - (id)allKeychainItems;
-- (id)keychainItemsForAccounts:(id)a3;
-- (void)_migrateUUIDKeychainItems:(id)a3;
-- (void)_validateKeychainItemClass:(id)a3;
+- (id)keychainItemsForAccounts:(id)accounts;
+- (void)_migrateUUIDKeychainItems:(id)items;
+- (void)_validateKeychainItemClass:(id)class;
 - (void)migrateAllKeychainItems;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __37__ACDKeychainMigrator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -56,12 +56,12 @@ uint64_t __37__ACDKeychainMigrator_sharedInstance__block_invoke(uint64_t a1)
 - (void)migrateAllKeychainItems
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ACDKeychainMigrator *)self allKeychainItems];
+  allKeychainItems = [(ACDKeychainMigrator *)self allKeychainItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v4 = [allKeychainItems countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v4)
   {
     v6 = v4;
@@ -74,7 +74,7 @@ uint64_t __37__ACDKeychainMigrator_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeychainItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -95,7 +95,7 @@ uint64_t __37__ACDKeychainMigrator_sharedInstance__block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [allKeychainItems countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);
@@ -104,54 +104,54 @@ uint64_t __37__ACDKeychainMigrator_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)migrateKeychainItem:(id)a3 toKeybag:(BOOL)a4
+- (BOOL)migrateKeychainItem:(id)item toKeybag:(BOOL)keybag
 {
-  v5 = a3;
-  v6 = [v5 version];
-  if (v6 > 8)
+  itemCopy = item;
+  version = [itemCopy version];
+  if (version > 8)
   {
     v9 = 1;
     goto LABEL_26;
   }
 
-  v7 = v6;
+  v7 = version;
   v8 = _ACDKeychainLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ACDKeychainMigrator migrateKeychainItem:v5 toKeybag:v7];
+    [ACDKeychainMigrator migrateKeychainItem:itemCopy toKeybag:v7];
   }
 
   if (v7 <= 0)
   {
-    [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+    [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
     goto LABEL_14;
   }
 
   if (v7 == 1)
   {
 LABEL_14:
-    [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+    [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
     goto LABEL_15;
   }
 
   if (v7 <= 2)
   {
 LABEL_15:
-    [(ACDKeychainMigrator *)self _migrateUUIDKeychainItems:v5];
+    [(ACDKeychainMigrator *)self _migrateUUIDKeychainItems:itemCopy];
     goto LABEL_16;
   }
 
   if (v7 <= 4)
   {
 LABEL_16:
-    [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+    [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
     goto LABEL_17;
   }
 
   if (v7 == 5)
   {
 LABEL_17:
-    [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+    [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
     goto LABEL_18;
   }
 
@@ -166,14 +166,14 @@ LABEL_17:
   }
 
 LABEL_18:
-  [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+  [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
 LABEL_19:
-  [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
+  [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
 LABEL_20:
-  [(ACDKeychainMigrator *)self _validateKeychainItemClass:v5];
-  [v5 setVersion:9];
+  [(ACDKeychainMigrator *)self _validateKeychainItemClass:itemCopy];
+  [itemCopy setVersion:9];
   v14 = 0;
-  v9 = [v5 save:&v14];
+  v9 = [itemCopy save:&v14];
   v10 = v14;
   v11 = _ACDKeychainLogSystem();
   v12 = v11;
@@ -194,17 +194,17 @@ LABEL_26:
   return v9;
 }
 
-- (void)_validateKeychainItemClass:(id)a3
+- (void)_validateKeychainItemClass:(id)class
 {
-  v3 = a3;
-  v4 = [v3 service];
+  classCopy = class;
+  service = [classCopy service];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__ACDKeychainMigrator__validateKeychainItemClass___block_invoke;
   v6[3] = &unk_27848C840;
-  v7 = v3;
-  v5 = v3;
-  [ACDKeychainManager componentsFromKeychainServiceName:v4 handler:v6];
+  v7 = classCopy;
+  v5 = classCopy;
+  [ACDKeychainManager componentsFromKeychainServiceName:service handler:v6];
 }
 
 void __50__ACDKeychainMigrator__validateKeychainItemClass___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -311,42 +311,42 @@ LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_migrateUUIDKeychainItems:(id)a3
+- (void)_migrateUUIDKeychainItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 account];
-  v6 = [v5 length];
+  itemsCopy = items;
+  account = [itemsCopy account];
+  v6 = [account length];
 
   if (v6 == 36)
   {
     accountStore = self->_accountStore;
-    v8 = [v4 account];
-    v9 = [(ACAccountStore *)accountStore accountWithIdentifier:v8];
+    account2 = [itemsCopy account];
+    v9 = [(ACAccountStore *)accountStore accountWithIdentifier:account2];
 
     if (v9)
     {
-      v10 = [v9 username];
-      v11 = [v10 length];
+      username = [v9 username];
+      v11 = [username length];
 
       v12 = _ACDKeychainLogSystem();
-      v13 = v12;
+      username3 = v12;
       if (v11)
       {
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v9 username];
+          username2 = [v9 username];
           v15 = ACHashedString();
-          v16 = [v4 account];
+          account3 = [itemsCopy account];
           v18 = 138412546;
           v19 = v15;
           v20 = 2112;
-          v21 = v16;
-          _os_log_impl(&dword_221D2F000, v13, OS_LOG_TYPE_DEFAULT, "Updating keychain item acct: %@ old: %@", &v18, 0x16u);
+          v21 = account3;
+          _os_log_impl(&dword_221D2F000, username3, OS_LOG_TYPE_DEFAULT, "Updating keychain item acct: %@ old: %@", &v18, 0x16u);
         }
 
-        v13 = [v9 username];
-        [v4 setAccount:v13];
+        username3 = [v9 username];
+        [itemsCopy setAccount:username3];
       }
 
       else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -357,10 +357,10 @@ LABEL_23:
 
     else
     {
-      v13 = _ACDKeychainLogSystem();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      username3 = _ACDKeychainLogSystem();
+      if (os_log_type_enabled(username3, OS_LOG_TYPE_DEBUG))
       {
-        [ACDKeychainMigrator _migrateUUIDKeychainItems:v4];
+        [ACDKeychainMigrator _migrateUUIDKeychainItems:itemsCopy];
       }
     }
   }
@@ -379,22 +379,22 @@ LABEL_23:
 
 - (id)allKeychainItems
 {
-  v3 = [(ACAccountStore *)self->_accountStore accounts];
-  v4 = [(ACDKeychainMigrator *)self keychainItemsForAccounts:v3];
+  accounts = [(ACAccountStore *)self->_accountStore accounts];
+  v4 = [(ACDKeychainMigrator *)self keychainItemsForAccounts:accounts];
 
   return v4;
 }
 
-- (id)keychainItemsForAccounts:(id)a3
+- (id)keychainItemsForAccounts:(id)accounts
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v6)
   {
@@ -409,54 +409,54 @@ LABEL_23:
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 accountType];
-        v11 = [v10 identifier];
+        accountType = [v9 accountType];
+        identifier = [accountType identifier];
 
-        if ([v11 length])
+        if ([identifier length])
         {
-          v12 = [v9 qualifiedUsername];
-          if ([v12 length])
+          qualifiedUsername = [v9 qualifiedUsername];
+          if ([qualifiedUsername length])
           {
-            v13 = [v4 objectForKeyedSubscript:v12];
+            v13 = [v4 objectForKeyedSubscript:qualifiedUsername];
             v14 = v13;
             if (v13)
             {
-              [v13 addObject:v11];
+              [v13 addObject:identifier];
             }
 
             else
             {
-              v15 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v11, 0}];
-              [v4 setObject:v15 forKeyedSubscript:v12];
+              v15 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{identifier, 0}];
+              [v4 setObject:v15 forKeyedSubscript:qualifiedUsername];
             }
           }
 
-          v16 = [v9 identifier];
-          if ([v16 length])
+          identifier2 = [v9 identifier];
+          if ([identifier2 length])
           {
-            v17 = [v4 objectForKeyedSubscript:v16];
+            v17 = [v4 objectForKeyedSubscript:identifier2];
             v18 = v17;
             if (v17)
             {
-              [v17 addObject:v11];
+              [v17 addObject:identifier];
             }
 
             else
             {
-              v19 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v11, 0}];
-              [v4 setObject:v19 forKeyedSubscript:v16];
+              v19 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{identifier, 0}];
+              [v4 setObject:v19 forKeyedSubscript:identifier2];
             }
           }
         }
 
         else
         {
-          v12 = _ACDKeychainLogSystem();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          qualifiedUsername = _ACDKeychainLogSystem();
+          if (os_log_type_enabled(qualifiedUsername, OS_LOG_TYPE_ERROR))
           {
             LODWORD(buf) = 138412290;
             *(&buf + 4) = v9;
-            _os_log_error_impl(&dword_221D2F000, v12, OS_LOG_TYPE_ERROR, "Account (%@) has and empty accountType identifier!", &buf, 0xCu);
+            _os_log_error_impl(&dword_221D2F000, qualifiedUsername, OS_LOG_TYPE_ERROR, "Account (%@) has and empty accountType identifier!", &buf, 0xCu);
           }
         }
       }
@@ -499,12 +499,12 @@ uint64_t __48__ACDKeychainMigrator_keychainItemsForAccounts___block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_keychainItemsForAccount:(id)a3 accountTypeIdentifiers:(id)a4
+- (id)_keychainItemsForAccount:(id)account accountTypeIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  identifiersCopy = identifiers;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, 0, 0);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], v6);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], accountCopy);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBEC8], @"apple");
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC140], *MEMORY[0x277CDC148]);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC228], *MEMORY[0x277CDC238]);
@@ -521,7 +521,7 @@ uint64_t __48__ACDKeychainMigrator_keychainItemsForAccounts___block_invoke(uint6
     v12 = _ACDKeychainLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ACDKeychainMigrator *)v6 _keychainItemsForAccount:v11 accountTypeIdentifiers:v12];
+      [(ACDKeychainMigrator *)accountCopy _keychainItemsForAccount:v11 accountTypeIdentifiers:v12];
     }
 
     v13 = 0;
@@ -546,8 +546,8 @@ uint64_t __48__ACDKeychainMigrator_keychainItemsForAccounts___block_invoke(uint6
   v19 = 3221225472;
   v20 = __71__ACDKeychainMigrator__keychainItemsForAccount_accountTypeIdentifiers___block_invoke;
   v21 = &unk_27848C8B8;
-  v22 = v7;
-  v14 = v7;
+  v22 = identifiersCopy;
+  v14 = identifiersCopy;
   v15 = [v13 indexesOfObjectsPassingTest:&v18];
   v16 = [v13 objectsAtIndexes:{v15, v18, v19, v20, v21}];
 
@@ -591,29 +591,29 @@ void __71__ACDKeychainMigrator__keychainItemsForAccount_accountTypeIdentifiers__
   }
 }
 
-- (id)_keychainItemFromAttributes:(id)a3
+- (id)_keychainItemFromAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CDC5F0]];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277CDC5F0]];
 
   if (v4)
   {
-    v4 = [[ACDKeychainItem alloc] initWithPersistentRef:v4 properties:v3];
+    v4 = [[ACDKeychainItem alloc] initWithPersistentRef:v4 properties:attributesCopy];
   }
 
   return v4;
 }
 
-- (id)_keychainItemFromAttributesArray:(id)a3
+- (id)_keychainItemFromAttributesArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {

@@ -1,7 +1,7 @@
 @interface VSASDDialogObserver
 - (UIViewController)presenterViewController;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -20,28 +20,28 @@
   [v2 setDialogObserver:0];
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
-  v8 = v6;
-  v9 = v7;
+  v8 = requestCopy;
+  v9 = handlerCopy;
   VSPerformBlockOnMainThread();
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
-  v8 = v6;
-  v9 = v7;
+  v8 = requestCopy;
+  v9 = handlerCopy;
   VSPerformBlockOnMainThread();
 
   objc_destroyWeak(&v10);

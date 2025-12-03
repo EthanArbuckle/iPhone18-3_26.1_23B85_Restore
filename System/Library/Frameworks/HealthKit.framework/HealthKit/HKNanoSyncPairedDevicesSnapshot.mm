@@ -1,19 +1,19 @@
 @interface HKNanoSyncPairedDevicesSnapshot
-- (BOOL)isEqual:(id)a3;
-- (HKNanoSyncPairedDevicesSnapshot)initWithCoder:(id)a3;
-- (HKNanoSyncPairedDevicesSnapshot)initWithPairedDeviceInfos:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKNanoSyncPairedDevicesSnapshot)initWithCoder:(id)coder;
+- (HKNanoSyncPairedDevicesSnapshot)initWithPairedDeviceInfos:(id)infos;
 - (id)description;
-- (id)deviceInfoForSourceBundleIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)deviceInfoForSourceBundleIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKNanoSyncPairedDevicesSnapshot
 
-- (HKNanoSyncPairedDevicesSnapshot)initWithPairedDeviceInfos:(id)a3
+- (HKNanoSyncPairedDevicesSnapshot)initWithPairedDeviceInfos:(id)infos
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  infosCopy = infos;
+  if (!infosCopy)
   {
     [(HKNanoSyncPairedDevicesSnapshot *)a2 initWithPairedDeviceInfos:?];
   }
@@ -27,7 +27,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = infosCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -71,11 +71,11 @@ LABEL_14:
   return v6;
 }
 
-- (id)deviceInfoForSourceBundleIdentifier:(id)a3
+- (id)deviceInfoForSourceBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(HKNanoSyncPairedDevicesSnapshot *)a2 deviceInfoForSourceBundleIdentifier:?];
   }
@@ -99,8 +99,8 @@ LABEL_14:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 sourceBundleIdentifier];
-        if (v11 && ([v5 isEqualToString:v11] & 1) != 0)
+        sourceBundleIdentifier = [v10 sourceBundleIdentifier];
+        if (sourceBundleIdentifier && ([identifierCopy isEqualToString:sourceBundleIdentifier] & 1) != 0)
         {
           v7 = v10;
 
@@ -125,13 +125,13 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     activeDeviceInfo = self->_activeDeviceInfo;
     v7 = v5[1];
     v8 = (activeDeviceInfo == v7 || v7 && [(HKNanoSyncPairedDeviceInfo *)activeDeviceInfo isEqual:?]) && [(NSSet *)self->_allDeviceInfos isEqualToSet:v5[2]];
@@ -201,34 +201,34 @@ LABEL_14:
   return v3;
 }
 
-- (HKNanoSyncPairedDevicesSnapshot)initWithCoder:(id)a3
+- (HKNanoSyncPairedDevicesSnapshot)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"allDevices"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"allDevices"];
 
   if (v8)
   {
     self = [(HKNanoSyncPairedDevicesSnapshot *)self initWithPairedDeviceInfos:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allDeviceInfos = self->_allDeviceInfos;
-  v4 = a3;
-  v5 = [(NSSet *)allDeviceInfos allObjects];
-  [v4 encodeObject:v5 forKey:@"allDevices"];
+  coderCopy = coder;
+  allObjects = [(NSSet *)allDeviceInfos allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"allDevices"];
 }
 
 - (void)initWithPairedDeviceInfos:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

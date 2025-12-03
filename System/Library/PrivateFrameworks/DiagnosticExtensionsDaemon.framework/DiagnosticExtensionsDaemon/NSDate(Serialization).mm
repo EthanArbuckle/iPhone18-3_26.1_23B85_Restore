@@ -8,7 +8,7 @@
 - (id)serialize
 {
   v2 = formatter();
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }

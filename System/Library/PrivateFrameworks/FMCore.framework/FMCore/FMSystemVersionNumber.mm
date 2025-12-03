@@ -1,8 +1,8 @@
 @interface FMSystemVersionNumber
 - (FMSystemVersionNumber)init;
-- (FMSystemVersionNumber)initWithString:(id)a3;
+- (FMSystemVersionNumber)initWithString:(id)string;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation FMSystemVersionNumber
@@ -14,20 +14,20 @@
   return [(FMSystemVersionNumber *)self initWithString:&stru_285D714C0];
 }
 
-- (FMSystemVersionNumber)initWithString:(id)a3
+- (FMSystemVersionNumber)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = FMSystemVersionNumber;
   v5 = [(FMSystemVersionNumber *)&v17 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAC80] scannerWithString:v4];
+    v6 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
     if ([v6 scanInteger:&v5->_baseNumber])
     {
-      v7 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+      uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
       v16 = 0;
-      [v6 scanCharactersFromSet:v7 intoString:&v16];
+      [v6 scanCharactersFromSet:uppercaseLetterCharacterSet intoString:&v16];
       v8 = v16;
 
       baseLetter = v5->_baseLetter;
@@ -35,9 +35,9 @@
 
       if ([v6 scanInteger:&v5->_buildNumber])
       {
-        v10 = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
+        lowercaseLetterCharacterSet = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
         v15 = 0;
-        [v6 scanCharactersFromSet:v10 intoString:&v15];
+        [v6 scanCharactersFromSet:lowercaseLetterCharacterSet intoString:&v15];
         v11 = v15;
 
         suffix = v5->_suffix;
@@ -52,16 +52,16 @@
 
 - (id)description
 {
-  v3 = [(FMSystemVersionNumber *)self suffix];
+  suffix = [(FMSystemVersionNumber *)self suffix];
 
   v4 = MEMORY[0x277CCACA8];
   baseNumber = self->_baseNumber;
-  if (v3)
+  if (suffix)
   {
-    v6 = [(FMSystemVersionNumber *)self baseLetter];
+    baseLetter = [(FMSystemVersionNumber *)self baseLetter];
     buildNumber = self->_buildNumber;
-    v8 = [(FMSystemVersionNumber *)self suffix];
-    v9 = [v4 stringWithFormat:@"%lu%@%lu%@", baseNumber, v6, buildNumber, v8];
+    suffix2 = [(FMSystemVersionNumber *)self suffix];
+    v9 = [v4 stringWithFormat:@"%lu%@%lu%@", baseNumber, baseLetter, buildNumber, suffix2];
   }
 
   else
@@ -72,56 +72,56 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(FMSystemVersionNumber *)self baseNumber];
-  if (v5 < [v4 baseNumber])
+  compareCopy = compare;
+  baseNumber = [(FMSystemVersionNumber *)self baseNumber];
+  if (baseNumber < [compareCopy baseNumber])
   {
 LABEL_2:
     v6 = -1;
     goto LABEL_6;
   }
 
-  v7 = [(FMSystemVersionNumber *)self baseNumber];
-  if (v7 > [v4 baseNumber])
+  baseNumber2 = [(FMSystemVersionNumber *)self baseNumber];
+  if (baseNumber2 > [compareCopy baseNumber])
   {
     goto LABEL_4;
   }
 
-  v8 = [(FMSystemVersionNumber *)self baseLetter];
-  v9 = [v4 baseLetter];
-  v6 = [v8 compare:v9];
+  baseLetter = [(FMSystemVersionNumber *)self baseLetter];
+  baseLetter2 = [compareCopy baseLetter];
+  v6 = [baseLetter compare:baseLetter2];
 
   if (v6)
   {
     goto LABEL_6;
   }
 
-  v11 = [(FMSystemVersionNumber *)self buildNumber];
-  if (v11 < [v4 buildNumber])
+  buildNumber = [(FMSystemVersionNumber *)self buildNumber];
+  if (buildNumber < [compareCopy buildNumber])
   {
     goto LABEL_2;
   }
 
-  v12 = [(FMSystemVersionNumber *)self buildNumber];
-  if (v12 > [v4 buildNumber])
+  buildNumber2 = [(FMSystemVersionNumber *)self buildNumber];
+  if (buildNumber2 > [compareCopy buildNumber])
   {
 LABEL_4:
     v6 = 1;
     goto LABEL_6;
   }
 
-  v13 = [(FMSystemVersionNumber *)self suffix];
-  v14 = [v4 suffix];
-  if (!v13)
+  suffix = [(FMSystemVersionNumber *)self suffix];
+  suffix2 = [compareCopy suffix];
+  if (!suffix)
   {
-    v13 = &stru_285D714C0;
+    suffix = &stru_285D714C0;
   }
 
-  if (v14)
+  if (suffix2)
   {
-    v15 = v14;
+    v15 = suffix2;
   }
 
   else
@@ -129,7 +129,7 @@ LABEL_4:
     v15 = &stru_285D714C0;
   }
 
-  v6 = [(__CFString *)v13 compare:v15];
+  v6 = [(__CFString *)suffix compare:v15];
 
 LABEL_6:
   return v6;

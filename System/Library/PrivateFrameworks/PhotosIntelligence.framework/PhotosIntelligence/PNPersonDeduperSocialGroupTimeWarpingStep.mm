@@ -1,29 +1,29 @@
 @interface PNPersonDeduperSocialGroupTimeWarpingStep
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6;
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6;
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type;
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock;
 @end
 
 @implementation PNPersonDeduperSocialGroupTimeWarpingStep
 
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock
 {
   v98 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  personsCopy = persons;
+  otherPersonsCopy = otherPersons;
+  blockCopy = block;
+  resultBlockCopy = resultBlock;
+  if (personsCopy)
   {
-    if (v12)
+    if (otherPersonsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_45:
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
 
-    if (v13)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -31,39 +31,39 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v55 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v55 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"verifiedPersons"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"verifiedPersons"}];
 
-  if (!v12)
+  if (!otherPersonsCopy)
   {
     goto LABEL_45;
   }
 
 LABEL_3:
-  if (v13)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_46:
-  v57 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v57 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
 LABEL_4:
-  v69 = v14;
-  if (!v14)
+  v69 = resultBlockCopy;
+  if (!resultBlockCopy)
   {
-    v58 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v58 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupTimeWarpingStep.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
   }
 
   v61 = a2;
-  v70 = v12;
-  v15 = [v11 setByAddingObjectsFromSet:v12];
-  v16 = [(PNPersonDeduperStep *)self delegate];
-  v76 = self;
-  v17 = [(PNPersonDeduperStep *)self personClusterManager];
-  v18 = [v16 performSocialGroupsIdentifiersWithPersonClusterManager:v17 forPersons:v15 overTheYearsComputation:1 updateBlock:v13];
+  v70 = otherPersonsCopy;
+  v15 = [personsCopy setByAddingObjectsFromSet:otherPersonsCopy];
+  delegate = [(PNPersonDeduperStep *)self delegate];
+  selfCopy = self;
+  personClusterManager = [(PNPersonDeduperStep *)self personClusterManager];
+  v18 = [delegate performSocialGroupsIdentifiersWithPersonClusterManager:personClusterManager forPersons:v15 overTheYearsComputation:1 updateBlock:blockCopy];
 
   v19 = objc_opt_new();
   v91 = 0u;
@@ -86,8 +86,8 @@ LABEL_4:
         }
 
         v25 = *(*(&v91 + 1) + 8 * i);
-        v26 = [v25 localIdentifier];
-        [v19 setObject:v25 forKeyedSubscript:v26];
+        localIdentifier = [v25 localIdentifier];
+        [v19 setObject:v25 forKeyedSubscript:localIdentifier];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v91 objects:v97 count:16];
@@ -101,12 +101,12 @@ LABEL_4:
   aBlock[2] = __100__PNPersonDeduperSocialGroupTimeWarpingStep_dedupePersons_withOtherPersons_updateBlock_resultBlock___block_invoke;
   aBlock[3] = &unk_1E82A26B8;
   v67 = v19;
-  v27 = v76;
+  v27 = selfCopy;
   v87 = v67;
-  v88 = v76;
-  v77 = v13;
+  v88 = selfCopy;
+  v77 = blockCopy;
   v90 = v77;
-  v28 = v11;
+  v28 = personsCopy;
   v89 = v28;
   v29 = _Block_copy(aBlock);
   v30 = [v18 count];
@@ -213,7 +213,7 @@ LABEL_4:
                 objc_autoreleasePoolPop(context);
               }
 
-              v27 = v76;
+              v27 = selfCopy;
             }
 
             v39 = [obj countByEnumeratingWithState:&v78 objects:v95 count:16];
@@ -352,29 +352,29 @@ void __100__PNPersonDeduperSocialGroupTimeWarpingStep_dedupePersons_withOtherPer
 LABEL_22:
 }
 
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type
 {
-  v6 = a6;
-  v9 = [(PNPersonDeduperStep *)self profile:a3];
-  v10 = [v9 shouldRelaxThreshold];
-  v11 = [(PNPersonDeduperStep *)self profile];
-  v12 = v11;
-  if (v10)
+  typeCopy = type;
+  v9 = [(PNPersonDeduperStep *)self profile:similar];
+  shouldRelaxThreshold = [v9 shouldRelaxThreshold];
+  profile = [(PNPersonDeduperStep *)self profile];
+  v12 = profile;
+  if (shouldRelaxThreshold)
   {
-    [v11 fuzzyMaximumDistance];
+    [profile fuzzyMaximumDistance];
   }
 
   else
   {
-    [v11 normalMaximumDistance];
+    [profile normalMaximumDistance];
   }
 
   v14 = v13;
 
   *&v14 = v14;
   LODWORD(v15) = LODWORD(v14);
-  [(PNPersonDeduperStep *)self adjustedThreshold:v6 forMinAgeType:v15];
-  return v16 > a5;
+  [(PNPersonDeduperStep *)self adjustedThreshold:typeCopy forMinAgeType:v15];
+  return v16 > distance;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface MLCDeviceOptimizer
-+ (MLCDeviceOptimizer)deviceOptimizerWithKernel:(id)a3;
-- (MLCDeviceOptimizer)initWithFunction:(unsigned int)a3 optimizerAlgFields:(id)a4 accumulatorBufferCount:(unint64_t)a5;
-- (MLCDeviceOptimizer)initWithKernel:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (MLCDeviceOptimizer)deviceOptimizerWithKernel:(id)kernel;
+- (MLCDeviceOptimizer)initWithFunction:(unsigned int)function optimizerAlgFields:(id)fields accumulatorBufferCount:(unint64_t)count;
+- (MLCDeviceOptimizer)initWithKernel:(id)kernel;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MLCDeviceOptimizer
 
-+ (MLCDeviceOptimizer)deviceOptimizerWithKernel:(id)a3
++ (MLCDeviceOptimizer)deviceOptimizerWithKernel:(id)kernel
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithKernel:v4];
+  kernelCopy = kernel;
+  v5 = [[self alloc] initWithKernel:kernelCopy];
 
   return v5;
 }
 
-- (MLCDeviceOptimizer)initWithKernel:(id)a3
+- (MLCDeviceOptimizer)initWithKernel:(id)kernel
 {
-  v5 = a3;
+  kernelCopy = kernel;
   v13.receiver = self;
   v13.super_class = MLCDeviceOptimizer;
   v6 = [(MLCDeviceOptimizer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_kernel, a3);
+    objc_storeStrong(&v6->_kernel, kernel);
     descriptor = v7->_descriptor;
     v7->_descriptor = 0;
 
@@ -44,18 +44,18 @@
   return v7;
 }
 
-- (MLCDeviceOptimizer)initWithFunction:(unsigned int)a3 optimizerAlgFields:(id)a4 accumulatorBufferCount:(unint64_t)a5
+- (MLCDeviceOptimizer)initWithFunction:(unsigned int)function optimizerAlgFields:(id)fields accumulatorBufferCount:(unint64_t)count
 {
-  v9 = a4;
+  fieldsCopy = fields;
   v13.receiver = self;
   v13.super_class = MLCDeviceOptimizer;
   v10 = [(MLCDeviceOptimizer *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_function = a3;
-    objc_storeStrong(&v10->_optimizerAlgFields, a4);
-    v11->_accumulatorBufferCount = a5;
+    v10->_function = function;
+    objc_storeStrong(&v10->_optimizerAlgFields, fields);
+    v11->_accumulatorBufferCount = count;
   }
 
   return v11;
@@ -66,17 +66,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCDeviceOptimizer *)self kernel];
-  v7 = [v3 stringWithFormat:@"%@: { kernel=%@ }", v5, v6];
+  kernel = [(MLCDeviceOptimizer *)self kernel];
+  v7 = [v3 stringWithFormat:@"%@: { kernel=%@ }", v5, kernel];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCDeviceOptimizer *)self kernel];
-  v6 = [v4 initWithKernel:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  kernel = [(MLCDeviceOptimizer *)self kernel];
+  v6 = [v4 initWithKernel:kernel];
 
   return v6;
 }

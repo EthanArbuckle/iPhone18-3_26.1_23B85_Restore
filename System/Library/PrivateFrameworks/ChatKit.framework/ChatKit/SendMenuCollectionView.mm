@@ -1,6 +1,6 @@
 @interface SendMenuCollectionView
-- (_TtC7ChatKit22SendMenuCollectionView)initWithCoder:(id)a3;
-- (_TtC7ChatKit22SendMenuCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC7ChatKit22SendMenuCollectionView)initWithCoder:(id)coder;
+- (_TtC7ChatKit22SendMenuCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)safeAreaInsetsDidChange;
 @end
 
@@ -23,27 +23,27 @@
   }
 }
 
-- (_TtC7ChatKit22SendMenuCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC7ChatKit22SendMenuCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC7ChatKit22SendMenuCollectionView_sendMenuCollectionViewDelegate) = 0;
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = type metadata accessor for SendMenuCollectionView();
-  return [(SendMenuCollectionView *)&v11 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(SendMenuCollectionView *)&v11 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
-- (_TtC7ChatKit22SendMenuCollectionView)initWithCoder:(id)a3
+- (_TtC7ChatKit22SendMenuCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC7ChatKit22SendMenuCollectionView_sendMenuCollectionViewDelegate) = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for SendMenuCollectionView();
-  v5 = a3;
-  v6 = [(SendMenuCollectionView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SendMenuCollectionView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

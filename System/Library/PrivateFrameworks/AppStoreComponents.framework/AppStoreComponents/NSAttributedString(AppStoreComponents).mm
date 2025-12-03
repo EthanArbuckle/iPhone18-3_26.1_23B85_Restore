@@ -56,12 +56,12 @@
       v21 = objc_alloc_init(MEMORY[0x277CCAB48]);
       [v21 appendAttributedString:v20];
       [v21 addAttribute:@"ASCLockupHeadingImageName" value:v18 range:{0, objc_msgSend(v20, "length")}];
-      v22 = [v21 mutableString];
+      mutableString = [v21 mutableString];
       v24 = ASCLocalizedString(@"LOCKUP_HEADING_JOINER", v23);
-      [v22 appendString:v24];
+      [mutableString appendString:v24];
 
-      v25 = [v21 mutableString];
-      [v25 appendString:v19];
+      mutableString2 = [v21 mutableString];
+      [mutableString2 appendString:v19];
 
       v26 = [v21 copy];
     }
@@ -109,8 +109,8 @@ LABEL_9:
       break;
     }
 
-    v12 = [v8 mutableString];
-    [v12 appendString:v11];
+    mutableString = [v8 mutableString];
+    [mutableString appendString:v11];
 LABEL_8:
 
     if (++v9 >= [v7 count])
@@ -119,14 +119,14 @@ LABEL_8:
     }
   }
 
-  v12 = v10;
-  v13 = ASCLockupImageStringForName(v12, v6);
+  mutableString = v10;
+  v13 = ASCLockupImageStringForName(mutableString, v6);
   if (v13)
   {
     v14 = v13;
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ASCLockupTextImageName %ld ", v9];
     [v8 appendAttributedString:v14];
-    [v8 addAttribute:v15 value:v12 range:{0, objc_msgSend(v14, "length")}];
+    [v8 addAttribute:v15 value:mutableString range:{0, objc_msgSend(v14, "length")}];
 
     goto LABEL_8;
   }

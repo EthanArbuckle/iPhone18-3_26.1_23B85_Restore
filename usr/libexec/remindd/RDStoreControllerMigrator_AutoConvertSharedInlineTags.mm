@@ -1,16 +1,16 @@
 @interface RDStoreControllerMigrator_AutoConvertSharedInlineTags
 - (_TtC7remindd53RDStoreControllerMigrator_AutoConvertSharedInlineTags)init;
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4;
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata;
 @end
 
 @implementation RDStoreControllerMigrator_AutoConvertSharedInlineTags
 
-- (void)migrateStoreIfNeeded:(id)a3 metadata:(id)a4
+- (void)migrateStoreIfNeeded:(id)needed metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001E8168(v6, v7);
+  neededCopy = needed;
+  metadataCopy = metadata;
+  selfCopy = self;
+  sub_1001E8168(neededCopy, metadataCopy);
 }
 
 - (_TtC7remindd53RDStoreControllerMigrator_AutoConvertSharedInlineTags)init

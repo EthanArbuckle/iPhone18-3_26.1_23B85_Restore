@@ -1,22 +1,22 @@
 @interface VCConnectionManagerLegacy
-- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3;
-- (BOOL)shouldNominateConnection:(id)a3;
+- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)info;
+- (BOOL)shouldNominateConnection:(id)connection;
 - (VCConnectionManagerLegacy)init;
 - (id)getPrimaryConnectionToBeCompared;
 - (id)getSecondaryConnectionToBeCompared;
-- (int)addConnection:(id)a3;
-- (int)nominateConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8;
-- (int)removeConnection:(id)a3;
-- (int)removeConnectionWithIPPort:(tagIPPORT *)a3 isLocalInterface:(BOOL)a4;
-- (int)removeConnectionWithIPPortInternal:(tagIPPORT *)a3 isLocalInterface:(BOOL)a4;
-- (int)shouldNominateCandidatePair:(tagCANDIDATEPAIR *)a3 interfaceMask:(int)a4 nominated:(int *)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8;
-- (int)shouldNominateCandidatePairInternal:(tagCANDIDATEPAIR *)a3 interfaceMask:(int)a4 nominated:(int *)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8;
-- (int)updateStateWithCurrentConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5 demote:(int *)a6 replaceOnly:(int *)a7;
+- (int)addConnection:(id)connection;
+- (int)nominateConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only;
+- (int)removeConnection:(id)connection;
+- (int)removeConnectionWithIPPort:(tagIPPORT *)port isLocalInterface:(BOOL)interface;
+- (int)removeConnectionWithIPPortInternal:(tagIPPORT *)internal isLocalInterface:(BOOL)interface;
+- (int)shouldNominateCandidatePair:(tagCANDIDATEPAIR *)pair interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only;
+- (int)shouldNominateCandidatePairInternal:(tagCANDIDATEPAIR *)internal interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only;
+- (int)updateStateWithCurrentConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask demote:(int *)demote replaceOnly:(int *)only;
 - (void)dealloc;
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4;
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection;
 - (void)setUpVTable;
-- (void)updateCellularMTU:(int)a3;
-- (void)updateCellularTech:(int)a3 forLocalInterface:(BOOL)a4;
+- (void)updateCellularMTU:(int)u;
+- (void)updateCellularTech:(int)tech forLocalInterface:(BOOL)interface;
 @end
 
 @implementation VCConnectionManagerLegacy
@@ -51,33 +51,33 @@
   [(VCConnectionManager *)&v3 dealloc];
 }
 
-- (int)shouldNominateCandidatePair:(tagCANDIDATEPAIR *)a3 interfaceMask:(int)a4 nominated:(int *)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8
+- (int)shouldNominateCandidatePair:(tagCANDIDATEPAIR *)pair interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only
 {
-  v12 = *&a4;
+  v12 = *&mask;
   pthread_rwlock_rdlock(&self->super._stateRWlock);
-  LODWORD(a8) = [(VCConnectionManagerLegacy *)self shouldNominateCandidatePairInternal:a3 interfaceMask:v12 nominated:a5 demote:a6 connectionPriority:a7 replaceOnly:a8];
+  LODWORD(only) = [(VCConnectionManagerLegacy *)self shouldNominateCandidatePairInternal:pair interfaceMask:v12 nominated:nominated demote:demote connectionPriority:priority replaceOnly:only];
   pthread_rwlock_unlock(&self->super._stateRWlock);
-  return a8;
+  return only;
 }
 
-- (int)addConnection:(id)a3
+- (int)addConnection:(id)connection
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
-    v3 = a3;
+    connectionCopy = connection;
     pthread_rwlock_wrlock(&self->super._stateRWlock);
     isInitialConnectionEstablished = self->super._isInitialConnectionEstablished;
-    if (*([v3 connectionResult] + 296))
+    if (*([connectionCopy connectionResult] + 296))
     {
-      v6 = [(VCConnectionManagerLegacy *)self pendingPrimaryConnection];
-      if (!v6)
+      pendingPrimaryConnection = [(VCConnectionManagerLegacy *)self pendingPrimaryConnection];
+      if (!pendingPrimaryConnection)
       {
         v8 = 3;
 LABEL_16:
-        VCConnection_SetPriority(v3, v8);
+        VCConnection_SetPriority(connectionCopy, v8);
         [(VCConnectionManagerLegacy *)self setPendingPrimaryConnection:0];
-        v16 = [(VCConnectionManager *)self lastPrimaryConnectionInUse];
+        lastPrimaryConnectionInUse = [(VCConnectionManager *)self lastPrimaryConnectionInUse];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v17 = VRTraceErrorLogLevelToCSTR();
@@ -91,20 +91,20 @@ LABEL_16:
             v55 = 1024;
             v56 = 160;
             v57 = 2080;
-            v58 = [objc_msgSend(v3 "description")];
+            v58 = [objc_msgSend(connectionCopy "description")];
             _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: set a PRIMARY connection %s", buf, 0x26u);
           }
         }
 
-        [(VCConnectionManager *)self useConnectionAsPrimary:v3];
-        [(NSMutableArray *)self->super._connectionArray addObject:v3];
-        if (v16)
+        [(VCConnectionManager *)self useConnectionAsPrimary:connectionCopy];
+        [(NSMutableArray *)self->super._connectionArray addObject:connectionCopy];
+        if (lastPrimaryConnectionInUse)
         {
-          v19 = [(VCConnectionManagerLegacy *)self pendingSecondaryConnection];
-          if (v19)
+          pendingSecondaryConnection = [(VCConnectionManagerLegacy *)self pendingSecondaryConnection];
+          if (pendingSecondaryConnection)
           {
-            v20 = v19;
-            if (([(VCConnectionProtocol *)v19 waitToBeNominated]& 1) == 0)
+            v20 = pendingSecondaryConnection;
+            if (([(VCConnectionProtocol *)pendingSecondaryConnection waitToBeNominated]& 1) == 0)
             {
               [(VCConnectionManager *)self setSecondaryConnection:v20];
               [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:0];
@@ -115,8 +115,8 @@ LABEL_16:
         goto LABEL_42;
       }
 
-      v7 = v6;
-      if (VCConnection_Equal(v3, v6))
+      v7 = pendingPrimaryConnection;
+      if (VCConnection_Equal(connectionCopy, pendingPrimaryConnection))
       {
         v8 = VCConnection_Priority(v7);
         goto LABEL_16;
@@ -135,7 +135,7 @@ LABEL_16:
           v55 = 1024;
           v56 = 174;
           v57 = 2080;
-          v58 = [objc_msgSend(v3 "description")];
+          v58 = [objc_msgSend(connectionCopy "description")];
           v59 = 2080;
           v60 = [-[VCConnectionProtocol description](v7 "description")];
           v23 = " [%s] %s:%d HandoverReport: new connection %s is not the pending primary %s";
@@ -147,15 +147,15 @@ LABEL_36:
 
     else
     {
-      v10 = [(VCConnectionManagerLegacy *)self pendingSecondaryConnection];
-      if (VCConnection_Equal(v3, v10))
+      pendingSecondaryConnection2 = [(VCConnectionManagerLegacy *)self pendingSecondaryConnection];
+      if (VCConnection_Equal(connectionCopy, pendingSecondaryConnection2))
       {
         v11 = VCConnectionManager_CopyPrimaryConnection(self);
         if (v11)
         {
           v12 = v11;
-          v13 = VCConnection_Priority(v10);
-          VCConnection_SetPriority(v3, v13);
+          v13 = VCConnection_Priority(pendingSecondaryConnection2);
+          VCConnection_SetPriority(connectionCopy, v13);
           [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:0];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
           {
@@ -170,32 +170,32 @@ LABEL_36:
               v55 = 1024;
               v56 = 204;
               v57 = 2080;
-              v58 = [objc_msgSend(v3 "description")];
+              v58 = [objc_msgSend(connectionCopy "description")];
               _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: set a SECONDARY connection %s", buf, 0x26u);
             }
           }
 
-          [(VCConnectionManager *)self setSecondaryConnection:v3];
+          [(VCConnectionManager *)self setSecondaryConnection:connectionCopy];
           CFRelease(v12);
         }
 
         else
         {
-          [v3 setWaitToBeNominated:0];
-          [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:v3];
-          v3 = [v3 copy];
-          VCConnection_SetPriority(v3, 2);
-          *([v3 connectionResult] + 296) = 0;
-          [(VCConnectionManager *)self useConnectionAsPrimary:v3];
+          [connectionCopy setWaitToBeNominated:0];
+          [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:connectionCopy];
+          connectionCopy = [connectionCopy copy];
+          VCConnection_SetPriority(connectionCopy, 2);
+          *([connectionCopy connectionResult] + 296) = 0;
+          [(VCConnectionManager *)self useConnectionAsPrimary:connectionCopy];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
           {
             v27 = VRTraceErrorLogLevelToCSTR();
             v28 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
             {
-              if (v3)
+              if (connectionCopy)
               {
-                v29 = [objc_msgSend(v3 "description")];
+                v29 = [objc_msgSend(connectionCopy "description")];
               }
 
               else
@@ -216,11 +216,11 @@ LABEL_36:
           }
         }
 
-        [(NSMutableArray *)self->super._connectionArray addObject:v3];
-        v16 = 0;
+        [(NSMutableArray *)self->super._connectionArray addObject:connectionCopy];
+        lastPrimaryConnectionInUse = 0;
 LABEL_42:
         v30 = VCConnectionManager_CopyPrimaryConnection(self);
-        v31 = VCConnection_Priority(v3);
+        v31 = VCConnection_Priority(connectionCopy);
         if (VRTraceGetErrorLogLevelForModule() < 6 || (v48 = VRTraceErrorLogLevelToCSTR(), v32 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
         {
 LABEL_64:
@@ -233,14 +233,14 @@ LABEL_64:
           VTP_SetAFRCConnectionNumber(NumberOfConnectionsInternal);
           v39 = VCConnectionManager_CopyPrimaryConnection(self);
           [(VCConnectionManager *)self checkpointPrimaryConnection:v39];
-          if (v16)
+          if (lastPrimaryConnectionInUse)
           {
-            [(VCConnectionManager *)self primaryConnectionChanged:v39 oldPrimaryConnection:v16];
+            [(VCConnectionManager *)self primaryConnectionChanged:v39 oldPrimaryConnection:lastPrimaryConnectionInUse];
           }
 
           else if (v31 == 2)
           {
-            IsLocalOnCellular = VCConnection_IsLocalOnCellular(v3);
+            IsLocalOnCellular = VCConnection_IsLocalOnCellular(connectionCopy);
             VCConnectionManager_UseCellPrimaryInterface(self, IsLocalOnCellular);
           }
 
@@ -255,7 +255,7 @@ LABEL_64:
           block[2] = __43__VCConnectionManagerLegacy_addConnection___block_invoke;
           block[3] = &unk_1E85F37C8;
           block[4] = self;
-          block[5] = v3;
+          block[5] = connectionCopy;
           v50 = !isInitialConnectionEstablished;
           dispatch_async(delegateQueue, block);
           if (!self->super._isInitialConnectionEstablished)
@@ -268,7 +268,7 @@ LABEL_64:
             VCConnectionManager_SetDuplicationEnabledInternal(self, 1);
           }
 
-          [(VCConnectionManagerLegacy *)self reportConnection:v3 isInitialConnection:!isInitialConnectionEstablished];
+          [(VCConnectionManagerLegacy *)self reportConnection:connectionCopy isInitialConnection:!isInitialConnectionEstablished];
           [(VCConnectionManager *)self reportConnectionUpdateWithRespCode:0];
           pthread_rwlock_unlock(&self->super._stateRWlock);
           return 0;
@@ -292,9 +292,9 @@ LABEL_64:
 
         v45 = v34;
         v46 = v33;
-        if (v3)
+        if (connectionCopy)
         {
-          v44 = [objc_msgSend(v3 "description")];
+          v44 = [objc_msgSend(connectionCopy "description")];
           if (v30)
           {
 LABEL_51:
@@ -376,10 +376,10 @@ LABEL_54:
         v22 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [objc_msgSend(v3 "description")];
-          if (v10)
+          v25 = [objc_msgSend(connectionCopy "description")];
+          if (pendingSecondaryConnection2)
           {
-            v26 = [-[VCConnectionProtocol description](v10 "description")];
+            v26 = [-[VCConnectionProtocol description](pendingSecondaryConnection2 "description")];
           }
 
           else
@@ -430,11 +430,11 @@ uint64_t __43__VCConnectionManagerLegacy_addConnection___block_invoke(uint64_t a
   return [v2 connectionCallback:v3 isInitialConnection:v4];
 }
 
-- (int)removeConnection:(id)a3
+- (int)removeConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
-    v4 = [a3 connectionResult] + 28;
+    v4 = [connection connectionResult] + 28;
 
     return [(VCConnectionManagerLegacy *)self removeConnectionWithIPPort:v4 isLocalInterface:1];
   }
@@ -454,34 +454,34 @@ uint64_t __43__VCConnectionManagerLegacy_addConnection___block_invoke(uint64_t a
   }
 }
 
-- (int)removeConnectionWithIPPort:(tagIPPORT *)a3 isLocalInterface:(BOOL)a4
+- (int)removeConnectionWithIPPort:(tagIPPORT *)port isLocalInterface:(BOOL)interface
 {
-  v4 = a4;
+  interfaceCopy = interface;
   pthread_rwlock_wrlock(&self->super._stateRWlock);
-  LODWORD(v4) = [(VCConnectionManagerLegacy *)self removeConnectionWithIPPortInternal:a3 isLocalInterface:v4];
+  LODWORD(interfaceCopy) = [(VCConnectionManagerLegacy *)self removeConnectionWithIPPortInternal:port isLocalInterface:interfaceCopy];
   pthread_rwlock_unlock(&self->super._stateRWlock);
-  return v4;
+  return interfaceCopy;
 }
 
-- (int)removeConnectionWithIPPortInternal:(tagIPPORT *)a3 isLocalInterface:(BOOL)a4
+- (int)removeConnectionWithIPPortInternal:(tagIPPORT *)internal isLocalInterface:(BOOL)interface
 {
-  v4 = a4;
+  interfaceCopy = interface;
   v35 = *MEMORY[0x1E69E9840];
   memset(v34, 0, sizeof(v34));
   IPPORTToStringWithSize();
-  v7 = [(VCConnectionManager *)self secondaryConnection];
-  v8 = v7;
-  if (v7)
+  secondaryConnection = [(VCConnectionManager *)self secondaryConnection];
+  v8 = secondaryConnection;
+  if (secondaryConnection)
   {
-    if (v4)
+    if (interfaceCopy)
     {
-      if (([(VCConnectionProtocol *)v7 isLocalIPPort:a3]& 1) == 0)
+      if (([(VCConnectionProtocol *)secondaryConnection isLocalIPPort:internal]& 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!VCConnectionLegacy_IsRemoteIPPort(v7, a3))
+    else if (!VCConnectionLegacy_IsRemoteIPPort(secondaryConnection, internal))
     {
       goto LABEL_12;
     }
@@ -499,7 +499,7 @@ uint64_t __43__VCConnectionManagerLegacy_addConnection___block_invoke(uint64_t a
         *&v26[14] = "[VCConnectionManagerLegacy removeConnectionWithIPPortInternal:isLocalInterface:]";
         *&v26[22] = 1024;
         *&v26[12] = 2080;
-        if (v4)
+        if (interfaceCopy)
         {
           v12 = "LOCAL";
         }
@@ -520,17 +520,17 @@ uint64_t __43__VCConnectionManagerLegacy_addConnection___block_invoke(uint64_t a
   }
 
 LABEL_12:
-  v13 = [(VCConnectionManager *)self lastPrimaryConnectionInUse];
-  v14 = v13;
-  if (v4)
+  lastPrimaryConnectionInUse = [(VCConnectionManager *)self lastPrimaryConnectionInUse];
+  v14 = lastPrimaryConnectionInUse;
+  if (interfaceCopy)
   {
-    if (([(VCConnectionProtocol *)v13 isLocalIPPort:a3]& 1) == 0)
+    if (([(VCConnectionProtocol *)lastPrimaryConnectionInUse isLocalIPPort:internal]& 1) == 0)
     {
       goto LABEL_32;
     }
   }
 
-  else if (!VCConnectionLegacy_IsRemoteIPPort(v13, a3))
+  else if (!VCConnectionLegacy_IsRemoteIPPort(lastPrimaryConnectionInUse, internal))
   {
 LABEL_32:
     v22 = 0;
@@ -559,7 +559,7 @@ LABEL_32:
       *&v26[4] = v15;
       *&v26[12] = 2080;
       *&v26[14] = "[VCConnectionManagerLegacy removeConnectionWithIPPortInternal:isLocalInterface:]";
-      if (v4)
+      if (interfaceCopy)
       {
         v18 = "LOCAL";
       }
@@ -641,13 +641,13 @@ LABEL_36:
   return 0;
 }
 
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection
 {
-  v4 = a4;
+  initialConnectionCopy = initialConnection;
   v47 = *MEMORY[0x1E69E9840];
-  VCConnection_Priority(a3);
-  v7 = VCConnection_LocalCellTech(a3);
-  v8 = VCConnection_RemoteCellTech(a3);
+  VCConnection_Priority(connection);
+  v7 = VCConnection_LocalCellTech(connection);
+  v8 = VCConnection_RemoteCellTech(connection);
   *&v46[14] = 0xAAAAAAAAAAAAAAAALL;
   *&v9 = 0xAAAAAAAAAAAAAAAALL;
   *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -665,15 +665,15 @@ LABEL_36:
   if (self->super._reportingAgent)
   {
     v10 = v8;
-    v31 = v4;
-    v11 = [a3 connectionResult];
-    v12 = vcvtd_n_f64_u32(*(v11 + 268), 0x10uLL);
+    v31 = initialConnectionCopy;
+    connectionResult = [connection connectionResult];
+    v12 = vcvtd_n_f64_u32(*(connectionResult + 268), 0x10uLL);
     IPPORTToStringWithSize();
     IPPORTToStringWithSize();
     IPPORTToStringWithSize();
-    v13 = *(v11 + 268);
-    IsRelay = VCConnection_IsRelay(a3);
-    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"connectionResultCallback %s/%s (rtt: %f cell: %d/%d v6/rel: %d/%d)  RTT=%d/%d", v45, v43, *&v12, v7, v10, VCConnection_IsIPv6(a3), IsRelay, v13, (v12 * 1000.0)];
+    v13 = *(connectionResult + 268);
+    IsRelay = VCConnection_IsRelay(connection);
+    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"connectionResultCallback %s/%s (rtt: %f cell: %d/%d v6/rel: %d/%d)  RTT=%d/%d", v45, v43, *&v12, v7, v10, VCConnection_IsIPv6(connection), IsRelay, v13, (v12 * 1000.0)];
     if (IsRelay)
     {
       v15 = "relay";
@@ -684,9 +684,9 @@ LABEL_36:
       v15 = "p2p";
     }
 
-    VCConnection_IsLocalOnCellular(a3);
+    VCConnection_IsLocalOnCellular(connection);
     v16 = CelltechToStr();
-    VCConnection_IsRemoteOnCellular(a3);
+    VCConnection_IsRemoteOnCellular(connection);
     v17 = CelltechToStr();
     relayConnectionID = self->_relayConnectionID;
     EyeContactEnabledBoolValue = VCDefaults_Prod_GetEyeContactEnabledBoolValue(1);
@@ -703,11 +703,11 @@ LABEL_36:
     v39[5] = @"relayServer";
     v40[5] = [MEMORY[0x1E696AEC0] stringWithUTF8String:v43];
     v39[6] = @"relayType";
-    v40[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "type")}];
+    v40[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(connection, "type")}];
     v39[7] = @"VPN";
-    v20 = [a3 isVPN];
+    isVPN = [connection isVPN];
     v21 = &unk_1F57999F0;
-    if (v20)
+    if (isVPN)
     {
       v21 = &unk_1F57999D8;
     }
@@ -725,7 +725,7 @@ LABEL_36:
     v40[9] = [MEMORY[0x1E696AD98] numberWithBool:EyeContactEnabledBoolValue];
     v39[10] = @"EndToEnd";
     v23 = MEMORY[0x1E696AEC0];
-    if (VCConnection_IsEndToEndLink(a3))
+    if (VCConnection_IsEndToEndLink(connection))
     {
       v24 = "1";
     }
@@ -737,7 +737,7 @@ LABEL_36:
 
     v40[10] = [v23 stringWithUTF8String:v24];
     v25 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:{11), "mutableCopy"}];
-    VCConnectionManager_AddTelemetryForConnection(self, a3, v25);
+    VCConnectionManager_AddTelemetryForConnection(self, connection, v25);
     reportingGenericEvent();
 
     if (v30)
@@ -774,7 +774,7 @@ LABEL_36:
 
     v32.receiver = self;
     v32.super_class = VCConnectionManagerLegacy;
-    [(VCConnectionManager *)&v32 reportConnection:a3 isInitialConnection:v31];
+    [(VCConnectionManager *)&v32 reportConnection:connection isInitialConnection:v31];
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -794,13 +794,13 @@ LABEL_36:
   }
 }
 
-- (int)nominateConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8
+- (int)nominateConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only
 {
-  v11 = *&a5;
-  v12 = a4;
-  if (a4)
+  v11 = *&mask;
+  primaryCopy = primary;
+  if (primary)
   {
-    if ([(VCConnectionManager *)self isOptimalConnection:a3 asPrimary:1 interfaceMask:*&a5])
+    if ([(VCConnectionManager *)self isOptimalConnection:connection asPrimary:1 interfaceMask:*&mask])
     {
       v15 = 3;
     }
@@ -813,49 +813,49 @@ LABEL_36:
 
   else
   {
-    v15 = [(VCConnectionManager *)self isOptimalConnection:a3 asPrimary:a4 interfaceMask:*&a5];
+    v15 = [(VCConnectionManager *)self isOptimalConnection:connection asPrimary:primary interfaceMask:*&mask];
   }
 
-  *a7 = v15;
-  VCConnection_SetPriority(a3, v15);
+  *priority = v15;
+  VCConnection_SetPriority(connection, v15);
 
-  return [(VCConnectionManagerLegacy *)self updateStateWithCurrentConnection:a3 asPrimary:v12 interfaceMask:v11 demote:a6 replaceOnly:a8];
+  return [(VCConnectionManagerLegacy *)self updateStateWithCurrentConnection:connection asPrimary:primaryCopy interfaceMask:v11 demote:demote replaceOnly:only];
 }
 
-- (BOOL)shouldNominateConnection:(id)a3
+- (BOOL)shouldNominateConnection:(id)connection
 {
-  v5 = [(VCConnectionManagerLegacy *)self getPrimaryConnectionToBeCompared];
-  v6 = [(VCConnectionManagerLegacy *)self getSecondaryConnectionToBeCompared];
-  if (!v5)
+  getPrimaryConnectionToBeCompared = [(VCConnectionManagerLegacy *)self getPrimaryConnectionToBeCompared];
+  getSecondaryConnectionToBeCompared = [(VCConnectionManagerLegacy *)self getSecondaryConnectionToBeCompared];
+  if (!getPrimaryConnectionToBeCompared)
   {
     return 1;
   }
 
-  v7 = v6;
-  if ([a3 isOnSameIPPortWithConnection:v5])
+  v7 = getSecondaryConnectionToBeCompared;
+  if ([connection isOnSameIPPortWithConnection:getPrimaryConnectionToBeCompared])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isOnSameIPPortWithConnection:v7] ^ 1;
+    return [connection isOnSameIPPortWithConnection:v7] ^ 1;
   }
 }
 
-- (int)updateStateWithCurrentConnection:(id)a3 asPrimary:(BOOL)a4 interfaceMask:(int)a5 demote:(int *)a6 replaceOnly:(int *)a7
+- (int)updateStateWithCurrentConnection:(id)connection asPrimary:(BOOL)primary interfaceMask:(int)mask demote:(int *)demote replaceOnly:(int *)only
 {
-  v9 = *&a5;
-  v10 = a4;
-  v13 = [(VCConnectionManagerLegacy *)self getPrimaryConnectionToBeCompared];
-  v14 = [(VCConnectionManagerLegacy *)self getSecondaryConnectionToBeCompared];
-  if (v10)
+  v9 = *&mask;
+  primaryCopy = primary;
+  getPrimaryConnectionToBeCompared = [(VCConnectionManagerLegacy *)self getPrimaryConnectionToBeCompared];
+  getSecondaryConnectionToBeCompared = [(VCConnectionManagerLegacy *)self getSecondaryConnectionToBeCompared];
+  if (primaryCopy)
   {
-    if (v13)
+    if (getPrimaryConnectionToBeCompared)
     {
-      if (v14)
+      if (getSecondaryConnectionToBeCompared)
       {
-        v15 = [(VCConnectionManager *)self isBetterConnection:v13 asPrimary:0];
+        v15 = [(VCConnectionManager *)self isBetterConnection:getPrimaryConnectionToBeCompared asPrimary:0];
         if (v15)
         {
           v16 = 3;
@@ -871,7 +871,7 @@ LABEL_36:
 
       else
       {
-        v17 = VCConnection_IsOnSameInterfacesWithConnection(a3);
+        v17 = VCConnection_IsOnSameInterfacesWithConnection(connection);
         if (v17)
         {
           v16 = 0;
@@ -890,25 +890,25 @@ LABEL_36:
       v17 = 0;
     }
 
-    *a6 = v16;
-    *a7 = v17;
-    if ((*a6 & 0xFFFFFFFE) == 2)
+    *demote = v16;
+    *only = v17;
+    if ((*demote & 0xFFFFFFFE) == 2)
     {
-      VCConnection_SetPriority(v13, [(VCConnectionManager *)self isOptimalConnection:v13 asPrimary:0 interfaceMask:v9]);
-      [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:v13];
+      VCConnection_SetPriority(getPrimaryConnectionToBeCompared, [(VCConnectionManager *)self isOptimalConnection:getPrimaryConnectionToBeCompared asPrimary:0 interfaceMask:v9]);
+      [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:getPrimaryConnectionToBeCompared];
     }
 
-    [a3 setWaitToBeNominated:1];
-    [(VCConnectionManagerLegacy *)self setPendingPrimaryConnection:a3];
+    [connection setWaitToBeNominated:1];
+    [(VCConnectionManagerLegacy *)self setPendingPrimaryConnection:connection];
   }
 
   else
   {
-    v18 = v14 != 0;
-    *a6 = v18;
-    *a7 = v18;
-    [a3 setWaitToBeNominated:1];
-    [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:a3];
+    v18 = getSecondaryConnectionToBeCompared != 0;
+    *demote = v18;
+    *only = v18;
+    [connection setWaitToBeNominated:1];
+    [(VCConnectionManagerLegacy *)self setPendingSecondaryConnection:connection];
   }
 
   return 0;
@@ -939,9 +939,9 @@ LABEL_36:
   return result;
 }
 
-- (void)updateCellularMTU:(int)a3
+- (void)updateCellularMTU:(int)u
 {
-  v3 = *&a3;
+  v3 = *&u;
   pthread_rwlock_wrlock(&self->super._stateRWlock);
   v5 = VCConnectionManager_CopyPrimaryConnection(self);
   [v5 setConnectionMTU:v3];
@@ -957,13 +957,13 @@ LABEL_36:
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (void)updateCellularTech:(int)a3 forLocalInterface:(BOOL)a4
+- (void)updateCellularTech:(int)tech forLocalInterface:(BOOL)interface
 {
-  v4 = a4;
+  interfaceCopy = interface;
   pthread_rwlock_wrlock(&self->super._stateRWlock);
   v6 = VCConnectionManager_CopyPrimaryConnection(self);
   v7 = v6;
-  if (!v4)
+  if (!interfaceCopy)
   {
     VCConnection_SetRemoteCellTech(v6);
     VCConnection_SetRemoteCellTech([(VCConnectionManager *)self secondaryConnection]);
@@ -992,7 +992,7 @@ LABEL_6:
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3
+- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)info
 {
   v17 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->super._stateRWlock);
@@ -1015,7 +1015,7 @@ LABEL_6:
           objc_enumerationMutation(connectionArray);
         }
 
-        if (VCConnection_MatchesSourceDestinationInfo(*(*(&v13 + 1) + 8 * i), a3))
+        if (VCConnection_MatchesSourceDestinationInfo(*(*(&v13 + 1) + 8 * i), info))
         {
           v10 = 1;
           goto LABEL_11;
@@ -1038,14 +1038,14 @@ LABEL_11:
   return v10;
 }
 
-- (int)shouldNominateCandidatePairInternal:(tagCANDIDATEPAIR *)a3 interfaceMask:(int)a4 nominated:(int *)a5 demote:(int *)a6 connectionPriority:(int *)a7 replaceOnly:(int *)a8
+- (int)shouldNominateCandidatePairInternal:(tagCANDIDATEPAIR *)internal interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only
 {
   v44 = *MEMORY[0x1E69E9840];
-  *a5 = 0;
-  v13 = [[VCConnectionLegacy alloc] initWithCandidatePair:a3];
+  *nominated = 0;
+  v13 = [[VCConnectionLegacy alloc] initWithCandidatePair:internal];
   if ([OUTLINED_FUNCTION_1_7() shouldNominateConnection:?] && ((objc_msgSend(OUTLINED_FUNCTION_1_7(), "isBetterConnection:asPrimary:") & 1) != 0 || (-[VCConnectionManagerLegacy getPrimaryConnectionToBeCompared](self, "getPrimaryConnectionToBeCompared"), (VCConnection_IsOnSameInterfacesWithConnection(v13) & 1) == 0) && objc_msgSend(OUTLINED_FUNCTION_1_7(), "isBetterConnection:asPrimary:")))
   {
-    *a5 = 1;
+    *nominated = 1;
     v14 = [OUTLINED_FUNCTION_1_7() nominateConnection:? asPrimary:? interfaceMask:? demote:? connectionPriority:? replaceOnly:?];
     if (v14 < 0)
     {
@@ -1058,7 +1058,7 @@ LABEL_11:
     v14 = 0;
   }
 
-  v15 = *a5;
+  v15 = *nominated;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v17 = MEMORY[0x1E6986650];
   if (v15)
@@ -1077,19 +1077,19 @@ LABEL_11:
 
     if (v13)
     {
-      v20 = [(NSString *)[(VCConnectionLegacy *)v13 description] UTF8String];
+      uTF8String = [(NSString *)[(VCConnectionLegacy *)v13 description] UTF8String];
     }
 
     else
     {
-      v20 = "<nil>";
+      uTF8String = "<nil>";
     }
 
-    v24 = *a7;
+    v24 = *priority;
     v25 = "OPTIMAL";
-    v26 = *a6;
-    v27 = *a8;
-    if ((*a7 & 0xFFFFFFFD) != 1)
+    v26 = *demote;
+    v27 = *only;
+    if ((*priority & 0xFFFFFFFD) != 1)
     {
       v25 = "";
     }
@@ -1111,7 +1111,7 @@ LABEL_11:
     *&v40[22] = 1024;
     LODWORD(v41) = 112;
     WORD2(v41) = 2080;
-    *(&v41 + 6) = v20;
+    *(&v41 + 6) = uTF8String;
     HIWORD(v41) = 2080;
     v42 = v25;
     *v43 = 2080;
@@ -1141,12 +1141,12 @@ LABEL_11:
 
     if (v13)
     {
-      v23 = [(NSString *)[(VCConnectionLegacy *)v13 description] UTF8String];
+      uTF8String2 = [(NSString *)[(VCConnectionLegacy *)v13 description] UTF8String];
     }
 
     else
     {
-      v23 = "<nil>";
+      uTF8String2 = "<nil>";
     }
 
     *v40 = 136315906;
@@ -1156,7 +1156,7 @@ LABEL_11:
     *&v40[22] = 1024;
     LODWORD(v41) = 114;
     WORD2(v41) = 2080;
-    *(&v41 + 6) = v23;
+    *(&v41 + 6) = uTF8String2;
     v29 = " [%s] %s:%d HandoverReport: DID NOT nominate connection %s";
     v30 = v22;
     v31 = 38;

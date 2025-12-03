@@ -1,5 +1,5 @@
 @interface UGCRateThisPlaceCell
-- (UGCRateThisPlaceCell)initWithDelegate:(id)a3;
+- (UGCRateThisPlaceCell)initWithDelegate:(id)delegate;
 - (UGCRateThisPlaceCellDelegate)delegate;
 - (void)setupSubviews;
 @end
@@ -33,8 +33,8 @@
   [(UGCRateThisPlaceCell *)self addSubview:self->_buttonView];
   v7 = [MUEdgeLayout alloc];
   v8 = self->_buttonView;
-  v9 = [(UGCRateThisPlaceCell *)self layoutMarginsGuide];
-  v10 = [v7 initWithItem:v8 container:v9];
+  layoutMarginsGuide = [(UGCRateThisPlaceCell *)self layoutMarginsGuide];
+  v10 = [v7 initWithItem:v8 container:layoutMarginsGuide];
 
   v18 = v10;
   v11 = [NSArray arrayWithObjects:&v18 count:1];
@@ -44,16 +44,16 @@
   objc_destroyWeak(&location);
 }
 
-- (UGCRateThisPlaceCell)initWithDelegate:(id)a3
+- (UGCRateThisPlaceCell)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = UGCRateThisPlaceCell;
   v5 = [(UGCPOIEnrichmentEditorCell *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(UGCRateThisPlaceCell *)v6 setupSubviews];
   }
 

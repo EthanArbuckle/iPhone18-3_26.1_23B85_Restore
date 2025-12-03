@@ -1,53 +1,53 @@
 @interface MTSThreadScanResult
-- (BOOL)isEqual:(id)a3;
-- (MTSThreadScanResult)initWithCoder:(id)a3;
-- (MTSThreadScanResult)initWithNetworkName:(id)a3 panID:(id)a4 extendedPANID:(id)a5 channel:(id)a6 extendedAddress:(id)a7 rssi:(id)a8 version:(id)a9 lqi:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (MTSThreadScanResult)initWithCoder:(id)coder;
+- (MTSThreadScanResult)initWithNetworkName:(id)name panID:(id)d extendedPANID:(id)iD channel:(id)channel extendedAddress:(id)address rssi:(id)rssi version:(id)version lqi:(id)self0;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSThreadScanResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSThreadScanResult *)self networkName];
-  [v4 encodeObject:v5 forKey:@"MTSTSR.ck.networkName"];
+  coderCopy = coder;
+  networkName = [(MTSThreadScanResult *)self networkName];
+  [coderCopy encodeObject:networkName forKey:@"MTSTSR.ck.networkName"];
 
-  v6 = [(MTSThreadScanResult *)self panID];
-  [v4 encodeObject:v6 forKey:@"MTSTSR.ck.panID"];
+  panID = [(MTSThreadScanResult *)self panID];
+  [coderCopy encodeObject:panID forKey:@"MTSTSR.ck.panID"];
 
-  v7 = [(MTSThreadScanResult *)self extendedPANID];
-  [v4 encodeObject:v7 forKey:@"MTSTSR.ck.extendedPANID"];
+  extendedPANID = [(MTSThreadScanResult *)self extendedPANID];
+  [coderCopy encodeObject:extendedPANID forKey:@"MTSTSR.ck.extendedPANID"];
 
-  v8 = [(MTSThreadScanResult *)self channel];
-  [v4 encodeObject:v8 forKey:@"MTSTSR.ck.channel"];
+  channel = [(MTSThreadScanResult *)self channel];
+  [coderCopy encodeObject:channel forKey:@"MTSTSR.ck.channel"];
 
-  v9 = [(MTSThreadScanResult *)self extendedAddress];
-  [v4 encodeObject:v9 forKey:@"MTSTSR.ck.extendedAddress"];
+  extendedAddress = [(MTSThreadScanResult *)self extendedAddress];
+  [coderCopy encodeObject:extendedAddress forKey:@"MTSTSR.ck.extendedAddress"];
 
-  v10 = [(MTSThreadScanResult *)self rssi];
-  [v4 encodeObject:v10 forKey:@"MTSTSR.ck.rssi"];
+  rssi = [(MTSThreadScanResult *)self rssi];
+  [coderCopy encodeObject:rssi forKey:@"MTSTSR.ck.rssi"];
 
-  v11 = [(MTSThreadScanResult *)self version];
-  [v4 encodeObject:v11 forKey:@"MTSTSR.ck.version"];
+  version = [(MTSThreadScanResult *)self version];
+  [coderCopy encodeObject:version forKey:@"MTSTSR.ck.version"];
 
   v12 = [(MTSThreadScanResult *)self lqi];
-  [v4 encodeObject:v12 forKey:@"MTSTSR.ck.lqi"];
+  [coderCopy encodeObject:v12 forKey:@"MTSTSR.ck.lqi"];
 }
 
-- (MTSThreadScanResult)initWithCoder:(id)a3
+- (MTSThreadScanResult)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.networkName"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.panID"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.extendedPANID"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.channel"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.extendedAddress"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.rssi"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.version"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.lqi"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.networkName"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.panID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.extendedPANID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.channel"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.extendedAddress"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.rssi"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.version"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTSR.ck.lqi"];
   v12 = v8;
   v13 = v7;
   v14 = v6;
@@ -64,7 +64,7 @@
   {
     v24 = v10;
     context = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -90,7 +90,7 @@
       _os_log_impl(&dword_239824000, v20, OS_LOG_TYPE_ERROR, "%{public}@Could not initialize from decoded networkName: %@, panID: %@, extendedPANID: %@, channel: %@, extendedAddress: %@, rssi: %@, version: %@, lqi: %@", buf, 0x5Cu);
     }
 
-    v26 = v19;
+    v26 = selfCopy;
     objc_autoreleasePoolPop(context);
     v18 = 0;
     v10 = v24;
@@ -102,33 +102,33 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MTSThreadScanResult *)self panID];
-  v4 = [v3 hash];
-  v5 = [(MTSThreadScanResult *)self extendedPANID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MTSThreadScanResult *)self networkName];
-  v8 = [v7 hash];
-  v9 = [(MTSThreadScanResult *)self channel];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(MTSThreadScanResult *)self extendedAddress];
-  v12 = [v11 hash];
-  v13 = [(MTSThreadScanResult *)self rssi];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(MTSThreadScanResult *)self version];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  panID = [(MTSThreadScanResult *)self panID];
+  v4 = [panID hash];
+  extendedPANID = [(MTSThreadScanResult *)self extendedPANID];
+  v6 = [extendedPANID hash] ^ v4;
+  networkName = [(MTSThreadScanResult *)self networkName];
+  v8 = [networkName hash];
+  channel = [(MTSThreadScanResult *)self channel];
+  v10 = v6 ^ v8 ^ [channel hash];
+  extendedAddress = [(MTSThreadScanResult *)self extendedAddress];
+  v12 = [extendedAddress hash];
+  rssi = [(MTSThreadScanResult *)self rssi];
+  v14 = v12 ^ [rssi hash];
+  version = [(MTSThreadScanResult *)self version];
+  v16 = v10 ^ v14 ^ [version hash];
   v17 = [(MTSThreadScanResult *)self lqi];
   v18 = [v17 hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -139,39 +139,39 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSThreadScanResult *)self networkName];
-    v8 = [v6 networkName];
-    if ([v7 isEqualToString:v8])
+    networkName = [(MTSThreadScanResult *)self networkName];
+    networkName2 = [v6 networkName];
+    if ([networkName isEqualToString:networkName2])
     {
-      v9 = [(MTSThreadScanResult *)self panID];
-      v10 = [v6 panID];
-      if ([v9 isEqualToNumber:v10])
+      panID = [(MTSThreadScanResult *)self panID];
+      panID2 = [v6 panID];
+      if ([panID isEqualToNumber:panID2])
       {
-        v11 = [(MTSThreadScanResult *)self extendedPANID];
-        v12 = [v6 extendedPANID];
-        if ([v11 isEqualToNumber:v12])
+        extendedPANID = [(MTSThreadScanResult *)self extendedPANID];
+        extendedPANID2 = [v6 extendedPANID];
+        if ([extendedPANID isEqualToNumber:extendedPANID2])
         {
-          v13 = [(MTSThreadScanResult *)self channel];
-          v29 = [v6 channel];
-          v30 = v13;
-          if ([v13 isEqualToNumber:v29])
+          channel = [(MTSThreadScanResult *)self channel];
+          channel2 = [v6 channel];
+          v30 = channel;
+          if ([channel isEqualToNumber:channel2])
           {
-            v14 = [(MTSThreadScanResult *)self extendedAddress];
-            v27 = [v6 extendedAddress];
-            v28 = v14;
-            if ([v14 isEqualToData:v27])
+            extendedAddress = [(MTSThreadScanResult *)self extendedAddress];
+            extendedAddress2 = [v6 extendedAddress];
+            v28 = extendedAddress;
+            if ([extendedAddress isEqualToData:extendedAddress2])
             {
-              v15 = [(MTSThreadScanResult *)self rssi];
-              v25 = [v6 rssi];
-              v26 = v15;
-              if ([v15 isEqualToNumber:v25])
+              rssi = [(MTSThreadScanResult *)self rssi];
+              rssi2 = [v6 rssi];
+              v26 = rssi;
+              if ([rssi isEqualToNumber:rssi2])
               {
-                v16 = [(MTSThreadScanResult *)self version];
-                v17 = [v6 version];
-                v24 = v16;
-                v18 = v16;
-                v19 = v17;
-                if ([v18 isEqualToNumber:v17])
+                version = [(MTSThreadScanResult *)self version];
+                version2 = [v6 version];
+                v24 = version;
+                v18 = version;
+                v19 = version2;
+                if ([v18 isEqualToNumber:version2])
                 {
                   v23 = [(MTSThreadScanResult *)self lqi];
                   v22 = [v6 lqi];
@@ -228,68 +228,68 @@
   return v20;
 }
 
-- (MTSThreadScanResult)initWithNetworkName:(id)a3 panID:(id)a4 extendedPANID:(id)a5 channel:(id)a6 extendedAddress:(id)a7 rssi:(id)a8 version:(id)a9 lqi:(id)a10
+- (MTSThreadScanResult)initWithNetworkName:(id)name panID:(id)d extendedPANID:(id)iD channel:(id)channel extendedAddress:(id)address rssi:(id)rssi version:(id)version lqi:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v34 = a5;
-  obj = a6;
-  v33 = a6;
-  v18 = a7;
-  v32 = a8;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  if (!v16)
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  obj = channel;
+  channelCopy = channel;
+  addressCopy = address;
+  rssiCopy = rssi;
+  rssiCopy2 = rssi;
+  versionCopy = version;
+  lqiCopy = lqi;
+  if (!nameCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!dCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v34)
+  if (!iDCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v33)
+  if (!channelCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v18)
+  if (!addressCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  if (!v19)
+  if (!rssiCopy2)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  if (!v20)
+  if (!versionCopy)
   {
 LABEL_18:
     _HMFPreconditionFailure();
     goto LABEL_19;
   }
 
-  v22 = v21;
-  if (!v21)
+  v22 = lqiCopy;
+  if (!lqiCopy)
   {
 LABEL_19:
     v29 = _HMFPreconditionFailure();
@@ -301,20 +301,20 @@ LABEL_19:
   v23 = [(MTSThreadScanResult *)&v35 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [nameCopy copy];
     networkName = v23->_networkName;
     v23->_networkName = v24;
 
-    objc_storeStrong(&v23->_panID, a4);
-    objc_storeStrong(&v23->_extendedPANID, a5);
+    objc_storeStrong(&v23->_panID, d);
+    objc_storeStrong(&v23->_extendedPANID, iD);
     objc_storeStrong(&v23->_channel, obj);
-    v26 = [v18 copy];
+    v26 = [addressCopy copy];
     extendedAddress = v23->_extendedAddress;
     v23->_extendedAddress = v26;
 
-    objc_storeStrong(&v23->_rssi, v32);
-    objc_storeStrong(&v23->_version, a9);
-    objc_storeStrong(&v23->_lqi, a10);
+    objc_storeStrong(&v23->_rssi, rssiCopy);
+    objc_storeStrong(&v23->_version, version);
+    objc_storeStrong(&v23->_lqi, lqi);
   }
 
   return v23;

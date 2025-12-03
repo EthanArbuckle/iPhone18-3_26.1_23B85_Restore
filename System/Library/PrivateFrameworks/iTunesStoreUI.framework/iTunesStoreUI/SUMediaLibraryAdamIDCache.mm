@@ -1,12 +1,12 @@
 @interface SUMediaLibraryAdamIDCache
 + (id)sharedCache;
 - (SUMediaLibraryAdamIDCache)init;
-- (void)_libraryChangedNotification:(id)a3;
+- (void)_libraryChangedNotification:(id)notification;
 - (void)_populateCache;
 - (void)dealloc;
-- (void)getContainsAdamID:(id)a3 completionBlock:(id)a4;
-- (void)getIntersectionWithSet:(id)a3 completionBlock:(id)a4;
-- (void)getProperties:(id)a3 ofAdamIDs:(id)a4 withCompletionBlock:(id)a5;
+- (void)getContainsAdamID:(id)d completionBlock:(id)block;
+- (void)getIntersectionWithSet:(id)set completionBlock:(id)block;
+- (void)getProperties:(id)properties ofAdamIDs:(id)ds withCompletionBlock:(id)block;
 - (void)populateCache;
 @end
 
@@ -23,10 +23,10 @@
     v2->_callbackQueue = dispatch_queue_create("com.apple.iTunesStoreUI.SUMediaLibraryAdamIDCache.callback", 0);
     v2->_dispatchQueue = dispatch_queue_create("com.apple.iTunesStoreUI.SUMediaLibraryAdamIDCache", 0);
     [MEMORY[0x1E6970618] setFilteringDisabled:1];
-    v3 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__libraryChangedNotification_ name:*MEMORY[0x1E696FBA8] object:v3];
-    [v3 beginGeneratingLibraryChangeNotifications];
+    defaultMediaLibrary = [MEMORY[0x1E69705E8] defaultMediaLibrary];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__libraryChangedNotification_ name:*MEMORY[0x1E696FBA8] object:defaultMediaLibrary];
+    [defaultMediaLibrary beginGeneratingLibraryChangeNotifications];
   }
 
   return v2;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
   [objc_msgSend(MEMORY[0x1E69705E8] "defaultMediaLibrary")];
   callbackQueue = self->_callbackQueue;
   if (callbackQueue)
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __40__SUMediaLibraryAdamIDCache_sharedCache__block_invoke;
   block[3] = &unk_1E8164348;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_sOnce != -1)
   {
     dispatch_once(&sharedCache_sOnce, block);
@@ -76,7 +76,7 @@ id __40__SUMediaLibraryAdamIDCache_sharedCache__block_invoke()
   return result;
 }
 
-- (void)getContainsAdamID:(id)a3 completionBlock:(id)a4
+- (void)getContainsAdamID:(id)d completionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -84,8 +84,8 @@ id __40__SUMediaLibraryAdamIDCache_sharedCache__block_invoke()
   block[2] = __63__SUMediaLibraryAdamIDCache_getContainsAdamID_completionBlock___block_invoke;
   block[3] = &unk_1E8165A68;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = block;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -109,7 +109,7 @@ void __63__SUMediaLibraryAdamIDCache_getContainsAdamID_completionBlock___block_i
   dispatch_async(v4, v5);
 }
 
-- (void)getIntersectionWithSet:(id)a3 completionBlock:(id)a4
+- (void)getIntersectionWithSet:(id)set completionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -117,8 +117,8 @@ void __63__SUMediaLibraryAdamIDCache_getContainsAdamID_completionBlock___block_i
   block[2] = __68__SUMediaLibraryAdamIDCache_getIntersectionWithSet_completionBlock___block_invoke;
   block[3] = &unk_1E8165A68;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = set;
+  block[6] = block;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -143,17 +143,17 @@ void __68__SUMediaLibraryAdamIDCache_getIntersectionWithSet_completionBlock___bl
   dispatch_async(v4, v6);
 }
 
-- (void)getProperties:(id)a3 ofAdamIDs:(id)a4 withCompletionBlock:(id)a5
+- (void)getProperties:(id)properties ofAdamIDs:(id)ds withCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__SUMediaLibraryAdamIDCache_getProperties_ofAdamIDs_withCompletionBlock___block_invoke;
   v6[3] = &unk_1E8164D18;
-  v6[4] = a3;
-  v6[5] = a4;
+  v6[4] = properties;
+  v6[5] = ds;
   v6[6] = self;
-  v6[7] = a5;
+  v6[7] = block;
   dispatch_async(dispatchQueue, v6);
 }
 
@@ -241,7 +241,7 @@ _BYTE *__42__SUMediaLibraryAdamIDCache_populateCache__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_libraryChangedNotification:(id)a3
+- (void)_libraryChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -287,19 +287,19 @@ uint64_t __57__SUMediaLibraryAdamIDCache__libraryChangedNotification___block_inv
   block[3] = &unk_1E8164348;
   block[4] = self;
   dispatch_async(callbackQueue, block);
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }

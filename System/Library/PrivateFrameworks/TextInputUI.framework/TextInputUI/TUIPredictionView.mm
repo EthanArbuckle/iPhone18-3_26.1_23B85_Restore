@@ -1,44 +1,44 @@
 @interface TUIPredictionView
-- (BOOL)_ensureVisibleCellCount:(unint64_t)a3 forCellStackView:(id)a4;
-- (BOOL)_shouldPadWithEmptyCellsForAutocorrectionList:(id)a3;
+- (BOOL)_ensureVisibleCellCount:(unint64_t)count forCellStackView:(id)view;
+- (BOOL)_shouldPadWithEmptyCellsForAutocorrectionList:(id)list;
 - (CGSize)intrinsicContentSize;
 - (NSArray)displayedCandidates;
-- (TUIPredictionView)initWithFrame:(CGRect)a3;
-- (id)_candidatesToDisplayForAutocorrectionList:(id)a3;
+- (TUIPredictionView)initWithFrame:(CGRect)frame;
+- (id)_candidatesToDisplayForAutocorrectionList:(id)list;
 - (id)allVisibleCells;
-- (id)labelFontForCandidate:(id)a3;
-- (id)test_cellForCandidate:(id)a3;
+- (id)labelFontForCandidate:(id)candidate;
+- (id)test_cellForCandidate:(id)candidate;
 - (id)visibleCells;
-- (int64_t)_numberOfEmojisToDisplayForAutocorrectionList:(id)a3 withCandidatesShown:(id)a4;
+- (int64_t)_numberOfEmojisToDisplayForAutocorrectionList:(id)list withCandidatesShown:(id)shown;
 - (int64_t)layoutDirection;
-- (unint64_t)_predictionCellIndexAtLocation:(CGPoint)a3;
-- (void)_didRecognizeTapGesture:(id)a3;
-- (void)_reloadCellsAnimated:(BOOL)a3;
-- (void)_setRenderConfig:(id)a3;
-- (void)_updateHighlightedCellForTouch:(id)a3;
+- (unint64_t)_predictionCellIndexAtLocation:(CGPoint)location;
+- (void)_didRecognizeTapGesture:(id)gesture;
+- (void)_reloadCellsAnimated:(BOOL)animated;
+- (void)_setRenderConfig:(id)config;
+- (void)_updateHighlightedCellForTouch:(id)touch;
 - (void)_updateVisibleCellAppearance;
 - (void)cancelTapGestureRecognizer;
-- (void)configurePredictionCell:(id)a3 forCandidate:(id)a4 animated:(BOOL)a5;
+- (void)configurePredictionCell:(id)cell forCandidate:(id)candidate animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setAutocorrectionList:(id)a3 animated:(BOOL)a4;
-- (void)setCurrentLocale:(id)a3;
-- (void)setDrawsBackdropView:(BOOL)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightCornerRadius:(double)a3;
-- (void)setHighlightMargin:(double)a3;
-- (void)setRenderConfig:(id)a3;
-- (void)setSelectedIndex:(int64_t)a3;
-- (void)setSeparatorColor:(id)a3;
-- (void)setSeparatorMargin:(double)a3;
-- (void)setUseContinuousCornerInHighlight:(BOOL)a3;
+- (void)setAutocorrectionList:(id)list animated:(BOOL)animated;
+- (void)setCurrentLocale:(id)locale;
+- (void)setDrawsBackdropView:(BOOL)view;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightCornerRadius:(double)radius;
+- (void)setHighlightMargin:(double)margin;
+- (void)setRenderConfig:(id)config;
+- (void)setSelectedIndex:(int64_t)index;
+- (void)setSeparatorColor:(id)color;
+- (void)setSeparatorMargin:(double)margin;
+- (void)setUseContinuousCornerInHighlight:(BOOL)highlight;
 @end
 
 @implementation TUIPredictionView
 
 - (int64_t)layoutDirection
 {
-  v2 = [(TUIPredictionView *)self currentLocale];
-  v3 = [v2 localeIdentifier];
+  currentLocale = [(TUIPredictionView *)self currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
   IsDefaultRightToLeft = UIKeyboardInputModeIsDefaultRightToLeft();
 
   return IsDefaultRightToLeft;
@@ -54,36 +54,36 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIPredictionView *)self cellStackView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  [cellStackView setFrame:{v4, v6, v8, v10}];
 
   if ([(TUIPredictionView *)self drawsBackdropView])
   {
-    v12 = [(TUIPredictionView *)self backdropView];
-    [v12 setFrame:{v4, v6, v8, v10}];
+    backdropView = [(TUIPredictionView *)self backdropView];
+    [backdropView setFrame:{v4, v6, v8, v10}];
   }
 }
 
 - (void)_updateVisibleCellAppearance
 {
-  v3 = [(TUIPredictionView *)self allVisibleCells];
-  v4 = [v3 count];
+  allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
+  v4 = [allVisibleCells count];
 
-  v5 = [(TUIPredictionView *)self allVisibleCells];
-  v6 = v5;
+  allVisibleCells2 = [(TUIPredictionView *)self allVisibleCells];
+  v6 = allVisibleCells2;
   if (v4 == 1)
   {
-    v10 = [v5 firstObject];
+    firstObject = [allVisibleCells2 firstObject];
 
-    [v10 setVisibleSeparatorEdges:10];
-    [v10 setRoundedHighlightEdges:10];
+    [firstObject setVisibleSeparatorEdges:10];
+    [firstObject setRoundedHighlightEdges:10];
   }
 
   else
   {
-    v7 = [v5 indexesOfObjectsPassingTest:&__block_literal_global_39];
+    v7 = [allVisibleCells2 indexesOfObjectsPassingTest:&__block_literal_global_39];
 
-    v8 = [(TUIPredictionView *)self allVisibleCells];
+    allVisibleCells3 = [(TUIPredictionView *)self allVisibleCells];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __49__TUIPredictionView__updateVisibleCellAppearance__block_invoke_2;
@@ -92,16 +92,16 @@
     v12 = v7;
     v13 = v4;
     v9 = v7;
-    [v8 enumerateObjectsUsingBlock:v11];
+    [allVisibleCells3 enumerateObjectsUsingBlock:v11];
   }
 }
 
 - (id)allVisibleCells
 {
-  v2 = [(TUIPredictionView *)self cellStackView];
-  v3 = [v2 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  return v3;
+  return allVisibleCells;
 }
 
 void __49__TUIPredictionView__updateVisibleCellAppearance__block_invoke_2(uint64_t a1, void *a2, unint64_t a3)
@@ -177,29 +177,29 @@ LABEL_18:
 
 - (id)visibleCells
 {
-  v2 = [(TUIPredictionView *)self cellStackView];
-  v3 = [v2 visibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  visibleCells = [cellStackView visibleCells];
 
-  return v3;
+  return visibleCells;
 }
 
-- (void)_updateHighlightedCellForTouch:(id)a3
+- (void)_updateHighlightedCellForTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v4 = [(TUIPredictionView *)self _predictionCellIndexAtLocation:?];
 
   [(TUIPredictionView *)self setSelectedIndex:v4];
 }
 
-- (unint64_t)_predictionCellIndexAtLocation:(CGPoint)a3
+- (unint64_t)_predictionCellIndexAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0x7FFFFFFFFFFFFFFFLL;
-  v6 = [(TUIPredictionView *)self allVisibleCells];
+  allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__TUIPredictionView__predictionCellIndexAtLocation___block_invoke;
@@ -208,7 +208,7 @@ LABEL_18:
   *&v9[7] = y;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [allVisibleCells enumerateObjectsUsingBlock:v9];
 
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -246,33 +246,33 @@ BOOL __52__TUIPredictionView__predictionCellIndexAtLocation___block_invoke(uint6
   return result;
 }
 
-- (void)_didRecognizeTapGesture:(id)a3
+- (void)_didRecognizeTapGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  gestureCopy = gesture;
+  [gestureCopy locationInView:self];
   v5 = [(TUIPredictionView *)self _predictionCellIndexAtLocation:?];
-  if ([v4 state] == 1 || objc_msgSend(v4, "state") == 2)
+  if ([gestureCopy state] == 1 || objc_msgSend(gestureCopy, "state") == 2)
   {
     [(TUIPredictionView *)self setSelectedIndex:v5];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(TUIPredictionView *)self allVisibleCells];
-      v7 = [v6 objectAtIndex:v5];
+      allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
+      v7 = [allVisibleCells objectAtIndex:v5];
 
-      v8 = [v7 maskingScrollView];
-      LODWORD(v6) = [v8 isDragging];
+      maskingScrollView = [v7 maskingScrollView];
+      LODWORD(allVisibleCells) = [maskingScrollView isDragging];
 
-      if (v6)
+      if (allVisibleCells)
       {
-        [v4 setEnabled:0];
-        [v4 setEnabled:1];
+        [gestureCopy setEnabled:0];
+        [gestureCopy setEnabled:1];
       }
     }
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  else if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    if ([v4 state] == 3 && self->_selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
+    if ([gestureCopy state] == 3 && self->_selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       v23 = 0;
       v24 = &v23;
@@ -280,40 +280,40 @@ BOOL __52__TUIPredictionView__predictionCellIndexAtLocation___block_invoke(uint6
       v26 = __Block_byref_object_copy__5500;
       v27 = __Block_byref_object_dispose__5501;
       v28 = 0;
-      v9 = [v4 _activeEvents];
+      _activeEvents = [gestureCopy _activeEvents];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __45__TUIPredictionView__didRecognizeTapGesture___block_invoke;
       v22[3] = &unk_1E72D7928;
       v22[4] = &v23;
-      [v9 enumerateObjectsUsingBlock:v22];
+      [_activeEvents enumerateObjectsUsingBlock:v22];
 
-      v10 = [MEMORY[0x1E69DCBE0] activeInstance];
-      [v10 _attemptAuthenticationWithMessage:v24[5]];
+      activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+      [activeInstance _attemptAuthenticationWithMessage:v24[5]];
 
-      v11 = [(TUIPredictionView *)self allVisibleCells];
-      v12 = [v11 objectAtIndex:self->_selectedIndex];
+      allVisibleCells2 = [(TUIPredictionView *)self allVisibleCells];
+      v12 = [allVisibleCells2 objectAtIndex:self->_selectedIndex];
 
-      v13 = [(TUIPredictionView *)self delegate];
+      delegate = [(TUIPredictionView *)self delegate];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v15 = [v12 candidate];
+        candidate = [v12 candidate];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v16 = objc_alloc(MEMORY[0x1E69D95F0]);
-          v17 = [v15 candidate];
-          v18 = [v15 input];
-          v19 = [v15 rawInput];
-          v20 = [v16 initWithCandidate:v17 forInput:v18 rawInput:v19];
+          v15Candidate = [candidate candidate];
+          input = [candidate input];
+          rawInput = [candidate rawInput];
+          v20 = [v16 initWithCandidate:v15Candidate forInput:input rawInput:rawInput];
 
-          v15 = v20;
+          candidate = v20;
         }
 
-        v21 = [(TUIPredictionView *)self delegate];
-        [v21 predictionView:self didSelectCandidate:v15];
+        delegate2 = [(TUIPredictionView *)self delegate];
+        [delegate2 predictionView:self didSelectCandidate:candidate];
       }
 
       _Block_object_dispose(&v23, 8);
@@ -338,25 +338,25 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
 
 - (void)cancelTapGestureRecognizer
 {
-  v3 = [(TUIPredictionView *)self tapGestureRecognizer];
-  [v3 setEnabled:0];
+  tapGestureRecognizer = [(TUIPredictionView *)self tapGestureRecognizer];
+  [tapGestureRecognizer setEnabled:0];
 
-  v4 = [(TUIPredictionView *)self tapGestureRecognizer];
-  [v4 setEnabled:1];
+  tapGestureRecognizer2 = [(TUIPredictionView *)self tapGestureRecognizer];
+  [tapGestureRecognizer2 setEnabled:1];
 }
 
-- (void)setHighlightMargin:(double)a3
+- (void)setHighlightMargin:(double)margin
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_highlightMargin = a3;
+  self->_highlightMargin = margin;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TUIPredictionView *)self cellStackView];
-  v5 = [v4 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -368,33 +368,33 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setHighlightMargin:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setHighlightMargin:margin];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setUseContinuousCornerInHighlight:(BOOL)a3
+- (void)setUseContinuousCornerInHighlight:(BOOL)highlight
 {
-  v3 = a3;
+  highlightCopy = highlight;
   v15 = *MEMORY[0x1E69E9840];
-  self->_useContinuousCornerInHighlight = a3;
+  self->_useContinuousCornerInHighlight = highlight;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TUIPredictionView *)self cellStackView];
-  v5 = [v4 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -406,32 +406,32 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setUseContinuousCornerInHighlight:v3];
+        [*(*(&v10 + 1) + 8 * v9++) setUseContinuousCornerInHighlight:highlightCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setHighlightCornerRadius:(double)a3
+- (void)setHighlightCornerRadius:(double)radius
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_highlightCornerRadius = a3;
+  self->_highlightCornerRadius = radius;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TUIPredictionView *)self cellStackView];
-  v5 = [v4 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -443,33 +443,33 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setHighlightCornerRadius:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setHighlightCornerRadius:radius];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_highlightColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_highlightColor, color);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(TUIPredictionView *)self cellStackView];
-  v7 = [v6 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -481,32 +481,32 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setHighlightColor:v5];
+        [*(*(&v12 + 1) + 8 * v11++) setHighlightColor:colorCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setSeparatorMargin:(double)a3
+- (void)setSeparatorMargin:(double)margin
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_separatorMargin = a3;
+  self->_separatorMargin = margin;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(TUIPredictionView *)self cellStackView];
-  v5 = [v4 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -518,33 +518,33 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setSeparatorMargin:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setSeparatorMargin:margin];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allVisibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_separatorColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_separatorColor, color);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(TUIPredictionView *)self cellStackView];
-  v7 = [v6 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -556,57 +556,57 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setSeparatorColor:v5];
+        [*(*(&v12 + 1) + 8 * v11++) setSeparatorColor:colorCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setCurrentLocale:(id)a3
+- (void)setCurrentLocale:(id)locale
 {
-  v7 = a3;
+  localeCopy = locale;
   if (([(NSLocale *)self->_currentLocale isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_currentLocale, a3);
-    v5 = [(TUIPredictionView *)self layoutDirection];
-    v6 = [(TUIPredictionView *)self cellStackView];
-    [v6 setLayoutDirection:v5];
+    objc_storeStrong(&self->_currentLocale, locale);
+    layoutDirection = [(TUIPredictionView *)self layoutDirection];
+    cellStackView = [(TUIPredictionView *)self cellStackView];
+    [cellStackView setLayoutDirection:layoutDirection];
   }
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5.receiver = self;
   v5.super_class = TUIPredictionView;
-  [(TUIPredictionView *)&v5 _setRenderConfig:v4];
-  if (self->_renderConfig != v4)
+  [(TUIPredictionView *)&v5 _setRenderConfig:configCopy];
+  if (self->_renderConfig != configCopy)
   {
-    [(TUIPredictionView *)self setRenderConfig:v4];
+    [(TUIPredictionView *)self setRenderConfig:configCopy];
   }
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_renderConfig, a3);
+  configCopy = config;
+  objc_storeStrong(&self->_renderConfig, config);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(TUIPredictionView *)self cellStackView];
-  v7 = [v6 allVisibleCells];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  allVisibleCells = [cellStackView allVisibleCells];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -618,59 +618,59 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setRenderConfig:v5];
+        [*(*(&v12 + 1) + 8 * v11++) setRenderConfig:configCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allVisibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setAutocorrectionList:(id)a3 animated:(BOOL)a4
+- (void)setAutocorrectionList:(id)list animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_autocorrectionList, a3);
+  animatedCopy = animated;
+  objc_storeStrong(&self->_autocorrectionList, list);
 
-  [(TUIPredictionView *)self _reloadCellsAnimated:v4];
+  [(TUIPredictionView *)self _reloadCellsAnimated:animatedCopy];
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   selectedIndex = self->_selectedIndex;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL && selectedIndex != a3)
+  if (selectedIndex != 0x7FFFFFFFFFFFFFFFLL && selectedIndex != index)
   {
-    v8 = [(TUIPredictionView *)self allVisibleCells];
-    v9 = [v8 objectAtIndex:self->_selectedIndex];
+    allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
+    v9 = [allVisibleCells objectAtIndex:self->_selectedIndex];
 
     [v9 setHighlighted:0];
     [v9 setShouldShowScalingAnimation:0];
   }
 
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (indexCopy != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(TUIPredictionView *)self allVisibleCells];
-    v11 = [v10 count];
+    allVisibleCells2 = [(TUIPredictionView *)self allVisibleCells];
+    v11 = [allVisibleCells2 count];
 
-    if (v11 > v3)
+    if (v11 > indexCopy)
     {
-      v12 = [(TUIPredictionView *)self allVisibleCells];
-      v13 = [v12 objectAtIndex:v3];
+      allVisibleCells3 = [(TUIPredictionView *)self allVisibleCells];
+      v13 = [allVisibleCells3 objectAtIndex:indexCopy];
 
-      v14 = [v13 candidate];
+      candidate = [v13 candidate];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v3 = 0x7FFFFFFFFFFFFFFFLL;
+        indexCopy = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
@@ -680,7 +680,7 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       }
     }
 
-    v6 = v3;
+    v6 = indexCopy;
   }
 
   self->_selectedIndex = v6;
@@ -691,13 +691,13 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
 - (NSArray)displayedCandidates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(TUIPredictionView *)self allVisibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
+  v5 = [allVisibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -708,55 +708,55 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allVisibleCells);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) candidate];
-        v10 = [v9 candidate];
-        v11 = [v10 length];
+        candidate = [*(*(&v13 + 1) + 8 * i) candidate];
+        v9Candidate = [candidate candidate];
+        v11 = [v9Candidate length];
 
         if (v11)
         {
-          [v3 addObject:v9];
+          [array addObject:candidate];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allVisibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_ensureVisibleCellCount:(unint64_t)a3 forCellStackView:(id)a4
+- (BOOL)_ensureVisibleCellCount:(unint64_t)count forCellStackView:(id)view
 {
-  v5 = a4;
-  v6 = [v5 visibleCells];
-  v7 = [v6 count];
+  viewCopy = view;
+  visibleCells = [viewCopy visibleCells];
+  v7 = [visibleCells count];
 
-  if (v7 != a3)
+  if (v7 != count)
   {
     while (1)
     {
-      v8 = [v5 visibleCells];
-      v9 = [v8 count];
+      visibleCells2 = [viewCopy visibleCells];
+      v9 = [visibleCells2 count];
 
-      if (v9 <= a3)
+      if (v9 <= count)
       {
         break;
       }
 
-      v10 = [v5 arrangedSubviews];
-      v11 = [v10 lastObject];
-      [v11 removeFromSuperview];
+      arrangedSubviews = [viewCopy arrangedSubviews];
+      lastObject = [arrangedSubviews lastObject];
+      [lastObject removeFromSuperview];
     }
 
-    v12 = [v5 visibleCells];
-    v13 = [v12 count];
+    visibleCells3 = [viewCopy visibleCells];
+    v13 = [visibleCells3 count];
 
-    if (v13 < a3)
+    if (v13 < count)
     {
       v14 = *MEMORY[0x1E695F058];
       v15 = *(MEMORY[0x1E695F058] + 8);
@@ -765,83 +765,83 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
       do
       {
         v18 = [[TUIPredictionViewCell alloc] initWithFrame:v14, v15, v16, v17];
-        [v5 addArrangedSubview:v18 beforeLastSubview:0];
+        [viewCopy addArrangedSubview:v18 beforeLastSubview:0];
 
-        v19 = [v5 visibleCells];
-        v20 = [v19 count];
+        visibleCells4 = [viewCopy visibleCells];
+        v20 = [visibleCells4 count];
       }
 
-      while (v20 < a3);
+      while (v20 < count);
     }
   }
 
-  return v7 != a3;
+  return v7 != count;
 }
 
-- (void)configurePredictionCell:(id)a3 forCandidate:(id)a4 animated:(BOOL)a5
+- (void)configurePredictionCell:(id)cell forCandidate:(id)candidate animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(TUIPredictionView *)self renderConfig];
-  [v8 setRenderConfig:v10];
+  animatedCopy = animated;
+  cellCopy = cell;
+  candidateCopy = candidate;
+  renderConfig = [(TUIPredictionView *)self renderConfig];
+  [cellCopy setRenderConfig:renderConfig];
 
-  v11 = [(TUIPredictionView *)self separatorColor];
-  [v8 setSeparatorColor:v11];
+  separatorColor = [(TUIPredictionView *)self separatorColor];
+  [cellCopy setSeparatorColor:separatorColor];
 
   [(TUIPredictionView *)self separatorMargin];
-  [v8 setSeparatorMargin:?];
-  v12 = [(TUIPredictionView *)self highlightColor];
-  [v8 setHighlightColor:v12];
+  [cellCopy setSeparatorMargin:?];
+  highlightColor = [(TUIPredictionView *)self highlightColor];
+  [cellCopy setHighlightColor:highlightColor];
 
   [(TUIPredictionView *)self highlightMargin];
-  [v8 setHighlightMargin:?];
+  [cellCopy setHighlightMargin:?];
   [(TUIPredictionView *)self highlightCornerRadius];
-  [v8 setHighlightCornerRadius:?];
-  [v8 setUseContinuousCornerInHighlight:{-[TUIPredictionView useContinuousCornerInHighlight](self, "useContinuousCornerInHighlight")}];
-  v13 = [(TUIPredictionView *)self labelFontForCandidate:v9];
-  [v8 setLabelFont:v13];
+  [cellCopy setHighlightCornerRadius:?];
+  [cellCopy setUseContinuousCornerInHighlight:{-[TUIPredictionView useContinuousCornerInHighlight](self, "useContinuousCornerInHighlight")}];
+  v13 = [(TUIPredictionView *)self labelFontForCandidate:candidateCopy];
+  [cellCopy setLabelFont:v13];
 
-  v14 = [(TUIPredictionView *)self autocorrectionList];
-  v15 = [v14 corrections];
-  v16 = [v15 autocorrection];
+  autocorrectionList = [(TUIPredictionView *)self autocorrectionList];
+  corrections = [autocorrectionList corrections];
+  autocorrection = [corrections autocorrection];
 
-  v17 = [(TUIPredictionView *)self disablesHighlight];
+  disablesHighlight = [(TUIPredictionView *)self disablesHighlight];
   v18 = 0;
-  if (!v17 && v16 == v9)
+  if (!disablesHighlight && autocorrection == candidateCopy)
   {
-    if (([v9 candidateProperty] & 4) != 0)
+    if (([candidateCopy candidateProperty] & 4) != 0)
     {
       v18 = 1;
     }
 
     else
     {
-      v19 = [v16 candidate];
-      v20 = [v16 input];
-      v21 = [v19 isEqualToString:v20];
+      candidate = [autocorrection candidate];
+      input = [autocorrection input];
+      v21 = [candidate isEqualToString:input];
 
       v18 = v21 ^ 1u;
     }
   }
 
-  [v8 setHighlighted:v18];
+  [cellCopy setHighlighted:v18];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __67__TUIPredictionView_configurePredictionCell_forCandidate_animated___block_invoke;
   v37[3] = &unk_1E72D78B8;
-  v22 = v9;
+  v22 = candidateCopy;
   v38 = v22;
-  v39 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = cellCopy;
   v40 = v23;
   v24 = __67__TUIPredictionView_configurePredictionCell_forCandidate_animated___block_invoke(v37);
   if (v24)
   {
     [v23 setImage:v24];
-    v25 = [(TUIPredictionView *)self autocorrectionList];
-    v26 = [v25 predictions];
-    v27 = [v26 count];
+    autocorrectionList2 = [(TUIPredictionView *)self autocorrectionList];
+    predictions = [autocorrectionList2 predictions];
+    v27 = [predictions count];
 
     if (v27 == 1)
     {
@@ -864,18 +864,18 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
 
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v22 customView];
-    [v23 setCustomView:v30];
+    customView = [v22 customView];
+    [v23 setCustomView:customView];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [v22 textSuggestion];
+    textSuggestion = [v22 textSuggestion];
     if (objc_opt_respondsToSelector())
     {
-      v32 = [v31 foregroundColor];
-      [v23 setPreferredForegroundColor:v32];
+      foregroundColor = [textSuggestion foregroundColor];
+      [v23 setPreferredForegroundColor:foregroundColor];
     }
 
     else
@@ -885,22 +885,22 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
 
     if (objc_opt_respondsToSelector())
     {
-      v33 = [v31 backgroundColor];
+      backgroundColor = [textSuggestion backgroundColor];
 
-      if (v33)
+      if (backgroundColor)
       {
-        v34 = [(TUIPredictionView *)self cellStackView];
-        [v34 setCellsHaveBackgroundColor:1];
+        cellStackView = [(TUIPredictionView *)self cellStackView];
+        [cellStackView setCellsHaveBackgroundColor:1];
 
-        v35 = [v31 backgroundColor];
-        [v23 setPreferredBackgroundColor:v35];
+        backgroundColor2 = [textSuggestion backgroundColor];
+        [v23 setPreferredBackgroundColor:backgroundColor2];
       }
     }
 
     else
     {
-      v36 = [(TUIPredictionView *)self cellStackView];
-      [v36 setCellsHaveBackgroundColor:0];
+      cellStackView2 = [(TUIPredictionView *)self cellStackView];
+      [cellStackView2 setCellsHaveBackgroundColor:0];
 
       [v23 setPreferredBackgroundColor:0];
     }
@@ -910,11 +910,11 @@ void __45__TUIPredictionView__didRecognizeTapGesture___block_invoke(uint64_t a1,
   {
     [v23 setPreferredForegroundColor:0];
     [v23 setPreferredBackgroundColor:0];
-    v31 = [(TUIPredictionView *)self cellStackView];
-    [v31 setCellsHaveBackgroundColor:0];
+    textSuggestion = [(TUIPredictionView *)self cellStackView];
+    [textSuggestion setCellsHaveBackgroundColor:0];
   }
 
-  [v23 setCandidate:v22 animated:v5];
+  [v23 setCandidate:v22 animated:animatedCopy];
 }
 
 id __67__TUIPredictionView_configurePredictionCell_forCandidate_animated___block_invoke(uint64_t a1)
@@ -959,15 +959,15 @@ id __67__TUIPredictionView_configurePredictionCell_forCandidate_animated___block
   return v3;
 }
 
-- (id)labelFontForCandidate:(id)a3
+- (id)labelFontForCandidate:(id)candidate
 {
-  if ([a3 isSupplementalItemCandidate])
+  if ([candidate isSupplementalItemCandidate])
   {
     v4 = MEMORY[0x1E69DB878];
-    v5 = [(TUIPredictionView *)self renderConfig];
-    v6 = [v5 colorAdaptiveBackground];
+    renderConfig = [(TUIPredictionView *)self renderConfig];
+    colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
     v7 = MEMORY[0x1E69DDCF8];
-    if (!v6)
+    if (!colorAdaptiveBackground)
     {
       v7 = MEMORY[0x1E69DDD40];
     }
@@ -983,27 +983,27 @@ id __67__TUIPredictionView_configurePredictionCell_forCandidate_animated___block
   return v8;
 }
 
-- (void)_reloadCellsAnimated:(BOOL)a3
+- (void)_reloadCellsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(TUIPredictionView *)self setSelectedIndex:0x7FFFFFFFFFFFFFFFLL];
   v51 = [(TUIPredictionView *)self _candidatesToDisplayForAutocorrectionList:self->_autocorrectionList];
-  v5 = [v51 lastObject];
-  v6 = [v5 customInfoType];
+  lastObject = [v51 lastObject];
+  customInfoType = [lastObject customInfoType];
 
   v7 = [v51 indexOfObjectPassingTest:&__block_literal_global_18];
   v8 = [(TUIPredictionView *)self _numberOfEmojisToDisplayForAutocorrectionList:self->_autocorrectionList withCandidatesShown:v51];
-  v49 = v6;
+  v49 = customInfoType;
   if (!v8)
   {
     v15 = v51;
     goto LABEL_12;
   }
 
-  if (v6 != 0x8000 && v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (customInfoType != 0x8000 && v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_10:
-    v13 = [v51 subarrayWithRange:{0, objc_msgSend(v51, "count", v6) - 1}];
+    v13 = [v51 subarrayWithRange:{0, objc_msgSend(v51, "count", customInfoType) - 1}];
     v14 = v51;
     goto LABEL_11;
   }
@@ -1011,7 +1011,7 @@ LABEL_10:
   if ([v51 count] < 2)
   {
     v15 = v51;
-    if (v6 == 0x8000)
+    if (customInfoType == 0x8000)
     {
       goto LABEL_12;
     }
@@ -1019,22 +1019,22 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [v51 lastObject];
+  lastObject2 = [v51 lastObject];
   v11 = [v51 subarrayWithRange:{0, objc_msgSend(v51, "count") - 2}];
-  v12 = [v51 lastObject];
-  v13 = [v11 arrayByAddingObject:v12];
+  lastObject3 = [v51 lastObject];
+  v13 = [v11 arrayByAddingObject:lastObject3];
 
-  v14 = v10;
+  v14 = lastObject2;
 LABEL_11:
 
   v15 = v13;
 LABEL_12:
   v52 = v15;
   v16 = [v15 count];
-  v17 = [(TUIPredictionView *)self cellStackView];
-  [(TUIPredictionView *)self _ensureVisibleCellCount:v16 forCellStackView:v17];
+  cellStackView = [(TUIPredictionView *)self cellStackView];
+  [(TUIPredictionView *)self _ensureVisibleCellCount:v16 forCellStackView:cellStackView];
 
-  v18 = [(TUIPredictionView *)self shouldAnimateCells];
+  shouldAnimateCells = [(TUIPredictionView *)self shouldAnimateCells];
   v19 = [v52 count];
   v20 = v52;
   if (v19)
@@ -1042,11 +1042,11 @@ LABEL_12:
     for (i = 0; i < v27; ++i)
     {
       v22 = [v20 objectAtIndex:i];
-      v23 = [(TUIPredictionView *)self cellStackView];
-      v24 = [v23 visibleCells];
-      v25 = [v24 objectAtIndex:i];
+      cellStackView2 = [(TUIPredictionView *)self cellStackView];
+      visibleCells = [cellStackView2 visibleCells];
+      v25 = [visibleCells objectAtIndex:i];
 
-      v26 = [v22 candidateProperty] == 2 || objc_msgSend(v22, "candidateProperty") == 128 || v18;
+      v26 = [v22 candidateProperty] == 2 || objc_msgSend(v22, "candidateProperty") == 128 || shouldAnimateCells;
       [(TUIPredictionView *)self configurePredictionCell:v25 forCandidate:v22 animated:v26 & 1];
 
       v27 = [v52 count];
@@ -1054,67 +1054,67 @@ LABEL_12:
     }
   }
 
-  v28 = [(TIAutocorrectionList *)self->_autocorrectionList emojiList];
-  v29 = v28;
+  emojiList = [(TIAutocorrectionList *)self->_autocorrectionList emojiList];
+  v29 = emojiList;
   if (v8)
   {
-    if ([v28 count] > v8)
+    if ([emojiList count] > v8)
     {
       v30 = [v29 subarrayWithRange:{0, v8}];
 
       v29 = v30;
     }
 
-    v31 = [(TUIPredictionView *)self cellStackView];
-    v32 = [v31 subStackViews];
-    v33 = [v32 count];
+    cellStackView3 = [(TUIPredictionView *)self cellStackView];
+    subStackViews = [cellStackView3 subStackViews];
+    v33 = [subStackViews count];
 
     if (v33)
     {
-      v34 = [(TUIPredictionView *)self cellStackView];
-      v35 = [v34 subStackViews];
-      v36 = [v35 firstObject];
+      cellStackView4 = [(TUIPredictionView *)self cellStackView];
+      subStackViews2 = [cellStackView4 subStackViews];
+      firstObject = [subStackViews2 firstObject];
     }
 
     else
     {
       v39 = [TUIPredictionViewStackView alloc];
-      v36 = [(TUIPredictionViewStackView *)v39 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      firstObject = [(TUIPredictionViewStackView *)v39 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     }
 
-    [(TUIPredictionViewStackView *)v36 setLayoutDirection:[(TUIPredictionView *)self layoutDirection]];
-    -[TUIPredictionView _ensureVisibleCellCount:forCellStackView:](self, "_ensureVisibleCellCount:forCellStackView:", [v29 count], v36);
+    [(TUIPredictionViewStackView *)firstObject setLayoutDirection:[(TUIPredictionView *)self layoutDirection]];
+    -[TUIPredictionView _ensureVisibleCellCount:forCellStackView:](self, "_ensureVisibleCellCount:forCellStackView:", [v29 count], firstObject);
     if ([v29 count])
     {
       v40 = 0;
       do
       {
         v41 = [v29 objectAtIndex:v40];
-        v42 = [(TUIPredictionViewStackView *)v36 visibleCells];
-        v43 = [v42 objectAtIndex:v40];
+        visibleCells2 = [(TUIPredictionViewStackView *)firstObject visibleCells];
+        v43 = [visibleCells2 objectAtIndex:v40];
 
-        [(TUIPredictionView *)self configurePredictionCell:v43 forCandidate:v41 animated:v3];
+        [(TUIPredictionView *)self configurePredictionCell:v43 forCandidate:v41 animated:animatedCopy];
         ++v40;
       }
 
       while (v40 < [v29 count]);
     }
 
-    v37 = [(TUIPredictionView *)self cellStackView];
-    [v37 addArrangedSubview:v36 beforeLastSubview:v50 == 0x8000];
+    cellStackView5 = [(TUIPredictionView *)self cellStackView];
+    [cellStackView5 addArrangedSubview:firstObject beforeLastSubview:v50 == 0x8000];
   }
 
   else
   {
-    v36 = [(TUIPredictionView *)self cellStackView];
-    v37 = [(TUIPredictionViewStackView *)v36 subStackViews];
-    v38 = [v37 firstObject];
-    [v38 removeFromSuperview];
+    firstObject = [(TUIPredictionView *)self cellStackView];
+    cellStackView5 = [(TUIPredictionViewStackView *)firstObject subStackViews];
+    firstObject2 = [cellStackView5 firstObject];
+    [firstObject2 removeFromSuperview];
   }
 
   [(TUIPredictionView *)self _updateVisibleCellAppearance];
-  v44 = [(TUIPredictionView *)self visibleCells];
-  v45 = [v44 count];
+  visibleCells3 = [(TUIPredictionView *)self visibleCells];
+  v45 = [visibleCells3 count];
 
   if (v45 == 1)
   {
@@ -1126,37 +1126,37 @@ LABEL_12:
     v46 = 0.0;
   }
 
-  v47 = [(TUIPredictionView *)self cellStackView];
-  [v47 setContentMargin:{0.0, v46, 0.0, v46}];
+  cellStackView6 = [(TUIPredictionView *)self cellStackView];
+  [cellStackView6 setContentMargin:{0.0, v46, 0.0, v46}];
 
-  v48 = [(TUIPredictionView *)self cellStackView];
-  [v48 setNeedsLayout];
+  cellStackView7 = [(TUIPredictionView *)self cellStackView];
+  [cellStackView7 setNeedsLayout];
 }
 
-- (int64_t)_numberOfEmojisToDisplayForAutocorrectionList:(id)a3 withCandidatesShown:(id)a4
+- (int64_t)_numberOfEmojisToDisplayForAutocorrectionList:(id)list withCandidatesShown:(id)shown
 {
-  v5 = a3;
-  v6 = [(TUIPredictionView *)self maximumEmojiCells];
-  v7 = [(TUIPredictionView *)self autocorrectionList];
-  v8 = [v7 emojiList];
-  v9 = [v8 count];
+  listCopy = list;
+  maximumEmojiCells = [(TUIPredictionView *)self maximumEmojiCells];
+  autocorrectionList = [(TUIPredictionView *)self autocorrectionList];
+  emojiList = [autocorrectionList emojiList];
+  v9 = [emojiList count];
 
-  if (v6 >= v9)
+  if (maximumEmojiCells >= v9)
   {
     v10 = v9;
   }
 
   else
   {
-    v10 = v6;
+    v10 = maximumEmojiCells;
   }
 
-  v11 = [v5 predictions];
-  if (v11)
+  predictions = [listCopy predictions];
+  if (predictions)
   {
-    v12 = v11;
-    v13 = [v5 predictions];
-    v14 = [v13 indexOfObjectPassingTest:&__block_literal_global_16];
+    v12 = predictions;
+    predictions2 = [listCopy predictions];
+    v14 = [predictions2 indexOfObjectPassingTest:&__block_literal_global_16];
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1167,84 +1167,84 @@ LABEL_12:
   return v10;
 }
 
-- (id)_candidatesToDisplayForAutocorrectionList:(id)a3
+- (id)_candidatesToDisplayForAutocorrectionList:(id)list
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 corrections];
-  v7 = [v6 autocorrection];
+  listCopy = list;
+  array = [MEMORY[0x1E695DF70] array];
+  corrections = [listCopy corrections];
+  autocorrection = [corrections autocorrection];
 
-  v67 = v4;
-  v8 = [v4 predictions];
-  v9 = [v7 input];
-  if ([v9 length])
+  v67 = listCopy;
+  predictions = [listCopy predictions];
+  input = [autocorrection input];
+  if ([input length])
   {
   }
 
   else
   {
-    v10 = [v7 candidate];
-    v11 = [v10 length];
+    candidate = [autocorrection candidate];
+    v11 = [candidate length];
 
     if (!v11)
     {
-      v12 = self;
+      selfCopy4 = self;
 
-      v7 = 0;
+      autocorrection = 0;
       goto LABEL_11;
     }
   }
 
-  if (!v7)
+  if (!autocorrection)
   {
-    v12 = self;
+    selfCopy4 = self;
     goto LABEL_11;
   }
 
-  if ([v7 isContinuousPathConversion])
+  if ([autocorrection isContinuousPathConversion])
   {
-    v12 = self;
-    [v5 addObject:v7];
+    selfCopy4 = self;
+    [array addObject:autocorrection];
 LABEL_11:
     v20 = 0;
     v66 = 0;
     goto LABEL_29;
   }
 
-  v13 = [v7 input];
-  v14 = [v7 rawInput];
-  v15 = [MEMORY[0x1E69DCBE0] activeInstance];
-  v16 = [v15 smartPunctuationController];
+  input2 = [autocorrection input];
+  rawInput = [autocorrection rawInput];
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  smartPunctuationController = [activeInstance smartPunctuationController];
 
-  v65 = v14;
-  v17 = v8;
-  if (v16)
+  v65 = rawInput;
+  v17 = predictions;
+  if (smartPunctuationController)
   {
-    v18 = [v16 smartPunctuationedStringForString:v13];
-    v19 = [v16 smartPunctuationedStringForString:v14];
+    v18 = [smartPunctuationController smartPunctuationedStringForString:input2];
+    v19 = [smartPunctuationController smartPunctuationedStringForString:rawInput];
   }
 
   else
   {
-    v18 = v13;
-    v19 = v14;
+    v18 = input2;
+    v19 = rawInput;
   }
 
   v21 = v19;
-  v22 = [(TUIPredictionView *)self currentLocale];
+  currentLocale = [(TUIPredictionView *)self currentLocale];
   v63 = v21;
   v64 = v18;
-  v23 = [TUITypedStringCandidate typedStringCandidateWithLocale:v22 candidateString:v18 inputString:v18 rawInputString:v21];
+  v23 = [TUITypedStringCandidate typedStringCandidateWithLocale:currentLocale candidateString:v18 inputString:v18 rawInputString:v21];
 
   v66 = v23;
-  [v5 addObject:v23];
-  v24 = [v7 candidate];
-  if ([v24 isEqualToString:v13])
+  [array addObject:v23];
+  candidate2 = [autocorrection candidate];
+  if ([candidate2 isEqualToString:input2])
   {
 
 LABEL_16:
-    if ([v7 candidateProperty] != 4 && !objc_msgSend(v7, "isSupplementalItemCandidate"))
+    if ([autocorrection candidateProperty] != 4 && !objc_msgSend(autocorrection, "isSupplementalItemCandidate"))
     {
       goto LABEL_19;
     }
@@ -1252,27 +1252,27 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  [v7 candidate];
-  v26 = v25 = v13;
+  [autocorrection candidate];
+  v26 = v25 = input2;
   v27 = [v26 isEqualToString:v65];
 
-  v13 = v25;
+  input2 = v25;
   if (v27)
   {
     goto LABEL_16;
   }
 
 LABEL_18:
-  [v5 addObject:v7];
+  [array addObject:autocorrection];
 LABEL_19:
   if (v17)
   {
-    v62 = v13;
+    v62 = input2;
     v28 = [v17 indexOfObjectWithOptions:0 passingTest:&__block_literal_global_5532];
     if (v28 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = 0;
-      v8 = v17;
+      predictions = v17;
     }
 
     else
@@ -1280,49 +1280,49 @@ LABEL_19:
       v29 = v28;
       v61 = v17;
       v30 = [v17 objectAtIndex:v28];
-      v31 = [v30 candidate];
+      candidate3 = [v30 candidate];
 
-      if (v16)
+      if (smartPunctuationController)
       {
-        v32 = [v16 smartPunctuationedStringForString:v31];
+        v32 = [smartPunctuationController smartPunctuationedStringForString:candidate3];
       }
 
       else
       {
-        v32 = v31;
+        v32 = candidate3;
       }
 
       v33 = v32;
-      v34 = [(TUIPredictionView *)self currentLocale];
-      v20 = [TUITypedStringCandidate typedStringCandidateWithLocale:v34 candidateString:v33 inputString:v64 rawInputString:v63];
+      currentLocale2 = [(TUIPredictionView *)self currentLocale];
+      v20 = [TUITypedStringCandidate typedStringCandidateWithLocale:currentLocale2 candidateString:v33 inputString:v64 rawInputString:v63];
 
       v35 = [v61 mutableCopy];
       [v35 removeObjectAtIndex:v29];
-      v8 = [v35 copy];
+      predictions = [v35 copy];
     }
 
-    v13 = v62;
+    input2 = v62;
   }
 
   else
   {
-    v8 = 0;
+    predictions = 0;
     v20 = 0;
   }
 
-  v12 = self;
+  selfCopy4 = self;
 
 LABEL_29:
-  v36 = v8;
-  [v5 addObjectsFromArray:v8];
-  v37 = [v5 lastObject];
-  v38 = [v37 customInfoType];
+  v36 = predictions;
+  [array addObjectsFromArray:predictions];
+  lastObject = [array lastObject];
+  customInfoType = [lastObject customInfoType];
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v39 = v5;
+  v39 = array;
   v40 = [v39 countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v40)
   {
@@ -1354,7 +1354,7 @@ LABEL_29:
     }
   }
 
-  if (v38 == 0x8000)
+  if (customInfoType == 0x8000)
   {
 LABEL_40:
     v44 = 1;
@@ -1371,10 +1371,10 @@ LABEL_40:
 
   if ([v39 count] > v46)
   {
-    v47 = [v39 lastObject];
-    v48 = [v47 customInfoType];
+    lastObject2 = [v39 lastObject];
+    customInfoType2 = [lastObject2 customInfoType];
 
-    if (v48 == 32)
+    if (customInfoType2 == 32)
     {
       v49 = 1;
     }
@@ -1388,9 +1388,9 @@ LABEL_40:
   }
 
   v50 = [v39 count];
-  if ([(TUIPredictionView *)v12 _shouldPadWithEmptyCellsForAutocorrectionList:v67])
+  if ([(TUIPredictionView *)selfCopy4 _shouldPadWithEmptyCellsForAutocorrectionList:v67])
   {
-    v51 = [(TUIPredictionView *)v12 minimumNumberOfCells]+ v44;
+    v51 = [(TUIPredictionView *)selfCopy4 minimumNumberOfCells]+ v44;
     while ([v39 count] < v51)
     {
       v52 = +[TUIPlaceholderCandidate placeholderCandidate];
@@ -1410,7 +1410,7 @@ LABEL_40:
   v68[1] = 3221225472;
   v68[2] = __63__TUIPredictionView__candidatesToDisplayForAutocorrectionList___block_invoke_2;
   v68[3] = &unk_1E72D7890;
-  v53 = v7;
+  v53 = autocorrection;
   v69 = v53;
   v54 = [v39 indexOfObjectWithOptions:0 passingTest:v68];
   if (v54 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1435,11 +1435,11 @@ LABEL_40:
   if (v20)
   {
     v56 = [v39 count];
-    v57 = [v39 lastObject];
-    v58 = [v57 customInfoType];
+    lastObject3 = [v39 lastObject];
+    customInfoType3 = [lastObject3 customInfoType];
 
     v59 = -2;
-    if (v58 != 0x8000)
+    if (customInfoType3 != 0x8000)
     {
       v59 = -1;
     }
@@ -1453,15 +1453,15 @@ LABEL_40:
   return v39;
 }
 
-- (BOOL)_shouldPadWithEmptyCellsForAutocorrectionList:(id)a3
+- (BOOL)_shouldPadWithEmptyCellsForAutocorrectionList:(id)list
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 predictions];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  predictions = [list predictions];
+  v4 = [predictions countByEnumeratingWithState:&v16 objects:v20 count:16];
   v5 = 1;
   if (v4)
   {
@@ -1474,15 +1474,15 @@ LABEL_40:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(predictions);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [objc_opt_class() type];
-        v11 = [v9 candidateProperty];
-        if (v10 > 8 || ((1 << v10) & 0x124) == 0)
+        type = [objc_opt_class() type];
+        candidateProperty = [v9 candidateProperty];
+        if (type > 8 || ((1 << type) & 0x124) == 0)
         {
-          v13 = v11;
+          v13 = candidateProperty;
           if ([v9 customInfoType] != 0x8000 && (objc_msgSend(v9, "isAlternativeInput") & 1) == 0 && v13 != 8)
           {
             v5 = 0;
@@ -1494,7 +1494,7 @@ LABEL_40:
       }
 
       while (v6 != v8);
-      v14 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v14 = [predictions countByEnumeratingWithState:&v16 objects:v20 count:16];
       v6 = v14;
     }
 
@@ -1516,13 +1516,13 @@ LABEL_18:
   return result;
 }
 
-- (void)setDrawsBackdropView:(BOOL)a3
+- (void)setDrawsBackdropView:(BOOL)view
 {
-  v3 = a3;
-  self->_drawsBackdropView = a3;
-  v5 = [(TUIPredictionView *)self backdropView];
-  v15 = v5;
-  if (v3)
+  viewCopy = view;
+  self->_drawsBackdropView = view;
+  backdropView = [(TUIPredictionView *)self backdropView];
+  v15 = backdropView;
+  if (viewCopy)
   {
 
     if (!v15)
@@ -1531,12 +1531,12 @@ LABEL_18:
       v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
       [(TUIPredictionView *)self setBackdropView:v7];
 
-      v8 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      v9 = [(TUIPredictionView *)self backdropView];
-      [v9 setBackgroundColor:v8];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      backdropView2 = [(TUIPredictionView *)self backdropView];
+      [backdropView2 setBackgroundColor:tertiarySystemFillColor];
 
-      v10 = [(TUIPredictionView *)self renderConfig];
-      if ([v10 colorAdaptiveBackground])
+      renderConfig = [(TUIPredictionView *)self renderConfig];
+      if ([renderConfig colorAdaptiveBackground])
       {
         v11 = 19.0;
       }
@@ -1546,17 +1546,17 @@ LABEL_18:
         v11 = 10.0;
       }
 
-      v12 = [(TUIPredictionView *)self backdropView];
-      [v12 _setContinuousCornerRadius:v11];
+      backdropView3 = [(TUIPredictionView *)self backdropView];
+      [backdropView3 _setContinuousCornerRadius:v11];
 
-      v13 = [(TUIPredictionView *)self backdropView];
-      [(TUIPredictionView *)self insertSubview:v13 atIndex:0];
+      backdropView4 = [(TUIPredictionView *)self backdropView];
+      [(TUIPredictionView *)self insertSubview:backdropView4 atIndex:0];
 
       [(TUIPredictionView *)self setNeedsLayout];
     }
 
-    v5 = [(TUIPredictionView *)self backdropView];
-    v15 = v5;
+    backdropView = [(TUIPredictionView *)self backdropView];
+    v15 = backdropView;
     v14 = 0;
   }
 
@@ -1565,63 +1565,63 @@ LABEL_18:
     v14 = 1;
   }
 
-  [v5 setHidden:v14];
+  [backdropView setHidden:v14];
 }
 
-- (TUIPredictionView)initWithFrame:(CGRect)a3
+- (TUIPredictionView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = TUIPredictionView;
-  v3 = [(TUIPredictionView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIPredictionView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TUIPredictionViewStackView alloc];
     v5 = [(TUIPredictionViewStackView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(TUIPredictionView *)v3 setCellStackView:v5];
 
-    v6 = [(TUIPredictionView *)v3 cellStackView];
-    [(TUIPredictionView *)v3 addSubview:v6];
+    cellStackView = [(TUIPredictionView *)v3 cellStackView];
+    [(TUIPredictionView *)v3 addSubview:cellStackView];
 
     v3->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     v7 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v3 action:sel__didRecognizeTapGesture_];
     [(TUIPredictionView *)v3 setTapGestureRecognizer:v7];
 
-    v8 = [(TUIPredictionView *)v3 tapGestureRecognizer];
-    [v8 setMinimumPressDuration:0.0];
+    tapGestureRecognizer = [(TUIPredictionView *)v3 tapGestureRecognizer];
+    [tapGestureRecognizer setMinimumPressDuration:0.0];
 
-    v9 = [(TUIPredictionView *)v3 tapGestureRecognizer];
-    [v9 setCancelsTouchesInView:0];
+    tapGestureRecognizer2 = [(TUIPredictionView *)v3 tapGestureRecognizer];
+    [tapGestureRecognizer2 setCancelsTouchesInView:0];
 
-    v10 = [(TUIPredictionView *)v3 tapGestureRecognizer];
-    [v10 setDelegate:v3];
+    tapGestureRecognizer3 = [(TUIPredictionView *)v3 tapGestureRecognizer];
+    [tapGestureRecognizer3 setDelegate:v3];
 
-    v11 = [(TUIPredictionView *)v3 tapGestureRecognizer];
-    [(TUIPredictionView *)v3 addGestureRecognizer:v11];
+    tapGestureRecognizer4 = [(TUIPredictionView *)v3 tapGestureRecognizer];
+    [(TUIPredictionView *)v3 addGestureRecognizer:tapGestureRecognizer4];
 
     [(TUIPredictionView *)v3 setMinimumNumberOfCells:3];
     [(TUIPredictionView *)v3 setMaximumEmojiCells:3];
-    v12 = [MEMORY[0x1E695DF58] currentLocale];
-    [(TUIPredictionView *)v3 setCurrentLocale:v12];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(TUIPredictionView *)v3 setCurrentLocale:currentLocale];
 
     [(TUIPredictionView *)v3 setSeparatorMargin:10.0];
     [(TUIPredictionView *)v3 setShouldAnimateCells:1];
-    v13 = [(TUIPredictionView *)v3 layer];
-    [v13 setHitTestsAsOpaque:1];
+    layer = [(TUIPredictionView *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
   }
 
   return v3;
 }
 
-- (id)test_cellForCandidate:(id)a3
+- (id)test_cellForCandidate:(id)candidate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  candidateCopy = candidate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(TUIPredictionView *)self allVisibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allVisibleCells = [(TUIPredictionView *)self allVisibleCells];
+  v6 = [allVisibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1631,12 +1631,12 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVisibleCells);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 candidate];
-        v11 = [v10 isEqual:v4];
+        candidate = [v9 candidate];
+        v11 = [candidate isEqual:candidateCopy];
 
         if (v11)
         {
@@ -1645,7 +1645,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allVisibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

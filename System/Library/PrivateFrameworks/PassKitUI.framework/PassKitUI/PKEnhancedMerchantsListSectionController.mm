@@ -1,44 +1,44 @@
 @interface PKEnhancedMerchantsListSectionController
-- (PKEnhancedMerchantsListSectionController)initWithSectionIdentifiers:(id)a3 paymentPass:(id)a4 fetcher:(id)a5 delegate:(id)a6;
+- (PKEnhancedMerchantsListSectionController)initWithSectionIdentifiers:(id)identifiers paymentPass:(id)pass fetcher:(id)fetcher delegate:(id)delegate;
 - (id)_disclosuresCellRegistration;
-- (id)_genericDisplayableErrorForError:(id)a3;
+- (id)_genericDisplayableErrorForError:(id)error;
 - (id)_merchantListCellRegistration;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)merchantForPrivateIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_openMapsForMerchantSearch:(id)a3;
-- (void)_performNearbyLocationsSearch:(id)a3 deviceLocation:(id)a4;
-- (void)_presentError:(id)a3;
-- (void)_reportEventIfNecessaryForButtonTapWithTag:(id)a3 merchant:(id)a4;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)merchantForPrivateIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_openMapsForMerchantSearch:(id)search;
+- (void)_performNearbyLocationsSearch:(id)search deviceLocation:(id)location;
+- (void)_presentError:(id)error;
+- (void)_reportEventIfNecessaryForButtonTapWithTag:(id)tag merchant:(id)merchant;
 - (void)_requestLocationUpdateIfPossible;
-- (void)_updateCellBasedOnCurrentSearch:(id)a3;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)_updateCellBasedOnCurrentSearch:(id)search;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)performAction:(int64_t)a3 forEnhancedMerchant:(id)a4 sender:(id)a5;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)performAction:(int64_t)action forEnhancedMerchant:(id)merchant sender:(id)sender;
 @end
 
 @implementation PKEnhancedMerchantsListSectionController
 
-- (PKEnhancedMerchantsListSectionController)initWithSectionIdentifiers:(id)a3 paymentPass:(id)a4 fetcher:(id)a5 delegate:(id)a6
+- (PKEnhancedMerchantsListSectionController)initWithSectionIdentifiers:(id)identifiers paymentPass:(id)pass fetcher:(id)fetcher delegate:(id)delegate
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifiersCopy = identifiers;
+  passCopy = pass;
+  fetcherCopy = fetcher;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = PKEnhancedMerchantsListSectionController;
   v15 = [(PKEnhancedMerchantsListSectionController *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_paymentPass, a4);
-    objc_storeStrong(&v16->_identifiers, a3);
+    objc_storeStrong(&v15->_paymentPass, pass);
+    objc_storeStrong(&v16->_identifiers, identifiers);
     identifiers = v16->_identifiers;
     if (!identifiers || ![(NSArray *)identifiers count])
     {
@@ -49,8 +49,8 @@
       v16->_identifiers = v18;
     }
 
-    objc_storeStrong(&v16->_fetcher, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v16->_fetcher, fetcher);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     objc_initWeak(&location, v16);
     fetcher = v16->_fetcher;
     v26[0] = MEMORY[0x1E69E9820];
@@ -114,8 +114,8 @@ void __100__PKEnhancedMerchantsListSectionController_initWithSectionIdentifiers_
     [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher removeUpdateHandler:?];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ([(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch isInProgress])
   {
@@ -128,18 +128,18 @@ void __100__PKEnhancedMerchantsListSectionController_initWithSectionIdentifiers_
   [(PKEnhancedMerchantsListSectionController *)&v4 dealloc];
 }
 
-- (id)merchantForPrivateIdentifier:(id)a3
+- (id)merchantForPrivateIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
+    enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73__PKEnhancedMerchantsListSectionController_merchantForPrivateIdentifier___block_invoke;
     v8[3] = &unk_1E801D188;
-    v9 = v4;
-    v6 = [v5 pk_firstObjectPassingTest:v8];
+    v9 = identifierCopy;
+    v6 = [enhancedMerchants pk_firstObjectPassingTest:v8];
   }
 
   else
@@ -178,18 +178,18 @@ uint64_t __73__PKEnhancedMerchantsListSectionController_merchantForPrivateIdenti
   return v10;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchantsWithOrderingContext:2];
-  if (!v7)
+  enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchantsWithOrderingContext:2];
+  if (!enhancedMerchants)
   {
-    v7 = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
+    enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self->_fetcher enhancedMerchants];
   }
 
-  v8 = v5;
+  v8 = identifierCopy;
   v9 = @"PKEnhancedMerchantsListSectionMerchantList";
   v10 = v9;
   if (v9 == v8)
@@ -209,7 +209,7 @@ uint64_t __73__PKEnhancedMerchantsListSectionController_merchantForPrivateIdenti
   if (v11)
   {
 LABEL_9:
-    [v6 appendItems:v7];
+    [v6 appendItems:enhancedMerchants];
     goto LABEL_22;
   }
 
@@ -233,7 +233,7 @@ LABEL_11:
     }
 
 LABEL_17:
-    v16 = [v7 pk_arrayBySafelyApplyingBlock:&__block_literal_global_162];
+    v16 = [enhancedMerchants pk_arrayBySafelyApplyingBlock:&__block_literal_global_162];
     [v6 appendItems:v16];
 
     goto LABEL_22;
@@ -261,22 +261,22 @@ PKAccountEnhancedMerchantDisclosurePresentationInfo *__94__PKEnhancedMerchantsLi
   return v3;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKEnhancedMerchantsListSectionController *)self _merchantListCellRegistration];
+    _merchantListCellRegistration = [(PKEnhancedMerchantsListSectionController *)self _merchantListCellRegistration];
 LABEL_5:
-    v6 = v5;
+    v6 = _merchantListCellRegistration;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKEnhancedMerchantsListSectionController *)self _disclosuresCellRegistration];
+    _merchantListCellRegistration = [(PKEnhancedMerchantsListSectionController *)self _disclosuresCellRegistration];
     goto LABEL_5;
   }
 
@@ -493,15 +493,15 @@ void __72__PKEnhancedMerchantsListSectionController__disclosuresCellRegistration
   [v7 setContentConfiguration:v26];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E69DC7E0];
-  v7 = a3;
+  environmentCopy = environment;
   v8 = [[v6 alloc] initWithAppearance:0];
   [v8 setHeaderMode:1];
-  v9 = v5;
+  v9 = identifierCopy;
   v10 = @"PKEnhancedMerchantsListSectionMerchantList";
   v11 = v10;
   if (v10 == v9)
@@ -522,11 +522,11 @@ void __72__PKEnhancedMerchantsListSectionController__disclosuresCellRegistration
   {
 LABEL_7:
     [v8 setShowsSeparators:1];
-    v13 = [v8 separatorConfiguration];
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v13 setColor:v14];
+    separatorConfiguration = [v8 separatorConfiguration];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [separatorConfiguration setColor:secondaryLabelColor];
 
-    [v8 setSeparatorConfiguration:v13];
+    [v8 setSeparatorConfiguration:separatorConfiguration];
     goto LABEL_20;
   }
 
@@ -565,25 +565,25 @@ LABEL_17:
   }
 
 LABEL_20:
-  v20 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v7];
+  v20 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:environmentCopy];
 
-  v21 = [v20 boundarySupplementaryItems];
-  [v21 enumerateObjectsUsingBlock:&__block_literal_global_183];
+  boundarySupplementaryItems = [v20 boundarySupplementaryItems];
+  [boundarySupplementaryItems enumerateObjectsUsingBlock:&__block_literal_global_183];
 
   return v20;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v46 = a3;
-  v8 = a4;
-  v9 = a5;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v46;
+    v10 = registrationCopy;
     v11 = *MEMORY[0x1E69DDC08];
-    v12 = v8;
+    v12 = kindCopy;
     v13 = v11;
     v14 = v13;
     if (v13 == v12)
@@ -623,7 +623,7 @@ LABEL_20:
       goto LABEL_23;
     }
 
-    v21 = v9;
+    v21 = identifierCopy;
     v22 = @"PKEnhancedMerchantsListSectionMerchantList";
     v23 = v22;
     if (v22 == v21)
@@ -643,32 +643,32 @@ LABEL_20:
       if (!v24)
       {
 LABEL_23:
-        v25 = v9;
+        plainHeaderConfiguration = identifierCopy;
         v38 = @"PKEnhancedMerchantsListSectionMerchantDisclosures";
         v39 = v38;
-        if (v38 == v25)
+        if (v38 == plainHeaderConfiguration)
         {
 
           if (v15)
           {
 LABEL_28:
-            v25 = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
+            plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
             v41 = PKLocalizedFeatureString();
-            [(__CFString *)v25 setText:v41];
+            [(__CFString *)plainHeaderConfiguration setText:v41];
             goto LABEL_34;
           }
         }
 
         else
         {
-          if (!v25 || !v38)
+          if (!plainHeaderConfiguration || !v38)
           {
 
 LABEL_40:
             goto LABEL_41;
           }
 
-          v40 = [(__CFString *)v25 isEqualToString:v38];
+          v40 = [(__CFString *)plainHeaderConfiguration isEqualToString:v38];
 
           if (!v40)
           {
@@ -685,11 +685,11 @@ LABEL_41:
 
         if (!v20)
         {
-          v25 = 0;
+          plainHeaderConfiguration = 0;
           goto LABEL_37;
         }
 
-        v25 = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
+        plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
         v41 = PKLocalizedFeatureString();
         v42 = [(PKPaymentPass *)self->_paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
         if (v42)
@@ -700,45 +700,45 @@ LABEL_41:
           v41 = v44;
         }
 
-        [(__CFString *)v25 setText:v41];
+        [(__CFString *)plainHeaderConfiguration setText:v41];
 
 LABEL_34:
 LABEL_37:
-        v27 = [(__CFString *)v25 textProperties];
+        textProperties = [(__CFString *)plainHeaderConfiguration textProperties];
         v45 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC90]);
-        [v27 setFont:v45];
+        [textProperties setFont:v45];
 
-        v32 = [MEMORY[0x1E69DC888] systemGray2Color];
-        [v27 setColor:v32];
+        systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+        [textProperties setColor:systemGray2Color];
         goto LABEL_38;
       }
     }
 
-    v25 = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
+    plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
     v26 = PKLocalizedFeatureString();
-    [(__CFString *)v25 setText:v26];
+    [(__CFString *)plainHeaderConfiguration setText:v26];
 
-    v27 = [(__CFString *)v25 textProperties];
+    textProperties = [(__CFString *)plainHeaderConfiguration textProperties];
     v28 = *MEMORY[0x1E69DDC90];
     v29 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD58], *MEMORY[0x1E69DDC90], 2, 0);
-    [v27 setFont:v29];
+    [textProperties setFont:v29];
 
-    [v27 setNumberOfLines:0];
-    v30 = [MEMORY[0x1E69DC888] labelColor];
-    [v27 setColor:v30];
+    [textProperties setNumberOfLines:0];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [textProperties setColor:labelColor];
 
     v31 = PKLocalizedFeatureString();
-    [(__CFString *)v25 setSecondaryText:v31];
+    [(__CFString *)plainHeaderConfiguration setSecondaryText:v31];
 
-    v32 = [(__CFString *)v25 secondaryTextProperties];
+    systemGray2Color = [(__CFString *)plainHeaderConfiguration secondaryTextProperties];
     v33 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], v28);
-    [v32 setFont:v33];
+    [systemGray2Color setFont:v33];
 
-    v34 = [MEMORY[0x1E69DC888] labelColor];
-    [v32 setColor:v34];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [systemGray2Color setColor:labelColor2];
 
-    [v32 setNumberOfLines:0];
-    [(__CFString *)v25 setTextToSecondaryTextVerticalPadding:15.0];
+    [systemGray2Color setNumberOfLines:0];
+    [(__CFString *)plainHeaderConfiguration setTextToSecondaryTextVerticalPadding:15.0];
     v35 = PKSetupViewConstantsViewMargin();
     v36 = PKSetupListViewConstantsViewMargin();
     v37 = v35 - v36;
@@ -747,12 +747,12 @@ LABEL_37:
       v37 = 0.0;
     }
 
-    [(__CFString *)v25 setDirectionalLayoutMargins:0.0, v37, 32.0, v37];
+    [(__CFString *)plainHeaderConfiguration setDirectionalLayoutMargins:0.0, v37, 32.0, v37];
 LABEL_38:
 
-    if (v25)
+    if (plainHeaderConfiguration)
     {
-      [v10 setContentConfiguration:v25];
+      [v10 setContentConfiguration:plainHeaderConfiguration];
       goto LABEL_40;
     }
 
@@ -762,43 +762,43 @@ LABEL_38:
 LABEL_42:
 }
 
-- (void)performAction:(int64_t)a3 forEnhancedMerchant:(id)a4 sender:(id)a5
+- (void)performAction:(int64_t)action forEnhancedMerchant:(id)merchant sender:(id)sender
 {
-  v8 = a4;
-  v9 = a5;
+  merchantCopy = merchant;
+  senderCopy = sender;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  switch(a3)
+  switch(action)
   {
     case 0:
-      v11 = [v9 linkedApplication];
-      if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+      linkedApplication = [senderCopy linkedApplication];
+      if (linkedApplication && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v15 = [v11 isInstalled];
+        isInstalled = [linkedApplication isInstalled];
         v16 = MEMORY[0x1E69BAB88];
-        if (!v15)
+        if (!isInstalled)
         {
           v16 = MEMORY[0x1E69BA2F0];
         }
 
-        [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*v16 merchant:v8];
-        [WeakRetained openLinkedApplication:v11];
+        [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*v16 merchant:merchantCopy];
+        [WeakRetained openLinkedApplication:linkedApplication];
       }
 
       goto LABEL_15;
     case 2:
-      [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*MEMORY[0x1E69BAA70] merchant:v8];
+      [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*MEMORY[0x1E69BAA70] merchant:merchantCopy];
       if ([(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch isInProgress])
       {
         [(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch cancel];
       }
 
-      v12 = [[_PKPendingEnhancedMerchantNearbyLocationSearch alloc] initWithMerchant:v8];
+      v12 = [[_PKPendingEnhancedMerchantNearbyLocationSearch alloc] initWithMerchant:merchantCopy];
       pendingMerchantLocationSearch = self->_pendingMerchantLocationSearch;
       self->_pendingMerchantLocationSearch = v12;
 
-      v11 = [v9 mapsButton];
-      [v11 pkui_updateConfigurationShowingActivityIndicator:1];
-      [v11 setEnabled:0];
+      linkedApplication = [senderCopy mapsButton];
+      [linkedApplication pkui_updateConfigurationShowingActivityIndicator:1];
+      [linkedApplication setEnabled:0];
       [(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch didStart];
       [(PKEnhancedMerchantsListSectionController *)self _openMapsForMerchantSearch:self->_pendingMerchantLocationSearch];
       objc_initWeak(&location, self);
@@ -808,18 +808,18 @@ LABEL_42:
       v17[2] = __85__PKEnhancedMerchantsListSectionController_performAction_forEnhancedMerchant_sender___block_invoke;
       v17[3] = &unk_1E8013F58;
       objc_copyWeak(&v19, &location);
-      v18 = v9;
+      v18 = senderCopy;
       [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v14 addCompletionHandler:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
       goto LABEL_15;
     case 1:
-      v11 = [v8 website];
-      if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+      linkedApplication = [merchantCopy website];
+      if (linkedApplication && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*MEMORY[0x1E69BB690] merchant:v8];
-        [WeakRetained openURL:v11 sensitive:0 preferInApp:0];
+        [(PKEnhancedMerchantsListSectionController *)self _reportEventIfNecessaryForButtonTapWithTag:*MEMORY[0x1E69BB690] merchant:merchantCopy];
+        [WeakRetained openURL:linkedApplication sensitive:0 preferInApp:0];
       }
 
 LABEL_15:
@@ -834,25 +834,25 @@ void __85__PKEnhancedMerchantsListSectionController_performAction_forEnhancedMer
   [WeakRetained _updateCellBasedOnCurrentSearch:*(a1 + 32)];
 }
 
-- (void)_reportEventIfNecessaryForButtonTapWithTag:(id)a3 merchant:(id)a4
+- (void)_reportEventIfNecessaryForButtonTapWithTag:(id)tag merchant:(id)merchant
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69BA440];
   v15[0] = *MEMORY[0x1E69BA680];
   v15[1] = v6;
   v16[0] = *MEMORY[0x1E69BA6F0];
-  v16[1] = a3;
+  v16[1] = tag;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a4;
-  v9 = a3;
+  merchantCopy = merchant;
+  tagCopy = tag;
   v10 = [v7 dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v11 = [v10 mutableCopy];
-  v12 = [v8 privateIdentifier];
+  privateIdentifier = [merchantCopy privateIdentifier];
 
-  if (v12)
+  if (privateIdentifier)
   {
-    [v11 setObject:v12 forKey:*MEMORY[0x1E69BAAB0]];
+    [v11 setObject:privateIdentifier forKey:*MEMORY[0x1E69BAAB0]];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -860,20 +860,20 @@ void __85__PKEnhancedMerchantsListSectionController_performAction_forEnhancedMer
   [WeakRetained reportEventIfNecessary:v14];
 }
 
-- (void)_updateCellBasedOnCurrentSearch:(id)a3
+- (void)_updateCellBasedOnCurrentSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v5 = self->_pendingMerchantLocationSearch;
-  v6 = [v4 mapsButton];
-  v7 = [v6 configuration];
-  v8 = [v7 showsActivityIndicator];
+  mapsButton = [searchCopy mapsButton];
+  configuration = [mapsButton configuration];
+  showsActivityIndicator = [configuration showsActivityIndicator];
 
-  v9 = [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v5 merchant];
-  v10 = [v9 privateIdentifier];
-  v11 = [v4 enhancedMerchant];
-  v12 = [v11 privateIdentifier];
-  v13 = v10;
-  v14 = v12;
+  merchant = [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v5 merchant];
+  privateIdentifier = [merchant privateIdentifier];
+  enhancedMerchant = [searchCopy enhancedMerchant];
+  privateIdentifier2 = [enhancedMerchant privateIdentifier];
+  v13 = privateIdentifier;
+  v14 = privateIdentifier2;
   v15 = v14;
   if (v13 == v14)
   {
@@ -885,7 +885,7 @@ void __85__PKEnhancedMerchantsListSectionController_performAction_forEnhancedMer
     {
 
 LABEL_9:
-      v17 = 0;
+      isInProgress = 0;
       goto LABEL_10;
     }
 
@@ -897,11 +897,11 @@ LABEL_9:
     }
   }
 
-  v17 = [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v5 isInProgress];
+  isInProgress = [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v5 isInProgress];
 LABEL_10:
-  [v6 setEnabled:v17 ^ 1];
-  [v6 pkui_updateConfigurationShowingActivityIndicator:v17];
-  if (((v17 ^ 1) & 1) == 0 && v8 != 1)
+  [mapsButton setEnabled:isInProgress ^ 1];
+  [mapsButton pkui_updateConfigurationShowingActivityIndicator:isInProgress];
+  if (((isInProgress ^ 1) & 1) == 0 && showsActivityIndicator != 1)
   {
     objc_initWeak(&location, self);
     v18[0] = MEMORY[0x1E69E9820];
@@ -909,7 +909,7 @@ LABEL_10:
     v18[2] = __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSearch___block_invoke;
     v18[3] = &unk_1E8013F58;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
+    v19 = searchCopy;
     [(_PKPendingEnhancedMerchantNearbyLocationSearch *)v5 addCompletionHandler:v18];
 
     objc_destroyWeak(&v20);
@@ -926,11 +926,11 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
 - (void)_requestLocationUpdateIfPossible
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695FBE8] locationServicesEnabled];
-  v4 = [(CLLocationManager *)self->_locationManager authorizationStatus];
-  if (v3)
+  locationServicesEnabled = [MEMORY[0x1E695FBE8] locationServicesEnabled];
+  authorizationStatus = [(CLLocationManager *)self->_locationManager authorizationStatus];
+  if (locationServicesEnabled)
   {
-    v5 = (v4 - 3) > 1;
+    v5 = (authorizationStatus - 3) > 1;
   }
 
   else
@@ -940,7 +940,7 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
 
   if (v5)
   {
-    if (v4)
+    if (authorizationStatus)
     {
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -989,15 +989,15 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
   }
 }
 
-- (void)_openMapsForMerchantSearch:(id)a3
+- (void)_openMapsForMerchantSearch:(id)search
 {
-  v5 = a3;
-  if ([v5 isInProgress])
+  searchCopy = search;
+  if ([searchCopy isInProgress])
   {
     v4 = self->_lastValidLocation;
     if (LocationIsValid(v4))
     {
-      [(PKEnhancedMerchantsListSectionController *)self _performNearbyLocationsSearch:v5 deviceLocation:v4];
+      [(PKEnhancedMerchantsListSectionController *)self _performNearbyLocationsSearch:searchCopy deviceLocation:v4];
     }
 
     else
@@ -1007,39 +1007,39 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
   }
 }
 
-- (void)_performNearbyLocationsSearch:(id)a3 deviceLocation:(id)a4
+- (void)_performNearbyLocationsSearch:(id)search deviceLocation:(id)location
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v31 = a4;
-  v29 = v6;
-  v32 = [v6 merchant];
-  v7 = [v32 mapsSearchText];
-  v8 = v7;
-  if (v7)
+  searchCopy = search;
+  locationCopy = location;
+  v29 = searchCopy;
+  merchant = [searchCopy merchant];
+  mapsSearchText = [merchant mapsSearchText];
+  v8 = mapsSearchText;
+  if (mapsSearchText)
   {
-    v30 = v7;
+    name = mapsSearchText;
   }
 
   else
   {
-    v30 = [v32 name];
+    name = [merchant name];
   }
 
-  v9 = [v32 mapsSearchStrings];
-  v35 = [MEMORY[0x1E696F298] sharedService];
-  v34 = [v35 defaultTraits];
-  v26 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v31];
-  [v34 setDeviceLocation:?];
-  v28 = [v32 brandMUIDs];
-  v27 = [v32 excludedMUIDs];
+  mapsSearchStrings = [merchant mapsSearchStrings];
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+  defaultTraits = [mEMORY[0x1E696F298] defaultTraits];
+  v26 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
+  [defaultTraits setDeviceLocation:?];
+  brandMUIDs = [merchant brandMUIDs];
+  excludedMUIDs = [merchant excludedMUIDs];
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (![v9 count])
+  if (![mapsSearchStrings count])
   {
-    v12 = [MEMORY[0x1E695DFD8] setWithObject:v30];
+    v12 = [MEMORY[0x1E695DFD8] setWithObject:name];
 
-    v9 = v12;
+    mapsSearchStrings = v12;
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -1048,7 +1048,7 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v9;
+  obj = mapsSearchStrings;
   v14 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v14)
   {
@@ -1067,9 +1067,9 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
         v44[1] = 3221225472;
         v44[2] = __89__PKEnhancedMerchantsListSectionController__performNearbyLocationsSearch_deviceLocation___block_invoke;
         v44[3] = &unk_1E801D288;
-        v45 = v35;
+        v45 = mEMORY[0x1E696F298];
         v46 = v17;
-        v47 = v34;
+        v47 = defaultTraits;
         v48 = v10;
         v49 = v11;
         [v13 addOperation:v44];
@@ -1081,7 +1081,7 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
     while (v14);
   }
 
-  v18 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __89__PKEnhancedMerchantsListSectionController__performNearbyLocationsSearch_deviceLocation___block_invoke_228;
@@ -1089,17 +1089,17 @@ void __76__PKEnhancedMerchantsListSectionController__updateCellBasedOnCurrentSea
   objc_copyWeak(&v43, &location);
   v19 = v11;
   v37 = v19;
-  v20 = v28;
+  v20 = brandMUIDs;
   v38 = v20;
-  v21 = v27;
+  v21 = excludedMUIDs;
   v39 = v21;
-  v22 = v30;
+  v22 = name;
   v40 = v22;
-  v23 = v31;
+  v23 = locationCopy;
   v41 = v23;
   v24 = v29;
   v42 = v24;
-  v25 = [v13 evaluateWithInput:v18 completion:v36];
+  v25 = [v13 evaluateWithInput:null completion:v36];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(&location);
@@ -1401,52 +1401,52 @@ uint64_t __89__PKEnhancedMerchantsListSectionController__performNearbyLocationsS
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(CLLocationManager *)self->_locationManager authorizationStatus];
+  authorizationStatus = [(CLLocationManager *)self->_locationManager authorizationStatus];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = v3;
+    v6 = authorizationStatus;
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Enhanced merchants location manager did change authorization: %ld", &v5, 0xCu);
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   lastValidLocation = self->_lastValidLocation;
   self->_lastValidLocation = 0;
 
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v10 = 138412290;
-    v11 = v8;
+    v11 = localizedDescription;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Location manager did fail with error: %@", &v10, 0xCu);
   }
 
   if ([(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch isInProgress])
   {
-    v9 = [(PKEnhancedMerchantsListSectionController *)self _genericDisplayableErrorForError:v5];
+    v9 = [(PKEnhancedMerchantsListSectionController *)self _genericDisplayableErrorForError:errorCopy];
     [(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch didFailWithError:v9];
     [(PKEnhancedMerchantsListSectionController *)self _presentError:v9];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a4 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  reverseObjectEnumerator = [locations reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -1456,7 +1456,7 @@ uint64_t __89__PKEnhancedMerchantsListSectionController__performNearbyLocationsS
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -1468,7 +1468,7 @@ uint64_t __89__PKEnhancedMerchantsListSectionController__performNearbyLocationsS
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1504,7 +1504,7 @@ LABEL_11:
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   if ([(_PKPendingEnhancedMerchantNearbyLocationSearch *)self->_pendingMerchantLocationSearch isInProgress])
   {
@@ -1514,9 +1514,9 @@ LABEL_11:
   [(PKEnhancedMerchantsListSectionController *)self _stopUpdatingLocation];
 }
 
-- (id)_genericDisplayableErrorForError:(id)a3
+- (id)_genericDisplayableErrorForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = PKLocalizedFeatureString();
   v5 = PKLocalizedFeatureString();
   v6 = PKDisplayableErrorCustom();
@@ -1524,14 +1524,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    [v5 presentDisplayableError:v6];
+    [v5 presentDisplayableError:errorCopy];
   }
 }
 

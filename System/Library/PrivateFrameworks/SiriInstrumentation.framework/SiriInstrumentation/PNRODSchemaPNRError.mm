@@ -1,26 +1,26 @@
 @interface PNRODSchemaPNRError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRError)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRError)initWithJSON:(id)a3;
+- (PNRODSchemaPNRError)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRError)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRError
 
-- (PNRODSchemaPNRError)initWithDictionary:(id)a3
+- (PNRODSchemaPNRError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PNRODSchemaPNRError;
   v5 = [(PNRODSchemaPNRError *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"domain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(PNRODSchemaPNRError *)v5 setDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"code"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"code"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRError setCode:](v5, "setCode:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"source"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRError)initWithJSON:(id)a3
+- (PNRODSchemaPNRError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,29 +84,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRError code](self, "code")}];
-    [v3 setObject:v4 forKeyedSubscript:@"code"];
+    [dictionary setObject:v4 forKeyedSubscript:@"code"];
   }
 
   if (self->_domain)
   {
-    v5 = [(PNRODSchemaPNRError *)self domain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"domain"];
+    domain = [(PNRODSchemaPNRError *)self domain];
+    v6 = [domain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"domain"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[PNRODSchemaPNRError source](self, "source")}];
-    [v3 setObject:v7 forKeyedSubscript:@"source"];
+    [dictionary setObject:v7 forKeyedSubscript:@"source"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,30 +136,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(PNRODSchemaPNRError *)self domain];
-  v6 = [v4 domain];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(PNRODSchemaPNRError *)self domain];
+  domain2 = [equalCopy domain];
+  v7 = domain2;
+  if ((domain != 0) == (domain2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(PNRODSchemaPNRError *)self domain];
-  if (v8)
+  domain3 = [(PNRODSchemaPNRError *)self domain];
+  if (domain3)
   {
-    v9 = v8;
-    v10 = [(PNRODSchemaPNRError *)self domain];
-    v11 = [v4 domain];
-    v12 = [v10 isEqual:v11];
+    v9 = domain3;
+    domain4 = [(PNRODSchemaPNRError *)self domain];
+    domain5 = [equalCopy domain];
+    v12 = [domain4 isEqual:domain5];
 
     if (!v12)
     {
@@ -172,7 +172,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -183,10 +183,10 @@ LABEL_16:
   if (*&has)
   {
     code = self->_code;
-    if (code == [v4 code])
+    if (code == [equalCopy code])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_12;
     }
 
@@ -203,7 +203,7 @@ LABEL_12:
   if (v16)
   {
     source = self->_source;
-    if (source != [v4 source])
+    if (source != [equalCopy source])
     {
       goto LABEL_16;
     }
@@ -215,12 +215,12 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(PNRODSchemaPNRError *)self domain];
+  toCopy = to;
+  domain = [(PNRODSchemaPNRError *)self domain];
 
-  if (v4)
+  if (domain)
   {
     PBDataWriterWriteStringField();
   }
@@ -232,17 +232,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasSource:(BOOL)a3
+- (void)setHasSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }

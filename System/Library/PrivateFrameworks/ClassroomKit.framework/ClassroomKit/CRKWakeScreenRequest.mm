@@ -1,33 +1,33 @@
 @interface CRKWakeScreenRequest
-- (CRKWakeScreenRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKWakeScreenRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKWakeScreenRequest
 
-- (CRKWakeScreenRequest)initWithCoder:(id)a3
+- (CRKWakeScreenRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CRKWakeScreenRequest;
-  v5 = [(CATTaskRequest *)&v8 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shouldBecomeExclusive"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shouldBecomeExclusive"];
     *(&v5->super._handlesNotifications + 1) = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRKWakeScreenRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKWakeScreenRequest shouldBecomeExclusive](self, "shouldBecomeExclusive", v6.receiver, v6.super_class)}];
-  [v4 encodeObject:v5 forKey:@"shouldBecomeExclusive"];
+  [coderCopy encodeObject:v5 forKey:@"shouldBecomeExclusive"];
 }
 
 @end

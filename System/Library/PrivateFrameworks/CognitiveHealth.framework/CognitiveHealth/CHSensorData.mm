@@ -1,15 +1,15 @@
 @interface CHSensorData
 - (CHSensorData)init;
-- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)a3 toDate:(id)a4 completion:(id)a5;
-- (void)embeddingVectorForBundleId:(id)a3 completion:(id)a4;
+- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)date toDate:(id)toDate completion:(id)completion;
+- (void)embeddingVectorForBundleId:(id)id completion:(id)completion;
 @end
 
 @implementation CHSensorData
 
-- (void)embeddingVectorForBundleId:(id)a3 completion:(id)a4
+- (void)embeddingVectorForBundleId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  idCopy = id;
   v8 = ch_sensor_data_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,14 +17,14 @@
     _os_log_impl(&dword_243B92000, v8, OS_LOG_TYPE_DEFAULT, "CHSensorData embeddingVectorForBundleId api called", v9, 2u);
   }
 
-  [(CHSensorDataProtocol *)self->_xpcClient embeddingVectorForBundleId:v7 completion:v6];
+  [(CHSensorDataProtocol *)self->_xpcClient embeddingVectorForBundleId:idCopy completion:completionCopy];
 }
 
-- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)a3 toDate:(id)a4 completion:(id)a5
+- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)date toDate:(id)toDate completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  toDateCopy = toDate;
+  dateCopy = date;
   v11 = ch_sensor_data_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,7 +32,7 @@
     _os_log_impl(&dword_243B92000, v11, OS_LOG_TYPE_DEFAULT, "CHSensorData aggregatedMotionAndAppLaunchData api called", v12, 2u);
   }
 
-  [(CHSensorDataProtocol *)self->_xpcClient aggregatedMotionAndAppLaunchDataFromDate:v10 toDate:v9 completion:v8];
+  [(CHSensorDataProtocol *)self->_xpcClient aggregatedMotionAndAppLaunchDataFromDate:dateCopy toDate:toDateCopy completion:completionCopy];
 }
 
 - (CHSensorData)init

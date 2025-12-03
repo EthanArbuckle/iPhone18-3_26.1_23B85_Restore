@@ -1,8 +1,8 @@
 @interface CNPropertyLinkedCardsAction
 - (CNContactContentViewControllerDelegate)contactDelegate;
-- (CNPropertyLinkedCardsAction)initWithContact:(id)a3;
+- (CNPropertyLinkedCardsAction)initWithContact:(id)contact;
 - (void)dealloc;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
+- (void)performActionForItem:(id)item sender:(id)sender;
 - (void)setPreferredForImage;
 - (void)setPreferredForName;
 @end
@@ -18,82 +18,82 @@
 
 - (void)setPreferredForName
 {
-  v3 = [(CNContactAction *)self delegate];
-  v4 = [v3 contactViewCache];
-  v5 = [v4 contactStore];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v6 = objc_alloc_init(MEMORY[0x1E695CF88]);
-  v7 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-  v8 = [(CNContactAction *)self mutableContact];
-  [v6 preferLinkedContactForName:v7 inUnifiedContact:v8];
+  linkedContact = [(CNPropertyLinkedCardsAction *)self linkedContact];
+  mutableContact = [(CNContactAction *)self mutableContact];
+  [v6 preferLinkedContactForName:linkedContact inUnifiedContact:mutableContact];
 
   v19 = 0;
-  LOBYTE(v8) = [v5 executeSaveRequest:v6 error:&v19];
+  LOBYTE(mutableContact) = [contactStore executeSaveRequest:v6 error:&v19];
   v9 = v19;
   v14 = v9;
-  if ((v8 & 1) == 0)
+  if ((mutableContact & 1) == 0)
   {
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyLinkedCardsAction.m", 114, 3, @"Could not set preferred contact for name: %@", v10, v11, v12, v13, v9);
   }
 
-  v15 = [(CNPropertyLinkedCardsAction *)self contactController];
-  v16 = [(CNPropertyLinkedCardsAction *)self contactController];
-  v17 = [v16 cardTopGroup];
-  [v15 removeActionWithTarget:self selector:sel_setPreferredForName inGroup:v17];
+  contactController = [(CNPropertyLinkedCardsAction *)self contactController];
+  contactController2 = [(CNPropertyLinkedCardsAction *)self contactController];
+  cardTopGroup = [contactController2 cardTopGroup];
+  [contactController removeActionWithTarget:self selector:sel_setPreferredForName inGroup:cardTopGroup];
 
-  v18 = [(CNContactAction *)self delegate];
-  [v18 actionDidFinish:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 actionDidFinish:self];
 }
 
 - (void)setPreferredForImage
 {
-  v3 = [(CNContactAction *)self delegate];
-  v4 = [v3 contactViewCache];
-  v5 = [v4 contactStore];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v6 = objc_alloc_init(MEMORY[0x1E695CF88]);
-  v7 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-  v8 = [(CNContactAction *)self mutableContact];
-  [v6 preferLinkedContactForImage:v7 inUnifiedContact:v8];
+  linkedContact = [(CNPropertyLinkedCardsAction *)self linkedContact];
+  mutableContact = [(CNContactAction *)self mutableContact];
+  [v6 preferLinkedContactForImage:linkedContact inUnifiedContact:mutableContact];
 
   v19 = 0;
-  LOBYTE(v8) = [v5 executeSaveRequest:v6 error:&v19];
+  LOBYTE(mutableContact) = [contactStore executeSaveRequest:v6 error:&v19];
   v9 = v19;
   v14 = v9;
-  if ((v8 & 1) == 0)
+  if ((mutableContact & 1) == 0)
   {
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyLinkedCardsAction.m", 96, 3, @"Could not set preferred contact for image: %@", v10, v11, v12, v13, v9);
   }
 
-  v15 = [(CNPropertyLinkedCardsAction *)self contactController];
-  v16 = [(CNPropertyLinkedCardsAction *)self contactController];
-  v17 = [v16 cardTopGroup];
-  [v15 removeActionWithTarget:self selector:sel_setPreferredForImage inGroup:v17];
+  contactController = [(CNPropertyLinkedCardsAction *)self contactController];
+  contactController2 = [(CNPropertyLinkedCardsAction *)self contactController];
+  cardTopGroup = [contactController2 cardTopGroup];
+  [contactController removeActionWithTarget:self selector:sel_setPreferredForImage inGroup:cardTopGroup];
 
-  v18 = [(CNContactAction *)self delegate];
-  [v18 actionDidFinish:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 actionDidFinish:self];
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
-  v49 = a3;
+  itemCopy = item;
   v6 = [CNContactContentViewController alloc];
-  v7 = [v49 contact];
-  v8 = [(CNContactContentViewController *)v6 initWithContact:v7];
+  contact = [itemCopy contact];
+  v8 = [(CNContactContentViewController *)v6 initWithContact:contact];
   [(CNPropertyLinkedCardsAction *)self setContactController:v8];
 
-  v9 = [(CNContactAction *)self delegate];
-  v10 = [(CNPropertyLinkedCardsAction *)self contactController];
-  [v9 action:self prepareChildContactViewController:v10 sender:self];
+  delegate = [(CNContactAction *)self delegate];
+  contactController = [(CNPropertyLinkedCardsAction *)self contactController];
+  [delegate action:self prepareChildContactViewController:contactController sender:self];
 
-  v11 = [(CNContactAction *)self delegate];
-  v12 = [v11 contactViewCache];
+  delegate2 = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate2 contactViewCache];
 
-  v13 = [v49 contact];
-  v14 = [v12 accountForContact:v13];
+  contact2 = [itemCopy contact];
+  v14 = [contactViewCache accountForContact:contact2];
 
-  v15 = [v49 contact];
-  v16 = [v12 policyForContact:v15];
+  contact3 = [itemCopy contact];
+  v16 = [contactViewCache policyForContact:contact3];
 
   v17 = CNContactsUIBundle();
   v18 = [v17 localizedStringForKey:@"ACCOUNT_CARD_ITEM_LABEL" value:&stru_1F0CE7398 table:@"Localized"];
@@ -105,14 +105,14 @@
     v18 = v19;
   }
 
-  v20 = [(CNPropertyLinkedCardsAction *)self contactController];
-  [v20 setTitle:v18];
+  contactController2 = [(CNPropertyLinkedCardsAction *)self contactController];
+  [contactController2 setTitle:v18];
 
-  v21 = [(CNPropertyLinkedCardsAction *)self contactController];
-  if ([v21 allowsEditing] && (objc_msgSend(v16, "isReadonly") & 1) == 0)
+  contactController3 = [(CNPropertyLinkedCardsAction *)self contactController];
+  if ([contactController3 allowsEditing] && (objc_msgSend(v16, "isReadonly") & 1) == 0)
   {
-    v4 = [(CNContactAction *)self delegate];
-    v23 = v4 != 0;
+    delegate3 = [(CNContactAction *)self delegate];
+    v23 = delegate3 != 0;
     v22 = 1;
   }
 
@@ -122,86 +122,86 @@
     v23 = 0;
   }
 
-  v24 = [(CNPropertyLinkedCardsAction *)self contactController];
-  [v24 setAllowsEditing:v23];
+  contactController4 = [(CNPropertyLinkedCardsAction *)self contactController];
+  [contactController4 setAllowsEditing:v23];
 
   if (v22)
   {
   }
 
-  v25 = [(CNPropertyLinkedCardsAction *)self contactDelegate];
-  v26 = [(CNPropertyLinkedCardsAction *)self contactController];
-  [v26 setContactDelegate:v25];
+  contactDelegate = [(CNPropertyLinkedCardsAction *)self contactDelegate];
+  contactController5 = [(CNPropertyLinkedCardsAction *)self contactController];
+  [contactController5 setContactDelegate:contactDelegate];
 
-  v27 = [v49 contact];
+  contact4 = [itemCopy contact];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CNPropertyLinkedCardsAction *)self setLinkedContact:v27];
+    [(CNPropertyLinkedCardsAction *)self setLinkedContact:contact4];
   }
 
   else
   {
-    v28 = [v27 mutableCopy];
+    v28 = [contact4 mutableCopy];
     [(CNPropertyLinkedCardsAction *)self setLinkedContact:v28];
   }
 
-  v29 = [(CNPropertyLinkedCardsAction *)self contactController];
-  v30 = [v29 allowsSettingLinkedContactsAsPreferred];
+  contactController6 = [(CNPropertyLinkedCardsAction *)self contactController];
+  allowsSettingLinkedContactsAsPreferred = [contactController6 allowsSettingLinkedContactsAsPreferred];
 
-  if (!v30)
+  if (!allowsSettingLinkedContactsAsPreferred)
   {
     goto LABEL_21;
   }
 
-  v31 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-  if ([v31 isPreferredForImage])
+  linkedContact = [(CNPropertyLinkedCardsAction *)self linkedContact];
+  if ([linkedContact isPreferredForImage])
   {
     goto LABEL_16;
   }
 
-  v32 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-  v33 = [v32 thumbnailImageData];
+  linkedContact2 = [(CNPropertyLinkedCardsAction *)self linkedContact];
+  thumbnailImageData = [linkedContact2 thumbnailImageData];
 
-  if (v33)
+  if (thumbnailImageData)
   {
-    v31 = [(CNPropertyLinkedCardsAction *)self contactController];
+    linkedContact = [(CNPropertyLinkedCardsAction *)self contactController];
     v46 = CNContactsUIBundle();
     v34 = [v46 localizedStringForKey:@"SET_PREFERRED_PHOTO_ACTION_BUTTON_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-    v35 = [(CNPropertyLinkedCardsAction *)self contactController];
-    v36 = [v35 cardTopGroup];
-    [v31 addActionWithTitle:v34 target:self selector:sel_setPreferredForImage inGroup:v36];
+    contactController7 = [(CNPropertyLinkedCardsAction *)self contactController];
+    cardTopGroup = [contactController7 cardTopGroup];
+    [linkedContact addActionWithTitle:v34 target:self selector:sel_setPreferredForImage inGroup:cardTopGroup];
 
 LABEL_16:
   }
 
-  v37 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-  if (([v37 isPreferredForName] & 1) == 0)
+  linkedContact3 = [(CNPropertyLinkedCardsAction *)self linkedContact];
+  if (([linkedContact3 isPreferredForName] & 1) == 0)
   {
     v38 = MEMORY[0x1E695CD80];
-    v39 = [(CNPropertyLinkedCardsAction *)self linkedContact];
-    v40 = [v38 stringFromContact:v39 style:0];
+    linkedContact4 = [(CNPropertyLinkedCardsAction *)self linkedContact];
+    v40 = [v38 stringFromContact:linkedContact4 style:0];
 
     if (!v40)
     {
       goto LABEL_21;
     }
 
-    v37 = [(CNPropertyLinkedCardsAction *)self contactController];
+    linkedContact3 = [(CNPropertyLinkedCardsAction *)self contactController];
     v47 = CNContactsUIBundle();
     v41 = [v47 localizedStringForKey:@"SET_PREFERRED_NAME_ACTION_BUTTON_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
     [(CNPropertyLinkedCardsAction *)self contactController];
     v42 = v48 = v16;
-    v43 = [v42 cardTopGroup];
-    [v37 addActionWithTitle:v41 target:self selector:sel_setPreferredForName inGroup:v43];
+    cardTopGroup2 = [v42 cardTopGroup];
+    [linkedContact3 addActionWithTitle:v41 target:self selector:sel_setPreferredForName inGroup:cardTopGroup2];
 
     v16 = v48;
   }
 
 LABEL_21:
-  v44 = [(CNContactAction *)self delegate];
-  v45 = [(CNPropertyLinkedCardsAction *)self contactController];
-  [v44 action:self pushViewController:v45 sender:self];
+  delegate4 = [(CNContactAction *)self delegate];
+  contactController8 = [(CNPropertyLinkedCardsAction *)self contactController];
+  [delegate4 action:self pushViewController:contactController8 sender:self];
 }
 
 - (void)dealloc
@@ -212,11 +212,11 @@ LABEL_21:
   [(CNPropertyLinkedCardsAction *)&v3 dealloc];
 }
 
-- (CNPropertyLinkedCardsAction)initWithContact:(id)a3
+- (CNPropertyLinkedCardsAction)initWithContact:(id)contact
 {
   v4.receiver = self;
   v4.super_class = CNPropertyLinkedCardsAction;
-  return [(CNPropertyAction *)&v4 initWithContact:a3];
+  return [(CNPropertyAction *)&v4 initWithContact:contact];
 }
 
 @end

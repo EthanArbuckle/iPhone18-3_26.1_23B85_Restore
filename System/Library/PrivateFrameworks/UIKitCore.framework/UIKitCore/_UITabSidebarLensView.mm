@@ -1,21 +1,21 @@
 @interface _UITabSidebarLensView
 - (UIView)liftedContainerView;
-- (_UITabSidebarLensView)initWithFrame:(CGRect)a3;
+- (_UITabSidebarLensView)initWithFrame:(CGRect)frame;
 - (void)_updateBackgroundPlacement;
 - (void)_updateLensViewFrame;
 - (void)layoutSubviews;
-- (void)setControlBackgroundColor:(id)a3;
-- (void)setLiftedContainerView:(id)a3;
+- (void)setControlBackgroundColor:(id)color;
+- (void)setLiftedContainerView:(id)view;
 @end
 
 @implementation _UITabSidebarLensView
 
-- (_UITabSidebarLensView)initWithFrame:(CGRect)a3
+- (_UITabSidebarLensView)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _UITabSidebarLensView;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_UILiquidLensView alloc];
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)setControlBackgroundColor:(id)a3
+- (void)setControlBackgroundColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     lensView = self->_lensView;
 
@@ -57,14 +57,14 @@
 
 - (void)_updateLensViewFrame
 {
-  if (a1)
+  if (self)
   {
-    [a1 bounds];
+    [self bounds];
     x = v2;
     y = v4;
     width = v6;
     height = v8;
-    if ([a1 isActive])
+    if ([self isActive])
     {
       v15.origin.x = x;
       v15.origin.y = y;
@@ -79,27 +79,27 @@
 
     v10 = *MEMORY[0x1E695EFF8];
     v11 = *(MEMORY[0x1E695EFF8] + 8);
-    v12 = [a1 lensView];
-    [v12 setCenter:{width * 0.5 + x, height * 0.5 + y}];
+    lensView = [self lensView];
+    [lensView setCenter:{width * 0.5 + x, height * 0.5 + y}];
 
-    v13 = [a1 lensView];
-    [v13 setBounds:{v10, v11, width, height}];
+    lensView2 = [self lensView];
+    [lensView2 setBounds:{v10, v11, width, height}];
   }
 }
 
 - (UIView)liftedContainerView
 {
-  v2 = [(_UITabSidebarLensView *)self lensView];
-  v3 = [v2 liftedContainerView];
+  lensView = [(_UITabSidebarLensView *)self lensView];
+  liftedContainerView = [lensView liftedContainerView];
 
-  return v3;
+  return liftedContainerView;
 }
 
-- (void)setLiftedContainerView:(id)a3
+- (void)setLiftedContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UITabSidebarLensView *)self lensView];
-  [v5 setLiftedContainerView:v4];
+  viewCopy = view;
+  lensView = [(_UITabSidebarLensView *)self lensView];
+  [lensView setLiftedContainerView:viewCopy];
 }
 
 - (void)layoutSubviews
@@ -114,8 +114,8 @@
 {
   if (self)
   {
-    v3 = [(UIView *)self traitCollection];
-    v4 = [v3 valueForNSIntegerTrait:objc_opt_class()];
+    traitCollection = [(UIView *)self traitCollection];
+    v4 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
     v5 = v4 == 1;
     v6 = 0.0;
@@ -132,8 +132,8 @@
   }
 
   [(UIView *)self setAlpha:v6];
-  v7 = [(_UITabSidebarLensView *)self lensView];
-  [v7 setLifted:v5 animated:1 alongsideAnimations:0 completion:0];
+  lensView = [(_UITabSidebarLensView *)self lensView];
+  [lensView setLifted:v5 animated:1 alongsideAnimations:0 completion:0];
 }
 
 @end

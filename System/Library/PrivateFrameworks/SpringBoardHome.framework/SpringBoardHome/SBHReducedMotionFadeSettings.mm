@@ -10,20 +10,20 @@
   v8.receiver = self;
   v8.super_class = SBHReducedMotionFadeSettings;
   [(SBHIconAnimationSettings *)&v8 setDefaultValues];
-  v3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v3 setAnimationType:1];
+  centralAnimationSettings = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings setAnimationType:1];
 
-  v4 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v4 setMass:8.0];
+  centralAnimationSettings2 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings2 setMass:8.0];
 
-  v5 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v5 setStiffness:1560.0];
+  centralAnimationSettings3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings3 setStiffness:1560.0];
 
-  v6 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v6 setDamping:600.0];
+  centralAnimationSettings4 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings4 setDamping:600.0];
 
-  v7 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v7 setCurve:0x10000];
+  centralAnimationSettings5 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings5 setCurve:0x10000];
 }
 
 + (id)settingsControllerModule
@@ -35,8 +35,8 @@
 
   v5 = MEMORY[0x1E69C6638];
   v6 = MEMORY[0x1E69C65E8];
-  v7 = [MEMORY[0x1E69C6640] action];
-  v8 = [v6 rowWithTitle:@"Restore Defaults" action:v7];
+  action = [MEMORY[0x1E69C6640] action];
+  v8 = [v6 rowWithTitle:@"Restore Defaults" action:action];
   v16[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v10 = [v5 sectionWithRows:v9];

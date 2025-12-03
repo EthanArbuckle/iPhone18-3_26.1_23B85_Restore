@@ -1,62 +1,62 @@
 @interface TIKeyboardInputManagerLoaderSyncHelper
 + (void)deleteCloudKitBackup;
-- (BOOL)shouldCacheObject:(id)a3;
+- (BOOL)shouldCacheObject:(id)object;
 - (TIKeyboardInputManagerLoaderSyncHelper)init;
 - (void)dealloc;
-- (void)languagePulled:(id)a3;
-- (void)noteObject:(id)a3 forLanguage:(id)a4;
-- (void)willLoadLanguage:(id)a3;
+- (void)languagePulled:(id)pulled;
+- (void)noteObject:(id)object forLanguage:(id)language;
+- (void)willLoadLanguage:(id)language;
 @end
 
 @implementation TIKeyboardInputManagerLoaderSyncHelper
 
-- (BOOL)shouldCacheObject:(id)a3
+- (BOOL)shouldCacheObject:(id)object
 {
-  v3 = objc_getAssociatedObject(a3, &kTidyObject);
-  v4 = [v3 valid];
+  v3 = objc_getAssociatedObject(object, &kTidyObject);
+  valid = [v3 valid];
 
-  return v4 ^ 1;
+  return valid ^ 1;
 }
 
-- (void)noteObject:(id)a3 forLanguage:(id)a4
+- (void)noteObject:(id)object forLanguage:(id)language
 {
-  v10 = a4;
+  languageCopy = language;
   languages = self->_languages;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)languages objectForKey:v10];
+  objectCopy = object;
+  v8 = [(NSMutableDictionary *)languages objectForKey:languageCopy];
   if (v8)
   {
-    v9 = v8;
+    weakObjectsPointerArray = v8;
     [v8 compact];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-    [(NSMutableDictionary *)self->_languages setObject:v9 forKey:v10];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    [(NSMutableDictionary *)self->_languages setObject:weakObjectsPointerArray forKey:languageCopy];
   }
 
-  [v9 addPointer:v7];
+  [weakObjectsPointerArray addPointer:objectCopy];
 }
 
-- (void)willLoadLanguage:(id)a3
+- (void)willLoadLanguage:(id)language
 {
-  v3 = [(NSMapTable *)self->_pendingSaves objectForKey:a3];
+  v3 = [(NSMapTable *)self->_pendingSaves objectForKey:language];
   [v3 execute];
 
-  v4 = [get_KSUserWordsSynchroniserClass() sharedInstance];
-  [v4 keyboardUsed];
+  sharedInstance = [get_KSUserWordsSynchroniserClass() sharedInstance];
+  [sharedInstance keyboardUsed];
 }
 
-- (void)languagePulled:(id)a3
+- (void)languagePulled:(id)pulled
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerLoaderSyncHelper *)self languageUpdated];
+  pulledCopy = pulled;
+  languageUpdated = [(TIKeyboardInputManagerLoaderSyncHelper *)self languageUpdated];
 
-  if (v5)
+  if (languageUpdated)
   {
-    v6 = [v4 userInfo];
+    userInfo = [pulledCopy userInfo];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -80,9 +80,9 @@
     if (v7)
     {
       v10 = *v7;
-      v11 = [v6 objectForKey:v10];
+      v11 = [userInfo objectForKey:v10];
 
-      v12 = [v4 userInfo];
+      userInfo2 = [pulledCopy userInfo];
       v27 = 0;
       v28 = &v27;
       v29 = 0x2020000000;
@@ -106,7 +106,7 @@
       if (v13)
       {
         v16 = *v13;
-        v17 = [v12 objectForKey:v16];
+        v17 = [userInfo2 objectForKey:v16];
 
         v24 = v11;
         v18 = v17;
@@ -143,7 +143,7 @@ LABEL_15:
   block[2] = __57__TIKeyboardInputManagerLoaderSyncHelper_languagePulled___block_invoke;
   block[3] = &unk_278733738;
   block[4] = self;
-  v26 = v4;
+  v26 = pulledCopy;
   dispatch_after(v21, MEMORY[0x277D85CD0], block);
 
 LABEL_13:
@@ -272,8 +272,8 @@ void __59__TIKeyboardInputManagerLoaderSyncHelper_languagesChanged___block_invok
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManagerLoaderSyncHelper;
@@ -290,18 +290,18 @@ void __59__TIKeyboardInputManagerLoaderSyncHelper_languagesChanged___block_invok
     return v2;
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   languages = v2->_languages;
-  v2->_languages = v3;
+  v2->_languages = dictionary;
 
-  v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   pendingSaves = v2->_pendingSaves;
-  v2->_pendingSaves = v5;
+  v2->_pendingSaves = strongToWeakObjectsMapTable;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:v2 selector:sel_languagesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_languagesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -324,7 +324,7 @@ void __59__TIKeyboardInputManagerLoaderSyncHelper_languagesChanged___block_invok
   _Block_object_dispose(&v20, 8);
   if (v9)
   {
-    [v8 addObserver:v2 selector:sel_languagePulled_ name:*v9 object:0];
+    [defaultCenter2 addObserver:v2 selector:sel_languagePulled_ name:*v9 object:0];
 
     [(TIKeyboardInputManagerLoaderSyncHelper *)v2 languagesChanged:0];
     return v2;
@@ -337,8 +337,8 @@ void __59__TIKeyboardInputManagerLoaderSyncHelper_languagesChanged___block_invok
 
 + (void)deleteCloudKitBackup
 {
-  v2 = [get_KSUserWordsSynchroniserClass() sharedInstance];
-  [v2 deleteZoneWithCompletionHandler:&__block_literal_global_27];
+  sharedInstance = [get_KSUserWordsSynchroniserClass() sharedInstance];
+  [sharedInstance deleteZoneWithCompletionHandler:&__block_literal_global_27];
 }
 
 void __62__TIKeyboardInputManagerLoaderSyncHelper_deleteCloudKitBackup__block_invoke(uint64_t a1, void *a2)

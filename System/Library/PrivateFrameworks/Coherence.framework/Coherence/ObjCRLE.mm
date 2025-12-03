@@ -1,8 +1,8 @@
 @interface ObjCRLE
 - (NSString)description;
 - (_TtC9Coherence7ObjCRLE)init;
-- (int64_t)rangeCountIn:(_NSRange)a3;
-- (void)enumerateRangesIn:(_NSRange)a3 :(id)a4;
+- (int64_t)rangeCountIn:(_NSRange)in;
+- (void)enumerateRangesIn:(_NSRange)in :(id)a4;
 @end
 
 @implementation ObjCRLE
@@ -19,25 +19,25 @@
   return [(ObjCRLE *)&v4 init];
 }
 
-- (int64_t)rangeCountIn:(_NSRange)a3
+- (int64_t)rangeCountIn:(_NSRange)in
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = in.length;
+  location = in.location;
+  selfCopy = self;
   sub_1AE2253F4(location, length);
   v7 = v6;
 
   return v7;
 }
 
-- (void)enumerateRangesIn:(_NSRange)a3 :(id)a4
+- (void)enumerateRangesIn:(_NSRange)in :(id)a4
 {
-  length = a3.length;
-  location = a3.location;
+  length = in.length;
+  location = in.location;
   v7 = _Block_copy(a4);
   _Block_copy(v7);
-  v8 = self;
-  sub_1AE229AAC(location, length, v8, v7);
+  selfCopy = self;
+  sub_1AE229AAC(location, length, selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
@@ -45,7 +45,7 @@
 - (NSString)description
 {
   sub_1ADDE56CC(self + OBJC_IVAR____TtC9Coherence7ObjCRLE_rle, v6);
-  v3 = self;
+  selfCopy = self;
   sub_1AE2221D4();
   sub_1ADDE5C20(v6);
 

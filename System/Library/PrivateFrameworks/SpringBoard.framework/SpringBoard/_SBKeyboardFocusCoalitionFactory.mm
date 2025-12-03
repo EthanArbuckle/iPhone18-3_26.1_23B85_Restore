@@ -1,17 +1,17 @@
 @interface _SBKeyboardFocusCoalitionFactory
-- (id)newCoalitionForSceneControllers:(id)a3;
+- (id)newCoalitionForSceneControllers:(id)controllers;
 @end
 
 @implementation _SBKeyboardFocusCoalitionFactory
 
-- (id)newCoalitionForSceneControllers:(id)a3
+- (id)newCoalitionForSceneControllers:(id)controllers
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = controllers;
   v3 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v3)
   {
@@ -35,15 +35,15 @@
       }
 
       v9 = *(*(&v18 + 1) + 8 * i);
-      v10 = [v9 sbWindowScene];
-      if ([v10 isEmbeddedScene])
+      sbWindowScene = [v9 sbWindowScene];
+      if ([sbWindowScene isEmbeddedScene])
       {
         v11 = v6;
         v12 = v4;
         v6 = v9;
       }
 
-      else if ([v10 isContinuityScene])
+      else if ([sbWindowScene isContinuityScene])
       {
         v11 = v5;
         v12 = v4;
@@ -54,7 +54,7 @@
       {
         v11 = v4;
         v12 = v9;
-        if (![v10 isExternalDisplayScene])
+        if (![sbWindowScene isExternalDisplayScene])
         {
           goto LABEL_12;
         }

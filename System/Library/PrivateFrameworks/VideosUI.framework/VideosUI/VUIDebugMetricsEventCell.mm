@@ -1,21 +1,21 @@
 @interface VUIDebugMetricsEventCell
-- (VUIDebugMetricsEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VUIDebugMetricsEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setEventTypeLabelStr:(id)a3;
-- (void)setSubhead1LabelStr:(id)a3;
-- (void)setSubhead2LabelStr:(id)a3;
-- (void)setSubhead3LabelStr:(id)a3;
-- (void)setTabName:(id)a3;
+- (void)setEventTypeLabelStr:(id)str;
+- (void)setSubhead1LabelStr:(id)str;
+- (void)setSubhead2LabelStr:(id)str;
+- (void)setSubhead3LabelStr:(id)str;
+- (void)setTabName:(id)name;
 @end
 
 @implementation VUIDebugMetricsEventCell
 
-- (VUIDebugMetricsEventCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VUIDebugMetricsEventCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v52.receiver = self;
   v52.super_class = VUIDebugMetricsEventCell;
-  v4 = [(VUIDebugMetricsEventCell *)&v52 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(VUIDebugMetricsEventCell *)&v52 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(VUITextLayout);
@@ -24,8 +24,8 @@
     [(VUITextLayout *)v5 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v5 setTextStyle:3];
     [(VUITextLayout *)v5 setMaximumContentSizeCategory:3];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v5 setColor:v6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v5 setColor:blackColor];
 
     [(VUITextLayout *)v5 setFontWeight:7];
     eventTypeLabelLayout = v4->_eventTypeLabelLayout;
@@ -36,8 +36,8 @@
     eventTypeLabel = v4->_eventTypeLabel;
     v4->_eventTypeLabel = v8;
 
-    v10 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v10 addSubview:v4->_eventTypeLabel];
+    contentView = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView addSubview:v4->_eventTypeLabel];
 
     v11 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v11 setNumberOfLines:1];
@@ -45,8 +45,8 @@
     [(VUITextLayout *)v11 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v11 setTextStyle:17];
     [(VUITextLayout *)v11 setMaximumContentSizeCategory:3];
-    v12 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v11 setColor:v12];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v11 setColor:blackColor2];
 
     subhead1LabelLayout = v4->_subhead1LabelLayout;
     v4->_subhead1LabelLayout = v11;
@@ -56,8 +56,8 @@
     subhead1Label = v4->_subhead1Label;
     v4->_subhead1Label = v15;
 
-    v17 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v17 addSubview:v4->_subhead1Label];
+    contentView2 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView2 addSubview:v4->_subhead1Label];
 
     v18 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v18 setNumberOfLines:1];
@@ -65,8 +65,8 @@
     [(VUITextLayout *)v18 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v18 setTextStyle:17];
     [(VUITextLayout *)v18 setMaximumContentSizeCategory:3];
-    v19 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v18 setColor:v19];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v18 setColor:blackColor3];
 
     subhead2LabelLayout = v4->_subhead2LabelLayout;
     v4->_subhead2LabelLayout = v18;
@@ -76,8 +76,8 @@
     subhead2Label = v4->_subhead2Label;
     v4->_subhead2Label = v22;
 
-    v24 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v24 addSubview:v4->_subhead2Label];
+    contentView3 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView3 addSubview:v4->_subhead2Label];
 
     v25 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v25 setNumberOfLines:1];
@@ -85,8 +85,8 @@
     [(VUITextLayout *)v25 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v25 setTextStyle:17];
     [(VUITextLayout *)v25 setMaximumContentSizeCategory:3];
-    v26 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v25 setColor:v26];
+    blackColor4 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v25 setColor:blackColor4];
 
     subhead3LabelLayout = v4->_subhead3LabelLayout;
     v4->_subhead3LabelLayout = v25;
@@ -96,8 +96,8 @@
     subhead3Label = v4->_subhead3Label;
     v4->_subhead3Label = v29;
 
-    v31 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v31 addSubview:v4->_subhead3Label];
+    contentView4 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView4 addSubview:v4->_subhead3Label];
 
     v32 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v32 setNumberOfLines:1];
@@ -105,8 +105,8 @@
     [(VUITextLayout *)v32 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v32 setTextStyle:3];
     [(VUITextLayout *)v32 setMaximumContentSizeCategory:3];
-    v33 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v32 setColor:v33];
+    blackColor5 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v32 setColor:blackColor5];
 
     tabNameLabelLayout = v4->_tabNameLabelLayout;
     v4->_tabNameLabelLayout = v32;
@@ -116,8 +116,8 @@
     tabNameLabel = v4->_tabNameLabel;
     v4->_tabNameLabel = v36;
 
-    v38 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v38 addSubview:v4->_tabNameLabel];
+    contentView5 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView5 addSubview:v4->_tabNameLabel];
 
     v39 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v40 = *MEMORY[0x1E695F058];
@@ -128,23 +128,23 @@
     tabImageView = v4->_tabImageView;
     v4->_tabImageView = v44;
 
-    v46 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v46 addSubview:v4->_tabImageView];
+    contentView6 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView6 addSubview:v4->_tabImageView];
 
     v47 = [[VUISeparatorView alloc] initWithFrame:v40, v41, v42, v43];
     separatorView = v4->_separatorView;
     v4->_separatorView = v47;
 
-    v49 = [(VUIDebugMetricsEventCell *)v4 contentView];
-    [v49 addSubview:v4->_separatorView];
+    contentView7 = [(VUIDebugMetricsEventCell *)v4 contentView];
+    [contentView7 addSubview:v4->_separatorView];
   }
 
   return v4;
 }
 
-- (void)setEventTypeLabelStr:(id)a3
+- (void)setEventTypeLabelStr:(id)str
 {
-  v4 = [a3 copy];
+  v4 = [str copy];
   eventTypeLabelStr = self->_eventTypeLabelStr;
   self->_eventTypeLabelStr = v4;
 
@@ -153,9 +153,9 @@
   [(VUIDebugMetricsEventCell *)self setNeedsLayout];
 }
 
-- (void)setSubhead1LabelStr:(id)a3
+- (void)setSubhead1LabelStr:(id)str
 {
-  v4 = [a3 copy];
+  v4 = [str copy];
   subhead1LabelStr = self->_subhead1LabelStr;
   self->_subhead1LabelStr = v4;
 
@@ -164,9 +164,9 @@
   [(VUIDebugMetricsEventCell *)self setNeedsLayout];
 }
 
-- (void)setSubhead2LabelStr:(id)a3
+- (void)setSubhead2LabelStr:(id)str
 {
-  v4 = [a3 copy];
+  v4 = [str copy];
   subhead2LabelStr = self->_subhead2LabelStr;
   self->_subhead2LabelStr = v4;
 
@@ -175,9 +175,9 @@
   [(VUIDebugMetricsEventCell *)self setNeedsLayout];
 }
 
-- (void)setSubhead3LabelStr:(id)a3
+- (void)setSubhead3LabelStr:(id)str
 {
-  v4 = [a3 copy];
+  v4 = [str copy];
   subhead3LabelStr = self->_subhead3LabelStr;
   self->_subhead3LabelStr = v4;
 
@@ -186,9 +186,9 @@
   [(VUIDebugMetricsEventCell *)self setNeedsLayout];
 }
 
-- (void)setTabName:(id)a3
+- (void)setTabName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tabName = self->_tabName;
   self->_tabName = v4;
 

@@ -1,7 +1,7 @@
 @interface ReflectionPromptView
-- (_TtC16MomentsUIService20ReflectionPromptView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService20ReflectionPromptView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)updatePromptIndex:(id)a3;
+- (void)updatePromptIndex:(id)index;
 @end
 
 @implementation ReflectionPromptView
@@ -13,18 +13,18 @@
   [(ReflectionPromptView *)&v2 layoutSubviews];
 }
 
-- (void)updatePromptIndex:(id)a3
+- (void)updatePromptIndex:(id)index
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService20ReflectionPromptView_updateReflectionIndex);
-  v6 = self;
+  selfCopy = self;
 
   v5 = v3(v4);
 
-  *(&v6->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService20ReflectionPromptView_promptIndex) = v5;
-  (*((swift_isaMask & v6->super.super.super.isa) + 0x1A0))();
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService20ReflectionPromptView_promptIndex) = v5;
+  (*((swift_isaMask & selfCopy->super.super.super.isa) + 0x1A0))();
 }
 
-- (_TtC16MomentsUIService20ReflectionPromptView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService20ReflectionPromptView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

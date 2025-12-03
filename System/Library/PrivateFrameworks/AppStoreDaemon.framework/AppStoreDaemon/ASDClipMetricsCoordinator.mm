@@ -1,6 +1,6 @@
 @interface ASDClipMetricsCoordinator
 - (ASDClipMetricsCoordinator)init;
-- (void)sendClipCardMetricsEvent:(id)a3 completionHandler:(id)a4;
+- (void)sendClipCardMetricsEvent:(id)event completionHandler:(id)handler;
 @end
 
 @implementation ASDClipMetricsCoordinator
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)sendClipCardMetricsEvent:(id)a3 completionHandler:(id)a4
+- (void)sendClipCardMetricsEvent:(id)event completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   broker = self->_broker;
   v19 = 0;
   v9 = [(ASDClipServiceBroker *)broker getClipServiceWithError:&v19];
@@ -35,7 +35,7 @@
     v17[1] = 3221225472;
     v17[2] = __72__ASDClipMetricsCoordinator_sendClipCardMetricsEvent_completionHandler___block_invoke;
     v17[3] = &unk_1E7CDB730;
-    v11 = v7;
+    v11 = handlerCopy;
     v18 = v11;
     v12 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v17];
     v15[0] = MEMORY[0x1E69E9820];
@@ -43,7 +43,7 @@
     v15[2] = __72__ASDClipMetricsCoordinator_sendClipCardMetricsEvent_completionHandler___block_invoke_1;
     v15[3] = &unk_1E7CDB758;
     v16 = v11;
-    [v12 clipCardMetricsEvent:v6 withReplyHandler:v15];
+    [v12 clipCardMetricsEvent:eventCopy withReplyHandler:v15];
   }
 
   else
@@ -56,7 +56,7 @@
       _os_log_error_impl(&dword_1B8220000, v13, OS_LOG_TYPE_ERROR, "Request to service failed with error: %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 
   v14 = *MEMORY[0x1E69E9840];

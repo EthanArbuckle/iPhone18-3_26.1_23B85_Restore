@@ -1,6 +1,6 @@
 @interface CASessionData
 - (CASessionData)init;
-- (void)error:(id)a3;
+- (void)error:(id)error;
 - (void)logData;
 @end
 
@@ -20,41 +20,41 @@
   return v2;
 }
 
-- (void)error:(id)a3
+- (void)error:(id)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CASessionData *)self numberOfErrorEvents];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  numberOfErrorEvents = [(CASessionData *)self numberOfErrorEvents];
+  v7 = [v5 numberWithInt:{objc_msgSend(numberOfErrorEvents, "intValue") + 1}];
   [(CASessionData *)self setNumberOfErrorEvents:v7];
 
   v20[0] = @"status";
-  v8 = [v4 objectForKeyedSubscript:?];
+  v8 = [errorCopy objectForKeyedSubscript:?];
   v20[1] = @"errorDescription";
   v21[0] = v8;
-  v9 = [v4 objectForKeyedSubscript:?];
+  v9 = [errorCopy objectForKeyedSubscript:?];
   v21[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
   v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
-  v12 = [(CASessionData *)self productUUID];
-  LOBYTE(v9) = v12 == 0;
+  productUUID = [(CASessionData *)self productUUID];
+  LOBYTE(v9) = productUUID == 0;
 
   if ((v9 & 1) == 0)
   {
-    v13 = [(CASessionData *)self productUUID];
-    v14 = [v13 UUIDString];
-    [v11 setObject:v14 forKeyedSubscript:@"ProductUUID"];
+    productUUID2 = [(CASessionData *)self productUUID];
+    uUIDString = [productUUID2 UUIDString];
+    [v11 setObject:uUIDString forKeyedSubscript:@"ProductUUID"];
   }
 
-  v15 = [(CASessionData *)self isOwner];
-  v16 = v15 == 0;
+  isOwner = [(CASessionData *)self isOwner];
+  v16 = isOwner == 0;
 
   if (!v16)
   {
-    v17 = [(CASessionData *)self isOwner];
-    [v11 setObject:v17 forKeyedSubscript:@"IsOwner"];
+    isOwner2 = [(CASessionData *)self isOwner];
+    [v11 setObject:isOwner2 forKeyedSubscript:@"IsOwner"];
   }
 
   v19 = v11;
@@ -66,12 +66,12 @@
 - (void)logData
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v3 = [(CASessionData *)self configureEvent];
+  configureEvent = [(CASessionData *)self configureEvent];
 
-  if (v3)
+  if (configureEvent)
   {
-    v4 = [(CASessionData *)self configureEvent];
-    v5 = [v4 objectForKeyedSubscript:@"timeElapsed"];
+    configureEvent2 = [(CASessionData *)self configureEvent];
+    v5 = [configureEvent2 objectForKeyedSubscript:@"timeElapsed"];
     [v5 doubleValue];
     v7 = v6;
   }
@@ -81,12 +81,12 @@
     v7 = -1.0;
   }
 
-  v8 = [(CASessionData *)self configureCompleteEvent];
+  configureCompleteEvent = [(CASessionData *)self configureCompleteEvent];
 
-  if (v8)
+  if (configureCompleteEvent)
   {
-    v9 = [(CASessionData *)self configureCompleteEvent];
-    v10 = [v9 objectForKeyedSubscript:@"timeElapsed"];
+    configureCompleteEvent2 = [(CASessionData *)self configureCompleteEvent];
+    v10 = [configureCompleteEvent2 objectForKeyedSubscript:@"timeElapsed"];
     [v10 doubleValue];
     v12 = v11 - v7;
   }
@@ -96,12 +96,12 @@
     v12 = -1.0;
   }
 
-  v13 = [(CASessionData *)self deinitEvent];
+  deinitEvent = [(CASessionData *)self deinitEvent];
 
-  if (v13)
+  if (deinitEvent)
   {
-    v14 = [(CASessionData *)self deinitEvent];
-    v15 = [v14 objectForKeyedSubscript:@"timeElapsed"];
+    deinitEvent2 = [(CASessionData *)self deinitEvent];
+    v15 = [deinitEvent2 objectForKeyedSubscript:@"timeElapsed"];
     [v15 doubleValue];
     v17 = v16 - v7;
   }
@@ -119,28 +119,28 @@
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
   v33[1] = v20;
   v32[2] = @"NumberOfErrorEvents";
-  v21 = [(CASessionData *)self numberOfErrorEvents];
-  v33[2] = v21;
+  numberOfErrorEvents = [(CASessionData *)self numberOfErrorEvents];
+  v33[2] = numberOfErrorEvents;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
   v23 = [v18 dictionaryWithDictionary:v22];
 
-  v24 = [(CASessionData *)self productUUID];
-  LOBYTE(v19) = v24 == 0;
+  productUUID = [(CASessionData *)self productUUID];
+  LOBYTE(v19) = productUUID == 0;
 
   if ((v19 & 1) == 0)
   {
-    v25 = [(CASessionData *)self productUUID];
-    v26 = [v25 UUIDString];
-    [v23 setObject:v26 forKeyedSubscript:@"ProductUUID"];
+    productUUID2 = [(CASessionData *)self productUUID];
+    uUIDString = [productUUID2 UUIDString];
+    [v23 setObject:uUIDString forKeyedSubscript:@"ProductUUID"];
   }
 
-  v27 = [(CASessionData *)self isOwner];
-  v28 = v27 == 0;
+  isOwner = [(CASessionData *)self isOwner];
+  v28 = isOwner == 0;
 
   if (!v28)
   {
-    v29 = [(CASessionData *)self isOwner];
-    [v23 setObject:v29 forKeyedSubscript:@"IsOwner"];
+    isOwner2 = [(CASessionData *)self isOwner];
+    [v23 setObject:isOwner2 forKeyedSubscript:@"IsOwner"];
   }
 
   v31 = v23;

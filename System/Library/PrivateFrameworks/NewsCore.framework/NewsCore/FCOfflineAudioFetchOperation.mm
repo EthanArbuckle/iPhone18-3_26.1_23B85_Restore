@@ -1,25 +1,25 @@
 @interface FCOfflineAudioFetchOperation
 - (BOOL)validateOperation;
-- (FCOfflineAudioFetchOperation)initWithContext:(id)a3 articleID:(id)a4;
-- (void)_handleArchive:(void *)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCOfflineAudioFetchOperation)initWithContext:(id)context articleID:(id)d;
+- (void)_handleArchive:(void *)archive;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCOfflineAudioFetchOperation
 
-- (FCOfflineAudioFetchOperation)initWithContext:(id)a3 articleID:(id)a4
+- (FCOfflineAudioFetchOperation)initWithContext:(id)context articleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = FCOfflineAudioFetchOperation;
   v9 = [(FCOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [dCopy copy];
     articleID = v10->_articleID;
     v10->_articleID = v11;
 
@@ -95,10 +95,10 @@ LABEL_12:
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
-    v5 = [(FCOfflineAudioFetchOperation *)self cachedOnly];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+    cachedOnly = [(FCOfflineAudioFetchOperation *)self cachedOnly];
     v6 = @"fetch";
-    if (v5)
+    if (cachedOnly)
     {
       v6 = @"lookup cached";
     }
@@ -114,7 +114,7 @@ LABEL_12:
     }
 
     *buf = 138543874;
-    v21 = v4;
+    v21 = shortOperationDescription;
     v22 = 2114;
     v23 = v6;
     v24 = 2114;
@@ -210,31 +210,31 @@ id __48__FCOfflineAudioFetchOperation_performOperation__block_invoke_2(uint64_t 
   return v8;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FCOfflineAudioFetchOperation *)self fetchCompletionQueue];
+  errorCopy = error;
+  fetchCompletionQueue = [(FCOfflineAudioFetchOperation *)self fetchCompletionQueue];
 
-  v6 = [(FCOfflineAudioFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCOfflineAudioFetchOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionQueue)
   {
-    if (v6)
+    if (fetchCompletionHandler)
     {
-      v7 = [(FCOfflineAudioFetchOperation *)self fetchCompletionQueue];
+      fetchCompletionQueue2 = [(FCOfflineAudioFetchOperation *)self fetchCompletionQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __61__FCOfflineAudioFetchOperation_operationWillFinishWithError___block_invoke;
       v12[3] = &unk_1E7C36C58;
       v12[4] = self;
-      v13 = v4;
-      dispatch_async(v7, v12);
+      v13 = errorCopy;
+      dispatch_async(fetchCompletionQueue2, v12);
     }
   }
 
-  else if (v6)
+  else if (fetchCompletionHandler)
   {
-    v8 = [(FCOfflineAudioFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCOfflineAudioFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       resultInterestTokens = self->_resultInterestTokens;
@@ -246,8 +246,8 @@ id __48__FCOfflineAudioFetchOperation_performOperation__block_invoke_2(uint64_t 
     }
 
     v10 = resultInterestTokens;
-    v11 = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
-    (v8)[2](v8, v11, v4);
+    readOnlyArray = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, readOnlyArray, errorCopy);
   }
 }
 
@@ -419,35 +419,35 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_handleArchive:(void *)a1
+- (void)_handleArchive:(void *)archive
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (archive && v3)
   {
-    v5 = [a1 archiveQueue];
+    archiveQueue = [archive archiveQueue];
 
-    v6 = [a1 archiveHandler];
+    archiveHandler = [archive archiveHandler];
 
-    if (v5)
+    if (archiveQueue)
     {
-      if (v6)
+      if (archiveHandler)
       {
-        v7 = [a1 archiveQueue];
+        archiveQueue2 = [archive archiveQueue];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __47__FCOfflineAudioFetchOperation__handleArchive___block_invoke_2;
         v9[3] = &unk_1E7C36C58;
-        v9[4] = a1;
+        v9[4] = archive;
         v10 = v4;
-        dispatch_async(v7, v9);
+        dispatch_async(archiveQueue2, v9);
       }
     }
 
-    else if (v6)
+    else if (archiveHandler)
     {
-      v8 = [a1 archiveHandler];
-      (v8)[2](v8, v4);
+      archiveHandler2 = [archive archiveHandler];
+      (archiveHandler2)[2](archiveHandler2, v4);
     }
   }
 }

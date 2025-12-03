@@ -1,24 +1,24 @@
 @interface PVImageBuffer
-+ (id)imageWithCGImage:(CGImage *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3 withGainMap:(CGImage *)a4;
-+ (id)imageWithCGImage:(CGImage *)a3 withSourceColorSpace:(id)a4 withDestColorSpace:(id)a5;
-+ (id)imageWithCVPixelBuffer:(__CVBuffer *)a3;
-+ (id)imageWithHGBitmap:(HGRef<HGBitmap>)a3;
-+ (id)imageWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)a3;
-+ (id)imageWithMTLTexture:(id)a3;
-+ (id)imageWithProResLogCGImage:(CGImage *)a3 forColorSpace:(int)a4;
-+ (id)imageWithProResLogCVPixelBuffer:(__CVBuffer *)a3 forColorSpace:(int)a4;
-+ (id)imageWithProResLogUIImage:(id)a3 forColorSpace:(int)a4;
-+ (id)imageWithUIImage:(id)a3;
++ (id)imageWithCGImage:(CGImage *)image;
++ (id)imageWithCGImage:(CGImage *)image withGainMap:(CGImage *)map;
++ (id)imageWithCGImage:(CGImage *)image withSourceColorSpace:(id)space withDestColorSpace:(id)colorSpace;
++ (id)imageWithCVPixelBuffer:(__CVBuffer *)buffer;
++ (id)imageWithHGBitmap:(HGRef<HGBitmap>)bitmap;
++ (id)imageWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)buffer;
++ (id)imageWithMTLTexture:(id)texture;
++ (id)imageWithProResLogCGImage:(CGImage *)image forColorSpace:(int)space;
++ (id)imageWithProResLogCVPixelBuffer:(__CVBuffer *)buffer forColorSpace:(int)space;
++ (id)imageWithProResLogUIImage:(id)image forColorSpace:(int)space;
++ (id)imageWithUIImage:(id)image;
 - (BOOL)canCreateCVPixelBuffer;
 - (BOOL)canCreateHGBitmap;
 - (BOOL)cvPixelBufferRequiresCopy;
 - (BOOL)cvPixelBufferRequiresRender;
 - (CGImage)cgImage;
 - (CGSize)size;
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3;
-- (PVImageBuffer)initWithImageBufferImpl:(id)a3;
-- (__CVBuffer)cvPixelBufferWithColorSpace:(id)a3;
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space;
+- (PVImageBuffer)initWithImageBufferImpl:(id)impl;
+- (__CVBuffer)cvPixelBufferWithColorSpace:(id)space;
 - (id)description;
 - (id)uiImage;
 - (void)dealloc;
@@ -26,52 +26,52 @@
 
 @implementation PVImageBuffer
 
-+ (id)imageWithUIImage:(id)a3
++ (id)imageWithUIImage:(id)image
 {
-  v3 = a3;
-  v4 = -[PVCGImageBufferImpl initWithCGImage:]([PVCGImageBufferImpl alloc], "initWithCGImage:", [v3 CGImage]);
+  imageCopy = image;
+  v4 = -[PVCGImageBufferImpl initWithCGImage:]([PVCGImageBufferImpl alloc], "initWithCGImage:", [imageCopy CGImage]);
   v5 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v4];
 
   return v5;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[PVCGImageBufferImpl alloc] initWithCGImage:a3];
+  v3 = [[PVCGImageBufferImpl alloc] initWithCGImage:image];
   v4 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v3];
 
   return v4;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 withGainMap:(CGImage *)a4
++ (id)imageWithCGImage:(CGImage *)image withGainMap:(CGImage *)map
 {
-  v4 = [[PVCGImageBufferImpl alloc] initWithCGImage:a3 withGainMap:a4];
+  v4 = [[PVCGImageBufferImpl alloc] initWithCGImage:image withGainMap:map];
   v5 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v4];
 
   return v5;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 withSourceColorSpace:(id)a4 withDestColorSpace:(id)a5
++ (id)imageWithCGImage:(CGImage *)image withSourceColorSpace:(id)space withDestColorSpace:(id)colorSpace
 {
-  v6 = a4;
-  v7 = [[PVCGImageBufferImpl alloc] initWithCGImage:a3 withSourceColorSpace:v6];
+  spaceCopy = space;
+  v7 = [[PVCGImageBufferImpl alloc] initWithCGImage:image withSourceColorSpace:spaceCopy];
   v8 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v7];
 
   return v8;
 }
 
-+ (id)imageWithCVPixelBuffer:(__CVBuffer *)a3
++ (id)imageWithCVPixelBuffer:(__CVBuffer *)buffer
 {
-  v3 = [[PVCVPixelBufferImageBufferImpl alloc] initWithCVPixelBuffer:a3];
+  v3 = [[PVCVPixelBufferImageBufferImpl alloc] initWithCVPixelBuffer:buffer];
   v4 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v3];
 
   return v4;
 }
 
-+ (id)imageWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)a3
++ (id)imageWithHGCVPixelBuffer:(HGRef<HGCVPixelBuffer>)buffer
 {
   v4 = [PVCVPixelBufferImageBufferImpl alloc];
-  v5 = *a3.m_Obj;
+  v5 = *buffer.m_Obj;
   v9 = v5;
   if (v5)
   {
@@ -89,9 +89,9 @@
   return v7;
 }
 
-+ (id)imageWithHGBitmap:(HGRef<HGBitmap>)a3
++ (id)imageWithHGBitmap:(HGRef<HGBitmap>)bitmap
 {
-  CVBitmapStorage = HGCVBitmap::getCVBitmapStorage(*a3.m_Obj, a2);
+  CVBitmapStorage = HGCVBitmap::getCVBitmapStorage(*bitmap.m_Obj, a2);
   if (CVBitmapStorage)
   {
     v5 = CVBitmapStorage[16];
@@ -122,7 +122,7 @@
   else
   {
     v8 = [PVHGBitmapImageBufferImpl alloc];
-    v9 = *a3.m_Obj;
+    v9 = *bitmap.m_Obj;
     v12 = v9;
     if (v9)
     {
@@ -141,42 +141,42 @@
   return v7;
 }
 
-+ (id)imageWithMTLTexture:(id)a3
++ (id)imageWithMTLTexture:(id)texture
 {
-  v3 = a3;
-  v4 = [[PVMTLTextureImageBufferImpl alloc] initWithMTLTexture:v3];
+  textureCopy = texture;
+  v4 = [[PVMTLTextureImageBufferImpl alloc] initWithMTLTexture:textureCopy];
   v5 = [objc_alloc(objc_opt_class()) initWithImageBufferImpl:v4];
 
   return v5;
 }
 
-- (PVImageBuffer)initWithImageBufferImpl:(id)a3
+- (PVImageBuffer)initWithImageBufferImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v8.receiver = self;
   v8.super_class = PVImageBuffer;
   v6 = [(PVImageBuffer *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_imageBufferImpl, a3);
+    objc_storeStrong(&v6->_imageBufferImpl, impl);
     operator new();
   }
 
   return 0;
 }
 
-+ (id)imageWithProResLogUIImage:(id)a3 forColorSpace:(int)a4
++ (id)imageWithProResLogUIImage:(id)image forColorSpace:(int)space
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 imageWithProResLogCGImage:objc_msgSend(v6 forColorSpace:{"CGImage"), v4}];
+  v4 = *&space;
+  imageCopy = image;
+  v7 = [self imageWithProResLogCGImage:objc_msgSend(imageCopy forColorSpace:{"CGImage"), v4}];
 
   return v7;
 }
 
-+ (id)imageWithProResLogCGImage:(CGImage *)a3 forColorSpace:(int)a4
++ (id)imageWithProResLogCGImage:(CGImage *)image forColorSpace:(int)space
 {
-  if (a4)
+  if (space)
   {
     +[PVColorSpace rec2100HLGColorSpace];
   }
@@ -188,7 +188,7 @@
   v5 = ;
   v6 = [PVCGImageBufferImpl alloc];
   v7 = +[PVColorSpace ProResLogColorSpace];
-  v8 = [(PVCGImageBufferImpl *)v6 initWithCGImage:a3 withSourceColorSpace:v7];
+  v8 = [(PVCGImageBufferImpl *)v6 initWithCGImage:image withSourceColorSpace:v7];
 
   if (v8)
   {
@@ -223,9 +223,9 @@
   return v11;
 }
 
-+ (id)imageWithProResLogCVPixelBuffer:(__CVBuffer *)a3 forColorSpace:(int)a4
++ (id)imageWithProResLogCVPixelBuffer:(__CVBuffer *)buffer forColorSpace:(int)space
 {
-  if (a4)
+  if (space)
   {
     +[PVColorSpace rec2100HLGColorSpace];
   }
@@ -237,7 +237,7 @@
   v5 = ;
   v6 = [PVCVPixelBufferImageBufferImpl alloc];
   v7 = +[PVColorSpace ProResLogColorSpace];
-  v8 = [(PVCVPixelBufferImageBufferImpl *)v6 initWithCVPixelBuffer:a3 withSourceColorSpace:v7];
+  v8 = [(PVCVPixelBufferImageBufferImpl *)v6 initWithCVPixelBuffer:buffer withSourceColorSpace:v7];
 
   if (v8)
   {
@@ -292,8 +292,8 @@
   HGSynchronizable::Lock(lock);
   v4 = MEMORY[0x277D755B8];
   v5 = [(PVImageBufferImpl *)self->_imageBufferImpl cgImage:lock];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 nativeScale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen nativeScale];
   v7 = [v4 imageWithCGImage:v5 scale:0 orientation:?];
 
   HGSynchronizable::Unlock(lock);
@@ -313,56 +313,56 @@
 
 - (BOOL)canCreateCVPixelBuffer
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   LOBYTE(v5) = 0;
   HGSynchronizable::Lock(lock);
-  LOBYTE(v2) = [(PVImageBufferImpl *)v2->_imageBufferImpl canCreateCVPixelBuffer:lock];
+  LOBYTE(selfCopy) = [(PVImageBufferImpl *)selfCopy->_imageBufferImpl canCreateCVPixelBuffer:lock];
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)canCreateHGBitmap
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   LOBYTE(v5) = 0;
   HGSynchronizable::Lock(lock);
-  LOBYTE(v2) = [(PVImageBufferImpl *)v2->_imageBufferImpl canCreateHGBitmap:lock];
+  LOBYTE(selfCopy) = [(PVImageBufferImpl *)selfCopy->_imageBufferImpl canCreateHGBitmap:lock];
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)cvPixelBufferRequiresCopy
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   LOBYTE(v5) = 0;
   HGSynchronizable::Lock(lock);
-  LOBYTE(v2) = [(PVImageBufferImpl *)v2->_imageBufferImpl cvPixelBufferRequiresCopy:lock];
+  LOBYTE(selfCopy) = [(PVImageBufferImpl *)selfCopy->_imageBufferImpl cvPixelBufferRequiresCopy:lock];
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)cvPixelBufferRequiresRender
 {
-  v2 = self;
+  selfCopy = self;
   lock = self->_lock;
   LOBYTE(v5) = 0;
   HGSynchronizable::Lock(lock);
-  LOBYTE(v2) = [(PVImageBufferImpl *)v2->_imageBufferImpl cvPixelBufferRequiresRender:lock];
+  LOBYTE(selfCopy) = [(PVImageBufferImpl *)selfCopy->_imageBufferImpl cvPixelBufferRequiresRender:lock];
   HGSynchronizable::Unlock(lock);
-  return v2;
+  return selfCopy;
 }
 
-- (__CVBuffer)cvPixelBufferWithColorSpace:(id)a3
+- (__CVBuffer)cvPixelBufferWithColorSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   lock = self->_lock;
   v14 = 0;
   HGSynchronizable::Lock(lock);
   imageBufferImpl = self->_imageBufferImpl;
-  if (imageBufferImpl && ([(PVImageBufferImpl *)imageBufferImpl cvPixelBufferWithColorSpace:v4], v12))
+  if (imageBufferImpl && ([(PVImageBufferImpl *)imageBufferImpl cvPixelBufferWithColorSpace:spaceCopy], v12))
   {
     if ([(PVImageBufferImpl *)self->_imageBufferImpl cvPixelBufferRequiresCopy])
     {
@@ -393,12 +393,12 @@
   return v9;
 }
 
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space
 {
   v5 = v3;
-  v6 = a3;
+  spaceCopy = space;
   lock = self->_lock;
-  v10 = v6;
+  v10 = spaceCopy;
   HGSynchronizable::Lock(lock);
   imageBufferImpl = self->_imageBufferImpl;
   if (imageBufferImpl)

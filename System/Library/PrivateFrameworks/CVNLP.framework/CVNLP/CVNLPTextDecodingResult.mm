@@ -1,20 +1,20 @@
 @interface CVNLPTextDecodingResult
-- (CVNLPTextDecodingResult)initWithCandidates:(id)a3;
+- (CVNLPTextDecodingResult)initWithCandidates:(id)candidates;
 - (int64_t)count;
 @end
 
 @implementation CVNLPTextDecodingResult
 
-- (CVNLPTextDecodingResult)initWithCandidates:(id)a3
+- (CVNLPTextDecodingResult)initWithCandidates:(id)candidates
 {
-  v5 = a3;
+  candidatesCopy = candidates;
   v9.receiver = self;
   v9.super_class = CVNLPTextDecodingResult;
   v6 = [(CVNLPTextDecodingResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_candidates, a3);
+    objc_storeStrong(&v6->_candidates, candidates);
   }
 
   return v7;

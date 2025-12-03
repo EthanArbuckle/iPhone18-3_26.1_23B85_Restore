@@ -1,25 +1,25 @@
 @interface MKHTTPProxyAuthorization
-- (MKHTTPProxyAuthorization)initWithHeaderValue:(id)a3;
+- (MKHTTPProxyAuthorization)initWithHeaderValue:(id)value;
 @end
 
 @implementation MKHTTPProxyAuthorization
 
-- (MKHTTPProxyAuthorization)initWithHeaderValue:(id)a3
+- (MKHTTPProxyAuthorization)initWithHeaderValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = MKHTTPProxyAuthorization;
   v5 = [(MKHTTPProxyAuthorization *)&v16 init];
   if (v5)
   {
-    if (![v4 hasPrefix:@"Bearer "])
+    if (![valueCopy hasPrefix:@"Bearer "])
     {
 LABEL_12:
       v13 = 0;
       goto LABEL_13;
     }
 
-    v6 = [v4 substringWithRange:{objc_msgSend(@"Bearer ", "length"), objc_msgSend(v4, "length") - objc_msgSend(@"Bearer ", "length")}];
+    v6 = [valueCopy substringWithRange:{objc_msgSend(@"Bearer ", "length"), objc_msgSend(valueCopy, "length") - objc_msgSend(@"Bearer ", "length")}];
     v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v6 options:0];
     v15 = 0;
     v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v7 options:0 error:&v15];

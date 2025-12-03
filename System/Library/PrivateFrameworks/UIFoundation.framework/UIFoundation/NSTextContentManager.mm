@@ -10,7 +10,7 @@
 - (void)_incrementTransactionStack;
 - (void)addTextLayoutManager:(NSTextLayoutManager *)textLayoutManager;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)performEditingTransactionUsingBlock:(void *)transaction;
 - (void)recordEditActionInRange:(NSTextRange *)originalTextRange newTextRange:(NSTextRange *)newTextRange;
 - (void)removeTextLayoutManager:(NSTextLayoutManager *)textLayoutManager;
@@ -142,12 +142,12 @@ uint64_t __69__NSTextContentManager_defaultBaseWritingDirectionResolutionStrateg
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [(NSTextContentManager *)self textLayoutManagers];
-    v6 = [(NSTextContentManager *)self delegate];
+    textLayoutManagers = [(NSTextContentManager *)self textLayoutManagers];
+    delegate = [(NSTextContentManager *)self delegate];
     if (self->_automaticallySynchronizesToBackingStore)
     {
       v7 = 2;
@@ -161,23 +161,23 @@ uint64_t __69__NSTextContentManager_defaultBaseWritingDirectionResolutionStrateg
     v8 = v7 | self->_automaticallySynchronizesTextLayoutManagers;
     if (v8)
     {
-      [a3 encodeInt32:v8 forKey:@"NS.flags"];
+      [coder encodeInt32:v8 forKey:@"NS.flags"];
     }
 
-    if (v6)
+    if (delegate)
     {
-      [a3 encodeObject:v6 forKey:@"NS.delegate"];
+      [coder encodeObject:delegate forKey:@"NS.delegate"];
     }
 
-    if ([(NSArray *)v5 count])
+    if ([(NSArray *)textLayoutManagers count])
     {
-      [a3 encodeObject:v5 forKey:@"NS.textLayoutManagers"];
+      [coder encodeObject:textLayoutManagers forKey:@"NS.textLayoutManagers"];
     }
 
     if (self->_maximumNumberOfUncachedElements)
     {
 
-      [a3 encodeInteger:? forKey:?];
+      [coder encodeInteger:? forKey:?];
     }
   }
 }
@@ -285,14 +285,14 @@ uint64_t __54__NSTextContentManager_synchronizeTextLayoutManagers___block_invoke
   v13 = __Block_byref_object_copy__12;
   v14 = __Block_byref_object_dispose__12;
   v15 = 0;
-  v5 = [(NSTextRange *)range location];
+  location = [(NSTextRange *)range location];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__NSTextContentManager_textElementsForRange___block_invoke;
   v9[3] = &unk_1E7266570;
   v9[4] = range;
   v9[5] = &v10;
-  [(NSTextContentManager *)self enumerateTextElementsFromLocation:v5 options:0 usingBlock:v9];
+  [(NSTextContentManager *)self enumerateTextElementsFromLocation:location options:0 usingBlock:v9];
   v6 = v11[5];
   if (v11[5])
   {

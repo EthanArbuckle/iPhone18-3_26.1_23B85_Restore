@@ -1,26 +1,26 @@
 @interface HKHealthStoreIdentifier
-+ (id)identifierFromProfileIdentifier:(id)a3;
++ (id)identifierFromProfileIdentifier:(id)identifier;
 + (id)primaryStoreIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (HKHealthStoreIdentifier)initWithCoder:(id)a3;
-- (HKHealthStoreIdentifier)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKHealthStoreIdentifier)initWithCoder:(id)coder;
+- (HKHealthStoreIdentifier)initWithIdentifier:(id)identifier;
 - (HKProfileIdentifier)profileIdentifier;
 - (id)initPrimaryStoreIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHealthStoreIdentifier
 
-- (HKHealthStoreIdentifier)initWithIdentifier:(id)a3
+- (HKHealthStoreIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKHealthStoreIdentifier;
   v5 = [(HKHealthStoreIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __49__HKHealthStoreIdentifier_primaryStoreIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (primaryStoreIdentifier_onceToken != -1)
   {
     dispatch_once(&primaryStoreIdentifier_onceToken, block);
@@ -67,26 +67,26 @@ uint64_t __49__HKHealthStoreIdentifier_primaryStoreIdentifier__block_invoke(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(HKHealthStoreIdentifier *)self isPrimaryStoreIdentifier];
-    v8 = [(HKHealthStoreIdentifier *)v6 isPrimaryStoreIdentifier];
-    v9 = v7 && v8;
-    if (!v7 && !v8)
+    isPrimaryStoreIdentifier = [(HKHealthStoreIdentifier *)self isPrimaryStoreIdentifier];
+    isPrimaryStoreIdentifier2 = [(HKHealthStoreIdentifier *)v6 isPrimaryStoreIdentifier];
+    v9 = isPrimaryStoreIdentifier && isPrimaryStoreIdentifier2;
+    if (!isPrimaryStoreIdentifier && !isPrimaryStoreIdentifier2)
     {
       identifier = self->_identifier;
-      v11 = [(HKHealthStoreIdentifier *)v6 identifier];
-      v9 = [(NSUUID *)identifier isEqual:v11];
+      identifier = [(HKHealthStoreIdentifier *)v6 identifier];
+      v9 = [(NSUUID *)identifier isEqual:identifier];
     }
   }
 
@@ -128,10 +128,10 @@ uint64_t __49__HKHealthStoreIdentifier_primaryStoreIdentifier__block_invoke(uint
   return v3;
 }
 
-+ (id)identifierFromProfileIdentifier:(id)a3
++ (id)identifierFromProfileIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  identifierCopy = identifier;
+  if ([identifierCopy type] == 1)
   {
     v4 = +[HKHealthStoreIdentifier primaryStoreIdentifier];
   }
@@ -139,18 +139,18 @@ uint64_t __49__HKHealthStoreIdentifier_primaryStoreIdentifier__block_invoke(uint
   else
   {
     v5 = [HKHealthStoreIdentifier alloc];
-    v6 = [v3 identifier];
-    v4 = [(HKHealthStoreIdentifier *)v5 initWithIdentifier:v6];
+    identifier = [identifierCopy identifier];
+    v4 = [(HKHealthStoreIdentifier *)v5 initWithIdentifier:identifier];
   }
 
   return v4;
 }
 
-- (HKHealthStoreIdentifier)initWithCoder:(id)a3
+- (HKHealthStoreIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"is_primary_store_identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"is_primary_store_identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   if (v5)
   {
@@ -180,14 +180,14 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[HKHealthStoreIdentifier isPrimaryStoreIdentifier](self forKey:{"isPrimaryStoreIdentifier"), @"is_primary_store_identifier"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HKHealthStoreIdentifier isPrimaryStoreIdentifier](self forKey:{"isPrimaryStoreIdentifier"), @"is_primary_store_identifier"}];
   identifier = self->_identifier;
   if (identifier)
   {
-    [v5 encodeObject:identifier forKey:@"identifier"];
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
   }
 }
 

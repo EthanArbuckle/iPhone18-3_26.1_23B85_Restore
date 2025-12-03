@@ -1,45 +1,45 @@
 @interface IMSendProgress
-- (IMSendProgress)initWithDelegate:(id)a3 context:(id)a4;
+- (IMSendProgress)initWithDelegate:(id)delegate context:(id)context;
 - (IMSendProgressDelegate)delegate;
 - (double)_getEstimatedSendTimeOverStewieInSeconds;
 - (id)context;
-- (unint64_t)_sGetEstimatedNumberOfRetries:(unint64_t)a3;
-- (unint64_t)_sGetNumberOfDataGrams:(unint64_t)a3;
+- (unint64_t)_sGetEstimatedNumberOfRetries:(unint64_t)retries;
+- (unint64_t)_sGetNumberOfDataGrams:(unint64_t)grams;
 - (void)_resetSendProgress;
 - (void)_scheduleSendProgressTimerIfNeeded;
-- (void)_sendProgressTimerFired:(id)a3;
+- (void)_sendProgressTimerFired:(id)fired;
 - (void)_updateSendProgress;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateForItems:(id)a3 forced:(BOOL)a4;
+- (void)updateForItems:(id)items forced:(BOOL)forced;
 - (void)updateForPendingComposition;
 @end
 
 @implementation IMSendProgress
 
-- (unint64_t)_sGetNumberOfDataGrams:(unint64_t)a3
+- (unint64_t)_sGetNumberOfDataGrams:(unint64_t)grams
 {
-  if (!a3)
+  if (!grams)
   {
     return 0;
   }
 
-  if (a3 >= 0xD)
+  if (grams >= 0xD)
   {
-    return (ceil((a3 - 11) / 17.0) + 1.0);
+    return (ceil((grams - 11) / 17.0) + 1.0);
   }
 
   return 1;
 }
 
-- (unint64_t)_sGetEstimatedNumberOfRetries:(unint64_t)a3
+- (unint64_t)_sGetEstimatedNumberOfRetries:(unint64_t)retries
 {
-  if (!a3)
+  if (!retries)
   {
     return 0;
   }
 
-  v3 = (a3 + -1.0) / 0.7 + 2.04081633 - a3;
+  v3 = (retries + -1.0) / 0.7 + 2.04081633 - retries;
   if (v3 < 0.0)
   {
     v3 = 0.0;
@@ -76,18 +76,18 @@
   [(IMSendProgress *)&v4 dealloc];
 }
 
-- (IMSendProgress)initWithDelegate:(id)a3 context:(id)a4
+- (IMSendProgress)initWithDelegate:(id)delegate context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = IMSendProgress;
   v8 = [(IMSendProgress *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeWeak(&v9->_context, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeWeak(&v9->_context, contextCopy);
     v10 = objc_opt_class();
     v13 = objc_alloc_init(objc_msgSend__timeDataSourceClass(v10, v11, v12));
     timeDataSource = v9->_timeDataSource;
@@ -97,14 +97,14 @@
   return v9;
 }
 
-- (void)updateForItems:(id)a3 forced:(BOOL)a4
+- (void)updateForItems:(id)items forced:(BOOL)forced
 {
-  v75 = a4;
+  forcedCopy = forced;
   v112 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v76 = self;
+  itemsCopy = items;
+  selfCopy = self;
   v78 = self->_sendingItems;
-  v6 = v5;
+  v6 = itemsCopy;
   v77 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v7, v8);
   v92 = 0u;
   v93 = 0u;
@@ -252,7 +252,7 @@ LABEL_28:
   v81 = v50;
   v82 = &v83;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v48, v51, v80);
-  v54 = self;
+  selfCopy2 = self;
   if (*(v84 + 24) == 1 && (objc_msgSend_waitingForComposition(self, v52, v53) & 1) == 0)
   {
     goto LABEL_37;
@@ -286,9 +286,9 @@ LABEL_38:
       v64 = objc_msgSend_allKeys(v48, v62, v63);
       v65 = *(*(&v90 + 1) + 24);
       v66 = *(v84 + 24);
-      hasSendingMessages = objc_msgSend__hasSendingMessages(v76, v67, v68);
+      hasSendingMessages = objc_msgSend__hasSendingMessages(selfCopy, v67, v68);
       *buf = 134220034;
-      v95 = v76;
+      v95 = selfCopy;
       v96 = 2048;
       v97 = WeakRetained;
       v98 = 2048;
@@ -302,20 +302,20 @@ LABEL_38:
       v106 = 1024;
       v107 = v66;
       v108 = 1024;
-      v109 = v75;
+      v109 = forcedCopy;
       v110 = 1024;
       v111 = hasSendingMessages;
       _os_log_impl(&dword_1A823F000, v56, OS_LOG_TYPE_INFO, "IMSendProgress: %p (delegate: %p, context: %p) is updating sending items from %@ to %@. (removed? %d, inserted? %d, forced? %d, hasSendingMessages? %d)", buf, 0x4Cu);
     }
 
-    v54 = v76;
+    selfCopy2 = selfCopy;
   }
 
-  objc_msgSend_setSendingItems_(v54, v55, v48);
-  objc_msgSend__scheduleSendProgressTimerIfNeeded(v54, v70, v71);
-  if ((*(*(&v90 + 1) + 24) & 1) != 0 || (v84[3] & 1) != 0 || (objc_msgSend__hasSendingMessages(v54, v72, v73) | v75) == 1)
+  objc_msgSend_setSendingItems_(selfCopy2, v55, v48);
+  objc_msgSend__scheduleSendProgressTimerIfNeeded(selfCopy2, v70, v71);
+  if ((*(*(&v90 + 1) + 24) & 1) != 0 || (v84[3] & 1) != 0 || (objc_msgSend__hasSendingMessages(selfCopy2, v72, v73) | forcedCopy) == 1)
   {
-    objc_msgSend__updateSendProgress(v54, v72, v73);
+    objc_msgSend__updateSendProgress(selfCopy2, v72, v73);
   }
 
   _Block_object_dispose(&v83, 8);
@@ -588,9 +588,9 @@ LABEL_34:
   }
 }
 
-- (void)_sendProgressTimerFired:(id)a3
+- (void)_sendProgressTimerFired:(id)fired
 {
-  if ((objc_msgSend__hasSendingMessages(self, a2, a3) & 1) != 0 || objc_msgSend_waitingForComposition(self, v4, v5))
+  if ((objc_msgSend__hasSendingMessages(self, a2, fired) & 1) != 0 || objc_msgSend_waitingForComposition(self, v4, v5))
   {
 
     objc_msgSend__updateSendProgress(self, v4, v5);

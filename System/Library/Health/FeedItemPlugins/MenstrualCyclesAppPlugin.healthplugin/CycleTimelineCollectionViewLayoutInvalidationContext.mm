@@ -9,7 +9,7 @@
 {
   sub_29E2C3714();
   v6[2] = self;
-  v3 = self;
+  selfCopy = self;
   sub_29E0D88FC(sub_29DEF8A84, v6);
 
   v4 = sub_29E2C33A4();

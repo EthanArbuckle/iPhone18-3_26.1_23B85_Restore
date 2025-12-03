@@ -1,31 +1,31 @@
 @interface PGPastSupersetMemoryGenerator
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7;
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)relevantCurationFeederForTriggeredMemory:(id)a3 relevantFeeder:(id)a4 inGraph:(id)a5 allowGuestAsset:(BOOL)a6 progressReporter:(id)a7;
-- (id)relevantFeederForTriggeredMemory:(id)a3 inGraph:(id)a4 allowGuestAsset:(BOOL)a5 progressReporter:(id)a6;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6;
-- (void)generateMoodForEnrichedMemory:(id)a3 extendedCuratedAssets:(id)a4 configuration:(id)a5 inGraph:(id)a6;
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)relevantCurationFeederForTriggeredMemory:(id)memory relevantFeeder:(id)feeder inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter;
+- (id)relevantFeederForTriggeredMemory:(id)memory inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock;
+- (void)generateMoodForEnrichedMemory:(id)memory extendedCuratedAssets:(id)assets configuration:(id)configuration inGraph:(id)graph;
 @end
 
 @implementation PGPastSupersetMemoryGenerator
 
-- (void)generateMoodForEnrichedMemory:(id)a3 extendedCuratedAssets:(id)a4 configuration:(id)a5 inGraph:(id)a6
+- (void)generateMoodForEnrichedMemory:(id)memory extendedCuratedAssets:(id)assets configuration:(id)configuration inGraph:(id)graph
 {
-  v6 = a3;
-  [v6 setSuggestedMood:16];
-  [v6 setForbiddenMoods:896];
-  [v6 setRecommendedMoods:0];
+  memoryCopy = memory;
+  [memoryCopy setSuggestedMood:16];
+  [memoryCopy setForbiddenMoods:896];
+  [memoryCopy setRecommendedMoods:0];
 }
 
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v7 = a3;
-  v8 = [v7 memoryMomentNodes];
-  v9 = [v8 dateNodes];
-  v10 = [v9 yearNodes];
-  v11 = [v10 count];
+  memoryCopy = memory;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  dateNodes = [memoryMomentNodes dateNodes];
+  yearNodes = [dateNodes yearNodes];
+  v11 = [yearNodes count];
 
   if (v11 < 2)
   {
@@ -34,42 +34,42 @@
 
   else
   {
-    v12 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:v7];
+    v12 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:memoryCopy];
   }
 
   return v12;
 }
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v9 = a7;
-  v10 = a3;
-  v11 = [v10 memoryMomentNodes];
-  v12 = [v11 universalDateInterval];
+  contextCopy = context;
+  memoryCopy = memory;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  universalDateInterval = [memoryMomentNodes universalDateInterval];
 
-  v13 = [v10 memoryFeatureNodes];
-  v14 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:v13];
-  v15 = [v14 anyNode];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v14 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:memoryFeatureNodes];
+  anyNode = [v14 anyNode];
 
   v16 = [PGPastSupersetMemoryTitleGenerator alloc];
-  v17 = [v10 memoryMomentNodes];
+  memoryMomentNodes2 = [memoryCopy memoryMomentNodes];
 
-  v18 = [v17 set];
-  v19 = [(PGPastSupersetMemoryTitleGenerator *)v16 initWithMomentNodes:v18 supersetLocationNode:v15 supersetDateInterval:v12 titleGenerationContext:v9];
+  v18 = [memoryMomentNodes2 set];
+  v19 = [(PGPastSupersetMemoryTitleGenerator *)v16 initWithMomentNodes:v18 supersetLocationNode:anyNode supersetDateInterval:universalDateInterval titleGenerationContext:contextCopy];
 
   return v19;
 }
 
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory
 {
   v14.receiver = self;
   v14.super_class = PGPastSupersetMemoryGenerator;
-  v7 = a5;
-  v8 = [(PGMemoryGenerator *)&v14 curationOptionsWithRequiredAssetUUIDs:a3 eligibleAssetUUIDs:a4 triggeredMemory:v7];
-  v9 = [v7 memoryMomentNodes];
+  memoryCopy = memory;
+  v8 = [(PGMemoryGenerator *)&v14 curationOptionsWithRequiredAssetUUIDs:ds eligibleAssetUUIDs:iDs triggeredMemory:memoryCopy];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
 
-  v10 = [v9 universalDateInterval];
-  [v10 duration];
+  universalDateInterval = [memoryMomentNodes universalDateInterval];
+  [universalDateInterval duration];
   v12 = v11;
 
   if (v12 > 31557600.0)
@@ -80,52 +80,52 @@
   return v8;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v10.receiver = self;
   v10.super_class = PGPastSupersetMemoryGenerator;
-  v5 = a4;
-  v6 = [(PGMemoryGenerator *)&v10 keyAssetCurationOptionsWithTriggeredMemory:a3 inGraph:v5];
+  graphCopy = graph;
+  v6 = [(PGMemoryGenerator *)&v10 keyAssetCurationOptionsWithTriggeredMemory:memory inGraph:graphCopy];
   [v6 setComplete:{1, v10.receiver, v10.super_class}];
-  v7 = [v5 meNodeCollection];
+  meNodeCollection = [graphCopy meNodeCollection];
 
-  v8 = [v7 localIdentifiers];
-  [v6 setReferencePersonLocalIdentifiers:v8];
+  localIdentifiers = [meNodeCollection localIdentifiers];
+  [v6 setReferencePersonLocalIdentifiers:localIdentifiers];
 
   [v6 setFocusOnPeople:1];
 
   return v6;
 }
 
-- (id)relevantCurationFeederForTriggeredMemory:(id)a3 relevantFeeder:(id)a4 inGraph:(id)a5 allowGuestAsset:(BOOL)a6 progressReporter:(id)a7
+- (id)relevantCurationFeederForTriggeredMemory:(id)memory relevantFeeder:(id)feeder inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  v13 = [v10 memoryFeatureNodes];
-  v14 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:v13];
+  memoryCopy = memory;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v14 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v14 count] == 1)
   {
-    v15 = [v10 memoryMomentNodes];
-    v16 = [v14 anyNode];
-    v17 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v18 = [v17 curationManager];
-    v19 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:v15 inLocationOrAreaNode:v16 requireInteresting:1 curationManager:v18 progressReporter:v12];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    anyNode = [v14 anyNode];
+    memoryCurationSession = [(PGMemoryGenerator *)self memoryCurationSession];
+    curationManager = [memoryCurationSession curationManager];
+    v19 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:memoryMomentNodes inLocationOrAreaNode:anyNode requireInteresting:1 curationManager:curationManager progressReporter:reporterCopy];
 
-    v20 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v21 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v19 memoryCurationSession:v20 graph:v11];
+    memoryCurationSession2 = [(PGMemoryGenerator *)self memoryCurationSession];
+    v21 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v19 memoryCurationSession:memoryCurationSession2 graph:graphCopy];
   }
 
   else
   {
-    v22 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v25[0] = 67109120;
       v25[1] = [v14 count];
-      _os_log_error_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_ERROR, "[PGPastSupersetMemoryGenerator] One frequent location node expected, found %d", v25, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGPastSupersetMemoryGenerator] One frequent location node expected, found %d", v25, 8u);
     }
 
     v21 = 0;
@@ -136,35 +136,35 @@
   return v21;
 }
 
-- (id)relevantFeederForTriggeredMemory:(id)a3 inGraph:(id)a4 allowGuestAsset:(BOOL)a5 progressReporter:(id)a6
+- (id)relevantFeederForTriggeredMemory:(id)memory inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 memoryFeatureNodes];
-  v13 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:v12];
+  memoryCopy = memory;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v13 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v13 count] == 1)
   {
-    v14 = [v9 memoryMomentNodes];
-    v15 = [v13 anyNode];
-    v16 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v17 = [v16 curationManager];
-    v18 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:v14 inLocationOrAreaNode:v15 requireInteresting:0 curationManager:v17 progressReporter:v11];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    anyNode = [v13 anyNode];
+    memoryCurationSession = [(PGMemoryGenerator *)self memoryCurationSession];
+    curationManager = [memoryCurationSession curationManager];
+    v18 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:memoryMomentNodes inLocationOrAreaNode:anyNode requireInteresting:0 curationManager:curationManager progressReporter:reporterCopy];
 
-    v19 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v20 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v18 memoryCurationSession:v19 graph:v10];
+    memoryCurationSession2 = [(PGMemoryGenerator *)self memoryCurationSession];
+    v20 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v18 memoryCurationSession:memoryCurationSession2 graph:graphCopy];
   }
 
   else
   {
-    v21 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v24[0] = 67109120;
       v24[1] = [v13 count];
-      _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "[PGPastSupersetMemoryGenerator] One frequent location node expected, found %d", v24, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGPastSupersetMemoryGenerator] One frequent location node expected, found %d", v24, 8u);
     }
 
     v20 = 0;
@@ -175,52 +175,52 @@
   return v20;
 }
 
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock
 {
   v273[1] = *MEMORY[0x277D85DE8];
-  v158 = a3;
-  v162 = a4;
-  v155 = a5;
-  v166 = a6;
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  usingBlockCopy = usingBlock;
   v161 = objc_opt_new();
   v164 = [MEMORY[0x277D27690] yearFromDate:self->_localDate];
   v10 = MEMORY[0x277D27690];
-  v172 = self;
-  v11 = [(PGPastSupersetMemoryGenerator *)self localDate];
-  v12 = [v10 dateByAddingMonths:-6 toDate:v11];
+  selfCopy = self;
+  localDate = [(PGPastSupersetMemoryGenerator *)self localDate];
+  v12 = [v10 dateByAddingMonths:-6 toDate:localDate];
 
   v160 = v12;
-  v13 = [(PGFeaturedMemoryGenerator *)self upperBoundLocalDate];
+  upperBoundLocalDate = [(PGFeaturedMemoryGenerator *)self upperBoundLocalDate];
 
   v174 = v160;
-  if (v13)
+  if (upperBoundLocalDate)
   {
-    v14 = [(PGFeaturedMemoryGenerator *)self upperBoundLocalDate];
-    v174 = [v160 earlierDate:v14];
+    upperBoundLocalDate2 = [(PGFeaturedMemoryGenerator *)self upperBoundLocalDate];
+    v174 = [v160 earlierDate:upperBoundLocalDate2];
   }
 
   v15 = objc_alloc(MEMORY[0x277CCA970]);
-  v16 = [(PGPastSupersetMemoryGenerator *)self localDate];
-  v188 = [v15 initWithStartDate:v160 endDate:v16];
+  localDate2 = [(PGPastSupersetMemoryGenerator *)self localDate];
+  v188 = [v15 initWithStartDate:v160 endDate:localDate2];
 
-  v17 = [MEMORY[0x277CBEB18] array];
-  v18 = [(PGMemoryGenerator *)self locationHelper];
-  v19 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v157 = [v19 momentNodesForProcessingWindow:v158 inGraph:v162];
+  array = [MEMORY[0x277CBEB18] array];
+  locationHelper = [(PGMemoryGenerator *)self locationHelper];
+  memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+  v157 = [memoryGenerationContext momentNodesForProcessingWindow:windowCopy inGraph:graphCopy];
 
-  v159 = [v157 frequentLocationNodes];
+  frequentLocationNodes = [v157 frequentLocationNodes];
   v20 = MEMORY[0x277D22BF8];
   v21 = +[PGGraphFrequentLocationNode momentOfFrequentLocation];
-  v22 = [v20 adjacencyWithSources:v159 relation:v21 targetsClass:objc_opt_class()];
+  v22 = [v20 adjacencyWithSources:frequentLocationNodes relation:v21 targetsClass:objc_opt_class()];
 
   v23 = MEMORY[0x277D22BF8];
   v24 = +[PGGraphFrequentLocationNode addressOfFrequentLocation];
-  v25 = [v23 adjacencyWithSources:v159 relation:v24 targetsClass:objc_opt_class()];
+  v25 = [v23 adjacencyWithSources:frequentLocationNodes relation:v24 targetsClass:objc_opt_class()];
 
   v26 = MEMORY[0x277D22BF8];
-  v27 = [v25 targets];
+  targets = [v25 targets];
   v28 = +[PGGraphAddressNode cityOfAddress];
-  v29 = [v26 adjacencyWithSources:v27 relation:v28 targetsClass:objc_opt_class()];
+  v29 = [v26 adjacencyWithSources:targets relation:v28 targetsClass:objc_opt_class()];
 
   v245[0] = MEMORY[0x277D85DD0];
   v245[1] = 3221225472;
@@ -230,15 +230,15 @@
   v246 = v153;
   v154 = v29;
   v247 = v154;
-  v200 = v18;
+  v200 = locationHelper;
   v248 = v200;
   v251 = 208;
   v152 = v22;
   v249 = v152;
-  v156 = v17;
+  v156 = array;
   v250 = v156;
-  [v159 enumerateNodesUsingBlock:v245];
-  v184 = [MEMORY[0x277CBEB18] array];
+  [frequentLocationNodes enumerateNodesUsingBlock:v245];
+  array2 = [MEMORY[0x277CBEB18] array];
   v30 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"dateInterval" ascending:1];
   v263 = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v263 count:1];
@@ -268,10 +268,10 @@
         v189 = v33;
         v35 = *(*(&v241 + 1) + 8 * v33);
         context = objc_autoreleasePoolPush();
-        v201 = [v35 dateInterval];
-        v193 = [v35 momentNodes];
-        v197 = [v35 supersetCityNodes];
-        v195 = [v35 densestCloseLocationNodes];
+        dateInterval = [v35 dateInterval];
+        momentNodes = [v35 momentNodes];
+        supersetCityNodes = [v35 supersetCityNodes];
+        densestCloseLocationNodes = [v35 densestCloseLocationNodes];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x3032000000;
@@ -282,7 +282,7 @@
         v238 = 0u;
         v239 = 0u;
         v240 = 0u;
-        v36 = v184;
+        v36 = array2;
         v37 = [v36 countByEnumeratingWithState:&v237 objects:v261 count:16];
         if (v37)
         {
@@ -297,15 +297,15 @@
               }
 
               v40 = *(*(&v237 + 1) + 8 * i);
-              v41 = [v40 dateInterval];
-              v42 = [v201 intersectionWithDateInterval:v41];
+              dateInterval2 = [v40 dateInterval];
+              v42 = [dateInterval intersectionWithDateInterval:dateInterval2];
               [v42 duration];
               v44 = v43 > 7889400.0;
 
               if (v44)
               {
-                v45 = [v40 densestCloseLocationNodes];
-                v46 = [v45 containsCollection:v195];
+                densestCloseLocationNodes2 = [v40 densestCloseLocationNodes];
+                v46 = [densestCloseLocationNodes2 containsCollection:densestCloseLocationNodes];
 
                 if (v46)
                 {
@@ -318,16 +318,16 @@ LABEL_24:
                   goto LABEL_25;
                 }
 
-                v47 = [v40 supersetCityNodes];
-                v48 = [v200 stateNodeFromCityNodeAsCollection:v197];
-                v49 = [v40 stateNodeAsCollection];
-                if (v49)
+                supersetCityNodes2 = [v40 supersetCityNodes];
+                v48 = [v200 stateNodeFromCityNodeAsCollection:supersetCityNodes];
+                stateNodeAsCollection = [v40 stateNodeAsCollection];
+                if (stateNodeAsCollection)
                 {
-                  if ([v48 intersectsCollection:v49])
+                  if ([v48 intersectsCollection:stateNodeAsCollection])
                   {
-                    v50 = [v200 addressNodesFromLocationNodes:v197];
-                    v51 = [v50 anyNode];
-                    [v51 coordinate];
+                    v50 = [v200 addressNodesFromLocationNodes:supersetCityNodes];
+                    anyNode = [v50 anyNode];
+                    [anyNode coordinate];
                     v53 = v52;
                     v55 = v54;
 
@@ -341,7 +341,7 @@ LABEL_24:
                     v234 = buf;
                     v231 = v56;
                     v232 = v40;
-                    v57 = v47;
+                    v57 = supersetCityNodes2;
                     v233 = v57;
                     [v57 enumerateIdentifiersAsCollectionsWithBlock:v230];
                     LOBYTE(v50) = *(*&buf[8] + 40) == 0;
@@ -371,34 +371,34 @@ LABEL_25:
         v60 = *(*&buf[8] + 40);
         if (v60)
         {
-          v61 = [v60 dateInterval];
-          v62 = [v61 startDate];
-          v63 = [v201 startDate];
-          v64 = [v62 earlierDate:v63];
+          dateInterval3 = [v60 dateInterval];
+          startDate = [dateInterval3 startDate];
+          startDate2 = [dateInterval startDate];
+          v64 = [startDate earlierDate:startDate2];
 
-          v65 = [v61 endDate];
-          v66 = [v201 endDate];
-          v67 = [v65 laterDate:v66];
+          endDate = [dateInterval3 endDate];
+          endDate2 = [dateInterval endDate];
+          v67 = [endDate laterDate:endDate2];
 
           v68 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v64 endDate:v67];
           [*(*&buf[8] + 40) setDateInterval:v68];
-          v69 = [*(*&buf[8] + 40) momentNodes];
-          v70 = [v69 collectionByFormingUnionWith:v193];
+          momentNodes2 = [*(*&buf[8] + 40) momentNodes];
+          v70 = [momentNodes2 collectionByFormingUnionWith:momentNodes];
           [*(*&buf[8] + 40) setMomentNodes:v70];
 
-          v71 = [*(*&buf[8] + 40) supersetCityNodes];
-          v72 = [v71 collectionByFormingUnionWith:v197];
+          supersetCityNodes3 = [*(*&buf[8] + 40) supersetCityNodes];
+          v72 = [supersetCityNodes3 collectionByFormingUnionWith:supersetCityNodes];
           [*(*&buf[8] + 40) setSupersetCityNodes:v72];
 
-          v73 = [*(*&buf[8] + 40) densestCloseLocationNodes];
-          v74 = [v73 collectionByFormingUnionWith:v195];
+          densestCloseLocationNodes3 = [*(*&buf[8] + 40) densestCloseLocationNodes];
+          v74 = [densestCloseLocationNodes3 collectionByFormingUnionWith:densestCloseLocationNodes];
           [*(*&buf[8] + 40) setDensestCloseLocationNodes:v74];
         }
 
         else
         {
-          v61 = [PGPastSupersetGroup pastSupersetGroupWithMomentNodes:v193 dateInterval:v201 supersetCityNodeAsCollection:v197 densestCloseLocationNodeAsCollection:v195 locationHelper:v200];
-          [v36 addObject:v61];
+          dateInterval3 = [PGPastSupersetGroup pastSupersetGroupWithMomentNodes:momentNodes dateInterval:dateInterval supersetCityNodeAsCollection:supersetCityNodes densestCloseLocationNodeAsCollection:densestCloseLocationNodes locationHelper:v200];
+          [v36 addObject:dateInterval3];
         }
 
         _Block_object_dispose(buf, 8);
@@ -418,13 +418,13 @@ LABEL_25:
   v226 = 0x3032000000;
   v227 = __Block_byref_object_copy__1215;
   v228 = __Block_byref_object_dispose__1216;
-  v229 = [(MAElementCollection *)[PGGraphLocationNodeCollection alloc] initWithGraph:v162];
-  v202 = [MEMORY[0x277CBEB38] dictionary];
+  v229 = [(MAElementCollection *)[PGGraphLocationNodeCollection alloc] initWithGraph:graphCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v222 = 0u;
   v223 = 0u;
   v220 = 0u;
   v221 = 0u;
-  v198 = v184;
+  v198 = array2;
   v75 = [v198 countByEnumeratingWithState:&v220 objects:v260 count:16];
   if (v75)
   {
@@ -439,19 +439,19 @@ LABEL_25:
         }
 
         v78 = *(*(&v220 + 1) + 8 * j);
-        v79 = [v78 dateInterval];
-        v80 = [v79 intersectsDateInterval:v188];
+        dateInterval4 = [v78 dateInterval];
+        v80 = [dateInterval4 intersectsDateInterval:v188];
 
-        v81 = [v78 densestCloseLocationNodes];
+        densestCloseLocationNodes4 = [v78 densestCloseLocationNodes];
         v215[0] = MEMORY[0x277D85DD0];
         v215[1] = 3221225472;
         v215[2] = __111__PGPastSupersetMemoryGenerator__enumeratePotentialMemoriesForProcessingWindow_graph_progressBlock_usingBlock___block_invoke_2;
         v215[3] = &unk_27887F138;
-        v216 = v202;
+        v216 = dictionary;
         v217 = v78;
         v219 = v80;
         v218 = &v224;
-        [v81 enumerateNodesUsingBlock:v215];
+        [densestCloseLocationNodes4 enumerateNodesUsingBlock:v215];
       }
 
       v75 = [v198 countByEnumeratingWithState:&v220 objects:v260 count:16];
@@ -460,14 +460,14 @@ LABEL_25:
     while (v75);
   }
 
-  v82 = [v162 meNode];
-  v163 = [v82 localIdentifier];
+  meNode = [graphCopy meNode];
+  localIdentifier = [meNode localIdentifier];
 
-  v83 = [(PGMemoryGenerator *)v172 momentNodesWithBlockedFeatureCache];
-  v170 = [v83 momentNodesWithBlockedFeature];
+  momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)selfCopy momentNodesWithBlockedFeatureCache];
+  momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
-  v179 = [(PGMemoryGenerator *)v172 processedScenesAndFacesCache];
-  v169 = [v179 momentNodesWithEnoughScenesProcessedInGraph:v162];
+  processedScenesAndFacesCache = [(PGMemoryGenerator *)selfCopy processedScenesAndFacesCache];
+  v169 = [processedScenesAndFacesCache momentNodesWithEnoughScenesProcessedInGraph:graphCopy];
   v213 = 0u;
   v214 = 0u;
   v211 = 0u;
@@ -492,35 +492,35 @@ LABEL_25:
         }
 
         v84 = *(*(&v211 + 1) + 8 * k);
-        v190 = [v84 momentNodes];
-        if ([v179 allMomentNodesInCollectionHaveScenesProcessed:?])
+        momentNodes3 = [v84 momentNodes];
+        if ([processedScenesAndFacesCache allMomentNodesInCollectionHaveScenesProcessed:?])
         {
-          v185 = [v84 densestCloseLocationNodes];
+          densestCloseLocationNodes5 = [v84 densestCloseLocationNodes];
           v175 = v84;
-          v85 = [v84 dateInterval];
-          v196 = [v85 endDate];
+          dateInterval5 = [v84 dateInterval];
+          endDate3 = [dateInterval5 endDate];
 
-          if ([v196 compare:v174] == 1)
+          if ([endDate3 compare:v174] == 1)
           {
             ++v173;
           }
 
           else
           {
-            if ([v225[5] intersectsCollection:v185])
+            if ([v225[5] intersectsCollection:densestCloseLocationNodes5])
             {
-              v86 = [v185 collectionByIntersecting:v225[5]];
+              v86 = [densestCloseLocationNodes5 collectionByIntersecting:v225[5]];
               v209 = 0u;
               v210 = 0u;
               v207 = 0u;
               v208 = 0u;
               v171 = v86;
-              v87 = [v86 temporarySet];
-              v88 = [v87 countByEnumeratingWithState:&v207 objects:v258 count:16];
+              temporarySet = [v86 temporarySet];
+              v88 = [temporarySet countByEnumeratingWithState:&v207 objects:v258 count:16];
               if (v88)
               {
                 contexta = *v208;
-                v183 = v87;
+                v183 = temporarySet;
                 while (2)
                 {
                   v187 = v88;
@@ -532,7 +532,7 @@ LABEL_25:
                     }
 
                     v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(*(&v207 + 1) + 8 * m), "identifier")}];
-                    v91 = [v202 objectForKeyedSubscript:v90];
+                    v91 = [dictionary objectForKeyedSubscript:v90];
 
                     v199 = v91;
                     v92 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
@@ -540,7 +540,7 @@ LABEL_25:
                     v93 = [MEMORY[0x277CBEA60] arrayWithObjects:v273 count:1];
                     v94 = [v199 sortedArrayUsingDescriptors:v93];
 
-                    v95 = [v94 firstObject];
+                    firstObject = [v94 firstObject];
                     v255 = 0u;
                     v253 = 0u;
                     v254 = 0u;
@@ -560,14 +560,14 @@ LABEL_25:
                           }
 
                           v100 = *(*(&v252 + 1) + 8 * n);
-                          if ([v100 intersectsDateInterval:v95])
+                          if ([v100 intersectsDateInterval:firstObject])
                           {
                             goto LABEL_59;
                           }
 
-                          v101 = [v95 startDate];
-                          v102 = [v100 endDate];
-                          [v101 timeIntervalSinceDate:v102];
+                          startDate3 = [firstObject startDate];
+                          endDate4 = [v100 endDate];
+                          [startDate3 timeIntervalSinceDate:endDate4];
                           v104 = v103 > 15778800.0;
 
                           if (!v104)
@@ -575,7 +575,7 @@ LABEL_25:
 LABEL_59:
                             v105 = v100;
 
-                            v95 = v105;
+                            firstObject = v105;
                           }
                         }
 
@@ -585,9 +585,9 @@ LABEL_59:
                       while (v97);
                     }
 
-                    v106 = [v95 startDate];
+                    startDate4 = [firstObject startDate];
 
-                    [v106 timeIntervalSinceDate:v196];
+                    [startDate4 timeIntervalSinceDate:endDate3];
                     v108 = v107 < 31557600.0;
 
                     if (v108)
@@ -598,7 +598,7 @@ LABEL_59:
                     }
                   }
 
-                  v87 = v183;
+                  temporarySet = v183;
                   v88 = [v183 countByEnumeratingWithState:&v207 objects:v258 count:16];
                   if (v88)
                   {
@@ -610,28 +610,28 @@ LABEL_59:
               }
             }
 
-            v109 = [v190 collectionBySubtracting:v170];
+            v109 = [momentNodes3 collectionBySubtracting:momentNodesWithBlockedFeature];
             v110 = [v109 collectionByIntersecting:v169];
 
-            v111 = [(PGMemoryGenerator *)v172 memoryGenerationContext];
-            v112 = [v111 interestingWithAlternateJunkingSubsetFromMomentNodes:v110];
+            memoryGenerationContext2 = [(PGMemoryGenerator *)selfCopy memoryGenerationContext];
+            v112 = [memoryGenerationContext2 interestingWithAlternateJunkingSubsetFromMomentNodes:v110];
 
             if ([v112 count] > 4)
             {
-              v113 = [v112 universalDateInterval];
-              [v113 duration];
+              universalDateInterval = [v112 universalDateInterval];
+              [universalDateInterval duration];
               v115 = v114;
 
-              v116 = [v190 universalDateInterval];
-              [v116 duration];
+              universalDateInterval2 = [momentNodes3 universalDateInterval];
+              [universalDateInterval2 duration];
               v118 = v117;
               v119 = MEMORY[0x277D27690];
-              v120 = [v116 startDate];
-              v121 = [v119 yearFromDate:v120];
+              startDate5 = [universalDateInterval2 startDate];
+              v121 = [v119 yearFromDate:startDate5];
 
               v122 = MEMORY[0x277D27690];
-              v123 = [v116 endDate];
-              v124 = [v122 yearFromDate:v123];
+              endDate5 = [universalDateInterval2 endDate];
+              v124 = [v122 yearFromDate:endDate5];
 
               if (((v164 - v124) & ~((v164 - v124) >> 63)) >= 10)
               {
@@ -671,24 +671,24 @@ LABEL_59:
 
               else
               {
-                v129 = [v175 supersetCityNodes];
-                v130 = [v129 count];
-                v131 = v129;
-                if (v130 == 1 || (v132 = [v185 count], v131 = v185, v132 == 1))
+                supersetCityNodes4 = [v175 supersetCityNodes];
+                v130 = [supersetCityNodes4 count];
+                v131 = supersetCityNodes4;
+                if (v130 == 1 || (v132 = [densestCloseLocationNodes5 count], v131 = densestCloseLocationNodes5, v132 == 1))
                 {
-                  v133 = [v131 anyNode];
+                  anyNode2 = [v131 anyNode];
                 }
 
                 else
                 {
-                  v134 = [v175 stateNodeAsCollection];
-                  v133 = [v134 anyNode];
+                  stateNodeAsCollection2 = [v175 stateNodeAsCollection];
+                  anyNode2 = [stateNodeAsCollection2 anyNode];
                 }
 
-                v135 = [v185 collectionByFormingUnionWith:v129];
-                v136 = [[PGPotentialPastSupersetMemory alloc] initWithSupersetLocationNode:v133 supersetDateInterval:v116 interestingMomentNodes:v112 momentNodes:v190];
+                v135 = [densestCloseLocationNodes5 collectionByFormingUnionWith:supersetCityNodes4];
+                v136 = [[PGPotentialPastSupersetMemory alloc] initWithSupersetLocationNode:anyNode2 supersetDateInterval:universalDateInterval2 interestingMomentNodes:v112 momentNodes:momentNodes3];
                 [(PGPotentialMemory *)v136 setScore:v128 + v125 / 10.0 * 0.6];
-                v137 = [PGFeature featureWithNode:v133];
+                v137 = [PGFeature featureWithNode:anyNode2];
                 if (v137)
                 {
                   v138 = [MEMORY[0x277CBEB98] setWithObject:v137];
@@ -696,9 +696,9 @@ LABEL_59:
                 }
 
                 [(PGPotentialPastSupersetMemory *)v136 setSupersetLocationNodes:v135];
-                if ([v163 length])
+                if ([localIdentifier length])
                 {
-                  v139 = [MEMORY[0x277CBEB98] setWithObject:v163];
+                  v139 = [MEMORY[0x277CBEB98] setWithObject:localIdentifier];
                   [(PGPotentialMemory *)v136 setPeopleUUIDs:v139];
                 }
 
@@ -764,10 +764,10 @@ LABEL_92:
 
         v148 = *(*(&v203 + 1) + 8 * ii);
         [v148 computeContentScore];
-        if (v149 > 0.5 || [(PGFeaturedMemoryGenerator *)v172 usesLowRequirements])
+        if (v149 > 0.5 || [(PGFeaturedMemoryGenerator *)selfCopy usesLowRequirements])
         {
           buf[0] = 0;
-          v166[2](v166, v148, buf);
+          usingBlockCopy[2](usingBlockCopy, v148, buf);
           if (buf[0])
           {
             goto LABEL_109;
@@ -788,8 +788,8 @@ LABEL_92:
 
 LABEL_109:
 
-  v150 = [(PGMemoryGenerator *)v172 loggingConnection];
-  if (os_log_type_enabled(v150, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [(PGMemoryGenerator *)selfCopy loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219776;
     *&buf[4] = 0;
@@ -807,7 +807,7 @@ LABEL_109:
     v270 = 0;
     v271 = 2048;
     v272 = v178;
-    _os_log_impl(&dword_22F0FC000, v150, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: Found %lu, rejected %lu not interseting enough, %lu small superset duration overlap, %lu not disjoint from recent close supersets, %lu untimely, %lu low scoring, %lu insufficiently Superseted, %lu not enough scenes processed", buf, 0x52u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: Found %lu, rejected %lu not interseting enough, %lu small superset duration overlap, %lu not disjoint from recent close supersets, %lu untimely, %lu low scoring, %lu insufficiently Superseted, %lu not enough scenes processed", buf, 0x52u);
   }
 
   _Block_object_dispose(&v224, 8);

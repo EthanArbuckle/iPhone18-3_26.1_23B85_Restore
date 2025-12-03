@@ -1,58 +1,58 @@
 @interface OBBulletedListItem
 - (NSArray)imageContainerSizeConstraints;
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6 linkButton:(id)a7;
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6;
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6 linkButton:(id)a7;
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color linkButton:(id)button;
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color;
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color linkButton:(id)button;
 - (double)_combinedLabelHeight;
 - (double)_horizontalMargins;
 - (id)_descriptionFont;
 - (id)_titleFont;
 - (void)_updateImageViewLayout;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
 @implementation OBBulletedListItem
 
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color
 {
   v10 = MEMORY[0x1E69DCAB8];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 _systemImageNamed:a5];
+  colorCopy = color;
+  descriptionCopy = description;
+  titleCopy = title;
+  v14 = [v10 _systemImageNamed:name];
   v15 = [MEMORY[0x1E69DCAD8] configurationWithScale:-1];
   v16 = [v14 imageWithConfiguration:v15];
 
-  v17 = [(OBBulletedListItem *)self initWithTitle:v13 description:v12 image:v16 tintColor:v11];
+  v17 = [(OBBulletedListItem *)self initWithTitle:titleCopy description:descriptionCopy image:v16 tintColor:colorCopy];
   return v17;
 }
 
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6 linkButton:(id)a7
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color linkButton:(id)button
 {
   v12 = MEMORY[0x1E69DCAB8];
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 _systemImageNamed:a5];
+  buttonCopy = button;
+  colorCopy = color;
+  descriptionCopy = description;
+  titleCopy = title;
+  v17 = [v12 _systemImageNamed:name];
   v18 = [MEMORY[0x1E69DCAD8] configurationWithScale:-1];
   v19 = [v17 imageWithConfiguration:v18];
 
-  v20 = [(OBBulletedListItem *)self initWithTitle:v16 description:v15 image:v19 tintColor:v14 linkButton:v13];
+  v20 = [(OBBulletedListItem *)self initWithTitle:titleCopy description:descriptionCopy image:v19 tintColor:colorCopy linkButton:buttonCopy];
   return v20;
 }
 
-- (OBBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6 linkButton:(id)a7
+- (OBBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color linkButton:(id)button
 {
   v143[9] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12 | v13)
+  titleCopy = title;
+  descriptionCopy = description;
+  imageCopy = image;
+  colorCopy = color;
+  buttonCopy = button;
+  if (titleCopy | descriptionCopy)
   {
     v142.receiver = self;
     v142.super_class = OBBulletedListItem;
@@ -65,22 +65,22 @@
     {
 LABEL_25:
       self = v22;
-      v17 = self;
+      selfCopy = self;
       goto LABEL_26;
     }
 
-    v139 = v14;
-    v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
+    v139 = imageCopy;
+    v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     [(OBBulletedListItem *)v22 setImageView:v23];
 
-    v24 = [(OBBulletedListItem *)v22 imageView];
-    [v24 setTintColor:v15];
+    imageView = [(OBBulletedListItem *)v22 imageView];
+    [imageView setTintColor:colorCopy];
 
-    v25 = [(OBBulletedListItem *)v22 imageView];
-    [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+    imageView2 = [(OBBulletedListItem *)v22 imageView];
+    [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v26 = [(OBBulletedListItem *)v22 imageView];
-    [v26 setContentMode:1];
+    imageView3 = [(OBBulletedListItem *)v22 imageView];
+    [imageView3 setContentMode:1];
 
     v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v18, v19, v20, v21}];
     imageContainer = v22->_imageContainer;
@@ -88,39 +88,39 @@ LABEL_25:
 
     [(UIView *)v22->_imageContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v22->_imageContainer addSubview:v22->_imageView];
-    if ([v12 length])
+    if ([titleCopy length])
     {
       v29 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v18, v19, v20, v21}];
       [(OBBulletedListItem *)v22 setTitleLabel:v29];
 
-      v30 = [(OBBulletedListItem *)v22 titleLabel];
-      [v30 setNumberOfLines:0];
+      titleLabel = [(OBBulletedListItem *)v22 titleLabel];
+      [titleLabel setNumberOfLines:0];
 
-      v31 = [(OBBulletedListItem *)v22 titleLabel];
-      [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+      titleLabel2 = [(OBBulletedListItem *)v22 titleLabel];
+      [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v32 = [(OBBulletedListItem *)v22 titleLabel];
-      [v32 setText:v12];
+      titleLabel3 = [(OBBulletedListItem *)v22 titleLabel];
+      [titleLabel3 setText:titleCopy];
 
-      v33 = [(OBBulletedListItem *)v22 titleLabel];
+      titleLabel4 = [(OBBulletedListItem *)v22 titleLabel];
       LODWORD(v34) = 1148846080;
-      [v33 setContentHuggingPriority:1 forAxis:v34];
+      [titleLabel4 setContentHuggingPriority:1 forAxis:v34];
     }
 
-    v141 = v12;
-    if ([v13 length])
+    v141 = titleCopy;
+    if ([descriptionCopy length])
     {
       v35 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v18, v19, v20, v21}];
       [(OBBulletedListItem *)v22 setDescriptionLabel:v35];
 
-      v36 = [(OBBulletedListItem *)v22 descriptionLabel];
-      [v36 setNumberOfLines:0];
+      descriptionLabel = [(OBBulletedListItem *)v22 descriptionLabel];
+      [descriptionLabel setNumberOfLines:0];
 
-      v37 = [(OBBulletedListItem *)v22 descriptionLabel];
-      [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+      descriptionLabel2 = [(OBBulletedListItem *)v22 descriptionLabel];
+      [descriptionLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v38 = [(OBBulletedListItem *)v22 descriptionLabel];
-      [v38 setText:v13];
+      descriptionLabel3 = [(OBBulletedListItem *)v22 descriptionLabel];
+      [descriptionLabel3 setText:descriptionCopy];
 
       if (+[OBFeatureFlags isNaturalUIEnabled])
       {
@@ -132,107 +132,107 @@ LABEL_25:
         [MEMORY[0x1E69DC888] colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0];
       }
       v39 = ;
-      v40 = [(OBBulletedListItem *)v22 descriptionLabel];
-      [v40 setTextColor:v39];
+      descriptionLabel4 = [(OBBulletedListItem *)v22 descriptionLabel];
+      [descriptionLabel4 setTextColor:v39];
 
-      v41 = [(OBBulletedListItem *)v22 descriptionLabel];
+      descriptionLabel5 = [(OBBulletedListItem *)v22 descriptionLabel];
       LODWORD(v42) = 1148846080;
-      [v41 setContentHuggingPriority:1 forAxis:v42];
+      [descriptionLabel5 setContentHuggingPriority:1 forAxis:v42];
     }
 
-    v43 = [(OBBulletedListItem *)v22 _titleFont];
-    v44 = [(OBBulletedListItem *)v22 titleLabel];
-    [v44 setFont:v43];
+    _titleFont = [(OBBulletedListItem *)v22 _titleFont];
+    titleLabel5 = [(OBBulletedListItem *)v22 titleLabel];
+    [titleLabel5 setFont:_titleFont];
 
-    v45 = [(OBBulletedListItem *)v22 _descriptionFont];
-    v46 = [(OBBulletedListItem *)v22 descriptionLabel];
-    [v46 setFont:v45];
+    _descriptionFont = [(OBBulletedListItem *)v22 _descriptionFont];
+    descriptionLabel6 = [(OBBulletedListItem *)v22 descriptionLabel];
+    [descriptionLabel6 setFont:_descriptionFont];
 
     v47 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithFrame:{v18, v19, v20, v21}];
     [(OBBulletedListItem *)v22 setStackView:v47];
 
-    v48 = [(OBBulletedListItem *)v22 stackView];
-    [v48 setAxis:1];
+    stackView = [(OBBulletedListItem *)v22 stackView];
+    [stackView setAxis:1];
 
-    v49 = [(OBBulletedListItem *)v22 stackView];
-    [v49 setAlignment:0];
+    stackView2 = [(OBBulletedListItem *)v22 stackView];
+    [stackView2 setAlignment:0];
 
-    v50 = [(OBBulletedListItem *)v22 stackView];
-    [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView3 = [(OBBulletedListItem *)v22 stackView];
+    [stackView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v51 = [(OBBulletedListItem *)v22 stackView];
-    v52 = [(OBBulletedListItem *)v22 titleLabel];
-    [v51 addArrangedSubview:v52];
+    stackView4 = [(OBBulletedListItem *)v22 stackView];
+    titleLabel6 = [(OBBulletedListItem *)v22 titleLabel];
+    [stackView4 addArrangedSubview:titleLabel6];
 
-    v53 = [(OBBulletedListItem *)v22 stackView];
-    v54 = [(OBBulletedListItem *)v22 descriptionLabel];
-    [v53 addArrangedSubview:v54];
+    stackView5 = [(OBBulletedListItem *)v22 stackView];
+    descriptionLabel7 = [(OBBulletedListItem *)v22 descriptionLabel];
+    [stackView5 addArrangedSubview:descriptionLabel7];
 
-    if (v16)
+    if (buttonCopy)
     {
-      objc_storeStrong(&v22->_accessoryButton, a7);
+      objc_storeStrong(&v22->_accessoryButton, button);
       [(UIButton *)v22->_accessoryButton setTranslatesAutoresizingMaskIntoConstraints:0];
       if (+[OBFeatureFlags isNaturalUIEnabled])
       {
         [(UIButton *)v22->_accessoryButton setContentHorizontalAlignment:4];
       }
 
-      v55 = [(OBBulletedListItem *)v22 stackView];
-      v56 = [(OBBulletedListItem *)v22 accessoryButton];
-      [v55 addArrangedSubview:v56];
+      stackView6 = [(OBBulletedListItem *)v22 stackView];
+      accessoryButton = [(OBBulletedListItem *)v22 accessoryButton];
+      [stackView6 addArrangedSubview:accessoryButton];
     }
 
-    v138 = v15;
-    v140 = v13;
+    v138 = colorCopy;
+    v140 = descriptionCopy;
     [(OBBulletedListItem *)v22 addSubview:v22->_imageContainer];
-    v57 = [(OBBulletedListItem *)v22 stackView];
-    [(OBBulletedListItem *)v22 addSubview:v57];
+    stackView7 = [(OBBulletedListItem *)v22 stackView];
+    [(OBBulletedListItem *)v22 addSubview:stackView7];
 
-    v58 = [(OBBulletedListItem *)v22 stackView];
-    v59 = [(OBBulletedListItem *)v22 _titleFont];
-    [v59 leading];
-    [v58 setSpacing:?];
+    stackView8 = [(OBBulletedListItem *)v22 stackView];
+    _titleFont2 = [(OBBulletedListItem *)v22 _titleFont];
+    [_titleFont2 leading];
+    [stackView8 setSpacing:?];
 
-    v60 = [(OBBulletedListItem *)v22 imageContainer];
-    v61 = [v60 topAnchor];
-    v62 = [(OBBulletedListItem *)v22 topAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    imageContainer = [(OBBulletedListItem *)v22 imageContainer];
+    topAnchor = [imageContainer topAnchor];
+    topAnchor2 = [(OBBulletedListItem *)v22 topAnchor];
+    v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(OBBulletedListItem *)v22 setTopConstraintToImageContainer:v63];
 
-    v64 = [(OBBulletedListItem *)v22 bottomAnchor];
-    v65 = [(OBBulletedListItem *)v22 imageContainer];
-    v66 = [v65 bottomAnchor];
-    v67 = [v64 constraintEqualToAnchor:v66];
+    bottomAnchor = [(OBBulletedListItem *)v22 bottomAnchor];
+    imageContainer2 = [(OBBulletedListItem *)v22 imageContainer];
+    bottomAnchor2 = [imageContainer2 bottomAnchor];
+    v67 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(OBBulletedListItem *)v22 setBottomConstraintToImageContainer:v67];
 
-    v68 = [(OBBulletedListItem *)v22 stackView];
-    v69 = [v68 topAnchor];
-    v70 = [(OBBulletedListItem *)v22 topAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    stackView9 = [(OBBulletedListItem *)v22 stackView];
+    topAnchor3 = [stackView9 topAnchor];
+    topAnchor4 = [(OBBulletedListItem *)v22 topAnchor];
+    v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [(OBBulletedListItem *)v22 setTopConstraintToStackView:v71];
 
-    v72 = [(OBBulletedListItem *)v22 bottomAnchor];
-    v73 = [(OBBulletedListItem *)v22 stackView];
-    v74 = [v73 bottomAnchor];
-    v75 = [v72 constraintEqualToAnchor:v74];
+    bottomAnchor3 = [(OBBulletedListItem *)v22 bottomAnchor];
+    stackView10 = [(OBBulletedListItem *)v22 stackView];
+    bottomAnchor4 = [stackView10 bottomAnchor];
+    v75 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [(OBBulletedListItem *)v22 setBottomConstraintToStackView:v75];
 
-    v76 = [(OBBulletedListItem *)v22 imageView];
-    v77 = [v76 image];
-    [(OBBulletedListItem *)v22 imageSizeForImage:v77];
+    imageView4 = [(OBBulletedListItem *)v22 imageView];
+    image = [imageView4 image];
+    [(OBBulletedListItem *)v22 imageSizeForImage:image];
     v79 = v78;
 
     v80 = 1.0;
     if (+[OBFeatureFlags isNaturalUIEnabled])
     {
-      v81 = [(OBBulletedListItem *)v22 imageView];
-      v82 = [v81 image];
-      if (v82)
+      imageView5 = [(OBBulletedListItem *)v22 imageView];
+      image2 = [imageView5 image];
+      if (image2)
       {
-        v83 = v82;
-        v84 = [(OBBulletedListItem *)v22 imageView];
-        v85 = [v84 image];
-        [v85 size];
+        v83 = image2;
+        imageView6 = [(OBBulletedListItem *)v22 imageView];
+        image3 = [imageView6 image];
+        [image3 size];
         v87 = v86;
 
         if (v87 <= 0.0)
@@ -240,80 +240,80 @@ LABEL_25:
           goto LABEL_20;
         }
 
-        v81 = [(OBBulletedListItem *)v22 imageView];
-        v88 = [v81 image];
-        [v88 size];
+        imageView5 = [(OBBulletedListItem *)v22 imageView];
+        image4 = [imageView5 image];
+        [image4 size];
         v90 = v89;
-        v91 = [(OBBulletedListItem *)v22 imageView];
-        v92 = [v91 image];
-        [v92 size];
+        imageView7 = [(OBBulletedListItem *)v22 imageView];
+        image5 = [imageView7 image];
+        [image5 size];
         v80 = v90 / v93;
       }
     }
 
 LABEL_20:
     v122 = MEMORY[0x1E696ACD8];
-    v136 = [(OBBulletedListItem *)v22 imageView];
-    v135 = [v136 widthAnchor];
-    v134 = [v135 constraintEqualToConstant:v79];
+    imageView8 = [(OBBulletedListItem *)v22 imageView];
+    widthAnchor = [imageView8 widthAnchor];
+    v134 = [widthAnchor constraintEqualToConstant:v79];
     v143[0] = v134;
-    v133 = [(OBBulletedListItem *)v22 imageView];
-    v131 = [v133 heightAnchor];
-    v132 = [(OBBulletedListItem *)v22 imageView];
-    v130 = [v132 widthAnchor];
-    v129 = [v131 constraintEqualToAnchor:v130 multiplier:v80];
+    imageView9 = [(OBBulletedListItem *)v22 imageView];
+    heightAnchor = [imageView9 heightAnchor];
+    imageView10 = [(OBBulletedListItem *)v22 imageView];
+    widthAnchor2 = [imageView10 widthAnchor];
+    v129 = [heightAnchor constraintEqualToAnchor:widthAnchor2 multiplier:v80];
     v143[1] = v129;
-    v128 = [(OBBulletedListItem *)v22 imageView];
-    v126 = [v128 centerXAnchor];
-    v127 = [(OBBulletedListItem *)v22 imageContainer];
-    v125 = [v127 centerXAnchor];
-    v124 = [v126 constraintEqualToAnchor:v125];
+    imageView11 = [(OBBulletedListItem *)v22 imageView];
+    centerXAnchor = [imageView11 centerXAnchor];
+    imageContainer3 = [(OBBulletedListItem *)v22 imageContainer];
+    centerXAnchor2 = [imageContainer3 centerXAnchor];
+    v124 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v143[2] = v124;
-    v123 = [(OBBulletedListItem *)v22 imageView];
-    v120 = [v123 centerYAnchor];
-    v121 = [(OBBulletedListItem *)v22 imageContainer];
-    v119 = [v121 centerYAnchor];
-    v118 = [v120 constraintEqualToAnchor:v119];
+    imageView12 = [(OBBulletedListItem *)v22 imageView];
+    centerYAnchor = [imageView12 centerYAnchor];
+    imageContainer4 = [(OBBulletedListItem *)v22 imageContainer];
+    centerYAnchor2 = [imageContainer4 centerYAnchor];
+    v118 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v143[3] = v118;
-    v117 = [(OBBulletedListItem *)v22 imageView];
-    v115 = [v117 topAnchor];
-    v116 = [(OBBulletedListItem *)v22 imageContainer];
-    v114 = [v116 topAnchor];
-    v113 = [v115 constraintLessThanOrEqualToAnchor:v114];
+    imageView13 = [(OBBulletedListItem *)v22 imageView];
+    topAnchor5 = [imageView13 topAnchor];
+    imageContainer5 = [(OBBulletedListItem *)v22 imageContainer];
+    topAnchor6 = [imageContainer5 topAnchor];
+    v113 = [topAnchor5 constraintLessThanOrEqualToAnchor:topAnchor6];
     v143[4] = v113;
-    v112 = [(OBBulletedListItem *)v22 imageView];
-    v110 = [v112 bottomAnchor];
-    v111 = [(OBBulletedListItem *)v22 imageContainer];
-    v94 = [v111 bottomAnchor];
-    v95 = [v110 constraintLessThanOrEqualToAnchor:v94];
+    imageView14 = [(OBBulletedListItem *)v22 imageView];
+    bottomAnchor5 = [imageView14 bottomAnchor];
+    imageContainer6 = [(OBBulletedListItem *)v22 imageContainer];
+    bottomAnchor6 = [imageContainer6 bottomAnchor];
+    v95 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
     v143[5] = v95;
-    v96 = [(OBBulletedListItem *)v22 stackView];
-    [v96 trailingAnchor];
-    v97 = v137 = v16;
-    v98 = [(OBBulletedListItem *)v22 trailingAnchor];
+    stackView11 = [(OBBulletedListItem *)v22 stackView];
+    [stackView11 trailingAnchor];
+    v97 = v137 = buttonCopy;
+    trailingAnchor = [(OBBulletedListItem *)v22 trailingAnchor];
     [(OBBulletedListItem *)v22 trailingMargin];
-    v100 = [v97 constraintEqualToAnchor:v98 constant:-v99];
+    v100 = [v97 constraintEqualToAnchor:trailingAnchor constant:-v99];
     v143[6] = v100;
-    v101 = [(OBBulletedListItem *)v22 topConstraintToStackView];
-    v143[7] = v101;
-    v102 = [(OBBulletedListItem *)v22 bottomConstraintToStackView];
-    v143[8] = v102;
+    topConstraintToStackView = [(OBBulletedListItem *)v22 topConstraintToStackView];
+    v143[7] = topConstraintToStackView;
+    bottomConstraintToStackView = [(OBBulletedListItem *)v22 bottomConstraintToStackView];
+    v143[8] = bottomConstraintToStackView;
     v103 = [MEMORY[0x1E695DEC8] arrayWithObjects:v143 count:9];
     [v122 activateConstraints:v103];
 
-    v16 = v137;
+    buttonCopy = v137;
     [(OBBulletedListItem *)v22 _updateImageViewLayout];
-    v104 = [(OBBulletedListItem *)v22 accessoryButton];
+    accessoryButton2 = [(OBBulletedListItem *)v22 accessoryButton];
 
-    v13 = v140;
-    v12 = v141;
-    v15 = v138;
-    v14 = v139;
-    if (v104)
+    descriptionCopy = v140;
+    titleCopy = v141;
+    colorCopy = v138;
+    imageCopy = v139;
+    if (accessoryButton2)
     {
-      v105 = [(OBBulletedListItem *)v22 descriptionLabel];
+      descriptionLabel8 = [(OBBulletedListItem *)v22 descriptionLabel];
 
-      if (v105)
+      if (descriptionLabel8)
       {
         [(OBBulletedListItem *)v22 descriptionLabel];
       }
@@ -323,33 +323,33 @@ LABEL_20:
         [(OBBulletedListItem *)v22 titleLabel];
       }
       v106 = ;
-      v107 = [(OBBulletedListItem *)v22 stackView];
-      [v107 setCustomSpacing:v106 afterView:0.0];
+      stackView12 = [(OBBulletedListItem *)v22 stackView];
+      [stackView12 setCustomSpacing:v106 afterView:0.0];
     }
 
     goto LABEL_25;
   }
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_26:
 
   v108 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = OBBulletedListItem;
-  [(OBBulletedListItem *)&v8 traitCollectionDidChange:a3];
+  [(OBBulletedListItem *)&v8 traitCollectionDidChange:change];
   [(OBBulletedListItem *)self _updateImageViewLayout];
-  v4 = [(OBBulletedListItem *)self _titleFont];
-  v5 = [(OBBulletedListItem *)self titleLabel];
-  [v5 setFont:v4];
+  _titleFont = [(OBBulletedListItem *)self _titleFont];
+  titleLabel = [(OBBulletedListItem *)self titleLabel];
+  [titleLabel setFont:_titleFont];
 
-  v6 = [(OBBulletedListItem *)self _descriptionFont];
-  v7 = [(OBBulletedListItem *)self descriptionLabel];
-  [v7 setFont:v6];
+  _descriptionFont = [(OBBulletedListItem *)self _descriptionFont];
+  descriptionLabel = [(OBBulletedListItem *)self descriptionLabel];
+  [descriptionLabel setFont:_descriptionFont];
 }
 
 - (void)layoutSubviews
@@ -357,9 +357,9 @@ LABEL_26:
   v18.receiver = self;
   v18.super_class = OBBulletedListItem;
   [(OBBulletedListItem *)&v18 layoutSubviews];
-  v3 = [(OBBulletedListItem *)self imageView];
-  v4 = [v3 image];
-  [(OBBulletedListItem *)self imageSizeForImage:v4];
+  imageView = [(OBBulletedListItem *)self imageView];
+  image = [imageView image];
+  [(OBBulletedListItem *)self imageSizeForImage:image];
   v6 = v5;
 
   [(OBBulletedListItem *)self _combinedLabelHeight];
@@ -370,32 +370,32 @@ LABEL_26:
 
   else
   {
-    v8 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
-    if ([v8 isActive])
+    stackViewLeadingConstraintVertical = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+    if ([stackViewLeadingConstraintVertical isActive])
     {
       v9 = 0;
     }
 
     else
     {
-      v10 = [(OBBulletedListItem *)self topConstraintToImageContainer];
-      v9 = [v10 isActive] ^ 1;
+      topConstraintToImageContainer = [(OBBulletedListItem *)self topConstraintToImageContainer];
+      v9 = [topConstraintToImageContainer isActive] ^ 1;
     }
   }
 
   [(OBBulletedListItem *)self _combinedLabelHeight];
   if (v6 <= v11)
   {
-    v13 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
-    if ([v13 isActive])
+    stackViewLeadingConstraintVertical2 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+    if ([stackViewLeadingConstraintVertical2 isActive])
     {
       v12 = 0;
     }
 
     else
     {
-      v14 = [(OBBulletedListItem *)self topConstraintToStackView];
-      v12 = [v14 isActive] ^ 1;
+      topConstraintToStackView = [(OBBulletedListItem *)self topConstraintToStackView];
+      v12 = [topConstraintToStackView isActive] ^ 1;
     }
   }
 
@@ -404,11 +404,11 @@ LABEL_26:
     v12 = 0;
   }
 
-  v15 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
-  if ([v15 isActive])
+  stackViewLeadingConstraintVertical3 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+  if ([stackViewLeadingConstraintVertical3 isActive])
   {
-    v16 = [(OBBulletedListItem *)self topConstraintToStackView];
-    v17 = [v16 isActive] ^ 1;
+    topConstraintToStackView2 = [(OBBulletedListItem *)self topConstraintToStackView];
+    v17 = [topConstraintToStackView2 isActive] ^ 1;
   }
 
   else
@@ -429,14 +429,14 @@ LABEL_26:
   {
     if (!+[OBFeatureFlags isNaturalUIEnabled](OBFeatureFlags, "isNaturalUIEnabled") || +[OBViewUtilities shouldUseAccessibilityLayout])
     {
-      v3 = [(OBBulletedListItem *)self imageContainer];
-      v4 = [v3 widthAnchor];
-      v5 = [v4 constraintEqualToConstant:40.0];
+      imageContainer = [(OBBulletedListItem *)self imageContainer];
+      widthAnchor = [imageContainer widthAnchor];
+      v5 = [widthAnchor constraintEqualToConstant:40.0];
       v35[0] = v5;
-      v6 = [(OBBulletedListItem *)self imageContainer];
-      v7 = [v6 heightAnchor];
-      v8 = [v7 constraintEqualToConstant:40.0];
-      v35[1] = v8;
+      imageContainer2 = [(OBBulletedListItem *)self imageContainer];
+      heightAnchor = [imageContainer2 heightAnchor];
+      imageContainer3 = [heightAnchor constraintEqualToConstant:40.0];
+      v35[1] = imageContainer3;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
       imageContainerSizeConstraints = self->_imageContainerSizeConstraints;
       self->_imageContainerSizeConstraints = v9;
@@ -445,38 +445,38 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v11 = [(OBBulletedListItem *)self imageView];
-    v12 = [v11 image];
-    [(OBBulletedListItem *)self imageSizeForImage:v12];
+    imageView = [(OBBulletedListItem *)self imageView];
+    image = [imageView image];
+    [(OBBulletedListItem *)self imageSizeForImage:image];
     v14 = v13;
 
     v15 = 1.0;
     if (+[OBFeatureFlags isNaturalUIEnabled])
     {
-      v16 = [(OBBulletedListItem *)self imageView];
-      v17 = [v16 image];
-      if (!v17)
+      imageView2 = [(OBBulletedListItem *)self imageView];
+      image2 = [imageView2 image];
+      if (!image2)
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v18 = v17;
-      v19 = [(OBBulletedListItem *)self imageView];
-      v20 = [v19 image];
-      [v20 size];
+      v18 = image2;
+      imageView3 = [(OBBulletedListItem *)self imageView];
+      image3 = [imageView3 image];
+      [image3 size];
       v22 = v21;
 
       if (v22 > 0.0)
       {
-        v16 = [(OBBulletedListItem *)self imageView];
-        v23 = [v16 image];
-        [v23 size];
+        imageView2 = [(OBBulletedListItem *)self imageView];
+        image4 = [imageView2 image];
+        [image4 size];
         v25 = v24;
-        v26 = [(OBBulletedListItem *)self imageView];
-        v27 = [v26 image];
-        [v27 size];
+        imageView4 = [(OBBulletedListItem *)self imageView];
+        image5 = [imageView4 image];
+        [image5 size];
         v15 = v25 / v28;
 
         goto LABEL_9;
@@ -484,15 +484,15 @@ LABEL_9:
     }
 
 LABEL_10:
-    v3 = [(OBBulletedListItem *)self imageContainer];
-    v4 = [v3 widthAnchor];
-    v5 = [v4 constraintEqualToConstant:v14];
+    imageContainer = [(OBBulletedListItem *)self imageContainer];
+    widthAnchor = [imageContainer widthAnchor];
+    v5 = [widthAnchor constraintEqualToConstant:v14];
     v36[0] = v5;
-    v6 = [(OBBulletedListItem *)self imageContainer];
-    v7 = [v6 heightAnchor];
-    v8 = [(OBBulletedListItem *)self imageContainer];
-    imageContainerSizeConstraints = [v8 widthAnchor];
-    v29 = [v7 constraintEqualToAnchor:imageContainerSizeConstraints multiplier:v15];
+    imageContainer2 = [(OBBulletedListItem *)self imageContainer];
+    heightAnchor = [imageContainer2 heightAnchor];
+    imageContainer3 = [(OBBulletedListItem *)self imageContainer];
+    imageContainerSizeConstraints = [imageContainer3 widthAnchor];
+    v29 = [heightAnchor constraintEqualToAnchor:imageContainerSizeConstraints multiplier:v15];
     v36[1] = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
     v31 = self->_imageContainerSizeConstraints;
@@ -511,98 +511,98 @@ LABEL_12:
 - (void)_updateImageViewLayout
 {
   v68[5] = *MEMORY[0x1E69E9840];
-  v3 = [(OBBulletedListItem *)self imageContainer];
-  [v3 removeFromSuperview];
+  imageContainer = [(OBBulletedListItem *)self imageContainer];
+  [imageContainer removeFromSuperview];
 
-  v4 = [(OBBulletedListItem *)self imageView];
-  v5 = [v4 image];
-  [(OBBulletedListItem *)self imageSizeForImage:v5];
+  imageView = [(OBBulletedListItem *)self imageView];
+  image = [imageView image];
+  [(OBBulletedListItem *)self imageSizeForImage:image];
   v7 = v6;
 
   if ([(OBBulletedListItem *)self shouldLayoutVertically])
   {
-    v8 = [(OBBulletedListItem *)self stackView];
-    v9 = [(OBBulletedListItem *)self imageContainer];
-    [v8 insertArrangedSubview:v9 atIndex:0];
+    stackView = [(OBBulletedListItem *)self stackView];
+    imageContainer2 = [(OBBulletedListItem *)self imageContainer];
+    [stackView insertArrangedSubview:imageContainer2 atIndex:0];
 
-    v10 = [(OBBulletedListItem *)self stackView];
+    stackView2 = [(OBBulletedListItem *)self stackView];
     [(OBBulletedListItem *)self _imageTextPadding];
     v12 = v11;
-    v13 = [(OBBulletedListItem *)self imageContainer];
-    [v10 setCustomSpacing:v13 afterView:v12];
+    imageContainer3 = [(OBBulletedListItem *)self imageContainer];
+    [stackView2 setCustomSpacing:imageContainer3 afterView:v12];
 
-    v14 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+    stackViewLeadingConstraintVertical = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
 
-    if (!v14)
+    if (!stackViewLeadingConstraintVertical)
     {
-      v15 = [(OBBulletedListItem *)self stackView];
-      v16 = [v15 leadingAnchor];
-      v17 = [(OBBulletedListItem *)self leadingAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      stackView3 = [(OBBulletedListItem *)self stackView];
+      leadingAnchor = [stackView3 leadingAnchor];
+      leadingAnchor2 = [(OBBulletedListItem *)self leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(OBBulletedListItem *)self setStackViewLeadingConstraintVertical:v18];
     }
 
-    v19 = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
-    [v19 setActive:0];
+    stackViewLeadingConstraintHorizontal = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
+    [stackViewLeadingConstraintHorizontal setActive:0];
 
-    v20 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
-    [v20 setActive:1];
+    stackViewLeadingConstraintVertical2 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+    [stackViewLeadingConstraintVertical2 setActive:1];
 
     v21 = MEMORY[0x1E696ACD8];
-    v64 = [(OBBulletedListItem *)self imageContainerSizeConstraints];
+    imageContainerSizeConstraints = [(OBBulletedListItem *)self imageContainerSizeConstraints];
     [v21 activateConstraints:?];
     v22 = *MEMORY[0x1E69E9840];
   }
 
   else
   {
-    v23 = [(OBBulletedListItem *)self imageContainer];
-    [(OBBulletedListItem *)self addSubview:v23];
+    imageContainer4 = [(OBBulletedListItem *)self imageContainer];
+    [(OBBulletedListItem *)self addSubview:imageContainer4];
 
-    v24 = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
+    stackViewLeadingConstraintHorizontal2 = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
 
-    if (!v24)
+    if (!stackViewLeadingConstraintHorizontal2)
     {
-      v25 = [(OBBulletedListItem *)self stackView];
-      v26 = [v25 leadingAnchor];
-      v27 = [(OBBulletedListItem *)self imageContainer];
-      v28 = [v27 trailingAnchor];
+      stackView4 = [(OBBulletedListItem *)self stackView];
+      leadingAnchor3 = [stackView4 leadingAnchor];
+      imageContainer5 = [(OBBulletedListItem *)self imageContainer];
+      trailingAnchor = [imageContainer5 trailingAnchor];
       [(OBBulletedListItem *)self _imageTextPadding];
-      v29 = [v26 constraintEqualToAnchor:v28 constant:?];
+      v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
       [(OBBulletedListItem *)self setStackViewLeadingConstraintHorizontal:v29];
     }
 
     v30 = MEMORY[0x1E696ACD8];
-    v31 = [(OBBulletedListItem *)self imageContainerSizeConstraints];
-    [v30 deactivateConstraints:v31];
+    imageContainerSizeConstraints2 = [(OBBulletedListItem *)self imageContainerSizeConstraints];
+    [v30 deactivateConstraints:imageContainerSizeConstraints2];
 
-    v32 = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
-    [v32 setActive:1];
+    stackViewLeadingConstraintHorizontal3 = [(OBBulletedListItem *)self stackViewLeadingConstraintHorizontal];
+    [stackViewLeadingConstraintHorizontal3 setActive:1];
 
-    v33 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
-    [v33 setActive:0];
+    stackViewLeadingConstraintVertical3 = [(OBBulletedListItem *)self stackViewLeadingConstraintVertical];
+    [stackViewLeadingConstraintVertical3 setActive:0];
 
     v59 = MEMORY[0x1E696ACD8];
-    v65 = [(OBBulletedListItem *)self topConstraintToImageContainer];
-    v68[0] = v65;
-    v63 = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
-    v68[1] = v63;
-    v62 = [(OBBulletedListItem *)self imageContainer];
-    v61 = [v62 widthAnchor];
-    v60 = [v61 constraintEqualToConstant:v7];
+    topConstraintToImageContainer = [(OBBulletedListItem *)self topConstraintToImageContainer];
+    v68[0] = topConstraintToImageContainer;
+    bottomConstraintToImageContainer = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
+    v68[1] = bottomConstraintToImageContainer;
+    imageContainer6 = [(OBBulletedListItem *)self imageContainer];
+    widthAnchor = [imageContainer6 widthAnchor];
+    v60 = [widthAnchor constraintEqualToConstant:v7];
     v68[2] = v60;
-    v58 = [(OBBulletedListItem *)self leadingAnchor];
-    v34 = [(OBBulletedListItem *)self imageContainer];
-    v35 = [v34 leadingAnchor];
+    leadingAnchor4 = [(OBBulletedListItem *)self leadingAnchor];
+    imageContainer7 = [(OBBulletedListItem *)self imageContainer];
+    leadingAnchor5 = [imageContainer7 leadingAnchor];
     [(OBBulletedListItem *)self leadingMargin];
-    v37 = [v58 constraintEqualToAnchor:v35 constant:-v36];
+    v37 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:-v36];
     v68[3] = v37;
-    v38 = [(OBBulletedListItem *)self imageContainer];
-    v39 = [v38 trailingAnchor];
-    v40 = [(OBBulletedListItem *)self stackView];
-    v41 = [v40 leadingAnchor];
+    imageContainer8 = [(OBBulletedListItem *)self imageContainer];
+    trailingAnchor2 = [imageContainer8 trailingAnchor];
+    stackView5 = [(OBBulletedListItem *)self stackView];
+    leadingAnchor6 = [stackView5 leadingAnchor];
     [(OBBulletedListItem *)self _imageTextPadding];
-    v43 = [v39 constraintEqualToAnchor:v41 constant:-v42];
+    v43 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor6 constant:-v42];
     v68[4] = v43;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:5];
     [v59 activateConstraints:v44];
@@ -611,12 +611,12 @@ LABEL_12:
     v46 = MEMORY[0x1E696ACD8];
     if (v45)
     {
-      v47 = [(OBBulletedListItem *)self imageContainer];
-      v48 = [v47 topAnchor];
-      v49 = [(OBBulletedListItem *)self stackView];
-      v50 = [v49 topAnchor];
+      imageContainer9 = [(OBBulletedListItem *)self imageContainer];
+      topAnchor = [imageContainer9 topAnchor];
+      stackView6 = [(OBBulletedListItem *)self stackView];
+      topAnchor2 = [stackView6 topAnchor];
       [(OBBulletedListItem *)self topMargin];
-      v51 = [v48 constraintEqualToAnchor:v50 constant:?];
+      v51 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
       v67 = v51;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1];
       [v46 activateConstraints:v52];
@@ -624,11 +624,11 @@ LABEL_12:
 
     else
     {
-      v47 = [(OBBulletedListItem *)self stackView];
-      v48 = [v47 centerYAnchor];
-      v53 = [(OBBulletedListItem *)self imageContainer];
-      v54 = [v53 centerYAnchor];
-      v55 = [v48 constraintEqualToAnchor:v54];
+      imageContainer9 = [(OBBulletedListItem *)self stackView];
+      topAnchor = [imageContainer9 centerYAnchor];
+      imageContainer10 = [(OBBulletedListItem *)self imageContainer];
+      centerYAnchor = [imageContainer10 centerYAnchor];
+      v55 = [topAnchor constraintEqualToAnchor:centerYAnchor];
       v66 = v55;
       v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
       [v46 activateConstraints:v56];
@@ -640,21 +640,21 @@ LABEL_12:
 
 - (double)_horizontalMargins
 {
-  v2 = [(OBBulletedListItem *)self shouldLayoutVertically];
+  shouldLayoutVertically = [(OBBulletedListItem *)self shouldLayoutVertically];
   result = 0.0;
-  if (!v2)
+  if (!shouldLayoutVertically)
   {
     v4 = +[OBFeatureFlags isNaturalUIEnabled];
     result = 4.0;
     if (!v4)
     {
       v5 = +[OBDevice currentDevice];
-      v6 = [v5 templateType];
+      templateType = [v5 templateType];
 
       result = 10.0;
-      if (v6 <= 0xA)
+      if (templateType <= 0xA)
       {
-        return dbl_1B4FFC370[v6];
+        return dbl_1B4FFC370[templateType];
       }
     }
   }
@@ -678,9 +678,9 @@ LABEL_12:
 
 - (id)_titleFont
 {
-  v3 = [(OBBulletedListItem *)self descriptionLabel];
+  descriptionLabel = [(OBBulletedListItem *)self descriptionLabel];
 
-  if (v3)
+  if (descriptionLabel)
   {
     v4 = +[OBFeatureFlags isNaturalUIEnabled];
     v5 = MEMORY[0x1E69DDCF8];
@@ -692,15 +692,15 @@ LABEL_12:
     v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*v5];
     v7 = [v6 fontDescriptorWithSymbolicTraits:2];
 
-    v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
+    _descriptionFont = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
   }
 
   else
   {
-    v8 = [(OBBulletedListItem *)self _descriptionFont];
+    _descriptionFont = [(OBBulletedListItem *)self _descriptionFont];
   }
 
-  return v8;
+  return _descriptionFont;
 }
 
 - (void)updateConstraints
@@ -708,67 +708,67 @@ LABEL_12:
   v23.receiver = self;
   v23.super_class = OBBulletedListItem;
   [(OBBulletedListItem *)&v23 updateConstraints];
-  v3 = [(OBBulletedListItem *)self topConstraintToStackView];
-  [v3 setActive:0];
+  topConstraintToStackView = [(OBBulletedListItem *)self topConstraintToStackView];
+  [topConstraintToStackView setActive:0];
 
-  v4 = [(OBBulletedListItem *)self bottomConstraintToStackView];
-  [v4 setActive:0];
+  bottomConstraintToStackView = [(OBBulletedListItem *)self bottomConstraintToStackView];
+  [bottomConstraintToStackView setActive:0];
 
-  v5 = [(OBBulletedListItem *)self imageView];
-  v6 = [v5 image];
-  [(OBBulletedListItem *)self imageSizeForImage:v6];
+  imageView = [(OBBulletedListItem *)self imageView];
+  image = [imageView image];
+  [(OBBulletedListItem *)self imageSizeForImage:image];
   v8 = v7;
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   [(OBBulletedListItem *)self _combinedLabelHeight];
   if (v8 <= v11 || (-[OBBulletedListItem stackViewLeadingConstraintVertical](self, "stackViewLeadingConstraintVertical"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isActive], v12, (v13 & 1) != 0))
   {
-    v14 = [(OBBulletedListItem *)self topConstraintToImageContainer];
-    [v9 addObject:v14];
+    topConstraintToImageContainer = [(OBBulletedListItem *)self topConstraintToImageContainer];
+    [array addObject:topConstraintToImageContainer];
 
-    v15 = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
-    [v9 addObject:v15];
+    bottomConstraintToImageContainer = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
+    [array addObject:bottomConstraintToImageContainer];
 
-    v16 = [(OBBulletedListItem *)self topConstraintToStackView];
-    [v10 addObject:v16];
+    topConstraintToStackView2 = [(OBBulletedListItem *)self topConstraintToStackView];
+    [array2 addObject:topConstraintToStackView2];
 
-    v17 = [(OBBulletedListItem *)self bottomConstraintToStackView];
+    bottomConstraintToStackView2 = [(OBBulletedListItem *)self bottomConstraintToStackView];
   }
 
   else
   {
-    v18 = [(OBBulletedListItem *)self topConstraintToStackView];
-    [v9 addObject:v18];
+    topConstraintToStackView3 = [(OBBulletedListItem *)self topConstraintToStackView];
+    [array addObject:topConstraintToStackView3];
 
-    v19 = [(OBBulletedListItem *)self bottomConstraintToStackView];
-    [v9 addObject:v19];
+    bottomConstraintToStackView3 = [(OBBulletedListItem *)self bottomConstraintToStackView];
+    [array addObject:bottomConstraintToStackView3];
 
-    v20 = [(OBBulletedListItem *)self imageContainerSizeConstraints];
-    [v10 addObjectsFromArray:v20];
+    imageContainerSizeConstraints = [(OBBulletedListItem *)self imageContainerSizeConstraints];
+    [array2 addObjectsFromArray:imageContainerSizeConstraints];
 
-    v21 = [(OBBulletedListItem *)self topConstraintToImageContainer];
-    [v10 addObject:v21];
+    topConstraintToImageContainer2 = [(OBBulletedListItem *)self topConstraintToImageContainer];
+    [array2 addObject:topConstraintToImageContainer2];
 
-    v17 = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
+    bottomConstraintToStackView2 = [(OBBulletedListItem *)self bottomConstraintToImageContainer];
   }
 
-  v22 = v17;
-  [v10 addObject:v17];
+  v22 = bottomConstraintToStackView2;
+  [array2 addObject:bottomConstraintToStackView2];
 
-  [MEMORY[0x1E696ACD8] deactivateConstraints:v9];
-  [MEMORY[0x1E696ACD8] activateConstraints:v10];
+  [MEMORY[0x1E696ACD8] deactivateConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array2];
 }
 
 - (double)_combinedLabelHeight
 {
-  v3 = [(OBBulletedListItem *)self titleLabel];
+  titleLabel = [(OBBulletedListItem *)self titleLabel];
   [(OBBulletedListItem *)self bounds];
-  [v3 systemLayoutSizeFittingSize:{v4, 0.0}];
+  [titleLabel systemLayoutSizeFittingSize:{v4, 0.0}];
   v6 = v5;
-  v7 = [(OBBulletedListItem *)self descriptionLabel];
+  descriptionLabel = [(OBBulletedListItem *)self descriptionLabel];
   [(OBBulletedListItem *)self bounds];
-  [v7 systemLayoutSizeFittingSize:{v8, 0.0}];
+  [descriptionLabel systemLayoutSizeFittingSize:{v8, 0.0}];
   v10 = v6 + v9;
 
   return v10;

@@ -1,11 +1,11 @@
 @interface PXUILabel
-- (PXUILabel)initWithCoder:(id)a3;
-- (PXUILabel)initWithFrame:(CGRect)a3;
+- (PXUILabel)initWithCoder:(id)coder;
+- (PXUILabel)initWithFrame:(CGRect)frame;
 - (id)_configuredText;
 - (void)_commonPXMemoriesLabelInitialization;
 - (void)_configureLabel;
-- (void)setSpec:(id)a3;
-- (void)setText:(id)a3;
+- (void)setSpec:(id)spec;
+- (void)setText:(id)text;
 - (void)updateConstraints;
 @end
 
@@ -13,9 +13,9 @@
 
 - (id)_configuredText
 {
-  v3 = [(PXUILabel *)self text];
-  v4 = [(PXUILabel *)self spec];
-  v5 = [v3 px_stringByApplyingCapitalization:{objc_msgSend(v4, "capitalization")}];
+  text = [(PXUILabel *)self text];
+  spec = [(PXUILabel *)self spec];
+  v5 = [text px_stringByApplyingCapitalization:{objc_msgSend(spec, "capitalization")}];
 
   return v5;
 }
@@ -117,36 +117,36 @@ LABEL_10:
 
 - (void)_configureLabel
 {
-  v11 = [(PXUILabel *)self spec];
-  v3 = [(PXUILabel *)self _configuredText];
-  v4 = v3;
-  if (v3 && [v3 length])
+  spec = [(PXUILabel *)self spec];
+  _configuredText = [(PXUILabel *)self _configuredText];
+  v4 = _configuredText;
+  if (_configuredText && [_configuredText length])
   {
-    v5 = [(UILabel *)self->_label text];
-    v6 = [v4 isEqualToString:v5];
+    text = [(UILabel *)self->_label text];
+    v6 = [v4 isEqualToString:text];
 
     if ((v6 & 1) == 0)
     {
       [(UILabel *)self->_label setText:v4];
     }
 
-    v7 = [v11 font];
-    v8 = [(UILabel *)self->_label font];
-    v9 = [v7 isEqual:v8];
+    font = [spec font];
+    font2 = [(UILabel *)self->_label font];
+    v9 = [font isEqual:font2];
 
     if ((v9 & 1) == 0)
     {
-      [(UILabel *)self->_label setFont:v7];
+      [(UILabel *)self->_label setFont:font];
     }
 
-    v10 = [v11 verticalAlignment];
-    if (v10 != self->_verticalAlignment)
+    verticalAlignment = [spec verticalAlignment];
+    if (verticalAlignment != self->_verticalAlignment)
     {
-      self->_verticalAlignment = v10;
+      self->_verticalAlignment = verticalAlignment;
       [(PXUILabel *)self setNeedsUpdateConstraints];
     }
 
-    [v11 contentInsets];
+    [spec contentInsets];
     PXEdgeInsetsEqualToEdgeInsets();
   }
 
@@ -164,36 +164,36 @@ LABEL_10:
   visualEffectView = self->_visualEffectView;
   if (visualEffectView)
   {
-    v4 = [(UIVisualEffectView *)visualEffectView contentView];
+    selfCopy = [(UIVisualEffectView *)visualEffectView contentView];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v5 = v4;
-  [(PXUILabel *)v4 addSubview:obj];
+  v5 = selfCopy;
+  [(PXUILabel *)selfCopy addSubview:obj];
   [(PXUILabel *)self setNeedsUpdateConstraints];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXUILabel *)self _configureLabel];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (self->_text != a3)
+  if (self->_text != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     text = self->_text;
     self->_text = v4;
 
@@ -201,11 +201,11 @@ LABEL_10:
   }
 }
 
-- (PXUILabel)initWithFrame:(CGRect)a3
+- (PXUILabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXUILabel;
-  v3 = [(PXUILabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXUILabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -215,11 +215,11 @@ LABEL_10:
   return v4;
 }
 
-- (PXUILabel)initWithCoder:(id)a3
+- (PXUILabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXUILabel;
-  v3 = [(PXUILabel *)&v6 initWithCoder:a3];
+  v3 = [(PXUILabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

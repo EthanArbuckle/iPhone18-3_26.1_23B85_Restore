@@ -1,9 +1,9 @@
 @interface MPSCNNDropoutGradient
 - (MPSCNNDropoutGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNDropoutGradient)initWithDevice:(id)device keepProbability:(float)keepProbability seed:(NSUInteger)seed maskStrideInPixels:(MTLSize *)maskStrideInPixels;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNDropoutGradient
@@ -81,27 +81,27 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v32.receiver = self;
   v32.super_class = MPSCNNDropoutGradient;
   [(MPSCNNGradientKernel *)&v32 encodeWithCoder:?];
-  *&v5 = v4->_keepProbability;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNDropoutGradientKeepProbability", v7, v8, v9, v10, v11, v5);
-  objc_msgSend_encodeInt32_forKey_(a3, v12, LODWORD(v4->_seed), @"MPSCNNDropoutGradientSeed", v13, v14, v15, v16);
-  v4 = (v4 + 448);
-  objc_msgSend_encodeInt64_forKey_(a3, v17, v4->super.super.super.super.isa, @"MPSCNNDropoutGradientMaskStrideInPixelsWidth", v18, v19, v20, v21);
-  objc_msgSend_encodeInt64_forKey_(a3, v22, v4->super.super.super._options, @"MPSCNNDropoutGradientMaskStrideInPixelsHeight", v23, v24, v25, v26);
-  objc_msgSend_encodeInt64_forKey_(a3, v27, v4->super.super.super._verbosityLevel, @"MPSCNNDropoutGradientMaskStrideInPixelsDepth", v28, v29, v30, v31);
+  *&v5 = selfCopy->_keepProbability;
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNDropoutGradientKeepProbability", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeInt32_forKey_(coder, v12, LODWORD(selfCopy->_seed), @"MPSCNNDropoutGradientSeed", v13, v14, v15, v16);
+  selfCopy = (selfCopy + 448);
+  objc_msgSend_encodeInt64_forKey_(coder, v17, selfCopy->super.super.super.super.isa, @"MPSCNNDropoutGradientMaskStrideInPixelsWidth", v18, v19, v20, v21);
+  objc_msgSend_encodeInt64_forKey_(coder, v22, selfCopy->super.super.super._options, @"MPSCNNDropoutGradientMaskStrideInPixelsHeight", v23, v24, v25, v26);
+  objc_msgSend_encodeInt64_forKey_(coder, v27, selfCopy->super.super.super._verbosityLevel, @"MPSCNNDropoutGradientMaskStrideInPixelsDepth", v28, v29, v30, v31);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSCNNDropoutGradient;
-  result = [(MPSCNNGradientKernel *)&v7 copyWithZone:a3 device:a4];
+  result = [(MPSCNNGradientKernel *)&v7 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 108) = LODWORD(self->_keepProbability);

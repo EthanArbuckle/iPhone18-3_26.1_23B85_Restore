@@ -1,43 +1,43 @@
 @interface ADSettingsService
-- (ADSettingsService)initWithRecordingInfoProvider:(id)a3 instanceContext:(id)a4;
-- (id)_wrapBoolSettingValue:(BOOL)a3;
-- (void)_getNoiseManagement:(id)a3 completion:(id)a4;
-- (void)_getPlaybackAudioRoute:(id)a3 completion:(id)a4;
-- (void)_getVoiceOver:(id)a3 completion:(id)a4;
-- (void)_getVoiceTriggerEnabled:(id)a3 completion:(id)a4;
-- (void)_registerCommandHandlersWithRegistry:(id)a3;
-- (void)_setBoolSetting:(id)a3 currentValueBlock:(id)a4 setValueBlock:(id)a5 completion:(id)a6;
-- (void)_setNoiseManagement:(id)a3 completion:(id)a4;
-- (void)_setVoiceOver:(id)a3 completion:(id)a4;
-- (void)_setVoiceTriggerEnabled:(id)a3 completion:(id)a4;
+- (ADSettingsService)initWithRecordingInfoProvider:(id)provider instanceContext:(id)context;
+- (id)_wrapBoolSettingValue:(BOOL)value;
+- (void)_getNoiseManagement:(id)management completion:(id)completion;
+- (void)_getPlaybackAudioRoute:(id)route completion:(id)completion;
+- (void)_getVoiceOver:(id)over completion:(id)completion;
+- (void)_getVoiceTriggerEnabled:(id)enabled completion:(id)completion;
+- (void)_registerCommandHandlersWithRegistry:(id)registry;
+- (void)_setBoolSetting:(id)setting currentValueBlock:(id)block setValueBlock:(id)valueBlock completion:(id)completion;
+- (void)_setNoiseManagement:(id)management completion:(id)completion;
+- (void)_setVoiceOver:(id)over completion:(id)completion;
+- (void)_setVoiceTriggerEnabled:(id)enabled completion:(id)completion;
 @end
 
 @implementation ADSettingsService
 
-- (void)_setBoolSetting:(id)a3 currentValueBlock:(id)a4 setValueBlock:(id)a5 completion:(id)a6
+- (void)_setBoolSetting:(id)setting currentValueBlock:(id)block setValueBlock:(id)valueBlock completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = (*(a4 + 2))(a4);
-  if ([v9 toggle])
+  settingCopy = setting;
+  valueBlockCopy = valueBlock;
+  completionCopy = completion;
+  v12 = (*(block + 2))(block);
+  if ([settingCopy toggle])
   {
-    v13 = (v12 ^ 1);
+    value = (v12 ^ 1);
   }
 
   else
   {
-    v13 = [v9 value];
+    value = [settingCopy value];
   }
 
-  if (v12 == v13)
+  if (v12 == value)
   {
     v14 = [SACommandFailed alloc];
     v15 = &SASettingValueUnchangedErrorCode;
     goto LABEL_9;
   }
 
-  if ((v13 & 1) == 0 && [v9 failOnSiriDisconnectWarnings])
+  if ((value & 1) == 0 && [settingCopy failOnSiriDisconnectWarnings])
   {
     v14 = [SACommandFailed alloc];
     v15 = &SASettingSiriDisconnectErrorCode;
@@ -46,9 +46,9 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (([v9 dryRun] & 1) == 0)
+  if (([settingCopy dryRun] & 1) == 0)
   {
-    v10[2](v10, v13);
+    valueBlockCopy[2](valueBlockCopy, value);
   }
 
   v16 = objc_alloc_init(SASettingSetBoolResponse);
@@ -56,7 +56,7 @@ LABEL_9:
   v18 = [NSNumber numberWithBool:v12];
   [v17 setPreviousValue:v18];
 
-  [v17 setValue:v13];
+  [v17 setValue:value];
   [v16 setSetting:v17];
 
 LABEL_13:
@@ -66,11 +66,11 @@ LABEL_13:
     v20 = v19;
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [v9 dryRun];
+    dryRun = [settingCopy dryRun];
     v24 = @"Set";
     v27 = 136316418;
     v28 = "[ADSettingsService _setBoolSetting:currentValueBlock:setValueBlock:completion:]";
-    if (v23)
+    if (dryRun)
     {
       v24 = @"Dry Run";
     }
@@ -92,7 +92,7 @@ LABEL_13:
 
     v33 = 2112;
     v34 = v26;
-    if (!v13)
+    if (!value)
     {
       v25 = @"OFF";
     }
@@ -104,28 +104,28 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s %@ (%@ / prev: %@ / value: %@ / %@)", &v27, 0x3Eu);
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11, v16, 0);
+    completionCopy[2](completionCopy, v16, 0);
   }
 }
 
-- (id)_wrapBoolSettingValue:(BOOL)a3
+- (id)_wrapBoolSettingValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(SASettingGetBoolResponse);
   v5 = objc_alloc_init(SASettingBooleanEntity);
-  [v5 setValue:v3];
+  [v5 setValue:valueCopy];
   [v4 setSetting:v5];
 
   return v4;
 }
 
-- (void)_setNoiseManagement:(id)a3 completion:(id)a4
+- (void)_setNoiseManagement:(id)management completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  managementCopy = management;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     goto LABEL_40;
   }
@@ -135,7 +135,7 @@ LABEL_13:
     v7 = [SACommandFailed alloc];
     v8 = [v7 initWithErrorCode:SASettingConnectedHeadsetNoiseManagementSiriControlUnsupportedErrorCode];
     v9 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", kAFAssistantErrorDomain, [v8 errorCode], 0);
-    v6[2](v6, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
 
     goto LABEL_40;
   }
@@ -151,8 +151,8 @@ LABEL_13:
   v72 = &v71;
   v73 = 0x2020000000;
   v74 = 0;
-  v11 = [v5 noiseManagementOption];
-  if ([v11 isEqualToString:SASettingNoiseManagementOptionNOISE_CANCELLATIONValue])
+  noiseManagementOption = [managementCopy noiseManagementOption];
+  if ([noiseManagementOption isEqualToString:SASettingNoiseManagementOptionNOISE_CANCELLATIONValue])
   {
     v12 = 3;
 LABEL_12:
@@ -160,19 +160,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v11 isEqualToString:SASettingNoiseManagementOptionAUDIO_TRANSPARENCYValue])
+  if ([noiseManagementOption isEqualToString:SASettingNoiseManagementOptionAUDIO_TRANSPARENCYValue])
   {
     v12 = 4;
     goto LABEL_12;
   }
 
-  if ([v11 isEqualToString:SASettingNoiseManagementOptionAUTOMATICValue])
+  if ([noiseManagementOption isEqualToString:SASettingNoiseManagementOptionAUTOMATICValue])
   {
     v12 = 5;
     goto LABEL_12;
   }
 
-  if ([v11 isEqualToString:SASettingNoiseManagementOptionOFFValue])
+  if ([noiseManagementOption isEqualToString:SASettingNoiseManagementOptionOFFValue])
   {
     v12 = 2;
     goto LABEL_12;
@@ -193,7 +193,7 @@ LABEL_13:
   dispatch_group_wait(v13, v14);
   if ([v76[5] count])
   {
-    v15 = [v76[5] dequeueObject];
+    dequeueObject = [v76[5] dequeueObject];
     v63 = 0;
     v64 = &v63;
     v65 = 0x2020000000;
@@ -211,7 +211,7 @@ LABEL_13:
     v58 = &v63;
     v16 = v13;
     v56 = v16;
-    [v15 getHeadphoneListeningMode:v55];
+    [dequeueObject getHeadphoneListeningMode:v55];
     v17 = dispatch_time(0, 4000000000);
     dispatch_group_wait(v16, v17);
     if (*(v64 + 24) == 1)
@@ -226,7 +226,7 @@ LABEL_13:
 
       v19 = [NSError errorWithDomain:kAFAssistantErrorDomain code:SASettingNoHeadsetConnectedErrorCode userInfo:0];
       v20 = [[SACommandFailed alloc] initWithErrorCode:{objc_msgSend(v19, "code")}];
-      v6[2](v6, v20, v19);
+      completionCopy[2](completionCopy, v20, v19);
     }
 
     else
@@ -269,7 +269,7 @@ LABEL_13:
         v50 = &v51;
         v31 = v16;
         v48 = v31;
-        [v15 setHeadphoneListeningMode:v30 completion:v47];
+        [dequeueObject setHeadphoneListeningMode:v30 completion:v47];
         v32 = dispatch_time(0, 4000000000);
         dispatch_group_wait(v31, v32);
         v43 = [v76[5] count];
@@ -281,9 +281,9 @@ LABEL_13:
           }
 
           dispatch_group_enter(v31);
-          v33 = [v76[5] dequeueObject];
-          v34 = v15;
-          v35 = v11;
+          dequeueObject2 = [v76[5] dequeueObject];
+          v34 = dequeueObject;
+          v35 = noiseManagementOption;
           v36 = v72[3];
           v45[0] = _NSConcreteStackBlock;
           v45[1] = 3221225472;
@@ -291,9 +291,9 @@ LABEL_13:
           v45[3] = &unk_10051C498;
           v46 = v31;
           v37 = v36;
-          v11 = v35;
-          v15 = v34;
-          [v33 setHeadphoneListeningMode:v37 completion:v45];
+          noiseManagementOption = v35;
+          dequeueObject = v34;
+          [dequeueObject2 setHeadphoneListeningMode:v37 completion:v45];
         }
 
         v38 = dispatch_time(0, 1000000000 * v43);
@@ -302,7 +302,7 @@ LABEL_13:
         {
           v19 = [NSError errorWithDomain:kAFAssistantErrorDomain code:SASettingNoHeadsetConnectedErrorCode userInfo:0];
           v39 = [[SACommandFailed alloc] initWithErrorCode:{objc_msgSend(v19, "code")}];
-          v6[2](v6, v39, v19);
+          completionCopy[2](completionCopy, v39, v19);
         }
 
         else
@@ -311,7 +311,7 @@ LABEL_13:
           {
             v40 = [SACommandFailed alloc];
             v39 = [v40 initWithErrorCode:{objc_msgSend(*(*(&v87 + 1) + 40), "code")}];
-            v6[2](v6, v39, *(*(&v87 + 1) + 40));
+            completionCopy[2](completionCopy, v39, *(*(&v87 + 1) + 40));
           }
 
           else
@@ -324,16 +324,16 @@ LABEL_13:
               v83 = 2112;
               v84 = v44;
               v85 = 2112;
-              v86 = v11;
+              v86 = noiseManagementOption;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "%s Done setting bluetooth device noise management from %@ to %@", buf, 0x20u);
             }
 
             v39 = objc_alloc_init(SASettingNoiseManagementEntity);
             [v39 setPreviousValue:v44];
-            [v39 setValue:v11];
+            [v39 setValue:noiseManagementOption];
             v42 = objc_alloc_init(SASettingSetValueResponse);
             [v42 setSetting:v39];
-            v6[2](v6, v42, 0);
+            completionCopy[2](completionCopy, v42, 0);
           }
 
           v19 = 0;
@@ -356,9 +356,9 @@ LABEL_13:
 
         v23 = [SACommandFailed alloc];
         v20 = [v23 initWithErrorCode:SASettingConnectedHeadsetNoiseManagementUnsupportedErrorCode];
-        v24 = [v20 errorCode];
-        v25 = [NSError errorWithDomain:kAFAssistantErrorDomain code:v24 userInfo:0];
-        v6[2](v6, v20, v25);
+        errorCode = [v20 errorCode];
+        v25 = [NSError errorWithDomain:kAFAssistantErrorDomain code:errorCode userInfo:0];
+        completionCopy[2](completionCopy, v20, v25);
 
         v19 = 0;
       }
@@ -371,8 +371,8 @@ LABEL_13:
   else
   {
     v19 = sub_100154C58(0, v72[3]);
-    v15 = [[SACommandFailed alloc] initWithErrorCode:{objc_msgSend(v19, "code")}];
-    v6[2](v6, v15, v19);
+    dequeueObject = [[SACommandFailed alloc] initWithErrorCode:{objc_msgSend(v19, "code")}];
+    completionCopy[2](completionCopy, dequeueObject, v19);
   }
 
   _Block_object_dispose(&v71, 8);
@@ -381,11 +381,11 @@ LABEL_13:
 LABEL_40:
 }
 
-- (void)_getNoiseManagement:(id)a3 completion:(id)a4
+- (void)_getNoiseManagement:(id)management completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  managementCopy = management;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v41 = 0;
     v42 = &v41;
@@ -397,9 +397,9 @@ LABEL_40:
     {
       v7 = [SACommandFailed alloc];
       v8 = [v7 initWithErrorCode:SASettingConnectedHeadsetNoiseManagementSiriControlUnsupportedErrorCode];
-      v9 = [v8 errorCode];
-      v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:v9 userInfo:0];
-      v6[2](v6, v8, v10);
+      errorCode = [v8 errorCode];
+      v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:errorCode userInfo:0];
+      completionCopy[2](completionCopy, v8, v10);
 LABEL_29:
 
       _Block_object_dispose(&v41, 8);
@@ -422,7 +422,7 @@ LABEL_29:
     {
       v8 = sub_100154C58(0, 0);
       v18 = [[SACommandFailed alloc] initWithErrorCode:{-[NSObject code](v8, "code")}];
-      v6[2](v6, v18, v8);
+      completionCopy[2](completionCopy, v18, v8);
 
 LABEL_28:
       goto LABEL_29;
@@ -461,7 +461,7 @@ LABEL_28:
 
       v8 = [NSError errorWithDomain:kAFAssistantErrorDomain code:SASettingNoHeadsetConnectedErrorCode userInfo:0];
       v17 = [[SACommandFailed alloc] initWithErrorCode:{-[NSObject code](v8, "code")}];
-      v6[2](v6, v17, v8);
+      completionCopy[2](completionCopy, v17, v8);
       goto LABEL_27;
     }
 
@@ -501,7 +501,7 @@ LABEL_28:
         if (v8)
         {
           v21 = [[SACommandFailed alloc] initWithErrorCode:{-[NSObject code](v8, "code")}];
-          v6[2](v6, v21, v8);
+          completionCopy[2](completionCopy, v21, v8);
 LABEL_26:
 
 LABEL_27:
@@ -525,7 +525,7 @@ LABEL_23:
         [v21 setValue:v17];
         v25 = objc_alloc_init(SASettingGetNoiseManagementResponse);
         [v25 setSetting:v21];
-        v6[2](v6, v25, 0);
+        completionCopy[2](completionCopy, v25, 0);
 
         v8 = 0;
         goto LABEL_26;
@@ -548,37 +548,37 @@ LABEL_23:
 LABEL_30:
 }
 
-- (void)_getPlaybackAudioRoute:(id)a3 completion:(id)a4
+- (void)_getPlaybackAudioRoute:(id)route completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 audioCategory];
+  completionCopy = completion;
+  audioCategory = [route audioCategory];
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v13 = "[ADSettingsService _getPlaybackAudioRoute:completion:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = audioCategory;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s audioCategory = %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v8 = +[ADAVSystemControllerLifecycleManager sharedManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100155FD8;
     v9[3] = &unk_100513670;
-    v10 = v6;
-    v11 = v5;
+    v10 = audioCategory;
+    v11 = completionCopy;
     [v8 getAVSystemControllerWithTimeout:v9 completion:2.0];
   }
 }
 
-- (void)_setVoiceOver:(id)a3 completion:(id)a4
+- (void)_setVoiceOver:(id)over completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  overCopy = over;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -587,13 +587,13 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", &v9, 0xCu);
   }
 
-  [(ADSettingsService *)self _setBoolSetting:v6 currentValueBlock:&stru_100513628 setValueBlock:&stru_100513648 completion:v7];
+  [(ADSettingsService *)self _setBoolSetting:overCopy currentValueBlock:&stru_100513628 setValueBlock:&stru_100513648 completion:completionCopy];
 }
 
-- (void)_getVoiceOver:(id)a3 completion:(id)a4
+- (void)_getVoiceOver:(id)over completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  overCopy = over;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -602,17 +602,17 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", &v10, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [(ADSettingsService *)self _wrapBoolSettingValue:_AXSVoiceOverTouchEnabled() != 0];
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 }
 
-- (void)_getVoiceTriggerEnabled:(id)a3 completion:(id)a4
+- (void)_getVoiceTriggerEnabled:(id)enabled completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -621,17 +621,17 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", &v10, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [(ADSettingsService *)self _wrapBoolSettingValue:sub_10000F1C0()];
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 }
 
-- (void)_setVoiceTriggerEnabled:(id)a3 completion:(id)a4
+- (void)_setVoiceTriggerEnabled:(id)enabled completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -652,46 +652,46 @@ LABEL_30:
   v11[3] = &unk_10051B778;
   v11[4] = self;
   v10 = objc_retainBlock(v11);
-  [(ADSettingsService *)self _setBoolSetting:v6 currentValueBlock:v9 setValueBlock:v10 completion:v7];
+  [(ADSettingsService *)self _setBoolSetting:enabledCopy currentValueBlock:v9 setValueBlock:v10 completion:completionCopy];
 }
 
-- (void)_registerCommandHandlersWithRegistry:(id)a3
+- (void)_registerCommandHandlersWithRegistry:(id)registry
 {
-  v6 = a3;
+  registryCopy = registry;
   v4 = AFIsHorseman();
   v5 = SASettingGroupIdentifier;
   if (v4)
   {
-    [(ADBaseService *)self _registerCommandClass:SASettingSetVoiceTriggerEnabledStateClassIdentifier forDomain:SASettingGroupIdentifier withSelector:"_setVoiceTriggerEnabled:completion:" forRegistry:v6];
-    [(ADBaseService *)self _registerCommandClass:SASettingGetVoiceTriggerEnabledStateClassIdentifier forDomain:v5 withSelector:"_getVoiceTriggerEnabled:completion:" forRegistry:v6];
-    [(ADBaseService *)self _registerCommandClass:SASettingGetVoiceOverClassIdentifier forDomain:v5 withSelector:"_getVoiceOver:completion:" forRegistry:v6];
-    [(ADBaseService *)self _registerCommandClass:SASettingSetVoiceOverClassIdentifier forDomain:v5 withSelector:"_setVoiceOver:completion:" forRegistry:v6];
+    [(ADBaseService *)self _registerCommandClass:SASettingSetVoiceTriggerEnabledStateClassIdentifier forDomain:SASettingGroupIdentifier withSelector:"_setVoiceTriggerEnabled:completion:" forRegistry:registryCopy];
+    [(ADBaseService *)self _registerCommandClass:SASettingGetVoiceTriggerEnabledStateClassIdentifier forDomain:v5 withSelector:"_getVoiceTriggerEnabled:completion:" forRegistry:registryCopy];
+    [(ADBaseService *)self _registerCommandClass:SASettingGetVoiceOverClassIdentifier forDomain:v5 withSelector:"_getVoiceOver:completion:" forRegistry:registryCopy];
+    [(ADBaseService *)self _registerCommandClass:SASettingSetVoiceOverClassIdentifier forDomain:v5 withSelector:"_setVoiceOver:completion:" forRegistry:registryCopy];
   }
 
-  [(ADBaseService *)self _registerCommandClass:SASettingGetPlaybackAudioRouteClassIdentifier forDomain:v5 withSelector:"_getPlaybackAudioRoute:completion:" forRegistry:v6];
-  [(ADBaseService *)self _registerCommandClass:SASettingGetNoiseManagementClassIdentifier forDomain:v5 withSelector:"_getNoiseManagement:completion:" forRegistry:v6];
-  [(ADBaseService *)self _registerCommandClass:SASettingSetNoiseManagementClassIdentifier forDomain:v5 withSelector:"_setNoiseManagement:completion:" forRegistry:v6];
+  [(ADBaseService *)self _registerCommandClass:SASettingGetPlaybackAudioRouteClassIdentifier forDomain:v5 withSelector:"_getPlaybackAudioRoute:completion:" forRegistry:registryCopy];
+  [(ADBaseService *)self _registerCommandClass:SASettingGetNoiseManagementClassIdentifier forDomain:v5 withSelector:"_getNoiseManagement:completion:" forRegistry:registryCopy];
+  [(ADBaseService *)self _registerCommandClass:SASettingSetNoiseManagementClassIdentifier forDomain:v5 withSelector:"_setNoiseManagement:completion:" forRegistry:registryCopy];
 }
 
-- (ADSettingsService)initWithRecordingInfoProvider:(id)a3 instanceContext:(id)a4
+- (ADSettingsService)initWithRecordingInfoProvider:(id)provider instanceContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = ADSettingsService;
   v9 = [(ADBaseService *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordingInfoProvider, a3);
-    v11 = v8;
-    if (!v8)
+    objc_storeStrong(&v9->_recordingInfoProvider, provider);
+    v11 = contextCopy;
+    if (!contextCopy)
     {
       v11 = +[AFInstanceContext defaultContext];
     }
 
     objc_storeStrong(&v10->_instanceContext, v11);
-    if (!v8)
+    if (!contextCopy)
     {
     }
   }

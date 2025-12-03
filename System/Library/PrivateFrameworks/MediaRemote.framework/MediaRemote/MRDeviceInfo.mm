@@ -1,18 +1,18 @@
 @interface MRDeviceInfo
-+ (id)dataFromDeviceInfos:(id)a3;
-+ (id)deviceInfosFromData:(id)a3;
++ (id)dataFromDeviceInfos:(id)infos;
++ (id)deviceInfosFromData:(id)data;
 + (int64_t)deviceClass;
-- (BOOL)containsDevice:(id)a3;
+- (BOOL)containsDevice:(id)device;
 - (BOOL)containsLocalDevice;
 - (BOOL)effectiveParentGroupContainsDiscoverableGroupLeader;
 - (BOOL)hasPlaceholderGroupSession;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesUID:(id)a3;
-- (MRDeviceInfo)initWithCoder:(id)a3;
-- (MRDeviceInfo)initWithData:(id)a3;
-- (MRDeviceInfo)initWithOutputDevice:(id)a3;
-- (MRDeviceInfo)initWithOutputDeviceDescription:(id)a3;
-- (MRDeviceInfo)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesUID:(id)d;
+- (MRDeviceInfo)initWithCoder:(id)coder;
+- (MRDeviceInfo)initWithData:(id)data;
+- (MRDeviceInfo)initWithOutputDevice:(id)device;
+- (MRDeviceInfo)initWithOutputDeviceDescription:(id)description;
+- (MRDeviceInfo)initWithProtobuf:(id)protobuf;
 - (MRDeviceInfo)skeleton;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
@@ -24,23 +24,23 @@
 - (NSString)mr_effectiveRoutingContextID;
 - (NSString)parentGroupID;
 - (_MRDeviceInfoMessageProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deltaDescriptionFromDeviceInfo:(id)a3 minimal:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deltaDescriptionFromDeviceInfo:(id)info minimal:(BOOL)minimal;
 - (id)description;
-- (id)resolveOutputDeviceUIDs:(id)a3;
+- (id)resolveOutputDeviceUIDs:(id)ds;
 - (unint64_t)hash;
 - (unsigned)deviceSubtype;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRDeviceInfo
 
 - (NSData)data
 {
-  v2 = [(MRDeviceInfo *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRDeviceInfo *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRDeviceInfoMessageProtobuf)protobuf
@@ -100,132 +100,132 @@
   [(_MRDeviceInfoMessageProtobuf *)v3 setHasLastSupportedMessageType:[(MRDeviceInfo *)self hasLastSupportedProtocolMessageType]];
   [(_MRDeviceInfoMessageProtobuf *)v3 setParentGroupSupportsGroupCohesion:[(MRDeviceInfo *)self parentGroupSupportsGroupCohesion]];
   [(_MRDeviceInfoMessageProtobuf *)v3 setHasParentGroupSupportsGroupCohesion:[(MRDeviceInfo *)self hasParentGroupSupportsGroupCohesion]];
-  v4 = [(MRDeviceInfo *)self name];
-  v5 = [v4 copy];
+  name = [(MRDeviceInfo *)self name];
+  v5 = [name copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setName:v5];
 
-  v6 = [(MRDeviceInfo *)self identifier];
-  v7 = [v6 copy];
+  identifier = [(MRDeviceInfo *)self identifier];
+  v7 = [identifier copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setUniqueIdentifier:v7];
 
-  v8 = [(MRDeviceInfo *)self localizedModelName];
-  v9 = [v8 copy];
+  localizedModelName = [(MRDeviceInfo *)self localizedModelName];
+  v9 = [localizedModelName copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setLocalizedModelName:v9];
 
-  v10 = [(MRDeviceInfo *)self buildVersion];
-  v11 = [v10 copy];
+  buildVersion = [(MRDeviceInfo *)self buildVersion];
+  v11 = [buildVersion copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setSystemBuildVersion:v11];
 
-  v12 = [(MRDeviceInfo *)self bundleIdentifier];
-  v13 = [v12 copy];
+  bundleIdentifier = [(MRDeviceInfo *)self bundleIdentifier];
+  v13 = [bundleIdentifier copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setApplicationBundleIdentifier:v13];
 
-  v14 = [(MRDeviceInfo *)self bundleVersion];
-  v15 = [v14 copy];
+  bundleVersion = [(MRDeviceInfo *)self bundleVersion];
+  v15 = [bundleVersion copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setApplicationBundleVersion:v15];
 
-  v16 = [(MRDeviceInfo *)self systemMediaApplication];
-  v17 = [v16 copy];
+  systemMediaApplication = [(MRDeviceInfo *)self systemMediaApplication];
+  v17 = [systemMediaApplication copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setSystemMediaApplication:v17];
 
-  v18 = [(MRDeviceInfo *)self systemPodcastApplication];
-  v19 = [v18 copy];
+  systemPodcastApplication = [(MRDeviceInfo *)self systemPodcastApplication];
+  v19 = [systemPodcastApplication copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setSystemPodcastApplication:v19];
 
-  v20 = [(MRDeviceInfo *)self systemBooksApplication];
-  v21 = [v20 copy];
+  systemBooksApplication = [(MRDeviceInfo *)self systemBooksApplication];
+  v21 = [systemBooksApplication copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setSystemBooksApplication:v21];
 
-  v22 = [(MRDeviceInfo *)self deviceUID];
-  v23 = [v22 copy];
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
+  v23 = [deviceUID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setDeviceUID:v23];
 
-  v24 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
-  v25 = [v24 copy];
+  managedConfigurationDeviceIdentifier = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
+  v25 = [managedConfigurationDeviceIdentifier copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setManagedConfigDeviceID:v25];
 
-  v26 = [(MRDeviceInfo *)self tightSyncUID];
-  v27 = [v26 copy];
+  tightSyncUID = [(MRDeviceInfo *)self tightSyncUID];
+  v27 = [tightSyncUID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setTightSyncUID:v27];
 
-  v28 = [(MRDeviceInfo *)self groupUID];
-  v29 = [v28 copy];
+  groupUID = [(MRDeviceInfo *)self groupUID];
+  v29 = [groupUID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setGroupUID:v29];
 
-  v30 = [(MRDeviceInfo *)self airPlayGroupUID];
-  [(_MRDeviceInfoMessageProtobuf *)v3 setAirPlayGroupID:v30];
+  airPlayGroupUID = [(MRDeviceInfo *)self airPlayGroupUID];
+  [(_MRDeviceInfoMessageProtobuf *)v3 setAirPlayGroupID:airPlayGroupUID];
 
-  v31 = [(MRDeviceInfo *)self groupName];
-  v32 = [v31 copy];
+  groupName = [(MRDeviceInfo *)self groupName];
+  v32 = [groupName copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setGroupName:v32];
 
-  v33 = [(MRDeviceInfo *)self senderDefaultGroupUID];
-  v34 = [v33 copy];
+  senderDefaultGroupUID = [(MRDeviceInfo *)self senderDefaultGroupUID];
+  v34 = [senderDefaultGroupUID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setSenderDefaultGroupUID:v34];
 
-  v35 = [(MRDeviceInfo *)self bluetoothAddress];
-  v36 = [v35 copy];
+  bluetoothAddress = [(MRDeviceInfo *)self bluetoothAddress];
+  v36 = [bluetoothAddress copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setBluetoothAddress:v36];
 
-  v37 = [(MRDeviceInfo *)self airPlayReceivers];
-  v38 = [v37 copy];
+  airPlayReceivers = [(MRDeviceInfo *)self airPlayReceivers];
+  v38 = [airPlayReceivers copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setAirplayReceivers:v38];
 
-  v39 = [(MRDeviceInfo *)self linkAgent];
-  v40 = [v39 copy];
+  linkAgent = [(MRDeviceInfo *)self linkAgent];
+  v40 = [linkAgent copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setLinkAgent:v40];
 
-  v41 = [(MRDeviceInfo *)self clusterID];
-  v42 = [v41 copy];
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  v42 = [clusterID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setClusterID:v42];
 
-  v43 = [(MRDeviceInfo *)self preferredClusterLeaderID];
-  v44 = [v43 copy];
+  preferredClusterLeaderID = [(MRDeviceInfo *)self preferredClusterLeaderID];
+  v44 = [preferredClusterLeaderID copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setClusterLeaderID:v44];
 
-  v45 = [(MRDeviceInfo *)self computerName];
-  v46 = [v45 copy];
+  computerName = [(MRDeviceInfo *)self computerName];
+  v46 = [computerName copy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setComputerName:v46];
 
-  v47 = [(MRDeviceInfo *)self modelID];
-  [(_MRDeviceInfoMessageProtobuf *)v3 setModelID:v47];
+  modelID = [(MRDeviceInfo *)self modelID];
+  [(_MRDeviceInfoMessageProtobuf *)v3 setModelID:modelID];
 
-  v48 = [(MRDeviceInfo *)self routingContextID];
-  [(_MRDeviceInfoMessageProtobuf *)v3 setRoutingContextID:v48];
+  routingContextID = [(MRDeviceInfo *)self routingContextID];
+  [(_MRDeviceInfoMessageProtobuf *)v3 setRoutingContextID:routingContextID];
 
-  v49 = [(MRDeviceInfo *)self activeSystemEndpointUID];
-  [(_MRDeviceInfoMessageProtobuf *)v3 setActiveSystemEndpointUID:v49];
+  activeSystemEndpointUID = [(MRDeviceInfo *)self activeSystemEndpointUID];
+  [(_MRDeviceInfoMessageProtobuf *)v3 setActiveSystemEndpointUID:activeSystemEndpointUID];
 
-  v50 = [(MRDeviceInfo *)self groupSessionToken];
+  groupSessionToken = [(MRDeviceInfo *)self groupSessionToken];
 
-  if (v50)
+  if (groupSessionToken)
   {
-    v51 = [(MRDeviceInfo *)self groupSessionToken];
-    v52 = [v51 protobuf];
-    [(_MRDeviceInfoMessageProtobuf *)v3 setGroupSessionToken:v52];
+    groupSessionToken2 = [(MRDeviceInfo *)self groupSessionToken];
+    protobuf = [groupSessionToken2 protobuf];
+    [(_MRDeviceInfoMessageProtobuf *)v3 setGroupSessionToken:protobuf];
   }
 
-  v53 = [(MRDeviceInfo *)self leaderDeviceInfo];
+  leaderDeviceInfo = [(MRDeviceInfo *)self leaderDeviceInfo];
 
-  if (v53)
+  if (leaderDeviceInfo)
   {
-    v54 = [(MRDeviceInfo *)self leaderDeviceInfo];
-    v55 = [v54 protobuf];
-    [(_MRDeviceInfoMessageProtobuf *)v3 setLeaderDeviceInfo:v55];
+    leaderDeviceInfo2 = [(MRDeviceInfo *)self leaderDeviceInfo];
+    protobuf2 = [leaderDeviceInfo2 protobuf];
+    [(_MRDeviceInfoMessageProtobuf *)v3 setLeaderDeviceInfo:protobuf2];
   }
 
-  v56 = [(MRDeviceInfo *)self groupedDevices];
-  v57 = [v56 mr_map:&__block_literal_global_23_1];
+  groupedDevices = [(MRDeviceInfo *)self groupedDevices];
+  v57 = [groupedDevices mr_map:&__block_literal_global_23_1];
   v58 = [v57 mutableCopy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setGroupedDevices:v58];
 
-  v59 = [(MRDeviceInfo *)self clusteredDevices];
-  v60 = [v59 mr_map:&__block_literal_global_25_1];
+  clusteredDevices = [(MRDeviceInfo *)self clusteredDevices];
+  v60 = [clusteredDevices mr_map:&__block_literal_global_25_1];
   v61 = [v60 mutableCopy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setClusteredDevices:v61];
 
-  v62 = [(MRDeviceInfo *)self allClusteredDevices];
-  v63 = [v62 mr_map:&__block_literal_global_27];
+  allClusteredDevices = [(MRDeviceInfo *)self allClusteredDevices];
+  v63 = [allClusteredDevices mr_map:&__block_literal_global_27];
   v64 = [v63 mutableCopy];
   [(_MRDeviceInfoMessageProtobuf *)v3 setAllClusteredDevices:v64];
 
@@ -236,32 +236,32 @@
 {
   if ([(MRDeviceInfo *)self isAirPlayActive])
   {
-    v3 = [(MRDeviceInfo *)self groupUID];
+    groupUID = [(MRDeviceInfo *)self groupUID];
   }
 
   else
   {
-    v3 = 0;
+    groupUID = 0;
   }
 
-  return v3;
+  return groupUID;
 }
 
 - (BOOL)effectiveParentGroupContainsDiscoverableGroupLeader
 {
-  v3 = [(MRDeviceInfo *)self leaderDeviceInfo];
-  if (v3)
+  leaderDeviceInfo = [(MRDeviceInfo *)self leaderDeviceInfo];
+  if (leaderDeviceInfo)
   {
-    v4 = [(MRDeviceInfo *)self leaderDeviceInfo];
-    v5 = [v4 parentGroupContainsDiscoverableGroupLeader];
+    leaderDeviceInfo2 = [(MRDeviceInfo *)self leaderDeviceInfo];
+    parentGroupContainsDiscoverableGroupLeader = [leaderDeviceInfo2 parentGroupContainsDiscoverableGroupLeader];
   }
 
   else
   {
-    v5 = [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader];
+    parentGroupContainsDiscoverableGroupLeader = [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader];
   }
 
-  return v5;
+  return parentGroupContainsDiscoverableGroupLeader;
 }
 
 + (int64_t)deviceClass
@@ -278,103 +278,103 @@
     return 15;
   }
 
-  v4 = [(MRDeviceInfo *)self deviceClass];
-  if ((v4 - 1) > 6)
+  deviceClass = [(MRDeviceInfo *)self deviceClass];
+  if ((deviceClass - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_1A2B80EA0[v4 - 1];
+    return dword_1A2B80EA0[deviceClass - 1];
   }
 }
 
 - (NSString)WHAIdentifier
 {
-  v3 = [(MRDeviceInfo *)self clusterID];
-  v4 = v3;
-  if (v3)
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  v4 = clusterID;
+  if (clusterID)
   {
-    v5 = v3;
+    v5 = clusterID;
   }
 
   else
   {
-    v6 = [(MRDeviceInfo *)self deviceUID];
-    v7 = v6;
-    if (v6)
+    deviceUID = [(MRDeviceInfo *)self deviceUID];
+    v7 = deviceUID;
+    if (deviceUID)
     {
-      v8 = v6;
+      identifier = deviceUID;
     }
 
     else
     {
-      v8 = [(MRDeviceInfo *)self identifier];
+      identifier = [(MRDeviceInfo *)self identifier];
     }
 
-    v5 = v8;
+    v5 = identifier;
   }
 
   return v5;
 }
 
-- (MRDeviceInfo)initWithOutputDevice:(id)a3
+- (MRDeviceInfo)initWithOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = MRDeviceInfo;
   v5 = [(MRDeviceInfo *)&v22 init];
   if (v5)
   {
-    v6 = [v4 name];
-    [(MRDeviceInfo *)v5 setName:v6];
+    name = [deviceCopy name];
+    [(MRDeviceInfo *)v5 setName:name];
 
-    v7 = [v4 primaryID];
-    [(MRDeviceInfo *)v5 setDeviceUID:v7];
+    primaryID = [deviceCopy primaryID];
+    [(MRDeviceInfo *)v5 setDeviceUID:primaryID];
 
-    v8 = [v4 modelID];
-    [(MRDeviceInfo *)v5 setLocalizedModelName:v8];
+    modelID = [deviceCopy modelID];
+    [(MRDeviceInfo *)v5 setLocalizedModelName:modelID];
 
-    v9 = [v4 logicalDeviceID];
-    [(MRDeviceInfo *)v5 setTightSyncUID:v9];
+    logicalDeviceID = [deviceCopy logicalDeviceID];
+    [(MRDeviceInfo *)v5 setTightSyncUID:logicalDeviceID];
 
-    v10 = [v4 groupID];
-    [(MRDeviceInfo *)v5 setGroupUID:v10];
+    groupID = [deviceCopy groupID];
+    [(MRDeviceInfo *)v5 setGroupUID:groupID];
 
-    v11 = [v4 airPlayGroupID];
-    [(MRDeviceInfo *)v5 setAirPlayGroupUID:v11];
+    airPlayGroupID = [deviceCopy airPlayGroupID];
+    [(MRDeviceInfo *)v5 setAirPlayGroupUID:airPlayGroupID];
 
-    v12 = [v4 modelID];
-    [(MRDeviceInfo *)v5 setModelID:v12];
+    modelID2 = [deviceCopy modelID];
+    [(MRDeviceInfo *)v5 setModelID:modelID2];
 
-    if ([v4 clusterType])
+    if ([deviceCopy clusterType])
     {
-      -[MRDeviceInfo setClusterType:](v5, "setClusterType:", [v4 clusterType]);
-      v13 = [v4 uid];
+      -[MRDeviceInfo setClusterType:](v5, "setClusterType:", [deviceCopy clusterType]);
+      v13 = [deviceCopy uid];
       [(MRDeviceInfo *)v5 setClusterID:v13];
 
-      -[MRDeviceInfo setConfiguredClusterSize:](v5, "setConfiguredClusterSize:", [v4 configuredClusterSize]);
+      -[MRDeviceInfo setConfiguredClusterSize:](v5, "setConfiguredClusterSize:", [deviceCopy configuredClusterSize]);
     }
 
-    if ([v4 groupContainsGroupLeader])
+    if ([deviceCopy groupContainsGroupLeader])
     {
       [(MRDeviceInfo *)v5 setGroupContainsDiscoverableGroupLeader:1];
     }
 
-    if ([v4 parentGroupContainsDiscoverableLeader])
+    if ([deviceCopy parentGroupContainsDiscoverableLeader])
     {
       [(MRDeviceInfo *)v5 setParentGroupContainsDiscoverableGroupLeader:1];
     }
 
-    v14 = [v4 deviceSubtype];
+    deviceSubtype = [deviceCopy deviceSubtype];
     v15 = 7;
-    if (v14 != 12)
+    if (deviceSubtype != 12)
     {
       v15 = -1;
     }
 
-    if (v14 == 13)
+    if (deviceSubtype == 13)
     {
       v16 = 4;
     }
@@ -385,12 +385,12 @@
     }
 
     [(MRDeviceInfo *)v5 setDeviceClass:v16];
-    v17 = [v4 clusterCompositionOutputDevices];
-    v18 = [v17 msv_map:&__block_literal_global_32];
+    clusterCompositionOutputDevices = [deviceCopy clusterCompositionOutputDevices];
+    v18 = [clusterCompositionOutputDevices msv_map:&__block_literal_global_32];
     [(MRDeviceInfo *)v5 setClusteredDevices:v18];
 
-    v19 = [v4 allClusterMembersOutputDevices];
-    v20 = [v19 msv_map:&__block_literal_global_2];
+    allClusterMembersOutputDevices = [deviceCopy allClusterMembersOutputDevices];
+    v20 = [allClusterMembersOutputDevices msv_map:&__block_literal_global_2];
     [(MRDeviceInfo *)v5 setAllClusteredDevices:v20];
   }
 
@@ -413,31 +413,31 @@ MRDeviceInfo *__37__MRDeviceInfo_initWithOutputDevice___block_invoke_2(uint64_t 
   return v3;
 }
 
-- (MRDeviceInfo)initWithOutputDeviceDescription:(id)a3
+- (MRDeviceInfo)initWithOutputDeviceDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v13.receiver = self;
   v13.super_class = MRDeviceInfo;
   v5 = [(MRDeviceInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 name];
-    [(MRDeviceInfo *)v5 setName:v6];
+    name = [descriptionCopy name];
+    [(MRDeviceInfo *)v5 setName:name];
 
-    v7 = [v4 uid];
+    v7 = [descriptionCopy uid];
     [(MRDeviceInfo *)v5 setDeviceUID:v7];
 
-    v8 = [v4 modelID];
-    [(MRDeviceInfo *)v5 setModelID:v8];
+    modelID = [descriptionCopy modelID];
+    [(MRDeviceInfo *)v5 setModelID:modelID];
 
-    v9 = [v4 deviceSubtype];
+    deviceSubtype = [descriptionCopy deviceSubtype];
     v10 = 7;
-    if (v9 != 12)
+    if (deviceSubtype != 12)
     {
       v10 = -1;
     }
 
-    if (v9 == 13)
+    if (deviceSubtype == 13)
     {
       v11 = 4;
     }
@@ -453,240 +453,240 @@ MRDeviceInfo *__37__MRDeviceInfo_initWithOutputDevice___block_invoke_2(uint64_t 
   return v5;
 }
 
-- (MRDeviceInfo)initWithProtobuf:(id)a3
+- (MRDeviceInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v99.receiver = self;
     v99.super_class = MRDeviceInfo;
     v5 = [(MRDeviceInfo *)&v99 init];
     if (v5)
     {
-      v5->_protocolVersion = [v4 protocolVersion];
-      v5->_hasProtocolVersion = [v4 hasProtocolVersion];
-      v5->_deviceClass = MRDeviceClassFromProtobuf([v4 deviceClass]);
-      v5->_hasDeviceClass = [v4 hasDeviceClass];
-      v5->_groupedDeviceCount = [v4 groupedDevicesCount];
-      v5->_tightSyncGroup = [v4 tightlySyncedGroup];
-      v5->_hasTightSyncGroup = [v4 hasTightlySyncedGroup];
-      v5->_pairingAllowed = [v4 allowsPairing];
-      v5->_hasPairingAllowed = [v4 hasAllowsPairing];
-      v5->_supportsSystemPairing = [v4 supportsSystemPairing];
-      v5->_hasSupportsSystemPairing = [v4 hasSupportsSystemPairing];
-      v5->_supportsACL = [v4 supportsACL];
-      v5->_hasSupportsACL = [v4 hasSupportsACL];
-      v5->_supportsSharedQueue = [v4 supportsSharedQueue];
-      v5->_hasSupportsSharedQueue = [v4 hasSupportsSharedQueue];
-      v5->_sharedQueueVersion = [v4 sharedQueueVersion];
-      v5->_hasSharedQueueVersion = [v4 hasSharedQueueVersion];
-      v5->_proxyGroupPlayer = [v4 isProxyGroupPlayer];
-      v5->_hasProxyGroupPlayer = [v4 hasIsProxyGroupPlayer];
-      v5->_connected = [v4 connected];
-      v5->_hasConnected = [v4 hasConnected];
-      v5->_supportsExtendedMotion = [v4 supportsExtendedMotion];
-      v5->_hasSupportsExtendedMotion = [v4 hasSupportsExtendedMotion];
-      v5->_groupLogicalDeviceCount = [v4 logicalDeviceCount];
-      v5->_hasGroupLogicalDeviceCount = [v4 hasLogicalDeviceCount];
-      v5->_groupLeader = [v4 isGroupLeader];
-      v5->_hasGroupLeader = [v4 hasIsGroupLeader];
-      v5->_airPlayActive = [v4 isAirplayActive];
-      v5->_hasAirPlayActive = [v4 hasIsAirplayActive];
-      v5->_supportsMultiplayer = [v4 supportsMultiplayer];
-      v5->_hasSupportsMultiplayer = [v4 hasSupportsMultiplayer];
-      v5->_parentGroupContainsDiscoverableGroupLeader = [v4 parentGroupContainsDiscoverableGroupLeader];
-      v5->_hasParentGroupContainsDiscoverableGroupLeader = [v4 hasParentGroupContainsDiscoverableGroupLeader];
-      v5->_groupContainsDiscoverableGroupLeader = [v4 groupContainsDiscoverableGroupLeader];
-      v5->_hasGroupContainsDiscoverableGroupLeader = [v4 hasGroupContainsDiscoverableGroupLeader];
-      v5->_preferredEncoding = [v4 preferredEncoding] == 1;
-      v5->_hasPreferredEncoding = [v4 hasPreferredEncoding];
-      v5->_isEligibleForHostingGroupSessionExcludingAcknowledgements = [v4 isEligibleForHostingGroupSessionExcludingAcknowledgements];
-      v5->_hasIsEligibleForHostingGroupSessionExcludingAcknowledgements = [v4 hasIsEligibleForHostingGroupSessionExcludingAcknowledgements];
-      v5->_clusterType = [v4 clusterType];
-      v5->_hasClusterType = [v4 hasClusterType];
-      v5->_clusterAware = [v4 isClusterAware];
-      v5->_hasIsClusterAware = [v4 hasIsClusterAware];
-      v5->_configuredClusterSize = [v4 configuredClusterSize];
-      v5->_hasConfiguredClusterSize = [v4 hasConfiguredClusterSize];
-      v5->_clusterLeader = [v4 isClusterLeader];
-      v5->_hasIsClusterLeader = [v4 hasIsClusterLeader];
-      v5->_lastSupportedClusterType = [v4 lastKnownClusterType];
-      v5->_hasLastSupportedClusterType = [v4 hasLastKnownClusterType];
-      v5->_supportsOutputContextSync = [v4 supportsOutputContextSync];
-      v5->_hasSupportsOutputContextSync = [v4 hasSupportsOutputContextSync];
-      v5->_lastSupportedProtocolMessageType = [v4 lastSupportedMessageType];
-      v5->_hasLastSupportedProtocolMessageType = [v4 hasLastSupportedMessageType];
-      v5->_parentGroupSupportsGroupCohesion = [v4 parentGroupSupportsGroupCohesion];
-      v5->_hasParentGroupSupportsGroupCohesion = [v4 hasParentGroupSupportsGroupCohesion];
-      v6 = [v4 name];
-      v7 = [v6 copy];
+      v5->_protocolVersion = [protobufCopy protocolVersion];
+      v5->_hasProtocolVersion = [protobufCopy hasProtocolVersion];
+      v5->_deviceClass = MRDeviceClassFromProtobuf([protobufCopy deviceClass]);
+      v5->_hasDeviceClass = [protobufCopy hasDeviceClass];
+      v5->_groupedDeviceCount = [protobufCopy groupedDevicesCount];
+      v5->_tightSyncGroup = [protobufCopy tightlySyncedGroup];
+      v5->_hasTightSyncGroup = [protobufCopy hasTightlySyncedGroup];
+      v5->_pairingAllowed = [protobufCopy allowsPairing];
+      v5->_hasPairingAllowed = [protobufCopy hasAllowsPairing];
+      v5->_supportsSystemPairing = [protobufCopy supportsSystemPairing];
+      v5->_hasSupportsSystemPairing = [protobufCopy hasSupportsSystemPairing];
+      v5->_supportsACL = [protobufCopy supportsACL];
+      v5->_hasSupportsACL = [protobufCopy hasSupportsACL];
+      v5->_supportsSharedQueue = [protobufCopy supportsSharedQueue];
+      v5->_hasSupportsSharedQueue = [protobufCopy hasSupportsSharedQueue];
+      v5->_sharedQueueVersion = [protobufCopy sharedQueueVersion];
+      v5->_hasSharedQueueVersion = [protobufCopy hasSharedQueueVersion];
+      v5->_proxyGroupPlayer = [protobufCopy isProxyGroupPlayer];
+      v5->_hasProxyGroupPlayer = [protobufCopy hasIsProxyGroupPlayer];
+      v5->_connected = [protobufCopy connected];
+      v5->_hasConnected = [protobufCopy hasConnected];
+      v5->_supportsExtendedMotion = [protobufCopy supportsExtendedMotion];
+      v5->_hasSupportsExtendedMotion = [protobufCopy hasSupportsExtendedMotion];
+      v5->_groupLogicalDeviceCount = [protobufCopy logicalDeviceCount];
+      v5->_hasGroupLogicalDeviceCount = [protobufCopy hasLogicalDeviceCount];
+      v5->_groupLeader = [protobufCopy isGroupLeader];
+      v5->_hasGroupLeader = [protobufCopy hasIsGroupLeader];
+      v5->_airPlayActive = [protobufCopy isAirplayActive];
+      v5->_hasAirPlayActive = [protobufCopy hasIsAirplayActive];
+      v5->_supportsMultiplayer = [protobufCopy supportsMultiplayer];
+      v5->_hasSupportsMultiplayer = [protobufCopy hasSupportsMultiplayer];
+      v5->_parentGroupContainsDiscoverableGroupLeader = [protobufCopy parentGroupContainsDiscoverableGroupLeader];
+      v5->_hasParentGroupContainsDiscoverableGroupLeader = [protobufCopy hasParentGroupContainsDiscoverableGroupLeader];
+      v5->_groupContainsDiscoverableGroupLeader = [protobufCopy groupContainsDiscoverableGroupLeader];
+      v5->_hasGroupContainsDiscoverableGroupLeader = [protobufCopy hasGroupContainsDiscoverableGroupLeader];
+      v5->_preferredEncoding = [protobufCopy preferredEncoding] == 1;
+      v5->_hasPreferredEncoding = [protobufCopy hasPreferredEncoding];
+      v5->_isEligibleForHostingGroupSessionExcludingAcknowledgements = [protobufCopy isEligibleForHostingGroupSessionExcludingAcknowledgements];
+      v5->_hasIsEligibleForHostingGroupSessionExcludingAcknowledgements = [protobufCopy hasIsEligibleForHostingGroupSessionExcludingAcknowledgements];
+      v5->_clusterType = [protobufCopy clusterType];
+      v5->_hasClusterType = [protobufCopy hasClusterType];
+      v5->_clusterAware = [protobufCopy isClusterAware];
+      v5->_hasIsClusterAware = [protobufCopy hasIsClusterAware];
+      v5->_configuredClusterSize = [protobufCopy configuredClusterSize];
+      v5->_hasConfiguredClusterSize = [protobufCopy hasConfiguredClusterSize];
+      v5->_clusterLeader = [protobufCopy isClusterLeader];
+      v5->_hasIsClusterLeader = [protobufCopy hasIsClusterLeader];
+      v5->_lastSupportedClusterType = [protobufCopy lastKnownClusterType];
+      v5->_hasLastSupportedClusterType = [protobufCopy hasLastKnownClusterType];
+      v5->_supportsOutputContextSync = [protobufCopy supportsOutputContextSync];
+      v5->_hasSupportsOutputContextSync = [protobufCopy hasSupportsOutputContextSync];
+      v5->_lastSupportedProtocolMessageType = [protobufCopy lastSupportedMessageType];
+      v5->_hasLastSupportedProtocolMessageType = [protobufCopy hasLastSupportedMessageType];
+      v5->_parentGroupSupportsGroupCohesion = [protobufCopy parentGroupSupportsGroupCohesion];
+      v5->_hasParentGroupSupportsGroupCohesion = [protobufCopy hasParentGroupSupportsGroupCohesion];
+      name = [protobufCopy name];
+      v7 = [name copy];
       name = v5->_name;
       v5->_name = v7;
 
-      v9 = [v4 uniqueIdentifier];
-      v10 = [v9 copy];
+      uniqueIdentifier = [protobufCopy uniqueIdentifier];
+      v10 = [uniqueIdentifier copy];
       identifier = v5->_identifier;
       v5->_identifier = v10;
 
-      v12 = [v4 localizedModelName];
-      v13 = [v12 copy];
+      localizedModelName = [protobufCopy localizedModelName];
+      v13 = [localizedModelName copy];
       localizedModelName = v5->_localizedModelName;
       v5->_localizedModelName = v13;
 
-      v15 = [v4 systemBuildVersion];
-      v16 = [v15 copy];
+      systemBuildVersion = [protobufCopy systemBuildVersion];
+      v16 = [systemBuildVersion copy];
       buildVersion = v5->_buildVersion;
       v5->_buildVersion = v16;
 
-      v18 = [v4 applicationBundleIdentifier];
-      v19 = [v18 copy];
+      applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
+      v19 = [applicationBundleIdentifier copy];
       bundleIdentifier = v5->_bundleIdentifier;
       v5->_bundleIdentifier = v19;
 
-      v21 = [v4 applicationBundleVersion];
-      v22 = [v21 copy];
+      applicationBundleVersion = [protobufCopy applicationBundleVersion];
+      v22 = [applicationBundleVersion copy];
       bundleVersion = v5->_bundleVersion;
       v5->_bundleVersion = v22;
 
-      v24 = [v4 systemMediaApplication];
-      v25 = [v24 copy];
+      systemMediaApplication = [protobufCopy systemMediaApplication];
+      v25 = [systemMediaApplication copy];
       systemMediaApplication = v5->_systemMediaApplication;
       v5->_systemMediaApplication = v25;
 
-      v27 = [v4 systemPodcastApplication];
-      v28 = [v27 copy];
+      systemPodcastApplication = [protobufCopy systemPodcastApplication];
+      v28 = [systemPodcastApplication copy];
       systemPodcastApplication = v5->_systemPodcastApplication;
       v5->_systemPodcastApplication = v28;
 
-      v30 = [v4 systemBooksApplication];
-      v31 = [v30 copy];
+      systemBooksApplication = [protobufCopy systemBooksApplication];
+      v31 = [systemBooksApplication copy];
       systemBooksApplication = v5->_systemBooksApplication;
       v5->_systemBooksApplication = v31;
 
-      v33 = [v4 deviceUID];
-      v34 = [v33 copy];
+      deviceUID = [protobufCopy deviceUID];
+      v34 = [deviceUID copy];
       deviceUID = v5->_deviceUID;
       v5->_deviceUID = v34;
 
-      v36 = [v4 managedConfigDeviceID];
-      v37 = [v36 copy];
+      managedConfigDeviceID = [protobufCopy managedConfigDeviceID];
+      v37 = [managedConfigDeviceID copy];
       managedConfigurationDeviceIdentifier = v5->_managedConfigurationDeviceIdentifier;
       v5->_managedConfigurationDeviceIdentifier = v37;
 
-      v39 = [v4 tightSyncUID];
-      v40 = [v39 copy];
+      tightSyncUID = [protobufCopy tightSyncUID];
+      v40 = [tightSyncUID copy];
       tightSyncUID = v5->_tightSyncUID;
       v5->_tightSyncUID = v40;
 
-      v42 = [v4 groupUID];
-      v43 = [v42 copy];
+      groupUID = [protobufCopy groupUID];
+      v43 = [groupUID copy];
       groupUID = v5->_groupUID;
       v5->_groupUID = v43;
 
-      v45 = [v4 airPlayGroupID];
-      v46 = [v45 copy];
+      airPlayGroupID = [protobufCopy airPlayGroupID];
+      v46 = [airPlayGroupID copy];
       airPlayGroupUID = v5->_airPlayGroupUID;
       v5->_airPlayGroupUID = v46;
 
-      v48 = [v4 groupName];
-      v49 = [v48 copy];
+      groupName = [protobufCopy groupName];
+      v49 = [groupName copy];
       groupName = v5->_groupName;
       v5->_groupName = v49;
 
-      v51 = [v4 senderDefaultGroupUID];
-      v52 = [v51 copy];
+      senderDefaultGroupUID = [protobufCopy senderDefaultGroupUID];
+      v52 = [senderDefaultGroupUID copy];
       senderDefaultGroupUID = v5->_senderDefaultGroupUID;
       v5->_senderDefaultGroupUID = v52;
 
-      v54 = [v4 bluetoothAddress];
-      v55 = [v54 copy];
+      bluetoothAddress = [protobufCopy bluetoothAddress];
+      v55 = [bluetoothAddress copy];
       bluetoothAddress = v5->_bluetoothAddress;
       v5->_bluetoothAddress = v55;
 
-      v57 = [v4 airplayReceivers];
-      v58 = [v57 copy];
+      airplayReceivers = [protobufCopy airplayReceivers];
+      v58 = [airplayReceivers copy];
       airPlayReceivers = v5->_airPlayReceivers;
       v5->_airPlayReceivers = v58;
 
-      v60 = [v4 linkAgent];
-      v61 = [v60 copy];
+      linkAgent = [protobufCopy linkAgent];
+      v61 = [linkAgent copy];
       linkAgent = v5->_linkAgent;
       v5->_linkAgent = v61;
 
-      v63 = [v4 clusterID];
-      v64 = [v63 copy];
+      clusterID = [protobufCopy clusterID];
+      v64 = [clusterID copy];
       clusterID = v5->_clusterID;
       v5->_clusterID = v64;
 
-      v66 = [v4 clusterLeaderID];
-      v67 = [v66 copy];
+      clusterLeaderID = [protobufCopy clusterLeaderID];
+      v67 = [clusterLeaderID copy];
       preferredClusterLeaderID = v5->_preferredClusterLeaderID;
       v5->_preferredClusterLeaderID = v67;
 
-      v69 = [v4 modelID];
-      v70 = [v69 copy];
+      modelID = [protobufCopy modelID];
+      v70 = [modelID copy];
       modelID = v5->_modelID;
       v5->_modelID = v70;
 
-      v72 = [v4 routingContextID];
-      v73 = [v72 copy];
+      routingContextID = [protobufCopy routingContextID];
+      v73 = [routingContextID copy];
       routingContextID = v5->_routingContextID;
       v5->_routingContextID = v73;
 
-      v75 = [v4 computerName];
-      v76 = [v75 copy];
+      computerName = [protobufCopy computerName];
+      v76 = [computerName copy];
       computerName = v5->_computerName;
       v5->_computerName = v76;
 
-      v78 = [v4 activeSystemEndpointUID];
+      activeSystemEndpointUID = [protobufCopy activeSystemEndpointUID];
       activeSystemEndpointUID = v5->_activeSystemEndpointUID;
-      v5->_activeSystemEndpointUID = v78;
+      v5->_activeSystemEndpointUID = activeSystemEndpointUID;
 
-      v80 = [v4 groupSessionToken];
-      if (v80)
+      groupSessionToken = [protobufCopy groupSessionToken];
+      if (groupSessionToken)
       {
-        v81 = [[MRGroupSessionToken alloc] initWithProtobuf:v80];
+        v81 = [[MRGroupSessionToken alloc] initWithProtobuf:groupSessionToken];
         groupSessionToken = v5->_groupSessionToken;
         v5->_groupSessionToken = v81;
       }
 
-      v83 = [v4 leaderDeviceInfo];
+      leaderDeviceInfo = [protobufCopy leaderDeviceInfo];
 
-      if (v83)
+      if (leaderDeviceInfo)
       {
         v84 = [MRDeviceInfo alloc];
-        v85 = [v4 leaderDeviceInfo];
-        v86 = [(MRDeviceInfo *)v84 initWithProtobuf:v85];
+        leaderDeviceInfo2 = [protobufCopy leaderDeviceInfo];
+        v86 = [(MRDeviceInfo *)v84 initWithProtobuf:leaderDeviceInfo2];
         leaderDeviceInfo = v5->_leaderDeviceInfo;
         v5->_leaderDeviceInfo = v86;
       }
 
-      v88 = [v4 groupedDevices];
-      v89 = [v88 mr_map:&__block_literal_global_6_0];
+      groupedDevices = [protobufCopy groupedDevices];
+      v89 = [groupedDevices mr_map:&__block_literal_global_6_0];
       groupedDevices = v5->_groupedDevices;
       v5->_groupedDevices = v89;
 
-      v91 = [v4 clusteredDevices];
-      v92 = [v91 mr_map:&__block_literal_global_8_1];
+      clusteredDevices = [protobufCopy clusteredDevices];
+      v92 = [clusteredDevices mr_map:&__block_literal_global_8_1];
       clusteredDevices = v5->_clusteredDevices;
       v5->_clusteredDevices = v92;
 
-      v94 = [v4 allClusteredDevices];
-      v95 = [v94 mr_map:&__block_literal_global_10_0];
+      allClusteredDevices = [protobufCopy allClusteredDevices];
+      v95 = [allClusteredDevices mr_map:&__block_literal_global_10_0];
       allClusteredDevices = v5->_allClusteredDevices;
       v5->_allClusteredDevices = v95;
     }
 
     self = v5;
-    v97 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v97 = 0;
+    selfCopy = 0;
   }
 
-  return v97;
+  return selfCopy;
 }
 
 MRDeviceInfo *__33__MRDeviceInfo_initWithProtobuf___block_invoke(uint64_t a1, void *a2)
@@ -713,12 +713,12 @@ MRDeviceInfo *__33__MRDeviceInfo_initWithProtobuf___block_invoke_3(uint64_t a1, 
   return v3;
 }
 
-- (MRDeviceInfo)initWithData:(id)a3
+- (MRDeviceInfo)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [[_MRDeviceInfoMessageProtobuf alloc] initWithData:v4];
+    v5 = [[_MRDeviceInfoMessageProtobuf alloc] initWithData:dataCopy];
     v6 = [(MRDeviceInfo *)self initWithProtobuf:v5];
   }
 
@@ -730,29 +730,29 @@ MRDeviceInfo *__33__MRDeviceInfo_initWithProtobuf___block_invoke_3(uint64_t a1, 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRDeviceInfo *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRDeviceInfo *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (MRDeviceInfo)initWithCoder:(id)a3
+- (MRDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MRDeviceInfo alloc];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   v7 = [(MRDeviceInfo *)v5 initWithProtobuf:v6];
   return v7;
 }
 
-+ (id)deviceInfosFromData:(id)a3
++ (id)deviceInfosFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x1E695DFD8];
-    v4 = a3;
+    dataCopy = data;
     v5 = objc_opt_class();
     v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
     v7 = MSVUnarchivedObjectOfClasses();
@@ -776,11 +776,11 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
   return v3;
 }
 
-+ (id)dataFromDeviceInfos:(id)a3
++ (id)dataFromDeviceInfos:(id)infos
 {
-  if (a3)
+  if (infos)
   {
-    v3 = [a3 mr_map:&__block_literal_global_21_0];
+    v3 = [infos mr_map:&__block_literal_global_21_0];
     v4 = MSVArchivedDataWithRootObject();
   }
 
@@ -795,92 +795,92 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRDeviceInfo *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(MRDeviceInfo *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(MRDeviceInfo *)self identifier];
-  [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+  identifier = [(MRDeviceInfo *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v6 = [(MRDeviceInfo *)self localizedModelName];
-  [v3 setObject:v6 forKeyedSubscript:@"localizedModelName"];
+  localizedModelName = [(MRDeviceInfo *)self localizedModelName];
+  [v3 setObject:localizedModelName forKeyedSubscript:@"localizedModelName"];
 
-  v7 = [(MRDeviceInfo *)self buildVersion];
-  [v3 setObject:v7 forKeyedSubscript:@"buildVersion"];
+  buildVersion = [(MRDeviceInfo *)self buildVersion];
+  [v3 setObject:buildVersion forKeyedSubscript:@"buildVersion"];
 
-  v8 = [(MRDeviceInfo *)self bundleIdentifier];
-  [v3 setObject:v8 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [(MRDeviceInfo *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
-  v9 = [(MRDeviceInfo *)self bundleVersion];
-  [v3 setObject:v9 forKeyedSubscript:@"bundleVersion"];
+  bundleVersion = [(MRDeviceInfo *)self bundleVersion];
+  [v3 setObject:bundleVersion forKeyedSubscript:@"bundleVersion"];
 
-  v10 = [(MRDeviceInfo *)self systemMediaApplication];
-  [v3 setObject:v10 forKeyedSubscript:@"systemMediaApplication"];
+  systemMediaApplication = [(MRDeviceInfo *)self systemMediaApplication];
+  [v3 setObject:systemMediaApplication forKeyedSubscript:@"systemMediaApplication"];
 
-  v11 = [(MRDeviceInfo *)self systemPodcastApplication];
-  [v3 setObject:v11 forKeyedSubscript:@"systemPodcastApplication"];
+  systemPodcastApplication = [(MRDeviceInfo *)self systemPodcastApplication];
+  [v3 setObject:systemPodcastApplication forKeyedSubscript:@"systemPodcastApplication"];
 
-  v12 = [(MRDeviceInfo *)self systemBooksApplication];
-  [v3 setObject:v12 forKeyedSubscript:@"systemBooksApplication"];
+  systemBooksApplication = [(MRDeviceInfo *)self systemBooksApplication];
+  [v3 setObject:systemBooksApplication forKeyedSubscript:@"systemBooksApplication"];
 
-  v13 = [(MRDeviceInfo *)self deviceUID];
-  [v3 setObject:v13 forKeyedSubscript:@"deviceUID"];
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
+  [v3 setObject:deviceUID forKeyedSubscript:@"deviceUID"];
 
-  v14 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
-  [v3 setObject:v14 forKeyedSubscript:@"localReceiverPairingIdentity"];
+  localReceiverPairingIdentity = [(MRDeviceInfo *)self localReceiverPairingIdentity];
+  [v3 setObject:localReceiverPairingIdentity forKeyedSubscript:@"localReceiverPairingIdentity"];
 
-  v15 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
-  [v3 setObject:v15 forKeyedSubscript:@"managedConfigurationDeviceIdentifier"];
+  managedConfigurationDeviceIdentifier = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
+  [v3 setObject:managedConfigurationDeviceIdentifier forKeyedSubscript:@"managedConfigurationDeviceIdentifier"];
 
-  v16 = [(MRDeviceInfo *)self tightSyncUID];
-  [v3 setObject:v16 forKeyedSubscript:@"tightSyncUID"];
+  tightSyncUID = [(MRDeviceInfo *)self tightSyncUID];
+  [v3 setObject:tightSyncUID forKeyedSubscript:@"tightSyncUID"];
 
-  v17 = [(MRDeviceInfo *)self groupUID];
-  [v3 setObject:v17 forKeyedSubscript:@"groupUID"];
+  groupUID = [(MRDeviceInfo *)self groupUID];
+  [v3 setObject:groupUID forKeyedSubscript:@"groupUID"];
 
-  v18 = [(MRDeviceInfo *)self airPlayGroupUID];
-  [v3 setObject:v18 forKeyedSubscript:@"airPlayGroupUID"];
+  airPlayGroupUID = [(MRDeviceInfo *)self airPlayGroupUID];
+  [v3 setObject:airPlayGroupUID forKeyedSubscript:@"airPlayGroupUID"];
 
-  v19 = [(MRDeviceInfo *)self groupName];
-  [v3 setObject:v19 forKeyedSubscript:@"groupName"];
+  groupName = [(MRDeviceInfo *)self groupName];
+  [v3 setObject:groupName forKeyedSubscript:@"groupName"];
 
-  v20 = [(MRDeviceInfo *)self senderDefaultGroupUID];
-  [v3 setObject:v20 forKeyedSubscript:@"senderDefaultGroupUID"];
+  senderDefaultGroupUID = [(MRDeviceInfo *)self senderDefaultGroupUID];
+  [v3 setObject:senderDefaultGroupUID forKeyedSubscript:@"senderDefaultGroupUID"];
 
-  v21 = [(MRDeviceInfo *)self bluetoothAddress];
-  [v3 setObject:v21 forKeyedSubscript:@"bluetoothAddress"];
+  bluetoothAddress = [(MRDeviceInfo *)self bluetoothAddress];
+  [v3 setObject:bluetoothAddress forKeyedSubscript:@"bluetoothAddress"];
 
-  v22 = [(MRDeviceInfo *)self groupedDevices];
-  [v3 setObject:v22 forKeyedSubscript:@"groupedDevices"];
+  groupedDevices = [(MRDeviceInfo *)self groupedDevices];
+  [v3 setObject:groupedDevices forKeyedSubscript:@"groupedDevices"];
 
-  v23 = [(MRDeviceInfo *)self clusteredDevices];
-  [v3 setObject:v23 forKeyedSubscript:@"clusteredDevices"];
+  clusteredDevices = [(MRDeviceInfo *)self clusteredDevices];
+  [v3 setObject:clusteredDevices forKeyedSubscript:@"clusteredDevices"];
 
-  v24 = [(MRDeviceInfo *)self allClusteredDevices];
-  [v3 setObject:v24 forKeyedSubscript:@"allClusteredDevices"];
+  allClusteredDevices = [(MRDeviceInfo *)self allClusteredDevices];
+  [v3 setObject:allClusteredDevices forKeyedSubscript:@"allClusteredDevices"];
 
-  v25 = [(MRDeviceInfo *)self airPlayReceivers];
-  [v3 setObject:v25 forKeyedSubscript:@"airPlayReceivers"];
+  airPlayReceivers = [(MRDeviceInfo *)self airPlayReceivers];
+  [v3 setObject:airPlayReceivers forKeyedSubscript:@"airPlayReceivers"];
 
-  v26 = [(MRDeviceInfo *)self linkAgent];
-  [v3 setObject:v26 forKeyedSubscript:@"linkAgent"];
+  linkAgent = [(MRDeviceInfo *)self linkAgent];
+  [v3 setObject:linkAgent forKeyedSubscript:@"linkAgent"];
 
-  v27 = [(MRDeviceInfo *)self clusterID];
-  [v3 setObject:v27 forKeyedSubscript:@"clusterID"];
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  [v3 setObject:clusterID forKeyedSubscript:@"clusterID"];
 
-  v28 = [(MRDeviceInfo *)self preferredClusterLeaderID];
-  [v3 setObject:v28 forKeyedSubscript:@"clusterLeaderID"];
+  preferredClusterLeaderID = [(MRDeviceInfo *)self preferredClusterLeaderID];
+  [v3 setObject:preferredClusterLeaderID forKeyedSubscript:@"clusterLeaderID"];
 
-  v29 = [(MRDeviceInfo *)self modelID];
-  [v3 setObject:v29 forKeyedSubscript:@"modelID"];
+  modelID = [(MRDeviceInfo *)self modelID];
+  [v3 setObject:modelID forKeyedSubscript:@"modelID"];
 
-  v30 = [(MRDeviceInfo *)self routingContextID];
-  [v3 setObject:v30 forKeyedSubscript:@"routingContextID"];
+  routingContextID = [(MRDeviceInfo *)self routingContextID];
+  [v3 setObject:routingContextID forKeyedSubscript:@"routingContextID"];
 
-  v31 = [(MRDeviceInfo *)self parentGroupID];
-  [v3 setObject:v31 forKeyedSubscript:@"parentGroupID"];
+  parentGroupID = [(MRDeviceInfo *)self parentGroupID];
+  [v3 setObject:parentGroupID forKeyedSubscript:@"parentGroupID"];
 
-  v32 = [(MRDeviceInfo *)self computerName];
-  [v3 setObject:v32 forKeyedSubscript:@"computerName"];
+  computerName = [(MRDeviceInfo *)self computerName];
+  [v3 setObject:computerName forKeyedSubscript:@"computerName"];
 
   if ([(MRDeviceInfo *)self hasDeviceClass])
   {
@@ -1170,8 +1170,8 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
     [v3 setObject:0 forKeyedSubscript:@"lastSupportedMessageType"];
   }
 
-  v60 = [(MRDeviceInfo *)self groupSessionToken];
-  [v3 setObject:v60 forKeyedSubscript:@"groupSessionToken"];
+  groupSessionToken = [(MRDeviceInfo *)self groupSessionToken];
+  [v3 setObject:groupSessionToken forKeyedSubscript:@"groupSessionToken"];
 
   if ([(MRDeviceInfo *)self isEligibleForHostingGroupSessionExcludingAcknowledgements])
   {
@@ -1184,12 +1184,12 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
     [v3 setObject:0 forKeyedSubscript:@"isEligibleForHostingGroupSessionExcludingAcknowledgements"];
   }
 
-  v62 = [(MRDeviceInfo *)self activeSystemEndpointUID];
-  [v3 setObject:v62 forKeyedSubscript:@"activeSystemEndpointUID"];
+  activeSystemEndpointUID = [(MRDeviceInfo *)self activeSystemEndpointUID];
+  [v3 setObject:activeSystemEndpointUID forKeyedSubscript:@"activeSystemEndpointUID"];
 
-  v63 = [(MRDeviceInfo *)self leaderDeviceInfo];
-  v64 = [v63 dictionaryRepresentation];
-  [v3 setObject:v64 forKeyedSubscript:@"leaderDeviceInfo"];
+  leaderDeviceInfo = [(MRDeviceInfo *)self leaderDeviceInfo];
+  dictionaryRepresentation = [leaderDeviceInfo dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"leaderDeviceInfo"];
 
   if ([(MRDeviceInfo *)self hasParentGroupSupportsGroupCohesion])
   {
@@ -1208,47 +1208,47 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
 - (MRDeviceInfo)skeleton
 {
   v3 = objc_alloc_init(MRDeviceInfo);
-  v4 = [(MRDeviceInfo *)self identifier];
-  [(MRDeviceInfo *)v3 setIdentifier:v4];
+  identifier = [(MRDeviceInfo *)self identifier];
+  [(MRDeviceInfo *)v3 setIdentifier:identifier];
 
-  v5 = [(MRDeviceInfo *)self name];
+  name = [(MRDeviceInfo *)self name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(MRDeviceInfo *)self name];
-    [(MRDeviceInfo *)v3 setName:v6];
+    name2 = [(MRDeviceInfo *)self name];
+    [(MRDeviceInfo *)v3 setName:name2];
   }
 
-  v7 = [(MRDeviceInfo *)self deviceUID];
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
 
-  if (v7)
+  if (deviceUID)
   {
-    v8 = [(MRDeviceInfo *)self deviceUID];
-    [(MRDeviceInfo *)v3 setDeviceUID:v8];
+    deviceUID2 = [(MRDeviceInfo *)self deviceUID];
+    [(MRDeviceInfo *)v3 setDeviceUID:deviceUID2];
   }
 
-  v9 = [(MRDeviceInfo *)self groupUID];
+  groupUID = [(MRDeviceInfo *)self groupUID];
 
-  if (v9)
+  if (groupUID)
   {
-    v10 = [(MRDeviceInfo *)self groupUID];
-    [(MRDeviceInfo *)v3 setGroupUID:v10];
+    groupUID2 = [(MRDeviceInfo *)self groupUID];
+    [(MRDeviceInfo *)v3 setGroupUID:groupUID2];
   }
 
-  v11 = [(MRDeviceInfo *)self airPlayGroupUID];
+  airPlayGroupUID = [(MRDeviceInfo *)self airPlayGroupUID];
 
-  if (v11)
+  if (airPlayGroupUID)
   {
-    v12 = [(MRDeviceInfo *)self airPlayGroupUID];
-    [(MRDeviceInfo *)v3 setAirPlayGroupUID:v12];
+    airPlayGroupUID2 = [(MRDeviceInfo *)self airPlayGroupUID];
+    [(MRDeviceInfo *)v3 setAirPlayGroupUID:airPlayGroupUID2];
   }
 
-  v13 = [(MRDeviceInfo *)self groupName];
+  groupName = [(MRDeviceInfo *)self groupName];
 
-  if (v13)
+  if (groupName)
   {
-    v14 = [(MRDeviceInfo *)self groupName];
-    [(MRDeviceInfo *)v3 setGroupName:v14];
+    groupName2 = [(MRDeviceInfo *)self groupName];
+    [(MRDeviceInfo *)v3 setGroupName:groupName2];
   }
 
   if ([(MRDeviceInfo *)self isProxyGroupPlayer])
@@ -1266,20 +1266,20 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
     [(MRDeviceInfo *)v3 setGroupLeader:1];
   }
 
-  v15 = [(MRDeviceInfo *)self tightSyncUID];
+  tightSyncUID = [(MRDeviceInfo *)self tightSyncUID];
 
-  if (v15)
+  if (tightSyncUID)
   {
-    v16 = [(MRDeviceInfo *)self tightSyncUID];
-    [(MRDeviceInfo *)v3 setTightSyncUID:v16];
+    tightSyncUID2 = [(MRDeviceInfo *)self tightSyncUID];
+    [(MRDeviceInfo *)v3 setTightSyncUID:tightSyncUID2];
   }
 
-  v17 = [(MRDeviceInfo *)self routingContextID];
+  routingContextID = [(MRDeviceInfo *)self routingContextID];
 
-  if (v17)
+  if (routingContextID)
   {
-    v18 = [(MRDeviceInfo *)self routingContextID];
-    [(MRDeviceInfo *)v3 setRoutingContextID:v18];
+    routingContextID2 = [(MRDeviceInfo *)self routingContextID];
+    [(MRDeviceInfo *)v3 setRoutingContextID:routingContextID2];
   }
 
   return v3;
@@ -1287,26 +1287,26 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
 
 - (NSString)minimalDescription
 {
-  v2 = [(MRDeviceInfo *)self skeleton];
-  v3 = [v2 description];
+  skeleton = [(MRDeviceInfo *)self skeleton];
+  v3 = [skeleton description];
 
   return v3;
 }
 
 - (BOOL)hasPlaceholderGroupSession
 {
-  v3 = [(MRDeviceInfo *)self groupSessionToken];
-  if (v3)
+  groupSessionToken = [(MRDeviceInfo *)self groupSessionToken];
+  if (groupSessionToken)
   {
-    v4 = 0;
+    isEligibleForHostingGroupSessionExcludingAcknowledgements = 0;
   }
 
   else
   {
-    v4 = [(MRDeviceInfo *)self isEligibleForHostingGroupSessionExcludingAcknowledgements];
+    isEligibleForHostingGroupSessionExcludingAcknowledgements = [(MRDeviceInfo *)self isEligibleForHostingGroupSessionExcludingAcknowledgements];
   }
 
-  return v4;
+  return isEligibleForHostingGroupSessionExcludingAcknowledgements;
 }
 
 - (BOOL)containsLocalDevice
@@ -1317,17 +1317,17 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
   return self;
 }
 
-- (BOOL)containsDevice:(id)a3
+- (BOOL)containsDevice:(id)device
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRDeviceInfo *)self clusterID];
-  v6 = [v5 isEqual:v4];
+  deviceCopy = device;
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  v6 = [clusterID isEqual:deviceCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MRDeviceInfo *)self deviceUID];
-    v8 = [v7 isEqual:v4];
+    deviceUID = [(MRDeviceInfo *)self deviceUID];
+    v8 = [deviceUID isEqual:deviceCopy];
 
     if ((v8 & 1) == 0)
     {
@@ -1335,8 +1335,8 @@ MRDeviceInfo *__36__MRDeviceInfo_deviceInfosFromData___block_invoke(uint64_t a1,
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v10 = [(MRDeviceInfo *)self groupedDevices];
-      v11 = [v10 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      groupedDevices = [(MRDeviceInfo *)self groupedDevices];
+      v11 = [groupedDevices countByEnumeratingWithState:&v31 objects:v37 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1347,17 +1347,17 @@ LABEL_6:
         {
           if (*v32 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(groupedDevices);
           }
 
-          if ([*(*(&v31 + 1) + 8 * v14) containsDevice:v4])
+          if ([*(*(&v31 + 1) + 8 * v14) containsDevice:deviceCopy])
           {
             break;
           }
 
           if (v12 == ++v14)
           {
-            v12 = [v10 countByEnumeratingWithState:&v31 objects:v37 count:16];
+            v12 = [groupedDevices countByEnumeratingWithState:&v31 objects:v37 count:16];
             if (v12)
             {
               goto LABEL_6;
@@ -1376,8 +1376,8 @@ LABEL_12:
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v10 = [(MRDeviceInfo *)self clusteredDevices];
-        v15 = [v10 countByEnumeratingWithState:&v27 objects:v36 count:16];
+        groupedDevices = [(MRDeviceInfo *)self clusteredDevices];
+        v15 = [groupedDevices countByEnumeratingWithState:&v27 objects:v36 count:16];
         if (v15)
         {
           v16 = v15;
@@ -1388,17 +1388,17 @@ LABEL_14:
           {
             if (*v28 != v17)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(groupedDevices);
             }
 
-            if ([*(*(&v27 + 1) + 8 * v18) containsDevice:v4])
+            if ([*(*(&v27 + 1) + 8 * v18) containsDevice:deviceCopy])
             {
               break;
             }
 
             if (v16 == ++v18)
             {
-              v16 = [v10 countByEnumeratingWithState:&v27 objects:v36 count:16];
+              v16 = [groupedDevices countByEnumeratingWithState:&v27 objects:v36 count:16];
               if (v16)
               {
                 goto LABEL_14;
@@ -1417,8 +1417,8 @@ LABEL_20:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = [(MRDeviceInfo *)self allClusteredDevices];
-          v9 = [v10 countByEnumeratingWithState:&v23 objects:v35 count:16];
+          groupedDevices = [(MRDeviceInfo *)self allClusteredDevices];
+          v9 = [groupedDevices countByEnumeratingWithState:&v23 objects:v35 count:16];
           if (!v9)
           {
 LABEL_30:
@@ -1433,17 +1433,17 @@ LABEL_22:
           {
             if (*v24 != v19)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(groupedDevices);
             }
 
-            if ([*(*(&v23 + 1) + 8 * v20) containsDevice:v4])
+            if ([*(*(&v23 + 1) + 8 * v20) containsDevice:deviceCopy])
             {
               break;
             }
 
             if (v9 == ++v20)
             {
-              v9 = [v10 countByEnumeratingWithState:&v23 objects:v35 count:16];
+              v9 = [groupedDevices countByEnumeratingWithState:&v23 objects:v35 count:16];
               if (v9)
               {
                 goto LABEL_22;
@@ -1467,51 +1467,51 @@ LABEL_31:
   return v9;
 }
 
-- (BOOL)matchesUID:(id)a3
+- (BOOL)matchesUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRDeviceInfo *)self deviceUID];
-  if ([v5 isEqualToString:v4])
+  dCopy = d;
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
+  if ([deviceUID isEqualToString:dCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(MRDeviceInfo *)self clusterID];
-    if ([v7 isEqualToString:v4])
+    clusterID = [(MRDeviceInfo *)self clusterID];
+    if ([clusterID isEqualToString:dCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [(MRDeviceInfo *)self identifier];
-      v6 = [v8 isEqualToString:v4];
+      identifier = [(MRDeviceInfo *)self identifier];
+      v6 = [identifier isEqualToString:dCopy];
     }
   }
 
   return v6;
 }
 
-- (id)resolveOutputDeviceUIDs:(id)a3
+- (id)resolveOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(MRDeviceInfo *)self deviceUID];
+  dsCopy = ds;
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
 
-  if (v5)
+  if (deviceUID)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke;
     v9[3] = &unk_1E769D2B0;
     v9[4] = self;
-    v6 = [v4 msv_map:v9];
+    v6 = [dsCopy msv_map:v9];
   }
 
   else
   {
-    v6 = v4;
+    v6 = dsCopy;
   }
 
   v7 = v6;
@@ -1537,16 +1537,16 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
   return v7;
 }
 
-- (id)deltaDescriptionFromDeviceInfo:(id)a3 minimal:(BOOL)a4
+- (id)deltaDescriptionFromDeviceInfo:(id)info minimal:(BOOL)minimal
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 dictionaryRepresentation];
-  v8 = [(MRDeviceInfo *)self dictionaryRepresentation];
+  minimalCopy = minimal;
+  infoCopy = info;
+  dictionaryRepresentation = [infoCopy dictionaryRepresentation];
+  dictionaryRepresentation2 = [(MRDeviceInfo *)self dictionaryRepresentation];
   v22 = 0;
   v23 = 0;
   v21 = 0;
-  MRDictionaryCalculateDeltas(v7, v8, &v23, &v22, &v21);
+  MRDictionaryCalculateDeltas(dictionaryRepresentation, dictionaryRepresentation2, &v23, &v22, &v21);
   v9 = v23;
   v10 = v22;
   v11 = v21;
@@ -1554,17 +1554,17 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
   v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14 = v13;
-  if (v4)
+  if (minimalCopy)
   {
-    v15 = [(MRDeviceInfo *)self skeleton];
-    v16 = [v14 initWithFormat:@"%@", v15];
+    skeleton = [(MRDeviceInfo *)self skeleton];
+    v16 = [v14 initWithFormat:@"%@", skeleton];
     [v12 appendString:v16];
   }
 
   else
   {
-    v15 = [v13 initWithFormat:@"DeviceInfo changed from\n %@ \nto\n %@\n", v6, self];
-    [v12 appendString:v15];
+    skeleton = [v13 initWithFormat:@"DeviceInfo changed from\n %@ \nto\n %@\n", infoCopy, self];
+    [v12 appendString:skeleton];
   }
 
   if ([v9 count])
@@ -1596,9 +1596,9 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setDeviceClass:{-[MRDeviceInfo deviceClass](self, "deviceClass")}];
   [v5 setHasDeviceClass:{-[MRDeviceInfo hasDeviceClass](self, "hasDeviceClass")}];
   [v5 setProtocolVersion:{-[MRDeviceInfo protocolVersion](self, "protocolVersion")}];
@@ -1653,128 +1653,128 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
   [v5 setHasLastSupportedProtocolMessageType:{-[MRDeviceInfo hasLastSupportedProtocolMessageType](self, "hasLastSupportedProtocolMessageType")}];
   [v5 setParentGroupSupportsGroupCohesion:{-[MRDeviceInfo parentGroupSupportsGroupCohesion](self, "parentGroupSupportsGroupCohesion")}];
   [v5 setHasParentGroupSupportsGroupCohesion:{-[MRDeviceInfo hasParentGroupSupportsGroupCohesion](self, "hasParentGroupSupportsGroupCohesion")}];
-  v6 = [(MRDeviceInfo *)self name];
-  v7 = [v6 copyWithZone:a3];
+  name = [(MRDeviceInfo *)self name];
+  v7 = [name copyWithZone:zone];
   [v5 setName:v7];
 
-  v8 = [(MRDeviceInfo *)self identifier];
-  v9 = [v8 copyWithZone:a3];
+  identifier = [(MRDeviceInfo *)self identifier];
+  v9 = [identifier copyWithZone:zone];
   [v5 setIdentifier:v9];
 
-  v10 = [(MRDeviceInfo *)self localizedModelName];
-  v11 = [v10 copyWithZone:a3];
+  localizedModelName = [(MRDeviceInfo *)self localizedModelName];
+  v11 = [localizedModelName copyWithZone:zone];
   [v5 setLocalizedModelName:v11];
 
-  v12 = [(MRDeviceInfo *)self buildVersion];
-  v13 = [v12 copyWithZone:a3];
+  buildVersion = [(MRDeviceInfo *)self buildVersion];
+  v13 = [buildVersion copyWithZone:zone];
   [v5 setBuildVersion:v13];
 
-  v14 = [(MRDeviceInfo *)self bundleIdentifier];
-  v15 = [v14 copyWithZone:a3];
+  bundleIdentifier = [(MRDeviceInfo *)self bundleIdentifier];
+  v15 = [bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v15];
 
-  v16 = [(MRDeviceInfo *)self bundleVersion];
-  v17 = [v16 copyWithZone:a3];
+  bundleVersion = [(MRDeviceInfo *)self bundleVersion];
+  v17 = [bundleVersion copyWithZone:zone];
   [v5 setBundleVersion:v17];
 
-  v18 = [(MRDeviceInfo *)self systemMediaApplication];
-  v19 = [v18 copyWithZone:a3];
+  systemMediaApplication = [(MRDeviceInfo *)self systemMediaApplication];
+  v19 = [systemMediaApplication copyWithZone:zone];
   [v5 setSystemMediaApplication:v19];
 
-  v20 = [(MRDeviceInfo *)self systemPodcastApplication];
-  v21 = [v20 copyWithZone:a3];
+  systemPodcastApplication = [(MRDeviceInfo *)self systemPodcastApplication];
+  v21 = [systemPodcastApplication copyWithZone:zone];
   [v5 setSystemPodcastApplication:v21];
 
-  v22 = [(MRDeviceInfo *)self systemBooksApplication];
-  v23 = [v22 copyWithZone:a3];
+  systemBooksApplication = [(MRDeviceInfo *)self systemBooksApplication];
+  v23 = [systemBooksApplication copyWithZone:zone];
   [v5 setSystemBooksApplication:v23];
 
-  v24 = [(MRDeviceInfo *)self deviceUID];
-  v25 = [v24 copyWithZone:a3];
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
+  v25 = [deviceUID copyWithZone:zone];
   [v5 setDeviceUID:v25];
 
-  v26 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
-  v27 = [v26 copyWithZone:a3];
+  localReceiverPairingIdentity = [(MRDeviceInfo *)self localReceiverPairingIdentity];
+  v27 = [localReceiverPairingIdentity copyWithZone:zone];
   [v5 setLocalReceiverPairingIdentity:v27];
 
-  v28 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
-  v29 = [v28 copyWithZone:a3];
+  managedConfigurationDeviceIdentifier = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
+  v29 = [managedConfigurationDeviceIdentifier copyWithZone:zone];
   [v5 setManagedConfigurationDeviceIdentifier:v29];
 
-  v30 = [(MRDeviceInfo *)self tightSyncUID];
-  v31 = [v30 copyWithZone:a3];
+  tightSyncUID = [(MRDeviceInfo *)self tightSyncUID];
+  v31 = [tightSyncUID copyWithZone:zone];
   [v5 setTightSyncUID:v31];
 
-  v32 = [(MRDeviceInfo *)self groupUID];
-  v33 = [v32 copyWithZone:a3];
+  groupUID = [(MRDeviceInfo *)self groupUID];
+  v33 = [groupUID copyWithZone:zone];
   [v5 setGroupUID:v33];
 
-  v34 = [(MRDeviceInfo *)self airPlayGroupUID];
-  v35 = [v34 copyWithZone:a3];
+  airPlayGroupUID = [(MRDeviceInfo *)self airPlayGroupUID];
+  v35 = [airPlayGroupUID copyWithZone:zone];
   [v5 setAirPlayGroupUID:v35];
 
-  v36 = [(MRDeviceInfo *)self groupName];
-  v37 = [v36 copyWithZone:a3];
+  groupName = [(MRDeviceInfo *)self groupName];
+  v37 = [groupName copyWithZone:zone];
   [v5 setGroupName:v37];
 
-  v38 = [(MRDeviceInfo *)self senderDefaultGroupUID];
-  v39 = [v38 copyWithZone:a3];
+  senderDefaultGroupUID = [(MRDeviceInfo *)self senderDefaultGroupUID];
+  v39 = [senderDefaultGroupUID copyWithZone:zone];
   [v5 setSenderDefaultGroupUID:v39];
 
-  v40 = [(MRDeviceInfo *)self bluetoothAddress];
-  v41 = [v40 copyWithZone:a3];
+  bluetoothAddress = [(MRDeviceInfo *)self bluetoothAddress];
+  v41 = [bluetoothAddress copyWithZone:zone];
   [v5 setBluetoothAddress:v41];
 
-  v42 = [(MRDeviceInfo *)self groupedDevices];
-  v43 = [v42 copyWithZone:a3];
+  groupedDevices = [(MRDeviceInfo *)self groupedDevices];
+  v43 = [groupedDevices copyWithZone:zone];
   [v5 setGroupedDevices:v43];
 
-  v44 = [(MRDeviceInfo *)self clusteredDevices];
-  v45 = [v44 copyWithZone:a3];
+  clusteredDevices = [(MRDeviceInfo *)self clusteredDevices];
+  v45 = [clusteredDevices copyWithZone:zone];
   [v5 setClusteredDevices:v45];
 
-  v46 = [(MRDeviceInfo *)self allClusteredDevices];
-  v47 = [v46 copyWithZone:a3];
+  allClusteredDevices = [(MRDeviceInfo *)self allClusteredDevices];
+  v47 = [allClusteredDevices copyWithZone:zone];
   [v5 setAllClusteredDevices:v47];
 
-  v48 = [(MRDeviceInfo *)self airPlayReceivers];
-  v49 = [v48 copyWithZone:a3];
+  airPlayReceivers = [(MRDeviceInfo *)self airPlayReceivers];
+  v49 = [airPlayReceivers copyWithZone:zone];
   [v5 setAirPlayReceivers:v49];
 
-  v50 = [(MRDeviceInfo *)self linkAgent];
-  v51 = [v50 copyWithZone:a3];
+  linkAgent = [(MRDeviceInfo *)self linkAgent];
+  v51 = [linkAgent copyWithZone:zone];
   [v5 setLinkAgent:v51];
 
-  v52 = [(MRDeviceInfo *)self clusterID];
-  v53 = [v52 copyWithZone:a3];
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  v53 = [clusterID copyWithZone:zone];
   [v5 setClusterID:v53];
 
-  v54 = [(MRDeviceInfo *)self preferredClusterLeaderID];
-  v55 = [v54 copyWithZone:a3];
+  preferredClusterLeaderID = [(MRDeviceInfo *)self preferredClusterLeaderID];
+  v55 = [preferredClusterLeaderID copyWithZone:zone];
   [v5 setPreferredClusterLeaderID:v55];
 
-  v56 = [(MRDeviceInfo *)self modelID];
-  v57 = [v56 copyWithZone:a3];
+  modelID = [(MRDeviceInfo *)self modelID];
+  v57 = [modelID copyWithZone:zone];
   [v5 setModelID:v57];
 
-  v58 = [(MRDeviceInfo *)self routingContextID];
-  v59 = [v58 copyWithZone:a3];
+  routingContextID = [(MRDeviceInfo *)self routingContextID];
+  v59 = [routingContextID copyWithZone:zone];
   [v5 setRoutingContextID:v59];
 
-  v60 = [(MRDeviceInfo *)self computerName];
-  v61 = [v60 copyWithZone:a3];
+  computerName = [(MRDeviceInfo *)self computerName];
+  v61 = [computerName copyWithZone:zone];
   [v5 setComputerName:v61];
 
-  v62 = [(MRDeviceInfo *)self groupSessionToken];
-  v63 = [v62 copyWithZone:a3];
+  groupSessionToken = [(MRDeviceInfo *)self groupSessionToken];
+  v63 = [groupSessionToken copyWithZone:zone];
   [v5 setGroupSessionToken:v63];
 
-  v64 = [(MRDeviceInfo *)self leaderDeviceInfo];
-  v65 = [v64 copyWithZone:a3];
+  leaderDeviceInfo = [(MRDeviceInfo *)self leaderDeviceInfo];
+  v65 = [leaderDeviceInfo copyWithZone:zone];
   [v5 setLeaderDeviceInfo:v65];
 
-  v66 = [(MRDeviceInfo *)self activeSystemEndpointUID];
-  v67 = [v66 copyWithZone:a3];
+  activeSystemEndpointUID = [(MRDeviceInfo *)self activeSystemEndpointUID];
+  v67 = [activeSystemEndpointUID copyWithZone:zone];
   [v5 setActiveSystemEndpointUID:v67];
 
   return v5;
@@ -1784,16 +1784,16 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRDeviceInfo *)self protobuf];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  protobuf = [(MRDeviceInfo *)self protobuf];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, protobuf];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1801,438 +1801,438 @@ id __40__MRDeviceInfo_resolveOutputDeviceUIDs___block_invoke(uint64_t a1, void *
       goto LABEL_217;
     }
 
-    v5 = [(MRDeviceInfo *)v4 hasDeviceClass];
-    if (v5 != [(MRDeviceInfo *)self hasDeviceClass])
+    hasDeviceClass = [(MRDeviceInfo *)equalCopy hasDeviceClass];
+    if (hasDeviceClass != [(MRDeviceInfo *)self hasDeviceClass])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasDeviceClass])
+    if ([(MRDeviceInfo *)equalCopy hasDeviceClass])
     {
       if ([(MRDeviceInfo *)self hasDeviceClass])
       {
-        v6 = [(MRDeviceInfo *)v4 deviceClass];
-        if (v6 != [(MRDeviceInfo *)self deviceClass])
+        deviceClass = [(MRDeviceInfo *)equalCopy deviceClass];
+        if (deviceClass != [(MRDeviceInfo *)self deviceClass])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v7 = [(MRDeviceInfo *)v4 hasProtocolVersion];
-    if (v7 != [(MRDeviceInfo *)self hasProtocolVersion])
+    hasProtocolVersion = [(MRDeviceInfo *)equalCopy hasProtocolVersion];
+    if (hasProtocolVersion != [(MRDeviceInfo *)self hasProtocolVersion])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasProtocolVersion])
+    if ([(MRDeviceInfo *)equalCopy hasProtocolVersion])
     {
       if ([(MRDeviceInfo *)self hasProtocolVersion])
       {
-        v8 = [(MRDeviceInfo *)v4 protocolVersion];
-        if (v8 != [(MRDeviceInfo *)self protocolVersion])
+        protocolVersion = [(MRDeviceInfo *)equalCopy protocolVersion];
+        if (protocolVersion != [(MRDeviceInfo *)self protocolVersion])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v9 = [(MRDeviceInfo *)v4 hasGroupedDeviceCount];
-    if (v9 != [(MRDeviceInfo *)self hasGroupedDeviceCount])
+    hasGroupedDeviceCount = [(MRDeviceInfo *)equalCopy hasGroupedDeviceCount];
+    if (hasGroupedDeviceCount != [(MRDeviceInfo *)self hasGroupedDeviceCount])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasGroupedDeviceCount])
+    if ([(MRDeviceInfo *)equalCopy hasGroupedDeviceCount])
     {
       if ([(MRDeviceInfo *)self hasGroupedDeviceCount])
       {
-        v10 = [(MRDeviceInfo *)v4 groupedDeviceCount];
-        if (v10 != [(MRDeviceInfo *)self groupedDeviceCount])
+        groupedDeviceCount = [(MRDeviceInfo *)equalCopy groupedDeviceCount];
+        if (groupedDeviceCount != [(MRDeviceInfo *)self groupedDeviceCount])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v11 = [(MRDeviceInfo *)v4 hasSharedQueueVersion];
-    if (v11 != [(MRDeviceInfo *)self hasSharedQueueVersion])
+    hasSharedQueueVersion = [(MRDeviceInfo *)equalCopy hasSharedQueueVersion];
+    if (hasSharedQueueVersion != [(MRDeviceInfo *)self hasSharedQueueVersion])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSharedQueueVersion])
+    if ([(MRDeviceInfo *)equalCopy hasSharedQueueVersion])
     {
       if ([(MRDeviceInfo *)self hasSharedQueueVersion])
       {
-        v12 = [(MRDeviceInfo *)v4 sharedQueueVersion];
-        if (v12 != [(MRDeviceInfo *)self sharedQueueVersion])
+        sharedQueueVersion = [(MRDeviceInfo *)equalCopy sharedQueueVersion];
+        if (sharedQueueVersion != [(MRDeviceInfo *)self sharedQueueVersion])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v13 = [(MRDeviceInfo *)v4 hasGroupLogicalDeviceCount];
-    if (v13 != [(MRDeviceInfo *)self hasGroupLogicalDeviceCount])
+    hasGroupLogicalDeviceCount = [(MRDeviceInfo *)equalCopy hasGroupLogicalDeviceCount];
+    if (hasGroupLogicalDeviceCount != [(MRDeviceInfo *)self hasGroupLogicalDeviceCount])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasGroupLogicalDeviceCount])
+    if ([(MRDeviceInfo *)equalCopy hasGroupLogicalDeviceCount])
     {
       if ([(MRDeviceInfo *)self hasGroupLogicalDeviceCount])
       {
-        v14 = [(MRDeviceInfo *)v4 groupLogicalDeviceCount];
-        if (v14 != [(MRDeviceInfo *)self groupLogicalDeviceCount])
+        groupLogicalDeviceCount = [(MRDeviceInfo *)equalCopy groupLogicalDeviceCount];
+        if (groupLogicalDeviceCount != [(MRDeviceInfo *)self groupLogicalDeviceCount])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v15 = [(MRDeviceInfo *)v4 hasSupportsSystemPairing];
-    if (v15 != [(MRDeviceInfo *)self hasSupportsSystemPairing])
+    hasSupportsSystemPairing = [(MRDeviceInfo *)equalCopy hasSupportsSystemPairing];
+    if (hasSupportsSystemPairing != [(MRDeviceInfo *)self hasSupportsSystemPairing])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSupportsSystemPairing])
+    if ([(MRDeviceInfo *)equalCopy hasSupportsSystemPairing])
     {
       if ([(MRDeviceInfo *)self hasSupportsSystemPairing])
       {
-        v16 = [(MRDeviceInfo *)v4 supportsSystemPairing];
-        if (v16 != [(MRDeviceInfo *)self supportsSystemPairing])
+        supportsSystemPairing = [(MRDeviceInfo *)equalCopy supportsSystemPairing];
+        if (supportsSystemPairing != [(MRDeviceInfo *)self supportsSystemPairing])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v17 = [(MRDeviceInfo *)v4 hasSupportsACL];
-    if (v17 != [(MRDeviceInfo *)self hasSupportsACL])
+    hasSupportsACL = [(MRDeviceInfo *)equalCopy hasSupportsACL];
+    if (hasSupportsACL != [(MRDeviceInfo *)self hasSupportsACL])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSupportsACL])
+    if ([(MRDeviceInfo *)equalCopy hasSupportsACL])
     {
       if ([(MRDeviceInfo *)self hasSupportsACL])
       {
-        v18 = [(MRDeviceInfo *)v4 supportsACL];
-        if (v18 != [(MRDeviceInfo *)self supportsACL])
+        supportsACL = [(MRDeviceInfo *)equalCopy supportsACL];
+        if (supportsACL != [(MRDeviceInfo *)self supportsACL])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v19 = [(MRDeviceInfo *)v4 hasSupportsSharedQueue];
-    if (v19 != [(MRDeviceInfo *)self hasSupportsSharedQueue])
+    hasSupportsSharedQueue = [(MRDeviceInfo *)equalCopy hasSupportsSharedQueue];
+    if (hasSupportsSharedQueue != [(MRDeviceInfo *)self hasSupportsSharedQueue])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSupportsSharedQueue])
+    if ([(MRDeviceInfo *)equalCopy hasSupportsSharedQueue])
     {
       if ([(MRDeviceInfo *)self hasSupportsSharedQueue])
       {
-        v20 = [(MRDeviceInfo *)v4 supportsSharedQueue];
-        if (v20 != [(MRDeviceInfo *)self supportsSharedQueue])
+        supportsSharedQueue = [(MRDeviceInfo *)equalCopy supportsSharedQueue];
+        if (supportsSharedQueue != [(MRDeviceInfo *)self supportsSharedQueue])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v21 = [(MRDeviceInfo *)v4 hasSupportsExtendedMotion];
-    if (v21 != [(MRDeviceInfo *)self hasSupportsExtendedMotion])
+    hasSupportsExtendedMotion = [(MRDeviceInfo *)equalCopy hasSupportsExtendedMotion];
+    if (hasSupportsExtendedMotion != [(MRDeviceInfo *)self hasSupportsExtendedMotion])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSupportsExtendedMotion])
+    if ([(MRDeviceInfo *)equalCopy hasSupportsExtendedMotion])
     {
       if ([(MRDeviceInfo *)self hasSupportsExtendedMotion])
       {
-        v22 = [(MRDeviceInfo *)v4 supportsExtendedMotion];
-        if (v22 != [(MRDeviceInfo *)self supportsExtendedMotion])
+        supportsExtendedMotion = [(MRDeviceInfo *)equalCopy supportsExtendedMotion];
+        if (supportsExtendedMotion != [(MRDeviceInfo *)self supportsExtendedMotion])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v23 = [(MRDeviceInfo *)v4 hasTightSyncGroup];
-    if (v23 != [(MRDeviceInfo *)self hasTightSyncGroup])
+    hasTightSyncGroup = [(MRDeviceInfo *)equalCopy hasTightSyncGroup];
+    if (hasTightSyncGroup != [(MRDeviceInfo *)self hasTightSyncGroup])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasTightSyncGroup])
+    if ([(MRDeviceInfo *)equalCopy hasTightSyncGroup])
     {
       if ([(MRDeviceInfo *)self hasTightSyncGroup])
       {
-        v24 = [(MRDeviceInfo *)v4 isTightSyncGroup];
-        if (v24 != [(MRDeviceInfo *)self isTightSyncGroup])
+        isTightSyncGroup = [(MRDeviceInfo *)equalCopy isTightSyncGroup];
+        if (isTightSyncGroup != [(MRDeviceInfo *)self isTightSyncGroup])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v25 = [(MRDeviceInfo *)v4 hasPairingAllowed];
-    if (v25 != [(MRDeviceInfo *)self hasPairingAllowed])
+    hasPairingAllowed = [(MRDeviceInfo *)equalCopy hasPairingAllowed];
+    if (hasPairingAllowed != [(MRDeviceInfo *)self hasPairingAllowed])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasPairingAllowed])
+    if ([(MRDeviceInfo *)equalCopy hasPairingAllowed])
     {
       if ([(MRDeviceInfo *)self hasPairingAllowed])
       {
-        v26 = [(MRDeviceInfo *)v4 isPairingAllowed];
-        if (v26 != [(MRDeviceInfo *)self isPairingAllowed])
+        isPairingAllowed = [(MRDeviceInfo *)equalCopy isPairingAllowed];
+        if (isPairingAllowed != [(MRDeviceInfo *)self isPairingAllowed])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v27 = [(MRDeviceInfo *)v4 hasProxyGroupPlayer];
-    if (v27 != [(MRDeviceInfo *)self hasProxyGroupPlayer])
+    hasProxyGroupPlayer = [(MRDeviceInfo *)equalCopy hasProxyGroupPlayer];
+    if (hasProxyGroupPlayer != [(MRDeviceInfo *)self hasProxyGroupPlayer])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasProxyGroupPlayer])
+    if ([(MRDeviceInfo *)equalCopy hasProxyGroupPlayer])
     {
       if ([(MRDeviceInfo *)self hasProxyGroupPlayer])
       {
-        v28 = [(MRDeviceInfo *)v4 isProxyGroupPlayer];
-        if (v28 != [(MRDeviceInfo *)self isProxyGroupPlayer])
+        isProxyGroupPlayer = [(MRDeviceInfo *)equalCopy isProxyGroupPlayer];
+        if (isProxyGroupPlayer != [(MRDeviceInfo *)self isProxyGroupPlayer])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v29 = [(MRDeviceInfo *)v4 hasConnected];
-    if (v29 != [(MRDeviceInfo *)self hasConnected])
+    hasConnected = [(MRDeviceInfo *)equalCopy hasConnected];
+    if (hasConnected != [(MRDeviceInfo *)self hasConnected])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasConnected])
+    if ([(MRDeviceInfo *)equalCopy hasConnected])
     {
       if ([(MRDeviceInfo *)self hasConnected])
       {
-        v30 = [(MRDeviceInfo *)v4 isConnected];
-        if (v30 != [(MRDeviceInfo *)self isConnected])
+        isConnected = [(MRDeviceInfo *)equalCopy isConnected];
+        if (isConnected != [(MRDeviceInfo *)self isConnected])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v31 = [(MRDeviceInfo *)v4 hasGroupLeader];
-    if (v31 != [(MRDeviceInfo *)self hasGroupLeader])
+    hasGroupLeader = [(MRDeviceInfo *)equalCopy hasGroupLeader];
+    if (hasGroupLeader != [(MRDeviceInfo *)self hasGroupLeader])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasGroupLeader])
+    if ([(MRDeviceInfo *)equalCopy hasGroupLeader])
     {
       if ([(MRDeviceInfo *)self hasGroupLeader])
       {
-        v32 = [(MRDeviceInfo *)v4 isGroupLeader];
-        if (v32 != [(MRDeviceInfo *)self isGroupLeader])
+        isGroupLeader = [(MRDeviceInfo *)equalCopy isGroupLeader];
+        if (isGroupLeader != [(MRDeviceInfo *)self isGroupLeader])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v33 = [(MRDeviceInfo *)v4 hasAirPlayActive];
-    if (v33 != [(MRDeviceInfo *)self hasAirPlayActive])
+    hasAirPlayActive = [(MRDeviceInfo *)equalCopy hasAirPlayActive];
+    if (hasAirPlayActive != [(MRDeviceInfo *)self hasAirPlayActive])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasAirPlayActive])
+    if ([(MRDeviceInfo *)equalCopy hasAirPlayActive])
     {
       if ([(MRDeviceInfo *)self hasAirPlayActive])
       {
-        v34 = [(MRDeviceInfo *)v4 isAirPlayActive];
-        if (v34 != [(MRDeviceInfo *)self isAirPlayActive])
+        isAirPlayActive = [(MRDeviceInfo *)equalCopy isAirPlayActive];
+        if (isAirPlayActive != [(MRDeviceInfo *)self isAirPlayActive])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v35 = [(MRDeviceInfo *)v4 hasSupportsMultiplayer];
-    if (v35 != [(MRDeviceInfo *)self hasSupportsMultiplayer])
+    hasSupportsMultiplayer = [(MRDeviceInfo *)equalCopy hasSupportsMultiplayer];
+    if (hasSupportsMultiplayer != [(MRDeviceInfo *)self hasSupportsMultiplayer])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasSupportsMultiplayer])
+    if ([(MRDeviceInfo *)equalCopy hasSupportsMultiplayer])
     {
       if ([(MRDeviceInfo *)self hasSupportsMultiplayer])
       {
-        v36 = [(MRDeviceInfo *)v4 supportsMultiplayer];
-        if (v36 != [(MRDeviceInfo *)self supportsMultiplayer])
+        supportsMultiplayer = [(MRDeviceInfo *)equalCopy supportsMultiplayer];
+        if (supportsMultiplayer != [(MRDeviceInfo *)self supportsMultiplayer])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v37 = [(MRDeviceInfo *)v4 hasParentGroupContainsDiscoverableGroupLeader];
-    if (v37 != [(MRDeviceInfo *)self hasParentGroupContainsDiscoverableGroupLeader])
+    hasParentGroupContainsDiscoverableGroupLeader = [(MRDeviceInfo *)equalCopy hasParentGroupContainsDiscoverableGroupLeader];
+    if (hasParentGroupContainsDiscoverableGroupLeader != [(MRDeviceInfo *)self hasParentGroupContainsDiscoverableGroupLeader])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasParentGroupContainsDiscoverableGroupLeader])
+    if ([(MRDeviceInfo *)equalCopy hasParentGroupContainsDiscoverableGroupLeader])
     {
       if ([(MRDeviceInfo *)self hasParentGroupContainsDiscoverableGroupLeader])
       {
-        v38 = [(MRDeviceInfo *)v4 parentGroupContainsDiscoverableGroupLeader];
-        if (v38 != [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader])
+        parentGroupContainsDiscoverableGroupLeader = [(MRDeviceInfo *)equalCopy parentGroupContainsDiscoverableGroupLeader];
+        if (parentGroupContainsDiscoverableGroupLeader != [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v39 = [(MRDeviceInfo *)v4 hasGroupContainsDiscoverableGroupLeader];
-    if (v39 != [(MRDeviceInfo *)self hasGroupContainsDiscoverableGroupLeader])
+    hasGroupContainsDiscoverableGroupLeader = [(MRDeviceInfo *)equalCopy hasGroupContainsDiscoverableGroupLeader];
+    if (hasGroupContainsDiscoverableGroupLeader != [(MRDeviceInfo *)self hasGroupContainsDiscoverableGroupLeader])
     {
       goto LABEL_217;
     }
 
-    if ([(MRDeviceInfo *)v4 hasGroupContainsDiscoverableGroupLeader])
+    if ([(MRDeviceInfo *)equalCopy hasGroupContainsDiscoverableGroupLeader])
     {
       if ([(MRDeviceInfo *)self hasGroupContainsDiscoverableGroupLeader])
       {
-        v40 = [(MRDeviceInfo *)v4 groupContainsDiscoverableGroupLeader];
-        if (v40 != [(MRDeviceInfo *)self groupContainsDiscoverableGroupLeader])
+        groupContainsDiscoverableGroupLeader = [(MRDeviceInfo *)equalCopy groupContainsDiscoverableGroupLeader];
+        if (groupContainsDiscoverableGroupLeader != [(MRDeviceInfo *)self groupContainsDiscoverableGroupLeader])
         {
           goto LABEL_217;
         }
       }
     }
 
-    v41 = [(MRDeviceInfo *)v4 hasClusterType];
-    if (v41 != [(MRDeviceInfo *)self hasClusterType])
+    hasClusterType = [(MRDeviceInfo *)equalCopy hasClusterType];
+    if (hasClusterType != [(MRDeviceInfo *)self hasClusterType])
     {
       goto LABEL_217;
     }
 
-    v42 = [(MRDeviceInfo *)v4 clusterType];
-    if (v42 != [(MRDeviceInfo *)self clusterType])
+    clusterType = [(MRDeviceInfo *)equalCopy clusterType];
+    if (clusterType != [(MRDeviceInfo *)self clusterType])
     {
       goto LABEL_217;
     }
 
-    v43 = [(MRDeviceInfo *)v4 hasIsClusterAware];
-    if (v43 != [(MRDeviceInfo *)self hasIsClusterAware])
+    hasIsClusterAware = [(MRDeviceInfo *)equalCopy hasIsClusterAware];
+    if (hasIsClusterAware != [(MRDeviceInfo *)self hasIsClusterAware])
     {
       goto LABEL_217;
     }
 
-    v44 = [(MRDeviceInfo *)v4 isClusterAware];
-    if (v44 != [(MRDeviceInfo *)self isClusterAware])
+    isClusterAware = [(MRDeviceInfo *)equalCopy isClusterAware];
+    if (isClusterAware != [(MRDeviceInfo *)self isClusterAware])
     {
       goto LABEL_217;
     }
 
-    v45 = [(MRDeviceInfo *)v4 hasConfiguredClusterSize];
-    if (v45 != [(MRDeviceInfo *)self hasConfiguredClusterSize])
+    hasConfiguredClusterSize = [(MRDeviceInfo *)equalCopy hasConfiguredClusterSize];
+    if (hasConfiguredClusterSize != [(MRDeviceInfo *)self hasConfiguredClusterSize])
     {
       goto LABEL_217;
     }
 
-    v46 = [(MRDeviceInfo *)v4 configuredClusterSize];
-    if (v46 != [(MRDeviceInfo *)self configuredClusterSize])
+    configuredClusterSize = [(MRDeviceInfo *)equalCopy configuredClusterSize];
+    if (configuredClusterSize != [(MRDeviceInfo *)self configuredClusterSize])
     {
       goto LABEL_217;
     }
 
-    v47 = [(MRDeviceInfo *)v4 hasIsClusterLeader];
-    if (v47 != [(MRDeviceInfo *)self hasIsClusterLeader])
+    hasIsClusterLeader = [(MRDeviceInfo *)equalCopy hasIsClusterLeader];
+    if (hasIsClusterLeader != [(MRDeviceInfo *)self hasIsClusterLeader])
     {
       goto LABEL_217;
     }
 
-    v48 = [(MRDeviceInfo *)v4 isClusterLeader];
-    if (v48 != [(MRDeviceInfo *)self isClusterLeader])
+    isClusterLeader = [(MRDeviceInfo *)equalCopy isClusterLeader];
+    if (isClusterLeader != [(MRDeviceInfo *)self isClusterLeader])
     {
       goto LABEL_217;
     }
 
-    v49 = [(MRDeviceInfo *)v4 hasLastSupportedClusterType];
-    if (v49 != [(MRDeviceInfo *)self hasLastSupportedClusterType])
+    hasLastSupportedClusterType = [(MRDeviceInfo *)equalCopy hasLastSupportedClusterType];
+    if (hasLastSupportedClusterType != [(MRDeviceInfo *)self hasLastSupportedClusterType])
     {
       goto LABEL_217;
     }
 
-    v50 = [(MRDeviceInfo *)v4 lastSupportedClusterType];
-    if (v50 != [(MRDeviceInfo *)self lastSupportedClusterType])
+    lastSupportedClusterType = [(MRDeviceInfo *)equalCopy lastSupportedClusterType];
+    if (lastSupportedClusterType != [(MRDeviceInfo *)self lastSupportedClusterType])
     {
       goto LABEL_217;
     }
 
-    v51 = [(MRDeviceInfo *)v4 hasSupportsOutputContextSync];
-    if (v51 != [(MRDeviceInfo *)self hasSupportsOutputContextSync])
+    hasSupportsOutputContextSync = [(MRDeviceInfo *)equalCopy hasSupportsOutputContextSync];
+    if (hasSupportsOutputContextSync != [(MRDeviceInfo *)self hasSupportsOutputContextSync])
     {
       goto LABEL_217;
     }
 
-    v52 = [(MRDeviceInfo *)v4 supportsOutputContextSync];
-    if (v52 != [(MRDeviceInfo *)self supportsOutputContextSync])
+    supportsOutputContextSync = [(MRDeviceInfo *)equalCopy supportsOutputContextSync];
+    if (supportsOutputContextSync != [(MRDeviceInfo *)self supportsOutputContextSync])
     {
       goto LABEL_217;
     }
 
-    v53 = [(MRDeviceInfo *)v4 hasLastSupportedProtocolMessageType];
-    if (v53 != [(MRDeviceInfo *)self hasLastSupportedProtocolMessageType])
+    hasLastSupportedProtocolMessageType = [(MRDeviceInfo *)equalCopy hasLastSupportedProtocolMessageType];
+    if (hasLastSupportedProtocolMessageType != [(MRDeviceInfo *)self hasLastSupportedProtocolMessageType])
     {
       goto LABEL_217;
     }
 
-    v54 = [(MRDeviceInfo *)v4 lastSupportedProtocolMessageType];
-    if (v54 != [(MRDeviceInfo *)self lastSupportedProtocolMessageType])
+    lastSupportedProtocolMessageType = [(MRDeviceInfo *)equalCopy lastSupportedProtocolMessageType];
+    if (lastSupportedProtocolMessageType != [(MRDeviceInfo *)self lastSupportedProtocolMessageType])
     {
       goto LABEL_217;
     }
 
-    v55 = [(MRDeviceInfo *)v4 hasParentGroupSupportsGroupCohesion];
-    if (v55 != [(MRDeviceInfo *)self hasParentGroupSupportsGroupCohesion])
+    hasParentGroupSupportsGroupCohesion = [(MRDeviceInfo *)equalCopy hasParentGroupSupportsGroupCohesion];
+    if (hasParentGroupSupportsGroupCohesion != [(MRDeviceInfo *)self hasParentGroupSupportsGroupCohesion])
     {
       goto LABEL_217;
     }
 
-    v56 = [(MRDeviceInfo *)v4 parentGroupSupportsGroupCohesion];
-    if (v56 != [(MRDeviceInfo *)self parentGroupSupportsGroupCohesion])
+    parentGroupSupportsGroupCohesion = [(MRDeviceInfo *)equalCopy parentGroupSupportsGroupCohesion];
+    if (parentGroupSupportsGroupCohesion != [(MRDeviceInfo *)self parentGroupSupportsGroupCohesion])
     {
       goto LABEL_217;
     }
 
-    v57 = [(MRDeviceInfo *)v4 name];
-    v58 = [(MRDeviceInfo *)self name];
-    v59 = v58;
-    if (v57 == v58)
+    name = [(MRDeviceInfo *)equalCopy name];
+    name2 = [(MRDeviceInfo *)self name];
+    v59 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v60 = [(MRDeviceInfo *)v4 name];
-      v61 = [(MRDeviceInfo *)self name];
-      v62 = [v60 isEqualToString:v61];
+      name3 = [(MRDeviceInfo *)equalCopy name];
+      name4 = [(MRDeviceInfo *)self name];
+      v62 = [name3 isEqualToString:name4];
 
       if (!v62)
       {
@@ -2242,18 +2242,18 @@ LABEL_217:
       }
     }
 
-    v64 = [(MRDeviceInfo *)v4 identifier];
-    v65 = [(MRDeviceInfo *)self identifier];
-    v66 = v65;
-    if (v64 == v65)
+    identifier = [(MRDeviceInfo *)equalCopy identifier];
+    identifier2 = [(MRDeviceInfo *)self identifier];
+    v66 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v67 = [(MRDeviceInfo *)v4 identifier];
-      v68 = [(MRDeviceInfo *)self identifier];
-      v69 = [v67 isEqualToString:v68];
+      identifier3 = [(MRDeviceInfo *)equalCopy identifier];
+      identifier4 = [(MRDeviceInfo *)self identifier];
+      v69 = [identifier3 isEqualToString:identifier4];
 
       if (!v69)
       {
@@ -2261,18 +2261,18 @@ LABEL_217:
       }
     }
 
-    v70 = [(MRDeviceInfo *)v4 localizedModelName];
-    v71 = [(MRDeviceInfo *)self localizedModelName];
-    v72 = v71;
-    if (v70 == v71)
+    localizedModelName = [(MRDeviceInfo *)equalCopy localizedModelName];
+    localizedModelName2 = [(MRDeviceInfo *)self localizedModelName];
+    v72 = localizedModelName2;
+    if (localizedModelName == localizedModelName2)
     {
     }
 
     else
     {
-      v73 = [(MRDeviceInfo *)v4 localizedModelName];
-      v74 = [(MRDeviceInfo *)self localizedModelName];
-      v75 = [v73 isEqualToString:v74];
+      localizedModelName3 = [(MRDeviceInfo *)equalCopy localizedModelName];
+      localizedModelName4 = [(MRDeviceInfo *)self localizedModelName];
+      v75 = [localizedModelName3 isEqualToString:localizedModelName4];
 
       if (!v75)
       {
@@ -2280,18 +2280,18 @@ LABEL_217:
       }
     }
 
-    v76 = [(MRDeviceInfo *)v4 buildVersion];
-    v77 = [(MRDeviceInfo *)self buildVersion];
-    v78 = v77;
-    if (v76 == v77)
+    buildVersion = [(MRDeviceInfo *)equalCopy buildVersion];
+    buildVersion2 = [(MRDeviceInfo *)self buildVersion];
+    v78 = buildVersion2;
+    if (buildVersion == buildVersion2)
     {
     }
 
     else
     {
-      v79 = [(MRDeviceInfo *)v4 buildVersion];
-      v80 = [(MRDeviceInfo *)self buildVersion];
-      v81 = [v79 isEqualToString:v80];
+      buildVersion3 = [(MRDeviceInfo *)equalCopy buildVersion];
+      buildVersion4 = [(MRDeviceInfo *)self buildVersion];
+      v81 = [buildVersion3 isEqualToString:buildVersion4];
 
       if (!v81)
       {
@@ -2299,18 +2299,18 @@ LABEL_217:
       }
     }
 
-    v82 = [(MRDeviceInfo *)v4 bundleIdentifier];
-    v83 = [(MRDeviceInfo *)self bundleIdentifier];
-    v84 = v83;
-    if (v82 == v83)
+    bundleIdentifier = [(MRDeviceInfo *)equalCopy bundleIdentifier];
+    bundleIdentifier2 = [(MRDeviceInfo *)self bundleIdentifier];
+    v84 = bundleIdentifier2;
+    if (bundleIdentifier == bundleIdentifier2)
     {
     }
 
     else
     {
-      v85 = [(MRDeviceInfo *)v4 bundleIdentifier];
-      v86 = [(MRDeviceInfo *)self bundleIdentifier];
-      v87 = [v85 isEqualToString:v86];
+      bundleIdentifier3 = [(MRDeviceInfo *)equalCopy bundleIdentifier];
+      bundleIdentifier4 = [(MRDeviceInfo *)self bundleIdentifier];
+      v87 = [bundleIdentifier3 isEqualToString:bundleIdentifier4];
 
       if (!v87)
       {
@@ -2318,18 +2318,18 @@ LABEL_217:
       }
     }
 
-    v88 = [(MRDeviceInfo *)v4 bundleVersion];
-    v89 = [(MRDeviceInfo *)self bundleVersion];
-    v90 = v89;
-    if (v88 == v89)
+    bundleVersion = [(MRDeviceInfo *)equalCopy bundleVersion];
+    bundleVersion2 = [(MRDeviceInfo *)self bundleVersion];
+    v90 = bundleVersion2;
+    if (bundleVersion == bundleVersion2)
     {
     }
 
     else
     {
-      v91 = [(MRDeviceInfo *)v4 bundleVersion];
-      v92 = [(MRDeviceInfo *)self bundleVersion];
-      v93 = [v91 isEqualToString:v92];
+      bundleVersion3 = [(MRDeviceInfo *)equalCopy bundleVersion];
+      bundleVersion4 = [(MRDeviceInfo *)self bundleVersion];
+      v93 = [bundleVersion3 isEqualToString:bundleVersion4];
 
       if (!v93)
       {
@@ -2337,18 +2337,18 @@ LABEL_217:
       }
     }
 
-    v94 = [(MRDeviceInfo *)v4 systemMediaApplication];
-    v95 = [(MRDeviceInfo *)self systemMediaApplication];
-    v96 = v95;
-    if (v94 == v95)
+    systemMediaApplication = [(MRDeviceInfo *)equalCopy systemMediaApplication];
+    systemMediaApplication2 = [(MRDeviceInfo *)self systemMediaApplication];
+    v96 = systemMediaApplication2;
+    if (systemMediaApplication == systemMediaApplication2)
     {
     }
 
     else
     {
-      v97 = [(MRDeviceInfo *)v4 systemMediaApplication];
-      v98 = [(MRDeviceInfo *)self systemMediaApplication];
-      v99 = [v97 isEqualToString:v98];
+      systemMediaApplication3 = [(MRDeviceInfo *)equalCopy systemMediaApplication];
+      systemMediaApplication4 = [(MRDeviceInfo *)self systemMediaApplication];
+      v99 = [systemMediaApplication3 isEqualToString:systemMediaApplication4];
 
       if (!v99)
       {
@@ -2356,18 +2356,18 @@ LABEL_217:
       }
     }
 
-    v100 = [(MRDeviceInfo *)v4 systemPodcastApplication];
-    v101 = [(MRDeviceInfo *)self systemPodcastApplication];
-    v102 = v101;
-    if (v100 == v101)
+    systemPodcastApplication = [(MRDeviceInfo *)equalCopy systemPodcastApplication];
+    systemPodcastApplication2 = [(MRDeviceInfo *)self systemPodcastApplication];
+    v102 = systemPodcastApplication2;
+    if (systemPodcastApplication == systemPodcastApplication2)
     {
     }
 
     else
     {
-      v103 = [(MRDeviceInfo *)v4 systemPodcastApplication];
-      v104 = [(MRDeviceInfo *)self systemPodcastApplication];
-      v105 = [v103 isEqualToString:v104];
+      systemPodcastApplication3 = [(MRDeviceInfo *)equalCopy systemPodcastApplication];
+      systemPodcastApplication4 = [(MRDeviceInfo *)self systemPodcastApplication];
+      v105 = [systemPodcastApplication3 isEqualToString:systemPodcastApplication4];
 
       if (!v105)
       {
@@ -2375,18 +2375,18 @@ LABEL_217:
       }
     }
 
-    v106 = [(MRDeviceInfo *)v4 systemBooksApplication];
-    v107 = [(MRDeviceInfo *)self systemBooksApplication];
-    v108 = v107;
-    if (v106 == v107)
+    systemBooksApplication = [(MRDeviceInfo *)equalCopy systemBooksApplication];
+    systemBooksApplication2 = [(MRDeviceInfo *)self systemBooksApplication];
+    v108 = systemBooksApplication2;
+    if (systemBooksApplication == systemBooksApplication2)
     {
     }
 
     else
     {
-      v109 = [(MRDeviceInfo *)v4 systemBooksApplication];
-      v110 = [(MRDeviceInfo *)self systemBooksApplication];
-      v111 = [v109 isEqualToString:v110];
+      systemBooksApplication3 = [(MRDeviceInfo *)equalCopy systemBooksApplication];
+      systemBooksApplication4 = [(MRDeviceInfo *)self systemBooksApplication];
+      v111 = [systemBooksApplication3 isEqualToString:systemBooksApplication4];
 
       if (!v111)
       {
@@ -2394,18 +2394,18 @@ LABEL_217:
       }
     }
 
-    v112 = [(MRDeviceInfo *)v4 deviceUID];
-    v113 = [(MRDeviceInfo *)self deviceUID];
-    v114 = v113;
-    if (v112 == v113)
+    deviceUID = [(MRDeviceInfo *)equalCopy deviceUID];
+    deviceUID2 = [(MRDeviceInfo *)self deviceUID];
+    v114 = deviceUID2;
+    if (deviceUID == deviceUID2)
     {
     }
 
     else
     {
-      v115 = [(MRDeviceInfo *)v4 deviceUID];
-      v116 = [(MRDeviceInfo *)self deviceUID];
-      v117 = [v115 isEqualToString:v116];
+      deviceUID3 = [(MRDeviceInfo *)equalCopy deviceUID];
+      deviceUID4 = [(MRDeviceInfo *)self deviceUID];
+      v117 = [deviceUID3 isEqualToString:deviceUID4];
 
       if (!v117)
       {
@@ -2413,18 +2413,18 @@ LABEL_217:
       }
     }
 
-    v118 = [(MRDeviceInfo *)v4 localReceiverPairingIdentity];
-    v119 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
-    v120 = v119;
-    if (v118 == v119)
+    localReceiverPairingIdentity = [(MRDeviceInfo *)equalCopy localReceiverPairingIdentity];
+    localReceiverPairingIdentity2 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
+    v120 = localReceiverPairingIdentity2;
+    if (localReceiverPairingIdentity == localReceiverPairingIdentity2)
     {
     }
 
     else
     {
-      v121 = [(MRDeviceInfo *)v4 localReceiverPairingIdentity];
-      v122 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
-      v123 = [v121 isEqualToString:v122];
+      localReceiverPairingIdentity3 = [(MRDeviceInfo *)equalCopy localReceiverPairingIdentity];
+      localReceiverPairingIdentity4 = [(MRDeviceInfo *)self localReceiverPairingIdentity];
+      v123 = [localReceiverPairingIdentity3 isEqualToString:localReceiverPairingIdentity4];
 
       if (!v123)
       {
@@ -2432,18 +2432,18 @@ LABEL_217:
       }
     }
 
-    v124 = [(MRDeviceInfo *)v4 managedConfigurationDeviceIdentifier];
-    v125 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
-    v126 = v125;
-    if (v124 == v125)
+    managedConfigurationDeviceIdentifier = [(MRDeviceInfo *)equalCopy managedConfigurationDeviceIdentifier];
+    managedConfigurationDeviceIdentifier2 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
+    v126 = managedConfigurationDeviceIdentifier2;
+    if (managedConfigurationDeviceIdentifier == managedConfigurationDeviceIdentifier2)
     {
     }
 
     else
     {
-      v127 = [(MRDeviceInfo *)v4 managedConfigurationDeviceIdentifier];
-      v128 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
-      v129 = [v127 isEqualToString:v128];
+      managedConfigurationDeviceIdentifier3 = [(MRDeviceInfo *)equalCopy managedConfigurationDeviceIdentifier];
+      managedConfigurationDeviceIdentifier4 = [(MRDeviceInfo *)self managedConfigurationDeviceIdentifier];
+      v129 = [managedConfigurationDeviceIdentifier3 isEqualToString:managedConfigurationDeviceIdentifier4];
 
       if (!v129)
       {
@@ -2451,18 +2451,18 @@ LABEL_217:
       }
     }
 
-    v130 = [(MRDeviceInfo *)v4 tightSyncUID];
-    v131 = [(MRDeviceInfo *)self tightSyncUID];
-    v132 = v131;
-    if (v130 == v131)
+    tightSyncUID = [(MRDeviceInfo *)equalCopy tightSyncUID];
+    tightSyncUID2 = [(MRDeviceInfo *)self tightSyncUID];
+    v132 = tightSyncUID2;
+    if (tightSyncUID == tightSyncUID2)
     {
     }
 
     else
     {
-      v133 = [(MRDeviceInfo *)v4 tightSyncUID];
-      v134 = [(MRDeviceInfo *)self tightSyncUID];
-      v135 = [v133 isEqualToString:v134];
+      tightSyncUID3 = [(MRDeviceInfo *)equalCopy tightSyncUID];
+      tightSyncUID4 = [(MRDeviceInfo *)self tightSyncUID];
+      v135 = [tightSyncUID3 isEqualToString:tightSyncUID4];
 
       if (!v135)
       {
@@ -2470,18 +2470,18 @@ LABEL_217:
       }
     }
 
-    v136 = [(MRDeviceInfo *)v4 groupUID];
-    v137 = [(MRDeviceInfo *)self groupUID];
-    v138 = v137;
-    if (v136 == v137)
+    groupUID = [(MRDeviceInfo *)equalCopy groupUID];
+    groupUID2 = [(MRDeviceInfo *)self groupUID];
+    v138 = groupUID2;
+    if (groupUID == groupUID2)
     {
     }
 
     else
     {
-      v139 = [(MRDeviceInfo *)v4 groupUID];
-      v140 = [(MRDeviceInfo *)self groupUID];
-      v141 = [v139 isEqualToString:v140];
+      groupUID3 = [(MRDeviceInfo *)equalCopy groupUID];
+      groupUID4 = [(MRDeviceInfo *)self groupUID];
+      v141 = [groupUID3 isEqualToString:groupUID4];
 
       if (!v141)
       {
@@ -2489,18 +2489,18 @@ LABEL_217:
       }
     }
 
-    v142 = [(MRDeviceInfo *)v4 airPlayGroupUID];
-    v143 = [(MRDeviceInfo *)self airPlayGroupUID];
-    v144 = v143;
-    if (v142 == v143)
+    airPlayGroupUID = [(MRDeviceInfo *)equalCopy airPlayGroupUID];
+    airPlayGroupUID2 = [(MRDeviceInfo *)self airPlayGroupUID];
+    v144 = airPlayGroupUID2;
+    if (airPlayGroupUID == airPlayGroupUID2)
     {
     }
 
     else
     {
-      v145 = [(MRDeviceInfo *)v4 airPlayGroupUID];
-      v146 = [(MRDeviceInfo *)self airPlayGroupUID];
-      v147 = [v145 isEqualToString:v146];
+      airPlayGroupUID3 = [(MRDeviceInfo *)equalCopy airPlayGroupUID];
+      airPlayGroupUID4 = [(MRDeviceInfo *)self airPlayGroupUID];
+      v147 = [airPlayGroupUID3 isEqualToString:airPlayGroupUID4];
 
       if (!v147)
       {
@@ -2508,18 +2508,18 @@ LABEL_217:
       }
     }
 
-    v148 = [(MRDeviceInfo *)v4 groupName];
-    v149 = [(MRDeviceInfo *)self groupName];
-    v150 = v149;
-    if (v148 == v149)
+    groupName = [(MRDeviceInfo *)equalCopy groupName];
+    groupName2 = [(MRDeviceInfo *)self groupName];
+    v150 = groupName2;
+    if (groupName == groupName2)
     {
     }
 
     else
     {
-      v151 = [(MRDeviceInfo *)v4 groupName];
-      v152 = [(MRDeviceInfo *)self groupName];
-      v153 = [v151 isEqualToString:v152];
+      groupName3 = [(MRDeviceInfo *)equalCopy groupName];
+      groupName4 = [(MRDeviceInfo *)self groupName];
+      v153 = [groupName3 isEqualToString:groupName4];
 
       if (!v153)
       {
@@ -2527,18 +2527,18 @@ LABEL_217:
       }
     }
 
-    v154 = [(MRDeviceInfo *)v4 senderDefaultGroupUID];
-    v155 = [(MRDeviceInfo *)self senderDefaultGroupUID];
-    v156 = v155;
-    if (v154 == v155)
+    senderDefaultGroupUID = [(MRDeviceInfo *)equalCopy senderDefaultGroupUID];
+    senderDefaultGroupUID2 = [(MRDeviceInfo *)self senderDefaultGroupUID];
+    v156 = senderDefaultGroupUID2;
+    if (senderDefaultGroupUID == senderDefaultGroupUID2)
     {
     }
 
     else
     {
-      v157 = [(MRDeviceInfo *)v4 senderDefaultGroupUID];
-      v158 = [(MRDeviceInfo *)self senderDefaultGroupUID];
-      v159 = [v157 isEqualToString:v158];
+      senderDefaultGroupUID3 = [(MRDeviceInfo *)equalCopy senderDefaultGroupUID];
+      senderDefaultGroupUID4 = [(MRDeviceInfo *)self senderDefaultGroupUID];
+      v159 = [senderDefaultGroupUID3 isEqualToString:senderDefaultGroupUID4];
 
       if (!v159)
       {
@@ -2546,18 +2546,18 @@ LABEL_217:
       }
     }
 
-    v160 = [(MRDeviceInfo *)v4 bluetoothAddress];
-    v161 = [(MRDeviceInfo *)self bluetoothAddress];
-    v162 = v161;
-    if (v160 == v161)
+    bluetoothAddress = [(MRDeviceInfo *)equalCopy bluetoothAddress];
+    bluetoothAddress2 = [(MRDeviceInfo *)self bluetoothAddress];
+    v162 = bluetoothAddress2;
+    if (bluetoothAddress == bluetoothAddress2)
     {
     }
 
     else
     {
-      v163 = [(MRDeviceInfo *)v4 bluetoothAddress];
-      v164 = [(MRDeviceInfo *)self bluetoothAddress];
-      v165 = [v163 isEqualToData:v164];
+      bluetoothAddress3 = [(MRDeviceInfo *)equalCopy bluetoothAddress];
+      bluetoothAddress4 = [(MRDeviceInfo *)self bluetoothAddress];
+      v165 = [bluetoothAddress3 isEqualToData:bluetoothAddress4];
 
       if (!v165)
       {
@@ -2565,18 +2565,18 @@ LABEL_217:
       }
     }
 
-    v166 = [(MRDeviceInfo *)v4 groupedDevices];
-    v167 = [(MRDeviceInfo *)self groupedDevices];
-    v168 = v167;
-    if (v166 == v167)
+    groupedDevices = [(MRDeviceInfo *)equalCopy groupedDevices];
+    groupedDevices2 = [(MRDeviceInfo *)self groupedDevices];
+    v168 = groupedDevices2;
+    if (groupedDevices == groupedDevices2)
     {
     }
 
     else
     {
-      v169 = [(MRDeviceInfo *)v4 groupedDevices];
-      v170 = [(MRDeviceInfo *)self groupedDevices];
-      v171 = [v169 isEqualToArray:v170];
+      groupedDevices3 = [(MRDeviceInfo *)equalCopy groupedDevices];
+      groupedDevices4 = [(MRDeviceInfo *)self groupedDevices];
+      v171 = [groupedDevices3 isEqualToArray:groupedDevices4];
 
       if (!v171)
       {
@@ -2584,18 +2584,18 @@ LABEL_217:
       }
     }
 
-    v172 = [(MRDeviceInfo *)v4 clusteredDevices];
-    v173 = [(MRDeviceInfo *)self clusteredDevices];
-    v174 = v173;
-    if (v172 == v173)
+    clusteredDevices = [(MRDeviceInfo *)equalCopy clusteredDevices];
+    clusteredDevices2 = [(MRDeviceInfo *)self clusteredDevices];
+    v174 = clusteredDevices2;
+    if (clusteredDevices == clusteredDevices2)
     {
     }
 
     else
     {
-      v175 = [(MRDeviceInfo *)v4 clusteredDevices];
-      v176 = [(MRDeviceInfo *)self clusteredDevices];
-      v177 = [v175 isEqualToArray:v176];
+      clusteredDevices3 = [(MRDeviceInfo *)equalCopy clusteredDevices];
+      clusteredDevices4 = [(MRDeviceInfo *)self clusteredDevices];
+      v177 = [clusteredDevices3 isEqualToArray:clusteredDevices4];
 
       if (!v177)
       {
@@ -2603,18 +2603,18 @@ LABEL_217:
       }
     }
 
-    v178 = [(MRDeviceInfo *)v4 allClusteredDevices];
-    v179 = [(MRDeviceInfo *)self allClusteredDevices];
-    v180 = v179;
-    if (v178 == v179)
+    allClusteredDevices = [(MRDeviceInfo *)equalCopy allClusteredDevices];
+    allClusteredDevices2 = [(MRDeviceInfo *)self allClusteredDevices];
+    v180 = allClusteredDevices2;
+    if (allClusteredDevices == allClusteredDevices2)
     {
     }
 
     else
     {
-      v181 = [(MRDeviceInfo *)v4 allClusteredDevices];
-      v182 = [(MRDeviceInfo *)self allClusteredDevices];
-      v183 = [v181 isEqualToArray:v182];
+      allClusteredDevices3 = [(MRDeviceInfo *)equalCopy allClusteredDevices];
+      allClusteredDevices4 = [(MRDeviceInfo *)self allClusteredDevices];
+      v183 = [allClusteredDevices3 isEqualToArray:allClusteredDevices4];
 
       if (!v183)
       {
@@ -2622,18 +2622,18 @@ LABEL_217:
       }
     }
 
-    v184 = [(MRDeviceInfo *)v4 airPlayReceivers];
-    v185 = [(MRDeviceInfo *)self airPlayReceivers];
-    v186 = v185;
-    if (v184 == v185)
+    airPlayReceivers = [(MRDeviceInfo *)equalCopy airPlayReceivers];
+    airPlayReceivers2 = [(MRDeviceInfo *)self airPlayReceivers];
+    v186 = airPlayReceivers2;
+    if (airPlayReceivers == airPlayReceivers2)
     {
     }
 
     else
     {
-      v187 = [(MRDeviceInfo *)v4 airPlayReceivers];
-      v188 = [(MRDeviceInfo *)self airPlayReceivers];
-      v189 = [v187 isEqualToArray:v188];
+      airPlayReceivers3 = [(MRDeviceInfo *)equalCopy airPlayReceivers];
+      airPlayReceivers4 = [(MRDeviceInfo *)self airPlayReceivers];
+      v189 = [airPlayReceivers3 isEqualToArray:airPlayReceivers4];
 
       if (!v189)
       {
@@ -2641,18 +2641,18 @@ LABEL_217:
       }
     }
 
-    v190 = [(MRDeviceInfo *)v4 linkAgent];
-    v191 = [(MRDeviceInfo *)self linkAgent];
-    v192 = v191;
-    if (v190 == v191)
+    linkAgent = [(MRDeviceInfo *)equalCopy linkAgent];
+    linkAgent2 = [(MRDeviceInfo *)self linkAgent];
+    v192 = linkAgent2;
+    if (linkAgent == linkAgent2)
     {
     }
 
     else
     {
-      v193 = [(MRDeviceInfo *)v4 linkAgent];
-      v194 = [(MRDeviceInfo *)self linkAgent];
-      v195 = [v193 isEqualToString:v194];
+      linkAgent3 = [(MRDeviceInfo *)equalCopy linkAgent];
+      linkAgent4 = [(MRDeviceInfo *)self linkAgent];
+      v195 = [linkAgent3 isEqualToString:linkAgent4];
 
       if (!v195)
       {
@@ -2660,18 +2660,18 @@ LABEL_217:
       }
     }
 
-    v196 = [(MRDeviceInfo *)v4 clusterID];
-    v197 = [(MRDeviceInfo *)self clusterID];
-    v198 = v197;
-    if (v196 == v197)
+    clusterID = [(MRDeviceInfo *)equalCopy clusterID];
+    clusterID2 = [(MRDeviceInfo *)self clusterID];
+    v198 = clusterID2;
+    if (clusterID == clusterID2)
     {
     }
 
     else
     {
-      v199 = [(MRDeviceInfo *)v4 clusterID];
-      v200 = [(MRDeviceInfo *)self clusterID];
-      v201 = [v199 isEqualToString:v200];
+      clusterID3 = [(MRDeviceInfo *)equalCopy clusterID];
+      clusterID4 = [(MRDeviceInfo *)self clusterID];
+      v201 = [clusterID3 isEqualToString:clusterID4];
 
       if (!v201)
       {
@@ -2679,18 +2679,18 @@ LABEL_217:
       }
     }
 
-    v202 = [(MRDeviceInfo *)v4 preferredClusterLeaderID];
-    v203 = [(MRDeviceInfo *)self preferredClusterLeaderID];
-    v204 = v203;
-    if (v202 == v203)
+    preferredClusterLeaderID = [(MRDeviceInfo *)equalCopy preferredClusterLeaderID];
+    preferredClusterLeaderID2 = [(MRDeviceInfo *)self preferredClusterLeaderID];
+    v204 = preferredClusterLeaderID2;
+    if (preferredClusterLeaderID == preferredClusterLeaderID2)
     {
     }
 
     else
     {
-      v205 = [(MRDeviceInfo *)v4 preferredClusterLeaderID];
-      v206 = [(MRDeviceInfo *)self preferredClusterLeaderID];
-      v207 = [v205 isEqualToString:v206];
+      preferredClusterLeaderID3 = [(MRDeviceInfo *)equalCopy preferredClusterLeaderID];
+      preferredClusterLeaderID4 = [(MRDeviceInfo *)self preferredClusterLeaderID];
+      v207 = [preferredClusterLeaderID3 isEqualToString:preferredClusterLeaderID4];
 
       if (!v207)
       {
@@ -2698,18 +2698,18 @@ LABEL_217:
       }
     }
 
-    v208 = [(MRDeviceInfo *)v4 computerName];
-    v209 = [(MRDeviceInfo *)self computerName];
-    v210 = v209;
-    if (v208 == v209)
+    computerName = [(MRDeviceInfo *)equalCopy computerName];
+    computerName2 = [(MRDeviceInfo *)self computerName];
+    v210 = computerName2;
+    if (computerName == computerName2)
     {
     }
 
     else
     {
-      v211 = [(MRDeviceInfo *)v4 computerName];
-      v212 = [(MRDeviceInfo *)self computerName];
-      v213 = [v211 isEqualToString:v212];
+      computerName3 = [(MRDeviceInfo *)equalCopy computerName];
+      computerName4 = [(MRDeviceInfo *)self computerName];
+      v213 = [computerName3 isEqualToString:computerName4];
 
       if (!v213)
       {
@@ -2717,10 +2717,10 @@ LABEL_217:
       }
     }
 
-    v214 = [(MRDeviceInfo *)v4 modelID];
-    v215 = [(MRDeviceInfo *)self modelID];
-    v216 = v214;
-    v217 = v215;
+    modelID = [(MRDeviceInfo *)equalCopy modelID];
+    modelID2 = [(MRDeviceInfo *)self modelID];
+    v216 = modelID;
+    v217 = modelID2;
     v218 = v217;
     if (v216 == v217)
     {
@@ -2736,10 +2736,10 @@ LABEL_217:
       }
     }
 
-    v220 = [(MRDeviceInfo *)v4 routingContextID];
-    v221 = [(MRDeviceInfo *)self routingContextID];
-    v222 = v220;
-    v223 = v221;
+    routingContextID = [(MRDeviceInfo *)equalCopy routingContextID];
+    routingContextID2 = [(MRDeviceInfo *)self routingContextID];
+    v222 = routingContextID;
+    v223 = routingContextID2;
     v224 = v223;
     if (v222 == v223)
     {
@@ -2755,10 +2755,10 @@ LABEL_217:
       }
     }
 
-    v226 = [(MRDeviceInfo *)v4 groupSessionToken];
-    v227 = [(MRDeviceInfo *)self groupSessionToken];
-    v228 = v226;
-    v229 = v227;
+    groupSessionToken = [(MRDeviceInfo *)equalCopy groupSessionToken];
+    groupSessionToken2 = [(MRDeviceInfo *)self groupSessionToken];
+    v228 = groupSessionToken;
+    v229 = groupSessionToken2;
     v230 = v229;
     if (v228 == v229)
     {
@@ -2774,10 +2774,10 @@ LABEL_217:
       }
     }
 
-    v232 = [(MRDeviceInfo *)v4 leaderDeviceInfo];
-    v233 = [(MRDeviceInfo *)self leaderDeviceInfo];
-    v234 = v232;
-    v235 = v233;
+    leaderDeviceInfo = [(MRDeviceInfo *)equalCopy leaderDeviceInfo];
+    leaderDeviceInfo2 = [(MRDeviceInfo *)self leaderDeviceInfo];
+    v234 = leaderDeviceInfo;
+    v235 = leaderDeviceInfo2;
     v236 = v235;
     if (v234 == v235)
     {
@@ -2793,10 +2793,10 @@ LABEL_217:
       }
     }
 
-    v238 = [(MRDeviceInfo *)v4 activeSystemEndpointUID];
-    v239 = [(MRDeviceInfo *)self activeSystemEndpointUID];
-    v240 = v238;
-    v241 = v239;
+    activeSystemEndpointUID = [(MRDeviceInfo *)equalCopy activeSystemEndpointUID];
+    activeSystemEndpointUID2 = [(MRDeviceInfo *)self activeSystemEndpointUID];
+    v240 = activeSystemEndpointUID;
+    v241 = activeSystemEndpointUID2;
     v242 = v241;
     if (v240 == v241)
     {
@@ -2812,11 +2812,11 @@ LABEL_217:
       }
     }
 
-    v244 = [(MRDeviceInfo *)v4 hasIsEligibleForHostingGroupSessionExcludingAcknowledgements];
-    if (v244 == [(MRDeviceInfo *)self hasIsEligibleForHostingGroupSessionExcludingAcknowledgements])
+    hasIsEligibleForHostingGroupSessionExcludingAcknowledgements = [(MRDeviceInfo *)equalCopy hasIsEligibleForHostingGroupSessionExcludingAcknowledgements];
+    if (hasIsEligibleForHostingGroupSessionExcludingAcknowledgements == [(MRDeviceInfo *)self hasIsEligibleForHostingGroupSessionExcludingAcknowledgements])
     {
-      v246 = [(MRDeviceInfo *)v4 isEligibleForHostingGroupSessionExcludingAcknowledgements];
-      v63 = v246 ^ [(MRDeviceInfo *)self isEligibleForHostingGroupSessionExcludingAcknowledgements]^ 1;
+      isEligibleForHostingGroupSessionExcludingAcknowledgements = [(MRDeviceInfo *)equalCopy isEligibleForHostingGroupSessionExcludingAcknowledgements];
+      v63 = isEligibleForHostingGroupSessionExcludingAcknowledgements ^ [(MRDeviceInfo *)self isEligibleForHostingGroupSessionExcludingAcknowledgements]^ 1;
       goto LABEL_218;
     }
 
@@ -2831,8 +2831,8 @@ LABEL_218:
 
 - (unint64_t)hash
 {
-  v2 = [(MRDeviceInfo *)self WHAIdentifier];
-  v3 = [v2 hash];
+  wHAIdentifier = [(MRDeviceInfo *)self WHAIdentifier];
+  v3 = [wHAIdentifier hash];
 
   return v3;
 }
@@ -2841,41 +2841,41 @@ LABEL_218:
 {
   if ((([(MRDeviceInfo *)self clusterType]- 1) & 0xFFFFFFFD) != 0 || [(MRDeviceInfo *)self isClusterLeader])
   {
-    v3 = [(MRDeviceInfo *)self routingContextID];
+    routingContextID = [(MRDeviceInfo *)self routingContextID];
   }
 
   else
   {
-    v3 = 0;
+    routingContextID = 0;
   }
 
-  return v3;
+  return routingContextID;
 }
 
 - (NSString)effectiveID
 {
-  v3 = [(MRDeviceInfo *)self clusterID];
-  v4 = v3;
-  if (v3)
+  clusterID = [(MRDeviceInfo *)self clusterID];
+  v4 = clusterID;
+  if (clusterID)
   {
-    v5 = v3;
+    v5 = clusterID;
   }
 
   else
   {
-    v6 = [(MRDeviceInfo *)self deviceUID];
-    v7 = v6;
-    if (v6)
+    deviceUID = [(MRDeviceInfo *)self deviceUID];
+    v7 = deviceUID;
+    if (deviceUID)
     {
-      v5 = v6;
+      v5 = deviceUID;
     }
 
     else
     {
       v8 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-      v9 = [v8 outputDevices];
-      v10 = [v9 firstObject];
-      v5 = [v10 uid];
+      outputDevices = [v8 outputDevices];
+      firstObject = [outputDevices firstObject];
+      v5 = [firstObject uid];
     }
   }
 
@@ -2884,26 +2884,26 @@ LABEL_218:
 
 - (NSString)effectiveName
 {
-  v3 = [(MRDeviceInfo *)self computerName];
-  v4 = v3;
-  if (v3)
+  computerName = [(MRDeviceInfo *)self computerName];
+  v4 = computerName;
+  if (computerName)
   {
-    v5 = v3;
+    name = computerName;
   }
 
   else
   {
-    v5 = [(MRDeviceInfo *)self name];
+    name = [(MRDeviceInfo *)self name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
   if ([(MRDeviceInfo *)self isProxyGroupPlayer])
   {
-    v8 = [(MRDeviceInfo *)self deviceUID];
+    deviceUID = [(MRDeviceInfo *)self deviceUID];
     v9 = @"(Proxy)";
-    if (!v8)
+    if (!deviceUID)
     {
       v9 = &stru_1F1513E38;
     }
@@ -2921,19 +2921,19 @@ LABEL_218:
 
 - (NSString)effectiveIdentifer
 {
-  v3 = [(MRDeviceInfo *)self deviceUID];
-  v4 = v3;
-  if (v3)
+  deviceUID = [(MRDeviceInfo *)self deviceUID];
+  v4 = deviceUID;
+  if (deviceUID)
   {
-    v5 = v3;
+    identifier = deviceUID;
   }
 
   else
   {
-    v5 = [(MRDeviceInfo *)self identifier];
+    identifier = [(MRDeviceInfo *)self identifier];
   }
 
-  v6 = v5;
+  v6 = identifier;
 
   return v6;
 }

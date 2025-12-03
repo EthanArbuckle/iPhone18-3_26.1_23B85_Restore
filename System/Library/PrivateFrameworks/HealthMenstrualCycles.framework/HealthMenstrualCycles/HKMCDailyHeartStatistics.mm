@@ -1,52 +1,52 @@
 @interface HKMCDailyHeartStatistics
-+ (id)dailyHeartStatisticsWithDayIndex:(int64_t)a3 asleepStatistics:(id)a4 awakeStatistics:(id)a5;
-- (BOOL)getData:(id *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (HKMCDailyHeartStatistics)initWithCoder:(id)a3;
-- (HKMCDailyHeartStatistics)initWithDayIndex:(int64_t)a3 tenthPercentileAsleepHeartRateStatistics:(id)a4 tenthPercentileAwakeHeartRateStatistics:(id)a5;
++ (id)dailyHeartStatisticsWithDayIndex:(int64_t)index asleepStatistics:(id)statistics awakeStatistics:(id)awakeStatistics;
+- (BOOL)getData:(id *)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (HKMCDailyHeartStatistics)initWithCoder:(id)coder;
+- (HKMCDailyHeartStatistics)initWithDayIndex:(int64_t)index tenthPercentileAsleepHeartRateStatistics:(id)statistics tenthPercentileAwakeHeartRateStatistics:(id)rateStatistics;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCDailyHeartStatistics
 
-- (HKMCDailyHeartStatistics)initWithDayIndex:(int64_t)a3 tenthPercentileAsleepHeartRateStatistics:(id)a4 tenthPercentileAwakeHeartRateStatistics:(id)a5
+- (HKMCDailyHeartStatistics)initWithDayIndex:(int64_t)index tenthPercentileAsleepHeartRateStatistics:(id)statistics tenthPercentileAwakeHeartRateStatistics:(id)rateStatistics
 {
-  v9 = a4;
-  v10 = a5;
+  statisticsCopy = statistics;
+  rateStatisticsCopy = rateStatistics;
   v14.receiver = self;
   v14.super_class = HKMCDailyHeartStatistics;
   v11 = [(HKMCDailyHeartStatistics *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_dayIndex = a3;
-    objc_storeStrong(&v11->_tenthPercentileAsleepHeartRateStatistics, a4);
-    objc_storeStrong(&v12->_tenthPercentileAwakeHeartRateStatistics, a5);
+    v11->_dayIndex = index;
+    objc_storeStrong(&v11->_tenthPercentileAsleepHeartRateStatistics, statistics);
+    objc_storeStrong(&v12->_tenthPercentileAwakeHeartRateStatistics, rateStatistics);
   }
 
   return v12;
 }
 
-+ (id)dailyHeartStatisticsWithDayIndex:(int64_t)a3 asleepStatistics:(id)a4 awakeStatistics:(id)a5
++ (id)dailyHeartStatisticsWithDayIndex:(int64_t)index asleepStatistics:(id)statistics awakeStatistics:(id)awakeStatistics
 {
-  v8 = a5;
-  v9 = [HKMCHeartStatistics heartStatisticsFromStatistics:a4];
-  v10 = [HKMCHeartStatistics heartStatisticsFromStatistics:v8];
+  awakeStatisticsCopy = awakeStatistics;
+  v9 = [HKMCHeartStatistics heartStatisticsFromStatistics:statistics];
+  v10 = [HKMCHeartStatistics heartStatisticsFromStatistics:awakeStatisticsCopy];
 
-  v11 = [[a1 alloc] initWithDayIndex:a3 tenthPercentileAsleepHeartRateStatistics:v9 tenthPercentileAwakeHeartRateStatistics:v10];
+  v11 = [[self alloc] initWithDayIndex:index tenthPercentileAsleepHeartRateStatistics:v9 tenthPercentileAwakeHeartRateStatistics:v10];
 
   return v11;
 }
 
-- (BOOL)getData:(id *)a3 error:(id *)a4
+- (BOOL)getData:(id *)data error:(id *)error
 {
   v16 = 0;
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v16];
   v8 = v16;
   v9 = v7;
-  *a3 = v7;
+  *data = v7;
   if (v7)
   {
     v10 = v8 == 0;
@@ -70,10 +70,10 @@
     v13 = v8;
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -86,29 +86,29 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dayIndex = self->_dayIndex;
-  v5 = a3;
-  [v5 encodeInteger:dayIndex forKey:@"DayIndex"];
-  [v5 encodeObject:self->_tenthPercentileAsleepHeartRateStatistics forKey:@"TenthPercentileAsleepHeartRateStatistics"];
-  [v5 encodeObject:self->_tenthPercentileAwakeHeartRateStatistics forKey:@"TenthPercentileAwakeHeartRateStatistics"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:dayIndex forKey:@"DayIndex"];
+  [coderCopy encodeObject:self->_tenthPercentileAsleepHeartRateStatistics forKey:@"TenthPercentileAsleepHeartRateStatistics"];
+  [coderCopy encodeObject:self->_tenthPercentileAwakeHeartRateStatistics forKey:@"TenthPercentileAwakeHeartRateStatistics"];
 }
 
-- (HKMCDailyHeartStatistics)initWithCoder:(id)a3
+- (HKMCDailyHeartStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKMCDailyHeartStatistics;
   v5 = [(HKMCDailyHeartStatistics *)&v11 init];
   if (v5)
   {
-    v5->_dayIndex = [v4 decodeIntegerForKey:@"DayIndex"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TenthPercentileAsleepHeartRateStatistics"];
+    v5->_dayIndex = [coderCopy decodeIntegerForKey:@"DayIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TenthPercentileAsleepHeartRateStatistics"];
     tenthPercentileAsleepHeartRateStatistics = v5->_tenthPercentileAsleepHeartRateStatistics;
     v5->_tenthPercentileAsleepHeartRateStatistics = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TenthPercentileAwakeHeartRateStatistics"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TenthPercentileAwakeHeartRateStatistics"];
     tenthPercentileAwakeHeartRateStatistics = v5->_tenthPercentileAwakeHeartRateStatistics;
     v5->_tenthPercentileAwakeHeartRateStatistics = v8;
   }
@@ -126,10 +126,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -139,20 +139,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(HKMCDailyHeartStatistics *)self dayIndex];
-      if (v6 == [(HKMCDailyHeartStatistics *)v5 dayIndex])
+      dayIndex = [(HKMCDailyHeartStatistics *)self dayIndex];
+      if (dayIndex == [(HKMCDailyHeartStatistics *)equalCopy dayIndex])
       {
-        v7 = [(HKMCDailyHeartStatistics *)self tenthPercentileAwakeHeartRateStatistics];
-        v8 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAwakeHeartRateStatistics];
-        if (v7 == v8)
+        tenthPercentileAwakeHeartRateStatistics = [(HKMCDailyHeartStatistics *)self tenthPercentileAwakeHeartRateStatistics];
+        tenthPercentileAwakeHeartRateStatistics2 = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAwakeHeartRateStatistics];
+        if (tenthPercentileAwakeHeartRateStatistics == tenthPercentileAwakeHeartRateStatistics2)
         {
           [(HKMCDailyHeartStatistics *)self tenthPercentileAsleepHeartRateStatistics:v21];
         }
 
         else
         {
-          v9 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAwakeHeartRateStatistics];
-          if (!v9)
+          tenthPercentileAwakeHeartRateStatistics3 = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAwakeHeartRateStatistics];
+          if (!tenthPercentileAwakeHeartRateStatistics3)
           {
             v12 = 0;
 LABEL_20:
@@ -160,10 +160,10 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v3 = v9;
-          v10 = [(HKMCDailyHeartStatistics *)self tenthPercentileAwakeHeartRateStatistics];
-          v11 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAwakeHeartRateStatistics];
-          if (![v10 isEqual:v11])
+          v3 = tenthPercentileAwakeHeartRateStatistics3;
+          tenthPercentileAwakeHeartRateStatistics4 = [(HKMCDailyHeartStatistics *)self tenthPercentileAwakeHeartRateStatistics];
+          tenthPercentileAwakeHeartRateStatistics5 = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAwakeHeartRateStatistics];
+          if (![tenthPercentileAwakeHeartRateStatistics4 isEqual:tenthPercentileAwakeHeartRateStatistics5])
           {
             v12 = 0;
 LABEL_19:
@@ -171,12 +171,12 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          [(HKMCDailyHeartStatistics *)self tenthPercentileAsleepHeartRateStatistics:v11];
+          [(HKMCDailyHeartStatistics *)self tenthPercentileAsleepHeartRateStatistics:tenthPercentileAwakeHeartRateStatistics5];
         }
         v13 = ;
-        v14 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAsleepHeartRateStatistics];
-        v15 = v14;
-        if (v13 == v14)
+        tenthPercentileAsleepHeartRateStatistics = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAsleepHeartRateStatistics];
+        v15 = tenthPercentileAsleepHeartRateStatistics;
+        if (v13 == tenthPercentileAsleepHeartRateStatistics)
         {
 
           v12 = 1;
@@ -184,13 +184,13 @@ LABEL_19:
 
         else
         {
-          v16 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAsleepHeartRateStatistics];
-          if (v16)
+          tenthPercentileAsleepHeartRateStatistics2 = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAsleepHeartRateStatistics];
+          if (tenthPercentileAsleepHeartRateStatistics2)
           {
-            v17 = v16;
-            v18 = [(HKMCDailyHeartStatistics *)self tenthPercentileAsleepHeartRateStatistics];
-            v19 = [(HKMCDailyHeartStatistics *)v5 tenthPercentileAsleepHeartRateStatistics];
-            v12 = [v18 isEqual:v19];
+            v17 = tenthPercentileAsleepHeartRateStatistics2;
+            tenthPercentileAsleepHeartRateStatistics3 = [(HKMCDailyHeartStatistics *)self tenthPercentileAsleepHeartRateStatistics];
+            tenthPercentileAsleepHeartRateStatistics4 = [(HKMCDailyHeartStatistics *)equalCopy tenthPercentileAsleepHeartRateStatistics];
+            v12 = [tenthPercentileAsleepHeartRateStatistics3 isEqual:tenthPercentileAsleepHeartRateStatistics4];
           }
 
           else
@@ -200,9 +200,9 @@ LABEL_19:
           }
         }
 
-        v11 = v22;
-        v10 = v24;
-        if (v7 == v8)
+        tenthPercentileAwakeHeartRateStatistics5 = v22;
+        tenthPercentileAwakeHeartRateStatistics4 = v24;
+        if (tenthPercentileAwakeHeartRateStatistics == tenthPercentileAwakeHeartRateStatistics2)
         {
           goto LABEL_20;
         }

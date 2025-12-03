@@ -14,7 +14,7 @@
 {
   v5 = objc_alloc(MEMORY[0x277CBEA80]);
   v6 = [v5 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v7 = [v6 dateByAddingUnit:16 value:a3 toDate:a1 options:0];
+  v7 = [v6 dateByAddingUnit:16 value:a3 toDate:self options:0];
 
   return v7;
 }
@@ -23,7 +23,7 @@
 {
   v2 = objc_alloc(MEMORY[0x277CBEA80]);
   v3 = [v2 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v4 = [v3 components:28 fromDate:a1];
+  v4 = [v3 components:28 fromDate:self];
 
   return v4;
 }
@@ -52,7 +52,7 @@
 
   v8 = v14;
   v13 = 0;
-  [v7 rangeOfUnit:16 startDate:&v13 interval:0 forDate:a1];
+  [v7 rangeOfUnit:16 startDate:&v13 interval:0 forDate:self];
   v9 = v13;
   v10 = [v7 components:16 fromDate:v8 toDate:v9 options:0];
   v11 = [v10 day];
@@ -63,7 +63,7 @@
 - (BOOL)crxu_isAfter:()CRXUExtensions
 {
   v4 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v6 = v5;
   [v4 timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -74,7 +74,7 @@
 - (BOOL)crxu_isBefore:()CRXUExtensions
 {
   v4 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v6 = v5;
   [v4 timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -84,8 +84,8 @@
 
 + (double)crxu_now
 {
-  v0 = [MEMORY[0x277CBEAA8] date];
-  [v0 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v2 = v1;
 
   return v2;

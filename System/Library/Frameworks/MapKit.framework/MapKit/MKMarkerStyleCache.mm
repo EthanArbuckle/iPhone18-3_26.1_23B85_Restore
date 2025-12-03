@@ -2,9 +2,9 @@
 + (id)sharedCache;
 - (id)_selectedStyleCache;
 - (id)_unselectedStyleCache;
-- (id)cachedStyleForConfiguration:(id)a3;
+- (id)cachedStyleForConfiguration:(id)configuration;
 - (void)_purge;
-- (void)cacheStyle:(id)a3 forConfiguration:(id)a4;
+- (void)cacheStyle:(id)style forConfiguration:(id)configuration;
 - (void)decrementLiveMarkerCount;
 @end
 
@@ -20,11 +20,11 @@
   }
 }
 
-- (void)cacheStyle:(id)a3 forConfiguration:(id)a4
+- (void)cacheStyle:(id)style forConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 selected])
+  configurationCopy = configuration;
+  styleCopy = style;
+  if ([configurationCopy selected])
   {
     [(MKMarkerStyleCache *)self _selectedStyleCache];
   }
@@ -34,13 +34,13 @@
     [(MKMarkerStyleCache *)self _unselectedStyleCache];
   }
   v8 = ;
-  [v8 setObject:v7 forKey:v6];
+  [v8 setObject:styleCopy forKey:configurationCopy];
 }
 
-- (id)cachedStyleForConfiguration:(id)a3
+- (id)cachedStyleForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 selected])
+  configurationCopy = configuration;
+  if ([configurationCopy selected])
   {
     [(MKMarkerStyleCache *)self _selectedStyleCache];
   }
@@ -50,7 +50,7 @@
     [(MKMarkerStyleCache *)self _unselectedStyleCache];
   }
   v5 = ;
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:configurationCopy];
 
   return v6;
 }

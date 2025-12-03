@@ -1,6 +1,6 @@
 @interface SBFAuthenticationRequest
-- (id)_initWithType:(unint64_t)a3 source:(int64_t)a4 passcode:(id)a5 skipSEKeepUserDataOperation:(BOOL)a6 verifyOnly:(BOOL)a7 handler:(id)a8;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithType:(unint64_t)type source:(int64_t)source passcode:(id)passcode skipSEKeepUserDataOperation:(BOOL)operation verifyOnly:(BOOL)only handler:(id)handler;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)publicDescription;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
@@ -16,37 +16,37 @@
   v6 = MEMORY[0x1E698E680];
   v7 = MEMORY[0x1BFB4D9B0](self->_handler);
   v8 = [v6 builderWithObject:v7];
-  v9 = [v8 build];
-  [v3 appendString:v9 withName:@"handler"];
+  build = [v8 build];
+  [v3 appendString:build withName:@"handler"];
 
   v10 = [v3 appendBool:self->_passcode != 0 withName:@"hasPasscode"];
-  v11 = [v3 build];
+  build2 = [v3 build];
 
-  return v11;
+  return build2;
 }
 
-- (id)_initWithType:(unint64_t)a3 source:(int64_t)a4 passcode:(id)a5 skipSEKeepUserDataOperation:(BOOL)a6 verifyOnly:(BOOL)a7 handler:(id)a8
+- (id)_initWithType:(unint64_t)type source:(int64_t)source passcode:(id)passcode skipSEKeepUserDataOperation:(BOOL)operation verifyOnly:(BOOL)only handler:(id)handler
 {
-  v14 = a5;
-  v15 = a8;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = SBFAuthenticationRequest;
   v16 = [(SBFAuthenticationRequest *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    v16->_source = a4;
-    v18 = [v14 copy];
+    v16->_type = type;
+    v16->_source = source;
+    v18 = [passcodeCopy copy];
     passcode = v17->_passcode;
     v17->_passcode = v18;
 
-    v20 = [v15 copy];
+    v20 = [handlerCopy copy];
     handler = v17->_handler;
     v17->_handler = v20;
 
-    v17->_skipSEKeepUserDataOperation = a6;
-    v17->_verifyOnly = a7;
+    v17->_skipSEKeepUserDataOperation = operation;
+    v17->_verifyOnly = only;
   }
 
   return v17;
@@ -54,10 +54,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFAuthenticationRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFAuthenticationRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -71,12 +71,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFAuthenticationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFAuthenticationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

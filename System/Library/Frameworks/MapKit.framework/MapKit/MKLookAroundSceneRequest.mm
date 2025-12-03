@@ -4,8 +4,8 @@
 - (CLLocationCoordinate2D)coordinate;
 - (MKLookAroundSceneRequest)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (MKLookAroundSceneRequest)initWithMapItem:(MKMapItem *)mapItem;
-- (void)_handleMapItems:(id)a3 requestType:(unint64_t)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)_performLookupRequestWithMapItem:(id)a3 orCoordinate:(CLLocationCoordinate2D)a4 completionHandler:(id)a5;
+- (void)_handleMapItems:(id)items requestType:(unint64_t)type error:(id)error completionHandler:(id)handler;
+- (void)_performLookupRequestWithMapItem:(id)item orCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 - (void)getSceneWithCompletionHandler:(void *)completionHandler;
@@ -22,52 +22,52 @@
   return result;
 }
 
-- (void)_handleMapItems:(id)a3 requestType:(unint64_t)a4 error:(id)a5 completionHandler:(id)a6
+- (void)_handleMapItems:(id)items requestType:(unint64_t)type error:(id)error completionHandler:(id)handler
 {
-  v17 = a3;
-  v10 = a5;
-  v11 = a6;
+  itemsCopy = items;
+  errorCopy = error;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_stateLock);
   cancelled = self->_cancelled;
   os_unfair_lock_unlock(&self->_stateLock);
-  if (v11 && !cancelled)
+  if (handlerCopy && !cancelled)
   {
-    if (v10)
+    if (errorCopy)
     {
-      v13 = [v10 _mapkit_error];
+      _mapkit_error = [errorCopy _mapkit_error];
     }
 
     else
     {
-      if ([v17 count])
+      if ([itemsCopy count])
       {
-        v14 = [v17 firstObject];
-        if ([v14 _hasLookAroundStorefront])
+        firstObject = [itemsCopy firstObject];
+        if ([firstObject _hasLookAroundStorefront])
         {
-          v15 = [[MKLookAroundScene alloc] initWithMapItem:v14];
-          v11[2](v11, v15, 0);
+          v15 = [[MKLookAroundScene alloc] initWithMapItem:firstObject];
+          handlerCopy[2](handlerCopy, v15, 0);
         }
 
-        else if (a4 == 1)
+        else if (type == 1)
         {
-          [v14 _coordinate];
-          [(MKLookAroundSceneRequest *)self _performLookupRequestWithMapItem:0 orCoordinate:v11 completionHandler:?];
+          [firstObject _coordinate];
+          [(MKLookAroundSceneRequest *)self _performLookupRequestWithMapItem:0 orCoordinate:handlerCopy completionHandler:?];
         }
 
         else
         {
-          v11[2](v11, 0, 0);
+          handlerCopy[2](handlerCopy, 0, 0);
         }
 
         goto LABEL_6;
       }
 
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v13 = [v16 initWithDomain:MKErrorDomain code:1 userInfo:0];
+      _mapkit_error = [v16 initWithDomain:MKErrorDomain code:1 userInfo:0];
     }
 
-    v14 = v13;
-    v11[2](v11, 0, v13);
+    firstObject = _mapkit_error;
+    handlerCopy[2](handlerCopy, 0, _mapkit_error);
 LABEL_6:
   }
 }
@@ -90,24 +90,24 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_performLookupRequestWithMapItem:(id)a3 orCoordinate:(CLLocationCoordinate2D)a4 completionHandler:(id)a5
+- (void)_performLookupRequestWithMapItem:(id)item orCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
-  v10 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  itemCopy = item;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v15 = __92__MKLookAroundSceneRequest__performLookupRequestWithMapItem_orCoordinate_completionHandler___block_invoke;
   v16 = &unk_1E76CDA98;
-  v17 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = itemCopy;
   v20 = latitude;
   v21 = longitude;
-  v19 = v10;
+  v19 = handlerCopy;
   v11 = MEMORY[0x1E696AF00];
-  v12 = v10;
-  v13 = v9;
+  v12 = handlerCopy;
+  v13 = itemCopy;
   if ([v11 isMainThread])
   {
     v15(block);
@@ -251,8 +251,8 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v10 = [(MKMapItem *)mapItem _identifier];
-  if (v10)
+  _identifier = [(MKMapItem *)mapItem _identifier];
+  if (_identifier)
   {
   }
 
@@ -299,9 +299,9 @@ LABEL_10:
     v18 = self->_mapItem;
     if (v18)
     {
-      v19 = [(MKMapItem *)v18 _hasLookAroundStorefront];
+      _hasLookAroundStorefront = [(MKMapItem *)v18 _hasLookAroundStorefront];
       v20 = self->_mapItem;
-      if (v19)
+      if (_hasLookAroundStorefront)
       {
         v21 = v20;
         if (v21)
@@ -317,8 +317,8 @@ LABEL_30:
 
       else
       {
-        v25 = [(MKMapItem *)v20 _identifier];
-        if (v25)
+        _identifier2 = [(MKMapItem *)v20 _identifier];
+        if (_identifier2)
         {
           v21 = self->_mapItem;
         }

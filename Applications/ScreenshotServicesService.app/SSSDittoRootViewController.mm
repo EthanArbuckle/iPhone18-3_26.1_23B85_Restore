@@ -1,42 +1,42 @@
 @interface SSSDittoRootViewController
-- (SSSDittoRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SSSDittoRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SSSDittoRootViewControllerDelegate)delegate;
 - (SSSDittoViewController)hostingViewController;
 - (SSSViewControllerManager)viewControllerManager;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_createAndParentContainerViewControllerIfPossible;
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_postNotificationForDidChangeToState:(unint64_t)a3;
-- (void)_postNotificationForWillChangeToState:(unint64_t)a3;
-- (void)_postNotificationName:(id)a3;
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)_postNotificationForDidChangeToState:(unint64_t)state;
+- (void)_postNotificationForWillChangeToState:(unint64_t)state;
+- (void)_postNotificationName:(id)name;
 - (void)_updateForCurrentSize;
-- (void)_updateForSize:(CGSize)a3;
-- (void)containerViewController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)containerViewController:(id)a3 isDraggingVISheetDidChange:(BOOL)a4;
-- (void)containerViewController:(id)a3 willBeginDismissAnimationWithSettings:(id)a4;
-- (void)containerViewController:(id)a3 willShowSharingUIWithBlock:(id)a4;
-- (void)containerViewController:(id)a3 willShowTestFlightUIWithBlock:(id)a4;
-- (void)containerViewController:(id)a3 willTransitionToState:(unint64_t)a4 animated:(BOOL)a5 changeBlock:(id)a6;
-- (void)containerViewControllerDidEndDismissAnimation:(id)a3;
-- (void)containerViewControllerEndedDragAndDrop:(id)a3 shouldDismiss:(BOOL)a4;
-- (void)containerViewControllerEndedShowingSharingUI:(id)a3 inStateTransition:(BOOL)a4;
-- (void)dittoDismissTimerFired:(id)a3;
-- (void)pipifyWithCompletion:(id)a3;
-- (void)screenshotReceived:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_updateForSize:(CGSize)size;
+- (void)containerViewController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)containerViewController:(id)controller isDraggingVISheetDidChange:(BOOL)change;
+- (void)containerViewController:(id)controller willBeginDismissAnimationWithSettings:(id)settings;
+- (void)containerViewController:(id)controller willShowSharingUIWithBlock:(id)block;
+- (void)containerViewController:(id)controller willShowTestFlightUIWithBlock:(id)block;
+- (void)containerViewController:(id)controller willTransitionToState:(unint64_t)state animated:(BOOL)animated changeBlock:(id)block;
+- (void)containerViewControllerDidEndDismissAnimation:(id)animation;
+- (void)containerViewControllerEndedDragAndDrop:(id)drop shouldDismiss:(BOOL)dismiss;
+- (void)containerViewControllerEndedShowingSharingUI:(id)i inStateTransition:(BOOL)transition;
+- (void)dittoDismissTimerFired:(id)fired;
+- (void)pipifyWithCompletion:(id)completion;
+- (void)screenshotReceived:(id)received completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SSSDittoRootViewController
 
-- (SSSDittoRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSSDittoRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SSSDittoRootViewController;
-  v4 = [(SSSDittoRootViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SSSDittoRootViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = objc_alloc_init(SSSDittoDismissTimer);
   dismissTimer = v4->_dismissTimer;
   v4->_dismissTimer = v5;
@@ -45,14 +45,14 @@
   return v4;
 }
 
-- (void)screenshotReceived:(id)a3 completion:(id)a4
+- (void)screenshotReceived:(id)received completion:(id)completion
 {
   dismissTimer = self->_dismissTimer;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  receivedCopy = received;
   [(SSSDittoDismissTimer *)dismissTimer newScreenshotReceived];
   [(SSSDittoRootViewController *)self _createAndParentContainerViewControllerIfPossible];
-  [(SSSContainerViewController *)self->_containerViewController addScreenshot:v8 completion:v7];
+  [(SSSContainerViewController *)self->_containerViewController addScreenshot:receivedCopy completion:completionCopy];
 }
 
 - (void)_createAndParentContainerViewControllerIfPossible
@@ -69,14 +69,14 @@
     containerViewController = self->_containerViewController;
   }
 
-  v6 = [(SSSContainerViewController *)containerViewController parentViewController];
+  parentViewController = [(SSSContainerViewController *)containerViewController parentViewController];
 
-  if (v6 != self)
+  if (parentViewController != self)
   {
     [(SSSDittoRootViewController *)self addChildViewController:self->_containerViewController];
-    v7 = [(SSSDittoRootViewController *)self view];
-    v8 = [(SSSContainerViewController *)self->_containerViewController view];
-    [v7 addSubview:v8];
+    view = [(SSSDittoRootViewController *)self view];
+    view2 = [(SSSContainerViewController *)self->_containerViewController view];
+    [view addSubview:view2];
 
     [(SSSContainerViewController *)self->_containerViewController didMoveToParentViewController:self];
     dismissTimer = self->_dismissTimer;
@@ -85,10 +85,10 @@
   }
 }
 
-- (void)containerViewController:(id)a3 willTransitionToState:(unint64_t)a4 animated:(BOOL)a5 changeBlock:(id)a6
+- (void)containerViewController:(id)controller willTransitionToState:(unint64_t)state animated:(BOOL)animated changeBlock:(id)block
 {
-  v9 = a6;
-  if (a4 == 1)
+  blockCopy = block;
+  if (state == 1)
   {
     [(SSSDittoDismissTimer *)self->_dismissTimer setViewState:1];
   }
@@ -97,95 +97,95 @@
   v14 = 3221225472;
   v15 = sub_10001FF64;
   v16 = &unk_1000BA830;
-  v18 = v9;
-  v19 = a4;
-  v20 = a5;
-  v17 = self;
-  v10 = v9;
+  v18 = blockCopy;
+  stateCopy = state;
+  animatedCopy = animated;
+  selfCopy = self;
+  v10 = blockCopy;
   v11 = objc_retainBlock(&v13);
-  self->_containerViewControllerTargetState = a4;
+  self->_containerViewControllerTargetState = state;
   v12 = [(SSSDittoRootViewController *)self delegate:v13];
-  [v12 dittoRootViewController:self willTransitionToState:a4 changeBlock:v11];
+  [v12 dittoRootViewController:self willTransitionToState:state changeBlock:v11];
 
-  [(SSSDittoRootViewController *)self _postNotificationForWillChangeToState:a4];
+  [(SSSDittoRootViewController *)self _postNotificationForWillChangeToState:state];
 }
 
-- (void)containerViewController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)containerViewController:(id)controller didTransitionToState:(unint64_t)state
 {
-  if (!a4)
+  if (!state)
   {
     [(SSSDittoDismissTimer *)self->_dismissTimer setViewState:0];
   }
 
-  v6 = [(SSSDittoRootViewController *)self delegate];
-  [v6 dittoRootViewController:self didTransitionToState:a4];
+  delegate = [(SSSDittoRootViewController *)self delegate];
+  [delegate dittoRootViewController:self didTransitionToState:state];
 
-  [(SSSDittoRootViewController *)self _postNotificationForDidChangeToState:a4];
+  [(SSSDittoRootViewController *)self _postNotificationForDidChangeToState:state];
 }
 
-- (void)containerViewControllerEndedDragAndDrop:(id)a3 shouldDismiss:(BOOL)a4
+- (void)containerViewControllerEndedDragAndDrop:(id)drop shouldDismiss:(BOOL)dismiss
 {
-  v4 = a4;
+  dismissCopy = dismiss;
   self->_isInDragAndDrop = 0;
   [(SSSDittoDismissTimer *)self->_dismissTimer setInDragAndDrop:0];
-  if (v4)
+  if (dismissCopy)
   {
 
     [(SSSDittoRootViewController *)self _dismissAnimated:0];
   }
 }
 
-- (void)containerViewController:(id)a3 willShowTestFlightUIWithBlock:(id)a4
+- (void)containerViewController:(id)controller willShowTestFlightUIWithBlock:(id)block
 {
   dismissTimer = self->_dismissTimer;
-  v6 = a4;
+  blockCopy = block;
   [(SSSDittoDismissTimer *)dismissTimer setShowingSharingUI:1];
-  v7 = [(SSSDittoRootViewController *)self delegate];
-  [v7 dittoRootViewController:self willShowTestFlightUIWithBlock:v6];
+  delegate = [(SSSDittoRootViewController *)self delegate];
+  [delegate dittoRootViewController:self willShowTestFlightUIWithBlock:blockCopy];
 }
 
-- (void)containerViewController:(id)a3 isDraggingVISheetDidChange:(BOOL)a4
+- (void)containerViewController:(id)controller isDraggingVISheetDidChange:(BOOL)change
 {
-  [(SSSDittoRootViewController *)self setShouldInhibitReachability:a4];
-  v5 = [(SSSDittoRootViewController *)self delegate];
+  [(SSSDittoRootViewController *)self setShouldInhibitReachability:change];
+  delegate = [(SSSDittoRootViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SSSDittoRootViewController *)self delegate];
-    [v7 dittoRootViewController:self shouldInhibitReachabilityDidChange:{-[SSSDittoRootViewController shouldInhibitReachability](self, "shouldInhibitReachability")}];
+    delegate2 = [(SSSDittoRootViewController *)self delegate];
+    [delegate2 dittoRootViewController:self shouldInhibitReachabilityDidChange:{-[SSSDittoRootViewController shouldInhibitReachability](self, "shouldInhibitReachability")}];
   }
 }
 
-- (void)containerViewController:(id)a3 willShowSharingUIWithBlock:(id)a4
+- (void)containerViewController:(id)controller willShowSharingUIWithBlock:(id)block
 {
   dismissTimer = self->_dismissTimer;
-  v6 = a4;
+  blockCopy = block;
   [(SSSDittoDismissTimer *)dismissTimer setShowingSharingUI:1];
-  v7 = [(SSSDittoRootViewController *)self delegate];
-  [v7 dittoRootViewController:self willShowShowSharingUIWithBlock:v6];
+  delegate = [(SSSDittoRootViewController *)self delegate];
+  [delegate dittoRootViewController:self willShowShowSharingUIWithBlock:blockCopy];
 }
 
-- (void)containerViewControllerEndedShowingSharingUI:(id)a3 inStateTransition:(BOOL)a4
+- (void)containerViewControllerEndedShowingSharingUI:(id)i inStateTransition:(BOOL)transition
 {
-  v4 = a4;
+  transitionCopy = transition;
   [(SSSDittoDismissTimer *)self->_dismissTimer setShowingSharingUI:0];
-  v6 = [(SSSDittoRootViewController *)self delegate];
-  [v6 dittoRootViewControllerFinishedShowingSharingUI:self inStateTransition:v4];
+  delegate = [(SSSDittoRootViewController *)self delegate];
+  [delegate dittoRootViewControllerFinishedShowingSharingUI:self inStateTransition:transitionCopy];
 }
 
-- (void)_postNotificationName:(id)a3
+- (void)_postNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSDistributedNotificationCenter defaultCenter];
-  [v4 postNotificationName:v3 object:0];
+  [v4 postNotificationName:nameCopy object:0];
 }
 
-- (void)_postNotificationForWillChangeToState:(unint64_t)a3
+- (void)_postNotificationForWillChangeToState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -201,11 +201,11 @@
   [(SSSDittoRootViewController *)self _postNotificationName:*v3];
 }
 
-- (void)_postNotificationForDidChangeToState:(unint64_t)a3
+- (void)_postNotificationForDidChangeToState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -223,28 +223,28 @@
 
 - (void)_updateForCurrentSize
 {
-  v5 = [(SSSDittoRootViewController *)self view];
-  [v5 bounds];
+  view = [(SSSDittoRootViewController *)self view];
+  [view bounds];
   [(SSSDittoRootViewController *)self _updateForSize:v3, v4];
 }
 
-- (void)_updateForSize:(CGSize)a3
+- (void)_updateForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   y = CGRectZero.origin.y;
-  v6 = [(SSSContainerViewController *)self->_containerViewController view];
-  [v6 setFrame:{CGRectZero.origin.x, y, width, height}];
+  view = [(SSSContainerViewController *)self->_containerViewController view];
+  [view setFrame:{CGRectZero.origin.x, y, width, height}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SSSDittoRootViewController;
-  v7 = a4;
-  [(SSSDittoRootViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SSSDittoRootViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000205D8;
@@ -252,35 +252,35 @@
   v8[4] = self;
   *&v8[5] = width;
   *&v8[6] = height;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SSSDittoRootViewController *)self parentViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  parentViewController = [(SSSDittoRootViewController *)self parentViewController];
+  supportedInterfaceOrientations = [parentViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
-- (void)pipifyWithCompletion:(id)a3
+- (void)pipifyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   containerViewController = self->_containerViewController;
   if (containerViewController)
   {
-    v6 = [(SSSContainerViewController *)containerViewController screenshotsViewController];
-    [v6 setDismissalType:10];
+    screenshotsViewController = [(SSSContainerViewController *)containerViewController screenshotsViewController];
+    [screenshotsViewController setDismissalType:10];
 
     if (self->_containerViewControllerTargetState && [(SSSContainerViewController *)self->_containerViewController state])
     {
-      v7 = [(SSSContainerViewController *)self->_containerViewController didInvokeVICard];
+      didInvokeVICard = [(SSSContainerViewController *)self->_containerViewController didInvokeVICard];
       v8 = self->_containerViewController;
-      if (v7)
+      if (didInvokeVICard)
       {
-        v9 = [(SSSContainerViewController *)v8 deleteReason];
+        deleteReason = [(SSSContainerViewController *)v8 deleteReason];
         v10 = self->_containerViewController;
-        if (v9 == 2)
+        if (deleteReason == 2)
         {
           [(SSSContainerViewController *)v10 dismissScreenshotsAnimated:1 completion:0];
         }
@@ -295,7 +295,7 @@
       else
       {
         [(SSSContainerViewController *)v8 commitInflightEditsIfNecessary];
-        [(SSSContainerViewController *)self->_containerViewController setState:0 animated:1 completion:v4];
+        [(SSSContainerViewController *)self->_containerViewController setState:0 animated:1 completion:completionCopy];
       }
 
       goto LABEL_15;
@@ -318,9 +318,9 @@
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_15:
@@ -331,37 +331,37 @@ LABEL_15:
   v5.receiver = self;
   v5.super_class = SSSDittoRootViewController;
   [(SSSDittoRootViewController *)&v5 viewDidLoad];
-  v3 = [(SSSDittoRootViewController *)self view];
+  view = [(SSSDittoRootViewController *)self view];
   v4 = +[UIColor whiteColor];
-  [v3 setTintColor:v4];
+  [view setTintColor:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SSSDittoRootViewController;
-  [(SSSDittoRootViewController *)&v4 viewDidAppear:a3];
+  [(SSSDittoRootViewController *)&v4 viewDidAppear:appear];
   [(SSSDittoRootViewController *)self _createAndParentContainerViewControllerIfPossible];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SSSDittoRootViewController;
   [(SSSDittoRootViewController *)&v5 viewDidDisappear:?];
-  [(SSSContainerViewController *)self->_containerViewController viewDidDisappear:v3];
+  [(SSSContainerViewController *)self->_containerViewController viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SSSDittoRootViewController;
-  [(SSSDittoRootViewController *)&v4 viewWillDisappear:a3];
+  [(SSSDittoRootViewController *)&v4 viewWillDisappear:disappear];
   [(SSSDittoRootViewController *)self resignFirstResponder];
 }
 
-- (void)dittoDismissTimerFired:(id)a3
+- (void)dittoDismissTimerFired:(id)fired
 {
   v4 = +[SSStatisticsManager sharedStatisticsManager];
   [v4 pipSlidOffscreenDueToTimeout];
@@ -369,81 +369,81 @@ LABEL_15:
   [(SSSDittoRootViewController *)self _dismissAnimated:1];
 }
 
-- (void)containerViewController:(id)a3 willBeginDismissAnimationWithSettings:(id)a4
+- (void)containerViewController:(id)controller willBeginDismissAnimationWithSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  settingsCopy = settings;
   v8 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     containerViewController = self->_containerViewController;
     v13 = 134218240;
-    v14 = v6;
+    v14 = controllerCopy;
     v15 = 2048;
     v16 = containerViewController;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "container view controller: %p, will being dismiss animation, current container vc: %p", &v13, 0x16u);
   }
 
   [(SSSDittoDismissTimer *)self->_dismissTimer setPerformingDismissAnimation:1];
-  v10 = [(SSSDittoRootViewController *)self delegate];
-  [v7 duration];
+  delegate = [(SSSDittoRootViewController *)self delegate];
+  [settingsCopy duration];
   v12 = v11;
 
-  [v10 dittoRootViewController:self wantsBackground:0 duration:v12];
+  [delegate dittoRootViewController:self wantsBackground:0 duration:v12];
 }
 
-- (void)containerViewControllerDidEndDismissAnimation:(id)a3
+- (void)containerViewControllerDidEndDismissAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     containerViewController = self->_containerViewController;
     v12 = 134218240;
-    v13 = v4;
+    v13 = animationCopy;
     v14 = 2048;
     v15 = containerViewController;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "container view controller: %p, did end dismiss animation, current container vc: %p", &v12, 0x16u);
   }
 
   [(SSSDittoDismissTimer *)self->_dismissTimer setPerformingDismissAnimation:0];
-  [(SSSContainerViewController *)v4 willMoveToParentViewController:0];
-  v7 = [(SSSContainerViewController *)v4 view];
-  [v7 removeFromSuperview];
+  [(SSSContainerViewController *)animationCopy willMoveToParentViewController:0];
+  view = [(SSSContainerViewController *)animationCopy view];
+  [view removeFromSuperview];
 
-  [(SSSContainerViewController *)v4 setDelegate:0];
-  [(SSSContainerViewController *)v4 removeFromParentViewController];
+  [(SSSContainerViewController *)animationCopy setDelegate:0];
+  [(SSSContainerViewController *)animationCopy removeFromParentViewController];
   v8 = self->_containerViewController;
-  if (v8 == v4)
+  if (v8 == animationCopy)
   {
     self->_containerViewController = 0;
 
     [(SSSDittoDismissTimer *)self->_dismissTimer setUserInterfaceHidden:1];
   }
 
-  v9 = [(SSSDittoRootViewController *)self delegate];
+  delegate = [(SSSDittoRootViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SSSDittoRootViewController *)self delegate];
-    [v11 dittoRootViewControllerDidDismiss:self];
+    delegate2 = [(SSSDittoRootViewController *)self delegate];
+    [delegate2 dittoRootViewControllerDidDismiss:self];
   }
 }
 
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = os_log_create("com.apple.screenshotservices", "ViewControllerManager");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4;
+    v8[1] = animatedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "dismiss animated: %{BOOL}d", v8, 8u);
   }
 
-  [(SSSContainerViewController *)self->_containerViewController dismissScreenshotsAnimated:v4 completion:v6];
+  [(SSSContainerViewController *)self->_containerViewController dismissScreenshotsAnimated:animatedCopy completion:completionCopy];
 }
 
 - (SSSDittoRootViewControllerDelegate)delegate

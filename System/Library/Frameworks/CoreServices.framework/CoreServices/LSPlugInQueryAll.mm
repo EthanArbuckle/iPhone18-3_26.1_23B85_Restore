@@ -1,13 +1,13 @@
 @interface LSPlugInQueryAll
-- (id)resolveExpensiveQueryRemotelyUsingResolver:(id)a3 error:(id *)a4;
+- (id)resolveExpensiveQueryRemotelyUsingResolver:(id)resolver error:(id *)error;
 @end
 
 @implementation LSPlugInQueryAll
 
-- (id)resolveExpensiveQueryRemotelyUsingResolver:(id)a3 error:(id *)a4
+- (id)resolveExpensiveQueryRemotelyUsingResolver:(id)resolver error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v52 = a3;
+  resolverCopy = resolver;
   v4 = 0;
   v5 = 0;
   v6 = 0;
@@ -26,23 +26,23 @@
     }
 
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [objc_alloc((p_vtable + 257)) _init];
-    v11 = [v9 setWithObject:v10];
+    _init = [objc_alloc((p_vtable + 257)) _init];
+    v11 = [v9 setWithObject:_init];
     v55 = 0;
-    v12 = [v52 _resolveQueries:v11 XPCConnection:0 error:&v55];
+    v12 = [resolverCopy _resolveQueries:v11 XPCConnection:0 error:&v55];
     v5 = v55;
 
-    v13 = [v12 allValues];
-    v14 = [v13 firstObject];
-    v15 = [v14 firstObject];
+    allValues = [v12 allValues];
+    firstObject = [allValues firstObject];
+    v14FirstObject = [firstObject firstObject];
 
-    v16 = v15;
-    v17 = [v15 pluginUnits];
-    v18 = [v15 dbUUID];
-    v53 = v18;
-    if (v17)
+    v16 = v14FirstObject;
+    pluginUnits = [v14FirstObject pluginUnits];
+    dbUUID = [v14FirstObject dbUUID];
+    v53 = dbUUID;
+    if (pluginUnits)
     {
-      v19 = v18 == 0;
+      v19 = dbUUID == 0;
     }
 
     else
@@ -52,24 +52,24 @@
 
     if (!v19)
     {
-      v48 = v15;
+      v48 = v14FirstObject;
       v49 = v12;
       v50 = v6;
       v51 = v4;
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if ([v17 count])
+      if ([pluginUnits count])
       {
         v21 = 0;
         v22 = 50;
         while (1)
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = [v17 count];
+          v24 = [pluginUnits count];
           v25 = (v24 - v21) >= 0x32 ? 50 : v24 - v21;
-          v26 = [v17 subarrayWithRange:{v21, v25}];
+          v26 = [pluginUnits subarrayWithRange:{v21, v25}];
           v54 = 0;
           v27 = MEMORY[0x1E695DFD8];
-          v28 = v52;
+          v28 = resolverCopy;
           v29 = v26;
           v30 = v53;
           v31 = [[LSPlugInQueryWithUnits alloc] initWithPlugInUnits:v29 forDatabaseWithUUID:v30];
@@ -79,13 +79,13 @@
 
           if (v33)
           {
-            v34 = [v33 allValues];
-            v35 = [v34 firstObject];
-            v36 = v35;
+            allValues2 = [v33 allValues];
+            firstObject2 = [allValues2 firstObject];
+            v36 = firstObject2;
             v37 = MEMORY[0x1E695E0F0];
-            if (v35)
+            if (firstObject2)
             {
-              v37 = v35;
+              v37 = firstObject2;
             }
 
             v38 = v37;
@@ -106,7 +106,7 @@
 
           objc_autoreleasePoolPop(v23);
           v21 = v22;
-          v40 = [v17 count] > v22;
+          v40 = [pluginUnits count] > v22;
           v22 += 50;
           v5 = v39;
           if (!v40)
@@ -145,8 +145,8 @@ LABEL_24:
 
     else
     {
-      v42 = [v5 domain];
-      if ([v42 isEqual:@"LSApplicationWorkspaceErrorDomain"])
+      domain = [v5 domain];
+      if ([domain isEqual:@"LSApplicationWorkspaceErrorDomain"])
       {
         v41 = [v5 code] != 114;
       }
@@ -174,10 +174,10 @@ LABEL_24:
       [LSPlugInQueryAll resolveExpensiveQueryRemotelyUsingResolver:v5 error:v43];
     }
 
-    if (a4)
+    if (error)
     {
       v44 = v5;
-      *a4 = v5;
+      *error = v5;
     }
   }
 

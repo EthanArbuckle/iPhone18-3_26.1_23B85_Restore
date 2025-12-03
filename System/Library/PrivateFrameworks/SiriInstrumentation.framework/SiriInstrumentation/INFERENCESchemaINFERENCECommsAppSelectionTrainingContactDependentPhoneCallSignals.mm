@@ -1,38 +1,38 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppContactAffinityScoreForPhoneCallReceived:(BOOL)a3;
-- (void)setHasAppContactAffinityScoreForPhoneCallUsingSiri:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall10Min:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall1Day:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall1Hr:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall28Day:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall2Min:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall6Hr:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall7Day:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCall:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCallHaptic:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCallInf:(BOOL)a3;
-- (void)setHasAppContactFreqForPhoneCallUsingSiri:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppContactAffinityScoreForPhoneCallReceived:(BOOL)received;
+- (void)setHasAppContactAffinityScoreForPhoneCallUsingSiri:(BOOL)siri;
+- (void)setHasAppContactFreqForPhoneCall10Min:(BOOL)min;
+- (void)setHasAppContactFreqForPhoneCall1Day:(BOOL)day;
+- (void)setHasAppContactFreqForPhoneCall1Hr:(BOOL)hr;
+- (void)setHasAppContactFreqForPhoneCall28Day:(BOOL)day;
+- (void)setHasAppContactFreqForPhoneCall2Min:(BOOL)min;
+- (void)setHasAppContactFreqForPhoneCall6Hr:(BOOL)hr;
+- (void)setHasAppContactFreqForPhoneCall7Day:(BOOL)day;
+- (void)setHasAppContactFreqForPhoneCall:(BOOL)call;
+- (void)setHasAppContactFreqForPhoneCallHaptic:(BOOL)haptic;
+- (void)setHasAppContactFreqForPhoneCallInf:(BOOL)inf;
+- (void)setHasAppContactFreqForPhoneCallUsingSiri:(BOOL)siri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCall"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)v5 setAppContactAffinityScoreForPhoneCall:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCallUsingSiri"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCallUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)v5 setAppContactAffinityScoreForPhoneCallUsingSiri:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCallReceived"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appContactAffinityScoreForPhoneCallReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,28 +56,28 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)v5 setAppContactAffinityScoreForPhoneCallReceived:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall2Min"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall2Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals setAppContactFreqForPhoneCall2Min:](v5, "setAppContactFreqForPhoneCall2Min:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall10Min"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall10Min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals setAppContactFreqForPhoneCall10Min:](v5, "setAppContactFreqForPhoneCall10Min:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall1Hr"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall1Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals setAppContactFreqForPhoneCall1Hr:](v5, "setAppContactFreqForPhoneCall1Hr:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall6Hr"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall6Hr"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
     }
 
     v29 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall1Day"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall1Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
 
     v23 = v13;
     v28 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall7Day"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall7Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
     }
 
     v27 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall28Day"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall28Day"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
     }
 
     v26 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCallInf"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCallInf"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
 
     v24 = v12;
     v25 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCall"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,14 +127,14 @@
     }
 
     v18 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCallUsingSiri"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCallUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals setAppContactFreqForPhoneCallUsingSiri:](v5, "setAppContactFreqForPhoneCallUsingSiri:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"appContactFreqForPhoneCallHaptic"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"appContactFreqForPhoneCallHaptic"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,30 +147,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -183,14 +183,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self appContactAffinityScoreForPhoneCall];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"appContactAffinityScoreForPhoneCall"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appContactAffinityScoreForPhoneCall"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -213,7 +213,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self appContactAffinityScoreForPhoneCallReceived];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"appContactAffinityScoreForPhoneCallReceived"];
+  [dictionary setObject:v10 forKeyedSubscript:@"appContactAffinityScoreForPhoneCallReceived"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -231,7 +231,7 @@ LABEL_21:
   v11 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals *)self appContactAffinityScoreForPhoneCallUsingSiri];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"appContactAffinityScoreForPhoneCallUsingSiri"];
+  [dictionary setObject:v12 forKeyedSubscript:@"appContactAffinityScoreForPhoneCallUsingSiri"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -247,7 +247,7 @@ LABEL_5:
 
 LABEL_22:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall](self, "appContactFreqForPhoneCall")}];
-  [v3 setObject:v13 forKeyedSubscript:@"appContactFreqForPhoneCall"];
+  [dictionary setObject:v13 forKeyedSubscript:@"appContactFreqForPhoneCall"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -263,7 +263,7 @@ LABEL_6:
 
 LABEL_23:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall10Min](self, "appContactFreqForPhoneCall10Min")}];
-  [v3 setObject:v14 forKeyedSubscript:@"appContactFreqForPhoneCall10Min"];
+  [dictionary setObject:v14 forKeyedSubscript:@"appContactFreqForPhoneCall10Min"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -279,7 +279,7 @@ LABEL_7:
 
 LABEL_24:
   v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall1Day](self, "appContactFreqForPhoneCall1Day")}];
-  [v3 setObject:v15 forKeyedSubscript:@"appContactFreqForPhoneCall1Day"];
+  [dictionary setObject:v15 forKeyedSubscript:@"appContactFreqForPhoneCall1Day"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -295,7 +295,7 @@ LABEL_8:
 
 LABEL_25:
   v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall1Hr](self, "appContactFreqForPhoneCall1Hr")}];
-  [v3 setObject:v16 forKeyedSubscript:@"appContactFreqForPhoneCall1Hr"];
+  [dictionary setObject:v16 forKeyedSubscript:@"appContactFreqForPhoneCall1Hr"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -311,7 +311,7 @@ LABEL_9:
 
 LABEL_26:
   v17 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall28Day](self, "appContactFreqForPhoneCall28Day")}];
-  [v3 setObject:v17 forKeyedSubscript:@"appContactFreqForPhoneCall28Day"];
+  [dictionary setObject:v17 forKeyedSubscript:@"appContactFreqForPhoneCall28Day"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -327,7 +327,7 @@ LABEL_10:
 
 LABEL_27:
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall2Min](self, "appContactFreqForPhoneCall2Min")}];
-  [v3 setObject:v18 forKeyedSubscript:@"appContactFreqForPhoneCall2Min"];
+  [dictionary setObject:v18 forKeyedSubscript:@"appContactFreqForPhoneCall2Min"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -343,7 +343,7 @@ LABEL_11:
 
 LABEL_28:
   v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall6Hr](self, "appContactFreqForPhoneCall6Hr")}];
-  [v3 setObject:v19 forKeyedSubscript:@"appContactFreqForPhoneCall6Hr"];
+  [dictionary setObject:v19 forKeyedSubscript:@"appContactFreqForPhoneCall6Hr"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -359,7 +359,7 @@ LABEL_12:
 
 LABEL_29:
   v20 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCall7Day](self, "appContactFreqForPhoneCall7Day")}];
-  [v3 setObject:v20 forKeyedSubscript:@"appContactFreqForPhoneCall7Day"];
+  [dictionary setObject:v20 forKeyedSubscript:@"appContactFreqForPhoneCall7Day"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -375,7 +375,7 @@ LABEL_13:
 
 LABEL_30:
   v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCallHaptic](self, "appContactFreqForPhoneCallHaptic")}];
-  [v3 setObject:v21 forKeyedSubscript:@"appContactFreqForPhoneCallHaptic"];
+  [dictionary setObject:v21 forKeyedSubscript:@"appContactFreqForPhoneCallHaptic"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -391,19 +391,19 @@ LABEL_14:
 
 LABEL_31:
   v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCallInf](self, "appContactFreqForPhoneCallInf")}];
-  [v3 setObject:v22 forKeyedSubscript:@"appContactFreqForPhoneCallInf"];
+  [dictionary setObject:v22 forKeyedSubscript:@"appContactFreqForPhoneCallInf"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentPhoneCallSignals appContactFreqForPhoneCallUsingSiri](self, "appContactFreqForPhoneCallUsingSiri")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appContactFreqForPhoneCallUsingSiri"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appContactFreqForPhoneCallUsingSiri"];
   }
 
 LABEL_16:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -675,16 +675,16 @@ LABEL_39:
   return v10 ^ v5 ^ v15 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_58;
@@ -693,14 +693,14 @@ LABEL_39:
   if (*&has)
   {
     appContactAffinityScoreForPhoneCall = self->_appContactAffinityScoreForPhoneCall;
-    [v4 appContactAffinityScoreForPhoneCall];
+    [equalCopy appContactAffinityScoreForPhoneCall];
     if (appContactAffinityScoreForPhoneCall != v8)
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -712,14 +712,14 @@ LABEL_39:
   if (v9)
   {
     appContactAffinityScoreForPhoneCallUsingSiri = self->_appContactAffinityScoreForPhoneCallUsingSiri;
-    [v4 appContactAffinityScoreForPhoneCallUsingSiri];
+    [equalCopy appContactAffinityScoreForPhoneCallUsingSiri];
     if (appContactAffinityScoreForPhoneCallUsingSiri != v11)
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -731,14 +731,14 @@ LABEL_39:
   if (v12)
   {
     appContactAffinityScoreForPhoneCallReceived = self->_appContactAffinityScoreForPhoneCallReceived;
-    [v4 appContactAffinityScoreForPhoneCallReceived];
+    [equalCopy appContactAffinityScoreForPhoneCallReceived];
     if (appContactAffinityScoreForPhoneCallReceived != v14)
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v15 = (*&has >> 3) & 1;
@@ -750,13 +750,13 @@ LABEL_39:
   if (v15)
   {
     appContactFreqForPhoneCall2Min = self->_appContactFreqForPhoneCall2Min;
-    if (appContactFreqForPhoneCall2Min != [v4 appContactFreqForPhoneCall2Min])
+    if (appContactFreqForPhoneCall2Min != [equalCopy appContactFreqForPhoneCall2Min])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v17 = (*&has >> 4) & 1;
@@ -768,13 +768,13 @@ LABEL_39:
   if (v17)
   {
     appContactFreqForPhoneCall10Min = self->_appContactFreqForPhoneCall10Min;
-    if (appContactFreqForPhoneCall10Min != [v4 appContactFreqForPhoneCall10Min])
+    if (appContactFreqForPhoneCall10Min != [equalCopy appContactFreqForPhoneCall10Min])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v19 = (*&has >> 5) & 1;
@@ -786,13 +786,13 @@ LABEL_39:
   if (v19)
   {
     appContactFreqForPhoneCall1Hr = self->_appContactFreqForPhoneCall1Hr;
-    if (appContactFreqForPhoneCall1Hr != [v4 appContactFreqForPhoneCall1Hr])
+    if (appContactFreqForPhoneCall1Hr != [equalCopy appContactFreqForPhoneCall1Hr])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v21 = (*&has >> 6) & 1;
@@ -804,13 +804,13 @@ LABEL_39:
   if (v21)
   {
     appContactFreqForPhoneCall6Hr = self->_appContactFreqForPhoneCall6Hr;
-    if (appContactFreqForPhoneCall6Hr != [v4 appContactFreqForPhoneCall6Hr])
+    if (appContactFreqForPhoneCall6Hr != [equalCopy appContactFreqForPhoneCall6Hr])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v23 = (*&has >> 7) & 1;
@@ -822,13 +822,13 @@ LABEL_39:
   if (v23)
   {
     appContactFreqForPhoneCall1Day = self->_appContactFreqForPhoneCall1Day;
-    if (appContactFreqForPhoneCall1Day != [v4 appContactFreqForPhoneCall1Day])
+    if (appContactFreqForPhoneCall1Day != [equalCopy appContactFreqForPhoneCall1Day])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v25 = (*&has >> 8) & 1;
@@ -840,13 +840,13 @@ LABEL_39:
   if (v25)
   {
     appContactFreqForPhoneCall7Day = self->_appContactFreqForPhoneCall7Day;
-    if (appContactFreqForPhoneCall7Day != [v4 appContactFreqForPhoneCall7Day])
+    if (appContactFreqForPhoneCall7Day != [equalCopy appContactFreqForPhoneCall7Day])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v27 = (*&has >> 9) & 1;
@@ -858,13 +858,13 @@ LABEL_39:
   if (v27)
   {
     appContactFreqForPhoneCall28Day = self->_appContactFreqForPhoneCall28Day;
-    if (appContactFreqForPhoneCall28Day != [v4 appContactFreqForPhoneCall28Day])
+    if (appContactFreqForPhoneCall28Day != [equalCopy appContactFreqForPhoneCall28Day])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v29 = (*&has >> 10) & 1;
@@ -876,13 +876,13 @@ LABEL_39:
   if (v29)
   {
     appContactFreqForPhoneCallInf = self->_appContactFreqForPhoneCallInf;
-    if (appContactFreqForPhoneCallInf != [v4 appContactFreqForPhoneCallInf])
+    if (appContactFreqForPhoneCallInf != [equalCopy appContactFreqForPhoneCallInf])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v31 = (*&has >> 11) & 1;
@@ -894,13 +894,13 @@ LABEL_39:
   if (v31)
   {
     appContactFreqForPhoneCall = self->_appContactFreqForPhoneCall;
-    if (appContactFreqForPhoneCall != [v4 appContactFreqForPhoneCall])
+    if (appContactFreqForPhoneCall != [equalCopy appContactFreqForPhoneCall])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v33 = (*&has >> 12) & 1;
@@ -912,10 +912,10 @@ LABEL_39:
   if (v33)
   {
     appContactFreqForPhoneCallUsingSiri = self->_appContactFreqForPhoneCallUsingSiri;
-    if (appContactFreqForPhoneCallUsingSiri == [v4 appContactFreqForPhoneCallUsingSiri])
+    if (appContactFreqForPhoneCallUsingSiri == [equalCopy appContactFreqForPhoneCallUsingSiri])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_54;
     }
 
@@ -934,7 +934,7 @@ LABEL_54:
   if (v35)
   {
     appContactFreqForPhoneCallHaptic = self->_appContactFreqForPhoneCallHaptic;
-    if (appContactFreqForPhoneCallHaptic != [v4 appContactFreqForPhoneCallHaptic])
+    if (appContactFreqForPhoneCallHaptic != [equalCopy appContactFreqForPhoneCallHaptic])
     {
       goto LABEL_58;
     }
@@ -946,9 +946,9 @@ LABEL_59:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1135,9 +1135,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)setHasAppContactFreqForPhoneCallHaptic:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCallHaptic:(BOOL)haptic
 {
-  if (a3)
+  if (haptic)
   {
     v3 = 0x2000;
   }
@@ -1150,9 +1150,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCallUsingSiri:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCallUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 4096;
   }
@@ -1165,9 +1165,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 2048;
   }
@@ -1180,9 +1180,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCallInf:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCallInf:(BOOL)inf
 {
-  if (a3)
+  if (inf)
   {
     v3 = 1024;
   }
@@ -1195,9 +1195,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall28Day:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall28Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 512;
   }
@@ -1210,9 +1210,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall7Day:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall7Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 256;
   }
@@ -1225,9 +1225,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall1Day:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall1Day:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 128;
   }
@@ -1240,9 +1240,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall6Hr:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall6Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 64;
   }
@@ -1255,9 +1255,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall1Hr:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall1Hr:(BOOL)hr
 {
-  if (a3)
+  if (hr)
   {
     v3 = 32;
   }
@@ -1270,9 +1270,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall10Min:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall10Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 16;
   }
@@ -1285,9 +1285,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAppContactFreqForPhoneCall2Min:(BOOL)a3
+- (void)setHasAppContactFreqForPhoneCall2Min:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 8;
   }
@@ -1300,9 +1300,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAppContactAffinityScoreForPhoneCallReceived:(BOOL)a3
+- (void)setHasAppContactAffinityScoreForPhoneCallReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 4;
   }
@@ -1315,9 +1315,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAppContactAffinityScoreForPhoneCallUsingSiri:(BOOL)a3
+- (void)setHasAppContactAffinityScoreForPhoneCallUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 2;
   }

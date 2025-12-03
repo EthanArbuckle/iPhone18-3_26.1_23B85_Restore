@@ -1,13 +1,13 @@
 @interface WRMBasebandMetricsInterface
 - (WRMBasebandMetricsInterface)init;
-- (void)getCellularDataMetrics:(id)a3;
-- (void)getNRPhyMetrics:(id)a3;
-- (void)getQSHMetrics:(id)a3;
-- (void)getWiFiBWEstimationMetrics:(id)a3;
-- (void)handleNotification:(id)a3 :(BOOL)a4;
-- (void)processWRMCellDataMetrics:(id)a3;
-- (void)processWRMNrPhyMetrics:(id)a3;
-- (void)processWRMWiFiBWEstMetrics:(id)a3;
+- (void)getCellularDataMetrics:(id)metrics;
+- (void)getNRPhyMetrics:(id)metrics;
+- (void)getQSHMetrics:(id)metrics;
+- (void)getWiFiBWEstimationMetrics:(id)metrics;
+- (void)handleNotification:(id)notification :(BOOL)a4;
+- (void)processWRMCellDataMetrics:(id)metrics;
+- (void)processWRMNrPhyMetrics:(id)metrics;
+- (void)processWRMWiFiBWEstMetrics:(id)metrics;
 - (void)reConnect;
 - (void)unregisterClient;
 @end
@@ -32,17 +32,17 @@ void __52__WRMBasebandMetricsInterface_registerClient_queue___block_invoke(uint6
   [(WRMClientInterface *)&v2 unregisterClient];
 }
 
-- (void)getWiFiBWEstimationMetrics:(id)a3
+- (void)getWiFiBWEstimationMetrics:(id)metrics
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   wifiMetricsHandler = self->wifiMetricsHandler;
   if (wifiMetricsHandler)
   {
     self->wifiMetricsHandler = 0;
   }
 
-  v6 = MEMORY[0x2743E9050](v4);
+  v6 = MEMORY[0x2743E9050](metricsCopy);
   v7 = self->wifiMetricsHandler;
   self->wifiMetricsHandler = v6;
 
@@ -62,17 +62,17 @@ void __52__WRMBasebandMetricsInterface_registerClient_queue___block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNRPhyMetrics:(id)a3
+- (void)getNRPhyMetrics:(id)metrics
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   metricsHandler = self->metricsHandler;
   if (metricsHandler)
   {
     self->metricsHandler = 0;
   }
 
-  v6 = MEMORY[0x2743E9050](v4);
+  v6 = MEMORY[0x2743E9050](metricsCopy);
   v7 = self->metricsHandler;
   self->metricsHandler = v6;
 
@@ -92,17 +92,17 @@ void __52__WRMBasebandMetricsInterface_registerClient_queue___block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCellularDataMetrics:(id)a3
+- (void)getCellularDataMetrics:(id)metrics
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   dataMetricsHandler = self->dataMetricsHandler;
   if (dataMetricsHandler)
   {
     self->dataMetricsHandler = 0;
   }
 
-  v6 = MEMORY[0x2743E9050](v4);
+  v6 = MEMORY[0x2743E9050](metricsCopy);
   v7 = self->dataMetricsHandler;
   self->dataMetricsHandler = v6;
 
@@ -122,14 +122,14 @@ void __52__WRMBasebandMetricsInterface_registerClient_queue___block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getQSHMetrics:(id)a3
+- (void)getQSHMetrics:(id)metrics
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metricsCopy = metrics;
+  v5 = metricsCopy;
+  if (metricsCopy)
   {
-    v6 = MEMORY[0x2743E9050](v4);
+    v6 = MEMORY[0x2743E9050](metricsCopy);
     if (v6)
     {
       v7 = v6;
@@ -224,11 +224,11 @@ void __45__WRMBasebandMetricsInterface_getQSHMetrics___block_invoke(uint64_t a1,
   return v3;
 }
 
-- (void)handleNotification:(id)a3 :(BOOL)a4
+- (void)handleNotification:(id)notification :(BOOL)a4
 {
   v4 = a4;
-  v6 = a3;
-  xdict = v6;
+  notificationCopy = notification;
+  xdict = notificationCopy;
   if (v4)
   {
     NSLog(&cfstr_InvokingReconn.isa);
@@ -237,7 +237,7 @@ void __45__WRMBasebandMetricsInterface_getQSHMetrics___block_invoke(uint64_t a1,
 
   else
   {
-    uint64 = xpc_dictionary_get_uint64(v6, "kMessageId");
+    uint64 = xpc_dictionary_get_uint64(notificationCopy, "kMessageId");
     v8 = xpc_dictionary_get_value(xdict, "kMessageArgs");
     switch(uint64)
     {
@@ -254,17 +254,17 @@ void __45__WRMBasebandMetricsInterface_getQSHMetrics___block_invoke(uint64_t a1,
   }
 }
 
-- (void)processWRMNrPhyMetrics:(id)a3
+- (void)processWRMNrPhyMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   mQueue = self->super.mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__WRMBasebandMetricsInterface_processWRMNrPhyMetrics___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = metricsCopy;
+  selfCopy = self;
+  v6 = metricsCopy;
   dispatch_async(mQueue, v7);
 }
 
@@ -319,17 +319,17 @@ void __54__WRMBasebandMetricsInterface_processWRMNrPhyMetrics___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processWRMCellDataMetrics:(id)a3
+- (void)processWRMCellDataMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   mQueue = self->super.mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__WRMBasebandMetricsInterface_processWRMCellDataMetrics___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = metricsCopy;
+  selfCopy = self;
+  v6 = metricsCopy;
   dispatch_async(mQueue, v7);
 }
 
@@ -362,17 +362,17 @@ void __57__WRMBasebandMetricsInterface_processWRMCellDataMetrics___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processWRMWiFiBWEstMetrics:(id)a3
+- (void)processWRMWiFiBWEstMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   mQueue = self->super.mQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__WRMBasebandMetricsInterface_processWRMWiFiBWEstMetrics___block_invoke;
   v7[3] = &unk_279ED5D40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = metricsCopy;
+  selfCopy = self;
+  v6 = metricsCopy;
   dispatch_async(mQueue, v7);
 }
 

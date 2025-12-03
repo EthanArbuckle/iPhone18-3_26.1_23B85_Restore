@@ -1,8 +1,8 @@
 @interface CKUIBehavior
 + (BOOL)_shouldUseClarityUI;
-+ (BOOL)isPreferredContentSizeCategoryGreaterThanOrEqualTo:(id)a3;
-+ (id)font:(id)a3 adjustedForMaxSizeCategory:(id)a4;
-+ (id)fontWithStyle:(id)a3 adjustedForMaxSizeCategory:(id)a4;
++ (BOOL)isPreferredContentSizeCategoryGreaterThanOrEqualTo:(id)to;
++ (id)font:(id)font adjustedForMaxSizeCategory:(id)category;
++ (id)fontWithStyle:(id)style adjustedForMaxSizeCategory:(id)category;
 + (id)orderedContentSizeCategories;
 + (id)sharedBehaviors;
 + (void)testOverrideClearSharedBehaviors;
@@ -115,7 +115,7 @@
 - (BOOL)shouldLoadInitialViewingMessageCount;
 - (BOOL)shouldRefreshAlternateAddressesSheet;
 - (BOOL)shouldScrollToSavedSticker;
-- (BOOL)shouldShowAvatarForWidth:(double)a3;
+- (BOOL)shouldShowAvatarForWidth:(double)width;
 - (BOOL)shouldShowContactPhotosInTranscript;
 - (BOOL)shouldShowDisclosureChevronInRecipientAtoms;
 - (BOOL)shouldShowPluginDividerLineWithPluginShelf;
@@ -150,7 +150,7 @@
 - (BOOL)supportsFoundInSuggestions;
 - (BOOL)supportsOrbPreviewsInConversationList;
 - (BOOL)supportsPassbookAttachments;
-- (BOOL)suppressPinActivityForState:(id)a3;
+- (BOOL)suppressPinActivityForState:(id)state;
 - (BOOL)tapbackPickerCanOverflowPresentationBounds;
 - (BOOL)timestampsPushBalloons;
 - (BOOL)transcriptCanUseOpaqueMask;
@@ -176,13 +176,13 @@
 - (CGPoint)transcriptTypingIndicatorLargeBubbleGrowOffset;
 - (CGPoint)transcriptTypingIndicatorLargeBubbleOffset;
 - (CGPoint)transcriptTypingIndicatorMediumBubbleOffset;
-- (CGRect)extensionIconBadgeRectForOrientation:(char)a3;
+- (CGRect)extensionIconBadgeRectForOrientation:(char)orientation;
 - (CGRect)ktStringAttachmentPadding;
 - (CGRect)transcriptTypingIndicatorSmallBubbleFrame;
 - (CGSize)_audioButtonSize;
 - (CGSize)_dictationButtonSize;
 - (CGSize)_entryViewPlusButtonSize;
-- (CGSize)_heightClampedScaleWithAspectRatio:(double)a3 width:(double)a4 imageSize:(CGSize)a5;
+- (CGSize)_heightClampedScaleWithAspectRatio:(double)ratio width:(double)width imageSize:(CGSize)size;
 - (CGSize)aggregateAcknowledgmentTranscriptBalloonSize;
 - (CGSize)appIconSize;
 - (CGSize)attachmentBalloonSize;
@@ -194,15 +194,15 @@
 - (CGSize)avatarSize;
 - (CGSize)backgroundEditorFormSheetSize;
 - (CGSize)balloonMaskSize;
-- (CGSize)balloonMaskSizeWithBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
-- (CGSize)balloonMaskSizeWithTailShape:(char)a3 isMultiline:(BOOL)a4;
-- (CGSize)balloonMaskTailSizeForTailShape:(char)a3;
+- (CGSize)balloonMaskSizeWithBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
+- (CGSize)balloonMaskSizeWithTailShape:(char)shape isMultiline:(BOOL)multiline;
+- (CGSize)balloonMaskTailSizeForTailShape:(char)shape;
 - (CGSize)bannerCellSize;
 - (CGSize)browserButtonSize;
 - (CGSize)businessBannerSize;
 - (CGSize)clearPluginButtonSize;
 - (CGSize)contactImageSize;
-- (CGSize)deletedReplyBalloonMaskSizeWithTailShape:(char)a3;
+- (CGSize)deletedReplyBalloonMaskSizeWithTailShape:(char)shape;
 - (CGSize)detonatedItemBalloonViewSize;
 - (CGSize)detonatedItemDocumentIconSize;
 - (CGSize)dictationButtonSize;
@@ -216,10 +216,10 @@
 - (CGSize)groupAvatarViewSize;
 - (CGSize)iMessageAppIconSize;
 - (CGSize)iMessageAppIconSizeSquare;
-- (CGSize)locationOfferMapThumbnailFillSizeForWidth:(double)a3;
-- (CGSize)locationShareBalloonSizeForWidth:(double)a3 offerState:(int64_t)a4;
+- (CGSize)locationOfferMapThumbnailFillSizeForWidth:(double)width;
+- (CGSize)locationShareBalloonSizeForWidth:(double)width offerState:(int64_t)state;
 - (CGSize)macAddToGroupDialogPreferredSize;
-- (CGSize)mapThumbnailFillSizeForWidth:(double)a3;
+- (CGSize)mapThumbnailFillSizeForWidth:(double)width;
 - (CGSize)mediaObjectCachedIconSize;
 - (CGSize)messageAcknowledgmentAnchorBubbleOffset;
 - (CGSize)messageAcknowledgmentAnchorBubbleSize;
@@ -234,7 +234,7 @@
 - (CGSize)messageAcknowledgmentVotingAvatarSize;
 - (CGSize)messageHighlightButtonVisibleViewSize;
 - (CGSize)messageHighlightTranscriptBalloonSize;
-- (CGSize)minimumSizeThatFitsExtensionIconBadge:(BOOL)a3;
+- (CGSize)minimumSizeThatFitsExtensionIconBadge:(BOOL)badge;
 - (CGSize)multilineBalloonMaskSize;
 - (CGSize)navBarUnifiedCallButtonSize;
 - (CGSize)obscuredBalloonMinimumSizeForAdult;
@@ -244,29 +244,29 @@
 - (CGSize)pinnedConversationActivityBroadShadowLightOffset;
 - (CGSize)pinnedConversationActivityTightShadowDarkOffset;
 - (CGSize)pinnedConversationActivityTightShadowLightOffset;
-- (CGSize)previewBalloonSizeThatFits:(CGSize)a3;
+- (CGSize)previewBalloonSizeThatFits:(CGSize)fits;
 - (CGSize)replyBalloonMaskSize;
-- (CGSize)replyBalloonMaskSizeWithTailShape:(char)a3 isMultiline:(BOOL)a4;
+- (CGSize)replyBalloonMaskSizeWithTailShape:(char)shape isMultiline:(BOOL)multiline;
 - (CGSize)replyDeleteBalloonMaskSize;
 - (CGSize)replyMultilineBalloonMaskSize;
 - (CGSize)replySkinnyBalloonMaskSize;
-- (CGSize)roundBalloonMaskSizeWithTailShape:(char)a3;
+- (CGSize)roundBalloonMaskSizeWithTailShape:(char)shape;
 - (CGSize)searchAttachmentsThumbnailAlignmentSize;
 - (CGSize)searchMessagesAvatarSize;
 - (CGSize)sendLaterDatePickerSize;
 - (CGSize)sendMenuListItemIconSize;
 - (CGSize)signInSplashImageSize;
 - (CGSize)skinnyBalloonMaskSize;
-- (CGSize)skinnyBalloonMaskSizeWithTailShape:(char)a3;
-- (CGSize)skinnyReplyBalloonMaskSizeWithTailShape:(char)a3;
+- (CGSize)skinnyBalloonMaskSizeWithTailShape:(char)shape;
+- (CGSize)skinnyReplyBalloonMaskSizeWithTailShape:(char)shape;
 - (CGSize)stickerPopoverSize;
 - (CGSize)stickerReactionSize;
-- (CGSize)stickerSizeScaledWithInitialSize:(CGSize)a3 imageScale:(double)a4 userScale:(double)a5 rectifiedScreenScale:(double)a6 maxWidth:(double)a7;
+- (CGSize)stickerSizeScaledWithInitialSize:(CGSize)size imageScale:(double)scale userScale:(double)userScale rectifiedScreenScale:(double)screenScale maxWidth:(double)width;
 - (CGSize)taillessBalloonMaskSize;
 - (CGSize)taillessMultilineBalloonMaskSize;
 - (CGSize)taillessSkinnyBalloonMaskSize;
 - (CGSize)tapbackPickerBlurPlatterPadding;
-- (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4;
+- (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size;
 - (CGSize)thumbnailSizeForAppIconInCollaborationLinks;
 - (CGSize)transcriptCustomStatusImageDefaultSize;
 - (CGSize)transcriptDownloadingPendingMessagesViewDefaultSize;
@@ -275,7 +275,7 @@
 - (CGSize)transcriptTypingIndicatorMediumBubbleSize;
 - (CGSize)tuConversationBalloonButtonAsIconSize;
 - (CGSize)tuConversationBalloonFacetimeIconSize;
-- (CGSize)unconstrainedAspectFillSizeForWidth:(double)a3 imageSize:(CGSize)a4;
+- (CGSize)unconstrainedAspectFillSizeForWidth:(double)width imageSize:(CGSize)size;
 - (CGSize)unreadIndicatorImageViewSize;
 - (CKMessageEntryViewLayoutMetrics)entryViewlayoutMetrics;
 - (CKUITheme)theme;
@@ -433,7 +433,7 @@
 - (UIEdgeInsets)additionalComposeRecipientLayoutMargins;
 - (UIEdgeInsets)appCardContainerViewControllerChildEdgeInsetsIfPresentedBySendMenuPopover;
 - (UIEdgeInsets)attachmentBalloonAlignmentRectInsets;
-- (UIEdgeInsets)attachmentBalloonAlignmentRectInsetsWithTailShape:(char)a3;
+- (UIEdgeInsets)attachmentBalloonAlignmentRectInsetsWithTailShape:(char)shape;
 - (UIEdgeInsets)attachmentBalloonRichIconInsets;
 - (UIEdgeInsets)attachmentBrowserFeedLayoutSectionInset;
 - (UIEdgeInsets)attachmentBrowserGridSectionInset;
@@ -442,16 +442,16 @@
 - (UIEdgeInsets)audioReplyPreviewBalloonAlignmentInsets;
 - (UIEdgeInsets)balloonLineFragmentInsets;
 - (UIEdgeInsets)balloonMaskAlignmentRectInsets;
-- (UIEdgeInsets)balloonMaskAlignmentRectInsetsWithTailShape:(char)a3;
+- (UIEdgeInsets)balloonMaskAlignmentRectInsetsWithTailShape:(char)shape;
 - (UIEdgeInsets)balloonMaskFrameInsets;
-- (UIEdgeInsets)balloonMaskFrameInsetsWithBalloonShape:(char)a3;
+- (UIEdgeInsets)balloonMaskFrameInsetsWithBalloonShape:(char)shape;
 - (UIEdgeInsets)balloonTextContainerInset;
 - (UIEdgeInsets)balloonTranscriptInsets;
 - (UIEdgeInsets)bigEmojiAlignmentRectInsets;
 - (UIEdgeInsets)bigEmojiBalloonMaskAlignmentRectInsets;
 - (UIEdgeInsets)callButtonImageInsets;
 - (UIEdgeInsets)contactPhotoTranscriptInsets;
-- (UIEdgeInsets)contentInsetsForConversationListSearchBarForLayoutMargins:(UIEdgeInsets)result isRTL:(BOOL)a4;
+- (UIEdgeInsets)contentInsetsForConversationListSearchBarForLayoutMargins:(UIEdgeInsets)result isRTL:(BOOL)l;
 - (UIEdgeInsets)conversationListPinnedCellTitleLabelVerticalPadding;
 - (UIEdgeInsets)defaultAVPlayerViewContorllerControlsInsets;
 - (UIEdgeInsets)detailsContactCellButtonEdgeInsets;
@@ -459,7 +459,7 @@
 - (UIEdgeInsets)entryViewHorizontalCoverInsets;
 - (UIEdgeInsets)entryViewVerticalCoverInsets;
 - (UIEdgeInsets)entryViewVerticalTextFieldInsets;
-- (UIEdgeInsets)extensionBalloonContentInsetsForOrientation:(char)a3;
+- (UIEdgeInsets)extensionBalloonContentInsetsForOrientation:(char)orientation;
 - (UIEdgeInsets)fieldPlatterMarginInsetsForLayoutMargins:(UIEdgeInsets)result;
 - (UIEdgeInsets)fromFieldMarginInsets;
 - (UIEdgeInsets)fromPickerStackMarginInset;
@@ -477,7 +477,7 @@
 - (UIEdgeInsets)minimumPlayButtonInsets;
 - (UIEdgeInsets)phishingWarningEdgeInsets;
 - (UIEdgeInsets)photoPickerSectionInsets;
-- (UIEdgeInsets)pluginBalloonInsetsForMessageFromMe:(BOOL)a3;
+- (UIEdgeInsets)pluginBalloonInsetsForMessageFromMe:(BOOL)me;
 - (UIEdgeInsets)quickActionPinButtonImageInsets;
 - (UIEdgeInsets)quickActionSaveButtonImageInsets;
 - (UIEdgeInsets)readerInsets;
@@ -498,7 +498,7 @@
 - (UIEdgeInsets)textReplyBalloonTailInsets;
 - (UIEdgeInsets)textReplyPreviewBalloonAlignmentRectInsets;
 - (UIEdgeInsets)textReplyPreviewBalloonPillContentInsets;
-- (UIEdgeInsets)thumbnailContentAlignmentInsetsForOrientation:(char)a3;
+- (UIEdgeInsets)thumbnailContentAlignmentInsetsForOrientation:(char)orientation;
 - (UIEdgeInsets)toFieldInternalMarginInsets;
 - (UIEdgeInsets)toFieldScrollViewInsets;
 - (UIEdgeInsets)transcriptBoldTextAlignmentInsets;
@@ -776,7 +776,7 @@
 - (char)entryViewButtonDefaultColor;
 - (double)_bottomConversationListSpace;
 - (double)_bottomTranscriptSpace;
-- (double)_calculateBalloonMinHeightWithFont:(id)a3 cornerRadius:(double)a4 tailInsets:(UIEdgeInsets *)a5;
+- (double)_calculateBalloonMinHeightWithFont:(id)font cornerRadius:(double)radius tailInsets:(UIEdgeInsets *)insets;
 - (double)_conversationCellTrailingSeparatorInset;
 - (double)_defaultSeparatorHeight;
 - (double)_entryContentViewTextLeftOffset;
@@ -827,16 +827,16 @@
 - (double)avatarSpacingMargin;
 - (double)avatarTitleOffset;
 - (double)avatarVerticalOffset;
-- (double)balloonBalloonTranscriptSpace:(unsigned __int8)a3;
+- (double)balloonBalloonTranscriptSpace:(unsigned __int8)space;
 - (double)balloonContiguousSpace;
 - (double)balloonCornerRadius;
 - (double)balloonLineFragmentPadding;
 - (double)balloonMaskTailHeight;
 - (double)balloonMaskTailWidth;
-- (double)balloonMaxWidthForTranscriptWidth:(double)a3 marginInsets:(UIEdgeInsets)a4 shouldShowPluginButtons:(BOOL)a5 shouldShowCharacterCount:(BOOL)a6 shouldCoverSendButton:(BOOL)a7;
+- (double)balloonMaxWidthForTranscriptWidth:(double)width marginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCoverSendButton:(BOOL)button;
 - (double)balloonMaxWidthPercent;
 - (double)balloonNonContiguousSpace;
-- (double)balloonOutlineWidthForScreenScale:(double)a3;
+- (double)balloonOutlineWidthForScreenScale:(double)scale;
 - (double)balloonPillMinHeight;
 - (double)balloonResetAnimationDuration;
 - (double)bannerAdditionalOffset;
@@ -861,7 +861,7 @@
 - (double)chatChromeBottomInset;
 - (double)chatMagnifiedChromeBottomInset;
 - (double)composeBalloonCornerRadius;
-- (double)composeBalloonMaxWidthForEntryContentViewWidth:(double)a3;
+- (double)composeBalloonMaxWidthForEntryContentViewWidth:(double)width;
 - (double)contactBalloonHeight;
 - (double)contactBalloonInnerItemSpacing;
 - (double)contactBalloonMinWidth;
@@ -869,7 +869,7 @@
 - (double)contactBalloonOrgBottomSpacing;
 - (double)contactBalloonTopNameSpacing;
 - (double)contactPhotoBalloonMargin;
-- (double)conversationCellLeadingSeparatorInsetForEnvironment:(id)a3;
+- (double)conversationCellLeadingSeparatorInsetForEnvironment:(id)environment;
 - (double)conversationCellTrailingSeparatorInset;
 - (double)conversationListAccessoryIndicatorToSummaryLabelPadding;
 - (double)conversationListBottomTipSectionPadding;
@@ -907,7 +907,7 @@
 - (double)conversationListSummaryBodyLeading;
 - (double)conversationListTableMarginWidth;
 - (double)conversationListTotalLastPinNameToFirstCellSpacing;
-- (double)conversationListWidthForInterfaceOrientation:(int64_t)a3;
+- (double)conversationListWidthForInterfaceOrientation:(int64_t)orientation;
 - (double)defaultNavigationBarNoContactPhotoCollapsedHeightValue;
 - (double)defaultNavigationBarNoContactPhotoCollapsedHeightValueAXPadding;
 - (double)defaultSeparatorHeight;
@@ -1011,7 +1011,7 @@
 - (double)locationShareBalloonAdditionalVertPadding;
 - (double)locationShareBalloonButtonHeight;
 - (double)locationShareBalloonContactImageDiameter;
-- (double)locationShareBalloonLabelMaxHeightForOfferState:(int64_t)a3;
+- (double)locationShareBalloonLabelMaxHeightForOfferState:(int64_t)state;
 - (double)locationShareBalloonLabelPadding;
 - (double)locationShareBalloonMaxVisibleMapHeight;
 - (double)locationShareOneHourTimeInterval;
@@ -1072,8 +1072,8 @@
 - (double)muteEightHourTimeInterval;
 - (double)muteOneHourTimeInterval;
 - (double)navBarButtonSymbolImageFontSize;
-- (double)navBarSubtitleFontLeadingValueForContentSizeCategory:(id)a3;
-- (double)navBarSubtitleFontTrackingValueForContentSizeCategory:(id)a3;
+- (double)navBarSubtitleFontLeadingValueForContentSizeCategory:(id)category;
+- (double)navBarSubtitleFontTrackingValueForContentSizeCategory:(id)category;
 - (double)navBarTitleViewAXFontSizePadding;
 - (double)navbarButtonImagePointSize;
 - (double)navbarSubtitleBottomPadding;
@@ -1082,7 +1082,7 @@
 - (double)navigationBarHeaderButtonVerticalOffset;
 - (double)navigationBarLeftItemVerticalCenterOffset;
 - (double)navigationBarTitleViewHeightWithContactPhoto;
-- (double)navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:(BOOL)a3;
+- (double)navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:(BOOL)areas;
 - (double)newComposeRoundedRectPlatterCornerRadius;
 - (double)nicknameIntroViewControllerPreviewBottomPadding;
 - (double)nicknameIntroViewControllerPreviewTopPadding;
@@ -1120,7 +1120,7 @@
 - (double)posterEditorButtonInset;
 - (double)posterEditorButtonSpacing;
 - (double)presentationControllerWindowLevel;
-- (double)previewBalloonMaxWidthForBalloonMaxWidth:(double)a3;
+- (double)previewBalloonMaxWidthForBalloonMaxWidth:(double)width;
 - (double)previewMaxWidth;
 - (double)previewTitleBarHeight;
 - (double)raiseToTalkAutoSendMaxDuration;
@@ -1243,9 +1243,9 @@
 - (double)statusItemInsetFromReplyPreviewBalloonEdge;
 - (double)stickerDisplaySizeScale;
 - (double)stickerDropPreviewMaxDimension;
-- (double)stickerDropPreviewMaxWidthForImageSize:(CGSize)a3 isEmoji:(BOOL)a4 displayScale:(double)a5;
+- (double)stickerDropPreviewMaxWidthForImageSize:(CGSize)size isEmoji:(BOOL)emoji displayScale:(double)scale;
 - (double)stickerInlinePreviewMaxDimension;
-- (double)stickerInlinePreviewMaxWidthForImageSize:(CGSize)a3 isEmoji:(BOOL)a4 displayScale:(double)a5;
+- (double)stickerInlinePreviewMaxWidthForImageSize:(CGSize)size isEmoji:(BOOL)emoji displayScale:(double)scale;
 - (double)stickerReactionHorizontalOverlapPercentage;
 - (double)stickerReactionOddRowInset;
 - (double)stickerReactionTextBalloonAdditionalVerticalPadding;
@@ -1254,7 +1254,7 @@
 - (double)stickerScreenScale;
 - (double)stickersCellCornerRadius;
 - (double)suggestedActionButtonMinHeight;
-- (double)suggestedActionsMenuAdditionalHeightWithChatBotActionButton:(id)a3;
+- (double)suggestedActionsMenuAdditionalHeightWithChatBotActionButton:(id)button;
 - (double)suggestedRepliesViewMaxWidth;
 - (double)suggestedReplyViewInsetHorizontal;
 - (double)suggestedReplyViewInsetVertical;
@@ -1280,7 +1280,7 @@
 - (double)toFieldPreferredHeight;
 - (double)topConversationListSpace;
 - (double)topTranscriptSpace;
-- (double)totalTopSpacingFromSearchBarToPinnedItems:(BOOL)a3;
+- (double)totalTopSpacingFromSearchBarToPinnedItems:(BOOL)items;
 - (double)transcriptBoldTextHeight;
 - (double)transcriptContactImageDiameter;
 - (double)transcriptCustomStatusImagePadding;
@@ -1289,9 +1289,9 @@
 - (double)transcriptDrawerContactImageDiameter;
 - (double)transcriptDrawerContactImagePadding;
 - (double)transcriptDrawerGestureAcceleration;
-- (double)transcriptDrawerOverlapForMarginInsets:(UIEdgeInsets)a3;
+- (double)transcriptDrawerOverlapForMarginInsets:(UIEdgeInsets)insets;
 - (double)transcriptDrawerSpace;
-- (double)transcriptDrawerWidthForMarginInsets:(UIEdgeInsets)a3;
+- (double)transcriptDrawerWidthForMarginInsets:(UIEdgeInsets)insets;
 - (double)transcriptGroupTypingContactImageDiameter;
 - (double)transcriptHeaderChevronRotationAnimationSpeed;
 - (double)transcriptHeaderViewMaxRows;
@@ -1308,7 +1308,7 @@
 - (double)transcriptTypingIndicatorLargeBubbleGrowBeginTime;
 - (double)transcriptTypingIndicatorThinkingDotDiameter;
 - (double)transcriptTypingIndicatorThinkingDotSpace;
-- (double)transcriptWaveformWidthForDuration:(double)a3;
+- (double)transcriptWaveformWidthForDuration:(double)duration;
 - (double)tuConversationBalloonAvatarDimensions;
 - (double)tuConversationBalloonContentBottomPadding;
 - (double)tuConversationBalloonContentCompressedMinWidth;
@@ -1346,7 +1346,7 @@
 - (double)waveformMinLinearPowerLevel;
 - (double)waveformViewHeight;
 - (double)waveformWidth;
-- (id)__ck_localizedString:(id)a3;
+- (id)__ck_localizedString:(id)string;
 - (id)_balloonParagraphStyle;
 - (id)_breadcrumbTranscriptTextAttributes;
 - (id)_conversationListFocusFilterBannerTitleValueFont;
@@ -1357,7 +1357,7 @@
 - (id)_entryViewlayoutMetrics;
 - (id)_leftStatusTranscriptTextAttributes;
 - (id)_leftTranscriptButtonTextAttributes;
-- (id)_messageEditingConfirmButtonImageWithButtonColor:(id)a3;
+- (id)_messageEditingConfirmButtonImageWithButtonColor:(id)color;
 - (id)_replyBalloonTextFont;
 - (id)_rightStatusTranscriptTextAttributes;
 - (id)_rightTranscriptButtonTextAttributes;
@@ -1384,37 +1384,37 @@
 - (id)_transcriptSatelliteSuppressedNotificationFontAttributes;
 - (id)_transcriptTranslationButtonFontAttributes;
 - (id)_transcriptTranslationIndicatorFontAttributes;
-- (id)aggregateAcknowledgmentBottomMiddleName:(BOOL)a3;
-- (id)aggregateAcknowledgmentBottomTopName:(BOOL)a3;
-- (id)aggregateAcknowledgmentMiddleName:(BOOL)a3;
-- (id)aggregateAcknowledgmentStackBackgroundName2:(BOOL)a3;
-- (id)aggregateAcknowledgmentStackBackgroundName3:(BOOL)a3;
-- (id)aggregateAcknowledgmentStackName2:(BOOL)a3;
-- (id)aggregateAcknowledgmentStackName3:(BOOL)a3;
-- (id)aggregateAcknowledgmentTopBackgroundName:(BOOL)a3;
-- (id)aggregateAcknowledgmentTopName:(BOOL)a3;
+- (id)aggregateAcknowledgmentBottomMiddleName:(BOOL)name;
+- (id)aggregateAcknowledgmentBottomTopName:(BOOL)name;
+- (id)aggregateAcknowledgmentMiddleName:(BOOL)name;
+- (id)aggregateAcknowledgmentStackBackgroundName2:(BOOL)name2;
+- (id)aggregateAcknowledgmentStackBackgroundName3:(BOOL)name3;
+- (id)aggregateAcknowledgmentStackName2:(BOOL)name2;
+- (id)aggregateAcknowledgmentStackName3:(BOOL)name3;
+- (id)aggregateAcknowledgmentTopBackgroundName:(BOOL)name;
+- (id)aggregateAcknowledgmentTopName:(BOOL)name;
 - (id)background_chevronImage;
 - (id)black_chevronImage;
 - (id)blue_chevronImage;
 - (id)breadcrumbTranscriptTextAttributes;
 - (id)business_chevronImage;
-- (id)chevronImageForColorType:(char)a3;
-- (id)conversationListMoveSelectedToRecentlyDeletedButtonItemWithTarget:(id)a3 action:(SEL)a4;
+- (id)chevronImageForColorType:(char)type;
+- (id)conversationListMoveSelectedToRecentlyDeletedButtonItemWithTarget:(id)target action:(SEL)action;
 - (id)disabledNavigationButtonStrokeColor;
 - (id)entryViewPlusButtonImage;
 - (id)gray_chevronImage;
 - (id)green_chevronImage;
-- (id)imageNameForBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
-- (id)imageNameForBalloonDescriptorWithFilledStyle:(CKBalloonDescriptor_t *)a3;
-- (id)imageNameForBalloonDescriptorWithStrokedStyle:(CKBalloonDescriptor_t *)a3;
-- (id)imageNamed:(id)a3 pointSize:(double)a4 insets:(UIEdgeInsets)a5;
-- (id)imageNamed:(id)a3 pointSize:(double)a4 insets:(UIEdgeInsets)a5 color:(id)a6;
+- (id)imageNameForBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
+- (id)imageNameForBalloonDescriptorWithFilledStyle:(CKBalloonDescriptor_t *)style;
+- (id)imageNameForBalloonDescriptorWithStrokedStyle:(CKBalloonDescriptor_t *)style;
+- (id)imageNamed:(id)named pointSize:(double)size insets:(UIEdgeInsets)insets;
+- (id)imageNamed:(id)named pointSize:(double)size insets:(UIEdgeInsets)insets color:(id)color;
 - (id)impactBalloonName;
 - (id)impactSkinnyBalloonName;
-- (id)largeMessageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)a3;
-- (id)messageAcknowledgmentImageNameForType:(int64_t)a3;
-- (id)messageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)a3;
-- (id)messageStatusChevronWithButtonColor:(id)a3;
+- (id)largeMessageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)type;
+- (id)messageAcknowledgmentImageNameForType:(int64_t)type;
+- (id)messageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)type;
+- (id)messageStatusChevronWithButtonColor:(id)color;
 - (id)message_editing_black_chevronImage;
 - (id)multilineBalloonName;
 - (id)multilineStrokedBalloonName;
@@ -1426,13 +1426,13 @@
 - (id)navBarGlyphFont;
 - (id)navBarHeaderChevronImageDefault;
 - (id)navBarHeaderOpaqueChevronImageDefault;
-- (id)navBarSubtitleAttributedStringAttributesForContentSizeCategory:(id)a3;
-- (id)navBarSubtitleFontForContentSizeCategory:(id)a3;
-- (id)navBarSubtitleParagraphStyleForContentSizeCategory:(id)a3;
+- (id)navBarSubtitleAttributedStringAttributesForContentSizeCategory:(id)category;
+- (id)navBarSubtitleFontForContentSizeCategory:(id)category;
+- (id)navBarSubtitleParagraphStyleForContentSizeCategory:(id)category;
 - (id)newEntryViewPlusButtonIconImageView;
 - (id)newSendMenuPopoverLayoutConfiguration;
 - (id)opaque_orb_gray_chevronImage;
-- (id)pasteConfigurationDisablingKeyboardStickers:(BOOL)a3;
+- (id)pasteConfigurationDisablingKeyboardStickers:(BOOL)stickers;
 - (id)pending_blue_chevronImage;
 - (id)red_chevronImage;
 - (id)replyBalloonName;
@@ -1463,7 +1463,7 @@
 - (id)translationStatusTextFont;
 - (id)whiteChevronImage;
 - (id)white_chevronImage;
-- (int64_t)contentDerivedUserInterfaceStyleForLuminance:(double)a3;
+- (int64_t)contentDerivedUserInterfaceStyleForLuminance:(double)luminance;
 - (int64_t)conversationListLayoutPinnedSectionNumberOfColumns;
 - (int64_t)conversationListSeparatorStyle;
 - (int64_t)detailsActionViewStyle;
@@ -1487,7 +1487,7 @@
 - (unint64_t)appIconPrefetchLimit;
 - (unint64_t)commonRepliesLoadLimit;
 - (unint64_t)contactsSettingsCacheSize;
-- (unint64_t)contentRectEdgeForConversationListSearchBarInsetsWithRTL:(BOOL)a3;
+- (unint64_t)contentRectEdgeForConversationListSearchBarInsetsWithRTL:(BOOL)l;
 - (unint64_t)conversationCacheSize;
 - (unint64_t)conversationListCellMaxSummaryLength;
 - (unint64_t)conversationListCellSummaryNumberOfLines;
@@ -1520,8 +1520,8 @@
 - (unint64_t)waveformPowerLevelWidth;
 - (unint64_t)waveformPowerLevelWidthIncrement;
 - (void)prewarmAcknowledgementsImage;
-- (void)setHUDStyle:(int64_t)a3;
-- (void)updateMessageEditingConfirmButtonConfiguration:(id)a3 forButtonColor:(char)a4 isEnabled:(BOOL)a5;
+- (void)setHUDStyle:(int64_t)style;
+- (void)updateMessageEditingConfirmButtonConfiguration:(id)configuration forButtonColor:(char)color isEnabled:(BOOL)enabled;
 @end
 
 @implementation CKUIBehavior
@@ -1534,24 +1534,24 @@
     goto LABEL_15;
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (CKIsRunningInMacCatalyst() && CKIsRunningUnitTests())
   {
     goto LABEL_11;
   }
 
-  if (v5 != 4)
+  if (userInterfaceIdiom != 4)
   {
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
       if (!CKIsRunningInSiri() && !CKIsRunningInMessagesNotificationViewService() && CKIsRunningInMessagesNotificationExtension())
       {
         [MEMORY[0x193AF5EC0](@"UNUserNotificationCenter" @"UserNotifications")];
       }
 
-      [a1 _shouldUseClarityUI];
+      [self _shouldUseClarityUI];
     }
 
 LABEL_11:
@@ -1644,10 +1644,10 @@ uint64_t __54__CKUIBehavior_defaultConversationViewingMessageCount__block_invoke
 - (unint64_t)_defaultConversationViewingMessageCount
 {
   v2 = IMGetCachedDomainIntForKeyWithDefaultValue();
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 _graphicsQuality];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v4 == 10)
+  if (_graphicsQuality == 10)
   {
     return 25;
   }
@@ -2282,9 +2282,9 @@ double __52__CKUIBehavior_conversationListContactImageDiameter__block_invoke()
 
 - (double)_conversationCellTrailingSeparatorInset
 {
-  v2 = [(CKUIBehavior *)self conversationListCellUsesLargeTextLayout];
+  conversationListCellUsesLargeTextLayout = [(CKUIBehavior *)self conversationListCellUsesLargeTextLayout];
   result = 16.0;
-  if (v2)
+  if (conversationListCellUsesLargeTextLayout)
   {
     return 0.0;
   }
@@ -2314,9 +2314,9 @@ double __52__CKUIBehavior_conversationListContactImageDiameter__block_invoke()
   v11 = UIContentSizeCategoryCompareToCategory(conversationListDateFont_sContentSizeCategory_conversationListDateFont, v3);
   if (-[CKUIBehavior ckShouldUpdateconversationListDateFont](self, "ckShouldUpdateconversationListDateFont") || v11 || conversationListDateFont_sIsIncreaseContrastEnabled_conversationListDateFont != v4 || conversationListDateFont_sIsBoldTextEnabled_conversationListDateFont != IsBoldTextEnabled || (v12 = conversationListDateFont_sTextFontSize_conversationListDateFont, *&conversationListDateFont_sTextFontSize_conversationListDateFont != v6) || (v12 = conversationListDateFont_sCustomTextFontSize_conversationListDateFont, *&conversationListDateFont_sCustomTextFontSize_conversationListDateFont != v7) || ([conversationListDateFont_sCustomTextFontName_conversationListDateFont isEqualToString:{v10, *&conversationListDateFont_sCustomTextFontSize_conversationListDateFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self conversationListSummaryFont];
+    conversationListSummaryFont = [(CKUIBehavior *)self conversationListSummaryFont];
     v14 = conversationListDateFont_sBehavior;
-    conversationListDateFont_sBehavior = v13;
+    conversationListDateFont_sBehavior = conversationListSummaryFont;
 
     objc_storeStrong(&conversationListDateFont_sContentSizeCategory_conversationListDateFont, v3);
     conversationListDateFont_sIsIncreaseContrastEnabled_conversationListDateFont = v4;
@@ -2625,11 +2625,11 @@ uint64_t __45__CKUIBehavior_showUnreadCountDebugggingInfo__block_invoke()
 
 - (double)_bottomConversationListSpace
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
   result = 18.0;
-  if ((v4 & 1) == 0)
+  if ((isConversationListRefreshEnabled & 1) == 0)
   {
     [(CKUIBehavior *)self conversationListSummaryBodyLeading];
     v7 = v6 * 0.6;
@@ -2687,10 +2687,10 @@ uint64_t __45__CKUIBehavior_showUnreadCountDebugggingInfo__block_invoke()
 
 - (double)_topConversationListSpace
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
-  if (v4)
+  if (isConversationListRefreshEnabled)
   {
     return 16.3333333;
   }
@@ -2779,8 +2779,8 @@ uint64_t __45__CKUIBehavior_showUnreadCountDebugggingInfo__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(conversationListSummaryBodyLeading_sContentSizeCategory_conversationListSummaryBodyLeading, v3);
   if (-[CKUIBehavior ckShouldUpdateconversationListSummaryBodyLeading](self, "ckShouldUpdateconversationListSummaryBodyLeading") || v10 || conversationListSummaryBodyLeading_sIsBoldTextEnabled_conversationListSummaryBodyLeading != IsBoldTextEnabled || (v11 = conversationListSummaryBodyLeading_sTextFontSize_conversationListSummaryBodyLeading, *&conversationListSummaryBodyLeading_sTextFontSize_conversationListSummaryBodyLeading != v5) || (v11 = conversationListSummaryBodyLeading_sCustomTextFontSize_conversationListSummaryBodyLeading, *&conversationListSummaryBodyLeading_sCustomTextFontSize_conversationListSummaryBodyLeading != v6) || ([conversationListSummaryBodyLeading_sCustomTextFontName_conversationListSummaryBodyLeading isEqualToString:{v9, *&conversationListSummaryBodyLeading_sCustomTextFontSize_conversationListSummaryBodyLeading}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self conversationListSummaryFont];
-    [v12 _bodyLeading];
+    conversationListSummaryFont = [(CKUIBehavior *)self conversationListSummaryFont];
+    [conversationListSummaryFont _bodyLeading];
     conversationListSummaryBodyLeading_sBehavior = v13;
 
     objc_storeStrong(&conversationListSummaryBodyLeading_sContentSizeCategory_conversationListSummaryBodyLeading, v3);
@@ -2933,10 +2933,10 @@ uint64_t __44__CKUIBehavior_entryViewVerticalCoverInsets__block_invoke(uint64_t 
 
 - (UIEdgeInsets)_entryViewVerticalCoverInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     v4 = *MEMORY[0x1E69DDCE0];
     v5 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -3072,10 +3072,10 @@ uint64_t __45__CKUIBehavior_entryViewSendButtonCoverSpace__block_invoke(uint64_t
 
 - (double)_entryViewSendButtonCoverSpace
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     if (CKPixelWidth_once_4 != -1)
     {
@@ -3132,11 +3132,11 @@ uint64_t __46__CKUIBehavior_entryContentViewTextLeftOffset__block_invoke(uint64_
 
 - (double)_entryContentViewTextLeftOffset
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 8.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 16.0;
   }
@@ -3293,17 +3293,17 @@ void __44__CKUIBehavior_textBalloonPillContentInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(balloonMaskTailHeight_sContentSizeCategory_balloonMaskTailHeight, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonMaskTailHeight](self, "ckShouldUpdateballoonMaskTailHeight") || v10 || balloonMaskTailHeight_sIsBoldTextEnabled_balloonMaskTailHeight != IsBoldTextEnabled || (v11 = balloonMaskTailHeight_sTextFontSize_balloonMaskTailHeight, *&balloonMaskTailHeight_sTextFontSize_balloonMaskTailHeight != v5) || (v11 = balloonMaskTailHeight_sCustomTextFontSize_balloonMaskTailHeight, *&balloonMaskTailHeight_sCustomTextFontSize_balloonMaskTailHeight != v6) || ([balloonMaskTailHeight_sCustomTextFontName_balloonMaskTailHeight isEqualToString:{v9, *&balloonMaskTailHeight_sCustomTextFontSize_balloonMaskTailHeight}] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
     v14 = 0;
-    if (v13)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v15 = [(CKUIBehavior *)self balloonTextFont];
+      balloonTextFont = [(CKUIBehavior *)self balloonTextFont];
       [(CKUIBehavior *)self balloonCornerRadius];
       v18 = 0u;
       v19 = 0u;
-      [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v15 cornerRadius:&v18 tailInsets:?];
+      [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:balloonTextFont cornerRadius:&v18 tailInsets:?];
       v14 = v19;
     }
 
@@ -3342,9 +3342,9 @@ void __44__CKUIBehavior_textBalloonPillContentInsets__block_invoke()
   v11 = UIContentSizeCategoryCompareToCategory(balloonTextFont_sContentSizeCategory_balloonTextFont, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonTextFont](self, "ckShouldUpdateballoonTextFont") || v11 || balloonTextFont_sIsIncreaseContrastEnabled_balloonTextFont != v4 || balloonTextFont_sIsBoldTextEnabled_balloonTextFont != IsBoldTextEnabled || (v12 = balloonTextFont_sTextFontSize_balloonTextFont, *&balloonTextFont_sTextFontSize_balloonTextFont != v6) || (v12 = balloonTextFont_sCustomTextFontSize_balloonTextFont, *&balloonTextFont_sCustomTextFontSize_balloonTextFont != v7) || ([balloonTextFont_sCustomTextFontName_balloonTextFont isEqualToString:{v10, *&balloonTextFont_sCustomTextFontSize_balloonTextFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _balloonTextFont];
+    _balloonTextFont = [(CKUIBehavior *)self _balloonTextFont];
     v14 = balloonTextFont_sBehavior;
-    balloonTextFont_sBehavior = v13;
+    balloonTextFont_sBehavior = _balloonTextFont;
 
     objc_storeStrong(&balloonTextFont_sContentSizeCategory_balloonTextFont, v3);
     balloonTextFont_sIsIncreaseContrastEnabled_balloonTextFont = v4;
@@ -3416,8 +3416,8 @@ void __44__CKUIBehavior_textBalloonPillContentInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(balloonPillMinHeight_sContentSizeCategory_balloonPillMinHeight, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonPillMinHeight](self, "ckShouldUpdateballoonPillMinHeight") || v10 || balloonPillMinHeight_sIsBoldTextEnabled_balloonPillMinHeight != IsBoldTextEnabled || (v11 = balloonPillMinHeight_sTextFontSize_balloonPillMinHeight, *&balloonPillMinHeight_sTextFontSize_balloonPillMinHeight != v5) || (v11 = balloonPillMinHeight_sCustomTextFontSize_balloonPillMinHeight, *&balloonPillMinHeight_sCustomTextFontSize_balloonPillMinHeight != v6) || ([balloonPillMinHeight_sCustomTextFontName_balloonPillMinHeight isEqualToString:{v9, *&balloonPillMinHeight_sCustomTextFontSize_balloonPillMinHeight}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self balloonTextFont];
-    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v12 cornerRadius:0 tailInsets:0.0];
+    balloonTextFont = [(CKUIBehavior *)self balloonTextFont];
+    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:balloonTextFont cornerRadius:0 tailInsets:0.0];
     v14 = v13;
 
     balloonPillMinHeight_sBehavior = v14;
@@ -3506,25 +3506,25 @@ uint64_t __40__CKUIBehavior_shouldUseDynamicGradient__block_invoke(uint64_t a1)
     [CKUIBehavior _shouldUseDynamicGradient];
   }
 
-  v2 = CKIsP101_sIsP101 ^ 1;
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  bOOLValue = CKIsP101_sIsP101 ^ 1;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 objectForKey:@"ShouldUseDynamicGradientForBalloons"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults objectForKey:@"ShouldUseDynamicGradientForBalloons"];
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v2 = [v6 BOOLValue];
+        bOOLValue = [v6 BOOLValue];
       }
     }
   }
 
-  return v2 & 1;
+  return bOOLValue & 1;
 }
 
 - (UIEdgeInsets)balloonTextContainerInset
@@ -3548,8 +3548,8 @@ uint64_t __40__CKUIBehavior_shouldUseDynamicGradient__block_invoke(uint64_t a1)
   v10 = UIContentSizeCategoryCompareToCategory(balloonTextContainerInset_sContentSizeCategory_balloonTextContainerInset, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonTextContainerInset](self, "ckShouldUpdateballoonTextContainerInset") || v10 || balloonTextContainerInset_sIsBoldTextEnabled_balloonTextContainerInset != IsBoldTextEnabled || (v11 = balloonTextContainerInset_sTextFontSize_balloonTextContainerInset, *&balloonTextContainerInset_sTextFontSize_balloonTextContainerInset != v5) || (v11 = balloonTextContainerInset_sCustomTextFontSize_balloonTextContainerInset, *&balloonTextContainerInset_sCustomTextFontSize_balloonTextContainerInset != v6) || ([balloonTextContainerInset_sCustomTextFontName_balloonTextContainerInset isEqualToString:{v9, *&balloonTextContainerInset_sCustomTextFontSize_balloonTextContainerInset}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self entryViewlayoutMetrics];
-    [v12 entryViewContentInsets];
+    entryViewlayoutMetrics = [(CKUIBehavior *)self entryViewlayoutMetrics];
+    [entryViewlayoutMetrics entryViewContentInsets];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -3611,9 +3611,9 @@ uint64_t __40__CKUIBehavior_shouldUseDynamicGradient__block_invoke(uint64_t a1)
   v10 = UIContentSizeCategoryCompareToCategory(entryViewlayoutMetrics_sContentSizeCategory_entryViewlayoutMetrics, v3);
   if (-[CKUIBehavior ckShouldUpdateentryViewlayoutMetrics](self, "ckShouldUpdateentryViewlayoutMetrics") || v10 || entryViewlayoutMetrics_sIsBoldTextEnabled_entryViewlayoutMetrics != IsBoldTextEnabled || (v11 = entryViewlayoutMetrics_sTextFontSize_entryViewlayoutMetrics, *&entryViewlayoutMetrics_sTextFontSize_entryViewlayoutMetrics != v5) || (v11 = entryViewlayoutMetrics_sCustomTextFontSize_entryViewlayoutMetrics, *&entryViewlayoutMetrics_sCustomTextFontSize_entryViewlayoutMetrics != v6) || ([entryViewlayoutMetrics_sCustomTextFontName_entryViewlayoutMetrics isEqualToString:{v9, *&entryViewlayoutMetrics_sCustomTextFontSize_entryViewlayoutMetrics}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self _entryViewlayoutMetrics];
+    _entryViewlayoutMetrics = [(CKUIBehavior *)self _entryViewlayoutMetrics];
     v13 = entryViewlayoutMetrics_sBehavior;
-    entryViewlayoutMetrics_sBehavior = v12;
+    entryViewlayoutMetrics_sBehavior = _entryViewlayoutMetrics;
 
     objc_storeStrong(&entryViewlayoutMetrics_sContentSizeCategory_entryViewlayoutMetrics, v3);
     entryViewlayoutMetrics_sIsBoldTextEnabled_entryViewlayoutMetrics = IsBoldTextEnabled;
@@ -3667,10 +3667,10 @@ uint64_t __44__CKUIBehavior_entryViewCoverHasOuterStroke__block_invoke(uint64_t 
 
 - (BOOL)_entryViewCoverHasOuterStroke
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  return v3 ^ 1;
+  return isEntryViewRefreshEnabled ^ 1;
 }
 
 - (double)textAlignmentRectInsetsScaleFactor
@@ -3694,9 +3694,9 @@ uint64_t __44__CKUIBehavior_entryViewCoverHasOuterStroke__block_invoke(uint64_t 
   v10 = UIContentSizeCategoryCompareToCategory(textAlignmentRectInsetsScaleFactor_sContentSizeCategory_textAlignmentRectInsetsScaleFactor, v3);
   if (-[CKUIBehavior ckShouldUpdatetextAlignmentRectInsetsScaleFactor](self, "ckShouldUpdatetextAlignmentRectInsetsScaleFactor") || v10 || textAlignmentRectInsetsScaleFactor_sIsBoldTextEnabled_textAlignmentRectInsetsScaleFactor != IsBoldTextEnabled || (v11 = textAlignmentRectInsetsScaleFactor_sTextFontSize_textAlignmentRectInsetsScaleFactor, *&textAlignmentRectInsetsScaleFactor_sTextFontSize_textAlignmentRectInsetsScaleFactor != v5) || (v11 = textAlignmentRectInsetsScaleFactor_sCustomTextFontSize_textAlignmentRectInsetsScaleFactor, *&textAlignmentRectInsetsScaleFactor_sCustomTextFontSize_textAlignmentRectInsetsScaleFactor != v6) || ([textAlignmentRectInsetsScaleFactor_sCustomTextFontName_textAlignmentRectInsetsScaleFactor isEqualToString:{v9, *&textAlignmentRectInsetsScaleFactor_sCustomTextFontSize_textAlignmentRectInsetsScaleFactor}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
     v13 = 1.2;
-    if (!v12)
+    if (!isAccessibilityPreferredContentSizeCategory)
     {
       v13 = 1.0;
     }
@@ -3736,9 +3736,9 @@ uint64_t __44__CKUIBehavior_entryViewCoverHasOuterStroke__block_invoke(uint64_t 
   v11 = UIContentSizeCategoryCompareToCategory(balloonParagraphStyle_sContentSizeCategory_balloonParagraphStyle, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonParagraphStyle](self, "ckShouldUpdateballoonParagraphStyle") || v11 || balloonParagraphStyle_sIsIncreaseContrastEnabled_balloonParagraphStyle != v4 || balloonParagraphStyle_sIsBoldTextEnabled_balloonParagraphStyle != IsBoldTextEnabled || (v12 = balloonParagraphStyle_sTextFontSize_balloonParagraphStyle, *&balloonParagraphStyle_sTextFontSize_balloonParagraphStyle != v6) || (v12 = balloonParagraphStyle_sCustomTextFontSize_balloonParagraphStyle, *&balloonParagraphStyle_sCustomTextFontSize_balloonParagraphStyle != v7) || ([balloonParagraphStyle_sCustomTextFontName_balloonParagraphStyle isEqualToString:{v10, *&balloonParagraphStyle_sCustomTextFontSize_balloonParagraphStyle}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _balloonParagraphStyle];
+    _balloonParagraphStyle = [(CKUIBehavior *)self _balloonParagraphStyle];
     v14 = balloonParagraphStyle_sBehavior;
-    balloonParagraphStyle_sBehavior = v13;
+    balloonParagraphStyle_sBehavior = _balloonParagraphStyle;
 
     objc_storeStrong(&balloonParagraphStyle_sContentSizeCategory_balloonParagraphStyle, v3);
     balloonParagraphStyle_sIsIncreaseContrastEnabled_balloonParagraphStyle = v4;
@@ -3756,8 +3756,8 @@ uint64_t __44__CKUIBehavior_entryViewCoverHasOuterStroke__block_invoke(uint64_t 
 
 - (id)_balloonParagraphStyle
 {
-  v3 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   if ([(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory])
   {
@@ -4057,8 +4057,8 @@ uint64_t __40__CKUIBehavior_isRunningInStoreDemoMode__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(entryViewTextOneLineHeight_sContentSizeCategory_entryViewTextOneLineHeight, v3);
   if (-[CKUIBehavior ckShouldUpdateentryViewTextOneLineHeight](self, "ckShouldUpdateentryViewTextOneLineHeight") || v10 || entryViewTextOneLineHeight_sIsBoldTextEnabled_entryViewTextOneLineHeight != IsBoldTextEnabled || (v11 = entryViewTextOneLineHeight_sTextFontSize_entryViewTextOneLineHeight, *&entryViewTextOneLineHeight_sTextFontSize_entryViewTextOneLineHeight != v5) || (v11 = entryViewTextOneLineHeight_sCustomTextFontSize_entryViewTextOneLineHeight, *&entryViewTextOneLineHeight_sCustomTextFontSize_entryViewTextOneLineHeight != v6) || ([entryViewTextOneLineHeight_sCustomTextFontName_entryViewTextOneLineHeight isEqualToString:{v9, *&entryViewTextOneLineHeight_sCustomTextFontSize_entryViewTextOneLineHeight}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self balloonTextFont];
-    [v12 lineHeight];
+    balloonTextFont = [(CKUIBehavior *)self balloonTextFont];
+    [balloonTextFont lineHeight];
     entryViewTextOneLineHeight_sBehavior = v13;
 
     objc_storeStrong(&entryViewTextOneLineHeight_sContentSizeCategory_entryViewTextOneLineHeight, v3);
@@ -4230,11 +4230,11 @@ uint64_t __74__CKUIBehavior_entryViewWithSendMenuBottomContentInsetWithKeyboardV
 
 - (double)_entryViewWithSendMenuBottomContentInsetWithKeyboardVisible
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 10.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 16.0;
   }
@@ -4295,21 +4295,21 @@ uint64_t __33__CKUIBehavior_showsLoadMoreItem__block_invoke()
   sSharedBehaviors = 0;
 }
 
-- (void)setHUDStyle:(int64_t)a3
+- (void)setHUDStyle:(int64_t)style
 {
-  if (self->_HUDStyle != a3)
+  if (self->_HUDStyle != style)
   {
-    self->_HUDStyle = a3;
-    v5 = [(CKUIBehavior *)self theme];
-    [v5 setHUDStyle:self->_HUDStyle];
+    self->_HUDStyle = style;
+    theme = [(CKUIBehavior *)self theme];
+    [theme setHUDStyle:self->_HUDStyle];
   }
 }
 
-- (BOOL)shouldShowAvatarForWidth:(double)a3
+- (BOOL)shouldShowAvatarForWidth:(double)width
 {
   [(CKUIBehavior *)self conversationListMinimumWidthForHiddenContactImage];
   v6 = v5;
-  if (![(CKUIBehavior *)self canShowContactPhotosInConversationList]|| v6 >= a3)
+  if (![(CKUIBehavior *)self canShowContactPhotosInConversationList]|| v6 >= width)
   {
     return 0;
   }
@@ -4762,25 +4762,25 @@ uint64_t __46__CKUIBehavior_isProximityMonitoringSupported__block_invoke()
   return *&minNavigationBarHeightValue_sBehavior;
 }
 
-- (double)navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:(BOOL)a3
+- (double)navigationBarTitleViewVerticalOffsetWantsMinimumSafeAreas:(BOOL)areas
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  areasCopy = areas;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 0.0;
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v8 = CKIsRunningInMessagesTranscriptExtension();
     result = 15.0;
     if (!v8)
     {
       result = 0.0;
-      if (v3)
+      if (areasCopy)
       {
-        v9 = [(CKUIBehavior *)self contactPhotosEnabled];
+        contactPhotosEnabled = [(CKUIBehavior *)self contactPhotosEnabled];
         result = 0.0;
-        if (v9)
+        if (contactPhotosEnabled)
         {
           return 4.0;
         }
@@ -5277,16 +5277,16 @@ void __44__CKUIBehavior_navbarJoinPillSharePlayImage__block_invoke()
   navbarJoinPillSharePlayImage_sBehavior = v3;
 }
 
-- (id)imageNamed:(id)a3 pointSize:(double)a4 insets:(UIEdgeInsets)a5
+- (id)imageNamed:(id)named pointSize:(double)size insets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v10 = MEMORY[0x1E69DCAD8];
-  v11 = a3;
-  v12 = [v10 configurationWithPointSize:a4];
-  v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11];
+  namedCopy = named;
+  v12 = [v10 configurationWithPointSize:size];
+  v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy];
 
   v14 = [v13 imageWithSymbolConfiguration:v12];
 
@@ -5295,16 +5295,16 @@ void __44__CKUIBehavior_navbarJoinPillSharePlayImage__block_invoke()
   return v15;
 }
 
-- (id)imageNamed:(id)a3 pointSize:(double)a4 insets:(UIEdgeInsets)a5 color:(id)a6
+- (id)imageNamed:(id)named pointSize:(double)size insets:(UIEdgeInsets)insets color:(id)color
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v13 = a6;
-  v14 = [(CKUIBehavior *)self imageNamed:a3 pointSize:a4 insets:top, left, bottom, right];
-  v15 = [v14 imageWithRenderingMode:2];
-  v16 = [v15 ckImageWithTintColor:v13];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  colorCopy = color;
+  right = [(CKUIBehavior *)self imageNamed:named pointSize:size insets:top, left, bottom, right];
+  v15 = [right imageWithRenderingMode:2];
+  v16 = [v15 ckImageWithTintColor:colorCopy];
 
   return v16;
 }
@@ -5367,8 +5367,8 @@ void __42__CKUIBehavior_disabledFacetimeVideoImage__block_invoke(uint64_t a1)
 
 - (BOOL)_isVerticallyCompact
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v3 = _UIUserInterfaceSizeClassForHeight() == 1;
 
   return v3;
@@ -5378,8 +5378,8 @@ void __42__CKUIBehavior_disabledFacetimeVideoImage__block_invoke(uint64_t a1)
 {
   if ([(CKUIBehavior *)self contactPhotosEnabled])
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     if (v4 <= 320.0 || [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory]|| [(CKUIBehavior *)self _isVerticallyCompact])
     {
       [(CKUIBehavior *)self minNavigationBarHeightValue];
@@ -5442,30 +5442,30 @@ void __44__CKUIBehavior_orderedContentSizeCategories__block_invoke()
   orderedContentSizeCategories__contentSizeCategories = v6;
 }
 
-+ (BOOL)isPreferredContentSizeCategoryGreaterThanOrEqualTo:(id)a3
++ (BOOL)isPreferredContentSizeCategoryGreaterThanOrEqualTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   v4 = +[CKUIBehavior orderedContentSizeCategories];
   v5 = CKPreferredContentSizeCategory();
   v6 = [v4 indexOfObject:v5];
-  v7 = [v4 indexOfObject:v3];
+  v7 = [v4 indexOfObject:toCopy];
 
   return v6 >= v7;
 }
 
-+ (id)fontWithStyle:(id)a3 adjustedForMaxSizeCategory:(id)a4
++ (id)fontWithStyle:(id)style adjustedForMaxSizeCategory:(id)category
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:a3];
+  categoryCopy = category;
+  v7 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:style];
   v8 = CKPreferredContentSizeCategory();
-  v9 = [a1 orderedContentSizeCategories];
-  v10 = [v9 indexOfObject:v8];
-  v11 = [a1 orderedContentSizeCategories];
-  v12 = [v11 indexOfObject:v6];
+  orderedContentSizeCategories = [self orderedContentSizeCategories];
+  v10 = [orderedContentSizeCategories indexOfObject:v8];
+  orderedContentSizeCategories2 = [self orderedContentSizeCategories];
+  v12 = [orderedContentSizeCategories2 indexOfObject:categoryCopy];
 
   if (v10 > v12)
   {
-    v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v6];
+    v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
     v14 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v13];
 
     v7 = v14;
@@ -5474,25 +5474,25 @@ void __44__CKUIBehavior_orderedContentSizeCategories__block_invoke()
   return v7;
 }
 
-+ (id)font:(id)a3 adjustedForMaxSizeCategory:(id)a4
++ (id)font:(id)font adjustedForMaxSizeCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  fontCopy = font;
+  categoryCopy = category;
   v8 = CKPreferredContentSizeCategory();
-  v9 = [a1 orderedContentSizeCategories];
-  v10 = [v9 indexOfObject:v8];
-  v11 = [a1 orderedContentSizeCategories];
-  v12 = [v11 indexOfObject:v7];
+  orderedContentSizeCategories = [self orderedContentSizeCategories];
+  v10 = [orderedContentSizeCategories indexOfObject:v8];
+  orderedContentSizeCategories2 = [self orderedContentSizeCategories];
+  v12 = [orderedContentSizeCategories2 indexOfObject:categoryCopy];
 
   if (v10 > v12)
   {
-    v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v7];
-    v14 = [v6 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v13];
+    v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
+    v14 = [fontCopy _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v13];
 
-    v6 = v14;
+    fontCopy = v14;
   }
 
-  return v6;
+  return fontCopy;
 }
 
 - (double)transcriptHeaderViewMaxRows
@@ -5575,8 +5575,8 @@ uint64_t __48__CKUIBehavior_defaultConversationLoadMoreCount__block_invoke(uint6
 
 - (unint64_t)minBalloonsForTranscriptHeight
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = fmax(v4, v5);
 
   v7 = v6 + -84.0;
@@ -5898,10 +5898,10 @@ void __27__CKUIBehavior_appIconSize__block_invoke()
   return showMMSSetup_sBehavior;
 }
 
-- (double)conversationListWidthForInterfaceOrientation:(int64_t)a3
+- (double)conversationListWidthForInterfaceOrientation:(int64_t)orientation
 {
   result = 320.0;
-  if ((a3 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     return 0.0;
   }
@@ -5933,11 +5933,11 @@ uint64_t __38__CKUIBehavior_defaultSeparatorHeight__block_invoke(uint64_t a1)
 
 - (double)_defaultSeparatorHeight
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
   result = 1.0;
-  if ((v3 & 1) == 0)
+  if ((isConversationListRefreshEnabled & 1) == 0)
   {
     if (CKPixelWidth_once_4 != -1)
     {
@@ -6069,8 +6069,8 @@ void __39__CKUIBehavior_landscapeKeyboardInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(conversationListSenderBodyLeading_sContentSizeCategory_conversationListSenderBodyLeading, v3);
   if (-[CKUIBehavior ckShouldUpdateconversationListSenderBodyLeading](self, "ckShouldUpdateconversationListSenderBodyLeading") || v10 || conversationListSenderBodyLeading_sIsBoldTextEnabled_conversationListSenderBodyLeading != IsBoldTextEnabled || (v11 = conversationListSenderBodyLeading_sTextFontSize_conversationListSenderBodyLeading, *&conversationListSenderBodyLeading_sTextFontSize_conversationListSenderBodyLeading != v5) || (v11 = conversationListSenderBodyLeading_sCustomTextFontSize_conversationListSenderBodyLeading, *&conversationListSenderBodyLeading_sCustomTextFontSize_conversationListSenderBodyLeading != v6) || ([conversationListSenderBodyLeading_sCustomTextFontName_conversationListSenderBodyLeading isEqualToString:{v9, *&conversationListSenderBodyLeading_sCustomTextFontSize_conversationListSenderBodyLeading}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self conversationListSenderFont];
-    [v12 _bodyLeading];
+    conversationListSenderFont = [(CKUIBehavior *)self conversationListSenderFont];
+    [conversationListSenderFont _bodyLeading];
     conversationListSenderBodyLeading_sBehavior = v13;
 
     objc_storeStrong(&conversationListSenderBodyLeading_sContentSizeCategory_conversationListSenderBodyLeading, v3);
@@ -6106,8 +6106,8 @@ void __39__CKUIBehavior_landscapeKeyboardInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(largeTextTopConversationListSpace_sContentSizeCategory_largeTextTopConversationListSpace, v3);
   if (-[CKUIBehavior ckShouldUpdatelargeTextTopConversationListSpace](self, "ckShouldUpdatelargeTextTopConversationListSpace") || v10 || largeTextTopConversationListSpace_sIsBoldTextEnabled_largeTextTopConversationListSpace != IsBoldTextEnabled || (v11 = largeTextTopConversationListSpace_sTextFontSize_largeTextTopConversationListSpace, *&largeTextTopConversationListSpace_sTextFontSize_largeTextTopConversationListSpace != v5) || (v11 = largeTextTopConversationListSpace_sCustomTextFontSize_largeTextTopConversationListSpace, *&largeTextTopConversationListSpace_sCustomTextFontSize_largeTextTopConversationListSpace != v6) || ([largeTextTopConversationListSpace_sCustomTextFontName_largeTextTopConversationListSpace isEqualToString:{v9, *&largeTextTopConversationListSpace_sCustomTextFontSize_largeTextTopConversationListSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self conversationListSenderFont];
-    [v12 pointSize];
+    conversationListSenderFont = [(CKUIBehavior *)self conversationListSenderFont];
+    [conversationListSenderFont pointSize];
     v14 = v13 * 0.226415094;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -6155,8 +6155,8 @@ void __39__CKUIBehavior_landscapeKeyboardInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(accessibilityBottomConversationListSpace_sContentSizeCategory_accessibilityBottomConversationListSpace, v3);
   if (-[CKUIBehavior ckShouldUpdateaccessibilityBottomConversationListSpace](self, "ckShouldUpdateaccessibilityBottomConversationListSpace") || v10 || accessibilityBottomConversationListSpace_sIsBoldTextEnabled_accessibilityBottomConversationListSpace != IsBoldTextEnabled || (v11 = accessibilityBottomConversationListSpace_sTextFontSize_accessibilityBottomConversationListSpace, *&accessibilityBottomConversationListSpace_sTextFontSize_accessibilityBottomConversationListSpace != v5) || (v11 = accessibilityBottomConversationListSpace_sCustomTextFontSize_accessibilityBottomConversationListSpace, *&accessibilityBottomConversationListSpace_sCustomTextFontSize_accessibilityBottomConversationListSpace != v6) || ([accessibilityBottomConversationListSpace_sCustomTextFontName_accessibilityBottomConversationListSpace isEqualToString:{v9, *&accessibilityBottomConversationListSpace_sCustomTextFontSize_accessibilityBottomConversationListSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self conversationListDateFont];
-    [v12 pointSize];
+    conversationListDateFont = [(CKUIBehavior *)self conversationListDateFont];
+    [conversationListDateFont pointSize];
     v14 = v13 * 0.448979592;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -6425,9 +6425,9 @@ void __39__CKUIBehavior_landscapeKeyboardInsets__block_invoke()
   return *&conversationListCellIntroductionsButtonSpacing_sBehavior;
 }
 
-- (double)conversationCellLeadingSeparatorInsetForEnvironment:(id)a3
+- (double)conversationCellLeadingSeparatorInsetForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if ([(CKUIBehavior *)self conversationListCellUsesLargeTextLayout])
   {
     [(CKUIBehavior *)self conversationListCellLargeTextLeftMargin];
@@ -6436,8 +6436,8 @@ void __39__CKUIBehavior_landscapeKeyboardInsets__block_invoke()
 
   else
   {
-    v7 = [v4 container];
-    [v7 contentSize];
+    container = [environmentCopy container];
+    [container contentSize];
     v8 = [(CKUIBehavior *)self shouldShowAvatarForWidth:?];
 
     [(CKUIBehavior *)self conversationListCellLeftMargin];
@@ -6738,13 +6738,13 @@ void __57__CKUIBehavior_transcriptTypingIndicatorSmallBubbleFrame__block_invoke(
   return v14;
 }
 
-- (id)navBarSubtitleAttributedStringAttributesForContentSizeCategory:(id)a3
+- (id)navBarSubtitleAttributedStringAttributesForContentSizeCategory:(id)category
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKUIBehavior *)self navBarSubtitleFontForContentSizeCategory:v4];
-  v6 = [(CKUIBehavior *)self navBarSubtitleParagraphStyleForContentSizeCategory:v4];
-  [(CKUIBehavior *)self navBarSubtitleFontTrackingValueForContentSizeCategory:v4];
+  categoryCopy = category;
+  v5 = [(CKUIBehavior *)self navBarSubtitleFontForContentSizeCategory:categoryCopy];
+  v6 = [(CKUIBehavior *)self navBarSubtitleParagraphStyleForContentSizeCategory:categoryCopy];
+  [(CKUIBehavior *)self navBarSubtitleFontTrackingValueForContentSizeCategory:categoryCopy];
   v8 = v7;
 
   v9 = *MEMORY[0x1E69DB688];
@@ -6760,27 +6760,27 @@ void __57__CKUIBehavior_transcriptTypingIndicatorSmallBubbleFrame__block_invoke(
   return v11;
 }
 
-- (id)navBarSubtitleFontForContentSizeCategory:(id)a3
+- (id)navBarSubtitleFontForContentSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x1E69DDC60];
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
   {
     v5 = 10.0;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(v3, v4))
+  else if (UIContentSizeCategoryCompareToCategory(categoryCopy, v4))
   {
     v5 = 14.0;
-    if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC58]) && UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]))
+    if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC58]) && UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC50]))
     {
       v6 = *MEMORY[0x1E69DDC20];
-      if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
       {
         v5 = 19.0;
       }
 
-      else if (UIContentSizeCategoryCompareToCategory(v3, v6))
+      else if (UIContentSizeCategoryCompareToCategory(categoryCopy, v6))
       {
         v5 = 10.0;
       }
@@ -6802,18 +6802,18 @@ void __57__CKUIBehavior_transcriptTypingIndicatorSmallBubbleFrame__block_invoke(
   return v7;
 }
 
-- (id)navBarSubtitleParagraphStyleForContentSizeCategory:(id)a3
+- (id)navBarSubtitleParagraphStyleForContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CKUIBehavior *)self navBarSubtitleFontForContentSizeCategory:v4];
+  categoryCopy = category;
+  v5 = [(CKUIBehavior *)self navBarSubtitleFontForContentSizeCategory:categoryCopy];
   [v5 pointSize];
   v7 = v6;
-  [(CKUIBehavior *)self navBarSubtitleFontLeadingValueForContentSizeCategory:v4];
+  [(CKUIBehavior *)self navBarSubtitleFontLeadingValueForContentSizeCategory:categoryCopy];
   v9 = v8;
 
   v10 = v9 - v7;
-  v11 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v12 = [v11 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v12 = [defaultParagraphStyle mutableCopy];
 
   [v12 setAlignment:1];
   [v12 setLineBreakMode:4];
@@ -6825,30 +6825,30 @@ void __57__CKUIBehavior_transcriptTypingIndicatorSmallBubbleFrame__block_invoke(
   return v12;
 }
 
-- (double)navBarSubtitleFontTrackingValueForContentSizeCategory:(id)a3
+- (double)navBarSubtitleFontTrackingValueForContentSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x1E69DDC60];
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
   {
     v6 = 0.12;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(v3, v4))
+  else if (UIContentSizeCategoryCompareToCategory(categoryCopy, v4))
   {
-    if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC58]))
+    if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC58]))
     {
-      if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]))
+      if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC50]))
       {
         v5 = *MEMORY[0x1E69DDC20];
-        if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
+        if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
         {
           v6 = -0.45;
         }
 
         else
         {
-          v6 = dbl_190DD0AD0[UIContentSizeCategoryCompareToCategory(v3, v5) == NSOrderedSame];
+          v6 = dbl_190DD0AD0[UIContentSizeCategoryCompareToCategory(categoryCopy, v5) == NSOrderedSame];
         }
       }
 
@@ -6872,28 +6872,28 @@ void __57__CKUIBehavior_transcriptTypingIndicatorSmallBubbleFrame__block_invoke(
   return v6;
 }
 
-- (double)navBarSubtitleFontLeadingValueForContentSizeCategory:(id)a3
+- (double)navBarSubtitleFontLeadingValueForContentSizeCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x1E69DDC60];
-  if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC60]) == NSOrderedAscending)
   {
     v6 = 11.0;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(v3, v4))
+  else if (UIContentSizeCategoryCompareToCategory(categoryCopy, v4))
   {
-    if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC58]))
+    if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC58]))
     {
-      if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]))
+      if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC50]))
       {
         v5 = *MEMORY[0x1E69DDC20];
-        if (UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
+        if (UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC20]) == NSOrderedAscending)
         {
           v6 = 20.0;
         }
 
-        else if (UIContentSizeCategoryCompareToCategory(v3, v5))
+        else if (UIContentSizeCategoryCompareToCategory(categoryCopy, v5))
         {
           v6 = 11.0;
         }
@@ -7011,16 +7011,16 @@ void __30__CKUIBehavior_acceptableUTIs__block_invoke()
   acceptableUTIs_sBehavior = v8;
 }
 
-- (id)pasteConfigurationDisablingKeyboardStickers:(BOOL)a3
+- (id)pasteConfigurationDisablingKeyboardStickers:(BOOL)stickers
 {
-  v3 = a3;
-  v4 = [(CKUIBehavior *)self acceptableUTIs];
-  v5 = [v4 mutableCopy];
+  stickersCopy = stickers;
+  acceptableUTIs = [(CKUIBehavior *)self acceptableUTIs];
+  v5 = [acceptableUTIs mutableCopy];
 
-  if (v3)
+  if (stickersCopy)
   {
-    v6 = [*MEMORY[0x1E6982F28] identifier];
-    [v5 removeObject:v6];
+    identifier = [*MEMORY[0x1E6982F28] identifier];
+    [v5 removeObject:identifier];
   }
 
   v7 = [objc_alloc(MEMORY[0x1E69DCD38]) initWithAcceptableTypeIdentifiers:v5];
@@ -7104,20 +7104,20 @@ uint64_t __46__CKUIBehavior_modalTranscriptControllerClass__block_invoke()
   return result;
 }
 
-- (BOOL)suppressPinActivityForState:(id)a3
+- (BOOL)suppressPinActivityForState:(id)state
 {
-  v3 = a3;
-  if ([v3 isSelected])
+  stateCopy = state;
+  if ([stateCopy isSelected])
   {
-    v4 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v4 = [v3 isHighlighted];
+    isHighlighted = [stateCopy isHighlighted];
   }
 
-  return v4;
+  return isHighlighted;
 }
 
 - (BOOL)shouldUnreadIndicatorChangeOnSelection
@@ -7193,10 +7193,10 @@ double __54__CKUIBehavior_pinnedConversationCheckmarkStrokeRatio__block_invoke(u
   return *&conversationListTotalLastPinNameToFirstCellSpacing_sBehavior;
 }
 
-- (double)totalTopSpacingFromSearchBarToPinnedItems:(BOOL)a3
+- (double)totalTopSpacingFromSearchBarToPinnedItems:(BOOL)items
 {
   result = 10.0;
-  if (a3)
+  if (items)
   {
     return 15.0;
   }
@@ -7204,19 +7204,19 @@ double __54__CKUIBehavior_pinnedConversationCheckmarkStrokeRatio__block_invoke(u
   return result;
 }
 
-- (id)conversationListMoveSelectedToRecentlyDeletedButtonItemWithTarget:(id)a3 action:(SEL)a4
+- (id)conversationListMoveSelectedToRecentlyDeletedButtonItemWithTarget:(id)target action:(SEL)action
 {
   v5 = MEMORY[0x1E69DC708];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithBarButtonSystemItem:16 target:v6 action:a4];
+  targetCopy = target;
+  v7 = [[v5 alloc] initWithBarButtonSystemItem:16 target:targetCopy action:action];
 
   return v7;
 }
 
-- (UIEdgeInsets)contentInsetsForConversationListSearchBarForLayoutMargins:(UIEdgeInsets)result isRTL:(BOOL)a4
+- (UIEdgeInsets)contentInsetsForConversationListSearchBarForLayoutMargins:(UIEdgeInsets)result isRTL:(BOOL)l
 {
   v4 = 0.0;
-  if (a4)
+  if (l)
   {
     result.left = 0.0;
   }
@@ -7232,9 +7232,9 @@ double __54__CKUIBehavior_pinnedConversationCheckmarkStrokeRatio__block_invoke(u
   return result;
 }
 
-- (unint64_t)contentRectEdgeForConversationListSearchBarInsetsWithRTL:(BOOL)a3
+- (unint64_t)contentRectEdgeForConversationListSearchBarInsetsWithRTL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     return 8;
   }
@@ -7247,16 +7247,16 @@ double __54__CKUIBehavior_pinnedConversationCheckmarkStrokeRatio__block_invoke(u
 
 - (BOOL)usesPersistentConversationSelection
 {
-  v2 = [*MEMORY[0x1E69DDA98] windows];
-  v3 = [v2 firstObject];
-  v4 = [v3 traitCollection];
+  windows = [*MEMORY[0x1E69DDA98] windows];
+  firstObject = [windows firstObject];
+  traitCollection = [firstObject traitCollection];
 
   v5 = usesPersistentConversationSelection_sUserInterfaceHorizontalSizeClass_usesPersistentConversationSelection;
-  if (v5 != [v4 horizontalSizeClass])
+  if (v5 != [traitCollection horizontalSizeClass])
   {
-    usesPersistentConversationSelection_sBehavior = [v4 horizontalSizeClass] == 2;
-    usesPersistentConversationSelection_sUserInterfaceHorizontalSizeClass_usesPersistentConversationSelection = [v4 horizontalSizeClass];
-    [v4 verticalSizeClass];
+    usesPersistentConversationSelection_sBehavior = [traitCollection horizontalSizeClass] == 2;
+    usesPersistentConversationSelection_sUserInterfaceHorizontalSizeClass_usesPersistentConversationSelection = [traitCollection horizontalSizeClass];
+    [traitCollection verticalSizeClass];
   }
 
   v6 = usesPersistentConversationSelection_sBehavior;
@@ -7626,9 +7626,9 @@ double __61__CKUIBehavior_conversationListMultipleContactsImageDiameter__block_i
   v11 = UIContentSizeCategoryCompareToCategory(conversationListGroupCountFont_sContentSizeCategory_conversationListGroupCountFont, v3);
   if (-[CKUIBehavior ckShouldUpdateconversationListGroupCountFont](self, "ckShouldUpdateconversationListGroupCountFont") || v11 || conversationListGroupCountFont_sIsIncreaseContrastEnabled_conversationListGroupCountFont != v4 || conversationListGroupCountFont_sIsBoldTextEnabled_conversationListGroupCountFont != IsBoldTextEnabled || (v12 = conversationListGroupCountFont_sTextFontSize_conversationListGroupCountFont, *&conversationListGroupCountFont_sTextFontSize_conversationListGroupCountFont != v6) || (v12 = conversationListGroupCountFont_sCustomTextFontSize_conversationListGroupCountFont, *&conversationListGroupCountFont_sCustomTextFontSize_conversationListGroupCountFont != v7) || ([conversationListGroupCountFont_sCustomTextFontName_conversationListGroupCountFont isEqualToString:{v10, *&conversationListGroupCountFont_sCustomTextFontSize_conversationListGroupCountFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self conversationListSummaryFont];
+    conversationListSummaryFont = [(CKUIBehavior *)self conversationListSummaryFont];
     v14 = conversationListGroupCountFont_sBehavior;
-    conversationListGroupCountFont_sBehavior = v13;
+    conversationListGroupCountFont_sBehavior = conversationListSummaryFont;
 
     objc_storeStrong(&conversationListGroupCountFont_sContentSizeCategory_conversationListGroupCountFont, v3);
     conversationListGroupCountFont_sIsIncreaseContrastEnabled_conversationListGroupCountFont = v4;
@@ -7786,9 +7786,9 @@ void __62__CKUIBehavior_conversationListFocusFilterBannerShowsKeylines__block_in
   v11 = UIContentSizeCategoryCompareToCategory(conversationListFocusFilterBannerTitleValueFont_sContentSizeCategory_conversationListFocusFilterBannerTitleValueFont, v3);
   if (-[CKUIBehavior ckShouldUpdateconversationListFocusFilterBannerTitleValueFont](self, "ckShouldUpdateconversationListFocusFilterBannerTitleValueFont") || v11 || conversationListFocusFilterBannerTitleValueFont_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerTitleValueFont != v4 || conversationListFocusFilterBannerTitleValueFont_sIsBoldTextEnabled_conversationListFocusFilterBannerTitleValueFont != IsBoldTextEnabled || (v12 = conversationListFocusFilterBannerTitleValueFont_sTextFontSize_conversationListFocusFilterBannerTitleValueFont, *&conversationListFocusFilterBannerTitleValueFont_sTextFontSize_conversationListFocusFilterBannerTitleValueFont != v6) || (v12 = conversationListFocusFilterBannerTitleValueFont_sCustomTextFontSize_conversationListFocusFilterBannerTitleValueFont, *&conversationListFocusFilterBannerTitleValueFont_sCustomTextFontSize_conversationListFocusFilterBannerTitleValueFont != v7) || ([conversationListFocusFilterBannerTitleValueFont_sCustomTextFontName_conversationListFocusFilterBannerTitleValueFont isEqualToString:{v10, *&conversationListFocusFilterBannerTitleValueFont_sCustomTextFontSize_conversationListFocusFilterBannerTitleValueFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _conversationListFocusFilterBannerTitleValueFont];
+    _conversationListFocusFilterBannerTitleValueFont = [(CKUIBehavior *)self _conversationListFocusFilterBannerTitleValueFont];
     v14 = conversationListFocusFilterBannerTitleValueFont_sBehavior;
-    conversationListFocusFilterBannerTitleValueFont_sBehavior = v13;
+    conversationListFocusFilterBannerTitleValueFont_sBehavior = _conversationListFocusFilterBannerTitleValueFont;
 
     objc_storeStrong(&conversationListFocusFilterBannerTitleValueFont_sContentSizeCategory_conversationListFocusFilterBannerTitleValueFont, v3);
     conversationListFocusFilterBannerTitleValueFont_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerTitleValueFont = v4;
@@ -7806,10 +7806,10 @@ void __62__CKUIBehavior_conversationListFocusFilterBannerShowsKeylines__block_in
 
 - (id)_conversationListFocusFilterBannerTitleValueFont
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isConversationListRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
-  if (v3)
+  if (isConversationListRefreshEnabled)
   {
     v4 = 0x8000;
   }
@@ -8695,33 +8695,33 @@ void __40__CKUIBehavior_shouldBackfillTranscript__block_invoke()
 
 - (double)_sendAnimationDuration
 {
-  v2 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
   v4 = 0.4;
-  if (v3)
+  if (isInternalInstall)
   {
-    v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v6 = [v5 isSendAnimationRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isSendAnimationRefreshEnabled = [mEMORY[0x1E69A8070] isSendAnimationRefreshEnabled];
 
-    if (v6)
+    if (isSendAnimationRefreshEnabled)
     {
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v8 = [v7 ck_isSlowSendAnimationEnabled];
-      v9 = [v7 ck_isVerySlowSendAnimationEnabled];
-      v10 = [v7 ck_isVeryVerySlowSendAnimationEnabled];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      ck_isSlowSendAnimationEnabled = [standardUserDefaults ck_isSlowSendAnimationEnabled];
+      ck_isVerySlowSendAnimationEnabled = [standardUserDefaults ck_isVerySlowSendAnimationEnabled];
+      ck_isVeryVerySlowSendAnimationEnabled = [standardUserDefaults ck_isVeryVerySlowSendAnimationEnabled];
       v11 = 0.4;
-      if (v8)
+      if (ck_isSlowSendAnimationEnabled)
       {
         v11 = 0.8;
       }
 
-      if (v9)
+      if (ck_isVerySlowSendAnimationEnabled)
       {
         v11 = v11 + 0.8;
       }
 
-      if (v10)
+      if (ck_isVeryVerySlowSendAnimationEnabled)
       {
         v4 = v11 + 1.6;
       }
@@ -8829,10 +8829,10 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
 - (UIImage)messageEditingRejectButtonImage
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     v4 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC8] scale:2];
     v5 = @"xmark";
@@ -8842,13 +8842,13 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
   {
     v6 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC0] scale:3];
     v7 = MEMORY[0x1E69DC888];
-    v8 = [MEMORY[0x1E69DC888] systemGray2Color];
-    v9 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v10 = [v7 dynamicColorWithLightColor:v8 darkColor:v9];
+    systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    v10 = [v7 dynamicColorWithLightColor:systemGray2Color darkColor:systemGray5Color];
 
     v11 = MEMORY[0x1E69DCAD8];
-    v12 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    v17[0] = v12;
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    v17[0] = systemWhiteColor;
     v17[1] = v10;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v14 = [v11 configurationWithPaletteColors:v13];
@@ -8865,37 +8865,37 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
 
 - (UIImage)messageEditingBlueConfirmButtonImage
 {
-  v3 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:v3];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:systemBlueColor];
 
   return v4;
 }
 
 - (UIImage)messageEditingGreenConfirmButtonImage
 {
-  v3 = [MEMORY[0x1E69DC888] systemGreenColor];
-  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:v3];
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:systemGreenColor];
 
   return v4;
 }
 
 - (UIImage)messageEditingConfirmButtonImage
 {
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v4 = [(CKUIBehavior *)self _messageEditingConfirmButtonImageWithButtonColor:clearColor];
 
   return v4;
 }
 
-- (id)_messageEditingConfirmButtonImageWithButtonColor:(id)a3
+- (id)_messageEditingConfirmButtonImageWithButtonColor:(id)color
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69A8070];
-  v4 = a3;
-  v5 = [v3 sharedFeatureFlags];
-  v6 = [v5 isEntryViewRefreshEnabled];
+  colorCopy = color;
+  sharedFeatureFlags = [v3 sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [sharedFeatureFlags isEntryViewRefreshEnabled];
 
-  if (v6)
+  if (isEntryViewRefreshEnabled)
   {
     v7 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC8] scale:2];
     v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark" withConfiguration:v7];
@@ -8905,9 +8905,9 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
   {
     v7 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC0] scale:3];
     v9 = MEMORY[0x1E69DCAD8];
-    v10 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    v15[0] = v10;
-    v15[1] = v4;
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    v15[0] = systemWhiteColor;
+    v15[1] = colorCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v12 = [v9 configurationWithPaletteColors:v11];
 
@@ -8922,10 +8922,10 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC0] scale:3];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -8936,8 +8936,8 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
   }
   v5 = ;
   v6 = MEMORY[0x1E69DCAD8];
-  v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v13[0] = v7;
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v13[0] = systemWhiteColor;
   v13[1] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v9 = [v6 configurationWithPaletteColors:v8];
@@ -8950,102 +8950,102 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
 
 - (UIButtonConfiguration)messageEditingRejectButtonBaseConfiguration
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
-    v4 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v4 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [_glassButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
   }
 
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  v6 = [v4 background];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  background = [_glassButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  return v4;
+  return _glassButtonConfiguration;
 }
 
 - (UIButtonConfiguration)messageEditingConfirmButtonBaseConfiguration
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
-    v4 = [MEMORY[0x1E69DC740] _tintedGlassButtonConfiguration];
+    _tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] _tintedGlassButtonConfiguration];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    v6 = [v4 background];
-    [v6 setBackgroundColor:v5];
+    _tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    background = [_tintedGlassButtonConfiguration background];
+    [background setBackgroundColor:clearColor];
 
-    [v4 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    [_tintedGlassButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
   }
 
-  return v4;
+  return _tintedGlassButtonConfiguration;
 }
 
-- (void)updateMessageEditingConfirmButtonConfiguration:(id)a3 forButtonColor:(char)a4 isEnabled:(BOOL)a5
+- (void)updateMessageEditingConfirmButtonConfiguration:(id)configuration forButtonColor:(char)color isEnabled:(BOOL)enabled
 {
-  v6 = a4;
-  v20 = a3;
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isEntryViewRefreshEnabled];
+  colorCopy = color;
+  configurationCopy = configuration;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v9)
+  if (isEntryViewRefreshEnabled)
   {
-    v10 = [(CKUIBehavior *)self messageEditingConfirmButtonImage];
-    [v20 setImage:v10];
+    messageEditingConfirmButtonImage = [(CKUIBehavior *)self messageEditingConfirmButtonImage];
+    [configurationCopy setImage:messageEditingConfirmButtonImage];
 
-    if (a5)
+    if (enabled)
     {
-      if (v6)
+      if (colorCopy)
       {
-        v11 = [MEMORY[0x1E69DC888] systemBlueColor];
-        v12 = [v20 background];
-        [v12 setBackgroundColor:v11];
+        systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+        background = [configurationCopy background];
+        [background setBackgroundColor:systemBlueColor];
 
         [MEMORY[0x1E69DC888] systemBlueColor];
       }
 
       else
       {
-        v17 = [MEMORY[0x1E69DC888] systemGreenColor];
-        v18 = [v20 background];
-        [v18 setBackgroundColor:v17];
+        systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+        background2 = [configurationCopy background];
+        [background2 setBackgroundColor:systemGreenColor];
 
         [MEMORY[0x1E69DC888] systemGreenColor];
       }
-      v13 = ;
+      systemGray5Color2 = ;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E69DC888] systemGray5Color];
-      v16 = [v20 background];
-      [v16 setBackgroundColor:v15];
+      systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+      background3 = [configurationCopy background];
+      [background3 setBackgroundColor:systemGray5Color];
 
-      v13 = [MEMORY[0x1E69DC888] systemGray5Color];
+      systemGray5Color2 = [MEMORY[0x1E69DC888] systemGray5Color];
     }
 
-    v19 = v13;
-    [v20 setBaseBackgroundColor:v13];
+    v19 = systemGray5Color2;
+    [configurationCopy setBaseBackgroundColor:systemGray5Color2];
   }
 
   else
   {
-    if (a5)
+    if (enabled)
     {
-      if (v6)
+      if (colorCopy)
       {
         [(CKUIBehavior *)self messageEditingBlueConfirmButtonImage];
       }
@@ -9054,16 +9054,16 @@ uint64_t __37__CKUIBehavior_sendAnimationDuration__block_invoke(uint64_t a1)
       {
         [(CKUIBehavior *)self messageEditingGreenConfirmButtonImage];
       }
-      v14 = ;
+      messageEditingConfirmDisabledButtonImage = ;
     }
 
     else
     {
-      v14 = [(CKUIBehavior *)self messageEditingConfirmDisabledButtonImage];
+      messageEditingConfirmDisabledButtonImage = [(CKUIBehavior *)self messageEditingConfirmDisabledButtonImage];
     }
 
-    v19 = v14;
-    [v20 setImage:v14];
+    v19 = messageEditingConfirmDisabledButtonImage;
+    [configurationCopy setImage:messageEditingConfirmDisabledButtonImage];
   }
 }
 
@@ -9199,8 +9199,8 @@ void __28__CKUIBehavior_forwardImage__block_invoke()
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = IMSharedUtilitiesFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"MESSAGE_SOMEONE_SUBTEXT" value:&stru_1F04268F8 table:@"CommSafetyLocalizable"];
-    v16 = [(CKUIBehavior *)self centerTranscriptButtonTextAttributes];
-    v17 = [v13 initWithString:v15 attributes:v16];
+    centerTranscriptButtonTextAttributes = [(CKUIBehavior *)self centerTranscriptButtonTextAttributes];
+    v17 = [v13 initWithString:v15 attributes:centerTranscriptButtonTextAttributes];
 
     v12 = &conversationListCellRightMargin_sBehavior;
     v18 = statusCommSafetyMessageSomeoneButtonTranscriptTextOverThirteen_sBehavior;
@@ -9246,8 +9246,8 @@ void __28__CKUIBehavior_forwardImage__block_invoke()
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = IMSharedUtilitiesFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"MESSAGE_GROWNUP_SUBTEXT" value:&stru_1F04268F8 table:@"CommSafetyLocalizable"];
-    v16 = [(CKUIBehavior *)self centerTranscriptButtonTextAttributes];
-    v17 = [v13 initWithString:v15 attributes:v16];
+    centerTranscriptButtonTextAttributes = [(CKUIBehavior *)self centerTranscriptButtonTextAttributes];
+    v17 = [v13 initWithString:v15 attributes:centerTranscriptButtonTextAttributes];
 
     v12 = &conversationListCellRightMargin_sBehavior;
     v18 = statusCommSafetyMessageGrownupButtonTranscriptTextUnderThirteen_sBehavior;
@@ -9703,8 +9703,8 @@ void __58__CKUIBehavior_obscurableBalloonObscuredContentBadgeImage__block_invoke
   v10 = UIContentSizeCategoryCompareToCategory(obscuredBalloonMinimumSizeForAdult_sContentSizeCategory_obscuredBalloonMinimumSizeForAdult, v3);
   if (-[CKUIBehavior ckShouldUpdateobscuredBalloonMinimumSizeForAdult](self, "ckShouldUpdateobscuredBalloonMinimumSizeForAdult") || v10 || obscuredBalloonMinimumSizeForAdult_sIsBoldTextEnabled_obscuredBalloonMinimumSizeForAdult != IsBoldTextEnabled || (v11 = obscuredBalloonMinimumSizeForAdult_sTextFontSize_obscuredBalloonMinimumSizeForAdult, *&obscuredBalloonMinimumSizeForAdult_sTextFontSize_obscuredBalloonMinimumSizeForAdult != v5) || (v11 = obscuredBalloonMinimumSizeForAdult_sCustomTextFontSize_obscuredBalloonMinimumSizeForAdult, *&obscuredBalloonMinimumSizeForAdult_sCustomTextFontSize_obscuredBalloonMinimumSizeForAdult != v6) || ([obscuredBalloonMinimumSizeForAdult_sCustomTextFontName_obscuredBalloonMinimumSizeForAdult isEqualToString:{v9, *&obscuredBalloonMinimumSizeForAdult_sCustomTextFontSize_obscuredBalloonMinimumSizeForAdult}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self sensitiveLabelFont];
-    [v12 _scaledValueForValue:120.0];
+    sensitiveLabelFont = [(CKUIBehavior *)self sensitiveLabelFont];
+    [sensitiveLabelFont _scaledValueForValue:120.0];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -9718,8 +9718,8 @@ void __58__CKUIBehavior_obscurableBalloonObscuredContentBadgeImage__block_invoke
     }
 
     v16 = round(v14 * v15) / v15;
-    v17 = [(CKUIBehavior *)self sensitiveLabelFont];
-    [v17 _scaledValueForValue:120.0];
+    sensitiveLabelFont2 = [(CKUIBehavior *)self sensitiveLabelFont];
+    [sensitiveLabelFont2 _scaledValueForValue:120.0];
     v19 = v18;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -9773,8 +9773,8 @@ void __58__CKUIBehavior_obscurableBalloonObscuredContentBadgeImage__block_invoke
   v10 = UIContentSizeCategoryCompareToCategory(obscuredBalloonMinimumSizeForChild_sContentSizeCategory_obscuredBalloonMinimumSizeForChild, v3);
   if (-[CKUIBehavior ckShouldUpdateobscuredBalloonMinimumSizeForChild](self, "ckShouldUpdateobscuredBalloonMinimumSizeForChild") || v10 || obscuredBalloonMinimumSizeForChild_sIsBoldTextEnabled_obscuredBalloonMinimumSizeForChild != IsBoldTextEnabled || (v11 = obscuredBalloonMinimumSizeForChild_sTextFontSize_obscuredBalloonMinimumSizeForChild, *&obscuredBalloonMinimumSizeForChild_sTextFontSize_obscuredBalloonMinimumSizeForChild != v5) || (v11 = obscuredBalloonMinimumSizeForChild_sCustomTextFontSize_obscuredBalloonMinimumSizeForChild, *&obscuredBalloonMinimumSizeForChild_sCustomTextFontSize_obscuredBalloonMinimumSizeForChild != v6) || ([obscuredBalloonMinimumSizeForChild_sCustomTextFontName_obscuredBalloonMinimumSizeForChild isEqualToString:{v9, *&obscuredBalloonMinimumSizeForChild_sCustomTextFontSize_obscuredBalloonMinimumSizeForChild}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self sensitiveLabelFont];
-    [v12 _scaledValueForValue:120.0];
+    sensitiveLabelFont = [(CKUIBehavior *)self sensitiveLabelFont];
+    [sensitiveLabelFont _scaledValueForValue:120.0];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -9788,8 +9788,8 @@ void __58__CKUIBehavior_obscurableBalloonObscuredContentBadgeImage__block_invoke
     }
 
     v16 = round(v14 * v15) / v15;
-    v17 = [(CKUIBehavior *)self sensitiveLabelFont];
-    [v17 _scaledValueForValue:120.0];
+    sensitiveLabelFont2 = [(CKUIBehavior *)self sensitiveLabelFont];
+    [sensitiveLabelFont2 _scaledValueForValue:120.0];
     v19 = v18;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -9922,20 +9922,20 @@ uint64_t __42__CKUIBehavior_transcriptCanUseOpaqueMask__block_invoke(uint64_t a1
 
 - (BOOL)_transcriptCanUseOpaqueMask
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) != 0 || [(CKUIBehavior *)self entryViewUsesTransparentBackground])
+  if ((isEntryViewRefreshEnabled & 1) != 0 || [(CKUIBehavior *)self entryViewUsesTransparentBackground])
   {
     return 0;
   }
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 theme];
-  v8 = [v7 transcriptBackgroundColor];
+  theme = [v6 theme];
+  transcriptBackgroundColor = [theme transcriptBackgroundColor];
 
   v11 = 0.0;
-  v9 = [v8 getRed:0 green:0 blue:0 alpha:&v11] ^ 1;
+  v9 = [transcriptBackgroundColor getRed:0 green:0 blue:0 alpha:&v11] ^ 1;
   if (v11 >= 1.0)
   {
     v5 = 1;
@@ -10017,10 +10017,10 @@ uint64_t __42__CKUIBehavior_transcriptCanUseOpaqueMask__block_invoke(uint64_t a1
   return *&lightInterfacePosterContentLuminanceThreshold_sBehavior;
 }
 
-- (int64_t)contentDerivedUserInterfaceStyleForLuminance:(double)a3
+- (int64_t)contentDerivedUserInterfaceStyleForLuminance:(double)luminance
 {
   [(CKUIBehavior *)self lightInterfacePosterContentLuminanceThreshold];
-  if (v4 <= a3)
+  if (v4 <= luminance)
   {
     return 1;
   }
@@ -10199,8 +10199,8 @@ void __65__CKUIBehavior_transcriptReplyPreviewContextContactImageDiameter__block
   if (-[CKUIBehavior ckShouldUpdatetranscriptBoldTextAlignmentInsets](self, "ckShouldUpdatetranscriptBoldTextAlignmentInsets") || v10 || transcriptBoldTextAlignmentInsets_sIsBoldTextEnabled_transcriptBoldTextAlignmentInsets != IsBoldTextEnabled || *&transcriptBoldTextAlignmentInsets_sTextFontSize_transcriptBoldTextAlignmentInsets != v5 || *&transcriptBoldTextAlignmentInsets_sCustomTextFontSize_transcriptBoldTextAlignmentInsets != v6 || ([transcriptBoldTextAlignmentInsets_sCustomTextFontName_transcriptBoldTextAlignmentInsets isEqualToString:{v9, *&transcriptBoldTextAlignmentInsets_sCustomTextFontSize_transcriptBoldTextAlignmentInsets}] & 1) == 0)
   {
     v11 = [CKUIBehavior sharedBehaviors:0];
-    v12 = [v11 transcriptBoldFont];
-    CKTranscriptTextSizeForFont(v12, 0, v20);
+    transcriptBoldFont = [v11 transcriptBoldFont];
+    CKTranscriptTextSizeForFont(transcriptBoldFont, 0, v20);
 
     transcriptBoldTextAlignmentInsets_sBehavior = v20[0];
     *&qword_1EAD6E738 = v20[1];
@@ -10249,8 +10249,8 @@ void __65__CKUIBehavior_transcriptReplyPreviewContextContactImageDiameter__block
   {
     v16 = 0;
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 transcriptBoldFont];
-    CKTranscriptTextSizeForFont(v13, &v16, 0);
+    transcriptBoldFont = [v12 transcriptBoldFont];
+    CKTranscriptTextSizeForFont(transcriptBoldFont, &v16, 0);
 
     transcriptBoldTextHeight_sBehavior = v16;
     objc_storeStrong(&transcriptBoldTextHeight_sContentSizeCategory_transcriptBoldTextHeight, v3);
@@ -10291,8 +10291,8 @@ void __65__CKUIBehavior_transcriptReplyPreviewContextContactImageDiameter__block
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = CKFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"KEEP" value:&stru_1F04268F8 table:@"ChatKit"];
-    v16 = [(CKUIBehavior *)self keepAudioMessageButtonTextAttributes];
-    v17 = [v13 initWithString:v15 attributes:v16];
+    keepAudioMessageButtonTextAttributes = [(CKUIBehavior *)self keepAudioMessageButtonTextAttributes];
+    v17 = [v13 initWithString:v15 attributes:keepAudioMessageButtonTextAttributes];
 
     v12 = &OBJC_IVAR____TtC7ChatKit13CKDebugTicker_capturedDidChangeObserver;
     v18 = statusSaveButtonTranscriptText_sBehavior;
@@ -10656,11 +10656,11 @@ uint64_t __42__CKUIBehavior_shouldScrollToSavedSticker__block_invoke()
   return result;
 }
 
-- (double)stickerInlinePreviewMaxWidthForImageSize:(CGSize)a3 isEmoji:(BOOL)a4 displayScale:(double)a5
+- (double)stickerInlinePreviewMaxWidthForImageSize:(CGSize)size isEmoji:(BOOL)emoji displayScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  if (emoji)
   {
     [(CKUIBehavior *)self emojiStickerInlinePreviewMaxDimension];
   }
@@ -10672,17 +10672,17 @@ uint64_t __42__CKUIBehavior_shouldScrollToSavedSticker__block_invoke()
 
   if (width < height && height > result)
   {
-    return round(width / height * result * a5) / a5;
+    return round(width / height * result * scale) / scale;
   }
 
   return result;
 }
 
-- (double)stickerDropPreviewMaxWidthForImageSize:(CGSize)a3 isEmoji:(BOOL)a4 displayScale:(double)a5
+- (double)stickerDropPreviewMaxWidthForImageSize:(CGSize)size isEmoji:(BOOL)emoji displayScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  if (emoji)
   {
     [(CKUIBehavior *)self emojiStickerDropPreviewMaxDimension];
   }
@@ -10694,7 +10694,7 @@ uint64_t __42__CKUIBehavior_shouldScrollToSavedSticker__block_invoke()
 
   if (width < height && height > result)
   {
-    return round(width / height * result * a5) / a5;
+    return round(width / height * result * scale) / scale;
   }
 
   return result;
@@ -10943,14 +10943,14 @@ void __58__CKUIBehavior_statusItemInsetFromReplyPreviewBalloonEdge__block_invoke
 
 - (UIEdgeInsets)_contactPhotoTranscriptInsets
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v5 = -4.0;
   v6 = 0.0;
   v7 = -4.0;
   v8 = 0.0;
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     v8 = *MEMORY[0x1E69DDCE0];
     v7 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -10958,8 +10958,8 @@ void __58__CKUIBehavior_statusItemInsetFromReplyPreviewBalloonEdge__block_invoke
     v5 = *(MEMORY[0x1E69DDCE0] + 24);
   }
 
-  v9 = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
-  if (v9)
+  isAccessibilityPreferredContentSizeCategory = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v10 = -4.0;
   }
@@ -10969,7 +10969,7 @@ void __58__CKUIBehavior_statusItemInsetFromReplyPreviewBalloonEdge__block_invoke
     v10 = v5;
   }
 
-  if (v9)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v11 = 0.0;
   }
@@ -10979,7 +10979,7 @@ void __58__CKUIBehavior_statusItemInsetFromReplyPreviewBalloonEdge__block_invoke
     v11 = v6;
   }
 
-  if (v9)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v12 = -16.0;
   }
@@ -10989,7 +10989,7 @@ void __58__CKUIBehavior_statusItemInsetFromReplyPreviewBalloonEdge__block_invoke
     v12 = v7;
   }
 
-  if (v9)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v13 = 0.0;
   }
@@ -11131,9 +11131,9 @@ double __41__CKUIBehavior_retractedReplyStampInsets__block_invoke(uint64_t a1)
   v10 = UIContentSizeCategoryCompareToCategory(transcriptDrawerGestureAcceleration_sContentSizeCategory_transcriptDrawerGestureAcceleration, v3);
   if (-[CKUIBehavior ckShouldUpdatetranscriptDrawerGestureAcceleration](self, "ckShouldUpdatetranscriptDrawerGestureAcceleration") || v10 || transcriptDrawerGestureAcceleration_sIsBoldTextEnabled_transcriptDrawerGestureAcceleration != IsBoldTextEnabled || (v11 = transcriptDrawerGestureAcceleration_sTextFontSize_transcriptDrawerGestureAcceleration, *&transcriptDrawerGestureAcceleration_sTextFontSize_transcriptDrawerGestureAcceleration != v5) || (v11 = transcriptDrawerGestureAcceleration_sCustomTextFontSize_transcriptDrawerGestureAcceleration, *&transcriptDrawerGestureAcceleration_sCustomTextFontSize_transcriptDrawerGestureAcceleration != v6) || ([transcriptDrawerGestureAcceleration_sCustomTextFontName_transcriptDrawerGestureAcceleration isEqualToString:{v9, *&transcriptDrawerGestureAcceleration_sCustomTextFontSize_transcriptDrawerGestureAcceleration}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
     v13 = 3.8;
-    if (!v12)
+    if (!isAccessibilityPreferredContentSizeCategory)
     {
       v13 = 1.0;
     }
@@ -11151,10 +11151,10 @@ double __41__CKUIBehavior_retractedReplyStampInsets__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (double)transcriptDrawerOverlapForMarginInsets:(UIEdgeInsets)a3
+- (double)transcriptDrawerOverlapForMarginInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  [(CKUIBehavior *)self balloonTranscriptInsets:a3.top];
+  right = insets.right;
+  [(CKUIBehavior *)self balloonTranscriptInsets:insets.top];
   v6 = right + v5;
   [(CKUIBehavior *)self balloonMaskTailWidth];
   v8 = v7 + v6;
@@ -11162,9 +11162,9 @@ double __41__CKUIBehavior_retractedReplyStampInsets__block_invoke(uint64_t a1)
   return v8 - v9;
 }
 
-- (double)transcriptDrawerWidthForMarginInsets:(UIEdgeInsets)a3
+- (double)transcriptDrawerWidthForMarginInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
+  right = insets.right;
   v35[1] = *MEMORY[0x1E69E9840];
   v5 = CKPreferredContentSizeCategory();
   v6 = &conversationListCellRightMargin_sBehavior;
@@ -11174,32 +11174,32 @@ double __41__CKUIBehavior_retractedReplyStampInsets__block_invoke(uint64_t a1)
     if (UIContentSizeCategoryCompareToCategory(transcriptDrawerWidthForMarginInsets__sContentSizeCategory_transcriptDrawerWidth, v5) || (sInvalidTranscriptDrawerWidth == 1 ? (v8 = v7 == 13.0) : (v8 = 0), !v8))
     {
       v9 = +[CKUIBehavior sharedBehaviors];
-      v10 = [v9 timestampDateFormatter];
+      timestampDateFormatter = [v9 timestampDateFormatter];
 
       v11 = objc_alloc_init(MEMORY[0x1E695DF10]);
       [v11 setHour:11];
       v12 = objc_alloc_init(MEMORY[0x1E695DF10]);
       [v12 setHour:23];
-      v13 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v14 = [v13 dateFromComponents:v11];
-      v31 = v10;
-      v15 = [v10 stringFromDate:v14];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v14 = [currentCalendar dateFromComponents:v11];
+      v31 = timestampDateFormatter;
+      v15 = [timestampDateFormatter stringFromDate:v14];
 
-      v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v17 = [v16 dateFromComponents:v12];
-      v18 = [v10 stringFromDate:v17];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v17 = [currentCalendar2 dateFromComponents:v12];
+      v18 = [timestampDateFormatter stringFromDate:v17];
 
       v34 = *MEMORY[0x1E69DB648];
       v19 = v34;
-      v20 = [(CKUIBehavior *)self transcriptDrawerFont];
-      v35[0] = v20;
+      transcriptDrawerFont = [(CKUIBehavior *)self transcriptDrawerFont];
+      v35[0] = transcriptDrawerFont;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       [v15 sizeWithAttributes:v21];
       v23 = v22;
 
       v32 = v19;
-      v24 = [(CKUIBehavior *)self transcriptDrawerFont];
-      v33 = v24;
+      transcriptDrawerFont2 = [(CKUIBehavior *)self transcriptDrawerFont];
+      v33 = transcriptDrawerFont2;
       v6 = &conversationListCellRightMargin_sBehavior;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       [v18 sizeWithAttributes:v25];
@@ -11371,8 +11371,8 @@ void __48__CKUIBehavior_transcriptEditingUnselectedImage__block_invoke(uint64_t 
   v10 = UIContentSizeCategoryCompareToCategory(topTranscriptSpace_sContentSizeCategory_topTranscriptSpace, v3);
   if (-[CKUIBehavior ckShouldUpdatetopTranscriptSpace](self, "ckShouldUpdatetopTranscriptSpace") || v10 || topTranscriptSpace_sIsBoldTextEnabled_topTranscriptSpace != IsBoldTextEnabled || (v11 = topTranscriptSpace_sTextFontSize_topTranscriptSpace, *&topTranscriptSpace_sTextFontSize_topTranscriptSpace != v5) || (v11 = topTranscriptSpace_sCustomTextFontSize_topTranscriptSpace, *&topTranscriptSpace_sCustomTextFontSize_topTranscriptSpace != v6) || ([topTranscriptSpace_sCustomTextFontName_topTranscriptSpace isEqualToString:{v9, *&topTranscriptSpace_sCustomTextFontSize_topTranscriptSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:15.5];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:15.5];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -11436,10 +11436,10 @@ void __48__CKUIBehavior_transcriptEditingUnselectedImage__block_invoke(uint64_t 
 
 - (double)_bottomTranscriptSpace
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     return 16.0;
   }
@@ -11784,14 +11784,14 @@ void __48__CKUIBehavior_transcriptEditingUnselectedImage__block_invoke(uint64_t 
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:6.0];
+    [transcriptTextFont _scaledValueForValue:6.0];
     v17 = v16;
     if (CKMainScreenScale_once_38 == -1)
     {
@@ -11801,7 +11801,7 @@ void __48__CKUIBehavior_transcriptEditingUnselectedImage__block_invoke(uint64_t 
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:5.0];
+  [transcriptTextFont _scaledValueForValue:5.0];
   v17 = v18;
   if (CKMainScreenScale_once_38 != -1)
   {
@@ -11864,14 +11864,14 @@ LABEL_17:
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:10.0];
+    [transcriptTextFont _scaledValueForValue:10.0];
     v17 = v16;
     if (CKMainScreenScale_once_38 == -1)
     {
@@ -11881,7 +11881,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:12.0];
+  [transcriptTextFont _scaledValueForValue:12.0];
   v17 = v18;
   if (CKMainScreenScale_once_38 != -1)
   {
@@ -11932,8 +11932,8 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(mediumLargeTranscriptSpace_sContentSizeCategory_mediumLargeTranscriptSpace, v3);
   if (-[CKUIBehavior ckShouldUpdatemediumLargeTranscriptSpace](self, "ckShouldUpdatemediumLargeTranscriptSpace") || v10 || mediumLargeTranscriptSpace_sIsBoldTextEnabled_mediumLargeTranscriptSpace != IsBoldTextEnabled || (v11 = mediumLargeTranscriptSpace_sTextFontSize_mediumLargeTranscriptSpace, *&mediumLargeTranscriptSpace_sTextFontSize_mediumLargeTranscriptSpace != v5) || (v11 = mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace, *&mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace != v6) || ([mediumLargeTranscriptSpace_sCustomTextFontName_mediumLargeTranscriptSpace isEqualToString:{v9, *&mediumLargeTranscriptSpace_sCustomTextFontSize_mediumLargeTranscriptSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:16.0];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:16.0];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -11981,8 +11981,8 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(largeTranscriptSpace_sContentSizeCategory_largeTranscriptSpace, v3);
   if (-[CKUIBehavior ckShouldUpdatelargeTranscriptSpace](self, "ckShouldUpdatelargeTranscriptSpace") || v10 || largeTranscriptSpace_sIsBoldTextEnabled_largeTranscriptSpace != IsBoldTextEnabled || (v11 = largeTranscriptSpace_sTextFontSize_largeTranscriptSpace, *&largeTranscriptSpace_sTextFontSize_largeTranscriptSpace != v5) || (v11 = largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace, *&largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace != v6) || ([largeTranscriptSpace_sCustomTextFontName_largeTranscriptSpace isEqualToString:{v9, *&largeTranscriptSpace_sCustomTextFontSize_largeTranscriptSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:20.0];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:20.0];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -12042,14 +12042,14 @@ LABEL_17:
     }
   }
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  v14 = [(CKUIBehavior *)self transcriptTextFont];
-  v15 = v14;
-  if (v13)
+  transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+  v15 = transcriptTextFont;
+  if (isRoundTailedBalloonShapeEnabled)
   {
-    [v14 _scaledValueForValue:32.0];
+    [transcriptTextFont _scaledValueForValue:32.0];
     v17 = v16;
     if (CKMainScreenScale_once_38 == -1)
     {
@@ -12059,7 +12059,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v14 _scaledValueForValue:34.0];
+  [transcriptTextFont _scaledValueForValue:34.0];
   v17 = v18;
   if (CKMainScreenScale_once_38 != -1)
   {
@@ -12110,8 +12110,8 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(selfReplyTranscriptSpace_sContentSizeCategory_selfReplyTranscriptSpace, v3);
   if (-[CKUIBehavior ckShouldUpdateselfReplyTranscriptSpace](self, "ckShouldUpdateselfReplyTranscriptSpace") || v10 || selfReplyTranscriptSpace_sIsBoldTextEnabled_selfReplyTranscriptSpace != IsBoldTextEnabled || (v11 = selfReplyTranscriptSpace_sTextFontSize_selfReplyTranscriptSpace, *&selfReplyTranscriptSpace_sTextFontSize_selfReplyTranscriptSpace != v5) || (v11 = selfReplyTranscriptSpace_sCustomTextFontSize_selfReplyTranscriptSpace, *&selfReplyTranscriptSpace_sCustomTextFontSize_selfReplyTranscriptSpace != v6) || ([selfReplyTranscriptSpace_sCustomTextFontName_selfReplyTranscriptSpace isEqualToString:{v9, *&selfReplyTranscriptSpace_sCustomTextFontSize_selfReplyTranscriptSpace}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self transcriptTextFont];
-    [v12 _scaledValueForValue:24.0];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    [transcriptTextFont _scaledValueForValue:24.0];
     v14 = v13;
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -12159,14 +12159,14 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(balloonContiguousSpace_sContentSizeCategory_balloonContiguousSpace, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonContiguousSpace](self, "ckShouldUpdateballoonContiguousSpace") || v10 || balloonContiguousSpace_sIsBoldTextEnabled_balloonContiguousSpace != IsBoldTextEnabled || (v11 = balloonContiguousSpace_sTextFontSize_balloonContiguousSpace, *&balloonContiguousSpace_sTextFontSize_balloonContiguousSpace != v5) || (v11 = balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace, *&balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace != v6) || ([balloonContiguousSpace_sCustomTextFontName_balloonContiguousSpace isEqualToString:{v9, *&balloonContiguousSpace_sCustomTextFontSize_balloonContiguousSpace}] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
     v14 = 1.0;
-    if (v13)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v15 = [(CKUIBehavior *)self transcriptTextFont];
-      [v15 _scaledValueForValue:4.0];
+      transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+      [transcriptTextFont _scaledValueForValue:4.0];
       v17 = v16;
       if (CKMainScreenScale_once_38 != -1)
       {
@@ -12216,14 +12216,14 @@ LABEL_17:
   v10 = UIContentSizeCategoryCompareToCategory(balloonNonContiguousSpace_sContentSizeCategory_balloonNonContiguousSpace, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonNonContiguousSpace](self, "ckShouldUpdateballoonNonContiguousSpace") || v10 || balloonNonContiguousSpace_sIsBoldTextEnabled_balloonNonContiguousSpace != IsBoldTextEnabled || (v11 = balloonNonContiguousSpace_sTextFontSize_balloonNonContiguousSpace, *&balloonNonContiguousSpace_sTextFontSize_balloonNonContiguousSpace != v5) || (v11 = balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace, *&balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace != v6) || ([balloonNonContiguousSpace_sCustomTextFontName_balloonNonContiguousSpace isEqualToString:{v9, *&balloonNonContiguousSpace_sCustomTextFontSize_balloonNonContiguousSpace}] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
     v14 = 9.0;
-    if (v13)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v15 = [(CKUIBehavior *)self transcriptTextFont];
-      [v15 _scaledValueForValue:10.0];
+      transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+      [transcriptTextFont _scaledValueForValue:10.0];
       v17 = v16;
       if (CKMainScreenScale_once_38 != -1)
       {
@@ -12252,9 +12252,9 @@ LABEL_17:
   return v19;
 }
 
-- (double)balloonBalloonTranscriptSpace:(unsigned __int8)a3
+- (double)balloonBalloonTranscriptSpace:(unsigned __int8)space
 {
-  if ((a3 - 1) > 1)
+  if ((space - 1) > 1)
   {
     [(CKUIBehavior *)self balloonNonContiguousSpace];
   }
@@ -12460,11 +12460,11 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
   return result;
 }
 
-- (double)balloonMaxWidthForTranscriptWidth:(double)a3 marginInsets:(UIEdgeInsets)a4 shouldShowPluginButtons:(BOOL)a5 shouldShowCharacterCount:(BOOL)a6 shouldCoverSendButton:(BOOL)a7
+- (double)balloonMaxWidthForTranscriptWidth:(double)width marginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCoverSendButton:(BOOL)button
 {
-  right = a4.right;
-  left = a4.left;
-  [CKMessageEntryView contentViewInsetsForMarginInsets:a5 shouldShowPluginButtons:a6 shouldShowCharacterCount:a7 shouldCoverSendButton:0 isStewieMode:a4.top, a4.left, a4.bottom, a4.right];
+  right = insets.right;
+  left = insets.left;
+  [CKMessageEntryView contentViewInsetsForMarginInsets:buttons shouldShowPluginButtons:count shouldShowCharacterCount:button shouldCoverSendButton:0 isStewieMode:insets.top, insets.left, insets.bottom, insets.right];
   v29 = v13;
   v30 = v12;
   [(CKUIBehavior *)self balloonLineFragmentInsets];
@@ -12474,13 +12474,13 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
   v19 = v18;
   v21 = v20;
   v22 = 1.0;
-  if (!a7)
+  if (!button)
   {
     [(CKUIBehavior *)self balloonMaxWidthPercent];
     v22 = v23;
   }
 
-  v24 = a3 - (left + right);
+  v24 = width - (left + right);
   if ([(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory])
   {
     [(CKUIBehavior *)self messageAcknowledgmentTranscriptBalloonSize];
@@ -12491,7 +12491,7 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
 
   else
   {
-    result = v19 + v21 + a3 - (v30 + v29) - (v15 + v17);
+    result = v19 + v21 + width - (v30 + v29) - (v15 + v17);
     if (result >= v24 * v22)
     {
       return v24 * v22;
@@ -12501,7 +12501,7 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
   return result;
 }
 
-- (double)previewBalloonMaxWidthForBalloonMaxWidth:(double)a3
+- (double)previewBalloonMaxWidthForBalloonMaxWidth:(double)width
 {
   [(CKUIBehavior *)self balloonLineFragmentInsets];
   v6 = v5;
@@ -12525,10 +12525,10 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
     v19 = 1.0;
   }
 
-  return ceil((v14 + v6 + v8 + a3 - (v10 + v12) - (v16 + v18)) * v19) / v19;
+  return ceil((v14 + v6 + v8 + width - (v10 + v12) - (v16 + v18)) * v19) / v19;
 }
 
-- (double)composeBalloonMaxWidthForEntryContentViewWidth:(double)a3
+- (double)composeBalloonMaxWidthForEntryContentViewWidth:(double)width
 {
   [(CKUIBehavior *)self balloonMaskTailWidth];
   v6 = v5;
@@ -12546,7 +12546,7 @@ double __53__CKUIBehavior_transcriptDockingMaximumBalloonHeight__block_invoke(ui
     v11 = 1.0;
   }
 
-  return ceil((v6 + a3 - (v8 + v10) + -2.0) * v11) / v11;
+  return ceil((v6 + width - (v8 + v10) + -2.0) * v11) / v11;
 }
 
 - (double)transcriptJunkHeaderButtonHeight
@@ -12678,8 +12678,8 @@ void __59__CKUIBehavior_defaultAVPlayerViewContorllerControlsInsets__block_invok
   if (-[CKUIBehavior ckShouldUpdatetuConversationBalloonTitleFont](self, "ckShouldUpdatetuConversationBalloonTitleFont") || v11 || tuConversationBalloonTitleFont_sIsIncreaseContrastEnabled_tuConversationBalloonTitleFont != v4 || tuConversationBalloonTitleFont_sIsBoldTextEnabled_tuConversationBalloonTitleFont != IsBoldTextEnabled || (v12 = tuConversationBalloonTitleFont_sTextFontSize_tuConversationBalloonTitleFont, *&tuConversationBalloonTitleFont_sTextFontSize_tuConversationBalloonTitleFont != v6) || (v12 = tuConversationBalloonTitleFont_sCustomTextFontSize_tuConversationBalloonTitleFont, *&tuConversationBalloonTitleFont_sCustomTextFontSize_tuConversationBalloonTitleFont != v7) || ([tuConversationBalloonTitleFont_sCustomTextFontName_tuConversationBalloonTitleFont isEqualToString:{v10, *&tuConversationBalloonTitleFont_sCustomTextFontSize_tuConversationBalloonTitleFont}] & 1) == 0)
   {
     v14 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:{*MEMORY[0x1E69DDD80], *&v12}];
-    v15 = [v14 fontDescriptor];
-    v16 = [v15 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor = [v14 fontDescriptor];
+    v16 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
     v17 = [MEMORY[0x1E69DB878] fontWithDescriptor:v16 size:0.0];
 
@@ -12725,8 +12725,8 @@ void __59__CKUIBehavior_defaultAVPlayerViewContorllerControlsInsets__block_invok
   if (-[CKUIBehavior ckShouldUpdatetuConversationBalloonSubtitleFont](self, "ckShouldUpdatetuConversationBalloonSubtitleFont") || v11 || tuConversationBalloonSubtitleFont_sIsIncreaseContrastEnabled_tuConversationBalloonSubtitleFont != v4 || tuConversationBalloonSubtitleFont_sIsBoldTextEnabled_tuConversationBalloonSubtitleFont != IsBoldTextEnabled || *&tuConversationBalloonSubtitleFont_sTextFontSize_tuConversationBalloonSubtitleFont != v6 || *&tuConversationBalloonSubtitleFont_sCustomTextFontSize_tuConversationBalloonSubtitleFont != v7 || ([tuConversationBalloonSubtitleFont_sCustomTextFontName_tuConversationBalloonSubtitleFont isEqualToString:{v10, *&tuConversationBalloonSubtitleFont_sCustomTextFontSize_tuConversationBalloonSubtitleFont}] & 1) == 0)
   {
     v13 = [MEMORY[0x1E69DB878] __ck_fontForStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB978]];
-    v14 = [v13 fontDescriptor];
-    v15 = [v14 fontDescriptorWithSymbolicTraits:0x8000];
+    fontDescriptor = [v13 fontDescriptor];
+    v15 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
     v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:0.0];
 
@@ -12852,9 +12852,9 @@ uint64_t __57__CKUIBehavior_tuConversationBalloonContentBottomPadding__block_inv
   v11 = UIContentSizeCategoryCompareToCategory(tuConversationBalloonActionButtonFont_sContentSizeCategory_tuConversationBalloonActionButtonFont, v3);
   if (-[CKUIBehavior ckShouldUpdatetuConversationBalloonActionButtonFont](self, "ckShouldUpdatetuConversationBalloonActionButtonFont") || v11 || tuConversationBalloonActionButtonFont_sIsIncreaseContrastEnabled_tuConversationBalloonActionButtonFont != v4 || tuConversationBalloonActionButtonFont_sIsBoldTextEnabled_tuConversationBalloonActionButtonFont != IsBoldTextEnabled || (v12 = tuConversationBalloonActionButtonFont_sTextFontSize_tuConversationBalloonActionButtonFont, *&tuConversationBalloonActionButtonFont_sTextFontSize_tuConversationBalloonActionButtonFont != v6) || (v12 = tuConversationBalloonActionButtonFont_sCustomTextFontSize_tuConversationBalloonActionButtonFont, *&tuConversationBalloonActionButtonFont_sCustomTextFontSize_tuConversationBalloonActionButtonFont != v7) || ([tuConversationBalloonActionButtonFont_sCustomTextFontName_tuConversationBalloonActionButtonFont isEqualToString:{v10, *&tuConversationBalloonActionButtonFont_sCustomTextFontSize_tuConversationBalloonActionButtonFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self navBarUnifiedCallButtonJoinTextFont];
+    navBarUnifiedCallButtonJoinTextFont = [(CKUIBehavior *)self navBarUnifiedCallButtonJoinTextFont];
     v14 = tuConversationBalloonActionButtonFont_sBehavior;
-    tuConversationBalloonActionButtonFont_sBehavior = v13;
+    tuConversationBalloonActionButtonFont_sBehavior = navBarUnifiedCallButtonJoinTextFont;
 
     objc_storeStrong(&tuConversationBalloonActionButtonFont_sContentSizeCategory_tuConversationBalloonActionButtonFont, v3);
     tuConversationBalloonActionButtonFont_sIsIncreaseContrastEnabled_tuConversationBalloonActionButtonFont = v4;
@@ -13264,8 +13264,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptTextFont](self, "ckShouldUpdatetranscriptTextFont") || v11 || transcriptTextFont_sIsIncreaseContrastEnabled_transcriptTextFont != v4 || transcriptTextFont_sIsBoldTextEnabled_transcriptTextFont != IsBoldTextEnabled || (v12 = transcriptTextFont_sTextFontSize_transcriptTextFont, *&transcriptTextFont_sTextFontSize_transcriptTextFont != v6) || (v12 = transcriptTextFont_sCustomTextFontSize_transcriptTextFont, *&transcriptTextFont_sCustomTextFontSize_transcriptTextFont != v7) || ([transcriptTextFont_sCustomTextFontName_transcriptTextFont isEqualToString:{v10, *&transcriptTextFont_sCustomTextFontSize_transcriptTextFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_preferredFontForStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_preferredFontForStyle:transcriptTextFontStyle];
     v16 = transcriptTextFont_sBehavior;
     transcriptTextFont_sBehavior = v15;
 
@@ -13306,8 +13306,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptMessageStatusFont](self, "ckShouldUpdatetranscriptMessageStatusFont") || v11 || transcriptMessageStatusFont_sIsIncreaseContrastEnabled_transcriptMessageStatusFont != v4 || transcriptMessageStatusFont_sIsBoldTextEnabled_transcriptMessageStatusFont != IsBoldTextEnabled || (v12 = transcriptMessageStatusFont_sTextFontSize_transcriptMessageStatusFont, *&transcriptMessageStatusFont_sTextFontSize_transcriptMessageStatusFont != v6) || (v12 = transcriptMessageStatusFont_sCustomTextFontSize_transcriptMessageStatusFont, *&transcriptMessageStatusFont_sCustomTextFontSize_transcriptMessageStatusFont != v7) || ([transcriptMessageStatusFont_sCustomTextFontName_transcriptMessageStatusFont isEqualToString:{v10, *&transcriptMessageStatusFont_sCustomTextFontSize_transcriptMessageStatusFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_fontForStyle:v14 weight:*MEMORY[0x1E69DB980]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_fontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB980]];
     v16 = transcriptMessageStatusFont_sBehavior;
     transcriptMessageStatusFont_sBehavior = v15;
 
@@ -13348,8 +13348,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptBoldFont](self, "ckShouldUpdatetranscriptBoldFont") || v11 || transcriptBoldFont_sIsIncreaseContrastEnabled_transcriptBoldFont != v4 || transcriptBoldFont_sIsBoldTextEnabled_transcriptBoldFont != IsBoldTextEnabled || (v12 = transcriptBoldFont_sTextFontSize_transcriptBoldFont, *&transcriptBoldFont_sTextFontSize_transcriptBoldFont != v6) || (v12 = transcriptBoldFont_sCustomTextFontSize_transcriptBoldFont, *&transcriptBoldFont_sCustomTextFontSize_transcriptBoldFont != v7) || ([transcriptBoldFont_sCustomTextFontName_transcriptBoldFont isEqualToString:{v10, *&transcriptBoldFont_sCustomTextFontSize_transcriptBoldFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_fontForStyle:v14 weight:*MEMORY[0x1E69DB970]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_fontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB970]];
     v16 = transcriptBoldFont_sBehavior;
     transcriptBoldFont_sBehavior = v15;
 
@@ -13390,8 +13390,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptBoldPreferredFont](self, "ckShouldUpdatetranscriptBoldPreferredFont") || v11 || transcriptBoldPreferredFont_sIsIncreaseContrastEnabled_transcriptBoldPreferredFont != v4 || transcriptBoldPreferredFont_sIsBoldTextEnabled_transcriptBoldPreferredFont != IsBoldTextEnabled || (v12 = transcriptBoldPreferredFont_sTextFontSize_transcriptBoldPreferredFont, *&transcriptBoldPreferredFont_sTextFontSize_transcriptBoldPreferredFont != v6) || (v12 = transcriptBoldPreferredFont_sCustomTextFontSize_transcriptBoldPreferredFont, *&transcriptBoldPreferredFont_sCustomTextFontSize_transcriptBoldPreferredFont != v7) || ([transcriptBoldPreferredFont_sCustomTextFontName_transcriptBoldPreferredFont isEqualToString:{v10, *&transcriptBoldPreferredFont_sCustomTextFontSize_transcriptBoldPreferredFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_preferredFontForStyle:v14 weight:*MEMORY[0x1E69DB970]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_preferredFontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB970]];
     v16 = transcriptBoldPreferredFont_sBehavior;
     transcriptBoldPreferredFont_sBehavior = v15;
 
@@ -13432,8 +13432,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptRegularFont](self, "ckShouldUpdatetranscriptRegularFont") || v11 || transcriptRegularFont_sIsIncreaseContrastEnabled_transcriptRegularFont != v4 || transcriptRegularFont_sIsBoldTextEnabled_transcriptRegularFont != IsBoldTextEnabled || (v12 = transcriptRegularFont_sTextFontSize_transcriptRegularFont, *&transcriptRegularFont_sTextFontSize_transcriptRegularFont != v6) || (v12 = transcriptRegularFont_sCustomTextFontSize_transcriptRegularFont, *&transcriptRegularFont_sCustomTextFontSize_transcriptRegularFont != v7) || ([transcriptRegularFont_sCustomTextFontName_transcriptRegularFont isEqualToString:{v10, *&transcriptRegularFont_sCustomTextFontSize_transcriptRegularFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_fontForStyle:v14 weight:*MEMORY[0x1E69DB978]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_fontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB978]];
     v16 = transcriptRegularFont_sBehavior;
     transcriptRegularFont_sBehavior = v15;
 
@@ -13474,8 +13474,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptRegularPreferredFont](self, "ckShouldUpdatetranscriptRegularPreferredFont") || v11 || transcriptRegularPreferredFont_sIsIncreaseContrastEnabled_transcriptRegularPreferredFont != v4 || transcriptRegularPreferredFont_sIsBoldTextEnabled_transcriptRegularPreferredFont != IsBoldTextEnabled || (v12 = transcriptRegularPreferredFont_sTextFontSize_transcriptRegularPreferredFont, *&transcriptRegularPreferredFont_sTextFontSize_transcriptRegularPreferredFont != v6) || (v12 = transcriptRegularPreferredFont_sCustomTextFontSize_transcriptRegularPreferredFont, *&transcriptRegularPreferredFont_sCustomTextFontSize_transcriptRegularPreferredFont != v7) || ([transcriptRegularPreferredFont_sCustomTextFontName_transcriptRegularPreferredFont isEqualToString:{v10, *&transcriptRegularPreferredFont_sCustomTextFontSize_transcriptRegularPreferredFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_preferredFontForStyle:v14 weight:*MEMORY[0x1E69DB978]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_preferredFontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB978]];
     v16 = transcriptRegularPreferredFont_sBehavior;
     transcriptRegularPreferredFont_sBehavior = v15;
 
@@ -13516,8 +13516,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptErrorStampFont](self, "ckShouldUpdatetranscriptErrorStampFont") || v11 || transcriptErrorStampFont_sIsIncreaseContrastEnabled_transcriptErrorStampFont != v4 || transcriptErrorStampFont_sIsBoldTextEnabled_transcriptErrorStampFont != IsBoldTextEnabled || (v12 = transcriptErrorStampFont_sTextFontSize_transcriptErrorStampFont, *&transcriptErrorStampFont_sTextFontSize_transcriptErrorStampFont != v6) || (v12 = transcriptErrorStampFont_sCustomTextFontSize_transcriptErrorStampFont, *&transcriptErrorStampFont_sCustomTextFontSize_transcriptErrorStampFont != v7) || ([transcriptErrorStampFont_sCustomTextFontName_transcriptErrorStampFont isEqualToString:{v10, *&transcriptErrorStampFont_sCustomTextFontSize_transcriptErrorStampFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_fontForStyle:v14 weight:*MEMORY[0x1E69DB980]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_fontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB980]];
     v16 = transcriptErrorStampFont_sBehavior;
     transcriptErrorStampFont_sBehavior = v15;
 
@@ -13558,8 +13558,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptErrorStampPreferredFont](self, "ckShouldUpdatetranscriptErrorStampPreferredFont") || v11 || transcriptErrorStampPreferredFont_sIsIncreaseContrastEnabled_transcriptErrorStampPreferredFont != v4 || transcriptErrorStampPreferredFont_sIsBoldTextEnabled_transcriptErrorStampPreferredFont != IsBoldTextEnabled || (v12 = transcriptErrorStampPreferredFont_sTextFontSize_transcriptErrorStampPreferredFont, *&transcriptErrorStampPreferredFont_sTextFontSize_transcriptErrorStampPreferredFont != v6) || (v12 = transcriptErrorStampPreferredFont_sCustomTextFontSize_transcriptErrorStampPreferredFont, *&transcriptErrorStampPreferredFont_sCustomTextFontSize_transcriptErrorStampPreferredFont != v7) || ([transcriptErrorStampPreferredFont_sCustomTextFontName_transcriptErrorStampPreferredFont isEqualToString:{v10, *&transcriptErrorStampPreferredFont_sCustomTextFontSize_transcriptErrorStampPreferredFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_preferredFontForStyle:v14 weight:*MEMORY[0x1E69DB980]];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_preferredFontForStyle:transcriptTextFontStyle weight:*MEMORY[0x1E69DB980]];
     v16 = transcriptErrorStampPreferredFont_sBehavior;
     transcriptErrorStampPreferredFont_sBehavior = v15;
 
@@ -13880,8 +13880,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptMessageStatusDateFont](self, "ckShouldUpdatetranscriptMessageStatusDateFont") || v11 || transcriptMessageStatusDateFont_sIsIncreaseContrastEnabled_transcriptMessageStatusDateFont != v4 || transcriptMessageStatusDateFont_sIsBoldTextEnabled_transcriptMessageStatusDateFont != IsBoldTextEnabled || (v12 = transcriptMessageStatusDateFont_sTextFontSize_transcriptMessageStatusDateFont, *&transcriptMessageStatusDateFont_sTextFontSize_transcriptMessageStatusDateFont != v6) || (v12 = transcriptMessageStatusDateFont_sCustomTextFontSize_transcriptMessageStatusDateFont, *&transcriptMessageStatusDateFont_sCustomTextFontSize_transcriptMessageStatusDateFont != v7) || ([transcriptMessageStatusDateFont_sCustomTextFontName_transcriptMessageStatusDateFont isEqualToString:{v10, *&transcriptMessageStatusDateFont_sCustomTextFontSize_transcriptMessageStatusDateFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_monospacedPreferredFontForTextStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_monospacedPreferredFontForTextStyle:transcriptTextFontStyle];
     v16 = transcriptMessageStatusDateFont_sBehavior;
     transcriptMessageStatusDateFont_sBehavior = v15;
 
@@ -13922,8 +13922,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptButtonTextFont](self, "ckShouldUpdatetranscriptButtonTextFont") || v11 || transcriptButtonTextFont_sIsIncreaseContrastEnabled_transcriptButtonTextFont != v4 || transcriptButtonTextFont_sIsBoldTextEnabled_transcriptButtonTextFont != IsBoldTextEnabled || (v12 = transcriptButtonTextFont_sTextFontSize_transcriptButtonTextFont, *&transcriptButtonTextFont_sTextFontSize_transcriptButtonTextFont != v6) || (v12 = transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont, *&transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont != v7) || ([transcriptButtonTextFont_sCustomTextFontName_transcriptButtonTextFont isEqualToString:{v10, *&transcriptButtonTextFont_sCustomTextFontSize_transcriptButtonTextFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_emphasizedPreferredFontForTextStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_emphasizedPreferredFontForTextStyle:transcriptTextFontStyle];
     v16 = transcriptButtonTextFont_sBehavior;
     transcriptButtonTextFont_sBehavior = v15;
 
@@ -14004,8 +14004,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptSenderFont](self, "ckShouldUpdatetranscriptSenderFont") || v11 || transcriptSenderFont_sIsIncreaseContrastEnabled_transcriptSenderFont != v4 || transcriptSenderFont_sIsBoldTextEnabled_transcriptSenderFont != IsBoldTextEnabled || (v12 = transcriptSenderFont_sTextFontSize_transcriptSenderFont, *&transcriptSenderFont_sTextFontSize_transcriptSenderFont != v6) || (v12 = transcriptSenderFont_sCustomTextFontSize_transcriptSenderFont, *&transcriptSenderFont_sCustomTextFontSize_transcriptSenderFont != v7) || ([transcriptSenderFont_sCustomTextFontName_transcriptSenderFont isEqualToString:{v10, *&transcriptSenderFont_sCustomTextFontSize_transcriptSenderFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_preferredFontForStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_preferredFontForStyle:transcriptTextFontStyle];
     v16 = transcriptSenderFont_sBehavior;
     transcriptSenderFont_sBehavior = v15;
 
@@ -14046,8 +14046,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptDrawerFont](self, "ckShouldUpdatetranscriptDrawerFont") || v11 || transcriptDrawerFont_sIsIncreaseContrastEnabled_transcriptDrawerFont != v4 || transcriptDrawerFont_sIsBoldTextEnabled_transcriptDrawerFont != IsBoldTextEnabled || (v12 = transcriptDrawerFont_sTextFontSize_transcriptDrawerFont, *&transcriptDrawerFont_sTextFontSize_transcriptDrawerFont != v6) || (v12 = transcriptDrawerFont_sCustomTextFontSize_transcriptDrawerFont, *&transcriptDrawerFont_sCustomTextFontSize_transcriptDrawerFont != v7) || ([transcriptDrawerFont_sCustomTextFontName_transcriptDrawerFont isEqualToString:{v10, *&transcriptDrawerFont_sCustomTextFontSize_transcriptDrawerFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_monospacedPreferredFontForTextStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_monospacedPreferredFontForTextStyle:transcriptTextFontStyle];
     v16 = transcriptDrawerFont_sBehavior;
     transcriptDrawerFont_sBehavior = v15;
 
@@ -14088,8 +14088,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdatetranscriptLoadingViewTextFont](self, "ckShouldUpdatetranscriptLoadingViewTextFont") || v11 || transcriptLoadingViewTextFont_sIsIncreaseContrastEnabled_transcriptLoadingViewTextFont != v4 || transcriptLoadingViewTextFont_sIsBoldTextEnabled_transcriptLoadingViewTextFont != IsBoldTextEnabled || (v12 = transcriptLoadingViewTextFont_sTextFontSize_transcriptLoadingViewTextFont, *&transcriptLoadingViewTextFont_sTextFontSize_transcriptLoadingViewTextFont != v6) || (v12 = transcriptLoadingViewTextFont_sCustomTextFontSize_transcriptLoadingViewTextFont, *&transcriptLoadingViewTextFont_sCustomTextFontSize_transcriptLoadingViewTextFont != v7) || ([transcriptLoadingViewTextFont_sCustomTextFontName_transcriptLoadingViewTextFont isEqualToString:{v10, *&transcriptLoadingViewTextFont_sCustomTextFontSize_transcriptLoadingViewTextFont}] & 1) == 0)
   {
     v13 = MEMORY[0x1E69DB878];
-    v14 = [(CKUIBehavior *)self transcriptTextFontStyle];
-    v15 = [v13 __ck_emphasizedPreferredFontForTextStyle:v14];
+    transcriptTextFontStyle = [(CKUIBehavior *)self transcriptTextFontStyle];
+    v15 = [v13 __ck_emphasizedPreferredFontForTextStyle:transcriptTextFontStyle];
     v16 = transcriptLoadingViewTextFont_sBehavior;
     transcriptLoadingViewTextFont_sBehavior = v15;
 
@@ -14315,18 +14315,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)leftStatusTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _leftStatusTranscriptTextAttributes];
+  _leftStatusTranscriptTextAttributes = [(CKUIBehavior *)self _leftStatusTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_leftStatusTranscriptTextAttributes];
 
-    v2 = v5;
+    _leftStatusTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _leftStatusTranscriptTextAttributes;
 }
 
 - (id)_leftStatusTranscriptTextAttributes
@@ -14353,18 +14353,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationListCellRightMargin_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_leftStatusTranscriptTextAttributes](self, "ckShouldUpdate_leftStatusTranscriptTextAttributes") || v11 || _leftStatusTranscriptTextAttributes_sIsIncreaseContrastEnabled__leftStatusTranscriptTextAttributes != v4 || _leftStatusTranscriptTextAttributes_sIsBoldTextEnabled__leftStatusTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _leftStatusTranscriptTextAttributes_sTextFontSize__leftStatusTranscriptTextAttributes, *&_leftStatusTranscriptTextAttributes_sTextFontSize__leftStatusTranscriptTextAttributes != v6) || (v12 = _leftStatusTranscriptTextAttributes_sCustomTextFontSize__leftStatusTranscriptTextAttributes, *&_leftStatusTranscriptTextAttributes_sCustomTextFontSize__leftStatusTranscriptTextAttributes != v7) || ([_leftStatusTranscriptTextAttributes_sCustomTextFontName__leftStatusTranscriptTextAttributes isEqualToString:{v10, *&_leftStatusTranscriptTextAttributes_sCustomTextFontSize__leftStatusTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     [v15 setLineBreakMode:2];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptMessageStatusFont];
-    v31[0] = v16;
+    transcriptMessageStatusFont = [(CKUIBehavior *)self transcriptMessageStatusFont];
+    v31[0] = transcriptMessageStatusFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptBreadcrumpTextColor];
+    theme = [v17 theme];
+    [theme transcriptBreadcrumpTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14399,18 +14399,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)rightStatusTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _rightStatusTranscriptTextAttributes];
+  _rightStatusTranscriptTextAttributes = [(CKUIBehavior *)self _rightStatusTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_rightStatusTranscriptTextAttributes];
 
-    v2 = v5;
+    _rightStatusTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _rightStatusTranscriptTextAttributes;
 }
 
 - (id)_rightStatusTranscriptTextAttributes
@@ -14437,18 +14437,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &browserAppStripLightPluginCellOpacity_once;
   if (-[CKUIBehavior ckShouldUpdate_rightStatusTranscriptTextAttributes](self, "ckShouldUpdate_rightStatusTranscriptTextAttributes") || v11 || _rightStatusTranscriptTextAttributes_sIsIncreaseContrastEnabled__rightStatusTranscriptTextAttributes != v4 || _rightStatusTranscriptTextAttributes_sIsBoldTextEnabled__rightStatusTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _rightStatusTranscriptTextAttributes_sTextFontSize__rightStatusTranscriptTextAttributes, *&_rightStatusTranscriptTextAttributes_sTextFontSize__rightStatusTranscriptTextAttributes != v6) || (v12 = _rightStatusTranscriptTextAttributes_sCustomTextFontSize__rightStatusTranscriptTextAttributes, *&_rightStatusTranscriptTextAttributes_sCustomTextFontSize__rightStatusTranscriptTextAttributes != v7) || ([_rightStatusTranscriptTextAttributes_sCustomTextFontName__rightStatusTranscriptTextAttributes isEqualToString:{v10, *&_rightStatusTranscriptTextAttributes_sCustomTextFontSize__rightStatusTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:2];
     [v15 setLineBreakMode:2];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptMessageStatusFont];
-    v31[0] = v16;
+    transcriptMessageStatusFont = [(CKUIBehavior *)self transcriptMessageStatusFont];
+    v31[0] = transcriptMessageStatusFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptBreadcrumpTextColor];
+    theme = [v17 theme];
+    [theme transcriptBreadcrumpTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14505,18 +14505,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationListCellRightMargin_sBehavior;
   if (-[CKUIBehavior ckShouldUpdateconversationCellSummaryPreviewTextAttributes](self, "ckShouldUpdateconversationCellSummaryPreviewTextAttributes") || v11 || conversationCellSummaryPreviewTextAttributes_sIsIncreaseContrastEnabled_conversationCellSummaryPreviewTextAttributes != v4 || conversationCellSummaryPreviewTextAttributes_sIsBoldTextEnabled_conversationCellSummaryPreviewTextAttributes != IsBoldTextEnabled || (v12 = conversationCellSummaryPreviewTextAttributes_sTextFontSize_conversationCellSummaryPreviewTextAttributes, *&conversationCellSummaryPreviewTextAttributes_sTextFontSize_conversationCellSummaryPreviewTextAttributes != v6) || (v12 = conversationCellSummaryPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryPreviewTextAttributes, *&conversationCellSummaryPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryPreviewTextAttributes != v7) || ([conversationCellSummaryPreviewTextAttributes_sCustomTextFontName_conversationCellSummaryPreviewTextAttributes isEqualToString:{v10, *&conversationCellSummaryPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryPreviewTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:4];
     [v15 setLineBreakMode:4];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self conversationListSummaryFont];
-    v31[0] = v16;
+    conversationListSummaryFont = [(CKUIBehavior *)self conversationListSummaryFont];
+    v31[0] = conversationListSummaryFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 conversationListSummaryColor];
+    theme = [v17 theme];
+    [theme conversationListSummaryColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14573,18 +14573,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdateconversationCellSummaryBoldPreviewTextAttributes](self, "ckShouldUpdateconversationCellSummaryBoldPreviewTextAttributes") || v11 || conversationCellSummaryBoldPreviewTextAttributes_sIsIncreaseContrastEnabled_conversationCellSummaryBoldPreviewTextAttributes != v4 || conversationCellSummaryBoldPreviewTextAttributes_sIsBoldTextEnabled_conversationCellSummaryBoldPreviewTextAttributes != IsBoldTextEnabled || (v12 = conversationCellSummaryBoldPreviewTextAttributes_sTextFontSize_conversationCellSummaryBoldPreviewTextAttributes, *&conversationCellSummaryBoldPreviewTextAttributes_sTextFontSize_conversationCellSummaryBoldPreviewTextAttributes != v6) || (v12 = conversationCellSummaryBoldPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryBoldPreviewTextAttributes, *&conversationCellSummaryBoldPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryBoldPreviewTextAttributes != v7) || ([conversationCellSummaryBoldPreviewTextAttributes_sCustomTextFontName_conversationCellSummaryBoldPreviewTextAttributes isEqualToString:{v10, *&conversationCellSummaryBoldPreviewTextAttributes_sCustomTextFontSize_conversationCellSummaryBoldPreviewTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:4];
     [v15 setLineBreakMode:4];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self conversationListBoldSummaryFont];
-    v31[0] = v16;
+    conversationListBoldSummaryFont = [(CKUIBehavior *)self conversationListBoldSummaryFont];
+    v31[0] = conversationListBoldSummaryFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 conversationListSummaryColor];
+    theme = [v17 theme];
+    [theme conversationListSummaryColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14619,20 +14619,20 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (UIButtonConfiguration)transcriptLabelAccessoryButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  [v2 setButtonSize:2];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  [filledButtonConfiguration setButtonSize:2];
   v3 = +[_TtC7ChatKit21CKMaterialPlatterView materialPlatterViewWithGrayMaterial];
-  v4 = [v2 background];
-  [v4 setCustomView:v3];
+  background = [filledButtonConfiguration background];
+  [background setCustomView:v3];
 
-  v5 = [v2 background];
-  [v5 setCornerRadius:0.0];
+  background2 = [filledButtonConfiguration background];
+  [background2 setCornerRadius:0.0];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  v7 = [v2 background];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  background3 = [filledButtonConfiguration background];
+  [background3 setBackgroundColor:clearColor];
 
-  return v2;
+  return filledButtonConfiguration;
 }
 
 - (UIButtonConfiguration)transcriptSendLaterButtonConfiguration
@@ -14699,18 +14699,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)leftTranscriptButtonTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _leftTranscriptButtonTextAttributes];
+  _leftTranscriptButtonTextAttributes = [(CKUIBehavior *)self _leftTranscriptButtonTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_leftTranscriptButtonTextAttributes];
 
-    v2 = v5;
+    _leftTranscriptButtonTextAttributes = v5;
   }
 
-  return v2;
+  return _leftTranscriptButtonTextAttributes;
 }
 
 - (id)_leftTranscriptButtonTextAttributes
@@ -14737,18 +14737,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_leftTranscriptButtonTextAttributes](self, "ckShouldUpdate_leftTranscriptButtonTextAttributes") || v11 || _leftTranscriptButtonTextAttributes_sIsIncreaseContrastEnabled__leftTranscriptButtonTextAttributes != v4 || _leftTranscriptButtonTextAttributes_sIsBoldTextEnabled__leftTranscriptButtonTextAttributes != IsBoldTextEnabled || (v12 = _leftTranscriptButtonTextAttributes_sTextFontSize__leftTranscriptButtonTextAttributes, *&_leftTranscriptButtonTextAttributes_sTextFontSize__leftTranscriptButtonTextAttributes != v6) || (v12 = _leftTranscriptButtonTextAttributes_sCustomTextFontSize__leftTranscriptButtonTextAttributes, *&_leftTranscriptButtonTextAttributes_sCustomTextFontSize__leftTranscriptButtonTextAttributes != v7) || ([_leftTranscriptButtonTextAttributes_sCustomTextFontName__leftTranscriptButtonTextAttributes isEqualToString:{v10, *&_leftTranscriptButtonTextAttributes_sCustomTextFontSize__leftTranscriptButtonTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     [v15 setLineBreakMode:0];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptButtonTextFont];
-    v31[0] = v16;
+    transcriptButtonTextFont = [(CKUIBehavior *)self transcriptButtonTextFont];
+    v31[0] = transcriptButtonTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 attachmentBalloonActionColor];
+    theme = [v17 theme];
+    [theme attachmentBalloonActionColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14783,18 +14783,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)rightTranscriptButtonTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _rightTranscriptButtonTextAttributes];
+  _rightTranscriptButtonTextAttributes = [(CKUIBehavior *)self _rightTranscriptButtonTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_rightTranscriptButtonTextAttributes];
 
-    v2 = v5;
+    _rightTranscriptButtonTextAttributes = v5;
   }
 
-  return v2;
+  return _rightTranscriptButtonTextAttributes;
 }
 
 - (id)_rightTranscriptButtonTextAttributes
@@ -14821,18 +14821,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_rightTranscriptButtonTextAttributes](self, "ckShouldUpdate_rightTranscriptButtonTextAttributes") || v11 || _rightTranscriptButtonTextAttributes_sIsIncreaseContrastEnabled__rightTranscriptButtonTextAttributes != v4 || _rightTranscriptButtonTextAttributes_sIsBoldTextEnabled__rightTranscriptButtonTextAttributes != IsBoldTextEnabled || (v12 = _rightTranscriptButtonTextAttributes_sTextFontSize__rightTranscriptButtonTextAttributes, *&_rightTranscriptButtonTextAttributes_sTextFontSize__rightTranscriptButtonTextAttributes != v6) || (v12 = _rightTranscriptButtonTextAttributes_sCustomTextFontSize__rightTranscriptButtonTextAttributes, *&_rightTranscriptButtonTextAttributes_sCustomTextFontSize__rightTranscriptButtonTextAttributes != v7) || ([_rightTranscriptButtonTextAttributes_sCustomTextFontName__rightTranscriptButtonTextAttributes isEqualToString:{v10, *&_rightTranscriptButtonTextAttributes_sCustomTextFontSize__rightTranscriptButtonTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:2];
     [v15 setLineBreakMode:0];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptButtonTextFont];
-    v31[0] = v16;
+    transcriptButtonTextFont = [(CKUIBehavior *)self transcriptButtonTextFont];
+    v31[0] = transcriptButtonTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 attachmentBalloonActionColor];
+    theme = [v17 theme];
+    [theme attachmentBalloonActionColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14889,17 +14889,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &pinnedConversationActivityBroadShadowLightRadius_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatecenterTranscriptButtonTextAttributes](self, "ckShouldUpdatecenterTranscriptButtonTextAttributes") || v11 || centerTranscriptButtonTextAttributes_sIsIncreaseContrastEnabled_centerTranscriptButtonTextAttributes != v4 || centerTranscriptButtonTextAttributes_sIsBoldTextEnabled_centerTranscriptButtonTextAttributes != IsBoldTextEnabled || (v12 = centerTranscriptButtonTextAttributes_sTextFontSize_centerTranscriptButtonTextAttributes, *&centerTranscriptButtonTextAttributes_sTextFontSize_centerTranscriptButtonTextAttributes != v6) || (v12 = centerTranscriptButtonTextAttributes_sCustomTextFontSize_centerTranscriptButtonTextAttributes, *&centerTranscriptButtonTextAttributes_sCustomTextFontSize_centerTranscriptButtonTextAttributes != v7) || ([centerTranscriptButtonTextAttributes_sCustomTextFontName_centerTranscriptButtonTextAttributes isEqualToString:{v10, *&centerTranscriptButtonTextAttributes_sCustomTextFontSize_centerTranscriptButtonTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptButtonTextFont];
-    v31[0] = v16;
+    transcriptButtonTextFont = [(CKUIBehavior *)self transcriptButtonTextFont];
+    v31[0] = transcriptButtonTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 centerTranscriptButtonTextColor];
+    theme = [v17 theme];
+    [theme centerTranscriptButtonTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -14956,17 +14956,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatekeepAudioMessageButtonTextAttributes](self, "ckShouldUpdatekeepAudioMessageButtonTextAttributes") || v11 || keepAudioMessageButtonTextAttributes_sIsIncreaseContrastEnabled_keepAudioMessageButtonTextAttributes != v4 || keepAudioMessageButtonTextAttributes_sIsBoldTextEnabled_keepAudioMessageButtonTextAttributes != IsBoldTextEnabled || (v12 = keepAudioMessageButtonTextAttributes_sTextFontSize_keepAudioMessageButtonTextAttributes, *&keepAudioMessageButtonTextAttributes_sTextFontSize_keepAudioMessageButtonTextAttributes != v6) || (v12 = keepAudioMessageButtonTextAttributes_sCustomTextFontSize_keepAudioMessageButtonTextAttributes, *&keepAudioMessageButtonTextAttributes_sCustomTextFontSize_keepAudioMessageButtonTextAttributes != v7) || ([keepAudioMessageButtonTextAttributes_sCustomTextFontName_keepAudioMessageButtonTextAttributes isEqualToString:{v10, *&keepAudioMessageButtonTextAttributes_sCustomTextFontSize_keepAudioMessageButtonTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptButtonTextFont];
-    v31[0] = v16;
+    transcriptButtonTextFont = [(CKUIBehavior *)self transcriptButtonTextFont];
+    v31[0] = transcriptButtonTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 attachmentBalloonActionColor];
+    theme = [v17 theme];
+    [theme attachmentBalloonActionColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15001,18 +15001,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (id)breadcrumbTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _breadcrumbTranscriptTextAttributes];
+  _breadcrumbTranscriptTextAttributes = [(CKUIBehavior *)self _breadcrumbTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_breadcrumbTranscriptTextAttributes];
 
-    v2 = v5;
+    _breadcrumbTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _breadcrumbTranscriptTextAttributes;
 }
 
 - (id)_breadcrumbTranscriptTextAttributes
@@ -15039,17 +15039,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_breadcrumbTranscriptTextAttributes](self, "ckShouldUpdate_breadcrumbTranscriptTextAttributes") || v11 || _breadcrumbTranscriptTextAttributes_sIsIncreaseContrastEnabled__breadcrumbTranscriptTextAttributes != v4 || _breadcrumbTranscriptTextAttributes_sIsBoldTextEnabled__breadcrumbTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _breadcrumbTranscriptTextAttributes_sTextFontSize__breadcrumbTranscriptTextAttributes, *&_breadcrumbTranscriptTextAttributes_sTextFontSize__breadcrumbTranscriptTextAttributes != v6) || (v12 = _breadcrumbTranscriptTextAttributes_sCustomTextFontSize__breadcrumbTranscriptTextAttributes, *&_breadcrumbTranscriptTextAttributes_sCustomTextFontSize__breadcrumbTranscriptTextAttributes != v7) || ([_breadcrumbTranscriptTextAttributes_sCustomTextFontName__breadcrumbTranscriptTextAttributes isEqualToString:{v10, *&_breadcrumbTranscriptTextAttributes_sCustomTextFontSize__breadcrumbTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptTextFont];
-    v31[0] = v16;
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    v31[0] = transcriptTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15084,18 +15084,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)senderTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _senderTranscriptTextAttributes];
+  _senderTranscriptTextAttributes = [(CKUIBehavior *)self _senderTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_senderTranscriptTextAttributes];
 
-    v2 = v5;
+    _senderTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _senderTranscriptTextAttributes;
 }
 
 - (id)_senderTranscriptTextAttributes
@@ -15122,18 +15122,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_senderTranscriptTextAttributes](self, "ckShouldUpdate_senderTranscriptTextAttributes") || v11 || _senderTranscriptTextAttributes_sIsIncreaseContrastEnabled__senderTranscriptTextAttributes != v4 || _senderTranscriptTextAttributes_sIsBoldTextEnabled__senderTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _senderTranscriptTextAttributes_sTextFontSize__senderTranscriptTextAttributes, *&_senderTranscriptTextAttributes_sTextFontSize__senderTranscriptTextAttributes != v6) || (v12 = _senderTranscriptTextAttributes_sCustomTextFontSize__senderTranscriptTextAttributes, *&_senderTranscriptTextAttributes_sCustomTextFontSize__senderTranscriptTextAttributes != v7) || ([_senderTranscriptTextAttributes_sCustomTextFontName__senderTranscriptTextAttributes isEqualToString:{v10, *&_senderTranscriptTextAttributes_sCustomTextFontSize__senderTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     [v15 setLineBreakMode:2];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptSenderFont];
-    v31[0] = v16;
+    transcriptSenderFont = [(CKUIBehavior *)self transcriptSenderFont];
+    v31[0] = transcriptSenderFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15168,18 +15168,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)senderAddToContactsTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _senderAddToContactsTranscriptTextAttributes];
+  _senderAddToContactsTranscriptTextAttributes = [(CKUIBehavior *)self _senderAddToContactsTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_senderAddToContactsTranscriptTextAttributes];
 
-    v2 = v5;
+    _senderAddToContactsTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _senderAddToContactsTranscriptTextAttributes;
 }
 
 - (id)_senderAddToContactsTranscriptTextAttributes
@@ -15206,20 +15206,20 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_senderAddToContactsTranscriptTextAttributes](self, "ckShouldUpdate_senderAddToContactsTranscriptTextAttributes") || v11 || _senderAddToContactsTranscriptTextAttributes_sIsIncreaseContrastEnabled__senderAddToContactsTranscriptTextAttributes != v4 || _senderAddToContactsTranscriptTextAttributes_sIsBoldTextEnabled__senderAddToContactsTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _senderAddToContactsTranscriptTextAttributes_sTextFontSize__senderAddToContactsTranscriptTextAttributes, *&_senderAddToContactsTranscriptTextAttributes_sTextFontSize__senderAddToContactsTranscriptTextAttributes != v6) || (v12 = _senderAddToContactsTranscriptTextAttributes_sCustomTextFontSize__senderAddToContactsTranscriptTextAttributes, *&_senderAddToContactsTranscriptTextAttributes_sCustomTextFontSize__senderAddToContactsTranscriptTextAttributes != v7) || ([_senderAddToContactsTranscriptTextAttributes_sCustomTextFontName__senderAddToContactsTranscriptTextAttributes isEqualToString:{v10, *&_senderAddToContactsTranscriptTextAttributes_sCustomTextFontSize__senderAddToContactsTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
-    v33 = [(CKUIBehavior *)self transcriptSenderFont];
+    transcriptSenderFont = [(CKUIBehavior *)self transcriptSenderFont];
     [v15 setAlignment:0];
     [v15 setLineBreakMode:2];
     v16 = *MEMORY[0x1E69DB648];
-    v35[0] = v33;
+    v35[0] = transcriptSenderFont;
     v17 = *MEMORY[0x1E69DB650];
     v34[0] = v16;
     v34[1] = v17;
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 theme];
-    [v19 messageSenderAddToContactTextColor];
+    theme = [v18 theme];
+    [theme messageSenderAddToContactTextColor];
     v20 = v8;
     v21 = v3;
     v23 = v22 = v10;
@@ -15258,18 +15258,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)stewieTranscriptEmergencyServiceAttributes
 {
-  v2 = [(CKUIBehavior *)self _stewieTranscriptEmergencyServiceAttributes];
+  _stewieTranscriptEmergencyServiceAttributes = [(CKUIBehavior *)self _stewieTranscriptEmergencyServiceAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_stewieTranscriptEmergencyServiceAttributes];
 
-    v2 = v5;
+    _stewieTranscriptEmergencyServiceAttributes = v5;
   }
 
-  return v2;
+  return _stewieTranscriptEmergencyServiceAttributes;
 }
 
 - (id)_stewieTranscriptEmergencyServiceAttributes
@@ -15297,18 +15297,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_stewieTranscriptEmergencyServiceAttributes](self, "ckShouldUpdate_stewieTranscriptEmergencyServiceAttributes") || v11 || _stewieTranscriptEmergencyServiceAttributes_sIsIncreaseContrastEnabled__stewieTranscriptEmergencyServiceAttributes != v4 || _stewieTranscriptEmergencyServiceAttributes_sIsBoldTextEnabled__stewieTranscriptEmergencyServiceAttributes != IsBoldTextEnabled || (v12 = _stewieTranscriptEmergencyServiceAttributes_sTextFontSize__stewieTranscriptEmergencyServiceAttributes, *&_stewieTranscriptEmergencyServiceAttributes_sTextFontSize__stewieTranscriptEmergencyServiceAttributes != v6) || (v12 = _stewieTranscriptEmergencyServiceAttributes_sCustomTextFontSize__stewieTranscriptEmergencyServiceAttributes, *&_stewieTranscriptEmergencyServiceAttributes_sCustomTextFontSize__stewieTranscriptEmergencyServiceAttributes != v7) || ([_stewieTranscriptEmergencyServiceAttributes_sCustomTextFontName__stewieTranscriptEmergencyServiceAttributes isEqualToString:{v10, *&_stewieTranscriptEmergencyServiceAttributes_sCustomTextFontSize__stewieTranscriptEmergencyServiceAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:4];
     [v15 setLineBreakMode:2];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptBoldFont];
-    v25[0] = v16;
+    transcriptBoldFont = [(CKUIBehavior *)self transcriptBoldFont];
+    v25[0] = transcriptBoldFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = systemRedColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -15332,18 +15332,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)stewieTranscriptEmergencyUserAttributes
 {
-  v2 = [(CKUIBehavior *)self _stewieTranscriptEmergencyUserAttributes];
+  _stewieTranscriptEmergencyUserAttributes = [(CKUIBehavior *)self _stewieTranscriptEmergencyUserAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_stewieTranscriptEmergencyUserAttributes];
 
-    v2 = v5;
+    _stewieTranscriptEmergencyUserAttributes = v5;
   }
 
-  return v2;
+  return _stewieTranscriptEmergencyUserAttributes;
 }
 
 - (id)_stewieTranscriptEmergencyUserAttributes
@@ -15371,18 +15371,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_stewieTranscriptEmergencyUserAttributes](self, "ckShouldUpdate_stewieTranscriptEmergencyUserAttributes") || v11 || _stewieTranscriptEmergencyUserAttributes_sIsIncreaseContrastEnabled__stewieTranscriptEmergencyUserAttributes != v4 || _stewieTranscriptEmergencyUserAttributes_sIsBoldTextEnabled__stewieTranscriptEmergencyUserAttributes != IsBoldTextEnabled || (v12 = _stewieTranscriptEmergencyUserAttributes_sTextFontSize__stewieTranscriptEmergencyUserAttributes, *&_stewieTranscriptEmergencyUserAttributes_sTextFontSize__stewieTranscriptEmergencyUserAttributes != v6) || (v12 = _stewieTranscriptEmergencyUserAttributes_sCustomTextFontSize__stewieTranscriptEmergencyUserAttributes, *&_stewieTranscriptEmergencyUserAttributes_sCustomTextFontSize__stewieTranscriptEmergencyUserAttributes != v7) || ([_stewieTranscriptEmergencyUserAttributes_sCustomTextFontName__stewieTranscriptEmergencyUserAttributes isEqualToString:{v10, *&_stewieTranscriptEmergencyUserAttributes_sCustomTextFontSize__stewieTranscriptEmergencyUserAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:4];
     [v15 setLineBreakMode:2];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptBoldFont];
-    v25[0] = v16;
+    transcriptBoldFont = [(CKUIBehavior *)self transcriptBoldFont];
+    v25[0] = transcriptBoldFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = labelColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -15429,18 +15429,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatereplySenderTranscriptTextAttributes](self, "ckShouldUpdatereplySenderTranscriptTextAttributes") || v11 || replySenderTranscriptTextAttributes_sIsIncreaseContrastEnabled_replySenderTranscriptTextAttributes != v4 || replySenderTranscriptTextAttributes_sIsBoldTextEnabled_replySenderTranscriptTextAttributes != IsBoldTextEnabled || (v12 = replySenderTranscriptTextAttributes_sTextFontSize_replySenderTranscriptTextAttributes, *&replySenderTranscriptTextAttributes_sTextFontSize_replySenderTranscriptTextAttributes != v6) || (v12 = replySenderTranscriptTextAttributes_sCustomTextFontSize_replySenderTranscriptTextAttributes, *&replySenderTranscriptTextAttributes_sCustomTextFontSize_replySenderTranscriptTextAttributes != v7) || ([replySenderTranscriptTextAttributes_sCustomTextFontName_replySenderTranscriptTextAttributes isEqualToString:{v10, *&replySenderTranscriptTextAttributes_sCustomTextFontSize_replySenderTranscriptTextAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     [v15 setLineBreakMode:2];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptTextFont];
-    v25[0] = v16;
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    v25[0] = transcriptTextFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = tertiaryLabelColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -15486,18 +15486,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatenickNameTranscriptTextAttributes](self, "ckShouldUpdatenickNameTranscriptTextAttributes") || v11 || nickNameTranscriptTextAttributes_sIsIncreaseContrastEnabled_nickNameTranscriptTextAttributes != v4 || nickNameTranscriptTextAttributes_sIsBoldTextEnabled_nickNameTranscriptTextAttributes != IsBoldTextEnabled || (v12 = nickNameTranscriptTextAttributes_sTextFontSize_nickNameTranscriptTextAttributes, *&nickNameTranscriptTextAttributes_sTextFontSize_nickNameTranscriptTextAttributes != v6) || (v12 = nickNameTranscriptTextAttributes_sCustomTextFontSize_nickNameTranscriptTextAttributes, *&nickNameTranscriptTextAttributes_sCustomTextFontSize_nickNameTranscriptTextAttributes != v7) || ([nickNameTranscriptTextAttributes_sCustomTextFontName_nickNameTranscriptTextAttributes isEqualToString:{v10, *&nickNameTranscriptTextAttributes_sCustomTextFontSize_nickNameTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:0];
     [v15 setLineBreakMode:2];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptTextFont];
-    v31[0] = v16;
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    v31[0] = transcriptTextFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptNicknameTextColor];
+    theme = [v17 theme];
+    [theme transcriptNicknameTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15532,18 +15532,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptRegularFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptRegularFontAttributes];
+  _transcriptRegularFontAttributes = [(CKUIBehavior *)self _transcriptRegularFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptRegularFontAttributes];
 
-    v2 = v5;
+    _transcriptRegularFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptRegularFontAttributes;
 }
 
 - (id)_transcriptRegularFontAttributes
@@ -15570,17 +15570,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &browserAppStripLightPluginCellOpacity_once;
   if (-[CKUIBehavior ckShouldUpdate_transcriptRegularFontAttributes](self, "ckShouldUpdate_transcriptRegularFontAttributes") || v11 || _transcriptRegularFontAttributes_sIsIncreaseContrastEnabled__transcriptRegularFontAttributes != v4 || _transcriptRegularFontAttributes_sIsBoldTextEnabled__transcriptRegularFontAttributes != IsBoldTextEnabled || (v12 = _transcriptRegularFontAttributes_sTextFontSize__transcriptRegularFontAttributes, *&_transcriptRegularFontAttributes_sTextFontSize__transcriptRegularFontAttributes != v6) || (v12 = _transcriptRegularFontAttributes_sCustomTextFontSize__transcriptRegularFontAttributes, *&_transcriptRegularFontAttributes_sCustomTextFontSize__transcriptRegularFontAttributes != v7) || ([_transcriptRegularFontAttributes_sCustomTextFontName__transcriptRegularFontAttributes isEqualToString:{v10, *&_transcriptRegularFontAttributes_sCustomTextFontSize__transcriptRegularFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptRegularFont];
-    v31[0] = v16;
+    transcriptRegularFont = [(CKUIBehavior *)self transcriptRegularFont];
+    v31[0] = transcriptRegularFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15615,18 +15615,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptRegularPreferredFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptRegularPreferredFontAttributes];
+  _transcriptRegularPreferredFontAttributes = [(CKUIBehavior *)self _transcriptRegularPreferredFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptRegularPreferredFontAttributes];
 
-    v2 = v5;
+    _transcriptRegularPreferredFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptRegularPreferredFontAttributes;
 }
 
 - (id)_transcriptRegularPreferredFontAttributes
@@ -15653,17 +15653,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptRegularPreferredFontAttributes](self, "ckShouldUpdate_transcriptRegularPreferredFontAttributes") || v11 || _transcriptRegularPreferredFontAttributes_sIsIncreaseContrastEnabled__transcriptRegularPreferredFontAttributes != v4 || _transcriptRegularPreferredFontAttributes_sIsBoldTextEnabled__transcriptRegularPreferredFontAttributes != IsBoldTextEnabled || (v12 = _transcriptRegularPreferredFontAttributes_sTextFontSize__transcriptRegularPreferredFontAttributes, *&_transcriptRegularPreferredFontAttributes_sTextFontSize__transcriptRegularPreferredFontAttributes != v6) || (v12 = _transcriptRegularPreferredFontAttributes_sCustomTextFontSize__transcriptRegularPreferredFontAttributes, *&_transcriptRegularPreferredFontAttributes_sCustomTextFontSize__transcriptRegularPreferredFontAttributes != v7) || ([_transcriptRegularPreferredFontAttributes_sCustomTextFontName__transcriptRegularPreferredFontAttributes isEqualToString:{v10, *&_transcriptRegularPreferredFontAttributes_sCustomTextFontSize__transcriptRegularPreferredFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptRegularPreferredFont];
-    v31[0] = v16;
+    transcriptRegularPreferredFont = [(CKUIBehavior *)self transcriptRegularPreferredFont];
+    v31[0] = transcriptRegularPreferredFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15698,18 +15698,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptSatelliteAvailabilityFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptSatelliteAvailabilityFontAttributes];
+  _transcriptSatelliteAvailabilityFontAttributes = [(CKUIBehavior *)self _transcriptSatelliteAvailabilityFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptSatelliteAvailabilityFontAttributes];
 
-    v2 = v5;
+    _transcriptSatelliteAvailabilityFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptSatelliteAvailabilityFontAttributes;
 }
 
 - (id)_transcriptSatelliteAvailabilityFontAttributes
@@ -15736,17 +15736,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptSatelliteAvailabilityFontAttributes](self, "ckShouldUpdate_transcriptSatelliteAvailabilityFontAttributes") || v11 || _transcriptSatelliteAvailabilityFontAttributes_sIsIncreaseContrastEnabled__transcriptSatelliteAvailabilityFontAttributes != v4 || _transcriptSatelliteAvailabilityFontAttributes_sIsBoldTextEnabled__transcriptSatelliteAvailabilityFontAttributes != IsBoldTextEnabled || (v12 = _transcriptSatelliteAvailabilityFontAttributes_sTextFontSize__transcriptSatelliteAvailabilityFontAttributes, *&_transcriptSatelliteAvailabilityFontAttributes_sTextFontSize__transcriptSatelliteAvailabilityFontAttributes != v6) || (v12 = _transcriptSatelliteAvailabilityFontAttributes_sCustomTextFontSize__transcriptSatelliteAvailabilityFontAttributes, *&_transcriptSatelliteAvailabilityFontAttributes_sCustomTextFontSize__transcriptSatelliteAvailabilityFontAttributes != v7) || ([_transcriptSatelliteAvailabilityFontAttributes_sCustomTextFontName__transcriptSatelliteAvailabilityFontAttributes isEqualToString:{v10, *&_transcriptSatelliteAvailabilityFontAttributes_sCustomTextFontSize__transcriptSatelliteAvailabilityFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptSatelliteAvailabilityFont];
-    v31[0] = v16;
+    transcriptSatelliteAvailabilityFont = [(CKUIBehavior *)self transcriptSatelliteAvailabilityFont];
+    v31[0] = transcriptSatelliteAvailabilityFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptSatelliteAvailabilityColor];
+    theme = [v17 theme];
+    [theme transcriptSatelliteAvailabilityColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15781,18 +15781,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptSatelliteSuppressedNotificationFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptSatelliteSuppressedNotificationFontAttributes];
+  _transcriptSatelliteSuppressedNotificationFontAttributes = [(CKUIBehavior *)self _transcriptSatelliteSuppressedNotificationFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptSatelliteSuppressedNotificationFontAttributes];
 
-    v2 = v5;
+    _transcriptSatelliteSuppressedNotificationFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptSatelliteSuppressedNotificationFontAttributes;
 }
 
 - (id)_transcriptSatelliteSuppressedNotificationFontAttributes
@@ -15819,17 +15819,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptSatelliteSuppressedNotificationFontAttributes](self, "ckShouldUpdate_transcriptSatelliteSuppressedNotificationFontAttributes") || v11 || _transcriptSatelliteSuppressedNotificationFontAttributes_sIsIncreaseContrastEnabled__transcriptSatelliteSuppressedNotificationFontAttributes != v4 || _transcriptSatelliteSuppressedNotificationFontAttributes_sIsBoldTextEnabled__transcriptSatelliteSuppressedNotificationFontAttributes != IsBoldTextEnabled || (v12 = _transcriptSatelliteSuppressedNotificationFontAttributes_sTextFontSize__transcriptSatelliteSuppressedNotificationFontAttributes, *&_transcriptSatelliteSuppressedNotificationFontAttributes_sTextFontSize__transcriptSatelliteSuppressedNotificationFontAttributes != v6) || (v12 = _transcriptSatelliteSuppressedNotificationFontAttributes_sCustomTextFontSize__transcriptSatelliteSuppressedNotificationFontAttributes, *&_transcriptSatelliteSuppressedNotificationFontAttributes_sCustomTextFontSize__transcriptSatelliteSuppressedNotificationFontAttributes != v7) || ([_transcriptSatelliteSuppressedNotificationFontAttributes_sCustomTextFontName__transcriptSatelliteSuppressedNotificationFontAttributes isEqualToString:{v10, *&_transcriptSatelliteSuppressedNotificationFontAttributes_sCustomTextFontSize__transcriptSatelliteSuppressedNotificationFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptSatelliteSuppressedNotificationFont];
-    v31[0] = v16;
+    transcriptSatelliteSuppressedNotificationFont = [(CKUIBehavior *)self transcriptSatelliteSuppressedNotificationFont];
+    v31[0] = transcriptSatelliteSuppressedNotificationFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptSatelliteSuppressedNotificationColor];
+    theme = [v17 theme];
+    [theme transcriptSatelliteSuppressedNotificationColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15864,18 +15864,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptAvailabilityFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptAvailabilityFontAttributes];
+  _transcriptAvailabilityFontAttributes = [(CKUIBehavior *)self _transcriptAvailabilityFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptAvailabilityFontAttributes];
 
-    v2 = v5;
+    _transcriptAvailabilityFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptAvailabilityFontAttributes;
 }
 
 - (id)_transcriptAvailabilityFontAttributes
@@ -15902,17 +15902,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptAvailabilityFontAttributes](self, "ckShouldUpdate_transcriptAvailabilityFontAttributes") || v11 || _transcriptAvailabilityFontAttributes_sIsIncreaseContrastEnabled__transcriptAvailabilityFontAttributes != v4 || _transcriptAvailabilityFontAttributes_sIsBoldTextEnabled__transcriptAvailabilityFontAttributes != IsBoldTextEnabled || (v12 = _transcriptAvailabilityFontAttributes_sTextFontSize__transcriptAvailabilityFontAttributes, *&_transcriptAvailabilityFontAttributes_sTextFontSize__transcriptAvailabilityFontAttributes != v6) || (v12 = _transcriptAvailabilityFontAttributes_sCustomTextFontSize__transcriptAvailabilityFontAttributes, *&_transcriptAvailabilityFontAttributes_sCustomTextFontSize__transcriptAvailabilityFontAttributes != v7) || ([_transcriptAvailabilityFontAttributes_sCustomTextFontName__transcriptAvailabilityFontAttributes isEqualToString:{v10, *&_transcriptAvailabilityFontAttributes_sCustomTextFontSize__transcriptAvailabilityFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptAvailabilityFont];
-    v31[0] = v16;
+    transcriptAvailabilityFont = [(CKUIBehavior *)self transcriptAvailabilityFont];
+    v31[0] = transcriptAvailabilityFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptAvailabilityColor];
+    theme = [v17 theme];
+    [theme transcriptAvailabilityColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -15947,18 +15947,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptTranslationButtonFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptTranslationButtonFontAttributes];
+  _transcriptTranslationButtonFontAttributes = [(CKUIBehavior *)self _transcriptTranslationButtonFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptTranslationButtonFontAttributes];
 
-    v2 = v5;
+    _transcriptTranslationButtonFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptTranslationButtonFontAttributes;
 }
 
 - (id)_transcriptTranslationButtonFontAttributes
@@ -15988,12 +15988,12 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
     v13 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
     [v13 setAlignment:1];
     v28[0] = *MEMORY[0x1E69DB648];
-    v14 = [(CKUIBehavior *)self transcriptTranslationIndicatorButtonFont];
-    v29[0] = v14;
+    transcriptTranslationIndicatorButtonFont = [(CKUIBehavior *)self transcriptTranslationIndicatorButtonFont];
+    v29[0] = transcriptTranslationIndicatorButtonFont;
     v28[1] = *MEMORY[0x1E69DB650];
     v15 = +[CKUIBehavior sharedBehaviors];
-    v16 = [v15 theme];
-    [v16 transcriptTranslationButtonColor];
+    theme = [v15 theme];
+    [theme transcriptTranslationButtonColor];
     obj = v9;
     v17 = v8;
     v18 = v3;
@@ -16028,18 +16028,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptAvailabilityDeemphasizedFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptAvailabilityDeemphasizedFontAttributes];
+  _transcriptAvailabilityDeemphasizedFontAttributes = [(CKUIBehavior *)self _transcriptAvailabilityDeemphasizedFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptAvailabilityDeemphasizedFontAttributes];
 
-    v2 = v5;
+    _transcriptAvailabilityDeemphasizedFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptAvailabilityDeemphasizedFontAttributes;
 }
 
 - (id)_transcriptAvailabilityDeemphasizedFontAttributes
@@ -16066,17 +16066,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptAvailabilityDeemphasizedFontAttributes](self, "ckShouldUpdate_transcriptAvailabilityDeemphasizedFontAttributes") || v11 || _transcriptAvailabilityDeemphasizedFontAttributes_sIsIncreaseContrastEnabled__transcriptAvailabilityDeemphasizedFontAttributes != v4 || _transcriptAvailabilityDeemphasizedFontAttributes_sIsBoldTextEnabled__transcriptAvailabilityDeemphasizedFontAttributes != IsBoldTextEnabled || (v12 = _transcriptAvailabilityDeemphasizedFontAttributes_sTextFontSize__transcriptAvailabilityDeemphasizedFontAttributes, *&_transcriptAvailabilityDeemphasizedFontAttributes_sTextFontSize__transcriptAvailabilityDeemphasizedFontAttributes != v6) || (v12 = _transcriptAvailabilityDeemphasizedFontAttributes_sCustomTextFontSize__transcriptAvailabilityDeemphasizedFontAttributes, *&_transcriptAvailabilityDeemphasizedFontAttributes_sCustomTextFontSize__transcriptAvailabilityDeemphasizedFontAttributes != v7) || ([_transcriptAvailabilityDeemphasizedFontAttributes_sCustomTextFontName__transcriptAvailabilityDeemphasizedFontAttributes isEqualToString:{v10, *&_transcriptAvailabilityDeemphasizedFontAttributes_sCustomTextFontSize__transcriptAvailabilityDeemphasizedFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptAvailabilityFont];
-    v31[0] = v16;
+    transcriptAvailabilityFont = [(CKUIBehavior *)self transcriptAvailabilityFont];
+    v31[0] = transcriptAvailabilityFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptAvailabilityDeemphasizedColor];
+    theme = [v17 theme];
+    [theme transcriptAvailabilityDeemphasizedColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -16111,18 +16111,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptTranslationIndicatorFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptTranslationIndicatorFontAttributes];
+  _transcriptTranslationIndicatorFontAttributes = [(CKUIBehavior *)self _transcriptTranslationIndicatorFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptTranslationIndicatorFontAttributes];
 
-    v2 = v5;
+    _transcriptTranslationIndicatorFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptTranslationIndicatorFontAttributes;
 }
 
 - (id)_transcriptTranslationIndicatorFontAttributes
@@ -16149,17 +16149,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &pinnedConversationActivityBroadShadowLightRadius_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptTranslationIndicatorFontAttributes](self, "ckShouldUpdate_transcriptTranslationIndicatorFontAttributes") || v11 || _transcriptTranslationIndicatorFontAttributes_sIsIncreaseContrastEnabled__transcriptTranslationIndicatorFontAttributes != v4 || _transcriptTranslationIndicatorFontAttributes_sIsBoldTextEnabled__transcriptTranslationIndicatorFontAttributes != IsBoldTextEnabled || (v12 = _transcriptTranslationIndicatorFontAttributes_sTextFontSize__transcriptTranslationIndicatorFontAttributes, *&_transcriptTranslationIndicatorFontAttributes_sTextFontSize__transcriptTranslationIndicatorFontAttributes != v6) || (v12 = _transcriptTranslationIndicatorFontAttributes_sCustomTextFontSize__transcriptTranslationIndicatorFontAttributes, *&_transcriptTranslationIndicatorFontAttributes_sCustomTextFontSize__transcriptTranslationIndicatorFontAttributes != v7) || ([_transcriptTranslationIndicatorFontAttributes_sCustomTextFontName__transcriptTranslationIndicatorFontAttributes isEqualToString:{v10, *&_transcriptTranslationIndicatorFontAttributes_sCustomTextFontSize__transcriptTranslationIndicatorFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
-    v31[0] = v16;
+    transcriptTranslationIndicatorFont = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
+    v31[0] = transcriptTranslationIndicatorFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTranslationIndicatorColor];
+    theme = [v17 theme];
+    [theme transcriptTranslationIndicatorColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -16194,18 +16194,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptNotifyAnywayFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptNotifyAnywayFontAttributes];
+  _transcriptNotifyAnywayFontAttributes = [(CKUIBehavior *)self _transcriptNotifyAnywayFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptNotifyAnywayFontAttributes];
 
-    v2 = v5;
+    _transcriptNotifyAnywayFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptNotifyAnywayFontAttributes;
 }
 
 - (id)_transcriptNotifyAnywayFontAttributes
@@ -16232,17 +16232,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptNotifyAnywayFontAttributes](self, "ckShouldUpdate_transcriptNotifyAnywayFontAttributes") || v11 || _transcriptNotifyAnywayFontAttributes_sIsIncreaseContrastEnabled__transcriptNotifyAnywayFontAttributes != v4 || _transcriptNotifyAnywayFontAttributes_sIsBoldTextEnabled__transcriptNotifyAnywayFontAttributes != IsBoldTextEnabled || (v12 = _transcriptNotifyAnywayFontAttributes_sTextFontSize__transcriptNotifyAnywayFontAttributes, *&_transcriptNotifyAnywayFontAttributes_sTextFontSize__transcriptNotifyAnywayFontAttributes != v6) || (v12 = _transcriptNotifyAnywayFontAttributes_sCustomTextFontSize__transcriptNotifyAnywayFontAttributes, *&_transcriptNotifyAnywayFontAttributes_sCustomTextFontSize__transcriptNotifyAnywayFontAttributes != v7) || ([_transcriptNotifyAnywayFontAttributes_sCustomTextFontName__transcriptNotifyAnywayFontAttributes isEqualToString:{v10, *&_transcriptNotifyAnywayFontAttributes_sCustomTextFontSize__transcriptNotifyAnywayFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptNotifyAnywayFont];
-    v31[0] = v16;
+    transcriptNotifyAnywayFont = [(CKUIBehavior *)self transcriptNotifyAnywayFont];
+    v31[0] = transcriptNotifyAnywayFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptAvailabilityColor];
+    theme = [v17 theme];
+    [theme transcriptAvailabilityColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -16277,18 +16277,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptEmphasizedFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptEmphasizedFontAttributes];
+  _transcriptEmphasizedFontAttributes = [(CKUIBehavior *)self _transcriptEmphasizedFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptEmphasizedFontAttributes];
 
-    v2 = v5;
+    _transcriptEmphasizedFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptEmphasizedFontAttributes;
 }
 
 - (id)_transcriptEmphasizedFontAttributes
@@ -16315,17 +16315,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &browserAppStripLightPluginCellOpacity_once;
   if (-[CKUIBehavior ckShouldUpdate_transcriptEmphasizedFontAttributes](self, "ckShouldUpdate_transcriptEmphasizedFontAttributes") || v11 || _transcriptEmphasizedFontAttributes_sIsIncreaseContrastEnabled__transcriptEmphasizedFontAttributes != v4 || _transcriptEmphasizedFontAttributes_sIsBoldTextEnabled__transcriptEmphasizedFontAttributes != IsBoldTextEnabled || (v12 = _transcriptEmphasizedFontAttributes_sTextFontSize__transcriptEmphasizedFontAttributes, *&_transcriptEmphasizedFontAttributes_sTextFontSize__transcriptEmphasizedFontAttributes != v6) || (v12 = _transcriptEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmphasizedFontAttributes, *&_transcriptEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmphasizedFontAttributes != v7) || ([_transcriptEmphasizedFontAttributes_sCustomTextFontName__transcriptEmphasizedFontAttributes isEqualToString:{v10, *&_transcriptEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmphasizedFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptBoldFont];
-    v31[0] = v16;
+    transcriptBoldFont = [(CKUIBehavior *)self transcriptBoldFont];
+    v31[0] = transcriptBoldFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -16360,18 +16360,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)sendLaterScheduledSectionTimeAttributes
 {
-  v2 = [(CKUIBehavior *)self _sendLaterScheduledSectionTimeAttributes];
+  _sendLaterScheduledSectionTimeAttributes = [(CKUIBehavior *)self _sendLaterScheduledSectionTimeAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_sendLaterScheduledSectionTimeAttributes];
 
-    v2 = v5;
+    _sendLaterScheduledSectionTimeAttributes = v5;
   }
 
-  return v2;
+  return _sendLaterScheduledSectionTimeAttributes;
 }
 
 - (id)_sendLaterScheduledSectionTimeAttributes
@@ -16396,9 +16396,9 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v11 = UIContentSizeCategoryCompareToCategory(_sendLaterScheduledSectionTimeAttributes_sContentSizeCategory__sendLaterScheduledSectionTimeAttributes, v3);
   if (-[CKUIBehavior ckShouldUpdate_sendLaterScheduledSectionTimeAttributes](self, "ckShouldUpdate_sendLaterScheduledSectionTimeAttributes") || v11 || _sendLaterScheduledSectionTimeAttributes_sIsIncreaseContrastEnabled__sendLaterScheduledSectionTimeAttributes != v4 || _sendLaterScheduledSectionTimeAttributes_sIsBoldTextEnabled__sendLaterScheduledSectionTimeAttributes != IsBoldTextEnabled || (v12 = _sendLaterScheduledSectionTimeAttributes_sTextFontSize__sendLaterScheduledSectionTimeAttributes, *&_sendLaterScheduledSectionTimeAttributes_sTextFontSize__sendLaterScheduledSectionTimeAttributes != v6) || (v12 = _sendLaterScheduledSectionTimeAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeAttributes, *&_sendLaterScheduledSectionTimeAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeAttributes != v7) || ([_sendLaterScheduledSectionTimeAttributes_sCustomTextFontName__sendLaterScheduledSectionTimeAttributes isEqualToString:{v10, *&_sendLaterScheduledSectionTimeAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeAttributes}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self transcriptEmphasizedFontAttributes];
+    transcriptEmphasizedFontAttributes = [(CKUIBehavior *)self transcriptEmphasizedFontAttributes];
     v14 = _sendLaterScheduledSectionTimeAttributes_sBehavior;
-    _sendLaterScheduledSectionTimeAttributes_sBehavior = v13;
+    _sendLaterScheduledSectionTimeAttributes_sBehavior = transcriptEmphasizedFontAttributes;
 
     objc_storeStrong(&_sendLaterScheduledSectionTimeAttributes_sContentSizeCategory__sendLaterScheduledSectionTimeAttributes, v3);
     _sendLaterScheduledSectionTimeAttributes_sIsIncreaseContrastEnabled__sendLaterScheduledSectionTimeAttributes = v4;
@@ -16416,18 +16416,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)sendLaterScheduledSectionEditAttributes
 {
-  v2 = [(CKUIBehavior *)self _sendLaterScheduledSectionEditAttributes];
+  _sendLaterScheduledSectionEditAttributes = [(CKUIBehavior *)self _sendLaterScheduledSectionEditAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_sendLaterScheduledSectionEditAttributes];
 
-    v2 = v5;
+    _sendLaterScheduledSectionEditAttributes = v5;
   }
 
-  return v2;
+  return _sendLaterScheduledSectionEditAttributes;
 }
 
 - (id)_sendLaterScheduledSectionEditAttributes
@@ -16453,13 +16453,13 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_sendLaterScheduledSectionEditAttributes](self, "ckShouldUpdate_sendLaterScheduledSectionEditAttributes") || v11 || _sendLaterScheduledSectionEditAttributes_sIsIncreaseContrastEnabled__sendLaterScheduledSectionEditAttributes != v4 || _sendLaterScheduledSectionEditAttributes_sIsBoldTextEnabled__sendLaterScheduledSectionEditAttributes != IsBoldTextEnabled || (v12 = _sendLaterScheduledSectionEditAttributes_sTextFontSize__sendLaterScheduledSectionEditAttributes, *&_sendLaterScheduledSectionEditAttributes_sTextFontSize__sendLaterScheduledSectionEditAttributes != v6) || (v12 = _sendLaterScheduledSectionEditAttributes_sCustomTextFontSize__sendLaterScheduledSectionEditAttributes, *&_sendLaterScheduledSectionEditAttributes_sCustomTextFontSize__sendLaterScheduledSectionEditAttributes != v7) || ([_sendLaterScheduledSectionEditAttributes_sCustomTextFontName__sendLaterScheduledSectionEditAttributes isEqualToString:{v10, *&_sendLaterScheduledSectionEditAttributes_sCustomTextFontSize__sendLaterScheduledSectionEditAttributes}] & 1) == 0)
   {
-    v14 = [(CKUIBehavior *)self sendLaterScheduledSectionTimeAttributes];
-    v15 = [v14 mutableCopy];
+    sendLaterScheduledSectionTimeAttributes = [(CKUIBehavior *)self sendLaterScheduledSectionTimeAttributes];
+    v15 = [sendLaterScheduledSectionTimeAttributes mutableCopy];
 
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 theme];
-    v18 = [v17 messageStatusLinkTextColor];
-    [v15 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    theme = [v16 theme];
+    messageStatusLinkTextColor = [theme messageStatusLinkTextColor];
+    [v15 setObject:messageStatusLinkTextColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
     v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
     v19 = _sendLaterScheduledSectionEditAttributes_sBehavior;
@@ -16481,18 +16481,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)sendLaterScheduledSectionTimeHighlightedAttributes
 {
-  v2 = [(CKUIBehavior *)self _sendLaterScheduledSectionTimeHighlightedAttributes];
+  _sendLaterScheduledSectionTimeHighlightedAttributes = [(CKUIBehavior *)self _sendLaterScheduledSectionTimeHighlightedAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_sendLaterScheduledSectionTimeHighlightedAttributes];
 
-    v2 = v5;
+    _sendLaterScheduledSectionTimeHighlightedAttributes = v5;
   }
 
-  return v2;
+  return _sendLaterScheduledSectionTimeHighlightedAttributes;
 }
 
 - (id)_sendLaterScheduledSectionTimeHighlightedAttributes
@@ -16517,9 +16517,9 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v11 = UIContentSizeCategoryCompareToCategory(_sendLaterScheduledSectionTimeHighlightedAttributes_sContentSizeCategory__sendLaterScheduledSectionTimeHighlightedAttributes, v3);
   if (-[CKUIBehavior ckShouldUpdate_sendLaterScheduledSectionTimeHighlightedAttributes](self, "ckShouldUpdate_sendLaterScheduledSectionTimeHighlightedAttributes") || v11 || _sendLaterScheduledSectionTimeHighlightedAttributes_sIsIncreaseContrastEnabled__sendLaterScheduledSectionTimeHighlightedAttributes != v4 || _sendLaterScheduledSectionTimeHighlightedAttributes_sIsBoldTextEnabled__sendLaterScheduledSectionTimeHighlightedAttributes != IsBoldTextEnabled || (v12 = _sendLaterScheduledSectionTimeHighlightedAttributes_sTextFontSize__sendLaterScheduledSectionTimeHighlightedAttributes, *&_sendLaterScheduledSectionTimeHighlightedAttributes_sTextFontSize__sendLaterScheduledSectionTimeHighlightedAttributes != v6) || (v12 = _sendLaterScheduledSectionTimeHighlightedAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeHighlightedAttributes, *&_sendLaterScheduledSectionTimeHighlightedAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeHighlightedAttributes != v7) || ([_sendLaterScheduledSectionTimeHighlightedAttributes_sCustomTextFontName__sendLaterScheduledSectionTimeHighlightedAttributes isEqualToString:{v10, *&_sendLaterScheduledSectionTimeHighlightedAttributes_sCustomTextFontSize__sendLaterScheduledSectionTimeHighlightedAttributes}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self sendLaterScheduledSectionTimeAttributes];
+    sendLaterScheduledSectionTimeAttributes = [(CKUIBehavior *)self sendLaterScheduledSectionTimeAttributes];
     v14 = _sendLaterScheduledSectionTimeHighlightedAttributes_sBehavior;
-    _sendLaterScheduledSectionTimeHighlightedAttributes_sBehavior = v13;
+    _sendLaterScheduledSectionTimeHighlightedAttributes_sBehavior = sendLaterScheduledSectionTimeAttributes;
 
     objc_storeStrong(&_sendLaterScheduledSectionTimeHighlightedAttributes_sContentSizeCategory__sendLaterScheduledSectionTimeHighlightedAttributes, v3);
     _sendLaterScheduledSectionTimeHighlightedAttributes_sIsIncreaseContrastEnabled__sendLaterScheduledSectionTimeHighlightedAttributes = v4;
@@ -16537,18 +16537,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptEmergencyEmphasizedFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptEmergencyEmphasizedFontAttributes];
+  _transcriptEmergencyEmphasizedFontAttributes = [(CKUIBehavior *)self _transcriptEmergencyEmphasizedFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptEmergencyEmphasizedFontAttributes];
 
-    v2 = v5;
+    _transcriptEmergencyEmphasizedFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptEmergencyEmphasizedFontAttributes;
 }
 
 - (id)_transcriptEmergencyEmphasizedFontAttributes
@@ -16576,17 +16576,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptEmergencyEmphasizedFontAttributes](self, "ckShouldUpdate_transcriptEmergencyEmphasizedFontAttributes") || v11 || _transcriptEmergencyEmphasizedFontAttributes_sIsIncreaseContrastEnabled__transcriptEmergencyEmphasizedFontAttributes != v4 || _transcriptEmergencyEmphasizedFontAttributes_sIsBoldTextEnabled__transcriptEmergencyEmphasizedFontAttributes != IsBoldTextEnabled || (v12 = _transcriptEmergencyEmphasizedFontAttributes_sTextFontSize__transcriptEmergencyEmphasizedFontAttributes, *&_transcriptEmergencyEmphasizedFontAttributes_sTextFontSize__transcriptEmergencyEmphasizedFontAttributes != v6) || (v12 = _transcriptEmergencyEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmergencyEmphasizedFontAttributes, *&_transcriptEmergencyEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmergencyEmphasizedFontAttributes != v7) || ([_transcriptEmergencyEmphasizedFontAttributes_sCustomTextFontName__transcriptEmergencyEmphasizedFontAttributes isEqualToString:{v10, *&_transcriptEmergencyEmphasizedFontAttributes_sCustomTextFontSize__transcriptEmergencyEmphasizedFontAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptLightFont];
-    v25[0] = v16;
+    transcriptLightFont = [(CKUIBehavior *)self transcriptLightFont];
+    v25[0] = transcriptLightFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] redColor];
+    redColor = [MEMORY[0x1E69DC888] redColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = redColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -16610,18 +16610,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptGroupModificationErrorEmphasizedFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptGroupModificationErrorEmphasizedFontAttributes];
+  _transcriptGroupModificationErrorEmphasizedFontAttributes = [(CKUIBehavior *)self _transcriptGroupModificationErrorEmphasizedFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptGroupModificationErrorEmphasizedFontAttributes];
 
-    v2 = v5;
+    _transcriptGroupModificationErrorEmphasizedFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptGroupModificationErrorEmphasizedFontAttributes;
 }
 
 - (id)_transcriptGroupModificationErrorEmphasizedFontAttributes
@@ -16649,17 +16649,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptGroupModificationErrorEmphasizedFontAttributes](self, "ckShouldUpdate_transcriptGroupModificationErrorEmphasizedFontAttributes") || v11 || _transcriptGroupModificationErrorEmphasizedFontAttributes_sIsIncreaseContrastEnabled__transcriptGroupModificationErrorEmphasizedFontAttributes != v4 || _transcriptGroupModificationErrorEmphasizedFontAttributes_sIsBoldTextEnabled__transcriptGroupModificationErrorEmphasizedFontAttributes != IsBoldTextEnabled || (v12 = _transcriptGroupModificationErrorEmphasizedFontAttributes_sTextFontSize__transcriptGroupModificationErrorEmphasizedFontAttributes, *&_transcriptGroupModificationErrorEmphasizedFontAttributes_sTextFontSize__transcriptGroupModificationErrorEmphasizedFontAttributes != v6) || (v12 = _transcriptGroupModificationErrorEmphasizedFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorEmphasizedFontAttributes, *&_transcriptGroupModificationErrorEmphasizedFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorEmphasizedFontAttributes != v7) || ([_transcriptGroupModificationErrorEmphasizedFontAttributes_sCustomTextFontName__transcriptGroupModificationErrorEmphasizedFontAttributes isEqualToString:{v10, *&_transcriptGroupModificationErrorEmphasizedFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorEmphasizedFontAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptBoldFont];
-    v25[0] = v16;
+    transcriptBoldFont = [(CKUIBehavior *)self transcriptBoldFont];
+    v25[0] = transcriptBoldFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = systemRedColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -16683,18 +16683,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptGroupModificationErrorRegularFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptGroupModificationErrorRegularFontAttributes];
+  _transcriptGroupModificationErrorRegularFontAttributes = [(CKUIBehavior *)self _transcriptGroupModificationErrorRegularFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptGroupModificationErrorRegularFontAttributes];
 
-    v2 = v5;
+    _transcriptGroupModificationErrorRegularFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptGroupModificationErrorRegularFontAttributes;
 }
 
 - (id)_transcriptGroupModificationErrorRegularFontAttributes
@@ -16722,17 +16722,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptGroupModificationErrorRegularFontAttributes](self, "ckShouldUpdate_transcriptGroupModificationErrorRegularFontAttributes") || v11 || _transcriptGroupModificationErrorRegularFontAttributes_sIsIncreaseContrastEnabled__transcriptGroupModificationErrorRegularFontAttributes != v4 || _transcriptGroupModificationErrorRegularFontAttributes_sIsBoldTextEnabled__transcriptGroupModificationErrorRegularFontAttributes != IsBoldTextEnabled || (v12 = _transcriptGroupModificationErrorRegularFontAttributes_sTextFontSize__transcriptGroupModificationErrorRegularFontAttributes, *&_transcriptGroupModificationErrorRegularFontAttributes_sTextFontSize__transcriptGroupModificationErrorRegularFontAttributes != v6) || (v12 = _transcriptGroupModificationErrorRegularFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorRegularFontAttributes, *&_transcriptGroupModificationErrorRegularFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorRegularFontAttributes != v7) || ([_transcriptGroupModificationErrorRegularFontAttributes_sCustomTextFontName__transcriptGroupModificationErrorRegularFontAttributes isEqualToString:{v10, *&_transcriptGroupModificationErrorRegularFontAttributes_sCustomTextFontSize__transcriptGroupModificationErrorRegularFontAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptLightFont];
-    v25[0] = v16;
+    transcriptLightFont = [(CKUIBehavior *)self transcriptLightFont];
+    v25[0] = transcriptLightFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = systemRedColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -16756,18 +16756,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptEmphasizedPreferredFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptEmphasizedPreferredFontAttributes];
+  _transcriptEmphasizedPreferredFontAttributes = [(CKUIBehavior *)self _transcriptEmphasizedPreferredFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptEmphasizedPreferredFontAttributes];
 
-    v2 = v5;
+    _transcriptEmphasizedPreferredFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptEmphasizedPreferredFontAttributes;
 }
 
 - (id)_transcriptEmphasizedPreferredFontAttributes
@@ -16794,17 +16794,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptEmphasizedPreferredFontAttributes](self, "ckShouldUpdate_transcriptEmphasizedPreferredFontAttributes") || v11 || _transcriptEmphasizedPreferredFontAttributes_sIsIncreaseContrastEnabled__transcriptEmphasizedPreferredFontAttributes != v4 || _transcriptEmphasizedPreferredFontAttributes_sIsBoldTextEnabled__transcriptEmphasizedPreferredFontAttributes != IsBoldTextEnabled || (v12 = _transcriptEmphasizedPreferredFontAttributes_sTextFontSize__transcriptEmphasizedPreferredFontAttributes, *&_transcriptEmphasizedPreferredFontAttributes_sTextFontSize__transcriptEmphasizedPreferredFontAttributes != v6) || (v12 = _transcriptEmphasizedPreferredFontAttributes_sCustomTextFontSize__transcriptEmphasizedPreferredFontAttributes, *&_transcriptEmphasizedPreferredFontAttributes_sCustomTextFontSize__transcriptEmphasizedPreferredFontAttributes != v7) || ([_transcriptEmphasizedPreferredFontAttributes_sCustomTextFontName__transcriptEmphasizedPreferredFontAttributes isEqualToString:{v10, *&_transcriptEmphasizedPreferredFontAttributes_sCustomTextFontSize__transcriptEmphasizedPreferredFontAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptBoldPreferredFont];
-    v31[0] = v16;
+    transcriptBoldPreferredFont = [(CKUIBehavior *)self transcriptBoldPreferredFont];
+    v31[0] = transcriptBoldPreferredFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -16839,18 +16839,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)transcriptErrorStampPreferredFontAttributes
 {
-  v2 = [(CKUIBehavior *)self _transcriptErrorStampPreferredFontAttributes];
+  _transcriptErrorStampPreferredFontAttributes = [(CKUIBehavior *)self _transcriptErrorStampPreferredFontAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_transcriptErrorStampPreferredFontAttributes];
 
-    v2 = v5;
+    _transcriptErrorStampPreferredFontAttributes = v5;
   }
 
-  return v2;
+  return _transcriptErrorStampPreferredFontAttributes;
 }
 
 - (id)_transcriptErrorStampPreferredFontAttributes
@@ -16878,17 +16878,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdate_transcriptErrorStampPreferredFontAttributes](self, "ckShouldUpdate_transcriptErrorStampPreferredFontAttributes") || v11 || _transcriptErrorStampPreferredFontAttributes_sIsIncreaseContrastEnabled__transcriptErrorStampPreferredFontAttributes != v4 || _transcriptErrorStampPreferredFontAttributes_sIsBoldTextEnabled__transcriptErrorStampPreferredFontAttributes != IsBoldTextEnabled || (v12 = _transcriptErrorStampPreferredFontAttributes_sTextFontSize__transcriptErrorStampPreferredFontAttributes, *&_transcriptErrorStampPreferredFontAttributes_sTextFontSize__transcriptErrorStampPreferredFontAttributes != v6) || (v12 = _transcriptErrorStampPreferredFontAttributes_sCustomTextFontSize__transcriptErrorStampPreferredFontAttributes, *&_transcriptErrorStampPreferredFontAttributes_sCustomTextFontSize__transcriptErrorStampPreferredFontAttributes != v7) || ([_transcriptErrorStampPreferredFontAttributes_sCustomTextFontName__transcriptErrorStampPreferredFontAttributes isEqualToString:{v10, *&_transcriptErrorStampPreferredFontAttributes_sCustomTextFontSize__transcriptErrorStampPreferredFontAttributes, v3}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:1];
     v24[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptErrorStampPreferredFont];
-    v25[0] = v16;
+    transcriptErrorStampPreferredFont = [(CKUIBehavior *)self transcriptErrorStampPreferredFont];
+    v25[0] = transcriptErrorStampPreferredFont;
     v24[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v24[2] = *MEMORY[0x1E69DB688];
-    v25[1] = v17;
+    v25[1] = systemRedColor;
     v25[2] = v15;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -16912,18 +16912,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
 - (NSDictionary)drawerTranscriptTextAttributes
 {
-  v2 = [(CKUIBehavior *)self _drawerTranscriptTextAttributes];
+  _drawerTranscriptTextAttributes = [(CKUIBehavior *)self _drawerTranscriptTextAttributes];
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
-    v5 = [CKPrintController printAttributes:v2];
+    v5 = [CKPrintController printAttributes:_drawerTranscriptTextAttributes];
 
-    v2 = v5;
+    _drawerTranscriptTextAttributes = v5;
   }
 
-  return v2;
+  return _drawerTranscriptTextAttributes;
 }
 
 - (id)_drawerTranscriptTextAttributes
@@ -16950,18 +16950,18 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v13 = &browserAppStripLightPluginCellOpacity_once;
   if (-[CKUIBehavior ckShouldUpdate_drawerTranscriptTextAttributes](self, "ckShouldUpdate_drawerTranscriptTextAttributes") || v11 || _drawerTranscriptTextAttributes_sIsIncreaseContrastEnabled__drawerTranscriptTextAttributes != v4 || _drawerTranscriptTextAttributes_sIsBoldTextEnabled__drawerTranscriptTextAttributes != IsBoldTextEnabled || (v12 = _drawerTranscriptTextAttributes_sTextFontSize__drawerTranscriptTextAttributes, *&_drawerTranscriptTextAttributes_sTextFontSize__drawerTranscriptTextAttributes != v6) || (v12 = _drawerTranscriptTextAttributes_sCustomTextFontSize__drawerTranscriptTextAttributes, *&_drawerTranscriptTextAttributes_sCustomTextFontSize__drawerTranscriptTextAttributes != v7) || ([_drawerTranscriptTextAttributes_sCustomTextFontName__drawerTranscriptTextAttributes isEqualToString:{v10, *&_drawerTranscriptTextAttributes_sCustomTextFontSize__drawerTranscriptTextAttributes}] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v15 = [v14 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v15 = [defaultParagraphStyle mutableCopy];
 
     [v15 setAlignment:2];
     [v15 setLineBreakMode:2];
     v30[0] = *MEMORY[0x1E69DB648];
-    v16 = [(CKUIBehavior *)self transcriptDrawerFont];
-    v31[0] = v16;
+    transcriptDrawerFont = [(CKUIBehavior *)self transcriptDrawerFont];
+    v31[0] = transcriptDrawerFont;
     v30[1] = *MEMORY[0x1E69DB650];
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    [v18 transcriptTextColor];
+    theme = [v17 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v19 = v8;
     v20 = v3;
@@ -17016,21 +17016,21 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v10 = v9;
   obj = v3;
   v11 = UIContentSizeCategoryCompareToCategory(phishingWarningTextAttributes_sContentSizeCategory_phishingWarningTextAttributes, v3);
-  v12 = [(CKUIBehavior *)self ckShouldUpdatephishingWarningTextAttributes];
+  ckShouldUpdatephishingWarningTextAttributes = [(CKUIBehavior *)self ckShouldUpdatephishingWarningTextAttributes];
   v14 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
-  if (v12 || v11 || phishingWarningTextAttributes_sIsIncreaseContrastEnabled_phishingWarningTextAttributes != v4 || phishingWarningTextAttributes_sIsBoldTextEnabled_phishingWarningTextAttributes != IsBoldTextEnabled || (v13 = phishingWarningTextAttributes_sTextFontSize_phishingWarningTextAttributes, *&phishingWarningTextAttributes_sTextFontSize_phishingWarningTextAttributes != v6) || (v13 = phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes, *&phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes != v7) || ([phishingWarningTextAttributes_sCustomTextFontName_phishingWarningTextAttributes isEqualToString:{v10, *&phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes, v3}] & 1) == 0)
+  if (ckShouldUpdatephishingWarningTextAttributes || v11 || phishingWarningTextAttributes_sIsIncreaseContrastEnabled_phishingWarningTextAttributes != v4 || phishingWarningTextAttributes_sIsBoldTextEnabled_phishingWarningTextAttributes != IsBoldTextEnabled || (v13 = phishingWarningTextAttributes_sTextFontSize_phishingWarningTextAttributes, *&phishingWarningTextAttributes_sTextFontSize_phishingWarningTextAttributes != v6) || (v13 = phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes, *&phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes != v7) || ([phishingWarningTextAttributes_sCustomTextFontName_phishingWarningTextAttributes isEqualToString:{v10, *&phishingWarningTextAttributes_sCustomTextFontSize_phishingWarningTextAttributes, v3}] & 1) == 0)
   {
-    v15 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v16 = [v15 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v16 = [defaultParagraphStyle mutableCopy];
 
     [v16 setAlignment:1];
     v25[0] = *MEMORY[0x1E69DB648];
     v17 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:*MEMORY[0x1E69DDD08]];
     v26[0] = v17;
     v25[1] = *MEMORY[0x1E69DB650];
-    v18 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
     v25[2] = *MEMORY[0x1E69DB688];
-    v26[1] = v18;
+    v26[1] = systemRedColor;
     v26[2] = v16;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
 
@@ -17172,13 +17172,13 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"lock.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptRegularFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptRegularFont = [(CKUIBehavior *)self transcriptRegularFont];
+    v17 = [v15 configurationWithFont:transcriptRegularFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v20 = [v18 imageWithTintColor:v19];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v20 = [v18 imageWithTintColor:secondaryLabelColor];
 
     v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
     v21 = encryptedServiceIcon_sBehavior;
@@ -17223,14 +17223,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"location.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptTextFont];
-    v17 = [v15 configurationWithFont:v16];
+    transcriptTextFont = [(CKUIBehavior *)self transcriptTextFont];
+    v17 = [v15 configurationWithFont:transcriptTextFont];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptTextColor];
+    theme = [v19 theme];
+    [theme transcriptTextColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17284,8 +17284,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdateconversationListFocusFilterBannerEnabledIcon](self, "ckShouldUpdateconversationListFocusFilterBannerEnabledIcon") || v11 || conversationListFocusFilterBannerEnabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerEnabledIcon != v4 || conversationListFocusFilterBannerEnabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerEnabledIcon != IsBoldTextEnabled || (v12 = conversationListFocusFilterBannerEnabledIcon_sTextFontSize_conversationListFocusFilterBannerEnabledIcon, *&conversationListFocusFilterBannerEnabledIcon_sTextFontSize_conversationListFocusFilterBannerEnabledIcon != v6) || (v12 = conversationListFocusFilterBannerEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerEnabledIcon, *&conversationListFocusFilterBannerEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerEnabledIcon != v7) || ([conversationListFocusFilterBannerEnabledIcon_sCustomTextFontName_conversationListFocusFilterBannerEnabledIcon isEqualToString:{v10, *&conversationListFocusFilterBannerEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerEnabledIcon}] & 1) == 0)
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.circle.fill", *&v12}];
-    v15 = [(CKUIBehavior *)self conversationListFocusFilterBannerTitleFont];
-    v16 = [MEMORY[0x1E69DCAD8] configurationWithFont:v15];
+    conversationListFocusFilterBannerTitleFont = [(CKUIBehavior *)self conversationListFocusFilterBannerTitleFont];
+    v16 = [MEMORY[0x1E69DCAD8] configurationWithFont:conversationListFocusFilterBannerTitleFont];
     v17 = [v14 imageWithSymbolConfiguration:v16];
 
     v18 = +[CKUIBehavior sharedBehaviors];
@@ -17345,8 +17345,8 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   if (-[CKUIBehavior ckShouldUpdateconversationListFocusFilterBannerDisabledIcon](self, "ckShouldUpdateconversationListFocusFilterBannerDisabledIcon") || v11 || conversationListFocusFilterBannerDisabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerDisabledIcon != v4 || conversationListFocusFilterBannerDisabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerDisabledIcon != IsBoldTextEnabled || (v12 = conversationListFocusFilterBannerDisabledIcon_sTextFontSize_conversationListFocusFilterBannerDisabledIcon, *&conversationListFocusFilterBannerDisabledIcon_sTextFontSize_conversationListFocusFilterBannerDisabledIcon != v6) || (v12 = conversationListFocusFilterBannerDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerDisabledIcon, *&conversationListFocusFilterBannerDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerDisabledIcon != v7) || ([conversationListFocusFilterBannerDisabledIcon_sCustomTextFontName_conversationListFocusFilterBannerDisabledIcon isEqualToString:{v10, *&conversationListFocusFilterBannerDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerDisabledIcon}] & 1) == 0)
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.circle.fill", *&v12}];
-    v15 = [(CKUIBehavior *)self conversationListFocusFilterBannerTitleFont];
-    v16 = [MEMORY[0x1E69DCAD8] configurationWithFont:v15];
+    conversationListFocusFilterBannerTitleFont = [(CKUIBehavior *)self conversationListFocusFilterBannerTitleFont];
+    v16 = [MEMORY[0x1E69DCAD8] configurationWithFont:conversationListFocusFilterBannerTitleFont];
     v17 = [v14 imageWithSymbolConfiguration:v16];
 
     v18 = +[CKUIBehavior sharedBehaviors];
@@ -17401,16 +17401,16 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   v11 = v10;
   obj = v3;
   v12 = UIContentSizeCategoryCompareToCategory(conversationListFocusFilterBannerCollapsedEnabledIcon_sContentSizeCategory_conversationListFocusFilterBannerCollapsedEnabledIcon, v3);
-  v13 = [(CKUIBehavior *)self ckShouldUpdateconversationListFocusFilterBannerCollapsedEnabledIcon];
+  ckShouldUpdateconversationListFocusFilterBannerCollapsedEnabledIcon = [(CKUIBehavior *)self ckShouldUpdateconversationListFocusFilterBannerCollapsedEnabledIcon];
   v15 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
-  if (v13 || v12 || conversationListFocusFilterBannerCollapsedEnabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerCollapsedEnabledIcon != v4 || conversationListFocusFilterBannerCollapsedEnabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerCollapsedEnabledIcon != IsBoldTextEnabled || (v14 = conversationListFocusFilterBannerCollapsedEnabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon != v6) || (v14 = conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon != v7) || ([conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontName_conversationListFocusFilterBannerCollapsedEnabledIcon isEqualToString:{v11, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, v25, v3}] & 1) == 0)
+  if (ckShouldUpdateconversationListFocusFilterBannerCollapsedEnabledIcon || v12 || conversationListFocusFilterBannerCollapsedEnabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerCollapsedEnabledIcon != v4 || conversationListFocusFilterBannerCollapsedEnabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerCollapsedEnabledIcon != IsBoldTextEnabled || (v14 = conversationListFocusFilterBannerCollapsedEnabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon != v6) || (v14 = conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon != v7) || ([conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontName_conversationListFocusFilterBannerCollapsedEnabledIcon isEqualToString:{v11, *&conversationListFocusFilterBannerCollapsedEnabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedEnabledIcon, v25, v3}] & 1) == 0)
   {
     v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.circle.fill", *&v14, v25}];
     v17 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
     v18 = [v16 imageWithSymbolConfiguration:v17];
 
-    v19 = [MEMORY[0x1E69DC888] systemIndigoColor];
-    v20 = [v18 imageWithTintColor:v19 renderingMode:1];
+    systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
+    v20 = [v18 imageWithTintColor:systemIndigoColor renderingMode:1];
 
     v15 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
     v21 = conversationListFocusFilterBannerCollapsedEnabledIcon_sBehavior;
@@ -17450,17 +17450,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(conversationListFocusFilterBannerCollapsedDisabledIcon_sContentSizeCategory_conversationListFocusFilterBannerCollapsedDisabledIcon, v3);
-  v12 = [(CKUIBehavior *)self ckShouldUpdateconversationListFocusFilterBannerCollapsedDisabledIcon];
+  ckShouldUpdateconversationListFocusFilterBannerCollapsedDisabledIcon = [(CKUIBehavior *)self ckShouldUpdateconversationListFocusFilterBannerCollapsedDisabledIcon];
   v14 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
-  if (v12 || v11 || conversationListFocusFilterBannerCollapsedDisabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerCollapsedDisabledIcon != v4 || conversationListFocusFilterBannerCollapsedDisabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerCollapsedDisabledIcon != IsBoldTextEnabled || (v13 = conversationListFocusFilterBannerCollapsedDisabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon != v6) || (v13 = conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon != v7) || ([conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontName_conversationListFocusFilterBannerCollapsedDisabledIcon isEqualToString:{v10, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon}] & 1) == 0)
+  if (ckShouldUpdateconversationListFocusFilterBannerCollapsedDisabledIcon || v11 || conversationListFocusFilterBannerCollapsedDisabledIcon_sIsIncreaseContrastEnabled_conversationListFocusFilterBannerCollapsedDisabledIcon != v4 || conversationListFocusFilterBannerCollapsedDisabledIcon_sIsBoldTextEnabled_conversationListFocusFilterBannerCollapsedDisabledIcon != IsBoldTextEnabled || (v13 = conversationListFocusFilterBannerCollapsedDisabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon != v6) || (v13 = conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon != v7) || ([conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontName_conversationListFocusFilterBannerCollapsedDisabledIcon isEqualToString:{v10, *&conversationListFocusFilterBannerCollapsedDisabledIcon_sCustomTextFontSize_conversationListFocusFilterBannerCollapsedDisabledIcon}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.circle.fill", *&v13}];
     v16 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
     v17 = [v15 imageWithSymbolConfiguration:v16];
 
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 theme];
-    [v19 conversationListSummaryColor];
+    theme = [v18 theme];
+    [theme conversationListSummaryColor];
     obj = v9;
     v20 = v8;
     v21 = v3;
@@ -17515,14 +17515,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptAvailabilityFont];
-    v17 = [v15 configurationWithFont:v16];
+    transcriptAvailabilityFont = [(CKUIBehavior *)self transcriptAvailabilityFont];
+    v17 = [v15 configurationWithFont:transcriptAvailabilityFont];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptAvailabilityColor];
+    theme = [v19 theme];
+    [theme transcriptAvailabilityColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17577,14 +17577,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"moon.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptAvailabilityFont];
-    v17 = [v15 configurationWithFont:v16];
+    transcriptAvailabilityFont = [(CKUIBehavior *)self transcriptAvailabilityFont];
+    v17 = [v15 configurationWithFont:transcriptAvailabilityFont];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptAvailabilityDeemphasizedColor];
+    theme = [v19 theme];
+    [theme transcriptAvailabilityDeemphasizedColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17639,14 +17639,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"translate", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptTranslationIndicatorFont = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
+    v17 = [v15 configurationWithFont:transcriptTranslationIndicatorFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptTranslationIconColor];
+    theme = [v19 theme];
+    [theme transcriptTranslationIconColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17702,14 +17702,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"translate", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptTranslationIndicatorFont = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
+    v17 = [v15 configurationWithFont:transcriptTranslationIndicatorFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptTranslationIndicatorColor];
+    theme = [v19 theme];
+    [theme transcriptTranslationIndicatorColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17764,14 +17764,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"chevron.up.chevron.down", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptTranslationIndicatorFont = [(CKUIBehavior *)self transcriptTranslationIndicatorFont];
+    v17 = [v15 configurationWithFont:transcriptTranslationIndicatorFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptTranslationIndicatorColor];
+    theme = [v19 theme];
+    [theme transcriptTranslationIndicatorColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17826,14 +17826,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:{@"satellite.wave.2.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptSatelliteSuppressedNotificationFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptSatelliteSuppressedNotificationFont = [(CKUIBehavior *)self transcriptSatelliteSuppressedNotificationFont];
+    v17 = [v15 configurationWithFont:transcriptSatelliteSuppressedNotificationFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptSatelliteSuppressedNotificationColor];
+    theme = [v19 theme];
+    [theme transcriptSatelliteSuppressedNotificationColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17888,14 +17888,14 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
   {
     v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:{@"satellite.wave.2.fill", *&v12}];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [(CKUIBehavior *)self transcriptSatelliteAvailabilityFont];
-    v17 = [v15 configurationWithFont:v16 scale:1];
+    transcriptSatelliteAvailabilityFont = [(CKUIBehavior *)self transcriptSatelliteAvailabilityFont];
+    v17 = [v15 configurationWithFont:transcriptSatelliteAvailabilityFont scale:1];
 
     v18 = [v14 imageWithSymbolConfiguration:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    [v20 transcriptSatelliteAvailabilityColor];
+    theme = [v19 theme];
+    [theme transcriptSatelliteAvailabilityColor];
     obj = v9;
     v21 = v8;
     v22 = v3;
@@ -17945,17 +17945,17 @@ void __74__CKUIBehavior_tuConversationBalloonContentStandardLayoutJoinButtonInse
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(satelliteServiceIcon_sContentSizeCategory_satelliteServiceIcon, v3);
-  v12 = [(CKUIBehavior *)self ckShouldUpdatesatelliteServiceIcon];
+  ckShouldUpdatesatelliteServiceIcon = [(CKUIBehavior *)self ckShouldUpdatesatelliteServiceIcon];
   v14 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
-  if (v12 || v11 || satelliteServiceIcon_sIsIncreaseContrastEnabled_satelliteServiceIcon != v4 || satelliteServiceIcon_sIsBoldTextEnabled_satelliteServiceIcon != IsBoldTextEnabled || (v13 = satelliteServiceIcon_sTextFontSize_satelliteServiceIcon, *&satelliteServiceIcon_sTextFontSize_satelliteServiceIcon != v6) || (v13 = satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon, *&satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon != v7) || ([satelliteServiceIcon_sCustomTextFontName_satelliteServiceIcon isEqualToString:{v10, *&satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon}] & 1) == 0)
+  if (ckShouldUpdatesatelliteServiceIcon || v11 || satelliteServiceIcon_sIsIncreaseContrastEnabled_satelliteServiceIcon != v4 || satelliteServiceIcon_sIsBoldTextEnabled_satelliteServiceIcon != IsBoldTextEnabled || (v13 = satelliteServiceIcon_sTextFontSize_satelliteServiceIcon, *&satelliteServiceIcon_sTextFontSize_satelliteServiceIcon != v6) || (v13 = satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon, *&satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon != v7) || ([satelliteServiceIcon_sCustomTextFontName_satelliteServiceIcon isEqualToString:{v10, *&satelliteServiceIcon_sCustomTextFontSize_satelliteServiceIcon}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DCAB8] _systemImageNamed:{@"satellite.wave.2.fill", *&v13}];
     v16 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
     v17 = [v15 imageWithSymbolConfiguration:v16];
 
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 theme];
-    [v19 transcriptAvailabilityDeemphasizedColor];
+    theme = [v18 theme];
+    [theme transcriptAvailabilityDeemphasizedColor];
     obj = v9;
     v20 = v8;
     v21 = v3;
@@ -18114,9 +18114,9 @@ void __57__CKUIBehavior_sendLaterScheduledSectionMenuSendNowImage__block_invoke(
   {
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"exclamationmark.circle", *&v12}];
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 theme];
-    v16 = [v15 transcriptTextColor];
-    v17 = [v13 imageWithTintColor:v16];
+    theme = [v14 theme];
+    transcriptTextColor = [theme transcriptTextColor];
+    v17 = [v13 imageWithTintColor:transcriptTextColor];
     v18 = hawkingWarningIcon_sBehavior;
     hawkingWarningIcon_sBehavior = v17;
 
@@ -18157,13 +18157,13 @@ void __57__CKUIBehavior_sendLaterScheduledSectionMenuSendNowImage__block_invoke(
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatemessageStatusWarningIconRed](self, "ckShouldUpdatemessageStatusWarningIconRed") || v11 || messageStatusWarningIconRed_sIsIncreaseContrastEnabled_messageStatusWarningIconRed != v4 || messageStatusWarningIconRed_sIsBoldTextEnabled_messageStatusWarningIconRed != IsBoldTextEnabled || (v12 = messageStatusWarningIconRed_sTextFontSize_messageStatusWarningIconRed, *&messageStatusWarningIconRed_sTextFontSize_messageStatusWarningIconRed != v6) || (v12 = messageStatusWarningIconRed_sCustomTextFontSize_messageStatusWarningIconRed, *&messageStatusWarningIconRed_sCustomTextFontSize_messageStatusWarningIconRed != v7) || ([messageStatusWarningIconRed_sCustomTextFontName_messageStatusWarningIconRed isEqualToString:{v10, *&messageStatusWarningIconRed_sCustomTextFontSize_messageStatusWarningIconRed}] & 1) == 0)
   {
-    v14 = [(CKUIBehavior *)self transcriptMessageStatusFont];
-    v15 = [MEMORY[0x1E69DCAD8] configurationWithFont:v14];
+    transcriptMessageStatusFont = [(CKUIBehavior *)self transcriptMessageStatusFont];
+    v15 = [MEMORY[0x1E69DCAD8] configurationWithFont:transcriptMessageStatusFont];
     [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle" withConfiguration:v15];
     v16 = v8;
     v18 = v17 = v3;
-    v19 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v18 imageWithTintColor:v19];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [v18 imageWithTintColor:systemRedColor];
     obj = v9;
     v20 = IsBoldTextEnabled;
     v22 = v21 = v10;
@@ -18213,13 +18213,13 @@ void __57__CKUIBehavior_sendLaterScheduledSectionMenuSendNowImage__block_invoke(
   v13 = &conversationCellSummaryBoldPreviewTextAttributes_sBehavior;
   if (-[CKUIBehavior ckShouldUpdatemessageStampWarningIconRed](self, "ckShouldUpdatemessageStampWarningIconRed") || v11 || messageStampWarningIconRed_sIsIncreaseContrastEnabled_messageStampWarningIconRed != v4 || messageStampWarningIconRed_sIsBoldTextEnabled_messageStampWarningIconRed != IsBoldTextEnabled || (v12 = messageStampWarningIconRed_sTextFontSize_messageStampWarningIconRed, *&messageStampWarningIconRed_sTextFontSize_messageStampWarningIconRed != v6) || (v12 = messageStampWarningIconRed_sCustomTextFontSize_messageStampWarningIconRed, *&messageStampWarningIconRed_sCustomTextFontSize_messageStampWarningIconRed != v7) || ([messageStampWarningIconRed_sCustomTextFontName_messageStampWarningIconRed isEqualToString:{v10, *&messageStampWarningIconRed_sCustomTextFontSize_messageStampWarningIconRed}] & 1) == 0)
   {
-    v14 = [(CKUIBehavior *)self transcriptErrorStampFont];
-    v15 = [MEMORY[0x1E69DCAD8] configurationWithFont:v14];
+    transcriptErrorStampFont = [(CKUIBehavior *)self transcriptErrorStampFont];
+    v15 = [MEMORY[0x1E69DCAD8] configurationWithFont:transcriptErrorStampFont];
     [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle" withConfiguration:v15];
     v16 = v8;
     v18 = v17 = v3;
-    v19 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v18 imageWithTintColor:v19];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [v18 imageWithTintColor:systemRedColor];
     obj = v9;
     v20 = IsBoldTextEnabled;
     v22 = v21 = v10;
@@ -18246,13 +18246,13 @@ void __57__CKUIBehavior_sendLaterScheduledSectionMenuSendNowImage__block_invoke(
   return v24;
 }
 
-- (id)messageStatusChevronWithButtonColor:(id)a3
+- (id)messageStatusChevronWithButtonColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CKUIBehavior *)self transcriptMessageStatusFont];
-  v6 = [MEMORY[0x1E69DCAD8] configurationWithFont:v5 scale:1];
+  colorCopy = color;
+  transcriptMessageStatusFont = [(CKUIBehavior *)self transcriptMessageStatusFont];
+  v6 = [MEMORY[0x1E69DCAD8] configurationWithFont:transcriptMessageStatusFont scale:1];
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward" withConfiguration:v6];
-  v8 = [v7 imageWithTintColor:v4];
+  v8 = [v7 imageWithTintColor:colorCopy];
 
   return v8;
 }
@@ -18827,9 +18827,9 @@ double __70__CKUIBehavior_messageEditingNonCompactLeftEdgeToButtonMinimumPadding
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(replyButtonFont_sContentSizeCategory_replyButtonFont, v3);
-  v12 = [(CKUIBehavior *)self ckShouldUpdatereplyButtonFont];
+  ckShouldUpdatereplyButtonFont = [(CKUIBehavior *)self ckShouldUpdatereplyButtonFont];
   v14 = &OBJC_IVAR____TtC7ChatKit13CKDebugTicker_capturedDidChangeObserver;
-  if (v12 || v11 || replyButtonFont_sIsIncreaseContrastEnabled_replyButtonFont != v4 || replyButtonFont_sIsBoldTextEnabled_replyButtonFont != IsBoldTextEnabled || (v13 = replyButtonFont_sTextFontSize_replyButtonFont, *&replyButtonFont_sTextFontSize_replyButtonFont != v6) || (v13 = replyButtonFont_sCustomTextFontSize_replyButtonFont, *&replyButtonFont_sCustomTextFontSize_replyButtonFont != v7) || ([replyButtonFont_sCustomTextFontName_replyButtonFont isEqualToString:{v10, *&replyButtonFont_sCustomTextFontSize_replyButtonFont}] & 1) == 0)
+  if (ckShouldUpdatereplyButtonFont || v11 || replyButtonFont_sIsIncreaseContrastEnabled_replyButtonFont != v4 || replyButtonFont_sIsBoldTextEnabled_replyButtonFont != IsBoldTextEnabled || (v13 = replyButtonFont_sTextFontSize_replyButtonFont, *&replyButtonFont_sTextFontSize_replyButtonFont != v6) || (v13 = replyButtonFont_sCustomTextFontSize_replyButtonFont, *&replyButtonFont_sCustomTextFontSize_replyButtonFont != v7) || ([replyButtonFont_sCustomTextFontName_replyButtonFont isEqualToString:{v10, *&replyButtonFont_sCustomTextFontSize_replyButtonFont}] & 1) == 0)
   {
     v15 = *MEMORY[0x1E69DDD80];
     v16 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{*MEMORY[0x1E69DDD80], *&v13}];
@@ -19392,14 +19392,14 @@ void __49__CKUIBehavior_conversationListSIMLabelTextColor__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(textReplyBalloonTailInsets_sContentSizeCategory_textReplyBalloonTailInsets, v3);
   if (-[CKUIBehavior ckShouldUpdatetextReplyBalloonTailInsets](self, "ckShouldUpdatetextReplyBalloonTailInsets") || v10 || textReplyBalloonTailInsets_sIsBoldTextEnabled_textReplyBalloonTailInsets != IsBoldTextEnabled || *&textReplyBalloonTailInsets_sTextFontSize_textReplyBalloonTailInsets != v5 || *&textReplyBalloonTailInsets_sCustomTextFontSize_textReplyBalloonTailInsets != v6 || ([textReplyBalloonTailInsets_sCustomTextFontName_textReplyBalloonTailInsets isEqualToString:{v9, *&textReplyBalloonTailInsets_sCustomTextFontSize_textReplyBalloonTailInsets}] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v12 = [v11 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-    if (v12)
+    if (isRoundTailedBalloonShapeEnabled)
     {
-      v13 = [(CKUIBehavior *)self replyBalloonTextFont];
+      replyBalloonTextFont = [(CKUIBehavior *)self replyBalloonTextFont];
       [(CKUIBehavior *)self textReplyBalloonCornerRadius];
-      [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v13 cornerRadius:&v22 tailInsets:?];
+      [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:replyBalloonTextFont cornerRadius:&v22 tailInsets:?];
     }
 
     else
@@ -19635,10 +19635,10 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return *&extensionIconBadgePaddingAroundBalloon_sBehavior;
 }
 
-- (CGRect)extensionIconBadgeRectForOrientation:(char)a3
+- (CGRect)extensionIconBadgeRectForOrientation:(char)orientation
 {
   v4 = 0.0;
-  if (a3 == 2)
+  if (orientation == 2)
   {
     [(CKUIBehavior *)self balloonMaskTailWidth];
     v4 = v5 + 0.0;
@@ -19662,12 +19662,12 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return result;
 }
 
-- (CGSize)minimumSizeThatFitsExtensionIconBadge:(BOOL)a3
+- (CGSize)minimumSizeThatFitsExtensionIconBadge:(BOOL)badge
 {
-  v3 = a3;
+  badgeCopy = badge;
   v5 = +[CKUIBehavior sharedBehaviors];
   v6 = v5;
-  if (v3)
+  if (badgeCopy)
   {
     v7 = 0;
   }
@@ -19697,7 +19697,7 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   v26.size.width = v13;
   v26.size.height = v15;
   v20 = v18 + CGRectGetMaxX(v26);
-  if (v3)
+  if (badgeCopy)
   {
     [(CKUIBehavior *)self balloonMaskTailWidth];
     v20 = v20 + v21;
@@ -19710,7 +19710,7 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return result;
 }
 
-- (UIEdgeInsets)extensionBalloonContentInsetsForOrientation:(char)a3
+- (UIEdgeInsets)extensionBalloonContentInsetsForOrientation:(char)orientation
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -19723,11 +19723,11 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return result;
 }
 
-- (double)suggestedActionsMenuAdditionalHeightWithChatBotActionButton:(id)a3
+- (double)suggestedActionsMenuAdditionalHeightWithChatBotActionButton:(id)button
 {
-  v3 = a3;
-  [v3 bounds];
-  [v3 sizeThatFits:{v4, 1.79769313e308}];
+  buttonCopy = button;
+  [buttonCopy bounds];
+  [buttonCopy sizeThatFits:{v4, 1.79769313e308}];
   v6 = v5;
 
   result = v6 + 13.0 + 5.0;
@@ -19767,15 +19767,15 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return *&suggestedActionButtonMinHeight_sBehavior;
 }
 
-- (CGSize)balloonMaskTailSizeForTailShape:(char)a3
+- (CGSize)balloonMaskTailSizeForTailShape:(char)shape
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     v4 = 6.0;
     v3 = 6.0;
   }
 
-  else if (a3 == 1)
+  else if (shape == 1)
   {
     [(CKUIBehavior *)self balloonMaskTailWidth];
     v4 = v6;
@@ -19795,18 +19795,18 @@ double __61__CKUIBehavior_entryViewTaillessBalloonMaskRightImageSpacing__block_i
   return result;
 }
 
-- (CGSize)balloonMaskSizeWithTailShape:(char)a3 isMultiline:(BOOL)a4
+- (CGSize)balloonMaskSizeWithTailShape:(char)shape isMultiline:(BOOL)multiline
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     goto LABEL_6;
   }
 
-  if (a3 != 1)
+  if (shape != 1)
   {
-    if (!a3)
+    if (!shape)
     {
-      if (a4)
+      if (multiline)
       {
         [(CKUIBehavior *)self taillessMultilineBalloonMaskSize];
       }
@@ -19825,7 +19825,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (a4)
+  if (multiline)
   {
     [(CKUIBehavior *)self multilineBalloonMaskSize];
   }
@@ -19841,20 +19841,20 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)skinnyBalloonMaskSizeWithTailShape:(char)a3
+- (CGSize)skinnyBalloonMaskSizeWithTailShape:(char)shape
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (shape == 1)
   {
     [(CKUIBehavior *)self skinnyBalloonMaskSize];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (shape)
   {
 LABEL_5:
     v3 = *MEMORY[0x1E695F060];
@@ -19872,9 +19872,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)roundBalloonMaskSizeWithTailShape:(char)a3
+- (CGSize)roundBalloonMaskSizeWithTailShape:(char)shape
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     v3 = vdupq_n_s64(0x4042000000000000uLL);
   }
@@ -19890,18 +19890,18 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)replyBalloonMaskSizeWithTailShape:(char)a3 isMultiline:(BOOL)a4
+- (CGSize)replyBalloonMaskSizeWithTailShape:(char)shape isMultiline:(BOOL)multiline
 {
-  if (a3 >= 2)
+  if (shape >= 2)
   {
-    if (a3 == 2)
+    if (shape == 2)
     {
       v6 = *MEMORY[0x1E695F060];
       v7 = *(MEMORY[0x1E695F060] + 8);
     }
   }
 
-  else if (a4)
+  else if (multiline)
   {
     [(CKUIBehavior *)self replyMultilineBalloonMaskSize:v4];
   }
@@ -19916,11 +19916,11 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)skinnyReplyBalloonMaskSizeWithTailShape:(char)a3
+- (CGSize)skinnyReplyBalloonMaskSizeWithTailShape:(char)shape
 {
-  if (a3 >= 2)
+  if (shape >= 2)
   {
-    if (a3 == 2)
+    if (shape == 2)
     {
       v5 = *MEMORY[0x1E695F060];
       v6 = *(MEMORY[0x1E695F060] + 8);
@@ -19937,11 +19937,11 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)deletedReplyBalloonMaskSizeWithTailShape:(char)a3
+- (CGSize)deletedReplyBalloonMaskSizeWithTailShape:(char)shape
 {
-  if (a3 >= 2)
+  if (shape >= 2)
   {
-    if (a3 == 2)
+    if (shape == 2)
     {
       v5 = *MEMORY[0x1E695F060];
       v6 = *(MEMORY[0x1E695F060] + 8);
@@ -19958,11 +19958,11 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)balloonMaskSizeWithBalloonDescriptor:(CKBalloonDescriptor_t *)a3
+- (CGSize)balloonMaskSizeWithBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
-  if (a3->var13)
+  if (descriptor->var13)
   {
-    var1 = a3->var1;
+    var1 = descriptor->var1;
   }
 
   else
@@ -19970,8 +19970,8 @@ LABEL_7:
     var1 = 0;
   }
 
-  var16 = a3->var16;
-  var0 = a3->var0;
+  var16 = descriptor->var16;
+  var0 = descriptor->var0;
   if (var0 > 2)
   {
     switch(var0)
@@ -19993,7 +19993,7 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (!a3->var0)
+  if (!descriptor->var0)
   {
     [(CKUIBehavior *)self balloonMaskSizeWithTailShape:var1 isMultiline:var16, v3, v4];
     goto LABEL_18;
@@ -20038,8 +20038,8 @@ LABEL_18:
   v10 = UIContentSizeCategoryCompareToCategory(replyBalloonPillMinHeight_sContentSizeCategory_replyBalloonPillMinHeight, v3);
   if (-[CKUIBehavior ckShouldUpdatereplyBalloonPillMinHeight](self, "ckShouldUpdatereplyBalloonPillMinHeight") || v10 || replyBalloonPillMinHeight_sIsBoldTextEnabled_replyBalloonPillMinHeight != IsBoldTextEnabled || (v11 = replyBalloonPillMinHeight_sTextFontSize_replyBalloonPillMinHeight, *&replyBalloonPillMinHeight_sTextFontSize_replyBalloonPillMinHeight != v5) || (v11 = replyBalloonPillMinHeight_sCustomTextFontSize_replyBalloonPillMinHeight, *&replyBalloonPillMinHeight_sCustomTextFontSize_replyBalloonPillMinHeight != v6) || ([replyBalloonPillMinHeight_sCustomTextFontName_replyBalloonPillMinHeight isEqualToString:{v9, *&replyBalloonPillMinHeight_sCustomTextFontSize_replyBalloonPillMinHeight}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self replyBalloonTextFont];
-    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v12 cornerRadius:0 tailInsets:0.0];
+    replyBalloonTextFont = [(CKUIBehavior *)self replyBalloonTextFont];
+    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:replyBalloonTextFont cornerRadius:0 tailInsets:0.0];
     v14 = v13;
 
     replyBalloonPillMinHeight_sBehavior = v14;
@@ -20210,8 +20210,8 @@ LABEL_18:
   v10 = UIContentSizeCategoryCompareToCategory(nicknamePreviewOnboardingBalloonCornerRadius_sContentSizeCategory_nicknamePreviewOnboardingBalloonCornerRadius, v3);
   if (-[CKUIBehavior ckShouldUpdatenicknamePreviewOnboardingBalloonCornerRadius](self, "ckShouldUpdatenicknamePreviewOnboardingBalloonCornerRadius") || v10 || nicknamePreviewOnboardingBalloonCornerRadius_sIsBoldTextEnabled_nicknamePreviewOnboardingBalloonCornerRadius != IsBoldTextEnabled || (v11 = nicknamePreviewOnboardingBalloonCornerRadius_sTextFontSize_nicknamePreviewOnboardingBalloonCornerRadius, *&nicknamePreviewOnboardingBalloonCornerRadius_sTextFontSize_nicknamePreviewOnboardingBalloonCornerRadius != v5) || (v11 = nicknamePreviewOnboardingBalloonCornerRadius_sCustomTextFontSize_nicknamePreviewOnboardingBalloonCornerRadius, *&nicknamePreviewOnboardingBalloonCornerRadius_sCustomTextFontSize_nicknamePreviewOnboardingBalloonCornerRadius != v6) || ([nicknamePreviewOnboardingBalloonCornerRadius_sCustomTextFontName_nicknamePreviewOnboardingBalloonCornerRadius isEqualToString:{v9, *&nicknamePreviewOnboardingBalloonCornerRadius_sCustomTextFontSize_nicknamePreviewOnboardingBalloonCornerRadius}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self nicknamePreviewOnboardingBalloonFont];
-    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v12 cornerRadius:0 tailInsets:0.0];
+    nicknamePreviewOnboardingBalloonFont = [(CKUIBehavior *)self nicknamePreviewOnboardingBalloonFont];
+    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:nicknamePreviewOnboardingBalloonFont cornerRadius:0 tailInsets:0.0];
     v14 = v13 * 0.5;
 
     nicknamePreviewOnboardingBalloonCornerRadius_sBehavior = *&v14;
@@ -20248,9 +20248,9 @@ LABEL_18:
   v10 = UIContentSizeCategoryCompareToCategory(textBalloonMinHeight_sContentSizeCategory_textBalloonMinHeight, v3);
   if (-[CKUIBehavior ckShouldUpdatetextBalloonMinHeight](self, "ckShouldUpdatetextBalloonMinHeight") || v10 || textBalloonMinHeight_sIsBoldTextEnabled_textBalloonMinHeight != IsBoldTextEnabled || (v11 = textBalloonMinHeight_sTextFontSize_textBalloonMinHeight, *&textBalloonMinHeight_sTextFontSize_textBalloonMinHeight != v5) || (v11 = textBalloonMinHeight_sCustomTextFontSize_textBalloonMinHeight, *&textBalloonMinHeight_sCustomTextFontSize_textBalloonMinHeight != v6) || ([textBalloonMinHeight_sCustomTextFontName_textBalloonMinHeight isEqualToString:{v9, *&textBalloonMinHeight_sCustomTextFontSize_textBalloonMinHeight}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self balloonTextFont];
+    balloonTextFont = [(CKUIBehavior *)self balloonTextFont];
     [(CKUIBehavior *)self balloonCornerRadius];
-    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v12 cornerRadius:0 tailInsets:?];
+    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:balloonTextFont cornerRadius:0 tailInsets:?];
     v14 = v13;
 
     textBalloonMinHeight_sBehavior = v14;
@@ -20287,9 +20287,9 @@ LABEL_18:
   v10 = UIContentSizeCategoryCompareToCategory(textReplyPreviewBalloonMinHeight_sContentSizeCategory_textReplyPreviewBalloonMinHeight, v3);
   if (-[CKUIBehavior ckShouldUpdatetextReplyPreviewBalloonMinHeight](self, "ckShouldUpdatetextReplyPreviewBalloonMinHeight") || v10 || textReplyPreviewBalloonMinHeight_sIsBoldTextEnabled_textReplyPreviewBalloonMinHeight != IsBoldTextEnabled || (v11 = textReplyPreviewBalloonMinHeight_sTextFontSize_textReplyPreviewBalloonMinHeight, *&textReplyPreviewBalloonMinHeight_sTextFontSize_textReplyPreviewBalloonMinHeight != v5) || (v11 = textReplyPreviewBalloonMinHeight_sCustomTextFontSize_textReplyPreviewBalloonMinHeight, *&textReplyPreviewBalloonMinHeight_sCustomTextFontSize_textReplyPreviewBalloonMinHeight != v6) || ([textReplyPreviewBalloonMinHeight_sCustomTextFontName_textReplyPreviewBalloonMinHeight isEqualToString:{v9, *&textReplyPreviewBalloonMinHeight_sCustomTextFontSize_textReplyPreviewBalloonMinHeight}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self replyBalloonTextFont];
+    replyBalloonTextFont = [(CKUIBehavior *)self replyBalloonTextFont];
     [(CKUIBehavior *)self textReplyBalloonCornerRadius];
-    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:v12 cornerRadius:0 tailInsets:?];
+    [(CKUIBehavior *)self _calculateBalloonMinHeightWithFont:replyBalloonTextFont cornerRadius:0 tailInsets:?];
     v14 = v13;
 
     textReplyPreviewBalloonMinHeight_sBehavior = v14;
@@ -20305,9 +20305,9 @@ LABEL_18:
   return v15;
 }
 
-- (double)_calculateBalloonMinHeightWithFont:(id)a3 cornerRadius:(double)a4 tailInsets:(UIEdgeInsets *)a5
+- (double)_calculateBalloonMinHeightWithFont:(id)font cornerRadius:(double)radius tailInsets:(UIEdgeInsets *)insets
 {
-  v7 = a3;
+  fontCopy = font;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -20316,9 +20316,9 @@ LABEL_18:
   aBlock[1] = 3221225472;
   aBlock[2] = __75__CKUIBehavior__calculateBalloonMinHeightWithFont_cornerRadius_tailInsets___block_invoke;
   aBlock[3] = &unk_1E72F24F0;
-  v8 = v7;
-  v17 = a4;
-  v18 = a5;
+  v8 = fontCopy;
+  radiusCopy = radius;
+  insetsCopy = insets;
   v15 = v8;
   v16 = &v19;
   v9 = _Block_copy(aBlock);
@@ -20794,20 +20794,20 @@ void __55__CKUIBehavior_audioReplyPreviewBalloonAlignmentInsets__block_invoke()
   return *&audioReplyPreviewBalloonInset_sBehavior;
 }
 
-- (UIEdgeInsets)balloonMaskAlignmentRectInsetsWithTailShape:(char)a3
+- (UIEdgeInsets)balloonMaskAlignmentRectInsetsWithTailShape:(char)shape
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (shape == 1)
   {
     [(CKUIBehavior *)self balloonMaskAlignmentRectInsets];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (shape)
   {
 LABEL_5:
     v3 = *MEMORY[0x1E69DDCE0];
@@ -20829,20 +20829,20 @@ LABEL_7:
   return result;
 }
 
-- (UIEdgeInsets)attachmentBalloonAlignmentRectInsetsWithTailShape:(char)a3
+- (UIEdgeInsets)attachmentBalloonAlignmentRectInsetsWithTailShape:(char)shape
 {
-  if (a3 == 2)
+  if (shape == 2)
   {
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (shape == 1)
   {
     [(CKUIBehavior *)self attachmentBalloonAlignmentRectInsets];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (shape)
   {
 LABEL_5:
     v3 = *MEMORY[0x1E69DDCE0];
@@ -20895,16 +20895,16 @@ LABEL_7:
 - (UIEdgeInsets)_replyBalloonTextContainerInset
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = fmin(v4, v5);
 
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"MADRID" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v29 = *MEMORY[0x1E69DB648];
-  v9 = [(CKUIBehavior *)self replyBalloonTextFont];
-  v30[0] = v9;
+  replyBalloonTextFont = [(CKUIBehavior *)self replyBalloonTextFont];
+  v30[0] = replyBalloonTextFont;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
   v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v10];
@@ -21013,9 +21013,9 @@ void __38__CKUIBehavior_balloonMaskFrameInsets__block_invoke()
   balloonMaskFrameInsets_sBehavior_3 = 0x3FF0000000000000;
 }
 
-- (UIEdgeInsets)balloonMaskFrameInsetsWithBalloonShape:(char)a3
+- (UIEdgeInsets)balloonMaskFrameInsetsWithBalloonShape:(char)shape
 {
-  if (a3 > 5 || a3 == 2)
+  if (shape > 5 || shape == 2)
   {
     v5 = *MEMORY[0x1E69DDCE0];
     v6 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -21080,9 +21080,9 @@ void __38__CKUIBehavior_balloonMaskFrameInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(audioBalloonTimeInset_sContentSizeCategory_audioBalloonTimeInset, v3);
   if (-[CKUIBehavior ckShouldUpdateaudioBalloonTimeInset](self, "ckShouldUpdateaudioBalloonTimeInset") || v10 || audioBalloonTimeInset_sIsBoldTextEnabled_audioBalloonTimeInset != IsBoldTextEnabled || (v11 = audioBalloonTimeInset_sTextFontSize_audioBalloonTimeInset, *&audioBalloonTimeInset_sTextFontSize_audioBalloonTimeInset != v5) || (v11 = audioBalloonTimeInset_sCustomTextFontSize_audioBalloonTimeInset, *&audioBalloonTimeInset_sCustomTextFontSize_audioBalloonTimeInset != v6) || ([audioBalloonTimeInset_sCustomTextFontName_audioBalloonTimeInset isEqualToString:{v9, *&audioBalloonTimeInset_sCustomTextFontSize_audioBalloonTimeInset}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
     v13 = 8.0;
-    if (v12)
+    if (isAccessibilityPreferredContentSizeCategory)
     {
       v13 = 18.0;
     }
@@ -21121,9 +21121,9 @@ void __38__CKUIBehavior_balloonMaskFrameInsets__block_invoke()
   v10 = UIContentSizeCategoryCompareToCategory(audioBalloonProgressInset_sContentSizeCategory_audioBalloonProgressInset, v3);
   if (-[CKUIBehavior ckShouldUpdateaudioBalloonProgressInset](self, "ckShouldUpdateaudioBalloonProgressInset") || v10 || audioBalloonProgressInset_sIsBoldTextEnabled_audioBalloonProgressInset != IsBoldTextEnabled || (v11 = audioBalloonProgressInset_sTextFontSize_audioBalloonProgressInset, *&audioBalloonProgressInset_sTextFontSize_audioBalloonProgressInset != v5) || (v11 = audioBalloonProgressInset_sCustomTextFontSize_audioBalloonProgressInset, *&audioBalloonProgressInset_sCustomTextFontSize_audioBalloonProgressInset != v6) || ([audioBalloonProgressInset_sCustomTextFontName_audioBalloonProgressInset isEqualToString:{v9, *&audioBalloonProgressInset_sCustomTextFontSize_audioBalloonProgressInset}] & 1) == 0)
   {
-    v12 = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [(CKUIBehavior *)self isAccessibilityPreferredContentSizeCategory];
     v13 = 3.0;
-    if (v12)
+    if (isAccessibilityPreferredContentSizeCategory)
     {
       v13 = 13.0;
     }
@@ -21235,10 +21235,10 @@ void __38__CKUIBehavior_balloonMaskFrameInsets__block_invoke()
   return *&stackBalloonVerticalInset_sBehavior;
 }
 
-- (CGSize)previewBalloonSizeThatFits:(CGSize)a3
+- (CGSize)previewBalloonSizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [CKUIBehavior sharedBehaviors:a3.width];
+  width = fits.width;
+  v4 = [CKUIBehavior sharedBehaviors:fits.width];
   [v4 previewMaxWidth];
   v6 = v5;
 
@@ -21291,11 +21291,11 @@ uint64_t __49__CKUIBehavior_messageFailureButtonBalloonMargin__block_invoke(uint
 
 - (double)_messageFailureButtonBalloonMargin
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
   result = 1.0;
-  if (v3)
+  if (isRoundTailedBalloonShapeEnabled)
   {
     return 8.0;
   }
@@ -21568,9 +21568,9 @@ uint64_t __41__CKUIBehavior_audioRecordingViewPadding__block_invoke(uint64_t a1)
   v11 = UIContentSizeCategoryCompareToCategory(balloonTranslationSecondaryTextFont_sContentSizeCategory_balloonTranslationSecondaryTextFont, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonTranslationSecondaryTextFont](self, "ckShouldUpdateballoonTranslationSecondaryTextFont") || v11 || balloonTranslationSecondaryTextFont_sIsIncreaseContrastEnabled_balloonTranslationSecondaryTextFont != v4 || balloonTranslationSecondaryTextFont_sIsBoldTextEnabled_balloonTranslationSecondaryTextFont != IsBoldTextEnabled || (v12 = balloonTranslationSecondaryTextFont_sTextFontSize_balloonTranslationSecondaryTextFont, *&balloonTranslationSecondaryTextFont_sTextFontSize_balloonTranslationSecondaryTextFont != v6) || (v12 = balloonTranslationSecondaryTextFont_sCustomTextFontSize_balloonTranslationSecondaryTextFont, *&balloonTranslationSecondaryTextFont_sCustomTextFontSize_balloonTranslationSecondaryTextFont != v7) || ([balloonTranslationSecondaryTextFont_sCustomTextFontName_balloonTranslationSecondaryTextFont isEqualToString:{v10, *&balloonTranslationSecondaryTextFont_sCustomTextFontSize_balloonTranslationSecondaryTextFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _balloonTranslationSecondaryTextFont];
+    _balloonTranslationSecondaryTextFont = [(CKUIBehavior *)self _balloonTranslationSecondaryTextFont];
     v14 = balloonTranslationSecondaryTextFont_sBehavior;
-    balloonTranslationSecondaryTextFont_sBehavior = v13;
+    balloonTranslationSecondaryTextFont_sBehavior = _balloonTranslationSecondaryTextFont;
 
     objc_storeStrong(&balloonTranslationSecondaryTextFont_sContentSizeCategory_balloonTranslationSecondaryTextFont, v3);
     balloonTranslationSecondaryTextFont_sIsIncreaseContrastEnabled_balloonTranslationSecondaryTextFont = v4;
@@ -21608,9 +21608,9 @@ uint64_t __41__CKUIBehavior_audioRecordingViewPadding__block_invoke(uint64_t a1)
   v11 = UIContentSizeCategoryCompareToCategory(translationStatusTextFont_sContentSizeCategory_translationStatusTextFont, v3);
   if (-[CKUIBehavior ckShouldUpdatetranslationStatusTextFont](self, "ckShouldUpdatetranslationStatusTextFont") || v11 || translationStatusTextFont_sIsIncreaseContrastEnabled_translationStatusTextFont != v4 || translationStatusTextFont_sIsBoldTextEnabled_translationStatusTextFont != IsBoldTextEnabled || (v12 = translationStatusTextFont_sTextFontSize_translationStatusTextFont, *&translationStatusTextFont_sTextFontSize_translationStatusTextFont != v6) || (v12 = translationStatusTextFont_sCustomTextFontSize_translationStatusTextFont, *&translationStatusTextFont_sCustomTextFontSize_translationStatusTextFont != v7) || ([translationStatusTextFont_sCustomTextFontName_translationStatusTextFont isEqualToString:{v10, *&translationStatusTextFont_sCustomTextFontSize_translationStatusTextFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _translationStatusTextFont];
+    _translationStatusTextFont = [(CKUIBehavior *)self _translationStatusTextFont];
     v14 = translationStatusTextFont_sBehavior;
-    translationStatusTextFont_sBehavior = v13;
+    translationStatusTextFont_sBehavior = _translationStatusTextFont;
 
     objc_storeStrong(&translationStatusTextFont_sContentSizeCategory_translationStatusTextFont, v3);
     translationStatusTextFont_sIsIncreaseContrastEnabled_translationStatusTextFont = v4;
@@ -21688,9 +21688,9 @@ uint64_t __41__CKUIBehavior_audioRecordingViewPadding__block_invoke(uint64_t a1)
   v11 = UIContentSizeCategoryCompareToCategory(balloonSubjectFont_sContentSizeCategory_balloonSubjectFont, v3);
   if (-[CKUIBehavior ckShouldUpdateballoonSubjectFont](self, "ckShouldUpdateballoonSubjectFont") || v11 || balloonSubjectFont_sIsIncreaseContrastEnabled_balloonSubjectFont != v4 || balloonSubjectFont_sIsBoldTextEnabled_balloonSubjectFont != IsBoldTextEnabled || (v12 = balloonSubjectFont_sTextFontSize_balloonSubjectFont, *&balloonSubjectFont_sTextFontSize_balloonSubjectFont != v6) || (v12 = balloonSubjectFont_sCustomTextFontSize_balloonSubjectFont, *&balloonSubjectFont_sCustomTextFontSize_balloonSubjectFont != v7) || ([balloonSubjectFont_sCustomTextFontName_balloonSubjectFont isEqualToString:{v10, *&balloonSubjectFont_sCustomTextFontSize_balloonSubjectFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _balloonSubjectFont];
+    _balloonSubjectFont = [(CKUIBehavior *)self _balloonSubjectFont];
     v14 = balloonSubjectFont_sBehavior;
-    balloonSubjectFont_sBehavior = v13;
+    balloonSubjectFont_sBehavior = _balloonSubjectFont;
 
     objc_storeStrong(&balloonSubjectFont_sContentSizeCategory_balloonSubjectFont, v3);
     balloonSubjectFont_sIsIncreaseContrastEnabled_balloonSubjectFont = v4;
@@ -21866,9 +21866,9 @@ uint64_t __41__CKUIBehavior_audioRecordingViewPadding__block_invoke(uint64_t a1)
   v11 = UIContentSizeCategoryCompareToCategory(bigEmojiFont_sContentSizeCategory_bigEmojiFont, v3);
   if (-[CKUIBehavior ckShouldUpdatebigEmojiFont](self, "ckShouldUpdatebigEmojiFont") || v11 || bigEmojiFont_sIsIncreaseContrastEnabled_bigEmojiFont != v4 || bigEmojiFont_sIsBoldTextEnabled_bigEmojiFont != IsBoldTextEnabled || (v12 = bigEmojiFont_sTextFontSize_bigEmojiFont, *&bigEmojiFont_sTextFontSize_bigEmojiFont != v6) || (v12 = bigEmojiFont_sCustomTextFontSize_bigEmojiFont, *&bigEmojiFont_sCustomTextFontSize_bigEmojiFont != v7) || ([bigEmojiFont_sCustomTextFontName_bigEmojiFont isEqualToString:{v10, *&bigEmojiFont_sCustomTextFontSize_bigEmojiFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self multipleBigEmojiFont];
+    multipleBigEmojiFont = [(CKUIBehavior *)self multipleBigEmojiFont];
     v14 = bigEmojiFont_sBehavior;
-    bigEmojiFont_sBehavior = v13;
+    bigEmojiFont_sBehavior = multipleBigEmojiFont;
 
     objc_storeStrong(&bigEmojiFont_sContentSizeCategory_bigEmojiFont, v3);
     bigEmojiFont_sIsIncreaseContrastEnabled_bigEmojiFont = v4;
@@ -21914,9 +21914,9 @@ uint64_t __41__CKUIBehavior_audioRecordingViewPadding__block_invoke(uint64_t a1)
   v11 = UIContentSizeCategoryCompareToCategory(replyBalloonTextFont_sContentSizeCategory_replyBalloonTextFont, v3);
   if (-[CKUIBehavior ckShouldUpdatereplyBalloonTextFont](self, "ckShouldUpdatereplyBalloonTextFont") || v11 || replyBalloonTextFont_sIsIncreaseContrastEnabled_replyBalloonTextFont != v4 || replyBalloonTextFont_sIsBoldTextEnabled_replyBalloonTextFont != IsBoldTextEnabled || (v12 = replyBalloonTextFont_sTextFontSize_replyBalloonTextFont, *&replyBalloonTextFont_sTextFontSize_replyBalloonTextFont != v6) || (v12 = replyBalloonTextFont_sCustomTextFontSize_replyBalloonTextFont, *&replyBalloonTextFont_sCustomTextFontSize_replyBalloonTextFont != v7) || ([replyBalloonTextFont_sCustomTextFontName_replyBalloonTextFont isEqualToString:{v10, *&replyBalloonTextFont_sCustomTextFontSize_replyBalloonTextFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self _replyBalloonTextFont];
+    _replyBalloonTextFont = [(CKUIBehavior *)self _replyBalloonTextFont];
     v14 = replyBalloonTextFont_sBehavior;
-    replyBalloonTextFont_sBehavior = v13;
+    replyBalloonTextFont_sBehavior = _replyBalloonTextFont;
 
     objc_storeStrong(&replyBalloonTextFont_sContentSizeCategory_replyBalloonTextFont, v3);
     replyBalloonTextFont_sIsIncreaseContrastEnabled_replyBalloonTextFont = v4;
@@ -22432,70 +22432,70 @@ void __40__CKUIBehavior_multiwayGrayChevronImage__block_invoke()
   multiwayGrayChevronImage_sBehavior = v0;
 }
 
-- (id)chevronImageForColorType:(char)a3
+- (id)chevronImageForColorType:(char)type
 {
-  switch(a3)
+  switch(type)
   {
     case -1:
-      v5 = [(CKUIBehavior *)self gray_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self gray_chevronImage];
       goto LABEL_22;
     case 0:
-      v5 = [(CKUIBehavior *)self green_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self green_chevronImage];
       goto LABEL_22;
     case 1:
-      v5 = [(CKUIBehavior *)self blue_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self blue_chevronImage];
       goto LABEL_22;
     case 2:
-      v5 = [(CKUIBehavior *)self siri_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self siri_chevronImage];
       goto LABEL_22;
     case 3:
-      v5 = [(CKUIBehavior *)self red_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self red_chevronImage];
       goto LABEL_22;
     case 4:
-      v5 = [(CKUIBehavior *)self white_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self white_chevronImage];
       goto LABEL_22;
     case 5:
-      v5 = [(CKUIBehavior *)self black_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self black_chevronImage];
       goto LABEL_22;
     case 6:
-      v5 = [(CKUIBehavior *)self business_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self business_chevronImage];
       goto LABEL_22;
     case 7:
-      v5 = [(CKUIBehavior *)self multiway_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self multiway_chevronImage];
       goto LABEL_22;
     case 8:
-      v5 = [(CKUIBehavior *)self background_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self background_chevronImage];
       goto LABEL_22;
     case 9:
-      v5 = [(CKUIBehavior *)self reply_gray_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self reply_gray_chevronImage];
       goto LABEL_22;
     case 10:
-      v5 = [(CKUIBehavior *)self reply_blue_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self reply_blue_chevronImage];
       goto LABEL_22;
     case 11:
-      v5 = [(CKUIBehavior *)self reply_green_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self reply_green_chevronImage];
       goto LABEL_22;
     case 12:
-      v5 = [(CKUIBehavior *)self stewie_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self stewie_chevronImage];
       goto LABEL_22;
     case 13:
-      v5 = [(CKUIBehavior *)self message_editing_black_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self message_editing_black_chevronImage];
       goto LABEL_22;
     case 14:
-      v5 = [(CKUIBehavior *)self opaque_orb_gray_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self opaque_orb_gray_chevronImage];
       goto LABEL_22;
     case 15:
-      v5 = [(CKUIBehavior *)self pending_blue_chevronImage];
+      gray_chevronImage = [(CKUIBehavior *)self pending_blue_chevronImage];
 LABEL_22:
 
       break;
     default:
-      v5 = 0;
+      gray_chevronImage = 0;
 
       break;
   }
 
-  return v5;
+  return gray_chevronImage;
 }
 
 - (id)gray_chevronImage
@@ -22887,8 +22887,8 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
       v4 = v5;
     }
 
-    v6 = [v4 CGImage];
-    v7 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v6];
+    cGImage = [v4 CGImage];
+    v7 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImage];
   }
 
   else
@@ -22899,11 +22899,11 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)imageNameForBalloonDescriptorWithFilledStyle:(CKBalloonDescriptor_t *)a3
+- (id)imageNameForBalloonDescriptorWithFilledStyle:(CKBalloonDescriptor_t *)style
 {
-  if (a3->var13)
+  if (style->var13)
   {
-    var1 = a3->var1;
+    var1 = style->var1;
   }
 
   else
@@ -22912,7 +22912,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
   }
 
   v6 = 0;
-  var0 = a3->var0;
+  var0 = style->var0;
   if (var0 > 2)
   {
     if (var0 != 3)
@@ -22921,7 +22921,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
       {
         if (var1 == 1)
         {
-          v8 = [(CKUIBehavior *)self replySkinnyBalloonName];
+          replySkinnyBalloonName = [(CKUIBehavior *)self replySkinnyBalloonName];
           goto LABEL_41;
         }
 
@@ -22938,7 +22938,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
         goto LABEL_28;
       }
 
-      v8 = [(CKUIBehavior *)self replyDeleteBalloonName];
+      replySkinnyBalloonName = [(CKUIBehavior *)self replyDeleteBalloonName];
       goto LABEL_41;
     }
 
@@ -22947,7 +22947,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
       goto LABEL_28;
     }
 
-    if (a3->var16)
+    if (style->var16)
     {
       [(CKUIBehavior *)self replyMultilineBalloonName];
     }
@@ -22957,21 +22957,21 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
       [(CKUIBehavior *)self replyBalloonName];
     }
 
-    v8 = LABEL_39:;
+    replySkinnyBalloonName = LABEL_39:;
     goto LABEL_41;
   }
 
-  if (!a3->var0)
+  if (!style->var0)
   {
     if (var1 == 1)
     {
-      if (a3->var15)
+      if (style->var15)
       {
-        v8 = [(CKUIBehavior *)self impactBalloonName];
+        replySkinnyBalloonName = [(CKUIBehavior *)self impactBalloonName];
         goto LABEL_41;
       }
 
-      if (a3->var16)
+      if (style->var16)
       {
         [(CKUIBehavior *)self multilineBalloonName];
       }
@@ -22989,7 +22989,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
         goto LABEL_28;
       }
 
-      if (a3->var16)
+      if (style->var16)
       {
         [(CKUIBehavior *)self multilineTaillessBalloonName];
       }
@@ -23012,7 +23012,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
 
     if (var1 == 2)
     {
-      v8 = [(CKUIBehavior *)self roundBalloonName];
+      replySkinnyBalloonName = [(CKUIBehavior *)self roundBalloonName];
       goto LABEL_41;
     }
 
@@ -23024,7 +23024,7 @@ void __41__CKUIBehavior_pending_blue_chevronImage__block_invoke(uint64_t a1)
 LABEL_24:
     if (!var1)
     {
-      v8 = [(CKUIBehavior *)self skinnyTaillessBalloonName];
+      replySkinnyBalloonName = [(CKUIBehavior *)self skinnyTaillessBalloonName];
       goto LABEL_41;
     }
 
@@ -23038,33 +23038,33 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  if (!a3->var15)
+  if (!style->var15)
   {
 LABEL_33:
-    v8 = [(CKUIBehavior *)self skinnyBalloonName];
+    replySkinnyBalloonName = [(CKUIBehavior *)self skinnyBalloonName];
     goto LABEL_41;
   }
 
-  v8 = [(CKUIBehavior *)self impactSkinnyBalloonName];
+  replySkinnyBalloonName = [(CKUIBehavior *)self impactSkinnyBalloonName];
 LABEL_41:
-  v6 = v8;
+  v6 = replySkinnyBalloonName;
 LABEL_42:
 
   return v6;
 }
 
-- (id)imageNameForBalloonDescriptorWithStrokedStyle:(CKBalloonDescriptor_t *)a3
+- (id)imageNameForBalloonDescriptorWithStrokedStyle:(CKBalloonDescriptor_t *)style
 {
-  var0 = a3->var0;
+  var0 = style->var0;
   if (var0 == 4)
   {
-    v6 = [(CKUIBehavior *)self replyStrokedSkinnyBalloonName];
+    replyStrokedSkinnyBalloonName = [(CKUIBehavior *)self replyStrokedSkinnyBalloonName];
     goto LABEL_18;
   }
 
   if (var0 == 3)
   {
-    if (a3->var16)
+    if (style->var16)
     {
       [(CKUIBehavior *)self replyStrokedMultilineBalloonName];
     }
@@ -23073,19 +23073,19 @@ LABEL_42:
     {
       [(CKUIBehavior *)self replyStrokedBalloonName];
     }
-    v6 = ;
+    replyStrokedSkinnyBalloonName = ;
     goto LABEL_18;
   }
 
-  if (a3->var0)
+  if (style->var0)
   {
     goto LABEL_17;
   }
 
-  if (!a3->var13)
+  if (!style->var13)
   {
 LABEL_7:
-    if (a3->var16)
+    if (style->var16)
     {
       [(CKUIBehavior *)self multilineStrokedTaillessBalloonName];
     }
@@ -23098,31 +23098,31 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3->var1 != 1)
+  if (style->var1 != 1)
   {
-    if (a3->var1)
+    if (style->var1)
     {
 LABEL_17:
-      v7 = *&a3->var8.blue;
-      v12[4] = *&a3->var8.red;
+      v7 = *&style->var8.blue;
+      v12[4] = *&style->var8.red;
       v12[5] = v7;
-      v8 = *&a3->var11;
-      v12[6] = *&a3->var9;
+      v8 = *&style->var11;
+      v12[6] = *&style->var9;
       v12[7] = v8;
-      v9 = *&a3->var5;
-      v12[0] = *&a3->var0;
+      v9 = *&style->var5;
+      v12[0] = *&style->var0;
       v12[1] = v9;
-      v10 = *&a3->var7.blue;
-      v12[2] = *&a3->var7.red;
+      v10 = *&style->var7.blue;
+      v12[2] = *&style->var7.red;
       v12[3] = v10;
-      v6 = [(CKUIBehavior *)self imageNameForBalloonDescriptorWithFilledStyle:v12];
+      replyStrokedSkinnyBalloonName = [(CKUIBehavior *)self imageNameForBalloonDescriptorWithFilledStyle:v12];
       goto LABEL_18;
     }
 
     goto LABEL_7;
   }
 
-  if (a3->var16)
+  if (style->var16)
   {
     [(CKUIBehavior *)self multilineStrokedBalloonName];
   }
@@ -23132,21 +23132,21 @@ LABEL_17:
     [(CKUIBehavior *)self strokedBalloonName];
   }
 
-  v6 = LABEL_9:;
-  if (!v6)
+  replyStrokedSkinnyBalloonName = LABEL_9:;
+  if (!replyStrokedSkinnyBalloonName)
   {
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  return v6;
+  return replyStrokedSkinnyBalloonName;
 }
 
-- (id)imageNameForBalloonDescriptor:(CKBalloonDescriptor_t *)a3
+- (id)imageNameForBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
   v3 = 0;
-  var2 = a3->var2;
+  var2 = descriptor->var2;
   if ((var2 - 2) < 4)
   {
     goto LABEL_9;
@@ -23154,39 +23154,39 @@ LABEL_18:
 
   if (var2 == 1)
   {
-    v11 = *&a3->var8.blue;
-    v21 = *&a3->var8.red;
+    v11 = *&descriptor->var8.blue;
+    v21 = *&descriptor->var8.red;
     v22 = v11;
-    v12 = *&a3->var11;
-    v23 = *&a3->var9;
+    v12 = *&descriptor->var11;
+    v23 = *&descriptor->var9;
     v24 = v12;
-    v13 = *&a3->var5;
-    v17 = *&a3->var0;
+    v13 = *&descriptor->var5;
+    v17 = *&descriptor->var0;
     v18 = v13;
-    v14 = *&a3->var7.blue;
-    v19 = *&a3->var7.red;
+    v14 = *&descriptor->var7.blue;
+    v19 = *&descriptor->var7.red;
     v20 = v14;
     v10 = [(CKUIBehavior *)self imageNameForBalloonDescriptorWithStrokedStyle:&v17];
   }
 
   else
   {
-    if (a3->var2)
+    if (descriptor->var2)
     {
       goto LABEL_7;
     }
 
-    v6 = *&a3->var8.blue;
-    v21 = *&a3->var8.red;
+    v6 = *&descriptor->var8.blue;
+    v21 = *&descriptor->var8.red;
     v22 = v6;
-    v7 = *&a3->var11;
-    v23 = *&a3->var9;
+    v7 = *&descriptor->var11;
+    v23 = *&descriptor->var9;
     v24 = v7;
-    v8 = *&a3->var5;
-    v17 = *&a3->var0;
+    v8 = *&descriptor->var5;
+    v17 = *&descriptor->var0;
     v18 = v8;
-    v9 = *&a3->var7.blue;
-    v19 = *&a3->var7.red;
+    v9 = *&descriptor->var7.blue;
+    v19 = *&descriptor->var7.red;
     v20 = v9;
     v10 = [(CKUIBehavior *)self imageNameForBalloonDescriptorWithFilledStyle:&v17];
   }
@@ -23219,9 +23219,9 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)locationOfferMapThumbnailFillSizeForWidth:(double)a3
+- (CGSize)locationOfferMapThumbnailFillSizeForWidth:(double)width
 {
-  [(CKUIBehavior *)self mapThumbnailFillSizeForWidth:a3];
+  [(CKUIBehavior *)self mapThumbnailFillSizeForWidth:width];
   v5 = v4;
   v7 = v6;
   [(CKUIBehavior *)self locationShareBalloonAdditionalVertPadding];
@@ -23282,12 +23282,12 @@ LABEL_9:
   return *&locationShareBalloonContactImageDiameter_sBehavior;
 }
 
-- (double)locationShareBalloonLabelMaxHeightForOfferState:(int64_t)a3
+- (double)locationShareBalloonLabelMaxHeightForOfferState:(int64_t)state
 {
   result = 22.0;
-  if ((a3 - 1) >= 2)
+  if ((state - 1) >= 2)
   {
-    if (a3)
+    if (state)
     {
       return 0.0;
     }
@@ -23302,18 +23302,18 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)locationShareBalloonSizeForWidth:(double)a3 offerState:(int64_t)a4
+- (CGSize)locationShareBalloonSizeForWidth:(double)width offerState:(int64_t)state
 {
-  [(CKUIBehavior *)self locationOfferMapThumbnailFillSizeForWidth:a3];
+  [(CKUIBehavior *)self locationOfferMapThumbnailFillSizeForWidth:width];
   v7 = v6;
   v9 = v8;
-  if (a4 == 1)
+  if (state == 1)
   {
     *&v10 = 44.0;
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
     *&v10 = 58.0;
 LABEL_5:
@@ -23873,16 +23873,16 @@ void __36__CKUIBehavior_imageSendLaterInsets__block_invoke()
   imageSendLaterInsets_sBehavior_3 = 0x4014000000000000;
 }
 
-- (CGSize)_heightClampedScaleWithAspectRatio:(double)a3 width:(double)a4 imageSize:(CGSize)a5
+- (CGSize)_heightClampedScaleWithAspectRatio:(double)ratio width:(double)width imageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   if (CKMainScreenScale_once_38 != -1)
   {
     [CKUIBehavior _topConversationListSpace];
   }
 
-  v9 = a4 / a3 > 500.0;
+  v9 = width / ratio > 500.0;
   v10 = height > width;
   if (v9 && v10)
   {
@@ -23891,13 +23891,13 @@ void __36__CKUIBehavior_imageSendLaterInsets__block_invoke()
 
   else
   {
-    v11 = a4 / a3;
+    v11 = width / ratio;
   }
 
-  v12 = a3 * 500.0;
+  widthCopy = ratio * 500.0;
   if (!v9 || !v10)
   {
-    v12 = a4;
+    widthCopy = width;
   }
 
   v13 = *&CKMainScreenScale_sMainScreenScale_38;
@@ -23906,33 +23906,33 @@ void __36__CKUIBehavior_imageSendLaterInsets__block_invoke()
     v13 = 1.0;
   }
 
-  v14 = ceil(v12 * v13) / v13;
+  v14 = ceil(widthCopy * v13) / v13;
   v15 = ceil(v11 * v13) / v13;
   result.height = v15;
   result.width = v14;
   return result;
 }
 
-- (CGSize)unconstrainedAspectFillSizeForWidth:(double)a3 imageSize:(CGSize)a4
+- (CGSize)unconstrainedAspectFillSizeForWidth:(double)width imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = width / height;
   if (height == 0.0)
   {
     v7 = 0.0;
   }
 
-  [(CKUIBehavior *)self _heightClampedScaleWithAspectRatio:v7 width:a3 imageSize:?];
+  [(CKUIBehavior *)self _heightClampedScaleWithAspectRatio:v7 width:width imageSize:?];
   result.height = v9;
   result.width = v8;
   return result;
 }
 
-- (CGSize)thumbnailFillSizeForWidth:(double)a3 imageSize:(CGSize)a4
+- (CGSize)thumbnailFillSizeForWidth:(double)width imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = width / height;
   if (height == 0.0)
   {
@@ -23945,15 +23945,15 @@ void __36__CKUIBehavior_imageSendLaterInsets__block_invoke()
     v8 = 1.77777778;
   }
 
-  [(CKUIBehavior *)self _heightClampedScaleWithAspectRatio:v8 width:a3 imageSize:?];
+  [(CKUIBehavior *)self _heightClampedScaleWithAspectRatio:v8 width:width imageSize:?];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (CGSize)mapThumbnailFillSizeForWidth:(double)a3
+- (CGSize)mapThumbnailFillSizeForWidth:(double)width
 {
-  [(CKUIBehavior *)self thumbnailFillSizeForWidth:a3 imageSize:4.0, 3.0];
+  [(CKUIBehavior *)self thumbnailFillSizeForWidth:width imageSize:4.0, 3.0];
   result.height = v4;
   result.width = v3;
   return result;
@@ -24013,20 +24013,20 @@ double __37__CKUIBehavior_previewTitleBarHeight__block_invoke()
   return result;
 }
 
-- (double)balloonOutlineWidthForScreenScale:(double)a3
+- (double)balloonOutlineWidthForScreenScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     return 3.0;
   }
 
   else
   {
-    return 3.0 / a3;
+    return 3.0 / scale;
   }
 }
 
-- (UIEdgeInsets)thumbnailContentAlignmentInsetsForOrientation:(char)a3
+- (UIEdgeInsets)thumbnailContentAlignmentInsetsForOrientation:(char)orientation
 {
   [(CKUIBehavior *)self balloonMaskTailHeight];
   v4 = v3;
@@ -24179,8 +24179,8 @@ uint64_t __48__CKUIBehavior_waveformPowerLevelWidthIncrement__block_invoke(uint6
 
 - (double)audioWaveformViewHeight
 {
-  v2 = [MEMORY[0x1E69A5C90] iMessageService];
-  v3 = [CKAudioMessageRecordingView buttonFor:3 with:v2];
+  iMessageService = [MEMORY[0x1E69A5C90] iMessageService];
+  v3 = [CKAudioMessageRecordingView buttonFor:3 with:iMessageService];
   [v3 sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v5 = v4;
 
@@ -24191,24 +24191,24 @@ uint64_t __48__CKUIBehavior_waveformPowerLevelWidthIncrement__block_invoke(uint6
   return v8;
 }
 
-- (double)transcriptWaveformWidthForDuration:(double)a3
+- (double)transcriptWaveformWidthForDuration:(double)duration
 {
-  v5 = [(CKUIBehavior *)self waveformMaxPowerLevelsCount];
+  waveformMaxPowerLevelsCount = [(CKUIBehavior *)self waveformMaxPowerLevelsCount];
   [(CKUIBehavior *)self waveformMaxWidthDuration];
-  if (v6 > a3)
+  if (v6 > duration)
   {
     v7 = v6;
-    v8 = [(CKUIBehavior *)self waveformMaxPowerLevelsCount];
-    v9 = log2(a3 + 1.0) * v8;
-    v5 = (v9 / log2(v7 + 1.0));
-    v10 = [(CKUIBehavior *)self waveformMinPowerLevelsCount];
-    if (v10 > v5)
+    waveformMaxPowerLevelsCount2 = [(CKUIBehavior *)self waveformMaxPowerLevelsCount];
+    v9 = log2(duration + 1.0) * waveformMaxPowerLevelsCount2;
+    waveformMaxPowerLevelsCount = (v9 / log2(v7 + 1.0));
+    waveformMinPowerLevelsCount = [(CKUIBehavior *)self waveformMinPowerLevelsCount];
+    if (waveformMinPowerLevelsCount > waveformMaxPowerLevelsCount)
     {
-      v5 = v10;
+      waveformMaxPowerLevelsCount = waveformMinPowerLevelsCount;
     }
   }
 
-  return ([(CKUIBehavior *)self waveformPowerLevelWidthIncrement]* v5);
+  return ([(CKUIBehavior *)self waveformPowerLevelWidthIncrement]* waveformMaxPowerLevelsCount);
 }
 
 - (CGSize)photoSheetProgressIndicatorSize
@@ -25093,10 +25093,10 @@ void __50__CKUIBehavior_entryViewUsesTransparentBackground__block_invoke()
 
 - (Class)entryViewBackgroundClass
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     v5 = 0;
   }
@@ -25355,11 +25355,11 @@ uint64_t __55__CKUIBehavior_entryViewLinkViewDiscardButtonEdgeInset__block_invok
 
 - (double)_entryViewLinkViewDiscardButtonEdgeInset
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRichLinkImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRichLinkImprovementsEnabled = [mEMORY[0x1E69A8070] isRichLinkImprovementsEnabled];
 
   result = 10.0;
-  if (v3)
+  if (isRichLinkImprovementsEnabled)
   {
     return 8.0;
   }
@@ -25540,8 +25540,8 @@ uint64_t __58__CKUIBehavior_messageEntryContentViewSendLaterDateInsets__block_in
 
 - (UIEdgeInsets)_messageEntryContentViewSendLaterDateInsets
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v3 = 8.0;
   v4 = 12.0;
@@ -25578,10 +25578,10 @@ uint64_t __30__CKUIBehavior_sendButtonSize__block_invoke(uint64_t a1)
 
 - (double)_sendButtonSize
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     +[CKGlassSendButton buttonSize];
   }
@@ -25662,10 +25662,10 @@ uint64_t __39__CKUIBehavior_entryViewPlusButtonSize__block_invoke(uint64_t a1)
 
 - (CGSize)_entryViewPlusButtonSize
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
 
     +[CKGlassSendMenuButton buttonSize];
@@ -25720,11 +25720,11 @@ uint64_t __40__CKUIBehavior_entryFieldCoverLineWidth__block_invoke(uint64_t a1)
 
 - (double)_entryFieldBorderWidth
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 0.0;
-  if ((v3 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
     if (CKMainScreenScale_once_38 != -1)
     {
@@ -25953,11 +25953,11 @@ uint64_t __77__CKUIBehavior_entryViewWithSendMenuBottomContentInsetWithoutKeyboa
 
 - (double)_entryViewWithSendMenuBottomContentInsetWithoutKeyboardVisible
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   result = 4.0;
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     return 0.0;
   }
@@ -26176,8 +26176,8 @@ void __51__CKUIBehavior_generationPluginButtonConfiguration__block_invoke()
 - (UIFont)mentionsCellNameFont
 {
   v2 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:*MEMORY[0x1E69DDD28]];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:0x8000];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
   v5 = MEMORY[0x1E69DB878];
   [v2 pointSize];
@@ -26522,10 +26522,10 @@ void __51__CKUIBehavior_entryViewDefaultSymbolConfiguration__block_invoke(uint64
 
 - (id)_entryViewDefaultSymbolConfiguration
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v3)
+  if (isEntryViewRefreshEnabled)
   {
     v4 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:2];
     v5 = [MEMORY[0x1E69DCAD8] configurationWithWeight:4];
@@ -26574,8 +26574,8 @@ void __40__CKUIBehavior_entryViewButtonTintColor__block_invoke(uint64_t a1)
 
 - (Class)entryViewPlusButtonClass
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  [v2 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
   v3 = objc_opt_class();
 
@@ -26606,10 +26606,10 @@ void __57__CKUIBehavior_entryViewPlusButtonDefaultBackgroundColor__block_invoke(
 
 - (id)_entryViewPlusButtonDefaultBackgroundColor
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     v5 = MEMORY[0x1E69DC888];
 LABEL_4:
@@ -26622,9 +26622,9 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [(CKUIBehavior *)self entryViewUsesTransparentBackground];
+  entryViewUsesTransparentBackground = [(CKUIBehavior *)self entryViewUsesTransparentBackground];
   v5 = MEMORY[0x1E69DC888];
-  if (v6)
+  if (entryViewUsesTransparentBackground)
   {
     goto LABEL_4;
   }
@@ -26797,11 +26797,11 @@ uint64_t __61__CKUIBehavior_sendMenuPreferredNumberOfItemsToDisplayOnOpen__block
 
 - (double)_sendMenuPreferredNumberOfItemsToDisplayOnOpen
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
   result = 7.6;
-  if (v3)
+  if (isPopoverSendMenuEnabled)
   {
     return 6.6;
   }
@@ -26976,9 +26976,9 @@ void __49__CKUIBehavior_sendMenuBackdropBackgroundEffects__block_invoke()
 - (id)newEntryViewPlusButtonIconImageView
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 entryViewPlusButtonImage];
+  entryViewPlusButtonImage = [v2 entryViewPlusButtonImage];
 
-  v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v3];
+  v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:entryViewPlusButtonImage];
   [v4 setContentMode:4];
 
   return v4;
@@ -26986,8 +26986,8 @@ void __49__CKUIBehavior_sendMenuBackdropBackgroundEffects__block_invoke()
 
 - (id)entryViewPlusButtonImage
 {
-  v2 = [(CKUIBehavior *)self sendMenuPlusSymbolScale];
-  v3 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:v2 scale:16.0];
+  sendMenuPlusSymbolScale = [(CKUIBehavior *)self sendMenuPlusSymbolScale];
+  v3 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:sendMenuPlusSymbolScale scale:16.0];
   v4 = MEMORY[0x1E69DC888];
   v5 = [MEMORY[0x1E69DC888] colorWithRed:0.580392157 green:0.584313725 blue:0.6 alpha:1.0];
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.517647059 green:0.517647059 blue:0.517647059 alpha:1.0];
@@ -27185,9 +27185,9 @@ void __49__CKUIBehavior_sendMenuBackdropBackgroundEffects__block_invoke()
 - (UIColor)sendMenuPresentPopoverBackdropViewBackgroundColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(CKUIBehavior *)self sendMenuBackdropBackgroundColor];
+  sendMenuBackdropBackgroundColor = [(CKUIBehavior *)self sendMenuBackdropBackgroundColor];
   v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.121568627 alpha:0.86];
-  v5 = [v2 dynamicColorWithLightColor:v3 darkColor:v4];
+  v5 = [v2 dynamicColorWithLightColor:sendMenuBackdropBackgroundColor darkColor:v4];
 
   return v5;
 }
@@ -27195,10 +27195,10 @@ void __49__CKUIBehavior_sendMenuBackdropBackgroundEffects__block_invoke()
 - (UIColor)sendMenuPopoverDimmingViewActiveBackgroundColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [v3 colorWithAlphaComponent:0.08];
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  v6 = [v5 colorWithAlphaComponent:0.36];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v4 = [blackColor colorWithAlphaComponent:0.08];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  v6 = [blackColor2 colorWithAlphaComponent:0.36];
   v7 = [v2 dynamicColorWithLightColor:v4 darkColor:v6];
 
   return v7;
@@ -27638,8 +27638,8 @@ uint64_t __41__CKUIBehavior_usesTapbackRefreshStyling__block_invoke(uint64_t a1)
 {
   if (CKIsRunningInMessagesNotificationExtension())
   {
-    v2 = [MEMORY[0x1E69A8018] sharedInstance];
-    v3 = [v2 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"enableGlassPickerInNotifications" defaultValue:0];
+    mEMORY[0x1E69A8018] = [MEMORY[0x1E69A8018] sharedInstance];
+    v3 = [mEMORY[0x1E69A8018] getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"enableGlassPickerInNotifications" defaultValue:0];
 
     if (!v3)
     {
@@ -27647,10 +27647,10 @@ uint64_t __41__CKUIBehavior_usesTapbackRefreshStyling__block_invoke(uint64_t a1)
     }
   }
 
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isTapbacksRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTapbacksRefreshEnabled = [mEMORY[0x1E69A8070] isTapbacksRefreshEnabled];
 
-  return v5;
+  return isTapbacksRefreshEnabled;
 }
 
 - (UIImage)replyImage
@@ -29543,33 +29543,33 @@ void __50__CKUIBehavior_nicknameUpdatesButtonConfiguration__block_invoke()
 
 - (void)prewarmAcknowledgementsImage
 {
-  v3 = [(CKUIBehavior *)self grayHeartAckImage];
-  v4 = [(CKUIBehavior *)self whiteHeartAckImage];
-  v5 = [(CKUIBehavior *)self grayThumbsUpAckImage];
-  v6 = [(CKUIBehavior *)self grayThumbsUpAckImage];
-  v7 = [(CKUIBehavior *)self grayThumbsDownAckImage];
-  v8 = [(CKUIBehavior *)self grayExclamationLeftAckImage];
-  v9 = [(CKUIBehavior *)self grayExclamationRightAckImage];
-  v10 = [(CKUIBehavior *)self grayQuestionMarkGlyphAckImage];
-  v11 = [(CKUIBehavior *)self grayQuestionMarkDotAckImage];
-  v12 = [(CKUIBehavior *)self grayHaAckImage];
-  v13 = [(CKUIBehavior *)self grayH1AckImage];
-  v14 = [(CKUIBehavior *)self grayA1AckImage];
-  v15 = [(CKUIBehavior *)self grayH2AckImage];
-  v16 = [(CKUIBehavior *)self grayA2AckImage];
-  v17 = [(CKUIBehavior *)self redHeartAckImage];
-  v18 = [(CKUIBehavior *)self whiteThumbsUpAckImage];
-  v19 = [(CKUIBehavior *)self whiteThumbsDownAckImage];
-  v20 = [(CKUIBehavior *)self whiteExclamationRightAckImage];
-  v21 = [(CKUIBehavior *)self whiteExclamationLeftAckImage];
-  v22 = [(CKUIBehavior *)self whiteQuestionMarkGlyphAckImage];
-  v23 = [(CKUIBehavior *)self whiteQuestionMarkDotAckImage];
-  v24 = [(CKUIBehavior *)self whiteHaAckImage];
-  v25 = [(CKUIBehavior *)self whiteH1AckImage];
-  v26 = [(CKUIBehavior *)self whiteH2AckImage];
-  v27 = [(CKUIBehavior *)self whiteH2AckImage];
-  v28 = [(CKUIBehavior *)self whiteA1AckImage];
-  v29 = [(CKUIBehavior *)self whiteA2AckImage];
+  grayHeartAckImage = [(CKUIBehavior *)self grayHeartAckImage];
+  whiteHeartAckImage = [(CKUIBehavior *)self whiteHeartAckImage];
+  grayThumbsUpAckImage = [(CKUIBehavior *)self grayThumbsUpAckImage];
+  grayThumbsUpAckImage2 = [(CKUIBehavior *)self grayThumbsUpAckImage];
+  grayThumbsDownAckImage = [(CKUIBehavior *)self grayThumbsDownAckImage];
+  grayExclamationLeftAckImage = [(CKUIBehavior *)self grayExclamationLeftAckImage];
+  grayExclamationRightAckImage = [(CKUIBehavior *)self grayExclamationRightAckImage];
+  grayQuestionMarkGlyphAckImage = [(CKUIBehavior *)self grayQuestionMarkGlyphAckImage];
+  grayQuestionMarkDotAckImage = [(CKUIBehavior *)self grayQuestionMarkDotAckImage];
+  grayHaAckImage = [(CKUIBehavior *)self grayHaAckImage];
+  grayH1AckImage = [(CKUIBehavior *)self grayH1AckImage];
+  grayA1AckImage = [(CKUIBehavior *)self grayA1AckImage];
+  grayH2AckImage = [(CKUIBehavior *)self grayH2AckImage];
+  grayA2AckImage = [(CKUIBehavior *)self grayA2AckImage];
+  redHeartAckImage = [(CKUIBehavior *)self redHeartAckImage];
+  whiteThumbsUpAckImage = [(CKUIBehavior *)self whiteThumbsUpAckImage];
+  whiteThumbsDownAckImage = [(CKUIBehavior *)self whiteThumbsDownAckImage];
+  whiteExclamationRightAckImage = [(CKUIBehavior *)self whiteExclamationRightAckImage];
+  whiteExclamationLeftAckImage = [(CKUIBehavior *)self whiteExclamationLeftAckImage];
+  whiteQuestionMarkGlyphAckImage = [(CKUIBehavior *)self whiteQuestionMarkGlyphAckImage];
+  whiteQuestionMarkDotAckImage = [(CKUIBehavior *)self whiteQuestionMarkDotAckImage];
+  whiteHaAckImage = [(CKUIBehavior *)self whiteHaAckImage];
+  whiteH1AckImage = [(CKUIBehavior *)self whiteH1AckImage];
+  whiteH2AckImage = [(CKUIBehavior *)self whiteH2AckImage];
+  whiteH2AckImage2 = [(CKUIBehavior *)self whiteH2AckImage];
+  whiteA1AckImage = [(CKUIBehavior *)self whiteA1AckImage];
+  whiteA2AckImage = [(CKUIBehavior *)self whiteA2AckImage];
 }
 
 - (UIImage)grayHeartAckImage
@@ -30236,12 +30236,12 @@ void __37__CKUIBehavior_businessFallbackImage__block_invoke()
 - (UIImage)navBarHeaderChevronImageNoAvatar
 {
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [(CKUIBehavior *)self noAvatarTitleFont];
-  v4 = [v2 configurationWithFont:v3 scale:1];
+  noAvatarTitleFont = [(CKUIBehavior *)self noAvatarTitleFont];
+  v4 = [v2 configurationWithFont:noAvatarTitleFont scale:1];
 
   v5 = MEMORY[0x1E69DCAD8];
-  v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v7 = [v5 configurationWithHierarchicalColor:v6];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v7 = [v5 configurationWithHierarchicalColor:tertiaryLabelColor];
   v8 = [v4 configurationByApplyingConfiguration:v7];
 
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
@@ -30253,8 +30253,8 @@ void __37__CKUIBehavior_businessFallbackImage__block_invoke()
 - (UIImage)navBarHeaderOpaqueChevronImageNoAvatar
 {
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [(CKUIBehavior *)self noAvatarTitleFont];
-  v4 = [v2 configurationWithFont:v3 scale:1];
+  noAvatarTitleFont = [(CKUIBehavior *)self noAvatarTitleFont];
+  v4 = [v2 configurationWithFont:noAvatarTitleFont scale:1];
 
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward" withConfiguration:v4];
   v6 = [v5 imageWithRenderingMode:2];
@@ -30265,12 +30265,12 @@ void __37__CKUIBehavior_businessFallbackImage__block_invoke()
 - (id)navBarHeaderChevronImageDefault
 {
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [(CKUIBehavior *)self avatarStackTitleFont];
-  v4 = [v2 configurationWithFont:v3 scale:1];
+  avatarStackTitleFont = [(CKUIBehavior *)self avatarStackTitleFont];
+  v4 = [v2 configurationWithFont:avatarStackTitleFont scale:1];
 
   v5 = MEMORY[0x1E69DCAD8];
-  v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v7 = [v5 configurationWithHierarchicalColor:v6];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v7 = [v5 configurationWithHierarchicalColor:tertiaryLabelColor];
   v8 = [v4 configurationByApplyingConfiguration:v7];
 
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
@@ -30283,8 +30283,8 @@ void __37__CKUIBehavior_businessFallbackImage__block_invoke()
 - (id)navBarHeaderOpaqueChevronImageDefault
 {
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [(CKUIBehavior *)self avatarStackTitleFont];
-  v4 = [v2 configurationWithFont:v3 scale:1];
+  avatarStackTitleFont = [(CKUIBehavior *)self avatarStackTitleFont];
+  v4 = [v2 configurationWithFont:avatarStackTitleFont scale:1];
 
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
   v6 = [v5 imageWithSymbolConfiguration:v4];
@@ -30700,10 +30700,10 @@ uint64_t __55__CKUIBehavior_additionalComposeRecipientLayoutMargins__block_invok
 
 - (UIEdgeInsets)_additionalComposeRecipientLayoutMargins
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
     v4 = 0.0;
     v5 = 20.0;
@@ -31377,11 +31377,11 @@ void __70__CKUIBehavior_messageAcknowledgmentTranscriptBalloonRelativePosition__
   return *&attributionViewAdditionalTopOffset_sBehavior;
 }
 
-- (id)messageAcknowledgmentImageNameForType:(int64_t)a3
+- (id)messageAcknowledgmentImageNameForType:(int64_t)type
 {
-  if (a3 > 2002)
+  if (type > 2002)
   {
-    if (a3 == 2003)
+    if (type == 2003)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = CKFrameworkBundle();
@@ -31393,12 +31393,12 @@ void __70__CKUIBehavior_messageAcknowledgmentTranscriptBalloonRelativePosition__
 
     v3 = @"Acknowledgments-Menu-Exclamation";
     v4 = @"Acknowledgments-Menu-QuestionMark";
-    if (a3 != 2005)
+    if (type != 2005)
     {
       v4 = 0;
     }
 
-    v6 = a3 == 2004;
+    v6 = type == 2004;
   }
 
   else
@@ -31406,17 +31406,17 @@ void __70__CKUIBehavior_messageAcknowledgmentTranscriptBalloonRelativePosition__
     v3 = @"Acknowledgments-Menu-Heart";
     v4 = @"Acknowledgments-Menu-ThumbsUp";
     v5 = @"Acknowledgments-Menu-ThumbsDown";
-    if (a3 != 2002)
+    if (type != 2002)
     {
       v5 = 0;
     }
 
-    if (a3 != 2001)
+    if (type != 2001)
     {
       v4 = v5;
     }
 
-    v6 = a3 == 2000;
+    v6 = type == 2000;
   }
 
   if (v6)
@@ -31434,11 +31434,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)messageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)a3
+- (id)messageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)type
 {
-  if (a3 > 2002)
+  if (type > 2002)
   {
-    if (a3 == 2003)
+    if (type == 2003)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = CKFrameworkBundle();
@@ -31450,12 +31450,12 @@ LABEL_14:
 
     v3 = @"Polling-Exclamation";
     v4 = @"Polling-QuestionMark";
-    if (a3 != 2005)
+    if (type != 2005)
     {
       v4 = 0;
     }
 
-    v6 = a3 == 2004;
+    v6 = type == 2004;
   }
 
   else
@@ -31463,17 +31463,17 @@ LABEL_14:
     v3 = @"Polling-Heart";
     v4 = @"Polling-ThumbsUp";
     v5 = @"Polling-ThumbsDown";
-    if (a3 != 2002)
+    if (type != 2002)
     {
       v5 = 0;
     }
 
-    if (a3 != 2001)
+    if (type != 2001)
     {
       v4 = v5;
     }
 
-    v6 = a3 == 2000;
+    v6 = type == 2000;
   }
 
   if (v6)
@@ -31491,11 +31491,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)largeMessageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)a3
+- (id)largeMessageAcknowledgmentPollingImageNameForAcknowledgmentType:(int64_t)type
 {
-  if (a3 > 2002)
+  if (type > 2002)
   {
-    if (a3 == 2003)
+    if (type == 2003)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = CKFrameworkBundle();
@@ -31507,12 +31507,12 @@ LABEL_14:
 
     v3 = @"Polling-Exclamation-Large";
     v4 = @"Polling-QuestionMark-Large";
-    if (a3 != 2005)
+    if (type != 2005)
     {
       v4 = 0;
     }
 
-    v6 = a3 == 2004;
+    v6 = type == 2004;
   }
 
   else
@@ -31520,17 +31520,17 @@ LABEL_14:
     v3 = @"Polling-Heart-Large";
     v4 = @"Polling-ThumbsUp-Large";
     v5 = @"Polling-ThumbsDown-Large";
-    if (a3 != 2002)
+    if (type != 2002)
     {
       v5 = 0;
     }
 
-    if (a3 != 2001)
+    if (type != 2001)
     {
       v4 = v5;
     }
 
-    v6 = a3 == 2000;
+    v6 = type == 2000;
   }
 
   if (v6)
@@ -31584,9 +31584,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   messageAcknowledgmentPickerBarBubbleTailName_sBehavior = @"MenuBubble2";
 }
 
-- (id)aggregateAcknowledgmentStackBackgroundName3:(BOOL)a3
+- (id)aggregateAcknowledgmentStackBackgroundName3:(BOOL)name3
 {
-  if (a3)
+  if (name3)
   {
     return @"AcknowledgmentStackBackground-3Stack";
   }
@@ -31597,9 +31597,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentStackBackgroundName2:(BOOL)a3
+- (id)aggregateAcknowledgmentStackBackgroundName2:(BOOL)name2
 {
-  if (a3)
+  if (name2)
   {
     return @"AcknowledgmentStackBackground-2Stack";
   }
@@ -31610,9 +31610,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentTopBackgroundName:(BOOL)a3
+- (id)aggregateAcknowledgmentTopBackgroundName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"AcknowledgmentTopBackgroundStack";
   }
@@ -31623,9 +31623,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentBottomMiddleName:(BOOL)a3
+- (id)aggregateAcknowledgmentBottomMiddleName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"AcknowledgmentBottomMiddleStack";
   }
@@ -31636,9 +31636,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentBottomTopName:(BOOL)a3
+- (id)aggregateAcknowledgmentBottomTopName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"AcknowledgmentBottomTopStack";
   }
@@ -31649,9 +31649,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentStackName3:(BOOL)a3
+- (id)aggregateAcknowledgmentStackName3:(BOOL)name3
 {
-  if (a3)
+  if (name3)
   {
     return @"AcknowledgmentStack-3Stack";
   }
@@ -31662,9 +31662,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentStackName2:(BOOL)a3
+- (id)aggregateAcknowledgmentStackName2:(BOOL)name2
 {
-  if (a3)
+  if (name2)
   {
     return @"AcknowledgmentStack-2Stack";
   }
@@ -31675,9 +31675,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentMiddleName:(BOOL)a3
+- (id)aggregateAcknowledgmentMiddleName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"AcknowledgmentMiddleStack";
   }
@@ -31688,9 +31688,9 @@ void __60__CKUIBehavior_messageAcknowledgmentPickerBarBubbleTailName__block_invo
   }
 }
 
-- (id)aggregateAcknowledgmentTopName:(BOOL)a3
+- (id)aggregateAcknowledgmentTopName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"AcknowledgmentTopStack";
   }
@@ -32234,9 +32234,9 @@ void __45__CKUIBehavior_cameraAppsMinimizedDockHeight__block_invoke()
   cameraAppsMinimizedDockHeight_sBehavior = v3;
 }
 
-- (UIEdgeInsets)pluginBalloonInsetsForMessageFromMe:(BOOL)a3
+- (UIEdgeInsets)pluginBalloonInsetsForMessageFromMe:(BOOL)me
 {
-  if (a3)
+  if (me)
   {
     [(CKUIBehavior *)self balloonMaskTailHeight];
     v5 = v4;
@@ -32554,26 +32554,26 @@ void __46__CKUIBehavior_emojiStickerTranscriptCellFont__block_invoke()
   return v16;
 }
 
-- (CGSize)stickerSizeScaledWithInitialSize:(CGSize)a3 imageScale:(double)a4 userScale:(double)a5 rectifiedScreenScale:(double)a6 maxWidth:(double)a7
+- (CGSize)stickerSizeScaledWithInitialSize:(CGSize)size imageScale:(double)scale userScale:(double)userScale rectifiedScreenScale:(double)screenScale maxWidth:(double)width
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CKUIBehavior *)self stickerDisplaySizeScale];
-  v14 = height * v13 * a4 * a5;
-  v15 = 1.0 / a6 * (width * v13 * a4 * a5);
-  v16 = 1.0 / a6 * v14;
-  if (v15 <= a7 || v15 == 0.0)
+  v14 = height * v13 * scale * userScale;
+  v15 = 1.0 / screenScale * (width * v13 * scale * userScale);
+  v16 = 1.0 / screenScale * v14;
+  if (v15 <= width || v15 == 0.0)
   {
-    a7 = v15;
+    width = v15;
   }
 
   else
   {
-    v16 = v16 * (a7 / v15);
+    v16 = v16 * (width / v15);
   }
 
-  v17 = round(a7 * a6) / a6;
-  v18 = round(v16 * a6) / a6;
+  v17 = round(width * screenScale) / screenScale;
+  v18 = round(v16 * screenScale) / screenScale;
   result.height = v18;
   result.width = v17;
   return result;
@@ -33496,9 +33496,9 @@ void __42__CKUIBehavior_searchDetailsResultsInsets__block_invoke()
 
   v10 = v9;
   v11 = UIContentSizeCategoryCompareToCategory(searchHeaderFont_sContentSizeCategory_searchHeaderFont, v3);
-  v12 = [(CKUIBehavior *)self ckShouldUpdatesearchHeaderFont];
+  ckShouldUpdatesearchHeaderFont = [(CKUIBehavior *)self ckShouldUpdatesearchHeaderFont];
   v14 = &unk_1EAD6D000;
-  if (v12 || v11 || searchHeaderFont_sIsIncreaseContrastEnabled_searchHeaderFont != v4 || searchHeaderFont_sIsBoldTextEnabled_searchHeaderFont != IsBoldTextEnabled || (v13 = searchHeaderFont_sTextFontSize_searchHeaderFont, *&searchHeaderFont_sTextFontSize_searchHeaderFont != v6) || (v13 = searchHeaderFont_sCustomTextFontSize_searchHeaderFont, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont != v7) || ([searchHeaderFont_sCustomTextFontName_searchHeaderFont isEqualToString:{v10, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont}] & 1) == 0)
+  if (ckShouldUpdatesearchHeaderFont || v11 || searchHeaderFont_sIsIncreaseContrastEnabled_searchHeaderFont != v4 || searchHeaderFont_sIsBoldTextEnabled_searchHeaderFont != IsBoldTextEnabled || (v13 = searchHeaderFont_sTextFontSize_searchHeaderFont, *&searchHeaderFont_sTextFontSize_searchHeaderFont != v6) || (v13 = searchHeaderFont_sCustomTextFontSize_searchHeaderFont, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont != v7) || ([searchHeaderFont_sCustomTextFontName_searchHeaderFont isEqualToString:{v10, *&searchHeaderFont_sCustomTextFontSize_searchHeaderFont}] & 1) == 0)
   {
     v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDDC8] addingSymbolicTraits:0x8000 options:{0, *&v13}];
     v30 = *MEMORY[0x1E69DB8F0];
@@ -33679,9 +33679,9 @@ void __42__CKUIBehavior_searchDetailsResultsInsets__block_invoke()
   v11 = UIContentSizeCategoryCompareToCategory(searchAttachmentResultLabelFont_sContentSizeCategory_searchAttachmentResultLabelFont, v3);
   if (-[CKUIBehavior ckShouldUpdatesearchAttachmentResultLabelFont](self, "ckShouldUpdatesearchAttachmentResultLabelFont") || v11 || searchAttachmentResultLabelFont_sIsIncreaseContrastEnabled_searchAttachmentResultLabelFont != v4 || searchAttachmentResultLabelFont_sIsBoldTextEnabled_searchAttachmentResultLabelFont != IsBoldTextEnabled || (v12 = searchAttachmentResultLabelFont_sTextFontSize_searchAttachmentResultLabelFont, *&searchAttachmentResultLabelFont_sTextFontSize_searchAttachmentResultLabelFont != v6) || (v12 = searchAttachmentResultLabelFont_sCustomTextFontSize_searchAttachmentResultLabelFont, *&searchAttachmentResultLabelFont_sCustomTextFontSize_searchAttachmentResultLabelFont != v7) || ([searchAttachmentResultLabelFont_sCustomTextFontName_searchAttachmentResultLabelFont isEqualToString:{v10, *&searchAttachmentResultLabelFont_sCustomTextFontSize_searchAttachmentResultLabelFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self searchResultLabelFont];
+    searchResultLabelFont = [(CKUIBehavior *)self searchResultLabelFont];
     v14 = searchAttachmentResultLabelFont_sBehavior;
-    searchAttachmentResultLabelFont_sBehavior = v13;
+    searchAttachmentResultLabelFont_sBehavior = searchResultLabelFont;
 
     objc_storeStrong(&searchAttachmentResultLabelFont_sContentSizeCategory_searchAttachmentResultLabelFont, v3);
     searchAttachmentResultLabelFont_sIsIncreaseContrastEnabled_searchAttachmentResultLabelFont = v4;
@@ -33719,9 +33719,9 @@ void __42__CKUIBehavior_searchDetailsResultsInsets__block_invoke()
   v11 = UIContentSizeCategoryCompareToCategory(searchAttachmentResultDateLabelFont_sContentSizeCategory_searchAttachmentResultDateLabelFont, v3);
   if (-[CKUIBehavior ckShouldUpdatesearchAttachmentResultDateLabelFont](self, "ckShouldUpdatesearchAttachmentResultDateLabelFont") || v11 || searchAttachmentResultDateLabelFont_sIsIncreaseContrastEnabled_searchAttachmentResultDateLabelFont != v4 || searchAttachmentResultDateLabelFont_sIsBoldTextEnabled_searchAttachmentResultDateLabelFont != IsBoldTextEnabled || (v12 = searchAttachmentResultDateLabelFont_sTextFontSize_searchAttachmentResultDateLabelFont, *&searchAttachmentResultDateLabelFont_sTextFontSize_searchAttachmentResultDateLabelFont != v6) || (v12 = searchAttachmentResultDateLabelFont_sCustomTextFontSize_searchAttachmentResultDateLabelFont, *&searchAttachmentResultDateLabelFont_sCustomTextFontSize_searchAttachmentResultDateLabelFont != v7) || ([searchAttachmentResultDateLabelFont_sCustomTextFontName_searchAttachmentResultDateLabelFont isEqualToString:{v10, *&searchAttachmentResultDateLabelFont_sCustomTextFontSize_searchAttachmentResultDateLabelFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self searchResultLabelFont];
+    searchResultLabelFont = [(CKUIBehavior *)self searchResultLabelFont];
     v14 = searchAttachmentResultDateLabelFont_sBehavior;
-    searchAttachmentResultDateLabelFont_sBehavior = v13;
+    searchAttachmentResultDateLabelFont_sBehavior = searchResultLabelFont;
 
     objc_storeStrong(&searchAttachmentResultDateLabelFont_sContentSizeCategory_searchAttachmentResultDateLabelFont, v3);
     searchAttachmentResultDateLabelFont_sIsIncreaseContrastEnabled_searchAttachmentResultDateLabelFont = v4;
@@ -34123,9 +34123,9 @@ void __57__CKUIBehavior_searchMessagesFromMeUnannotatedLabelColor__block_invoke(
   v11 = UIContentSizeCategoryCompareToCategory(searchMessagesGroupConversationFont_sContentSizeCategory_searchMessagesGroupConversationFont, v3);
   if (-[CKUIBehavior ckShouldUpdatesearchMessagesGroupConversationFont](self, "ckShouldUpdatesearchMessagesGroupConversationFont") || v11 || searchMessagesGroupConversationFont_sIsIncreaseContrastEnabled_searchMessagesGroupConversationFont != v4 || searchMessagesGroupConversationFont_sIsBoldTextEnabled_searchMessagesGroupConversationFont != IsBoldTextEnabled || (v12 = searchMessagesGroupConversationFont_sTextFontSize_searchMessagesGroupConversationFont, *&searchMessagesGroupConversationFont_sTextFontSize_searchMessagesGroupConversationFont != v6) || (v12 = searchMessagesGroupConversationFont_sCustomTextFontSize_searchMessagesGroupConversationFont, *&searchMessagesGroupConversationFont_sCustomTextFontSize_searchMessagesGroupConversationFont != v7) || ([searchMessagesGroupConversationFont_sCustomTextFontName_searchMessagesGroupConversationFont isEqualToString:{v10, *&searchMessagesGroupConversationFont_sCustomTextFontSize_searchMessagesGroupConversationFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self searchMessagesDMConversationFont];
+    searchMessagesDMConversationFont = [(CKUIBehavior *)self searchMessagesDMConversationFont];
     v14 = searchMessagesGroupConversationFont_sBehavior;
-    searchMessagesGroupConversationFont_sBehavior = v13;
+    searchMessagesGroupConversationFont_sBehavior = searchMessagesDMConversationFont;
 
     objc_storeStrong(&searchMessagesGroupConversationFont_sContentSizeCategory_searchMessagesGroupConversationFont, v3);
     searchMessagesGroupConversationFont_sIsIncreaseContrastEnabled_searchMessagesGroupConversationFont = v4;
@@ -34163,9 +34163,9 @@ void __57__CKUIBehavior_searchMessagesFromMeUnannotatedLabelColor__block_invoke(
   v11 = UIContentSizeCategoryCompareToCategory(searchMessagesBalloonFont_sContentSizeCategory_searchMessagesBalloonFont, v3);
   if (-[CKUIBehavior ckShouldUpdatesearchMessagesBalloonFont](self, "ckShouldUpdatesearchMessagesBalloonFont") || v11 || searchMessagesBalloonFont_sIsIncreaseContrastEnabled_searchMessagesBalloonFont != v4 || searchMessagesBalloonFont_sIsBoldTextEnabled_searchMessagesBalloonFont != IsBoldTextEnabled || (v12 = searchMessagesBalloonFont_sTextFontSize_searchMessagesBalloonFont, *&searchMessagesBalloonFont_sTextFontSize_searchMessagesBalloonFont != v6) || (v12 = searchMessagesBalloonFont_sCustomTextFontSize_searchMessagesBalloonFont, *&searchMessagesBalloonFont_sCustomTextFontSize_searchMessagesBalloonFont != v7) || ([searchMessagesBalloonFont_sCustomTextFontName_searchMessagesBalloonFont isEqualToString:{v10, *&searchMessagesBalloonFont_sCustomTextFontSize_searchMessagesBalloonFont}] & 1) == 0)
   {
-    v13 = [(CKUIBehavior *)self balloonTextFont];
+    balloonTextFont = [(CKUIBehavior *)self balloonTextFont];
     v14 = searchMessagesBalloonFont_sBehavior;
-    searchMessagesBalloonFont_sBehavior = v13;
+    searchMessagesBalloonFont_sBehavior = balloonTextFont;
 
     objc_storeStrong(&searchMessagesBalloonFont_sContentSizeCategory_searchMessagesBalloonFont, v3);
     searchMessagesBalloonFont_sIsIncreaseContrastEnabled_searchMessagesBalloonFont = v4;
@@ -34896,11 +34896,11 @@ void __34__CKUIBehavior_signInAppIconImage__block_invoke()
   return *&signInPrivacyLinkHeight_sBehavior;
 }
 
-- (id)__ck_localizedString:(id)a3
+- (id)__ck_localizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = CKFrameworkBundle();
-  v5 = [v4 localizedStringForKey:v3 value:&stru_1F04268F8 table:@"ChatKit"];
+  v5 = [v4 localizedStringForKey:stringCopy value:&stru_1F04268F8 table:@"ChatKit"];
 
   return v5;
 }

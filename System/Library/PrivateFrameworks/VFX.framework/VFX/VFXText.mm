@@ -1,9 +1,9 @@
 @interface VFXText
-+ (id)textWithString:(id)a3 extrusionDepth:(float)a4;
++ (id)textWithString:(id)string extrusionDepth:(float)depth;
 - ($80EDBB80750A9D2E1B4955686707C737)params;
 - (BOOL)_wantsSeparateMeshElements;
-- (BOOL)getBoundingBoxMin:(VFXText *)self max:(SEL)a2;
-- (BOOL)getBoundingSphereCenter:(VFXText *)self radius:(SEL)a2;
+- (BOOL)getBoundingBoxMin:(VFXText *)self max:(SEL)max;
+- (BOOL)getBoundingSphereCenter:(VFXText *)self radius:(SEL)radius;
 - (BOOL)isWrapped;
 - (CGRect)containerFrame;
 - (NSString)alignmentMode;
@@ -12,41 +12,41 @@
 - (UIBezierPath)chamferProfile;
 - (UIFont)font;
 - (VFXText)init;
-- (VFXText)initWithCoder:(id)a3;
-- (VFXText)initWithTextGeometryRef:(__CFXTextGeometry *)a3;
+- (VFXText)initWithCoder:(id)coder;
+- (VFXText)initWithTextGeometryRef:(__CFXTextGeometry *)ref;
 - (float)chamferRadius;
 - (float)discretizedStraightLineMaxLength;
 - (float)extrusionDepth;
 - (float)flatness;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationTextGeometryWithTextGeometryRef:(__CFXTextGeometry *)a3;
-- (id)patchFont:(id)a3;
+- (id)initPresentationTextGeometryWithTextGeometryRef:(__CFXTextGeometry *)ref;
+- (id)patchFont:(id)font;
 - (id)presentationModel;
 - (id)string;
 - (int64_t)primitiveType;
 - (uint64_t)__createCFObject;
-- (void)_customDecodingOfVFXText:(id)a3;
-- (void)_customEncodingOfVFXText:(id)a3;
-- (void)_setupObjCModelFrom:(id)a3;
-- (void)_updateModelFromPresentation:(__CFXTextGeometry *)a3;
+- (void)_customDecodingOfVFXText:(id)text;
+- (void)_customEncodingOfVFXText:(id)text;
+- (void)_setupObjCModelFrom:(id)from;
+- (void)_updateModelFromPresentation:(__CFXTextGeometry *)presentation;
 - (void)_updatePresentationFromModel;
-- (void)copyTo:(id)a3 withContext:(id)a4;
+- (void)copyTo:(id)to withContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlignmentMode:(id)a3;
-- (void)setChamferProfile:(id)a3;
-- (void)setChamferRadius:(float)a3;
-- (void)setContainerFrame:(CGRect)a3;
-- (void)setDiscretizedStraightLineMaxLength:(float)a3;
-- (void)setExtrusionDepth:(float)a3;
-- (void)setFlatness:(float)a3;
-- (void)setFont:(id)a3;
-- (void)setPrimitiveType:(int64_t)a3;
-- (void)setString:(id)a3;
-- (void)setTruncationMode:(id)a3;
-- (void)setWrapped:(BOOL)a3;
-- (void)set_wantsSeparateMeshElements:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlignmentMode:(id)mode;
+- (void)setChamferProfile:(id)profile;
+- (void)setChamferRadius:(float)radius;
+- (void)setContainerFrame:(CGRect)frame;
+- (void)setDiscretizedStraightLineMaxLength:(float)length;
+- (void)setExtrusionDepth:(float)depth;
+- (void)setFlatness:(float)flatness;
+- (void)setFont:(id)font;
+- (void)setPrimitiveType:(int64_t)type;
+- (void)setString:(id)string;
+- (void)setTruncationMode:(id)mode;
+- (void)setWrapped:(BOOL)wrapped;
+- (void)set_wantsSeparateMeshElements:(BOOL)elements;
 @end
 
 @implementation VFXText
@@ -77,29 +77,29 @@
   return v0;
 }
 
-- (void)_updateModelFromPresentation:(__CFXTextGeometry *)a3
+- (void)_updateModelFromPresentation:(__CFXTextGeometry *)presentation
 {
   v14.receiver = self;
   v14.super_class = VFXText;
   [(VFXModel *)&v14 _updateModelFromPresentation];
-  self->_primitiveType = sub_1AF1C5A20(a3);
-  self->_flatness = sub_1AF1C5C90(a3);
-  self->_chamferRadius = sub_1AF1C5804(a3);
-  self->_extrusionDepth = sub_1AF1C596C(a3);
-  self->_chamferProfile = sub_1AF1C5AD4(a3);
-  self->_discretizedStraightLineMaxLength = sub_1AF1C58B8(a3);
-  self->_alignmentMode = sub_1AF1C5CD4(a3);
-  self->_truncationMode = sub_1AF1C5CDC(a3);
-  self->_string = sub_1AF1C5CC4(a3);
-  v5 = sub_1AF1C5CCC(a3);
+  self->_primitiveType = sub_1AF1C5A20(presentation);
+  self->_flatness = sub_1AF1C5C90(presentation);
+  self->_chamferRadius = sub_1AF1C5804(presentation);
+  self->_extrusionDepth = sub_1AF1C596C(presentation);
+  self->_chamferProfile = sub_1AF1C5AD4(presentation);
+  self->_discretizedStraightLineMaxLength = sub_1AF1C58B8(presentation);
+  self->_alignmentMode = sub_1AF1C5CD4(presentation);
+  self->_truncationMode = sub_1AF1C5CDC(presentation);
+  self->_string = sub_1AF1C5CC4(presentation);
+  v5 = sub_1AF1C5CCC(presentation);
   self->_font = objc_msgSend_patchFont_(self, v6, v5, v7);
-  self->_useCustomContainerFrame = sub_1AF1C573C(a3);
-  self->_customContainerFrame.origin.x = sub_1AF1C5744(a3);
+  self->_useCustomContainerFrame = sub_1AF1C573C(presentation);
+  self->_customContainerFrame.origin.x = sub_1AF1C5744(presentation);
   self->_customContainerFrame.origin.y = v8;
   self->_customContainerFrame.size.width = v9;
   self->_customContainerFrame.size.height = v10;
-  self->_wrapped = sub_1AF1C5CE4(a3);
-  self->__wantsSeparateMeshElements = sub_1AF1C60F8(a3);
+  self->_wrapped = sub_1AF1C5CE4(presentation);
+  self->__wantsSeparateMeshElements = sub_1AF1C60F8(presentation);
   v11 = self->_font;
   v12 = self->_string;
   v13 = self->_chamferProfile;
@@ -137,11 +137,11 @@
   return v8;
 }
 
-- (VFXText)initWithTextGeometryRef:(__CFXTextGeometry *)a3
+- (VFXText)initWithTextGeometryRef:(__CFXTextGeometry *)ref
 {
   v12.receiver = self;
   v12.super_class = VFXText;
-  v3 = [(VFXModel *)&v12 initWithModelRef:a3];
+  v3 = [(VFXModel *)&v12 initWithModelRef:ref];
   v7 = v3;
   if (v3)
   {
@@ -152,11 +152,11 @@
   return v7;
 }
 
-- (id)initPresentationTextGeometryWithTextGeometryRef:(__CFXTextGeometry *)a3
+- (id)initPresentationTextGeometryWithTextGeometryRef:(__CFXTextGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = VFXText;
-  return [(VFXModel *)&v4 initPresentationModelWithModelRef:a3];
+  return [(VFXModel *)&v4 initPresentationModelWithModelRef:ref];
 }
 
 - (id)presentationModel
@@ -168,12 +168,12 @@
   return inited;
 }
 
-+ (id)textWithString:(id)a3 extrusionDepth:(float)a4
++ (id)textWithString:(id)string extrusionDepth:(float)depth
 {
-  v6 = objc_alloc_init(a1);
-  *&v7 = a4;
+  v6 = objc_alloc_init(self);
+  *&v7 = depth;
   objc_msgSend_setExtrusionDepth_(v6, v8, v9, v10, v7);
-  objc_msgSend_setString_(v6, v11, a3, v12);
+  objc_msgSend_setString_(v6, v11, string, v12);
   return v6;
 }
 
@@ -186,51 +186,51 @@
   return objc_msgSend_stringWithFormat_(v5, v15, @"<%@ | string=%@ extrusionDepth=%.3f> ", v16, v6, v10, v14);
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v62.receiver = self;
   v62.super_class = VFXText;
   [(VFXModel *)&v62 _setupObjCModelFrom:?];
   objc_msgSend_begin(VFXTransaction, v5, v6, v7);
   objc_msgSend_setImmediateMode_(VFXTransaction, v8, 1, v9);
-  v13 = objc_msgSend_font(a3, v10, v11, v12);
+  v13 = objc_msgSend_font(from, v10, v11, v12);
   objc_msgSend_setFont_(self, v14, v13, v15);
-  objc_msgSend_containerFrame(a3, v16, v17, v18);
+  objc_msgSend_containerFrame(from, v16, v17, v18);
   if (v22 != 0.0)
   {
-    objc_msgSend_containerFrame(a3, v19, v20, v21);
+    objc_msgSend_containerFrame(from, v19, v20, v21);
     objc_msgSend_setContainerFrame_(self, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_truncationMode(a3, v19, v20, v21);
+  v26 = objc_msgSend_truncationMode(from, v19, v20, v21);
   objc_msgSend_setTruncationMode_(self, v27, v26, v28);
-  v32 = objc_msgSend_alignmentMode(a3, v29, v30, v31);
+  v32 = objc_msgSend_alignmentMode(from, v29, v30, v31);
   objc_msgSend_setAlignmentMode_(self, v33, v32, v34);
-  objc_msgSend_flatness(a3, v35, v36, v37);
+  objc_msgSend_flatness(from, v35, v36, v37);
   objc_msgSend_setFlatness_(self, v38, v39, v40);
-  isWrapped = objc_msgSend_isWrapped(a3, v41, v42, v43);
+  isWrapped = objc_msgSend_isWrapped(from, v41, v42, v43);
   objc_msgSend_setWrapped_(self, v45, isWrapped, v46);
-  objc_msgSend_chamferRadius(a3, v47, v48, v49);
+  objc_msgSend_chamferRadius(from, v47, v48, v49);
   objc_msgSend_setChamferRadius_(self, v50, v51, v52);
-  v56 = objc_msgSend_chamferProfile(a3, v53, v54, v55);
+  v56 = objc_msgSend_chamferProfile(from, v53, v54, v55);
   objc_msgSend_setChamferProfile_(self, v57, v56, v58);
   objc_msgSend_commitImmediate(VFXTransaction, v59, v60, v61);
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
   v18.receiver = self;
   v18.super_class = VFXText;
-  [(VFXModel *)&v18 copyTo:a3 withContext:a4];
+  [(VFXModel *)&v18 copyTo:to withContext:context];
   v9 = objc_msgSend_string(self, v6, v7, v8);
-  objc_msgSend_setString_(a3, v10, v9, v11);
+  objc_msgSend_setString_(to, v10, v9, v11);
   objc_msgSend_extrusionDepth(self, v12, v13, v14);
-  objc_msgSend_setExtrusionDepth_(a3, v15, v16, v17);
+  objc_msgSend_setExtrusionDepth_(to, v15, v16, v17);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_string(self, a2, a3, v3);
+  v5 = objc_msgSend_string(self, a2, zone, v3);
   objc_msgSend_extrusionDepth(self, v6, v7, v8);
   v16 = objc_msgSend_textWithString_extrusionDepth_(VFXText, v9, v5, v10);
   objc_msgSend__setupObjCModelFrom_(v16, v11, self, v12);
@@ -266,19 +266,19 @@
   return wantsSeparateMeshElements & 1;
 }
 
-- (void)set_wantsSeparateMeshElements:(BOOL)a3
+- (void)set_wantsSeparateMeshElements:(BOOL)elements
 {
-  if (self->__wantsSeparateMeshElements != a3)
+  if (self->__wantsSeparateMeshElements != elements)
   {
     v7 = v3;
     v8 = v4;
-    self->__wantsSeparateMeshElements = a3;
+    self->__wantsSeparateMeshElements = elements;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF334190;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    elementsCopy = elements;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -307,9 +307,9 @@
   return v14;
 }
 
-- (void)setChamferRadius:(float)a3
+- (void)setChamferRadius:(float)radius
 {
-  v5 = fmaxf(a3, 0.0);
+  v5 = fmaxf(radius, 0.0);
   if (v5 != self->_chamferRadius)
   {
     v8 = v3;
@@ -349,9 +349,9 @@
   return v14;
 }
 
-- (void)setDiscretizedStraightLineMaxLength:(float)a3
+- (void)setDiscretizedStraightLineMaxLength:(float)length
 {
-  v5 = fmaxf(a3, 0.0);
+  v5 = fmaxf(length, 0.0);
   if (v5 != self->_discretizedStraightLineMaxLength)
   {
     v8 = v3;
@@ -391,9 +391,9 @@
   return v14;
 }
 
-- (void)setExtrusionDepth:(float)a3
+- (void)setExtrusionDepth:(float)depth
 {
-  v5 = fmaxf(a3, 0.0);
+  v5 = fmaxf(depth, 0.0);
   if (v5 != self->_extrusionDepth)
   {
     v8 = v3;
@@ -433,19 +433,19 @@
   return v14;
 }
 
-- (void)setFlatness:(float)a3
+- (void)setFlatness:(float)flatness
 {
-  if (self->_flatness != a3)
+  if (self->_flatness != flatness)
   {
     v7 = v3;
     v8 = v4;
-    self->_flatness = a3;
+    self->_flatness = flatness;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF3346E8;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    flatnessCopy = flatness;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -474,19 +474,19 @@
   return v14;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
-  if (self->_primitiveType != a3)
+  if (self->_primitiveType != type)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_primitiveType = a3;
+    self->_primitiveType = type;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF33482C;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = type;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -520,13 +520,13 @@
   return v15;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   string = self->_string;
-  if (string != a3)
+  if (string != string)
   {
 
-    self->_string = objc_msgSend_copy(a3, v6, v7, v8);
+    self->_string = objc_msgSend_copy(string, v6, v7, v8);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF3349A0;
@@ -563,51 +563,51 @@
   return wrapped & 1;
 }
 
-- (void)setWrapped:(BOOL)a3
+- (void)setWrapped:(BOOL)wrapped
 {
-  if (self->_wrapped != a3)
+  if (self->_wrapped != wrapped)
   {
     v7 = v3;
     v8 = v4;
-    self->_wrapped = a3;
+    self->_wrapped = wrapped;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF334AF4;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    wrappedCopy = wrapped;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
 
-- (id)patchFont:(id)a3
+- (id)patchFont:(id)font
 {
-  v4 = a3;
-  if (!a3)
+  fontCopy = font;
+  if (!font)
   {
-    return v4;
+    return fontCopy;
   }
 
-  v5 = objc_msgSend_fontName(a3, a2, a3, v3);
+  v5 = objc_msgSend_fontName(font, a2, font, v3);
   if (objc_msgSend_hasPrefix_(v5, v6, @".SFUI", v7))
   {
     v11 = MEMORY[0x1E69DB878];
-    objc_msgSend_pointSize(v4, v8, v9, v10);
-    v4 = objc_msgSend_fontWithName_size_(v11, v12, @"HelveticaNeue", v13);
-    if (!v4)
+    objc_msgSend_pointSize(fontCopy, v8, v9, v10);
+    fontCopy = objc_msgSend_fontWithName_size_(v11, v12, @"HelveticaNeue", v13);
+    if (!fontCopy)
     {
-      return v4;
+      return fontCopy;
     }
   }
 
-  v14 = objc_msgSend_fontName(v4, v8, v9, v10);
+  v14 = objc_msgSend_fontName(fontCopy, v8, v9, v10);
   if (!objc_msgSend_hasPrefix_(v14, v15, @".SFNS", v16))
   {
-    return v4;
+    return fontCopy;
   }
 
   v20 = MEMORY[0x1E69DB878];
-  objc_msgSend_pointSize(v4, v17, v18, v19);
+  objc_msgSend_pointSize(fontCopy, v17, v18, v19);
 
   return objc_msgSend_fontWithName_size_(v20, v21, @"HelveticaNeue", v22);
 }
@@ -658,11 +658,11 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  if (self->_font != a3)
+  if (self->_font != font)
   {
-    v5 = objc_msgSend_patchFont_(self, a2, a3, v3);
+    v5 = objc_msgSend_patchFont_(self, a2, font, v3);
 
     self->_font = v5;
     v7[0] = MEMORY[0x1E69E9820];
@@ -716,13 +716,13 @@
   return result;
 }
 
-- (void)setContainerFrame:(CGRect)a3
+- (void)setContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = !CGRectIsEmpty(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = !CGRectIsEmpty(frame);
   if (self->_useCustomContainerFrame != v9 || (v12.origin.x = x, v12.origin.y = y, v12.size.width = width, v12.size.height = height, !CGRectEqualToRect(self->_customContainerFrame, v12)))
   {
     self->_useCustomContainerFrame = v9;
@@ -767,35 +767,35 @@
   return sub_1AF335060(truncationMode);
 }
 
-- (void)setTruncationMode:(id)a3
+- (void)setTruncationMode:(id)mode
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isEqualToString_(a3, a2, *MEMORY[0x1E697A068], v3))
+  if (objc_msgSend_isEqualToString_(mode, a2, *MEMORY[0x1E697A068], v3))
   {
 LABEL_2:
     v8 = 0;
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E697A070], v7))
+  if (objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E697A070], v7))
   {
     v8 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E697A058], v9))
+  else if (objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E697A058], v9))
   {
     v8 = 2;
   }
 
   else
   {
-    if ((objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E697A060], v10) & 1) == 0)
+    if ((objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E697A060], v10) & 1) == 0)
     {
       v11 = sub_1AF0D5194();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = a3;
+        modeCopy = mode;
         _os_log_impl(&dword_1AF0CE000, v11, OS_LOG_TYPE_DEFAULT, "Warning: Unknown truncation mode %@", buf, 0xCu);
       }
 
@@ -846,40 +846,40 @@ LABEL_9:
   return sub_1AF335358(alignmentMode);
 }
 
-- (void)setAlignmentMode:(id)a3
+- (void)setAlignmentMode:(id)mode
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isEqualToString_(a3, a2, *MEMORY[0x1E6979578], v3))
+  if (objc_msgSend_isEqualToString_(mode, a2, *MEMORY[0x1E6979578], v3))
   {
 LABEL_2:
     v8 = 0;
     goto LABEL_11;
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E6979570], v7))
+  if (objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E6979570], v7))
   {
     v8 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E6979580], v9))
+  else if (objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E6979580], v9))
   {
     v8 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E6979560], v10))
+  else if (objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E6979560], v10))
   {
     v8 = 3;
   }
 
   else
   {
-    if ((objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E6979568], v11) & 1) == 0)
+    if ((objc_msgSend_isEqualToString_(mode, v6, *MEMORY[0x1E6979568], v11) & 1) == 0)
     {
       v12 = sub_1AF0D5194();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = a3;
+        modeCopy = mode;
         _os_log_impl(&dword_1AF0CE000, v12, OS_LOG_TYPE_DEFAULT, "Warning: Unknown alignment mode %@", buf, 0xCu);
       }
 
@@ -932,15 +932,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)setChamferProfile:(id)a3
+- (void)setChamferProfile:(id)profile
 {
-  self->_chamferProfile = objc_msgSend_copy(a3, v5, v6, v7);
+  self->_chamferProfile = objc_msgSend_copy(profile, v5, v6, v7);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1AF335734;
   v9[3] = &unk_1E7A7E220;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = profile;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v8, self, v9);
 }
 
@@ -989,11 +989,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)getBoundingBoxMin:(VFXText *)self max:(SEL)a2
+- (BOOL)getBoundingBoxMin:(VFXText *)self max:(SEL)max
 {
   v4 = v3;
   v5 = v2;
-  v7 = objc_msgSend_worldRef(self, a2, v2, v3);
+  v7 = objc_msgSend_worldRef(self, max, v2, v3);
   v11 = v7;
   if (v7)
   {
@@ -1037,11 +1037,11 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)getBoundingSphereCenter:(VFXText *)self radius:(SEL)a2
+- (BOOL)getBoundingSphereCenter:(VFXText *)self radius:(SEL)radius
 {
   v4 = v3;
   v5 = v2;
-  v7 = objc_msgSend_worldRef(self, a2, v2, v3);
+  v7 = objc_msgSend_worldRef(self, radius, v2, v3);
   v11 = v7;
   if (v7)
   {
@@ -1089,44 +1089,44 @@ LABEL_11:
   [(VFXModel *)&v3 dealloc];
 }
 
-- (void)_customDecodingOfVFXText:(id)a3
+- (void)_customDecodingOfVFXText:(id)text
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v5 = sub_1AF3723C4(a3, @"chamferProfile");
+  v5 = sub_1AF3723C4(text, @"chamferProfile");
   objc_msgSend_setChamferProfile_(self, v6, v5, v7);
   v8 = MEMORY[0x1E695DFD8];
   v40[0] = objc_opt_class();
   v40[1] = objc_opt_class();
   v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v9, v40, 2);
   v13 = objc_msgSend_setWithArray_(v8, v11, v10, v12);
-  v14 = sub_1AF3726E8(a3, @"string", v13);
+  v14 = sub_1AF3726E8(text, @"string", v13);
   objc_msgSend_setString_(self, v15, v14, v16);
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v21 = objc_msgSend_setWithObject_(v17, v19, v18, v20);
-  v22 = sub_1AF3726E8(a3, @"font", v21);
+  v22 = sub_1AF3726E8(text, @"font", v21);
   v25 = objc_msgSend_patchFont_(self, v23, v22, v24);
   objc_msgSend_setFont_(self, v26, v25, v27);
-  v30 = objc_msgSend_decodeIntegerForKey_(a3, v28, @"alignmentMode", v29);
+  v30 = objc_msgSend_decodeIntegerForKey_(text, v28, @"alignmentMode", v29);
   v31 = sub_1AF335358(v30);
   objc_msgSend_setAlignmentMode_(self, v32, v31, v33);
-  v36 = objc_msgSend_decodeIntegerForKey_(a3, v34, @"truncationMode", v35);
+  v36 = objc_msgSend_decodeIntegerForKey_(text, v34, @"truncationMode", v35);
   v37 = sub_1AF335060(v36);
   objc_msgSend_setTruncationMode_(self, v38, v37, v39);
 }
 
-- (void)_customEncodingOfVFXText:(id)a3
+- (void)_customEncodingOfVFXText:(id)text
 {
-  sub_1AF3721F0(a3, self->_chamferProfile, @"chamferProfile", v3);
-  sub_1AF37266C(a3, self->_string, @"string");
-  sub_1AF37266C(a3, self->_font, @"font");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->_alignmentMode, @"alignmentMode");
+  sub_1AF3721F0(text, self->_chamferProfile, @"chamferProfile", v3);
+  sub_1AF37266C(text, self->_string, @"string");
+  sub_1AF37266C(text, self->_font, @"font");
+  objc_msgSend_encodeInteger_forKey_(text, v6, self->_alignmentMode, @"alignmentMode");
   truncationMode = self->_truncationMode;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v7, truncationMode, @"truncationMode");
+  objc_msgSend_encodeInteger_forKey_(text, v7, truncationMode, @"truncationMode");
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v35.receiver = self;
   v35.super_class = VFXText;
@@ -1137,24 +1137,24 @@ LABEL_11:
     objc_msgSend__updateModelFromPresentation_(self, v12, v11, v13);
   }
 
-  objc_msgSend__customEncodingOfVFXText_(self, v8, a3, v10);
+  objc_msgSend__customEncodingOfVFXText_(self, v8, coder, v10);
   *&v14 = self->_flatness;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"flatness2", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"flatness2", v16, v14);
   *&v17 = self->_chamferRadius;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"chamferRadius", v19, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"chamferRadius", v19, v17);
   *&v20 = self->_extrusionDepth;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"extrusionDepth", v22, v20);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"extrusionDepth", v22, v20);
   *&v23 = self->_discretizedStraightLineMaxLength;
-  objc_msgSend_encodeFloat_forKey_(a3, v24, @"discretizedStraightLineMaxLength", v25, v23);
-  objc_msgSend_encodeInteger_forKey_(a3, v26, self->_primitiveType, @"primitiveType");
-  objc_msgSend_encodeBool_forKey_(a3, v27, self->_wrapped, @"wrapped");
-  objc_msgSend_encodeBool_forKey_(a3, v28, self->_useCustomContainerFrame, @"useCustomContainerFrame");
+  objc_msgSend_encodeFloat_forKey_(coder, v24, @"discretizedStraightLineMaxLength", v25, v23);
+  objc_msgSend_encodeInteger_forKey_(coder, v26, self->_primitiveType, @"primitiveType");
+  objc_msgSend_encodeBool_forKey_(coder, v27, self->_wrapped, @"wrapped");
+  objc_msgSend_encodeBool_forKey_(coder, v28, self->_useCustomContainerFrame, @"useCustomContainerFrame");
   v32 = objc_msgSend_valueWithCGRect_(MEMORY[0x1E696B098], v29, v30, v31, self->_customContainerFrame.origin.x, self->_customContainerFrame.origin.y, self->_customContainerFrame.size.width, self->_customContainerFrame.size.height);
-  objc_msgSend_encodeObject_forKey_(a3, v33, v32, @"customContainerFrame");
-  objc_msgSend_encodeBool_forKey_(a3, v34, self->__wantsSeparateMeshElements, @"_wantsSeparateMeshElements");
+  objc_msgSend_encodeObject_forKey_(coder, v33, v32, @"customContainerFrame");
+  objc_msgSend_encodeBool_forKey_(coder, v34, self->__wantsSeparateMeshElements, @"_wantsSeparateMeshElements");
 }
 
-- (VFXText)initWithCoder:(id)a3
+- (VFXText)initWithCoder:(id)coder
 {
   v66.receiver = self;
   v66.super_class = VFXText;
@@ -1163,38 +1163,38 @@ LABEL_11:
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend__customDecodingOfVFXText_(v7, v11, a3, v12);
-    if (objc_msgSend_containsValueForKey_(a3, v13, @"flatness2", v14))
+    objc_msgSend__customDecodingOfVFXText_(v7, v11, coder, v12);
+    if (objc_msgSend_containsValueForKey_(coder, v13, @"flatness2", v14))
     {
-      objc_msgSend_decodeFloatForKey_(a3, v15, @"flatness2", v16);
+      objc_msgSend_decodeFloatForKey_(coder, v15, @"flatness2", v16);
     }
 
     else
     {
-      objc_msgSend_decodeFloatForKey_(a3, v15, @"flatness", v16);
+      objc_msgSend_decodeFloatForKey_(coder, v15, @"flatness", v16);
       *&v20 = *&v20 * 100.0;
     }
 
     objc_msgSend_setFlatness_(v7, v17, v18, v19, v20);
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"chamferRadius", v22);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"chamferRadius", v22);
     objc_msgSend_setChamferRadius_(v7, v23, v24, v25);
-    objc_msgSend_decodeFloatForKey_(a3, v26, @"extrusionDepth", v27);
+    objc_msgSend_decodeFloatForKey_(coder, v26, @"extrusionDepth", v27);
     objc_msgSend_setExtrusionDepth_(v7, v28, v29, v30);
-    objc_msgSend_decodeFloatForKey_(a3, v31, @"discretizedStraightLineMaxLength", v32);
+    objc_msgSend_decodeFloatForKey_(coder, v31, @"discretizedStraightLineMaxLength", v32);
     objc_msgSend_setDiscretizedStraightLineMaxLength_(v7, v33, v34, v35);
-    v38 = objc_msgSend_decodeIntegerForKey_(a3, v36, @"primitiveType", v37);
+    v38 = objc_msgSend_decodeIntegerForKey_(coder, v36, @"primitiveType", v37);
     objc_msgSend_setPrimitiveType_(v7, v39, v38, v40);
-    v43 = objc_msgSend_decodeBoolForKey_(a3, v41, @"wrapped", v42);
+    v43 = objc_msgSend_decodeBoolForKey_(coder, v41, @"wrapped", v42);
     objc_msgSend_setWrapped_(v7, v44, v43, v45);
-    v7->_useCustomContainerFrame = objc_msgSend_decodeBoolForKey_(a3, v46, @"useCustomContainerFrame", v47);
+    v7->_useCustomContainerFrame = objc_msgSend_decodeBoolForKey_(coder, v46, @"useCustomContainerFrame", v47);
     v48 = objc_opt_class();
-    v50 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v49, v48, @"customContainerFrame");
+    v50 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v49, v48, @"customContainerFrame");
     objc_msgSend_CGRectValue(v50, v51, v52, v53);
     v7->_customContainerFrame.origin.x = v54;
     v7->_customContainerFrame.origin.y = v55;
     v7->_customContainerFrame.size.width = v56;
     v7->_customContainerFrame.size.height = v57;
-    v60 = objc_msgSend_decodeBoolForKey_(a3, v58, @"_wantsSeparateMeshElements", v59);
+    v60 = objc_msgSend_decodeBoolForKey_(coder, v58, @"_wantsSeparateMeshElements", v59);
     objc_msgSend_set_wantsSeparateMeshElements_(v7, v61, v60, v62);
     objc_msgSend_setImmediateMode_(VFXTransaction, v63, v8, v64);
   }
@@ -1204,7 +1204,7 @@ LABEL_11:
 
 - (NSString)swiftString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF44A824();
 
   v3 = sub_1AFDFCEC8();

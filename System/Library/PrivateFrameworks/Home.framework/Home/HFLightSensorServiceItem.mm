@@ -1,16 +1,16 @@
 @interface HFLightSensorServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFLightSensorServiceItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = *MEMORY[0x277CCF830];
-  v6 = a3;
+  optionsCopy = options;
   v7 = [v4 setWithObject:v5];
-  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:v6];
+  v8 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v7 options:optionsCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;

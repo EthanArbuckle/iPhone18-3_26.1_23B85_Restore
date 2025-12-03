@@ -1,10 +1,10 @@
 @interface MFDeliveryResult
-- (MFDeliveryResult)initWithStatus:(int64_t)a3;
+- (MFDeliveryResult)initWithStatus:(int64_t)status;
 @end
 
 @implementation MFDeliveryResult
 
-- (MFDeliveryResult)initWithStatus:(int64_t)a3
+- (MFDeliveryResult)initWithStatus:(int64_t)status
 {
   v7.receiver = self;
   v7.super_class = MFDeliveryResult;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_status = a3;
+    v4->_status = status;
     v4->_isWifi = [+[MFNetworkController sharedInstance](MFNetworkController isFatPipe];
   }
 

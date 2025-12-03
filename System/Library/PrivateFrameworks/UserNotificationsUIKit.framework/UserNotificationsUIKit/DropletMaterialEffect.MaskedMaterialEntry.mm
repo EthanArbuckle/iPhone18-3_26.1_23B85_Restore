@@ -1,38 +1,38 @@
 @interface DropletMaterialEffect.MaskedMaterialEntry
 - (_TtCC22UserNotificationsUIKit21DropletMaterialEffectP33_14CD243C8142B7E189D98278765B16FF19MaskedMaterialEntry)init;
-- (void)addEffectToView:(id)a3;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)applyRequestedEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)applyRequestedEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation DropletMaterialEffect.MaskedMaterialEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E8E6A10(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21E8E6A10(viewCopy);
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E8E7178(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21E8E7178(viewCopy);
 }
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_21E8E7290();
 }
 
-- (void)applyRequestedEffectToView:(id)a3
+- (void)applyRequestedEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_21E8E740C();
 }
 

@@ -4,9 +4,9 @@
 - (UIView)view;
 - (_UIScrollPocketRegistrationInteraction)init;
 - (_UIScrollPocketRegistrationInteractionDelegate)delegate;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)didMoveToView:(id)a3;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)didMoveToView:(id)view;
 - (void)updatePocketCollectorModel;
 @end
 
@@ -14,9 +14,9 @@
 
 - (UIView)view
 {
-  v2 = [(_UIScrollPocketRegistrationInteraction *)self _view];
+  _view = [(_UIScrollPocketRegistrationInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
 - (UIView)_view
@@ -26,32 +26,32 @@
   return Strong;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v7 = self;
-  v4 = a3;
-  v5 = [(_UIScrollPocketRegistrationInteraction *)v7 _view];
-  if (v5)
+  selfCopy = self;
+  viewCopy = view;
+  _view = [(_UIScrollPocketRegistrationInteraction *)selfCopy _view];
+  if (_view)
   {
-    v6 = v5;
-    [(UIView *)v5 _removeGeometryChangeObserver:v7];
+    v6 = _view;
+    [(UIView *)_view _removeGeometryChangeObserver:selfCopy];
   }
 
-  [(_UIScrollPocketRegistrationInteraction *)v7 set_view:v4];
-  if (v4)
+  [(_UIScrollPocketRegistrationInteraction *)selfCopy set_view:viewCopy];
+  if (viewCopy)
   {
-    [(UIView *)v4 _addGeometryChangeObserver:v7];
+    [(UIView *)viewCopy _addGeometryChangeObserver:selfCopy];
   }
 
   else
   {
-    [(_UIScrollPocketRegistrationInteraction *)v7 _updateProperties];
+    [(_UIScrollPocketRegistrationInteraction *)selfCopy _updateProperties];
   }
 }
 
 - (void)updatePocketCollectorModel
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B70AB0();
 }
 
@@ -62,17 +62,17 @@
   return Strong;
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  if (a3)
+  if (changed)
   {
-    if ((a3->var0 & 2) != 0)
+    if ((changed->var0 & 2) != 0)
     {
-      v6 = self;
-      v5 = [(_UIScrollPocketRegistrationInteraction *)v6 delegate];
-      if (v5)
+      selfCopy = self;
+      delegate = [(_UIScrollPocketRegistrationInteraction *)selfCopy delegate];
+      if (delegate)
       {
-        [(_UIScrollPocketRegistrationInteractionDelegate *)v5 _scrollPocketRegistrationInteractionDidInvalidatePosition:v6];
+        [(_UIScrollPocketRegistrationInteractionDelegate *)delegate _scrollPocketRegistrationInteractionDidInvalidatePosition:selfCopy];
         swift_unknownObjectRelease();
       }
     }
@@ -87,22 +87,22 @@
 - (NSString)description
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 descriptionForRootObject_];
-  if (!v5)
+  selfCopy = self;
+  descriptionForRootObject_ = [v3 descriptionForRootObject_];
+  if (!descriptionForRootObject_)
   {
     sub_18A4A7288();
-    v5 = sub_18A4A7258();
+    descriptionForRootObject_ = sub_18A4A7258();
   }
 
-  return v5;
+  return descriptionForRootObject_;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = self;
-  sub_188E95738(v4);
+  streamCopy = stream;
+  selfCopy = self;
+  sub_188E95738(streamCopy);
 }
 
 - (_UIScrollPocketRegistrationInteraction)init

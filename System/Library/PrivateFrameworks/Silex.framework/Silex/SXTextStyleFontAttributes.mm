@@ -1,17 +1,17 @@
 @interface SXTextStyleFontAttributes
-- (unint64_t)weightLabelWithValue:(id)a3 withType:(int)a4;
+- (unint64_t)weightLabelWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXTextStyleFontAttributes
 
-- (unint64_t)weightLabelWithValue:(id)a3 withType:(int)a4
+- (unint64_t)weightLabelWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
+  valueCopy = value;
+  v6 = valueCopy;
   v7 = 0;
-  if (v5 && a4 == 3)
+  if (valueCopy && type == 3)
   {
-    if ([v5 isEqualToString:@"bolder"])
+    if ([valueCopy isEqualToString:@"bolder"])
     {
       v7 = 1;
     }

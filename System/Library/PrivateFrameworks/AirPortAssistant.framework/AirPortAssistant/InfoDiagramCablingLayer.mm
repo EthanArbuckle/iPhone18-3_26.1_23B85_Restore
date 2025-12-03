@@ -2,10 +2,10 @@
 - (id)initNoWANLinkFirstFrame;
 - (id)initNoWANLinkLastFrame;
 - (void)commonInit;
-- (void)createPathForSublayer:(id)a3;
+- (void)createPathForSublayer:(id)sublayer;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setIsCompactWidth:(BOOL)a3;
+- (void)setIsCompactWidth:(BOOL)width;
 @end
 
 @implementation InfoDiagramCablingLayer
@@ -157,10 +157,10 @@
   return p_isa;
 }
 
-- (void)setIsCompactWidth:(BOOL)a3
+- (void)setIsCompactWidth:(BOOL)width
 {
   internetOuterLineLayer = self->internetOuterLineLayer;
-  if (a3)
+  if (width)
   {
     v6 = 4.0;
   }
@@ -170,7 +170,7 @@
     v6 = 5.0;
   }
 
-  if (a3)
+  if (width)
   {
     v7 = 2.0;
   }
@@ -180,13 +180,13 @@
     v7 = 3.0;
   }
 
-  objc_msgSend_setLineWidth_(internetOuterLineLayer, a2, a3, v6);
+  objc_msgSend_setLineWidth_(internetOuterLineLayer, a2, width, v6);
   objc_msgSend_setLineWidth_(self->internetInnerLineLayer, v8, v9, v7);
   objc_msgSend_setLineWidth_(self->broadbandToWANOuterLineLayer, v10, v11, v6);
   objc_msgSend_setLineWidth_(self->broadbandToWANInnerLineLayer, v12, v13, v7);
   objc_msgSend_setLineWidth_(self->swapArcLineLayer, v14, v15, v6);
   objc_msgSend_setLineWidth_(self->swapArcArrowLayer, v16, v17, 4.0);
-  self->isCompactWidth = a3;
+  self->isCompactWidth = width;
 }
 
 - (void)dealloc
@@ -240,17 +240,17 @@
   }
 }
 
-- (void)createPathForSublayer:(id)a3
+- (void)createPathForSublayer:(id)sublayer
 {
-  if (objc_msgSend_path(a3, a2, a3))
+  if (objc_msgSend_path(sublayer, a2, sublayer))
   {
     return;
   }
 
-  v7 = objc_msgSend_name(a3, v5, v6);
+  v7 = objc_msgSend_name(sublayer, v5, v6);
   NSLog(&cfstr_SLayerNameIs.isa, "[InfoDiagramCablingLayer createPathForSublayer:]", v7);
   Mutable = CGPathCreateMutable();
-  v11 = objc_msgSend_name(a3, v9, v10);
+  v11 = objc_msgSend_name(sublayer, v9, v10);
   if (objc_msgSend_isEqualToString_(v11, v12, @"Internet"))
   {
     v15 = objc_msgSend_internetPoint(self->diagramAnchorPointDelegate, v13, v14);
@@ -268,12 +268,12 @@
 
   else
   {
-    v34 = objc_msgSend_name(a3, v13, v14);
+    v34 = objc_msgSend_name(sublayer, v13, v14);
     if (!objc_msgSend_isEqualToString_(v34, v35, @"BroadbandToWAN"))
     {
       if (self->swapCabling)
       {
-        v63 = objc_msgSend_name(a3, v36, v37);
+        v63 = objc_msgSend_name(sublayer, v36, v37);
         if (objc_msgSend_isEqualToString_(v63, v64, @"SwapArcArrow"))
         {
           objc_msgSend_swapArcLineEndPoint(self->diagramAnchorPointDelegate, v36, v65);
@@ -290,7 +290,7 @@
 
         else if (self->swapCabling)
         {
-          v71 = objc_msgSend_name(a3, v36, v65);
+          v71 = objc_msgSend_name(sublayer, v36, v65);
           if (objc_msgSend_isEqualToString_(v71, v72, @"SwapArcLine"))
           {
             objc_msgSend_swapArcLineStartPoint(self->diagramAnchorPointDelegate, v36, v73);
@@ -336,7 +336,7 @@
 
   CGPathAddLineToPoint(v31, 0, v32, v33);
 LABEL_7:
-  objc_msgSend_setPath_(a3, v36, Mutable);
+  objc_msgSend_setPath_(sublayer, v36, Mutable);
 
   CGPathRelease(Mutable);
 }

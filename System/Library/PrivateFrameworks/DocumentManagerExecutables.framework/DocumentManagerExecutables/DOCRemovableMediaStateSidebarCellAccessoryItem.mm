@@ -1,5 +1,5 @@
 @interface DOCRemovableMediaStateSidebarCellAccessoryItem
-- (_TtC26DocumentManagerExecutables46DOCRemovableMediaStateSidebarCellAccessoryItem)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables46DOCRemovableMediaStateSidebarCellAccessoryItem)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
@@ -14,7 +14,7 @@
   DOCRemovableMediaStateSidebarCellAccessoryItem.updateViews(state:)([*&v2[OBJC_IVAR____TtC26DocumentManagerExecutables46DOCRemovableMediaStateSidebarCellAccessoryItem_formattingOperation] operationState]);
 }
 
-- (_TtC26DocumentManagerExecutables46DOCRemovableMediaStateSidebarCellAccessoryItem)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables46DOCRemovableMediaStateSidebarCellAccessoryItem)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

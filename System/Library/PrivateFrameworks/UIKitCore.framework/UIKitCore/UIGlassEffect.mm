@@ -1,29 +1,29 @@
 @interface UIGlassEffect
-+ (id)effectWithGlass:(id)a3;
-+ (id)effectWithStyle:(int64_t)a3;
++ (id)effectWithGlass:(id)glass;
++ (id)effectWithStyle:(int64_t)style;
 - (_UIViewGlass)glass;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIGlassEffect
 
-+ (id)effectWithStyle:(int64_t)a3
++ (id)effectWithStyle:(int64_t)style
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   if (v4)
   {
-    v4[4] = a3;
+    v4[4] = style;
   }
 
   return v4;
 }
 
-+ (id)effectWithGlass:(id)a3
++ (id)effectWithGlass:(id)glass
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  glassCopy = glass;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = glassCopy;
 
   return v5;
 }
@@ -39,8 +39,8 @@
   else
   {
     v3 = [[_UIViewGlass alloc] initWithVariant:self->_style == 1];
-    v5 = [(UIGlassEffect *)self tintColor];
-    [(_UIViewGlass *)v3 setTintColor:v5];
+    tintColor = [(UIGlassEffect *)self tintColor];
+    [(_UIViewGlass *)v3 setTintColor:tintColor];
 
     [(_UIViewGlass *)v3 setFlexible:[(UIGlassEffect *)self isInteractive]];
   }
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = v4;
   if (v4)
   {

@@ -1,12 +1,12 @@
 @interface DKDiagnosticController
 - (BOOL)isCancelled;
 - (DKDiagnosticController)init;
-- (void)beginRequestWithDiagnosticContext:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCancelled:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
-- (void)setProgress:(id)a3;
+- (void)beginRequestWithDiagnosticContext:(id)context;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCancelled:(BOOL)cancelled;
+- (void)setFinished:(BOOL)finished;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation DKDiagnosticController
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -46,7 +46,7 @@
     _os_log_impl(&dword_248B9D000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  [(DKDiagnosticController *)self setContext:v4];
+  [(DKDiagnosticController *)self setContext:contextCopy];
   v6 = objc_alloc_init(MEMORY[0x277CCAC48]);
   [(DKDiagnosticController *)self setProgress:v6];
 
@@ -56,10 +56,10 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginRequestWithDiagnosticContext:(id)a3
+- (void)beginRequestWithDiagnosticContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -69,7 +69,7 @@
   }
 
   [(DKDiagnosticController *)self setIsXPC:1];
-  [(DKDiagnosticController *)self setContext:v4];
+  [(DKDiagnosticController *)self setContext:contextCopy];
 
   v6 = objc_alloc_init(MEMORY[0x277CCAC48]);
   [(DKDiagnosticController *)self setProgress:v6];
@@ -80,42 +80,42 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v3 = a3;
-  v5 = [(DKDiagnosticController *)self finishedLock];
-  [v5 lock];
+  finishedCopy = finished;
+  finishedLock = [(DKDiagnosticController *)self finishedLock];
+  [finishedLock lock];
 
-  if (!v3 || self->_finished)
+  if (!finishedCopy || self->_finished)
   {
-    v17 = [(DKDiagnosticController *)self finishedLock];
-    [v17 unlock];
+    finishedLock2 = [(DKDiagnosticController *)self finishedLock];
+    [finishedLock2 unlock];
   }
 
   else
   {
-    self->_finished = v3;
-    v6 = [(DKDiagnosticController *)self finishedLock];
-    [v6 unlock];
+    self->_finished = finishedCopy;
+    finishedLock3 = [(DKDiagnosticController *)self finishedLock];
+    [finishedLock3 unlock];
 
-    self->_finished = v3;
+    self->_finished = finishedCopy;
     if ([(DKDiagnosticController *)self isSetup]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
       [(DKDiagnosticController *)self teardown];
     }
 
-    v7 = [(DKDiagnosticController *)self result];
-    [DKUtilities moveFilesToSharedContainerInMutableResult:v7];
+    result = [(DKDiagnosticController *)self result];
+    [DKUtilities moveFilesToSharedContainerInMutableResult:result];
 
     if (![(DKDiagnosticController *)self isXPC])
     {
-      v8 = [(DKDiagnosticController *)self result];
-      v9 = [v8 files];
-      v10 = [(DKDiagnosticController *)self context];
-      v11 = v10;
-      if (v10)
+      result2 = [(DKDiagnosticController *)self result];
+      files = [result2 files];
+      context = [(DKDiagnosticController *)self context];
+      v11 = context;
+      if (context)
       {
-        [v10 auditToken];
+        [context auditToken];
       }
 
       else
@@ -123,20 +123,20 @@
         memset(v19, 0, sizeof(v19));
       }
 
-      v12 = [DKSandboxExtension issueSandboxExtensionsForFiles:v9 toAuditToken:v19];
-      v13 = [(DKDiagnosticController *)self result];
-      [v13 setFileSandboxTokens:v12];
+      v12 = [DKSandboxExtension issueSandboxExtensionsForFiles:files toAuditToken:v19];
+      result3 = [(DKDiagnosticController *)self result];
+      [result3 setFileSandboxTokens:v12];
     }
 
-    v14 = [(DKDiagnosticController *)self context];
-    v15 = [(DKDiagnosticController *)self result];
-    v16 = [v15 copy];
+    context2 = [(DKDiagnosticController *)self context];
+    result4 = [(DKDiagnosticController *)self result];
+    v16 = [result4 copy];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __38__DKDiagnosticController_setFinished___block_invoke;
     v18[3] = &unk_278F6C050;
     v18[4] = self;
-    [v14 completeWithDiagnosticResult:v16 completion:v18];
+    [context2 completeWithDiagnosticResult:v16 completion:v18];
   }
 }
 
@@ -149,53 +149,53 @@ void __38__DKDiagnosticController_setFinished___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCancelled:(BOOL)a3
+- (void)setCancelled:(BOOL)cancelled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cancelled = a3;
+  obj->_cancelled = cancelled;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  objc_storeStrong(&self->_progress, a3);
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"fractionCompleted" options:1 context:ProgressObserverContext_2];
-  [v5 addObserver:self forKeyPath:@"totalUnitCount" options:1 context:ProgressObserverContext_2];
-  [v5 addObserver:self forKeyPath:@"indeterminate" options:1 context:ProgressObserverContext_2];
-  [v5 addObserver:self forKeyPath:@"userInfo.NSProgressEstimatedTimeRemainingKey" options:1 context:ProgressObserverContext_2];
+  objc_storeStrong(&self->_progress, progress);
+  progressCopy = progress;
+  [progressCopy addObserver:self forKeyPath:@"fractionCompleted" options:1 context:ProgressObserverContext_2];
+  [progressCopy addObserver:self forKeyPath:@"totalUnitCount" options:1 context:ProgressObserverContext_2];
+  [progressCopy addObserver:self forKeyPath:@"indeterminate" options:1 context:ProgressObserverContext_2];
+  [progressCopy addObserver:self forKeyPath:@"userInfo.NSProgressEstimatedTimeRemainingKey" options:1 context:ProgressObserverContext_2];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (ProgressObserverContext_2 == a6)
+  if (ProgressObserverContext_2 == context)
   {
     v7 = [DKDiagnosticProgress alloc];
-    v8 = [(DKDiagnosticController *)self progress];
-    v12 = [(DKDiagnosticProgress *)v7 initWithProgress:v8];
+    progress = [(DKDiagnosticController *)self progress];
+    v12 = [(DKDiagnosticProgress *)v7 initWithProgress:progress];
 
-    v9 = [(DKDiagnosticController *)self context];
-    v10 = [(DKDiagnosticController *)self context];
-    v11 = [v10 testID];
-    [v9 updateProgress:v12 forTest:v11];
+    context = [(DKDiagnosticController *)self context];
+    context2 = [(DKDiagnosticController *)self context];
+    testID = [context2 testID];
+    [context updateProgress:v12 forTest:testID];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = DKDiagnosticController;
-    [(DKDiagnosticController *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DKDiagnosticController *)&v13 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface ICTelephonyController
 + (ICTelephonyController)sharedController;
 - (BOOL)_ensureTelephonyHandlesAreReady;
-- (BOOL)sendSMSWithText:(id)a3 toPhoneNumber:(id)a4 error:(id *)a5;
+- (BOOL)sendSMSWithText:(id)text toPhoneNumber:(id)number error:(id *)error;
 - (NSString)IMEI;
 - (NSString)mobileSubscriberCountryCode;
 - (NSString)mobileSubscriberNetworkCode;
@@ -11,11 +11,11 @@
 - (id)_telephonyClient;
 - (id)_telephonySubscriptionContext;
 - (void)_handleActiveSubscriptionsDidChange;
-- (void)_updatePhoneNumberAllowingDidChangeNotification:(BOOL)a3;
+- (void)_updatePhoneNumberAllowingDidChangeNotification:(BOOL)notification;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
-- (void)phoneNumberAvailable:(id)a3;
-- (void)phoneNumberChanged:(id)a3;
+- (void)phoneNumberAvailable:(id)available;
+- (void)phoneNumberChanged:(id)changed;
 @end
 
 @implementation ICTelephonyController
@@ -50,11 +50,11 @@
 - (BOOL)_ensureTelephonyHandlesAreReady
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [(ICTelephonyController *)self _telephonyClient];
-  if (v3)
+  _telephonyClient = [(ICTelephonyController *)self _telephonyClient];
+  if (_telephonyClient)
   {
-    v4 = [(ICTelephonyController *)self _telephonySubscriptionContext];
-    v5 = v4 != 0;
+    _telephonySubscriptionContext = [(ICTelephonyController *)self _telephonySubscriptionContext];
+    v5 = _telephonySubscriptionContext != 0;
   }
 
   else
@@ -72,9 +72,9 @@
   if (!telephonyClient)
   {
     v4 = +[ICDeviceInfo currentDeviceInfo];
-    v5 = [v4 hasTelephonyCapability];
+    hasTelephonyCapability = [v4 hasTelephonyCapability];
 
-    if (v5)
+    if (hasTelephonyCapability)
     {
       v6 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:self->_telephonyCallbackQueue];
       v7 = self->_telephonyClient;
@@ -142,9 +142,9 @@ uint64_t __41__ICTelephonyController_sharedController__block_invoke()
   telephonySubscriptionContext = self->_telephonySubscriptionContext;
   if (!telephonySubscriptionContext)
   {
-    v5 = [(ICTelephonyController *)self _telephonyClient];
-    v6 = v5;
-    if (!v5)
+    _telephonyClient = [(ICTelephonyController *)self _telephonyClient];
+    v6 = _telephonyClient;
+    if (!_telephonyClient)
     {
 LABEL_15:
 
@@ -153,7 +153,7 @@ LABEL_15:
     }
 
     v21 = 0;
-    v7 = [v5 getUserDefaultVoiceSubscriptionContext:&v21];
+    v7 = [_telephonyClient getUserDefaultVoiceSubscriptionContext:&v21];
     v8 = v21;
     v9 = v8;
     if (v7 || !v8)
@@ -167,9 +167,9 @@ LABEL_15:
         v17 = os_log_create("com.apple.amp.iTunesCloud", "Default");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v10 subscriptions];
+          subscriptions = [v10 subscriptions];
           *buf = 138543362;
-          v23 = v18;
+          v23 = subscriptions;
           _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "Could not find a valid telephony subscription context. Available telephony subscription contexts: %{public}@.", buf, 0xCu);
         }
 
@@ -181,11 +181,11 @@ LABEL_15:
       v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v7 slotID];
+        slotID = [v7 slotID];
         *buf = 138543618;
         v23 = v7;
         v24 = 2048;
-        v25 = v15;
+        v25 = slotID;
         v11 = "Found telephony subscription context %{public}@ at slot %ld as the user default voice one.";
         v12 = v10;
         v13 = OS_LOG_TYPE_DEFAULT;
@@ -254,9 +254,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)_updatePhoneNumberAllowingDidChangeNotification:(BOOL)a3
+- (void)_updatePhoneNumberAllowingDidChangeNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v30 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   if ([(ICTelephonyController *)self _ensureTelephonyHandlesAreReady])
@@ -279,7 +279,7 @@ LABEL_16:
 
     if (v10)
     {
-      v11 = [v7 number];
+      number = [v7 number];
     }
 
     else
@@ -288,28 +288,28 @@ LABEL_16:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v25 = v9;
+        selfCopy = v9;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "Failed to retrieve telephony phone number with error: %{public}@.", buf, 0xCu);
       }
 
-      v11 = 0;
+      number = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    number = 0;
   }
 
   v14 = self->_phoneNumber;
   v15 = v14;
-  if (v14 == v11)
+  if (v14 == number)
   {
   }
 
   else
   {
-    v16 = [(NSString *)v14 isEqual:v11];
+    v16 = [(NSString *)v14 isEqual:number];
 
     if ((v16 & 1) == 0)
     {
@@ -318,19 +318,19 @@ LABEL_16:
       {
         phoneNumber = self->_phoneNumber;
         *buf = 138412802;
-        v25 = self;
+        selfCopy = self;
         v26 = 2112;
         v27 = phoneNumber;
         v28 = 2112;
-        v29 = v11;
+        v29 = number;
         _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, "%@ phone number changed from %@ to %@.", buf, 0x20u);
       }
 
-      v19 = [(NSString *)v11 copy];
+      v19 = [(NSString *)number copy];
       v20 = self->_phoneNumber;
       self->_phoneNumber = v19;
 
-      if (v3)
+      if (notificationCopy)
       {
         v21 = dispatch_get_global_queue(0, 0);
         v22[0] = MEMORY[0x1E69E9820];
@@ -361,7 +361,7 @@ void __73__ICTelephonyController__updatePhoneNumberAllowingDidChangeNotification
   [(ICTelephonyController *)self _updatePhoneNumberAllowingDidChangeNotification:1];
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -379,7 +379,7 @@ void __73__ICTelephonyController__updatePhoneNumberAllowingDidChangeNotification
   dispatch_async(accessQueue, block);
 }
 
-- (void)phoneNumberAvailable:(id)a3
+- (void)phoneNumberAvailable:(id)available
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -415,10 +415,10 @@ void __73__ICTelephonyController__updatePhoneNumberAllowingDidChangeNotification
   dispatch_async(accessQueue, block);
 }
 
-- (BOOL)sendSMSWithText:(id)a3 toPhoneNumber:(id)a4 error:(id *)a5
+- (BOOL)sendSMSWithText:(id)text toPhoneNumber:(id)number error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  numberCopy = number;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -435,16 +435,16 @@ void __73__ICTelephonyController__updatePhoneNumberAllowingDidChangeNotification
   block[2] = __61__ICTelephonyController_sendSMSWithText_toPhoneNumber_error___block_invoke;
   block[3] = &unk_1E7BF8538;
   block[4] = self;
-  v11 = v9;
+  v11 = numberCopy;
   v16 = v11;
   v18 = &v26;
-  v12 = v8;
+  v12 = textCopy;
   v17 = v12;
   v19 = &v20;
   dispatch_sync(accessQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   v13 = *(v27 + 24);

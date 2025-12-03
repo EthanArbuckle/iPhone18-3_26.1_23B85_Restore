@@ -3,25 +3,25 @@
 + (id)sharedPrivateConnection;
 + (void)initialize;
 - (BOOL)beginRealTimeTask;
-- (BOOL)compiledModelExistsFor:(id)a3;
-- (BOOL)compiledModelExistsMatchingHash:(id)a3;
-- (BOOL)echo:(id)a3;
+- (BOOL)compiledModelExistsFor:(id)for;
+- (BOOL)compiledModelExistsMatchingHash:(id)hash;
+- (BOOL)echo:(id)echo;
 - (BOOL)endRealTimeTask;
-- (BOOL)evaluateRealTimeWithModel:(id)a3 options:(id)a4 request:(id)a5 error:(id *)a6;
+- (BOOL)evaluateRealTimeWithModel:(id)model options:(id)options request:(id)request error:(id *)error;
 - (BOOL)isAnetoolRootDaemonConnection;
 - (BOOL)isVirtualClient;
-- (BOOL)sessionHintWithModel:(id)a3 hint:(id)a4 options:(id)a5 report:(id)a6 error:(id *)a7;
-- (_ANEClient)initWithRestrictedAccessAllowed:(BOOL)a3;
+- (BOOL)sessionHintWithModel:(id)model hint:(id)hint options:(id)options report:(id)report error:(id *)error;
+- (_ANEClient)initWithRestrictedAccessAllowed:(BOOL)allowed;
 - (_ANEDaemonConnection)fastConn;
-- (id)connectionForLoadingModel:(id)a3 options:(id)a4;
-- (id)connectionUsedForLoadingModel:(id)a3;
+- (id)connectionForLoadingModel:(id)model options:(id)options;
+- (id)connectionUsedForLoadingModel:(id)model;
 - (id)fastConnWithoutLock;
 - (void)beginRealTimeTask;
 - (void)dealloc;
 - (void)endRealTimeTask;
-- (void)purgeCompiledModel:(id)a3;
-- (void)purgeCompiledModelMatchingHash:(id)a3;
-- (void)unmapIOSurfacesWithModel:(id)a3 request:(id)a4;
+- (void)purgeCompiledModel:(id)model;
+- (void)purgeCompiledModelMatchingHash:(id)hash;
+- (void)unmapIOSurfacesWithModel:(id)model request:(id)request;
 @end
 
 @implementation _ANEClient
@@ -42,7 +42,7 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(_ANEClient *)self fastConnWithoutLock];
+  fastConnWithoutLock = [(_ANEClient *)self fastConnWithoutLock];
   os_unfair_lock_unlock(&self->_lock);
   v5 = gLogger_1;
   if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return fastConnWithoutLock;
 }
 
 - (id)fastConnWithoutLock
@@ -82,8 +82,8 @@
     v11[2] = __33___ANEClient_fastConnWithoutLock__block_invoke;
     v11[3] = &__block_descriptor_40_e5_v8__0l;
     v11[4] = a2;
-    v7 = [(_ANEDaemonConnection *)self->_fastConn daemonConnection];
-    [v7 setInterruptionHandler:v11];
+    daemonConnection = [(_ANEDaemonConnection *)self->_fastConn daemonConnection];
+    [daemonConnection setInterruptionHandler:v11];
 
     v10[2] = __33___ANEClient_fastConnWithoutLock__block_invoke_10;
     v10[3] = &__block_descriptor_40_e5_v8__0l;
@@ -136,7 +136,7 @@
   objc_autoreleasePoolPop(v4);
 }
 
-- (_ANEClient)initWithRestrictedAccessAllowed:(BOOL)a3
+- (_ANEClient)initWithRestrictedAccessAllowed:(BOOL)allowed
 {
   v23.receiver = self;
   v23.super_class = _ANEClient;
@@ -144,7 +144,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_allowRestrictedAccess = a3;
+    v5->_allowRestrictedAccess = allowed;
     v7 = +[_ANEVirtualClient sharedConnection];
     virtualClient = v6->_virtualClient;
     v6->_virtualClient = v7;
@@ -158,7 +158,7 @@
       }
     }
 
-    if (a3)
+    if (allowed)
     {
       +[_ANEDaemonConnection daemonConnectionRestricted];
     }
@@ -181,8 +181,8 @@
     v22[2] = __46___ANEClient_initWithRestrictedAccessAllowed___block_invoke;
     v22[3] = &__block_descriptor_40_e5_v8__0l;
     v22[4] = a2;
-    v14 = [(_ANEDaemonConnection *)v6->_conn daemonConnection];
-    [v14 setInterruptionHandler:v22];
+    daemonConnection = [(_ANEDaemonConnection *)v6->_conn daemonConnection];
+    [daemonConnection setInterruptionHandler:v22];
 
     v21[2] = __46___ANEClient_initWithRestrictedAccessAllowed___block_invoke_6;
     v21[3] = &__block_descriptor_40_e5_v8__0l;
@@ -191,13 +191,13 @@
     [v15 setInvalidationHandler:v21];
 
     v6->_lock._os_unfair_lock_opaque = 0;
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     connectionsUsedForLoadingModels = v6->_connectionsUsedForLoadingModels;
-    v6->_connectionsUsedForLoadingModels = v16;
+    v6->_connectionsUsedForLoadingModels = dictionary;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     connections = v6->_connections;
-    v6->_connections = v18;
+    v6->_connections = dictionary2;
   }
 
   return v6;
@@ -205,24 +205,24 @@
 
 - (void)dealloc
 {
-  v3 = [(_ANEClient *)self conn];
-  v4 = [v3 daemonConnection];
-  [v4 invalidate];
+  conn = [(_ANEClient *)self conn];
+  daemonConnection = [conn daemonConnection];
+  [daemonConnection invalidate];
 
-  v5 = [(_ANEClient *)self fastConn];
-  v6 = [v5 daemonConnection];
-  [v6 invalidate];
+  fastConn = [(_ANEClient *)self fastConn];
+  daemonConnection2 = [fastConn daemonConnection];
+  [daemonConnection2 invalidate];
 
   v7.receiver = self;
   v7.super_class = _ANEClient;
   [(_ANEClient *)&v7 dealloc];
 }
 
-- (id)connectionForLoadingModel:(id)a3 options:(id)a4
+- (id)connectionForLoadingModel:(id)model options:(id)options
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  optionsCopy = options;
   if (self->_isRootDaemon)
   {
     v46 = 0;
@@ -231,22 +231,22 @@
     v49 = __Block_byref_object_copy__3;
     v50 = __Block_byref_object_dispose__3;
     v51 = 0;
-    v9 = [v7 getUUID];
+    getUUID = [modelCopy getUUID];
     os_unfair_lock_lock(&self->_lock);
-    v10 = [(_ANEClient *)self connectionsUsedForLoadingModels];
+    connectionsUsedForLoadingModels = [(_ANEClient *)self connectionsUsedForLoadingModels];
     v39 = MEMORY[0x1E69E9820];
     v40 = 3221225472;
     v41 = __48___ANEClient_connectionForLoadingModel_options___block_invoke;
     v42 = &unk_1E79BA4D0;
-    v11 = v9;
-    v44 = self;
+    v11 = getUUID;
+    selfCopy = self;
     v45 = &v46;
     v43 = v11;
-    [v10 enumerateKeysAndObjectsUsingBlock:&v39];
+    [connectionsUsedForLoadingModels enumerateKeysAndObjectsUsingBlock:&v39];
 
     if (!v47[5])
     {
-      v12 = [v8 objectForKeyedSubscript:kANEFModelTypeKey[0]];
+      v12 = [optionsCopy objectForKeyedSubscript:kANEFModelTypeKey[0]];
       v13 = [v12 isEqualToString:kANEFModelPreCompiledValue[0]];
 
       if (v13)
@@ -272,31 +272,31 @@
 
       else
       {
-        v21 = [(_ANEClient *)self conn];
+        conn = [(_ANEClient *)self conn];
         v20 = v47[5];
-        v47[5] = v21;
+        v47[5] = conn;
       }
 
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v47[5], v39, v40, v41, v42];
-      v23 = [(_ANEClient *)self connections];
-      v24 = [v23 objectForKeyedSubscript:v22];
+      connections = [(_ANEClient *)self connections];
+      v24 = [connections objectForKeyedSubscript:v22];
       v25 = v24 == 0;
 
       if (v25)
       {
         v26 = v47[5];
-        v27 = [(_ANEClient *)self connections];
-        [v27 setObject:v26 forKeyedSubscript:v22];
+        connections2 = [(_ANEClient *)self connections];
+        [connections2 setObject:v26 forKeyedSubscript:v22];
       }
 
-      v28 = [(_ANEClient *)self connectionsUsedForLoadingModels];
-      v29 = [v28 objectForKeyedSubscript:v22];
+      connectionsUsedForLoadingModels2 = [(_ANEClient *)self connectionsUsedForLoadingModels];
+      v29 = [connectionsUsedForLoadingModels2 objectForKeyedSubscript:v22];
 
       if (!v29)
       {
         v29 = [MEMORY[0x1E695DFA8] set];
-        v30 = [(_ANEClient *)self connectionsUsedForLoadingModels];
-        [v30 setObject:v29 forKeyedSubscript:v22];
+        connectionsUsedForLoadingModels3 = [(_ANEClient *)self connectionsUsedForLoadingModels];
+        [connectionsUsedForLoadingModels3 setObject:v29 forKeyedSubscript:v22];
       }
 
       [v29 addObject:v11];
@@ -304,8 +304,8 @@
 
     os_unfair_lock_unlock(&self->_lock);
     v31 = v47[5];
-    v32 = [(_ANEClient *)self conn];
-    LODWORD(v31) = v31 == v32;
+    conn2 = [(_ANEClient *)self conn];
+    LODWORD(v31) = v31 == conn2;
 
     v33 = gLogger_1;
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_INFO);
@@ -332,7 +332,7 @@
       _os_log_impl(&dword_1AD246000, v33, OS_LOG_TYPE_INFO, "%@: Using fast connection for loading modelUUID=%@", buf, 0x16u);
     }
 
-    v15 = v47[5];
+    conn3 = v47[5];
     _Block_object_dispose(&v46, 8);
   }
 
@@ -344,35 +344,35 @@
       [_ANEClient connectionForLoadingModel:v14 options:a2];
     }
 
-    v15 = [(_ANEClient *)self conn];
+    conn3 = [(_ANEClient *)self conn];
   }
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return conn3;
 }
 
-- (id)connectionUsedForLoadingModel:(id)a3
+- (id)connectionUsedForLoadingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  v5 = [v4 getUUID];
+  getUUID = [modelCopy getUUID];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(_ANEClient *)self connectionsUsedForLoadingModels];
+  connectionsUsedForLoadingModels = [(_ANEClient *)self connectionsUsedForLoadingModels];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44___ANEClient_connectionUsedForLoadingModel___block_invoke;
   v10[3] = &unk_1E79BA4D0;
-  v7 = v5;
-  v12 = self;
+  v7 = getUUID;
+  selfCopy = self;
   v13 = &v14;
   v11 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  [connectionsUsedForLoadingModels enumerateKeysAndObjectsUsingBlock:v10];
 
   os_unfair_lock_unlock(&self->_lock);
   v8 = v15[5];
@@ -382,18 +382,18 @@
   return v8;
 }
 
-- (BOOL)compiledModelExistsFor:(id)a3
+- (BOOL)compiledModelExistsFor:(id)for
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  forCopy = for;
   v6 = mach_continuous_time();
   v7 = os_signpost_id_generate(gLogger_1);
-  v8 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v8)
+  if (virtualClient)
   {
-    v9 = [(_ANEClient *)self virtualClient];
-    v10 = [v9 compiledModelExistsFor:v5];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    v10 = [virtualClient2 compiledModelExistsFor:forCopy];
   }
 
   else if (+[_ANEDeviceInfo isVirtualMachine])
@@ -411,7 +411,7 @@
   {
     v12 = objc_autoreleasePoolPush();
     v13 = gLogger_1;
-    if (v5)
+    if (forCopy)
     {
       if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_DEBUG))
       {
@@ -428,38 +428,38 @@
       v33[3] = __Block_byref_object_copy__3;
       v33[4] = __Block_byref_object_dispose__3;
       v34 = 0;
-      [v5 string_id];
+      [forCopy string_id];
       kdebug_trace();
       v14 = gLogger_1;
       v15 = v14;
       if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
       {
-        v16 = [v5 string_id];
+        string_id = [forCopy string_id];
         *buf = 134217984;
-        v40 = v16;
+        v40 = string_id;
         _os_signpost_emit_with_name_impl(&dword_1AD246000, v15, OS_SIGNPOST_EVENT, v7, "_ANEF_COMPILED_MODEL_EXISTS", "model.string_id:%llu", buf, 0xCu);
       }
 
-      v17 = [(_ANEClient *)self fastConn];
-      v18 = v17;
-      if (v17)
+      fastConn = [(_ANEClient *)self fastConn];
+      v18 = fastConn;
+      if (fastConn)
       {
-        v19 = v17;
+        conn = fastConn;
       }
 
       else
       {
-        v19 = [(_ANEClient *)self conn];
+        conn = [(_ANEClient *)self conn];
       }
 
-      v20 = v19;
+      v20 = conn;
 
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __37___ANEClient_compiledModelExistsFor___block_invoke;
       v27[3] = &unk_1E79BA598;
       v31 = a2;
-      v21 = v5;
+      v21 = forCopy;
       v28 = v21;
       v29 = &v35;
       v30 = v33;
@@ -500,29 +500,29 @@
   return v10 & 1;
 }
 
-- (void)purgeCompiledModel:(id)a3
+- (void)purgeCompiledModel:(id)model
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v6 = mach_continuous_time();
   v7 = os_signpost_id_generate(gLogger_1);
-  [v5 string_id];
+  [modelCopy string_id];
   kdebug_trace();
   v8 = gLogger_1;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v5 string_id];
+    *(&buf + 4) = [modelCopy string_id];
     _os_signpost_emit_with_name_impl(&dword_1AD246000, v9, OS_SIGNPOST_EVENT, v7, "_ANEF_PURGE_COMPILED_MODEL", "model.string_id:%llu", &buf, 0xCu);
   }
 
-  v10 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v10)
+  if (virtualClient)
   {
-    v11 = [(_ANEClient *)self virtualClient];
-    [v11 purgeCompiledModel:v5];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    [virtualClient2 purgeCompiledModel:modelCopy];
   }
 
   else if (+[_ANEDeviceInfo isVirtualMachine])
@@ -537,7 +537,7 @@
   else
   {
     v14 = gLogger_1;
-    if (v5)
+    if (modelCopy)
     {
       if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_DEBUG))
       {
@@ -554,7 +554,7 @@
       v34 = __Block_byref_object_copy__3;
       v35 = __Block_byref_object_dispose__3;
       v36 = 0;
-      v15 = [(_ANEClient *)self conn];
+      conn = [(_ANEClient *)self conn];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __33___ANEClient_purgeCompiledModel___block_invoke;
@@ -562,10 +562,10 @@
       p_buf = &buf;
       v24 = a2;
       v22 = &v26;
-      v16 = v5;
+      v16 = modelCopy;
       v21 = v16;
       v25 = v7;
-      [v15 purgeCompiledModel:v16 withReply:v20];
+      [conn purgeCompiledModel:v16 withReply:v20];
 
       [v16 string_id];
       v17 = *(v27 + 24);
@@ -592,10 +592,10 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)compiledModelExistsMatchingHash:(id)a3
+- (BOOL)compiledModelExistsMatchingHash:(id)hash
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  hashCopy = hash;
   v6 = mach_continuous_time();
   v7 = os_signpost_id_generate(gLogger_1);
   kdebug_trace();
@@ -608,12 +608,12 @@
     _os_signpost_emit_with_name_impl(&dword_1AD246000, v9, OS_SIGNPOST_EVENT, v7, "_ANEF_COMPILED_MODEL_EXISTS", "%u", buf, 8u);
   }
 
-  v10 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v10)
+  if (virtualClient)
   {
-    v11 = [(_ANEClient *)self virtualClient];
-    v12 = [v11 compiledModelExistsMatchingHash:v5];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    v12 = [virtualClient2 compiledModelExistsMatchingHash:hashCopy];
 
     goto LABEL_25;
   }
@@ -632,7 +632,7 @@ LABEL_16:
   }
 
   v14 = gLogger_1;
-  if (!v5)
+  if (!hashCopy)
   {
     if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_ERROR))
     {
@@ -657,19 +657,19 @@ LABEL_16:
   v36 = __Block_byref_object_copy__3;
   v37 = __Block_byref_object_dispose__3;
   v38 = 0;
-  v15 = [(_ANEClient *)self fastConn];
-  v16 = v15;
-  if (v15)
+  fastConn = [(_ANEClient *)self fastConn];
+  v16 = fastConn;
+  if (fastConn)
   {
-    v17 = v15;
+    conn = fastConn;
   }
 
   else
   {
-    v17 = [(_ANEClient *)self conn];
+    conn = [(_ANEClient *)self conn];
   }
 
-  v18 = v17;
+  v18 = conn;
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -679,7 +679,7 @@ LABEL_16:
   v26[5] = buf;
   v26[6] = a2;
   v26[7] = v7;
-  [v18 compiledModelExistsMatchingHash:v5 withReply:v26];
+  [v18 compiledModelExistsMatchingHash:hashCopy withReply:v26];
   v19 = *(v28 + 24);
   kdebug_trace();
   v20 = gLogger_1;
@@ -721,18 +721,18 @@ LABEL_25:
   return v12 & 1;
 }
 
-- (void)purgeCompiledModelMatchingHash:(id)a3
+- (void)purgeCompiledModelMatchingHash:(id)hash
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  hashCopy = hash;
   v6 = mach_continuous_time();
   v7 = os_signpost_id_generate(gLogger_1);
-  v8 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v8)
+  if (virtualClient)
   {
-    v9 = [(_ANEClient *)self virtualClient];
-    [v9 purgeCompiledModelMatchingHash:v5];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    [virtualClient2 purgeCompiledModelMatchingHash:hashCopy];
   }
 
   else if (+[_ANEDeviceInfo isVirtualMachine])
@@ -747,7 +747,7 @@ LABEL_25:
   else
   {
     v12 = gLogger_1;
-    if (v5)
+    if (hashCopy)
     {
       if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_DEBUG))
       {
@@ -773,7 +773,7 @@ LABEL_25:
         _os_signpost_emit_with_name_impl(&dword_1AD246000, v14, OS_SIGNPOST_EVENT, v7, "_ANEF_PURGE_COMPILED_MODEL", "%u", buf, 8u);
       }
 
-      v15 = [(_ANEClient *)self conn];
+      conn = [(_ANEClient *)self conn];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __45___ANEClient_purgeCompiledModelMatchingHash___block_invoke;
@@ -782,7 +782,7 @@ LABEL_25:
       v21[5] = v22;
       v21[6] = a2;
       v21[7] = v7;
-      [v15 purgeCompiledModelMatchingHash:v5 withReply:v21];
+      [conn purgeCompiledModelMatchingHash:hashCopy withReply:v21];
 
       v16 = *(v25 + 24);
       kdebug_trace();
@@ -827,16 +827,16 @@ LABEL_25:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unmapIOSurfacesWithModel:(id)a3 request:(id)a4
+- (void)unmapIOSurfacesWithModel:(id)model request:(id)request
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  requestCopy = request;
   v9 = mach_continuous_time();
   v10 = os_signpost_id_generate(gLogger_1);
-  v11 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v11)
+  if (virtualClient)
   {
     v12 = gLogger_1;
     if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_ERROR))
@@ -859,33 +859,33 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    if (v7)
+    if (modelCopy)
     {
-      if (v8)
+      if (requestCopy)
       {
-        v13 = [v7 mapper];
+        mapper = [modelCopy mapper];
         v14 = gLogger_1;
-        if (v13)
+        if (mapper)
         {
           if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_DEBUG))
           {
             [_ANEClient mapIOSurfacesWithModel:request:cacheInference:error:];
           }
 
-          [v7 string_id];
+          [modelCopy string_id];
           kdebug_trace();
           v15 = gLogger_1;
           v16 = v15;
           if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
           {
             *buf = 134217984;
-            v33 = [v7 string_id];
+            string_id = [modelCopy string_id];
             _os_signpost_emit_with_name_impl(&dword_1AD246000, v16, OS_SIGNPOST_EVENT, v10, "_ANEF_IOSURFACES_UNMAP", "model.string_id:%llu", buf, 0xCu);
           }
 
           v31 = 0;
-          v17 = v13;
-          v18 = [v13 unmapIOSurfacesWithModel:v7 request:v8 error:&v31];
+          v17 = mapper;
+          v18 = [mapper unmapIOSurfacesWithModel:modelCopy request:requestCopy error:&v31];
           v29 = v31;
           v19 = gLogger_1;
           if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_DEBUG))
@@ -893,7 +893,7 @@ LABEL_3:
             v27 = v19;
             v28 = NSStringFromSelector(a2);
             *buf = 138412802;
-            v33 = v28;
+            string_id = v28;
             v34 = 1024;
             v35 = v18;
             v36 = 2112;
@@ -901,7 +901,7 @@ LABEL_3:
             _os_log_debug_impl(&dword_1AD246000, v27, OS_LOG_TYPE_DEBUG, "%@: success=%d : err=%@", buf, 0x1Cu);
           }
 
-          [v7 string_id];
+          [modelCopy string_id];
           kdebug_trace();
           v20 = gLogger_1;
           v21 = v20;
@@ -909,27 +909,27 @@ LABEL_3:
           {
 
             v23 = gLogger_1;
-            v13 = v17;
+            mapper = v17;
           }
 
           else
           {
             if (os_signpost_enabled(v20))
             {
-              v22 = [v7 string_id];
+              string_id2 = [modelCopy string_id];
               *buf = 134218240;
-              v33 = v22;
+              string_id = string_id2;
               v34 = 1024;
               v35 = v18;
               _os_signpost_emit_with_name_impl(&dword_1AD246000, v21, OS_SIGNPOST_EVENT, v10, "_ANEF_IOSURFACES_UNMAP", "model.string_id:%llu ok:%u", buf, 0x12u);
             }
 
             v23 = gLogger_1;
-            v13 = v17;
+            mapper = v17;
             if (os_signpost_enabled(v23))
             {
               *buf = 134349056;
-              v33 = v9;
+              string_id = v9;
               _os_signpost_emit_with_name_impl(&dword_1AD246000, v23, OS_SIGNPOST_EVENT, v10, "_ANEF_IOSURFACES_UNMAP", "%{public, signpost.description:begin_time}llu ", buf, 0xCu);
             }
           }
@@ -980,14 +980,14 @@ LABEL_31:
 
 - (BOOL)beginRealTimeTask
 {
-  v4 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v4)
+  if (virtualClient)
   {
-    v5 = [(_ANEClient *)self virtualClient];
-    v6 = [v5 beginRealTimeTask];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    beginRealTimeTask = [virtualClient2 beginRealTimeTask];
 
-    return v6;
+    return beginRealTimeTask;
   }
 
   else
@@ -1009,14 +1009,14 @@ LABEL_31:
       v13 = &v12;
       v14 = 0x2020000000;
       v15 = 0;
-      v10 = [(_ANEClient *)self conn];
+      conn = [(_ANEClient *)self conn];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __31___ANEClient_beginRealTimeTask__block_invoke;
       v11[3] = &unk_1E79BA610;
       v11[4] = &v12;
       v11[5] = a2;
-      [v10 beginRealTimeTaskWithReply:v11];
+      [conn beginRealTimeTaskWithReply:v11];
 
       v9 = *(v13 + 24);
       _Block_object_dispose(&v12, 8);
@@ -1028,14 +1028,14 @@ LABEL_31:
 
 - (BOOL)endRealTimeTask
 {
-  v4 = [(_ANEClient *)self virtualClient];
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v4)
+  if (virtualClient)
   {
-    v5 = [(_ANEClient *)self virtualClient];
-    v6 = [v5 endRealTimeTask];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    endRealTimeTask = [virtualClient2 endRealTimeTask];
 
-    return v6;
+    return endRealTimeTask;
   }
 
   else
@@ -1057,14 +1057,14 @@ LABEL_31:
       v13 = &v12;
       v14 = 0x2020000000;
       v15 = 0;
-      v10 = [(_ANEClient *)self conn];
+      conn = [(_ANEClient *)self conn];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __29___ANEClient_endRealTimeTask__block_invoke;
       v11[3] = &unk_1E79BA610;
       v11[4] = &v12;
       v11[5] = a2;
-      [v10 endRealTimeTaskWithReply:v11];
+      [conn endRealTimeTaskWithReply:v11];
 
       v9 = *(v13 + 24);
       _Block_object_dispose(&v12, 8);
@@ -1074,33 +1074,33 @@ LABEL_31:
   }
 }
 
-- (BOOL)evaluateRealTimeWithModel:(id)a3 options:(id)a4 request:(id)a5 error:(id *)a6
+- (BOOL)evaluateRealTimeWithModel:(id)model options:(id)options request:(id)request error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  LOBYTE(a6) = [(_ANEClient *)self doEvaluateDirectWithModel:v12 options:v11 request:v10 qos:+[_ANEQoSMapper error:"aneRealTimeTaskQoS"], a6];
+  requestCopy = request;
+  optionsCopy = options;
+  modelCopy = model;
+  LOBYTE(error) = [(_ANEClient *)self doEvaluateDirectWithModel:modelCopy options:optionsCopy request:requestCopy qos:+[_ANEQoSMapper error:"aneRealTimeTaskQoS"], error];
 
-  return a6;
+  return error;
 }
 
 - (BOOL)isVirtualClient
 {
-  v2 = [(_ANEClient *)self virtualClient];
-  v3 = v2 != 0;
+  virtualClient = [(_ANEClient *)self virtualClient];
+  v3 = virtualClient != 0;
 
   return v3;
 }
 
-- (BOOL)echo:(id)a3
+- (BOOL)echo:(id)echo
 {
-  v5 = a3;
-  v6 = [(_ANEClient *)self virtualClient];
+  echoCopy = echo;
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v6)
+  if (virtualClient)
   {
-    v7 = [(_ANEClient *)self virtualClient];
-    v8 = [v7 echo:v5];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    v8 = [virtualClient2 echo:echoCopy];
   }
 
   else if (+[_ANEDeviceInfo isVirtualMachine])
@@ -1120,14 +1120,14 @@ LABEL_31:
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v10 = [(_ANEClient *)self conn];
+    conn = [(_ANEClient *)self conn];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __19___ANEClient_echo___block_invoke;
     v12[3] = &unk_1E79BA610;
     v12[4] = &v13;
     v12[5] = a2;
-    [v10 echo:v5 withReply:v12];
+    [conn echo:echoCopy withReply:v12];
 
     v8 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
@@ -1139,26 +1139,26 @@ LABEL_31:
 - (BOOL)isAnetoolRootDaemonConnection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 arguments];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  arguments = [processInfo2 arguments];
 
-  if ([v4 isEqualToString:@"anetool"])
+  if ([processName isEqualToString:@"anetool"])
   {
-    if ([v6 count])
+    if ([arguments count])
     {
       v7 = 0;
       do
       {
-        v8 = [v6 objectAtIndexedSubscript:v7];
-        if ([v8 isEqualToString:@"-u"] && v7 < objc_msgSend(v6, "count") - 1)
+        v8 = [arguments objectAtIndexedSubscript:v7];
+        if ([v8 isEqualToString:@"-u"] && v7 < objc_msgSend(arguments, "count") - 1)
         {
-          v9 = [v6 objectAtIndexedSubscript:++v7];
-          v10 = [v9 BOOLValue];
+          v9 = [arguments objectAtIndexedSubscript:++v7];
+          bOOLValue = [v9 BOOLValue];
 
-          if (v10)
+          if (bOOLValue)
           {
             goto LABEL_12;
           }
@@ -1171,7 +1171,7 @@ LABEL_31:
         }
       }
 
-      while (v7 < [v6 count]);
+      while (v7 < [arguments count]);
     }
 
     v11 = gLogger_1;
@@ -1196,18 +1196,18 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)sessionHintWithModel:(id)a3 hint:(id)a4 options:(id)a5 report:(id)a6 error:(id *)a7
+- (BOOL)sessionHintWithModel:(id)model hint:(id)hint options:(id)options report:(id)report error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = [(_ANEClient *)self virtualClient];
+  modelCopy = model;
+  hintCopy = hint;
+  optionsCopy = options;
+  reportCopy = report;
+  virtualClient = [(_ANEClient *)self virtualClient];
 
-  if (v17)
+  if (virtualClient)
   {
-    v18 = [(_ANEClient *)self virtualClient];
-    LOBYTE(a7) = [v18 sessionHintWithModel:v13 hint:v14 options:v15 report:v16 error:a7];
+    virtualClient2 = [(_ANEClient *)self virtualClient];
+    LOBYTE(error) = [virtualClient2 sessionHintWithModel:modelCopy hint:hintCopy options:optionsCopy report:reportCopy error:error];
 
     goto LABEL_19;
   }
@@ -1218,13 +1218,13 @@ LABEL_12:
     if (os_log_type_enabled(gLogger_1, OS_LOG_TYPE_ERROR))
     {
       [_ANEClient doEnqueueSetsWithModel:v19 outputSet:? options:? qos:? error:?];
-      if (!a7)
+      if (!error)
       {
         goto LABEL_19;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
       goto LABEL_19;
     }
@@ -1232,13 +1232,13 @@ LABEL_12:
     v20 = NSStringFromSelector(a2);
     v21 = [_ANEErrors hostTooOld:v20];
 LABEL_18:
-    *a7 = v21;
+    *error = v21;
 
-    LOBYTE(a7) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_19;
   }
 
-  if (!v13)
+  if (!modelCopy)
   {
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1249,7 +1249,7 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!hintCopy)
   {
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1259,7 +1259,7 @@ LABEL_18:
 
 LABEL_16:
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -1269,11 +1269,11 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v22 = [v13 program];
-  v23 = v22;
-  if (v22)
+  program = [modelCopy program];
+  v23 = program;
+  if (program)
   {
-    LOBYTE(a7) = [v22 processSessionHint:v14 options:v15 report:v16 error:a7];
+    LOBYTE(error) = [program processSessionHint:hintCopy options:optionsCopy report:reportCopy error:error];
   }
 
   else
@@ -1284,27 +1284,27 @@ LABEL_16:
       [_ANEClient sessionHintWithModel:v26 hint:? options:? report:? error:?];
     }
 
-    if ([v14 isEqualToString:kANEFHintSessionInfo])
+    if ([hintCopy isEqualToString:kANEFHintSessionInfo])
     {
-      LOBYTE(a7) = 1;
-      if (v16)
+      LOBYTE(error) = 1;
+      if (reportCopy)
       {
         v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
-        [v16 setObject:v27 forKeyedSubscript:kANEFHintReportSessionStatusKey];
+        [reportCopy setObject:v27 forKeyedSubscript:kANEFHintReportSessionStatusKey];
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       v28 = NSStringFromSelector(a2);
-      *a7 = [_ANEErrors invalidModelErrorForMethod:v28];
+      *error = [_ANEErrors invalidModelErrorForMethod:v28];
 
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
 LABEL_19:
-  return a7;
+  return error;
 }
 
 - (void)initWithRestrictedAccessAllowed:(void *)a1 .cold.1(void *a1)
@@ -1602,7 +1602,7 @@ LABEL_19:
 - (void)beginRealTimeTask
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a1;
+  selfCopy = self;
   v4 = NSStringFromSelector(a2);
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_9(&dword_1AD246000, v5, v6, "%@: Virtual Machine environment detected but no virtualClient available.", v7, v8, v9, v10, v12);
@@ -1613,7 +1613,7 @@ LABEL_19:
 - (void)endRealTimeTask
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a1;
+  selfCopy = self;
   v4 = NSStringFromSelector(a2);
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_9(&dword_1AD246000, v5, v6, "%@: Virtual Machine environment detected but no virtualClient available.", v7, v8, v9, v10, v12);

@@ -1,6 +1,6 @@
 @interface CloudBookmarkDatabaseAccessProvider
 + (id)bookmarkDatabaseAccessor;
-+ (id)tabGroupDatabaseAccessorWithStoreOwner:(int64_t)a3;
++ (id)tabGroupDatabaseAccessorWithStoreOwner:(int64_t)owner;
 @end
 
 @implementation CloudBookmarkDatabaseAccessProvider
@@ -12,9 +12,9 @@
   return v2;
 }
 
-+ (id)tabGroupDatabaseAccessorWithStoreOwner:(int64_t)a3
++ (id)tabGroupDatabaseAccessorWithStoreOwner:(int64_t)owner
 {
-  v3 = [[WBBookmarkDBAccess alloc] initWithCollectionType:1 storeOwner:a3];
+  v3 = [[WBBookmarkDBAccess alloc] initWithCollectionType:1 storeOwner:owner];
 
   return v3;
 }

@@ -1,19 +1,19 @@
 @interface FigCaptureCMSession
-- (FigCaptureCMSession)initWithCMSession:(opaqueCMSession *)a3;
-- (id)copyProperty:(__CFString *)a3 error:(int *)a4;
+- (FigCaptureCMSession)initWithCMSession:(opaqueCMSession *)session;
+- (id)copyProperty:(__CFString *)property error:(int *)error;
 - (void)dealloc;
 @end
 
 @implementation FigCaptureCMSession
 
-- (FigCaptureCMSession)initWithCMSession:(opaqueCMSession *)a3
+- (FigCaptureCMSession)initWithCMSession:(opaqueCMSession *)session
 {
   v6.receiver = self;
   v6.super_class = FigCaptureCMSession;
   v4 = [(FigCaptureCMSession *)&v6 init];
   if (v4)
   {
-    v4->_cmsession = CFRetain(a3);
+    v4->_cmsession = CFRetain(session);
   }
 
   return v4;
@@ -27,12 +27,12 @@
   [(FigCaptureCMSession *)&v3 dealloc];
 }
 
-- (id)copyProperty:(__CFString *)a3 error:(int *)a4
+- (id)copyProperty:(__CFString *)property error:(int *)error
 {
   v5 = CMSessionCopyProperty();
-  if (a4)
+  if (error)
   {
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;

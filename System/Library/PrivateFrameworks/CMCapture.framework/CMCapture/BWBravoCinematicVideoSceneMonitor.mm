@@ -1,21 +1,21 @@
 @interface BWBravoCinematicVideoSceneMonitor
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11;
-- (BWBravoCinematicVideoSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4;
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1;
+- (BWBravoCinematicVideoSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics;
 - (void)dealloc;
 - (void)focusScanDidComplete;
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5;
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress;
 @end
 
 @implementation BWBravoCinematicVideoSceneMonitor
 
-- (BWBravoCinematicVideoSceneMonitor)initWithTuningParameters:(id)a3 attachDebugFrameStatistics:(BOOL)a4
+- (BWBravoCinematicVideoSceneMonitor)initWithTuningParameters:(id)parameters attachDebugFrameStatistics:(BOOL)statistics
 {
   v9.receiver = self;
   v9.super_class = BWBravoCinematicVideoSceneMonitor;
-  v5 = [(BWBravoCinematicVideoSceneMonitor *)&v9 init:a3];
+  v5 = [(BWBravoCinematicVideoSceneMonitor *)&v9 init:parameters];
   if (v5)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"TooDarkLuxLevelThreshold", "floatValue"}];
+    [objc_msgSend(parameters objectForKeyedSubscript:{@"TooDarkLuxLevelThreshold", "floatValue"}];
     v7 = v6;
     if (!v6)
     {
@@ -37,11 +37,11 @@
   [(BWBravoCinematicVideoSceneMonitor *)&v2 dealloc];
 }
 
-- (void)setAutoFocusInProgress:(BOOL)a3 focusLocked:(BOOL)a4 oneShotFocusScanInProgress:(BOOL)a5
+- (void)setAutoFocusInProgress:(BOOL)progress focusLocked:(BOOL)locked oneShotFocusScanInProgress:(BOOL)inProgress
 {
-  if (a3 || a4 || a5)
+  if (progress || locked || inProgress)
   {
-    self->_oneShotFocusScanInProgress = !a3 && !a4;
+    self->_oneShotFocusScanInProgress = !progress && !locked;
   }
 }
 
@@ -53,9 +53,9 @@
   }
 }
 
-- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)a3 frameStatisticsByPortType:(id)a4 sceneFlags:(unint64_t)a5 flashOrTorchWillBeActive:(BOOL)a6 digitalFlashWillFire:(BOOL)a7 thermalPressureLevel:(int)a8 peakPowerPressureLevel:(int)a9 effectStatus:(int *)a10 stagePreviewStatus:(int *)a11
+- (BOOL)resolveSDOFStatusWithSampleBuffer:(opaqueCMSampleBuffer *)buffer frameStatisticsByPortType:(id)type sceneFlags:(unint64_t)flags flashOrTorchWillBeActive:(BOOL)active digitalFlashWillFire:(BOOL)fire thermalPressureLevel:(int)level peakPowerPressureLevel:(int)pressureLevel effectStatus:(int *)self0 stagePreviewStatus:(int *)self1
 {
-  v12 = [a4 objectForKeyedSubscript:{objc_msgSend(CMGetAttachment(a3, *off_1E798A3C8, 0), "objectForKeyedSubscript:", *off_1E798B540)}];
+  v12 = [type objectForKeyedSubscript:{objc_msgSend(CMGetAttachment(buffer, *off_1E798A3C8, 0), "objectForKeyedSubscript:", *off_1E798B540)}];
   if (self->_sceneTooDarkMonitoringEnabled)
   {
     v13 = v12;
@@ -86,7 +86,7 @@ LABEL_3:
   }
 
 LABEL_10:
-  if (a10)
+  if (status)
   {
     if (self->_sceneIsTooDark)
     {
@@ -98,7 +98,7 @@ LABEL_10:
       v15 = 1;
     }
 
-    *a10 = v15;
+    *status = v15;
   }
 
   return 1;

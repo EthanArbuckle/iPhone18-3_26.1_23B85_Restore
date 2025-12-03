@@ -1,20 +1,20 @@
 @interface COMTPerformActionRequest
-- (COMTPerformActionRequest)initWithActions:(id)a3;
-- (COMTPerformActionRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COMTPerformActionRequest)initWithActions:(id)actions;
+- (COMTPerformActionRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTPerformActionRequest
 
-- (COMTPerformActionRequest)initWithActions:(id)a3
+- (COMTPerformActionRequest)initWithActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9.receiver = self;
   v9.super_class = COMTPerformActionRequest;
   v5 = [(COMessageChannelRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [actionsCopy copy];
     actions = v5->_actions;
     v5->_actions = v6;
   }
@@ -22,19 +22,19 @@
   return v5;
 }
 
-- (COMTPerformActionRequest)initWithCoder:(id)a3
+- (COMTPerformActionRequest)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = COMTPerformActionRequest;
-  v5 = [(COMessageChannelRequest *)&v25 initWithCoder:v4];
+  v5 = [(COMessageChannelRequest *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"PA"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"PA"];
 
     v23 = 0u;
     v24 = 0u;
@@ -91,14 +91,14 @@ LABEL_13:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COMTPerformActionRequest;
-  v4 = a3;
-  [(COMessageChannelRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMessageChannelRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COMTPerformActionRequest *)self actions:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"PA"];
+  [coderCopy encodeObject:v5 forKey:@"PA"];
 }
 
 @end

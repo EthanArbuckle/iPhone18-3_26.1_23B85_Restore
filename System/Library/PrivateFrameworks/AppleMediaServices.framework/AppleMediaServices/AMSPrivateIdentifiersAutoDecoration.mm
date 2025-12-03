@@ -1,20 +1,20 @@
 @interface AMSPrivateIdentifiersAutoDecoration
-- (void)autoDecorationIdentifiersForEvent:(AMSMetricsEvent *)a3 bag:(AMSBagProtocol *)a4 completionHandler:(id)a5;
+- (void)autoDecorationIdentifiersForEvent:(AMSMetricsEvent *)event bag:(AMSBagProtocol *)bag completionHandler:(id)handler;
 @end
 
 @implementation AMSPrivateIdentifiersAutoDecoration
 
-- (void)autoDecorationIdentifiersForEvent:(AMSMetricsEvent *)a3 bag:(AMSBagProtocol *)a4 completionHandler:(id)a5
+- (void)autoDecorationIdentifiersForEvent:(AMSMetricsEvent *)event bag:(AMSBagProtocol *)bag completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = event;
+  v9[3] = bag;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
+  eventCopy = event;
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
 
   sub_1928FB3BC(&unk_192FC04B8, v9);
 }

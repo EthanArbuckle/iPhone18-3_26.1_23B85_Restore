@@ -1,5 +1,5 @@
 @interface DebugFormatEditorPathView
-- (_TtC8NewsFeed25DebugFormatEditorPathView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed25DebugFormatEditorPathView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D67A3CF0();
 }
 
-- (_TtC8NewsFeed25DebugFormatEditorPathView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed25DebugFormatEditorPathView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

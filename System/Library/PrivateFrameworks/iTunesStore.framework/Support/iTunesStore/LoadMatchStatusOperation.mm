@@ -1,23 +1,23 @@
 @interface LoadMatchStatusOperation
-- (LoadMatchStatusOperation)initWithAccountIdentifier:(id)a3;
+- (LoadMatchStatusOperation)initWithAccountIdentifier:(id)identifier;
 - (NSString)userAgent;
-- (id)_newMatchStatusOperationWithURLBag:(id)a3;
+- (id)_newMatchStatusOperationWithURLBag:(id)bag;
 - (unint64_t)matchStatus;
 - (void)dealloc;
 - (void)run;
-- (void)setUserAgent:(id)a3;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation LoadMatchStatusOperation
 
-- (LoadMatchStatusOperation)initWithAccountIdentifier:(id)a3
+- (LoadMatchStatusOperation)initWithAccountIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = LoadMatchStatusOperation;
   v4 = [(LoadMatchStatusOperation *)&v6 init];
   if (v4)
   {
-    v4->_accountID = [a3 copy];
+    v4->_accountID = [identifier copy];
   }
 
   return v4;
@@ -38,14 +38,14 @@
   return matchStatus;
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(LoadMatchStatusOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(LoadMatchStatusOperation *)self unlock];
@@ -69,15 +69,15 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -109,8 +109,8 @@
   v11 = [SSURLBagContext contextWithBagType:0, v33];
   [(SSURLBagContext *)v11 setIgnoresCaches:1];
   [(SSURLBagContext *)v11 setUserIdentifier:self->_accountID];
-  v12 = [(LoadMatchStatusOperation *)self userAgent];
-  [(SSURLBagContext *)v11 setValue:v12 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(LoadMatchStatusOperation *)self userAgent];
+  [(SSURLBagContext *)v11 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   v13 = [(LoadMatchStatusOperation *)self loadedURLBagWithContext:v11 returningError:&v36];
   if (v13)
   {
@@ -118,19 +118,19 @@
     v15 = [v13 valueForKey:@"isMatchServiceEnabled"];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
     }
 
     else
     {
-      v16 = 0;
+      bOOLValue = 0;
     }
 
     [v14 valueForKey:@"cloud-welcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 |= 2uLL;
+      bOOLValue |= 2uLL;
     }
 
     v17 = [(LoadMatchStatusOperation *)self _newMatchStatusOperationWithURLBag:v14];
@@ -142,7 +142,7 @@
         v19 = [objc_msgSend(objc_msgSend(v18 "dataProvider")];
         if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 BOOLValue])
         {
-          v16 |= 4uLL;
+          bOOLValue |= 4uLL;
         }
 
         v20 = +[SSLogConfig sharedDaemonConfig];
@@ -151,15 +151,15 @@
           v20 = +[SSLogConfig sharedConfig];
         }
 
-        v21 = [v20 shouldLog];
+        shouldLog2 = [v20 shouldLog];
         if ([v20 shouldLogToDisk])
         {
-          v22 = v21 | 2;
+          v22 = shouldLog2 | 2;
         }
 
         else
         {
-          v22 = v21;
+          v22 = shouldLog2;
         }
 
         v23 = 1;
@@ -178,7 +178,7 @@
         v37 = 138412802;
         v38 = v24;
         v39 = 2048;
-        v40 = v16;
+        v40 = bOOLValue;
         v41 = 2112;
         v42 = v25;
         LODWORD(v35) = 32;
@@ -202,7 +202,7 @@ LABEL_43:
 
   else
   {
-    v16 = 0;
+    bOOLValue = 0;
   }
 
   v27 = +[SSLogConfig sharedDaemonConfig];
@@ -211,15 +211,15 @@ LABEL_43:
     v27 = +[SSLogConfig sharedConfig];
   }
 
-  v28 = [v27 shouldLog];
+  shouldLog3 = [v27 shouldLog];
   if ([v27 shouldLogToDisk])
   {
-    v29 = v28 | 2;
+    v29 = shouldLog3 | 2;
   }
 
   else
   {
-    v29 = v28;
+    v29 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v27 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -249,15 +249,15 @@ LABEL_43:
 
 LABEL_45:
   [(LoadMatchStatusOperation *)self lock];
-  self->_matchStatus = v16;
+  self->_matchStatus = bOOLValue;
   [(LoadMatchStatusOperation *)self unlock];
   [(LoadMatchStatusOperation *)self setError:v36];
   [(LoadMatchStatusOperation *)self setSuccess:v23];
 }
 
-- (id)_newMatchStatusOperationWithURLBag:(id)a3
+- (id)_newMatchStatusOperationWithURLBag:(id)bag
 {
-  v4 = [a3 valueForKey:@"getMatchStatusSrv"];
+  v4 = [bag valueForKey:@"getMatchStatusSrv"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -268,9 +268,9 @@ LABEL_45:
   [v5 setDataProvider:{+[DaemonProtocolDataProvider provider](DaemonProtocolDataProvider, "provider")}];
   [v5 setUseUserSpecificURLBag:1];
   v6 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:self->_accountID];
-  v7 = [(LoadMatchStatusOperation *)self userAgent];
+  userAgent = [(LoadMatchStatusOperation *)self userAgent];
   v8 = SSHTTPHeaderUserAgent;
-  [v6 setValue:v7 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  [v6 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   [v5 setAuthenticationContext:v6];
 
   v9 = [[SSMutableURLRequestProperties alloc] initWithURL:{+[NSURL URLWithString:](NSURL, "URLWithString:", v4)}];

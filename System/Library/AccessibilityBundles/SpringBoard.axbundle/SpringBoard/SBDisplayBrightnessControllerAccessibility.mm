@@ -1,14 +1,14 @@
 @interface SBDisplayBrightnessControllerAccessibility
-- (void)_setBrightnessLevel:(float)a3 animated:(BOOL)a4;
+- (void)_setBrightnessLevel:(float)level animated:(BOOL)animated;
 @end
 
 @implementation SBDisplayBrightnessControllerAccessibility
 
-- (void)_setBrightnessLevel:(float)a3 animated:(BOOL)a4
+- (void)_setBrightnessLevel:(float)level animated:(BOOL)animated
 {
   v9.receiver = self;
   v9.super_class = SBDisplayBrightnessControllerAccessibility;
-  [(SBDisplayBrightnessControllerAccessibility *)&v9 _setBrightnessLevel:a4 animated:?];
+  [(SBDisplayBrightnessControllerAccessibility *)&v9 _setBrightnessLevel:animated animated:?];
   BKSDisplayBrightnessGetCurrent();
   v4 = *MEMORY[0x29EDC7EA8];
   v5 = MEMORY[0x29EDBA0F8];

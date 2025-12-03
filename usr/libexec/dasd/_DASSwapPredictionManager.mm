@@ -1,22 +1,22 @@
 @interface _DASSwapPredictionManager
 + (id)sharedInstance;
-- (_DASSwapPredictionManager)initWithAlgorithms:(id)a3;
+- (_DASSwapPredictionManager)initWithAlgorithms:(id)algorithms;
 - (void)start;
 - (void)updateScores;
-- (void)updateSwapScoresWithDictionary:(id)a3;
+- (void)updateSwapScoresWithDictionary:(id)dictionary;
 @end
 
 @implementation _DASSwapPredictionManager
 
-- (_DASSwapPredictionManager)initWithAlgorithms:(id)a3
+- (_DASSwapPredictionManager)initWithAlgorithms:(id)algorithms
 {
-  v4 = a3;
+  algorithmsCopy = algorithms;
   v24.receiver = self;
   v24.super_class = _DASSwapPredictionManager;
   v5 = [(_DASSwapPredictionManager *)&v24 init];
   if (v5)
   {
-    v6 = [[_DASSwapModelCustomAggregator alloc] initWithAlgorithms:v4];
+    v6 = [[_DASSwapModelCustomAggregator alloc] initWithAlgorithms:algorithmsCopy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
@@ -66,21 +66,21 @@
   [(_DASSwapPredictionManager *)self updateSwapScoresWithDictionary:v5];
 }
 
-- (void)updateSwapScoresWithDictionary:(id)a3
+- (void)updateSwapScoresWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [_DASDaemonLogger logForCategory:@"swap"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = v4;
+    v37 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating scores to %@", buf, 0xCu);
   }
 
-  if ([v4 count])
+  if ([dictionaryCopy count])
   {
-    v27 = self;
-    v6 = [v4 mutableCopy];
+    selfCopy = self;
+    v6 = [dictionaryCopy mutableCopy];
     [v6 setObject:&off_1001CA390 forKeyedSubscript:@"MobileSafari"];
     v26 = v6;
     v7 = [v6 copy];
@@ -92,8 +92,8 @@
     v34 = 0u;
     v33 = 0u;
     v32 = 0u;
-    v4 = v7;
-    v8 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    dictionaryCopy = v7;
+    v8 = [dictionaryCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v8)
     {
       v10 = v8;
@@ -111,13 +111,13 @@
         {
           if (*v33 != v12)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(dictionaryCopy);
           }
 
           v15 = *(*(&v32 + 1) + 8 * v13);
           *(v14 - 8) = 1;
           snprintf(v14, 0x11uLL, "%s", [v15 UTF8String]);
-          v16 = [v4 objectForKeyedSubscript:v15];
+          v16 = [dictionaryCopy objectForKeyedSubscript:v15];
           [v16 doubleValue];
           v18 = v17 > 0.0;
 
@@ -136,7 +136,7 @@
         }
 
         while (v10 != v13);
-        v10 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v10 = [dictionaryCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
         v11 = v31;
       }
 
@@ -144,7 +144,7 @@
     }
 
     v19 = memorystatus_control();
-    v20 = v27;
+    v20 = selfCopy;
     if (v19)
     {
       v21 = v19;
@@ -155,7 +155,7 @@
       }
     }
 
-    v23 = [_DASAppResumePLLogger topPredictionsFromScores:v4];
+    v23 = [_DASAppResumePLLogger topPredictionsFromScores:dictionaryCopy];
     currentPredictions = v20->_currentPredictions;
     v20->_currentPredictions = v23;
   }
@@ -173,7 +173,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000B7E78;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B740 != -1)
   {
     dispatch_once(&qword_10020B740, block);

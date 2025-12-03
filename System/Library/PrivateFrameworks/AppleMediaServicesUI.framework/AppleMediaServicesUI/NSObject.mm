@@ -1,13 +1,13 @@
 @interface NSObject
-- (id)valueForKeyPath:(id)a3 exception:(id *)a4;
+- (id)valueForKeyPath:(id)path exception:(id *)exception;
 @end
 
 @implementation NSObject
 
-- (id)valueForKeyPath:(id)a3 exception:(id *)a4
+- (id)valueForKeyPath:(id)path exception:(id *)exception
 {
-  v5 = a3;
-  v6 = [self valueForKeyPath:v5];
+  pathCopy = path;
+  v6 = [self valueForKeyPath:pathCopy];
 
   return v6;
 }

@@ -1,11 +1,11 @@
 @interface DebugFormatDebuggerViewController
-- (_TtC8NewsFeed33DebugFormatDebuggerViewController)initWithCoder:(id)a3;
+- (_TtC8NewsFeed33DebugFormatDebuggerViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation DebugFormatDebuggerViewController
 
-- (_TtC8NewsFeed33DebugFormatDebuggerViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed33DebugFormatDebuggerViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed33DebugFormatDebuggerViewController_selectedCallStackFrame;
   v5 = type metadata accessor for FormatDebuggerCallStackFrame(0);
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6CBFB40();
 }
 

@@ -1,58 +1,58 @@
 @interface CPLTextCommentChange
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLTextCommentChange
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [v5 cpl_decryptedObjectForKey:@"commentText" validateClass:objc_opt_class()];
-  [(CPLTextCommentChange *)v4 setCommentText:v6];
+  selfCopy = self;
+  recordCopy = record;
+  v6 = [recordCopy cpl_decryptedObjectForKey:@"commentText" validateClass:objc_opt_class()];
+  [(CPLTextCommentChange *)selfCopy setCommentText:v6];
 
-  v7 = [v5 objectForKey:@"commentTimestamp"];
-  [(CPLTextCommentChange *)v4 setCommentDate:v7];
+  v7 = [recordCopy objectForKey:@"commentTimestamp"];
+  [(CPLTextCommentChange *)selfCopy setCommentDate:v7];
 
-  v10 = [v5 objectForKey:@"associatedAssetRef"];
+  v10 = [recordCopy objectForKey:@"associatedAssetRef"];
 
-  v8 = [v10 recordID];
-  v9 = [v8 recordName];
+  recordID = [v10 recordID];
+  recordName = [recordID recordName];
 
-  [(CPLTextCommentChange *)v4 setAssetIdentifier:v9];
+  [(CPLTextCommentChange *)selfCopy setAssetIdentifier:recordName];
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [v7 fingerprintContext];
-  if ([(CPLTextCommentChange *)v8 hasChangeType:2])
+  builderCopy = builder;
+  providerCopy = provider;
+  selfCopy = self;
+  fingerprintContext = [providerCopy fingerprintContext];
+  if ([(CPLTextCommentChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLTextCommentChange *)v8 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentText")])
+    if ([(CPLTextCommentChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentText")])
     {
-      v10 = [(CPLTextCommentChange *)v8 commentText];
-      [v14 setEncryptedObject:v10 forKey:@"commentText" validateClass:objc_opt_class()];
+      commentText = [(CPLTextCommentChange *)selfCopy commentText];
+      [builderCopy setEncryptedObject:commentText forKey:@"commentText" validateClass:objc_opt_class()];
     }
 
-    if ([(CPLTextCommentChange *)v8 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentDate")])
+    if ([(CPLTextCommentChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentDate")])
     {
-      v11 = [(CPLTextCommentChange *)v8 commentDate];
-      [v14 setObject:v11 forKey:@"commentTimestamp"];
+      commentDate = [(CPLTextCommentChange *)selfCopy commentDate];
+      [builderCopy setObject:commentDate forKey:@"commentTimestamp"];
     }
 
-    if ([(CPLTextCommentChange *)v8 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetIdentifier")])
+    if ([(CPLTextCommentChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetIdentifier")])
     {
-      v12 = [(CPLTextCommentChange *)v8 assetScopedIdentifier];
-      if (!v12)
+      assetScopedIdentifier = [(CPLTextCommentChange *)selfCopy assetScopedIdentifier];
+      if (!assetScopedIdentifier)
       {
-        sub_1001AC5F4(a2, v8);
+        sub_1001AC5F4(a2, selfCopy);
       }
 
-      v13 = v12;
-      [v14 setCKReferenceWithScopedIdentifier:v12 forKey:@"associatedAssetRef" referenceAction:1];
+      v13 = assetScopedIdentifier;
+      [builderCopy setCKReferenceWithScopedIdentifier:assetScopedIdentifier forKey:@"associatedAssetRef" referenceAction:1];
     }
   }
 }

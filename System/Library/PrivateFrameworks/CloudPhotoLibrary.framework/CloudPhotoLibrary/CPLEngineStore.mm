@@ -1,56 +1,56 @@
 @interface CPLEngineStore
 + (NSArray)storageNames;
 + (id)platformImplementationProtocol;
-+ (id)stateDescriptionForState:(unint64_t)a3;
-- (BOOL)_applyAndDiscardPendingUpdate:(id)a3 error:(id *)a4;
-- (BOOL)_applyPendingUpdate:(id)a3 error:(id *)a4;
-- (BOOL)_canHaveActivatedScope:(id)a3 libraryOptions:(unint64_t)a4 error:(id *)a5;
++ (id)stateDescriptionForState:(unint64_t)state;
+- (BOOL)_applyAndDiscardPendingUpdate:(id)update error:(id *)error;
+- (BOOL)_applyPendingUpdate:(id)update error:(id *)error;
+- (BOOL)_canHaveActivatedScope:(id)scope libraryOptions:(unint64_t)options error:(id *)error;
 - (BOOL)_canRead;
 - (BOOL)_canWrite;
-- (BOOL)_handleException:(id)a3;
-- (BOOL)_resetCompleteSyncStateIncludingIDMappingWithCause:(id)a3 scope:(id)a4 error:(id *)a5;
-- (BOOL)_resetCompleteSyncStateWithCause:(id)a3 scope:(id)a4 error:(id *)a5;
-- (BOOL)_resetGlobalStateWithError:(id *)a3;
-- (BOOL)_resetLocalSyncStateWithCause:(id)a3 scope:(id)a4 date:(id)a5 error:(id *)a6;
-- (BOOL)_resetSyncAnchorWithCause:(id)a3 scope:(id)a4 error:(id *)a5;
-- (BOOL)_storeChangeSessionUpdate:(id)a3 error:(id *)a4;
-- (BOOL)addPushPullGatekeeper:(id)a3 error:(id *)a4;
-- (BOOL)applyPreviousChangeSessionUpdateWithExpectedLibraryVersion:(id)a3 error:(id *)a4;
-- (BOOL)beginChangeSession:(id)a3 withLibraryVersion:(id)a4 resetTracker:(id)a5 error:(id *)a6;
-- (BOOL)canActivateScope:(id)a3 error:(id *)a4;
-- (BOOL)checkExpectedLibraryVersion:(id)a3 error:(id *)a4;
-- (BOOL)clearAllPushPullGatekeepersWithError:(id *)a3;
-- (BOOL)clientCanPushScopeChange:(id)a3;
-- (BOOL)createStoragesDynamically:(id)a3 error:(id *)a4;
-- (BOOL)deleteDynamicallyCreatedStorages:(id)a3 error:(id *)a4;
-- (BOOL)forceApplyPendingChangeSessionUpdateWithError:(id *)a3;
+- (BOOL)_handleException:(id)exception;
+- (BOOL)_resetCompleteSyncStateIncludingIDMappingWithCause:(id)cause scope:(id)scope error:(id *)error;
+- (BOOL)_resetCompleteSyncStateWithCause:(id)cause scope:(id)scope error:(id *)error;
+- (BOOL)_resetGlobalStateWithError:(id *)error;
+- (BOOL)_resetLocalSyncStateWithCause:(id)cause scope:(id)scope date:(id)date error:(id *)error;
+- (BOOL)_resetSyncAnchorWithCause:(id)cause scope:(id)scope error:(id *)error;
+- (BOOL)_storeChangeSessionUpdate:(id)update error:(id *)error;
+- (BOOL)addPushPullGatekeeper:(id)gatekeeper error:(id *)error;
+- (BOOL)applyPreviousChangeSessionUpdateWithExpectedLibraryVersion:(id)version error:(id *)error;
+- (BOOL)beginChangeSession:(id)session withLibraryVersion:(id)version resetTracker:(id)tracker error:(id *)error;
+- (BOOL)canActivateScope:(id)scope error:(id *)error;
+- (BOOL)checkExpectedLibraryVersion:(id)version error:(id *)error;
+- (BOOL)clearAllPushPullGatekeepersWithError:(id *)error;
+- (BOOL)clientCanPushScopeChange:(id)change;
+- (BOOL)createStoragesDynamically:(id)dynamically error:(id *)error;
+- (BOOL)deleteDynamicallyCreatedStorages:(id)storages error:(id *)error;
+- (BOOL)forceApplyPendingChangeSessionUpdateWithError:(id *)error;
 - (BOOL)hasPendingChangeSessionUpdate;
 - (BOOL)hasPendingResetSync;
 - (BOOL)hasUnacknowledgedChanges;
 - (BOOL)isClientInSyncWithClientCache;
-- (BOOL)isFeatureDisabled:(id)a3;
-- (BOOL)mainScopeSupportsSharingScopeWithIdentifier:(id)a3;
+- (BOOL)isFeatureDisabled:(id)disabled;
+- (BOOL)mainScopeSupportsSharingScopeWithIdentifier:(id)identifier;
 - (BOOL)pushRepositoryIsFull;
-- (BOOL)resetCompleteSyncStateIncludingIDMappingWithCause:(id)a3 error:(id *)a4;
-- (BOOL)resetCompleteSyncStateWithCause:(id)a3 error:(id *)a4;
-- (BOOL)resetLocalSyncStateWithCause:(id)a3 date:(id)a4 error:(id *)a5;
-- (BOOL)resetSyncAnchorWithCause:(id)a3 error:(id *)a4;
-- (BOOL)setShouldUpdateDisabledFeaturesWithError:(id *)a3;
+- (BOOL)resetCompleteSyncStateIncludingIDMappingWithCause:(id)cause error:(id *)error;
+- (BOOL)resetCompleteSyncStateWithCause:(id)cause error:(id *)error;
+- (BOOL)resetLocalSyncStateWithCause:(id)cause date:(id)date error:(id *)error;
+- (BOOL)resetSyncAnchorWithCause:(id)cause error:(id *)error;
+- (BOOL)setShouldUpdateDisabledFeaturesWithError:(id *)error;
 - (BOOL)shouldSyncScopeList;
 - (BOOL)shouldUpdateDisabledFeatures;
-- (BOOL)storeChangeSessionUpdate:(id)a3 error:(id *)a4;
-- (BOOL)storeClientIsInSyncWithClientCacheWithError:(id *)a3;
-- (BOOL)storeDerivativesFilter:(id)a3 error:(id *)a4;
-- (BOOL)storeLastQuarantineCountReportDate:(id)a3 error:(id *)a4;
-- (BOOL)storeLibraryVersion:(id)a3 withError:(id *)a4;
-- (BOOL)storeUserIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)storeChangeSessionUpdate:(id)update error:(id *)error;
+- (BOOL)storeClientIsInSyncWithClientCacheWithError:(id *)error;
+- (BOOL)storeDerivativesFilter:(id)filter error:(id *)error;
+- (BOOL)storeLastQuarantineCountReportDate:(id)date error:(id *)error;
+- (BOOL)storeLibraryVersion:(id)version withError:(id *)error;
+- (BOOL)storeUserIdentifier:(id)identifier error:(id *)error;
 - (BOOL)storeVersionHasChanged;
-- (BOOL)supportsSharingScopeWithIdentifier:(id)a3 forScopeWithIdentifier:(id)a4;
+- (BOOL)supportsSharingScopeWithIdentifier:(id)identifier forScopeWithIdentifier:(id)withIdentifier;
 - (BOOL)syncSessionShouldRequestMoreTime;
-- (BOOL)updateDisabledFeatures:(id)a3 didReset:(BOOL *)a4 error:(id *)a5;
-- (BOOL)updateLibraryOptions:(unint64_t)a3 error:(id *)a4;
+- (BOOL)updateDisabledFeatures:(id)features didReset:(BOOL *)reset error:(id *)error;
+- (BOOL)updateLibraryOptions:(unint64_t)options error:(id *)error;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineStore)initWithEngineLibrary:(id)a3;
+- (CPLEngineStore)initWithEngineLibrary:(id)library;
 - (CPLRecordStorageView)transactionClientCacheView;
 - (CPLTransportScopeMapping)transactionTransportScopeMapping;
 - (NSArray)disabledFeatures;
@@ -59,7 +59,7 @@
 - (NSString)description;
 - (NSString)mainScopeIdentifier;
 - (id)_currentTransaction;
-- (id)_performWriteTransactionByPassBlocker:(id)a3 WithBlock:(id)a4 completionHandler:(id)a5;
+- (id)_performWriteTransactionByPassBlocker:(id)blocker WithBlock:(id)block completionHandler:(id)handler;
 - (id)_resetEventsDescriptions;
 - (id)_resetEventsJSON;
 - (id)_storedDisabledFeatures;
@@ -69,61 +69,61 @@
 - (id)derivativesFilter;
 - (id)lastQuarantineCountReportDate;
 - (id)libraryVersion;
-- (id)localResourceForCloudResource:(id)a3 recordClass:(Class *)a4;
-- (id)newClientCacheViewUsesPushRepository:(BOOL *)a3;
-- (id)performReadTransactionWithBlock:(id)a3;
-- (id)unacknowledgedChangeWithLocalScopedIdentifier:(id)a3;
+- (id)localResourceForCloudResource:(id)resource recordClass:(Class *)class;
+- (id)newClientCacheViewUsesPushRepository:(BOOL *)repository;
+- (id)performReadTransactionWithBlock:(id)block;
+- (id)unacknowledgedChangeWithLocalScopedIdentifier:(id)identifier;
 - (id)userIdentifier;
 - (unint64_t)libraryOptions;
-- (void)_addCleanupBlock:(id)a3;
-- (void)_closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
-- (void)_commitWriteTransaction:(id)a3 commitError:(id)a4;
+- (void)_addCleanupBlock:(id)block;
+- (void)_closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
+- (void)_commitWriteTransaction:(id)transaction commitError:(id)error;
 - (void)_dropTransactionClientCacheView;
 - (void)_finishTransaction;
-- (void)_forceCloseWithCompletionHandler:(id)a3;
+- (void)_forceCloseWithCompletionHandler:(id)handler;
 - (void)_loadResetEvents;
-- (void)_performBarrierTransaction:(id)a3 withBlock:(id)a4;
-- (void)_performTransaction:(id)a3 withBlock:(id)a4;
+- (void)_performBarrierTransaction:(id)transaction withBlock:(id)block;
+- (void)_performTransaction:(id)transaction withBlock:(id)block;
 - (void)_reallyPerformBatchedTransactionsLocked;
 - (void)_reallySchedulePendingUpdateApply;
 - (void)_reallyUnschedulePendingUpdateApply;
-- (void)_removeTransactionOnCurrentThread:(id)a3;
+- (void)_removeTransactionOnCurrentThread:(id)thread;
 - (void)_scheduleBatchedTransactionsLocked;
 - (void)_schedulePendingUpdateApply;
-- (void)_setSharingScopeIdentifier:(id)a3;
-- (void)_setTransactionOnCurrentThread:(id)a3;
-- (void)_storeResetEvent:(id)a3 scopeIdentifier:(id)a4 date:(id)a5 pending:(BOOL)a6 cause:(id)a7;
+- (void)_setSharingScopeIdentifier:(id)identifier;
+- (void)_setTransactionOnCurrentThread:(id)thread;
+- (void)_storeResetEvent:(id)event scopeIdentifier:(id)identifier date:(id)date pending:(BOOL)pending cause:(id)cause;
 - (void)_unschedulePendingUpdateApply;
-- (void)_updateShouldSyncScopeList:(BOOL)a3;
+- (void)_updateShouldSyncScopeList:(BOOL)list;
 - (void)assertCanRead;
 - (void)assertCanWrite;
 - (void)assertNoUnacknowledgedChanges;
-- (void)blockWriteTransactionsWithCompletionHandler:(id)a3;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
+- (void)blockWriteTransactionsWithCompletionHandler:(id)handler;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
 - (void)dealloc;
-- (void)dropSharingScopeIdentifier:(id)a3;
+- (void)dropSharingScopeIdentifier:(id)identifier;
 - (void)dropUnacknowledgedBatch;
 - (void)emergencyClose;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
-- (void)keepUnacknowledgedBatch:(id)a3;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
+- (void)keepUnacknowledgedBatch:(id)batch;
 - (void)markAsCorrupted;
-- (void)noteInvalidRecordScopedIdentifiersInPushSession:(id)a3;
-- (void)noteOtherResetEvent:(id)a3 cause:(id)a4;
+- (void)noteInvalidRecordScopedIdentifiersInPushSession:(id)session;
+- (void)noteOtherResetEvent:(id)event cause:(id)cause;
 - (void)notePushRepositoryStoredSomeChanges;
 - (void)noteResetSyncFinished;
-- (void)openWithCompletionHandler:(id)a3;
+- (void)openWithCompletionHandler:(id)handler;
 - (void)performBarrier;
 - (void)performBatchedWriteTransactionBarrier;
-- (void)performBatchedWriteTransactionBarrierWithCompletionBlock:(id)a3;
-- (void)performBatchedWriteTransactionWithBlock:(id)a3 completionHandler:(id)a4;
-- (void)predictSyncSessionValue:(id)a3 ofType:(id)a4;
-- (void)registerStorage:(id)a3;
-- (void)startVacuumWithCompletionHandler:(id)a3;
+- (void)performBatchedWriteTransactionBarrierWithCompletionBlock:(id)block;
+- (void)performBatchedWriteTransactionWithBlock:(id)block completionHandler:(id)handler;
+- (void)predictSyncSessionValue:(id)value ofType:(id)type;
+- (void)registerStorage:(id)storage;
+- (void)startVacuumWithCompletionHandler:(id)handler;
 - (void)stopVacuum;
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5;
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler;
 - (void)transactionDidFinish;
-- (void)wipeStoreAtNextOpeningWithReason:(id)a3 completionBlock:(id)a4;
+- (void)wipeStoreAtNextOpeningWithReason:(id)reason completionBlock:(id)block;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -132,18 +132,18 @@
 
 - (id)clientCacheIdentifier
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 clientCacheIdentifier];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  clientCacheIdentifier = [platformObject clientCacheIdentifier];
 
-  return v3;
+  return clientCacheIdentifier;
 }
 
 - (BOOL)isClientInSyncWithClientCache
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 isClientInSyncWithClientCache];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  isClientInSyncWithClientCache = [platformObject isClientInSyncWithClientCache];
 
-  return v3;
+  return isClientInSyncWithClientCache;
 }
 
 - (BOOL)shouldSyncScopeList
@@ -186,35 +186,35 @@
     block[3] = &unk_1E861A940;
     block[4] = self;
     dispatch_sync(shouldSyncScopeListQueue, block);
-    v4 = [(CPLEngineStore *)self engineLibrary];
-    v5 = [v4 scheduler];
-    [v5 noteScopeListNeedsUpdate];
+    engineLibrary = [(CPLEngineStore *)self engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [scheduler noteScopeListNeedsUpdate];
 
     self->_shouldEnableScopeListSyncOnWriteSuccess = 0;
   }
 
   if (self->_scheduleSetupOnWriteSuccess)
   {
-    v6 = [(CPLEngineStore *)self engineLibrary];
-    v7 = [v6 scheduler];
-    [v7 noteStoreNeedsSetup];
+    engineLibrary2 = [(CPLEngineStore *)self engineLibrary];
+    scheduler2 = [engineLibrary2 scheduler];
+    [scheduler2 noteStoreNeedsSetup];
 
     self->_scheduleSetupOnWriteSuccess = 0;
   }
 
   if (self->_scheduleDisabledFeatureUpdateOnWriteSuccess)
   {
-    v8 = [(CPLEngineStore *)self engineLibrary];
-    v9 = [v8 scheduler];
-    [v9 noteStoreNeedsToUpdateDisabledFeatures];
+    engineLibrary3 = [(CPLEngineStore *)self engineLibrary];
+    scheduler3 = [engineLibrary3 scheduler];
+    [scheduler3 noteStoreNeedsToUpdateDisabledFeatures];
 
     self->_scheduleDisabledFeatureUpdateOnWriteSuccess = 0;
   }
 
   if (self->_schedulePullFromClient)
   {
-    v10 = [(CPLEngineStore *)self engineLibrary];
-    [v10 notifyAttachedObjectsPullQueueIsFull];
+    engineLibrary4 = [(CPLEngineStore *)self engineLibrary];
+    [engineLibrary4 notifyAttachedObjectsPullQueueIsFull];
 
     self->_schedulePullFromClient = 0;
   }
@@ -225,16 +225,16 @@
   if (self->_transactionNewPredictions)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-    v12 = [WeakRetained scheduler];
-    v13 = [v12 predictor];
-    [v13 updatePredictionWithValuesAndTypes:self->_transactionNewPredictions];
+    scheduler4 = [WeakRetained scheduler];
+    predictor = [scheduler4 predictor];
+    [predictor updatePredictionWithValuesAndTypes:self->_transactionNewPredictions];
 
     transactionNewPredictions = self->_transactionNewPredictions;
     self->_transactionNewPredictions = 0;
   }
 
-  v15 = [(CPLEngineStore *)self platformObject];
-  [v15 writeTransactionDidSucceed];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject writeTransactionDidSucceed];
 }
 
 - (void)_finishTransaction
@@ -298,11 +298,11 @@
   return WeakRetained;
 }
 
-- (void)testKey:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)testKey:(id)key value:(id)value completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  handlerCopy = handler;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -318,9 +318,9 @@
   v19[2] = __50__CPLEngineStore_testKey_value_completionHandler___block_invoke;
   v19[3] = &unk_1E861C170;
   v19[4] = self;
-  v11 = v8;
+  v11 = keyCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = valueCopy;
   v21 = v12;
   v22 = v26;
   v23 = v24;
@@ -329,7 +329,7 @@
   v15[2] = __50__CPLEngineStore_testKey_value_completionHandler___block_invoke_3;
   v15[3] = &unk_1E861B9E8;
   v17 = v26;
-  v13 = v10;
+  v13 = handlerCopy;
   v16 = v13;
   v18 = v24;
   v14 = [(CPLEngineStore *)self performWriteTransactionWithBlock:v19 completionHandler:v15];
@@ -451,16 +451,16 @@ LABEL_3:
   return v17;
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CPLEngineStore_getStatusDictionaryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8620308;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(CPLEngineStore *)self performReadTransactionWithBlock:v7];
 }
 
@@ -526,16 +526,16 @@ void __59__CPLEngineStore_getStatusDictionaryWithCompletionHandler___block_invok
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CPLEngineStore_getStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8620308;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(CPLEngineStore *)self performReadTransactionWithBlock:v7];
 }
 
@@ -1010,37 +1010,37 @@ uint64_t __49__CPLEngineStore_getStatusWithCompletionHandler___block_invoke_3(ui
       }
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    [v9 handleFailureInMethod:a2 object:self file:v10 lineNumber:2380 description:{@"Store still has an unacknowledged batch %@", self->_unacknowledgedBatch}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:2380 description:{@"Store still has an unacknowledged batch %@", self->_unacknowledgedBatch}];
 LABEL_14:
 
     abort();
   }
 
-  v4 = [(CPLEngineStore *)self platformObject];
-  v5 = [v4 hasStoredChangeSessionUpdate];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  hasStoredChangeSessionUpdate = [platformObject hasStoredChangeSessionUpdate];
 
-  if (v5)
+  if (hasStoredChangeSessionUpdate)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v11 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [(CPLEngineStore *)self platformObject];
-        v13 = [v12 storedChangeSessionUpdate];
+        platformObject2 = [(CPLEngineStore *)self platformObject];
+        storedChangeSessionUpdate = [platformObject2 storedChangeSessionUpdate];
         *buf = 138412290;
-        v17 = v13;
+        v17 = storedChangeSessionUpdate;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Store still has an un-applied session update: %@", buf, 0xCu);
       }
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v14 = [(CPLEngineStore *)self platformObject];
-    v15 = [v14 storedChangeSessionUpdate];
-    [v9 handleFailureInMethod:a2 object:self file:v10 lineNumber:2381 description:{@"Store still has an un-applied session update: %@", v15}];
+    platformObject3 = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate2 = [platformObject3 storedChangeSessionUpdate];
+    [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:2381 description:{@"Store still has an un-applied session update: %@", storedChangeSessionUpdate2}];
 
     goto LABEL_14;
   }
@@ -1058,23 +1058,23 @@ LABEL_14:
       v5 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v6 = [MEMORY[0x1E696AF00] currentThread];
-        v7 = [(CPLEngineStore *)self _currentTransaction];
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        _currentTransaction = [(CPLEngineStore *)self _currentTransaction];
         *buf = 134218498;
-        v13 = v6;
+        v13 = currentThread;
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v7;
+        v17 = _currentTransaction;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_ERROR, "Trying to read on thread %p in %@ outside of a read transaction (current transaction is %@)", buf, 0x20u);
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v10 = [MEMORY[0x1E696AF00] currentThread];
-    v11 = [(CPLEngineStore *)self _currentTransaction];
-    [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:2376 description:{@"Trying to read on thread %p in %@ outside of a read transaction (current transaction is %@)", v10, self, v11}];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    _currentTransaction2 = [(CPLEngineStore *)self _currentTransaction];
+    [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:2376 description:{@"Trying to read on thread %p in %@ outside of a read transaction (current transaction is %@)", currentThread2, self, _currentTransaction2}];
 
     abort();
   }
@@ -1092,23 +1092,23 @@ LABEL_14:
       v5 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v6 = [MEMORY[0x1E696AF00] currentThread];
-        v7 = [(CPLEngineStore *)self _currentTransaction];
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        _currentTransaction = [(CPLEngineStore *)self _currentTransaction];
         *buf = 134218498;
-        v13 = v6;
+        v13 = currentThread;
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v7;
+        v17 = _currentTransaction;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_ERROR, "Trying to write on thread %p in %@ outside of a write transaction (current transaction is %@)", buf, 0x20u);
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v10 = [MEMORY[0x1E696AF00] currentThread];
-    v11 = [(CPLEngineStore *)self _currentTransaction];
-    [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:2372 description:{@"Trying to write on thread %p in %@ outside of a write transaction (current transaction is %@)", v10, self, v11}];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    _currentTransaction2 = [(CPLEngineStore *)self _currentTransaction];
+    [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:2372 description:{@"Trying to write on thread %p in %@ outside of a write transaction (current transaction is %@)", currentThread2, self, _currentTransaction2}];
 
     abort();
   }
@@ -1118,63 +1118,63 @@ LABEL_14:
 
 - (BOOL)_canWrite
 {
-  v2 = [(CPLEngineStore *)self _currentTransaction];
-  v3 = [v2 canWrite];
+  _currentTransaction = [(CPLEngineStore *)self _currentTransaction];
+  canWrite = [_currentTransaction canWrite];
 
-  return v3;
+  return canWrite;
 }
 
 - (BOOL)_canRead
 {
-  v2 = [(CPLEngineStore *)self _currentTransaction];
-  v3 = [v2 canRead];
+  _currentTransaction = [(CPLEngineStore *)self _currentTransaction];
+  canRead = [_currentTransaction canRead];
 
-  return v3;
+  return canRead;
 }
 
-- (void)_removeTransactionOnCurrentThread:(id)a3
+- (void)_removeTransactionOnCurrentThread:(id)thread
 {
   v17 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  [v14 _transactionDidFinish];
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  threadCopy = thread;
+  [threadCopy _transactionDidFinish];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
 
-  if (v7 != v14)
+  if (v7 != threadCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v9 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+        v10 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
         *buf = 138412290;
         v16 = v10;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Trying to remove the wrong transaction on thread: %@", buf, 0xCu);
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v13 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:2355 description:{@"Trying to remove the wrong transaction on thread: %@", v13}];
+    v13 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:2355 description:{@"Trying to remove the wrong transaction on thread: %@", v13}];
 
     abort();
   }
 
-  [v6 removeObjectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  [threadDictionary removeObjectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setTransactionOnCurrentThread:(id)a3
+- (void)_setTransactionOnCurrentThread:(id)thread
 {
   v19 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  threadCopy = thread;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
 
   if (v7)
   {
@@ -1183,43 +1183,43 @@ LABEL_14:
       v9 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+        v10 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
         *buf = 138412546;
-        v16 = v14;
+        v16 = threadCopy;
         v17 = 2112;
         v18 = v10;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Trying to setup a transaction %@ on a thread which already has one: %@", buf, 0x16u);
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v13 = [v6 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:2346 description:{@"Trying to setup a transaction %@ on a thread which already has one: %@", v14, v13}];
+    v13 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:2346 description:{@"Trying to setup a transaction %@ on a thread which already has one: %@", threadCopy, v13}];
 
     abort();
   }
 
-  [v6 setObject:v14 forKey:@"com.apple.cloudphotolibrary.currenttransaction"];
-  [v14 _transactionWillBeginOnThread:v5];
+  [threadDictionary setObject:threadCopy forKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  [threadCopy _transactionWillBeginOnThread:currentThread];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (id)_currentTransaction
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
 
   return v4;
 }
 
-- (void)_addCleanupBlock:(id)a3
+- (void)_addCleanupBlock:(id)block
 {
-  v10 = a3;
-  v5 = [(CPLEngineStore *)self _currentTransaction];
-  if (!v5)
+  blockCopy = block;
+  _currentTransaction = [(CPLEngineStore *)self _currentTransaction];
+  if (!_currentTransaction)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -1231,36 +1231,36 @@ LABEL_14:
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:2334 description:@"Trying to add a clean-up block while not in a transaction"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:2334 description:@"Trying to add a clean-up block while not in a transaction"];
 
     abort();
   }
 
-  v6 = v5;
-  [v5 addCleanupBlock:v10];
+  v6 = _currentTransaction;
+  [_currentTransaction addCleanupBlock:blockCopy];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CPLEngineStore *)self engineLibrary];
-  v6 = [v5 libraryIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, v6];
+  engineLibrary = [(CPLEngineStore *)self engineLibrary];
+  libraryIdentifier = [engineLibrary libraryIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, libraryIdentifier];
 
   return v7;
 }
 
-- (void)dropSharingScopeIdentifier:(id)a3
+- (void)dropSharingScopeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   sharingScopeIdentifier = self->_sharingScopeIdentifier;
-  v6 = v4;
-  if (!v4 || !sharingScopeIdentifier)
+  v6 = identifierCopy;
+  if (!identifierCopy || !sharingScopeIdentifier)
   {
-    if (v4 | sharingScopeIdentifier)
+    if (identifierCopy | sharingScopeIdentifier)
     {
       goto LABEL_7;
     }
@@ -1268,7 +1268,7 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if ([v4 isEqual:?])
+  if ([identifierCopy isEqual:?])
   {
 LABEL_6:
     [(CPLEngineStore *)self _setSharingScopeIdentifier:0];
@@ -1277,30 +1277,30 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_setSharingScopeIdentifier:(id)a3
+- (void)_setSharingScopeIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5 && ![(CPLEngineStore *)self mainScopeSupportsSharingScopeWithIdentifier:v5])
+  identifierCopy = identifier;
+  if (identifierCopy && ![(CPLEngineStore *)self mainScopeSupportsSharingScopeWithIdentifier:identifierCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v13 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(CPLEngineStore *)self mainScopeIdentifier];
+        mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
         *buf = 138412546;
-        v22 = v5;
+        v22 = identifierCopy;
         v23 = 2112;
-        v24 = v14;
+        v24 = mainScopeIdentifier;
         _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "Trying to bind sharing scope %@ with %@", buf, 0x16u);
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v17 = [(CPLEngineStore *)self mainScopeIdentifier];
-    [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:2291 description:{@"Trying to bind sharing scope %@ with %@", v5, v17}];
+    mainScopeIdentifier2 = [(CPLEngineStore *)self mainScopeIdentifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:2291 description:{@"Trying to bind sharing scope %@ with %@", identifierCopy, mainScopeIdentifier2}];
 
     abort();
   }
@@ -1312,19 +1312,19 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = v5;
+      v22 = identifierCopy;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Setting sharing scope identifier to %{public}@", buf, 0xCu);
     }
   }
 
   sharingScopeIdentifier = self->_sharingScopeIdentifier;
-  self->_sharingScopeIdentifier = v5;
-  v9 = v5;
+  self->_sharingScopeIdentifier = identifierCopy;
+  v9 = identifierCopy;
 
   if (!self->_sharingScopeIdentifier)
   {
-    v10 = [(CPLEngineStore *)self engineLibrary];
-    [v10 setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:0];
+    engineLibrary = [(CPLEngineStore *)self engineLibrary];
+    [engineLibrary setEstimatedCountOfRemainingRecordsDuringSharedLibraryExit:0];
   }
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -1332,7 +1332,7 @@ LABEL_7:
   v18[2] = __45__CPLEngineStore__setSharingScopeIdentifier___block_invoke;
   v18[3] = &unk_1E86204A0;
   v19 = v6;
-  v20 = self;
+  selfCopy = self;
   v11 = v6;
   [(CPLEngineStore *)self _addCleanupBlock:v18];
 
@@ -1375,85 +1375,85 @@ void __45__CPLEngineStore__setSharingScopeIdentifier___block_invoke(uint64_t a1,
     }
   }
 
-  v4 = [(CPLEngineStore *)self platformObject];
-  [v4 markAsCorrupted];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject markAsCorrupted];
 }
 
 - (void)emergencyClose
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  [v2 emergencyClose];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject emergencyClose];
 }
 
 - (void)stopVacuum
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  [v2 stopVacuum];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject stopVacuum];
 }
 
-- (void)startVacuumWithCompletionHandler:(id)a3
+- (void)startVacuumWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineStore *)self platformObject];
-  [v5 startVacuumWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject startVacuumWithCompletionHandler:handlerCopy];
 }
 
 - (BOOL)storeVersionHasChanged
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 storeVersionHasChanged];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  storeVersionHasChanged = [platformObject storeVersionHasChanged];
 
-  return v3;
+  return storeVersionHasChanged;
 }
 
-- (BOOL)clientCanPushScopeChange:(id)a3
+- (BOOL)clientCanPushScopeChange:(id)change
 {
-  v4 = [a3 scopeType];
-  v5 = [(CPLEngineStore *)self libraryOptions];
-  if (v4 > 8)
+  scopeType = [change scopeType];
+  libraryOptions = [(CPLEngineStore *)self libraryOptions];
+  if (scopeType > 8)
   {
     goto LABEL_7;
   }
 
-  if (((1 << v4) & 0xC) != 0)
+  if (((1 << scopeType) & 0xC) != 0)
   {
-    return (v5 >> 2) & 1;
+    return (libraryOptions >> 2) & 1;
   }
 
-  if (((1 << v4) & 0x30) != 0)
+  if (((1 << scopeType) & 0x30) != 0)
   {
-    LODWORD(v5) = (isSharedLibraryFeatureEnabled | ~overridesSharedLibraryFeatureFlag) & (v5 >> 3) & 1;
-    return v5;
+    LODWORD(libraryOptions) = (isSharedLibraryFeatureEnabled | ~overridesSharedLibraryFeatureFlag) & (libraryOptions >> 3) & 1;
+    return libraryOptions;
   }
 
-  if (((1 << v4) & 0x180) != 0)
+  if (((1 << scopeType) & 0x180) != 0)
   {
-    LOBYTE(v5) = CPLIsCollectionShareFeatureEnabled() & ((v5 & 0x10) != 0);
+    LOBYTE(libraryOptions) = CPLIsCollectionShareFeatureEnabled() & ((libraryOptions & 0x10) != 0);
   }
 
   else
   {
 LABEL_7:
-    LOBYTE(v5) = v4 == 1 && (v5 & 2) != 0;
+    LOBYTE(libraryOptions) = scopeType == 1 && (libraryOptions & 2) != 0;
   }
 
-  return v5;
+  return libraryOptions;
 }
 
-- (BOOL)canActivateScope:(id)a3 error:(id *)a4
+- (BOOL)canActivateScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self libraryOptions];
-  if ([(CPLEngineStore *)self _canHaveActivatedScope:v6 libraryOptions:v7 error:a4])
+  scopeCopy = scope;
+  libraryOptions = [(CPLEngineStore *)self libraryOptions];
+  if ([(CPLEngineStore *)self _canHaveActivatedScope:scopeCopy libraryOptions:libraryOptions error:error])
   {
-    v8 = +[CPLScopeChange shouldAutoActivateScopeWithType:](CPLScopeChange, "shouldAutoActivateScopeWithType:", [v6 scopeType]);
+    v8 = +[CPLScopeChange shouldAutoActivateScopeWithType:](CPLScopeChange, "shouldAutoActivateScopeWithType:", [scopeCopy scopeType]);
     v9 = !v8;
-    if (a4 && v8)
+    if (error && v8)
     {
-      v10 = [v6 scopeIdentifier];
-      v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v6 scopeType]);
-      v12 = [CPLLibraryManager descriptionForLibraryOptions:v7];
-      *a4 = [CPLErrors cplErrorWithCode:38 description:@"You are not allowed to activate %@ (%@) with these library options (%@)", v10, v11, v12];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
+      v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
+      v12 = [CPLLibraryManager descriptionForLibraryOptions:libraryOptions];
+      *error = [CPLErrors cplErrorWithCode:38 description:@"You are not allowed to activate %@ (%@) with these library options (%@)", scopeIdentifier, v11, v12];
     }
   }
 
@@ -1465,36 +1465,36 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_canHaveActivatedScope:(id)a3 libraryOptions:(unint64_t)a4 error:(id *)a5
+- (BOOL)_canHaveActivatedScope:(id)scope libraryOptions:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 scopeType];
-  if (![CPLScopeChange supportsActivationOfScopeWithType:v9])
+  scopeCopy = scope;
+  scopeType = [scopeCopy scopeType];
+  if (![CPLScopeChange supportsActivationOfScopeWithType:scopeType])
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_23:
       LOBYTE(self) = 0;
       goto LABEL_24;
     }
 
-    v10 = [v8 scopeIdentifier];
-    v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v8 scopeType]);
-    *a5 = [CPLErrors cplErrorWithCode:38 description:@"%@ (%@) is not supported", v10, v11];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
+    *error = [CPLErrors cplErrorWithCode:38 description:@"%@ (%@) is not supported", scopeIdentifier, v11];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if (v9 > 8)
+  if (scopeType > 8)
   {
     goto LABEL_12;
   }
 
-  if (((1 << v9) & 0xC) != 0)
+  if (((1 << scopeType) & 0xC) != 0)
   {
-    self = ((a4 >> 2) & 1);
-    if (!a5)
+    self = ((options >> 2) & 1);
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1502,12 +1502,12 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  if (((1 << v9) & 0x30) != 0)
+  if (((1 << scopeType) & 0x30) != 0)
   {
-    v12 = [v8 scopeIdentifier];
-    LOBYTE(self) = [(CPLEngineStore *)self mainScopeSupportsSharingScopeWithIdentifier:v12];
+    scopeIdentifier2 = [scopeCopy scopeIdentifier];
+    LOBYTE(self) = [(CPLEngineStore *)self mainScopeSupportsSharingScopeWithIdentifier:scopeIdentifier2];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1515,10 +1515,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  if (((1 << v9) & 0x180) != 0)
+  if (((1 << scopeType) & 0x180) != 0)
   {
-    LODWORD(self) = CPLIsCollectionShareFeatureEnabled() & (a4 >> 4);
-    if (!a5)
+    LODWORD(self) = CPLIsCollectionShareFeatureEnabled() & (options >> 4);
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1527,11 +1527,11 @@ LABEL_22:
   else
   {
 LABEL_12:
-    if (v9 == 1)
+    if (scopeType == 1)
     {
-      v13 = [v8 scopeIdentifier];
-      v14 = [(CPLEngineStore *)self mainScopeIdentifier];
-      v15 = [v13 isEqualToString:v14];
+      scopeIdentifier3 = [scopeCopy scopeIdentifier];
+      mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+      v15 = [scopeIdentifier3 isEqualToString:mainScopeIdentifier];
 
       if (v15)
       {
@@ -1539,8 +1539,8 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      self = ((a4 >> 1) & 1);
-      if (!a5)
+      self = ((options >> 1) & 1);
+      if (!error)
       {
         goto LABEL_24;
       }
@@ -1549,7 +1549,7 @@ LABEL_12:
     else
     {
       LOBYTE(self) = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_24;
       }
@@ -1559,10 +1559,10 @@ LABEL_12:
 LABEL_20:
   if ((self & 1) == 0)
   {
-    v10 = [v8 scopeIdentifier];
-    v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v8 scopeType]);
-    v16 = [CPLLibraryManager descriptionForLibraryOptions:a4];
-    *a5 = [CPLErrors cplErrorWithCode:38 description:@"%@ (%@) can't be active with these library options (%@)", v10, v11, v16];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    v11 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
+    v16 = [CPLLibraryManager descriptionForLibraryOptions:options];
+    *error = [CPLErrors cplErrorWithCode:38 description:@"%@ (%@) can't be active with these library options (%@)", scopeIdentifier, v11, v16];
 
     goto LABEL_22;
   }
@@ -1578,9 +1578,9 @@ LABEL_24:
   if (!transactionTransportScopeMapping)
   {
     v4 = [CPLTransportScopeMapping alloc];
-    v5 = [(CPLEngineStore *)self engineLibrary];
-    v6 = [v5 transport];
-    v7 = [(CPLTransportScopeMapping *)v4 initWithTranslator:v6];
+    engineLibrary = [(CPLEngineStore *)self engineLibrary];
+    transport = [engineLibrary transport];
+    v7 = [(CPLTransportScopeMapping *)v4 initWithTranslator:transport];
     v8 = self->_transactionTransportScopeMapping;
     self->_transactionTransportScopeMapping = v7;
 
@@ -1592,12 +1592,12 @@ LABEL_24:
 
 - (BOOL)syncSessionShouldRequestMoreTime
 {
-  v3 = [(CPLEngineScopeStorage *)self->_scopes primaryScope];
-  if (v3 && ![(CPLEngineScopeStorage *)self->_scopes valueForFlag:16 forScope:v3])
+  primaryScope = [(CPLEngineScopeStorage *)self->_scopes primaryScope];
+  if (primaryScope && ![(CPLEngineScopeStorage *)self->_scopes valueForFlag:16 forScope:primaryScope])
   {
-    if ([(CPLEngineScopeStorage *)self->_scopes hasFinishedInitialDownloadForScope:v3])
+    if ([(CPLEngineScopeStorage *)self->_scopes hasFinishedInitialDownloadForScope:primaryScope])
     {
-      v6 = [(CPLEngineScopeStorage *)self->_scopes sharingScopeForScope:v3];
+      v6 = [(CPLEngineScopeStorage *)self->_scopes sharingScopeForScope:primaryScope];
       if (v6)
       {
         v4 = ![(CPLEngineScopeStorage *)self->_scopes hasFinishedInitialDownloadForScope:v6];
@@ -1623,20 +1623,20 @@ LABEL_24:
   return v4;
 }
 
-- (void)predictSyncSessionValue:(id)a3 ofType:(id)a4
+- (void)predictSyncSessionValue:(id)value ofType:(id)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  typeCopy = type;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v8 = __CPLStoreOSLogDomain_3044();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412546;
-      v14 = v7;
+      v14 = typeCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = valueCopy;
       _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEBUG, "Updating prediction for %@ to %@", &v13, 0x16u);
     }
   }
@@ -1651,48 +1651,48 @@ LABEL_24:
     transactionNewPredictions = self->_transactionNewPredictions;
   }
 
-  [(NSMutableDictionary *)transactionNewPredictions setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)transactionNewPredictions setObject:valueCopy forKeyedSubscript:typeCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)wipeStoreAtNextOpeningWithReason:(id)a3 completionBlock:(id)a4
+- (void)wipeStoreAtNextOpeningWithReason:(id)reason completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineStore *)self platformObject];
-  [v8 wipeStoreAtNextOpeningWithReason:v7 completionBlock:v6];
+  blockCopy = block;
+  reasonCopy = reason;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject wipeStoreAtNextOpeningWithReason:reasonCopy completionBlock:blockCopy];
 }
 
-- (BOOL)storeDerivativesFilter:(id)a3 error:(id *)a4
+- (BOOL)storeDerivativesFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 storeDerivativesFilter:v6 error:a4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storeDerivativesFilter:filterCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)derivativesFilter
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 derivativesFilter];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  derivativesFilter = [platformObject derivativesFilter];
 
-  return v3;
+  return derivativesFilter;
 }
 
-- (id)localResourceForCloudResource:(id)a3 recordClass:(Class *)a4
+- (id)localResourceForCloudResource:(id)resource recordClass:(Class *)class
 {
-  v6 = a3;
-  v7 = [v6 itemScopedIdentifier];
-  if (v7)
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  if (itemScopedIdentifier)
   {
     v12 = 0;
-    v8 = [(CPLEngineIDMapping *)self->_idMapping localScopedIdentifierForCloudScopedIdentifier:v7 isFinal:&v12];
+    v8 = [(CPLEngineIDMapping *)self->_idMapping localScopedIdentifierForCloudScopedIdentifier:itemScopedIdentifier isFinal:&v12];
     if (v8)
     {
-      v9 = [(CPLEngineStore *)self transactionClientCacheView];
-      v10 = [v9 resourceOfType:objc_msgSend(v6 forRecordWithScopedIdentifier:"resourceType") recordClass:v8 error:{a4, 0}];
+      transactionClientCacheView = [(CPLEngineStore *)self transactionClientCacheView];
+      v10 = [transactionClientCacheView resourceOfType:objc_msgSend(resourceCopy forRecordWithScopedIdentifier:"resourceType") recordClass:v8 error:{class, 0}];
     }
 
     else
@@ -1709,10 +1709,10 @@ LABEL_24:
   return v10;
 }
 
-- (BOOL)setShouldUpdateDisabledFeaturesWithError:(id *)a3
+- (BOOL)setShouldUpdateDisabledFeaturesWithError:(id *)error
 {
-  v5 = [(CPLEngineStore *)self platformObject];
-  v6 = [v5 setShouldUpdateDisabledFeaturesWithError:a3];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  v6 = [platformObject setShouldUpdateDisabledFeaturesWithError:error];
 
   if (v6)
   {
@@ -1724,10 +1724,10 @@ LABEL_24:
 
 - (BOOL)shouldUpdateDisabledFeatures
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 shouldUpdateDisabledFeatures];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  shouldUpdateDisabledFeatures = [platformObject shouldUpdateDisabledFeatures];
 
-  return v3;
+  return shouldUpdateDisabledFeatures;
 }
 
 - (NSArray)disabledFeatures
@@ -1735,9 +1735,9 @@ LABEL_24:
   disabledFeatures = self->_disabledFeatures;
   if (!disabledFeatures)
   {
-    v5 = [(CPLEngineStore *)self _storedDisabledFeatures];
+    _storedDisabledFeatures = [(CPLEngineStore *)self _storedDisabledFeatures];
     v6 = self->_disabledFeatures;
-    self->_disabledFeatures = v5;
+    self->_disabledFeatures = _storedDisabledFeatures;
 
     disabledFeatures = self->_disabledFeatures;
     v2 = vars8;
@@ -1756,44 +1756,44 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)isFeatureDisabled:(id)a3
+- (BOOL)isFeatureDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   disabledFeatures = self->_disabledFeatures;
   if (!disabledFeatures)
   {
-    v6 = [(CPLEngineStore *)self _storedDisabledFeatures];
+    _storedDisabledFeatures = [(CPLEngineStore *)self _storedDisabledFeatures];
     v7 = self->_disabledFeatures;
-    self->_disabledFeatures = v6;
+    self->_disabledFeatures = _storedDisabledFeatures;
 
     disabledFeatures = self->_disabledFeatures;
   }
 
-  v8 = [(NSArray *)disabledFeatures containsObject:v4];
+  v8 = [(NSArray *)disabledFeatures containsObject:disabledCopy];
 
   return v8;
 }
 
-- (BOOL)updateDisabledFeatures:(id)a3 didReset:(BOOL *)a4 error:(id *)a5
+- (BOOL)updateDisabledFeatures:(id)features didReset:(BOOL *)reset error:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v57 = a4;
-  *a4 = 0;
+  featuresCopy = features;
+  resetCopy = reset;
+  *reset = 0;
   disabledFeatures = self->_disabledFeatures;
   *&self->_hasUpdatedDisabledFeatures = 257;
   if (!disabledFeatures)
   {
-    v10 = [(CPLEngineStore *)self _storedDisabledFeatures];
+    _storedDisabledFeatures = [(CPLEngineStore *)self _storedDisabledFeatures];
     v11 = self->_disabledFeatures;
-    self->_disabledFeatures = v10;
+    self->_disabledFeatures = _storedDisabledFeatures;
   }
 
-  v62 = self;
+  selfCopy = self;
   v12 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (featuresCopy)
   {
-    v12 = v8;
+    v12 = featuresCopy;
   }
 
   v58 = v12;
@@ -1846,11 +1846,11 @@ LABEL_24:
     v27 = 0;
     v68 = 0;
     v69 = 0;
-    v24 = v62;
+    v24 = selfCopy;
     goto LABEL_75;
   }
 
-  v24 = v62;
+  v24 = selfCopy;
   if ([v15 count])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -1863,11 +1863,11 @@ LABEL_24:
         v90 = v26;
         _os_log_impl(&dword_1DC05A000, v25, OS_LOG_TYPE_DEFAULT, "Features re-enabled: %@", buf, 0xCu);
 
-        v24 = v62;
+        v24 = selfCopy;
       }
     }
 
-    v60 = a5;
+    errorCopy2 = error;
     v61 = v13;
     v81 = 0u;
     v82 = 0u;
@@ -1936,7 +1936,7 @@ LABEL_24:
     v27 = 0;
 LABEL_43:
 
-    a5 = v60;
+    error = errorCopy2;
     v13 = v61;
     v23 = &propertiesForChangeType__facesProperties;
   }
@@ -1960,7 +1960,7 @@ LABEL_43:
         v90 = v37;
         _os_log_impl(&dword_1DC05A000, v36, OS_LOG_TYPE_DEFAULT, "Features disabled: %@", buf, 0xCu);
 
-        v24 = v62;
+        v24 = selfCopy;
       }
     }
 
@@ -1978,7 +1978,7 @@ LABEL_70:
       goto LABEL_72;
     }
 
-    v60 = a5;
+    errorCopy2 = error;
     v61 = v13;
     v65 = *v75;
 LABEL_51:
@@ -2027,7 +2027,7 @@ LABEL_51:
           goto LABEL_51;
         }
 
-        a5 = v60;
+        error = errorCopy2;
         v13 = v61;
         goto LABEL_69;
       }
@@ -2038,9 +2038,9 @@ LABEL_68:
     objc_autoreleasePoolPop(v30);
     v43 = 0;
     v27 = v34;
-    a5 = v60;
+    error = errorCopy2;
     v13 = v61;
-    v24 = v62;
+    v24 = selfCopy;
 LABEL_69:
     v23 = &propertiesForChangeType__facesProperties;
     goto LABEL_70;
@@ -2048,8 +2048,8 @@ LABEL_69:
 
   v43 = 1;
 LABEL_72:
-  v44 = [(CPLEngineStore *)v24 engineLibrary];
-  [v44 updateDisabledFeatures:v13];
+  engineLibrary = [(CPLEngineStore *)v24 engineLibrary];
+  [engineLibrary updateDisabledFeatures:v13];
 
   if (!v43)
   {
@@ -2058,10 +2058,10 @@ LABEL_72:
 
 LABEL_75:
   v45 = v27;
-  v46 = [(CPLEngineStore *)v24 platformObject];
+  platformObject = [(CPLEngineStore *)v24 platformObject];
   v72 = v27;
   v47 = v24;
-  v48 = [v46 storeDisabledFeatures:v13 error:&v72];
+  v48 = [platformObject storeDisabledFeatures:v13 error:&v72];
   v27 = v72;
 
   if (!v48)
@@ -2088,7 +2088,7 @@ LABEL_83:
       }
     }
 
-    *v57 = 1;
+    *resetCopy = 1;
     v71 = v27;
     v50 = [(CPLEngineStore *)v47 resetCompleteSyncStateWithCause:v69 error:&v71];
     v51 = v71;
@@ -2114,7 +2114,7 @@ LABEL_83:
       }
     }
 
-    *v57 = 1;
+    *resetCopy = 1;
     v70 = v27;
     v50 = [(CPLEngineStore *)v47 resetLocalSyncStateWithCause:v68 error:&v70];
     v51 = v70;
@@ -2123,14 +2123,14 @@ LABEL_83:
   v53 = v51;
 
   v27 = v53;
-  v24 = v62;
+  v24 = selfCopy;
 LABEL_91:
   *&v24->_shouldTriggerCompleteResetSyncAfterDisabledFeaturesUpdate = 0;
-  if (a5 && (v50 & 1) == 0)
+  if (error && (v50 & 1) == 0)
   {
     v54 = v27;
     v50 = 0;
-    *a5 = v27;
+    *error = v27;
   }
 
 LABEL_94:
@@ -2141,10 +2141,10 @@ LABEL_94:
 
 - (id)_storedDisabledFeatures
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 disabledFeatures];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  disabledFeatures = [platformObject disabledFeatures];
 
-  return v3;
+  return disabledFeatures;
 }
 
 - (BOOL)hasUnacknowledgedChanges
@@ -2154,29 +2154,29 @@ LABEL_94:
     return 1;
   }
 
-  v4 = [(CPLEngineStore *)self platformObject];
-  v5 = [v4 hasStoredChangeSessionUpdate];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  hasStoredChangeSessionUpdate = [platformObject hasStoredChangeSessionUpdate];
 
-  return v5;
+  return hasStoredChangeSessionUpdate;
 }
 
-- (id)unacknowledgedChangeWithLocalScopedIdentifier:(id)a3
+- (id)unacknowledgedChangeWithLocalScopedIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   unacknowledgedBatch = self->_unacknowledgedBatch;
   if (unacknowledgedBatch)
   {
-    v6 = [(CPLChangeBatch *)unacknowledgedBatch recordWithScopedIdentifier:v4];
+    v6 = [(CPLChangeBatch *)unacknowledgedBatch recordWithScopedIdentifier:identifierCopy];
   }
 
   else
   {
-    v7 = [(CPLEngineStore *)self platformObject];
-    v8 = [v7 storedChangeSessionUpdate];
+    platformObject = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate = [platformObject storedChangeSessionUpdate];
 
-    if (v8)
+    if (storedChangeSessionUpdate)
     {
-      v6 = [v8 pendingRecordChangeForClientCacheWithLocalScopedIdentifier:v4];
+      v6 = [storedChangeSessionUpdate pendingRecordChangeForClientCacheWithLocalScopedIdentifier:identifierCopy];
     }
 
     else
@@ -2197,22 +2197,22 @@ LABEL_94:
   self->_discardUnacknowledgedBatchOnTransactionFail = 0;
 }
 
-- (void)keepUnacknowledgedBatch:(id)a3
+- (void)keepUnacknowledgedBatch:(id)batch
 {
-  objc_storeStrong(&self->_unacknowledgedBatch, a3);
+  objc_storeStrong(&self->_unacknowledgedBatch, batch);
   [(CPLEngineStore *)self _dropTransactionClientCacheView];
   self->_discardUnacknowledgedBatchOnTransactionFail = 1;
 }
 
-- (BOOL)checkExpectedLibraryVersion:(id)a3 error:(id *)a4
+- (BOOL)checkExpectedLibraryVersion:(id)version error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self libraryVersion];
-  v8 = [v7 isEqualToString:v6];
+  versionCopy = version;
+  libraryVersion = [(CPLEngineStore *)self libraryVersion];
+  v8 = [libraryVersion isEqualToString:versionCopy];
 
-  if (a4 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
-    *a4 = [CPLErrors invalidClientCacheErrorWithReason:@"Client cache has been reset during session"];
+    *error = [CPLErrors invalidClientCacheErrorWithReason:@"Client cache has been reset during session"];
   }
 
   return v8;
@@ -2220,34 +2220,34 @@ LABEL_94:
 
 - (BOOL)hasPendingChangeSessionUpdate
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 hasStoredChangeSessionUpdate];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  hasStoredChangeSessionUpdate = [platformObject hasStoredChangeSessionUpdate];
 
-  return v3;
+  return hasStoredChangeSessionUpdate;
 }
 
-- (BOOL)forceApplyPendingChangeSessionUpdateWithError:(id *)a3
+- (BOOL)forceApplyPendingChangeSessionUpdateWithError:(id *)error
 {
   if (!self->_applyingChangeSessionUpdate)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [(CPLEngineStore *)self platformObject];
-    v8 = [v7 storedChangeSessionUpdate];
+    platformObject = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate = [platformObject storedChangeSessionUpdate];
 
-    if (v8)
+    if (storedChangeSessionUpdate)
     {
       v13 = 0;
-      v9 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:v8 error:&v13];
+      v9 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:storedChangeSessionUpdate error:&v13];
       v10 = v13;
       if (!v9)
       {
 
         objc_autoreleasePoolPop(v6);
-        if (a3)
+        if (error)
         {
           v11 = v10;
           v3 = 0;
-          *a3 = v10;
+          *error = v10;
         }
 
         else
@@ -2276,24 +2276,24 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)applyPreviousChangeSessionUpdateWithExpectedLibraryVersion:(id)a3 error:(id *)a4
+- (BOOL)applyPreviousChangeSessionUpdateWithExpectedLibraryVersion:(id)version error:(id *)error
 {
-  v6 = a3;
+  versionCopy = version;
   if (self->_dontDelayChangeSessionUpdate)
   {
-    v7 = [(CPLEngineStore *)self checkExpectedLibraryVersion:v6 error:a4];
+    v7 = [(CPLEngineStore *)self checkExpectedLibraryVersion:versionCopy error:error];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(CPLEngineStore *)self platformObject];
-    v10 = [v9 storedChangeSessionUpdate];
+    platformObject = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate = [platformObject storedChangeSessionUpdate];
 
-    if (v10)
+    if (storedChangeSessionUpdate)
     {
       v18 = 0;
-      v11 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:v10 error:&v18];
+      v11 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:storedChangeSessionUpdate error:&v18];
       v12 = v18;
       if (v11)
       {
@@ -2315,27 +2315,27 @@ LABEL_11:
     else
     {
       v16 = 0;
-      v7 = [(CPLEngineStore *)self checkExpectedLibraryVersion:v6 error:&v16];
+      v7 = [(CPLEngineStore *)self checkExpectedLibraryVersion:versionCopy error:&v16];
       v12 = v16;
     }
 
     objc_autoreleasePoolPop(v8);
-    if (a4 && !v7)
+    if (error && !v7)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
   return v7;
 }
 
-- (BOOL)beginChangeSession:(id)a3 withLibraryVersion:(id)a4 resetTracker:(id)a5 error:(id *)a6
+- (BOOL)beginChangeSession:(id)session withLibraryVersion:(id)version resetTracker:(id)tracker error:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sessionCopy = session;
+  versionCopy = version;
+  trackerCopy = tracker;
   if (_CPLDontDelayChangeSessionUpdate == 1)
   {
     self->_dontDelayChangeSessionUpdate = _CPLDontDelayChangeSessionUpdate;
@@ -2343,16 +2343,16 @@ LABEL_11:
 
   else
   {
-    v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-    self->_dontDelayChangeSessionUpdate = [v14 BOOLForKey:@"CPLDontDelayChangeSessionUpdate"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    self->_dontDelayChangeSessionUpdate = [standardUserDefaults BOOLForKey:@"CPLDontDelayChangeSessionUpdate"];
   }
 
   p_pendingTracker = &self->_pendingTracker;
   pendingTracker = self->_pendingTracker;
   if (pendingTracker)
   {
-    v17 = [(CPLResetTracker *)pendingTracker likelyResetDate];
-    [v17 timeIntervalSinceNow];
+    likelyResetDate = [(CPLResetTracker *)pendingTracker likelyResetDate];
+    [likelyResetDate timeIntervalSinceNow];
     if (v18 < -60.0)
     {
       v19 = *p_pendingTracker;
@@ -2361,10 +2361,10 @@ LABEL_11:
   }
 
   v84 = a2;
-  if (v12)
+  if (versionCopy)
   {
-    v20 = [(CPLEngineStore *)self libraryVersion];
-    if (!v20)
+    libraryVersion = [(CPLEngineStore *)self libraryVersion];
+    if (!libraryVersion)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -2376,38 +2376,38 @@ LABEL_11:
         }
       }
 
-      v75 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v76 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-      [v75 handleFailureInMethod:a2 object:self file:v76 lineNumber:1802 description:@"Library version should be set here"];
+      [currentHandler handleFailureInMethod:a2 object:self file:v76 lineNumber:1802 description:@"Library version should be set here"];
 
       abort();
     }
 
-    v21 = v20;
+    v21 = libraryVersion;
     if ((_CPLSilentLogging & 1) == 0)
     {
       v22 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v87 = v12;
+        v87 = versionCopy;
         v88 = 2112;
         v89 = v21;
         v90 = 2112;
-        v91 = v11;
+        v91 = sessionCopy;
         _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_DEBUG, "Checking client version %@ against our own version %@ during %@", buf, 0x20u);
       }
     }
 
-    v23 = v11;
-    v24 = [v21 isEqualToString:v12];
-    v25 = [(CPLEngineStore *)self platformObject];
-    v26 = [v25 storedChangeSessionUpdate];
+    v23 = sessionCopy;
+    v24 = [v21 isEqualToString:versionCopy];
+    platformObject = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate = [platformObject storedChangeSessionUpdate];
 
     if (v24)
     {
-      v27 = a6;
-      if (!v26)
+      errorCopy3 = error;
+      if (!storedChangeSessionUpdate)
       {
         v42 = v23;
         if ((_CPLSilentLogging & 1) == 0)
@@ -2416,14 +2416,14 @@ LABEL_11:
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v87 = v12;
+            v87 = versionCopy;
             v88 = 2112;
             v89 = v23;
             _os_log_impl(&dword_1DC05A000, v56, OS_LOG_TYPE_DEBUG, "Client has the correct version (%@). Starting %@", buf, 0x16u);
           }
         }
 
-        v57 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:a6];
+        v57 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:error];
 
         v40 = 0;
         v41 = 0;
@@ -2440,22 +2440,22 @@ LABEL_11:
         v28 = __CPLStoreOSLogDomain_3044();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v29 = [v26 libraryVersion];
+          libraryVersion2 = [storedChangeSessionUpdate libraryVersion];
           *buf = 138412802;
-          v87 = v12;
+          v87 = versionCopy;
           v88 = 2112;
-          v89 = v29;
+          v89 = libraryVersion2;
           v90 = 2112;
           v91 = v23;
           _os_log_impl(&dword_1DC05A000, v28, OS_LOG_TYPE_ERROR, "Client has an incorrect version (%@) but it matches the previous version, discarding lost pending update (%@). Recovering %@", buf, 0x20u);
 
-          v27 = a6;
+          errorCopy3 = error;
         }
       }
 
-      if ([v26 discardFromStore:self error:v27])
+      if ([storedChangeSessionUpdate discardFromStore:self error:errorCopy3])
       {
-        v30 = [(CPLEngineStore *)self _storeChangeSessionUpdate:0 error:v27];
+        v30 = [(CPLEngineStore *)self _storeChangeSessionUpdate:0 error:errorCopy3];
         [(CPLEngineStore *)self _unschedulePendingUpdateApply];
 
         if (!v30)
@@ -2469,33 +2469,33 @@ LABEL_11:
       goto LABEL_75;
     }
 
-    if (v26)
+    if (storedChangeSessionUpdate)
     {
-      v43 = [v26 libraryVersion];
-      v44 = [v12 isEqualToString:v43];
+      libraryVersion3 = [storedChangeSessionUpdate libraryVersion];
+      v44 = [versionCopy isEqualToString:libraryVersion3];
 
       if (v44)
       {
-        v27 = a6;
+        errorCopy3 = error;
         if ((_CPLSilentLogging & 1) == 0)
         {
           v45 = __CPLStoreOSLogDomain_3044();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v87 = v12;
+            v87 = versionCopy;
             v88 = 2112;
             v89 = v23;
             _os_log_impl(&dword_1DC05A000, v45, OS_LOG_TYPE_ERROR, "Client has the correct version (%@) after an unfinished session. Recovering %@", buf, 0x16u);
           }
         }
 
-        if ([(CPLEngineStore *)self _applyAndDiscardPendingUpdate:v26 error:a6])
+        if ([(CPLEngineStore *)self _applyAndDiscardPendingUpdate:storedChangeSessionUpdate error:error])
         {
           [(CPLEngineStore *)self _unschedulePendingUpdateApply];
 
 LABEL_37:
-          v46 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:v27];
+          v46 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:errorCopy3];
 
           v42 = v23;
           if (!v46)
@@ -2513,14 +2513,14 @@ LABEL_75:
 LABEL_76:
         v42 = v23;
 LABEL_77:
-        if (v27)
+        if (errorCopy3)
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
             v21 = __CPLStoreOSLogDomain_3044();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v68 = *v27;
+              v68 = *errorCopy3;
               *buf = 138412290;
               v87 = v68;
               v69 = "Failed to recover mismatched session: %@";
@@ -2563,13 +2563,13 @@ LABEL_86:
         v58 = __CPLStoreOSLogDomain_3044();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
         {
-          v59 = [v26 libraryVersion];
+          libraryVersion4 = [storedChangeSessionUpdate libraryVersion];
           *buf = 138412802;
-          v87 = v12;
+          v87 = versionCopy;
           v88 = 2112;
           v89 = v21;
           v90 = 2112;
-          v91 = v59;
+          v91 = libraryVersion4;
           _os_log_impl(&dword_1DC05A000, v58, OS_LOG_TYPE_ERROR, "Client has an incorrect version (%@) - current version is (%@) and pending version is (%@). Client will have to perform a reset sync", buf, 0x20u);
         }
 
@@ -2583,7 +2583,7 @@ LABEL_63:
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v87 = v12;
+        v87 = versionCopy;
         v88 = 2112;
         v89 = v21;
         _os_log_impl(&dword_1DC05A000, v58, OS_LOG_TYPE_ERROR, "Client has an incorrect version (%@) - current version is (%@). Client will have to perform a reset sync", buf, 0x16u);
@@ -2592,9 +2592,9 @@ LABEL_63:
       goto LABEL_63;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = +[CPLErrors versionMismatchError];
+      *error = +[CPLErrors versionMismatchError];
     }
 
     [CPLResetTracker registerLikelyResetReason:@"version mismatch during %@", v23];
@@ -2604,25 +2604,25 @@ LABEL_63:
   }
 
   v31 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v83 = v11;
-  v32 = [objc_opt_class() shortDescription];
-  v33 = [v31 initWithFormat:@"client library version reset in a %@ session", v32];
+  v83 = sessionCopy;
+  shortDescription = [objc_opt_class() shortDescription];
+  v33 = [v31 initWithFormat:@"client library version reset in a %@ session", shortDescription];
 
-  if (([v13 hasReasons] & 1) == 0 && *p_pendingTracker)
+  if (([trackerCopy hasReasons] & 1) == 0 && *p_pendingTracker)
   {
     v34 = *p_pendingTracker;
 
-    v13 = v34;
+    trackerCopy = v34;
   }
 
-  v35 = [(CPLEngineStore *)self platformObject];
-  v36 = [v35 isClientInSyncWithClientCache];
+  platformObject2 = [(CPLEngineStore *)self platformObject];
+  isClientInSyncWithClientCache = [platformObject2 isClientInSyncWithClientCache];
 
-  if (v36)
+  if (isClientInSyncWithClientCache)
   {
-    v37 = [v13 likelyResetReasonWithImmediateReason:v33];
-    v38 = [v13 likelyResetDate];
-    v39 = [(CPLEngineStore *)self resetLocalSyncStateWithCause:v37 date:v38 error:a6];
+    v37 = [trackerCopy likelyResetReasonWithImmediateReason:v33];
+    likelyResetDate2 = [trackerCopy likelyResetDate];
+    v39 = [(CPLEngineStore *)self resetLocalSyncStateWithCause:v37 date:likelyResetDate2 error:error];
 
     v40 = 0;
     v41 = 0;
@@ -2635,17 +2635,17 @@ LABEL_63:
 
   else
   {
-    v47 = [(CPLEngineStore *)self platformObject];
-    v48 = [v47 storedChangeSessionUpdate];
+    platformObject3 = [(CPLEngineStore *)self platformObject];
+    storedChangeSessionUpdate2 = [platformObject3 storedChangeSessionUpdate];
 
-    if (v48)
+    if (storedChangeSessionUpdate2)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v49 = __CPLStoreOSLogDomain_3044();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v50 = [v13 likelyResetReasonWithImmediateReason:v33];
+          v50 = [trackerCopy likelyResetReasonWithImmediateReason:v33];
           *buf = 138412290;
           v87 = v50;
           _os_log_impl(&dword_1DC05A000, v49, OS_LOG_TYPE_ERROR, "Client is resetting library version but we are already out of sync - we still need to discard a pending update (%@)", buf, 0xCu);
@@ -2653,7 +2653,7 @@ LABEL_63:
       }
 
       v85 = 0;
-      v51 = [v48 discardFromStore:self error:&v85];
+      v51 = [storedChangeSessionUpdate2 discardFromStore:self error:&v85];
       v52 = v85;
       if ((v51 & 1) == 0 && (_CPLSilentLogging & 1) == 0)
       {
@@ -2670,7 +2670,7 @@ LABEL_63:
         }
       }
 
-      v55 = [(CPLEngineStore *)self _storeChangeSessionUpdate:0 error:a6];
+      v55 = [(CPLEngineStore *)self _storeChangeSessionUpdate:0 error:error];
 
       v40 = 0;
       v41 = 0;
@@ -2690,27 +2690,27 @@ LABEL_63:
   }
 
 LABEL_68:
-  v60 = [(CPLEngineStore *)self platformObject];
-  v61 = [v60 hasStoredChangeSessionUpdate];
+  platformObject4 = [(CPLEngineStore *)self platformObject];
+  hasStoredChangeSessionUpdate = [platformObject4 hasStoredChangeSessionUpdate];
 
-  if (v61)
+  if (hasStoredChangeSessionUpdate)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v77 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
       {
-        v78 = [objc_opt_class() shortDescription];
+        shortDescription2 = [objc_opt_class() shortDescription];
         *buf = 138412290;
-        v87 = v78;
+        v87 = shortDescription2;
         _os_log_impl(&dword_1DC05A000, v77, OS_LOG_TYPE_ERROR, "A %@ session should always start with not pending updates", buf, 0xCu);
       }
     }
 
-    v79 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v80 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    v81 = [objc_opt_class() shortDescription];
-    [v79 handleFailureInMethod:v84 object:self file:v80 lineNumber:1872 description:{@"A %@ session should always start with not pending updates", v81}];
+    shortDescription3 = [objc_opt_class() shortDescription];
+    [currentHandler2 handleFailureInMethod:v84 object:self file:v80 lineNumber:1872 description:{@"A %@ session should always start with not pending updates", shortDescription3}];
 
     abort();
   }
@@ -2719,17 +2719,17 @@ LABEL_68:
   {
     v62 = objc_alloc(MEMORY[0x1E696AEC0]);
     v63 = v42;
-    v64 = [objc_opt_class() shortDescription];
-    v21 = [v62 initWithFormat:@"client library version reset in a %@ session", v64];
+    shortDescription4 = [objc_opt_class() shortDescription];
+    v21 = [v62 initWithFormat:@"client library version reset in a %@ session", shortDescription4];
 
-    v65 = [(CPLEngineStore *)self mainScopeIdentifier];
-    v66 = [v13 likelyResetDate];
-    v67 = [v13 likelyResetReasonWithImmediateReason:v21];
-    [(CPLEngineStore *)self _storeResetEvent:@"recover" scopeIdentifier:v65 date:v66 pending:0 cause:v67];
+    mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+    likelyResetDate3 = [trackerCopy likelyResetDate];
+    v67 = [trackerCopy likelyResetReasonWithImmediateReason:v21];
+    [(CPLEngineStore *)self _storeResetEvent:@"recover" scopeIdentifier:mainScopeIdentifier date:likelyResetDate3 pending:0 cause:v67];
 
-    if ([v13 hasReasons])
+    if ([trackerCopy hasReasons])
     {
-      objc_storeStrong(&self->_pendingTracker, v13);
+      objc_storeStrong(&self->_pendingTracker, trackerCopy);
     }
 
     v41 = 1;
@@ -2744,55 +2744,55 @@ LABEL_87:
   return v41;
 }
 
-- (BOOL)storeChangeSessionUpdate:(id)a3 error:(id *)a4
+- (BOOL)storeChangeSessionUpdate:(id)update error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
+  updateCopy = update;
+  v8 = updateCopy;
   if (self->_dontDelayChangeSessionUpdate)
   {
-    if (![v7 applyToStore:self error:a4])
+    if (![updateCopy applyToStore:self error:error])
     {
       v12 = 0;
       goto LABEL_8;
     }
 
-    v9 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:a4];
+    v9 = [(CPLEngineStore *)self storeClientIsInSyncWithClientCacheWithError:error];
   }
 
   else
   {
-    v10 = [(CPLEngineStore *)self platformObject];
-    v11 = [v10 hasStoredChangeSessionUpdate];
+    platformObject = [(CPLEngineStore *)self platformObject];
+    hasStoredChangeSessionUpdate = [platformObject hasStoredChangeSessionUpdate];
 
-    if (v11)
+    if (hasStoredChangeSessionUpdate)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v15 = __CPLStoreOSLogDomain_3044();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = [(CPLEngineStore *)self platformObject];
-          v17 = [v16 storedChangeSessionUpdate];
+          platformObject2 = [(CPLEngineStore *)self platformObject];
+          storedChangeSessionUpdate = [platformObject2 storedChangeSessionUpdate];
           *buf = 138412546;
           v23 = v8;
           v24 = 2112;
-          v25 = v17;
+          v25 = storedChangeSessionUpdate;
           _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Trying to store %@ while %@ is already stored", buf, 0x16u);
         }
       }
 
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-      v20 = [(CPLEngineStore *)self platformObject];
-      v21 = [v20 storedChangeSessionUpdate];
-      [v18 handleFailureInMethod:a2 object:self file:v19 lineNumber:1782 description:{@"Trying to store %@ while %@ is already stored", v8, v21}];
+      platformObject3 = [(CPLEngineStore *)self platformObject];
+      storedChangeSessionUpdate2 = [platformObject3 storedChangeSessionUpdate];
+      [currentHandler handleFailureInMethod:a2 object:self file:v19 lineNumber:1782 description:{@"Trying to store %@ while %@ is already stored", v8, storedChangeSessionUpdate2}];
 
       abort();
     }
 
     [(CPLEngineStore *)self _schedulePendingUpdateApply];
-    v9 = [(CPLEngineStore *)self _storeChangeSessionUpdate:v8 error:a4];
+    v9 = [(CPLEngineStore *)self _storeChangeSessionUpdate:v8 error:error];
   }
 
   v12 = v9;
@@ -2802,55 +2802,55 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_storeChangeSessionUpdate:(id)a3 error:(id *)a4
+- (BOOL)_storeChangeSessionUpdate:(id)update error:(id *)error
 {
-  v6 = a3;
+  updateCopy = update;
   [(CPLEngineStore *)self _dropTransactionClientCacheView];
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 storeChangeSessionUpdate:v6 error:a4];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storeChangeSessionUpdate:updateCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (NSArray)pushPullGatekeepers
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 pushPullGatekeepers];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  pushPullGatekeepers = [platformObject pushPullGatekeepers];
 
-  return v3;
+  return pushPullGatekeepers;
 }
 
-- (BOOL)clearAllPushPullGatekeepersWithError:(id *)a3
+- (BOOL)clearAllPushPullGatekeepersWithError:(id *)error
 {
-  v4 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a3) = [v4 storePushPullGatekeepers:0 error:a3];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storePushPullGatekeepers:0 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)addPushPullGatekeeper:(id)a3 error:(id *)a4
+- (BOOL)addPushPullGatekeeper:(id)gatekeeper error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  v8 = [v7 pushPullGatekeepers];
+  gatekeeperCopy = gatekeeper;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  pushPullGatekeepers = [platformObject pushPullGatekeepers];
 
-  v9 = [v8 count];
-  v10 = [(CPLEngineStore *)self platformObject];
+  v9 = [pushPullGatekeepers count];
+  platformObject2 = [(CPLEngineStore *)self platformObject];
   if (v9)
   {
-    v11 = [v8 arrayByAddingObject:v6];
+    v11 = [pushPullGatekeepers arrayByAddingObject:gatekeeperCopy];
   }
 
   else
   {
-    v16[0] = v6;
+    v16[0] = gatekeeperCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   }
 
   v12 = v11;
 
-  v13 = [v10 storePushPullGatekeepers:v12 error:a4];
+  v13 = [platformObject2 storePushPullGatekeepers:v12 error:error];
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
@@ -3059,34 +3059,34 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
   }
 }
 
-- (BOOL)_applyPendingUpdate:(id)a3 error:(id *)a4
+- (BOOL)_applyPendingUpdate:(id)update error:(id *)error
 {
-  v6 = a3;
+  updateCopy = update;
   v19 = 0;
-  v7 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:v6 error:&v19];
+  v7 = [(CPLEngineStore *)self _applyAndDiscardPendingUpdate:updateCopy error:&v19];
   v8 = v19;
   v9 = v8;
   if (!v7)
   {
-    if ([v8 isCPLErrorWithCode:20] && (objc_msgSend(v9, "userInfo"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"CPLErrorResetReason"), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+    if ([v8 isCPLErrorWithCode:20] && (objc_msgSend(v9, "userInfo"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"CPLErrorResetReason"), domain = objc_claimAutoreleasedReturnValue(), v10, domain))
     {
-      v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to apply delayed update (%@) to client cache: %@", objc_opt_class(), v11, v18];
+      v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to apply delayed update (%@) to client cache: %@", objc_opt_class(), domain, v18];
     }
 
     else
     {
       v13 = objc_alloc(MEMORY[0x1E696AEC0]);
       v14 = objc_opt_class();
-      v11 = [v9 domain];
-      v12 = [v13 initWithFormat:@"Failed to apply delayed update (%@) to client cache (%@/%ld)", v14, v11, objc_msgSend(v9, "code")];
+      domain = [v9 domain];
+      v12 = [v13 initWithFormat:@"Failed to apply delayed update (%@) to client cache (%@/%ld)", v14, domain, objc_msgSend(v9, "code")];
     }
 
     v15 = v12;
 
-    if (a4)
+    if (error)
     {
       v16 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     [CPLResetTracker registerLikelyResetReason:@"%@", v15];
@@ -3095,16 +3095,16 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
   return v7;
 }
 
-- (BOOL)_applyAndDiscardPendingUpdate:(id)a3 error:(id *)a4
+- (BOOL)_applyAndDiscardPendingUpdate:(id)update error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  updateCopy = update;
+  v7 = updateCopy;
   LOBYTE(v8) = 1;
   if (!self->_applyingChangeSessionUpdate)
   {
     self->_applyingChangeSessionUpdate = 1;
     v15 = 0;
-    v8 = [v6 applyToStore:self error:&v15];
+    v8 = [updateCopy applyToStore:self error:&v15];
     v9 = v15;
     v10 = v9;
     if (v8)
@@ -3116,10 +3116,10 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
       v10 = v11;
     }
 
-    if (a4 && (v8 & 1) == 0)
+    if (error && (v8 & 1) == 0)
     {
       v12 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     self->_applyingChangeSessionUpdate = 0;
@@ -3156,52 +3156,52 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
 
 - (id)corruptionInfo
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 corruptionInfo];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  corruptionInfo = [platformObject corruptionInfo];
 
-  return v3;
+  return corruptionInfo;
 }
 
 - (NSDate)libraryCreationDate
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 libraryCreationDate];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  libraryCreationDate = [platformObject libraryCreationDate];
 
-  return v3;
+  return libraryCreationDate;
 }
 
-- (BOOL)storeClientIsInSyncWithClientCacheWithError:(id *)a3
+- (BOOL)storeClientIsInSyncWithClientCacheWithError:(id *)error
 {
-  v4 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a3) = [v4 storeClientIsInSyncWithClientCacheWithError:a3];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storeClientIsInSyncWithClientCacheWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)storeLastQuarantineCountReportDate:(id)a3 error:(id *)a4
+- (BOOL)storeLastQuarantineCountReportDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 storeLastQuarantineCountReportDate:v6 error:a4];
+  dateCopy = date;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storeLastQuarantineCountReportDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)lastQuarantineCountReportDate
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 lastQuarantineCountReportDate];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  lastQuarantineCountReportDate = [platformObject lastQuarantineCountReportDate];
 
-  return v3;
+  return lastQuarantineCountReportDate;
 }
 
-- (BOOL)storeUserIdentifier:(id)a3 error:(id *)a4
+- (BOOL)storeUserIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  v8 = [v7 storeUserIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  v8 = [platformObject storeUserIdentifier:identifierCopy error:error];
 
-  if (!v6 && v8)
+  if (!identifierCopy && v8)
   {
     self->_scheduleSetupOnWriteSuccess = 1;
   }
@@ -3211,10 +3211,10 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
 
 - (id)userIdentifier
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 userIdentifier];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  userIdentifier = [platformObject userIdentifier];
 
-  return v3;
+  return userIdentifier;
 }
 
 - (BOOL)pushRepositoryIsFull
@@ -3240,8 +3240,8 @@ void __51__CPLEngineStore__reallySchedulePendingUpdateApply__block_invoke_4(void
         }
 
         pushRepository = self->_pushRepository;
-        v9 = [*(*(&v13 + 1) + 8 * i) scopeIdentifier];
-        LOBYTE(pushRepository) = [(CPLEnginePushRepository *)pushRepository hasChangesInScopeWithIdentifier:v9];
+        scopeIdentifier = [*(*(&v13 + 1) + 8 * i) scopeIdentifier];
+        LOBYTE(pushRepository) = [(CPLEnginePushRepository *)pushRepository hasChangesInScopeWithIdentifier:scopeIdentifier];
 
         if (pushRepository)
         {
@@ -3269,21 +3269,21 @@ LABEL_11:
 
 - (id)createNewLibraryVersion
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 createNewLibraryVersion];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  createNewLibraryVersion = [platformObject createNewLibraryVersion];
 
-  return v3;
+  return createNewLibraryVersion;
 }
 
 - (id)libraryVersion
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 libraryVersion];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  libraryVersion = [platformObject libraryVersion];
 
-  return v3;
+  return libraryVersion;
 }
 
-- (void)_updateShouldSyncScopeList:(BOOL)a3
+- (void)_updateShouldSyncScopeList:(BOOL)list
 {
   shouldSyncScopeListQueue = self->_shouldSyncScopeListQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3291,7 +3291,7 @@ LABEL_11:
   v4[2] = __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke;
   v4[3] = &unk_1E861F7F0;
   v4[4] = self;
-  v5 = a3;
+  listCopy = list;
   dispatch_sync(shouldSyncScopeListQueue, v4);
 }
 
@@ -3306,14 +3306,14 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)updateLibraryOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)updateLibraryOptions:(unint64_t)options error:(id *)error
 {
-  v7 = [(CPLEngineStore *)self platformObject];
-  v8 = [v7 updateLibraryOptions:a3 error:a4];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  v8 = [platformObject updateLibraryOptions:options error:error];
 
   if (v8)
   {
-    [(CPLEngineStore *)self _updateShouldSyncScopeList:[(CPLEngineStore *)self _shouldSyncScopeListWithOptions:a3]];
+    [(CPLEngineStore *)self _updateShouldSyncScopeList:[(CPLEngineStore *)self _shouldSyncScopeListWithOptions:options]];
   }
 
   return v8;
@@ -3321,27 +3321,27 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
 
 - (unint64_t)libraryOptions
 {
-  v2 = [(CPLEngineStore *)self platformObject];
-  v3 = [v2 libraryOptions];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  libraryOptions = [platformObject libraryOptions];
 
-  return v3;
+  return libraryOptions;
 }
 
-- (BOOL)storeLibraryVersion:(id)a3 withError:(id *)a4
+- (BOOL)storeLibraryVersion:(id)version withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 storeLibraryVersion:v6 withError:a4];
+  versionCopy = version;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject storeLibraryVersion:versionCopy withError:error];
 
-  return a4;
+  return error;
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  deactivateCopy = deactivate;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (deactivateCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -3349,20 +3349,20 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
     v8[3] = &unk_1E861F2E8;
     v8[4] = self;
     v10 = 1;
-    v9 = v6;
+    v9 = handlerCopy;
     [(CPLEngineStore *)self wipeStoreAtNextOpeningWithReason:@"wiping database because it has been marked as deactivated" completionBlock:v8];
   }
 
   else
   {
-    [(CPLEngineStore *)self _closeAndDeactivate:0 completionHandler:v6];
+    [(CPLEngineStore *)self _closeAndDeactivate:0 completionHandler:handlerCopy];
   }
 }
 
-- (void)_closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)_closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   if ([(CPLEngineStore *)self state]== 2)
   {
     [(CPLEngineStore *)self setState:3];
@@ -3372,9 +3372,9 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
       v8 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [(CPLEngineStore *)self platformObject];
+        platformObject = [(CPLEngineStore *)self platformObject];
         *buf = 138412290;
-        v18 = v9;
+        v18 = platformObject;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEBUG, "Closing concrete store: %@", buf, 0xCu);
       }
     }
@@ -3385,8 +3385,8 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
     v13[3] = &unk_1E861B090;
     v13[4] = self;
     v14 = v7;
-    v16 = a3;
-    v15 = v6;
+    deactivateCopy = deactivate;
+    v15 = handlerCopy;
     v10 = v7;
     [(CPLEngineStore *)self _performBarrierTransaction:v10 withBlock:v13];
   }
@@ -3394,7 +3394,7 @@ uint64_t __45__CPLEngineStore__updateShouldSyncScopeList___block_invoke(uint64_t
   else
   {
     v11 = [CPLErrors incorrectMachineStateErrorWithReason:@"Library is not open"];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -3517,13 +3517,13 @@ uint64_t __56__CPLEngineStore__closeAndDeactivate_completionHandler___block_invo
 - (void)performBarrier
 {
   [(CPLEngineStore *)self performBatchedWriteTransactionBarrier];
-  v3 = [(CPLEngineStore *)self platformObject];
-  [v3 performBarrier];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject performBarrier];
 }
 
-- (void)performBatchedWriteTransactionBarrierWithCompletionBlock:(id)a3
+- (void)performBatchedWriteTransactionBarrierWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -3539,15 +3539,15 @@ uint64_t __56__CPLEngineStore__closeAndDeactivate_completionHandler___block_invo
   if (*(v16 + 24) == 1)
   {
     v6 = [[CPLEngineStoreTransaction alloc] initForWrite:0 store:self identifier:@"cpl.store.batch.barrier" description:@"barrier for batched write"];
-    v7 = [(CPLEngineStore *)self platformObject];
+    platformObject = [(CPLEngineStore *)self platformObject];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __75__CPLEngineStore_performBatchedWriteTransactionBarrierWithCompletionBlock___block_invoke_2;
     v11[3] = &unk_1E861ECD0;
-    v13 = v4;
+    v13 = blockCopy;
     v8 = v6;
     v12 = v8;
-    [v7 performBarrierTransaction:v8 withBlock:v11];
+    [platformObject performBarrierTransaction:v8 withBlock:v11];
   }
 
   else
@@ -3556,7 +3556,7 @@ uint64_t __56__CPLEngineStore__closeAndDeactivate_completionHandler___block_invo
     v9[1] = 3221225472;
     v9[2] = __75__CPLEngineStore_performBatchedWriteTransactionBarrierWithCompletionBlock___block_invoke_4;
     v9[3] = &unk_1E861C660;
-    v10 = v4;
+    v10 = blockCopy;
     [(CPLEngineStore *)self performBatchedWriteTransactionWithBlock:&__block_literal_global_312 completionHandler:v9];
     v8 = v10;
   }
@@ -3590,13 +3590,13 @@ uint64_t __75__CPLEngineStore_performBatchedWriteTransactionBarrierWithCompletio
   dispatch_sync(batchedTransactionsQueue, block);
 }
 
-- (void)performBatchedWriteTransactionWithBlock:(id)a3 completionHandler:(id)a4
+- (void)performBatchedWriteTransactionWithBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   if (_dontBatchTransactions == 1)
   {
-    v8 = [(CPLEngineStore *)self performWriteTransactionWithBlock:v6 completionHandler:v7];
+    v8 = [(CPLEngineStore *)self performWriteTransactionWithBlock:blockCopy completionHandler:handlerCopy];
   }
 
   else
@@ -3606,8 +3606,8 @@ uint64_t __75__CPLEngineStore_performBatchedWriteTransactionBarrierWithCompletio
     v13[1] = 3221225472;
     v13[2] = __76__CPLEngineStore_performBatchedWriteTransactionWithBlock_completionHandler___block_invoke;
     v13[3] = &unk_1E861E9A8;
-    v14 = v6;
-    v15 = v7;
+    v14 = blockCopy;
+    v15 = handlerCopy;
     v13[4] = self;
     v10 = v13;
     block[0] = MEMORY[0x1E69E9820];
@@ -3816,21 +3816,21 @@ void __52__CPLEngineStore__scheduleBatchedTransactionsLocked__block_invoke(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)blockWriteTransactionsWithCompletionHandler:(id)a3
+- (void)blockWriteTransactionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CPLEngineStore *)self platformObject];
-  [v5 blockWriteTransactionsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject blockWriteTransactionsWithCompletionHandler:handlerCopy];
 }
 
-- (id)_performWriteTransactionByPassBlocker:(id)a3 WithBlock:(id)a4 completionHandler:(id)a5
+- (id)_performWriteTransactionByPassBlocker:(id)blocker WithBlock:(id)block completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockerCopy = blocker;
+  blockCopy = block;
+  handlerCopy = handler;
   v11 = [[CPLEngineStoreTransaction alloc] initForWrite:1 store:self identifier:@"cpl.store.write" description:@"write store"];
-  [v11 setBlocker:v8];
+  [v11 setBlocker:blockerCopy];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v12 = __CPLStoreOSLogDomain_3044();
@@ -3843,20 +3843,20 @@ void __52__CPLEngineStore__scheduleBatchedTransactionsLocked__block_invoke(uint6
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-  v14 = [WeakRetained hasChangesToProcess];
+  hasChangesToProcess = [WeakRetained hasChangesToProcess];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v34 = 0x2020000000;
-  v35 = v14;
-  v15 = [(CPLEngineStore *)self platformObject];
+  v35 = hasChangesToProcess;
+  platformObject = [(CPLEngineStore *)self platformObject];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __84__CPLEngineStore__performWriteTransactionByPassBlocker_WithBlock_completionHandler___block_invoke;
   v29[3] = &unk_1E861EAC8;
   v29[4] = self;
   v30 = v11;
-  v16 = v9;
+  v16 = blockCopy;
   v31 = v16;
   p_buf = &buf;
   v23[0] = MEMORY[0x1E69E9820];
@@ -3865,12 +3865,12 @@ void __52__CPLEngineStore__scheduleBatchedTransactionsLocked__block_invoke(uint6
   v23[3] = &unk_1E861B970;
   v17 = v30;
   v24 = v17;
-  v25 = self;
+  selfCopy = self;
   v27 = &buf;
-  v28 = v14;
-  v18 = v10;
+  v28 = hasChangesToProcess;
+  v18 = handlerCopy;
   v26 = v18;
-  [v15 performWriteTransaction:v17 withBlock:v29 completionHandler:v23];
+  [platformObject performWriteTransaction:v17 withBlock:v29 completionHandler:v23];
 
   v19 = v26;
   v20 = v17;
@@ -3957,27 +3957,27 @@ void __84__CPLEngineStore__performWriteTransactionByPassBlocker_WithBlock_comple
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_commitWriteTransaction:(id)a3 commitError:(id)a4
+- (void)_commitWriteTransaction:(id)transaction commitError:(id)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  errorCopy = error;
   state = self->_state;
-  v9 = [v6 error];
+  error = [transactionCopy error];
 
-  v36 = v6;
-  v37 = self;
-  v35 = v7;
-  if (v9)
+  v36 = transactionCopy;
+  selfCopy = self;
+  v35 = errorCopy;
+  if (error)
   {
     goto LABEL_27;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     if (state != 3)
     {
-      if ([v7 isCPLOperationCancelledError])
+      if ([errorCopy isCPLOperationCancelledError])
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -3985,7 +3985,7 @@ void __84__CPLEngineStore__performWriteTransactionByPassBlocker_WithBlock_comple
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v49 = v6;
+            v49 = transactionCopy;
             v11 = "! %@ commit failed: operation was cancelled";
             v12 = v10;
             v13 = OS_LOG_TYPE_DEBUG;
@@ -4005,9 +4005,9 @@ LABEL_24:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v49 = v6;
+          v49 = transactionCopy;
           v50 = 2112;
-          v51 = v7;
+          v51 = errorCopy;
           v11 = "! %@ commit failed: %@";
           v12 = v10;
           v13 = OS_LOG_TYPE_ERROR;
@@ -4019,16 +4019,16 @@ LABEL_25:
       }
     }
 
-    [v6 setError:v7];
+    [transactionCopy setError:errorCopy];
 LABEL_27:
     if (state == 3 && (_CPLSilentLogging & 1) == 0)
     {
       v24 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v6 error];
+        error2 = [transactionCopy error];
         *buf = 138412290;
-        v49 = v25;
+        v49 = error2;
         _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_ERROR, "Closing transaction did fail: %@", buf, 0xCu);
       }
     }
@@ -4058,9 +4058,9 @@ LABEL_27:
             v32 = __CPLStoreOSLogDomain_3044();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [v31 name];
+              name = [v31 name];
               *buf = 138543362;
-              v49 = v33;
+              v49 = name;
               _os_log_impl(&dword_1DC05A000, v32, OS_LOG_TYPE_DEFAULT, "Closing %{public}@ after failed transaction", buf, 0xCu);
             }
           }
@@ -4074,8 +4074,8 @@ LABEL_27:
       while (v28);
     }
 
-    v23 = v37;
-    [(CPLEngineStore *)v37 writeTransactionDidFail];
+    selfCopy2 = selfCopy;
+    [(CPLEngineStore *)selfCopy writeTransactionDidFail];
     goto LABEL_45;
   }
 
@@ -4104,9 +4104,9 @@ LABEL_27:
           v21 = __CPLStoreOSLogDomain_3044();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v20 name];
+            name2 = [v20 name];
             *buf = 138543362;
-            v49 = v22;
+            v49 = name2;
             _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_DEFAULT, "Closing %{public}@", buf, 0xCu);
           }
         }
@@ -4120,10 +4120,10 @@ LABEL_27:
     while (v17);
   }
 
-  v23 = self;
+  selfCopy2 = self;
   [(CPLEngineStore *)self writeTransactionDidSucceed];
 LABEL_45:
-  [(CPLEngineStore *)v23 _finishTransaction];
+  [(CPLEngineStore *)selfCopy2 _finishTransaction];
 
   v34 = *MEMORY[0x1E69E9840];
 }
@@ -4151,14 +4151,14 @@ LABEL_45:
   transactionNewPredictions = self->_transactionNewPredictions;
   self->_transactionNewPredictions = 0;
 
-  v6 = [(CPLEngineStore *)self platformObject];
-  [v6 writeTransactionDidFail];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  [platformObject writeTransactionDidFail];
 }
 
-- (id)performReadTransactionWithBlock:(id)a3
+- (id)performReadTransactionWithBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = [[CPLEngineStoreTransaction alloc] initForWrite:0 store:self identifier:@"cpl.store.read" description:@"read store"];
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -4171,7 +4171,7 @@ LABEL_45:
     }
   }
 
-  v7 = [(CPLEngineStore *)self platformObject];
+  platformObject = [(CPLEngineStore *)self platformObject];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__CPLEngineStore_performReadTransactionWithBlock___block_invoke;
@@ -4179,9 +4179,9 @@ LABEL_45:
   v14[4] = self;
   v8 = v5;
   v15 = v8;
-  v16 = v4;
-  v9 = v4;
-  [v7 performReadTransaction:v8 withBlock:v14];
+  v16 = blockCopy;
+  v9 = blockCopy;
+  [platformObject performReadTransaction:v8 withBlock:v14];
 
   v10 = v16;
   v11 = v8;
@@ -4225,14 +4225,14 @@ uint64_t __50__CPLEngineStore_performReadTransactionWithBlock___block_invoke_2(u
   return result;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(CPLEngineStore *)self state])
   {
     v5 = [CPLErrors incorrectMachineStateErrorWithReason:@"Can't open library if it's not closed first"];
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 
   else
@@ -4242,9 +4242,9 @@ uint64_t __50__CPLEngineStore_performReadTransactionWithBlock___block_invoke_2(u
       v6 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(CPLEngineStore *)self platformObject];
+        platformObject = [(CPLEngineStore *)self platformObject];
         *buf = 138412290;
-        v15 = v7;
+        v15 = platformObject;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEBUG, "Opening concrete store: %@", buf, 0xCu);
       }
     }
@@ -4257,7 +4257,7 @@ uint64_t __50__CPLEngineStore_performReadTransactionWithBlock___block_invoke_2(u
     v11[3] = &unk_1E861B3D0;
     v11[4] = self;
     v12 = v8;
-    v13 = v4;
+    v13 = handlerCopy;
     v9 = v8;
     [(CPLEngineStore *)self _performBarrierTransaction:v9 withBlock:v11];
   }
@@ -5277,22 +5277,22 @@ void __44__CPLEngineStore_openWithCompletionHandler___block_invoke_281(uint64_t 
   [v3 postNotificationName:@"CPLLibraryMustBeWipedNotificationName" object:v2];
 }
 
-- (void)_forceCloseWithCompletionHandler:(id)a3
+- (void)_forceCloseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[CPLEngineStoreTransaction alloc] initForWrite:1 store:self identifier:@"cpl.store.close.force" description:@"force close store"];
   v6 = [CPLTransaction newTransactionWithIdentifier:@"cpl.store.barrier" description:@"barrier" keepPower:1];
-  v7 = [(CPLEngineStore *)self platformObject];
+  platformObject = [(CPLEngineStore *)self platformObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__CPLEngineStore__forceCloseWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E861ABE0;
   v11 = v6;
-  v12 = v4;
+  v12 = handlerCopy;
   v10[4] = self;
   v8 = v6;
-  v9 = v4;
-  [v7 performBarrierTransaction:v5 withBlock:v10];
+  v9 = handlerCopy;
+  [platformObject performBarrierTransaction:v5 withBlock:v10];
 }
 
 void __51__CPLEngineStore__forceCloseWithCompletionHandler___block_invoke(uint64_t a1)
@@ -5306,22 +5306,22 @@ void __51__CPLEngineStore__forceCloseWithCompletionHandler___block_invoke(uint64
   [*(a1 + 40) endTransaction];
 }
 
-- (void)_performBarrierTransaction:(id)a3 withBlock:(id)a4
+- (void)_performBarrierTransaction:(id)transaction withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  transactionCopy = transaction;
   v8 = [CPLTransaction newTransactionWithIdentifier:@"cpl.store.barrier" description:@"barrier" keepPower:1];
-  v9 = [(CPLEngineStore *)self platformObject];
+  platformObject = [(CPLEngineStore *)self platformObject];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__CPLEngineStore__performBarrierTransaction_withBlock___block_invoke;
   v12[3] = &unk_1E861F5D0;
   v13 = v8;
-  v14 = v6;
+  v14 = blockCopy;
   v12[4] = self;
   v10 = v8;
-  v11 = v6;
-  [v9 performBarrierTransaction:v7 withBlock:v12];
+  v11 = blockCopy;
+  [platformObject performBarrierTransaction:transactionCopy withBlock:v12];
 }
 
 uint64_t __55__CPLEngineStore__performBarrierTransaction_withBlock___block_invoke(uint64_t a1)
@@ -5333,47 +5333,47 @@ uint64_t __55__CPLEngineStore__performBarrierTransaction_withBlock___block_invok
   return [v2 endTransaction];
 }
 
-- (void)_performTransaction:(id)a3 withBlock:(id)a4
+- (void)_performTransaction:(id)transaction withBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(CPLEngineStore *)self _setTransactionOnCurrentThread:v6];
-  v31 = v7;
-  if ([v6 canWrite] && -[CPLEngineStore state](self, "state") == 2)
+  transactionCopy = transaction;
+  blockCopy = block;
+  [(CPLEngineStore *)self _setTransactionOnCurrentThread:transactionCopy];
+  v31 = blockCopy;
+  if ([transactionCopy canWrite] && -[CPLEngineStore state](self, "state") == 2)
   {
-    v8 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfResourcesToUpload];
-    v9 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfOriginalResourcesToUpload];
-    v10 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalImages];
-    v11 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalVideos];
+    sizeOfResourcesToUpload = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfResourcesToUpload];
+    sizeOfOriginalResourcesToUpload = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfOriginalResourcesToUpload];
+    countOfOriginalImages = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalImages];
+    countOfOriginalVideos = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalVideos];
     v12 = 1;
-    v32 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalOthers];
-    v33 = v11;
-    v13 = v10;
-    v14 = v9;
-    v15 = v8;
-    v7 = v31;
+    countOfOriginalOthers = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalOthers];
+    v33 = countOfOriginalVideos;
+    v13 = countOfOriginalImages;
+    v14 = sizeOfOriginalResourcesToUpload;
+    v15 = sizeOfResourcesToUpload;
+    blockCopy = v31;
   }
 
   else
   {
     v12 = 0;
-    v32 = 0;
+    countOfOriginalOthers = 0;
     v33 = 0;
     v13 = 0;
     v14 = 0;
     v15 = 0;
   }
 
-  (*(v7 + 2))(v7);
+  (*(blockCopy + 2))(blockCopy);
   if (!v12)
   {
     goto LABEL_12;
   }
 
-  v16 = [v6 error];
+  error = [transactionCopy error];
 
-  if (v16 || (v17 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfResourcesToUpload], v18 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfOriginalResourcesToUpload], v19 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalImages], v20 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalVideos], v21 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalOthers], v17 == v15) && v18 == v14 && v19 == v13 && v20 == v33 && v21 == v32)
+  if (error || (v17 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfResourcesToUpload], v18 = [(CPLEngineOutgoingResources *)self->_outgoingResources sizeOfOriginalResourcesToUpload], v19 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalImages], v20 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalVideos], v21 = [(CPLEngineOutgoingResources *)self->_outgoingResources countOfOriginalOthers], v17 == v15) && v18 == v14 && v19 == v13 && v20 == v33 && v21 == countOfOriginalOthers)
   {
 LABEL_12:
     v22 = 0;
@@ -5382,18 +5382,18 @@ LABEL_12:
   else
   {
     v22 = 1;
-    v32 = v21;
+    countOfOriginalOthers = v21;
     v33 = v20;
     v13 = v19;
     v14 = v18;
     v15 = v17;
   }
 
-  v23 = [v6 error];
-  v24 = v23;
-  if (v23)
+  error2 = [transactionCopy error];
+  v24 = error2;
+  if (error2)
   {
-    if (![v23 isCPLOperationCancelledError])
+    if (![error2 isCPLOperationCancelledError])
     {
       if ([v24 isCPLError])
       {
@@ -5405,11 +5405,11 @@ LABEL_12:
         v27 = __CPLTransactionOSLogDomain();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v6 error];
+          error3 = [transactionCopy error];
           *buf = 138412546;
-          v35 = v6;
+          v35 = transactionCopy;
           v36 = 2112;
-          v37 = v28;
+          v37 = error3;
           _os_log_impl(&dword_1DC05A000, v27, OS_LOG_TYPE_DEFAULT, "! %@ failed: %@", buf, 0x16u);
         }
       }
@@ -5424,11 +5424,11 @@ LABEL_12:
         v27 = __CPLTransactionOSLogDomain();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v29 = [v6 error];
+          error4 = [transactionCopy error];
           *buf = 138412546;
-          v35 = v6;
+          v35 = transactionCopy;
           v36 = 2112;
-          v37 = v29;
+          v37 = error4;
           _os_log_impl(&dword_1DC05A000, v27, OS_LOG_TYPE_ERROR, "! %@ failed: %@", buf, 0x16u);
         }
       }
@@ -5442,7 +5442,7 @@ LABEL_12:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v35 = v6;
+        v35 = transactionCopy;
         _os_log_impl(&dword_1DC05A000, v25, OS_LOG_TYPE_DEBUG, "! %@ failed: transaction was cancelled", buf, 0xCu);
       }
     }
@@ -5451,29 +5451,29 @@ LABEL_12:
   else if (v22)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-    [WeakRetained notifyAttachedObjectsSizeOfResourcesToUploadDidChangeToSize:v15 sizeOfOriginalResourcesToUpload:v14 numberOfImages:v13 numberOfVideos:v33 numberOfOtherItems:v32];
+    [WeakRetained notifyAttachedObjectsSizeOfResourcesToUploadDidChangeToSize:v15 sizeOfOriginalResourcesToUpload:v14 numberOfImages:v13 numberOfVideos:v33 numberOfOtherItems:countOfOriginalOthers];
   }
 
 LABEL_30:
-  [(CPLEngineStore *)self _removeTransactionOnCurrentThread:v6];
+  [(CPLEngineStore *)self _removeTransactionOnCurrentThread:transactionCopy];
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_handleException:(id)a3
+- (BOOL)_handleException:(id)exception
 {
-  v4 = a3;
+  exceptionCopy = exception;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 name];
-    v7 = [v5 reason];
-    if ([v6 isEqualToString:@"CPLAssertStoreException"])
+    v5 = exceptionCopy;
+    name = [v5 name];
+    reason = [v5 reason];
+    if ([name isEqualToString:@"CPLAssertStoreException"])
     {
-      if (v7)
+      if (reason)
       {
-        v8 = v7;
+        v8 = reason;
       }
 
       else
@@ -5490,10 +5490,10 @@ LABEL_30:
       v9 = v19;
     }
 
-    else if ([v6 isEqualToString:CPLArchiverFailureExceptionName])
+    else if ([name isEqualToString:CPLArchiverFailureExceptionName])
     {
-      v11 = [v5 userInfo];
-      v9 = [v11 objectForKeyedSubscript:@"CPLArchiverFailureContext"];
+      userInfo = [v5 userInfo];
+      v9 = [userInfo objectForKeyedSubscript:@"CPLArchiverFailureContext"];
 
       v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Archiver exception raised - %@", v9];
       v16[0] = MEMORY[0x1E69E9820];
@@ -5506,7 +5506,7 @@ LABEL_30:
 
     else
     {
-      if (![v6 isEqualToString:*MEMORY[0x1E695D930]])
+      if (![name isEqualToString:*MEMORY[0x1E695D930]])
       {
         v10 = 0;
         goto LABEL_13;
@@ -5533,49 +5533,49 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)deleteDynamicallyCreatedStorages:(id)a3 error:(id *)a4
+- (BOOL)deleteDynamicallyCreatedStorages:(id)storages error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 deleteDynamicallyCreatedStorages:v6 error:a4];
+  storagesCopy = storages;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject deleteDynamicallyCreatedStorages:storagesCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)createStoragesDynamically:(id)a3 error:(id *)a4
+- (BOOL)createStoragesDynamically:(id)dynamically error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStore *)self platformObject];
-  LOBYTE(a4) = [v7 createStoragesDynamically:v6 error:a4];
+  dynamicallyCopy = dynamically;
+  platformObject = [(CPLEngineStore *)self platformObject];
+  LOBYTE(error) = [platformObject createStoragesDynamically:dynamicallyCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)noteInvalidRecordScopedIdentifiersInPushSession:(id)a3
+- (void)noteInvalidRecordScopedIdentifiersInPushSession:(id)session
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
+  sessionCopy = session;
+  date = [v4 date];
   lastInvalidRecordsDate = self->_lastInvalidRecordsDate;
-  self->_lastInvalidRecordsDate = v6;
+  self->_lastInvalidRecordsDate = date;
 
-  v8 = [v5 copy];
+  v8 = [sessionCopy copy];
   lastInvalidRecordScopedIdentifiers = self->_lastInvalidRecordScopedIdentifiers;
   self->_lastInvalidRecordScopedIdentifiers = v8;
 }
 
-- (void)noteOtherResetEvent:(id)a3 cause:(id)a4
+- (void)noteOtherResetEvent:(id)event cause:(id)cause
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineStore *)self mainScopeIdentifier];
-  [(CPLEngineStore *)self _storeResetEvent:v7 scopeIdentifier:v8 date:0 cause:v6];
+  causeCopy = cause;
+  eventCopy = event;
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  [(CPLEngineStore *)self _storeResetEvent:eventCopy scopeIdentifier:mainScopeIdentifier date:0 cause:causeCopy];
 }
 
-- (BOOL)resetSyncAnchorWithCause:(id)a3 error:(id *)a4
+- (BOOL)resetSyncAnchorWithCause:(id)cause error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  causeCopy = cause;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -5595,7 +5595,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        if (![(CPLEngineStore *)self _resetSyncAnchorWithCause:v6 scope:*(*(&v15 + 1) + 8 * i) error:a4])
+        if (![(CPLEngineStore *)self _resetSyncAnchorWithCause:causeCopy scope:*(*(&v15 + 1) + 8 * i) error:error])
         {
           v12 = 0;
           goto LABEL_11;
@@ -5619,11 +5619,11 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)resetCompleteSyncStateIncludingIDMappingWithCause:(id)a3 error:(id *)a4
+- (BOOL)resetCompleteSyncStateIncludingIDMappingWithCause:(id)cause error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CPLEngineStore *)self _resetGlobalStateWithError:a4])
+  causeCopy = cause;
+  if ([(CPLEngineStore *)self _resetGlobalStateWithError:error])
   {
     v17 = 0u;
     v18 = 0u;
@@ -5644,7 +5644,7 @@ LABEL_11:
             objc_enumerationMutation(v7);
           }
 
-          if (![(CPLEngineStore *)self _resetCompleteSyncStateIncludingIDMappingWithCause:v6 scope:*(*(&v15 + 1) + 8 * i) error:a4])
+          if (![(CPLEngineStore *)self _resetCompleteSyncStateIncludingIDMappingWithCause:causeCopy scope:*(*(&v15 + 1) + 8 * i) error:error])
           {
 
             goto LABEL_12;
@@ -5661,7 +5661,7 @@ LABEL_11:
       }
     }
 
-    v12 = [(CPLEngineStore *)self storeUserIdentifier:0 error:a4];
+    v12 = [(CPLEngineStore *)self storeUserIdentifier:0 error:error];
   }
 
   else
@@ -5674,17 +5674,17 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)resetCompleteSyncStateWithCause:(id)a3 error:(id *)a4
+- (BOOL)resetCompleteSyncStateWithCause:(id)cause error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  causeCopy = cause;
   if (self->_isUpdatingDisabledFeatures)
   {
     v7 = 1;
     self->_shouldTriggerCompleteResetSyncAfterDisabledFeaturesUpdate = 1;
   }
 
-  else if ([(CPLEngineStore *)self _resetGlobalStateWithError:a4])
+  else if ([(CPLEngineStore *)self _resetGlobalStateWithError:error])
   {
     v17 = 0u;
     v18 = 0u;
@@ -5705,7 +5705,7 @@ LABEL_12:
             objc_enumerationMutation(v8);
           }
 
-          if (![(CPLEngineStore *)self _resetCompleteSyncStateWithCause:v6 scope:*(*(&v15 + 1) + 8 * i) error:a4])
+          if (![(CPLEngineStore *)self _resetCompleteSyncStateWithCause:causeCopy scope:*(*(&v15 + 1) + 8 * i) error:error])
           {
 
             goto LABEL_14;
@@ -5722,7 +5722,7 @@ LABEL_12:
       }
     }
 
-    v7 = [(CPLEngineStore *)self storeUserIdentifier:0 error:a4];
+    v7 = [(CPLEngineStore *)self storeUserIdentifier:0 error:error];
   }
 
   else
@@ -5735,11 +5735,11 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)resetLocalSyncStateWithCause:(id)a3 date:(id)a4 error:(id *)a5
+- (BOOL)resetLocalSyncStateWithCause:(id)cause date:(id)date error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  causeCopy = cause;
+  dateCopy = date;
   if (self->_isUpdatingDisabledFeatures)
   {
     v10 = 1;
@@ -5749,7 +5749,7 @@ LABEL_14:
   else
   {
     [(CPLEngineStore *)self isClientInSyncWithClientCache];
-    if ([(CPLEngineStore *)self _resetGlobalStateWithError:a5])
+    if ([(CPLEngineStore *)self _resetGlobalStateWithError:error])
     {
       v20 = 0u;
       v21 = 0u;
@@ -5770,7 +5770,7 @@ LABEL_14:
               objc_enumerationMutation(v11);
             }
 
-            if (![(CPLEngineStore *)self _resetLocalSyncStateWithCause:v8 scope:*(*(&v18 + 1) + 8 * i) date:v9 error:a5])
+            if (![(CPLEngineStore *)self _resetLocalSyncStateWithCause:causeCopy scope:*(*(&v18 + 1) + 8 * i) date:dateCopy error:error])
             {
               v10 = 0;
               goto LABEL_15;
@@ -5801,166 +5801,166 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_resetSyncAnchorWithCause:(id)a3 scope:(id)a4 error:(id *)a5
+- (BOOL)_resetSyncAnchorWithCause:(id)cause scope:(id)scope error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
+  causeCopy = cause;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLStoreOSLogDomain_3044();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v8;
+      v18 = causeCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = scopeIdentifier;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Resetting sync anchor (%@) for %@", &v17, 0x16u);
     }
   }
 
-  v12 = [(CPLEngineStore *)self mainScopeIdentifier];
-  v13 = [v10 isEqualToString:v12];
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  v13 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v13)
   {
-    [(CPLEngineStore *)self _storeResetEvent:@"anchor" scopeIdentifier:v10 date:0 cause:v8];
+    [(CPLEngineStore *)self _storeResetEvent:@"anchor" scopeIdentifier:scopeIdentifier date:0 cause:causeCopy];
   }
 
-  v14 = [(CPLEngineScopeStorage *)self->_scopes resetSyncAnchorForScope:v9 error:a5];
+  v14 = [(CPLEngineScopeStorage *)self->_scopes resetSyncAnchorForScope:scopeCopy error:error];
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (BOOL)_resetCompleteSyncStateIncludingIDMappingWithCause:(id)a3 scope:(id)a4 error:(id *)a5
+- (BOOL)_resetCompleteSyncStateIncludingIDMappingWithCause:(id)cause scope:(id)scope error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
+  causeCopy = cause;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLStoreOSLogDomain_3044();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v10;
+      v18 = scopeIdentifier;
       v19 = 2112;
-      v20 = v8;
+      v20 = causeCopy;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Resetting complete sync state for %@ (%@)", &v17, 0x16u);
     }
   }
 
-  v12 = [(CPLEngineStore *)self mainScopeIdentifier];
-  v13 = [v10 isEqualToString:v12];
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  v13 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v13)
   {
-    [(CPLEngineStore *)self _storeResetEvent:@"hard" scopeIdentifier:v10 date:0 cause:v8];
+    [(CPLEngineStore *)self _storeResetEvent:@"hard" scopeIdentifier:scopeIdentifier date:0 cause:causeCopy];
   }
 
-  v14 = [(CPLEngineScopeStorage *)self->_scopes resetCompleteSyncStateIncludingIDMappingForScope:v9 error:a5];
+  v14 = [(CPLEngineScopeStorage *)self->_scopes resetCompleteSyncStateIncludingIDMappingForScope:scopeCopy error:error];
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (BOOL)_resetCompleteSyncStateWithCause:(id)a3 scope:(id)a4 error:(id *)a5
+- (BOOL)_resetCompleteSyncStateWithCause:(id)cause scope:(id)scope error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
+  causeCopy = cause;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLStoreOSLogDomain_3044();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v10;
+      v18 = scopeIdentifier;
       v19 = 2112;
-      v20 = v8;
+      v20 = causeCopy;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Resetting complete sync state for %@ (%@)", &v17, 0x16u);
     }
   }
 
-  v12 = [(CPLEngineStore *)self mainScopeIdentifier];
-  v13 = [v10 isEqualToString:v12];
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  v13 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v13)
   {
-    [(CPLEngineStore *)self _storeResetEvent:@"hard" scopeIdentifier:v10 date:0 cause:v8];
+    [(CPLEngineStore *)self _storeResetEvent:@"hard" scopeIdentifier:scopeIdentifier date:0 cause:causeCopy];
   }
 
-  v14 = [(CPLEngineScopeStorage *)self->_scopes resetCompleteSyncStateForScope:v9 error:a5];
+  v14 = [(CPLEngineScopeStorage *)self->_scopes resetCompleteSyncStateForScope:scopeCopy error:error];
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (BOOL)_resetLocalSyncStateWithCause:(id)a3 scope:(id)a4 date:(id)a5 error:(id *)a6
+- (BOOL)_resetLocalSyncStateWithCause:(id)cause scope:(id)scope date:(id)date error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 scopeIdentifier];
+  causeCopy = cause;
+  scopeCopy = scope;
+  dateCopy = date;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v14 = __CPLStoreOSLogDomain_3044();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412546;
-      v21 = v13;
+      v21 = scopeIdentifier;
       v22 = 2112;
-      v23 = v10;
+      v23 = causeCopy;
       _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Resetting local sync state for %@ (%@)", &v20, 0x16u);
     }
   }
 
-  v15 = [(CPLEngineStore *)self mainScopeIdentifier];
-  v16 = [v13 isEqualToString:v15];
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  v16 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v16)
   {
-    [(CPLEngineStore *)self _storeResetEvent:@"soft" scopeIdentifier:v13 date:v12 cause:v10];
+    [(CPLEngineStore *)self _storeResetEvent:@"soft" scopeIdentifier:scopeIdentifier date:dateCopy cause:causeCopy];
   }
 
-  v17 = [(CPLEngineScopeStorage *)self->_scopes resetLocalSyncStateForScope:v11 error:a6];
+  v17 = [(CPLEngineScopeStorage *)self->_scopes resetLocalSyncStateForScope:scopeCopy error:error];
 
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (BOOL)_resetGlobalStateWithError:(id *)a3
+- (BOOL)_resetGlobalStateWithError:(id *)error
 {
-  v5 = [(CPLEngineStore *)self platformObject];
-  v6 = [(CPLEngineStore *)self createNewLibraryVersion];
-  v7 = [(CPLEngineStore *)self storeLibraryVersion:v6 withError:a3];
+  platformObject = [(CPLEngineStore *)self platformObject];
+  createNewLibraryVersion = [(CPLEngineStore *)self createNewLibraryVersion];
+  v7 = [(CPLEngineStore *)self storeLibraryVersion:createNewLibraryVersion withError:error];
 
   if (!v7)
   {
     goto LABEL_10;
   }
 
-  if (![v5 storeClientIsNotInSyncWithClientCacheWithError:a3])
+  if (![platformObject storeClientIsNotInSyncWithClientCacheWithError:error])
   {
     goto LABEL_10;
   }
 
-  v8 = [v5 createNewClientCacheIdentifier];
-  v9 = [v5 storeClientCacheIdentifier:v8 error:a3];
+  createNewClientCacheIdentifier = [platformObject createNewClientCacheIdentifier];
+  v9 = [platformObject storeClientCacheIdentifier:createNewClientCacheIdentifier error:error];
 
   if (!v9)
   {
     goto LABEL_10;
   }
 
-  v10 = [v5 storedChangeSessionUpdate];
-  v11 = v10;
-  if (v10 && ([v10 discardFromStore:self error:a3] & 1) == 0)
+  storedChangeSessionUpdate = [platformObject storedChangeSessionUpdate];
+  v11 = storedChangeSessionUpdate;
+  if (storedChangeSessionUpdate && ([storedChangeSessionUpdate discardFromStore:self error:error] & 1) == 0)
   {
 
 LABEL_10:
@@ -5968,16 +5968,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [v5 storeChangeSessionUpdate:0 error:a3];
+  v12 = [platformObject storeChangeSessionUpdate:0 error:error];
   [(CPLEngineStore *)self _unschedulePendingUpdateApply];
 
-  if (!v12 || ![(CPLEnginePushRepository *)self->_pushRepository storeExtractedBatch:0 error:a3])
+  if (!v12 || ![(CPLEnginePushRepository *)self->_pushRepository storeExtractedBatch:0 error:error])
   {
     goto LABEL_10;
   }
 
   [(CPLEnginePushRepository *)self->_pushRepository setExtractionStrategy:0];
-  [(CPLEngineScopeStorage *)self->_scopes storeScopeListSyncAnchor:0 error:a3];
+  [(CPLEngineScopeStorage *)self->_scopes storeScopeListSyncAnchor:0 error:error];
   v13 = 1;
   self->_schedulePullFromClient = 1;
   [(CPLEngineStatusCenter *)self->_statusCenter resetAllTransientStatuses];
@@ -6059,8 +6059,8 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   if (v3)
   {
     v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3];
-    v4 = [MEMORY[0x1E695DF00] date];
-    v24 = [(NSMutableArray *)self->_resetEvents lastObject];
+    date = [MEMORY[0x1E695DF00] date];
+    lastObject = [(NSMutableArray *)self->_resetEvents lastObject];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -6088,8 +6088,8 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
             v11 = MEMORY[0x1E696AEC0];
             v12 = [v8 objectForKeyedSubscript:@"type"];
             v13 = [v8 objectForKeyedSubscript:@"cause"];
-            v14 = [CPLDateFormatter stringFromDateAgo:v9 now:v4];
-            v15 = [CPLDateFormatter stringFromDateAgo:v10 now:v4];
+            v14 = [CPLDateFormatter stringFromDateAgo:v9 now:date];
+            v15 = [CPLDateFormatter stringFromDateAgo:v10 now:date];
             v16 = [v11 stringWithFormat:@"%@ (%@) - %@ finished %@", v12, v13, v14, v15];
             [v27 addObject:v16];
           }
@@ -6097,16 +6097,16 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
           else
           {
             v17 = [v8 objectForKeyedSubscript:@"pending"];
-            v18 = [v17 BOOLValue];
+            bOOLValue = [v17 BOOLValue];
 
-            if (v18)
+            if (bOOLValue)
             {
               v19 = MEMORY[0x1E696AEC0];
               v12 = [v8 objectForKeyedSubscript:@"type"];
               v13 = [v8 objectForKeyedSubscript:@"cause"];
-              v20 = [CPLDateFormatter stringFromDateAgo:v9 now:v4];
+              v20 = [CPLDateFormatter stringFromDateAgo:v9 now:date];
               v14 = v20;
-              if (v24 == v8)
+              if (lastObject == v8)
               {
                 [v19 stringWithFormat:@"%@ (%@) - %@ ongoing", v12, v13, v20];
               }
@@ -6122,7 +6122,7 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
               v21 = MEMORY[0x1E696AEC0];
               v12 = [v8 objectForKeyedSubscript:@"type"];
               v13 = [v8 objectForKeyedSubscript:@"cause"];
-              v14 = [CPLDateFormatter stringFromDateAgo:v9 now:v4];
+              v14 = [CPLDateFormatter stringFromDateAgo:v9 now:date];
               [v21 stringWithFormat:@"%@ (%@) - %@", v12, v13, v14];
             }
             v15 = ;
@@ -6150,48 +6150,48 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
 - (BOOL)hasPendingResetSync
 {
   [(CPLEngineStore *)self _loadResetEvents];
-  v3 = [(NSMutableArray *)self->_resetEvents lastObject];
-  v4 = v3;
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_resetEvents lastObject];
+  v4 = lastObject;
+  if (lastObject)
   {
-    v5 = [v3 objectForKeyedSubscript:@"pending"];
-    v6 = [v5 BOOLValue];
+    v5 = [lastObject objectForKeyedSubscript:@"pending"];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)noteResetSyncFinished
 {
   [(CPLEngineStore *)self _loadResetEvents];
-  v3 = [(CPLEngineResourceStorage *)self->_resourceStorage fileStorage];
-  [v3 setTrackAllStoresAndDeletes:0];
+  fileStorage = [(CPLEngineResourceStorage *)self->_resourceStorage fileStorage];
+  [fileStorage setTrackAllStoresAndDeletes:0];
 
-  v4 = [(NSMutableArray *)self->_resetEvents lastObject];
-  if (v4)
+  lastObject = [(NSMutableArray *)self->_resetEvents lastObject];
+  if (lastObject)
   {
-    v16 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"pending"];
-    v6 = [v5 BOOLValue];
+    v16 = lastObject;
+    v5 = [lastObject objectForKeyedSubscript:@"pending"];
+    bOOLValue = [v5 BOOLValue];
 
-    v4 = v16;
-    if (v6)
+    lastObject = v16;
+    if (bOOLValue)
     {
       v7 = [v16 mutableCopy];
       [v7 removeObjectForKey:@"pending"];
-      v8 = [MEMORY[0x1E695DF00] date];
-      [v7 setObject:v8 forKeyedSubscript:@"endDate"];
+      date = [MEMORY[0x1E695DF00] date];
+      [v7 setObject:date forKeyedSubscript:@"endDate"];
 
       [(NSMutableArray *)self->_resetEvents replaceObjectAtIndex:[(NSMutableArray *)self->_resetEvents count]- 1 withObject:v7];
       [(NSMutableArray *)self->_resetEvents writeToURL:self->_resetEventsURL atomically:1];
       v9 = [v16 objectForKeyedSubscript:@"uuid"];
       WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-      v11 = [WeakRetained feedback];
+      feedback = [WeakRetained feedback];
       if (v9)
       {
         v12 = v9;
@@ -6214,23 +6214,23 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
         v15 = @"End of reset";
       }
 
-      [v11 reportEndOfResetWithUUID:v12 reason:v15];
+      [feedback reportEndOfResetWithUUID:v12 reason:v15];
 
-      v4 = v16;
+      lastObject = v16;
     }
   }
 }
 
-- (void)_storeResetEvent:(id)a3 scopeIdentifier:(id)a4 date:(id)a5 pending:(BOOL)a6 cause:(id)a7
+- (void)_storeResetEvent:(id)event scopeIdentifier:(id)identifier date:(id)date pending:(BOOL)pending cause:(id)cause
 {
-  v8 = a6;
+  pendingCopy = pending;
   v33[5] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(CPLEngineStore *)self mainScopeIdentifier];
-  v17 = [v13 isEqualToString:v16];
+  eventCopy = event;
+  identifierCopy = identifier;
+  dateCopy = date;
+  causeCopy = cause;
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  v17 = [identifierCopy isEqualToString:mainScopeIdentifier];
 
   if (v17)
   {
@@ -6245,32 +6245,32 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
       while ([(NSMutableArray *)self->_resetEvents count]> 4);
     }
 
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [v18 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    if (!v15)
+    if (!causeCopy)
     {
-      v15 = @"unknown reason";
+      causeCopy = @"unknown reason";
     }
 
     resetEvents = self->_resetEvents;
-    if (v8)
+    if (pendingCopy)
     {
       v32[0] = @"type";
       v32[1] = @"cause";
-      v33[0] = v12;
-      v33[1] = v15;
-      v33[2] = v19;
-      v21 = v14;
+      v33[0] = eventCopy;
+      v33[1] = causeCopy;
+      v33[2] = uUIDString;
+      date = dateCopy;
       v32[2] = @"uuid";
       v32[3] = @"date";
-      if (!v14)
+      if (!dateCopy)
       {
-        v21 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
       v32[4] = @"pending";
-      v33[3] = v21;
+      v33[3] = date;
       v33[4] = MEMORY[0x1E695E118];
       v22 = MEMORY[0x1E695DF20];
       v23 = v33;
@@ -6282,18 +6282,18 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
     {
       v30[0] = @"type";
       v30[1] = @"cause";
-      v31[0] = v12;
-      v31[1] = v15;
-      v31[2] = v19;
-      v21 = v14;
+      v31[0] = eventCopy;
+      v31[1] = causeCopy;
+      v31[2] = uUIDString;
+      date = dateCopy;
       v30[2] = @"uuid";
       v30[3] = @"date";
-      if (!v14)
+      if (!dateCopy)
       {
-        v21 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
-      v31[3] = v21;
+      v31[3] = date;
       v22 = MEMORY[0x1E695DF20];
       v23 = v31;
       v24 = v30;
@@ -6303,14 +6303,14 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
     v26 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
     [(NSMutableArray *)resetEvents addObject:v26];
 
-    if (!v14)
+    if (!dateCopy)
     {
     }
 
     [(NSMutableArray *)self->_resetEvents writeToURL:self->_resetEventsURL atomically:1];
     WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-    v28 = [WeakRetained feedback];
-    [v28 reportResetType:v12 reason:v15 uuid:v19];
+    feedback = [WeakRetained feedback];
+    [feedback reportResetType:eventCopy reason:causeCopy uuid:uUIDString];
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -6335,10 +6335,10 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)registerStorage:(id)a3
+- (void)registerStorage:(id)storage
 {
   v17 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  storageCopy = storage;
   if ([(CPLEngineStore *)self state])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -6347,16 +6347,16 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v14 = v12;
+        v14 = storageCopy;
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Trying to register %@ to %@ while the library is already open", buf, 0x16u);
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    [v10 handleFailureInMethod:a2 object:self file:v11 lineNumber:368 description:{@"Trying to register %@ to %@ while the library is already open", v12, self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v11 lineNumber:368 description:{@"Trying to register %@ to %@ while the library is already open", storageCopy, self}];
 
     abort();
   }
@@ -6364,14 +6364,14 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   storages = self->_storages;
   if (!storages)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_storages;
-    self->_storages = v6;
+    self->_storages = weakObjectsHashTable;
 
     storages = self->_storages;
   }
 
-  [(NSHashTable *)storages addObject:v12];
+  [(NSHashTable *)storages addObject:storageCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -6387,17 +6387,17 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
       {
         v6 = [objc_opt_class() stateDescriptionForState:self->_state];
         *buf = 138412546;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
         v14 = v6;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_ERROR, "at dealloc time, %@ should not be in state %@", buf, 0x16u);
       }
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
     v9 = [objc_opt_class() stateDescriptionForState:self->_state];
-    [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:360 description:{@"at dealloc time, %@ should not be in state %@", self, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:360 description:{@"at dealloc time, %@ should not be in state %@", self, v9}];
 
     abort();
   }
@@ -6408,17 +6408,17 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLEngineStore)initWithEngineLibrary:(id)a3
+- (CPLEngineStore)initWithEngineLibrary:(id)library
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   v74.receiver = self;
   v74.super_class = CPLEngineStore;
   v6 = [(CPLEngineStore *)&v74 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_engineLibrary, v5);
+    objc_storeWeak(&v6->_engineLibrary, libraryCopy);
     v8 = [[CPLEngineScopeStorage alloc] initWithEngineStore:v7 name:@"scopes"];
     scopes = v7->_scopes;
     v7->_scopes = v8;
@@ -6493,8 +6493,8 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
     v7->_batchedTransactionsQueue = v43;
 
     WeakRetained = objc_loadWeakRetained(&v7->_engineLibrary);
-    v46 = [WeakRetained clientLibraryBaseURL];
-    v47 = [v46 URLByAppendingPathComponent:@"resetevents.plist" isDirectory:0];
+    clientLibraryBaseURL = [WeakRetained clientLibraryBaseURL];
+    v47 = [clientLibraryBaseURL URLByAppendingPathComponent:@"resetevents.plist" isDirectory:0];
     resetEventsURL = v7->_resetEventsURL;
     v7->_resetEventsURL = v47;
 
@@ -6504,8 +6504,8 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
     v7->_pendingUpdateQueue = v50;
 
     v52 = objc_loadWeakRetained(&v7->_engineLibrary);
-    v53 = [v52 clientLibraryBaseURL];
-    v54 = [v53 URLByAppendingPathComponent:@"derivatives" isDirectory:1];
+    clientLibraryBaseURL2 = [v52 clientLibraryBaseURL];
+    v54 = [clientLibraryBaseURL2 URLByAppendingPathComponent:@"derivatives" isDirectory:1];
 
     v55 = [[CPLEngineDerivativesCache alloc] initWithCacheURL:v54];
     derivativesCache = v7->_derivativesCache;
@@ -6525,11 +6525,11 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
       v62 = __CPLStoreOSLogDomain_3044();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
       {
-        v63 = [(NSHashTable *)v7->_storages allObjects];
+        allObjects = [(NSHashTable *)v7->_storages allObjects];
         *buf = 138412546;
         v76 = v7;
         v77 = 2112;
-        v78 = v63;
+        v78 = allObjects;
         _os_log_impl(&dword_1DC05A000, v62, OS_LOG_TYPE_DEBUG, "Initing store %@ - storages: %@", buf, 0x16u);
       }
     }
@@ -6554,9 +6554,9 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
         }
       }
 
-      v72 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v73 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-      [v72 handleFailureInMethod:a2 object:v7 file:v73 lineNumber:354 description:{@"No platform object specified for %@", objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:v73 lineNumber:354 description:{@"No platform object specified for %@", objc_opt_class()}];
 
       abort();
     }
@@ -6566,20 +6566,20 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   return v7;
 }
 
-- (BOOL)mainScopeSupportsSharingScopeWithIdentifier:(id)a3
+- (BOOL)mainScopeSupportsSharingScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStore *)self mainScopeIdentifier];
-  LOBYTE(self) = [(CPLEngineStore *)self supportsSharingScopeWithIdentifier:v4 forScopeWithIdentifier:v5];
+  identifierCopy = identifier;
+  mainScopeIdentifier = [(CPLEngineStore *)self mainScopeIdentifier];
+  LOBYTE(self) = [(CPLEngineStore *)self supportsSharingScopeWithIdentifier:identifierCopy forScopeWithIdentifier:mainScopeIdentifier];
 
   return self;
 }
 
-- (BOOL)supportsSharingScopeWithIdentifier:(id)a3 forScopeWithIdentifier:(id)a4
+- (BOOL)supportsSharingScopeWithIdentifier:(id)identifier forScopeWithIdentifier:(id)withIdentifier
 {
-  v5 = a3;
-  v6 = CPLSharingScopePrefixForScopeWithIdentifier(a4);
-  v7 = [v5 hasPrefix:v6];
+  identifierCopy = identifier;
+  v6 = CPLSharingScopePrefixForScopeWithIdentifier(withIdentifier);
+  v7 = [identifierCopy hasPrefix:v6];
 
   return v7;
 }
@@ -6587,9 +6587,9 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
 - (NSString)mainScopeIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_engineLibrary);
-  v3 = [WeakRetained mainScopeIdentifier];
+  mainScopeIdentifier = [WeakRetained mainScopeIdentifier];
 
-  return v3;
+  return mainScopeIdentifier;
 }
 
 + (id)platformImplementationProtocol
@@ -6601,16 +6601,16 @@ void __34__CPLEngineStore__resetEventsJSON__block_invoke(uint64_t a1, void *a2, 
   return v4;
 }
 
-+ (id)stateDescriptionForState:(unint64_t)a3
++ (id)stateDescriptionForState:(unint64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E861BA08[a3];
+    return off_1E861BA08[state];
   }
 }
 
@@ -6632,37 +6632,37 @@ void __30__CPLEngineStore_storageNames__block_invoke()
   storageNames_storageNames = &unk_1F57EF860;
 }
 
-- (id)newClientCacheViewUsesPushRepository:(BOOL *)a3
+- (id)newClientCacheViewUsesPushRepository:(BOOL *)repository
 {
   v5 = [[CPLClientCacheBaseView alloc] initWithStore:self];
-  v6 = [(CPLEngineStore *)self pushRepository];
-  v7 = [v6 storedExtractedBatch];
-  if (v7)
+  pushRepository = [(CPLEngineStore *)self pushRepository];
+  storedExtractedBatch = [pushRepository storedExtractedBatch];
+  if (storedExtractedBatch)
   {
     v8 = [CPLChangeBatchChangeStorage alloc];
-    v9 = [v7 batch];
-    v10 = [(CPLChangeBatchChangeStorage *)v8 initWithBatch:v9 name:@"extractedBatch"];
+    batch = [storedExtractedBatch batch];
+    v10 = [(CPLChangeBatchChangeStorage *)v8 initWithBatch:batch name:@"extractedBatch"];
 
     v11 = [[CPLChangedRecordStorageView alloc] initWithChangeStorage:v10 overStorageView:v5];
     v5 = v11;
   }
 
-  if ([v6 isEmpty])
+  if ([pushRepository isEmpty])
   {
-    if (a3)
+    if (repository)
     {
-      *a3 = 0;
+      *repository = 0;
     }
   }
 
   else
   {
-    v12 = [[CPLPushRepositoryStorage alloc] initWithPushRepository:v6];
+    v12 = [[CPLPushRepositoryStorage alloc] initWithPushRepository:pushRepository];
     v13 = [[CPLChangedRecordStorageView alloc] initWithChangeStorage:v12 overStorageView:v5];
 
-    if (a3)
+    if (repository)
     {
-      *a3 = 1;
+      *repository = 1;
     }
 
     v5 = v13;

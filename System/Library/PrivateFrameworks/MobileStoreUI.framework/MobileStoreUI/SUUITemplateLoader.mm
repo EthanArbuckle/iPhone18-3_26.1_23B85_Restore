@@ -1,28 +1,28 @@
 @interface SUUITemplateLoader
-- (SUUITemplateLoader)initWithURLs:(id)a3 completionBlock:(id)a4;
-- (id)_operationWithURL:(id)a3;
-- (void)_operation:(id)a3 didCompleteWithOutput:(id)a4;
-- (void)_operation:(id)a3 didFailWithError:(id)a4;
-- (void)_operationDidFinish:(id)a3;
+- (SUUITemplateLoader)initWithURLs:(id)ls completionBlock:(id)block;
+- (id)_operationWithURL:(id)l;
+- (void)_operation:(id)_operation didCompleteWithOutput:(id)output;
+- (void)_operation:(id)_operation didFailWithError:(id)error;
+- (void)_operationDidFinish:(id)finish;
 - (void)load;
 @end
 
 @implementation SUUITemplateLoader
 
-- (SUUITemplateLoader)initWithURLs:(id)a3 completionBlock:(id)a4
+- (SUUITemplateLoader)initWithURLs:(id)ls completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = SUUITemplateLoader;
   v8 = [(SUUITemplateLoader *)&v22 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lsCopy copy];
     URLs = v8->_URLs;
     v8->_URLs = v9;
 
-    v11 = [v7 copy];
+    v11 = [blockCopy copy];
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v11;
 
@@ -48,17 +48,17 @@
   return v8;
 }
 
-- (id)_operationWithURL:(id)a3
+- (id)_operationWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:v4];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:lCopy];
   [v5 setAllowedRetryCount:1];
   v6 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequestProperties:v5];
   [v6 setRecordsMetrics:1];
   [v6 setITunesStoreRequest:1];
   v7 = [SUUITemplateParsingDataProvider alloc];
-  v8 = [(SUUITemplateLoader *)self templateParsingRegularExpression];
-  v9 = [(SUUITemplateParsingDataProvider *)v7 initWithRegularExpression:v8];
+  templateParsingRegularExpression = [(SUUITemplateLoader *)self templateParsingRegularExpression];
+  v9 = [(SUUITemplateParsingDataProvider *)v7 initWithRegularExpression:templateParsingRegularExpression];
   [v6 setDataConsumer:v9];
 
   objc_initWeak(&location, self);
@@ -117,19 +117,19 @@ uint64_t __40__SUUITemplateLoader__operationWithURL___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_operation:(id)a3 didCompleteWithOutput:(id)a4
+- (void)_operation:(id)_operation didCompleteWithOutput:(id)output
 {
-  v6 = a3;
+  _operationCopy = _operation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__SUUITemplateLoader__operation_didCompleteWithOutput___block_invoke;
   v10[3] = &unk_2798FE008;
-  v11 = v6;
-  v7 = v6;
-  v8 = a4;
+  v11 = _operationCopy;
+  v7 = _operationCopy;
+  outputCopy = output;
   [SUUIMetricsAppLaunchEvent withPendingLaunchEvent:v10];
-  v9 = [(SUUITemplateLoader *)self templateStrings];
-  [v9 addEntriesFromDictionary:v8];
+  templateStrings = [(SUUITemplateLoader *)self templateStrings];
+  [templateStrings addEntriesFromDictionary:outputCopy];
 
   [(SUUITemplateLoader *)self _operationDidFinish:v7];
 }
@@ -154,54 +154,54 @@ void __55__SUUITemplateLoader__operation_didCompleteWithOutput___block_invoke(ui
   }
 }
 
-- (void)_operation:(id)a3 didFailWithError:(id)a4
+- (void)_operation:(id)_operation didFailWithError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(SUUITemplateLoader *)self errors];
-  [v7 addObject:v6];
+  errorCopy = error;
+  _operationCopy = _operation;
+  errors = [(SUUITemplateLoader *)self errors];
+  [errors addObject:errorCopy];
 
-  [(SUUITemplateLoader *)self _operationDidFinish:v8];
+  [(SUUITemplateLoader *)self _operationDidFinish:_operationCopy];
 }
 
-- (void)_operationDidFinish:(id)a3
+- (void)_operationDidFinish:(id)finish
 {
   v16[1] = *MEMORY[0x277D85DE8];
   [(SUUITemplateLoader *)self setPendingOperationCount:[(SUUITemplateLoader *)self pendingOperationCount]- 1];
   if (![(SUUITemplateLoader *)self pendingOperationCount])
   {
-    v4 = [(SUUITemplateLoader *)self errors];
-    v5 = [v4 count];
+    errors = [(SUUITemplateLoader *)self errors];
+    v5 = [errors count];
 
-    v6 = [(SUUITemplateLoader *)self errors];
-    v7 = v6;
+    errors2 = [(SUUITemplateLoader *)self errors];
+    errors3 = errors2;
     if (v5 == 1)
     {
-      v8 = [v6 firstObject];
+      firstObject = [errors2 firstObject];
     }
 
     else
     {
-      v9 = [v6 count];
+      v9 = [errors2 count];
 
       if (v9 < 2)
       {
-        v8 = 0;
+        firstObject = 0;
         goto LABEL_8;
       }
 
       v10 = MEMORY[0x277CCA9B8];
       v15 = @"SUUITemplateLoaderErrorUnderlyingErrorsKey";
-      v7 = [(SUUITemplateLoader *)self errors];
-      v16[0] = v7;
+      errors3 = [(SUUITemplateLoader *)self errors];
+      v16[0] = errors3;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v8 = [v10 errorWithDomain:@"SUUITemplateLoaderErrorDomain" code:561278320 userInfo:v11];
+      firstObject = [v10 errorWithDomain:@"SUUITemplateLoaderErrorDomain" code:561278320 userInfo:v11];
     }
 
 LABEL_8:
-    v12 = [(SUUITemplateLoader *)self completionBlock];
-    v13 = [(SUUITemplateLoader *)self templateStrings];
-    (v12)[2](v12, v13, v8);
+    completionBlock = [(SUUITemplateLoader *)self completionBlock];
+    templateStrings = [(SUUITemplateLoader *)self templateStrings];
+    (completionBlock)[2](completionBlock, templateStrings, firstObject);
 
     retainSelf = self->_retainSelf;
     self->_retainSelf = 0;
@@ -210,8 +210,8 @@ LABEL_8:
 
 - (void)load
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SUUITemplateLoader.m" lineNumber:193 description:@"load called more than once"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SUUITemplateLoader.m" lineNumber:193 description:@"load called more than once"];
 }
 
 @end

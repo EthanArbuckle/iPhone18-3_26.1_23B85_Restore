@@ -1,7 +1,7 @@
 @interface VoiceOverMagicTapController
-- (id)magicTapDefaultToMediaPlayback:(id)a3;
+- (id)magicTapDefaultToMediaPlayback:(id)playback;
 - (id)specifiers;
-- (void)setMagicTapDefaultToMediaPlayback:(id)a3 specifier:(id)a4;
+- (void)setMagicTapDefaultToMediaPlayback:(id)playback specifier:(id)specifier;
 @end
 
 @implementation VoiceOverMagicTapController
@@ -35,14 +35,14 @@
   return v5;
 }
 
-- (void)setMagicTapDefaultToMediaPlayback:(id)a3 specifier:(id)a4
+- (void)setMagicTapDefaultToMediaPlayback:(id)playback specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [playback BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverMagicTapDefaultToMediaPlayback:v4];
+  [v5 setVoiceOverMagicTapDefaultToMediaPlayback:bOOLValue];
 }
 
-- (id)magicTapDefaultToMediaPlayback:(id)a3
+- (id)magicTapDefaultToMediaPlayback:(id)playback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverMagicTapDefaultToMediaPlayback]);

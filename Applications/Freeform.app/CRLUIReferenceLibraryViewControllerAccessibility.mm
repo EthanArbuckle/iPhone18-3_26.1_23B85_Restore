@@ -1,22 +1,22 @@
 @interface CRLUIReferenceLibraryViewControllerAccessibility
-+ (BOOL)dictionaryHasDefinitionForTerm:(id)a3;
-+ (id)crlaxCastFrom:(id)a3;
++ (BOOL)dictionaryHasDefinitionForTerm:(id)term;
++ (id)crlaxCastFrom:(id)from;
 @end
 
 @implementation CRLUIReferenceLibraryViewControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-+ (BOOL)dictionaryHasDefinitionForTerm:(id)a3
++ (BOOL)dictionaryHasDefinitionForTerm:(id)term
 {
-  v4 = a3;
+  termCopy = term;
   if (UIAccessibilityIsVoiceOverRunning() && +[NSThread isMainThread]&& (byte_101A351A8 & 1) != 0)
   {
     v5 = 1;
@@ -24,9 +24,9 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CRLUIReferenceLibraryViewControllerAccessibility;
-    v5 = objc_msgSendSuper2(&v7, "dictionaryHasDefinitionForTerm:", v4);
+    v5 = objc_msgSendSuper2(&v7, "dictionaryHasDefinitionForTerm:", termCopy);
   }
 
   return v5;

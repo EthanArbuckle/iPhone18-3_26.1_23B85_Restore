@@ -1,10 +1,10 @@
 @interface StoreImporterQueueCoding
 - (BOOL)isDataAvailable;
-- (id)initAllowDenseCoding:(BOOL)a3;
-- (int)popCommand:(id *)a3;
-- (unint64_t)flushWithBlock:(id)a3;
-- (unint64_t)pushCommand:(id *)a3 block:(id)a4;
-- (unint64_t)rawDecode:(char *)a3 availableLength:(unint64_t)a4 block:(id)a5;
+- (id)initAllowDenseCoding:(BOOL)coding;
+- (int)popCommand:(id *)command;
+- (unint64_t)flushWithBlock:(id)block;
+- (unint64_t)pushCommand:(id *)command block:(id)block;
+- (unint64_t)rawDecode:(char *)decode availableLength:(unint64_t)length block:(id)block;
 - (void)dealloc;
 - (void)popBackToRecordedPushMarker;
 - (void)recordPushMarker;
@@ -15,7 +15,7 @@
 
 @implementation StoreImporterQueueCoding
 
-- (id)initAllowDenseCoding:(BOOL)a3
+- (id)initAllowDenseCoding:(BOOL)coding
 {
   v6.receiver = self;
   v6.super_class = StoreImporterQueueCoding;
@@ -23,7 +23,7 @@
   if (v4)
   {
     v4->_rawQueue = sub_100005FF8(65000);
-    v4->_allowDenseCoding = a3;
+    v4->_allowDenseCoding = coding;
   }
 
   return v4;
@@ -64,10 +64,10 @@
   self->_encodeState.runLengthDirectoryMask = self->_pushEncodingState.runLengthDirectoryMask;
 }
 
-- (unint64_t)pushCommand:(id *)a3 block:(id)a4
+- (unint64_t)pushCommand:(id *)command block:(id)block
 {
-  var8 = a3->var8;
-  if (a3->var0)
+  var8 = command->var8;
+  if (command->var0)
   {
     v5 = 0;
   }
@@ -101,7 +101,7 @@
     self->_recordPushMarker = 0;
   }
 
-  if (!a3->var0)
+  if (!command->var0)
   {
     runLength = self->_encodeState.runLength;
     if (runLength < 1)
@@ -118,25 +118,25 @@
     }
 
     v33 = v11 + v17;
-    v34 = (a3->var8 + 4095) & 0xFFF;
+    v34 = (command->var8 + 4095) & 0xFFF;
     if (v34 > 0x1F)
     {
       v35 = (v34 >> 8) | 0xFFFFFFE0;
       v36 = v33 + 2;
-      v33[1] = LOBYTE(a3->var8) - 1;
+      v33[1] = LOBYTE(command->var8) - 1;
     }
 
     else
     {
-      LOBYTE(v35) = (LOBYTE(a3->var8) - 1) | 0xC0;
+      LOBYTE(v35) = (LOBYTE(command->var8) - 1) | 0xC0;
       v36 = v33 + 1;
     }
 
     *v33 = v35;
-    memcpy(v36, a3->var9, v34 + 1);
-    v37 = a3->var8;
+    memcpy(v36, command->var9, v34 + 1);
+    v37 = command->var8;
     v23 = &v36[v37];
-    if (v37 == 1 && !a3->var9[0])
+    if (v37 == 1 && !command->var9[0])
     {
       self->_encodeState.runLengthDirectoryMask = 0;
       *&self->_encodeState.uidCache[1] = 0u;
@@ -148,8 +148,8 @@
   }
 
   uidCache = self->_encodeState.uidCache;
-  v14 = a3->var2 == self->_encodeState.uidCache[0] && a3->var3 == self->_encodeState.gidCache[0];
-  v18 = a3->var1 - self->_encodeState.previousOid;
+  v14 = command->var2 == self->_encodeState.uidCache[0] && command->var3 == self->_encodeState.gidCache[0];
+  v18 = command->var1 - self->_encodeState.previousOid;
   if (!self->_allowDenseCoding)
   {
     goto LABEL_24;
@@ -160,7 +160,7 @@
     v14 = 0;
   }
 
-  if (!v14 || a3->var8 || (v19 = a3->var4, v19 > 1) || a3->var5)
+  if (!v14 || command->var8 || (v19 = command->var4, v19 > 1) || command->var5)
   {
 LABEL_24:
     v20 = self->_encodeState.runLength;
@@ -179,7 +179,7 @@ LABEL_24:
 
     v22 = v11 + v21;
     v23 = v11 + v21 + 2;
-    v24 = a3->var8;
+    v24 = command->var8;
     v25 = v24 - 1;
     v68 = (v24 + 4095) & 0xFFF;
     if (v24)
@@ -213,8 +213,8 @@ LABEL_24:
       {
         if ((v18 + 0x4000) >> 16)
         {
-          var1 = a3->var1;
-          v39 = (16 * a3->var4) | (4 * a3->var5) | v27;
+          var1 = command->var1;
+          v39 = (16 * command->var4) | (4 * command->var5) | v27;
           if (HIDWORD(var1))
           {
             LOBYTE(v31) = v39 | 3;
@@ -232,15 +232,15 @@ LABEL_24:
           goto LABEL_44;
         }
 
-        var5 = a3->var5;
+        var5 = command->var5;
         goto LABEL_43;
       }
     }
 
     else
     {
-      var4 = a3->var4;
-      if (var4 <= 1 && !a3->var5)
+      var4 = command->var4;
+      if (var4 <= 1 && !command->var5)
       {
         v40 = v27 | (32 * var4);
         v41 = v40 | (v18 - 24);
@@ -271,12 +271,12 @@ LABEL_24:
       v29 = v18 + 512;
     }
 
-    var5 = a3->var5;
+    var5 = command->var5;
     if (var5)
     {
       if ((v18 + 64) <= 0xFF)
       {
-        v31 = (16 * a3->var4) | (4 * var5) | v27;
+        v31 = (16 * command->var4) | (4 * var5) | v27;
         *v23++ = v18 + 64;
 LABEL_44:
         v32 = -64;
@@ -284,19 +284,19 @@ LABEL_44:
       }
 
 LABEL_43:
-      v31 = (16 * a3->var4) | (4 * var5) | v27 | 1;
+      v31 = (16 * command->var4) | (4 * var5) | v27 | 1;
       *v23 = v18 + 0x4000;
       v23 += 2;
       goto LABEL_44;
     }
 
-    v31 = (v29 >> 8) | (16 * a3->var4) | v27;
+    v31 = (v29 >> 8) | (16 * command->var4) | v27;
     *v23++ = v18;
     v32 = 0x80;
 LABEL_61:
     v43 = 0;
     v44 = 0;
-    var2 = a3->var2;
+    var2 = command->var2;
     while (uidCache[v43] != var2)
     {
       --v44;
@@ -307,7 +307,7 @@ LABEL_61:
         self->_encodeState.uidCache[3] = self->_encodeState.uidCache[2];
         *&self->_encodeState.uidCache[1] = v46;
         self->_encodeState.uidCache[0] = var2;
-        v47 = a3->var2;
+        v47 = command->var2;
         if (v47 == -2)
         {
           v47 = 0;
@@ -369,7 +369,7 @@ LABEL_75:
     v52 = 0;
     v53 = 0;
     gidCache = self->_encodeState.gidCache;
-    var3 = a3->var3;
+    var3 = command->var3;
     while (gidCache[v52] != var3)
     {
       --v53;
@@ -380,7 +380,7 @@ LABEL_75:
         self->_encodeState.gidCache[3] = self->_encodeState.gidCache[2];
         *&self->_encodeState.gidCache[1] = v56;
         self->_encodeState.gidCache[0] = var3;
-        v57 = a3->var3;
+        v57 = command->var3;
         if (v57 == -2)
         {
           v57 = 0;
@@ -444,10 +444,10 @@ LABEL_86:
 LABEL_90:
     *v22 = v31;
     v22[1] = v32 + 8 * v48 + v58;
-    if (a3->var8)
+    if (command->var8)
     {
-      memcpy(v23, a3->var9, v68 + 1);
-      v23 += a3->var8;
+      memcpy(v23, command->var9, v68 + 1);
+      v23 += command->var8;
     }
 
     goto LABEL_92;
@@ -482,7 +482,7 @@ LABEL_90:
       *v11 = LODWORD(self->_encodeState.runLengthDirectoryMask) + 16 * v63 - 16;
       self->_encodeState.runLength = 0;
       self->_encodeState.runLengthDirectoryMask = 0;
-      v19 = a3->var4;
+      v19 = command->var4;
       v64 = 1;
     }
 
@@ -491,14 +491,14 @@ LABEL_90:
   }
 
 LABEL_92:
-  self->_encodeState.previousOid = a3->var1;
+  self->_encodeState.previousOid = command->var1;
 LABEL_93:
   v15 = v23 - v12;
   if (v23 != v12)
   {
-    if (a4)
+    if (block)
     {
-      (*(a4 + 2))(a4, v12, v23 - v12);
+      (*(block + 2))(block, v12, v23 - v12);
     }
 
     sub_100006480(self->_rawQueue, v23 - v12);
@@ -507,7 +507,7 @@ LABEL_93:
   return v15;
 }
 
-- (unint64_t)flushWithBlock:(id)a3
+- (unint64_t)flushWithBlock:(id)block
 {
   if (self->_encodeState.runLength < 1)
   {
@@ -530,9 +530,9 @@ LABEL_93:
   *v5 = LOBYTE(self->_encodeState.runLengthDirectoryMask) + 16 * runLength - 16;
   self->_encodeState.runLength = 0;
   self->_encodeState.runLengthDirectoryMask = 0;
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, v5, 1);
+    (*(block + 2))(block, v5, 1);
   }
 
   rawQueue = self->_rawQueue;
@@ -555,7 +555,7 @@ LABEL_93:
   return v5[0] != 0;
 }
 
-- (int)popCommand:(id *)a3
+- (int)popCommand:(id *)command
 {
   *v9 = 0;
   v5 = sub_1000060BC(self->_rawQueue, v9);
@@ -570,7 +570,7 @@ LABEL_93:
     return 0;
   }
 
-  v7 = sub_10002051C(v5, *v9, &self->_decodeState, a3);
+  v7 = sub_10002051C(v5, *v9, &self->_decodeState, command);
   if (v7 < 1)
   {
     if (v7)
@@ -615,15 +615,15 @@ LABEL_93:
   *&self->_rawDecodeState.previousOid = 0u;
 }
 
-- (unint64_t)rawDecode:(char *)a3 availableLength:(unint64_t)a4 block:(id)a5
+- (unint64_t)rawDecode:(char *)decode availableLength:(unint64_t)length block:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000209F4;
   v6[3] = &unk_100035CD0;
   v6[4] = self;
-  v6[5] = a5;
-  return sub_100020880(a3, a4, &self->_rawDecodeState, v6, a5);
+  v6[5] = block;
+  return sub_100020880(decode, length, &self->_rawDecodeState, v6, block);
 }
 
 @end

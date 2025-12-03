@@ -1,41 +1,41 @@
 @interface BYODDisableCatchAllEmailRequest
-- (BYODDisableCatchAllEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5;
+- (BYODDisableCatchAllEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation BYODDisableCatchAllEmailRequest
 
-- (BYODDisableCatchAllEmailRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5
+- (BYODDisableCatchAllEmailRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(BYODDisableCatchAllEmailRequest *)self urlString];
+  accountCopy = account;
+  storeCopy = store;
+  urlString = [(BYODDisableCatchAllEmailRequest *)self urlString];
   v12.receiver = self;
   v12.super_class = BYODDisableCatchAllEmailRequest;
-  v10 = [(BYODRequest *)&v12 initWithURLString:v9 accountStore:v8 appleAccount:v7 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v10 = [(BYODRequest *)&v12 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   return v10;
 }
 
 - (id)urlString
 {
-  v2 = [(BYODRequest *)self iCloudAppleAccount];
-  v3 = [v2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  iCloudAppleAccount = [(BYODRequest *)self iCloudAppleAccount];
+  v3 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"disableCatchAllURL"];
 
   return v4;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5C2CC;
   v5[3] = &unk_B97F0;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(BYODRequest *)self performRequestWithHandler:v5];
 }
 

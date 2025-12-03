@@ -1,14 +1,14 @@
 @interface TSCEFunction_DAYNAME
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_DAYNAME
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v91 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v91);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v91);
   v10 = v91;
   v15 = objc_msgSend_trunc(v9, v11, v12, v13, v14);
 
@@ -17,11 +17,11 @@
 
     v24 = objc_msgSend_gregorianCalendar(TSCECalendar, v20, v21, v22, v23);
     v90 = 0;
-    v26 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v7, v25, a3, a4, 0, &v90);
+    v26 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v7, v25, context, spec, 0, &v90);
     v30 = v90;
     if (v30)
     {
-      v31 = objc_msgSend_raiseErrorOrConvert_(a3, v27, v30, v28, v29);
+      v31 = objc_msgSend_raiseErrorOrConvert_(context, v27, v30, v28, v29);
       goto LABEL_17;
     }
 
@@ -39,9 +39,9 @@
   {
     if (!isDuration)
     {
-      v26 = objc_msgSend_functionName(a4, v38, v39, v40, v41);
+      v26 = objc_msgSend_functionName(spec, v38, v39, v40, v41);
       v62 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v80, 1, v26, 1, 1, 1.0, 7.0);
-      v74 = objc_msgSend_raiseErrorOrConvert_(a3, v81, v62, v82, v83);
+      v74 = objc_msgSend_raiseErrorOrConvert_(context, v81, v62, v82, v83);
       goto LABEL_16;
     }
   }
@@ -53,7 +53,7 @@
     {
       v44 = v43 - 1;
 LABEL_9:
-      v50 = objc_msgSend_locale(a3, v38, v39, v40, v41);
+      v50 = objc_msgSend_locale(context, v38, v39, v40, v41);
       v26 = objc_msgSend_standaloneWeekdaySymbols(v50, v51, v52, v53, v54);
 
       if (v44 >= objc_msgSend_count(v26, v55, v56, v57, v58) || (objc_msgSend_objectAtIndex_(v26, v59, v44, v60, v61), (v62 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -79,9 +79,9 @@ LABEL_9:
     }
   }
 
-  v26 = objc_msgSend_functionName(a4, v38, v39, v40, v41);
+  v26 = objc_msgSend_functionName(spec, v38, v39, v40, v41);
   v62 = objc_msgSend_durationNotAllowedError_argumentNumber_(TSCEError, v75, v26, 1, v76);
-  v74 = objc_msgSend_raiseErrorOrConvert_(a3, v77, v62, v78, v79);
+  v74 = objc_msgSend_raiseErrorOrConvert_(context, v77, v62, v78, v79);
 LABEL_16:
   v31 = v74;
 

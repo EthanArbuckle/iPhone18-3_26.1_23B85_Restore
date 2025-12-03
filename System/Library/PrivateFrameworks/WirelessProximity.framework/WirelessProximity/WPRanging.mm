@@ -1,30 +1,30 @@
 @interface WPRanging
-- (WPRanging)initWithDelegate:(id)a3 queue:(id)a4;
+- (WPRanging)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPRangingDelegate)delegate;
 - (void)invalidate;
-- (void)isRangingEnabledReply:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
+- (void)isRangingEnabledReply:(id)reply;
+- (void)stateDidChange:(int64_t)change;
 @end
 
 @implementation WPRanging
 
-- (WPRanging)initWithDelegate:(id)a3 queue:(id)a4
+- (WPRanging)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   if (+[WPClient supportsRanging])
   {
     v13.receiver = self;
     v13.super_class = WPRanging;
-    v8 = [(WPClient *)&v13 initWithQueue:v7 machName:0];
+    v8 = [(WPClient *)&v13 initWithQueue:queueCopy machName:0];
     v9 = v8;
     if (v8)
     {
-      objc_storeWeak(&v8->_delegate, v6);
+      objc_storeWeak(&v8->_delegate, delegateCopy);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -40,10 +40,10 @@
       [WPRanging initWithDelegate:v11 queue:?];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)invalidate
@@ -54,9 +54,9 @@
   [(WPClient *)&v3 invalidate];
 }
 
-- (void)isRangingEnabledReply:(id)a3
+- (void)isRangingEnabledReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (WPLogInitOnce != -1)
   {
     [WPRanging isRangingEnabledReply:];
@@ -71,21 +71,21 @@
 
   v6.receiver = self;
   v6.super_class = WPRanging;
-  [(WPClient *)&v6 isRangingEnabledReply:v4];
+  [(WPClient *)&v6 isRangingEnabledReply:replyCopy];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPRanging;
-  [(WPClient *)&v7 stateDidChange:a3];
-  v4 = [(WPRanging *)self delegate];
+  [(WPClient *)&v7 stateDidChange:change];
+  delegate = [(WPRanging *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPRanging *)self delegate];
-    [v6 rangingDidUpdateState:self];
+    delegate2 = [(WPRanging *)self delegate];
+    [delegate2 rangingDidUpdateState:self];
   }
 }
 

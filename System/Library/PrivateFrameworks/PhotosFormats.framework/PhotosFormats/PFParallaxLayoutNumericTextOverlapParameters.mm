@@ -1,13 +1,13 @@
 @interface PFParallaxLayoutNumericTextOverlapParameters
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4;
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive;
 @end
 
 @implementation PFParallaxLayoutNumericTextOverlapParameters
 
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive
 {
-  result = a3.size.height * 4.0 / 3.0 * 0.2 / a3.size.width;
-  if (a4)
+  result = rect.size.height * 4.0 / 3.0 * 0.2 / rect.size.width;
+  if (interactive)
   {
     return result + (1.0 - result) * 0.25;
   }

@@ -1,6 +1,6 @@
 @interface WFParameter
 + (id)allInsertableVariableTypes;
-+ (id)parameterWithDefinition:(id)a3;
++ (id)parameterWithDefinition:(id)definition;
 + (id)referencedActionResourceClasses;
 - (BOOL)stripsTTSHints;
 - (Class)singleStateClass;
@@ -11,18 +11,18 @@
 - (NSString)localizedLabel;
 - (NSString)localizedPlaceholder;
 - (NSString)localizedPrompt;
-- (WFParameter)initWithDefinition:(id)a3;
-- (_NSRange)arraySizeRangeForWidgetFamily:(id)a3;
-- (id)_localizedStringForKey:(id)a3 context:(id)a4;
-- (id)localizedLabelWithContext:(id)a3;
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4;
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4;
-- (int64_t)arraySizeForWidgetSizeClass:(id)a3;
-- (void)addEventObserver:(id)a3;
+- (WFParameter)initWithDefinition:(id)definition;
+- (_NSRange)arraySizeRangeForWidgetFamily:(id)family;
+- (id)_localizedStringForKey:(id)key context:(id)context;
+- (id)localizedLabelWithContext:(id)context;
+- (id)rewriteParameterState:(id)state withStrings:(id)strings;
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case;
+- (int64_t)arraySizeForWidgetSizeClass:(id)class;
+- (void)addEventObserver:(id)observer;
 - (void)attributesDidChange;
 - (void)defaultSerializedRepresentationDidChange;
-- (void)removeEventObserver:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)removeEventObserver:(id)observer;
+- (void)setHidden:(BOOL)hidden;
 - (void)stateValidityCriteriaDidChange;
 @end
 
@@ -32,38 +32,38 @@
 {
   if ([(WFParameter *)self allowsMultipleValues])
   {
-    v3 = [(WFParameter *)self multipleStateClass];
+    multipleStateClass = [(WFParameter *)self multipleStateClass];
   }
 
   else
   {
-    v3 = [(WFParameter *)self singleStateClass];
+    multipleStateClass = [(WFParameter *)self singleStateClass];
   }
 
-  return v3;
+  return multipleStateClass;
 }
 
 - (NSString)localizedLabel
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFParameter *)self localizedLabelWithContext:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFParameter *)self localizedLabelWithContext:defaultContext];
 
   return v4;
 }
 
 - (NSString)localizedDescription
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFParameter *)self localizedDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFParameter *)self localizedDescriptionWithContext:defaultContext];
 
   return v4;
 }
 
-- (id)userVisibleStringsInParameterState:(id)a3 forUseCase:(unint64_t)a4
+- (id)userVisibleStringsInParameterState:(id)state forUseCase:(unint64_t)case
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1CA5C5234(a3, a4);
+  selfCopy = self;
+  sub_1CA5C5234(state, case);
   swift_unknownObjectRelease();
 
   type metadata accessor for WFUserVisibleString();
@@ -73,14 +73,14 @@
   return v8;
 }
 
-- (id)rewriteParameterState:(id)a3 withStrings:(id)a4
+- (id)rewriteParameterState:(id)state withStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   sub_1CA94C1C8();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1CA5C53E8(a3);
+  selfCopy = self;
+  v7 = sub_1CA5C53E8(state);
   swift_unknownObjectRelease();
 
   return v7;
@@ -88,38 +88,38 @@
 
 - (Class)toolkitValueClass
 {
-  v2 = [(WFParameter *)self toolkitStateClass];
+  toolkitStateClass = [(WFParameter *)self toolkitStateClass];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(objc_class *)v2 processingValueClasses];
-    v4 = [v3 firstObject];
+    processingValueClasses = [(objc_class *)toolkitStateClass processingValueClasses];
+    firstObject = [processingValueClasses firstObject];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [(objc_class *)v2 processingValueClass];
+    firstObject = [(objc_class *)toolkitStateClass processingValueClass];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (void)removeEventObserver:(id)a3
+- (void)removeEventObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFParameter *)self eventObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  eventObservers = [(WFParameter *)self eventObservers];
+  [eventObservers removeObject:observerCopy];
 }
 
-- (void)addEventObserver:(id)a3
+- (void)addEventObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFParameter *)self eventObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  eventObservers = [(WFParameter *)self eventObservers];
+  [eventObservers addObject:observerCopy];
 }
 
 - (void)stateValidityCriteriaDidChange
@@ -129,10 +129,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(WFParameter *)self eventObservers];
-  v4 = [v3 allObjects];
+  eventObservers = [(WFParameter *)self eventObservers];
+  allObjects = [eventObservers allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -144,7 +144,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -157,7 +157,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -173,10 +173,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(WFParameter *)self eventObservers];
-  v4 = [v3 allObjects];
+  eventObservers = [(WFParameter *)self eventObservers];
+  allObjects = [eventObservers allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -188,7 +188,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -201,7 +201,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -213,17 +213,17 @@
 - (void)attributesDidChange
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(WFParameter *)self localizedStringCache];
-  [v3 removeAllObjects];
+  localizedStringCache = [(WFParameter *)self localizedStringCache];
+  [localizedStringCache removeAllObjects];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(WFParameter *)self eventObservers];
-  v5 = [v4 allObjects];
+  eventObservers = [(WFParameter *)self eventObservers];
+  allObjects = [eventObservers allObjects];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -235,7 +235,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -248,7 +248,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -257,89 +257,89 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(WFParameter *)self attributesDidChange];
   }
 }
 
 - (BOOL)stripsTTSHints
 {
-  v2 = [(WFParameter *)self definition];
-  v3 = [v2 objectForKey:@"StripsTTSHints"];
-  v4 = [v3 BOOLValue];
+  definition = [(WFParameter *)self definition];
+  v3 = [definition objectForKey:@"StripsTTSHints"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (_NSRange)arraySizeRangeForWidgetFamily:(id)a3
+- (_NSRange)arraySizeRangeForWidgetFamily:(id)family
 {
-  v5 = a3;
-  if (!v5)
+  familyCopy = family;
+  if (!familyCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFParameter.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"widgetFamily"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameter.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"widgetFamily"}];
   }
 
-  v6 = 1;
+  rangeValue = 1;
   v7 = 1;
   if ([(WFParameter *)self allowsMultipleValues])
   {
     if ([(WFParameter *)self isRangedSizeArray])
     {
-      v8 = [(NSDictionary *)self->_arraySizeRangesByWidgetFamily objectForKeyedSubscript:v5];
+      v8 = [(NSDictionary *)self->_arraySizeRangesByWidgetFamily objectForKeyedSubscript:familyCopy];
       v9 = v8;
       if (v8)
       {
-        v6 = [v8 rangeValue];
+        rangeValue = [v8 rangeValue];
         v7 = v10;
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v11 = [v5 isEqualToString:*MEMORY[0x1E69AC188]];
+      v11 = [familyCopy isEqualToString:*MEMORY[0x1E69AC188]];
       v12 = *MEMORY[0x1E69AC190];
       if ((v11 & 1) == 0)
       {
-        v13 = [v5 isEqualToString:v12];
+        v13 = [familyCopy isEqualToString:v12];
         v12 = *MEMORY[0x1E69AC198];
         if ((v13 & 1) == 0)
         {
-          v14 = [v5 isEqualToString:v12];
+          v14 = [familyCopy isEqualToString:v12];
           v12 = *MEMORY[0x1E69AC1A0];
           if ((v14 & 1) == 0)
           {
-            if (![v5 isEqualToString:v12])
+            if (![familyCopy isEqualToString:v12])
             {
-              v15 = [v5 isEqualToString:*MEMORY[0x1E69AC178]];
+              v15 = [familyCopy isEqualToString:*MEMORY[0x1E69AC178]];
               v12 = *MEMORY[0x1E69AC160];
               if (v15)
               {
                 goto LABEL_16;
               }
 
-              v16 = [v5 isEqualToString:v12];
+              v16 = [familyCopy isEqualToString:v12];
               v12 = *MEMORY[0x1E69AC168];
               if (v16)
               {
                 goto LABEL_16;
               }
 
-              v17 = [v5 isEqualToString:v12];
+              v17 = [familyCopy isEqualToString:v12];
               v12 = *MEMORY[0x1E69AC170];
               if (v17)
               {
                 goto LABEL_16;
               }
 
-              if (![v5 isEqualToString:v12])
+              if (![familyCopy isEqualToString:v12])
               {
                 v7 = 0;
-                v6 = 0x7FFFFFFFFFFFFFFFLL;
+                rangeValue = 0x7FFFFFFFFFFFFFFFLL;
                 goto LABEL_17;
               }
             }
@@ -351,65 +351,65 @@ LABEL_17:
 
 LABEL_16:
       v18 = v12;
-      v6 = [(WFParameter *)self arraySizeRangeForWidgetFamily:v18];
+      rangeValue = [(WFParameter *)self arraySizeRangeForWidgetFamily:v18];
       v7 = v19;
 
       goto LABEL_17;
     }
 
-    v6 = 0;
+    rangeValue = 0;
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
 LABEL_18:
 
-  v20 = v6;
+  v20 = rangeValue;
   v21 = v7;
   result.length = v21;
   result.location = v20;
   return result;
 }
 
-- (int64_t)arraySizeForWidgetSizeClass:(id)a3
+- (int64_t)arraySizeForWidgetSizeClass:(id)class
 {
-  v5 = a3;
-  if (!v5)
+  classCopy = class;
+  if (!classCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFParameter.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"widgetSizeClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameter.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"widgetSizeClass"}];
   }
 
   if ([(WFParameter *)self allowsMultipleValues])
   {
     if ([(WFParameter *)self fixedSizeArray])
     {
-      v6 = [(NSDictionary *)self->_arraySizesBySizeClass objectForKeyedSubscript:v5];
+      v6 = [(NSDictionary *)self->_arraySizesBySizeClass objectForKeyedSubscript:classCopy];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 integerValue];
-        if (v8 <= 1)
+        integerValue = [v6 integerValue];
+        if (integerValue <= 1)
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = v8;
+          v9 = integerValue;
         }
 
         goto LABEL_17;
       }
 
-      v10 = [v5 isEqualToString:*MEMORY[0x1E696E538]];
+      v10 = [classCopy isEqualToString:*MEMORY[0x1E696E538]];
       v11 = *MEMORY[0x1E696E540];
       if ((v10 & 1) == 0)
       {
-        v12 = [v5 isEqualToString:*MEMORY[0x1E696E540]];
+        v12 = [classCopy isEqualToString:*MEMORY[0x1E696E540]];
         v11 = *MEMORY[0x1E696E548];
         if ((v12 & 1) == 0)
         {
-          if ([v5 isEqualToString:*MEMORY[0x1E696E548]] || (v11 = *MEMORY[0x1E696E520], objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E696E520])))
+          if ([classCopy isEqualToString:*MEMORY[0x1E696E548]] || (v11 = *MEMORY[0x1E696E520], objc_msgSend(classCopy, "isEqualToString:", *MEMORY[0x1E696E520])))
           {
             v11 = *MEMORY[0x1E696E550];
           }
@@ -417,9 +417,9 @@ LABEL_18:
           else
           {
             v15 = *MEMORY[0x1E696E518];
-            if (([v5 isEqualToString:*MEMORY[0x1E696E518]] & 1) == 0)
+            if (([classCopy isEqualToString:*MEMORY[0x1E696E518]] & 1) == 0)
             {
-              if ([v5 isEqualToString:*MEMORY[0x1E696E530]])
+              if ([classCopy isEqualToString:*MEMORY[0x1E696E530]])
               {
                 v11 = v15;
               }
@@ -427,7 +427,7 @@ LABEL_18:
               else
               {
                 v11 = v15;
-                if (![v5 isEqualToString:*MEMORY[0x1E696E528]])
+                if (![classCopy isEqualToString:*MEMORY[0x1E696E528]])
                 {
                   v9 = 1;
                   goto LABEL_17;
@@ -468,17 +468,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [(WFParameter *)self defaultSupportedVariableTypes];
-  v5 = [v4 mutableCopy];
+  defaultSupportedVariableTypes = [(WFParameter *)self defaultSupportedVariableTypes];
+  v5 = [defaultSupportedVariableTypes mutableCopy];
 
   if (v5)
   {
-    v6 = [(WFParameter *)self disallowedVariableTypes];
+    disallowedVariableTypes = [(WFParameter *)self disallowedVariableTypes];
 
-    if (v6)
+    if (disallowedVariableTypes)
     {
-      v7 = [(WFParameter *)self disallowedVariableTypes];
-      [(NSSet *)v5 minusSet:v7];
+      disallowedVariableTypes2 = [(WFParameter *)self disallowedVariableTypes];
+      [(NSSet *)v5 minusSet:disallowedVariableTypes2];
     }
 
     v8 = self->_supportedVariableTypes;
@@ -494,17 +494,17 @@ LABEL_7:
   return v9;
 }
 
-- (id)_localizedStringForKey:(id)a3 context:(id)a4
+- (id)_localizedStringForKey:(id)key context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  contextCopy = context;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v7 locale];
-  v10 = [v9 localeIdentifier];
-  v11 = [v8 stringWithFormat:@"%@_%@", v6, v10];
+  locale = [contextCopy locale];
+  localeIdentifier = [locale localeIdentifier];
+  v11 = [v8 stringWithFormat:@"%@_%@", keyCopy, localeIdentifier];
 
-  v12 = [(WFParameter *)self localizedStringCache];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  localizedStringCache = [(WFParameter *)self localizedStringCache];
+  v13 = [localizedStringCache objectForKeyedSubscript:v11];
 
   if (v13)
   {
@@ -512,8 +512,8 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v15 = [(WFParameter *)self definition];
-  v16 = [v15 objectForKey:v6];
+  definition = [(WFParameter *)self definition];
+  v16 = [definition objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -534,13 +534,13 @@ LABEL_7:
       v18 = &unk_1F4A9A168;
     }
 
-    v17 = [v16 localizedStringWithContext:v7 pluralizationNumber:v18];
+    v17 = [v16 localizedStringWithContext:contextCopy pluralizationNumber:v18];
 LABEL_10:
     v14 = v17;
     if (v17)
     {
-      v19 = [(WFParameter *)self localizedStringCache];
-      [v19 setObject:v14 forKeyedSubscript:v11];
+      localizedStringCache2 = [(WFParameter *)self localizedStringCache];
+      [localizedStringCache2 setObject:v14 forKeyedSubscript:v11];
     }
 
     goto LABEL_13;
@@ -564,8 +564,8 @@ LABEL_14:
 
   else
   {
-    v5 = [MEMORY[0x1E69E0BE0] defaultContext];
-    v3 = [(WFParameter *)self _localizedStringForKey:@"Placeholder" context:v5];
+    defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+    v3 = [(WFParameter *)self _localizedStringForKey:@"Placeholder" context:defaultContext];
   }
 
   return v3;
@@ -581,28 +581,28 @@ LABEL_14:
 
   else
   {
-    v5 = [MEMORY[0x1E69E0BE0] defaultContext];
-    v6 = [(WFParameter *)self _localizedStringForKey:@"Prompt" context:v5];
+    defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+    v6 = [(WFParameter *)self _localizedStringForKey:@"Prompt" context:defaultContext];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      localizedLabel = v6;
     }
 
     else
     {
-      v8 = [(WFParameter *)self localizedLabel];
+      localizedLabel = [(WFParameter *)self localizedLabel];
     }
 
-    v3 = v8;
+    v3 = localizedLabel;
   }
 
   return v3;
 }
 
-- (id)localizedLabelWithContext:(id)a3
+- (id)localizedLabelWithContext:(id)context
 {
-  v3 = [(WFParameter *)self _localizedStringForKey:@"Label" context:a3];
+  v3 = [(WFParameter *)self _localizedStringForKey:@"Label" context:context];
   v4 = v3;
   if (v3)
   {
@@ -619,37 +619,37 @@ LABEL_14:
   return v5;
 }
 
-- (WFParameter)initWithDefinition:(id)a3
+- (WFParameter)initWithDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v80.receiver = self;
   v80.super_class = WFParameter;
   v6 = [(WFParameter *)&v80 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_definition, a3);
+    objc_storeStrong(&v6->_definition, definition);
     v8 = [WFResourceManager alloc];
-    v9 = [v5 objectForKey:@"RequiredResources"];
+    v9 = [definitionCopy objectForKey:@"RequiredResources"];
     v10 = [(WFResourceManager *)v8 initWithDefinitions:v9];
     resourceManager = v7->_resourceManager;
     v7->_resourceManager = v10;
 
-    v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     eventObservers = v7->_eventObservers;
-    v7->_eventObservers = v12;
+    v7->_eventObservers = weakObjectsHashTable;
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     localizedStringCache = v7->_localizedStringCache;
     v7->_localizedStringCache = v14;
 
-    v16 = [v5 objectForKey:@"Key"];
+    v16 = [definitionCopy objectForKey:@"Key"];
     v17 = objc_opt_class();
     v18 = WFEnforceClass_1501(v16, v17);
     key = v7->_key;
     v7->_key = v18;
 
-    v20 = [v5 objectForKey:@"KeyForSerialization"];
+    v20 = [definitionCopy objectForKey:@"KeyForSerialization"];
     v21 = objc_opt_class();
     v22 = WFEnforceClass_1501(v20, v21);
     v23 = v22;
@@ -660,38 +660,38 @@ LABEL_14:
 
     objc_storeStrong(&v7->_keyForSerialization, v23);
 
-    v24 = [v5 objectForKey:@"LegacyKey"];
+    v24 = [definitionCopy objectForKey:@"LegacyKey"];
     v25 = objc_opt_class();
     v26 = WFEnforceClass_1501(v24, v25);
     legacyKey = v7->_legacyKey;
     v7->_legacyKey = v26;
 
-    v28 = [v5 objectForKey:@"Hidden"];
+    v28 = [definitionCopy objectForKey:@"Hidden"];
     v29 = objc_opt_class();
     v30 = WFEnforceClass_1501(v28, v29);
     v7->_hidden = [v30 BOOLValue];
 
-    v31 = [v5 objectForKey:@"DoNotLocalizeValues"];
+    v31 = [definitionCopy objectForKey:@"DoNotLocalizeValues"];
     v32 = objc_opt_class();
     v33 = WFEnforceClass_1501(v31, v32);
     v7->_doNotLocalizeValues = [v33 BOOLValue];
 
-    v34 = [v5 objectForKey:@"DoNotLocalizePlaceholder"];
+    v34 = [definitionCopy objectForKey:@"DoNotLocalizePlaceholder"];
     v35 = objc_opt_class();
     v36 = WFEnforceClass_1501(v34, v35);
     v7->_doNotLocalizePlaceholder = [v36 BOOLValue];
 
-    v37 = [v5 objectForKey:@"LanguageCodeOverride"];
+    v37 = [definitionCopy objectForKey:@"LanguageCodeOverride"];
     v38 = objc_opt_class();
     v39 = WFEnforceClass_1501(v37, v38);
     languageCode = v7->_languageCode;
     v7->_languageCode = v39;
 
-    v41 = [v5 objectForKey:@"DefaultValue"];
+    v41 = [definitionCopy objectForKey:@"DefaultValue"];
     defaultSerializedRepresentation = v7->_defaultSerializedRepresentation;
     v7->_defaultSerializedRepresentation = v41;
 
-    v43 = [v5 objectForKey:@"DisallowedVariableTypes"];
+    v43 = [definitionCopy objectForKey:@"DisallowedVariableTypes"];
     v44 = objc_opt_class();
     v45 = WFEnforceClass_1501(v43, v44);
 
@@ -699,12 +699,12 @@ LABEL_14:
     {
       if ([v45 containsObject:@"Variable"])
       {
-        v46 = [objc_opt_class() allInsertableVariableTypes];
-        v47 = [v46 mutableCopy];
+        allInsertableVariableTypes = [objc_opt_class() allInsertableVariableTypes];
+        v47 = [allInsertableVariableTypes mutableCopy];
 
         [v47 removeObject:@"Ask"];
-        v48 = [v47 allObjects];
-        v49 = [v45 arrayByAddingObjectsFromArray:v48];
+        allObjects = [v47 allObjects];
+        v49 = [v45 arrayByAddingObjectsFromArray:allObjects];
 
         v45 = v49;
       }
@@ -727,7 +727,7 @@ LABEL_14:
 
     else
     {
-      v56 = [v5 objectForKey:@"ImportQuestionBehavior"];
+      v56 = [definitionCopy objectForKey:@"ImportQuestionBehavior"];
       v57 = objc_opt_class();
       importQuestionBehavior = WFEnforceClass_1501(v56, v57);
 
@@ -744,7 +744,7 @@ LABEL_14:
       objc_storeStrong(&v7->_importQuestionBehavior, v58);
     }
 
-    v59 = [v5 objectForKey:@"IntentSlotName"];
+    v59 = [definitionCopy objectForKey:@"IntentSlotName"];
     v60 = objc_opt_class();
     v61 = WFEnforceClass_1501(v59, v60);
     v62 = v61;
@@ -755,12 +755,12 @@ LABEL_14:
 
     objc_storeStrong(&v7->_intentSlotName, v62);
 
-    v63 = [v5 objectForKey:@"AllowsMultipleValues"];
+    v63 = [definitionCopy objectForKey:@"AllowsMultipleValues"];
     v7->_allowsMultipleValues = [v63 BOOLValue];
 
     if (v7->_allowsMultipleValues)
     {
-      v64 = [v5 objectForKey:@"AllowsEmptyValue"];
+      v64 = [definitionCopy objectForKey:@"AllowsEmptyValue"];
       v65 = v64;
       if (!v64)
       {
@@ -775,22 +775,22 @@ LABEL_14:
       v7->_allowsEmptyValue = 1;
     }
 
-    v66 = [v5 objectForKey:@"FixedSizeArray"];
+    v66 = [definitionCopy objectForKey:@"FixedSizeArray"];
     v7->_fixedSizeArray = [v66 BOOLValue];
 
-    v67 = [v5 objectForKey:@"ArraySizesForSizeClass"];
+    v67 = [definitionCopy objectForKey:@"ArraySizesForSizeClass"];
     arraySizesBySizeClass = v7->_arraySizesBySizeClass;
     v7->_arraySizesBySizeClass = v67;
 
-    v69 = [v5 objectForKey:@"RangedSizeArray"];
+    v69 = [definitionCopy objectForKey:@"RangedSizeArray"];
     v70 = ([v69 BOOLValue] & 1) != 0 || v7->_fixedSizeArray;
     v7->_rangedSizeArray = v70 & 1;
 
-    v71 = [v5 objectForKey:@"ArraySizeRangesForWidgetFamily"];
+    v71 = [definitionCopy objectForKey:@"ArraySizeRangesForWidgetFamily"];
     arraySizeRangesByWidgetFamily = v7->_arraySizeRangesByWidgetFamily;
     v7->_arraySizeRangesByWidgetFamily = v71;
 
-    v73 = [v5 objectForKey:@"PreferredTypes"];
+    v73 = [definitionCopy objectForKey:@"PreferredTypes"];
     v74 = objc_opt_class();
     v75 = WFEnforceClass_1501(v73, v74);
     v76 = [v75 if_compactMap:&__block_literal_global_4008];
@@ -821,19 +821,19 @@ LABEL_14:
   return v2;
 }
 
-+ (id)parameterWithDefinition:(id)a3
++ (id)parameterWithDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Class"];
+  definitionCopy = definition;
+  v5 = [definitionCopy objectForKey:@"Class"];
   v6 = objc_opt_class();
   v7 = WFEnforceClass_1501(v5, v6);
   v8 = NSClassFromString(v7);
 
   if (v8)
   {
-    if (-[objc_class isSubclassOfClass:](v8, "isSubclassOfClass:", a1) && ([v4 objectForKey:@"Key"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_class(), WFEnforceClass_1501(v9, v10), v11 = objc_claimAutoreleasedReturnValue(), v11, v9, v11))
+    if (-[objc_class isSubclassOfClass:](v8, "isSubclassOfClass:", self) && ([definitionCopy objectForKey:@"Key"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_class(), WFEnforceClass_1501(v9, v10), v11 = objc_claimAutoreleasedReturnValue(), v11, v9, v11))
     {
-      v8 = [[v8 alloc] initWithDefinition:v4];
+      v8 = [[v8 alloc] initWithDefinition:definitionCopy];
     }
 
     else

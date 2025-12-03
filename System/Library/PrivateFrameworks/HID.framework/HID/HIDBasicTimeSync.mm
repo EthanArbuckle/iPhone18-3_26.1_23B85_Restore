@@ -1,10 +1,10 @@
 @interface HIDBasicTimeSync
 - (HIDBasicTimeSync)init;
-- (id)dataFromSyncedTime:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)syncedTimeFromData:(id)a3 error:(id *)a4;
+- (id)dataFromSyncedTime:(unint64_t)time error:(id *)error;
+- (unint64_t)syncedTimeFromData:(id)data error:(id *)error;
 - (void)handleActivate;
 - (void)handleCancel;
-- (void)handlePropertyUpdate:(id)a3;
+- (void)handlePropertyUpdate:(id)update;
 @end
 
 @implementation HIDBasicTimeSync
@@ -13,18 +13,18 @@
 {
   v6.receiver = self;
   v6.super_class = HIDBasicTimeSync;
-  v2 = [(HIDTimeSync *)&v6 initInternal];
-  v3 = [MEMORY[0x277D714C8] sharedClockManager];
-  tsMgr = v2->_tsMgr;
-  v2->_tsMgr = v3;
+  initInternal = [(HIDTimeSync *)&v6 initInternal];
+  mEMORY[0x277D714C8] = [MEMORY[0x277D714C8] sharedClockManager];
+  tsMgr = initInternal->_tsMgr;
+  initInternal->_tsMgr = mEMORY[0x277D714C8];
 
-  return v2;
+  return initInternal;
 }
 
-- (unint64_t)syncedTimeFromData:(id)a3 error:(id *)a4
+- (unint64_t)syncedTimeFromData:(id)data error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   info = 0xAAAAAAAAAAAAAAAALL;
   v7 = mach_absolute_time();
   if ([(HIDTimeSync *)self state]!= 1)
@@ -37,10 +37,10 @@
   {
     v8 = 3758097111;
 LABEL_17:
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithIOReturn:v8];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -51,7 +51,7 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  if ([v6 length] != 8)
+  if ([dataCopy length] != 8)
   {
     goto LABEL_17;
   }
@@ -65,9 +65,9 @@ LABEL_17:
   }
 
   mach_timebase_info(&info);
-  v10 = [v6 bytes];
-  v11 = *v10;
-  v12 = [(TSUserFilteredClock *)self->_tsClock convertFromDomainToMachAbsoluteTime:*v10];
+  bytes = [dataCopy bytes];
+  v11 = *bytes;
+  v12 = [(TSUserFilteredClock *)self->_tsClock convertFromDomainToMachAbsoluteTime:*bytes];
   numer = info.numer;
   denom = info.denom;
   v15 = _IOHIDLog();
@@ -104,7 +104,7 @@ LABEL_8:
   return v12;
 }
 
-- (id)dataFromSyncedTime:(unint64_t)a3 error:(id *)a4
+- (id)dataFromSyncedTime:(unint64_t)time error:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
   if ([(HIDTimeSync *)self state]!= 1)
@@ -112,7 +112,7 @@ LABEL_8:
     [HIDBasicTimeSync syncedTimeFromData:v10 error:?];
   }
 
-  if (a4)
+  if (error)
   {
     if (self->_active)
     {
@@ -124,7 +124,7 @@ LABEL_8:
       v6 = 3758097111;
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithIOReturn:v6];
+    *error = [MEMORY[0x277CCA9B8] errorWithIOReturn:v6];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -155,21 +155,21 @@ LABEL_8:
   }
 }
 
-- (void)handlePropertyUpdate:(id)a3
+- (void)handlePropertyUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Active"];
-  v6 = [v4 objectForKeyedSubscript:@"TSClockID"];
+  updateCopy = update;
+  v5 = [updateCopy objectForKeyedSubscript:@"Active"];
+  v6 = [updateCopy objectForKeyedSubscript:@"TSClockID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedLongLongValue = 0;
   }
 
   if (self->_active)
@@ -178,8 +178,8 @@ LABEL_5:
     if (([v5 isEqual:&unk_284199FE8] & 1) == 0)
     {
       self->_active = 0;
-      v8 = [(HIDTimeSync *)self eventHandler];
-      v8[2](v8, 0, 0);
+      eventHandler = [(HIDTimeSync *)self eventHandler];
+      eventHandler[2](eventHandler, 0, 0);
 
       tsClock = self->_tsClock;
       self->_tsClock = 0;
@@ -198,24 +198,24 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_clockID = v7;
-  v10 = [(TSClockManager *)self->_tsMgr clockWithClockIdentifier:v7];
+  self->_clockID = unsignedLongLongValue;
+  v10 = [(TSClockManager *)self->_tsMgr clockWithClockIdentifier:unsignedLongLongValue];
   v11 = self->_tsClock;
   self->_tsClock = v10;
 
   if (self->_tsClock)
   {
     self->_active = 1;
-    v12 = [(HIDTimeSync *)self eventHandler];
-    (*(v12 + 16))(v12, 1, 0);
+    eventHandler2 = [(HIDTimeSync *)self eventHandler];
+    (*(eventHandler2 + 16))(eventHandler2, 1, 0);
   }
 
   else
   {
-    v12 = _IOHIDLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    eventHandler2 = _IOHIDLog();
+    if (os_log_type_enabled(eventHandler2, OS_LOG_TYPE_ERROR))
     {
-      [(HIDBasicTimeSync *)v12 handlePropertyUpdate:v13, v14, v15, v16, v17, v18, v19];
+      [(HIDBasicTimeSync *)eventHandler2 handlePropertyUpdate:v13, v14, v15, v16, v17, v18, v19];
     }
   }
 

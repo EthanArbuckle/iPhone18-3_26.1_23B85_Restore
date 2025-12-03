@@ -1,21 +1,21 @@
 @interface DRLayoutMonitor
-- (BOOL)containsSceneIdentifier:(id)a3;
-- (DRLayoutMonitor)initWithDisplayIdentity:(id)a3;
+- (BOOL)containsSceneIdentifier:(id)identifier;
+- (DRLayoutMonitor)initWithDisplayIdentity:(id)identity;
 - (void)dealloc;
-- (void)updateSceneIdentifiersWithLayout:(id)a3;
+- (void)updateSceneIdentifiersWithLayout:(id)layout;
 @end
 
 @implementation DRLayoutMonitor
 
-- (DRLayoutMonitor)initWithDisplayIdentity:(id)a3
+- (DRLayoutMonitor)initWithDisplayIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v19.receiver = self;
   v19.super_class = DRLayoutMonitor;
   v6 = [(DRLayoutMonitor *)&v19 init];
   if (v6)
   {
-    if ([v5 isMainDisplay])
+    if ([identityCopy isMainDisplay])
     {
       v7 = +[FBSDisplayLayoutMonitorConfiguration configurationForDefaultMainDisplayMonitor];
     }
@@ -38,9 +38,9 @@
     displayLayoutMonitor = v6->_displayLayoutMonitor;
     v6->_displayLayoutMonitor = v9;
 
-    objc_storeStrong(&v6->_displayIdentity, a3);
-    v11 = [(FBSDisplayLayoutMonitor *)v6->_displayLayoutMonitor currentLayout];
-    [(DRLayoutMonitor *)v6 updateSceneIdentifiersWithLayout:v11];
+    objc_storeStrong(&v6->_displayIdentity, identity);
+    currentLayout = [(FBSDisplayLayoutMonitor *)v6->_displayLayoutMonitor currentLayout];
+    [(DRLayoutMonitor *)v6 updateSceneIdentifiersWithLayout:currentLayout];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -49,28 +49,28 @@
   return v6;
 }
 
-- (BOOL)containsSceneIdentifier:(id)a3
+- (BOOL)containsSceneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSSet *)self->_sceneIdentifiers containsObject:v4];
+  v5 = [(NSSet *)self->_sceneIdentifiers containsObject:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (void)updateSceneIdentifiersWithLayout:(id)a3
+- (void)updateSceneIdentifiersWithLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 elements];
-  v6 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v5 count]);
+  layoutCopy = layout;
+  elements = [layoutCopy elements];
+  v6 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [elements count]);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v4 elements];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  elements2 = [layoutCopy elements];
+  v8 = [elements2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -82,17 +82,17 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(elements2);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) identifier];
-        [(NSSet *)v6 addObject:v12];
+        identifier = [*(*(&v14 + 1) + 8 * v11) identifier];
+        [(NSSet *)v6 addObject:identifier];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [elements2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);

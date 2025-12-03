@@ -1,31 +1,31 @@
 @interface SFOpenPunchoutCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFOpenPunchoutCommand)initWithCoder:(id)a3;
-- (SFOpenPunchoutCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFOpenPunchoutCommand)initWithCoder:(id)coder;
+- (SFOpenPunchoutCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFOpenPunchoutCommand
 
-- (SFOpenPunchoutCommand)initWithProtobuf:(id)a3
+- (SFOpenPunchoutCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFOpenPunchoutCommand;
   v5 = [(SFOpenPunchoutCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 punchout];
+    punchout = [protobufCopy punchout];
 
-    if (v6)
+    if (punchout)
     {
       v7 = [SFPunchout alloc];
-      v8 = [v4 punchout];
-      v9 = [(SFPunchout *)v7 initWithProtobuf:v8];
+      punchout2 = [protobufCopy punchout];
+      v9 = [(SFPunchout *)v7 initWithProtobuf:punchout2];
       [(SFOpenPunchoutCommand *)v5 setPunchout:v9];
     }
 
@@ -40,38 +40,38 @@
   v7.receiver = self;
   v7.super_class = SFOpenPunchoutCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFOpenPunchoutCommand *)self punchout];
-  v5 = [v4 hash];
+  punchout = [(SFOpenPunchoutCommand *)self punchout];
+  v5 = [punchout hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFOpenPunchoutCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFOpenPunchoutCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFOpenPunchoutCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFOpenPunchoutCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFOpenPunchoutCommand *)self punchout];
-    v7 = [(SFOpenPunchoutCommand *)v5 punchout];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    punchout = [(SFOpenPunchoutCommand *)self punchout];
+    punchout2 = [(SFOpenPunchoutCommand *)v5 punchout];
+    if ((punchout != 0) == (punchout2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFOpenPunchoutCommand *)self punchout];
-      if (v8)
+      punchout3 = [(SFOpenPunchoutCommand *)self punchout];
+      if (punchout3)
       {
-        v9 = [(SFOpenPunchoutCommand *)self punchout];
-        v10 = [(SFOpenPunchoutCommand *)v5 punchout];
-        v11 = [v9 isEqual:v10];
+        punchout4 = [(SFOpenPunchoutCommand *)self punchout];
+        punchout5 = [(SFOpenPunchoutCommand *)v5 punchout];
+        v11 = [punchout4 isEqual:punchout5];
       }
 
       else
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFOpenPunchoutCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFOpenPunchoutCommand *)self punchout];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  punchout = [(SFOpenPunchoutCommand *)self punchout];
+  v6 = [punchout copy];
   [v4 setPunchout:v6];
 
   return v4;
@@ -104,51 +104,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBOpenPunchoutCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenPunchoutCommand *)v2 jsonData];
+  jsonData = [(_SFPBOpenPunchoutCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBOpenPunchoutCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenPunchoutCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBOpenPunchoutCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFOpenPunchoutCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFOpenPunchoutCommand)initWithCoder:(id)a3
+- (SFOpenPunchoutCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFOpenPunchoutCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 punchout];
-    [(SFOpenPunchoutCommand *)v5 setPunchout:v9];
+    punchout = [(SFCommand *)v8 punchout];
+    [(SFOpenPunchoutCommand *)v5 setPunchout:punchout];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

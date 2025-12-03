@@ -2,7 +2,7 @@
 - (BOOL)isValid;
 - (MSDDownloadFileRequest)init;
 - (id)description;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDDownloadFileRequest
@@ -34,15 +34,15 @@
     return 0;
   }
 
-  v3 = [(MSDDownloadFileRequest *)self fileInfo];
-  v4 = [v3 fileHash];
-  if (v4)
+  fileInfo = [(MSDDownloadFileRequest *)self fileInfo];
+  fileHash = [fileInfo fileHash];
+  if (fileHash)
   {
-    v5 = [(MSDServerRequest *)self savePath];
-    if (v5)
+    savePath = [(MSDServerRequest *)self savePath];
+    if (savePath)
     {
-      v6 = [(MSDServerRequest *)self completion];
-      v7 = v6 != 0;
+      completion = [(MSDServerRequest *)self completion];
+      v7 = completion != 0;
     }
 
     else
@@ -61,27 +61,27 @@
 
 - (id)description
 {
-  v3 = [(MSDServerRequest *)self getName];
-  v4 = [(MSDDownloadFileRequest *)self fileInfo];
-  v5 = [v4 fileHash];
-  v6 = [(MSDServerRequest *)self savePath];
-  v7 = [NSString stringWithFormat:@"%@: hash=%@ toPath=%@", v3, v5, v6];;
+  getName = [(MSDServerRequest *)self getName];
+  fileInfo = [(MSDDownloadFileRequest *)self fileInfo];
+  fileHash = [fileInfo fileHash];
+  savePath = [(MSDServerRequest *)self savePath];
+  v7 = [NSString stringWithFormat:@"%@: hash=%@ toPath=%@", getName, fileHash, savePath];;
 
   return v7;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
+  payloadCopy = payload;
+  errorCopy = error;
   v8 = +[NSFileManager defaultManager];
   v40.receiver = self;
   v40.super_class = MSDDownloadFileRequest;
-  v9 = [(MSDServerRequest *)&v40 parseResponseForError:v7 andPayload:v6];
+  v9 = [(MSDServerRequest *)&v40 parseResponseForError:errorCopy andPayload:payloadCopy];
 
-  v10 = [v9 error];
+  error = [v9 error];
 
-  if (v10)
+  if (error)
   {
     v20 = 0;
     v12 = 0;
@@ -89,28 +89,28 @@
 
   else
   {
-    v11 = [v6 objectForKey:@"fileSize"];
+    v11 = [payloadCopy objectForKey:@"fileSize"];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v13 = 0;
+      integerValue = 0;
     }
 
-    [v9 setDownloadedSize:v13];
-    v14 = [(MSDDownloadFileRequest *)self fileInfo];
-    v15 = [(MSDServerRequest *)self savePath];
-    v16 = [v14 hashCheckForFile:v15];
+    [v9 setDownloadedSize:integerValue];
+    fileInfo = [(MSDDownloadFileRequest *)self fileInfo];
+    savePath = [(MSDServerRequest *)self savePath];
+    v16 = [fileInfo hashCheckForFile:savePath];
 
     if (v16)
     {
-      v17 = [(MSDDownloadFileRequest *)self fileInfo];
-      v18 = [(MSDServerRequest *)self savePath];
-      v19 = [v17 entitlementCheckForFile:v18];
+      fileInfo2 = [(MSDDownloadFileRequest *)self fileInfo];
+      savePath2 = [(MSDServerRequest *)self savePath];
+      v19 = [fileInfo2 entitlementCheckForFile:savePath2];
 
       if (v19)
       {
@@ -139,33 +139,33 @@
   }
 
 LABEL_8:
-  v21 = [v9 error];
+  error2 = [v9 error];
 
-  if (!v21)
+  if (!error2)
   {
     [v9 setError:v20];
   }
 
   if (v20)
   {
-    v22 = [(MSDServerRequest *)self savePath];
-    v23 = [v8 fileExistsAtPath:v22];
+    savePath3 = [(MSDServerRequest *)self savePath];
+    v23 = [v8 fileExistsAtPath:savePath3];
 
     if (v23)
     {
       v24 = sub_100063A54();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(MSDServerRequest *)self savePath];
+        savePath4 = [(MSDServerRequest *)self savePath];
         *buf = 138543362;
-        v42 = v25;
+        v42 = savePath4;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Hash check or entitlement check for %{public}@ failed, deleting file", buf, 0xCu);
       }
 
       v26 = +[NSFileManager defaultManager];
-      v27 = [(MSDServerRequest *)self savePath];
+      savePath5 = [(MSDServerRequest *)self savePath];
       v37 = 0;
-      v28 = [v26 removeItemAtPath:v27 error:&v37];
+      v28 = [v26 removeItemAtPath:savePath5 error:&v37];
       v29 = v37;
 
       if ((v28 & 1) == 0)
@@ -173,9 +173,9 @@ LABEL_8:
         v30 = sub_100063A54();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v32 = [(MSDServerRequest *)self savePath];
+          savePath6 = [(MSDServerRequest *)self savePath];
           *buf = 138543362;
-          v42 = v32;
+          v42 = savePath6;
           _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "File deletion for %{public}@ failed", buf, 0xCu);
         }
       }

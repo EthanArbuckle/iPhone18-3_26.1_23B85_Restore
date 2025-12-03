@@ -3,8 +3,8 @@
 - (id)_makeContactDelegate;
 - (id)_makeNamedEntityDelegate;
 - (id)_makePPNamedEntityStore;
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5;
-- (void)startLoadingWithManager:(id)a3;
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style;
+- (void)startLoadingWithManager:(id)manager;
 @end
 
 @implementation _ICPortraitLexiconSource
@@ -20,9 +20,9 @@
     contactStore = v2->_contactStore;
     v2->_contactStore = v3;
 
-    v5 = [(_ICPortraitLexiconSource *)v2 _makePPNamedEntityStore];
+    _makePPNamedEntityStore = [(_ICPortraitLexiconSource *)v2 _makePPNamedEntityStore];
     namedEntityStore = v2->_namedEntityStore;
-    v2->_namedEntityStore = v5;
+    v2->_namedEntityStore = _makePPNamedEntityStore;
   }
 
   return v2;
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (void)startLoadingWithManager:(id)a3
+- (void)startLoadingWithManager:(id)manager
 {
-  objc_storeWeak(&self->_manager, a3);
+  objc_storeWeak(&self->_manager, manager);
   v4 = _ICPersNamedEntityOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -50,9 +50,9 @@
     _os_log_impl(&dword_254BD0000, v4, OS_LOG_TYPE_INFO, "_ICPortraitLexiconSource loading data", buf, 2u);
   }
 
-  v5 = [(_ICPortraitLexiconSource *)self _makeContactDelegate];
+  _makeContactDelegate = [(_ICPortraitLexiconSource *)self _makeContactDelegate];
   contactDelegate = self->_contactDelegate;
-  self->_contactDelegate = v5;
+  self->_contactDelegate = _makeContactDelegate;
 
   contactStore = self->_contactStore;
   v8 = self->_contactDelegate;
@@ -68,9 +68,9 @@
     }
   }
 
-  v11 = [(_ICPortraitLexiconSource *)self _makeNamedEntityDelegate];
+  _makeNamedEntityDelegate = [(_ICPortraitLexiconSource *)self _makeNamedEntityDelegate];
   namedEntityDelegate = self->_namedEntityDelegate;
-  self->_namedEntityDelegate = v11;
+  self->_namedEntityDelegate = _makeNamedEntityDelegate;
 
   v13 = objc_alloc_init(MEMORY[0x277D3A430]);
   v14 = +[_ICPortraitUtilities acceptedSourceBundleIds];
@@ -203,54 +203,54 @@
   return v3;
 }
 
-- (void)provideFeedbackForString:(id)a3 type:(unsigned __int8)a4 style:(unsigned __int8)a5
+- (void)provideFeedbackForString:(id)string type:(unsigned __int8)type style:(unsigned __int8)style
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v6 == 3)
+  styleCopy = style;
+  typeCopy = type;
+  stringCopy = string;
+  if (typeCopy == 3)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithOfferedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithOfferedString:stringCopy];
 LABEL_15:
     v10 = v9;
     v11 = _ICPersNamedEntityOSLogFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [_ICPortraitLexiconSource provideFeedbackForString:v5 type:v6 style:v11];
+      [_ICPortraitLexiconSource provideFeedbackForString:styleCopy type:typeCopy style:v11];
     }
 
     [(PPNamedEntityStore *)self->_namedEntityStore registerFeedback:v10 completion:0];
     goto LABEL_18;
   }
 
-  if (v6 == 1 && v5 == 1)
+  if (typeCopy == 1 && styleCopy == 1)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyEngagedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyEngagedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 1 && v5 == 2)
+  if (typeCopy == 1 && styleCopy == 2)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyEngagedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyEngagedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 2 && v5 == 1)
+  if (typeCopy == 2 && styleCopy == 1)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyRejectedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithExplicitlyRejectedString:stringCopy];
     goto LABEL_15;
   }
 
-  if (v6 == 2 && v5 == 2)
+  if (typeCopy == 2 && styleCopy == 2)
   {
-    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyRejectedString:v8];
+    v9 = [objc_alloc(MEMORY[0x277D3A3B8]) initWithImplicitlyRejectedString:stringCopy];
     goto LABEL_15;
   }
 
   v10 = _ICPersNamedEntityOSLogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [_ICPortraitLexiconSource provideFeedbackForString:v6 type:v5 style:v10];
+    [_ICPortraitLexiconSource provideFeedbackForString:typeCopy type:styleCopy style:v10];
   }
 
 LABEL_18:

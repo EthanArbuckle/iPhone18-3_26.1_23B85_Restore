@@ -1,60 +1,60 @@
 @interface SiriUILegacyCardSectionViewController
 + (id)cardSectionClasses;
-- (BOOL)siriSnippetViewControllerIsVisible:(id)a3;
-- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)a3;
-- (CGSize)siriViewControllerVisibleContentArea:(id)a3;
+- (BOOL)siriSnippetViewControllerIsVisible:(id)visible;
+- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)interaction;
+- (CGSize)siriViewControllerVisibleContentArea:(id)area;
 - (SiriUISnippetViewController)containingSnippetViewController;
-- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)a3;
-- (double)boundingWidthForSnippetViewController:(id)a3;
-- (double)siriViewControllerExpectedWidth:(id)a3;
-- (double)statusBarHeightForSiriViewController:(id)a3;
-- (id)_createReusableViewIfNeededWithClass:(Class)a3;
+- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)insets;
+- (double)boundingWidthForSnippetViewController:(id)controller;
+- (double)siriViewControllerExpectedWidth:(id)width;
+- (double)statusBarHeightForSiriViewController:(id)controller;
+- (id)_createReusableViewIfNeededWithClass:(Class)class;
 - (id)_interaction;
-- (id)localeForSiriViewController:(id)a3;
-- (id)persistentDataStoreForSiriViewController:(id)a3;
-- (id)siriEnabledAppListForSiriViewController:(id)a3;
-- (id)siriViewController:(id)a3 disambiguationItemForListItem:(id)a4 disambiguationKey:(id)a5;
-- (id)siriViewController:(id)a3 domainObjectForIdentifier:(id)a4;
-- (id)siriViewController:(id)a3 filteredDisambiguationListItems:(id)a4;
-- (id)siriViewController:(id)a3 listItemToPickInAutodisambiguationForListItems:(id)a4;
-- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)a3;
-- (id)updatedUserUtteranceForSiriViewController:(id)a3;
-- (unint64_t)siriDeviceLockStateForSnippetViewController:(id)a3;
+- (id)localeForSiriViewController:(id)controller;
+- (id)persistentDataStoreForSiriViewController:(id)controller;
+- (id)siriEnabledAppListForSiriViewController:(id)controller;
+- (id)siriViewController:(id)controller disambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)siriViewController:(id)controller domainObjectForIdentifier:(id)identifier;
+- (id)siriViewController:(id)controller filteredDisambiguationListItems:(id)items;
+- (id)siriViewController:(id)controller listItemToPickInAutodisambiguationForListItems:(id)items;
+- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)location;
+- (id)updatedUserUtteranceForSiriViewController:(id)controller;
+- (unint64_t)siriDeviceLockStateForSnippetViewController:(id)controller;
 - (void)_loadCardSectionView;
 - (void)_updateContentSize;
-- (void)cancelRequestForSiriSnippetViewController:(id)a3;
-- (void)cancelSpeakingForSiriViewController:(id)a3;
-- (void)removeSiriViewController:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)siriSnippetViewController:(id)a3 didDismissViewController:(id)a4;
-- (void)siriSnippetViewController:(id)a3 didPresentViewController:(id)a4;
-- (void)siriSnippetViewController:(id)a3 didRequestKeyboardWithVisibility:(BOOL)a4;
-- (void)siriSnippetViewController:(id)a3 didShowGuideStartDate:(id)a4 endDate:(id)a5;
-- (void)siriSnippetViewController:(id)a3 pushSirilandSnippets:(id)a4;
-- (void)siriSnippetViewController:(id)a3 requestPasscodeUnlockWithCompletion:(id)a4;
-- (void)siriSnippetViewController:(id)a3 setStatusBarHidden:(BOOL)a4 animated:(BOOL)a5;
-- (void)siriSnippetViewController:(id)a3 setStatusBarHidden:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)siriSnippetViewController:(id)a3 setStatusViewHidden:(BOOL)a4;
-- (void)siriSnippetViewController:(id)a3 shouldPresentPicker:(id)a4 completion:(id)a5;
-- (void)siriSnippetViewController:(id)a3 willDismissViewController:(id)a4;
-- (void)siriSnippetViewController:(id)a3 willPresentViewController:(id)a4;
-- (void)siriSnippetViewControllerViewDidLoad:(id)a3;
-- (void)siriSnippetViewControllerWillBecomeFirstResponder:(id)a3;
-- (void)siriViewController:(id)a3 addSelectionResponse:(id)a4;
-- (void)siriViewController:(id)a3 didHideVibrantView:(id)a4;
-- (void)siriViewController:(id)a3 openURL:(id)a4 completion:(id)a5;
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4;
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5;
-- (void)siriViewController:(id)a3 setContentOffset:(double)a4;
-- (void)siriViewController:(id)a3 setDomainObject:(id)a4 forIdentifier:(id)a5;
-- (void)siriViewController:(id)a3 speakText:(id)a4 completion:(id)a5;
-- (void)siriViewController:(id)a3 startCorrectedSpeechRequestWithText:(id)a4 correctionIdentifier:(id)a5 userSelectionResults:(id)a6;
-- (void)siriViewControllerDidEndEditing:(id)a3;
-- (void)siriViewControllerHeightDidChange:(id)a3;
-- (void)siriViewControllerRequestTearDownEditingViewController:(id)a3;
-- (void)siriViewControllerViewDidAppear:(id)a3 isTopLevelViewController:(BOOL)a4;
-- (void)siriViewControllerViewDidDisappear:(id)a3 isTopLevelViewController:(BOOL)a4;
-- (void)siriViewControllerWillBeginEditing:(id)a3;
+- (void)cancelRequestForSiriSnippetViewController:(id)controller;
+- (void)cancelSpeakingForSiriViewController:(id)controller;
+- (void)removeSiriViewController:(id)controller;
+- (void)setDelegate:(id)delegate;
+- (void)siriSnippetViewController:(id)controller didDismissViewController:(id)viewController;
+- (void)siriSnippetViewController:(id)controller didPresentViewController:(id)viewController;
+- (void)siriSnippetViewController:(id)controller didRequestKeyboardWithVisibility:(BOOL)visibility;
+- (void)siriSnippetViewController:(id)controller didShowGuideStartDate:(id)date endDate:(id)endDate;
+- (void)siriSnippetViewController:(id)controller pushSirilandSnippets:(id)snippets;
+- (void)siriSnippetViewController:(id)controller requestPasscodeUnlockWithCompletion:(id)completion;
+- (void)siriSnippetViewController:(id)controller setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)siriSnippetViewController:(id)controller setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)siriSnippetViewController:(id)controller setStatusViewHidden:(BOOL)hidden;
+- (void)siriSnippetViewController:(id)controller shouldPresentPicker:(id)picker completion:(id)completion;
+- (void)siriSnippetViewController:(id)controller willDismissViewController:(id)viewController;
+- (void)siriSnippetViewController:(id)controller willPresentViewController:(id)viewController;
+- (void)siriSnippetViewControllerViewDidLoad:(id)load;
+- (void)siriSnippetViewControllerWillBecomeFirstResponder:(id)responder;
+- (void)siriViewController:(id)controller addSelectionResponse:(id)response;
+- (void)siriViewController:(id)controller didHideVibrantView:(id)view;
+- (void)siriViewController:(id)controller openURL:(id)l completion:(id)completion;
+- (void)siriViewController:(id)controller performAceCommands:(id)commands;
+- (void)siriViewController:(id)controller performAceCommands:(id)commands completion:(id)completion;
+- (void)siriViewController:(id)controller setContentOffset:(double)offset;
+- (void)siriViewController:(id)controller setDomainObject:(id)object forIdentifier:(id)identifier;
+- (void)siriViewController:(id)controller speakText:(id)text completion:(id)completion;
+- (void)siriViewController:(id)controller startCorrectedSpeechRequestWithText:(id)text correctionIdentifier:(id)identifier userSelectionResults:(id)results;
+- (void)siriViewControllerDidEndEditing:(id)editing;
+- (void)siriViewControllerHeightDidChange:(id)change;
+- (void)siriViewControllerRequestTearDownEditingViewController:(id)controller;
+- (void)siriViewControllerViewDidAppear:(id)appear isTopLevelViewController:(BOOL)controller;
+- (void)siriViewControllerViewDidDisappear:(id)disappear isTopLevelViewController:(BOOL)controller;
+- (void)siriViewControllerWillBeginEditing:(id)editing;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -62,22 +62,22 @@
 
 - (id)_interaction
 {
-  v3 = [(CRKCardSectionViewController *)self delegate];
+  delegate = [(CRKCardSectionViewController *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(CRKCardSectionViewController *)self delegate];
-    v5 = [v4 card];
-    v6 = [v5 interactions];
-    v7 = [v6 anyObject];
+    delegate2 = [(CRKCardSectionViewController *)self delegate];
+    card = [delegate2 card];
+    interactions = [card interactions];
+    anyObject = [interactions anyObject];
   }
 
   else
   {
-    v7 = 0;
+    anyObject = 0;
   }
 
-  return v7;
+  return anyObject;
 }
 
 + (id)cardSectionClasses
@@ -88,15 +88,15 @@
   return [v2 setWithObject:v3];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = SiriUILegacyCardSectionViewController;
-  [(CRKCardSectionViewController *)&v9 setDelegate:a3];
-  v4 = [(SiriUILegacyCardSectionViewController *)self _interaction];
+  [(CRKCardSectionViewController *)&v9 setDelegate:delegate];
+  _interaction = [(SiriUILegacyCardSectionViewController *)self _interaction];
   v5 = +[SiriUISnippetManager sharedInstance];
-  v6 = [v4 _snippet];
-  v7 = [v5 snippetViewControllerForSnippet:v6];
+  _snippet = [_interaction _snippet];
+  v7 = [v5 snippetViewControllerForSnippet:_snippet];
   snippetViewController = self->_snippetViewController;
   self->_snippetViewController = v7;
 
@@ -110,15 +110,15 @@
 - (void)_loadCardSectionView
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 _snippet];
+  selfCopy = self;
+  _snippet = [a2 _snippet];
   v5 = 136315650;
   v6 = "[SiriUILegacyCardSectionViewController _loadCardSectionView]";
   v7 = 2112;
-  v8 = v4;
+  v8 = _snippet;
   v9 = 2112;
   v10 = a2;
-  _os_log_error_impl(&dword_26948D000, v3, OS_LOG_TYPE_ERROR, "%s #cards No snippet view controller for snippet: %@, interaction: %@", &v5, 0x20u);
+  _os_log_error_impl(&dword_26948D000, selfCopy, OS_LOG_TYPE_ERROR, "%s #cards No snippet view controller for snippet: %@, interaction: %@", &v5, 0x20u);
 }
 
 - (void)viewDidLayoutSubviews
@@ -134,7 +134,7 @@
   [(SiriUILegacyCardSectionViewController *)self siriViewControllerExpectedWidth:self->_snippetViewController];
   v4 = v3;
   v5 = objc_opt_respondsToSelector();
-  v8 = [(SiriUILegacyCardSectionViewController *)self view];
+  view = [(SiriUILegacyCardSectionViewController *)self view];
   snippetViewController = self->_snippetViewController;
   if (v5)
   {
@@ -146,14 +146,14 @@
     [(SiriUIBaseSnippetViewController *)snippetViewController desiredHeight];
   }
 
-  [v8 setContentSize:{v4, v7}];
+  [view setContentSize:{v4, v7}];
 }
 
-- (id)_createReusableViewIfNeededWithClass:(Class)a3
+- (id)_createReusableViewIfNeededWithClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = [a3 alloc];
+    v4 = [class alloc];
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     if (objc_opt_respondsToSelector())
     {
@@ -169,172 +169,172 @@
   return v5;
 }
 
-- (void)siriSnippetViewController:(id)a3 pushSirilandSnippets:(id)a4
+- (void)siriSnippetViewController:(id)controller pushSirilandSnippets:(id)snippets
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 pushSirilandSnippets:v5];
+  snippetsCopy = snippets;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 pushSirilandSnippets:snippetsCopy];
 }
 
-- (void)siriSnippetViewControllerViewDidLoad:(id)a3
+- (void)siriSnippetViewControllerViewDidLoad:(id)load
 {
   [(CRKCardSectionViewController *)self _finishLoadingViewIfNecessary];
 
   [(SiriUILegacyCardSectionViewController *)self _updateContentSize];
 }
 
-- (void)siriSnippetViewController:(id)a3 setStatusBarHidden:(BOOL)a4 animated:(BOOL)a5
+- (void)siriSnippetViewController:(id)controller setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v8 = [v10 delegate];
-  v9 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v8 siriSnippetViewController:v9 setStatusBarHidden:v6 animated:v5];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 setStatusBarHidden:hiddenCopy animated:animatedCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 shouldPresentPicker:(id)a4 completion:(id)a5
+- (void)siriSnippetViewController:(id)controller shouldPresentPicker:(id)picker completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v11 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriSnippetViewController:v10 shouldPresentPicker:v8 completion:v7];
+  completionCopy = completion;
+  pickerCopy = picker;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 shouldPresentPicker:pickerCopy completion:completionCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 didShowGuideStartDate:(id)a4 endDate:(id)a5
+- (void)siriSnippetViewController:(id)controller didShowGuideStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v11 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriSnippetViewController:v10 didShowGuideStartDate:v8 endDate:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 didShowGuideStartDate:dateCopy endDate:endDateCopy];
 }
 
-- (BOOL)siriSnippetViewControllerIsVisible:(id)a3
+- (BOOL)siriSnippetViewControllerIsVisible:(id)visible
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 siriSnippetViewControllerIsVisible:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [delegate siriSnippetViewControllerIsVisible:containingSnippetViewController2];
 
   return v7;
 }
 
-- (void)siriSnippetViewController:(id)a3 requestPasscodeUnlockWithCompletion:(id)a4
+- (void)siriSnippetViewController:(id)controller requestPasscodeUnlockWithCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 requestPasscodeUnlockWithCompletion:v5];
+  completionCopy = completion;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 requestPasscodeUnlockWithCompletion:completionCopy];
 }
 
-- (void)siriSnippetViewControllerWillBecomeFirstResponder:(id)a3
+- (void)siriSnippetViewControllerWillBecomeFirstResponder:(id)responder
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 delegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 siriSnippetViewControllerWillBecomeFirstResponder:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewControllerWillBecomeFirstResponder:containingSnippetViewController2];
 }
 
-- (unint64_t)siriDeviceLockStateForSnippetViewController:(id)a3
+- (unint64_t)siriDeviceLockStateForSnippetViewController:(id)controller
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 siriDeviceLockStateForSnippetViewController:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [delegate siriDeviceLockStateForSnippetViewController:containingSnippetViewController2];
 
   return v7;
 }
 
-- (id)siriEnabledAppListForSiriViewController:(id)a3
+- (id)siriEnabledAppListForSiriViewController:(id)controller
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 siriEnabledAppListForSiriViewController:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [delegate siriEnabledAppListForSiriViewController:containingSnippetViewController2];
 
   return v7;
 }
 
-- (void)siriSnippetViewController:(id)a3 setStatusBarHidden:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)siriSnippetViewController:(id)controller setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController:a3];
-  v9 = [v11 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriSnippetViewController:v10 setStatusBarHidden:v7 animated:v6];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController:controller];
+  delegate = [v11 delegate];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController setStatusBarHidden:hiddenCopy animated:animatedCopy];
 }
 
-- (void)siriViewControllerViewDidAppear:(id)a3 isTopLevelViewController:(BOOL)a4
+- (void)siriViewControllerViewDidAppear:(id)appear isTopLevelViewController:(BOOL)controller
 {
-  v5 = a3;
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v7 delegate];
-  [v6 siriViewControllerViewDidAppear:v5 isTopLevelViewController:0];
+  appearCopy = appear;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  [delegate siriViewControllerViewDidAppear:appearCopy isTopLevelViewController:0];
 }
 
-- (void)siriViewControllerViewDidDisappear:(id)a3 isTopLevelViewController:(BOOL)a4
+- (void)siriViewControllerViewDidDisappear:(id)disappear isTopLevelViewController:(BOOL)controller
 {
-  v5 = a3;
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v7 delegate];
-  [v6 siriViewControllerViewDidDisappear:v5 isTopLevelViewController:0];
+  disappearCopy = disappear;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  [delegate siriViewControllerViewDidDisappear:disappearCopy isTopLevelViewController:0];
 }
 
-- (double)boundingWidthForSnippetViewController:(id)a3
+- (double)boundingWidthForSnippetViewController:(id)controller
 {
-  v3 = [(SiriUILegacyCardSectionViewController *)self view];
-  [v3 bounds];
+  view = [(SiriUILegacyCardSectionViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   return v5;
 }
 
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4
+- (void)siriViewController:(id)controller performAceCommands:(id)commands
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriViewController:v7 performAceCommands:v5];
+  commandsCopy = commands;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 performAceCommands:commandsCopy];
 }
 
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller performAceCommands:(id)commands completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v11 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriViewController:v10 performAceCommands:v8 completion:v7];
+  completionCopy = completion;
+  commandsCopy = commands;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 performAceCommands:commandsCopy completion:completionCopy];
 }
 
-- (void)siriViewController:(id)a3 openURL:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller openURL:(id)l completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v11 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriViewController:v10 openURL:v8 completion:v7];
+  completionCopy = completion;
+  lCopy = l;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 openURL:lCopy completion:completionCopy];
 }
 
-- (id)siriViewController:(id)a3 domainObjectForIdentifier:(id)a4
+- (id)siriViewController:(id)controller domainObjectForIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v8 delegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v11 = [v9 siriViewController:v10 domainObjectForIdentifier:v7];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v11 = [delegate siriViewController:containingSnippetViewController2 domainObjectForIdentifier:identifierCopy];
 
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -342,9 +342,9 @@
     v14 = 136315906;
     v15 = "[SiriUILegacyCardSectionViewController siriViewController:domainObjectForIdentifier:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = controllerCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = identifierCopy;
     v20 = 2112;
     v21 = v11;
     _os_log_impl(&dword_26948D000, v12, OS_LOG_TYPE_DEFAULT, "%s #cards Retrieving a domain object for a legacy snippet view controller:\n    Siri view controller: %@\n    Identifier: %@\n    Domain object: %@", &v14, 0x2Au);
@@ -353,59 +353,59 @@
   return v11;
 }
 
-- (void)siriViewController:(id)a3 setDomainObject:(id)a4 forIdentifier:(id)a5
+- (void)siriViewController:(id)controller setDomainObject:(id)object forIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  objectCopy = object;
+  identifierCopy = identifier;
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315906;
     v16 = "[SiriUILegacyCardSectionViewController siriViewController:setDomainObject:forIdentifier:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = controllerCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = objectCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = identifierCopy;
     _os_log_impl(&dword_26948D000, v11, OS_LOG_TYPE_DEFAULT, "%s #cards Storing a domain object on behalf of a legacy snippet view controller:\n    Siri view controller: %@\n    Domain object: %@\n    Identifier: %@", &v15, 0x2Au);
   }
 
-  v12 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v13 = [v12 delegate];
-  v14 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v13 siriViewController:v14 setDomainObject:v9 forIdentifier:v10];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 setDomainObject:objectCopy forIdentifier:identifierCopy];
 }
 
-- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)a3
+- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)location
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 siriViewControllerEffectiveBundleForCoreLocation:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [delegate siriViewControllerEffectiveBundleForCoreLocation:containingSnippetViewController2];
 
   return v7;
 }
 
-- (double)siriViewControllerExpectedWidth:(id)a3
+- (double)siriViewControllerExpectedWidth:(id)width
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v5 siriViewControllerExpectedWidth:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewControllerExpectedWidth:containingSnippetViewController2];
   v8 = v7;
 
   return v8;
 }
 
-- (CGSize)siriViewControllerVisibleContentArea:(id)a3
+- (CGSize)siriViewControllerVisibleContentArea:(id)area
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v5 siriViewControllerVisibleContentArea:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewControllerVisibleContentArea:containingSnippetViewController2];
   v8 = v7;
   v10 = v9;
 
@@ -416,124 +416,124 @@
   return result;
 }
 
-- (void)siriViewControllerHeightDidChange:(id)a3
+- (void)siriViewControllerHeightDidChange:(id)change
 {
   [(SiriUILegacyCardSectionViewController *)self _updateContentSize];
-  v4 = [(CRKCardSectionViewController *)self delegate];
-  [v4 cardSectionViewControllerBoundsDidChange:self];
+  delegate = [(CRKCardSectionViewController *)self delegate];
+  [delegate cardSectionViewControllerBoundsDidChange:self];
 }
 
-- (void)siriViewController:(id)a3 setContentOffset:(double)a4
+- (void)siriViewController:(id)controller setContentOffset:(double)offset
 {
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriViewController:v7 setContentOffset:a4];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 setContentOffset:offset];
 }
 
-- (id)siriViewController:(id)a3 filteredDisambiguationListItems:(id)a4
+- (id)siriViewController:(id)controller filteredDisambiguationListItems:(id)items
 {
-  v5 = a4;
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v6 delegate];
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v7 siriViewController:v8 filteredDisambiguationListItems:v5];
+  itemsCopy = items;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v9 = [delegate siriViewController:containingSnippetViewController2 filteredDisambiguationListItems:itemsCopy];
 
   return v9;
 }
 
-- (id)siriViewController:(id)a3 disambiguationItemForListItem:(id)a4 disambiguationKey:(id)a5
+- (id)siriViewController:(id)controller disambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v10 = [v9 delegate];
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v12 = [v10 siriViewController:v11 disambiguationItemForListItem:v8 disambiguationKey:v7];
+  keyCopy = key;
+  itemCopy = item;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v12 = [delegate siriViewController:containingSnippetViewController2 disambiguationItemForListItem:itemCopy disambiguationKey:keyCopy];
 
   return v12;
 }
 
-- (id)siriViewController:(id)a3 listItemToPickInAutodisambiguationForListItems:(id)a4
+- (id)siriViewController:(id)controller listItemToPickInAutodisambiguationForListItems:(id)items
 {
-  v5 = a4;
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v6 delegate];
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v7 siriViewController:v8 listItemToPickInAutodisambiguationForListItems:v5];
+  itemsCopy = items;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v9 = [delegate siriViewController:containingSnippetViewController2 listItemToPickInAutodisambiguationForListItems:itemsCopy];
 
   return v9;
 }
 
-- (void)siriViewController:(id)a3 addSelectionResponse:(id)a4
+- (void)siriViewController:(id)controller addSelectionResponse:(id)response
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriViewController:v7 addSelectionResponse:v5];
+  responseCopy = response;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 addSelectionResponse:responseCopy];
 }
 
-- (void)cancelRequestForSiriSnippetViewController:(id)a3
+- (void)cancelRequestForSiriSnippetViewController:(id)controller
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 delegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 cancelRequestForSiriSnippetViewController:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate cancelRequestForSiriSnippetViewController:containingSnippetViewController2];
 }
 
-- (id)persistentDataStoreForSiriViewController:(id)a3
+- (id)persistentDataStoreForSiriViewController:(id)controller
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 persistentDataStoreForSiriViewController:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [delegate persistentDataStoreForSiriViewController:containingSnippetViewController2];
 
   return v7;
 }
 
-- (void)siriSnippetViewController:(id)a3 setStatusViewHidden:(BOOL)a4
+- (void)siriSnippetViewController:(id)controller setStatusViewHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v6 delegate];
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v7 siriSnippetViewController:v8 setStatusViewHidden:v4];
+  hiddenCopy = hidden;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriSnippetViewController:containingSnippetViewController2 setStatusViewHidden:hiddenCopy];
 
-  v9 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v10 = [v9 delegate];
-  LOBYTE(v8) = objc_opt_respondsToSelector();
+  containingSnippetViewController3 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate2 = [containingSnippetViewController3 delegate];
+  LOBYTE(containingSnippetViewController2) = objc_opt_respondsToSelector();
 
-  if (v8)
+  if (containingSnippetViewController2)
   {
-    v13 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-    v11 = [v13 delegate];
-    v12 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-    [v11 siriSnippetViewController:v12 setTypeToSiriViewHidden:v4];
+    containingSnippetViewController4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+    delegate3 = [containingSnippetViewController4 delegate];
+    containingSnippetViewController5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+    [delegate3 siriSnippetViewController:containingSnippetViewController5 setTypeToSiriViewHidden:hiddenCopy];
   }
 }
 
-- (void)siriViewController:(id)a3 didHideVibrantView:(id)a4
+- (void)siriViewController:(id)controller didHideVibrantView:(id)view
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 delegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriViewController:v7 didHideVibrantView:v5];
+  viewCopy = view;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [delegate siriViewController:containingSnippetViewController2 didHideVibrantView:viewCopy];
 }
 
-- (id)updatedUserUtteranceForSiriViewController:(id)a3
+- (id)updatedUserUtteranceForSiriViewController:(id)controller
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 delegate];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-    v8 = [v7 delegate];
-    v9 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-    v10 = [v8 updatedUserUtteranceForSiriViewController:v9];
+    containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+    delegate2 = [containingSnippetViewController2 delegate];
+    containingSnippetViewController3 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+    v10 = [delegate2 updatedUserUtteranceForSiriViewController:containingSnippetViewController3];
   }
 
   else
@@ -544,144 +544,144 @@
   return v10;
 }
 
-- (double)statusBarHeightForSiriViewController:(id)a3
+- (double)statusBarHeightForSiriViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v5 delegate];
-  [v6 statusBarHeightForSiriViewController:v4];
+  controllerCopy = controller;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  delegate = [containingSnippetViewController delegate];
+  [delegate statusBarHeightForSiriViewController:controllerCopy];
   v8 = v7;
 
   return v8;
 }
 
-- (void)siriViewController:(id)a3 speakText:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller speakText:(id)text completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v9 = [v11 _privateDelegate];
-  v10 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v9 siriViewController:v10 speakText:v8 completion:v7];
+  completionCopy = completion;
+  textCopy = text;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriViewController:containingSnippetViewController2 speakText:textCopy completion:completionCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 willPresentViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller willPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 _privateDelegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 willPresentViewController:v5];
+  viewControllerCopy = viewController;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriSnippetViewController:containingSnippetViewController2 willPresentViewController:viewControllerCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 didPresentViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller didPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 _privateDelegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 didPresentViewController:v5];
+  viewControllerCopy = viewController;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriSnippetViewController:containingSnippetViewController2 didPresentViewController:viewControllerCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 willDismissViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller willDismissViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 _privateDelegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 willDismissViewController:v5];
+  viewControllerCopy = viewController;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriSnippetViewController:containingSnippetViewController2 willDismissViewController:viewControllerCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 didDismissViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller didDismissViewController:(id)viewController
 {
-  v5 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 _privateDelegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 didDismissViewController:v5];
+  viewControllerCopy = viewController;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriSnippetViewController:containingSnippetViewController2 didDismissViewController:viewControllerCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 didRequestKeyboardWithVisibility:(BOOL)a4
+- (void)siriSnippetViewController:(id)controller didRequestKeyboardWithVisibility:(BOOL)visibility
 {
-  v4 = a4;
-  v8 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v6 = [v8 _privateDelegate];
-  v7 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v6 siriSnippetViewController:v7 didRequestKeyboardWithVisibility:v4];
+  visibilityCopy = visibility;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriSnippetViewController:containingSnippetViewController2 didRequestKeyboardWithVisibility:visibilityCopy];
 }
 
-- (void)cancelSpeakingForSiriViewController:(id)a3
+- (void)cancelSpeakingForSiriViewController:(id)controller
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 _privateDelegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 cancelSpeakingForSiriViewController:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate cancelSpeakingForSiriViewController:containingSnippetViewController2];
 }
 
-- (void)removeSiriViewController:(id)a3
+- (void)removeSiriViewController:(id)controller
 {
-  v4 = a3;
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v6 _privateDelegate];
-  [v5 removeSiriViewController:v4];
+  controllerCopy = controller;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  [_privateDelegate removeSiriViewController:controllerCopy];
 }
 
-- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)a3
+- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)interaction
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 _privateDelegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 siriViewControllerShouldPreventUserInteraction:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [_privateDelegate siriViewControllerShouldPreventUserInteraction:containingSnippetViewController2];
 
   return v7;
 }
 
-- (void)siriViewControllerWillBeginEditing:(id)a3
+- (void)siriViewControllerWillBeginEditing:(id)editing
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 _privateDelegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 siriViewControllerWillBeginEditing:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriViewControllerWillBeginEditing:containingSnippetViewController2];
 }
 
-- (void)siriViewControllerDidEndEditing:(id)a3
+- (void)siriViewControllerDidEndEditing:(id)editing
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 _privateDelegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 siriViewControllerDidEndEditing:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriViewControllerDidEndEditing:containingSnippetViewController2];
 }
 
-- (void)siriViewController:(id)a3 startCorrectedSpeechRequestWithText:(id)a4 correctionIdentifier:(id)a5 userSelectionResults:(id)a6
+- (void)siriViewController:(id)controller startCorrectedSpeechRequestWithText:(id)text correctionIdentifier:(id)identifier userSelectionResults:(id)results
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v14 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v12 = [v14 _privateDelegate];
-  v13 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v12 siriViewController:v13 startCorrectedSpeechRequestWithText:v11 correctionIdentifier:v10 userSelectionResults:v9];
+  resultsCopy = results;
+  identifierCopy = identifier;
+  textCopy = text;
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriViewController:containingSnippetViewController2 startCorrectedSpeechRequestWithText:textCopy correctionIdentifier:identifierCopy userSelectionResults:resultsCopy];
 }
 
-- (void)siriViewControllerRequestTearDownEditingViewController:(id)a3
+- (void)siriViewControllerRequestTearDownEditingViewController:(id)controller
 {
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v4 = [v6 _privateDelegate];
-  v5 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  [v4 siriViewControllerRequestTearDownEditingViewController:v5];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  [_privateDelegate siriViewControllerRequestTearDownEditingViewController:containingSnippetViewController2];
 }
 
-- (id)localeForSiriViewController:(id)a3
+- (id)localeForSiriViewController:(id)controller
 {
-  v4 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v5 = [v4 _privateDelegate];
-  v6 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
-  v7 = [v5 localeForSiriViewController:v6];
+  containingSnippetViewController = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  _privateDelegate = [containingSnippetViewController _privateDelegate];
+  containingSnippetViewController2 = [(SiriUILegacyCardSectionViewController *)self containingSnippetViewController];
+  v7 = [_privateDelegate localeForSiriViewController:containingSnippetViewController2];
 
   return v7;
 }
 
-- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)a3
+- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)insets
 {
   v3 = *MEMORY[0x277D768C8];
   v4 = *(MEMORY[0x277D768C8] + 8);

@@ -1,7 +1,7 @@
 @interface TVPReportingSession
 + (void)initialize;
-- (TVPReportingSession)initWithMediaItem:(id)a3;
-- (void)reportDownloadFinishedWithResult:(int64_t)a3 error:(id)a4;
+- (TVPReportingSession)initWithMediaItem:(id)item;
+- (void)reportDownloadFinishedWithResult:(int64_t)result error:(id)error;
 @end
 
 @implementation TVPReportingSession
@@ -21,25 +21,25 @@ uint64_t __33__TVPReportingSession_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (TVPReportingSession)initWithMediaItem:(id)a3
+- (TVPReportingSession)initWithMediaItem:(id)item
 {
   v38[6] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = TVPReportingSession;
   v6 = [(TVPReportingSession *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (itemCopy)
     {
-      objc_storeStrong(&v6->_mediaItem, a3);
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 bundleIdentifier];
+      objc_storeStrong(&v6->_mediaItem, item);
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      if (v9)
+      if (bundleIdentifier)
       {
-        v10 = v9;
+        v10 = bundleIdentifier;
       }
 
       else
@@ -66,8 +66,8 @@ uint64_t __33__TVPReportingSession_initialize__block_invoke()
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:6];
       v16 = [v15 mutableCopy];
 
-      v17 = [v5 mediaItemMetadataForProperty:@"TVPMediaItemMetadataServiceIdentifier"];
-      v18 = [v5 mediaItemMetadataForProperty:@"TVPMediaItemMetadataAVURLAssetAlternativeConfigurationOptions"];
+      v17 = [itemCopy mediaItemMetadataForProperty:@"TVPMediaItemMetadataServiceIdentifier"];
+      v18 = [itemCopy mediaItemMetadataForProperty:@"TVPMediaItemMetadataAVURLAssetAlternativeConfigurationOptions"];
       if (![v17 length])
       {
         v19 = [v18 objectForKey:*MEMORY[0x277CE61E8]];
@@ -80,19 +80,19 @@ uint64_t __33__TVPReportingSession_initialize__block_invoke()
         v35 = v16;
         v20 = v10;
         v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v22 = [MEMORY[0x277CCA8D8] mainBundle];
-        v23 = [v22 executablePath];
-        v24 = [v23 lastPathComponent];
-        v25 = v24;
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        executablePath = [mainBundle2 executablePath];
+        lastPathComponent = [executablePath lastPathComponent];
+        v25 = lastPathComponent;
         v26 = @"(UNKNOWN)";
-        if (v24)
+        if (lastPathComponent)
         {
-          v26 = v24;
+          v26 = lastPathComponent;
         }
 
         v27 = v26;
 
-        v28 = [v5 mediaItemMetadataForProperty:@"TVPMediaItemMetadataStoreFrontIdentifier"];
+        v28 = [itemCopy mediaItemMetadataForProperty:@"TVPMediaItemMetadataStoreFrontIdentifier"];
         [v21 setObject:v17 forKey:*MEMORY[0x277D44098]];
         [v21 setObject:v27 forKey:*MEMORY[0x277D44090]];
 
@@ -154,11 +154,11 @@ void __41__TVPReportingSession_initWithMediaItem___block_invoke(uint64_t a1, voi
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportDownloadFinishedWithResult:(int64_t)a3 error:(id)a4
+- (void)reportDownloadFinishedWithResult:(int64_t)result error:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 == 1)
+  errorCopy = error;
+  if (result == 1)
   {
     v7 = 300;
   }
@@ -168,7 +168,7 @@ void __41__TVPReportingSession_initWithMediaItem___block_invoke(uint64_t a1, voi
     v7 = 200;
   }
 
-  if (a3 == 2)
+  if (result == 2)
   {
     v8 = 500;
   }
@@ -179,12 +179,12 @@ void __41__TVPReportingSession_initWithMediaItem___block_invoke(uint64_t a1, voi
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = v6;
+  v10 = errorCopy;
   v11 = v10;
   if (v10)
   {
     v24 = v8;
-    v26 = self;
+    selfCopy = self;
     v12 = 0;
     v27 = *MEMORY[0x277CCA7E8];
     v25 = v10;
@@ -192,16 +192,16 @@ void __41__TVPReportingSession_initWithMediaItem___block_invoke(uint64_t a1, voi
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"errorDomain%d", v12];
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"errorCode%d", v12];
-      v15 = [v11 domain];
+      domain = [v11 domain];
       v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "code")}];
-      if (v15)
+      if (domain)
       {
-        [v9 setObject:v15 forKey:v13];
+        [v9 setObject:domain forKey:v13];
       }
 
       [v9 setObject:v16 forKey:v14];
-      v17 = [v11 userInfo];
-      v18 = [v17 objectForKey:v27];
+      userInfo = [v11 userInfo];
+      v18 = [userInfo objectForKey:v27];
 
       if (!v18)
       {
@@ -216,12 +216,12 @@ void __41__TVPReportingSession_initWithMediaItem___block_invoke(uint64_t a1, voi
     while (!v19);
 
     v11 = v25;
-    self = v26;
+    self = selfCopy;
     v8 = v24;
   }
 
-  v20 = [(TVPReportingSession *)self mediaItem];
-  v21 = [v20 mediaItemMetadataForProperty:@"TVPMediaItemMetadataDownloadQOSMetrics"];
+  mediaItem = [(TVPReportingSession *)self mediaItem];
+  v21 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataDownloadQOSMetrics"];
 
   if (v21)
   {

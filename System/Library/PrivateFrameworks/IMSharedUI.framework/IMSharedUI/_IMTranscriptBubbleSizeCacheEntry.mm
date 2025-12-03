@@ -1,16 +1,16 @@
 @interface _IMTranscriptBubbleSizeCacheEntry
 - (CGSize)size;
-- (_IMTranscriptBubbleSizeCacheEntry)initWithSize:(CGSize)a3 maximumWidth:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_IMTranscriptBubbleSizeCacheEntry)initWithSize:(CGSize)size maximumWidth:(double)width;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _IMTranscriptBubbleSizeCacheEntry
 
-- (_IMTranscriptBubbleSizeCacheEntry)initWithSize:(CGSize)a3 maximumWidth:(double)a4
+- (_IMTranscriptBubbleSizeCacheEntry)initWithSize:(CGSize)size maximumWidth:(double)width
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = _IMTranscriptBubbleSizeCacheEntry;
   result = [(_IMTranscriptBubbleSizeCacheEntry *)&v8 init];
@@ -18,13 +18,13 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_maximumWidth = a4;
+    result->_maximumWidth = width;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_IMTranscriptBubbleSizeCacheEntry alloc];
   maximumWidth = self->_maximumWidth;

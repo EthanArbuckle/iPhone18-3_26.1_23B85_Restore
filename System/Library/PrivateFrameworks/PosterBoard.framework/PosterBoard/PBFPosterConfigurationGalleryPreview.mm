@@ -1,14 +1,14 @@
 @interface PBFPosterConfigurationGalleryPreview
-- (PBFPosterConfigurationGalleryPreview)initWithConfiguration:(id)a3 extension:(id)a4;
+- (PBFPosterConfigurationGalleryPreview)initWithConfiguration:(id)configuration extension:(id)extension;
 @end
 
 @implementation PBFPosterConfigurationGalleryPreview
 
-- (PBFPosterConfigurationGalleryPreview)initWithConfiguration:(id)a3 extension:(id)a4
+- (PBFPosterConfigurationGalleryPreview)initWithConfiguration:(id)configuration extension:(id)extension
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  configurationCopy = configuration;
+  extensionCopy = extension;
+  v10 = configurationCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v10)
   {
@@ -20,7 +20,7 @@
     [PBFPosterConfigurationGalleryPreview initWithConfiguration:a2 extension:?];
   }
 
-  if (!v9)
+  if (!extensionCopy)
   {
     [PBFPosterConfigurationGalleryPreview initWithConfiguration:a2 extension:?];
   }
@@ -31,11 +31,11 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_configuration, a3);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    objc_storeStrong(&v11->_configuration, configuration);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     previewUniqueIdentifier = v12->_previewUniqueIdentifier;
-    v12->_previewUniqueIdentifier = v14;
+    v12->_previewUniqueIdentifier = uUIDString;
 
     objc_storeStrong(&v12->_type, PBFPreviewTypeDefault);
     v16 = [v10 loadTitleStyleConfigurationWithError:0];
@@ -43,17 +43,17 @@
     v12->_titleStyleConfiguration = v16;
 
     v18 = [v10 loadOtherMetadataWithError:0];
-    v19 = [v18 displayNameLocalizationKey];
+    displayNameLocalizationKey = [v18 displayNameLocalizationKey];
     displayNameLocalizationKey = v12->_displayNameLocalizationKey;
-    v12->_displayNameLocalizationKey = v19;
+    v12->_displayNameLocalizationKey = displayNameLocalizationKey;
 
-    v21 = [v10 _path];
-    v22 = [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:v21 extension:v9];
+    _path = [v10 _path];
+    v22 = [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:_path extension:extensionCopy];
     posterDescriptorLookupInfo = v12->_posterDescriptorLookupInfo;
     v12->_posterDescriptorLookupInfo = v22;
 
-    v24 = [v9 localizedName];
-    v25 = [v24 copy];
+    localizedName = [extensionCopy localizedName];
+    v25 = [localizedName copy];
     galleryLocalizedTitle = v12->_galleryLocalizedTitle;
     v12->_galleryLocalizedTitle = v25;
 
@@ -62,24 +62,24 @@
 
     v12->_galleryDisplayStyle = 0;
     v28 = [v10 loadComplicationLayoutWithError:0];
-    v29 = [v28 inlineComplication];
+    inlineComplication = [v28 inlineComplication];
 
-    if (v29)
+    if (inlineComplication)
     {
-      v30 = [v28 inlineComplication];
-      v31 = [v30 pbf_complicationLookupInfo];
+      inlineComplication2 = [v28 inlineComplication];
+      pbf_complicationLookupInfo = [inlineComplication2 pbf_complicationLookupInfo];
       subtitleComplication = v12->_subtitleComplication;
-      v12->_subtitleComplication = v31;
+      v12->_subtitleComplication = pbf_complicationLookupInfo;
     }
 
     v12->_complicationsUseBottomLayout = [v28 complicationsUseBottomLayout];
-    v33 = [v28 complications];
-    v34 = [v33 bs_map:&__block_literal_global_18];
+    complications = [v28 complications];
+    v34 = [complications bs_map:&__block_literal_global_18];
     suggestedComplications = v12->_suggestedComplications;
     v12->_suggestedComplications = v34;
 
-    v36 = [v28 sidebarComplications];
-    v37 = [v36 bs_map:&__block_literal_global_20];
+    sidebarComplications = [v28 sidebarComplications];
+    v37 = [sidebarComplications bs_map:&__block_literal_global_20];
     suggestedLandscapeComplications = v12->_suggestedLandscapeComplications;
     v12->_suggestedLandscapeComplications = v37;
   }

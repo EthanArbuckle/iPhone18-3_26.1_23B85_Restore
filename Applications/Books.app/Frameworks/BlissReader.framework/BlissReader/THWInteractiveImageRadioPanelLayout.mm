@@ -1,5 +1,5 @@
 @interface THWInteractiveImageRadioPanelLayout
-- (BOOL)p_shouldUseTextLabelWithFrameWidth:(double)a3;
+- (BOOL)p_shouldUseTextLabelWithFrameWidth:(double)width;
 - (CGRect)nextButtonFrame;
 - (CGRect)pageControlFrame;
 - (CGRect)prevButtonFrame;
@@ -9,7 +9,7 @@
 - (id)additionalLayouts;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)primaryColor;
 - (void)dealloc;
 @end
@@ -61,38 +61,38 @@
 
   else
   {
-    v4 = [(THWInteractiveImageRadioPanelLayout *)self widgetLayout];
+    widgetLayout = [(THWInteractiveImageRadioPanelLayout *)self widgetLayout];
 
-    return [(THWInteractiveImageWidgetLayout *)v4 primaryColor];
+    return [(THWInteractiveImageWidgetLayout *)widgetLayout primaryColor];
   }
 }
 
 - (double)p_desiredWidth
 {
-  v2 = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
-  v3 = v2 - 1;
-  if (!v2)
+  totalCallouts = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
+  v3 = totalCallouts - 1;
+  if (!totalCallouts)
   {
     v3 = 0;
   }
 
-  return v3 * 4.0 + v2 * 31.0;
+  return v3 * 4.0 + totalCallouts * 31.0;
 }
 
-- (BOOL)p_shouldUseTextLabelWithFrameWidth:(double)a3
+- (BOOL)p_shouldUseTextLabelWithFrameWidth:(double)width
 {
   [(THWInteractiveImageRadioPanelLayout *)self maxCalloutFrameWidth];
   v6 = v5;
-  v7 = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
-  return v6 <= a3 || v7 > 0xA;
+  totalCallouts = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
+  return v6 <= width || totalCallouts > 0xA;
 }
 
 - (id)computeLayoutGeometry
 {
   v28.receiver = self;
   v28.super_class = THWInteractiveImageRadioPanelLayout;
-  v3 = [(THWInteractiveImageRadioPanelLayout *)&v28 computeLayoutGeometry];
-  [v3 frame];
+  computeLayoutGeometry = [(THWInteractiveImageRadioPanelLayout *)&v28 computeLayoutGeometry];
+  [computeLayoutGeometry frame];
   v5 = v4;
   __asm { FMOV            V0.2D, #31.0 }
 
@@ -113,8 +113,8 @@
     v14 = 1.0;
   }
 
-  v15 = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
-  v16 = v14 * ([(THWInteractiveImageRadioPanelLayout *)self totalCallouts]- 1) + v15 * 31.0;
+  totalCallouts = [(THWInteractiveImageRadioPanelLayout *)self totalCallouts];
+  v16 = v14 * ([(THWInteractiveImageRadioPanelLayout *)self totalCallouts]- 1) + totalCallouts * 31.0;
   v17 = [(THWInteractiveImageRadioPanelLayout *)self p_shouldUseTextLabelWithFrameWidth:v16];
   if (v17)
   {
@@ -122,7 +122,7 @@
     v16 = v18;
   }
 
-  [v3 frame];
+  [computeLayoutGeometry frame];
   p_pageControlFrame = &self->_pageControlFrame;
   self->_pageControlFrame.origin.x = (v5 - v16) * 0.5;
   self->_pageControlFrame.origin.y = (v19 + -31.0) * 0.5;
@@ -130,7 +130,7 @@
   self->_pageControlFrame.size.height = 31.0;
   [(THWPageControlLayout *)self->_pageControl setSpacing:v14];
   [(THWPageControlLayout *)self->_pageControl setForceTextOnly:v17];
-  [v3 frame];
+  [computeLayoutGeometry frame];
   v22 = v21;
   v23 = 0.0;
   if ([(THWInteractiveImageWidgetLayout *)[(THWInteractiveImageRadioPanelLayout *)self widgetLayout] isExpanded])
@@ -159,7 +159,7 @@
   self->_nextButtonFrame.origin.x = v24;
   self->_nextButtonFrame.origin.y = v25;
   self->_nextButtonFrame.size = v27;
-  return v3;
+  return computeLayoutGeometry;
 }
 
 - (id)dependentLayouts
@@ -171,7 +171,7 @@
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v4 = TSUProtocolCast();
   if (!v4)

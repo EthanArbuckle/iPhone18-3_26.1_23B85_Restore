@@ -1,39 +1,39 @@
 @interface SeparatorView
 - (BOOL)isHidden;
 - (UIColor)backgroundColor;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SeparatorView
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SeparatorView.isHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  SeparatorView.isHidden.setter(a3);
+  selfCopy = self;
+  SeparatorView.isHidden.setter(hidden);
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SeparatorView.backgroundColor.getter();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  SeparatorView.backgroundColor.setter(a3);
+  colorCopy = color;
+  selfCopy = self;
+  SeparatorView.backgroundColor.setter(color);
 }
 
 @end

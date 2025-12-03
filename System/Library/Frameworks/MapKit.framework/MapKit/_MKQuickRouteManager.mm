@@ -1,9 +1,9 @@
 @interface _MKQuickRouteManager
-+ (BOOL)isLikelyToReturnETAForLocation:(id)a3;
-+ (unint64_t)counterpartForTransportType:(unint64_t)a3;
-+ (unint64_t)directionsTypeForMapItem:(id)a3 delegate:(id)a4 mapType:(unint64_t)a5;
++ (BOOL)isLikelyToReturnETAForLocation:(id)location;
++ (unint64_t)counterpartForTransportType:(unint64_t)type;
++ (unint64_t)directionsTypeForMapItem:(id)item delegate:(id)delegate mapType:(unint64_t)type;
 - (BOOL)_transportTypeShouldBeSmart;
-- (BOOL)haveETAsForPreferredTransportType:(unint64_t)a3;
+- (BOOL)haveETAsForPreferredTransportType:(unint64_t)type;
 - (BOOL)isOnlyDriving;
 - (BOOL)isUsingCurrentLocationForOrigin;
 - (CLLocationCoordinate2D)coordinate;
@@ -14,20 +14,20 @@
 - (MKQuickRouteTransportTypeFinding)transportTypeFinder;
 - (_MKQuickRouteManager)init;
 - (double)_maxDistanceToRequestETA;
-- (id)bestETAForPreferredDirectionsType:(unint64_t)a3;
+- (id)bestETAForPreferredDirectionsType:(unint64_t)type;
 - (id)description;
-- (id)routeETAForTransportType:(unint64_t)a3;
-- (unint64_t)directionsTypeForMapType:(unint64_t)a3;
-- (unint64_t)directionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 preferredDirectionsType:(unint64_t)a5;
-- (unint64_t)guessTransportTypeForDistance:(double)a3 preferredDirectionsType:(unint64_t)a4;
-- (void)_performWithTransportType:(id)a3;
+- (id)routeETAForTransportType:(unint64_t)type;
+- (unint64_t)directionsTypeForMapType:(unint64_t)type;
+- (unint64_t)directionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate preferredDirectionsType:(unint64_t)type;
+- (unint64_t)guessTransportTypeForDistance:(double)distance preferredDirectionsType:(unint64_t)type;
+- (void)_performWithTransportType:(id)type;
 - (void)_resetState;
-- (void)requestNewETAForPreferredTransportType:(unint64_t)a3 completion:(id)a4;
-- (void)setAllowsDistantETA:(BOOL)a3;
-- (void)setFetchAllTransportTypes:(BOOL)a3;
-- (void)setMapItem:(id)a3;
-- (void)setOriginMapItem:(id)a3;
-- (void)setView:(id)a3;
+- (void)requestNewETAForPreferredTransportType:(unint64_t)type completion:(id)completion;
+- (void)setAllowsDistantETA:(BOOL)a;
+- (void)setFetchAllTransportTypes:(BOOL)types;
+- (void)setMapItem:(id)item;
+- (void)setOriginMapItem:(id)item;
+- (void)setView:(id)view;
 - (void)updateETA;
 @end
 
@@ -65,33 +65,33 @@
 
 - (BOOL)isOnlyDriving
 {
-  v2 = [(_MKQuickRouteManager *)self delegate];
-  v3 = [v2 quickRouteShouldOnlyUseAutomobile];
+  delegate = [(_MKQuickRouteManager *)self delegate];
+  quickRouteShouldOnlyUseAutomobile = [delegate quickRouteShouldOnlyUseAutomobile];
 
-  return v3;
+  return quickRouteShouldOnlyUseAutomobile;
 }
 
-- (BOOL)haveETAsForPreferredTransportType:(unint64_t)a3
+- (BOOL)haveETAsForPreferredTransportType:(unint64_t)type
 {
-  v5 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  etaResults = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v7 = [etaResults objectForKey:v6];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [objc_opt_class() counterpartForTransportType:a3];
-  v9 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v8 = [objc_opt_class() counterpartForTransportType:type];
+  etaResults2 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  v11 = [v9 objectForKey:v10];
+  v11 = [etaResults2 objectForKey:v10];
   v12 = v11 != 0;
 
   return v12;
 }
 
-- (unint64_t)guessTransportTypeForDistance:(double)a3 preferredDirectionsType:(unint64_t)a4
+- (unint64_t)guessTransportTypeForDistance:(double)distance preferredDirectionsType:(unint64_t)type
 {
   closeWalkTravelTime = self->_closeWalkTravelTime;
   maxWalkingDistance = self->_maxWalkingDistance;
@@ -101,9 +101,9 @@
   }
 
   v9 = closeWalkTravelTime * 1.25;
-  if (a4 == 4)
+  if (type == 4)
   {
-    if (v9 <= a3)
+    if (v9 <= distance)
     {
       return 4;
     }
@@ -111,14 +111,14 @@
     return 2;
   }
 
-  if (a4 != 2)
+  if (type != 2)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
-      return a4;
+      return type;
     }
 
-    if (v9 <= a3)
+    if (v9 <= distance)
     {
       return 1;
     }
@@ -126,7 +126,7 @@
     return 2;
   }
 
-  if (maxWalkingDistance < a3)
+  if (maxWalkingDistance < distance)
   {
     return 1;
   }
@@ -137,24 +137,24 @@
   }
 }
 
-- (unint64_t)directionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 preferredDirectionsType:(unint64_t)a5
+- (unint64_t)directionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate preferredDirectionsType:(unint64_t)type
 {
-  if (fabs(a3.longitude) > 180.0 || fabs(a3.latitude) > 90.0 || fabs(a4.longitude) > 180.0 || fabs(a4.latitude) > 90.0)
+  if (fabs(coordinate.longitude) > 180.0 || fabs(coordinate.latitude) > 90.0 || fabs(destinationCoordinate.longitude) > 180.0 || fabs(destinationCoordinate.latitude) > 90.0)
   {
-    return a5;
+    return type;
   }
 
   GEOCalculateDistance();
 
-  return [(_MKQuickRouteManager *)self guessTransportTypeForDistance:a5 preferredDirectionsType:?];
+  return [(_MKQuickRouteManager *)self guessTransportTypeForDistance:type preferredDirectionsType:?];
 }
 
-- (unint64_t)directionsTypeForMapType:(unint64_t)a3
+- (unint64_t)directionsTypeForMapType:(unint64_t)type
 {
-  v5 = [(_MKQuickRouteManager *)self delegate];
-  v6 = [v5 preferredDirectionsTypeForQuickRoute];
+  delegate = [(_MKQuickRouteManager *)self delegate];
+  preferredDirectionsTypeForQuickRoute = [delegate preferredDirectionsTypeForQuickRoute];
 
-  if (a3 == 104)
+  if (type == 104)
   {
     return 4;
   }
@@ -164,13 +164,13 @@
   v11 = v10;
   [(_MKQuickRouteManager *)self destinationCoordinate];
 
-  return [(_MKQuickRouteManager *)self directionsTypeForOriginCoordinate:v6 destinationCoordinate:v9 preferredDirectionsType:v11, v12, v13];
+  return [(_MKQuickRouteManager *)self directionsTypeForOriginCoordinate:preferredDirectionsTypeForQuickRoute destinationCoordinate:v9 preferredDirectionsType:v11, v12, v13];
 }
 
-- (id)bestETAForPreferredDirectionsType:(unint64_t)a3
+- (id)bestETAForPreferredDirectionsType:(unint64_t)type
 {
-  v5 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-  v6 = [v5 count];
+  etaResults = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v6 = [etaResults count];
 
   if (!v6)
   {
@@ -184,32 +184,32 @@
   }
 
   v8 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       v11 = 0;
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_27;
       }
 
-      v7 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-      v8 = v7;
+      etaResults2 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+      v8 = etaResults2;
       v9 = &unk_1F1611620;
       goto LABEL_4;
     }
 
-    v19 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-    v8 = [v19 objectForKeyedSubscript:&unk_1F1611608];
+    etaResults3 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+    v8 = [etaResults3 objectForKeyedSubscript:&unk_1F1611608];
 
     if (![(_MKQuickRouteManager *)self _transportTypeShouldBeSmart])
     {
       goto LABEL_26;
     }
 
-    v20 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-    v11 = [v20 objectForKeyedSubscript:&unk_1F16115F0];
+    etaResults4 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+    v11 = [etaResults4 objectForKeyedSubscript:&unk_1F16115F0];
 
     if (!v8 && v11)
     {
@@ -238,18 +238,18 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v17 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-    v8 = [v17 objectForKeyedSubscript:&unk_1F16115D8];
+    etaResults5 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+    v8 = [etaResults5 objectForKeyedSubscript:&unk_1F16115D8];
 
     if (![(_MKQuickRouteManager *)self _transportTypeShouldBeSmart])
     {
       goto LABEL_26;
     }
 
-    v18 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-    v11 = [v18 objectForKeyedSubscript:&unk_1F16115F0];
+    etaResults6 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+    v11 = [etaResults6 objectForKeyedSubscript:&unk_1F16115F0];
 
     if (!v8)
     {
@@ -262,13 +262,13 @@ LABEL_33:
   }
 
   v11 = 0;
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_27;
   }
 
-  v12 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-  v8 = [v12 objectForKeyedSubscript:&unk_1F16115F0];
+  etaResults7 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v8 = [etaResults7 objectForKeyedSubscript:&unk_1F16115F0];
 
   if (![(_MKQuickRouteManager *)self _transportTypeShouldBeSmart])
   {
@@ -280,8 +280,8 @@ LABEL_33:
     [v8 distance];
     if (v13 > self->_maxWalkingDistance)
     {
-      v14 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-      v15 = [v14 objectForKeyedSubscript:&unk_1F16115D8];
+      etaResults8 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+      v15 = [etaResults8 objectForKeyedSubscript:&unk_1F16115D8];
 
       if (v15)
       {
@@ -299,11 +299,11 @@ LABEL_26:
   }
 
 LABEL_3:
-  v7 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-  v8 = v7;
+  etaResults2 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v8 = etaResults2;
   v9 = &unk_1F16115D8;
 LABEL_4:
-  v10 = [v7 objectForKeyedSubscript:v9];
+  v10 = [etaResults2 objectForKeyedSubscript:v9];
   v11 = 0;
 LABEL_5:
 
@@ -317,12 +317,12 @@ LABEL_28:
 
 - (CLLocationCoordinate2D)destinationCoordinate
 {
-  v3 = [(_MKQuickRouteManager *)self mapItem];
+  mapItem = [(_MKQuickRouteManager *)self mapItem];
 
-  if (v3)
+  if (mapItem)
   {
-    v4 = [(_MKQuickRouteManager *)self mapItem];
-    [v4 _coordinate];
+    mapItem2 = [(_MKQuickRouteManager *)self mapItem];
+    [mapItem2 _coordinate];
     latitude = v5;
     longitude = v7;
   }
@@ -344,12 +344,12 @@ LABEL_28:
 {
   if ([(_MKQuickRouteManager *)self isUsingCurrentLocationForOrigin])
   {
-    v3 = +[MKLocationManager sharedLocationManager];
-    if ([v3 hasLocation])
+    originMapItem = +[MKLocationManager sharedLocationManager];
+    if ([originMapItem hasLocation])
     {
       v4 = +[MKLocationManager sharedLocationManager];
-      v5 = [v4 lastLocation];
-      [v5 coordinate];
+      lastLocation = [v4 lastLocation];
+      [lastLocation coordinate];
       v7 = v6;
       v9 = v8;
     }
@@ -363,8 +363,8 @@ LABEL_28:
 
   else
   {
-    v3 = [(_MKQuickRouteManager *)self originMapItem];
-    [v3 _coordinate];
+    originMapItem = [(_MKQuickRouteManager *)self originMapItem];
+    [originMapItem _coordinate];
     v7 = v10;
     v9 = v11;
   }
@@ -378,23 +378,23 @@ LABEL_28:
 
 - (BOOL)isUsingCurrentLocationForOrigin
 {
-  v2 = [(_MKQuickRouteManager *)self originMapItem];
-  v3 = [v2 isCurrentLocation];
+  originMapItem = [(_MKQuickRouteManager *)self originMapItem];
+  isCurrentLocation = [originMapItem isCurrentLocation];
 
-  return v3;
+  return isCurrentLocation;
 }
 
-- (void)requestNewETAForPreferredTransportType:(unint64_t)a3 completion:(id)a4
+- (void)requestNewETAForPreferredTransportType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = v7;
   if (self->_fetchAllTransportTypes)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       [v7 addObject:&unk_1F1611578];
-      if (a3 == 4)
+      if (type == 4)
       {
         [v8 addObject:&unk_1F16115C0];
 LABEL_14:
@@ -403,21 +403,21 @@ LABEL_14:
       }
     }
 
-    v10 = [(_MKQuickRouteManager *)self delegate];
-    v11 = [v10 quickRouteShouldIncludeTransitWhenNotPreferredTransportType];
+    delegate = [(_MKQuickRouteManager *)self delegate];
+    quickRouteShouldIncludeTransitWhenNotPreferredTransportType = [delegate quickRouteShouldIncludeTransitWhenNotPreferredTransportType];
 
-    if (v11)
+    if (quickRouteShouldIncludeTransitWhenNotPreferredTransportType)
     {
       [v8 addObject:&unk_1F1611590];
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       goto LABEL_14;
     }
 
     [v8 addObject:&unk_1F16115C0];
-    if (a3 != 8)
+    if (type != 8)
     {
       goto LABEL_14;
     }
@@ -425,18 +425,18 @@ LABEL_14:
 
   else
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       goto LABEL_9;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v9 = &unk_1F1611578;
       goto LABEL_16;
     }
 
-    if (a3 == 1 && ![(_MKQuickRouteManager *)self isOnlyDriving])
+    if (type == 1 && ![(_MKQuickRouteManager *)self isOnlyDriving])
     {
 LABEL_9:
       v9 = &unk_1F16115C0;
@@ -450,11 +450,11 @@ LABEL_16:
   v14[1] = 3221225472;
   v14[2] = __74___MKQuickRouteManager_requestNewETAForPreferredTransportType_completion___block_invoke;
   v14[3] = &unk_1E76C9C60;
-  v15 = v6;
-  v16 = a3;
+  v15 = completionCopy;
+  typeCopy = type;
   v14[4] = self;
-  v13 = v6;
-  [(_MKRouteETAFetcher *)etaFetcher requestNewETAForTransportType:a3 additionalTransportTypes:v8 completion:v14];
+  v13 = completionCopy;
+  [(_MKRouteETAFetcher *)etaFetcher requestNewETAForTransportType:type additionalTransportTypes:v8 completion:v14];
 }
 
 - (void)updateETA
@@ -467,11 +467,11 @@ LABEL_16:
   [(_MKQuickRouteManager *)self _performWithTransportType:v2];
 }
 
-- (id)routeETAForTransportType:(unint64_t)a3
+- (id)routeETAForTransportType:(unint64_t)type
 {
-  v4 = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  etaResults = [(_MKRouteETAFetcher *)self->_etaFetcher etaResults];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [etaResults objectForKeyedSubscript:v5];
 
   return v6;
 }
@@ -487,23 +487,23 @@ LABEL_16:
   [(_MKRouteETAFetcher *)etaFetcher _resetState];
 }
 
-- (void)setOriginMapItem:(id)a3
+- (void)setOriginMapItem:(id)item
 {
-  v5 = a3;
-  v4 = [(_MKRouteETAFetcher *)self->_etaFetcher originMapItem];
+  itemCopy = item;
+  originMapItem = [(_MKRouteETAFetcher *)self->_etaFetcher originMapItem];
 
-  if (v4 != v5)
+  if (originMapItem != itemCopy)
   {
     [(_MKQuickRouteManager *)self willChangeValueForKey:@"usingCurrentLocationForOrigin"];
-    [(_MKRouteETAFetcher *)self->_etaFetcher setOriginMapItem:v5];
+    [(_MKRouteETAFetcher *)self->_etaFetcher setOriginMapItem:itemCopy];
     [(_MKQuickRouteManager *)self _resetState];
     [(_MKQuickRouteManager *)self didChangeValueForKey:@"usingCurrentLocationForOrigin"];
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
@@ -515,36 +515,36 @@ LABEL_16:
   }
 }
 
-- (void)setAllowsDistantETA:(BOOL)a3
+- (void)setAllowsDistantETA:(BOOL)a
 {
-  if (self->_allowsDistantETA != a3)
+  if (self->_allowsDistantETA != a)
   {
-    self->_allowsDistantETA = a3;
+    self->_allowsDistantETA = a;
     [(_MKQuickRouteManager *)self _resetState];
   }
 }
 
-- (void)setFetchAllTransportTypes:(BOOL)a3
+- (void)setFetchAllTransportTypes:(BOOL)types
 {
-  if (self->_fetchAllTransportTypes != a3)
+  if (self->_fetchAllTransportTypes != types)
   {
-    self->_fetchAllTransportTypes = a3;
+    self->_fetchAllTransportTypes = types;
     [(_MKQuickRouteManager *)self _resetState];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v8 = a3;
-  v4 = [(_MKRouteETAFetcher *)self->_etaFetcher mapItem];
+  itemCopy = item;
+  mapItem = [(_MKRouteETAFetcher *)self->_etaFetcher mapItem];
 
-  v5 = v8;
-  if (v4 != v8)
+  v5 = itemCopy;
+  if (mapItem != itemCopy)
   {
-    [(_MKRouteETAFetcher *)self->_etaFetcher setMapItem:v8];
-    if (v8)
+    [(_MKRouteETAFetcher *)self->_etaFetcher setMapItem:itemCopy];
+    if (itemCopy)
     {
-      [v8 _coordinate];
+      [itemCopy _coordinate];
       self->_coordinate.latitude = v6;
       self->_coordinate.longitude = v7;
     }
@@ -555,34 +555,34 @@ LABEL_16:
     }
 
     [(_MKQuickRouteManager *)self _resetState];
-    v5 = v8;
+    v5 = itemCopy;
   }
 }
 
 - (BOOL)_transportTypeShouldBeSmart
 {
-  v2 = [(_MKQuickRouteManager *)self transportTypeFinder];
-  v3 = v2 == 0;
+  transportTypeFinder = [(_MKQuickRouteManager *)self transportTypeFinder];
+  v3 = transportTypeFinder == 0;
 
   return v3;
 }
 
-- (void)_performWithTransportType:(id)a3
+- (void)_performWithTransportType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v16 = v4;
-    v5 = [(_MKQuickRouteManager *)self transportTypeFinder];
+    v16 = typeCopy;
+    transportTypeFinder = [(_MKQuickRouteManager *)self transportTypeFinder];
 
-    if (v5)
+    if (transportTypeFinder)
     {
-      v6 = [(_MKQuickRouteManager *)self transportTypeFinder];
+      transportTypeFinder2 = [(_MKQuickRouteManager *)self transportTypeFinder];
       [(_MKQuickRouteManager *)self originCoordinate];
       v8 = v7;
       v10 = v9;
       [(_MKQuickRouteManager *)self destinationCoordinate];
-      [v6 findDirectionsTypeForOriginCoordinate:v16 destinationCoordinate:v8 handler:{v10, v11, v12}];
+      [transportTypeFinder2 findDirectionsTypeForOriginCoordinate:v16 destinationCoordinate:v8 handler:{v10, v11, v12}];
     }
 
     else
@@ -602,7 +602,7 @@ LABEL_16:
       }
     }
 
-    v4 = v16;
+    typeCopy = v16;
   }
 }
 
@@ -610,9 +610,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_MKQuickRouteManager *)self mapItem];
-  v6 = [v5 name];
-  v7 = [v3 stringWithFormat:@"<%@ %p: name=%@>", v4, self, v6];
+  mapItem = [(_MKQuickRouteManager *)self mapItem];
+  name = [mapItem name];
+  v7 = [v3 stringWithFormat:@"<%@ %p: name=%@>", v4, self, name];
 
   return v7;
 }
@@ -650,44 +650,44 @@ LABEL_16:
   return v2;
 }
 
-+ (unint64_t)directionsTypeForMapItem:(id)a3 delegate:(id)a4 mapType:(unint64_t)a5
++ (unint64_t)directionsTypeForMapItem:(id)item delegate:(id)delegate mapType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  [v10 setMapItem:v9];
+  delegateCopy = delegate;
+  itemCopy = item;
+  v10 = objc_alloc_init(self);
+  [v10 setMapItem:itemCopy];
 
-  [v10 setDelegate:v8];
-  v11 = [v10 directionsTypeForMapType:a5];
+  [v10 setDelegate:delegateCopy];
+  v11 = [v10 directionsTypeForMapType:type];
 
   return v11;
 }
 
-+ (unint64_t)counterpartForTransportType:(unint64_t)a3
++ (unint64_t)counterpartForTransportType:(unint64_t)type
 {
-  if ((a3 - 1) > 7)
+  if ((type - 1) > 7)
   {
     return 1;
   }
 
   else
   {
-    return qword_1A30F7840[(a3 - 1)];
+    return qword_1A30F7840[(type - 1)];
   }
 }
 
-+ (BOOL)isLikelyToReturnETAForLocation:(id)a3
++ (BOOL)isLikelyToReturnETAForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = +[MKLocationManager sharedLocationManager];
-  v6 = [v5 currentLocation];
+  currentLocation = [v5 currentLocation];
 
-  if (v6)
+  if (currentLocation)
   {
-    [a1 _maxDistanceToRequestLikelyETA];
+    [self _maxDistanceToRequestLikelyETA];
     v8 = v7;
-    [v6 coordinate];
-    [v4 _coordinate];
+    [currentLocation coordinate];
+    [locationCopy _coordinate];
     GEOCalculateDistance();
     v10 = v9 < v8 && v9 > 1.0;
   }

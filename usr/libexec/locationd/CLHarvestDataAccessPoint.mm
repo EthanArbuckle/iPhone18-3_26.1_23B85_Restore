@@ -1,33 +1,33 @@
 @interface CLHarvestDataAccessPoint
-- (CLHarvestDataAccessPoint)initWithAccessPoint:(AccessPoint *)a3;
-- (CLHarvestDataAccessPoint)initWithCoder:(id)a3;
+- (CLHarvestDataAccessPoint)initWithAccessPoint:(AccessPoint *)point;
+- (CLHarvestDataAccessPoint)initWithCoder:(id)coder;
 - (id)description;
 - (id)jsonObject;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLHarvestDataAccessPoint
 
-- (CLHarvestDataAccessPoint)initWithAccessPoint:(AccessPoint *)a3
+- (CLHarvestDataAccessPoint)initWithAccessPoint:(AccessPoint *)point
 {
   v10.receiver = self;
   v10.super_class = CLHarvestDataAccessPoint;
   v4 = [(CLHarvestDataAccessPoint *)&v10 init];
   if (v4)
   {
-    __p[0] = a3->var0.var0;
+    __p[0] = point->var0.var0;
     v4->_macAddress = sub_10018D3FC(__p);
     v5 = [NSString alloc];
-    if (*(&a3->var1.__rep_.__l + 23) < 0)
+    if (*(&point->var1.__rep_.__l + 23) < 0)
     {
-      sub_100007244(__p, a3->var1.__rep_.__l.__data_, a3->var1.__rep_.__l.__size_);
+      sub_100007244(__p, point->var1.__rep_.__l.__data_, point->var1.__rep_.__l.__size_);
     }
 
     else
     {
-      *__p = *a3->var1.__rep_.__s.__data_;
-      v9 = *(&a3->var1.__rep_.__l + 2);
+      *__p = *point->var1.__rep_.__s.__data_;
+      v9 = *(&point->var1.__rep_.__l + 2);
     }
 
     if (v9 >= 0)
@@ -46,12 +46,12 @@
       operator delete(__p[0]);
     }
 
-    v4->_rssi = a3[1].var0.var0;
-    v4->_mode = HIDWORD(a3[1].var0.var0);
-    v4->_channel = *a3[1].var1.__rep_.__s.__data_;
-    *&v4->_age = a3[1].var1.__rep_.__l.__size_;
-    v4->_timestamp = *(&a3[1].var1.__rep_.__l + 2);
-    v4->_isApplePersonalHotspot = a3[2].var0.var0;
+    v4->_rssi = point[1].var0.var0;
+    v4->_mode = HIDWORD(point[1].var0.var0);
+    v4->_channel = *point[1].var1.__rep_.__s.__data_;
+    *&v4->_age = point[1].var1.__rep_.__l.__size_;
+    v4->_timestamp = *(&point[1].var1.__rep_.__l + 2);
+    v4->_isApplePersonalHotspot = point[2].var0.var0;
   }
 
   return v4;
@@ -64,39 +64,39 @@
   [(CLHarvestDataAccessPoint *)&v3 dealloc];
 }
 
-- (CLHarvestDataAccessPoint)initWithCoder:(id)a3
+- (CLHarvestDataAccessPoint)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CLHarvestDataAccessPoint;
   v4 = [(CLHarvestDataAccessPoint *)&v8 init];
   if (v4)
   {
-    v4->_macAddress = [a3 decodeInt64ForKey:@"MacAddressKey"];
-    v4->_ssid = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"SsidKey"];
-    v4->_rssi = [a3 decodeIntForKey:@"RssiKey"];
-    v4->_channel = [a3 decodeIntForKey:@"ChannelKey"];
-    [a3 decodeDoubleForKey:@"AgeKey"];
+    v4->_macAddress = [coder decodeInt64ForKey:@"MacAddressKey"];
+    v4->_ssid = [coder decodeObjectOfClass:objc_opt_class() forKey:@"SsidKey"];
+    v4->_rssi = [coder decodeIntForKey:@"RssiKey"];
+    v4->_channel = [coder decodeIntForKey:@"ChannelKey"];
+    [coder decodeDoubleForKey:@"AgeKey"];
     v4->_age = v5;
-    [a3 decodeDoubleForKey:@"ScanTimestampKey"];
+    [coder decodeDoubleForKey:@"ScanTimestampKey"];
     v4->_timestamp = v6;
-    v4->_isApplePersonalHotspot = [a3 decodeBoolForKey:@"ApplePersonalHotspotKey"];
+    v4->_isApplePersonalHotspot = [coder decodeBoolForKey:@"ApplePersonalHotspotKey"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_macAddress forKey:@"MacAddressKey"];
-  [a3 encodeObject:self->_ssid forKey:@"SsidKey"];
-  [a3 encodeInt:self->_rssi forKey:@"RssiKey"];
-  [a3 encodeInt:self->_mode forKey:@"ModeKey"];
-  [a3 encodeInt:self->_channel forKey:@"ChannelKey"];
-  [a3 encodeDouble:@"AgeKey" forKey:self->_age];
-  [a3 encodeDouble:@"ScanTimestampKey" forKey:self->_timestamp];
+  [coder encodeInt64:self->_macAddress forKey:@"MacAddressKey"];
+  [coder encodeObject:self->_ssid forKey:@"SsidKey"];
+  [coder encodeInt:self->_rssi forKey:@"RssiKey"];
+  [coder encodeInt:self->_mode forKey:@"ModeKey"];
+  [coder encodeInt:self->_channel forKey:@"ChannelKey"];
+  [coder encodeDouble:@"AgeKey" forKey:self->_age];
+  [coder encodeDouble:@"ScanTimestampKey" forKey:self->_timestamp];
   isApplePersonalHotspot = self->_isApplePersonalHotspot;
 
-  [a3 encodeBool:isApplePersonalHotspot forKey:@"ApplePersonalHotspotKey"];
+  [coder encodeBool:isApplePersonalHotspot forKey:@"ApplePersonalHotspotKey"];
 }
 
 - (id)jsonObject

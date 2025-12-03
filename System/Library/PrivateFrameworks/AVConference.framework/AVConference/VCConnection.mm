@@ -1,17 +1,17 @@
 @interface VCConnection
 - (VCConnection)init;
 - (id)getConnectionSelectionPriorities;
-- (int64_t)compare:(id)a3 isPrimary:(BOOL)a4 selectionPolicy:(id *)a5;
-- (int64_t)compareConnectionTypePriority:(id)a3 selectionPolicy:(id *)a4;
-- (int64_t)compareE2EPriority:(id)a3 selectionPolicy:(id *)a4;
-- (int64_t)compareInterfacePriority:(id)a3 isPrimary:(BOOL)a4 preferWired:(BOOL)a5;
-- (int64_t)compareIpVersionPriority:(id)a3 selectionPolicy:(id *)a4;
-- (int64_t)compareVpnPriority:(id)a3 selectionPolicy:(id *)a4;
+- (int64_t)compare:(id)compare isPrimary:(BOOL)primary selectionPolicy:(id *)policy;
+- (int64_t)compareConnectionTypePriority:(id)priority selectionPolicy:(id *)policy;
+- (int64_t)compareE2EPriority:(id)priority selectionPolicy:(id *)policy;
+- (int64_t)compareInterfacePriority:(id)priority isPrimary:(BOOL)primary preferWired:(BOOL)wired;
+- (int64_t)compareIpVersionPriority:(id)priority selectionPolicy:(id *)policy;
+- (int64_t)compareVpnPriority:(id)priority selectionPolicy:(id *)policy;
 - (void)dealloc;
-- (void)setLinkFlags:(unsigned __int16)a3;
-- (void)setPreviousLinkFlags:(unsigned __int16)a3;
-- (void)setPreviousRemoteLinkFlags:(unsigned __int16)a3;
-- (void)setRemoteLinkFlags:(unsigned __int16)a3;
+- (void)setLinkFlags:(unsigned __int16)flags;
+- (void)setPreviousLinkFlags:(unsigned __int16)flags;
+- (void)setPreviousRemoteLinkFlags:(unsigned __int16)flags;
+- (void)setRemoteLinkFlags:(unsigned __int16)flags;
 @end
 
 @implementation VCConnection
@@ -41,11 +41,11 @@
   [(VCConnection *)&v3 dealloc];
 }
 
-- (void)setLinkFlags:(unsigned __int16)a3
+- (void)setLinkFlags:(unsigned __int16)flags
 {
   v15 = *MEMORY[0x1E69E9840];
   self->_previousLinkFlags = self->_linkFlags;
-  self->_linkFlags = a3;
+  self->_linkFlags = flags;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -66,10 +66,10 @@
   }
 }
 
-- (void)setPreviousLinkFlags:(unsigned __int16)a3
+- (void)setPreviousLinkFlags:(unsigned __int16)flags
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_previousLinkFlags = a3;
+  self->_previousLinkFlags = flags;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -90,11 +90,11 @@
   }
 }
 
-- (void)setRemoteLinkFlags:(unsigned __int16)a3
+- (void)setRemoteLinkFlags:(unsigned __int16)flags
 {
   v15 = *MEMORY[0x1E69E9840];
   self->_previousRemoteLinkFlags = self->_remoteLinkFlags;
-  self->_remoteLinkFlags = a3;
+  self->_remoteLinkFlags = flags;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -115,10 +115,10 @@
   }
 }
 
-- (void)setPreviousRemoteLinkFlags:(unsigned __int16)a3
+- (void)setPreviousRemoteLinkFlags:(unsigned __int16)flags
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_previousRemoteLinkFlags = a3;
+  self->_previousRemoteLinkFlags = flags;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -139,40 +139,40 @@
   }
 }
 
-- (int64_t)compare:(id)a3 isPrimary:(BOOL)a4 selectionPolicy:(id *)a5
+- (int64_t)compare:(id)compare isPrimary:(BOOL)primary selectionPolicy:(id *)policy
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!compare)
   {
     return 1;
   }
 
-  v6 = a4;
-  if (!a5->var3 || (result = [(VCConnection *)self compareE2EPriority:a3 selectionPolicy:a5]) == 0)
+  primaryCopy = primary;
+  if (!policy->var3 || (result = [(VCConnection *)self compareE2EPriority:compare selectionPolicy:policy]) == 0)
   {
-    result = [(VCConnection *)self compareInterfacePriority:a3 isPrimary:v6 preferWired:a5->var5];
+    result = [(VCConnection *)self compareInterfacePriority:compare isPrimary:primaryCopy preferWired:policy->var5];
     if (!result)
     {
-      result = [(VCConnection *)self compareConnectionTypePriority:a3 selectionPolicy:a5];
+      result = [(VCConnection *)self compareConnectionTypePriority:compare selectionPolicy:policy];
       if (!result)
       {
-        result = [(VCConnection *)self compareIpVersionPriority:a3 selectionPolicy:a5];
+        result = [(VCConnection *)self compareIpVersionPriority:compare selectionPolicy:policy];
         if (!result)
         {
-          result = [(VCConnection *)self compareVpnPriority:a3 selectionPolicy:a5];
+          result = [(VCConnection *)self compareVpnPriority:compare selectionPolicy:policy];
           if (!result)
           {
-            v10 = [(VCConnection *)self connectionUUID];
-            v11 = [a3 connectionUUID];
-            v12 = [objc_msgSend(v10 "UUIDString")];
+            connectionUUID = [(VCConnection *)self connectionUUID];
+            connectionUUID2 = [compare connectionUUID];
+            v12 = [objc_msgSend(connectionUUID "UUIDString")];
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
               v13 = VRTraceErrorLogLevelToCSTR();
               v14 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v15 = [v10 UUIDString];
-                v16 = [v11 UUIDString];
+                uUIDString = [connectionUUID UUIDString];
+                uUIDString2 = [connectionUUID2 UUIDString];
                 v18 = 136316418;
                 v17 = "Old";
                 v19 = v13;
@@ -186,9 +186,9 @@
 
                 v23 = 137;
                 v24 = 2112;
-                v25 = v15;
+                v25 = uUIDString;
                 v26 = 2112;
-                v27 = v16;
+                v27 = uUIDString2;
                 v28 = 2080;
                 v29 = v17;
                 _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: connections %@, and %@ are identical for primary, choosing %s", &v18, 0x3Au);
@@ -213,10 +213,10 @@
   return result;
 }
 
-- (int64_t)compareInterfacePriority:(id)a3 isPrimary:(BOOL)a4 preferWired:(BOOL)a5
+- (int64_t)compareInterfacePriority:(id)priority isPrimary:(BOOL)primary preferWired:(BOOL)wired
 {
-  v5 = a5;
-  if (a4)
+  wiredCopy = wired;
+  if (primary)
   {
     v8 = @"connectionPrimary";
   }
@@ -227,7 +227,7 @@
   }
 
   v9 = [-[NSDictionary objectForKeyedSubscript:](self->_connectionSelectionPriorities objectForKeyedSubscript:{@"interfacePriority", "objectForKeyedSubscript:", v8}];
-  if (v5)
+  if (wiredCopy)
   {
     if (VCConnection_IsLocalOnWired(self))
     {
@@ -259,12 +259,12 @@
       v11 = @"interfaceCellular";
     }
 
-    if (VCConnection_IsLocalOnWired(a3))
+    if (VCConnection_IsLocalOnWired(priority))
     {
       v12 = @"interfaceWired";
     }
 
-    else if (VCConnection_IsLocalOnWiFiOrWired(a3))
+    else if (VCConnection_IsLocalOnWiFiOrWired(priority))
     {
       v12 = @"interfaceWiFi";
     }
@@ -274,7 +274,7 @@
       v12 = @"interfaceCellular";
     }
 
-    if (VCConnection_IsRemoteOnWired(a3))
+    if (VCConnection_IsRemoteOnWired(priority))
     {
       v13 = @"interfaceWired";
       goto LABEL_34;
@@ -303,7 +303,7 @@
       v11 = @"interfaceCellular";
     }
 
-    if (VCConnection_IsLocalOnWiFiOrWired(a3))
+    if (VCConnection_IsLocalOnWiFiOrWired(priority))
     {
       v12 = @"interfaceWiFi";
     }
@@ -314,7 +314,7 @@
     }
   }
 
-  if (VCConnection_IsRemoteOnWiFiOrWired(a3))
+  if (VCConnection_IsRemoteOnWiFiOrWired(priority))
   {
     v13 = @"interfaceWiFi";
   }
@@ -327,7 +327,7 @@
 LABEL_34:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", v11), "intValue") + objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", v10), "intValue")}];
   result = [v14 compare:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", v13), "intValue") + objc_msgSend(objc_msgSend(v9, "objectForKeyedSubscript:", v12), "intValue"))}];
-  if (!v5 && !result)
+  if (!wiredCopy && !result)
   {
     v16 = [v9 objectForKeyedSubscript:v10];
     if (v16 == [v9 objectForKeyedSubscript:v12])
@@ -344,9 +344,9 @@ LABEL_34:
   return result;
 }
 
-- (int64_t)compareConnectionTypePriority:(id)a3 selectionPolicy:(id *)a4
+- (int64_t)compareConnectionTypePriority:(id)priority selectionPolicy:(id *)policy
 {
-  if (a4->var0)
+  if (policy->var0)
   {
     v6 = @"preferRelay";
   }
@@ -367,7 +367,7 @@ LABEL_34:
     v8 = @"connectionTypeP2P";
   }
 
-  if (VCConnection_IsRelay(a3))
+  if (VCConnection_IsRelay(priority))
   {
     v9 = @"connectionTypeRelay";
   }
@@ -383,19 +383,19 @@ LABEL_34:
   return [v10 compare:v11];
 }
 
-- (int64_t)compareVpnPriority:(id)a3 selectionPolicy:(id *)a4
+- (int64_t)compareVpnPriority:(id)priority selectionPolicy:(id *)policy
 {
-  if (!a4->var2)
+  if (!policy->var2)
   {
     return 0;
   }
 
-  if (-[VCConnection isVPN](self, "isVPN") & 1) == 0 && ([a3 isVPN])
+  if (-[VCConnection isVPN](self, "isVPN") & 1) == 0 && ([priority isVPN])
   {
     return 1;
   }
 
-  if (-[VCConnection isVPN](self, "isVPN") && ![a3 isVPN])
+  if (-[VCConnection isVPN](self, "isVPN") && ![priority isVPN])
   {
     return -1;
   }
@@ -406,10 +406,10 @@ LABEL_34:
   }
 }
 
-- (int64_t)compareE2EPriority:(id)a3 selectionPolicy:(id *)a4
+- (int64_t)compareE2EPriority:(id)priority selectionPolicy:(id *)policy
 {
   IsEndToEndLink = VCConnection_IsEndToEndLink(self);
-  v7 = VCConnection_IsEndToEndLink(a3);
+  v7 = VCConnection_IsEndToEndLink(priority);
   if (!IsEndToEndLink || (v7 & 1) != 0)
   {
     if (IsEndToEndLink & 1 | ((v7 & 1) == 0))
@@ -417,13 +417,13 @@ LABEL_34:
       return 0;
     }
 
-    v8 = !a4->var4;
+    v8 = !policy->var4;
     v9 = -1;
   }
 
   else
   {
-    v8 = !a4->var4;
+    v8 = !policy->var4;
     v9 = 1;
   }
 
@@ -438,9 +438,9 @@ LABEL_34:
   }
 }
 
-- (int64_t)compareIpVersionPriority:(id)a3 selectionPolicy:(id *)a4
+- (int64_t)compareIpVersionPriority:(id)priority selectionPolicy:(id *)policy
 {
-  if (a4->var1)
+  if (policy->var1)
   {
     v6 = @"preferIPv6";
   }
@@ -461,7 +461,7 @@ LABEL_34:
     v8 = @"IPv4";
   }
 
-  if (VCConnection_IsIPv6(a3))
+  if (VCConnection_IsIPv6(priority))
   {
     v9 = @"IPv6";
   }

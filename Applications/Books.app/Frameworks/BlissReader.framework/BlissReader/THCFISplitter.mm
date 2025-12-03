@@ -2,7 +2,7 @@
 + (id)_singletonAlloc;
 + (id)sharedInstance;
 - (THCFISplitter)init;
-- (id)storageIDFromCFI:(id)a3;
+- (id)storageIDFromCFI:(id)i;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___THCFISplitter;
   return objc_msgSendSuper2(&v3, "allocWithZone:", 0);
 }
@@ -20,10 +20,10 @@
   result = qword_5678B0;
   if (!qword_5678B0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_5678B0)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       qword_5678B0 = v4;
       if (!v4)
@@ -32,7 +32,7 @@
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_5678B0;
   }
 
@@ -59,9 +59,9 @@
   [(THCFISplitter *)&v3 dealloc];
 }
 
-- (id)storageIDFromCFI:(id)a3
+- (id)storageIDFromCFI:(id)i
 {
-  v4 = -[NSRegularExpression firstMatchInString:options:range:](self->_regex, "firstMatchInString:options:range:", a3, 0, 0, [a3 length]);
+  v4 = -[NSRegularExpression firstMatchInString:options:range:](self->_regex, "firstMatchInString:options:range:", i, 0, 0, [i length]);
   if ([(NSTextCheckingResult *)v4 numberOfRanges]< 2)
   {
     return 0;
@@ -69,12 +69,12 @@
 
   v5 = [(NSTextCheckingResult *)v4 rangeAtIndex:1];
   v7 = v6;
-  if (v6 >= 2 && [a3 characterAtIndex:v5] == 112 && objc_msgSend(a3, "characterAtIndex:", v5 + 1) - 58 > 0xFFFFFFF5)
+  if (v6 >= 2 && [i characterAtIndex:v5] == 112 && objc_msgSend(i, "characterAtIndex:", v5 + 1) - 58 > 0xFFFFFFF5)
   {
     return 0;
   }
 
-  return [a3 substringWithRange:{v5, v7}];
+  return [i substringWithRange:{v5, v7}];
 }
 
 @end

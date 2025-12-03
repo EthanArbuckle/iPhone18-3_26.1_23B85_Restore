@@ -1,20 +1,20 @@
 @interface PKProvisioningContinuityDiscoveryResponseMessage
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKProvisioningContinuityDiscoveryResponseMessage)initWithProximityVerification:(id)a3;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (PKProvisioningContinuityDiscoveryResponseMessage)initWithProximityVerification:(id)verification;
 - (id)description;
 @end
 
 @implementation PKProvisioningContinuityDiscoveryResponseMessage
 
-- (PKProvisioningContinuityDiscoveryResponseMessage)initWithProximityVerification:(id)a3
+- (PKProvisioningContinuityDiscoveryResponseMessage)initWithProximityVerification:(id)verification
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  verificationCopy = verification;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 dictionaryRepresentation];
+  dictionaryRepresentation = [verificationCopy dictionaryRepresentation];
 
-  [v6 setObject:v7 forKeyedSubscript:@"proximityVerification"];
+  [v6 setObject:dictionaryRepresentation forKeyedSubscript:@"proximityVerification"];
   v10.receiver = self;
   v10.super_class = PKProvisioningContinuityDiscoveryResponseMessage;
   v8 = [(PKSharingGenericMessage *)&v10 initWithFormat:3 type:2002 genericSharingDict:MEMORY[0x1E695E0F8] appleSharingDict:v6];
@@ -22,15 +22,15 @@
   return v8;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v11.receiver = self;
   v11.super_class = PKProvisioningContinuityDiscoveryResponseMessage;
-  v5 = [(PKSharingGenericMessage *)&v11 configureWithContent:v4];
+  v5 = [(PKSharingGenericMessage *)&v11 configureWithContent:contentCopy];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"apple"];
+    v6 = [contentCopy PKDictionaryForKey:@"apple"];
     v7 = [v6 PKDictionaryForKey:@"proximityVerification"];
     if (v7)
     {
@@ -46,8 +46,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   [v3 appendFormat:@"proximityVerification: '%@'; ", self->_proximityVerification];
   v5 = PKSharingMessageTypeToString([(PKSharingMessage *)self type]);
@@ -59,16 +59,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (self)
     {

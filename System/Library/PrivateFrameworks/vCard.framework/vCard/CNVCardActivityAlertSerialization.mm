@@ -1,37 +1,37 @@
 @interface CNVCardActivityAlertSerialization
-+ (id)dictionaryWithType:(id)a3 info:(id)a4;
-+ (id)infoFromDictionary:(id)a3;
-+ (id)stringWithType:(id)a3 info:(id)a4;
-+ (id)typeFromDictionary:(id)a3;
-+ (void)parseString:(id)a3 intoTypeAndInfo:(id)a4;
++ (id)dictionaryWithType:(id)type info:(id)info;
++ (id)infoFromDictionary:(id)dictionary;
++ (id)stringWithType:(id)type info:(id)info;
++ (id)typeFromDictionary:(id)dictionary;
++ (void)parseString:(id)string intoTypeAndInfo:(id)info;
 @end
 
 @implementation CNVCardActivityAlertSerialization
 
-+ (id)stringWithType:(id)a3 info:(id)a4
++ (id)stringWithType:(id)type info:(id)info
 {
-  v4 = [a1 dictionaryWithType:a3 info:a4];
+  v4 = [self dictionaryWithType:type info:info];
   v5 = [CNVCardActivityAlertSerializer serializeDictionary:v4];
 
   return v5;
 }
 
-+ (id)dictionaryWithType:(id)a3 info:(id)a4
++ (id)dictionaryWithType:(id)type info:(id)info
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 dictionary];
-  v9 = sAPITypeToSerializedType_block_invoke_3(v8, v7);
+  infoCopy = info;
+  typeCopy = type;
+  dictionary = [v5 dictionary];
+  v9 = sAPITypeToSerializedType_block_invoke_3(dictionary, typeCopy);
 
-  [v8 _cn_setNonNilObject:v9 forKey:@"type"];
+  [dictionary _cn_setNonNilObject:v9 forKey:@"type"];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__CNVCardActivityAlertSerialization_dictionaryWithType_info___block_invoke;
   v12[3] = &unk_27A710E20;
-  v10 = v8;
+  v10 = dictionary;
   v13 = v10;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   return v10;
 }
@@ -44,35 +44,35 @@ void __61__CNVCardActivityAlertSerialization_dictionaryWithType_info___block_inv
   [v4 setObject:v5 forKey:v6];
 }
 
-+ (void)parseString:(id)a3 intoTypeAndInfo:(id)a4
++ (void)parseString:(id)string intoTypeAndInfo:(id)info
 {
-  v6 = a4;
-  v9 = [a1 activityAlertWithString:a3];
-  v7 = [a1 typeFromDictionary:v9];
-  v8 = [a1 infoFromDictionary:v9];
-  v6[2](v6, v7, v8);
+  infoCopy = info;
+  v9 = [self activityAlertWithString:string];
+  v7 = [self typeFromDictionary:v9];
+  v8 = [self infoFromDictionary:v9];
+  infoCopy[2](infoCopy, v7, v8);
 }
 
-+ (id)typeFromDictionary:(id)a3
++ (id)typeFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"type"];
+  v3 = [dictionary objectForKeyedSubscript:@"type"];
   v4 = sSerializedTypeToAPIType_block_invoke_4(v3, v3);
 
   return v4;
 }
 
-+ (id)infoFromDictionary:(id)a3
++ (id)infoFromDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__CNVCardActivityAlertSerialization_infoFromDictionary___block_invoke;
   v8[3] = &unk_27A710E20;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }

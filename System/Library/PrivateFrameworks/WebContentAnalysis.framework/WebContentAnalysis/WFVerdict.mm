@@ -1,31 +1,31 @@
 @interface WFVerdict
 - (void)dealloc;
-- (void)setLSMEvaluationResult:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setURL:(id)a3;
+- (void)setLSMEvaluationResult:(id)result;
+- (void)setMessage:(id)message;
+- (void)setURL:(id)l;
 @end
 
 @implementation WFVerdict
 
-- (void)setLSMEvaluationResult:(id)a3
+- (void)setLSMEvaluationResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
 
-  self->LSMEvaluationResult = a3;
+  self->LSMEvaluationResult = result;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
 
-  self->message = a3;
+  self->message = message;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
 
-  self->URL = a3;
+  self->URL = l;
 }
 
 - (void)dealloc

@@ -1,5 +1,5 @@
 @interface WFWidgetWorkflowFetchRequest
-- (WFWidgetWorkflowFetchRequest)initWithFetchType:(unint64_t)a3 identifier:(id)a4 limit:(unint64_t)a5 retryCount:(unint64_t)a6 completionHandler:(id)a7;
+- (WFWidgetWorkflowFetchRequest)initWithFetchType:(unint64_t)type identifier:(id)identifier limit:(unint64_t)limit retryCount:(unint64_t)count completionHandler:(id)handler;
 - (id)description;
 @end
 
@@ -21,30 +21,30 @@
     v5 = @"single workflow";
   }
 
-  v6 = [(WFWidgetWorkflowFetchRequest *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@, type: %@, identifier: %@, limit: %lu, retryCount: %lu>", v4, v5, v6, -[WFWidgetWorkflowFetchRequest limit](self, "limit"), -[WFWidgetWorkflowFetchRequest retryCount](self, "retryCount")];
+  identifier = [(WFWidgetWorkflowFetchRequest *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@, type: %@, identifier: %@, limit: %lu, retryCount: %lu>", v4, v5, identifier, -[WFWidgetWorkflowFetchRequest limit](self, "limit"), -[WFWidgetWorkflowFetchRequest retryCount](self, "retryCount")];
 
   return v7;
 }
 
-- (WFWidgetWorkflowFetchRequest)initWithFetchType:(unint64_t)a3 identifier:(id)a4 limit:(unint64_t)a5 retryCount:(unint64_t)a6 completionHandler:(id)a7
+- (WFWidgetWorkflowFetchRequest)initWithFetchType:(unint64_t)type identifier:(id)identifier limit:(unint64_t)limit retryCount:(unint64_t)count completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a7;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = WFWidgetWorkflowFetchRequest;
   v14 = [(WFWidgetWorkflowFetchRequest *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    v16 = [v12 copy];
+    v14->_type = type;
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v15->_limit = a5;
-    v15->_retryCount = a6;
-    v18 = [v13 copy];
+    v15->_limit = limit;
+    v15->_retryCount = count;
+    v18 = [handlerCopy copy];
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v18;
 

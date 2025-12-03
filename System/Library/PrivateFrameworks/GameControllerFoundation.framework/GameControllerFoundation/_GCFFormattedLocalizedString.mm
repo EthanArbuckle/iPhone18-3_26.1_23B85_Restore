@@ -1,9 +1,9 @@
 @interface _GCFFormattedLocalizedString
-- (_GCFFormattedLocalizedString)initWithCoder:(id)a3;
-- (_GCFFormattedLocalizedString)initWithFormat:(id)a3 arg:(id)a4;
+- (_GCFFormattedLocalizedString)initWithCoder:(id)coder;
+- (_GCFFormattedLocalizedString)initWithFormat:(id)format arg:(id)arg;
 - (id)_realizedString;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCFFormattedLocalizedString
@@ -15,44 +15,44 @@
   [(_GCFFormattedLocalizedString *)&v3 dealloc];
 }
 
-- (_GCFFormattedLocalizedString)initWithCoder:(id)a3
+- (_GCFFormattedLocalizedString)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"arg"];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+    decodeObject2 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"arg"];
   }
 
   else
   {
-    v5 = [a3 decodeObject];
-    v6 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
+    decodeObject2 = [coder decodeObject];
   }
 
-  v7 = v6;
-  self->_format = [v5 copy];
+  v7 = decodeObject2;
+  self->_format = [decodeObject copy];
   self->_arg = [v7 copy];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   format = self->_format;
-  if (v5)
+  if (allowsKeyedCoding)
   {
-    [a3 encodeObject:format forKey:@"format"];
+    [coder encodeObject:format forKey:@"format"];
     arg = self->_arg;
 
-    [a3 encodeObject:arg forKey:@"arg"];
+    [coder encodeObject:arg forKey:@"arg"];
   }
 
   else
   {
-    [a3 encodeObject:format];
+    [coder encodeObject:format];
     v8 = self->_arg;
 
-    [a3 encodeObject:v8];
+    [coder encodeObject:v8];
   }
 }
 
@@ -92,17 +92,17 @@
   return realizedString;
 }
 
-- (_GCFFormattedLocalizedString)initWithFormat:(id)a3 arg:(id)a4
+- (_GCFFormattedLocalizedString)initWithFormat:(id)format arg:(id)arg
 {
-  if (!a3)
+  if (!format)
   {
     return 0;
   }
 
-  v5 = self;
-  self->_format = [a3 copy];
-  v5->_arg = [a4 copy];
-  return v5;
+  selfCopy = self;
+  self->_format = [format copy];
+  selfCopy->_arg = [arg copy];
+  return selfCopy;
 }
 
 @end

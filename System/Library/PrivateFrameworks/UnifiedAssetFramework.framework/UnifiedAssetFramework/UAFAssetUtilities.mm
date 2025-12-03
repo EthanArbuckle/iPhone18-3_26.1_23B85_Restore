@@ -1,7 +1,7 @@
 @interface UAFAssetUtilities
-- (BOOL)_networkIsExpensiveForPath:(id)a3;
+- (BOOL)_networkIsExpensiveForPath:(id)path;
 - (BOOL)assistantEnabled;
-- (BOOL)hasSufficientDiskSpaceForClient:(unint64_t)a3;
+- (BOOL)hasSufficientDiskSpaceForClient:(unint64_t)client;
 - (BOOL)hasSufficientDiskSpaceForDownload;
 - (BOOL)understandingOnDeviceAssetsAvailable;
 - (NSDictionary)assistantUODStatus;
@@ -13,51 +13,51 @@
 - (id)_createConnection;
 - (id)currentAssetStatus;
 - (id)getAssistantLanguageIfAvailableSync;
-- (id)getDiskSpaceNeededInBytesForLanguage:(id)a3 forClient:(unint64_t)a4;
-- (unint64_t)_checkFreeSpaceNeededForLanguage:(id)a3 forClient:(unint64_t)a4;
+- (id)getDiskSpaceNeededInBytesForLanguage:(id)language forClient:(unint64_t)client;
+- (unint64_t)_checkFreeSpaceNeededForLanguage:(id)language forClient:(unint64_t)client;
 - (void)_assistantLanguageUpdate;
 - (void)_assistantPreferencesUpdate;
-- (void)_downloadSiriAssetsOverCellular:(BOOL)a3;
+- (void)_downloadSiriAssetsOverCellular:(BOOL)cellular;
 - (void)_downloadSiriAssetsRetry;
-- (void)_downloadSiriAssetsWithDelay:(double)a3;
-- (void)_handleNetworkPathUpdate:(id)a3;
+- (void)_downloadSiriAssetsWithDelay:(double)delay;
+- (void)_handleNetworkPathUpdate:(id)update;
 - (void)_stopObservers;
 - (void)_triggerDelegateAssetStatusUpdated;
-- (void)_updateDelegateForUODAvailable:(BOOL)a3 uodStatus:(id)a4;
-- (void)assetsAreAvailableForLanguage:(id)a3 completion:(id)a4;
+- (void)_updateDelegateForUODAvailable:(BOOL)available uodStatus:(id)status;
+- (void)assetsAreAvailableForLanguage:(id)language completion:(id)completion;
 - (void)dealloc;
 - (void)downloadSiriAssets;
 - (void)downloadSiriAssetsIfNeeded;
 - (void)downloadSiriAssetsOverCellular;
 - (void)refreshUAFAssetStatusAsync;
 - (void)refreshUnderstandingOnDeviceAssetsAvailableAsync;
-- (void)setRetryState:(id)a3;
-- (void)startObserversWithOptions:(unint64_t)a3;
+- (void)setRetryState:(id)state;
+- (void)startObserversWithOptions:(unint64_t)options;
 @end
 
 @implementation UAFAssetUtilities
 
 - (void)refreshUAFAssetStatusAsync
 {
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__UAFAssetUtilities_refreshUAFAssetStatusAsync__block_invoke;
   block[3] = &unk_1E7FFCFD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(assistantQueue, block);
 }
 
 - (void)refreshUnderstandingOnDeviceAssetsAvailableAsync
 {
-  v3 = [(UAFAssetUtilities *)self assistantGroup];
-  v4 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__UAFAssetUtilities_refreshUnderstandingOnDeviceAssetsAvailableAsync__block_invoke;
   block[3] = &unk_1E7FFCFD0;
   block[4] = self;
-  dispatch_group_async(v3, v4, block);
+  dispatch_group_async(assistantGroup, assistantQueue, block);
 }
 
 void __47__UAFAssetUtilities_refreshUAFAssetStatusAsync__block_invoke(uint64_t a1)
@@ -79,9 +79,9 @@ void __47__UAFAssetUtilities_refreshUAFAssetStatusAsync__block_invoke(uint64_t a
 
 - (id)_createConnection
 {
-  v2 = [[UAFXPCConnection alloc] initWithUserService];
+  initWithUserService = [[UAFXPCConnection alloc] initWithUserService];
 
-  return v2;
+  return initWithUserService;
 }
 
 void __69__UAFAssetUtilities_refreshUnderstandingOnDeviceAssetsAvailableAsync__block_invoke(uint64_t a1)
@@ -185,16 +185,16 @@ void __47__UAFAssetUtilities_refreshUAFAssetStatusAsync__block_invoke_3(uint64_t
 
 - (void)_triggerDelegateAssetStatusUpdated
 {
-  v3 = [(UAFAssetUtilities *)self statusQueue];
-  dispatch_assert_queue_V2(v3);
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
+  dispatch_assert_queue_V2(statusQueue);
 
-  v4 = [(UAFAssetUtilities *)self delegateQueue];
+  delegateQueue = [(UAFAssetUtilities *)self delegateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__UAFAssetUtilities__triggerDelegateAssetStatusUpdated__block_invoke;
   block[3] = &unk_1E7FFCFD0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(delegateQueue, block);
 }
 
 void __55__UAFAssetUtilities__triggerDelegateAssetStatusUpdated__block_invoke(uint64_t a1)
@@ -231,25 +231,25 @@ void __55__UAFAssetUtilities__triggerDelegateAssetStatusUpdated__block_invoke(ui
 - (id)currentAssetStatus
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(UAFAssetUtilities *)self assetStatus];
+  assetStatus = [(UAFAssetUtilities *)self assetStatus];
   v4 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [v3 state]);
-    v6 = [v3 value];
+    v5 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [assetStatus state]);
+    value = [assetStatus value];
     *buf = 136315650;
     v33 = "[UAFAssetUtilities currentAssetStatus]";
     v34 = 2112;
     v35 = v5;
     v36 = 1024;
-    v37 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [value unsignedIntegerValue];
     _os_log_impl(&dword_1BCF2C000, v4, OS_LOG_TYPE_DEFAULT, "%s #settings Current asset state %@ with value %d", buf, 0x1Cu);
   }
 
   v7 = +[UAFCommonUtilities isAssistantEnabled];
   v8 = +[UAFCommonUtilities deviceSupportAndUseHybridASR];
   v9 = +[UAFCommonUtilities deviceSupportFullUOD];
-  if (![v3 state] || objc_msgSend(v3, "state") == 2 || objc_msgSend(v3, "state") == 4)
+  if (![assetStatus state] || objc_msgSend(assetStatus, "state") == 2 || objc_msgSend(assetStatus, "state") == 4)
   {
     v10 = 0;
     if (!v7)
@@ -260,7 +260,7 @@ void __55__UAFAssetUtilities__triggerDelegateAssetStatusUpdated__block_invoke(ui
 
   else
   {
-    v10 = [v3 state] != 6;
+    v10 = [assetStatus state] != 6;
     if (!v7)
     {
       goto LABEL_13;
@@ -270,39 +270,39 @@ void __55__UAFAssetUtilities__triggerDelegateAssetStatusUpdated__block_invoke(ui
   if ([(UAFAssetUtilities *)self autoRetryEnabled]&& self->_networkSatisfied && !self->_networkExpensive && !v10 && (v8 || v9))
   {
     objc_initWeak(buf, self);
-    v11 = [(UAFAssetUtilities *)self assistantQueue];
+    assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__UAFAssetUtilities_currentAssetStatus__block_invoke;
     block[3] = &unk_1E7FFD110;
     objc_copyWeak(&v31, buf);
-    dispatch_async(v11, block);
+    dispatch_async(assistantQueue, block);
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
   }
 
 LABEL_13:
-  v12 = [(UAFAssetUtilities *)self showHybridAsUnsupported];
+  showHybridAsUnsupported = [(UAFAssetUtilities *)self showHybridAsUnsupported];
   v13 = v9 || v8;
-  if (v12)
+  if (showHybridAsUnsupported)
   {
     v13 = v9;
   }
 
   if ((v7 & v13 & 1) == 0)
   {
-    [v3 setState:1];
+    [assetStatus setState:1];
     v14 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [v3 state]);
+      v16 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [assetStatus state]);
       *buf = 136316162;
       v33 = "[UAFAssetUtilities currentAssetStatus]";
       v34 = 2112;
       v35 = v16;
       v36 = 1024;
-      v37 = v7;
+      unsignedIntegerValue = v7;
       v38 = 1024;
       v39 = v8;
       v40 = 1024;
@@ -315,11 +315,11 @@ LABEL_13:
 
   if (v9 && [(UAFAssetUtilities *)self understandingOnDeviceAssetsAvailable])
   {
-    [v3 setState:5];
+    [assetStatus setState:5];
     v14 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [v3 state]);
+      v15 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [assetStatus state]);
       *buf = 136315394;
       v33 = "[UAFAssetUtilities currentAssetStatus]";
       v34 = 2112;
@@ -334,22 +334,22 @@ LABEL_22:
   v18 = v17;
   if (v17)
   {
-    [v3 setState:{objc_msgSend(v17, "state")}];
-    v19 = [v18 value];
-    [v3 setValue:v19];
+    [assetStatus setState:{objc_msgSend(v17, "state")}];
+    value2 = [v18 value];
+    [assetStatus setValue:value2];
 
     v20 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [v3 state]);
-      v22 = [v3 value];
-      v23 = [v22 unsignedIntegerValue];
+      v21 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [assetStatus state]);
+      value3 = [assetStatus value];
+      unsignedIntegerValue2 = [value3 unsignedIntegerValue];
       *buf = 136315650;
       v33 = "[UAFAssetUtilities currentAssetStatus]";
       v34 = 2112;
       v35 = v21;
       v36 = 1024;
-      v37 = v23;
+      unsignedIntegerValue = unsignedIntegerValue2;
       _os_log_impl(&dword_1BCF2C000, v20, OS_LOG_TYPE_DEFAULT, "%s #settings Using mock asset state %@ with value %d", buf, 0x1Cu);
     }
   }
@@ -357,30 +357,30 @@ LABEL_22:
   v24 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [v3 state]);
-    v26 = [v3 value];
-    v27 = [v26 unsignedIntegerValue];
+    v25 = +[UAFAssetStatus stringFromUAFAssetState:](UAFAssetStatus, "stringFromUAFAssetState:", [assetStatus state]);
+    value4 = [assetStatus value];
+    unsignedIntegerValue3 = [value4 unsignedIntegerValue];
     *buf = 136315650;
     v33 = "[UAFAssetUtilities currentAssetStatus]";
     v34 = 2112;
     v35 = v25;
     v36 = 1024;
-    v37 = v27;
+    unsignedIntegerValue = unsignedIntegerValue3;
     _os_log_impl(&dword_1BCF2C000, v24, OS_LOG_TYPE_DEFAULT, "%s #settings Returning state %@ with value %d", buf, 0x1Cu);
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return assetStatus;
 }
 
 - (UAFAssetStatus)assetStatus
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(UAFAssetUtilities *)self assistantGroup];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
   [(UAFAssetUtilities *)self assetAvailableCheckTimeout];
   v5 = dispatch_time(0, (v4 * 1000000000.0));
-  v6 = dispatch_group_wait(v3, v5);
+  v6 = dispatch_group_wait(assistantGroup, v5);
 
   if (v6)
   {
@@ -393,8 +393,8 @@ LABEL_22:
     }
   }
 
-  v8 = [(UAFAssetUtilities *)self statusQueue];
-  dispatch_assert_queue_not_V2(v8);
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
+  dispatch_assert_queue_not_V2(statusQueue);
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -402,14 +402,14 @@ LABEL_22:
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v9 = [(UAFAssetUtilities *)self statusQueue];
+  statusQueue2 = [(UAFAssetUtilities *)self statusQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __32__UAFAssetUtilities_assetStatus__block_invoke;
   v13[3] = &unk_1E7FFD0E8;
   v13[4] = self;
   v13[5] = &buf;
-  dispatch_sync(v9, v13);
+  dispatch_sync(statusQueue2, v13);
 
   v10 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);
@@ -449,10 +449,10 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_understandingOnDeviceAssetsAvailable)
   {
-    v3 = [(UAFAssetUtilities *)self assistantGroup];
+    assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
     [(UAFAssetUtilities *)self assetAvailableCheckTimeout];
     v5 = dispatch_time(0, (v4 * 1000000000.0));
-    v6 = dispatch_group_wait(v3, v5);
+    v6 = dispatch_group_wait(assistantGroup, v5);
 
     if (v6)
     {
@@ -466,21 +466,21 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(UAFAssetUtilities *)self statusQueue];
-  dispatch_assert_queue_not_V2(v8);
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
+  dispatch_assert_queue_not_V2(statusQueue);
 
   *&v17 = 0;
   *(&v17 + 1) = &v17;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [(UAFAssetUtilities *)self statusQueue];
+  statusQueue2 = [(UAFAssetUtilities *)self statusQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__UAFAssetUtilities_understandingOnDeviceAssetsAvailable__block_invoke;
   v14[3] = &unk_1E7FFD070;
   v14[4] = self;
   v14[5] = &v17;
-  dispatch_sync(v9, v14);
+  dispatch_sync(statusQueue2, v14);
 
   if (*(*(&v17 + 1) + 24))
   {
@@ -508,10 +508,10 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
 - (NSDictionary)assistantUODStatus
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(UAFAssetUtilities *)self assistantGroup];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
   [(UAFAssetUtilities *)self assetAvailableCheckTimeout];
   v5 = dispatch_time(0, (v4 * 1000000000.0));
-  v6 = dispatch_group_wait(v3, v5);
+  v6 = dispatch_group_wait(assistantGroup, v5);
 
   if (v6)
   {
@@ -524,8 +524,8 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(UAFAssetUtilities *)self statusQueue];
-  dispatch_assert_queue_not_V2(v8);
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
+  dispatch_assert_queue_not_V2(statusQueue);
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -533,14 +533,14 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v9 = [(UAFAssetUtilities *)self statusQueue];
+  statusQueue2 = [(UAFAssetUtilities *)self statusQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __39__UAFAssetUtilities_assistantUODStatus__block_invoke;
   v13[3] = &unk_1E7FFD070;
   v13[4] = self;
   v13[5] = &buf;
-  dispatch_sync(v9, v13);
+  dispatch_sync(statusQueue2, v13);
 
   v10 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);
@@ -601,17 +601,17 @@ void __32__UAFAssetUtilities_assetStatus__block_invoke(uint64_t a1)
   [(UAFAssetUtilities *)&v3 dealloc];
 }
 
-- (void)startObserversWithOptions:(unint64_t)a3
+- (void)startObserversWithOptions:(unint64_t)options
 {
-  v5 = [(UAFAssetUtilities *)self assistantGroup];
-  v6 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__UAFAssetUtilities_startObserversWithOptions___block_invoke;
   v7[3] = &unk_1E7FFCFA8;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_group_async(v5, v6, v7);
+  v7[5] = options;
+  dispatch_group_async(assistantGroup, assistantQueue, v7);
 }
 
 void __47__UAFAssetUtilities_startObserversWithOptions___block_invoke(uint64_t a1)
@@ -831,18 +831,18 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assetsAreAvailableForLanguage:(id)a3 completion:(id)a4
+- (void)assetsAreAvailableForLanguage:(id)language completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  languageCopy = language;
+  completionCopy = completion;
+  if (languageCopy)
   {
     v8 = +[UAFCommonUtilities deviceSupportFullUOD];
     v9 = +[UAFCommonUtilities deviceSupportAndUseHybridASR];
     if (v8 || v9)
     {
-      v17 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+      v17 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
       location = 0;
       p_location = &location;
       v34 = 0x2050000000;
@@ -869,12 +869,12 @@ LABEL_10:
         *buf = 136315394;
         *&buf[4] = "[UAFAssetUtilities assetsAreAvailableForLanguage:completion:]";
         *&buf[12] = 2114;
-        *&buf[14] = v6;
+        *&buf[14] = languageCopy;
         _os_log_impl(&dword_1BCF2C000, v21, OS_LOG_TYPE_DEFAULT, "%s #settings UOD check for language %{public}@", buf, 0x16u);
       }
 
-      v22 = [(UAFAssetUtilities *)self assistantGroup];
-      dispatch_group_enter(v22);
+      assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+      dispatch_group_enter(assistantGroup);
 
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -883,8 +883,8 @@ LABEL_10:
       v23 = v20;
       v26 = v23;
       objc_copyWeak(&v30, &location);
-      v29 = v7;
-      v27 = self;
+      v29 = completionCopy;
+      selfCopy = self;
       v31 = v8;
       v13 = v17;
       v28 = v13;
@@ -911,9 +911,9 @@ LABEL_10:
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
       v13 = [v11 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:5000 userInfo:v12];
 
-      if (v7)
+      if (completionCopy)
       {
-        (*(v7 + 2))(v7, 0, v13);
+        (*(completionCopy + 2))(completionCopy, 0, v13);
       }
     }
   }
@@ -934,9 +934,9 @@ LABEL_10:
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v13 = [v15 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:5000 userInfo:v16];
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, v13);
     }
   }
 
@@ -995,20 +995,20 @@ void __62__UAFAssetUtilities_assetsAreAvailableForLanguage_completion___block_in
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateDelegateForUODAvailable:(BOOL)a3 uodStatus:(id)a4
+- (void)_updateDelegateForUODAvailable:(BOOL)available uodStatus:(id)status
 {
-  v6 = a4;
-  v7 = [(UAFAssetUtilities *)self assistantGroup];
-  v8 = [(UAFAssetUtilities *)self statusQueue];
+  statusCopy = status;
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__UAFAssetUtilities__updateDelegateForUODAvailable_uodStatus___block_invoke;
   block[3] = &unk_1E7FFD048;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
-  dispatch_group_async(v7, v8, block);
+  v11 = statusCopy;
+  availableCopy = available;
+  v9 = statusCopy;
+  dispatch_group_async(assistantGroup, statusQueue, block);
 }
 
 void __62__UAFAssetUtilities__updateDelegateForUODAvailable_uodStatus___block_invoke(uint64_t a1)
@@ -1102,9 +1102,9 @@ void __39__UAFAssetUtilities_currentAssetStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_networkIsExpensiveForPath:(id)a3
+- (BOOL)_networkIsExpensiveForPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     JUMPOUT(0x1BFB33690);
   }
@@ -1112,17 +1112,17 @@ void __39__UAFAssetUtilities_currentAssetStatus__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)_handleNetworkPathUpdate:(id)a3
+- (void)_handleNetworkPathUpdate:(id)update
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UAFAssetUtilities *)self statusQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  statusQueue = [(UAFAssetUtilities *)self statusQueue];
+  dispatch_assert_queue_V2(statusQueue);
 
   networkSatisfied = self->_networkSatisfied;
   networkExpensive = self->_networkExpensive;
-  self->_networkSatisfied = [(UAFAssetUtilities *)self _networkIsSatisfiedForPath:v4];
-  self->_networkExpensive = [(UAFAssetUtilities *)self _networkIsExpensiveForPath:v4];
+  self->_networkSatisfied = [(UAFAssetUtilities *)self _networkIsSatisfiedForPath:updateCopy];
+  self->_networkExpensive = [(UAFAssetUtilities *)self _networkIsExpensiveForPath:updateCopy];
   v8 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1140,13 +1140,13 @@ void __39__UAFAssetUtilities_currentAssetStatus__block_invoke(uint64_t a1)
   v11 = self->_networkSatisfied;
   if (networkSatisfied != v11)
   {
-    v12 = [(UAFAssetStatus *)self->_assetStatus state];
+    state = [(UAFAssetStatus *)self->_assetStatus state];
     if (v11)
     {
-      if (v12 == 4)
+      if (state == 4)
       {
-        v13 = [(UAFAssetStatus *)self->_assetStatus value];
-        v14 = [v13 isEqualToNumber:&unk_1F3B73110];
+        value = [(UAFAssetStatus *)self->_assetStatus value];
+        v14 = [value isEqualToNumber:&unk_1F3B73110];
 
         if (v14)
         {
@@ -1155,7 +1155,7 @@ void __39__UAFAssetUtilities_currentAssetStatus__block_invoke(uint64_t a1)
       }
     }
 
-    else if (v12 == 3)
+    else if (state == 3)
     {
       [(UAFAssetStatus *)self->_assetStatus setState:4];
       [(UAFAssetStatus *)self->_assetStatus setValue:&unk_1F3B73110];
@@ -1193,31 +1193,31 @@ LABEL_19:
     if ([(UAFAssetUtilities *)self autoRetryEnabled]&& self->_networkSatisfied && !self->_networkExpensive)
     {
       objc_initWeak(buf, self);
-      v17 = [(UAFAssetUtilities *)self assistantQueue];
+      assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __46__UAFAssetUtilities__handleNetworkPathUpdate___block_invoke;
       block[3] = &unk_1E7FFD110;
       objc_copyWeak(&v25, buf);
-      dispatch_async(v17, block);
+      dispatch_async(assistantQueue, block);
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(buf);
     }
 
-    v18 = [(UAFAssetUtilities *)self delegate];
+    delegate = [(UAFAssetUtilities *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
       objc_initWeak(buf, self);
-      v20 = [(UAFAssetUtilities *)self delegateQueue];
+      delegateQueue = [(UAFAssetUtilities *)self delegateQueue];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __46__UAFAssetUtilities__handleNetworkPathUpdate___block_invoke_328;
       v22[3] = &unk_1E7FFD110;
       objc_copyWeak(&v23, buf);
-      dispatch_async(v20, v22);
+      dispatch_async(delegateQueue, v22);
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(buf);
@@ -1277,14 +1277,14 @@ void __46__UAFAssetUtilities__handleNetworkPathUpdate___block_invoke_328(uint64_
   }
 
   objc_initWeak(buf, self);
-  v4 = [(UAFAssetUtilities *)self downloadQueue];
+  downloadQueue = [(UAFAssetUtilities *)self downloadQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__UAFAssetUtilities_downloadSiriAssetsIfNeeded__block_invoke;
   v6[3] = &unk_1E7FFD160;
   objc_copyWeak(&v7, buf);
   v6[4] = self;
-  dispatch_async(v4, v6);
+  dispatch_async(downloadQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
@@ -1357,14 +1357,14 @@ void __47__UAFAssetUtilities_downloadSiriAssetsIfNeeded__block_invoke_3(uint64_t
   }
 
   objc_initWeak(buf, self);
-  v4 = [(UAFAssetUtilities *)self assistantGroup];
-  v5 = [(UAFAssetUtilities *)self downloadQueue];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+  downloadQueue = [(UAFAssetUtilities *)self downloadQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__UAFAssetUtilities_downloadSiriAssets__block_invoke;
   block[3] = &unk_1E7FFD110;
   objc_copyWeak(&v8, buf);
-  dispatch_group_notify(v4, v5, block);
+  dispatch_group_notify(assistantGroup, downloadQueue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -1389,14 +1389,14 @@ void __39__UAFAssetUtilities_downloadSiriAssets__block_invoke(uint64_t a1)
   }
 
   objc_initWeak(buf, self);
-  v4 = [(UAFAssetUtilities *)self assistantGroup];
-  v5 = [(UAFAssetUtilities *)self downloadQueue];
+  assistantGroup = [(UAFAssetUtilities *)self assistantGroup];
+  downloadQueue = [(UAFAssetUtilities *)self downloadQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke;
   block[3] = &unk_1E7FFD110;
   objc_copyWeak(&v8, buf);
-  dispatch_group_notify(v4, v5, block);
+  dispatch_group_notify(assistantGroup, downloadQueue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -1412,8 +1412,8 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
 - (void)_downloadSiriAssetsRetry
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
-  dispatch_assert_queue_V2(v3);
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
+  dispatch_assert_queue_V2(assistantQueue);
 
   if (![(UAFAssetUtilities *)self autoRetryEnabled])
   {
@@ -1435,9 +1435,9 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy_;
     v31 = __Block_byref_object_dispose_;
-    v32 = [(UAFAssetUtilities *)self retryState];
-    v6 = [*(*(&buf + 1) + 40) retryCount];
-    if (v6 >= [(UAFAssetUtilities *)self autoRetryLimit])
+    retryState = [(UAFAssetUtilities *)self retryState];
+    retryCount = [*(*(&buf + 1) + 40) retryCount];
+    if (retryCount >= [(UAFAssetUtilities *)self autoRetryLimit])
     {
       v7 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1445,7 +1445,7 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
         *v24 = 136315394;
         v25 = "[UAFAssetUtilities _downloadSiriAssetsRetry]";
         v26 = 1024;
-        v27 = v6;
+        v27 = retryCount;
         v8 = "%s #settings Skip retry after hitting limit %d";
         v9 = v7;
         v10 = 18;
@@ -1458,9 +1458,9 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
       if (![*(*(&buf + 1) + 40) pending])
       {
         [*(*(&buf + 1) + 40) setPending:1];
-        v11 = [(UAFAssetUtilities *)self autoRetryLimit];
-        v12 = v11 - v6;
-        if (v11 != v6)
+        autoRetryLimit = [(UAFAssetUtilities *)self autoRetryLimit];
+        v12 = autoRetryLimit - retryCount;
+        if (autoRetryLimit != retryCount)
         {
           v13 = 0;
           do
@@ -1471,7 +1471,7 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
             v17 = v16;
             objc_initWeak(v24, self);
             v18 = dispatch_time(0, ((v15 + v13 * v17) * 1000000000.0));
-            v19 = [(UAFAssetUtilities *)self assistantQueue];
+            assistantQueue2 = [(UAFAssetUtilities *)self assistantQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __45__UAFAssetUtilities__downloadSiriAssetsRetry__block_invoke;
@@ -1480,7 +1480,7 @@ void __51__UAFAssetUtilities_downloadSiriAssetsOverCellular__block_invoke(uint64
             block[4] = &buf;
             v22 = v13;
             v23 = v12;
-            dispatch_after(v18, v19, block);
+            dispatch_after(v18, assistantQueue2, block);
 
             objc_destroyWeak(&v21);
             objc_destroyWeak(v24);
@@ -1576,7 +1576,7 @@ void __45__UAFAssetUtilities__downloadSiriAssetsRetry__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_downloadSiriAssetsWithDelay:(double)a3
+- (void)_downloadSiriAssetsWithDelay:(double)delay
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
@@ -1588,14 +1588,14 @@ void __45__UAFAssetUtilities__downloadSiriAssetsRetry__block_invoke(uint64_t a1)
   }
 
   objc_initWeak(buf, self);
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
-  v7 = [(UAFAssetUtilities *)self downloadQueue];
+  v6 = dispatch_time(0, (delay * 1000000000.0));
+  downloadQueue = [(UAFAssetUtilities *)self downloadQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__UAFAssetUtilities__downloadSiriAssetsWithDelay___block_invoke;
   block[3] = &unk_1E7FFD110;
   objc_copyWeak(&v10, buf);
-  dispatch_after(v6, v7, block);
+  dispatch_after(v6, downloadQueue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -1608,28 +1608,28 @@ void __50__UAFAssetUtilities__downloadSiriAssetsWithDelay___block_invoke(uint64_
   [WeakRetained _downloadSiriAssetsOverCellular:0];
 }
 
-- (void)_downloadSiriAssetsOverCellular:(BOOL)a3
+- (void)_downloadSiriAssetsOverCellular:(BOOL)cellular
 {
-  v3 = a3;
+  cellularCopy = cellular;
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(UAFAssetUtilities *)self downloadQueue];
-  dispatch_assert_queue_V2(v5);
+  downloadQueue = [(UAFAssetUtilities *)self downloadQueue];
+  dispatch_assert_queue_V2(downloadQueue);
 
-  v6 = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
-  if (v6)
+  getAssistantLanguageIfAvailableSync = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
+  if (getAssistantLanguageIfAvailableSync)
   {
-    v7 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:v6 forClient:0];
+    v7 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:getAssistantLanguageIfAvailableSync forClient:0];
     if (v7)
     {
       v8 = v7;
-      v9 = [(UAFAssetUtilities *)self statusQueue];
+      statusQueue = [(UAFAssetUtilities *)self statusQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __53__UAFAssetUtilities__downloadSiriAssetsOverCellular___block_invoke;
       block[3] = &unk_1E7FFCFA8;
       block[4] = self;
       block[5] = v8;
-      dispatch_async(v9, block);
+      dispatch_async(statusQueue, block);
 
       goto LABEL_21;
     }
@@ -1637,7 +1637,7 @@ void __50__UAFAssetUtilities__downloadSiriAssetsWithDelay___block_invoke(uint64_
     pathEvaluator = self->_pathEvaluator;
     v12 = nw_path_evaluator_copy_path();
     v13 = [(UAFAssetUtilities *)self _networkIsSatisfiedForPath:v12];
-    if (v3 || !v13)
+    if (cellularCopy || !v13)
     {
       if (v13)
       {
@@ -1654,22 +1654,22 @@ LABEL_10:
         *buf = 136315650;
         v23 = "[UAFAssetUtilities _downloadSiriAssetsOverCellular:]";
         v24 = 2114;
-        v25 = v6;
+        v25 = getAssistantLanguageIfAvailableSync;
         v26 = 1024;
-        v27 = v3;
+        v27 = cellularCopy;
         _os_log_impl(&dword_1BCF2C000, v14, OS_LOG_TYPE_DEFAULT, "%s #settings Download requested for language (%{public}@) (cellular:%d)", buf, 0x1Cu);
       }
 
-      v15 = [(UAFAssetUtilities *)self _createConnection];
-      v16 = v15;
-      if (v3)
+      _createConnection = [(UAFAssetUtilities *)self _createConnection];
+      v16 = _createConnection;
+      if (cellularCopy)
       {
-        [v15 downloadSiriAssetsOverCellular];
+        [_createConnection downloadSiriAssetsOverCellular];
       }
 
       else
       {
-        [v15 downloadSiriAssets];
+        [_createConnection downloadSiriAssets];
       }
 
 LABEL_20:
@@ -1684,13 +1684,13 @@ LABEL_20:
       _os_log_impl(&dword_1BCF2C000, v17, OS_LOG_TYPE_DEFAULT, "%s #settings Skip download due to network path", buf, 0xCu);
     }
 
-    v18 = [(UAFAssetUtilities *)self statusQueue];
+    statusQueue2 = [(UAFAssetUtilities *)self statusQueue];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __53__UAFAssetUtilities__downloadSiriAssetsOverCellular___block_invoke_331;
     v20[3] = &unk_1E7FFCFD0;
     v20[4] = self;
-    dispatch_async(v18, v20);
+    dispatch_async(statusQueue2, v20);
 
     goto LABEL_20;
   }
@@ -1726,11 +1726,11 @@ uint64_t __53__UAFAssetUtilities__downloadSiriAssetsOverCellular___block_invoke_
   return [v2 _triggerDelegateAssetStatusUpdated];
 }
 
-- (id)getDiskSpaceNeededInBytesForLanguage:(id)a3 forClient:(unint64_t)a4
+- (id)getDiskSpaceNeededInBytesForLanguage:(id)language forClient:(unint64_t)client
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  languageCopy = language;
+  if (!languageCopy)
   {
     v13 = &unk_1F3B73128;
     goto LABEL_14;
@@ -1749,7 +1749,7 @@ uint64_t __53__UAFAssetUtilities__downloadSiriAssetsOverCellular___block_invoke_
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v8 = [(UAFAssetUtilities *)self _createConnection];
+  _createConnection = [(UAFAssetUtilities *)self _createConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___block_invoke;
@@ -1758,7 +1758,7 @@ uint64_t __53__UAFAssetUtilities__downloadSiriAssetsOverCellular___block_invoke_
   v22 = &v23;
   v9 = v7;
   v20 = v9;
-  [v8 diskSpaceNeededInBytesForLanguage:v6 forClient:a4 completion:v19];
+  [_createConnection diskSpaceNeededInBytesForLanguage:languageCopy forClient:client completion:v19];
   [(UAFAssetUtilities *)self assetAvailableCheckTimeout];
   v11 = dispatch_time(0, (v10 * 1000000000.0));
   if (dispatch_semaphore_wait(v9, v11))
@@ -1825,17 +1825,17 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (unint64_t)_checkFreeSpaceNeededForLanguage:(id)a3 forClient:(unint64_t)a4
+- (unint64_t)_checkFreeSpaceNeededForLanguage:(id)language forClient:(unint64_t)client
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(UAFAssetUtilities *)self getDiskSpaceNeededInBytesForLanguage:a3 forClient:a4];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [(UAFAssetUtilities *)self getDiskSpaceNeededInBytesForLanguage:language forClient:client];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
     v6 = *MEMORY[0x1E69E9840];
 
-    return [UAFCommonUtilities getFreeDiskSpaceNeededInBytes:v5];
+    return [UAFCommonUtilities getFreeDiskSpaceNeededInBytes:unsignedIntegerValue];
   }
 
   else
@@ -1855,10 +1855,10 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
 
 - (BOOL)hasSufficientDiskSpaceForDownload
 {
-  v3 = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
-  if (v3)
+  getAssistantLanguageIfAvailableSync = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
+  if (getAssistantLanguageIfAvailableSync)
   {
-    v4 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:v3 forClient:0]== 0;
+    v4 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:getAssistantLanguageIfAvailableSync forClient:0]== 0;
   }
 
   else
@@ -1869,12 +1869,12 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
   return v4;
 }
 
-- (BOOL)hasSufficientDiskSpaceForClient:(unint64_t)a3
+- (BOOL)hasSufficientDiskSpaceForClient:(unint64_t)client
 {
-  v5 = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
-  if (v5)
+  getAssistantLanguageIfAvailableSync = [(UAFAssetUtilities *)self getAssistantLanguageIfAvailableSync];
+  if (getAssistantLanguageIfAvailableSync)
   {
-    v6 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:v5 forClient:a3]== 0;
+    v6 = [(UAFAssetUtilities *)self _checkFreeSpaceNeededForLanguage:getAssistantLanguageIfAvailableSync forClient:client]== 0;
   }
 
   else
@@ -1887,8 +1887,8 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
 
 - (NSString)siriLanguage
 {
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
-  dispatch_assert_queue_not_V2(v3);
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
+  dispatch_assert_queue_not_V2(assistantQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -1896,14 +1896,14 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantQueue2 = [(UAFAssetUtilities *)self assistantQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__UAFAssetUtilities_siriLanguage__block_invoke;
   v7[3] = &unk_1E7FFD070;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(assistantQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1913,32 +1913,32 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
 
 - (BOOL)assistantEnabled
 {
-  v2 = self;
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
+  dispatch_assert_queue_not_V2(assistantQueue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(UAFAssetUtilities *)v2 assistantQueue];
+  assistantQueue2 = [(UAFAssetUtilities *)selfCopy assistantQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__UAFAssetUtilities_assistantEnabled__block_invoke;
   v6[3] = &unk_1E7FFD070;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(assistantQueue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (UAFRetryState)retryState
 {
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
-  dispatch_assert_queue_V2(v3);
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
+  dispatch_assert_queue_V2(assistantQueue);
 
   retryState = self->_retryState;
   if (!retryState)
@@ -1953,25 +1953,25 @@ void __68__UAFAssetUtilities_getDiskSpaceNeededInBytesForLanguage_forClient___bl
   return retryState;
 }
 
-- (void)setRetryState:(id)a3
+- (void)setRetryState:(id)state
 {
-  v4 = a3;
-  v5 = [(UAFAssetUtilities *)self assistantQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
+  dispatch_assert_queue_V2(assistantQueue);
 
   retryState = self->_retryState;
-  self->_retryState = v4;
+  self->_retryState = stateCopy;
 }
 
 - (void)_assistantLanguageUpdate
 {
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__UAFAssetUtilities__assistantLanguageUpdate__block_invoke;
   block[3] = &unk_1E7FFCFD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(assistantQueue, block);
 }
 
 void __45__UAFAssetUtilities__assistantLanguageUpdate__block_invoke(uint64_t a1)
@@ -2055,13 +2055,13 @@ void __45__UAFAssetUtilities__assistantLanguageUpdate__block_invoke_336(uint64_t
 
 - (void)_assistantPreferencesUpdate
 {
-  v3 = [(UAFAssetUtilities *)self assistantQueue];
+  assistantQueue = [(UAFAssetUtilities *)self assistantQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__UAFAssetUtilities__assistantPreferencesUpdate__block_invoke;
   block[3] = &unk_1E7FFCFD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(assistantQueue, block);
 }
 
 void __48__UAFAssetUtilities__assistantPreferencesUpdate__block_invoke(uint64_t a1)

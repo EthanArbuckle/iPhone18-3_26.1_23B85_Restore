@@ -1,16 +1,16 @@
 @interface PurplePageMemoryTestRunner
-- (PurplePageMemoryTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
-- (void)_updatePageLoad:(id)a3 stats:(id)a4;
+- (PurplePageMemoryTestRunner)initWithTestName:(id)name browserController:(id)controller;
+- (void)_updatePageLoad:(id)load stats:(id)stats;
 - (void)collectPPTResults;
 @end
 
 @implementation PurplePageMemoryTestRunner
 
-- (PurplePageMemoryTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (PurplePageMemoryTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = PurplePageMemoryTestRunner;
-  v4 = [(PurplePageLoadTestRunner *)&v8 initWithTestName:a3 browserController:a4];
+  v4 = [(PurplePageLoadTestRunner *)&v8 initWithTestName:name browserController:controller];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -23,23 +23,23 @@
   return v4;
 }
 
-- (void)_updatePageLoad:(id)a3 stats:(id)a4
+- (void)_updatePageLoad:(id)load stats:(id)stats
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  loadCopy = load;
+  statsCopy = stats;
+  v6 = statsCopy;
+  if (statsCopy)
   {
-    v7 = [v5 memoryBeforeWarning];
-    if (v7)
+    memoryBeforeWarning = [statsCopy memoryBeforeWarning];
+    if (memoryBeforeWarning)
     {
-      [v9 setMemoryBeforeWarning:v7];
+      [loadCopy setMemoryBeforeWarning:memoryBeforeWarning];
     }
 
-    v8 = [v6 memoryAfterWarning];
-    if (v8)
+    memoryAfterWarning = [v6 memoryAfterWarning];
+    if (memoryAfterWarning)
     {
-      [v9 setMemoryAfterWarning:v8];
+      [loadCopy setMemoryAfterWarning:memoryAfterWarning];
     }
   }
 }
@@ -75,8 +75,8 @@
         {
           if ([v12 memoryBeforeWarning] && objc_msgSend(v12, "memoryAfterWarning"))
           {
-            v13 = [v12 memoryBeforeWarning];
-            v14 = (([v12 memoryAfterWarning] + v13) >> 1);
+            memoryBeforeWarning = [v12 memoryBeforeWarning];
+            v14 = (([v12 memoryAfterWarning] + memoryBeforeWarning) >> 1);
             v15 = [v12 URL];
             [(PurplePageLoadTestRunner *)self pptResultFor:v15 measure:0 value:@"bytes" units:v14];
 

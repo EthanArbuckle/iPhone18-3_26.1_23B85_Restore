@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilIOUtils
-+ (BOOL)spinsLinuxWithOrgLukhnosPortmobileFilePath:(id)a3;
++ (BOOL)spinsLinuxWithOrgLukhnosPortmobileFilePath:(id)path;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneUtilIOUtils
 
-+ (BOOL)spinsLinuxWithOrgLukhnosPortmobileFilePath:(id)a3
++ (BOOL)spinsLinuxWithOrgLukhnosPortmobileFilePath:(id)path
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilIOUtils__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -17,7 +17,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(OrgLukhnosPortmobileCharsetStandardCharsets__initialized, memory_order_acquire) & 1) == 0)
     {

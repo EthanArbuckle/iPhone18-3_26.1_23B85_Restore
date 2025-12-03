@@ -1,40 +1,40 @@
 @interface COSAboutDataSource
 - (COSAboutDataSource)init;
-- (id)getBTAddress:(id)a3;
-- (id)getCarrierInfo:(id)a3;
-- (id)getDeviceDetail:(id)a3;
-- (id)getDeviceModel:(id)a3;
-- (id)getDeviceName:(id)a3;
-- (id)getICCID:(id)a3;
-- (id)getIMEI:(id)a3;
-- (id)getLocalizedArtworkDeviceDescription:(id)a3;
-- (id)getNumberOfApps:(id)a3;
-- (id)getNumberOfPhotos:(id)a3;
-- (id)getNumberOfSongs:(id)a3;
-- (id)getSerialNumber:(id)a3;
-- (id)getStorageAvailable:(id)a3;
-- (id)getStorageCapacity:(id)a3;
-- (id)getSystemVersion:(id)a3;
-- (id)getWiFiAddress:(id)a3;
-- (id)guardedUint64StringValue:(unint64_t)a3;
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4;
-- (void)cellularPlanInfoDidChange:(id)a3;
+- (id)getBTAddress:(id)address;
+- (id)getCarrierInfo:(id)info;
+- (id)getDeviceDetail:(id)detail;
+- (id)getDeviceModel:(id)model;
+- (id)getDeviceName:(id)name;
+- (id)getICCID:(id)d;
+- (id)getIMEI:(id)i;
+- (id)getLocalizedArtworkDeviceDescription:(id)description;
+- (id)getNumberOfApps:(id)apps;
+- (id)getNumberOfPhotos:(id)photos;
+- (id)getNumberOfSongs:(id)songs;
+- (id)getSerialNumber:(id)number;
+- (id)getStorageAvailable:(id)available;
+- (id)getStorageCapacity:(id)capacity;
+- (id)getSystemVersion:(id)version;
+- (id)getWiFiAddress:(id)address;
+- (id)guardedUint64StringValue:(unint64_t)value;
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer;
+- (void)cellularPlanInfoDidChange:(id)change;
 - (void)dealloc;
-- (void)displayNetworkActivityIndicator:(BOOL)a3;
-- (void)handleAboutInfo:(id)a3 error:(id)a4;
-- (void)handleRemoteBundleInfo:(id)a3 success:(BOOL)a4;
-- (void)handleRetrievedICCIDs:(id)a3;
-- (void)handleUsageData:(id)a3 error:(id)a4;
+- (void)displayNetworkActivityIndicator:(BOOL)indicator;
+- (void)handleAboutInfo:(id)info error:(id)error;
+- (void)handleRemoteBundleInfo:(id)info success:(BOOL)success;
+- (void)handleRetrievedICCIDs:(id)ds;
+- (void)handleUsageData:(id)data error:(id)error;
 - (void)hideNetworkActivityIndicatorOnceRemoteQueriesHaveCompleted;
 - (void)loadSpecifiers;
-- (void)performUpdatesOnMainThreadWithAnimated:(BOOL)a3 usingBlock:(id)a4;
+- (void)performUpdatesOnMainThreadWithAnimated:(BOOL)animated usingBlock:(id)block;
 - (void)queryDevice;
-- (void)setDeviceName:(id)a3 specifier:(id)a4;
-- (void)showUserManual:(id)a3;
+- (void)setDeviceName:(id)name specifier:(id)specifier;
+- (void)showUserManual:(id)manual;
 - (void)tappedAppleLegalLink;
-- (void)updateDeviceDetailSpecifier:(id)a3;
-- (void)updateICCIDSpecifier:(id)a3;
-- (void)updateModelSpecifier:(id)a3;
+- (void)updateDeviceDetailSpecifier:(id)specifier;
+- (void)updateICCIDSpecifier:(id)specifier;
+- (void)updateModelSpecifier:(id)specifier;
 @end
 
 @implementation COSAboutDataSource
@@ -93,8 +93,8 @@
       }
 
       v12 = *v9;
-      v13 = [sub_10000DEBC() sharedInstance];
-      [v8 addObserver:v2 selector:"cellularPlanInfoDidChange:" name:v12 object:v13];
+      sharedInstance = [sub_10000DEBC() sharedInstance];
+      [v8 addObserver:v2 selector:"cellularPlanInfoDidChange:" name:v12 object:sharedInstance];
     }
 
     v14 = dispatch_queue_create("com.apple.Bridge.CoreTelephony", 0);
@@ -120,11 +120,11 @@
   [(COSAboutDataSource *)&v4 dealloc];
 }
 
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 observerType] == 1)
+  specifierCopy = specifier;
+  observerCopy = observer;
+  if ([observerCopy observerType] == 1)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -139,7 +139,7 @@
 
   v10.receiver = self;
   v10.super_class = COSAboutDataSource;
-  v8 = [(COSAboutDataSource *)&v10 specifiersForSpecifier:v6 observer:v7];
+  v8 = [(COSAboutDataSource *)&v10 specifiersForSpecifier:specifierCopy observer:observerCopy];
 
   return v8;
 }
@@ -313,8 +313,8 @@
     }
 
     v49 = v12[378];
-    v50 = [v35[501] mainBundle];
-    v51 = [v50 localizedStringForKey:@"EID" value:&stru_10026E598 table:@"About"];
+    mainBundle = [v35[501] mainBundle];
+    v51 = [mainBundle localizedStringForKey:@"EID" value:&stru_10026E598 table:@"About"];
     v52 = [v49 preferenceSpecifierNamed:v51 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
     [v52 setIdentifier:@"EID_CELL_ID"];
@@ -325,24 +325,24 @@
 
   if ([objc_opt_class() useConnectedDevice] && _os_feature_enabled_impl())
   {
-    v53 = [(COSAboutDataSource *)self ndoController];
-    [v53 setSpecifierIDToInsertAfter:@"DEVICE_SERIAL_NUMBER_CELL_ID"];
+    ndoController = [(COSAboutDataSource *)self ndoController];
+    [ndoController setSpecifierIDToInsertAfter:@"DEVICE_SERIAL_NUMBER_CELL_ID"];
 
-    v54 = [(COSAboutDataSource *)self ndoController];
-    v55 = [v54 specifiers];
+    ndoController2 = [(COSAboutDataSource *)self ndoController];
+    specifiers = [ndoController2 specifiers];
 
-    if (v55)
+    if (specifiers)
     {
-      v56 = [(COSAboutDataSource *)self ndoController];
-      v57 = [v56 specifierIDToInsertAfter];
-      v58 = [v5 specifierForID:v57];
+      ndoController3 = [(COSAboutDataSource *)self ndoController];
+      specifierIDToInsertAfter = [ndoController3 specifierIDToInsertAfter];
+      v58 = [v5 specifierForID:specifierIDToInsertAfter];
 
-      [v5 ps_insertObjectsFromArray:v55 afterObject:v58];
+      [v5 ps_insertObjectsFromArray:specifiers afterObject:v58];
     }
   }
 
-  v59 = [(COSAboutDataSource *)self specifiers];
-  [v59 addObjectsFromArray:v5];
+  specifiers2 = [(COSAboutDataSource *)self specifiers];
+  [specifiers2 addObjectsFromArray:v5];
 }
 
 - (void)queryDevice
@@ -518,8 +518,8 @@ LABEL_45:
 
 LABEL_43:
     self->_hasReceivedCellularPlanUpdate = 0;
-    v24 = [sub_10000DEBC() sharedInstance];
-    [v24 updateCellularPlansWithFetch:1];
+    sharedInstance = [sub_10000DEBC() sharedInstance];
+    [sharedInstance updateCellularPlansWithFetch:1];
 
     goto LABEL_44;
   }
@@ -535,27 +535,27 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)cellularPlanInfoDidChange:(id)a3
+- (void)cellularPlanInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100054310;
   block[3] = &unk_100268458;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)displayNetworkActivityIndicator:(BOOL)a3
+- (void)displayNetworkActivityIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  if (a3)
+  indicatorCopy = indicator;
+  if (indicator)
   {
     v4 = 1;
   }
@@ -572,7 +572,7 @@ LABEL_44:
 
   self->_displayNetworkProgressIndicator = v4;
   v5 = +[UIApplication sharedApplication];
-  [v5 setNetworkActivityIndicatorVisible:v3];
+  [v5 setNetworkActivityIndicatorVisible:indicatorCopy];
 }
 
 - (void)hideNetworkActivityIndicatorOnceRemoteQueriesHaveCompleted
@@ -599,22 +599,22 @@ LABEL_7:
   [(COSAboutDataSource *)self displayNetworkActivityIndicator:!hasReceivedCellularPlanUpdate];
 }
 
-- (void)handleAboutInfo:(id)a3 error:(id)a4
+- (void)handleAboutInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   self->_hasFetchedAboutInfo = 1;
   [(COSAboutDataSource *)self hideNetworkActivityIndicatorOnceRemoteQueriesHaveCompleted];
-  if (!v6 || v7)
+  if (!infoCopy || errorCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
       self->_errorOccurredFetchingAboutInfo = 1;
       v15 = pbb_bridge_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v7;
+        v17 = errorCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Error occurred retrieving the About info: %@", &v16, 0xCu);
       }
 
@@ -628,19 +628,19 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = infoCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "About info: (%@)", &v16, 0xCu);
     }
 
-    v9 = [v6 objectForKeyedSubscript:kNSSAboutAppsKey];
+    v9 = [infoCopy objectForKeyedSubscript:kNSSAboutAppsKey];
     numberOfApps = self->_numberOfApps;
     self->_numberOfApps = v9;
 
-    v11 = [v6 objectForKeyedSubscript:kNSSAboutSongsKey];
+    v11 = [infoCopy objectForKeyedSubscript:kNSSAboutSongsKey];
     numberOfSongs = self->_numberOfSongs;
     self->_numberOfSongs = v11;
 
-    v13 = [v6 objectForKeyedSubscript:kNSSAboutPhotosKey];
+    v13 = [infoCopy objectForKeyedSubscript:kNSSAboutPhotosKey];
     numberOfPhotos = self->_numberOfPhotos;
     self->_numberOfPhotos = v13;
 
@@ -651,22 +651,22 @@ LABEL_7:
   }
 }
 
-- (void)handleUsageData:(id)a3 error:(id)a4
+- (void)handleUsageData:(id)data error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  errorCopy = error;
   self->_hasFetchedUsageData = 1;
   [(COSAboutDataSource *)self hideNetworkActivityIndicatorOnceRemoteQueriesHaveCompleted];
-  if (!v6 || v7)
+  if (!dataCopy || errorCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
       self->_errorOccurredFetchingUsageData = 1;
       v9 = pbb_bridge_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v7;
+        v11 = errorCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Error occurred retrieving the usage data: %@", &v10, 0xCu);
       }
 
@@ -680,12 +680,12 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = dataCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Usage data: (%@)", &v10, 0xCu);
     }
 
-    self->_storageAvailable = [v6 availableStorageInBytes];
-    self->_storageCapacity = [v6 capacityInBytes];
+    self->_storageAvailable = [dataCopy availableStorageInBytes];
+    self->_storageCapacity = [dataCopy capacityInBytes];
     if ([objc_opt_class() useConnectedDevice])
     {
       [(COSAboutDataSource *)self performUpdatesOnMainThreadWithAnimated:0 usingBlock:&stru_100269558];
@@ -693,23 +693,23 @@ LABEL_7:
   }
 }
 
-- (void)handleRemoteBundleInfo:(id)a3 success:(BOOL)a4
+- (void)handleRemoteBundleInfo:(id)info success:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
+  successCopy = success;
+  infoCopy = info;
   self->_hasFetchedRemoteBundleInfo = 1;
   [(COSAboutDataSource *)self hideNetworkActivityIndicatorOnceRemoteQueriesHaveCompleted];
-  if (v4)
+  if (successCopy)
   {
     v7 = pbb_bridge_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = infoCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Remote Bundle Info: (%@)", &v13, 0xCu);
     }
 
-    v8 = [v6 objectForKeyedSubscript:@"kCarrier"];
+    v8 = [infoCopy objectForKeyedSubscript:@"kCarrier"];
     v9 = [v8 objectForKeyedSubscript:@"CarrierName"];
     carrierName = self->_carrierName;
     self->_carrierName = v9;
@@ -736,9 +736,9 @@ LABEL_7:
   }
 }
 
-- (void)handleRetrievedICCIDs:(id)a3
+- (void)handleRetrievedICCIDs:(id)ds
 {
-  objc_storeStrong(&self->_simICCIDs, a3);
+  objc_storeStrong(&self->_simICCIDs, ds);
   if ([objc_opt_class() useConnectedDevice])
   {
 
@@ -746,23 +746,23 @@ LABEL_7:
   }
 }
 
-- (id)guardedUint64StringValue:(unint64_t)a3
+- (id)guardedUint64StringValue:(unint64_t)value
 {
   if (self->_hasFetchedAboutInfo && !self->_errorOccurredFetchingAboutInfo)
   {
-    v4 = [NSNumber numberWithUnsignedLongLong:a3];
-    v3 = [NSNumberFormatter localizedStringFromNumber:v4 numberStyle:1];
+    v4 = [NSNumber numberWithUnsignedLongLong:value];
+    dash = [NSNumberFormatter localizedStringFromNumber:v4 numberStyle:1];
   }
 
   else
   {
-    v3 = [(COSAboutDataSource *)self dash];
+    dash = [(COSAboutDataSource *)self dash];
   }
 
-  return v3;
+  return dash;
 }
 
-- (id)getNumberOfSongs:(id)a3
+- (id)getNumberOfSongs:(id)songs
 {
   numberOfSongs = self->_numberOfSongs;
   if (numberOfSongs)
@@ -779,7 +779,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)getNumberOfPhotos:(id)a3
+- (id)getNumberOfPhotos:(id)photos
 {
   numberOfPhotos = self->_numberOfPhotos;
   if (numberOfPhotos)
@@ -796,7 +796,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)getNumberOfApps:(id)a3
+- (id)getNumberOfApps:(id)apps
 {
   numberOfApps = self->_numberOfApps;
   if (numberOfApps)
@@ -813,37 +813,37 @@ LABEL_7:
   return v5;
 }
 
-- (id)getStorageAvailable:(id)a3
+- (id)getStorageAvailable:(id)available
 {
   if (self->_hasFetchedUsageData && !self->_errorOccurredFetchingUsageData)
   {
-    v3 = NSLocalizedFileSizeDescription();
+    dash = NSLocalizedFileSizeDescription();
   }
 
   else
   {
-    v3 = [(COSAboutDataSource *)self dash];
+    dash = [(COSAboutDataSource *)self dash];
   }
 
-  return v3;
+  return dash;
 }
 
-- (id)getStorageCapacity:(id)a3
+- (id)getStorageCapacity:(id)capacity
 {
   if (self->_hasFetchedUsageData && !self->_errorOccurredFetchingUsageData)
   {
-    v3 = NSLocalizedFileSizeDescription();
+    dash = NSLocalizedFileSizeDescription();
   }
 
   else
   {
-    v3 = [(COSAboutDataSource *)self dash];
+    dash = [(COSAboutDataSource *)self dash];
   }
 
-  return v3;
+  return dash;
 }
 
-- (id)getDeviceName:(id)a3
+- (id)getDeviceName:(id)name
 {
   v4 = [UIApp cachedNameForDevice:self->_device];
   v5 = pbb_setup_log();
@@ -862,14 +862,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)setDeviceName:(id)a3 specifier:(id)a4
+- (void)setDeviceName:(id)name specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    [(NSSManager *)self->_nssManager setDeviceName:v5];
+    [(NSSManager *)self->_nssManager setDeviceName:nameCopy];
     v6 = UIApp;
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     [v6 setCachedName:v7 forDevice:self->_device];
 
     v8 = pbb_setup_log();
@@ -878,7 +878,7 @@ LABEL_7:
       v10 = 136315394;
       v11 = "[COSAboutDataSource setDeviceName:specifier:]";
       v12 = 2112;
-      v13 = v5;
+      v13 = nameCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s %@", &v10, 0x16u);
     }
 
@@ -889,7 +889,7 @@ LABEL_7:
   }
 }
 
-- (id)getSystemVersion:(id)a3
+- (id)getSystemVersion:(id)version
 {
   v4 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyMarketingVersion];
   if (!v4)
@@ -903,9 +903,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)getDeviceModel:(id)a3
+- (id)getDeviceModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (self->_showRegulatoryModelNumber)
   {
     v5 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyRegulatoryModelNumber];
@@ -941,23 +941,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateModelSpecifier:(id)a3
+- (void)updateModelSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
     self->_showRegulatoryModelNumber ^= 1u;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100055724;
     v6[3] = &unk_1002695E0;
-    v7 = v4;
+    v7 = specifierCopy;
     [(COSAboutDataSource *)self performUpdatesAnimated:0 usingBlock:v6];
   }
 }
 
-- (id)getSerialNumber:(id)a3
+- (id)getSerialNumber:(id)number
 {
   v3 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertySerialNumber];
   if ([v3 length])
@@ -974,14 +974,14 @@ LABEL_11:
   return v4;
 }
 
-- (id)getWiFiAddress:(id)a3
+- (id)getWiFiAddress:(id)address
 {
   v3 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyWIFIMACAddress];
-  v4 = [v3 uppercaseString];
+  uppercaseString = [v3 uppercaseString];
 
-  if ([v4 length])
+  if ([uppercaseString length])
   {
-    v5 = v4;
+    v5 = uppercaseString;
   }
 
   else
@@ -993,14 +993,14 @@ LABEL_11:
   return v5;
 }
 
-- (id)getBTAddress:(id)a3
+- (id)getBTAddress:(id)address
 {
   v3 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyBluetoothMACAddress];
-  v4 = [v3 uppercaseString];
+  uppercaseString = [v3 uppercaseString];
 
-  if ([v4 length])
+  if ([uppercaseString length])
   {
-    v5 = v4;
+    v5 = uppercaseString;
   }
 
   else
@@ -1012,25 +1012,25 @@ LABEL_11:
   return v5;
 }
 
-- (id)getCarrierInfo:(id)a3
+- (id)getCarrierInfo:(id)info
 {
   carrierName = self->_carrierName;
   if (carrierName && (carrierVersion = self->_carrierVersion) != 0)
   {
-    v5 = [NSString stringWithFormat:@"%@ %@", carrierName, carrierVersion];
+    carrierVersion = [NSString stringWithFormat:@"%@ %@", carrierName, carrierVersion];
   }
 
   else
   {
-    v5 = [(COSAboutDataSource *)self dash];
+    carrierVersion = [(COSAboutDataSource *)self dash];
   }
 
-  return v5;
+  return carrierVersion;
 }
 
-- (id)getIMEI:(id)a3
+- (id)getIMEI:(id)i
 {
-  sub_10002EE00(@"Reading IMEI from NRDevice", a2, a3, v3, v4, v5, v6, v7, v13);
+  sub_10002EE00(@"Reading IMEI from NRDevice", a2, i, v3, v4, v5, v6, v7, v13);
   v9 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyIMEI];
   if ([v9 length])
   {
@@ -1046,9 +1046,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)getLocalizedArtworkDeviceDescription:(id)a3
+- (id)getLocalizedArtworkDeviceDescription:(id)description
 {
-  v3 = [a3 propertyForKey:@"artworkDeviceDescription"];
+  v3 = [description propertyForKey:@"artworkDeviceDescription"];
   v4 = PBLocalizedAppleWatchModelStringForDeviceDescription();
   v5 = pbb_setup_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1065,23 +1065,23 @@ LABEL_11:
   return v4;
 }
 
-- (void)updateDeviceDetailSpecifier:(id)a3
+- (void)updateDeviceDetailSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
     self->_showMarketingBehaviorDescription ^= 1u;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100055C54;
     v6[3] = &unk_1002695E0;
-    v7 = v4;
+    v7 = specifierCopy;
     [(COSAboutDataSource *)self performUpdatesAnimated:0 usingBlock:v6];
   }
 }
 
-- (id)getDeviceDetail:(id)a3
+- (id)getDeviceDetail:(id)detail
 {
   v4 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyDeviceBrand];
   [v4 integerValue];
@@ -1106,26 +1106,26 @@ LABEL_11:
   return v6;
 }
 
-- (id)getICCID:(id)a3
+- (id)getICCID:(id)d
 {
   if ([(NSArray *)self->_simICCIDs count])
   {
     v4 = [(NSArray *)self->_simICCIDs objectAtIndexedSubscript:self->_iccidDisplayIndex];
-    v5 = sub_100052AE8(v4, 4uLL);
+    dash = sub_100052AE8(v4, 4uLL);
   }
 
   else
   {
-    v5 = [(COSAboutDataSource *)self dash];
+    dash = [(COSAboutDataSource *)self dash];
   }
 
-  return v5;
+  return dash;
 }
 
-- (void)updateICCIDSpecifier:(id)a3
+- (void)updateICCIDSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
     if ([(NSArray *)self->_simICCIDs count])
     {
@@ -1143,7 +1143,7 @@ LABEL_11:
     v7[1] = 3221225472;
     v7[2] = sub_100055F4C;
     v7[3] = &unk_1002695E0;
-    v8 = v4;
+    v8 = specifierCopy;
     [(COSAboutDataSource *)self performUpdatesAnimated:0 usingBlock:v7];
   }
 }
@@ -1154,30 +1154,30 @@ LABEL_11:
   BPSOpenSensitiveURLAsync();
 }
 
-- (void)showUserManual:(id)a3
+- (void)showUserManual:(id)manual
 {
   v3 = [(COSAboutDataSource *)self observersOfClass:objc_opt_class()];
-  v8 = [v3 anyObject];
+  anyObject = [v3 anyObject];
 
   v4 = objc_alloc_init(BCUserGuide);
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"USER_GUIDE_TITLE" value:&stru_10026E598 table:@"About"];
   v7 = [v4 getUserGuideViewWithTitle:v6];
-  [v8 presentViewController:v7 animated:1 completion:0];
+  [anyObject presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)performUpdatesOnMainThreadWithAnimated:(BOOL)a3 usingBlock:(id)a4
+- (void)performUpdatesOnMainThreadWithAnimated:(BOOL)animated usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100056170;
   v8[3] = &unk_100269608;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  v9 = v6;
-  v7 = v6;
+  animatedCopy = animated;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(&_dispatch_main_q, v8);
 
   objc_destroyWeak(&v10);

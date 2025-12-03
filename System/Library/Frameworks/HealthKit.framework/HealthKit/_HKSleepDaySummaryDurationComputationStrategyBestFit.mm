@@ -1,40 +1,40 @@
 @interface _HKSleepDaySummaryDurationComputationStrategyBestFit
-- (id)computeDurationsFromPeriod:(id)a3;
+- (id)computeDurationsFromPeriod:(id)period;
 @end
 
 @implementation _HKSleepDaySummaryDurationComputationStrategyBestFit
 
-- (id)computeDurationsFromPeriod:(id)a3
+- (id)computeDurationsFromPeriod:(id)period
 {
-  v4 = a3;
-  v5 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v6 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:1 bestFittingSleepDayInterval:v5 consideringInterval:v6];
+  periodCopy = period;
+  sleepDayInterval = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:1 bestFittingSleepDayInterval:sleepDayInterval consideringInterval:considerationInterval];
   v8 = v7;
 
-  v9 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v10 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:3 bestFittingSleepDayInterval:v9 consideringInterval:v10];
+  sleepDayInterval2 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval2 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:3 bestFittingSleepDayInterval:sleepDayInterval2 consideringInterval:considerationInterval2];
   v12 = v11;
 
-  v13 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v14 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:4 bestFittingSleepDayInterval:v13 consideringInterval:v14];
+  sleepDayInterval3 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval3 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:4 bestFittingSleepDayInterval:sleepDayInterval3 consideringInterval:considerationInterval3];
   v16 = v15;
 
-  v17 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v18 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:5 bestFittingSleepDayInterval:v17 consideringInterval:v18];
+  sleepDayInterval4 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval4 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:5 bestFittingSleepDayInterval:sleepDayInterval4 consideringInterval:considerationInterval4];
   v20 = v19;
 
-  v21 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v22 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:2 bestFittingSleepDayInterval:v21 consideringInterval:v22];
+  sleepDayInterval5 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval5 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:2 bestFittingSleepDayInterval:sleepDayInterval5 consideringInterval:considerationInterval5];
   v24 = v23;
 
-  v25 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
-  v26 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
-  [v4 durationForCategory:0 bestFittingSleepDayInterval:v25 consideringInterval:v26];
+  sleepDayInterval6 = [(HKSleepDaySummaryDurationStrategy *)self sleepDayInterval];
+  considerationInterval6 = [(HKSleepDaySummaryDurationStrategy *)self considerationInterval];
+  [periodCopy durationForCategory:0 bestFittingSleepDayInterval:sleepDayInterval6 consideringInterval:considerationInterval6];
   v28 = v27;
 
   v29 = [[HKSleepDaySummaryDurations alloc] initWithInBedDuration:v28 sleepDuration:v8 + v12 + v16 + v20 unspecifiedSleepDuration:v8 coreSleepDuration:v12 deepSleepDuration:v16 remSleepDuration:v20 awakeDuration:v24];

@@ -1,18 +1,18 @@
 @interface IDSCacheClearRequest
-- (IDSCacheClearRequest)initWithCoder:(id)a3;
+- (IDSCacheClearRequest)initWithCoder:(id)coder;
 @end
 
 @implementation IDSCacheClearRequest
 
-- (IDSCacheClearRequest)initWithCoder:(id)a3
+- (IDSCacheClearRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IDSCacheClearRequest;
   v5 = [(IDSCacheClearRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"RequestContextKey"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"RequestContextKey"];
     requestContexts = v5->_requestContexts;
     v5->_requestContexts = v6;
   }

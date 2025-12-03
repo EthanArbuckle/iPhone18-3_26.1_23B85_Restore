@@ -7,12 +7,12 @@
 - (void)initWithElement:()GameController
 {
   v4 = a3;
-  v5 = [v4 unmappedNameLocalizationKey];
-  if (v5)
+  selfCopy = [v4 unmappedNameLocalizationKey];
+  if (selfCopy)
   {
-    v6 = [v4 unmappedSfSymbolsName];
+    unmappedSfSymbolsName = [v4 unmappedSfSymbolsName];
 
-    if (v6)
+    if (unmappedSfSymbolsName)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -34,21 +34,21 @@
         }
       }
 
-      v8 = [v4 primaryAlias];
-      v9 = [v4 unmappedNameLocalizationKey];
-      v10 = [v4 unmappedSfSymbolsName];
-      a1 = [a1 initWithName:v8 nameLocalizationKey:v9 sfSymbolsName:v10 remappingKey:objc_msgSend(v4 kind:{"remappingKey"), v7}];
+      primaryAlias = [v4 primaryAlias];
+      unmappedNameLocalizationKey = [v4 unmappedNameLocalizationKey];
+      unmappedSfSymbolsName2 = [v4 unmappedSfSymbolsName];
+      self = [self initWithName:primaryAlias nameLocalizationKey:unmappedNameLocalizationKey sfSymbolsName:unmappedSfSymbolsName2 remappingKey:objc_msgSend(v4 kind:{"remappingKey"), v7}];
 
-      v5 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

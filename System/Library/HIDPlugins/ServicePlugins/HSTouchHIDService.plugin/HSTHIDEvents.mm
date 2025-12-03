@@ -1,6 +1,6 @@
 @interface HSTHIDEvents
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (HSTHIDEvents)init;
 - (NSString)description;
 - (id).cxx_construct;
@@ -46,14 +46,14 @@
   return v7;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v10 = *(a3 + 17);
+    *&v10 = *(encode + 17);
     DWORD2(v10) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v10);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xE7u, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v10);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xE7u, 0);
   }
 
   begin = self->events.__begin_;
@@ -68,20 +68,20 @@
       return 0;
     }
 
-    HSUtil::Encoder::encodeNSData(a3, Data);
+    HSUtil::Encoder::encodeNSData(encode, Data);
 
     ++begin;
   }
 
-  if (!*a3)
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -90,8 +90,8 @@
   v13 = v5;
   v14 = v5;
   v12 = v5;
-  HSUtil::Decoder::decodeArray(a3, &v12);
-  if (*a3)
+  HSUtil::Decoder::decodeArray(decode, &v12);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTHIDEvents.mm", __b);

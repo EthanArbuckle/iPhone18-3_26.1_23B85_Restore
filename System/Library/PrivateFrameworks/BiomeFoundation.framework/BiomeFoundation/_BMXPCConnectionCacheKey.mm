@@ -1,6 +1,6 @@
 @interface _BMXPCConnectionCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_BMXPCConnectionCacheKey)initWithServiceType:(unint64_t)a3 domain:(unint64_t)a4 user:(unsigned int)a5 useCase:(id)a6 flags:(unint64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (_BMXPCConnectionCacheKey)initWithServiceType:(unint64_t)type domain:(unint64_t)domain user:(unsigned int)user useCase:(id)case flags:(unint64_t)flags;
 - (unint64_t)hash;
 @end
 
@@ -21,29 +21,29 @@
   return v9 ^ v11;
 }
 
-- (_BMXPCConnectionCacheKey)initWithServiceType:(unint64_t)a3 domain:(unint64_t)a4 user:(unsigned int)a5 useCase:(id)a6 flags:(unint64_t)a7
+- (_BMXPCConnectionCacheKey)initWithServiceType:(unint64_t)type domain:(unint64_t)domain user:(unsigned int)user useCase:(id)case flags:(unint64_t)flags
 {
-  v13 = a6;
+  caseCopy = case;
   v17.receiver = self;
   v17.super_class = _BMXPCConnectionCacheKey;
   v14 = [(_BMXPCConnectionCacheKey *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_serviceType = a3;
-    v14->_domain = a4;
-    v14->_user = a5;
-    objc_storeStrong(&v14->_useCase, a6);
-    v15->_flags = a7;
+    v14->_serviceType = type;
+    v14->_domain = domain;
+    v14->_user = user;
+    objc_storeStrong(&v14->_useCase, case);
+    v15->_flags = flags;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -53,7 +53,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v8 = self->_serviceType == v5->_serviceType && self->_domain == v5->_domain && self->_user == v5->_user && ((useCase = self->_useCase, useCase == v6->_useCase) || [(NSString *)useCase isEqual:?]) && self->_flags == v6->_flags;
     }

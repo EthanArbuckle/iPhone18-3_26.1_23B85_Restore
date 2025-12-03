@@ -1,9 +1,9 @@
 @interface GKFriendListCacheObject
-+ (id)cacheFriendList:(id)a3 withTimeToLive:(double)a4 forProfile:(id)a5 managedObjectContext:(id)a6 commonFriends:(BOOL)a7;
++ (id)cacheFriendList:(id)list withTimeToLive:(double)live forProfile:(id)profile managedObjectContext:(id)context commonFriends:(BOOL)friends;
 - (NSArray)filterableFriends;
 - (id)internalRepresentation;
 - (id)playerIDs;
-- (void)populateFriendNamesFromServerRepresentationDictionary:(id)a3;
+- (void)populateFriendNamesFromServerRepresentationDictionary:(id)dictionary;
 @end
 
 @implementation GKFriendListCacheObject
@@ -16,56 +16,56 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKFriendListCacheObject playerIDs]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKFriendListCacheObject playerIDs]", [v7 UTF8String], 2428);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKFriendListCacheObject playerIDs]", [lastPathComponent UTF8String], 2428);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKFriendListCacheObject *)self entries];
-  v10 = [v9 _gkValuesForKeyPath:@"playerID"];
+  entries = [(GKFriendListCacheObject *)self entries];
+  v10 = [entries _gkValuesForKeyPath:@"playerID"];
 
   return v10;
 }
 
-+ (id)cacheFriendList:(id)a3 withTimeToLive:(double)a4 forProfile:(id)a5 managedObjectContext:(id)a6 commonFriends:(BOOL)a7
++ (id)cacheFriendList:(id)list withTimeToLive:(double)live forProfile:(id)profile managedObjectContext:(id)context commonFriends:(BOOL)friends
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  friendsCopy = friends;
+  listCopy = list;
+  profileCopy = profile;
+  contextCopy = context;
   v14 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v14, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v15 = +[NSThread callStackSymbols];
     v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKFriendListCacheObject cacheFriendList:withTimeToLive:forProfile:managedObjectContext:commonFriends:]", v15);
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v18 = [v17 lastPathComponent];
-    v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v16, "+[GKFriendListCacheObject cacheFriendList:withTimeToLive:forProfile:managedObjectContext:commonFriends:]", [v18 UTF8String], 2438);
+    lastPathComponent = [v17 lastPathComponent];
+    v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v16, "+[GKFriendListCacheObject cacheFriendList:withTimeToLive:forProfile:managedObjectContext:commonFriends:]", [lastPathComponent UTF8String], 2438);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v19];
   }
 
-  v20 = [NSDate dateWithTimeIntervalSinceNow:a4];
-  v21 = [(GKCacheObject *)[GKFriendListCacheObject alloc] initWithManagedObjectContext:v13];
-  [v12 setFriendList:v21];
+  v20 = [NSDate dateWithTimeIntervalSinceNow:live];
+  v21 = [(GKCacheObject *)[GKFriendListCacheObject alloc] initWithManagedObjectContext:contextCopy];
+  [profileCopy setFriendList:v21];
   [(GKFriendListCacheObject *)v21 setExpirationDate:v20];
-  [(GKFriendListCacheObject *)v21 setCommon:v7];
-  [(GKFriendListCacheObject *)v21 setPlayer:v12];
-  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v11 count]);
+  [(GKFriendListCacheObject *)v21 setCommon:friendsCopy];
+  [(GKFriendListCacheObject *)v21 setPlayer:profileCopy];
+  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [listCopy count]);
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10012EA4C;
   v22 = v30[3] = &unk_100367C38;
   v31 = v22;
-  [(GKListCacheObject *)v21 updateEntriesWithRepresentations:v11 entryForRepresentation:v30 reuseEntriesByIndex:0];
-  v23 = [(GKFriendListCacheObject *)v21 player];
-  v24 = [v23 isLocalPlayer];
+  [(GKListCacheObject *)v21 updateEntriesWithRepresentations:listCopy entryForRepresentation:v30 reuseEntriesByIndex:0];
+  player = [(GKFriendListCacheObject *)v21 player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v24)
+  if (isLocalPlayer)
   {
-    v25 = [(GKFriendListCacheObject *)v21 playerIDs];
-    [GKPlayerProfileCacheObject setFamiliarPlayerIDs:v25 familiarity:2];
+    playerIDs = [(GKFriendListCacheObject *)v21 playerIDs];
+    [GKPlayerProfileCacheObject setFamiliarPlayerIDs:playerIDs familiarity:2];
   }
 
   v26 = [v22 copy];
@@ -86,32 +86,32 @@
   return v21;
 }
 
-- (void)populateFriendNamesFromServerRepresentationDictionary:(id)a3
+- (void)populateFriendNamesFromServerRepresentationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKFriendListCacheObject populateFriendNamesFromServerRepresentationDictionary:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKFriendListCacheObject populateFriendNamesFromServerRepresentationDictionary:]", [v9 UTF8String], 2493);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKFriendListCacheObject populateFriendNamesFromServerRepresentationDictionary:]", [lastPathComponent UTF8String], 2493);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
-  if ([v4 count])
+  if ([dictionaryCopy count])
   {
-    v11 = [(GKFriendListCacheObject *)self playerIDs];
-    v12 = [(GKFriendListCacheObject *)self managedObjectContext];
-    v13 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:v11 inManagedObjectContext:v12];
+    playerIDs = [(GKFriendListCacheObject *)self playerIDs];
+    managedObjectContext = [(GKFriendListCacheObject *)self managedObjectContext];
+    v13 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:playerIDs inManagedObjectContext:managedObjectContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10012EE34;
     v14[3] = &unk_100367C60;
-    v15 = v4;
+    v15 = dictionaryCopy;
     [v13 enumerateObjectsUsingBlock:v14];
   }
 }
@@ -124,24 +124,24 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKFriendListCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKFriendListCacheObject internalRepresentation]", [v7 UTF8String], 2567);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKFriendListCacheObject internalRepresentation]", [lastPathComponent UTF8String], 2567);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKFriendListCacheObject *)self entries];
-  v10 = [v9 count];
+  entries = [(GKFriendListCacheObject *)self entries];
+  v10 = [entries count];
 
   v35 = [[NSMutableArray alloc] initWithCapacity:v10];
-  v11 = [(GKFriendListCacheObject *)self managedObjectContext];
-  v12 = [(GKFriendListCacheObject *)self playerIDs];
-  v13 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:v12 inManagedObjectContext:v11];
+  managedObjectContext = [(GKFriendListCacheObject *)self managedObjectContext];
+  playerIDs = [(GKFriendListCacheObject *)self playerIDs];
+  v13 = [GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:playerIDs inManagedObjectContext:managedObjectContext];
 
   v31 = [v13 _gkDistinctValuesForKeyPath:@"lastPlayedGame"];
-  v14 = [v31 allObjects];
-  v33 = v11;
-  v15 = [GKGameCacheObject gamesForBundleIDs:v14 context:v11];
+  allObjects = [v31 allObjects];
+  v33 = managedObjectContext;
+  v15 = [GKGameCacheObject gamesForBundleIDs:allObjects context:managedObjectContext];
 
   v30 = v15;
   v34 = [v15 _gkMapDictionaryWithKeyPath:@"bundleID"];
@@ -151,8 +151,8 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = [(GKFriendListCacheObject *)self entries];
-  v18 = [v17 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  entries2 = [(GKFriendListCacheObject *)self entries];
+  v18 = [entries2 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v18)
   {
     v19 = v18;
@@ -163,25 +163,25 @@
       {
         if (*v37 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(entries2);
         }
 
-        v22 = [*(*(&v36 + 1) + 8 * i) playerID];
-        if (v22)
+        playerID = [*(*(&v36 + 1) + 8 * i) playerID];
+        if (playerID)
         {
-          v23 = [v16 objectForKeyedSubscript:v22];
+          v23 = [v16 objectForKeyedSubscript:playerID];
           if ([v23 familiarity] == 2)
           {
             v24 = [[GKFriendPlayerInternal alloc] initWithCacheObject:v23];
-            v25 = [v23 lastPlayedGame];
+            lastPlayedGame = [v23 lastPlayedGame];
 
-            if (v25)
+            if (lastPlayedGame)
             {
-              v26 = [v23 lastPlayedGame];
-              v27 = [v34 objectForKeyedSubscript:v26];
+              lastPlayedGame2 = [v23 lastPlayedGame];
+              v27 = [v34 objectForKeyedSubscript:lastPlayedGame2];
 
-              v28 = [v27 internalRepresentation];
-              [v24 setLastPlayedGame:v28];
+              internalRepresentation = [v27 internalRepresentation];
+              [v24 setLastPlayedGame:internalRepresentation];
             }
 
             [v35 addObject:v24];
@@ -189,7 +189,7 @@
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v19 = [entries2 countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v19);
@@ -200,7 +200,7 @@
 
 - (NSArray)filterableFriends
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A5EA4();
 
   type metadata accessor for GKFilterableFriend();

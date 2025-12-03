@@ -4,14 +4,14 @@
 - (id)containerViewsForPlatterTreatment;
 - (id)createSliderView;
 - (void)_applyCompactContinuousCornerRadius;
-- (void)setContentMetrics:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setSelectedGlyphColor:(id)a3;
+- (void)setContentMetrics:(id)metrics;
+- (void)setGlyphState:(id)state;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setSelectedGlyphColor:(id)color;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation CCUISliderModuleViewController
@@ -29,36 +29,36 @@
   v9.receiver = self;
   v9.super_class = CCUISliderModuleViewController;
   [(CCUIButtonModuleViewController *)&v9 viewDidLoad];
-  v3 = [(CCUISliderModuleViewController *)self createSliderView];
-  [(CCUIBaseSliderView *)v3 setAutoresizingMask:18];
-  [(CCUIBaseSliderView *)v3 setUserInteractionEnabled:[(CCUISliderModuleViewController *)self _isSliderGridSizeClass]];
-  -[CCUIBaseSliderView setInteractiveWhenUnexpanded:](v3, "setInteractiveWhenUnexpanded:", ([objc_opt_class() supportedGridSizeClasses] >> 1) & 1);
-  v4 = [(CCUIButtonModuleViewController *)self contentMetrics];
-  [(CCUIBaseSliderView *)v3 setContentMetrics:v4];
+  createSliderView = [(CCUISliderModuleViewController *)self createSliderView];
+  [(CCUIBaseSliderView *)createSliderView setAutoresizingMask:18];
+  [(CCUIBaseSliderView *)createSliderView setUserInteractionEnabled:[(CCUISliderModuleViewController *)self _isSliderGridSizeClass]];
+  -[CCUIBaseSliderView setInteractiveWhenUnexpanded:](createSliderView, "setInteractiveWhenUnexpanded:", ([objc_opt_class() supportedGridSizeClasses] >> 1) & 1);
+  contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+  [(CCUIBaseSliderView *)createSliderView setContentMetrics:contentMetrics];
 
   sliderView = self->_sliderView;
-  self->_sliderView = v3;
-  v6 = v3;
+  self->_sliderView = createSliderView;
+  v6 = createSliderView;
 
-  v7 = [(CCUISliderModuleViewController *)self view];
-  v8 = [(CCUIButtonModuleViewController *)self buttonView];
-  [v7 insertSubview:v6 belowSubview:v8];
+  view = [(CCUISliderModuleViewController *)self view];
+  buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+  [view insertSubview:v6 belowSubview:buttonView];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CCUISliderModuleViewController;
-  v7 = a4;
-  [(CCUISliderModuleViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CCUISliderModuleViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E83EA620;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -75,24 +75,24 @@ void __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitio
   v9.receiver = self;
   v9.super_class = CCUISliderModuleViewController;
   [(CCUIButtonModuleViewController *)&v9 viewWillLayoutSubviews];
-  v3 = [(CCUIButtonModuleViewController *)self buttonView];
-  v4 = [(CCUISliderModuleViewController *)self sliderView];
+  buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+  sliderView = [(CCUISliderModuleViewController *)self sliderView];
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
     [(CCUISliderModuleViewController *)self preferredExpandedContinuousCornerRadius];
-    [v4 setContinuousSliderCornerRadius:?];
+    [sliderView setContinuousSliderCornerRadius:?];
   }
 
-  v5 = [objc_opt_class() _compactStateAlwaysDisplaysSliderGlyph];
-  v6 = [(CCUISliderModuleViewController *)self _isSliderInteractive];
+  _compactStateAlwaysDisplaysSliderGlyph = [objc_opt_class() _compactStateAlwaysDisplaysSliderGlyph];
+  _isSliderInteractive = [(CCUISliderModuleViewController *)self _isSliderInteractive];
   v7 = 1.0;
-  if (v6)
+  if (_isSliderInteractive)
   {
     v7 = 0.0;
   }
 
-  [v3 setAlpha:v7];
-  if (v6 || v5)
+  [buttonView setAlpha:v7];
+  if (_isSliderInteractive || _compactStateAlwaysDisplaysSliderGlyph)
   {
     v8 = [(CCUIButtonModuleViewController *)self isExpanded]^ 1;
   }
@@ -102,67 +102,67 @@ void __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitio
     v8 = 0;
   }
 
-  [v4 setGlyphVisible:v8];
-  [v4 setValueVisible:v6];
+  [sliderView setGlyphVisible:v8];
+  [sliderView setValueVisible:_isSliderInteractive];
 }
 
-- (void)setSelectedGlyphColor:(id)a3
+- (void)setSelectedGlyphColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = CCUISliderModuleViewController;
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)&v6 setSelectedGlyphColor:v4];
+  colorCopy = color;
+  [(CCUIButtonModuleViewController *)&v6 setSelectedGlyphColor:colorCopy];
   v5 = [(CCUISliderModuleViewController *)self sliderView:v6.receiver];
-  [v5 setGlyphTintColor:v4];
+  [v5 setGlyphTintColor:colorCopy];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
   v6.receiver = self;
   v6.super_class = CCUISliderModuleViewController;
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)&v6 setGlyphState:v4];
+  stateCopy = state;
+  [(CCUIButtonModuleViewController *)&v6 setGlyphState:stateCopy];
   v5 = [(CCUISliderModuleViewController *)self sliderView:v6.receiver];
-  [v5 setGlyphState:v4];
+  [v5 setGlyphState:stateCopy];
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
   v10.receiver = self;
   v10.super_class = CCUISliderModuleViewController;
-  if ([(CCUIButtonModuleViewController *)&v10 gridSizeClass]!= a3)
+  if ([(CCUIButtonModuleViewController *)&v10 gridSizeClass]!= class)
   {
     v9.receiver = self;
     v9.super_class = CCUISliderModuleViewController;
-    [(CCUIButtonModuleViewController *)&v9 setGridSizeClass:a3];
-    v5 = [(CCUISliderModuleViewController *)self view];
-    [v5 setNeedsLayout];
-    [v5 layoutIfNeeded];
-    v6 = [(CCUIButtonModuleViewController *)self isExpanded];
-    v7 = [(CCUISliderModuleViewController *)self _isSliderGridSizeClass];
-    v8 = [(CCUISliderModuleViewController *)self sliderView];
-    [v8 setUserInteractionEnabled:v6 || v7];
+    [(CCUIButtonModuleViewController *)&v9 setGridSizeClass:class];
+    view = [(CCUISliderModuleViewController *)self view];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
+    isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
+    _isSliderGridSizeClass = [(CCUISliderModuleViewController *)self _isSliderGridSizeClass];
+    sliderView = [(CCUISliderModuleViewController *)self sliderView];
+    [sliderView setUserInteractionEnabled:isExpanded || _isSliderGridSizeClass];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
   v6.receiver = self;
   v6.super_class = CCUISliderModuleViewController;
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)&v6 setContentMetrics:v4];
+  metricsCopy = metrics;
+  [(CCUIButtonModuleViewController *)&v6 setContentMetrics:metricsCopy];
   v5 = [(CCUISliderModuleViewController *)self sliderView:v6.receiver];
-  [v5 setContentMetrics:v4];
+  [v5 setContentMetrics:metricsCopy];
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
   v7.receiver = self;
   v7.super_class = CCUISliderModuleViewController;
   [(CCUIButtonModuleViewController *)&v7 willTransitionToExpandedContentMode:?];
-  v5 = [(CCUISliderModuleViewController *)self _isSliderGridSizeClass];
-  v6 = [(CCUISliderModuleViewController *)self sliderView];
-  [v6 setUserInteractionEnabled:a3 || v5];
+  _isSliderGridSizeClass = [(CCUISliderModuleViewController *)self _isSliderGridSizeClass];
+  sliderView = [(CCUISliderModuleViewController *)self sliderView];
+  [sliderView setUserInteractionEnabled:mode || _isSliderGridSizeClass];
 }
 
 - (void)_applyCompactContinuousCornerRadius
@@ -170,17 +170,17 @@ void __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitio
   v4.receiver = self;
   v4.super_class = CCUISliderModuleViewController;
   [(CCUIButtonModuleViewController *)&v4 _applyCompactContinuousCornerRadius];
-  v3 = [(CCUISliderModuleViewController *)self sliderView];
+  sliderView = [(CCUISliderModuleViewController *)self sliderView];
   [(CCUIButtonModuleViewController *)self compactContinuousCornerRadius];
-  [v3 setContinuousSliderCornerRadius:?];
+  [sliderView setContinuousSliderCornerRadius:?];
 }
 
 - (id)containerViewsForPlatterTreatment
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CCUISliderModuleViewController *)self sliderView];
-  v3 = [v2 elasticContentView];
-  v6[0] = v3;
+  sliderView = [(CCUISliderModuleViewController *)self sliderView];
+  elasticContentView = [sliderView elasticContentView];
+  v6[0] = elasticContentView;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
@@ -201,8 +201,8 @@ void __85__CCUISliderModuleViewController_viewWillTransitionToSize_withTransitio
   objc_opt_class();
   NSRequestConcreteImplementation();
   v3 = [CCUIBaseSliderView alloc];
-  v4 = [(CCUISliderModuleViewController *)self view];
-  [v4 bounds];
+  view = [(CCUISliderModuleViewController *)self view];
+  [view bounds];
   v5 = [(CCUIBaseSliderView *)v3 initWithFrame:?];
 
   return v5;

@@ -1,11 +1,11 @@
 @interface PosterCoupledTitlesView
-- (_TtC11PosterBoard23PosterCoupledTitlesView)initWithCoder:(id)a3;
+- (_TtC11PosterBoard23PosterCoupledTitlesView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PosterCoupledTitlesView
 
-- (_TtC11PosterBoard23PosterCoupledTitlesView)initWithCoder:(id)a3
+- (_TtC11PosterBoard23PosterCoupledTitlesView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard23PosterCoupledTitlesView_titleLabelSpacingFromTopEdge) = 0x4042000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard23PosterCoupledTitlesView_footerLabelSpacingFromBottomEdge) = 0x4024000000000000;
@@ -16,7 +16,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B61ECF0();
 }
 

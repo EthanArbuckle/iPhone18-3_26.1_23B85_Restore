@@ -1,7 +1,7 @@
 @interface AppEventDetailPageViewController
 - (BOOL)accessibilityPerformEscape;
-- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)appEnteredWhileAppeared;
 - (void)appExitedWhileAppeared;
@@ -9,19 +9,19 @@
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
 - (void)as_viewWillBecomePartiallyVisible;
-- (void)lockupTapGestureRecognized:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)lockupTapGestureRecognized:(id)recognized;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AppEventDetailPageViewController
 
-- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_isCollapsing) = 0;
   result = sub_76A840();
@@ -38,83 +38,83 @@
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v8 = self;
+  selfCopy = self;
   [(AppEventDetailPageViewController *)&v9 viewDidLoad];
-  sub_B170((&v8->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver), *&v8->lifecycleObserver[OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver + 16]);
+  sub_B170((&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver), *&selfCopy->lifecycleObserver[OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver + 16]);
   (*(v5 + 104))(v7, enum case for StoreViewControllerLifecycleEvent.didLoad(_:), v4);
   sub_7587C0();
   (*(v5 + 8))(v7, v4);
   sub_75A160();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_3A6F84(a3);
+  selfCopy = self;
+  sub_3A6F84(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_3A723C(a3);
+  selfCopy = self;
+  sub_3A723C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_3A757C(a3);
+  selfCopy = self;
+  sub_3A757C(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_3A794C(a3);
+  selfCopy = self;
+  sub_3A794C(disappear);
 }
 
 - (void)as_viewWillBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A81FC(&selRef_as_viewWillBecomeFullyVisible, &enum case for StoreViewControllerLifecycleEvent.willAppear(_:), &dispatch thunk of VideoPlaybackCoordinator.resumeAutoPlayVideo());
 }
 
 - (void)as_viewDidBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A7DE0();
 }
 
 - (void)as_viewWillBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A7FE0();
 }
 
 - (void)as_viewDidBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A81FC(&selRef_as_viewDidBecomePartiallyVisible, &enum case for StoreViewControllerLifecycleEvent.didDisappear(_:), &dispatch thunk of VideoPlaybackCoordinator.pauseAutoPlayVideo());
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A8414();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3A8598(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3A8598(change);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(AppEventDetailPageViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(AppEventDetailPageViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -127,7 +127,7 @@
 
 - (void)appEnteredWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A883C();
 }
 
@@ -139,17 +139,17 @@
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_B170((&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver), *&self->lifecycleObserver[OBJC_IVAR____TtC18ASMessagesProvider32AppEventDetailPageViewController_lifecycleObserver + 16]);
   (*(v4 + 104))(v6, enum case for StoreViewControllerLifecycleEvent.appExitedWhileAppeared(_:), v3);
-  v7 = self;
+  selfCopy = self;
   sub_7587C0();
 
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)lockupTapGestureRecognized:(id)a3
+- (void)lockupTapGestureRecognized:(id)recognized
 {
-  if (a3)
+  if (recognized)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_76A510();
     swift_unknownObjectRelease();
@@ -158,7 +158,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_3A8CEC();
@@ -175,15 +175,15 @@
   (*(v4 + 104))(v7, enum case for StoreViewControllerLifecycleEvent.dismissedByBackButton(_:), v3, v5);
   sub_758580();
   sub_3AA734(&qword_951DE8, 255, &type metadata accessor for AppEventDetailPagePresenter);
-  v8 = self;
+  selfCopy = self;
   sub_75EBD0();
   (*(v4 + 8))(v7, v3);
-  [(AppEventDetailPageViewController *)v8 dismissViewControllerAnimated:1 completion:0];
+  [(AppEventDetailPageViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   return 1;
 }
 
-- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider32AppEventDetailPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

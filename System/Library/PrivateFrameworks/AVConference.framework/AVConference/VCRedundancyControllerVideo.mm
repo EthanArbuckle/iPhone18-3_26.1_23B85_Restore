@@ -1,20 +1,20 @@
 @interface VCRedundancyControllerVideo
-- (VCRedundancyControllerVideo)initWithDelegate:(id)a3 mode:(int)a4 parameters:(VCRedundancyControllerVideoParameters_t)a5;
+- (VCRedundancyControllerVideo)initWithDelegate:(id)delegate mode:(int)mode parameters:(VCRedundancyControllerVideoParameters_t)parameters;
 - (void)dealloc;
 - (void)loadDefaultSettings;
-- (void)reportRedundancyPercentage:(unsigned int)a3 redundancyInterval:(double)a4;
-- (void)resetRedundancyStrategy:(id *)a3;
+- (void)reportRedundancyPercentage:(unsigned int)percentage redundancyInterval:(double)interval;
+- (void)resetRedundancyStrategy:(id *)strategy;
 - (void)setBtNotificationMonitor;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControllerVideo
 
-- (VCRedundancyControllerVideo)initWithDelegate:(id)a3 mode:(int)a4 parameters:(VCRedundancyControllerVideoParameters_t)a5
+- (VCRedundancyControllerVideo)initWithDelegate:(id)delegate mode:(int)mode parameters:(VCRedundancyControllerVideoParameters_t)parameters
 {
-  v5 = *&a5.var1;
-  var0 = a5.var0;
-  v7 = *&a4;
+  v5 = *&parameters.var1;
+  var0 = parameters.var0;
+  v7 = *&mode;
   v36 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = VCRedundancyControllerVideo;
@@ -25,7 +25,7 @@
     goto LABEL_31;
   }
 
-  objc_storeWeak(&v9->_redundancyControllerDelegate, a3);
+  objc_storeWeak(&v9->_redundancyControllerDelegate, delegate);
   if ((v5 & 0x100000000) == 0)
   {
     statisticsCollector = var0;
@@ -234,10 +234,10 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
   [(VCRedundancyControllerVideo *)&v3 dealloc];
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (self->_type == 3 && (v5 = a3->var0.network.statisticsID) != 0 && v5 != self->_statisticsID)
+  if (self->_type == 3 && (v5 = statistics->var0.network.statisticsID) != 0 && v5 != self->_statisticsID)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -249,7 +249,7 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           statisticsID = self->_statisticsID;
-          v19 = a3->var0.network.statisticsID;
+          v19 = statistics->var0.network.statisticsID;
           *v22 = 136316162;
           *&v22[4] = v15;
           *&v22[12] = 2080;
@@ -267,7 +267,7 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
       else if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v20 = self->_statisticsID;
-        v21 = a3->var0.network.statisticsID;
+        v21 = statistics->var0.network.statisticsID;
         *v22 = 136316162;
         *&v22[4] = v15;
         *&v22[12] = 2080;
@@ -286,39 +286,39 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
   else
   {
     algorithm = self->_algorithm;
-    v7 = *(&a3->var0.addRemoveEndPoint + 19);
-    v30 = *(&a3->var0.addRemoveEndPoint + 17);
+    v7 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v30 = *(&statistics->var0.addRemoveEndPoint + 17);
     v31 = v7;
-    v32 = *(&a3->var0.addRemoveEndPoint + 21);
-    v8 = *(&a3->var0.addRemoveEndPoint + 11);
-    v26 = *(&a3->var0.addRemoveEndPoint + 9);
+    v32 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v8 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v26 = *(&statistics->var0.addRemoveEndPoint + 9);
     v27 = v8;
-    v9 = *(&a3->var0.addRemoveEndPoint + 15);
-    v28 = *(&a3->var0.addRemoveEndPoint + 13);
+    v9 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v28 = *(&statistics->var0.addRemoveEndPoint + 13);
     v29 = v9;
-    v10 = *(&a3->var0.addRemoveEndPoint + 3);
-    *&v22[32] = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v10 = *(&statistics->var0.addRemoveEndPoint + 3);
+    *&v22[32] = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v23 = v10;
-    v11 = *(&a3->var0.addRemoveEndPoint + 7);
-    v24 = *(&a3->var0.addRemoveEndPoint + 5);
+    v11 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v24 = *(&statistics->var0.addRemoveEndPoint + 5);
     v25 = v11;
-    v12 = *&a3->isVCRCInternal;
-    *v22 = *&a3->type;
+    v12 = *&statistics->isVCRCInternal;
+    *v22 = *&statistics->type;
     *&v22[16] = v12;
     [(VCRedundancyControlAlgorithm *)algorithm updateRedundancyStrategyWithNetworkStatistics:v22];
     type = self->_type;
     if (type == 13 || type == 3)
     {
-      v14 = [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyPercentage];
+      redundancyPercentage = [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyPercentage];
       [(VCRedundancyControlAlgorithm *)self->_algorithm redundancyInterval];
-      [(VCRedundancyControllerVideo *)self reportRedundancyPercentage:v14 redundancyInterval:?];
+      [(VCRedundancyControllerVideo *)self reportRedundancyPercentage:redundancyPercentage redundancyInterval:?];
     }
   }
 }
 
-- (void)reportRedundancyPercentage:(unsigned int)a3 redundancyInterval:(double)a4
+- (void)reportRedundancyPercentage:(unsigned int)percentage redundancyInterval:(double)interval
 {
-  LODWORD(v5) = a3;
+  LODWORD(v5) = percentage;
   v19 = *MEMORY[0x1E69E9840];
   [(VCRedundancyControllerVideo *)self loadDefaultSettings];
   forceRedundancyPercentage = self->_forceRedundancyPercentage;
@@ -367,7 +367,7 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
     }
   }
 
-  if (a4 != 0.0 && VRTraceGetErrorLogLevelForModule() >= 5)
+  if (interval != 0.0 && VRTraceGetErrorLogLevelForModule() >= 5)
   {
     v13 = VRTraceErrorLogLevelToCSTR();
     v14 = *MEMORY[0x1E6986650];
@@ -380,7 +380,7 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
       *&buf[22] = 1024;
       *&buf[24] = 175;
       *&buf[28] = 2048;
-      *&buf[30] = a4;
+      *&buf[30] = interval;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Video redundancy interval %f, which should be 0 since we don't support cross-frame FEC yet", buf, 0x26u);
     }
   }
@@ -423,7 +423,7 @@ void __64__VCRedundancyControllerVideo_initWithDelegate_mode_parameters___block_
 - (void)setBtNotificationMonitor
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -447,7 +447,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -478,7 +478,7 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
   return [v3 resetRedundancyStrategy:a2];
 }
 
-- (void)resetRedundancyStrategy:(id *)a3
+- (void)resetRedundancyStrategy:(id *)strategy
 {
   v21 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -498,8 +498,8 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
         goto LABEL_13;
       }
 
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = strategy->var0;
+      var1 = strategy->var1;
       *v17 = 136316162;
       *&v17[4] = v6;
       *&v17[12] = 2080;
@@ -509,7 +509,7 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
       WORD2(v18) = 2080;
       *(&v18 + 6) = var0;
       HIWORD(v18) = 1024;
-      LODWORD(v19) = var1;
+      LODWORD(selfCopy) = var1;
       v10 = " [%s] %s:%d Reset redundancy strategy, BT device %s state=%d while WLAN's on 2.4GHz";
       v11 = v7;
       v12 = 44;
@@ -539,8 +539,8 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
         goto LABEL_13;
       }
 
-      v15 = a3->var0;
-      v16 = a3->var1;
+      v15 = strategy->var0;
+      v16 = strategy->var1;
       *v17 = 136316674;
       *&v17[4] = v13;
       *&v17[12] = 2080;
@@ -550,7 +550,7 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
       WORD2(v18) = 2112;
       *(&v18 + 6) = v5;
       HIWORD(v18) = 2048;
-      v19 = self;
+      selfCopy = self;
       LOWORD(v20) = 2080;
       *(&v20 + 2) = v15;
       WORD5(v20) = 1024;
@@ -562,7 +562,7 @@ uint64_t __55__VCRedundancyControllerVideo_setBtNotificationMonitor__block_invok
 
     _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, v10, v17, v12);
 LABEL_13:
-    [(VCRedundancyControlAlgorithm *)self->_algorithm setIsRedundancyStrategyResetPending:1, *v17, *&v17[16], v18, v19, v20];
+    [(VCRedundancyControlAlgorithm *)self->_algorithm setIsRedundancyStrategyResetPending:1, *v17, *&v17[16], v18, selfCopy, v20];
   }
 }
 

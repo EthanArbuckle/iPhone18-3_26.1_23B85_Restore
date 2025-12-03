@@ -8,34 +8,34 @@
 - (BOOL)isForcedIgnoreFitCheckResultFromBuds;
 - (BOOL)ringtoneActive;
 - (FitNoiseCheckDelegate)fitNoiseCheckDelegate;
-- (HMFitNoiseCheckContentViewController)initWithDeviceAddress:(id)a3;
+- (HMFitNoiseCheckContentViewController)initWithDeviceAddress:(id)address;
 - (float)getTargetVolume;
-- (id)getResultString:(unint64_t)a3;
-- (id)getStepString:(unint64_t)a3;
-- (unint64_t)categorizeFitCheckResultBud:(float)a3;
-- (unint64_t)categorizeFitCheckResultWithLeftBud:(float)a3 rightBud:(float)a4;
+- (id)getResultString:(unint64_t)string;
+- (id)getStepString:(unint64_t)string;
+- (unint64_t)categorizeFitCheckResultBud:(float)bud;
+- (unint64_t)categorizeFitCheckResultWithLeftBud:(float)bud rightBud:(float)rightBud;
 - (void)analyzeResult;
-- (void)audioRouteChangedHandler:(id)a3;
+- (void)audioRouteChangedHandler:(id)handler;
 - (void)callCancelledHandler;
-- (void)callCompletionHandlerWithStaus:(unint64_t)a3;
+- (void)callCompletionHandlerWithStaus:(unint64_t)staus;
 - (void)clearDebugView;
-- (void)deviceDisconnectionHandler:(id)a3;
+- (void)deviceDisconnectionHandler:(id)handler;
 - (void)fitCheckStopped;
 - (void)generateFitCheckResult;
-- (void)generateNoiseCheckResult:(int64_t)a3;
-- (void)inEarStatusChangedHandler:(id)a3;
-- (void)interruptionHandler:(id)a3;
+- (void)generateNoiseCheckResult:(int64_t)result;
+- (void)inEarStatusChangedHandler:(id)handler;
+- (void)interruptionHandler:(id)handler;
 - (void)mainButtonTapped;
-- (void)moveToStep:(unint64_t)a3;
+- (void)moveToStep:(unint64_t)step;
 - (void)resetVolume;
-- (void)sealValueChangedHandler:(id)a3;
+- (void)sealValueChangedHandler:(id)handler;
 - (void)setupButtonTray;
 - (void)setupConstraints;
 - (void)setupContentView;
 - (void)setupDebugView;
 - (void)setupNotifications;
 - (void)setupPlayer;
-- (void)showAirpodsFitSuggestionsControllerWithHeadphoneDevice:(id)a3;
+- (void)showAirpodsFitSuggestionsControllerWithHeadphoneDevice:(id)device;
 - (void)showDebugResult;
 - (void)showImproveDisclosure;
 - (void)startFitCheck;
@@ -47,9 +47,9 @@
 - (void)stopNoiseCheck;
 - (void)stopVolumeObserver;
 - (void)udpateFitCheckThresholds;
-- (void)updateFitCheckResult:(id)a3;
+- (void)updateFitCheckResult:(id)result;
 - (void)updateForcedCheckResult;
-- (void)updateHeaderButton:(id)a3;
+- (void)updateHeaderButton:(id)button;
 - (void)updateUIForFitCheckReady;
 - (void)updateUIForFitCheckRetry;
 - (void)updateUIForFitCheckTutorial;
@@ -65,53 +65,53 @@
 
 @implementation HMFitNoiseCheckContentViewController
 
-- (HMFitNoiseCheckContentViewController)initWithDeviceAddress:(id)a3
+- (HMFitNoiseCheckContentViewController)initWithDeviceAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(BluetoothDevice *)self->_device address];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+  addressCopy = address;
+  address = [(BluetoothDevice *)self->_device address];
+  v6 = [address stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
-  v49 = [HearingAidUtils getBluetoothDeviceFromAddressOrUUID:v4];
-  v7 = [MEMORY[0x277D0FC08] shared];
-  v8 = [v7 connectedHeadphones];
+  v49 = [HearingAidUtils getBluetoothDeviceFromAddressOrUUID:addressCopy];
+  mEMORY[0x277D0FC08] = [MEMORY[0x277D0FC08] shared];
+  connectedHeadphones = [mEMORY[0x277D0FC08] connectedHeadphones];
   v47 = v6;
-  v9 = [v8 objectForKeyedSubscript:v6];
+  firstObject = [connectedHeadphones objectForKeyedSubscript:v6];
 
-  if (!v9)
+  if (!firstObject)
   {
-    v10 = [MEMORY[0x277D0FC08] shared];
-    v11 = [v10 connectedHeadphones];
+    mEMORY[0x277D0FC08]2 = [MEMORY[0x277D0FC08] shared];
+    connectedHeadphones2 = [mEMORY[0x277D0FC08]2 connectedHeadphones];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___block_invoke;
     v53[3] = &unk_2796F3CE8;
-    v54 = v4;
-    v12 = [v11 bs_filter:v53];
-    v13 = [v12 allValues];
-    v9 = [v13 firstObject];
+    v54 = addressCopy;
+    v12 = [connectedHeadphones2 bs_filter:v53];
+    allValues = [v12 allValues];
+    firstObject = [allValues firstObject];
   }
 
-  v14 = [[_TtC13HearingModeUI32AnyHearingFeatureContentProvider alloc] initWithDevice:v9];
+  v14 = [[_TtC13HearingModeUI32AnyHearingFeatureContentProvider alloc] initWithDevice:firstObject];
   if ([(AnyHearingFeatureContentProvider *)v14 featureFlag])
   {
-    v15 = [(AnyHearingFeatureContentProvider *)v14 deviceMarketingName];
+    deviceMarketingName = [(AnyHearingFeatureContentProvider *)v14 deviceMarketingName];
   }
 
   else
   {
-    v15 = @"AirPods Pro";
+    deviceMarketingName = @"AirPods Pro";
   }
 
   v16 = v49;
-  v48 = v4;
+  v48 = addressCopy;
   if ([(AnyHearingFeatureContentProvider *)v14 featureFlag])
   {
-    v17 = [(AnyHearingFeatureContentProvider *)v14 devicePlatformName];
+    devicePlatformName = [(AnyHearingFeatureContentProvider *)v14 devicePlatformName];
   }
 
   else
   {
-    v17 = @"AirPods";
+    devicePlatformName = @"AirPods";
   }
 
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -120,21 +120,21 @@
   v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = [v20 localizedStringForKey:@"Do not remove %@." value:&stru_286444CA0 table:0];
 
-  v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v21, v17];
+  v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v21, devicePlatformName];
 
   v52.receiver = self;
   v52.super_class = HMFitNoiseCheckContentViewController;
   v46 = v19;
   v23 = [(HMFitNoiseCheckContentViewController *)&v52 initWithTitle:v19 detailText:v22 icon:0 contentLayout:1];
   v24 = v23;
-  v25 = v15;
+  v25 = deviceMarketingName;
   if (v23)
   {
-    objc_storeStrong(&v23->_addressOrUUID, a3);
+    objc_storeStrong(&v23->_addressOrUUID, address);
     objc_storeStrong(&v24->_device, v49);
-    objc_storeStrong(&v24->_headphoneDevice, v9);
-    objc_storeStrong(&v24->_marketingName, v15);
-    objc_storeStrong(&v24->_platformName, v17);
+    objc_storeStrong(&v24->_headphoneDevice, firstObject);
+    objc_storeStrong(&v24->_marketingName, deviceMarketingName);
+    objc_storeStrong(&v24->_platformName, devicePlatformName);
     v24->_currentStep = 0;
     v24->_fitCheckResultOverall = 0;
     v24->_fitCheckResultLeft = 0;
@@ -151,7 +151,7 @@
     v24->_noiseCheckService = v27;
 
     v24->_fitNoiseCheckOngoing = 0;
-    v29 = [[_TtC13HearingModeUI22HMFitNoiseCheckTopView alloc] initWithService:v24->_noiseCheckService hpDevice:v9];
+    v29 = [[_TtC13HearingModeUI22HMFitNoiseCheckTopView alloc] initWithService:v24->_noiseCheckService hpDevice:firstObject];
     fitNoiseCheckTopView = v24->_fitNoiseCheckTopView;
     v24->_fitNoiseCheckTopView = v29;
 
@@ -175,18 +175,18 @@
     detailDictionary = v32->_detailDictionary;
     v32->_detailDictionary = v35;
 
-    v37 = [MEMORY[0x277D37638] accessoryButton];
+    accessoryButton = [MEMORY[0x277D37638] accessoryButton];
     headerAccessorybutton = v32->_headerAccessorybutton;
-    v32->_headerAccessorybutton = v37;
+    v32->_headerAccessorybutton = accessoryButton;
 
     [(OBHeaderAccessoryButton *)v32->_headerAccessorybutton addTarget:v32 action:sel_showImproveDisclosure forControlEvents:64];
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v40 = [v39 localizedStringForKey:&stru_286444CA0 value:&stru_286444CA0 table:0];
     [(HMFitNoiseCheckContentViewController *)v32 updateHeaderButton:v40];
 
-    v41 = [(HMFitNoiseCheckContentViewController *)v32 headerView];
+    headerView = [(HMFitNoiseCheckContentViewController *)v32 headerView];
     v16 = v49;
-    [v41 addAccessoryButton:v32->_headerAccessorybutton];
+    [headerView addAccessoryButton:v32->_headerAccessorybutton];
 
     v42 = objc_alloc_init(MEMORY[0x277CBAF70]);
     callObserver = v32->_callObserver;
@@ -216,31 +216,31 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
   [(HMFitNoiseCheckContentViewController *)self setupDebugView];
   [(HMFitNoiseCheckContentViewController *)self moveToStep:0];
   cancelButton = self->_cancelButton;
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:cancelButton];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:cancelButton];
 }
 
 - (void)setupNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_audioRouteChangedHandler_ name:*MEMORY[0x277CB8210] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_audioRouteChangedHandler_ name:*MEMORY[0x277CB8210] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_sealValueChangedHandler_ name:*MEMORY[0x277CF3158] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_sealValueChangedHandler_ name:*MEMORY[0x277CF3158] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_inEarStatusChangedHandler_ name:*MEMORY[0x277CF3150] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_inEarStatusChangedHandler_ name:*MEMORY[0x277CF3150] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_deviceDisconnectionHandler_ name:*MEMORY[0x277CF31A0] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_deviceDisconnectionHandler_ name:*MEMORY[0x277CF31A0] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_interruptionHandler_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_interruptionHandler_ name:*MEMORY[0x277D76660] object:0];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = *MEMORY[0x277CB8068];
-  v9 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v10 addObserver:self selector:sel_interruptionHandler_ name:v8 object:v9];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [defaultCenter6 addObserver:self selector:sel_interruptionHandler_ name:v8 object:mEMORY[0x277CB83F8]];
 }
 
 - (void)setupPlayer
@@ -249,9 +249,9 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
   v4 = [v3 pathForResource:@"E+D-US_ML" ofType:@"wav"];
 
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
-  v6 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v19 = 0;
-  [v6 setActive:1 error:&v19];
+  [mEMORY[0x277CB83F8] setActive:1 error:&v19];
   v7 = v19;
 
   if (v7)
@@ -261,10 +261,10 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
 
   else
   {
-    v8 = [MEMORY[0x277CB83F8] sharedInstance];
+    mEMORY[0x277CB83F8]2 = [MEMORY[0x277CB83F8] sharedInstance];
     v9 = *MEMORY[0x277CB8030];
     v18 = 0;
-    [v8 setCategory:v9 error:&v18];
+    [mEMORY[0x277CB83F8]2 setCategory:v9 error:&v18];
     v7 = v18;
 
     if (v7)
@@ -274,10 +274,10 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
 
     else
     {
-      v10 = [MEMORY[0x277CB83F8] sharedInstance];
+      mEMORY[0x277CB83F8]3 = [MEMORY[0x277CB83F8] sharedInstance];
       v11 = *MEMORY[0x277CB80C0];
       v17 = 0;
-      [v10 setMode:v11 error:&v17];
+      [mEMORY[0x277CB83F8]3 setMode:v11 error:&v17];
       v12 = v17;
 
       if (v12)
@@ -301,42 +301,42 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
 
 - (void)setupContentView
 {
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  contentView = [(HMFitNoiseCheckContentViewController *)self contentView];
+  [contentView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  [v5 addSubview:self->_fitNoiseCheckTopView];
+  contentView2 = [(HMFitNoiseCheckContentViewController *)self contentView];
+  [contentView2 addSubview:self->_fitNoiseCheckTopView];
 }
 
 - (void)setupConstraints
 {
   v26[5] = *MEMORY[0x277D85DE8];
   v17 = MEMORY[0x277CCAAD0];
-  v24 = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView heightAnchor];
-  v25 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  v23 = [v25 heightAnchor];
-  v22 = [v24 constraintLessThanOrEqualToAnchor:v23];
+  heightAnchor = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView heightAnchor];
+  contentView = [(HMFitNoiseCheckContentViewController *)self contentView];
+  heightAnchor2 = [contentView heightAnchor];
+  v22 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
   v26[0] = v22;
-  v20 = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView leadingAnchor];
-  v21 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  v19 = [v21 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView leadingAnchor];
+  contentView2 = [(HMFitNoiseCheckContentViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[1] = v18;
-  v15 = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView trailingAnchor];
-  v16 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  v14 = [v16 trailingAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14];
+  trailingAnchor = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView trailingAnchor];
+  contentView3 = [(HMFitNoiseCheckContentViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v13;
-  v12 = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView centerXAnchor];
-  v3 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  v4 = [v3 centerXAnchor];
-  v5 = [v12 constraintEqualToAnchor:v4];
+  centerXAnchor = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView centerXAnchor];
+  contentView4 = [(HMFitNoiseCheckContentViewController *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v5 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[3] = v5;
-  v6 = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView centerYAnchor];
-  v7 = [(HMFitNoiseCheckContentViewController *)self contentView];
-  v8 = [v7 centerYAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerYAnchor = [(HMFitNoiseCheckTopView *)self->_fitNoiseCheckTopView centerYAnchor];
+  contentView5 = [(HMFitNoiseCheckContentViewController *)self contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v26[4] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:5];
   [v17 activateConstraints:v10];
@@ -347,9 +347,9 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
 
 - (void)setupButtonTray
 {
-  v3 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   mainButton = self->_mainButton;
-  self->_mainButton = v3;
+  self->_mainButton = boldButton;
 
   v5 = self->_mainButton;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -357,8 +357,8 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
   [(OBTrayButton *)v5 setTitle:v7 forState:0];
 
   [(OBTrayButton *)self->_mainButton addTarget:self action:sel_mainButtonTapped forControlEvents:64];
-  v8 = [(HMFitNoiseCheckContentViewController *)self buttonTray];
-  [v8 addButton:self->_mainButton];
+  buttonTray = [(HMFitNoiseCheckContentViewController *)self buttonTray];
+  [buttonTray addButton:self->_mainButton];
 }
 
 - (void)mainButtonTapped
@@ -379,7 +379,7 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
     {
       if (currentStep == 9)
       {
-        v5 = self;
+        selfCopy2 = self;
         v6 = 1;
       }
 
@@ -390,11 +390,11 @@ uint64_t __62__HMFitNoiseCheckContentViewController_initWithDeviceAddress___bloc
           return;
         }
 
-        v5 = self;
+        selfCopy2 = self;
         v6 = 0;
       }
 
-      [(HMFitNoiseCheckContentViewController *)v5 callCompletionHandlerWithStaus:v6];
+      [(HMFitNoiseCheckContentViewController *)selfCopy2 callCompletionHandlerWithStaus:v6];
     }
   }
 
@@ -422,20 +422,20 @@ LABEL_5:
   }
 }
 
-- (void)moveToStep:(unint64_t)a3
+- (void)moveToStep:(unint64_t)step
 {
   v5 = [(HMFitNoiseCheckContentViewController *)self getStepString:self->_currentStep];
-  v6 = [(HMFitNoiseCheckContentViewController *)self getStepString:a3];
+  v6 = [(HMFitNoiseCheckContentViewController *)self getStepString:step];
   NSLog(&cfstr_FitNoiseCheckM_0.isa, v5, v6);
 
-  self->_currentStep = a3;
-  if (a3 <= 4)
+  self->_currentStep = step;
+  if (step <= 4)
   {
-    if (a3 <= 1)
+    if (step <= 1)
     {
-      if (a3)
+      if (step)
       {
-        if (a3 == 1)
+        if (step == 1)
         {
           [(HMFitNoiseCheckContentViewController *)self updateUIForOngoingFitCheck];
 
@@ -450,14 +450,14 @@ LABEL_5:
       }
     }
 
-    else if (a3 == 2)
+    else if (step == 2)
     {
       [(HMFitNoiseCheckContentViewController *)self updateUIForOngoingFitCheck];
 
       [(HMFitNoiseCheckContentViewController *)self startFitCheck];
     }
 
-    else if (a3 == 3)
+    else if (step == 3)
     {
       [(HMFitNoiseCheckContentViewController *)self updateUIForOngoingNoiseCheck];
 
@@ -471,9 +471,9 @@ LABEL_5:
     }
   }
 
-  else if (a3 > 7)
+  else if (step > 7)
   {
-    switch(a3)
+    switch(step)
     {
       case 8uLL:
 
@@ -490,13 +490,13 @@ LABEL_5:
     }
   }
 
-  else if (a3 == 5)
+  else if (step == 5)
   {
 
     [(HMFitNoiseCheckContentViewController *)self updateUIForFitCheckRetry];
   }
 
-  else if (a3 == 6)
+  else if (step == 6)
   {
 
     [(HMFitNoiseCheckContentViewController *)self updateUIForFitCheckTutorial];
@@ -920,30 +920,30 @@ void __61__HMFitNoiseCheckContentViewController_updateUIForResultFail__block_inv
 
 - (BOOL)callActive
 {
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26B48]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26B48]];
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   v5 = "No";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = "Yes";
   }
 
   NSLog(&cfstr_FitNoiseCheckC_0.isa, v5);
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)ringtoneActive
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(CXCallObserver *)self->_callObserver calls];
+  calls = [(CXCallObserver *)self->_callObserver calls];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v3 = [calls countByEnumeratingWithState:&v12 objects:v16 count:16];
   v4 = "No";
   if (v3)
   {
@@ -956,7 +956,7 @@ void __61__HMFitNoiseCheckContentViewController_updateUIForResultFail__block_inv
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(calls);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -966,7 +966,7 @@ void __61__HMFitNoiseCheckContentViewController_updateUIForResultFail__block_inv
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [calls countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -989,28 +989,28 @@ void __61__HMFitNoiseCheckContentViewController_updateUIForResultFail__block_inv
 
 - (BOOL)audioRouteActive
 {
-  v3 = [MEMORY[0x277CB83F8] sharedInstance];
-  v4 = [v3 currentRoute];
-  v5 = [v4 outputs];
-  NSLog(&cfstr_CurrentAudioRo.isa, v5);
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  currentRoute = [mEMORY[0x277CB83F8] currentRoute];
+  outputs = [currentRoute outputs];
+  NSLog(&cfstr_CurrentAudioRo.isa, outputs);
 
-  v6 = [(BluetoothDevice *)self->_device address];
-  NSLog(&cfstr_CurrentAudioRo_0.isa, v6);
+  address = [(BluetoothDevice *)self->_device address];
+  NSLog(&cfstr_CurrentAudioRo_0.isa, address);
 
-  v7 = [MEMORY[0x277CB83F8] sharedInstance];
-  v8 = [v7 currentRoute];
-  v9 = [v8 outputs];
+  mEMORY[0x277CB83F8]2 = [MEMORY[0x277CB83F8] sharedInstance];
+  currentRoute2 = [mEMORY[0x277CB83F8]2 currentRoute];
+  outputs2 = [currentRoute2 outputs];
 
-  if ([v9 count] == 1)
+  if ([outputs2 count] == 1)
   {
-    v10 = [MEMORY[0x277CB83F8] sharedInstance];
-    v11 = [v10 currentRoute];
-    v12 = [v11 outputs];
-    v13 = [v12 firstObject];
-    v14 = [v13 UID];
+    mEMORY[0x277CB83F8]3 = [MEMORY[0x277CB83F8] sharedInstance];
+    currentRoute3 = [mEMORY[0x277CB83F8]3 currentRoute];
+    outputs3 = [currentRoute3 outputs];
+    firstObject = [outputs3 firstObject];
+    v14 = [firstObject UID];
 
-    v15 = [(BluetoothDevice *)self->_device address];
-    v16 = [v14 containsString:v15];
+    address2 = [(BluetoothDevice *)self->_device address];
+    v16 = [v14 containsString:address2];
 
     if (v16)
     {
@@ -1022,13 +1022,13 @@ void __61__HMFitNoiseCheckContentViewController_updateUIForResultFail__block_inv
       v17 = "NO";
     }
 
-    v18 = [(BluetoothDevice *)self->_device address];
-    NSLog(&cfstr_CurrentAudioRo_2.isa, v17, v14, v18);
+    address3 = [(BluetoothDevice *)self->_device address];
+    NSLog(&cfstr_CurrentAudioRo_2.isa, v17, v14, address3);
   }
 
   else
   {
-    NSLog(&cfstr_CurrentAudioRo_1.isa, [v9 count]);
+    NSLog(&cfstr_CurrentAudioRo_1.isa, [outputs2 count]);
     LOBYTE(v16) = 0;
   }
 
@@ -1287,14 +1287,14 @@ uint64_t __55__HMFitNoiseCheckContentViewController_fitCheckStopped__block_invok
   return [v2 resetVolume];
 }
 
-- (unint64_t)categorizeFitCheckResultBud:(float)a3
+- (unint64_t)categorizeFitCheckResultBud:(float)bud
 {
-  if (self->_fitCheckSealThresholdBad > a3)
+  if (self->_fitCheckSealThresholdBad > bud)
   {
     return 3;
   }
 
-  if (self->_fitCheckSealThresholdGood < a3)
+  if (self->_fitCheckSealThresholdGood < bud)
   {
     return 1;
   }
@@ -1302,16 +1302,16 @@ uint64_t __55__HMFitNoiseCheckContentViewController_fitCheckStopped__block_invok
   return 2;
 }
 
-- (unint64_t)categorizeFitCheckResultWithLeftBud:(float)a3 rightBud:(float)a4
+- (unint64_t)categorizeFitCheckResultWithLeftBud:(float)bud rightBud:(float)rightBud
 {
-  v4 = a4 == 1.0 && a3 == 1.0;
+  v4 = rightBud == 1.0 && bud == 1.0;
   v5 = 1;
   if (!v4)
   {
     v5 = 2;
   }
 
-  if (a4 == 3.0 || a3 == 3.0)
+  if (rightBud == 3.0 || bud == 3.0)
   {
     return 3;
   }
@@ -1385,9 +1385,9 @@ uint64_t __55__HMFitNoiseCheckContentViewController_fitCheckStopped__block_invok
   NSLog(&cfstr_FitNoiseCheckS_7.isa, v11, v9);
 }
 
-- (void)updateFitCheckResult:(id)a3
+- (void)updateFitCheckResult:(id)result
 {
-  objc_storeStrong(&self->_fitCheckResultDict, a3);
+  objc_storeStrong(&self->_fitCheckResultDict, result);
   [(HMFitNoiseCheckContentViewController *)self fitCheckStopped];
   [(HMFitNoiseCheckContentViewController *)self generateFitCheckResult];
 
@@ -1473,33 +1473,33 @@ uint64_t __55__HMFitNoiseCheckContentViewController_fitCheckStopped__block_invok
 - (void)startVolumeObserver
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   v4 = MEMORY[0x277D26DE8];
   v18[0] = *MEMORY[0x277D26DE8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v6 = *MEMORY[0x277D26DD0];
   v17 = 0;
-  [v3 setAttribute:v5 forKey:v6 error:&v17];
+  [mEMORY[0x277D26E58] setAttribute:v5 forKey:v6 error:&v17];
   v7 = v17;
 
   if (v7)
   {
-    v8 = [v7 localizedDescription];
-    NSLog(&cfstr_FitNoiseCheckC_1.isa, v8);
+    localizedDescription = [v7 localizedDescription];
+    NSLog(&cfstr_FitNoiseCheckC_1.isa, localizedDescription);
   }
 
   else
   {
     NSLog(&cfstr_FitNoiseCheckS_8.isa);
     objc_initWeak(&location, self);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = *v4;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__HMFitNoiseCheckContentViewController_startVolumeObserver__block_invoke;
     v14[3] = &unk_2796F3E78;
     objc_copyWeak(&v15, &location);
-    v11 = [v9 addObserverForName:v10 object:0 queue:0 usingBlock:v14];
+    v11 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v14];
     systemVolumeObserver = self->_systemVolumeObserver;
     self->_systemVolumeObserver = v11;
 
@@ -1538,8 +1538,8 @@ void __59__HMFitNoiseCheckContentViewController_startVolumeObserver__block_invok
   NSLog(&cfstr_FitNoiseCheckS_9.isa, a2);
   if (self->_systemVolumeObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_systemVolumeObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_systemVolumeObserver];
 
     systemVolumeObserver = self->_systemVolumeObserver;
     self->_systemVolumeObserver = 0;
@@ -1653,34 +1653,34 @@ void __62__HMFitNoiseCheckContentViewController_startNoiseCheckNudging__block_in
   [(HMNoiseCheckService *)noiseCheckService stopNoiseCheck];
 }
 
-- (void)generateNoiseCheckResult:(int64_t)a3
+- (void)generateNoiseCheckResult:(int64_t)result
 {
-  if (a3 <= 1)
+  if (result <= 1)
   {
-    if (a3)
+    if (result)
     {
-      if (a3 != 1)
+      if (result != 1)
       {
         goto LABEL_12;
       }
 
 LABEL_8:
-      self->_noiseCheckResult = a3;
+      self->_noiseCheckResult = result;
       goto LABEL_9;
     }
 
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (result == 2)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (result == 3)
   {
 LABEL_7:
-    a3 = 3;
+    result = 3;
     goto LABEL_8;
   }
 
@@ -1716,7 +1716,7 @@ LABEL_9:
 
   if (self->_fitCheckResultOverall == 3)
   {
-    v3 = self;
+    selfCopy3 = self;
     v4 = 5;
   }
 
@@ -1725,33 +1725,33 @@ LABEL_9:
     if (self->_noiseCheckResult == 3)
     {
 LABEL_2:
-      v3 = self;
+      selfCopy3 = self;
       v4 = 7;
       goto LABEL_7;
     }
 
-    v3 = self;
+    selfCopy3 = self;
     v4 = 9;
   }
 
 LABEL_7:
 
-  [(HMFitNoiseCheckContentViewController *)v3 moveToStep:v4];
+  [(HMFitNoiseCheckContentViewController *)selfCopy3 moveToStep:v4];
 }
 
 - (void)updateVolume
 {
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v4 = [v3 getVolume:&self->_volumeBeforeFitCheck forCategory:@"Audio/Video"];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v4 = [mEMORY[0x277D26E58] getVolume:&self->_volumeBeforeFitCheck forCategory:@"Audio/Video"];
 
   if (v4)
   {
     NSLog(&cfstr_FitNoiseCheckU_6.isa, self->_volumeBeforeFitCheck);
     [(HMFitNoiseCheckContentViewController *)self getTargetVolume];
     v6 = v5;
-    v7 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
     *&v8 = v6;
-    v9 = [v7 setVolumeTo:@"Audio/Video" forCategory:v8];
+    v9 = [mEMORY[0x277D26E58]2 setVolumeTo:@"Audio/Video" forCategory:v8];
 
     if (v9)
     {
@@ -1791,35 +1791,35 @@ LABEL_7:
   if (self->_volumeChanged)
   {
     NSLog(&cfstr_FitNoiseCheckR_0.isa, a2, self->_volumeBeforeFitCheck);
-    v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
     *&v4 = self->_volumeBeforeFitCheck;
-    [v3 setVolumeTo:@"Audio/Video" forCategory:v4];
+    [mEMORY[0x277D26E58] setVolumeTo:@"Audio/Video" forCategory:v4];
 
     self->_volumeChanged = 0;
   }
 }
 
-- (void)callCompletionHandlerWithStaus:(unint64_t)a3
+- (void)callCompletionHandlerWithStaus:(unint64_t)staus
 {
-  v5 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+  fitNoiseCheckDelegate = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = "Failed";
-    if (a3 == 1)
+    if (staus == 1)
     {
       v7 = "Passed";
     }
 
     NSLog(&cfstr_FitNoiseCheckC_2.isa, v7);
-    v11 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
-    [v11 fitNoiseCheckCompleted:self status:a3 details:self->_detailDictionary];
+    fitNoiseCheckDelegate2 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+    [fitNoiseCheckDelegate2 fitNoiseCheckCompleted:self status:staus details:self->_detailDictionary];
   }
 
   else
   {
-    v8 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+    fitNoiseCheckDelegate3 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -1829,27 +1829,27 @@ LABEL_7:
     }
 
     v10 = "Failed";
-    if (a3 == 1)
+    if (staus == 1)
     {
       v10 = "Passed";
     }
 
     NSLog(&cfstr_FitNoiseCheckC_2.isa, v10);
-    v11 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
-    [v11 fitNoiseCheckCompleted:self status:a3];
+    fitNoiseCheckDelegate2 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+    [fitNoiseCheckDelegate2 fitNoiseCheckCompleted:self status:staus];
   }
 }
 
 - (void)callCancelledHandler
 {
-  v3 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+  fitNoiseCheckDelegate = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     NSLog(&cfstr_FitNoiseCheckC_4.isa);
-    v5 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
-    [v5 fitNoiseCheckCancelled:self];
+    fitNoiseCheckDelegate2 = [(HMFitNoiseCheckContentViewController *)self fitNoiseCheckDelegate];
+    [fitNoiseCheckDelegate2 fitNoiseCheckCancelled:self];
   }
 
   else
@@ -1858,9 +1858,9 @@ LABEL_7:
   }
 }
 
-- (void)sealValueChangedHandler:(id)a3
+- (void)sealValueChangedHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   NSLog(&cfstr_FitNoiseCheckS_14.isa);
   if (self->_fitCheckOngoing)
   {
@@ -1871,8 +1871,8 @@ LABEL_7:
 
     else
     {
-      v4 = [v5 object];
-      [(HMFitNoiseCheckContentViewController *)self updateFitCheckResult:v4];
+      object = [handlerCopy object];
+      [(HMFitNoiseCheckContentViewController *)self updateFitCheckResult:object];
     }
   }
 
@@ -1882,9 +1882,9 @@ LABEL_7:
   }
 }
 
-- (void)audioRouteChangedHandler:(id)a3
+- (void)audioRouteChangedHandler:(id)handler
 {
-  NSLog(&cfstr_CurrentAudioRo_4.isa, a2, a3);
+  NSLog(&cfstr_CurrentAudioRo_4.isa, a2, handler);
   if (self->_fitNoiseCheckOngoing)
   {
     if (![(HMFitNoiseCheckContentViewController *)self audioRouteActive])
@@ -1931,19 +1931,19 @@ void __65__HMFitNoiseCheckContentViewController_audioRouteChangedHandler___block
   [*(a1 + 32) presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)inEarStatusChangedHandler:(id)a3
+- (void)inEarStatusChangedHandler:(id)handler
 {
-  v4 = [a3 object];
-  v5 = [v4 objectForKeyedSubscript:@"primaryInEarStatus"];
-  v6 = [v4 objectForKeyedSubscript:@"secondaryInEarStatus"];
-  v7 = [v4 objectForKeyedSubscript:@"device"];
-  v8 = [v7 address];
-  v9 = [(BluetoothDevice *)self->_device address];
+  object = [handler object];
+  v5 = [object objectForKeyedSubscript:@"primaryInEarStatus"];
+  v6 = [object objectForKeyedSubscript:@"secondaryInEarStatus"];
+  v7 = [object objectForKeyedSubscript:@"device"];
+  address = [v7 address];
+  address2 = [(BluetoothDevice *)self->_device address];
 
-  if (v8 == v9)
+  if (address == address2)
   {
-    v10 = [v5 BOOLValue];
-    v11 = (v10 | [v6 BOOLValue]) ^ 1;
+    bOOLValue = [v5 BOOLValue];
+    v11 = (bOOLValue | [v6 BOOLValue]) ^ 1;
     NSLog(&cfstr_FitNoiseCheckP_2.isa, v5, v6, v11 & 1);
     if ((v11 & 1) == 0)
     {
@@ -1984,44 +1984,44 @@ void __66__HMFitNoiseCheckContentViewController_inEarStatusChangedHandler___bloc
   [*(a1 + 32) presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)deviceDisconnectionHandler:(id)a3
+- (void)deviceDisconnectionHandler:(id)handler
 {
-  NSLog(&cfstr_FitNoiseCheckH.isa, a2, a3);
+  NSLog(&cfstr_FitNoiseCheckH.isa, a2, handler);
   [(HMFitNoiseCheckContentViewController *)self stopFitNoiseCheck];
 
   [(HMFitNoiseCheckContentViewController *)self callCompletionHandlerWithStaus:0];
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
-  v4 = [a3 object];
-  NSLog(&cfstr_FitNoiseCheckH_0.isa, v4);
+  object = [handler object];
+  NSLog(&cfstr_FitNoiseCheckH_0.isa, object);
   [(HMFitNoiseCheckContentViewController *)self stopFitNoiseCheck];
 }
 
-- (id)getStepString:(unint64_t)a3
+- (id)getStepString:(unint64_t)string
 {
-  if (a3 - 1 > 0xB)
+  if (string - 1 > 0xB)
   {
     return @"Ready";
   }
 
   else
   {
-    return off_2796F3EC0[a3 - 1];
+    return off_2796F3EC0[string - 1];
   }
 }
 
-- (id)getResultString:(unint64_t)a3
+- (id)getResultString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2796F3F20[a3 - 1];
+    return off_2796F3F20[string - 1];
   }
 }
 
@@ -2055,8 +2055,8 @@ void __66__HMFitNoiseCheckContentViewController_inEarStatusChangedHandler___bloc
 
     [(UILabel *)self->_resultDetailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)self->_resultDetailLabel setText:&stru_286444CA0];
-    v6 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UILabel *)self->_resultDetailLabel setTextColor:v6];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UILabel *)self->_resultDetailLabel setTextColor:systemBlackColor];
 
     [(UILabel *)self->_resultDetailLabel setTextAlignment:1];
     [(UILabel *)self->_resultDetailLabel setNumberOfLines:0];
@@ -2065,27 +2065,27 @@ void __66__HMFitNoiseCheckContentViewController_inEarStatusChangedHandler___bloc
     [(UILabel *)self->_resultDetailLabel setFont:v7];
 
     [(UILabel *)self->_resultDetailLabel setAlpha:1.0];
-    v8 = [(HMFitNoiseCheckContentViewController *)self headerView];
-    [v8 addSubview:self->_resultDetailLabel];
+    headerView = [(HMFitNoiseCheckContentViewController *)self headerView];
+    [headerView addSubview:self->_resultDetailLabel];
 
     v20 = MEMORY[0x277CCAAD0];
-    v25 = [(UILabel *)self->_resultDetailLabel heightAnchor];
-    v24 = [v25 constraintEqualToConstant:150.0];
+    heightAnchor = [(UILabel *)self->_resultDetailLabel heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:150.0];
     v26[0] = v24;
-    v22 = [(UILabel *)self->_resultDetailLabel leadingAnchor];
-    v23 = [(HMFitNoiseCheckContentViewController *)self contentView];
-    v21 = [v23 leadingAnchor];
-    v9 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UILabel *)self->_resultDetailLabel leadingAnchor];
+    contentView = [(HMFitNoiseCheckContentViewController *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[1] = v9;
-    v10 = [(UILabel *)self->_resultDetailLabel trailingAnchor];
-    v11 = [(HMFitNoiseCheckContentViewController *)self contentView];
-    v12 = [v11 trailingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UILabel *)self->_resultDetailLabel trailingAnchor];
+    contentView2 = [(HMFitNoiseCheckContentViewController *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[2] = v13;
-    v14 = [(UILabel *)self->_resultDetailLabel topAnchor];
-    v15 = [(HMFitNoiseCheckContentViewController *)self headerView];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor = [(UILabel *)self->_resultDetailLabel topAnchor];
+    headerView2 = [(HMFitNoiseCheckContentViewController *)self headerView];
+    bottomAnchor = [headerView2 bottomAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v26[3] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
     [v20 activateConstraints:v18];
@@ -2244,9 +2244,9 @@ void __55__HMFitNoiseCheckContentViewController_showDebugResult__block_invoke(ui
   }
 }
 
-- (void)updateHeaderButton:(id)a3
+- (void)updateHeaderButton:(id)button
 {
-  [(OBHeaderAccessoryButton *)self->_headerAccessorybutton setTitle:a3 forState:0];
+  [(OBHeaderAccessoryButton *)self->_headerAccessorybutton setTitle:button forState:0];
   v4 = self->_currentStep - 5;
   v5 = 0.0;
   if (v4 <= 3)
@@ -2277,11 +2277,11 @@ void __55__HMFitNoiseCheckContentViewController_showDebugResult__block_invoke(ui
   return WeakRetained;
 }
 
-- (void)showAirpodsFitSuggestionsControllerWithHeadphoneDevice:(id)a3
+- (void)showAirpodsFitSuggestionsControllerWithHeadphoneDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  HMFitNoiseCheckContentViewController.showAirpodsFitSuggestionsController(headphoneDevice:)(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  HMFitNoiseCheckContentViewController.showAirpodsFitSuggestionsController(headphoneDevice:)(deviceCopy);
 }
 
 @end

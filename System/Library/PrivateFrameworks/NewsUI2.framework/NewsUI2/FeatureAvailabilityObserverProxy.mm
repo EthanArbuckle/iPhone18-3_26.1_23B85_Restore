@@ -1,12 +1,12 @@
 @interface FeatureAvailabilityObserverProxy
-- (void)sportsTopicNotificationsWithDidChange:(BOOL)a3;
+- (void)sportsTopicNotificationsWithDidChange:(BOOL)change;
 @end
 
 @implementation FeatureAvailabilityObserverProxy
 
-- (void)sportsTopicNotificationsWithDidChange:(BOOL)a3
+- (void)sportsTopicNotificationsWithDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {

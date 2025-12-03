@@ -1,12 +1,12 @@
 @interface _UICellAccessoryConfigurationOutlineDisclosure
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIImage)image;
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCellSelectionTogglesExpansionState:(BOOL)a3;
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCoder:(id)a3;
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithImage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCellSelectionTogglesExpansionState:(BOOL)state;
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCoder:(id)coder;
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithImage:(id)image;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICellAccessoryConfigurationOutlineDisclosure
@@ -18,20 +18,20 @@
   return [v2 initWithCellSelectionTogglesExpansionState:1];
 }
 
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithImage:(id)a3
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v6 = [(_UICellAccessoryConfigurationOutlineDisclosure *)self initWithCellSelectionTogglesExpansionState:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__customImage, a3);
+    objc_storeStrong(&v6->__customImage, image);
   }
 
   return v7;
 }
 
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCellSelectionTogglesExpansionState:(BOOL)a3
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCellSelectionTogglesExpansionState:(BOOL)state
 {
   v7.receiver = self;
   v7.super_class = _UICellAccessoryConfigurationOutlineDisclosure;
@@ -40,29 +40,29 @@
   if (v4)
   {
     [(_UICellAccessoryConfiguration *)v4 setUsesDefaultLayoutWidth:0];
-    v5->_cellSelectionTogglesExpansionState = a3;
+    v5->_cellSelectionTogglesExpansionState = state;
     v5->_rotationAngle = 1.57079633;
   }
 
   return v5;
 }
 
-- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCoder:(id)a3
+- (_UICellAccessoryConfigurationOutlineDisclosure)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _UICellAccessoryConfigurationOutlineDisclosure;
-  v5 = [(_UICellAccessoryConfiguration *)&v12 initWithCoder:v4];
+  v5 = [(_UICellAccessoryConfiguration *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customImage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customImage"];
     customImage = v5->__customImage;
     v5->__customImage = v6;
 
-    v5->_cellSelectionTogglesExpansionState = [v4 decodeBoolForKey:@"cellSelectionTogglesExpansionState"];
-    [v4 decodeDoubleForKey:@"rotationAngle"];
+    v5->_cellSelectionTogglesExpansionState = [coderCopy decodeBoolForKey:@"cellSelectionTogglesExpansionState"];
+    [coderCopy decodeDoubleForKey:@"rotationAngle"];
     v5->_rotationAngle = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedTintColor"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedTintColor"];
     selectedTintColor = v5->_selectedTintColor;
     v5->_selectedTintColor = v9;
   }
@@ -70,23 +70,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICellAccessoryConfigurationOutlineDisclosure;
-  v4 = a3;
-  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->__customImage forKey:{@"customImage", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_cellSelectionTogglesExpansionState forKey:@"cellSelectionTogglesExpansionState"];
-  [v4 encodeDouble:@"rotationAngle" forKey:self->_rotationAngle];
-  [v4 encodeObject:self->_selectedTintColor forKey:@"selectedTintColor"];
+  coderCopy = coder;
+  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->__customImage forKey:{@"customImage", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_cellSelectionTogglesExpansionState forKey:@"cellSelectionTogglesExpansionState"];
+  [coderCopy encodeDouble:@"rotationAngle" forKey:self->_rotationAngle];
+  [coderCopy encodeObject:self->_selectedTintColor forKey:@"selectedTintColor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _UICellAccessoryConfigurationOutlineDisclosure;
-  v4 = [(_UICellAccessoryConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(_UICellAccessoryConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -99,14 +99,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = _UICellAccessoryConfigurationOutlineDisclosure;
-  if ([(_UICellAccessoryConfiguration *)&v15 isEqual:v4])
+  if ([(_UICellAccessoryConfiguration *)&v15 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_cellSelectionTogglesExpansionState == *(v5 + 32))
     {

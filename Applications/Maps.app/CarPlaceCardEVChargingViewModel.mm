@@ -1,12 +1,12 @@
 @interface CarPlaceCardEVChargingViewModel
 - (NSString)summaryTitle;
 - (_TtC4Maps31CarPlaceCardEVChargingViewModel)init;
-- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItem:(id)a3 virtualGarageService:(id)a4;
-- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItemIdentifier:(id)a3 plugs:(id)a4 initialAggregatedAvailabilityInfo:(id)a5 virtualGarageService:(id)a6;
+- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItem:(id)item virtualGarageService:(id)service;
+- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItemIdentifier:(id)identifier plugs:(id)plugs initialAggregatedAvailabilityInfo:(id)info virtualGarageService:(id)service;
 - (_TtP4Maps39CarPlaceCardEVChargingViewModelObserver_)observer;
-- (void)evChargerAvailabilityDownloader:(id)a3 didDownloadAvailabilityWithPlugs:(id)a4;
-- (void)setSummaryDescription:(id)a3;
-- (void)setSummaryTitle:(id)a3;
+- (void)evChargerAvailabilityDownloader:(id)downloader didDownloadAvailabilityWithPlugs:(id)plugs;
+- (void)setSummaryDescription:(id)description;
+- (void)setSummaryTitle:(id)title;
 @end
 
 @implementation CarPlaceCardEVChargingViewModel
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)setSummaryTitle:(id)a3
+- (void)setSummaryTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -45,11 +45,11 @@
   v6[1] = v5;
 }
 
-- (void)setSummaryDescription:(id)a3
+- (void)setSummaryDescription:(id)description
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps31CarPlaceCardEVChargingViewModel_summaryDescription);
-  *(self + OBJC_IVAR____TtC4Maps31CarPlaceCardEVChargingViewModel_summaryDescription) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps31CarPlaceCardEVChargingViewModel_summaryDescription) = description;
+  descriptionCopy = description;
 }
 
 - (_TtP4Maps39CarPlaceCardEVChargingViewModelObserver_)observer
@@ -59,21 +59,21 @@
   return Strong;
 }
 
-- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItem:(id)a3 virtualGarageService:(id)a4
+- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItem:(id)item virtualGarageService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  return CarPlaceCardEVChargingViewModel.init(mapItem:virtualGarageService:)(v5, a4);
+  itemCopy = item;
+  serviceCopy = service;
+  return CarPlaceCardEVChargingViewModel.init(mapItem:virtualGarageService:)(itemCopy, service);
 }
 
-- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItemIdentifier:(id)a3 plugs:(id)a4 initialAggregatedAvailabilityInfo:(id)a5 virtualGarageService:(id)a6
+- (_TtC4Maps31CarPlaceCardEVChargingViewModel)initWithMapItemIdentifier:(id)identifier plugs:(id)plugs initialAggregatedAvailabilityInfo:(id)info virtualGarageService:(id)service
 {
   sub_100014C84(0, &qword_10190EDD0);
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  return CarPlaceCardEVChargingViewModel.init(mapItemIdentifier:plugs:initialAggregatedAvailabilityInfo:virtualGarageService:)(v10, v9, a5, a6);
+  identifierCopy = identifier;
+  infoCopy = info;
+  serviceCopy = service;
+  return CarPlaceCardEVChargingViewModel.init(mapItemIdentifier:plugs:initialAggregatedAvailabilityInfo:virtualGarageService:)(identifierCopy, v9, info, service);
 }
 
 - (_TtC4Maps31CarPlaceCardEVChargingViewModel)init
@@ -83,11 +83,11 @@
   return result;
 }
 
-- (void)evChargerAvailabilityDownloader:(id)a3 didDownloadAvailabilityWithPlugs:(id)a4
+- (void)evChargerAvailabilityDownloader:(id)downloader didDownloadAvailabilityWithPlugs:(id)plugs
 {
   sub_100014C84(0, &qword_10190EDD0);
   *(self + OBJC_IVAR____TtC4Maps31CarPlaceCardEVChargingViewModel_plugs) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
 
   sub_10019F6B0();
 }

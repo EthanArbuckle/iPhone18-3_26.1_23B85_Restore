@@ -1,13 +1,13 @@
 @interface DeviceActivityCollector
-+ (void)collectLocalActivityWithOptions:(int64_t)a3 shouldSync:(BOOL)a4 completionHandler:(id)a5;
-+ (void)deleteLocalActivityWithCompletionHandler:(id)a3;
++ (void)collectLocalActivityWithOptions:(int64_t)options shouldSync:(BOOL)sync completionHandler:(id)handler;
++ (void)deleteLocalActivityWithCompletionHandler:(id)handler;
 @end
 
 @implementation DeviceActivityCollector
 
-+ (void)collectLocalActivityWithOptions:(int64_t)a3 shouldSync:(BOOL)a4 completionHandler:(id)a5
++ (void)collectLocalActivityWithOptions:(int64_t)options shouldSync:(BOOL)sync completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -21,14 +21,14 @@
   }
 
   swift_getObjCClassMetadata();
-  sub_10002355C(a3, a4, v7, v8);
+  sub_10002355C(options, sync, v7, v8);
 
   sub_100029B58(v7);
 }
 
-+ (void)deleteLocalActivityWithCompletionHandler:(id)a3
++ (void)deleteLocalActivityWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   if (v3)
   {
     v4 = v3;

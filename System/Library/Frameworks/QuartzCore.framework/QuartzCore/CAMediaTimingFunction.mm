@@ -1,17 +1,17 @@
 @interface CAMediaTimingFunction
 + (CAMediaTimingFunction)functionWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y;
 + (CAMediaTimingFunction)functionWithName:(CAMediaTimingFunctionName)name;
-+ (void)CAMLParserEndElement:(id)a3 content:(id)a4;
-- (CAMediaTimingFunction)initWithCoder:(id)a3;
++ (void)CAMLParserEndElement:(id)element content:(id)content;
+- (CAMediaTimingFunction)initWithCoder:(id)coder;
 - (CAMediaTimingFunction)initWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y;
 - (Object)CA_copyRenderValue;
-- (float)_solveForInput:(float)a3;
+- (float)_solveForInput:(float)input;
 - (id)description;
-- (unint64_t)CA_copyNumericValue:(double *)a3;
-- (void)_getPoints:(double *)a3;
+- (unint64_t)CA_copyNumericValue:(double *)value;
+- (void)_getPoints:(double *)points;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 - (void)getControlPointAtIndex:(size_t)idx values:(float *)ptr;
 @end
 
@@ -36,15 +36,15 @@
   [(CAMediaTimingFunction *)&v4 dealloc];
 }
 
-- (CAMediaTimingFunction)initWithCoder:(id)a3
+- (CAMediaTimingFunction)initWithCoder:(id)coder
 {
-  [a3 decodeFloatForKey:@"c1x"];
+  [coder decodeFloatForKey:@"c1x"];
   v6 = v5;
-  [a3 decodeFloatForKey:@"c1y"];
+  [coder decodeFloatForKey:@"c1y"];
   v8 = v7;
-  [a3 decodeFloatForKey:@"c2x"];
+  [coder decodeFloatForKey:@"c2x"];
   v10 = v9;
-  [a3 decodeFloatForKey:@"c2y"];
+  [coder decodeFloatForKey:@"c2y"];
   LODWORD(v11) = LODWORD(v12);
   LODWORD(v12) = v6;
   LODWORD(v13) = v8;
@@ -53,7 +53,7 @@
   return [(CAMediaTimingFunction *)self initWithControlPoints:v12];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -61,16 +61,16 @@
   [(CAMediaTimingFunction *)self _getPoints:&v8];
   HIDWORD(v4) = DWORD1(v8);
   *&v4 = *&v8;
-  [a3 encodeFloat:@"c1x" forKey:v4];
+  [coder encodeFloat:@"c1x" forKey:v4];
   HIDWORD(v5) = HIDWORD(v8);
   *&v5 = *(&v8 + 1);
-  [a3 encodeFloat:@"c1y" forKey:v5];
+  [coder encodeFloat:@"c1y" forKey:v5];
   HIDWORD(v6) = DWORD1(v9);
   *&v6 = *&v9;
-  [a3 encodeFloat:@"c2x" forKey:v6];
+  [coder encodeFloat:@"c2x" forKey:v6];
   HIDWORD(v7) = HIDWORD(v9);
   *&v7 = *(&v9 + 1);
-  [a3 encodeFloat:@"c2y" forKey:v7];
+  [coder encodeFloat:@"c2y" forKey:v7];
 }
 
 - (id)description
@@ -113,12 +113,12 @@ LABEL_7:
   }
 }
 
-- (void)_getPoints:(double *)a3
+- (void)_getPoints:(double *)points
 {
   priv = self->_priv;
   v4 = vcvtq_f64_f32(priv[1]);
-  *a3 = vcvtq_f64_f32(*priv);
-  *(a3 + 1) = v4;
+  *points = vcvtq_f64_f32(*priv);
+  *(points + 1) = v4;
 }
 
 - (CAMediaTimingFunction)initWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y
@@ -210,7 +210,7 @@ LABEL_7:
 
 + (CAMediaTimingFunction)functionWithControlPoints:(float)c1x :(float)c1y :(float)c2x :(float)c2y
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   *&v11 = c1x;
   *&v12 = c1y;
   *&v13 = c2x;
@@ -220,28 +220,28 @@ LABEL_7:
   return v15;
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v6 = *MEMORY[0x1E69E9840];
   memset(v5, 0, sizeof(v5));
   [(CAMediaTimingFunction *)self _getPoints:v5];
   v4 = CACreateStringWithDoubleArray(v5, 4uLL, 0.0001);
-  [a3 setElementContent:v4];
+  [writer setElementContent:v4];
   CFRelease(v4);
 }
 
-- (float)_solveForInput:(float)a3
+- (float)_solveForInput:(float)input
 {
   v7 = *MEMORY[0x1E69E9840];
   memset(v6, 0, sizeof(v6));
   [(CAMediaTimingFunction *)self _getPoints:v6];
-  return CA::Render::TimingFunction::evaluate(v6, v4, a3, 0.00001);
+  return CA::Render::TimingFunction::evaluate(v6, v4, input, 0.00001);
 }
 
-+ (void)CAMLParserEndElement:(id)a3 content:(id)a4
++ (void)CAMLParserEndElement:(id)element content:(id)content
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = [a4 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")}];
+  v5 = [content stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")}];
   if ([v5 length])
   {
     v6 = [v5 characterAtIndex:0];
@@ -251,22 +251,22 @@ LABEL_7:
       if (v26)
       {
 
-        [a3 setElementValue:v26];
+        [element setElementValue:v26];
       }
 
       else
       {
-        [a3 parserError:{@"Unknown timing function: %@", v5}];
+        [element parserError:{@"Unknown timing function: %@", v5}];
       }
     }
 
     else
     {
-      v8 = [v5 UTF8String];
-      v9 = strlen(v8);
-      v10 = &v8[v9];
-      v27[0] = v8;
-      v11 = x_strtod(v8, v27, &v8[v9]);
+      uTF8String = [v5 UTF8String];
+      v9 = strlen(uTF8String);
+      v10 = &uTF8String[v9];
+      v27[0] = uTF8String;
+      v11 = x_strtod(uTF8String, v27, &uTF8String[v9]);
       v27[0] = CAML::skip_whitespace(v27[0], v10, v12);
       v13 = x_strtod(v27[0], v27, v10);
       v27[0] = CAML::skip_whitespace(v27[0], v10, v14);
@@ -284,13 +284,13 @@ LABEL_7:
       *&v17 = v17;
       LODWORD(v24) = LODWORD(v17);
       v25 = [(CAMediaTimingFunction *)v20 initWithControlPoints:v21];
-      [a3 setElementValue:v25];
+      [element setElementValue:v25];
 
       if (v19 < v10)
       {
         if (*v19)
         {
-          [a3 parserWarning:@"Ignoring trailing characters"];
+          [element parserWarning:@"Ignoring trailing characters"];
         }
       }
     }
@@ -299,19 +299,19 @@ LABEL_7:
   else
   {
 
-    [a3 parserError:@"No timing function data"];
+    [element parserError:@"No timing function data"];
   }
 }
 
-- (unint64_t)CA_copyNumericValue:(double *)a3
+- (unint64_t)CA_copyNumericValue:(double *)value
 {
   v8 = *MEMORY[0x1E69E9840];
   v6 = 0u;
   v7 = 0u;
   [(CAMediaTimingFunction *)self _getPoints:&v6];
   v4 = v7;
-  *a3 = v6;
-  *(a3 + 1) = v4;
+  *value = v6;
+  *(value + 1) = v4;
   return 4;
 }
 

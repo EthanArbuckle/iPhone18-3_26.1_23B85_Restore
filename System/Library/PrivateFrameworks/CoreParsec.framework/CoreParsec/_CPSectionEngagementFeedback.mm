@@ -1,39 +1,39 @@
 @interface _CPSectionEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSectionEngagementFeedback)init;
-- (_CPSectionEngagementFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPSectionEngagementFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSectionEngagementFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPSectionEngagementFeedback *)self section];
-      v7 = [v4 section];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      section = [(_CPSectionEngagementFeedback *)self section];
+      section2 = [equalCopy section];
+      v8 = section2;
+      if ((section != 0) != (section2 == 0))
       {
-        v9 = [(_CPSectionEngagementFeedback *)self section];
-        if (!v9)
+        section3 = [(_CPSectionEngagementFeedback *)self section];
+        if (!section3)
         {
 
 LABEL_11:
           triggerEvent = self->_triggerEvent;
-          v14 = triggerEvent == [v4 triggerEvent];
+          v14 = triggerEvent == [equalCopy triggerEvent];
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPSectionEngagementFeedback *)self section];
-        v12 = [v4 section];
-        v13 = [v11 isEqual:v12];
+        v10 = section3;
+        section4 = [(_CPSectionEngagementFeedback *)self section];
+        section5 = [equalCopy section];
+        v13 = [section4 isEqual:section5];
 
         if (v13)
         {
@@ -53,20 +53,20 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPSectionEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPSectionEngagementFeedback *)self section];
+  section = [(_CPSectionEngagementFeedback *)self section];
 
-  if (v5)
+  if (section)
   {
-    v6 = [(_CPSectionEngagementFeedback *)self section];
+    section2 = [(_CPSectionEngagementFeedback *)self section];
     PBDataWriterWriteSubmessage();
   }
 
@@ -93,26 +93,26 @@ LABEL_9:
   return v2;
 }
 
-- (_CPSectionEngagementFeedback)initWithFacade:(id)a3
+- (_CPSectionEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPSectionEngagementFeedback;
   v5 = [(_CPSectionEngagementFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 section];
+    -[_CPSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    section = [facadeCopy section];
 
-    if (v6)
+    if (section)
     {
       v7 = [_CPResultSectionForFeedback alloc];
-      v8 = [v4 section];
-      v9 = [(_CPResultSectionForFeedback *)v7 initWithFacade:v8];
+      section2 = [facadeCopy section];
+      v9 = [(_CPResultSectionForFeedback *)v7 initWithFacade:section2];
       [(_CPSectionEngagementFeedback *)v5 setSection:v9];
     }
 
-    -[_CPSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
+    -[_CPSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
     v10 = v5;
   }
 

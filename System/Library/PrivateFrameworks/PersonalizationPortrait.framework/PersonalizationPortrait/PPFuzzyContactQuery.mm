@@ -1,26 +1,26 @@
 @interface PPFuzzyContactQuery
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFuzzyContactQuery:(id)a3;
-- (PPFuzzyContactQuery)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFuzzyContactQuery:(id)query;
+- (PPFuzzyContactQuery)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPFuzzyContactQuery
 
-- (BOOL)isEqualToFuzzyContactQuery:(id)a3
+- (BOOL)isEqualToFuzzyContactQuery:(id)query
 {
-  v4 = a3;
-  if (!v4)
+  queryCopy = query;
+  if (!queryCopy)
   {
     goto LABEL_12;
   }
 
   v5 = self->_sourceBundleIds;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == queryCopy[2])
   {
   }
 
@@ -36,7 +36,7 @@
 
   v8 = self->_startDate;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == queryCopy[3])
   {
   }
 
@@ -52,7 +52,7 @@
 
   v11 = self->_endDate;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == queryCopy[4])
   {
 
     goto LABEL_14;
@@ -63,7 +63,7 @@
   if (v13)
   {
 LABEL_14:
-    v14 = self->_onlyAddressBook == *(v4 + 8);
+    v14 = self->_onlyAddressBook == *(queryCopy + 8);
     goto LABEL_15;
   }
 
@@ -74,18 +74,18 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPFuzzyContactQuery *)self isEqualToFuzzyContactQuery:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPFuzzyContactQuery *)self isEqualToFuzzyContactQuery:v5];
   }
 
   return v6;
@@ -109,7 +109,7 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PPFuzzyContactQuery allocWithZone:?]];
   [(PPFuzzyContactQuery *)v4 setSourceBundleIds:self->_sourceBundleIds];
@@ -119,9 +119,9 @@ LABEL_15:
   return v4;
 }
 
-- (PPFuzzyContactQuery)initWithCoder:(id)a3
+- (PPFuzzyContactQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
   v6 = MEMORY[0x1E69C5D78];
   v7 = objc_autoreleasePoolPush();
@@ -130,22 +130,22 @@ LABEL_15:
   v10 = [v8 initWithObjects:{v9, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v7);
   v11 = pp_contacts_log_handle();
-  v12 = [v6 robustDecodeObjectOfClasses:v10 forKey:@"bids" withCoder:v4 expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v11];
+  v12 = [v6 robustDecodeObjectOfClasses:v10 forKey:@"bids" withCoder:coderCopy expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v11];
 
   v13 = MEMORY[0x1E69C5D78];
   v14 = objc_opt_class();
   v15 = pp_contacts_log_handle();
-  v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"sd" withCoder:v4 expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v15];
+  v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"sd" withCoder:coderCopy expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v15];
 
   v17 = MEMORY[0x1E69C5D78];
   v18 = objc_opt_class();
   v19 = pp_contacts_log_handle();
-  v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"ed" withCoder:v4 expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v19];
+  v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"ed" withCoder:coderCopy expectNonNull:0 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v19];
 
   v21 = MEMORY[0x1E69C5D78];
   v22 = objc_opt_class();
   v23 = pp_contacts_log_handle();
-  v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"ab" withCoder:v4 expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v23];
+  v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"ab" withCoder:coderCopy expectNonNull:1 errorDomain:@"PPErrorDomain" errorCode:23 logHandle:v23];
 
   if (v24)
   {
@@ -171,15 +171,15 @@ LABEL_15:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceBundleIds = self->_sourceBundleIds;
-  v5 = a3;
-  [v5 encodeObject:sourceBundleIds forKey:@"bids"];
-  [v5 encodeObject:self->_startDate forKey:@"sd"];
-  [v5 encodeObject:self->_endDate forKey:@"ed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceBundleIds forKey:@"bids"];
+  [coderCopy encodeObject:self->_startDate forKey:@"sd"];
+  [coderCopy encodeObject:self->_endDate forKey:@"ed"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_onlyAddressBook];
-  [v5 encodeObject:v6 forKey:@"ab"];
+  [coderCopy encodeObject:v6 forKey:@"ab"];
 }
 
 @end

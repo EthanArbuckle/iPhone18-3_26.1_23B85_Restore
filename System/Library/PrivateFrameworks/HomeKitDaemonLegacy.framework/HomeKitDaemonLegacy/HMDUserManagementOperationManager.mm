@@ -1,31 +1,31 @@
 @interface HMDUserManagementOperationManager
 + (void)initialize;
 - (HMDHomeManager)homeManager;
-- (HMDUserManagementOperationManager)initWithOperations:(id)a3;
+- (HMDUserManagementOperationManager)initWithOperations:(id)operations;
 - (NSArray)operations;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_filteredOperationsForAccessory:(id)a3;
-- (id)_filteredOperationsWithDependency:(id)a3;
-- (void)__deregisterIfNeededForReachablityChangeNotificationsForAccessory:(id)a3;
-- (void)__executeOperation:(id)a3;
+- (id)_filteredOperationsForAccessory:(id)accessory;
+- (id)_filteredOperationsWithDependency:(id)dependency;
+- (void)__deregisterIfNeededForReachablityChangeNotificationsForAccessory:(id)accessory;
+- (void)__executeOperation:(id)operation;
 - (void)__registerIfNeededForReachablityChangeNotifications;
-- (void)__registerIfNeededForReachablityChangeNotificationsForAccessory:(id)a3;
-- (void)__removeOperationAndProcessDependantOperations:(id)a3;
+- (void)__registerIfNeededForReachablityChangeNotificationsForAccessory:(id)accessory;
+- (void)__removeOperationAndProcessDependantOperations:(id)operations;
 - (void)__save;
-- (void)_cleanPriorOperations:(id)a3;
-- (void)_handleAccessoryIsReachable:(id)a3;
-- (void)_handleAddedOperation:(id)a3;
-- (void)_handleRemovedOperation:(id)a3;
+- (void)_cleanPriorOperations:(id)operations;
+- (void)_handleAccessoryIsReachable:(id)reachable;
+- (void)_handleAddedOperation:(id)operation;
+- (void)_handleRemovedOperation:(id)operation;
 - (void)_reallySave;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 - (void)cancelAllOperations;
 - (void)dealloc;
-- (void)operationCancelled:(id)a3;
-- (void)operationStoppedBackingOff:(id)a3;
-- (void)removeOperation:(id)a3;
-- (void)removeOperationWithIdentifier:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)operationCancelled:(id)cancelled;
+- (void)operationStoppedBackingOff:(id)off;
+- (void)removeOperation:(id)operation;
+- (void)removeOperationWithIdentifier:(id)identifier;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDUserManagementOperationManager
@@ -37,12 +37,12 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self saveTimer];
+  fireCopy = fire;
+  saveTimer = [(HMDUserManagementOperationManager *)self saveTimer];
 
-  if (v5 == v4)
+  if (saveTimer == fireCopy)
   {
 
     [(HMDUserManagementOperationManager *)self _reallySave];
@@ -51,13 +51,13 @@
 
 - (void)_reallySave
 {
-  v3 = [(HMDUserManagementOperationManager *)self clientQueue];
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDUserManagementOperationManager__reallySave__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t a1)
@@ -97,31 +97,31 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HMDUserManagementOperationManager *)self shortDescription];
+    shortDescription = [(HMDUserManagementOperationManager *)self shortDescription];
     v9 = 138543618;
     v10 = v5;
     v11 = 2112;
-    v12 = v6;
+    v12 = shortDescription;
     _os_log_impl(&dword_2531F8000, v4, OS_LOG_TYPE_INFO, "%{public}@[%@] Kicking save timer", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDUserManagementOperationManager *)self saveTimer];
-  [v7 resume];
+  saveTimer = [(HMDUserManagementOperationManager *)self saveTimer];
+  [saveTimer resume];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__deregisterIfNeededForReachablityChangeNotificationsForAccessory:(id)a3
+- (void)__deregisterIfNeededForReachablityChangeNotificationsForAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self observedAccessories];
-  v6 = [v5 containsObject:v4];
+  accessoryCopy = accessory;
+  observedAccessories = [(HMDUserManagementOperationManager *)self observedAccessories];
+  v6 = [observedAccessories containsObject:accessoryCopy];
 
   if (v6)
   {
-    v7 = [(HMDUserManagementOperationManager *)self _filteredOperationsForAccessory:v4];
+    v7 = [(HMDUserManagementOperationManager *)self _filteredOperationsForAccessory:accessoryCopy];
     if (![v7 count])
     {
       v8 = objc_autoreleasePoolPush();
@@ -129,35 +129,35 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [(HMDUserManagementOperationManager *)self shortDescription];
-        v12 = [v4 name];
+        shortDescription = [(HMDUserManagementOperationManager *)self shortDescription];
+        name = [accessoryCopy name];
         v16 = 138543874;
         v17 = v10;
         v18 = 2112;
-        v19 = v11;
+        v19 = shortDescription;
         v20 = 2112;
-        v21 = v12;
+        v21 = name;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@[%@] No longer observing accessory '%@' for reachability change notifications we we have no pending operations for this accessory", &v16, 0x20u);
       }
 
       objc_autoreleasePoolPop(v8);
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 removeObserver:self name:@"HMDAccessoryIsReachableNotification" object:v4];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:@"HMDAccessoryIsReachableNotification" object:accessoryCopy];
 
-      v14 = [(HMDUserManagementOperationManager *)self observedAccessories];
-      [v14 removeObject:v4];
+      observedAccessories2 = [(HMDUserManagementOperationManager *)self observedAccessories];
+      [observedAccessories2 removeObject:accessoryCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__registerIfNeededForReachablityChangeNotificationsForAccessory:(id)a3
+- (void)__registerIfNeededForReachablityChangeNotificationsForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self observedAccessories];
-  v6 = [v5 containsObject:v4];
+  accessoryCopy = accessory;
+  observedAccessories = [(HMDUserManagementOperationManager *)self observedAccessories];
+  v6 = [observedAccessories containsObject:accessoryCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -166,23 +166,23 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDUserManagementOperationManager *)self shortDescription];
-      v11 = [v4 name];
+      shortDescription = [(HMDUserManagementOperationManager *)self shortDescription];
+      name = [accessoryCopy name];
       v15 = 138543874;
       v16 = v9;
       v17 = 2112;
-      v18 = v10;
+      v18 = shortDescription;
       v19 = 2112;
-      v20 = v11;
+      v20 = name;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@[%@] Starting to observe accessory '%@' for reachability change notifications as we have pending operations for this accessory", &v15, 0x20u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDUserManagementOperationManager *)self observedAccessories];
-    [v12 addObject:v4];
+    observedAccessories2 = [(HMDUserManagementOperationManager *)self observedAccessories];
+    [observedAccessories2 addObject:accessoryCopy];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel__handleAccessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleAccessoryIsReachable_ name:@"HMDAccessoryIsReachableNotification" object:accessoryCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -195,8 +195,8 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HMDUserManagementOperationManager *)self operations];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v4 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -208,17 +208,17 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) accessory];
-        [(HMDUserManagementOperationManager *)self __registerIfNeededForReachablityChangeNotificationsForAccessory:v8];
+        accessory = [*(*(&v10 + 1) + 8 * v7) accessory];
+        [(HMDUserManagementOperationManager *)self __registerIfNeededForReachablityChangeNotificationsForAccessory:accessory];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -227,18 +227,18 @@ void __48__HMDUserManagementOperationManager__reallySave__block_invoke(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAccessoryIsReachable:(id)a3
+- (void)_handleAccessoryIsReachable:(id)reachable
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self clientQueue];
+  reachableCopy = reachable;
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMDUserManagementOperationManager__handleAccessoryIsReachable___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reachableCopy;
+  v6 = reachableCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __65__HMDUserManagementOperationManager__handleAccessoryIsReachable___block_invoke(uint64_t a1)
@@ -335,31 +335,31 @@ void __65__HMDUserManagementOperationManager__handleAccessoryIsReachable___block
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__removeOperationAndProcessDependantOperations:(id)a3
+- (void)__removeOperationAndProcessDependantOperations:(id)operations
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationsCopy = operations;
   v5 = objc_autoreleasePoolPush();
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [(HMDUserManagementOperationManager *)self shortDescription];
-    v9 = [v4 identifier];
-    v10 = [v9 UUIDString];
+    shortDescription = [(HMDUserManagementOperationManager *)self shortDescription];
+    identifier = [operationsCopy identifier];
+    uUIDString = [identifier UUIDString];
     *buf = 138543874;
     v29 = v7;
     v30 = 2112;
-    v31 = v8;
+    v31 = shortDescription;
     v32 = 2112;
-    v33 = v10;
+    v33 = uUIDString;
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@[%@] Removing operation '%@' and processing any dependant operations", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDUserManagementOperationManager *)self removeOperation:v4];
-  v21 = v4;
-  [(HMDUserManagementOperationManager *)self _filteredOperationsWithDependency:v4];
+  [(HMDUserManagementOperationManager *)self removeOperation:operationsCopy];
+  v21 = operationsCopy;
+  [(HMDUserManagementOperationManager *)self _filteredOperationsWithDependency:operationsCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -384,11 +384,11 @@ void __65__HMDUserManagementOperationManager__handleAccessoryIsReachable___block
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v18 = HMFGetLogIdentifier();
-          v19 = [(HMDUserManagementOperationManager *)self shortDescription];
+          shortDescription2 = [(HMDUserManagementOperationManager *)self shortDescription];
           *buf = 138543874;
           v29 = v18;
           v30 = 2112;
-          v31 = v19;
+          v31 = shortDescription2;
           v32 = 2112;
           v33 = v15;
           _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[%@] Processing dependant operation: %@", buf, 0x20u);
@@ -407,36 +407,36 @@ void __65__HMDUserManagementOperationManager__handleAccessoryIsReachable___block
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__executeOperation:(id)a3
+- (void)__executeOperation:(id)operation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isReady])
+  operationCopy = operation;
+  if ([operationCopy isReady])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HMDUserManagementOperationManager *)self shortDescription];
+      shortDescription = [(HMDUserManagementOperationManager *)self shortDescription];
       *buf = 138543874;
       v14 = v7;
       v15 = 2112;
-      v16 = v8;
+      v16 = shortDescription;
       v17 = 2112;
-      v18 = v4;
+      v18 = operationCopy;
       _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@[%@] Executing ready operation: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMDUserManagementOperationManager *)self clientQueue];
+    clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__HMDUserManagementOperationManager___executeOperation___block_invoke;
     v11[3] = &unk_2797358C8;
     v11[4] = self;
-    v12 = v4;
-    [v12 executeWithCompletionQueue:v9 completionHandler:v11];
+    v12 = operationCopy;
+    [v12 executeWithCompletionQueue:clientQueue completionHandler:v11];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -478,32 +478,32 @@ void __56__HMDUserManagementOperationManager___executeOperation___block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationStoppedBackingOff:(id)a3
+- (void)operationStoppedBackingOff:(id)off
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self clientQueue];
+  offCopy = off;
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDUserManagementOperationManager_operationStoppedBackingOff___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = offCopy;
+  v6 = offCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)operationCancelled:(id)a3
+- (void)operationCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self clientQueue];
+  cancelledCopy = cancelled;
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDUserManagementOperationManager_operationCancelled___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = cancelledCopy;
+  v6 = cancelledCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 - (void)cancelAllOperations
@@ -513,8 +513,8 @@ void __56__HMDUserManagementOperationManager___executeOperation___block_invoke(u
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDUserManagementOperationManager *)self operations];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v3 = [operations countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -526,14 +526,14 @@ void __56__HMDUserManagementOperationManager___executeOperation___block_invoke(u
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cancel];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [operations countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -542,18 +542,18 @@ void __56__HMDUserManagementOperationManager___executeOperation___block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemovedOperation:(id)a3
+- (void)_handleRemovedOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self clientQueue];
+  operationCopy = operation;
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMDUserManagementOperationManager__handleRemovedOperation___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = operationCopy;
+  v6 = operationCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __61__HMDUserManagementOperationManager__handleRemovedOperation___block_invoke(uint64_t a1)
@@ -564,12 +564,12 @@ void __61__HMDUserManagementOperationManager__handleRemovedOperation___block_inv
   [v2 __deregisterIfNeededForReachablityChangeNotificationsForAccessory:v3];
 }
 
-- (void)removeOperation:(id)a3
+- (void)removeOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v5 = v4;
+    v5 = operationCopy;
     os_unfair_lock_lock_with_options();
     if ([(NSMutableArray *)self->_operations containsObject:v5])
     {
@@ -579,15 +579,15 @@ void __61__HMDUserManagementOperationManager__handleRemovedOperation___block_inv
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    operationCopy = v5;
   }
 }
 
-- (void)removeOperationWithIdentifier:(id)a3
+- (void)removeOperationWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock_with_options();
     v16 = 0u;
@@ -609,8 +609,8 @@ void __61__HMDUserManagementOperationManager__handleRemovedOperation___block_inv
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          v11 = [v10 isEqual:v4];
+          identifier = [v9 identifier];
+          v11 = [identifier isEqual:identifierCopy];
 
           if (v11)
           {
@@ -646,18 +646,18 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAddedOperation:(id)a3
+- (void)_handleAddedOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self clientQueue];
+  operationCopy = operation;
+  clientQueue = [(HMDUserManagementOperationManager *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMDUserManagementOperationManager__handleAddedOperation___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = operationCopy;
+  v6 = operationCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 uint64_t __59__HMDUserManagementOperationManager__handleAddedOperation___block_invoke(uint64_t a1)
@@ -673,12 +673,12 @@ uint64_t __59__HMDUserManagementOperationManager__handleAddedOperation___block_i
   return [v4 __executeOperation:v5];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v5 = v4;
+    v5 = operationCopy;
     os_unfair_lock_lock_with_options();
     if ((-[NSMutableArray containsObject:](self->_operations, "containsObject:", v5) & 1) == 0 && ([v5 isFinished] & 1) == 0)
     {
@@ -694,22 +694,22 @@ uint64_t __59__HMDUserManagementOperationManager__handleAddedOperation___block_i
   MEMORY[0x2821F9730]();
 }
 
-- (void)_cleanPriorOperations:(id)a3
+- (void)_cleanPriorOperations:(id)operations
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 user];
-  v30 = [v5 pairingIdentity];
+  operationsCopy = operations;
+  user = [operationsCopy user];
+  pairingIdentity = [user pairingIdentity];
 
-  v28 = v4;
-  v6 = [v4 accessory];
-  v7 = [v6 identifier];
+  v28 = operationsCopy;
+  accessory = [operationsCopy accessory];
+  identifier = [accessory identifier];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v29 = self;
+  selfCopy = self;
   obj = [(NSMutableArray *)self->_operations copy];
   v8 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v8)
@@ -726,16 +726,16 @@ uint64_t __59__HMDUserManagementOperationManager__handleAddedOperation___block_i
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 accessory];
-        v14 = [v13 identifier];
-        if ([v7 isEqualToString:v14])
+        accessory2 = [v12 accessory];
+        identifier2 = [accessory2 identifier];
+        if ([identifier isEqualToString:identifier2])
         {
-          v15 = [v12 user];
-          [v15 pairingIdentity];
-          v17 = v16 = v7;
-          v18 = [v30 isEqual:v17];
+          user2 = [v12 user];
+          [user2 pairingIdentity];
+          v17 = v16 = identifier;
+          v18 = [pairingIdentity isEqual:v17];
 
-          v7 = v16;
+          identifier = v16;
           if (!v18)
           {
             continue;
@@ -746,34 +746,34 @@ uint64_t __59__HMDUserManagementOperationManager__handleAddedOperation___block_i
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
             v21 = HMFGetLogIdentifier();
-            v22 = [(HMDUserManagementOperationManager *)v29 shortDescription];
+            shortDescription = [(HMDUserManagementOperationManager *)selfCopy shortDescription];
             *buf = 138543874;
             v38 = v21;
             v39 = 2112;
-            v40 = v22;
+            v40 = shortDescription;
             v41 = 2112;
             v42 = v12;
             _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@[%@] Dropping prior operation: %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v19);
-          [(NSMutableArray *)v29->_operations removeObject:v12];
+          [(NSMutableArray *)selfCopy->_operations removeObject:v12];
           [v12 setOperationManager:0];
-          v23 = [(HMDUserManagementOperationManager *)v29 homeManager];
-          v24 = [v23 backingStore];
+          homeManager = [(HMDUserManagementOperationManager *)selfCopy homeManager];
+          backingStore = [homeManager backingStore];
           v25 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-          v13 = [v24 transaction:@"kUserManagementOperationRemovedKey" options:v25];
+          accessory2 = [backingStore transaction:@"kUserManagementOperationRemovedKey" options:v25];
 
           v26 = [v12 modelObjectWithChangeType:3];
-          [v13 add:v26];
+          [accessory2 add:v26];
 
           v32[0] = MEMORY[0x277D85DD0];
           v32[1] = 3221225472;
           v32[2] = __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invoke;
           v32[3] = &unk_2797359D8;
-          v32[4] = v29;
-          [v13 save:v32];
-          [(HMDUserManagementOperationManager *)v29 _handleRemovedOperation:v12];
+          v32[4] = selfCopy;
+          [accessory2 save:v32];
+          [(HMDUserManagementOperationManager *)selfCopy _handleRemovedOperation:v12];
         }
 
         else
@@ -797,17 +797,17 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
   [v2 saveWithRequest:v3];
 }
 
-- (id)_filteredOperationsWithDependency:(id)a3
+- (id)_filteredOperationsWithDependency:(id)dependency
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self operations];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  dependencyCopy = dependency;
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(operations, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = operations;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -825,8 +825,8 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
         v12 = *(*(&v18 + 1) + 8 * i);
         if (v12)
         {
-          v13 = [*(*(&v18 + 1) + 8 * i) dependencies];
-          v14 = [v13 containsObject:v4];
+          dependencies = [*(*(&v18 + 1) + 8 * i) dependencies];
+          v14 = [dependencies containsObject:dependencyCopy];
 
           if (!v14)
           {
@@ -849,17 +849,17 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
   return v15;
 }
 
-- (id)_filteredOperationsForAccessory:(id)a3
+- (id)_filteredOperationsForAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserManagementOperationManager *)self operations];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  accessoryCopy = accessory;
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(operations, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = operations;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -875,10 +875,10 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        if (v4)
+        if (accessoryCopy)
         {
-          v13 = [*(*(&v18 + 1) + 8 * i) accessory];
-          v14 = [v4 isEqual:v13];
+          accessory = [*(*(&v18 + 1) + 8 * i) accessory];
+          v14 = [accessoryCopy isEqual:accessory];
 
           if (!v14)
           {
@@ -914,8 +914,8 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDUserManagementOperationManager *)self operations];
-  v6 = [v3 stringWithFormat:@"<%@, Operations = %@>", v4, v5];
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v6 = [v3 stringWithFormat:@"<%@, Operations = %@>", v4, operations];
 
   return v6;
 }
@@ -924,34 +924,34 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDUserManagementOperationManager *)self operations];
-  v6 = [v3 stringWithFormat:@"<%@ %p, Operations = %@>", v4, self, v5];
+  operations = [(HMDUserManagementOperationManager *)self operations];
+  v6 = [v3 stringWithFormat:@"<%@ %p, Operations = %@>", v4, self, operations];
 
   return v6;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HMDUserManagementOperationManager;
   [(HMDUserManagementOperationManager *)&v4 dealloc];
 }
 
-- (HMDUserManagementOperationManager)initWithOperations:(id)a3
+- (HMDUserManagementOperationManager)initWithOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v34.receiver = self;
   v34.super_class = HMDUserManagementOperationManager;
   v5 = [(HMDUserManagementOperationManager *)&v34 init];
   if (v5)
   {
     v6 = HMDispatchQueueNameString();
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     clientQueue = v5->_clientQueue;
     v5->_clientQueue = v9;
 
@@ -959,82 +959,82 @@ void __59__HMDUserManagementOperationManager__cleanPriorOperations___block_invok
     saveTimer = v5->_saveTimer;
     v5->_saveTimer = v11;
 
-    v13 = [(HMDUserManagementOperationManager *)v5 saveTimer];
-    [v13 setDelegate:v5];
+    saveTimer = [(HMDUserManagementOperationManager *)v5 saveTimer];
+    [saveTimer setDelegate:v5];
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     operations = v5->_operations;
-    v5->_operations = v14;
+    v5->_operations = array;
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    if ([v4 count])
+    array2 = [MEMORY[0x277CBEB18] array];
+    if ([operationsCopy count])
     {
-      v17 = [MEMORY[0x277CBEB38] dictionary];
-      v18 = [v4 reverseObjectEnumerator];
-      v19 = [v18 nextObject];
-      if (v19)
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      reverseObjectEnumerator = [operationsCopy reverseObjectEnumerator];
+      nextObject = [reverseObjectEnumerator nextObject];
+      if (nextObject)
       {
-        v20 = v19;
+        v20 = nextObject;
         do
         {
           if ([v20 isAuditOperation])
           {
-            [v16 addObject:v20];
+            [array2 addObject:v20];
           }
 
           else
           {
-            v21 = [v20 user];
-            v22 = [v21 pairingIdentity];
+            user = [v20 user];
+            pairingIdentity = [user pairingIdentity];
 
-            v23 = [v20 accessory];
-            v24 = [v23 uuid];
+            accessory = [v20 accessory];
+            uuid = [accessory uuid];
 
-            if (v22 && v24)
+            if (pairingIdentity && uuid)
             {
-              v25 = [v17 objectForKeyedSubscript:v24];
-              if (!v25)
+              array3 = [dictionary objectForKeyedSubscript:uuid];
+              if (!array3)
               {
-                v25 = [MEMORY[0x277CBEB18] array];
-                [v17 setObject:v25 forKeyedSubscript:v24];
+                array3 = [MEMORY[0x277CBEB18] array];
+                [dictionary setObject:array3 forKeyedSubscript:uuid];
               }
 
-              if (([v25 containsObject:v22] & 1) == 0)
+              if (([array3 containsObject:pairingIdentity] & 1) == 0)
               {
-                [v25 addObject:v22];
-                [v16 addObject:v20];
+                [array3 addObject:pairingIdentity];
+                [array2 addObject:v20];
               }
             }
           }
 
-          v26 = [v18 nextObject];
+          nextObject2 = [reverseObjectEnumerator nextObject];
 
-          v20 = v26;
+          v20 = nextObject2;
         }
 
-        while (v26);
+        while (nextObject2);
       }
 
-      v27 = [v16 reverseObjectEnumerator];
-      v28 = [v27 nextObject];
-      if (v28)
+      reverseObjectEnumerator2 = [array2 reverseObjectEnumerator];
+      nextObject3 = [reverseObjectEnumerator2 nextObject];
+      if (nextObject3)
       {
-        v29 = v28;
+        v29 = nextObject3;
         do
         {
           [(NSMutableArray *)v5->_operations addObject:v29];
-          v30 = [v27 nextObject];
+          nextObject4 = [reverseObjectEnumerator2 nextObject];
 
-          v29 = v30;
+          v29 = nextObject4;
         }
 
-        while (v30);
+        while (nextObject4);
       }
     }
 
-    v31 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observedAccessories = v5->_observedAccessories;
-    v5->_observedAccessories = v31;
+    v5->_observedAccessories = weakObjectsHashTable;
 
     [(HMDUserManagementOperationManager *)v5 __registerIfNeededForReachablityChangeNotifications];
   }

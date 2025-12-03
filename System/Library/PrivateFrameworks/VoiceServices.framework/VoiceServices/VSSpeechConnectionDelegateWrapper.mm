@@ -2,19 +2,19 @@
 - (VSSpeechConnection)connection;
 - (VSSpeechConnectionDelegate)delegate;
 - (VSSpeechConnectionDelegateWrapper)init;
-- (id)getLocalAudioRequest:(id)a3;
-- (id)getLocalRequest:(id)a3;
-- (void)audioRequest:(id)a3 didReportInstrumentMetrics:(id)a4 error:(id)a5;
-- (void)audioRequestDidStart:(id)a3;
-- (void)speechRequest:(id)a3 didReceiveTimingInfo:(id)a4;
-- (void)speechRequest:(id)a3 didReportInstrumentMetrics:(id)a4;
-- (void)speechRequest:(id)a3 didStartWithMark:(int64_t)a4 forRange:(_NSRange)a5;
-- (void)speechRequestDidContinue:(id)a3;
-- (void)speechRequestDidPause:(id)a3;
-- (void)speechRequestDidStart:(id)a3;
-- (void)synthesisRequest:(id)a3 didFinishWithInstrumentMetrics:(id)a4 error:(id)a5;
-- (void)synthesisRequest:(id)a3 didGenerateAudioChunk:(id)a4;
-- (void)synthesisRequest:(id)a3 didReceiveTimingInfo:(id)a4;
+- (id)getLocalAudioRequest:(id)request;
+- (id)getLocalRequest:(id)request;
+- (void)audioRequest:(id)request didReportInstrumentMetrics:(id)metrics error:(id)error;
+- (void)audioRequestDidStart:(id)start;
+- (void)speechRequest:(id)request didReceiveTimingInfo:(id)info;
+- (void)speechRequest:(id)request didReportInstrumentMetrics:(id)metrics;
+- (void)speechRequest:(id)request didStartWithMark:(int64_t)mark forRange:(_NSRange)range;
+- (void)speechRequestDidContinue:(id)continue;
+- (void)speechRequestDidPause:(id)pause;
+- (void)speechRequestDidStart:(id)start;
+- (void)synthesisRequest:(id)request didFinishWithInstrumentMetrics:(id)metrics error:(id)error;
+- (void)synthesisRequest:(id)request didGenerateAudioChunk:(id)chunk;
+- (void)synthesisRequest:(id)request didReceiveTimingInfo:(id)info;
 @end
 
 @implementation VSSpeechConnectionDelegateWrapper
@@ -33,11 +33,11 @@
   return WeakRetained;
 }
 
-- (void)audioRequest:(id)a3 didReportInstrumentMetrics:(id)a4 error:(id)a5
+- (void)audioRequest:(id)request didReportInstrumentMetrics:(id)metrics error:(id)error
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -46,20 +46,20 @@
 
     if (v12)
     {
-      v13 = [(VSSpeechConnectionDelegateWrapper *)self getLocalAudioRequest:v16];
+      v13 = [(VSSpeechConnectionDelegateWrapper *)self getLocalAudioRequest:requestCopy];
       if (v13)
       {
         v14 = objc_loadWeakRetained(&self->_delegate);
         v15 = objc_loadWeakRetained(&self->_connection);
-        [v14 connection:v15 presynthesizedAudioRequest:v13 successWithInstrumentMetrics:v8 error:v9];
+        [v14 connection:v15 presynthesizedAudioRequest:v13 successWithInstrumentMetrics:metricsCopy error:errorCopy];
       }
     }
   }
 }
 
-- (void)audioRequestDidStart:(id)a3
+- (void)audioRequestDidStart:(id)start
 {
-  v10 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -68,7 +68,7 @@
 
     if (v6)
     {
-      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalAudioRequest:v10];
+      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalAudioRequest:startCopy];
       if (v7)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)synthesisRequest:(id)a3 didFinishWithInstrumentMetrics:(id)a4 error:(id)a5
+- (void)synthesisRequest:(id)request didFinishWithInstrumentMetrics:(id)metrics error:(id)error
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -92,28 +92,28 @@
 
     if (v12)
     {
-      v13 = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v20, "pointer")}];
-      v15 = [v13 objectForKey:v14];
+      concurrentSynthesisRequests = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "pointer")}];
+      v15 = [concurrentSynthesisRequests objectForKey:v14];
 
       if (v15)
       {
-        v16 = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
+        concurrentSynthesisRequests2 = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
         v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "pointer")}];
-        [v16 removeObjectForKey:v17];
+        [concurrentSynthesisRequests2 removeObjectForKey:v17];
 
         v18 = objc_loadWeakRetained(&self->_delegate);
         v19 = objc_loadWeakRetained(&self->_connection);
-        [v18 connection:v19 synthesisRequest:v15 didFinishWithInstrumentMetrics:v8 error:v9];
+        [v18 connection:v19 synthesisRequest:v15 didFinishWithInstrumentMetrics:metricsCopy error:errorCopy];
       }
     }
   }
 }
 
-- (void)synthesisRequest:(id)a3 didGenerateAudioChunk:(id)a4
+- (void)synthesisRequest:(id)request didGenerateAudioChunk:(id)chunk
 {
-  v15 = a3;
-  v6 = a4;
+  requestCopy = request;
+  chunkCopy = chunk;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -122,24 +122,24 @@
 
     if (v9)
     {
-      v10 = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "pointer")}];
-      v12 = [v10 objectForKey:v11];
+      concurrentSynthesisRequests = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "pointer")}];
+      v12 = [concurrentSynthesisRequests objectForKey:v11];
 
       if (v12)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
         v14 = objc_loadWeakRetained(&self->_connection);
-        [v13 connection:v14 speechRequest:v12 didGenerateAudioChunk:v6];
+        [v13 connection:v14 speechRequest:v12 didGenerateAudioChunk:chunkCopy];
       }
     }
   }
 }
 
-- (void)speechRequest:(id)a3 didReportInstrumentMetrics:(id)a4
+- (void)speechRequest:(id)request didReportInstrumentMetrics:(id)metrics
 {
-  v13 = a3;
-  v6 = a4;
+  requestCopy = request;
+  metricsCopy = metrics;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -148,21 +148,21 @@
 
     if (v9)
     {
-      v10 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v13];
+      v10 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:requestCopy];
       if (v10)
       {
         v11 = objc_loadWeakRetained(&self->_delegate);
         v12 = objc_loadWeakRetained(&self->_connection);
-        [v11 connection:v12 speechRequest:v10 successWithInstrumentMetrics:v6];
+        [v11 connection:v12 speechRequest:v10 successWithInstrumentMetrics:metricsCopy];
       }
     }
   }
 }
 
-- (void)synthesisRequest:(id)a3 didReceiveTimingInfo:(id)a4
+- (void)synthesisRequest:(id)request didReceiveTimingInfo:(id)info
 {
-  v15 = a3;
-  v6 = a4;
+  requestCopy = request;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -171,24 +171,24 @@
 
     if (v9)
     {
-      v10 = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "pointer")}];
-      v12 = [v10 objectForKey:v11];
+      concurrentSynthesisRequests = [(VSSpeechConnectionDelegateWrapper *)self concurrentSynthesisRequests];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "pointer")}];
+      v12 = [concurrentSynthesisRequests objectForKey:v11];
 
       if (v12)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
         v14 = objc_loadWeakRetained(&self->_connection);
-        [v13 connection:v14 speechRequest:v12 didReceiveTimingInfo:v6];
+        [v13 connection:v14 speechRequest:v12 didReceiveTimingInfo:infoCopy];
       }
     }
   }
 }
 
-- (void)speechRequest:(id)a3 didReceiveTimingInfo:(id)a4
+- (void)speechRequest:(id)request didReceiveTimingInfo:(id)info
 {
-  v13 = a3;
-  v6 = a4;
+  requestCopy = request;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -197,22 +197,22 @@
 
     if (v9)
     {
-      v10 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v13];
+      v10 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:requestCopy];
       if (v10)
       {
         v11 = objc_loadWeakRetained(&self->_delegate);
         v12 = objc_loadWeakRetained(&self->_connection);
-        [v11 connection:v12 speechRequest:v10 didReceiveTimingInfo:v6];
+        [v11 connection:v12 speechRequest:v10 didReceiveTimingInfo:infoCopy];
       }
     }
   }
 }
 
-- (void)speechRequest:(id)a3 didStartWithMark:(int64_t)a4 forRange:(_NSRange)a5
+- (void)speechRequest:(id)request didStartWithMark:(int64_t)mark forRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v15 = a3;
+  length = range.length;
+  location = range.location;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -221,20 +221,20 @@
 
     if (v11)
     {
-      v12 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v15];
+      v12 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:requestCopy];
       if (v12)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
         v14 = objc_loadWeakRetained(&self->_connection);
-        [v13 connection:v14 speechRequest:v12 willSpeakMark:a4 inRange:{location, length}];
+        [v13 connection:v14 speechRequest:v12 willSpeakMark:mark inRange:{location, length}];
       }
     }
   }
 }
 
-- (void)speechRequestDidContinue:(id)a3
+- (void)speechRequestDidContinue:(id)continue
 {
-  v10 = a3;
+  continueCopy = continue;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -243,7 +243,7 @@
 
     if (v6)
     {
-      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v10];
+      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:continueCopy];
       if (v7)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
@@ -254,9 +254,9 @@
   }
 }
 
-- (void)speechRequestDidPause:(id)a3
+- (void)speechRequestDidPause:(id)pause
 {
-  v10 = a3;
+  pauseCopy = pause;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -265,7 +265,7 @@
 
     if (v6)
     {
-      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v10];
+      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:pauseCopy];
       if (v7)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
@@ -276,9 +276,9 @@
   }
 }
 
-- (void)speechRequestDidStart:(id)a3
+- (void)speechRequestDidStart:(id)start
 {
-  v10 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   if (WeakRetained)
   {
@@ -287,7 +287,7 @@
 
     if (v6)
     {
-      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:v10];
+      v7 = [(VSSpeechConnectionDelegateWrapper *)self getLocalRequest:startCopy];
       if (v7)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
@@ -298,16 +298,16 @@
   }
 }
 
-- (id)getLocalAudioRequest:(id)a3
+- (id)getLocalAudioRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VSSpeechConnectionDelegateWrapper *)self audioRequests];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  audioRequests = [(VSSpeechConnectionDelegateWrapper *)self audioRequests];
+  v6 = [audioRequests countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -317,19 +317,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(audioRequests);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 requestCreatedTimestamp];
-        if (v10 == [v9 requestCreatedTimestamp])
+        requestCreatedTimestamp = [requestCopy requestCreatedTimestamp];
+        if (requestCreatedTimestamp == [v9 requestCreatedTimestamp])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [audioRequests countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -346,16 +346,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)getLocalRequest:(id)a3
+- (id)getLocalRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VSSpeechConnectionDelegateWrapper *)self requests];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  requests = [(VSSpeechConnectionDelegateWrapper *)self requests];
+  v6 = [requests countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -365,19 +365,19 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requests);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 requestCreatedTimestamp];
-        if (v10 == [v9 requestCreatedTimestamp])
+        requestCreatedTimestamp = [requestCopy requestCreatedTimestamp];
+        if (requestCreatedTimestamp == [v9 requestCreatedTimestamp])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [requests countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

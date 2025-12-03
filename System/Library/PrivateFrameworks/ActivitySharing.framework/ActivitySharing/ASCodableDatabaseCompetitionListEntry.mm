@@ -1,20 +1,20 @@
 @interface ASCodableDatabaseCompetitionListEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableDatabaseCompetitionListEntry
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ASCodableDatabaseCompetitionListEntry;
   v4 = [(ASCodableDatabaseCompetitionListEntry *)&v8 description];
-  v5 = [(ASCodableDatabaseCompetitionListEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableDatabaseCompetitionListEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   friendUUID = self->_friendUUID;
   if (friendUUID)
   {
-    [v3 setObject:friendUUID forKey:@"friendUUID"];
+    [dictionary setObject:friendUUID forKey:@"friendUUID"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -70,70 +70,70 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_friendUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_systemFieldsOnlyRecord)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     owner = self->_owner;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_friendUUID)
   {
-    [v4 setFriendUUID:?];
-    v4 = v5;
+    [toCopy setFriendUUID:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_type;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = self->_type;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_systemFieldsOnlyRecord)
   {
     [v5 setSystemFieldsOnlyRecord:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_owner;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_owner;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_friendUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_friendUUID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -143,7 +143,7 @@
     *(v5 + 40) |= 2u;
   }
 
-  v8 = [(NSData *)self->_systemFieldsOnlyRecord copyWithZone:a3];
+  v8 = [(NSData *)self->_systemFieldsOnlyRecord copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -156,16 +156,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   friendUUID = self->_friendUUID;
-  if (friendUUID | *(v4 + 3))
+  if (friendUUID | *(equalCopy + 3))
   {
     if (![(NSData *)friendUUID isEqual:?])
     {
@@ -174,22 +174,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_type != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_type != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   systemFieldsOnlyRecord = self->_systemFieldsOnlyRecord;
-  if (systemFieldsOnlyRecord | *(v4 + 4))
+  if (systemFieldsOnlyRecord | *(equalCopy + 4))
   {
     if (![(NSData *)systemFieldsOnlyRecord isEqual:?])
     {
@@ -201,10 +201,10 @@ LABEL_16:
     has = self->_has;
   }
 
-  v9 = (*(v4 + 40) & 1) == 0;
+  v9 = (*(equalCopy + 40) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_owner != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_owner != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -244,31 +244,31 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(ASCodableDatabaseCompetitionListEntry *)self setFriendUUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((v4[5] & 2) != 0)
+  if ((fromCopy[5] & 2) != 0)
   {
-    self->_type = v4[2];
+    self->_type = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(ASCodableDatabaseCompetitionListEntry *)self setSystemFieldsOnlyRecord:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_owner = v4[1];
+    self->_owner = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

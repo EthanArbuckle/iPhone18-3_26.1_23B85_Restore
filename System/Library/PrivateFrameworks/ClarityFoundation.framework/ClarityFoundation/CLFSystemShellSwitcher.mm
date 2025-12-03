@@ -1,8 +1,8 @@
 @interface CLFSystemShellSwitcher
 + (CLFSystemShellSwitcher)sharedSystemShellSwitcher;
-- (BOOL)_createFileWithError:(id *)a3;
-- (BOOL)_removeFileWithError:(id *)a3;
-- (BOOL)setClarityBoardEnabled:(BOOL)a3 error:(id *)a4;
+- (BOOL)_createFileWithError:(id *)error;
+- (BOOL)_removeFileWithError:(id *)error;
+- (BOOL)setClarityBoardEnabled:(BOOL)enabled error:(id *)error;
 - (void)signalSiriAvailability;
 @end
 
@@ -27,19 +27,19 @@ uint64_t __51__CLFSystemShellSwitcher_sharedSystemShellSwitcher__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)setClarityBoardEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setClarityBoardEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v22 = *MEMORY[0x1E69E9840];
   v7 = +[CLFLog commonLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v21 = v5;
+    v21 = enabledCopy;
     _os_log_impl(&dword_1E115B000, v7, OS_LOG_TYPE_DEFAULT, "Set ClarityBoard enabled: %i", buf, 8u);
   }
 
-  if (v5)
+  if (enabledCopy)
   {
     v8 = +[(CLFSettings_GeneratedCode *)CLFSettings];
     [v8 setRestartReason:@"enableClarityBoard"];
@@ -47,7 +47,7 @@ uint64_t __51__CLFSystemShellSwitcher_sharedSystemShellSwitcher__block_invoke()
     v9 = +[(CLFSettings_GeneratedCode *)CLFSettings];
     [v9 setShouldShowTripleClickInstructions:1];
 
-    if (![(CLFSystemShellSwitcher *)self _createFileWithError:a4])
+    if (![(CLFSystemShellSwitcher *)self _createFileWithError:error])
     {
 LABEL_12:
       LOBYTE(v10) = 0;
@@ -69,19 +69,19 @@ LABEL_7:
       [CLFSystemShellSwitcher setClarityBoardEnabled:v12 error:v13];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = [MEMORY[0x1E696AD98] numberWithInt:{v12, @"RebootErrorCode"}];
       v19 = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:5 userInfo:v15];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:5 userInfo:v15];
     }
 
     goto LABEL_12;
   }
 
-  v10 = [(CLFSystemShellSwitcher *)self _removeFileWithError:a4];
+  v10 = [(CLFSystemShellSwitcher *)self _removeFileWithError:error];
   if (v10)
   {
     goto LABEL_7;
@@ -92,15 +92,15 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_createFileWithError:(id *)a3
+- (BOOL)_createFileWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [(CLFSystemShellSwitcher *)self _directoryURL];
-  if (v4)
+  _directoryURL = [(CLFSystemShellSwitcher *)self _directoryURL];
+  if (_directoryURL)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0;
-    v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v18];
+    v6 = [defaultManager createDirectoryAtURL:_directoryURL withIntermediateDirectories:1 attributes:0 error:&v18];
     v7 = v18;
     if (!v6)
     {
@@ -110,7 +110,7 @@ LABEL_14:
         [CLFSystemShellSwitcher _createFileWithError:];
       }
 
-      if (a3)
+      if (error)
       {
         if (v7)
         {
@@ -120,7 +120,7 @@ LABEL_14:
         }
 
         [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:3 userInfo:0];
-        *a3 = LOBYTE(v10) = 0;
+        *error = LOBYTE(v10) = 0;
       }
 
       else
@@ -131,10 +131,10 @@ LABEL_14:
       goto LABEL_25;
     }
 
-    v8 = [v4 URLByAppendingPathComponent:@"ClarityBoardEnabled"];
-    v9 = [MEMORY[0x1E695DEF0] data];
+    v8 = [_directoryURL URLByAppendingPathComponent:@"ClarityBoardEnabled"];
+    data = [MEMORY[0x1E695DEF0] data];
     v17 = 0;
-    v10 = [v9 writeToURL:v8 options:0x10000000 error:&v17];
+    v10 = [data writeToURL:v8 options:0x10000000 error:&v17];
     v11 = v17;
 
     v12 = +[CLFLog commonLog];
@@ -156,7 +156,7 @@ LABEL_14:
         [CLFSystemShellSwitcher _createFileWithError:];
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_24;
       }
@@ -173,7 +173,7 @@ LABEL_14:
         v13 = 0;
       }
 
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:2 userInfo:v13];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:2 userInfo:v13];
     }
 
 LABEL_24:
@@ -182,10 +182,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:1 userInfo:0];
-    *a3 = LOBYTE(v10) = 0;
+    *error = LOBYTE(v10) = 0;
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)_removeFileWithError:(id *)a3
+- (BOOL)_removeFileWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(CLFSystemShellSwitcher *)self _directoryURL];
-  if (v4)
+  _directoryURL = [(CLFSystemShellSwitcher *)self _directoryURL];
+  if (_directoryURL)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v4 URLByAppendingPathComponent:@"ClarityBoardEnabled"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [_directoryURL URLByAppendingPathComponent:@"ClarityBoardEnabled"];
     v16 = 0;
-    v7 = [v5 removeItemAtURL:v6 error:&v16];
+    v7 = [defaultManager removeItemAtURL:v6 error:&v16];
     v8 = v16;
     v9 = v8;
     if (v7)
@@ -226,12 +226,12 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v11 = [v8 domain];
-    if ([v11 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v12 = [v9 code];
+      code = [v9 code];
 
-      if (v12 == 4)
+      if (code == 4)
       {
         LOBYTE(v7) = 1;
         goto LABEL_21;
@@ -248,7 +248,7 @@ LABEL_20:
       [CLFSystemShellSwitcher _removeFileWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       if (v9)
       {
@@ -262,7 +262,7 @@ LABEL_20:
         v10 = 0;
       }
 
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:4 userInfo:v10];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:4 userInfo:v10];
       goto LABEL_20;
     }
 
@@ -272,10 +272,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"CLFSystemShellSwitcher" code:1 userInfo:0];
-    *a3 = LOBYTE(v7) = 0;
+    *error = LOBYTE(v7) = 0;
   }
 
   else

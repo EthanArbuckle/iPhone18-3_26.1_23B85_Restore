@@ -1,6 +1,6 @@
 @interface GTDisplayRequest
 - (GTDisplayRequest)init;
-- (GTDisplayRequest)initWithCoder:(id)a3;
+- (GTDisplayRequest)initWithCoder:(id)coder;
 @end
 
 @implementation GTDisplayRequest
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (GTDisplayRequest)initWithCoder:(id)a3
+- (GTDisplayRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTDisplayRequest;
   v5 = [(GTDisplayRequest *)&v8 init];
   if (v5)
   {
-    v5->_requestID = [v4 decodeInt64ForKey:@"requestID"];
+    v5->_requestID = [coderCopy decodeInt64ForKey:@"requestID"];
     v6 = v5;
   }
 

@@ -1,20 +1,20 @@
 @interface WFMoveFileAction
-- (id)contentDestinationWithError:(id *)a3;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)contentDestinationWithError:(id *)error;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFMoveFileAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(WFMoveFileAction *)self input];
-  v10 = [v9 numberOfItems];
+  nameCopy = name;
+  destinationCopy = destination;
+  input = [(WFMoveFileAction *)self input];
+  numberOfItems = [input numberOfItems];
 
   v11 = MEMORY[0x277CCACA8];
-  if (v10 <= 1)
+  if (numberOfItems <= 1)
   {
     v12 = @"Allow “%1$@” to move a file in “%2$@”?";
   }
@@ -25,12 +25,12 @@
   }
 
   v13 = WFLocalizedString(v12);
-  v14 = [v11 localizedStringWithFormat:v13, v7, v8];
+  destinationCopy = [v11 localizedStringWithFormat:v13, nameCopy, destinationCopy];
 
-  return v14;
+  return destinationCopy;
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v3 = [(WFMoveFileAction *)self parameterValueForKey:@"WFFolder" ofClass:objc_opt_class()];
   v4 = [MEMORY[0x277CFC318] contentLocationForFile:v3];
@@ -38,17 +38,17 @@
   return v4;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 numberOfItems] == 1)
+  inputCopy = input;
+  if ([inputCopy numberOfItems] == 1)
   {
     v5 = [(WFMoveFileAction *)self parameterValueForKey:@"WFFolder" ofClass:objc_opt_class()];
     if (v5)
     {
       v6 = [(WFMoveFileAction *)self parameterValueForKey:@"WFReplaceExisting" ofClass:objc_opt_class()];
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -57,8 +57,8 @@
       v15[4] = self;
       v5 = v5;
       v16 = v5;
-      v17 = v7;
-      [v4 getFileRepresentation:v15 forType:0];
+      v17 = bOOLValue;
+      [inputCopy getFileRepresentation:v15 forType:0];
     }
 
     else

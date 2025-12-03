@@ -11,7 +11,7 @@
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
-  v12 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v3 = [(ACSportsTeamsListViewAccessibility *)self safeValueForKey:@"domainObjectViews"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())

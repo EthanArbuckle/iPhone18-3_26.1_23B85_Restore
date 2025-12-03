@@ -1,54 +1,54 @@
 @interface MLPEmbeddingLayer
-- (MLPEmbeddingLayer)initWithName:(id)a3 inputLength:(unint64_t)a4 vocabSize:(unint64_t)a5 embeddingDimension:(unint64_t)a6;
-- (MLPEmbeddingLayer)initWithName:(id)a3 parameters:(id *)a4;
+- (MLPEmbeddingLayer)initWithName:(id)name inputLength:(unint64_t)length vocabSize:(unint64_t)size embeddingDimension:(unint64_t)dimension;
+- (MLPEmbeddingLayer)initWithName:(id)name parameters:(id *)parameters;
 - (NSArray)mlpOptimizers;
 - (id).cxx_construct;
-- (id)forward:(id)a3 input:(id)a4 labels:(id)a5 runInference:(BOOL)a6;
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5;
-- (id)seqBackward:(id)a3 dataBatch:(id)a4 inputGradient:(id)a5;
-- (id)seqForward:(id)a3 input:(id)a4 dataBatch:(id)a5 runInference:(BOOL)a6;
+- (id)forward:(id)forward input:(id)input labels:(id)labels runInference:(BOOL)inference;
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter;
+- (id)seqBackward:(id)backward dataBatch:(id)batch inputGradient:(id)gradient;
+- (id)seqForward:(id)forward input:(id)input dataBatch:(id)batch runInference:(BOOL)inference;
 - (void)createKernel;
-- (void)seqBackward:(id)a3 inputGradientMatrix:(id)a4 matrixIter:(unint64_t)a5;
+- (void)seqBackward:(id)backward inputGradientMatrix:(id)matrix matrixIter:(unint64_t)iter;
 @end
 
 @implementation MLPEmbeddingLayer
 
-- (MLPEmbeddingLayer)initWithName:(id)a3 parameters:(id *)a4
+- (MLPEmbeddingLayer)initWithName:(id)name parameters:(id *)parameters
 {
-  v6 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = MLPEmbeddingLayer;
-  v7 = [(MLPLayer *)&v24 initWithLayerType:7 name:v6 parameters:a4];
+  v7 = [(MLPLayer *)&v24 initWithLayerType:7 name:nameCopy parameters:parameters];
   v10 = v7;
   if (v7)
   {
-    objc_msgSend_setInputLength_(v7, v8, a4->var9[0][0], v9);
+    objc_msgSend_setInputLength_(v7, v8, parameters->var9[0][0], v9);
     objc_msgSend_setInputChannels_(v10, v11, 1, v12);
-    objc_msgSend_setOutputLength_(v10, v13, a4->var9[0][0], v14);
-    objc_msgSend_setOutputChannels_(v10, v15, a4->var10[0][0] / a4->var9[0][0], v16);
-    objc_msgSend_setVocabSize_(v10, v17, a4->var11[0], v18);
-    objc_msgSend_setEmbeddingDimension_(v10, v19, a4->var10[0][0] / a4->var9[0][0], v20);
-    objc_msgSend_setInitialWeights_(v10, v21, a4->var13[0], v22);
+    objc_msgSend_setOutputLength_(v10, v13, parameters->var9[0][0], v14);
+    objc_msgSend_setOutputChannels_(v10, v15, parameters->var10[0][0] / parameters->var9[0][0], v16);
+    objc_msgSend_setVocabSize_(v10, v17, parameters->var11[0], v18);
+    objc_msgSend_setEmbeddingDimension_(v10, v19, parameters->var10[0][0] / parameters->var9[0][0], v20);
+    objc_msgSend_setInitialWeights_(v10, v21, parameters->var13[0], v22);
   }
 
   return v10;
 }
 
-- (MLPEmbeddingLayer)initWithName:(id)a3 inputLength:(unint64_t)a4 vocabSize:(unint64_t)a5 embeddingDimension:(unint64_t)a6
+- (MLPEmbeddingLayer)initWithName:(id)name inputLength:(unint64_t)length vocabSize:(unint64_t)size embeddingDimension:(unint64_t)dimension
 {
-  v10 = a3;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = MLPEmbeddingLayer;
-  v11 = [(MLPLayer *)&v26 initWithLayerType:7 name:v10 neuronType:0 neuronParams:0];
+  v11 = [(MLPLayer *)&v26 initWithLayerType:7 name:nameCopy neuronType:0 neuronParams:0];
   v14 = v11;
   if (v11)
   {
-    objc_msgSend_setInputLength_(v11, v12, a4, v13);
+    objc_msgSend_setInputLength_(v11, v12, length, v13);
     objc_msgSend_setInputChannels_(v14, v15, 1, v16);
-    objc_msgSend_setOutputLength_(v14, v17, a4, v18);
-    objc_msgSend_setOutputChannels_(v14, v19, a6, v20);
-    objc_msgSend_setVocabSize_(v14, v21, a5, v22);
-    objc_msgSend_setEmbeddingDimension_(v14, v23, a6, v24);
+    objc_msgSend_setOutputLength_(v14, v17, length, v18);
+    objc_msgSend_setOutputChannels_(v14, v19, dimension, v20);
+    objc_msgSend_setVocabSize_(v14, v21, size, v22);
+    objc_msgSend_setEmbeddingDimension_(v14, v23, dimension, v24);
   }
 
   return v14;
@@ -120,12 +120,12 @@
   objc_msgSend_setSumFilter_(self, v110, v109, v111);
 }
 
-- (id)forward:(id)a3 input:(id)a4 labels:(id)a5 runInference:(BOOL)a6
+- (id)forward:(id)forward input:(id)input labels:(id)labels runInference:(BOOL)inference
 {
   v145 = *MEMORY[0x1E69E9840];
-  v138 = a3;
-  v131 = a4;
-  v130 = a5;
+  forwardCopy = forward;
+  inputCopy = input;
+  labelsCopy = labels;
   v12 = objc_msgSend_network(self, v9, v10, v11);
   v16 = objc_msgSend_deviceHandler(v12, v13, v14, v15);
   v135 = objc_msgSend_device(v16, v17, v18, v19);
@@ -141,13 +141,13 @@
   }
 
   v36 = MEMORY[0x1E695DF70];
-  v37 = objc_msgSend_count(v131, v24, v25, v26);
+  v37 = objc_msgSend_count(inputCopy, v24, v25, v26);
   v134 = objc_msgSend_arrayWithCapacity_(v36, v38, v37, v39);
   v142 = 0u;
   v143 = 0u;
   v140 = 0u;
   v141 = 0u;
-  obj = v131;
+  obj = inputCopy;
   v136 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v40, &v140, v144, 16);
   if (v136)
   {
@@ -186,10 +186,10 @@
         v74 = objc_msgSend_network(self, v71, v72, v73);
         v78 = objc_msgSend_deviceHandler(v74, v75, v76, v77);
         v82 = objc_msgSend_embeddingDimension(self, v79, v80, v81);
-        v84 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(v78, v83, v82, 0, v138);
+        v84 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(v78, v83, v82, 0, forwardCopy);
 
         v88 = objc_msgSend_matrixCopy(self, v85, v86, v87);
-        objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v88, v89, v138, v60);
+        objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v88, v89, forwardCopy, v60);
 
         v90 = MEMORY[0x1E6974480];
         objc_msgSend_embeddingDimension(self, v91, v92, v93);
@@ -204,7 +204,7 @@
         v116 = objc_msgSend_network(self, v113, v114, v115);
         v120 = objc_msgSend_m2iKernel(v116, v117, v118, v119);
         v124 = objc_msgSend_embeddingDimension(self, v121, v122, v123);
-        v126 = objc_msgSend_imageFromMatrix_m2iKernel_cmdBuf_width_height_featureChannels_(v112, v125, v104, v120, v138, 0, 1, v124);
+        v126 = objc_msgSend_imageFromMatrix_m2iKernel_cmdBuf_width_height_featureChannels_(v112, v125, v104, v120, forwardCopy, 0, 1, v124);
 
         objc_msgSend_addObject_(v134, v127, v126, v128);
       }
@@ -218,32 +218,32 @@
   return v134;
 }
 
-- (id)seqForward:(id)a3 input:(id)a4 dataBatch:(id)a5 runInference:(BOOL)a6
+- (id)seqForward:(id)forward input:(id)input dataBatch:(id)batch runInference:(BOOL)inference
 {
-  v100 = a3;
-  v101 = a4;
-  v97 = a5;
-  v105 = self;
+  forwardCopy = forward;
+  inputCopy = input;
+  batchCopy = batch;
+  selfCopy = self;
   v12 = objc_msgSend_network(self, v9, v10, v11);
   v16 = objc_msgSend_deviceHandler(v12, v13, v14, v15);
   v99 = objc_msgSend_device(v16, v17, v18, v19);
 
-  v23 = objc_msgSend_matrixCopy(v105, v20, v21, v22);
+  v23 = objc_msgSend_matrixCopy(selfCopy, v20, v21, v22);
 
   if (!v23)
   {
     v27 = objc_alloc(MEMORY[0x1E6974658]);
-    v31 = objc_msgSend_embeddingDimension(v105, v28, v29, v30);
+    v31 = objc_msgSend_embeddingDimension(selfCopy, v28, v29, v30);
     v33 = objc_msgSend_initWithDevice_copyRows_copyColumns_sourcesAreTransposed_destinationsAreTransposed_(v27, v32, v99, 1, v31, 0, 0);
-    objc_msgSend_setMatrixCopy_(v105, v34, v33, v35);
+    objc_msgSend_setMatrixCopy_(selfCopy, v34, v33, v35);
   }
 
   v36 = MEMORY[0x1E695DF70];
-  v37 = objc_msgSend_count(v101, v24, v25, v26);
+  v37 = objc_msgSend_count(inputCopy, v24, v25, v26);
   v98 = objc_msgSend_arrayWithCapacity_(v36, v38, v37, v39);
-  p_wordIDRepetitions = &v105->wordIDRepetitions;
-  begin = v105->wordIDRepetitions.__begin_;
-  end = v105->wordIDRepetitions.__end_;
+  p_wordIDRepetitions = &selfCopy->wordIDRepetitions;
+  begin = selfCopy->wordIDRepetitions.__begin_;
+  end = selfCopy->wordIDRepetitions.__end_;
   if (end != begin)
   {
     do
@@ -256,9 +256,9 @@
     while (v46 != begin);
   }
 
-  v105->wordIDRepetitions.__end_ = begin;
-  v47 = objc_msgSend_count(v101, v40, v41, v42);
-  v50 = v105->wordIDRepetitions.__end_;
+  selfCopy->wordIDRepetitions.__end_ = begin;
+  v47 = objc_msgSend_count(inputCopy, v40, v41, v42);
+  v50 = selfCopy->wordIDRepetitions.__end_;
   v51 = 0xAAAAAAAAAAAAAAABLL * (&v50[-*p_wordIDRepetitions] >> 3);
   v52 = (v47 - v51);
   if (v47 <= v51)
@@ -278,7 +278,7 @@
         while (v54 != v53);
       }
 
-      v105->wordIDRepetitions.__end_ = v53;
+      selfCopy->wordIDRepetitions.__end_ = v53;
     }
   }
 
@@ -287,9 +287,9 @@
     sub_19D394E4C(p_wordIDRepetitions, v52);
   }
 
-  for (i = 0; i < objc_msgSend_count(v101, v52, v48, v49); ++i)
+  for (i = 0; i < objc_msgSend_count(inputCopy, v52, v48, v49); ++i)
   {
-    v102 = objc_msgSend_objectAtIndexedSubscript_(v101, v56, i, v57);
+    v102 = objc_msgSend_objectAtIndexedSubscript_(inputCopy, v56, i, v57);
     v61 = objc_msgSend_rows(v102, v58, v59, v60);
     v62 = objc_alloc(MEMORY[0x1E6974660]);
     v104 = objc_msgSend_initWithDevice_count_(v62, v63, v99, v61);
@@ -308,13 +308,13 @@
       sub_19D2AE2B4();
     }
 
-    v79 = objc_msgSend_network(v105, v76, v77, v78);
+    v79 = objc_msgSend_network(selfCopy, v76, v77, v78);
     v83 = objc_msgSend_deviceHandler(v79, v80, v81, v82);
-    v87 = objc_msgSend_embeddingDimension(v105, v84, v85, v86);
-    v103 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(v83, v88, v61, v87, v100);
+    v87 = objc_msgSend_embeddingDimension(selfCopy, v84, v85, v86);
+    v103 = objc_msgSend_tempMatrixWithRows_columns_cmdBuf_(v83, v88, v61, v87, forwardCopy);
 
-    v92 = objc_msgSend_matrixCopy(v105, v89, v90, v91);
-    objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v92, v93, v100, v104);
+    v92 = objc_msgSend_matrixCopy(selfCopy, v89, v90, v91);
+    objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v92, v93, forwardCopy, v104);
 
     objc_msgSend_addObject_(v98, v94, v103, v95);
   }
@@ -322,37 +322,37 @@
   return v98;
 }
 
-- (id)seqBackward:(id)a3 dataBatch:(id)a4 inputGradient:(id)a5
+- (id)seqBackward:(id)backward dataBatch:(id)batch inputGradient:(id)gradient
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = a5;
-  for (i = 0; i < objc_msgSend_count(v13, v10, v11, v12); ++i)
+  backwardCopy = backward;
+  batchCopy = batch;
+  gradientCopy = gradient;
+  for (i = 0; i < objc_msgSend_count(gradientCopy, v10, v11, v12); ++i)
   {
-    v17 = objc_msgSend_objectAtIndexedSubscript_(v13, v15, i, v16);
-    objc_msgSend_seqBackward_inputGradientMatrix_matrixIter_(self, v18, v8, v17, i);
+    v17 = objc_msgSend_objectAtIndexedSubscript_(gradientCopy, v15, i, v16);
+    objc_msgSend_seqBackward_inputGradientMatrix_matrixIter_(self, v18, backwardCopy, v17, i);
   }
 
   return 0;
 }
 
-- (void)seqBackward:(id)a3 inputGradientMatrix:(id)a4 matrixIter:(unint64_t)a5
+- (void)seqBackward:(id)backward inputGradientMatrix:(id)matrix matrixIter:(unint64_t)iter
 {
   v189[2] = *MEMORY[0x1E69E9840];
-  v183 = a3;
-  v8 = a4;
-  v9 = self;
-  v184 = v8;
+  backwardCopy = backward;
+  matrixCopy = matrix;
+  selfCopy = self;
+  v184 = matrixCopy;
   begin = self->wordIDRepetitions.__begin_;
-  v14 = objc_msgSend_network(v9, v11, v12, v13);
+  v14 = objc_msgSend_network(selfCopy, v11, v12, v13);
   v18 = objc_msgSend_deviceHandler(v14, v15, v16, v17);
   v180 = objc_msgSend_device(v18, v19, v20, v21);
 
-  v25 = objc_msgSend_zeroFilter(v9, v22, v23, v24);
-  v29 = objc_msgSend_weights(v9, v26, v27, v28);
-  v33 = objc_msgSend_weightGradients(v9, v30, v31, v32);
-  objc_msgSend_encodeToCommandBuffer_inputMatrix_biasVector_resultMatrix_(v25, v34, v183, v29, 0, v33);
-  v35 = &begin[24 * a5];
+  v25 = objc_msgSend_zeroFilter(selfCopy, v22, v23, v24);
+  v29 = objc_msgSend_weights(selfCopy, v26, v27, v28);
+  v33 = objc_msgSend_weightGradients(selfCopy, v30, v31, v32);
+  objc_msgSend_encodeToCommandBuffer_inputMatrix_biasVector_resultMatrix_(v25, v34, backwardCopy, v29, 0, v33);
+  v35 = &begin[24 * iter];
 
   v185 = v35;
   v41 = *v35;
@@ -402,7 +402,7 @@
     }
 
     while (v45 != v40);
-    v187 = v9;
+    v187 = selfCopy;
     if (v42)
     {
       v46 = objc_alloc(MEMORY[0x1E6974660]);
@@ -454,9 +454,9 @@
         while (v64 != v40);
       }
 
-      v9 = v187;
+      selfCopy = v187;
       v65 = objc_msgSend_matrixCopyFilter(v187, v48, v49, v50);
-      objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v65, v66, v183, v51);
+      objc_msgSend_encodeToCommandBuffer_copyDescriptor_(v65, v66, backwardCopy, v51);
     }
 
     if (v43)
@@ -466,14 +466,14 @@
       v178 = objc_msgSend_vectorDescriptorWithLength_dataType_(v67, v69, 4 * v68, 32);
       v70 = objc_alloc(MEMORY[0x1E69744B0]);
       v72 = objc_msgSend_initWithDevice_descriptor_(v70, v71, v180, v178);
-      objc_msgSend_setOffsetVector_(v9, v73, v72, v74);
+      objc_msgSend_setOffsetVector_(selfCopy, v73, v72, v74);
 
-      v78 = objc_msgSend_offsetVector(v9, v75, v76, v77);
+      v78 = objc_msgSend_offsetVector(selfCopy, v75, v76, v77);
       v82 = objc_msgSend_data(v78, v79, v80, v81);
       v83 = v82;
       v87 = objc_msgSend_contents(v83, v84, v85, v86);
 
-      v91 = objc_msgSend_offsetVector(v9, v88, v89, v90);
+      v91 = objc_msgSend_offsetVector(selfCopy, v88, v89, v90);
       v95 = objc_msgSend_data(v91, v92, v93, v94);
       v99 = objc_msgSend_length(v95, v96, v97, v98);
       bzero(v87, v99);
@@ -481,7 +481,7 @@
       v100 = objc_alloc(MEMORY[0x1E6974A08]);
       v104 = objc_msgSend_columns(v184, v101, v102, v103);
       v106 = objc_msgSend_initWithDevice_count_rows_columns_transpose_(v100, v105, v180, 2, 1, v104, 0);
-      objc_msgSend_setSumFilter_(v9, v107, v106, v108);
+      objc_msgSend_setSumFilter_(selfCopy, v107, v106, v108);
 
       v112 = *v185;
       if (*v185 != v40)
@@ -525,7 +525,7 @@
               v153 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v152, v189, 2);
               v157 = objc_msgSend_weightGradients(v187, v154, v155, v156);
               v161 = objc_msgSend_offsetVector(v187, v158, v159, v160);
-              objc_msgSend_encodeToCommandBuffer_sourceMatrices_resultMatrix_scaleVector_offsetVector_biasVector_startIndex_(v143, v162, v183, v153, v157, 0, v161, 0, v116);
+              objc_msgSend_encodeToCommandBuffer_sourceMatrices_resultMatrix_scaleVector_offsetVector_biasVector_startIndex_(v143, v162, backwardCopy, v153, v157, 0, v161, 0, v116);
 
               ++v186;
               v114 += 4;
@@ -566,23 +566,23 @@
         while (v164 != v181);
       }
 
-      v9 = v187;
+      selfCopy = v187;
     }
   }
 
-  v165 = objc_msgSend_optimizer(v9, v36, v37, v38);
-  v169 = objc_msgSend_weightGradients(v9, v166, v167, v168);
-  v173 = objc_msgSend_weights(v9, v170, v171, v172);
-  objc_msgSend_encodeToCommandBuffer_inputGradientMatrix_inputValuesMatrix_(v165, v174, v183, v169, v173);
+  v165 = objc_msgSend_optimizer(selfCopy, v36, v37, v38);
+  v169 = objc_msgSend_weightGradients(selfCopy, v166, v167, v168);
+  v173 = objc_msgSend_weights(selfCopy, v170, v171, v172);
+  objc_msgSend_encodeToCommandBuffer_inputGradientMatrix_inputValuesMatrix_(v165, v174, backwardCopy, v169, v173);
 
   objc_msgSend_resetReadCount(v184, v175, v176, v177);
 }
 
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter
 {
   v162[1] = *MEMORY[0x1E69E9840];
-  v151 = a3;
-  v152 = a4;
+  nodeCopy = node;
+  modelCopy = model;
   bzero(v154, 0x2C0uLL);
   v154[4] = 0;
   v154[5] = 0;
@@ -611,7 +611,7 @@
 
   v72 = objc_msgSend_network(self, v69, v70, v71);
   v76 = objc_msgSend_deviceHandler(v72, v73, v74, v75);
-  v148 = a5;
+  iterCopy = iter;
   v80 = objc_msgSend_commandQueue(v76, v77, v78, v79);
 
   v150 = v80;
@@ -659,7 +659,7 @@
   v160 = v142;
   v144 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v143, &v160, 1);
 
-  v146 = objc_msgSend_generateNode_model_weightIter_params_inputChunks_outputChunks_(self, v145, v151, v152, v148, v154, v124, v144);
+  v146 = objc_msgSend_generateNode_model_weightIter_params_inputChunks_outputChunks_(self, v145, nodeCopy, modelCopy, iterCopy, v154, v124, v144);
 
   return v146;
 }

@@ -1,37 +1,37 @@
 @interface NTKGalleonAltitude
-+ (id)initAltitude:(id)a3;
-- (NTKGalleonAltitude)initWithAbsoluteAltitude:(id)a3;
-- (double)_convertMeterInFeet:(double)a3;
-- (double)_getCloserValue:(double)a3 low:(double)a4 high:(double)a5;
-- (double)_getRoundedAccuracy:(double)a3 byUnit:(BOOL)a4;
-- (double)_getRoundedPrecisionWithValue:(double)a3 multiplier:(double)a4;
++ (id)initAltitude:(id)altitude;
+- (NTKGalleonAltitude)initWithAbsoluteAltitude:(id)altitude;
+- (double)_convertMeterInFeet:(double)feet;
+- (double)_getCloserValue:(double)value low:(double)low high:(double)high;
+- (double)_getRoundedAccuracy:(double)accuracy byUnit:(BOOL)unit;
+- (double)_getRoundedPrecisionWithValue:(double)value multiplier:(double)multiplier;
 - (void)_populateRoundedValue;
 @end
 
 @implementation NTKGalleonAltitude
 
-+ (id)initAltitude:(id)a3
++ (id)initAltitude:(id)altitude
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v8 = objc_msgSend_initWithAbsoluteAltitude_(v5, v6, v4, v7);
+  altitudeCopy = altitude;
+  v5 = [self alloc];
+  v8 = objc_msgSend_initWithAbsoluteAltitude_(v5, v6, altitudeCopy, v7);
 
   return v8;
 }
 
-- (NTKGalleonAltitude)initWithAbsoluteAltitude:(id)a3
+- (NTKGalleonAltitude)initWithAbsoluteAltitude:(id)altitude
 {
-  v4 = a3;
+  altitudeCopy = altitude;
   v22.receiver = self;
   v22.super_class = NTKGalleonAltitude;
   v8 = [(NTKGalleonAltitude *)&v22 init];
   if (v8)
   {
-    objc_msgSend_altitude(v4, v5, v6, v7);
+    objc_msgSend_altitude(altitudeCopy, v5, v6, v7);
     v8->_rawAltitude = v9;
-    objc_msgSend_accuracy(v4, v10, v11, v12);
+    objc_msgSend_accuracy(altitudeCopy, v10, v11, v12);
     v8->_rawAccuracy = v13;
-    objc_msgSend_precision(v4, v14, v15, v16);
+    objc_msgSend_precision(altitudeCopy, v14, v15, v16);
     v8->_rawPrecision = v17;
     objc_msgSend__populateRoundedValue(v8, v18, v19, v20);
   }
@@ -39,11 +39,11 @@
   return v8;
 }
 
-- (double)_convertMeterInFeet:(double)a3
+- (double)_convertMeterInFeet:(double)feet
 {
   v4 = objc_alloc(MEMORY[0x277CCAB10]);
   v8 = objc_msgSend_meters(MEMORY[0x277CCAE20], v5, v6, v7);
-  v11 = objc_msgSend_initWithDoubleValue_unit_(v4, v9, v8, v10, a3);
+  v11 = objc_msgSend_initWithDoubleValue_unit_(v4, v9, v8, v10, feet);
 
   v15 = objc_msgSend_feet(MEMORY[0x277CCAE20], v12, v13, v14);
   v18 = objc_msgSend_measurementByConvertingToUnit_(v11, v16, v15, v17);
@@ -122,25 +122,25 @@
   }
 }
 
-- (double)_getRoundedPrecisionWithValue:(double)a3 multiplier:(double)a4
+- (double)_getRoundedPrecisionWithValue:(double)value multiplier:(double)multiplier
 {
   v9 = 0;
   while (objc_msgSend_count(&unk_284EA8238, a2, v4, v5) - 1 > v9)
   {
     v13 = objc_msgSend_objectAtIndex_(&unk_284EA8238, v10, v9, v12);
     objc_msgSend_doubleValue(v13, v14, v15, v16);
-    v18 = v17 * a4;
+    v18 = v17 * multiplier;
 
     v21 = objc_msgSend_objectAtIndex_(&unk_284EA8238, v19, ++v9, v20);
     objc_msgSend_doubleValue(v21, v22, v23, v24);
     v26 = v25;
 
-    if (v18 > a3)
+    if (v18 > value)
     {
       return v18;
     }
 
-    if (v26 * a4 >= a3)
+    if (v26 * multiplier >= value)
     {
 
       MEMORY[0x2821F9670](self, sel__getCloserValue_low_high_, v4, v5);
@@ -148,34 +148,34 @@
     }
   }
 
-  objc_msgSend__getRoundedPrecisionWithValue_multiplier_(self, v10, v11, v12, a3, a4 * 10.0);
+  objc_msgSend__getRoundedPrecisionWithValue_multiplier_(self, v10, v11, v12, value, multiplier * 10.0);
   return result;
 }
 
-- (double)_getCloserValue:(double)a3 low:(double)a4 high:(double)a5
+- (double)_getCloserValue:(double)value low:(double)low high:(double)high
 {
-  if (a3 - a4 <= a5 - a3)
+  if (value - low <= high - value)
   {
-    return a4;
+    return low;
   }
 
   else
   {
-    return a5;
+    return high;
   }
 }
 
-- (double)_getRoundedAccuracy:(double)a3 byUnit:(BOOL)a4
+- (double)_getRoundedAccuracy:(double)accuracy byUnit:(BOOL)unit
 {
   result = 10.0;
-  if (a4)
+  if (unit)
   {
     result = 5.0;
   }
 
-  if (a3 > 0.0)
+  if (accuracy > 0.0)
   {
-    return result * ceil(a3 / result);
+    return result * ceil(accuracy / result);
   }
 
   return result;

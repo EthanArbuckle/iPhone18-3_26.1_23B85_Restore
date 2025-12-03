@@ -1,44 +1,44 @@
 @interface FSDATaskMessage
-- (void)completed:(id)a3 replyHandler:(id)a4;
-- (void)prompt:(id)a3 replyHandler:(id)a4;
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4;
+- (void)completed:(id)completed replyHandler:(id)handler;
+- (void)prompt:(id)prompt replyHandler:(id)handler;
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler;
 @end
 
 @implementation FSDATaskMessage
 
-- (void)prompt:(id)a3 replyHandler:(id)a4
+- (void)prompt:(id)prompt replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  sub_100009EE0("%s\n", [a3 UTF8String]);
-  v7[2](v7, @"Completed prompt", 0);
+  promptCopy = prompt;
+  handlerCopy = handler;
+  sub_100009EE0("%s\n", [prompt UTF8String]);
+  handlerCopy[2](handlerCopy, @"Completed prompt", 0);
 }
 
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  sub_100009EE0("%s\n", [a3 UTF8String]);
-  v7[2](v7, 1, 0);
+  falseCopy = false;
+  handlerCopy = handler;
+  sub_100009EE0("%s\n", [false UTF8String]);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  sub_100009EE0("Completed task with error %@\n", v9);
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_dispatch_group && !v8->_didCompletion)
+  completedCopy = completed;
+  handlerCopy = handler;
+  sub_100009EE0("Completed task with error %@\n", completedCopy);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_dispatch_group && !selfCopy->_didCompletion)
   {
-    objc_storeStrong(&v8->_exitError, a3);
-    dispatch_group_leave(v8->_dispatch_group);
+    objc_storeStrong(&selfCopy->_exitError, completed);
+    dispatch_group_leave(selfCopy->_dispatch_group);
   }
 
-  v8->_didCompletion = 1;
-  objc_sync_exit(v8);
+  selfCopy->_didCompletion = 1;
+  objc_sync_exit(selfCopy);
 
-  v7[2](v7, 0, v9);
+  handlerCopy[2](handlerCopy, 0, completedCopy);
 }
 
 @end

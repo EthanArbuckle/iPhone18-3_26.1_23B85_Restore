@@ -7,13 +7,13 @@
 
 - (unint64_t)tvp_shuffle
 {
-  result = [a1 count];
+  result = [self count];
   if (result >= 2)
   {
     v3 = result - 1;
     do
     {
-      result = [a1 exchangeObjectAtIndex:arc4random() % v3 withObjectAtIndex:v3];
+      result = [self exchangeObjectAtIndex:arc4random() % v3 withObjectAtIndex:v3];
       --v3;
     }
 
@@ -27,10 +27,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

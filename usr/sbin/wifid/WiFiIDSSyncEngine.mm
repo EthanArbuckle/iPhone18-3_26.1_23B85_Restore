@@ -1,60 +1,60 @@
 @interface WiFiIDSSyncEngine
-+ (id)getStringForDataType:(int64_t)a3;
-- (BOOL)doesNetworkContainBssidForGuessing2GhzNetwork:(__WiFiNetwork *)a3;
-- (BOOL)isNetwork:(__WiFiNetwork *)a3 updatedSince:(double)a4 withinInterval:(double)a5 basedOn:(__CFString *)a6;
-- (BOOL)skipSyncForNetwork:(__WiFiNetwork *)a3;
-- (__WiFiNetwork)_findMatchingPlistNetworkForNetworkRecord:(id)a3;
++ (id)getStringForDataType:(int64_t)type;
+- (BOOL)doesNetworkContainBssidForGuessing2GhzNetwork:(__WiFiNetwork *)network;
+- (BOOL)isNetwork:(__WiFiNetwork *)network updatedSince:(double)since withinInterval:(double)interval basedOn:(__CFString *)on;
+- (BOOL)skipSyncForNetwork:(__WiFiNetwork *)network;
+- (__WiFiNetwork)_findMatchingPlistNetworkForNetworkRecord:(id)record;
 - (id)copyPairedDestinationID;
-- (id)getCorresponding5GhzSsidInPlistFor2GhzNetwork:(__WiFiNetwork *)a3;
+- (id)getCorresponding5GhzSsidInPlistFor2GhzNetwork:(__WiFiNetwork *)network;
 - (id)getPairedVersionID;
-- (int64_t)isRxdNetwork:(id)a3 equalToPlistNetwork:(__WiFiNetwork *)a4;
-- (unsigned)canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:(__WiFiNetwork *)a3;
-- (unsigned)isNetworkKnown:(id)a3;
-- (void)addToKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)a3;
+- (int64_t)isRxdNetwork:(id)network equalToPlistNetwork:(__WiFiNetwork *)plistNetwork;
+- (unsigned)canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:(__WiFiNetwork *)network;
+- (unsigned)isNetworkKnown:(id)known;
+- (void)addToKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)network;
 - (void)checkForWiFiPasswordChange;
-- (void)companionReAssociationWaitTimerFired:(id)a3;
+- (void)companionReAssociationWaitTimerFired:(id)fired;
 - (void)createKnownNetworkGuessingDictionary;
 - (void)currentNetworkChanged;
 - (void)currentNetworkChannelChanged;
 - (void)dealloc;
-- (void)enteredCompatibilityState:(id)a3;
-- (void)incrementGuessingFailedCountForScannedNetworkWithBssid:(id)a3;
-- (void)initializeWithWiFiManager:(__WiFiManager *)a3 queue:(id)a4;
+- (void)enteredCompatibilityState:(id)state;
+- (void)incrementGuessingFailedCountForScannedNetworkWithBssid:(id)bssid;
+- (void)initializeWithWiFiManager:(__WiFiManager *)manager queue:(id)queue;
 - (void)keychainAccessibleNow;
 - (void)knownNetworksListChanged;
-- (void)networkRemoved:(__WiFiNetwork *)a3;
+- (void)networkRemoved:(__WiFiNetwork *)removed;
 - (void)notifyStateChanged;
-- (void)pairedDeviceConnectionChanged:(id)a3;
-- (void)processReceivedAutoJoinAssist:(id)a3;
-- (void)processReceivedKnownNetwork:(id)a3;
-- (void)processReceivedKnownNetworks:(id)a3;
-- (void)processReceivedKnownNetworksInBatch:(id)a3;
-- (void)processReceivedLocaleString:(id)a3;
-- (void)reSendIdsMessage:(int64_t)a3;
+- (void)pairedDeviceConnectionChanged:(id)changed;
+- (void)processReceivedAutoJoinAssist:(id)assist;
+- (void)processReceivedKnownNetwork:(id)network;
+- (void)processReceivedKnownNetworks:(id)networks;
+- (void)processReceivedKnownNetworksInBatch:(id)batch;
+- (void)processReceivedLocaleString:(id)string;
+- (void)reSendIdsMessage:(int64_t)message;
 - (void)registerForInitialSyncTrigger;
 - (void)registerForSoftwareUpdateTrigger;
 - (void)releaseKnownNetworkGuessingDictionary;
-- (void)removeFromKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)a3;
-- (void)sendCurrentCompanionNetworkWithChannelUpdate:(unsigned __int8)a3;
-- (void)sendLocaleToGizmo:(id)a3;
-- (void)sendToGizmoOfDataType:(int64_t)a3;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)removeFromKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)network;
+- (void)sendCurrentCompanionNetworkWithChannelUpdate:(unsigned __int8)update;
+- (void)sendLocaleToGizmo:(id)gizmo;
+- (void)sendToGizmoOfDataType:(int64_t)type;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)setUpIDS;
 - (void)subscribeToKeychainChanges;
-- (void)syncKnownWiFiNetwork:(__WiFiNetwork *)a3 withOperation:(int)a4;
-- (void)syncKnownWiFiNetworks:(id)a3;
-- (void)updateBssidGuessingDictForBssid:(id)a3 guessingFailureCountDict:(id)a4 forNetworkSsid:(id)a5;
-- (void)updateConnectionState:(id)a3 waitUntilDone:(unsigned __int8)a4;
-- (void)updateGuessedNetworkCredentials:(__WiFiNetwork *)a3 password:(__CFString *)a4;
-- (void)updatePairedDeviceID:(id)a3 versionID:(id)a4;
+- (void)syncKnownWiFiNetwork:(__WiFiNetwork *)network withOperation:(int)operation;
+- (void)syncKnownWiFiNetworks:(id)networks;
+- (void)updateBssidGuessingDictForBssid:(id)bssid guessingFailureCountDict:(id)dict forNetworkSsid:(id)ssid;
+- (void)updateConnectionState:(id)state waitUntilDone:(unsigned __int8)done;
+- (void)updateGuessedNetworkCredentials:(__WiFiNetwork *)credentials password:(__CFString *)password;
+- (void)updatePairedDeviceID:(id)d versionID:(id)iD;
 @end
 
 @implementation WiFiIDSSyncEngine
 
-- (void)initializeWithWiFiManager:(__WiFiManager *)a3 queue:(id)a4
+- (void)initializeWithWiFiManager:(__WiFiManager *)manager queue:(id)queue
 {
   v7 = objc_autoreleasePoolPush();
   v8 = objc_autoreleasePoolPush();
@@ -65,8 +65,8 @@
 
   objc_autoreleasePoolPop(v8);
   [(WiFiIDSSyncEngine *)self setConnectionState:0];
-  [(WiFiIDSSyncEngine *)self setManager:a3];
-  [(WiFiIDSSyncEngine *)self setManagerQueue:a4];
+  [(WiFiIDSSyncEngine *)self setManager:manager];
+  [(WiFiIDSSyncEngine *)self setManagerQueue:queue];
   [(WiFiIDSSyncEngine *)self setIsWaitingForIdsMessageDelivery:1];
   [(WiFiIDSSyncEngine *)self setUpIDS];
   [(WiFiIDSSyncEngine *)self setRole:1];
@@ -80,7 +80,7 @@
   [(WiFiIDSSyncEngine *)self registerForInitialSyncTrigger];
   [(WiFiIDSSyncEngine *)self registerForSoftwareUpdateTrigger];
   [(WiFiIDSSyncEngine *)self subscribeToKeychainChanges];
-  v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, a4);
+  v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   self->_timer = v10;
   if (v10)
   {
@@ -150,16 +150,16 @@
   objc_autoreleasePoolPop(v3);
 }
 
-+ (id)getStringForDataType:(int64_t)a3
++ (id)getStringForDataType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1002635A0[a3];
+    return off_1002635A0[type];
   }
 }
 
@@ -196,22 +196,22 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)enteredCompatibilityState:(id)a3
+- (void)enteredCompatibilityState:(id)state
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 userInfo];
-  -[WiFiIDSSyncEngine checkIfSoftwareUpdateStateEntered:](self, "checkIfSoftwareUpdateStateEntered:", [objc_msgSend(v6 objectForKey:{NRPairedDeviceRegistryCompatibilityStateKey), "integerValue"}]);
+  userInfo = [state userInfo];
+  -[WiFiIDSSyncEngine checkIfSoftwareUpdateStateEntered:](self, "checkIfSoftwareUpdateStateEntered:", [objc_msgSend(userInfo objectForKey:{NRPairedDeviceRegistryCompatibilityStateKey), "integerValue"}]);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   context = objc_autoreleasePoolPush();
   v9 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: rxd ids data from ID %@", "-[WiFiIDSSyncEngine service:account:incomingData:fromID:context:]", a6}];
+    [off_100298C40 WFLog:3 message:{"%s: rxd ids data from ID %@", "-[WiFiIDSSyncEngine service:account:incomingData:fromID:context:]", d}];
   }
 
   objc_autoreleasePoolPop(v9);
@@ -220,7 +220,7 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
-  v15 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:v10 fromData:v11 error:v12, v13, v14, objc_opt_class(), 0], a5, 0];
+  v15 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:v10 fromData:v11 error:v12, v13, v14, objc_opt_class(), 0], data, 0];
   if (!v15)
   {
     sub_1001B02B0();
@@ -231,7 +231,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [(WiFiIDSSyncEngine *)self managerQueue];
+    managerQueue = [(WiFiIDSSyncEngine *)self managerQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10011F5E0;
@@ -240,7 +240,7 @@
     v26[5] = v16;
     v18 = v26;
 LABEL_15:
-    dispatch_sync(v17, v18);
+    dispatch_sync(managerQueue, v18);
     goto LABEL_16;
   }
 
@@ -248,7 +248,7 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     v19 = [v16 objectForKeyedSubscript:@"V2"];
-    v17 = [(WiFiIDSSyncEngine *)self managerQueue];
+    managerQueue = [(WiFiIDSSyncEngine *)self managerQueue];
     if (v19)
     {
       v25[0] = _NSConcreteStackBlock;
@@ -277,7 +277,7 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [(WiFiIDSSyncEngine *)self managerQueue];
+    managerQueue = [(WiFiIDSSyncEngine *)self managerQueue];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10011F63C;
@@ -299,7 +299,7 @@ LABEL_16:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)sendToGizmoOfDataType:(int64_t)a3
+- (void)sendToGizmoOfDataType:(int64_t)type
 {
   v5 = objc_autoreleasePoolPush();
   v20 = 0;
@@ -314,31 +314,31 @@ LABEL_16:
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: ID:%@, data type <%@>", "-[WiFiIDSSyncEngine sendToGizmoOfDataType:]", -[WiFiIDSSyncEngine pairedDeviceDestinationID](self, "pairedDeviceDestinationID"), +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", a3)}];
+    [off_100298C40 WFLog:3 message:{"%s: ID:%@, data type <%@>", "-[WiFiIDSSyncEngine sendToGizmoOfDataType:]", -[WiFiIDSSyncEngine pairedDeviceDestinationID](self, "pairedDeviceDestinationID"), +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", type)}];
   }
 
   objc_autoreleasePoolPop(v7);
   if ([(WiFiIDSSyncEngine *)self pairedDeviceDestinationID])
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         if (![(WiFiIDSSyncEngine *)self lastSyncedCompanionAssistedAutoJoinData])
         {
           goto LABEL_23;
         }
 
-        v8 = [(WiFiIDSSyncEngine *)self lastSyncedCompanionAssistedAutoJoinData];
+        lastSyncedCompanionAssistedAutoJoinData = [(WiFiIDSSyncEngine *)self lastSyncedCompanionAssistedAutoJoinData];
       }
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
-          if (a3 == 3 && [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworkPayloadData])
+          if (type == 3 && [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworkPayloadData])
           {
-            v8 = [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworkPayloadData];
+            lastSyncedCompanionAssistedAutoJoinData = [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworkPayloadData];
             goto LABEL_16;
           }
 
@@ -346,7 +346,7 @@ LABEL_23:
           v12 = objc_autoreleasePoolPush();
           if (off_100298C40)
           {
-            [off_100298C40 WFLog:3 message:{"there is no data of type <%@> to send...", +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", a3), v15, v16, v17, v18}];
+            [off_100298C40 WFLog:3 message:{"there is no data of type <%@> to send...", +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", type), v15, v16, v17, v18}];
           }
 
           goto LABEL_31;
@@ -357,7 +357,7 @@ LABEL_23:
           goto LABEL_23;
         }
 
-        v8 = [(WiFiIDSSyncEngine *)self lastSyncedCompanionLocaleData];
+        lastSyncedCompanionAssistedAutoJoinData = [(WiFiIDSSyncEngine *)self lastSyncedCompanionLocaleData];
       }
     }
 
@@ -368,13 +368,13 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v8 = [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworksData];
+      lastSyncedCompanionAssistedAutoJoinData = [(WiFiIDSSyncEngine *)self lastSyncedKnownNetworksData];
     }
 
 LABEL_16:
-    v9 = v8;
+    v9 = lastSyncedCompanionAssistedAutoJoinData;
     [(WiFiIDSSyncEngine *)self setIsWaitingForIdsMessageDelivery:1];
-    if (([(WiFiIDSSyncEngine *)self reSendIdsMessageBitMap]& (1 << a3)) == 0)
+    if (([(WiFiIDSSyncEngine *)self reSendIdsMessageBitMap]& (1 << type)) == 0)
     {
       v10 = dispatch_time(0, 600000000000);
       block[0] = _NSConcreteStackBlock;
@@ -382,14 +382,14 @@ LABEL_16:
       block[2] = sub_10011F9D8;
       block[3] = &unk_10025F5F8;
       block[4] = self;
-      block[5] = a3;
+      block[5] = type;
       dispatch_after(v10, [(WiFiIDSSyncEngine *)self serialIdsDispatchQ], block);
     }
 
     v11 = [(IDSService *)[(WiFiIDSSyncEngine *)self idsService] sendData:v9 toDestinations:[NSSet setWithObject:?]identifier:200 error:v6, &v20, &v21];
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         [(WiFiIDSSyncEngine *)self setLastSyncedCompanionAssistedAutoJoinDataGUID:v20];
         if (!v11)
@@ -400,7 +400,7 @@ LABEL_16:
         goto LABEL_28;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         [(WiFiIDSSyncEngine *)self setLastSyncedCompanionLocaleGUID:v20];
         if (!v11)
@@ -434,7 +434,7 @@ LABEL_29:
     v13 = off_100298C40;
     if (off_100298C40)
     {
-      v14 = [WiFiIDSSyncEngine getStringForDataType:a3];
+      v14 = [WiFiIDSSyncEngine getStringForDataType:type];
       [v13 WFLog:3 message:{"%s: dataType <%@>, success %d, guid %@, error %@ ", "-[WiFiIDSSyncEngine sendToGizmoOfDataType:]", v14, v11, v20, v21}];
     }
 
@@ -445,20 +445,20 @@ LABEL_31:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)reSendIdsMessage:(int64_t)a3
+- (void)reSendIdsMessage:(int64_t)message
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: reSendIdsMessageBitMap 0x%lx, isWaitingForIdsMessageDelivery %d, data type <%@>", "-[WiFiIDSSyncEngine reSendIdsMessage:]", -[WiFiIDSSyncEngine reSendIdsMessageBitMap](self, "reSendIdsMessageBitMap"), -[WiFiIDSSyncEngine isWaitingForIdsMessageDelivery](self, "isWaitingForIdsMessageDelivery"), +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", a3)}];
+    [off_100298C40 WFLog:3 message:{"%s: reSendIdsMessageBitMap 0x%lx, isWaitingForIdsMessageDelivery %d, data type <%@>", "-[WiFiIDSSyncEngine reSendIdsMessage:]", -[WiFiIDSSyncEngine reSendIdsMessageBitMap](self, "reSendIdsMessageBitMap"), -[WiFiIDSSyncEngine isWaitingForIdsMessageDelivery](self, "isWaitingForIdsMessageDelivery"), +[WiFiIDSSyncEngine getStringForDataType:](WiFiIDSSyncEngine, "getStringForDataType:", message)}];
   }
 
   objc_autoreleasePoolPop(v6);
-  v7 = 1 << a3;
+  v7 = 1 << message;
   if (([(WiFiIDSSyncEngine *)self reSendIdsMessageBitMap]& v7) == 0 && [(WiFiIDSSyncEngine *)self isWaitingForIdsMessageDelivery])
   {
-    [(WiFiIDSSyncEngine *)self sendToGizmoOfDataType:a3];
+    [(WiFiIDSSyncEngine *)self sendToGizmoOfDataType:message];
     [(WiFiIDSSyncEngine *)self setReSendIdsMessageBitMap:[(WiFiIDSSyncEngine *)self reSendIdsMessageBitMap]| v7];
   }
 
@@ -472,8 +472,8 @@ LABEL_31:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(IDSService *)[(WiFiIDSSyncEngine *)self idsService] devices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(IDSService *)[(WiFiIDSSyncEngine *)self idsService] devices];
+  v5 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -484,7 +484,7 @@ LABEL_31:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) isDefaultPairedDevice])
@@ -494,7 +494,7 @@ LABEL_31:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -524,8 +524,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSService *)[(WiFiIDSSyncEngine *)self idsService] devices];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [(IDSService *)[(WiFiIDSSyncEngine *)self idsService] devices];
+  v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -536,18 +536,18 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isDefaultPairedDevice])
         {
-          v10 = [v9 productVersion];
+          productVersion = [v9 productVersion];
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -557,28 +557,28 @@ LABEL_11:
     }
   }
 
-  v10 = 0;
+  productVersion = 0;
 LABEL_11:
   v11 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: paired device version ID %@", "-[WiFiIDSSyncEngine getPairedVersionID]", v10}];
+    [off_100298C40 WFLog:3 message:{"%s: paired device version ID %@", "-[WiFiIDSSyncEngine getPairedVersionID]", productVersion}];
   }
 
   objc_autoreleasePoolPop(v11);
   objc_autoreleasePoolPop(v3);
-  return v10;
+  return productVersion;
 }
 
-- (void)updateConnectionState:(id)a3 waitUntilDone:(unsigned __int8)a4
+- (void)updateConnectionState:(id)state waitUntilDone:(unsigned __int8)done
 {
-  v4 = a4;
+  doneCopy = done;
   v7 = objc_autoreleasePoolPush();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [state countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -590,7 +590,7 @@ LABEL_11:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(state);
         }
 
         if ([*(*(&v22 + 1) + 8 * i) isNearby])
@@ -600,7 +600,7 @@ LABEL_11:
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [state countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
         continue;
@@ -620,21 +620,21 @@ LABEL_11:
   }
 
 LABEL_12:
-  v14 = [(WiFiIDSSyncEngine *)self connectionState];
+  connectionState = [(WiFiIDSSyncEngine *)self connectionState];
   v15 = objc_autoreleasePoolPush();
   v16 = off_100298C40;
-  if (v13 == v14)
+  if (v13 == connectionState)
   {
     if (off_100298C40)
     {
-      v17 = [(WiFiIDSSyncEngine *)self connectionState];
+      connectionState2 = [(WiFiIDSSyncEngine *)self connectionState];
       v18 = @"Unknown";
-      if (v17 == 2)
+      if (connectionState2 == 2)
       {
         v18 = @"Connected";
       }
 
-      if (v17 == 1)
+      if (connectionState2 == 1)
       {
         v18 = @"Not Connected";
       }
@@ -654,15 +654,15 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v15);
     [(WiFiIDSSyncEngine *)self setConnectionState:v13];
-    v19 = [(WiFiIDSSyncEngine *)self managerQueue];
-    if (v4)
+    managerQueue = [(WiFiIDSSyncEngine *)self managerQueue];
+    if (doneCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100120084;
       block[3] = &unk_10025ED68;
       block[4] = self;
-      dispatch_sync(v19, block);
+      dispatch_sync(managerQueue, block);
     }
 
     else
@@ -672,25 +672,25 @@ LABEL_12:
       v20[2] = sub_10012008C;
       v20[3] = &unk_10025ED68;
       v20[4] = self;
-      dispatch_async(v19, v20);
+      dispatch_async(managerQueue, v20);
     }
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)updatePairedDeviceID:(id)a3 versionID:(id)a4
+- (void)updatePairedDeviceID:(id)d versionID:(id)iD
 {
   v7 = objc_autoreleasePoolPush();
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: isWaitingForIdsMessageDelivery %d, isWaitingForIdsSendResponse %d, pairedDeviceDestinationID prev %@, new %@, pairedDeviceVersionID prev %@, new %@", "-[WiFiIDSSyncEngine updatePairedDeviceID:versionID:]", -[WiFiIDSSyncEngine isWaitingForIdsMessageDelivery](self, "isWaitingForIdsMessageDelivery"), -[WiFiIDSSyncEngine isWaitingForIdsSendResponse](self, "isWaitingForIdsSendResponse"), -[WiFiIDSSyncEngine pairedDeviceDestinationID](self, "pairedDeviceDestinationID"), a3, -[WiFiIDSSyncEngine pairedDeviceVersionID](self, "pairedDeviceVersionID"), a4}];
+    [off_100298C40 WFLog:3 message:{"%s: isWaitingForIdsMessageDelivery %d, isWaitingForIdsSendResponse %d, pairedDeviceDestinationID prev %@, new %@, pairedDeviceVersionID prev %@, new %@", "-[WiFiIDSSyncEngine updatePairedDeviceID:versionID:]", -[WiFiIDSSyncEngine isWaitingForIdsMessageDelivery](self, "isWaitingForIdsMessageDelivery"), -[WiFiIDSSyncEngine isWaitingForIdsSendResponse](self, "isWaitingForIdsSendResponse"), -[WiFiIDSSyncEngine pairedDeviceDestinationID](self, "pairedDeviceDestinationID"), d, -[WiFiIDSSyncEngine pairedDeviceVersionID](self, "pairedDeviceVersionID"), iD}];
   }
 
   objc_autoreleasePoolPop(v8);
-  [(WiFiIDSSyncEngine *)self setPairedDeviceDestinationID:a3];
-  [(WiFiIDSSyncEngine *)self setPairedDeviceVersionID:a4];
+  [(WiFiIDSSyncEngine *)self setPairedDeviceDestinationID:d];
+  [(WiFiIDSSyncEngine *)self setPairedDeviceVersionID:iD];
   if ([(WiFiIDSSyncEngine *)self isWaitingForIdsMessageDelivery]&& ![(WiFiIDSSyncEngine *)self isWaitingForIdsSendResponse])
   {
     if ([(WiFiIDSSyncEngine *)self lastSyncedKnownNetworksData])
@@ -717,11 +717,11 @@ LABEL_12:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)pairedDeviceConnectionChanged:(id)a3
+- (void)pairedDeviceConnectionChanged:(id)changed
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(WiFiIDSSyncEngine *)self role];
-  if (a3 && v6 && [a3 count])
+  role = [(WiFiIDSSyncEngine *)self role];
+  if (changed && role && [changed count])
   {
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -730,17 +730,17 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v7);
-    v8 = [(WiFiIDSSyncEngine *)self copyPairedDestinationID];
-    v9 = [(WiFiIDSSyncEngine *)self getPairedVersionID];
-    if (v8)
+    copyPairedDestinationID = [(WiFiIDSSyncEngine *)self copyPairedDestinationID];
+    getPairedVersionID = [(WiFiIDSSyncEngine *)self getPairedVersionID];
+    if (copyPairedDestinationID)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100120330;
       block[3] = &unk_100262558;
       block[4] = self;
-      block[5] = v8;
-      block[6] = v9;
+      block[5] = copyPairedDestinationID;
+      block[6] = getPairedVersionID;
       dispatch_sync([(WiFiIDSSyncEngine *)self managerQueue], block);
     }
   }
@@ -748,17 +748,17 @@ LABEL_12:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: #devices %lu", "-[WiFiIDSSyncEngine service:nearbyDevicesChanged:]", objc_msgSend(a4, "count")}];
+    [off_100298C40 WFLog:3 message:{"%s: #devices %lu", "-[WiFiIDSSyncEngine service:nearbyDevicesChanged:]", objc_msgSend(changed, "count")}];
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4 && [a4 count])
+  if (changed && [changed count])
   {
     v8 = 2;
     v9 = @"Connected";
@@ -770,21 +770,21 @@ LABEL_12:
     v9 = @"Not Connected";
   }
 
-  v10 = [(WiFiIDSSyncEngine *)self connectionState];
+  connectionState = [(WiFiIDSSyncEngine *)self connectionState];
   v11 = objc_autoreleasePoolPush();
   v12 = off_100298C40;
-  if (v8 == v10)
+  if (v8 == connectionState)
   {
     if (off_100298C40)
     {
-      v13 = [(WiFiIDSSyncEngine *)self connectionState];
+      connectionState2 = [(WiFiIDSSyncEngine *)self connectionState];
       v14 = @"Unknown";
-      if (v13 == 2)
+      if (connectionState2 == 2)
       {
         v14 = @"Connected";
       }
 
-      if (v13 == 1)
+      if (connectionState2 == 1)
       {
         v14 = @"Not Connected";
       }
@@ -812,45 +812,45 @@ LABEL_12:
     dispatch_async([(WiFiIDSSyncEngine *)self managerQueue], block);
   }
 
-  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:a4];
+  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:changed];
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: #devices %lu", "-[WiFiIDSSyncEngine service:devicesChanged:]", objc_msgSend(a4, "count")}];
+    [off_100298C40 WFLog:3 message:{"%s: #devices %lu", "-[WiFiIDSSyncEngine service:devicesChanged:]", objc_msgSend(changed, "count")}];
   }
 
   objc_autoreleasePoolPop(v7);
-  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:a4];
+  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:changed];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: devices %lu", "-[WiFiIDSSyncEngine service:connectedDevicesChanged:]", objc_msgSend(a4, "count")}];
+    [off_100298C40 WFLog:3 message:{"%s: devices %lu", "-[WiFiIDSSyncEngine service:connectedDevicesChanged:]", objc_msgSend(changed, "count")}];
   }
 
   objc_autoreleasePoolPop(v7);
-  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:a4];
+  [(WiFiIDSSyncEngine *)self pairedDeviceConnectionChanged:changed];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (BOOL)doesNetworkContainBssidForGuessing2GhzNetwork:(__WiFiNetwork *)a3
+- (BOOL)doesNetworkContainBssidForGuessing2GhzNetwork:(__WiFiNetwork *)network
 {
-  if (a3)
+  if (network)
   {
-    if (sub_10000A540(a3, @"GUESSED_2ghzBSSID1"))
+    if (sub_10000A540(network, @"GUESSED_2ghzBSSID1"))
     {
       return 1;
     }
@@ -875,16 +875,16 @@ LABEL_12:
   return 0;
 }
 
-- (void)updateGuessedNetworkCredentials:(__WiFiNetwork *)a3 password:(__CFString *)a4
+- (void)updateGuessedNetworkCredentials:(__WiFiNetwork *)credentials password:(__CFString *)password
 {
-  v18 = a4;
-  if (a3)
+  passwordCopy = password;
+  if (credentials)
   {
-    v5 = sub_10000A878(a3);
+    v5 = sub_10000A878(credentials);
     v6 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: Received companion network <%@>", "-[WiFiIDSSyncEngine updateGuessedNetworkCredentials:password:]", v5, v18}];
+      [off_100298C40 WFLog:3 message:{"%s: Received companion network <%@>", "-[WiFiIDSSyncEngine updateGuessedNetworkCredentials:password:]", v5, passwordCopy}];
     }
 
     objc_autoreleasePoolPop(v6);
@@ -929,7 +929,7 @@ LABEL_12:
                 }
 
                 objc_autoreleasePoolPop(v17);
-                sub_10009FBF4(v11, v18);
+                sub_10009FBF4(v11, passwordCopy);
               }
             }
           }
@@ -946,13 +946,13 @@ LABEL_12:
   }
 }
 
-- (__WiFiNetwork)_findMatchingPlistNetworkForNetworkRecord:(id)a3
+- (__WiFiNetwork)_findMatchingPlistNetworkForNetworkRecord:(id)record
 {
   v5 = sub_100020110([(WiFiIDSSyncEngine *)self manager]);
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, %lu rxd networks", "-[WiFiIDSSyncEngine _findMatchingPlistNetworkForNetworkRecord:]", -[__CFArray count](v5, "count"), objc_msgSend(a3, "objectForKey:", @"SSID_STR"}];
+    [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, %lu rxd networks", "-[WiFiIDSSyncEngine _findMatchingPlistNetworkForNetworkRecord:]", -[__CFArray count](v5, "count"), objc_msgSend(record, "objectForKey:", @"SSID_STR"}];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -974,7 +974,7 @@ LABEL_8:
   while (1)
   {
     v8 = [(__CFArray *)v5 objectAtIndex:v7];
-    if ([(WiFiIDSSyncEngine *)self isRxdNetwork:a3 equalToPlistNetwork:v8]>= 1)
+    if ([(WiFiIDSSyncEngine *)self isRxdNetwork:record equalToPlistNetwork:v8]>= 1)
     {
       break;
     }
@@ -994,15 +994,15 @@ LABEL_8:
   return v8;
 }
 
-- (void)processReceivedKnownNetwork:(id)a3
+- (void)processReceivedKnownNetwork:(id)network
 {
   v5 = objc_autoreleasePoolPush();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  allKeys = [network allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1013,15 +1013,15 @@ LABEL_8:
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v43 + 1) + 8 * i);
-        v12 = [a3 objectForKey:v11];
+        v12 = [network objectForKey:v11];
       }
 
       v13 = v12;
-      v8 = [v6 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v8);
@@ -1278,17 +1278,17 @@ LABEL_76:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)processReceivedKnownNetworks:(id)a3
+- (void)processReceivedKnownNetworks:(id)networks
 {
   if (self->_knownNetworkList)
   {
 
-    self->_latestReceivedNetworkRecords = [[NSArray alloc] initWithArray:a3 copyItems:1];
+    self->_latestReceivedNetworkRecords = [[NSArray alloc] initWithArray:networks copyItems:1];
   }
 
   else
   {
-    self->_knownNetworkList = [[NSArray alloc] initWithArray:a3 copyItems:1];
+    self->_knownNetworkList = [[NSArray alloc] initWithArray:networks copyItems:1];
     timer = self->_timer;
     v6 = dispatch_time(0, 0);
 
@@ -1296,7 +1296,7 @@ LABEL_76:
   }
 }
 
-- (void)processReceivedKnownNetworksInBatch:(id)a3
+- (void)processReceivedKnownNetworksInBatch:(id)batch
 {
   v5 = objc_autoreleasePoolPush();
   if (sub_100088584([(WiFiIDSSyncEngine *)self manager]))
@@ -1306,7 +1306,7 @@ LABEL_76:
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, %lu rxd networks", "-[WiFiIDSSyncEngine processReceivedKnownNetworksInBatch:]", -[__CFArray count](v6, "count"), objc_msgSend(a3, "count")}];
+      [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, %lu rxd networks", "-[WiFiIDSSyncEngine processReceivedKnownNetworksInBatch:]", -[__CFArray count](v6, "count"), objc_msgSend(batch, "count")}];
     }
 
     objc_autoreleasePoolPop(v7);
@@ -1351,12 +1351,12 @@ LABEL_76:
 LABEL_13:
             if (!sub_10009ED84(v9) && !sub_1000A1F04(v9))
             {
-              if ([a3 count])
+              if ([batch count])
               {
                 v12 = 0;
-                while (-[WiFiIDSSyncEngine isRxdNetwork:equalToPlistNetwork:](self, "isRxdNetwork:equalToPlistNetwork:", [a3 objectAtIndex:v12], v9) < 1)
+                while (-[WiFiIDSSyncEngine isRxdNetwork:equalToPlistNetwork:](self, "isRxdNetwork:equalToPlistNetwork:", [batch objectAtIndex:v12], v9) < 1)
                 {
-                  if (++v12 >= [a3 count])
+                  if (++v12 >= [batch count])
                   {
                     goto LABEL_25;
                   }
@@ -1449,13 +1449,13 @@ LABEL_33:
     }
 
     v21 = sub_100020110([(WiFiIDSSyncEngine *)self manager]);
-    if ([a3 count])
+    if ([batch count])
     {
       v22 = 0;
       v23 = 0;
       do
       {
-        v24 = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectAtIndex:", v22)}];
+        v24 = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(batch, "objectAtIndex:", v22)}];
         v25 = [v24 objectForKey:@"SSID_STR"];
         if (!v25)
         {
@@ -1642,7 +1642,7 @@ LABEL_94:
         ++v22;
       }
 
-      while (v22 < [a3 count]);
+      while (v22 < [batch count]);
     }
 
     v5 = v45;
@@ -1662,7 +1662,7 @@ LABEL_94:
 
     objc_autoreleasePoolPop(v14);
 
-    self->_receivedKnownNetworks = [a3 copy];
+    self->_receivedKnownNetworks = [batch copy];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -1709,9 +1709,9 @@ LABEL_94:
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)isNetwork:(__WiFiNetwork *)a3 updatedSince:(double)a4 withinInterval:(double)a5 basedOn:(__CFString *)a6
+- (BOOL)isNetwork:(__WiFiNetwork *)network updatedSince:(double)since withinInterval:(double)interval basedOn:(__CFString *)on
 {
-  v8 = sub_10000A540(a3, a6);
+  v8 = sub_10000A540(network, on);
   AbsoluteTime = 0.0;
   if (v8)
   {
@@ -1724,24 +1724,24 @@ LABEL_94:
   }
 
   v12 = AbsoluteTime > 0.0;
-  if (a4 <= 0.0)
+  if (since <= 0.0)
   {
     v12 = 0;
   }
 
-  return a4 - AbsoluteTime < a5 && v12;
+  return since - AbsoluteTime < interval && v12;
 }
 
-- (BOOL)skipSyncForNetwork:(__WiFiNetwork *)a3
+- (BOOL)skipSyncForNetwork:(__WiFiNetwork *)network
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [(WiFiIDSSyncEngine *)self isNetwork:a3 updatedSince:@"lastAutoJoined" withinInterval:Current basedOn:604800.0];
-  v7 = [(WiFiIDSSyncEngine *)self isNetwork:a3 updatedSince:@"lastJoined" withinInterval:Current basedOn:604800.0];
-  v8 = [(WiFiIDSSyncEngine *)self isNetwork:a3 updatedSince:@"lastUpdated" withinInterval:Current basedOn:604800.0];
-  return ((v6 | v7 | v8 | [(WiFiIDSSyncEngine *)self isNetwork:a3 updatedSince:@"addedAt" withinInterval:Current basedOn:604800.0]) & 1) == 0;
+  v6 = [(WiFiIDSSyncEngine *)self isNetwork:network updatedSince:@"lastAutoJoined" withinInterval:Current basedOn:604800.0];
+  v7 = [(WiFiIDSSyncEngine *)self isNetwork:network updatedSince:@"lastJoined" withinInterval:Current basedOn:604800.0];
+  v8 = [(WiFiIDSSyncEngine *)self isNetwork:network updatedSince:@"lastUpdated" withinInterval:Current basedOn:604800.0];
+  return ((v6 | v7 | v8 | [(WiFiIDSSyncEngine *)self isNetwork:network updatedSince:@"addedAt" withinInterval:Current basedOn:604800.0]) & 1) == 0;
 }
 
-- (void)syncKnownWiFiNetwork:(__WiFiNetwork *)a3 withOperation:(int)a4
+- (void)syncKnownWiFiNetwork:(__WiFiNetwork *)network withOperation:(int)operation
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_autoreleasePoolPush();
@@ -1789,25 +1789,25 @@ LABEL_94:
         while (v10);
       }
 
-      if ([(WiFiIDSSyncEngine *)self skipSyncForNetwork:a3])
+      if ([(WiFiIDSSyncEngine *)self skipSyncForNetwork:network])
       {
         v13 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
-          [off_100298C40 WFLog:3 message:{"%s: Skipping sync for network: <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(a3)}];
+          [off_100298C40 WFLog:3 message:{"%s: Skipping sync for network: <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(network)}];
         }
 
         objc_autoreleasePoolPop(v13);
         goto LABEL_35;
       }
 
-      v14 = sub_1001266A8(a3, [(WiFiIDSSyncEngine *)self manager]);
+      v14 = sub_1001266A8(network, [(WiFiIDSSyncEngine *)self manager]);
       v15 = v14;
       if (v14 && sub_100127AB4(v14))
       {
         if (sub_1001B0388(v15))
         {
-          v16 = sub_10002A1CC(a3);
+          v16 = sub_10002A1CC(network);
           if (!v16)
           {
 LABEL_35:
@@ -1816,10 +1816,10 @@ LABEL_35:
           }
 
           [v15 setObject:v16 forKey:@"WiFiNetworkPasswordString"];
-          if (!sub_1000A13F8(a3))
+          if (!sub_1000A13F8(network))
           {
-            v17 = [objc_msgSend(v8 objectForKeyedSubscript:{sub_10000A878(a3)), "objectForKeyedSubscript:", kSecAttrModificationDate}];
-            sub_1000A12E4(a3, v17);
+            v17 = [objc_msgSend(v8 objectForKeyedSubscript:{sub_10000A878(network)), "objectForKeyedSubscript:", kSecAttrModificationDate}];
+            sub_1000A12E4(network, v17);
             [(WiFiIDSSyncEngine *)self manager];
             sub_10007D980();
           }
@@ -1830,27 +1830,27 @@ LABEL_35:
           v16 = 0;
         }
 
-        v18 = sub_10000A540(a3, @"NetworkOfInterestHomeState");
+        v18 = sub_10000A540(network, @"NetworkOfInterestHomeState");
         if (v18)
         {
           [v15 setObject:v18 forKey:@"NetworkOfInterestHomeState"];
           v19 = objc_autoreleasePoolPush();
           if (off_100298C40)
           {
-            [off_100298C40 WFLog:3 message:{"%s: WFMacRandomisation : syncing NOI for network : <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(a3)}];
+            [off_100298C40 WFLog:3 message:{"%s: WFMacRandomisation : syncing NOI for network : <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(network)}];
           }
 
           objc_autoreleasePoolPop(v19);
         }
 
-        v20 = sub_10000A540(a3, @"NetworkAtLocationOfInterestType");
+        v20 = sub_10000A540(network, @"NetworkAtLocationOfInterestType");
         if (v20)
         {
           [v15 setObject:v20 forKey:@"NetworkAtLocationOfInterestType"];
           v21 = objc_autoreleasePoolPush();
           if (off_100298C40)
           {
-            [off_100298C40 WFLog:3 message:{"%s: WFMacRandomisation : syncing LOI for network : <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(a3)}];
+            [off_100298C40 WFLog:3 message:{"%s: WFMacRandomisation : syncing LOI for network : <%@>", "-[WiFiIDSSyncEngine syncKnownWiFiNetwork:withOperation:]", sub_10000A878(network)}];
           }
 
           objc_autoreleasePoolPop(v21);
@@ -1866,7 +1866,7 @@ LABEL_35:
       block[1] = 3221225472;
       block[2] = sub_100122844;
       block[3] = &unk_100263558;
-      v24 = a4;
+      operationCopy = operation;
       block[4] = v15;
       block[5] = self;
       block[6] = v29;
@@ -1882,7 +1882,7 @@ LABEL_36:
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)syncKnownWiFiNetworks:(id)a3
+- (void)syncKnownWiFiNetworks:(id)networks
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2095,7 +2095,7 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)companionReAssociationWaitTimerFired:(id)a3
+- (void)companionReAssociationWaitTimerFired:(id)fired
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2105,9 +2105,9 @@ LABEL_18:
   dispatch_async([(WiFiIDSSyncEngine *)self managerQueue], block);
 }
 
-- (void)sendCurrentCompanionNetworkWithChannelUpdate:(unsigned __int8)a3
+- (void)sendCurrentCompanionNetworkWithChannelUpdate:(unsigned __int8)update
 {
-  v3 = a3;
+  updateCopy = update;
   v5 = objc_autoreleasePoolPush();
   v27 = 0;
   v28 = &v27;
@@ -2195,7 +2195,7 @@ LABEL_18:
 
       v15 = [NSNumber numberWithInt:v14];
       [v21[5] setObject:v15 forKey:@"CHANNEL"];
-      if (v3)
+      if (updateCopy)
       {
         [v21[5] setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"CHANNEL_UPDATE"}];
       }
@@ -2227,18 +2227,18 @@ LABEL_18:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)sendLocaleToGizmo:(id)a3
+- (void)sendLocaleToGizmo:(id)gizmo
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: Sending countryCode %@", "-[WiFiIDSSyncEngine sendLocaleToGizmo:]", a3}];
+    [off_100298C40 WFLog:3 message:{"%s: Sending countryCode %@", "-[WiFiIDSSyncEngine sendLocaleToGizmo:]", gizmo}];
   }
 
   objc_autoreleasePoolPop(v6);
 
-  self->_countryCodeStr = [a3 copy];
+  self->_countryCodeStr = [gizmo copy];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100124264;
@@ -2266,7 +2266,7 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)networkRemoved:(__WiFiNetwork *)a3
+- (void)networkRemoved:(__WiFiNetwork *)removed
 {
   v5 = objc_autoreleasePoolPush();
   if ([(WiFiIDSSyncEngine *)self role]!= 1)
@@ -2274,12 +2274,12 @@ LABEL_18:
     v6 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: Clear the guessing dictionaries for %@", "-[WiFiIDSSyncEngine networkRemoved:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: Clear the guessing dictionaries for %@", "-[WiFiIDSSyncEngine networkRemoved:]", removed}];
     }
 
     objc_autoreleasePoolPop(v6);
-    [(WiFiIDSSyncEngine *)self removeFromKnownNetworkGuessingDictionaryTheNetwork:a3];
-    v7 = [(WiFiIDSSyncEngine *)self getCorresponding5GhzSsidInPlistFor2GhzNetwork:a3];
+    [(WiFiIDSSyncEngine *)self removeFromKnownNetworkGuessingDictionaryTheNetwork:removed];
+    v7 = [(WiFiIDSSyncEngine *)self getCorresponding5GhzSsidInPlistFor2GhzNetwork:removed];
     if (v7)
     {
       v8 = v7;
@@ -2297,10 +2297,10 @@ LABEL_18:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)processReceivedAutoJoinAssist:(id)a3
+- (void)processReceivedAutoJoinAssist:(id)assist
 {
   v5 = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!assist)
   {
     v34 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -2311,7 +2311,7 @@ LABEL_18:
     goto LABEL_55;
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"SSID_STR"];
+  v6 = [assist objectForKeyedSubscript:@"SSID_STR"];
   if (!v6)
   {
     v34 = objc_autoreleasePoolPush();
@@ -2322,7 +2322,7 @@ LABEL_18:
 
 LABEL_55:
     objc_autoreleasePoolPop(v34);
-    v26 = [(WiFiIDSSyncEngine *)self manager];
+    manager = [(WiFiIDSSyncEngine *)self manager];
     v27 = 0;
     v28 = 0;
     v29 = 0;
@@ -2331,14 +2331,14 @@ LABEL_55:
   }
 
   v7 = v6;
-  v8 = [a3 objectForKeyedSubscript:@"RSSI"];
+  v8 = [assist objectForKeyedSubscript:@"RSSI"];
   if (v8)
   {
-    v9 = [v8 intValue];
+    intValue = [v8 intValue];
     v10 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"rxd companion rssi %d", v9}];
+      [off_100298C40 WFLog:3 message:{"rxd companion rssi %d", intValue}];
     }
 
     objc_autoreleasePoolPop(v10);
@@ -2346,17 +2346,17 @@ LABEL_55:
 
   else
   {
-    LODWORD(v9) = 0;
+    LODWORD(intValue) = 0;
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"CHANNEL"];
+  v11 = [assist objectForKeyedSubscript:@"CHANNEL"];
   if (v11)
   {
-    v12 = [v11 intValue];
+    intValue2 = [v11 intValue];
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"rxd companion channel %d", v12}];
+      [off_100298C40 WFLog:3 message:{"rxd companion channel %d", intValue2}];
     }
 
     objc_autoreleasePoolPop(v13);
@@ -2364,19 +2364,19 @@ LABEL_55:
 
   else
   {
-    LODWORD(v12) = 0;
+    LODWORD(intValue2) = 0;
   }
 
-  v35 = v9;
-  v14 = [a3 objectForKeyedSubscript:@"CHANNEL_UPDATE"];
+  v35 = intValue;
+  v14 = [assist objectForKeyedSubscript:@"CHANNEL_UPDATE"];
   if (v14)
   {
-    v15 = [v14 intValue];
+    intValue3 = [v14 intValue];
     v16 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
       v17 = "true";
-      if (!v15)
+      if (!intValue3)
       {
         v17 = "false";
       }
@@ -2385,7 +2385,7 @@ LABEL_55:
     }
 
     objc_autoreleasePoolPop(v16);
-    v18 = v15 == 0;
+    v18 = intValue3 == 0;
   }
 
   else
@@ -2393,7 +2393,7 @@ LABEL_55:
     v18 = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ISO_CC_CODE"])
+  if ([assist objectForKeyedSubscript:@"ISO_CC_CODE"])
   {
     sub_10015E088([(WiFiIDSSyncEngine *)self manager]);
   }
@@ -2402,7 +2402,7 @@ LABEL_55:
   v20 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, autojoin assist SSID: %@", "-[WiFiIDSSyncEngine processReceivedAutoJoinAssist:]", objc_msgSend(v19, "count"), objc_msgSend(a3, "objectForKey:", @"SSID_STR"}];
+    [off_100298C40 WFLog:3 message:{"%s: %lu plist networks, autojoin assist SSID: %@", "-[WiFiIDSSyncEngine processReceivedAutoJoinAssist:]", objc_msgSend(v19, "count"), objc_msgSend(assist, "objectForKey:", @"SSID_STR"}];
   }
 
   objc_autoreleasePoolPop(v20);
@@ -2437,9 +2437,9 @@ LABEL_55:
   {
     v22 = 0;
 LABEL_30:
-    v24 = [[NSDictionary alloc] initWithObjectsAndKeys:{a3, @"ADD", 0}];
+    v24 = [[NSDictionary alloc] initWithObjectsAndKeys:{assist, @"ADD", 0}];
     [(WiFiIDSSyncEngine *)self processReceivedKnownNetwork:v24];
-    v23 = [a3 objectForKeyedSubscript:@"SSID_STR"];
+    v23 = [assist objectForKeyedSubscript:@"SSID_STR"];
   }
 
   if (![(WiFiIDSSyncEngine *)self doesNetworkContainBssidForGuessing2GhzNetwork:v22])
@@ -2483,25 +2483,25 @@ LABEL_50:
   }
 
 LABEL_36:
-  v26 = [(WiFiIDSSyncEngine *)self manager];
+  manager = [(WiFiIDSSyncEngine *)self manager];
   if (v18)
   {
     v27 = v23;
     v28 = 1;
     v29 = v35;
-    v30 = v12;
+    v30 = intValue2;
 LABEL_38:
-    sub_100085748(v26, v27, v28, v29, v30);
+    sub_100085748(manager, v27, v28, v29, v30);
     goto LABEL_40;
   }
 
-  sub_10015EFB0(v26, v12, 0);
+  sub_10015EFB0(manager, intValue2, 0);
 LABEL_40:
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)processReceivedLocaleString:(id)a3
+- (void)processReceivedLocaleString:(id)string
 {
   v4 = objc_autoreleasePoolPush();
   sub_10015E088([(WiFiIDSSyncEngine *)self manager]);
@@ -2513,12 +2513,12 @@ LABEL_40:
 {
   if ([(WiFiIDSSyncEngine *)self stateChangeCallback])
   {
-    v3 = [(WiFiIDSSyncEngine *)self stateChangeCallback];
-    v4 = [(WiFiIDSSyncEngine *)self connectionState];
-    v5 = [(WiFiIDSSyncEngine *)self stateChangeContext];
-    v6 = v3[2];
+    stateChangeCallback = [(WiFiIDSSyncEngine *)self stateChangeCallback];
+    connectionState = [(WiFiIDSSyncEngine *)self connectionState];
+    stateChangeContext = [(WiFiIDSSyncEngine *)self stateChangeContext];
+    v6 = stateChangeCallback[2];
 
-    v6(v3, v4, v5);
+    v6(stateChangeCallback, connectionState, stateChangeContext);
   }
 }
 
@@ -2583,14 +2583,14 @@ LABEL_40:
   }
 }
 
-- (void)updateBssidGuessingDictForBssid:(id)a3 guessingFailureCountDict:(id)a4 forNetworkSsid:(id)a5
+- (void)updateBssidGuessingDictForBssid:(id)bssid guessingFailureCountDict:(id)dict forNetworkSsid:(id)ssid
 {
-  if (a4 && [a4 valueForKey:a3])
+  if (dict && [dict valueForKey:bssid])
   {
     v14[0] = @"5GhzSsid";
     v14[1] = @"GuessingFailureCount";
-    v15[0] = a5;
-    v15[1] = [a4 valueForKey:a3];
+    v15[0] = ssid;
+    v15[1] = [dict valueForKey:bssid];
     v9 = v15;
     v10 = v14;
     v11 = 2;
@@ -2599,24 +2599,24 @@ LABEL_40:
   else
   {
     v12 = @"5GhzSsid";
-    v13 = a5;
-    v9 = &v13;
+    ssidCopy = ssid;
+    v9 = &ssidCopy;
     v10 = &v12;
     v11 = 1;
   }
 
-  [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] setValue:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v9 forKeys:v10 count:v11], a3];
+  [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] setValue:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v9 forKeys:v10 count:v11], bssid];
 }
 
-- (void)addToKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)a3
+- (void)addToKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)network
 {
-  if (a3)
+  if (network)
   {
-    v5 = sub_10000A878(a3);
+    v5 = sub_10000A878(network);
     if (v5)
     {
       v6 = v5;
-      v7 = sub_10009F418(a3);
+      v7 = sub_10009F418(network);
       v8 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
@@ -2627,7 +2627,7 @@ LABEL_40:
       if (v7)
       {
         v25 = 0;
-        v9 = sub_10009F954(a3, &v25, 0.1);
+        v9 = sub_10009F954(network, &v25, 0.1);
         v10 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
@@ -2678,14 +2678,14 @@ LABEL_40:
       }
 
       [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self authGuessingDictionary] setObject:v13 forKey:v6];
-      v15 = sub_10000A540(a3, @"GUESSED_2ghzBSSID1");
+      v15 = sub_10000A540(network, @"GUESSED_2ghzBSSID1");
       if (v15)
       {
         v16 = v15;
-        v17 = sub_10000A540(a3, @"GUESSED_2ghzBSSID2");
-        v18 = sub_10000A540(a3, @"GUESSED_2ghzBSSID3");
-        v19 = sub_10000A540(a3, @"GUESSED_2ghzBSSID4");
-        v20 = sub_10000A540(a3, @"WiFiPreference2GhzGuessingAttemptsPerBSSID");
+        v17 = sub_10000A540(network, @"GUESSED_2ghzBSSID2");
+        v18 = sub_10000A540(network, @"GUESSED_2ghzBSSID3");
+        v19 = sub_10000A540(network, @"GUESSED_2ghzBSSID4");
+        v20 = sub_10000A540(network, @"WiFiPreference2GhzGuessingAttemptsPerBSSID");
         [(WiFiIDSSyncEngine *)self updateBssidGuessingDictForBssid:v16 guessingFailureCountDict:v20 forNetworkSsid:v6];
         if (v17)
         {
@@ -2727,11 +2727,11 @@ LABEL_34:
   objc_autoreleasePoolPop(v14);
 }
 
-- (void)removeFromKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)a3
+- (void)removeFromKnownNetworkGuessingDictionaryTheNetwork:(__WiFiNetwork *)network
 {
-  if (a3)
+  if (network)
   {
-    v5 = sub_10000A878(a3);
+    v5 = sub_10000A878(network);
     v6 = objc_autoreleasePoolPush();
     if (!v5)
     {
@@ -2751,29 +2751,29 @@ LABEL_34:
 
     objc_autoreleasePoolPop(v6);
     [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self authGuessingDictionary] removeObjectForKey:v5];
-    v7 = sub_10000A540(a3, @"GUESSED_2ghzBSSID1");
+    v7 = sub_10000A540(network, @"GUESSED_2ghzBSSID1");
     if (v7)
     {
       [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] removeObjectForKey:v7];
-      v8 = sub_10000A540(a3, @"GUESSED_2ghzBSSID2");
+      v8 = sub_10000A540(network, @"GUESSED_2ghzBSSID2");
       if (v8)
       {
         [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] removeObjectForKey:v8];
       }
 
-      v9 = sub_10000A540(a3, @"GUESSED_2ghzBSSID3");
+      v9 = sub_10000A540(network, @"GUESSED_2ghzBSSID3");
       if (v9)
       {
         [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] removeObjectForKey:v9];
       }
 
-      v10 = sub_10000A540(a3, @"GUESSED_2ghzBSSID4");
+      v10 = sub_10000A540(network, @"GUESSED_2ghzBSSID4");
       if (v10)
       {
         v11 = v10;
-        v12 = [(WiFiIDSSyncEngine *)self bssidGuessingDictionary];
+        bssidGuessingDictionary = [(WiFiIDSSyncEngine *)self bssidGuessingDictionary];
 
-        [(NSMutableDictionary *)v12 removeObjectForKey:v11];
+        [(NSMutableDictionary *)bssidGuessingDictionary removeObjectForKey:v11];
       }
 
       return;
@@ -2801,9 +2801,9 @@ LABEL_22:
   objc_autoreleasePoolPop(v14);
 }
 
-- (unsigned)canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:(__WiFiNetwork *)a3
+- (unsigned)canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:(__WiFiNetwork *)network
 {
-  if (!a3)
+  if (!network)
   {
     v11 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -2814,7 +2814,7 @@ LABEL_22:
     goto LABEL_14;
   }
 
-  v5 = sub_10000A878(a3);
+  v5 = sub_10000A878(network);
   if (!v5)
   {
     v11 = objc_autoreleasePoolPush();
@@ -2827,7 +2827,7 @@ LABEL_22:
   }
 
   v6 = v5;
-  v7 = sub_10000A540(a3, @"BSSID");
+  v7 = sub_10000A540(network, @"BSSID");
   if (!v7)
   {
     v11 = objc_autoreleasePoolPush();
@@ -2869,10 +2869,10 @@ LABEL_22:
           v20 = [v18 valueForKey:@"AuthFlag"];
           if (v20)
           {
-            v21 = [v20 unsignedIntValue];
-            if (sub_10009F418(a3) == v21)
+            unsignedIntValue = [v20 unsignedIntValue];
+            if (sub_10009F418(network) == unsignedIntValue)
             {
-              if (!v21)
+              if (!unsignedIntValue)
               {
                 return 0;
               }
@@ -2887,12 +2887,12 @@ LABEL_22:
                 if (v24)
                 {
                   v25 = v24;
-                  if (sub_10009FDE4(a3))
+                  if (sub_10009FDE4(network))
                   {
                     v26 = objc_autoreleasePoolPush();
                     if (off_100298C40)
                     {
-                      [off_100298C40 WFLog:3 message:{"%s: Password is already available for scanned network [%@]", "-[WiFiIDSSyncEngine canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:]", sub_10000A878(a3), v30, v31}];
+                      [off_100298C40 WFLog:3 message:{"%s: Password is already available for scanned network [%@]", "-[WiFiIDSSyncEngine canAttemptAssociationBasedOnBssidGuessingForScannedNetwork:]", sub_10000A878(network), v30, v31}];
                     }
                   }
 
@@ -3006,11 +3006,11 @@ LABEL_15:
   return 0;
 }
 
-- (unsigned)isNetworkKnown:(id)a3
+- (unsigned)isNetworkKnown:(id)known
 {
-  if (a3)
+  if (known)
   {
-    return [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self authGuessingDictionary] objectForKey:a3]!= 0;
+    return [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self authGuessingDictionary] objectForKey:known]!= 0;
   }
 
   v4 = objc_autoreleasePoolPush();
@@ -3023,11 +3023,11 @@ LABEL_15:
   return 0;
 }
 
-- (void)incrementGuessingFailedCountForScannedNetworkWithBssid:(id)a3
+- (void)incrementGuessingFailedCountForScannedNetworkWithBssid:(id)bssid
 {
-  if (a3)
+  if (bssid)
   {
-    v5 = [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] valueForKey:a3];
+    v5 = [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] valueForKey:bssid];
     if (v5)
     {
       v6 = v5;
@@ -3041,12 +3041,12 @@ LABEL_15:
         v14[1] = @"GuessingFailureCount";
         v15[0] = v8;
         v15[1] = v10;
-        [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] setValue:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v15 forKeys:v14 count:2], a3];
-        v11 = sub_100083194([(WiFiIDSSyncEngine *)self manager], v8, a3);
+        [(NSMutableDictionary *)[(WiFiIDSSyncEngine *)self bssidGuessingDictionary] setValue:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v15 forKeys:v14 count:2], bssid];
+        v11 = sub_100083194([(WiFiIDSSyncEngine *)self manager], v8, bssid);
         v12 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
-          [off_100298C40 WFLog:3 message:{"%s: %@[%@]: update guessing failure count to %d, status:%d", "-[WiFiIDSSyncEngine incrementGuessingFailedCountForScannedNetworkWithBssid:]", a3, v8, v9, v11}];
+          [off_100298C40 WFLog:3 message:{"%s: %@[%@]: update guessing failure count to %d, status:%d", "-[WiFiIDSSyncEngine incrementGuessingFailedCountForScannedNetworkWithBssid:]", bssid, v8, v9, v11}];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -3083,9 +3083,9 @@ LABEL_15:
   objc_autoreleasePoolPop(v13);
 }
 
-- (id)getCorresponding5GhzSsidInPlistFor2GhzNetwork:(__WiFiNetwork *)a3
+- (id)getCorresponding5GhzSsidInPlistFor2GhzNetwork:(__WiFiNetwork *)network
 {
-  result = sub_10000A540(a3, @"BSSID");
+  result = sub_10000A540(network, @"BSSID");
   if (result)
   {
     result = [-[NSMutableDictionary valueForKey:](-[WiFiIDSSyncEngine bssidGuessingDictionary](self "bssidGuessingDictionary")];
@@ -3107,17 +3107,17 @@ LABEL_15:
   return result;
 }
 
-- (int64_t)isRxdNetwork:(id)a3 equalToPlistNetwork:(__WiFiNetwork *)a4
+- (int64_t)isRxdNetwork:(id)network equalToPlistNetwork:(__WiFiNetwork *)plistNetwork
 {
   v7 = objc_autoreleasePoolPush();
-  if (![objc_msgSend(a3 objectForKey:{@"SSID_STR", "isEqualToString:", sub_10000A878(a4)}])
+  if (![objc_msgSend(network objectForKey:{@"SSID_STR", "isEqualToString:", sub_10000A878(plistNetwork)}])
   {
 LABEL_24:
     v9 = 0;
     goto LABEL_25;
   }
 
-  v8 = sub_1001266A8(a4, [(WiFiIDSSyncEngine *)self manager]);
+  v8 = sub_1001266A8(plistNetwork, [(WiFiIDSSyncEngine *)self manager]);
   if (!v8)
   {
     v21 = objc_autoreleasePoolPush();
@@ -3132,7 +3132,7 @@ LABEL_24:
 
   v9 = v8;
   v10 = sub_1001B0388(v8);
-  if (v10 != sub_1001B0388(a3))
+  if (v10 != sub_1001B0388(network))
   {
 LABEL_25:
     v19 = 0;
@@ -3142,8 +3142,8 @@ LABEL_25:
 
   if (v10)
   {
-    v10 = sub_10002A1CC(a4);
-    if ([v10 isEqualToString:{objc_msgSend(a3, "objectForKey:", @"WiFiNetworkPasswordString"}])
+    v10 = sub_10002A1CC(plistNetwork);
+    if ([v10 isEqualToString:{objc_msgSend(network, "objectForKey:", @"WiFiNetworkPasswordString"}])
     {
       v11 = 0;
     }
@@ -3159,17 +3159,17 @@ LABEL_25:
     v11 = 0;
   }
 
-  v12 = sub_10001CB84(a4);
-  if (v12 != [objc_msgSend(a3 objectForKey:{@"UserDirected", "BOOLValue"}])
+  v12 = sub_10001CB84(plistNetwork);
+  if (v12 != [objc_msgSend(network objectForKey:{@"UserDirected", "BOOLValue"}])
   {
     v11 |= 4uLL;
   }
 
-  v13 = [a3 objectForKey:@"GUESSED_2ghzBSSID4"];
+  v13 = [network objectForKey:@"GUESSED_2ghzBSSID4"];
   if (v13)
   {
     v14 = v13;
-    v15 = sub_10000A540(a4, @"GUESSED_2ghzBSSID4");
+    v15 = sub_10000A540(plistNetwork, @"GUESSED_2ghzBSSID4");
     if (v15)
     {
       v16 = v14;
@@ -3181,14 +3181,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v17 = [a3 objectForKey:@"GUESSED_2ghzBSSID1"];
+  v17 = [network objectForKey:@"GUESSED_2ghzBSSID1"];
   if (!v17)
   {
     goto LABEL_19;
   }
 
   v18 = v17;
-  v15 = sub_10000A540(a4, @"GUESSED_2ghzBSSID1");
+  v15 = sub_10000A540(plistNetwork, @"GUESSED_2ghzBSSID1");
   if (!v15)
   {
     goto LABEL_18;

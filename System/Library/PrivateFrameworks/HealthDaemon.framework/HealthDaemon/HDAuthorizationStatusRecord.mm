@@ -1,8 +1,8 @@
 @interface HDAuthorizationStatusRecord
 + (id)notDerminedReadAuthorizationStatus;
 + (id)unrestrictedReadAuthorizationStatus;
-- (BOOL)isEqual:(id)a3;
-- (HDAuthorizationStatusRecord)initWithReadAuthorizationStatus:(int64_t)a3 authorizationRequest:(int64_t)a4 authorizationMode:(int64_t)a5 restrictedBundleIdentifier:(id)a6 restrictedSourceEntities:(id)a7 deletedObjectBaselineAnchor:(id)a8 objectLimitAnchor:(id)a9 objectLimitModifiedDate:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (HDAuthorizationStatusRecord)initWithReadAuthorizationStatus:(int64_t)status authorizationRequest:(int64_t)request authorizationMode:(int64_t)mode restrictedBundleIdentifier:(id)identifier restrictedSourceEntities:(id)entities deletedObjectBaselineAnchor:(id)anchor objectLimitAnchor:(id)limitAnchor objectLimitModifiedDate:(id)self0;
 - (HDSQLitePredicate)authorizationPredicate;
 - (id)description;
 - (void)disableReading;
@@ -11,17 +11,17 @@
 
 @implementation HDAuthorizationStatusRecord
 
-- (HDAuthorizationStatusRecord)initWithReadAuthorizationStatus:(int64_t)a3 authorizationRequest:(int64_t)a4 authorizationMode:(int64_t)a5 restrictedBundleIdentifier:(id)a6 restrictedSourceEntities:(id)a7 deletedObjectBaselineAnchor:(id)a8 objectLimitAnchor:(id)a9 objectLimitModifiedDate:(id)a10
+- (HDAuthorizationStatusRecord)initWithReadAuthorizationStatus:(int64_t)status authorizationRequest:(int64_t)request authorizationMode:(int64_t)mode restrictedBundleIdentifier:(id)identifier restrictedSourceEntities:(id)entities deletedObjectBaselineAnchor:(id)anchor objectLimitAnchor:(id)limitAnchor objectLimitModifiedDate:(id)self0
 {
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  if (a5 == 1 && !v20)
+  identifierCopy = identifier;
+  entitiesCopy = entities;
+  anchorCopy = anchor;
+  limitAnchorCopy = limitAnchor;
+  dateCopy = date;
+  if (mode == 1 && !limitAnchorCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HDAuthorizationStatusRecord.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"objectLimitAnchor != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationStatusRecord.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"objectLimitAnchor != nil"}];
   }
 
   v35.receiver = self;
@@ -29,23 +29,23 @@
   v22 = [(HDAuthorizationStatusRecord *)&v35 init];
   if (v22)
   {
-    v23 = [MEMORY[0x277CCDD20] recordWithStatus:a3 request:a4 mode:a5 anchorLimitModifiedDate:v21];
+    v23 = [MEMORY[0x277CCDD20] recordWithStatus:status request:request mode:mode anchorLimitModifiedDate:dateCopy];
     authorizationRecord = v22->_authorizationRecord;
     v22->_authorizationRecord = v23;
 
-    v25 = [v17 copy];
+    v25 = [identifierCopy copy];
     restrictedBundleIdentifier = v22->_restrictedBundleIdentifier;
     v22->_restrictedBundleIdentifier = v25;
 
-    v27 = [v18 copy];
+    v27 = [entitiesCopy copy];
     restrictedSourceEntities = v22->_restrictedSourceEntities;
     v22->_restrictedSourceEntities = v27;
 
-    v29 = [v19 copy];
+    v29 = [anchorCopy copy];
     deletedObjectBaselineAnchor = v22->_deletedObjectBaselineAnchor;
     v22->_deletedObjectBaselineAnchor = v29;
 
-    v31 = [v20 copy];
+    v31 = [limitAnchorCopy copy];
     objectLimitAnchor = v22->_objectLimitAnchor;
     v22->_objectLimitAnchor = v31;
   }
@@ -55,14 +55,14 @@
 
 + (id)unrestrictedReadAuthorizationStatus
 {
-  v2 = [[a1 alloc] initWithReadAuthorizationStatus:101 authorizationRequest:203 authorizationMode:0 restrictedBundleIdentifier:0 restrictedSourceEntities:0 deletedObjectBaselineAnchor:&unk_283CB3C18 objectLimitAnchor:0 objectLimitModifiedDate:0];
+  v2 = [[self alloc] initWithReadAuthorizationStatus:101 authorizationRequest:203 authorizationMode:0 restrictedBundleIdentifier:0 restrictedSourceEntities:0 deletedObjectBaselineAnchor:&unk_283CB3C18 objectLimitAnchor:0 objectLimitModifiedDate:0];
 
   return v2;
 }
 
 + (id)notDerminedReadAuthorizationStatus
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x277CBEB98] set];
   v4 = [v2 initWithReadAuthorizationStatus:100 authorizationRequest:200 authorizationMode:0 restrictedBundleIdentifier:&stru_283BF39C8 restrictedSourceEntities:v3 deletedObjectBaselineAnchor:&unk_283CB3C18 objectLimitAnchor:0 objectLimitModifiedDate:0];
 
@@ -71,20 +71,20 @@
 
 - (void)disableReading
 {
-  v3 = [(_HKAuthorizationRecord *)self->_authorizationRecord recordWithReadingDisabled];
+  recordWithReadingDisabled = [(_HKAuthorizationRecord *)self->_authorizationRecord recordWithReadingDisabled];
   authorizationRecord = self->_authorizationRecord;
-  self->_authorizationRecord = v3;
+  self->_authorizationRecord = recordWithReadingDisabled;
 
-  MEMORY[0x2821F96F8](v3, authorizationRecord);
+  MEMORY[0x2821F96F8](recordWithReadingDisabled, authorizationRecord);
 }
 
 - (void)disableSharing
 {
-  v3 = [(_HKAuthorizationRecord *)self->_authorizationRecord recordWithSharingDisabled];
+  recordWithSharingDisabled = [(_HKAuthorizationRecord *)self->_authorizationRecord recordWithSharingDisabled];
   authorizationRecord = self->_authorizationRecord;
-  self->_authorizationRecord = v3;
+  self->_authorizationRecord = recordWithSharingDisabled;
 
-  MEMORY[0x2821F96F8](v3, authorizationRecord);
+  MEMORY[0x2821F96F8](recordWithSharingDisabled, authorizationRecord);
 }
 
 - (HDSQLitePredicate)authorizationPredicate
@@ -100,21 +100,21 @@
     {
       [MEMORY[0x277D10B70] truePredicate];
     }
-    v3 = ;
+    falsePredicate = ;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
-  return v3;
+  return falsePredicate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -124,7 +124,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (![(_HKAuthorizationRecord *)self->_authorizationRecord isEqual:v5->_authorizationRecord])
       {
         goto LABEL_18;
@@ -208,8 +208,8 @@ LABEL_20:
   {
     v10 = MEMORY[0x277CCACA8];
     restrictedBundleIdentifier = self->_restrictedBundleIdentifier;
-    v12 = [(NSSet *)restrictedSourceEntities allObjects];
-    v13 = [v12 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)restrictedSourceEntities allObjects];
+    v13 = [allObjects componentsJoinedByString:{@", "}];
     v14 = [v10 stringWithFormat:@" RESTRICTED to %@ (%@)", restrictedBundleIdentifier, v13];
     v18 = deletedObjectBaselineAnchor;
     v15 = v20;

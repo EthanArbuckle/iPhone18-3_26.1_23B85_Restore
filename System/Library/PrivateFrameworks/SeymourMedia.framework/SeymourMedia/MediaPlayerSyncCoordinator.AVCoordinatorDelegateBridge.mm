@@ -1,14 +1,14 @@
 @interface MediaPlayerSyncCoordinator.AVCoordinatorDelegateBridge
 - (_TtCC12SeymourMedia26MediaPlayerSyncCoordinatorP33_75A9D0B74F4CEE621C27366C52243E4627AVCoordinatorDelegateBridge)init;
-- (id)localParticipantUUIDForPlaybackCoordinator:(id)a3;
-- (void)playbackCoordinator:(id)a3 broadcastLocalParticipantStateDictionary:(id)a4;
-- (void)playbackCoordinator:(id)a3 broadcastTransportControlStateDictionary:(id)a4 forItemWithIdentifier:(id)a5;
-- (void)playbackCoordinator:(id)a3 reloadTransportControlStateForItemWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (id)localParticipantUUIDForPlaybackCoordinator:(id)coordinator;
+- (void)playbackCoordinator:(id)coordinator broadcastLocalParticipantStateDictionary:(id)dictionary;
+- (void)playbackCoordinator:(id)coordinator broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier;
+- (void)playbackCoordinator:(id)coordinator reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation MediaPlayerSyncCoordinator.AVCoordinatorDelegateBridge
 
-- (id)localParticipantUUIDForPlaybackCoordinator:(id)a3
+- (id)localParticipantUUIDForPlaybackCoordinator:(id)coordinator
 {
   v4 = sub_20C59D4CC();
   v5 = *(v4 - 8);
@@ -21,7 +21,7 @@
   return v9;
 }
 
-- (void)playbackCoordinator:(id)a3 broadcastLocalParticipantStateDictionary:(id)a4
+- (void)playbackCoordinator:(id)coordinator broadcastLocalParticipantStateDictionary:(id)dictionary
 {
   type metadata accessor for AVPlaybackCoordinationParticipantStateKey(0);
   sub_20C50EAB4(&qword_27C7C4358, type metadata accessor for AVPlaybackCoordinationParticipantStateKey);
@@ -29,13 +29,13 @@
   if (swift_unknownObjectWeakLoadStrong())
   {
     type metadata accessor for MediaPlayerSyncCoordinator();
-    v5 = self;
+    selfCopy = self;
     sub_20C50D114();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)playbackCoordinator:(id)a3 broadcastTransportControlStateDictionary:(id)a4 forItemWithIdentifier:(id)a5
+- (void)playbackCoordinator:(id)coordinator broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier
 {
   type metadata accessor for AVPlaybackCoordinationTransportControlStateKey(0);
   sub_20C50EAB4(&qword_27C7C4348, type metadata accessor for AVPlaybackCoordinationTransportControlStateKey);
@@ -44,15 +44,15 @@
   if (swift_unknownObjectWeakLoadStrong())
   {
     type metadata accessor for MediaPlayerSyncCoordinator();
-    v6 = self;
+    selfCopy = self;
     sub_20C50D178();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)playbackCoordinator:(id)a3 reloadTransportControlStateForItemWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)playbackCoordinator:(id)coordinator reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_20C5A039C();
   v9 = v8;
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -60,7 +60,7 @@
   {
     v11 = Strong;
     _Block_copy(v6);
-    v12 = self;
+    selfCopy = self;
     sub_20C50E36C(v7, v9, v11, v6);
 
     _Block_release(v6);

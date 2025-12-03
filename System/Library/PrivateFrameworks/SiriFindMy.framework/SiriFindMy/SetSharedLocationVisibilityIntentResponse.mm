@@ -1,12 +1,12 @@
 @interface SetSharedLocationVisibilityIntentResponse
-- (SetSharedLocationVisibilityIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetSharedLocationVisibilityIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetSharedLocationVisibilityIntentResponse
 
-- (SetSharedLocationVisibilityIntentResponse)initWithPropertiesByName:(id)a3
+- (SetSharedLocationVisibilityIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_266DAA6AC();
   }

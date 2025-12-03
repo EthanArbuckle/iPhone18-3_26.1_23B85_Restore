@@ -1,7 +1,7 @@
 @interface FPDiagnosticExtensionManager
 + (id)sharedManager;
 - (FPDiagnosticExtensionManager)init;
-- (void)triggerDiagnosticsFor:(id)a3 persistingAt:(id)a4 completionHandler:(id)a5;
+- (void)triggerDiagnosticsFor:(id)for persistingAt:(id)at completionHandler:(id)handler;
 @end
 
 @implementation FPDiagnosticExtensionManager
@@ -32,11 +32,11 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
   v2 = [(FPDiagnosticExtensionManager *)&v8 init];
   if (v2 && getDEExtensionManagerClass())
   {
-    v3 = [getDEExtensionManagerClass() sharedInstance];
-    [v3 loadExtensions];
+    sharedInstance = [getDEExtensionManagerClass() sharedInstance];
+    [sharedInstance loadExtensions];
 
-    v4 = [getDEExtensionManagerClass() sharedInstance];
-    v5 = [v4 extensionForIdentifier:@"com.apple.FileProviderDaemon.diagnostic"];
+    sharedInstance2 = [getDEExtensionManagerClass() sharedInstance];
+    v5 = [sharedInstance2 extensionForIdentifier:@"com.apple.FileProviderDaemon.diagnostic"];
     fpExtension = v2->fpExtension;
     v2->fpExtension = v5;
   }
@@ -44,15 +44,15 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)triggerDiagnosticsFor:(id)a3 persistingAt:(id)a4 completionHandler:(id)a5
+- (void)triggerDiagnosticsFor:(id)for persistingAt:(id)at completionHandler:(id)handler
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  atCopy = at;
+  handlerCopy = handler;
   if (self->fpExtension)
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v39 = 0;
     v40 = &v39;
     v41 = 0x3032000000;
@@ -64,21 +64,21 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
     v37 = 0x2020000000;
     v38 = 0;
     obj = 0;
-    v12 = [v11 removeItemAtURL:v9 error:&obj];
+    v12 = [defaultManager removeItemAtURL:atCopy error:&obj];
     objc_storeStrong(&v44, obj);
     *(v36 + 24) = v12;
     if (v12 & 1) != 0 || ([v40[5] fp_isCocoaErrorCode:4])
     {
       v13 = (v40 + 5);
       v33 = v40[5];
-      v14 = [v11 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v33];
+      v14 = [defaultManager createDirectoryAtURL:atCopy withIntermediateDirectories:1 attributes:0 error:&v33];
       objc_storeStrong(v13, v33);
       *(v36 + 24) = v14;
       if (v14)
       {
         v15 = objc_opt_new();
         [v15 setObject:@"FileProvider Daemon" forKeyedSubscript:@"DEExtensionHostAppKey"];
-        [v15 setObject:v8 forKeyedSubscript:@"domainID"];
+        [v15 setObject:forCopy forKeyedSubscript:@"domainID"];
         v16 = fp_current_or_default_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -90,11 +90,11 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
         v27[1] = 3221225472;
         v27[2] = __85__FPDiagnosticExtensionManager_triggerDiagnosticsFor_persistingAt_completionHandler___block_invoke;
         v27[3] = &unk_1E83C0C98;
-        v28 = v9;
+        v28 = atCopy;
         v31 = &v35;
-        v29 = v11;
+        v29 = defaultManager;
         v32 = &v39;
-        v30 = v10;
+        v30 = handlerCopy;
         [(DEExtension *)fpExtension attachmentsForParameters:v15 andHandler:v27];
 
         goto LABEL_16;
@@ -103,13 +103,13 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
       v19 = fp_current_or_default_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v9 path];
-        v21 = [v20 fp_prettyPath];
-        v22 = [v40[5] fp_prettyDescription];
+        path = [atCopy path];
+        fp_prettyPath = [path fp_prettyPath];
+        fp_prettyDescription = [v40[5] fp_prettyDescription];
         *buf = 138412546;
-        v46 = v21;
+        v46 = fp_prettyPath;
         v47 = 2112;
-        v48 = v22;
+        v48 = fp_prettyDescription;
         _os_log_error_impl(&dword_1CEFC7000, v19, OS_LOG_TYPE_ERROR, "[ERROR] Failed creating %@: %@ - won't execute DE", buf, 0x16u);
       }
     }
@@ -119,18 +119,18 @@ void __45__FPDiagnosticExtensionManager_sharedManager__block_invoke()
       v19 = fp_current_or_default_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 path];
-        v25 = [v24 fp_prettyPath];
-        v26 = [v40[5] fp_prettyDescription];
+        path2 = [atCopy path];
+        fp_prettyPath2 = [path2 fp_prettyPath];
+        fp_prettyDescription2 = [v40[5] fp_prettyDescription];
         *buf = 138412546;
-        v46 = v25;
+        v46 = fp_prettyPath2;
         v47 = 2112;
-        v48 = v26;
+        v48 = fp_prettyDescription2;
         _os_log_error_impl(&dword_1CEFC7000, v19, OS_LOG_TYPE_ERROR, "[ERROR] Failed emptying %@: %@ - won't execute DE", buf, 0x16u);
       }
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_16:
     _Block_object_dispose(&v35, 8);
     _Block_object_dispose(&v39, 8);
@@ -144,7 +144,7 @@ LABEL_16:
     [FPDiagnosticExtensionManager triggerDiagnosticsFor:v18 persistingAt:? completionHandler:?];
   }
 
-  (*(v10 + 2))(v10, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_17:
 
   v23 = *MEMORY[0x1E69E9840];

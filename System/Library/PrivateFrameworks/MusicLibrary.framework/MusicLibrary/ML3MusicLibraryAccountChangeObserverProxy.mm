@@ -3,10 +3,10 @@
 - (NSHashTable)readonlyObservers;
 - (NSHashTable)weakObservers;
 - (id)_init;
-- (void)addAccountChangeObserver:(id)a3;
-- (void)emergencyDisconnectWithCompletion:(id)a3;
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4;
-- (void)removeAccountChangeObserver:(id)a3;
+- (void)addAccountChangeObserver:(id)observer;
+- (void)emergencyDisconnectWithCompletion:(id)completion;
+- (void)performDatabasePathChange:(id)change completion:(id)completion;
+- (void)removeAccountChangeObserver:(id)observer;
 - (void)terminateForFailureToPerformDatabasePathChange;
 @end
 
@@ -52,15 +52,15 @@ uint64_t __56__ML3MusicLibraryAccountChangeObserverProxy_sharedProxy__block_invo
 
 - (NSHashTable)weakObservers
 {
-  v3 = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   weakObservers = self->_weakObservers;
   if (!weakObservers)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_weakObservers;
-    self->_weakObservers = v5;
+    self->_weakObservers = weakObjectsHashTable;
 
     weakObservers = self->_weakObservers;
   }
@@ -76,14 +76,14 @@ uint64_t __56__ML3MusicLibraryAccountChangeObserverProxy_sharedProxy__block_invo
   v10 = __Block_byref_object_copy__25234;
   v11 = __Block_byref_object_dispose__25235;
   v12 = 0;
-  v3 = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
+  serialQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__ML3MusicLibraryAccountChangeObserverProxy_readonlyObservers__block_invoke;
   v6[3] = &unk_278766080;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -100,18 +100,18 @@ void __62__ML3MusicLibraryAccountChangeObserverProxy_readonlyObservers__block_in
   *(v3 + 40) = v2;
 }
 
-- (void)removeAccountChangeObserver:(id)a3
+- (void)removeAccountChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__ML3MusicLibraryAccountChangeObserverProxy_removeAccountChangeObserver___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 void __73__ML3MusicLibraryAccountChangeObserverProxy_removeAccountChangeObserver___block_invoke(uint64_t a1)
@@ -120,29 +120,29 @@ void __73__ML3MusicLibraryAccountChangeObserverProxy_removeAccountChangeObserver
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addAccountChangeObserver:(id)a3
+- (void)addAccountChangeObserver:(id)observer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = observerCopy;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ - addAccountChangeObserver: %{public}@", buf, 0x16u);
   }
 
-  v6 = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
+  serialQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___block_invoke;
   v8[3] = &unk_2787660F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = observerCopy;
+  v7 = observerCopy;
+  dispatch_sync(serialQueue, v8);
 }
 
 void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___block_invoke(uint64_t a1)
@@ -157,11 +157,11 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
   v3 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+    readonlyObservers = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v4;
+    v18 = readonlyObservers;
     _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ - terminateForFailureToPrepareForAccountChange - Observers: %{public}@", buf, 0x16u);
   }
 
@@ -169,8 +169,8 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  readonlyObservers2 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+  v6 = [readonlyObservers2 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -182,32 +182,32 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(readonlyObservers2);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) terminateForFailureToPerformDatabasePathChange];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [readonlyObservers2 countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)emergencyDisconnectWithCompletion:(id)a3
+- (void)emergencyDisconnectWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  completionCopy = completion;
   v4 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+    readonlyObservers = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v5;
+    v32 = readonlyObservers;
     _os_log_impl(&dword_22D2FA000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ - emergencyDisconnectWithCompletion - Observers: %{public}@", buf, 0x16u);
   }
 
@@ -218,8 +218,8 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  readonlyObservers2 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+  v8 = [readonlyObservers2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -231,7 +231,7 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(readonlyObservers2);
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
@@ -248,23 +248,23 @@ void __70__ML3MusicLibraryAccountChangeObserverProxy_addAccountChangeObserver___
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [readonlyObservers2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(ML3MusicLibraryAccountChangeObserverProxy *)self calloutQueue];
+  calloutQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)self calloutQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWithCompletion___block_invoke_3;
   block[3] = &unk_278765798;
   v19 = v16;
-  v20 = self;
-  v21 = v17;
-  v14 = v17;
+  selfCopy2 = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
   v15 = v16;
-  dispatch_group_notify(v6, v13, block);
+  dispatch_group_notify(v6, calloutQueue, block);
 }
 
 void __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWithCompletion___block_invoke(uint64_t a1)
@@ -294,21 +294,21 @@ uint64_t __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWith
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)performDatabasePathChange:(id)a3 completion:(id)a4
+- (void)performDatabasePathChange:(id)change completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v19 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v6 = os_log_create("com.apple.amp.medialibrary", "MultiUser");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+    readonlyObservers = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
     *buf = 138543875;
-    v32 = self;
+    selfCopy = self;
     v33 = 2113;
-    v34 = v20;
+    v34 = changeCopy;
     v35 = 2114;
-    v36 = v7;
+    v36 = readonlyObservers;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ - performDatabasePathChange: - newPath=%{private}@ Observers=%{public}@", buf, 0x20u);
   }
 
@@ -317,9 +317,9 @@ uint64_t __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWith
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = self;
-  v10 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  selfCopy2 = self;
+  readonlyObservers2 = [(ML3MusicLibraryAccountChangeObserverProxy *)self readonlyObservers];
+  v11 = [readonlyObservers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -331,7 +331,7 @@ uint64_t __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWith
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(readonlyObservers2);
         }
 
         v15 = *(*(&v26 + 1) + 8 * v14);
@@ -340,31 +340,31 @@ uint64_t __79__ML3MusicLibraryAccountChangeObserverProxy_emergencyDisconnectWith
         v24[1] = 3221225472;
         v24[2] = __82__ML3MusicLibraryAccountChangeObserverProxy_performDatabasePathChange_completion___block_invoke;
         v24[3] = &unk_278765DB8;
-        v24[4] = v9;
+        v24[4] = selfCopy2;
         v25 = v8;
-        [v15 performDatabasePathChange:v20 completion:v24];
+        [v15 performDatabasePathChange:changeCopy completion:v24];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [readonlyObservers2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [(ML3MusicLibraryAccountChangeObserverProxy *)v9 calloutQueue];
+  calloutQueue = [(ML3MusicLibraryAccountChangeObserverProxy *)selfCopy2 calloutQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ML3MusicLibraryAccountChangeObserverProxy_performDatabasePathChange_completion___block_invoke_3;
   block[3] = &unk_278765798;
-  block[4] = v9;
-  v22 = v20;
-  v23 = v19;
-  v17 = v19;
-  v18 = v20;
-  dispatch_group_notify(v8, v16, block);
+  block[4] = selfCopy2;
+  v22 = changeCopy;
+  v23 = completionCopy;
+  v17 = completionCopy;
+  v18 = changeCopy;
+  dispatch_group_notify(v8, calloutQueue, block);
 }
 
 void __82__ML3MusicLibraryAccountChangeObserverProxy_performDatabasePathChange_completion___block_invoke(uint64_t a1)

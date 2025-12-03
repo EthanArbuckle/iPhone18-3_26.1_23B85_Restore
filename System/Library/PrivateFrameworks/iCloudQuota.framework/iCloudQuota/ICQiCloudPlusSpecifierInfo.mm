@@ -1,8 +1,8 @@
 @interface ICQiCloudPlusSpecifierInfo
-- (ICQiCloudPlusSpecifierInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICQiCloudPlusSpecifierInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQiCloudPlusSpecifierInfo
@@ -18,53 +18,53 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQiCloudPlusSpecifierInfo);
-  v5 = [(ICQSpecifierInfo *)self identifier];
-  [(ICQSpecifierInfo *)v4 setIdentifier:v5];
+  identifier = [(ICQSpecifierInfo *)self identifier];
+  [(ICQSpecifierInfo *)v4 setIdentifier:identifier];
 
-  v6 = [(ICQSpecifierInfo *)self type];
-  [(ICQSpecifierInfo *)v4 setType:v6];
+  type = [(ICQSpecifierInfo *)self type];
+  [(ICQSpecifierInfo *)v4 setType:type];
 
-  v7 = [(ICQSpecifierInfo *)self title];
-  [(ICQSpecifierInfo *)v4 setTitle:v7];
+  title = [(ICQSpecifierInfo *)self title];
+  [(ICQSpecifierInfo *)v4 setTitle:title];
 
-  v8 = [(ICQSpecifierInfo *)self subTitle];
-  [(ICQSpecifierInfo *)v4 setSubTitle:v8];
+  subTitle = [(ICQSpecifierInfo *)self subTitle];
+  [(ICQSpecifierInfo *)v4 setSubTitle:subTitle];
 
-  v9 = [(ICQSpecifierInfo *)self iconURL];
-  [(ICQSpecifierInfo *)v4 setIconURL:v9];
+  iconURL = [(ICQSpecifierInfo *)self iconURL];
+  [(ICQSpecifierInfo *)v4 setIconURL:iconURL];
 
-  v10 = [(ICQSpecifierInfo *)self actionURL];
-  [(ICQSpecifierInfo *)v4 setActionURL:v10];
+  actionURL = [(ICQSpecifierInfo *)self actionURL];
+  [(ICQSpecifierInfo *)v4 setActionURL:actionURL];
 
-  v11 = [(ICQSpecifierInfo *)self icqLink];
-  [(ICQSpecifierInfo *)v4 setIcqLink:v11];
+  icqLink = [(ICQSpecifierInfo *)self icqLink];
+  [(ICQSpecifierInfo *)v4 setIcqLink:icqLink];
 
-  v12 = [(ICQSpecifierInfo *)self actions];
-  [(ICQSpecifierInfo *)v4 setActions:v12];
+  actions = [(ICQSpecifierInfo *)self actions];
+  [(ICQSpecifierInfo *)v4 setActions:actions];
 
   [(ICQiCloudPlusSpecifierInfo *)v4 setFeatureList:self->_featureList];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ICQiCloudPlusSpecifierInfo;
-  v4 = a3;
-  [(ICQSpecifierInfo *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_featureList forKey:{@"featureList", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ICQSpecifierInfo *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_featureList forKey:{@"featureList", v5.receiver, v5.super_class}];
 }
 
-- (ICQiCloudPlusSpecifierInfo)initWithCoder:(id)a3
+- (ICQiCloudPlusSpecifierInfo)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICQiCloudPlusSpecifierInfo;
-  v5 = [(ICQSpecifierInfo *)&v13 initWithCoder:v4];
+  v5 = [(ICQSpecifierInfo *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -73,7 +73,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"featureList"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"featureList"];
     featureList = v5->_featureList;
     v5->_featureList = v9;
   }

@@ -1,10 +1,10 @@
 @interface SLNetworkReachabilityWarning
-- (SLNetworkReachabilityWarning)initWithServiceType:(id)a3;
+- (SLNetworkReachabilityWarning)initWithServiceType:(id)type;
 @end
 
 @implementation SLNetworkReachabilityWarning
 
-- (SLNetworkReachabilityWarning)initWithServiceType:(id)a3
+- (SLNetworkReachabilityWarning)initWithServiceType:(id)type
 {
   v4.receiver = self;
   v4.super_class = SLNetworkReachabilityWarning;

@@ -1,24 +1,24 @@
 @interface NTKZeusSpectrumFaceBundle
 + (id)identifier;
 - (id)complicationTypesBySlot;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
 @end
 
 @implementation NTKZeusSpectrumFaceBundle
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_478C8;
   v6 = &off_478E0;
@@ -27,25 +27,25 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v3 = a3;
-  [NTKSpectrumZeusFace isRestrictedForDevice:v3];
+  deviceCopy = device;
+  [NTKSpectrumZeusFace isRestrictedForDevice:deviceCopy];
   v19 = objc_opt_new();
-  v4 = [NTKSpectrumStyleEditOption numberOfOptionsForDevice:v3];
+  v4 = [NTKSpectrumStyleEditOption numberOfOptionsForDevice:deviceCopy];
   if (v4 >= 1)
   {
     v5 = v4;
     for (i = 0; i != v5; ++i)
     {
-      v7 = [NTKFace defaultFaceOfStyle:42 forDevice:v3];
+      v7 = [NTKFace defaultFaceOfStyle:42 forDevice:deviceCopy];
       if (v7)
       {
-        v8 = [NTKSpectrumStyleEditOption optionAtIndex:i forDevice:v3];
+        v8 = [NTKSpectrumStyleEditOption optionAtIndex:i forDevice:deviceCopy];
         [v7 selectOption:v8 forCustomEditMode:15 slot:0];
 
-        v9 = [(NTKZeusSpectrumFaceBundle *)self complicationTypesBySlot];
-        [v7 _setFaceGalleryComplicationTypesForSlots:v9];
+        complicationTypesBySlot = [(NTKZeusSpectrumFaceBundle *)self complicationTypesBySlot];
+        [v7 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
         v10 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:6 zOrder:4000];
         v11 = v10;
@@ -87,19 +87,19 @@
   return v2;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 deviceCategory] == &dword_0 + 1 || !objc_msgSend(v4, "isZeusBlack"))
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1 || !objc_msgSend(deviceCopy, "isZeusBlack"))
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [NTKFace defaultFaceOfStyle:42 forDevice:v4];
-    v6 = [(NTKZeusSpectrumFaceBundle *)self complicationTypesBySlot];
-    [v5 _setFaceGalleryComplicationTypesForSlots:v6];
+    v5 = [NTKFace defaultFaceOfStyle:42 forDevice:deviceCopy];
+    complicationTypesBySlot = [(NTKZeusSpectrumFaceBundle *)self complicationTypesBySlot];
+    [v5 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
     if (v5)
     {

@@ -1,8 +1,8 @@
 @interface MCFeatureFlagsPayloadHandler
-+ (BOOL)_reapplyConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5;
-+ (BOOL)_reapplyPayloads:(id)a3 error:(id *)a4;
++ (BOOL)_reapplyConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error;
++ (BOOL)_reapplyPayloads:(id)payloads error:(id *)error;
 + (id)_fullyInstalledPayloads;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -18,9 +18,9 @@
   return v3;
 }
 
-+ (BOOL)_reapplyPayloads:(id)a3 error:(id *)a4
++ (BOOL)_reapplyPayloads:(id)payloads error:(id *)error
 {
-  v5 = a3;
+  payloadsCopy = payloads;
   v6 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
@@ -32,14 +32,14 @@
   v8 = v7;
   if (v7)
   {
-    v33 = a4;
+    errorCopy = error;
     [v7 prepareToAddProfilePayloads];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v34 = v5;
-    v9 = v5;
+    v34 = payloadsCopy;
+    v9 = payloadsCopy;
     v10 = [v9 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v10)
     {
@@ -58,21 +58,21 @@
           }
 
           v16 = *(*(&v37 + 1) + 8 * v14);
-          v17 = [v16 featureFlagsConfiguration];
+          featureFlagsConfiguration = [v16 featureFlagsConfiguration];
           v18 = _MCLogObjects[0];
           if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
           {
             v19 = v18;
-            v20 = [v16 UUID];
+            uUID = [v16 UUID];
             *buf = 138543618;
-            v42 = v20;
+            v42 = uUID;
             v43 = 2112;
-            v44 = v17;
+            v44 = featureFlagsConfiguration;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Adding feature flag settings from payload %{public}@: %@.", buf, 0x16u);
           }
 
           v36 = v15;
-          v21 = [v8 addProfilePayload:v17 error:&v36];
+          v21 = [v8 addProfilePayload:featureFlagsConfiguration error:&v36];
           v12 = v36;
 
           if ((v21 & 1) == 0)
@@ -81,9 +81,9 @@
             if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
             {
               v23 = v22;
-              v24 = [v16 UUID];
+              uUID2 = [v16 UUID];
               *buf = 138543618;
-              v42 = v24;
+              v42 = uUID2;
               v43 = 2114;
               v44 = v12;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to apply feature flag configuration payload %{public}@ with error: %{public}@", buf, 0x16u);
@@ -126,8 +126,8 @@
 
     v12 = v28;
 LABEL_25:
-    a4 = v33;
-    v5 = v34;
+    error = errorCopy;
+    payloadsCopy = v34;
   }
 
   else
@@ -150,7 +150,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "End applying changes to feature flag settings.", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v30 = v25;
   }
@@ -163,28 +163,28 @@ LABEL_25:
   if ((v30 & 1) == 0)
   {
     v31 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v25;
 }
 
-+ (BOOL)_reapplyConfigurationIncludingPayloads:(id)a3 excludingPayloads:(id)a4 error:(id *)a5
++ (BOOL)_reapplyConfigurationIncludingPayloads:(id)payloads excludingPayloads:(id)excludingPayloads error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  excludingPayloadsCopy = excludingPayloads;
+  payloadsCopy = payloads;
   v10 = +[NSMutableArray array];
-  v11 = [a1 _fullyInstalledPayloads];
-  [v10 addObjectsFromArray:v11];
+  _fullyInstalledPayloads = [self _fullyInstalledPayloads];
+  [v10 addObjectsFromArray:_fullyInstalledPayloads];
 
-  [v10 addObjectsFromArray:v9];
-  if (v8)
+  [v10 addObjectsFromArray:payloadsCopy];
+  if (excludingPayloadsCopy)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100095A0C;
     v18[3] = &unk_10011CF40;
-    v19 = v8;
+    v19 = excludingPayloadsCopy;
     v12 = [NSPredicate predicateWithBlock:v18];
     [v10 filterUsingPredicate:v12];
   }
@@ -199,14 +199,14 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Applying %lu feature flag payloads", buf, 0xCu);
   }
 
-  v16 = [a1 _reapplyPayloads:v10 error:a5];
+  v16 = [self _reapplyPayloads:v10 error:error];
 
   return v16;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = [(MCNewPayloadHandler *)self payload:a3];
+  v8 = [(MCNewPayloadHandler *)self payload:installer];
   v9 = [MCProfileHandler payloadsOfClass:objc_opt_class() installedBeforePayload:v8];
   v10 = [v9 mutableCopy];
 
@@ -217,15 +217,15 @@ LABEL_25:
   if ((v11 & 1) == 0)
   {
     v13 = MCInstallationErrorDomain;
-    v14 = [(MCNewPayloadHandler *)self payload];
-    v15 = [v14 friendlyName];
+    payload = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload friendlyName];
     v16 = MCErrorArray();
-    v17 = [NSError MCErrorWithDomain:v13 code:4001 descriptionArray:v16 underlyingError:v12 errorType:MCErrorTypeFatal, v15, 0];
+    v17 = [NSError MCErrorWithDomain:v13 code:4001 descriptionArray:v16 underlyingError:v12 errorType:MCErrorTypeFatal, friendlyName, 0];
 
-    if (a6)
+    if (error)
     {
       v18 = v17;
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -234,16 +234,16 @@ LABEL_25:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [(MCNewPayloadHandler *)self profileHandler];
-  v5 = [v4 isSetAside];
+  payload = [(MCNewPayloadHandler *)self payload];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v5 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
-    v6 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:v3];
+    v6 = [MCProfileHandler payloadsOfClass:objc_opt_class() removedBeforePayload:payload];
     v7 = [v6 mutableCopy];
 
-    [v7 addObject:v3];
+    [v7 addObject:payload];
     v17 = 0;
     v8 = [objc_opt_class() _reapplyConfigurationIncludingPayloads:0 excludingPayloads:v7 error:&v17];
     v9 = v17;
@@ -253,9 +253,9 @@ LABEL_25:
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [v3 UUID];
+        uUID = [payload UUID];
         *buf = 138543362;
-        v19 = v12;
+        v19 = uUID;
         v13 = "Removed Feature Flags with payload ID %{public}@";
         v14 = v11;
         v15 = OS_LOG_TYPE_DEFAULT;
@@ -268,9 +268,9 @@ LABEL_7:
     else if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [v3 UUID];
+      uUID = [payload UUID];
       *buf = 138543618;
-      v19 = v12;
+      v19 = uUID;
       v20 = 2114;
       v21 = v9;
       v13 = "Failed to remove Feature Flags payload with payload ID %{public}@. Ignoring. Error: %{public}@";
@@ -284,11 +284,11 @@ LABEL_7:
 
 - (void)setAside
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [MCProfileHandler payloadsOfClass:objc_opt_class() setAsideBeforePayload:v2];
+  payload = [(MCNewPayloadHandler *)self payload];
+  v3 = [MCProfileHandler payloadsOfClass:objc_opt_class() setAsideBeforePayload:payload];
   v4 = [v3 mutableCopy];
 
-  [v4 addObject:v2];
+  [v4 addObject:payload];
   v9 = 0;
   LOBYTE(v3) = [objc_opt_class() _reapplyConfigurationIncludingPayloads:0 excludingPayloads:v4 error:&v9];
   v5 = v9;
@@ -298,9 +298,9 @@ LABEL_7:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [v2 UUID];
+      uUID = [payload UUID];
       *buf = 138543618;
-      v11 = v8;
+      v11 = uUID;
       v12 = 2114;
       v13 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to set aside Feature Flags payload with payload ID %{public}@. Ignoring. Error: %{public}@", buf, 0x16u);
@@ -310,29 +310,29 @@ LABEL_7:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [MCProfileHandler payloadsOfClass:objc_opt_class() unsetAsideBeforePayload:v3];
+  payload = [(MCNewPayloadHandler *)self payload];
+  v4 = [MCProfileHandler payloadsOfClass:objc_opt_class() unsetAsideBeforePayload:payload];
   v5 = [v4 mutableCopy];
 
-  [v5 addObject:v3];
-  v6 = [(MCNewPayloadHandler *)self payload];
-  v7 = [v6 profile];
-  v8 = [v7 payloadsOfKindOfClass:objc_opt_class()];
+  [v5 addObject:payload];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  profile = [payload2 profile];
+  v8 = [profile payloadsOfKindOfClass:objc_opt_class()];
   v9 = [v8 mutableCopy];
 
   [v9 removeObjectsInArray:v5];
   v14 = 0;
-  LOBYTE(v6) = [objc_opt_class() _reapplyConfigurationIncludingPayloads:0 excludingPayloads:v9 error:&v14];
+  LOBYTE(payload2) = [objc_opt_class() _reapplyConfigurationIncludingPayloads:0 excludingPayloads:v9 error:&v14];
   v10 = v14;
-  if ((v6 & 1) == 0)
+  if ((payload2 & 1) == 0)
   {
     v11 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v3 UUID];
+      uUID = [payload UUID];
       *buf = 138543618;
-      v16 = v13;
+      v16 = uUID;
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to restore Feature Flags payload with payload ID %{public}@. Ignoring. Error: %{public}@", buf, 0x16u);

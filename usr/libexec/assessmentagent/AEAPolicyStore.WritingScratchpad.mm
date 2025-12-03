@@ -1,26 +1,26 @@
 @interface AEAPolicyStore.WritingScratchpad
-- (BOOL)persistWithError:(id *)a3;
-- (void)setArray:(id)a3 forKey:(id)a4;
-- (void)setNumber:(id)a3 forKey:(id)a4;
-- (void)setString:(id)a3 forKey:(id)a4;
+- (BOOL)persistWithError:(id *)error;
+- (void)setArray:(id)array forKey:(id)key;
+- (void)setNumber:(id)number forKey:(id)key;
+- (void)setString:(id)string forKey:(id)key;
 @end
 
 @implementation AEAPolicyStore.WritingScratchpad
 
-- (void)setNumber:(id)a3 forKey:(id)a4
+- (void)setNumber:(id)number forKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v9[3] = sub_100005C1C();
-  v9[0] = a3;
+  v9[0] = number;
   swift_beginAccess();
-  v8 = a3;
+  numberCopy = number;
 
   sub_10003FB78(v9, v5, v7);
   swift_endAccess();
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -35,7 +35,7 @@
   swift_endAccess();
 }
 
-- (void)setArray:(id)a3 forKey:(id)a4
+- (void)setArray:(id)array forKey:(id)key
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -48,7 +48,7 @@
   swift_endAccess();
 }
 
-- (BOOL)persistWithError:(id *)a3
+- (BOOL)persistWithError:(id *)error
 {
 
   sub_100005490();

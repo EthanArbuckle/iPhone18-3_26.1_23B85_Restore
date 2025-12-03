@@ -1,22 +1,22 @@
 @interface IDSNGMMessageHasher
-+ (id)computeHashForMessage:(id)a3;
++ (id)computeHashForMessage:(id)message;
 @end
 
 @implementation IDSNGMMessageHasher
 
-+ (id)computeHashForMessage:(id)a3
++ (id)computeHashForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = NSClassFromString(&cfstr_Ngmmessagehash.isa);
   if (v4)
   {
-    v5 = [(objc_class *)v4 computeHashForMessage:v3];
+    v5 = [(objc_class *)v4 computeHashForMessage:messageCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
     {
       sub_1A7E19F8C();
     }

@@ -1,8 +1,8 @@
 @interface Detection
 - (CGRect)bounds;
 - (Detection)init;
-- (Detection)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (Detection)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Detection
@@ -22,35 +22,35 @@
   return v3;
 }
 
-- (Detection)initWithCoder:(id)a3
+- (Detection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(Detection *)self init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"bounds"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"bounds"];
     [v9 rectValue];
     [(Detection *)v5 setBounds:?];
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:@"oid"];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"oid"];
     -[Detection setOid:](v5, "setOid:", [v10 longValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCAE60];
-  v5 = a3;
+  coderCopy = coder;
   [(Detection *)self bounds];
   v6 = [v4 valueWithRect:?];
-  [v5 encodeObject:v6 forKey:@"bounds"];
+  [coderCopy encodeObject:v6 forKey:@"bounds"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithLong:{-[Detection oid](self, "oid")}];
-  [v5 encodeObject:v7 forKey:@"oid"];
+  [coderCopy encodeObject:v7 forKey:@"oid"];
 }
 
 - (CGRect)bounds

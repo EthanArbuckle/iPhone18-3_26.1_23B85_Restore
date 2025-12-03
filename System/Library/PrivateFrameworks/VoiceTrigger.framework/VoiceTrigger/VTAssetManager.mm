@@ -2,31 +2,31 @@
 + (id)sharedInstance;
 - (BOOL)_isReadyToUse;
 - (VTAssetManager)init;
-- (id)_assetQueryForLanguage:(id)a3 supportPremium:(BOOL)a4;
+- (id)_assetQueryForLanguage:(id)language supportPremium:(BOOL)premium;
 - (id)_defaultDownloadOptions;
-- (id)_filteredAssetsForAssets:(id)a3 language:(id)a4 supportPremium:(BOOL)a5;
-- (id)_findLatestInstalledAsset:(id)a3;
-- (id)_installedAssetForLanguage:(id)a3 supportPremium:(BOOL)a4;
-- (id)_installedAssetWithoutMetaDataForLanguage:(id)a3 supportPremium:(BOOL)a4;
-- (id)assetForLanguage:(id)a3;
-- (id)installedAssetForLanguage:(id)a3;
-- (void)_addKeyValuePairForQuery:(id *)a3;
-- (void)_downloadAsset:(id)a3 withComplete:(id)a4;
-- (void)_fetchRemoteAssetForLanguage:(id)a3 supportPremium:(BOOL)a4;
+- (id)_filteredAssetsForAssets:(id)assets language:(id)language supportPremium:(BOOL)premium;
+- (id)_findLatestInstalledAsset:(id)asset;
+- (id)_installedAssetForLanguage:(id)language supportPremium:(BOOL)premium;
+- (id)_installedAssetWithoutMetaDataForLanguage:(id)language supportPremium:(BOOL)premium;
+- (id)assetForLanguage:(id)language;
+- (id)installedAssetForLanguage:(id)language;
+- (void)_addKeyValuePairForQuery:(id *)query;
+- (void)_downloadAsset:(id)asset withComplete:(id)complete;
+- (void)_fetchRemoteAssetForLanguage:(id)language supportPremium:(BOOL)premium;
 - (void)_fetchRemoteMetaData;
-- (void)_runAssetQuery:(id)a3 completion:(id)a4;
-- (void)_startDownloadingVoiceTriggerAsset:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)_updateFromRemoteToLocalAssets:(id)a3;
+- (void)_runAssetQuery:(id)query completion:(id)completion;
+- (void)_startDownloadingVoiceTriggerAsset:(id)asset progress:(id)progress completion:(id)completion;
+- (void)_updateFromRemoteToLocalAssets:(id)assets;
 @end
 
 @implementation VTAssetManager
 
-- (void)_startDownloadingVoiceTriggerAsset:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)_startDownloadingVoiceTriggerAsset:(id)asset progress:(id)progress completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
   {
@@ -39,11 +39,11 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v8 state];
+    state = [assetCopy state];
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = assetCopy;
     v29 = 1026;
-    v30 = v13;
+    v30 = state;
     _os_log_impl(&dword_223A31000, v12, OS_LOG_TYPE_INFO, "Attempting to download asset %{public}@ with asset state : %{public}u", buf, 0x12u);
   }
 
@@ -51,34 +51,34 @@
   v25[1] = 3221225472;
   v25[2] = __73__VTAssetManager__startDownloadingVoiceTriggerAsset_progress_completion___block_invoke;
   v25[3] = &unk_2784ECB78;
-  v14 = v9;
+  v14 = progressCopy;
   v27 = v14;
-  v15 = v8;
+  v15 = assetCopy;
   v26 = v15;
   v16 = MEMORY[0x223DF24E0](v25);
-  v17 = [v15 state];
-  if (v17 <= 6)
+  state2 = [v15 state];
+  if (state2 <= 6)
   {
-    if (((1 << v17) & 0x6C) != 0)
+    if (((1 << state2) & 0x6C) != 0)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = 4;
       goto LABEL_8;
     }
 
-    if (v17 == 1)
+    if (state2 == 1)
     {
       *buf = 0;
       if ([v15 spaceCheck:buf])
       {
         [v15 attachProgressCallBack:v16];
-        v22 = [(VTAssetManager *)self _defaultDownloadOptions];
+        _defaultDownloadOptions = [(VTAssetManager *)self _defaultDownloadOptions];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __73__VTAssetManager__startDownloadingVoiceTriggerAsset_progress_completion___block_invoke_2;
         v23[3] = &unk_2784ECBA0;
-        v24 = v10;
-        [v15 startDownload:v22 then:v23];
+        v24 = completionCopy;
+        [v15 startDownload:_defaultDownloadOptions then:v23];
 
         v20 = 0;
         goto LABEL_13;
@@ -89,7 +89,7 @@
       goto LABEL_8;
     }
 
-    if (v17 == 4)
+    if (state2 == 4)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = 3;
@@ -97,7 +97,7 @@
     }
   }
 
-  if (v17)
+  if (state2)
   {
     v20 = 0;
     goto LABEL_9;
@@ -115,9 +115,9 @@ LABEL_9:
     _os_log_impl(&dword_223A31000, v21, OS_LOG_TYPE_DEFAULT, "Asset doesn't need downloading, invoking completion", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
   }
 
 LABEL_13:
@@ -167,10 +167,10 @@ void __73__VTAssetManager__startDownloadingVoiceTriggerAsset_progress_completion
   }
 }
 
-- (void)_downloadAsset:(id)a3 withComplete:(id)a4
+- (void)_downloadAsset:(id)asset withComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completeCopy = complete;
   dispatch_assert_queue_V2(self->_queue);
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -183,10 +183,10 @@ void __73__VTAssetManager__startDownloadingVoiceTriggerAsset_progress_completion
   v11[1] = 3221225472;
   v11[2] = __46__VTAssetManager__downloadAsset_withComplete___block_invoke_317;
   v11[3] = &unk_2784ECB50;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetCopy;
+  v13 = completeCopy;
+  v9 = completeCopy;
+  v10 = assetCopy;
   [(VTAssetManager *)self _startDownloadingVoiceTriggerAsset:v10 progress:&__block_literal_global_316 completion:v11];
 }
 
@@ -264,16 +264,16 @@ void __46__VTAssetManager__downloadAsset_withComplete___block_invoke(double a1)
 - (BOOL)_isReadyToUse
 {
   v2 = +[VTFirstUnlockMonitor sharedInstance];
-  v3 = [v2 isFirstUnlocked];
+  isFirstUnlocked = [v2 isFirstUnlocked];
 
-  return v3;
+  return isFirstUnlocked;
 }
 
-- (void)_runAssetQuery:(id)a3 completion:(id)a4
+- (void)_runAssetQuery:(id)query completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
   {
@@ -287,10 +287,10 @@ void __46__VTAssetManager__downloadAsset_withComplete___block_invoke(double a1)
   v12[1] = 3221225472;
   v12[2] = __44__VTAssetManager__runAssetQuery_completion___block_invoke;
   v12[3] = &unk_2784ECD30;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = queryCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = queryCopy;
   dispatch_async(queue, v12);
 }
 
@@ -369,10 +369,10 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
   }
 }
 
-- (id)_assetQueryForLanguage:(id)a3 supportPremium:(BOOL)a4
+- (id)_assetQueryForLanguage:(id)language supportPremium:(BOOL)premium
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  languageCopy = language;
   v6 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
   {
@@ -390,36 +390,36 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v8 queryParams];
+    queryParams = [v8 queryParams];
     *buf = 136446466;
     v15 = "[VTAssetManager _assetQueryForLanguage:supportPremium:]";
     v16 = 2114;
-    v17 = v11;
+    v17 = queryParams;
     _os_log_impl(&dword_223A31000, v10, OS_LOG_TYPE_INFO, "::: %{public}s, query: %{public}@", buf, 0x16u);
   }
 
   return v8;
 }
 
-- (id)_filteredAssetsForAssets:(id)a3 language:(id)a4 supportPremium:(BOOL)a5
+- (id)_filteredAssetsForAssets:(id)assets language:(id)language supportPremium:(BOOL)premium
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  languageCopy = language;
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v7;
+  v9 = assetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v30;
-    if (a5)
+    if (premium)
     {
-      if (v8)
+      if (languageCopy)
       {
         do
         {
@@ -431,9 +431,9 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
             }
 
             v14 = *(*(&v29 + 1) + 8 * i);
-            v15 = [v14 attributes];
-            v16 = [v15 valueForKey:@"Languages"];
-            if ([v16 containsObject:v8])
+            attributes = [v14 attributes];
+            v16 = [attributes valueForKey:@"Languages"];
+            if ([v16 containsObject:languageCopy])
             {
               [v28 addObject:v14];
             }
@@ -457,8 +457,8 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
             }
 
             v18 = *(*(&v29 + 1) + 8 * j);
-            v19 = [v18 attributes];
-            v20 = [v19 valueForKey:@"Languages"];
+            attributes2 = [v18 attributes];
+            v20 = [attributes2 valueForKey:@"Languages"];
             [v28 addObject:v18];
           }
 
@@ -481,12 +481,12 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
           }
 
           v22 = *(*(&v29 + 1) + 8 * k);
-          v23 = [v22 attributes];
-          v24 = [v23 valueForKey:@"Languages"];
+          attributes3 = [v22 attributes];
+          v24 = [attributes3 valueForKey:@"Languages"];
           v25 = v24;
-          if (!v8 || [v24 containsObject:v8])
+          if (!languageCopy || [v24 containsObject:languageCopy])
           {
-            v26 = [v23 objectForKey:@"Footprint"];
+            v26 = [attributes3 objectForKey:@"Footprint"];
             if (v26 != @"Premium")
             {
               [v28 addObject:v22];
@@ -504,23 +504,23 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
   return v28;
 }
 
-- (void)_addKeyValuePairForQuery:(id *)a3
+- (void)_addKeyValuePairForQuery:(id *)query
 {
   v3 = *MEMORY[0x277D288F0];
   v4 = MEMORY[0x277CCACA8];
-  v5 = *a3;
+  v5 = *query;
   v6 = [v4 stringWithFormat:@"%d", 13];
   [v5 addKeyValuePair:v3 with:v6];
 }
 
-- (id)_findLatestInstalledAsset:(id)a3
+- (id)_findLatestInstalledAsset:(id)asset
 {
   v27 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = asset;
   v3 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v3)
   {
@@ -539,16 +539,16 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 state];
+        state = [v9 state];
         v11 = VTLogContextFacilityVoiceTrigger;
         if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v18;
-          v25 = v10;
+          v25 = state;
           _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "Asset state : %{public}ld", buf, 0xCu);
         }
 
-        if (v10 <= 6 && ((1 << v10) & 0x6C) != 0)
+        if (state <= 6 && ((1 << state) & 0x6C) != 0)
         {
           if (v6)
           {
@@ -582,20 +582,20 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v6 attributes];
+    attributes = [v6 attributes];
     *buf = 138543362;
-    v25 = v16;
+    v25 = attributes;
     _os_log_impl(&dword_223A31000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   return v6;
 }
 
-- (void)_updateFromRemoteToLocalAssets:(id)a3
+- (void)_updateFromRemoteToLocalAssets:(id)assets
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v29 = self;
+  assetsCopy = assets;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
   p_cache = VTTriggerEventMonitorManager.cache;
   v6 = VTLogContextFacilityVoiceTrigger;
@@ -609,7 +609,7 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (v8)
   {
@@ -735,7 +735,7 @@ void __44__VTAssetManager__runAssetQuery_completion___block_invoke_311(uint64_t 
       _os_log_impl(&dword_223A31000, v28, OS_LOG_TYPE_DEFAULT, "::: Request downloading remote asset", buf, 2u);
     }
 
-    [(VTAssetManager *)v29 _downloadAsset:v11 withComplete:&__block_literal_global_303];
+    [(VTAssetManager *)selfCopy _downloadAsset:v11 withComplete:&__block_literal_global_303];
   }
 }
 
@@ -745,10 +745,10 @@ void __49__VTAssetManager__updateFromRemoteToLocalAssets___block_invoke()
   [v0 notifyNewAssetDownloaded];
 }
 
-- (void)_fetchRemoteAssetForLanguage:(id)a3 supportPremium:(BOOL)a4
+- (void)_fetchRemoteAssetForLanguage:(id)language supportPremium:(BOOL)premium
 {
-  v4 = a4;
-  v6 = a3;
+  premiumCopy = premium;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
   v7 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -757,16 +757,16 @@ void __49__VTAssetManager__updateFromRemoteToLocalAssets___block_invoke()
     _os_log_impl(&dword_223A31000, v7, OS_LOG_TYPE_DEFAULT, "::: Request fetching remote asset", buf, 2u);
   }
 
-  v8 = [(VTAssetManager *)self _assetQueryForLanguage:v6 supportPremium:v4];
+  v8 = [(VTAssetManager *)self _assetQueryForLanguage:languageCopy supportPremium:premiumCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__VTAssetManager__fetchRemoteAssetForLanguage_supportPremium___block_invoke;
   v11[3] = &unk_2784ECAE0;
   v11[4] = self;
   v12 = v8;
-  v13 = v6;
-  v14 = v4;
-  v9 = v6;
+  v13 = languageCopy;
+  v14 = premiumCopy;
+  v9 = languageCopy;
   v10 = v8;
   [v10 queryMetaData:v11];
 }
@@ -832,13 +832,13 @@ void __62__VTAssetManager__fetchRemoteAssetForLanguage_supportPremium___block_in
   }
 
   v4 = MEMORY[0x277D289B8];
-  v5 = [(VTAssetManager *)self _defaultDownloadOptions];
+  _defaultDownloadOptions = [(VTAssetManager *)self _defaultDownloadOptions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__VTAssetManager__fetchRemoteMetaData__block_invoke;
   v6[3] = &unk_2784ECA90;
   v6[4] = self;
-  [v4 startCatalogDownload:@"com.apple.MobileAsset.VoiceTriggerAssets" options:v5 then:v6];
+  [v4 startCatalogDownload:@"com.apple.MobileAsset.VoiceTriggerAssets" options:_defaultDownloadOptions then:v6];
 }
 
 void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64_t a2)
@@ -868,26 +868,26 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (id)_installedAssetWithoutMetaDataForLanguage:(id)a3 supportPremium:(BOOL)a4
+- (id)_installedAssetWithoutMetaDataForLanguage:(id)language supportPremium:(BOOL)premium
 {
-  v4 = a4;
+  premiumCopy = premium;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(VTAssetManager *)self _assetQueryForLanguage:v6 supportPremium:v4];
+  languageCopy = language;
+  v7 = [(VTAssetManager *)self _assetQueryForLanguage:languageCopy supportPremium:premiumCopy];
   [v7 returnTypes:2];
-  v8 = [v7 queryMetaDataSync];
-  v9 = [v7 results];
-  v10 = [(VTAssetManager *)self _filteredAssetsForAssets:v9 language:v6 supportPremium:v4];
+  queryMetaDataSync = [v7 queryMetaDataSync];
+  results = [v7 results];
+  v10 = [(VTAssetManager *)self _filteredAssetsForAssets:results language:languageCopy supportPremium:premiumCopy];
 
   v11 = VTLogContextFacilityVoiceTrigger;
-  if ((v8 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((queryMetaDataSync & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
       v16 = v7;
       v17 = 2050;
-      v18 = v8;
+      v18 = queryMetaDataSync;
       _os_log_error_impl(&dword_223A31000, v11, OS_LOG_TYPE_ERROR, "Error running asset-query : %{public}@, error: %{public}lu", &v15, 0x16u);
     }
   }
@@ -898,7 +898,7 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
     v15 = 134349312;
     v16 = [v10 count];
     v17 = 2050;
-    v18 = v8;
+    v18 = queryMetaDataSync;
     _os_log_impl(&dword_223A31000, v12, OS_LOG_TYPE_DEFAULT, "::: found %{public}lu assets with error %{public}lu", &v15, 0x16u);
   }
 
@@ -907,18 +907,18 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
   return v13;
 }
 
-- (id)_installedAssetForLanguage:(id)a3 supportPremium:(BOOL)a4
+- (id)_installedAssetForLanguage:(id)language supportPremium:(BOOL)premium
 {
-  v4 = a4;
+  premiumCopy = premium;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(VTAssetManager *)self _assetQueryForLanguage:v6 supportPremium:v4];
-  v8 = [v7 queryMetaDataSync];
-  v9 = [v7 results];
-  v10 = [(VTAssetManager *)self _filteredAssetsForAssets:v9 language:v6 supportPremium:v4];
+  languageCopy = language;
+  v7 = [(VTAssetManager *)self _assetQueryForLanguage:languageCopy supportPremium:premiumCopy];
+  queryMetaDataSync = [v7 queryMetaDataSync];
+  results = [v7 results];
+  v10 = [(VTAssetManager *)self _filteredAssetsForAssets:results language:languageCopy supportPremium:premiumCopy];
 
   v11 = VTLogContextFacilityVoiceTrigger;
-  if (v8 == 2)
+  if (queryMetaDataSync == 2)
   {
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
@@ -926,17 +926,17 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
       _os_log_error_impl(&dword_223A31000, v11, OS_LOG_TYPE_ERROR, "::: Meta data not available, query again with returnType MAUnionOfCatalogInstalled", &v15, 2u);
     }
 
-    v13 = [(VTAssetManager *)self _installedAssetWithoutMetaDataForLanguage:v6 supportPremium:v4];
+    v13 = [(VTAssetManager *)self _installedAssetWithoutMetaDataForLanguage:languageCopy supportPremium:premiumCopy];
   }
 
-  else if (v8)
+  else if (queryMetaDataSync)
   {
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
       v16 = v7;
       v17 = 2050;
-      v18 = v8;
+      v18 = queryMetaDataSync;
       _os_log_error_impl(&dword_223A31000, v11, OS_LOG_TYPE_ERROR, "Error running asset-query : %{public}@, error: %{public}lu", &v15, 0x16u);
     }
 
@@ -959,9 +959,9 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
   return v13;
 }
 
-- (id)installedAssetForLanguage:(id)a3
+- (id)installedAssetForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   if ([(VTAssetManager *)self _isReadyToUse])
   {
     v11 = 0;
@@ -977,7 +977,7 @@ void __38__VTAssetManager__fetchRemoteMetaData__block_invoke(uint64_t a1, uint64
     block[3] = &unk_2784ECA68;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = languageCopy;
     dispatch_sync(queue, block);
     v6 = v12[5];
 
@@ -999,19 +999,19 @@ uint64_t __44__VTAssetManager_installedAssetForLanguage___block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)assetForLanguage:(id)a3
+- (id)assetForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   if ([(VTAssetManager *)self _isReadyToUse])
   {
-    v5 = [(VTAssetManager *)self installedAssetForLanguage:v4];
+    v5 = [(VTAssetManager *)self installedAssetForLanguage:languageCopy];
     queue = self->_queue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __35__VTAssetManager_assetForLanguage___block_invoke;
     v8[3] = &unk_2784ED118;
     v8[4] = self;
-    v9 = v4;
+    v9 = languageCopy;
     dispatch_async(queue, v8);
   }
 

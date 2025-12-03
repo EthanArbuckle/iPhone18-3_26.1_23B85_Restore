@@ -1,10 +1,10 @@
 @interface HMBMutableCloudZoneConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBMutableCloudZoneConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMBCloudZoneConfiguration allocWithZone:?]];
   [(HMBCloudZoneConfiguration *)v4 setShouldRebuildOnManateeKeyLoss:[(HMBCloudZoneConfiguration *)self shouldRebuildOnManateeKeyLoss]];

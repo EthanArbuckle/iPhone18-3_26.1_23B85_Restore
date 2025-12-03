@@ -1,5 +1,5 @@
 @interface NSString
-- (id)_NTPBCKIdentifierWithType:(uint64_t)a1;
+- (id)_NTPBCKIdentifierWithType:(uint64_t)type;
 @end
 
 @implementation NSString
@@ -11,12 +11,12 @@ uint64_t __49__NSString_FCAdditions__fc_isValidColorHexString__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_NTPBCKIdentifierWithType:(uint64_t)a1
+- (id)_NTPBCKIdentifierWithType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     v4 = objc_opt_new();
-    [v4 setName:a1];
+    [v4 setName:type];
     [v4 setType:a2];
   }
 

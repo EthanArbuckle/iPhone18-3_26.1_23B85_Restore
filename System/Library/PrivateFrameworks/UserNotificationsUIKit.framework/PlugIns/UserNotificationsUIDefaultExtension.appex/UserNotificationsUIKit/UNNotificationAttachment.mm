@@ -6,27 +6,27 @@
 
 - (__CFString)_nc_safeUTI
 {
-  v3 = [(UNNotificationAttachment *)self type];
-  if (!v3)
+  type = [(UNNotificationAttachment *)self type];
+  if (!type)
   {
     v4 = [(UNNotificationAttachment *)self URL];
-    v5 = [v4 pathExtension];
+    pathExtension = [v4 pathExtension];
 
-    if (v5)
+    if (pathExtension)
     {
-      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, v5, 0);
-      v3 = CFAutorelease(PreferredIdentifierForTag);
+      PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, 0);
+      type = CFAutorelease(PreferredIdentifierForTag);
     }
 
     else
     {
-      v3 = 0;
+      type = 0;
     }
   }
 
-  if (v3)
+  if (type)
   {
-    return v3;
+    return type;
   }
 
   else

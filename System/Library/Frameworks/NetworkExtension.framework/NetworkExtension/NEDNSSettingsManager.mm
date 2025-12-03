@@ -1,7 +1,7 @@
 @interface NEDNSSettingsManager
 + (NEDNSSettingsManager)sharedManager;
 + (id)globalConfigurationManager;
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3;
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler;
 - (BOOL)isConfigurationGradeEnterprise;
 - (BOOL)isEnabled;
 - (BOOL)isFromProfile;
@@ -12,8 +12,8 @@
 - (NSString)appBundleIdentifier;
 - (NSString)localizedDescription;
 - (NSUUID)identifier;
-- (void)createEmptyConfigurationWithGrade:(void *)a1;
-- (void)fetchStatusWithCompletionHandler:(id)a3;
+- (void)createEmptyConfigurationWithGrade:(void *)grade;
+- (void)fetchStatusWithCompletionHandler:(id)handler;
 - (void)loadFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler;
@@ -31,9 +31,9 @@
   return WeakRetained;
 }
 
-- (void)fetchStatusWithCompletionHandler:(id)a3
+- (void)fetchStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     connection = self->_connection;
@@ -49,8 +49,8 @@
   v7[2] = __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7F0B110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NEVPNConnection *)connection updateSessionInfoForce:0 notify:v7 withCompletionHandler:?];
 }
 
@@ -106,8 +106,8 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
     self = objc_getProperty(self, a2, 40, 1);
   }
 
-  v2 = [(NEDNSSettingsManager *)self payloadInfo];
-  v3 = v2 != 0;
+  payloadInfo = [(NEDNSSettingsManager *)self payloadInfo];
+  v3 = payloadInfo != 0;
 
   return v3;
 }
@@ -137,11 +137,11 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v8 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 40, 1);
+    Property = objc_getProperty(selfCopy, v5, 40, 1);
   }
 
   else
@@ -152,16 +152,16 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   v7 = Property;
   [v7 setName:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 40, 1);
+    Property = objc_getProperty(selfCopy, v3, 40, 1);
   }
 
   else
@@ -170,21 +170,21 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v5 = Property;
-  v6 = [v5 name];
+  name = [v5 name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return name;
 }
 
 - (void)setOnDemandRules:(NSArray *)onDemandRules
 {
   v9 = onDemandRules;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 40, 1);
+    Property = objc_getProperty(selfCopy, v5, 40, 1);
   }
 
   else
@@ -193,19 +193,19 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v7 = Property;
-  v8 = [v7 dnsSettings];
-  [v8 setOnDemandRules:v9];
+  dnsSettings = [v7 dnsSettings];
+  [dnsSettings setOnDemandRules:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)onDemandRules
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 40, 1);
+    Property = objc_getProperty(selfCopy, v3, 40, 1);
   }
 
   else
@@ -214,22 +214,22 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v5 = Property;
-  v6 = [v5 dnsSettings];
-  v7 = [v6 onDemandRules];
+  dnsSettings = [v5 dnsSettings];
+  onDemandRules = [dnsSettings onDemandRules];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return onDemandRules;
 }
 
 - (void)setDnsSettings:(NEDNSSettings *)dnsSettings
 {
   v9 = dnsSettings;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v5, 40, 1);
+    Property = objc_getProperty(selfCopy, v5, 40, 1);
   }
 
   else
@@ -238,19 +238,19 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v7 = Property;
-  v8 = [v7 dnsSettings];
-  [v8 setSettings:v9];
+  dnsSettings = [v7 dnsSettings];
+  [dnsSettings setSettings:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NEDNSSettings)dnsSettings
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 40, 1);
+    Property = objc_getProperty(selfCopy, v3, 40, 1);
   }
 
   else
@@ -259,21 +259,21 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v5 = Property;
-  v6 = [v5 dnsSettings];
-  v7 = [v6 settings];
+  dnsSettings = [v5 dnsSettings];
+  settings = [dnsSettings settings];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return settings;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 40, 1);
+    Property = objc_getProperty(selfCopy, v3, 40, 1);
   }
 
   else
@@ -282,22 +282,22 @@ uint64_t __57__NEDNSSettingsManager_fetchStatusWithCompletionHandler___block_inv
   }
 
   v5 = Property;
-  v6 = [v5 dnsSettings];
-  v7 = [v6 isEnabled];
+  dnsSettings = [v5 dnsSettings];
+  isEnabled = [dnsSettings isEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && v5->_hasLoaded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && selfCopy->_hasLoaded)
   {
-    v7 = objc_getProperty(v5, v6, 16, 1);
-    v9 = objc_getProperty(v5, v8, 40, 1);
+    v7 = objc_getProperty(selfCopy, v6, 16, 1);
+    v9 = objc_getProperty(selfCopy, v8, 40, 1);
     v10 = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
     v13[0] = MEMORY[0x1E69E9820];
@@ -325,7 +325,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __63__NEDNSSettingsManager_saveToPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -378,17 +378,17 @@ void __63__NEDNSSettingsManager_saveToPreferencesWithCompletionHandler___block_i
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && objc_getProperty(v5, v6, 40, 1))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && objc_getProperty(selfCopy, v6, 40, 1))
   {
-    v8 = objc_getProperty(v5, v7, 40, 1);
-    v9 = [v8 payloadInfo];
+    v8 = objc_getProperty(selfCopy, v7, 40, 1);
+    payloadInfo = [v8 payloadInfo];
 
-    if (!v9)
+    if (!payloadInfo)
     {
-      v14 = objc_getProperty(v5, v10, 16, 1);
-      v16 = objc_getProperty(v5, v15, 40, 1);
+      v14 = objc_getProperty(selfCopy, v10, 16, 1);
+      v16 = objc_getProperty(selfCopy, v15, 40, 1);
       v17 = MEMORY[0x1E69E96A0];
       v18 = MEMORY[0x1E69E96A0];
       v19[0] = MEMORY[0x1E69E9820];
@@ -431,7 +431,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __67__NEDNSSettingsManager_removeFromPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -485,11 +485,11 @@ void __67__NEDNSSettingsManager_removeFromPreferencesWithCompletionHandler___blo
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      Property = objc_getProperty(v5, v6, 16, 1);
+      Property = objc_getProperty(selfCopy, v6, 16, 1);
     }
 
     else
@@ -504,11 +504,11 @@ void __67__NEDNSSettingsManager_removeFromPreferencesWithCompletionHandler___blo
     v11[1] = 3221225472;
     v11[2] = __65__NEDNSSettingsManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E7F0B5B0;
-    v11[4] = v5;
+    v11[4] = selfCopy;
     v12 = v4;
     [v8 loadConfigurationsWithCompletionQueue:v9 handler:v11];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -624,45 +624,45 @@ LABEL_23:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createEmptyConfigurationWithGrade:(void *)a1
+- (void)createEmptyConfigurationWithGrade:(void *)grade
 {
-  if (a1)
+  if (grade)
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 infoDictionary];
-    v14 = [v3 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v14 = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
 
     if (!v14)
     {
-      v6 = [MEMORY[0x1E696AAE8] mainBundle];
-      v7 = [v6 infoDictionary];
-      v14 = [v7 objectForKey:*MEMORY[0x1E695E4F8]];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      infoDictionary2 = [mainBundle3 infoDictionary];
+      v14 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E4F8]];
     }
 
     v8 = [[NEConfiguration alloc] initWithName:v14 grade:2];
-    objc_setProperty_atomic(a1, v9, v8, 40);
+    objc_setProperty_atomic(grade, v9, v8, 40);
 
     v10 = objc_alloc_init(NEDNSSettingsBundle);
-    [objc_getProperty(a1 v11];
+    [objc_getProperty(grade v11];
 
-    [objc_getProperty(a1 v12];
-    [objc_getProperty(a1 v13];
+    [objc_getProperty(grade v12];
+    [objc_getProperty(grade v13];
   }
 }
 
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NEDNSSettingsManager globalConfigurationManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__NEDNSSettingsManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7F0B510;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v6];
 }
 

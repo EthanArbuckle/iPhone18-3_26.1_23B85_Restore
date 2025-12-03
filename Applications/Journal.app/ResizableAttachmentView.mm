@@ -1,26 +1,26 @@
 @interface ResizableAttachmentView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)frame;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)selectAttachment:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)viewPannedWithSender:(id)a3;
-- (void)viewTappedWithSender:(id)a3;
+- (void)selectAttachment:(id)attachment;
+- (void)setFrame:(CGRect)frame;
+- (void)viewPannedWithSender:(id)sender;
+- (void)viewTappedWithSender:(id)sender;
 @end
 
 @implementation ResizableAttachmentView
 
-- (void)selectAttachment:(id)a3
+- (void)selectAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007CAD08(v4);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  sub_1007CAD08(attachmentCopy);
 }
 
 - (CGRect)frame
@@ -35,13 +35,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1007CAF7C(x, y, width, height);
 }
 
@@ -51,28 +51,28 @@
   v5.super_class = type metadata accessor for ResizableAttachmentView();
   v2 = v5.receiver;
   [(ResizableAttachmentView *)&v5 didMoveToSuperview];
-  v3 = [v2 superview];
-  if (v3)
+  superview = [v2 superview];
+  if (superview)
   {
-    v4 = v3;
-    [v3 setClipsToBounds:0];
+    v4 = superview;
+    [superview setClipsToBounds:0];
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007CB15C();
 }
 
-- (void)viewPannedWithSender:(id)a3
+- (void)viewPannedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007CC8AC(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1007CC8AC(senderCopy);
 }
 
-- (void)viewTappedWithSender:(id)a3
+- (void)viewTappedWithSender:(id)sender
 {
   v4 = self + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -80,23 +80,23 @@
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 32);
-    v8 = self;
+    selfCopy = self;
     v7(ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1007CCC3C(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1007CCC3C(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v5 = self + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -104,7 +104,7 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 48);
-    v8 = self;
+    selfCopy = self;
     v9 = v7();
     swift_unknownObjectRelease();
   }
@@ -117,53 +117,53 @@
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v6 = self;
-  if ([(ResizableAttachmentView *)v8 menuAppearance]== 1)
+  interactionCopy = interaction;
+  selfCopy = self;
+  if ([(ResizableAttachmentView *)interactionCopy menuAppearance]== 1)
   {
-    *(&v6->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_isShowingContextMenuPreview) = 1;
-    [*(&v6->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_resizeHandleView) setAlpha:0.0];
-    [*(&v6->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_deleteButton) setAlpha:0.0];
-    v7 = v6;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_isShowingContextMenuPreview) = 1;
+    [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_resizeHandleView) setAlpha:0.0];
+    [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D23ResizableAttachmentView_deleteButton) setAlpha:0.0];
+    v7 = selfCopy;
   }
 
   else
   {
-    v7 = v8;
-    v8 = v6;
+    v7 = interactionCopy;
+    interactionCopy = selfCopy;
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1007CDD08(a5);
+  selfCopy = self;
+  sub_1007CDD08(animator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_1007CE038();
 
   return v9;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1007CD444(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1007CD444(event, x, y);
 
   return v10;
 }

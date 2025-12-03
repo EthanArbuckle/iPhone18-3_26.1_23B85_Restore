@@ -1,18 +1,18 @@
 @interface CUHomeKitManager
-- (BOOL)_isOwnerOfHome:(id)a3;
+- (BOOL)_isOwnerOfHome:(id)home;
 - (CUHomeKitManager)init;
-- (id)_bestUserAndLabel:(id *)a3;
-- (id)_cuPairingIdentityWithHMFPairingIdentity:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)_selfAccessoryMediaSystemUncached:(id *)a3;
+- (id)_bestUserAndLabel:(id *)label;
+- (id)_cuPairingIdentityWithHMFPairingIdentity:(id)identity options:(unint64_t)options error:(id *)error;
+- (id)_selfAccessoryMediaSystemUncached:(id *)uncached;
 - (void)_activateIfNeeded;
 - (void)_clearHomeKitState;
-- (void)_findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)_findPairedPeerWithContext:(id)a3;
-- (void)_findPairedPeerWithContext:(id)a3 label:(id)a4 pairingIdentity:(id)a5 error:(id)a6;
-- (void)_getPairingIdentityCompleted:(id)a3 options:(unint64_t)a4 error:(id)a5 label:(id)a6 completion:(id)a7;
-- (void)_getPairingIdentityForAccessoryWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_getPairingIdentityForLegacyWithOptions:(unint64_t)a3 user:(id)a4 nonLegacyIdentity:(id)a5 label:(id)a6 completion:(id)a7;
-- (void)_getPairingIdentityForUserWithOptions:(unint64_t)a3 completion:(id)a4;
+- (void)_findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)_findPairedPeerWithContext:(id)context;
+- (void)_findPairedPeerWithContext:(id)context label:(id)label pairingIdentity:(id)identity error:(id)error;
+- (void)_getPairingIdentityCompleted:(id)completed options:(unint64_t)options error:(id)error label:(id)label completion:(id)completion;
+- (void)_getPairingIdentityForAccessoryWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_getPairingIdentityForLegacyWithOptions:(unint64_t)options user:(id)user nonLegacyIdentity:(id)identity label:(id)label completion:(id)completion;
+- (void)_getPairingIdentityForUserWithOptions:(unint64_t)options completion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_updateAccessories;
@@ -23,53 +23,53 @@
 - (void)_updateSelfAccessorySiriAccess;
 - (void)_updateState;
 - (void)_updateUsers;
-- (void)accessory:(id)a3 didUpdateDevice:(id)a4;
-- (void)accessoryDidUpdateApplicationData:(id)a3;
-- (void)accessoryDidUpdatePairingIdentity:(id)a3;
+- (void)accessory:(id)accessory didUpdateDevice:(id)device;
+- (void)accessoryDidUpdateApplicationData:(id)data;
+- (void)accessoryDidUpdatePairingIdentity:(id)identity;
 - (void)activate;
 - (void)dealloc;
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)getHomeKitLocalPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddMediaSystem:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didUpdateMediaPassword:(id)a4;
-- (void)home:(id)a3 didUpdateMediaPeerToPeerEnabled:(BOOL)a4;
-- (void)home:(id)a3 didUpdateMinimumMediaUserPrivilege:(int64_t)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)homeManagerDidUpdateDataSyncState:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion;
+- (void)getHomeKitLocalPairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddMediaSystem:(id)system;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveMediaSystem:(id)system;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didUpdateMediaPassword:(id)password;
+- (void)home:(id)home didUpdateMediaPeerToPeerEnabled:(BOOL)enabled;
+- (void)home:(id)home didUpdateMinimumMediaUserPrivilege:(int64_t)privilege;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status;
+- (void)homeManagerDidUpdateDataSyncState:(id)state;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)invalidate;
-- (void)mediaSystem:(id)a3 didUpdateComponents:(id)a4;
-- (void)mediaSystem:(id)a3 didUpdateName:(id)a4;
-- (void)setLabel:(id)a3;
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5;
-- (void)user:(id)a3 didUpdatePairingIdentity:(id)a4;
+- (void)mediaSystem:(id)system didUpdateComponents:(id)components;
+- (void)mediaSystem:(id)system didUpdateName:(id)name;
+- (void)setLabel:(id)label;
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home;
+- (void)user:(id)user didUpdatePairingIdentity:(id)identity;
 @end
 
 @implementation CUHomeKitManager
 
-- (void)user:(id)a3 didUpdatePairingIdentity:(id)a4
+- (void)user:(id)user didUpdatePairingIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  identityCopy = identity;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__CUHomeKitManager_user_didUpdatePairingIdentity___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = userCopy;
+  v13 = identityCopy;
+  v9 = identityCopy;
+  v10 = userCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -115,20 +115,20 @@ LABEL_7:
   }
 }
 
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home
 {
-  v7 = a3;
-  v8 = a5;
+  userCopy = user;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__CUHomeKitManager_user_didUpdateAssistantAccessControl_forHome___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = userCopy;
+  v14 = homeCopy;
+  v10 = homeCopy;
+  v11 = userCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -167,20 +167,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)accessory:(id)a3 didUpdateDevice:(id)a4
+- (void)accessory:(id)accessory didUpdateDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CUHomeKitManager_accessory_didUpdateDevice___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = accessoryCopy;
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = accessoryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -219,17 +219,17 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)accessoryDidUpdatePairingIdentity:(id)a3
+- (void)accessoryDidUpdatePairingIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__CUHomeKitManager_accessoryDidUpdatePairingIdentity___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identityCopy;
+  v6 = identityCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -274,17 +274,17 @@ LABEL_7:
   }
 }
 
-- (void)accessoryDidUpdateApplicationData:(id)a3
+- (void)accessoryDidUpdateApplicationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__CUHomeKitManager_accessoryDidUpdateApplicationData___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -322,17 +322,17 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)mediaSystem:(id)a3 didUpdateName:(id)a4
+- (void)mediaSystem:(id)system didUpdateName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__CUHomeKitManager_mediaSystem_didUpdateName___block_invoke;
   v8[3] = &unk_1E73A49F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = nameCopy;
+  v7 = nameCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -369,17 +369,17 @@ LABEL_7:
   return [v8 _updateHomes];
 }
 
-- (void)mediaSystem:(id)a3 didUpdateComponents:(id)a4
+- (void)mediaSystem:(id)system didUpdateComponents:(id)components
 {
-  v5 = a3;
+  systemCopy = system;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__CUHomeKitManager_mediaSystem_didUpdateComponents___block_invoke;
   v8[3] = &unk_1E73A49F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = systemCopy;
+  v7 = systemCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -417,20 +417,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didRemoveMediaSystem:(id)a4
+- (void)home:(id)home didRemoveMediaSystem:(id)system
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  systemCopy = system;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CUHomeKitManager_home_didRemoveMediaSystem___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = systemCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = systemCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -469,20 +469,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didAddMediaSystem:(id)a4
+- (void)home:(id)home didAddMediaSystem:(id)system
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  systemCopy = system;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CUHomeKitManager_home_didAddMediaSystem___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = systemCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = systemCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -521,20 +521,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didUpdateMediaPassword:(id)a4
+- (void)home:(id)home didUpdateMediaPassword:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  passwordCopy = password;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__CUHomeKitManager_home_didUpdateMediaPassword___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = passwordCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = passwordCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -583,18 +583,18 @@ LABEL_10:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didUpdateMediaPeerToPeerEnabled:(BOOL)a4
+- (void)home:(id)home didUpdateMediaPeerToPeerEnabled:(BOOL)enabled
 {
-  v6 = a3;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CUHomeKitManager_home_didUpdateMediaPeerToPeerEnabled___block_invoke;
   block[3] = &unk_1E73A3CE8;
-  v11 = a4;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = homeCopy;
+  v8 = homeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -643,18 +643,18 @@ LABEL_10:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didUpdateMinimumMediaUserPrivilege:(int64_t)a4
+- (void)home:(id)home didUpdateMinimumMediaUserPrivilege:(int64_t)privilege
 {
-  v6 = a3;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CUHomeKitManager_home_didUpdateMinimumMediaUserPrivilege___block_invoke;
   block[3] = &unk_1E73A4040;
-  v10 = v6;
-  v11 = a4;
+  v10 = homeCopy;
+  privilegeCopy = privilege;
   block[4] = self;
-  v8 = v6;
+  v8 = homeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -704,20 +704,20 @@ LABEL_11:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__CUHomeKitManager_home_didRemoveUser___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = userCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = userCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -757,20 +757,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__CUHomeKitManager_home_didAddUser___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = userCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = userCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -810,23 +810,23 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  roomCopy = room;
+  accessoryCopy = accessory;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__CUHomeKitManager_home_didUpdateRoom_forAccessory___block_invoke;
   v15[3] = &unk_1E73A40E0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = roomCopy;
+  v17 = accessoryCopy;
+  v18 = homeCopy;
+  v12 = homeCopy;
+  v13 = accessoryCopy;
+  v14 = roomCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -866,20 +866,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__CUHomeKitManager_home_didRemoveAccessory___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = accessoryCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = accessoryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -918,20 +918,20 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CUHomeKitManager_home_didAddAccessory___block_invoke;
   block[3] = &unk_1E73A37D8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = accessoryCopy;
+  v13 = homeCopy;
+  v9 = homeCopy;
+  v10 = accessoryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -970,17 +970,17 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v5 = a4;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__CUHomeKitManager_homeManager_didRemoveHome___block_invoke;
   v8[3] = &unk_1E73A49F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = homeCopy;
+  v7 = homeCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -1018,17 +1018,17 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v5 = a4;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__CUHomeKitManager_homeManager_didAddHome___block_invoke;
   v8[3] = &unk_1E73A49F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = homeCopy;
+  v7 = homeCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -1066,7 +1066,7 @@ LABEL_7:
   return [result _updateHomes];
 }
 
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1074,7 +1074,7 @@ LABEL_7:
   v5[2] = __48__CUHomeKitManager_homeManager_didUpdateStatus___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = status;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -1113,7 +1113,7 @@ LABEL_7:
   return [v12 _updateHomes];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1161,7 +1161,7 @@ LABEL_7:
   return [v12 _updateHomes];
 }
 
-- (void)homeManagerDidUpdateDataSyncState:(id)a3
+- (void)homeManagerDidUpdateDataSyncState:(id)state
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1206,23 +1206,23 @@ LABEL_7:
   return [v12 _updateHomes];
 }
 
-- (id)_selfAccessoryMediaSystemUncached:(id *)a3
+- (id)_selfAccessoryMediaSystemUncached:(id *)uncached
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
-  v6 = [(HMAccessory *)self->_selfAccessory home];
+  uniqueIdentifier = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
+  home = [(HMAccessory *)self->_selfAccessory home];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 mediaSystems];
-  v26 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  mediaSystems = [home mediaSystems];
+  v26 = [mediaSystems countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
-    v24 = a3;
-    v25 = v6;
+    uncachedCopy = uncached;
+    v25 = home;
     v8 = *v34;
-    v28 = v7;
+    v28 = mediaSystems;
     v23 = *v34;
     do
     {
@@ -1230,7 +1230,7 @@ LABEL_7:
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(mediaSystems);
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
@@ -1239,8 +1239,8 @@ LABEL_7:
         v31 = 0u;
         v32 = 0u;
         v27 = v10;
-        v11 = [v10 components];
-        v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        components = [v10 components];
+        v12 = [components countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1251,31 +1251,31 @@ LABEL_7:
             {
               if (*v30 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(components);
               }
 
               v16 = *(*(&v29 + 1) + 8 * j);
-              v17 = [v16 mediaProfile];
-              v18 = [v17 accessory];
-              v19 = [v18 uniqueIdentifier];
+              mediaProfile = [v16 mediaProfile];
+              accessory = [mediaProfile accessory];
+              uniqueIdentifier2 = [accessory uniqueIdentifier];
 
-              if ([v19 isEqual:v5])
+              if ([uniqueIdentifier2 isEqual:uniqueIdentifier])
               {
-                if (v24)
+                if (uncachedCopy)
                 {
                   v21 = v16;
-                  *v24 = v16;
+                  *uncachedCopy = v16;
                 }
 
                 v20 = v27;
 
-                v6 = v25;
-                v7 = v28;
+                home = v25;
+                mediaSystems = v28;
                 goto LABEL_21;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v13 = [components countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v13)
             {
               continue;
@@ -1285,12 +1285,12 @@ LABEL_7:
           }
         }
 
-        v7 = v28;
+        mediaSystems = v28;
         v8 = v23;
       }
 
       v20 = 0;
-      v6 = v25;
+      home = v25;
       v26 = [v28 countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
@@ -1307,39 +1307,39 @@ LABEL_21:
   return v20;
 }
 
-- (BOOL)_isOwnerOfHome:(id)a3
+- (BOOL)_isOwnerOfHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 currentUser];
-  if (v4)
+  homeCopy = home;
+  currentUser = [homeCopy currentUser];
+  if (currentUser)
   {
-    v5 = [v3 homeAccessControlForUser:v4];
-    v6 = [v5 isOwner];
+    v5 = [homeCopy homeAccessControlForUser:currentUser];
+    isOwner = [v5 isOwner];
   }
 
   else
   {
-    v6 = 0;
+    isOwner = 0;
   }
 
-  return v6;
+  return isOwner;
 }
 
-- (id)_cuPairingIdentityWithHMFPairingIdentity:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)_cuPairingIdentityWithHMFPairingIdentity:(id)identity options:(unint64_t)options error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  identityCopy = identity;
   v8 = objc_alloc_init(CUPairingIdentity);
-  v15 = [v7 identifier];
-  if (v15)
+  identifier = [identityCopy identifier];
+  if (identifier)
   {
-    v22 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v15];
+    v22 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier];
     if (!v22)
     {
-      if (a5)
+      if (error)
       {
-        NSErrorWithOSStatusF(4294960579, "Bad HomeKit pairing identifier: '%@'", v16, v17, v18, v19, v20, v21, v15);
-        *a5 = v33 = 0;
+        NSErrorWithOSStatusF(4294960579, "Bad HomeKit pairing identifier: '%@'", v16, v17, v18, v19, v20, v21, identifier);
+        *error = v33 = 0;
       }
 
       else
@@ -1351,13 +1351,13 @@ LABEL_21:
     }
 
     [(CUPairingIdentity *)v8 setIdentifier:v22];
-    v23 = [v7 publicKey];
-    v24 = [v23 data];
+    publicKey = [identityCopy publicKey];
+    data = [publicKey data];
 
-    if (v24)
+    if (data)
     {
-      [(CUPairingIdentity *)v8 setPublicKey:v24];
-      if ((v6 & 2) == 0)
+      [(CUPairingIdentity *)v8 setPublicKey:data];
+      if ((optionsCopy & 2) == 0)
       {
 LABEL_7:
         v33 = v8;
@@ -1367,17 +1367,17 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v31 = [v7 privateKey];
-      v32 = [v31 data];
+      privateKey = [identityCopy privateKey];
+      data2 = [privateKey data];
 
-      if (v32)
+      if (data2)
       {
-        [(CUPairingIdentity *)v8 setSecretKey:v32];
+        [(CUPairingIdentity *)v8 setSecretKey:data2];
 
         goto LABEL_7;
       }
 
-      if (a5)
+      if (error)
       {
         v34 = "No HomeKit pairing private key";
         v35 = 4294896142;
@@ -1385,13 +1385,13 @@ LABEL_21:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v34 = "No HomeKit pairing public key";
       v35 = 4294896141;
 LABEL_18:
       NSErrorWithOSStatusF(v35, v34, v25, v26, v27, v28, v29, v30, v37);
-      *a5 = v33 = 0;
+      *error = v33 = 0;
       goto LABEL_20;
     }
 
@@ -1399,10 +1399,10 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (a5)
+  if (error)
   {
     NSErrorWithOSStatusF(4294960588, "No HomeKit pairing identifier", v9, v10, v11, v12, v13, v14, v37);
-    *a5 = v33 = 0;
+    *error = v33 = 0;
   }
 
   else
@@ -1415,38 +1415,38 @@ LABEL_22:
   return v33;
 }
 
-- (id)_bestUserAndLabel:(id *)a3
+- (id)_bestUserAndLabel:(id *)label
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(HMHomeManager *)self->_homeManager currentHome];
-  v6 = [v5 currentUser];
-  if (v6)
+  currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+  currentUser = [currentHome currentUser];
+  if (currentUser)
   {
-    v7 = v6;
-    if (a3)
+    v7 = currentUser;
+    if (label)
     {
       v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v9 = [v5 name];
-      *a3 = [v8 initWithFormat:@"CurrentHome '%@'", v9];
+      name = [currentHome name];
+      *label = [v8 initWithFormat:@"CurrentHome '%@'", name];
     }
   }
 
   else
   {
-    v10 = [(HMHomeManager *)self->_homeManager primaryHome];
+    primaryHome = [(HMHomeManager *)self->_homeManager primaryHome];
 
-    v11 = [v10 currentUser];
-    if (v11)
+    currentUser2 = [primaryHome currentUser];
+    if (currentUser2)
     {
-      v7 = v11;
-      if (a3)
+      v7 = currentUser2;
+      if (label)
       {
         v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v13 = [v10 name];
-        *a3 = [v12 initWithFormat:@"PrimaryHome '%@'", v13];
+        name2 = [primaryHome name];
+        *label = [v12 initWithFormat:@"PrimaryHome '%@'", name2];
       }
 
-      v5 = v10;
+      currentHome = primaryHome;
     }
 
     else
@@ -1455,35 +1455,35 @@ LABEL_22:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v14 = [(HMHomeManager *)self->_homeManager homes];
-      v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      homes = [(HMHomeManager *)self->_homeManager homes];
+      v15 = [homes countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v15)
       {
         v16 = v15;
         v17 = *v26;
-        v5 = v10;
+        currentHome = primaryHome;
         while (2)
         {
           v18 = 0;
-          v19 = v5;
+          v19 = currentHome;
           do
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(homes);
             }
 
-            v5 = *(*(&v25 + 1) + 8 * v18);
+            currentHome = *(*(&v25 + 1) + 8 * v18);
 
-            v20 = [v5 currentUser];
-            if (v20)
+            currentUser3 = [currentHome currentUser];
+            if (currentUser3)
             {
-              v21 = v20;
-              if (a3)
+              v21 = currentUser3;
+              if (label)
               {
                 v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-                v23 = [v5 name];
-                *a3 = [v22 initWithFormat:@"Home '%@'", v23];
+                name3 = [currentHome name];
+                *label = [v22 initWithFormat:@"Home '%@'", name3];
               }
 
               v7 = v21;
@@ -1492,11 +1492,11 @@ LABEL_22:
             }
 
             ++v18;
-            v19 = v5;
+            v19 = currentHome;
           }
 
           while (v16 != v18);
-          v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v16 = [homes countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v16)
           {
             continue;
@@ -1508,11 +1508,11 @@ LABEL_22:
 
       else
       {
-        v5 = v10;
+        currentHome = primaryHome;
       }
 
       v7 = 0;
-      v5 = v14;
+      currentHome = homes;
     }
   }
 
@@ -1521,18 +1521,18 @@ LABEL_22:
   return v7;
 }
 
-- (void)_findPairedPeerWithContext:(id)a3 label:(id)a4 pairingIdentity:(id)a5 error:(id)a6
+- (void)_findPairedPeerWithContext:(id)context label:(id)label pairingIdentity:(id)identity error:(id)error
 {
-  v60 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  contextCopy = context;
+  labelCopy = label;
+  identityCopy = identity;
+  errorCopy = error;
+  if (!identityCopy)
   {
     ucat = self->_ucat;
     if (ucat->var0 <= 50)
     {
-      v24 = v60;
+      v24 = contextCopy;
       if (ucat->var0 == -1)
       {
         if (!_LogCategory_Initialize(self->_ucat, 0x32u))
@@ -1541,29 +1541,29 @@ LABEL_22:
         }
 
         ucat = self->_ucat;
-        v24 = v60;
+        v24 = contextCopy;
       }
 
-      v25 = [v24 identifier];
-      LogPrintF(ucat, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x32u, "FindPairedPeer: '%@', %@, no identity, %{error}\n", v26, v27, v28, v29, v25);
+      identifier = [v24 identifier];
+      LogPrintF(ucat, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x32u, "FindPairedPeer: '%@', %@, no identity, %{error}\n", v26, v27, v28, v29, identifier);
     }
 
 LABEL_18:
-    [(CUHomeKitManager *)self _findPairedPeerWithContext:v60];
+    [(CUHomeKitManager *)self _findPairedPeerWithContext:contextCopy];
     goto LABEL_33;
   }
 
-  v13 = [v11 identifier];
-  if (!v13)
+  identifier2 = [identityCopy identifier];
+  if (!identifier2)
   {
     v30 = self->_ucat;
-    v31 = v60;
+    v31 = contextCopy;
     if (v30->var0 <= 90)
     {
       if (v30->var0 == -1)
       {
         v56 = _LogCategory_Initialize(self->_ucat, 0x5Au);
-        v31 = v60;
+        v31 = contextCopy;
         if (!v56)
         {
           goto LABEL_25;
@@ -1572,34 +1572,34 @@ LABEL_18:
         v30 = self->_ucat;
       }
 
-      v32 = [v31 identifier];
-      LogPrintF(v30, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x5Au, "### FindPairedPeer: '%@', %@, no identifier for identity\n", v33, v34, v35, v36, v32);
+      identifier3 = [v31 identifier];
+      LogPrintF(v30, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x5Au, "### FindPairedPeer: '%@', %@, no identifier for identity\n", v33, v34, v35, v36, identifier3);
 
-      v31 = v60;
+      v31 = contextCopy;
     }
 
 LABEL_25:
-    v54 = self;
+    selfCopy2 = self;
     v55 = v31;
     goto LABEL_26;
   }
 
-  v14 = [v60 identifier];
-  v15 = [v13 caseInsensitiveCompare:v14];
+  identifier4 = [contextCopy identifier];
+  v15 = [identifier2 caseInsensitiveCompare:identifier4];
 
   if (!v15)
   {
-    v37 = [v11 publicKey];
-    v38 = [v37 data];
+    publicKey = [identityCopy publicKey];
+    data = [publicKey data];
 
-    if (v38)
+    if (data)
     {
       v39 = mach_absolute_time();
-      UpTicksToMilliseconds(v39 - [v60 startTicks]);
+      UpTicksToMilliseconds(v39 - [contextCopy startTicks]);
       v40 = self->_ucat;
       if (v40->var0 <= 30)
       {
-        v41 = v60;
+        v41 = contextCopy;
         if (v40->var0 == -1)
         {
           if (!_LogCategory_Initialize(self->_ucat, 0x1Eu))
@@ -1608,20 +1608,20 @@ LABEL_25:
           }
 
           v40 = self->_ucat;
-          v41 = v60;
+          v41 = contextCopy;
         }
 
-        v42 = [v41 identifier];
-        LogPrintF(v40, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x1Eu, "FindPairedPeer found: '%@', %@, %llu ms\n", v43, v44, v45, v46, v42);
+        identifier5 = [v41 identifier];
+        LogPrintF(v40, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x1Eu, "FindPairedPeer found: '%@', %@, %llu ms\n", v43, v44, v45, v46, identifier5);
       }
 
 LABEL_28:
-      v57 = [v60 pairedPeer];
-      [v57 setPublicKey:v38];
+      pairedPeer = [contextCopy pairedPeer];
+      [pairedPeer setPublicKey:data];
 
-      v58 = [v60 completion];
-      v59 = [v60 pairedPeer];
-      (v58)[2](v58, v59, 0);
+      completion = [contextCopy completion];
+      pairedPeer2 = [contextCopy pairedPeer];
+      (completion)[2](completion, pairedPeer2, 0);
 
 LABEL_31:
       goto LABEL_32;
@@ -1630,7 +1630,7 @@ LABEL_31:
     v47 = self->_ucat;
     if (v47->var0 <= 90)
     {
-      v48 = v60;
+      v48 = contextCopy;
       if (v47->var0 == -1)
       {
         if (!_LogCategory_Initialize(self->_ucat, 0x5Au))
@@ -1639,22 +1639,22 @@ LABEL_31:
         }
 
         v47 = self->_ucat;
-        v48 = v60;
+        v48 = contextCopy;
       }
 
-      v49 = [v48 identifier];
-      LogPrintF(v47, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x5Au, "### FindPairedPeer: '%@', %@, no PK\n", v50, v51, v52, v53, v49);
+      identifier6 = [v48 identifier];
+      LogPrintF(v47, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x5Au, "### FindPairedPeer: '%@', %@, no PK\n", v50, v51, v52, v53, identifier6);
     }
 
 LABEL_30:
-    [(CUHomeKitManager *)self _findPairedPeerWithContext:v60];
+    [(CUHomeKitManager *)self _findPairedPeerWithContext:contextCopy];
     goto LABEL_31;
   }
 
   v16 = self->_ucat;
   if (v16->var0 <= 50)
   {
-    v17 = v60;
+    v17 = contextCopy;
     if (v16->var0 == -1)
     {
       if (!_LogCategory_Initialize(self->_ucat, 0x32u))
@@ -1663,37 +1663,37 @@ LABEL_30:
       }
 
       v16 = self->_ucat;
-      v17 = v60;
+      v17 = contextCopy;
     }
 
-    v18 = [v17 identifier];
-    LogPrintF(v16, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x32u, "FindPairedPeer: '%@', %@, mismatch '%@'\n", v19, v20, v21, v22, v18);
+    identifier7 = [v17 identifier];
+    LogPrintF(v16, "[CUHomeKitManager _findPairedPeerWithContext:label:pairingIdentity:error:]", 0x32u, "FindPairedPeer: '%@', %@, mismatch '%@'\n", v19, v20, v21, v22, identifier7);
   }
 
 LABEL_23:
-  v54 = self;
-  v55 = v60;
+  selfCopy2 = self;
+  v55 = contextCopy;
 LABEL_26:
-  [(CUHomeKitManager *)v54 _findPairedPeerWithContext:v55];
+  [(CUHomeKitManager *)selfCopy2 _findPairedPeerWithContext:v55];
 LABEL_32:
 
 LABEL_33:
 }
 
-- (void)_findPairedPeerWithContext:(id)a3
+- (void)_findPairedPeerWithContext:(id)context
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 triedHomeRepairFlow] & 1) == 0)
+  contextCopy = context;
+  if (([contextCopy triedHomeRepairFlow] & 1) == 0)
   {
-    [v4 setTriedHomeRepairFlow:1];
+    [contextCopy setTriedHomeRepairFlow:1];
     homeManager = self->_homeManager;
     v98 = 0;
     v7 = [(HMHomeManager *)homeManager allPairingIdentitiesInRankOrderWithError:&v98];
     v25 = v98;
-    v26 = [v7 firstObject];
-    v27 = [v4 identifier];
-    if (v27)
+    firstObject = [v7 firstObject];
+    identifier = [contextCopy identifier];
+    if (identifier)
     {
       v96 = 0u;
       v97 = 0u;
@@ -1717,13 +1717,13 @@ LABEL_33:
             }
 
             v33 = *(*(&v94 + 1) + 8 * i);
-            v34 = [v33 identifier];
-            v35 = v34;
-            if (v34 && ![v34 caseInsensitiveCompare:v27])
+            identifier2 = [v33 identifier];
+            v35 = identifier2;
+            if (identifier2 && ![identifier2 caseInsensitiveCompare:identifier])
             {
               v36 = v33;
 
-              v26 = v36;
+              firstObject = v36;
               goto LABEL_22;
             }
           }
@@ -1744,47 +1744,47 @@ LABEL_22:
     block[2] = __47__CUHomeKitManager__findPairedPeerWithContext___block_invoke;
     block[3] = &unk_1E73A40E0;
     block[4] = self;
-    v91 = v4;
-    v92 = v26;
+    v91 = contextCopy;
+    v92 = firstObject;
     v93 = v25;
-    v38 = v25;
-    v39 = v26;
+    completion2 = v25;
+    v39 = firstObject;
     dispatch_async(dispatchQueue, block);
 
     goto LABEL_51;
   }
 
-  if (([v4 triedHAP] & 1) == 0)
+  if (([contextCopy triedHAP] & 1) == 0)
   {
-    [v4 setTriedHAP:1];
-    v5 = [getHAPSystemKeychainStoreClass[0]() systemStore];
+    [contextCopy setTriedHAP:1];
+    systemStore = [getHAPSystemKeychainStoreClass[0]() systemStore];
     v89 = 0;
-    v6 = [v5 getLocalPairingIdentity:&v89];
+    v6 = [systemStore getLocalPairingIdentity:&v89];
     v7 = v89;
 
     if (v6)
     {
-      v8 = [v6 identifier];
-      if (!v8)
+      identifier3 = [v6 identifier];
+      if (!identifier3)
       {
         goto LABEL_28;
       }
 
-      v9 = [v4 identifier];
-      v10 = [v8 caseInsensitiveCompare:v9];
+      identifier4 = [contextCopy identifier];
+      v10 = [identifier3 caseInsensitiveCompare:identifier4];
 
       if (v10)
       {
         goto LABEL_28;
       }
 
-      v11 = [v6 publicKey];
-      v12 = [v11 data];
+      publicKey = [v6 publicKey];
+      data = [publicKey data];
 
-      if (v12)
+      if (data)
       {
         v17 = mach_absolute_time();
-        UpTicksToMilliseconds(v17 - [v4 startTicks]);
+        UpTicksToMilliseconds(v17 - [contextCopy startTicks]);
         ucat = self->_ucat;
         if (ucat->var0 <= 30)
         {
@@ -1798,17 +1798,17 @@ LABEL_22:
             ucat = self->_ucat;
           }
 
-          v19 = [v4 identifier];
-          LogPrintF(ucat, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x1Eu, "FindPairedPeer found: '%@', HAP, %llu ms\n", v20, v21, v22, v23, v19);
+          identifier5 = [contextCopy identifier];
+          LogPrintF(ucat, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x1Eu, "FindPairedPeer found: '%@', HAP, %llu ms\n", v20, v21, v22, v23, identifier5);
         }
 
 LABEL_62:
-        v78 = [v4 pairedPeer];
-        [v78 setPublicKey:v12];
+        pairedPeer = [contextCopy pairedPeer];
+        [pairedPeer setPublicKey:data];
 
-        v79 = [v4 completion];
-        v80 = [v4 pairedPeer];
-        (v79)[2](v79, v80, 0);
+        completion = [contextCopy completion];
+        pairedPeer2 = [contextCopy pairedPeer];
+        (completion)[2](completion, pairedPeer2, 0);
 
         goto LABEL_52;
       }
@@ -1829,7 +1829,7 @@ LABEL_62:
         v77 = self->_ucat;
       }
 
-      LogPrintF(v77, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no HAP public key\n", v13, v14, v15, v16, v8);
+      LogPrintF(v77, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no HAP public key\n", v13, v14, v15, v16, identifier3);
     }
 
     else
@@ -1852,8 +1852,8 @@ LABEL_29:
         v40 = self->_ucat;
       }
 
-      v8 = [v4 identifier];
-      LogPrintF(v40, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no HAP identity, %{error}\n", v41, v42, v43, v44, v8);
+      identifier3 = [contextCopy identifier];
+      LogPrintF(v40, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no HAP identity, %{error}\n", v41, v42, v43, v44, identifier3);
     }
 
 LABEL_28:
@@ -1862,12 +1862,12 @@ LABEL_28:
   }
 
 LABEL_30:
-  if ([v4 triedAccessory])
+  if ([contextCopy triedAccessory])
   {
     goto LABEL_31;
   }
 
-  [v4 setTriedAccessory:1];
+  [contextCopy setTriedAccessory:1];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v71 = self->_ucat;
@@ -1881,15 +1881,15 @@ LABEL_30:
       if (!_LogCategory_Initialize(self->_ucat, 0x5Au))
       {
 LABEL_31:
-        v45 = [v4 userIndex];
-        if (v45 < [v4 userCount])
+        userIndex = [contextCopy userIndex];
+        if (userIndex < [contextCopy userCount])
         {
           do
           {
-            v46 = [v4 users];
-            v47 = [v4 userIndex];
-            [v4 setUserIndex:v47 + 1];
-            v48 = [v46 objectAtIndexedSubscript:v47];
+            users = [contextCopy users];
+            userIndex2 = [contextCopy userIndex];
+            [contextCopy setUserIndex:userIndex2 + 1];
+            v48 = [users objectAtIndexedSubscript:userIndex2];
 
             if (objc_opt_respondsToSelector())
             {
@@ -1899,7 +1899,7 @@ LABEL_31:
               v85[3] = &unk_1E73A3530;
               v85[4] = self;
               v85[5] = v48;
-              v86 = v4;
+              v86 = contextCopy;
               [v48 pairingIdentityWithCompletionHandler:v85];
 
               goto LABEL_53;
@@ -1918,21 +1918,21 @@ LABEL_31:
                 v49 = self->_ucat;
               }
 
-              v50 = [v4 identifier];
-              v82 = [v48 name];
-              LogPrintF(v49, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no user identity SPI '%@'\n", v51, v52, v53, v54, v50);
+              identifier6 = [contextCopy identifier];
+              name = [v48 name];
+              LogPrintF(v49, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no user identity SPI '%@'\n", v51, v52, v53, v54, identifier6);
             }
 
 LABEL_37:
 
-            v55 = [v4 userIndex];
+            userIndex3 = [contextCopy userIndex];
           }
 
-          while (v55 < [v4 userCount]);
+          while (userIndex3 < [contextCopy userCount]);
         }
 
         v56 = mach_absolute_time();
-        UpTicksToMilliseconds(v56 - [v4 startTicks]);
+        UpTicksToMilliseconds(v56 - [contextCopy startTicks]);
         v7 = NSErrorWithOSStatusF(4294960569, "Not found via HAP, accessory, or user", v57, v58, v59, v60, v61, v62, v81);
         v63 = self->_ucat;
         if (v63->var0 > 90)
@@ -1950,12 +1950,12 @@ LABEL_37:
           v63 = self->_ucat;
         }
 
-        v64 = [v4 identifier];
-        LogPrintF(v63, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer failed: '%@', %{error}, %llu ms\n", v65, v66, v67, v68, v64);
+        identifier7 = [contextCopy identifier];
+        LogPrintF(v63, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer failed: '%@', %{error}, %llu ms\n", v65, v66, v67, v68, identifier7);
 
 LABEL_50:
-        v38 = [v4 completion];
-        v38[2](v38, 0, v7);
+        completion2 = [contextCopy completion];
+        completion2[2](completion2, 0, v7);
 LABEL_51:
 
 LABEL_52:
@@ -1965,21 +1965,21 @@ LABEL_52:
       v71 = self->_ucat;
     }
 
-    v72 = [v4 identifier];
-    LogPrintF(v71, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no accessory identity SPI\n", v73, v74, v75, v76, v72);
+    identifier8 = [contextCopy identifier];
+    LogPrintF(v71, "[CUHomeKitManager _findPairedPeerWithContext:]", 0x5Au, "### FindPairedPeer: '%@', no accessory identity SPI\n", v73, v74, v75, v76, identifier8);
 
     goto LABEL_31;
   }
 
   v69 = self->_homeManager;
-  v70 = [v4 identifier];
+  identifier9 = [contextCopy identifier];
   v87[0] = MEMORY[0x1E69E9820];
   v87[1] = 3221225472;
   v87[2] = __47__CUHomeKitManager__findPairedPeerWithContext___block_invoke_2;
   v87[3] = &unk_1E73A34E0;
   v87[4] = self;
-  v88 = v4;
-  [(HMHomeManager *)v69 pairingIdentityForAccessoryWithIdentifier:v70 completionHandler:v87];
+  v88 = contextCopy;
+  [(HMHomeManager *)v69 pairingIdentityForAccessoryWithIdentifier:identifier9 completionHandler:v87];
 
 LABEL_53:
 }
@@ -2032,24 +2032,24 @@ void __47__CUHomeKitManager__findPairedPeerWithContext___block_invoke_5(uint64_t
   [*(a1 + 40) _findPairedPeerWithContext:*(a1 + 48) label:v10 pairingIdentity:*(a1 + 56) error:*(a1 + 64)];
 }
 
-- (void)_findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)_findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 identifierStr];
-  if (v10)
+  peerCopy = peer;
+  completionCopy = completion;
+  identifierStr = [peerCopy identifierStr];
+  if (identifierStr)
   {
-    v15 = v10;
+    uUIDString = identifierStr;
     goto LABEL_4;
   }
 
-  v16 = [v8 identifier];
-  v15 = [v16 UUIDString];
+  identifier = [peerCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (!v15)
+  if (!uUIDString)
   {
-    v38 = NSErrorWithOSStatusF(4294960591, "Bad peer identifier: '%@'", v17, v18, v11, v12, v13, v14, v8);
+    v38 = NSErrorWithOSStatusF(4294960591, "Bad peer identifier: '%@'", v17, v18, v11, v12, v13, v14, peerCopy);
     ucat = self->_ucat;
     if (ucat->var0 <= 90)
     {
@@ -2067,7 +2067,7 @@ void __47__CUHomeKitManager__findPairedPeerWithContext___block_invoke_5(uint64_t
     }
 
 LABEL_30:
-    v9[2](v9, 0, v38);
+    completionCopy[2](completionCopy, 0, v38);
 
     goto LABEL_25;
   }
@@ -2086,18 +2086,18 @@ LABEL_4:
       v19 = self->_ucat;
     }
 
-    LogPrintF(v19, "[CUHomeKitManager _findPairedPeer:options:completion:]", 0x1Eu, "FindPairedPeer start: '%@', %#{flags}\n", v11, v12, v13, v14, v15);
+    LogPrintF(v19, "[CUHomeKitManager _findPairedPeer:options:completion:]", 0x1Eu, "FindPairedPeer start: '%@', %#{flags}\n", v11, v12, v13, v14, uUIDString);
   }
 
 LABEL_8:
   v20 = objc_alloc_init(CUHomeKitFindPairedPeerContext);
-  v43 = v9;
-  [(CUHomeKitFindPairedPeerContext *)v20 setCompletion:v9];
-  v41 = v15;
-  [(CUHomeKitFindPairedPeerContext *)v20 setIdentifier:v15];
-  [(CUHomeKitFindPairedPeerContext *)v20 setOptions:a4];
-  v44 = v8;
-  [(CUHomeKitFindPairedPeerContext *)v20 setPairedPeer:v8];
+  v43 = completionCopy;
+  [(CUHomeKitFindPairedPeerContext *)v20 setCompletion:completionCopy];
+  v41 = uUIDString;
+  [(CUHomeKitFindPairedPeerContext *)v20 setIdentifier:uUIDString];
+  [(CUHomeKitFindPairedPeerContext *)v20 setOptions:options];
+  v44 = peerCopy;
+  [(CUHomeKitFindPairedPeerContext *)v20 setPairedPeer:peerCopy];
   v40 = v20;
   [(CUHomeKitFindPairedPeerContext *)v20 setStartTicks:mach_absolute_time()];
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2105,9 +2105,9 @@ LABEL_8:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v42 = self;
-  v22 = [(HMHomeManager *)self->_homeManager homes];
-  v23 = [v22 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  selfCopy = self;
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v23 = [homes countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v23)
   {
     v24 = v23;
@@ -2118,22 +2118,22 @@ LABEL_8:
       {
         if (*v50 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(homes);
         }
 
         v27 = *(*(&v49 + 1) + 8 * i);
-        v28 = [v27 currentUser];
-        if (v28)
+        currentUser = [v27 currentUser];
+        if (currentUser)
         {
-          [v21 addObject:v28];
+          [v21 addObject:currentUser];
         }
 
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v29 = [v27 users];
-        v30 = [v29 countByEnumeratingWithState:&v45 objects:v53 count:16];
+        users = [v27 users];
+        v30 = [users countByEnumeratingWithState:&v45 objects:v53 count:16];
         if (v30)
         {
           v31 = v30;
@@ -2144,20 +2144,20 @@ LABEL_8:
             {
               if (*v46 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(users);
               }
 
               [v21 addObject:*(*(&v45 + 1) + 8 * j)];
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v45 objects:v53 count:16];
+            v31 = [users countByEnumeratingWithState:&v45 objects:v53 count:16];
           }
 
           while (v31);
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v24 = [homes countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v24);
@@ -2166,42 +2166,42 @@ LABEL_8:
   [(CUHomeKitFindPairedPeerContext *)v40 setUsers:v21];
   [(CUHomeKitFindPairedPeerContext *)v40 setUserIndex:0];
   -[CUHomeKitFindPairedPeerContext setUserCount:](v40, "setUserCount:", [v21 count]);
-  [(CUHomeKitManager *)v42 _findPairedPeerWithContext:v40];
+  [(CUHomeKitManager *)selfCopy _findPairedPeerWithContext:v40];
 
-  v9 = v43;
-  v8 = v44;
+  completionCopy = v43;
+  peerCopy = v44;
 LABEL_25:
 }
 
-- (void)findPairedPeer:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)findPairedPeer:(id)peer options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__CUHomeKitManager_findPairedPeer_options_completion___block_invoke;
   v13[3] = &unk_1E73A3938;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = peerCopy;
+  v15 = completionCopy;
+  optionsCopy = options;
+  v11 = completionCopy;
+  v12 = peerCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_getPairingIdentityCompleted:(id)a3 options:(unint64_t)a4 error:(id)a5 label:(id)a6 completion:(id)a7
+- (void)_getPairingIdentityCompleted:(id)completed options:(unint64_t)options error:(id)error label:(id)label completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v22 = v12;
-  if (v22 && !v13)
+  completedCopy = completed;
+  errorCopy = error;
+  labelCopy = label;
+  completionCopy = completion;
+  v22 = completedCopy;
+  if (v22 && !errorCopy)
   {
     v42 = 0;
-    v23 = [(CUHomeKitManager *)self _cuPairingIdentityWithHMFPairingIdentity:v22 options:a4 error:&v42];
+    v23 = [(CUHomeKitManager *)self _cuPairingIdentityWithHMFPairingIdentity:v22 options:options error:&v42];
     v30 = v42;
     ucat = self->_ucat;
     var0 = ucat->var0;
@@ -2219,12 +2219,12 @@ LABEL_25:
           ucat = self->_ucat;
         }
 
-        v41 = [v23 identifier];
-        LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityCompleted:options:error:label:completion:]", 0x1Eu, "GetPairingIdentity finish: %#{flags}, %@ (%@)\n", v33, v34, v35, v36, a4);
+        identifier = [v23 identifier];
+        LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityCompleted:options:error:label:completion:]", 0x1Eu, "GetPairingIdentity finish: %#{flags}, %@ (%@)\n", v33, v34, v35, v36, options);
       }
 
 LABEL_18:
-      v15[2](v15, v23, 0);
+      completionCopy[2](completionCopy, v23, 0);
 LABEL_21:
 
       goto LABEL_22;
@@ -2247,7 +2247,7 @@ LABEL_21:
 
 LABEL_20:
     v39 = NSErrorWithOSStatusF(4294960596, "No converted identity, no error", v24, v25, v26, v27, v28, v29, v40);
-    (v15)[2](v15, 0, v39);
+    (completionCopy)[2](completionCopy, 0, v39);
 
     goto LABEL_21;
   }
@@ -2258,7 +2258,7 @@ LABEL_20:
     if (v37->var0 != -1)
     {
 LABEL_9:
-      LogPrintF(v37, "[CUHomeKitManager _getPairingIdentityCompleted:options:error:label:completion:]", 0x5Au, "### GetPairingIdentity failed: %{error}\n", v18, v19, v20, v21, v13);
+      LogPrintF(v37, "[CUHomeKitManager _getPairingIdentityCompleted:options:error:label:completion:]", 0x5Au, "### GetPairingIdentity failed: %{error}\n", v18, v19, v20, v21, errorCopy);
       goto LABEL_14;
     }
 
@@ -2270,26 +2270,26 @@ LABEL_9:
   }
 
 LABEL_14:
-  if (v13)
+  if (errorCopy)
   {
-    (v15)[2](v15, 0, v13);
+    (completionCopy)[2](completionCopy, 0, errorCopy);
   }
 
   else
   {
     v38 = NSErrorWithOSStatusF(4294960596, "No identity, no error", v16, v17, v18, v19, v20, v21, v40);
-    (v15)[2](v15, 0, v38);
+    (completionCopy)[2](completionCopy, 0, v38);
   }
 
 LABEL_22:
 }
 
-- (void)_getPairingIdentityForLegacyWithOptions:(unint64_t)a3 user:(id)a4 nonLegacyIdentity:(id)a5 label:(id)a6 completion:(id)a7
+- (void)_getPairingIdentityForLegacyWithOptions:(unint64_t)options user:(id)user nonLegacyIdentity:(id)identity label:(id)label completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  userCopy = user;
+  identityCopy = identity;
+  labelCopy = label;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     ucat = self->_ucat;
@@ -2305,8 +2305,8 @@ LABEL_22:
         ucat = self->_ucat;
       }
 
-      v29 = [v12 name];
-      LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityForLegacyWithOptions:user:nonLegacyIdentity:label:completion:]", 0x1Eu, "GetPairingIdentity %#{flags} via fetch all SPI '%{mask}", v17, v18, v19, v20, a3);
+      name = [userCopy name];
+      LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityForLegacyWithOptions:user:nonLegacyIdentity:label:completion:]", 0x1Eu, "GetPairingIdentity %#{flags} via fetch all SPI '%{mask}", v17, v18, v19, v20, options);
     }
 
 LABEL_7:
@@ -2315,20 +2315,20 @@ LABEL_7:
     v30[2] = __100__CUHomeKitManager__getPairingIdentityForLegacyWithOptions_user_nonLegacyIdentity_label_completion___block_invoke;
     v30[3] = &unk_1E73A34B8;
     v30[4] = self;
-    v31 = v13;
-    v32 = v12;
-    v35 = a3;
-    v33 = v14;
-    v34 = v15;
+    v31 = identityCopy;
+    v32 = userCopy;
+    optionsCopy = options;
+    v33 = labelCopy;
+    v34 = completionCopy;
     [v32 fetchAllPairingIdentitiesWithCompletionHandler:v30];
 
     goto LABEL_8;
   }
 
-  v21 = [v12 name];
-  v28 = NSErrorWithOSStatusF(4294960569, "No HomeKit pairing identity, no fetch all SPI, '%{mask}'", v22, v23, v24, v25, v26, v27, v21);
+  name2 = [userCopy name];
+  v28 = NSErrorWithOSStatusF(4294960569, "No HomeKit pairing identity, no fetch all SPI, '%{mask}'", v22, v23, v24, v25, v26, v27, name2);
 
-  [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:a3 error:v28 label:v14 completion:v15];
+  [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:options error:v28 label:labelCopy completion:completionCopy];
 LABEL_8:
 }
 
@@ -2439,9 +2439,9 @@ LABEL_15:
   [v18 _getPairingIdentityCompleted:v21 options:v16 error:v19 label:v20 completion:v17];
 }
 
-- (void)_getPairingIdentityForUserWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_getPairingIdentityForUserWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v35 = 0;
   v7 = [(CUHomeKitManager *)self _bestUserAndLabel:&v35];
   v14 = v35;
@@ -2462,8 +2462,8 @@ LABEL_15:
           ucat = self->_ucat;
         }
 
-        v30 = [v7 name];
-        LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityForUserWithOptions:completion:]", 0x1Eu, "GetPairingIdentity %#{flags} via SPI '%{mask}", v16, v17, v18, v19, a3);
+        name = [v7 name];
+        LogPrintF(ucat, "[CUHomeKitManager _getPairingIdentityForUserWithOptions:completion:]", 0x1Eu, "GetPairingIdentity %#{flags} via SPI '%{mask}", v16, v17, v18, v19, options);
       }
 
 LABEL_9:
@@ -2471,26 +2471,26 @@ LABEL_9:
       v31[1] = 3221225472;
       v31[2] = __69__CUHomeKitManager__getPairingIdentityForUserWithOptions_completion___block_invoke;
       v31[3] = &unk_1E73A3468;
-      v34 = a3;
+      optionsCopy = options;
       v31[4] = self;
       v31[5] = v7;
       v32 = v14;
-      v33 = v6;
+      v33 = completionCopy;
       [v7 pairingIdentityWithCompletionHandler:v31];
 
       goto LABEL_10;
     }
 
-    v21 = [v7 name];
-    v28 = NSErrorWithOSStatusF(4294960569, "No HomeKit user pairing identity, no SPI, '%@'", v22, v23, v24, v25, v26, v27, v21);
+    name2 = [v7 name];
+    v28 = NSErrorWithOSStatusF(4294960569, "No HomeKit user pairing identity, no SPI, '%@'", v22, v23, v24, v25, v26, v27, name2);
 
-    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:a3 error:v28 label:v14 completion:v6];
+    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:options error:v28 label:v14 completion:completionCopy];
   }
 
   else
   {
     v20 = NSErrorWithOSStatusF(4294896143, "No HomeKit user for pairing identity", v8, v9, v10, v11, v12, v13, v29);
-    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:a3 error:v20 label:v14 completion:v6];
+    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:options error:v20 label:v14 completion:completionCopy];
   }
 
 LABEL_10:
@@ -2544,26 +2544,26 @@ void __69__CUHomeKitManager__getPairingIdentityForUserWithOptions_completion___b
   }
 }
 
-- (void)_getPairingIdentityForAccessoryWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_getPairingIdentityForAccessoryWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
-  v13 = [(HMHomeManager *)self->_homeManager currentAccessory];
-  if (v13)
+  completionCopy = completion;
+  currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+  if (currentAccessory)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__CUHomeKitManager__getPairingIdentityForAccessoryWithOptions_completion___block_invoke;
     v16[3] = &unk_1E73A3418;
     v16[4] = self;
-    v18 = a3;
-    v17 = v6;
-    [v13 pairingIdentityWithPrivateKey:(a3 >> 1) & 1 attemptToReadFromKeychain:1 completionHandler:v16];
+    optionsCopy = options;
+    v17 = completionCopy;
+    [currentAccessory pairingIdentityWithPrivateKey:(options >> 1) & 1 attemptToReadFromKeychain:1 completionHandler:v16];
   }
 
   else
   {
     v14 = NSErrorWithOSStatusF(4294960569, "No HomeKit Self Accessory", v7, v8, v9, v10, v11, v12, v15);
-    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:a3 error:v14 label:@"SelfAccessory" completion:v6];
+    [(CUHomeKitManager *)self _getPairingIdentityCompleted:0 options:options error:v14 label:@"SelfAccessory" completion:completionCopy];
   }
 }
 
@@ -2588,9 +2588,9 @@ void __74__CUHomeKitManager__getPairingIdentityForAccessoryWithOptions_completio
   dispatch_async(v8, block);
 }
 
-- (void)getHomeKitLocalPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getHomeKitLocalPairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     ucat = self->_ucat;
@@ -2611,7 +2611,7 @@ void __74__CUHomeKitManager__getPairingIdentityForAccessoryWithOptions_completio
 
 LABEL_7:
     v17 = NSErrorWithOSStatusF(4294960561, "HomeKit does not support this SPI on this platform", v7, v8, v9, v10, v11, v12, v20[0]);
-    v6[2](v6, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
     goto LABEL_8;
   }
 
@@ -2626,9 +2626,9 @@ LABEL_7:
   v20[3] = &unk_1E73A33F0;
   v20[4] = self;
   v21 = v14;
-  v24 = a3;
+  optionsCopy = options;
   v22 = v15;
-  v23 = v6;
+  v23 = completionCopy;
   v17 = v15;
   v18 = v14;
   dispatch_async(dispatchQueue, v20);
@@ -2643,18 +2643,18 @@ void __73__CUHomeKitManager_getHomeKitLocalPairingIdentityWithOptions_completion
   [v2 _getPairingIdentityCompleted:v3 options:*(a1 + 64) error:*(a1 + 48) label:@"HomeKitLocalKey" completion:*(a1 + 56)];
 }
 
-- (void)getPairingIdentityWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)getPairingIdentityWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__CUHomeKitManager_getPairingIdentityWithOptions_completion___block_invoke;
   block[3] = &unk_1E73A4BB0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  optionsCopy = options;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2703,8 +2703,8 @@ LABEL_5:
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = [(HMHomeManager *)self->_homeManager homes];
-  v5 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v5 = [homes countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2715,17 +2715,17 @@ LABEL_5:
       {
         if (*v64 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
-        v9 = [*(*(&v63 + 1) + 8 * i) currentUser];
-        if (v9)
+        currentUser = [*(*(&v63 + 1) + 8 * i) currentUser];
+        if (currentUser)
         {
-          [v3 addObject:v9];
+          [v3 addObject:currentUser];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+      v6 = [homes countByEnumeratingWithState:&v63 objects:v70 count:16];
     }
 
     while (v6);
@@ -2757,10 +2757,10 @@ LABEL_5:
       }
 
       v14 = *(*(&v59 + 1) + 8 * v13);
-      v15 = [v14 uniqueIdentifier];
-      if (v15)
+      uniqueIdentifier = [v14 uniqueIdentifier];
+      if (uniqueIdentifier)
       {
-        v16 = [(NSMutableDictionary *)self->_users objectForKeyedSubscript:v15];
+        v16 = [(NSMutableDictionary *)self->_users objectForKeyedSubscript:uniqueIdentifier];
         if (!v16)
         {
           ucat = self->_ucat;
@@ -2775,8 +2775,8 @@ LABEL_5:
             {
               ucat = self->_ucat;
 LABEL_19:
-              v45 = [v14 userID];
-              LogPrintF(ucat, "[CUHomeKitManager _updateUsers]", 0x1Eu, "FoundCurrentUser: %@, %{mask}", v18, v19, v20, v21, v15);
+              userID = [v14 userID];
+              LogPrintF(ucat, "[CUHomeKitManager _updateUsers]", 0x1Eu, "FoundCurrentUser: %@, %{mask}", v18, v19, v20, v21, uniqueIdentifier);
             }
           }
 
@@ -2791,7 +2791,7 @@ LABEL_19:
             users = self->_users;
           }
 
-          [(NSMutableDictionary *)users setObject:v14 forKeyedSubscript:v15];
+          [(NSMutableDictionary *)users setObject:v14 forKeyedSubscript:uniqueIdentifier];
           v48 = 1;
         }
       }
@@ -2811,8 +2811,8 @@ LABEL_31:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v47 = [(NSMutableDictionary *)self->_users allKeys];
-  v26 = [v47 countByEnumeratingWithState:&v55 objects:v68 count:16];
+  allKeys = [(NSMutableDictionary *)self->_users allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v55 objects:v68 count:16];
   if (!v26)
   {
     goto LABEL_53;
@@ -2827,7 +2827,7 @@ LABEL_31:
     {
       if (*v56 != v49)
       {
-        objc_enumerationMutation(v47);
+        objc_enumerationMutation(allKeys);
       }
 
       v29 = *(*(&v55 + 1) + 8 * v28);
@@ -2855,9 +2855,9 @@ LABEL_44:
             v37 = self->_ucat;
           }
 
-          v38 = [v30 uniqueIdentifier];
-          v46 = [v30 userID];
-          LogPrintF(v37, "[CUHomeKitManager _updateUsers]", 0x1Eu, "LostCurrentUser: %@, %{mask}", v39, v40, v41, v42, v38);
+          uniqueIdentifier2 = [v30 uniqueIdentifier];
+          userID2 = [v30 userID];
+          LogPrintF(v37, "[CUHomeKitManager _updateUsers]", 0x1Eu, "LostCurrentUser: %@, %{mask}", v39, v40, v41, v42, uniqueIdentifier2);
         }
 
 LABEL_48:
@@ -2878,8 +2878,8 @@ LABEL_38:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v51 + 1) + 8 * v34) uniqueIdentifier];
-        v36 = [v35 isEqual:v29];
+        uniqueIdentifier3 = [*(*(&v51 + 1) + 8 * v34) uniqueIdentifier];
+        v36 = [uniqueIdentifier3 isEqual:v29];
 
         if (v36)
         {
@@ -2908,7 +2908,7 @@ LABEL_49:
       break;
     }
 
-    v43 = [v47 countByEnumeratingWithState:&v55 objects:v68 count:16];
+    v43 = [allKeys countByEnumeratingWithState:&v55 objects:v68 count:16];
     v27 = v43;
     if (v43)
     {
@@ -2990,35 +2990,35 @@ LABEL_14:
   v30 = *MEMORY[0x1E69E9840];
   if (self->_selfAccessorySiriAccessEnabled)
   {
-    v3 = [(HMAccessory *)self->_selfAccessory home];
-    v4 = v3;
-    if (!v3)
+    home = [(HMAccessory *)self->_selfAccessory home];
+    v4 = home;
+    if (!home)
     {
 LABEL_30:
 
       return;
     }
 
-    v5 = [v3 currentUser];
-    v6 = v5;
-    if (!v5)
+    currentUser = [home currentUser];
+    v6 = currentUser;
+    if (!currentUser)
     {
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v7 = [v5 assistantAccessControlForHome:v4];
+    v7 = [currentUser assistantAccessControlForHome:v4];
     selfAccessorySiriEnabled = self->_selfAccessorySiriEnabled;
     if ([v7 isEnabled])
     {
-      v9 = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
+      uniqueIdentifier = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v10 = [v7 accessories];
-      v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      accessories = [v7 accessories];
+      v11 = [accessories countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
         v23 = selfAccessorySiriEnabled;
@@ -3030,11 +3030,11 @@ LABEL_29:
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(accessories);
             }
 
-            v14 = [*(*(&v25 + 1) + 8 * i) uniqueIdentifier];
-            v15 = [v14 isEqual:v9];
+            uniqueIdentifier2 = [*(*(&v25 + 1) + 8 * i) uniqueIdentifier];
+            v15 = [uniqueIdentifier2 isEqual:uniqueIdentifier];
 
             if (v15)
             {
@@ -3043,7 +3043,7 @@ LABEL_29:
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [accessories countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v11)
           {
             continue;
@@ -3121,10 +3121,10 @@ LABEL_26:
     v5 = v4;
     if (v3 && v4)
     {
-      v6 = [v3 uniqueIdentifier];
-      v7 = [(HMMediaSystem *)self->_selfAccessoryMediaSystem uniqueIdentifier];
-      v8 = v6;
-      v9 = v7;
+      uniqueIdentifier = [v3 uniqueIdentifier];
+      uniqueIdentifier2 = [(HMMediaSystem *)self->_selfAccessoryMediaSystem uniqueIdentifier];
+      v8 = uniqueIdentifier;
+      v9 = uniqueIdentifier2;
       selfAccessoryMediaSystem = v9;
       v11 = v8 != v9;
       if (v8 == v9)
@@ -3133,9 +3133,9 @@ LABEL_26:
 LABEL_22:
 LABEL_23:
         v30 = self->_selfAccessoryMediaSystemName;
-        v31 = [v3 name];
+        name = [v3 name];
         v32 = v30;
-        v33 = v31;
+        v33 = name;
         v34 = v33;
         if (v32 == v33)
         {
@@ -3157,10 +3157,10 @@ LABEL_35:
             v86 = v32;
             v87 = v8;
             v88 = v5;
-            v43 = [v5 role];
-            v44 = [v43 type];
+            role = [v5 role];
+            type = [role type];
             selfAccessoryMediaSystemRole = self->_selfAccessoryMediaSystemRole;
-            v46 = v43;
+            v46 = role;
             v47 = selfAccessoryMediaSystemRole;
             v48 = v47;
             if (v46 == v47)
@@ -3180,14 +3180,14 @@ LABEL_50:
               {
 LABEL_51:
                 v84 = v11;
-                if (v44 == 1)
+                if (type == 1)
                 {
                   v58 = 2;
                 }
 
                 else
                 {
-                  v58 = v44 == 2;
+                  v58 = type == 2;
                 }
 
                 if (v58)
@@ -3196,8 +3196,8 @@ LABEL_51:
                   v92 = 0u;
                   v89 = 0u;
                   v90 = 0u;
-                  v59 = [v3 components];
-                  v60 = [v59 countByEnumeratingWithState:&v89 objects:v94 count:16];
+                  components = [v3 components];
+                  v60 = [components countByEnumeratingWithState:&v89 objects:v94 count:16];
                   if (v60)
                   {
                     v61 = v60;
@@ -3209,23 +3209,23 @@ LABEL_51:
                       {
                         if (*v90 != v62)
                         {
-                          objc_enumerationMutation(v59);
+                          objc_enumerationMutation(components);
                         }
 
                         v64 = *(*(&v89 + 1) + 8 * i);
-                        v65 = [v64 role];
-                        v66 = [v65 type];
+                        role2 = [v64 role];
+                        type2 = [role2 type];
 
-                        if (v66 == v58)
+                        if (type2 == v58)
                         {
-                          v68 = [v64 mediaProfile];
-                          v67 = [v68 accessory];
+                          mediaProfile = [v64 mediaProfile];
+                          accessory = [mediaProfile accessory];
 
                           goto LABEL_65;
                         }
                       }
 
-                      v61 = [v59 countByEnumeratingWithState:&v89 objects:v94 count:16];
+                      v61 = [components countByEnumeratingWithState:&v89 objects:v94 count:16];
                       if (v61)
                       {
                         continue;
@@ -3234,39 +3234,39 @@ LABEL_51:
                       break;
                     }
 
-                    v67 = 0;
+                    accessory = 0;
 LABEL_65:
                     v3 = v83;
                   }
 
                   else
                   {
-                    v67 = 0;
+                    accessory = 0;
                   }
                 }
 
                 else
                 {
-                  v67 = 0;
+                  accessory = 0;
                 }
 
-                v69 = [(HMAccessory *)self->_selfAccessoryMediaSystemCounterpart uniqueIdentifier];
-                v70 = [v67 uniqueIdentifier];
-                v71 = v69;
+                uniqueIdentifier3 = [(HMAccessory *)self->_selfAccessoryMediaSystemCounterpart uniqueIdentifier];
+                uniqueIdentifier4 = [accessory uniqueIdentifier];
+                v71 = uniqueIdentifier3;
                 v72 = v71;
-                if (v70 == v71)
+                if (uniqueIdentifier4 == v71)
                 {
                 }
 
                 else
                 {
-                  if ((v71 == 0) == (v70 != 0))
+                  if ((v71 == 0) == (uniqueIdentifier4 != 0))
                   {
 
                     goto LABEL_77;
                   }
 
-                  v73 = [v70 isEqual:v71];
+                  v73 = [uniqueIdentifier4 isEqual:v71];
 
                   if ((v73 & 1) == 0)
                   {
@@ -3284,12 +3284,12 @@ LABEL_77:
                         ucat = self->_ucat;
                       }
 
-                      v82 = [v67 name];
-                      LogPrintF(ucat, "[CUHomeKitManager _updateSelfAccessoryMediaSystem]", 0x1Eu, "SelfAccessoryMediaSystemCounterpart updated: %@ '%@'\n", v75, v76, v77, v78, v70);
+                      name2 = [accessory name];
+                      LogPrintF(ucat, "[CUHomeKitManager _updateSelfAccessoryMediaSystem]", 0x1Eu, "SelfAccessoryMediaSystemCounterpart updated: %@ '%@'\n", v75, v76, v77, v78, uniqueIdentifier4);
                     }
 
 LABEL_81:
-                    objc_storeStrong(&self->_selfAccessoryMediaSystemCounterpart, v67);
+                    objc_storeStrong(&self->_selfAccessoryMediaSystemCounterpart, accessory);
                     goto LABEL_82;
                   }
                 }
@@ -3323,14 +3323,14 @@ LABEL_82:
               if (v55->var0 != -1)
               {
 LABEL_43:
-                if (v44 > 2)
+                if (type > 2)
                 {
                   v56 = "?";
                 }
 
                 else
                 {
-                  v56 = off_1E73A3550[v44];
+                  v56 = off_1E73A3550[type];
                 }
 
                 LogPrintF(v55, "[CUHomeKitManager _updateSelfAccessoryMediaSystem]", 0x1Eu, "SelfAccessoryMediaSystemRole updated: %s\n", v50, v51, v52, v53, v56);
@@ -3409,7 +3409,7 @@ LABEL_33:
           v23 = self->_ucat;
         }
 
-        v81 = [v3 name];
+        name3 = [v3 name];
         LogPrintF(v23, "[CUHomeKitManager _updateSelfAccessoryMediaSystem]", 0x1Eu, "SelfAccessoryMediaSystem ID updated: %@ '%@'\n", v24, v25, v26, v27, v8);
       }
 
@@ -3477,21 +3477,21 @@ LABEL_18:
     return;
   }
 
-  v4 = [(HMAccessory *)self->_selfAccessory home];
-  if (v4)
+  home = [(HMAccessory *)self->_selfAccessory home];
+  if (home)
   {
     selfAccessoryMediaAccessFlags = self->_selfAccessoryMediaAccessFlags;
-    v42 = v4;
-    v6 = [v4 isMediaPeerToPeerEnabled];
+    v42 = home;
+    isMediaPeerToPeerEnabled = [home isMediaPeerToPeerEnabled];
     v11 = (selfAccessoryMediaAccessFlags >> 1) & 1;
-    v12 = v11 != v6;
-    if (v11 == v6)
+    v12 = v11 != isMediaPeerToPeerEnabled;
+    if (v11 == isMediaPeerToPeerEnabled)
     {
       v16 = self->_selfAccessoryMediaAccessFlags;
       goto LABEL_17;
     }
 
-    v13 = v6;
+    v13 = isMediaPeerToPeerEnabled;
     ucat = self->_ucat;
     if (ucat->var0 <= 30)
     {
@@ -3534,13 +3534,13 @@ LABEL_13:
     LOBYTE(v16) = v17 | v18;
     self->_selfAccessoryMediaAccessFlags = v17 | v18;
 LABEL_17:
-    v19 = [v42 minimumMediaUserPrivilege];
-    if ((v19 != 0) == (v16 & 1))
+    minimumMediaUserPrivilege = [v42 minimumMediaUserPrivilege];
+    if ((minimumMediaUserPrivilege != 0) == (v16 & 1))
     {
       goto LABEL_28;
     }
 
-    v24 = v19;
+    v24 = minimumMediaUserPrivilege;
     v25 = self->_ucat;
     if (v25->var0 <= 30)
     {
@@ -3578,9 +3578,9 @@ LABEL_25:
     self->_selfAccessoryMediaAccessFlags = v27;
     v12 = 1;
 LABEL_28:
-    v28 = [v42 mediaPassword];
+    mediaPassword = [v42 mediaPassword];
     selfAccessoryMediaAccessPassword = self->_selfAccessoryMediaAccessPassword;
-    v30 = v28;
+    v30 = mediaPassword;
     v31 = selfAccessoryMediaAccessPassword;
     v32 = v31;
     if (v30 == v31)
@@ -3625,7 +3625,7 @@ LABEL_38:
         }
 
 LABEL_42:
-        objc_storeStrong(&self->_selfAccessoryMediaAccessPassword, v28);
+        objc_storeStrong(&self->_selfAccessoryMediaAccessPassword, mediaPassword);
         goto LABEL_43;
       }
     }
@@ -3634,7 +3634,7 @@ LABEL_42:
     {
 LABEL_45:
 
-      v4 = v42;
+      home = v42;
       goto LABEL_46;
     }
 
@@ -3658,11 +3658,11 @@ LABEL_46:
     return;
   }
 
-  v4 = [(HMHomeManager *)self->_homeManager currentAccessory];
-  obj = v4;
-  if (!v4)
+  currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+  obj = currentAccessory;
+  if (!currentAccessory)
   {
-    v7 = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
+    uniqueIdentifier = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
     selfAccessory = self->_selfAccessory;
     if (!selfAccessory)
     {
@@ -3688,8 +3688,8 @@ LABEL_46:
       ucat = self->_ucat;
     }
 
-    v64 = [(HMAccessory *)selfAccessory name];
-    LogPrintF(ucat, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "LostSelfAccessory: %@ (%@)\n", v13, v14, v15, v16, v7);
+    name = [(HMAccessory *)selfAccessory name];
+    LogPrintF(ucat, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "LostSelfAccessory: %@ (%@)\n", v13, v14, v15, v16, uniqueIdentifier);
 
     selfAccessory = self->_selfAccessory;
 LABEL_30:
@@ -3700,33 +3700,33 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v5 = [v4 uniqueIdentifier];
-  v6 = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
-  v7 = v5;
-  v8 = v6;
+  uniqueIdentifier2 = [currentAccessory uniqueIdentifier];
+  uniqueIdentifier3 = [(HMAccessory *)self->_selfAccessory uniqueIdentifier];
+  uniqueIdentifier = uniqueIdentifier2;
+  v8 = uniqueIdentifier3;
   v9 = v8;
-  if (v7 == v8)
+  if (uniqueIdentifier == v8)
   {
 
     goto LABEL_13;
   }
 
-  if ((v7 != 0) == (v8 == 0))
+  if ((uniqueIdentifier != 0) == (v8 == 0))
   {
 
     goto LABEL_18;
   }
 
-  v10 = [v7 isEqual:v8];
+  v10 = [uniqueIdentifier isEqual:v8];
 
   if (v10)
   {
 LABEL_13:
-    v17 = [obj room];
-    v18 = [v17 uniqueIdentifier];
+    room = [obj room];
+    uniqueIdentifier4 = [room uniqueIdentifier];
 
     selfAccessoryRoomID = self->_selfAccessoryRoomID;
-    v20 = v18;
+    v20 = uniqueIdentifier4;
     v21 = selfAccessoryRoomID;
     v22 = v21;
     v23 = v20 != v21;
@@ -3777,8 +3777,8 @@ LABEL_18:
       v25 = self->_ucat;
     }
 
-    v65 = [obj name];
-    LogPrintF(v25, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "FoundSelfAccessory: %@ (%@)\n", v26, v27, v28, v29, v7);
+    name2 = [obj name];
+    LogPrintF(v25, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "FoundSelfAccessory: %@ (%@)\n", v26, v27, v28, v29, uniqueIdentifier);
   }
 
 LABEL_28:
@@ -3788,13 +3788,13 @@ LABEL_31:
   v23 = 1;
 LABEL_32:
 
-  v34 = [obj home];
-  v35 = [v34 currentUser];
+  home = [obj home];
+  currentUser = [home currentUser];
 
-  v36 = [(HMUser *)v35 uniqueIdentifier];
-  v37 = [(HMUser *)self->_selfAccessoryUser uniqueIdentifier];
-  v38 = v36;
-  v39 = v37;
+  uniqueIdentifier5 = [(HMUser *)currentUser uniqueIdentifier];
+  uniqueIdentifier6 = [(HMUser *)self->_selfAccessoryUser uniqueIdentifier];
+  v38 = uniqueIdentifier5;
+  v39 = uniqueIdentifier6;
   v40 = v39;
   if (v38 == v39)
   {
@@ -3839,25 +3839,25 @@ LABEL_32:
       v42 = self->_ucat;
     }
 
-    v43 = [(HMUser *)v35 userID];
-    LogPrintF(v42, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "SelfAccessory user updated: %{mask}", v44, v45, v46, v47, v43);
+    userID = [(HMUser *)currentUser userID];
+    LogPrintF(v42, "[CUHomeKitManager _updateSelfAccessoryIfNeeded]", 0x1Eu, "SelfAccessory user updated: %{mask}", v44, v45, v46, v47, userID);
   }
 
 LABEL_44:
-  if (v35)
+  if (currentUser)
   {
-    selfAccessoryUser = v35;
-    v49 = self;
+    selfAccessoryUser = currentUser;
+    selfCopy = self;
   }
 
   else
   {
     selfAccessoryUser = self->_selfAccessoryUser;
-    v49 = 0;
+    selfCopy = 0;
   }
 
-  [(HMUser *)selfAccessoryUser setDelegate:v49];
-  objc_storeStrong(&self->_selfAccessoryUser, v35);
+  [(HMUser *)selfAccessoryUser setDelegate:selfCopy];
+  objc_storeStrong(&self->_selfAccessoryUser, currentUser);
 LABEL_48:
   selfAccessoryUpdatedHandler = self->_selfAccessoryUpdatedHandler;
   if (selfAccessoryUpdatedHandler)
@@ -3866,11 +3866,11 @@ LABEL_48:
   }
 
 LABEL_50:
-  v51 = [(HMAccessory *)self->_selfAccessory applicationData];
-  v52 = [v51 dictionary];
+  applicationData = [(HMAccessory *)self->_selfAccessory applicationData];
+  dictionary = [applicationData dictionary];
 
   selfAccessoryAppData = self->_selfAccessoryAppData;
-  v54 = v52;
+  v54 = dictionary;
   v55 = selfAccessoryAppData;
   v56 = v55;
   if (v54 != v55)
@@ -3907,7 +3907,7 @@ LABEL_58:
     }
 
 LABEL_60:
-    objc_storeStrong(&self->_selfAccessoryAppData, v52);
+    objc_storeStrong(&self->_selfAccessoryAppData, dictionary);
     selfAccessoryAppDataChangedHandler = self->_selfAccessoryAppDataChangedHandler;
     if (selfAccessoryAppDataChangedHandler)
     {
@@ -3932,8 +3932,8 @@ LABEL_62:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v7 = [(HMHomeManager *)self->_homeManager homes];
-    v8 = [v7 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    homes = [(HMHomeManager *)self->_homeManager homes];
+    v8 = [homes countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (!v8)
     {
       goto LABEL_19;
@@ -3948,12 +3948,12 @@ LABEL_62:
       {
         if (*v55 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(homes);
         }
 
         v12 = *(*(&v54 + 1) + 8 * v11);
-        v13 = [v12 uniqueIdentifier];
-        v14 = [(NSMutableDictionary *)self->_homes objectForKeyedSubscript:v13];
+        uniqueIdentifier = [v12 uniqueIdentifier];
+        v14 = [(NSMutableDictionary *)self->_homes objectForKeyedSubscript:uniqueIdentifier];
 
         if (!v14)
         {
@@ -3969,8 +3969,8 @@ LABEL_62:
             {
               ucat = self->_ucat;
 LABEL_10:
-              v42 = [v12 name];
-              LogPrintF(ucat, "[CUHomeKitManager _updateHomes]", 0x1Eu, "FoundHome: %@ (%@)\n", v16, v17, v18, v19, v13);
+              name = [v12 name];
+              LogPrintF(ucat, "[CUHomeKitManager _updateHomes]", 0x1Eu, "FoundHome: %@ (%@)\n", v16, v17, v18, v19, uniqueIdentifier);
             }
           }
 
@@ -3985,14 +3985,14 @@ LABEL_10:
             homes = self->_homes;
           }
 
-          [(NSMutableDictionary *)homes setObject:v12 forKeyedSubscript:v13];
+          [(NSMutableDictionary *)homes setObject:v12 forKeyedSubscript:uniqueIdentifier];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v23 = [v7 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      v23 = [homes countByEnumeratingWithState:&v54 objects:v60 count:16];
       v9 = v23;
       if (!v23)
       {
@@ -4026,13 +4026,13 @@ LABEL_19:
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
-            v28 = [(HMHomeManager *)self->_homeManager homes];
-            v29 = [v28 countByEnumeratingWithState:&v46 objects:v58 count:16];
+            homes2 = [(HMHomeManager *)self->_homeManager homes];
+            v29 = [homes2 countByEnumeratingWithState:&v46 objects:v58 count:16];
             if (!v29)
             {
 LABEL_32:
 
-              v28 = [(NSMutableDictionary *)self->_homes objectForKeyedSubscript:v27];
+              homes2 = [(NSMutableDictionary *)self->_homes objectForKeyedSubscript:v27];
               v35 = self->_ucat;
               if (v35->var0 <= 30)
               {
@@ -4045,12 +4045,12 @@ LABEL_32:
                 {
                   v35 = self->_ucat;
 LABEL_34:
-                  v43 = [v28 name];
+                  name2 = [homes2 name];
                   LogPrintF(v35, "[CUHomeKitManager _updateHomes]", 0x1Eu, "LostHome: %@ (%@)\n", v36, v37, v38, v39, v27);
                 }
               }
 
-              [v28 setDelegate:0];
+              [homes2 setDelegate:0];
               [(NSMutableDictionary *)self->_homes setObject:0 forKeyedSubscript:v27];
               goto LABEL_37;
             }
@@ -4063,11 +4063,11 @@ LABEL_26:
             {
               if (*v47 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(homes2);
               }
 
-              v33 = [*(*(&v46 + 1) + 8 * v32) uniqueIdentifier];
-              v34 = [v33 isEqual:v27];
+              uniqueIdentifier2 = [*(*(&v46 + 1) + 8 * v32) uniqueIdentifier];
+              v34 = [uniqueIdentifier2 isEqual:v27];
 
               if (v34)
               {
@@ -4076,7 +4076,7 @@ LABEL_26:
 
               if (v30 == ++v32)
               {
-                v30 = [v28 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                v30 = [homes2 countByEnumeratingWithState:&v46 objects:v58 count:16];
                 if (v30)
                 {
                   goto LABEL_26;
@@ -4127,14 +4127,14 @@ LABEL_41:
 
 - (void)_updateAccessories
 {
-  v2 = self;
+  selfCopy = self;
   v111 = *MEMORY[0x1E69E9840];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   obj = [(NSMutableDictionary *)self->_resolvableAccessoriesMap allKeys];
-  v82 = v2;
+  v82 = selfCopy;
   v77 = [obj countByEnumeratingWithState:&v102 objects:v110 count:16];
   if (!v77)
   {
@@ -4160,8 +4160,8 @@ LABEL_41:
       v99 = 0u;
       v100 = 0u;
       v101 = 0u;
-      v81 = [(HMHomeManager *)v2->_homeManager homes];
-      v5 = [v81 countByEnumeratingWithState:&v98 objects:v109 count:16];
+      homes = [(HMHomeManager *)selfCopy->_homeManager homes];
+      v5 = [homes countByEnumeratingWithState:&v98 objects:v109 count:16];
       if (v5)
       {
         v6 = v5;
@@ -4172,7 +4172,7 @@ LABEL_41:
           {
             if (*v99 != v83)
             {
-              objc_enumerationMutation(v81);
+              objc_enumerationMutation(homes);
             }
 
             v8 = *(*(&v98 + 1) + 8 * i);
@@ -4180,8 +4180,8 @@ LABEL_41:
             v95 = 0u;
             v96 = 0u;
             v97 = 0u;
-            v9 = [v8 accessories];
-            v10 = [v9 countByEnumeratingWithState:&v94 objects:v108 count:16];
+            accessories = [v8 accessories];
+            v10 = [accessories countByEnumeratingWithState:&v94 objects:v108 count:16];
             if (v10)
             {
               v11 = v10;
@@ -4192,12 +4192,12 @@ LABEL_13:
               {
                 if (*v95 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(accessories);
                 }
 
                 v14 = *(*(&v94 + 1) + 8 * v13);
-                v15 = [v14 uniqueIdentifier];
-                v16 = [v15 isEqual:v4];
+                uniqueIdentifier = [v14 uniqueIdentifier];
+                v16 = [uniqueIdentifier isEqual:v4];
 
                 if (v16)
                 {
@@ -4206,7 +4206,7 @@ LABEL_13:
 
                 if (v11 == ++v13)
                 {
-                  v11 = [v9 countByEnumeratingWithState:&v94 objects:v108 count:16];
+                  v11 = [accessories countByEnumeratingWithState:&v94 objects:v108 count:16];
                   if (v11)
                   {
                     goto LABEL_13;
@@ -4223,17 +4223,17 @@ LABEL_13:
                 goto LABEL_21;
               }
 
-              v2 = v82;
+              selfCopy = v82;
               goto LABEL_29;
             }
 
 LABEL_19:
 
 LABEL_21:
-            v2 = v82;
+            selfCopy = v82;
           }
 
-          v6 = [v81 countByEnumeratingWithState:&v98 objects:v109 count:16];
+          v6 = [homes countByEnumeratingWithState:&v98 objects:v109 count:16];
           if (v6)
           {
             continue;
@@ -4243,11 +4243,11 @@ LABEL_21:
         }
       }
 
-      v17 = [(NSMutableDictionary *)v2->_resolvableAccessoriesMap objectForKeyedSubscript:v4];
-      [(NSMutableDictionary *)v2->_resolvableAccessoriesMap setObject:0 forKeyedSubscript:v4];
-      v81 = [v17 accessory];
-      [v81 setDelegate:0];
-      ucat = v2->_ucat;
+      v17 = [(NSMutableDictionary *)selfCopy->_resolvableAccessoriesMap objectForKeyedSubscript:v4];
+      [(NSMutableDictionary *)selfCopy->_resolvableAccessoriesMap setObject:0 forKeyedSubscript:v4];
+      homes = [v17 accessory];
+      [homes setDelegate:0];
+      ucat = selfCopy->_ucat;
       if (ucat->var0 <= 30)
       {
         if (ucat->var0 != -1)
@@ -4257,12 +4257,12 @@ LABEL_21:
         }
 
         v19 = v79;
-        if (_LogCategory_Initialize(v2->_ucat, 0x1Eu))
+        if (_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
         {
-          ucat = v2->_ucat;
+          ucat = selfCopy->_ucat;
 LABEL_26:
-          v20 = [v17 irkData];
-          v68 = [v81 name];
+          irkData = [v17 irkData];
+          name = [homes name];
           LogPrintF(ucat, "[CUHomeKitManager _updateAccessories]", 0x1Eu, "ResolvableAccessory removed: %@, %{mask}, '%@'\n", v21, v22, v23, v24, v4);
         }
 
@@ -4286,22 +4286,22 @@ LABEL_32:
   while (v25);
 LABEL_38:
 
-  v26 = [(HMHomeManager *)v2->_homeManager currentAccessory];
-  v27 = [v26 uniqueIdentifier];
+  currentAccessory = [(HMHomeManager *)selfCopy->_homeManager currentAccessory];
+  uniqueIdentifier2 = [currentAccessory uniqueIdentifier];
 
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v70 = [(HMHomeManager *)v2->_homeManager homes];
-  obja = [v70 countByEnumeratingWithState:&v90 objects:v107 count:16];
+  homes2 = [(HMHomeManager *)selfCopy->_homeManager homes];
+  obja = [homes2 countByEnumeratingWithState:&v90 objects:v107 count:16];
   if (!obja)
   {
     goto LABEL_82;
   }
 
   v71 = *v91;
-  v78 = v27;
+  v78 = uniqueIdentifier2;
   while (2)
   {
     v28 = 0;
@@ -4309,7 +4309,7 @@ LABEL_38:
     {
       if (*v91 != v71)
       {
-        objc_enumerationMutation(v70);
+        objc_enumerationMutation(homes2);
       }
 
       v75 = v28;
@@ -4318,13 +4318,13 @@ LABEL_38:
       v87 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v30 = [v29 accessories];
-      v31 = [v30 countByEnumeratingWithState:&v86 objects:v106 count:16];
+      accessories2 = [v29 accessories];
+      v31 = [accessories2 countByEnumeratingWithState:&v86 objects:v106 count:16];
       if (v31)
       {
         v32 = v31;
         v33 = *v87;
-        v80 = v30;
+        v80 = accessories2;
         do
         {
           v34 = 0;
@@ -4332,31 +4332,31 @@ LABEL_38:
           {
             if (*v87 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(accessories2);
             }
 
             v35 = *(*(&v86 + 1) + 8 * v34);
-            v36 = [v35 uniqueIdentifier];
-            v37 = v36;
-            if (v36 && ([v36 isEqual:v27] & 1) == 0)
+            uniqueIdentifier3 = [v35 uniqueIdentifier];
+            v37 = uniqueIdentifier3;
+            if (uniqueIdentifier3 && ([uniqueIdentifier3 isEqual:uniqueIdentifier2] & 1) == 0)
             {
-              v38 = [v35 device];
-              if (v38)
+              device = [v35 device];
+              if (device)
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  v39 = [v38 rapportIRK];
-                  v40 = [v39 data];
+                  rapportIRK = [device rapportIRK];
+                  data = [rapportIRK data];
 
-                  v41 = [(NSMutableDictionary *)v2->_resolvableAccessoriesMap objectForKeyedSubscript:v37];
+                  v41 = [(NSMutableDictionary *)selfCopy->_resolvableAccessoriesMap objectForKeyedSubscript:v37];
                   v42 = v41;
-                  v84 = v40;
+                  v84 = data;
                   if (v41)
                   {
-                    v43 = [v41 irkData];
-                    v44 = v40;
-                    v45 = v43;
-                    v46 = v45;
+                    irkData2 = [v41 irkData];
+                    v44 = data;
+                    v45 = irkData2;
+                    name2 = v45;
                     if (v44 != v45)
                     {
                       if ((v44 != 0) != (v45 == 0))
@@ -4367,9 +4367,9 @@ LABEL_38:
                         {
 LABEL_73:
 
-                          v2 = v82;
-                          v27 = v78;
-                          v30 = v80;
+                          selfCopy = v82;
+                          uniqueIdentifier2 = v78;
+                          accessories2 = v80;
                           goto LABEL_74;
                         }
                       }
@@ -4399,7 +4399,7 @@ LABEL_72:
 
                       p_var0 = &v82->_ucat->var0;
 LABEL_67:
-                      v46 = [v35 name];
+                      name2 = [v35 name];
                       LogPrintF(p_var0, "[CUHomeKitManager _updateAccessories]", 0x1Eu, "ResolvableAccessory updated: %@, %{mask}, '%@'\n", v57, v58, v59, v60, v37);
                       goto LABEL_69;
                     }
@@ -4407,35 +4407,35 @@ LABEL_67:
 
                   else
                   {
-                    v46 = objc_alloc_init(CUHomeKitResolvableAccessory);
-                    [(CUHomeKitResolvableAccessory *)v46 setAccessory:v35];
-                    [(CUHomeKitResolvableAccessory *)v46 setIrkData:v40];
-                    resolvableAccessoriesMap = v2->_resolvableAccessoriesMap;
+                    name2 = objc_alloc_init(CUHomeKitResolvableAccessory);
+                    [(CUHomeKitResolvableAccessory *)name2 setAccessory:v35];
+                    [(CUHomeKitResolvableAccessory *)name2 setIrkData:data];
+                    resolvableAccessoriesMap = selfCopy->_resolvableAccessoriesMap;
                     if (!resolvableAccessoriesMap)
                     {
                       v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
-                      v50 = v2->_resolvableAccessoriesMap;
-                      v2->_resolvableAccessoriesMap = v49;
+                      v50 = selfCopy->_resolvableAccessoriesMap;
+                      selfCopy->_resolvableAccessoriesMap = v49;
 
-                      resolvableAccessoriesMap = v2->_resolvableAccessoriesMap;
+                      resolvableAccessoriesMap = selfCopy->_resolvableAccessoriesMap;
                     }
 
-                    [(NSMutableDictionary *)resolvableAccessoriesMap setObject:v46 forKeyedSubscript:v37];
-                    [v35 setDelegate:v2];
-                    v51 = v2->_ucat;
+                    [(NSMutableDictionary *)resolvableAccessoriesMap setObject:name2 forKeyedSubscript:v37];
+                    [v35 setDelegate:selfCopy];
+                    v51 = selfCopy->_ucat;
                     if (v51->var0 <= 30)
                     {
                       if (v51->var0 == -1)
                       {
-                        if (!_LogCategory_Initialize(v2->_ucat, 0x1Eu))
+                        if (!_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
                         {
                           goto LABEL_69;
                         }
 
-                        v51 = v2->_ucat;
+                        v51 = selfCopy->_ucat;
                       }
 
-                      v69 = [v35 name];
+                      name3 = [v35 name];
                       LogPrintF(v51, "[CUHomeKitManager _updateAccessories]", 0x1Eu, "ResolvableAccessory added: %@, %{mask}, '%@'\n", v52, v53, v54, v55, v37);
                     }
 
@@ -4449,7 +4449,7 @@ LABEL_69:
 
               else
               {
-                [v35 setDelegate:v2];
+                [v35 setDelegate:selfCopy];
               }
 
 LABEL_74:
@@ -4459,7 +4459,7 @@ LABEL_74:
           }
 
           while (v32 != v34);
-          v61 = [v30 countByEnumeratingWithState:&v86 objects:v106 count:16];
+          v61 = [accessories2 countByEnumeratingWithState:&v86 objects:v106 count:16];
           v32 = v61;
         }
 
@@ -4475,7 +4475,7 @@ LABEL_74:
       break;
     }
 
-    obja = [v70 countByEnumeratingWithState:&v90 objects:v107 count:16];
+    obja = [homes2 countByEnumeratingWithState:&v90 objects:v107 count:16];
     if (obja)
     {
       continue;
@@ -4489,7 +4489,7 @@ LABEL_82:
   if (v76)
   {
     v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v63 = v2->_resolvableAccessoriesMap;
+    v63 = selfCopy->_resolvableAccessoriesMap;
     v85[0] = MEMORY[0x1E69E9820];
     v85[1] = 3221225472;
     v85[2] = __38__CUHomeKitManager__updateAccessories__block_invoke;
@@ -4497,10 +4497,10 @@ LABEL_82:
     v85[4] = v62;
     [(NSMutableDictionary *)v63 enumerateKeysAndObjectsUsingBlock:v85];
     v64 = [v62 copy];
-    resolvableAccessories = v2->_resolvableAccessories;
-    v2->_resolvableAccessories = v64;
+    resolvableAccessories = selfCopy->_resolvableAccessories;
+    selfCopy->_resolvableAccessories = v64;
 
-    v66 = _Block_copy(v2->_resolvableAccessoriesChangedHandler);
+    v66 = _Block_copy(selfCopy->_resolvableAccessoriesChangedHandler);
     v67 = v66;
     if (v66)
     {
@@ -4557,9 +4557,9 @@ void __38__CUHomeKitManager__updateAccessories__block_invoke(uint64_t a1, uint64
         ucat = self->_ucat;
       }
 
-      v9 = [(HMAccessory *)v6 uniqueIdentifier];
-      v96 = [(HMAccessory *)v6 name];
-      LogPrintF(ucat, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "LostSelfAccessory: %@ (%@), HK clear", v10, v11, v12, v13, v9);
+      uniqueIdentifier = [(HMAccessory *)v6 uniqueIdentifier];
+      name = [(HMAccessory *)v6 name];
+      LogPrintF(ucat, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "LostSelfAccessory: %@ (%@), HK clear", v10, v11, v12, v13, uniqueIdentifier);
     }
 
 LABEL_6:
@@ -4591,8 +4591,8 @@ LABEL_6:
         v17 = self->_ucat;
       }
 
-      v18 = [(HMUser *)v16 userID];
-      LogPrintF(v17, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessory user updated: %{mask}, HK clear", v19, v20, v21, v22, v18);
+      userID = [(HMUser *)v16 userID];
+      LogPrintF(v17, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessory user updated: %{mask}, HK clear", v19, v20, v21, v22, userID);
     }
 
 LABEL_14:
@@ -4702,9 +4702,9 @@ LABEL_33:
       v42 = self->_ucat;
     }
 
-    v43 = [(HMMediaSystem *)v40 uniqueIdentifier];
-    v97 = [(HMMediaSystem *)v40 name];
-    LogPrintF(v42, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessoryMediaSystem ID updated: %@ '%@', HK clear", v44, v45, v46, v47, v43);
+    uniqueIdentifier2 = [(HMMediaSystem *)v40 uniqueIdentifier];
+    name2 = [(HMMediaSystem *)v40 name];
+    LogPrintF(v42, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessoryMediaSystem ID updated: %@ '%@', HK clear", v44, v45, v46, v47, uniqueIdentifier2);
   }
 
 LABEL_38:
@@ -4731,9 +4731,9 @@ LABEL_39:
       v50 = self->_ucat;
     }
 
-    v51 = [(HMAccessory *)v49 uniqueIdentifier];
-    v98 = [(HMAccessory *)v49 name];
-    LogPrintF(v50, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessoryMediaSystemCounterpart updated: %@ '%@', HK clear\n", v52, v53, v54, v55, v51);
+    uniqueIdentifier3 = [(HMAccessory *)v49 uniqueIdentifier];
+    name3 = [(HMAccessory *)v49 name];
+    LogPrintF(v50, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessoryMediaSystemCounterpart updated: %@ '%@', HK clear\n", v52, v53, v54, v55, uniqueIdentifier3);
   }
 
 LABEL_44:
@@ -4784,15 +4784,15 @@ LABEL_51:
     if (v65->var0 != -1)
     {
 LABEL_54:
-      v66 = [(HMMediaSystemRole *)v64 type];
-      if (v66 > 2)
+      type = [(HMMediaSystemRole *)v64 type];
+      if (type > 2)
       {
         v71 = "?";
       }
 
       else
       {
-        v71 = off_1E73A3550[v66];
+        v71 = off_1E73A3550[type];
       }
 
       LogPrintF(v65, "[CUHomeKitManager _clearHomeKitState]", 0x1Eu, "SelfAccessoryMediaSystemRole updated: %s, HK clear", v67, v68, v69, v70, v71);
@@ -5391,13 +5391,13 @@ LABEL_7:
   return [result _activateIfNeeded];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE89D0;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

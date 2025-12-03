@@ -1,59 +1,59 @@
 @interface HOAppDelegate
 + (NSString)itemManagerUpdatesDisabledReasonScrollPerformanceTest;
 + (void)_logSupportedSensitiveFeatures;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 - (HOAppNavigator)appNavigator;
 - (HOBaseControllerDelegate)baseViewController;
 - (UIViewController)sceneRootViewController;
-- (id)_cameraProfileForTestingInHome:(id)a3 withUUID:(id)a4;
+- (id)_cameraProfileForTestingInHome:(id)home withUUID:(id)d;
 - (id)_firstReadCompleteFuture;
-- (id)_networkConfigurationProfileForTestingInHome:(id)a3;
-- (id)_networkRouterForTestingInHome:(id)a3;
-- (id)_runScrollTestWithTestName:(id)a3 scrollView:(id)a4 options:(id)a5;
-- (id)_selectAndFinishFirstReadForTabWithIdentifier:(id)a3;
-- (id)_sortedAccessoriesInHome:(id)a3;
-- (id)application:(id)a3 configurationForConnecting:(id)a4 options:(id)a5;
-- (id)findAccessoryWithItemManager:(id)a3 accessoryID:(id)a4 testBlock:(id)a5;
-- (id)findPreferredAccessoryWithItemManager:(id)a3 accessoryID:(id)a4 with:(id)a5;
+- (id)_networkConfigurationProfileForTestingInHome:(id)home;
+- (id)_networkRouterForTestingInHome:(id)home;
+- (id)_runScrollTestWithTestName:(id)name scrollView:(id)view options:(id)options;
+- (id)_selectAndFinishFirstReadForTabWithIdentifier:(id)identifier;
+- (id)_sortedAccessoriesInHome:(id)home;
+- (id)application:(id)application configurationForConnecting:(id)connecting options:(id)options;
+- (id)findAccessoryWithItemManager:(id)manager accessoryID:(id)d testBlock:(id)block;
+- (id)findPreferredAccessoryWithItemManager:(id)manager accessoryID:(id)d with:(id)with;
 - (id)firstReadCompleteFuture;
-- (id)homeKitObjectIDFrom:(id)a3 userDefaultsEnabled:(BOOL)a4;
-- (id)serviceLikeItemWithItem:(id)a3 itemManager:(id)a4 withID:(id)a5;
-- (void)_deleteRoomWithName:(id)a3 inHome:(id)a4;
-- (void)_endBackgroundTaskWithItemIdentifier:(id)a3;
-- (void)_endBackgroundTaskWithTaskIdentifier:(unint64_t)a3;
-- (void)_logAccessoryCountMetricsWithHomes:(id)a3;
+- (id)homeKitObjectIDFrom:(id)from userDefaultsEnabled:(BOOL)enabled;
+- (id)serviceLikeItemWithItem:(id)item itemManager:(id)manager withID:(id)d;
+- (void)_deleteRoomWithName:(id)name inHome:(id)home;
+- (void)_endBackgroundTaskWithItemIdentifier:(id)identifier;
+- (void)_endBackgroundTaskWithTaskIdentifier:(unint64_t)identifier;
+- (void)_logAccessoryCountMetricsWithHomes:(id)homes;
 - (void)_logNetworkSymptoms;
-- (void)_logUserAutomationNamingTypeProportions:(id)a3;
+- (void)_logUserAutomationNamingTypeProportions:(id)proportions;
 - (void)_logUserMetrics;
-- (void)_runAddRoomTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runDeleteRoomTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runExtendedLaunchTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runPresentHomeSettingsTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runPresentNetworkConfigurationSettingsTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runPresentNetworkRouterSettingsTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runPresentNetworkSettingsTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runScrollAutomationTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runScrollCameraClipsInPlayerTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runScrollHomeSettingsTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runTabSwitchToAutomationTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runToggleLightTestWithApplication:(id)a3 options:(id)a4;
-- (void)_runToggleSceneTestWithApplication:(id)a3 options:(id)a4;
-- (void)_startBackgroundTaskWithItemIdentifier:(id)a3;
-- (void)_submitMetricsSymptomsSummaryForSymptomsHandlers:(id)a3;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)endAppleMusicLoginBackgroundTask:(id)a3;
-- (void)endSymptomFixBackgroundTask:(id)a3;
-- (void)startAppleMusicLoginBackgroundTask:(id)a3;
-- (void)startSymptomFixBackgroundTask:(id)a3;
+- (void)_runAddRoomTestWithApplication:(id)application options:(id)options;
+- (void)_runDeleteRoomTestWithApplication:(id)application options:(id)options;
+- (void)_runExtendedLaunchTestWithApplication:(id)application options:(id)options;
+- (void)_runPresentHomeSettingsTestWithApplication:(id)application options:(id)options;
+- (void)_runPresentNetworkConfigurationSettingsTestWithApplication:(id)application options:(id)options;
+- (void)_runPresentNetworkRouterSettingsTestWithApplication:(id)application options:(id)options;
+- (void)_runPresentNetworkSettingsTestWithApplication:(id)application options:(id)options;
+- (void)_runScrollAutomationTestWithApplication:(id)application options:(id)options;
+- (void)_runScrollCameraClipsInPlayerTestWithApplication:(id)application options:(id)options;
+- (void)_runScrollHomeSettingsTestWithApplication:(id)application options:(id)options;
+- (void)_runTabSwitchToAutomationTestWithApplication:(id)application options:(id)options;
+- (void)_runToggleLightTestWithApplication:(id)application options:(id)options;
+- (void)_runToggleSceneTestWithApplication:(id)application options:(id)options;
+- (void)_startBackgroundTaskWithItemIdentifier:(id)identifier;
+- (void)_submitMetricsSymptomsSummaryForSymptomsHandlers:(id)handlers;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)endAppleMusicLoginBackgroundTask:(id)task;
+- (void)endSymptomFixBackgroundTask:(id)task;
+- (void)startAppleMusicLoginBackgroundTask:(id)task;
+- (void)startSymptomFixBackgroundTask:(id)task;
 @end
 
 @implementation HOAppDelegate
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
   v4 = dispatch_get_global_queue(-2, 0);
   dispatch_async(v4, &stru_1000C2408);
@@ -79,9 +79,9 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [HOActivationManager sharedInstance:a3];
+  v5 = [HOActivationManager sharedInstance:application];
   v6 = objc_opt_new();
   [(HOAppDelegate *)self setItemIdentifierToBackgroundTaskIdentifierMap:v6];
 
@@ -98,11 +98,11 @@
   [v10 addObserver:self selector:"endAppleMusicLoginBackgroundTask:" name:HFAppleMusicAccountEndManualLoginNotification object:0];
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 applicationState];
+  applicationState = [v11 applicationState];
 
   v13 = HFLogForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v12 == 2)
+  if (applicationState == 2)
   {
     if (v14)
     {
@@ -157,12 +157,12 @@
   return 1;
 }
 
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  sessionCopy = session;
+  handlerCopy = handler;
   v8 = +[HFAccessoryDiagnosticsUploadManager backgroundURLSessionIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  v9 = [v8 isEqualToString:sessionCopy];
 
   if (v9)
   {
@@ -170,58 +170,58 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Handle background URL Session update for identifier:%@.", &v12, 0xCu);
     }
 
     v11 = +[HFAccessoryDiagnosticsUploadManager sharedManager];
-    [v11 resumeServiceForURLSessionIdentifier:v6];
-    [v11 setBackgroundUrlSessionCompletionHandler:v7];
+    [v11 resumeServiceForURLSessionIdentifier:sessionCopy];
+    [v11 setBackgroundUrlSessionCompletionHandler:handlerCopy];
   }
 }
 
-- (id)application:(id)a3 configurationForConnecting:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnecting:(id)connecting options:(id)options
 {
-  v5 = a4;
+  connectingCopy = connecting;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[HOAppDelegate application:configurationForConnecting:options:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = connectingCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "(%s) Scene configuration for %@ through App Delegate instead of .plist.", &v11, 0x16u);
   }
 
   v7 = [UISceneConfiguration alloc];
-  v8 = [v5 role];
-  v9 = [v7 initWithName:@"Default Configuration" sessionRole:v8];
+  role = [connectingCopy role];
+  v9 = [v7 initWithName:@"Default Configuration" sessionRole:role];
 
   [v9 setDelegateClass:objc_opt_class()];
 
   return v9;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
-  v4 = a4;
+  sessionsCopy = sessions;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = sessionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Discarding scene sessions: %@", &v6, 0xCu);
   }
 }
 
-- (void)startSymptomFixBackgroundTask:(id)a3
+- (void)startSymptomFixBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [taskCopy userInfo];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = userInfo;
   }
 
   else
@@ -248,14 +248,14 @@
   }
 }
 
-- (void)endSymptomFixBackgroundTask:(id)a3
+- (void)endSymptomFixBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [taskCopy userInfo];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = userInfo;
   }
 
   else
@@ -282,14 +282,14 @@
   }
 }
 
-- (void)startAppleMusicLoginBackgroundTask:(id)a3
+- (void)startAppleMusicLoginBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [taskCopy userInfo];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = userInfo;
   }
 
   else
@@ -316,14 +316,14 @@
   }
 }
 
-- (void)endAppleMusicLoginBackgroundTask:(id)a3
+- (void)endAppleMusicLoginBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [taskCopy userInfo];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = userInfo;
   }
 
   else
@@ -350,24 +350,24 @@
   }
 }
 
-- (void)_startBackgroundTaskWithItemIdentifier:(id)a3
+- (void)_startBackgroundTaskWithItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v4 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001792C;
   v13[3] = &unk_1000C2450;
-  v7 = v4;
-  v15 = self;
+  v7 = identifierCopy;
+  selfCopy = self;
   v16 = &v17;
   v14 = v7;
-  v8 = [v5 beginBackgroundTaskWithName:v6 expirationHandler:v13];
+  v8 = [v5 beginBackgroundTaskWithName:uUIDString expirationHandler:v13];
 
   v18[3] = v8;
   v9 = HFLogForCategory();
@@ -381,57 +381,57 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Began background task for itemID = %@ - taskID = %lu", buf, 0x16u);
   }
 
-  v11 = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
+  itemIdentifierToBackgroundTaskIdentifierMap = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
   v12 = [NSNumber numberWithUnsignedInteger:v18[3]];
-  [v11 setObject:v12 forKey:v7];
+  [itemIdentifierToBackgroundTaskIdentifierMap setObject:v12 forKey:v7];
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_endBackgroundTaskWithItemIdentifier:(id)a3
+- (void)_endBackgroundTaskWithItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 unsignedIntegerValue];
+  identifierCopy = identifier;
+  itemIdentifierToBackgroundTaskIdentifierMap = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
+  v6 = [itemIdentifierToBackgroundTaskIdentifierMap objectForKey:identifierCopy];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
-    [(HOAppDelegate *)self _endBackgroundTaskWithTaskIdentifier:v7];
-    v8 = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
-    [v8 removeObjectForKey:v4];
+    [(HOAppDelegate *)self _endBackgroundTaskWithTaskIdentifier:unsignedIntegerValue];
+    itemIdentifierToBackgroundTaskIdentifierMap2 = [(HOAppDelegate *)self itemIdentifierToBackgroundTaskIdentifierMap];
+    [itemIdentifierToBackgroundTaskIdentifierMap2 removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v8 = HFLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    itemIdentifierToBackgroundTaskIdentifierMap2 = HFLogForCategory();
+    if (os_log_type_enabled(itemIdentifierToBackgroundTaskIdentifierMap2, OS_LOG_TYPE_ERROR))
     {
       sub_10007FF14();
     }
   }
 }
 
-- (void)_endBackgroundTaskWithTaskIdentifier:(unint64_t)a3
+- (void)_endBackgroundTaskWithTaskIdentifier:(unint64_t)identifier
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Ending background task with taskID %lu", &v6, 0xCu);
   }
 
   v5 = +[UIApplication sharedApplication];
-  [v5 endBackgroundTask:a3];
+  [v5 endBackgroundTask:identifier];
 }
 
 - (void)_logUserMetrics
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 allHomesFuture];
+  allHomesFuture = [v3 allHomesFuture];
   v5 = +[NAScheduler globalAsyncScheduler];
-  v6 = [v4 reschedule:v5];
+  v6 = [allHomesFuture reschedule:v5];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100017C78;
@@ -440,9 +440,9 @@
   v7 = [v6 addSuccessBlock:v8];
 }
 
-- (void)_logAccessoryCountMetricsWithHomes:(id)a3
+- (void)_logAccessoryCountMetricsWithHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -467,7 +467,7 @@
   v10[5] = &v23;
   v10[6] = &v19;
   v10[7] = &v15;
-  [v3 na_each:v10];
+  [homesCopy na_each:v10];
   v27[0] = HFAnalyticsEventFieldNameUnsupportedServicesCount;
   v4 = [NSNumber numberWithInteger:v24[3]];
   v27[1] = HFAnalyticsEventFieldNameSupportedServicesCount;
@@ -490,9 +490,9 @@
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)_logUserAutomationNamingTypeProportions:(id)a3
+- (void)_logUserAutomationNamingTypeProportions:(id)proportions
 {
-  v9 = [a3 na_flatMap:&stru_1000C2598];
+  v9 = [proportions na_flatMap:&stru_1000C2598];
   v3 = [v9 na_filter:&stru_1000C25D8];
   if ([v9 count])
   {
@@ -519,9 +519,9 @@
   dispatch_after(v3, v4, block);
 }
 
-- (void)_submitMetricsSymptomsSummaryForSymptomsHandlers:(id)a3
+- (void)_submitMetricsSymptomsSummaryForSymptomsHandlers:(id)handlers
 {
-  v3 = a3;
+  handlersCopy = handlers;
   v4 = +[NSMutableDictionary dictionary];
   [v4 setObject:&off_1000CB728 forKeyedSubscript:HFAnalyticsEventFieldNameAnySymptom];
   [v4 setObject:&off_1000CB728 forKeyedSubscript:HFAnalyticsEventFieldNameSymptomMisconfigurationDoubleNAT];
@@ -537,7 +537,7 @@
   v7[3] = &unk_1000C26C8;
   v5 = v4;
   v8 = v5;
-  [v3 na_each:v7];
+  [handlersCopy na_each:v7];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -550,20 +550,20 @@
   [HFAnalytics sendEvent:58 withData:v5];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v8 = a3;
-  v4 = [(HOAppDelegate *)self menuToolbarManager];
+  builderCopy = builder;
+  menuToolbarManager = [(HOAppDelegate *)self menuToolbarManager];
 
-  if (v4)
+  if (menuToolbarManager)
   {
-    v5 = [v8 system];
+    system = [builderCopy system];
     v6 = +[UIMenuSystem mainSystem];
 
-    if (v5 == v6)
+    if (system == v6)
     {
-      v7 = [(HOAppDelegate *)self menuToolbarManager];
-      [v7 setMenuBuilder:v8];
+      menuToolbarManager2 = [(HOAppDelegate *)self menuToolbarManager];
+      [menuToolbarManager2 setMenuBuilder:builderCopy];
     }
   }
 }
@@ -630,15 +630,15 @@
   }
 }
 
-- (void)_runExtendedLaunchTestWithApplication:(id)a3 options:(id)a4
+- (void)_runExtendedLaunchTestWithApplication:(id)application options:(id)options
 {
-  [a3 startedTest:{@"ExtendedLaunch PPT", a4}];
-  v5 = [(HOAppDelegate *)self baseViewController];
+  [application startedTest:{@"ExtendedLaunch PPT", options}];
+  baseViewController = [(HOAppDelegate *)self baseViewController];
 }
 
-- (void)_runTabSwitchToAutomationTestWithApplication:(id)a3 options:(id)a4
+- (void)_runTabSwitchToAutomationTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -646,19 +646,19 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - Switch to automation tab", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7)
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController)
   {
-    v8 = [(HOAppDelegate *)self _firstReadCompleteFuture];
+    _firstReadCompleteFuture = [(HOAppDelegate *)self _firstReadCompleteFuture];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10001ED48;
     v21[3] = &unk_1000C2A78;
-    v9 = v5;
+    v9 = applicationCopy;
     v22 = v9;
     v23 = @"tabSwitchToAutomation";
-    v24 = v7;
-    v10 = [v8 flatMap:v21];
+    v24 = baseViewController;
+    v10 = [_firstReadCompleteFuture flatMap:v21];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10001ED94;
@@ -684,14 +684,14 @@
       sub_100080070();
     }
 
-    [v5 failedTest:@"tabSwitchToAutomation"];
+    [applicationCopy failedTest:@"tabSwitchToAutomation"];
   }
 }
 
-- (void)_runScrollHomeSettingsTestWithApplication:(id)a3 options:(id)a4
+- (void)_runScrollHomeSettingsTestWithApplication:(id)application options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -700,19 +700,19 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(%s) PPT - Scrolling Home Settings", buf, 0xCu);
   }
 
-  v9 = [(HOAppDelegate *)self baseViewController];
-  if (v9 && ([(HOAppDelegate *)self appNavigator], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [v9 selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
+    v11 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10001F008;
     v18[3] = &unk_1000C2B18;
-    v12 = v6;
+    v12 = applicationCopy;
     v19 = v12;
     v20 = @"scrollHomeSettings";
-    v21 = self;
-    v22 = v7;
+    selfCopy = self;
+    v22 = optionsCopy;
     v13 = [v11 addSuccessBlock:v18];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -725,14 +725,14 @@
 
   else
   {
-    [v6 failedTest:@"scrollHomeSettings" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"scrollHomeSettings" withFailure:@"Invalid controller"];
   }
 }
 
-- (void)_runScrollAutomationTestWithApplication:(id)a3 options:(id)a4
+- (void)_runScrollAutomationTestWithApplication:(id)application options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -740,25 +740,25 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PPT - Scrolling automation tab", buf, 2u);
   }
 
-  v10 = [(HOAppDelegate *)self baseViewController];
-  v11 = v10;
-  if (v10)
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  v11 = baseViewController;
+  if (baseViewController)
   {
-    v12 = [v10 selectTabWithIdentifier:HFHomeAppTabIdentifierTriggers];
+    v12 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierTriggers];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10001F7F0;
     v19[3] = &unk_1000C2B40;
     v22 = a2;
     v19[4] = self;
-    v20 = v8;
+    v20 = optionsCopy;
     v21 = @"scrollAutomation";
     v13 = [v12 addSuccessBlock:v19];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001F94C;
     v16[3] = &unk_1000C2AC8;
-    v17 = v7;
+    v17 = applicationCopy;
     v18 = @"scrollAutomation";
     v14 = [v13 addFailureBlock:v16];
   }
@@ -771,13 +771,13 @@
       sub_1000802B8();
     }
 
-    [v7 failedTest:@"scrollAutomation"];
+    [applicationCopy failedTest:@"scrollAutomation"];
   }
 }
 
-- (void)_runAddRoomTestWithApplication:(id)a3 options:(id)a4
+- (void)_runAddRoomTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -785,24 +785,24 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - Add a room", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7)
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController)
   {
     v8 = +[HFHomeKitDispatcher sharedDispatcher];
-    v9 = [v8 home];
+    home = [v8 home];
 
-    v10 = [[HFRoomBuilder alloc] initWithHome:v9];
+    v10 = [[HFRoomBuilder alloc] initWithHome:home];
     [v10 setName:@"PPT-Room"];
-    [v5 startedTest:@"addRoom"];
-    v11 = [v10 commitItem];
+    [applicationCopy startedTest:@"addRoom"];
+    commitItem = [v10 commitItem];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10001FC20;
     v24[3] = &unk_1000C2B68;
-    v12 = v5;
+    v12 = applicationCopy;
     v25 = v12;
     v26 = @"addRoom";
-    v13 = [v11 addSuccessBlock:v24];
+    v13 = [commitItem addSuccessBlock:v24];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10001FC2C;
@@ -816,8 +816,8 @@
     v18[3] = &unk_1000C2B90;
     v18[4] = self;
     v19 = @"PPT-Room";
-    v20 = v9;
-    v15 = v9;
+    v20 = home;
+    v15 = home;
     v16 = [v14 addCompletionBlock:v18];
   }
 
@@ -829,13 +829,13 @@
       sub_1000803F0();
     }
 
-    [v5 failedTest:@"addRoom"];
+    [applicationCopy failedTest:@"addRoom"];
   }
 }
 
-- (void)_runDeleteRoomTestWithApplication:(id)a3 options:(id)a4
+- (void)_runDeleteRoomTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -843,25 +843,25 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - delete a room", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7)
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController)
   {
     v8 = +[HFHomeKitDispatcher sharedDispatcher];
-    v9 = [v8 home];
+    home = [v8 home];
 
-    v10 = [[HFRoomBuilder alloc] initWithHome:v9];
+    v10 = [[HFRoomBuilder alloc] initWithHome:home];
     [v10 setName:@"PPT-Room"];
-    v11 = [v10 commitItem];
+    commitItem = [v10 commitItem];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10001FF5C;
     v25[3] = &unk_1000C2BB8;
-    v12 = v5;
+    v12 = applicationCopy;
     v26 = v12;
     v27 = @"deleteRoom";
-    v28 = v9;
-    v13 = v9;
-    v14 = [v11 flatMap:v25];
+    v28 = home;
+    v13 = home;
+    v14 = [commitItem flatMap:v25];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -888,13 +888,13 @@
       sub_100080424();
     }
 
-    [v5 failedTest:@"deleteRoom"];
+    [applicationCopy failedTest:@"deleteRoom"];
   }
 }
 
-- (void)_runPresentHomeSettingsTestWithApplication:(id)a3 options:(id)a4
+- (void)_runPresentHomeSettingsTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -902,18 +902,18 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - present home settings", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
+    v9 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10002023C;
     v16[3] = &unk_1000C2C08;
-    v10 = v5;
+    v10 = applicationCopy;
     v17 = v10;
     v18 = @"presentHomeSettings";
-    v19 = self;
+    selfCopy = self;
     v11 = [v9 addSuccessBlock:v16];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -926,13 +926,13 @@
 
   else
   {
-    [v5 failedTest:@"presentHomeSettings" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"presentHomeSettings" withFailure:@"Invalid controller"];
   }
 }
 
-- (void)_runPresentNetworkSettingsTestWithApplication:(id)a3 options:(id)a4
+- (void)_runPresentNetworkSettingsTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -940,18 +940,18 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - present network settings", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
+    v9 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000205FC;
     v16[3] = &unk_1000C2C08;
-    v10 = v5;
+    v10 = applicationCopy;
     v17 = v10;
     v18 = @"presentNetworkSettings";
-    v19 = self;
+    selfCopy = self;
     v11 = [v9 addSuccessBlock:v16];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -964,13 +964,13 @@
 
   else
   {
-    [v5 failedTest:@"presentNetworkSettings" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"presentNetworkSettings" withFailure:@"Invalid controller"];
   }
 }
 
-- (void)_runPresentNetworkRouterSettingsTestWithApplication:(id)a3 options:(id)a4
+- (void)_runPresentNetworkRouterSettingsTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -978,18 +978,18 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - present network router settings", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
+    v9 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000209EC;
     v16[3] = &unk_1000C2C08;
-    v10 = v5;
+    v10 = applicationCopy;
     v17 = v10;
     v18 = @"presentNetworkRouterSettings";
-    v19 = self;
+    selfCopy = self;
     v11 = [v9 addSuccessBlock:v16];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -1002,13 +1002,13 @@
 
   else
   {
-    [v5 failedTest:@"presentNetworkRouterSettings" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"presentNetworkRouterSettings" withFailure:@"Invalid controller"];
   }
 }
 
-- (void)_runPresentNetworkConfigurationSettingsTestWithApplication:(id)a3 options:(id)a4
+- (void)_runPresentNetworkConfigurationSettingsTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1016,18 +1016,18 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - present network configuration settings", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
+    v9 = [baseViewController selectTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100020E04;
     v17[3] = &unk_1000C2C08;
-    v10 = v5;
+    v10 = applicationCopy;
     v18 = v10;
     v19 = @"presentNetworkConfigurationSettings";
-    v20 = self;
+    selfCopy = self;
     v11 = [v9 addSuccessBlock:v17];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -1046,14 +1046,14 @@
       sub_100080458();
     }
 
-    [v5 failedTest:@"presentNetworkConfigurationSettings"];
+    [applicationCopy failedTest:@"presentNetworkConfigurationSettings"];
   }
 }
 
-- (void)_runScrollCameraClipsInPlayerTestWithApplication:(id)a3 options:(id)a4
+- (void)_runScrollCameraClipsInPlayerTestWithApplication:(id)application options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1062,7 +1062,7 @@
   }
 
   objc_opt_class();
-  v9 = [v7 objectForKeyedSubscript:@"cameraUUID"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"cameraUUID"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -1091,8 +1091,8 @@
   v44 = sub_100021458;
   v45 = sub_100021468;
   v46 = 0;
-  v13 = [(HOAppDelegate *)self baseViewController];
-  if (v13 && ([(HOAppDelegate *)self appNavigator], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
     v15 = [(HOAppDelegate *)self _selectAndFinishFirstReadForTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v35[0] = _NSConcreteStackBlock;
@@ -1100,10 +1100,10 @@
     v35[2] = sub_100021470;
     v35[3] = &unk_1000C2C30;
     v40 = buf;
-    v16 = v6;
+    v16 = applicationCopy;
     v36 = v16;
     v37 = @"scrollCameraClips";
-    v38 = self;
+    selfCopy = self;
     v39 = v12;
     v17 = [v15 flatMap:v35];
     v31[0] = _NSConcreteStackBlock;
@@ -1124,7 +1124,7 @@
     v20 = v18;
     v27 = v20;
     v28 = @"scrollCameraClips";
-    v29 = v7;
+    v29 = optionsCopy;
     v21 = [v19 addSuccessBlock:v26];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -1137,15 +1137,15 @@
 
   else
   {
-    [v6 failedTest:@"scrollCameraClips" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"scrollCameraClips" withFailure:@"Invalid controller"];
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_runToggleLightTestWithApplication:(id)a3 options:(id)a4
+- (void)_runToggleLightTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1153,15 +1153,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - toggling light", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = [(HOAppDelegate *)self _selectAndFinishFirstReadForTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100021A04;
     v16[3] = &unk_1000C2AA0;
-    v10 = v5;
+    v10 = applicationCopy;
     v17 = v10;
     v18 = @"toggleLight";
     v11 = [v9 addSuccessBlock:v16];
@@ -1176,13 +1176,13 @@
 
   else
   {
-    [v5 failedTest:@"toggleLight" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"toggleLight" withFailure:@"Invalid controller"];
   }
 }
 
-- (void)_runToggleSceneTestWithApplication:(id)a3 options:(id)a4
+- (void)_runToggleSceneTestWithApplication:(id)application options:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1190,15 +1190,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PPT - toggling scene", buf, 2u);
   }
 
-  v7 = [(HOAppDelegate *)self baseViewController];
-  if (v7 && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  if (baseViewController && ([(HOAppDelegate *)self appNavigator], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v9 = [(HOAppDelegate *)self _selectAndFinishFirstReadForTabWithIdentifier:HFHomeAppTabIdentifierHome];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100021EC4;
     v16[3] = &unk_1000C2AA0;
-    v10 = v5;
+    v10 = applicationCopy;
     v17 = v10;
     v18 = @"toggleScene";
     v11 = [v9 addSuccessBlock:v16];
@@ -1213,31 +1213,31 @@
 
   else
   {
-    [v5 failedTest:@"toggleScene" withFailure:@"Invalid controller"];
+    [applicationCopy failedTest:@"toggleScene" withFailure:@"Invalid controller"];
   }
 }
 
 - (id)_firstReadCompleteFuture
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 homeFuture];
-  v4 = [v3 flatMap:&stru_1000C2D48];
+  homeFuture = [v2 homeFuture];
+  v4 = [homeFuture flatMap:&stru_1000C2D48];
 
   return v4;
 }
 
-- (id)_selectAndFinishFirstReadForTabWithIdentifier:(id)a3
+- (id)_selectAndFinishFirstReadForTabWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HOAppDelegate *)self baseViewController];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  baseViewController = [(HOAppDelegate *)self baseViewController];
+  v6 = baseViewController;
+  if (baseViewController)
   {
-    v7 = [v5 selectTabWithIdentifier:v4];
+    v7 = [baseViewController selectTabWithIdentifier:identifierCopy];
     v18[0] = v7;
     v8 = +[HFHomeKitDispatcher sharedDispatcher];
-    v9 = [v8 homeFuture];
-    v18[1] = v9;
+    homeFuture = [v8 homeFuture];
+    v18[1] = homeFuture;
     v10 = [NSArray arrayWithObjects:v18 count:2];
     v11 = [NAFuture combineAllFutures:v10];
     v12 = [v11 flatMap:&stru_1000C2D88];
@@ -1256,75 +1256,75 @@
   return v15;
 }
 
-- (id)_networkRouterForTestingInHome:(id)a3
+- (id)_networkRouterForTestingInHome:(id)home
 {
-  v3 = [a3 hf_allNetworkRouterAccessories];
-  v4 = [v3 sortedArrayUsingComparator:&stru_1000C2EB8];
-  v5 = [v4 firstObject];
+  hf_allNetworkRouterAccessories = [home hf_allNetworkRouterAccessories];
+  v4 = [hf_allNetworkRouterAccessories sortedArrayUsingComparator:&stru_1000C2EB8];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_networkConfigurationProfileForTestingInHome:(id)a3
+- (id)_networkConfigurationProfileForTestingInHome:(id)home
 {
-  v3 = [a3 hf_allNetworkConfigurationProfiles];
-  v4 = [v3 sortedArrayUsingComparator:&stru_1000C2EF8];
-  v5 = [v4 firstObject];
+  hf_allNetworkConfigurationProfiles = [home hf_allNetworkConfigurationProfiles];
+  v4 = [hf_allNetworkConfigurationProfiles sortedArrayUsingComparator:&stru_1000C2EF8];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_sortedAccessoriesInHome:(id)a3
+- (id)_sortedAccessoriesInHome:(id)home
 {
-  v3 = [a3 accessories];
-  v4 = [v3 sortedArrayUsingComparator:&stru_1000C2F18];
+  accessories = [home accessories];
+  v4 = [accessories sortedArrayUsingComparator:&stru_1000C2F18];
 
   return v4;
 }
 
-- (void)_deleteRoomWithName:(id)a3 inHome:(id)a4
+- (void)_deleteRoomWithName:(id)name inHome:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 rooms];
-  if ([v7 count])
+  nameCopy = name;
+  homeCopy = home;
+  rooms = [homeCopy rooms];
+  if ([rooms count])
   {
-    v8 = [NSPredicate predicateWithFormat:@"name == %@", v5];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    nameCopy = [NSPredicate predicateWithFormat:@"name == %@", nameCopy];
+    v9 = [rooms filteredArrayUsingPredicate:nameCopy];
     if ([v9 count])
     {
-      v10 = [v9 firstObject];
-      [v6 removeRoom:v10 completionHandler:&stru_1000C2F38];
+      firstObject = [v9 firstObject];
+      [homeCopy removeRoom:firstObject completionHandler:&stru_1000C2F38];
     }
 
     else
     {
-      v10 = HFLogForCategory();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      firstObject = HFLogForCategory();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
-        sub_10008048C(v5, v10);
+        sub_10008048C(nameCopy, firstObject);
       }
     }
   }
 
   else
   {
-    v8 = HFLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    nameCopy = HFLogForCategory();
+    if (os_log_type_enabled(nameCopy, OS_LOG_TYPE_ERROR))
     {
       sub_100080504();
     }
   }
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -1334,19 +1334,19 @@
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v16.value.super.super.isa = a3;
+  applicationCopy = application;
+  selfCopy = self;
+  v16.value.super.super.isa = application;
   v16.is_nil = v8;
   v13.value._countAndFlagsBits = v10;
-  v13.value._object = v5;
+  v13.value._object = optionsCopy;
   v14 = HOAppDelegate.application(_:runTest:options:)(v16, v13, v17);
 
   return v14;
@@ -1375,36 +1375,36 @@ LABEL_4:
 
 - (HOBaseControllerDelegate)baseViewController
 {
-  v2 = [(HOAppDelegate *)self sceneRootViewController];
-  if (v2)
+  sceneRootViewController = [(HOAppDelegate *)self sceneRootViewController];
+  if (sceneRootViewController)
   {
-    v3 = v2;
-    v2 = swift_dynamicCastObjCProtocolConditional();
-    if (!v2)
+    v3 = sceneRootViewController;
+    sceneRootViewController = swift_dynamicCastObjCProtocolConditional();
+    if (!sceneRootViewController)
     {
 
-      v2 = 0;
+      sceneRootViewController = 0;
     }
   }
 
-  return v2;
+  return sceneRootViewController;
 }
 
 - (HOAppNavigator)appNavigator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HOAppDelegate.appNavigator.getter();
 
   return v3;
 }
 
-- (id)serviceLikeItemWithItem:(id)a3 itemManager:(id)a4 withID:(id)a5
+- (id)serviceLikeItemWithItem:(id)item itemManager:(id)manager withID:(id)d
 {
   v9 = sub_1000578B4(&unk_1000D9E30, &qword_1000933F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  if (a5)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for UUID();
@@ -1417,24 +1417,24 @@ LABEL_4:
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  v18 = sub_10007D5C0(v15, v12);
+  itemCopy = item;
+  managerCopy = manager;
+  selfCopy = self;
+  v18 = sub_10007D5C0(itemCopy, v12);
 
   sub_10007E208(v12);
 
   return v18;
 }
 
-- (id)findPreferredAccessoryWithItemManager:(id)a3 accessoryID:(id)a4 with:(id)a5
+- (id)findPreferredAccessoryWithItemManager:(id)manager accessoryID:(id)d with:(id)with
 {
   v9 = sub_1000578B4(&unk_1000D9E30, &qword_1000933F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
-  if (a4)
+  v13 = _Block_copy(with);
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for UUID();
@@ -1449,9 +1449,9 @@ LABEL_4:
 
   __chkstk_darwin(v15);
   *(&v21 - 2) = v13;
-  v17 = a3;
-  v18 = self;
-  v19 = HOAppDelegate.findPreferredAccessory(itemManager:accessoryID:with:)(v17, v12, sub_10007E66C, (&v21 - 4));
+  managerCopy = manager;
+  selfCopy = self;
+  v19 = HOAppDelegate.findPreferredAccessory(itemManager:accessoryID:with:)(managerCopy, v12, sub_10007E66C, (&v21 - 4));
   _Block_release(v13);
 
   sub_10007E208(v12);
@@ -1459,14 +1459,14 @@ LABEL_4:
   return v19;
 }
 
-- (id)findAccessoryWithItemManager:(id)a3 accessoryID:(id)a4 testBlock:(id)a5
+- (id)findAccessoryWithItemManager:(id)manager accessoryID:(id)d testBlock:(id)block
 {
   v9 = sub_1000578B4(&unk_1000D9E30, &qword_1000933F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
-  if (a4)
+  v13 = _Block_copy(block);
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for UUID();
@@ -1480,9 +1480,9 @@ LABEL_4:
   }
 
   _Block_copy(v13);
-  v16 = a3;
-  v17 = self;
-  sub_10007E270(v16, v12, v17, v13);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_10007E270(managerCopy, v12, selfCopy, v13);
   v19 = v18;
   _Block_release(v13);
   _Block_release(v13);
@@ -1492,14 +1492,14 @@ LABEL_4:
   return v19;
 }
 
-- (id)homeKitObjectIDFrom:(id)a3 userDefaultsEnabled:(BOOL)a4
+- (id)homeKitObjectIDFrom:(id)from userDefaultsEnabled:(BOOL)enabled
 {
   v5 = sub_1000578B4(&unk_1000D9E30, &qword_1000933F0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v17 - v7;
   v9 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   HOAppDelegate.homeKitObjectID(from:userDefaultsEnabled:)(v9, v8);
 
   v11 = type metadata accessor for UUID();
@@ -1516,25 +1516,25 @@ LABEL_4:
   return v14;
 }
 
-- (id)_runScrollTestWithTestName:(id)a3 scrollView:(id)a4 options:(id)a5
+- (id)_runScrollTestWithTestName:(id)name scrollView:(id)view options:(id)options
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = self;
-  v13 = sub_100077518(v7, v9, v11, v10, 0);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100077518(v7, v9, viewCopy, v10, 0);
 
   return v13;
 }
 
-- (id)_cameraProfileForTestingInHome:(id)a3 withUUID:(id)a4
+- (id)_cameraProfileForTestingInHome:(id)home withUUID:(id)d
 {
   v7 = sub_1000578B4(&unk_1000D9E30, &qword_1000933F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -1547,9 +1547,9 @@ LABEL_4:
     (*(*(v12 - 8) + 56))(v10, 1, 1, v12);
   }
 
-  v13 = a3;
-  v14 = self;
-  v15 = sub_10007CF40(v13, v10);
+  homeCopy = home;
+  selfCopy = self;
+  v15 = sub_10007CF40(homeCopy, v10);
 
   sub_10007E208(v10);
 

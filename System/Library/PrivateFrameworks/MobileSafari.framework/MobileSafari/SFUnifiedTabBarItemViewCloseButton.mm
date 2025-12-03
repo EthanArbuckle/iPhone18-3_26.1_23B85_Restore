@@ -1,20 +1,20 @@
 @interface SFUnifiedTabBarItemViewCloseButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)pointInsideForPointer:(CGPoint)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)pointInsideForPointer:(CGPoint)pointer;
 @end
 
 @implementation SFUnifiedTabBarItemViewCloseButton
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SFUnifiedTabBarItemViewCloseButton;
-  if ([(SFUnifiedTabBarItemViewCloseButton *)&v10 pointInside:v7 withEvent:x, y])
+  if ([(SFUnifiedTabBarItemViewCloseButton *)&v10 pointInside:eventCopy withEvent:x, y])
   {
-    if ([v7 buttonMask])
+    if ([eventCopy buttonMask])
     {
       v8 = [(SFUnifiedTabBarItemViewCloseButton *)self pointInsideForPointer:x, y];
     }
@@ -33,27 +33,27 @@
   return v8;
 }
 
-- (BOOL)pointInsideForPointer:(CGPoint)a3
+- (BOOL)pointInsideForPointer:(CGPoint)pointer
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(SFUnifiedTabBarItemViewCloseButton *)self _imageView];
-  [v6 bounds];
+  y = pointer.y;
+  x = pointer.x;
+  selfCopy = self;
+  _imageView = [(SFUnifiedTabBarItemViewCloseButton *)self _imageView];
+  [_imageView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 convertPoint:v5 fromView:{x, y}];
+  [_imageView convertPoint:selfCopy fromView:{x, y}];
   v18.x = v15;
   v18.y = v16;
   v19.origin.x = v8;
   v19.origin.y = v10;
   v19.size.width = v12;
   v19.size.height = v14;
-  LOBYTE(v5) = CGRectContainsPoint(v19, v18);
+  LOBYTE(selfCopy) = CGRectContainsPoint(v19, v18);
 
-  return v5;
+  return selfCopy;
 }
 
 @end

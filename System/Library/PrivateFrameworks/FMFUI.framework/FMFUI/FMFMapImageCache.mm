@@ -1,11 +1,11 @@
 @interface FMFMapImageCache
 + (id)sharedInstance;
 - (NSCache)_cache;
-- (id)_imageForMap:(id)a3;
-- (id)_keyForHandles:(id)a3;
+- (id)_imageForMap:(id)map;
+- (id)_keyForHandles:(id)handles;
 - (id)_orientationKey;
-- (id)cachedMapForHandles:(id)a3;
-- (void)cacheMap:(id)a3 forHandles:(id)a4;
+- (id)cachedMapForHandles:(id)handles;
+- (void)cacheMap:(id)map forHandles:(id)handles;
 - (void)dealloc;
 @end
 
@@ -39,40 +39,40 @@ void __34__FMFMapImageCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->__cache name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->__cache name:*MEMORY[0x277D76670] object:0];
 
   v4.receiver = self;
   v4.super_class = FMFMapImageCache;
   [(FMFMapImageCache *)&v4 dealloc];
 }
 
-- (void)cacheMap:(id)a3 forHandles:(id)a4
+- (void)cacheMap:(id)map forHandles:(id)handles
 {
-  v6 = a3;
-  v9 = [(FMFMapImageCache *)self _keyForHandles:a4];
-  v7 = [(FMFMapImageCache *)self _imageForMap:v6];
+  mapCopy = map;
+  v9 = [(FMFMapImageCache *)self _keyForHandles:handles];
+  v7 = [(FMFMapImageCache *)self _imageForMap:mapCopy];
 
   if (v7)
   {
-    v8 = [(FMFMapImageCache *)self _cache];
-    [v8 setObject:v7 forKey:v9];
+    _cache = [(FMFMapImageCache *)self _cache];
+    [_cache setObject:v7 forKey:v9];
   }
 }
 
-- (id)cachedMapForHandles:(id)a3
+- (id)cachedMapForHandles:(id)handles
 {
-  v4 = [(FMFMapImageCache *)self _keyForHandles:a3];
-  v5 = [(FMFMapImageCache *)self _cache];
-  v6 = [v5 objectForKey:v4];
+  v4 = [(FMFMapImageCache *)self _keyForHandles:handles];
+  _cache = [(FMFMapImageCache *)self _cache];
+  v6 = [_cache objectForKey:v4];
 
   return v6;
 }
 
 - (id)_orientationKey
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  if (([v2 statusBarOrientation] - 3) >= 2)
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (([mEMORY[0x277D75128] statusBarOrientation] - 3) >= 2)
   {
     v3 = @"p";
   }
@@ -87,37 +87,37 @@ void __34__FMFMapImageCache_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)_keyForHandles:(id)a3
+- (id)_keyForHandles:(id)handles
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  handlesCopy = handles;
   v6 = [v4 sortDescriptorWithKey:@"identifier" ascending:1 selector:sel_localizedCaseInsensitiveCompare_];
   v14[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [handlesCopy sortedArrayUsingDescriptors:v7];
 
   v9 = [v8 description];
-  v10 = [(FMFMapImageCache *)self _orientationKey];
-  v11 = [v9 stringByAppendingString:v10];
+  _orientationKey = [(FMFMapImageCache *)self _orientationKey];
+  v11 = [v9 stringByAppendingString:_orientationKey];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (id)_imageForMap:(id)a3
+- (id)_imageForMap:(id)map
 {
-  v3 = a3;
-  [v3 bounds];
+  mapCopy = map;
+  [mapCopy bounds];
   v10.width = v4;
   v10.height = v5;
   UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)
   {
-    v7 = [v3 layer];
-    [v7 renderInContext:CurrentContext];
+    layer = [mapCopy layer];
+    [layer renderInContext:CurrentContext];
 
     CurrentContext = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -135,8 +135,8 @@ void __34__FMFMapImageCache_sharedInstance__block_invoke()
     [(FMFMapImageCache *)self set_cache:v4];
 
     [(NSCache *)self->__cache setCountLimit:25];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self->__cache selector:sel_removeAllObjects name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self->__cache selector:sel_removeAllObjects name:*MEMORY[0x277D76670] object:0];
 
     cache = self->__cache;
   }

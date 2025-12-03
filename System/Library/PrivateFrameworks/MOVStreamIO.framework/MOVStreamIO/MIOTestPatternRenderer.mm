@@ -1,34 +1,34 @@
 @interface MIOTestPatternRenderer
 - (Area_renderer)areaRendererFromTestPattern:(Area_renderer *__return_ptr)retstr;
-- (BOOL)renderToPixelBuffer:(__CVBuffer *)a3;
-- (MIOTestPatternRenderer)initWithTestPattern:(id)a3 numberOfFrames:(int)a4 startOffset:(int)a5;
+- (BOOL)renderToPixelBuffer:(__CVBuffer *)buffer;
+- (MIOTestPatternRenderer)initWithTestPattern:(id)pattern numberOfFrames:(int)frames startOffset:(int)offset;
 - (id).cxx_construct;
-- (id)originalColorAttachmentsOfPixelBuffer:(__CVBuffer *)a3;
-- (void)addMetadataToPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 frameNumber:(int)a5;
+- (id)originalColorAttachmentsOfPixelBuffer:(__CVBuffer *)buffer;
+- (void)addMetadataToPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata frameNumber:(int)number;
 - (void)dealloc;
-- (void)setRendererParamsFromDict:(id)a3;
+- (void)setRendererParamsFromDict:(id)dict;
 @end
 
 @implementation MIOTestPatternRenderer
 
-- (MIOTestPatternRenderer)initWithTestPattern:(id)a3 numberOfFrames:(int)a4 startOffset:(int)a5
+- (MIOTestPatternRenderer)initWithTestPattern:(id)pattern numberOfFrames:(int)frames startOffset:(int)offset
 {
-  v8 = a3;
+  patternCopy = pattern;
   v18.receiver = self;
   v18.super_class = MIOTestPatternRenderer;
   v9 = [(MIOTestPatternRenderer *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    v9->_numberOfFrames = a4;
-    v9->_startOffset = a5;
-    v11 = [v8 parameters];
-    [(MIOTestPatternRenderer *)v10 setRendererParamsFromDict:v11];
+    v9->_numberOfFrames = frames;
+    v9->_startOffset = offset;
+    parameters = [patternCopy parameters];
+    [(MIOTestPatternRenderer *)v10 setRendererParamsFromDict:parameters];
 
     v15 = 0;
     v16 = 0;
     v17 = 0;
-    [(MIOTestPatternRenderer *)v10 areaRendererFromTestPattern:v8];
+    [(MIOTestPatternRenderer *)v10 areaRendererFromTestPattern:patternCopy];
     v16 = std::vector<Area_renderer>::__emplace_back_slow_path<Area_renderer>(&v15, &__p);
     if (v14 < 0)
     {
@@ -59,7 +59,7 @@
   [(MIOTestPatternRenderer *)&v4 dealloc];
 }
 
-- (BOOL)renderToPixelBuffer:(__CVBuffer *)a3
+- (BOOL)renderToPixelBuffer:(__CVBuffer *)buffer
 {
   v13[1] = *MEMORY[0x277D85DE8];
   startOffset = self->_startOffset;
@@ -71,7 +71,7 @@
     goto LABEL_5;
   }
 
-  v8 = MultiRenderer::render(self->_multiRenderer, v5, a3);
+  v8 = MultiRenderer::render(self->_multiRenderer, v5, buffer);
   if (v8)
   {
     v12 = @"content";
@@ -79,7 +79,7 @@
     v13[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    [(MIOTestPatternRenderer *)self addMetadataToPixelBuffer:a3 metadata:v10 frameNumber:v5];
+    [(MIOTestPatternRenderer *)self addMetadataToPixelBuffer:buffer metadata:v10 frameNumber:v5];
 LABEL_5:
     LOBYTE(v8) = 1;
   }
@@ -87,7 +87,7 @@ LABEL_5:
   return v8;
 }
 
-- (id)originalColorAttachmentsOfPixelBuffer:(__CVBuffer *)a3
+- (id)originalColorAttachmentsOfPixelBuffer:(__CVBuffer *)buffer
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CC4CC0];
@@ -121,7 +121,7 @@ LABEL_5:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = CVBufferCopyAttachment(a3, v13, 0);
+        v14 = CVBufferCopyAttachment(buffer, v13, 0);
         if (v14)
         {
           [v8 setObject:v14 forKey:{v13, v16}];
@@ -137,16 +137,16 @@ LABEL_5:
   return v8;
 }
 
-- (void)addMetadataToPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 frameNumber:(int)a5
+- (void)addMetadataToPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata frameNumber:(int)number
 {
-  v5 = *&a5;
+  v5 = *&number;
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (v8)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
-    v9 = [(MIOTestPatternRenderer *)self originalColorAttachmentsOfPixelBuffer:a3];
+    v9 = [(MIOTestPatternRenderer *)self originalColorAttachmentsOfPixelBuffer:buffer];
     v10 = objc_opt_new();
-    [v10 addEntriesFromDictionary:v8];
+    [v10 addEntriesFromDictionary:metadataCopy];
     [v10 addEntriesFromDictionary:v9];
     v11 = [MEMORY[0x277CCABB0] numberWithInt:v5];
     [v10 setObject:v11 forKeyedSubscript:@"frame"];
@@ -154,7 +154,7 @@ LABEL_5:
     v13 = @"RendererInfo";
     v14[0] = v10;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    CVBufferSetAttachments(a3, v12, kCVAttachmentMode_ShouldPropagate);
+    CVBufferSetAttachments(buffer, v12, kCVAttachmentMode_ShouldPropagate);
   }
 }
 
@@ -166,9 +166,9 @@ LABEL_5:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [v17 name];
-  v12 = [v11 UTF8String];
-  v13 = strlen(v12);
+  name = [v17 name];
+  uTF8String = [name UTF8String];
+  v13 = strlen(uTF8String);
   if (v13 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -183,7 +183,7 @@ LABEL_5:
   HIBYTE(v19) = v13;
   if (v13)
   {
-    memmove(&__dst, v12, v13);
+    memmove(&__dst, uTF8String, v13);
   }
 
   *(&__dst + v14) = 0;
@@ -211,32 +211,32 @@ LABEL_5:
   return result;
 }
 
-- (void)setRendererParamsFromDict:(id)a3
+- (void)setRendererParamsFromDict:(id)dict
 {
-  v13 = a3;
-  v4 = [v13 objectForKey:@"kR"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKey:@"kR"];
 
   if (v4)
   {
-    v5 = [v13 objectForKeyedSubscript:@"kR"];
+    v5 = [dictCopy objectForKeyedSubscript:@"kR"];
     [v5 doubleValue];
     self->_params.kR = v6;
   }
 
-  v7 = [v13 objectForKey:@"kB"];
+  v7 = [dictCopy objectForKey:@"kB"];
 
   if (v7)
   {
-    v8 = [v13 objectForKeyedSubscript:@"kB"];
+    v8 = [dictCopy objectForKeyedSubscript:@"kB"];
     [v8 doubleValue];
     self->_params.kB = v9;
   }
 
-  v10 = [v13 objectForKey:@"amplitude"];
+  v10 = [dictCopy objectForKey:@"amplitude"];
 
   if (v10)
   {
-    v11 = [v13 objectForKeyedSubscript:@"amplitude"];
+    v11 = [dictCopy objectForKeyedSubscript:@"amplitude"];
     [v11 doubleValue];
     self->_params.amplitude = v12;
   }

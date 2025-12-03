@@ -1,34 +1,34 @@
 @interface AXSwitchControlSwitchResolutionResult
-+ (id)confirmationRequiredWithSwitchControlSwitchToConfirm:(id)a3;
-+ (id)disambiguationWithSwitchControlSwitchsToDisambiguate:(id)a3;
-+ (id)successWithResolvedSwitchControlSwitch:(id)a3;
++ (id)confirmationRequiredWithSwitchControlSwitchToConfirm:(id)confirm;
++ (id)disambiguationWithSwitchControlSwitchsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedSwitchControlSwitch:(id)switch;
 @end
 
 @implementation AXSwitchControlSwitchResolutionResult
 
-+ (id)successWithResolvedSwitchControlSwitch:(id)a3
++ (id)successWithResolvedSwitchControlSwitch:(id)switch
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___AXSwitchControlSwitchResolutionResult;
-  v3 = objc_msgSendSuper2(&v5, "successWithResolvedObject:", a3);
+  v3 = objc_msgSendSuper2(&v5, "successWithResolvedObject:", switch);
 
   return v3;
 }
 
-+ (id)disambiguationWithSwitchControlSwitchsToDisambiguate:(id)a3
++ (id)disambiguationWithSwitchControlSwitchsToDisambiguate:(id)disambiguate
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___AXSwitchControlSwitchResolutionResult;
-  v3 = objc_msgSendSuper2(&v5, "disambiguationWithObjectsToDisambiguate:", a3);
+  v3 = objc_msgSendSuper2(&v5, "disambiguationWithObjectsToDisambiguate:", disambiguate);
 
   return v3;
 }
 
-+ (id)confirmationRequiredWithSwitchControlSwitchToConfirm:(id)a3
++ (id)confirmationRequiredWithSwitchControlSwitchToConfirm:(id)confirm
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___AXSwitchControlSwitchResolutionResult;
-  v3 = objc_msgSendSuper2(&v5, "confirmationRequiredWithObjectToConfirm:", a3);
+  v3 = objc_msgSendSuper2(&v5, "confirmationRequiredWithObjectToConfirm:", confirm);
 
   return v3;
 }

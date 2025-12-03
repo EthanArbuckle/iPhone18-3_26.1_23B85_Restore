@@ -1,27 +1,27 @@
 @interface NLXSchemaCDMLanguageVariantResult
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMLanguageVariantResult)initWithDictionary:(id)a3;
-- (NLXSchemaCDMLanguageVariantResult)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMLanguageVariantResult)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMLanguageVariantResult)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addMultilingualVariants:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMultilingualVariants:(id)variants;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMLanguageVariantResult
 
-- (NLXSchemaCDMLanguageVariantResult)initWithDictionary:(id)a3
+- (NLXSchemaCDMLanguageVariantResult)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = NLXSchemaCDMLanguageVariantResult;
   v5 = [(NLXSchemaCDMLanguageVariantResult *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"multilingualVariants"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"multilingualVariants"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"cdmParser", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"cdmParser", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMLanguageVariantResult)initWithJSON:(id)a3
+- (NLXSchemaCDMLanguageVariantResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMLanguageVariantResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMLanguageVariantResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMLanguageVariantResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cdmParser)
   {
-    v4 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cdmParser = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+    dictionaryRepresentation = [cdmParser dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cdmParser"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cdmParser"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cdmParser"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cdmParser"];
     }
   }
 
   if ([(NSArray *)self->_multilingualVariants count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -174,36 +174,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"multilingualVariants"];
+    [dictionary setObject:array forKeyedSubscript:@"multilingualVariants"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
-  v6 = [v4 multilingualVariants];
-  if ((v5 != 0) == (v6 == 0))
+  multilingualVariants = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
+  multilingualVariants2 = [equalCopy multilingualVariants];
+  if ((multilingualVariants != 0) == (multilingualVariants2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
-  if (v7)
+  multilingualVariants3 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
+  if (multilingualVariants3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
-    v10 = [v4 multilingualVariants];
-    v11 = [v9 isEqual:v10];
+    v8 = multilingualVariants3;
+    multilingualVariants4 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants];
+    multilingualVariants5 = [equalCopy multilingualVariants];
+    v11 = [multilingualVariants4 isEqual:multilingualVariants5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
-  v6 = [v4 cdmParser];
-  if ((v5 != 0) != (v6 == 0))
+  multilingualVariants = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+  multilingualVariants2 = [equalCopy cdmParser];
+  if ((multilingualVariants != 0) != (multilingualVariants2 == 0))
   {
-    v12 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
-    if (!v12)
+    cdmParser = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+    if (!cdmParser)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
-    v15 = [v4 cdmParser];
-    v16 = [v14 isEqual:v15];
+    v13 = cdmParser;
+    cdmParser2 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+    cdmParser3 = [equalCopy cdmParser];
+    v16 = [cdmParser2 isEqual:cdmParser3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+  cdmParser = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
 
-  if (v10)
+  if (cdmParser)
   {
-    v11 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+    cdmParser2 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addMultilingualVariants:(id)a3
+- (void)addMultilingualVariants:(id)variants
 {
-  v4 = a3;
+  variantsCopy = variants;
   multilingualVariants = self->_multilingualVariants;
-  v8 = v4;
+  v8 = variantsCopy;
   if (!multilingualVariants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_multilingualVariants;
-    self->_multilingualVariants = v6;
+    self->_multilingualVariants = array;
 
-    v4 = v8;
+    variantsCopy = v8;
     multilingualVariants = self->_multilingualVariants;
   }
 
-  [(NSArray *)multilingualVariants addObject:v4];
+  [(NSArray *)multilingualVariants addObject:variantsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaCDMLanguageVariantResult;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMLanguageVariantResult *)self multilingualVariants:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaCDMLanguageVariantResult *)self setMultilingualVariants:v7];
 
-  v8 = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  cdmParser = [(NLXSchemaCDMLanguageVariantResult *)self cdmParser];
+  v9 = [cdmParser applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMLanguageVariantResult *)self deleteCdmParser];
   }

@@ -1,26 +1,26 @@
 @interface PKShippingMethod
-+ (PKShippingMethod)shippingMethodWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShippingMethod:(id)a3;
-- (PKShippingMethod)initWithCoder:(id)a3;
-- (PKShippingMethod)initWithDictionary:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PKShippingMethod)shippingMethodWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShippingMethod:(id)method;
+- (PKShippingMethod)initWithCoder:(id)coder;
+- (PKShippingMethod)initWithDictionary:(id)dictionary error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)shippingMethodProtobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKShippingMethod
 
-+ (PKShippingMethod)shippingMethodWithProtobuf:(id)a3
++ (PKShippingMethod)shippingMethodWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKShippingMethod);
-  if ([v3 hasDecimalAmount])
+  if ([protobufCopy hasDecimalAmount])
   {
-    v5 = [v3 decimalAmount];
-    v6 = PKProtoSupportDecimalNumberFromProtobuf(v5);
+    decimalAmount = [protobufCopy decimalAmount];
+    v6 = PKProtoSupportDecimalNumberFromProtobuf(decimalAmount);
 LABEL_5:
     v7 = v6;
     [(PKPaymentSummaryItem *)v4 setAmount:v6];
@@ -28,26 +28,26 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 hasCustomPrecisionAmount])
+  if ([protobufCopy hasCustomPrecisionAmount])
   {
-    v5 = [v3 customPrecisionAmount];
-    v6 = PKLegacyCurrencyStorageIntegerToDecimal([v5 amount], 1);
+    decimalAmount = [protobufCopy customPrecisionAmount];
+    v6 = PKLegacyCurrencyStorageIntegerToDecimal([decimalAmount amount], 1);
     goto LABEL_5;
   }
 
-  v5 = PKLegacyCurrencyStorageIntegerToDecimal([v3 amount], 0);
-  [(PKPaymentSummaryItem *)v4 setAmount:v5];
+  decimalAmount = PKLegacyCurrencyStorageIntegerToDecimal([protobufCopy amount], 0);
+  [(PKPaymentSummaryItem *)v4 setAmount:decimalAmount];
 LABEL_7:
 
-  v8 = [v3 label];
-  [(PKPaymentSummaryItem *)v4 setLabel:v8];
+  label = [protobufCopy label];
+  [(PKPaymentSummaryItem *)v4 setLabel:label];
 
-  -[PKPaymentSummaryItem setType:](v4, "setType:", [v3 type]);
-  v9 = [v3 identifier];
-  [(PKShippingMethod *)v4 setIdentifier:v9];
+  -[PKPaymentSummaryItem setType:](v4, "setType:", [protobufCopy type]);
+  identifier = [protobufCopy identifier];
+  [(PKShippingMethod *)v4 setIdentifier:identifier];
 
-  v10 = [v3 detail];
-  [(PKShippingMethod *)v4 setDetail:v10];
+  detail = [protobufCopy detail];
+  [(PKShippingMethod *)v4 setDetail:detail];
 
   return v4;
 }
@@ -55,127 +55,127 @@ LABEL_7:
 - (id)shippingMethodProtobuf
 {
   v3 = objc_alloc_init(PKProtobufShippingMethod);
-  v4 = [(PKPaymentSummaryItem *)self amount];
-  [(PKProtobufShippingMethod *)v3 setAmount:PKCurrencyDecimalToLegacyStorageInteger(v4, 0)];
+  amount = [(PKPaymentSummaryItem *)self amount];
+  [(PKProtobufShippingMethod *)v3 setAmount:PKCurrencyDecimalToLegacyStorageInteger(amount, 0)];
 
-  v5 = [(PKPaymentSummaryItem *)self amount];
-  v6 = DecimalToCustomPrecisionProtobuf(v5);
+  amount2 = [(PKPaymentSummaryItem *)self amount];
+  v6 = DecimalToCustomPrecisionProtobuf(amount2);
   [(PKProtobufShippingMethod *)v3 setCustomPrecisionAmount:v6];
 
-  v7 = [(PKPaymentSummaryItem *)self amount];
-  v8 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(v7);
+  amount3 = [(PKPaymentSummaryItem *)self amount];
+  v8 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(amount3);
   [(PKProtobufShippingMethod *)v3 setDecimalAmount:v8];
 
-  v9 = [(PKPaymentSummaryItem *)self label];
-  [(PKProtobufShippingMethod *)v3 setLabel:v9];
+  label = [(PKPaymentSummaryItem *)self label];
+  [(PKProtobufShippingMethod *)v3 setLabel:label];
 
   [(PKProtobufShippingMethod *)v3 setType:[(PKPaymentSummaryItem *)self type]];
-  v10 = [(PKShippingMethod *)self identifier];
-  [(PKProtobufShippingMethod *)v3 setIdentifier:v10];
+  identifier = [(PKShippingMethod *)self identifier];
+  [(PKProtobufShippingMethod *)v3 setIdentifier:identifier];
 
-  v11 = [(PKShippingMethod *)self detail];
-  [(PKProtobufShippingMethod *)v3 setDetail:v11];
+  detail = [(PKShippingMethod *)self detail];
+  [(PKProtobufShippingMethod *)v3 setDetail:detail];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = PKShippingMethod;
   v5 = [(PKPaymentSummaryItem *)&v13 copyWithZone:?];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_detail copyWithZone:a3];
+  v8 = [(NSString *)self->_detail copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(PKDateComponentsRange *)self->_dateComponentsRange copyWithZone:a3];
+  v10 = [(PKDateComponentsRange *)self->_dateComponentsRange copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
   return v5;
 }
 
-- (PKShippingMethod)initWithCoder:(id)a3
+- (PKShippingMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKShippingMethod;
-  v5 = [(PKPaymentSummaryItem *)&v10 initWithCoder:v4];
+  v5 = [(PKPaymentSummaryItem *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(PKShippingMethod *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detail"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detail"];
     [(PKShippingMethod *)v5 setDetail:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateComponentsRange"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateComponentsRange"];
     [(PKShippingMethod *)v5 setDateComponentsRange:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = PKShippingMethod;
-  v4 = a3;
-  [(PKPaymentSummaryItem *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPaymentSummaryItem *)&v8 encodeWithCoder:coderCopy];
   v5 = [(PKShippingMethod *)self identifier:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  [coderCopy encodeObject:v5 forKey:@"identifier"];
 
-  v6 = [(PKShippingMethod *)self detail];
-  [v4 encodeObject:v6 forKey:@"detail"];
+  detail = [(PKShippingMethod *)self detail];
+  [coderCopy encodeObject:detail forKey:@"detail"];
 
-  v7 = [(PKShippingMethod *)self dateComponentsRange];
-  [v4 encodeObject:v7 forKey:@"dateComponentsRange"];
+  dateComponentsRange = [(PKShippingMethod *)self dateComponentsRange];
+  [coderCopy encodeObject:dateComponentsRange forKey:@"dateComponentsRange"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_detail];
-  [v3 safelyAddObject:self->_dateComponentsRange];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_detail];
+  [array safelyAddObject:self->_dateComponentsRange];
   v7.receiver = self;
   v7.super_class = PKShippingMethod;
   v4 = [(PKPaymentSummaryItem *)&v7 hash];
-  v5 = PKCombinedHash(v4, v3);
+  v5 = PKCombinedHash(v4, array);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShippingMethod *)self isEqualToShippingMethod:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShippingMethod *)self isEqualToShippingMethod:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToShippingMethod:(id)a3
+- (BOOL)isEqualToShippingMethod:(id)method
 {
-  v4 = a3;
-  if (![(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:v4])
+  methodCopy = method;
+  if (![(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:methodCopy])
   {
     goto LABEL_17;
   }
 
-  v5 = v4[7];
+  v5 = methodCopy[7];
   v6 = self->_identifier;
   v7 = v5;
   v8 = v7;
@@ -208,7 +208,7 @@ LABEL_7:
     }
   }
 
-  v11 = v4[8];
+  v11 = methodCopy[8];
   v6 = self->_detail;
   v12 = v11;
   v8 = v12;
@@ -246,7 +246,7 @@ LABEL_17:
 
 LABEL_21:
   dateComponentsRange = self->_dateComponentsRange;
-  v18 = v4[9];
+  v18 = methodCopy[9];
   if (dateComponentsRange && v18)
   {
     v14 = [(PKDateComponentsRange *)dateComponentsRange isEqual:?];
@@ -262,19 +262,19 @@ LABEL_18:
   return v14;
 }
 
-- (PKShippingMethod)initWithDictionary:(id)a3 error:(id *)a4
+- (PKShippingMethod)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKShippingMethod;
-  v7 = [(PKPaymentSummaryItem *)&v13 initWithDictionary:v6 error:a4];
+  v7 = [(PKPaymentSummaryItem *)&v13 initWithDictionary:dictionaryCopy error:error];
   if (v7)
   {
-    v8 = [v6 PKStringForKey:@"detail"];
+    v8 = [dictionaryCopy PKStringForKey:@"detail"];
     detail = v7->_detail;
     v7->_detail = v8;
 
-    v10 = [v6 PKStringForKey:@"identifier"];
+    v10 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v7->_identifier;
     v7->_identifier = v10;
   }
@@ -287,8 +287,8 @@ LABEL_18:
   v3 = MEMORY[0x1E695DF90];
   v10.receiver = self;
   v10.super_class = PKShippingMethod;
-  v4 = [(PKPaymentSummaryItem *)&v10 dictionaryRepresentation];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  dictionaryRepresentation = [(PKPaymentSummaryItem *)&v10 dictionaryRepresentation];
+  v5 = [v3 dictionaryWithDictionary:dictionaryRepresentation];
 
   detail = self->_detail;
   if (detail)

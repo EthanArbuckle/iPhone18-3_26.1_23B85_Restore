@@ -15,9 +15,9 @@
 - (double)homescreenWallpaperAlpha;
 - (double)lockscreenOnlyWallpaperAlpha;
 - (double)lockscreenWallpaperAlpha;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)wallpaperVariant;
 @end
 
@@ -25,17 +25,17 @@
 
 - (int64_t)wallpaperVariant
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229969];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229969];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (CGRect)lockscreenWallpaperContentsRect
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229970];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229970];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -55,8 +55,8 @@
 
 - (double)lockscreenWallpaperAlpha
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229971];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229971];
   [v3 doubleValue];
   v5 = v4;
 
@@ -65,8 +65,8 @@
 
 - (double)homescreenWallpaperAlpha
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229972];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229972];
   [v3 doubleValue];
   v5 = v4;
 
@@ -75,8 +75,8 @@
 
 - (double)lockscreenOnlyWallpaperAlpha
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229973];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229973];
   [v3 doubleValue];
   v5 = v4;
 
@@ -85,8 +85,8 @@
 
 - (BOOL)disallowHomescreenRasterization
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229974];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229974];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -94,8 +94,8 @@
 
 - (BOOL)disallowLockscreenRasterization
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229975];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229975];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -103,8 +103,8 @@
 
 - (BOOL)homescreenWallpaperHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229976];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229976];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -112,8 +112,8 @@
 
 - (BOOL)lockscreenWallpaperHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229977];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229977];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -121,8 +121,8 @@
 
 - (BOOL)wallpaperAnimationSuspended
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229978];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229978];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -130,8 +130,8 @@
 
 - (BOOL)wallpaperRequired
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229979];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229979];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -139,8 +139,8 @@
 
 - (BOOL)homescreenStyleChangesDelayed
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229980];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229980];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -148,32 +148,32 @@
 
 - (NSString)cachingIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229981];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229981];
 
   return v3;
 }
 
 - (PBUIWallpaperWindowSceneStyleTransitionState)homescreenStyleTransitionState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229982];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229982];
 
   return v3;
 }
 
 - (PBUIWallpaperWindowSceneStyleTransitionState)lockscreenStyleTransitionState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:727229983];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:727229983];
 
   return v3;
 }
 
 - (BOOL)liveWallpaperTouchActive
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229984];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229984];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -181,23 +181,23 @@
 
 - (BOOL)liveWallpaperInteractive
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:727229985];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:727229985];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PBUIMutableWallpaperWindowSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  v5 = PBUIWallpaperWindowSceneSettingKeyDescription(a3);
+  v5 = PBUIWallpaperWindowSceneSettingKeyDescription(setting);
   v6 = v5;
   if (v5)
   {
@@ -208,7 +208,7 @@
   {
     v10.receiver = self;
     v10.super_class = PBUIWallpaperWindowSceneSettings;
-    v7 = [(FBSSettings *)&v10 keyDescriptionForSetting:a3];
+    v7 = [(FBSSettings *)&v10 keyDescriptionForSetting:setting];
   }
 
   v8 = v7;
@@ -216,10 +216,10 @@
   return v8;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = PBUIWallpaperWindowSceneSettingValueDescription(a5, v8);
+  objectCopy = object;
+  v9 = PBUIWallpaperWindowSceneSettingValueDescription(setting, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -230,7 +230,7 @@
   {
     v14.receiver = self;
     v14.super_class = PBUIWallpaperWindowSceneSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

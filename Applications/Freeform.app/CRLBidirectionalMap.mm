@@ -2,9 +2,9 @@
 - (CRLBidirectionalMap)init;
 - (id)allKeys;
 - (id)allValues;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation CRLBidirectionalMap
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRLBidirectionalMap);
   v5 = [(NSMutableDictionary *)self->_forward mutableCopy];
@@ -42,24 +42,24 @@
   return v4;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_forward objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  v5 = [(NSMutableDictionary *)self->_forward objectForKeyedSubscript:subscriptCopy];
   if (!v5)
   {
-    v5 = [(NSMutableDictionary *)self->_backward objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_backward objectForKeyedSubscript:subscriptCopy];
   }
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_forward objectForKeyedSubscript:v6];
-  v8 = [(NSMutableDictionary *)self->_backward objectForKeyedSubscript:v6];
+  objectCopy = object;
+  subscriptCopy = subscript;
+  v7 = [(NSMutableDictionary *)self->_forward objectForKeyedSubscript:subscriptCopy];
+  v8 = [(NSMutableDictionary *)self->_backward objectForKeyedSubscript:subscriptCopy];
   if (v8)
   {
     v9 = [(NSMutableDictionary *)self->_forward objectForKeyedSubscript:v8];
@@ -68,9 +68,9 @@
       [(NSMutableDictionary *)self->_forward setObject:0 forKeyedSubscript:v8];
     }
 
-    if (v10)
+    if (objectCopy)
     {
-      [(NSMutableDictionary *)self->_forward setObject:v6 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_forward setObject:subscriptCopy forKeyedSubscript:objectCopy];
     }
 
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
@@ -83,9 +83,9 @@
       [(NSMutableDictionary *)self->_backward setObject:0 forKeyedSubscript:v7];
     }
 
-    if (v10)
+    if (objectCopy)
     {
-      [(NSMutableDictionary *)self->_backward setObject:v6 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_backward setObject:subscriptCopy forKeyedSubscript:objectCopy];
     }
 
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
@@ -94,9 +94,9 @@
 
 - (id)allKeys
 {
-  v3 = [(NSMutableDictionary *)self->_forward allKeys];
-  v4 = [(NSMutableDictionary *)self->_backward allKeys];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_forward allKeys];
+  allKeys2 = [(NSMutableDictionary *)self->_backward allKeys];
+  v5 = [allKeys arrayByAddingObjectsFromArray:allKeys2];
   v6 = v5;
   if (v5)
   {
@@ -115,9 +115,9 @@
 
 - (id)allValues
 {
-  v3 = [(NSMutableDictionary *)self->_forward allValues];
-  v4 = [(NSMutableDictionary *)self->_backward allValues];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  allValues = [(NSMutableDictionary *)self->_forward allValues];
+  allValues2 = [(NSMutableDictionary *)self->_backward allValues];
+  v5 = [allValues arrayByAddingObjectsFromArray:allValues2];
   v6 = v5;
   if (v5)
   {

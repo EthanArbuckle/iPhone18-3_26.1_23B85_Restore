@@ -1,14 +1,14 @@
 @interface CRLAASBoardTracker
-- (void)boardItemDidInsert:(id)a3;
+- (void)boardItemDidInsert:(id)insert;
 @end
 
 @implementation CRLAASBoardTracker
 
-- (void)boardItemDidInsert:(id)a3
+- (void)boardItemDidInsert:(id)insert
 {
-  v3 = a3;
+  insertCopy = insert;
 
-  sub_10074FC50(v3);
+  sub_10074FC50(insertCopy);
 }
 
 @end

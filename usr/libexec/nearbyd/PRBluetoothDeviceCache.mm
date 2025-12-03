@@ -1,15 +1,15 @@
 @interface PRBluetoothDeviceCache
-- (BOOL)isCached:(id)a3;
-- (BOOL)isCachedByTokenData:(id)a3;
-- (BOOL)uncacheDeviceByTokenData:(id)a3;
+- (BOOL)isCached:(id)cached;
+- (BOOL)isCachedByTokenData:(id)data;
+- (BOOL)uncacheDeviceByTokenData:(id)data;
 - (PRBluetoothDeviceCache)init;
 - (id)cachedDevices;
-- (id)deviceForIDSIdentifier:(id)a3;
-- (id)deviceForIdentifier:(unint64_t)a3;
-- (id)deviceForTokenData:(id)a3;
-- (void)cacheDevice:(id)a3;
+- (id)deviceForIDSIdentifier:(id)identifier;
+- (id)deviceForIdentifier:(unint64_t)identifier;
+- (id)deviceForTokenData:(id)data;
+- (void)cacheDevice:(id)device;
 - (void)reset;
-- (void)uncacheDevice:(id)a3;
+- (void)uncacheDevice:(id)device;
 @end
 
 @implementation PRBluetoothDeviceCache
@@ -53,88 +53,88 @@
 {
   v3 = objc_opt_new();
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_u64IdentifierToBluetoothDeviceMap allValues];
+  allValues = [(NSMutableDictionary *)self->_u64IdentifierToBluetoothDeviceMap allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allValues;
 }
 
-- (void)cacheDevice:(id)a3
+- (void)cacheDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
-    v6 = [v4 u64Identifier];
+    u64Identifier = [deviceCopy u64Identifier];
     v7 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = v6;
+      v16 = u64Identifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Caching device with address: 0x%llx", &v15, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_lock);
     u64IdentifierToBluetoothDeviceMap = self->_u64IdentifierToBluetoothDeviceMap;
-    v9 = [NSNumber numberWithUnsignedLongLong:v6];
+    v9 = [NSNumber numberWithUnsignedLongLong:u64Identifier];
     [(NSMutableDictionary *)u64IdentifierToBluetoothDeviceMap setObject:v5 forKeyedSubscript:v9];
 
     tokenDataToBluetoothDeviceMap = self->_tokenDataToBluetoothDeviceMap;
-    v11 = [v5 discoveryTokenData];
-    [(NSMutableDictionary *)tokenDataToBluetoothDeviceMap setObject:v5 forKeyedSubscript:v11];
+    discoveryTokenData = [v5 discoveryTokenData];
+    [(NSMutableDictionary *)tokenDataToBluetoothDeviceMap setObject:v5 forKeyedSubscript:discoveryTokenData];
 
-    v12 = [v5 idsDeviceID];
-    LOBYTE(v11) = v12 == 0;
+    idsDeviceID = [v5 idsDeviceID];
+    LOBYTE(discoveryTokenData) = idsDeviceID == 0;
 
-    if ((v11 & 1) == 0)
+    if ((discoveryTokenData & 1) == 0)
     {
       idsIdentifierToBluetoothDeviceMap = self->_idsIdentifierToBluetoothDeviceMap;
-      v14 = [v5 idsDeviceID];
-      [(NSMutableDictionary *)idsIdentifierToBluetoothDeviceMap setObject:v5 forKeyedSubscript:v14];
+      idsDeviceID2 = [v5 idsDeviceID];
+      [(NSMutableDictionary *)idsIdentifierToBluetoothDeviceMap setObject:v5 forKeyedSubscript:idsDeviceID2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)uncacheDevice:(id)a3
+- (void)uncacheDevice:(id)device
 {
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
-    v13 = v4;
-    v5 = [v4 u64Identifier];
+    v13 = deviceCopy;
+    u64Identifier = [deviceCopy u64Identifier];
     os_unfair_lock_lock(&self->_lock);
     u64IdentifierToBluetoothDeviceMap = self->_u64IdentifierToBluetoothDeviceMap;
-    v7 = [NSNumber numberWithUnsignedLongLong:v5];
+    v7 = [NSNumber numberWithUnsignedLongLong:u64Identifier];
     [(NSMutableDictionary *)u64IdentifierToBluetoothDeviceMap removeObjectForKey:v7];
 
     tokenDataToBluetoothDeviceMap = self->_tokenDataToBluetoothDeviceMap;
-    v9 = [v13 discoveryTokenData];
-    [(NSMutableDictionary *)tokenDataToBluetoothDeviceMap removeObjectForKey:v9];
+    discoveryTokenData = [v13 discoveryTokenData];
+    [(NSMutableDictionary *)tokenDataToBluetoothDeviceMap removeObjectForKey:discoveryTokenData];
 
-    v10 = [v13 idsDeviceID];
+    idsDeviceID = [v13 idsDeviceID];
 
-    if (v10)
+    if (idsDeviceID)
     {
       idsIdentifierToBluetoothDeviceMap = self->_idsIdentifierToBluetoothDeviceMap;
-      v12 = [v13 idsDeviceID];
-      [(NSMutableDictionary *)idsIdentifierToBluetoothDeviceMap removeObjectForKey:v12];
+      idsDeviceID2 = [v13 idsDeviceID];
+      [(NSMutableDictionary *)idsIdentifierToBluetoothDeviceMap removeObjectForKey:idsDeviceID2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v13;
+    deviceCopy = v13;
   }
 }
 
-- (BOOL)uncacheDeviceByTokenData:(id)a3
+- (BOOL)uncacheDeviceByTokenData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_tokenDataToBluetoothDeviceMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_tokenDataToBluetoothDeviceMap objectForKey:dataCopy];
     os_unfair_lock_unlock(&self->_lock);
     v6 = v5 != 0;
     if (v5)
@@ -151,14 +151,14 @@
   return v6;
 }
 
-- (BOOL)isCached:(id)a3
+- (BOOL)isCached:(id)cached
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  cachedCopy = cached;
+  v5 = cachedCopy;
+  if (cachedCopy)
   {
-    v6 = [v4 discoveryTokenData];
-    v7 = [(PRBluetoothDeviceCache *)self deviceForTokenData:v6];
+    discoveryTokenData = [cachedCopy discoveryTokenData];
+    v7 = [(PRBluetoothDeviceCache *)self deviceForTokenData:discoveryTokenData];
     v8 = v7 != 0;
   }
 
@@ -170,12 +170,12 @@
   return v8;
 }
 
-- (BOOL)isCachedByTokenData:(id)a3
+- (BOOL)isCachedByTokenData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [(PRBluetoothDeviceCache *)self deviceForTokenData:v4];
+    v5 = [(PRBluetoothDeviceCache *)self deviceForTokenData:dataCopy];
     v6 = v5 != 0;
   }
 
@@ -187,11 +187,11 @@
   return v6;
 }
 
-- (id)deviceForIdentifier:(unint64_t)a3
+- (id)deviceForIdentifier:(unint64_t)identifier
 {
   os_unfair_lock_lock(&self->_lock);
   u64IdentifierToBluetoothDeviceMap = self->_u64IdentifierToBluetoothDeviceMap;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:identifier];
   v7 = [(NSMutableDictionary *)u64IdentifierToBluetoothDeviceMap objectForKeyedSubscript:v6];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -199,13 +199,13 @@
   return v7;
 }
 
-- (id)deviceForTokenData:(id)a3
+- (id)deviceForTokenData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_tokenDataToBluetoothDeviceMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_tokenDataToBluetoothDeviceMap objectForKeyedSubscript:dataCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -217,13 +217,13 @@
   return v5;
 }
 
-- (id)deviceForIDSIdentifier:(id)a3
+- (id)deviceForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_idsIdentifierToBluetoothDeviceMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_idsIdentifierToBluetoothDeviceMap objectForKeyedSubscript:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 

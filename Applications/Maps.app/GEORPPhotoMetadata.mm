@@ -1,37 +1,37 @@
 @interface GEORPPhotoMetadata
-- (GEORPPhotoMetadata)initWithUUID:(id)a3 location:(id)a4;
+- (GEORPPhotoMetadata)initWithUUID:(id)d location:(id)location;
 @end
 
 @implementation GEORPPhotoMetadata
 
-- (GEORPPhotoMetadata)initWithUUID:(id)a3 location:(id)a4
+- (GEORPPhotoMetadata)initWithUUID:(id)d location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  locationCopy = location;
   v17.receiver = self;
   v17.super_class = GEORPPhotoMetadata;
   v8 = [(GEORPPhotoMetadata *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    [(GEORPPhotoMetadata *)v8 setClientImageUuid:v6];
-    if (v7)
+    [(GEORPPhotoMetadata *)v8 setClientImageUuid:dCopy];
+    if (locationCopy)
     {
-      [v7 coordinate];
+      [locationCopy coordinate];
       if (CLLocationCoordinate2DIsValid(v18))
       {
-        v10 = [[GEOLocation alloc] initWithCLLocation:v7];
+        v10 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
         [(GEORPPhotoMetadata *)v9 setGeotag:v10];
 
-        v11 = [v7 timestamp];
+        timestamp = [locationCopy timestamp];
 
-        if (v11)
+        if (timestamp)
         {
-          v12 = [v7 timestamp];
-          [v12 timeIntervalSinceReferenceDate];
+          timestamp2 = [locationCopy timestamp];
+          [timestamp2 timeIntervalSinceReferenceDate];
           v14 = v13;
-          v15 = [(GEORPPhotoMetadata *)v9 geotag];
-          [v15 setTimestamp:v14];
+          geotag = [(GEORPPhotoMetadata *)v9 geotag];
+          [geotag setTimestamp:v14];
         }
       }
     }

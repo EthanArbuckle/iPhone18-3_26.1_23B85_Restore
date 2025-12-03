@@ -1,32 +1,32 @@
 @interface LARatchetObserverWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LARatchetObserver)observer;
-- (LARatchetObserverWrapper)initWithObserver:(id)a3;
+- (LARatchetObserverWrapper)initWithObserver:(id)observer;
 - (unint64_t)hash;
-- (void)ratchetStateDidChange:(id)a3;
+- (void)ratchetStateDidChange:(id)change;
 @end
 
 @implementation LARatchetObserverWrapper
 
-- (LARatchetObserverWrapper)initWithObserver:(id)a3
+- (LARatchetObserverWrapper)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8.receiver = self;
   v8.super_class = LARatchetObserverWrapper;
   v5 = [(LARatchetObserverWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
   }
 
   return v6;
 }
 
-- (void)ratchetStateDidChange:(id)a3
+- (void)ratchetStateDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [[LARatchetState alloc] initWithState:v4];
+  changeCopy = change;
+  v6 = [[LARatchetState alloc] initWithState:changeCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   [WeakRetained ratchetStateDidChange:v6];
@@ -40,17 +40,17 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    v7 = [v5 observer];
+    observer = [v5 observer];
 
-    v8 = [WeakRetained isEqual:v7];
+    v8 = [WeakRetained isEqual:observer];
   }
 
   else

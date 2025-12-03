@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -33,20 +33,20 @@
 
 - (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup
 {
-  v3 = [(AVFigRoutingContextCommandOutputDeviceConfiguration *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
-  if (v3)
+  automaticallyAllowsConnectionsFromPeersInHomeGroup = [(AVFigRoutingContextCommandOutputDeviceConfiguration *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
+  if (automaticallyAllowsConnectionsFromPeersInHomeGroup)
   {
     CFDictionaryGetValue(self->_response, *MEMORY[0x1E69617C0]);
-    LOBYTE(v3) = FigCFEqual() == 0;
+    LOBYTE(automaticallyAllowsConnectionsFromPeersInHomeGroup) = FigCFEqual() == 0;
   }
 
-  return v3;
+  return automaticallyAllowsConnectionsFromPeersInHomeGroup;
 }
 
 - (NSArray)peersInHomeGroup
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   Value = CFDictionaryGetValue(self->_response, *MEMORY[0x1E69617A8]);
   v19 = 0u;
   v20 = 0u;
@@ -75,7 +75,7 @@
         v14 = [v12 objectForKeyedSubscript:v9];
         v15 = [objc_msgSend(v12 objectForKeyedSubscript:{v10), "unsignedIntegerValue"}];
         v16 = [objc_alloc(MEMORY[0x1E6958808]) initWithID:v13 publicKey:v14 hasAdministratorPrivileges:v15 == 1];
-        [(NSArray *)v3 addObject:v16];
+        [(NSArray *)array addObject:v16];
       }
 
       v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -84,7 +84,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PKPeerPaymentAccountRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentAccountRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (informationCopy)
     {
-      v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B46B8 queryParameters:0 appleAccountInformation:v7];
+      v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B46B8 queryParameters:0 appleAccountInformation:informationCopy];
       [v9 setHTTPMethod:@"GET"];
       [v9 setCachePolicy:1];
       v10 = [v9 copy];

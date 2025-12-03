@@ -5,54 +5,54 @@
 - (BOOL)_isUserSubscriptionSelectionStillPending;
 - (BOOL)_userHasDisabledSMSRegistration;
 - (BOOL)_validSIMStateForRegistration;
-- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)a3 preflightStackStore:(id)a4 HTTPDelivery:(id)a5 pushHandler:(id)a6 lockdownManager:(id)a7 systemMonitor:(id)a8 arbiter:(id)a9 systemAccountAdapter:(id)a10 dailyMetricData:(id)a11 serviceType:(int64_t)a12;
-- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)a3 preflightStackStore:(id)a4 serviceType:(int64_t)a5;
+- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)r preflightStackStore:(id)store HTTPDelivery:(id)delivery pushHandler:(id)handler lockdownManager:(id)manager systemMonitor:(id)monitor arbiter:(id)arbiter systemAccountAdapter:(id)self0 dailyMetricData:(id)self1 serviceType:(int64_t)self2;
+- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)r preflightStackStore:(id)store serviceType:(int64_t)type;
 - (IDSPreflightStack)currentPreflightStack;
 - (NSString)description;
-- (id)_filterUnsupportedMechanisms:(id)a3;
+- (id)_filterUnsupportedMechanisms:(id)mechanisms;
 - (id)_getHighestPriorityMechanism;
-- (id)identifyPhoneNumberForRequestor:(id)a3 queue:(id)a4;
-- (int64_t)_errorCodeForRegistrationError:(int64_t)a3;
+- (id)identifyPhoneNumberForRequestor:(id)requestor queue:(id)queue;
+- (int64_t)_errorCodeForRegistrationError:(int64_t)error;
 - (int64_t)_registrationControlStatus;
-- (void)PNRRequestSentWithRequestData:(id)a3;
-- (void)PNRResponseReceivedWithResponseData:(id)a3;
+- (void)PNRRequestSentWithRequestData:(id)data;
+- (void)PNRResponseReceivedWithResponseData:(id)data;
 - (void)_SIMSetupDidComplete;
 - (void)_cancelScheduledHeartbeat;
 - (void)_cancelScheduledSMSTimeout;
 - (void)_clearSMSDeliveryTimeout;
-- (void)_deviceIDChangedNotification:(id)a3;
-- (void)_failPromisesWithError:(int64_t)a3;
-- (void)_fulfillPromisesWithPhoneNumber:(id)a3 token:(id)a4;
-- (void)_issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:(id)a3 mechanism:(id)a4;
-- (void)_keychainMigrationComplete:(id)a3;
+- (void)_deviceIDChangedNotification:(id)notification;
+- (void)_failPromisesWithError:(int64_t)error;
+- (void)_fulfillPromisesWithPhoneNumber:(id)number token:(id)token;
+- (void)_issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:(id)token mechanism:(id)mechanism;
+- (void)_keychainMigrationComplete:(id)complete;
 - (void)_lastSendSMSTimerFiredOnMain;
-- (void)_lockdownStateChanged:(id)a3;
-- (void)_notifyFailureWithError:(int64_t)a3;
-- (void)_notifySuccess:(id)a3;
+- (void)_lockdownStateChanged:(id)changed;
+- (void)_notifyFailureWithError:(int64_t)error;
+- (void)_notifySuccess:(id)success;
 - (void)_performHighestPriorityPreflightVerification;
 - (void)_popHighestPriorityPreflightVerification;
 - (void)_registerForDeviceCenterNotifications;
 - (void)_registerForLockdownNotifications;
-- (void)_requestUserConsentForPhoneNumberValidationWithCompletion:(id)a3;
-- (void)_scheduleHeartbeat:(double)a3;
-- (void)_scheduleSMSTimeout:(double)a3;
+- (void)_requestUserConsentForPhoneNumberValidationWithCompletion:(id)completion;
+- (void)_scheduleHeartbeat:(double)heartbeat;
+- (void)_scheduleSMSTimeout:(double)timeout;
 - (void)_sendPreflightVerificationIfNeeded;
-- (void)_sendPreflightVerificationWithIMSI:(id)a3 PLMN:(id)a4;
-- (void)_sendSMSVerificationWithMechanism:(id)a3;
-- (void)_setSMSDeliveryTimeout:(double)a3;
+- (void)_sendPreflightVerificationWithIMSI:(id)i PLMN:(id)n;
+- (void)_sendSMSVerificationWithMechanism:(id)mechanism;
+- (void)_setSMSDeliveryTimeout:(double)timeout;
 - (void)_smsDeliveryClear;
 - (void)_tryToSendSMSIdentification;
-- (void)addListener:(id)a3;
-- (void)addPhoneNumberValidationRequestor:(id)a3;
+- (void)addListener:(id)listener;
+- (void)addPhoneNumberValidationRequestor:(id)requestor;
 - (void)dealloc;
-- (void)handleIncomingSMSForResponse:(id)a3;
-- (void)handleRegistrationSMSDeliveryFailedWithShouldBypassRetry:(BOOL)a3;
-- (void)handleRegistrationSMSSuccessfullyDeliveredWithTelephonyTimeout:(id)a3;
+- (void)handleIncomingSMSForResponse:(id)response;
+- (void)handleRegistrationSMSDeliveryFailedWithShouldBypassRetry:(BOOL)retry;
+- (void)handleRegistrationSMSSuccessfullyDeliveredWithTelephonyTimeout:(id)timeout;
 - (void)heartbeat;
 - (void)invalidate;
-- (void)removePhoneNumberValidationRequestor:(id)a3;
+- (void)removePhoneNumberValidationRequestor:(id)requestor;
 - (void)resetSMSCounter;
-- (void)setCurrentPreflightStack:(id)a3;
+- (void)setCurrentPreflightStack:(id)stack;
 - (void)systemDidFinishMigration;
 - (void)systemDidStopBackup;
 - (void)systemRestoreStateDidChange;
@@ -237,12 +237,12 @@ LABEL_41:
 
 - (void)_cancelScheduledHeartbeat
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self inFlightHeartbeatBlock];
+  inFlightHeartbeatBlock = [(IDSPhoneNumberValidationStateMachine *)self inFlightHeartbeatBlock];
 
-  if (v3)
+  if (inFlightHeartbeatBlock)
   {
-    v4 = [(IDSPhoneNumberValidationStateMachine *)self inFlightHeartbeatBlock];
-    dispatch_block_cancel(v4);
+    inFlightHeartbeatBlock2 = [(IDSPhoneNumberValidationStateMachine *)self inFlightHeartbeatBlock];
+    dispatch_block_cancel(inFlightHeartbeatBlock2);
 
     [(IDSPhoneNumberValidationStateMachine *)self setInFlightHeartbeatBlock:0];
   }
@@ -250,10 +250,10 @@ LABEL_41:
 
 - (BOOL)_deviceCanRegisterPresently
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
-  v4 = [v3 isActivated];
+  lockdownManager = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
+  isActivated = [lockdownManager isActivated];
 
-  if (v4)
+  if (isActivated)
   {
     if ([(IDSPhoneNumberValidationStateMachine *)self _validSIMStateForRegistration]&& !IDSDebuggingShouldFakeBadSIM())
     {
@@ -273,9 +273,9 @@ LABEL_41:
     v5 = +[IMRGLog sms];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
+      lockdownManager2 = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
       v8 = 138412290;
-      v9 = v6;
+      v9 = lockdownManager2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device is currently locked down, we're not able to proceed (State: %@)", &v8, 0xCu);
     }
   }
@@ -311,8 +311,8 @@ LABEL_41:
 
 - (BOOL)_isPhoneNumberIdentificationSupported
 {
-  v2 = [(IDSCTPNR *)self->_CTPNR isPNRSupported];
-  if ((v2 & 1) == 0)
+  isPNRSupported = [(IDSCTPNR *)self->_CTPNR isPNRSupported];
+  if ((isPNRSupported & 1) == 0)
   {
     v3 = +[IMRGLog sms];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -322,7 +322,7 @@ LABEL_41:
     }
   }
 
-  return v2;
+  return isPNRSupported;
 }
 
 - (void)_tryToSendSMSIdentification
@@ -432,15 +432,15 @@ LABEL_51:
   {
     if ([(IDSPhoneNumberValidationStateMachine *)self _canDeliverSMSNow])
     {
-      v10 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-      v11 = [v10 isValidationModeLegacy];
+      arbiter = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+      isValidationModeLegacy = [arbiter isValidationModeLegacy];
 
-      if (v11)
+      if (isValidationModeLegacy)
       {
-        v12 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-        v13 = [v12 maxAllowableNumberOfSuccessfullySentVerifications];
+        arbiter2 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+        maxAllowableNumberOfSuccessfullySentVerifications = [arbiter2 maxAllowableNumberOfSuccessfullySentVerifications];
 
-        if (self->_numberOfSuccessfulSends >= v13)
+        if (self->_numberOfSuccessfulSends >= maxAllowableNumberOfSuccessfullySentVerifications)
         {
           v34 = +[IMRGLog warning];
           if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
@@ -460,7 +460,7 @@ LABEL_51:
           *buf = 67109376;
           v37 = numberOfSuccessfulSends;
           v38 = 1024;
-          v39 = v13;
+          v39 = maxAllowableNumberOfSuccessfullySentVerifications;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Haven't sent max number of SMS yet { sends: %d, maxSMSSends: %d }", buf, 0xEu);
         }
       }
@@ -483,10 +483,10 @@ LABEL_51:
       v19 = [NSString stringWithFormat:@"Trying to send phone number validation request { preflights: %d, sends: %d, attemptsWithoutSend: %d }", self->_numberOfPreflights, self->_numberOfSuccessfulSends, self->_numberOfAttemptsWithoutSuccessfulSend];
       sub_100450174(0, @"Registration attempt", v19, 0);
 
-      v20 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-      v21 = [v20 isValidationModeLegacy];
+      arbiter3 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+      isValidationModeLegacy2 = [arbiter3 isValidationModeLegacy];
 
-      if (v21)
+      if (isValidationModeLegacy2)
       {
         v22 = +[IMRGLog sms];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -500,12 +500,12 @@ LABEL_51:
 
       else
       {
-        v27 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-        v28 = [v27 isValidationModeShortCircuitingPreflight];
+        arbiter4 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+        isValidationModeShortCircuitingPreflight = [arbiter4 isValidationModeShortCircuitingPreflight];
 
         v29 = +[IMRGLog sms];
         v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-        if (v28)
+        if (isValidationModeShortCircuitingPreflight)
         {
           if (v30)
           {
@@ -513,9 +513,9 @@ LABEL_51:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Preflight short-circuiting; sending phone number verification with overrides", buf, 2u);
           }
 
-          v31 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-          v32 = [v31 preflightShortCircuitMechanismOverride];
-          [(IDSPhoneNumberValidationStateMachine *)self _sendSMSVerificationWithMechanism:v32];
+          arbiter5 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+          preflightShortCircuitMechanismOverride = [arbiter5 preflightShortCircuitMechanismOverride];
+          [(IDSPhoneNumberValidationStateMachine *)self _sendSMSVerificationWithMechanism:preflightShortCircuitMechanismOverride];
         }
 
         else
@@ -595,13 +595,13 @@ LABEL_52:
   if (v3)
   {
     v4 = +[FTDeviceSupport sharedInstance];
-    v5 = [v4 isGreenTea];
+    isGreenTea = [v4 isGreenTea];
 
-    v6 = [(IDSPhoneNumberValidationStateMachine *)self _isUserSubscriptionSelectionStillPending];
+    _isUserSubscriptionSelectionStillPending = [(IDSPhoneNumberValidationStateMachine *)self _isUserSubscriptionSelectionStillPending];
     v7 = [(IDSPhoneNumberValidationStateMachine *)self _registrationControlStatus]- 3;
     if (v7 < 0xFFFFFFFFFFFFFFFELL)
     {
-      v8 = v5;
+      v8 = isGreenTea;
     }
 
     else
@@ -609,13 +609,13 @@ LABEL_52:
       v8 = 0;
     }
 
-    if ((v8 & 1) != 0 || v6)
+    if ((v8 & 1) != 0 || _isUserSubscriptionSelectionStillPending)
     {
       v9 = +[IMRGLog sms];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = @"NO";
-        if (v5)
+        if (isGreenTea)
         {
           v11 = @"YES";
         }
@@ -639,7 +639,7 @@ LABEL_52:
         v15 = v11;
         v16 = 2112;
         v17 = v12;
-        if (v6)
+        if (_isUserSubscriptionSelectionStillPending)
         {
           v10 = @"YES";
         }
@@ -666,19 +666,19 @@ LABEL_52:
   v3 = +[FTDeviceSupport sharedInstance];
   if ([v3 faceTimeBlocked] && objc_msgSend(v3, "callingBlocked") && objc_msgSend(v3, "iMessageBlocked"))
   {
-    v4 = [v3 multiwayBlocked];
+    multiwayBlocked = [v3 multiwayBlocked];
   }
 
   else
   {
-    v4 = 0;
+    multiwayBlocked = 0;
   }
 
   v5 = [(IDSSystemAccountAdapter *)self->_systemAccountAdapter iCloudSystemAccountWithError:0];
 
   v6 = +[IMRGLog sms];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v4 || v5)
+  if (!multiwayBlocked || v5)
   {
     if (v7)
     {
@@ -687,9 +687,9 @@ LABEL_52:
     }
 
     v9 = +[FTDeviceSupport sharedInstance];
-    v10 = [v9 isGreenTea];
+    isGreenTea = [v9 isGreenTea];
 
-    if (v10)
+    if (isGreenTea)
     {
       v8 = [(IDSPhoneNumberValidationStateMachine *)self _registrationControlStatus]== 1;
     }
@@ -731,16 +731,16 @@ LABEL_52:
   return [NSString stringWithFormat:@"<%@: %p state: %@, lastSendDate: %@, numberOfPreflights: %u, numberOfAttemptsWithoutSuccessfulSend: %u, numberOfSuccessfulSends: %u>", v3, self, v5, self->_smsSendDate, self->_numberOfPreflights, self->_numberOfAttemptsWithoutSuccessfulSend, self->_numberOfSuccessfulSends];
 }
 
-- (void)_scheduleHeartbeat:(double)a3
+- (void)_scheduleHeartbeat:(double)heartbeat
 {
   [(IDSPhoneNumberValidationStateMachine *)self _cancelScheduledHeartbeat];
-  if (a3 > 0.0 && self->_status)
+  if (heartbeat > 0.0 && self->_status)
   {
     v5 = +[IMRGLog sms];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = a3;
+      heartbeatCopy = heartbeat;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Scheduling heartbeat in %f seconds", buf, 0xCu);
     }
 
@@ -751,13 +751,13 @@ LABEL_52:
     block[4] = self;
     v6 = dispatch_block_create(0, block);
     [(IDSPhoneNumberValidationStateMachine *)self setInFlightHeartbeatBlock:v6];
-    v7 = dispatch_time(0, (a3 * 1000000000.0));
+    v7 = dispatch_time(0, (heartbeat * 1000000000.0));
     v8 = im_primary_queue();
     dispatch_after(v7, v8, v6);
   }
 }
 
-- (void)_scheduleSMSTimeout:(double)a3
+- (void)_scheduleSMSTimeout:(double)timeout
 {
   [(IDSPhoneNumberValidationStateMachine *)self _cancelScheduledSMSTimeout];
   objc_initWeak(&location, self);
@@ -768,7 +768,7 @@ LABEL_52:
   objc_copyWeak(&v12, &location);
   v5 = dispatch_block_create(0, &v8);
   [(IDSPhoneNumberValidationStateMachine *)self setInFlightSMSTimeoutBlock:v5, v8, v9, v10, v11];
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (timeout * 1000000000.0));
   v7 = im_primary_queue();
   dispatch_after(v6, v7, v5);
 
@@ -778,30 +778,30 @@ LABEL_52:
 
 - (void)_cancelScheduledSMSTimeout
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self inFlightSMSTimeoutBlock];
+  inFlightSMSTimeoutBlock = [(IDSPhoneNumberValidationStateMachine *)self inFlightSMSTimeoutBlock];
 
-  if (v3)
+  if (inFlightSMSTimeoutBlock)
   {
-    v4 = [(IDSPhoneNumberValidationStateMachine *)self inFlightSMSTimeoutBlock];
-    dispatch_block_cancel(v4);
+    inFlightSMSTimeoutBlock2 = [(IDSPhoneNumberValidationStateMachine *)self inFlightSMSTimeoutBlock];
+    dispatch_block_cancel(inFlightSMSTimeoutBlock2);
 
     [(IDSPhoneNumberValidationStateMachine *)self setInFlightSMSTimeoutBlock:0];
   }
 }
 
-- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)a3 preflightStackStore:(id)a4 HTTPDelivery:(id)a5 pushHandler:(id)a6 lockdownManager:(id)a7 systemMonitor:(id)a8 arbiter:(id)a9 systemAccountAdapter:(id)a10 dailyMetricData:(id)a11 serviceType:(int64_t)a12
+- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)r preflightStackStore:(id)store HTTPDelivery:(id)delivery pushHandler:(id)handler lockdownManager:(id)manager systemMonitor:(id)monitor arbiter:(id)arbiter systemAccountAdapter:(id)self0 dailyMetricData:(id)self1 serviceType:(int64_t)self2
 {
-  v18 = a3;
-  v48 = a4;
-  v47 = a5;
-  v46 = a6;
-  v45 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
-  v19 = a11;
-  v49 = v18;
-  if (!v18)
+  rCopy = r;
+  storeCopy = store;
+  deliveryCopy = delivery;
+  handlerCopy = handler;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  arbiterCopy = arbiter;
+  adapterCopy = adapter;
+  dataCopy = data;
+  v49 = rCopy;
+  if (!rCopy)
   {
     v20 = +[IMRGLog sms];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -816,18 +816,18 @@ LABEL_52:
   v22 = v21;
   if (v21)
   {
-    v40 = v19;
-    objc_storeStrong(&v21->_systemMonitor, a8);
+    v40 = dataCopy;
+    objc_storeStrong(&v21->_systemMonitor, monitor);
     [(IMSystemMonitor *)v22->_systemMonitor addListener:v22];
-    objc_storeStrong(&v22->_pushHandler, a6);
-    objc_storeStrong(&v22->_CTPNR, a3);
+    objc_storeStrong(&v22->_pushHandler, handler);
+    objc_storeStrong(&v22->_CTPNR, r);
     [v49 setPNRDelegate:v22];
-    v22->_serviceType = a12;
-    objc_storeStrong(&v22->_httpMessageDelivery, a5);
-    objc_storeStrong(&v22->_lockdownManager, a7);
-    objc_storeStrong(&v22->_arbiter, a9);
-    objc_storeStrong(&v22->_systemAccountAdapter, a10);
-    objc_storeStrong(&v22->_preflighStackStore, a4);
+    v22->_serviceType = type;
+    objc_storeStrong(&v22->_httpMessageDelivery, delivery);
+    objc_storeStrong(&v22->_lockdownManager, manager);
+    objc_storeStrong(&v22->_arbiter, arbiter);
+    objc_storeStrong(&v22->_systemAccountAdapter, adapter);
+    objc_storeStrong(&v22->_preflighStackStore, store);
     v22->_reason = 0;
     v23 = objc_alloc_init(NSMutableArray);
     requestors = v22->_requestors;
@@ -851,9 +851,9 @@ LABEL_52:
     v29 = +[IMRGLog sms];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(IDSPhoneNumberValidationStateMachine *)v22 lockdownManager];
+      lockdownManager = [(IDSPhoneNumberValidationStateMachine *)v22 lockdownManager];
       *buf = 138412290;
-      v52 = v30;
+      v52 = lockdownManager;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Lockdown state: %@", buf, 0xCu);
     }
 
@@ -878,7 +878,7 @@ LABEL_52:
       sub_1009294BC();
     }
 
-    v19 = v40;
+    dataCopy = v40;
     if (qword_100CBF008)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -888,10 +888,10 @@ LABEL_52:
     else
     {
       v35 = +[FTDeviceSupport sharedInstance];
-      v36 = [v35 deviceType];
+      deviceType = [v35 deviceType];
 
-      v37 = v36 == 2;
-      v19 = v40;
+      v37 = deviceType == 2;
+      dataCopy = v40;
       if (v37)
       {
         v38 = +[IMRGLog sms];
@@ -904,16 +904,16 @@ LABEL_52:
 
     IDSSetPhoneNumberChangeNotificationEnabled();
     IDSFetchPhoneNumber();
-    objc_storeStrong(&v22->_dailyMetricData, a11);
+    objc_storeStrong(&v22->_dailyMetricData, data);
   }
 
   return v22;
 }
 
-- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)a3 preflightStackStore:(id)a4 serviceType:(int64_t)a5
+- (IDSPhoneNumberValidationStateMachine)initWithCTPNR:(id)r preflightStackStore:(id)store serviceType:(int64_t)type
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  rCopy = r;
   v25 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
   v24 = +[IMLockdownManager sharedInstance];
   v23 = +[IMSystemMonitor sharedInstance];
@@ -928,13 +928,13 @@ LABEL_52:
   v18 = [(IDSSystemAccountAdapter *)v11 initWithQueue:v12];
 
   v13 = [IDSPersistentMap alloc];
-  v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.identityservices.dailyPNRData.%lu", [v7 slotID]);
+  v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.identityservices.dailyPNRData.%lu", [rCopy slotID]);
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
   v14 = [NSArray arrayWithObjects:v26 count:2];
   v15 = [NSSet setWithArray:v14];
   v16 = [(IDSPersistentMap *)v13 initWithIdentifier:v19 versionNumber:0 decodableClasses:v15 migrationBlock:0];
-  v22 = [(IDSPhoneNumberValidationStateMachine *)self initWithCTPNR:v7 preflightStackStore:v6 HTTPDelivery:v8 pushHandler:v25 lockdownManager:v24 systemMonitor:v23 arbiter:v10 systemAccountAdapter:v18 dailyMetricData:v16 serviceType:a5];
+  v22 = [(IDSPhoneNumberValidationStateMachine *)self initWithCTPNR:rCopy preflightStackStore:storeCopy HTTPDelivery:v8 pushHandler:v25 lockdownManager:v24 systemMonitor:v23 arbiter:v10 systemAccountAdapter:v18 dailyMetricData:v16 serviceType:type];
 
   return v22;
 }
@@ -972,19 +972,19 @@ LABEL_52:
 
 - (IDSPreflightStack)currentPreflightStack
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self preflighStackStore];
-  v4 = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
-  v5 = [v3 preflightStackForIdentifier:v4];
+  preflighStackStore = [(IDSPhoneNumberValidationStateMachine *)self preflighStackStore];
+  uniqueIdentifier = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
+  v5 = [preflighStackStore preflightStackForIdentifier:uniqueIdentifier];
 
   return v5;
 }
 
-- (void)setCurrentPreflightStack:(id)a3
+- (void)setCurrentPreflightStack:(id)stack
 {
-  v4 = a3;
-  v6 = [(IDSPhoneNumberValidationStateMachine *)self preflighStackStore];
-  v5 = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
-  [v6 setPreflightStack:v4 forIdentifier:v5];
+  stackCopy = stack;
+  preflighStackStore = [(IDSPhoneNumberValidationStateMachine *)self preflighStackStore];
+  uniqueIdentifier = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
+  [preflighStackStore setPreflightStack:stackCopy forIdentifier:uniqueIdentifier];
 }
 
 - (int64_t)_registrationControlStatus
@@ -998,13 +998,13 @@ LABEL_52:
 - (BOOL)_isUserSubscriptionSelectionStillPending
 {
   v3 = +[IDSCTAdapter sharedInstance];
-  v4 = [v3 dualSIMCapabilityEnabled];
+  dualSIMCapabilityEnabled = [v3 dualSIMCapabilityEnabled];
 
   v5 = +[FTUserConfiguration sharedInstance];
-  v6 = [v5 selectedPhoneNumberRegistrationSubscriptionLabels];
-  v7 = [v6 count];
+  selectedPhoneNumberRegistrationSubscriptionLabels = [v5 selectedPhoneNumberRegistrationSubscriptionLabels];
+  v7 = [selectedPhoneNumberRegistrationSubscriptionLabels count];
 
-  if (v4)
+  if (dualSIMCapabilityEnabled)
   {
     v8 = v7 == 0;
   }
@@ -1019,7 +1019,7 @@ LABEL_52:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v4)
+    if (dualSIMCapabilityEnabled)
     {
       v12 = @"YES";
     }
@@ -1057,30 +1057,30 @@ LABEL_52:
   return v9;
 }
 
-- (void)_notifyFailureWithError:(int64_t)a3
+- (void)_notifyFailureWithError:(int64_t)error
 {
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v53 = _os_activity_create(&_mh_execute_header, "SMS registration center notify failure", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v53, &state);
-  v5 = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
-  v6 = [(IDSPhoneNumberValidationStateMachine *)self _errorCodeForRegistrationError:a3];
-  v7 = [[IDSRegistrationEventTracingSMSValidationEvent alloc] initWithMechanismType:{objc_msgSend(v5, "type")}];
+  _getHighestPriorityMechanism = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
+  v6 = [(IDSPhoneNumberValidationStateMachine *)self _errorCodeForRegistrationError:error];
+  v7 = [[IDSRegistrationEventTracingSMSValidationEvent alloc] initWithMechanismType:{objc_msgSend(_getHighestPriorityMechanism, "type")}];
   v8 = +[IDSRegistrationEventTracing sharedInstance];
-  v9 = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
+  uniqueIdentifier = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
   v10 = [NSError errorWithDomain:@"IDSPhoneNumberValidationErrorDomain" code:v6 userInfo:0];
-  [v8 endEvent:v7 identifier:v9 error:v10];
+  [v8 endEvent:v7 identifier:uniqueIdentifier error:v10];
 
   v42 = v6;
-  if (v6 == -3000 && v5 && [v5 type] == 1)
+  if (v6 == -3000 && _getHighestPriorityMechanism && [_getHighestPriorityMechanism type] == 1)
   {
-    v11 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
-    v40 = v5;
+    _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+    v40 = _getHighestPriorityMechanism;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v12 = v11;
+    v12 = _copyForEnumerating;
     v13 = [v12 countByEnumeratingWithState:&v48 objects:v55 count:16];
     if (v13)
     {
@@ -1107,7 +1107,7 @@ LABEL_52:
       while (v13);
     }
 
-    v5 = v40;
+    _getHighestPriorityMechanism = v40;
     v6 = -3000;
   }
 
@@ -1125,15 +1125,15 @@ LABEL_52:
   }
 
   [(IDSPhoneNumberValidationStateMachine *)self _cancelScheduledHeartbeat];
-  [(IDSPhoneNumberValidationStateMachine *)self _failPromisesWithError:a3];
-  v19 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+  [(IDSPhoneNumberValidationStateMachine *)self _failPromisesWithError:error];
+  _copyForEnumerating2 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
   v41 = v7;
-  v20 = v5;
+  v20 = _getHighestPriorityMechanism;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v21 = v19;
+  v21 = _copyForEnumerating2;
   v22 = [v21 countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v22)
   {
@@ -1150,7 +1150,7 @@ LABEL_52:
         v25 = *(*(&v43 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          [v25 validator:self failedIdentificationWithRegistrationError:a3];
+          [v25 validator:self failedIdentificationWithRegistrationError:error];
         }
       }
 
@@ -1164,13 +1164,13 @@ LABEL_52:
   [v26 timeIntervalSinceDate:self->_phoneNumberValidationStartDate];
   v28 = v27;
 
-  sub_1000236A8(a3);
+  sub_1000236A8(error);
   v29 = [NSNumber numberWithDouble:v28];
   v30 = [NSNumber numberWithUnsignedInt:self->_numberOfSuccessfulSends];
   FTAWDLogRegistrationPhoneNumberValidationFinished();
 
   v31 = [IDSRegistrationPhoneNumberValidationFinishedMetric alloc];
-  v32 = sub_1000236A8(a3);
+  v32 = sub_1000236A8(error);
   v33 = [NSNumber numberWithDouble:v28];
   v34 = [NSNumber numberWithUnsignedInt:self->_numberOfSuccessfulSends];
   v35 = [v31 initWithGuid:0 registrationError:v32 validationDuration:v33 numberOfSMSSent:v34];
@@ -1190,26 +1190,26 @@ LABEL_52:
   cut_arc_os_release();
 }
 
-- (void)_notifySuccess:(id)a3
+- (void)_notifySuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v50 = _os_activity_create(&_mh_execute_header, "SMS registration center notify success", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v50, &state);
   v5 = [[IDSRegistrationEventTracingSMSValidationEvent alloc] initWithMechanismType:0];
   v6 = +[IDSRegistrationEventTracing sharedInstance];
-  v7 = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
-  [v6 endEvent:v5 identifier:v7 error:0];
+  uniqueIdentifier = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
+  [v6 endEvent:v5 identifier:uniqueIdentifier error:0];
   v37 = v5;
 
-  v39 = [v4 phoneNumber];
-  v8 = [v4 phoneBookNumber];
-  v9 = [v4 signature];
-  v10 = [v9 _FTStringFromBaseData];
+  phoneNumber = [successCopy phoneNumber];
+  phoneBookNumber = [successCopy phoneBookNumber];
+  signature = [successCopy signature];
+  _FTStringFromBaseData = [signature _FTStringFromBaseData];
 
-  v11 = [v4 mechanismUsed];
-  v38 = v4;
+  mechanismUsed = [successCopy mechanismUsed];
+  v38 = successCopy;
   if ([(NSMutableArray *)self->_requestors count])
   {
     [(NSMutableArray *)self->_requestors removeAllObjects];
@@ -1223,13 +1223,13 @@ LABEL_52:
     }
 
     [(IDSPhoneNumberValidationStateMachine *)self _cancelScheduledHeartbeat];
-    [(IDSPhoneNumberValidationStateMachine *)self _fulfillPromisesWithPhoneNumber:v39 token:v10];
-    v13 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+    [(IDSPhoneNumberValidationStateMachine *)self _fulfillPromisesWithPhoneNumber:phoneNumber token:_FTStringFromBaseData];
+    _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v14 = v13;
+    v14 = _copyForEnumerating;
     v15 = [v14 countByEnumeratingWithState:&v40 objects:v51 count:16];
     if (v15)
     {
@@ -1247,7 +1247,7 @@ LABEL_52:
           v18 = *(*(&v40 + 1) + 8 * v17);
           if (objc_opt_respondsToSelector())
           {
-            [v18 validator:self identifiedPhoneNumber:v39 token:v10 phoneBookNumber:v8 mechanismUsed:v11];
+            [v18 validator:self identifiedPhoneNumber:phoneNumber token:_FTStringFromBaseData phoneBookNumber:phoneBookNumber mechanismUsed:mechanismUsed];
           }
 
           v17 = v17 + 1;
@@ -1287,12 +1287,12 @@ LABEL_52:
 
   else
   {
-    v32 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+    _copyForEnumerating2 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v29 = v32;
+    v29 = _copyForEnumerating2;
     v33 = [v29 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v33)
     {
@@ -1310,7 +1310,7 @@ LABEL_52:
           v36 = *(*(&v45 + 1) + 8 * v35);
           if (objc_opt_respondsToSelector())
           {
-            [v36 validator:self identifiedPhoneNumber:v39 token:v10 phoneBookNumber:v8 mechanismUsed:v11];
+            [v36 validator:self identifiedPhoneNumber:phoneNumber token:_FTStringFromBaseData phoneBookNumber:phoneBookNumber mechanismUsed:mechanismUsed];
           }
 
           v35 = v35 + 1;
@@ -1330,11 +1330,11 @@ LABEL_52:
   cut_arc_os_release();
 }
 
-- (void)_fulfillPromisesWithPhoneNumber:(id)a3 token:(id)a4
+- (void)_fulfillPromisesWithPhoneNumber:(id)number token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[IDSPhoneNumberIdentification alloc] initWithPhoneNumber:v6 phoneToken:v7];
+  numberCopy = number;
+  tokenCopy = token;
+  v8 = [[IDSPhoneNumberIdentification alloc] initWithPhoneNumber:numberCopy phoneToken:tokenCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1369,9 +1369,9 @@ LABEL_52:
   [(NSMutableArray *)self->_promises removeAllObjects];
 }
 
-- (void)_failPromisesWithError:(int64_t)a3
+- (void)_failPromisesWithError:(int64_t)error
 {
-  v4 = [[NSError alloc] initWithDomain:@"IDSPhoneNumberValidationErrorDomain" code:-[IDSPhoneNumberValidationStateMachine _errorCodeForRegistrationError:](self userInfo:{"_errorCodeForRegistrationError:", a3), 0}];
+  v4 = [[NSError alloc] initWithDomain:@"IDSPhoneNumberValidationErrorDomain" code:-[IDSPhoneNumberValidationStateMachine _errorCodeForRegistrationError:](self userInfo:{"_errorCodeForRegistrationError:", error), 0}];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1406,23 +1406,23 @@ LABEL_52:
   [(NSMutableArray *)self->_promises removeAllObjects];
 }
 
-- (int64_t)_errorCodeForRegistrationError:(int64_t)a3
+- (int64_t)_errorCodeForRegistrationError:(int64_t)error
 {
-  if ((a3 - 5) < 2)
+  if ((error - 5) < 2)
   {
     return -2000;
   }
 
-  if ((a3 - 3) < 2)
+  if ((error - 3) < 2)
   {
     return -3000;
   }
 
-  if (a3 > 34)
+  if (error > 34)
   {
-    if (a3 != 35)
+    if (error != 35)
     {
-      if (a3 == 36)
+      if (error == 36)
       {
         return -5000;
       }
@@ -1433,9 +1433,9 @@ LABEL_52:
     return -4000;
   }
 
-  if (a3)
+  if (error)
   {
-    if (a3 != 2)
+    if (error != 2)
     {
       return -1000;
     }
@@ -1446,7 +1446,7 @@ LABEL_52:
   return -6000;
 }
 
-- (void)_lockdownStateChanged:(id)a3
+- (void)_lockdownStateChanged:(id)changed
 {
   v4 = +[IMRGLog sms];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1455,10 +1455,10 @@ LABEL_52:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Lockdown changed", buf, 2u);
   }
 
-  v5 = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
-  v6 = [v5 isActivated];
+  lockdownManager = [(IDSPhoneNumberValidationStateMachine *)self lockdownManager];
+  isActivated = [lockdownManager isActivated];
 
-  if (v6)
+  if (isActivated)
   {
     v7 = +[IMRGLog sms];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1477,7 +1477,7 @@ LABEL_52:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Registering %@ for lockdown changes", &v5, 0xCu);
   }
 
@@ -1485,7 +1485,7 @@ LABEL_52:
   [v4 addObserver:self selector:"_lockdownStateChanged:" name:IMLockdownDeviceActivatedChangedNotification object:0];
 }
 
-- (void)_deviceIDChangedNotification:(id)a3
+- (void)_deviceIDChangedNotification:(id)notification
 {
   v4 = +[IMRGLog sms];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1507,15 +1507,15 @@ LABEL_52:
   }
 }
 
-- (void)PNRRequestSentWithRequestData:(id)a3
+- (void)PNRRequestSentWithRequestData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 success];
-  v6 = [v4 timeout];
+  dataCopy = data;
+  success = [dataCopy success];
+  timeout = [dataCopy timeout];
   v7 = +[IMRGLog sms];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (success)
     {
       v8 = @"YES";
     }
@@ -1525,13 +1525,13 @@ LABEL_52:
       v8 = @"NO";
     }
 
-    v9 = [v4 token];
+    token = [dataCopy token];
     *buf = 138412802;
     v17 = v8;
     v18 = 2112;
-    v19 = v6;
+    v19 = timeout;
     v20 = 2112;
-    v21 = v9;
+    v21 = token;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "CT phone number registration request sent { success: %@, timeout: %@, pushTokenHexEncoding: %@ }", buf, 0x20u);
   }
 
@@ -1542,23 +1542,23 @@ LABEL_52:
   block[2] = sub_10056C1CC;
   block[3] = &unk_100BDE7D0;
   objc_copyWeak(&v14, buf);
-  v15 = v5;
-  v13 = v6;
-  v11 = v6;
+  v15 = success;
+  v13 = timeout;
+  v11 = timeout;
   dispatch_async(v10, block);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (void)PNRResponseReceivedWithResponseData:(id)a3
+- (void)PNRResponseReceivedWithResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CT phone number registration response received { data: %@ }", buf, 0xCu);
   }
 
@@ -1569,8 +1569,8 @@ LABEL_52:
   v8[2] = sub_10056C428;
   v8[3] = &unk_100BDA6B0;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = dataCopy;
+  v7 = dataCopy;
   dispatch_async(v6, v8);
 
   objc_destroyWeak(&v10);
@@ -1650,12 +1650,12 @@ LABEL_52:
   [(IDSPhoneNumberValidationStateMachine *)self _scheduleHeartbeat:1.0];
 }
 
-- (void)_keychainMigrationComplete:(id)a3
+- (void)_keychainMigrationComplete:(id)complete
 {
   v4 = +[IDSRegistrationKeyManager sharedInstance];
-  v5 = [v4 requiresKeychainMigration];
+  requiresKeychainMigration = [v4 requiresKeychainMigration];
 
-  if ((v5 & 1) == 0)
+  if ((requiresKeychainMigration & 1) == 0)
   {
     v6 = +[IMRGLog sms];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1711,7 +1711,7 @@ LABEL_52:
   }
 }
 
-- (void)_setSMSDeliveryTimeout:(double)a3
+- (void)_setSMSDeliveryTimeout:(double)timeout
 {
   if (!self->_lastSendSMSTimer)
   {
@@ -1723,12 +1723,12 @@ LABEL_52:
 
     if (byte_100CBF010 == 1)
     {
-      a3 = IMGetDomainIntForKey();
+      timeout = IMGetDomainIntForKey();
       v5 = +[IMRGLog warning];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134218498;
-        v11 = a3;
+        timeoutCopy = timeout;
         v12 = 2112;
         v13 = @"com.apple.registration";
         v14 = 2112;
@@ -1739,7 +1739,7 @@ LABEL_52:
 
     v6 = [IMTimer alloc];
     v7 = im_primary_queue();
-    v8 = [v6 initWithTimeInterval:@"com.apple.identityservices.sms-delivery-hbi" name:1 shouldWake:self target:"_smsDeliveryClear" selector:0 userInfo:v7 queue:a3];
+    v8 = [v6 initWithTimeInterval:@"com.apple.identityservices.sms-delivery-hbi" name:1 shouldWake:self target:"_smsDeliveryClear" selector:0 userInfo:v7 queue:timeout];
     lastSendSMSTimer = self->_lastSendSMSTimer;
     self->_lastSendSMSTimer = v8;
   }
@@ -1756,26 +1756,26 @@ LABEL_52:
   dispatch_sync(v3, block);
 }
 
-- (void)_sendSMSVerificationWithMechanism:(id)a3
+- (void)_sendSMSVerificationWithMechanism:(id)mechanism
 {
-  v4 = a3;
+  mechanismCopy = mechanism;
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = mechanismCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to send SMS verification { mechanism: %@ }", &v20, 0xCu);
   }
 
-  v6 = [[IDSRegistrationEventTracingSMSValidationEvent alloc] initWithMechanismType:{objc_msgSend(v4, "type")}];
+  v6 = [[IDSRegistrationEventTracingSMSValidationEvent alloc] initWithMechanismType:{objc_msgSend(mechanismCopy, "type")}];
   v7 = +[IDSRegistrationEventTracing sharedInstance];
-  v8 = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
-  [v7 beginEvent:v6 identifier:v8];
+  uniqueIdentifier = [(IDSCTPNR *)self->_CTPNR uniqueIdentifier];
+  [v7 beginEvent:v6 identifier:uniqueIdentifier];
 
   if ([(IDSPhoneNumberValidationStateMachine *)self _canDeliverSMSNow])
   {
-    v9 = [(IDSPushHandler *)self->_pushHandler pushToken];
-    if (v9)
+    pushToken = [(IDSPushHandler *)self->_pushHandler pushToken];
+    if (pushToken)
     {
       self->_status = 2;
       v10 = +[IMRGLog sms];
@@ -1785,13 +1785,13 @@ LABEL_52:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "6. Setting SMS status to: IDSSMSIdentificationStatusWaitingSMSIdentityVerificationDelivery", &v20, 2u);
       }
 
-      [(IDSPhoneNumberValidationStateMachine *)self _issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:v9 mechanism:v4];
-      v11 = [[IDSPNRMetric alloc] initWithPNRReason:-[IDSPhoneNumberValidationStateMachine reason](self mechanism:{"reason"), objc_msgSend(v4, "type")}];
+      [(IDSPhoneNumberValidationStateMachine *)self _issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:pushToken mechanism:mechanismCopy];
+      v11 = [[IDSPNRMetric alloc] initWithPNRReason:-[IDSPhoneNumberValidationStateMachine reason](self mechanism:{"reason"), objc_msgSend(mechanismCopy, "type")}];
       v12 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v12 logMetric:v11];
 
       dailyMetricData = self->_dailyMetricData;
-      v14 = +[IDSCTPNRValidationMechanism mechanismStringForMechanism:](IDSCTPNRValidationMechanism, "mechanismStringForMechanism:", [v4 type]);
+      v14 = +[IDSCTPNRValidationMechanism mechanismStringForMechanism:](IDSCTPNRValidationMechanism, "mechanismStringForMechanism:", [mechanismCopy type]);
       [(IDSPersistentMap *)dailyMetricData setObject:v14 forKey:IDSPNRRegStatusMetricPNRMechanismKey];
 
       v15 = self->_dailyMetricData;
@@ -1824,28 +1824,28 @@ LABEL_52:
 
   else
   {
-    v9 = +[IMRGLog sms];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    pushToken = +[IMRGLog sms];
+    if (os_log_type_enabled(pushToken, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v20) = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Still waiting on timeout to clear for next Phone Number Validation request to be delivered, waiting", &v20, 2u);
+      _os_log_impl(&_mh_execute_header, pushToken, OS_LOG_TYPE_DEFAULT, "Still waiting on timeout to clear for next Phone Number Validation request to be delivered, waiting", &v20, 2u);
     }
   }
 }
 
-- (void)_issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:(id)a3 mechanism:(id)a4
+- (void)_issueAsyncCoreTelephonyPhoneNumberValidationRequestWithPushToken:(id)token mechanism:(id)mechanism
 {
   CTPNR = self->_CTPNR;
   numberOfSuccessfulSends = self->_numberOfSuccessfulSends;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(IDSPhoneNumberValidationStateMachine *)self sessionID];
+  mechanismCopy = mechanism;
+  tokenCopy = token;
+  sessionID = [(IDSPhoneNumberValidationStateMachine *)self sessionID];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10056D1FC;
   v12[3] = &unk_100BDB8C0;
   v12[4] = self;
-  LOBYTE(CTPNR) = [(IDSCTPNR *)CTPNR issuePNRForMechanism:v8 pushToken:v9 attemptCount:numberOfSuccessfulSends sessionToken:v10 completion:v12];
+  LOBYTE(CTPNR) = [(IDSCTPNR *)CTPNR issuePNRForMechanism:mechanismCopy pushToken:tokenCopy attemptCount:numberOfSuccessfulSends sessionToken:sessionID completion:v12];
 
   if ((CTPNR & 1) == 0)
   {
@@ -1861,27 +1861,27 @@ LABEL_52:
 
 - (void)_sendPreflightVerificationIfNeeded
 {
-  v3 = [(IDSCTPNR *)self->_CTPNR PNRInfo];
-  v4 = [v3 IMSI];
-  v5 = [v3 PLMN];
-  v6 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-  if (v6)
+  pNRInfo = [(IDSCTPNR *)self->_CTPNR PNRInfo];
+  iMSI = [pNRInfo IMSI];
+  pLMN = [pNRInfo PLMN];
+  currentPreflightStack = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+  if (currentPreflightStack)
   {
-    v7 = v6;
-    v8 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-    if ([v8 containsMechanisms])
+    v7 = currentPreflightStack;
+    currentPreflightStack2 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+    if ([currentPreflightStack2 containsMechanisms])
     {
-      v9 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-      v10 = [v9 matchesIMSI:v4 PLMN:v5];
+      currentPreflightStack3 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+      v10 = [currentPreflightStack3 matchesIMSI:iMSI PLMN:pLMN];
 
       if (v10)
       {
         v11 = +[IMRGLog sms];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+          currentPreflightStack4 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
           v18 = 138412290;
-          v19[0] = v12;
+          v19[0] = currentPreflightStack4;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "We're currently iterating over Preflight mechanisms -- continuing { currentPreflightStack: %@ }", &v18, 0xCu);
         }
 
@@ -1895,10 +1895,10 @@ LABEL_52:
     }
   }
 
-  v13 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-  v14 = [v13 maxAllowableNumberOfPreflightRequests];
+  arbiter = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+  maxAllowableNumberOfPreflightRequests = [arbiter maxAllowableNumberOfPreflightRequests];
 
-  if (self->_numberOfPreflights >= v14)
+  if (self->_numberOfPreflights >= maxAllowableNumberOfPreflightRequests)
   {
     v17 = +[IMRGLog warning];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -1919,11 +1919,11 @@ LABEL_52:
       v18 = 67109376;
       LODWORD(v19[0]) = numberOfPreflights;
       WORD2(v19[0]) = 1024;
-      *(v19 + 6) = v14;
+      *(v19 + 6) = maxAllowableNumberOfPreflightRequests;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Haven't completed max number of Preflights yet { preflights: %d, maxPreflights: %d }", &v18, 0xEu);
     }
 
-    [(IDSPhoneNumberValidationStateMachine *)self _sendPreflightVerificationWithIMSI:v4 PLMN:v5];
+    [(IDSPhoneNumberValidationStateMachine *)self _sendPreflightVerificationWithIMSI:iMSI PLMN:pLMN];
   }
 
 LABEL_15:
@@ -1931,46 +1931,46 @@ LABEL_15:
 
 - (id)_getHighestPriorityMechanism
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-  v4 = [v3 containsMechanisms];
+  currentPreflightStack = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+  containsMechanisms = [currentPreflightStack containsMechanisms];
 
-  if (v4)
+  if (containsMechanisms)
   {
-    v5 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-    v6 = [v5 topMechanism];
+    currentPreflightStack2 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+    topMechanism = [currentPreflightStack2 topMechanism];
   }
 
   else
   {
-    v6 = 0;
+    topMechanism = 0;
   }
 
-  return v6;
+  return topMechanism;
 }
 
 - (void)_popHighestPriorityPreflightVerification
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-  v4 = [v3 containsMechanisms];
+  currentPreflightStack = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+  containsMechanisms = [currentPreflightStack containsMechanisms];
 
-  if (v4)
+  if (containsMechanisms)
   {
-    v6 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
-    v5 = [v6 preflightStackByPoppingMechanism];
-    [(IDSPhoneNumberValidationStateMachine *)self setCurrentPreflightStack:v5];
+    currentPreflightStack2 = [(IDSPhoneNumberValidationStateMachine *)self currentPreflightStack];
+    preflightStackByPoppingMechanism = [currentPreflightStack2 preflightStackByPoppingMechanism];
+    [(IDSPhoneNumberValidationStateMachine *)self setCurrentPreflightStack:preflightStackByPoppingMechanism];
   }
 }
 
 - (void)_performHighestPriorityPreflightVerification
 {
-  v3 = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
-  [(IDSPhoneNumberValidationStateMachine *)self _sendSMSVerificationWithMechanism:v3];
+  _getHighestPriorityMechanism = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
+  [(IDSPhoneNumberValidationStateMachine *)self _sendSMSVerificationWithMechanism:_getHighestPriorityMechanism];
 }
 
-- (void)_sendPreflightVerificationWithIMSI:(id)a3 PLMN:(id)a4
+- (void)_sendPreflightVerificationWithIMSI:(id)i PLMN:(id)n
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  nCopy = n;
   v8 = +[IMRGLog sms];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1980,79 +1980,79 @@ LABEL_15:
 
   v9 = objc_alloc_init(IDSPreflightMessage);
   v10 = +[IDSRegistrationEventTracing sharedInstance];
-  v11 = [(IDSPhoneNumberValidationStateMachine *)self CTPNR];
-  v12 = [v11 uniqueIdentifier];
-  v13 = [(IDSPreflightMessage *)v9 overallEventTracingOperation];
-  [v10 trackIDSMessageWithIdentifier:v12 messageType:3 operation:v13];
+  cTPNR = [(IDSPhoneNumberValidationStateMachine *)self CTPNR];
+  uniqueIdentifier = [cTPNR uniqueIdentifier];
+  overallEventTracingOperation = [(IDSPreflightMessage *)v9 overallEventTracingOperation];
+  [v10 trackIDSMessageWithIdentifier:uniqueIdentifier messageType:3 operation:overallEventTracingOperation];
 
   v14 = [NSNumber numberWithUnsignedInt:self->_numberOfPreflights];
   [(IDSPreflightMessage *)v9 setPhoneNumberValidationRetryCount:v14];
 
-  v15 = [(IDSPushHandler *)self->_pushHandler pushToken];
-  [(IDSPreflightMessage *)v9 setPushToken:v15];
+  pushToken = [(IDSPushHandler *)self->_pushHandler pushToken];
+  [(IDSPreflightMessage *)v9 setPushToken:pushToken];
 
   IDSAssignPushIdentityToMessage();
   v16 = +[FTDeviceSupport sharedInstance];
-  v17 = [v16 model];
+  model = [v16 model];
 
   v18 = +[FTDeviceSupport sharedInstance];
-  v19 = [v18 productOSVersion];
+  productOSVersion = [v18 productOSVersion];
 
   v20 = +[FTDeviceSupport sharedInstance];
-  v21 = [v20 productBuildVersion];
+  productBuildVersion = [v20 productBuildVersion];
 
   v22 = +[FTDeviceSupport sharedInstance];
-  v23 = [v22 deviceName];
+  deviceName = [v22 deviceName];
 
-  [(IDSPreflightMessage *)v9 setHardwareVersion:v17];
-  [(IDSPreflightMessage *)v9 setOsVersion:v19];
-  [(IDSPreflightMessage *)v9 setSoftwareVersion:v21];
-  [(IDSPreflightMessage *)v9 setDeviceName:v23];
+  [(IDSPreflightMessage *)v9 setHardwareVersion:model];
+  [(IDSPreflightMessage *)v9 setOsVersion:productOSVersion];
+  [(IDSPreflightMessage *)v9 setSoftwareVersion:productBuildVersion];
+  [(IDSPreflightMessage *)v9 setDeviceName:deviceName];
   [(IDSPreflightMessage *)v9 setTimeout:36000.0];
   v24 = [NSNumber numberWithInteger:[(IDSPhoneNumberValidationStateMachine *)self reason]];
   [(IDSPreflightMessage *)v9 setPnrReason:v24];
 
-  v25 = [(IDSPhoneNumberValidationStateMachine *)self CTPNR];
-  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 hardwareType]);
+  cTPNR2 = [(IDSPhoneNumberValidationStateMachine *)self CTPNR];
+  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [cTPNR2 hardwareType]);
   [(IDSPreflightMessage *)v9 setSimHardwareType:v26];
 
-  v27 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-  v28 = [v27 validationMode];
+  arbiter = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+  validationMode = [arbiter validationMode];
 
-  if (v28 == 3)
+  if (validationMode == 3)
   {
-    v29 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-    v30 = [v29 preflightTestDataOverride];
+    arbiter2 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+    preflightTestDataOverride = [arbiter2 preflightTestDataOverride];
 
     v31 = +[IMRGLog sms];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v30;
+      v40 = preflightTestDataOverride;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Setting test data on preflight message { testData: %@ }", buf, 0xCu);
     }
 
-    [(IDSPreflightMessage *)v9 setTestData:v30];
+    [(IDSPreflightMessage *)v9 setTestData:preflightTestDataOverride];
   }
 
   v32 = +[IMRGLog sms];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v6;
+    v40 = iCopy;
     v41 = 2112;
-    v42 = v7;
+    v42 = nCopy;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Setting IMSI and PLMN on preflight message { IMSI: %@, PLMN: %@ }", buf, 0x16u);
   }
 
-  if (v6)
+  if (iCopy)
   {
-    [(IDSPreflightMessage *)v9 setIMSI:v6];
+    [(IDSPreflightMessage *)v9 setIMSI:iCopy];
   }
 
-  if (v7)
+  if (nCopy)
   {
-    [(IDSPreflightMessage *)v9 setPLMN:v7];
+    [(IDSPreflightMessage *)v9 setPLMN:nCopy];
   }
 
   sub_1004C6E84();
@@ -2061,21 +2061,21 @@ LABEL_15:
   v36[2] = sub_10056DDD4;
   v36[3] = &unk_100BDD200;
   v36[4] = self;
-  v37 = v6;
-  v38 = v7;
-  v33 = v7;
-  v34 = v6;
+  v37 = iCopy;
+  v38 = nCopy;
+  v33 = nCopy;
+  v34 = iCopy;
   [(IDSPreflightMessage *)v9 setCompletionBlock:v36];
-  v35 = [(IDSPhoneNumberValidationStateMachine *)self httpMessageDelivery];
-  [v35 sendMessage:v9];
+  httpMessageDelivery = [(IDSPhoneNumberValidationStateMachine *)self httpMessageDelivery];
+  [httpMessageDelivery sendMessage:v9];
 
   ++self->_numberOfPreflights;
   [(IDSPhoneNumberValidationStateMachine *)self persistNumberOfPreflightAttempts:?];
 }
 
-- (id)_filterUnsupportedMechanisms:(id)a3
+- (id)_filterUnsupportedMechanisms:(id)mechanisms
 {
-  v4 = a3;
+  mechanismsCopy = mechanisms;
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2083,13 +2083,13 @@ LABEL_15:
     *buf = 138412546;
     v24 = v6;
     v25 = 2112;
-    v26 = v4;
+    v26 = mechanismsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Filtering out unsupported mechanisms per our service type. { serviceType: %@, preflightMechanisms: %@ }", buf, 0x16u);
   }
 
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(IDSPhoneNumberValidationStateMachine *)self serviceType];
-  if (v8 == 2)
+  serviceType = [(IDSPhoneNumberValidationStateMachine *)self serviceType];
+  if (serviceType == 2)
   {
     v10 = +[IMRGLog sms];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2102,7 +2102,7 @@ LABEL_15:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = v4;
+    v11 = mechanismsCopy;
     v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
@@ -2131,7 +2131,7 @@ LABEL_15:
     }
   }
 
-  else if (v8 == 1)
+  else if (serviceType == 1)
   {
     v9 = +[IMRGLog sms];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2140,20 +2140,20 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "IDS service type supports all mechanisms.", buf, 2u);
     }
 
-    [v7 addObjectsFromArray:v4];
+    [v7 addObjectsFromArray:mechanismsCopy];
   }
 
   return v7;
 }
 
-- (void)_requestUserConsentForPhoneNumberValidationWithCompletion:(id)a3
+- (void)_requestUserConsentForPhoneNumberValidationWithCompletion:(id)completion
 {
   requestors = self->_requestors;
-  v5 = a3;
+  completionCopy = completion;
   if ([(NSMutableArray *)requestors count])
   {
-    v7 = [(NSMutableArray *)self->_requestors firstObject];
-    [v7 requestUserConsentToValidatePhoneNumberForCTPNR:self->_CTPNR completion:v5];
+    firstObject = [(NSMutableArray *)self->_requestors firstObject];
+    [firstObject requestUserConsentToValidatePhoneNumberForCTPNR:self->_CTPNR completion:completionCopy];
   }
 
   else
@@ -2165,13 +2165,13 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No requestors are present for delegation of SMS permission", buf, 2u);
     }
 
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)handleRegistrationSMSDeliveryFailedWithShouldBypassRetry:(BOOL)a3
+- (void)handleRegistrationSMSDeliveryFailedWithShouldBypassRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v26 = _os_activity_create(&_mh_execute_header, "SMS registration handle SMS delivery failed", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -2194,10 +2194,10 @@ LABEL_15:
 
   if ([(NSMutableArray *)self->_requestors count])
   {
-    v9 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-    v10 = [v9 maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully];
+    arbiter = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+    maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully = [arbiter maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully];
 
-    if (self->_numberOfAttemptsWithoutSuccessfulSend < v10 && !v3)
+    if (self->_numberOfAttemptsWithoutSuccessfulSend < maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully && !retryCopy)
     {
       v11 = +[IMRGLog sms];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2206,7 +2206,7 @@ LABEL_15:
         *buf = 67109376;
         v28 = v12;
         v29 = 1024;
-        v30 = v10;
+        v30 = maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Retrying this validation { attemptsWithoutSuccessfulSend: %d, maxRetries: %d }", buf, 0xEu);
       }
 
@@ -2232,24 +2232,24 @@ LABEL_15:
       v18 = self->_numberOfAttemptsWithoutSuccessfulSend;
       v19 = @"NO";
       *buf = 67109634;
-      if (v3)
+      if (retryCopy)
       {
         v19 = @"YES";
       }
 
       v28 = v18;
       v29 = 1024;
-      v30 = v10;
+      v30 = maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully;
       v31 = 2112;
       v32 = v19;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Not retrying this validation { attemptsWithoutSuccessfulSend: %d, maxRetries: %d, shouldBypassRetry: %@ }", buf, 0x18u);
     }
 
     self->_numberOfAttemptsWithoutSuccessfulSend = 0;
-    v20 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-    v21 = [v20 isValidationModeLegacy];
+    arbiter2 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+    isValidationModeLegacy = [arbiter2 isValidationModeLegacy];
 
-    if ((v21 & 1) == 0)
+    if ((isValidationModeLegacy & 1) == 0)
     {
       [(IDSPhoneNumberValidationStateMachine *)self _popHighestPriorityPreflightVerification];
       self->_status = 1;
@@ -2298,9 +2298,9 @@ LABEL_26:
   cut_arc_os_release();
 }
 
-- (void)handleRegistrationSMSSuccessfullyDeliveredWithTelephonyTimeout:(id)a3
+- (void)handleRegistrationSMSSuccessfullyDeliveredWithTelephonyTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v18 = _os_activity_create(&_mh_execute_header, "SMS registration center handle SMS successfully delivered", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -2330,7 +2330,7 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "11. Setting SMS status to: IDSSMSIdentificationStatusWaitingSMSIdentityVerificationResponse", buf, 2u);
     }
 
-    [v4 doubleValue];
+    [timeoutCopy doubleValue];
     if (v8 <= 5.0)
     {
       v11 = 1800.0;
@@ -2342,16 +2342,16 @@ LABEL_26:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = *&v4;
+        v20 = *&timeoutCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Using telephony-provided timeout { telephonyTimeout: %@ }", buf, 0xCu);
       }
 
-      [v4 doubleValue];
+      [timeoutCopy doubleValue];
       v11 = v10;
     }
 
-    v13 = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
-    [v13 minimumIntervalBetweenValidationAttempts];
+    arbiter = [(IDSPhoneNumberValidationStateMachine *)self arbiter];
+    [arbiter minimumIntervalBetweenValidationAttempts];
     v15 = v14;
 
     if (v11 <= v15)
@@ -2369,7 +2369,7 @@ LABEL_26:
       v23 = 2048;
       v24 = 0x409C200000000000;
       v25 = 2112;
-      v26 = v4;
+      v26 = timeoutCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting timeout for Phone Number Validation Request { timeoutInSeconds: %f, minimumReasonableTimeout: %f, defaultTimeout: %f, telephonyTimeout: %@ }", buf, 0x2Au);
     }
 
@@ -2393,12 +2393,12 @@ LABEL_26:
   cut_arc_os_release();
 }
 
-- (void)handleIncomingSMSForResponse:(id)a3
+- (void)handleIncomingSMSForResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 phoneNumber];
-  v6 = [v4 signature];
-  v7 = [v4 mechanismUsed];
+  responseCopy = response;
+  phoneNumber = [responseCopy phoneNumber];
+  signature = [responseCopy signature];
+  mechanismUsed = [responseCopy mechanismUsed];
   v32 = _os_activity_create(&_mh_execute_header, "SMS registration center handle incoming SMS", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
@@ -2417,7 +2417,7 @@ LABEL_26:
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     *buf = 138412546;
-    v34 = v5;
+    v34 = phoneNumber;
     v35 = 2112;
     v36 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Phone number: %@     Class: %@", buf, 0x16u);
@@ -2429,7 +2429,7 @@ LABEL_26:
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     *buf = 138412546;
-    v34 = v6;
+    v34 = signature;
     v35 = 2112;
     v36 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Signature: %@        Class: %@", buf, 0x16u);
@@ -2438,7 +2438,7 @@ LABEL_26:
   v15 = +[IMRGLog sms];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [IDSCTPNRValidationMechanism mechanismStringForMechanism:v7];
+    v16 = [IDSCTPNRValidationMechanism mechanismStringForMechanism:mechanismUsed];
     *buf = 138412290;
     v34 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Mechanism used: %@", buf, 0xCu);
@@ -2478,20 +2478,20 @@ LABEL_26:
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "12. Setting SMS status to: IDSSMSIdentificationStatusIdle", buf, 2u);
         }
 
-        v28 = v4;
+        v28 = responseCopy;
         im_dispatch_after_primary_queue();
       }
 
       else
       {
-        v29 = v6;
+        v29 = signature;
         im_dispatch_after_primary_queue();
       }
     }
 
     else
     {
-      v30 = v5;
+      v30 = phoneNumber;
       im_dispatch_after_primary_queue();
     }
   }
@@ -2565,16 +2565,16 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Sending another", buf, 2u);
   }
 
-  v5 = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
-  v6 = v5;
-  if (v5 && [v5 type] == 1)
+  _getHighestPriorityMechanism = [(IDSPhoneNumberValidationStateMachine *)self _getHighestPriorityMechanism];
+  v6 = _getHighestPriorityMechanism;
+  if (_getHighestPriorityMechanism && [_getHighestPriorityMechanism type] == 1)
   {
-    v7 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+    _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v7;
+    v8 = _copyForEnumerating;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v21 count:16];
     if (v9)
     {
@@ -2614,9 +2614,9 @@ LABEL_26:
   cut_arc_os_release();
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v7 = a3;
+  listenerCopy = listener;
   if (([(NSMutableArray *)self->_handlers containsObjectIdenticalTo:?]& 1) == 0)
   {
     handlers = self->_handlers;
@@ -2629,27 +2629,27 @@ LABEL_26:
       handlers = self->_handlers;
     }
 
-    [(NSMutableArray *)handlers addObject:v7];
+    [(NSMutableArray *)handlers addObject:listenerCopy];
   }
 }
 
-- (void)addPhoneNumberValidationRequestor:(id)a3
+- (void)addPhoneNumberValidationRequestor:(id)requestor
 {
-  v4 = a3;
+  requestorCopy = requestor;
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     requestors = self->_requestors;
     v7 = 138412546;
-    v8 = v4;
+    v8 = requestorCopy;
     v9 = 2112;
     v10 = requestors;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding phone number valiation requestor { requestor: %@, requestors: %@ }", &v7, 0x16u);
   }
 
-  if (v4 && ([(NSMutableArray *)self->_requestors containsObject:v4]& 1) == 0)
+  if (requestorCopy && ([(NSMutableArray *)self->_requestors containsObject:requestorCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_requestors addObject:v4];
+    [(NSMutableArray *)self->_requestors addObject:requestorCopy];
   }
 
   if ([(NSMutableArray *)self->_requestors count])
@@ -2658,37 +2658,37 @@ LABEL_26:
   }
 }
 
-- (id)identifyPhoneNumberForRequestor:(id)a3 queue:(id)a4
+- (id)identifyPhoneNumberForRequestor:(id)requestor queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CUTPromiseSeal alloc] initWithQueue:v6];
+  queueCopy = queue;
+  requestorCopy = requestor;
+  v8 = [[CUTPromiseSeal alloc] initWithQueue:queueCopy];
 
   [(NSMutableArray *)self->_promises addObject:v8];
-  [(IDSPhoneNumberValidationStateMachine *)self addPhoneNumberValidationRequestor:v7];
+  [(IDSPhoneNumberValidationStateMachine *)self addPhoneNumberValidationRequestor:requestorCopy];
 
-  v9 = [v8 promise];
+  promise = [v8 promise];
 
-  return v9;
+  return promise;
 }
 
-- (void)removePhoneNumberValidationRequestor:(id)a3
+- (void)removePhoneNumberValidationRequestor:(id)requestor
 {
-  v4 = a3;
+  requestorCopy = requestor;
   v5 = +[IMRGLog sms];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     requestors = self->_requestors;
     v8 = 138412546;
-    v9 = v4;
+    v9 = requestorCopy;
     v10 = 2112;
     v11 = requestors;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing phone number valiation requestor { requestor: %@, requestors: %@ }", &v8, 0x16u);
   }
 
-  if (v4 && [(NSMutableArray *)self->_requestors containsObject:v4])
+  if (requestorCopy && [(NSMutableArray *)self->_requestors containsObject:requestorCopy])
   {
-    [(NSMutableArray *)self->_requestors removeObject:v4];
+    [(NSMutableArray *)self->_requestors removeObject:requestorCopy];
   }
 
   if (![(NSMutableArray *)self->_requestors count])

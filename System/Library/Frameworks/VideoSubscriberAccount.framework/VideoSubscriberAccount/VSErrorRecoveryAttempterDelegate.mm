@@ -1,6 +1,6 @@
 @interface VSErrorRecoveryAttempterDelegate
 + (id)sharedDelegate;
-- (void)didPresentErrorWithRecovery:(BOOL)a3 contextInfo:(void *)a4;
+- (void)didPresentErrorWithRecovery:(BOOL)recovery contextInfo:(void *)info;
 @end
 
 @implementation VSErrorRecoveryAttempterDelegate
@@ -26,17 +26,17 @@ uint64_t __50__VSErrorRecoveryAttempterDelegate_sharedDelegate__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)didPresentErrorWithRecovery:(BOOL)a3 contextInfo:(void *)a4
+- (void)didPresentErrorWithRecovery:(BOOL)recovery contextInfo:(void *)info
 {
-  if (a4)
+  if (info)
   {
-    v5 = a4;
-    self = (*(a4 + 2))(a4, a3);
-    a4 = v5;
+    infoCopy = info;
+    self = (*(info + 2))(info, recovery);
+    info = infoCopy;
     v4 = vars8;
   }
 
-  MEMORY[0x2821F97C8](self, a2, a3, a4);
+  MEMORY[0x2821F97C8](self, a2, recovery, info);
 }
 
 @end

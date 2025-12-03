@@ -1,48 +1,48 @@
 @interface NIServerAcwgSession
 - (BOOL)_validateLockAttributes;
 - (JobConfig)_aopJobConfigWithTimeouts;
-- (NIServerAcwgSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (NIServerAcwgSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (NIServerNumberResponse)isRangingLimitExceeded;
-- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)a3;
+- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)params;
 - (duration<long)nominalCycleRate;
 - (id).cxx_construct;
 - (id)_configureForOwnerDevice;
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4;
-- (id)_setURSKTTL:(unint64_t)a3;
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier;
+- (id)_setURSKTTL:(unint64_t)l;
 - (id)configure;
 - (id)deleteURSKs;
 - (id)disableAllServices;
 - (id)lastConfiguration;
-- (id)pauseWithSource:(int64_t)a3;
-- (id)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 monotonicTimeSec:(double)a6 response:(id *)a7;
+- (id)pauseWithSource:(int64_t)source;
+- (id)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter monotonicTimeSec:(double)sec response:(id *)response;
 - (id)run;
-- (shared_ptr<rose::objects::AlishaSession>)_buildAlishaSession:(const void *)a3;
+- (shared_ptr<rose::objects::AlishaSession>)_buildAlishaSession:(const void *)session;
 - (unint64_t)requiresUWBToRun;
-- (void)_alishaSessionInvalidatedWithReason:(int)a3;
-- (void)_alishaStateChangedFromState:(unsigned __int8)a3 toNewState:(unsigned __int8)a4;
-- (void)_handleHealthChanged:(int)a3;
-- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)a3;
-- (void)_handleSessionStats:(SessionStats *)a3;
-- (void)_handleTimeoutEvent:(int)a3 time:(double)a4;
-- (void)_sendAnalyticsOnRangingComplete:(int64_t)a3 suspendReason:(int64_t)a4;
+- (void)_alishaSessionInvalidatedWithReason:(int)reason;
+- (void)_alishaStateChangedFromState:(unsigned __int8)state toNewState:(unsigned __int8)newState;
+- (void)_handleHealthChanged:(int)changed;
+- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)update;
+- (void)_handleSessionStats:(SessionStats *)stats;
+- (void)_handleTimeoutEvent:(int)event time:(double)time;
+- (void)_sendAnalyticsOnRangingComplete:(int64_t)complete suspendReason:(int64_t)reason;
 - (void)dealloc;
-- (void)didReceiveAopSFZoneUpdate:(AOPRoseSFZoneUpdate)a3;
-- (void)didReceiveAopSensorFusionUpdate:(int)a3 withBtConnHandle:(unsigned __int16)a4;
+- (void)didReceiveAopSFZoneUpdate:(AOPRoseSFZoneUpdate)update;
+- (void)didReceiveAopSensorFusionUpdate:(int)update withBtConnHandle:(unsigned __int16)handle;
 - (void)invalidate;
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4;
-- (void)processAcwgM3Msg:(id)a3;
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4;
-- (void)processUpdatedLockState:(unsigned __int16)a3;
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4;
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4;
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason;
+- (void)processAcwgM3Msg:(id)msg;
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason;
+- (void)processUpdatedLockState:(unsigned __int16)state;
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause;
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason;
 @end
 
 @implementation NIServerAcwgSession
 
-- (NIServerAcwgSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerAcwgSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -56,8 +56,8 @@
     [v33 handleFailureInMethod:a2 object:self file:@"NIServerAcwgSession.mm" lineNumber:353 description:@"NIServerAcwgSession given invalid configuration."];
   }
 
-  v20 = [v9 serverSessionIdentifier];
-  v21 = v20 == 0;
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
+  v21 = serverSessionIdentifier == 0;
 
   if (v21)
   {
@@ -69,27 +69,27 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = v10;
+    v37 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#ses-acwg,initWithResourcesManager. Configuration: %@", buf, 0xCu);
   }
 
   v35.receiver = self;
   v35.super_class = NIServerAcwgSession;
-  v23 = [(NIServerBaseSession *)&v35 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v23 = [(NIServerBaseSession *)&v35 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v23)
   {
-    v24 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v25 = *(v23 + 6);
-    *(v23 + 6) = v24;
+    *(v23 + 6) = clientConnectionQueue;
 
-    v26 = [v10 copy];
+    v26 = [configurationCopy copy];
     v27 = *(v23 + 42);
     *(v23 + 42) = v26;
 
-    v28 = [v9 serverSessionIdentifier];
-    v29 = [v28 UUIDString];
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
     v30 = *(v23 + 7);
-    *(v23 + 7) = v29;
+    *(v23 + 7) = uUIDString;
 
     dispatch_queue_set_specific(*(v23 + 6), "com.apple.nearbyd.acwg-session.queue-context-key", *(v23 + 7), 0);
     v31 = v23;
@@ -128,7 +128,7 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#ses-acwg,invalidate.", buf, 2u);
   }
 
-  v12 = [(NIServerAcwgSession *)self disableAllServices];
+  disableAllServices = [(NIServerAcwgSession *)self disableAllServices];
   v13.receiver = self;
   v13.super_class = NIServerAcwgSession;
   [(NIServerBaseSession *)&v13 invalidate];
@@ -151,7 +151,7 @@
 
   v23.receiver = self;
   v23.super_class = NIServerAcwgSession;
-  v12 = [(NIServerBaseSession *)&v23 disableAllServices];
+  disableAllServices = [(NIServerBaseSession *)&v23 disableAllServices];
   ptr = self->_acwgManager.__ptr_;
   if (ptr)
   {
@@ -195,7 +195,7 @@
   v19 = sub_10035D02C();
   sub_10035D290(v19, 2, self->_lockBtConnHandle, 0);
 
-  return v12;
+  return disableAllServices;
 }
 
 - (void)dealloc
@@ -262,8 +262,8 @@
     sub_1004A9FB4(v3, v4, v5, v6, v7, v8, v9, v10);
   }
 
-  v11 = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
-  v12 = v11 == 0;
+  lockIdentifier = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
+  v12 = lockIdentifier == 0;
 
   if (v12)
   {
@@ -278,18 +278,18 @@
   else
   {
     v13 = [NSUUID alloc];
-    v14 = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
-    v15 = [v13 initWithUUIDString:v14];
+    lockIdentifier2 = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
+    v15 = [v13 initWithUUIDString:lockIdentifier2];
 
     v16 = v15 != 0;
     if (v15)
     {
-      v17 = [(NIAcwgConfiguration *)self->_configuration lockBtConnHandle];
-      self->_lockBtConnHandle = v17;
-      if (v17 == 0xFFFF)
+      lockBtConnHandle = [(NIAcwgConfiguration *)self->_configuration lockBtConnHandle];
+      self->_lockBtConnHandle = lockBtConnHandle;
+      if (lockBtConnHandle == 0xFFFF)
       {
-        v18 = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
-        v19 = [v18 substringToIndex:2];
+        lockIdentifier3 = [(NIAcwgConfiguration *)self->_configuration lockIdentifier];
+        v19 = [lockIdentifier3 substringToIndex:2];
 
         *buf = 0;
         v20 = [NSScanner scannerWithString:v19];
@@ -325,15 +325,15 @@
 
 - (id)configure
 {
-  v43 = self;
+  selfCopy = self;
   v2 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
     sub_1004AA0A4(v2, v3, v4, v5, v6, v7, v8, v9);
   }
 
-  dispatch_assert_queue_V2(v43->_clientQueue);
-  if (!v43->_configuration)
+  dispatch_assert_queue_V2(selfCopy->_clientQueue);
+  if (!selfCopy->_configuration)
   {
     sub_1004AA20C();
   }
@@ -345,19 +345,19 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#ses-acwg,configure", buf, 2u);
   }
 
-  if ([(NIServerAcwgSession *)v43 _validateLockAttributes])
+  if ([(NIServerAcwgSession *)selfCopy _validateLockAttributes])
   {
-    if (!v43->_alishaSystem.__ptr_)
+    if (!selfCopy->_alishaSystem.__ptr_)
     {
       operator new();
     }
 
-    if (!v43->_uwbSystemListener.__ptr_)
+    if (!selfCopy->_uwbSystemListener.__ptr_)
     {
       sub_1001FC4E0();
     }
 
-    ptr = v43->_alishaSystem.__ptr_;
+    ptr = selfCopy->_alishaSystem.__ptr_;
     sub_100340E38(buf);
     if (*buf)
     {
@@ -370,7 +370,7 @@
       v44 = NSLocalizedDescriptionKey;
       v45 = @"Failed to query device capabilities.";
       v20 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-      v21 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v20];
+      _configureForOwnerDevice = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v20];
 
       goto LABEL_28;
     }
@@ -405,10 +405,10 @@
         }
       }
 
-      sub_1001FBA10(&v43->_cachedCapabilities, &buf[8]);
-      if ([(NIAcwgConfiguration *)v43->_configuration configurationType]== 1)
+      sub_1001FBA10(&selfCopy->_cachedCapabilities, &buf[8]);
+      if ([(NIAcwgConfiguration *)selfCopy->_configuration configurationType]== 1)
       {
-        v21 = [(NIServerAcwgSession *)v43 _configureForOwnerDevice];
+        _configureForOwnerDevice = [(NIServerAcwgSession *)selfCopy _configureForOwnerDevice];
 LABEL_28:
         if (v42 == 1)
         {
@@ -450,11 +450,11 @@ LABEL_28:
   v48 = NSLocalizedDescriptionKey;
   v49 = @"Lock identifier nil or invalid.";
   v30 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-  v21 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v30];
+  _configureForOwnerDevice = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v30];
 
 LABEL_33:
 
-  return v21;
+  return _configureForOwnerDevice;
 }
 
 - (id)run
@@ -519,7 +519,7 @@ LABEL_33:
   return v17;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -530,7 +530,7 @@ LABEL_33:
   v13 = qword_1009F9820;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = sub_100300878(a3);
+    v14 = sub_100300878(source);
     *buf = 138412290;
     *&buf[4] = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ses-acwg,pause owner session: %@", buf, 0xCu);
@@ -547,7 +547,7 @@ LABEL_33:
   }
 
   v26 = 0;
-  switch(a3)
+  switch(source)
   {
     case 1:
       v16 = 107;
@@ -631,10 +631,10 @@ LABEL_32:
   return v24;
 }
 
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason
 {
-  v6 = a3;
-  v42 = a4;
+  msgCopy = msg;
+  reasonCopy = reason;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -644,9 +644,9 @@ LABEL_32:
   v15 = qword_1009F9820;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = NIAcwgSessionTriggerReasonToString(v42);
+    v16 = NIAcwgSessionTriggerReasonToString(reasonCopy);
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = msgCopy;
     *&buf[12] = 2112;
     *&buf[14] = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-acwg,processAcwgM1Msg:%@ triggerReason:%@", buf, 0x16u);
@@ -659,18 +659,18 @@ LABEL_32:
 
   v41.receiver = self;
   v41.super_class = NIServerAcwgSession;
-  v17 = [(NIServerBaseSession *)&v41 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v41 resourcesManager];
   ptr = self->_configProvider.__ptr_;
-  v19 = [v6 selectedProtocolVersion];
-  if (v19 == 9 || v19 == 256)
+  selectedProtocolVersion = [msgCopy selectedProtocolVersion];
+  if (selectedProtocolVersion == 9 || selectedProtocolVersion == 256)
   {
-    *(ptr + 12) = v19;
+    *(ptr + 12) = selectedProtocolVersion;
     p_sessionReasonStack = &self->_sessionReasonStack;
-    sub_1001FC5C4(&self->_sessionReasonStack.c.__map_.__first_, &v42);
+    sub_1001FC5C4(&self->_sessionReasonStack.c.__map_.__first_, &reasonCopy);
     v21 = self->_acwgManager.__ptr_;
-    if (v6)
+    if (msgCopy)
     {
-      [v6 toStruct];
+      [msgCopy toStruct];
     }
 
     else
@@ -734,8 +734,8 @@ LABEL_32:
 
       v34 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:v33 userInfo:v31];
 
-      v35 = [v17 remote];
-      [v35 didProcessAcwgM1MsgWithResponse:0 error:v34];
+      remote = [resourcesManager remote];
+      [remote didProcessAcwgM1MsgWithResponse:0 error:v34];
 
       size = p_sessionReasonStack->c.__size_;
       if (!size)
@@ -750,8 +750,8 @@ LABEL_32:
     else
     {
       v27 = [NIAcwgM2Msg fromStruct:v38, v39];
-      v28 = [v17 remote];
-      [v28 didProcessAcwgM1MsgWithResponse:v27 error:0];
+      remote2 = [resourcesManager remote];
+      [remote2 didProcessAcwgM1MsgWithResponse:v27 error:0];
 
       v29 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -765,7 +765,7 @@ LABEL_32:
 
   else
   {
-    v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Protocol version 0x%04X not supported", [v6 selectedProtocolVersion]);
+    v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Protocol version 0x%04X not supported", [msgCopy selectedProtocolVersion]);
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_1004AA2B0();
@@ -776,14 +776,14 @@ LABEL_32:
     v23 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     v24 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-19702 userInfo:v23];
 
-    v25 = [v17 remote];
-    [v25 didProcessAcwgM1MsgWithResponse:0 error:v24];
+    remote3 = [resourcesManager remote];
+    [remote3 didProcessAcwgM1MsgWithResponse:0 error:v24];
   }
 }
 
-- (void)processAcwgM3Msg:(id)a3
+- (void)processAcwgM3Msg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -794,7 +794,7 @@ LABEL_32:
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v34 = v4;
+    *v34 = msgCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ses-acwg,processAcwgM3Msg:%@", buf, 0xCu);
   }
 
@@ -805,9 +805,9 @@ LABEL_32:
 
   v28.receiver = self;
   v28.super_class = NIServerAcwgSession;
-  v14 = [(NIServerBaseSession *)&v28 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v28 resourcesManager];
   ptr = self->_acwgManager.__ptr_;
-  *v31 = [v4 toStruct];
+  *v31 = [msgCopy toStruct];
   *&v31[8] = v16;
   sub_1003A4088(ptr, v31, buf);
   v17 = *buf;
@@ -851,8 +851,8 @@ LABEL_32:
 
     v25 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:v24 userInfo:v22];
 
-    v26 = [v14 remote];
-    [v26 didProcessAcwgM3MsgWithResponse:0 error:v25];
+    remote = [resourcesManager remote];
+    [remote didProcessAcwgM3MsgWithResponse:0 error:v25];
 
     size = self->_sessionReasonStack.c.__size_;
     if (size)
@@ -867,8 +867,8 @@ LABEL_32:
     *v31 = *&v34[1];
     v32 = *&v34[5];
     v18 = [NIAcwgM4Msg fromStruct:v31];
-    v19 = [v14 remote];
-    [v19 didProcessAcwgM3MsgWithResponse:v18 error:0];
+    remote2 = [resourcesManager remote];
+    [remote2 didProcessAcwgM3MsgWithResponse:v18 error:0];
 
     v20 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -880,9 +880,9 @@ LABEL_32:
   }
 }
 
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason
 {
-  v28 = a4;
+  reasonCopy = reason;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -892,9 +892,9 @@ LABEL_32:
   v14 = qword_1009F9820;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = NIAcwgSuspendTriggerReasonToString(v28);
+    v15 = NIAcwgSuspendTriggerReasonToString(reasonCopy);
     *buf = 67109378;
-    *&buf[4] = a3;
+    *&buf[4] = ranging;
     *&buf[8] = 2112;
     *&buf[10] = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-acwg,suspendAcwgRanging:%u triggerReason:%@", buf, 0x12u);
@@ -905,10 +905,10 @@ LABEL_32:
     sub_1004AA7FC();
   }
 
-  sub_1001FBD78(&self->_suspendReasonStack.c.__map_.__first_, &v28);
-  if ((v28 - 100) <= 7)
+  sub_1001FBD78(&self->_suspendReasonStack.c.__map_.__first_, &reasonCopy);
+  if ((reasonCopy - 100) <= 7)
   {
-    if (((1 << (v28 - 100)) & 0x8F) == 0)
+    if (((1 << (reasonCopy - 100)) & 0x8F) == 0)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
       {
@@ -933,7 +933,7 @@ LABEL_32:
     goto LABEL_14;
   }
 
-  if ((v28 - 200) < 2)
+  if ((reasonCopy - 200) < 2)
   {
 LABEL_14:
     v17 = sub_1003A3CB0(self->_acwgManager.__ptr_);
@@ -944,7 +944,7 @@ LABEL_14:
 LABEL_15:
   v27.receiver = self;
   v27.super_class = NIServerAcwgSession;
-  v18 = [(NIServerBaseSession *)&v27 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v27 resourcesManager];
   if (v17)
   {
     sub_1003A4500(v17, buf);
@@ -985,8 +985,8 @@ LABEL_15:
 
     v24 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:v23 userInfo:v21];
 
-    v25 = [v18 remote];
-    [v25 uwbSessionDidFailWithError:v24];
+    remote = [resourcesManager remote];
+    [remote uwbSessionDidFailWithError:v24];
   }
 
   else
@@ -1000,7 +1000,7 @@ LABEL_15:
   }
 }
 
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason
 {
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1011,9 +1011,9 @@ LABEL_15:
   v15 = qword_1009F9820;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = NIAcwgSessionTriggerReasonToString(a4);
+    v16 = NIAcwgSessionTriggerReasonToString(reason);
     *buf = 67109378;
-    *&buf[4] = a3;
+    *&buf[4] = msg;
     LOWORD(v36) = 2112;
     *(&v36 + 2) = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-acwg,processAcwgRangingSessionResumeRequestMsg:%u triggerReason:%@", buf, 0x12u);
@@ -1025,13 +1025,13 @@ LABEL_15:
   }
 
   p_sessionReasonStack = &self->_sessionReasonStack;
-  *buf = a4;
+  *buf = reason;
   sub_1001FC5C4(&self->_sessionReasonStack.c.__map_.__first_, buf);
-  sub_1003A4168(self->_acwgManager.__ptr_, a3, buf);
+  sub_1003A4168(self->_acwgManager.__ptr_, msg, buf);
   v18 = *buf;
   v32.receiver = self;
   v32.super_class = NIServerAcwgSession;
-  v19 = [(NIServerBaseSession *)&v32 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v32 resourcesManager];
   if (v18 || v37 != 1)
   {
     sub_1003A4500(v18, v30);
@@ -1072,8 +1072,8 @@ LABEL_15:
 
     v27 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:v26 userInfo:v24];
 
-    v28 = [v19 remote];
-    [v28 didProcessAcwgRangingSessionResumeRequestMsgWithResponse:0 error:v27];
+    remote = [resourcesManager remote];
+    [remote didProcessAcwgRangingSessionResumeRequestMsgWithResponse:0 error:v27];
 
     size = p_sessionReasonStack->c.__size_;
     if (!size)
@@ -1088,8 +1088,8 @@ LABEL_15:
   else
   {
     v20 = [NIAcwgRangingSessionResumeResponseMsg fromStruct:v36];
-    v21 = [v19 remote];
-    [v21 didProcessAcwgRangingSessionResumeRequestMsgWithResponse:v20 error:0];
+    remote2 = [resourcesManager remote];
+    [remote2 didProcessAcwgRangingSessionResumeRequestMsgWithResponse:v20 error:0];
 
     v22 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1100,30 +1100,30 @@ LABEL_15:
   }
 }
 
-- (void)processUpdatedLockState:(unsigned __int16)a3
+- (void)processUpdatedLockState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    LODWORD(v15) = v3;
+    LODWORD(v15) = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-acwg,processUpdatedLockState:0x%04x", &v14, 8u);
   }
 
-  v6 = v3 >> 8;
+  v6 = stateCopy >> 8;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3 <= 1u)
+    if (stateCopy <= 1u)
     {
-      if (!v3)
+      if (!stateCopy)
       {
         v8 = @"Secured";
         goto LABEL_16;
       }
 
-      if (v3 == 1)
+      if (stateCopy == 1)
       {
         v8 = @"Unsecured";
         goto LABEL_16;
@@ -1132,7 +1132,7 @@ LABEL_15:
 
     else
     {
-      switch(v3)
+      switch(stateCopy)
       {
         case 2u:
           v8 = @"Jammed";
@@ -1169,7 +1169,7 @@ LABEL_16:
   }
 
 LABEL_20:
-  if (v3 == 1 && v6 == 4)
+  if (stateCopy == 1 && v6 == 4)
   {
     v11 = +[NIServerUsageAnalyticsAggregator sharedInstance];
     v12 = +[NSDate now];
@@ -1177,21 +1177,21 @@ LABEL_20:
   }
 
   v13 = sub_10035D02C();
-  sub_10035D290(v13, 3, self->_lockBtConnHandle, v3);
+  sub_10035D290(v13, 3, self->_lockBtConnHandle, stateCopy);
 }
 
-- (id)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 monotonicTimeSec:(double)a6 response:(id *)a7
+- (id)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter monotonicTimeSec:(double)sec response:(id *)response
 {
   v13 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v14 = @"Unknown";
-    if (a3 == 138)
+    if (type == 138)
     {
       v14 = @"ConnCompltEventCount0";
     }
 
-    if (a3 == 12)
+    if (type == 12)
     {
       v14 = @"LESetPHY";
     }
@@ -1200,24 +1200,24 @@ LABEL_20:
     *buf = 138413058;
     v51 = v15;
     v52 = 2048;
-    v53 = a4;
+    ticksCopy = ticks;
     v54 = 2048;
-    v55 = a5;
+    counterCopy = counter;
     v56 = 2048;
-    *v57 = a6;
+    *v57 = sec;
     v16 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#ses-acwg,processBluetoothHostTimeSyncWithType got event: %@, btc clock ticks: %llu, event counter: %llu, monotonic time: %f [s]", buf, 0x2Au);
   }
 
-  *a7 = 0;
+  *response = 0;
   if (!self->_acwgManager.__ptr_)
   {
     sub_1004AAC5C();
   }
 
-  if (a3 == 12 || a3 == 138)
+  if (type == 12 || type == 138)
   {
-    if (a3 == 12)
+    if (type == 12)
     {
       v17 = 12;
     }
@@ -1229,20 +1229,20 @@ LABEL_20:
 
     v18 = sub_1000054A8();
     v19 = sub_100460AB0(v18);
-    v20 = 7500 * a4;
+    ticksCopy2 = 7500 * ticks;
     if (v19)
     {
-      v20 = a4;
+      ticksCopy2 = ticks;
     }
 
     *buf = v17;
     LODWORD(v51) = 1;
     BYTE4(v51) = 0;
-    BYTE2(v53) = 0;
-    v55 = v20;
+    BYTE2(ticksCopy) = 0;
+    counterCopy = ticksCopy2;
     LOBYTE(v56) = 1;
-    *&v57[3] = a5;
-    *&v57[7] = a6;
+    *&v57[3] = counter;
+    *&v57[7] = sec;
     sub_1003A4224(self->_acwgManager.__ptr_, buf, &v39);
     if (v39)
     {
@@ -1284,7 +1284,7 @@ LABEL_20:
       v34 = [NIBluetoothHostTimeSyncResponse alloc];
       LOWORD(v36) = v46;
       v24 = 0;
-      *a7 = [(NIBluetoothHostTimeSyncResponse *)v34 initWithDeviceEventCount:v40 uwbDeviceTimeUs:v41 uwbDeviceTimeUncertainty:v42 uwbClockSkewMeasurementAvailable:v43 deviceMaxPpm:v44 success:v45 retryDelay:v36];
+      *response = [(NIBluetoothHostTimeSyncResponse *)v34 initWithDeviceEventCount:v40 uwbDeviceTimeUs:v41 uwbDeviceTimeUncertainty:v42 uwbClockSkewMeasurementAvailable:v43 deviceMaxPpm:v44 success:v45 retryDelay:v36];
     }
   }
 
@@ -1387,9 +1387,9 @@ LABEL_16:
   return v16;
 }
 
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
+  kCopy = k;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -1399,13 +1399,13 @@ LABEL_16:
   [@"com.apple.nearbyd" UTF8String];
   if (os_variant_allows_internal_security_policies())
   {
-    if (v6 && [v6 length] == 32)
+    if (kCopy && [kCopy length] == 32)
     {
-      [v6 getBytes:v37 length:32];
-      v34 = a4;
+      [kCopy getBytes:v37 length:32];
+      identifierCopy = identifier;
       v35 = v37[0];
       v36 = v37[1];
-      v15 = sub_1003413A4(self->_alishaSystem.__ptr_, &v34);
+      v15 = sub_1003413A4(self->_alishaSystem.__ptr_, &identifierCopy);
       if (v15)
       {
         sub_1003A03C4(v15, __p);
@@ -1465,7 +1465,7 @@ LABEL_16:
   return v19;
 }
 
-- (id)_setURSKTTL:(unint64_t)a3
+- (id)_setURSKTTL:(unint64_t)l
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1476,7 +1476,7 @@ LABEL_16:
   [@"com.apple.nearbyd" UTF8String];
   if (os_variant_allows_internal_security_policies())
   {
-    sub_1003414A8(self->_alishaSystem.__ptr_, a3);
+    sub_1003414A8(self->_alishaSystem.__ptr_, l);
   }
 
   v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
@@ -1484,7 +1484,7 @@ LABEL_16:
   return v13;
 }
 
-- (shared_ptr<rose::objects::AlishaSession>)_buildAlishaSession:(const void *)a3
+- (shared_ptr<rose::objects::AlishaSession>)_buildAlishaSession:(const void *)session
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1496,7 +1496,7 @@ LABEL_16:
   operator new();
 }
 
-- (void)_alishaSessionInvalidatedWithReason:(int)a3
+- (void)_alishaSessionInvalidatedWithReason:(int)reason
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1507,16 +1507,16 @@ LABEL_16:
   v13 = qword_1009F9820;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_100342FC8(a3, v17);
+    sub_100342FC8(reason, v17);
     sub_1004AB0E4(v17);
   }
 
   [(NIServerAcwgSession *)self invalidate];
   v16.receiver = self;
   v16.super_class = NIServerAcwgSession;
-  v14 = [(NIServerBaseSession *)&v16 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v16 invalidationHandler];
   v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v14)[2](v14, v15);
+  (invalidationHandler)[2](invalidationHandler, v15);
 }
 
 - (id)_configureForOwnerDevice
@@ -1540,17 +1540,17 @@ LABEL_16:
     [v19 handleFailureInMethod:a2 object:self file:@"NIServerAcwgSession.mm" lineNumber:1120 description:{@"Invalid parameter not satisfying: %@", @"_cachedCapabilities.has_value()"}];
   }
 
-  v13 = self;
-  if (!v13->_configProvider.__ptr_)
+  selfCopy = self;
+  if (!selfCopy->_configProvider.__ptr_)
   {
-    v17 = [(NIAcwgConfiguration *)v13->_configuration debugOptions];
-    v18 = [v17 objectForKeyedSubscript:@"BypassBluetoothTimesync"];
+    debugOptions = [(NIAcwgConfiguration *)selfCopy->_configuration debugOptions];
+    v18 = [debugOptions objectForKeyedSubscript:@"BypassBluetoothTimesync"];
     [v18 BOOLValue];
 
     sub_1001FDA6C();
   }
 
-  if (!v13->_paramNegotiator.__ptr_)
+  if (!selfCopy->_paramNegotiator.__ptr_)
   {
     if (self->_cachedCapabilities.__engaged_)
     {
@@ -1560,7 +1560,7 @@ LABEL_16:
     sub_1000195BC();
   }
 
-  v14 = v13;
+  v14 = selfCopy;
   if (!v14->_acwgManager.__ptr_)
   {
     v15 = sub_10032CEB8();
@@ -1599,7 +1599,7 @@ LABEL_16:
   return result;
 }
 
-- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)a3
+- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)params
 {
   v5 = a4;
   v6 = qword_1009F9820;
@@ -1634,32 +1634,32 @@ LABEL_16:
   else
   {
     v18 = [v5 objectForKeyedSubscript:@"DebugSTSIndex0"];
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
     v20 = [v5 objectForKeyedSubscript:@"AnchorHopKey"];
-    v21 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
     retstr->var2 = 1;
     retstr->var3.__engaged_ = 1;
-    retstr->var3.var0.__val_ = v19;
+    retstr->var3.var0.__val_ = unsignedIntegerValue;
     retstr->var4.__engaged_ = 1;
-    retstr->var4.var0.__val_ = v21;
+    retstr->var4.var0.__val_ = unsignedIntegerValue2;
   }
 
   v22 = [v5 objectForKeyedSubscript:@"DisableUWBEncryption"];
-  v23 = [v22 BOOLValue];
+  bOOLValue = [v22 BOOLValue];
 
   v24 = [v5 objectForKeyedSubscript:@"DisableSecureToF"];
-  v25 = [v24 BOOLValue];
+  bOOLValue2 = [v24 BOOLValue];
 
-  retstr->var9 = v23;
-  retstr->var10 = v25;
+  retstr->var9 = bOOLValue;
+  retstr->var10 = bOOLValue2;
   retstr->var11 = 8;
 
   return result;
 }
 
-- (void)_sendAnalyticsOnRangingComplete:(int64_t)a3 suspendReason:(int64_t)a4
+- (void)_sendAnalyticsOnRangingComplete:(int64_t)complete suspendReason:(int64_t)reason
 {
   sessionSuspendTimestamp = self->_sessionSuspendTimestamp;
   if (!sessionSuspendTimestamp)
@@ -1683,8 +1683,8 @@ LABEL_16:
   {
     lockBtConnHandle = self->_lockBtConnHandle;
     containerUniqueIdentifier = self->_containerUniqueIdentifier;
-    v13 = NIAcwgSessionTriggerReasonToString(a3);
-    v14 = NIAcwgSuspendTriggerReasonToString(a4);
+    v13 = NIAcwgSessionTriggerReasonToString(complete);
+    v14 = NIAcwgSuspendTriggerReasonToString(reason);
     *buf = 67110146;
     v18 = lockBtConnHandle;
     v19 = 2112;
@@ -1706,10 +1706,10 @@ LABEL_16:
   self->_sessionSuspendTimestamp = 0;
 }
 
-- (void)_alishaStateChangedFromState:(unsigned __int8)a3 toNewState:(unsigned __int8)a4
+- (void)_alishaStateChangedFromState:(unsigned __int8)state toNewState:(unsigned __int8)newState
 {
-  v4 = a4;
-  v5 = a3;
+  newStateCopy = newState;
+  stateCopy = state;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -1720,10 +1720,10 @@ LABEL_16:
   v15 = qword_1009F9820;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1003A0BC8(v5, v35);
+    sub_1003A0BC8(stateCopy, v35);
     v16 = v36;
     v17 = v35[0];
-    sub_1003A0BC8(v4, __p);
+    sub_1003A0BC8(newStateCopy, __p);
     v18 = v35;
     if (v16 < 0)
     {
@@ -1759,8 +1759,8 @@ LABEL_16:
     }
   }
 
-  v21 = sub_1003A2D2C(v5);
-  if (!(sub_1003A2D2C(v4) & 1 | ((v21 & 1) == 0)))
+  v21 = sub_1003A2D2C(stateCopy);
+  if (!(sub_1003A2D2C(newStateCopy) & 1 | ((v21 & 1) == 0)))
   {
     size = self->_suspendReasonStack.c.__size_;
     if (size)
@@ -1793,13 +1793,13 @@ LABEL_16:
     [(NIServerAcwgSession *)self _sendAnalyticsOnRangingComplete:v27 suspendReason:v24];
     v32.receiver = self;
     v32.super_class = NIServerAcwgSession;
-    v30 = [(NIServerBaseSession *)&v32 resourcesManager];
-    v31 = [v30 remote];
-    [v31 didSuspendAcwgRanging:v24];
+    resourcesManager = [(NIServerBaseSession *)&v32 resourcesManager];
+    remote = [resourcesManager remote];
+    [remote didSuspendAcwgRanging:v24];
   }
 }
 
-- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)a3
+- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)update
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1809,7 +1809,7 @@ LABEL_16:
 
   dispatch_assert_queue_V2(self->_clientQueue);
   ptr = self->_acwgManager.__ptr_;
-  if (ptr && sub_1003A2D2C(*(*(ptr + 16) + 160)) && !a3->var5 && a3->var8 == 1)
+  if (ptr && sub_1003A2D2C(*(*(ptr + 16) + 160)) && !update->var5 && update->var8 == 1)
   {
     size = self->_sessionReasonStack.c.__size_;
     if (!size)
@@ -1824,13 +1824,13 @@ LABEL_16:
 
     v20.receiver = self;
     v20.super_class = NIServerAcwgSession;
-    v18 = [(NIServerBaseSession *)&v20 resourcesManager];
-    v19 = [v18 remote];
-    [v19 didStartAcwgRanging:v15];
+    resourcesManager = [(NIServerBaseSession *)&v20 resourcesManager];
+    remote = [resourcesManager remote];
+    [remote didStartAcwgRanging:v15];
   }
 }
 
-- (void)_handleSessionStats:(SessionStats *)a3
+- (void)_handleSessionStats:(SessionStats *)stats
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1841,7 +1841,7 @@ LABEL_16:
   dispatch_assert_queue_V2(self->_clientQueue);
 }
 
-- (void)_handleHealthChanged:(int)a3
+- (void)_handleHealthChanged:(int)changed
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1853,7 +1853,7 @@ LABEL_16:
   v13 = qword_1009F9820;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100004A08(__p, off_10099E3A8[a3]);
+    sub_100004A08(__p, off_10099E3A8[changed]);
     if (v17 >= 0)
     {
       v14 = __p;
@@ -1877,7 +1877,7 @@ LABEL_16:
   }
 }
 
-- (void)_handleTimeoutEvent:(int)a3 time:(double)a4
+- (void)_handleTimeoutEvent:(int)event time:(double)time
 {
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1886,7 +1886,7 @@ LABEL_16:
   }
 
   dispatch_assert_queue_V2(self->_clientQueue);
-  sub_100004A08(__p, off_10099E3C0[a3]);
+  sub_100004A08(__p, off_10099E3C0[event]);
   v15 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -1900,7 +1900,7 @@ LABEL_16:
     *buf = 136315650;
     *&buf[4] = v16;
     v38 = 2048;
-    *v39 = a4;
+    *v39 = time;
     *&v39[8] = 2112;
     *&v39[10] = containerUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#ses-acwg,Received timeout event %s at %f sec, session container ID: %@", buf, 0x20u);
@@ -1910,12 +1910,12 @@ LABEL_16:
   {
     v32.receiver = self;
     v32.super_class = NIServerAcwgSession;
-    v18 = [(NIServerBaseSession *)&v32 resourcesManager];
-    v19 = v18;
+    resourcesManager = [(NIServerBaseSession *)&v32 resourcesManager];
+    v19 = resourcesManager;
     v31 = 103;
-    if ((a3 - 2) >= 2)
+    if ((event - 2) >= 2)
     {
-      if (a3 != 4)
+      if (event != 4)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
         {
@@ -1956,7 +1956,7 @@ LABEL_16:
         v24 = *buf;
       }
 
-      v20 = [NSString stringWithFormat:@"Supending ACWG Ranging on timeout failed (%s)", v24];
+      remote2 = [NSString stringWithFormat:@"Supending ACWG Ranging on timeout failed (%s)", v24];
       if ((v39[9] & 0x80000000) != 0)
       {
         operator delete(*buf);
@@ -1968,7 +1968,7 @@ LABEL_16:
       }
 
       v35 = NSLocalizedDescriptionKey;
-      v36 = v20;
+      v36 = remote2;
       v25 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v26 = (v23 + 103);
       if (v26 >= 4)
@@ -1983,14 +1983,14 @@ LABEL_16:
 
       v28 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:v27 userInfo:v25];
 
-      v29 = [v19 remote];
-      [v29 uwbSessionDidFailWithError:v28];
+      remote = [v19 remote];
+      [remote uwbSessionDidFailWithError:v28];
     }
 
     else
     {
-      v20 = [v18 remote];
-      [v20 requestAcwgRangingSessionSuspend:sub_1003A428C(self->_acwgManager.__ptr_) withSuspendTriggerReason:103];
+      remote2 = [resourcesManager remote];
+      [remote2 requestAcwgRangingSessionSuspend:sub_1003A428C(self->_acwgManager.__ptr_) withSuspendTriggerReason:103];
     }
 
 LABEL_26:
@@ -2011,7 +2011,7 @@ LABEL_27:
   }
 }
 
-- (void)didReceiveAopSensorFusionUpdate:(int)a3 withBtConnHandle:(unsigned __int16)a4
+- (void)didReceiveAopSensorFusionUpdate:(int)update withBtConnHandle:(unsigned __int16)handle
 {
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -2026,15 +2026,15 @@ LABEL_27:
   v16[2] = sub_1001FB060;
   v16[3] = &unk_10099DAE8;
   objc_copyWeak(&v17, &location);
-  v19 = a4;
-  v18 = a3;
+  handleCopy = handle;
+  updateCopy = update;
   v16[4] = self;
   dispatch_async(clientQueue, v16);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)didReceiveAopSFZoneUpdate:(AOPRoseSFZoneUpdate)a3
+- (void)didReceiveAopSFZoneUpdate:(AOPRoseSFZoneUpdate)update
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -2049,14 +2049,14 @@ LABEL_27:
   v14[2] = sub_1001FB398;
   v14[3] = &unk_10098B138;
   objc_copyWeak(&v15, &location);
-  v16 = a3;
+  updateCopy = update;
   v14[4] = self;
   dispatch_async(clientQueue, v14);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause
 {
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -2072,10 +2072,10 @@ LABEL_27:
   {
     if (v18)
     {
-      sub_100004A08(v30, off_10099E3F0[a3]);
+      sub_100004A08(v30, off_10099E3F0[state]);
       v23 = v31;
       v24 = v30[0];
-      sub_100004A08(__p, off_10099E418[a4]);
+      sub_100004A08(__p, off_10099E418[cause]);
       v25 = v30;
       if (v23 < 0)
       {
@@ -2108,7 +2108,7 @@ LABEL_27:
       }
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       ptr = self->_acwgManager.__ptr_;
       if (ptr)
@@ -2122,10 +2122,10 @@ LABEL_27:
   {
     if (v18)
     {
-      sub_100004A08(v30, off_10099E3F0[a3]);
+      sub_100004A08(v30, off_10099E3F0[state]);
       v19 = v31;
       v20 = v30[0];
-      sub_100004A08(__p, off_10099E418[a4]);
+      sub_100004A08(__p, off_10099E418[cause]);
       v21 = v30;
       if (v19 < 0)
       {

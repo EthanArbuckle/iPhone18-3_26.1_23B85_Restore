@@ -8,22 +8,22 @@
 - (HDCodableWorkoutEvent)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableWorkoutEvent);
-  -[HDCodableWorkoutEvent setType:](v2, "setType:", [a1 type]);
-  v3 = [a1 dateInterval];
-  v4 = [v3 startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  -[HDCodableWorkoutEvent setType:](v2, "setType:", [self type]);
+  dateInterval = [self dateInterval];
+  startDate = [dateInterval startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HDCodableWorkoutEvent *)v2 setDate:?];
 
-  v5 = [a1 dateInterval];
-  [v5 duration];
+  dateInterval2 = [self dateInterval];
+  [dateInterval2 duration];
   [(HDCodableWorkoutEvent *)v2 setDuration:?];
 
-  v6 = [a1 metadata];
-  v7 = [v6 hk_codableMetadata];
-  [(HDCodableWorkoutEvent *)v2 setMetadataDictionary:v7];
+  metadata = [self metadata];
+  hk_codableMetadata = [metadata hk_codableMetadata];
+  [(HDCodableWorkoutEvent *)v2 setMetadataDictionary:hk_codableMetadata];
 
-  v8 = [a1 metadata];
-  v9 = [v8 objectForKey:*MEMORY[0x277CCC518]];
+  metadata2 = [self metadata];
+  v9 = [metadata2 objectForKey:*MEMORY[0x277CCC518]];
 
   if (v9)
   {
@@ -43,8 +43,8 @@
     if ([v5 hasType])
     {
       v6 = MEMORY[0x277CBEB38];
-      v7 = [v5 metadataDictionary];
-      v8 = [v6 hk_dictionaryWithCodableMetadata:v7];
+      metadataDictionary = [v5 metadataDictionary];
+      v8 = [v6 hk_dictionaryWithCodableMetadata:metadataDictionary];
 
       v9 = 0.0;
       if ([v5 hasDuration])
@@ -59,12 +59,12 @@
         [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCC518]];
       }
 
-      v12 = [v5 type];
+      type = [v5 type];
       v13 = objc_alloc(MEMORY[0x277CCA970]);
-      v14 = [v5 decodedDateIntervalStartDate];
-      v15 = [v13 initWithStartDate:v14 duration:v9];
+      decodedDateIntervalStartDate = [v5 decodedDateIntervalStartDate];
+      v15 = [v13 initWithStartDate:decodedDateIntervalStartDate duration:v9];
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
-      v17 = [a1 _unvalidatedWorkoutEventWithType:v12 dateInterval:v15 metadata:v16];
+      v17 = [self _unvalidatedWorkoutEventWithType:type dateInterval:v15 metadata:v16];
     }
 
     else

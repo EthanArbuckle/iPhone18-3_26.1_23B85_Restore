@@ -1,40 +1,40 @@
 @interface HDSPDarwinNotificationCenter
-- (HDSPDarwinNotificationCenter)initWithEnvironment:(id)a3;
+- (HDSPDarwinNotificationCenter)initWithEnvironment:(id)environment;
 - (HDSPEnvironment)environment;
-- (void)publishNotificationForEvent:(id)a3;
-- (void)tearDownNotificationForEventIdentifier:(id)a3;
+- (void)publishNotificationForEvent:(id)event;
+- (void)tearDownNotificationForEventIdentifier:(id)identifier;
 @end
 
 @implementation HDSPDarwinNotificationCenter
 
-- (HDSPDarwinNotificationCenter)initWithEnvironment:(id)a3
+- (HDSPDarwinNotificationCenter)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPDarwinNotificationCenter;
   v5 = [(HDSPDarwinNotificationCenter *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)publishNotificationForEvent:(id)a3
+- (void)publishNotificationForEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 identifier];
+  identifier = [event identifier];
   v5 = *MEMORY[0x277D621D0];
-  v6 = [v4 isEqualToString:*MEMORY[0x277D621D0]];
+  v6 = [identifier isEqualToString:*MEMORY[0x277D621D0]];
 
   if (v6)
   {
-    v7 = [(HDSPDarwinNotificationCenter *)self environment];
-    v8 = [v7 sensitiveUIMonitor];
-    v9 = [v8 shouldHideForSensitivity:1];
+    environment = [(HDSPDarwinNotificationCenter *)self environment];
+    sensitiveUIMonitor = [environment sensitiveUIMonitor];
+    v9 = [sensitiveUIMonitor shouldHideForSensitivity:1];
 
     v10 = HKSPLogForCategory();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -69,10 +69,10 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tearDownNotificationForEventIdentifier:(id)a3
+- (void)tearDownNotificationForEventIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:*MEMORY[0x277D621D0]])
+  if ([identifier isEqualToString:*MEMORY[0x277D621D0]])
   {
     v3 = HKSPLogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

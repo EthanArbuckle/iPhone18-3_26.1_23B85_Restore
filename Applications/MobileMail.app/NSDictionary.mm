@@ -12,8 +12,8 @@
 
 - (BOOL)mf_isAMSTest
 {
-  v2 = [(NSDictionary *)self mf_testName];
-  v3 = [v2 containsString:@"AMS"];
+  mf_testName = [(NSDictionary *)self mf_testName];
+  v3 = [mf_testName containsString:@"AMS"];
 
   return v3;
 }
@@ -21,17 +21,17 @@
 - (int)mf_iterations
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"iterations"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)mf_pages
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"pages"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)mf_maxScrollLength
@@ -44,23 +44,23 @@
   }
 
   v4 = [(NSDictionary *)self objectForKeyedSubscript:@"maxScrollLength"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (int)mf_scrollOffset
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"offset"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int64_t)mf_testInterfaceOrientation
 {
-  v2 = [(NSDictionary *)self mf_testName];
-  if ([v2 mf_containsSubstring:@"Landscape"])
+  mf_testName = [(NSDictionary *)self mf_testName];
+  if ([mf_testName mf_containsSubstring:@"Landscape"])
   {
     v3 = 3;
   }

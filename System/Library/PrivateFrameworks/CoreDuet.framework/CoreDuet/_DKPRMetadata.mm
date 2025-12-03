@@ -1,11 +1,11 @@
 @interface _DKPRMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addEntry:(uint64_t)a1;
+- (uint64_t)addEntry:(uint64_t)entry;
 - (uint64_t)entrys;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRMetadata
@@ -16,8 +16,8 @@
   v8.receiver = self;
   v8.super_class = _DKPRMetadata;
   v4 = [(_DKPRMetadata *)&v8 description];
-  v5 = [(_DKPRMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -25,7 +25,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_entrys count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_entrys, "count")}];
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -58,18 +58,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"entry"];
+    [dictionary setObject:v4 forKey:@"entry"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -105,10 +105,10 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -129,7 +129,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [(_DKPRMetadata *)v5 addEntry:v11];
 
         ++v10;
@@ -146,13 +146,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     entrys = self->_entrys;
-    if (entrys | v4[1])
+    if (entrys | equalCopy[1])
     {
       v6 = [(NSMutableArray *)entrys isEqual:?];
     }
@@ -171,21 +171,21 @@
   return v6;
 }
 
-- (uint64_t)addEntry:(uint64_t)a1
+- (uint64_t)addEntry:(uint64_t)entry
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entry)
   {
-    v5 = *(a1 + 8);
+    v5 = *(entry + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(entry + 8);
+      *(entry + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(entry + 8);
     }
 
     v3 = [v5 addObject:v9];

@@ -1,11 +1,11 @@
 @interface SUCoreRollback
 - (SUCoreRollback)init;
-- (SUCoreRollback)initWithCoder:(id)a3;
+- (SUCoreRollback)initWithCoder:(id)coder;
 - (SUCoreRollbackDescriptor)eligibleRollback;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)previousRollback;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadPersistedStateFile;
 - (void)rollbackCompleted;
 @end
@@ -19,9 +19,9 @@
   v2 = [(SUCoreRollback *)&v10 init];
   if (v2)
   {
-    v3 = [@"com.apple.su.core.rollback.statequeue" UTF8String];
+    uTF8String = [@"com.apple.su.core.rollback.statequeue" UTF8String];
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v5 = dispatch_queue_create(v3, v4);
+    v5 = dispatch_queue_create(uTF8String, v4);
     stateQueue = v2->_stateQueue;
     v2->_stateQueue = v5;
 
@@ -73,20 +73,20 @@ void __34__SUCoreRollback_eligibleRollback__block_invoke(uint64_t a1)
 {
   v40 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_not_V2(self->_stateQueue);
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v4)
+  if (!bundleIdentifier)
   {
     goto LABEL_8;
   }
 
-  v5 = [v4 componentsSeparatedByString:@"."];
-  v6 = [v5 lastObject];
+  v5 = [bundleIdentifier componentsSeparatedByString:@"."];
+  lastObject = [v5 lastObject];
 
-  if (v6)
+  if (lastObject)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", v6];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", lastObject];
     if (v7)
     {
       v8 = v7;
@@ -96,29 +96,29 @@ LABEL_14:
     }
   }
 
-  v9 = [MEMORY[0x277D64460] sharedLogger];
-  v10 = [v9 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    [(SUCoreRollback *)v10 loadPersistedStateFile];
+    [(SUCoreRollback *)oslog loadPersistedStateFile];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", v4];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", bundleIdentifier];
   if (!v8)
   {
 LABEL_8:
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 executablePath];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    executablePath = [mainBundle2 executablePath];
 
-    if (v12)
+    if (executablePath)
     {
-      v13 = [v12 componentsSeparatedByString:@"/"];
-      v14 = [v13 lastObject];
+      v13 = [executablePath componentsSeparatedByString:@"/"];
+      lastObject2 = [v13 lastObject];
 
-      if (v14)
+      if (lastObject2)
       {
-        v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", v14];
+        v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@.state", @"/var/mobile/Library/SoftwareUpdateCore/", lastObject2];
 
         if (v8)
         {
@@ -132,9 +132,9 @@ LABEL_8:
     }
 
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@", @"/var/mobile/Library/SoftwareUpdateCore/", @"SUCoreRollbackDefautState.state"];
-    v6 = [MEMORY[0x277D64428] sharedDiag];
+    lastObject = [MEMORY[0x277D64428] sharedDiag];
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create a file path from bundleIdentifier, falling back to the default of %@", v8];
-    [v6 trackAnomaly:@"SUCoreRollback" forReason:v15 withResult:8116 withError:0];
+    [lastObject trackAnomaly:@"SUCoreRollback" forReason:v15 withResult:8116 withError:0];
 
     goto LABEL_14;
   }
@@ -144,40 +144,40 @@ LABEL_15:
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 URLByDeletingLastPathComponent];
-    v19 = [v18 path];
+    uRLByDeletingLastPathComponent = [v16 URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [v20 fileExistsAtPath:v19];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v21 = [defaultManager fileExistsAtPath:path];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v35 = 0;
-      [v22 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v35];
+      [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v35];
       v23 = v35;
 
       if (v23)
       {
-        v24 = [MEMORY[0x277D64460] sharedLogger];
-        v25 = [v24 oslog];
+        mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+        oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v17 path];
+          path2 = [v17 path];
           *buf = 138543618;
-          v37 = v26;
+          v37 = path2;
           v38 = 2114;
           v39 = v23;
-          _os_log_impl(&dword_23193C000, v25, OS_LOG_TYPE_DEFAULT, "Error creating persisted state file %{public}@: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Error creating persisted state file %{public}@: %{public}@", buf, 0x16u);
         }
       }
     }
 
     v27 = objc_alloc(MEMORY[0x277D64478]);
     stateQueue = self->_stateQueue;
-    v29 = [v17 path];
-    v30 = [v27 initWithDispatchQueue:stateQueue withPersistencePath:v29 forPolicyVersion:@"1.0"];
+    path3 = [v17 path];
+    v30 = [v27 initWithDispatchQueue:stateQueue withPersistencePath:path3 forPolicyVersion:@"1.0"];
     persistedState = self->_persistedState;
     self->_persistedState = v30;
 
@@ -276,38 +276,38 @@ uint64_t __35__SUCoreRollback_rollbackCompleted__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUCoreRollback *)self rollback];
-  v5 = [v3 initWithFormat:@"rollback:%@", v4];
+  rollback = [(SUCoreRollback *)self rollback];
+  v5 = [v3 initWithFormat:@"rollback:%@", rollback];
 
   return v5;
 }
 
-- (SUCoreRollback)initWithCoder:(id)a3
+- (SUCoreRollback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(SUCoreRollback);
 
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rollback"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rollback"];
     [(SUCoreRollback *)v5 setRollback:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreRollback *)self rollback];
-  [v4 encodeObject:v5 forKey:@"rollback"];
+  coderCopy = coder;
+  rollback = [(SUCoreRollback *)self rollback];
+  [coderCopy encodeObject:rollback forKey:@"rollback"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SUCoreRollback allocWithZone:?]];
-  v5 = [(SUCoreRollback *)self rollback];
-  [(SUCoreRollback *)v4 setRollback:v5];
+  rollback = [(SUCoreRollback *)self rollback];
+  [(SUCoreRollback *)v4 setRollback:rollback];
 
   return v4;
 }

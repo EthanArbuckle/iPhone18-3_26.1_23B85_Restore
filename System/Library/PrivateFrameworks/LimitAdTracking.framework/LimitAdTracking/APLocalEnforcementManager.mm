@@ -1,10 +1,10 @@
 @interface APLocalEnforcementManager
-- (BOOL)adServicesEnabled:(id)a3;
+- (BOOL)adServicesEnabled:(id)enabled;
 - (BOOL)deviceRegionStorefrontEnabled;
 - (BOOL)isU13MAIDEDU;
 - (BOOL)shouldShowTCCWithAds;
 - (id)accountStorefront;
-- (id)appTrackingXPCConnection:(id)a3 withInvalidation:(id)a4;
+- (id)appTrackingXPCConnection:(id)connection withInvalidation:(id)invalidation;
 - (id)disabledReasons;
 @end
 
@@ -13,43 +13,43 @@
 - (id)disabledReasons
 {
   v2 = objc_alloc_init(ADTrackingTransparency);
-  v3 = [(ADTrackingTransparency *)v2 adSwitchDisabledReasons];
-  v4 = [MEMORY[0x277CBEB18] array];
+  adSwitchDisabledReasons = [(ADTrackingTransparency *)v2 adSwitchDisabledReasons];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-  v6 = [v3 containsObject:v5];
+  v6 = [adSwitchDisabledReasons containsObject:v5];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v4 addObject:v7];
+    [array addObject:v7];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:3];
-  v9 = [v3 containsObject:v8];
+  v9 = [adSwitchDisabledReasons containsObject:v8];
 
   if (v9)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:3];
-    [v4 addObject:v10];
+    [array addObject:v10];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-  v12 = [v3 containsObject:v11];
+  v12 = [adSwitchDisabledReasons containsObject:v11];
 
   if (v12)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-    [v4 addObject:v13];
+    [array addObject:v13];
   }
 
-  v14 = [v4 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (BOOL)adServicesEnabled:(id)a3
+- (BOOL)adServicesEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -79,7 +79,7 @@
   v10[2] = __47__APLocalEnforcementManager_adServicesEnabled___block_invoke_10;
   v10[3] = &unk_279817778;
   v10[4] = self;
-  v7 = v4;
+  v7 = enabledCopy;
   v11 = v7;
   v12 = &v14;
   [v6 localAdServicesEnabled:v10];
@@ -239,15 +239,15 @@ void __58__APLocalEnforcementManager_deviceRegionStorefrontEnabled__block_invoke
 - (BOOL)isU13MAIDEDU
 {
   v2 = objc_alloc_init(ADTrackingTransparency);
-  v3 = [(ADTrackingTransparency *)v2 adSwitchDisabledReasons];
+  adSwitchDisabledReasons = [(ADTrackingTransparency *)v2 adSwitchDisabledReasons];
   v4 = 1;
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-  v6 = [v3 containsObject:v5];
+  v6 = [adSwitchDisabledReasons containsObject:v5];
 
   if ((v6 & 1) == 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-    v8 = [v3 containsObject:v7];
+    v8 = [adSwitchDisabledReasons containsObject:v7];
 
     if (v8)
     {
@@ -257,7 +257,7 @@ void __58__APLocalEnforcementManager_deviceRegionStorefrontEnabled__block_invoke
     else
     {
       v9 = [MEMORY[0x277CCABB0] numberWithInteger:3];
-      v4 = [v3 containsObject:v9];
+      v4 = [adSwitchDisabledReasons containsObject:v9];
     }
   }
 
@@ -353,18 +353,18 @@ void __46__APLocalEnforcementManager_accountStorefront__block_invoke_32(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appTrackingXPCConnection:(id)a3 withInvalidation:(id)a4
+- (id)appTrackingXPCConnection:(id)connection withInvalidation:(id)invalidation
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  invalidationCopy = invalidation;
   v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ap.adprivacyd.opt-out" options:4096];
   if (v7)
   {
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2868090D0];
     [v7 setRemoteObjectInterface:v8];
 
-    [v7 setInvalidationHandler:v6];
-    [v7 setInterruptionHandler:v5];
+    [v7 setInvalidationHandler:invalidationCopy];
+    [v7 setInterruptionHandler:connectionCopy];
     [v7 resume];
     v9 = v7;
   }

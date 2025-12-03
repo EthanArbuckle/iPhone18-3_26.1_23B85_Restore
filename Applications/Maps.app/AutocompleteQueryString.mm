@@ -1,18 +1,18 @@
 @interface AutocompleteQueryString
 - (AutocompleteQueryString)init;
-- (AutocompleteQueryString)initWithQuery:(id)a3 requiredMatchLength:(unint64_t)a4;
-- (BOOL)matchesString:(id)a3;
-- (id)matchesInString:(id)a3;
-- (id)matchesInStringTerms:(id)a3 displayString:(id)a4;
+- (AutocompleteQueryString)initWithQuery:(id)query requiredMatchLength:(unint64_t)length;
+- (BOOL)matchesString:(id)string;
+- (id)matchesInString:(id)string;
+- (id)matchesInStringTerms:(id)terms displayString:(id)string;
 @end
 
 @implementation AutocompleteQueryString
 
-- (id)matchesInStringTerms:(id)a3 displayString:(id)a4
+- (id)matchesInStringTerms:(id)terms displayString:(id)string
 {
-  v6 = a3;
-  v41 = a4;
-  v39 = v6;
+  termsCopy = terms;
+  stringCopy = string;
+  v39 = termsCopy;
   v86 = 0;
   v87 = &v86;
   v88 = 0x3032000000;
@@ -31,7 +31,7 @@
   v77 = sub_1008237F4;
   v78 = sub_100823804;
   v79 = 0;
-  v7 = [v6 mutableCopy];
+  v7 = [termsCopy mutableCopy];
   v8 = [v7 count];
   isCJK = self->_isCJK;
   v70 = 0;
@@ -82,7 +82,7 @@
         v48 = &v54;
         v49 = &v74;
         v50 = &v66;
-        v44 = v41;
+        v44 = stringCopy;
         v45 = v39;
         v51 = &v86;
         v52 = &v80;
@@ -117,11 +117,11 @@
     v67[3] = v67[3] / v8;
   }
 
-  v14 = [v40 lastObject];
-  if ([(NSArray *)v14 length])
+  lastObject = [v40 lastObject];
+  if ([(NSArray *)lastObject length])
   {
     v15 = [v75[5] length];
-    *&v16 = v15 / [(NSArray *)v14 length];
+    *&v16 = v15 / [(NSArray *)lastObject length];
     v17 = [NSNumber numberWithFloat:v16];
   }
 
@@ -131,12 +131,12 @@
   }
 
   v19 = [(NSString *)self->_unsanitazedQuery length];
-  *&v20 = v19 / [v41 length];
+  *&v20 = v19 / [stringCopy length];
   v37 = [NSNumber numberWithFloat:v20];
-  obj = v14;
-  v21 = [v41 uppercaseString];
-  v22 = [(NSString *)self->_unsanitazedQuery uppercaseString];
-  v23 = [v21 rangeOfString:v22];
+  obj = lastObject;
+  uppercaseString = [stringCopy uppercaseString];
+  uppercaseString2 = [(NSString *)self->_unsanitazedQuery uppercaseString];
+  v23 = [uppercaseString rangeOfString:uppercaseString2];
 
   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -148,14 +148,14 @@
     v24 = [NSNumber numberWithUnsignedInteger:v23];
   }
 
-  v25 = [v41 uppercaseString];
-  v26 = [(NSString *)self->_query uppercaseString];
-  v27 = [v25 rangeOfString:v26];
+  uppercaseString3 = [stringCopy uppercaseString];
+  uppercaseString4 = [(NSString *)self->_query uppercaseString];
+  v27 = [uppercaseString3 rangeOfString:uppercaseString4];
   v29 = v28;
 
-  if (&v27[v29] <= [v41 length])
+  if (&v27[v29] <= [stringCopy length])
   {
-    v31 = [v41 substringFromIndex:?];
+    v31 = [stringCopy substringFromIndex:?];
     if ([v31 length])
     {
       v32 = sub_1008239E0();
@@ -190,18 +190,18 @@ LABEL_27:
   return v18;
 }
 
-- (id)matchesInString:(id)a3
+- (id)matchesInString:(id)string
 {
-  v4 = a3;
-  if ([v4 length] && -[NSString length](self->_query, "length") && -[NSArray count](self->_queryTerms, "count"))
+  stringCopy = string;
+  if ([stringCopy length] && -[NSString length](self->_query, "length") && -[NSArray count](self->_queryTerms, "count"))
   {
     v5 = sub_1008239E0();
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    v6 = [stringCopy stringByTrimmingCharactersInSet:v5];
 
     v7 = sub_1008239E0();
     v8 = [v6 componentsSeparatedByCharactersInSet:v7];
 
-    v9 = [(AutocompleteQueryString *)self matchesInStringTerms:v8 displayString:v4];
+    v9 = [(AutocompleteQueryString *)self matchesInStringTerms:v8 displayString:stringCopy];
   }
 
   else
@@ -212,9 +212,9 @@ LABEL_27:
   return v9;
 }
 
-- (BOOL)matchesString:(id)a3
+- (BOOL)matchesString:(id)string
 {
-  v4 = [(AutocompleteQueryString *)self matchesInString:a3];
+  v4 = [(AutocompleteQueryString *)self matchesInString:string];
   v5 = v4;
   if (v4)
   {
@@ -229,22 +229,22 @@ LABEL_27:
   return v6;
 }
 
-- (AutocompleteQueryString)initWithQuery:(id)a3 requiredMatchLength:(unint64_t)a4
+- (AutocompleteQueryString)initWithQuery:(id)query requiredMatchLength:(unint64_t)length
 {
-  v7 = a3;
+  queryCopy = query;
   v17.receiver = self;
   v17.super_class = AutocompleteQueryString;
   v8 = [(AutocompleteQueryString *)&v17 init];
   if (v8)
   {
     v9 = sub_1008239E0();
-    v10 = [v7 stringByTrimmingCharactersInSet:v9];
+    v10 = [queryCopy stringByTrimmingCharactersInSet:v9];
     query = v8->_query;
     v8->_query = v10;
 
-    objc_storeStrong(&v8->_unsanitazedQuery, a3);
+    objc_storeStrong(&v8->_unsanitazedQuery, query);
     v8->_isCJK = [(NSString *)v8->_query _navigation_isCJK];
-    v8->_requiredMatchLength = a4;
+    v8->_requiredMatchLength = length;
     v12 = v8->_query;
     v13 = sub_1008239E0();
     v14 = [(NSString *)v12 componentsSeparatedByCharactersInSet:v13];

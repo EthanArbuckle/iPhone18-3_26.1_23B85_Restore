@@ -1,26 +1,26 @@
 @interface _DASActivityRateLimitTracker
-- (BOOL)onlyExpiredOccurrencesAtDate:(id)a3;
-- (BOOL)timewiseEligibleAtDate:(id)a3 withLPMWindowExtension:(BOOL)a4;
-- (_DASActivityRateLimitTracker)initWithRateLimit:(id)a3;
-- (_DASActivityRateLimitTracker)initWithRateLimit:(id)a3 andOccurrences:(id)a4;
+- (BOOL)onlyExpiredOccurrencesAtDate:(id)date;
+- (BOOL)timewiseEligibleAtDate:(id)date withLPMWindowExtension:(BOOL)extension;
+- (_DASActivityRateLimitTracker)initWithRateLimit:(id)limit;
+- (_DASActivityRateLimitTracker)initWithRateLimit:(id)limit andOccurrences:(id)occurrences;
 - (id)description;
-- (id)nextTimewiseEligibleDateFromDate:(id)a3 withLPMWindowExtension:(BOOL)a4;
-- (unint64_t)occurrencesInWindow:(double)a3 atDate:(id)a4;
-- (void)executeAtDate:(id)a3;
+- (id)nextTimewiseEligibleDateFromDate:(id)date withLPMWindowExtension:(BOOL)extension;
+- (unint64_t)occurrencesInWindow:(double)window atDate:(id)date;
+- (void)executeAtDate:(id)date;
 @end
 
 @implementation _DASActivityRateLimitTracker
 
-- (_DASActivityRateLimitTracker)initWithRateLimit:(id)a3
+- (_DASActivityRateLimitTracker)initWithRateLimit:(id)limit
 {
-  v4 = a3;
+  limitCopy = limit;
   v10.receiver = self;
   v10.super_class = _DASActivityRateLimitTracker;
   v5 = [(_DASActivityRateLimitTracker *)&v10 init];
   if (v5)
   {
-    v5->_maximum = [v4 maximum];
-    [v4 window];
+    v5->_maximum = [limitCopy maximum];
+    [limitCopy window];
     v5->_window = v6;
     v7 = +[NSMutableArray array];
     occurrences = v5->_occurrences;
@@ -32,20 +32,20 @@
   return v5;
 }
 
-- (_DASActivityRateLimitTracker)initWithRateLimit:(id)a3 andOccurrences:(id)a4
+- (_DASActivityRateLimitTracker)initWithRateLimit:(id)limit andOccurrences:(id)occurrences
 {
-  v6 = a3;
-  v7 = a4;
+  limitCopy = limit;
+  occurrencesCopy = occurrences;
   v14.receiver = self;
   v14.super_class = _DASActivityRateLimitTracker;
   v8 = [(_DASActivityRateLimitTracker *)&v14 init];
   if (v8)
   {
-    v8->_maximum = [v6 maximum];
-    [v6 window];
+    v8->_maximum = [limitCopy maximum];
+    [limitCopy window];
     v8->_window = v9;
-    v10 = [v7 allObjects];
-    v11 = [NSMutableArray arrayWithArray:v10];
+    allObjects = [occurrencesCopy allObjects];
+    v11 = [NSMutableArray arrayWithArray:allObjects];
     occurrences = v8->_occurrences;
     v8->_occurrences = v11;
 
@@ -55,13 +55,13 @@
   return v8;
 }
 
-- (unint64_t)occurrencesInWindow:(double)a3 atDate:(id)a4
+- (unint64_t)occurrencesInWindow:(double)window atDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v7 = +[NSMutableArray array];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(_DASActivityRateLimitTracker *)self occurrences];
-  v9 = [NSArray arrayWithArray:v8];
+  occurrences = [(_DASActivityRateLimitTracker *)self occurrences];
+  v9 = [NSArray arrayWithArray:occurrences];
 
   os_unfair_lock_unlock(&self->_lock);
   v22 = 0u;
@@ -85,9 +85,9 @@
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        [v16 timeIntervalSinceDate:{v6, v20}];
+        [v16 timeIntervalSinceDate:{dateCopy, v20}];
         v18 = -v17;
-        if (v18 <= a3)
+        if (v18 <= window)
         {
           ++v13;
           [v7 addObject:{v16, v18}];
@@ -112,10 +112,10 @@
   return v13;
 }
 
-- (BOOL)timewiseEligibleAtDate:(id)a3 withLPMWindowExtension:(BOOL)a4
+- (BOOL)timewiseEligibleAtDate:(id)date withLPMWindowExtension:(BOOL)extension
 {
-  v6 = a3;
-  if (a4)
+  dateCopy = date;
+  if (extension)
   {
     v7 = 3600.0;
   }
@@ -125,28 +125,28 @@
     [(_DASActivityRateLimitTracker *)self window];
   }
 
-  v8 = [(_DASActivityRateLimitTracker *)self occurrencesInWindow:v6 atDate:v7];
+  v8 = [(_DASActivityRateLimitTracker *)self occurrencesInWindow:dateCopy atDate:v7];
   v9 = v8 < [(_DASActivityRateLimitTracker *)self maximum];
 
   return v9;
 }
 
-- (void)executeAtDate:(id)a3
+- (void)executeAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_occurrences addObject:v4];
+  [(NSMutableArray *)self->_occurrences addObject:dateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)nextTimewiseEligibleDateFromDate:(id)a3 withLPMWindowExtension:(BOOL)a4
+- (id)nextTimewiseEligibleDateFromDate:(id)date withLPMWindowExtension:(BOOL)extension
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableArray *)self->_occurrences count];
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (extension)
   {
     v8 = 3600.0;
   }
@@ -157,17 +157,17 @@
     v8 = v9;
   }
 
-  v10 = [(_DASActivityRateLimitTracker *)self occurrencesInWindow:v6 atDate:v8];
+  v10 = [(_DASActivityRateLimitTracker *)self occurrencesInWindow:dateCopy atDate:v8];
   if (v10 < [(_DASActivityRateLimitTracker *)self maximum]|| (v11 = v7 - v10, (v11 & 0x80000000) != 0))
   {
-    v14 = v6;
+    v14 = dateCopy;
   }
 
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v12 = [(_DASActivityRateLimitTracker *)self occurrences];
-    v13 = [v12 objectAtIndexedSubscript:v11];
+    occurrences = [(_DASActivityRateLimitTracker *)self occurrences];
+    v13 = [occurrences objectAtIndexedSubscript:v11];
 
     os_unfair_lock_unlock(&self->_lock);
     v14 = [NSDate dateWithTimeInterval:v13 sinceDate:v8];
@@ -176,12 +176,12 @@
   return v14;
 }
 
-- (BOOL)onlyExpiredOccurrencesAtDate:(id)a3
+- (BOOL)onlyExpiredOccurrencesAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_DASActivityRateLimitTracker *)self occurrences];
-  v6 = [NSArray arrayWithArray:v5];
+  occurrences = [(_DASActivityRateLimitTracker *)self occurrences];
+  v6 = [NSArray arrayWithArray:occurrences];
 
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
@@ -203,7 +203,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v17 + 1) + 8 * i) timeIntervalSinceDate:{v4, v17}];
+        [*(*(&v17 + 1) + 8 * i) timeIntervalSinceDate:{dateCopy, v17}];
         v13 = -v12;
         [(_DASActivityRateLimitTracker *)self window];
         if (v14 >= v13)

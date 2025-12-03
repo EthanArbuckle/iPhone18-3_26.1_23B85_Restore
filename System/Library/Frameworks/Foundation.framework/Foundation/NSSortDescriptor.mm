@@ -1,26 +1,26 @@
 @interface NSSortDescriptor
 + (NSSortDescriptor)sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending comparator:(NSComparator)cmptr;
 + (NSSortDescriptor)sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector;
-+ (NSSortDescriptor)sortDescriptorWithKey:(id)a3 ascending:(BOOL)a4 reverseNullOrder:(BOOL)a5;
++ (NSSortDescriptor)sortDescriptorWithKey:(id)key ascending:(BOOL)ascending reverseNullOrder:(BOOL)order;
 + (void)initialize;
-- (BOOL)_isEqualToSortDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToSortDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
 - (NSComparator)comparator;
 - (NSComparisonResult)compareObject:(id)object1 toObject:(id)object2;
 - (NSSortDescriptor)initWithCoder:(NSCoder *)coder;
 - (NSSortDescriptor)initWithKey:(NSString *)key ascending:(BOOL)ascending comparator:(NSComparator)cmptr;
-- (NSSortDescriptor)initWithKey:(id)a3 ascending:(BOOL)a4 reverseNullOrder:(BOOL)a5 selector:(SEL)a6;
+- (NSSortDescriptor)initWithKey:(id)key ascending:(BOOL)ascending reverseNullOrder:(BOOL)order selector:(SEL)selector;
 - (NSString)key;
 - (SEL)selector;
 - (id)_selectorName;
 - (id)description;
-- (id)replacementObjectForPortCoder:(id)a3;
+- (id)replacementObjectForPortCoder:(id)coder;
 - (id)reversedSortDescriptor;
-- (void)_setKey:(id)a3;
-- (void)_setSelectorName:(id)a3;
+- (void)_setKey:(id)key;
+- (void)_setSelectorName:(id)name;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setReverseNullOrder:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setReverseNullOrder:(BOOL)order;
 @end
 
 @implementation NSSortDescriptor
@@ -98,9 +98,9 @@
 
 + (void)initialize
 {
-  if (NSSortDescriptor == a1)
+  if (NSSortDescriptor == self)
   {
-    _NSInternalCompareObject = class_getMethodImplementation(a1, sel_compareObject_toObject_);
+    _NSInternalCompareObject = class_getMethodImplementation(self, sel_compareObject_toObject_);
   }
 }
 
@@ -128,19 +128,19 @@
   sortDescriptorFlags = self->_sortDescriptorFlags;
   v4 = objc_opt_class();
   v5 = [(NSSortDescriptor *)self key];
-  v6 = [(NSSortDescriptor *)self ascending];
+  ascending = [(NSSortDescriptor *)self ascending];
   if ((sortDescriptorFlags & 2) != 0)
   {
-    v9 = [(NSSortDescriptor *)self comparator];
+    comparator = [(NSSortDescriptor *)self comparator];
 
-    return [v4 sortDescriptorWithKey:v5 ascending:!v6 comparator:v9];
+    return [v4 sortDescriptorWithKey:v5 ascending:!ascending comparator:comparator];
   }
 
   else
   {
-    v7 = [(NSSortDescriptor *)self selector];
+    selector = [(NSSortDescriptor *)self selector];
 
-    return [v4 sortDescriptorWithKey:v5 ascending:!v6 selector:v7];
+    return [v4 sortDescriptorWithKey:v5 ascending:!ascending selector:selector];
   }
 }
 
@@ -167,14 +167,14 @@
     v5 = @"descending";
   }
 
-  v6 = [(NSSortDescriptor *)self reverseNullOrder];
+  reverseNullOrder = [(NSSortDescriptor *)self reverseNullOrder];
   if ((sortDescriptorFlags & 2) != 0)
   {
-    if (v6)
+    if (reverseNullOrder)
     {
-      v8 = [(NSSortDescriptor *)self ascending];
+      ascending = [(NSSortDescriptor *)self ascending];
       v9 = @"NULLS FIRST";
-      if (v8)
+      if (ascending)
       {
         v9 = @"NULLS LAST";
       }
@@ -190,7 +190,7 @@
 
   else
   {
-    if (v6)
+    if (reverseNullOrder)
     {
       if ([(NSSortDescriptor *)self ascending])
       {
@@ -214,60 +214,60 @@
 
 + (NSSortDescriptor)sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector
 {
-  v5 = [[a1 alloc] initWithKey:key ascending:ascending selector:selector];
+  v5 = [[self alloc] initWithKey:key ascending:ascending selector:selector];
 
   return v5;
 }
 
-+ (NSSortDescriptor)sortDescriptorWithKey:(id)a3 ascending:(BOOL)a4 reverseNullOrder:(BOOL)a5
++ (NSSortDescriptor)sortDescriptorWithKey:(id)key ascending:(BOOL)ascending reverseNullOrder:(BOOL)order
 {
-  v5 = [[a1 alloc] initWithKey:a3 ascending:a4 reverseNullOrder:a5];
+  v5 = [[self alloc] initWithKey:key ascending:ascending reverseNullOrder:order];
 
   return v5;
 }
 
 + (NSSortDescriptor)sortDescriptorWithKey:(NSString *)key ascending:(BOOL)ascending comparator:(NSComparator)cmptr
 {
-  v5 = [[a1 alloc] initWithKey:key ascending:ascending comparator:cmptr];
+  v5 = [[self alloc] initWithKey:key ascending:ascending comparator:cmptr];
 
   return v5;
 }
 
-- (NSSortDescriptor)initWithKey:(id)a3 ascending:(BOOL)a4 reverseNullOrder:(BOOL)a5 selector:(SEL)a6
+- (NSSortDescriptor)initWithKey:(id)key ascending:(BOOL)ascending reverseNullOrder:(BOOL)order selector:(SEL)selector
 {
-  v7 = a5;
-  v8 = a4;
+  orderCopy = order;
+  ascendingCopy = ascending;
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = NSSortDescriptor;
   v10 = [(NSSortDescriptor *)&v15 init];
   if (v10)
   {
-    v11 = [a3 length];
+    v11 = [key length];
     if (v11)
     {
-      v11 = [a3 copy];
+      v11 = [key copy];
     }
 
     v12 = 8;
-    if (!v7)
+    if (!orderCopy)
     {
       v12 = 0;
     }
 
-    v10->_sortDescriptorFlags |= v12 | v8;
+    v10->_sortDescriptorFlags |= v12 | ascendingCopy;
     v10->_key = v11;
-    if (a6)
+    if (selector)
     {
-      v13 = a6;
+      selectorCopy = selector;
     }
 
     else
     {
-      v13 = sel_compare_;
+      selectorCopy = sel_compare_;
     }
 
-    v10->_selector = v13;
+    v10->_selector = selectorCopy;
     v10->_selectorOrBlock = 0;
   }
 
@@ -298,7 +298,7 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
   if ((self->_sortDescriptorFlags & 2) != 0)
@@ -306,33 +306,33 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSSortDescriptor using Blocks cannot be encoded." userInfo:0]);
   }
 
-  v5 = [(NSSortDescriptor *)self ascending];
-  v11 = v5;
-  v6 = [(NSSortDescriptor *)self reverseNullOrder];
-  v7 = [(NSSortDescriptor *)self _selectorName];
-  v8 = [a3 allowsKeyedCoding];
+  ascending = [(NSSortDescriptor *)self ascending];
+  v11 = ascending;
+  reverseNullOrder = [(NSSortDescriptor *)self reverseNullOrder];
+  _selectorName = [(NSSortDescriptor *)self _selectorName];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   key = self->_key;
-  if (v8)
+  if (allowsKeyedCoding)
   {
     if (key)
     {
-      [a3 encodeObject:key forKey:@"NSKey"];
+      [coder encodeObject:key forKey:@"NSKey"];
     }
 
-    [a3 encodeBool:v5 forKey:@"NSAscending"];
-    if (v7)
+    [coder encodeBool:ascending forKey:@"NSAscending"];
+    if (_selectorName)
     {
-      [a3 encodeObject:v7 forKey:@"NSSelector"];
+      [coder encodeObject:_selectorName forKey:@"NSSelector"];
     }
 
-    [a3 encodeBool:v6 forKey:@"NSReverseNullOrder"];
+    [coder encodeBool:reverseNullOrder forKey:@"NSReverseNullOrder"];
   }
 
   else
   {
-    [a3 encodeObject:key];
-    [a3 encodeValuesOfObjCTypes:{"c", &v11}];
-    if (v6)
+    [coder encodeObject:key];
+    [coder encodeValuesOfObjCTypes:{"c", &v11}];
+    if (reverseNullOrder)
     {
       v10 = _NSOSLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -342,7 +342,7 @@
       }
     }
 
-    [a3 encodeObject:v7];
+    [coder encodeObject:_selectorName];
   }
 }
 
@@ -352,17 +352,17 @@
   v14 = 0;
   if (![(NSCoder *)coder allowsKeyedCoding])
   {
-    v5 = [(NSCoder *)coder decodeObject];
+    decodeObject = [(NSCoder *)coder decodeObject];
     [(NSCoder *)coder decodeValuesOfObjCTypes:"c", &v14];
-    v8 = [(NSCoder *)coder decodeObject];
+    decodeObject2 = [(NSCoder *)coder decodeObject];
     v7 = 0;
-    v9 = 0;
+    requiresSecureCoding = 0;
     v6 = v14;
     goto LABEL_8;
   }
 
-  v5 = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSKey"];
-  if (v5)
+  decodeObject = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSKey"];
+  if (decodeObject)
   {
     if (_NSIsNSString())
     {
@@ -386,8 +386,8 @@ LABEL_4:
   v6 = [(NSCoder *)coder decodeBoolForKey:@"NSAscending"];
   v14 = v6;
   v7 = [(NSCoder *)coder decodeBoolForKey:@"NSReverseNullOrder"];
-  v8 = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSelector"];
-  if (!v8)
+  decodeObject2 = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSelector"];
+  if (!decodeObject2)
   {
     if (![(NSCoder *)coder error])
     {
@@ -406,16 +406,16 @@ LABEL_17:
   }
 
 LABEL_6:
-  v9 = [(NSCoder *)coder requiresSecureCoding];
+  requiresSecureCoding = [(NSCoder *)coder requiresSecureCoding];
 LABEL_8:
-  v10 = [(NSSortDescriptor *)self initWithKey:v5 ascending:v6];
+  v10 = [(NSSortDescriptor *)self initWithKey:decodeObject ascending:v6];
   v11 = v10;
-  if (v8)
+  if (decodeObject2)
   {
-    [(NSSortDescriptor *)v10 _setSelectorName:v8];
+    [(NSSortDescriptor *)v10 _setSelectorName:decodeObject2];
   }
 
-  if (v9)
+  if (requiresSecureCoding)
   {
     [(NSSortDescriptor *)v11 _disallowEvaluation];
   }
@@ -428,20 +428,20 @@ LABEL_8:
   return v11;
 }
 
-- (void)_setKey:(id)a3
+- (void)_setKey:(id)key
 {
   key = self->_key;
-  if (key != a3)
+  if (key != key)
   {
 
-    self->_key = [a3 copy];
+    self->_key = [key copy];
   }
 }
 
-- (void)setReverseNullOrder:(BOOL)a3
+- (void)setReverseNullOrder:(BOOL)order
 {
   v3 = 8;
-  if (!a3)
+  if (!order)
   {
     v3 = 0;
   }
@@ -449,15 +449,15 @@ LABEL_8:
   self->_sortDescriptorFlags |= v3;
 }
 
-- (void)_setSelectorName:(id)a3
+- (void)_setSelectorName:(id)name
 {
   if ((self->_sortDescriptorFlags & 2) == 0)
   {
     selectorOrBlock = self->_selectorOrBlock;
-    if (selectorOrBlock != a3)
+    if (selectorOrBlock != name)
     {
 
-      v6 = [a3 copy];
+      v6 = [name copy];
       self->_selector = 0;
       self->_selectorOrBlock = v6;
     }
@@ -471,8 +471,8 @@ LABEL_8:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Sort descriptor was decoded from a secure archive and local evaluation is not enabled." userInfo:0]);
   }
 
-  v7 = [(NSSortDescriptor *)self selector];
-  v8 = [MEMORY[0x1E695DFB0] null];
+  selector = [(NSSortDescriptor *)self selector];
+  null = [MEMORY[0x1E695DFB0] null];
   if (self->_key)
   {
     object1 = [object1 valueForKeyPath:?];
@@ -482,7 +482,7 @@ LABEL_8:
     }
   }
 
-  if (object1 == v8)
+  if (object1 == null)
   {
     object1 = 0;
   }
@@ -491,41 +491,41 @@ LABEL_8:
   {
     if ((self->_sortDescriptorFlags & 2) != 0)
     {
-      v7 = 0;
+      selector = 0;
       selectorOrBlock = self->_selectorOrBlock;
     }
 
     else
     {
       v9 = objc_opt_class();
-      selectorOrBlock = class_getMethodImplementation(v9, v7);
+      selectorOrBlock = class_getMethodImplementation(v9, selector);
     }
   }
 
   else
   {
-    v7 = sel_compare_;
+    selector = sel_compare_;
     selectorOrBlock = _NSNullCompare;
   }
 
-  if (object2 == v8)
+  if (object2 == null)
   {
     object2 = 0;
   }
 
-  v11 = [(NSSortDescriptor *)self ascending];
-  v12 = [(NSSortDescriptor *)self reverseNullOrder];
+  ascending = [(NSSortDescriptor *)self ascending];
+  reverseNullOrder = [(NSSortDescriptor *)self reverseNullOrder];
 
-  return _NSCompareObject(object1, object2, selectorOrBlock, v7, v11, v12);
+  return _NSCompareObject(object1, object2, selectorOrBlock, selector, ascending, reverseNullOrder);
 }
 
-- (BOOL)_isEqualToSortDescriptor:(id)a3
+- (BOOL)_isEqualToSortDescriptor:(id)descriptor
 {
-  v5 = [(NSSortDescriptor *)self ascending];
-  if (v5 == [a3 ascending] && (v6 = -[NSSortDescriptor reverseNullOrder](self, "reverseNullOrder"), v6 == objc_msgSend(a3, "reverseNullOrder")))
+  ascending = [(NSSortDescriptor *)self ascending];
+  if (ascending == [descriptor ascending] && (v6 = -[NSSortDescriptor reverseNullOrder](self, "reverseNullOrder"), v6 == objc_msgSend(descriptor, "reverseNullOrder")))
   {
     v12 = [(NSSortDescriptor *)self key];
-    v7 = v12 == [a3 key] || -[NSString isEqualToString:](-[NSSortDescriptor key](self, "key"), "isEqualToString:", objc_msgSend(a3, "key"));
+    v7 = v12 == [descriptor key] || -[NSString isEqualToString:](-[NSSortDescriptor key](self, "key"), "isEqualToString:", objc_msgSend(descriptor, "key"));
   }
 
   else
@@ -534,10 +534,10 @@ LABEL_8:
   }
 
   sortDescriptorFlags = self->_sortDescriptorFlags;
-  v9 = *(a3 + 1);
+  v9 = *(descriptor + 1);
   if ((sortDescriptorFlags & 2) != 0 && (v9 & 2) != 0)
   {
-    v10 = self->_selectorOrBlock == *(a3 + 4);
+    v10 = self->_selectorOrBlock == *(descriptor + 4);
   }
 
   else if (((sortDescriptorFlags | v9) & 2) != 0)
@@ -553,29 +553,29 @@ LABEL_8:
   return v7 & v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [(NSSortDescriptor *)self _isEqualToSortDescriptor:a3];
+  return [(NSSortDescriptor *)self _isEqualToSortDescriptor:equal];
 }
 
-- (id)replacementObjectForPortCoder:(id)a3
+- (id)replacementObjectForPortCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isByref])
+  if ([coder isByref])
   {
     v6.receiver = self;
     v6.super_class = NSSortDescriptor;
-    return [(NSSortDescriptor *)&v6 replacementObjectForPortCoder:a3];
+    return [(NSSortDescriptor *)&v6 replacementObjectForPortCoder:coder];
   }
 
   return self;

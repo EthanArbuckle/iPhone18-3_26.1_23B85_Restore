@@ -6,23 +6,23 @@
 
 - (id)sr_sirilandShim
 {
-  v3 = [(SAPhoneCallSnippet *)self calls];
-  v4 = v3;
-  if (v3 && [v3 count])
+  calls = [(SAPhoneCallSnippet *)self calls];
+  v4 = calls;
+  if (calls && [calls count])
   {
     v54 = v4;
     v5 = objc_alloc_init(SFCard);
-    v6 = [(SAPhoneCallSnippet *)self title];
-    [v5 setTitle:v6];
+    title = [(SAPhoneCallSnippet *)self title];
+    [v5 setTitle:title];
 
     [v5 setType:1];
-    v7 = [(SAPhoneCallSnippet *)self aceId];
-    [v5 setCardId:v7];
+    aceId = [(SAPhoneCallSnippet *)self aceId];
+    [v5 setCardId:aceId];
 
     [v5 setSource:2];
     v8 = objc_alloc_init(NSMutableArray);
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = [(SAPhoneCallSnippet *)self calls];
+    calls2 = [(SAPhoneCallSnippet *)self calls];
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_10007A1D8;
@@ -31,53 +31,53 @@
     v57 = v11;
     v55 = v9;
     v58 = v55;
-    v12 = [(SAPhoneCallSnippet *)self _callHistoryRowsForCalls:v10 callOperation:v56];
+    v12 = [(SAPhoneCallSnippet *)self _callHistoryRowsForCalls:calls2 callOperation:v56];
 
     v13 = [(SAPhoneCallSnippet *)self _searchCallHistoryIntentForVoicemail:0];
     v53 = v11;
     v14 = [(SAPhoneCallSnippet *)self _searchCallHistoryIntentResponseForCallRecords:v11];
-    v15 = [v13 backingStore];
-    v16 = [v15 data];
+    backingStore = [v13 backingStore];
+    data = [backingStore data];
 
-    v17 = [objc_opt_class() intentDescription];
-    v18 = [v17 name];
+    intentDescription = [objc_opt_class() intentDescription];
+    name = [intentDescription name];
 
-    [v5 setIntentMessageData:v16];
-    v48 = v18;
-    [v5 setIntentMessageName:v18];
+    [v5 setIntentMessageData:data];
+    v48 = name;
+    [v5 setIntentMessageName:name];
     v50 = v14;
-    v19 = [v14 backingStore];
-    v20 = [v19 data];
-    [v5 setIntentResponseMessageData:v20];
+    backingStore2 = [v14 backingStore];
+    data2 = [backingStore2 data];
+    [v5 setIntentResponseMessageData:data2];
 
-    v21 = [objc_opt_class() intentDescription];
-    v22 = [v21 responseName];
-    [v5 setIntentResponseMessageName:v22];
+    intentDescription2 = [objc_opt_class() intentDescription];
+    responseName = [intentDescription2 responseName];
+    [v5 setIntentResponseMessageName:responseName];
 
     v23 = objc_alloc_init(SAIntentGroupLaunchAppWithIntent);
     v24 = +[NSUUID UUID];
-    v25 = [v24 UUIDString];
-    [v23 setAceId:v25];
+    uUIDString = [v24 UUIDString];
+    [v23 setAceId:uUIDString];
 
     v26 = objc_alloc_init(SAIntentGroupProtobufMessage);
     v27 = +[NSUUID UUID];
-    v28 = [v27 UUIDString];
-    [v26 setAceId:v28];
+    uUIDString2 = [v27 UUIDString];
+    [v26 setAceId:uUIDString2];
 
-    v49 = v16;
-    [v26 setData:v16];
+    v49 = data;
+    [v26 setData:data];
     v51 = v13;
-    v29 = [objc_opt_class() intentDescription];
-    v30 = [v29 type];
-    [v26 setTypeName:v30];
+    intentDescription3 = [objc_opt_class() intentDescription];
+    type = [intentDescription3 type];
+    [v26 setTypeName:type];
 
     [v23 setHandledIntent:v26];
     v31 = objc_alloc_init(SFAbstractCommand);
     [v31 setType:1];
     v32 = objc_alloc_init(SFCommandValue);
     v33 = objc_alloc_init(SFReferentialCommand);
-    v34 = [v23 aceId];
-    [v33 setReferenceIdentifier:v34];
+    aceId2 = [v23 aceId];
+    [v33 setReferenceIdentifier:aceId2];
 
     [v32 setReferentialCommand:v33];
     v47 = v31;
@@ -86,22 +86,22 @@
     v35 = [v12 copy];
     [v5 setCardSections:v35];
 
-    v36 = objc_alloc_init(SACardSnippet);
+    selfCopy = objc_alloc_init(SACardSnippet);
     v37 = [[_SFPBCard alloc] initWithFacade:v5];
-    v38 = [v37 data];
-    [(SAPhoneCallSnippet *)v36 setCardData:v38];
+    data3 = [v37 data];
+    [(SAPhoneCallSnippet *)selfCopy setCardData:data3];
 
     v39 = [v55 copy];
-    [(SAPhoneCallSnippet *)v36 setReferencedCommands:v39];
+    [(SAPhoneCallSnippet *)selfCopy setReferencedCommands:v39];
 
     v40 = objc_alloc_init(SAUISash);
     [v40 setApplicationBundleIdentifier:@"com.apple.mobilephone"];
     if (AFIsInternalInstall())
     {
       v41 = +[AFPreferences sharedPreferences];
-      v42 = [v41 debugButtonIsEnabled];
+      debugButtonIsEnabled = [v41 debugButtonIsEnabled];
 
-      if (v42)
+      if (debugButtonIsEnabled)
       {
         v43 = sub_100078408(@"CALL_HISTORY_SASH_TITLE");
         v44 = [NSString stringWithFormat:@"%@ (INTERNAL ONLY: LEGACY FLOW)", v43];
@@ -113,18 +113,18 @@
     v45 = [NSArray arrayWithObjects:&v59 count:1];
     [v40 setCommands:v45];
 
-    [(SAPhoneCallSnippet *)v36 setSash:v40];
-    [(SAPhoneCallSnippet *)v36 sr_applySnippetProperties:self];
+    [(SAPhoneCallSnippet *)selfCopy setSash:v40];
+    [(SAPhoneCallSnippet *)selfCopy sr_applySnippetProperties:self];
 
     v4 = v54;
   }
 
   else
   {
-    v36 = self;
+    selfCopy = self;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 @end

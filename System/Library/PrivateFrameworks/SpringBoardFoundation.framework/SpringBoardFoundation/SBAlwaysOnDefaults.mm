@@ -44,9 +44,9 @@
 - (BOOL)_shouldEnableAODByDefault
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 @end

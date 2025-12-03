@@ -1,23 +1,23 @@
 @interface CSEndpointerSettings
-- (CSEndpointerSettings)initWithCoder:(id)a3;
-- (CSEndpointerSettings)initWithDisableEndpointer:(BOOL)a3;
+- (CSEndpointerSettings)initWithCoder:(id)coder;
+- (CSEndpointerSettings)initWithDisableEndpointer:(BOOL)endpointer;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSEndpointerSettings
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   disableEndpointer = self->_disableEndpointer;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithBool:disableEndpointer];
-  [v4 encodeObject:v5 forKey:@"CSEndpointerSettings:::disableEndpointer"];
+  [coderCopy encodeObject:v5 forKey:@"CSEndpointerSettings:::disableEndpointer"];
 }
 
-- (CSEndpointerSettings)initWithCoder:(id)a3
+- (CSEndpointerSettings)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"CSEndpointerSettings:::disableEndpointer"];
+  v4 = [coder decodeBoolForKey:@"CSEndpointerSettings:::disableEndpointer"];
 
   return [(CSEndpointerSettings *)self initWithDisableEndpointer:v4];
 }
@@ -41,14 +41,14 @@
   return v4;
 }
 
-- (CSEndpointerSettings)initWithDisableEndpointer:(BOOL)a3
+- (CSEndpointerSettings)initWithDisableEndpointer:(BOOL)endpointer
 {
   v5.receiver = self;
   v5.super_class = CSEndpointerSettings;
   result = [(CSEndpointerSettings *)&v5 init];
   if (result)
   {
-    result->_disableEndpointer = a3;
+    result->_disableEndpointer = endpointer;
   }
 
   return result;

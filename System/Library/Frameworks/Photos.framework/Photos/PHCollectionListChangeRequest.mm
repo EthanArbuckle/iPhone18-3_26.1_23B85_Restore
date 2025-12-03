@@ -1,36 +1,36 @@
 @interface PHCollectionListChangeRequest
 + (PHCollectionListChangeRequest)changeRequestForTopLevelCollectionListUserCollections:(PHFetchResult *)childCollections;
 + (PHCollectionListChangeRequest)creationRequestForCollectionListWithTitle:(NSString *)title;
-+ (id)_changeRequestForCollectionList:(id)a3 optionalChildCollections:(id)a4;
-+ (void)_deleteCollectionLists:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5;
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (id)_changeRequestForCollectionList:(id)list optionalChildCollections:(id)collections;
++ (void)_deleteCollectionLists:(id)lists withOperation:(int64_t)operation topLevelSelector:(SEL)selector;
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)customSortAscending;
 - (NSString)description;
 - (NSString)title;
-- (PHCollectionListChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHCollectionListChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHCollectionListChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHCollectionListChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedCollectionList;
 - (id)_mutableObjectIDsAndUUIDs;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (unsigned)customSortKey;
 - (void)_prepareAssetIDsIfNeeded;
-- (void)_prepareWithFetchResult:(id)a3;
-- (void)addChildCollection:(id)a3;
+- (void)_prepareWithFetchResult:(id)result;
+- (void)addChildCollection:(id)collection;
 - (void)addChildCollections:(id)collections;
-- (void)encodeToXPCDict:(id)a3;
-- (void)insertChildCollection:(id)a3 inChildCollectionsAtIndex:(unint64_t)a4;
+- (void)encodeToXPCDict:(id)dict;
+- (void)insertChildCollection:(id)collection inChildCollectionsAtIndex:(unint64_t)index;
 - (void)insertChildCollections:(id)collections atIndexes:(NSIndexSet *)indexes;
 - (void)moveChildCollectionsAtIndexes:(NSIndexSet *)indexes toIndex:(NSUInteger)toIndex;
-- (void)removeChildCollection:(id)a3;
-- (void)removeChildCollectionFromChildCollectionsAtIndex:(unint64_t)a3;
+- (void)removeChildCollection:(id)collection;
+- (void)removeChildCollectionFromChildCollectionsAtIndex:(unint64_t)index;
 - (void)removeChildCollections:(id)collections;
 - (void)removeChildCollectionsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceChildCollectionsAtIndex:(unint64_t)a3 withChildCollection:(id)a4;
+- (void)replaceChildCollectionsAtIndex:(unint64_t)index withChildCollection:(id)collection;
 - (void)replaceChildCollectionsAtIndexes:(NSIndexSet *)indexes withChildCollections:(id)collections;
-- (void)setCustomSortAscending:(BOOL)a3;
-- (void)setCustomSortKey:(unsigned int)a3;
+- (void)setCustomSortAscending:(BOOL)ascending;
+- (void)setCustomSortKey:(unsigned int)key;
 - (void)setTitle:(NSString *)title;
 @end
 
@@ -41,18 +41,18 @@
   v8.receiver = self;
   v8.super_class = PHCollectionListChangeRequest;
   v3 = [(PHCollectionListChangeRequest *)&v8 description];
-  v4 = [(PHCollectionListChangeRequest *)self title];
-  v5 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper mutableObjectIDsAndUUIDs];
-  v6 = [v3 stringByAppendingFormat:@" title=%@ hasAssetChanges=%d", v4, v5 != 0];
+  title = [(PHCollectionListChangeRequest *)self title];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper mutableObjectIDsAndUUIDs];
+  v6 = [v3 stringByAppendingFormat:@" title=%@ hasAssetChanges=%d", title, mutableObjectIDsAndUUIDs != 0];
 
   return v6;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 managedObjectContext];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
   v9 = PLSafeEntityForNameInManagedObjectContext();
 
   if (!v9)
@@ -62,16 +62,16 @@
     goto LABEL_17;
   }
 
-  v10 = [v7 kindValue];
-  v11 = [v7 entity];
-  v12 = [v11 isKindOfEntity:v9];
+  kindValue = [objectCopy kindValue];
+  entity = [objectCopy entity];
+  v12 = [entity isKindOfEntity:v9];
 
-  if (!v12 || (v10 - 3998) >= 3)
+  if (!v12 || (kindValue - 3998) >= 3)
   {
     v34 = MEMORY[0x1E696ABC0];
     v47 = *MEMORY[0x1E696A578];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid collection list type"];
-    v48[0] = v16;
+    collectionsHelper = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid collection list type"];
+    v48[0] = collectionsHelper;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
     v33 = [v34 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v20];
     v32 = 0;
@@ -81,15 +81,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [(PHChangeRequest *)self helper];
+  helper = [(PHChangeRequest *)self helper];
   v46 = 0;
-  v14 = [v13 applyMutationsToManagedObject:v7 error:&v46];
+  v14 = [helper applyMutationsToManagedObject:objectCopy error:&v46];
   v15 = v46;
 
   if (!v14)
   {
     v32 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -97,17 +97,17 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v16 = [(PHCollectionListChangeRequest *)self collectionsHelper];
-  v17 = [v16 mutableObjectIDsAndUUIDs];
+  collectionsHelper = [(PHCollectionListChangeRequest *)self collectionsHelper];
+  mutableObjectIDsAndUUIDs = [collectionsHelper mutableObjectIDsAndUUIDs];
 
-  if (v17)
+  if (mutableObjectIDsAndUUIDs)
   {
-    v18 = v7;
-    [v16 setAllowsInsert:{objc_msgSend(v18, "canPerformEditOperation:", 4)}];
-    [v16 setAllowsMove:{objc_msgSend(v18, "canPerformEditOperation:", 16)}];
-    [v16 setAllowsRemove:{objc_msgSend(v18, "canPerformEditOperation:", 2)}];
-    v19 = [MEMORY[0x1E69BE458] entityName];
-    [v16 setDestinationEntityName:v19];
+    v18 = objectCopy;
+    [collectionsHelper setAllowsInsert:{objc_msgSend(v18, "canPerformEditOperation:", 4)}];
+    [collectionsHelper setAllowsMove:{objc_msgSend(v18, "canPerformEditOperation:", 16)}];
+    [collectionsHelper setAllowsRemove:{objc_msgSend(v18, "canPerformEditOperation:", 2)}];
+    entityName = [MEMORY[0x1E69BE458] entityName];
+    [collectionsHelper setDestinationEntityName:entityName];
 
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
@@ -115,35 +115,35 @@ LABEL_11:
     v43[3] = &unk_1E75A4C70;
     v20 = v18;
     v44 = v20;
-    v45 = v10;
-    [v16 setIsDestinationObjectValid:v43];
+    v45 = kindValue;
+    [collectionsHelper setIsDestinationObjectValid:v43];
     if ([(PHCollectionListChangeRequest *)self isTopLevelUserCollection])
     {
       v21 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-      v40 = [v21 librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [v21 librarySpecificFetchOptions];
 
       v22 = MEMORY[0x1E696AB28];
       v23 = +[PHCollection predicateForUserCollections];
       v39 = [v22 notPredicateWithSubpredicate:v23];
 
-      v38 = [PHQuery queryForTopLevelCollectionsMatchingPredicate:v39 options:v40];
-      v41 = [v38 executeQuery];
-      v24 = [v41 fetchedObjectIDs];
-      v25 = [v16 originalObjectIDs];
-      v37 = [v24 arrayByAddingObjectsFromArray:v25];
+      v38 = [PHQuery queryForTopLevelCollectionsMatchingPredicate:v39 options:librarySpecificFetchOptions];
+      executeQuery = [v38 executeQuery];
+      fetchedObjectIDs = [executeQuery fetchedObjectIDs];
+      originalObjectIDs = [collectionsHelper originalObjectIDs];
+      v37 = [fetchedObjectIDs arrayByAddingObjectsFromArray:originalObjectIDs];
 
-      [v16 setOriginalObjectIDs:v37];
-      v26 = [v16 mutableObjectIDsAndUUIDs];
-      v27 = [v41 fetchedObjectIDs];
+      [collectionsHelper setOriginalObjectIDs:v37];
+      mutableObjectIDsAndUUIDs2 = [collectionsHelper mutableObjectIDsAndUUIDs];
+      fetchedObjectIDs2 = [executeQuery fetchedObjectIDs];
       v28 = MEMORY[0x1E696AC90];
-      v29 = [v41 fetchedObjectIDs];
-      v30 = [v28 indexSetWithIndexesInRange:{0, objc_msgSend(v29, "count")}];
-      [v26 insertObjects:v27 atIndexes:v30];
+      fetchedObjectIDs3 = [executeQuery fetchedObjectIDs];
+      v30 = [v28 indexSetWithIndexesInRange:{0, objc_msgSend(fetchedObjectIDs3, "count")}];
+      [mutableObjectIDsAndUUIDs2 insertObjects:fetchedObjectIDs2 atIndexes:v30];
     }
 
-    v31 = [v20 albums];
+    albums = [v20 albums];
     v42 = v15;
-    v32 = [v16 applyMutationsToManagedObject:v20 orderedMutableChildren:v31 error:&v42];
+    v32 = [collectionsHelper applyMutationsToManagedObject:v20 orderedMutableChildren:albums error:&v42];
     v33 = v42;
 
     goto LABEL_11;
@@ -152,7 +152,7 @@ LABEL_11:
   v32 = 1;
 LABEL_12:
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -162,7 +162,7 @@ LABEL_15:
   {
     v35 = v15;
     v32 = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
 LABEL_17:
@@ -241,14 +241,14 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)allowMutationToManagedObject:(id)a3 propertyKey:(id)a4 error:(id *)a5
+- (BOOL)allowMutationToManagedObject:(id)object propertyKey:(id)key error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  keyCopy = key;
+  helper = [(PHChangeRequest *)self helper];
   v24 = 0;
-  v11 = [v10 allowMutationToManagedObject:v8 propertyKey:v9 error:&v24];
+  v11 = [helper allowMutationToManagedObject:objectCopy propertyKey:keyCopy error:&v24];
   v12 = v24;
 
   if (!v11)
@@ -256,14 +256,14 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  if (![v9 isEqualToString:@"title"])
+  if (![keyCopy isEqualToString:@"title"])
   {
-    if (([v9 isEqualToString:@"customSortKey"] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"customSortAscending") & 1) == 0)
+    if (([keyCopy isEqualToString:@"customSortKey"] & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"customSortAscending") & 1) == 0)
     {
       v19 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", v9];
-      v26 = v20;
+      keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid property %@", keyCopy];
+      v26 = keyCopy;
       v18 = 1;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v22 = [v19 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v21];
@@ -275,7 +275,7 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  if ([v8 canPerformEditOperation:64])
+  if ([objectCopy canPerformEditOperation:64])
   {
 LABEL_9:
     v18 = 1;
@@ -284,18 +284,18 @@ LABEL_9:
 
   v13 = MEMORY[0x1E696ABC0];
   v27 = *MEMORY[0x1E696A578];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on property %@", v9];
-  v28[0] = v14;
+  keyCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid operation on property %@", keyCopy];
+  v28[0] = keyCopy2;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v16 = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3300 userInfo:v15];
 
   v12 = v16;
 LABEL_5:
-  if (a5)
+  if (error)
   {
     v17 = v12;
     v18 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -308,15 +308,15 @@ LABEL_12:
   return v18;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHChangeRequest *)self helper];
+  libraryCopy = library;
+  helper = [(PHChangeRequest *)self helper];
   v24 = 0;
-  v8 = [MEMORY[0x1E69BE558] entityName];
+  entityName = [MEMORY[0x1E69BE558] entityName];
   v23 = 0;
-  v9 = [v7 getCloudGUIDIfReserved:&v24 entityName:v8 photoLibrary:v6 error:&v23];
+  v9 = [helper getCloudGUIDIfReserved:&v24 entityName:entityName photoLibrary:libraryCopy error:&v23];
   v10 = v24;
   v11 = v23;
 
@@ -325,7 +325,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x1E69BE558] insertNewFolderWithTitle:0 kind:4000 intoLibrary:v6];
+  v12 = [MEMORY[0x1E69BE558] insertNewFolderWithTitle:0 kind:4000 intoLibrary:libraryCopy];
   if (!v12)
   {
     v16 = MEMORY[0x1E696ABC0];
@@ -339,11 +339,11 @@ LABEL_12:
 LABEL_7:
     v20 = v11;
     v15 = v20;
-    if (a4)
+    if (error)
     {
       v21 = v20;
       v13 = 0;
-      *a4 = v15;
+      *error = v15;
     }
 
     else
@@ -355,8 +355,8 @@ LABEL_7:
   }
 
   v13 = v12;
-  v14 = [(PHChangeRequest *)self uuid];
-  [v13 setUuid:v14];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v13 setUuid:uuid];
 
   if (v10)
   {
@@ -381,7 +381,7 @@ LABEL_10:
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v14;
     do
     {
@@ -393,24 +393,24 @@ LABEL_10:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (!v7)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v7 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v11 = PLObjectIDOrUUIDFromPHObject(v10);
-        [v7 addObject:v11];
+        [array addObject:v11];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
-    if (v7)
+    if (array)
     {
-      v12 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v12 removeObjectsInArray:v7];
+      _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs removeObjectsInArray:array];
     }
   }
 }
@@ -427,7 +427,7 @@ LABEL_10:
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v14;
     do
     {
@@ -439,53 +439,53 @@ LABEL_10:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (!v7)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v7 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v11 = PLObjectIDOrUUIDFromPHObject(v10);
-        [v7 addObject:v11];
+        [array addObject:v11];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
-    if (v7)
+    if (array)
     {
-      v12 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v12 addObjectsFromArray:v7];
+      _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs addObjectsFromArray:array];
     }
   }
 }
 
-- (void)removeChildCollection:(id)a3
+- (void)removeChildCollection:(id)collection
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (collection)
   {
-    v7 = a3;
+    collectionCopy = collection;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    collectionCopy2 = collection;
+    v6 = [v4 arrayWithObjects:&collectionCopy count:1];
 
-    [(PHCollectionListChangeRequest *)self removeChildCollections:v6, v7, v8];
+    [(PHCollectionListChangeRequest *)self removeChildCollections:v6, collectionCopy, v8];
   }
 }
 
-- (void)addChildCollection:(id)a3
+- (void)addChildCollection:(id)collection
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (collection)
   {
-    v7 = a3;
+    collectionCopy = collection;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    collectionCopy2 = collection;
+    v6 = [v4 arrayWithObjects:&collectionCopy count:1];
 
-    [(PHCollectionListChangeRequest *)self addChildCollections:v6, v7, v8];
+    [(PHCollectionListChangeRequest *)self addChildCollections:v6, collectionCopy, v8];
   }
 }
 
@@ -495,12 +495,12 @@ LABEL_10:
   if ([(NSIndexSet *)v10 count])
   {
     [(PHChangeRequest *)self didMutate];
-    v6 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-    v7 = [v6 objectsAtIndexes:v10];
-    [v6 removeObjectsAtIndexes:v10];
+    _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+    v7 = [_mutableObjectIDsAndUUIDs objectsAtIndexes:v10];
+    [_mutableObjectIDsAndUUIDs removeObjectsAtIndexes:v10];
     v8 = [(NSIndexSet *)v10 count];
     v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{toIndex, v8}];
-    [v6 insertObjects:v7 atIndexes:v9];
+    [_mutableObjectIDsAndUUIDs insertObjects:v7 atIndexes:v9];
   }
 }
 
@@ -517,7 +517,7 @@ LABEL_10:
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    array = 0;
     v11 = *v17;
     do
     {
@@ -529,37 +529,37 @@ LABEL_10:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if (!v10)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v10 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v14 = PLObjectIDOrUUIDFromPHObject(v13);
-        [v10 addObject:v14];
+        [array addObject:v14];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
-    if (v10)
+    if (array)
     {
-      v15 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v15 replaceObjectsAtIndexes:v6 withObjects:v10];
+      _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs replaceObjectsAtIndexes:v6 withObjects:array];
     }
   }
 }
 
-- (void)replaceChildCollectionsAtIndex:(unint64_t)a3 withChildCollection:(id)a4
+- (void)replaceChildCollectionsAtIndex:(unint64_t)index withChildCollection:(id)collection
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (collection)
   {
     v6 = MEMORY[0x1E696AC90];
-    v7 = a4;
-    v8 = [v6 indexSetWithIndex:a3];
-    v10[0] = v7;
+    collectionCopy = collection;
+    v8 = [v6 indexSetWithIndex:index];
+    v10[0] = collectionCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
     [(PHCollectionListChangeRequest *)self replaceChildCollectionsAtIndexes:v8 withChildCollections:v9];
@@ -572,8 +572,8 @@ LABEL_10:
   if ([(NSIndexSet *)v5 count])
   {
     [(PHChangeRequest *)self didMutate];
-    v4 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-    [v4 removeObjectsAtIndexes:v5];
+    _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+    [_mutableObjectIDsAndUUIDs removeObjectsAtIndexes:v5];
   }
 }
 
@@ -590,7 +590,7 @@ LABEL_10:
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    array = 0;
     v11 = *v17;
     do
     {
@@ -602,47 +602,47 @@ LABEL_10:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if (!v10)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v10 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v14 = PLObjectIDOrUUIDFromPHObject(v13);
-        [v10 addObject:v14];
+        [array addObject:v14];
       }
 
       v9 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
-    if (v10)
+    if (array)
     {
-      v15 = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v15 insertObjects:v10 atIndexes:v7];
+      _mutableObjectIDsAndUUIDs = [(PHCollectionListChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs insertObjects:array atIndexes:v7];
     }
   }
 }
 
-- (void)removeChildCollectionFromChildCollectionsAtIndex:(unint64_t)a3
+- (void)removeChildCollectionFromChildCollectionsAtIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [MEMORY[0x1E696AC90] indexSetWithIndex:?];
     [(PHCollectionListChangeRequest *)self removeChildCollectionsAtIndexes:v5];
   }
 }
 
-- (void)insertChildCollection:(id)a3 inChildCollectionsAtIndex:(unint64_t)a4
+- (void)insertChildCollection:(id)collection inChildCollectionsAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (collection)
   {
-    v10 = a3;
+    collectionCopy = collection;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a3;
-    v8 = [v6 arrayWithObjects:&v10 count:1];
-    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{a4, v10, v11}];
+    collectionCopy2 = collection;
+    v8 = [v6 arrayWithObjects:&collectionCopy count:1];
+    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{index, collectionCopy, v11}];
 
     [(PHCollectionListChangeRequest *)self insertChildCollections:v8 atIndexes:v9];
   }
@@ -659,181 +659,181 @@ LABEL_10:
 - (void)_prepareAssetIDsIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     if (self->_originalCollectionList)
     {
       v4 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-      v5 = [v4 librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [v4 librarySpecificFetchOptions];
 
       if ([(PHCollectionListChangeRequest *)self isTopLevelUserCollection])
       {
-        [PHQuery queryForTopLevelUserCollectionsWithOptions:v5];
+        [PHQuery queryForTopLevelUserCollectionsWithOptions:librarySpecificFetchOptions];
       }
 
       else
       {
-        [PHQuery queryForCollectionsInCollectionList:self->_originalCollectionList options:v5];
+        [PHQuery queryForCollectionsInCollectionList:self->_originalCollectionList options:librarySpecificFetchOptions];
       }
       v6 = ;
-      v7 = [v6 executeQuery];
-      [(PHCollectionListChangeRequest *)self _prepareWithFetchResult:v7];
+      executeQuery = [v6 executeQuery];
+      [(PHCollectionListChangeRequest *)self _prepareWithFetchResult:executeQuery];
     }
 
-    v8 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
 
-    if (!v8)
+    if (!originalObjectIDs2)
     {
       [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
     }
   }
 
-  v9 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper mutableObjectIDsAndUUIDs];
 
-  if (!v9)
+  if (!mutableObjectIDsAndUUIDs)
   {
     collectionsHelper = self->_collectionsHelper;
-    v12 = [(PHRelationshipChangeRequestHelper *)collectionsHelper originalObjectIDs];
-    v11 = [v12 mutableCopy];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)collectionsHelper originalObjectIDs];
+    v11 = [originalObjectIDs3 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)collectionsHelper setMutableObjectIDsAndUUIDs:v11];
   }
 }
 
-- (void)_prepareWithFetchResult:(id)a3
+- (void)_prepareWithFetchResult:(id)result
 {
-  v7 = a3;
+  resultCopy = result;
   +[PHPhotoLibrary assertTransaction];
-  v4 = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_collectionsHelper originalObjectIDs];
 
-  if (!v4)
+  if (!originalObjectIDs)
   {
     collectionsHelper = self->_collectionsHelper;
-    v6 = [v7 fetchedObjectIDs];
-    [(PHRelationshipChangeRequestHelper *)collectionsHelper setOriginalObjectIDs:v6];
+    fetchedObjectIDs = [resultCopy fetchedObjectIDs];
+    [(PHRelationshipChangeRequestHelper *)collectionsHelper setOriginalObjectIDs:fetchedObjectIDs];
   }
 }
 
 - (void)setTitle:(NSString *)title
 {
   v10 = title;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
   if (v10)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"title"];
+    [mutations setObject:v10 forKeyedSubscript:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"title"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"title"];
+    [mutations removeObjectForKey:@"title"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"title"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"title"];
   }
 }
 
 - (NSString)title
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"title"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"title"];
 
   return v5;
 }
 
-- (void)setCustomSortAscending:(BOOL)a3
+- (void)setCustomSortAscending:(BOOL)ascending
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  ascendingCopy = ascending;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortAscending"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:ascendingCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortAscending"];
 }
 
 - (BOOL)customSortAscending
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortAscending"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortAscending"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setCustomSortKey:(unsigned int)a3
+- (void)setCustomSortKey:(unsigned int)key
 {
-  v3 = *&a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  v3 = *&key;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"customSortKey"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"customSortKey"];
 }
 
 - (unsigned)customSortKey
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"customSortKey"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"customSortKey"];
 
-  LODWORD(v3) = [v5 intValue];
-  return v3;
+  LODWORD(helper) = [v5 intValue];
+  return helper;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedCollectionList
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  v6 = [(PHCollectionListChangeRequest *)self collectionsHelper];
-  [v6 encodeToXPCDict:v4];
+  collectionsHelper = [(PHCollectionListChangeRequest *)self collectionsHelper];
+  [collectionsHelper encodeToXPCDict:dictCopy];
 }
 
-- (PHCollectionListChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHCollectionListChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v17.receiver = self;
   v17.super_class = PHCollectionListChangeRequest;
   v11 = [(PHChangeRequest *)&v17 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
     if (v12)
     {
-      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"childCollections" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"childCollections" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       collectionsHelper = v11->_collectionsHelper;
       v11->_collectionsHelper = v14;
     }
@@ -842,16 +842,16 @@ LABEL_10:
   return v11;
 }
 
-- (PHCollectionListChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHCollectionListChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = PHCollectionListChangeRequest;
   v8 = [(PHChangeRequest *)&v14 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -882,17 +882,17 @@ LABEL_10:
   return v2;
 }
 
-+ (void)_deleteCollectionLists:(id)a3 withOperation:(int64_t)a4 topLevelSelector:(SEL)a5
++ (void)_deleteCollectionLists:(id)lists withOperation:(int64_t)operation topLevelSelector:(SEL)selector
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [PHObject assertAllObjects:v7 forSelector:a5 areOfType:objc_opt_class()];
+  listsCopy = lists;
+  [PHObject assertAllObjects:listsCopy forSelector:selector areOfType:objc_opt_class()];
   +[PHPhotoLibrary assertTransaction];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v7;
+  v8 = listsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -908,7 +908,7 @@ LABEL_10:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v14 + 1) + 8 * v12++) operation:a4, v14];
+        v13 = [(PHTrashableObjectDeleteRequest *)PHCollectionDeleteRequest deleteRequestForObject:*(*(&v14 + 1) + 8 * v12++) operation:operation, v14];
       }
 
       while (v10 != v12);
@@ -922,32 +922,32 @@ LABEL_10:
 + (PHCollectionListChangeRequest)creationRequestForCollectionListWithTitle:(NSString *)title
 {
   v3 = title;
-  v4 = [[PHCollectionListChangeRequest alloc] initForNewObject];
-  [v4 setTitle:v3];
+  initForNewObject = [[PHCollectionListChangeRequest alloc] initForNewObject];
+  [initForNewObject setTitle:v3];
 
-  return v4;
+  return initForNewObject;
 }
 
 + (PHCollectionListChangeRequest)changeRequestForTopLevelCollectionListUserCollections:(PHFetchResult *)childCollections
 {
   v4 = childCollections;
   v5 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-  v6 = [v5 librarySpecificFetchOptions];
-  v7 = [PHCollectionList fetchRootAlbumCollectionListWithOptions:v6];
-  v8 = [v7 firstObject];
+  librarySpecificFetchOptions = [v5 librarySpecificFetchOptions];
+  v7 = [PHCollectionList fetchRootAlbumCollectionListWithOptions:librarySpecificFetchOptions];
+  firstObject = [v7 firstObject];
 
-  v9 = [a1 _changeRequestForCollectionList:v8 optionalChildCollections:v4];
+  v9 = [self _changeRequestForCollectionList:firstObject optionalChildCollections:v4];
 
   [v9 setIsTopLevelUserCollection:1];
 
   return v9;
 }
 
-+ (id)_changeRequestForCollectionList:(id)a3 optionalChildCollections:(id)a4
++ (id)_changeRequestForCollectionList:(id)list optionalChildCollections:(id)collections
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isTransient])
+  listCopy = list;
+  collectionsCopy = collections;
+  if ([listCopy isTransient])
   {
     v7 = 0;
   }
@@ -955,14 +955,14 @@ LABEL_10:
   else
   {
     v8 = [PHCollectionListChangeRequest alloc];
-    v9 = [v5 uuid];
-    v10 = [v5 objectID];
-    v7 = [(PHCollectionListChangeRequest *)v8 initWithUUID:v9 objectID:v10];
+    uuid = [listCopy uuid];
+    objectID = [listCopy objectID];
+    v7 = [(PHCollectionListChangeRequest *)v8 initWithUUID:uuid objectID:objectID];
 
-    [(PHCollectionListChangeRequest *)v7 _setOriginalCollectionList:v5];
-    if (v6)
+    [(PHCollectionListChangeRequest *)v7 _setOriginalCollectionList:listCopy];
+    if (collectionsCopy)
     {
-      [(PHCollectionListChangeRequest *)v7 _prepareWithFetchResult:v6];
+      [(PHCollectionListChangeRequest *)v7 _prepareWithFetchResult:collectionsCopy];
     }
   }
 

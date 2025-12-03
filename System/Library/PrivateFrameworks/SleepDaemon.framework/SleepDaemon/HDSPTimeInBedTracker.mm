@@ -2,32 +2,32 @@
 - (BOOL)isTimeInBedTrackingEnabled;
 - (HDSPEnvironment)environment;
 - (HDSPSleepTrackerDelegate)delegate;
-- (HDSPTimeInBedTracker)initWithEnvironment:(id)a3;
+- (HDSPTimeInBedTracker)initWithEnvironment:(id)environment;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
-- (id)_computeSessionMetadataForInterval:(id)a3;
-- (id)_computeSleepSessionStartBeforeDate:(id)a3;
-- (id)_createSleepSessionWithEndDate:(id)a3 endReason:(unint64_t)a4;
-- (id)computeSleepIntervalsForInterval:(id)a3;
-- (id)processedSessionForSession:(id)a3;
-- (void)_compareWithCoreDuetInBedDetectionForInterval:(id)a3;
-- (void)_endSleepSessionWithReason:(unint64_t)a3;
-- (void)_logDetections:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
+- (id)_computeSessionMetadataForInterval:(id)interval;
+- (id)_computeSleepSessionStartBeforeDate:(id)date;
+- (id)_createSleepSessionWithEndDate:(id)date endReason:(unint64_t)reason;
+- (id)computeSleepIntervalsForInterval:(id)interval;
+- (id)processedSessionForSession:(id)session;
+- (void)_compareWithCoreDuetInBedDetectionForInterval:(id)interval;
+- (void)_endSleepSessionWithReason:(unint64_t)reason;
+- (void)_logDetections:(id)detections;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
 @end
 
 @implementation HDSPTimeInBedTracker
 
-- (HDSPTimeInBedTracker)initWithEnvironment:(id)a3
+- (HDSPTimeInBedTracker)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = HDSPTimeInBedTracker;
   v5 = [(HDSPTimeInBedTracker *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = HKSPDispatchQueueName();
     v8 = HKSPSerialQueueBackedScheduler();
     sleepIntervalScheduler = v6->_sleepIntervalScheduler;
@@ -43,39 +43,39 @@
   return v6;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = [a3 sleepCoordinator];
-  [v4 addObserver:self];
+  sleepCoordinator = [ready sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 }
 
 - (BOOL)isTimeInBedTrackingEnabled
 {
   v21 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 timeInBedTracking];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  timeInBedTracking = [features timeInBedTracking];
 
-  if ((v6 & 1) == 0)
+  if ((timeInBedTracking & 1) == 0)
   {
-    v7 = HKSPLogForCategory();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    sleepScheduleModel = HKSPLogForCategory();
+    if (os_log_type_enabled(sleepScheduleModel, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
       v20 = objc_opt_class();
       v13 = v20;
-      _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] time in bed tracking feature disabled", &v19, 0xCu);
+      _os_log_impl(&dword_269B11000, sleepScheduleModel, OS_LOG_TYPE_DEFAULT, "[%{public}@] time in bed tracking feature disabled", &v19, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  v7 = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
-  v8 = [v7 sleepSchedule];
-  v9 = [v8 isEnabledAndHasOccurrences];
+  sleepScheduleModel = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
+  sleepSchedule = [sleepScheduleModel sleepSchedule];
+  isEnabledAndHasOccurrences = [sleepSchedule isEnabledAndHasOccurrences];
 
-  if ((v9 & 1) == 0)
+  if ((isEnabledAndHasOccurrences & 1) == 0)
   {
     v14 = HKSPLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -95,10 +95,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = [v7 sleepSettings];
-  v11 = [v10 timeInBedTracking];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  timeInBedTracking2 = [sleepSettings timeInBedTracking];
 
-  if ((v11 & 1) == 0)
+  if ((timeInBedTracking2 & 1) == 0)
   {
     v14 = HKSPLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -123,17 +123,17 @@ LABEL_14:
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = [(HDSPTimeInBedTracker *)self isTimeInBedTrackingEnabled];
-  if (a3 == 1 && v7)
+  isTimeInBedTrackingEnabled = [(HDSPTimeInBedTracker *)self isTimeInBedTrackingEnabled];
+  if (change == 1 && isTimeInBedTrackingEnabled)
   {
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -142,7 +142,7 @@ LABEL_14:
       v10 = v9;
       v11 = NSStringFromHKSPSleepScheduleStateChangeReason();
       v14 = 138543618;
-      v15 = v9;
+      selfCopy = v9;
       v16 = 2114;
       v17 = v11;
       _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] state changed to wake up (%{public}@)", &v14, 0x16u);
@@ -154,7 +154,7 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] ending time in bed tracking", &v14, 0xCu);
       }
 
@@ -165,7 +165,7 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endSleepSessionWithReason:(unint64_t)a3
+- (void)_endSleepSessionWithReason:(unint64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -173,7 +173,7 @@ LABEL_14:
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = HDSPSleepSessionEndReasonDescription(a3);
+    v8 = HDSPSleepSessionEndReasonDescription(reason);
     v15 = 138543618;
     v16 = v6;
     v17 = 2114;
@@ -182,26 +182,26 @@ LABEL_14:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v10 = [WeakRetained currentDateProvider];
-  v11 = v10[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v11 = currentDateProvider[2]();
 
-  v12 = [(HDSPTimeInBedTracker *)self _createSleepSessionWithEndDate:v11 endReason:a3];
-  v13 = [(HDSPTimeInBedTracker *)self delegate];
-  [v13 sleepTracker:self didEndSession:v12 reason:a3];
+  v12 = [(HDSPTimeInBedTracker *)self _createSleepSessionWithEndDate:v11 endReason:reason];
+  delegate = [(HDSPTimeInBedTracker *)self delegate];
+  [delegate sleepTracker:self didEndSession:v12 reason:reason];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createSleepSessionWithEndDate:(id)a3 endReason:(unint64_t)a4
+- (id)_createSleepSessionWithEndDate:(id)date endReason:(unint64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSPTimeInBedTracker *)self _computeSleepSessionStartBeforeDate:v6];
+  dateCopy = date;
+  v7 = [(HDSPTimeInBedTracker *)self _computeSleepSessionStartBeforeDate:dateCopy];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v6];
+    v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:dateCopy];
     v9 = [(HDSPTimeInBedTracker *)self _computeSessionMetadataForInterval:v8];
-    v10 = [HDSPSleepSession sleepSessionWithDateInterval:v8 sleepIntervals:MEMORY[0x277CBEBF8] endReason:a4 metadata:v9 requiresFirstUnlock:1];
+    v10 = [HDSPSleepSession sleepSessionWithDateInterval:v8 sleepIntervals:MEMORY[0x277CBEBF8] endReason:reason metadata:v9 requiresFirstUnlock:1];
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -224,18 +224,18 @@ LABEL_14:
   return v10;
 }
 
-- (id)_computeSleepSessionStartBeforeDate:(id)a3
+- (id)_computeSleepSessionStartBeforeDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
-  v6 = [v5 previousEventWithIdentifier:*MEMORY[0x277D621B8] dueBeforeDate:v4];
+  dateCopy = date;
+  sleepScheduleModel = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
+  v6 = [sleepScheduleModel previousEventWithIdentifier:*MEMORY[0x277D621B8] dueBeforeDate:dateCopy];
 
   v7 = v6;
-  v8 = [v5 sleepSettings];
-  v9 = [v8 sleepTracking];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  sleepTracking = [sleepSettings sleepTracking];
 
-  if (v9)
+  if (sleepTracking)
   {
     v10 = [v7 dateByAddingTimeInterval:-5400.0];
 
@@ -272,17 +272,17 @@ LABEL_14:
   return v10;
 }
 
-- (id)computeSleepIntervalsForInterval:(id)a3
+- (id)computeSleepIntervalsForInterval:(id)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v16 = objc_opt_class();
     v17 = 2114;
-    v18 = v4;
+    v18 = intervalCopy;
     v6 = v16;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] computing in bed intervals inside %{public}@", buf, 0x16u);
   }
@@ -293,9 +293,9 @@ LABEL_14:
   v13[2] = __57__HDSPTimeInBedTracker_computeSleepIntervalsForInterval___block_invoke;
   v13[3] = &unk_279C7B230;
   v13[4] = self;
-  v14 = v4;
+  v14 = intervalCopy;
   sleepIntervalScheduler = self->_sleepIntervalScheduler;
-  v9 = v4;
+  v9 = intervalCopy;
   v10 = [v7 futureWithBlock:v13 scheduler:sleepIntervalScheduler];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -363,10 +363,10 @@ void __57__HDSPTimeInBedTracker_computeSleepIntervalsForInterval___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logDetections:(id)a3
+- (void)_logDetections:(id)detections
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  detectionsCopy = detections;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -375,7 +375,7 @@ void __57__HDSPTimeInBedTracker_computeSleepIntervalsForInterval___block_invoke_
     *buf = 138543618;
     v11 = v6;
     v12 = 2048;
-    v13 = [v4 count];
+    v13 = [detectionsCopy count];
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] found %lu in-bed intervals", buf, 0x16u);
   }
 
@@ -384,7 +384,7 @@ void __57__HDSPTimeInBedTracker_computeSleepIntervalsForInterval___block_invoke_
   v9[2] = __39__HDSPTimeInBedTracker__logDetections___block_invoke;
   v9[3] = &unk_279C7B258;
   v9[4] = self;
-  [v4 na_each:v9];
+  [detectionsCopy na_each:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -413,10 +413,10 @@ void __39__HDSPTimeInBedTracker__logDetections___block_invoke(uint64_t a1, void 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_compareWithCoreDuetInBedDetectionForInterval:(id)a3
+- (void)_compareWithCoreDuetInBedDetectionForInterval:(id)interval
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -427,7 +427,7 @@ void __39__HDSPTimeInBedTracker__logDetections___block_invoke(uint64_t a1, void 
   }
 
   v7 = +[HDSPCDInBedDetector inBedDetector];
-  v8 = [v7 detectInBedTimesDuringInterval:v4];
+  v8 = [v7 detectInBedTimesDuringInterval:intervalCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -466,24 +466,24 @@ void __70__HDSPTimeInBedTracker__compareWithCoreDuetInBedDetectionForInterval___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_computeSessionMetadataForInterval:(id)a3
+- (id)_computeSessionMetadataForInterval:(id)interval
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v34 = objc_opt_class();
     v35 = 2114;
-    v36 = v4;
+    v36 = intervalCopy;
     v6 = v34;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _computeSessionMetadataForInterval: %{public}@", buf, 0x16u);
   }
 
-  v7 = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
-  v8 = [v4 endDate];
-  v9 = [v7 previousOccurrenceBeforeDate:v8];
+  sleepScheduleModel = [(HDSPTimeInBedTracker *)self sleepScheduleModel];
+  endDate = [intervalCopy endDate];
+  v9 = [sleepScheduleModel previousOccurrenceBeforeDate:endDate];
 
   v10 = HKSPLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -499,24 +499,24 @@ void __70__HDSPTimeInBedTracker__compareWithCoreDuetInBedDetectionForInterval___
 
   if ([v9 isSingleDayOverride])
   {
-    v13 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v14 = [v9 wakeUpComponents];
-    v15 = [v13 dateFromComponents:v14];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    wakeUpComponents = [v9 wakeUpComponents];
+    v15 = [hk_gregorianCalendar dateFromComponents:wakeUpComponents];
 
-    v16 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v17 = [v9 bedtimeComponents];
-    [v16 dateFromComponents:v17];
+    hk_gregorianCalendar2 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    bedtimeComponents = [v9 bedtimeComponents];
+    [hk_gregorianCalendar2 dateFromComponents:bedtimeComponents];
   }
 
   else
   {
-    v18 = [v4 endDate];
-    v19 = [v9 wakeUpComponents];
-    v15 = [v18 hksp_dateNearestMatchingComponents:v19];
+    endDate2 = [intervalCopy endDate];
+    wakeUpComponents2 = [v9 wakeUpComponents];
+    v15 = [endDate2 hksp_dateNearestMatchingComponents:wakeUpComponents2];
 
-    v16 = [v4 startDate];
-    v17 = [v9 bedtimeComponents];
-    [v16 hksp_dateNearestMatchingComponents:v17];
+    hk_gregorianCalendar2 = [intervalCopy startDate];
+    bedtimeComponents = [v9 bedtimeComponents];
+    [hk_gregorianCalendar2 hksp_dateNearestMatchingComponents:bedtimeComponents];
   }
   v20 = ;
 
@@ -537,10 +537,10 @@ void __70__HDSPTimeInBedTracker__compareWithCoreDuetInBedDetectionForInterval___
   v24 = MEMORY[0x277CBEC10];
   if (v20 && v15)
   {
-    v25 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v26 = [v25 name];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    name = [systemTimeZone name];
     v27 = *MEMORY[0x277CCE0F8];
-    v32[0] = v26;
+    v32[0] = name;
     v32[1] = v20;
     v28 = *MEMORY[0x277CCE100];
     v31[1] = v27;
@@ -554,26 +554,26 @@ void __70__HDSPTimeInBedTracker__compareWithCoreDuetInBedDetectionForInterval___
   return v24;
 }
 
-- (id)processedSessionForSession:(id)a3
+- (id)processedSessionForSession:(id)session
 {
-  v4 = a3;
-  if ([v4 requiresFirstUnlock])
+  sessionCopy = session;
+  if ([sessionCopy requiresFirstUnlock])
   {
-    v5 = [v4 interval];
-    v6 = [(HDSPTimeInBedTracker *)self computeSleepIntervalsForInterval:v5];
+    interval = [sessionCopy interval];
+    v6 = [(HDSPTimeInBedTracker *)self computeSleepIntervalsForInterval:interval];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __51__HDSPTimeInBedTracker_processedSessionForSession___block_invoke;
     v9[3] = &unk_279C7B1E0;
-    v10 = v4;
-    v11 = self;
+    v10 = sessionCopy;
+    selfCopy = self;
     v7 = [v6 flatMap:v9];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D2C900] futureWithResult:v4];
+    v7 = [MEMORY[0x277D2C900] futureWithResult:sessionCopy];
   }
 
   return v7;

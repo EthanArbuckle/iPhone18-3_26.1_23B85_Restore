@@ -1,7 +1,7 @@
 @interface ServiceAlertQueue
 + (id)defaultQueue;
 - (ServiceAlertQueue)init;
-- (void)getNextAlertForClassName:(id)a3 completionBlock:(id)a4;
+- (void)getNextAlertForClassName:(id)name completionBlock:(id)block;
 @end
 
 @implementation ServiceAlertQueue
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_100025F90;
   block[3] = &unk_1000517F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100069610[0] != -1)
   {
     dispatch_once(qword_100069610, block);
@@ -39,16 +39,16 @@
   return v2;
 }
 
-- (void)getNextAlertForClassName:(id)a3 completionBlock:(id)a4
+- (void)getNextAlertForClassName:(id)name completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  nameCopy = name;
   v8 = SSXPCCreateMessageDictionary();
   SSXPCDictionarySetCFObject();
 
   v9 = objc_alloc_init(ServiceAlertProxy);
-  v10 = [(ServiceAlertProxy *)v9 receiverEndpoint];
-  xpc_dictionary_set_value(v8, "2", v10);
+  receiverEndpoint = [(ServiceAlertProxy *)v9 receiverEndpoint];
+  xpc_dictionary_set_value(v8, "2", receiverEndpoint);
 
   connection = self->_connection;
   v14[0] = _NSConcreteStackBlock;
@@ -56,8 +56,8 @@
   v14[2] = sub_1000260F4;
   v14[3] = &unk_100051F48;
   v15 = v9;
-  v16 = v6;
-  v12 = v6;
+  v16 = blockCopy;
+  v12 = blockCopy;
   v13 = v9;
   [(SSXPCConnection *)connection sendMessage:v8 withReply:v14];
 }

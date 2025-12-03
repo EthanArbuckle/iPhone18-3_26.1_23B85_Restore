@@ -1,22 +1,22 @@
 @interface _StoreStatus
 - (BOOL)needsResetSync;
-- (_StoreStatus)initWithPersistencePath:(id)a3;
+- (_StoreStatus)initWithPersistencePath:(id)path;
 - (void)_persistStatus;
-- (void)setSeqId:(id)a3;
+- (void)setSeqId:(id)id;
 @end
 
 @implementation _StoreStatus
 
-- (_StoreStatus)initWithPersistencePath:(id)a3
+- (_StoreStatus)initWithPersistencePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = _StoreStatus;
   v6 = [(_StoreStatus *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistencePath, a3);
+    objc_storeStrong(&v6->_persistencePath, path);
     v8 = [NSDictionary dictionaryWithContentsOfFile:v7->_persistencePath];
     objc_opt_class();
     NTKValidateDictionaryValue();
@@ -43,17 +43,17 @@
 - (BOOL)needsResetSync
 {
   v2 = [(NSMutableDictionary *)self->_status objectForKey:@"needs-reset-sync"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSeqId:(id)a3
+- (void)setSeqId:(id)id
 {
   status = self->_status;
-  if (a3)
+  if (id)
   {
-    [(NSMutableDictionary *)status setObject:a3 forKey:@"sequence-id"];
+    [(NSMutableDictionary *)status setObject:id forKey:@"sequence-id"];
   }
 
   else

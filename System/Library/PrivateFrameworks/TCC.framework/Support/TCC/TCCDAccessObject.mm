@@ -1,22 +1,22 @@
 @interface TCCDAccessObject
-- (TCCDAccessObject)initWithService:(id)a3 indirectObject:(id)a4;
+- (TCCDAccessObject)initWithService:(id)service indirectObject:(id)object;
 - (id)description;
 @end
 
 @implementation TCCDAccessObject
 
-- (TCCDAccessObject)initWithService:(id)a3 indirectObject:(id)a4
+- (TCCDAccessObject)initWithService:(id)service indirectObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = TCCDAccessObject;
   v8 = [(TCCDAccessObject *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(TCCDAccessObject *)v8 setServiceObject:v6];
-    [(TCCDAccessObject *)v9 setIndirectObject:v7];
+    [(TCCDAccessObject *)v8 setServiceObject:serviceCopy];
+    [(TCCDAccessObject *)v9 setIndirectObject:objectCopy];
   }
 
   return v9;
@@ -25,17 +25,17 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(TCCDAccessObject *)self serviceObject];
-  v5 = [v4 name];
-  [v3 appendFormat:@"S:%@", v5];
+  serviceObject = [(TCCDAccessObject *)self serviceObject];
+  name = [serviceObject name];
+  [v3 appendFormat:@"S:%@", name];
 
-  v6 = [(TCCDAccessObject *)self indirectObject];
+  indirectObject = [(TCCDAccessObject *)self indirectObject];
   v7 = +[TCCDAccessIndirectObject unusedIndirectObject];
 
-  if (v6 != v7)
+  if (indirectObject != v7)
   {
-    v8 = [(TCCDAccessObject *)self indirectObject];
-    v9 = [v8 description];
+    indirectObject2 = [(TCCDAccessObject *)self indirectObject];
+    v9 = [indirectObject2 description];
     [v3 appendFormat:@", IO:%@", v9];
   }
 

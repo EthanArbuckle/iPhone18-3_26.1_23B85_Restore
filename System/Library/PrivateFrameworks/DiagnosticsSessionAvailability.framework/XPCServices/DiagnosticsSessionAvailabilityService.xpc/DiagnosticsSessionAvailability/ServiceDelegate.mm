@@ -1,18 +1,18 @@
 @interface ServiceDelegate
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -39,10 +39,10 @@
   return v9;
 }
 
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  v4 = a4;
-  [v4 UTF8String];
+  entitlementCopy = entitlement;
+  [entitlementCopy UTF8String];
   v5 = xpc_copy_entitlement_for_token();
   v6 = v5;
   if (v5 && xpc_BOOL_get_value(v5))
@@ -58,7 +58,7 @@
       sub_10000AF58(v8);
     }
 
-    v9 = [NSError errorWithDomain:v4 code:0 userInfo:0];
+    v9 = [NSError errorWithDomain:entitlementCopy code:0 userInfo:0];
     [DSAnalytics sendAnalyticsWithEvent:5 error:v9];
 
     v7 = 0;

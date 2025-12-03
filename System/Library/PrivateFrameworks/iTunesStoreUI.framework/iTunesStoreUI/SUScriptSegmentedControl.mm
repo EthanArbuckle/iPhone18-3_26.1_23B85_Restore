@@ -1,50 +1,50 @@
 @interface SUScriptSegmentedControl
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSNumber)selectedIndex;
 - (NSNumber)selectedSegmentIndex;
 - (NSString)cancelButtonTitle;
 - (NSString)moreListTitle;
 - (NSString)style;
-- (SUScriptSegmentedControl)initWithPageSectionGroup:(id)a3;
+- (SUScriptSegmentedControl)initWithPageSectionGroup:(id)group;
 - (SUSegmentedControl)activeSegmentedControl;
 - (SUSegmentedControl)nativeSegmentedControl;
 - (SUStorePageViewController)storePageViewController;
 - (double)maximumWidth;
 - (id)_newNativeSegmentedControl;
-- (id)_newPageSectionGroupWithSegments:(id)a3;
-- (id)_newSegmentsFromPageSectionGroup:(id)a3;
-- (id)makeSegmentWithTitle:(id)a3 userInfo:(id)a4;
+- (id)_newPageSectionGroupWithSegments:(id)segments;
+- (id)_newSegmentsFromPageSectionGroup:(id)group;
+- (id)makeSegmentWithTitle:(id)title userInfo:(id)info;
 - (id)newPageSectionGroup;
 - (id)scriptAttributeKeys;
 - (id)segments;
 - (id)showsMoreListAutomatically;
 - (id)tintColor;
-- (id)titleColorForControlState:(unint64_t)a3;
-- (id)titleShadowColorForControlState:(unint64_t)a3;
+- (id)titleColorForControlState:(unint64_t)state;
+- (id)titleShadowColorForControlState:(unint64_t)state;
 - (int64_t)maximumNumberOfItems;
 - (int64_t)nativeSelectedIndex;
 - (int64_t)tintStyle;
-- (void)_reloadSegmentedControl:(id)a3 withSegments:(id)a4;
+- (void)_reloadSegmentedControl:(id)control withSegments:(id)segments;
 - (void)_reloadViewControllerPageSectionGroup;
-- (void)_setColor:(id)a3 forTitleTextAttribute:(id)a4 controlState:(unint64_t)a5;
-- (void)_setRawSegments:(id)a3;
+- (void)_setColor:(id)color forTitleTextAttribute:(id)attribute controlState:(unint64_t)state;
+- (void)_setRawSegments:(id)segments;
 - (void)dealloc;
-- (void)setNativeSegmentedControl:(id)a3;
-- (void)setSegments:(id)a3;
-- (void)setSelectedIndex:(id)a3;
-- (void)setShowsMoreListAutomatically:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitleColor:(id)a3 forControlState:(unint64_t)a4;
-- (void)setTitleShadowColor:(id)a3 forControlState:(unint64_t)a4;
-- (void)showPopoverController:(id)a3 fromSegmentIndex:(int64_t)a4 animated:(BOOL)a5;
+- (void)setNativeSegmentedControl:(id)control;
+- (void)setSegments:(id)segments;
+- (void)setSelectedIndex:(id)index;
+- (void)setShowsMoreListAutomatically:(id)automatically;
+- (void)setStyle:(id)style;
+- (void)setTintColor:(id)color;
+- (void)setTitleColor:(id)color forControlState:(unint64_t)state;
+- (void)setTitleShadowColor:(id)color forControlState:(unint64_t)state;
+- (void)showPopoverController:(id)controller fromSegmentIndex:(int64_t)index animated:(BOOL)animated;
 @end
 
 @implementation SUScriptSegmentedControl
 
-- (SUScriptSegmentedControl)initWithPageSectionGroup:(id)a3
+- (SUScriptSegmentedControl)initWithPageSectionGroup:(id)group
 {
   v8.receiver = self;
   v8.super_class = SUScriptSegmentedControl;
@@ -52,10 +52,10 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(SUScriptSegmentedControl *)v4 _newSegmentsFromPageSectionGroup:a3];
+    v6 = [(SUScriptSegmentedControl *)v4 _newSegmentsFromPageSectionGroup:group];
     [(SUScriptSegmentedControl *)v5 setSegments:v6];
-    -[SUScriptSegmentedControl setSelectedIndex:](v5, "setSelectedIndex:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "defaultSectionIndex")}]);
-    v5->_style = [a3 style];
+    -[SUScriptSegmentedControl setSelectedIndex:](v5, "setSelectedIndex:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(group, "defaultSectionIndex")}]);
+    v5->_style = [group style];
   }
 
   return v5;
@@ -70,35 +70,35 @@
 
 - (SUSegmentedControl)nativeSegmentedControl
 {
-  v3 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [(SUScriptSegmentedControl *)self _newNativeSegmentedControl];
-    [(SUScriptObject *)self setNativeObject:[(SUScriptNativeObject *)SUScriptSegmentedControlNativeObject objectWithNativeObject:v3]];
-    v4 = v3;
+    object = [(SUScriptSegmentedControl *)self _newNativeSegmentedControl];
+    [(SUScriptObject *)self setNativeObject:[(SUScriptNativeObject *)SUScriptSegmentedControlNativeObject objectWithNativeObject:object]];
+    v4 = object;
   }
 
-  return v3;
+  return object;
 }
 
 - (int64_t)nativeSelectedIndex
 {
-  v2 = [(SUScriptSegmentedControl *)self activeSegmentedControl];
+  activeSegmentedControl = [(SUScriptSegmentedControl *)self activeSegmentedControl];
 
-  return [(SUSegmentedControl *)v2 selectedItemIndex];
+  return [(SUSegmentedControl *)activeSegmentedControl selectedItemIndex];
 }
 
 - (id)newPageSectionGroup
 {
-  v3 = [(SUScriptSegmentedControl *)self segments];
+  segments = [(SUScriptSegmentedControl *)self segments];
 
-  return [(SUScriptSegmentedControl *)self _newPageSectionGroupWithSegments:v3];
+  return [(SUScriptSegmentedControl *)self _newPageSectionGroupWithSegments:segments];
 }
 
-- (void)setNativeSegmentedControl:(id)a3
+- (void)setNativeSegmentedControl:(id)control
 {
-  v4 = [(SUScriptNativeObject *)SUScriptSegmentedControlNativeObject objectWithNativeObject:a3];
+  v4 = [(SUScriptNativeObject *)SUScriptSegmentedControlNativeObject objectWithNativeObject:control];
 
   [(SUScriptObject *)self setNativeObject:v4];
 }
@@ -111,40 +111,40 @@ uint64_t __49__SUScriptSegmentedControl_hideMoreListAnimated___block_invoke(uint
   return [v2 showMoreList:0 animated:v3];
 }
 
-- (id)makeSegmentWithTitle:(id)a3 userInfo:(id)a4
+- (id)makeSegmentWithTitle:(id)title userInfo:(id)info
 {
   v7 = objc_alloc_init(SUScriptSegmentedControlItem);
-  [(SUScriptSegmentedControlItem *)v7 setTitle:a3];
-  [(SUScriptSegmentedControlItem *)v7 setUserInfo:a4];
+  [(SUScriptSegmentedControlItem *)v7 setTitle:title];
+  [(SUScriptSegmentedControlItem *)v7 setUserInfo:info];
   [(SUScriptObject *)self checkInScriptObject:v7];
 
   return v7;
 }
 
-- (void)setTitleColor:(id)a3 forControlState:(unint64_t)a4
+- (void)setTitleColor:(id)color forControlState:(unint64_t)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    color = 0;
   }
 
   v7 = *MEMORY[0x1E69DB650];
 
-  [(SUScriptSegmentedControl *)self _setColor:a3 forTitleTextAttribute:v7 controlState:a4];
+  [(SUScriptSegmentedControl *)self _setColor:color forTitleTextAttribute:v7 controlState:state];
 }
 
-- (void)setTitleShadowColor:(id)a3 forControlState:(unint64_t)a4
+- (void)setTitleShadowColor:(id)color forControlState:(unint64_t)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    color = 0;
   }
 
   v7 = *MEMORY[0x1E69DE3E8];
 
-  [(SUScriptSegmentedControl *)self _setColor:a3 forTitleTextAttribute:v7 controlState:a4];
+  [(SUScriptSegmentedControl *)self _setColor:color forTitleTextAttribute:v7 controlState:state];
 }
 
 uint64_t __49__SUScriptSegmentedControl_showMoreListAnimated___block_invoke(uint64_t a1)
@@ -155,7 +155,7 @@ uint64_t __49__SUScriptSegmentedControl_showMoreListAnimated___block_invoke(uint
   return [v2 showMoreList:1 animated:v3];
 }
 
-- (void)showPopoverController:(id)a3 fromSegmentIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)showPopoverController:(id)controller fromSegmentIndex:(int64_t)index animated:(BOOL)animated
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -183,7 +183,7 @@ uint64_t __76__SUScriptSegmentedControl_showPopoverController_fromSegmentIndex_a
   return result;
 }
 
-- (id)titleColorForControlState:(unint64_t)a3
+- (id)titleColorForControlState:(unint64_t)state
 {
   v5 = 0;
   v6 = &v5;
@@ -212,7 +212,7 @@ SUScriptColor *__54__SUScriptSegmentedControl_titleColorForControlState___block_
   return result;
 }
 
-- (id)titleShadowColorForControlState:(unint64_t)a3
+- (id)titleShadowColorForControlState:(unint64_t)state
 {
   v5 = 0;
   v6 = &v5;
@@ -334,15 +334,15 @@ id __41__SUScriptSegmentedControl_moreListTitle__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -442,25 +442,25 @@ uint64_t __45__SUScriptSegmentedControl_setMoreListTitle___block_invoke(uint64_t
   return [v2 setMoreListTitle:v3];
 }
 
-- (void)setSegments:(id)a3
+- (void)setSegments:(id)segments
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 0;
+    segmentsCopy = 0;
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v4 = 0;
-    if (a3)
+    segmentsCopy = 0;
+    if (segments)
     {
       if ((isKindOfClass & 1) == 0)
       {
         objc_opt_class();
-        v4 = a3;
+        segmentsCopy = segments;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_8;
@@ -469,7 +469,7 @@ uint64_t __45__SUScriptSegmentedControl_setMoreListTitle___block_invoke(uint64_t
     }
   }
 
-  v5 = [v4 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+  v5 = [segmentsCopy copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
   if (!v5)
   {
 LABEL_8:
@@ -510,10 +510,10 @@ uint64_t __40__SUScriptSegmentedControl_setSegments___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSelectedIndex:(id)a3
+- (void)setSelectedIndex:(id)index
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !index) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
   {
     WebThreadRunOnMainThread();
   }
@@ -543,10 +543,10 @@ uint64_t __45__SUScriptSegmentedControl_setSelectedIndex___block_invoke(uint64_t
   return [v2 setSelectedItemIndex:v4];
 }
 
-- (void)setShowsMoreListAutomatically:(id)a3
+- (void)setShowsMoreListAutomatically:(id)automatically
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !automatically) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
   {
     WebThreadRunOnMainThread();
   }
@@ -567,10 +567,10 @@ uint64_t __58__SUScriptSegmentedControl_setShowsMoreListAutomatically___block_in
   return [v2 setShowsMoreListAutomatically:v3];
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !style) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -619,28 +619,28 @@ uint64_t __37__SUScriptSegmentedControl_setStyle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    color = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SUScriptColor alloc] initWithStyleString:a3];
+    colorCopy = [[SUScriptColor alloc] initWithStyleString:color];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = a3;
+    colorCopy = color;
 LABEL_8:
-    v5 = v4;
-    if (!a3)
+    v5 = colorCopy;
+    if (!color)
     {
       goto LABEL_13;
     }
@@ -649,7 +649,7 @@ LABEL_8:
   }
 
   v5 = 0;
-  if (!a3)
+  if (!color)
   {
 LABEL_13:
     WebThreadRunOnMainThread();
@@ -808,11 +808,11 @@ uint64_t __37__SUScriptSegmentedControl_tintStyle__block_invoke(uint64_t a1)
 
 - (SUStorePageViewController)storePageViewController
 {
-  v2 = [(SUScriptNativeObject *)[[(SUScriptObject *)self parentScriptObject] nativeObject] object];
+  object = [(SUScriptNativeObject *)[[(SUScriptObject *)self parentScriptObject] nativeObject] object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return object;
   }
 
   else
@@ -829,7 +829,7 @@ uint64_t __37__SUScriptSegmentedControl_tintStyle__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_newPageSectionGroupWithSegments:(id)a3
+- (id)_newPageSectionGroupWithSegments:(id)segments
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -837,7 +837,7 @@ uint64_t __37__SUScriptSegmentedControl_tintStyle__block_invoke(uint64_t a1)
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -849,24 +849,24 @@ uint64_t __37__SUScriptSegmentedControl_tintStyle__block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(segments);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) newPageSection];
-        if (!v10)
+        newPageSection = [*(*(&v15 + 1) + 8 * v9) newPageSection];
+        if (!newPageSection)
         {
           v12 = 0;
           goto LABEL_13;
         }
 
-        v11 = v10;
-        [v5 addObject:v10];
+        v11 = newPageSection;
+        [v5 addObject:newPageSection];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -877,10 +877,10 @@ uint64_t __37__SUScriptSegmentedControl_tintStyle__block_invoke(uint64_t a1)
   }
 
   v12 = objc_alloc_init(SUPageSectionGroup);
-  v13 = [(SUSegmentedControl *)[(SUScriptSegmentedControl *)self activeSegmentedControl] selectedItemIndex];
-  if (v13 != -1)
+  selectedItemIndex = [(SUSegmentedControl *)[(SUScriptSegmentedControl *)self activeSegmentedControl] selectedItemIndex];
+  if (selectedItemIndex != -1)
   {
-    [(SUPageSectionGroup *)v12 setDefaultSectionIndex:v13];
+    [(SUPageSectionGroup *)v12 setDefaultSectionIndex:selectedItemIndex];
   }
 
   [(SUPageSectionGroup *)v12 setSections:v5];
@@ -890,21 +890,21 @@ LABEL_13:
   return v12;
 }
 
-- (id)_newSegmentsFromPageSectionGroup:(id)a3
+- (id)_newSegmentsFromPageSectionGroup:(id)group
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!group)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [a3 sections];
+  sections = [group sections];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -915,7 +915,7 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
         v10 = [[SUScriptSegmentedControlItem alloc] initWithPageSection:*(*(&v13 + 1) + 8 * i)];
@@ -926,7 +926,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -935,7 +935,7 @@ LABEL_13:
   return v4;
 }
 
-- (void)_reloadSegmentedControl:(id)a3 withSegments:(id)a4
+- (void)_reloadSegmentedControl:(id)control withSegments:(id)segments
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -943,7 +943,7 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [segments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -954,55 +954,55 @@ LABEL_13:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(segments);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v11 image];
-        if (!v12)
+        image = [v11 image];
+        if (!image)
         {
-          v12 = [v11 title];
+          image = [v11 title];
         }
 
-        [v6 addObject:v12];
+        [v6 addObject:image];
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [segments countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  [a3 setItems:v6];
+  [control setItems:v6];
 }
 
 - (void)_reloadViewControllerPageSectionGroup
 {
-  v3 = [(SUScriptSegmentedControl *)self storePageViewController];
-  if (v3)
+  storePageViewController = [(SUScriptSegmentedControl *)self storePageViewController];
+  if (storePageViewController)
   {
-    v4 = v3;
+    v4 = storePageViewController;
     v5 = [(SUScriptSegmentedControl *)self _newPageSectionGroupWithSegments:self->_segments];
     [(SUStorePageViewController *)v4 reloadForSectionsWithGroup:v5];
   }
 }
 
-- (void)_setColor:(id)a3 forTitleTextAttribute:(id)a4 controlState:(unint64_t)a5
+- (void)_setColor:(id)color forTitleTextAttribute:(id)attribute controlState:(unint64_t)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[SUScriptColor alloc] initWithStyleString:a3];
+    colorCopy = [[SUScriptColor alloc] initWithStyleString:color];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = a3;
+    colorCopy = color;
 LABEL_5:
-    v7 = v6;
-    if (!a3)
+    v7 = colorCopy;
+    if (!color)
     {
       goto LABEL_10;
     }
@@ -1011,7 +1011,7 @@ LABEL_5:
   }
 
   v7 = 0;
-  if (!a3)
+  if (!color)
   {
 LABEL_10:
     WebThreadRunOnMainThread();
@@ -1052,10 +1052,10 @@ void __73__SUScriptSegmentedControl__setColor_forTitleTextAttribute_controlState
   [v2 setTitleTextAttributes:v5 forState:*(a1 + 56)];
 }
 
-- (void)_setRawSegments:(id)a3
+- (void)_setRawSegments:(id)segments
 {
   segments = self->_segments;
-  if (segments != a3)
+  if (segments != segments)
   {
     if (segments)
     {
@@ -1068,37 +1068,37 @@ void __73__SUScriptSegmentedControl__setColor_forTitleTextAttribute_controlState
       v6 = 0;
     }
 
-    v7 = a3;
-    self->_segments = v7;
-    if (v7)
+    segmentsCopy = segments;
+    self->_segments = segmentsCopy;
+    if (segmentsCopy)
     {
 
-      [(SUScriptObject *)self checkInScriptObjects:v7];
+      [(SUScriptObject *)self checkInScriptObjects:segmentsCopy];
     }
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_46 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSegmentedControl;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_37, 8);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_37, 8);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSegmentedControl;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -1108,14 +1108,14 @@ void __73__SUScriptSegmentedControl__setColor_forTitleTextAttribute_controlState
 {
   v4.receiver = self;
   v4.super_class = SUScriptSegmentedControl;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_46 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_46 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_37 = sel_hideMoreListAnimated_;
     *algn_1EBF3B2A8 = @"hideMoreList";

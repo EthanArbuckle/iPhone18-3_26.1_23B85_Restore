@@ -1,36 +1,36 @@
 @interface PREUMTrialExperiment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PREUMTrialExperiment
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(PREUMTrialExperiment *)self setExperimentId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PREUMTrialExperiment *)self setTreatmentId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PREUMTrialExperiment *)self setTreatmentModelName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -41,13 +41,13 @@
   return v4 ^ [(NSString *)self->_treatmentModelName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((experimentId = self->_experimentId, !(experimentId | v4[1])) || -[NSString isEqual:](experimentId, "isEqual:")) && ((treatmentId = self->_treatmentId, !(treatmentId | v4[2])) || -[NSString isEqual:](treatmentId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((experimentId = self->_experimentId, !(experimentId | equalCopy[1])) || -[NSString isEqual:](experimentId, "isEqual:")) && ((treatmentId = self->_treatmentId, !(treatmentId | equalCopy[2])) || -[NSString isEqual:](treatmentId, "isEqual:")))
   {
     treatmentModelName = self->_treatmentModelName;
-    if (treatmentModelName | v4[3])
+    if (treatmentModelName | equalCopy[3])
     {
       v8 = [(NSString *)treatmentModelName isEqual:?];
     }
@@ -66,78 +66,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_experimentId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_experimentId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_treatmentId copyWithZone:a3];
+  v8 = [(NSString *)self->_treatmentId copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_treatmentModelName copyWithZone:a3];
+  v10 = [(NSString *)self->_treatmentModelName copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_experimentId)
   {
-    [v4 setExperimentId:?];
-    v4 = v5;
+    [toCopy setExperimentId:?];
+    toCopy = v5;
   }
 
   if (self->_treatmentId)
   {
     [v5 setTreatmentId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_treatmentModelName)
   {
     [v5 setTreatmentModelName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_experimentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_treatmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_treatmentModelName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    [v3 setObject:experimentId forKey:@"experiment_id"];
+    [dictionary setObject:experimentId forKey:@"experiment_id"];
   }
 
   treatmentId = self->_treatmentId;
@@ -161,8 +161,8 @@
   v8.receiver = self;
   v8.super_class = PREUMTrialExperiment;
   v4 = [(PREUMTrialExperiment *)&v8 description];
-  v5 = [(PREUMTrialExperiment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PREUMTrialExperiment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

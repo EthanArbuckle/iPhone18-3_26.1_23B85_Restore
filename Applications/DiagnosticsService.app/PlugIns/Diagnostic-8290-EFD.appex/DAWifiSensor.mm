@@ -1,30 +1,30 @@
 @interface DAWifiSensor
 - (DAChamberSensorDelegate)delegate;
-- (DAWifiSensor)initWithDelegate:(id)a3 scanInterval:(double)a4;
+- (DAWifiSensor)initWithDelegate:(id)delegate scanInterval:(double)interval;
 - (void)dealloc;
 - (void)scanAvailableNetworks;
-- (void)scheduleNetworksScanWithDelay:(double)a3;
+- (void)scheduleNetworksScanWithDelay:(double)delay;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation DAWifiSensor
 
-- (DAWifiSensor)initWithDelegate:(id)a3 scanInterval:(double)a4
+- (DAWifiSensor)initWithDelegate:(id)delegate scanInterval:(double)interval
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = DAWifiSensor;
   v7 = [(DAWifiSensor *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_alloc_init(CWFInterface);
     interface = v8->_interface;
     v8->_interface = v9;
 
-    v8->_scanInterval = a4;
+    v8->_scanInterval = interval;
     v11 = dispatch_queue_create("DAWifiSensorQueue", 0);
     scanQueue = v8->_scanQueue;
     v8->_scanQueue = v11;
@@ -45,8 +45,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "DAWifiSensor:: Start monitoring", v5, 2u);
   }
 
-  v4 = [(DAWifiSensor *)self interface];
-  [v4 activate];
+  interface = [(DAWifiSensor *)self interface];
+  [interface activate];
 
   [(DAWifiSensor *)self setStarted:1];
   [(DAWifiSensor *)self scheduleNetworksScanWithDelay:0.0];
@@ -65,17 +65,17 @@
   {
     [(DAWifiSensor *)self setStarted:0];
     [(DAWifiSensor *)self setMostRecentEvent:0];
-    v4 = [(DAWifiSensor *)self interface];
-    [v4 invalidate];
+    interface = [(DAWifiSensor *)self interface];
+    [interface invalidate];
   }
 
   else
   {
-    v4 = DiagnosticLogHandleForCategory();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    interface = DiagnosticLogHandleForCategory();
+    if (os_log_type_enabled(interface, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Attempt to stop DAWifiSensor that hasn't been started.", v5, 2u);
+      _os_log_impl(&_mh_execute_header, interface, OS_LOG_TYPE_DEFAULT, "Attempt to stop DAWifiSensor that hasn't been started.", v5, 2u);
     }
   }
 }
@@ -98,9 +98,9 @@
     v5 = [NSSet setWithArray:&off_10001DAD8];
     [v4 setIncludeProperties:v5];
 
-    v6 = [(DAWifiSensor *)self interface];
+    interface = [(DAWifiSensor *)self interface];
     v31 = 0;
-    v7 = [v6 performScanWithParameters:v4 error:&v31];
+    v7 = [interface performScanWithParameters:v4 error:&v31];
     v8 = v31;
 
     v9 = DiagnosticLogHandleForCategory();
@@ -148,12 +148,12 @@
             v18 = DiagnosticLogHandleForCategory();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v17 networkName];
-              v20 = [v17 RSSI];
+              networkName = [v17 networkName];
+              rSSI = [v17 RSSI];
               *buf = 138412546;
-              v33 = v19;
+              v33 = networkName;
               v34 = 2048;
-              v35 = v20;
+              v35 = rSSI;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "SSID: %@, RSSI: %ld, ", buf, 0x16u);
             }
           }
@@ -175,13 +175,13 @@
       }
 
       v10 = [[DAChamberSensorEvent alloc] initWithSensorType:1 eventType:v21];
-      v22 = [(DAWifiSensor *)self mostRecentEvent];
-      v23 = [(DAChamberSensorEvent *)v10 isEqual:v22];
+      mostRecentEvent = [(DAWifiSensor *)self mostRecentEvent];
+      v23 = [(DAChamberSensorEvent *)v10 isEqual:mostRecentEvent];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [(DAWifiSensor *)self delegate];
-        [v24 handleSensorEvent:v10];
+        delegate = [(DAWifiSensor *)self delegate];
+        [delegate handleSensorEvent:v10];
 
         [(DAWifiSensor *)self setMostRecentEvent:v10];
       }
@@ -196,16 +196,16 @@
   }
 }
 
-- (void)scheduleNetworksScanWithDelay:(double)a3
+- (void)scheduleNetworksScanWithDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
-  v5 = [(DAWifiSensor *)self scanQueue];
+  v4 = dispatch_time(0, (delay * 1000000000.0));
+  scanQueue = [(DAWifiSensor *)self scanQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C498;
   block[3] = &unk_10001C5A0;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, scanQueue, block);
 }
 
 - (void)dealloc

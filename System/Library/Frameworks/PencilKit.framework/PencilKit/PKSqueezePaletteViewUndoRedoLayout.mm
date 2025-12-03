@@ -1,63 +1,63 @@
 @interface PKSqueezePaletteViewUndoRedoLayout
 - (BOOL)_isLTR;
 - (PKSqueezePaletteView)paletteView;
-- (id)initWithUndoButton:(void *)a3 redoButton:(double)a4 startAngle:;
+- (id)initWithUndoButton:(void *)button redoButton:(double)redoButton startAngle:;
 - (uint64_t)_performRedoAction;
 - (uint64_t)_performUndoAction;
 - (uint64_t)_updateRedoButtonConstraints;
 - (uint64_t)_updateUndoButtonConstraints;
-- (void)handleLongPressGestureRecognizer:(void *)a3 forButton:;
+- (void)handleLongPressGestureRecognizer:(void *)recognizer forButton:;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewUndoRedoLayout
 
-- (id)initWithUndoButton:(void *)a3 redoButton:(double)a4 startAngle:
+- (id)initWithUndoButton:(void *)button redoButton:(double)redoButton startAngle:
 {
   v31[4] = *MEMORY[0x1E69E9840];
   v23 = a2;
-  v24 = a3;
-  if (a1)
+  buttonCopy = button;
+  if (self)
   {
-    v30.receiver = a1;
+    v30.receiver = self;
     v30.super_class = PKSqueezePaletteViewUndoRedoLayout;
     v8 = objc_msgSendSuper2(&v30, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 14, a2);
-      objc_storeStrong(a1 + 15, a3);
-      *(a1 + 13) = a4;
-      a1[7] = PKSqueezePaletteButtonInterItemSpacing;
-      objc_initWeak(&location, a1);
+      objc_storeStrong(self + 15, button);
+      *(self + 13) = redoButton;
+      self[7] = PKSqueezePaletteButtonInterItemSpacing;
+      objc_initWeak(&location, self);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_startAngle___block_invoke;
       v27[3] = &unk_1E82D69B8;
       objc_copyWeak(&v28, &location);
-      [a1[14] _set_pk_longSqueezeAction:v27];
+      [self[14] _set_pk_longSqueezeAction:v27];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_startAngle___block_invoke_2;
       v25[3] = &unk_1E82D69B8;
       objc_copyWeak(&v26, &location);
-      [a1[15] _set_pk_longSqueezeAction:v25];
+      [self[15] _set_pk_longSqueezeAction:v25];
       v9 = PKSqueezePaletteButtonSize();
       v11 = v10;
       v22 = MEMORY[0x1E696ACD8];
-      v12 = [a1[14] heightAnchor];
-      v13 = [v12 constraintEqualToConstant:v9];
+      heightAnchor = [self[14] heightAnchor];
+      v13 = [heightAnchor constraintEqualToConstant:v9];
       v31[0] = v13;
-      v14 = [a1[14] widthAnchor];
-      v15 = [v14 constraintEqualToConstant:v11];
+      widthAnchor = [self[14] widthAnchor];
+      v15 = [widthAnchor constraintEqualToConstant:v11];
       v31[1] = v15;
-      v16 = [a1[15] heightAnchor];
-      v17 = [v16 constraintEqualToConstant:v9];
+      heightAnchor2 = [self[15] heightAnchor];
+      v17 = [heightAnchor2 constraintEqualToConstant:v9];
       v31[2] = v17;
-      v18 = [a1[15] widthAnchor];
-      v19 = [v18 constraintEqualToConstant:v11];
+      widthAnchor2 = [self[15] widthAnchor];
+      v19 = [widthAnchor2 constraintEqualToConstant:v11];
       v31[3] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
       [v22 activateConstraints:v20];
@@ -68,7 +68,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_startAngle___block_invoke(uint64_t a1)
@@ -111,18 +111,18 @@ void __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_star
   return result;
 }
 
-- (void)handleLongPressGestureRecognizer:(void *)a3 forButton:
+- (void)handleLongPressGestureRecognizer:(void *)recognizer forButton:
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  recognizerCopy = recognizer;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 88));
-    v8 = [(PKSqueezePaletteView *)WeakRetained _undoCount];
+    WeakRetained = objc_loadWeakRetained((self + 88));
+    _undoCount = [(PKSqueezePaletteView *)WeakRetained _undoCount];
 
-    v9 = objc_loadWeakRetained((a1 + 88));
-    v10 = [(PKSqueezePaletteView *)v9 _redoCount];
+    v9 = objc_loadWeakRetained((self + 88));
+    _redoCount = [(PKSqueezePaletteView *)v9 _redoCount];
 
     v11 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -130,18 +130,18 @@ void __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_star
       v22 = 138412802;
       v23 = v5;
       v24 = 2048;
-      v25 = v8;
+      v25 = _undoCount;
       v26 = 2048;
-      v27 = v10;
+      v27 = _redoCount;
       _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Undo/redo button long press gesture recognizer handled: %@, undoCount: %lu, redoCount: %li", &v22, 0x20u);
     }
 
-    if (v8 + v10)
+    if (_undoCount + _redoCount)
     {
-      if ([v5 state] == 1 && (*(a1 + 64) & 1) == 0)
+      if ([v5 state] == 1 && (*(self + 64) & 1) == 0)
       {
-        v14 = [[PKSqueezePaletteViewExpandedUndoRedoLayoutContext alloc] initWithSliderButton:v6 sliderButtonLongPressGestureRecognizer:v5 previousLayout:a1];
-        v15 = objc_loadWeakRetained((a1 + 88));
+        v14 = [[PKSqueezePaletteViewExpandedUndoRedoLayoutContext alloc] initWithSliderButton:recognizerCopy sliderButtonLongPressGestureRecognizer:v5 previousLayout:self];
+        v15 = objc_loadWeakRetained((self + 88));
         v16 = v15;
         if (v15)
         {
@@ -154,17 +154,17 @@ void __79__PKSqueezePaletteViewUndoRedoLayout_initWithUndoButton_redoButton_star
         }
 
         v18 = v17;
-        v19 = [(PKSqueezePaletteViewUndoRedoLayout *)a1 _isLTR];
-        v20 = [(PKSqueezePaletteViewLayoutFactory *)v18 makeExpandedUndoRedoLayoutWithContext:v14 isLTR:v19];
+        _isLTR = [(PKSqueezePaletteViewUndoRedoLayout *)self _isLTR];
+        v20 = [(PKSqueezePaletteViewLayoutFactory *)v18 makeExpandedUndoRedoLayoutWithContext:v14 isLTR:_isLTR];
 
-        v21 = objc_loadWeakRetained((a1 + 88));
+        v21 = objc_loadWeakRetained((self + 88));
         [(PKSqueezePaletteView *)v21 setCurrentLayout:v20];
 
 LABEL_15:
         goto LABEL_16;
       }
 
-      if ([v5 state] == 3 && *(a1 + 64) == 1)
+      if ([v5 state] == 3 && *(self + 64) == 1)
       {
         v12 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -173,13 +173,13 @@ LABEL_15:
           _os_log_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_DEFAULT, "Removing undo button long press gesture recognizer", &v22, 2u);
         }
 
-        [*(a1 + 112) removeGestureRecognizer:*(a1 + 72)];
-        [*(a1 + 120) removeGestureRecognizer:*(a1 + 80)];
-        v13 = *(a1 + 72);
-        *(a1 + 72) = 0;
+        [*(self + 112) removeGestureRecognizer:*(self + 72)];
+        [*(self + 120) removeGestureRecognizer:*(self + 80)];
+        v13 = *(self + 72);
+        *(self + 72) = 0;
 
-        v14 = *(a1 + 80);
-        *(a1 + 80) = 0;
+        v14 = *(self + 80);
+        *(self + 80) = 0;
         goto LABEL_15;
       }
     }
@@ -190,13 +190,13 @@ LABEL_16:
 
 - (BOOL)_isLTR
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v1 = MEMORY[0x1E69DD250];
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
+  WeakRetained = objc_loadWeakRetained((self + 88));
   v3 = [v1 userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(WeakRetained, "semanticContentAttribute")}] == 0;
 
   return v3;
@@ -300,31 +300,31 @@ LABEL_16:
     v11 = v10;
     [v11 addSubview:self->_redoButton];
 
-    v12 = [(UIButton *)self->_undoButton centerXAnchor];
+    centerXAnchor = [(UIButton *)self->_undoButton centerXAnchor];
     v13 = objc_loadWeakRetained(&self->_paletteView);
-    v14 = [v13 centerXAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerXAnchor2 = [v13 centerXAnchor];
+    v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     undoButtonCenterXConstraint = self->_undoButtonCenterXConstraint;
     self->_undoButtonCenterXConstraint = v15;
 
-    v17 = [(UIButton *)self->_undoButton centerYAnchor];
+    centerYAnchor = [(UIButton *)self->_undoButton centerYAnchor];
     v18 = objc_loadWeakRetained(&self->_paletteView);
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    centerYAnchor2 = [v18 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     undoButtonCenterYConstraint = self->_undoButtonCenterYConstraint;
     self->_undoButtonCenterYConstraint = v20;
 
-    v22 = [(UIButton *)self->_redoButton centerXAnchor];
+    centerXAnchor3 = [(UIButton *)self->_redoButton centerXAnchor];
     v23 = objc_loadWeakRetained(&self->_paletteView);
-    v24 = [v23 centerXAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    centerXAnchor4 = [v23 centerXAnchor];
+    v25 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     redoButtonCenterXConstraint = self->_redoButtonCenterXConstraint;
     self->_redoButtonCenterXConstraint = v25;
 
-    v27 = [(UIButton *)self->_redoButton centerYAnchor];
+    centerYAnchor3 = [(UIButton *)self->_redoButton centerYAnchor];
     v28 = objc_loadWeakRetained(&self->_paletteView);
-    v29 = [v28 centerYAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    centerYAnchor4 = [v28 centerYAnchor];
+    v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     redoButtonCenterYConstraint = self->_redoButtonCenterYConstraint;
     self->_redoButtonCenterYConstraint = v30;
 
@@ -334,21 +334,21 @@ LABEL_16:
     v65 = MEMORY[0x1E696ACD8];
     v66[0] = self->_undoButtonCenterXConstraint;
     v66[1] = v35;
-    v36 = [(UIButton *)self->_undoButton heightAnchor];
-    v37 = [v36 constraintEqualToConstant:v32];
+    heightAnchor = [(UIButton *)self->_undoButton heightAnchor];
+    v37 = [heightAnchor constraintEqualToConstant:v32];
     v66[2] = v37;
-    v38 = [(UIButton *)self->_undoButton widthAnchor];
-    v39 = [v38 constraintEqualToConstant:v34];
+    widthAnchor = [(UIButton *)self->_undoButton widthAnchor];
+    v39 = [widthAnchor constraintEqualToConstant:v34];
     v40 = self->_redoButtonCenterXConstraint;
     v41 = self->_redoButtonCenterYConstraint;
     v66[3] = v39;
     v66[4] = v40;
     v66[5] = v41;
-    v42 = [(UIButton *)self->_redoButton heightAnchor];
-    v43 = [v42 constraintEqualToConstant:v32];
+    heightAnchor2 = [(UIButton *)self->_redoButton heightAnchor];
+    v43 = [heightAnchor2 constraintEqualToConstant:v32];
     v66[6] = v43;
-    v44 = [(UIButton *)self->_redoButton widthAnchor];
-    v45 = [v44 constraintEqualToConstant:v34];
+    widthAnchor2 = [(UIButton *)self->_redoButton widthAnchor];
+    v45 = [widthAnchor2 constraintEqualToConstant:v34];
     v66[7] = v45;
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:8];
     [v65 activateConstraints:v46];
@@ -364,8 +364,8 @@ LABEL_16:
       startAngle = v50;
     }
 
-    v51 = [(PKSqueezePaletteViewUndoRedoLayout *)self _isLTR];
-    if (v51)
+    _isLTR = [(PKSqueezePaletteViewUndoRedoLayout *)self _isLTR];
+    if (_isLTR)
     {
       v52 = 40;
     }
@@ -375,7 +375,7 @@ LABEL_16:
       v52 = 48;
     }
 
-    if (v51)
+    if (_isLTR)
     {
       v53 = 48;
     }
@@ -414,8 +414,8 @@ LABEL_16:
     self->_redoButtonLongPressGestureRecognizer = v59;
 
     [(UIButton *)self->_redoButton addGestureRecognizer:self->_redoButtonLongPressGestureRecognizer];
-    v61 = [(PKSqueezePaletteViewUndoRedoLayout *)self _isLTR];
-    if (v61)
+    _isLTR2 = [(PKSqueezePaletteViewUndoRedoLayout *)self _isLTR];
+    if (_isLTR2)
     {
       v62 = 40;
     }
@@ -425,7 +425,7 @@ LABEL_16:
       v62 = 48;
     }
 
-    if (v61)
+    if (_isLTR2)
     {
       v63 = 48;
     }
@@ -447,13 +447,13 @@ LABEL_16:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_paletteView);
-    v5 = [(PKSqueezePaletteView *)v4 _canUndo];
+    _canUndo = [(PKSqueezePaletteView *)v4 _canUndo];
 
-    [(UIButton *)self->_undoButton setEnabled:v5];
+    [(UIButton *)self->_undoButton setEnabled:_canUndo];
     v6 = objc_loadWeakRetained(&self->_paletteView);
-    v7 = [(PKSqueezePaletteView *)v6 _canRedo];
+    _canRedo = [(PKSqueezePaletteView *)v6 _canRedo];
 
-    [(UIButton *)self->_redoButton setEnabled:v7];
+    [(UIButton *)self->_redoButton setEnabled:_canRedo];
     CGAffineTransformMakeRotation(&v12, self->_undoButtonAngle + 1.57079633);
     undoButton = self->_undoButton;
     v11 = v12;
@@ -467,16 +467,16 @@ LABEL_16:
   }
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4)
+    if (layoutCopy)
     {
-      v5 = v4[3];
+      v5 = layoutCopy[3];
       v6 = v5;
       if (v5)
       {

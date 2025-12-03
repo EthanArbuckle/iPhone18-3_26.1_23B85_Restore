@@ -1,71 +1,71 @@
 @interface PKProtobufPaymentRequest
-- (BOOL)isEqual:(id)a3;
-- (id)confirmationStyleAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)confirmationStyleAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)requestTypeAsString:(int)a3;
-- (id)requestorAsString:(int)a3;
-- (id)requestorDeviceTypeAsString:(int)a3;
-- (int)StringAsConfirmationStyle:(id)a3;
-- (int)StringAsRequestType:(id)a3;
-- (int)StringAsRequestor:(id)a3;
-- (int)StringAsRequestorDeviceType:(id)a3;
+- (id)requestTypeAsString:(int)string;
+- (id)requestorAsString:(int)string;
+- (id)requestorDeviceTypeAsString:(int)string;
+- (int)StringAsConfirmationStyle:(id)style;
+- (int)StringAsRequestType:(id)type;
+- (int)StringAsRequestor:(id)requestor;
+- (int)StringAsRequestorDeviceType:(id)type;
 - (int)confirmationStyle;
 - (int)requestType;
 - (int)requestor;
 - (int)requestorDeviceType;
 - (unint64_t)hash;
-- (void)addContentItems:(id)a3;
-- (void)addMultiTokenContexts:(id)a3;
-- (void)addRequiredBillingContactFields:(id)a3;
-- (void)addRequiredShippingContactFields:(id)a3;
-- (void)addShippingMethods:(id)a3;
-- (void)addSummaryItems:(id)a3;
-- (void)addSupportedCountries:(id)a3;
-- (void)addSupportedNetworks:(id)a3;
-- (void)addThumbnailURLs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfirmationStyle:(BOOL)a3;
-- (void)setHasExpectsMerchantSession:(BOOL)a3;
-- (void)setHasMerchantCapabilities:(BOOL)a3;
-- (void)setHasMerchantCategoryCode:(BOOL)a3;
-- (void)setHasRequestType:(BOOL)a3;
-- (void)setHasRequestor:(BOOL)a3;
-- (void)setHasRequestorDeviceType:(BOOL)a3;
-- (void)setHasRequiredBillingAddressFields:(BOOL)a3;
-- (void)setHasRequiredShippingAddressFields:(BOOL)a3;
-- (void)setHasRespectSupportedNetworksOrder:(BOOL)a3;
-- (void)setHasSummaryPinned:(BOOL)a3;
-- (void)setHasSuppressLandscape:(BOOL)a3;
-- (void)setHasSuppressTotal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentItems:(id)items;
+- (void)addMultiTokenContexts:(id)contexts;
+- (void)addRequiredBillingContactFields:(id)fields;
+- (void)addRequiredShippingContactFields:(id)fields;
+- (void)addShippingMethods:(id)methods;
+- (void)addSummaryItems:(id)items;
+- (void)addSupportedCountries:(id)countries;
+- (void)addSupportedNetworks:(id)networks;
+- (void)addThumbnailURLs:(id)ls;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfirmationStyle:(BOOL)style;
+- (void)setHasExpectsMerchantSession:(BOOL)session;
+- (void)setHasMerchantCapabilities:(BOOL)capabilities;
+- (void)setHasMerchantCategoryCode:(BOOL)code;
+- (void)setHasRequestType:(BOOL)type;
+- (void)setHasRequestor:(BOOL)requestor;
+- (void)setHasRequestorDeviceType:(BOOL)type;
+- (void)setHasRequiredBillingAddressFields:(BOOL)fields;
+- (void)setHasRequiredShippingAddressFields:(BOOL)fields;
+- (void)setHasRespectSupportedNetworksOrder:(BOOL)order;
+- (void)setHasSummaryPinned:(BOOL)pinned;
+- (void)setHasSuppressLandscape:(BOOL)landscape;
+- (void)setHasSuppressTotal:(BOOL)total;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentRequest
 
-- (void)addSupportedNetworks:(id)a3
+- (void)addSupportedNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   supportedNetworks = self->_supportedNetworks;
-  v8 = v4;
+  v8 = networksCopy;
   if (!supportedNetworks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedNetworks;
     self->_supportedNetworks = v6;
 
-    v4 = v8;
+    networksCopy = v8;
     supportedNetworks = self->_supportedNetworks;
   }
 
-  [(NSMutableArray *)supportedNetworks addObject:v4];
+  [(NSMutableArray *)supportedNetworks addObject:networksCopy];
 }
 
-- (void)setHasMerchantCapabilities:(BOOL)a3
+- (void)setHasMerchantCapabilities:(BOOL)capabilities
 {
-  if (a3)
+  if (capabilities)
   {
     v3 = 4;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRequiredBillingAddressFields:(BOOL)a3
+- (void)setHasRequiredBillingAddressFields:(BOOL)fields
 {
-  if (a3)
+  if (fields)
   {
     v3 = 128;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRequiredShippingAddressFields:(BOOL)a3
+- (void)setHasRequiredShippingAddressFields:(BOOL)fields
 {
-  if (a3)
+  if (fields)
   {
     v3 = 256;
   }
@@ -108,63 +108,63 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)addSummaryItems:(id)a3
+- (void)addSummaryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   summaryItems = self->_summaryItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!summaryItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_summaryItems;
     self->_summaryItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     summaryItems = self->_summaryItems;
   }
 
-  [(NSMutableArray *)summaryItems addObject:v4];
+  [(NSMutableArray *)summaryItems addObject:itemsCopy];
 }
 
-- (void)addShippingMethods:(id)a3
+- (void)addShippingMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   shippingMethods = self->_shippingMethods;
-  v8 = v4;
+  v8 = methodsCopy;
   if (!shippingMethods)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_shippingMethods;
     self->_shippingMethods = v6;
 
-    v4 = v8;
+    methodsCopy = v8;
     shippingMethods = self->_shippingMethods;
   }
 
-  [(NSMutableArray *)shippingMethods addObject:v4];
+  [(NSMutableArray *)shippingMethods addObject:methodsCopy];
 }
 
-- (void)addThumbnailURLs:(id)a3
+- (void)addThumbnailURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   thumbnailURLs = self->_thumbnailURLs;
-  v8 = v4;
+  v8 = lsCopy;
   if (!thumbnailURLs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_thumbnailURLs;
     self->_thumbnailURLs = v6;
 
-    v4 = v8;
+    lsCopy = v8;
     thumbnailURLs = self->_thumbnailURLs;
   }
 
-  [(NSMutableArray *)thumbnailURLs addObject:v4];
+  [(NSMutableArray *)thumbnailURLs addObject:lsCopy];
 }
 
-- (void)setHasExpectsMerchantSession:(BOOL)a3
+- (void)setHasExpectsMerchantSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = 512;
   }
@@ -177,81 +177,81 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)addRequiredShippingContactFields:(id)a3
+- (void)addRequiredShippingContactFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   requiredShippingContactFields = self->_requiredShippingContactFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!requiredShippingContactFields)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_requiredShippingContactFields;
     self->_requiredShippingContactFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     requiredShippingContactFields = self->_requiredShippingContactFields;
   }
 
-  [(NSMutableArray *)requiredShippingContactFields addObject:v4];
+  [(NSMutableArray *)requiredShippingContactFields addObject:fieldsCopy];
 }
 
-- (void)addRequiredBillingContactFields:(id)a3
+- (void)addRequiredBillingContactFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   requiredBillingContactFields = self->_requiredBillingContactFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!requiredBillingContactFields)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_requiredBillingContactFields;
     self->_requiredBillingContactFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     requiredBillingContactFields = self->_requiredBillingContactFields;
   }
 
-  [(NSMutableArray *)requiredBillingContactFields addObject:v4];
+  [(NSMutableArray *)requiredBillingContactFields addObject:fieldsCopy];
 }
 
-- (void)addSupportedCountries:(id)a3
+- (void)addSupportedCountries:(id)countries
 {
-  v4 = a3;
+  countriesCopy = countries;
   supportedCountries = self->_supportedCountries;
-  v8 = v4;
+  v8 = countriesCopy;
   if (!supportedCountries)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedCountries;
     self->_supportedCountries = v6;
 
-    v4 = v8;
+    countriesCopy = v8;
     supportedCountries = self->_supportedCountries;
   }
 
-  [(NSMutableArray *)supportedCountries addObject:v4];
+  [(NSMutableArray *)supportedCountries addObject:countriesCopy];
 }
 
-- (void)addContentItems:(id)a3
+- (void)addContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   contentItems = self->_contentItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!contentItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentItems;
     self->_contentItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     contentItems = self->_contentItems;
   }
 
-  [(NSMutableArray *)contentItems addObject:v4];
+  [(NSMutableArray *)contentItems addObject:itemsCopy];
 }
 
-- (void)setHasSuppressTotal:(BOOL)a3
+- (void)setHasSuppressTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 0x2000;
   }
@@ -264,9 +264,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasSummaryPinned:(BOOL)a3
+- (void)setHasSummaryPinned:(BOOL)pinned
 {
-  if (a3)
+  if (pinned)
   {
     v3 = 2048;
   }
@@ -292,9 +292,9 @@
   }
 }
 
-- (void)setHasRequestor:(BOOL)a3
+- (void)setHasRequestor:(BOOL)requestor
 {
-  if (a3)
+  if (requestor)
   {
     v3 = 32;
   }
@@ -307,50 +307,50 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (id)requestorAsString:(int)a3
+- (id)requestorAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79E1188[a3];
+    v4 = off_1E79E1188[string];
   }
 
   return v4;
 }
 
-- (int)StringAsRequestor:(id)a3
+- (int)StringAsRequestor:(id)requestor
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DEFAULT"])
+  requestorCopy = requestor;
+  if ([requestorCopy isEqualToString:@"DEFAULT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ITUNES"])
+  else if ([requestorCopy isEqualToString:@"ITUNES"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"APP_STORE"])
+  else if ([requestorCopy isEqualToString:@"APP_STORE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_MUSIC"])
+  else if ([requestorCopy isEqualToString:@"APPLE_MUSIC"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_NEWS"])
+  else if ([requestorCopy isEqualToString:@"APPLE_NEWS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_BOOKS"])
+  else if ([requestorCopy isEqualToString:@"APPLE_BOOKS"])
   {
     v4 = 5;
   }
@@ -376,9 +376,9 @@
   }
 }
 
-- (void)setHasConfirmationStyle:(BOOL)a3
+- (void)setHasConfirmationStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 2;
   }
@@ -391,65 +391,65 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)confirmationStyleAsString:(int)a3
+- (id)confirmationStyleAsString:(int)string
 {
-  if (a3 >= 9)
+  if (string >= 9)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79E11B8[a3];
+    v4 = off_1E79E11B8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsConfirmationStyle:(id)a3
+- (int)StringAsConfirmationStyle:(id)style
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PAY"])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:@"PAY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONFIRM"])
+  else if ([styleCopy isEqualToString:@"CONFIRM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GET"])
+  else if ([styleCopy isEqualToString:@"GET"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"INSTALL"])
+  else if ([styleCopy isEqualToString:@"INSTALL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RENT"])
+  else if ([styleCopy isEqualToString:@"RENT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"REDEEM"])
+  else if ([styleCopy isEqualToString:@"REDEEM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ADD"])
+  else if ([styleCopy isEqualToString:@"ADD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SUBSCRIBE"])
+  else if ([styleCopy isEqualToString:@"SUBSCRIBE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SUBSCRIBE_AND_INSTALL"])
+  else if ([styleCopy isEqualToString:@"SUBSCRIBE_AND_INSTALL"])
   {
     v4 = 8;
   }
@@ -475,9 +475,9 @@
   }
 }
 
-- (void)setHasRequestType:(BOOL)a3
+- (void)setHasRequestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -490,100 +490,100 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (id)requestTypeAsString:(int)a3
+- (id)requestTypeAsString:(int)string
 {
-  if (a3 >= 0x10)
+  if (string >= 0x10)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79E1200[a3];
+    v4 = off_1E79E1200[string];
   }
 
   return v4;
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"APPLE_PAY"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"APPLE_PAY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CARD_ON_FILE"])
+  else if ([typeCopy isEqualToString:@"CARD_ON_FILE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACCOUNT_SERVICE"])
+  else if ([typeCopy isEqualToString:@"ACCOUNT_SERVICE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AMP_ENROLLMENT"])
+  else if ([typeCopy isEqualToString:@"AMP_ENROLLMENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PHYSICAL_CARD_ACTION"])
+  else if ([typeCopy isEqualToString:@"PHYSICAL_CARD_ACTION"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INSTALLMENT"])
+  else if ([typeCopy isEqualToString:@"INSTALLMENT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ACCESSIBILITY_ENROLLMENT"])
+  else if ([typeCopy isEqualToString:@"ACCESSIBILITY_ENROLLMENT"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"EXTERNAL_CONTEXT_AUTHORIZATION"])
+  else if ([typeCopy isEqualToString:@"EXTERNAL_CONTEXT_AUTHORIZATION"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SERVICE_PROVIDER"])
+  else if ([typeCopy isEqualToString:@"SERVICE_PROVIDER"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PEER_PAYMENT"])
+  else if ([typeCopy isEqualToString:@"PEER_PAYMENT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"DISBURSEMENT"])
+  else if ([typeCopy isEqualToString:@"DISBURSEMENT"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PAY_LATER"])
+  else if ([typeCopy isEqualToString:@"PAY_LATER"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"VIRTUAL_CARD_ENROLLMENT"])
+  else if ([typeCopy isEqualToString:@"VIRTUAL_CARD_ENROLLMENT"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"IDENTITY_IN_APP"])
+  else if ([typeCopy isEqualToString:@"IDENTITY_IN_APP"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"VIRTUAL_CARD_REFRESH"])
+  else if ([typeCopy isEqualToString:@"VIRTUAL_CARD_REFRESH"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ALTERNATIVE_APP_DISTRIBUTION"])
+  else if ([typeCopy isEqualToString:@"ALTERNATIVE_APP_DISTRIBUTION"])
   {
     v4 = 15;
   }
@@ -596,27 +596,27 @@
   return v4;
 }
 
-- (void)addMultiTokenContexts:(id)a3
+- (void)addMultiTokenContexts:(id)contexts
 {
-  v4 = a3;
+  contextsCopy = contexts;
   multiTokenContexts = self->_multiTokenContexts;
-  v8 = v4;
+  v8 = contextsCopy;
   if (!multiTokenContexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_multiTokenContexts;
     self->_multiTokenContexts = v6;
 
-    v4 = v8;
+    contextsCopy = v8;
     multiTokenContexts = self->_multiTokenContexts;
   }
 
-  [(NSMutableArray *)multiTokenContexts addObject:v4];
+  [(NSMutableArray *)multiTokenContexts addObject:contextsCopy];
 }
 
-- (void)setHasRespectSupportedNetworksOrder:(BOOL)a3
+- (void)setHasRespectSupportedNetworksOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 1024;
   }
@@ -642,9 +642,9 @@
   }
 }
 
-- (void)setHasRequestorDeviceType:(BOOL)a3
+- (void)setHasRequestorDeviceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -657,18 +657,18 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (id)requestorDeviceTypeAsString:(int)a3
+- (id)requestorDeviceTypeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"TV";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -680,25 +680,25 @@
   return v4;
 }
 
-- (int)StringAsRequestorDeviceType:(id)a3
+- (int)StringAsRequestorDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DEFAULT"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"DEFAULT"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TV"];
+    v4 = [typeCopy isEqualToString:@"TV"];
   }
 
   return v4;
 }
 
-- (void)setHasMerchantCategoryCode:(BOOL)a3
+- (void)setHasMerchantCategoryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -711,9 +711,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSuppressLandscape:(BOOL)a3
+- (void)setHasSuppressLandscape:(BOOL)landscape
 {
-  if (a3)
+  if (landscape)
   {
     v3 = 4096;
   }
@@ -732,8 +732,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentRequest;
   v4 = [(PKProtobufPaymentRequest *)&v8 description];
-  v5 = [(PKProtobufPaymentRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -741,12 +741,12 @@
 - (id)dictionaryRepresentation
 {
   v101 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   merchantIdentifier = self->_merchantIdentifier;
   if (merchantIdentifier)
   {
-    [v3 setObject:merchantIdentifier forKey:@"merchantIdentifier"];
+    [dictionary setObject:merchantIdentifier forKey:@"merchantIdentifier"];
   }
 
   countryCode = self->_countryCode;
@@ -836,8 +836,8 @@ LABEL_13:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v93 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v93 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v93 objects:v100 count:16];
@@ -871,8 +871,8 @@ LABEL_13:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v89 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v89 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v89 objects:v99 count:16];
@@ -899,8 +899,8 @@ LABEL_13:
   merchantSession = self->_merchantSession;
   if (merchantSession)
   {
-    v30 = [(PKProtobufPaymentMerchantSession *)merchantSession dictionaryRepresentation];
-    [v4 setObject:v30 forKey:@"merchantSession"];
+    dictionaryRepresentation3 = [(PKProtobufPaymentMerchantSession *)merchantSession dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"merchantSession"];
   }
 
   thumbnailURLs = self->_thumbnailURLs;
@@ -961,8 +961,8 @@ LABEL_13:
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v85 + 1) + 8 * k) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation4 = [*(*(&v85 + 1) + 8 * k) dictionaryRepresentation];
+          [v37 addObject:dictionaryRepresentation4];
         }
 
         v40 = [(NSMutableArray *)v38 countByEnumeratingWithState:&v85 objects:v98 count:16];
@@ -1086,15 +1086,15 @@ LABEL_89:
   availableShippingMethods = self->_availableShippingMethods;
   if (availableShippingMethods)
   {
-    v58 = [(PKProtobufShippingMethods *)availableShippingMethods dictionaryRepresentation];
-    [v4 setObject:v58 forKey:@"availableShippingMethods"];
+    dictionaryRepresentation5 = [(PKProtobufShippingMethods *)availableShippingMethods dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"availableShippingMethods"];
   }
 
   recurringPaymentRequest = self->_recurringPaymentRequest;
   if (recurringPaymentRequest)
   {
-    v60 = [(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v60 forKey:@"recurringPaymentRequest"];
+    dictionaryRepresentation6 = [(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"recurringPaymentRequest"];
   }
 
   if ([(NSMutableArray *)self->_multiTokenContexts count])
@@ -1119,8 +1119,8 @@ LABEL_89:
             objc_enumerationMutation(v62);
           }
 
-          v67 = [*(*(&v81 + 1) + 8 * m) dictionaryRepresentation];
-          [v61 addObject:v67];
+          dictionaryRepresentation7 = [*(*(&v81 + 1) + 8 * m) dictionaryRepresentation];
+          [v61 addObject:dictionaryRepresentation7];
         }
 
         v64 = [(NSMutableArray *)v62 countByEnumeratingWithState:&v81 objects:v97 count:16];
@@ -1141,8 +1141,8 @@ LABEL_89:
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
   if (automaticReloadPaymentRequest)
   {
-    v70 = [(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v70 forKey:@"automaticReloadPaymentRequest"];
+    dictionaryRepresentation8 = [(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation8 forKey:@"automaticReloadPaymentRequest"];
   }
 
   if ((*&self->_has & 0x40) != 0)
@@ -1172,8 +1172,8 @@ LABEL_89:
   deferredPaymentRequest = self->_deferredPaymentRequest;
   if (deferredPaymentRequest)
   {
-    v74 = [(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v74 forKey:@"deferredPaymentRequest"];
+    dictionaryRepresentation9 = [(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation9 forKey:@"deferredPaymentRequest"];
   }
 
   userAgent = self->_userAgent;
@@ -1205,10 +1205,10 @@ LABEL_89:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v97 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_merchantIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -1660,35 +1660,35 @@ LABEL_91:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v44 = a3;
+  toCopy = to;
   if (self->_merchantIdentifier)
   {
-    [v44 setMerchantIdentifier:?];
+    [toCopy setMerchantIdentifier:?];
   }
 
   if (self->_countryCode)
   {
-    [v44 setCountryCode:?];
+    [toCopy setCountryCode:?];
   }
 
   if (self->_currencyCode)
   {
-    [v44 setCurrencyCode:?];
+    [toCopy setCurrencyCode:?];
   }
 
   if ([(PKProtobufPaymentRequest *)self supportedNetworksCount])
   {
-    [v44 clearSupportedNetworks];
-    v4 = [(PKProtobufPaymentRequest *)self supportedNetworksCount];
-    if (v4)
+    [toCopy clearSupportedNetworks];
+    supportedNetworksCount = [(PKProtobufPaymentRequest *)self supportedNetworksCount];
+    if (supportedNetworksCount)
     {
-      v5 = v4;
+      v5 = supportedNetworksCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PKProtobufPaymentRequest *)self supportedNetworksAtIndex:i];
-        [v44 addSupportedNetworks:v7];
+        [toCopy addSupportedNetworks:v7];
       }
     }
   }
@@ -1696,8 +1696,8 @@ LABEL_91:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v44 + 28) = self->_merchantCapabilities;
-    *(v44 + 132) |= 4u;
+    *(toCopy + 28) = self->_merchantCapabilities;
+    *(toCopy + 132) |= 4u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -1716,168 +1716,168 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v44 + 43) = self->_requiredBillingAddressFields;
-  *(v44 + 132) |= 0x80u;
+  *(toCopy + 43) = self->_requiredBillingAddressFields;
+  *(toCopy + 132) |= 0x80u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_14:
-    *(v44 + 46) = self->_requiredShippingAddressFields;
-    *(v44 + 132) |= 0x100u;
+    *(toCopy + 46) = self->_requiredShippingAddressFields;
+    *(toCopy + 132) |= 0x100u;
   }
 
 LABEL_15:
   if (self->_billingContact)
   {
-    [v44 setBillingContact:?];
+    [toCopy setBillingContact:?];
   }
 
   if (self->_shippingContact)
   {
-    [v44 setShippingContact:?];
+    [toCopy setShippingContact:?];
   }
 
   if ([(PKProtobufPaymentRequest *)self summaryItemsCount])
   {
-    [v44 clearSummaryItems];
-    v9 = [(PKProtobufPaymentRequest *)self summaryItemsCount];
-    if (v9)
+    [toCopy clearSummaryItems];
+    summaryItemsCount = [(PKProtobufPaymentRequest *)self summaryItemsCount];
+    if (summaryItemsCount)
     {
-      v10 = v9;
+      v10 = summaryItemsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PKProtobufPaymentRequest *)self summaryItemsAtIndex:j];
-        [v44 addSummaryItems:v12];
+        [toCopy addSummaryItems:v12];
       }
     }
   }
 
   if ([(PKProtobufPaymentRequest *)self shippingMethodsCount])
   {
-    [v44 clearShippingMethods];
-    v13 = [(PKProtobufPaymentRequest *)self shippingMethodsCount];
-    if (v13)
+    [toCopy clearShippingMethods];
+    shippingMethodsCount = [(PKProtobufPaymentRequest *)self shippingMethodsCount];
+    if (shippingMethodsCount)
     {
-      v14 = v13;
+      v14 = shippingMethodsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(PKProtobufPaymentRequest *)self shippingMethodsAtIndex:k];
-        [v44 addShippingMethods:v16];
+        [toCopy addShippingMethods:v16];
       }
     }
   }
 
   if (self->_applicationData)
   {
-    [v44 setApplicationData:?];
+    [toCopy setApplicationData:?];
   }
 
   if (self->_originatingURL)
   {
-    [v44 setOriginatingURL:?];
+    [toCopy setOriginatingURL:?];
   }
 
   if (self->_merchantSession)
   {
-    [v44 setMerchantSession:?];
+    [toCopy setMerchantSession:?];
   }
 
   if ([(PKProtobufPaymentRequest *)self thumbnailURLsCount])
   {
-    [v44 clearThumbnailURLs];
-    v17 = [(PKProtobufPaymentRequest *)self thumbnailURLsCount];
-    if (v17)
+    [toCopy clearThumbnailURLs];
+    thumbnailURLsCount = [(PKProtobufPaymentRequest *)self thumbnailURLsCount];
+    if (thumbnailURLsCount)
     {
-      v18 = v17;
+      v18 = thumbnailURLsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(PKProtobufPaymentRequest *)self thumbnailURLsAtIndex:m];
-        [v44 addThumbnailURLs:v20];
+        [toCopy addThumbnailURLs:v20];
       }
     }
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    *(v44 + 256) = self->_expectsMerchantSession;
-    *(v44 + 132) |= 0x200u;
+    *(toCopy + 256) = self->_expectsMerchantSession;
+    *(toCopy + 132) |= 0x200u;
   }
 
   if ([(PKProtobufPaymentRequest *)self requiredShippingContactFieldsCount])
   {
-    [v44 clearRequiredShippingContactFields];
-    v21 = [(PKProtobufPaymentRequest *)self requiredShippingContactFieldsCount];
-    if (v21)
+    [toCopy clearRequiredShippingContactFields];
+    requiredShippingContactFieldsCount = [(PKProtobufPaymentRequest *)self requiredShippingContactFieldsCount];
+    if (requiredShippingContactFieldsCount)
     {
-      v22 = v21;
+      v22 = requiredShippingContactFieldsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(PKProtobufPaymentRequest *)self requiredShippingContactFieldsAtIndex:n];
-        [v44 addRequiredShippingContactFields:v24];
+        [toCopy addRequiredShippingContactFields:v24];
       }
     }
   }
 
   if ([(PKProtobufPaymentRequest *)self requiredBillingContactFieldsCount])
   {
-    [v44 clearRequiredBillingContactFields];
-    v25 = [(PKProtobufPaymentRequest *)self requiredBillingContactFieldsCount];
-    if (v25)
+    [toCopy clearRequiredBillingContactFields];
+    requiredBillingContactFieldsCount = [(PKProtobufPaymentRequest *)self requiredBillingContactFieldsCount];
+    if (requiredBillingContactFieldsCount)
     {
-      v26 = v25;
+      v26 = requiredBillingContactFieldsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(PKProtobufPaymentRequest *)self requiredBillingContactFieldsAtIndex:ii];
-        [v44 addRequiredBillingContactFields:v28];
+        [toCopy addRequiredBillingContactFields:v28];
       }
     }
   }
 
   if ([(PKProtobufPaymentRequest *)self supportedCountriesCount])
   {
-    [v44 clearSupportedCountries];
-    v29 = [(PKProtobufPaymentRequest *)self supportedCountriesCount];
-    if (v29)
+    [toCopy clearSupportedCountries];
+    supportedCountriesCount = [(PKProtobufPaymentRequest *)self supportedCountriesCount];
+    if (supportedCountriesCount)
     {
-      v30 = v29;
+      v30 = supportedCountriesCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(PKProtobufPaymentRequest *)self supportedCountriesAtIndex:jj];
-        [v44 addSupportedCountries:v32];
+        [toCopy addSupportedCountries:v32];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v44 + 2) = self->_apiType;
-    *(v44 + 132) |= 1u;
+    *(toCopy + 2) = self->_apiType;
+    *(toCopy + 132) |= 1u;
   }
 
   if ([(PKProtobufPaymentRequest *)self contentItemsCount])
   {
-    [v44 clearContentItems];
-    v33 = [(PKProtobufPaymentRequest *)self contentItemsCount];
-    if (v33)
+    [toCopy clearContentItems];
+    contentItemsCount = [(PKProtobufPaymentRequest *)self contentItemsCount];
+    if (contentItemsCount)
     {
-      v34 = v33;
+      v34 = contentItemsCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(PKProtobufPaymentRequest *)self contentItemsAtIndex:kk];
-        [v44 addContentItems:v36];
+        [toCopy addContentItems:v36];
       }
     }
   }
 
   if (self->_localizedNavigationTitle)
   {
-    [v44 setLocalizedNavigationTitle:?];
+    [toCopy setLocalizedNavigationTitle:?];
   }
 
-  v37 = v44;
+  v37 = toCopy;
   if (self->_localizedSummaryItemsTitle)
   {
-    [v44 setLocalizedSummaryItemsTitle:?];
-    v37 = v44;
+    [toCopy setLocalizedSummaryItemsTitle:?];
+    v37 = toCopy;
   }
 
   v38 = self->_has;
@@ -1945,40 +1945,40 @@ LABEL_66:
 LABEL_67:
   if (self->_availableShippingMethods)
   {
-    [v44 setAvailableShippingMethods:?];
+    [toCopy setAvailableShippingMethods:?];
   }
 
   if (self->_recurringPaymentRequest)
   {
-    [v44 setRecurringPaymentRequest:?];
+    [toCopy setRecurringPaymentRequest:?];
   }
 
   if ([(PKProtobufPaymentRequest *)self multiTokenContextsCount])
   {
-    [v44 clearMultiTokenContexts];
-    v39 = [(PKProtobufPaymentRequest *)self multiTokenContextsCount];
-    if (v39)
+    [toCopy clearMultiTokenContexts];
+    multiTokenContextsCount = [(PKProtobufPaymentRequest *)self multiTokenContextsCount];
+    if (multiTokenContextsCount)
     {
-      v40 = v39;
+      v40 = multiTokenContextsCount;
       for (mm = 0; mm != v40; ++mm)
       {
         v42 = [(PKProtobufPaymentRequest *)self multiTokenContextsAtIndex:mm];
-        [v44 addMultiTokenContexts:v42];
+        [toCopy addMultiTokenContexts:v42];
       }
     }
   }
 
-  v43 = v44;
+  v43 = toCopy;
   if ((*&self->_has & 0x400) != 0)
   {
-    *(v44 + 257) = self->_respectSupportedNetworksOrder;
-    *(v44 + 132) |= 0x400u;
+    *(toCopy + 257) = self->_respectSupportedNetworksOrder;
+    *(toCopy + 132) |= 0x400u;
   }
 
   if (self->_automaticReloadPaymentRequest)
   {
-    [v44 setAutomaticReloadPaymentRequest:?];
-    v43 = v44;
+    [toCopy setAutomaticReloadPaymentRequest:?];
+    v43 = toCopy;
   }
 
   if ((*&self->_has & 0x40) != 0)
@@ -1989,14 +1989,14 @@ LABEL_67:
 
   if (self->_deferredPaymentRequest)
   {
-    [v44 setDeferredPaymentRequest:?];
-    v43 = v44;
+    [toCopy setDeferredPaymentRequest:?];
+    v43 = toCopy;
   }
 
   if (self->_userAgent)
   {
-    [v44 setUserAgent:?];
-    v43 = v44;
+    [toCopy setUserAgent:?];
+    v43 = toCopy;
   }
 
   if ((*&self->_has & 8) != 0)
@@ -2007,8 +2007,8 @@ LABEL_67:
 
   if (self->_attributionIdentifier)
   {
-    [v44 setAttributionIdentifier:?];
-    v43 = v44;
+    [toCopy setAttributionIdentifier:?];
+    v43 = toCopy;
   }
 
   if ((*&self->_has & 0x1000) != 0)
@@ -2018,19 +2018,19 @@ LABEL_67:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v140 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:zone];
   v7 = *(v5 + 120);
   *(v5 + 120) = v6;
 
-  v8 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v8 = [(NSString *)self->_countryCode copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v10 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
@@ -2053,7 +2053,7 @@ LABEL_67:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v127 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v127 + 1) + 8 * i) copyWithZone:zone];
         [v5 addSupportedNetworks:v17];
       }
 
@@ -2096,11 +2096,11 @@ LABEL_11:
   }
 
 LABEL_12:
-  v19 = [(NSData *)self->_billingContact copyWithZone:a3];
+  v19 = [(NSData *)self->_billingContact copyWithZone:zone];
   v20 = *(v5 + 48);
   *(v5 + 48) = v19;
 
-  v21 = [(NSData *)self->_shippingContact copyWithZone:a3];
+  v21 = [(NSData *)self->_shippingContact copyWithZone:zone];
   v22 = *(v5 + 200);
   *(v5 + 200) = v21;
 
@@ -2123,7 +2123,7 @@ LABEL_12:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v123 + 1) + 8 * j) copyWithZone:a3];
+        v28 = [*(*(&v123 + 1) + 8 * j) copyWithZone:zone];
         [v5 addSummaryItems:v28];
       }
 
@@ -2152,7 +2152,7 @@ LABEL_12:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v119 + 1) + 8 * k) copyWithZone:a3];
+        v34 = [*(*(&v119 + 1) + 8 * k) copyWithZone:zone];
         [v5 addShippingMethods:v34];
       }
 
@@ -2162,15 +2162,15 @@ LABEL_12:
     while (v31);
   }
 
-  v35 = [(NSData *)self->_applicationData copyWithZone:a3];
+  v35 = [(NSData *)self->_applicationData copyWithZone:zone];
   v36 = *(v5 + 16);
   *(v5 + 16) = v35;
 
-  v37 = [(NSString *)self->_originatingURL copyWithZone:a3];
+  v37 = [(NSString *)self->_originatingURL copyWithZone:zone];
   v38 = *(v5 + 144);
   *(v5 + 144) = v37;
 
-  v39 = [(PKProtobufPaymentMerchantSession *)self->_merchantSession copyWithZone:a3];
+  v39 = [(PKProtobufPaymentMerchantSession *)self->_merchantSession copyWithZone:zone];
   v40 = *(v5 + 128);
   *(v5 + 128) = v39;
 
@@ -2193,7 +2193,7 @@ LABEL_12:
           objc_enumerationMutation(v41);
         }
 
-        v46 = [*(*(&v115 + 1) + 8 * m) copyWithZone:a3];
+        v46 = [*(*(&v115 + 1) + 8 * m) copyWithZone:zone];
         [v5 addThumbnailURLs:v46];
       }
 
@@ -2228,7 +2228,7 @@ LABEL_12:
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v111 + 1) + 8 * n) copyWithZone:a3];
+        v52 = [*(*(&v111 + 1) + 8 * n) copyWithZone:zone];
         [v5 addRequiredShippingContactFields:v52];
       }
 
@@ -2257,7 +2257,7 @@ LABEL_12:
           objc_enumerationMutation(v53);
         }
 
-        v58 = [*(*(&v107 + 1) + 8 * ii) copyWithZone:a3];
+        v58 = [*(*(&v107 + 1) + 8 * ii) copyWithZone:zone];
         [v5 addRequiredBillingContactFields:v58];
       }
 
@@ -2286,7 +2286,7 @@ LABEL_12:
           objc_enumerationMutation(v59);
         }
 
-        v64 = [*(*(&v103 + 1) + 8 * jj) copyWithZone:a3];
+        v64 = [*(*(&v103 + 1) + 8 * jj) copyWithZone:zone];
         [v5 addSupportedCountries:v64];
       }
 
@@ -2321,7 +2321,7 @@ LABEL_12:
           objc_enumerationMutation(v65);
         }
 
-        v70 = [*(*(&v99 + 1) + 8 * kk) copyWithZone:a3];
+        v70 = [*(*(&v99 + 1) + 8 * kk) copyWithZone:zone];
         [v5 addContentItems:v70];
       }
 
@@ -2331,11 +2331,11 @@ LABEL_12:
     while (v67);
   }
 
-  v71 = [(NSString *)self->_localizedNavigationTitle copyWithZone:a3];
+  v71 = [(NSString *)self->_localizedNavigationTitle copyWithZone:zone];
   v72 = *(v5 + 96);
   *(v5 + 96) = v71;
 
-  v73 = [(NSString *)self->_localizedSummaryItemsTitle copyWithZone:a3];
+  v73 = [(NSString *)self->_localizedSummaryItemsTitle copyWithZone:zone];
   v74 = *(v5 + 104);
   *(v5 + 104) = v73;
 
@@ -2402,11 +2402,11 @@ LABEL_70:
   }
 
 LABEL_71:
-  v76 = [(PKProtobufShippingMethods *)self->_availableShippingMethods copyWithZone:a3];
+  v76 = [(PKProtobufShippingMethods *)self->_availableShippingMethods copyWithZone:zone];
   v77 = *(v5 + 40);
   *(v5 + 40) = v76;
 
-  v78 = [(PKProtobufRecurringPaymentRequest *)self->_recurringPaymentRequest copyWithZone:a3];
+  v78 = [(PKProtobufRecurringPaymentRequest *)self->_recurringPaymentRequest copyWithZone:zone];
   v79 = *(v5 + 152);
   *(v5 + 152) = v78;
 
@@ -2429,7 +2429,7 @@ LABEL_71:
           objc_enumerationMutation(v80);
         }
 
-        v85 = [*(*(&v95 + 1) + 8 * mm) copyWithZone:{a3, v95}];
+        v85 = [*(*(&v95 + 1) + 8 * mm) copyWithZone:{zone, v95}];
         [v5 addMultiTokenContexts:v85];
       }
 
@@ -2445,7 +2445,7 @@ LABEL_71:
     *(v5 + 264) |= 0x400u;
   }
 
-  v86 = [(PKProtobufAutomaticReloadPaymentRequest *)self->_automaticReloadPaymentRequest copyWithZone:a3, v95];
+  v86 = [(PKProtobufAutomaticReloadPaymentRequest *)self->_automaticReloadPaymentRequest copyWithZone:zone, v95];
   v87 = *(v5 + 32);
   *(v5 + 32) = v86;
 
@@ -2455,11 +2455,11 @@ LABEL_71:
     *(v5 + 264) |= 0x40u;
   }
 
-  v88 = [(PKProtobufDeferredPaymentRequest *)self->_deferredPaymentRequest copyWithZone:a3];
+  v88 = [(PKProtobufDeferredPaymentRequest *)self->_deferredPaymentRequest copyWithZone:zone];
   v89 = *(v5 + 88);
   *(v5 + 88) = v88;
 
-  v90 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v90 = [(NSString *)self->_userAgent copyWithZone:zone];
   v91 = *(v5 + 248);
   *(v5 + 248) = v90;
 
@@ -2469,7 +2469,7 @@ LABEL_71:
     *(v5 + 264) |= 8u;
   }
 
-  v92 = [(NSString *)self->_attributionIdentifier copyWithZone:a3];
+  v92 = [(NSString *)self->_attributionIdentifier copyWithZone:zone];
   v93 = *(v5 + 24);
   *(v5 + 24) = v92;
 
@@ -2482,16 +2482,16 @@ LABEL_71:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   merchantIdentifier = self->_merchantIdentifier;
-  if (merchantIdentifier | *(v4 + 15))
+  if (merchantIdentifier | *(equalCopy + 15))
   {
     if (![(NSString *)merchantIdentifier isEqual:?])
     {
@@ -2500,7 +2500,7 @@ LABEL_71:
   }
 
   countryCode = self->_countryCode;
-  if (countryCode | *(v4 + 9))
+  if (countryCode | *(equalCopy + 9))
   {
     if (![(NSString *)countryCode isEqual:?])
     {
@@ -2509,7 +2509,7 @@ LABEL_71:
   }
 
   currencyCode = self->_currencyCode;
-  if (currencyCode | *(v4 + 10))
+  if (currencyCode | *(equalCopy + 10))
   {
     if (![(NSString *)currencyCode isEqual:?])
     {
@@ -2518,7 +2518,7 @@ LABEL_71:
   }
 
   supportedNetworks = self->_supportedNetworks;
-  if (supportedNetworks | *(v4 + 29))
+  if (supportedNetworks | *(equalCopy + 29))
   {
     if (![(NSMutableArray *)supportedNetworks isEqual:?])
     {
@@ -2527,10 +2527,10 @@ LABEL_71:
   }
 
   has = self->_has;
-  v10 = *(v4 + 132);
+  v10 = *(equalCopy + 132);
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_merchantCapabilities != *(v4 + 28))
+    if ((v10 & 4) == 0 || self->_merchantCapabilities != *(equalCopy + 28))
     {
       goto LABEL_53;
     }
@@ -2543,7 +2543,7 @@ LABEL_71:
 
   if ((has & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_requiredBillingAddressFields != *(v4 + 43))
+    if ((v10 & 0x80) == 0 || self->_requiredBillingAddressFields != *(equalCopy + 43))
     {
       goto LABEL_53;
     }
@@ -2556,25 +2556,25 @@ LABEL_71:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 132) & 0x100) == 0 || self->_requiredShippingAddressFields != *(v4 + 46))
+    if ((*(equalCopy + 132) & 0x100) == 0 || self->_requiredShippingAddressFields != *(equalCopy + 46))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 132) & 0x100) != 0)
+  else if ((*(equalCopy + 132) & 0x100) != 0)
   {
     goto LABEL_53;
   }
 
   billingContact = self->_billingContact;
-  if (billingContact | *(v4 + 6) && ![(NSData *)billingContact isEqual:?])
+  if (billingContact | *(equalCopy + 6) && ![(NSData *)billingContact isEqual:?])
   {
     goto LABEL_53;
   }
 
   shippingContact = self->_shippingContact;
-  if (shippingContact | *(v4 + 25))
+  if (shippingContact | *(equalCopy + 25))
   {
     if (![(NSData *)shippingContact isEqual:?])
     {
@@ -2583,7 +2583,7 @@ LABEL_71:
   }
 
   summaryItems = self->_summaryItems;
-  if (summaryItems | *(v4 + 27))
+  if (summaryItems | *(equalCopy + 27))
   {
     if (![(NSMutableArray *)summaryItems isEqual:?])
     {
@@ -2592,7 +2592,7 @@ LABEL_71:
   }
 
   shippingMethods = self->_shippingMethods;
-  if (shippingMethods | *(v4 + 26))
+  if (shippingMethods | *(equalCopy + 26))
   {
     if (![(NSMutableArray *)shippingMethods isEqual:?])
     {
@@ -2601,7 +2601,7 @@ LABEL_71:
   }
 
   applicationData = self->_applicationData;
-  if (applicationData | *(v4 + 2))
+  if (applicationData | *(equalCopy + 2))
   {
     if (![(NSData *)applicationData isEqual:?])
     {
@@ -2610,7 +2610,7 @@ LABEL_71:
   }
 
   originatingURL = self->_originatingURL;
-  if (originatingURL | *(v4 + 18))
+  if (originatingURL | *(equalCopy + 18))
   {
     if (![(NSString *)originatingURL isEqual:?])
     {
@@ -2619,7 +2619,7 @@ LABEL_71:
   }
 
   merchantSession = self->_merchantSession;
-  if (merchantSession | *(v4 + 16))
+  if (merchantSession | *(equalCopy + 16))
   {
     if (![(PKProtobufPaymentMerchantSession *)merchantSession isEqual:?])
     {
@@ -2628,7 +2628,7 @@ LABEL_71:
   }
 
   thumbnailURLs = self->_thumbnailURLs;
-  if (thumbnailURLs | *(v4 + 30))
+  if (thumbnailURLs | *(equalCopy + 30))
   {
     if (![(NSMutableArray *)thumbnailURLs isEqual:?])
     {
@@ -2638,38 +2638,38 @@ LABEL_71:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 132) & 0x200) == 0)
+    if ((*(equalCopy + 132) & 0x200) == 0)
     {
       goto LABEL_53;
     }
 
     if (self->_expectsMerchantSession)
     {
-      if ((*(v4 + 256) & 1) == 0)
+      if ((*(equalCopy + 256) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 256))
+    else if (*(equalCopy + 256))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 132) & 0x200) != 0)
+  else if ((*(equalCopy + 132) & 0x200) != 0)
   {
     goto LABEL_53;
   }
 
   requiredShippingContactFields = self->_requiredShippingContactFields;
-  if (requiredShippingContactFields | *(v4 + 24) && ![(NSMutableArray *)requiredShippingContactFields isEqual:?])
+  if (requiredShippingContactFields | *(equalCopy + 24) && ![(NSMutableArray *)requiredShippingContactFields isEqual:?])
   {
     goto LABEL_53;
   }
 
   requiredBillingContactFields = self->_requiredBillingContactFields;
-  if (requiredBillingContactFields | *(v4 + 22))
+  if (requiredBillingContactFields | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)requiredBillingContactFields isEqual:?])
     {
@@ -2678,7 +2678,7 @@ LABEL_71:
   }
 
   supportedCountries = self->_supportedCountries;
-  if (supportedCountries | *(v4 + 28))
+  if (supportedCountries | *(equalCopy + 28))
   {
     if (![(NSMutableArray *)supportedCountries isEqual:?])
     {
@@ -2686,10 +2686,10 @@ LABEL_71:
     }
   }
 
-  v22 = *(v4 + 132);
+  v22 = *(equalCopy + 132);
   if (*&self->_has)
   {
-    if ((v22 & 1) == 0 || self->_apiType != *(v4 + 2))
+    if ((v22 & 1) == 0 || self->_apiType != *(equalCopy + 2))
     {
       goto LABEL_53;
     }
@@ -2701,13 +2701,13 @@ LABEL_71:
   }
 
   contentItems = self->_contentItems;
-  if (contentItems | *(v4 + 8) && ![(NSMutableArray *)contentItems isEqual:?])
+  if (contentItems | *(equalCopy + 8) && ![(NSMutableArray *)contentItems isEqual:?])
   {
     goto LABEL_53;
   }
 
   localizedNavigationTitle = self->_localizedNavigationTitle;
-  if (localizedNavigationTitle | *(v4 + 12))
+  if (localizedNavigationTitle | *(equalCopy + 12))
   {
     if (![(NSString *)localizedNavigationTitle isEqual:?])
     {
@@ -2716,7 +2716,7 @@ LABEL_71:
   }
 
   localizedSummaryItemsTitle = self->_localizedSummaryItemsTitle;
-  if (localizedSummaryItemsTitle | *(v4 + 13))
+  if (localizedSummaryItemsTitle | *(equalCopy + 13))
   {
     if (![(NSString *)localizedSummaryItemsTitle isEqual:?])
     {
@@ -2725,62 +2725,62 @@ LABEL_71:
   }
 
   v28 = self->_has;
-  v29 = *(v4 + 132);
+  v29 = *(equalCopy + 132);
   if ((v28 & 0x2000) != 0)
   {
-    if ((*(v4 + 132) & 0x2000) == 0)
+    if ((*(equalCopy + 132) & 0x2000) == 0)
     {
       goto LABEL_53;
     }
 
     if (self->_suppressTotal)
     {
-      if ((*(v4 + 260) & 1) == 0)
+      if ((*(equalCopy + 260) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 260))
+    else if (*(equalCopy + 260))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 132) & 0x2000) != 0)
+  else if ((*(equalCopy + 132) & 0x2000) != 0)
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 132) & 0x800) == 0)
+    if ((*(equalCopy + 132) & 0x800) == 0)
     {
       goto LABEL_53;
     }
 
     if (self->_summaryPinned)
     {
-      if ((*(v4 + 258) & 1) == 0)
+      if ((*(equalCopy + 258) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 258))
+    else if (*(equalCopy + 258))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 132) & 0x800) != 0)
+  else if ((*(equalCopy + 132) & 0x800) != 0)
   {
     goto LABEL_53;
   }
 
   if ((v28 & 0x20) != 0)
   {
-    if ((v29 & 0x20) == 0 || self->_requestor != *(v4 + 41))
+    if ((v29 & 0x20) == 0 || self->_requestor != *(equalCopy + 41))
     {
       goto LABEL_53;
     }
@@ -2793,7 +2793,7 @@ LABEL_71:
 
   if ((v28 & 2) != 0)
   {
-    if ((v29 & 2) == 0 || self->_confirmationStyle != *(v4 + 14))
+    if ((v29 & 2) == 0 || self->_confirmationStyle != *(equalCopy + 14))
     {
       goto LABEL_53;
     }
@@ -2806,7 +2806,7 @@ LABEL_71:
 
   if ((v28 & 0x10) != 0)
   {
-    if ((v29 & 0x10) == 0 || self->_requestType != *(v4 + 40))
+    if ((v29 & 0x10) == 0 || self->_requestType != *(equalCopy + 40))
     {
       goto LABEL_53;
     }
@@ -2818,13 +2818,13 @@ LABEL_71:
   }
 
   availableShippingMethods = self->_availableShippingMethods;
-  if (availableShippingMethods | *(v4 + 5) && ![(PKProtobufShippingMethods *)availableShippingMethods isEqual:?])
+  if (availableShippingMethods | *(equalCopy + 5) && ![(PKProtobufShippingMethods *)availableShippingMethods isEqual:?])
   {
     goto LABEL_53;
   }
 
   recurringPaymentRequest = self->_recurringPaymentRequest;
-  if (recurringPaymentRequest | *(v4 + 19))
+  if (recurringPaymentRequest | *(equalCopy + 19))
   {
     if (![(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest isEqual:?])
     {
@@ -2833,7 +2833,7 @@ LABEL_71:
   }
 
   multiTokenContexts = self->_multiTokenContexts;
-  if (multiTokenContexts | *(v4 + 17))
+  if (multiTokenContexts | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)multiTokenContexts isEqual:?])
     {
@@ -2842,35 +2842,35 @@ LABEL_71:
   }
 
   v33 = self->_has;
-  v34 = *(v4 + 132);
+  v34 = *(equalCopy + 132);
   if ((v33 & 0x400) != 0)
   {
-    if ((*(v4 + 132) & 0x400) == 0)
+    if ((*(equalCopy + 132) & 0x400) == 0)
     {
       goto LABEL_53;
     }
 
     if (self->_respectSupportedNetworksOrder)
     {
-      if ((*(v4 + 257) & 1) == 0)
+      if ((*(equalCopy + 257) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 257))
+    else if (*(equalCopy + 257))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 132) & 0x400) != 0)
+  else if ((*(equalCopy + 132) & 0x400) != 0)
   {
     goto LABEL_53;
   }
 
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
-  if (automaticReloadPaymentRequest | *(v4 + 4))
+  if (automaticReloadPaymentRequest | *(equalCopy + 4))
   {
     if (![(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest isEqual:?])
     {
@@ -2878,12 +2878,12 @@ LABEL_71:
     }
 
     v33 = self->_has;
-    v34 = *(v4 + 132);
+    v34 = *(equalCopy + 132);
   }
 
   if ((v33 & 0x40) != 0)
   {
-    if ((v34 & 0x40) == 0 || self->_requestorDeviceType != *(v4 + 42))
+    if ((v34 & 0x40) == 0 || self->_requestorDeviceType != *(equalCopy + 42))
     {
       goto LABEL_53;
     }
@@ -2895,13 +2895,13 @@ LABEL_71:
   }
 
   deferredPaymentRequest = self->_deferredPaymentRequest;
-  if (deferredPaymentRequest | *(v4 + 11) && ![(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest isEqual:?])
+  if (deferredPaymentRequest | *(equalCopy + 11) && ![(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest isEqual:?])
   {
     goto LABEL_53;
   }
 
   userAgent = self->_userAgent;
-  if (userAgent | *(v4 + 31))
+  if (userAgent | *(equalCopy + 31))
   {
     if (![(NSString *)userAgent isEqual:?])
     {
@@ -2910,10 +2910,10 @@ LABEL_71:
   }
 
   v38 = self->_has;
-  v39 = *(v4 + 132);
+  v39 = *(equalCopy + 132);
   if ((v38 & 8) != 0)
   {
-    if ((v39 & 8) == 0 || self->_merchantCategoryCode != *(v4 + 29))
+    if ((v39 & 8) == 0 || self->_merchantCategoryCode != *(equalCopy + 29))
     {
       goto LABEL_53;
     }
@@ -2925,7 +2925,7 @@ LABEL_71:
   }
 
   attributionIdentifier = self->_attributionIdentifier;
-  if (attributionIdentifier | *(v4 + 3))
+  if (attributionIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)attributionIdentifier isEqual:?])
     {
@@ -2933,7 +2933,7 @@ LABEL_71:
     }
 
     v38 = self->_has;
-    v39 = *(v4 + 132);
+    v39 = *(equalCopy + 132);
   }
 
   if ((v38 & 0x1000) == 0)
@@ -2946,13 +2946,13 @@ LABEL_71:
   {
     if (self->_suppressLandscape)
     {
-      if (*(v4 + 259))
+      if (*(equalCopy + 259))
       {
         goto LABEL_140;
       }
     }
 
-    else if (!*(v4 + 259))
+    else if (!*(equalCopy + 259))
     {
 LABEL_140:
       v23 = 1;
@@ -3159,21 +3159,21 @@ LABEL_25:
   return v43 ^ v44 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v107 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 15))
+  fromCopy = from;
+  if (*(fromCopy + 15))
   {
     [(PKProtobufPaymentRequest *)self setMerchantIdentifier:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PKProtobufPaymentRequest *)self setCountryCode:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PKProtobufPaymentRequest *)self setCurrencyCode:?];
   }
@@ -3182,7 +3182,7 @@ LABEL_25:
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v5 = *(v4 + 29);
+  v5 = *(fromCopy + 29);
   v6 = [v5 countByEnumeratingWithState:&v94 objects:v106 count:16];
   if (v6)
   {
@@ -3206,12 +3206,12 @@ LABEL_25:
     while (v7);
   }
 
-  v10 = *(v4 + 132);
+  v10 = *(fromCopy + 132);
   if ((v10 & 4) != 0)
   {
-    self->_merchantCapabilities = *(v4 + 28);
+    self->_merchantCapabilities = *(fromCopy + 28);
     *&self->_has |= 4u;
-    v10 = *(v4 + 132);
+    v10 = *(fromCopy + 132);
     if ((v10 & 0x80) == 0)
     {
 LABEL_16:
@@ -3229,22 +3229,22 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  self->_requiredBillingAddressFields = *(v4 + 43);
+  self->_requiredBillingAddressFields = *(fromCopy + 43);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 132) & 0x100) != 0)
+  if ((*(fromCopy + 132) & 0x100) != 0)
   {
 LABEL_17:
-    self->_requiredShippingAddressFields = *(v4 + 46);
+    self->_requiredShippingAddressFields = *(fromCopy + 46);
     *&self->_has |= 0x100u;
   }
 
 LABEL_18:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PKProtobufPaymentRequest *)self setBillingContact:?];
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(PKProtobufPaymentRequest *)self setShippingContact:?];
   }
@@ -3253,7 +3253,7 @@ LABEL_18:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v11 = *(v4 + 27);
+  v11 = *(fromCopy + 27);
   v12 = [v11 countByEnumeratingWithState:&v90 objects:v105 count:16];
   if (v12)
   {
@@ -3281,7 +3281,7 @@ LABEL_18:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v16 = *(v4 + 26);
+  v16 = *(fromCopy + 26);
   v17 = [v16 countByEnumeratingWithState:&v86 objects:v104 count:16];
   if (v17)
   {
@@ -3305,18 +3305,18 @@ LABEL_18:
     while (v18);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PKProtobufPaymentRequest *)self setApplicationData:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PKProtobufPaymentRequest *)self setOriginatingURL:?];
   }
 
   merchantSession = self->_merchantSession;
-  v22 = *(v4 + 16);
+  v22 = *(fromCopy + 16);
   if (merchantSession)
   {
     if (v22)
@@ -3334,7 +3334,7 @@ LABEL_18:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v23 = *(v4 + 30);
+  v23 = *(fromCopy + 30);
   v24 = [v23 countByEnumeratingWithState:&v82 objects:v103 count:16];
   if (v24)
   {
@@ -3358,9 +3358,9 @@ LABEL_18:
     while (v25);
   }
 
-  if ((*(v4 + 132) & 0x200) != 0)
+  if ((*(fromCopy + 132) & 0x200) != 0)
   {
-    self->_expectsMerchantSession = *(v4 + 256);
+    self->_expectsMerchantSession = *(fromCopy + 256);
     *&self->_has |= 0x200u;
   }
 
@@ -3368,7 +3368,7 @@ LABEL_18:
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v28 = *(v4 + 24);
+  v28 = *(fromCopy + 24);
   v29 = [v28 countByEnumeratingWithState:&v78 objects:v102 count:16];
   if (v29)
   {
@@ -3396,7 +3396,7 @@ LABEL_18:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v33 = *(v4 + 22);
+  v33 = *(fromCopy + 22);
   v34 = [v33 countByEnumeratingWithState:&v74 objects:v101 count:16];
   if (v34)
   {
@@ -3424,7 +3424,7 @@ LABEL_18:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v38 = *(v4 + 28);
+  v38 = *(fromCopy + 28);
   v39 = [v38 countByEnumeratingWithState:&v70 objects:v100 count:16];
   if (v39)
   {
@@ -3448,9 +3448,9 @@ LABEL_18:
     while (v40);
   }
 
-  if (*(v4 + 132))
+  if (*(fromCopy + 132))
   {
-    self->_apiType = *(v4 + 2);
+    self->_apiType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -3458,7 +3458,7 @@ LABEL_18:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v43 = *(v4 + 8);
+  v43 = *(fromCopy + 8);
   v44 = [v43 countByEnumeratingWithState:&v66 objects:v99 count:16];
   if (v44)
   {
@@ -3482,22 +3482,22 @@ LABEL_18:
     while (v45);
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PKProtobufPaymentRequest *)self setLocalizedNavigationTitle:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(PKProtobufPaymentRequest *)self setLocalizedSummaryItemsTitle:?];
   }
 
-  v48 = *(v4 + 132);
+  v48 = *(fromCopy + 132);
   if ((v48 & 0x2000) != 0)
   {
-    self->_suppressTotal = *(v4 + 260);
+    self->_suppressTotal = *(fromCopy + 260);
     *&self->_has |= 0x2000u;
-    v48 = *(v4 + 132);
+    v48 = *(fromCopy + 132);
     if ((v48 & 0x800) == 0)
     {
 LABEL_93:
@@ -3510,14 +3510,14 @@ LABEL_93:
     }
   }
 
-  else if ((*(v4 + 132) & 0x800) == 0)
+  else if ((*(fromCopy + 132) & 0x800) == 0)
   {
     goto LABEL_93;
   }
 
-  self->_summaryPinned = *(v4 + 258);
+  self->_summaryPinned = *(fromCopy + 258);
   *&self->_has |= 0x800u;
-  v48 = *(v4 + 132);
+  v48 = *(fromCopy + 132);
   if ((v48 & 0x20) == 0)
   {
 LABEL_94:
@@ -3530,9 +3530,9 @@ LABEL_94:
   }
 
 LABEL_102:
-  self->_requestor = *(v4 + 41);
+  self->_requestor = *(fromCopy + 41);
   *&self->_has |= 0x20u;
-  v48 = *(v4 + 132);
+  v48 = *(fromCopy + 132);
   if ((v48 & 2) == 0)
   {
 LABEL_95:
@@ -3545,18 +3545,18 @@ LABEL_95:
   }
 
 LABEL_103:
-  self->_confirmationStyle = *(v4 + 14);
+  self->_confirmationStyle = *(fromCopy + 14);
   *&self->_has |= 2u;
-  if ((*(v4 + 132) & 0x10) != 0)
+  if ((*(fromCopy + 132) & 0x10) != 0)
   {
 LABEL_96:
-    self->_requestType = *(v4 + 40);
+    self->_requestType = *(fromCopy + 40);
     *&self->_has |= 0x10u;
   }
 
 LABEL_97:
   availableShippingMethods = self->_availableShippingMethods;
-  v50 = *(v4 + 5);
+  v50 = *(fromCopy + 5);
   if (availableShippingMethods)
   {
     if (v50)
@@ -3571,7 +3571,7 @@ LABEL_97:
   }
 
   recurringPaymentRequest = self->_recurringPaymentRequest;
-  v52 = *(v4 + 19);
+  v52 = *(fromCopy + 19);
   if (recurringPaymentRequest)
   {
     if (v52)
@@ -3589,7 +3589,7 @@ LABEL_97:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v53 = *(v4 + 17);
+  v53 = *(fromCopy + 17);
   v54 = [v53 countByEnumeratingWithState:&v62 objects:v98 count:16];
   if (v54)
   {
@@ -3613,14 +3613,14 @@ LABEL_97:
     while (v55);
   }
 
-  if ((*(v4 + 132) & 0x400) != 0)
+  if ((*(fromCopy + 132) & 0x400) != 0)
   {
-    self->_respectSupportedNetworksOrder = *(v4 + 257);
+    self->_respectSupportedNetworksOrder = *(fromCopy + 257);
     *&self->_has |= 0x400u;
   }
 
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
-  v59 = *(v4 + 4);
+  v59 = *(fromCopy + 4);
   if (automaticReloadPaymentRequest)
   {
     if (v59)
@@ -3634,14 +3634,14 @@ LABEL_97:
     [(PKProtobufPaymentRequest *)self setAutomaticReloadPaymentRequest:?];
   }
 
-  if ((*(v4 + 132) & 0x40) != 0)
+  if ((*(fromCopy + 132) & 0x40) != 0)
   {
-    self->_requestorDeviceType = *(v4 + 42);
+    self->_requestorDeviceType = *(fromCopy + 42);
     *&self->_has |= 0x40u;
   }
 
   deferredPaymentRequest = self->_deferredPaymentRequest;
-  v61 = *(v4 + 11);
+  v61 = *(fromCopy + 11);
   if (deferredPaymentRequest)
   {
     if (v61)
@@ -3655,25 +3655,25 @@ LABEL_97:
     [(PKProtobufPaymentRequest *)self setDeferredPaymentRequest:?];
   }
 
-  if (*(v4 + 31))
+  if (*(fromCopy + 31))
   {
     [(PKProtobufPaymentRequest *)self setUserAgent:?];
   }
 
-  if ((*(v4 + 132) & 8) != 0)
+  if ((*(fromCopy + 132) & 8) != 0)
   {
-    self->_merchantCategoryCode = *(v4 + 29);
+    self->_merchantCategoryCode = *(fromCopy + 29);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufPaymentRequest *)self setAttributionIdentifier:?];
   }
 
-  if ((*(v4 + 132) & 0x1000) != 0)
+  if ((*(fromCopy + 132) & 0x1000) != 0)
   {
-    self->_suppressLandscape = *(v4 + 259);
+    self->_suppressLandscape = *(fromCopy + 259);
     *&self->_has |= 0x1000u;
   }
 }

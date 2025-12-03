@@ -1,15 +1,15 @@
 @interface STKStickerSearchQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsEmoji;
 - (BOOL)supportsGenmoji;
 - (BOOL)supportsImages;
 - (NSArray)multilingualSearchLocales;
 - (STKStickerSearchQuery)init;
 - (id)trimmedEmojiSearchQuery;
-- (void)setMultilingualSearchLocales:(id)a3;
-- (void)setSupportsEmoji:(BOOL)a3;
-- (void)setSupportsGenmoji:(BOOL)a3;
-- (void)setSupportsImages:(BOOL)a3;
+- (void)setMultilingualSearchLocales:(id)locales;
+- (void)setSupportsEmoji:(BOOL)emoji;
+- (void)setSupportsGenmoji:(BOOL)genmoji;
+- (void)setSupportsImages:(BOOL)images;
 @end
 
 @implementation STKStickerSearchQuery
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setMultilingualSearchLocales:(id)a3
+- (void)setMultilingualSearchLocales:(id)locales
 {
-  if (a3)
+  if (locales)
   {
     v4 = sub_19A7AB254();
   }
@@ -56,11 +56,11 @@
   return *(self + v3);
 }
 
-- (void)setSupportsImages:(BOOL)a3
+- (void)setSupportsImages:(BOOL)images
 {
   v5 = OBJC_IVAR___STKStickerSearchQuery_supportsImages;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = images;
 }
 
 - (BOOL)supportsGenmoji
@@ -70,11 +70,11 @@
   return *(self + v3);
 }
 
-- (void)setSupportsGenmoji:(BOOL)a3
+- (void)setSupportsGenmoji:(BOOL)genmoji
 {
   v5 = OBJC_IVAR___STKStickerSearchQuery_supportsGenmoji;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = genmoji;
 }
 
 - (BOOL)supportsEmoji
@@ -84,18 +84,18 @@
   return *(self + v3);
 }
 
-- (void)setSupportsEmoji:(BOOL)a3
+- (void)setSupportsEmoji:(BOOL)emoji
 {
   v5 = OBJC_IVAR___STKStickerSearchQuery_supportsEmoji;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = emoji;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19A7ABB44();
     swift_unknownObjectRelease();
@@ -104,7 +104,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = StickerSearchQuery.isEqual(_:)(v8);
@@ -126,7 +126,7 @@
   {
     v12[1] = *v7;
     v12[2] = v8;
-    v9 = self;
+    selfCopy = self;
 
     sub_19A7A8B94();
     sub_19A639920();

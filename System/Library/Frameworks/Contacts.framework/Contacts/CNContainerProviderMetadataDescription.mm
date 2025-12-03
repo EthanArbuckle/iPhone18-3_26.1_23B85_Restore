@@ -1,15 +1,15 @@
 @interface CNContainerProviderMetadataDescription
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
 @end
 
 @implementation CNContainerProviderMetadataDescription
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v4 = v3;
+  v4 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -22,30 +22,30 @@
 
   v6 = v5;
 
-  v7 = [v6 dataRepresentation];
+  dataRepresentation = [v6 dataRepresentation];
 
-  return v7;
+  return dataRepresentation;
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  v3 = a3;
-  if (a3)
+  valueCopy = value;
+  if (value)
   {
-    v4 = CFGetTypeID(a3);
+    v4 = CFGetTypeID(value);
     if (v4 == CFDataGetTypeID())
     {
-      v5 = v3;
-      v3 = [[CNProviderMetadata alloc] initWithDataRepresentation:v5];
+      v5 = valueCopy;
+      valueCopy = [[CNProviderMetadata alloc] initWithDataRepresentation:v5];
     }
 
     else
     {
-      v3 = 0;
+      valueCopy = 0;
     }
   }
 
-  return v3;
+  return valueCopy;
 }
 
 @end

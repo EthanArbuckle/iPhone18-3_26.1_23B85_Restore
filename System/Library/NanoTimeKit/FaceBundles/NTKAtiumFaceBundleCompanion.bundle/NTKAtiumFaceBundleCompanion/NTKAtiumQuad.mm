@@ -1,31 +1,31 @@
 @interface NTKAtiumQuad
 - (BOOL)_needsOrientationBlend;
-- (NTKAtiumQuad)initWithDevice:(id)a3;
+- (NTKAtiumQuad)initWithDevice:(id)device;
 - (NTKAtiumQuadDelegate)delegate;
 - (float32x2_t)_getHandAngles;
-- (id)_createRenderPipelineWithPixelFormat:(unint64_t)a3 functionConstants:(id)a4;
-- (id)_createTextureWithName:(id)a3;
+- (id)_createRenderPipelineWithPixelFormat:(unint64_t)format functionConstants:(id)constants;
+- (id)_createTextureWithName:(id)name;
 - (id)_createVertexBuffer;
 - (void)_updateDeviceRotationMatrix;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setAnimatingOverrideDate:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setupForQuadView:(id)a3;
-- (void)startWakeAnimationWithDuration:(double)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setAnimatingOverrideDate:(BOOL)date;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setupForQuadView:(id)view;
+- (void)startWakeAnimationWithDuration:(double)duration;
 @end
 
 @implementation NTKAtiumQuad
 
-- (NTKAtiumQuad)initWithDevice:(id)a3
+- (NTKAtiumQuad)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v82.receiver = self;
   v82.super_class = NTKAtiumQuad;
   v6 = [(NTKAtiumQuad *)&v82 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[CLKUIMetalResourceManager sharedDevice];
     mtlDevice = v7->_mtlDevice;
     v7->_mtlDevice = v8;
@@ -36,7 +36,7 @@
     library = v7->_library;
     v7->_library = v12;
 
-    [v5 screenScale];
+    [deviceCopy screenScale];
     v7->_screenScale = v14;
     v7->_tritiumProgress = 0.0;
     v7->_shadowStrength = 1.0;
@@ -64,9 +64,9 @@
     calendar = v7->_calendar;
     v7->_calendar = v19;
 
-    v21 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:v5];
-    v22 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:v5];
-    v23 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v5];
+    v21 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:deviceCopy];
+    v22 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:deviceCopy];
+    v23 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:deviceCopy];
     screenScale = v7->_screenScale;
     [v21 handWidth];
     *&v25 = screenScale * v25 * 0.5;
@@ -178,13 +178,13 @@
   return v7;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
       [(NTKAtiumQuad *)self setAnimatingOverrideDate:1];
     }
@@ -198,21 +198,21 @@
     }
 
     v12 = v11;
-    if (v7)
+    if (dateCopy)
     {
-      v13 = v7;
+      v13 = dateCopy;
     }
 
     else
     {
-      v13 = [v10 dateByAddingTimeInterval:a4];
+      v13 = [v10 dateByAddingTimeInterval:duration];
     }
 
     v14 = v13;
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     v15 = CACurrentMediaTime();
     self->_startOverrideTime = v15;
-    self->_endOverrideTime = v15 + a4;
+    self->_endOverrideTime = v15 + duration;
     calendar = self->_calendar;
     NTKHourMinuteSecondAnglesForTime();
     HIDWORD(v17) = 0;
@@ -228,36 +228,36 @@
   }
 }
 
-- (void)setAnimatingOverrideDate:(BOOL)a3
+- (void)setAnimatingOverrideDate:(BOOL)date
 {
-  if (self->_animatingOverrideDate != a3)
+  if (self->_animatingOverrideDate != date)
   {
-    self->_animatingOverrideDate = a3;
-    v5 = [(NTKAtiumQuad *)self delegate];
-    [v5 atiumQuadDidUpdateAnimatingOverrideDate:self];
+    self->_animatingOverrideDate = date;
+    delegate = [(NTKAtiumQuad *)self delegate];
+    [delegate atiumQuadDidUpdateAnimatingOverrideDate:self];
   }
 }
 
-- (void)startWakeAnimationWithDuration:(double)a3
+- (void)startWakeAnimationWithDuration:(double)duration
 {
   v5 = CACurrentMediaTime();
   self->_startWristRaiseTime = v5;
-  self->_endWristRaiseTime = v5 + a3;
+  self->_endWristRaiseTime = v5 + duration;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   screenScale = self->_screenScale;
   self->_renderSize.width = v6 * screenScale;
   self->_renderSize.height = v7 * screenScale;
-  v8 = [v4 colorPixelFormat];
+  colorPixelFormat = [viewCopy colorPixelFormat];
 
-  self->_pixelFormat = v8;
-  v9 = [(NTKAtiumQuad *)self _createVertexBuffer];
+  self->_pixelFormat = colorPixelFormat;
+  _createVertexBuffer = [(NTKAtiumQuad *)self _createVertexBuffer];
   vertexBuffer = self->_vertexBuffer;
-  self->_vertexBuffer = v9;
+  self->_vertexBuffer = _createVertexBuffer;
 
   v11 = [(NTKAtiumQuad *)self _createTextureWithName:@"QuickCubeTexture"];
   reflectionCubeTexture = self->_reflectionCubeTexture;
@@ -302,10 +302,10 @@
 - (float32x2_t)_getHandAngles
 {
   v2 = CACurrentMediaTime();
-  v3 = *(a1 + 424);
+  v3 = *(self + 424);
   if (v2 >= v3)
   {
-    v16 = *(a1 + 600);
+    v16 = *(self + 600);
     if (v16)
     {
       v17 = v16;
@@ -317,56 +317,56 @@
     }
 
     v5 = v17;
-    v18 = *(a1 + 376);
+    v18 = *(self + 376);
     NTKHourMinuteSecondAnglesForTime();
     v19 = vcvt_f32_f64(0);
     v20 = 0.0;
-    if (!*(a1 + 600))
+    if (!*(self + 600))
     {
       v20 = 1.0;
     }
 
-    *(a1 + 464) = v20;
-    [a1 setAnimatingOverrideDate:{0, *&v19}];
+    *(self + 464) = v20;
+    [self setAnimatingOverrideDate:{0, *&v19}];
   }
 
   else
   {
-    v4 = (v2 - *(a1 + 416)) / (v3 - *(a1 + 416));
+    v4 = (v2 - *(self + 416)) / (v3 - *(self + 416));
     v5 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     *&v6 = v4;
     [v5 _solveForInput:v6];
-    v7 = *(a1 + 448);
-    v8 = *(a1 + 432);
+    v7 = *(self + 448);
+    v8 = *(self + 432);
     CLKInterpolateShortestPathBetweenAnglesUnclipped();
     v22 = v9;
-    v10 = *(a1 + 436);
-    v11 = *(a1 + 452);
+    v10 = *(self + 436);
+    v11 = *(self + 452);
     CLKInterpolateShortestPathBetweenAnglesUnclipped();
     v12.f64[0] = v22;
     v12.f64[1] = v13;
     v23 = vcvt_f32_f64(v12);
-    v14 = *(a1 + 440);
-    v12.f64[0] = *(a1 + 456);
+    v14 = *(self + 440);
+    v12.f64[0] = *(self + 456);
     CLKInterpolateShortestPathBetweenAnglesUnclipped();
     v15 = v4;
-    if (*(a1 + 600))
+    if (*(self + 600))
     {
       v15 = 1.0 - v4;
     }
 
-    *(a1 + 464) = v15;
+    *(self + 464) = v15;
   }
 
   return vcvt_f32_f64(vaddq_f64(vsubq_f64(vdupq_n_s64(0x401921FB54442D18uLL), vcvtq_f64_f32(v23)), vdupq_n_s64(0x3FF921FB54442D18uLL)));
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-  v5 = [(NTKAtiumQuad *)self recolorLightingTextureEnabled];
-  v6 = [(NTKAtiumQuad *)self useThreeColorTexture];
+  recolorLightingTextureEnabled = [(NTKAtiumQuad *)self recolorLightingTextureEnabled];
+  useThreeColorTexture = [(NTKAtiumQuad *)self useThreeColorTexture];
   blendTransitionFraction = self->_blendTransitionFraction;
   if (blendTransitionFraction <= 0.0)
   {
@@ -397,18 +397,18 @@
     }
   }
 
-  v10 = [(NTKAtiumQuad *)self _needsOrientationBlend];
+  _needsOrientationBlend = [(NTKAtiumQuad *)self _needsOrientationBlend];
   if (self->_tritiumProgress <= 0.0)
   {
-    v13 = [(NTKAtiumQuad *)self overrideTritiumAnimation];
+    overrideTritiumAnimation = [(NTKAtiumQuad *)self overrideTritiumAnimation];
     v14 = 256;
-    if (!v6)
+    if (!useThreeColorTexture)
     {
       v14 = 0;
     }
 
-    v12 = v14 | v5 | ((blendTransitionFraction > 0.0) << 16) | v8 | v9;
-    if (!v13)
+    v12 = v14 | recolorLightingTextureEnabled | ((blendTransitionFraction > 0.0) << 16) | v8 | v9;
+    if (!overrideTritiumAnimation)
     {
       v110 = 0;
       v15 = 0;
@@ -419,12 +419,12 @@
   else
   {
     v11 = 256;
-    if (!v6)
+    if (!useThreeColorTexture)
     {
       v11 = 0;
     }
 
-    v12 = v11 | v5 | ((blendTransitionFraction > 0.0) << 16) | v8 | v9;
+    v12 = v11 | recolorLightingTextureEnabled | ((blendTransitionFraction > 0.0) << 16) | v8 | v9;
   }
 
   v110 = 1;
@@ -432,7 +432,7 @@
 LABEL_18:
   v16 = 0;
   LODWORD(v17) = 0;
-  v18 = v12 | ((v15 | v10) << 48);
+  v18 = v12 | ((v15 | _needsOrientationBlend) << 48);
   *&v125 = v18;
   do
   {
@@ -454,13 +454,13 @@ LABEL_18:
     [(NSMutableDictionary *)self->_renderPipelines setObject:v21 forKey:v19];
   }
 
-  [v4 setLabel:{@"Atium Render Encoder", v18}];
+  [encoderCopy setLabel:{@"Atium Render Encoder", v18}];
   v125 = 0uLL;
   renderSize = self->_renderSize;
   v127 = xmmword_8A10;
-  [v4 setViewport:&v125];
-  [v4 setRenderPipelineState:v21];
-  [v4 setCullMode:0];
+  [encoderCopy setViewport:&v125];
+  [encoderCopy setRenderPipelineState:v21];
+  [encoderCopy setCullMode:0];
   memset(v134, 0, sizeof(v134));
   v132 = 0u;
   v133 = 0u;
@@ -560,9 +560,9 @@ LABEL_18:
   *&v52 = v52;
   DWORD1(v134[0]) = LODWORD(v52);
   v53 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:&v125 length:176 options:1];
-  [v4 setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
-  [v4 setVertexBuffer:v53 offset:0 atIndex:1];
-  [v4 setFragmentBuffer:v53 offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:v53 offset:0 atIndex:1];
+  [encoderCopy setFragmentBuffer:v53 offset:0 atIndex:0];
   if (blendTransitionFraction > 0.0)
   {
     v123 = 0u;
@@ -600,10 +600,10 @@ LABEL_18:
     _Q0.f32[0] = self->_blendTransitionFraction;
     v120.i32[2] = _Q0.i32[0];
     v65 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:&v119 length:96 options:1];
-    [v4 setFragmentBuffer:v65 offset:0 atIndex:1];
+    [encoderCopy setFragmentBuffer:v65 offset:0 atIndex:1];
   }
 
-  if (v10)
+  if (_needsOrientationBlend)
   {
     v123 = 0u;
     v124 = 0u;
@@ -719,7 +719,7 @@ LABEL_18:
     }
 
     v95 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:&v119 length:96 options:1];
-    [v4 setFragmentBuffer:v95 offset:0 atIndex:2];
+    [encoderCopy setFragmentBuffer:v95 offset:0 atIndex:2];
   }
 
   if ([(NTKAtiumQuad *)self useRainbowTexture])
@@ -729,15 +729,15 @@ LABEL_18:
 
   else
   {
-    v97 = [(NTKAtiumQuad *)self useThreeColorTexture];
+    useThreeColorTexture2 = [(NTKAtiumQuad *)self useThreeColorTexture];
     v96 = &OBJC_IVAR___NTKAtiumQuad__reflectionCubeTexture;
-    if (v97)
+    if (useThreeColorTexture2)
     {
       v96 = &OBJC_IVAR___NTKAtiumQuad__reflectionThreeColorCubeTexture;
     }
   }
 
-  [v4 setFragmentTexture:*&self->CLKUIQuad_opaque[*v96] atIndex:0];
+  [encoderCopy setFragmentTexture:*&self->CLKUIQuad_opaque[*v96] atIndex:0];
   if (blendTransitionFraction > 0.0)
   {
     if ([(NTKAtiumQuad *)self blendUseRainbowTexture])
@@ -747,24 +747,24 @@ LABEL_18:
 
     else
     {
-      v99 = [(NTKAtiumQuad *)self blendUseThreeColorTexture];
+      blendUseThreeColorTexture = [(NTKAtiumQuad *)self blendUseThreeColorTexture];
       v98 = &OBJC_IVAR___NTKAtiumQuad__reflectionCubeTexture;
-      if (v99)
+      if (blendUseThreeColorTexture)
       {
         v98 = &OBJC_IVAR___NTKAtiumQuad__reflectionThreeColorCubeTexture;
       }
     }
 
-    [v4 setFragmentTexture:*&self->CLKUIQuad_opaque[*v98] atIndex:1];
+    [encoderCopy setFragmentTexture:*&self->CLKUIQuad_opaque[*v98] atIndex:1];
   }
 
-  [v4 setFragmentTexture:self->_centerMaskTexture atIndex:2];
+  [encoderCopy setFragmentTexture:self->_centerMaskTexture atIndex:2];
   if (v110)
   {
-    [v4 setFragmentTexture:self->_aodMaskTexture atIndex:3];
+    [encoderCopy setFragmentTexture:self->_aodMaskTexture atIndex:3];
   }
 
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   [(NTKAtiumQuad *)self dialSize];
   if (v100 < sqrtf(vaddv_f32(vmul_f32(*&v125, *&v125))))
   {
@@ -782,18 +782,18 @@ LABEL_18:
 
     if (v104)
     {
-      v105 = [(NSMutableDictionary *)self->_renderPipelines objectForKey:v103];
+      0x10000000000 = [(NSMutableDictionary *)self->_renderPipelines objectForKey:v103];
     }
 
     else
     {
-      v105 = [(NTKAtiumQuad *)self _createRenderPipelineWithPixelFormat:self->_pixelFormat functionConstants:v106 | 0x10000000000];
-      [(NSMutableDictionary *)self->_renderPipelines setObject:v105 forKey:v103];
+      0x10000000000 = [(NTKAtiumQuad *)self _createRenderPipelineWithPixelFormat:self->_pixelFormat functionConstants:v106 | 0x10000000000];
+      [(NSMutableDictionary *)self->_renderPipelines setObject:0x10000000000 forKey:v103];
     }
 
-    [v4 setRenderPipelineState:v105];
-    [v4 setFragmentTexture:self->_aodMaskTextureBlurred atIndex:3];
-    [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [encoderCopy setRenderPipelineState:0x10000000000];
+    [encoderCopy setFragmentTexture:self->_aodMaskTextureBlurred atIndex:3];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   }
 }
 
@@ -815,10 +815,10 @@ LABEL_18:
   *(anon_90 + 3) = v12;
 }
 
-- (id)_createRenderPipelineWithPixelFormat:(unint64_t)a3 functionConstants:(id)a4
+- (id)_createRenderPipelineWithPixelFormat:(unint64_t)format functionConstants:(id)constants
 {
-  v21 = a3;
-  v23 = a4;
+  formatCopy = format;
+  constantsCopy = constants;
   v5 = self->_library;
   if (!self->_binaryArchive)
   {
@@ -831,7 +831,7 @@ LABEL_18:
   v9 = objc_opt_new();
   for (i = 0; i != 8; ++i)
   {
-    [v9 setConstantValue:&v23.var0[i] type:53 atIndex:{i, v21}];
+    [v9 setConstantValue:&constantsCopy.var0[i] type:53 atIndex:{i, formatCopy}];
   }
 
   v11 = [(MTLLibrary *)v5 newFunctionWithName:@"atiumVertexShader"];
@@ -853,10 +853,10 @@ LABEL_18:
   [v15 setVertexFunction:v11];
   [v15 setFragmentFunction:v13];
   [v15 setLabel:@"Atium Render Pipeline"];
-  v16 = [v15 colorAttachments];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  colorAttachments = [v15 colorAttachments];
+  v17 = [colorAttachments objectAtIndexedSubscript:0];
 
-  [v17 setPixelFormat:v21];
+  [v17 setPixelFormat:formatCopy];
   [v17 setBlendingEnabled:1];
   [v17 setRgbBlendOperation:0];
   [v17 setAlphaBlendOperation:0];
@@ -886,9 +886,9 @@ LABEL_18:
   return v2;
 }
 
-- (id)_createTextureWithName:(id)a3
+- (id)_createTextureWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [[MTKTextureLoader alloc] initWithDevice:self->_mtlDevice];
   v14[0] = MTKTextureLoaderOptionTextureUsage;
   v14[1] = MTKTextureLoaderOptionTextureStorageMode;
@@ -897,7 +897,7 @@ LABEL_18:
   v6 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
   v7 = sub_424C();
   v13 = 0;
-  v8 = [v5 newTextureWithName:v4 scaleFactor:v7 bundle:v6 options:&v13 error:1.0];
+  v8 = [v5 newTextureWithName:nameCopy scaleFactor:v7 bundle:v6 options:&v13 error:1.0];
 
   v9 = v13;
   if (v8)

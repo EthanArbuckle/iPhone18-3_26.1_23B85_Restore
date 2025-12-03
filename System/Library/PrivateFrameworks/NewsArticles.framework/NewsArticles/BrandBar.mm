@@ -1,6 +1,6 @@
 @interface BrandBar
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12NewsArticles8BrandBar)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12NewsArticles8BrandBar)initWithFrame:(CGRect)frame;
 - (void)contentSizeCategoryDidChange;
 - (void)layoutSubviews;
 @end
@@ -10,17 +10,17 @@
 - (void)contentSizeCategoryDidChange
 {
   __swift_project_boxed_opaque_existential_1((&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles8BrandBar_renderer), *(&self->super._cachedTraitCollection + OBJC_IVAR____TtC12NewsArticles8BrandBar_renderer));
-  v3 = self;
-  sub_1D7C75640(v3);
-  [(BrandBar *)v3 setNeedsLayout];
+  selfCopy = self;
+  sub_1D7C75640(selfCopy);
+  [(BrandBar *)selfCopy setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  sub_1D7C75C44(v5, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  sub_1D7C75C44(selfCopy, width, height);
   v7 = v6;
   v9 = v8;
 
@@ -40,7 +40,7 @@
   sub_1D7C757C0(v2);
 }
 
-- (_TtC12NewsArticles8BrandBar)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticles8BrandBar)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

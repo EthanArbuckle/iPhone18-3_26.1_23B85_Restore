@@ -1,29 +1,29 @@
 @interface TGITextGenerationInferenceSession
-- (TGITextGenerationInferenceSession)initWithUUID:(id)a3 configuration:(id)a4 inferenceRunnerManager:(id)a5;
+- (TGITextGenerationInferenceSession)initWithUUID:(id)d configuration:(id)configuration inferenceRunnerManager:(id)manager;
 - (TGTextGenerationOperationDelegate)delegate;
 - (id).cxx_construct;
-- (id)enqueueOperation:(id)a3;
+- (id)enqueueOperation:(id)operation;
 - (shared_ptr<TGITextGenerationInferenceSessionStateCache>)stateCache;
-- (void)cancelOperationWithExecutionUUID:(id)a3;
+- (void)cancelOperationWithExecutionUUID:(id)d;
 @end
 
 @implementation TGITextGenerationInferenceSession
 
-- (TGITextGenerationInferenceSession)initWithUUID:(id)a3 configuration:(id)a4 inferenceRunnerManager:(id)a5
+- (TGITextGenerationInferenceSession)initWithUUID:(id)d configuration:(id)configuration inferenceRunnerManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  configurationCopy = configuration;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = TGITextGenerationInferenceSession;
   v11 = [(TGITextGenerationInferenceSession *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     v13 = *(v11 + 2);
     *(v11 + 2) = v12;
 
-    v14 = [v9 copy];
+    v14 = [configurationCopy copy];
     v15 = *(v11 + 3);
     *(v11 + 3) = v14;
 
@@ -41,27 +41,27 @@
       }
     }
 
-    objc_storeStrong(v11 + 4, a5);
+    objc_storeStrong(v11 + 4, manager);
   }
 
   return v11;
 }
 
-- (id)enqueueOperation:(id)a3
+- (id)enqueueOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [(TGITextGenerationInferenceSession *)self inferenceRunnerManager];
-  [v6 enqueueOperation:v4 executionUUID:v5 session:self];
+  operationCopy = operation;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  inferenceRunnerManager = [(TGITextGenerationInferenceSession *)self inferenceRunnerManager];
+  [inferenceRunnerManager enqueueOperation:operationCopy executionUUID:uUID session:self];
 
-  return v5;
+  return uUID;
 }
 
-- (void)cancelOperationWithExecutionUUID:(id)a3
+- (void)cancelOperationWithExecutionUUID:(id)d
 {
-  v5 = a3;
-  v4 = [(TGITextGenerationInferenceSession *)self inferenceRunnerManager];
-  [v4 cancelOperationWithExecutionUUID:v5];
+  dCopy = d;
+  inferenceRunnerManager = [(TGITextGenerationInferenceSession *)self inferenceRunnerManager];
+  [inferenceRunnerManager cancelOperationWithExecutionUUID:dCopy];
 }
 
 - (TGTextGenerationOperationDelegate)delegate

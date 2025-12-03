@@ -1,18 +1,18 @@
 @interface PRREColorTableViewCell
-- (PRREColorTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PRREColorTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_configure;
-- (void)_setCurrentValue:(id)a3;
-- (void)_tapped:(id)a3;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
+- (void)_setCurrentValue:(id)value;
+- (void)_tapped:(id)_tapped;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
 @end
 
 @implementation PRREColorTableViewCell
 
-- (PRREColorTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PRREColorTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PRREColorTableViewCell;
-  v4 = [(PRREColorTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PRREColorTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DC8A8]);
@@ -37,11 +37,11 @@
   [(PRREColorTableViewCell *)self setNeedsLayout];
 }
 
-- (void)_setCurrentValue:(id)a3
+- (void)_setCurrentValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = valueCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -65,21 +65,21 @@
   [(UIColorWell *)self->_well setSelectedColor:v8];
 }
 
-- (void)_tapped:(id)a3
+- (void)_tapped:(id)_tapped
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DC8A0]);
   [v4 setDelegate:self];
   [v4 setSupportsAlpha:0];
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [v5 selectedColor];
-  [(PRREColorTableViewCell *)self _setCurrentValue:v4];
+  finishCopy = finish;
+  selectedColor = [finishCopy selectedColor];
+  [(PRREColorTableViewCell *)self _setCurrentValue:selectedColor];
 
   [(PRRETableViewCell *)self _valueChanged:self];
-  [v5 setDelegate:0];
+  [finishCopy setDelegate:0];
 }
 
 @end

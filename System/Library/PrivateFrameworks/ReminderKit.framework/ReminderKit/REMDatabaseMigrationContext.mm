@@ -1,20 +1,20 @@
 @interface REMDatabaseMigrationContext
-- (BOOL)_cleanLocalDatabases:(id *)a3;
-- (BOOL)ensureAccountsExist:(id *)a3;
-- (BOOL)ensureAccountsExist:(id)a3 error:(id *)a4;
-- (BOOL)ensureAccountsExistWithMigrationAccountInfos:(id)a3 error:(id *)a4;
+- (BOOL)_cleanLocalDatabases:(id *)databases;
+- (BOOL)ensureAccountsExist:(id *)exist;
+- (BOOL)ensureAccountsExist:(id)exist error:(id *)error;
+- (BOOL)ensureAccountsExistWithMigrationAccountInfos:(id)infos error:(id *)error;
 - (BOOL)isDatabaseMigrated;
 - (BOOL)shouldDeleteMigratedData;
 - (REMDatabaseMigrationContext)init;
-- (REMDatabaseMigrationContext)initWithSandboxDatabaseEnabled:(BOOL)a3;
-- (id)_migrationAccountInfosFromDEPRECATEDInfoDictionaryList:(id)a3;
+- (REMDatabaseMigrationContext)initWithSandboxDatabaseEnabled:(BOOL)enabled;
+- (id)_migrationAccountInfosFromDEPRECATEDInfoDictionaryList:(id)list;
 - (id)remStore;
-- (void)_diagnosticReportWithStage:(unint64_t)a3 failureIdentifier:(id)a4 error:(id)a5;
+- (void)_diagnosticReportWithStage:(unint64_t)stage failureIdentifier:(id)identifier error:(id)error;
 - (void)_postMigrationLocalAccountCleanup;
 - (void)dealloc;
 - (void)destroySandboxContainerIfNecessary;
-- (void)reportMigrationDidFinishWithSuccess:(BOOL)a3;
-- (void)reportMigrationErrorWithIdentifier:(id)a3 atStage:(unint64_t)a4 error:(id)a5 objectLocator:(id)a6;
+- (void)reportMigrationDidFinishWithSuccess:(BOOL)success;
+- (void)reportMigrationErrorWithIdentifier:(id)identifier atStage:(unint64_t)stage error:(id)error objectLocator:(id)locator;
 - (void)reportMigrationWillBegin;
 @end
 
@@ -23,20 +23,20 @@
 - (REMDatabaseMigrationContext)init
 {
   v3 = +[REMUserDefaults daemonUserDefaults];
-  v4 = [v3 databaseMigrationTestModeEnabled];
+  databaseMigrationTestModeEnabled = [v3 databaseMigrationTestModeEnabled];
 
-  return [(REMDatabaseMigrationContext *)self initWithSandboxDatabaseEnabled:v4];
+  return [(REMDatabaseMigrationContext *)self initWithSandboxDatabaseEnabled:databaseMigrationTestModeEnabled];
 }
 
-- (REMDatabaseMigrationContext)initWithSandboxDatabaseEnabled:(BOOL)a3
+- (REMDatabaseMigrationContext)initWithSandboxDatabaseEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13.receiver = self;
   v13.super_class = REMDatabaseMigrationContext;
   v4 = [(REMDatabaseMigrationContext *)&v13 init];
   if (v4)
   {
-    v5 = !v3;
+    v5 = !enabledCopy;
   }
 
   else
@@ -77,56 +77,56 @@ LABEL_8:
 
 - (BOOL)shouldDeleteMigratedData
 {
-  v2 = [(REMDatabaseMigrationContext *)self containerToken];
-  v3 = v2 == 0;
+  containerToken = [(REMDatabaseMigrationContext *)self containerToken];
+  v3 = containerToken == 0;
 
   return v3;
 }
 
 - (BOOL)isDatabaseMigrated
 {
-  v2 = [(REMDatabaseMigrationContext *)self containerToken];
+  containerToken = [(REMDatabaseMigrationContext *)self containerToken];
 
-  if (v2)
+  if (containerToken)
   {
     v3 = +[REMSystemUtilities systemBuildVersion];
     v4 = +[REMUserDefaults daemonUserDefaults];
-    v5 = [v4 lastDatabaseMigrationSystemBuildVersion];
-    v6 = [v3 isEqual:v5];
+    lastDatabaseMigrationSystemBuildVersion = [v4 lastDatabaseMigrationSystemBuildVersion];
+    isDatabaseMigrated = [v3 isEqual:lastDatabaseMigrationSystemBuildVersion];
   }
 
   else
   {
     v3 = +[REMUserDefaults daemonUserDefaults];
-    v6 = [v3 isDatabaseMigrated];
+    isDatabaseMigrated = [v3 isDatabaseMigrated];
   }
 
-  return v6;
+  return isDatabaseMigrated;
 }
 
 - (id)remStore
 {
-  v3 = [(REMDatabaseMigrationContext *)self cachedStore];
-  if (!v3)
+  cachedStore = [(REMDatabaseMigrationContext *)self cachedStore];
+  if (!cachedStore)
   {
-    v4 = [(REMDatabaseMigrationContext *)self containerToken];
-    if (v4)
+    containerToken = [(REMDatabaseMigrationContext *)self containerToken];
+    if (containerToken)
     {
       v5 = [REMStore alloc];
-      v6 = [(REMDatabaseMigrationContext *)self containerToken];
-      v3 = [(REMStore *)v5 initWithStoreContainerToken:v6];
+      containerToken2 = [(REMDatabaseMigrationContext *)self containerToken];
+      cachedStore = [(REMStore *)v5 initWithStoreContainerToken:containerToken2];
     }
 
     else
     {
-      v3 = objc_alloc_init(REMStore);
+      cachedStore = objc_alloc_init(REMStore);
     }
 
-    [(REMStore *)v3 setMode:1];
-    [(REMDatabaseMigrationContext *)self setCachedStore:v3];
+    [(REMStore *)cachedStore setMode:1];
+    [(REMDatabaseMigrationContext *)self setCachedStore:cachedStore];
   }
 
-  v7 = v3;
+  v7 = cachedStore;
 
   return v7;
 }
@@ -157,40 +157,40 @@ LABEL_8:
   }
 
   AnalyticsSendEvent();
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(REMDatabaseMigrationContext *)self setMigrationStartDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  [(REMDatabaseMigrationContext *)self setMigrationStartDate:date];
 }
 
-- (void)reportMigrationErrorWithIdentifier:(id)a3 atStage:(unint64_t)a4 error:(id)a5 objectLocator:(id)a6
+- (void)reportMigrationErrorWithIdentifier:(id)identifier atStage:(unint64_t)stage error:(id)error objectLocator:(id)locator
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   v11 = +[REMLogStore OVERSIZED];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    v15 = NSStringFromMigrationStage(a4);
-    v16 = [v10 userInfo];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+    v15 = NSStringFromMigrationStage(stage);
+    userInfo = [errorCopy userInfo];
+    v17 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
     *buf = 138544130;
-    v21 = v9;
+    v21 = identifierCopy;
     v22 = 2114;
     v23 = v15;
     v24 = 2114;
-    v25 = v10;
+    v25 = errorCopy;
     v26 = 2112;
     v27 = v17;
     _os_log_error_impl(&dword_19A0DB000, v11, OS_LOG_TYPE_ERROR, "Migration Error {identifier: %{public}@, stage: %{public}@, error: %{public}@, error.debugDescription: %@}", buf, 0x2Au);
   }
 
-  v19 = v10;
-  v18 = v9;
-  v12 = v10;
-  v13 = v9;
+  v19 = errorCopy;
+  v18 = identifierCopy;
+  v12 = errorCopy;
+  v13 = identifierCopy;
   AnalyticsSendEventLazy();
   [(REMDatabaseMigrationContext *)self setLastReportedErrorIdentifier:v13];
   [(REMDatabaseMigrationContext *)self setLastReportedError:v12];
-  [(REMDatabaseMigrationContext *)self setLastReportedErrorStage:a4];
+  [(REMDatabaseMigrationContext *)self setLastReportedErrorStage:stage];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -223,19 +223,19 @@ id __94__REMDatabaseMigrationContext_reportMigrationErrorWithIdentifier_atStage_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportMigrationDidFinishWithSuccess:(BOOL)a3
+- (void)reportMigrationDidFinishWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(REMDatabaseMigrationContext *)self migrationStartDate];
-  [v5 timeIntervalSinceNow];
+  migrationStartDate = [(REMDatabaseMigrationContext *)self migrationStartDate];
+  [migrationStartDate timeIntervalSinceNow];
   v7 = v6;
 
   v8 = +[REMLogStore write];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v22 = v3;
+    v22 = successCopy;
     v23 = 2048;
     v24 = v7;
     _os_log_impl(&dword_19A0DB000, v8, OS_LOG_TYPE_DEFAULT, "Database Migration did finish {success: %d, duration: %.2f}", buf, 0x12u);
@@ -245,15 +245,15 @@ id __94__REMDatabaseMigrationContext_reportMigrationErrorWithIdentifier_atStage_
   v16 = 3221225472;
   v17 = __67__REMDatabaseMigrationContext_reportMigrationDidFinishWithSuccess___block_invoke;
   v18 = &__block_descriptor_41_e19___NSDictionary_8__0l;
-  LOBYTE(v20) = v3;
+  LOBYTE(v20) = successCopy;
   v19 = v7;
   AnalyticsSendEventLazy();
-  if (!v3)
+  if (!successCopy)
   {
     v9 = [(REMDatabaseMigrationContext *)self lastReportedErrorStage:v15];
-    v10 = [(REMDatabaseMigrationContext *)self lastReportedErrorIdentifier];
-    v11 = [(REMDatabaseMigrationContext *)self lastReportedError];
-    [(REMDatabaseMigrationContext *)self _diagnosticReportWithStage:v9 failureIdentifier:v10 error:v11];
+    lastReportedErrorIdentifier = [(REMDatabaseMigrationContext *)self lastReportedErrorIdentifier];
+    lastReportedError = [(REMDatabaseMigrationContext *)self lastReportedError];
+    [(REMDatabaseMigrationContext *)self _diagnosticReportWithStage:v9 failureIdentifier:lastReportedErrorIdentifier error:lastReportedError];
   }
 
   [(REMDatabaseMigrationContext *)self setIsDatabaseMigrated:1, v15, v16, v17, v18, v19, v20];
@@ -282,25 +282,25 @@ id __67__REMDatabaseMigrationContext_reportMigrationDidFinishWithSuccess___block
   return v4;
 }
 
-- (void)_diagnosticReportWithStage:(unint64_t)a3 failureIdentifier:(id)a4 error:(id)a5
+- (void)_diagnosticReportWithStage:(unint64_t)stage failureIdentifier:(id)identifier error:(id)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x1E69D4F80];
-  v9 = a4;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(v8);
-  v11 = NSStringFromMigrationStage(a3);
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 processName];
-  v14 = [v10 signatureWithDomain:@"ReminderKit" type:@"EventKitMigration" subType:v11 subtypeContext:v9 detectedProcess:v13 triggerThresholdValues:0];
+  v11 = NSStringFromMigrationStage(stage);
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v14 = [v10 signatureWithDomain:@"ReminderKit" type:@"EventKitMigration" subType:v11 subtypeContext:identifierCopy detectedProcess:processName triggerThresholdValues:0];
 
-  if (v7)
+  if (errorCopy)
   {
     v19[0] = @"errorDomain";
-    v15 = [v7 domain];
+    domain = [errorCopy domain];
     v19[1] = @"errorCode";
-    v20[0] = v15;
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "code")}];
+    v20[0] = domain;
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     v20[1] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   }
@@ -330,10 +330,10 @@ void __82__REMDatabaseMigrationContext__diagnosticReportWithStage_failureIdentif
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)ensureAccountsExistWithMigrationAccountInfos:(id)a3 error:(id *)a4
+- (BOOL)ensureAccountsExistWithMigrationAccountInfos:(id)infos error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infosCopy = infos;
   if ([(REMDatabaseMigrationContext *)self hasPerformedEnsureAccountsExist])
   {
     v7 = 1;
@@ -354,7 +354,7 @@ LABEL_8:
 
   else
   {
-    [(REMDatabaseMigrationContext *)self _cleanLocalDatabases:a4];
+    [(REMDatabaseMigrationContext *)self _cleanLocalDatabases:error];
     v8 = +[REMLogStore write];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -365,24 +365,24 @@ LABEL_8:
   }
 
   [(REMDatabaseMigrationContext *)self setHasPerformedEnsureAccountsExist:1];
-  if ([v6 count])
+  if ([infosCopy count])
   {
-    v42 = a4;
-    v10 = [(REMDatabaseMigrationContext *)self remStore];
-    v43 = v6;
-    v44 = [[REMSaveRequest alloc] initWithStore:v10];
+    errorCopy = error;
+    remStore = [(REMDatabaseMigrationContext *)self remStore];
+    v43 = infosCopy;
+    v44 = [[REMSaveRequest alloc] initWithStore:remStore];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v11 = v6;
+    v11 = infosCopy;
     v12 = [v11 countByEnumeratingWithState:&v50 objects:v63 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v51;
       v45 = v11;
-      v46 = v10;
+      v46 = remStore;
       do
       {
         v15 = 0;
@@ -395,19 +395,19 @@ LABEL_8:
           }
 
           v16 = *(*(&v50 + 1) + 8 * v15);
-          v17 = [v16 type];
+          type = [v16 type];
           v18 = +[REMLogStore write];
           v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-          if (v17 == 1)
+          if (type == 1)
           {
             if (v19)
             {
-              v20 = [v16 identifier];
-              v21 = [v16 name];
+              identifier = [v16 identifier];
+              name = [v16 name];
               *buf = 138543618;
-              v58 = v20;
+              v58 = identifier;
               v59 = 2112;
-              v60 = v21;
+              v60 = name;
               _os_log_impl(&dword_19A0DB000, v18, OS_LOG_TYPE_INFO, "ensureAccountsExist: Local account is ignored {accountID: %{public}@, name: %@}", buf, 0x16u);
             }
           }
@@ -416,28 +416,28 @@ LABEL_8:
           {
             if (v19)
             {
-              v22 = [v16 identifier];
-              v23 = [v16 name];
-              v24 = [v16 type];
+              identifier2 = [v16 identifier];
+              name2 = [v16 name];
+              type2 = [v16 type];
               *buf = 138543874;
-              v58 = v22;
+              v58 = identifier2;
               v59 = 2112;
-              v60 = v23;
+              v60 = name2;
               v61 = 2048;
-              v62 = v24;
+              v62 = type2;
               _os_log_impl(&dword_19A0DB000, v18, OS_LOG_TYPE_INFO, "ensureAccountsExist: About to add account per request {accountID: %{public}@, name: %@, type: %ld}", buf, 0x20u);
             }
 
-            v25 = [v16 identifier];
+            identifier3 = [v16 identifier];
             v49 = 0;
-            v26 = [v10 fetchAccountWithExternalIdentifier:v25 error:&v49];
+            v26 = [remStore fetchAccountWithExternalIdentifier:identifier3 error:&v49];
             v18 = v49;
 
             if (v26)
             {
-              v27 = v10;
-              v28 = +[REMLogStore write];
-              if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+              v27 = remStore;
+              name3 = +[REMLogStore write];
+              if (os_log_type_enabled(name3, OS_LOG_TYPE_ERROR))
               {
                 [REMDatabaseMigrationContext ensureAccountsExistWithMigrationAccountInfos:v56 error:v16];
               }
@@ -445,19 +445,19 @@ LABEL_8:
 
             else
             {
-              v28 = [v16 name];
+              name3 = [v16 name];
               v29 = objc_alloc(MEMORY[0x1E696AFB0]);
-              v30 = [v16 identifier];
-              v31 = [v29 initWithUUIDString:v30];
+              identifier4 = [v16 identifier];
+              v31 = [v29 initWithUUIDString:identifier4];
 
               if (v31)
               {
                 v32 = [REMAccount objectIDWithUUID:v31];
-                v33 = -[REMSaveRequest __addAccountWithType:name:accountObjectID:](v44, "__addAccountWithType:name:accountObjectID:", [v16 type], v28, v32);
+                v33 = -[REMSaveRequest __addAccountWithType:name:accountObjectID:](v44, "__addAccountWithType:name:accountObjectID:", [v16 type], name3, v32);
                 if ([v16 isCloudKit])
                 {
-                  v34 = +[REMLogStore write];
-                  if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+                  identifier5 = +[REMLogStore write];
+                  if (os_log_type_enabled(identifier5, OS_LOG_TYPE_ERROR))
                   {
                     [REMDatabaseMigrationContext ensureAccountsExistWithMigrationAccountInfos:v54 error:v16];
                   }
@@ -465,8 +465,8 @@ LABEL_8:
 
                 else
                 {
-                  v34 = [v16 identifier];
-                  [v33 setExternalIdentifier:v34];
+                  identifier5 = [v16 identifier];
+                  [v33 setExternalIdentifier:identifier5];
                 }
               }
 
@@ -484,7 +484,7 @@ LABEL_8:
               v11 = v45;
             }
 
-            v10 = v27;
+            remStore = v27;
             v13 = v47;
           }
 
@@ -512,10 +512,10 @@ LABEL_8:
     v7 = v36 == 0;
     if (v36)
     {
-      if (v42)
+      if (errorCopy)
       {
         v38 = v36;
-        *v42 = v37;
+        *errorCopy = v37;
       }
 
       v39 = +[REMLogStore write];
@@ -525,16 +525,16 @@ LABEL_8:
       }
     }
 
-    v6 = v43;
+    infosCopy = v43;
   }
 
   else
   {
-    v10 = +[REMLogStore write];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    remStore = +[REMLogStore write];
+    if (os_log_type_enabled(remStore, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_19A0DB000, v10, OS_LOG_TYPE_DEFAULT, "ensureAccountsExist: There's no input account info. There's nothing we need to do.", buf, 2u);
+      _os_log_impl(&dword_19A0DB000, remStore, OS_LOG_TYPE_DEFAULT, "ensureAccountsExist: There's no input account info. There's nothing we need to do.", buf, 2u);
     }
 
     v7 = 1;
@@ -545,15 +545,15 @@ LABEL_48:
   return v7;
 }
 
-- (BOOL)ensureAccountsExist:(id)a3 error:(id *)a4
+- (BOOL)ensureAccountsExist:(id)exist error:(id *)error
 {
-  v6 = [(REMDatabaseMigrationContext *)self _migrationAccountInfosFromDEPRECATEDInfoDictionaryList:a3];
-  LOBYTE(a4) = [(REMDatabaseMigrationContext *)self ensureAccountsExistWithMigrationAccountInfos:v6 error:a4];
+  v6 = [(REMDatabaseMigrationContext *)self _migrationAccountInfosFromDEPRECATEDInfoDictionaryList:exist];
+  LOBYTE(error) = [(REMDatabaseMigrationContext *)self ensureAccountsExistWithMigrationAccountInfos:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)ensureAccountsExist:(id *)a3
+- (BOOL)ensureAccountsExist:(id *)exist
 {
   v3 = +[REMLogStore write];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -564,16 +564,16 @@ LABEL_48:
   return 0;
 }
 
-- (id)_migrationAccountInfosFromDEPRECATEDInfoDictionaryList:(id)a3
+- (id)_migrationAccountInfosFromDEPRECATEDInfoDictionaryList:(id)list
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v25 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  listCopy = list;
+  v25 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(listCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = listCopy;
   v4 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v4)
   {
@@ -661,20 +661,20 @@ LABEL_12:
   return v25;
 }
 
-- (BOOL)_cleanLocalDatabases:(id *)a3
+- (BOOL)_cleanLocalDatabases:(id *)databases
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = [(REMDatabaseMigrationContext *)self remStore];
+  remStore = [(REMDatabaseMigrationContext *)self remStore];
   v63 = 0;
-  v5 = [v4 fetchAccountsIncludingInactive:1 error:&v63];
+  v5 = [remStore fetchAccountsIncludingInactive:1 error:&v63];
   v6 = v63;
   if (v6)
   {
     v7 = v6;
-    if (a3)
+    if (databases)
     {
       v8 = v6;
-      *a3 = v7;
+      *databases = v7;
     }
 
     v52 = +[REMLogStore write];
@@ -687,7 +687,7 @@ LABEL_12:
     goto LABEL_47;
   }
 
-  v52 = [[REMSaveRequest alloc] initWithStore:v4];
+  v52 = [[REMSaveRequest alloc] initWithStore:remStore];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -701,10 +701,10 @@ LABEL_12:
     goto LABEL_45;
   }
 
-  v43 = a3;
+  databasesCopy = databases;
   v44 = v10 == 0;
   v45 = v5;
-  v46 = v4;
+  v46 = remStore;
   v11 = 0;
   v7 = 0;
   v12 = *v60;
@@ -725,25 +725,25 @@ LABEL_12:
 
       v51 = v16;
       v17 = *(*(&v59 + 1) + 8 * v16);
-      v18 = [v17 accountTypeHost];
-      v19 = v18;
-      if (([v18 isCalDav] & 1) != 0 || objc_msgSend(v18, "isExchange"))
+      accountTypeHost = [v17 accountTypeHost];
+      v19 = accountTypeHost;
+      if (([accountTypeHost isCalDav] & 1) != 0 || objc_msgSend(accountTypeHost, "isExchange"))
       {
-        v20 = [*(v13 + 3368) write];
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        write = [*(v13 + 3368) write];
+        if (os_log_type_enabled(write, OS_LOG_TYPE_ERROR))
         {
-          v33 = [v17 name];
-          v34 = [v17 objectID];
-          v35 = [v17 externalIdentifier];
+          name = [v17 name];
+          objectID = [v17 objectID];
+          externalIdentifier = [v17 externalIdentifier];
           *buf = 138412802;
-          v67 = v33;
+          v67 = name;
           v68 = 2114;
-          v69 = v34;
+          v69 = objectID;
           v70 = 2114;
-          v71 = v35;
-          _os_log_error_impl(&dword_19A0DB000, v20, OS_LOG_TYPE_ERROR, "REMDatabaseMigrationContext found existing CalDAV account locally before migration, deleting store: {name: %@, id: %{public}@, externalIdentifier: %{public}@}", buf, 0x20u);
+          v71 = externalIdentifier;
+          _os_log_error_impl(&dword_19A0DB000, write, OS_LOG_TYPE_ERROR, "REMDatabaseMigrationContext found existing CalDAV account locally before migration, deleting store: {name: %@, id: %{public}@, externalIdentifier: %{public}@}", buf, 0x20u);
 
-          v18 = v19;
+          accountTypeHost = v19;
           v15 = v49;
         }
 
@@ -755,10 +755,10 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      if ([v18 isLocal])
+      if ([accountTypeHost isLocal])
       {
-        v22 = [*(v13 + 3368) write];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        write2 = [*(v13 + 3368) write];
+        if (os_log_type_enabled(write2, OS_LOG_TYPE_ERROR))
         {
           [(REMDatabaseMigrationContext *)v65 _cleanLocalDatabases:v17];
         }
@@ -787,9 +787,9 @@ LABEL_17:
               }
 
               v28 = *(*(&v54 + 1) + 8 * i);
-              v29 = [v28 objectID];
+              objectID2 = [v28 objectID];
               v30 = +[REMList localAccountDefaultListID];
-              v31 = [v29 isEqual:v30];
+              v31 = [objectID2 isEqual:v30];
 
               if ((v31 & 1) == 0)
               {
@@ -800,7 +800,7 @@ LABEL_17:
               }
             }
 
-            v18 = v19;
+            accountTypeHost = v19;
             v25 = [v21 countByEnumeratingWithState:&v54 objects:v64 count:16];
           }
 
@@ -829,11 +829,11 @@ LABEL_18:
 
   if (v11)
   {
-    v37 = [*(v13 + 3368) write];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
+    write3 = [*(v13 + 3368) write];
+    if (os_log_type_enabled(write3, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_19A0DB000, v37, OS_LOG_TYPE_INFO, "_cleanLocalDatabases saving changes", buf, 2u);
+      _os_log_impl(&dword_19A0DB000, write3, OS_LOG_TYPE_INFO, "_cleanLocalDatabases saving changes", buf, 2u);
     }
 
     v53 = v7;
@@ -841,7 +841,7 @@ LABEL_18:
     v39 = v53;
 
     v5 = v45;
-    v4 = v46;
+    remStore = v46;
     v9 = v44;
     if (v38)
     {
@@ -849,10 +849,10 @@ LABEL_18:
       goto LABEL_46;
     }
 
-    if (v43)
+    if (databasesCopy)
     {
       v40 = v39;
-      *v43 = v39;
+      *databasesCopy = v39;
     }
 
     obj = +[REMLogStore write];
@@ -871,7 +871,7 @@ LABEL_46:
   {
     v9 = 1;
     v5 = v45;
-    v4 = v46;
+    remStore = v46;
   }
 
 LABEL_47:

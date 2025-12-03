@@ -2,31 +2,31 @@
 - (ICViewControllerManager)viewControllerManager;
 - (ICWindowSceneDelegate)init;
 - (id)archiveForLaunchingPPT;
-- (id)archiveForUserActivities:(id)a3 isSourceApplicationExternal:(BOOL)a4 lastSavedArchive:(id)a5;
+- (id)archiveForUserActivities:(id)activities isSourceApplicationExternal:(BOOL)external lastSavedArchive:(id)archive;
 - (id)nextResponder;
-- (id)stateRestorationActivityForScene:(id)a3;
+- (id)stateRestorationActivityForScene:(id)scene;
 - (void)dealloc;
-- (void)handleAcceptingCloudKitShareWithMetadata:(id)a3 withWindowScene:(id)a4;
+- (void)handleAcceptingCloudKitShareWithMetadata:(id)metadata withWindowScene:(id)scene;
 - (void)handleLaunchingQuickNoteUnlocked;
-- (void)handleOpeningURLContexts:(id)a3 withScene:(id)a4;
-- (void)handleRecordingUserActivity:(id)a3;
+- (void)handleOpeningURLContexts:(id)contexts withScene:(id)scene;
+- (void)handleRecordingUserActivity:(id)activity;
 - (void)makeKeyWindowWhenTransitioningFromCoverSheet;
 - (void)performPPTForegroundLaunchTasksIfNecessary;
-- (void)reportReferralDataFromSceneConnectionOptions:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)reportReferralDataFromSceneConnectionOptions:(id)options;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 - (void)setUpAppStoreRatingObserverIfNecessary;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata;
 @end
 
 @implementation ICWindowSceneDelegate
@@ -74,9 +74,9 @@
   }
 
   v3 = +[ICAppDelegate sharedInstance];
-  v4 = [v3 isRunningPPT];
+  isRunningPPT = [v3 isRunningPPT];
 
-  if ((v4 & 1) == 0)
+  if ((isRunningPPT & 1) == 0)
   {
     [ICAssert handleFailedAssertWithCondition:"ICAppDelegate.sharedInstance.isRunningPPT" functionName:"[ICWindowSceneDelegate archiveForLaunchingPPT]" simulateCrash:1 showAlert:0 format:@"should only call this for launching in PPT"];
   }
@@ -130,38 +130,38 @@ LABEL_17:
   [(ICWindowStateArchive *)v13 setIsPrimaryContentVisible:v12];
   [(ICWindowStateArchive *)v13 setIsSupplementaryContentVisible:v9];
   v14 = +[ICNoteContext sharedContext];
-  v15 = [v14 managedObjectContext];
-  v16 = [ICAccount localAccountInContext:v15];
+  managedObjectContext = [v14 managedObjectContext];
+  v16 = [ICAccount localAccountInContext:managedObjectContext];
 
   if (v16 && (!v12 || +[UIDevice ic_isiPad]))
   {
-    v17 = [v16 objectID];
-    v18 = [v17 URIRepresentation];
-    v32 = v18;
+    objectID = [v16 objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    v32 = uRIRepresentation;
     v19 = [NSArray arrayWithObjects:&v32 count:1];
     [(ICWindowStateArchive *)v13 setCurrentContainerObjectIDURLs:v19];
 
-    v20 = [v16 objectID];
-    v21 = [v20 URIRepresentation];
-    [(ICWindowStateArchive *)v13 setCurrentObjectIDURL:v21];
+    objectID2 = [v16 objectID];
+    uRIRepresentation2 = [objectID2 URIRepresentation];
+    [(ICWindowStateArchive *)v13 setCurrentObjectIDURL:uRIRepresentation2];
   }
 
   if ((v11 & 1) == 0)
   {
     v22 = +[ICApplicationTestingHelper sharedHelper];
-    v23 = [v22 testNoteIdentifier];
+    testNoteIdentifier = [v22 testNoteIdentifier];
 
     v24 = +[ICNoteContext sharedContext];
-    v25 = [v24 managedObjectContext];
-    v26 = [ICNote noteWithIdentifier:v23 includeDeleted:0 context:v25];
+    managedObjectContext2 = [v24 managedObjectContext];
+    v26 = [ICNote noteWithIdentifier:testNoteIdentifier includeDeleted:0 context:managedObjectContext2];
 
-    v27 = [v26 objectID];
-    v28 = [v27 URIRepresentation];
-    [(ICWindowStateArchive *)v13 setCurrentNoteObjectIDURL:v28];
+    objectID3 = [v26 objectID];
+    uRIRepresentation3 = [objectID3 URIRepresentation];
+    [(ICWindowStateArchive *)v13 setCurrentNoteObjectIDURL:uRIRepresentation3];
 
-    v29 = [v26 objectID];
-    v30 = [v29 URIRepresentation];
-    [(ICWindowStateArchive *)v13 setCurrentObjectIDURL:v30];
+    objectID4 = [v26 objectID];
+    uRIRepresentation4 = [objectID4 URIRepresentation];
+    [(ICWindowStateArchive *)v13 setCurrentObjectIDURL:uRIRepresentation4];
 
     [(ICWindowStateArchive *)v13 setIsPrimaryContentVisible:0];
     [(ICWindowStateArchive *)v13 setIsSupplementaryContentVisible:0];
@@ -172,13 +172,13 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v3 = [(ICWindowSceneDelegate *)self sceneDidDisconnectNotificationToken];
+  sceneDidDisconnectNotificationToken = [(ICWindowSceneDelegate *)self sceneDidDisconnectNotificationToken];
 
-  if (v3)
+  if (sceneDidDisconnectNotificationToken)
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(ICWindowSceneDelegate *)self sceneDidDisconnectNotificationToken];
-    [v4 removeObserver:v5];
+    sceneDidDisconnectNotificationToken2 = [(ICWindowSceneDelegate *)self sceneDidDisconnectNotificationToken];
+    [v4 removeObserver:sceneDidDisconnectNotificationToken2];
   }
 
   v6.receiver = self;
@@ -188,25 +188,25 @@ LABEL_17:
 
 - (ICViewControllerManager)viewControllerManager
 {
-  v2 = [(ICWindowSceneDelegate *)self icWindow];
-  v3 = [v2 viewControllerManager];
+  icWindow = [(ICWindowSceneDelegate *)self icWindow];
+  viewControllerManager = [icWindow viewControllerManager];
 
-  return v3;
+  return viewControllerManager;
 }
 
 - (id)nextResponder
 {
-  v2 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  v3 = [v2 keyboardHandler];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  keyboardHandler = [viewControllerManager keyboardHandler];
 
-  return v3;
+  return keyboardHandler;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v10 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,39 +217,39 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  v11 = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
-  v12 = [v8 stateRestorationActivity];
-  v13 = [v8 persistentIdentifier];
-  [v11 ic_setNonNilObject:v12 forNonNilKey:v13];
+  sessionIdentifierToStateRestorationActivity = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
+  stateRestorationActivity = [sessionCopy stateRestorationActivity];
+  persistentIdentifier = [sessionCopy persistentIdentifier];
+  [sessionIdentifierToStateRestorationActivity ic_setNonNilObject:stateRestorationActivity forNonNilKey:persistentIdentifier];
 
   v77 = @"ICSessionSceneHasBecomeForegroundKey";
   v78 = &__kCFBooleanFalse;
   v14 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-  [v8 setUserInfo:v14];
+  [sessionCopy setUserInfo:v14];
 
   objc_opt_class();
   v15 = ICDynamicCast();
-  v16 = [v15 screen];
-  v17 = [v16 displayIdentity];
-  v18 = [v17 expectsSecureRendering];
+  screen = [v15 screen];
+  displayIdentity = [screen displayIdentity];
+  expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
-  if (v18)
+  if (expectsSecureRendering)
   {
     [ICAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[ICWindowSceneDelegate scene:willConnectToSession:options:]" simulateCrash:1 showAlert:0 format:@"Trying to show secure screen with non-secure window scene delegate"];
     goto LABEL_42;
   }
 
-  v61 = v7;
+  v61 = sceneCopy;
   v62 = v15;
-  v63 = v9;
-  v64 = v8;
+  v63 = optionsCopy;
+  v64 = sessionCopy;
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v19 = [v9 userActivities];
-  v20 = [v19 countByEnumeratingWithState:&v72 objects:v76 count:16];
-  v21 = self;
+  userActivities = [optionsCopy userActivities];
+  v20 = [userActivities countByEnumeratingWithState:&v72 objects:v76 count:16];
+  selfCopy3 = self;
   if (v20)
   {
     v22 = v20;
@@ -260,56 +260,56 @@ LABEL_17:
       {
         if (*v73 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(userActivities);
         }
 
         v25 = *(*(&v72 + 1) + 8 * i);
-        v26 = [v25 activityType];
-        if ([v26 isEqual:@"TUUserActivityCreateCallRecording"])
+        activityType = [v25 activityType];
+        if ([activityType isEqual:@"TUUserActivityCreateCallRecording"])
         {
         }
 
         else
         {
-          v27 = [v25 activityType];
-          v28 = [v27 isEqual:@"TUUserActivityFinishedCallRecording"];
+          activityType2 = [v25 activityType];
+          v28 = [activityType2 isEqual:@"TUUserActivityFinishedCallRecording"];
 
-          v21 = self;
+          selfCopy3 = self;
           if (!v28)
           {
             continue;
           }
         }
 
-        [(ICWindowSceneDelegate *)v21 handleRecordingUserActivity:v25];
+        [(ICWindowSceneDelegate *)selfCopy3 handleRecordingUserActivity:v25];
       }
 
-      v22 = [v19 countByEnumeratingWithState:&v72 objects:v76 count:16];
+      v22 = [userActivities countByEnumeratingWithState:&v72 objects:v76 count:16];
     }
 
     while (v22);
   }
 
   v29 = +[ICAppDelegate sharedInstance];
-  v30 = [v29 isRunningPPT];
+  isRunningPPT = [v29 isRunningPPT];
 
-  if ((v30 & 1) == 0)
+  if ((isRunningPPT & 1) == 0)
   {
     v31 = +[NSProcessInfo processInfo];
-    v32 = [v31 arguments];
-    v33 = [v32 indexOfObjectPassingTest:&stru_1006481A8];
+    arguments = [v31 arguments];
+    v33 = [arguments indexOfObjectPassingTest:&stru_1006481A8];
 
     v34 = v33 == 0x7FFFFFFFFFFFFFFFLL;
-    v21 = self;
+    selfCopy3 = self;
     if (v34)
     {
       v35 = v63;
-      v36 = [v63 sourceApplication];
+      sourceApplication = [v63 sourceApplication];
 
       v37 = v64;
-      v38 = [v64 stateRestorationActivity];
-      v39 = [v38 userInfo];
-      v40 = [v39 objectForKeyedSubscript:@"ICCanvasStateArchiveKey"];
+      stateRestorationActivity2 = [v64 stateRestorationActivity];
+      userInfo = [stateRestorationActivity2 userInfo];
+      v40 = [userInfo objectForKeyedSubscript:@"ICCanvasStateArchiveKey"];
 
       if (v40)
       {
@@ -321,60 +321,60 @@ LABEL_17:
         v41 = 0;
       }
 
-      v46 = [v63 userActivities];
-      v42 = [(ICWindowSceneDelegate *)self archiveForUserActivities:v46 isSourceApplicationExternal:v36 != 0 lastSavedArchive:v41];
+      userActivities2 = [v63 userActivities];
+      archiveForLaunchingPPT = [(ICWindowSceneDelegate *)self archiveForUserActivities:userActivities2 isSourceApplicationExternal:sourceApplication != 0 lastSavedArchive:v41];
 
       v43 = 1;
-      if (v42)
+      if (archiveForLaunchingPPT)
       {
         goto LABEL_22;
       }
 
 LABEL_25:
-      v42 = +[ICWindowStateArchive windowStateArchiveWithDefaultState];
+      archiveForLaunchingPPT = +[ICWindowStateArchive windowStateArchiveWithDefaultState];
       goto LABEL_26;
     }
   }
 
-  v42 = [(ICWindowSceneDelegate *)v21 archiveForLaunchingPPT];
+  archiveForLaunchingPPT = [(ICWindowSceneDelegate *)selfCopy3 archiveForLaunchingPPT];
   v43 = 0;
   v35 = v63;
   v37 = v64;
-  if (!v42)
+  if (!archiveForLaunchingPPT)
   {
     goto LABEL_25;
   }
 
 LABEL_22:
   v44 = +[ICExpansionState sharedExpansionState];
-  v45 = [v42 expansionState];
-  [v44 applyArchiveDictionary:v45];
+  expansionState = [archiveForLaunchingPPT expansionState];
+  [v44 applyArchiveDictionary:expansionState];
 
 LABEL_26:
-  v7 = v61;
-  v47 = [v37 configuration];
-  v48 = [v47 name];
-  v49 = [v48 isEqualToString:off_1006BAAF0];
+  sceneCopy = v61;
+  configuration = [v37 configuration];
+  name = [configuration name];
+  v49 = [name isEqualToString:off_1006BAAF0];
 
   if (v49)
   {
-    [v42 setIsAuxiliaryWindow:1];
+    [archiveForLaunchingPPT setIsAuxiliaryWindow:1];
   }
 
-  if ([v42 isAuxiliaryWindow])
+  if ([archiveForLaunchingPPT isAuxiliaryWindow])
   {
     v50 = [NSPredicate predicateWithValue:0];
-    v51 = [v62 activationConditions];
-    [v51 setCanActivateForTargetContentIdentifierPredicate:v50];
+    activationConditions = [v62 activationConditions];
+    [activationConditions setCanActivateForTargetContentIdentifierPredicate:v50];
   }
 
   if (+[UIDevice ic_isVision])
   {
-    v52 = [v62 sizeRestrictions];
-    [v52 setMinimumSize:{488.0, 488.0}];
+    sizeRestrictions = [v62 sizeRestrictions];
+    [sizeRestrictions setMinimumSize:{488.0, 488.0}];
 
-    v53 = [v62 sizeRestrictions];
-    [v53 setMaximumSize:{1600.0, 900.0}];
+    sizeRestrictions2 = [v62 sizeRestrictions];
+    [sizeRestrictions2 setMaximumSize:{1600.0, 900.0}];
   }
 
   if ((+[UIDevice ic_isVision]& 1) != 0)
@@ -384,7 +384,7 @@ LABEL_26:
 
   else if (sub_10000D07C())
   {
-    [v42 setHostApplicationIdentifier:ICNoteMathNotesHostApplicationIdentifier];
+    [archiveForLaunchingPPT setHostApplicationIdentifier:ICNoteMathNotesHostApplicationIdentifier];
     v54 = 1;
   }
 
@@ -403,11 +403,11 @@ LABEL_26:
   v15 = v62;
   v58 = v57;
   v68 = v57;
-  v69 = self;
+  selfCopy4 = self;
   v70 = v62;
   v59 = v56;
   v71 = v59;
-  [(ICViewControllerManager *)v59 setupWithWindow:v55 stateRestoreArchive:v42 completion:v67];
+  [(ICViewControllerManager *)v59 setupWithWindow:v55 stateRestoreArchive:archiveForLaunchingPPT completion:v67];
   [v55 setViewControllerManager:v59];
   [v55 makeKeyAndVisible];
   if ((v43 & +[ICUtilities showInternalInstallUI]) == 1)
@@ -417,7 +417,7 @@ LABEL_26:
 
   [(ICWindowSceneDelegate *)self setIcWindow:v55];
   [(ICWindowSceneDelegate *)self reportReferralDataFromSceneConnectionOptions:v58];
-  if (([v42 isAuxiliaryWindow] & 1) == 0)
+  if (([archiveForLaunchingPPT isAuxiliaryWindow] & 1) == 0)
   {
     v60 = +[ICAppDelegate sharedInstance];
     v66[0] = _NSConcreteStackBlock;
@@ -428,14 +428,14 @@ LABEL_26:
     [v60 waitForDelayedLaunchWithCompletionHandler:v66];
   }
 
-  v9 = v63;
-  v8 = v64;
+  optionsCopy = v63;
+  sessionCopy = v64;
 LABEL_42:
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   objc_opt_class();
   v4 = ICDynamicCast();
   v5 = +[ICNAController sharedController];
@@ -450,13 +450,13 @@ LABEL_42:
   v14 = @"ICSessionSceneHasBecomeForegroundKey";
   v15 = &__kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1, v9, v10, v11, v12];
-  v8 = [v3 session];
+  session = [foregroundCopy session];
 
-  [v8 setUserInfo:v7];
+  [session setUserInfo:v7];
   [UIApp setApplicationIconBadgeNumber:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v3 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -469,11 +469,11 @@ LABEL_42:
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  [v5 updateSceneTitle:v4];
+  activeCopy = active;
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  [viewControllerManager updateSceneTitle:activeCopy];
 
   v6 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -486,9 +486,9 @@ LABEL_42:
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -510,14 +510,14 @@ LABEL_42:
 
   v9 = +[UIApplication sharedApplication];
   v10 = [v9 beginBackgroundTaskWithName:@"Save Note When Backgrounding" expirationHandler:&stru_1006481C8];
-  v11 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  v12 = [v11 noteEditorViewController];
-  [v12 saveNote];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  noteEditorViewController = [viewControllerManager noteEditorViewController];
+  [noteEditorViewController saveNote];
 
   [v9 endBackgroundTask:v10];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -529,29 +529,29 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s:%d", &v16, 0x12u);
   }
 
-  v5 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  v6 = [v5 noteEditorViewController];
-  v7 = [v6 note];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  noteEditorViewController = [viewControllerManager noteEditorViewController];
+  note = [noteEditorViewController note];
 
-  if (v7)
+  if (note)
   {
     v8 = +[ICAudioController sharedAudioController];
-    v9 = [v8 currentAttachment];
-    v10 = [v9 note];
+    currentAttachment = [v8 currentAttachment];
+    note2 = [currentAttachment note];
 
-    if (v7 == v10)
+    if (note == note2)
     {
       v11 = +[ICAudioController sharedAudioController];
       [v11 stop];
     }
 
-    v12 = [(ICWindowSceneDelegate *)self viewControllerManager];
-    if ([v12 isAuxiliary])
+    viewControllerManager2 = [(ICWindowSceneDelegate *)self viewControllerManager];
+    if ([viewControllerManager2 isAuxiliary])
     {
       v13 = +[ICAudioRecordingManager currentAttachment];
-      v14 = [v13 note];
+      note3 = [v13 note];
 
-      if (v7 == v14)
+      if (note == note3)
       {
         [ICAudioRecordingManager cancelCurrentAudioRecordingSessionWithCompletionHandler:&stru_1006481E8];
       }
@@ -562,23 +562,23 @@ LABEL_42:
     }
   }
 
-  v15 = [(ICWindowSceneDelegate *)self appStoreRatingObserver];
-  [v15 stopObserving];
+  appStoreRatingObserver = [(ICWindowSceneDelegate *)self appStoreRatingObserver];
+  [appStoreRatingObserver stopObserving];
 
   [(ICWindowSceneDelegate *)self setAppStoreRatingObserver:0];
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = +[ICNAWindowSceneReportingManager sharedManager];
-  [v7 windowSceneMayBeResized:v6];
+  [v7 windowSceneMayBeResized:sceneCopy];
 }
 
-- (void)windowScene:(id)a3 userDidAcceptCloudKitShareWithMetadata:(id)a4
+- (void)windowScene:(id)scene userDidAcceptCloudKitShareWithMetadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
+  metadataCopy = metadata;
+  sceneCopy = scene;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -589,12 +589,12 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s:%d", &v9, 0x12u);
   }
 
-  [(ICWindowSceneDelegate *)self handleAcceptingCloudKitShareWithMetadata:v6 withWindowScene:v7];
+  [(ICWindowSceneDelegate *)self handleAcceptingCloudKitShareWithMetadata:metadataCopy withWindowScene:sceneCopy];
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -605,45 +605,45 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  v6 = [v4 session];
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"ICSessionSceneHasBecomeForegroundKey"];
-  v9 = [v8 BOOLValue];
+  session = [sceneCopy session];
+  userInfo = [session userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"ICSessionSceneHasBecomeForegroundKey"];
+  bOOLValue = [v8 BOOLValue];
 
-  if ((v9 & 1) != 0 || (-[ICWindowSceneDelegate sessionIdentifierToStateRestorationActivity](self, "sessionIdentifierToStateRestorationActivity"), v10 = objc_claimAutoreleasedReturnValue(), [v4 session], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "persistentIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v12), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v10, !v13))
+  if ((bOOLValue & 1) != 0 || (-[ICWindowSceneDelegate sessionIdentifierToStateRestorationActivity](self, "sessionIdentifierToStateRestorationActivity"), v10 = objc_claimAutoreleasedReturnValue(), [sceneCopy session], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "persistentIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v12), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v10, !v13))
   {
     v18 = [[NSUserActivity alloc] initWithActivityType:@"ICCanvasStateActivityType"];
-    v19 = [(ICWindowSceneDelegate *)self icWindow];
-    v20 = [v19 viewControllerManager];
-    v15 = [v20 windowStateArchive];
+    icWindow = [(ICWindowSceneDelegate *)self icWindow];
+    viewControllerManager = [icWindow viewControllerManager];
+    windowStateArchive = [viewControllerManager windowStateArchive];
 
     v29 = @"ICCanvasStateArchiveKey";
-    v21 = [v15 dictionaryRepresentation];
-    v30 = v21;
+    dictionaryRepresentation = [windowStateArchive dictionaryRepresentation];
+    v30 = dictionaryRepresentation;
     v22 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     [v18 setUserInfo:v22];
 
-    if (!v15)
+    if (!windowStateArchive)
     {
       [ICAssert handleFailedAssertWithCondition:"((archive) != nil)" functionName:"[ICWindowSceneDelegate stateRestorationActivityForScene:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "archive"];
     }
 
-    if (ICInternalSettingsIsSelectionStateTrackingEnabled() && ([v15 selectionState], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (ICInternalSettingsIsSelectionStateTrackingEnabled() && ([windowStateArchive selectionState], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v24 = [v15 currentNoteObjectIDURL];
+      currentNoteObjectIDURL = [windowStateArchive currentNoteObjectIDURL];
 
-      if (!v24)
+      if (!currentNoteObjectIDURL)
       {
         goto LABEL_16;
       }
     }
 
-    v16 = +[ICAppDelegate sharedInstance];
-    [v16 saveLastBackgroundedArchiveState:v15];
+    session2 = +[ICAppDelegate sharedInstance];
+    [session2 saveLastBackgroundedArchiveState:windowStateArchive];
   }
 
   else
@@ -654,29 +654,29 @@ LABEL_42:
       sub_1004DCC58();
     }
 
-    v15 = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
-    v16 = [v4 session];
-    v17 = [v16 persistentIdentifier];
-    v18 = [v15 objectForKeyedSubscript:v17];
+    windowStateArchive = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
+    session2 = [sceneCopy session];
+    persistentIdentifier = [session2 persistentIdentifier];
+    v18 = [windowStateArchive objectForKeyedSubscript:persistentIdentifier];
   }
 
 LABEL_16:
-  v25 = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
-  v26 = [v4 session];
-  v27 = [v26 persistentIdentifier];
-  [v25 ic_setNonNilObject:v18 forNonNilKey:v27];
+  sessionIdentifierToStateRestorationActivity = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
+  session3 = [sceneCopy session];
+  persistentIdentifier2 = [session3 persistentIdentifier];
+  [sessionIdentifierToStateRestorationActivity ic_setNonNilObject:v18 forNonNilKey:persistentIdentifier2];
 
   return v18;
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v4 = a4;
+  typeCopy = type;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412802;
-    v7 = v4;
+    v7 = typeCopy;
     v8 = 2080;
     v9 = "[ICWindowSceneDelegate scene:willContinueUserActivityWithType:]";
     v10 = 1024;
@@ -685,18 +685,18 @@ LABEL_16:
   }
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  typeCopy = type;
+  errorCopy = error;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v17 = v6;
+    v17 = typeCopy;
     v18 = 2112;
     v20 = 2080;
-    v19 = v7;
+    v19 = errorCopy;
     v21 = "[ICWindowSceneDelegate scene:didFailToContinueUserActivityWithType:error:]";
     v22 = 1024;
     v23 = 351;
@@ -704,15 +704,15 @@ LABEL_16:
   }
 
   v9 = +[ICAppDelegate sharedInstance];
-  v10 = [v9 analyticsController];
-  v11 = [NSString stringWithFormat:@"%@/%@", ICNAInbountURLComponentUserActivity, v6];
-  v12 = [NSURL URLWithString:v11];
-  [v10 startSessionWithReferralURL:v12 referralApplication:0];
+  analyticsController = [v9 analyticsController];
+  typeCopy = [NSString stringWithFormat:@"%@/%@", ICNAInbountURLComponentUserActivity, typeCopy];
+  v12 = [NSURL URLWithString:typeCopy];
+  [analyticsController startSessionWithReferralURL:v12 referralApplication:0];
 
   v13 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_1004DCC8C(v7, v13);
+    sub_1004DCC8C(errorCopy, v13);
   }
 
   v14 = +[ICHandoffController sharedController];
@@ -722,16 +722,16 @@ LABEL_16:
   [v15 setOutputStream:0];
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
+  activityCopy = activity;
+  sceneCopy = scene;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 activityType];
+    activityType = [activityCopy activityType];
     v23 = 138412802;
-    v24 = v9;
+    v24 = activityType;
     v25 = 2080;
     v26 = "[ICWindowSceneDelegate scene:continueUserActivity:]";
     v27 = 1024;
@@ -739,15 +739,15 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "type == %@%s:%d", &v23, 0x1Cu);
   }
 
-  v10 = [v6 activityType];
-  if ([v10 isEqual:@"TUUserActivityCreateCallRecording"])
+  activityType2 = [activityCopy activityType];
+  if ([activityType2 isEqual:@"TUUserActivityCreateCallRecording"])
   {
   }
 
   else
   {
-    v11 = [v6 activityType];
-    v12 = [v11 isEqual:@"TUUserActivityFinishedCallRecording"];
+    activityType3 = [activityCopy activityType];
+    v12 = [activityType3 isEqual:@"TUUserActivityFinishedCallRecording"];
 
     if (!v12)
     {
@@ -755,15 +755,15 @@ LABEL_16:
     }
   }
 
-  [(ICWindowSceneDelegate *)self handleRecordingUserActivity:v6];
+  [(ICWindowSceneDelegate *)self handleRecordingUserActivity:activityCopy];
 LABEL_7:
-  v13 = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
-  v14 = [v7 session];
+  sessionIdentifierToStateRestorationActivity = [(ICWindowSceneDelegate *)self sessionIdentifierToStateRestorationActivity];
+  session = [sceneCopy session];
 
-  v15 = [v14 persistentIdentifier];
-  v16 = [v13 objectForKeyedSubscript:v15];
-  v17 = [v16 userInfo];
-  v18 = [v17 objectForKeyedSubscript:@"ICCanvasStateArchiveKey"];
+  persistentIdentifier = [session persistentIdentifier];
+  v16 = [sessionIdentifierToStateRestorationActivity objectForKeyedSubscript:persistentIdentifier];
+  userInfo = [v16 userInfo];
+  v18 = [userInfo objectForKeyedSubscript:@"ICCanvasStateArchiveKey"];
 
   if (v18)
   {
@@ -775,17 +775,17 @@ LABEL_7:
     v19 = 0;
   }
 
-  v20 = [NSSet setWithObject:v6];
+  v20 = [NSSet setWithObject:activityCopy];
   v21 = [(ICWindowSceneDelegate *)self archiveForUserActivities:v20 isSourceApplicationExternal:1 lastSavedArchive:v19];
 
-  v22 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  [v22 applyStateRestoreArchive:v21 completion:0];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  [viewControllerManager applyStateRestoreArchive:v21 completion:0];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v6 = a4;
-  v7 = a3;
+  contextsCopy = contexts;
+  sceneCopy = scene;
   v8 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -796,19 +796,19 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s:%d", &v9, 0x12u);
   }
 
-  [(ICWindowSceneDelegate *)self handleOpeningURLContexts:v6 withScene:v7];
+  [(ICWindowSceneDelegate *)self handleOpeningURLContexts:contextsCopy withScene:sceneCopy];
 }
 
-- (void)handleOpeningURLContexts:(id)a3 withScene:(id)a4
+- (void)handleOpeningURLContexts:(id)contexts withScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  contextsCopy = contexts;
+  sceneCopy = scene;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  obj = contextsCopy;
+  v8 = [contextsCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v10 = v8;
@@ -827,8 +827,8 @@ LABEL_7:
 
         v13 = [*(*(&v25 + 1) + 8 * v12) URL];
         v14 = +[ICAppDelegate sharedInstance];
-        v15 = [v14 analyticsController];
-        [v15 startSessionWithReferralURL:v13 referralApplication:0];
+        analyticsController = [v14 analyticsController];
+        [analyticsController startSessionWithReferralURL:v13 referralApplication:0];
 
         v16 = os_log_create("com.apple.notes", "UI");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -845,15 +845,15 @@ LABEL_7:
         v20 = v19;
         if (!v17 || (v18 & 1) != 0)
         {
-          v21 = [(ICWindowSceneDelegate *)self viewControllerManager];
-          [v21 openURL:v13];
+          viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+          [viewControllerManager openURL:v13];
 LABEL_14:
 
           goto LABEL_15;
         }
 
-        v21 = [v19 screen];
-        if ([v21 ic_isSecure])
+        viewControllerManager = [v19 screen];
+        if ([viewControllerManager ic_isSecure])
         {
           goto LABEL_14;
         }
@@ -880,18 +880,18 @@ LABEL_15:
 
 - (void)handleLaunchingQuickNoteUnlocked
 {
-  v3 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  v4 = [v3 mainSplitViewController];
-  v5 = [v4 presentedViewController];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  mainSplitViewController = [viewControllerManager mainSplitViewController];
+  presentedViewController = [mainSplitViewController presentedViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICWindowSceneDelegate *)self viewControllerManager];
-    v8 = [v7 mainSplitViewController];
-    v9 = [v8 presentedViewController];
+    viewControllerManager2 = [(ICWindowSceneDelegate *)self viewControllerManager];
+    mainSplitViewController2 = [viewControllerManager2 mainSplitViewController];
+    presentedViewController2 = [mainSplitViewController2 presentedViewController];
 
-    [v9 prepareForDismissal];
+    [presentedViewController2 prepareForDismissal];
   }
 
   v10 = +[ICQuickNoteSessionSettings showOnLockScreen];
@@ -912,25 +912,25 @@ LABEL_15:
   {
     [v12 lastBackgroundedArchiveState];
   }
-  v16 = ;
+  viewControllerManager4 = ;
 
-  if (v16)
+  if (viewControllerManager4)
   {
-    v14 = [(ICWindowSceneDelegate *)self viewControllerManager];
-    [v14 applyStateRestoreArchive:v16 completion:0];
+    viewControllerManager3 = [(ICWindowSceneDelegate *)self viewControllerManager];
+    [viewControllerManager3 applyStateRestoreArchive:viewControllerManager4 completion:0];
   }
 
   else
   {
 LABEL_10:
-    v16 = [(ICWindowSceneDelegate *)self viewControllerManager];
-    v15 = [v16 showNewNoteWithApproach:12 sender:self animated:1];
+    viewControllerManager4 = [(ICWindowSceneDelegate *)self viewControllerManager];
+    v15 = [viewControllerManager4 showNewNoteWithApproach:12 sender:self animated:1];
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
+  itemCopy = item;
   v7 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -942,15 +942,15 @@ LABEL_10:
   }
 
   v8 = +[ICAppDelegate sharedInstance];
-  v9 = [v8 analyticsController];
+  analyticsController = [v8 analyticsController];
   v10 = ICNAInbountURLComponentShortcutItem;
-  v11 = [v6 type];
-  v12 = [NSString stringWithFormat:@"%@/%@", v10, v11];
+  type = [itemCopy type];
+  v12 = [NSString stringWithFormat:@"%@/%@", v10, type];
   v13 = [NSURL URLWithString:v12];
-  [v9 startSessionWithReferralURL:v13 referralApplication:0];
+  [analyticsController startSessionWithReferralURL:v13 referralApplication:0];
 
-  v14 = [(ICWindowSceneDelegate *)self viewControllerManager];
-  [v14 performActionForShortcutItem:v6];
+  viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+  [viewControllerManager performActionForShortcutItem:itemCopy];
 }
 
 - (void)performPPTForegroundLaunchTasksIfNecessary
@@ -968,9 +968,9 @@ LABEL_10:
   }
 
   v4 = +[ICAppDelegate sharedInstance];
-  v5 = [v4 isRunningPPT];
+  isRunningPPT = [v4 isRunningPPT];
 
-  if (!v5)
+  if (!isRunningPPT)
   {
     v12 = 0;
 LABEL_18:
@@ -1022,17 +1022,17 @@ LABEL_17:
   v13 = 1;
 LABEL_19:
   v14 = +[ICApplicationTestingHelper sharedHelper];
-  v15 = [v14 testNoteIdentifier];
+  testNoteIdentifier = [v14 testNoteIdentifier];
 
   if (v13)
   {
-    v16 = [(ICWindowSceneDelegate *)self viewControllerManager];
-    [v16 showAccountListAnimated:0];
+    viewControllerManager = [(ICWindowSceneDelegate *)self viewControllerManager];
+    [viewControllerManager showAccountListAnimated:0];
   }
 
   else
   {
-    if (v15)
+    if (testNoteIdentifier)
     {
       v17 = v12;
     }
@@ -1042,35 +1042,35 @@ LABEL_19:
       v17 = 0;
     }
 
-    if (v17 == 1 && [v15 length])
+    if (v17 == 1 && [testNoteIdentifier length])
     {
       v18 = +[ICNoteContext sharedContext];
-      v19 = [v18 managedObjectContext];
-      v16 = [ICNote noteWithIdentifier:v15 includeDeleted:0 context:v19];
+      managedObjectContext = [v18 managedObjectContext];
+      viewControllerManager = [ICNote noteWithIdentifier:testNoteIdentifier includeDeleted:0 context:managedObjectContext];
 
-      v20 = [(ICWindowSceneDelegate *)self viewControllerManager];
-      v21 = [v16 objectID];
-      [v20 selectNoteWithObjectID:v21 scrollState:0 startEditing:0 animated:0 ensurePresented:1];
+      viewControllerManager2 = [(ICWindowSceneDelegate *)self viewControllerManager];
+      objectID = [viewControllerManager objectID];
+      [viewControllerManager2 selectNoteWithObjectID:objectID scrollState:0 startEditing:0 animated:0 ensurePresented:1];
     }
 
     else
     {
       v22 = +[ICNoteContext sharedContext];
-      v23 = [v22 managedObjectContext];
-      v16 = [ICAccount localAccountInContext:v23];
+      managedObjectContext2 = [v22 managedObjectContext];
+      viewControllerManager = [ICAccount localAccountInContext:managedObjectContext2];
 
-      v20 = [(ICWindowSceneDelegate *)self viewControllerManager];
-      v21 = [v16 objectID];
-      [v20 selectContainerWithIdentifier:v21 usingRootViewController:1 deferUntilDataLoaded:0 animated:0];
+      viewControllerManager2 = [(ICWindowSceneDelegate *)self viewControllerManager];
+      objectID = [viewControllerManager objectID];
+      [viewControllerManager2 selectContainerWithIdentifier:objectID usingRootViewController:1 deferUntilDataLoaded:0 animated:0];
     }
   }
 }
 
-- (void)handleRecordingUserActivity:(id)a3
+- (void)handleRecordingUserActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
 
   v15 = 0;
   v16 = &v15;
@@ -1089,9 +1089,9 @@ LABEL_19:
   v10[1] = 3221225472;
   v10[2] = sub_1000B1790;
   v10[3] = &unk_100646008;
-  v8 = v3;
+  v8 = activityCopy;
   v11 = v8;
-  v9 = v5;
+  v9 = managedObjectContext;
   v12 = v9;
   v13 = &v15;
   [v9 performBlockAndWait:v10];
@@ -1099,14 +1099,14 @@ LABEL_19:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)handleAcceptingCloudKitShareWithMetadata:(id)a3 withWindowScene:(id)a4
+- (void)handleAcceptingCloudKitShareWithMetadata:(id)metadata withWindowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  sceneCopy = scene;
   v8 = +[ICAppDelegate sharedInstance];
-  v9 = [v8 analyticsController];
+  analyticsController = [v8 analyticsController];
   v10 = [NSURL URLWithString:kICNACloudKitShareReferralURL];
-  [v9 startSessionWithReferralURL:v10 referralApplication:0];
+  [analyticsController startSessionWithReferralURL:v10 referralApplication:0];
 
   v11 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1116,15 +1116,15 @@ LABEL_19:
   }
 
   v12 = +[ICNoteContext sharedContext];
-  v13 = [v12 managedObjectContext];
+  managedObjectContext = [v12 managedObjectContext];
 
-  v14 = [(ICWindowSceneDelegate *)self icWindow];
-  v15 = [v14 viewControllerManager];
+  icWindow = [(ICWindowSceneDelegate *)self icWindow];
+  viewControllerManager = [icWindow viewControllerManager];
 
-  if ([ICAccount hasActiveCloudKitAccountInContext:v13])
+  if ([ICAccount hasActiveCloudKitAccountInContext:managedObjectContext])
   {
-    v16 = [v6 share];
-    v17 = [v16 URL];
+    share = [metadataCopy share];
+    v17 = [share URL];
 
     if (v17)
     {
@@ -1133,13 +1133,13 @@ LABEL_19:
       v44[1] = 3221225472;
       v44[2] = sub_1000B1F28;
       v44[3] = &unk_100648210;
-      v45 = v15;
+      v45 = viewControllerManager;
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
       v42[2] = sub_1000B2080;
       v42[3] = &unk_100648238;
       v43 = v45;
-      [v18 processShareAcceptanceWithMetadata:v6 windowScene:v7 managedObjectContext:v13 alertBlock:v44 showObjectBlock:v42];
+      [v18 processShareAcceptanceWithMetadata:metadataCopy windowScene:sceneCopy managedObjectContext:managedObjectContext alertBlock:v44 showObjectBlock:v42];
 
       v19 = v45;
     }
@@ -1156,7 +1156,7 @@ LABEL_19:
 
   else
   {
-    v36 = v7;
+    v36 = sceneCopy;
     v20 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -1195,34 +1195,34 @@ LABEL_19:
     v37[2] = sub_1000B218C;
     v37[3] = &unk_100648288;
     v37[4] = self;
-    v32 = v15;
+    v32 = viewControllerManager;
     v38 = v32;
-    v39 = v13;
+    v39 = managedObjectContext;
     v40 = v36;
-    v41 = v6;
+    v41 = metadataCopy;
     v33 = [UIAlertAction actionWithTitle:v31 style:0 handler:v37];
 
     [v19 addAction:v33];
-    v34 = [v32 trailingSidebarViewController];
-    [v34 presentViewController:v19 animated:1 completion:0];
+    trailingSidebarViewController = [v32 trailingSidebarViewController];
+    [trailingSidebarViewController presentViewController:v19 animated:1 completion:0];
 
-    v7 = v36;
+    sceneCopy = v36;
     v17 = v35;
   }
 }
 
-- (id)archiveForUserActivities:(id)a3 isSourceApplicationExternal:(BOOL)a4 lastSavedArchive:(id)a5
+- (id)archiveForUserActivities:(id)activities isSourceApplicationExternal:(BOOL)external lastSavedArchive:(id)archive
 {
-  v6 = a3;
-  v7 = a5;
+  activitiesCopy = activities;
+  archiveCopy = archive;
   v107 = sub_1000DC72C();
   v108 = +[ICNoteContext sharedContext];
-  v112 = [v108 managedObjectContext];
+  managedObjectContext = [v108 managedObjectContext];
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v8 = v6;
+  v8 = activitiesCopy;
   v119 = [v8 countByEnumeratingWithState:&v121 objects:v129 count:16];
   if (!v119)
   {
@@ -1232,7 +1232,7 @@ LABEL_19:
     v12 = 0;
     v97 = 0;
     v13 = 0;
-    if (!v7)
+    if (!archiveCopy)
     {
       goto LABEL_105;
     }
@@ -1240,7 +1240,7 @@ LABEL_19:
     goto LABEL_104;
   }
 
-  v104 = v7;
+  v104 = archiveCopy;
   v10 = 0;
   v115 = 0;
   v11 = 0;
@@ -1266,54 +1266,54 @@ LABEL_19:
 
       v15 = *(*(&v121 + 1) + 8 * v14);
       objc_opt_class();
-      v16 = [v15 userInfo];
-      v17 = [v16 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+      userInfo = [v15 userInfo];
+      v17 = [userInfo objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
       v18 = ICDynamicCast();
 
       if (v18)
       {
         [NSURL URLWithString:v18];
-        v12 = v19 = v12;
+        v12 = noteContext2 = v12;
 LABEL_46:
 
         v10 = v120;
         goto LABEL_47;
       }
 
-      v20 = [v15 activityType];
-      v21 = [v20 isEqualToString:@"com.apple.notes.open.object"];
+      activityType = [v15 activityType];
+      v21 = [activityType isEqualToString:@"com.apple.notes.open.object"];
 
       v117 = v13;
       if (v21)
       {
-        v22 = [v15 targetContentIdentifier];
-        v19 = [NSURL URLWithString:v22];
+        targetContentIdentifier = [v15 targetContentIdentifier];
+        noteContext2 = [NSURL URLWithString:targetContentIdentifier];
 
         v114 = v11;
-        if (v19)
+        if (noteContext2)
         {
-          if ([ICAppURLUtilities isShowFolderListURL:v19])
+          if ([ICAppURLUtilities isShowFolderListURL:noteContext2])
           {
             goto LABEL_11;
           }
 
-          if ([ICAppURLUtilities isShowDefaultFolderURL:v19])
+          if ([ICAppURLUtilities isShowDefaultFolderURL:noteContext2])
           {
             v35 = +[NotesApp sharedNotesApp];
-            v36 = [v35 noteContext];
-            v37 = [ICDefaultAccountUtilities defaultFolderWithHTMLNoteContext:v36];
-            v38 = [v37 objectID];
-            v39 = [v38 URIRepresentation];
+            noteContext = [v35 noteContext];
+            v37 = [ICDefaultAccountUtilities defaultFolderWithHTMLNoteContext:noteContext];
+            objectID = [v37 objectID];
+            uRIRepresentation = [objectID URIRepresentation];
 
             v23 = 0;
-            v12 = v39;
+            v12 = uRIRepresentation;
             v8 = v110;
             goto LABEL_44;
           }
 
           if (v108)
           {
-            v55 = [ICAppURLUtilities objectIDForModernFolderMentionedInURL:v19 noteContext:?];
+            v55 = [ICAppURLUtilities objectIDForModernFolderMentionedInURL:noteContext2 noteContext:?];
 
             if (!v55)
             {
@@ -1322,19 +1322,19 @@ LABEL_46:
             }
 
 LABEL_43:
-            v59 = [v55 URIRepresentation];
+            uRIRepresentation2 = [v55 URIRepresentation];
 
             v23 = 0;
-            v12 = v59;
+            v12 = uRIRepresentation2;
             v109 = v55;
           }
 
           else
           {
 LABEL_36:
-            if (v112 && [ICAppURLUtilities isShowVirtualSmartFolderURL:v19])
+            if (managedObjectContext && [ICAppURLUtilities isShowVirtualSmartFolderURL:noteContext2])
             {
-              v56 = [ICAppURLUtilities virtualSmartFolderMentionedInURL:v19 context:v112];
+              v56 = [ICAppURLUtilities virtualSmartFolderMentionedInURL:noteContext2 context:managedObjectContext];
 
               v23 = 0;
               v120 = v56;
@@ -1344,7 +1344,7 @@ LABEL_36:
             {
               if (v107)
               {
-                v55 = [ICAppURLUtilities objectIDForHTMLFolderMentionedInURL:v19 context:?];
+                v55 = [ICAppURLUtilities objectIDForHTMLFolderMentionedInURL:noteContext2 context:?];
 
                 if (v55)
                 {
@@ -1354,35 +1354,35 @@ LABEL_36:
                 v109 = 0;
               }
 
-              if (v112 && [ICAppURLUtilities isShowNoteURL:v19])
+              if (managedObjectContext && [ICAppURLUtilities isShowNoteURL:noteContext2])
               {
-                v85 = [ICAppURLUtilities predicateForNotesMentionedInURL:v19];
+                v85 = [ICAppURLUtilities predicateForNotesMentionedInURL:noteContext2];
                 v23 = v85 != 0;
                 if (v85)
                 {
-                  v86 = [ICNote notesMatchingPredicate:v85 context:v112];
-                  v87 = [v86 firstObject];
-                  v88 = [v87 objectID];
-                  v116 = [v88 URIRepresentation];
+                  v86 = [ICNote notesMatchingPredicate:v85 context:managedObjectContext];
+                  firstObject = [v86 firstObject];
+                  objectID2 = [firstObject objectID];
+                  uRIRepresentation3 = [objectID2 URIRepresentation];
 
                   v8 = v110;
-                  v12 = v116;
+                  v12 = uRIRepresentation3;
                 }
               }
 
               else
               {
-                v89 = [ICAppURLUtilities objectIDURIRepresentationForHTMLNoteMentionedInURL:v19, v103];
+                v103 = [ICAppURLUtilities objectIDURIRepresentationForHTMLNoteMentionedInURL:noteContext2, v103];
 
-                if (v89)
+                if (v103)
                 {
                   v23 = 1;
-                  v12 = v89;
+                  v12 = v103;
                 }
 
-                else if ([ICAppURLUtilities isShowHTMLNoteURL:v19])
+                else if ([ICAppURLUtilities isShowHTMLNoteURL:noteContext2])
                 {
-                  v12 = [ICAppURLUtilities objectIDURIRepresentationForHTMLNoteMentionedInURL:v19];
+                  v12 = [ICAppURLUtilities objectIDURIRepresentationForHTMLNoteMentionedInURL:noteContext2];
                   v23 = 1;
                 }
 
@@ -1392,7 +1392,7 @@ LABEL_36:
                   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                   {
                     *buf = v103;
-                    v126 = v19;
+                    v126 = noteContext2;
                     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Cannot handle open object URL {url: %@}", buf, 0xCu);
                   }
 
@@ -1418,8 +1418,8 @@ LABEL_11:
         }
 
 LABEL_44:
-        v60 = [v15 userInfo];
-        v61 = [v60 objectForKeyedSubscript:@"ICUseAuxiliaryWindow"];
+        userInfo2 = [v15 userInfo];
+        v61 = [userInfo2 objectForKeyedSubscript:@"ICUseAuxiliaryWindow"];
         v62 = [v61 isEqual:&__kCFBooleanTrue];
 
         v115 = v23 & v62;
@@ -1430,15 +1430,15 @@ LABEL_45:
       }
 
       v24 = v11;
-      v25 = [v15 activityType];
-      v26 = [v25 isEqual:v113];
+      activityType2 = [v15 activityType];
+      v26 = [activityType2 isEqual:v113];
 
       if (v26)
       {
-        v27 = [v15 userInfo];
-        v19 = [v27 objectForKeyedSubscript:v111];
+        userInfo3 = [v15 userInfo];
+        noteContext2 = [userInfo3 objectForKeyedSubscript:v111];
 
-        v28 = [ICNote noteWithIdentifier:v19 context:v112];
+        v28 = [ICNote noteWithIdentifier:noteContext2 context:managedObjectContext];
         if ([v28 markedForDeletion])
         {
           goto LABEL_19;
@@ -1447,15 +1447,15 @@ LABEL_45:
         goto LABEL_17;
       }
 
-      v29 = [v15 activityType];
-      v30 = [v29 isEqual:@"com.apple.Notes"];
+      activityType3 = [v15 activityType];
+      v30 = [activityType3 isEqual:@"com.apple.Notes"];
 
       if (v30)
       {
         v31 = +[NotesApp sharedNotesApp];
-        v19 = [v31 noteContext];
+        noteContext2 = [v31 noteContext];
 
-        v28 = sub_10008C178(v15, v19, 0);
+        v28 = sub_10008C178(v15, noteContext2, 0);
         if ([v28 isMarkedForDeletion])
         {
 LABEL_19:
@@ -1467,41 +1467,41 @@ LABEL_19:
 LABEL_17:
         if (([v28 isDeleted] & 1) == 0)
         {
-          v32 = [v28 objectID];
-          v33 = [v32 URIRepresentation];
+          objectID3 = [v28 objectID];
+          uRIRepresentation4 = [objectID3 URIRepresentation];
 
-          v12 = v33;
+          v12 = uRIRepresentation4;
         }
 
         goto LABEL_19;
       }
 
-      v40 = [v15 activityType];
+      activityType4 = [v15 activityType];
       v41 = +[ICNotesFolderIntent className];
-      v42 = [v40 isEqual:v41];
+      v42 = [activityType4 isEqual:v41];
 
       if (v42)
       {
-        v19 = [v15 interaction];
-        v43 = [v19 intent];
-        if (v43)
+        noteContext2 = [v15 interaction];
+        intent = [noteContext2 intent];
+        if (intent)
         {
-          v44 = v43;
-          v45 = [v19 intent];
+          v44 = intent;
+          intent2 = [noteContext2 intent];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           v8 = v110;
           if (isKindOfClass)
           {
-            v47 = [v19 intent];
-            v48 = [v47 folder];
+            intent3 = [noteContext2 intent];
+            folder = [intent3 folder];
             v11 = v24;
-            if (v48 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+            if (folder && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v105 = v47;
-              v49 = [v48 identifier];
-              v50 = [NSURL URLWithString:v49];
+              v105 = intent3;
+              identifier = [folder identifier];
+              v50 = [NSURL URLWithString:identifier];
 
               v106 = v50;
               if (v108)
@@ -1511,9 +1511,9 @@ LABEL_17:
 
                 if (v52)
                 {
-                  v53 = [v52 URIRepresentation];
+                  uRIRepresentation5 = [v52 URIRepresentation];
                   v54 = v12;
-                  v12 = v53;
+                  v12 = uRIRepresentation5;
                   v109 = v52;
                   v11 = v24;
                   v13 = v117;
@@ -1537,12 +1537,12 @@ LABEL_17:
 
                 if (v93)
                 {
-                  v94 = [v93 URIRepresentation];
+                  uRIRepresentation6 = [v93 URIRepresentation];
                   v54 = v12;
-                  v12 = v94;
+                  v12 = uRIRepresentation6;
                   v109 = v93;
 LABEL_88:
-                  v47 = v105;
+                  intent3 = v105;
 LABEL_92:
 
                   goto LABEL_93;
@@ -1551,10 +1551,10 @@ LABEL_92:
                 v109 = 0;
               }
 
-              v47 = v105;
+              intent3 = v105;
               if ([v51[327] isShowVirtualSmartFolderURL:{v106, v103}])
               {
-                v95 = [ICAppURLUtilities virtualSmartFolderMentionedInURL:v106 context:v112];
+                v95 = [ICAppURLUtilities virtualSmartFolderMentionedInURL:v106 context:managedObjectContext];
                 v54 = v120;
                 v120 = v95;
                 goto LABEL_92;
@@ -1581,37 +1581,37 @@ LABEL_93:
         goto LABEL_45;
       }
 
-      v57 = [v15 activityType];
-      v58 = [v57 isEqual:CSQueryContinuationActionType];
+      activityType5 = [v15 activityType];
+      v58 = [activityType5 isEqual:CSQueryContinuationActionType];
 
       if (v58)
       {
-        v19 = [v15 userInfo];
-        v11 = [v19 objectForKey:CSSearchQueryString];
+        noteContext2 = [v15 userInfo];
+        v11 = [noteContext2 objectForKey:CSSearchQueryString];
 
         v8 = v110;
         goto LABEL_45;
       }
 
-      v70 = [v15 activityType];
+      activityType6 = [v15 activityType];
       v71 = objc_opt_class();
       v72 = NSStringFromClass(v71);
-      v73 = [v70 isEqual:v72];
+      v73 = [activityType6 isEqual:v72];
 
       if (v73)
       {
-        v74 = [v15 userInfo];
+        userInfo4 = [v15 userInfo];
         v75 = NSStringFromSelector("content");
-        v76 = [v74 objectForKey:v75];
+        v76 = [userInfo4 objectForKey:v75];
 
         v8 = v110;
         v10 = v120;
         if (![v76 length])
         {
           [v15 userInfo];
-          v19 = v90 = v76;
+          noteContext2 = v90 = v76;
           v91 = NSStringFromSelector("title");
-          v92 = [v19 objectForKeyedSubscript:v91];
+          v92 = [noteContext2 objectForKeyedSubscript:v91];
 
           v11 = v92;
           goto LABEL_45;
@@ -1622,25 +1622,25 @@ LABEL_93:
 
       else
       {
-        v77 = [v15 activityType];
-        v78 = [v77 isEqual:@"TUUserActivityCreateCallRecording"];
+        activityType7 = [v15 activityType];
+        v78 = [activityType7 isEqual:@"TUUserActivityCreateCallRecording"];
 
         if (v78)
         {
           objc_opt_class();
-          v79 = [v15 userInfo];
-          v80 = [v79 objectForKeyedSubscript:@"uniqueProxyIdentifier"];
-          v19 = ICDynamicCast();
+          userInfo5 = [v15 userInfo];
+          v80 = [userInfo5 objectForKeyedSubscript:@"uniqueProxyIdentifier"];
+          noteContext2 = ICDynamicCast();
 
-          v81 = [v19 UUIDString];
-          v82 = [ICNote noteWithIdentifier:v81 context:v112];
+          uUIDString = [noteContext2 UUIDString];
+          v82 = [ICNote noteWithIdentifier:uUIDString context:managedObjectContext];
           v8 = v110;
           if (([v82 markedForDeletion] & 1) == 0 && (objc_msgSend(v82, "isDeleted") & 1) == 0)
           {
-            v83 = [v82 objectID];
-            v84 = [v83 URIRepresentation];
+            objectID4 = [v82 objectID];
+            uRIRepresentation7 = [objectID4 URIRepresentation];
 
-            v12 = v84;
+            v12 = uRIRepresentation7;
           }
 
           v11 = v24;
@@ -1675,9 +1675,9 @@ LABEL_47:
         v67 = v66 = v11;
         [v65 setCurrentVirtualSmartFolderType:v67];
 
-        v68 = [v10 accountObjectID];
-        v69 = [v68 URIRepresentation];
-        [v65 setCurrentVirtualSmartFolderAccountObjectIDURL:v69];
+        accountObjectID = [v10 accountObjectID];
+        uRIRepresentation8 = [accountObjectID URIRepresentation];
+        [v65 setCurrentVirtualSmartFolderAccountObjectIDURL:uRIRepresentation8];
 
         v11 = v66;
         [v65 setIsAuxiliaryWindow:v115 & 1];
@@ -1695,7 +1695,7 @@ LABEL_47:
 
   while (v96);
 
-  v7 = v104;
+  archiveCopy = v104;
   if (!v104)
   {
     v97 = v109;
@@ -1706,7 +1706,7 @@ LABEL_47:
   {
     v97 = v109;
 LABEL_104:
-    v13 = v7;
+    v13 = archiveCopy;
     goto LABEL_105;
   }
 
@@ -1730,117 +1730,117 @@ LABEL_105:
   return v13;
 }
 
-- (void)reportReferralDataFromSceneConnectionOptions:(id)a3
+- (void)reportReferralDataFromSceneConnectionOptions:(id)options
 {
-  v27 = a3;
-  v3 = [v27 sourceApplication];
+  optionsCopy = options;
+  sourceApplication = [optionsCopy sourceApplication];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v27 sourceApplication];
+    sourceApplication2 = [optionsCopy sourceApplication];
   }
 
   else
   {
-    v5 = 0;
+    sourceApplication2 = 0;
   }
 
-  v6 = [v27 URLContexts];
-  v7 = [v6 count];
+  uRLContexts = [optionsCopy URLContexts];
+  v7 = [uRLContexts count];
 
   if (v7)
   {
-    v8 = [v27 URLContexts];
-    v9 = [v8 anyObject];
-    v10 = [v9 URL];
+    uRLContexts2 = [optionsCopy URLContexts];
+    anyObject = [uRLContexts2 anyObject];
+    cloudKitShareMetadata = [anyObject URL];
 
     goto LABEL_14;
   }
 
-  v11 = [v27 handoffUserActivityType];
+  handoffUserActivityType = [optionsCopy handoffUserActivityType];
 
-  if (v11)
+  if (handoffUserActivityType)
   {
     v12 = ICNAInbountURLComponentUserActivity;
     v13 = ICNAInbountURLComponentHandoff;
-    v14 = [v27 handoffUserActivityType];
-    v15 = [NSString stringWithFormat:@"%@/%@/%@", v12, v13, v14];
-    v10 = [NSURL URLWithString:v15];
+    handoffUserActivityType2 = [optionsCopy handoffUserActivityType];
+    v15 = [NSString stringWithFormat:@"%@/%@/%@", v12, v13, handoffUserActivityType2];
+    cloudKitShareMetadata = [NSURL URLWithString:v15];
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v16 = [v27 userActivities];
-  v17 = [v16 count];
+  userActivities = [optionsCopy userActivities];
+  v17 = [userActivities count];
 
   if (v17)
   {
     v18 = ICNAInbountURLComponentUserActivity;
-    v14 = [v27 userActivities];
-    v19 = [v14 anyObject];
-    v20 = [v19 activityType];
-    v21 = [NSString stringWithFormat:@"%@/%@", v18, v20];
-    v10 = [NSURL URLWithString:v21];
+    handoffUserActivityType2 = [optionsCopy userActivities];
+    anyObject2 = [handoffUserActivityType2 anyObject];
+    activityType = [anyObject2 activityType];
+    v21 = [NSString stringWithFormat:@"%@/%@", v18, activityType];
+    cloudKitShareMetadata = [NSURL URLWithString:v21];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v22 = [v27 shortcutItem];
+  shortcutItem = [optionsCopy shortcutItem];
 
-  if (v22)
+  if (shortcutItem)
   {
     v23 = ICNAInbountURLComponentShortcutItem;
-    v14 = [v27 shortcutItem];
-    v19 = [v14 type];
-    v24 = [NSString stringWithFormat:@"%@/%@", v23, v19];
-    v10 = [NSURL URLWithString:v24];
+    handoffUserActivityType2 = [optionsCopy shortcutItem];
+    anyObject2 = [handoffUserActivityType2 type];
+    v24 = [NSString stringWithFormat:@"%@/%@", v23, anyObject2];
+    cloudKitShareMetadata = [NSURL URLWithString:v24];
 
     goto LABEL_12;
   }
 
-  v10 = [v27 cloudKitShareMetadata];
+  cloudKitShareMetadata = [optionsCopy cloudKitShareMetadata];
 
-  if (v10)
+  if (cloudKitShareMetadata)
   {
-    v10 = [NSURL URLWithString:kICNACloudKitShareReferralURL];
+    cloudKitShareMetadata = [NSURL URLWithString:kICNACloudKitShareReferralURL];
   }
 
 LABEL_14:
   v25 = +[ICAppDelegate sharedInstance];
-  v26 = [v25 analyticsController];
-  [v26 addReferralDataWithReferringInboundURL:v10 referringApplication:v5];
+  analyticsController = [v25 analyticsController];
+  [analyticsController addReferralDataWithReferringInboundURL:cloudKitShareMetadata referringApplication:sourceApplication2];
 }
 
 - (void)setUpAppStoreRatingObserverIfNecessary
 {
-  v3 = [(ICWindowSceneDelegate *)self icWindow];
-  v14 = [v3 windowScene];
+  icWindow = [(ICWindowSceneDelegate *)self icWindow];
+  windowScene = [icWindow windowScene];
 
-  if (v14)
+  if (windowScene)
   {
     v4 = +[ICAccountUtilities sharedInstance];
-    v5 = [v4 primaryICloudACAccount];
+    primaryICloudACAccount = [v4 primaryICloudACAccount];
 
-    v6 = [v5 identifier];
-    if ([v6 length])
+    identifier = [primaryICloudACAccount identifier];
+    if ([identifier length])
     {
       if (!self->_appStoreRatingObserver)
       {
         v7 = [ICAppStoreRatingObserver alloc];
         v8 = +[ICNoteContext sharedContext];
-        v9 = [v8 workerManagedObjectContext];
+        workerManagedObjectContext = [v8 workerManagedObjectContext];
         v10 = +[NSUserDefaults standardUserDefaults];
-        v11 = [(ICAppStoreRatingObserver *)v7 initWithAccountIdentifier:v6 managedObjectContext:v9 userDefaults:v10 windowScene:v14];
+        v11 = [(ICAppStoreRatingObserver *)v7 initWithAccountIdentifier:identifier managedObjectContext:workerManagedObjectContext userDefaults:v10 windowScene:windowScene];
         appStoreRatingObserver = self->_appStoreRatingObserver;
         self->_appStoreRatingObserver = v11;
       }
 
-      v13 = [(ICWindowSceneDelegate *)self appStoreRatingObserver];
-      [v13 startObserving];
+      appStoreRatingObserver = [(ICWindowSceneDelegate *)self appStoreRatingObserver];
+      [appStoreRatingObserver startObserving];
     }
   }
 }

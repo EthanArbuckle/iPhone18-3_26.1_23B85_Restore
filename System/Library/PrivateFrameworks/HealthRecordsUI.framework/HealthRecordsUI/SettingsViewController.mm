@@ -1,20 +1,20 @@
 @interface SettingsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithStyle:(int64_t)a3;
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithUsingInsetStyling:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithStyle:(int64_t)style;
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithUsingInsetStyling:(BOOL)styling;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)sourceListDataSourceDidUpdate:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tapToRadar:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)sourceListDataSourceDidUpdate:(id)update;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tapToRadar:(id)radar;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -24,14 +24,14 @@
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI22SettingsViewController_accountStateCancellable))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1D138F64C();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -41,21 +41,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D112A728();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D112B5BC(a3);
+  selfCopy = self;
+  sub_1D112B5BC(appear);
 }
 
-- (void)tapToRadar:(id)a3
+- (void)tapToRadar:(id)radar
 {
-  if (a3)
+  if (radar)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D139101C();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   type metadata accessor for TapToRadarManager();
@@ -73,66 +73,66 @@
   sub_1D1096BE0(v6);
 }
 
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithStyle:(int64_t)a3
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15HealthRecordsUI22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  SettingsViewController.sourceListDataSourceDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  SettingsViewController.sourceListDataSourceDidUpdate(_:)(updateCopy);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  SettingsViewController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  SettingsViewController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_1D121C260();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
 
   v5 = sub_1D115FCFC(v4);
 
@@ -141,20 +141,20 @@
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1D12821DC(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1D12821DC(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  object = SettingsViewController.tableView(_:titleForHeaderInSection:)(v6, a4).value._object;
+  viewCopy = view;
+  selfCopy = self;
+  object = SettingsViewController.tableView(_:titleForHeaderInSection:)(viewCopy, section).value._object;
 
   if (object)
   {
@@ -169,11 +169,11 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D1282454(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D1282454(section);
   v9 = v8;
 
   if (v9)
@@ -189,16 +189,16 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  SettingsViewController.tableView(_:cellForRowAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  SettingsViewController.tableView(_:cellForRowAt:)(viewCopy, v9);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);
@@ -206,7 +206,7 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_1D138D82C();
   v9 = *(v8 - 8);
@@ -216,17 +216,17 @@
   sub_1D138E07C();
   if (swift_dynamicCastClass())
   {
-    v12 = self;
-    v13 = a3;
-    v14 = a4;
+    selfCopy = self;
+    viewCopy = view;
+    cellCopy = cell;
     sub_1D138E05C();
   }
 
   else
   {
-    v15 = self;
-    v16 = a3;
-    v17 = a4;
+    selfCopy2 = self;
+    viewCopy2 = view;
+    cellCopy2 = cell;
   }
 
   type metadata accessor for LoadingTableViewCell();
@@ -239,7 +239,7 @@
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_1D138D82C();
   v9 = *(v8 - 8);
@@ -248,9 +248,9 @@
   sub_1D138D7EC();
   sub_1D138E07C();
   v12 = swift_dynamicCastClass();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   if (v12)
   {
     sub_1D138E05C();

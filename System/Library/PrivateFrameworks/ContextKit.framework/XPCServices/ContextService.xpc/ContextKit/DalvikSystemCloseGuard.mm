@@ -1,22 +1,22 @@
 @interface DalvikSystemCloseGuard
 + (id)getReporter;
 + (void)initialize;
-+ (void)setEnabledWithBoolean:(BOOL)a3;
++ (void)setEnabledWithBoolean:(BOOL)boolean;
 - (void)dealloc;
-- (void)openWithNSString:(id)a3;
+- (void)openWithNSString:(id)string;
 - (void)warnIfOpen;
 @end
 
 @implementation DalvikSystemCloseGuard
 
-+ (void)setEnabledWithBoolean:(BOOL)a3
++ (void)setEnabledWithBoolean:(BOOL)boolean
 {
   if ((atomic_load_explicit(DalvikSystemCloseGuard__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001D22BC();
   }
 
-  atomic_store(a3, byte_100554E50);
+  atomic_store(boolean, byte_100554E50);
 }
 
 + (id)getReporter
@@ -29,9 +29,9 @@
   return atomic_load(&qword_100554E58);
 }
 
-- (void)openWithNSString:(id)a3
+- (void)openWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v12 = new_JavaLangNullPointerException_initWithNSString_(@"closer == null");
     objc_exception_throw(v12);
@@ -42,7 +42,7 @@
     v9 = atomic_load(byte_100554E50);
     if (v9)
     {
-      v10 = JreStrcat("$$$", a2, a3, v3, v4, v5, v6, v7, @"Explicit termination method '");
+      v10 = JreStrcat("$$$", a2, string, v3, v4, v5, v6, v7, @"Explicit termination method '");
       v11 = new_JavaLangThrowable_initWithNSString_(v10);
 
       JreStrongAssignAndConsume(&self->allocationSite_, v11);
@@ -79,7 +79,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554E48, [DalvikSystemCloseGuard alloc]);
     JreVolatileStrongAssignAndConsume(&qword_100554E58, [DalvikSystemCloseGuard_DefaultReporter alloc]);

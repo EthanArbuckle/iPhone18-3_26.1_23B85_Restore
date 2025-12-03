@@ -1,13 +1,13 @@
 @interface SKUIMediaSocialProfile
-- (SKUIMediaSocialProfile)initWithProfileDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIMediaSocialProfile)initWithProfileDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIMediaSocialProfile
 
-- (SKUIMediaSocialProfile)initWithProfileDictionary:(id)a3
+- (SKUIMediaSocialProfile)initWithProfileDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaSocialProfile initWithProfileDictionary:];
@@ -18,7 +18,7 @@
   v5 = [(SKUIMediaSocialProfile *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"entityId"];
+    v6 = [dictionaryCopy objectForKey:@"entityId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       v5->_identifier = v7;
     }
 
-    v9 = [v4 objectForKey:@"entityType"];
+    v9 = [dictionaryCopy objectForKey:@"entityType"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -37,7 +37,7 @@
       v5->_profileType = v10;
     }
 
-    v12 = [v4 objectForKey:@"name"];
+    v12 = [dictionaryCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -47,7 +47,7 @@
       v5->_name = v13;
     }
 
-    v15 = [v4 objectForKey:@"handle"];
+    v15 = [dictionaryCopy objectForKey:@"handle"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -55,7 +55,7 @@
       objc_storeStrong(&v5->_handle, v15);
     }
 
-    v16 = [v4 objectForKey:@"bio"];
+    v16 = [dictionaryCopy objectForKey:@"bio"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBackgroundImageURL:self->_backgroundImageURL];
   [v4 setBio:self->_bio];
   [v4 setHandle:self->_handle];

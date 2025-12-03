@@ -6,7 +6,7 @@
 
 - (void)executionDidBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4063308();
 }
 

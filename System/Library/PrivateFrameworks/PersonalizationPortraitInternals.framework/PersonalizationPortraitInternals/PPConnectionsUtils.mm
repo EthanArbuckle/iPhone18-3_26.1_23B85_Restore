@@ -1,40 +1,40 @@
 @interface PPConnectionsUtils
-+ (BOOL)isClientAuthorizedForSemanticTriggers:(id)a3;
-+ (BOOL)isValidLinguisticQuery:(id)a3;
-+ (BOOL)shouldAggregateLabel:(id)a3 withValue:(id)a4 query:(id)a5;
++ (BOOL)isClientAuthorizedForSemanticTriggers:(id)triggers;
++ (BOOL)isValidLinguisticQuery:(id)query;
++ (BOOL)shouldAggregateLabel:(id)label withValue:(id)value query:(id)query;
 + (id)supportedLocationSemanticTypes;
-+ (id)triggerTypeFromQuery:(id)a3;
-+ (unsigned)locationFieldFromSemanticTag:(unsigned __int8)a3;
++ (id)triggerTypeFromQuery:(id)query;
++ (unsigned)locationFieldFromSemanticTag:(unsigned __int8)tag;
 @end
 
 @implementation PPConnectionsUtils
 
-+ (unsigned)locationFieldFromSemanticTag:(unsigned __int8)a3
++ (unsigned)locationFieldFromSemanticTag:(unsigned __int8)tag
 {
-  if ((a3 - 1) > 0x10)
+  if ((tag - 1) > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return byte_232418770[(a3 - 1)];
+    return byte_232418770[(tag - 1)];
   }
 }
 
-+ (id)triggerTypeFromQuery:(id)a3
++ (id)triggerTypeFromQuery:(id)query
 {
-  v3 = a3;
-  if ([objc_opt_class() isValidLinguisticQuery:v3])
+  queryCopy = query;
+  if ([objc_opt_class() isValidLinguisticQuery:queryCopy])
   {
-    if ([v3 subtype] == 6)
+    if ([queryCopy subtype] == 6)
     {
-      if ([v3 fields])
+      if ([queryCopy fields])
       {
         v4 = @"phone";
       }
 
-      else if (([v3 fields] & 4) != 0)
+      else if (([queryCopy fields] & 4) != 0)
       {
         v4 = @"location";
       }
@@ -48,7 +48,7 @@
     else
     {
       v4 = @"unknown";
-      if ([v3 subtype] == 7 && (objc_msgSend(v3, "fields") & 4) != 0)
+      if ([queryCopy subtype] == 7 && (objc_msgSend(queryCopy, "fields") & 4) != 0)
       {
         v4 = @"address";
       }
@@ -57,9 +57,9 @@
 
   else
   {
-    v5 = [objc_opt_class() supportedLocationSemanticTypes];
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v3, "semanticTag")}];
-    v7 = [v5 containsObject:v6];
+    supportedLocationSemanticTypes = [objc_opt_class() supportedLocationSemanticTypes];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(queryCopy, "semanticTag")}];
+    v7 = [supportedLocationSemanticTypes containsObject:v6];
 
     if (v7)
     {
@@ -75,18 +75,18 @@
   return v4;
 }
 
-+ (BOOL)shouldAggregateLabel:(id)a3 withValue:(id)a4 query:(id)a5
++ (BOOL)shouldAggregateLabel:(id)label withValue:(id)value query:(id)query
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([objc_opt_class() isValidLinguisticQuery:v9] && objc_msgSend(v9, "subtype") != 7)
+  labelCopy = label;
+  valueCopy = value;
+  queryCopy = query;
+  if ([objc_opt_class() isValidLinguisticQuery:queryCopy] && objc_msgSend(queryCopy, "subtype") != 7)
   {
-    v12 = [v9 fields];
+    fields = [queryCopy fields];
     LOBYTE(v10) = 0;
-    if (v7 && (v12 & 1) == 0)
+    if (labelCopy && (fields & 1) == 0)
     {
-      v10 = [v7 isEqualToString:v8] ^ 1;
+      v10 = [labelCopy isEqualToString:valueCopy] ^ 1;
     }
   }
 
@@ -98,19 +98,19 @@
   return v10;
 }
 
-+ (BOOL)isValidLinguisticQuery:(id)a3
++ (BOOL)isValidLinguisticQuery:(id)query
 {
-  v3 = a3;
-  if ([v3 type] == 3 && (objc_msgSend(v3, "subtype") == 6 || objc_msgSend(v3, "subtype") == 7))
+  queryCopy = query;
+  if ([queryCopy type] == 3 && (objc_msgSend(queryCopy, "subtype") == 6 || objc_msgSend(queryCopy, "subtype") == 7))
   {
-    if ([v3 fields])
+    if ([queryCopy fields])
     {
       LOBYTE(v4) = 1;
     }
 
     else
     {
-      v4 = ([v3 fields] >> 2) & 1;
+      v4 = ([queryCopy fields] >> 2) & 1;
     }
   }
 
@@ -122,13 +122,13 @@
   return v4;
 }
 
-+ (BOOL)isClientAuthorizedForSemanticTriggers:(id)a3
++ (BOOL)isClientAuthorizedForSemanticTriggers:(id)triggers
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  if ([v4 isEqualToString:*MEMORY[0x277D3A698]])
+  triggersCopy = triggers;
+  bundleIdentifier = [triggersCopy bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:*MEMORY[0x277D3A698]])
   {
-    v5 = [v3 semanticTag] == 1;
+    v5 = [triggersCopy semanticTag] == 1;
   }
 
   else

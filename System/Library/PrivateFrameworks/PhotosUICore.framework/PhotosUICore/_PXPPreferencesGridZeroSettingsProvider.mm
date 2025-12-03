@@ -23,8 +23,8 @@
 
 - (void)preferencesDidChange
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:*off_1E7722060 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*off_1E7722060 object:0];
 }
 
 - (BOOL)isStacksEnabled

@@ -1,33 +1,33 @@
 @interface REMTemplatePublicLink
-- (BOOL)isEqual:(id)a3;
-- (REMTemplatePublicLink)initWithCoder:(id)a3;
-- (REMTemplatePublicLink)initWithURL:(id)a3 configuration:(id)a4 creationDate:(id)a5 lastModifiedDate:(id)a6 expirationDate:(id)a7 canBeUpdated:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMTemplatePublicLink)initWithCoder:(id)coder;
+- (REMTemplatePublicLink)initWithURL:(id)l configuration:(id)configuration creationDate:(id)date lastModifiedDate:(id)modifiedDate expirationDate:(id)expirationDate canBeUpdated:(BOOL)updated;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTemplatePublicLink
 
-- (REMTemplatePublicLink)initWithURL:(id)a3 configuration:(id)a4 creationDate:(id)a5 lastModifiedDate:(id)a6 expirationDate:(id)a7 canBeUpdated:(BOOL)a8
+- (REMTemplatePublicLink)initWithURL:(id)l configuration:(id)configuration creationDate:(id)date lastModifiedDate:(id)modifiedDate expirationDate:(id)expirationDate canBeUpdated:(BOOL)updated
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  configurationCopy = configuration;
+  dateCopy = date;
+  modifiedDateCopy = modifiedDate;
+  expirationDateCopy = expirationDate;
   v23.receiver = self;
   v23.super_class = REMTemplatePublicLink;
   v18 = [(REMTemplatePublicLink *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_url, a3);
-    objc_storeStrong(&v19->_configuration, a4);
-    objc_storeStrong(&v19->_creationDate, a5);
-    objc_storeStrong(&v19->_lastModifiedDate, a6);
-    objc_storeStrong(&v19->_expirationDate, a7);
-    v19->_canBeUpdated = a8;
+    objc_storeStrong(&v18->_url, l);
+    objc_storeStrong(&v19->_configuration, configuration);
+    objc_storeStrong(&v19->_creationDate, date);
+    objc_storeStrong(&v19->_lastModifiedDate, modifiedDate);
+    objc_storeStrong(&v19->_expirationDate, expirationDate);
+    v19->_canBeUpdated = updated;
   }
 
   return v19;
@@ -38,19 +38,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(REMTemplatePublicLink *)self url];
-  v6 = [(REMTemplatePublicLink *)self configuration];
-  v7 = [(REMTemplatePublicLink *)self creationDate];
-  v8 = [(REMTemplatePublicLink *)self lastModifiedDate];
-  v9 = [(REMTemplatePublicLink *)self expirationDate];
+  configuration = [(REMTemplatePublicLink *)self configuration];
+  creationDate = [(REMTemplatePublicLink *)self creationDate];
+  lastModifiedDate = [(REMTemplatePublicLink *)self lastModifiedDate];
+  expirationDate = [(REMTemplatePublicLink *)self expirationDate];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMTemplatePublicLink canBeUpdated](self, "canBeUpdated")}];
-  v11 = [v3 stringWithFormat:@"<%@: %p url: %@, configuration: %@, creationDate: %@, lastModifiedDate: %@, expirationDate: %@, canBeUpdated: %@>", v4, self, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@: %p url: %@, configuration: %@, creationDate: %@, lastModifiedDate: %@, expirationDate: %@, canBeUpdated: %@>", v4, self, v5, configuration, creationDate, lastModifiedDate, expirationDate, v10];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -58,7 +58,7 @@
   }
 
   v5 = [(REMTemplatePublicLink *)self url];
-  v6 = [v4 url];
+  v6 = [equalCopy url];
   v7 = v6;
   if (v5 == v6)
   {
@@ -67,7 +67,7 @@
   else
   {
     v8 = [(REMTemplatePublicLink *)self url];
-    v9 = [v4 url];
+    v9 = [equalCopy url];
     v10 = [v8 isEqual:v9];
 
     if (!v10)
@@ -76,18 +76,18 @@
     }
   }
 
-  v11 = [(REMTemplatePublicLink *)self configuration];
-  v12 = [v4 configuration];
-  v13 = v12;
-  if (v11 == v12)
+  configuration = [(REMTemplatePublicLink *)self configuration];
+  configuration2 = [equalCopy configuration];
+  v13 = configuration2;
+  if (configuration == configuration2)
   {
   }
 
   else
   {
-    v14 = [(REMTemplatePublicLink *)self configuration];
-    v15 = [v4 configuration];
-    v16 = [v14 isEqual:v15];
+    configuration3 = [(REMTemplatePublicLink *)self configuration];
+    configuration4 = [equalCopy configuration];
+    v16 = [configuration3 isEqual:configuration4];
 
     if (!v16)
     {
@@ -95,18 +95,18 @@
     }
   }
 
-  v17 = [(REMTemplatePublicLink *)self creationDate];
-  v18 = [v4 creationDate];
-  v19 = v18;
-  if (v17 == v18)
+  creationDate = [(REMTemplatePublicLink *)self creationDate];
+  creationDate2 = [equalCopy creationDate];
+  v19 = creationDate2;
+  if (creationDate == creationDate2)
   {
   }
 
   else
   {
-    v20 = [(REMTemplatePublicLink *)self creationDate];
-    v21 = [v4 creationDate];
-    v22 = [v20 isEqual:v21];
+    creationDate3 = [(REMTemplatePublicLink *)self creationDate];
+    creationDate4 = [equalCopy creationDate];
+    v22 = [creationDate3 isEqual:creationDate4];
 
     if (!v22)
     {
@@ -114,18 +114,18 @@
     }
   }
 
-  v23 = [(REMTemplatePublicLink *)self lastModifiedDate];
-  v24 = [v4 lastModifiedDate];
-  v25 = v24;
-  if (v23 == v24)
+  lastModifiedDate = [(REMTemplatePublicLink *)self lastModifiedDate];
+  lastModifiedDate2 = [equalCopy lastModifiedDate];
+  v25 = lastModifiedDate2;
+  if (lastModifiedDate == lastModifiedDate2)
   {
   }
 
   else
   {
-    v26 = [(REMTemplatePublicLink *)self lastModifiedDate];
-    v27 = [v4 lastModifiedDate];
-    v28 = [v26 isEqual:v27];
+    lastModifiedDate3 = [(REMTemplatePublicLink *)self lastModifiedDate];
+    lastModifiedDate4 = [equalCopy lastModifiedDate];
+    v28 = [lastModifiedDate3 isEqual:lastModifiedDate4];
 
     if (!v28)
     {
@@ -133,24 +133,24 @@
     }
   }
 
-  v29 = [(REMTemplatePublicLink *)self expirationDate];
-  v30 = [v4 expirationDate];
-  v31 = v30;
-  if (v29 == v30)
+  expirationDate = [(REMTemplatePublicLink *)self expirationDate];
+  expirationDate2 = [equalCopy expirationDate];
+  v31 = expirationDate2;
+  if (expirationDate == expirationDate2)
   {
 
     goto LABEL_23;
   }
 
-  v32 = [(REMTemplatePublicLink *)self expirationDate];
-  v33 = [v4 expirationDate];
-  v34 = [v32 isEqual:v33];
+  expirationDate3 = [(REMTemplatePublicLink *)self expirationDate];
+  expirationDate4 = [equalCopy expirationDate];
+  v34 = [expirationDate3 isEqual:expirationDate4];
 
   if (v34)
   {
 LABEL_23:
-    v37 = [(REMTemplatePublicLink *)self canBeUpdated];
-    v35 = v37 ^ [v4 canBeUpdated] ^ 1;
+    canBeUpdated = [(REMTemplatePublicLink *)self canBeUpdated];
+    v35 = canBeUpdated ^ [equalCopy canBeUpdated] ^ 1;
     goto LABEL_21;
   }
 
@@ -161,52 +161,52 @@ LABEL_21:
   return v35;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMTemplatePublicLink alloc];
   v5 = [(REMTemplatePublicLink *)self url];
-  v6 = [(REMTemplatePublicLink *)self configuration];
-  v7 = [(REMTemplatePublicLink *)self creationDate];
-  v8 = [(REMTemplatePublicLink *)self lastModifiedDate];
-  v9 = [(REMTemplatePublicLink *)self expirationDate];
-  v10 = [(REMTemplatePublicLink *)v4 initWithURL:v5 configuration:v6 creationDate:v7 lastModifiedDate:v8 expirationDate:v9 canBeUpdated:[(REMTemplatePublicLink *)self canBeUpdated]];
+  configuration = [(REMTemplatePublicLink *)self configuration];
+  creationDate = [(REMTemplatePublicLink *)self creationDate];
+  lastModifiedDate = [(REMTemplatePublicLink *)self lastModifiedDate];
+  expirationDate = [(REMTemplatePublicLink *)self expirationDate];
+  v10 = [(REMTemplatePublicLink *)v4 initWithURL:v5 configuration:configuration creationDate:creationDate lastModifiedDate:lastModifiedDate expirationDate:expirationDate canBeUpdated:[(REMTemplatePublicLink *)self canBeUpdated]];
 
   return v10;
 }
 
-- (REMTemplatePublicLink)initWithCoder:(id)a3
+- (REMTemplatePublicLink)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  v10 = [v4 decodeBoolForKey:@"canBeUpdated"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModifiedDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v10 = [coderCopy decodeBoolForKey:@"canBeUpdated"];
 
   v11 = [(REMTemplatePublicLink *)self initWithURL:v5 configuration:v6 creationDate:v7 lastModifiedDate:v8 expirationDate:v9 canBeUpdated:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = [(REMTemplatePublicLink *)self url];
-  [v9 encodeObject:v4 forKey:@"url"];
+  [coderCopy encodeObject:v4 forKey:@"url"];
 
-  v5 = [(REMTemplatePublicLink *)self configuration];
-  [v9 encodeObject:v5 forKey:@"configuration"];
+  configuration = [(REMTemplatePublicLink *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  v6 = [(REMTemplatePublicLink *)self creationDate];
-  [v9 encodeObject:v6 forKey:@"creationDate"];
+  creationDate = [(REMTemplatePublicLink *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v7 = [(REMTemplatePublicLink *)self lastModifiedDate];
-  [v9 encodeObject:v7 forKey:@"lastModifiedDate"];
+  lastModifiedDate = [(REMTemplatePublicLink *)self lastModifiedDate];
+  [coderCopy encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
 
-  v8 = [(REMTemplatePublicLink *)self expirationDate];
-  [v9 encodeObject:v8 forKey:@"expirationDate"];
+  expirationDate = [(REMTemplatePublicLink *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
 
-  [v9 encodeBool:-[REMTemplatePublicLink canBeUpdated](self forKey:{"canBeUpdated"), @"canBeUpdated"}];
+  [coderCopy encodeBool:-[REMTemplatePublicLink canBeUpdated](self forKey:{"canBeUpdated"), @"canBeUpdated"}];
 }
 
 @end

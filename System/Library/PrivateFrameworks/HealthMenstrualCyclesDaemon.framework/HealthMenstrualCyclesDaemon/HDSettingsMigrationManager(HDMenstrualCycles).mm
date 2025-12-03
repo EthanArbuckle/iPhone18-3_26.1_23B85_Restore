@@ -22,7 +22,7 @@
   v16 = [MEMORY[0x277D10860] dawnMoveToDeviationDetectionFeatureSettingsWithUserDefaults:v10];
   v21[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
-  v18 = [a1 initWithProfile:v11 identifier:@"HealthMenstrualCycles" currentMigrationVersion:17005 migrationSteps:v17 delegate:v9 migrationVersionDefaults:v10 lastMigratedVersionKey:@"HDMCSettingsMigrationManager_LastCompletedVersion" loggingCategory:*MEMORY[0x277CCC2E8]];
+  v18 = [self initWithProfile:v11 identifier:@"HealthMenstrualCycles" currentMigrationVersion:17005 migrationSteps:v17 delegate:v9 migrationVersionDefaults:v10 lastMigratedVersionKey:@"HDMCSettingsMigrationManager_LastCompletedVersion" loggingCategory:*MEMORY[0x277CCC2E8]];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;

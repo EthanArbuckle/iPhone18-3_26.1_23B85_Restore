@@ -6,8 +6,8 @@
 + (MAEdgeFilter)weekOfMonthFilter;
 + (MAEdgeFilter)weekOfYearFilter;
 + (MAEdgeFilter)yearFilter;
-- (PGGraphCalendarUnitEdge)initWithCalendarUnit:(unint64_t)a3 fromDateNode:(id)a4 toCalendarUnitNode:(id)a5;
-- (PGGraphCalendarUnitEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphCalendarUnitEdge)initWithCalendarUnit:(unint64_t)unit fromDateNode:(id)node toCalendarUnitNode:(id)unitNode;
+- (PGGraphCalendarUnitEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)label;
 @end
 
@@ -28,37 +28,37 @@
   return v3;
 }
 
-- (PGGraphCalendarUnitEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphCalendarUnitEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if ([v10 isEqualToString:@"DAY"])
+  labelCopy = label;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  if ([labelCopy isEqualToString:@"DAY"])
   {
     v13 = 1;
   }
 
-  else if ([v10 isEqualToString:@"MONTH"])
+  else if ([labelCopy isEqualToString:@"MONTH"])
   {
     v13 = 2;
   }
 
-  else if ([v10 isEqualToString:@"MONTH_DAY"])
+  else if ([labelCopy isEqualToString:@"MONTH_DAY"])
   {
     v13 = 3;
   }
 
-  else if ([v10 isEqualToString:@"YEAR"])
+  else if ([labelCopy isEqualToString:@"YEAR"])
   {
     v13 = 4;
   }
 
-  else if ([v10 isEqualToString:@"WEEKMONTH"])
+  else if ([labelCopy isEqualToString:@"WEEKMONTH"])
   {
     v13 = 5;
   }
 
-  else if ([v10 isEqualToString:@"WEEKYEAR"])
+  else if ([labelCopy isEqualToString:@"WEEKYEAR"])
   {
     v13 = 6;
   }
@@ -68,27 +68,27 @@
     v13 = 0;
   }
 
-  v14 = [(PGGraphCalendarUnitEdge *)self initWithCalendarUnit:v13 fromDateNode:v12 toCalendarUnitNode:v11];
+  v14 = [(PGGraphCalendarUnitEdge *)self initWithCalendarUnit:v13 fromDateNode:nodeCopy toCalendarUnitNode:targetNodeCopy];
   return v14;
 }
 
-- (PGGraphCalendarUnitEdge)initWithCalendarUnit:(unint64_t)a3 fromDateNode:(id)a4 toCalendarUnitNode:(id)a5
+- (PGGraphCalendarUnitEdge)initWithCalendarUnit:(unint64_t)unit fromDateNode:(id)node toCalendarUnitNode:(id)unitNode
 {
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  nodeCopy = node;
+  unitNodeCopy = unitNode;
+  if (!unit)
   {
     __assert_rtn("[PGGraphCalendarUnitEdge initWithCalendarUnit:fromDateNode:toCalendarUnitNode:]", "PGGraphCalendarUnitEdge.m", 53, "calendarUnit != PGGraphCalendarUnitUnitUnknown");
   }
 
-  v10 = v9;
+  v10 = unitNodeCopy;
   v14.receiver = self;
   v14.super_class = PGGraphCalendarUnitEdge;
-  v11 = [(PGGraphEdge *)&v14 initWithSourceNode:v8 targetNode:v9];
+  v11 = [(PGGraphEdge *)&v14 initWithSourceNode:nodeCopy targetNode:unitNodeCopy];
   v12 = v11;
   if (v11)
   {
-    *(v11 + 40) = a3;
+    *(v11 + 40) = unit;
   }
 
   return v12;

@@ -6,35 +6,35 @@
 - (CGSize)largeBubbleSize;
 - (CGSize)mediumBubbleSize;
 - (CGSize)parentAvatarViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)smallBubbleSize;
 - (CGSize)thinkingDotContainerSize;
 - (CKPinnedConversationActivityItemViewDelegate)activityItemViewDelegate;
-- (CKPinnedConversationTypingBubble)initWithActivityItem:(id)a3;
+- (CKPinnedConversationTypingBubble)initWithActivityItem:(id)item;
 - (unint64_t)tailCornerAnchor;
 - (void)_updateThinkingDotColor;
 - (void)_updateUserInterfaceStyles;
-- (void)calculateBezierPathWithOutputsForPath:(id *)a3 largeBubbleFrame:(CGRect *)a4 mediumBubbleFrame:(CGRect *)a5 smallBubbleFrame:(CGRect *)a6;
+- (void)calculateBezierPathWithOutputsForPath:(id *)path largeBubbleFrame:(CGRect *)frame mediumBubbleFrame:(CGRect *)bubbleFrame smallBubbleFrame:(CGRect *)smallBubbleFrame;
 - (void)layoutSubviews;
-- (void)setActivityItem:(id)a3;
-- (void)setOriginationDirection:(int64_t)a3;
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActivityItem:(id)item;
+- (void)setOriginationDirection:(int64_t)direction;
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKPinnedConversationTypingBubble
 
-- (CKPinnedConversationTypingBubble)initWithActivityItem:(id)a3
+- (CKPinnedConversationTypingBubble)initWithActivityItem:(id)item
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v48.receiver = self;
   v48.super_class = CKPinnedConversationTypingBubble;
   v6 = [(CKPinnedConversationTypingBubble *)&v48 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_typingBubbleActivityItem, a3);
+    objc_storeStrong(&v6->_typingBubbleActivityItem, item);
     v8 = [[CKPinnedConversationActivityItemViewShadowLayer alloc] initWithShadowType:0];
     broadShadowLayer = v7->_broadShadowLayer;
     v7->_broadShadowLayer = v8;
@@ -53,14 +53,14 @@
 
     [(CKPinnedConversationActivityItemViewBackdropLayer *)v7->_backdropLayer setMask:v7->_backdropMaskShapeLayer];
     [(CKPinnedConversationTypingBubble *)v7 _updateUserInterfaceStyles];
-    v16 = [(CKPinnedConversationTypingBubble *)v7 layer];
-    [v16 addSublayer:v7->_broadShadowLayer];
+    layer = [(CKPinnedConversationTypingBubble *)v7 layer];
+    [layer addSublayer:v7->_broadShadowLayer];
 
-    v17 = [(CKPinnedConversationTypingBubble *)v7 layer];
-    [v17 addSublayer:v7->_tightShadowLayer];
+    layer2 = [(CKPinnedConversationTypingBubble *)v7 layer];
+    [layer2 addSublayer:v7->_tightShadowLayer];
 
-    v18 = [(CKPinnedConversationTypingBubble *)v7 layer];
-    [v18 addSublayer:v7->_backdropLayer];
+    layer3 = [(CKPinnedConversationTypingBubble *)v7 layer];
+    [layer3 addSublayer:v7->_backdropLayer];
 
     v19 = objc_alloc_init(MEMORY[0x1E6979398]);
     thinkingDotContainer = v7->_thinkingDotContainer;
@@ -69,8 +69,8 @@
     v21 = v7->_thinkingDotContainer;
     [(CKPinnedConversationTypingBubble *)v7 bounds];
     [(CALayer *)v21 setBounds:?];
-    v22 = [(CKPinnedConversationTypingBubble *)v7 layer];
-    [v22 addSublayer:v7->_thinkingDotContainer];
+    layer4 = [(CKPinnedConversationTypingBubble *)v7 layer];
+    [layer4 addSublayer:v7->_thinkingDotContainer];
 
     v23 = objc_alloc_init(MEMORY[0x1E69794A0]);
     thinkingDot = v7->_thinkingDot;
@@ -108,9 +108,9 @@
     [v30 setFillMode:*MEMORY[0x1E69797E0]];
     [v30 setRemovedOnCompletion:0];
     [(CAShapeLayer *)v7->_thinkingDot addAnimation:v30 forKey:@"Opacity"];
-    v40 = [MEMORY[0x1E6979430] layer];
+    layer5 = [MEMORY[0x1E6979430] layer];
     thinkingDots = v7->_thinkingDots;
-    v7->_thinkingDots = v40;
+    v7->_thinkingDots = layer5;
 
     [(CAReplicatorLayer *)v7->_thinkingDots setInstanceCount:3];
     v42 = v7->_thinkingDots;
@@ -139,7 +139,7 @@
   v20 = 0;
   [(CKPinnedConversationTypingBubble *)self calculateBezierPathWithOutputsForPath:&v20 largeBubbleFrame:&v23 mediumBubbleFrame:v22 smallBubbleFrame:v21];
   v3 = v20;
-  v4 = [v3 CGPath];
+  cGPath = [v3 CGPath];
   [v3 bounds];
   v6 = v5;
   v8 = v7;
@@ -149,20 +149,20 @@
   [(CAShapeLayer *)self->_backdropMaskShapeLayer setFrame:v6, v8, v10, v12];
   [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setFrame:v6, v8, v10, v12];
   [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setFrame:v6, v8, v10, v12];
-  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:v4];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:v4];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:v4];
+  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:cGPath];
   [(CKPinnedConversationTypingBubble *)self thinkingDotContainerSize];
   v14 = v13;
   v16 = v15;
   v17 = CGRectGetMinX(v23) + (v23.size.width - v13) * 0.5;
   v18 = CGRectGetMinY(v23) + (v23.size.height - v16) * 0.5;
-  v19 = [(CKPinnedConversationTypingBubble *)self thinkingDotContainer];
+  thinkingDotContainer = [(CKPinnedConversationTypingBubble *)self thinkingDotContainer];
 
-  [v19 setFrame:{v17, v18, v14, v16}];
+  [thinkingDotContainer setFrame:{v17, v18, v14, v16}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   memset(v13, 0, sizeof(v13));
   memset(v12, 0, sizeof(v12));
@@ -228,9 +228,9 @@
 
 - (void)_updateThinkingDotColor
 {
-  v4 = [(CKPinnedConversationTypingBubble *)self thinkingDotColor];
-  v3 = v4;
-  -[CAShapeLayer setFillColor:](self->_thinkingDot, "setFillColor:", [v4 CGColor]);
+  thinkingDotColor = [(CKPinnedConversationTypingBubble *)self thinkingDotColor];
+  v3 = thinkingDotColor;
+  -[CAShapeLayer setFillColor:](self->_thinkingDot, "setFillColor:", [thinkingDotColor CGColor]);
 }
 
 - (CGSize)thinkingDotContainerSize
@@ -261,11 +261,11 @@
   }
 }
 
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate
 {
-  if (self->_preferredTailAttachmentPointXCoordinate != a3)
+  if (self->_preferredTailAttachmentPointXCoordinate != coordinate)
   {
-    self->_preferredTailAttachmentPointXCoordinate = a3;
+    self->_preferredTailAttachmentPointXCoordinate = coordinate;
     [(CKPinnedConversationTypingBubble *)self setNeedsLayout];
   }
 }
@@ -277,10 +277,10 @@
   memset(&v10, 0, sizeof(v10));
   v9 = 0;
   [(CKPinnedConversationTypingBubble *)self calculateBezierPathWithOutputsForPath:&v9 largeBubbleFrame:v12 mediumBubbleFrame:v11 smallBubbleFrame:&v10];
-  v3 = [(CKPinnedConversationTypingBubble *)self tailCornerAnchor];
+  tailCornerAnchor = [(CKPinnedConversationTypingBubble *)self tailCornerAnchor];
   v4 = 0.0;
-  v5 = v3 + 1;
-  if (v3 + 1 > 9)
+  v5 = tailCornerAnchor + 1;
+  if (tailCornerAnchor + 1 > 9)
   {
     MidX = 0.0;
     goto LABEL_7;
@@ -310,16 +310,16 @@ LABEL_7:
   return result;
 }
 
-- (void)setOriginationDirection:(int64_t)a3
+- (void)setOriginationDirection:(int64_t)direction
 {
-  if (self->_originationDirection != a3)
+  if (self->_originationDirection != direction)
   {
-    self->_originationDirection = a3;
+    self->_originationDirection = direction;
     [(CKPinnedConversationTypingBubble *)self setNeedsLayout];
   }
 }
 
-- (void)calculateBezierPathWithOutputsForPath:(id *)a3 largeBubbleFrame:(CGRect *)a4 mediumBubbleFrame:(CGRect *)a5 smallBubbleFrame:(CGRect *)a6
+- (void)calculateBezierPathWithOutputsForPath:(id *)path largeBubbleFrame:(CGRect *)frame mediumBubbleFrame:(CGRect *)bubbleFrame smallBubbleFrame:(CGRect *)smallBubbleFrame
 {
   [(CKPinnedConversationTypingBubble *)self largeBubbleSize];
   v12 = v11;
@@ -338,17 +338,17 @@ LABEL_7:
   v63 = v26;
   [(CKPinnedConversationTypingBubble *)self largeBubbleCornerRadius];
   v66 = v27;
-  v28 = [(CKPinnedConversationTypingBubble *)self tailCornerAnchor];
+  tailCornerAnchor = [(CKPinnedConversationTypingBubble *)self tailCornerAnchor];
   v29 = *MEMORY[0x1E695F058];
   v30 = *(MEMORY[0x1E695F058] + 8);
   v31 = *MEMORY[0x1E695F058];
-  if (v28 > 3)
+  if (tailCornerAnchor > 3)
   {
-    if (v28 != 4)
+    if (tailCornerAnchor != 4)
     {
       v61 = v21;
       v57 = v19;
-      if (v28 == 8)
+      if (tailCornerAnchor == 8)
       {
         v40 = *MEMORY[0x1E695F058];
         v59 = *MEMORY[0x1E695F058];
@@ -411,11 +411,11 @@ LABEL_7:
 
   else
   {
-    if (v28 != 1)
+    if (tailCornerAnchor != 1)
     {
       v61 = v21;
       v57 = v19;
-      if (v28 == 2)
+      if (tailCornerAnchor == 2)
       {
         rect_8a = *MEMORY[0x1E695F058];
         v58 = *MEMORY[0x1E695F058];
@@ -488,66 +488,66 @@ LABEL_11:
   v55 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:?];
   [rect_24a appendPath:v54];
   [rect_24a appendPath:v55];
-  if (a3)
+  if (path)
   {
     v56 = rect_24a;
-    *a3 = rect_24a;
+    *path = rect_24a;
   }
 
-  if (a4)
+  if (frame)
   {
-    a4->origin.x = rect_16;
-    a4->origin.y = v64;
-    a4->size.width = v12;
-    a4->size.height = v34;
+    frame->origin.x = rect_16;
+    frame->origin.y = v64;
+    frame->size.width = v12;
+    frame->size.height = v34;
   }
 
-  if (a5)
+  if (bubbleFrame)
   {
-    a5->origin.x = rect_8;
-    a5->origin.y = v36;
-    a5->size.width = v15;
-    a5->size.height = v17;
+    bubbleFrame->origin.x = rect_8;
+    bubbleFrame->origin.y = v36;
+    bubbleFrame->size.width = v15;
+    bubbleFrame->size.height = v17;
   }
 
-  if (a6)
+  if (smallBubbleFrame)
   {
-    a6->origin.x = x;
-    a6->origin.y = v30;
-    a6->size.width = v19;
-    a6->size.height = v21;
+    smallBubbleFrame->origin.x = x;
+    smallBubbleFrame->origin.y = v30;
+    smallBubbleFrame->size.width = v19;
+    smallBubbleFrame->size.height = v21;
   }
 }
 
-- (void)setActivityItem:(id)a3
+- (void)setActivityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_typingBubbleActivityItem, a3);
+    objc_storeStrong(&self->_typingBubbleActivityItem, item);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKPinnedConversationTypingBubble;
-  [(CKPinnedConversationTypingBubble *)&v4 traitCollectionDidChange:a3];
+  [(CKPinnedConversationTypingBubble *)&v4 traitCollectionDidChange:change];
   [(CKPinnedConversationTypingBubble *)self _updateThinkingDotColor];
   [(CKPinnedConversationTypingBubble *)self _updateUserInterfaceStyles];
 }
 
 - (void)_updateUserInterfaceStyles
 {
-  v3 = [(CKPinnedConversationTypingBubble *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CKPinnedConversationTypingBubble *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:v4];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:userInterfaceStyle];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:userInterfaceStyle];
   tightShadowLayer = self->_tightShadowLayer;
 
-  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:userInterfaceStyle];
 }
 
 - (CKPinnedConversationActivityItemViewDelegate)activityItemViewDelegate

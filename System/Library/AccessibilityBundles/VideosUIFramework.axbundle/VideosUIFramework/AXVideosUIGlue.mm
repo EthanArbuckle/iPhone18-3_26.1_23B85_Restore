@@ -8,8 +8,8 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global_0 withPreValidationHandler:&__block_literal_global_295 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_304];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global_0 withPreValidationHandler:&__block_literal_global_295 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_304];
 
     _Failover = [objc_allocWithZone(AXVideosUIGlue) init];
 

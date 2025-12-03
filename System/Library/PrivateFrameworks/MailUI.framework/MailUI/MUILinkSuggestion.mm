@@ -1,42 +1,42 @@
 @interface MUILinkSuggestion
-+ (id)suggestionWithURL:(id)a3 title:(id)a4 richLinkID:(id)a5 authors:(id)a6 authorEmailAddresses:(id)a7 objectID:(id)a8 messageID:(id)a9 messageList:(id)a10;
-- (MUILinkSuggestion)initWithURL:(id)a3 title:(id)a4 richLinkID:(id)a5 authors:(id)a6 authorEmailAddresses:(id)a7 objectID:(id)a8 messageID:(id)a9 messageList:(id)a10;
++ (id)suggestionWithURL:(id)l title:(id)title richLinkID:(id)d authors:(id)authors authorEmailAddresses:(id)addresses objectID:(id)iD messageID:(id)messageID messageList:(id)self0;
+- (MUILinkSuggestion)initWithURL:(id)l title:(id)title richLinkID:(id)d authors:(id)authors authorEmailAddresses:(id)addresses objectID:(id)iD messageID:(id)messageID messageList:(id)self0;
 - (id)description;
 @end
 
 @implementation MUILinkSuggestion
 
-+ (id)suggestionWithURL:(id)a3 title:(id)a4 richLinkID:(id)a5 authors:(id)a6 authorEmailAddresses:(id)a7 objectID:(id)a8 messageID:(id)a9 messageList:(id)a10
++ (id)suggestionWithURL:(id)l title:(id)title richLinkID:(id)d authors:(id)authors authorEmailAddresses:(id)addresses objectID:(id)iD messageID:(id)messageID messageList:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [[a1 alloc] initWithURL:v24 title:v23 richLinkID:v22 authors:v21 authorEmailAddresses:v20 objectID:v19 messageID:v18 messageList:v17];
+  listCopy = list;
+  messageIDCopy = messageID;
+  iDCopy = iD;
+  addressesCopy = addresses;
+  authorsCopy = authors;
+  dCopy = d;
+  titleCopy = title;
+  lCopy = l;
+  v25 = [[self alloc] initWithURL:lCopy title:titleCopy richLinkID:dCopy authors:authorsCopy authorEmailAddresses:addressesCopy objectID:iDCopy messageID:messageIDCopy messageList:listCopy];
 
   return v25;
 }
 
-- (MUILinkSuggestion)initWithURL:(id)a3 title:(id)a4 richLinkID:(id)a5 authors:(id)a6 authorEmailAddresses:(id)a7 objectID:(id)a8 messageID:(id)a9 messageList:(id)a10
+- (MUILinkSuggestion)initWithURL:(id)l title:(id)title richLinkID:(id)d authors:(id)authors authorEmailAddresses:(id)addresses objectID:(id)iD messageID:(id)messageID messageList:(id)self0
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v17 = a9;
+  lCopy = l;
+  titleCopy = title;
+  dCopy = d;
+  messageIDCopy = messageID;
   v24.receiver = self;
   v24.super_class = MUILinkSuggestion;
-  v18 = [(MUIResultSuggestion *)&v24 initWithObjectID:a8 messageList:a10 authors:a6 authorEmailAddresses:a7];
+  v18 = [(MUIResultSuggestion *)&v24 initWithObjectID:iD messageList:list authors:authors authorEmailAddresses:addresses];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_url, a3);
-    objc_storeStrong(&v19->_title, a4);
-    objc_storeStrong(&v19->_richLinkID, a5);
-    objc_storeStrong(&v19->_messageID, a9);
+    objc_storeStrong(&v18->_url, l);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v19->_richLinkID, d);
+    objc_storeStrong(&v19->_messageID, messageID);
   }
 
   return v19;
@@ -49,11 +49,11 @@
   url = self->_url;
   title = self->_title;
   richLinkID = self->_richLinkID;
-  v8 = [(MUIResultSuggestion *)self authors];
-  v9 = [(MUIResultSuggestion *)self authorEmailAddresses];
-  v10 = [(MUIResultSuggestion *)self objectID];
-  v11 = [(MUIResultSuggestion *)self messageList];
-  v12 = [v3 stringWithFormat:@"<%@: %p> url=%@ title=%@ richLinkID=%@  authors=%@ authorEmailAddresses=%@ objectID=%@ messageList=%@", v4, self, url, title, richLinkID, v8, v9, v10, v11];
+  authors = [(MUIResultSuggestion *)self authors];
+  authorEmailAddresses = [(MUIResultSuggestion *)self authorEmailAddresses];
+  objectID = [(MUIResultSuggestion *)self objectID];
+  messageList = [(MUIResultSuggestion *)self messageList];
+  v12 = [v3 stringWithFormat:@"<%@: %p> url=%@ title=%@ richLinkID=%@  authors=%@ authorEmailAddresses=%@ objectID=%@ messageList=%@", v4, self, url, title, richLinkID, authors, authorEmailAddresses, objectID, messageList];
 
   return v12;
 }

@@ -1,7 +1,7 @@
 @interface SSItemMedia
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SSItemMedia)init;
-- (SSItemMedia)initWithStoreOfferDictionary:(id)a3;
+- (SSItemMedia)initWithStoreOfferDictionary:(id)dictionary;
 - (id)description;
 - (void)dealloc;
 @end
@@ -35,7 +35,7 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: (%@) %@", -[SSItemMedia description](&v3, sel_description), self->_mediaKind, self->_url];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -44,12 +44,12 @@
   }
 
   url = self->_url;
-  v6 = [a3 URL];
+  v6 = [equal URL];
 
   return [(NSURL *)url isEqual:v6];
 }
 
-- (SSItemMedia)initWithStoreOfferDictionary:(id)a3
+- (SSItemMedia)initWithStoreOfferDictionary:(id)dictionary
 {
   v16.receiver = self;
   v16.super_class = SSItemMedia;
@@ -59,63 +59,63 @@
     return v4;
   }
 
-  v5 = [a3 objectForKey:@"preview-url"];
+  v5 = [dictionary objectForKey:@"preview-url"];
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 objectForKey:@"preview-duration"];
+    v7 = [dictionary objectForKey:@"preview-duration"];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
     }
 
     else
     {
-      v8 = -1;
+      intValue = -1;
     }
 
-    v4->_duration = v8;
+    v4->_duration = intValue;
     v4->_protected = 1;
   }
 
   else
   {
-    v9 = [a3 objectForKey:@"asset-url"];
+    v9 = [dictionary objectForKey:@"asset-url"];
     if (!v9)
     {
       goto LABEL_14;
     }
 
     v6 = v9;
-    v10 = [a3 objectForKey:@"duration"];
+    v10 = [dictionary objectForKey:@"duration"];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 intValue];
+      intValue2 = [v10 intValue];
     }
 
     else
     {
-      v11 = -1;
+      intValue2 = -1;
     }
 
-    v4->_duration = v11;
+    v4->_duration = intValue2;
   }
 
   v4->_url = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v6];
 LABEL_14:
-  v12 = [a3 objectForKey:@"duration"];
+  v12 = [dictionary objectForKey:@"duration"];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 intValue];
+    intValue3 = [v12 intValue];
   }
 
   else
   {
-    v13 = -1;
+    intValue3 = -1;
   }
 
-  v4->_fullDuration = v13;
-  v14 = [a3 objectForKey:@"size"];
+  v4->_fullDuration = intValue3;
+  v14 = [dictionary objectForKey:@"size"];
   if (objc_opt_respondsToSelector())
   {
     v4->_mediaFileSize = [v14 longLongValue];

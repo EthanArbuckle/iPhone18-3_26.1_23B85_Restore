@@ -1,9 +1,9 @@
 @interface VCSessionParticipantOneToOneConfig
 - (VCSessionParticipantOneToOneConfig)init;
 - (void)dealloc;
-- (void)setAudioMediaControlInfoGenerator:(void *)a3;
-- (void)setVcMediaQueue:(tagVCMediaQueue *)a3;
-- (void)setVideoMediaControlInfoGenerator:(void *)a3;
+- (void)setAudioMediaControlInfoGenerator:(void *)generator;
+- (void)setVcMediaQueue:(tagVCMediaQueue *)queue;
+- (void)setVideoMediaControlInfoGenerator:(void *)generator;
 @end
 
 @implementation VCSessionParticipantOneToOneConfig
@@ -48,10 +48,10 @@
   [(VCObject *)&v6 dealloc];
 }
 
-- (void)setAudioMediaControlInfoGenerator:(void *)a3
+- (void)setAudioMediaControlInfoGenerator:(void *)generator
 {
   audioMediaControlInfoGenerator = self->_audioMediaControlInfoGenerator;
-  if (audioMediaControlInfoGenerator != a3)
+  if (audioMediaControlInfoGenerator != generator)
   {
     if (audioMediaControlInfoGenerator)
     {
@@ -59,17 +59,17 @@
     }
 
     self->_audioMediaControlInfoGenerator = 0;
-    if (a3)
+    if (generator)
     {
-      self->_audioMediaControlInfoGenerator = CFRetain(a3);
+      self->_audioMediaControlInfoGenerator = CFRetain(generator);
     }
   }
 }
 
-- (void)setVideoMediaControlInfoGenerator:(void *)a3
+- (void)setVideoMediaControlInfoGenerator:(void *)generator
 {
   videoMediaControlInfoGenerator = self->_videoMediaControlInfoGenerator;
-  if (videoMediaControlInfoGenerator != a3)
+  if (videoMediaControlInfoGenerator != generator)
   {
     if (videoMediaControlInfoGenerator)
     {
@@ -77,26 +77,26 @@
     }
 
     self->_videoMediaControlInfoGenerator = 0;
-    if (a3)
+    if (generator)
     {
-      self->_videoMediaControlInfoGenerator = CFRetain(a3);
+      self->_videoMediaControlInfoGenerator = CFRetain(generator);
     }
   }
 }
 
-- (void)setVcMediaQueue:(tagVCMediaQueue *)a3
+- (void)setVcMediaQueue:(tagVCMediaQueue *)queue
 {
   vcMediaQueue = self->_vcMediaQueue;
-  if (vcMediaQueue != a3)
+  if (vcMediaQueue != queue)
   {
     if (vcMediaQueue)
     {
       CFRelease(vcMediaQueue);
     }
 
-    if (a3)
+    if (queue)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(queue);
     }
 
     else

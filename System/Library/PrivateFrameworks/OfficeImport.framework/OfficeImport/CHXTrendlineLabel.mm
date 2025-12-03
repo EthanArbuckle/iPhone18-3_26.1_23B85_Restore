@@ -1,35 +1,35 @@
 @interface CHXTrendlineLabel
-+ (id)chdTrendlineLabelFromXmlTrendlineLabelElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdTrendlineLabelFromXmlTrendlineLabelElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXTrendlineLabel
 
-+ (id)chdTrendlineLabelFromXmlTrendlineLabelElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdTrendlineLabelFromXmlTrendlineLabelElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 resources];
-  v7 = [CHDTrendlineLabel trendlineLabelWithResources:v6];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  v7 = [CHDTrendlineLabel trendlineLabelWithResources:resources];
 
-  v8 = [v5 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "tx");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "tx");
 
   if (v10)
   {
     v25 = 0;
     v26 = 0;
-    [CHXString readFromXmlTxElement:v10 formula:&v26 lastCached:&v25 state:v5];
+    [CHXString readFromXmlTxElement:v10 formula:&v26 lastCached:&v25 state:stateCopy];
     v11 = v26;
     v12 = v25;
-    v13 = [v5 chart];
-    [v7 setName:v11 chart:v13];
+    chart = [stateCopy chart];
+    [v7 setName:v11 chart:chart];
 
     [v7 setLastCachedName:v12];
   }
 
-  v14 = [v5 drawingState];
-  v15 = [v14 OAXChartNamespace];
-  v16 = OCXFindChild(a3, v15, "numFmt");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v16 = OCXFindChild(element, oAXChartNamespace2, "numFmt");
 
   if (v16)
   {
@@ -52,7 +52,7 @@
   }
 
   v21 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v21 element:a3 state:v5];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v21 element:element state:stateCopy];
   [v7 setGraphicProperties:v21];
 
   return v7;

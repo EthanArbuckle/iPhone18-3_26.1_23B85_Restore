@@ -1,42 +1,42 @@
 @interface SearchUIUpdateSportsFollowingStatusHandler
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIUpdateSportsFollowingStatusHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v5 = a3;
-  v6 = [v5 sportsItem];
-  v7 = [v5 follow];
+  commandCopy = command;
+  sportsItem = [commandCopy sportsItem];
+  follow = [commandCopy follow];
 
-  v8 = [v6 type];
-  if ((v8 - 1) > 1)
+  type = [sportsItem type];
+  if ((type - 1) > 1)
   {
-    if (v8 == 3)
+    if (type == 3)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __86__SearchUIUpdateSportsFollowingStatusHandler_performCommand_triggerEvent_environment___block_invoke_2;
       aBlock[3] = &__block_descriptor_33_e17_v16__0__NSError_8l;
-      v12 = v7;
+      v12 = follow;
       v9 = _Block_copy(aBlock);
-      v10 = [v6 identifier];
-      if (v7)
+      identifier = [sportsItem identifier];
+      if (follow)
       {
-        [_TtC8SearchUI26SearchUISportsKitUtilities createSessionWithCanonicalId:v10 completionBlock:v9];
+        [_TtC8SearchUI26SearchUISportsKitUtilities createSessionWithCanonicalId:identifier completionBlock:v9];
       }
 
       else
       {
-        [_TtC8SearchUI26SearchUISportsKitUtilities destroySessionWithCanonicalId:v10 completionBlock:v9];
+        [_TtC8SearchUI26SearchUISportsKitUtilities destroySessionWithCanonicalId:identifier completionBlock:v9];
       }
     }
   }
 
   else
   {
-    [_TtC8SearchUI19SearchUITVUtilities updateSportsItemFavoriteStatusWithSportsItem:v6 shouldBeFavorite:v7 completionHandler:&__block_literal_global_28];
+    [_TtC8SearchUI19SearchUITVUtilities updateSportsItemFavoriteStatusWithSportsItem:sportsItem shouldBeFavorite:follow completionHandler:&__block_literal_global_28];
   }
 }
 

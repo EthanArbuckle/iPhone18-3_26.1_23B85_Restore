@@ -1,14 +1,14 @@
 @interface PeppyHIDService
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5;
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client;
 - (PeppyHIDService)init;
-- (id)_getPropertyForKey:(id)a3;
-- (id)eventMatching:(id)a3 forClient:(id)a4;
-- (id)propertyForKey:(id)a3 client:(id)a4;
-- (int)_probeWithService:(unsigned int)a3 properties:(id)a4 outScore:(int *)a5;
-- (int)_startWithService:(unsigned int)a3 properties:(id)a4;
-- (void)_scheduleWithDispatchQueue:(id)a3;
-- (void)_setEventCallback:(void *)a3 target:(void *)a4 refcon:(void *)a5;
-- (void)_unscheduleWithDispatchQueue:(id)a3;
+- (id)_getPropertyForKey:(id)key;
+- (id)eventMatching:(id)matching forClient:(id)client;
+- (id)propertyForKey:(id)key client:(id)client;
+- (int)_probeWithService:(unsigned int)service properties:(id)properties outScore:(int *)score;
+- (int)_startWithService:(unsigned int)service properties:(id)properties;
+- (void)_scheduleWithDispatchQueue:(id)queue;
+- (void)_setEventCallback:(void *)callback target:(void *)target refcon:(void *)refcon;
+- (void)_unscheduleWithDispatchQueue:(id)queue;
 - (void)dealloc;
 @end
 
@@ -63,37 +63,37 @@
   [(PeppyHIDService *)&v3 dealloc];
 }
 
-- (id)propertyForKey:(id)a3 client:(id)a4
+- (id)propertyForKey:(id)key client:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  clientCopy = client;
   abort();
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  propertyCopy = property;
+  keyCopy = key;
+  clientCopy = client;
   abort();
 }
 
-- (id)eventMatching:(id)a3 forClient:(id)a4
+- (id)eventMatching:(id)matching forClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  matchingCopy = matching;
+  clientCopy = client;
   abort();
 }
 
-- (int)_probeWithService:(unsigned int)a3 properties:(id)a4 outScore:(int *)a5
+- (int)_probeWithService:(unsigned int)service properties:(id)properties outScore:(int *)score
 {
-  v6 = *&a3;
-  v7 = a4;
+  v6 = *&service;
+  propertiesCopy = properties;
   v10 = 0;
-  if ([objc_opt_class() matchService:v6 options:v7 score:&v10])
+  if ([objc_opt_class() matchService:v6 options:propertiesCopy score:&v10])
   {
     v8 = 0;
-    *a5 = v10;
+    *score = v10;
   }
 
   else
@@ -104,9 +104,9 @@
   return v8;
 }
 
-- (int)_startWithService:(unsigned int)a3 properties:(id)a4
+- (int)_startWithService:(unsigned int)service properties:(id)properties
 {
-  v4 = [(PeppyHIDService *)self initWithService:*&a3];
+  v4 = [(PeppyHIDService *)self initWithService:*&service];
 
   if (v4)
   {
@@ -119,35 +119,35 @@
   }
 }
 
-- (id)_getPropertyForKey:(id)a3
+- (id)_getPropertyForKey:(id)key
 {
-  v3 = [(PeppyHIDService *)self propertyForKey:a3 client:0];
+  v3 = [(PeppyHIDService *)self propertyForKey:key client:0];
 
   return v3;
 }
 
-- (void)_setEventCallback:(void *)a3 target:(void *)a4 refcon:(void *)a5
+- (void)_setEventCallback:(void *)callback target:(void *)target refcon:(void *)refcon
 {
   v9 = objc_opt_new();
-  v9[1] = a3;
-  v9[2] = a4;
-  v9[3] = a5;
+  v9[1] = callback;
+  v9[2] = target;
+  v9[3] = refcon;
   v10 = v9;
   [(PeppyHIDService *)self setEventDispatcher:?];
 }
 
-- (void)_scheduleWithDispatchQueue:(id)a3
+- (void)_scheduleWithDispatchQueue:(id)queue
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  queueCopy = queue;
+  v6 = queueCopy;
+  if (queueCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __46__PeppyHIDService__scheduleWithDispatchQueue___block_invoke;
     block[3] = &unk_109250;
     block[4] = self;
-    v9 = v5;
+    v9 = queueCopy;
     dispatch_async(v9, block);
   }
 
@@ -167,10 +167,10 @@ id __46__PeppyHIDService__scheduleWithDispatchQueue___block_invoke(uint64_t a1)
   return [v2 activate];
 }
 
-- (void)_unscheduleWithDispatchQueue:(id)a3
+- (void)_unscheduleWithDispatchQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"PeppyHIDService.mm" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -181,7 +181,7 @@ id __46__PeppyHIDService__scheduleWithDispatchQueue___block_invoke(uint64_t a1)
   block[2] = __48__PeppyHIDService__unscheduleWithDispatchQueue___block_invoke;
   block[3] = &unk_109150;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queueCopy, block);
 }
 
 @end

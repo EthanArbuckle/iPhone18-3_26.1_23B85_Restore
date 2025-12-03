@@ -25,14 +25,14 @@
   v16[1] = 0x3032000000;
   v16[2] = __Block_byref_object_copy_;
   v16[3] = __Block_byref_object_dispose_;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __42__NSArray_xpcarrayConv__initWithXPCArray___block_invoke;
   v12 = &unk_2798EF348;
   v14 = &v15;
-  v5 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = selfCopy;
   if (xpc_array_apply(v4, &v9))
   {
     v6 = defaultLogHandle();
@@ -41,8 +41,8 @@
       [(NSArray(xpcarrayConv) *)v16 initWithXPCArray:v6];
     }
 
-    v5 = [v5 initWithArray:{*(v16[0] + 40), v9, v10, v11, v12}];
-    v7 = v5;
+    selfCopy = [selfCopy initWithArray:{*(v16[0] + 40), v9, v10, v11, v12}];
+    v7 = selfCopy;
   }
 
   else
@@ -68,7 +68,7 @@
   v3 = v2;
   v7 = v3;
   v8 = &v9;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
   if (v10[3])
   {
     v4 = v3;
@@ -87,14 +87,14 @@
 - (id)xpcSafeArrayFromArray
 {
   v44 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = a1;
+    obj = self;
     v2 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (!v2)
     {
@@ -234,15 +234,15 @@ LABEL_34:
   v4 = v3;
   if (v3)
   {
-    if (![v3 conformsToProtocol:&unk_286AE26D0] || (objc_msgSend(MEMORY[0x277CCAAB0], "archivedDataWithRootObject:requiringSecureCoding:error:", v4, 0, 0), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![v3 conformsToProtocol:&unk_286AE26D0] || (objc_msgSend(MEMORY[0x277CCAAB0], "archivedDataWithRootObject:requiringSecureCoding:error:", v4, 0, 0), (data = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if (![MEMORY[0x277CCAC58] propertyList:v4 isValidForFormat:200] || (objc_msgSend(MEMORY[0x277CCAC58], "dataWithPropertyList:format:options:error:", v4, 200, 0, 0), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![MEMORY[0x277CCAC58] propertyList:v4 isValidForFormat:200] || (objc_msgSend(MEMORY[0x277CCAC58], "dataWithPropertyList:format:options:error:", v4, 200, 0, 0), (data = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:0];
-        if (!v5)
+        data = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:0];
+        if (!data)
         {
           v6 = [v4 description];
-          v5 = [v6 dataUsingEncoding:4];
+          data = [v6 dataUsingEncoding:4];
         }
       }
     }
@@ -250,12 +250,12 @@ LABEL_34:
 
   else
   {
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return data;
 }
 
 - (void)initWithXPCArray:()xpcarrayConv .cold.1(uint64_t a1, NSObject *a2)

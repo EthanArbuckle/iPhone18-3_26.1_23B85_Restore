@@ -1,19 +1,19 @@
 @interface UITextSearchingDimmingView
 - (UIEdgeInsets)contentInset;
-- (UITextSearchingDimmingView)initWithFrame:(CGRect)a3;
-- (void)_updatePunchoutPathForVisibleRect:(CGRect)a3;
+- (UITextSearchingDimmingView)initWithFrame:(CGRect)frame;
+- (void)_updatePunchoutPathForVisibleRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setTextRects:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTextRects:(id)rects;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UITextSearchingDimmingView
 
-- (UITextSearchingDimmingView)initWithFrame:(CGRect)a3
+- (UITextSearchingDimmingView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = UITextSearchingDimmingView;
-  v3 = [(UIView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69794A0]);
@@ -24,8 +24,8 @@
     -[CAShapeLayer setFillColor:](v3->_brighteningLayer, "setFillColor:", [v6 CGColor]);
 
     [(CAShapeLayer *)v3->_brighteningLayer setCompositingFilter:*MEMORY[0x1E6979C30]];
-    v7 = [(UIView *)v3 layer];
-    [v7 addSublayer:v3->_brighteningLayer];
+    layer = [(UIView *)v3 layer];
+    [layer addSublayer:v3->_brighteningLayer];
 
     v8 = objc_alloc_init(MEMORY[0x1E6979398]);
     dimmingLayer = v3->_dimmingLayer;
@@ -34,8 +34,8 @@
     v10 = +[UIColor _dimmingViewColor];
     -[CALayer setBackgroundColor:](v3->_dimmingLayer, "setBackgroundColor:", [v10 CGColor]);
 
-    v11 = [(UIView *)v3 layer];
-    [v11 addSublayer:v3->_dimmingLayer];
+    layer2 = [(UIView *)v3 layer];
+    [layer2 addSublayer:v3->_dimmingLayer];
 
     v12 = objc_alloc_init(MEMORY[0x1E69794A0]);
     punchoutLayer = v3->_punchoutLayer;
@@ -48,26 +48,26 @@
   return v3;
 }
 
-- (void)setTextRects:(id)a3
+- (void)setTextRects:(id)rects
 {
   self->_punchoutPathIsValid = 0;
-  objc_storeStrong(&self->_textRects, a3);
+  objc_storeStrong(&self->_textRects, rects);
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = UITextSearchingDimmingView;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)_updatePunchoutPathForVisibleRect:(CGRect)a3
+- (void)_updatePunchoutPathForVisibleRect:(CGRect)rect
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -109,7 +109,7 @@
           v46.origin.y = v13;
           v46.size.width = v15;
           v46.size.height = v17;
-          if (CGRectIntersectsRect(v46, a3))
+          if (CGRectIntersectsRect(v46, rect))
           {
             [(UIView *)self contentScaleFactor];
             v25 = UIRectIntegralWithScale(v11 - v20 - left, v13 - v23 - top, v15, v17, v24);
@@ -117,7 +117,7 @@
             v29 = v28;
             v31 = v30;
             v32 = [MEMORY[0x1E696B098] valueWithRect:?];
-            [v4 addObject:v32];
+            [array addObject:v32];
             v47.origin.x = v25;
             v47.origin.y = v27;
             v47.size.width = v29;
@@ -155,13 +155,13 @@
     v33 = Height * 0.25;
   }
 
-  v34 = [[UIPreviewParameters alloc] initWithTextLineRects:v4];
+  v34 = [[UIPreviewParameters alloc] initWithTextLineRects:array];
   [(UIPreviewParameters *)v34 _setTextPathCornerRadius:v33];
   [(UIPreviewParameters *)v34 _setTextPathInsets:0.0, 0.0, 0.0, 0.0];
-  v35 = [(UIPreviewParameters *)v34 visiblePath];
-  v36 = [v35 CGPath];
+  visiblePath = [(UIPreviewParameters *)v34 visiblePath];
+  cGPath = [visiblePath CGPath];
 
-  [(CAShapeLayer *)self->_punchoutLayer setPath:CGPathCreateMutableCopy(v36)];
+  [(CAShapeLayer *)self->_punchoutLayer setPath:CGPathCreateMutableCopy(cGPath)];
 }
 
 - (void)layoutSubviews
@@ -173,12 +173,12 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(UIView *)self _containingScrollView];
+    _containingScrollView = [(UIView *)self _containingScrollView];
 
-    if (v11)
+    if (_containingScrollView)
     {
-      v12 = [(UIView *)self _containingScrollView];
-      [v12 visibleBounds];
+      _containingScrollView2 = [(UIView *)self _containingScrollView];
+      [_containingScrollView2 visibleBounds];
       v4 = v13;
       v6 = v14;
       v8 = v15;
@@ -189,15 +189,15 @@
     self->_punchoutPathIsValid = 1;
   }
 
-  v17 = [(UIView *)self traitCollection];
-  v18 = [v17 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v18 == 2)
+  if (userInterfaceStyle == 2)
   {
     [(CAShapeLayer *)self->_brighteningLayer setPath:CGPathCreateMutableCopy([(CAShapeLayer *)self->_punchoutLayer path])];
   }
 
-  [(CAShapeLayer *)self->_brighteningLayer setHidden:v18 != 2];
+  [(CAShapeLayer *)self->_brighteningLayer setHidden:userInterfaceStyle != 2];
   [(UIView *)self bounds];
   dimmingLayer = self->_dimmingLayer;
 

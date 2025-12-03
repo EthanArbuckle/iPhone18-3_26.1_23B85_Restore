@@ -1,36 +1,36 @@
 @interface ATXModeConfigurationLogger
 - (ATXModeConfigurationLogger)init;
-- (ATXModeConfigurationLogger)initWithDNDModeConfigurationClient:(id)a3;
-- (void)logMetricForConfiguration:(id)a3;
-- (void)logModeConfigurationsWithXPCActivity:(id)a3;
+- (ATXModeConfigurationLogger)initWithDNDModeConfigurationClient:(id)client;
+- (void)logMetricForConfiguration:(id)configuration;
+- (void)logModeConfigurationsWithXPCActivity:(id)activity;
 - (void)retrieveEvents;
 @end
 
 @implementation ATXModeConfigurationLogger
 
-- (ATXModeConfigurationLogger)initWithDNDModeConfigurationClient:(id)a3
+- (ATXModeConfigurationLogger)initWithDNDModeConfigurationClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = ATXModeConfigurationLogger;
   v6 = [(ATXModeConfigurationLogger *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
     v8 = objc_opt_new();
     cachedSuggestedItems = v7->_cachedSuggestedItems;
     v7->_cachedSuggestedItems = v8;
 
-    v10 = [MEMORY[0x277CEB6A8] sharedInstance];
+    mEMORY[0x277CEB6A8] = [MEMORY[0x277CEB6A8] sharedInstance];
     modeEntityTrialClientWrapper = v7->_modeEntityTrialClientWrapper;
-    v7->_modeEntityTrialClientWrapper = v10;
+    v7->_modeEntityTrialClientWrapper = mEMORY[0x277CEB6A8];
 
     [(ATXModeConfigurationLogger *)v7 retrieveEvents];
     v12 = +[ATXPosterConfigurationCache sharedInstance];
-    v13 = [v12 configurations];
+    configurations = [v12 configurations];
     cachedConfigurations = v7->_cachedConfigurations;
-    v7->_cachedConfigurations = v13;
+    v7->_cachedConfigurations = configurations;
   }
 
   return v7;
@@ -38,16 +38,16 @@
 
 - (ATXModeConfigurationLogger)init
 {
-  v3 = [MEMORY[0x277CEB440] sharedInstance];
-  v4 = [(ATXModeConfigurationLogger *)self initWithDNDModeConfigurationClient:v3];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  v4 = [(ATXModeConfigurationLogger *)self initWithDNDModeConfigurationClient:mEMORY[0x277CEB440]];
 
   return v4;
 }
 
-- (void)logModeConfigurationsWithXPCActivity:(id)a3
+- (void)logModeConfigurationsWithXPCActivity:(id)activity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -58,10 +58,10 @@
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "%@ - Logging mode configurations", buf, 0xCu);
   }
 
-  v8 = [(ATXDNDModeConfigurationClient *)self->_client getAllModeConfigurationsWithoutCache];
+  getAllModeConfigurationsWithoutCache = [(ATXDNDModeConfigurationClient *)self->_client getAllModeConfigurationsWithoutCache];
   v9 = __atxlog_handle_metrics();
-  v10 = v9;
-  if (v8)
+  allValues = v9;
+  if (getAllModeConfigurationsWithoutCache)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -69,13 +69,13 @@
       v12 = NSStringFromClass(v11);
       *buf = 138412290;
       v33 = v12;
-      _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_INFO, "%@ - Fetched mode configurations from client", buf, 0xCu);
+      _os_log_impl(&dword_2263AA000, allValues, OS_LOG_TYPE_INFO, "%@ - Fetched mode configurations from client", buf, 0xCu);
     }
 
-    if ([v4 didDefer])
+    if ([activityCopy didDefer])
     {
-      v10 = __atxlog_handle_metrics();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      allValues = __atxlog_handle_metrics();
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_INFO))
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
@@ -83,7 +83,7 @@
         v33 = v14;
         v15 = "%@ - XPC Activity deferred, terminating.";
 LABEL_21:
-        _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_INFO, v15, buf, 0xCu);
+        _os_log_impl(&dword_2263AA000, allValues, OS_LOG_TYPE_INFO, v15, buf, 0xCu);
       }
     }
 
@@ -93,8 +93,8 @@ LABEL_21:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v10 = [v8 allValues];
-      v16 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      allValues = [getAllModeConfigurationsWithoutCache allValues];
+      v16 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v16)
       {
         v17 = v16;
@@ -105,13 +105,13 @@ LABEL_21:
           {
             if (*v28 != v18)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allValues);
             }
 
             v20 = *(*(&v27 + 1) + 8 * i);
             v21 = objc_autoreleasePoolPush();
             [(ATXModeConfigurationLogger *)self logMetricForConfiguration:v20];
-            if ([v4 didDefer])
+            if ([activityCopy didDefer])
             {
               v23 = __atxlog_handle_metrics();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -130,7 +130,7 @@ LABEL_21:
             objc_autoreleasePoolPop(v21);
           }
 
-          v17 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v17 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
           if (v17)
           {
             continue;
@@ -140,8 +140,8 @@ LABEL_21:
         }
       }
 
-      v10 = __atxlog_handle_metrics();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      allValues = __atxlog_handle_metrics();
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_INFO))
       {
         v22 = objc_opt_class();
         v14 = NSStringFromClass(v22);
@@ -163,33 +163,33 @@ LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMetricForConfiguration:(id)a3
+- (void)logMetricForConfiguration:(id)configuration
 {
   v181 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v3 mode];
-    v8 = [v7 identifier];
-    v9 = [v8 UUIDString];
+    mode = [configurationCopy mode];
+    identifier = [mode identifier];
+    uUIDString = [identifier UUIDString];
     *buf = 138412546;
     v173 = v6;
     v174 = 2112;
-    v175 = v9;
+    v175 = uUIDString;
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_INFO, "%@ - Generating metrics for DND mode with UUID %@", buf, 0x16u);
   }
 
   v10 = objc_opt_new();
-  v11 = [v3 mode];
-  v12 = [v11 identifier];
-  v13 = [v12 UUIDString];
-  [v10 setModeIdentifier:v13];
+  mode2 = [configurationCopy mode];
+  identifier2 = [mode2 identifier];
+  uUIDString2 = [identifier2 UUIDString];
+  [v10 setModeIdentifier:uUIDString2];
 
-  v14 = [v3 mode];
-  [v14 semanticType];
+  mode3 = [configurationCopy mode];
+  [mode3 semanticType];
   DNDModeSemanticTypeToATXActivityType();
   v15 = ATXActivityTypeToString();
   [v10 setModeSemanticType:v15];
@@ -207,7 +207,7 @@ LABEL_25:
     }
   }
 
-  v138 = v3;
+  v138 = configurationCopy;
   v134 = v17;
   v168 = 0u;
   v169 = 0u;
@@ -233,8 +233,8 @@ LABEL_25:
         v163 = 0u;
         v164 = 0u;
         v165 = 0u;
-        v23 = [v22 associatedModeUUIDs];
-        v24 = [v23 countByEnumeratingWithState:&v162 objects:v179 count:16];
+        associatedModeUUIDs = [v22 associatedModeUUIDs];
+        v24 = [associatedModeUUIDs countByEnumeratingWithState:&v162 objects:v179 count:16];
         if (v24)
         {
           v25 = v24;
@@ -245,20 +245,20 @@ LABEL_25:
             {
               if (*v163 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(associatedModeUUIDs);
               }
 
               v28 = *(*(&v162 + 1) + 8 * j);
-              v29 = [v10 modeIdentifier];
-              LODWORD(v28) = [v28 isEqualToString:v29];
+              modeIdentifier = [v10 modeIdentifier];
+              LODWORD(v28) = [v28 isEqualToString:modeIdentifier];
 
               if (v28)
               {
                 [v10 setHasCustomHomeScreen:1];
                 [v10 setNumCustomHomeScreens:{objc_msgSend(v10, "numCustomHomeScreens") + 1}];
-                v30 = [v22 associatedModeUUIDs];
-                v31 = [v30 count];
-                v32 = [v10 hasCustomHomeScreenUsedInOtherModes];
+                associatedModeUUIDs2 = [v22 associatedModeUUIDs];
+                v31 = [associatedModeUUIDs2 count];
+                hasCustomHomeScreenUsedInOtherModes = [v10 hasCustomHomeScreenUsedInOtherModes];
                 if (v31 > 1)
                 {
                   v33 = 1;
@@ -266,14 +266,14 @@ LABEL_25:
 
                 else
                 {
-                  v33 = v32;
+                  v33 = hasCustomHomeScreenUsedInOtherModes;
                 }
 
                 [v10 setHasCustomHomeScreenUsedInOtherModes:v33];
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v162 objects:v179 count:16];
+            v25 = [associatedModeUUIDs countByEnumeratingWithState:&v162 objects:v179 count:16];
           }
 
           while (v25);
@@ -286,32 +286,32 @@ LABEL_25:
     while (v20);
   }
 
-  v34 = [(ATXModeConfigurationLogger *)self cachedConfigurations];
+  cachedConfigurations = [(ATXModeConfigurationLogger *)self cachedConfigurations];
   v160[0] = MEMORY[0x277D85DD0];
   v160[1] = 3221225472;
   v160[2] = __56__ATXModeConfigurationLogger_logMetricForConfiguration___block_invoke;
   v160[3] = &unk_27859F778;
   v35 = v138;
   v161 = v35;
-  v36 = [v34 _pas_filteredArrayWithTest:v160];
+  v36 = [cachedConfigurations _pas_filteredArrayWithTest:v160];
   [v10 setNumLockScreenPosters:{objc_msgSend(v36, "count")}];
 
   v37 = objc_opt_new();
-  v38 = [v35 mode];
-  v39 = [v38 identifier];
-  v40 = [v39 UUIDString];
+  mode4 = [v35 mode];
+  identifier3 = [mode4 identifier];
+  uUIDString3 = [identifier3 UUIDString];
   v133 = v37;
-  v41 = [v37 identifierOfSuggestedPageForModeUUID:v40];
+  v41 = [v37 identifierOfSuggestedPageForModeUUID:uUIDString3];
 
   if (v41)
   {
     [v10 setNumAcceptedSuggestedHomePages:1];
   }
 
-  v42 = [v35 mode];
-  v43 = [v42 semanticType];
+  mode5 = [v35 mode];
+  semanticType = [mode5 semanticType];
 
-  if (v43 == 1)
+  if (semanticType == 1)
   {
     v44 = ATXSleepSuggestedHomePageWasCreatedDuringMigration();
     if (!v44)
@@ -323,9 +323,9 @@ LABEL_25:
       }
     }
 
-    v46 = [v44 BOOLValue];
-    [v10 setIsSleepMigrated:v46];
-    [v10 setDidRemoveSuggestedPage:{v46 & (objc_msgSend(v10, "hasCustomHomeScreen") ^ 1)}];
+    bOOLValue = [v44 BOOLValue];
+    [v10 setIsSleepMigrated:bOOLValue];
+    [v10 setDidRemoveSuggestedPage:{bOOLValue & (objc_msgSend(v10, "hasCustomHomeScreen") ^ 1)}];
   }
 
   v158 = 0u;
@@ -333,8 +333,8 @@ LABEL_25:
   v156 = 0u;
   v157 = 0u;
   v139 = v35;
-  v47 = [v35 triggers];
-  v48 = [v47 countByEnumeratingWithState:&v156 objects:v178 count:16];
+  triggers = [v35 triggers];
+  v48 = [triggers countByEnumeratingWithState:&v156 objects:v178 count:16];
   if (v48)
   {
     v49 = v48;
@@ -345,7 +345,7 @@ LABEL_25:
       {
         if (*v157 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(triggers);
         }
 
         v52 = *(*(&v156 + 1) + 8 * k);
@@ -410,37 +410,37 @@ LABEL_25:
         }
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v156 objects:v178 count:16];
+      v49 = [triggers countByEnumeratingWithState:&v156 objects:v178 count:16];
     }
 
     while (v49);
   }
 
-  v53 = [v139 configuration];
-  v54 = [v53 allowIntelligentManagement];
+  configuration = [v139 configuration];
+  allowIntelligentManagement = [configuration allowIntelligentManagement];
 
-  if (v54 == 2)
+  if (allowIntelligentManagement == 2)
   {
     [v10 setIsIntelligentBreakthroughEnabled:1];
   }
 
-  v55 = [(ATXModeConfigurationLogger *)self cachedSuggestedItems];
-  v56 = [v139 mode];
-  v57 = [v56 identifier];
-  v58 = [v57 UUIDString];
-  v59 = [v55 objectForKeyedSubscript:v58];
+  cachedSuggestedItems = [(ATXModeConfigurationLogger *)self cachedSuggestedItems];
+  mode6 = [v139 mode];
+  identifier4 = [mode6 identifier];
+  uUIDString4 = [identifier4 UUIDString];
+  v59 = [cachedSuggestedItems objectForKeyedSubscript:uUIDString4];
 
-  v60 = [v139 configuration];
-  v61 = [v60 applicationConfigurationType];
+  configuration2 = [v139 configuration];
+  applicationConfigurationType = [configuration2 applicationConfigurationType];
 
-  if (v61)
+  if (applicationConfigurationType)
   {
-    if (v61 == 2)
+    if (applicationConfigurationType == 2)
     {
       goto LABEL_73;
     }
 
-    if (v61 != 1)
+    if (applicationConfigurationType != 1)
     {
       v65 = __atxlog_handle_metrics();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_FAULT))
@@ -451,18 +451,18 @@ LABEL_25:
       goto LABEL_72;
     }
 
-    v62 = [v139 configuration];
-    v63 = [v62 applicationsWithExceptions];
+    configuration3 = [v139 configuration];
+    applicationsWithExceptions = [configuration3 applicationsWithExceptions];
 
-    [v10 setNumDeniedApps:{objc_msgSend(v63, "count")}];
-    v64 = [v59 suggestedDeniedApps];
+    [v10 setNumDeniedApps:{objc_msgSend(applicationsWithExceptions, "count")}];
+    suggestedDeniedApps = [v59 suggestedDeniedApps];
     v154[0] = MEMORY[0x277D85DD0];
     v154[1] = 3221225472;
     v154[2] = __56__ATXModeConfigurationLogger_logMetricForConfiguration___block_invoke_57;
     v154[3] = &unk_27859B908;
-    v155 = v63;
-    v65 = v63;
-    v66 = [v64 _pas_filteredSetWithTest:v154];
+    v155 = applicationsWithExceptions;
+    v65 = applicationsWithExceptions;
+    v66 = [suggestedDeniedApps _pas_filteredSetWithTest:v154];
 
     [v10 setNumAcceptedSuggestedApps:{objc_msgSend(v66, "count")}];
     v67 = v155;
@@ -470,18 +470,18 @@ LABEL_25:
 
   else
   {
-    v68 = [v139 configuration];
-    v69 = [v68 applicationsWithExceptions];
+    configuration4 = [v139 configuration];
+    applicationsWithExceptions2 = [configuration4 applicationsWithExceptions];
 
-    [v10 setNumAllowedApps:{objc_msgSend(v69, "count")}];
-    v70 = [v59 suggestedAllowedApps];
+    [v10 setNumAllowedApps:{objc_msgSend(applicationsWithExceptions2, "count")}];
+    suggestedAllowedApps = [v59 suggestedAllowedApps];
     v152[0] = MEMORY[0x277D85DD0];
     v152[1] = 3221225472;
     v152[2] = __56__ATXModeConfigurationLogger_logMetricForConfiguration___block_invoke_2;
     v152[3] = &unk_27859B908;
-    v153 = v69;
-    v65 = v69;
-    v71 = [v70 _pas_filteredSetWithTest:v152];
+    v153 = applicationsWithExceptions2;
+    v65 = applicationsWithExceptions2;
+    v71 = [suggestedAllowedApps _pas_filteredSetWithTest:v152];
 
     [v10 setNumAcceptedSuggestedApps:{objc_msgSend(v71, "count")}];
     v67 = v153;
@@ -489,17 +489,17 @@ LABEL_25:
 
 LABEL_72:
 LABEL_73:
-  v72 = [v139 configuration];
-  v73 = [v72 senderConfigurationType];
+  configuration5 = [v139 configuration];
+  senderConfigurationType = [configuration5 senderConfigurationType];
 
-  if (v73)
+  if (senderConfigurationType)
   {
-    if (v73 == 2)
+    if (senderConfigurationType == 2)
     {
       goto LABEL_82;
     }
 
-    if (v73 != 1)
+    if (senderConfigurationType != 1)
     {
       v77 = __atxlog_handle_metrics();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_FAULT))
@@ -510,18 +510,18 @@ LABEL_73:
       goto LABEL_81;
     }
 
-    v74 = [v139 configuration];
-    v75 = [v74 contactsWithExceptions];
+    configuration6 = [v139 configuration];
+    contactsWithExceptions = [configuration6 contactsWithExceptions];
 
-    [v10 setNumDeniedContacts:{objc_msgSend(v75, "count")}];
-    v76 = [v59 suggestedDeniedContacts];
+    [v10 setNumDeniedContacts:{objc_msgSend(contactsWithExceptions, "count")}];
+    suggestedDeniedContacts = [v59 suggestedDeniedContacts];
     v150[0] = MEMORY[0x277D85DD0];
     v150[1] = 3221225472;
     v150[2] = __56__ATXModeConfigurationLogger_logMetricForConfiguration___block_invoke_59;
     v150[3] = &unk_27859B908;
-    v151 = v75;
-    v77 = v75;
-    v78 = [v76 _pas_filteredSetWithTest:v150];
+    v151 = contactsWithExceptions;
+    v77 = contactsWithExceptions;
+    v78 = [suggestedDeniedContacts _pas_filteredSetWithTest:v150];
 
     [v10 setNumAcceptedSuggestedContacts:{objc_msgSend(v78, "count")}];
     v79 = v151;
@@ -529,18 +529,18 @@ LABEL_73:
 
   else
   {
-    v80 = [v139 configuration];
-    v81 = [v80 contactsWithExceptions];
+    configuration7 = [v139 configuration];
+    contactsWithExceptions2 = [configuration7 contactsWithExceptions];
 
-    [v10 setNumAllowedContacts:{objc_msgSend(v81, "count")}];
-    v82 = [v59 suggestedAllowedContacts];
+    [v10 setNumAllowedContacts:{objc_msgSend(contactsWithExceptions2, "count")}];
+    suggestedAllowedContacts = [v59 suggestedAllowedContacts];
     v148[0] = MEMORY[0x277D85DD0];
     v148[1] = 3221225472;
     v148[2] = __56__ATXModeConfigurationLogger_logMetricForConfiguration___block_invoke_2_60;
     v148[3] = &unk_27859B908;
-    v149 = v81;
-    v77 = v81;
-    v83 = [v82 _pas_filteredSetWithTest:v148];
+    v149 = contactsWithExceptions2;
+    v77 = contactsWithExceptions2;
+    v83 = [suggestedAllowedContacts _pas_filteredSetWithTest:v148];
 
     [v10 setNumAcceptedSuggestedContacts:{objc_msgSend(v83, "count")}];
     v79 = v149;
@@ -549,34 +549,34 @@ LABEL_73:
 LABEL_81:
 LABEL_82:
   v132 = v59;
-  v84 = [v139 configuration];
-  [v84 applicationConfigurationType];
+  configuration8 = [v139 configuration];
+  [configuration8 applicationConfigurationType];
   v85 = DNDStringFromConfigurationType();
   [v10 setAppConfigurationType:v85];
 
-  v86 = [v139 configuration];
-  [v86 senderConfigurationType];
+  configuration9 = [v139 configuration];
+  [configuration9 senderConfigurationType];
   v87 = DNDStringFromConfigurationType();
   [v10 setContactConfigurationType:v87];
 
   [v10 setIsAutomaticallyGenerated:{objc_msgSend(v139, "isAutomaticallyGenerated")}];
   [v10 setDoesImpactAvailability:{objc_msgSend(v139, "impactsAvailability") != 0}];
-  v88 = [(ATXModeConfigurationLogger *)self client];
-  [v10 setIsSharingAcrossDevices:{objc_msgSend(v88, "isCloudSyncActive")}];
+  client = [(ATXModeConfigurationLogger *)self client];
+  [v10 setIsSharingAcrossDevices:{objc_msgSend(client, "isCloudSyncActive")}];
 
-  v89 = [(ATXModeConfigurationLogger *)self client];
-  v90 = [v139 mode];
-  v91 = [v90 modeIdentifier];
+  client2 = [(ATXModeConfigurationLogger *)self client];
+  mode7 = [v139 mode];
+  modeIdentifier2 = [mode7 modeIdentifier];
   v147 = 0;
-  v92 = [v89 appConfigurationsForModeIdentifier:v91 error:&v147];
+  v92 = [client2 appConfigurationsForModeIdentifier:modeIdentifier2 error:&v147];
   v93 = v147;
   [v10 setNumAppConfigurations:{objc_msgSend(v92, "count")}];
 
-  v94 = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper trialExperimentId];
-  [v10 setExperimentId:v94];
+  trialExperimentId = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper trialExperimentId];
+  [v10 setExperimentId:trialExperimentId];
 
-  v95 = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper trialTreatmentId];
-  [v10 setTreatmentId:v95];
+  trialTreatmentId = [(ATXModeEntityTrialClientWrapper *)self->_modeEntityTrialClientWrapper trialTreatmentId];
+  [v10 setTreatmentId:trialTreatmentId];
 
   v96 = [MEMORY[0x277CCABB0] numberWithInt:{-[ATXModeEntityTrialClientWrapper trialDeploymentId](self->_modeEntityTrialClientWrapper, "trialDeploymentId")}];
   [v10 setDeploymentId:v96];
@@ -589,14 +589,14 @@ LABEL_82:
     {
       v127 = objc_opt_class();
       v128 = NSStringFromClass(v127);
-      v129 = [v93 localizedDescription];
-      v130 = [v139 mode];
-      [v130 semanticType];
+      localizedDescription = [v93 localizedDescription];
+      mode8 = [v139 mode];
+      [mode8 semanticType];
       v131 = DNDModeSemanticTypeToString();
       *buf = 138412802;
       v173 = v128;
       v174 = 2112;
-      v175 = v129;
+      v175 = localizedDescription;
       v176 = 2112;
       v177 = v131;
       _os_log_error_impl(&dword_2263AA000, v97, OS_LOG_TYPE_ERROR, "%@: Got error: %@, when getting AppConfigturation for %@", buf, 0x20u);
@@ -604,14 +604,14 @@ LABEL_82:
   }
 
   v98 = MEMORY[0x277CEB930];
-  v99 = [v139 mode];
-  LODWORD(v98) = [v98 suggestionsAreSupportedForModeSemanticType:{objc_msgSend(v99, "semanticType")}];
+  mode9 = [v139 mode];
+  LODWORD(v98) = [v98 suggestionsAreSupportedForModeSemanticType:{objc_msgSend(mode9, "semanticType")}];
 
   if (v98)
   {
     v100 = objc_alloc(MEMORY[0x277CEB930]);
-    v101 = [v139 mode];
-    v102 = [v100 initWithModeSemanticType:{objc_msgSend(v101, "semanticType")}];
+    mode10 = [v139 mode];
+    v102 = [v100 initWithModeSemanticType:{objc_msgSend(mode10, "semanticType")}];
 
     [v10 setWasQuickStartPlatterShown:{objc_msgSend(v102, "suggestionWasAlreadyShown")}];
   }
@@ -619,10 +619,10 @@ LABEL_82:
   v103 = objc_alloc(MEMORY[0x277CBEBD0]);
   v104 = [v103 initWithSuiteName:*MEMORY[0x277CEBD00]];
   v105 = [v104 dictionaryForKey:*MEMORY[0x277CEBDA8]];
-  v106 = [v139 mode];
-  v107 = [v106 modeIdentifier];
-  v108 = [v105 objectForKeyedSubscript:v107];
-  [v10 setWasColoringBookSeen:{objc_msgSend(v108, "BOOLValue")}];
+  mode11 = [v139 mode];
+  modeIdentifier3 = [mode11 modeIdentifier];
+  mode12 = [v105 objectForKeyedSubscript:modeIdentifier3];
+  [v10 setWasColoringBookSeen:{objc_msgSend(mode12, "BOOLValue")}];
 
   [v10 setNumAcceptedSuggestedLockScreens:0];
   v145 = 0u;
@@ -630,10 +630,10 @@ LABEL_82:
   v143 = 0u;
   v144 = 0u;
   v109 = +[ATXPosterConfigurationCache sharedInstance];
-  v110 = [v109 configurations];
+  configurations = [v109 configurations];
 
-  v142 = v110;
-  v111 = [v110 countByEnumeratingWithState:&v143 objects:v171 count:16];
+  v142 = configurations;
+  v111 = [configurations countByEnumeratingWithState:&v143 objects:v171 count:16];
   if (v111)
   {
     v112 = v111;
@@ -647,14 +647,14 @@ LABEL_82:
           objc_enumerationMutation(v142);
         }
 
-        v115 = [*(*(&v143 + 1) + 8 * m) galleryItem];
-        v116 = v115;
-        if (v115 && ([v115 modeSemanticType], (v107 = objc_claimAutoreleasedReturnValue()) != 0))
+        galleryItem = [*(*(&v143 + 1) + 8 * m) galleryItem];
+        v116 = galleryItem;
+        if (galleryItem && ([galleryItem modeSemanticType], (modeIdentifier3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v106 = [v116 modeSemanticType];
-          v117 = [v106 integerValue];
-          v108 = [v139 mode];
-          v118 = v117 == [v108 semanticType] && objc_msgSend(v116, "source") == 6;
+          mode11 = [v116 modeSemanticType];
+          integerValue = [mode11 integerValue];
+          mode12 = [v139 mode];
+          v118 = integerValue == [mode12 semanticType] && objc_msgSend(v116, "source") == 6;
           v119 = 1;
         }
 
@@ -685,13 +685,13 @@ LABEL_82:
   {
     v121 = objc_opt_class();
     v122 = NSStringFromClass(v121);
-    v123 = [v139 mode];
-    v124 = [v123 identifier];
-    v125 = [v124 UUIDString];
+    mode13 = [v139 mode];
+    identifier5 = [mode13 identifier];
+    uUIDString5 = [identifier5 UUIDString];
     *buf = 138412546;
     v173 = v122;
     v174 = 2112;
-    v175 = v125;
+    v175 = uUIDString5;
     _os_log_impl(&dword_2263AA000, v120, OS_LOG_TYPE_INFO, "%@ - Logging metrics for DND mode with UUID %@", buf, 0x16u);
   }
 

@@ -1,9 +1,9 @@
 @interface WBSSavedAccountMatchResult
-+ (BOOL)shouldEvaluateAccountsToConsiderEquivalentForUserName:(id)a3 atURL:(id)a4;
++ (BOOL)shouldEvaluateAccountsToConsiderEquivalentForUserName:(id)name atURL:(id)l;
 - (NSArray)matchesForPasswordAutoFill;
 - (NSArray)orderedMatches;
-- (WBSSavedAccountMatchResult)initWithExactMatches:(id)a3 potentialMatches:(id)a4 associatedDomainMatches:(id)a5 nearbyDeviceOptions:(id)a6;
-- (id)accountsToConsiderEquivalentForUserName:(id)a3 atURL:(id)a4;
+- (WBSSavedAccountMatchResult)initWithExactMatches:(id)matches potentialMatches:(id)potentialMatches associatedDomainMatches:(id)domainMatches nearbyDeviceOptions:(id)options;
+- (id)accountsToConsiderEquivalentForUserName:(id)name atURL:(id)l;
 - (id)debugDescription;
 - (unint64_t)count;
 - (void)addUniqueHostUserToMatches;
@@ -11,18 +11,18 @@
 
 @implementation WBSSavedAccountMatchResult
 
-- (WBSSavedAccountMatchResult)initWithExactMatches:(id)a3 potentialMatches:(id)a4 associatedDomainMatches:(id)a5 nearbyDeviceOptions:(id)a6
+- (WBSSavedAccountMatchResult)initWithExactMatches:(id)matches potentialMatches:(id)potentialMatches associatedDomainMatches:(id)domainMatches nearbyDeviceOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  matchesCopy = matches;
+  potentialMatchesCopy = potentialMatches;
+  domainMatchesCopy = domainMatches;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = WBSSavedAccountMatchResult;
   v14 = [(WBSSavedAccountMatchResult *)&v27 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [matchesCopy copy];
     v16 = v15;
     v17 = MEMORY[0x1E695E0F0];
     if (v15)
@@ -37,7 +37,7 @@
 
     objc_storeStrong(&v14->_exactMatches, v18);
 
-    v19 = [v11 copy];
+    v19 = [potentialMatchesCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -51,7 +51,7 @@
 
     objc_storeStrong(&v14->_potentialMatches, v21);
 
-    v22 = [v12 copy];
+    v22 = [domainMatchesCopy copy];
     v23 = v22;
     if (v22)
     {
@@ -65,7 +65,7 @@
 
     objc_storeStrong(&v14->_associatedDomainMatches, v24);
 
-    objc_storeStrong(&v14->_nearbyDeviceOptions, a6);
+    objc_storeStrong(&v14->_nearbyDeviceOptions, options);
     v25 = v14;
   }
 
@@ -153,8 +153,8 @@ uint64_t __56__WBSSavedAccountMatchResult_matchesForPasswordAutoFill__block_invo
 - (void)addUniqueHostUserToMatches
 {
   v3 = MEMORY[0x1E696AB50];
-  v4 = [(WBSSavedAccountMatchResult *)self orderedMatches];
-  v5 = [v4 safari_mapObjectsUsingBlock:&__block_literal_global_8_0];
+  orderedMatches = [(WBSSavedAccountMatchResult *)self orderedMatches];
+  v5 = [orderedMatches safari_mapObjectsUsingBlock:&__block_literal_global_8_0];
   v6 = [v3 setWithArray:v5];
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -202,35 +202,35 @@ id __56__WBSSavedAccountMatchResult_addUniqueHostUserToMatches__block_invoke_2(u
   return v3;
 }
 
-- (id)accountsToConsiderEquivalentForUserName:(id)a3 atURL:(id)a4
+- (id)accountsToConsiderEquivalentForUserName:(id)name atURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() shouldEvaluateAccountsToConsiderEquivalentForUserName:v6 atURL:v7];
+  nameCopy = name;
+  lCopy = l;
+  v8 = [objc_opt_class() shouldEvaluateAccountsToConsiderEquivalentForUserName:nameCopy atURL:lCopy];
 
   if (v8)
   {
-    v9 = [v6 lowercaseString];
+    lowercaseString = [nameCopy lowercaseString];
 
-    if ([v9 hasSuffix:@"@gmail.com"])
+    if ([lowercaseString hasSuffix:@"@gmail.com"])
     {
-      v10 = [(WBSSavedAccountMatchResult *)self exactMatches];
-      v11 = [(WBSSavedAccountMatchResult *)self associatedDomainMatches];
-      v12 = [v10 arrayByAddingObjectsFromArray:v11];
+      exactMatches = [(WBSSavedAccountMatchResult *)self exactMatches];
+      associatedDomainMatches = [(WBSSavedAccountMatchResult *)self associatedDomainMatches];
+      v12 = [exactMatches arrayByAddingObjectsFromArray:associatedDomainMatches];
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __76__WBSSavedAccountMatchResult_accountsToConsiderEquivalentForUserName_atURL___block_invoke;
       v15[3] = &unk_1E7CF4478;
-      v6 = v9;
-      v16 = v6;
+      nameCopy = lowercaseString;
+      v16 = nameCopy;
       v13 = [v12 safari_mapAndFilterObjectsUsingBlock:v15];
     }
 
     else
     {
       v13 = MEMORY[0x1E695E0F0];
-      v6 = v9;
+      nameCopy = lowercaseString;
     }
   }
 
@@ -262,25 +262,25 @@ id __76__WBSSavedAccountMatchResult_accountsToConsiderEquivalentForUserName_atUR
   return v7;
 }
 
-+ (BOOL)shouldEvaluateAccountsToConsiderEquivalentForUserName:(id)a3 atURL:(id)a4
++ (BOOL)shouldEvaluateAccountsToConsiderEquivalentForUserName:(id)name atURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 length])
+  nameCopy = name;
+  lCopy = l;
+  if (![nameCopy length])
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 host];
-  v8 = [v7 length];
+  host = [lCopy host];
+  v8 = [host length];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v5 lowercaseString];
-  v10 = [v9 hasSuffix:@"@gmail.com"];
+  lowercaseString = [nameCopy lowercaseString];
+  v10 = [lowercaseString hasSuffix:@"@gmail.com"];
 
   if (v10)
   {
@@ -290,9 +290,9 @@ id __76__WBSSavedAccountMatchResult_accountsToConsiderEquivalentForUserName_atUR
     }
 
     v11 = shouldEvaluateAccountsToConsiderEquivalentForUserName_atURL__googleHosts;
-    v12 = [v6 host];
-    v13 = [v12 lowercaseString];
-    v14 = [v11 containsObject:v13];
+    host2 = [lCopy host];
+    lowercaseString2 = [host2 lowercaseString];
+    v14 = [v11 containsObject:lowercaseString2];
   }
 
   else

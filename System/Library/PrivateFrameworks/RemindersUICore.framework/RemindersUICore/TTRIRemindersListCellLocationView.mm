@@ -1,10 +1,10 @@
 @interface TTRIRemindersListCellLocationView
-- (_TtC15RemindersUICore33TTRIRemindersListCellLocationView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore33TTRIRemindersListCellLocationView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TTRIRemindersListCellLocationView
 
-- (_TtC15RemindersUICore33TTRIRemindersListCellLocationView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore33TTRIRemindersListCellLocationView)initWithFrame:(CGRect)frame
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore33TTRIRemindersListCellLocationView_imageBackgroundColor) = 0;

@@ -16,15 +16,15 @@
   v10 = [v7 traitCollectionWithPreferredContentSizeCategory:v8];
   v11 = [v6 preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:v10];
 
-  v12 = [v11 fontAttributes];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
+  fontAttributes = [v11 fontAttributes];
+  v13 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v14 floatValue];
   v16 = v15;
 
   v17 = MEMORY[0x1B8C79DB0](v16);
   [v11 pointSize];
-  v18 = [a1 configurationWithPointSize:v17 weight:a4 scale:?];
+  v18 = [self configurationWithPointSize:v17 weight:a4 scale:?];
 
   return v18;
 }
@@ -39,15 +39,15 @@
   v13 = [v9 traitCollectionWithPreferredContentSizeCategory:v10];
   v14 = [v8 preferredFontDescriptorWithTextStyle:v12 compatibleWithTraitCollection:v13];
 
-  v15 = [v14 fontAttributes];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
+  fontAttributes = [v14 fontAttributes];
+  v16 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
   v17 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v17 floatValue];
   v19 = v18;
 
   v20 = MEMORY[0x1B8C79DB0](v19);
   [v14 pointSize];
-  v21 = [a1 configurationWithPointSize:v20 weight:a4 scale:?];
+  v21 = [self configurationWithPointSize:v20 weight:a4 scale:?];
   v22 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v11];
 
   v23 = [v22 configurationByApplyingConfiguration:v21];
@@ -65,15 +65,15 @@
   v12 = [v9 traitCollectionWithPreferredContentSizeCategory:v10];
   v13 = [v7 preferredFontDescriptorWithTextStyle:v8 compatibleWithTraitCollection:v12];
 
-  v14 = [v13 fontAttributes];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
+  fontAttributes = [v13 fontAttributes];
+  v15 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
   v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v16 floatValue];
   v18 = v17;
 
   v19 = MEMORY[0x1B8C79DB0](v18);
   [v13 pointSize];
-  v20 = [a1 configurationWithPointSize:v19 weight:a4 scale:?];
+  v20 = [self configurationWithPointSize:v19 weight:a4 scale:?];
   v21 = [MEMORY[0x1E69DCAD8] configurationWithPaletteColors:v11];
 
   v22 = [v21 configurationByApplyingConfiguration:v20];
@@ -91,7 +91,7 @@
   v13 = [v8 preferredFontDescriptorWithTextStyle:v11 compatibleWithTraitCollection:v12];
 
   [v13 pointSize];
-  v14 = [a1 configurationWithPointSize:a5 weight:a4 scale:?];
+  v14 = [self configurationWithPointSize:a5 weight:a4 scale:?];
 
   return v14;
 }

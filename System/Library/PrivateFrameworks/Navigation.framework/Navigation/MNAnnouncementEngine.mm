@@ -1,69 +1,69 @@
 @interface MNAnnouncementEngine
-- (BOOL)_advanceToResolveConflict:(id)a3;
-- (BOOL)_compressToResolveConflict:(id)a3;
-- (BOOL)_delayToResolveConflict:(id)a3;
-- (double)_canAdvanceEvent:(id)a3;
-- (double)_canDelayEvent:(id)a3;
+- (BOOL)_advanceToResolveConflict:(id)conflict;
+- (BOOL)_compressToResolveConflict:(id)conflict;
+- (BOOL)_delayToResolveConflict:(id)conflict;
+- (double)_canAdvanceEvent:(id)event;
+- (double)_canDelayEvent:(id)event;
 - (id)nextEvent;
-- (void)_dropToResolveConflict:(id)a3;
-- (void)planForEvents:(id)a3 distance:(double)a4 speed:(double)a5 previousEvent:(id)a6 timeSinceLastEvent:(double)a7 durations:(id)a8;
+- (void)_dropToResolveConflict:(id)conflict;
+- (void)planForEvents:(id)events distance:(double)distance speed:(double)speed previousEvent:(id)event timeSinceLastEvent:(double)lastEvent durations:(id)durations;
 @end
 
 @implementation MNAnnouncementEngine
 
-- (void)_dropToResolveConflict:(id)a3
+- (void)_dropToResolveConflict:(id)conflict
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstEvent];
-  v6 = [v4 secondEvent];
+  conflictCopy = conflict;
+  firstEvent = [conflictCopy firstEvent];
+  secondEvent = [conflictCopy secondEvent];
   v7 = GetAudioLogForMNAnnouncementEngineCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v4 firstEvent];
-    v9 = [v4 secondEvent];
+    firstEvent2 = [conflictCopy firstEvent];
+    secondEvent2 = [conflictCopy secondEvent];
     *buf = 138478083;
-    v29 = v8;
+    v29 = firstEvent2;
     v30 = 2113;
-    v31 = v9;
+    v31 = secondEvent2;
     _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_DEBUG, "Comparing events: %{private}@, %{private}@", buf, 0x16u);
   }
 
-  v10 = [v4 firstEvent];
-  v11 = [v10 event];
-  v12 = [v4 secondEvent];
-  v13 = [v12 event];
-  v14 = [v11 comparePriority:v13];
+  firstEvent3 = [conflictCopy firstEvent];
+  event = [firstEvent3 event];
+  secondEvent3 = [conflictCopy secondEvent];
+  event2 = [secondEvent3 event];
+  v14 = [event comparePriority:event2];
 
   if (v14 == -1)
   {
-    v15 = [v4 secondEvent];
+    secondEvent4 = [conflictCopy secondEvent];
 
-    v16 = [v4 firstEvent];
+    firstEvent4 = [conflictCopy firstEvent];
 
-    v6 = v16;
-    v5 = v15;
+    secondEvent = firstEvent4;
+    firstEvent = secondEvent4;
   }
 
-  [v5 setIncludeInPlan:0];
-  [v6 setVariantIndex:0];
-  v17 = [v6 event];
+  [firstEvent setIncludeInPlan:0];
+  [secondEvent setVariantIndex:0];
+  event3 = [secondEvent event];
   speed = self->_speed;
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __47__MNAnnouncementEngine__dropToResolveConflict___block_invoke;
   v25 = &unk_1E842B518;
-  v26 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = secondEvent;
   v27 = v19;
-  [v17 triggerDistanceForSpeed:&v22 andDuration:speed];
-  [v19 setTriggerDistance:{v22, v23, v24, v25, v26}];
+  [event3 triggerDistanceForSpeed:&v22 andDuration:speed];
+  [v19 setTriggerDistance:{v22, v23, v24, v25, selfCopy}];
 
   v20 = GetAudioLogForMNAnnouncementEngineCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138477827;
-    v29 = v5;
+    v29 = firstEvent;
     _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_ERROR, "Dropping event to resolve conflict: %{private}@", buf, 0xCu);
   }
 
@@ -84,27 +84,27 @@ double __47__MNAnnouncementEngine__dropToResolveConflict___block_invoke(uint64_t
   return v7;
 }
 
-- (BOOL)_compressToResolveConflict:(id)a3
+- (BOOL)_compressToResolveConflict:(id)conflict
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 announcementsAreSimilar])
+  conflictCopy = conflict;
+  if ([conflictCopy announcementsAreSimilar])
   {
     v5 = 0;
     goto LABEL_24;
   }
 
-  [v4 desiredTimeGap];
+  [conflictCopy desiredTimeGap];
   v7 = v6;
-  [v4 timeGap];
+  [conflictCopy timeGap];
   v9 = v7 - v8;
-  v10 = [v4 firstEvent];
-  v11 = [v4 secondEvent];
-  v12 = [v11 event];
-  [v12 triggerDistanceForSpeed:&__block_literal_global_793 andDuration:self->_speed];
+  firstEvent = [conflictCopy firstEvent];
+  secondEvent = [conflictCopy secondEvent];
+  event = [secondEvent event];
+  [event triggerDistanceForSpeed:&__block_literal_global_793 andDuration:self->_speed];
   v14 = v13;
-  v15 = [v11 event];
-  [v15 triggerDistanceForSpeed:&__block_literal_global_6 andDuration:self->_speed];
+  event2 = [secondEvent event];
+  [event2 triggerDistanceForSpeed:&__block_literal_global_6 andDuration:self->_speed];
   v17 = v16;
 
   v19 = 0.0;
@@ -117,7 +117,7 @@ double __47__MNAnnouncementEngine__dropToResolveConflict___block_invoke(uint64_t
   v62 = v18;
   while (1)
   {
-    v20 = v10;
+    v20 = firstEvent;
     v21 = v20;
     if (v14 >= v17)
     {
@@ -125,21 +125,21 @@ double __47__MNAnnouncementEngine__dropToResolveConflict___block_invoke(uint64_t
     }
 
     v22 = [v20 variantIndex] + 1;
-    v23 = [v21 announcementDurations];
-    v24 = [v23 count];
+    announcementDurations = [v21 announcementDurations];
+    v24 = [announcementDurations count];
 
     if (v22 == v24)
     {
 LABEL_7:
-      v25 = v11;
+      v25 = secondEvent;
 
       v21 = v25;
       goto LABEL_17;
     }
 
-    v26 = [v11 variantIndex] + 1;
-    v27 = [v11 announcementDurations];
-    v28 = [v27 count];
+    v26 = [secondEvent variantIndex] + 1;
+    announcementDurations2 = [secondEvent announcementDurations];
+    v28 = [announcementDurations2 count];
 
     if (v26 != v28)
     {
@@ -147,33 +147,33 @@ LABEL_7:
       v30 = 1.0;
       if ([v21 variantIndex])
       {
-        v31 = [v21 announcementDurations];
-        v32 = [v31 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex")}];
+        announcementDurations3 = [v21 announcementDurations];
+        v32 = [announcementDurations3 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex")}];
         [v32 doubleValue];
         v34 = v33;
-        v35 = [v21 announcementDurations];
-        v36 = [v35 objectAtIndexedSubscript:0];
+        announcementDurations4 = [v21 announcementDurations];
+        v36 = [announcementDurations4 objectAtIndexedSubscript:0];
         [v36 doubleValue];
         v30 = v34 / v37;
       }
 
-      if ([v11 variantIndex])
+      if ([secondEvent variantIndex])
       {
-        v38 = [v11 announcementDurations];
-        v39 = [v38 objectAtIndexedSubscript:{objc_msgSend(v11, "variantIndex")}];
+        announcementDurations5 = [secondEvent announcementDurations];
+        v39 = [announcementDurations5 objectAtIndexedSubscript:{objc_msgSend(secondEvent, "variantIndex")}];
         [v39 doubleValue];
         v41 = v40;
-        v42 = [v11 announcementDurations];
-        v43 = [v42 objectAtIndexedSubscript:0];
+        announcementDurations6 = [secondEvent announcementDurations];
+        v43 = [announcementDurations6 objectAtIndexedSubscript:0];
         [v43 doubleValue];
         v29 = v41 / v44;
       }
 
       if (v30 == v29)
       {
-        v45 = [v21 event];
-        v46 = [v11 event];
-        v47 = [v45 comparePriority:v46];
+        event3 = [v21 event];
+        event4 = [secondEvent event];
+        v47 = [event3 comparePriority:event4];
 
         if (v47 == -1)
         {
@@ -189,20 +189,20 @@ LABEL_7:
 
 LABEL_17:
     v48 = [v21 variantIndex] + 1;
-    v49 = [v21 announcementDurations];
-    v50 = [v49 count];
+    announcementDurations7 = [v21 announcementDurations];
+    v50 = [announcementDurations7 count];
 
     if (v48 >= v50)
     {
       break;
     }
 
-    v51 = [v21 announcementDurations];
-    v52 = [v51 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex")}];
+    announcementDurations8 = [v21 announcementDurations];
+    v52 = [announcementDurations8 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex")}];
     [v52 doubleValue];
     v54 = v53;
-    v55 = [v21 announcementDurations];
-    v56 = [v55 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex") + 1}];
+    announcementDurations9 = [v21 announcementDurations];
+    v56 = [announcementDurations9 objectAtIndexedSubscript:{objc_msgSend(v21, "variantIndex") + 1}];
     [v56 doubleValue];
     v58 = v57;
 
@@ -231,50 +231,50 @@ LABEL_24:
   return v5;
 }
 
-- (double)_canDelayEvent:(id)a3
+- (double)_canDelayEvent:(id)event
 {
-  v4 = a3;
-  [v4 completionDistance];
+  eventCopy = event;
+  [eventCopy completionDistance];
   v6 = v5;
-  v7 = [v4 event];
-  [v7 endValidDistance];
+  event = [eventCopy event];
+  [event endValidDistance];
   v9 = v6 - v8;
 
   v10 = v9 / self->_speed;
-  v11 = [(MNAnnouncementEngine *)self plan];
-  v12 = [v11 plannedEvents];
-  v13 = [v12 indexOfObject:v4];
+  plan = [(MNAnnouncementEngine *)self plan];
+  plannedEvents = [plan plannedEvents];
+  v13 = [plannedEvents indexOfObject:eventCopy];
 
   for (i = v13 + 1; ; ++i)
   {
-    v15 = [(MNAnnouncementEngine *)self plan];
-    v16 = [v15 plannedEvents];
-    v17 = [v16 count];
+    plan2 = [(MNAnnouncementEngine *)self plan];
+    plannedEvents2 = [plan2 plannedEvents];
+    v17 = [plannedEvents2 count];
 
     if (i >= v17)
     {
       break;
     }
 
-    v18 = [(MNAnnouncementEngine *)self plan];
-    v19 = [v18 plannedEvents];
-    v20 = [v19 objectAtIndexedSubscript:i];
+    plan3 = [(MNAnnouncementEngine *)self plan];
+    plannedEvents3 = [plan3 plannedEvents];
+    v20 = [plannedEvents3 objectAtIndexedSubscript:i];
 
     if ([v20 includeInPlan])
     {
-      v21 = [v20 event];
-      v22 = [v21 announcements];
-      v23 = [v22 count];
+      event2 = [v20 event];
+      announcements = [event2 announcements];
+      v23 = [announcements count];
 
       if (v23)
       {
         if (v20)
         {
-          [v4 completionDistance];
+          [eventCopy completionDistance];
           v25 = v24;
           [v20 triggerDistance];
           v27 = (v25 - v26) / self->_speed;
-          [MNAnnouncementPlan desiredTimeGapBetweenEvent:v4 andEvent:v20];
+          [MNAnnouncementPlan desiredTimeGapBetweenEvent:eventCopy andEvent:v20];
           v10 = fmin(v27 - v28, v10);
         }
 
@@ -286,33 +286,33 @@ LABEL_24:
   return fmax(v10, 0.0);
 }
 
-- (BOOL)_delayToResolveConflict:(id)a3
+- (BOOL)_delayToResolveConflict:(id)conflict
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 announcementsAreSimilar])
+  conflictCopy = conflict;
+  if ([conflictCopy announcementsAreSimilar])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 firstEvent];
-    v7 = [v6 event];
-    [v7 startValidDistance];
+    firstEvent = [conflictCopy firstEvent];
+    event = [firstEvent event];
+    [event startValidDistance];
     v9 = v8;
-    v10 = [v4 firstEvent];
-    v11 = [v10 event];
-    [v11 endValidDistance];
+    firstEvent2 = [conflictCopy firstEvent];
+    event2 = [firstEvent2 event];
+    [event2 endValidDistance];
     v13 = v9 - v12;
 
-    v14 = [v4 secondEvent];
-    v15 = [v14 event];
-    [v15 startValidDistance];
+    secondEvent = [conflictCopy secondEvent];
+    event3 = [secondEvent event];
+    [event3 startValidDistance];
     v17 = v16;
-    v18 = [v4 secondEvent];
-    v19 = [v18 event];
-    [v19 endValidDistance];
+    secondEvent2 = [conflictCopy secondEvent];
+    event4 = [secondEvent2 event];
+    [event4 endValidDistance];
     v21 = v20;
 
     if (v13 <= v17 + 300.0 - v21)
@@ -320,59 +320,59 @@ LABEL_24:
       goto LABEL_9;
     }
 
-    v22 = [v4 secondEvent];
-    v23 = [v22 announcementDurations];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    secondEvent3 = [conflictCopy secondEvent];
+    announcementDurations = [secondEvent3 announcementDurations];
+    v24 = [announcementDurations objectAtIndexedSubscript:0];
     [v24 doubleValue];
     v26 = v25;
 
-    v27 = [v4 secondEvent];
-    [v27 triggerDistance];
+    secondEvent4 = [conflictCopy secondEvent];
+    [secondEvent4 triggerDistance];
     v29 = v28;
-    v30 = [v4 firstEvent];
-    [v30 triggerDistance];
+    firstEvent3 = [conflictCopy firstEvent];
+    [firstEvent3 triggerDistance];
     v32 = v29 - v31;
     speed = self->_speed;
 
-    [v4 desiredTimeGap];
+    [conflictCopy desiredTimeGap];
     v35 = v26 + v32 * speed + v34;
-    v36 = [v4 secondEvent];
-    [v36 setIncludeInPlan:0];
+    secondEvent5 = [conflictCopy secondEvent];
+    [secondEvent5 setIncludeInPlan:0];
 
-    v37 = [v4 firstEvent];
-    [(MNAnnouncementEngine *)self _canDelayEvent:v37];
+    firstEvent4 = [conflictCopy firstEvent];
+    [(MNAnnouncementEngine *)self _canDelayEvent:firstEvent4];
     v39 = v38;
 
-    v40 = [v4 secondEvent];
-    [v40 setIncludeInPlan:1];
+    secondEvent6 = [conflictCopy secondEvent];
+    [secondEvent6 setIncludeInPlan:1];
 
     if (v39 < v35 || v35 <= 0.0)
     {
 LABEL_9:
-      [v4 desiredTimeGap];
+      [conflictCopy desiredTimeGap];
       v48 = v47;
-      [v4 timeGap];
+      [conflictCopy timeGap];
       v50 = v48 - v49;
-      v51 = [v4 secondEvent];
-      [(MNAnnouncementEngine *)self _canDelayEvent:v51];
+      secondEvent7 = [conflictCopy secondEvent];
+      [(MNAnnouncementEngine *)self _canDelayEvent:secondEvent7];
       v53 = v52;
 
       v54 = fmin(v50, v53);
       if (v54 > 0.0)
       {
-        v55 = [v4 secondEvent];
+        secondEvent8 = [conflictCopy secondEvent];
         v56 = self->_speed;
-        [v55 triggerDistance];
-        [v55 setTriggerDistance:v57 - v56 * v54];
+        [secondEvent8 triggerDistance];
+        [secondEvent8 setTriggerDistance:v57 - v56 * v54];
 
         v58 = GetAudioLogForMNAnnouncementEngineCategory();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
-          v59 = [v4 secondEvent];
+          secondEvent9 = [conflictCopy secondEvent];
           v62 = 134218243;
           v63 = v54;
           v64 = 2113;
-          v65 = v59;
+          v65 = secondEvent9;
           _os_log_impl(&dword_1D311E000, v58, OS_LOG_TYPE_DEFAULT, "Delaying second event %.2f seconds to resolve conflict: %{private}@", &v62, 0x16u);
         }
       }
@@ -382,22 +382,22 @@ LABEL_9:
 
     else
     {
-      v41 = [v4 firstEvent];
+      firstEvent5 = [conflictCopy firstEvent];
       v42 = self->_speed;
-      [v41 triggerDistance];
-      [v41 setTriggerDistance:v43 - v42 * v35];
+      [firstEvent5 triggerDistance];
+      [firstEvent5 setTriggerDistance:v43 - v42 * v35];
 
-      v44 = [(MNAnnouncementEngine *)self plan];
-      [v44 sortEvents];
+      plan = [(MNAnnouncementEngine *)self plan];
+      [plan sortEvents];
 
       v45 = GetAudioLogForMNAnnouncementEngineCategory();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [v4 firstEvent];
+        firstEvent6 = [conflictCopy firstEvent];
         v62 = 134218243;
         v63 = v35;
         v64 = 2113;
-        v65 = v46;
+        v65 = firstEvent6;
         _os_log_impl(&dword_1D311E000, v45, OS_LOG_TYPE_DEFAULT, "Delaying first event %.2f seconds to resolve conflict: %{private}@", &v62, 0x16u);
       }
 
@@ -409,34 +409,34 @@ LABEL_9:
   return v5;
 }
 
-- (double)_canAdvanceEvent:(id)a3
+- (double)_canAdvanceEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   distance = self->_distance;
-  v6 = [v4 event];
-  [v6 startValidDistance];
+  event = [eventCopy event];
+  [event startValidDistance];
   v8 = v7;
 
-  [v4 triggerDistance];
+  [eventCopy triggerDistance];
   v10 = (fmin(distance, v8) - v9) / self->_speed;
-  v11 = [(MNAnnouncementEngine *)self plan];
-  v12 = [v11 plannedEvents];
-  v13 = [v12 indexOfObject:v4];
+  plan = [(MNAnnouncementEngine *)self plan];
+  plannedEvents = [plan plannedEvents];
+  v13 = [plannedEvents indexOfObject:eventCopy];
 
   if (v13 >= 1)
   {
     v14 = v13 + 1;
     while (1)
     {
-      v15 = [(MNAnnouncementEngine *)self plan];
-      v16 = [v15 plannedEvents];
-      v17 = [v16 objectAtIndexedSubscript:v14 - 2];
+      plan2 = [(MNAnnouncementEngine *)self plan];
+      plannedEvents2 = [plan2 plannedEvents];
+      v17 = [plannedEvents2 objectAtIndexedSubscript:v14 - 2];
 
       if ([v17 includeInPlan])
       {
-        v18 = [v17 event];
-        v19 = [v18 announcements];
-        v20 = [v19 count];
+        event2 = [v17 event];
+        announcements = [event2 announcements];
+        v20 = [announcements count];
 
         if (v20)
         {
@@ -454,9 +454,9 @@ LABEL_9:
     {
       [v17 completionDistance];
       v22 = v21;
-      [v4 triggerDistance];
+      [eventCopy triggerDistance];
       v24 = (v22 - v23) / self->_speed;
-      [MNAnnouncementPlan desiredTimeGapBetweenEvent:v17 andEvent:v4];
+      [MNAnnouncementPlan desiredTimeGapBetweenEvent:v17 andEvent:eventCopy];
       v10 = fmin(v24 - v25, v10);
     }
   }
@@ -466,41 +466,41 @@ LABEL_9:
   return fmax(v10, 0.0);
 }
 
-- (BOOL)_advanceToResolveConflict:(id)a3
+- (BOOL)_advanceToResolveConflict:(id)conflict
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 announcementsAreSimilar])
+  conflictCopy = conflict;
+  if ([conflictCopy announcementsAreSimilar])
   {
     v5 = 0;
   }
 
   else
   {
-    [v4 desiredTimeGap];
+    [conflictCopy desiredTimeGap];
     v7 = v6;
-    [v4 timeGap];
+    [conflictCopy timeGap];
     v9 = v7 - v8 + 1.0;
-    v10 = [v4 firstEvent];
-    [(MNAnnouncementEngine *)self _canAdvanceEvent:v10];
+    firstEvent = [conflictCopy firstEvent];
+    [(MNAnnouncementEngine *)self _canAdvanceEvent:firstEvent];
     v12 = v11;
 
     v13 = fmin(v9, v12);
     if (v13 > 0.0)
     {
       v14 = fmin(self->_speed * v12, (self->_speed + 5.0) * v13);
-      v15 = [v4 firstEvent];
-      [v15 triggerDistance];
-      [v15 setTriggerDistance:v16 + v14];
+      firstEvent2 = [conflictCopy firstEvent];
+      [firstEvent2 triggerDistance];
+      [firstEvent2 setTriggerDistance:v16 + v14];
 
       v17 = GetAudioLogForMNAnnouncementEngineCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 firstEvent];
+        firstEvent3 = [conflictCopy firstEvent];
         v21 = 134218243;
         v22 = v13;
         v23 = 2113;
-        v24 = v18;
+        v24 = firstEvent3;
         _os_log_impl(&dword_1D311E000, v17, OS_LOG_TYPE_DEFAULT, "Advancing first event %.2f seconds to resolve conflict: %{private}@", &v21, 0x16u);
       }
     }
@@ -519,10 +519,10 @@ LABEL_9:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MNAnnouncementEngine *)self plan];
-  v4 = [v3 plannedEvents];
+  plan = [(MNAnnouncementEngine *)self plan];
+  plannedEvents = [plan plannedEvents];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [plannedEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -533,7 +533,7 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plannedEvents);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -549,7 +549,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [plannedEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -567,47 +567,47 @@ LABEL_12:
   return v12;
 }
 
-- (void)planForEvents:(id)a3 distance:(double)a4 speed:(double)a5 previousEvent:(id)a6 timeSinceLastEvent:(double)a7 durations:(id)a8
+- (void)planForEvents:(id)events distance:(double)distance speed:(double)speed previousEvent:(id)event timeSinceLastEvent:(double)lastEvent durations:(id)durations
 {
   v40 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a8;
-  objc_storeStrong(&self->_events, a3);
-  self->_distance = a4;
-  self->_speed = a5;
-  objc_storeStrong(&self->_durations, a8);
-  v18 = [[MNAnnouncementPlan alloc] initWithEvents:v15 distance:v17 speed:a4 durations:a5];
+  eventsCopy = events;
+  eventCopy = event;
+  durationsCopy = durations;
+  objc_storeStrong(&self->_events, events);
+  self->_distance = distance;
+  self->_speed = speed;
+  objc_storeStrong(&self->_durations, durations);
+  v18 = [[MNAnnouncementPlan alloc] initWithEvents:eventsCopy distance:durationsCopy speed:distance durations:speed];
   [(MNAnnouncementEngine *)self setPlan:v18];
 
-  if (v16)
+  if (eventCopy)
   {
-    v19 = [(MNAnnouncementEngine *)self plan];
-    v20 = [v19 plannedEvents];
-    v21 = [v20 count];
+    plan = [(MNAnnouncementEngine *)self plan];
+    plannedEvents = [plan plannedEvents];
+    v21 = [plannedEvents count];
 
     if (v21)
     {
-      if (a7 > 0.0)
+      if (lastEvent > 0.0)
       {
-        v22 = [(MNAnnouncementEngine *)self plan];
-        v23 = [v22 plannedEvents];
-        v24 = [v23 firstObject];
+        plan2 = [(MNAnnouncementEngine *)self plan];
+        plannedEvents2 = [plan2 plannedEvents];
+        firstObject = [plannedEvents2 firstObject];
 
-        [MNAnnouncementPlan desiredTimeGapBetweenEvent:v16 andEvent:v24];
-        if (v25 > a7)
+        [MNAnnouncementPlan desiredTimeGapBetweenEvent:eventCopy andEvent:firstObject];
+        if (v25 > lastEvent)
         {
           v31 = v25;
-          [(MNAnnouncementEngine *)self _canDelayEvent:v24];
+          [(MNAnnouncementEngine *)self _canDelayEvent:firstObject];
           v33 = v32;
-          [v24 setTriggerDistance:0.0];
+          [firstObject setTriggerDistance:0.0];
           v34 = GetAudioLogForMNAnnouncementEngineCategory();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
             v36 = 134218243;
-            v37 = fmin(v31 - a7, v33);
+            v37 = fmin(v31 - lastEvent, v33);
             v38 = 2113;
-            v39 = v24;
+            v39 = firstObject;
             _os_log_impl(&dword_1D311E000, v34, OS_LOG_TYPE_DEBUG, "Delaying event %.2f seconds due to recent announcement: %{private}@", &v36, 0x16u);
           }
 
@@ -618,10 +618,10 @@ LABEL_22:
     }
   }
 
-  v26 = [(MNAnnouncementEngine *)self plan];
-  v27 = [v26 nextConflict];
+  plan3 = [(MNAnnouncementEngine *)self plan];
+  nextConflict = [plan3 nextConflict];
 
-  if (v27)
+  if (nextConflict)
   {
     v28 = 100;
     do
@@ -632,30 +632,30 @@ LABEL_22:
         goto LABEL_17;
       }
 
-      if (![(MNAnnouncementEngine *)self _advanceToResolveConflict:v27]&& ![(MNAnnouncementEngine *)self _delayToResolveConflict:v27]&& ![(MNAnnouncementEngine *)self _compressToResolveConflict:v27])
+      if (![(MNAnnouncementEngine *)self _advanceToResolveConflict:nextConflict]&& ![(MNAnnouncementEngine *)self _delayToResolveConflict:nextConflict]&& ![(MNAnnouncementEngine *)self _compressToResolveConflict:nextConflict])
       {
-        [(MNAnnouncementEngine *)self _dropToResolveConflict:v27];
+        [(MNAnnouncementEngine *)self _dropToResolveConflict:nextConflict];
       }
 
-      v29 = [(MNAnnouncementEngine *)self plan];
-      v30 = [v29 nextConflict];
+      plan4 = [(MNAnnouncementEngine *)self plan];
+      nextConflict2 = [plan4 nextConflict];
 
       --v28;
-      v27 = v30;
+      nextConflict = nextConflict2;
     }
 
-    while (v30);
+    while (nextConflict2);
     if (v28)
     {
       goto LABEL_23;
     }
 
 LABEL_17:
-    v24 = GetAudioLogForMNAnnouncementEngineCategory();
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    firstObject = GetAudioLogForMNAnnouncementEngineCategory();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v36) = 0;
-      _os_log_impl(&dword_1D311E000, v24, OS_LOG_TYPE_ERROR, "Infinite loop in resolving guidance event conflicts.", &v36, 2u);
+      _os_log_impl(&dword_1D311E000, firstObject, OS_LOG_TYPE_ERROR, "Infinite loop in resolving guidance event conflicts.", &v36, 2u);
     }
 
     goto LABEL_22;

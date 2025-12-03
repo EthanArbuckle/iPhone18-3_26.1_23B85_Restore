@@ -1,27 +1,27 @@
 @interface GKGameSettingsInternal
-- (id)initWithGameSettings:(id)a3;
+- (id)initWithGameSettings:(id)settings;
 @end
 
 @implementation GKGameSettingsInternal
 
-- (id)initWithGameSettings:(id)a3
+- (id)initWithGameSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = GKGameSettingsInternal;
   v5 = [(GKGameSettingsInternal *)&v12 init];
   if (v5)
   {
-    v6 = [v4 bundleID];
-    [(GKGameSettingsInternal *)v5 setBundleID:v6];
+    bundleID = [settingsCopy bundleID];
+    [(GKGameSettingsInternal *)v5 setBundleID:bundleID];
 
-    v7 = [v4 allowFriendListAccess];
-    v8 = [&off_1003832F8 objectForKeyedSubscript:v7];
+    allowFriendListAccess = [settingsCopy allowFriendListAccess];
+    v8 = [&off_1003832F8 objectForKeyedSubscript:allowFriendListAccess];
 
     if (v8)
     {
-      v9 = [v4 allowFriendListAccess];
-      v10 = [&off_1003832F8 objectForKeyedSubscript:v9];
+      allowFriendListAccess2 = [settingsCopy allowFriendListAccess];
+      v10 = [&off_1003832F8 objectForKeyedSubscript:allowFriendListAccess2];
 
       -[GKGameSettingsInternal setAllowFriendListAccess:](v5, "setAllowFriendListAccess:", [v10 integerValue]);
     }

@@ -1,15 +1,15 @@
 @interface SocialOnboardingNetworkCell
 - (BOOL)isHighlighted;
 - (NSString)title;
-- (_TtC16MusicApplication27SocialOnboardingNetworkCell)initWithCoder:(id)a3;
+- (_TtC16MusicApplication27SocialOnboardingNetworkCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SocialOnboardingNetworkCell
 
-- (_TtC16MusicApplication27SocialOnboardingNetworkCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication27SocialOnboardingNetworkCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication27SocialOnboardingNetworkCell_networkStackView;
   type metadata accessor for SocialOnboardingNetworkStackView();
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v7 = v6;
-  v9 = a3;
-  v8 = self;
+  titleCopy = title;
+  selfCopy = self;
   sub_36E584(v5, v7);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_36DDA8();
 }
 
@@ -49,13 +49,13 @@
   return [(SocialOnboardingNetworkCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SocialOnboardingNetworkCell();
   v4 = v5.receiver;
-  [(SocialOnboardingNetworkCell *)&v5 setHighlighted:v3];
+  [(SocialOnboardingNetworkCell *)&v5 setHighlighted:highlightedCopy];
   sub_36E658([v4 isHighlighted]);
 }
 

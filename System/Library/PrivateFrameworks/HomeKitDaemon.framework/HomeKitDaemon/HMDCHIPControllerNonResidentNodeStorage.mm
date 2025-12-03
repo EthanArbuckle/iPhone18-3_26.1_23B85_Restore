@@ -1,34 +1,34 @@
 @interface HMDCHIPControllerNonResidentNodeStorage
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateUsingHomeModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateUsingHomeModel:(id)model;
 - (NSDictionary)debugDictionaryRepresentation;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)logIdentifier;
 - (unint64_t)hash;
-- (void)updateHomeModel:(id)a3;
+- (void)updateHomeModel:(id)model;
 @end
 
 @implementation HMDCHIPControllerNonResidentNodeStorage
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-  v5 = [v4 count];
+  array = [MEMORY[0x277CBEB18] array];
+  keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+  v5 = [keyValueStore count];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D0F778]);
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-    v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    keyValueStore2 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+    v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(keyValueStore2, "count")}];
     v10 = [v6 initWithName:@"Key-Value Store Count" value:v9];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
@@ -36,36 +36,36 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-  v4 = [v2 stringWithFormat:@"%zu", objc_msgSend(v3, "count")];
+  keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+  v4 = [v2 stringWithFormat:@"%zu", objc_msgSend(keyValueStore, "count")];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMDCHIPControllerNonResidentNodeStorage allocWithZone:?]];
-  v5 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-  [(HMDCHIPControllerNonResidentNodeStorage *)v4 setKeyValueStore:v5];
+  keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+  [(HMDCHIPControllerNonResidentNodeStorage *)v4 setKeyValueStore:keyValueStore];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-  v3 = [v2 hash];
+  keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+  v3 = [keyValueStore hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -76,8 +76,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-    v8 = [v6 keyValueStore];
+    keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+    keyValueStore2 = [v6 keyValueStore];
     v9 = HMFEqualObjects();
   }
 
@@ -89,12 +89,12 @@
   return v9;
 }
 
-- (void)updateHomeModel:(id)a3
+- (void)updateHomeModel:(id)model
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -108,12 +108,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateUsingHomeModel:(id)a3
+- (BOOL)updateUsingHomeModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -130,11 +130,11 @@
 
 - (NSDictionary)debugDictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
-  [v3 setObject:v4 forKeyedSubscript:@"Key-Value Store"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  keyValueStore = [(HMDCHIPControllerNonResidentNodeStorage *)self keyValueStore];
+  [dictionary setObject:keyValueStore forKeyedSubscript:@"Key-Value Store"];
 
-  v5 = [v3 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }

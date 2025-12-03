@@ -1,41 +1,41 @@
 @interface CNFuture
-+ (CNFuture)futureWithBlock:(id)a3;
-+ (CNFuture)futureWithBlock:(id)a3 scheduler:(id)a4;
-+ (CNFuture)futureWithBlock:(id)a3 scheduler:(id)a4 schedulerProvider:(id)a5;
-+ (CNFuture)futureWithBlock:(id)a3 schedulerProvider:(id)a4;
-+ (CNFuture)futureWithError:(id)a3;
-+ (CNFuture)futureWithResult:(id)a3;
-+ (id)_joinMany:(id)a3;
-+ (id)chain:(id)a3;
-+ (id)flatMap:(id)a3 withBlock:(id)a4 schedulerProvider:(id)a5;
++ (CNFuture)futureWithBlock:(id)block;
++ (CNFuture)futureWithBlock:(id)block scheduler:(id)scheduler;
++ (CNFuture)futureWithBlock:(id)block scheduler:(id)scheduler schedulerProvider:(id)provider;
++ (CNFuture)futureWithBlock:(id)block schedulerProvider:(id)provider;
++ (CNFuture)futureWithError:(id)error;
++ (CNFuture)futureWithResult:(id)result;
++ (id)_joinMany:(id)many;
++ (id)chain:(id)chain;
++ (id)flatMap:(id)map withBlock:(id)block schedulerProvider:(id)provider;
 + (id)future;
-+ (id)join:(id)a3;
-+ (id)lazyFutureWithBlock:(id)a3;
++ (id)join:(id)join;
++ (id)lazyFutureWithBlock:(id)block;
 + (id)promiseFuture;
-+ (id)recover:(id)a3 withBlock:(id)a4 schedulerProvider:(id)a5;
-+ (id)sequence:(id)a3;
-+ (void)finishPromise:(id)a3 withFuture:(id)a4;
++ (id)recover:(id)recover withBlock:(id)block schedulerProvider:(id)provider;
++ (id)sequence:(id)sequence;
++ (void)finishPromise:(id)promise withFuture:(id)future;
 - (BOOL)cancel;
-- (BOOL)finishWithError:(id)a3;
-- (BOOL)finishWithResult:(id)a3;
+- (BOOL)finishWithError:(id)error;
+- (BOOL)finishWithResult:(id)result;
 - (CNFuture)init;
-- (CNFuture)initWithImpl:(id)a3;
-- (CNFuture)initWithSchedulerProvider:(id)a3;
+- (CNFuture)initWithImpl:(id)impl;
+- (CNFuture)initWithSchedulerProvider:(id)provider;
 - (NSString)description;
-- (id)flatMap:(id)a3;
-- (id)recover:(id)a3;
-- (id)result:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
+- (id)flatMap:(id)map;
+- (id)recover:(id)recover;
+- (id)result:(id *)result;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4;
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4;
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler;
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler;
 @end
 
 @implementation CNFuture
 
 + (id)promiseFuture
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -52,81 +52,81 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   [(CNFutureImpl *)self->_impl updateDescriptionWithBuilder:v3];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 + (id)future
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (CNFuture)futureWithResult:(id)a3
++ (CNFuture)futureWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [[_CNConstantFutureImpl alloc] initWithResult:v4];
+  resultCopy = result;
+  v5 = [[_CNConstantFutureImpl alloc] initWithResult:resultCopy];
 
-  v6 = [[a1 alloc] initWithImpl:v5];
+  v6 = [[self alloc] initWithImpl:v5];
 
   return v6;
 }
 
-+ (CNFuture)futureWithError:(id)a3
++ (CNFuture)futureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[_CNFailedFutureImpl alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[_CNFailedFutureImpl alloc] initWithError:errorCopy];
 
-  v6 = [[a1 alloc] initWithImpl:v5];
+  v6 = [[self alloc] initWithImpl:v5];
 
   return v6;
 }
 
-+ (CNFuture)futureWithBlock:(id)a3
++ (CNFuture)futureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [a1 futureWithBlock:v4 schedulerProvider:v5];
+  v6 = [self futureWithBlock:blockCopy schedulerProvider:v5];
 
   return v6;
 }
 
-+ (CNFuture)futureWithBlock:(id)a3 scheduler:(id)a4
++ (CNFuture)futureWithBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a4;
-  v7 = a3;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v8 = +[CNSchedulerProvider defaultProvider];
-  v9 = [a1 futureWithBlock:v7 scheduler:v6 schedulerProvider:v8];
+  v9 = [self futureWithBlock:blockCopy scheduler:schedulerCopy schedulerProvider:v8];
 
   return v9;
 }
 
-+ (CNFuture)futureWithBlock:(id)a3 schedulerProvider:(id)a4
++ (CNFuture)futureWithBlock:(id)block schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  blockCopy = block;
   v8 = +[CNScheduler immediateScheduler];
-  v9 = [a1 futureWithBlock:v7 scheduler:v8 schedulerProvider:v6];
+  v9 = [self futureWithBlock:blockCopy scheduler:v8 schedulerProvider:providerCopy];
 
   return v9;
 }
 
-+ (CNFuture)futureWithBlock:(id)a3 scheduler:(id)a4 schedulerProvider:(id)a5
++ (CNFuture)futureWithBlock:(id)block scheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v8 = objc_alloc_init(CNPromise);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __56__CNFuture_futureWithBlock_scheduler_schedulerProvider___block_invoke;
   v16 = &unk_1E6ED52C0;
   v17 = v8;
-  v18 = v6;
+  v18 = blockCopy;
   v9 = v8;
-  v10 = v6;
-  [v7 performBlock:&v13];
+  v10 = blockCopy;
+  [schedulerCopy performBlock:&v13];
 
   v11 = [(CNPromise *)v9 future:v13];
 
@@ -142,40 +142,40 @@ void __56__CNFuture_futureWithBlock_scheduler_schedulerProvider___block_invoke(u
   [*(a1 + 32) finishWithResult:v3 error:v4];
 }
 
-+ (id)lazyFutureWithBlock:(id)a3
++ (id)lazyFutureWithBlock:(id)block
 {
-  v4 = [_CNBlockFutureImpl lazyImplWithBlock:a3];
-  v5 = [[a1 alloc] initWithImpl:v4];
+  v4 = [_CNBlockFutureImpl lazyImplWithBlock:block];
+  v5 = [[self alloc] initWithImpl:v4];
 
   return v5;
 }
 
-+ (id)flatMap:(id)a3 withBlock:(id)a4 schedulerProvider:(id)a5
++ (id)flatMap:(id)map withBlock:(id)block schedulerProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CNPromise alloc] initWithSchedulerProvider:v9];
+  blockCopy = block;
+  providerCopy = provider;
+  mapCopy = map;
+  v11 = [[CNPromise alloc] initWithSchedulerProvider:providerCopy];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __48__CNFuture_flatMap_withBlock_schedulerProvider___block_invoke;
   v22[3] = &unk_1E6ED7A88;
-  v24 = v8;
-  v25 = a1;
+  v24 = blockCopy;
+  selfCopy = self;
   v12 = v11;
   v23 = v12;
-  v13 = v8;
-  [v10 addSuccessBlock:v22];
+  v13 = blockCopy;
+  [mapCopy addSuccessBlock:v22];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __48__CNFuture_flatMap_withBlock_schedulerProvider___block_invoke_2;
   v20 = &unk_1E6ED5A30;
   v21 = v12;
   v14 = v12;
-  [v10 addFailureBlock:&v17];
+  [mapCopy addFailureBlock:&v17];
   v15 = [(CNPromise *)v14 future:v17];
-  [v15 addCalculationDependency:v10];
+  [v15 addCalculationDependency:mapCopy];
 
   return v15;
 }
@@ -188,12 +188,12 @@ void __48__CNFuture_flatMap_withBlock_schedulerProvider___block_invoke(uint64_t 
   [v2 addCalculationDependency:v3];
 }
 
-+ (id)recover:(id)a3 withBlock:(id)a4 schedulerProvider:(id)a5
++ (id)recover:(id)recover withBlock:(id)block schedulerProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CNPromise alloc] initWithSchedulerProvider:v9];
+  blockCopy = block;
+  providerCopy = provider;
+  recoverCopy = recover;
+  v11 = [[CNPromise alloc] initWithSchedulerProvider:providerCopy];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -201,19 +201,19 @@ void __48__CNFuture_flatMap_withBlock_schedulerProvider___block_invoke(uint64_t 
   v24[3] = &unk_1E6ED6988;
   v12 = v11;
   v25 = v12;
-  [v10 addSuccessBlock:v24];
+  [recoverCopy addSuccessBlock:v24];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __48__CNFuture_recover_withBlock_schedulerProvider___block_invoke_2;
   v20 = &unk_1E6ED7AB0;
-  v22 = v8;
-  v23 = a1;
+  v22 = blockCopy;
+  selfCopy = self;
   v21 = v12;
   v13 = v12;
-  v14 = v8;
-  [v10 addFailureBlock:&v17];
+  v14 = blockCopy;
+  [recoverCopy addFailureBlock:&v17];
   v15 = [(CNPromise *)v13 future:v17];
-  [v15 addCalculationDependency:v10];
+  [v15 addCalculationDependency:recoverCopy];
 
   return v15;
 }
@@ -224,35 +224,35 @@ void __48__CNFuture_recover_withBlock_schedulerProvider___block_invoke_2(uint64_
   [*(a1 + 48) finishPromise:*(a1 + 32) withFuture:v2];
 }
 
-+ (void)finishPromise:(id)a3 withFuture:(id)a4
++ (void)finishPromise:(id)promise withFuture:(id)future
 {
-  v5 = a3;
+  promiseCopy = promise;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __37__CNFuture_finishPromise_withFuture___block_invoke;
   v11[3] = &unk_1E6ED6988;
-  v6 = v5;
+  v6 = promiseCopy;
   v12 = v6;
-  v7 = a4;
-  [v7 addSuccessBlock:v11];
+  futureCopy = future;
+  [futureCopy addSuccessBlock:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__CNFuture_finishPromise_withFuture___block_invoke_2;
   v9[3] = &unk_1E6ED5A30;
   v10 = v6;
   v8 = v6;
-  [v7 addFailureBlock:v9];
+  [futureCopy addFailureBlock:v9];
 }
 
-+ (id)chain:(id)a3
++ (id)chain:(id)chain
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v4 _cn_tail];
+  chainCopy = chain;
+  firstObject = [chainCopy firstObject];
+  _cn_tail = [chainCopy _cn_tail];
 
-  if (off_1EF43E9E8(&__block_literal_global_5, v6))
+  if (off_1EF43E9E8(&__block_literal_global_5, _cn_tail))
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   else
@@ -261,16 +261,16 @@ void __48__CNFuture_recover_withBlock_schedulerProvider___block_invoke_2(uint64_
     v15[1] = 3221225472;
     v15[2] = __18__CNFuture_chain___block_invoke;
     v15[3] = &unk_1E6ED7AD8;
-    v17 = a1;
-    v8 = v6;
+    selfCopy = self;
+    v8 = _cn_tail;
     v16 = v8;
-    v9 = [v5 flatMap:v15];
+    v9 = [firstObject flatMap:v15];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __18__CNFuture_chain___block_invoke_2;
     v12[3] = &unk_1E6ED7B00;
-    v14 = a1;
+    selfCopy2 = self;
     v13 = v8;
     v10 = [v9 recover:v12];
 
@@ -299,26 +299,26 @@ id __18__CNFuture_chain___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (id)sequence:(id)a3
++ (id)sequence:(id)sequence
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (off_1EF43E9E8(&__block_literal_global_5, v3))
+  sequenceCopy = sequence;
+  if (off_1EF43E9E8(&__block_literal_global_5, sequenceCopy))
   {
     v4 = [CNFuture futureWithResult:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v3 firstObject];
+    array = [MEMORY[0x1E695DF70] array];
+    firstObject = [sequenceCopy firstObject];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = v3;
-    v7 = [v3 _cn_tail];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v17 = sequenceCopy;
+    _cn_tail = [sequenceCopy _cn_tail];
+    v8 = [_cn_tail countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -326,12 +326,12 @@ id __18__CNFuture_chain___block_invoke(uint64_t a1, void *a2)
       do
       {
         v11 = 0;
-        v12 = v6;
+        v12 = firstObject;
         do
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_cn_tail);
           }
 
           v13 = *(*(&v23 + 1) + 8 * v11);
@@ -339,16 +339,16 @@ id __18__CNFuture_chain___block_invoke(uint64_t a1, void *a2)
           v20[1] = 3221225472;
           v20[2] = __21__CNFuture_sequence___block_invoke;
           v20[3] = &unk_1E6ED7B28;
-          v21 = v5;
+          v21 = array;
           v22 = v13;
-          v6 = [v12 flatMap:v20];
+          firstObject = [v12 flatMap:v20];
 
           ++v11;
-          v12 = v6;
+          v12 = firstObject;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [_cn_tail countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
@@ -358,11 +358,11 @@ id __18__CNFuture_chain___block_invoke(uint64_t a1, void *a2)
     v18[1] = 3221225472;
     v18[2] = __21__CNFuture_sequence___block_invoke_2;
     v18[3] = &unk_1E6ED7B50;
-    v19 = v5;
-    v14 = v5;
-    v4 = [v6 flatMap:v18];
+    v19 = array;
+    v14 = array;
+    v4 = [firstObject flatMap:v18];
 
-    v3 = v17;
+    sequenceCopy = v17;
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -386,21 +386,21 @@ CNFuture *__21__CNFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
   return [CNFuture futureWithResult:v3];
 }
 
-+ (id)join:(id)a3
++ (id)join:(id)join
 {
-  v3 = a3;
-  v4 = [v3 count];
+  joinCopy = join;
+  v4 = [joinCopy count];
   if (v4 == 1)
   {
-    v5 = [v3 firstObject];
-    v6 = [CNFuture _joinOne:v5];
+    firstObject = [joinCopy firstObject];
+    v6 = [CNFuture _joinOne:firstObject];
   }
 
   else
   {
     if (v4)
     {
-      [CNFuture _joinMany:v3];
+      [CNFuture _joinMany:joinCopy];
     }
 
     else
@@ -427,19 +427,19 @@ id __21__CNFuture__joinOne___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)_joinMany:(id)a3
++ (id)_joinMany:(id)many
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  manyCopy = many;
   v4 = objc_alloc_init(CNPromise);
   v5 = [CNScheduler synchronousSerialDispatchQueueWithName:@"com.apple.contacts.future.join"];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [v3 mutableCopy];
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = [manyCopy mutableCopy];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __22__CNFuture__joinMany___block_invoke;
   v24[3] = &unk_1E6ED7BE8;
-  v8 = v6;
+  v8 = array;
   v25 = v8;
   v9 = v7;
   v26 = v9;
@@ -447,13 +447,13 @@ id __21__CNFuture__joinOne___block_invoke(uint64_t a1, void *a2)
   v27 = v10;
   v11 = v5;
   v28 = v11;
-  [v3 enumerateObjectsUsingBlock:v24];
-  v12 = [(CNPromise *)v10 future];
+  [manyCopy enumerateObjectsUsingBlock:v24];
+  future = [(CNPromise *)v10 future];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = v3;
+  v13 = manyCopy;
   v14 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v14)
   {
@@ -468,7 +468,7 @@ id __21__CNFuture__joinOne___block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v13);
         }
 
-        [v12 addCalculationDependency:{*(*(&v20 + 1) + 8 * i), v20}];
+        [future addCalculationDependency:{*(*(&v20 + 1) + 8 * i), v20}];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
@@ -479,7 +479,7 @@ id __21__CNFuture__joinOne___block_invoke(uint64_t a1, void *a2)
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return future;
 }
 
 void __22__CNFuture__joinMany___block_invoke(id *a1, void *a2, void *a3)
@@ -594,25 +594,25 @@ void __22__CNFuture__joinMany___block_invoke_4(id *a1)
   }
 }
 
-- (CNFuture)initWithSchedulerProvider:(id)a3
+- (CNFuture)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[_CNBlockFutureImpl alloc] initWithSchedulerProvider:v4];
+  providerCopy = provider;
+  v5 = [[_CNBlockFutureImpl alloc] initWithSchedulerProvider:providerCopy];
 
   v6 = [(CNFuture *)self initWithImpl:v5];
   return v6;
 }
 
-- (CNFuture)initWithImpl:(id)a3
+- (CNFuture)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v12.receiver = self;
   v12.super_class = CNFuture;
   v6 = [(CNFuture *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     calculationDependencies = v7->_calculationDependencies;
     v7->_calculationDependencies = v8;
@@ -623,18 +623,18 @@ void __22__CNFuture__joinMany___block_invoke_4(id *a1)
   return v7;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [(CNFuture *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [(CNFuture *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(CNFuture *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(CNFuture *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
@@ -652,10 +652,10 @@ void __22__CNFuture__joinMany___block_invoke_4(id *a1)
   return [(CNFutureImpl *)v4 cancel];
 }
 
-- (BOOL)finishWithResult:(id)a3
+- (BOOL)finishWithResult:(id)result
 {
-  v4 = a3;
-  if (!v4)
+  resultCopy = result;
+  if (!resultCopy)
   {
     v5 = +[CNObservable os_log_protocol];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -672,15 +672,15 @@ void __22__CNFuture__joinMany___block_invoke_4(id *a1)
     CNFutureThrowProtocolExceptionWithReason(@"result must be non-nil", 0);
   }
 
-  v7 = [(CNFuture *)self finishWithResult:v4 error:0];
+  v7 = [(CNFuture *)self finishWithResult:resultCopy error:0];
 
   return v7;
 }
 
-- (BOOL)finishWithError:(id)a3
+- (BOOL)finishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = +[CNObservable os_log_protocol];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -697,23 +697,23 @@ void __22__CNFuture__joinMany___block_invoke_4(id *a1)
     CNFutureThrowProtocolExceptionWithReason(@"error must be non-nil", 0);
   }
 
-  v7 = [(CNFuture *)self finishWithResult:0 error:v4];
+  v7 = [(CNFuture *)self finishWithResult:0 error:errorCopy];
 
   return v7;
 }
 
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__CNFuture_addSuccessBlock_scheduler___block_invoke;
   v10[3] = &unk_1E6ED6A78;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(CNFuture *)self addSuccessBlock:v10];
 }
 
@@ -732,18 +732,18 @@ void __38__CNFuture_addSuccessBlock_scheduler___block_invoke(uint64_t a1, void *
   [v4 performBlock:v7];
 }
 
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__CNFuture_addFailureBlock_scheduler___block_invoke;
   v10[3] = &unk_1E6ED69D8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(CNFuture *)self addFailureBlock:v10];
 }
 
@@ -762,20 +762,20 @@ void __38__CNFuture_addFailureBlock_scheduler___block_invoke(uint64_t a1, void *
   [v4 performBlock:v7];
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [(CNFuture *)self flatMap:v4 schedulerProvider:v5];
+  v6 = [(CNFuture *)self flatMap:mapCopy schedulerProvider:v5];
 
   return v6;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [(CNFuture *)self recover:v4 schedulerProvider:v5];
+  v6 = [(CNFuture *)self recover:recoverCopy schedulerProvider:v5];
 
   return v6;
 }

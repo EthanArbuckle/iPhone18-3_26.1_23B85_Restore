@@ -1,252 +1,252 @@
 @interface WFAutomationSummaryIconsView
 - (CGSize)intrinsicContentSize;
-- (WFAutomationSummaryIconsView)initWithFrame:(CGRect)a3;
-- (void)configureIconView:(id)a3;
-- (void)setActionIcons:(id)a3;
-- (void)setHomeActionIcons:(id)a3;
-- (void)setHomeTriggerIcon:(id)a3;
-- (void)setTriggerIcon:(id)a3 tintColor:(id)a4 withCornerRadius:(double)a5;
-- (void)setTriggerIcon:(id)a3 tintColor:(id)a4 withTrigger:(id)a5;
+- (WFAutomationSummaryIconsView)initWithFrame:(CGRect)frame;
+- (void)configureIconView:(id)view;
+- (void)setActionIcons:(id)icons;
+- (void)setHomeActionIcons:(id)icons;
+- (void)setHomeTriggerIcon:(id)icon;
+- (void)setTriggerIcon:(id)icon tintColor:(id)color withCornerRadius:(double)radius;
+- (void)setTriggerIcon:(id)icon tintColor:(id)color withTrigger:(id)trigger;
 @end
 
 @implementation WFAutomationSummaryIconsView
 
-- (void)setHomeActionIcons:(id)a3
+- (void)setHomeActionIcons:(id)icons
 {
-  v9 = a3;
-  if (!v9)
+  iconsCopy = icons;
+  if (!iconsCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryIconsView.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"homeActionIcons"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryIconsView.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"homeActionIcons"}];
   }
 
-  v5 = [(WFAutomationSummaryIconsView *)self actionsIconsView];
-  [v5 setHomeIcons:v9];
+  actionsIconsView = [(WFAutomationSummaryIconsView *)self actionsIconsView];
+  [actionsIconsView setHomeIcons:iconsCopy];
 
-  v6 = [v9 count] == 0;
-  v7 = [(WFAutomationSummaryIconsView *)self arrowImageView];
-  [v7 setHidden:v6];
+  v6 = [iconsCopy count] == 0;
+  arrowImageView = [(WFAutomationSummaryIconsView *)self arrowImageView];
+  [arrowImageView setHidden:v6];
 }
 
-- (void)setActionIcons:(id)a3
+- (void)setActionIcons:(id)icons
 {
-  v9 = a3;
-  if (!v9)
+  iconsCopy = icons;
+  if (!iconsCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryIconsView.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"actionIcons"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationSummaryIconsView.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"actionIcons"}];
   }
 
-  v5 = [(WFAutomationSummaryIconsView *)self actionsIconsView];
-  [v5 setIcons:v9];
+  actionsIconsView = [(WFAutomationSummaryIconsView *)self actionsIconsView];
+  [actionsIconsView setIcons:iconsCopy];
 
-  v6 = [v9 count] == 0;
-  v7 = [(WFAutomationSummaryIconsView *)self arrowImageView];
-  [v7 setHidden:v6];
+  v6 = [iconsCopy count] == 0;
+  arrowImageView = [(WFAutomationSummaryIconsView *)self arrowImageView];
+  [arrowImageView setHidden:v6];
 }
 
-- (void)configureIconView:(id)a3
+- (void)configureIconView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   LODWORD(v3) = 1148846080;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v3];
+  [viewCopy setContentCompressionResistancePriority:0 forAxis:v3];
   LODWORD(v4) = 1148846080;
-  [v7 setContentCompressionResistancePriority:1 forAxis:v4];
+  [viewCopy setContentCompressionResistancePriority:1 forAxis:v4];
   LODWORD(v5) = 1148846080;
-  [v7 setContentHuggingPriority:0 forAxis:v5];
+  [viewCopy setContentHuggingPriority:0 forAxis:v5];
   LODWORD(v6) = 1148846080;
-  [v7 setContentHuggingPriority:1 forAxis:v6];
+  [viewCopy setContentHuggingPriority:1 forAxis:v6];
 }
 
-- (void)setHomeTriggerIcon:(id)a3
+- (void)setHomeTriggerIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+  iconCopy = icon;
+  triggerIconView = [(WFAutomationSummaryIconsView *)self triggerIconView];
 
-  if (v5)
+  if (triggerIconView)
   {
-    v6 = [(WFAutomationSummaryIconsView *)self stackView];
-    v7 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v6 removeArrangedSubview:v7];
+    stackView = [(WFAutomationSummaryIconsView *)self stackView];
+    triggerIconView2 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [stackView removeArrangedSubview:triggerIconView2];
 
-    v8 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v8 removeFromSuperview];
+    triggerIconView3 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [triggerIconView3 removeFromSuperview];
 
     [(WFAutomationSummaryIconsView *)self setTriggerIconView:0];
   }
 
-  v9 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+  homeTriggerIconView = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
 
-  if (v9)
+  if (homeTriggerIconView)
   {
-    v10 = [(WFAutomationSummaryIconsView *)self stackView];
-    v11 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v10 removeArrangedSubview:v11];
+    stackView2 = [(WFAutomationSummaryIconsView *)self stackView];
+    homeTriggerIconView2 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [stackView2 removeArrangedSubview:homeTriggerIconView2];
 
-    v12 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v12 removeFromSuperview];
+    homeTriggerIconView3 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [homeTriggerIconView3 removeFromSuperview];
 
     [(WFAutomationSummaryIconsView *)self setHomeTriggerIconView:0];
   }
 
-  v13 = [objc_alloc(getHUTriggerIconViewClass()) initWithIconDescriptor:v4];
+  v13 = [objc_alloc(getHUTriggerIconViewClass()) initWithIconDescriptor:iconCopy];
 
   [(WFAutomationSummaryIconsView *)self setHomeTriggerIconView:v13];
-  v14 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  homeTriggerIconView4 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+  [homeTriggerIconView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(WFAutomationSummaryIconsView *)self stackView];
-  v16 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-  [v15 insertArrangedSubview:v16 atIndex:0];
+  stackView3 = [(WFAutomationSummaryIconsView *)self stackView];
+  homeTriggerIconView5 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+  [stackView3 insertArrangedSubview:homeTriggerIconView5 atIndex:0];
 
   [(WFAutomationSummaryIconsView *)self setNeedsLayout];
 }
 
-- (void)setTriggerIcon:(id)a3 tintColor:(id)a4 withCornerRadius:(double)a5
+- (void)setTriggerIcon:(id)icon tintColor:(id)color withCornerRadius:(double)radius
 {
-  v26 = a3;
-  v8 = a4;
-  v9 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+  iconCopy = icon;
+  colorCopy = color;
+  homeTriggerIconView = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
 
-  if (v9)
+  if (homeTriggerIconView)
   {
-    v10 = [(WFAutomationSummaryIconsView *)self stackView];
-    v11 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v10 removeArrangedSubview:v11];
+    stackView = [(WFAutomationSummaryIconsView *)self stackView];
+    homeTriggerIconView2 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [stackView removeArrangedSubview:homeTriggerIconView2];
 
-    v12 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v12 removeFromSuperview];
+    homeTriggerIconView3 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [homeTriggerIconView3 removeFromSuperview];
 
     [(WFAutomationSummaryIconsView *)self setHomeTriggerIconView:0];
   }
 
-  v13 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+  triggerIconView = [(WFAutomationSummaryIconsView *)self triggerIconView];
 
-  if (v13)
+  if (triggerIconView)
   {
-    v14 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v14 setImage:v26];
+    triggerIconView2 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [triggerIconView2 setImage:iconCopy];
 
-    v15 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    v16 = v15;
-    if (a5 <= 0.0)
+    triggerIconView3 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    v16 = triggerIconView3;
+    if (radius <= 0.0)
     {
-      [v15 setClipsToBounds:0];
+      [triggerIconView3 setClipsToBounds:0];
 
-      v17 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-      v18 = [v17 layer];
-      v19 = v18;
-      v20 = 0.0;
+      triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+      layer = [triggerIconView4 layer];
+      v19 = layer;
+      radiusCopy = 0.0;
     }
 
     else
     {
-      [v15 setClipsToBounds:1];
+      [triggerIconView3 setClipsToBounds:1];
 
-      v17 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-      v18 = [v17 layer];
-      v19 = v18;
-      v20 = a5;
+      triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+      layer = [triggerIconView4 layer];
+      v19 = layer;
+      radiusCopy = radius;
     }
 
-    [v18 setCornerRadius:v20];
+    [layer setCornerRadius:radiusCopy];
   }
 
   else
   {
-    v21 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v26];
+    v21 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:iconCopy];
     [(WFAutomationSummaryIconsView *)self setTriggerIconView:v21];
 
-    v22 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    triggerIconView5 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [triggerIconView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [(WFAutomationSummaryIconsView *)self stackView];
-    v24 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v23 insertArrangedSubview:v24 atIndex:0];
+    stackView2 = [(WFAutomationSummaryIconsView *)self stackView];
+    triggerIconView6 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [stackView2 insertArrangedSubview:triggerIconView6 atIndex:0];
 
-    v17 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [(WFAutomationSummaryIconsView *)self configureIconView:v17];
+    triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [(WFAutomationSummaryIconsView *)self configureIconView:triggerIconView4];
   }
 
-  v25 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-  [v25 setTintColor:v8];
+  triggerIconView7 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+  [triggerIconView7 setTintColor:colorCopy];
 
   [(WFAutomationSummaryIconsView *)self setNeedsLayout];
 }
 
-- (void)setTriggerIcon:(id)a3 tintColor:(id)a4 withTrigger:(id)a5
+- (void)setTriggerIcon:(id)icon tintColor:(id)color withTrigger:(id)trigger
 {
-  v31 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+  iconCopy = icon;
+  triggerCopy = trigger;
+  colorCopy = color;
+  homeTriggerIconView = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
 
-  if (v10)
+  if (homeTriggerIconView)
   {
-    v11 = [(WFAutomationSummaryIconsView *)self stackView];
-    v12 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v11 removeArrangedSubview:v12];
+    stackView = [(WFAutomationSummaryIconsView *)self stackView];
+    homeTriggerIconView2 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [stackView removeArrangedSubview:homeTriggerIconView2];
 
-    v13 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
-    [v13 removeFromSuperview];
+    homeTriggerIconView3 = [(WFAutomationSummaryIconsView *)self homeTriggerIconView];
+    [homeTriggerIconView3 removeFromSuperview];
 
     [(WFAutomationSummaryIconsView *)self setHomeTriggerIconView:0];
   }
 
-  v14 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+  triggerIconView = [(WFAutomationSummaryIconsView *)self triggerIconView];
 
-  if (v14)
+  if (triggerIconView)
   {
-    v15 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v15 setImage:v31];
+    triggerIconView2 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [triggerIconView2 setImage:iconCopy];
 
-    [v8 displayGlyphCornerRadius];
+    [triggerCopy displayGlyphCornerRadius];
     v17 = v16;
-    v18 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    v19 = v18;
+    triggerIconView3 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    v19 = triggerIconView3;
     if (v17 <= 0.0)
     {
-      [v18 setClipsToBounds:0];
+      [triggerIconView3 setClipsToBounds:0];
 
-      v22 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-      v23 = [v22 layer];
-      v24 = v23;
+      triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+      layer = [triggerIconView4 layer];
+      v24 = layer;
       v25 = 0.0;
     }
 
     else
     {
-      [v18 setClipsToBounds:1];
+      [triggerIconView3 setClipsToBounds:1];
 
-      [v8 displayGlyphCornerRadius];
+      [triggerCopy displayGlyphCornerRadius];
       v21 = v20;
-      v22 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-      v23 = [v22 layer];
-      v24 = v23;
+      triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+      layer = [triggerIconView4 layer];
+      v24 = layer;
       v25 = v21;
     }
 
-    [v23 setCornerRadius:v25];
+    [layer setCornerRadius:v25];
   }
 
   else
   {
-    v26 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v31];
+    v26 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:iconCopy];
     [(WFAutomationSummaryIconsView *)self setTriggerIconView:v26];
 
-    v27 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    triggerIconView5 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [triggerIconView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(WFAutomationSummaryIconsView *)self stackView];
-    v29 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [v28 insertArrangedSubview:v29 atIndex:0];
+    stackView2 = [(WFAutomationSummaryIconsView *)self stackView];
+    triggerIconView6 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [stackView2 insertArrangedSubview:triggerIconView6 atIndex:0];
 
-    v22 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-    [(WFAutomationSummaryIconsView *)self configureIconView:v22];
+    triggerIconView4 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+    [(WFAutomationSummaryIconsView *)self configureIconView:triggerIconView4];
   }
 
-  v30 = [(WFAutomationSummaryIconsView *)self triggerIconView];
-  [v30 setTintColor:v9];
+  triggerIconView7 = [(WFAutomationSummaryIconsView *)self triggerIconView];
+  [triggerIconView7 setTintColor:colorCopy];
 
   [(WFAutomationSummaryIconsView *)self setNeedsLayout];
 }
@@ -260,12 +260,12 @@
   return result;
 }
 
-- (WFAutomationSummaryIconsView)initWithFrame:(CGRect)a3
+- (WFAutomationSummaryIconsView)initWithFrame:(CGRect)frame
 {
   v37[4] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = WFAutomationSummaryIconsView;
-  v3 = [(WFAutomationSummaryIconsView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFAutomationSummaryIconsView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -279,21 +279,21 @@
     [(UIStackView *)v3->_stackView setSpacing:12.0];
     [(WFAutomationSummaryIconsView *)v3 addSubview:v3->_stackView];
     v28 = MEMORY[0x277CCAAD0];
-    v33 = [(UIStackView *)v3->_stackView topAnchor];
-    v32 = [(WFAutomationSummaryIconsView *)v3 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor2 = [(WFAutomationSummaryIconsView *)v3 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[0] = v31;
-    v30 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v29 = [(WFAutomationSummaryIconsView *)v3 bottomAnchor];
-    v6 = [v30 constraintEqualToAnchor:v29];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor2 = [(WFAutomationSummaryIconsView *)v3 bottomAnchor];
+    v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[1] = v6;
-    v7 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v8 = [(WFAutomationSummaryIconsView *)v3 leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leadingAnchor = [(UIStackView *)v3->_stackView leadingAnchor];
+    leadingAnchor2 = [(WFAutomationSummaryIconsView *)v3 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[2] = v9;
-    v10 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v11 = [(WFAutomationSummaryIconsView *)v3 trailingAnchor];
-    v12 = [v10 constraintLessThanOrEqualToAnchor:v11];
+    trailingAnchor = [(UIStackView *)v3->_stackView trailingAnchor];
+    trailingAnchor2 = [(WFAutomationSummaryIconsView *)v3 trailingAnchor];
+    v12 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v37[3] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
     [v28 activateConstraints:v13];
@@ -313,8 +313,8 @@
     arrowImageView = v3->_arrowImageView;
     v3->_arrowImageView = v20;
 
-    v22 = [MEMORY[0x277CFC248] sharedContext];
-    LODWORD(v19) = [v22 shouldReverseLayoutDirection];
+    mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+    LODWORD(v19) = [mEMORY[0x277CFC248] shouldReverseLayoutDirection];
 
     if (v19)
     {

@@ -1,21 +1,21 @@
 @interface PKWebServiceStaticContentDataSourceFeature
-- (PKWebServiceStaticContentDataSourceFeature)initWithDictionary:(id)a3 region:(id)a4;
-- (id)createProductsRequestWithIsFetchBlocked:(BOOL *)a3;
+- (PKWebServiceStaticContentDataSourceFeature)initWithDictionary:(id)dictionary region:(id)region;
+- (id)createProductsRequestWithIsFetchBlocked:(BOOL *)blocked;
 @end
 
 @implementation PKWebServiceStaticContentDataSourceFeature
 
-- (PKWebServiceStaticContentDataSourceFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceStaticContentDataSourceFeature)initWithDictionary:(id)dictionary region:(id)region
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKWebServiceStaticContentDataSourceFeature;
-  v7 = [(PKWebServiceRegionFeature *)&v11 initWithFeatureType:14 dictionary:v6 region:a4];
+  v7 = [(PKWebServiceRegionFeature *)&v11 initWithFeatureType:14 dictionary:dictionaryCopy region:region];
   if (v7)
   {
-    v7->_enabled = [v6 PKBoolForKey:@"enabled"];
-    v7->_blockStaticContentFetching = [v6 PKBoolForKey:@"blockStaticContentFetching"];
-    v8 = [v6 PKURLForKey:@"staticContentURL"];
+    v7->_enabled = [dictionaryCopy PKBoolForKey:@"enabled"];
+    v7->_blockStaticContentFetching = [dictionaryCopy PKBoolForKey:@"blockStaticContentFetching"];
+    v8 = [dictionaryCopy PKURLForKey:@"staticContentURL"];
     contentURL = v7->_contentURL;
     v7->_contentURL = v8;
   }
@@ -23,12 +23,12 @@
   return v7;
 }
 
-- (id)createProductsRequestWithIsFetchBlocked:(BOOL *)a3
+- (id)createProductsRequestWithIsFetchBlocked:(BOOL *)blocked
 {
   blockStaticContentFetching = self->_blockStaticContentFetching;
-  if (a3)
+  if (blocked)
   {
-    *a3 = blockStaticContentFetching;
+    *blocked = blockStaticContentFetching;
   }
 
   v5 = 0;

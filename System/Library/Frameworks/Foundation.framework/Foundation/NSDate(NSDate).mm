@@ -10,14 +10,14 @@
   v7[1] = *MEMORY[0x1E69E9840];
   if ([a3 allowsKeyedCoding])
   {
-    [a1 timeIntervalSinceReferenceDate];
+    [self timeIntervalSinceReferenceDate];
 
     return [a3 encodeDouble:@"NS.time" forKey:?];
   }
 
   else
   {
-    [a1 timeIntervalSinceReferenceDate];
+    [self timeIntervalSinceReferenceDate];
     v7[0] = v6;
     return [a3 encodeValueOfObjCType:"d" at:v7];
   }
@@ -30,14 +30,14 @@
   {
     [a3 decodeDoubleForKey:@"NS.time"];
 
-    return [a1 initWithTimeIntervalSinceReferenceDate:?];
+    return [self initWithTimeIntervalSinceReferenceDate:?];
   }
 
   else
   {
     v6[0] = 0.0;
     [a3 decodeValueOfObjCType:"d" at:v6 size:8];
-    return [a1 initWithTimeIntervalSinceReferenceDate:v6[0]];
+    return [self initWithTimeIntervalSinceReferenceDate:v6[0]];
   }
 }
 

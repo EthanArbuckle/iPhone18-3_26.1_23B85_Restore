@@ -1,8 +1,8 @@
 @interface PXPhotosAppGridConfiguration
 - (PXPhotosAppSpecificGridDelegate)photosAppGridDelegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createContentControllerHelperWithConfiguration:(id)a3 contentController:(id)a4;
-- (id)createViewModelHelperWithConfiguration:(id)a3 viewModel:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createContentControllerHelperWithConfiguration:(id)configuration contentController:(id)controller;
+- (id)createViewModelHelperWithConfiguration:(id)configuration viewModel:(id)model;
 @end
 
 @implementation PXPhotosAppGridConfiguration
@@ -14,50 +14,50 @@
   return WeakRetained;
 }
 
-- (id)createContentControllerHelperWithConfiguration:(id)a3 contentController:(id)a4
+- (id)createContentControllerHelperWithConfiguration:(id)configuration contentController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXPhotosAppGridContentController alloc] initWithConfiguration:v6 contentController:v5];
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  v7 = [[PXPhotosAppGridContentController alloc] initWithConfiguration:configurationCopy contentController:controllerCopy];
 
   return v7;
 }
 
-- (id)createViewModelHelperWithConfiguration:(id)a3 viewModel:(id)a4
+- (id)createViewModelHelperWithConfiguration:(id)configuration viewModel:(id)model
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXPhotosAppGridViewModel alloc] initWithConfiguration:v6 viewModel:v5];
+  modelCopy = model;
+  configurationCopy = configuration;
+  v7 = [[PXPhotosAppGridViewModel alloc] initWithConfiguration:configurationCopy viewModel:modelCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXPhotosAppGridConfiguration);
-  v5 = [(PXPhotosAppGridConfiguration *)self privacyController];
-  [(PXPhotosAppGridConfiguration *)v4 setPrivacyController:v5];
+  privacyController = [(PXPhotosAppGridConfiguration *)self privacyController];
+  [(PXPhotosAppGridConfiguration *)v4 setPrivacyController:privacyController];
 
-  v6 = [(PXPhotosAppGridConfiguration *)self searchQueryMatchInfo];
-  [(PXPhotosAppGridConfiguration *)v4 setSearchQueryMatchInfo:v6];
+  searchQueryMatchInfo = [(PXPhotosAppGridConfiguration *)self searchQueryMatchInfo];
+  [(PXPhotosAppGridConfiguration *)v4 setSearchQueryMatchInfo:searchQueryMatchInfo];
 
-  v7 = [(PXPhotosAppGridConfiguration *)self searchContextualVideoThumbnailIdentifiers];
-  [(PXPhotosAppGridConfiguration *)v4 setSearchContextualVideoThumbnailIdentifiers:v7];
+  searchContextualVideoThumbnailIdentifiers = [(PXPhotosAppGridConfiguration *)self searchContextualVideoThumbnailIdentifiers];
+  [(PXPhotosAppGridConfiguration *)v4 setSearchContextualVideoThumbnailIdentifiers:searchContextualVideoThumbnailIdentifiers];
 
-  v8 = [(PXPhotosAppGridConfiguration *)self viewOptionsModel];
-  [(PXPhotosAppGridConfiguration *)v4 setViewOptionsModel:v8];
+  viewOptionsModel = [(PXPhotosAppGridConfiguration *)self viewOptionsModel];
+  [(PXPhotosAppGridConfiguration *)v4 setViewOptionsModel:viewOptionsModel];
 
   [(PXPhotosAppGridConfiguration *)v4 setHidesViewOptionsToolbar:[(PXPhotosAppGridConfiguration *)self hidesViewOptionsToolbar]];
   [(PXPhotosAppGridConfiguration *)v4 setAlwaysIncludeSharedWithYouAssets:[(PXPhotosAppGridConfiguration *)self alwaysIncludeSharedWithYouAssets]];
-  v9 = [(PXPhotosAppGridConfiguration *)self photosAppGridDelegate];
-  [(PXPhotosAppGridConfiguration *)v4 setPhotosAppGridDelegate:v9];
+  photosAppGridDelegate = [(PXPhotosAppGridConfiguration *)self photosAppGridDelegate];
+  [(PXPhotosAppGridConfiguration *)v4 setPhotosAppGridDelegate:photosAppGridDelegate];
 
   [(PXPhotosAppGridConfiguration *)v4 setBarItemProviderClass:[(PXPhotosAppGridConfiguration *)self barItemProviderClass]];
-  v10 = [(PXPhotosAppGridConfiguration *)self photoLibraries];
-  [(PXPhotosAppGridConfiguration *)v4 setPhotoLibraries:v10];
+  photoLibraries = [(PXPhotosAppGridConfiguration *)self photoLibraries];
+  [(PXPhotosAppGridConfiguration *)v4 setPhotoLibraries:photoLibraries];
 
-  v11 = [(PXPhotosAppGridConfiguration *)self openInPhotosAppButtonNavigationDestination];
-  [(PXPhotosAppGridConfiguration *)v4 setOpenInPhotosAppButtonNavigationDestination:v11];
+  openInPhotosAppButtonNavigationDestination = [(PXPhotosAppGridConfiguration *)self openInPhotosAppButtonNavigationDestination];
+  [(PXPhotosAppGridConfiguration *)v4 setOpenInPhotosAppButtonNavigationDestination:openInPhotosAppButtonNavigationDestination];
 
   return v4;
 }

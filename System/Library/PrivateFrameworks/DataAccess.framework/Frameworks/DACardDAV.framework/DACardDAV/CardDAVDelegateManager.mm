@@ -1,23 +1,23 @@
 @interface CardDAVDelegateManager
-+ (void)finishFutures:(id)a3;
-- (CardDAVDelegateManager)initWithDelegateInfoProvider:(id)a3 accountID:(id)a4 databaseHelper:(id)a5;
++ (void)finishFutures:(id)futures;
+- (CardDAVDelegateManager)initWithDelegateInfoProvider:(id)provider accountID:(id)d databaseHelper:(id)helper;
 - (id)account;
-- (id)addChildWithDelegateInfo:(id)a3;
-- (id)collectDelegateInfoReturningError:(id *)a3;
-- (id)existingChildAccountsWithProperty:(id)a3;
-- (id)removeAccount:(id)a3;
-- (id)saveAccount:(id)a3;
-- (void)deleteOrphanDatabasesLackingRepresentationInDelegateInfos:(id)a3;
+- (id)addChildWithDelegateInfo:(id)info;
+- (id)collectDelegateInfoReturningError:(id *)error;
+- (id)existingChildAccountsWithProperty:(id)property;
+- (id)removeAccount:(id)account;
+- (id)saveAccount:(id)account;
+- (void)deleteOrphanDatabasesLackingRepresentationInDelegateInfos:(id)infos;
 - (void)updateDelegates;
 @end
 
 @implementation CardDAVDelegateManager
 
-- (CardDAVDelegateManager)initWithDelegateInfoProvider:(id)a3 accountID:(id)a4 databaseHelper:(id)a5
+- (CardDAVDelegateManager)initWithDelegateInfoProvider:(id)provider accountID:(id)d databaseHelper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  dCopy = d;
+  helperCopy = helper;
   v17.receiver = self;
   v17.super_class = CardDAVDelegateManager;
   v12 = [(CardDAVDelegateManager *)&v17 init];
@@ -27,9 +27,9 @@
     accountStore = v12->_accountStore;
     v12->_accountStore = v13;
 
-    objc_storeStrong(&v12->_accountID, a4);
-    objc_storeStrong(&v12->_delegateProvider, a3);
-    objc_storeStrong(&v12->_databaseHelper, a5);
+    objc_storeStrong(&v12->_accountID, d);
+    objc_storeStrong(&v12->_delegateProvider, provider);
+    objc_storeStrong(&v12->_databaseHelper, helper);
     v15 = v12;
   }
 
@@ -39,7 +39,7 @@
 - (void)updateDelegates
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0;
   v4 = [(CardDAVDelegateManager *)self collectDelegateInfoReturningError:&v46];
   v5 = v46;
@@ -47,10 +47,10 @@
   if (v4)
   {
     v34 = v5;
-    v36 = v3;
-    v7 = [MEMORY[0x277D03970] DAAccountPrincipalPath];
-    v39 = self;
-    v8 = [(CardDAVDelegateManager *)self existingChildAccountsWithProperty:v7];
+    v36 = array;
+    dAAccountPrincipalPath = [MEMORY[0x277D03970] DAAccountPrincipalPath];
+    selfCopy = self;
+    v8 = [(CardDAVDelegateManager *)self existingChildAccountsWithProperty:dAAccountPrincipalPath];
     v9 = [v8 mutableCopy];
 
     v44 = 0u;
@@ -82,21 +82,21 @@
         }
 
         v17 = *(*(&v42 + 1) + 8 * i);
-        v18 = [v17 principalPath];
-        if (!(*(v13 + 16))(v13, v18))
+        principalPath = [v17 principalPath];
+        if (!(*(v13 + 16))(v13, principalPath))
         {
           v21 = v11;
           v22 = v14;
           v23 = v12;
           v24 = v9;
-          v25 = [v9 objectForKeyedSubscript:v18];
+          v25 = [v9 objectForKeyedSubscript:principalPath];
           if (v25)
           {
             v19 = v25;
-            v26 = [v25 accountProperties];
+            accountProperties = [v25 accountProperties];
             [v17 setPropertiesOnAccount:v19];
-            v27 = [v19 accountProperties];
-            v28 = [v26 isEqualToDictionary:v27];
+            accountProperties2 = [v19 accountProperties];
+            v28 = [accountProperties isEqualToDictionary:accountProperties2];
 
             if (v28)
             {
@@ -106,15 +106,15 @@
 
           else
           {
-            v19 = [(CardDAVDelegateManager *)v39 addChildWithDelegateInfo:v17];
+            v19 = [(CardDAVDelegateManager *)selfCopy addChildWithDelegateInfo:v17];
           }
 
-          v29 = [(CardDAVDelegateManager *)v39 saveAccount:v19];
+          v29 = [(CardDAVDelegateManager *)selfCopy saveAccount:v19];
           [v36 addObject:v29];
 
 LABEL_15:
           v9 = v24;
-          [v24 removeObjectForKey:v18];
+          [v24 removeObjectForKey:principalPath];
           v12 = v23;
           v14 = v22;
           v11 = v21;
@@ -128,9 +128,9 @@ LABEL_15:
           goto LABEL_17;
         }
 
-        v20 = [v17 dsid];
+        dsid = [v17 dsid];
         *buf = 138543618;
-        v48 = v20;
+        v48 = dsid;
         v49 = 2112;
         v50 = v17;
         _os_log_impl(&dword_24850D000, v19, type, "Unexpected condition updating deletes - no principal path for delegateInfo: %{public}@ %@", buf, 0x16u);
@@ -145,17 +145,17 @@ LABEL_17:
       {
 LABEL_19:
 
-        v30 = [v9 allValues];
+        allValues = [v9 allValues];
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __41__CardDAVDelegateManager_updateDelegates__block_invoke;
         v41[3] = &unk_278F1AD10;
-        v41[4] = v39;
-        v31 = [v30 _cn_map:v41];
+        v41[4] = selfCopy;
+        v31 = [allValues _cn_map:v41];
 
-        [(CardDAVDelegateManager *)v39 deleteOrphanDatabasesLackingRepresentationInDelegateInfos:obj];
+        [(CardDAVDelegateManager *)selfCopy deleteOrphanDatabasesLackingRepresentationInDelegateInfos:obj];
         [objc_opt_class() finishFutures:v31];
-        v3 = v36;
+        array = v36;
         [objc_opt_class() finishFutures:v36];
 
         v6 = v34;
@@ -179,54 +179,54 @@ LABEL_22:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteOrphanDatabasesLackingRepresentationInDelegateInfos:(id)a3
+- (void)deleteOrphanDatabasesLackingRepresentationInDelegateInfos:(id)infos
 {
-  v5 = [a3 _cn_map:&__block_literal_global_0];
-  v4 = [(CardDAVDelegateManager *)self databaseHelper];
-  [v4 removeDelegateDatabasesNotMatchingAltDSIDs:v5];
+  v5 = [infos _cn_map:&__block_literal_global_0];
+  databaseHelper = [(CardDAVDelegateManager *)self databaseHelper];
+  [databaseHelper removeDelegateDatabasesNotMatchingAltDSIDs:v5];
 }
 
-+ (void)finishFutures:(id)a3
++ (void)finishFutures:(id)futures
 {
-  v5 = a3;
+  futuresCopy = futures;
   if (((*(*MEMORY[0x277CFBCF8] + 16))() & 1) == 0)
   {
-    v3 = [MEMORY[0x277CFBE28] sequence:v5];
+    v3 = [MEMORY[0x277CFBE28] sequence:futuresCopy];
     v4 = [v3 result:0];
   }
 }
 
 - (id)account
 {
-  v3 = [(CardDAVDelegateManager *)self accountStore];
-  v4 = [(CardDAVDelegateManager *)self accountID];
-  v5 = [v3 accountWithIdentifier:v4];
+  accountStore = [(CardDAVDelegateManager *)self accountStore];
+  accountID = [(CardDAVDelegateManager *)self accountID];
+  v5 = [accountStore accountWithIdentifier:accountID];
 
   return v5;
 }
 
-- (id)collectDelegateInfoReturningError:(id *)a3
+- (id)collectDelegateInfoReturningError:(id *)error
 {
-  v5 = [(CardDAVDelegateManager *)self delegateProvider];
-  v6 = [(CardDAVDelegateManager *)self account];
-  v7 = [v5 collectDelegatesForAccount:v6 error:a3];
+  delegateProvider = [(CardDAVDelegateManager *)self delegateProvider];
+  account = [(CardDAVDelegateManager *)self account];
+  v7 = [delegateProvider collectDelegatesForAccount:account error:error];
 
   return v7;
 }
 
-- (id)existingChildAccountsWithProperty:(id)a3
+- (id)existingChildAccountsWithProperty:(id)property
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(CardDAVDelegateManager *)self account];
-  v7 = [v6 childAccounts];
+  propertyCopy = property;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  account = [(CardDAVDelegateManager *)self account];
+  childAccounts = [account childAccounts];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v7;
+  v8 = childAccounts;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -242,8 +242,8 @@ LABEL_22:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 accountPropertyForKey:{v4, v18}];
-        [v5 setObject:v13 forKeyedSubscript:v14];
+        v14 = [v13 accountPropertyForKey:{propertyCopy, v18}];
+        [dictionary setObject:v13 forKeyedSubscript:v14];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -252,41 +252,41 @@ LABEL_22:
     while (v10);
   }
 
-  v15 = [v5 copy];
+  v15 = [dictionary copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)addChildWithDelegateInfo:(id)a3
+- (id)addChildWithDelegateInfo:(id)info
 {
   v4 = MEMORY[0x277CB8F30];
-  v5 = a3;
+  infoCopy = info;
   v6 = [v4 alloc];
-  v7 = [(CardDAVDelegateManager *)self accountStore];
-  v8 = [v7 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BD8]];
+  accountStore = [(CardDAVDelegateManager *)self accountStore];
+  v8 = [accountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BD8]];
   v9 = [v6 initWithAccountType:v8];
 
-  [v5 setPropertiesOnAccount:v9];
-  v10 = [(CardDAVDelegateManager *)self account];
-  [v9 setParentAccount:v10];
+  [infoCopy setPropertiesOnAccount:v9];
+  account = [(CardDAVDelegateManager *)self account];
+  [v9 setParentAccount:account];
 
   [v9 setAuthenticationType:@"parent"];
 
   return v9;
 }
 
-- (id)saveAccount:(id)a3
+- (id)saveAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CardDAVDelegateManager *)self accountStore];
-  v6 = [v5 _cn_canSaveAccount:v4];
+  accountCopy = account;
+  accountStore = [(CardDAVDelegateManager *)self accountStore];
+  v6 = [accountStore _cn_canSaveAccount:accountCopy];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __38__CardDAVDelegateManager_saveAccount___block_invoke;
   v16[3] = &unk_278F1AD58;
-  v7 = v4;
+  v7 = accountCopy;
   v17 = v7;
   [v6 addFailureBlock:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -399,17 +399,17 @@ void __38__CardDAVDelegateManager_saveAccount___block_invoke_11(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeAccount:(id)a3
+- (id)removeAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CardDAVDelegateManager *)self accountStore];
-  v6 = [v5 _cn_removeAccount:v4];
+  accountCopy = account;
+  accountStore = [(CardDAVDelegateManager *)self accountStore];
+  v6 = [accountStore _cn_removeAccount:accountCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__CardDAVDelegateManager_removeAccount___block_invoke;
   v12[3] = &unk_278F1AD58;
-  v7 = v4;
+  v7 = accountCopy;
   v13 = v7;
   [v6 addFailureBlock:v12];
   v10[0] = MEMORY[0x277D85DD0];

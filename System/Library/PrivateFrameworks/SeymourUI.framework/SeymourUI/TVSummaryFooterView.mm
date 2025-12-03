@@ -1,13 +1,13 @@
 @interface TVSummaryFooterView
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI19TVSummaryFooterView)initWithCoder:(id)a3;
+- (_TtC9SeymourUI19TVSummaryFooterView)initWithCoder:(id)coder;
 @end
 
 @implementation TVSummaryFooterView
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B8FDB80();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C7620E0);
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (_TtC9SeymourUI19TVSummaryFooterView)initWithCoder:(id)a3
+- (_TtC9SeymourUI19TVSummaryFooterView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI19TVSummaryFooterView_onDoneButtonTap);
   *v3 = 0;

@@ -1,19 +1,19 @@
 @interface ACCBLEPairingServerRemote
-- (ACCBLEPairingServerRemote)initWithXPCConnection:(id)a3;
+- (ACCBLEPairingServerRemote)initWithXPCConnection:(id)connection;
 - (void)dealloc;
-- (void)devicePairingData:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 pairData:(id)a6;
-- (void)deviceStateUpdate:(id)a3 blePairingUUID:(id)a4 bRadioOn:(BOOL)a5 pairState:(int)a6 bPairModeOn:(BOOL)a7;
-- (void)deviceUpdatePairingInfo:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 pairInfo:(id)a6;
-- (void)initConnection:(id)a3;
-- (void)startBLEUpdates:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 bRadioUpdatesOn:(BOOL)a6 bPairInfoUpdatesOn:(BOOL)a7;
-- (void)stopBLEUpdates:(id)a3 blePairingUUID:(id)a4;
+- (void)devicePairingData:(id)data blePairingUUID:(id)d pairType:(unsigned __int8)type pairData:(id)pairData;
+- (void)deviceStateUpdate:(id)update blePairingUUID:(id)d bRadioOn:(BOOL)on pairState:(int)state bPairModeOn:(BOOL)modeOn;
+- (void)deviceUpdatePairingInfo:(id)info blePairingUUID:(id)d pairType:(unsigned __int8)type pairInfo:(id)pairInfo;
+- (void)initConnection:(id)connection;
+- (void)startBLEUpdates:(id)updates blePairingUUID:(id)d pairType:(unsigned __int8)type bRadioUpdatesOn:(BOOL)on bPairInfoUpdatesOn:(BOOL)updatesOn;
+- (void)stopBLEUpdates:(id)updates blePairingUUID:(id)d;
 @end
 
 @implementation ACCBLEPairingServerRemote
 
-- (ACCBLEPairingServerRemote)initWithXPCConnection:(id)a3
+- (ACCBLEPairingServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -43,7 +43,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v5 hash];
+    v14 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "initWithXPCConnection: XPCConnection=%lu", buf, 0xCu);
   }
 
@@ -53,9 +53,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v9->_XPCConnection, a3);
+      objc_storeStrong(&v9->_XPCConnection, connection);
     }
 
     else
@@ -78,14 +78,14 @@
   [(ACCBLEPairingServerRemote *)&v4 dealloc];
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCBLEPairingServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCBLEPairingServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCBLEPairingServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -154,16 +154,16 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)startBLEUpdates:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 bRadioUpdatesOn:(BOOL)a6 bPairInfoUpdatesOn:(BOOL)a7
+- (void)startBLEUpdates:(id)updates blePairingUUID:(id)d pairType:(unsigned __int8)type bRadioUpdatesOn:(BOOL)on bPairInfoUpdatesOn:(BOOL)updatesOn
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  updatesOnCopy = updatesOn;
+  onCopy = on;
+  typeCopy = type;
+  updatesCopy = updates;
+  dCopy = d;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 5;
@@ -193,24 +193,24 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138413314;
-    v23 = v12;
+    v23 = updatesCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = dCopy;
     v26 = 1024;
-    v27 = v9;
+    v27 = typeCopy;
     v28 = 1024;
-    v29 = v8;
+    v29 = onCopy;
     v30 = 1024;
-    v31 = v7;
+    v31 = updatesOnCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "BLEPairing startBLEUpdates: accessoryUID %@, blePairingUUID=%@, pairType=%d bRadioUpdatesOn=%d bPairInfoUpdatesOn=%d", &v22, 0x28u);
   }
 
   v17 = +[ACCBLEPairingServer sharedServer];
-  v18 = [v17 reserveAccessory:v12 xpcConn:self->_XPCConnection];
+  v18 = [v17 reserveAccessory:updatesCopy xpcConn:self->_XPCConnection];
 
   if (v18)
   {
-    platform_blePairing_startBLEUpdatesHandler(v12, v13, v9, v8, v7);
+    platform_blePairing_startBLEUpdatesHandler(updatesCopy, dCopy, typeCopy, onCopy, updatesOnCopy);
   }
 
   else
@@ -235,7 +235,7 @@
     {
       v21 = [(NSXPCConnection *)self->_XPCConnection hash];
       v22 = 138412546;
-      v23 = v12;
+      v23 = updatesCopy;
       v24 = 2048;
       v25 = v21;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "BLEPairing startBLEUpdates: accessoryUID %@, NOT RESERVED connHash %lu", &v22, 0x16u);
@@ -243,12 +243,12 @@
   }
 }
 
-- (void)deviceStateUpdate:(id)a3 blePairingUUID:(id)a4 bRadioOn:(BOOL)a5 pairState:(int)a6 bPairModeOn:(BOOL)a7
+- (void)deviceStateUpdate:(id)update blePairingUUID:(id)d bRadioOn:(BOOL)on pairState:(int)state bPairModeOn:(BOOL)modeOn
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  modeOnCopy = modeOn;
+  onCopy = on;
+  updateCopy = update;
+  dCopy = d;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 5;
@@ -278,24 +278,24 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138413314;
-    v23 = v12;
+    v23 = updateCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = dCopy;
     v26 = 1024;
-    v27 = v9;
+    v27 = onCopy;
     v28 = 1024;
-    v29 = a6;
+    stateCopy = state;
     v30 = 1024;
-    v31 = v7;
+    v31 = modeOnCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "BLEPairing deviceStateUpdate: accessoryUID %@, blePairingUUID=%@, bRadioOn=%d pairState=%d bPairModeOn=%d", &v22, 0x28u);
   }
 
   v17 = +[ACCBLEPairingServer sharedServer];
-  v18 = [v17 accessoryReserved:v12 xpcConn:self->_XPCConnection];
+  v18 = [v17 accessoryReserved:updateCopy xpcConn:self->_XPCConnection];
 
   if (v18)
   {
-    platform_blePairing_deviceStateUpdateHandler(v12, v13, v9, a6, v7);
+    platform_blePairing_deviceStateUpdateHandler(updateCopy, dCopy, onCopy, state, modeOnCopy);
   }
 
   else
@@ -320,7 +320,7 @@
     {
       v21 = [(NSXPCConnection *)self->_XPCConnection hash];
       v22 = 138412546;
-      v23 = v12;
+      v23 = updateCopy;
       v24 = 2048;
       v25 = v21;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "BLEPairing deviceStateUpdate: accessoryUID %@, NOT RESERVED connHash %lu", &v22, 0x16u);
@@ -328,12 +328,12 @@
   }
 }
 
-- (void)devicePairingData:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 pairData:(id)a6
+- (void)devicePairingData:(id)data blePairingUUID:(id)d pairType:(unsigned __int8)type pairData:(id)pairData
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typeCopy = type;
+  dataCopy = data;
+  dCopy = d;
+  pairDataCopy = pairData;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 5;
@@ -363,22 +363,22 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138413058;
-    v22 = v10;
+    v22 = dataCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = dCopy;
     v25 = 1024;
-    v26 = v7;
+    v26 = typeCopy;
     v27 = 2112;
-    v28 = v12;
+    v28 = pairDataCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BLEPairing devicePairingData: accessoryUID %@, blePairingUUID=%@, pairType=%d pairData=%@", &v21, 0x26u);
   }
 
   v16 = +[ACCBLEPairingServer sharedServer];
-  v17 = [v16 accessoryReserved:v10 xpcConn:self->_XPCConnection];
+  v17 = [v16 accessoryReserved:dataCopy xpcConn:self->_XPCConnection];
 
   if (v17)
   {
-    platform_blePairing_devicePairingDataHandler(v10, v11, v7, v12);
+    platform_blePairing_devicePairingDataHandler(dataCopy, dCopy, typeCopy, pairDataCopy);
   }
 
   else
@@ -403,7 +403,7 @@
     {
       v20 = [(NSXPCConnection *)self->_XPCConnection hash];
       v21 = 138412546;
-      v22 = v10;
+      v22 = dataCopy;
       v23 = 2048;
       v24 = v20;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "BLEPairing devicePairingData: accessoryUID %@, NOT RESERVED connHash %lu", &v21, 0x16u);
@@ -411,12 +411,12 @@
   }
 }
 
-- (void)deviceUpdatePairingInfo:(id)a3 blePairingUUID:(id)a4 pairType:(unsigned __int8)a5 pairInfo:(id)a6
+- (void)deviceUpdatePairingInfo:(id)info blePairingUUID:(id)d pairType:(unsigned __int8)type pairInfo:(id)pairInfo
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typeCopy = type;
+  infoCopy = info;
+  dCopy = d;
+  pairInfoCopy = pairInfo;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 5;
@@ -446,22 +446,22 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138413058;
-    v22 = v10;
+    v22 = infoCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = dCopy;
     v25 = 1024;
-    v26 = v7;
+    v26 = typeCopy;
     v27 = 2112;
-    v28 = v12;
+    v28 = pairInfoCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BLEPairing deviceUpdatePairingInfo: accessoryUID %@, blePairingUUID=%@, pairType=%d pairInfo=%@", &v21, 0x26u);
   }
 
   v16 = +[ACCBLEPairingServer sharedServer];
-  v17 = [v16 accessoryReserved:v10 xpcConn:self->_XPCConnection];
+  v17 = [v16 accessoryReserved:infoCopy xpcConn:self->_XPCConnection];
 
   if (v17)
   {
-    platform_blePairing_deviceUpdatePairingInfoHandler(v10, v11, v7, v12);
+    platform_blePairing_deviceUpdatePairingInfoHandler(infoCopy, dCopy, typeCopy, pairInfoCopy);
   }
 
   else
@@ -486,7 +486,7 @@
     {
       v20 = [(NSXPCConnection *)self->_XPCConnection hash];
       v21 = 138412546;
-      v22 = v10;
+      v22 = infoCopy;
       v23 = 2048;
       v24 = v20;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "BLEPairing deviceUpdatePairingInfo: accessoryUID %@, NOT RESERVED connHash %lu", &v21, 0x16u);
@@ -494,10 +494,10 @@
   }
 }
 
-- (void)stopBLEUpdates:(id)a3 blePairingUUID:(id)a4
+- (void)stopBLEUpdates:(id)updates blePairingUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -527,20 +527,20 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v6;
+    v17 = updatesCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BLEPairing stopBLEUpdate: accessoryUID %@, blePairingUUID=%@", &v16, 0x16u);
   }
 
   v11 = +[ACCBLEPairingServer sharedServer];
-  v12 = [v11 accessoryReserved:v6 xpcConn:self->_XPCConnection];
+  v12 = [v11 accessoryReserved:updatesCopy xpcConn:self->_XPCConnection];
 
   if (v12)
   {
-    platform_blePairing_stopBLEUpdatesHandler(v6, v7);
+    platform_blePairing_stopBLEUpdatesHandler(updatesCopy, dCopy);
     v13 = +[ACCBLEPairingServer sharedServer];
-    [v13 releaseAccessory:v6 xpcConn:self->_XPCConnection];
+    [v13 releaseAccessory:updatesCopy xpcConn:self->_XPCConnection];
   }
 
   else
@@ -565,7 +565,7 @@
     {
       v15 = [(NSXPCConnection *)self->_XPCConnection hash];
       v16 = 138412546;
-      v17 = v6;
+      v17 = updatesCopy;
       v18 = 2048;
       v19 = v15;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "BLEPairing stopBLEUpdate: accessoryUID %@, NOT RESERVED connHash %lu", &v16, 0x16u);

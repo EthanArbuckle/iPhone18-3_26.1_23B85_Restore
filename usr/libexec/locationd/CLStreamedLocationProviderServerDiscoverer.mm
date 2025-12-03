@@ -1,18 +1,18 @@
 @interface CLStreamedLocationProviderServerDiscoverer
-+ (BOOL)iOSSourceVersionNewEnough:(id *)a3;
-+ (BOOL)macOSSourceVersionNewEnough:(id *)a3;
-+ (BOOL)validateRemoteDeviceForStreaming:(id)a3;
-- (id)deviceWithEffectiveID:(id)a3;
-- (id)initOnQueue:(id)a3;
++ (BOOL)iOSSourceVersionNewEnough:(id *)enough;
++ (BOOL)macOSSourceVersionNewEnough:(id *)enough;
++ (BOOL)validateRemoteDeviceForStreaming:(id)streaming;
+- (id)deviceWithEffectiveID:(id)d;
+- (id)initOnQueue:(id)queue;
 - (void)dealloc;
-- (void)findCandidateServersWithCompletion:(id)a3;
+- (void)findCandidateServersWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)invalidateAndReleaseProbeClients;
 @end
 
 @implementation CLStreamedLocationProviderServerDiscoverer
 
-- (id)initOnQueue:(id)a3
+- (id)initOnQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = CLStreamedLocationProviderServerDiscoverer;
@@ -35,7 +35,7 @@
     }
 
     [(RPCompanionLinkClient *)v4->_nearbyDeviceListener setControlFlags:v5];
-    [(RPCompanionLinkClient *)v4->_nearbyDeviceListener setDispatchQueue:a3];
+    [(RPCompanionLinkClient *)v4->_nearbyDeviceListener setDispatchQueue:queue];
     [(RPCompanionLinkClient *)v4->_nearbyDeviceListener setDeviceFoundHandler:&stru_102456648];
     [(RPCompanionLinkClient *)v4->_nearbyDeviceListener setDeviceLostHandler:&stru_102456668];
     [(RPCompanionLinkClient *)v4->_nearbyDeviceListener activateWithCompletion:&stru_1024566A8];
@@ -100,14 +100,14 @@
   self->_probeClients = 0;
 }
 
-- (id)deviceWithEffectiveID:(id)a3
+- (id)deviceWithEffectiveID:(id)d
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(RPCompanionLinkClient *)[(CLStreamedLocationProviderServerDiscoverer *)self nearbyDeviceListener] activeDevices];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v23 count:16];
+  activeDevices = [(RPCompanionLinkClient *)[(CLStreamedLocationProviderServerDiscoverer *)self nearbyDeviceListener] activeDevices];
+  v5 = [activeDevices countByEnumeratingWithState:&v13 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,7 +118,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeDevices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -132,13 +132,13 @@
           v10 = qword_1025D47B8;
           if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_DEBUG))
           {
-            v11 = [a3 UTF8String];
+            uTF8String = [d UTF8String];
             *buf = 68289283;
             v18 = 0;
             v19 = 2082;
             v20 = "";
             v21 = 2081;
-            v22 = v11;
+            v22 = uTF8String;
             _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#Multiclient found an active device with effective ID, effectiveID:%{private, location:escape_only}s}", buf, 0x1Cu);
           }
 
@@ -146,7 +146,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v23 count:16];
+      v6 = [activeDevices countByEnumeratingWithState:&v13 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -159,40 +159,40 @@
   return 0;
 }
 
-+ (BOOL)iOSSourceVersionNewEnough:(id *)a3
++ (BOOL)iOSSourceVersionNewEnough:(id *)enough
 {
-  if (a3->var0 < 16)
+  if (enough->var0 < 16)
   {
     return 0;
   }
 
-  if (a3->var0 == 16)
+  if (enough->var0 == 16)
   {
-    return a3->var1 > 3;
+    return enough->var1 > 3;
   }
 
   return 1;
 }
 
-+ (BOOL)macOSSourceVersionNewEnough:(id *)a3
++ (BOOL)macOSSourceVersionNewEnough:(id *)enough
 {
-  if (a3->var0 < 14)
+  if (enough->var0 < 14)
   {
     return 0;
   }
 
-  if (a3->var0 == 14)
+  if (enough->var0 == 14)
   {
-    return a3->var1 > 3;
+    return enough->var1 > 3;
   }
 
   return 1;
 }
 
-+ (BOOL)validateRemoteDeviceForStreaming:(id)a3
++ (BOOL)validateRemoteDeviceForStreaming:(id)streaming
 {
-  v4 = [a3 statusFlags];
-  if ([objc_msgSend(a3 "model")])
+  statusFlags = [streaming statusFlags];
+  if ([objc_msgSend(streaming "model")])
   {
     sub_10001A3E8();
     if (!sub_100717D04())
@@ -218,9 +218,9 @@
       goto LABEL_42;
     }
 
-    if (a3)
+    if (streaming)
     {
-      [a3 operatingSystemVersion];
+      [streaming operatingSystemVersion];
     }
 
     else
@@ -243,12 +243,12 @@
         return 0;
       }
 
-      v13 = [a3 name];
-      if (a3)
+      name = [streaming name];
+      if (streaming)
       {
-        [a3 operatingSystemVersion];
+        [streaming operatingSystemVersion];
         v14 = v21;
-        [a3 operatingSystemVersion];
+        [streaming operatingSystemVersion];
         v15 = v20;
       }
 
@@ -263,9 +263,9 @@
       *v23 = 2082;
       *&v23[2] = "";
       *&v23[10] = 2113;
-      *&v23[12] = v13;
+      *&v23[12] = name;
       v24 = 2050;
-      v25 = v14;
+      model = v14;
       v26 = 2050;
       v27 = v15;
       v6 = "{msg%{public}.0s:#Multiclient macOS device running too-old software, ignoring, name:%{private, location:escape_only}@, major:%{public}ld, minor:%{public}ld}";
@@ -275,11 +275,11 @@
     return 1;
   }
 
-  if ([objc_msgSend(a3 "model")])
+  if ([objc_msgSend(streaming "model")])
   {
-    if (a3)
+    if (streaming)
     {
-      [a3 operatingSystemVersion];
+      [streaming operatingSystemVersion];
     }
 
     else
@@ -302,12 +302,12 @@
         return 0;
       }
 
-      v16 = [a3 name];
-      if (a3)
+      name2 = [streaming name];
+      if (streaming)
       {
-        [a3 operatingSystemVersion];
+        [streaming operatingSystemVersion];
         v17 = v21;
-        [a3 operatingSystemVersion];
+        [streaming operatingSystemVersion];
         v18 = v20;
       }
 
@@ -322,9 +322,9 @@
       *v23 = 2082;
       *&v23[2] = "";
       *&v23[10] = 2113;
-      *&v23[12] = v16;
+      *&v23[12] = name2;
       v24 = 2050;
-      v25 = v17;
+      model = v17;
       v26 = 2050;
       v27 = v18;
       v6 = "{msg%{public}.0s:#Multiclient iOS device running too-old software, ignoring, name:%{private, location:escape_only}@, major:%{public}ld, minor:%{public}ld}";
@@ -340,7 +340,7 @@ LABEL_42:
   }
 
   sub_10001A3E8();
-  if (!sub_100717D04() || (v4 & 0x1000000) == 0)
+  if (!sub_100717D04() || (statusFlags & 0x1000000) == 0)
   {
     if (qword_1025D47B0 != -1)
     {
@@ -358,11 +358,11 @@ LABEL_42:
     *v23 = 2082;
     *&v23[2] = "";
     *&v23[10] = 2113;
-    *&v23[12] = [a3 name];
+    *&v23[12] = [streaming name];
     v24 = 2114;
-    v25 = [a3 model];
+    model = [streaming model];
     v26 = 1026;
-    LODWORD(v27) = (v4 >> 24) & 1;
+    LODWORD(v27) = (statusFlags >> 24) & 1;
     v6 = "{msg%{public}.0s:#Multiclient candidate is neither a phone nor a mac host, skipping, name:%{private, location:escape_only}@, model:%{public, location:escape_only}@, USB?:%{public}hhd}";
     v7 = v11;
     v8 = 44;
@@ -383,14 +383,14 @@ LABEL_42:
     *v23 = 2082;
     *&v23[2] = "";
     *&v23[10] = 2113;
-    *&v23[12] = [a3 name];
+    *&v23[12] = [streaming name];
     _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#Multiclient accepting this device because it looks like it's our host, name:%{private, location:escape_only}@}", buf, 0x1Cu);
   }
 
   return v10;
 }
 
-- (void)findCandidateServersWithCompletion:(id)a3
+- (void)findCandidateServersWithCompletion:(id)completion
 {
   v23 = +[NSMutableDictionary dictionary];
   v22 = +[NSMutableDictionary dictionary];
@@ -415,8 +415,8 @@ LABEL_42:
   v27 = 0uLL;
   v28 = 0uLL;
   v29 = 0uLL;
-  v5 = [(RPCompanionLinkClient *)[(CLStreamedLocationProviderServerDiscoverer *)self nearbyDeviceListener] activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v42 count:16];
+  activeDevices = [(RPCompanionLinkClient *)[(CLStreamedLocationProviderServerDiscoverer *)self nearbyDeviceListener] activeDevices];
+  v6 = [activeDevices countByEnumeratingWithState:&v26 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -431,13 +431,13 @@ LABEL_42:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices);
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
-        v11 = [v10 statusFlags];
+        statusFlags = [v10 statusFlags];
         sub_10001A3E8();
-        if (!sub_100717D04() || (v11 & 0x1000000) != 0)
+        if (!sub_100717D04() || (statusFlags & 0x1000000) != 0)
         {
           if ([CLStreamedLocationProviderServerDiscoverer validateRemoteDeviceForStreaming:v10])
           {
@@ -493,16 +493,16 @@ LABEL_42:
           v12 = qword_1025D47B8;
           if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v10 name];
-            v14 = [v10 model];
+            name = [v10 name];
+            model = [v10 model];
             *buf = 68289538;
             v35 = 0;
             v36 = 2082;
             v37 = "";
             v38 = 2114;
-            v39 = v13;
+            v39 = name;
             v40 = 2114;
-            v41 = v14;
+            v41 = model;
             _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#Multiclient skipping this device because it's not the host, name:%{public, location:escape_only}@, model:%{public, location:escape_only}@}", buf, 0x26u);
           }
         }
@@ -511,7 +511,7 @@ LABEL_42:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v42 count:16];
+      v7 = [activeDevices countByEnumeratingWithState:&v26 objects:v42 count:16];
     }
 
     while (v7);
@@ -523,7 +523,7 @@ LABEL_42:
   block[2] = sub_10048FC0C;
   block[3] = &unk_102456748;
   block[4] = v23;
-  block[5] = a3;
+  block[5] = completion;
   dispatch_after(v17, [(RPCompanionLinkClient *)[(CLStreamedLocationProviderServerDiscoverer *)self nearbyDeviceListener] dispatchQueue], block);
 }
 

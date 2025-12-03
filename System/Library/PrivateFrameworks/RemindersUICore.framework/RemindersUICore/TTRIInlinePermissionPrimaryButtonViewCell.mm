@@ -1,6 +1,6 @@
 @interface TTRIInlinePermissionPrimaryButtonViewCell
 + (Class)containerViewClass;
-- (_TtC15RemindersUICore41TTRIInlinePermissionPrimaryButtonViewCell)initWithCoder:(id)a3;
+- (_TtC15RemindersUICore41TTRIInlinePermissionPrimaryButtonViewCell)initWithCoder:(id)coder;
 - (void)prepareForReuse;
 @end
 
@@ -13,7 +13,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC15RemindersUICore41TTRIInlinePermissionPrimaryButtonViewCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore41TTRIInlinePermissionPrimaryButtonViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC15RemindersUICore41TTRIInlinePermissionPrimaryButtonViewCell_delegate) = 0;
   swift_unknownObjectWeakInit();

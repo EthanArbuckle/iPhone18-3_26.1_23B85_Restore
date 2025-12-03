@@ -1,42 +1,42 @@
 @interface MKGETStatusRouter
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKGETStatusRouter
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
   v36 = *MEMORY[0x277D85DE8];
-  v29 = a5;
+  responseCopy = response;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v28 = self;
+  selfCopy = self;
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_state];
   [v6 setObject:v7 forKey:@"state"];
 
   v8 = objc_alloc_init(MKDevice);
-  v9 = [(MKDevice *)v8 systemName];
-  [v6 setObject:v9 forKey:@"system_name"];
+  systemName = [(MKDevice *)v8 systemName];
+  [v6 setObject:systemName forKey:@"system_name"];
 
-  v10 = [(MKDevice *)v8 systemVersion];
-  [v6 setObject:v10 forKey:@"system_version"];
+  systemVersion = [(MKDevice *)v8 systemVersion];
+  [v6 setObject:systemVersion forKey:@"system_version"];
 
-  v11 = [(MKDevice *)v8 deviceName];
-  [v6 setObject:v11 forKey:@"device_name"];
+  deviceName = [(MKDevice *)v8 deviceName];
+  [v6 setObject:deviceName forKey:@"device_name"];
 
-  v12 = [(MKDevice *)v8 deviceFamily];
-  [v6 setObject:v12 forKey:@"device_family"];
+  deviceFamily = [(MKDevice *)v8 deviceFamily];
+  [v6 setObject:deviceFamily forKey:@"device_family"];
 
-  v13 = [(MKDevice *)v8 deviceModel];
-  [v6 setObject:v13 forKey:@"device_model"];
+  deviceModel = [(MKDevice *)v8 deviceModel];
+  [v6 setObject:deviceModel forKey:@"device_model"];
 
   v14 = objc_alloc_init(MKWiFiDevice);
-  v15 = [(MKWiFiDevice *)v14 currentNetwork];
+  currentNetwork = [(MKWiFiDevice *)v14 currentNetwork];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = [v15 allKeys];
-  v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  allKeys = [currentNetwork allKeys];
+  v17 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v17)
   {
     v18 = v17;
@@ -47,21 +47,21 @@
       {
         if (*v32 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v31 + 1) + 8 * i);
-        v22 = [v15 objectForKeyedSubscript:v21];
+        v22 = [currentNetwork objectForKeyedSubscript:v21];
         [v6 setObject:v22 forKey:v21];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v18);
   }
 
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:v28->_preferredChannel];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:selfCopy->_preferredChannel];
   [v6 setObject:v23 forKey:@"ap1"];
 
   v30 = 0;
@@ -76,7 +76,7 @@
     }
   }
 
-  [v29 setBody:v24];
+  [responseCopy setBody:v24];
 
   v27 = *MEMORY[0x277D85DE8];
 }

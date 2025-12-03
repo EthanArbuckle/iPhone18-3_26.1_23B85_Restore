@@ -1,7 +1,7 @@
 @interface SuggestedRouteBannerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC13MediaRemoteUI24SuggestedRouteBannerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC13MediaRemoteUI24SuggestedRouteBannerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)updateUserInterfaceStyle;
 @end
@@ -21,28 +21,28 @@
   [v4 setSideConstraintActive:1];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaRemoteUI24SuggestedRouteBannerView_pillView);
-  v8 = a4;
-  v9 = self;
-  [(SuggestedRouteBannerView *)v9 convertPoint:v7 toCoordinateSpace:x, y];
-  LOBYTE(v7) = [v7 pointInside:v8 withEvent:?];
+  eventCopy = event;
+  selfCopy = self;
+  [(SuggestedRouteBannerView *)selfCopy convertPoint:v7 toCoordinateSpace:x, y];
+  LOBYTE(v7) = [v7 pointInside:eventCopy withEvent:?];
 
   return v7;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for SuggestedRouteBannerView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(SuggestedRouteBannerView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(SuggestedRouteBannerView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -67,11 +67,11 @@ LABEL_5:
 
 - (void)updateUserInterfaceStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033EC8();
 }
 
-- (_TtC13MediaRemoteUI24SuggestedRouteBannerView)initWithFrame:(CGRect)a3
+- (_TtC13MediaRemoteUI24SuggestedRouteBannerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

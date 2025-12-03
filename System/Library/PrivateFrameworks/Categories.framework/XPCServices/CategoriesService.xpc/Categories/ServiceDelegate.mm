@@ -1,6 +1,6 @@
 @interface ServiceDelegate
-- (BOOL)hasEntitlement:(id)a3 connection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)hasEntitlement:(id)entitlement connection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServiceDelegate)init;
 @end
 
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CategoriesServiceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self->_sharedXPCService];
-  [v5 resume];
+  [connectionCopy setExportedObject:self->_sharedXPCService];
+  [connectionCopy resume];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -46,9 +46,9 @@
   return 1;
 }
 
-- (BOOL)hasEntitlement:(id)a3 connection:(id)a4
+- (BOOL)hasEntitlement:(id)entitlement connection:(id)connection
 {
-  v4 = [a4 valueForEntitlement:a3];
+  v4 = [connection valueForEntitlement:entitlement];
   v5 = 0;
   if (v4)
   {

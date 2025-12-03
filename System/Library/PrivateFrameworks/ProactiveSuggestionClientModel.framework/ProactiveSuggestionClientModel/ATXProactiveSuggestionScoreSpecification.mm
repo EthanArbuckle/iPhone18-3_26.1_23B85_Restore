@@ -1,19 +1,19 @@
 @interface ATXProactiveSuggestionScoreSpecification
-+ (id)stringForSuggestedConfidenceCategory:(int64_t)a3;
-- (ATXProactiveSuggestionScoreSpecification)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionScoreSpecification)initWithProto:(id)a3;
-- (ATXProactiveSuggestionScoreSpecification)initWithProtoData:(id)a3;
-- (ATXProactiveSuggestionScoreSpecification)initWithRawScore:(double)a3 suggestedConfidenceCategory:(int64_t)a4;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)fuzzyIsEqualToScoreSpecification:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringForSuggestedConfidenceCategory:(int64_t)category;
+- (ATXProactiveSuggestionScoreSpecification)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionScoreSpecification)initWithProto:(id)proto;
+- (ATXProactiveSuggestionScoreSpecification)initWithProtoData:(id)data;
+- (ATXProactiveSuggestionScoreSpecification)initWithRawScore:(double)score suggestedConfidenceCategory:(int64_t)category;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)fuzzyIsEqualToScoreSpecification:(id)specification;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonRawData;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXProactiveSuggestionScoreSpecification
@@ -78,39 +78,39 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXProactiveSuggestionScoreSpecification *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXProactiveSuggestionScoreSpecification *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXProactiveSuggestionScoreSpecification)initWithRawScore:(double)a3 suggestedConfidenceCategory:(int64_t)a4
+- (ATXProactiveSuggestionScoreSpecification)initWithRawScore:(double)score suggestedConfidenceCategory:(int64_t)category
 {
   v7.receiver = self;
   v7.super_class = ATXProactiveSuggestionScoreSpecification;
   result = [(ATXProactiveSuggestionScoreSpecification *)&v7 init];
   if (result)
   {
-    result->_rawScore = a3;
-    result->_suggestedConfidenceCategory = a4;
+    result->_rawScore = score;
+    result->_suggestedConfidenceCategory = category;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXProactiveSuggestionScoreSpecification allocWithZone:a3];
+  v4 = [ATXProactiveSuggestionScoreSpecification allocWithZone:zone];
   rawScore = self->_rawScore;
   suggestedConfidenceCategory = self->_suggestedConfidenceCategory;
 
   return [(ATXProactiveSuggestionScoreSpecification *)v4 initWithRawScore:suggestedConfidenceCategory suggestedConfidenceCategory:rawScore];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -120,7 +120,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(ATXProactiveSuggestionScoreSpecification *)v5 rawScore];
       v7 = v6 == self->_rawScore && [(ATXProactiveSuggestionScoreSpecification *)v5 suggestedConfidenceCategory]== self->_suggestedConfidenceCategory;
     }
@@ -134,10 +134,10 @@
   return v7;
 }
 
-- (BOOL)fuzzyIsEqualToScoreSpecification:(id)a3
+- (BOOL)fuzzyIsEqualToScoreSpecification:(id)specification
 {
-  v4 = a3;
-  if (self == v4)
+  specificationCopy = specification;
+  if (self == specificationCopy)
   {
     v5 = 1;
   }
@@ -145,53 +145,53 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ATXProactiveSuggestionScoreSpecification *)v4 suggestedConfidenceCategory]== self->_suggestedConfidenceCategory;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ATXProactiveSuggestionScoreSpecification *)specificationCopy suggestedConfidenceCategory]== self->_suggestedConfidenceCategory;
   }
 
   return v5;
 }
 
-+ (id)stringForSuggestedConfidenceCategory:(int64_t)a3
++ (id)stringForSuggestedConfidenceCategory:(int64_t)category
 {
-  if (a3 >= 5)
+  if (category >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %li)", a3];
+    category = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %li)", category];
   }
 
   else
   {
-    v4 = off_1E86A4AA8[a3];
+    category = off_1E86A4AA8[category];
   }
 
-  return v4;
+  return category;
 }
 
-- (ATXProactiveSuggestionScoreSpecification)initWithProtoData:(id)a3
+- (ATXProactiveSuggestionScoreSpecification)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestionScoreSpecification alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestionScoreSpecification alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestionScoreSpecification *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionScoreSpecification)initWithProto:(id)a3
+- (ATXProactiveSuggestionScoreSpecification)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
@@ -207,17 +207,17 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBProactiveSuggestionScoreSpecification *)v5 rawScore];
-  v7 = [(ATXPBProactiveSuggestionScoreSpecification *)v5 suggestedConfidenceCategory];
-  if (v7 >= 5)
+  v5 = protoCopy;
+  rawScore = [(ATXPBProactiveSuggestionScoreSpecification *)v5 rawScore];
+  suggestedConfidenceCategory = [(ATXPBProactiveSuggestionScoreSpecification *)v5 suggestedConfidenceCategory];
+  if (suggestedConfidenceCategory >= 5)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", suggestedConfidenceCategory];
   }
 
   else
   {
-    v8 = off_1E86A4AA8[v7];
+    v8 = off_1E86A4AA8[suggestedConfidenceCategory];
   }
 
   v11 = v8;
@@ -251,40 +251,40 @@ LABEL_8:
     v12 = 0;
   }
 
-  self = [(ATXProactiveSuggestionScoreSpecification *)self initWithRawScore:v12 suggestedConfidenceCategory:v6];
-  v10 = self;
+  self = [(ATXProactiveSuggestionScoreSpecification *)self initWithRawScore:v12 suggestedConfidenceCategory:rawScore];
+  selfCopy = self;
 LABEL_22:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -296,33 +296,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -334,17 +334,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestionScoreSpecification *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestionScoreSpecification *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestionScoreSpecification)initWithCoder:(id)a3
+- (ATXProactiveSuggestionScoreSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestionScoreSpecification *)self initWithProtoData:v5];
   return v6;

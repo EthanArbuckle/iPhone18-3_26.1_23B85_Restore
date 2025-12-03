@@ -1,36 +1,36 @@
 @interface DNDSModeAssertionStore
-+ (id)messageDateForPeaceSyncDictionaryRepresentation:(id)a3;
-+ (id)messageDateForSyncDictionaryRepresentation:(id)a3;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-+ (id)newWithPeaceSyncDictionaryRepresentation:(id)a3;
-+ (id)newWithSyncDictionaryRepresentation:(id)a3;
-+ (id)upgradeDictionaryRepresentation:(id)a3 fromVersionNumber:(unint64_t)a4 toVersionNumber:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)messageDateForPeaceSyncDictionaryRepresentation:(id)representation;
++ (id)messageDateForSyncDictionaryRepresentation:(id)representation;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
++ (id)newWithPeaceSyncDictionaryRepresentation:(id)representation;
++ (id)newWithSyncDictionaryRepresentation:(id)representation;
++ (id)upgradeDictionaryRepresentation:(id)representation fromVersionNumber:(unint64_t)number toVersionNumber:(unint64_t)versionNumber;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithStore:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
+- (id)_initWithStore:(id)store;
+- (id)dictionaryRepresentationWithContext:(id)context;
 - (id)lastUpdateDate;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)peaceSyncDictionaryRepresentationWithDate:(id)a3 messageUUID:(id)a4 userRequestedClientIdentifierHandler:(id)a5;
-- (id)syncDictionaryRepresentationWithDate:(id)a3 messageUUID:(id)a4;
-- (id)sysdiagnoseDictionaryRepresentation:(BOOL)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)peaceSyncDictionaryRepresentationWithDate:(id)date messageUUID:(id)d userRequestedClientIdentifierHandler:(id)handler;
+- (id)syncDictionaryRepresentationWithDate:(id)date messageUUID:(id)d;
+- (id)sysdiagnoseDictionaryRepresentation:(BOOL)representation;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSModeAssertionStore
 
-+ (id)newWithSyncDictionaryRepresentation:(id)a3
++ (id)newWithSyncDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 bs_safeDictionaryForKey:@"c"];
+  v3 = [representation bs_safeDictionaryForKey:@"c"];
   v4 = [DNDSModeAssertionStoreRecord recordForDictionary:v3 keys:&kSyncRecordKeys];
-  v5 = [v4 object];
+  object = [v4 object];
 
-  return v5;
+  return object;
 }
 
-+ (id)messageDateForSyncDictionaryRepresentation:(id)a3
++ (id)messageDateForSyncDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 bs_safeNumberForKey:@"b"];
+  v3 = [representation bs_safeNumberForKey:@"b"];
   v4 = v3;
   v5 = MEMORY[0x277CBEAA8];
   if (v3)
@@ -48,20 +48,20 @@
   return v6;
 }
 
-- (id)syncDictionaryRepresentationWithDate:(id)a3 messageUUID:(id)a4
+- (id)syncDictionaryRepresentationWithDate:(id)date messageUUID:(id)d
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  dateCopy = date;
   v8 = [DNDSModeAssertionStoreRecord recordForAssertionStore:self];
   v9 = [v8 dictionaryWithKeys:&kSyncRecordKeys options:0];
   v18[0] = @"a";
-  v10 = [v6 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v19[0] = v10;
+  v19[0] = uUIDString;
   v18[1] = @"b";
   v11 = MEMORY[0x277CCABB0];
-  [v7 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
   v14 = [v11 numberWithDouble:v13];
@@ -75,15 +75,15 @@
   return v15;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v4 = [DNDSModeAssertionStoreRecord recordForDictionary:a3 keys:kBackingStoreRecordKeys];
-  v5 = [v4 object];
+  v4 = [DNDSModeAssertionStoreRecord recordForDictionary:representation keys:kBackingStoreRecordKeys];
+  object = [v4 object];
 
-  return v5;
+  return object;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v3 = [DNDSModeAssertionStoreRecord recordForAssertionStore:self];
   v4 = [v3 dictionaryWithKeys:kBackingStoreRecordKeys options:0];
@@ -91,19 +91,19 @@
   return v4;
 }
 
-+ (id)upgradeDictionaryRepresentation:(id)a3 fromVersionNumber:(unint64_t)a4 toVersionNumber:(unint64_t)a5
++ (id)upgradeDictionaryRepresentation:(id)representation fromVersionNumber:(unint64_t)number toVersionNumber:(unint64_t)versionNumber
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v7 = [v36 mutableCopy];
-  if (a4 <= 1 && a5 >= 2)
+  representationCopy = representation;
+  v7 = [representationCopy mutableCopy];
+  if (number <= 1 && versionNumber >= 2)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
 
-    v7 = v8;
+    v7 = dictionary;
   }
 
-  if (a4 <= 2 && a5 >= 3)
+  if (number <= 2 && versionNumber >= 3)
   {
     v9 = [v7 bs_safeArrayForKey:@"storeAssertionRecords"];
     v10 = [v9 bs_mapNoNulls:&__block_literal_global_7];
@@ -111,7 +111,7 @@
     [v7 bs_setSafeObject:v10 forKey:@"storeAssertionRecords"];
   }
 
-  if (a4 <= 3 && a5 >= 4)
+  if (number <= 3 && versionNumber >= 4)
   {
     v11 = [v7 bs_safeArrayForKey:@"storeAssertionRecords"];
     v12 = [v11 bs_mapNoNulls:&__block_literal_global_13];
@@ -119,7 +119,7 @@
     [v7 bs_setSafeObject:v12 forKey:@"storeAssertionRecords"];
   }
 
-  if (a4 <= 4 && a5 >= 5)
+  if (number <= 4 && versionNumber >= 5)
   {
     v13 = [v7 bs_safeArrayForKey:@"storeAssertionRecords"];
     v14 = [v13 bs_mapNoNulls:&__block_literal_global_30];
@@ -127,7 +127,7 @@
     [v7 bs_setSafeObject:v14 forKey:@"storeAssertionRecords"];
   }
 
-  if (a4 <= 5 && a5 >= 6)
+  if (number <= 5 && versionNumber >= 6)
   {
     v15 = [v7 bs_safeNumberForKey:@"storeLastCompleteInvalidationTimestamp"];
     if (v15)
@@ -168,7 +168,7 @@
     _Block_object_dispose(&v42, 8);
   }
 
-  if (a4 <= 7 && a5 >= 8)
+  if (number <= 7 && versionNumber >= 8)
   {
     v35 = [v7 bs_safeNumberForKey:@"storeLastCompleteInvalidationTimestamp"];
     v20 = [v7 bs_safeStringForKey:@"storeLastCompleteInvalidationReason"];
@@ -177,19 +177,19 @@
     if (v35 && v20 && v21)
     {
       v23 = [v7 bs_safeStringForKey:@"storeLastCompleteInvalidationSourceDeviceIdentifier"];
-      v24 = [MEMORY[0x277CBEB38] dictionary];
-      [v24 setObject:v22 forKey:@"assertionClientIdentifier"];
-      [v24 bs_setSafeObject:v23 forKey:@"assertionSourceDeviceIdentifier"];
-      v25 = [MEMORY[0x277CBEB38] dictionary];
-      v26 = [MEMORY[0x277CCAD78] UUID];
-      v27 = [v26 UUIDString];
-      [v25 setObject:v27 forKey:@"invalidationRequestUUID"];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary2 setObject:v22 forKey:@"assertionClientIdentifier"];
+      [dictionary2 bs_setSafeObject:v23 forKey:@"assertionSourceDeviceIdentifier"];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [dictionary3 setObject:uUIDString forKey:@"invalidationRequestUUID"];
 
-      [v25 setObject:&unk_285C536B8 forKey:@"invalidationRequestPredicate"];
-      [v25 setObject:v35 forKey:@"invalidationRequestDateTimestamp"];
-      [v25 setObject:v24 forKey:@"invalidationRequestSource"];
-      [v25 setObject:v20 forKey:@"invalidationRequestReason"];
-      v48[0] = v25;
+      [dictionary3 setObject:&unk_285C536B8 forKey:@"invalidationRequestPredicate"];
+      [dictionary3 setObject:v35 forKey:@"invalidationRequestDateTimestamp"];
+      [dictionary3 setObject:dictionary2 forKey:@"invalidationRequestSource"];
+      [dictionary3 setObject:v20 forKey:@"invalidationRequestReason"];
+      v48[0] = dictionary3;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
       [v7 setObject:v28 forKey:@"storeInvalidationRequestRecords"];
     }
@@ -480,12 +480,12 @@ id __114__DNDSModeAssertionStore_BackingRecordUpgrade__upgradeDictionaryRepresen
   return v4;
 }
 
-- (id)sysdiagnoseDictionaryRepresentation:(BOOL)a3
+- (id)sysdiagnoseDictionaryRepresentation:(BOOL)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = [DNDSModeAssertionStoreRecord recordForAssertionStore:self];
   v5 = v4;
-  if (v3)
+  if (representationCopy)
   {
     v6 = 3;
   }
@@ -500,24 +500,24 @@ id __114__DNDSModeAssertionStore_BackingRecordUpgrade__upgradeDictionaryRepresen
   return v7;
 }
 
-+ (id)newWithPeaceSyncDictionaryRepresentation:(id)a3
++ (id)newWithPeaceSyncDictionaryRepresentation:(id)representation
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_alloc_init(DNDSModeAssertionStoreRecord);
-  v5 = [v3 bs_safeDictionaryForKey:@"d"];
+  v5 = [representationCopy bs_safeDictionaryForKey:@"d"];
 
   v6 = [v5 bs_safeArrayForKey:@"b"];
   v7 = [v6 bs_mapNoNulls:&__block_literal_global_10];
   [(DNDSModeAssertionStoreRecord *)v4 setAssertions:v7];
   v8 = [v5 bs_safeNumberForKey:@"a"];
-  v9 = [v8 dnds_dateValue];
+  dnds_dateValue = [v8 dnds_dateValue];
 
-  if (v9)
+  if (dnds_dateValue)
   {
     v10 = +[DNDSModeAssertionInvalidationPredicate predicateForAnyAssertion];
     v11 = [objc_alloc(MEMORY[0x277D05988]) initWithClientIdentifier:@"com.apple.donotdisturb.legacy-watch-toggle" deviceIdentifier:0];
-    v12 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:v10 requestDate:v9 source:v11 reason:2];
+    v12 = [DNDSModeAssertionInvalidationRequest requestWithPredicate:v10 requestDate:dnds_dateValue source:v11 reason:2];
     v13 = [DNDSModeAssertionInvalidationRequestRecord recordForInvalidationRequest:v12];
     v14 = v13;
     if (v13)
@@ -528,10 +528,10 @@ id __114__DNDSModeAssertionStore_BackingRecordUpgrade__upgradeDictionaryRepresen
     }
   }
 
-  v16 = [(DNDSModeAssertionStoreRecord *)v4 object];
+  object = [(DNDSModeAssertionStoreRecord *)v4 object];
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return object;
 }
 
 DNDSModeAssertionRecord *__85__DNDSModeAssertionStore_PeaceSyncMessage__newWithPeaceSyncDictionaryRepresentation___block_invoke(uint64_t a1, void *a2)
@@ -634,9 +634,9 @@ LABEL_14:
   return v16;
 }
 
-+ (id)messageDateForPeaceSyncDictionaryRepresentation:(id)a3
++ (id)messageDateForPeaceSyncDictionaryRepresentation:(id)representation
 {
-  v3 = [a3 bs_safeNumberForKey:@"b"];
+  v3 = [representation bs_safeNumberForKey:@"b"];
   v4 = v3;
   v5 = MEMORY[0x277CBEAA8];
   if (v3)
@@ -654,29 +654,29 @@ LABEL_14:
   return v6;
 }
 
-- (id)peaceSyncDictionaryRepresentationWithDate:(id)a3 messageUUID:(id)a4 userRequestedClientIdentifierHandler:(id)a5
+- (id)peaceSyncDictionaryRepresentationWithDate:(id)date messageUUID:(id)d userRequestedClientIdentifierHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v33 = a4;
-  v8 = a5;
+  dateCopy = date;
+  dCopy = d;
+  handlerCopy = handler;
   v32 = [DNDSModeAssertionStoreRecord recordForAssertionStore:self];
-  v9 = [v32 assertions];
+  assertions = [v32 assertions];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresentationWithDate_messageUUID_userRequestedClientIdentifierHandler___block_invoke;
   v39[3] = &unk_278F8AAE8;
-  v10 = v8;
+  v10 = handlerCopy;
   v40 = v10;
-  v11 = [v9 bs_mapNoNulls:v39];
+  v11 = [assertions bs_mapNoNulls:v39];
 
-  v12 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = [(DNDSModeAssertionStore *)self invalidationRequests];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  invalidationRequests = [(DNDSModeAssertionStore *)self invalidationRequests];
+  v14 = [invalidationRequests countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v14)
   {
     v15 = v14;
@@ -687,44 +687,44 @@ LABEL_14:
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(invalidationRequests);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [v18 predicate];
-        v20 = [v19 predicateType];
+        predicate = [v18 predicate];
+        predicateType = [predicate predicateType];
 
-        if (!v20)
+        if (!predicateType)
         {
-          v21 = [v18 requestDate];
-          v22 = [v12 laterDate:v21];
+          requestDate = [v18 requestDate];
+          v22 = [distantPast laterDate:requestDate];
 
-          v12 = v22;
+          distantPast = v22;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v15 = [invalidationRequests countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v15);
   }
 
-  v23 = [MEMORY[0x277CBEB38] dictionary];
-  [v12 timeIntervalSinceReferenceDate];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [distantPast timeIntervalSinceReferenceDate];
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:ceil(v24)];
-  [v23 setObject:v25 forKey:@"a"];
+  [dictionary setObject:v25 forKey:@"a"];
 
-  [v23 bs_setSafeObject:v11 forKey:@"b"];
+  [dictionary bs_setSafeObject:v11 forKey:@"b"];
   v41[0] = @"a";
-  v26 = [v33 UUIDString];
-  v42[0] = v26;
+  uUIDString = [dCopy UUIDString];
+  v42[0] = uUIDString;
   v41[1] = @"b";
   v27 = MEMORY[0x277CCABB0];
-  [v34 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v28 = [v27 numberWithDouble:?];
   v41[2] = @"d";
   v42[1] = v28;
-  v42[2] = v23;
+  v42[2] = dictionary;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:3];
 
   v30 = *MEMORY[0x277D85DE8];
@@ -789,16 +789,16 @@ id __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresenta
   return v4;
 }
 
-- (id)_initWithStore:(id)a3
+- (id)_initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = DNDSModeAssertionStore;
   v5 = [(DNDSModeAssertionStore *)&v20 init];
   if (v5)
   {
-    v6 = [v4 assertions];
-    v7 = [v6 copy];
+    assertions = [storeCopy assertions];
+    v7 = [assertions copy];
     v8 = v7;
     v9 = MEMORY[0x277CBEBF8];
     if (v7)
@@ -813,8 +813,8 @@ id __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresenta
 
     objc_storeStrong(&v5->_assertions, v10);
 
-    v11 = [v4 invalidations];
-    v12 = [v11 copy];
+    invalidations = [storeCopy invalidations];
+    v12 = [invalidations copy];
     v13 = v12;
     if (v12)
     {
@@ -828,8 +828,8 @@ id __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresenta
 
     objc_storeStrong(&v5->_invalidations, v14);
 
-    v15 = [v4 invalidationRequests];
-    v16 = [v15 copy];
+    invalidationRequests = [storeCopy invalidationRequests];
+    v16 = [invalidationRequests copy];
     v17 = v16;
     if (v16)
     {
@@ -849,20 +849,20 @@ id __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresenta
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSModeAssertionStore *)self assertions];
-  v4 = [v3 hash];
-  v5 = [(DNDSModeAssertionStore *)self invalidations];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSModeAssertionStore *)self invalidationRequests];
-  v8 = [v7 hash];
+  assertions = [(DNDSModeAssertionStore *)self assertions];
+  v4 = [assertions hash];
+  invalidations = [(DNDSModeAssertionStore *)self invalidations];
+  v6 = [invalidations hash] ^ v4;
+  invalidationRequests = [(DNDSModeAssertionStore *)self invalidationRequests];
+  v8 = [invalidationRequests hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -872,21 +872,21 @@ id __135__DNDSModeAssertionStore_PeaceSyncMessage__peaceSyncDictionaryRepresenta
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSModeAssertionStore *)self assertions];
-      v8 = [(DNDSModeAssertionStore *)v6 assertions];
-      if (v7 != v8)
+      v6 = equalCopy;
+      assertions = [(DNDSModeAssertionStore *)self assertions];
+      assertions2 = [(DNDSModeAssertionStore *)v6 assertions];
+      if (assertions != assertions2)
       {
-        v9 = [(DNDSModeAssertionStore *)self assertions];
-        if (!v9)
+        assertions3 = [(DNDSModeAssertionStore *)self assertions];
+        if (!assertions3)
         {
           v13 = 0;
           goto LABEL_37;
         }
 
-        v10 = v9;
-        v11 = [(DNDSModeAssertionStore *)v6 assertions];
-        if (!v11)
+        v10 = assertions3;
+        assertions4 = [(DNDSModeAssertionStore *)v6 assertions];
+        if (!assertions4)
         {
           v13 = 0;
 LABEL_36:
@@ -894,9 +894,9 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v12 = [(DNDSModeAssertionStore *)self assertions];
-        v3 = [(DNDSModeAssertionStore *)v6 assertions];
-        if (![v12 isEqual:v3])
+        assertions5 = [(DNDSModeAssertionStore *)self assertions];
+        assertions6 = [(DNDSModeAssertionStore *)v6 assertions];
+        if (![assertions5 isEqual:assertions6])
         {
           v13 = 0;
 LABEL_35:
@@ -904,36 +904,36 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v36 = v3;
-        v37 = v12;
-        v38 = v11;
+        v36 = assertions6;
+        v37 = assertions5;
+        v38 = assertions4;
         v39 = v10;
       }
 
-      v14 = [(DNDSModeAssertionStore *)self invalidations];
-      v15 = [(DNDSModeAssertionStore *)v6 invalidations];
-      if (v14 != v15)
+      invalidations = [(DNDSModeAssertionStore *)self invalidations];
+      invalidations2 = [(DNDSModeAssertionStore *)v6 invalidations];
+      if (invalidations != invalidations2)
       {
-        v16 = [(DNDSModeAssertionStore *)self invalidations];
-        if (v16)
+        invalidations3 = [(DNDSModeAssertionStore *)self invalidations];
+        if (invalidations3)
         {
-          v17 = v16;
-          v18 = [(DNDSModeAssertionStore *)v6 invalidations];
-          if (v18)
+          v17 = invalidations3;
+          invalidations4 = [(DNDSModeAssertionStore *)v6 invalidations];
+          if (invalidations4)
           {
-            v35 = v14;
-            v19 = [(DNDSModeAssertionStore *)self invalidations];
-            v3 = [(DNDSModeAssertionStore *)v6 invalidations];
-            if ([v19 isEqual:v3])
+            v35 = invalidations;
+            invalidations5 = [(DNDSModeAssertionStore *)self invalidations];
+            assertions6 = [(DNDSModeAssertionStore *)v6 invalidations];
+            if ([invalidations5 isEqual:assertions6])
             {
-              v31 = v19;
-              v32 = v18;
+              v31 = invalidations5;
+              v32 = invalidations4;
               v33 = v17;
 LABEL_17:
-              v20 = [(DNDSModeAssertionStore *)self invalidationRequests];
-              v21 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
-              v22 = v21;
-              if (v20 == v21)
+              invalidationRequests = [(DNDSModeAssertionStore *)self invalidationRequests];
+              invalidationRequests2 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
+              v22 = invalidationRequests2;
+              if (invalidationRequests == invalidationRequests2)
               {
 
                 v13 = 1;
@@ -942,20 +942,20 @@ LABEL_17:
 
               else
               {
-                v34 = v3;
-                v23 = [(DNDSModeAssertionStore *)self invalidationRequests];
-                if (v23)
+                v34 = assertions6;
+                invalidationRequests3 = [(DNDSModeAssertionStore *)self invalidationRequests];
+                if (invalidationRequests3)
                 {
-                  v24 = v23;
-                  v25 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
-                  if (v25)
+                  v24 = invalidationRequests3;
+                  invalidationRequests4 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
+                  if (invalidationRequests4)
                   {
-                    v30 = v25;
-                    v29 = [(DNDSModeAssertionStore *)self invalidationRequests];
-                    v26 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
-                    v13 = [v29 isEqual:v26];
+                    v30 = invalidationRequests4;
+                    invalidationRequests5 = [(DNDSModeAssertionStore *)self invalidationRequests];
+                    invalidationRequests6 = [(DNDSModeAssertionStore *)v6 invalidationRequests];
+                    v13 = [invalidationRequests5 isEqual:invalidationRequests6];
 
-                    v25 = v30;
+                    invalidationRequests4 = v30;
                   }
 
                   else
@@ -970,20 +970,20 @@ LABEL_17:
                   v13 = 0;
                 }
 
-                v3 = v34;
+                assertions6 = v34;
                 v27 = v35;
               }
 
-              if (v27 != v15)
+              if (v27 != invalidations2)
               {
               }
 
 LABEL_34:
-              v11 = v38;
+              assertions4 = v38;
               v10 = v39;
-              v3 = v36;
-              v12 = v37;
-              if (v7 != v8)
+              assertions6 = v36;
+              assertions5 = v37;
+              if (assertions != assertions2)
               {
                 goto LABEL_35;
               }
@@ -993,7 +993,7 @@ LABEL_37:
               goto LABEL_38;
             }
 
-            v14 = v35;
+            invalidations = v35;
           }
         }
 
@@ -1001,7 +1001,7 @@ LABEL_37:
         goto LABEL_34;
       }
 
-      v35 = v14;
+      v35 = invalidations;
       goto LABEL_17;
     }
 
@@ -1017,15 +1017,15 @@ LABEL_38:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSModeAssertionStore *)self assertions];
-  v6 = [(DNDSModeAssertionStore *)self invalidations];
-  v7 = [(DNDSModeAssertionStore *)self invalidationRequests];
-  v8 = [v3 stringWithFormat:@"<%@: %p assertions: %@; invalidations: %@; invalidationRequests: %@>", v4, self, v5, v6, v7];;
+  assertions = [(DNDSModeAssertionStore *)self assertions];
+  invalidations = [(DNDSModeAssertionStore *)self invalidations];
+  invalidationRequests = [(DNDSModeAssertionStore *)self invalidationRequests];
+  v8 = [v3 stringWithFormat:@"<%@: %p assertions: %@; invalidations: %@; invalidationRequests: %@>", v4, self, assertions, invalidations, invalidationRequests];;
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableModeAssertionStore alloc];
 
@@ -1035,13 +1035,13 @@ LABEL_38:
 - (id)lastUpdateDate
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(DNDSModeAssertionStore *)self assertions];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  assertions = [(DNDSModeAssertionStore *)self assertions];
+  v5 = [assertions countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1049,23 +1049,23 @@ LABEL_38:
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = distantPast;
       do
       {
         if (*v36 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assertions);
         }
 
-        v10 = [*(*(&v35 + 1) + 8 * v8) startDate];
-        v3 = [v9 laterDate:v10];
+        startDate = [*(*(&v35 + 1) + 8 * v8) startDate];
+        distantPast = [v9 laterDate:startDate];
 
         ++v8;
-        v9 = v3;
+        v9 = distantPast;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v6 = [assertions countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v6);
@@ -1075,8 +1075,8 @@ LABEL_38:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [(DNDSModeAssertionStore *)self invalidations];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  invalidations = [(DNDSModeAssertionStore *)self invalidations];
+  v12 = [invalidations countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1084,23 +1084,23 @@ LABEL_38:
     do
     {
       v15 = 0;
-      v16 = v3;
+      v16 = distantPast;
       do
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(invalidations);
         }
 
-        v17 = [*(*(&v31 + 1) + 8 * v15) invalidationDate];
-        v3 = [v16 laterDate:v17];
+        invalidationDate = [*(*(&v31 + 1) + 8 * v15) invalidationDate];
+        distantPast = [v16 laterDate:invalidationDate];
 
         ++v15;
-        v16 = v3;
+        v16 = distantPast;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v13 = [invalidations countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v13);
@@ -1110,8 +1110,8 @@ LABEL_38:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = [(DNDSModeAssertionStore *)self invalidationRequests];
-  v19 = [v18 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  invalidationRequests = [(DNDSModeAssertionStore *)self invalidationRequests];
+  v19 = [invalidationRequests countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1119,23 +1119,23 @@ LABEL_38:
     do
     {
       v22 = 0;
-      v23 = v3;
+      v23 = distantPast;
       do
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(invalidationRequests);
         }
 
-        v24 = [*(*(&v27 + 1) + 8 * v22) requestDate];
-        v3 = [v23 laterDate:v24];
+        requestDate = [*(*(&v27 + 1) + 8 * v22) requestDate];
+        distantPast = [v23 laterDate:requestDate];
 
         ++v22;
-        v23 = v3;
+        v23 = distantPast;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v20 = [invalidationRequests countByEnumeratingWithState:&v27 objects:v39 count:16];
     }
 
     while (v20);
@@ -1143,7 +1143,7 @@ LABEL_38:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return distantPast;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface ASDUpdatePollMetrics
-- (ASDUpdatePollMetrics)initWithDictionary:(id)a3;
+- (ASDUpdatePollMetrics)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionary;
 @end
 
 @implementation ASDUpdatePollMetrics
 
-- (ASDUpdatePollMetrics)initWithDictionary:(id)a3
+- (ASDUpdatePollMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ASDUpdatePollMetrics;
   v5 = [(ASDUpdatePollMetrics *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"date"];
+    v6 = [dictionaryCopy objectForKey:@"date"];
     if (objc_opt_respondsToSelector())
     {
       v7 = MEMORY[0x1E695DF00];
@@ -24,11 +24,11 @@
       v5->_pollTime = v8;
     }
 
-    v10 = [v4 objectForKey:@"reason"];
+    v10 = [dictionaryCopy objectForKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v10;
 
-    v12 = [v4 objectForKey:@"bundleIDs"];
+    v12 = [dictionaryCopy objectForKey:@"bundleIDs"];
     bundleIDs = v5->_bundleIDs;
     v5->_bundleIDs = v12;
   }
@@ -39,31 +39,31 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ASDUpdatePollMetrics *)self pollTime];
-  v5 = [(ASDUpdatePollMetrics *)self reason];
-  v6 = [(ASDUpdatePollMetrics *)self bundleIDs];
-  v7 = [v6 componentsJoinedByString:{@", "}];
-  v8 = [v3 stringWithFormat:@"{ %@: %@, %@: %@, %@ : [%@] }", @"date", v4, @"reason", v5, @"bundleIDs", v7];
+  pollTime = [(ASDUpdatePollMetrics *)self pollTime];
+  reason = [(ASDUpdatePollMetrics *)self reason];
+  bundleIDs = [(ASDUpdatePollMetrics *)self bundleIDs];
+  v7 = [bundleIDs componentsJoinedByString:{@", "}];
+  v8 = [v3 stringWithFormat:@"{ %@: %@, %@: %@, %@ : [%@] }", @"date", pollTime, @"reason", reason, @"bundleIDs", v7];
 
   return v8;
 }
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(ASDUpdatePollMetrics *)self pollTime];
-  [v5 timeIntervalSinceReferenceDate];
+  pollTime = [(ASDUpdatePollMetrics *)self pollTime];
+  [pollTime timeIntervalSinceReferenceDate];
   v6 = [v4 numberWithDouble:?];
-  [v3 setObject:v6 forKeyedSubscript:@"date"];
+  [dictionary setObject:v6 forKeyedSubscript:@"date"];
 
-  v7 = [(ASDUpdatePollMetrics *)self reason];
-  [v3 setObject:v7 forKeyedSubscript:@"reason"];
+  reason = [(ASDUpdatePollMetrics *)self reason];
+  [dictionary setObject:reason forKeyedSubscript:@"reason"];
 
-  v8 = [(ASDUpdatePollMetrics *)self bundleIDs];
-  [v3 setObject:v8 forKeyedSubscript:@"bundleIDs"];
+  bundleIDs = [(ASDUpdatePollMetrics *)self bundleIDs];
+  [dictionary setObject:bundleIDs forKeyedSubscript:@"bundleIDs"];
 
-  return v3;
+  return dictionary;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PopoverViewController
-- (_TtC11WeatherMaps21PopoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11WeatherMaps21PopoverViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -9,30 +9,30 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E687B8();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E688A8();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220E68C14();
 }
 
-- (_TtC11WeatherMaps21PopoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps21PopoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_220E69344();
 }
 

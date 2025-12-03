@@ -1,11 +1,11 @@
 @interface HDCodableRoutineLocationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutineLocationResponse
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutineLocationResponse;
   v4 = [(HDCodableRoutineLocationResponse *)&v8 description];
-  v5 = [(HDCodableRoutineLocationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutineLocationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   locationOfInterest = self->_locationOfInterest;
   if (locationOfInterest)
   {
-    v5 = [(HDCodableRoutineLocation *)locationOfInterest dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"locationOfInterest"];
+    dictionaryRepresentation = [(HDCodableRoutineLocation *)locationOfInterest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"locationOfInterest"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_locationOfInterest)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   locationOfInterest = self->_locationOfInterest;
   if (locationOfInterest)
   {
-    [a3 setLocationOfInterest:locationOfInterest];
+    [to setLocationOfInterest:locationOfInterest];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableRoutineLocation *)self->_locationOfInterest copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableRoutineLocation *)self->_locationOfInterest copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     locationOfInterest = self->_locationOfInterest;
-    if (locationOfInterest | v4[1])
+    if (locationOfInterest | equalCopy[1])
     {
       v6 = [(HDCodableRoutineLocation *)locationOfInterest isEqual:?];
     }
@@ -87,11 +87,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   locationOfInterest = self->_locationOfInterest;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (locationOfInterest)
   {
     if (v6)

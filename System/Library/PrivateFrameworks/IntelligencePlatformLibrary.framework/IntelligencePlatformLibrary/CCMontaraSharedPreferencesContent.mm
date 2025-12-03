@@ -1,26 +1,26 @@
 @interface CCMontaraSharedPreferencesContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCMontaraSharedPreferencesContent)initWithIsEnabled:(id)a3 setupPrompt:(id)a4 useConfirmationPrompts:(id)a5 error:(id *)a6;
-- (CCMontaraSharedPreferencesContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCMontaraSharedPreferencesContent)initWithIsEnabled:(id)enabled setupPrompt:(id)prompt useConfirmationPrompts:(id)prompts error:(id *)error;
+- (CCMontaraSharedPreferencesContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCMontaraSharedPreferencesContent
 
-- (CCMontaraSharedPreferencesContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCMontaraSharedPreferencesContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"isEnabled"];
-    v10 = [v6 objectForKeyedSubscript:@"setupPrompt"];
-    v11 = [v6 objectForKeyedSubscript:@"useConfirmationPrompts"];
-    v12 = [[CCMontaraSharedPreferencesContent alloc] initWithIsEnabled:v9 setupPrompt:v10 useConfirmationPrompts:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"setupPrompt"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"useConfirmationPrompts"];
+    v12 = [[CCMontaraSharedPreferencesContent alloc] initWithIsEnabled:v9 setupPrompt:v10 useConfirmationPrompts:v11 error:error];
   }
 
   else
@@ -58,32 +58,32 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   if (self->_hasIsEnabled)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:44531 BOOLValue:self->_isEnabled];
-    v8[2](v8, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasSetupPrompt)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:44532 BOOLValue:self->_setupPrompt];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasUseConfirmationPrompts)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:44533 BOOLValue:self->_useConfirmationPrompts];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -94,7 +94,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v59 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -276,14 +276,14 @@ LABEL_54:
           {
             v49 = objc_opt_class();
             NSStringFromClass(v49);
-            v50 = a4;
-            v52 = v51 = v6;
+            errorCopy = error;
+            v52 = v51 = dataCopy;
             v53 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v51;
-            a4 = v50;
-            self = v59;
+            dataCopy = v51;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_73:
@@ -377,13 +377,13 @@ LABEL_80:
   return v57;
 }
 
-- (CCMontaraSharedPreferencesContent)initWithIsEnabled:(id)a3 setupPrompt:(id)a4 useConfirmationPrompts:(id)a5 error:(id *)a6
+- (CCMontaraSharedPreferencesContent)initWithIsEnabled:(id)enabled setupPrompt:(id)prompt useConfirmationPrompts:(id)prompts error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  enabledCopy = enabled;
+  promptCopy = prompt;
+  promptsCopy = prompts;
   v13 = objc_opt_new();
-  if (v10)
+  if (enabledCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -393,13 +393,13 @@ LABEL_80:
       goto LABEL_7;
     }
 
-    [v10 BOOLValue];
+    [enabledCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
-    if (!v11)
+    if (!promptCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (promptsCopy)
       {
         goto LABEL_5;
       }
@@ -413,7 +413,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!promptCopy)
     {
       goto LABEL_4;
     }
@@ -426,14 +426,14 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
-  [v11 BOOLValue];
+  [promptCopy BOOLValue];
   CCPBDataWriterWriteBOOLField();
-  if (!v12)
+  if (!promptsCopy)
   {
     goto LABEL_11;
   }
@@ -445,34 +445,34 @@ LABEL_5:
 
   if (v17)
   {
-    [v12 BOOLValue];
+    [promptsCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 21006) > 3u)
+  if ((identifier + 21006) > 3u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E9530[(a3 + 21006)];
+    return off_1E73E9530[(identifier + 21006)];
   }
 }
 

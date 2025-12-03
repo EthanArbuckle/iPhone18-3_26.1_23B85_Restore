@@ -1,16 +1,16 @@
 @interface PKPaymentSetupInitialCardEducationIconsView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKPaymentSetupInitialCardEducationIconsView)initWithFrame:(CGRect)a3;
+- (PKPaymentSetupInitialCardEducationIconsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPaymentSetupInitialCardEducationIconsView
 
-- (PKPaymentSetupInitialCardEducationIconsView)initWithFrame:(CGRect)a3
+- (PKPaymentSetupInitialCardEducationIconsView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = PKPaymentSetupInitialCardEducationIconsView;
-  v3 = [(PKPaymentSetupInitialCardEducationIconsView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentSetupInitialCardEducationIconsView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = vdup_n_s32(PKUIGetMinScreenType() > 3);
@@ -31,8 +31,8 @@
 
     [(UIImageView *)v3->_applePayIcon setContentMode:1];
     v15 = v3->_applePayIcon;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v15 setTintColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v15 setTintColor:labelColor];
 
     [(PKPaymentSetupInitialCardEducationIconsView *)v3 addSubview:v3->_applePayIcon];
     v17 = [v7 URLForResource:@"ContactlessSymbol" withExtension:@"pdf"];
@@ -46,8 +46,8 @@
 
     [(UIImageView *)v3->_contactlessIcon setContentMode:1];
     v23 = v3->_contactlessIcon;
-    v24 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v23 setTintColor:v24];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v23 setTintColor:labelColor2];
 
     [(PKPaymentSetupInitialCardEducationIconsView *)v3 addSubview:v3->_contactlessIcon];
   }

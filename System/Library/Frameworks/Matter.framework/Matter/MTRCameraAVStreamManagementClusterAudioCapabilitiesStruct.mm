@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct
 - (MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,36 +17,36 @@
     maxNumberOfChannels = v2->_maxNumberOfChannels;
     v2->_maxNumberOfChannels = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     supportedCodecs = v3->_supportedCodecs;
-    v3->_supportedCodecs = v5;
+    v3->_supportedCodecs = array;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     supportedSampleRates = v3->_supportedSampleRates;
-    v3->_supportedSampleRates = v7;
+    v3->_supportedSampleRates = array2;
 
-    v9 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     supportedBitDepths = v3->_supportedBitDepths;
-    v3->_supportedBitDepths = v9;
+    v3->_supportedBitDepths = array3;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self maxNumberOfChannels];
-  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setMaxNumberOfChannels:v5];
+  maxNumberOfChannels = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self maxNumberOfChannels];
+  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setMaxNumberOfChannels:maxNumberOfChannels];
 
-  v6 = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedCodecs];
-  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedCodecs:v6];
+  supportedCodecs = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedCodecs];
+  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedCodecs:supportedCodecs];
 
-  v7 = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedSampleRates];
-  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedSampleRates:v7];
+  supportedSampleRates = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedSampleRates];
+  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedSampleRates:supportedSampleRates];
 
-  v8 = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedBitDepths];
-  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedBitDepths:v8];
+  supportedBitDepths = [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)self supportedBitDepths];
+  [(MTRCameraAVStreamManagementClusterAudioCapabilitiesStruct *)v4 setSupportedBitDepths:supportedBitDepths];
 
   return v4;
 }

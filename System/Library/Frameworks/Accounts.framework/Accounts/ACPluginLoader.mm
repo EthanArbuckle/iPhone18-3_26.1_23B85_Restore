@@ -1,29 +1,29 @@
 @interface ACPluginLoader
-+ (id)_accountsPluginDirectoryURLs:(id)a3 inAppleInternal:(BOOL)a4;
-+ (id)_validatedBundleAtURL:(id)a3;
-+ (id)pluginBundlesAtSubpath:(id)a3;
-+ (id)pluginWithName:(id)a3 inSubpath:(id)a4;
++ (id)_accountsPluginDirectoryURLs:(id)ls inAppleInternal:(BOOL)internal;
++ (id)_validatedBundleAtURL:(id)l;
++ (id)pluginBundlesAtSubpath:(id)subpath;
++ (id)pluginWithName:(id)name inSubpath:(id)subpath;
 @end
 
 @implementation ACPluginLoader
 
-+ (id)_accountsPluginDirectoryURLs:(id)a3 inAppleInternal:(BOOL)a4
++ (id)_accountsPluginDirectoryURLs:(id)ls inAppleInternal:(BOOL)internal
 {
-  v4 = a4;
+  internalCopy = internal;
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lsCopy = ls;
   v6 = [MEMORY[0x1E695E0F0] mutableCopy];
-  if (v4)
+  if (internalCopy)
   {
-    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/AppleInternal/Library" isDirectory:1];
-    v24[0] = v7;
+    defaultManager = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/AppleInternal/Library" isDirectory:1];
+    v24[0] = defaultManager;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 URLsForDirectory:5 inDomains:8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager URLsForDirectory:5 inDomains:8];
   }
 
   v9 = v8;
@@ -50,7 +50,7 @@
           }
 
           v15 = [*(*(&v19 + 1) + 8 * i) URLByAppendingPathComponent:@"Accounts" isDirectory:{1, v19}];
-          v16 = [v15 URLByAppendingPathComponent:v5 isDirectory:1];
+          v16 = [v15 URLByAppendingPathComponent:lsCopy isDirectory:1];
           [v6 addObject:v16];
         }
 
@@ -75,12 +75,12 @@
   return v6;
 }
 
-+ (id)_validatedBundleAtURL:(id)a3
++ (id)_validatedBundleAtURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = [v4 hasSuffix:@"bundle"];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  v5 = [lastPathComponent hasSuffix:@"bundle"];
 
   if (!v5)
   {
@@ -91,7 +91,7 @@
   v23 = 0;
   v6 = *MEMORY[0x1E695DB78];
   v22 = 0;
-  v7 = [v3 getResourceValue:&v23 forKey:v6 error:&v22];
+  v7 = [lCopy getResourceValue:&v23 forKey:v6 error:&v22];
   v8 = v23;
   v9 = v22;
   if ((v7 & 1) == 0)
@@ -114,7 +114,7 @@
   v21 = 0;
   v13 = *MEMORY[0x1E695DBC8];
   v20 = 0;
-  v14 = [v3 getResourceValue:&v21 forKey:v13 error:&v20];
+  v14 = [lCopy getResourceValue:&v21 forKey:v13 error:&v20];
   v15 = v21;
 
   v16 = v20;
@@ -125,7 +125,7 @@
       v8 = v15;
       v9 = v16;
 LABEL_4:
-      v10 = [MEMORY[0x1E696AAE8] bundleWithURL:v3];
+      v10 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
       v11 = v10;
       if (v10)
       {
@@ -139,7 +139,7 @@ LABEL_4:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v25 = v3;
+          v25 = lCopy;
           _os_log_impl(&dword_1AC3CD000, v17, OS_LOG_TYPE_DEFAULT, "Couldn't create plugin at %@", buf, 0xCu);
         }
 
@@ -152,7 +152,7 @@ LABEL_4:
     v11 = _ACLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [(ACPluginLoader *)v3 _validatedBundleAtURL:v11];
+      [(ACPluginLoader *)lCopy _validatedBundleAtURL:v11];
     }
   }
 
@@ -198,11 +198,11 @@ uint64_t __67__ACPluginLoader__populatePluginBundles_atSubpath_inAppleInternal__
   return 1;
 }
 
-+ (id)pluginBundlesAtSubpath:(id)a3
++ (id)pluginBundlesAtSubpath:(id)subpath
 {
-  v4 = a3;
+  subpathCopy = subpath;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  [a1 _populatePluginBundles:v5 atSubpath:v4 inAppleInternal:0];
+  [self _populatePluginBundles:v5 atSubpath:subpathCopy inAppleInternal:0];
   if (ACIsInternal())
   {
     v6 = _ACLogSystem();
@@ -211,7 +211,7 @@ uint64_t __67__ACPluginLoader__populatePluginBundles_atSubpath_inAppleInternal__
       [ACPluginLoader pluginBundlesAtSubpath:v6];
     }
 
-    [a1 _populatePluginBundles:v5 atSubpath:v4 inAppleInternal:1];
+    [self _populatePluginBundles:v5 atSubpath:subpathCopy inAppleInternal:1];
   }
 
   v7 = [v5 copy];
@@ -219,11 +219,11 @@ uint64_t __67__ACPluginLoader__populatePluginBundles_atSubpath_inAppleInternal__
   return v7;
 }
 
-+ (id)pluginWithName:(id)a3 inSubpath:(id)a4
++ (id)pluginWithName:(id)name inSubpath:(id)subpath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _pluginWithName:v6 inSubpath:v7 inAppleInternal:0];
+  nameCopy = name;
+  subpathCopy = subpath;
+  v8 = [self _pluginWithName:nameCopy inSubpath:subpathCopy inAppleInternal:0];
   if (!v8)
   {
     if (ACIsInternal())
@@ -234,7 +234,7 @@ uint64_t __67__ACPluginLoader__populatePluginBundles_atSubpath_inAppleInternal__
         +[ACPluginLoader pluginWithName:inSubpath:];
       }
 
-      v8 = [a1 _pluginWithName:v6 inSubpath:v7 inAppleInternal:1];
+      v8 = [self _pluginWithName:nameCopy inSubpath:subpathCopy inAppleInternal:1];
     }
 
     else

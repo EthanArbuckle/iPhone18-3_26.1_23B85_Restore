@@ -1,17 +1,17 @@
 @interface PKAMSPromiseWrapper
 - (BOOL)isCanceled;
 - (BOOL)isInvalidated;
-- (PKAMSPromiseWrapper)initWithAMSPromise:(id)a3;
+- (PKAMSPromiseWrapper)initWithAMSPromise:(id)promise;
 - (void)cancel;
 - (void)invalidate;
 @end
 
 @implementation PKAMSPromiseWrapper
 
-- (PKAMSPromiseWrapper)initWithAMSPromise:(id)a3
+- (PKAMSPromiseWrapper)initWithAMSPromise:(id)promise
 {
-  v5 = a3;
-  if (v5)
+  promiseCopy = promise;
+  if (promiseCopy)
   {
     v10.receiver = self;
     v10.super_class = PKAMSPromiseWrapper;
@@ -20,19 +20,19 @@
     if (v6)
     {
       v6->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v6->_promise, a3);
+      objc_storeStrong(&v6->_promise, promise);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)isInvalidated

@@ -1,35 +1,35 @@
 @interface UIPrintSheetController
 - (CGSize)getNUpLayout;
-- (CGSize)sizeForSheetNum:(int64_t)a3 showingPageView:(BOOL)a4;
-- (UIPrintSheetController)initWithPrintInfo:(id)a3 printPageImageDelegate:(id)a4 usingWebKitFormatter:(BOOL)a5;
-- (id)imageForSheetNum:(int64_t)a3 showingPageView:(BOOL)a4;
-- (int64_t)calcNumberOfSheetsForLayoutType:(int64_t)a3;
-- (int64_t)convertSelectionPageNumToPageNum:(int64_t)a3;
+- (CGSize)sizeForSheetNum:(int64_t)num showingPageView:(BOOL)view;
+- (UIPrintSheetController)initWithPrintInfo:(id)info printPageImageDelegate:(id)delegate usingWebKitFormatter:(BOOL)formatter;
+- (id)imageForSheetNum:(int64_t)num showingPageView:(BOOL)view;
+- (int64_t)calcNumberOfSheetsForLayoutType:(int64_t)type;
+- (int64_t)convertSelectionPageNumToPageNum:(int64_t)num;
 - (int64_t)numberOfPagesInSelection;
-- (int64_t)pageOffsetForRow:(int64_t)a3 column:(int64_t)a4 nUpLayout:(CGSize)a5;
-- (void)clearCacheForSheetNum:(int64_t)a3;
+- (int64_t)pageOffsetForRow:(int64_t)row column:(int64_t)column nUpLayout:(CGSize)layout;
+- (void)clearCacheForSheetNum:(int64_t)num;
 - (void)clearPagesCache;
 - (void)dealloc;
-- (void)generateWebKitThumbnailsWithCompletionBlock:(id)a3;
+- (void)generateWebKitThumbnailsWithCompletionBlock:(id)block;
 - (void)recalculateWebKitPageCount;
 - (void)updateSelectionPageMap;
 @end
 
 @implementation UIPrintSheetController
 
-- (UIPrintSheetController)initWithPrintInfo:(id)a3 printPageImageDelegate:(id)a4 usingWebKitFormatter:(BOOL)a5
+- (UIPrintSheetController)initWithPrintInfo:(id)info printPageImageDelegate:(id)delegate usingWebKitFormatter:(BOOL)formatter
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  formatterCopy = formatter;
+  infoCopy = info;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = UIPrintSheetController;
   v10 = [(UIPrintSheetController *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(UIPrintSheetController *)v10 setPrintInfo:v8];
-    v12 = [[UIPrintPagesController alloc] initWithPrintInfo:v8 delegate:v9 usingWebKitFormatter:v5];
+    [(UIPrintSheetController *)v10 setPrintInfo:infoCopy];
+    v12 = [[UIPrintPagesController alloc] initWithPrintInfo:infoCopy delegate:delegateCopy usingWebKitFormatter:formatterCopy];
     [(UIPrintSheetController *)v11 setPagesController:v12];
   }
 
@@ -56,10 +56,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(UIPrintSheetController *)self printInfo];
-  v3 = [v2 pageRanges];
+  printInfo = [(UIPrintSheetController *)self printInfo];
+  pageRanges = [printInfo pageRanges];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [pageRanges countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -71,14 +71,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pageRanges);
         }
 
         [*(*(&v11 + 1) + 8 * i) rangeValue];
         v6 += v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [pageRanges countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -109,10 +109,10 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = [(UIPrintSheetController *)self printInfo];
-    v6 = [v5 pageRanges];
+    printInfo = [(UIPrintSheetController *)self printInfo];
+    pageRanges = [printInfo pageRanges];
 
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v7 = [pageRanges countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -127,14 +127,14 @@
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pageRanges);
           }
 
-          v12 = [*(*(&v23 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v23 + 1) + 8 * i) rangeValue];
           if (v13)
           {
             v14 = 0;
-            v15 = vaddq_s64(vdupq_n_s64(v12), v22);
+            v15 = vaddq_s64(vdupq_n_s64(rangeValue), v22);
             v16 = vdupq_n_s64(v13 - 1);
             v17 = &self->_selectionPageMap[v9];
             do
@@ -160,7 +160,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v8 = [pageRanges countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v8);
@@ -168,55 +168,55 @@
   }
 }
 
-- (int64_t)calcNumberOfSheetsForLayoutType:(int64_t)a3
+- (int64_t)calcNumberOfSheetsForLayoutType:(int64_t)type
 {
-  v5 = [(UIPrintSheetController *)self printInfo];
-  v6 = [v5 pageCount];
+  printInfo = [(UIPrintSheetController *)self printInfo];
+  pageCount = [printInfo pageCount];
 
-  if (a3)
+  if (type)
   {
-    v7 = [(UIPrintSheetController *)self numberOfPagesInSelection];
-    if (v7 >= 1)
+    numberOfPagesInSelection = [(UIPrintSheetController *)self numberOfPagesInSelection];
+    if (numberOfPagesInSelection >= 1)
     {
-      v8 = v7;
-      v9 = [(UIPrintSheetController *)self printInfo];
-      v10 = [v9 numNUpColumns];
-      v11 = [(UIPrintSheetController *)self printInfo];
-      v6 = vcvtps_s32_f32(v8 / ([v11 numNUpRows] * v10));
+      v8 = numberOfPagesInSelection;
+      printInfo2 = [(UIPrintSheetController *)self printInfo];
+      numNUpColumns = [printInfo2 numNUpColumns];
+      printInfo3 = [(UIPrintSheetController *)self printInfo];
+      pageCount = vcvtps_s32_f32(v8 / ([printInfo3 numNUpRows] * numNUpColumns));
     }
   }
 
-  return v6;
+  return pageCount;
 }
 
-- (CGSize)sizeForSheetNum:(int64_t)a3 showingPageView:(BOOL)a4
+- (CGSize)sizeForSheetNum:(int64_t)num showingPageView:(BOOL)view
 {
-  v4 = a4;
-  v7 = [(UIPrintSheetController *)self pagesController];
-  [v7 sizeForPageNum:a3];
+  viewCopy = view;
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController sizeForPageNum:num];
 
-  if (v4)
+  if (viewCopy)
   {
-    v8 = [(UIPrintSheetController *)self pagesController];
-    [v8 sizeForPageNum:a3];
+    pagesController2 = [(UIPrintSheetController *)self pagesController];
+    [pagesController2 sizeForPageNum:num];
     v10 = v9;
     v12 = v11;
   }
 
   else
   {
-    v13 = [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:a3];
-    v14 = [(UIPrintSheetController *)self pagesController];
-    [v14 sizeForPageNum:v13];
+    v13 = [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:num];
+    pagesController3 = [(UIPrintSheetController *)self pagesController];
+    [pagesController3 sizeForPageNum:v13];
     v10 = v15;
     v12 = v16;
 
-    v17 = [(UIPrintSheetController *)self printInfo];
-    v18 = [v17 numNUpRows];
-    v19 = [(UIPrintSheetController *)self printInfo];
-    v20 = [v19 numNUpColumns];
+    printInfo = [(UIPrintSheetController *)self printInfo];
+    numNUpRows = [printInfo numNUpRows];
+    printInfo2 = [(UIPrintSheetController *)self printInfo];
+    numNUpColumns = [printInfo2 numNUpColumns];
 
-    if (v18 != v20)
+    if (numNUpRows != numNUpColumns)
     {
       v21 = v10 / v12;
       if (v10 / v12 <= 1.0)
@@ -238,34 +238,34 @@
   return result;
 }
 
-- (id)imageForSheetNum:(int64_t)a3 showingPageView:(BOOL)a4
+- (id)imageForSheetNum:(int64_t)num showingPageView:(BOOL)view
 {
-  if (a4)
+  if (view)
   {
-    v6 = [(UIPrintSheetController *)self pagesController];
-    v7 = v6;
-    v8 = a3;
+    pagesController = [(UIPrintSheetController *)self pagesController];
+    v7 = pagesController;
+    numCopy = num;
     v9 = 1;
 LABEL_20:
-    v14 = [v6 imageForPageNum:v8 showingPageView:v9];
+    v14 = [pagesController imageForPageNum:numCopy showingPageView:v9];
 
     goto LABEL_21;
   }
 
-  v10 = [(UIPrintSheetController *)self printInfo];
-  v11 = [v10 nUpActive];
+  printInfo = [(UIPrintSheetController *)self printInfo];
+  nUpActive = [printInfo nUpActive];
 
-  if ((v11 & 1) == 0)
+  if ((nUpActive & 1) == 0)
   {
-    v34 = [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:a3];
-    v6 = [(UIPrintSheetController *)self pagesController];
-    v7 = v6;
-    v8 = v34;
+    v34 = [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:num];
+    pagesController = [(UIPrintSheetController *)self pagesController];
+    v7 = pagesController;
+    numCopy = v34;
     v9 = 0;
     goto LABEL_20;
   }
 
-  [(UIPrintSheetController *)self sizeForSheetNum:a3 showingPageView:0];
+  [(UIPrintSheetController *)self sizeForSheetNum:num showingPageView:0];
   v14 = 0;
   v15 = ceil(v12);
   if (v15 > 0.0)
@@ -274,22 +274,22 @@ LABEL_20:
     if (v13 > 0.0)
     {
       v17 = v12;
-      v18 = [(UIPrintSheetController *)self printInfo];
-      if ([v18 outputType] != 2)
+      printInfo2 = [(UIPrintSheetController *)self printInfo];
+      if ([printInfo2 outputType] != 2)
       {
-        v19 = [(UIPrintSheetController *)self printInfo];
-        if ([v19 outputType] != 3)
+        printInfo3 = [(UIPrintSheetController *)self printInfo];
+        if ([printInfo3 outputType] != 3)
         {
-          v36 = [(UIPrintSheetController *)self printInfo];
-          v37 = [v36 currentPrinter];
-          if (v37)
+          printInfo4 = [(UIPrintSheetController *)self printInfo];
+          currentPrinter = [printInfo4 currentPrinter];
+          if (currentPrinter)
           {
-            v38 = v37;
-            v39 = [(UIPrintSheetController *)self printInfo];
-            v40 = [v39 currentPrinter];
-            v41 = [v40 supportsColor];
+            v38 = currentPrinter;
+            printInfo5 = [(UIPrintSheetController *)self printInfo];
+            currentPrinter2 = [printInfo5 currentPrinter];
+            supportsColor = [currentPrinter2 supportsColor];
 
-            if ((v41 & 1) == 0)
+            if ((supportsColor & 1) == 0)
             {
               goto LABEL_10;
             }
@@ -309,10 +309,10 @@ LABEL_11:
             eraseCGBitmapContext(v14);
             CGContextScaleCTM(v14, v15 / v17, v16 / v16);
             CGContextSaveGState(v14);
-            v22 = [(UIPrintSheetController *)self printInfo];
-            v23 = [v22 flipHorizontal];
+            printInfo6 = [(UIPrintSheetController *)self printInfo];
+            flipHorizontal = [printInfo6 flipHorizontal];
 
-            if (v23)
+            if (flipHorizontal)
             {
               CGContextTranslateCTM(v14, v17, 0.0);
               CGContextScaleCTM(v14, -1.0, 1.0);
@@ -358,12 +358,12 @@ LABEL_11:
               v56 = v16;
             }
 
-            v44 = [(UIPrintSheetController *)self printInfo];
-            v45 = [v44 pageCount];
+            printInfo7 = [(UIPrintSheetController *)self printInfo];
+            pageCount = [printInfo7 pageCount];
 
             if (v27 > 0.0)
             {
-              v46 = (v27 * v25 * (a3 - 1));
+              v46 = (v27 * v25 * (num - 1));
               v47 = 0.0;
               do
               {
@@ -380,10 +380,10 @@ LABEL_11:
                   do
                   {
                     v50 = [(UIPrintSheetController *)self pageOffsetForRow:v48 column:v49 nUpLayout:v25, v27]+ v46;
-                    if (v50 < v45 && [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:v50 + 1]>= 1)
+                    if (v50 < pageCount && [(UIPrintSheetController *)self convertSelectionPageNumToPageNum:v50 + 1]>= 1)
                     {
-                      v51 = [(UIPrintSheetController *)self pagesController];
-                      v52 = [v51 imageForPageNum:-[UIPrintSheetController convertSelectionPageNumToPageNum:](self showingPageView:{"convertSelectionPageNumToPageNum:", v50 + 1), 0}];
+                      pagesController2 = [(UIPrintSheetController *)self pagesController];
+                      v52 = [pagesController2 imageForPageNum:-[UIPrintSheetController convertSelectionPageNumToPageNum:](self showingPageView:{"convertSelectionPageNumToPageNum:", v50 + 1), 0}];
 
                       if (v52)
                       {
@@ -393,12 +393,12 @@ LABEL_11:
                         CGContextGetBaseCTM();
                         CGContextGetCTM(&v58, v14);
                         CGContextSetBaseCTM();
-                        v53 = [v52 CGImage];
+                        cGImage = [v52 CGImage];
                         v61.origin.x = 0.0;
                         v61.origin.y = 0.0;
                         v61.size.width = v57 * v56;
                         v61.size.height = v57 * v55;
-                        CGContextDrawImage(v14, v61, v53);
+                        CGContextDrawImage(v14, v61, cGImage);
                         v58 = v59;
                         CGContextSetBaseCTM();
                         CGContextRestoreGState(v14);
@@ -444,63 +444,63 @@ LABEL_21:
   return v14;
 }
 
-- (int64_t)convertSelectionPageNumToPageNum:(int64_t)a3
+- (int64_t)convertSelectionPageNumToPageNum:(int64_t)num
 {
   if (!self->_selectionPageMap)
   {
     [(UIPrintSheetController *)self updateSelectionPageMap];
   }
 
-  if ([(UIPrintSheetController *)self numberOfPagesInSelection]< a3)
+  if ([(UIPrintSheetController *)self numberOfPagesInSelection]< num)
   {
     return 0;
   }
 
-  if (a3 <= 1)
+  if (num <= 1)
   {
-    v6 = 1;
+    numCopy = 1;
   }
 
   else
   {
-    v6 = a3;
+    numCopy = num;
   }
 
-  return self->_selectionPageMap[v6 - 1];
+  return self->_selectionPageMap[numCopy - 1];
 }
 
 - (CGSize)getNUpLayout
 {
-  v3 = [(UIPrintSheetController *)self printInfo];
-  v4 = [v3 numNUpRows];
+  printInfo = [(UIPrintSheetController *)self printInfo];
+  numNUpRows = [printInfo numNUpRows];
 
-  v5 = [(UIPrintSheetController *)self printInfo];
-  v6 = [v5 numNUpColumns];
+  printInfo2 = [(UIPrintSheetController *)self printInfo];
+  numNUpColumns = [printInfo2 numNUpColumns];
 
-  v7 = [(UIPrintSheetController *)self pagesController];
-  [v7 sizeForPageNum:1];
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController sizeForPageNum:1];
   v9 = v8;
   v11 = v10;
 
-  v12 = (v6 < v4) ^ (v11 > v9);
+  v12 = (numNUpColumns < numNUpRows) ^ (v11 > v9);
   if (v12)
   {
-    v13 = v6;
+    v13 = numNUpColumns;
   }
 
   else
   {
-    v13 = v4;
+    v13 = numNUpRows;
   }
 
   if (v12)
   {
-    v14 = v4;
+    v14 = numNUpRows;
   }
 
   else
   {
-    v14 = v6;
+    v14 = numNUpColumns;
   }
 
   result.height = v14;
@@ -508,27 +508,27 @@ LABEL_21:
   return result;
 }
 
-- (int64_t)pageOffsetForRow:(int64_t)a3 column:(int64_t)a4 nUpLayout:(CGSize)a5
+- (int64_t)pageOffsetForRow:(int64_t)row column:(int64_t)column nUpLayout:(CGSize)layout
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = [(UIPrintSheetController *)self printInfo];
-  v10 = [v9 nUpLayoutDirection];
-  v11 = width - (a4 + 1);
-  v12 = v11 + a3 * width;
-  v13 = a3 + v11 * height;
-  v14 = a4 + a3 * width;
-  if (v10 == 3)
+  height = layout.height;
+  width = layout.width;
+  printInfo = [(UIPrintSheetController *)self printInfo];
+  nUpLayoutDirection = [printInfo nUpLayoutDirection];
+  v11 = width - (column + 1);
+  v12 = v11 + row * width;
+  v13 = row + v11 * height;
+  v14 = column + row * width;
+  if (nUpLayoutDirection == 3)
   {
     v14 = v13;
   }
 
-  if (v10 == 2)
+  if (nUpLayoutDirection == 2)
   {
-    v14 = a3 + a4 * height;
+    v14 = row + column * height;
   }
 
-  if (v10 == 1)
+  if (nUpLayoutDirection == 1)
   {
     v14 = v12;
   }
@@ -540,27 +540,27 @@ LABEL_21:
 
 - (void)clearPagesCache
 {
-  v2 = [(UIPrintSheetController *)self pagesController];
-  [v2 clearPagesCache];
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController clearPagesCache];
 }
 
-- (void)clearCacheForSheetNum:(int64_t)a3
+- (void)clearCacheForSheetNum:(int64_t)num
 {
-  v4 = [(UIPrintSheetController *)self pagesController];
-  [v4 clearCacheForPageNum:a3];
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController clearCacheForPageNum:num];
 }
 
-- (void)generateWebKitThumbnailsWithCompletionBlock:(id)a3
+- (void)generateWebKitThumbnailsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIPrintSheetController *)self pagesController];
-  [v5 generateWebKitThumbnailsWithCompletionBlock:v4];
+  blockCopy = block;
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController generateWebKitThumbnailsWithCompletionBlock:blockCopy];
 }
 
 - (void)recalculateWebKitPageCount
 {
-  v2 = [(UIPrintSheetController *)self pagesController];
-  [v2 recalculateWebKitPageCount];
+  pagesController = [(UIPrintSheetController *)self pagesController];
+  [pagesController recalculateWebKitPageCount];
 }
 
 @end

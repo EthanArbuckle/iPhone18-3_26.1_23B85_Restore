@@ -1,18 +1,18 @@
 @interface AFSiriAnnounceDropInCallRequest
-- (AFSiriAnnounceDropInCallRequest)initWithAnnouncementType:(int64_t)a3;
-- (void)performRequestWithCompletion:(id)a3;
+- (AFSiriAnnounceDropInCallRequest)initWithAnnouncementType:(int64_t)type;
+- (void)performRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriAnnounceDropInCallRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_announcementType)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_13;
   }
 
@@ -92,14 +92,14 @@ void __64__AFSiriAnnounceDropInCallRequest_performRequestWithCompletion___block_
   xpc_connection_cancel(*(a1 + 32));
 }
 
-- (AFSiriAnnounceDropInCallRequest)initWithAnnouncementType:(int64_t)a3
+- (AFSiriAnnounceDropInCallRequest)initWithAnnouncementType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = AFSiriAnnounceDropInCallRequest;
   result = [(AFSiriAnnounceDropInCallRequest *)&v5 init];
   if (result)
   {
-    result->_announcementType = a3;
+    result->_announcementType = type;
   }
 
   return result;

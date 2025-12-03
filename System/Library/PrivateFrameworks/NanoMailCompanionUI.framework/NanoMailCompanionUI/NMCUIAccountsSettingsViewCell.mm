@@ -1,19 +1,19 @@
 @interface NMCUIAccountsSettingsViewCell
-- (NMCUIAccountsSettingsViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NMCUIAccountsSettingsViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIActivityIndicatorView)spinner;
 - (UILabel)warningLabel;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation NMCUIAccountsSettingsViewCell
 
-- (NMCUIAccountsSettingsViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NMCUIAccountsSettingsViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v5 = [objc_opt_class() reuseIdentifier];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
   v13.receiver = self;
   v13.super_class = NMCUIAccountsSettingsViewCell;
-  v6 = [(PSTableCell *)&v13 initWithStyle:3 reuseIdentifier:v5];
+  v6 = [(PSTableCell *)&v13 initWithStyle:3 reuseIdentifier:reuseIdentifier];
 
   if (v6)
   {
@@ -21,12 +21,12 @@
     [(NMCUIAccountsSettingsViewCell *)v6 setSelectionTintColor:v7];
 
     v8 = soft_BPSTextColor();
-    v9 = [(PSTableCell *)v6 titleLabel];
-    [v9 setTextColor:v8];
+    titleLabel = [(PSTableCell *)v6 titleLabel];
+    [titleLabel setTextColor:v8];
 
     v10 = soft_BPSDetailTextColor();
-    v11 = [(NMCUIAccountsSettingsViewCell *)v6 detailTextLabel];
-    [v11 setTextColor:v10];
+    detailTextLabel = [(NMCUIAccountsSettingsViewCell *)v6 detailTextLabel];
+    [detailTextLabel setTextColor:v10];
   }
 
   return v6;
@@ -105,49 +105,49 @@
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v19.receiver = self;
   v19.super_class = NMCUIAccountsSettingsViewCell;
-  v4 = a3;
-  [(PSSubtitleButtonCell *)&v19 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSSubtitleButtonCell *)&v19 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = soft_BPSCellHightlightColor();
   [(NMCUIAccountsSettingsViewCell *)self setSelectionTintColor:v5, v19.receiver, v19.super_class];
 
   v6 = soft_BPSTextColor();
-  v7 = [(PSTableCell *)self titleLabel];
-  [v7 setTextColor:v6];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setTextColor:v6];
 
   v8 = soft_BPSDetailTextColor();
-  v9 = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
-  [v9 setTextColor:v8];
+  detailTextLabel = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v8];
 
-  v10 = [(PSTableCell *)self titleLabel];
-  [v10 setEnabled:1];
+  titleLabel2 = [(PSTableCell *)self titleLabel];
+  [titleLabel2 setEnabled:1];
 
-  v11 = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
-  [v11 setEnabled:1];
+  detailTextLabel2 = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
+  [detailTextLabel2 setEnabled:1];
 
-  v12 = [v4 objectForKeyedSubscript:@"MFNanoSettingsSpecifierDetailKey"];
-  v13 = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
-  [v13 setText:v12];
+  v12 = [specifierCopy objectForKeyedSubscript:@"MFNanoSettingsSpecifierDetailKey"];
+  detailTextLabel3 = [(NMCUIAccountsSettingsViewCell *)self detailTextLabel];
+  [detailTextLabel3 setText:v12];
 
-  v14 = [v4 objectForKeyedSubscript:@"MFNanoSettingsSpecifierWarningKey"];
-  v15 = [v4 objectForKeyedSubscript:@"MFNanoSettingsSpecifierLoadingKey"];
+  v14 = [specifierCopy objectForKeyedSubscript:@"MFNanoSettingsSpecifierWarningKey"];
+  v15 = [specifierCopy objectForKeyedSubscript:@"MFNanoSettingsSpecifierLoadingKey"];
 
   if ([v15 BOOLValue])
   {
-    v16 = [(NMCUIAccountsSettingsViewCell *)self spinner];
-    [(NMCUIAccountsSettingsViewCell *)self setAccessoryView:v16];
+    spinner = [(NMCUIAccountsSettingsViewCell *)self spinner];
+    [(NMCUIAccountsSettingsViewCell *)self setAccessoryView:spinner];
 
-    v17 = [(NMCUIAccountsSettingsViewCell *)self spinner];
-    [v17 startAnimating];
+    spinner2 = [(NMCUIAccountsSettingsViewCell *)self spinner];
+    [spinner2 startAnimating];
   }
 
   else if ([v14 BOOLValue])
   {
-    v18 = [(NMCUIAccountsSettingsViewCell *)self warningLabel];
-    [(NMCUIAccountsSettingsViewCell *)self setAccessoryView:v18];
+    warningLabel = [(NMCUIAccountsSettingsViewCell *)self warningLabel];
+    [(NMCUIAccountsSettingsViewCell *)self setAccessoryView:warningLabel];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface NUEmptyPattern
-- (BOOL)isEqualToPattern:(id)a3;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
+- (BOOL)isEqualToPattern:(id)pattern;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
 @end
 
 @implementation NUEmptyPattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
-  v6 = *a4;
-  v7 = [a3 count];
+  v6 = *location;
+  v7 = [match count];
   if (v6 <= v7)
   {
-    *a5 = 0;
+    *count = 0;
   }
 
   return v6 <= v7;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

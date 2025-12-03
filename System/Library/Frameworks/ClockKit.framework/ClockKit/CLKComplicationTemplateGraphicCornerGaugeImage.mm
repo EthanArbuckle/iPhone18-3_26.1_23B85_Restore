@@ -2,8 +2,8 @@
 + (CLKComplicationTemplateGraphicCornerGaugeImage)templateWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider imageProvider:(CLKFullColorImageProvider *)imageProvider;
 + (CLKComplicationTemplateGraphicCornerGaugeImage)templateWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider leadingTextProvider:(CLKTextProvider *)leadingTextProvider trailingTextProvider:(CLKTextProvider *)trailingTextProvider imageProvider:(CLKFullColorImageProvider *)imageProvider;
 - (CLKComplicationTemplateGraphicCornerGaugeImage)initWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider leadingTextProvider:(CLKTextProvider *)leadingTextProvider trailingTextProvider:(CLKTextProvider *)trailingTextProvider imageProvider:(CLKFullColorImageProvider *)imageProvider;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerGaugeImage
@@ -16,11 +16,11 @@
   v13 = imageProvider;
   v17.receiver = self;
   v17.super_class = CLKComplicationTemplateGraphicCornerGaugeImage;
-  v14 = [(CLKComplicationTemplate *)&v17 initPrivate];
-  v15 = v14;
-  if (v14)
+  initPrivate = [(CLKComplicationTemplate *)&v17 initPrivate];
+  v15 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCornerGaugeImage *)v14 setGaugeProvider:v10];
+    [(CLKComplicationTemplateGraphicCornerGaugeImage *)initPrivate setGaugeProvider:v10];
     [(CLKComplicationTemplateGraphicCornerGaugeImage *)v15 setLeadingTextProvider:v11];
     [(CLKComplicationTemplateGraphicCornerGaugeImage *)v15 setTrailingTextProvider:v12];
     [(CLKComplicationTemplateGraphicCornerGaugeImage *)v15 setImageProvider:v13];
@@ -33,7 +33,7 @@
 {
   v6 = imageProvider;
   v7 = gaugeProvider;
-  v8 = [[a1 alloc] initWithGaugeProvider:v7 imageProvider:v6];
+  v8 = [[self alloc] initWithGaugeProvider:v7 imageProvider:v6];
 
   return v8;
 }
@@ -44,34 +44,34 @@
   v11 = trailingTextProvider;
   v12 = leadingTextProvider;
   v13 = gaugeProvider;
-  v14 = [[a1 alloc] initWithGaugeProvider:v13 leadingTextProvider:v12 trailingTextProvider:v11 imageProvider:v10];
+  v14 = [[self alloc] initWithGaugeProvider:v13 leadingTextProvider:v12 trailingTextProvider:v11 imageProvider:v10];
 
   return v14;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"leadingTextProvider", 1, 1, &v4);
+  blockCopy[2](blockCopy, @"leadingTextProvider", 1, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"trailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"trailingTextProvider", 1, 1, &v4);
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __96__CLKComplicationTemplateGraphicCornerGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __96__CLKComplicationTemplateGraphicCornerGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE919C0;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize];
-  v4[2](v4, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
+  blockCopy[2](blockCopy, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
 }
 
 uint64_t __96__CLKComplicationTemplateGraphicCornerGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

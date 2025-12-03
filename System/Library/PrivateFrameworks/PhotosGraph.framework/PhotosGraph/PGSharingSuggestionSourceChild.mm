@@ -1,22 +1,22 @@
 @interface PGSharingSuggestionSourceChild
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceChild
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v18 = a4;
-  v20 = [v5 momentNodes];
-  v21 = [v5 graph];
-  v6 = [v21 children];
-  if ([v6 count])
+  inputCopy = input;
+  optionsCopy = options;
+  momentNodes = [inputCopy momentNodes];
+  graph = [inputCopy graph];
+  children = [graph children];
+  if ([children count])
   {
-    v7 = [v21 parents];
-    v8 = [v21 partners];
-    v19 = [v7 setByAddingObjectsFromSet:v8];
+    parents = [graph parents];
+    partners = [graph partners];
+    v19 = [parents setByAddingObjectsFromSet:partners];
 
     if ([v19 count])
     {
@@ -25,7 +25,7 @@
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v9 = v20;
+      v9 = momentNodes;
       v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v10)
       {
@@ -48,7 +48,7 @@
             v23[1] = 3221225472;
             v23[2] = __71__PGSharingSuggestionSourceChild_suggestedResultsForInput_withOptions___block_invoke;
             v23[3] = &unk_278889420;
-            v24 = v6;
+            v24 = children;
             v25 = &v26;
             [v13 enumeratePersonNodesUsingBlock:v23];
             if (*(v27 + 24) == 1)

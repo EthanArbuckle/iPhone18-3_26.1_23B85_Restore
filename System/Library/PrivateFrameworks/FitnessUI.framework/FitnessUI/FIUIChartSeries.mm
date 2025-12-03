@@ -3,10 +3,10 @@
 - (FIUIChartSeries)init;
 - (FIUIChartSeriesDataSource)dataSource;
 - (UIEdgeInsets)edgeInsets;
-- (double)xValueForPointFromChartPoint:(id)a3;
-- (double)yValueForPointFromChartPointValue:(id)a3;
-- (float)_relativePositionForXPlaneValue:(id)a3;
-- (float)_relativePositionForYPlaneValue:(id)a3;
+- (double)xValueForPointFromChartPoint:(id)point;
+- (double)yValueForPointFromChartPointValue:(id)value;
+- (float)_relativePositionForXPlaneValue:(id)value;
+- (float)_relativePositionForYPlaneValue:(id)value;
 - (void)_reloadMinMaxValues;
 - (void)layoutSubviews;
 @end
@@ -26,10 +26,10 @@
     *&v2->_edgeInsets.bottom = v4;
     [(FIUIChartSeries *)v2 setBackgroundColor:0];
     [(FIUIChartSeries *)v3 setOpaque:0];
-    v5 = [(FIUIChartSeries *)v3 layer];
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
-    [v5 setContentsScale:?];
+    layer = [(FIUIChartSeries *)v3 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer setContentsScale:?];
   }
 
   return v3;
@@ -66,35 +66,35 @@
   self->_maxYValue = v12;
 }
 
-- (float)_relativePositionForXPlaneValue:(id)a3
+- (float)_relativePositionForXPlaneValue:(id)value
 {
   minXValue = self->_minXValue;
-  v5 = a3;
+  valueCopy = value;
   v6 = FIUIChartXAxisFloatValue(minXValue);
   v7 = FIUIChartXAxisFloatValue(self->_maxXValue);
-  v8 = FIUIChartXAxisFloatValue(v5);
+  v8 = FIUIChartXAxisFloatValue(valueCopy);
 
   return FIUIChartRelativePositionForXPlaneValue(v8, v6, v7);
 }
 
-- (float)_relativePositionForYPlaneValue:(id)a3
+- (float)_relativePositionForYPlaneValue:(id)value
 {
   minYValue = self->_minYValue;
-  v5 = a3;
+  valueCopy = value;
   [(NSNumber *)minYValue doubleValue];
   v7 = v6;
   [(NSNumber *)self->_maxYValue doubleValue];
   v9 = v8;
-  [v5 doubleValue];
+  [valueCopy doubleValue];
   v11 = v10;
 
   return FIUIChartRelativePositionForYPlaneValue(v11, v7, v9);
 }
 
-- (double)xValueForPointFromChartPoint:(id)a3
+- (double)xValueForPointFromChartPoint:(id)point
 {
-  v4 = [a3 xValue];
-  v5 = FIUIChartXAxisFloatValue(v4);
+  xValue = [point xValue];
+  v5 = FIUIChartXAxisFloatValue(xValue);
 
   v6 = FIUIChartXAxisFloatValue(self->_minXValue);
   v7 = FIUIChartXAxisFloatValue(self->_maxXValue);
@@ -104,16 +104,16 @@
   return FIUIChartAbsolutePositionForXPlaneValue(self, v8, v9, v10, v11, v12);
 }
 
-- (double)yValueForPointFromChartPointValue:(id)a3
+- (double)yValueForPointFromChartPointValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
   v5 = v4;
-  v6 = [(FIUIChartSeries *)self minYValue];
-  [v6 doubleValue];
+  minYValue = [(FIUIChartSeries *)self minYValue];
+  [minYValue doubleValue];
   v8 = v7;
 
-  v9 = [(FIUIChartSeries *)self maxYValue];
-  [v9 doubleValue];
+  maxYValue = [(FIUIChartSeries *)self maxYValue];
+  [maxYValue doubleValue];
   v11 = v10;
 
   v12 = FIUIChartRelativePositionForYPlaneValue(v5, v8, v11);

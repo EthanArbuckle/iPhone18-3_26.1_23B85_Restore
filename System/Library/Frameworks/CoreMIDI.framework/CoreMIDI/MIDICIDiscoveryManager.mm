@@ -1,20 +1,20 @@
 @interface MIDICIDiscoveryManager
 + (MIDICIDiscoveryManager)sharedInstance;
-- (id)handleNotification:(const MIDINotification *)a3;
+- (id)handleNotification:(const MIDINotification *)notification;
 - (void)dealloc;
 - (void)discoverWithHandler:(MIDICIDiscoveryResponseBlock)completedHandler;
 @end
 
 @implementation MIDICIDiscoveryManager
 
-- (id)handleNotification:(const MIDINotification *)a3
+- (id)handleNotification:(const MIDINotification *)notification
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   __dst[0] = 0uLL;
   *(&__dst[1] + 5) = 0;
   *&__dst[1] = 0;
-  messageID = a3->messageID;
-  messageSize = a3->messageSize;
+  messageID = notification->messageID;
+  messageSize = notification->messageSize;
   if (messageID > 21)
   {
     if (messageID <= 30)
@@ -82,7 +82,7 @@
 
   v7 = "Unknown Notification Type";
 LABEL_25:
-  NSLog(&cfstr_Handlenotifica.isa, a3, messageID, v7, messageSize, __dst[0], __dst[1]);
+  NSLog(&cfstr_Handlenotifica.isa, notification, messageID, v7, messageSize, __dst[0], __dst[1]);
   if ((messageID - 10) > 2)
   {
     NSLog(&cfstr_DisallowedMess.isa);
@@ -94,7 +94,7 @@ LABEL_25:
     v9 = messageID;
     while (v9 == 11)
     {
-      v10 = a3 + 1;
+      v10 = notification + 1;
       memcpy(__dst, v10, messageSize);
       v11 = BYTE12(__dst[1]);
       v12 = *(__dst + 4);
@@ -104,9 +104,9 @@ LABEL_25:
 
       NSLog(&cfstr_PeerDiscovered.isa, v15);
       [v4 addObject:v15];
-      a3 = (v10 + messageSize);
-      v9 = a3->messageID;
-      messageSize = a3->messageSize;
+      notification = (v10 + messageSize);
+      v9 = notification->messageID;
+      messageSize = notification->messageSize;
       v8 = v15;
     }
 
@@ -144,8 +144,8 @@ LABEL_25:
   NSLog(&cfstr_Discoverwithha.isa, v4);
 
   [(MIDICIDiscoveryManager *)self setResponseBlock:v6];
-  v5 = self;
-  [(MIDICIDiscoveryManager *)v5 discover];
+  selfCopy = self;
+  [(MIDICIDiscoveryManager *)selfCopy discover];
 }
 
 + (MIDICIDiscoveryManager)sharedInstance
@@ -154,7 +154,7 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = __40__MIDICIDiscoveryManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MIDICIDiscoveryManager sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[MIDICIDiscoveryManager sharedInstance]::onceToken, block);

@@ -1,18 +1,18 @@
 @interface PICoreImageUtilities
-+ (id)framedRectImageWithCGRect:(CGRect)a3 color:(id)a4 borderWidth:(double)a5;
-+ (id)loadFilterWithName:(id)a3;
-+ (id)metalKernelWithFunctionName:(id)a3 error:(id *)a4;
++ (id)framedRectImageWithCGRect:(CGRect)rect color:(id)color borderWidth:(double)width;
++ (id)loadFilterWithName:(id)name;
++ (id)metalKernelWithFunctionName:(id)name error:(id *)error;
 + (id)metalLibraryData;
 @end
 
 @implementation PICoreImageUtilities
 
-+ (id)loadFilterWithName:(id)a3
++ (id)loadFilterWithName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695F648] filterWithName:v3];
-  if (v4 || ([MEMORY[0x1E695F648] filterWithName:v3], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  v4 = [MEMORY[0x1E695F648] filterWithName:nameCopy];
+  if (v4 || ([MEMORY[0x1E695F648] filterWithName:nameCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
   }
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = nameCopy;
       _os_log_error_impl(&dword_1C7694000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to load filter named '%@'", &v7, 0xCu);
     }
 
@@ -32,46 +32,46 @@
   return v5;
 }
 
-+ (id)framedRectImageWithCGRect:(CGRect)a3 color:(id)a4 borderWidth:(double)a5
++ (id)framedRectImageWithCGRect:(CGRect)rect color:(id)color borderWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = MEMORY[0x1E695F648];
-  v11 = a4;
-  v12 = [v10 roundedRectangleGeneratorFilter];
-  [v12 setExtent:{x, y, width, height}];
-  [v12 setColor:v11];
+  colorCopy = color;
+  roundedRectangleGeneratorFilter = [v10 roundedRectangleGeneratorFilter];
+  [roundedRectangleGeneratorFilter setExtent:{x, y, width, height}];
+  [roundedRectangleGeneratorFilter setColor:colorCopy];
 
-  v13 = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
+  roundedRectangleGeneratorFilter2 = [MEMORY[0x1E695F648] roundedRectangleGeneratorFilter];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  v22 = CGRectInset(v21, a5, a5);
-  [v13 setExtent:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
-  v14 = [MEMORY[0x1E695F610] blackColor];
-  [v13 setColor:v14];
+  v22 = CGRectInset(v21, width, width);
+  [roundedRectangleGeneratorFilter2 setExtent:{v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
+  blackColor = [MEMORY[0x1E695F610] blackColor];
+  [roundedRectangleGeneratorFilter2 setColor:blackColor];
 
-  v15 = [MEMORY[0x1E695F648] sourceOutCompositingFilter];
-  v16 = [v12 outputImage];
-  [v15 setInputImage:v16];
+  sourceOutCompositingFilter = [MEMORY[0x1E695F648] sourceOutCompositingFilter];
+  outputImage = [roundedRectangleGeneratorFilter outputImage];
+  [sourceOutCompositingFilter setInputImage:outputImage];
 
-  v17 = [v13 outputImage];
-  [v15 setBackgroundImage:v17];
+  outputImage2 = [roundedRectangleGeneratorFilter2 outputImage];
+  [sourceOutCompositingFilter setBackgroundImage:outputImage2];
 
-  v18 = [v15 outputImage];
+  outputImage3 = [sourceOutCompositingFilter outputImage];
 
-  return v18;
+  return outputImage3;
 }
 
-+ (id)metalKernelWithFunctionName:(id)a3 error:(id *)a4
++ (id)metalKernelWithFunctionName:(id)name error:(id *)error
 {
   v6 = MEMORY[0x1E695F660];
-  v7 = a3;
-  v8 = [a1 metalLibraryData];
-  v9 = [v6 kernelWithFunctionName:v7 fromMetalLibraryData:v8 error:a4];
+  nameCopy = name;
+  metalLibraryData = [self metalLibraryData];
+  v9 = [v6 kernelWithFunctionName:nameCopy fromMetalLibraryData:metalLibraryData error:error];
 
   return v9;
 }
@@ -82,7 +82,7 @@
   block[1] = 3221225472;
   block[2] = __40__PICoreImageUtilities_metalLibraryData__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (metalLibraryData_onceToken != -1)
   {
     dispatch_once(&metalLibraryData_onceToken, block);

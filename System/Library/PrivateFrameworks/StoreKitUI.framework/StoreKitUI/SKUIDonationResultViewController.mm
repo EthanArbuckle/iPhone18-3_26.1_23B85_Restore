@@ -1,16 +1,16 @@
 @interface SKUIDonationResultViewController
-- (SKUIDonationResultViewController)initWithCharity:(id)a3 configuration:(id)a4;
-- (void)_doneButtonAction:(id)a3;
-- (void)donationConfigurationController:(id)a3 didLoadLogoForCharity:(id)a4;
+- (SKUIDonationResultViewController)initWithCharity:(id)charity configuration:(id)configuration;
+- (void)_doneButtonAction:(id)action;
+- (void)donationConfigurationController:(id)controller didLoadLogoForCharity:(id)charity;
 - (void)loadView;
 @end
 
 @implementation SKUIDonationResultViewController
 
-- (SKUIDonationResultViewController)initWithCharity:(id)a3 configuration:(id)a4
+- (SKUIDonationResultViewController)initWithCharity:(id)charity configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  charityCopy = charity;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDonationResultViewController initWithCharity:configuration:];
@@ -18,15 +18,15 @@
 
   v13.receiver = self;
   v13.super_class = SKUIDonationResultViewController;
-  v8 = [(SKUIDonationStepViewController *)&v13 initWithCharity:v6 configuration:v7];
+  v8 = [(SKUIDonationStepViewController *)&v13 initWithCharity:charityCopy configuration:configurationCopy];
   if (v8)
   {
-    [v7 addObserver:v8];
-    v9 = [v7 clientContext];
-    v10 = v9;
-    if (v9)
+    [configurationCopy addObserver:v8];
+    clientContext = [configurationCopy clientContext];
+    v10 = clientContext;
+    if (clientContext)
     {
-      [v9 localizedStringForKey:@"DONATION_CONFIRM_TITLE"];
+      [clientContext localizedStringForKey:@"DONATION_CONFIRM_TITLE"];
     }
 
     else
@@ -42,18 +42,18 @@
 
 - (void)loadView
 {
-  v3 = [(SKUIDonationStepViewController *)self donationConfiguration];
-  v23 = [v3 clientContext];
+  donationConfiguration = [(SKUIDonationStepViewController *)self donationConfiguration];
+  clientContext = [donationConfiguration clientContext];
 
-  v4 = [(SKUIDonationResultViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem = [(SKUIDonationResultViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v5 setAction:sel__doneButtonAction_];
   [v5 setStyle:2];
   [v5 setTarget:self];
-  if (v23)
+  if (clientContext)
   {
-    [v23 localizedStringForKey:@"DONATION_CONFIRM_DONE"];
+    [clientContext localizedStringForKey:@"DONATION_CONFIRM_DONE"];
   }
 
   else
@@ -63,7 +63,7 @@
   v6 = ;
   [v5 setTitle:v6];
 
-  [v4 setRightBarButtonItem:v5];
+  [navigationItem setRightBarButtonItem:v5];
   resultView = self->_resultView;
   if (!resultView)
   {
@@ -72,18 +72,18 @@
     self->_resultView = v8;
 
     v10 = self->_resultView;
-    v11 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(SKUIDonationResultView *)v10 setBackgroundColor:v11];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(SKUIDonationResultView *)v10 setBackgroundColor:_systemBackgroundColor];
 
     v12 = self->_resultView;
-    v13 = [(SKUIDonationStepViewController *)self donationConfiguration];
-    v14 = [(SKUIDonationStepViewController *)self charity];
-    v15 = [v13 logoImageForCharity:v14];
+    donationConfiguration2 = [(SKUIDonationStepViewController *)self donationConfiguration];
+    charity = [(SKUIDonationStepViewController *)self charity];
+    v15 = [donationConfiguration2 logoImageForCharity:charity];
     [(SKUIDonationResultView *)v12 setImage:v15];
 
-    if (v23)
+    if (clientContext)
     {
-      [v23 localizedStringForKey:@"DONATION_CONFIRM_MESSAGE"];
+      [clientContext localizedStringForKey:@"DONATION_CONFIRM_MESSAGE"];
     }
 
     else
@@ -93,14 +93,14 @@
     v16 = ;
     v17 = self->_resultView;
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(SKUIGiftAmount *)self->_donationAmount displayLabel];
-    v20 = [v18 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v19];
+    displayLabel = [(SKUIGiftAmount *)self->_donationAmount displayLabel];
+    v20 = [v18 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, displayLabel];
     [(SKUIDonationResultView *)v17 setMessage:v20];
 
     v21 = self->_resultView;
-    if (v23)
+    if (clientContext)
     {
-      [v23 localizedStringForKey:@"DONATION_CONFIRM_THANKS"];
+      [clientContext localizedStringForKey:@"DONATION_CONFIRM_THANKS"];
     }
 
     else
@@ -116,30 +116,30 @@
   [(SKUIDonationResultViewController *)self setView:resultView];
 }
 
-- (void)donationConfigurationController:(id)a3 didLoadLogoForCharity:(id)a4
+- (void)donationConfigurationController:(id)controller didLoadLogoForCharity:(id)charity
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SKUIDonationStepViewController *)self charity];
+  controllerCopy = controller;
+  charityCopy = charity;
+  charity = [(SKUIDonationStepViewController *)self charity];
 
-  if (v7 == v6)
+  if (charity == charityCopy)
   {
     resultView = self->_resultView;
-    v9 = [v10 logoImageForCharity:v6];
+    v9 = [controllerCopy logoImageForCharity:charityCopy];
     [(SKUIDonationResultView *)resultView setImage:v9];
   }
 }
 
-- (void)_doneButtonAction:(id)a3
+- (void)_doneButtonAction:(id)action
 {
-  v4 = [(SKUIDonationStepViewController *)self donationViewController];
-  v5 = v4;
-  if (!v4)
+  selfCopy = [(SKUIDonationStepViewController *)self donationViewController];
+  v5 = selfCopy;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)initWithCharity:configuration:.cold.1()

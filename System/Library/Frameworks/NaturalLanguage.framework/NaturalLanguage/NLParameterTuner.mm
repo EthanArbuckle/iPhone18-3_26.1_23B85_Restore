@@ -1,51 +1,51 @@
 @interface NLParameterTuner
-+ (id)parameterTunerWithParameters:(id)a3 options:(id)a4 delegate:(id)a5;
-+ (id)tunedParameterBundleWithParameters:(id)a3 options:(id)a4 delegate:(id)a5 error:(id *)a6;
-- (NLParameterTuner)initWithParameters:(id)a3 options:(id)a4 delegate:(id)a5;
++ (id)parameterTunerWithParameters:(id)parameters options:(id)options delegate:(id)delegate;
++ (id)tunedParameterBundleWithParameters:(id)parameters options:(id)options delegate:(id)delegate error:(id *)error;
+- (NLParameterTuner)initWithParameters:(id)parameters options:(id)options delegate:(id)delegate;
 - (NLParameterTuningDelegate)delegate;
 - (id)_hyperTuneParameterArray;
-- (id)tunedParameterBundleWithError:(id *)a3;
+- (id)tunedParameterBundleWithError:(id *)error;
 @end
 
 @implementation NLParameterTuner
 
-+ (id)tunedParameterBundleWithParameters:(id)a3 options:(id)a4 delegate:(id)a5 error:(id *)a6
++ (id)tunedParameterBundleWithParameters:(id)parameters options:(id)options delegate:(id)delegate error:(id *)error
 {
-  v7 = [a1 parameterTunerWithParameters:a3 options:a4 delegate:a5];
-  v8 = [v7 tunedParameterBundleWithError:a6];
+  v7 = [self parameterTunerWithParameters:parameters options:options delegate:delegate];
+  v8 = [v7 tunedParameterBundleWithError:error];
 
   return v8;
 }
 
-+ (id)parameterTunerWithParameters:(id)a3 options:(id)a4 delegate:(id)a5
++ (id)parameterTunerWithParameters:(id)parameters options:(id)options delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithParameters:v10 options:v9 delegate:v8];
+  delegateCopy = delegate;
+  optionsCopy = options;
+  parametersCopy = parameters;
+  v11 = [[self alloc] initWithParameters:parametersCopy options:optionsCopy delegate:delegateCopy];
 
   return v11;
 }
 
-- (NLParameterTuner)initWithParameters:(id)a3 options:(id)a4 delegate:(id)a5
+- (NLParameterTuner)initWithParameters:(id)parameters options:(id)options delegate:(id)delegate
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v36.receiver = self;
   v36.super_class = NLParameterTuner;
   v11 = [(NLParameterTuner *)&v36 init];
   if (v11)
   {
-    v30 = v9;
-    v12 = [MEMORY[0x1E695DF70] array];
+    v30 = optionsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = v8;
-    v13 = v8;
+    v31 = parametersCopy;
+    v13 = parametersCopy;
     v14 = [v13 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v14)
     {
@@ -61,13 +61,13 @@
           }
 
           v18 = *(*(&v32 + 1) + 8 * i);
-          v19 = [v18 name];
-          v20 = [(NSArray *)v12 containsObject:v19];
+          name = [v18 name];
+          v20 = [(NSArray *)array containsObject:name];
 
           if (!v20)
           {
-            v21 = [v18 name];
-            [(NSArray *)v12 addObject:v21];
+            name2 = [v18 name];
+            [(NSArray *)array addObject:name2];
           }
         }
 
@@ -82,16 +82,16 @@
     v11->_parameters = v22;
 
     parameterNames = v11->_parameterNames;
-    v11->_parameterNames = v12;
-    v25 = v12;
+    v11->_parameterNames = array;
+    v25 = array;
 
-    v9 = v30;
+    optionsCopy = v30;
     v26 = [v30 copy];
     options = v11->_options;
     v11->_options = v26;
 
-    objc_storeWeak(&v11->_delegate, v10);
-    v8 = v31;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    parametersCopy = v31;
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -101,13 +101,13 @@
 - (id)_hyperTuneParameterArray
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NLParameterTuner *)self parameters];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  parameters = [(NLParameterTuner *)self parameters];
+  v5 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,14 +118,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(parameters);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) _hyperTuneDictionary];
-        [v3 addObject:v9];
+        _hyperTuneDictionary = [*(*(&v12 + 1) + 8 * i) _hyperTuneDictionary];
+        [array addObject:_hyperTuneDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -133,19 +133,19 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (id)tunedParameterBundleWithError:(id *)a3
+- (id)tunedParameterBundleWithError:(id *)error
 {
   v51[5] = *MEMORY[0x1E69E9840];
-  v41 = [(NLParameterTuner *)self _hyperTuneParameterArray];
-  v4 = [(NLParameterTuner *)self options];
-  v39 = [v4 objectForKey:@"Metadata"];
-  v40 = [(NLParameterTuner *)self delegate];
+  _hyperTuneParameterArray = [(NLParameterTuner *)self _hyperTuneParameterArray];
+  options = [(NLParameterTuner *)self options];
+  v39 = [options objectForKey:@"Metadata"];
+  delegate = [(NLParameterTuner *)self delegate];
   objc_opt_respondsToSelector();
-  v5 = v4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  v5 = options;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v51[0] = @"Algorithm";
   v51[1] = @"MaximumIterations";
   v51[2] = @"PreferLowerScore";
@@ -175,7 +175,7 @@
         if (([v7 containsObject:v13] & 1) == 0)
         {
           v14 = [v8 objectForKey:v13];
-          [v6 setObject:v14 forKey:v13];
+          [dictionary setObject:v14 forKey:v13];
         }
       }
 
@@ -202,7 +202,7 @@
     v18 = MEMORY[0x1E69B2760];
   }
 
-  [v6 setObject:*v18 forKey:*MEMORY[0x1E69B2768]];
+  [dictionary setObject:*v18 forKey:*MEMORY[0x1E69B2768]];
   v19 = BOOLForKey(v8, @"PreferLowerScore", 0);
   v20 = MEMORY[0x1E69B2790];
   if (!v19)
@@ -210,7 +210,7 @@
     v20 = MEMORY[0x1E69B2788];
   }
 
-  [v6 setObject:*v20 forKey:*MEMORY[0x1E69B2780]];
+  [dictionary setObject:*v20 forKey:*MEMORY[0x1E69B2780]];
   v21 = [v8 objectForKey:@"MaximumIterations"];
   if (v21)
   {
@@ -222,45 +222,45 @@
     v22 = &unk_1F10D1358;
   }
 
-  [v6 setObject:v22 forKey:*MEMORY[0x1E69B27D8]];
+  [dictionary setObject:v22 forKey:*MEMORY[0x1E69B27D8]];
   v23 = [v8 objectForKey:@"RandomSeed"];
   if (v23)
   {
-    [v6 setObject:v23 forKey:*MEMORY[0x1E69B27D0]];
+    [dictionary setObject:v23 forKey:*MEMORY[0x1E69B27D0]];
   }
 
   v24 = [v8 objectForKey:@"InitialParameterValues"];
   if (v24)
   {
-    [v6 setObject:v24 forKey:*MEMORY[0x1E69B2778]];
+    [dictionary setObject:v24 forKey:*MEMORY[0x1E69B2778]];
   }
 
-  v25 = v6;
+  v25 = dictionary;
   v42 = v39;
-  v43 = v40;
+  v43 = delegate;
   v26 = v42;
   v27 = v43;
   v28 = HTTuneParameters();
   if (v28)
   {
     v29 = v28;
-    v30 = [(NLParameterTuner *)self parameters];
+    parameters = [(NLParameterTuner *)self parameters];
     v31 = _parameterValuesForHyperTuneValues(v29);
-    v32 = [NLParameterBundle parameterBundleWithParameters:v30 values:v31 metadata:v26];
+    v32 = [NLParameterBundle parameterBundleWithParameters:parameters values:v31 metadata:v26];
 
     CFRelease(v29);
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
       v33 = MEMORY[0x1E696ABC0];
       v48 = *MEMORY[0x1E696A578];
       v49 = @"Failed to tune parameter bundle";
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
       v35 = [v33 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:9 userInfo:v34];
-      *a3 = v35;
+      *error = v35;
     }
 
     v32 = 0;

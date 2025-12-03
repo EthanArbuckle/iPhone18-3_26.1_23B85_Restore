@@ -4,8 +4,8 @@
 - (NSString)localizedStringForDate:(NSDate *)date relativeToDate:(NSDate *)referenceDate;
 - (NSString)localizedStringFromTimeInterval:(NSTimeInterval)timeInterval;
 - (NSString)stringForObjectValue:(id)obj;
-- (id)_stringForCalendarUnit:(unint64_t)a3 value:(int64_t)a4;
-- (id)_stringFromDateComponents:(id)a3;
+- (id)_stringForCalendarUnit:(unint64_t)unit value:(int64_t)value;
+- (id)_stringFromDateComponents:(id)components;
 - (void)_clearFormatter;
 - (void)dealloc;
 - (void)setCalendar:(NSCalendar *)calendar;
@@ -61,9 +61,9 @@
     return self->_locale;
   }
 
-  v5 = [(NSRelativeDateTimeFormatter *)self calendar];
+  calendar = [(NSRelativeDateTimeFormatter *)self calendar];
 
-  return [(NSCalendar *)v5 locale];
+  return [(NSCalendar *)calendar locale];
 }
 
 - (void)setCalendar:(NSCalendar *)calendar
@@ -117,10 +117,10 @@
 
 - (NSString)localizedStringFromTimeInterval:(NSTimeInterval)timeInterval
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v5 sinceDate:timeInterval];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeInterval:date sinceDate:timeInterval];
 
-  return [(NSRelativeDateTimeFormatter *)self localizedStringForDate:v6 relativeToDate:v5];
+  return [(NSRelativeDateTimeFormatter *)self localizedStringForDate:v6 relativeToDate:date];
 }
 
 - (NSString)localizedStringForDate:(NSDate *)date relativeToDate:(NSDate *)referenceDate
@@ -137,16 +137,16 @@
     return 0;
   }
 
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
 
-  return [(NSRelativeDateTimeFormatter *)self localizedStringForDate:obj relativeToDate:v5];
+  return [(NSRelativeDateTimeFormatter *)self localizedStringForDate:obj relativeToDate:date];
 }
 
-- (id)_stringForCalendarUnit:(unint64_t)a3 value:(int64_t)a4
+- (id)_stringForCalendarUnit:(unint64_t)unit value:(int64_t)value
 {
   if (!self->_formatter)
   {
-    [(NSRelativeDateTimeFormatter *)self locale:a3];
+    [(NSRelativeDateTimeFormatter *)self locale:unit];
     self->_formatter = _CFRelativeDateTimeFormatterCreate();
   }
 
@@ -155,7 +155,7 @@
   return CFAutorelease(StringWithCalendarUnit);
 }
 
-- (id)_stringFromDateComponents:(id)a3
+- (id)_stringFromDateComponents:(id)components
 {
   v4 = 0;
   v23 = *MEMORY[0x1E69E9840];
@@ -171,7 +171,7 @@
   v8[1] = 3221225472;
   v9 = __57__NSRelativeDateTimeFormatter__stringFromDateComponents___block_invoke;
   v10 = &unk_1E69F4900;
-  v11 = a3;
+  componentsCopy = components;
   v12 = &v18;
   v13 = &v14;
   do

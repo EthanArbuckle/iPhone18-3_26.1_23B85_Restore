@@ -1,8 +1,8 @@
 @interface HKListUserDomainConceptSemanticIdentifier
-+ (id)semanticIdentifierWithComponents:(id)a3;
++ (id)semanticIdentifierWithComponents:(id)components;
 - (HKListUserDomainConceptSemanticIdentifier)init;
-- (HKListUserDomainConceptSemanticIdentifier)initWithListType:(unint64_t)a3;
-- (HKListUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3;
+- (HKListUserDomainConceptSemanticIdentifier)initWithListType:(unint64_t)type;
+- (HKListUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier;
 - (id)stringValue;
 @end
 
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (HKListUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3
+- (HKListUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -28,7 +28,7 @@
   return 0;
 }
 
-- (HKListUserDomainConceptSemanticIdentifier)initWithListType:(unint64_t)a3
+- (HKListUserDomainConceptSemanticIdentifier)initWithListType:(unint64_t)type
 {
   v5 = +[HKUserDomainConceptTypeIdentifier listUserDomainConceptIdentifier];
   v8.receiver = self;
@@ -37,23 +37,23 @@
 
   if (v6)
   {
-    v6->_listType = a3;
+    v6->_listType = type;
   }
 
   return v6;
 }
 
-+ (id)semanticIdentifierWithComponents:(id)a3
++ (id)semanticIdentifierWithComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  componentsCopy = components;
+  if ([componentsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [componentsCopy firstObject];
     v5 = 0;
-    if (([v4 isEqualToString:@"(null)"] & 1) == 0 && v4)
+    if (([firstObject isEqualToString:@"(null)"] & 1) == 0 && firstObject)
     {
       v6 = MEMORY[0x1E696ADA0];
-      v7 = v4;
+      v7 = firstObject;
       v8 = objc_alloc_init(v6);
       v9 = [v8 numberFromString:v7];
 
@@ -82,8 +82,8 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = HKListUserDomainConceptSemanticIdentifier;
-  v3 = [(HKUserDomainConceptSemanticIdentifier *)&v9 stringValue];
-  v10[0] = v3;
+  stringValue = [(HKUserDomainConceptSemanticIdentifier *)&v9 stringValue];
+  v10[0] = stringValue;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_listType];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];

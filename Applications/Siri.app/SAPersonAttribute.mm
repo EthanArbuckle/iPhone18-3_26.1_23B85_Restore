@@ -8,12 +8,12 @@
 
 - (id)sr_inPerson
 {
-  v3 = [(SAPersonAttribute *)self displayText];
-  v4 = INPersonHandleLabelMain;
-  v5 = [(SAPersonAttribute *)self dataType];
-  v6 = [(SAPersonAttribute *)self typedData];
-  v50 = v5;
-  if (([v5 isEqualToString:@"PhoneNumber"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"PhoneLabel"))
+  displayText = [(SAPersonAttribute *)self displayText];
+  label2 = INPersonHandleLabelMain;
+  dataType = [(SAPersonAttribute *)self dataType];
+  typedData = [(SAPersonAttribute *)self typedData];
+  v50 = dataType;
+  if (([dataType isEqualToString:@"PhoneNumber"] & 1) != 0 || objc_msgSend(dataType, "isEqualToString:", @"PhoneLabel"))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -21,31 +21,31 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v6;
+        number = typedData;
       }
 
       else
       {
-        v8 = 0;
+        number = 0;
       }
 
       v10 = 2;
       goto LABEL_14;
     }
 
-    v7 = v6;
-    v8 = [v7 number];
-    v9 = [v7 label];
+    v7 = typedData;
+    number = [v7 number];
+    label = [v7 label];
 
     v10 = 2;
 LABEL_5:
-    v4 = v9;
+    label2 = label;
 LABEL_14:
-    v12 = v6;
+    v12 = typedData;
     goto LABEL_15;
   }
 
-  if (([v5 isEqualToString:@"EmailAddress"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"EmailLabel"))
+  if (([dataType isEqualToString:@"EmailAddress"] & 1) != 0 || objc_msgSend(dataType, "isEqualToString:", @"EmailLabel"))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -53,42 +53,42 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v6;
+        number = typedData;
       }
 
       else
       {
-        v8 = 0;
+        number = 0;
       }
 
       v10 = 1;
       goto LABEL_14;
     }
 
-    v11 = v6;
-    v8 = [v11 emailAddress];
-    v9 = [v11 label];
+    v11 = typedData;
+    number = [v11 emailAddress];
+    label = [v11 label];
 
     v10 = 1;
     goto LABEL_5;
   }
 
-  v47 = v3;
-  v48 = v4;
+  v47 = displayText;
+  v48 = label2;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
   {
     sub_1000CEBEC();
   }
 
-  v28 = [(SAPersonAttribute *)self data];
+  data = [(SAPersonAttribute *)self data];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v29 = [(SAPersonAttribute *)self object];
-  v30 = [v29 phones];
+  object = [(SAPersonAttribute *)self object];
+  phones = [object phones];
 
-  v31 = [v30 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  v31 = [phones countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v31)
   {
     v32 = v31;
@@ -99,12 +99,12 @@ LABEL_24:
     {
       if (*v56 != v33)
       {
-        objc_enumerationMutation(v30);
+        objc_enumerationMutation(phones);
       }
 
       v35 = *(*(&v55 + 1) + 8 * v34);
-      v36 = [v35 number];
-      v37 = [v36 isEqualToString:v28];
+      number2 = [v35 number];
+      v37 = [number2 isEqualToString:data];
 
       if (v37)
       {
@@ -113,7 +113,7 @@ LABEL_24:
 
       if (v32 == ++v34)
       {
-        v32 = [v30 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v32 = [phones countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (v32)
         {
           goto LABEL_24;
@@ -123,12 +123,12 @@ LABEL_24:
       }
     }
 
-    v8 = v28;
-    v4 = [v35 label];
+    number = data;
+    label2 = [v35 label];
 
     v10 = 2;
-    v3 = v47;
-    if (v8)
+    displayText = v47;
+    if (number)
     {
       goto LABEL_45;
     }
@@ -139,26 +139,26 @@ LABEL_24:
 LABEL_30:
 
     v10 = 0;
-    v3 = v47;
-    v4 = v48;
+    displayText = v47;
+    label2 = v48;
   }
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v38 = [(SAPersonAttribute *)self object];
-  v39 = [v38 emails];
+  object2 = [(SAPersonAttribute *)self object];
+  emails = [object2 emails];
 
-  v40 = v39;
-  v8 = [v39 countByEnumeratingWithState:&v51 objects:v59 count:16];
-  if (v8)
+  v40 = emails;
+  number = [emails countByEnumeratingWithState:&v51 objects:v59 count:16];
+  if (number)
   {
-    v49 = v4;
+    v49 = label2;
     v41 = *v52;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != number; i = i + 1)
       {
         if (*v52 != v41)
         {
@@ -166,22 +166,22 @@ LABEL_30:
         }
 
         v43 = *(*(&v51 + 1) + 8 * i);
-        v44 = [v43 emailAddress];
-        v45 = [v44 isEqualToString:v28];
+        emailAddress = [v43 emailAddress];
+        v45 = [emailAddress isEqualToString:data];
 
         if (v45)
         {
-          v8 = v28;
-          v4 = [v43 label];
+          number = data;
+          label2 = [v43 label];
 
           v10 = 1;
-          v3 = v47;
+          displayText = v47;
           goto LABEL_44;
         }
       }
 
-      v8 = [v40 countByEnumeratingWithState:&v51 objects:v59 count:16];
-      if (v8)
+      number = [v40 countByEnumeratingWithState:&v51 objects:v59 count:16];
+      if (number)
       {
         continue;
       }
@@ -189,8 +189,8 @@ LABEL_30:
       break;
     }
 
-    v3 = v47;
-    v4 = v49;
+    displayText = v47;
+    label2 = v49;
   }
 
 LABEL_44:
@@ -198,43 +198,43 @@ LABEL_44:
 LABEL_45:
   v12 = v46;
 LABEL_15:
-  v13 = [(SAPersonAttribute *)self object];
+  object3 = [(SAPersonAttribute *)self object];
   v14 = objc_alloc_init(NSPersonNameComponents);
-  v15 = [v13 firstName];
-  [v14 setGivenName:v15];
+  firstName = [object3 firstName];
+  [v14 setGivenName:firstName];
 
-  v16 = [v13 nickName];
-  [v14 setNickname:v16];
+  nickName = [object3 nickName];
+  [v14 setNickname:nickName];
 
-  v17 = [v13 middleName];
-  [v14 setMiddleName:v17];
+  middleName = [object3 middleName];
+  [v14 setMiddleName:middleName];
 
-  v18 = [v13 lastName];
-  [v14 setFamilyName:v18];
+  lastName = [object3 lastName];
+  [v14 setFamilyName:lastName];
 
-  v19 = [v13 prefix];
-  [v14 setNamePrefix:v19];
+  prefix = [object3 prefix];
+  [v14 setNamePrefix:prefix];
 
-  v20 = [v13 suffix];
-  [v14 setNameSuffix:v20];
+  suffix = [object3 suffix];
+  [v14 setNameSuffix:suffix];
 
-  v21 = [[INPersonHandle alloc] initWithValue:v8 type:v10 label:v4];
+  v21 = [[INPersonHandle alloc] initWithValue:number type:v10 label:label2];
   v22 = [INPerson alloc];
-  [v13 internalGUID];
-  v24 = v23 = v4;
-  v25 = [v13 aceId];
-  v26 = [v22 initWithPersonHandle:v21 nameComponents:v14 displayName:v3 image:0 contactIdentifier:v24 customIdentifier:v25];
+  [object3 internalGUID];
+  v24 = v23 = label2;
+  aceId = [object3 aceId];
+  v26 = [v22 initWithPersonHandle:v21 nameComponents:v14 displayName:displayText image:0 contactIdentifier:v24 customIdentifier:aceId];
 
   return v26;
 }
 
 - (id)_applicablePhone
 {
-  v3 = [(SAPersonAttribute *)self typedData];
+  typedData = [(SAPersonAttribute *)self typedData];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = typedData;
   }
 
   else
@@ -244,15 +244,15 @@ LABEL_15:
       sub_1000CEC60();
     }
 
-    v5 = [(SAPersonAttribute *)self data];
+    data = [(SAPersonAttribute *)self data];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(SAPersonAttribute *)self object];
-    v7 = [v6 phones];
+    object = [(SAPersonAttribute *)self object];
+    phones = [object phones];
 
-    v4 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v4 = [phones countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v4)
     {
       v8 = *v15;
@@ -262,12 +262,12 @@ LABEL_15:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(phones);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 number];
-          v12 = [v11 isEqualToString:v5];
+          number = [v10 number];
+          v12 = [number isEqualToString:data];
 
           if (v12)
           {
@@ -276,7 +276,7 @@ LABEL_15:
           }
         }
 
-        v4 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v4 = [phones countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v4)
         {
           continue;
@@ -294,11 +294,11 @@ LABEL_15:
 
 - (id)_applicableEmail
 {
-  v3 = [(SAPersonAttribute *)self typedData];
+  typedData = [(SAPersonAttribute *)self typedData];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = typedData;
   }
 
   else
@@ -308,15 +308,15 @@ LABEL_15:
       sub_1000CECD4();
     }
 
-    v5 = [(SAPersonAttribute *)self data];
+    data = [(SAPersonAttribute *)self data];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(SAPersonAttribute *)self object];
-    v7 = [v6 emails];
+    object = [(SAPersonAttribute *)self object];
+    emails = [object emails];
 
-    v4 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v4 = [emails countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v4)
     {
       v8 = *v15;
@@ -326,12 +326,12 @@ LABEL_15:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(emails);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 emailAddress];
-          v12 = [v11 isEqualToString:v5];
+          emailAddress = [v10 emailAddress];
+          v12 = [emailAddress isEqualToString:data];
 
           if (v12)
           {
@@ -340,7 +340,7 @@ LABEL_15:
           }
         }
 
-        v4 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v4 = [emails countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v4)
         {
           continue;

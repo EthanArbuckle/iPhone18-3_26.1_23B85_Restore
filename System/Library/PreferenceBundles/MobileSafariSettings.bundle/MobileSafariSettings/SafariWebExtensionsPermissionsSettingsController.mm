@@ -1,31 +1,31 @@
 @interface SafariWebExtensionsPermissionsSettingsController
-- (BOOL)_clearStorageButtonWasOnlyButtonInExtensionsButtonsGroup:(int64_t)a3;
+- (BOOL)_clearStorageButtonWasOnlyButtonInExtensionsButtonsGroup:(int64_t)group;
 - (BOOL)_isExtensionEnabledInMoreThanOneProfile;
 - (NSString)authenticationPrompt;
 - (SafariWebExtensionsPermissionsSettingsController)init;
-- (id)_domainPermissionForSpecifier:(id)a3;
-- (id)_enabledStateOfWebExtensionForSpecifier:(id)a3;
-- (id)_enabledStateOfWebExtensionInPrivateBrowsingForSpecifier:(id)a3;
-- (id)_perDomainSpecifierForMatchPattern:(id)a3 withName:(id)a4;
+- (id)_domainPermissionForSpecifier:(id)specifier;
+- (id)_enabledStateOfWebExtensionForSpecifier:(id)specifier;
+- (id)_enabledStateOfWebExtensionInPrivateBrowsingForSpecifier:(id)specifier;
+- (id)_perDomainSpecifierForMatchPattern:(id)pattern withName:(id)name;
 - (id)_specifiersForEnablingExtension;
 - (id)_specifiersForExtensionErrors;
 - (id)_specifiersForExtensionSettingsAndStorage;
 - (id)_tabOverrideTopLevelDetailString;
-- (id)_tintIconForDarkModeIfNeeded:(id)a3;
+- (id)_tintIconForDarkModeIfNeeded:(id)needed;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_calculateExtensionStorageSizeAndCreateClearStorageButton;
-- (void)_deleteExtensionStorage:(id)a3;
-- (void)_extensionEnabledStateDidChange:(id)a3;
+- (void)_deleteExtensionStorage:(id)storage;
+- (void)_extensionEnabledStateDidChange:(id)change;
 - (void)_reloadSpecifiersSoon;
-- (void)_setDomainPermission:(id)a3 forSpecifier:(id)a4;
+- (void)_setDomainPermission:(id)permission forSpecifier:(id)specifier;
 - (void)_setExtensionIfNeeded;
-- (void)_setWebExtensionEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)_setWebExtensionEnabledInPrivateBrowsing:(id)a3 forSpecifier:(id)a4;
-- (void)_showManageStorageConfirmationPrompt:(id)a3;
-- (void)_showWebExtensionSettings:(id)a3;
-- (void)_updateAllowInPrivateBrowsingValue:(id)a3 forWebExtension:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)_setWebExtensionEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)_setWebExtensionEnabledInPrivateBrowsing:(id)browsing forSpecifier:(id)specifier;
+- (void)_showManageStorageConfirmationPrompt:(id)prompt;
+- (void)_showWebExtensionSettings:(id)settings;
+- (void)_updateAllowInPrivateBrowsingValue:(id)value forWebExtension:(id)extension;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariWebExtensionsPermissionsSettingsController
@@ -101,11 +101,11 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
   v60 = v7;
   [v7 setUserInfo:v9];
 
-  v10 = [v5 canLoad];
+  canLoad = [v5 canLoad];
   v11 = +[WBSManagedExtensionsController sharedController];
   v59 = v5;
-  v12 = [v5 composedIdentifier];
-  v13 = [v11 managedExtensionStateForComposedIdentifier:v12];
+  composedIdentifier = [v5 composedIdentifier];
+  v13 = [v11 managedExtensionStateForComposedIdentifier:composedIdentifier];
 
   if (v13)
   {
@@ -117,7 +117,7 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
 
   else
   {
-    v15 = v10;
+    v15 = canLoad;
   }
 
   v63 = v15;
@@ -130,8 +130,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
   if (v58)
   {
     v17 = +[WBSManagedExtensionsController sharedController];
-    v18 = [v59 composedIdentifier];
-    v19 = [v17 managedExtensionPrivateBrowsingStateForComposedIdentifier:v18];
+    composedIdentifier2 = [v59 composedIdentifier];
+    v19 = [v17 managedExtensionPrivateBrowsingStateForComposedIdentifier:composedIdentifier2];
 
     if (v13 | v19)
     {
@@ -163,8 +163,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
   }
 
   v26 = +[SafariSettingsController tabGroupManager];
-  v27 = [v26 namedProfiles];
-  v28 = [v27 count];
+  namedProfiles = [v26 namedProfiles];
+  v28 = [namedProfiles count];
 
   if (v28)
   {
@@ -182,12 +182,12 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
     v55 = v30;
     [v29 addObject:v30];
     v32 = +[SafariSettingsController tabGroupManager];
-    v33 = [v32 defaultProfile];
-    v34 = [NSArray arrayWithObject:v33];
+    defaultProfile = [v32 defaultProfile];
+    v34 = [NSArray arrayWithObject:defaultProfile];
 
     v35 = +[SafariSettingsController tabGroupManager];
-    v36 = [v35 namedProfiles];
-    v37 = [v34 arrayByAddingObjectsFromArray:v36];
+    namedProfiles2 = [v35 namedProfiles];
+    v37 = [v34 arrayByAddingObjectsFromArray:namedProfiles2];
 
     v67 = 0u;
     v68 = 0u;
@@ -210,16 +210,16 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
           }
 
           v43 = *(*(&v65 + 1) + 8 * i);
-          v44 = [v43 title];
-          v45 = [PSSpecifier preferenceSpecifierNamed:v44 target:self set:"_setWebExtensionEnabled:forSpecifier:" get:"_enabledStateOfWebExtensionForSpecifier:" detail:0 cell:6 edit:0];
+          title = [v43 title];
+          v45 = [PSSpecifier preferenceSpecifierNamed:title target:self set:"_setWebExtensionEnabled:forSpecifier:" get:"_enabledStateOfWebExtensionForSpecifier:" detail:0 cell:6 edit:0];
 
           [v45 setObject:&__kCFBooleanTrue forKeyedSubscript:v41];
           v46 = self->_extension;
           v69[0] = @"Extension";
           v69[1] = @"ProfileServerID";
           v70[0] = v46;
-          v47 = [v43 identifierForExtensions];
-          v70[1] = v47;
+          identifierForExtensions = [v43 identifierForExtensions];
+          v70[1] = identifierForExtensions;
           v48 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:2];
           [v45 setUserInfo:v48];
 
@@ -273,20 +273,20 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
     goto LABEL_23;
   }
 
-  v5 = [v4 manifestErrors];
-  if ([v4 canLoad] && !objc_msgSend(v5, "count"))
+  manifestErrors = [v4 manifestErrors];
+  if ([v4 canLoad] && !objc_msgSend(manifestErrors, "count"))
   {
     v27 = &__NSArray0__struct;
     goto LABEL_22;
   }
 
-  if (([v4 canLoad] & 1) == 0 && !objc_msgSend(v5, "count"))
+  if (([v4 canLoad] & 1) == 0 && !objc_msgSend(manifestErrors, "count"))
   {
     v6 = [NSError errorWithDomain:WBSWebExtensionErrorDomain code:1 userInfo:0];
     v49 = v6;
     v7 = [NSArray arrayWithObjects:&v49 count:1];
 
-    v5 = v7;
+    manifestErrors = v7;
   }
 
   v8 = [PSSpecifier groupSpecifierWithID:@"MANIFEST_ERRORS"];
@@ -300,8 +300,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
 
     v13 = SafariSettingsLocalizedString(@"Web Extension error section title", @"Extensions");
     v36 = v4;
-    v14 = [v4 displayShortName];
-    v15 = [NSString stringWithFormat:v13, v14];
+    displayShortName = [v4 displayShortName];
+    v15 = [NSString stringWithFormat:v13, displayShortName];
     v34 = v8;
     [v8 setName:v15];
 
@@ -309,8 +309,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v35 = v5;
-    obj = v5;
+    v35 = manifestErrors;
+    obj = manifestErrors;
     v16 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v16)
     {
@@ -330,8 +330,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
           v22 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
           [v22 setProperty:objc_opt_class() forKey:v19];
           v43[0] = @"title";
-          v23 = [v21 localizedDescription];
-          v44[0] = v23;
+          localizedDescription = [v21 localizedDescription];
+          v44[0] = localizedDescription;
           v44[1] = v12;
           v43[1] = @"image";
           v43[2] = @"imageDirectionalMargins";
@@ -354,7 +354,7 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
     v26 = v9;
     v27 = [v9 copy];
 
-    v5 = v35;
+    manifestErrors = v35;
     v4 = v36;
     v8 = v34;
     goto LABEL_20;
@@ -365,8 +365,8 @@ void __73__SafariWebExtensionsPermissionsSettingsController__reloadSpecifiersSoo
     v26 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
     v47 = @"title";
     v28 = SafariSettingsLocalizedString(@"Web Extension fatal error description", @"Extensions");
-    v29 = [v4 displayShortName];
-    v30 = [NSString stringWithFormat:v28, v29];
+    displayShortName2 = [v4 displayShortName];
+    v30 = [NSString stringWithFormat:v28, displayShortName2];
     v48 = v30;
     v31 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     [v26 setUserInfo:v31];
@@ -389,17 +389,17 @@ LABEL_23:
   return v27;
 }
 
-- (void)_showManageStorageConfirmationPrompt:(id)a3
+- (void)_showManageStorageConfirmationPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   v5 = webExtensionsController();
   v6 = [v5 webExtensionForExtension:self->_extension];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"failedToCalculateExtensionStorage"];
-  v9 = [v8 BOOLValue];
+  userInfo = [promptCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"failedToCalculateExtensionStorage"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = SafariSettingsLocalizedString(@"An error occurred while calculating extension storage.", @"Extensions");
     v11 = [UIAlertController alertControllerWithTitle:0 message:v10 preferredStyle:1];
@@ -412,12 +412,12 @@ LABEL_23:
 
   else
   {
-    v14 = [v4 userInfo];
-    v10 = [v14 objectForKeyedSubscript:@"storageSize"];
+    userInfo2 = [promptCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:@"storageSize"];
 
     v15 = +[SafariSettingsController tabGroupManager];
-    v16 = [v15 namedProfiles];
-    v17 = [v16 count];
+    namedProfiles = [v15 namedProfiles];
+    v17 = [namedProfiles count];
 
     if (v17)
     {
@@ -430,10 +430,10 @@ LABEL_23:
     }
 
     v19 = SafariSettingsLocalizedString(v18, @"Extensions");
-    v20 = [v6 displayName];
+    displayName = [v6 displayName];
     [v10 unsignedLongLongValue];
     v21 = NSLocalizedFileSizeDescription();
-    v11 = [NSString stringWithFormat:v19, v20, v21];
+    v11 = [NSString stringWithFormat:v19, displayName, v21];
 
     v22 = [PSConfirmationSpecifier preferenceSpecifierNamed:&stru_8BB60 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     v27[0] = PSConfirmationTitleKey;
@@ -451,31 +451,31 @@ LABEL_23:
     [v22 setupWithDictionary:v26];
 
     [v22 setProperty:&__kCFBooleanTrue forKey:PSConfirmationDestructiveKey];
-    [v22 setProperty:v4 forKey:@"manageStorageButton"];
+    [v22 setProperty:promptCopy forKey:@"manageStorageButton"];
     [v22 setConfirmationAction:"_deleteExtensionStorage:"];
     [(SafariWebExtensionsPermissionsSettingsController *)self showConfirmationViewForSpecifier:v22];
   }
 }
 
-- (BOOL)_clearStorageButtonWasOnlyButtonInExtensionsButtonsGroup:(int64_t)a3
+- (BOOL)_clearStorageButtonWasOnlyButtonInExtensionsButtonsGroup:(int64_t)group
 {
-  v4 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndex:a3 - 1];
+  v4 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndex:group - 1];
   v5 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierForID:@"EXTENSION_BUTTONS_GROUP"];
   v6 = [v4 isEqual:v5];
 
   return v6;
 }
 
-- (void)_deleteExtensionStorage:(id)a3
+- (void)_deleteExtensionStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x2020000000;
   v45 = 0;
   v4 = +[SafariSettingsController extensionsProfilesDataSource];
-  v5 = [v4 profileServerIDToWebExtensionsControllers];
-  v6 = [v5 allValues];
+  profileServerIDToWebExtensionsControllers = [v4 profileServerIDToWebExtensionsControllers];
+  allValues = [profileServerIDToWebExtensionsControllers allValues];
 
   v43[0] = 0;
   v43[1] = v43;
@@ -487,20 +487,20 @@ LABEL_23:
   v37[3] = &unk_8AF48;
   v40 = v43;
   v41 = v44;
-  v42 = [v6 count];
-  v22 = v3;
+  v42 = [allValues count];
+  v22 = storageCopy;
   v38 = v22;
-  v39 = self;
+  selfCopy = self;
   v24 = objc_retainBlock(v37);
   v7 = webExtensionsController();
   v25 = [v7 webExtensionForExtension:self->_extension];
 
-  v23 = [v25 composedIdentifier];
+  composedIdentifier = [v25 composedIdentifier];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = allValues;
   v8 = [obj countByEnumeratingWithState:&v33 objects:v47 count:16];
   if (v8)
   {
@@ -516,16 +516,16 @@ LABEL_23:
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 webKitController];
+        webKitController = [v12 webKitController];
         v14 = objc_opt_respondsToSelector();
 
         if (v14)
         {
           dataRecords = self->_dataRecords;
-          v16 = [v25 webKitContext];
-          v17 = [(NSMapTable *)dataRecords objectForKey:v16];
+          webKitContext = [v25 webKitContext];
+          v17 = [(NSMapTable *)dataRecords objectForKey:webKitContext];
 
-          v18 = [v12 webKitController];
+          webKitController2 = [v12 webKitController];
           v19 = [NSSet setWithObject:v10];
           v46 = v17;
           v20 = [NSArray arrayWithObjects:&v46 count:1];
@@ -537,8 +537,8 @@ LABEL_23:
           v29 = v21;
           v32 = v44;
           v31 = v24;
-          v30 = v23;
-          [v18 removeDataOfTypes:v19 fromDataRecords:v20 completionHandler:v28];
+          v30 = composedIdentifier;
+          [webKitController2 removeDataOfTypes:v19 fromDataRecords:v20 completionHandler:v28];
         }
       }
 
@@ -619,10 +619,10 @@ uint64_t __76__SafariWebExtensionsPermissionsSettingsController__deleteExtension
   v20 = 0u;
   v21 = 0u;
   v3 = +[SafariSettingsController tabGroupManager];
-  v4 = [v3 profiles];
+  profiles = [v3 profiles];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = profiles;
+  v5 = [profiles countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -639,9 +639,9 @@ uint64_t __76__SafariWebExtensionsPermissionsSettingsController__deleteExtension
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = +[SafariSettingsController extensionsProfilesDataSource];
-        v12 = [v11 profileServerIDToWebExtensionsControllers];
-        v13 = [v10 identifierForExtensions];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        profileServerIDToWebExtensionsControllers = [v11 profileServerIDToWebExtensionsControllers];
+        identifierForExtensions = [v10 identifierForExtensions];
+        v14 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:identifierForExtensions];
 
         v7 += [v14 extensionIsEnabled:self->_extension];
         if (v7 > 1)
@@ -673,15 +673,15 @@ LABEL_11:
   v4 = webExtensionsController();
   v5 = [v4 webExtensionForExtension:self->_extension];
 
-  v6 = [v5 composedIdentifier];
+  composedIdentifier = [v5 composedIdentifier];
   v7 = webExtensionsController();
-  v8 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:v6 webExtensionsController:v7];
+  v8 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:composedIdentifier webExtensionsController:v7];
 
   if ([v8 isEnabledInAnyProfile])
   {
-    v9 = [v5 optionsPageURL];
+    optionsPageURL = [v5 optionsPageURL];
 
-    if (v9)
+    if (optionsPageURL)
     {
       v10 = [PSSpecifier groupSpecifierWithID:@"EXTENSION_BUTTONS_GROUP"];
       [v3 addObject:v10];
@@ -718,8 +718,8 @@ LABEL_11:
   v31[2] = 0x2020000000;
   v32 = 0;
   v3 = +[SafariSettingsController extensionsProfilesDataSource];
-  v4 = [v3 profileServerIDToWebExtensionsControllers];
-  v5 = [v4 allValues];
+  profileServerIDToWebExtensionsControllers = [v3 profileServerIDToWebExtensionsControllers];
+  allValues = [profileServerIDToWebExtensionsControllers allValues];
 
   v30[0] = 0;
   v30[1] = v30;
@@ -736,14 +736,14 @@ LABEL_11:
   v28[5] = v30;
   v28[6] = v29;
   v28[7] = v31;
-  v28[8] = [v5 count];
+  v28[8] = [allValues count];
   v28[4] = self;
   v18 = objc_retainBlock(v28);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = allValues;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v6)
   {
@@ -762,9 +762,9 @@ LABEL_11:
         v10 = [v9 webExtensionForExtension:self->_extension];
         v11 = [v9 extensionIsEnabled:self->_extension];
         [v9 initializeWebKitControllerIfNeededFromSettings:1];
-        v12 = [v9 webKitController];
+        webKitController = [v9 webKitController];
         v13 = [NSSet setWithObjects:v7, 0];
-        v14 = [v10 webKitContext];
+        webKitContext = [v10 webKitContext];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = __109__SafariWebExtensionsPermissionsSettingsController__calculateExtensionStorageSizeAndCreateClearStorageButton__block_invoke_2;
@@ -775,7 +775,7 @@ LABEL_11:
         v22 = v31;
         v21 = v18;
         v23 = v11;
-        [v12 fetchDataRecordOfTypes:v13 forExtensionContext:v14 completionHandler:v19];
+        [webKitController fetchDataRecordOfTypes:v13 forExtensionContext:webKitContext completionHandler:v19];
       }
 
       v6 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -967,20 +967,20 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
 {
   [(SafariWebExtensionsPermissionsSettingsController *)self _setExtensionIfNeeded];
   v3 = webExtensionsController();
-  v4 = [(SafariWebExtensionsPermissionsSettingsController *)self navigationController];
-  v5 = [v3 extensions];
-  if ([v5 containsObject:self->_extension])
+  navigationController = [(SafariWebExtensionsPermissionsSettingsController *)self navigationController];
+  extensions = [v3 extensions];
+  if ([extensions containsObject:self->_extension])
   {
   }
 
   else
   {
-    v6 = [(SafariWebExtensionsPermissionsSettingsController *)self viewIfLoaded];
-    v7 = [v6 window];
+    viewIfLoaded = [(SafariWebExtensionsPermissionsSettingsController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v7)
+    if (window)
     {
-      v8 = [v4 popViewControllerAnimated:1];
+      v8 = [navigationController popViewControllerAnimated:1];
       v9 = 0;
       goto LABEL_36;
     }
@@ -994,18 +994,18 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
   }
 
   v88 = OBJC_IVAR___PSListController__specifiers;
-  v90 = v4;
+  v90 = navigationController;
   v11 = +[NSMutableArray array];
   v12 = [PSSpecifier groupSpecifierWithID:@"EXTENSION_INFO_GROUP"];
   [v11 addObject:v12];
   v13 = [v3 webExtensionForExtension:self->_extension];
-  v89 = [v13 displayName];
+  displayName = [v13 displayName];
   v14 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:0 set:? get:? detail:? cell:? edit:?];
   v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 canLoad]);
   v93 = PSEnabledKey;
   [v14 setProperty:v15 forKey:?];
 
-  v16 = [v13 preferencesIcon];
+  preferencesIcon = [v13 preferencesIcon];
   v17 = [ISImageDescriptor imageDescriptorNamed:kISImageDescriptorTableUIName];
   [v17 size];
   v19 = v18;
@@ -1016,7 +1016,7 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
   v98[2] = __62__SafariWebExtensionsPermissionsSettingsController_specifiers__block_invoke;
   v98[3] = &unk_8AFE8;
   v98[4] = self;
-  v22 = [v16 safari_dynamicImageWithSize:v98 generator:{v19, v21}];
+  v22 = [preferencesIcon safari_dynamicImageWithSize:v98 generator:{v19, v21}];
 
   v86 = v22;
   [v14 setProperty:v22 forKey:PSIconImageKey];
@@ -1028,8 +1028,8 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
   [v11 addObject:v24];
 
   v91 = v13;
-  v25 = [v13 displayDescription];
-  if ([v25 length])
+  displayDescription = [v13 displayDescription];
+  if ([displayDescription length])
   {
     v26 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
     [v26 setProperty:@"DESCRIPTION" forKey:PSIDKey];
@@ -1037,7 +1037,7 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
     v27 = SafariSettingsLocalizedString(@"Description", @"Extensions");
     v102[1] = @"subtitle";
     v103[0] = v27;
-    v103[1] = v25;
+    v103[1] = displayDescription;
     v28 = [NSDictionary dictionaryWithObjects:v103 forKeys:v102 count:2];
     [v26 setUserInfo:v28];
 
@@ -1045,11 +1045,11 @@ void __109__SafariWebExtensionsPermissionsSettingsController__calculateExtension
     [v11 addObject:v26];
   }
 
-  v29 = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForEnablingExtension];
-  [v11 addObjectsFromArray:v29];
+  _specifiersForEnablingExtension = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForEnablingExtension];
+  [v11 addObjectsFromArray:_specifiersForEnablingExtension];
 
-  v30 = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForExtensionErrors];
-  [v11 addObjectsFromArray:v30];
+  _specifiersForExtensionErrors = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForExtensionErrors];
+  [v11 addObjectsFromArray:_specifiersForExtensionErrors];
 
   v31 = webExtensionsController();
   if (![v31 extensionIsEnabled:self->_extension])
@@ -1061,28 +1061,28 @@ LABEL_19:
   }
 
   v32 = v91;
-  v33 = [v91 newTabOverridePageURL];
+  newTabOverridePageURL = [v91 newTabOverridePageURL];
 
-  if (v33)
+  if (newTabOverridePageURL)
   {
     v34 = +[WBSManagedNewTabPageController sharedController];
-    v35 = [v34 managedNewTabPageState];
+    managedNewTabPageState = [v34 managedNewTabPageState];
 
     v31 = [PSSpecifier groupSpecifierWithID:@"EXTENSION_OVERRIDE_SETTINGS_GROUP"];
-    if (v35)
+    if (managedNewTabPageState)
     {
       v36 = _WBSLocalizedString();
       [v31 setProperty:v36 forKey:PSFooterTextGroupKey];
     }
 
     [v11 addObject:v31];
-    v37 = [v91 newTabOverridePageURL];
+    newTabOverridePageURL2 = [v91 newTabOverridePageURL];
 
-    if (v37)
+    if (newTabOverridePageURL2)
     {
       v38 = SafariSettingsLocalizedString(@"New Tab Override Title", @"Extensions");
-      v39 = v25;
-      if (v35)
+      v39 = displayDescription;
+      if (managedNewTabPageState)
       {
         v40 = 0;
         v41 = -1;
@@ -1094,7 +1094,7 @@ LABEL_19:
         v41 = 2;
       }
 
-      v42 = v35 == 0;
+      v42 = managedNewTabPageState == 0;
       v43 = [PSSpecifier preferenceSpecifierNamed:v38 target:self set:0 get:"_tabOverrideTopLevelDetailString" detail:v40 cell:v41 edit:0];
 
       [v43 setProperty:@"NEW_TAB_OVERRIDE" forKey:PSIDKey];
@@ -1107,40 +1107,40 @@ LABEL_19:
       [v43 setUserInfo:v45];
 
       [v11 addObject:v43];
-      v25 = v39;
+      displayDescription = v39;
     }
 
     goto LABEL_19;
   }
 
 LABEL_20:
-  v85 = v25;
-  v46 = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForExtensionSettingsAndStorage];
-  [v11 addObjectsFromArray:v46];
+  v85 = displayDescription;
+  _specifiersForExtensionSettingsAndStorage = [(SafariWebExtensionsPermissionsSettingsController *)self _specifiersForExtensionSettingsAndStorage];
+  [v11 addObjectsFromArray:_specifiersForExtensionSettingsAndStorage];
 
   v47 = [[SafariExtensionPermissionsExplanation alloc] initWithExtension:v32];
-  v48 = [(SafariExtensionPermissionsExplanation *)v47 specifiers];
-  [v11 addObjectsFromArray:v48];
+  specifiers = [(SafariExtensionPermissionsExplanation *)v47 specifiers];
+  [v11 addObjectsFromArray:specifiers];
 
-  v49 = [v32 composedIdentifier];
+  composedIdentifier = [v32 composedIdentifier];
   v50 = webExtensionsController();
-  v51 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:v49 webExtensionsController:v50];
+  v51 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:composedIdentifier webExtensionsController:v50];
 
   v84 = v51;
   if ([v51 isEnabledInAnyProfile])
   {
     v82 = v12;
     v83 = v3;
-    v92 = self;
-    v81 = [v32 configuredPermissionOrigins];
-    v52 = [v81 allKeys];
-    v53 = [v52 safari_setByApplyingBlock:&__block_literal_global_18];
+    selfCopy = self;
+    configuredPermissionOrigins = [v32 configuredPermissionOrigins];
+    allKeys = [configuredPermissionOrigins allKeys];
+    v53 = [allKeys safari_setByApplyingBlock:&__block_literal_global_18];
 
     v80 = v53;
-    v54 = [v53 allObjects];
-    v55 = [v54 sortedArrayUsingComparator:&__block_literal_global_217];
+    allObjects = [v53 allObjects];
+    v55 = [allObjects sortedArrayUsingComparator:&__block_literal_global_217];
 
-    v56 = [v51 composedIdentifier];
+    composedIdentifier2 = [v51 composedIdentifier];
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
@@ -1162,10 +1162,10 @@ LABEL_20:
 
           v62 = *(*(&v94 + 1) + 8 * i);
           v63 = [WBSWebExtensionMatchPattern matchPatternForDomain:v62];
-          v64 = [(SafariWebExtensionsPermissionsSettingsController *)v92 _perDomainSpecifierForMatchPattern:v63 withName:0];
+          v64 = [(SafariWebExtensionsPermissionsSettingsController *)selfCopy _perDomainSpecifierForMatchPattern:v63 withName:0];
 
           v65 = +[WBSManagedExtensionsController sharedController];
-          v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v65 domainIsManaged:v62 forComposedIdentifier:v56] ^ 1);
+          v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v65 domainIsManaged:v62 forComposedIdentifier:composedIdentifier2] ^ 1);
           [v64 setProperty:v66 forKey:v93];
 
           [v11 addObject:v64];
@@ -1180,7 +1180,7 @@ LABEL_20:
     v67 = v57;
 
     v32 = v91;
-    v68 = v89;
+    v68 = displayName;
     if ([v91 requestsAccessToAllHosts])
     {
       if ([v57 count])
@@ -1195,10 +1195,10 @@ LABEL_20:
 
       v70 = SafariSettingsLocalizedString(v69, @"Extensions");
       v71 = +[WBSWebExtensionMatchPattern allHostsAndSchemesMatchPattern];
-      v72 = [(SafariWebExtensionsPermissionsSettingsController *)v92 _perDomainSpecifierForMatchPattern:v71 withName:v70];
+      v72 = [(SafariWebExtensionsPermissionsSettingsController *)selfCopy _perDomainSpecifierForMatchPattern:v71 withName:v70];
 
       v73 = +[WBSManagedExtensionsController sharedController];
-      v74 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v73 allDomainsAreManagedForComposedIdentifier:v56] ^ 1);
+      v74 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v73 allDomainsAreManagedForComposedIdentifier:composedIdentifier2] ^ 1);
       [v72 setProperty:v74 forKey:v93];
 
       [v11 addObject:v72];
@@ -1206,13 +1206,13 @@ LABEL_20:
     }
 
     v75 = [v11 copy];
-    v76 = *&v92->super.PSListController_opaque[v88];
-    *&v92->super.PSListController_opaque[v88] = v75;
+    v76 = *&selfCopy->super.PSListController_opaque[v88];
+    *&selfCopy->super.PSListController_opaque[v88] = v75;
 
-    v9 = *&v92->super.PSListController_opaque[v88];
+    v9 = *&selfCopy->super.PSListController_opaque[v88];
     v12 = v82;
     v3 = v83;
-    v4 = v90;
+    navigationController = v90;
   }
 
   else
@@ -1222,8 +1222,8 @@ LABEL_20:
     *&self->super.PSListController_opaque[v88] = v77;
 
     v9 = *&self->super.PSListController_opaque[v88];
-    v68 = v89;
-    v4 = v90;
+    v68 = displayName;
+    navigationController = v90;
   }
 
 LABEL_36:
@@ -1252,48 +1252,48 @@ id __62__SafariWebExtensionsPermissionsSettingsController_specifiers__block_invo
 {
   if (!self->_extension)
   {
-    v6 = [(SafariWebExtensionsPermissionsSettingsController *)self specifier];
-    v3 = [v6 userInfo];
-    v4 = [v3 extension];
+    specifier = [(SafariWebExtensionsPermissionsSettingsController *)self specifier];
+    userInfo = [specifier userInfo];
+    extension = [userInfo extension];
     extension = self->_extension;
-    self->_extension = v4;
+    self->_extension = extension;
   }
 }
 
-- (id)_enabledStateOfWebExtensionForSpecifier:(id)a3
+- (id)_enabledStateOfWebExtensionForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"Extension"];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"Extension"];
 
   v6 = +[SafariSettingsController extensionsProfilesDataSource];
-  v7 = [v6 profileServerIDToWebExtensionsControllers];
-  v8 = [v3 userInfo];
+  profileServerIDToWebExtensionsControllers = [v6 profileServerIDToWebExtensionsControllers];
+  userInfo2 = [specifierCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"ProfileServerID"];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  v9 = [userInfo2 objectForKeyedSubscript:@"ProfileServerID"];
+  v10 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:v9];
 
   v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 extensionIsEnabled:v5]);
 
   return v11;
 }
 
-- (void)_setWebExtensionEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setWebExtensionEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"Extension"];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  userInfo = [specifierCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"Extension"];
 
   v10 = +[SafariSettingsController extensionsProfilesDataSource];
-  v11 = [v10 profileServerIDToWebExtensionsControllers];
-  v12 = [v6 userInfo];
+  profileServerIDToWebExtensionsControllers = [v10 profileServerIDToWebExtensionsControllers];
+  userInfo2 = [specifierCopy userInfo];
 
-  v13 = [v12 objectForKeyedSubscript:@"ProfileServerID"];
-  v14 = [v11 objectForKeyedSubscript:v13];
+  v13 = [userInfo2 objectForKeyedSubscript:@"ProfileServerID"];
+  v14 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:v13];
 
   v15 = [v14 webExtensionForExtension:v9];
-  LODWORD(v11) = [v7 BOOLValue];
+  LODWORD(profileServerIDToWebExtensionsControllers) = [enabledCopy BOOLValue];
 
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
@@ -1302,14 +1302,14 @@ id __62__SafariWebExtensionsPermissionsSettingsController_specifiers__block_invo
   v16 = v14;
   v24 = v16;
   v25 = v9;
-  LOBYTE(v27) = v11;
-  v26 = self;
+  LOBYTE(v27) = profileServerIDToWebExtensionsControllers;
+  selfCopy = self;
   v17 = v9;
   v18 = objc_retainBlock(&v20);
   v19 = v18;
-  if (v11)
+  if (profileServerIDToWebExtensionsControllers)
   {
-    [v16 reportCommandShortcutConflictsIfNecessaryForExtension:v15 presentingViewController:self completionHandler:{v18, v20, v21, v22, v23, v24, v25, v26, v27}];
+    [v16 reportCommandShortcutConflictsIfNecessaryForExtension:v15 presentingViewController:self completionHandler:{v18, v20, v21, v22, v23, v24, v25, selfCopy, v27}];
   }
 
   else
@@ -1327,46 +1327,46 @@ id __89__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnable
   return [v2 postDistributedNotificationNamed:@"com.apple.mobilesafari.SafariSettingsChangedExtensionSettings"];
 }
 
-- (id)_enabledStateOfWebExtensionInPrivateBrowsingForSpecifier:(id)a3
+- (id)_enabledStateOfWebExtensionInPrivateBrowsingForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = webExtensionsController();
-  v5 = [v3 userInfo];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = [v4 webExtensionForExtension:v5];
+  v6 = [v4 webExtensionForExtension:userInfo];
 
   v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 readAllowedInPrivateBrowsingValueFromDisk]);
 
   return v7;
 }
 
-- (void)_setWebExtensionEnabledInPrivateBrowsing:(id)a3 forSpecifier:(id)a4
+- (void)_setWebExtensionEnabledInPrivateBrowsing:(id)browsing forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  browsingCopy = browsing;
+  specifierCopy = specifier;
   v8 = webExtensionsController();
-  v9 = [v7 userInfo];
-  v10 = [v8 webExtensionForExtension:v9];
+  userInfo = [specifierCopy userInfo];
+  v10 = [v8 webExtensionForExtension:userInfo];
 
   v11 = +[NSUserDefaults safari_browserDefaults];
-  LODWORD(v9) = [v11 BOOLForKey:WBSPrivateBrowsingRequiresAuthenticationPreferenceKey];
+  LODWORD(userInfo) = [v11 BOOLForKey:WBSPrivateBrowsingRequiresAuthenticationPreferenceKey];
 
-  if (v9 && +[WBSFeatureAvailability isLockedPrivateBrowsingEnabled](WBSFeatureAvailability, "isLockedPrivateBrowsingEnabled") && [v6 BOOLValue])
+  if (userInfo && +[WBSFeatureAvailability isLockedPrivateBrowsingEnabled](WBSFeatureAvailability, "isLockedPrivateBrowsingEnabled") && [browsingCopy BOOLValue])
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabledInPrivateBrowsing_forSpecifier___block_invoke;
     v12[3] = &unk_8B098;
-    v13 = v7;
-    v14 = self;
-    v15 = v6;
+    v13 = specifierCopy;
+    selfCopy = self;
+    v15 = browsingCopy;
     v16 = v10;
     [_SFSettingsAuthentication authenticateForSettings:self allowAuthenticationReuse:0 completionHandler:v12];
   }
 
   else
   {
-    [(SafariWebExtensionsPermissionsSettingsController *)self _updateAllowInPrivateBrowsingValue:v6 forWebExtension:v10];
+    [(SafariWebExtensionsPermissionsSettingsController *)self _updateAllowInPrivateBrowsingValue:browsingCopy forWebExtension:v10];
   }
 }
 
@@ -1391,19 +1391,19 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
   }
 }
 
-- (void)_updateAllowInPrivateBrowsingValue:(id)a3 forWebExtension:(id)a4
+- (void)_updateAllowInPrivateBrowsingValue:(id)value forWebExtension:(id)extension
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 setAllowedInPrivateBrowsing:{objc_msgSend(v6, "BOOLValue")}];
+  extensionCopy = extension;
+  valueCopy = value;
+  [extensionCopy setAllowedInPrivateBrowsing:{objc_msgSend(valueCopy, "BOOLValue")}];
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   v8 = WBSWebExtensionDidChangeEnabledStateInPrivateBrowsingNotification;
   v11[0] = WBSWebExtensionComposedIdentifierKey;
-  v9 = [v5 composedIdentifier];
+  composedIdentifier = [extensionCopy composedIdentifier];
 
   v11[1] = WBSExtensionEnabledInPrivateBrowsingNotificationKey;
-  v12[0] = v9;
-  v12[1] = v6;
+  v12[0] = composedIdentifier;
+  v12[1] = valueCopy;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   [v7 postNotificationName:v8 object:0 userInfo:v10];
@@ -1417,22 +1417,22 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
   return v3;
 }
 
-- (void)_showWebExtensionSettings:(id)a3
+- (void)_showWebExtensionSettings:(id)settings
 {
   v4 = webExtensionsController();
   v12 = [v4 webExtensionForExtension:self->_extension];
 
-  v5 = [v12 composedIdentifier];
+  composedIdentifier = [v12 composedIdentifier];
   v6 = webExtensionsController();
-  v7 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:v5 webExtensionsController:v6];
+  v7 = [SFExtensionWrapper extensionWrapperForWebExtensionWithComposedIdentifier:composedIdentifier webExtensionsController:v6];
 
-  v8 = [v7 enabledNamedProfiles];
+  enabledNamedProfiles = [v7 enabledNamedProfiles];
   extension = self->_extension;
-  if ([v8 count])
+  if ([enabledNamedProfiles count])
   {
-    v10 = [v8 firstObject];
-    v11 = [v10 identifier];
-    openExtensionSettingsInMobileSafariForExtension(extension, v11);
+    firstObject = [enabledNamedProfiles firstObject];
+    identifier = [firstObject identifier];
+    openExtensionSettingsInMobileSafariForExtension(extension, identifier);
   }
 
   else
@@ -1441,18 +1441,18 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
   }
 }
 
-- (id)_domainPermissionForSpecifier:(id)a3
+- (id)_domainPermissionForSpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
+  userInfo = [specifier userInfo];
   v5 = webExtensionsController();
   v6 = [v5 webExtensionForExtension:self->_extension];
 
-  v7 = [v6 configuredPermissionOrigins];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  configuredPermissionOrigins = [v6 configuredPermissionOrigins];
+  v8 = [configuredPermissionOrigins objectForKeyedSubscript:userInfo];
 
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:v4];
+    v9 = [configuredPermissionOrigins objectForKeyedSubscript:userInfo];
   }
 
   else
@@ -1461,7 +1461,7 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
     if ([v6 requestsAccessToAllHosts])
     {
       v10 = +[WBSWebExtensionMatchPattern allHostsAndSchemesMatchPattern];
-      v11 = [v7 objectForKeyedSubscript:v10];
+      v11 = [configuredPermissionOrigins objectForKeyedSubscript:v10];
       v12 = v11;
       if (v11)
       {
@@ -1480,27 +1480,27 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
   return v9;
 }
 
-- (void)_setDomainPermission:(id)a3 forSpecifier:(id)a4
+- (void)_setDomainPermission:(id)permission forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 userInfo];
+  permissionCopy = permission;
+  userInfo = [specifier userInfo];
   v8 = +[NSSet set];
   v22 = +[NSDate distantFuture];
-  v28 = v7;
+  v28 = userInfo;
   v9 = [NSArray arrayWithObjects:&v28 count:1];
   v10 = [NSSet setWithArray:v9];
 
-  v21 = v6;
-  v11 = [v6 integerValue];
+  v21 = permissionCopy;
+  integerValue = [permissionCopy integerValue];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v12 = +[SafariSettingsController extensionsProfilesDataSource];
-  v13 = [v12 profileServerIDToWebExtensionsControllers];
-  v14 = [v13 allValues];
+  profileServerIDToWebExtensionsControllers = [v12 profileServerIDToWebExtensionsControllers];
+  allValues = [profileServerIDToWebExtensionsControllers allValues];
 
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v15 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1511,19 +1511,19 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v19 = [*(*(&v23 + 1) + 8 * i) webExtensionForExtension:self->_extension];
         v20 = v19;
-        if (v11 == &dword_0 + 1)
+        if (integerValue == &dword_0 + 1)
         {
           [v19 grantPermissions:v8 origins:v10 expirationDate:v22];
         }
 
-        else if (v11)
+        else if (integerValue)
         {
-          if (v11 == -1)
+          if (integerValue == -1)
           {
             [v19 revokePermissions:v8 origins:v10 expirationDate:v22];
           }
@@ -1531,11 +1531,11 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
 
         else
         {
-          [v19 removeGrantedAndRevokedPermissions:v8 origins:v10 exactPatternMatchesOnly:{objc_msgSend(v7, "matchesAllHosts")}];
+          [v19 removeGrantedAndRevokedPermissions:v8 origins:v10 exactPatternMatchesOnly:{objc_msgSend(userInfo, "matchesAllHosts")}];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v16);
@@ -1544,36 +1544,36 @@ id __106__SafariWebExtensionsPermissionsSettingsController__setWebExtensionEnabl
   [(SafariWebExtensionsPermissionsSettingsController *)self reloadSpecifiers];
 }
 
-- (void)_extensionEnabledStateDidChange:(id)a3
+- (void)_extensionEnabledStateDidChange:(id)change
 {
-  v4 = [a3 object];
-  if ([v4 isEqual:self->_extension])
+  object = [change object];
+  if ([object isEqual:self->_extension])
   {
     [(SafariWebExtensionsPermissionsSettingsController *)self _reloadSpecifiersSoon];
   }
 }
 
-- (id)_perDomainSpecifierForMatchPattern:(id)a3 withName:(id)a4
+- (id)_perDomainSpecifierForMatchPattern:(id)pattern withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  patternCopy = pattern;
+  nameCopy = name;
   v8 = [&off_90DE8 safari_mapObjectsUsingBlock:&__block_literal_global_238];
-  if (v7)
+  if (nameCopy)
   {
-    v9 = v7;
+    host = nameCopy;
   }
 
   else
   {
-    v9 = [v6 host];
+    host = [patternCopy host];
   }
 
-  v10 = v9;
-  v11 = [v9 safari_stringByRemovingWwwAndWildcardDotPrefixes];
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"_setDomainPermission:forSpecifier:" get:"_domainPermissionForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
+  v10 = host;
+  safari_stringByRemovingWwwAndWildcardDotPrefixes = [host safari_stringByRemovingWwwAndWildcardDotPrefixes];
+  v12 = [PSSpecifier preferenceSpecifierNamed:safari_stringByRemovingWwwAndWildcardDotPrefixes target:self set:"_setDomainPermission:forSpecifier:" get:"_domainPermissionForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
   [v12 setValues:&off_90DE8 titles:v8];
   [v12 setProperty:&off_90C10 forKey:PSDefaultValueKey];
-  [v12 setUserInfo:v6];
+  [v12 setUserInfo:patternCopy];
 
   return v12;
 }
@@ -1594,22 +1594,22 @@ NSString *__cdecl __96__SafariWebExtensionsPermissionsSettingsController__perDom
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndexPath:a4];
-  v6 = [v5 userInfo];
+  v5 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndexPath:path];
+  userInfo = [v5 userInfo];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 matchesAllHosts] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([userInfo matchesAllHosts] & 1) == 0)
   {
     v8 = webExtensionsController();
     v9 = [v8 webExtensionForExtension:self->_extension];
 
-    v10 = [v6 host];
-    v11 = [v10 safari_stringByRemovingWwwAndWildcardDotPrefixes];
+    host = [userInfo host];
+    safari_stringByRemovingWwwAndWildcardDotPrefixes = [host safari_stringByRemovingWwwAndWildcardDotPrefixes];
 
     v12 = +[WBSManagedExtensionsController sharedController];
-    v13 = [v9 composedIdentifier];
-    v14 = [v12 domainIsManaged:v11 forComposedIdentifier:v13];
+    composedIdentifier = [v9 composedIdentifier];
+    v14 = [v12 domainIsManaged:safari_stringByRemovingWwwAndWildcardDotPrefixes forComposedIdentifier:composedIdentifier];
 
     if (v14)
     {
@@ -1643,9 +1643,9 @@ NSString *__cdecl __96__SafariWebExtensionsPermissionsSettingsController__perDom
             v20 = *(*(&v27 + 1) + 8 * i);
             if (([v20 matchesAllHosts] & 1) == 0)
             {
-              v21 = [v20 host];
-              v22 = [v21 safari_stringByRemovingWwwAndWildcardDotPrefixes];
-              v23 = [v22 isEqual:v11];
+              host2 = [v20 host];
+              safari_stringByRemovingWwwAndWildcardDotPrefixes2 = [host2 safari_stringByRemovingWwwAndWildcardDotPrefixes];
+              v23 = [safari_stringByRemovingWwwAndWildcardDotPrefixes2 isEqual:safari_stringByRemovingWwwAndWildcardDotPrefixes];
 
               if (v23)
               {
@@ -1684,25 +1684,25 @@ LABEL_17:
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndexPath:a5, a4];
-  v7 = [v6 userInfo];
+  style = [(SafariWebExtensionsPermissionsSettingsController *)self specifierAtIndexPath:path, style];
+  userInfo = [style userInfo];
   v8 = webExtensionsController();
   v9 = [v8 webExtensionForExtension:self->_extension];
 
-  v10 = [v7 host];
-  v11 = [v10 safari_stringByRemovingWwwAndWildcardDotPrefixes];
+  host = [userInfo host];
+  safari_stringByRemovingWwwAndWildcardDotPrefixes = [host safari_stringByRemovingWwwAndWildcardDotPrefixes];
 
-  v12 = [v9 configuredPermissionOrigins];
-  v13 = [v12 allKeys];
+  configuredPermissionOrigins = [v9 configuredPermissionOrigins];
+  allKeys = [configuredPermissionOrigins allKeys];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = __99__SafariWebExtensionsPermissionsSettingsController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
   v18[3] = &unk_8B100;
-  v19 = v11;
-  v14 = v11;
-  v15 = [v13 safari_filterObjectsUsingBlock:v18];
+  v19 = safari_stringByRemovingWwwAndWildcardDotPrefixes;
+  v14 = safari_stringByRemovingWwwAndWildcardDotPrefixes;
+  v15 = [allKeys safari_filterObjectsUsingBlock:v18];
 
   v16 = +[NSSet set];
   v17 = [NSSet setWithArray:v15];
@@ -1720,22 +1720,22 @@ id __99__SafariWebExtensionsPermissionsSettingsController_tableView_commitEditin
   return v5;
 }
 
-- (id)_tintIconForDarkModeIfNeeded:(id)a3
+- (id)_tintIconForDarkModeIfNeeded:(id)needed
 {
-  v3 = a3;
-  [v3 safari_computeAverageLuminance];
+  neededCopy = needed;
+  [neededCopy safari_computeAverageLuminance];
   v5 = v4;
-  v6 = [v3 safari_isGrayscale];
-  v7 = [v3 safari_transparencyAnalysisResultIsNotOpaque];
-  if (v5 >= 0.1 || v6 == 0 || v7 == 0)
+  safari_isGrayscale = [neededCopy safari_isGrayscale];
+  safari_transparencyAnalysisResultIsNotOpaque = [neededCopy safari_transparencyAnalysisResultIsNotOpaque];
+  if (v5 >= 0.1 || safari_isGrayscale == 0 || safari_transparencyAnalysisResultIsNotOpaque == 0)
   {
-    v11 = v3;
+    v11 = neededCopy;
   }
 
   else
   {
     v10 = +[UIColor labelColor];
-    v11 = [v3 imageWithTintColor:v10];
+    v11 = [neededCopy imageWithTintColor:v10];
   }
 
   return v11;
@@ -1747,8 +1747,8 @@ id __99__SafariWebExtensionsPermissionsSettingsController_tableView_commitEditin
   v4 = [v3 webExtensionForExtension:self->_extension];
 
   v5 = SafariSettingsLocalizedString(@"Turn On %@ in Private Browsing", @"Extensions");
-  v6 = [v4 displayName];
-  v7 = [NSString stringWithFormat:v5, v6];
+  displayName = [v4 displayName];
+  v7 = [NSString stringWithFormat:v5, displayName];
 
   return v7;
 }

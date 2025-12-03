@@ -16,8 +16,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v1 = [a1 registeredTypeIdentifiers];
-  v2 = [v1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v2 = [registeredTypeIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v2)
   {
     v3 = v2;
@@ -30,7 +30,7 @@
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v12 + 1) + 8 * v6)];
@@ -46,7 +46,7 @@
       }
 
       while (v3 != v6);
-      v3 = [v1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [registeredTypeIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
         continue;
@@ -70,8 +70,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v1 = [a1 registeredTypeIdentifiers];
-  v2 = [v1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v2 = [registeredTypeIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v2)
   {
     v3 = v2;
@@ -87,7 +87,7 @@ LABEL_11:
       {
         if (*v15 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:*(*(&v14 + 1) + 8 * v9)];
@@ -102,7 +102,7 @@ LABEL_11:
       }
 
       while (v3 != v9);
-      v3 = [v1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v3 = [registeredTypeIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v3)
       {
         continue;
@@ -122,13 +122,13 @@ LABEL_14:
 - (id)preferredContentTypeForSavingWithCanOpenInPlace:()Sharing
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [a1 registeredContentTypesForOpenInPlace];
+  registeredContentTypesForOpenInPlace = [self registeredContentTypesForOpenInPlace];
   v6 = +[SFCollaborationUtilities _copyRepresentationTypeIdentifier];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v5;
+  v7 = registeredContentTypesForOpenInPlace;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v8)
   {
@@ -146,8 +146,8 @@ LABEL_14:
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v6];
+        identifier = [v13 identifier];
+        v15 = [identifier isEqualToString:v6];
 
         if ((v15 & 1) == 0)
         {
@@ -179,7 +179,7 @@ LABEL_14:
   {
   }
 
-  [a1 registeredContentTypes];
+  [self registeredContentTypes];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -238,7 +238,7 @@ LABEL_26:
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 canLoadObjectOfClass:objc_opt_class()])
+  if ([self canLoadObjectOfClass:objc_opt_class()])
   {
     v8 = objc_opt_class();
     v10[0] = MEMORY[0x1E69E9820];
@@ -246,7 +246,7 @@ LABEL_26:
     v10[2] = __75__NSItemProvider_Sharing__loadURLClassWithPreviousError_completionHandler___block_invoke;
     v10[3] = &unk_1E788E5E8;
     v11 = v7;
-    v9 = [a1 loadObjectOfClass:v8 completionHandler:v10];
+    v9 = [self loadObjectOfClass:v8 completionHandler:v10];
   }
 
   else
@@ -260,7 +260,7 @@ LABEL_26:
   v21 = *MEMORY[0x1E69E9840];
   v6 = a4;
   v18 = 0;
-  v7 = [a1 preferredContentTypeForSavingWithCanOpenInPlace:&v18];
+  v7 = [self preferredContentTypeForSavingWithCanOpenInPlace:&v18];
   v8 = v7;
   if (v7 && ((a3 ^ 1 | v18) & 1) != 0)
   {
@@ -271,8 +271,8 @@ LABEL_26:
     v17 = a3;
     v16 = v6;
     v14 = v8;
-    v15 = a1;
-    v9 = [a1 loadFileRepresentationForContentType:v14 openInPlace:a3 completionHandler:v13];
+    selfCopy = self;
+    v9 = [self loadFileRepresentationForContentType:v14 openInPlace:a3 completionHandler:v13];
   }
 
   else
@@ -282,14 +282,14 @@ LABEL_26:
       v10 = framework_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v8 identifier];
+        identifier = [v8 identifier];
         *buf = 138412290;
-        v20 = v11;
+        v20 = identifier;
         _os_log_impl(&dword_1A9662000, v10, OS_LOG_TYPE_DEFAULT, "Not loading file representation for content type %@ because it can't be opened in place", buf, 0xCu);
       }
     }
 
-    [a1 loadURLClassWithPreviousError:0 completionHandler:v6];
+    [self loadURLClassWithPreviousError:0 completionHandler:v6];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -304,7 +304,7 @@ LABEL_26:
   v6[3] = &unk_1E788FE38;
   v7 = v4;
   v5 = v4;
-  [a1 loadItemForTypeIdentifier:@"com.apple.ShareUI.airdrop.supplementalSecurityContext" options:0 completionHandler:v6];
+  [self loadItemForTypeIdentifier:@"com.apple.ShareUI.airdrop.supplementalSecurityContext" options:0 completionHandler:v6];
 }
 
 @end

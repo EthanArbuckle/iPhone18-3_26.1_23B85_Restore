@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (HSAAuthenticationServer)init;
 - (void)_cleanup;
-- (void)_cleanupClient:(id)a3;
+- (void)_cleanupClient:(id)client;
 - (void)_clientConnected;
-- (void)_configureWithClient:(id)a3;
+- (void)_configureWithClient:(id)client;
 - (void)dealloc;
-- (void)parseIncomingMessageFromNumber:(id)a3 forService:(id)a4 messageBody:(id)a5;
+- (void)parseIncomingMessageFromNumber:(id)number forService:(id)service messageBody:(id)body;
 @end
 
 @implementation HSAAuthenticationServer
@@ -72,22 +72,22 @@
   return v3;
 }
 
-- (void)parseIncomingMessageFromNumber:(id)a3 forService:(id)a4 messageBody:(id)a5
+- (void)parseIncomingMessageFromNumber:(id)number forService:(id)service messageBody:(id)body
 {
   v57 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v43 = a4;
-  v8 = a5;
-  v42 = v8;
+  numberCopy = number;
+  serviceCopy = service;
+  bodyCopy = body;
+  v42 = bodyCopy;
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412803;
-    v52 = v44;
+    v52 = numberCopy;
     v53 = 2112;
-    v54 = v43;
+    v54 = serviceCopy;
     v55 = 2117;
-    v56 = v8;
+    v56 = bodyCopy;
     _os_log_impl(&dword_250996000, v9, OS_LOG_TYPE_DEFAULT, "HSA - Processing incoming message from number: %@   service: %@   body: %{sensitive}@", buf, 0x20u);
   }
 
@@ -120,7 +120,7 @@
 
     if ([(__CFString *)v41 length])
     {
-      if (![(__CFString *)v40 count]|| ([(__CFString *)v44 lowercaseString], v14 = objc_claimAutoreleasedReturnValue(), v15 = [(__CFString *)v40 containsObject:v14], v14, (v15 & 1) != 0))
+      if (![(__CFString *)v40 count]|| ([(__CFString *)numberCopy lowercaseString], v14 = objc_claimAutoreleasedReturnValue(), v15 = [(__CFString *)v40 containsObject:v14], v14, (v15 & 1) != 0))
       {
         v49 = 0;
         v39 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v41 options:1 error:&v49];
@@ -153,7 +153,7 @@
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412803;
-                v52 = v44;
+                v52 = numberCopy;
                 v53 = 2117;
                 v54 = v42;
                 v55 = 2117;
@@ -186,7 +186,7 @@
                     {
                       IMInsertNSStringsToXPCDictionary();
                       IMInsertNSStringsToXPCDictionary();
-                      v28 = [(__CFString *)v20 trimmedString:v43];
+                      v28 = [(__CFString *)v20 trimmedString:serviceCopy];
                       IMInsertNSStringsToXPCDictionary();
 
                       IMInsertNSStringsToXPCDictionary();
@@ -234,7 +234,7 @@
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412547;
-            v52 = v44;
+            v52 = numberCopy;
             v53 = 2117;
             v54 = v42;
             _os_log_impl(&dword_250996000, v35, OS_LOG_TYPE_DEFAULT, "Ignoring incoming message from: %@  body: %{sensitive}@  --  no results found", buf, 0x16u);
@@ -249,7 +249,7 @@ LABEL_50:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v52 = v44;
+        v52 = numberCopy;
         v53 = 2112;
         v54 = v40;
         _os_log_impl(&dword_250996000, v34, OS_LOG_TYPE_DEFAULT, "Ignoring incoming message from: %@  it is not in the originator list: %@", buf, 0x16u);
@@ -310,21 +310,21 @@ LABEL_52:
   }
 }
 
-- (void)_cleanupClient:(id)a3
+- (void)_cleanupClient:(id)client
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 67109120;
-      pid = xpc_connection_get_pid(v4);
+      pid = xpc_connection_get_pid(clientCopy);
       _os_log_impl(&dword_250996000, v5, OS_LOG_TYPE_DEFAULT, "HSA - Removing client %d", &v10, 8u);
     }
 
-    [(NSMutableArray *)self->_clients removeObject:v4];
+    [(NSMutableArray *)self->_clients removeObject:clientCopy];
     v6 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -345,19 +345,19 @@ LABEL_52:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureWithClient:(id)a3
+- (void)_configureWithClient:(id)client
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = clientCopy;
     _os_log_impl(&dword_250996000, v5, OS_LOG_TYPE_DEFAULT, "HSA - Configuring with client: %@", &v11, 0xCu);
   }
 
-  if (v4 && ([(NSMutableArray *)self->_clients containsObject:v4]& 1) == 0)
+  if (clientCopy && ([(NSMutableArray *)self->_clients containsObject:clientCopy]& 1) == 0)
   {
     if (!self->_clients)
     {
@@ -369,13 +369,13 @@ LABEL_52:
     v8 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      pid = xpc_connection_get_pid(v4);
+      pid = xpc_connection_get_pid(clientCopy);
       v11 = 67109120;
       LODWORD(v12) = pid;
       _os_log_impl(&dword_250996000, v8, OS_LOG_TYPE_DEFAULT, "HSA - Adding client %d", &v11, 8u);
     }
 
-    [(NSMutableArray *)self->_clients addObject:v4];
+    [(NSMutableArray *)self->_clients addObject:clientCopy];
     [(HSAAuthenticationServer *)self _clientConnected];
   }
 

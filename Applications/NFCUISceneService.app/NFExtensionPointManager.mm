@@ -1,26 +1,26 @@
 @interface NFExtensionPointManager
-- (BOOL)launchExtension:(id)a3;
-- (NFExtensionPointManager)initWithIdentifier:(id)a3;
+- (BOOL)launchExtension:(id)extension;
+- (NFExtensionPointManager)initWithIdentifier:(id)identifier;
 - (NSSet)availableExtensionIdentities;
 - (id)dumpState;
 - (void)_initExtensionIdentities;
 - (void)_registerIdentityUpdates;
 - (void)_unregisterIdentityUpdates;
-- (void)_updateExtensionIdentities:(id)a3;
+- (void)_updateExtensionIdentities:(id)identities;
 - (void)dealloc;
-- (void)queryControllerDidUpdate:(id)a3;
+- (void)queryControllerDidUpdate:(id)update;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation NFExtensionPointManager
 
-- (NFExtensionPointManager)initWithIdentifier:(id)a3
+- (NFExtensionPointManager)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (objc_opt_class() && (v11.receiver = self, v11.super_class = NFExtensionPointManager, v6 = [(NFExtensionPointManager *)&v11 init], (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7 = objc_opt_new();
     availableExtensions = self->_availableExtensions;
     self->_availableExtensions = v7;
@@ -29,15 +29,15 @@
     [(NFExtensionPointManager *)self _initExtensionIdentities];
     [(NFExtensionPointManager *)self _registerIdentityUpdates];
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -46,8 +46,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NFExtensionPointManager *)self availableExtensions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  availableExtensions = [(NFExtensionPointManager *)self availableExtensions];
+  v4 = [availableExtensions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,7 +59,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableExtensions);
         }
 
         [*(*(&v9 + 1) + 8 * v7) invalidate];
@@ -67,7 +67,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [availableExtensions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -89,8 +89,8 @@
   }
 
   v4 = [_EXQuery alloc];
-  v5 = [(NFExtensionPointManager *)self identifier];
-  v6 = [v4 initWithExtensionPointIdentifier:v5];
+  identifier = [(NFExtensionPointManager *)self identifier];
+  v6 = [v4 initWithExtensionPointIdentifier:identifier];
 
   v67 = v6;
   v7 = [NSArray arrayWithObjects:&v67 count:1];
@@ -310,8 +310,8 @@
 - (NSSet)availableExtensionIdentities
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NFExtensionPointManager *)self availableExtensions];
-  v4 = [NSSet setWithSet:v3];
+  availableExtensions = [(NFExtensionPointManager *)self availableExtensions];
+  v4 = [NSSet setWithSet:availableExtensions];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -420,9 +420,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)launchExtension:(id)a3
+- (BOOL)launchExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -438,7 +438,7 @@
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 198, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 198, extensionCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -465,34 +465,34 @@
     v98 = 1024;
     v99 = 198;
     v100 = 2114;
-    v101 = v5;
+    v101 = extensionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v14 = [v5 xpcConnection];
+  xpcConnection = [extensionCopy xpcConnection];
 
-  if (!v14)
+  if (!xpcConnection)
   {
     v16 = NFSharedSignpostLog();
     if (os_signpost_enabled(v16))
     {
-      v17 = [v5 identity];
-      v18 = [v17 bundleIdentifier];
+      identity = [extensionCopy identity];
+      bundleIdentifier = [identity bundleIdentifier];
       *buf = 138543362;
-      *v95 = v18;
+      *v95 = bundleIdentifier;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "NFExtensionPointManager launchExtension:", "%{public}@", buf, 0xCu);
     }
 
-    v19 = [v5 extensionProcess];
-    v20 = [v5 identity];
-    v21 = [v20 bundleIdentifier];
-    v22 = [v21 copy];
+    extensionProcess = [extensionCopy extensionProcess];
+    identity2 = [extensionCopy identity];
+    bundleIdentifier2 = [identity2 bundleIdentifier];
+    v22 = [bundleIdentifier2 copy];
 
-    if (!v19 || ([v19 isValid] & 1) == 0)
+    if (!extensionProcess || ([extensionProcess isValid] & 1) == 0)
     {
       v23 = [_EXHostConfiguration alloc];
-      v24 = [v5 identity];
-      v25 = [v23 initWithExtensionIdentity:v24];
+      identity3 = [extensionCopy identity];
+      v25 = [v23 initWithExtensionIdentity:identity3];
 
       if (!v25)
       {
@@ -557,7 +557,7 @@
       sel = v22;
       v26 = v22;
       v90 = v26;
-      v27 = v5;
+      v27 = extensionCopy;
       v91 = v27;
       [v25 setInterruptionHandler:v89];
       v88 = 0;
@@ -642,11 +642,11 @@ LABEL_75:
         goto LABEL_76;
       }
 
-      v19 = v28;
+      extensionProcess = v28;
     }
 
     v87 = 0;
-    v48 = [v19 makeXPCConnectionWithError:&v87];
+    v48 = [extensionProcess makeXPCConnectionWithError:&v87];
     v29 = v87;
     if (v29)
     {
@@ -712,12 +712,12 @@ LABEL_75:
 
     else
     {
-      v66 = [v5 identity];
-      v67 = [(NFExtensionPointManager *)self extensionIdentity:v66 shouldAcceptNewConnection:v48];
+      identity4 = [extensionCopy identity];
+      v67 = [(NFExtensionPointManager *)self extensionIdentity:identity4 shouldAcceptNewConnection:v48];
 
       if (v67)
       {
-        [v5 setXpcConnection:v48];
+        [extensionCopy setXpcConnection:v48];
         v64 = NFSharedSignpostLog();
         if (os_signpost_enabled(v64))
         {
@@ -778,7 +778,7 @@ LABEL_75:
         _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i XPC connection from extension %@ is rejected", buf, 0x2Cu);
       }
 
-      [v19 invalidate];
+      [extensionProcess invalidate];
       [v48 invalidate];
       v64 = NFSharedSignpostLog();
       if (!os_signpost_enabled(v64))
@@ -788,7 +788,7 @@ LABEL_72:
 LABEL_73:
 
 LABEL_74:
-        v28 = v19;
+        v28 = extensionProcess;
         goto LABEL_75;
       }
 
@@ -806,16 +806,16 @@ LABEL_76:
   return v15;
 }
 
-- (void)_updateExtensionIdentities:(id)a3
+- (void)_updateExtensionIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = identitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v46 count:16];
   if (v7)
   {
@@ -831,8 +831,8 @@ LABEL_76:
         }
 
         v11 = [[NFExtensionKitWrapper alloc] initWithExtensionIdentity:*(*(&v32 + 1) + 8 * i) extensionProcess:0 xpc:0];
-        v12 = [(NFExtensionPointManager *)self availableExtensions];
-        v13 = [v12 member:v11];
+        availableExtensions = [(NFExtensionPointManager *)self availableExtensions];
+        v13 = [availableExtensions member:v11];
 
         if (v13)
         {
@@ -853,13 +853,13 @@ LABEL_76:
     while (v8);
   }
 
-  v15 = [(NFExtensionPointManager *)self availableExtensions];
-  [v15 removeAllObjects];
+  availableExtensions2 = [(NFExtensionPointManager *)self availableExtensions];
+  [availableExtensions2 removeAllObjects];
 
   if ([v5 count])
   {
-    v16 = [(NFExtensionPointManager *)self availableExtensions];
-    [v16 addObjectsFromArray:v5];
+    availableExtensions3 = [(NFExtensionPointManager *)self availableExtensions];
+    [availableExtensions3 addObjectsFromArray:v5];
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -871,14 +871,14 @@ LABEL_76:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v23 = [(NFExtensionPointManager *)self availableExtensions];
+    availableExtensions4 = [(NFExtensionPointManager *)self availableExtensions];
     v24 = 45;
     if (isMetaClass)
     {
       v24 = 43;
     }
 
-    v18(6, "%c[%{public}s %{public}s]:%i New set: %{public}@", v24, ClassName, Name, 293, v23);
+    v18(6, "%c[%{public}s %{public}s]:%i New set: %{public}@", v24, ClassName, Name, 293, availableExtensions4);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -898,7 +898,7 @@ LABEL_76:
 
     v28 = object_getClassName(self);
     v29 = sel_getName(a2);
-    v30 = [(NFExtensionPointManager *)self availableExtensions];
+    availableExtensions5 = [(NFExtensionPointManager *)self availableExtensions];
     *buf = 67110146;
     v37 = v27;
     v38 = 2082;
@@ -908,7 +908,7 @@ LABEL_76:
     v42 = 1024;
     v43 = 293;
     v44 = 2114;
-    v45 = v30;
+    v45 = availableExtensions5;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i New set: %{public}@", buf, 0x2Cu);
   }
 
@@ -924,7 +924,7 @@ LABEL_76:
   return v3;
 }
 
-- (void)queryControllerDidUpdate:(id)a3
+- (void)queryControllerDidUpdate:(id)update
 {
   v4 = NFSharedSignpostLog();
   if (os_signpost_enabled(v4))
@@ -934,8 +934,8 @@ LABEL_76:
   }
 
   v5 = [_EXQuery alloc];
-  v6 = [(NFExtensionPointManager *)self identifier];
-  v7 = [v5 initWithExtensionPointIdentifier:v6];
+  identifier = [(NFExtensionPointManager *)self identifier];
+  v7 = [v5 initWithExtensionPointIdentifier:identifier];
 
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];

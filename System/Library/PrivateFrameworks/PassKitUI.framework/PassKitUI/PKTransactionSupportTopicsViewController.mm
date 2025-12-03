@@ -1,21 +1,21 @@
 @interface PKTransactionSupportTopicsViewController
-- (BOOL)shouldShowSupportLink:(id)a3;
-- (PKTransactionSupportTopicsViewController)initWithAccount:(id)a3 transaction:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8;
-- (void)_cancelPaymentWithFallbackTopic:(id)a3;
+- (BOOL)shouldShowSupportLink:(id)link;
+- (PKTransactionSupportTopicsViewController)initWithAccount:(id)account transaction:(id)transaction transactionSourceCollection:(id)collection familyCollection:(id)familyCollection accountUserCollection:(id)userCollection physicalCards:(id)cards;
+- (void)_cancelPaymentWithFallbackTopic:(id)topic;
 - (void)_fetchSupportTopics;
-- (void)_openBusinessChatForTopic:(id)a3;
-- (void)_openBusinessChatWithContext:(id)a3;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 dismissAfter:(BOOL)a5;
+- (void)_openBusinessChatForTopic:(id)topic;
+- (void)_openBusinessChatWithContext:(id)context;
+- (void)_presentAlertWithTitle:(id)title message:(id)message dismissAfter:(BOOL)after;
 - (void)_redirectUserToLegacyReportIssue;
-- (void)_reloadSectionControllerWithTopics:(id)a3;
-- (void)_setBarButtonSpinnerHidden:(BOOL)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_reloadSectionControllerWithTopics:(id)topics;
+- (void)_setBarButtonSpinnerHidden:(BOOL)hidden;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)dealloc;
 - (void)deselectCells;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)openBusinessChatForTopic:(id)a3;
-- (void)reloadItem:(id)a3 animated:(BOOL)a4;
-- (void)showExplanationForTopic:(id)a3;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)openBusinessChatForTopic:(id)topic;
+- (void)reloadItem:(id)item animated:(BOOL)animated;
+- (void)showExplanationForTopic:(id)topic;
 - (void)showMerchantDetailsForTransaction;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -23,41 +23,41 @@
 
 @implementation PKTransactionSupportTopicsViewController
 
-- (PKTransactionSupportTopicsViewController)initWithAccount:(id)a3 transaction:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8
+- (PKTransactionSupportTopicsViewController)initWithAccount:(id)account transaction:(id)transaction transactionSourceCollection:(id)collection familyCollection:(id)familyCollection accountUserCollection:(id)userCollection physicalCards:(id)cards
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v28 = a7;
+  accountCopy = account;
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  userCollectionCopy = userCollection;
   v29.receiver = self;
   v29.super_class = PKTransactionSupportTopicsViewController;
   v18 = [(PKPaymentSetupOptionsViewController *)&v29 initWithContext:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_transaction, a4);
-    objc_storeStrong(&v19->_transactionSourceCollection, a5);
-    objc_storeStrong(&v19->_familyCollection, a6);
-    objc_storeStrong(&v19->_accountUserCollection, a7);
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_transaction, transaction);
+    objc_storeStrong(&v19->_transactionSourceCollection, collection);
+    objc_storeStrong(&v19->_familyCollection, familyCollection);
+    objc_storeStrong(&v19->_accountUserCollection, userCollection);
     v20 = [(NSSet *)v19->_physicalCards copy];
     physicalCards = v19->_physicalCards;
     v19->_physicalCards = v20;
 
     v19->_loadingTopics = 0;
-    v22 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v19->_paymentService;
-    v19->_paymentService = v22;
+    v19->_paymentService = paymentService;
 
     [(PKPaymentService *)v19->_paymentService registerObserver:v19];
-    v24 = [(PKTransactionSupportTopicsViewController *)v19 navigationItem];
+    navigationItem = [(PKTransactionSupportTopicsViewController *)v19 navigationItem];
     v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v19 action:sel__cancelTapped];
-    [v24 setLeftBarButtonItem:v25];
+    [navigationItem setLeftBarButtonItem:v25];
 
-    [v24 setBackButtonDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
     v26 = PKLocalizedPaymentString(&cfstr_TransactionDet_44.isa);
-    [v24 setTitle:v26];
+    [navigationItem setTitle:v26];
   }
 
   return v19;
@@ -76,21 +76,21 @@
   self->_loadingTopics = 1;
   [(PKTransactionSupportTopicsViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
   v3 = objc_alloc_init(MEMORY[0x1E69B84D0]);
-  v4 = [(PKAccount *)self->_account accountBaseURL];
-  [v3 setBaseURL:v4];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v3 setBaseURL:accountBaseURL];
 
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  [v3 setAccountIdentifier:v5];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v3 setAccountIdentifier:accountIdentifier];
 
   [v3 setTransaction:self->_transaction];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PKTransactionSupportTopicsViewController__fetchSupportTopics__block_invoke;
   v7[3] = &unk_1E8014AD0;
   objc_copyWeak(&v8, &location);
-  [v6 supportTopicsWithRequest:v3 completion:v7];
+  [mEMORY[0x1E69B8EF8] supportTopicsWithRequest:v3 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -191,62 +191,62 @@ void __63__PKTransactionSupportTopicsViewController__fetchSupportTopics__block_i
   v3 = [PKReportIssueViewController alloc];
   transaction = self->_transaction;
   transactionSourceCollection = self->_transactionSourceCollection;
-  v6 = [(PKTransactionSourceCollection *)transactionSourceCollection paymentPass];
-  v7 = [(PKReportIssueViewController *)v3 initWithTransaction:transaction transactionSourceCollection:transactionSourceCollection paymentPass:v6 familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection bankConnectInstitution:0 physicalCards:self->_physicalCards detailViewStyle:0 context:0];
+  paymentPass = [(PKTransactionSourceCollection *)transactionSourceCollection paymentPass];
+  v7 = [(PKReportIssueViewController *)v3 initWithTransaction:transaction transactionSourceCollection:transactionSourceCollection paymentPass:paymentPass familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection bankConnectInstitution:0 physicalCards:self->_physicalCards detailViewStyle:0 context:0];
 
-  v8 = [(PKTransactionSupportTopicsViewController *)self navigationController];
-  if (v8)
+  navigationController = [(PKTransactionSupportTopicsViewController *)self navigationController];
+  if (navigationController)
   {
     v10[0] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v8 setViewControllers:v9 animated:0];
+    [navigationController setViewControllers:v9 animated:0];
   }
 }
 
-- (void)_reloadSectionControllerWithTopics:(id)a3
+- (void)_reloadSectionControllerWithTopics:(id)topics
 {
   v34[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  topicsCopy = topics;
+  if ([topicsCopy count])
   {
     v5 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:5 detailViewStyle:0 avatarViewDelegate:self];
     v6 = [[PKDashboardPaymentTransactionItem alloc] initWithTransactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection transaction:self->_transaction account:self->_account accountUserCollection:self->_accountUserCollection bankConnectInstitution:0];
     v7 = [PKTransactionSupportTransactionSectionController alloc];
-    v8 = [(PKDynamicCollectionViewController *)self collectionView];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
     v32 = v5;
-    v9 = [(PKTransactionSupportTransactionSectionController *)v7 initWithTransactionItem:v6 transactionItemPresenter:v5 collectionView:v8];
+    v9 = [(PKTransactionSupportTransactionSectionController *)v7 initWithTransactionItem:v6 transactionItemPresenter:v5 collectionView:collectionView];
     transactionSectionController = self->_transactionSectionController;
     self->_transactionSectionController = v9;
 
     v11 = [PKAccountSupportTopicsSectionController alloc];
     account = self->_account;
     v13 = PKLocalizedFeatureString();
-    v14 = [v13 localizedUppercaseString];
-    v15 = [(PKAccountSupportTopicsSectionController *)v11 initWithAccount:account topics:v4 sectionTitle:v14 delegate:self];
+    localizedUppercaseString = [v13 localizedUppercaseString];
+    v15 = [(PKAccountSupportTopicsSectionController *)v11 initWithAccount:account topics:topicsCopy sectionTitle:localizedUppercaseString delegate:self];
     sectionTopicController = self->_sectionTopicController;
     self->_sectionTopicController = v15;
 
-    v17 = [(PKPaymentTransaction *)self->_transaction merchant];
-    v18 = [v17 rawName];
-    if (v18)
+    merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+    rawName = [merchant rawName];
+    if (rawName)
     {
-      v19 = v18;
+      name = rawName;
     }
 
     else
     {
-      v19 = [v17 name];
-      if (!v19)
+      name = [merchant name];
+      if (!name)
       {
         goto LABEL_11;
       }
     }
 
-    v20 = [v17 displayName];
-    v19 = v19;
-    v21 = v20;
+    displayName = [merchant displayName];
+    name = name;
+    v21 = displayName;
     v22 = v21;
-    if (v19 == v21)
+    if (name == v21)
     {
     }
 
@@ -256,7 +256,7 @@ void __63__PKTransactionSupportTopicsViewController__fetchSupportTopics__block_i
       {
 
 LABEL_13:
-        v28 = [[PKTransactionSupportStatementNameSectionController alloc] initWithMerchantStatementName:v19];
+        v28 = [[PKTransactionSupportStatementNameSectionController alloc] initWithMerchantStatementName:name];
         merchantNameSectionController = self->_merchantNameSectionController;
         self->_merchantNameSectionController = v28;
 
@@ -270,7 +270,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v23 = [v19 isEqualToString:v21];
+      v23 = [name isEqualToString:v21];
 
       if ((v23 & 1) == 0)
       {
@@ -301,8 +301,8 @@ LABEL_15:
   v4.receiver = self;
   v4.super_class = PKTransactionSupportTopicsViewController;
   [(PKPaymentSetupOptionsViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:systemGroupedBackgroundColor];
 
   [(PKTransactionSupportTopicsViewController *)self _fetchSupportTopics];
 }
@@ -314,20 +314,20 @@ LABEL_15:
   [(PKPaymentSetupOptionsViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKDynamicCollectionViewController *)self collectionView];
-    v4 = [(PKTransactionSupportTopicsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    navigationItem = [(PKTransactionSupportTopicsViewController *)self navigationItem];
+    [collectionView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (self->_loadingTopics)
   {
     v4 = MEMORY[0x1E69DC8C8];
-    v5 = a3;
-    v6 = [v4 loadingConfiguration];
-    v7 = [v6 updatedConfigurationForState:v5];
+    stateCopy = state;
+    loadingConfiguration = [v4 loadingConfiguration];
+    v7 = [loadingConfiguration updatedConfigurationForState:stateCopy];
   }
 
   else
@@ -338,13 +338,13 @@ LABEL_15:
   [(PKTransactionSupportTopicsViewController *)self _setContentUnavailableConfiguration:v7];
 }
 
-- (void)showExplanationForTopic:(id)a3
+- (void)showExplanationForTopic:(id)topic
 {
-  v11 = a3;
-  v4 = [v11 issueType];
-  if (v4 >= 4)
+  topicCopy = topic;
+  issueType = [topicCopy issueType];
+  if (issueType >= 4)
   {
-    if (v4 != 4)
+    if (issueType != 4)
     {
       goto LABEL_6;
     }
@@ -352,17 +352,17 @@ LABEL_15:
     v6 = [PKReportIssueViewController alloc];
     transaction = self->_transaction;
     transactionSourceCollection = self->_transactionSourceCollection;
-    v9 = [(PKTransactionSourceCollection *)transactionSourceCollection paymentPass];
-    v5 = [(PKReportIssueViewController *)v6 initWithTransaction:transaction transactionSourceCollection:transactionSourceCollection paymentPass:v9 familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection bankConnectInstitution:0 physicalCards:self->_physicalCards detailViewStyle:0 context:1];
+    paymentPass = [(PKTransactionSourceCollection *)transactionSourceCollection paymentPass];
+    v5 = [(PKReportIssueViewController *)v6 initWithTransaction:transaction transactionSourceCollection:transactionSourceCollection paymentPass:paymentPass familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection bankConnectInstitution:0 physicalCards:self->_physicalCards detailViewStyle:0 context:1];
   }
 
   else
   {
-    v5 = [[PKAccountSupportTopicExplanationViewController alloc] initWithAccount:self->_account topic:v11 delegate:self];
+    v5 = [[PKAccountSupportTopicExplanationViewController alloc] initWithAccount:self->_account topic:topicCopy delegate:self];
   }
 
-  v10 = [(PKTransactionSupportTopicsViewController *)self navigationController];
-  [v10 pushViewController:v5 animated:1];
+  navigationController = [(PKTransactionSupportTopicsViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 
 LABEL_6:
 }
@@ -374,33 +374,33 @@ LABEL_6:
   [(PKDynamicCollectionViewController *)&v2 deselectCells];
 }
 
-- (void)reloadItem:(id)a3 animated:(BOOL)a4
+- (void)reloadItem:(id)item animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKTransactionSupportTopicsViewController;
-  [(PKDynamicCollectionViewController *)&v4 reloadItem:a3 animated:a4];
+  [(PKDynamicCollectionViewController *)&v4 reloadItem:item animated:animated];
 }
 
-- (BOOL)shouldShowSupportLink:(id)a3
+- (BOOL)shouldShowSupportLink:(id)link
 {
-  if ([a3 action] != 1)
+  if ([link action] != 1)
   {
     return 1;
   }
 
-  v4 = [(PKPaymentTransaction *)self->_transaction merchant];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
   v5 = 0;
-  if (PKIsPhone() && v4)
+  if (PKIsPhone() && merchant)
   {
-    if ([v4 shouldIgnoreMapsMatches])
+    if ([merchant shouldIgnoreMapsMatches])
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [v4 mapsMerchant];
-      v5 = v6 != 0;
+      mapsMerchant = [merchant mapsMerchant];
+      v5 = mapsMerchant != 0;
     }
   }
 
@@ -412,11 +412,11 @@ LABEL_6:
   v22[1] = *MEMORY[0x1E69E9840];
   if (!self->_loadingMapsViewController)
   {
-    v3 = [(PKPaymentTransaction *)self->_transaction merchant];
-    v4 = [v3 mapsMerchant];
-    v5 = [v4 identifier];
+    merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+    mapsMerchant = [merchant mapsMerchant];
+    identifier = [mapsMerchant identifier];
 
-    if (v5)
+    if (identifier)
     {
       self->_loadingMapsViewController = 1;
       loadingMapsTimer = self->_loadingMapsTimer;
@@ -444,7 +444,7 @@ LABEL_6:
       dispatch_source_set_event_handler(v12, handler);
       dispatch_resume(self->_loadingMapsTimer);
       v13 = objc_alloc_init(MEMORY[0x1E696F260]);
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
       v22[0] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
       [v13 _setMuids:v15];
@@ -455,7 +455,7 @@ LABEL_6:
       v17[2] = __77__PKTransactionSupportTopicsViewController_showMerchantDetailsForTransaction__block_invoke_2;
       v17[3] = &unk_1E8016120;
       objc_copyWeak(v18, &location);
-      v18[1] = v5;
+      v18[1] = identifier;
       [v16 startWithCompletionHandler:v17];
       objc_destroyWeak(v18);
 
@@ -575,16 +575,16 @@ void __77__PKTransactionSupportTopicsViewController_showMerchantDetailsForTransa
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 dismissAfter:(BOOL)a5
+- (void)_presentAlertWithTitle:(id)title message:(id)message dismissAfter:(BOOL)after
 {
-  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:title message:message preferredStyle:1];
   v8 = MEMORY[0x1E69DC648];
   v9 = PKLocalizedPaymentString(&cfstr_TransactionDet_45.isa);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PKTransactionSupportTopicsViewController__presentAlertWithTitle_message_dismissAfter___block_invoke;
   v11[3] = &unk_1E8016148;
-  v12 = a5;
+  afterCopy = after;
   v11[4] = self;
   v10 = [v8 actionWithTitle:v9 style:0 handler:v11];
   [v7 addAction:v10];
@@ -601,40 +601,40 @@ void __88__PKTransactionSupportTopicsViewController__presentAlertWithTitle_messa
   }
 }
 
-- (void)openBusinessChatForTopic:(id)a3
+- (void)openBusinessChatForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
-  if (!v5)
+  topicCopy = topic;
+  accountIdentifier = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
+  if (!accountIdentifier)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v8 = [v7 businessChatIdentifier];
-  if (!v8)
+  v6 = accountIdentifier;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  businessChatIdentifier = [paymentPass businessChatIdentifier];
+  if (!businessChatIdentifier)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [(PKPaymentTransaction *)self->_transaction payments];
-  if (![v10 count])
+  v9 = businessChatIdentifier;
+  payments = [(PKPaymentTransaction *)self->_transaction payments];
+  if (![payments count])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(PKPaymentTransaction *)self->_transaction payments];
-  v12 = [v11 firstObject];
-  v13 = [v12 isCurrentlyCancellable];
+  payments2 = [(PKPaymentTransaction *)self->_transaction payments];
+  firstObject = [payments2 firstObject];
+  isCurrentlyCancellable = [firstObject isCurrentlyCancellable];
 
-  if (!v13)
+  if (!isCurrentlyCancellable)
   {
 LABEL_8:
-    [(PKTransactionSupportTopicsViewController *)self _openBusinessChatForTopic:v4];
+    [(PKTransactionSupportTopicsViewController *)self _openBusinessChatForTopic:topicCopy];
     goto LABEL_9;
   }
 
@@ -652,7 +652,7 @@ LABEL_8:
   v31[2] = __69__PKTransactionSupportTopicsViewController_openBusinessChatForTopic___block_invoke;
   v31[3] = &unk_1E8011310;
   v31[4] = self;
-  v20 = v4;
+  v20 = topicCopy;
   v32 = v20;
   v21 = [v18 actionWithTitle:v19 style:2 handler:v31];
   [v17 addAction:v21];
@@ -663,10 +663,10 @@ LABEL_8:
   v26 = 3221225472;
   v27 = __69__PKTransactionSupportTopicsViewController_openBusinessChatForTopic___block_invoke_2;
   v28 = &unk_1E8011310;
-  v29 = self;
+  selfCopy = self;
   v30 = v20;
   v24 = [v22 actionWithTitle:v23 style:1 handler:&v25];
-  [v17 addAction:{v24, v25, v26, v27, v28, v29}];
+  [v17 addAction:{v24, v25, v26, v27, v28, selfCopy}];
 
   [(PKTransactionSupportTopicsViewController *)self presentViewController:v17 animated:1 completion:0];
 LABEL_9:
@@ -679,12 +679,12 @@ uint64_t __69__PKTransactionSupportTopicsViewController_openBusinessChatForTopic
   return result;
 }
 
-- (void)_setBarButtonSpinnerHidden:(BOOL)a3
+- (void)_setBarButtonSpinnerHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
-    v4 = [(PKTransactionSupportTopicsViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:0];
+    navigationItem = [(PKTransactionSupportTopicsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     activityIndicator = self->_activityIndicator;
     self->_activityIndicator = 0;
@@ -703,37 +703,37 @@ uint64_t __69__PKTransactionSupportTopicsViewController_openBusinessChatForTopic
     }
 
     [(UIActivityIndicatorView *)v6 startAnimating];
-    v10 = [(PKTransactionSupportTopicsViewController *)self navigationItem];
+    navigationItem2 = [(PKTransactionSupportTopicsViewController *)self navigationItem];
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_activityIndicator];
-    [(UIActivityIndicatorView *)v10 setRightBarButtonItem:v9];
+    [(UIActivityIndicatorView *)navigationItem2 setRightBarButtonItem:v9];
 
-    activityIndicator = v10;
+    activityIndicator = navigationItem2;
   }
 }
 
-- (void)_cancelPaymentWithFallbackTopic:(id)a3
+- (void)_cancelPaymentWithFallbackTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(PKPaymentTransaction *)self->_transaction payments];
-  v6 = [v5 firstObject];
+  topicCopy = topic;
+  payments = [(PKPaymentTransaction *)self->_transaction payments];
+  firstObject = [payments firstObject];
 
   v7 = objc_alloc_init(MEMORY[0x1E69B8480]);
-  v8 = [(PKAccount *)self->_account accountIdentifier];
-  [v7 setAccountIdentifier:v8];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v7 setAccountIdentifier:accountIdentifier];
 
-  v9 = [(PKAccount *)self->_account accountBaseURL];
-  [v7 setBaseURL:v9];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v7 setBaseURL:accountBaseURL];
 
-  v10 = [v6 referenceIdentifier];
-  [v7 setPaymentReferenceIdentifier:v10];
+  referenceIdentifier = [firstObject referenceIdentifier];
+  [v7 setPaymentReferenceIdentifier:referenceIdentifier];
 
   objc_initWeak(&location, self);
   paymentWebService = self->_paymentWebService;
   if (!paymentWebService)
   {
-    v12 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     v13 = self->_paymentWebService;
-    self->_paymentWebService = v12;
+    self->_paymentWebService = mEMORY[0x1E69B8EF8];
 
     paymentWebService = self->_paymentWebService;
   }
@@ -743,7 +743,7 @@ uint64_t __69__PKTransactionSupportTopicsViewController_openBusinessChatForTopic
   v15[2] = __76__PKTransactionSupportTopicsViewController__cancelPaymentWithFallbackTopic___block_invoke;
   v15[3] = &unk_1E8016198;
   objc_copyWeak(&v17, &location);
-  v14 = v4;
+  v14 = topicCopy;
   v16 = v14;
   [(PKPaymentWebService *)paymentWebService cancelPaymentWithRequest:v7 completion:v15];
 
@@ -849,29 +849,29 @@ void __76__PKTransactionSupportTopicsViewController__cancelPaymentWithFallbackTo
   }
 }
 
-- (void)_openBusinessChatForTopic:(id)a3
+- (void)_openBusinessChatForTopic:(id)topic
 {
-  v11 = a3;
+  topicCopy = topic;
   v4 = [(PKAccountUserCollection *)self->_accountUserCollection accountUserForTransaction:self->_transaction];
   familyCollection = self->_familyCollection;
-  v6 = [v4 altDSID];
-  v7 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:v6];
+  altDSID = [v4 altDSID];
+  v7 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:altDSID];
 
-  if (!v11)
+  if (!topicCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x1E69B8418]) initWithOtherTopicForAccount:self->_account];
+    topicCopy = [objc_alloc(MEMORY[0x1E69B8418]) initWithOtherTopicForAccount:self->_account];
   }
 
   v8 = [PKBusinessChatTransactionDisputeContext alloc];
-  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v10 = [(PKBusinessChatTransactionDisputeContext *)v8 initWithPaymentPass:v9 transaction:self->_transaction account:self->_account accountUser:v4 familyMember:v7 physicalCards:self->_physicalCards topic:v11];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v10 = [(PKBusinessChatTransactionDisputeContext *)v8 initWithPaymentPass:paymentPass transaction:self->_transaction account:self->_account accountUser:v4 familyMember:v7 physicalCards:self->_physicalCards topic:topicCopy];
 
   [(PKTransactionSupportTopicsViewController *)self _openBusinessChatWithContext:v10];
 }
 
-- (void)_openBusinessChatWithContext:(id)a3
+- (void)_openBusinessChatWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (!self->_businessChatController)
   {
     v5 = objc_alloc_init(PKBusinessChatController);
@@ -886,7 +886,7 @@ void __76__PKTransactionSupportTopicsViewController__cancelPaymentWithFallbackTo
   v8[2] = __73__PKTransactionSupportTopicsViewController__openBusinessChatWithContext___block_invoke;
   v8[3] = &unk_1E8011338;
   objc_copyWeak(&v9, &location);
-  [(PKBusinessChatController *)v7 openBusinessChatWithContext:v4 completion:v8];
+  [(PKBusinessChatController *)v7 openBusinessChatWithContext:contextCopy completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -929,16 +929,16 @@ void __73__PKTransactionSupportTopicsViewController__openBusinessChatWithContext
   }
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PKTransactionSupportTopicsViewController_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = membersCopy;
+  selfCopy = self;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

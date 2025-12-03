@@ -1,64 +1,64 @@
 @interface SBFolderIconImageSharedCache
 + (OS_dispatch_queue)miniImageQueue;
-- (BOOL)hasCachedItemsThatIncludeIcon:(id)a3 imageAppearance:(id)a4;
-- (BOOL)hasUpToDateCachedMiniImageForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5;
+- (BOOL)hasCachedItemsThatIncludeIcon:(id)icon imageAppearance:(id)appearance;
+- (BOOL)hasUpToDateCachedMiniImageForImage:(id)image forIcon:(id)icon appearance:(id)appearance;
 - (NSString)activityDescription;
-- (SBFolderIconImageSharedCache)initWithListLayout:(id)a3 iconImageCache:(id)a4;
-- (id)cachedMiniImageAppearancesForIcon:(id)a3;
-- (id)cachingPlaceholderMiniGridImageWithImageAppearance:(id)a3;
-- (id)genericMiniGridImageWithImageAppearance:(id)a3;
-- (id)gridCellImageForIcon:(id)a3 imageAppearance:(id)a4 imageAttributes:(unint64_t *)a5;
-- (id)gridCellImageOfSize:(CGSize)a3 forIcon:(id)a4 iconImageInfo:(SBIconImageInfo *)a5 compatibleWithTraitCollection:(id)a6 imageAttributes:(unint64_t *)a7;
-- (id)gridCellViewForIcon:(id)a3 imageAppearance:(id)a4 imageAttributes:(unint64_t *)a5;
-- (id)imageForPageAtIndex:(unint64_t)a3 inFolderIcon:(id)a4 imageAppearance:(id)a5;
-- (id)miniGridViewForPageAtIndex:(unint64_t)a3 inFolderIcon:(id)a4 imageAppearance:(id)a5 options:(unint64_t)a6;
-- (id)performSynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5;
-- (void)addObserver:(id)a3 forFolderIcon:(id)a4;
-- (void)beginAsynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5 reason:(id)a6;
+- (SBFolderIconImageSharedCache)initWithListLayout:(id)layout iconImageCache:(id)cache;
+- (id)cachedMiniImageAppearancesForIcon:(id)icon;
+- (id)cachingPlaceholderMiniGridImageWithImageAppearance:(id)appearance;
+- (id)genericMiniGridImageWithImageAppearance:(id)appearance;
+- (id)gridCellImageForIcon:(id)icon imageAppearance:(id)appearance imageAttributes:(unint64_t *)attributes;
+- (id)gridCellImageOfSize:(CGSize)size forIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info compatibleWithTraitCollection:(id)collection imageAttributes:(unint64_t *)attributes;
+- (id)gridCellViewForIcon:(id)icon imageAppearance:(id)appearance imageAttributes:(unint64_t *)attributes;
+- (id)imageForPageAtIndex:(unint64_t)index inFolderIcon:(id)icon imageAppearance:(id)appearance;
+- (id)miniGridViewForPageAtIndex:(unint64_t)index inFolderIcon:(id)icon imageAppearance:(id)appearance options:(unint64_t)options;
+- (id)performSynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon appearance:(id)appearance;
+- (void)addObserver:(id)observer forFolderIcon:(id)icon;
+- (void)beginAsynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon appearance:(id)appearance reason:(id)reason;
 - (void)checkIfCachingActivityHasCompleted;
-- (void)didEndCachingActivityForReason:(id)a3;
-- (void)finishAsynchronousMiniImageGenerationWithImage:(id)a3 forIcon:(id)a4 imageIdentity:(id)a5 reason:(id)a6;
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5;
-- (void)folder:(id)a3 didAddList:(id)a4;
-- (void)folder:(id)a3 didMoveIcon:(id)a4;
-- (void)folder:(id)a3 didMoveList:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5;
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5;
-- (void)folderIcon:(id)a3 containedIconImageDidUpdate:(id)a4;
-- (void)folderIconImageCache:(id)a3 didAddObserverForFolderIcon:(id)a4;
-- (void)iconImageCache:(id)a3 didUpdateImageForIcon:(id)a4 imageAppearance:(id)a5;
-- (void)iconImageDidUpdate:(id)a3;
-- (void)informObserversOfUpdateForFolderIcon:(id)a3 imageAppearance:(id)a4;
-- (void)performAsynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 imageIdentity:(id)a5 miniImageSize:(CGSize)a6 reason:(id)a7;
-- (void)performWhenCachingActivityCompletesUsingBlock:(id)a3;
+- (void)didEndCachingActivityForReason:(id)reason;
+- (void)finishAsynchronousMiniImageGenerationWithImage:(id)image forIcon:(id)icon imageIdentity:(id)identity reason:(id)reason;
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons;
+- (void)folder:(id)folder didAddList:(id)list;
+- (void)folder:(id)folder didMoveIcon:(id)icon;
+- (void)folder:(id)folder didMoveList:(id)list fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes;
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon;
+- (void)folderIcon:(id)icon containedIconImageDidUpdate:(id)update;
+- (void)folderIconImageCache:(id)cache didAddObserverForFolderIcon:(id)icon;
+- (void)iconImageCache:(id)cache didUpdateImageForIcon:(id)icon imageAppearance:(id)appearance;
+- (void)iconImageDidUpdate:(id)update;
+- (void)informObserversOfUpdateForFolderIcon:(id)icon imageAppearance:(id)appearance;
+- (void)performAsynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon imageIdentity:(id)identity miniImageSize:(CGSize)size reason:(id)reason;
+- (void)performWhenCachingActivityCompletesUsingBlock:(id)block;
 - (void)purgeAllCachedFolderImages;
 - (void)rebuildAllCachedFolderImages;
-- (void)rebuildImagesForFolderIcon:(id)a3;
-- (void)rebuildImagesForFolderIcon:(id)a3 appearance:(id)a4;
-- (void)removeObserver:(id)a3 forFolderIcon:(id)a4;
-- (void)updateCachedImagesForFolderIcon:(id)a3 afterChangeToContainedForIcon:(id)a4 imageAppearance:(id)a5 updateType:(int64_t)a6;
-- (void)updateCachedMiniImage:(id)a3 forIcon:(id)a4 imageAppearance:(id)a5;
-- (void)willBeginCachingActivityForReason:(id)a3;
+- (void)rebuildImagesForFolderIcon:(id)icon;
+- (void)rebuildImagesForFolderIcon:(id)icon appearance:(id)appearance;
+- (void)removeObserver:(id)observer forFolderIcon:(id)icon;
+- (void)updateCachedImagesForFolderIcon:(id)icon afterChangeToContainedForIcon:(id)forIcon imageAppearance:(id)appearance updateType:(int64_t)type;
+- (void)updateCachedMiniImage:(id)image forIcon:(id)icon imageAppearance:(id)appearance;
+- (void)willBeginCachingActivityForReason:(id)reason;
 @end
 
 @implementation SBFolderIconImageSharedCache
 
-- (SBFolderIconImageSharedCache)initWithListLayout:(id)a3 iconImageCache:(id)a4
+- (SBFolderIconImageSharedCache)initWithListLayout:(id)layout iconImageCache:(id)cache
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  cacheCopy = cache;
   v37.receiver = self;
   v37.super_class = SBFolderIconImageSharedCache;
   v9 = [(SBFolderIconImageSharedCache *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_listLayout, a3);
-    objc_storeStrong(&v10->_iconImageCache, a4);
-    v11 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v9->_listLayout, layout);
+    objc_storeStrong(&v10->_iconImageCache, cache);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     folderIconObservers = v10->_folderIconObservers;
-    v10->_folderIconObservers = v11;
+    v10->_folderIconObservers = weakToStrongObjectsMapTable;
 
     v13 = objc_alloc_init(SBHIconImageAppearanceStore);
     cachedFolderImages = v10->_cachedFolderImages;
@@ -68,28 +68,28 @@
     cachedMiniGridImages = v10->_cachedMiniGridImages;
     v10->_cachedMiniGridImages = v15;
 
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     cachedFolderIcons = v10->_cachedFolderIcons;
-    v10->_cachedFolderIcons = v17;
+    v10->_cachedFolderIcons = weakObjectsHashTable;
 
-    v19 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     folderIconImageCaches = v10->_folderIconImageCaches;
-    v10->_folderIconImageCaches = v19;
+    v10->_folderIconImageCaches = weakObjectsHashTable2;
 
-    [v8 addObserver:v10];
-    v21 = [v7 numberOfColumnsForOrientation:1];
-    v22 = [v7 numberOfRowsForOrientation:1];
-    [SBIconGridImage sizeForLayout:v7];
+    [cacheCopy addObserver:v10];
+    v21 = [layoutCopy numberOfColumnsForOrientation:1];
+    v22 = [layoutCopy numberOfRowsForOrientation:1];
+    [SBIconGridImage sizeForLayout:layoutCopy];
     v24 = v23;
     v26 = v25;
-    [v8 iconImageInfo];
+    [cacheCopy iconImageInfo];
     v27 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:0 scale:v24 withContextType:v26];
     snprintf(__str, 0x64uLL, "gridImages_%lux%lu", v21, v22);
     v28 = [objc_alloc(MEMORY[0x1E698B698]) initWithLabel:__str slotLength:v27];
     pool = v10->_pool;
     v10->_pool = v28;
 
-    v30 = SBHIconListLayoutFolderIconGridCellSize(v7);
+    v30 = SBHIconListLayoutFolderIconGridCellSize(layoutCopy);
     v32 = v31;
     v33 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:0 scale:? withContextType:?];
     snprintf(__str, 0x64uLL, "miniGridImages_%lux%lu", v30, v32);
@@ -101,60 +101,60 @@
   return v10;
 }
 
-- (void)folderIconImageCache:(id)a3 didAddObserverForFolderIcon:(id)a4
+- (void)folderIconImageCache:(id)cache didAddObserverForFolderIcon:(id)icon
 {
-  v5 = a4;
-  [v5 addObserver:self];
-  v6 = [v5 folder];
+  iconCopy = icon;
+  [iconCopy addObserver:self];
+  folder = [iconCopy folder];
 
-  [v6 addFolderObserver:self];
+  [folder addFolderObserver:self];
 }
 
-- (void)addObserver:(id)a3 forFolderIcon:(id)a4
+- (void)addObserver:(id)observer forFolderIcon:(id)icon
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_folderIconObservers objectForKey:v6];
-  if (!v7)
+  observerCopy = observer;
+  iconCopy = icon;
+  weakObjectsHashTable = [(NSMapTable *)self->_folderIconObservers objectForKey:iconCopy];
+  if (!weakObjectsHashTable)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(NSMapTable *)self->_folderIconObservers setObject:v7 forKey:v6];
-    [v6 addObserver:self];
-    v8 = [v6 folder];
-    [v8 addFolderObserver:self];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(NSMapTable *)self->_folderIconObservers setObject:weakObjectsHashTable forKey:iconCopy];
+    [iconCopy addObserver:self];
+    folder = [iconCopy folder];
+    [folder addFolderObserver:self];
   }
 
-  [v7 addObject:v9];
+  [weakObjectsHashTable addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3 forFolderIcon:(id)a4
+- (void)removeObserver:(id)observer forFolderIcon:(id)icon
 {
   folderIconObservers = self->_folderIconObservers;
-  v6 = a3;
-  v7 = [(NSMapTable *)folderIconObservers objectForKey:a4];
-  [v7 removeObject:v6];
+  observerCopy = observer;
+  v7 = [(NSMapTable *)folderIconObservers objectForKey:icon];
+  [v7 removeObject:observerCopy];
 }
 
-- (id)imageForPageAtIndex:(unint64_t)a3 inFolderIcon:(id)a4 imageAppearance:(id)a5
+- (id)imageForPageAtIndex:(unint64_t)index inFolderIcon:(id)icon imageAppearance:(id)appearance
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 folder];
-  v11 = [v10 listCount];
-  v12 = [(SBHIconImageAppearanceStore *)self->_cachedFolderImages imageForIcon:v8 appearance:v9];
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  folder = [iconCopy folder];
+  listCount = [folder listCount];
+  v12 = [(SBHIconImageAppearanceStore *)self->_cachedFolderImages imageForIcon:iconCopy appearance:appearanceCopy];
   v13 = v12;
-  if (v12 && [v12 count] != v11)
+  if (v12 && [v12 count] != listCount)
   {
     [v13 setCount:0];
-    [v13 setCount:v11];
+    [v13 setCount:listCount];
   }
 
-  v14 = [v13 pointerAtIndex:a3];
+  v14 = [v13 pointerAtIndex:index];
   if (v14)
   {
     v15 = v14;
-    if (!a3)
+    if (!index)
     {
       SBFPreheatImageData();
     }
@@ -162,64 +162,64 @@
 
   else
   {
-    v16 = [(SBFolderIconImageSharedCache *)self listLayout];
-    v17 = [(SBFolderIconImageSharedCache *)self pool];
-    v21 = v16;
-    v15 = [SBFolderIconImageCache imageForPageAtIndex:a3 inFolderIcon:v8 imageAppearance:v9 listLayout:v16 gridCellImageProvider:self pool:v17];
+    listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+    pool = [(SBFolderIconImageSharedCache *)self pool];
+    v21 = listLayout;
+    v15 = [SBFolderIconImageCache imageForPageAtIndex:index inFolderIcon:iconCopy imageAppearance:appearanceCopy listLayout:listLayout gridCellImageProvider:self pool:pool];
     v18 = SBLogFolderIconImageCache();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218754;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = v15;
       v26 = 2048;
-      v27 = a3;
+      indexCopy = index;
       v28 = 2112;
-      v29 = v8;
+      v29 = iconCopy;
       _os_log_debug_impl(&dword_1BEB18000, v18, OS_LOG_TYPE_DEBUG, "%p caching image %@ at page %lu for icon: %@", buf, 0x2Au);
     }
 
     if (!v13)
     {
       v13 = [MEMORY[0x1E696AE08] pointerArrayWithOptions:0];
-      [v13 setCount:v11];
-      [(SBHIconImageAppearanceStore *)self->_cachedFolderImages setImage:v13 forIcon:v8 appearance:v9];
-      [(NSHashTable *)self->_cachedFolderIcons addObject:v8];
+      [v13 setCount:listCount];
+      [(SBHIconImageAppearanceStore *)self->_cachedFolderImages setImage:v13 forIcon:iconCopy appearance:appearanceCopy];
+      [(NSHashTable *)self->_cachedFolderIcons addObject:iconCopy];
     }
 
-    [v13 replacePointerAtIndex:a3 withPointer:v15];
+    [v13 replacePointerAtIndex:index withPointer:v15];
   }
 
-  [v8 addObserver:self];
-  v19 = [v8 folder];
-  [v19 addFolderObserver:self];
+  [iconCopy addObserver:self];
+  folder2 = [iconCopy folder];
+  [folder2 addFolderObserver:self];
 
   return v15;
 }
 
-- (id)miniGridViewForPageAtIndex:(unint64_t)a3 inFolderIcon:(id)a4 imageAppearance:(id)a5 options:(unint64_t)a6
+- (id)miniGridViewForPageAtIndex:(unint64_t)index inFolderIcon:(id)icon imageAppearance:(id)appearance options:(unint64_t)options
 {
-  v10 = a5;
-  v11 = [a4 folder];
-  v12 = [(SBFolderIconImageSharedCache *)self listLayout];
-  v13 = [v11 miniGridViewForListIndex:a3 listLayout:v12 imageAppearance:v10 options:a6 cellProvider:0];
+  appearanceCopy = appearance;
+  folder = [icon folder];
+  listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+  v13 = [folder miniGridViewForListIndex:index listLayout:listLayout imageAppearance:appearanceCopy options:options cellProvider:0];
 
   return v13;
 }
 
-- (id)gridCellImageForIcon:(id)a3 imageAppearance:(id)a4 imageAttributes:(unint64_t *)a5
+- (id)gridCellImageForIcon:(id)icon imageAppearance:(id)appearance imageAttributes:(unint64_t *)attributes
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:v8 appearance:v9];
-  v11 = [(SBFolderIconImageSharedCache *)self iconImageCache];
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  v10 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:iconCopy appearance:appearanceCopy];
+  iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
   if (v10)
   {
     v12 = 0;
     v13 = v10;
-    if (!a5)
+    if (!attributes)
     {
       goto LABEL_4;
     }
@@ -227,8 +227,8 @@
     goto LABEL_3;
   }
 
-  v15 = [(SBFolderIconImageSharedCache *)self listLayout];
-  [v15 iconImageInfo];
+  listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+  [listLayout iconImageInfo];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -239,23 +239,23 @@
     [SBFolderIconImageSharedCache gridCellImageForIcon:imageAppearance:imageAttributes:];
   }
 
-  if (v11)
+  if (iconImageCache)
   {
-    v25 = [v11 realImageForIcon:v8 imageAppearance:v9 options:4];
+    v25 = [iconImageCache realImageForIcon:iconCopy imageAppearance:appearanceCopy options:4];
     if (v25)
     {
       v26 = v25;
 LABEL_13:
-      [(SBFolderIconImageSharedCache *)self beginAsynchronousMiniImageGenerationForImage:v26 forIcon:v8 appearance:v9 reason:@"gridCellForImage"];
+      [(SBFolderIconImageSharedCache *)self beginAsynchronousMiniImageGenerationForImage:v26 forIcon:iconCopy appearance:appearanceCopy reason:@"gridCellForImage"];
       v29 = SBLogFolderIconImageCache();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v44 = v8;
+        v44 = iconCopy;
         _os_log_impl(&dword_1BEB18000, v29, OS_LOG_TYPE_INFO, "beginning async mini image generation for icon %@", buf, 0xCu);
       }
 
-      v30 = -[SBHIconImageAppearanceStore imageForIcon:appearanceType:](self->_cachedMiniGridImages, "imageForIcon:appearanceType:", v8, [v9 appearanceType]);
+      v30 = -[SBHIconImageAppearanceStore imageForIcon:appearanceType:](self->_cachedMiniGridImages, "imageForIcon:appearanceType:", iconCopy, [appearanceCopy appearanceType]);
       if (v30)
       {
         v13 = v30;
@@ -264,7 +264,7 @@ LABEL_17:
         goto LABEL_27;
       }
 
-      v13 = [(SBFolderIconImageSharedCache *)self cachingPlaceholderMiniGridImageWithImageAppearance:v9];
+      v13 = [(SBFolderIconImageSharedCache *)self cachingPlaceholderMiniGridImageWithImageAppearance:appearanceCopy];
 LABEL_25:
       v12 = 1;
       goto LABEL_27;
@@ -275,18 +275,18 @@ LABEL_25:
     v36 = 3221225472;
     v37 = __85__SBFolderIconImageSharedCache_gridCellImageForIcon_imageAppearance_imageAttributes___block_invoke;
     v38 = &unk_1E808C2F0;
-    v39 = v11;
-    v40 = v8;
-    v41 = v9;
-    v42 = self;
+    v39 = iconImageCache;
+    v40 = iconCopy;
+    v41 = appearanceCopy;
+    selfCopy = self;
     v31 = [v39 cacheImageForIcon:v40 imageAppearance:v41 priority:2 reason:@"gridCellImageForIcon" options:0 completionHandler:&v35];
   }
 
   else
   {
-    v27 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:v9];
-    v28 = [v8 imageLoadContext];
-    v26 = [v8 makeIconImageWithInfo:v27 traitCollection:v28 context:1 options:{v17, v19, v21, v23}];
+    v27 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:appearanceCopy];
+    imageLoadContext = [iconCopy imageLoadContext];
+    v26 = [iconCopy makeIconImageWithInfo:v27 traitCollection:imageLoadContext context:1 options:{v17, v19, v21, v23}];
 
     if (v26)
     {
@@ -294,9 +294,9 @@ LABEL_25:
     }
   }
 
-  if ([v8 hasIconImage])
+  if ([iconCopy hasIconImage])
   {
-    v32 = [v11 isCachingImageForIcon:v8];
+    v32 = [iconImageCache isCachingImageForIcon:iconCopy];
     v33 = SBLogFolderIconImageCache();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_INFO);
     if (!v32)
@@ -304,11 +304,11 @@ LABEL_25:
       if (v34)
       {
         *buf = 138412290;
-        v44 = v8;
+        v44 = iconCopy;
         _os_log_impl(&dword_1BEB18000, v33, OS_LOG_TYPE_INFO, "Could not get grid cell image for icon %@", buf, 0xCu);
       }
 
-      v13 = [(SBFolderIconImageSharedCache *)self genericMiniGridImageWithImageAppearance:v9];
+      v13 = [(SBFolderIconImageSharedCache *)self genericMiniGridImageWithImageAppearance:appearanceCopy];
       v26 = 0;
       goto LABEL_17;
     }
@@ -316,11 +316,11 @@ LABEL_25:
     if (v34)
     {
       *buf = 138412290;
-      v44 = v8;
+      v44 = iconCopy;
       _os_log_impl(&dword_1BEB18000, v33, OS_LOG_TYPE_INFO, "icon image cache is still caching image for icon %@", buf, 0xCu);
     }
 
-    v13 = [(SBFolderIconImageSharedCache *)self cachingPlaceholderMiniGridImageWithImageAppearance:v9];
+    v13 = [(SBFolderIconImageSharedCache *)self cachingPlaceholderMiniGridImageWithImageAppearance:appearanceCopy];
     v26 = 0;
     goto LABEL_25;
   }
@@ -330,10 +330,10 @@ LABEL_25:
   v13 = 0;
 LABEL_27:
 
-  if (a5)
+  if (attributes)
   {
 LABEL_3:
-    *a5 = v12;
+    *attributes = v12;
   }
 
 LABEL_4:
@@ -373,21 +373,21 @@ void __46__SBFolderIconImageSharedCache_miniImageQueue__block_invoke()
   miniImageQueue_miniImageQueue = v1;
 }
 
-- (BOOL)hasUpToDateCachedMiniImageForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5
+- (BOOL)hasUpToDateCachedMiniImageForImage:(id)image forIcon:(id)icon appearance:(id)appearance
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 sbh_iconImageIdentity];
-  v11 = [v10 imageGeneration];
-  v12 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:v9 appearance:v8];
+  appearanceCopy = appearance;
+  iconCopy = icon;
+  sbh_iconImageIdentity = [image sbh_iconImageIdentity];
+  imageGeneration = [sbh_iconImageIdentity imageGeneration];
+  v12 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:iconCopy appearance:appearanceCopy];
 
   v15 = 0;
   if (v12)
   {
-    v13 = [v12 sbh_iconImageIdentity];
-    v14 = [v13 imageGeneration];
+    sbh_iconImageIdentity2 = [v12 sbh_iconImageIdentity];
+    imageGeneration2 = [sbh_iconImageIdentity2 imageGeneration];
 
-    if (v14 >= v11)
+    if (imageGeneration2 >= imageGeneration)
     {
       v15 = 1;
     }
@@ -396,20 +396,20 @@ void __46__SBFolderIconImageSharedCache_miniImageQueue__block_invoke()
   return v15;
 }
 
-- (void)beginAsynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5 reason:(id)a6
+- (void)beginAsynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon appearance:(id)appearance reason:(id)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(SBFolderIconImageSharedCache *)self iconImageCache];
-  v15 = [(SBFolderIconImageSharedCache *)self listLayout];
-  v16 = SBHIconListLayoutFolderIconGridCellIconImageInfo(v15);
+  imageCopy = image;
+  iconCopy = icon;
+  reasonCopy = reason;
+  appearanceCopy = appearance;
+  iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
+  listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+  v16 = SBHIconListLayoutFolderIconGridCellIconImageInfo(listLayout);
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = -[SBHIconImageIdentity initWithIcon:iconImageInfo:imageGeneration:imageAppearance:]([SBHIconImageIdentity alloc], "initWithIcon:iconImageInfo:imageGeneration:imageAppearance:", v11, [v14 imageGenerationForCachedImage:v10], v13, v16, v17, v19, v21);
-  v24 = [(SBFolderIconImageSharedCache *)self hasUpToDateCachedMiniImageForImage:v10 forIcon:v11 appearance:v13];
+  v23 = -[SBHIconImageIdentity initWithIcon:iconImageInfo:imageGeneration:imageAppearance:]([SBHIconImageIdentity alloc], "initWithIcon:iconImageInfo:imageGeneration:imageAppearance:", iconCopy, [iconImageCache imageGenerationForCachedImage:imageCopy], appearanceCopy, v16, v17, v19, v21);
+  v24 = [(SBFolderIconImageSharedCache *)self hasUpToDateCachedMiniImageForImage:imageCopy forIcon:iconCopy appearance:appearanceCopy];
 
   if (v24)
   {
@@ -453,95 +453,95 @@ LABEL_7:
     [SBFolderIconImageSharedCache beginAsynchronousMiniImageGenerationForImage:forIcon:appearance:reason:];
   }
 
-  v30 = [objc_opt_class() miniImageQueue];
+  miniImageQueue = [objc_opt_class() miniImageQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__SBFolderIconImageSharedCache_beginAsynchronousMiniImageGenerationForImage_forIcon_appearance_reason___block_invoke;
   block[3] = &unk_1E808C318;
   block[4] = self;
-  v32 = v10;
-  v33 = v11;
+  v32 = imageCopy;
+  v33 = iconCopy;
   v34 = v23;
   v36 = v16;
   v37 = v18;
   v38 = v20;
   v39 = v22;
-  v35 = v12;
-  dispatch_async(v30, block);
+  v35 = reasonCopy;
+  dispatch_async(miniImageQueue, block);
 
 LABEL_13:
 }
 
-- (void)performAsynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 imageIdentity:(id)a5 miniImageSize:(CGSize)a6 reason:(id)a7
+- (void)performAsynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon imageIdentity:(id)identity miniImageSize:(CGSize)size reason:(id)reason
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a3;
+  height = size.height;
+  width = size.width;
+  iconCopy = icon;
+  identityCopy = identity;
+  reasonCopy = reason;
+  imageCopy = image;
   v16 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache performAsynchronousMiniImageGenerationForImage:forIcon:imageIdentity:miniImageSize:reason:];
   }
 
-  v17 = [SBFolderIconImageCache gridCellImageOfSize:v15 forIconImage:width, height];
+  height = [SBFolderIconImageCache gridCellImageOfSize:imageCopy forIconImage:width, height];
 
-  [v17 sbh_setIconImageIdentity:v13];
+  [height sbh_setIconImageIdentity:identityCopy];
   v18 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache performAsynchronousMiniImageGenerationForImage:forIcon:imageIdentity:miniImageSize:reason:];
   }
 
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v17;
+  v23 = iconCopy;
+  v24 = identityCopy;
+  v25 = reasonCopy;
+  v19 = reasonCopy;
+  v20 = identityCopy;
+  v21 = iconCopy;
+  v22 = height;
   BSDispatchMain();
 }
 
-- (void)finishAsynchronousMiniImageGenerationWithImage:(id)a3 forIcon:(id)a4 imageIdentity:(id)a5 reason:(id)a6
+- (void)finishAsynchronousMiniImageGenerationWithImage:(id)image forIcon:(id)icon imageIdentity:(id)identity reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  imageCopy = image;
+  iconCopy = icon;
+  identityCopy = identity;
   v12 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache finishAsynchronousMiniImageGenerationWithImage:forIcon:imageIdentity:reason:];
   }
 
-  v13 = [v11 imageAppearance];
-  v14 = [v11 imageGeneration];
-  if (v9)
+  imageAppearance = [identityCopy imageAppearance];
+  imageGeneration = [identityCopy imageGeneration];
+  if (imageCopy)
   {
-    v15 = v14;
-    v16 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:v10 appearance:v13];
-    v17 = [v16 sbh_iconImageIdentity];
-    v18 = [v17 imageGeneration];
+    v15 = imageGeneration;
+    v16 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:iconCopy appearance:imageAppearance];
+    sbh_iconImageIdentity = [v16 sbh_iconImageIdentity];
+    imageGeneration2 = [sbh_iconImageIdentity imageGeneration];
 
-    if (v18 < v15)
+    if (imageGeneration2 < v15)
     {
-      [(SBFolderIconImageSharedCache *)self updateCachedMiniImage:v9 forIcon:v10 imageAppearance:v13];
+      [(SBFolderIconImageSharedCache *)self updateCachedMiniImage:imageCopy forIcon:iconCopy imageAppearance:imageAppearance];
     }
   }
 
-  [(NSMutableSet *)self->_cachingMiniGridImageIdentities removeObject:v11];
+  [(NSMutableSet *)self->_cachingMiniGridImageIdentities removeObject:identityCopy];
   [(SBFolderIconImageSharedCache *)self didEndCachingActivityForReason:@"mini image generation"];
 }
 
-- (void)updateCachedMiniImage:(id)a3 forIcon:(id)a4 imageAppearance:(id)a5
+- (void)updateCachedMiniImage:(id)image forIcon:(id)icon imageAppearance:(id)appearance
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages setImage:a3 forIcon:v8 appearance:v9];
-  [v8 addObserver:self];
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages setImage:image forIcon:iconCopy appearance:appearanceCopy];
+  [iconCopy addObserver:self];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -562,10 +562,10 @@ LABEL_13:
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        v16 = [v15 folder];
-        if ([v16 containsIcon:v8])
+        folder = [v15 folder];
+        if ([folder containsIcon:iconCopy])
         {
-          [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:v15 afterChangeToContainedForIcon:v8 imageAppearance:v9 updateType:1];
+          [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:v15 afterChangeToContainedForIcon:iconCopy imageAppearance:appearanceCopy updateType:1];
         }
       }
 
@@ -576,40 +576,40 @@ LABEL_13:
   }
 }
 
-- (id)performSynchronousMiniImageGenerationForImage:(id)a3 forIcon:(id)a4 appearance:(id)a5
+- (id)performSynchronousMiniImageGenerationForImage:(id)image forIcon:(id)icon appearance:(id)appearance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBFolderIconImageSharedCache *)self iconImageCache];
-  v12 = [(SBFolderIconImageSharedCache *)self listLayout];
-  v13 = SBHIconListLayoutFolderIconGridCellIconImageInfo(v12);
+  imageCopy = image;
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
+  listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+  v13 = SBHIconListLayoutFolderIconGridCellIconImageInfo(listLayout);
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 imageGenerationForCachedImage:v8];
-  if ([(SBFolderIconImageSharedCache *)self hasUpToDateCachedMiniImageForImage:v8 forIcon:v9 appearance:v10])
+  v20 = [iconImageCache imageGenerationForCachedImage:imageCopy];
+  if ([(SBFolderIconImageSharedCache *)self hasUpToDateCachedMiniImageForImage:imageCopy forIcon:iconCopy appearance:appearanceCopy])
   {
-    v21 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:v9 appearance:v10];
+    v21 = [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages imageForIcon:iconCopy appearance:appearanceCopy];
   }
 
   else
   {
-    v22 = [[SBHIconImageIdentity alloc] initWithIcon:v9 iconImageInfo:v20 imageGeneration:v10 imageAppearance:v13, v15, v17, v19];
-    v21 = [SBFolderIconImageCache gridCellImageOfSize:v8 forIconImage:v13, v15];
+    v22 = [[SBHIconImageIdentity alloc] initWithIcon:iconCopy iconImageInfo:v20 imageGeneration:appearanceCopy imageAppearance:v13, v15, v17, v19];
+    v21 = [SBFolderIconImageCache gridCellImageOfSize:imageCopy forIconImage:v13, v15];
     [v21 sbh_setIconImageIdentity:v22];
-    [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages setImage:v21 forIcon:v9 appearance:v10];
+    [(SBHIconImageAppearanceStore *)self->_cachedMiniGridImages setImage:v21 forIcon:iconCopy appearance:appearanceCopy];
   }
 
-  [v9 addObserver:self];
+  [iconCopy addObserver:self];
 
   return v21;
 }
 
-- (id)cachedMiniImageAppearancesForIcon:(id)a3
+- (id)cachedMiniImageAppearancesForIcon:(id)icon
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  iconCopy = icon;
   v6 = objc_alloc_init(v4);
   cachedMiniGridImages = self->_cachedMiniGridImages;
   v10[0] = MEMORY[0x1E69E9820];
@@ -618,35 +618,35 @@ LABEL_13:
   v10[3] = &unk_1E808C368;
   v8 = v6;
   v11 = v8;
-  [(SBHIconImageAppearanceStore *)cachedMiniGridImages enumerateImagesForIcon:v5 usingBlock:v10];
+  [(SBHIconImageAppearanceStore *)cachedMiniGridImages enumerateImagesForIcon:iconCopy usingBlock:v10];
 
   return v8;
 }
 
-- (id)gridCellViewForIcon:(id)a3 imageAppearance:(id)a4 imageAttributes:(unint64_t *)a5
+- (id)gridCellViewForIcon:(id)icon imageAppearance:(id)appearance imageAttributes:(unint64_t *)attributes
 {
   v7 = MEMORY[0x1E69DD1B8];
-  v8 = a3;
-  v9 = [v7 sbh_traitCollectionWithIconImageAppearance:a4];
-  v10 = [(SBFolderIconImageSharedCache *)self listLayout];
-  [v10 iconImageInfo];
-  v11 = [v8 iconLayerViewWithInfo:v9 traitCollection:1 options:1 priority:?];
+  iconCopy = icon;
+  v9 = [v7 sbh_traitCollectionWithIconImageAppearance:appearance];
+  listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+  [listLayout iconImageInfo];
+  v11 = [iconCopy iconLayerViewWithInfo:v9 traitCollection:1 options:1 priority:?];
 
   return v11;
 }
 
-- (void)rebuildImagesForFolderIcon:(id)a3
+- (void)rebuildImagesForFolderIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageCache rebuildImagesForFolderIcon:];
   }
 
-  [(SBHIconImageAppearanceStore *)self->_cachedFolderImages removeAllImagesForIcon:v4];
+  [(SBHIconImageAppearanceStore *)self->_cachedFolderImages removeAllImagesForIcon:iconCopy];
   [(NSHashTable *)self->_cachedFolderIcons removeAllObjects];
-  [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:v4 imageAppearance:0];
+  [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:iconCopy imageAppearance:0];
 }
 
 - (void)rebuildAllCachedFolderImages
@@ -702,27 +702,27 @@ LABEL_13:
   [(NSHashTable *)self->_cachedFolderIcons removeAllObjects];
 }
 
-- (void)rebuildImagesForFolderIcon:(id)a3 appearance:(id)a4
+- (void)rebuildImagesForFolderIcon:(id)icon appearance:(id)appearance
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  appearanceCopy = appearance;
   v8 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache rebuildImagesForFolderIcon:appearance:];
   }
 
-  [(SBHIconImageAppearanceStore *)self->_cachedFolderImages removeAllImagesForIcon:v6 appearance:v7];
-  [(NSHashTable *)self->_cachedFolderIcons removeObject:v6];
-  [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:v6 imageAppearance:v7];
+  [(SBHIconImageAppearanceStore *)self->_cachedFolderImages removeAllImagesForIcon:iconCopy appearance:appearanceCopy];
+  [(NSHashTable *)self->_cachedFolderIcons removeObject:iconCopy];
+  [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:iconCopy imageAppearance:appearanceCopy];
 }
 
-- (void)informObserversOfUpdateForFolderIcon:(id)a3 imageAppearance:(id)a4
+- (void)informObserversOfUpdateForFolderIcon:(id)icon imageAppearance:(id)appearance
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_folderIconObservers objectForKey:v6];
+  iconCopy = icon;
+  appearanceCopy = appearance;
+  v8 = [(NSMapTable *)self->_folderIconObservers objectForKey:iconCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -742,7 +742,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v22 + 1) + 8 * v12++) folderIconImageSharedCache:self didUpdateImagesForFolderIcon:v6 imageAppearance:v7];
+        [*(*(&v22 + 1) + 8 * v12++) folderIconImageSharedCache:self didUpdateImagesForFolderIcon:iconCopy imageAppearance:appearanceCopy];
       }
 
       while (v10 != v12);
@@ -772,7 +772,7 @@ LABEL_13:
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v18 + 1) + 8 * v17++) folderIconImageSharedCache:self didUpdateImagesForFolderIcon:v6 imageAppearance:{v7, v18}];
+        [*(*(&v18 + 1) + 8 * v17++) folderIconImageSharedCache:self didUpdateImagesForFolderIcon:iconCopy imageAppearance:{appearanceCopy, v18}];
       }
 
       while (v15 != v17);
@@ -783,26 +783,26 @@ LABEL_13:
   }
 }
 
-- (id)genericMiniGridImageWithImageAppearance:(id)a3
+- (id)genericMiniGridImageWithImageAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   genericMiniGridImages = self->_genericMiniGridImages;
   v6 = +[SBHIconImageAppearanceStore defaultIcon];
-  v7 = [(SBHIconImageAppearanceStore *)genericMiniGridImages imageForIcon:v6 appearance:v4];
+  v7 = [(SBHIconImageAppearanceStore *)genericMiniGridImages imageForIcon:v6 appearance:appearanceCopy];
 
   if (!v7)
   {
-    v8 = [(SBFolderIconImageSharedCache *)self iconImageCache];
-    v9 = [(SBFolderIconImageSharedCache *)self listLayout];
-    v10 = [v8 genericImageWithImageAppearance:v4 options:20];
-    v11 = SBHIconListLayoutFolderIconGridCellSize(v9);
+    iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
+    listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+    v10 = [iconImageCache genericImageWithImageAppearance:appearanceCopy options:20];
+    v11 = SBHIconListLayoutFolderIconGridCellSize(listLayout);
     v13 = v12;
     v14 = v10;
     v15 = v14;
     if (!v14)
     {
-      [v8 iconImageInfo];
-      v15 = [SBHIconImageCache fallbackGenericImageWithInfo:v4 imageAppearance:0 options:?];
+      [iconImageCache iconImageInfo];
+      v15 = [SBHIconImageCache fallbackGenericImageWithInfo:appearanceCopy imageAppearance:0 options:?];
     }
 
     v7 = [SBFolderIconImageCache gridCellImageOfSize:v15 forIconImage:v11, v13];
@@ -819,28 +819,28 @@ LABEL_13:
       }
 
       v19 = +[SBHIconImageAppearanceStore defaultIcon];
-      [(SBHIconImageAppearanceStore *)v16 setImage:v7 forIcon:v19 appearance:v4];
+      [(SBHIconImageAppearanceStore *)v16 setImage:v7 forIcon:v19 appearance:appearanceCopy];
     }
   }
 
   return v7;
 }
 
-- (id)cachingPlaceholderMiniGridImageWithImageAppearance:(id)a3
+- (id)cachingPlaceholderMiniGridImageWithImageAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   if (+[SBHIconImageCache hasUniqueCachingPlaceholderImage])
   {
     cachingPlaceholderMiniGridImages = self->_cachingPlaceholderMiniGridImages;
     v6 = +[SBHIconImageAppearanceStore defaultIcon];
-    v7 = [(SBHIconImageAppearanceStore *)cachingPlaceholderMiniGridImages imageForIcon:v6 appearance:v4];
+    v7 = [(SBHIconImageAppearanceStore *)cachingPlaceholderMiniGridImages imageForIcon:v6 appearance:appearanceCopy];
 
     if (!v7)
     {
-      v8 = [(SBFolderIconImageSharedCache *)self iconImageCache];
-      v9 = [(SBFolderIconImageSharedCache *)self listLayout];
-      v10 = [v8 cachingPlaceholderImageWithImageAppearance:v4 options:0];
-      v7 = [SBFolderIconImageCache gridCellImageOfSize:v10 forIconImage:SBHIconListLayoutFolderIconGridCellSize(v9)];
+      iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
+      listLayout = [(SBFolderIconImageSharedCache *)self listLayout];
+      v10 = [iconImageCache cachingPlaceholderImageWithImageAppearance:appearanceCopy options:0];
+      v7 = [SBFolderIconImageCache gridCellImageOfSize:v10 forIconImage:SBHIconListLayoutFolderIconGridCellSize(listLayout)];
       v11 = self->_cachingPlaceholderMiniGridImages;
       if (!v11)
       {
@@ -852,25 +852,25 @@ LABEL_13:
       }
 
       v14 = +[SBHIconImageAppearanceStore defaultIcon];
-      [(SBHIconImageAppearanceStore *)v11 setImage:v7 forIcon:v14 appearance:v4];
+      [(SBHIconImageAppearanceStore *)v11 setImage:v7 forIcon:v14 appearance:appearanceCopy];
     }
   }
 
   else
   {
-    v7 = [(SBFolderIconImageSharedCache *)self genericMiniGridImageWithImageAppearance:v4];
+    v7 = [(SBFolderIconImageSharedCache *)self genericMiniGridImageWithImageAppearance:appearanceCopy];
   }
 
   return v7;
 }
 
-- (void)updateCachedImagesForFolderIcon:(id)a3 afterChangeToContainedForIcon:(id)a4 imageAppearance:(id)a5 updateType:(int64_t)a6
+- (void)updateCachedImagesForFolderIcon:(id)icon afterChangeToContainedForIcon:(id)forIcon imageAppearance:(id)appearance updateType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  iconCopy = icon;
+  forIconCopy = forIcon;
+  appearanceCopy = appearance;
+  v13 = appearanceCopy;
+  if (iconCopy)
   {
     v33 = 0;
     v34 = &v33;
@@ -885,17 +885,17 @@ LABEL_13:
     v19 = 3221225472;
     v20 = __121__SBFolderIconImageSharedCache_updateCachedImagesForFolderIcon_afterChangeToContainedForIcon_imageAppearance_updateType___block_invoke;
     v21 = &unk_1E808C3B8;
-    v15 = v12;
+    v15 = appearanceCopy;
     v22 = v15;
-    v16 = v10;
+    v16 = iconCopy;
     v23 = v16;
     v27 = &v33;
-    v28 = a6;
-    v25 = self;
+    typeCopy = type;
+    selfCopy = self;
     v26 = &v29;
-    v24 = v11;
+    v24 = forIconCopy;
     [(SBHIconImageAppearanceStore *)cachedFolderImages enumerateImagesForIcon:v16 usingBlock:&v18];
-    if (a6 == 3 || (v30[3] & 1) != 0)
+    if (type == 3 || (v30[3] & 1) != 0)
     {
       if ((v34[3] & 1) == 0)
       {
@@ -1071,10 +1071,10 @@ BOOL __121__SBFolderIconImageSharedCache_updateCachedImagesForFolderIcon_afterCh
   return v16;
 }
 
-- (BOOL)hasCachedItemsThatIncludeIcon:(id)a3 imageAppearance:(id)a4
+- (BOOL)hasCachedItemsThatIncludeIcon:(id)icon imageAppearance:(id)appearance
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  iconCopy = icon;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1093,8 +1093,8 @@ BOOL __121__SBFolderIconImageSharedCache_updateCachedImagesForFolderIcon_afterCh
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) folder];
-        v11 = [v10 containsIcon:v5];
+        folder = [*(*(&v13 + 1) + 8 * i) folder];
+        v11 = [folder containsIcon:iconCopy];
 
         if (v11)
         {
@@ -1118,34 +1118,34 @@ LABEL_11:
   return v7;
 }
 
-- (void)willBeginCachingActivityForReason:(id)a3
+- (void)willBeginCachingActivityForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   backgroundActivityReasons = self->_backgroundActivityReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!backgroundActivityReasons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
     v7 = self->_backgroundActivityReasons;
     self->_backgroundActivityReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     backgroundActivityReasons = self->_backgroundActivityReasons;
   }
 
-  [(NSCountedSet *)backgroundActivityReasons addObject:v4];
+  [(NSCountedSet *)backgroundActivityReasons addObject:reasonCopy];
 }
 
-- (void)didEndCachingActivityForReason:(id)a3
+- (void)didEndCachingActivityForReason:(id)reason
 {
-  [(NSCountedSet *)self->_backgroundActivityReasons removeObject:a3];
+  [(NSCountedSet *)self->_backgroundActivityReasons removeObject:reason];
 
   [(SBFolderIconImageSharedCache *)self checkIfCachingActivityHasCompleted];
 }
 
-- (void)performWhenCachingActivityCompletesUsingBlock:(id)a3
+- (void)performWhenCachingActivityCompletesUsingBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if ([(NSCountedSet *)self->_backgroundActivityReasons count])
   {
     performAfterCachingActivityBlocks = self->_performAfterCachingActivityBlocks;
@@ -1158,14 +1158,14 @@ LABEL_11:
       performAfterCachingActivityBlocks = self->_performAfterCachingActivityBlocks;
     }
 
-    v7 = [v9 copy];
+    v7 = [blockCopy copy];
     v8 = _Block_copy(v7);
     [(NSMutableArray *)performAfterCachingActivityBlocks addObject:v8];
   }
 
   else
   {
-    v9[2]();
+    blockCopy[2]();
   }
 }
 
@@ -1215,70 +1215,70 @@ LABEL_11:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(NSMutableSet *)self->_cachingMiniGridImageIdentities count];
-  v5 = [(NSCountedSet *)self->_backgroundActivityReasons allObjects];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allObjects = [(NSCountedSet *)self->_backgroundActivityReasons allObjects];
+  v6 = [allObjects componentsJoinedByString:{@", "}];
   v7 = [v3 stringWithFormat:@"Mini images generating: %lu, background tasks: %@", v4, v6];
 
   return v7;
 }
 
-- (id)gridCellImageOfSize:(CGSize)a3 forIcon:(id)a4 iconImageInfo:(SBIconImageInfo *)a5 compatibleWithTraitCollection:(id)a6 imageAttributes:(unint64_t *)a7
+- (id)gridCellImageOfSize:(CGSize)size forIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info compatibleWithTraitCollection:(id)collection imageAttributes:(unint64_t *)attributes
 {
   v13 = v10;
   v14 = v9;
   v15 = v8;
   v16 = v7;
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v20 = MEMORY[0x1E69DD1B8];
-  v21 = a4;
-  v22 = [v20 sbh_iconImageAppearanceFromTraitCollection:a5];
-  v23 = [(SBFolderIconImageSharedCache *)self gridCellImageOfSize:v21 forIcon:v22 iconImageInfo:a6 imageAppearance:width imageAttributes:height, v16, v15, v14, v13];
+  iconCopy = icon;
+  v22 = [v20 sbh_iconImageAppearanceFromTraitCollection:info];
+  v23 = [(SBFolderIconImageSharedCache *)self gridCellImageOfSize:iconCopy forIcon:v22 iconImageInfo:collection imageAppearance:width imageAttributes:height, v16, v15, v14, v13];
 
   return v23;
 }
 
-- (void)folderIcon:(id)a3 containedIconImageDidUpdate:(id)a4
+- (void)folderIcon:(id)icon containedIconImageDidUpdate:(id)update
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBFolderIconImageSharedCache *)self iconImageCache];
+  iconCopy = icon;
+  updateCopy = update;
+  iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
 
-  if (!v7)
+  if (!iconImageCache)
   {
-    [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:v8 afterChangeToContainedForIcon:v6 imageAppearance:0 updateType:0];
+    [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:iconCopy afterChangeToContainedForIcon:updateCopy imageAppearance:0 updateType:0];
   }
 }
 
-- (void)iconImageCache:(id)a3 didUpdateImageForIcon:(id)a4 imageAppearance:(id)a5
+- (void)iconImageCache:(id)cache didUpdateImageForIcon:(id)icon imageAppearance:(id)appearance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cacheCopy = cache;
+  iconCopy = icon;
+  appearanceCopy = appearance;
   v11 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [SBFolderIconImageSharedCache iconImageCache:v9 didUpdateImageForIcon:v11 imageAppearance:?];
+    [SBFolderIconImageSharedCache iconImageCache:iconCopy didUpdateImageForIcon:v11 imageAppearance:?];
   }
 
-  if ([v8 currentRequestChangedImageVisually] && -[SBFolderIconImageSharedCache hasCachedItemsThatIncludeIcon:imageAppearance:](self, "hasCachedItemsThatIncludeIcon:imageAppearance:", v9, v10))
+  if ([cacheCopy currentRequestChangedImageVisually] && -[SBFolderIconImageSharedCache hasCachedItemsThatIncludeIcon:imageAppearance:](self, "hasCachedItemsThatIncludeIcon:imageAppearance:", iconCopy, appearanceCopy))
   {
-    v12 = [v8 imageForIcon:v9 imageAppearance:v10 options:0];
-    [(SBFolderIconImageSharedCache *)self beginAsynchronousMiniImageGenerationForImage:v12 forIcon:v9 appearance:v10 reason:@"image cache update"];
+    v12 = [cacheCopy imageForIcon:iconCopy imageAppearance:appearanceCopy options:0];
+    [(SBFolderIconImageSharedCache *)self beginAsynchronousMiniImageGenerationForImage:v12 forIcon:iconCopy appearance:appearanceCopy reason:@"image cache update"];
   }
 }
 
-- (void)iconImageDidUpdate:(id)a3
+- (void)iconImageDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SBFolderIconImageSharedCache *)self iconImageCache];
+  updateCopy = update;
+  iconImageCache = [(SBFolderIconImageSharedCache *)self iconImageCache];
   v6 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache iconImageDidUpdate:];
   }
 
-  v7 = [(SBFolderIconImageSharedCache *)self cachedMiniImageAppearancesForIcon:v4];
+  v7 = [(SBFolderIconImageSharedCache *)self cachedMiniImageAppearancesForIcon:updateCopy];
   if ([v7 count])
   {
     [(SBFolderIconImageSharedCache *)self willBeginCachingActivityForReason:@"folder image cache icon observer"];
@@ -1286,10 +1286,10 @@ LABEL_11:
     v8[1] = 3221225472;
     v8[2] = __51__SBFolderIconImageSharedCache_iconImageDidUpdate___block_invoke;
     v8[3] = &unk_1E8089E68;
-    v9 = v5;
-    v10 = v4;
+    v9 = iconImageCache;
+    v10 = updateCopy;
     v11 = v7;
-    v12 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -1354,29 +1354,29 @@ uint64_t __51__SBFolderIconImageSharedCache_iconImageDidUpdate___block_invoke_2(
   return [*(a1 + 56) didEndCachingActivityForReason:@"folder image cache icon observer"];
 }
 
-- (void)folder:(id)a3 didAddList:(id)a4
+- (void)folder:(id)folder didAddList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  listCopy = list;
   v8 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache folder:didAddList:];
   }
 
-  v9 = [v6 icon];
+  icon = [folderCopy icon];
   cachedFolderImages = self->_cachedFolderImages;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__SBFolderIconImageSharedCache_folder_didAddList___block_invoke;
   v14[3] = &unk_1E808C3E0;
-  v15 = v6;
-  v16 = v7;
-  v17 = self;
-  v18 = v9;
-  v11 = v9;
-  v12 = v7;
-  v13 = v6;
+  v15 = folderCopy;
+  v16 = listCopy;
+  selfCopy = self;
+  v18 = icon;
+  v11 = icon;
+  v12 = listCopy;
+  v13 = folderCopy;
   [(SBHIconImageAppearanceStore *)cachedFolderImages enumerateImagesForIcon:v11 usingBlock:v14];
 }
 
@@ -1397,18 +1397,18 @@ void __50__SBFolderIconImageSharedCache_folder_didAddList___block_invoke(uint64_
   }
 }
 
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  folderCopy = folder;
+  listsCopy = lists;
+  indexesCopy = indexes;
   v11 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache folder:didRemoveLists:atIndexes:];
   }
 
-  v12 = [v8 icon];
+  icon = [folderCopy icon];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1419,12 +1419,12 @@ void __50__SBFolderIconImageSharedCache_folder_didAddList___block_invoke(uint64_
   v17[2] = __64__SBFolderIconImageSharedCache_folder_didRemoveLists_atIndexes___block_invoke;
   v17[3] = &unk_1E808C430;
   v22 = &v23;
-  v14 = v8;
+  v14 = folderCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = indexesCopy;
   v19 = v15;
-  v20 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = icon;
   v21 = v16;
   [(SBHIconImageAppearanceStore *)cachedFolderImages enumerateImagesForIcon:v16 usingBlock:v17];
   if ((v24[3] & 1) == 0)
@@ -1460,17 +1460,17 @@ void __64__SBFolderIconImageSharedCache_folder_didRemoveLists_atIndexes___block_
   }
 }
 
-- (void)folder:(id)a3 didMoveList:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)folder:(id)folder didMoveList:(id)list fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v10 = a3;
-  v11 = a4;
+  folderCopy = folder;
+  listCopy = list;
   v12 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache folder:didMoveList:fromIndex:toIndex:];
   }
 
-  v13 = [v10 icon];
+  icon = [folderCopy icon];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -1481,17 +1481,17 @@ void __64__SBFolderIconImageSharedCache_folder_didRemoveLists_atIndexes___block_
   v19 = __69__SBFolderIconImageSharedCache_folder_didMoveList_fromIndex_toIndex___block_invoke;
   v20 = &unk_1E808C458;
   v24 = &v27;
-  v15 = v10;
-  v25 = a5;
-  v26 = a6;
+  v15 = folderCopy;
+  indexCopy = index;
+  toIndexCopy = toIndex;
   v21 = v15;
-  v22 = self;
-  v16 = v13;
+  selfCopy = self;
+  v16 = icon;
   v23 = v16;
   [(SBHIconImageAppearanceStore *)cachedFolderImages enumerateImagesForIcon:v16 usingBlock:&v17];
   if ((v28[3] & 1) == 0)
   {
-    [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:v16 imageAppearance:0, v17, v18, v19, v20, v21, v22];
+    [(SBFolderIconImageSharedCache *)self informObserversOfUpdateForFolderIcon:v16 imageAppearance:0, v17, v18, v19, v20, v21, selfCopy];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -1517,55 +1517,55 @@ void __69__SBFolderIconImageSharedCache_folder_didMoveList_fromIndex_toIndex___b
   }
 }
 
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons
 {
-  v6 = a3;
+  folderCopy = folder;
   v7 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [SBFolderIconImageSharedCache folder:didAddIcons:removedIcons:];
   }
 
-  v8 = [v6 icon];
-  [(SBFolderIconImageSharedCache *)self rebuildImagesForFolderIcon:v8];
+  icon = [folderCopy icon];
+  [(SBFolderIconImageSharedCache *)self rebuildImagesForFolderIcon:icon];
 }
 
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  folderCopy = folder;
+  iconCopy = icon;
+  withIconCopy = withIcon;
   v11 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v9 uniqueIdentifier];
-    v14 = [v10 uniqueIdentifier];
+    uniqueIdentifier = [iconCopy uniqueIdentifier];
+    uniqueIdentifier2 = [withIconCopy uniqueIdentifier];
     v15 = 138412802;
-    v16 = v8;
+    v16 = folderCopy;
     v17 = 2112;
-    v18 = v13;
+    v18 = uniqueIdentifier;
     v19 = 2112;
-    v20 = v14;
+    v20 = uniqueIdentifier2;
     _os_log_debug_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEBUG, "observed folder '%@' replaced '%@' with '%@'", &v15, 0x20u);
   }
 
-  v12 = [v8 icon];
-  [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:v12 afterChangeToContainedForIcon:v10 imageAppearance:0 updateType:2];
+  icon = [folderCopy icon];
+  [(SBFolderIconImageSharedCache *)self updateCachedImagesForFolderIcon:icon afterChangeToContainedForIcon:withIconCopy imageAppearance:0 updateType:2];
 }
 
-- (void)folder:(id)a3 didMoveIcon:(id)a4
+- (void)folder:(id)folder didMoveIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  iconCopy = icon;
   v8 = SBLogFolderIconImageCache();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFolderIconImageSharedCache *)v6 folder:v7 didMoveIcon:v8];
+    [(SBFolderIconImageSharedCache *)folderCopy folder:iconCopy didMoveIcon:v8];
   }
 
-  v9 = [v6 icon];
-  [(SBFolderIconImageSharedCache *)self rebuildImagesForFolderIcon:v9];
+  icon = [folderCopy icon];
+  [(SBFolderIconImageSharedCache *)self rebuildImagesForFolderIcon:icon];
 }
 
 - (void)gridCellImageForIcon:imageAppearance:imageAttributes:.cold.1()

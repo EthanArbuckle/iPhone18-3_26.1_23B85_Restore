@@ -1,21 +1,21 @@
 @interface TwoLineCollectionViewListCell
 + (id)identifier;
 - (PersonalizedItem)personalizedItemForQuickActionMenu;
-- (TwoLineCollectionViewListCell)initWithFrame:(CGRect)a3;
+- (TwoLineCollectionViewListCell)initWithFrame:(CGRect)frame;
 - (double)leadingPadding;
 - (void)_updateAccessories;
-- (void)setSelected:(BOOL)a3;
-- (void)setViewModel:(id)a3;
-- (void)updateLeadingSpace:(double)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setViewModel:(id)model;
+- (void)updateLeadingSpace:(double)space;
 @end
 
 @implementation TwoLineCollectionViewListCell
 
 - (PersonalizedItem)personalizedItemForQuickActionMenu
 {
-  v2 = self;
-  v3 = [(TwoLineCollectionViewListCell *)v2 viewModel];
-  if (v3 && (v4 = [(TwoLinesContentViewModel *)v3 personalizedItemForQuickActionMenuCreator], swift_unknownObjectRelease(), v4))
+  selfCopy = self;
+  viewModel = [(TwoLineCollectionViewListCell *)selfCopy viewModel];
+  if (viewModel && (v4 = [(TwoLinesContentViewModel *)viewModel personalizedItemForQuickActionMenuCreator], swift_unknownObjectRelease(), v4))
   {
     v5 = v4[2](v4);
 
@@ -34,21 +34,21 @@
 
 - (void)_updateAccessories
 {
-  v3 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
-  if (!v3)
+  customAccessoryView = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
+  if (!customAccessoryView)
   {
-    v6 = [(TwoLinesContentViewModel *)self->_viewModel cellAccessories];
-    if (![v6 count])
+    cellAccessories = [(TwoLinesContentViewModel *)self->_viewModel cellAccessories];
+    if (![cellAccessories count])
     {
       [(TwoLineCollectionViewListCell *)self setAccessories:&__NSArray0__struct];
       goto LABEL_13;
     }
 
-    v13 = [(TwoLinesContentViewModel *)self->_viewModel cellAccessories];
-    v7 = v13;
-    if (v13)
+    cellAccessories2 = [(TwoLinesContentViewModel *)self->_viewModel cellAccessories];
+    v7 = cellAccessories2;
+    if (cellAccessories2)
     {
-      v12 = v13;
+      v12 = cellAccessories2;
     }
 
     else
@@ -56,33 +56,33 @@
       v12 = &__NSArray0__struct;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     goto LABEL_10;
   }
 
   v4 = [UICellAccessoryCustomView alloc];
-  v5 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
-  v6 = [v4 initWithCustomView:v5 placement:1];
+  customAccessoryView2 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
+  cellAccessories = [v4 initWithCustomView:customAccessoryView2 placement:1];
 
-  [v6 setReservedLayoutWidth:0.0];
-  v14 = v6;
+  [cellAccessories setReservedLayoutWidth:0.0];
+  v14 = cellAccessories;
   v7 = [NSArray arrayWithObjects:&v14 count:1];
-  v8 = [(TwoLineCollectionViewListCell *)self accessories];
-  v9 = v8;
-  if (v8 == v7)
+  accessories = [(TwoLineCollectionViewListCell *)self accessories];
+  v9 = accessories;
+  if (accessories == v7)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [v8 isEqual:v7];
+  v10 = [accessories isEqual:v7];
 
   if ((v10 & 1) == 0)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = v7;
 LABEL_10:
-    [(TwoLineCollectionViewListCell *)v11 setAccessories:v12];
+    [(TwoLineCollectionViewListCell *)selfCopy2 setAccessories:v12];
   }
 
 LABEL_12:
@@ -90,46 +90,46 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v11 = v5;
-    v7 = [(TwoLinesContentViewModel *)viewModel observers];
-    [v7 unregisterObserver:self];
+    v11 = modelCopy;
+    observers = [(TwoLinesContentViewModel *)viewModel observers];
+    [observers unregisterObserver:self];
 
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(TwoLinesContentView *)self->_twoLinesContentView setViewModel:v11];
-    v8 = [(TwoLinesContentViewModel *)self->_viewModel observers];
-    [v8 registerObserver:self];
+    observers2 = [(TwoLinesContentViewModel *)self->_viewModel observers];
+    [observers2 registerObserver:self];
 
-    v9 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
-    v10 = [v9 axIdentifier];
-    [(TwoLineCollectionViewListCell *)self setAccessibilityIdentifier:v10];
+    viewModel = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
+    axIdentifier = [viewModel axIdentifier];
+    [(TwoLineCollectionViewListCell *)self setAccessibilityIdentifier:axIdentifier];
 
     [(TwoLineCollectionViewListCell *)self _updateAccessories];
-    v5 = v11;
+    modelCopy = v11;
   }
 }
 
-- (void)updateLeadingSpace:(double)a3
+- (void)updateLeadingSpace:(double)space
 {
-  if (self->_leadingSpace != a3)
+  if (self->_leadingSpace != space)
   {
-    v5 = [(TwoLineCollectionViewListCell *)self leadingContraint];
-    [v5 setActive:0];
+    leadingContraint = [(TwoLineCollectionViewListCell *)self leadingContraint];
+    [leadingContraint setActive:0];
 
-    self->_leadingSpace = a3;
-    v6 = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
-    v7 = [(TwoLineCollectionViewListCell *)self contentView];
-    v8 = [v7 leadingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8 constant:a3];
+    self->_leadingSpace = space;
+    leadingAnchor = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
+    contentView = [(TwoLineCollectionViewListCell *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:space];
     [(TwoLineCollectionViewListCell *)self setLeadingContraint:v9];
 
-    v10 = [(TwoLineCollectionViewListCell *)self leadingContraint];
-    [v10 setActive:1];
+    leadingContraint2 = [(TwoLineCollectionViewListCell *)self leadingContraint];
+    [leadingContraint2 setActive:1];
   }
 }
 
@@ -142,20 +142,20 @@ LABEL_13:
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = TwoLineCollectionViewListCell;
   [(TwoLineCollectionViewListCell *)&v5 setSelected:?];
-  [(TwoLinesContentView *)self->_twoLinesContentView setIsParentCellSelected:v3];
+  [(TwoLinesContentView *)self->_twoLinesContentView setIsParentCellSelected:selectedCopy];
 }
 
-- (TwoLineCollectionViewListCell)initWithFrame:(CGRect)a3
+- (TwoLineCollectionViewListCell)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = TwoLineCollectionViewListCell;
-  v3 = [(TwoLineCollectionViewListCell *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TwoLineCollectionViewListCell *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if ([objc_opt_class() hasClearBackground])
@@ -172,33 +172,33 @@ LABEL_13:
     v3->_twoLinesContentView = v6;
 
     [(TwoLinesContentView *)v3->_twoLinesContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(TwoLineCollectionViewListCell *)v3 contentView];
-    [v8 addSubview:v3->_twoLinesContentView];
+    contentView = [(TwoLineCollectionViewListCell *)v3 contentView];
+    [contentView addSubview:v3->_twoLinesContentView];
 
-    v9 = [(TwoLinesContentView *)v3->_twoLinesContentView leadingAnchor];
-    v10 = [(TwoLineCollectionViewListCell *)v3 contentView];
-    v11 = [v10 leadingAnchor];
+    leadingAnchor = [(TwoLinesContentView *)v3->_twoLinesContentView leadingAnchor];
+    contentView2 = [(TwoLineCollectionViewListCell *)v3 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
     [(TwoLineCollectionViewListCell *)v3 leadingPadding];
-    v12 = [v9 constraintEqualToAnchor:v11 constant:?];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     leadingContraint = v3->_leadingContraint;
     v3->_leadingContraint = v12;
 
-    v28 = [(TwoLinesContentView *)v3->_twoLinesContentView topAnchor];
-    v29 = [(TwoLineCollectionViewListCell *)v3 contentView];
-    v27 = [v29 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [(TwoLinesContentView *)v3->_twoLinesContentView topAnchor];
+    contentView3 = [(TwoLineCollectionViewListCell *)v3 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[0] = v26;
     v31[1] = v3->_leadingContraint;
-    v14 = [(TwoLinesContentView *)v3->_twoLinesContentView trailingAnchor];
-    v15 = [(TwoLineCollectionViewListCell *)v3 contentView];
-    v16 = [v15 trailingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16 constant:-10.0];
+    trailingAnchor = [(TwoLinesContentView *)v3->_twoLinesContentView trailingAnchor];
+    contentView4 = [(TwoLineCollectionViewListCell *)v3 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     v31[2] = v17;
-    v18 = [(TwoLinesContentView *)v3->_twoLinesContentView bottomAnchor];
-    v19 = [(TwoLineCollectionViewListCell *)v3 contentView];
-    v20 = [v19 bottomAnchor];
+    bottomAnchor = [(TwoLinesContentView *)v3->_twoLinesContentView bottomAnchor];
+    contentView5 = [(TwoLineCollectionViewListCell *)v3 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
     LODWORD(v21) = 1144750080;
-    v22 = [v18 constraintEqualToAnchor:v20 constant:0.0 priority:v21];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0 priority:v21];
     v31[3] = v22;
     v23 = [NSArray arrayWithObjects:v31 count:4];
     [NSLayoutConstraint activateConstraints:v23];

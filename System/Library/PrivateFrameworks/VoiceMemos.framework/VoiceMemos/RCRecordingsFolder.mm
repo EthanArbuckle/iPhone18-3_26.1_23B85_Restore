@@ -1,43 +1,43 @@
 @interface RCRecordingsFolder
-- (BOOL)containsRecording:(id)a3;
-- (RCRecordingsFolder)initWithContext:(id)a3 name:(id)a4 rank:(int64_t)a5 uuid:(id)a6;
+- (BOOL)containsRecording:(id)recording;
+- (RCRecordingsFolder)initWithContext:(id)context name:(id)name rank:(int64_t)rank uuid:(id)uuid;
 @end
 
 @implementation RCRecordingsFolder
 
-- (RCRecordingsFolder)initWithContext:(id)a3 name:(id)a4 rank:(int64_t)a5 uuid:(id)a6
+- (RCRecordingsFolder)initWithContext:(id)context name:(id)name rank:(int64_t)rank uuid:(id)uuid
 {
-  v10 = a4;
-  v11 = a6;
+  nameCopy = name;
+  uuidCopy = uuid;
   v17.receiver = self;
   v17.super_class = RCRecordingsFolder;
-  v12 = [(RCRecordingsFolder *)&v17 initWithContext:a3];
+  v12 = [(RCRecordingsFolder *)&v17 initWithContext:context];
   v13 = v12;
   if (v12)
   {
-    [(RCRecordingsFolder *)v12 setEncryptedName:v10];
-    [(RCRecordingsFolder *)v13 setRank:a5];
-    if (v11)
+    [(RCRecordingsFolder *)v12 setEncryptedName:nameCopy];
+    [(RCRecordingsFolder *)v13 setRank:rank];
+    if (uuidCopy)
     {
-      [(RCRecordingsFolder *)v13 setUuid:v11];
+      [(RCRecordingsFolder *)v13 setUuid:uuidCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCAD78] UUID];
-      v15 = [v14 UUIDString];
-      [(RCRecordingsFolder *)v13 setUuid:v15];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [(RCRecordingsFolder *)v13 setUuid:uUIDString];
     }
   }
 
   return v13;
 }
 
-- (BOOL)containsRecording:(id)a3
+- (BOOL)containsRecording:(id)recording
 {
-  v4 = [a3 userFolderUUID];
-  v5 = [(RCRecordingsFolder *)self uuid];
-  v6 = [v4 isEqual:v5];
+  userFolderUUID = [recording userFolderUUID];
+  uuid = [(RCRecordingsFolder *)self uuid];
+  v6 = [userFolderUUID isEqual:uuid];
 
   return v6;
 }

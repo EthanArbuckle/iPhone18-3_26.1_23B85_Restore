@@ -1,12 +1,12 @@
 @interface SUUISyncWishlistOperation
-- (BOOL)_loadRemoteItemsForWishlist:(id)a3 didChange:(BOOL *)a4 error:(id *)a5;
-- (BOOL)_mergeItems:(id)a3 wishlist:(id)a4 didChange:(BOOL *)a5 error:(id *)a6;
+- (BOOL)_loadRemoteItemsForWishlist:(id)wishlist didChange:(BOOL *)change error:(id *)error;
+- (BOOL)_mergeItems:(id)items wishlist:(id)wishlist didChange:(BOOL *)change error:(id *)error;
 - (SUUISyncWishlistOperation)init;
-- (SUUISyncWishlistOperation)initWithClientContext:(id)a3;
+- (SUUISyncWishlistOperation)initWithClientContext:(id)context;
 - (id)resultBlock;
-- (void)_sendLocalChangesForWishlist:(id)a3;
+- (void)_sendLocalChangesForWishlist:(id)wishlist;
 - (void)main;
-- (void)setResultBlock:(id)a3;
+- (void)setResultBlock:(id)block;
 @end
 
 @implementation SUUISyncWishlistOperation
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (SUUISyncWishlistOperation)initWithClientContext:(id)a3
+- (SUUISyncWishlistOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUISyncWishlistOperation;
   v6 = [(SUUISyncWishlistOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = dispatch_queue_create("com.apple.iTunesStoreUI.SUUISyncWishlistOperation", 0);
     dispatchQueue = v7->_dispatchQueue;
     v7->_dispatchQueue = v8;
@@ -69,17 +69,17 @@ uint64_t __40__SUUISyncWishlistOperation_resultBlock__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setResultBlock:(id)a3
+- (void)setResultBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SUUISyncWishlistOperation_setResultBlock___block_invoke;
   v7[3] = &unk_2798F6030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -103,14 +103,14 @@ void *__44__SUUISyncWishlistOperation_setResultBlock___block_invoke(uint64_t a1)
 - (void)main
 {
   v13 = 0;
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v4 = [v3 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v4)
+  if (activeAccount)
   {
     v5 = objc_alloc(MEMORY[0x277D69D58]);
-    v6 = [v4 uniqueIdentifier];
-    v7 = [v5 initWithAccountIdentifier:{objc_msgSend(v6, "longLongValue")}];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
+    v7 = [v5 initWithAccountIdentifier:{objc_msgSend(uniqueIdentifier, "longLongValue")}];
 
     [(SUUISyncWishlistOperation *)self _sendLocalChangesForWishlist:v7];
     v12 = 0;
@@ -124,17 +124,17 @@ void *__44__SUUISyncWishlistOperation_setResultBlock___block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  v10 = [(SUUISyncWishlistOperation *)self resultBlock];
-  v11 = v10;
-  if (v10)
+  resultBlock = [(SUUISyncWishlistOperation *)self resultBlock];
+  v11 = resultBlock;
+  if (resultBlock)
   {
-    (*(v10 + 16))(v10, v8, v13, v9);
+    (*(resultBlock + 16))(resultBlock, v8, v13, v9);
   }
 }
 
-- (BOOL)_loadRemoteItemsForWishlist:(id)a3 didChange:(BOOL *)a4 error:(id *)a5
+- (BOOL)_loadRemoteItemsForWishlist:(id)wishlist didChange:(BOOL *)change error:(id *)error
 {
-  v8 = a3;
+  wishlistCopy = wishlist;
   v49[0] = 0;
   v43 = 0;
   v44 = &v43;
@@ -146,30 +146,30 @@ void *__44__SUUISyncWishlistOperation_setResultBlock___block_invoke(uint64_t a1)
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v9 = [(SUUIClientContext *)self->_clientContext URLBag];
-  v10 = [v9 valueForKey:@"viewWishlistBaseUrl" error:0];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
+  v10 = [uRLBag valueForKey:@"viewWishlistBaseUrl" error:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x277D69B38] sharedConfig];
-    v20 = [v19 shouldLog];
-    v21 = [v19 shouldLogToDisk];
-    v22 = [v19 OSLogObject];
-    v23 = v22;
-    if (v21)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    v23 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v20 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = v20;
+      v24 = shouldLog;
     }
 
     else
     {
-      v24 = v20 & 2;
+      v24 = shouldLog & 2;
     }
 
     if (v24)
@@ -227,7 +227,7 @@ LABEL_14:
     v16 = v34[5];
     v17 = (v44 + 5);
     obj = v44[5];
-    v18 = [(SUUISyncWishlistOperation *)self _mergeItems:v16 wishlist:v8 didChange:v49 error:&obj];
+    v18 = [(SUUISyncWishlistOperation *)self _mergeItems:v16 wishlist:wishlistCopy didChange:v49 error:&obj];
     objc_storeStrong(v17, obj);
     *(v40 + 24) = v18;
   }
@@ -237,15 +237,15 @@ LABEL_14:
 LABEL_15:
   v27 = v40;
   v28 = *(v40 + 24);
-  if (a4 && (v40[3] & 1) != 0)
+  if (change && (v40[3] & 1) != 0)
   {
-    *a4 = v49[0];
+    *change = v49[0];
     v28 = *(v27 + 24);
   }
 
-  if (a5 && (v28 & 1) == 0)
+  if (error && (v28 & 1) == 0)
   {
-    *a5 = v44[5];
+    *error = v44[5];
     v28 = *(v40 + 24);
   }
 
@@ -268,10 +268,10 @@ void __73__SUUISyncWishlistOperation__loadRemoteItemsForWishlist_didChange_error
   *(*(a1[6] + 8) + 24) = *(*(a1[5] + 8) + 40) != 0;
 }
 
-- (BOOL)_mergeItems:(id)a3 wishlist:(id)a4 didChange:(BOOL *)a5 error:(id *)a6
+- (BOOL)_mergeItems:(id)items wishlist:(id)wishlist didChange:(BOOL *)change error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  itemsCopy = items;
+  wishlistCopy = wishlist;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -284,24 +284,24 @@ void __73__SUUISyncWishlistOperation__loadRemoteItemsForWishlist_didChange_error
   v16[1] = 3221225472;
   v16[2] = __66__SUUISyncWishlistOperation__mergeItems_wishlist_didChange_error___block_invoke;
   v16[3] = &unk_2798F95F8;
-  v11 = v9;
+  v11 = itemsCopy;
   v17 = v11;
   v19 = &v25;
   v20 = &v21;
-  v12 = v10;
+  v12 = wishlistCopy;
   v18 = v12;
   [v12 performTransactionWithBlock:v16];
   v13 = v22;
   v14 = *(v22 + 24);
-  if (a5 && (v22[3] & 1) != 0)
+  if (change && (v22[3] & 1) != 0)
   {
-    *a5 = *(v26 + 24);
+    *change = *(v26 + 24);
     v14 = *(v13 + 24);
   }
 
-  if (a6 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
-    *a6 = 0;
+    *error = 0;
     v14 = *(v22 + 24);
   }
 
@@ -444,10 +444,10 @@ void __66__SUUISyncWishlistOperation__mergeItems_wishlist_didChange_error___bloc
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_sendLocalChangesForWishlist:(id)a3
+- (void)_sendLocalChangesForWishlist:(id)wishlist
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  wishlistCopy = wishlist;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -455,26 +455,26 @@ void __66__SUUISyncWishlistOperation__mergeItems_wishlist_didChange_error___bloc
   v23[3] = &unk_2798F8300;
   v5 = v4;
   v24 = v5;
-  [v3 performTransactionWithBlock:v23];
+  [wishlistCopy performTransactionWithBlock:v23];
   if (![v5 count])
   {
     goto LABEL_19;
   }
 
-  v6 = [MEMORY[0x277D69B38] sharedConfig];
-  v7 = [v6 shouldLog];
-  if ([v6 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v8 &= 2u;
   }
@@ -493,9 +493,9 @@ void __66__SUUISyncWishlistOperation__mergeItems_wishlist_didChange_error___bloc
 
   if (v11)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v26, v18}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, &v26, v18}];
     free(v11);
-    v17 = v9;
+    v17 = oSLogObject;
     SSFileLog();
 LABEL_10:
   }

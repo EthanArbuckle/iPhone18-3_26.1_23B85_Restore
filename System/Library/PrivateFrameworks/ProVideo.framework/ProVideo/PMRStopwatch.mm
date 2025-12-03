@@ -1,24 +1,24 @@
 @interface PMRStopwatch
-+ (void)benchmarkBlockWithTitle:(id)a3 iterations:(unint64_t)a4 usingBlock:(id)a5 onCompletion:(id)a6;
-- (PMRStopwatch)initWithDomain:(id)a3;
++ (void)benchmarkBlockWithTitle:(id)title iterations:(unint64_t)iterations usingBlock:(id)block onCompletion:(id)completion;
+- (PMRStopwatch)initWithDomain:(id)domain;
 - (id)_subtreeDescription;
 - (id)description;
-- (id)descriptionWithFormat:(int)a3 key:(id)a4 comment:(id)a5;
-- (id)formattedUserInfoForSplitTime:(id)a3;
+- (id)descriptionWithFormat:(int)format key:(id)key comment:(id)comment;
+- (id)formattedUserInfoForSplitTime:(id)time;
 - (void)_purgeOldestSplitTimeIfNeeded;
-- (void)addSplit:(id)a3;
-- (void)beginTimingGroupForMethod:(SEL)a3 inClass:(Class)a4 comment:(id)a5;
+- (void)addSplit:(id)split;
+- (void)beginTimingGroupForMethod:(SEL)method inClass:(Class)class comment:(id)comment;
 - (void)dealloc;
-- (void)logEvent:(id)a3 comment:(id)a4 userInfo:(id)a5;
-- (void)logToLocation:(id)a3 key:(id)a4;
-- (void)logWithFormat:(int)a3;
+- (void)logEvent:(id)event comment:(id)comment userInfo:(id)info;
+- (void)logToLocation:(id)location key:(id)key;
+- (void)logWithFormat:(int)format;
 - (void)reset;
-- (void)writeToFile:(id)a3 key:(id)a4 comment:(id)a5 fileFormat:(int)a6;
+- (void)writeToFile:(id)file key:(id)key comment:(id)comment fileFormat:(int)format;
 @end
 
 @implementation PMRStopwatch
 
-- (PMRStopwatch)initWithDomain:(id)a3
+- (PMRStopwatch)initWithDomain:(id)domain
 {
   v6.receiver = self;
   v6.super_class = PMRStopwatch;
@@ -27,7 +27,7 @@
   {
     v4->_splitTimes = objc_opt_new();
     v4->_startTime = mach_absolute_time();
-    v4->_domain = [a3 copy];
+    v4->_domain = [domain copy];
     v4->_maxSplitTimes = 1000;
   }
 
@@ -56,7 +56,7 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = [-[PMRStopwatch description](self "description")];
-  v15 = [MEMORY[0x277CCA900] newlineCharacterSet];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
   if ([(NSMutableArray *)self->_splitTimes count])
   {
     [v3 appendString:@"\n"];
@@ -79,7 +79,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v8 = [objc_msgSend(*(*(&v20 + 1) + 8 * i) performSelector:{sel__subtreeDescription), "componentsSeparatedByCharactersInSet:", v15}];
+          v8 = [objc_msgSend(*(*(&v20 + 1) + 8 * i) performSelector:{sel__subtreeDescription), "componentsSeparatedByCharactersInSet:", newlineCharacterSet}];
           v16 = 0u;
           v17 = 0u;
           v18 = 0u;
@@ -135,12 +135,12 @@
   }
 }
 
-- (void)beginTimingGroupForMethod:(SEL)a3 inClass:(Class)a4 comment:(id)a5
+- (void)beginTimingGroupForMethod:(SEL)method inClass:(Class)class comment:(id)comment
 {
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
-  v10 = NSStringFromClass(a4);
-  v13 = [v9 initWithFormat:@"%@.%@", v10, NSStringFromSelector(a3)];
-  v11 = [[PMRSplitTime alloc] initWithKey:v13 comment:a5 level:[(NSMutableArray *)self->_splitTimeStack count]];
+  v10 = NSStringFromClass(class);
+  v13 = [v9 initWithFormat:@"%@.%@", v10, NSStringFromSelector(method)];
+  v11 = [[PMRSplitTime alloc] initWithKey:v13 comment:comment level:[(NSMutableArray *)self->_splitTimeStack count]];
   if ([(NSMutableArray *)self->_splitTimeStack count])
   {
     [-[NSMutableArray lastObject](self->_splitTimeStack "lastObject")];
@@ -162,16 +162,16 @@
   [(NSMutableArray *)splitTimeStack addObject:v11];
 }
 
-+ (void)benchmarkBlockWithTitle:(id)a3 iterations:(unint64_t)a4 usingBlock:(id)a5 onCompletion:(id)a6
++ (void)benchmarkBlockWithTitle:(id)title iterations:(unint64_t)iterations usingBlock:(id)block onCompletion:(id)completion
 {
   v10 = objc_opt_new();
 
-  [v10 benchmarkBlockWithTitle:a3 iterations:a4 currentIteration:0 usingBlock:a5 onCompletion:a6];
+  [v10 benchmarkBlockWithTitle:title iterations:iterations currentIteration:0 usingBlock:block onCompletion:completion];
 }
 
-- (void)logToLocation:(id)a3 key:(id)a4
+- (void)logToLocation:(id)location key:(id)key
 {
-  if (a3)
+  if (location)
   {
 
     [PMRStopwatch writeToFile:"writeToFile:key:comment:fileFormat:" key:? comment:? fileFormat:?];
@@ -179,17 +179,17 @@
 
   else
   {
-    NSLog(&stru_2872E15A0.isa, [(PMRStopwatch *)self descriptionWithFormat:1 key:a4 comment:0]);
+    NSLog(&stru_2872E15A0.isa, [(PMRStopwatch *)self descriptionWithFormat:1 key:key comment:0]);
   }
 }
 
-- (void)addSplit:(id)a3
+- (void)addSplit:(id)split
 {
   if ([(NSMutableArray *)self->_splitTimeStack count])
   {
-    v5 = [(NSMutableArray *)self->_splitTimeStack lastObject];
+    lastObject = [(NSMutableArray *)self->_splitTimeStack lastObject];
 
-    [v5 addSplitTimesObject:a3];
+    [lastObject addSplitTimesObject:split];
   }
 
   else
@@ -197,31 +197,31 @@
     [(PMRStopwatch *)self _purgeOldestSplitTimeIfNeeded];
     splitTimes = self->_splitTimes;
 
-    [(NSMutableArray *)splitTimes addObject:a3];
+    [(NSMutableArray *)splitTimes addObject:split];
   }
 }
 
-- (void)logEvent:(id)a3 comment:(id)a4 userInfo:(id)a5
+- (void)logEvent:(id)event comment:(id)comment userInfo:(id)info
 {
-  v6 = [[PMRSplitTime alloc] initWithKey:a3 comment:a4 level:[(NSMutableArray *)self->_splitTimeStack count] duration:0 userInfo:a5];
+  v6 = [[PMRSplitTime alloc] initWithKey:event comment:comment level:[(NSMutableArray *)self->_splitTimeStack count] duration:0 userInfo:info];
   [(PMRStopwatch *)self addSplit:v6];
 }
 
-- (id)descriptionWithFormat:(int)a3 key:(id)a4 comment:(id)a5
+- (id)descriptionWithFormat:(int)format key:(id)key comment:(id)comment
 {
   v45 = *MEMORY[0x277D85DE8];
   info = 0;
   mach_timebase_info(&info);
   if ([(NSMutableArray *)self->_splitTimes count])
   {
-    v35 = a5;
-    v36 = a4;
-    v38 = [MEMORY[0x277CCAB68] string];
-    v9 = [(PMRStopwatch *)self domain];
+    commentCopy = comment;
+    keyCopy = key;
+    string = [MEMORY[0x277CCAB68] string];
+    domain = [(PMRStopwatch *)self domain];
     v10 = @"undefined";
-    if (v9)
+    if (domain)
     {
-      v10 = v9;
+      v10 = domain;
     }
 
     v37 = v10;
@@ -249,31 +249,31 @@
 
           v19 = *(*(&v39 + 1) + 8 * i);
           startTime = [v19 splitTime];
-          v20 = [v19 duration];
+          duration = [v19 duration];
           v21 = info.numer / info.denom;
-          v22 = (v20 * v21) / 1000000.0;
+          v22 = (duration * v21) / 1000000.0;
           if (v22 == 0.0)
           {
             v22 = ((startTime - v18) * v21) / 1000000.0;
           }
 
-          v23 = [v19 comment];
+          comment = [v19 comment];
           v24 = [(PMRStopwatch *)self formattedUserInfoForSplitTime:v19];
-          if (a3 == 1)
+          if (format == 1)
           {
             v25 = v24;
-            if (!v23)
+            if (!comment)
             {
-              v23 = &stru_2872E16E0;
+              comment = &stru_2872E16E0;
             }
 
             v30 = [v19 key];
-            [v38 appendFormat:@"\t<Measurement key=%@ value=%.3f comment=%@ domain=%@ %@ timestamp=%.3f/>\n", v30, *&v22, v23, v37, v25, (startTime * (info.numer / info.denom)) / 1000000000.0];
+            [string appendFormat:@"\t<Measurement key=%@ value=%.3f comment=%@ domain=%@ %@ timestamp=%.3f/>\n", v30, *&v22, comment, v37, v25, (startTime * (info.numer / info.denom)) / 1000000000.0];
           }
 
-          else if (a3 == 2)
+          else if (format == 2)
           {
-            [v38 appendFormat:@"%@\t%.3f\n", objc_msgSend(v19, "key"), *&v22, v31, v32, v33, v34];
+            [string appendFormat:@"%@\t%.3f\n", objc_msgSend(v19, "key"), *&v22, v31, v32, v33, v34];
           }
 
           v16 = v16 + v22;
@@ -290,58 +290,58 @@
       v16 = 0.0;
     }
 
-    if (a3 == 1)
+    if (format == 1)
     {
-      a4 = v36;
-      v26 = [v36 stringByAppendingString:@"sum"];
-      [v38 appendFormat:@"\t<Measurement key=%@ value=%.3f comment=%@ domain=%@ timestamp=%.3f/>\n", v26, *&v16, v35, v37, (mach_absolute_time() * (info.numer / info.denom)) / 1000000000.0];
+      key = keyCopy;
+      v26 = [keyCopy stringByAppendingString:@"sum"];
+      [string appendFormat:@"\t<Measurement key=%@ value=%.3f comment=%@ domain=%@ timestamp=%.3f/>\n", v26, *&v16, commentCopy, v37, (mach_absolute_time() * (info.numer / info.denom)) / 1000000000.0];
     }
 
     else
     {
-      a4 = v36;
-      if (a3 == 2)
+      key = keyCopy;
+      if (format == 2)
       {
-        [v38 appendFormat:@"%@\t%.3f\n", objc_msgSend(v36, "stringByAppendingString:", @"sum", *&v16, v31, v32, v33];
+        [string appendFormat:@"%@\t%.3f\n", objc_msgSend(keyCopy, "stringByAppendingString:", @"sum", *&v16, v31, v32, v33];
       }
     }
   }
 
   else
   {
-    v38 = 0;
+    string = 0;
   }
 
   if ([(PMRStopwatch *)self coreAnimationTotalTime])
   {
-    if (!a3)
+    if (!format)
     {
       v27 = @"{ key :%@coreAnimationSum(ms), value : %.3f,\n";
       goto LABEL_31;
     }
 
-    if (a3 == 1)
+    if (format == 1)
     {
       v27 = @"\t<Measurement key=%@coreAnimationSum(ms) value=%.3f />\n";
 LABEL_31:
-      v28 = [(PMRStopwatch *)self coreAnimationTotalTime];
-      [v38 appendFormat:v27, a4, (v28 * (info.numer / info.denom)) / 1000000.0];
+      coreAnimationTotalTime = [(PMRStopwatch *)self coreAnimationTotalTime];
+      [string appendFormat:v27, key, (coreAnimationTotalTime * (info.numer / info.denom)) / 1000000.0];
     }
   }
 
-  return v38;
+  return string;
 }
 
-- (id)formattedUserInfoForSplitTime:(id)a3
+- (id)formattedUserInfoForSplitTime:(id)time
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a3 userInfo];
-  v4 = [MEMORY[0x277CCAB68] string];
+  userInfo = [time userInfo];
+  string = [MEMORY[0x277CCAB68] string];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [userInfo countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -353,53 +353,53 @@ LABEL_31:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(userInfo);
         }
 
-        [v4 appendFormat:@"%@=%@ ", *(*(&v10 + 1) + 8 * v8), objc_msgSend(v3, "objectForKeyedSubscript:", *(*(&v10 + 1) + 8 * v8))];
+        [string appendFormat:@"%@=%@ ", *(*(&v10 + 1) + 8 * v8), objc_msgSend(userInfo, "objectForKeyedSubscript:", *(*(&v10 + 1) + 8 * v8))];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [userInfo countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return string;
 }
 
-- (void)logWithFormat:(int)a3
+- (void)logWithFormat:(int)format
 {
-  v3 = [-[PMRStopwatch descriptionWithFormat:key:comment:](self descriptionWithFormat:*&a3 key:0 comment:0), "UTF8String"];
+  v3 = [-[PMRStopwatch descriptionWithFormat:key:comment:](self descriptionWithFormat:*&format key:0 comment:0), "UTF8String"];
 
   puts(v3);
 }
 
-- (void)writeToFile:(id)a3 key:(id)a4 comment:(id)a5 fileFormat:(int)a6
+- (void)writeToFile:(id)file key:(id)key comment:(id)comment fileFormat:(int)format
 {
   v16 = 0;
-  v8 = [(PMRStopwatch *)self descriptionWithFormat:*&a6 key:a4 comment:a5];
+  v8 = [(PMRStopwatch *)self descriptionWithFormat:*&format key:key comment:comment];
   if (v8)
   {
     v9 = v8;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([a3 hasPrefix:@"/"])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([file hasPrefix:@"/"])
     {
-      v11 = [a3 stringByExpandingTildeInPath];
+      stringByExpandingTildeInPath = [file stringByExpandingTildeInPath];
     }
 
     else
     {
       v12 = [objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
       v13 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"~/Library/Logs/%@/", v12), "stringByExpandingTildeInPath"];
-      [v10 createDirectoryAtPath:v13 withIntermediateDirectories:0 attributes:0 error:0];
-      v11 = [v13 stringByAppendingPathComponent:a3];
+      [defaultManager createDirectoryAtPath:v13 withIntermediateDirectories:0 attributes:0 error:0];
+      stringByExpandingTildeInPath = [v13 stringByAppendingPathComponent:file];
     }
 
-    v14 = v11;
-    if ([v10 fileExistsAtPath:v11])
+    v14 = stringByExpandingTildeInPath;
+    if ([defaultManager fileExistsAtPath:stringByExpandingTildeInPath])
     {
       v15 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v14];
       [v15 seekToEndOfFile];

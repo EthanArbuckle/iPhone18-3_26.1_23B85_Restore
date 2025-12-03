@@ -1,7 +1,7 @@
 @interface MapsFeatureFlagsDebugController
 - (Class)findDebugClass;
 - (MapsFeatureFlagsDebugController)init;
-- (id)addGenericRowFor:(id)a3 withName:(id)a4 keyStr:(id)a5 keyType:(unint64_t)a6 defaultValue:(id)a7 configOptions:(unint64_t)a8 inSection:(id)a9;
+- (id)addGenericRowFor:(id)for withName:(id)name keyStr:(id)str keyType:(unint64_t)type defaultValue:(id)value configOptions:(unint64_t)options inSection:(id)section;
 @end
 
 @implementation MapsFeatureFlagsDebugController
@@ -38,9 +38,9 @@
 
       v36 = v7;
       v8 = *(*(&v50 + 1) + 8 * v7);
-      v9 = [v3[423] defaultManager];
+      defaultManager = [v3[423] defaultManager];
       v40 = v8;
-      v10 = [v9 contentsOfDirectoryAtPath:v8 error:0];
+      v10 = [defaultManager contentsOfDirectoryAtPath:v8 error:0];
 
       v48 = 0u;
       v49 = 0u;
@@ -73,15 +73,15 @@
 
               if (v18)
               {
-                v19 = [v18 infoDictionary];
-                v20 = [v19 objectForKeyedSubscript:@"GeoConfigDebugClasses"];
+                infoDictionary = [v18 infoDictionary];
+                v20 = [infoDictionary objectForKeyedSubscript:@"GeoConfigDebugClasses"];
 
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) != 0 && [v20 count])
                 {
-                  v21 = [v18 load];
+                  load = [v18 load];
                   v22 = @"Unable to load bundle %@";
-                  if (v21)
+                  if (load)
                   {
                     v44 = 0u;
                     v45 = 0u;
@@ -181,14 +181,14 @@ LABEL_41:
   return v32;
 }
 
-- (id)addGenericRowFor:(id)a3 withName:(id)a4 keyStr:(id)a5 keyType:(unint64_t)a6 defaultValue:(id)a7 configOptions:(unint64_t)a8 inSection:(id)a9
+- (id)addGenericRowFor:(id)for withName:(id)name keyStr:(id)str keyType:(unint64_t)type defaultValue:(id)value configOptions:(unint64_t)options inSection:(id)section
 {
-  v12 = a4;
-  v13 = a9;
-  if (a6 == 2)
+  nameCopy = name;
+  sectionCopy = section;
+  if (type == 2)
   {
-    v14 = a7;
-    v15 = [a3 key];
+    valueCopy = value;
+    v15 = [for key];
     v17 = v16;
     if (MapsFeature_IsAvailable())
     {
@@ -204,20 +204,20 @@ LABEL_41:
       v24[3] = &unk_1016548D0;
       v24[4] = v15;
       v24[5] = v17;
-      v18 = [v13 addSwitchRowWithTitle:v12 get:v25 set:v24];
+      v18 = [sectionCopy addSwitchRowWithTitle:nameCopy get:v25 set:v24];
       v19 = "YES";
     }
 
     else
     {
-      v18 = [v13 addReadOnlyRowWithTitle:v12 value:0];
+      v18 = [sectionCopy addReadOnlyRowWithTitle:nameCopy value:0];
       v19 = "NO";
     }
 
-    v20 = [v14 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
 
     v21 = "YES";
-    if (!v20)
+    if (!bOOLValue)
     {
       v21 = "NO";
     }
@@ -236,14 +236,14 @@ LABEL_41:
 
 - (MapsFeatureFlagsDebugController)init
 {
-  v2 = self;
-  v3 = [(MapsFeatureFlagsDebugController *)self findDebugClass];
-  if (v3)
+  selfCopy = self;
+  findDebugClass = [(MapsFeatureFlagsDebugController *)self findDebugClass];
+  if (findDebugClass)
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = MapsFeatureFlagsDebugController;
-    v2 = [(GEOConfigKeysDebugController *)&v6 initWithName:@"Feature Flags" geoConfigDebugClass:v3];
-    v4 = v2;
+    selfCopy = [(GEOConfigKeysDebugController *)&v6 initWithName:@"Feature Flags" geoConfigDebugClass:findDebugClass];
+    v4 = selfCopy;
   }
 
   else

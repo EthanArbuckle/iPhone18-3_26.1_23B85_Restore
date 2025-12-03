@@ -6,16 +6,16 @@
 
 - (int64_t)resultCallbackCode
 {
-  v3 = [(SAGenericCommand *)self className];
-  if ([v3 isEqualToString:SACommandFailedClassIdentifier])
+  className = [(SAGenericCommand *)self className];
+  if ([className isEqualToString:SACommandFailedClassIdentifier])
   {
-    v4 = [(SAGenericCommand *)self properties];
-    v5 = [v4 objectForKey:SACommandFailedErrorCodePListKey];
-    v6 = [v5 integerValue];
+    properties = [(SAGenericCommand *)self properties];
+    v5 = [properties objectForKey:SACommandFailedErrorCodePListKey];
+    integerValue = [v5 integerValue];
 
-    if (v6)
+    if (integerValue)
     {
-      v7 = v6;
+      v7 = integerValue;
     }
 
     else
@@ -26,17 +26,17 @@
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:SACommandSucceededClassIdentifier])
+  if ([className isEqualToString:SACommandSucceededClassIdentifier])
   {
 LABEL_6:
     v7 = 0;
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:SAPhoneSearchCompletedClassIdentifier])
+  if ([className isEqualToString:SAPhoneSearchCompletedClassIdentifier])
   {
-    v8 = [(SAGenericCommand *)self properties];
-    v9 = [v8 objectForKey:SAPhoneSearchCompletedPhoneSearchResultsPListKey];
+    properties2 = [(SAGenericCommand *)self properties];
+    v9 = [properties2 objectForKey:SAPhoneSearchCompletedPhoneSearchResultsPListKey];
 
     v10 = [v9 count];
     v11 = &SAPhonePhoneSearchHasResultsErrorCode;
@@ -50,23 +50,23 @@ LABEL_6:
 
   else
   {
-    if (([v3 isEqualToString:SACFFlowCompletedClassIdentifier] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", SACFProviderCompletedClassIdentifier))
+    if (([className isEqualToString:SACFFlowCompletedClassIdentifier] & 1) == 0 && !objc_msgSend(className, "isEqualToString:", SACFProviderCompletedClassIdentifier))
     {
       goto LABEL_6;
     }
 
-    v12 = [(SAGenericCommand *)self properties];
-    v13 = [v12 objectForKey:SACFAbstractClientCommandCompletedStatusPListKey];
-    v14 = [v13 integerValue];
+    properties3 = [(SAGenericCommand *)self properties];
+    v13 = [properties3 objectForKey:SACFAbstractClientCommandCompletedStatusPListKey];
+    integerValue2 = [v13 integerValue];
 
-    if (v14 == SACFSuccessErrorCode)
+    if (integerValue2 == SACFSuccessErrorCode)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v14;
+      v7 = integerValue2;
     }
   }
 

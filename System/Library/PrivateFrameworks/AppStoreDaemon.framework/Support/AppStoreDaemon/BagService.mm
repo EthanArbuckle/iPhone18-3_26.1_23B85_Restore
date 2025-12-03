@@ -7,10 +7,10 @@
 - (AMSBagProtocol)amsBag;
 - (AMSBagProtocol)autoupdatingAMSBag;
 - (BagService)init;
-- (id)addChangeObserverLimitedToKeys:(id)a3 observer:(id)a4;
-- (id)lastCountryCodeForStorefront:(unint64_t)a3;
-- (void)bagWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)removeChangeObserverWithToken:(id)a3;
+- (id)addChangeObserverLimitedToKeys:(id)keys observer:(id)observer;
+- (id)lastCountryCodeForStorefront:(unint64_t)storefront;
+- (void)bagWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)removeChangeObserverWithToken:(id)token;
 - (void)warmUpCache;
 @end
 
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (id)lastCountryCodeForStorefront:(unint64_t)a3
+- (id)lastCountryCodeForStorefront:(unint64_t)storefront
 {
-  v4 = self;
-  sub_10009C7E4(a3);
+  selfCopy = self;
+  sub_10009C7E4(storefront);
   v6 = v5;
 
   if (v6)
@@ -61,15 +61,15 @@
   v3 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v3 - 8);
   v5 = &v10 - v4;
-  v6 = self;
+  selfCopy = self;
   static TaskPriority.userInitiated.getter();
   v7 = type metadata accessor for TaskPriority();
   (*(*(v7 - 8) + 56))(v5, 0, 1, v7);
   v8 = swift_allocObject();
   v8[2] = 0;
   v8[3] = 0;
-  v8[4] = v6;
-  v9 = v6;
+  v8[4] = selfCopy;
+  v9 = selfCopy;
   sub_1000D6CB8(0, 0, v5, 0, 0, &unk_100435C00, v8);
 
   sub_100005518(v5, &qword_10059C3E0);
@@ -78,7 +78,7 @@
 - (AMSBagProtocol)amsBag
 {
   v2 = (self + OBJC_IVAR___BagService_lastRecentBagMutex);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   sub_1000044A4(&v2[2], v8, &qword_10059BDF0);
   os_unfair_lock_unlock(v2);
@@ -102,7 +102,7 @@
 
 - (AMSBagProtocol)autoupdatingAMSBag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000CCE24();
 
   return v3;
@@ -123,30 +123,30 @@
   return v4;
 }
 
-- (void)bagWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)bagWithTimeout:(double)timeout completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = self;
-  sub_1000D71DC(v7, v6, a3);
+  selfCopy = self;
+  sub_1000D71DC(selfCopy, v6, timeout);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (id)addChangeObserverLimitedToKeys:(id)a3 observer:(id)a4
+- (id)addChangeObserverLimitedToKeys:(id)keys observer:(id)observer
 {
   v7 = sub_100085D40(&qword_10059CBC0);
   v8 = __chkstk_darwin(v7);
   v10 = &v23 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v12 = &v23 - v11;
-  v13 = _Block_copy(a4);
-  if (a3)
+  v13 = _Block_copy(observer);
+  if (keys)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = swift_allocObject();
     *(v14 + 16) = v13;
-    v15 = self;
+    selfCopy = self;
 
     sub_1000D7C90(v16);
 
@@ -157,7 +157,7 @@
   {
     v14 = swift_allocObject();
     *(v14 + 16) = v13;
-    v18 = self;
+    selfCopy2 = self;
     v17 = sub_100006060;
   }
 
@@ -175,15 +175,15 @@
   return v21;
 }
 
-- (void)removeChangeObserverWithToken:(id)a3
+- (void)removeChangeObserverWithToken:(id)token
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v5 = v8;
   v6 = sub_100005B60(v7, v8);
-  sub_1000D58D4(v6, v4, v5);
+  sub_1000D58D4(v6, selfCopy, v5);
 
   sub_100005A00(v7);
 }

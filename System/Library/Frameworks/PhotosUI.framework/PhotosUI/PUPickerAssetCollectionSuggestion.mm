@@ -1,6 +1,6 @@
 @interface PUPickerAssetCollectionSuggestion
 - (NSString)localIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerAssetCollectionSuggestion
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PickerAssetCollectionSuggestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PickerAssetCollectionSuggestion.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface TRIRolloutHistoryDatabase
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 block:(id)a5;
-- (BOOL)addRecord:(id)a3;
-- (BOOL)enumerateRecordsNewerThanDate:(id)a3 block:(id)a4;
-- (BOOL)expireRecordsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4;
-- (TRIRolloutHistoryDatabase)initWithDatabase:(id)a3;
-- (id)getAllAllocationStatusesForRolloutId:(id)a3 rampId:(id)a4 deploymentId:(int)a5 factorPackSetId:(id)a6;
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind block:(id)block;
+- (BOOL)addRecord:(id)record;
+- (BOOL)enumerateRecordsNewerThanDate:(id)date block:(id)block;
+- (BOOL)expireRecordsOlderThanDate:(id)date deletedCount:(unint64_t *)count;
+- (TRIRolloutHistoryDatabase)initWithDatabase:(id)database;
+- (id)getAllAllocationStatusesForRolloutId:(id)id rampId:(id)rampId deploymentId:(int)deploymentId factorPackSetId:(id)setId;
 @end
 
 @implementation TRIRolloutHistoryDatabase
 
-- (TRIRolloutHistoryDatabase)initWithDatabase:(id)a3
+- (TRIRolloutHistoryDatabase)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -24,19 +24,19 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- (BOOL)addRecord:(id)a3
+- (BOOL)addRecord:(id)record
 {
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"record"}];
   }
 
   v15 = 0;
@@ -48,9 +48,9 @@
   v10[2] = __39__TRIRolloutHistoryDatabase_addRecord___block_invoke;
   v10[3] = &unk_279DE1758;
   v11 = @" INSERT INTO rolloutHistory(    eventLogTime,     eventType,     rolloutId,     rampId,     deploymentId,     factorPackSetId) VALUES(    :event_log_time,     :event_type,     :rollout_id,     :ramp_id,     :dep_id,     :fps_id);";
-  v6 = v5;
+  v6 = recordCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   [(TRIRolloutHistoryDatabase *)self writeTransactionWithFailableBlock:v10];
   v7 = *(v16 + 24);
@@ -192,16 +192,16 @@ void __39__TRIRolloutHistoryDatabase_addRecord___block_invoke_3(uint64_t a1, voi
   [v4 bindNamedParam:":name" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 block:(id)a5
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if ((v9 == 0) != (v10 == 0))
+  clauseCopy = clause;
+  bindCopy = bind;
+  blockCopy = block;
+  v12 = blockCopy;
+  if ((clauseCopy == 0) != (bindCopy == 0))
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"(whereClause == nil) == (bind == nil)"}];
 
     if (v12)
     {
@@ -209,13 +209,13 @@ void __39__TRIRolloutHistoryDatabase_addRecord___block_invoke_3(uint64_t a1, voi
     }
 
 LABEL_5:
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
@@ -287,13 +287,13 @@ LABEL_3:
   v33[1] = 3221225472;
   v33[2] = __77__TRIRolloutHistoryDatabase__enumerateRecordsMatchingWhereClause_bind_block___block_invoke_5;
   v33[3] = &unk_279DE18C0;
-  v24 = v9;
+  v24 = clauseCopy;
   v34 = v24;
-  v25 = v10;
+  v25 = bindCopy;
   v36 = v25;
   v26 = v23;
   v37 = v26;
-  v35 = self;
+  selfCopy = self;
   v27 = v20;
   v38 = v27;
   v39 = &v59;
@@ -428,15 +428,15 @@ uint64_t __77__TRIRolloutHistoryDatabase__enumerateRecordsMatchingWhereClause_bi
   return *v13;
 }
 
-- (BOOL)enumerateRecordsNewerThanDate:(id)a3 block:(id)a4
+- (BOOL)enumerateRecordsNewerThanDate:(id)date block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dateCopy = date;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (!dateCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
     if (v9)
     {
@@ -444,13 +444,13 @@ uint64_t __77__TRIRolloutHistoryDatabase__enumerateRecordsMatchingWhereClause_bi
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
@@ -460,8 +460,8 @@ LABEL_3:
   v15[1] = 3221225472;
   v15[2] = __65__TRIRolloutHistoryDatabase_enumerateRecordsNewerThanDate_block___block_invoke;
   v15[3] = &unk_279DDF860;
-  v16 = v7;
-  v10 = v7;
+  v16 = dateCopy;
+  v10 = dateCopy;
   v11 = [(TRIRolloutHistoryDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE rh.eventLogTime > :threshold" bind:v15 block:v9];
 
   return v11;
@@ -475,15 +475,15 @@ void __65__TRIRolloutHistoryDatabase_enumerateRecordsNewerThanDate_block___block
   [v3 bindNamedParam:":threshold" toDouble:?];
 }
 
-- (id)getAllAllocationStatusesForRolloutId:(id)a3 rampId:(id)a4 deploymentId:(int)a5 factorPackSetId:(id)a6
+- (id)getAllAllocationStatusesForRolloutId:(id)id rampId:(id)rampId deploymentId:(int)deploymentId factorPackSetId:(id)setId
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  idCopy = id;
+  rampIdCopy = rampId;
+  setIdCopy = setId;
+  if (!idCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
   }
 
   v36[0] = 0;
@@ -505,16 +505,16 @@ void __65__TRIRolloutHistoryDatabase_enumerateRecordsNewerThanDate_block___block
   v20[2] = __102__TRIRolloutHistoryDatabase_getAllAllocationStatusesForRolloutId_rampId_deploymentId_factorPackSetId___block_invoke;
   v20[3] = &unk_279DE1E10;
   v25 = v36;
-  v14 = v11;
+  v14 = idCopy;
   v21 = v14;
-  v15 = v12;
+  v15 = rampIdCopy;
   v22 = v15;
-  v28 = a5;
-  v16 = v13;
+  deploymentIdCopy = deploymentId;
+  v16 = setIdCopy;
   v26 = v35;
   v27 = &v29;
   v23 = v16;
-  v24 = self;
+  selfCopy = self;
   [(TRIRolloutHistoryDatabase *)self readTransactionWithFailableBlock:v20];
   v17 = v30[5];
 
@@ -576,13 +576,13 @@ uint64_t __102__TRIRolloutHistoryDatabase_getAllAllocationStatusesForRolloutId_r
   return *MEMORY[0x277D42690];
 }
 
-- (BOOL)expireRecordsOlderThanDate:(id)a3 deletedCount:(unint64_t *)a4
+- (BOOL)expireRecordsOlderThanDate:(id)date deletedCount:(unint64_t *)count
 {
-  v7 = a3;
-  if (!v7)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutHistoryDatabase.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
   v16 = 0;
@@ -594,9 +594,9 @@ uint64_t __102__TRIRolloutHistoryDatabase_getAllAllocationStatusesForRolloutId_r
   v12[2] = __69__TRIRolloutHistoryDatabase_expireRecordsOlderThanDate_deletedCount___block_invoke;
   v12[3] = &unk_279DE1560;
   v12[4] = self;
-  v8 = v7;
+  v8 = dateCopy;
   v14 = &v16;
-  v15 = a4;
+  countCopy = count;
   v13 = v8;
   [(TRIRolloutHistoryDatabase *)self writeTransactionWithFailableBlock:v12];
   v9 = *(v17 + 24);

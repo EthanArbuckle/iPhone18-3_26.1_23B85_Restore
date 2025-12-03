@@ -1,10 +1,10 @@
 @interface VPPresenterView
 - (VPPresenterView)init;
-- (VPPresenterView)initWithCoder:(id)a3;
-- (VPPresenterView)initWithFrame:(CGRect)a3;
+- (VPPresenterView)initWithCoder:(id)coder;
+- (VPPresenterView)initWithFrame:(CGRect)frame;
 - (void)_watermarkStep;
 - (void)layoutSubviews;
-- (void)setVerificationCode:(id)a3;
+- (void)setVerificationCode:(id)code;
 - (void)start;
 - (void)stop;
 @end
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (VPPresenterView)initWithFrame:(CGRect)a3
+- (VPPresenterView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VPPresenterView;
-  v3 = [(VPPresenterView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VPPresenterView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,11 +39,11 @@
   return v4;
 }
 
-- (VPPresenterView)initWithCoder:(id)a3
+- (VPPresenterView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = VPPresenterView;
-  v3 = [(VPPresenterView *)&v6 initWithCoder:a3];
+  v3 = [(VPPresenterView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)setVerificationCode:(id)a3
+- (void)setVerificationCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (gLogCategory_PV <= 30 && (gLogCategory_PV != -1 || _LogCategory_Initialize()))
   {
     IsAppleInternalBuild();
@@ -78,8 +78,8 @@
   }
 
   verificationCode = self->_verificationCode;
-  self->_verificationCode = v4;
-  v6 = v4;
+  self->_verificationCode = codeCopy;
+  v6 = codeCopy;
 
   watermarkPixelBuffers = self->_watermarkPixelBuffers;
   self->_watermarkPixelBuffers = 0;
@@ -108,12 +108,12 @@
       goto LABEL_22;
     }
 
-    v14 = [(NSString *)self->_verificationCode UTF8String];
+    uTF8String = [(NSString *)self->_verificationCode UTF8String];
     [(VPPresenterView *)self bounds];
     v16 = v15;
     [(VPPresenterView *)self bounds];
     watermarkOpacityMultiplier = self->_watermarkOpacityMultiplier;
-    v19 = VPCreateWatermarkPixelBuffers(v14, 0xFFFFFFFFFFFFFFFFLL, v16, v17, 32, self->_watermarkScaleFactor, &v22);
+    v19 = VPCreateWatermarkPixelBuffers(uTF8String, 0xFFFFFFFFFFFFFFFFLL, v16, v17, 32, self->_watermarkScaleFactor, &v22);
     watermarkPixelBuffers = self->_watermarkPixelBuffers;
     self->_watermarkPixelBuffers = v19;
 
@@ -122,15 +122,15 @@
 LABEL_22:
       if (!self->_watermarkLayer)
       {
-        v4 = [MEMORY[0x277CD9ED0] layer];
+        layer = [MEMORY[0x277CD9ED0] layer];
         watermarkLayer = self->_watermarkLayer;
-        self->_watermarkLayer = v4;
+        self->_watermarkLayer = layer;
 
         [(CALayer *)self->_watermarkLayer setContentsDither:0];
         [(VPPresenterView *)self bounds];
         [(CALayer *)self->_watermarkLayer setFrame:?];
-        v6 = [(VPPresenterView *)self layer];
-        [v6 addSublayer:self->_watermarkLayer];
+        layer2 = [(VPPresenterView *)self layer];
+        [layer2 addSublayer:self->_watermarkLayer];
       }
 
       if (!self->_moviePlayer)

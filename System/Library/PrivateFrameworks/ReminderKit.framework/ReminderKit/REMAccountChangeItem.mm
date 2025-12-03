@@ -1,45 +1,45 @@
 @interface REMAccountChangeItem
-+ (id)_emptyListIDsOrderingWithAccountID:(id)a3;
++ (id)_emptyListIDsOrderingWithAccountID:(id)d;
 + (void)initialize;
-- (BOOL)canCopyReminderLosslesslyToAccountChangeItem:(id)a3;
+- (BOOL)canCopyReminderLosslesslyToAccountChangeItem:(id)item;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (REMAccountCapabilities)capabilities;
-- (REMAccountChangeItem)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5 insertIntoSaveRequest:(id)a6;
-- (REMAccountChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 capabilities:(id)a5 changedKeysObserver:(id)a6;
+- (REMAccountChangeItem)initWithObjectID:(id)d type:(int64_t)type name:(id)name insertIntoSaveRequest:(id)request;
+- (REMAccountChangeItem)initWithSaveRequest:(id)request storage:(id)storage capabilities:(id)capabilities changedKeysObserver:(id)observer;
 - (REMAccountGroupContextChangeItem)groupContext;
 - (REMAccountPinnedListsContextChangeItem)pinnedListsContext;
 - (id)accountTypeHost;
 - (id)changedKeys;
-- (id)lowLevelRemoveMergeableOrderingNodeIDFromOrdering:(id)a3;
-- (id)mergeableOrderingNodesByOrderingMergeableOrderingNodes:(id)a3;
-- (id)resolutionTokenKeyForChangedKey:(id)a3;
-- (id)shallowCopyWithSaveRequest:(id)a3;
+- (id)lowLevelRemoveMergeableOrderingNodeIDFromOrdering:(id)ordering;
+- (id)mergeableOrderingNodesByOrderingMergeableOrderingNodes:(id)nodes;
+- (id)resolutionTokenKeyForChangedKey:(id)key;
+- (id)shallowCopyWithSaveRequest:(id)request;
 - (id)templatesContextChangeItem;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_editListIDsOrderingUsingBlock:(id)a3;
-- (void)_lowLevelAddMergeableOrderingNodeToOrdering:(id)a3 atIndexOfSibling:(id)a4 isAfter:(BOOL)a5 withParentMergeableOrderingNode:(id)a6;
-- (void)_lowLevelApplyUndoToOrdering:(id)a3;
-- (void)_reassignMergeableOrderingNode:(id)a3 withParentListChangeItem:(id)a4;
-- (void)addMergeableOrderingNode:(id)a3;
-- (void)addSmartListChangeItem:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_editListIDsOrderingUsingBlock:(id)block;
+- (void)_lowLevelAddMergeableOrderingNodeToOrdering:(id)ordering atIndexOfSibling:(id)sibling isAfter:(BOOL)after withParentMergeableOrderingNode:(id)node;
+- (void)_lowLevelApplyUndoToOrdering:(id)ordering;
+- (void)_reassignMergeableOrderingNode:(id)node withParentListChangeItem:(id)item;
+- (void)addMergeableOrderingNode:(id)node;
+- (void)addSmartListChangeItem:(id)item;
 - (void)capabilities;
-- (void)insertMergeableOrderingNode:(id)a3 afterMergeableOrderingNode:(id)a4;
-- (void)insertMergeableOrderingNode:(id)a3 beforeMergeableOrderingNode:(id)a4;
-- (void)insertSmartListChangeItem:(id)a3 afterSmartListChangeItem:(id)a4;
-- (void)insertSmartListChangeItem:(id)a3 beforeSmartListChangeItem:(id)a4;
-- (void)lowLevelAddMergeableOrderingNodeIDToOrdering:(id)a3 withParentMergeableOrderingNode:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)test_lowLevelEditOrderingByMovingListObjectID:(id)a3 toTarget:(unint64_t)a4;
-- (void)undeleteListWithID:(id)a3 usingUndo:(id)a4;
-- (void)undeleteSmartListWithID:(id)a3 usingUndo:(id)a4;
+- (void)insertMergeableOrderingNode:(id)node afterMergeableOrderingNode:(id)orderingNode;
+- (void)insertMergeableOrderingNode:(id)node beforeMergeableOrderingNode:(id)orderingNode;
+- (void)insertSmartListChangeItem:(id)item afterSmartListChangeItem:(id)changeItem;
+- (void)insertSmartListChangeItem:(id)item beforeSmartListChangeItem:(id)changeItem;
+- (void)lowLevelAddMergeableOrderingNodeIDToOrdering:(id)ordering withParentMergeableOrderingNode:(id)node;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)test_lowLevelEditOrderingByMovingListObjectID:(id)d toTarget:(unint64_t)target;
+- (void)undeleteListWithID:(id)d usingUndo:(id)undo;
+- (void)undeleteSmartListWithID:(id)d usingUndo:(id)undo;
 @end
 
 @implementation REMAccountChangeItem
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = __sKeysToObserve_0;
     __sKeysToObserve_0 = &unk_1F0D998C8;
@@ -50,13 +50,13 @@
   }
 }
 
-- (REMAccountChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 capabilities:(id)a5 changedKeysObserver:(id)a6
+- (REMAccountChangeItem)initWithSaveRequest:(id)request storage:(id)storage capabilities:(id)capabilities changedKeysObserver:(id)observer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  requestCopy = request;
+  storageCopy = storage;
+  capabilitiesCopy = capabilities;
+  observerCopy = observer;
+  if (storageCopy)
   {
     v22.receiver = self;
     v22.super_class = REMAccountChangeItem;
@@ -64,16 +64,16 @@
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_saveRequest, a3);
-      objc_storeStrong(&v16->_storage, a4);
-      objc_storeStrong(&v16->_changedKeysObserver, a6);
+      objc_storeStrong(&v15->_saveRequest, request);
+      objc_storeStrong(&v16->_storage, storage);
+      objc_storeStrong(&v16->_changedKeysObserver, observer);
       saveRequest = v16->_saveRequest;
-      v18 = [(REMAccountStorage *)v16->_storage objectID];
-      [(REMSaveRequest *)saveRequest _trackAccountCapabilities:v13 forObjectID:v18];
+      objectID = [(REMAccountStorage *)v16->_storage objectID];
+      [(REMSaveRequest *)saveRequest _trackAccountCapabilities:capabilitiesCopy forObjectID:objectID];
     }
 
     self = v16;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
@@ -85,46 +85,46 @@
     }
 
     NSLog(&cfstr_SIsUnexpectedl.isa, "storage");
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (REMAccountChangeItem)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5 insertIntoSaveRequest:(id)a6
+- (REMAccountChangeItem)initWithObjectID:(id)d type:(int64_t)type name:(id)name insertIntoSaveRequest:(id)request
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [REMAccountChangeItem _emptyListIDsOrderingWithAccountID:v12];
-  v14 = [[REMAccountStorage alloc] initWithObjectID:v12 type:a4 name:v11 listIDsMergeableOrdering:v13];
+  requestCopy = request;
+  nameCopy = name;
+  dCopy = d;
+  v13 = [REMAccountChangeItem _emptyListIDsOrderingWithAccountID:dCopy];
+  v14 = [[REMAccountStorage alloc] initWithObjectID:dCopy type:type name:nameCopy listIDsMergeableOrdering:v13];
 
-  v15 = [[REMAccountCapabilities alloc] initWithAccountType:a4];
-  v16 = [(REMAccountChangeItem *)self initWithSaveRequest:v10 storage:v14 capabilities:v15 observeInitialValues:1];
+  v15 = [[REMAccountCapabilities alloc] initWithAccountType:type];
+  v16 = [(REMAccountChangeItem *)self initWithSaveRequest:requestCopy storage:v14 capabilities:v15 observeInitialValues:1];
 
   return v16;
 }
 
-- (id)shallowCopyWithSaveRequest:(id)a3
+- (id)shallowCopyWithSaveRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(REMAccountChangeItem *)self storage];
+  requestCopy = request;
+  storage = [(REMAccountChangeItem *)self storage];
 
-  if (v6)
+  if (storage)
   {
-    v7 = [(REMAccountChangeItem *)self objectID];
-    v8 = [v5 _trackedAccountCapabilitiesForObjectID:v7];
+    objectID = [(REMAccountChangeItem *)self objectID];
+    v8 = [requestCopy _trackedAccountCapabilitiesForObjectID:objectID];
 
     if (v8)
     {
       goto LABEL_16;
     }
 
-    v9 = [(REMAccountChangeItem *)self objectID];
+    objectID2 = [(REMAccountChangeItem *)self objectID];
 
-    if (v9)
+    if (objectID2)
     {
-      if (!v5)
+      if (!requestCopy)
       {
         goto LABEL_15;
       }
@@ -147,8 +147,8 @@
 
 LABEL_15:
     v13 = [REMAccountCapabilities alloc];
-    v14 = [(REMAccountChangeItem *)self storage];
-    v8 = -[REMAccountCapabilities initWithAccountType:](v13, "initWithAccountType:", [v14 type]);
+    storage2 = [(REMAccountChangeItem *)self storage];
+    v8 = -[REMAccountCapabilities initWithAccountType:](v13, "initWithAccountType:", [storage2 type]);
 
     if (!v8)
     {
@@ -158,15 +158,15 @@ LABEL_15:
         [REMAccountChangeItem shallowCopyWithSaveRequest:v8];
       }
 
-      v12 = 0;
+      storage4 = 0;
       goto LABEL_17;
     }
 
 LABEL_16:
     v15 = [REMAccountChangeItem alloc];
-    v16 = [(REMAccountChangeItem *)self storage];
-    v17 = [(REMAccountChangeItem *)self changedKeysObserver];
-    v12 = [(REMAccountChangeItem *)v15 initWithSaveRequest:v5 storage:v16 capabilities:v8 changedKeysObserver:v17];
+    storage3 = [(REMAccountChangeItem *)self storage];
+    changedKeysObserver = [(REMAccountChangeItem *)self changedKeysObserver];
+    storage4 = [(REMAccountChangeItem *)v15 initWithSaveRequest:requestCopy storage:storage3 capabilities:v8 changedKeysObserver:changedKeysObserver];
 
 LABEL_17:
     goto LABEL_18;
@@ -178,11 +178,11 @@ LABEL_17:
     [REMAccountChangeItem shallowCopyWithSaveRequest:];
   }
 
-  v12 = [(REMAccountChangeItem *)self storage];
+  storage4 = [(REMAccountChangeItem *)self storage];
 
-  if (v12)
+  if (storage4)
   {
-    v12 = 0;
+    storage4 = 0;
   }
 
   else
@@ -192,18 +192,18 @@ LABEL_17:
 
 LABEL_18:
 
-  return v12;
+  return storage4;
 }
 
 - (REMAccountCapabilities)capabilities
 {
-  v3 = [(REMAccountChangeItem *)self storage];
+  storage = [(REMAccountChangeItem *)self storage];
 
-  if (v3)
+  if (storage)
   {
-    v4 = [(REMAccountChangeItem *)self saveRequest];
-    v5 = [(REMAccountChangeItem *)self objectID];
-    v6 = [v4 _trackedAccountCapabilitiesForObjectID:v5];
+    saveRequest = [(REMAccountChangeItem *)self saveRequest];
+    objectID = [(REMAccountChangeItem *)self objectID];
+    v6 = [saveRequest _trackedAccountCapabilitiesForObjectID:objectID];
 
     if (!v6)
     {
@@ -214,8 +214,8 @@ LABEL_18:
       }
 
       v8 = [REMAccountCapabilities alloc];
-      v9 = [(REMAccountChangeItem *)self storage];
-      v6 = -[REMAccountCapabilities initWithAccountType:](v8, "initWithAccountType:", [v9 type]);
+      storage2 = [(REMAccountChangeItem *)self storage];
+      v6 = -[REMAccountCapabilities initWithAccountType:](v8, "initWithAccountType:", [storage2 type]);
 
       if (!v6)
       {
@@ -232,9 +232,9 @@ LABEL_18:
       [REMAccountChangeItem shallowCopyWithSaveRequest:];
     }
 
-    v11 = [(REMAccountChangeItem *)self storage];
+    storage3 = [(REMAccountChangeItem *)self storage];
 
-    if (!v11)
+    if (!storage3)
     {
       NSLog(&cfstr_SIsUnexpectedl.isa, "self.storage");
     }
@@ -247,10 +247,10 @@ LABEL_18:
 
 - (REMAccountGroupContextChangeItem)groupContext
 {
-  v3 = [(REMAccountChangeItem *)self capabilities];
-  v4 = [v3 supportsGroups];
+  capabilities = [(REMAccountChangeItem *)self capabilities];
+  supportsGroups = [capabilities supportsGroups];
 
-  if (v4)
+  if (supportsGroups)
   {
     v5 = [[REMAccountGroupContextChangeItem alloc] initWithAccountChangeItem:self];
   }
@@ -265,10 +265,10 @@ LABEL_18:
 
 - (REMAccountPinnedListsContextChangeItem)pinnedListsContext
 {
-  v3 = [(REMAccountChangeItem *)self capabilities];
-  v4 = [v3 supportsPinnedLists];
+  capabilities = [(REMAccountChangeItem *)self capabilities];
+  supportsPinnedLists = [capabilities supportsPinnedLists];
 
-  if (v4)
+  if (supportsPinnedLists)
   {
     v5 = [[REMAccountPinnedListsContextChangeItem alloc] initWithAccountChangeItem:self];
   }
@@ -283,10 +283,10 @@ LABEL_18:
 
 - (id)templatesContextChangeItem
 {
-  v3 = [(REMAccountChangeItem *)self capabilities];
-  v4 = [v3 supportsTemplates];
+  capabilities = [(REMAccountChangeItem *)self capabilities];
+  supportsTemplates = [capabilities supportsTemplates];
 
-  if (v4)
+  if (supportsTemplates)
   {
     v5 = [[REMAccountTemplatesContextChangeItem alloc] initWithAccountChangeItem:self];
   }
@@ -299,16 +299,16 @@ LABEL_18:
   return v5;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMAccountChangeItem *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMAccountChangeItem *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMAccountChangeItem;
@@ -319,21 +319,21 @@ LABEL_18:
 
   else
   {
-    v5 = [(REMAccountChangeItem *)self storage];
+    storage = [(REMAccountChangeItem *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMAccountChangeItem *)self saveRequest];
-  v9 = [v8 isSaved];
+  keyCopy = key;
+  valueCopy = value;
+  saveRequest = [(REMAccountChangeItem *)self saveRequest];
+  isSaved = [saveRequest isSaved];
 
-  if (v9)
+  if (isSaved)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -343,22 +343,22 @@ LABEL_18:
     }
   }
 
-  v11 = [(REMAccountChangeItem *)self storage];
-  [v11 setValue:v7 forKey:v6];
+  storage = [(REMAccountChangeItem *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
-- (id)resolutionTokenKeyForChangedKey:(id)a3
+- (id)resolutionTokenKeyForChangedKey:(id)key
 {
   v3 = __resolutionTokenKeyDenylist;
-  v4 = a3;
-  if ([v3 containsObject:v4])
+  keyCopy = key;
+  if ([v3 containsObject:keyCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = keyCopy;
   }
 
   v6 = v5;
@@ -368,136 +368,136 @@ LABEL_18:
 
 - (id)changedKeys
 {
-  v2 = [(REMAccountChangeItem *)self changedKeysObserver];
-  v3 = [v2 changedKeys];
+  changedKeysObserver = [(REMAccountChangeItem *)self changedKeysObserver];
+  changedKeys = [changedKeysObserver changedKeys];
 
-  return v3;
+  return changedKeys;
 }
 
 - (id)accountTypeHost
 {
-  v2 = [(REMAccountChangeItem *)self storage];
-  v3 = [v2 accountTypeHost];
+  storage = [(REMAccountChangeItem *)self storage];
+  accountTypeHost = [storage accountTypeHost];
 
-  return v3;
+  return accountTypeHost;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMAccountChangeItem *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMAccountChangeItem *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
-- (void)addSmartListChangeItem:(id)a3
+- (void)addSmartListChangeItem:(id)item
 {
-  v4 = a3;
-  [v4 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem addSmartListChangeItem:]"];
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v4 adjacentToMergeableOrderingNode:0 isAfter:1 withParentMergeableOrderingNode:0];
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem addSmartListChangeItem:]"];
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:0 isAfter:1 withParentMergeableOrderingNode:0];
 }
 
-- (void)insertSmartListChangeItem:(id)a3 beforeSmartListChangeItem:(id)a4
+- (void)insertSmartListChangeItem:(id)item beforeSmartListChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:]"];
-  [v6 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:] (sibling)"];
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:0 withParentMergeableOrderingNode:0];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:]"];
+  [changeItemCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:beforeSmartListChangeItem:] (sibling)"];
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:changeItemCopy isAfter:0 withParentMergeableOrderingNode:0];
 }
 
-- (void)insertSmartListChangeItem:(id)a3 afterSmartListChangeItem:(id)a4
+- (void)insertSmartListChangeItem:(id)item afterSmartListChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:afterSmartListChangeItem:]"];
-  [v6 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:afterSmartListChangeItem:] (sibling)"];
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:1 withParentMergeableOrderingNode:0];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  [itemCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:afterSmartListChangeItem:]"];
+  [changeItemCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertSmartListChangeItem:afterSmartListChangeItem:] (sibling)"];
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:itemCopy adjacentToMergeableOrderingNode:changeItemCopy isAfter:1 withParentMergeableOrderingNode:0];
 }
 
-- (void)addMergeableOrderingNode:(id)a3
+- (void)addMergeableOrderingNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem addMergeableOrderingNode:]"];
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem addMergeableOrderingNode:]"];
   }
 
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v4 adjacentToMergeableOrderingNode:0 isAfter:1 withParentMergeableOrderingNode:0];
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:0 isAfter:1 withParentMergeableOrderingNode:0];
 }
 
-- (void)insertMergeableOrderingNode:(id)a3 beforeMergeableOrderingNode:(id)a4
+- (void)insertMergeableOrderingNode:(id)node beforeMergeableOrderingNode:(id)orderingNode
 {
-  v7 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  orderingNodeCopy = orderingNode;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:]"];
-  }
-
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    [v6 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:] (sibling)"];
-  }
-
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:0 withParentMergeableOrderingNode:0];
-}
-
-- (void)insertMergeableOrderingNode:(id)a3 afterMergeableOrderingNode:(id)a4
-{
-  v7 = a3;
-  v6 = a4;
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    [v7 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:]"];
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:]"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:] (sibling)"];
+    [orderingNodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:beforeMergeableOrderingNode:] (sibling)"];
   }
 
-  [(REMAccountChangeItem *)self insertMergeableOrderingNode:v7 adjacentToMergeableOrderingNode:v6 isAfter:1 withParentMergeableOrderingNode:0];
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:orderingNodeCopy isAfter:0 withParentMergeableOrderingNode:0];
 }
 
-- (void)undeleteListWithID:(id)a3 usingUndo:(id)a4
+- (void)insertMergeableOrderingNode:(id)node afterMergeableOrderingNode:(id)orderingNode
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(REMAccountChangeItem *)self listIDsToUndelete];
-  v8 = [v7 setByAddingObject:v6];
+  nodeCopy = node;
+  orderingNodeCopy = orderingNode;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [nodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:]"];
+  }
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [orderingNodeCopy assertIsCustomSmartListWithAction:@"-[REMAccountChangeItem insertMergeableOrderingNode:afterMergeableOrderingNode:] (sibling)"];
+  }
+
+  [(REMAccountChangeItem *)self insertMergeableOrderingNode:nodeCopy adjacentToMergeableOrderingNode:orderingNodeCopy isAfter:1 withParentMergeableOrderingNode:0];
+}
+
+- (void)undeleteListWithID:(id)d usingUndo:(id)undo
+{
+  undoCopy = undo;
+  dCopy = d;
+  listIDsToUndelete = [(REMAccountChangeItem *)self listIDsToUndelete];
+  v8 = [listIDsToUndelete setByAddingObject:dCopy];
 
   [(REMAccountChangeItem *)self setListIDsToUndelete:v8];
-  [(REMAccountChangeItem *)self _lowLevelApplyUndoToOrdering:v9];
+  [(REMAccountChangeItem *)self _lowLevelApplyUndoToOrdering:undoCopy];
 }
 
-- (void)undeleteSmartListWithID:(id)a3 usingUndo:(id)a4
+- (void)undeleteSmartListWithID:(id)d usingUndo:(id)undo
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(REMAccountChangeItem *)self smartListIDsToUndelete];
-  v8 = [v7 setByAddingObject:v6];
+  undoCopy = undo;
+  dCopy = d;
+  smartListIDsToUndelete = [(REMAccountChangeItem *)self smartListIDsToUndelete];
+  v8 = [smartListIDsToUndelete setByAddingObject:dCopy];
 
   [(REMAccountChangeItem *)self setSmartListIDsToUndelete:v8];
-  [(REMAccountChangeItem *)self _lowLevelApplyUndoToOrdering:v9];
+  [(REMAccountChangeItem *)self _lowLevelApplyUndoToOrdering:undoCopy];
 }
 
-- (id)mergeableOrderingNodesByOrderingMergeableOrderingNodes:(id)a3
+- (id)mergeableOrderingNodesByOrderingMergeableOrderingNodes:(id)nodes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  nodesCopy = nodes;
+  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(nodesCopy, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(nodesCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = nodesCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -513,13 +513,13 @@ LABEL_18:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 remObjectID];
-        v13 = [v12 uuid];
-        v14 = [v13 UUIDString];
+        remObjectID = [v11 remObjectID];
+        uuid = [remObjectID uuid];
+        uUIDString = [uuid UUIDString];
 
-        if ([v14 length])
+        if ([uUIDString length])
         {
-          [v5 setObject:v11 forKeyedSubscript:v14];
+          [v5 setObject:v11 forKeyedSubscript:uUIDString];
         }
       }
 
@@ -529,7 +529,7 @@ LABEL_18:
     while (v8);
   }
 
-  v15 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  listIDsMergeableOrdering = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __79__REMAccountChangeItem_mergeableOrderingNodesByOrderingMergeableOrderingNodes___block_invoke;
@@ -538,7 +538,7 @@ LABEL_18:
   v25 = v16;
   v17 = v23;
   v26 = v17;
-  [v15 enumerateObjectsUsingBlock:v24];
+  [listIDsMergeableOrdering enumerateObjectsUsingBlock:v24];
 
   if ([v16 count])
   {
@@ -567,27 +567,27 @@ void __79__REMAccountChangeItem_mergeableOrderingNodesByOrderingMergeableOrderin
   }
 }
 
-- (BOOL)canCopyReminderLosslesslyToAccountChangeItem:(id)a3
+- (BOOL)canCopyReminderLosslesslyToAccountChangeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
-  v6 = [(REMAccountChangeItem *)self type];
-  v7 = [v4 type];
-  v8 = [v4 accountTypeHost];
+  type = [(REMAccountChangeItem *)self type];
+  type2 = [itemCopy type];
+  accountTypeHost = [itemCopy accountTypeHost];
 
-  LOBYTE(v6) = [v5 canCopyReminderLosslesslyFromAccountWithType:v6 toAccountWithType:v7 accountTypeHost:v8];
-  return v6;
+  LOBYTE(type) = [v5 canCopyReminderLosslesslyFromAccountWithType:type toAccountWithType:type2 accountTypeHost:accountTypeHost];
+  return type;
 }
 
-- (void)lowLevelAddMergeableOrderingNodeIDToOrdering:(id)a3 withParentMergeableOrderingNode:(id)a4
+- (void)lowLevelAddMergeableOrderingNodeIDToOrdering:(id)ordering withParentMergeableOrderingNode:(id)node
 {
-  v5 = a3;
+  orderingCopy = ordering;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __101__REMAccountChangeItem_lowLevelAddMergeableOrderingNodeIDToOrdering_withParentMergeableOrderingNode___block_invoke;
   v7[3] = &unk_1E7508670;
-  v8 = v5;
-  v6 = v5;
+  v8 = orderingCopy;
+  v6 = orderingCopy;
   [(REMAccountChangeItem *)self _editListIDsOrderingUsingBlock:v7];
 }
 
@@ -599,14 +599,14 @@ void __101__REMAccountChangeItem_lowLevelAddMergeableOrderingNodeIDToOrdering_wi
   v5 = [v6 addObject:v4];
 }
 
-- (id)lowLevelRemoveMergeableOrderingNodeIDFromOrdering:(id)a3
+- (id)lowLevelRemoveMergeableOrderingNodeIDFromOrdering:(id)ordering
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-  v6 = [v4 uuid];
-  v7 = [v6 UUIDString];
-  v8 = [v5 indexOfEqualObject:v7];
+  orderingCopy = ordering;
+  listIDsMergeableOrdering = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  uuid = [orderingCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v8 = [listIDsMergeableOrdering indexOfEqualObject:uUIDString];
 
   v15 = 0;
   v16 = &v15;
@@ -619,8 +619,8 @@ void __101__REMAccountChangeItem_lowLevelAddMergeableOrderingNodeIDToOrdering_wi
     v9 = +[REMLogStore write];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-      [(REMAccountChangeItem *)v4 lowLevelRemoveMergeableOrderingNodeIDFromOrdering:v10, buf, v9];
+      listIDsMergeableOrdering2 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+      [(REMAccountChangeItem *)orderingCopy lowLevelRemoveMergeableOrderingNodeIDFromOrdering:listIDsMergeableOrdering2, buf, v9];
     }
   }
 
@@ -653,20 +653,20 @@ uint64_t __74__REMAccountChangeItem_lowLevelRemoveMergeableOrderingNodeIDFromOrd
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)test_lowLevelEditOrderingByMovingListObjectID:(id)a3 toTarget:(unint64_t)a4
+- (void)test_lowLevelEditOrderingByMovingListObjectID:(id)d toTarget:(unint64_t)target
 {
-  v6 = a3;
-  v7 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-  v8 = [v6 uuid];
-  v9 = [v8 UUIDString];
-  v10 = [v7 indexOfEqualObject:v9];
+  dCopy = d;
+  listIDsMergeableOrdering = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  uuid = [dCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v10 = [listIDsMergeableOrdering indexOfEqualObject:uUIDString];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [REMAccountChangeItem test_lowLevelEditOrderingByMovingListObjectID:v6 toTarget:self];
+      [REMAccountChangeItem test_lowLevelEditOrderingByMovingListObjectID:dCopy toTarget:self];
     }
 
 LABEL_8:
@@ -674,15 +674,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-  v13 = [v12 count];
+  listIDsMergeableOrdering2 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  v13 = [listIDsMergeableOrdering2 count];
 
-  if (v13 <= a4)
+  if (v13 <= target)
   {
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [REMAccountChangeItem test_lowLevelEditOrderingByMovingListObjectID:v6 toTarget:self];
+      [REMAccountChangeItem test_lowLevelEditOrderingByMovingListObjectID:dCopy toTarget:self];
     }
 
     goto LABEL_8;
@@ -692,7 +692,7 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __79__REMAccountChangeItem_test_lowLevelEditOrderingByMovingListObjectID_toTarget___block_invoke;
   v14[3] = &__block_descriptor_48_e41_v16__0__REMMutableCRMergeableOrderedSet_8l;
-  v14[4] = a4;
+  v14[4] = target;
   v14[5] = v10;
   [(REMAccountChangeItem *)self _editListIDsOrderingUsingBlock:v14];
 LABEL_9:
@@ -708,49 +708,49 @@ void *__79__REMAccountChangeItem_test_lowLevelEditOrderingByMovingListObjectID_t
   return result;
 }
 
-+ (id)_emptyListIDsOrderingWithAccountID:(id)a3
++ (id)_emptyListIDsOrderingWithAccountID:(id)d
 {
-  v3 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:a3];
+  v3 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:d];
   v4 = [REMCRMergeableOrderedSet alloc];
-  v5 = [MEMORY[0x1E695DFB8] orderedSet];
-  v6 = [(REMCRMergeableOrderedSet *)v4 initWithReplicaIDSource:v3 orderedSet:v5];
+  orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+  v6 = [(REMCRMergeableOrderedSet *)v4 initWithReplicaIDSource:v3 orderedSet:orderedSet];
 
   return v6;
 }
 
-- (void)_reassignMergeableOrderingNode:(id)a3 withParentListChangeItem:(id)a4
+- (void)_reassignMergeableOrderingNode:(id)node withParentListChangeItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 removeFromParentWithAccountChangeItem:self];
-  v7 = [(REMAccountChangeItem *)self objectID];
-  [v10 setParentOwnerID:v7];
+  nodeCopy = node;
+  itemCopy = item;
+  [nodeCopy removeFromParentWithAccountChangeItem:self];
+  objectID = [(REMAccountChangeItem *)self objectID];
+  [nodeCopy setParentOwnerID:objectID];
 
-  v8 = [(REMAccountChangeItem *)self objectID];
-  [v10 setAccountID:v8];
+  objectID2 = [(REMAccountChangeItem *)self objectID];
+  [nodeCopy setAccountID:objectID2];
 
-  if (v6)
+  if (itemCopy)
   {
-    v9 = [v6 remObjectID];
-    [v10 setParentSubContainerID:v9];
+    remObjectID = [itemCopy remObjectID];
+    [nodeCopy setParentSubContainerID:remObjectID];
   }
 }
 
-- (void)_lowLevelAddMergeableOrderingNodeToOrdering:(id)a3 atIndexOfSibling:(id)a4 isAfter:(BOOL)a5 withParentMergeableOrderingNode:(id)a6
+- (void)_lowLevelAddMergeableOrderingNodeToOrdering:(id)ordering atIndexOfSibling:(id)sibling isAfter:(BOOL)after withParentMergeableOrderingNode:(id)node
 {
-  v9 = a3;
-  v10 = a4;
-  v38 = a6;
-  v11 = [v9 accountID];
-  if (!v11)
+  orderingCopy = ordering;
+  siblingCopy = sibling;
+  nodeCopy = node;
+  accountID = [orderingCopy accountID];
+  if (!accountID)
   {
     goto LABEL_13;
   }
 
-  v12 = v11;
-  v13 = [v9 accountID];
-  v14 = [(REMAccountChangeItem *)self objectID];
-  v15 = [v13 isEqual:v14];
+  v12 = accountID;
+  accountID2 = [orderingCopy accountID];
+  objectID = [(REMAccountChangeItem *)self objectID];
+  v15 = [accountID2 isEqual:objectID];
 
   if ((v15 & 1) == 0)
   {
@@ -762,23 +762,23 @@ LABEL_13:
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0x7FFFFFFFFFFFFFFFLL;
-  v16 = [v9 remObjectID];
-  v17 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-  v18 = [v16 uuid];
-  v19 = [v18 UUIDString];
-  v37 = [v17 indexOfEqualObject:v19];
+  remObjectID = [orderingCopy remObjectID];
+  listIDsMergeableOrdering = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  uuid = [remObjectID uuid];
+  uUIDString = [uuid UUIDString];
+  v37 = [listIDsMergeableOrdering indexOfEqualObject:uUIDString];
 
-  v20 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-  v36 = [v20 count];
+  listIDsMergeableOrdering2 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+  v36 = [listIDsMergeableOrdering2 count];
 
-  if (!v10)
+  if (!siblingCopy)
   {
     goto LABEL_12;
   }
 
-  v21 = [v9 accountID];
-  v22 = [v10 accountID];
-  if (([v21 isEqual:v22] & 1) == 0)
+  accountID3 = [orderingCopy accountID];
+  accountID4 = [siblingCopy accountID];
+  if (([accountID3 isEqual:accountID4] & 1) == 0)
   {
 
     v27 = 0;
@@ -787,20 +787,20 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v23 = [v9 parentSubContainerID];
-  if (!v23)
+  parentSubContainerID = [orderingCopy parentSubContainerID];
+  if (!parentSubContainerID)
   {
-    v35 = [v10 parentSubContainerID];
-    if (!v35)
+    parentSubContainerID2 = [siblingCopy parentSubContainerID];
+    if (!parentSubContainerID2)
     {
 
 LABEL_15:
-      v21 = v10;
-      v28 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
-      v29 = [v21 remObjectID];
-      v30 = [v29 uuid];
-      v31 = [v30 UUIDString];
-      v32 = [v28 indexOfEqualObject:v31];
+      accountID3 = siblingCopy;
+      listIDsMergeableOrdering3 = [(REMAccountChangeItem *)self listIDsMergeableOrdering];
+      remObjectID2 = [accountID3 remObjectID];
+      uuid2 = [remObjectID2 uuid];
+      uUIDString2 = [uuid2 UUIDString];
+      v32 = [listIDsMergeableOrdering3 indexOfEqualObject:uUIDString2];
       v50[3] = v32;
 
       v27 = v50[3] == 0x7FFFFFFFFFFFFFFFLL;
@@ -808,11 +808,11 @@ LABEL_15:
     }
   }
 
-  v24 = [v9 parentSubContainerID];
-  v25 = [v10 parentSubContainerID];
-  v26 = [v24 isEqual:v25];
+  parentSubContainerID3 = [orderingCopy parentSubContainerID];
+  parentSubContainerID4 = [siblingCopy parentSubContainerID];
+  v26 = [parentSubContainerID3 isEqual:parentSubContainerID4];
 
-  if (v23)
+  if (parentSubContainerID)
   {
   }
 
@@ -832,15 +832,15 @@ LABEL_17:
   v40[1] = 3221225472;
   v40[2] = __125__REMAccountChangeItem__lowLevelAddMergeableOrderingNodeToOrdering_atIndexOfSibling_isAfter_withParentMergeableOrderingNode___block_invoke;
   v40[3] = &unk_1E75086E0;
-  v47 = a5;
+  afterCopy = after;
   v44 = &v49;
   v45 = v37;
-  v33 = v16;
+  v33 = remObjectID;
   v41 = v33;
   v48 = v27;
-  v34 = v38;
+  v34 = nodeCopy;
   v42 = v34;
-  v43 = self;
+  selfCopy = self;
   v46 = v36;
   [(REMAccountChangeItem *)self _editListIDsOrderingUsingBlock:v40];
 
@@ -945,25 +945,25 @@ LABEL_24:
 LABEL_28:
 }
 
-- (void)_lowLevelApplyUndoToOrdering:(id)a3
+- (void)_lowLevelApplyUndoToOrdering:(id)ordering
 {
-  v4 = a3;
+  orderingCopy = ordering;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__REMAccountChangeItem__lowLevelApplyUndoToOrdering___block_invoke;
   v6[3] = &unk_1E7508670;
-  v7 = v4;
-  v5 = v4;
+  v7 = orderingCopy;
+  v5 = orderingCopy;
   [(REMAccountChangeItem *)self _editListIDsOrderingUsingBlock:v6];
 }
 
-- (void)_editListIDsOrderingUsingBlock:(id)a3
+- (void)_editListIDsOrderingUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(REMAccountChangeItem *)self saveRequest];
-  v6 = [v5 isSaved];
+  blockCopy = block;
+  saveRequest = [(REMAccountChangeItem *)self saveRequest];
+  isSaved = [saveRequest isSaved];
 
-  if (v6)
+  if (isSaved)
   {
     v7 = +[REMLogStore write];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -973,21 +973,21 @@ LABEL_28:
     }
   }
 
-  v8 = [(REMAccountChangeItem *)self storage];
-  v9 = [v8 listIDsMergeableOrdering];
+  storage = [(REMAccountChangeItem *)self storage];
+  listIDsMergeableOrdering = [storage listIDsMergeableOrdering];
 
-  v10 = [v9 mutableOrderedSet];
-  v11 = [(REMAccountChangeItem *)self saveRequest];
-  v12 = [v11 replicaManagerProvider];
-  [v10 setReplicaManagerProvider:v12];
+  mutableOrderedSet = [listIDsMergeableOrdering mutableOrderedSet];
+  saveRequest2 = [(REMAccountChangeItem *)self saveRequest];
+  replicaManagerProvider = [saveRequest2 replicaManagerProvider];
+  [mutableOrderedSet setReplicaManagerProvider:replicaManagerProvider];
 
-  v4[2](v4, v10);
-  v13 = [v10 immutableOrderedSet];
-  v14 = [(REMAccountChangeItem *)self storage];
-  [v14 setListIDsMergeableOrdering:v13];
+  blockCopy[2](blockCopy, mutableOrderedSet);
+  immutableOrderedSet = [mutableOrderedSet immutableOrderedSet];
+  storage2 = [(REMAccountChangeItem *)self storage];
+  [storage2 setListIDsMergeableOrdering:immutableOrderedSet];
 
-  v15 = [(REMAccountChangeItem *)self changedKeysObserver];
-  [v15 keyDidChange:@"listIDsMergeableOrdering"];
+  changedKeysObserver = [(REMAccountChangeItem *)self changedKeysObserver];
+  [changedKeysObserver keyDidChange:@"listIDsMergeableOrdering"];
 }
 
 - (void)initWithSaveRequest:storage:capabilities:changedKeysObserver:.cold.1()

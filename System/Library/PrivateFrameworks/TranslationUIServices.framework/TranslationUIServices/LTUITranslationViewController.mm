@@ -1,38 +1,38 @@
 @interface LTUITranslationViewController
 + (void)initialize;
 - (LTUITranslationViewController)init;
-- (LTUITranslationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (LTUITranslationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_sheetPresentationController;
 - (id)_userInfo;
 - (void)_cleanUpExtension;
 - (void)_insertBackground;
-- (void)_presentError:(id)a3;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)_presentationControllerDidDismiss:(id)a3;
+- (void)_presentError:(id)error;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)_presentationControllerDidDismiss:(id)dismiss;
 - (void)_refreshExtensionList;
 - (void)_refreshForSystemExtension;
 - (void)_removeBackground;
-- (void)_setChildController:(id)a3;
+- (void)_setChildController:(id)controller;
 - (void)confirmUserConsent;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
 - (void)dismiss;
 - (void)expandSheet;
-- (void)finishWithError:(id)a3;
-- (void)finishWithTranslation:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)finishWithTranslation:(id)translation;
 - (void)invalidate;
-- (void)receiveExtensions:(id)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)receiveExtensions:(id)extensions;
+- (void)setRemoteViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation LTUITranslationViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     instrumentationLog = _LTOSLogSignpost();
 
@@ -40,7 +40,7 @@
   }
 }
 
-- (LTUITranslationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (LTUITranslationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = LTUITranslationViewController;
@@ -109,34 +109,34 @@
   v5.receiver = self;
   v5.super_class = LTUITranslationViewController;
   [(LTUITranslationViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(LTUITranslationViewController *)self _isInPopoverPresentation];
-  v4 = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
-  [v4 adaptForPresentationInPopover:v3];
+  _isInPopoverPresentation = [(LTUITranslationViewController *)self _isInPopoverPresentation];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
+  [serviceViewControllerProxy adaptForPresentationInPopover:_isInPopoverPresentation];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = LTUITranslationViewController;
   [(LTUITranslationViewController *)&v7 willMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(LTUITranslationViewController *)self _isInPopoverPresentation];
-    v6 = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
-    [v6 adaptForPresentationInPopover:v5];
+    _isInPopoverPresentation = [(LTUITranslationViewController *)self _isInPopoverPresentation];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy adaptForPresentationInPopover:_isInPopoverPresentation];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = LTUITranslationViewController;
   [(LTUITranslationViewController *)&v7 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(LTUITranslationViewController *)self _isInPopoverPresentation];
-    v6 = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
-    [v6 adaptForPresentationInPopover:v5];
+    _isInPopoverPresentation = [(LTUITranslationViewController *)self _isInPopoverPresentation];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy adaptForPresentationInPopover:_isInPopoverPresentation];
   }
 }
 
@@ -234,9 +234,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _LTOSLogSystemTranslation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -249,9 +249,9 @@ LABEL_9:
 - (id)_userInfo
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 arguments];
-  v5 = [v4 containsObject:@"-SkipFirstUse"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  arguments = [processInfo arguments];
+  v5 = [arguments containsObject:@"-SkipFirstUse"];
 
   v6 = _LTOSLogOnboarding();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -271,8 +271,8 @@ LABEL_9:
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[LTUITranslationViewController isSourceEditable](self, "isSourceEditable")}];
   v24[2] = v10;
   v23[3] = @"IgnoredAttributes";
-  v11 = [(LTUITranslationViewController *)self ignoredAttributes];
-  v24[3] = v11;
+  ignoredAttributes = [(LTUITranslationViewController *)self ignoredAttributes];
+  v24[3] = ignoredAttributes;
   v23[4] = @"CPLIntervalID";
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->cplID];
   v24[4] = v12;
@@ -282,22 +282,22 @@ LABEL_9:
   sourceMeta = self->_sourceMeta;
   if (sourceMeta)
   {
-    v16 = [(LTUISourceMeta *)sourceMeta dictionaryRepresentation];
-    [v14 setObject:v16 forKeyedSubscript:@"SourceMeta"];
+    dictionaryRepresentation = [(LTUISourceMeta *)sourceMeta dictionaryRepresentation];
+    [v14 setObject:dictionaryRepresentation forKeyedSubscript:@"SourceMeta"];
   }
 
   sourceLocale = self->_sourceLocale;
   if (sourceLocale)
   {
-    v18 = [(NSLocale *)sourceLocale localeIdentifier];
-    [v14 setObject:v18 forKeyedSubscript:@"SourceLocale"];
+    localeIdentifier = [(NSLocale *)sourceLocale localeIdentifier];
+    [v14 setObject:localeIdentifier forKeyedSubscript:@"SourceLocale"];
   }
 
   targetLocale = self->_targetLocale;
   if (targetLocale)
   {
-    v20 = [(NSLocale *)targetLocale localeIdentifier];
-    [v14 setObject:v20 forKeyedSubscript:@"TargetLocale"];
+    localeIdentifier2 = [(NSLocale *)targetLocale localeIdentifier];
+    [v14 setObject:localeIdentifier2 forKeyedSubscript:@"TargetLocale"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -305,15 +305,15 @@ LABEL_9:
   return v14;
 }
 
-- (void)receiveExtensions:(id)a3
+- (void)receiveExtensions:(id)extensions
 {
   v39 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  extensionsCopy = extensions;
+  v5 = [extensionsCopy countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v5)
   {
     v6 = 0;
@@ -324,12 +324,12 @@ LABEL_9:
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(extensionsCopy);
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:@"com.apple.TranslationUIServices.TranslationUIService"];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:@"com.apple.TranslationUIServices.TranslationUIService"];
 
         if (v11)
         {
@@ -339,7 +339,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v5 = [extensionsCopy countByEnumeratingWithState:&v31 objects:v38 count:16];
     }
 
     while (v5);
@@ -348,16 +348,16 @@ LABEL_9:
     {
       [(LTUITranslationViewController *)self setCurrentExtension:v6];
       v13 = objc_alloc_init(MEMORY[0x277CCA9D8]);
-      v14 = [(LTUITranslationViewController *)self _userInfo];
-      [v13 setUserInfo:v14];
-      v15 = [(LTUITranslationViewController *)self text];
+      _userInfo = [(LTUITranslationViewController *)self _userInfo];
+      [v13 setUserInfo:_userInfo];
+      text = [(LTUITranslationViewController *)self text];
 
-      if (v15)
+      if (text)
       {
         v16 = objc_alloc(MEMORY[0x277CCA898]);
-        v17 = [(LTUITranslationViewController *)self text];
-        v18 = [v17 string];
-        v19 = [v16 initWithString:v18];
+        text2 = [(LTUITranslationViewController *)self text];
+        string = [text2 string];
+        v19 = [v16 initWithString:string];
         [v13 setAttributedContentText:v19];
       }
 
@@ -382,7 +382,7 @@ LABEL_9:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v37 = v14;
+        v37 = _userInfo;
         _os_log_impl(&dword_26F4D2000, v23, OS_LOG_TYPE_INFO, "Starting translation with user info: %{public}@", buf, 0xCu);
       }
 
@@ -502,18 +502,18 @@ void __51__LTUITranslationViewController_receiveExtensions___block_invoke_2_35(u
   }
 }
 
-- (void)_setChildController:(id)a3
+- (void)_setChildController:(id)controller
 {
-  v4 = a3;
-  [(LTUITranslationViewController *)self addChildViewController:v4];
+  controllerCopy = controller;
+  [(LTUITranslationViewController *)self addChildViewController:controllerCopy];
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__LTUITranslationViewController__setChildController___block_invoke;
   v7[3] = &unk_279DD8698;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = controllerCopy;
+  selfCopy = self;
+  v6 = controllerCopy;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -556,26 +556,26 @@ void __53__LTUITranslationViewController__setChildController___block_invoke(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   remoteViewController = self->_remoteViewController;
   if (remoteViewController)
   {
-    v7 = [(LTUIRemoteViewController *)remoteViewController view];
-    [v7 removeFromSuperview];
+    view = [(LTUIRemoteViewController *)remoteViewController view];
+    [view removeFromSuperview];
 
     [(LTUIRemoteViewController *)self->_remoteViewController removeFromParentViewController];
   }
 
-  objc_storeStrong(&self->_remoteViewController, a3);
+  objc_storeStrong(&self->_remoteViewController, controller);
   [(LTUIRemoteViewController *)self->_remoteViewController setDelegate:self];
   if (self->_remoteViewController)
   {
     [(LTUITranslationViewController *)self _setChildController:?];
-    v8 = [(LTUITranslationViewController *)self _isInPopoverPresentation];
-    v9 = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
-    [v9 adaptForPresentationInPopover:v8];
+    _isInPopoverPresentation = [(LTUITranslationViewController *)self _isInPopoverPresentation];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy adaptForPresentationInPopover:_isInPopoverPresentation];
 
     v10 = instrumentationLog;
     v11 = v10;
@@ -595,10 +595,10 @@ void __53__LTUITranslationViewController__setChildController___block_invoke(uint
   [(LTUITranslationViewController *)self _cleanUpExtension];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[LTUIErrorViewController alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[LTUIErrorViewController alloc] initWithError:errorCopy];
   v6 = _LTOSLogSystemTranslation();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -614,25 +614,25 @@ void __53__LTUITranslationViewController__setChildController___block_invoke(uint
 - (void)_cleanUpExtension
 {
   v3 = MEMORY[0x277CCA9C8];
-  v4 = [(LTUITranslationViewController *)self matchingToken];
-  [v3 endMatchingExtensions:v4];
+  matchingToken = [(LTUITranslationViewController *)self matchingToken];
+  [v3 endMatchingExtensions:matchingToken];
 
   [(LTUITranslationViewController *)self setMatchingToken:0];
-  v5 = [(LTUITranslationViewController *)self currentExtension];
-  v6 = [(LTUITranslationViewController *)self requestID];
-  [v5 cancelExtensionRequestWithIdentifier:v6];
+  currentExtension = [(LTUITranslationViewController *)self currentExtension];
+  requestID = [(LTUITranslationViewController *)self requestID];
+  [currentExtension cancelExtensionRequestWithIdentifier:requestID];
 
   [(LTUITranslationViewController *)self setCurrentExtension:0];
 
   [(LTUITranslationViewController *)self setRequestID:0];
 }
 
-- (void)finishWithTranslation:(id)a3
+- (void)finishWithTranslation:(id)translation
 {
   replacementHandler = self->_replacementHandler;
   if (replacementHandler)
   {
-    replacementHandler[2](replacementHandler, a3);
+    replacementHandler[2](replacementHandler, translation);
   }
 
   [(LTUITranslationViewController *)self dismiss];
@@ -647,8 +647,8 @@ void __53__LTUITranslationViewController__setChildController___block_invoke(uint
     _os_log_impl(&dword_26F4D2000, v3, OS_LOG_TYPE_INFO, "Dismissing system view controller", v5, 2u);
   }
 
-  v4 = [(LTUITranslationViewController *)self dismissCompletionHandler];
-  [(LTUITranslationViewController *)self dismissViewControllerAnimated:1 completion:v4];
+  dismissCompletionHandler = [(LTUITranslationViewController *)self dismissCompletionHandler];
+  [(LTUITranslationViewController *)self dismissViewControllerAnimated:1 completion:dismissCompletionHandler];
 
   [(LTUITranslationViewController *)self setDismissCompletionHandler:0];
   [(LTUITranslationViewController *)self _cleanUpExtension];
@@ -669,19 +669,19 @@ void __53__LTUITranslationViewController__setChildController___block_invoke(uint
 
 - (void)expandSheet
 {
-  v3 = [(LTUITranslationViewController *)self _sheetPresentationController];
-  v4 = [v3 detents];
-  v5 = [v4 count];
+  _sheetPresentationController = [(LTUITranslationViewController *)self _sheetPresentationController];
+  detents = [_sheetPresentationController detents];
+  v5 = [detents count];
 
-  if (v3 && v5 >= 2)
+  if (_sheetPresentationController && v5 >= 2)
   {
     v6 = MEMORY[0x277D75D18];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__LTUITranslationViewController_expandSheet__block_invoke;
     v7[3] = &unk_279DD8698;
-    v8 = v3;
-    v9 = self;
+    v8 = _sheetPresentationController;
+    selfCopy = self;
     [v6 _animateUsingDefaultDampedSpringWithDelay:2 initialSpringVelocity:v7 options:0 animations:0.0 completion:0.0];
   }
 }
@@ -699,45 +699,45 @@ void __44__LTUITranslationViewController_expandSheet__block_invoke(uint64_t a1)
 
 - (void)_insertBackground
 {
-  v3 = [(LTUITranslationViewController *)self view];
-  v4 = [v3 viewWithTag:101];
+  view = [(LTUITranslationViewController *)self view];
+  v4 = [view viewWithTag:101];
 
   if (!v4)
   {
     v8 = [MEMORY[0x277D75210] effectWithStyle:9];
     v5 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v8];
     [v5 setTag:101];
-    v6 = [(LTUITranslationViewController *)self view];
-    [v6 bounds];
+    view2 = [(LTUITranslationViewController *)self view];
+    [view2 bounds];
     [v5 setFrame:?];
 
     [v5 setAutoresizingMask:18];
-    v7 = [(LTUITranslationViewController *)self view];
-    [v7 insertSubview:v5 atIndex:0];
+    view3 = [(LTUITranslationViewController *)self view];
+    [view3 insertSubview:v5 atIndex:0];
   }
 }
 
 - (void)_removeBackground
 {
-  v2 = [(LTUITranslationViewController *)self view];
-  v3 = [v2 viewWithTag:101];
+  view = [(LTUITranslationViewController *)self view];
+  v3 = [view viewWithTag:101];
 
   [v3 removeFromSuperview];
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = presentationControllerCopy;
     [v5 _setShouldDismissWhenTappedOutside:1];
-    v6 = [MEMORY[0x277D75A28] mediumDetent];
-    v10[0] = v6;
-    v7 = [MEMORY[0x277D75A28] largeDetent];
-    v10[1] = v7;
+    mediumDetent = [MEMORY[0x277D75A28] mediumDetent];
+    v10[0] = mediumDetent;
+    largeDetent = [MEMORY[0x277D75A28] largeDetent];
+    v10[1] = largeDetent;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
     [v5 setDetents:v8];
 
@@ -748,20 +748,20 @@ void __44__LTUITranslationViewController_expandSheet__block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 _setBackgroundBlurDisabled:1];
+    [presentationControllerCopy _setBackgroundBlurDisabled:1];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentationControllerDidDismiss:(id)a3
+- (void)_presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(LTUITranslationViewController *)self dismissCompletionHandler];
+  dismissCompletionHandler = [(LTUITranslationViewController *)self dismissCompletionHandler];
 
-  if (v4)
+  if (dismissCompletionHandler)
   {
-    v5 = [(LTUITranslationViewController *)self dismissCompletionHandler];
-    v5[2]();
+    dismissCompletionHandler2 = [(LTUITranslationViewController *)self dismissCompletionHandler];
+    dismissCompletionHandler2[2]();
 
     [(LTUITranslationViewController *)self setDismissCompletionHandler:0];
   }

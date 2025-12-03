@@ -1,25 +1,25 @@
 @interface PVAppIdentityGenerator
-- (BOOL)extractApplicationRecord:(id *)a3;
-- (BOOL)validatePPQAppId:(id *)a3;
-- (PVAppIdentityGenerator)initWithApplicationURL:(id)a3 ppqAppId:(id)a4;
+- (BOOL)extractApplicationRecord:(id *)record;
+- (BOOL)validatePPQAppId:(id *)id;
+- (PVAppIdentityGenerator)initWithApplicationURL:(id)l ppqAppId:(id)id;
 - (id)generateDigest;
 - (void)dealloc;
 @end
 
 @implementation PVAppIdentityGenerator
 
-- (PVAppIdentityGenerator)initWithApplicationURL:(id)a3 ppqAppId:(id)a4
+- (PVAppIdentityGenerator)initWithApplicationURL:(id)l ppqAppId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = PVAppIdentityGenerator;
   v9 = [(PVAppIdentityGenerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->applicationURL, a3);
-    objc_storeStrong(&v10->ppqAppId, a4);
+    objc_storeStrong(&v9->applicationURL, l);
+    objc_storeStrong(&v10->ppqAppId, id);
     executableName = v10->executableName;
     v10->executableName = 0;
 
@@ -37,7 +37,7 @@
   [(PVAppIdentityGenerator *)&v2 dealloc];
 }
 
-- (BOOL)extractApplicationRecord:(id *)a3
+- (BOOL)extractApplicationRecord:(id *)record
 {
   v5 = [LSApplicationRecord alloc];
   applicationURL = self->applicationURL;
@@ -46,15 +46,15 @@
   v8 = v25;
   if (v7)
   {
-    v9 = [v7 infoDictionary];
-    v10 = [v9 objectForKey:kCFBundleExecutableKey ofClass:objc_opt_class()];
+    infoDictionary = [v7 infoDictionary];
+    v10 = [infoDictionary objectForKey:kCFBundleExecutableKey ofClass:objc_opt_class()];
 
-    v11 = [v7 executableURL];
+    executableURL = [v7 executableURL];
     v12 = isNSString(v10);
 
     if (v12)
     {
-      v13 = v11 == 0;
+      v13 = executableURL == 0;
     }
 
     else
@@ -71,7 +71,7 @@
     else
     {
       objc_storeStrong(&self->executableName, v10);
-      objc_storeStrong(&self->executableURL, v11);
+      objc_storeStrong(&self->executableURL, executableURL);
       v15 = _PVAppIdentityLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
@@ -128,16 +128,16 @@
     v8 = v10 = v8;
   }
 
-  if (a3 && v8)
+  if (record && v8)
   {
     v23 = v8;
-    *a3 = v8;
+    *record = v8;
   }
 
   return v8 == 0;
 }
 
-- (BOOL)validatePPQAppId:(id *)a3
+- (BOOL)validatePPQAppId:(id *)id
 {
   v4 = isNSData(self->ppqAppId);
 
@@ -149,10 +149,10 @@
   else
   {
     v5 = [NSError pvai_errorWithCode:-10001];
-    if (a3 && v5)
+    if (id && v5)
     {
       v5 = v5;
-      *a3 = v5;
+      *id = v5;
     }
   }
 
@@ -179,8 +179,8 @@
     v5 = 0;
 LABEL_4:
     v6 = [PVAppIdentityDigest alloc];
-    v7 = [NSNumber numberWithInt:2002];
-    v8 = [(PVAppIdentityDigest *)v6 initWithError:v4 version:v7];
+    asDictionary = [NSNumber numberWithInt:2002];
+    v8 = [(PVAppIdentityDigest *)v6 initWithError:v4 version:asDictionary];
     v9 = 0;
     v10 = 0;
     v11 = 0;
@@ -217,9 +217,9 @@ LABEL_5:
     v12 = v23;
     v8 = [PVAppIdentityDigest initWithVersion:v24 data0:"initWithVersion:data0:data1:data2:data3:data4:data5:" data1:v25 data2:v26 data3:v27 data4:v13 data5:?];
 
-    v7 = [(PVAppIdentityDigest *)v8 asDictionary];
+    asDictionary = [(PVAppIdentityDigest *)v8 asDictionary];
     v34 = 0;
-    v32 = [NSJSONSerialization dataWithJSONObject:v7 options:3 error:&v34];
+    v32 = [NSJSONSerialization dataWithJSONObject:asDictionary options:3 error:&v34];
     v30 = v34;
     v28 = _PVAppIdentityLogSystem();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))

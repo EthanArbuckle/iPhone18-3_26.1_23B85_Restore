@@ -22,8 +22,8 @@ LABEL_4:
 
   v3 = 0;
 LABEL_6:
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   v7 = 2.0;
@@ -46,10 +46,10 @@ LABEL_6:
 {
   if (a3)
   {
-    return [a1 performAsCurrentTraitCollection:?];
+    return [self performAsCurrentTraitCollection:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

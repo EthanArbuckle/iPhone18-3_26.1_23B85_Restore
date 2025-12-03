@@ -1,73 +1,73 @@
 @interface PKSpendingSingleSummaryViewController
-- (BOOL)_hasFooterForSection:(unint64_t)a3;
-- (BOOL)_hasHeaderForSection:(unint64_t)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (CGSize)_sizeForAggregateOrRewardsCellInCollectionView:(id)a3 atIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKSpendingSingleSummaryViewController)initWithTransationSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 transactionGroupPresenter:(id)a9 summaryPresenter:(id)a10 currentMonthTransactions:(id)a11 pendingPayments:(id)a12 upcomingScheduledPayments:(id)a13 displayType:(unint64_t)a14;
+- (BOOL)_hasFooterForSection:(unint64_t)section;
+- (BOOL)_hasHeaderForSection:(unint64_t)section;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (CGSize)_sizeForAggregateOrRewardsCellInCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKSpendingSingleSummaryViewController)initWithTransationSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards transactionGroupPresenter:(id)presenter summaryPresenter:(id)self0 currentMonthTransactions:(id)self1 pendingPayments:(id)self2 upcomingScheduledPayments:(id)self3 displayType:(unint64_t)self4;
 - (PKSpendingSingleSummaryViewControllerDelegate)summaryDelegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)alphaForIndexPath:(id)a3 visible:(BOOL)a4 transition:(double)a5;
-- (double)lineSpacingForSection:(int64_t)a3;
-- (id)_headerReuseIdentifierForSection:(unint64_t)a3;
-- (id)_nonSpendingTransactionGroupForType:(unint64_t)a3;
-- (id)_sortedAccountUsersForSummary:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)alphaForIndexPath:(id)path visible:(BOOL)visible transition:(double)transition;
+- (double)lineSpacingForSection:(int64_t)section;
+- (id)_headerReuseIdentifierForSection:(unint64_t)section;
+- (id)_nonSpendingTransactionGroupForType:(unint64_t)type;
+- (id)_sortedAccountUsersForSummary:(id)summary;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)indexPathForSummary;
 - (int64_t)_numberOfAggregateCells;
 - (int64_t)_numberOfNonSpendingTransactionTypeRowsEnabled;
 - (int64_t)_numberOfRewardsCells;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (unint64_t)_nonSpendingTransactionTypeForRow:(int64_t)a3;
-- (unsigned)horizontalAlignmentForSection:(int64_t)a3;
-- (void)_accountsChanged:(id)a3;
-- (void)_applyStylingToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5 isTransactionCell:(BOOL)a6;
-- (void)_changeCategorizationTypeTo:(unint64_t)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (unint64_t)_nonSpendingTransactionTypeForRow:(int64_t)row;
+- (unsigned)horizontalAlignmentForSection:(int64_t)section;
+- (void)_accountsChanged:(id)changed;
+- (void)_applyStylingToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection isTransactionCell:(BOOL)transactionCell;
+- (void)_changeCategorizationTypeTo:(unint64_t)to;
 - (void)_configureDefaultFooter;
 - (void)_configureFooter;
 - (void)_configureFooterForAccountUsers;
-- (void)_configureFooterView:(id)a3 inSection:(unint64_t)a4;
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4;
-- (void)_configureRewardsHubButtonCell:(id)a3;
-- (void)_updateSelectedGroupWithSummary:(id)a3;
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)buttonTappedInFooterView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_configureFooterView:(id)view inSection:(unint64_t)section;
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section;
+- (void)_configureRewardsHubButtonCell:(id)cell;
+- (void)_updateSelectedGroupWithSummary:(id)summary;
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)buttonTappedInFooterView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)setAlphaTransition:(double)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setData:(id)a3 swap:(BOOL)a4;
-- (void)setSummary:(id)a3 swap:(BOOL)a4;
-- (void)setVisible:(BOOL)a3;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)setAlphaTransition:(double)transition;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setData:(id)data swap:(BOOL)swap;
+- (void)setSummary:(id)summary swap:(BOOL)swap;
+- (void)setVisible:(BOOL)visible;
 - (void)viewDidLoad;
 @end
 
 @implementation PKSpendingSingleSummaryViewController
 
-- (PKSpendingSingleSummaryViewController)initWithTransationSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 transactionGroupPresenter:(id)a9 summaryPresenter:(id)a10 currentMonthTransactions:(id)a11 pendingPayments:(id)a12 upcomingScheduledPayments:(id)a13 displayType:(unint64_t)a14
+- (PKSpendingSingleSummaryViewController)initWithTransationSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards transactionGroupPresenter:(id)presenter summaryPresenter:(id)self0 currentMonthTransactions:(id)self1 pendingPayments:(id)self2 upcomingScheduledPayments:(id)self3 displayType:(unint64_t)self4
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v78 = a3;
-  v66 = a4;
-  v19 = a4;
-  v20 = a7;
-  v77 = v19;
-  v67 = a5;
-  v21 = a5;
-  v76 = a6;
-  v73 = a7;
-  v75 = a8;
-  v72 = a9;
-  v71 = a10;
-  v70 = a11;
-  v69 = a12;
-  v68 = a13;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  familyCollectionCopy2 = familyCollection;
+  userCollectionCopy = userCollection;
+  v77 = familyCollectionCopy2;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  accountCopy = account;
+  userCollectionCopy2 = userCollection;
+  cardsCopy = cards;
+  presenterCopy = presenter;
+  summaryPresenterCopy = summaryPresenter;
+  transactionsCopy = transactions;
+  paymentsCopy = payments;
+  scheduledPaymentsCopy = scheduledPayments;
   v22 = objc_alloc_init(PKHorizontalScrollingChildLayout);
   v79.receiver = self;
   v79.super_class = PKSpendingSingleSummaryViewController;
@@ -77,22 +77,22 @@
   {
     objc_storeStrong(&v23->_layout, v22);
     [(PKHorizontalScrollingChildLayout *)v24->_layout setDataSource:v24];
-    objc_storeStrong(&v24->_transactionSourceCollection, a3);
-    objc_storeStrong(&v24->_account, a6);
-    objc_storeStrong(&v24->_accountUserCollection, v20);
-    v25 = [v75 copy];
+    objc_storeStrong(&v24->_transactionSourceCollection, collection);
+    objc_storeStrong(&v24->_account, account);
+    objc_storeStrong(&v24->_accountUserCollection, userCollectionCopy);
+    v25 = [cardsCopy copy];
     physicalCards = v24->_physicalCards;
     v24->_physicalCards = v25;
 
-    v24->_feature = [v76 feature];
-    objc_storeStrong(&v24->_familyCollection, v66);
-    v24->_displayType = a14;
-    objc_storeStrong(&v24->_avatarManager, v67);
-    v27 = [[PKDashboardAvatarPresenter alloc] initWithAvatarManager:v21];
+    v24->_feature = [accountCopy feature];
+    objc_storeStrong(&v24->_familyCollection, familyCollectionCopy);
+    v24->_displayType = type;
+    objc_storeStrong(&v24->_avatarManager, managerCopy);
+    v27 = [[PKDashboardAvatarPresenter alloc] initWithAvatarManager:managerCopy2];
     avatarPresenter = v24->_avatarPresenter;
     v24->_avatarPresenter = v27;
 
-    v29 = [[PKSpendingSummaryAccountUserPresenter alloc] initWithTransactionSourceCollection:v78 familyCollection:v77 avatarManager:v21 interimSpacing:8.0];
+    v29 = [[PKSpendingSummaryAccountUserPresenter alloc] initWithTransactionSourceCollection:collectionCopy familyCollection:v77 avatarManager:managerCopy2 interimSpacing:8.0];
     summaryUsersPresenter = v24->_summaryUsersPresenter;
     v24->_summaryUsersPresenter = v29;
 
@@ -100,20 +100,20 @@
     sortedAccountUsers = v24->_sortedAccountUsers;
     v24->_sortedAccountUsers = v31;
 
-    v33 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     currentCalendar = v24->_currentCalendar;
-    v24->_currentCalendar = v33;
+    v24->_currentCalendar = currentCalendar;
 
-    v35 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v24->_accountService;
-    v24->_accountService = v35;
+    v24->_accountService = mEMORY[0x1E69B8400];
 
     v24->_footerNeedsConfiguration = 1;
     v37 = PKIsLowEndDevice();
     v24->_isLowEndDevice = v37;
     [(PKHorizontalScrollingChildLayout *)v24->_layout setIsLowEndDevice:v37];
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 addObserver:v24 selector:sel__accountsChanged_ name:*MEMORY[0x1E69B9E60] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v24 selector:sel__accountsChanged_ name:*MEMORY[0x1E69B9E60] object:0];
 
     v39 = objc_alloc_init(MEMORY[0x1E696AB78]);
     formatterDay = v24->_formatterDay;
@@ -135,11 +135,11 @@
     v24->_formatterYear = v45;
 
     [(NSDateFormatter *)v24->_formatterYear setLocalizedDateFormatFromTemplate:@"yyyy"];
-    objc_storeStrong(&v24->_transactionGroupPresenter, a9);
-    objc_storeStrong(&v24->_summaryPresenter, a10);
-    objc_storeStrong(&v24->_currentMonthTransactions, a11);
-    objc_storeStrong(&v24->_pendingPayments, a12);
-    objc_storeStrong(&v24->_upcomingScheduledPayments, a13);
+    objc_storeStrong(&v24->_transactionGroupPresenter, presenter);
+    objc_storeStrong(&v24->_summaryPresenter, summaryPresenter);
+    objc_storeStrong(&v24->_currentMonthTransactions, transactions);
+    objc_storeStrong(&v24->_pendingPayments, payments);
+    objc_storeStrong(&v24->_upcomingScheduledPayments, scheduledPayments);
     v47 = [PKDashboardTitleHeaderView alloc];
     v48 = *MEMORY[0x1E695F058];
     v49 = *(MEMORY[0x1E695F058] + 8);
@@ -213,8 +213,8 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKSpendingSingleSummaryViewController;
@@ -226,50 +226,50 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
   v8.receiver = self;
   v8.super_class = PKSpendingSingleSummaryViewController;
   [(PKSpendingSingleSummaryViewController *)&v8 viewDidLoad];
-  v3 = [(PKSpendingSingleSummaryViewController *)self collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionGroupPresenter"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"spendingPresenter"];
+  collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionGroupPresenter"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"spendingPresenter"];
   v4 = objc_opt_class();
   v5 = *MEMORY[0x1E69DDC08];
-  [v3 registerClass:v4 forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:v5 withReuseIdentifier:@"bigTitleIdentifier"];
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:v5 withReuseIdentifier:@"segmentedControlIdentifier"];
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"footerIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"buttonCellIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"titleDetailIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"avatarPresenter"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"spendingAccountUserPresenter"];
-  [v3 setShowsVerticalScrollIndicator:0];
-  [v3 setAlwaysBounceVertical:1];
-  [v3 setBounces:1];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v6];
+  [collectionView registerClass:v4 forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:v5 withReuseIdentifier:@"bigTitleIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:v5 withReuseIdentifier:@"segmentedControlIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"footerIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"buttonCellIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"titleDetailIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"avatarPresenter"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"spendingAccountUserPresenter"];
+  [collectionView setShowsVerticalScrollIndicator:0];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [collectionView setBackgroundColor:clearColor];
 
-  [v3 setContentInset:{self->_contentInset.top, self->_contentInset.left, self->_contentInset.bottom, self->_contentInset.right}];
-  [v3 setContentInsetAdjustmentBehavior:3];
-  v7 = [(PKSpendingSingleSummaryViewController *)self view];
-  [v7 setClipsToBounds:0];
+  [collectionView setContentInset:{self->_contentInset.top, self->_contentInset.left, self->_contentInset.bottom, self->_contentInset.right}];
+  [collectionView setContentInsetAdjustmentBehavior:3];
+  view = [(PKSpendingSingleSummaryViewController *)self view];
+  [view setClipsToBounds:0];
 
-  [v3 setClipsToBounds:0];
+  [collectionView setClipsToBounds:0];
 }
 
-- (void)setData:(id)a3 swap:(BOOL)a4
+- (void)setData:(id)data swap:(BOOL)swap
 {
-  v4 = a4;
-  v6 = a3;
+  swapCopy = swap;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PKSpendingSingleSummaryViewController *)self setSummary:v6 swap:v4];
+    [(PKSpendingSingleSummaryViewController *)self setSummary:dataCopy swap:swapCopy];
   }
 }
 
-- (void)setAlphaTransition:(double)a3
+- (void)setAlphaTransition:(double)transition
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (self->_alphaTransition != a3)
+  if (self->_alphaTransition != transition)
   {
-    self->_alphaTransition = a3;
+    self->_alphaTransition = transition;
     [(PKHorizontalScrollingChildLayout *)self->_layout setAlphaTransition:?];
     v4 = 0.0;
     v5 = 0.0;
@@ -283,13 +283,13 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
       }
     }
 
-    v7 = [(PKSpendingSingleSummaryViewController *)self collectionView];
+    collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [v7 indexPathsForVisibleItems];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -300,28 +300,28 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(indexPathsForVisibleItems);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 section];
-          v15 = [v7 cellForItemAtIndexPath:v13];
-          if (v14 == 1 && ![v13 row])
+          section = [v13 section];
+          v15 = [collectionView cellForItemAtIndexPath:v13];
+          if (section == 1 && ![v13 row])
           {
-            v16 = [v15 layer];
+            layer = [v15 layer];
             *&v17 = v4;
-            [v16 setShadowOpacity:v17];
-            [v16 setShadowRadius:v5];
-            [v16 setMasksToBounds:0];
-            v18 = [v15 contentView];
-            v19 = [v18 layer];
+            [layer setShadowOpacity:v17];
+            [layer setShadowRadius:v5];
+            [layer setMasksToBounds:0];
+            contentView = [v15 contentView];
+            layer2 = [contentView layer];
 
-            [v19 setCornerRadius:26.0];
-            [v19 setMasksToBounds:1];
+            [layer2 setCornerRadius:26.0];
+            [layer2 setMasksToBounds:1];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
@@ -329,35 +329,35 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible == !a3)
+  if (self->_visible == !visible)
   {
-    self->_visible = a3;
+    self->_visible = visible;
     [(PKHorizontalScrollingChildLayout *)self->_layout setVisible:?];
   }
 }
 
-- (double)alphaForIndexPath:(id)a3 visible:(BOOL)a4 transition:(double)a5
+- (double)alphaForIndexPath:(id)path visible:(BOOL)visible transition:(double)transition
 {
   result = 0.0;
-  if (a4)
+  if (visible)
   {
-    v7 = [a3 section];
+    section = [path section];
     result = 1.0;
-    if (v7 > 1)
+    if (section > 1)
     {
-      return a5;
+      return transition;
     }
   }
 
   return result;
 }
 
-- (double)lineSpacingForSection:(int64_t)a3
+- (double)lineSpacingForSection:(int64_t)section
 {
   result = 0.0;
-  if (a3 == 2)
+  if (section == 2)
   {
     return 8.0;
   }
@@ -365,12 +365,12 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
   return result;
 }
 
-- (unsigned)horizontalAlignmentForSection:(int64_t)a3
+- (unsigned)horizontalAlignmentForSection:(int64_t)section
 {
-  v4 = [(PKSpendingSingleSummaryViewController *)self collectionView];
-  v5 = [v4 _shouldReverseLayoutDirection];
+  collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
+  _shouldReverseLayoutDirection = [collectionView _shouldReverseLayoutDirection];
 
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
     v6 = 2;
   }
@@ -380,7 +380,7 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
     v6 = 0;
   }
 
-  if (a3 == 2)
+  if (section == 2)
   {
     return v6;
   }
@@ -391,9 +391,9 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
   }
 }
 
-- (id)_sortedAccountUsersForSummary:(id)a3
+- (id)_sortedAccountUsersForSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -415,8 +415,8 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
   v21[5] = &v22;
   v6 = [v5 pk_setByApplyingBlock:v21];
 
-  v7 = [v4 altDSID];
-  v8 = [v7 length];
+  altDSID = [summaryCopy altDSID];
+  v8 = [altDSID length];
 
   if (v8)
   {
@@ -425,7 +425,7 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
     v19[1] = 3221225472;
     v19[2] = __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSummary___block_invoke_2;
     v19[3] = &unk_1E8018C58;
-    v20 = v4;
+    v20 = summaryCopy;
     v10 = [v6 pk_anyObjectPassingTest:v19];
     v11 = [v9 initWithObjects:{v10, 0}];
     v12 = &v20;
@@ -437,14 +437,14 @@ void __273__PKSpendingSingleSummaryViewController_initWithTransationSourceCollec
     v17[1] = 3221225472;
     v17[2] = __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSummary___block_invoke_3;
     v17[3] = &unk_1E8018C80;
-    v18 = v4;
+    v18 = summaryCopy;
     v11 = [v6 objectsPassingTest:v17];
     v12 = &v18;
     v10 = v6;
   }
 
-  v13 = [v11 allObjects];
-  v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_125];
+  allObjects = [v11 allObjects];
+  v14 = [allObjects sortedArrayUsingComparator:&__block_literal_global_125];
   v15 = [v14 mutableCopy];
 
   if (v23[5] && [v15 containsObject:?])
@@ -549,13 +549,13 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
   return v9;
 }
 
-- (void)setSummary:(id)a3 swap:(BOOL)a4
+- (void)setSummary:(id)summary swap:(BOOL)swap
 {
-  v4 = a4;
-  v6 = a3;
+  swapCopy = swap;
+  summaryCopy = summary;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v7 = [(PKSpendingSingleSummaryViewController *)self _sortedAccountUsersForSummary:v6];
+    v7 = [(PKSpendingSingleSummaryViewController *)self _sortedAccountUsersForSummary:summaryCopy];
     v8 = PKEqualObjects();
     if ((v8 & 1) == 0)
     {
@@ -563,9 +563,9 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
     }
 
     summaryType = self->_summaryType;
-    if (summaryType == [v6 summaryType])
+    if (summaryType == [summaryCopy summaryType])
     {
-      v10 = [v6 startDate];
+      startDate = [summaryCopy startDate];
       v11 = PKEqualObjects() ^ 1;
     }
 
@@ -580,11 +580,11 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
     aBlock[1] = 3221225472;
     aBlock[2] = __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke;
     aBlock[3] = &unk_1E8018CC8;
-    v14 = v8 & (v4 | v11 ^ 1) & v13;
+    v14 = v8 & (swapCopy | v11 ^ 1) & v13;
     aBlock[4] = self;
     v38 = v12;
     v15 = _Block_copy(aBlock);
-    v16 = [(PKSpendingSingleSummaryViewController *)self collectionView];
+    collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
     if (v14)
     {
       v29 = v15;
@@ -594,9 +594,9 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
       v33[2] = __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_2;
       v33[3] = &unk_1E8017D20;
       v36 = v15;
-      v17 = v6;
+      v17 = summaryCopy;
       v34 = v17;
-      v35 = v16;
+      v35 = collectionView;
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_3;
@@ -604,40 +604,40 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
       v18 = v35;
       v32 = v18;
       [v18 performBatchUpdates:v33 completion:v31];
-      v19 = [(PKSpendingSingleSummaryViewController *)self indexPathForSummary];
-      v28 = [v18 supplementaryViewForElementKind:*MEMORY[0x1E69DDC08] atIndexPath:v19];
+      indexPathForSummary = [(PKSpendingSingleSummaryViewController *)self indexPathForSummary];
+      v28 = [v18 supplementaryViewForElementKind:*MEMORY[0x1E69DDC08] atIndexPath:indexPathForSummary];
       [PKSpendingSingleSummaryViewController _configureHeaderView:"_configureHeaderView:inSection:" inSection:?];
       v20 = *MEMORY[0x1E69DDC00];
       v21 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:5];
       v22 = [v18 supplementaryViewForElementKind:v20 atIndexPath:v21];
 
       [(PKSpendingSingleSummaryViewController *)self _configureFooterView:v22 inSection:5];
-      v23 = v4;
+      v23 = swapCopy;
       v24 = objc_alloc_init(PKDashboardSpendingSummaryItem);
       [(PKDashboardSpendingSummaryItem *)v24 setSpendingSummary:v17];
       summaryPresenter = self->_summaryPresenter;
-      v26 = [v18 cellForItemAtIndexPath:v19];
+      v26 = [v18 cellForItemAtIndexPath:indexPathForSummary];
       if (v23)
       {
-        [(PKSpendingSummaryPresenter *)summaryPresenter swapSummaryInCell:v26 forItem:v24 inCollectionView:v18 atIndexPath:v19];
+        [(PKSpendingSummaryPresenter *)summaryPresenter swapSummaryInCell:v26 forItem:v24 inCollectionView:v18 atIndexPath:indexPathForSummary];
       }
 
       else
       {
-        [(PKSpendingSummaryPresenter *)summaryPresenter updateCell:v26 forItem:v24 inCollectionView:v18 atIndexPath:v19];
+        [(PKSpendingSummaryPresenter *)summaryPresenter updateCell:v26 forItem:v24 inCollectionView:v18 atIndexPath:indexPathForSummary];
       }
 
-      v27 = v36;
+      collectionViewLayout = v36;
       v15 = v29;
       v7 = v30;
     }
 
     else
     {
-      (*(v15 + 2))(v15, v6);
-      [v16 reloadData];
-      v27 = [v16 collectionViewLayout];
-      [v27 invalidateLayout];
+      (*(v15 + 2))(v15, summaryCopy);
+      [collectionView reloadData];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
 
     if (self->_displayType == 1)
@@ -646,7 +646,7 @@ uint64_t __71__PKSpendingSingleSummaryViewController__sortedAccountUsersForSumma
     }
 
     [(PKSpendingSingleSummaryViewController *)self _configureFooter];
-    [(PKSpendingSingleSummaryViewController *)self _updateSelectedGroupWithSummary:v6];
+    [(PKSpendingSingleSummaryViewController *)self _updateSelectedGroupWithSummary:summaryCopy];
   }
 }
 
@@ -712,8 +712,8 @@ void __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_
 
       [(PKDashboardViewControllerFooterView *)self->_currentFooter setDelegate:self];
       v6 = objc_alloc(MEMORY[0x1E69DD6C8]);
-      v7 = [(PKSpendingSingleSummaryViewController *)self collectionView];
-      v8 = [v6 initWithScrollView:v7 edge:4 style:1];
+      collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
+      v8 = [v6 initWithScrollView:collectionView edge:4 style:1];
 
       [(PKDashboardViewControllerFooterView *)self->_currentFooter addInteraction:v8];
     }
@@ -730,12 +730,12 @@ void __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_
     }
 
     [(PKDashboardViewControllerFooterView *)self->_currentFooter setNeedsLayout];
-    v10 = [(PKDashboardViewControllerFooterView *)self->_currentFooter superview];
+    superview = [(PKDashboardViewControllerFooterView *)self->_currentFooter superview];
 
-    if (v10)
+    if (superview)
     {
-      v11 = [(PKDashboardViewControllerFooterView *)self->_currentFooter superview];
-      [v11 setNeedsLayout];
+      superview2 = [(PKDashboardViewControllerFooterView *)self->_currentFooter superview];
+      [superview2 setNeedsLayout];
     }
   }
 }
@@ -744,21 +744,21 @@ void __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_
 {
   v3 = [MEMORY[0x1E69B8770] paymentEducationStateForAccount:self->_account mostRecentTransactions:self->_currentMonthTransactions pendingPayments:self->_pendingPayments upcomingScheduledPayments:self->_upcomingScheduledPayments];
   [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v74 = [v4 accountSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [v5 accountSummary];
-  v73 = [v6 currentStatement];
+  creditDetails2 = [(PKAccount *)self->_account creditDetails];
+  accountSummary2 = [creditDetails2 accountSummary];
+  currentStatement = [accountSummary2 currentStatement];
 
-  v7 = [(PKAccount *)self->_account creditDetails];
-  v8 = [v7 currencyCode];
+  creditDetails3 = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails3 currencyCode];
 
-  v9 = [v74 remainingStatementBalance];
-  v10 = v9;
-  if (v9)
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  v10 = remainingStatementBalance;
+  if (remainingStatementBalance)
   {
-    v71 = PKCurrencyAmountCreate(v9, v8);
+    v71 = PKCurrencyAmountCreate(remainingStatementBalance, currencyCode);
   }
 
   else
@@ -766,10 +766,10 @@ void __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_
     v71 = 0;
   }
 
-  v11 = [(PKAccount *)self->_account creditDetails];
-  v12 = [v11 cardBalance];
+  creditDetails4 = [(PKAccount *)self->_account creditDetails];
+  cardBalance = [creditDetails4 cardBalance];
 
-  v72 = v8;
+  v72 = currencyCode;
   if (v3 > 9)
   {
     goto LABEL_15;
@@ -782,38 +782,38 @@ void __57__PKSpendingSingleSummaryViewController_setSummary_swap___block_invoke_
 
   if (((1 << v3) & 0x28) != 0)
   {
-    v22 = [v73 openingDate];
-    v23 = [v73 closingDate];
-    v70 = v22;
-    [v23 timeIntervalSinceDate:v22];
+    openingDate = [currentStatement openingDate];
+    closingDate = [currentStatement closingDate];
+    v70 = openingDate;
+    [closingDate timeIntervalSinceDate:openingDate];
     v25 = v24;
 
-    v69 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v22 sinceDate:v25 * 0.5];
+    v69 = [MEMORY[0x1E695DF00] dateWithTimeInterval:openingDate sinceDate:v25 * 0.5];
     v26 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v26 setDay:-1];
-    v68 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v67 = [v68 dateByAddingComponents:v26 toDate:v69 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v67 = [currentCalendar dateByAddingComponents:v26 toDate:v69 options:0];
     v27 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
     v28 = [v27 components:8 fromDate:v67];
     [v28 month];
 
-    v29 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
+    leadingTitle = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
     v30 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
     v31 = PKLocalizedFeatureString();
-    [v29 setText:v31];
+    [leadingTitle setText:v31];
 
-    v32 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+    leadingDetail = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
     v33 = v71;
-    v34 = [v71 formattedStringValue];
-    [v32 setText:v34];
+    formattedStringValue = [v71 formattedStringValue];
+    [leadingDetail setText:formattedStringValue];
 
     currentFooter = self->_currentFooter;
     [(PKAccount *)self->_account feature];
     v36 = PKLocalizedFeatureString();
     [(PKDashboardViewControllerFooterView *)currentFooter setButtonTitle:v36];
 
-    v37 = [v74 paymentDueDate];
-    [v37 timeIntervalSinceNow];
+    paymentDueDate = [accountSummary paymentDueDate];
+    [paymentDueDate timeIntervalSinceNow];
     v39 = v38;
 
     if (v39 > 604800.0)
@@ -832,13 +832,13 @@ LABEL_15:
     {
       if (v3 == 1)
       {
-        v47 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
+        leadingTitle2 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
         v48 = PKLocalizedFeatureString();
-        [v47 setText:v48];
+        [leadingTitle2 setText:v48];
 
-        v49 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
-        v50 = [v12 formattedStringValue];
-        [v49 setText:v50];
+        leadingDetail2 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+        formattedStringValue2 = [cardBalance formattedStringValue];
+        [leadingDetail2 setText:formattedStringValue2];
 
         v51 = self->_currentFooter;
         [(PKAccount *)self->_account feature];
@@ -851,28 +851,28 @@ LABEL_15:
       v33 = v71;
 LABEL_24:
       v63 = self->_currentFooter;
-      v64 = [MEMORY[0x1E69DC888] blackColor];
-      [(PKDashboardViewControllerFooterView *)v63 setButtonTintColor:v64];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(PKDashboardViewControllerFooterView *)v63 setButtonTintColor:blackColor];
 
       v65 = self->_currentFooter;
-      v66 = [MEMORY[0x1E69DC888] whiteColor];
-      [(PKDashboardViewControllerFooterView *)v65 setButtonTitleColor:v66];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(PKDashboardViewControllerFooterView *)v65 setButtonTitleColor:whiteColor];
 
       goto LABEL_25;
     }
 
 LABEL_6:
-    v13 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
+    leadingTitle3 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
     v14 = PKLocalizedFeatureString();
-    [v13 setText:v14];
+    [leadingTitle3 setText:v14];
 
-    v15 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
-    v16 = [v12 formattedStringValue];
-    [v15 setText:v16];
+    leadingDetail3 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+    formattedStringValue3 = [cardBalance formattedStringValue];
+    [leadingDetail3 setText:formattedStringValue3];
 
-    v17 = [v74 adjustedBalance];
-    v18 = [MEMORY[0x1E696AB90] zero];
-    v19 = [v17 compare:v18];
+    adjustedBalance = [accountSummary adjustedBalance];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v19 = [adjustedBalance compare:zero];
 
     if (v19 == 1)
     {
@@ -902,15 +902,15 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  v41 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
+  leadingTitle4 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
   v42 = PKLocalizedFeatureString();
-  [v41 setText:v42];
+  [leadingTitle4 setText:v42];
 
-  v43 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
-  v44 = [MEMORY[0x1E696AB90] zero];
-  v45 = PKCurrencyAmountCreate(v44, v8);
-  v46 = [v45 formattedStringValue];
-  [v43 setText:v46];
+  leadingDetail4 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v45 = PKCurrencyAmountCreate(zero2, currencyCode);
+  formattedStringValue4 = [v45 formattedStringValue];
+  [leadingDetail4 setText:formattedStringValue4];
 
   [(PKDashboardViewControllerFooterView *)self->_currentFooter setButtonTitle:0];
   v40 = 1;
@@ -922,8 +922,8 @@ LABEL_20:
   [(PKDashboardViewControllerFooterView *)v53 setButtonTintColor:v54];
 
   v55 = self->_currentFooter;
-  v56 = [MEMORY[0x1E69DC888] blackColor];
-  [(PKDashboardViewControllerFooterView *)v55 setButtonTitleColor:v56];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  [(PKDashboardViewControllerFooterView *)v55 setButtonTitleColor:blackColor2];
 
   if (v40)
   {
@@ -945,11 +945,11 @@ LABEL_26:
 
 - (void)_configureFooterForAccountUsers
 {
-  v15 = [(PKSpendingSummary *)self->_summary startDate];
-  v3 = [(PKSpendingSummary *)self->_summary endDate];
-  if (v15)
+  startDate = [(PKSpendingSummary *)self->_summary startDate];
+  endDate = [(PKSpendingSummary *)self->_summary endDate];
+  if (startDate)
   {
-    v4 = v3 == 0;
+    v4 = endDate == 0;
   }
 
   else
@@ -963,30 +963,30 @@ LABEL_26:
     if (v5)
     {
       v6 = v5;
-      v7 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
-      [v7 setText:v6];
+      leadingTitle = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingTitle];
+      [leadingTitle setText:v6];
 
-      v8 = [(PKSpendingSummary *)self->_summary totalSpending];
-      v9 = [v8 amount];
-      v10 = [v9 pk_isNegativeNumber];
+      totalSpending = [(PKSpendingSummary *)self->_summary totalSpending];
+      amount = [totalSpending amount];
+      pk_isNegativeNumber = [amount pk_isNegativeNumber];
 
-      if (v10)
+      if (pk_isNegativeNumber)
       {
-        v11 = [v8 negativeValue];
+        negativeValue = [totalSpending negativeValue];
 
-        v12 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
-        v13 = [v11 formattedStringValue];
-        v14 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v13);
-        [v12 setText:v14];
+        leadingDetail = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+        formattedStringValue = [negativeValue formattedStringValue];
+        v14 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
+        [leadingDetail setText:v14];
 
-        v8 = v11;
+        totalSpending = negativeValue;
       }
 
       else
       {
-        v12 = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
-        v13 = [v8 formattedStringValue];
-        [v12 setText:v13];
+        leadingDetail = [(PKDashboardViewControllerFooterView *)self->_currentFooter leadingDetail];
+        formattedStringValue = [totalSpending formattedStringValue];
+        [leadingDetail setText:formattedStringValue];
       }
     }
   }
@@ -1004,10 +1004,10 @@ LABEL_26:
     return 2;
   }
 
-  v4 = [(NSArray *)self->_sortedAccountUsers firstObject];
-  v5 = [v4 isCurrentUser];
+  firstObject = [(NSArray *)self->_sortedAccountUsers firstObject];
+  isCurrentUser = [firstObject isCurrentUser];
 
-  if (v5)
+  if (isCurrentUser)
   {
     return 2;
   }
@@ -1020,14 +1020,14 @@ LABEL_26:
 
 - (int64_t)_numberOfAggregateCells
 {
-  v2 = [(PKSpendingSummary *)self->_summary interest];
-  v3 = [v2 totalAmount];
+  interest = [(PKSpendingSummary *)self->_summary interest];
+  totalAmount = [interest totalAmount];
 
-  if (v3)
+  if (totalAmount)
   {
-    v4 = [v3 amount];
-    v5 = [MEMORY[0x1E696AB90] zero];
-    v6 = [v4 compare:v5] == 1;
+    amount = [totalAmount amount];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v6 = [amount compare:zero] == 1;
   }
 
   else
@@ -1057,7 +1057,7 @@ void __60__PKSpendingSingleSummaryViewController_indexPathForSummary__block_invo
   qword_1EBDAA8B8 = v0;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if (self->_summary)
   {
@@ -1070,34 +1070,34 @@ void __60__PKSpendingSingleSummaryViewController_indexPathForSummary__block_invo
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   displayType = 0;
-  if (a4 > 2)
+  if (section > 2)
   {
-    if (a4 <= 4)
+    if (section <= 4)
     {
-      if (a4 != 3)
+      if (section != 3)
       {
-        v8 = [(PKSpendingSingleSummaryViewController *)self _numberOfAggregateCells];
+        _numberOfAggregateCells = [(PKSpendingSingleSummaryViewController *)self _numberOfAggregateCells];
 LABEL_22:
-        displayType = v8;
+        displayType = _numberOfAggregateCells;
         goto LABEL_30;
       }
 
 LABEL_17:
-      v8 = [(PKSpendingSingleSummaryViewController *)self _numberOfRewardsCells];
+      _numberOfAggregateCells = [(PKSpendingSingleSummaryViewController *)self _numberOfRewardsCells];
       goto LABEL_22;
     }
 
-    if (a4 != 5)
+    if (section != 5)
     {
-      if (a4 == 6)
+      if (section == 6)
       {
         if (!self->_categorization)
         {
-          v8 = [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled];
+          _numberOfAggregateCells = [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled];
           goto LABEL_22;
         }
 
@@ -1115,14 +1115,14 @@ LABEL_17:
     categorization = self->_categorization;
     if (categorization == 1)
     {
-      v11 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
-      if (![v11 count])
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
+      if (![orderedSpendingPerMerchants count])
       {
         displayType = 1;
         goto LABEL_36;
       }
 
-      v12 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
+      orderedSpendingPerMerchants2 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
     }
 
     else
@@ -1132,24 +1132,24 @@ LABEL_17:
         goto LABEL_29;
       }
 
-      v11 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
-      if (![v11 count])
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
+      if (![orderedSpendingPerMerchants count])
       {
         displayType = [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled]< 1;
         goto LABEL_36;
       }
 
-      v12 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
+      orderedSpendingPerMerchants2 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
     }
 
-    v14 = v12;
-    displayType = [v12 count];
+    v14 = orderedSpendingPerMerchants2;
+    displayType = [orderedSpendingPerMerchants2 count];
 
 LABEL_36:
     goto LABEL_30;
   }
 
-  switch(a4)
+  switch(section)
   {
     case 0:
       displayType = self->_displayType;
@@ -1165,7 +1165,7 @@ LABEL_36:
       }
 
 LABEL_21:
-      v8 = [(PKSpendingSingleSummaryViewController *)self _numberOfSummaryCells];
+      _numberOfAggregateCells = [(PKSpendingSingleSummaryViewController *)self _numberOfSummaryCells];
       goto LABEL_22;
     case 1:
       goto LABEL_21;
@@ -1180,7 +1180,7 @@ LABEL_21:
 
         if ([(PKAccount *)self->_account accessLevel]== 1 && [(NSArray *)self->_sortedAccountUsers count]>= 2)
         {
-          v8 = [(NSArray *)self->_sortedAccountUsers count];
+          _numberOfAggregateCells = [(NSArray *)self->_sortedAccountUsers count];
           goto LABEL_22;
         }
       }
@@ -1195,22 +1195,22 @@ LABEL_30:
   return displayType;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v9 = 0;
-  if (v8 > 2)
+  if (section > 2)
   {
-    if (v8 <= 4)
+    if (section <= 4)
     {
-      if (v8 == 3)
+      if (section == 3)
       {
-        v24 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [v7 row]);
+        v24 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [pathCopy row]);
         if (v24 == 1)
         {
-          v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"buttonCellIdentifier" forIndexPath:v7];
+          v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"buttonCellIdentifier" forIndexPath:pathCopy];
           [(PKSpendingSingleSummaryViewController *)self _configureRewardsHubButtonCell:v9];
         }
 
@@ -1222,19 +1222,19 @@ LABEL_30:
         else
         {
           v25 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-          v26 = [(PKSpendingSummary *)self->_summary rewards];
-          [(PKDashboardPaymentTransactionGroupItem *)v25 setGroup:v26];
+          rewards = [(PKSpendingSummary *)self->_summary rewards];
+          [(PKDashboardPaymentTransactionGroupItem *)v25 setGroup:rewards];
 
           [(PKDashboardPaymentTransactionGroupItem *)v25 setTransactionSourceCollection:self->_transactionSourceCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v25 setFamilyCollection:self->_familyCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v25 setAccount:self->_account];
           [(PKDashboardPaymentTransactionGroupItem *)v25 setAccountUserCollection:self->_accountUserCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v25 setPhysicalCards:self->_physicalCards];
-          v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v25 inCollectionView:v6 atIndexPath:v7];
+          v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v25 inCollectionView:viewCopy atIndexPath:pathCopy];
         }
 
-        -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [v7 row] == 0, -[PKSpendingSingleSummaryViewController _numberOfRewardsCells](self, "_numberOfRewardsCells") == objc_msgSend(v7, "row") + 1, 0);
-        v32 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [v7 row]);
+        -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [pathCopy row] == 0, -[PKSpendingSingleSummaryViewController _numberOfRewardsCells](self, "_numberOfRewardsCells") == objc_msgSend(pathCopy, "row") + 1, 0);
+        v32 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [pathCopy row]);
         v33 = MEMORY[0x1E69B9B90];
         v34 = MEMORY[0x1E69B9B98];
         if (v32 != 1)
@@ -1245,7 +1245,7 @@ LABEL_30:
 
       else
       {
-        if (-[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [v7 row]))
+        if (-[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [pathCopy row]))
         {
           v9 = 0;
         }
@@ -1253,19 +1253,19 @@ LABEL_30:
         else
         {
           v30 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-          v31 = [(PKSpendingSummary *)self->_summary interest];
-          [(PKDashboardPaymentTransactionGroupItem *)v30 setGroup:v31];
+          interest = [(PKSpendingSummary *)self->_summary interest];
+          [(PKDashboardPaymentTransactionGroupItem *)v30 setGroup:interest];
 
           [(PKDashboardPaymentTransactionGroupItem *)v30 setTransactionSourceCollection:self->_transactionSourceCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v30 setFamilyCollection:self->_familyCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v30 setAccount:self->_account];
           [(PKDashboardPaymentTransactionGroupItem *)v30 setAccountUserCollection:self->_accountUserCollection];
           [(PKDashboardPaymentTransactionGroupItem *)v30 setPhysicalCards:self->_physicalCards];
-          v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v30 inCollectionView:v6 atIndexPath:v7];
+          v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v30 inCollectionView:viewCopy atIndexPath:pathCopy];
         }
 
-        -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [v7 row] == 0, -[PKSpendingSingleSummaryViewController _numberOfAggregateCells](self, "_numberOfAggregateCells") == objc_msgSend(v7, "row") + 1, 1);
-        v32 = -[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [v7 row]);
+        -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [pathCopy row] == 0, -[PKSpendingSingleSummaryViewController _numberOfAggregateCells](self, "_numberOfAggregateCells") == objc_msgSend(pathCopy, "row") + 1, 1);
+        v32 = -[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [pathCopy row]);
         v33 = MEMORY[0x1E69B98A8];
         v34 = MEMORY[0x1E69B9D90];
       }
@@ -1279,35 +1279,35 @@ LABEL_30:
       goto LABEL_44;
     }
 
-    if (v8 != 5)
+    if (section != 5)
     {
-      if (v8 != 6)
+      if (section != 6)
       {
         goto LABEL_44;
       }
 
-      v17 = [v7 row];
-      v10 = [(PKSpendingSingleSummaryViewController *)self _nonSpendingTransactionGroupForType:[(PKSpendingSingleSummaryViewController *)self _nonSpendingTransactionTypeForRow:v17]];
+      v17 = [pathCopy row];
+      layer = [(PKSpendingSingleSummaryViewController *)self _nonSpendingTransactionGroupForType:[(PKSpendingSingleSummaryViewController *)self _nonSpendingTransactionTypeForRow:v17]];
       v18 = v17 == 0;
       v19 = v17 + 1 == [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled];
       v20 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-      [(PKDashboardPaymentTransactionGroupItem *)v20 setGroup:v10];
+      [(PKDashboardPaymentTransactionGroupItem *)v20 setGroup:layer];
       [(PKDashboardPaymentTransactionGroupItem *)v20 setTransactionSourceCollection:self->_transactionSourceCollection];
       [(PKDashboardPaymentTransactionGroupItem *)v20 setFamilyCollection:self->_familyCollection];
       [(PKDashboardPaymentTransactionGroupItem *)v20 setAccount:self->_account];
       [(PKDashboardPaymentTransactionGroupItem *)v20 setAccountUserCollection:self->_accountUserCollection];
       [(PKDashboardPaymentTransactionGroupItem *)v20 setPhysicalCards:self->_physicalCards];
-      v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v20 inCollectionView:v6 atIndexPath:v7];
+      v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v20 inCollectionView:viewCopy atIndexPath:pathCopy];
       [(PKSpendingSingleSummaryViewController *)self _applyStylingToCell:v9 firstInSection:v18 lastInSection:v19 isTransactionCell:1];
 
       goto LABEL_16;
     }
 
-    v27 = [v7 row];
+    v27 = [pathCopy row];
     categorization = self->_categorization;
     if (categorization == 1)
     {
-      v29 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
     }
 
     else
@@ -1319,11 +1319,11 @@ LABEL_30:
         goto LABEL_43;
       }
 
-      v29 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
     }
 
-    v41 = v29;
-    v42 = [v29 objectAtIndex:v27];
+    v41 = orderedSpendingPerMerchants;
+    v42 = [orderedSpendingPerMerchants objectAtIndex:v27];
     v43 = [v41 count];
 
 LABEL_43:
@@ -1334,54 +1334,54 @@ LABEL_43:
     [(PKDashboardPaymentTransactionGroupItem *)v44 setAccount:self->_account];
     [(PKDashboardPaymentTransactionGroupItem *)v44 setAccountUserCollection:self->_accountUserCollection];
     [(PKDashboardPaymentTransactionGroupItem *)v44 setPhysicalCards:self->_physicalCards];
-    v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v44 inCollectionView:v6 atIndexPath:v7];
+    v9 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter cellForItem:v44 inCollectionView:viewCopy atIndexPath:pathCopy];
     [(PKSpendingSingleSummaryViewController *)self _applyStylingToCell:v9 firstInSection:v27 == 0 lastInSection:v43 == v27 + 1 isTransactionCell:1];
 
     goto LABEL_44;
   }
 
-  if (!v8)
+  if (!section)
   {
-    v10 = objc_alloc_init(PKDashboardAvatarItem);
-    v11 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [v7 row]);
-    v21 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-    v22 = [(PKDashboardSpendingSummaryAccountUserItem *)v11 altDSID];
-    v23 = [v21 objectForKey:v22];
-    [(PKDashboardAvatarItem *)v10 setFamilyMember:v23];
+    layer = objc_alloc_init(PKDashboardAvatarItem);
+    layer3 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [pathCopy row]);
+    familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+    altDSID = [(PKDashboardSpendingSummaryAccountUserItem *)layer3 altDSID];
+    v23 = [familyMembersByAltDSID objectForKey:altDSID];
+    [(PKDashboardAvatarItem *)layer setFamilyMember:v23];
 
-    [(PKDashboardAvatarItem *)v10 setAccountUser:v11];
+    [(PKDashboardAvatarItem *)layer setAccountUser:layer3];
     avatarPresenter = self->_avatarPresenter;
-    v16 = v10;
+    v16 = layer;
 LABEL_14:
-    v9 = [avatarPresenter cellForItem:v16 inCollectionView:v6 atIndexPath:v7];
+    v9 = [avatarPresenter cellForItem:v16 inCollectionView:viewCopy atIndexPath:pathCopy];
 LABEL_15:
 
 LABEL_16:
     goto LABEL_44;
   }
 
-  if (v8 != 1)
+  if (section != 1)
   {
-    if (v8 != 2)
+    if (section != 2)
     {
       goto LABEL_44;
     }
 
-    v10 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [v7 row]);
-    v11 = objc_alloc_init(PKDashboardSpendingSummaryAccountUserItem);
-    [(PKDashboardSpendingSummaryAccountUserItem *)v11 setSpendingSummary:self->_summary];
-    v12 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-    v13 = [(PKDashboardAvatarItem *)v10 altDSID];
-    v14 = [v12 objectForKey:v13];
-    [(PKDashboardSpendingSummaryAccountUserItem *)v11 setFamilyMember:v14];
+    layer = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [pathCopy row]);
+    layer3 = objc_alloc_init(PKDashboardSpendingSummaryAccountUserItem);
+    [(PKDashboardSpendingSummaryAccountUserItem *)layer3 setSpendingSummary:self->_summary];
+    familyMembersByAltDSID2 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+    altDSID2 = [(PKDashboardAvatarItem *)layer altDSID];
+    v14 = [familyMembersByAltDSID2 objectForKey:altDSID2];
+    [(PKDashboardSpendingSummaryAccountUserItem *)layer3 setFamilyMember:v14];
 
-    [(PKDashboardSpendingSummaryAccountUserItem *)v11 setAccountUser:v10];
+    [(PKDashboardSpendingSummaryAccountUserItem *)layer3 setAccountUser:layer];
     avatarPresenter = self->_summaryUsersPresenter;
-    v16 = v11;
+    v16 = layer3;
     goto LABEL_14;
   }
 
-  if ([v7 row])
+  if ([pathCopy row])
   {
     v9 = 0;
   }
@@ -1390,16 +1390,16 @@ LABEL_16:
   {
     v35 = objc_alloc_init(PKDashboardSpendingSummaryItem);
     [(PKDashboardSpendingSummaryItem *)v35 setSpendingSummary:self->_summary];
-    v9 = [(PKSpendingSummaryPresenter *)self->_summaryPresenter cellForItem:v35 inCollectionView:v6 atIndexPath:v7];
-    v36 = [v9 contentView];
-    v37 = [v36 subviews];
-    v38 = [v37 firstObject];
+    v9 = [(PKSpendingSummaryPresenter *)self->_summaryPresenter cellForItem:v35 inCollectionView:viewCopy atIndexPath:pathCopy];
+    contentView = [v9 contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
 
-    [v38 setVisible:self->_visible];
+    [firstObject setVisible:self->_visible];
   }
 
-  -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [v7 row] == 0, -[PKSpendingSingleSummaryViewController _numberOfSummaryCells](self, "_numberOfSummaryCells") == objc_msgSend(v7, "row") + 1, 0);
-  v39 = [v7 row];
+  -[PKSpendingSingleSummaryViewController _applyStylingToCell:firstInSection:lastInSection:isTransactionCell:](self, "_applyStylingToCell:firstInSection:lastInSection:isTransactionCell:", v9, [pathCopy row] == 0, -[PKSpendingSingleSummaryViewController _numberOfSummaryCells](self, "_numberOfSummaryCells") == objc_msgSend(pathCopy, "row") + 1, 0);
+  v39 = [pathCopy row];
   v40 = MEMORY[0x1E69B95F0];
   if (v39)
   {
@@ -1407,18 +1407,18 @@ LABEL_16:
   }
 
   [v9 setAccessibilityIdentifier:*v40];
-  if (![v7 row])
+  if (![pathCopy row])
   {
     if (self->_isLowEndDevice)
     {
-      v10 = [v9 layer];
+      layer = [v9 layer];
     }
 
     else
     {
       visible = self->_visible;
-      v47 = [v9 layer];
-      v10 = v47;
+      layer2 = [v9 layer];
+      layer = layer2;
       if (visible)
       {
         alphaTransition = self->_alphaTransition;
@@ -1426,22 +1426,22 @@ LABEL_16:
         {
           v49 = (alphaTransition / -0.2 + 1.0) * 0.15;
           *&v49 = v49;
-          [(PKDashboardAvatarItem *)v47 setShadowOpacity:v49];
-          [(PKDashboardAvatarItem *)v10 setShadowRadius:20.0];
-          [(PKDashboardAvatarItem *)v10 setMasksToBounds:0];
+          [(PKDashboardAvatarItem *)layer2 setShadowOpacity:v49];
+          [(PKDashboardAvatarItem *)layer setShadowRadius:20.0];
+          [(PKDashboardAvatarItem *)layer setMasksToBounds:0];
 LABEL_51:
-          v50 = [v9 contentView];
-          v11 = [v50 layer];
+          contentView2 = [v9 contentView];
+          layer3 = [contentView2 layer];
 
-          [(PKDashboardSpendingSummaryAccountUserItem *)v11 setCornerRadius:26.0];
-          [(PKDashboardSpendingSummaryAccountUserItem *)v11 setMasksToBounds:1];
+          [(PKDashboardSpendingSummaryAccountUserItem *)layer3 setCornerRadius:26.0];
+          [(PKDashboardSpendingSummaryAccountUserItem *)layer3 setMasksToBounds:1];
           goto LABEL_15;
         }
       }
     }
 
-    [(PKDashboardAvatarItem *)v10 setShadowOpacity:0.0];
-    [(PKDashboardAvatarItem *)v10 setShadowRadius:0.0];
+    [(PKDashboardAvatarItem *)layer setShadowOpacity:0.0];
+    [(PKDashboardAvatarItem *)layer setShadowRadius:0.0];
     goto LABEL_51;
   }
 
@@ -1470,7 +1470,7 @@ LABEL_44:
   return v4;
 }
 
-- (unint64_t)_nonSpendingTransactionTypeForRow:(int64_t)a3
+- (unint64_t)_nonSpendingTransactionTypeForRow:(int64_t)row
 {
   v5 = 0;
   v6 = 0;
@@ -1480,7 +1480,7 @@ LABEL_44:
 
     if (v7)
     {
-      if (v6 == a3)
+      if (v6 == row)
       {
         return v5;
       }
@@ -1495,45 +1495,45 @@ LABEL_44:
   return v5;
 }
 
-- (id)_nonSpendingTransactionGroupForType:(unint64_t)a3
+- (id)_nonSpendingTransactionGroupForType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v3 = [(PKSpendingSummary *)self->_summary adjustments];
+    adjustments = [(PKSpendingSummary *)self->_summary adjustments];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v3 = [(PKSpendingSummary *)self->_summary refunds];
+    adjustments = [(PKSpendingSummary *)self->_summary refunds];
   }
 
-  else if (a3)
+  else if (type)
   {
-    v3 = 0;
+    adjustments = 0;
   }
 
   else
   {
-    v3 = [(PKSpendingSummary *)self->_summary payments];
+    adjustments = [(PKSpendingSummary *)self->_summary payments];
   }
 
-  return v3;
+  return adjustments;
 }
 
-- (void)_applyStylingToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5 isTransactionCell:(BOOL)a6
+- (void)_applyStylingToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection isTransactionCell:(BOOL)transactionCell
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v15 = a3;
+  transactionCellCopy = transactionCell;
+  inSectionCopy = inSection;
+  sectionCopy = section;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v10 = v15;
+  v10 = cellCopy;
   if (isKindOfClass)
   {
-    v11 = v15;
+    v11 = cellCopy;
     v12 = v11;
-    if (v8 && v7)
+    if (sectionCopy && inSectionCopy)
     {
       v13 = 3;
 LABEL_5:
@@ -1541,18 +1541,18 @@ LABEL_5:
       [v12 setShowsBottomSeparator:0];
 LABEL_13:
 
-      v10 = v15;
+      v10 = cellCopy;
       goto LABEL_14;
     }
 
-    if (v8)
+    if (sectionCopy)
     {
       v14 = 1;
     }
 
     else
     {
-      if (v7)
+      if (inSectionCopy)
       {
         v13 = 2;
         goto LABEL_5;
@@ -1563,7 +1563,7 @@ LABEL_13:
 
     [v11 setMaskType:v14];
     [v12 setShowsBottomSeparator:1];
-    if (v6)
+    if (transactionCellCopy)
     {
       [v12 setSeparatorInsets:{0.0, 67.0, 0.0, 16.0}];
     }
@@ -1574,24 +1574,24 @@ LABEL_13:
 LABEL_14:
 }
 
-- (CGSize)_sizeForAggregateOrRewardsCellInCollectionView:(id)a3 atIndexPath:(id)a4
+- (CGSize)_sizeForAggregateOrRewardsCellInCollectionView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-  v9 = [(PKSpendingSummary *)self->_summary rewards];
-  [(PKDashboardPaymentTransactionGroupItem *)v8 setGroup:v9];
+  rewards = [(PKSpendingSummary *)self->_summary rewards];
+  [(PKDashboardPaymentTransactionGroupItem *)v8 setGroup:rewards];
 
   [(PKDashboardPaymentTransactionGroupItem *)v8 setTransactionSourceCollection:self->_transactionSourceCollection];
   [(PKDashboardPaymentTransactionGroupItem *)v8 setFamilyCollection:self->_familyCollection];
   [(PKDashboardPaymentTransactionGroupItem *)v8 setAccount:self->_account];
   [(PKDashboardPaymentTransactionGroupItem *)v8 setAccountUserCollection:self->_accountUserCollection];
   [(PKDashboardPaymentTransactionGroupItem *)v8 setPhysicalCards:self->_physicalCards];
-  [v7 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v11 = v10;
   v13 = v12;
-  [v7 bounds];
-  [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter sizeForItem:v8 inCollectionView:v7 safeAreaWidth:v6 atIndexPath:v14 - v11 - v13];
+  [viewCopy bounds];
+  [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter sizeForItem:v8 inCollectionView:viewCopy safeAreaWidth:pathCopy atIndexPath:v14 - v11 - v13];
   v16 = v15;
   v18 = v17;
 
@@ -1602,35 +1602,35 @@ LABEL_14:
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 section];
-  if (*MEMORY[0x1E69DDC08] == v9)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
-    v12 = [(PKSpendingSingleSummaryViewController *)self _headerReuseIdentifierForSection:v11];
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v12 forIndexPath:v10];
-    [(PKSpendingSingleSummaryViewController *)self _configureHeaderView:v13 inSection:v11];
+    v12 = [(PKSpendingSingleSummaryViewController *)self _headerReuseIdentifierForSection:section];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v12 forIndexPath:pathCopy];
+    [(PKSpendingSingleSummaryViewController *)self _configureHeaderView:v13 inSection:section];
   }
 
   else
   {
     v12 = @"footerIdentifier";
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"footerIdentifier" forIndexPath:v10];
-    [(PKSpendingSingleSummaryViewController *)self _configureFooterView:v13 inSection:v11];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"footerIdentifier" forIndexPath:pathCopy];
+    [(PKSpendingSingleSummaryViewController *)self _configureFooterView:v13 inSection:section];
   }
 
   return v13;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  if ([(PKSpendingSingleSummaryViewController *)self _hasHeaderForSection:a5])
+  viewCopy = view;
+  if ([(PKSpendingSingleSummaryViewController *)self _hasHeaderForSection:section])
   {
-    v8 = [(PKSpendingSingleSummaryViewController *)self _headerReuseIdentifierForSection:a5];
+    v8 = [(PKSpendingSingleSummaryViewController *)self _headerReuseIdentifierForSection:section];
     if ([v8 isEqualToString:@"titleIdentifier"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"bigTitleIdentifier"))
     {
       v9 = &OBJC_IVAR___PKSpendingSingleSummaryViewController__sampleHeaderView;
@@ -1650,8 +1650,8 @@ LABEL_14:
     if (v10)
     {
       v11 = v10;
-      [(PKSpendingSingleSummaryViewController *)self _configureHeaderView:v10 inSection:a5];
-      [v7 bounds];
+      [(PKSpendingSingleSummaryViewController *)self _configureHeaderView:v10 inSection:section];
+      [viewCopy bounds];
       [v11 sizeThatFits:{v12, 3.40282347e38}];
       v14 = v13;
       v16 = v15;
@@ -1683,14 +1683,14 @@ LABEL_14:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v7 = a3;
-  if ([(PKSpendingSingleSummaryViewController *)self _hasFooterForSection:a5])
+  viewCopy = view;
+  if ([(PKSpendingSingleSummaryViewController *)self _hasFooterForSection:section])
   {
-    [(PKSpendingSingleSummaryViewController *)self _configureFooterView:self->_sampleFooterView inSection:a5];
+    [(PKSpendingSingleSummaryViewController *)self _configureFooterView:self->_sampleFooterView inSection:section];
     sampleFooterView = self->_sampleFooterView;
-    [v7 bounds];
+    [viewCopy bounds];
     v10 = v9;
     +[PKDashboardCollectionViewCell defaultHorizontalInset];
     [(PKDashboardFooterTextView *)sampleFooterView sizeThatFits:v10 + v11 * -2.0, 3.40282347e38];
@@ -1711,21 +1711,21 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
+  pathCopy = path;
+  section = [pathCopy section];
   hasTransactions = 0;
-  if (v6 <= 3)
+  if (section <= 3)
   {
-    if (v6 != 2)
+    if (section != 2)
     {
-      if (v6 != 3)
+      if (section != 3)
       {
         goto LABEL_12;
       }
 
-      v8 = [v5 row];
+      v8 = [pathCopy row];
       if (v8 == 2)
       {
         hasTransactions = 0;
@@ -1734,8 +1734,8 @@ LABEL_14:
 
       if (!v8)
       {
-        v9 = [(PKSpendingSummary *)self->_summary rewards];
-        hasTransactions = [v9 transactionCount] != 0;
+        rewards = [(PKSpendingSummary *)self->_summary rewards];
+        hasTransactions = [rewards transactionCount] != 0;
 
         goto LABEL_12;
       }
@@ -1746,12 +1746,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6 == 4 || v6 == 6)
+  if (section == 4 || section == 6)
   {
     goto LABEL_11;
   }
 
-  if (v6 == 5)
+  if (section == 5)
   {
     hasTransactions = self->_hasTransactions;
   }
@@ -1761,38 +1761,38 @@ LABEL_12:
   return hasTransactions;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 > 3)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section > 3)
   {
-    switch(v6)
+    switch(section)
     {
       case 4:
-        if (-[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [v5 row]))
+        if (-[PKSpendingSingleSummaryViewController _aggregateCellAtIndex:](self, "_aggregateCellAtIndex:", [pathCopy row]))
         {
           goto LABEL_37;
         }
 
         v12 = [PKTransactionHistoryViewController alloc];
-        v13 = [(PKSpendingSummary *)self->_summary interest];
-        v10 = [(PKTransactionHistoryViewController *)v12 initWithTransactionGroup:v13 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
+        interest = [(PKSpendingSummary *)self->_summary interest];
+        v10 = [(PKTransactionHistoryViewController *)v12 initWithTransactionGroup:interest transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
         break;
       case 5:
         categorization = self->_categorization;
         if (categorization == 1)
         {
-          v27 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
-          v11 = [v27 objectAtIndex:{objc_msgSend(v5, "row")}];
+          orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
+          v11 = [orderedSpendingPerMerchants objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-          v28 = [v11 transactions];
-          v29 = [v28 firstObject];
+          transactions = [v11 transactions];
+          firstObject = [transactions firstObject];
 
           v30 = objc_alloc(MEMORY[0x1E69B8788]);
-          v31 = [v29 merchant];
-          v32 = [v30 initWithMerchant:v31 transactionSourceCollection:self->_transactionSourceCollection paymentDataProvider:0];
+          merchant = [firstObject merchant];
+          v32 = [v30 initWithMerchant:merchant transactionSourceCollection:self->_transactionSourceCollection paymentDataProvider:0];
 
           v10 = [[PKTransactionHistoryViewController alloc] initWithFetcher:v32 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards featuredTransaction:0 selectedTransactions:v11];
 LABEL_34:
@@ -1800,9 +1800,9 @@ LABEL_34:
 LABEL_35:
           if (v10)
           {
-            v35 = [(PKSpendingSingleSummaryViewController *)self parentViewController];
-            v36 = [v35 navigationController];
-            [v36 pushViewController:v10 animated:1];
+            parentViewController = [(PKSpendingSingleSummaryViewController *)self parentViewController];
+            navigationController = [parentViewController navigationController];
+            [navigationController pushViewController:v10 animated:1];
           }
 
           goto LABEL_37;
@@ -1813,14 +1813,14 @@ LABEL_35:
           goto LABEL_37;
         }
 
-        v19 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
-        v13 = [v19 objectAtIndex:{objc_msgSend(v5, "row")}];
+        orderedSpendingCategories = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
+        interest = [orderedSpendingCategories objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-        v10 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:v13 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
+        v10 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:interest transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
         objc_storeWeak(&self->_historyViewController, v10);
         break;
       case 6:
-        v11 = -[PKSpendingSingleSummaryViewController _nonSpendingTransactionGroupForType:](self, "_nonSpendingTransactionGroupForType:", -[PKSpendingSingleSummaryViewController _nonSpendingTransactionTypeForRow:](self, "_nonSpendingTransactionTypeForRow:", [v5 row]));
+        v11 = -[PKSpendingSingleSummaryViewController _nonSpendingTransactionGroupForType:](self, "_nonSpendingTransactionGroupForType:", -[PKSpendingSingleSummaryViewController _nonSpendingTransactionTypeForRow:](self, "_nonSpendingTransactionTypeForRow:", [pathCopy row]));
         if (v11)
         {
           v10 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:v11 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
@@ -1839,39 +1839,39 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (v6 == 1)
+  if (section == 1)
   {
-    [v5 row];
+    [pathCopy row];
     goto LABEL_37;
   }
 
-  if (v6 == 2)
+  if (section == 2)
   {
-    v14 = [(PKSpendingSummary *)self->_summary summaryType];
-    v15 = [(PKSpendingSummary *)self->_summary startDate];
-    v38 = v15;
-    if (v14)
+    summaryType = [(PKSpendingSummary *)self->_summary summaryType];
+    startDate = [(PKSpendingSummary *)self->_summary startDate];
+    v38 = startDate;
+    if (summaryType)
     {
-      if (v14 == 1)
+      if (summaryType == 1)
       {
-        v44 = v15;
+        v44 = startDate;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
         v16 = MEMORY[0x1E695E0F0];
       }
 
       else
       {
-        if (v14 == 2)
+        if (summaryType == 2)
         {
-          v45[0] = v15;
+          v45[0] = startDate;
           v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
           v17 = MEMORY[0x1E695E0F0];
           v37 = MEMORY[0x1E695E0F0];
 LABEL_33:
-          v33 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [v5 row]);
+          v33 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [pathCopy row]);
           v34 = [objc_alloc(MEMORY[0x1E69B92A8]) initWithTransactionSourceCollection:self->_transactionSourceCollection account:self->_account accountUser:v33];
           v11 = v37;
-          v10 = [[PKSpendingSummaryViewController alloc] initWithTransactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection avatarManager:self->_avatarManager account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:v34 weeks:v37 months:v17 years:v16 type:v14 unit:0x7FFFFFFFFFFFFFFFLL currentMonthTransactions:0 pendingPayments:0 upcomingScheduledPayments:0 dispayType:1];
+          v10 = [[PKSpendingSummaryViewController alloc] initWithTransactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection avatarManager:self->_avatarManager account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:v34 weeks:v37 months:v17 years:v16 type:summaryType unit:0x7FFFFFFFFFFFFFFFLL currentMonthTransactions:0 pendingPayments:0 upcomingScheduledPayments:0 dispayType:1];
 
           goto LABEL_34;
         }
@@ -1884,19 +1884,19 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v43 = v15;
+    v43 = startDate;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
     v16 = MEMORY[0x1E695E0F0];
     v17 = MEMORY[0x1E695E0F0];
     goto LABEL_33;
   }
 
-  if (v6 != 3)
+  if (section != 3)
   {
     goto LABEL_37;
   }
 
-  v7 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [v5 row]);
+  v7 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [pathCopy row]);
   if (v7 != 1)
   {
     if (v7)
@@ -1905,8 +1905,8 @@ LABEL_33:
     }
 
     v8 = [PKTransactionHistoryViewController alloc];
-    v9 = [(PKSpendingSummary *)self->_summary rewards];
-    v10 = [(PKTransactionHistoryViewController *)v8 initWithTransactionGroup:v9 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
+    rewards = [(PKSpendingSummary *)self->_summary rewards];
+    v10 = [(PKTransactionHistoryViewController *)v8 initWithTransactionGroup:rewards transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards fetcher:0 detailViewStyle:0];
 
     objc_storeWeak(&self->_historyViewController, v10);
     goto LABEL_35;
@@ -1926,8 +1926,8 @@ LABEL_33:
     v41[2] = *MEMORY[0x1E69BB170];
     v42[2] = *MEMORY[0x1E69BAAA0];
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:3];
-    v26 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    [v21 reportDashboardEventIfNecessary:v25 forPass:v26];
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    [v21 reportDashboardEventIfNecessary:v25 forPass:paymentPass];
 
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -1948,20 +1948,20 @@ void __81__PKSpendingSingleSummaryViewController_collectionView_didSelectItemAtI
   [v2 pushViewController:*(a1 + 40) animated:1];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = *MEMORY[0x1E69DDCE0];
   v8 = *(MEMORY[0x1E69DDCE0] + 8);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
   v10 = *(MEMORY[0x1E69DDCE0] + 24);
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  if (a5 <= 7)
+  if (index <= 7)
   {
-    if (a5 == 2)
+    if (index == 2)
     {
       v16 = v11;
-      if ([v6 numberOfItemsInSection:2] >= 1)
+      if ([viewCopy numberOfItemsInSection:2] >= 1)
       {
         v7 = 0.0;
         v9 = 33.0;
@@ -1970,7 +1970,7 @@ void __81__PKSpendingSingleSummaryViewController_collectionView_didSelectItemAtI
       }
     }
 
-    else if ([v6 numberOfItemsInSection:a5] >= 1)
+    else if ([viewCopy numberOfItemsInSection:index] >= 1)
     {
       v10 = 0.0;
       v9 = 20.0;
@@ -1990,26 +1990,26 @@ void __81__PKSpendingSingleSummaryViewController_collectionView_didSelectItemAtI
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 safeAreaInsets];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy safeAreaInsets];
   v10 = v9;
   v12 = v11;
-  [v7 bounds];
+  [viewCopy bounds];
   v14 = v13 - v10 - v12;
-  v15 = [v8 section];
-  if (v15 <= 2)
+  section = [pathCopy section];
+  if (section <= 2)
   {
-    switch(v15)
+    switch(section)
     {
       case 0:
         v20 = objc_alloc_init(PKDashboardAvatarItem);
-        v21 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [v8 row]);
-        v23 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-        v24 = [(PKDashboardSpendingSummaryAccountUserItem *)v21 altDSID];
-        v25 = [v23 objectForKey:v24];
+        v21 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [pathCopy row]);
+        familyMembersByAltDSID = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+        altDSID = [(PKDashboardSpendingSummaryAccountUserItem *)v21 altDSID];
+        v25 = [familyMembersByAltDSID objectForKey:altDSID];
         [(PKDashboardAvatarItem *)v20 setFamilyMember:v25];
 
         [(PKDashboardAvatarItem *)v20 setAccountUser:v21];
@@ -2018,7 +2018,7 @@ LABEL_14:
         v26 = *(&self->super.super.super.super.isa + v22);
         v27 = v20;
 LABEL_30:
-        [v26 sizeForItem:v27 inCollectionView:v7 safeAreaWidth:v8 atIndexPath:v14];
+        [v26 sizeForItem:v27 inCollectionView:viewCopy safeAreaWidth:pathCopy atIndexPath:v14];
         v18 = v42;
         v19 = v43;
 
@@ -2026,10 +2026,10 @@ LABEL_30:
       case 1:
         v33 = objc_alloc_init(PKDashboardSpendingSummaryItem);
         [(PKDashboardSpendingSummaryItem *)v33 setSpendingSummary:self->_summary];
-        [(PKSpendingSummaryPresenter *)self->_summaryPresenter sizeForItem:v33 inCollectionView:v7 safeAreaWidth:v8 atIndexPath:v14];
+        [(PKSpendingSummaryPresenter *)self->_summaryPresenter sizeForItem:v33 inCollectionView:viewCopy safeAreaWidth:pathCopy atIndexPath:v14];
         v18 = v34;
         v19 = v35;
-        v36 = [v8 row];
+        v36 = [pathCopy row];
 
         if (v36 < 2)
         {
@@ -2043,12 +2043,12 @@ LABEL_30:
         goto LABEL_19;
     }
 
-    v20 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [v8 row]);
+    v20 = -[NSArray objectAtIndex:](self->_sortedAccountUsers, "objectAtIndex:", [pathCopy row]);
     v21 = objc_alloc_init(PKDashboardSpendingSummaryAccountUserItem);
     [(PKDashboardSpendingSummaryAccountUserItem *)v21 setSpendingSummary:self->_summary];
-    v37 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
-    v38 = [(PKDashboardAvatarItem *)v20 altDSID];
-    v39 = [v37 objectForKey:v38];
+    familyMembersByAltDSID2 = [(PKFamilyMemberCollection *)self->_familyCollection familyMembersByAltDSID];
+    altDSID2 = [(PKDashboardAvatarItem *)v20 altDSID];
+    v39 = [familyMembersByAltDSID2 objectForKey:altDSID2];
     [(PKDashboardSpendingSummaryAccountUserItem *)v21 setFamilyMember:v39];
 
     [(PKDashboardSpendingSummaryAccountUserItem *)v21 setAccountUser:v20];
@@ -2059,17 +2059,17 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v15 > 4)
+  if (section > 4)
   {
-    if (v15 != 5)
+    if (section != 5)
     {
-      if (v15 != 6)
+      if (section != 6)
       {
         goto LABEL_19;
       }
 
       v20 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-      v21 = -[PKSpendingSingleSummaryViewController _nonSpendingTransactionGroupForType:](self, "_nonSpendingTransactionGroupForType:", -[PKSpendingSingleSummaryViewController _nonSpendingTransactionTypeForRow:](self, "_nonSpendingTransactionTypeForRow:", [v8 row]));
+      v21 = -[PKSpendingSingleSummaryViewController _nonSpendingTransactionGroupForType:](self, "_nonSpendingTransactionGroupForType:", -[PKSpendingSingleSummaryViewController _nonSpendingTransactionTypeForRow:](self, "_nonSpendingTransactionTypeForRow:", [pathCopy row]));
       [(PKDashboardAvatarItem *)v20 setGroup:v21];
       [(PKDashboardAvatarItem *)v20 setTransactionSourceCollection:self->_transactionSourceCollection];
       [(PKDashboardAvatarItem *)v20 setFamilyCollection:self->_familyCollection];
@@ -2083,7 +2083,7 @@ LABEL_29:
     categorization = self->_categorization;
     if (categorization == 1)
     {
-      v32 = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingPerMerchants];
     }
 
     else
@@ -2094,11 +2094,11 @@ LABEL_29:
         goto LABEL_28;
       }
 
-      v32 = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
+      orderedSpendingPerMerchants = [(PKSpendingSummary *)self->_summary orderedSpendingCategories];
     }
 
-    v41 = v32;
-    v20 = [v32 objectAtIndex:{objc_msgSend(v8, "row")}];
+    v41 = orderedSpendingPerMerchants;
+    v20 = [orderedSpendingPerMerchants objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
 LABEL_28:
     v21 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
@@ -2112,19 +2112,19 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v15 != 3)
+  if (section != 3)
   {
-    [(PKSpendingSingleSummaryViewController *)self _sizeForAggregateOrRewardsCellInCollectionView:v7 atIndexPath:v8];
+    [(PKSpendingSingleSummaryViewController *)self _sizeForAggregateOrRewardsCellInCollectionView:viewCopy atIndexPath:pathCopy];
     v18 = v17;
 LABEL_5:
     v19 = v16;
     goto LABEL_31;
   }
 
-  [(PKSpendingSingleSummaryViewController *)self _sizeForAggregateOrRewardsCellInCollectionView:v7 atIndexPath:v8];
+  [(PKSpendingSingleSummaryViewController *)self _sizeForAggregateOrRewardsCellInCollectionView:viewCopy atIndexPath:pathCopy];
   v18 = v28;
   v19 = v29;
-  v30 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [v8 row]);
+  v30 = -[PKSpendingSingleSummaryViewController _rewardsCellAtIndex:](self, "_rewardsCellAtIndex:", [pathCopy row]);
   if (v30 && v30 != 2)
   {
     if (v30 == 1)
@@ -2148,24 +2148,24 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)_hasHeaderForSection:(unint64_t)a3
+- (BOOL)_hasHeaderForSection:(unint64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     return 1;
   }
 
-  if (a3 == 6)
+  if (section == 6)
   {
-    v5 = [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled];
+    _numberOfNonSpendingTransactionTypeRowsEnabled = [(PKSpendingSingleSummaryViewController *)self _numberOfNonSpendingTransactionTypeRowsEnabled];
     if (([(PKSpendingSummary *)self->_summary isLoading]& 1) == 0 && !self->_categorization)
     {
-      if (v5 > 1)
+      if (_numberOfNonSpendingTransactionTypeRowsEnabled > 1)
       {
         return 1;
       }
 
-      if (v5 == 1)
+      if (_numberOfNonSpendingTransactionTypeRowsEnabled == 1)
       {
         return !self->_hasTransactions;
       }
@@ -2174,7 +2174,7 @@ LABEL_31:
     return 0;
   }
 
-  if (a3 != 5 || ([(PKSpendingSummary *)self->_summary isLoading]& 1) != 0)
+  if (section != 5 || ([(PKSpendingSummary *)self->_summary isLoading]& 1) != 0)
   {
     return 0;
   }
@@ -2182,28 +2182,28 @@ LABEL_31:
   return self->_hasTransactions;
 }
 
-- (id)_headerReuseIdentifierForSection:(unint64_t)a3
+- (id)_headerReuseIdentifierForSection:(unint64_t)section
 {
-  if (a3 > 6)
+  if (section > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E8018D10[a3];
+    return off_1E8018D10[section];
   }
 }
 
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  viewCopy = view;
+  v7 = viewCopy;
+  switch(section)
   {
     case 6uLL:
-      [v6 setUseCompactTopInset:1];
+      [viewCopy setUseCompactTopInset:1];
       if ([(PKSpendingSummary *)self->_summary isLoading])
       {
         [v7 setTitle:&stru_1F3BD7330];
@@ -2221,7 +2221,7 @@ LABEL_31:
       [v7 setActionTitle:0];
       break;
     case 5uLL:
-      v13 = v6;
+      v13 = viewCopy;
       if (([(PKSpendingSummary *)self->_summary isLoading]& 1) != 0 || !self->_hasTransactions)
       {
         [v13 setActions:MEMORY[0x1E695E0F0]];
@@ -2259,46 +2259,46 @@ LABEL_31:
 
       break;
     case 1uLL:
-      [v6 setUseCompactTopInset:1];
-      v8 = [(PKSpendingSummary *)self->_summary summaryType];
-      if (v8)
+      [viewCopy setUseCompactTopInset:1];
+      summaryType = [(PKSpendingSummary *)self->_summary summaryType];
+      if (summaryType)
       {
-        if (v8 == 1)
+        if (summaryType == 1)
         {
           formatterFullMonth = self->_formatterFullMonth;
-          v10 = [(PKSpendingSummary *)self->_summary startDate];
-          v11 = [(NSDateFormatter *)formatterFullMonth stringFromDate:v10];
-          v12 = [v11 pk_uppercaseFirstStringForPreferredLocale];
+          startDate = [(PKSpendingSummary *)self->_summary startDate];
+          endDate = [(NSDateFormatter *)formatterFullMonth stringFromDate:startDate];
+          pk_uppercaseFirstStringForPreferredLocale = [endDate pk_uppercaseFirstStringForPreferredLocale];
         }
 
         else
         {
-          if (v8 != 2)
+          if (summaryType != 2)
           {
-            v23 = 0;
+            pk_uppercaseFirstStringForPreferredLocale2 = 0;
             goto LABEL_22;
           }
 
           formatterYear = self->_formatterYear;
-          v10 = [(PKSpendingSummary *)self->_summary startDate];
-          v11 = [(NSDateFormatter *)formatterYear stringFromDate:v10];
-          v12 = [v11 pk_uppercaseFirstStringForPreferredLocale];
+          startDate = [(PKSpendingSummary *)self->_summary startDate];
+          endDate = [(NSDateFormatter *)formatterYear stringFromDate:startDate];
+          pk_uppercaseFirstStringForPreferredLocale = [endDate pk_uppercaseFirstStringForPreferredLocale];
         }
 
-        v23 = v12;
+        pk_uppercaseFirstStringForPreferredLocale2 = pk_uppercaseFirstStringForPreferredLocale;
       }
 
       else
       {
-        v10 = [(PKSpendingSummary *)self->_summary startDate];
-        v11 = [(PKSpendingSummary *)self->_summary endDate];
+        startDate = [(PKSpendingSummary *)self->_summary startDate];
+        endDate = [(PKSpendingSummary *)self->_summary endDate];
         v24 = PKDateRangeStringFromDateToDate();
-        v23 = [v24 pk_uppercaseFirstStringForPreferredLocale];
+        pk_uppercaseFirstStringForPreferredLocale2 = [v24 pk_uppercaseFirstStringForPreferredLocale];
       }
 
 LABEL_22:
       [v7 setTitleStyle:1];
-      [v7 setTitle:v23];
+      [v7 setTitle:pk_uppercaseFirstStringForPreferredLocale2];
       [v7 setActionTitle:0];
       +[PKDashboardCollectionViewCell defaultHorizontalInset];
       [v7 setHorizontalInset:v25 + 8.0];
@@ -2329,32 +2329,32 @@ void __72__PKSpendingSingleSummaryViewController__configureHeaderView_inSection_
   }
 }
 
-- (void)_changeCategorizationTypeTo:(unint64_t)a3
+- (void)_changeCategorizationTypeTo:(unint64_t)to
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  if (self->_categorization == a3)
+  if (self->_categorization == to)
   {
     return;
   }
 
-  v5 = [(PKSpendingSingleSummaryViewController *)self collectionView];
+  collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __69__PKSpendingSingleSummaryViewController__changeCategorizationTypeTo___block_invoke;
   v19 = &unk_1E8012C50;
-  v20 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = collectionView;
   v21 = v6;
-  v22 = a3;
+  toCopy = to;
   [v6 performBatchUpdates:&v16 completion:0];
-  if (!a3)
+  if (!to)
   {
     v8 = MEMORY[0x1E69BB2B8];
     goto LABEL_6;
   }
 
   v7 = 0;
-  if (a3 == 1)
+  if (to == 1)
   {
     v8 = MEMORY[0x1E69BB2C0];
 LABEL_6:
@@ -2370,9 +2370,9 @@ LABEL_6:
   v11 = MEMORY[0x1E69B8540];
   v23[2] = *MEMORY[0x1E69BA440];
   v24[2] = v7;
-  v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{3, v16, v17, v18, v19, v20}];
-  v13 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  [v11 reportDashboardEventIfNecessary:v12 forPass:v13];
+  v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{3, v16, v17, v18, v19, selfCopy}];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  [v11 reportDashboardEventIfNecessary:v12 forPass:paymentPass];
 
   WeakRetained = objc_loadWeakRetained(&self->_summaryDelegate);
   v15 = WeakRetained;
@@ -2458,50 +2458,50 @@ LABEL_11:
   [v14 reloadSections:v15];
 }
 
-- (BOOL)_hasFooterForSection:(unint64_t)a3
+- (BOOL)_hasFooterForSection:(unint64_t)section
 {
-  if (a3 != 5)
+  if (section != 5)
   {
     return 0;
   }
 
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v4 = [v3 accountSummary];
-  v5 = [v4 requiresDebtCollectionNotices];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  requiresDebtCollectionNotices = [accountSummary requiresDebtCollectionNotices];
 
-  return v5;
+  return requiresDebtCollectionNotices;
 }
 
-- (void)_configureFooterView:(id)a3 inSection:(unint64_t)a4
+- (void)_configureFooterView:(id)view inSection:(unint64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  [v6 setHorizontalInset:?];
-  if (a4 == 5)
+  [viewCopy setHorizontalInset:?];
+  if (section == 5)
   {
     v5 = PKLocalizedFeatureString();
-    [v6 setFooterText:v5];
+    [viewCopy setFooterText:v5];
   }
 }
 
-- (void)_configureRewardsHubButtonCell:(id)a3
+- (void)_configureRewardsHubButtonCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v4 = PKLocalizedFeatureString();
-  [v3 setTitle:v4];
-  [v3 setStyle:1];
+  [cellCopy setTitle:v4];
+  [cellCopy setStyle:1];
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   accountService = self->_accountService;
-  v5 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKSpendingSingleSummaryViewController__accountsChanged___block_invoke;
   v6[3] = &unk_1E80112C0;
   v6[4] = self;
-  [(PKAccountService *)accountService accountWithIdentifier:v5 completion:v6];
+  [(PKAccountService *)accountService accountWithIdentifier:accountIdentifier completion:v6];
 }
 
 void __58__PKSpendingSingleSummaryViewController__accountsChanged___block_invoke(uint64_t a1, void *a2)
@@ -2525,16 +2525,16 @@ uint64_t __58__PKSpendingSingleSummaryViewController__accountsChanged___block_in
   return [v2 _configureFooter];
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__PKSpendingSingleSummaryViewController_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = membersCopy;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2549,29 +2549,29 @@ void __64__PKSpendingSingleSummaryViewController_didUpdateFamilyMembers___block_
   [v5 reloadData];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(PKSpendingSingleSummaryViewController *)self gestureRecognizerRequiredToFail];
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizerRequiredToFail = [(PKSpendingSingleSummaryViewController *)self gestureRecognizerRequiredToFail];
 
-  return v6 == v5;
+  return gestureRecognizerRequiredToFail == gestureRecognizerCopy;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_contentInset = a3;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  self->_contentInset = inset;
   if ([(PKSpendingSingleSummaryViewController *)self isViewLoaded])
   {
-    v8 = [(PKSpendingSingleSummaryViewController *)self collectionView];
-    [v8 setContentInset:{top, left, bottom, right}];
+    collectionView = [(PKSpendingSingleSummaryViewController *)self collectionView];
+    [collectionView setContentInset:{top, left, bottom, right}];
   }
 }
 
-- (void)buttonTappedInFooterView:(id)a3
+- (void)buttonTappedInFooterView:(id)view
 {
   v15[3] = *MEMORY[0x1E69E9840];
   if (PKStoreDemoModeEnabled())
@@ -2605,18 +2605,18 @@ void __64__PKSpendingSingleSummaryViewController_didUpdateFamilyMembers___block_
     v14[2] = *MEMORY[0x1E69BA440];
     v15[2] = *MEMORY[0x1E69BB2B0];
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
-    v12 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    [v7 reportDashboardEventIfNecessary:v11 forPass:v12];
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    [v7 reportDashboardEventIfNecessary:v11 forPass:paymentPass];
   }
 }
 
-- (void)_updateSelectedGroupWithSummary:(id)a3
+- (void)_updateSelectedGroupWithSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   WeakRetained = objc_loadWeakRetained(&self->_historyViewController);
-  v6 = [WeakRetained group];
+  group = [WeakRetained group];
 
-  if (!v6)
+  if (!group)
   {
     v10 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2631,14 +2631,14 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  v7 = [v6 type];
-  if (v7)
+  type = [group type];
+  if (type)
   {
-    if (v7 == 4)
+    if (type == 4)
     {
       v8 = objc_loadWeakRetained(&self->_historyViewController);
-      v9 = [v4 rewards];
-      [v8 updateGroup:v9];
+      rewards = [summaryCopy rewards];
+      [v8 updateGroup:rewards];
 
       v10 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2662,15 +2662,15 @@ LABEL_8:
     v26 = __Block_byref_object_copy__21;
     v27 = __Block_byref_object_dispose__21;
     v28 = 0;
-    v12 = [v4 orderedSpendingCategories];
+    orderedSpendingCategories = [summaryCopy orderedSpendingCategories];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __73__PKSpendingSingleSummaryViewController__updateSelectedGroupWithSummary___block_invoke;
     v20[3] = &unk_1E8018CF0;
-    v13 = v6;
+    v13 = group;
     v21 = v13;
     v22 = buf;
-    [v12 enumerateObjectsUsingBlock:v20];
+    [orderedSpendingCategories enumerateObjectsUsingBlock:v20];
 
     if (*(v24 + 5))
     {
@@ -2682,11 +2682,11 @@ LABEL_8:
     {
       v14 = objc_alloc_init(MEMORY[0x1E69B8EB0]);
       [v14 setType:0];
-      v15 = [v13 startDate];
-      [v14 setStartDate:v15];
+      startDate = [v13 startDate];
+      [v14 setStartDate:startDate];
 
-      v16 = [v13 endDate];
-      [v14 setEndDate:v16];
+      endDate = [v13 endDate];
+      [v14 setEndDate:endDate];
 
       [v14 setMerchantCategory:{objc_msgSend(v13, "merchantCategory")}];
       v17 = objc_loadWeakRetained(&self->_historyViewController);
@@ -2717,11 +2717,11 @@ void __73__PKSpendingSingleSummaryViewController__updateSelectedGroupWithSummary
   }
 }
 
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
-  v7 = [(UIViewController *)self pkui_frontMostViewController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  viewControllerCopy = viewController;
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [pkui_frontMostViewController presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
 - (PKSpendingSingleSummaryViewControllerDelegate)summaryDelegate

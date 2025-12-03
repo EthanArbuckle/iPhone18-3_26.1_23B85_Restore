@@ -1,16 +1,16 @@
 @interface PSUICoreTelephonyRegistrationCache
 + (PSUICoreTelephonyRegistrationCache)sharedInstance;
-- (BOOL)IMSStatusSMS:(id)a3;
-- (BOOL)IMSStatusVoice:(id)a3;
-- (BOOL)RCSStatus:(id)a3;
-- (BOOL)is2GEnabledForContext:(id)a3;
-- (BOOL)is2GSwitchSupportedForContext:(id)a3;
+- (BOOL)IMSStatusSMS:(id)s;
+- (BOOL)IMSStatusVoice:(id)voice;
+- (BOOL)RCSStatus:(id)status;
+- (BOOL)is2GEnabledForContext:(id)context;
+- (BOOL)is2GSwitchSupportedForContext:(id)context;
 - (PSUICoreTelephonyRegistrationCache)init;
 - (id)initPrivate;
-- (id)localizedOperatorName:(id)a3;
-- (id)rejectCauseCode:(id)a3;
-- (id)supportedDataRates:(id)a3;
-- (int64_t)maxDataRate:(id)a3;
+- (id)localizedOperatorName:(id)name;
+- (id)rejectCauseCode:(id)code;
+- (id)supportedDataRates:(id)rates;
+- (int64_t)maxDataRate:(id)rate;
 - (void)clearCache;
 - (void)dataRatesChanged;
 - (void)fetch2GSwitchEnabled;
@@ -22,9 +22,9 @@
 - (void)fetchRejectCauseCode;
 - (void)fetchSupportedDataRates;
 - (void)handleDataUsageChanged;
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)setMaxDataRate:(id)a3 dataRate:(int64_t)a4;
+- (void)imsRegistrationChanged:(id)changed info:(id)info;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)setMaxDataRate:(id)rate dataRate:(int64_t)dataRate;
 @end
 
 @implementation PSUICoreTelephonyRegistrationCache
@@ -69,14 +69,14 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     [(PSUICoreTelephonyRegistrationCache *)v2 setSupportedDataRatesDict:0];
     [(PSUICoreTelephonyRegistrationCache *)v2 setMaxDataRateDict:0];
     [(PSUICoreTelephonyRegistrationCache *)v2 setOperatorNameDict:0];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D76758] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D4D888] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D4D888] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_handleDataUsageChanged name:*MEMORY[0x277D4D8A8] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_handleDataUsageChanged name:*MEMORY[0x277D4D8A8] object:0];
   }
 
   return v2;
@@ -85,12 +85,12 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 - (PSUICoreTelephonyRegistrationCache)init
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315138;
     v4 = "[PSUICoreTelephonyRegistrationCache init]";
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -98,64 +98,64 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 
 - (void)clearCache
 {
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing registration cache", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing registration cache", v5, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(PSUICoreTelephonyRegistrationCache *)v4 setImsStatusVoiceDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setImsStatusSMSDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setRcsStatusDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setRejectCauseCodeDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setSupportedDataRatesDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setMaxDataRateDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setDataRate2GSupportedDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setDataRate2GEnabledDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setOperatorNameDict:0];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusVoiceDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusSMSDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setRcsStatusDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setRejectCauseCodeDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setSupportedDataRatesDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setMaxDataRateDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setDataRate2GSupportedDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setDataRate2GEnabledDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setOperatorNameDict:0];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)handleDataUsageChanged
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(PSUICoreTelephonyRegistrationCache *)v2 setMaxDataRateDict:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setMaxDataRateDict:0];
   v3 = [MEMORY[0x277CCAB88] notificationWithName:@"PSMaxDataRateChangedNotification" object:0];
-  v4 = [(PSUICoreTelephonyRegistrationCache *)v2 getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[PSUICoreTelephonyRegistrationCache handleDataUsageChanged]";
     v9 = 2112;
     v10 = @"PSMaxDataRateChangedNotification";
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s posting notification %@ from main thread", &v7, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s posting notification %@ from main thread", &v7, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 performSelectorOnMainThread:sel_postNotification_ withObject:v3 waitUntilDone:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter performSelectorOnMainThread:sel_postNotification_ withObject:v3 waitUntilDone:0];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (void)fetchIMSStatus
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v34 = "[PSUICoreTelephonyRegistrationCache fetchIMSStatus]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v26 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -163,7 +163,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = subscriptionContexts;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v6)
   {
@@ -184,8 +184,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v28 = 0;
         v12 = [(CoreTelephonyClient *)client getIMSRegistrationStatus:v10 error:&v28, v24];
         v13 = v28;
-        v14 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v15 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v13)
         {
           if (v15)
@@ -196,7 +196,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v36 = v13;
             v37 = 2112;
             v38 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@, %@", buf, 0x20u);
           }
         }
 
@@ -214,10 +214,10 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
               v16 = @"NO";
             }
 
-            v17 = [v12 isRegisteredForSMS];
+            isRegisteredForSMS = [v12 isRegisteredForSMS];
             *buf = v24;
             v18 = @"NO";
-            if (v17)
+            if (isRegisteredForSMS)
             {
               v18 = @"YES";
             }
@@ -229,16 +229,16 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v38 = v18;
             v39 = 2112;
             v40 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@, %@", buf, 0x2Au);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@, %@", buf, 0x2Au);
           }
 
           v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "isRegisteredForVoice")}];
           v20 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](v10, "slotID")}];
           [v26 setObject:v19 forKeyedSubscript:v20];
 
-          v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "isRegisteredForSMS")}];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "isRegisteredForSMS")}];
           v21 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](v10, "slotID")}];
-          [v25 setObject:v14 forKeyedSubscript:v21];
+          [v25 setObject:getLogger2 forKeyedSubscript:v21];
         }
       }
 
@@ -248,94 +248,94 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v6);
   }
 
-  v22 = self;
-  objc_sync_enter(v22);
-  [(PSUICoreTelephonyRegistrationCache *)v22 setImsStatusVoiceDict:v26];
-  [(PSUICoreTelephonyRegistrationCache *)v22 setImsStatusSMSDict:v25];
-  objc_sync_exit(v22);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusVoiceDict:v26];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusSMSDict:v25];
+  objc_sync_exit(selfCopy);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)IMSStatusVoice:(id)a3
+- (BOOL)IMSStatusVoice:(id)voice
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self imsStatusVoiceDict];
+  voiceCopy = voice;
+  imsStatusVoiceDict = [(PSUICoreTelephonyRegistrationCache *)self imsStatusVoiceDict];
 
-  if (!v5)
+  if (!imsStatusVoiceDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchIMSStatus];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 imsStatusVoiceDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imsStatusVoiceDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy imsStatusVoiceDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(voiceCopy, "slotID")}];
+  v9 = [imsStatusVoiceDict2 objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  objc_sync_exit(v6);
-  return v10;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
-- (BOOL)IMSStatusSMS:(id)a3
+- (BOOL)IMSStatusSMS:(id)s
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self imsStatusSMSDict];
+  sCopy = s;
+  imsStatusSMSDict = [(PSUICoreTelephonyRegistrationCache *)self imsStatusSMSDict];
 
-  if (!v5)
+  if (!imsStatusSMSDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchIMSStatus];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 imsStatusSMSDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imsStatusSMSDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy imsStatusSMSDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sCopy, "slotID")}];
+  v9 = [imsStatusSMSDict2 objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  objc_sync_exit(v6);
-  return v10;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
 - (void)fetchRCSStatus
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Fetching RCS status", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching RCS status", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v5;
+  v6 = subscriptionContexts;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
@@ -358,33 +358,33 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v14 = v24;
         if (v14)
         {
-          v15 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = v22;
             v30 = v14;
             v31 = 2112;
             v32 = v11;
-            _os_log_error_impl(&dword_2658DE000, v15, OS_LOG_TYPE_ERROR, "RCS status fetch failed: %@, %@", buf, 0x16u);
+            _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "RCS status fetch failed: %@, %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v16 = [v13 operationStatus];
-          v17 = [v16 registrationState];
+          operationStatus = [v13 operationStatus];
+          registrationState = [operationStatus registrationState];
 
-          v18 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          getLogger3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+          if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v22;
             v30 = v11;
             v31 = 2048;
-            v32 = v17;
-            _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "RCS status fetch succeeded, context: %@, registration state: %ld", buf, 0x16u);
+            v32 = registrationState;
+            _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "RCS status fetch succeeded, context: %@, registration state: %ld", buf, 0x16u);
           }
 
-          if (v17 == 1)
+          if (registrationState == 1)
           {
             [MEMORY[0x277CCABB0] numberWithBool:1];
           }
@@ -393,9 +393,9 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
           {
             [MEMORY[0x277CCABB0] numberWithBool:0];
           }
-          v15 = ;
+          getLogger2 = ;
           v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "slotID")}];
-          [v23 setObject:v15 forKeyedSubscript:v19];
+          [v23 setObject:getLogger2 forKeyedSubscript:v19];
         }
       }
 
@@ -405,64 +405,64 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v7);
   }
 
-  v20 = self;
-  objc_sync_enter(v20);
-  [(PSUICoreTelephonyRegistrationCache *)v20 setRcsStatusDict:v23];
-  objc_sync_exit(v20);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setRcsStatusDict:v23];
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)RCSStatus:(id)a3
+- (BOOL)RCSStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self rcsStatusDict];
+  statusCopy = status;
+  rcsStatusDict = [(PSUICoreTelephonyRegistrationCache *)self rcsStatusDict];
 
-  if (!v5)
+  if (!rcsStatusDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchRCSStatus];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 rcsStatusDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rcsStatusDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy rcsStatusDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(statusCopy, "slotID")}];
+  v9 = [rcsStatusDict2 objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  objc_sync_exit(v6);
-  return v10;
+  objc_sync_exit(selfCopy);
+  return bOOLValue;
 }
 
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4
+- (void)imsRegistrationChanged:(id)changed info:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  changedCopy = changed;
+  infoCopy = info;
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[PSUICoreTelephonyRegistrationCache imsRegistrationChanged:info:]";
     v13 = 2112;
-    v14 = v6;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s updating: %@", &v11, 0x16u);
+    v14 = changedCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s updating: %@", &v11, 0x16u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  [(PSUICoreTelephonyRegistrationCache *)v9 setImsStatusVoiceDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v9 setImsStatusSMSDict:0];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusVoiceDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setImsStatusSMSDict:0];
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -470,23 +470,23 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 - (void)fetchRejectCauseCode
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v27 = "[PSUICoreTelephonyRegistrationCache fetchRejectCauseCode]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = subscriptionContexts;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v6)
   {
@@ -507,8 +507,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v21 = 0;
         v12 = [(CoreTelephonyClient *)client getRejectCauseCode:v10 error:&v21, v18];
         v13 = v21;
-        v14 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v15 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v13)
         {
           if (v15)
@@ -517,7 +517,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v27 = "[PSUICoreTelephonyRegistrationCache fetchRejectCauseCode]";
             v28 = 2112;
             v29 = v13;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -531,11 +531,11 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v29 = v12;
             v30 = 2112;
             v31 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
           }
 
-          v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
-          [v19 setObject:v12 forKeyedSubscript:v14];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
+          [v19 setObject:v12 forKeyedSubscript:getLogger2];
         }
       }
 
@@ -545,31 +545,31 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v6);
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  [(PSUICoreTelephonyRegistrationCache *)v16 setRejectCauseCodeDict:v19];
-  objc_sync_exit(v16);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setRejectCauseCodeDict:v19];
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rejectCauseCode:(id)a3
+- (id)rejectCauseCode:(id)code
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self rejectCauseCodeDict];
+  codeCopy = code;
+  rejectCauseCodeDict = [(PSUICoreTelephonyRegistrationCache *)self rejectCauseCodeDict];
 
-  if (!v5)
+  if (!rejectCauseCodeDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchRejectCauseCode];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 rejectCauseCodeDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rejectCauseCodeDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy rejectCauseCodeDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(codeCopy, "slotID")}];
+  v9 = [rejectCauseCodeDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -577,23 +577,23 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 - (void)fetchSupportedDataRates
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v30 = "[PSUICoreTelephonyRegistrationCache fetchSupportedDataRates]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = subscriptionContexts;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v6)
   {
@@ -614,8 +614,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v24 = 0;
         v12 = [(CoreTelephonyClient *)client getSupportedDataRates:v10 error:&v24, v21];
         v13 = v24;
-        v14 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v15 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v13)
         {
           if (v15)
@@ -624,7 +624,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v30 = "[PSUICoreTelephonyRegistrationCache fetchSupportedDataRates]";
             v31 = 2112;
             v32 = v13;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -632,18 +632,18 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         {
           if (v15)
           {
-            v16 = [v12 rates];
+            rates = [v12 rates];
             *buf = v21;
             v30 = "[PSUICoreTelephonyRegistrationCache fetchSupportedDataRates]";
             v31 = 2112;
-            v32 = v16;
+            v32 = rates;
             v33 = 2112;
             v34 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
           }
 
-          v14 = [v12 rates];
-          v17 = [v14 copy];
+          getLogger2 = [v12 rates];
+          v17 = [getLogger2 copy];
           v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
           [v22 setObject:v17 forKeyedSubscript:v18];
         }
@@ -655,31 +655,31 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v6);
   }
 
-  v19 = self;
-  objc_sync_enter(v19);
-  [(PSUICoreTelephonyRegistrationCache *)v19 setSupportedDataRatesDict:v22];
-  objc_sync_exit(v19);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setSupportedDataRatesDict:v22];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)supportedDataRates:(id)a3
+- (id)supportedDataRates:(id)rates
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self supportedDataRatesDict];
+  ratesCopy = rates;
+  supportedDataRatesDict = [(PSUICoreTelephonyRegistrationCache *)self supportedDataRatesDict];
 
-  if (!v5)
+  if (!supportedDataRatesDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchSupportedDataRates];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 supportedDataRatesDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  supportedDataRatesDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy supportedDataRatesDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(ratesCopy, "slotID")}];
+  v9 = [supportedDataRatesDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -687,23 +687,23 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 - (void)fetchMaxDataRate
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v29 = "[PSUICoreTelephonyRegistrationCache fetchMaxDataRate]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = subscriptionContexts;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v7)
   {
@@ -724,8 +724,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v23 = 0;
         v13 = [(CoreTelephonyClient *)client getMaxDataRate:v11 error:&v23, v21];
         v14 = v23;
-        v15 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v16 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v14)
         {
           if (v16)
@@ -734,7 +734,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v29 = "[PSUICoreTelephonyRegistrationCache fetchMaxDataRate]";
             v30 = 2112;
             v31 = v14;
-            _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -749,12 +749,12 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v31 = v17;
             v32 = 2112;
             v33 = v11;
-            _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %s, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %s, %@", buf, 0x20u);
           }
 
-          v15 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
           v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "slotID")}];
-          [v22 setObject:v15 forKeyedSubscript:v18];
+          [v22 setObject:getLogger2 forKeyedSubscript:v18];
         }
       }
 
@@ -764,90 +764,90 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v7);
   }
 
-  v19 = self;
-  objc_sync_enter(v19);
-  [(PSUICoreTelephonyRegistrationCache *)v19 setMaxDataRateDict:v22];
-  objc_sync_exit(v19);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setMaxDataRateDict:v22];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)maxDataRate:(id)a3
+- (int64_t)maxDataRate:(id)rate
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self maxDataRateDict];
+  rateCopy = rate;
+  maxDataRateDict = [(PSUICoreTelephonyRegistrationCache *)self maxDataRateDict];
 
-  if (!v5)
+  if (!maxDataRateDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchMaxDataRate];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 maxDataRateDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maxDataRateDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy maxDataRateDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(rateCopy, "slotID")}];
+  v9 = [maxDataRateDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
-  v10 = [v9 integerValue];
+  objc_sync_exit(selfCopy);
+  integerValue = [v9 integerValue];
 
-  return v10;
+  return integerValue;
 }
 
-- (void)setMaxDataRate:(id)a3 dataRate:(int64_t)a4
+- (void)setMaxDataRate:(id)rate dataRate:(int64_t)dataRate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  rateCopy = rate;
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v18 = "[PSUICoreTelephonyRegistrationCache setMaxDataRate:dataRate:]";
     v19 = 2048;
-    v20 = a4;
+    dataRateCopy2 = dataRate;
     v21 = 2112;
-    v22 = v6;
-    _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "%s setting: %li, %@", buf, 0x20u);
+    v22 = rateCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s setting: %li, %@", buf, 0x20u);
   }
 
   objc_initWeak(&location, self);
-  v8 = [(CoreTelephonyClient *)self->_client setMaxDataRate:v6 rate:a4];
+  v8 = [(CoreTelephonyClient *)self->_client setMaxDataRate:rateCopy rate:dataRate];
   if (v8)
   {
-    v9 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v18 = "[PSUICoreTelephonyRegistrationCache setMaxDataRate:dataRate:]";
       v19 = 2112;
-      v20 = v8;
-      _os_log_error_impl(&dword_2658DE000, v9, OS_LOG_TYPE_ERROR, "%s set failed: %@", buf, 0x16u);
+      dataRateCopy2 = v8;
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "%s set failed: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v10 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    getLogger3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v18 = "[PSUICoreTelephonyRegistrationCache setMaxDataRate:dataRate:]";
       v19 = 2048;
-      v20 = a4;
+      dataRateCopy2 = dataRate;
       v21 = 2112;
-      v22 = v6;
-      _os_log_impl(&dword_2658DE000, v10, OS_LOG_TYPE_DEFAULT, "%s set succeeded: %li, %@", buf, 0x20u);
+      v22 = rateCopy;
+      _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "%s set succeeded: %li, %@", buf, 0x20u);
     }
 
-    v9 = objc_loadWeakRetained(&location);
-    objc_sync_enter(v9);
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    getLogger2 = objc_loadWeakRetained(&location);
+    objc_sync_enter(getLogger2);
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:dataRate];
     v12 = objc_loadWeakRetained(&location);
-    v13 = [v12 maxDataRateDict];
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
-    [v13 setObject:v11 forKeyedSubscript:v14];
+    maxDataRateDict = [v12 maxDataRateDict];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(rateCopy, "slotID")}];
+    [maxDataRateDict setObject:v11 forKeyedSubscript:v14];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(getLogger2);
   }
 
   objc_destroyWeak(&location);
@@ -856,43 +856,43 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 
 - (void)dataRatesChanged
 {
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Data Rates Changed. Clearing maxDataRate & supportedDataRates cache.", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Data Rates Changed. Clearing maxDataRate & supportedDataRates cache.", v6, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(PSUICoreTelephonyRegistrationCache *)v4 setMaxDataRateDict:0];
-  [(PSUICoreTelephonyRegistrationCache *)v4 setSupportedDataRatesDict:0];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setMaxDataRateDict:0];
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setSupportedDataRatesDict:0];
+  objc_sync_exit(selfCopy);
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"PSMaxDataRateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSMaxDataRateChangedNotification" object:0];
 }
 
 - (void)fetch2GSwitchSupported
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v29 = "[PSUICoreTelephonyRegistrationCache fetch2GSwitchSupported]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = subscriptionContexts;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v6)
   {
@@ -913,8 +913,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v23 = 0;
         v12 = [(CoreTelephonyClient *)client getRegulatedRatsSwitchEnabledSync:v10 error:&v23, v20];
         v13 = v23;
-        v14 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v15 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v13)
         {
           if (v15)
@@ -923,7 +923,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v29 = "[PSUICoreTelephonyRegistrationCache fetch2GSwitchSupported]";
             v30 = 2112;
             v31 = v13;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -938,12 +938,12 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v31 = v16;
             v32 = 2112;
             v33 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
           }
 
-          v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithBool:v12];
           v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
-          [v21 setObject:v14 forKeyedSubscript:v17];
+          [v21 setObject:getLogger2 forKeyedSubscript:v17];
         }
       }
 
@@ -953,10 +953,10 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v6);
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  [(PSUICoreTelephonyRegistrationCache *)v18 setDataRate2GSupportedDict:v21];
-  objc_sync_exit(v18);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setDataRate2GSupportedDict:v21];
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -964,23 +964,23 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
 - (void)fetch2GSwitchEnabled
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v29 = "[PSUICoreTelephonyRegistrationCache fetch2GSwitchEnabled]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = subscriptionContexts;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v6)
   {
@@ -1001,8 +1001,8 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
         v23 = 0;
         v12 = [(CoreTelephonyClient *)client getRegulatedRatsUserPreferenceSync:v10 error:&v23, v20];
         v13 = v23;
-        v14 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v15 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v13)
         {
           if (v15)
@@ -1011,7 +1011,7 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v29 = "[PSUICoreTelephonyRegistrationCache fetch2GSwitchEnabled]";
             v30 = 2112;
             v31 = v13;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -1026,12 +1026,12 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
             v31 = v16;
             v32 = 2112;
             v33 = v10;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %@", buf, 0x20u);
           }
 
-          v14 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithBool:v12];
           v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
-          [v21 setObject:v14 forKeyedSubscript:v17];
+          [v21 setObject:getLogger2 forKeyedSubscript:v17];
         }
       }
 
@@ -1041,56 +1041,56 @@ uint64_t __52__PSUICoreTelephonyRegistrationCache_sharedInstance__block_invoke()
     while (v6);
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  [(PSUICoreTelephonyRegistrationCache *)v18 setDataRate2GEnabledDict:v21];
-  objc_sync_exit(v18);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setDataRate2GEnabledDict:v21];
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)is2GSwitchSupportedForContext:(id)a3
+- (BOOL)is2GSwitchSupportedForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self dataRate2GSupportedDict];
+  contextCopy = context;
+  dataRate2GSupportedDict = [(PSUICoreTelephonyRegistrationCache *)self dataRate2GSupportedDict];
 
-  if (!v5)
+  if (!dataRate2GSupportedDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetch2GSwitchSupported];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 dataRate2GSupportedDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataRate2GSupportedDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy dataRate2GSupportedDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
+  v9 = [dataRate2GSupportedDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
-  LOBYTE(v6) = [v9 BOOLValue];
+  objc_sync_exit(selfCopy);
+  LOBYTE(selfCopy) = [v9 BOOLValue];
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)is2GEnabledForContext:(id)a3
+- (BOOL)is2GEnabledForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self dataRate2GEnabledDict];
+  contextCopy = context;
+  dataRate2GEnabledDict = [(PSUICoreTelephonyRegistrationCache *)self dataRate2GEnabledDict];
 
-  if (!v5)
+  if (!dataRate2GEnabledDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetch2GSwitchEnabled];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 dataRate2GEnabledDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataRate2GEnabledDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy dataRate2GEnabledDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
+  v9 = [dataRate2GEnabledDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
-  LOBYTE(v6) = [v9 BOOLValue];
+  objc_sync_exit(selfCopy);
+  LOBYTE(selfCopy) = [v9 BOOLValue];
 
-  return v6;
+  return selfCopy;
 }
 
 void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_invoke(uint64_t a1, void *a2)
@@ -1143,23 +1143,23 @@ void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_in
 - (void)fetchLocalizedOperatorName
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v27 = "[PSUICoreTelephonyRegistrationCache fetchLocalizedOperatorName]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v5;
+  v6 = subscriptionContexts;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v7)
   {
@@ -1180,8 +1180,8 @@ void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_in
         v21 = 0;
         v13 = [(CoreTelephonyClient *)client getLocalizedOperatorName:v11 error:&v21, v19];
         v14 = v21;
-        v15 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-        v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+        getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+        v16 = os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT);
         if (v14)
         {
           if (v16)
@@ -1190,7 +1190,7 @@ void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_in
             v27 = "[PSUICoreTelephonyRegistrationCache fetchLocalizedOperatorName]";
             v28 = 2112;
             v29 = v14;
-            _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch failed: %@", buf, 0x16u);
           }
         }
 
@@ -1204,11 +1204,11 @@ void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_in
             v29 = v13;
             v30 = 2112;
             v31 = v11;
-            _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %{public}@, %@", buf, 0x20u);
+            _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %{public}@, %@", buf, 0x20u);
           }
 
-          v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "slotID")}];
-          [v20 setObject:v13 forKeyedSubscript:v15];
+          getLogger2 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "slotID")}];
+          [v20 setObject:v13 forKeyedSubscript:getLogger2];
         }
       }
 
@@ -1218,95 +1218,95 @@ void __62__PSUICoreTelephonyRegistrationCache_set2GEnabled_forContext___block_in
     while (v7);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  [(PSUICoreTelephonyRegistrationCache *)v17 setOperatorNameDict:v20];
-  objc_sync_exit(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyRegistrationCache *)selfCopy setOperatorNameDict:v20];
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localizedOperatorName:(id)a3
+- (id)localizedOperatorName:(id)name
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyRegistrationCache *)self operatorNameDict];
+  nameCopy = name;
+  operatorNameDict = [(PSUICoreTelephonyRegistrationCache *)self operatorNameDict];
 
-  if (!v5)
+  if (!operatorNameDict)
   {
     [(PSUICoreTelephonyRegistrationCache *)self fetchLocalizedOperatorName];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyRegistrationCache *)v6 operatorNameDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  operatorNameDict2 = [(PSUICoreTelephonyRegistrationCache *)selfCopy operatorNameDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(nameCopy, "slotID")}];
+  v9 = [operatorNameDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  changedCopy = changed;
+  nameCopy = name;
+  getLogger = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[PSUICoreTelephonyRegistrationCache operatorNameChanged:name:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = changedCopy;
     v22 = 2112;
-    v23 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", buf, 0x20u);
+    v23 = nameCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", buf, 0x20u);
   }
 
   client = self->_client;
   v17 = 0;
-  v10 = [(CoreTelephonyClient *)client getLocalizedOperatorName:v6 error:&v17];
+  v10 = [(CoreTelephonyClient *)client getLocalizedOperatorName:changedCopy error:&v17];
   v11 = v17;
 
-  v12 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  getLogger2 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[PSUICoreTelephonyRegistrationCache operatorNameChanged:name:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = changedCopy;
     v22 = 2112;
     v23 = v10;
-    _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_DEFAULT, "%s localized name: %@, %@", buf, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s localized name: %@, %@", buf, 0x20u);
   }
 
   if (!v10 || v11)
   {
-    v13 = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
-    if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_ERROR))
+    selfCopy = [(PSUICoreTelephonyRegistrationCache *)self getLogger];
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
       v19 = "[PSUICoreTelephonyRegistrationCache operatorNameChanged:name:]";
       v20 = 2112;
-      v21 = v6;
+      v21 = changedCopy;
       v22 = 2112;
       v23 = v10;
       v24 = 2112;
       v25 = v11;
-      _os_log_error_impl(&dword_2658DE000, &v13->super, OS_LOG_TYPE_ERROR, "%s failed to localize operator name: %@, %@, %@", buf, 0x2Au);
+      _os_log_error_impl(&dword_2658DE000, &selfCopy->super, OS_LOG_TYPE_ERROR, "%s failed to localize operator name: %@, %@, %@", buf, 0x2Au);
     }
   }
 
   else
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [(PSUICoreTelephonyRegistrationCache *)v13 operatorNameDict];
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
-    [v14 setObject:v10 forKeyedSubscript:v15];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    operatorNameDict = [(PSUICoreTelephonyRegistrationCache *)selfCopy operatorNameDict];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(changedCopy, "slotID")}];
+    [operatorNameDict setObject:v10 forKeyedSubscript:v15];
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 
   v16 = *MEMORY[0x277D85DE8];

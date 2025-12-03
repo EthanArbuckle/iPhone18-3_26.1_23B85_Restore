@@ -1,18 +1,18 @@
 @interface BWStillImageFocusPixelBlurScoreResult
-- (BWStillImageFocusPixelBlurScoreResult)initWithStatus:(int)a3 score:(float)a4;
+- (BWStillImageFocusPixelBlurScoreResult)initWithStatus:(int)status score:(float)score;
 @end
 
 @implementation BWStillImageFocusPixelBlurScoreResult
 
-- (BWStillImageFocusPixelBlurScoreResult)initWithStatus:(int)a3 score:(float)a4
+- (BWStillImageFocusPixelBlurScoreResult)initWithStatus:(int)status score:(float)score
 {
   v7.receiver = self;
   v7.super_class = BWStillImageFocusPixelBlurScoreResult;
   result = [(BWStillImageFocusPixelBlurScoreResult *)&v7 init];
   if (result)
   {
-    result->_status = a3;
-    result->_score = a4;
+    result->_status = status;
+    result->_score = score;
   }
 
   return result;

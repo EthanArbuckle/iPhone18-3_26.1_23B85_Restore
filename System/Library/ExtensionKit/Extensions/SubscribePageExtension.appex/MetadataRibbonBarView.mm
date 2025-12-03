@@ -1,5 +1,5 @@
 @interface MetadataRibbonBarView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004C4C2C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   v5 = sub_10074C354();
   v6 = *(v5 - 8);
@@ -27,7 +27,7 @@
   v28[1] = v13;
   (*(v6 + 16))(v8, self + OBJC_IVAR____TtC22SubscribePageExtension21MetadataRibbonBarView_metrics, v5);
   swift_unknownObjectRetain();
-  v14 = self;
+  selfCopy = self;
   v15 = v13;
   sub_10074C304();
   sub_10074C314();

@@ -6,14 +6,14 @@
 
 - (id)description
 {
-  v3 = [(SUUICompressedImage *)self cornerType];
+  cornerType = [(SUUICompressedImage *)self cornerType];
   v4 = @"SUUICornerTypeArc";
-  if (v3 != 1)
+  if (cornerType != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (cornerType)
   {
     v5 = v4;
   }
@@ -31,8 +31,8 @@
   v9 = v8;
   [(SUUICompressedImage *)self borderWidth];
   v11 = v10;
-  v12 = [(SUUICompressedImage *)self borderColor];
-  v13 = [v6 stringWithFormat:@"%@: {%@, %f} {%f, %@};", v7, v5, v9, v11, v12];;
+  borderColor = [(SUUICompressedImage *)self borderColor];
+  v13 = [v6 stringWithFormat:@"%@: {%@, %f} {%f, %@};", v7, v5, v9, v11, borderColor];;
 
   return v13;
 }

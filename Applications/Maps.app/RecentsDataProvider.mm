@@ -1,11 +1,11 @@
 @interface RecentsDataProvider
 - (GEOObserverHashTable)observers;
 - (RecentsDataProvider)init;
-- (void)_recentsDidChange:(id)a3;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
-- (void)deleteAllRecentsWithCompletion:(id)a3;
-- (void)deleteRecents:(id)a3 completion:(id)a4;
-- (void)setActive:(BOOL)a3;
+- (void)_recentsDidChange:(id)change;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
+- (void)deleteAllRecentsWithCompletion:(id)completion;
+- (void)deleteRecents:(id)recents completion:(id)completion;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation RecentsDataProvider
@@ -40,9 +40,9 @@
   return observers;
 }
 
-- (void)deleteAllRecentsWithCompletion:(id)a3
+- (void)deleteAllRecentsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -56,14 +56,14 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@", &v11, 0x16u);
   }
 
-  v10 = [(RecentsDataProvider *)self _recentsEngine];
-  [v10 deleteAllRecentsWithCompletion:v5];
+  _recentsEngine = [(RecentsDataProvider *)self _recentsEngine];
+  [_recentsEngine deleteAllRecentsWithCompletion:completionCopy];
 }
 
-- (void)deleteRecents:(id)a3 completion:(id)a4
+- (void)deleteRecents:(id)recents completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  recentsCopy = recents;
   v9 = sub_1000410AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -77,28 +77,28 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ %@", &v14, 0x16u);
   }
 
-  v13 = [(RecentsDataProvider *)self _recentsEngine];
-  [v13 deleteRecents:v8 completion:v7];
+  _recentsEngine = [(RecentsDataProvider *)self _recentsEngine];
+  [_recentsEngine deleteRecents:recentsCopy completion:completionCopy];
 }
 
-- (void)_recentsDidChange:(id)a3
+- (void)_recentsDidChange:(id)change
 {
   [(RecentsDataProvider *)self setInitialDataHasBeenLoaded:1];
 
   [(RecentsDataProvider *)self _updateAndNotifyObservers:1];
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
-    v6 = [(RecentsDataProvider *)self _recentsEngine];
-    v7 = [v6 orderedRecents];
-    v8 = v7;
-    if (v7)
+    observersCopy = observers;
+    _recentsEngine = [(RecentsDataProvider *)self _recentsEngine];
+    orderedRecents = [_recentsEngine orderedRecents];
+    v8 = orderedRecents;
+    if (orderedRecents)
     {
-      v9 = v7;
+      v9 = orderedRecents;
     }
 
     else
@@ -125,25 +125,25 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@ %@, # recents = %d", &v15, 0x1Cu);
     }
 
-    if (v3)
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = +[NSNotificationCenter defaultCenter];
     v7 = v5;
-    if (v3)
+    if (activeCopy)
     {
-      v6 = [(RecentsDataProvider *)self _recentsEngine];
-      [v7 addObserver:self selector:"_recentsDidChange:" name:@"RecentsDidChangeNotification" object:v6];
+      _recentsEngine = [(RecentsDataProvider *)self _recentsEngine];
+      [v7 addObserver:self selector:"_recentsDidChange:" name:@"RecentsDidChangeNotification" object:_recentsEngine];
 
       [(RecentsDataProvider *)self _updateAndNotifyObservers:0];
     }

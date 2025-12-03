@@ -1,29 +1,29 @@
 @interface HDVersionedClinicalGatewaySyncEntity
-+ (BOOL)_shouldInsertReceivedCodableGateway:(id)a3 profile:(id)a4;
++ (BOOL)_shouldInsertReceivedCodableGateway:(id)gateway profile:(id)profile;
 @end
 
 @implementation HDVersionedClinicalGatewaySyncEntity
 
-+ (BOOL)_shouldInsertReceivedCodableGateway:(id)a3 profile:(id)a4
++ (BOOL)_shouldInsertReceivedCodableGateway:(id)gateway profile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 daemon];
-  v9 = [v8 ontologyConfigurationProvider];
+  gatewayCopy = gateway;
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
 
-  if (!v9)
+  if (!ontologyConfigurationProvider)
   {
     _HKInitializeLogging();
     v10 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_FAULT))
     {
-      sub_A36E0(a1, v7, v10);
+      sub_A36E0(self, profileCopy, v10);
     }
   }
 
-  v11 = [v6 countryCode];
-  v12 = [v11 uppercaseString];
-  v13 = [v9 isCountryCodeSupported:v12];
+  countryCode = [gatewayCopy countryCode];
+  uppercaseString = [countryCode uppercaseString];
+  v13 = [ontologyConfigurationProvider isCountryCodeSupported:uppercaseString];
 
   if ((v13 & 1) == 0)
   {
@@ -32,12 +32,12 @@
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v6 countryCode];
+      countryCode2 = [gatewayCopy countryCode];
       v21 = HKSensitiveLogItem();
       v25 = 138543874;
-      v26 = a1;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v20;
+      v28 = countryCode2;
       v29 = 2114;
       v30 = v21;
       v22 = "%{public}@ dropping incoming gateway because country %{public}@ is not supported: %{public}@";
@@ -50,9 +50,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v14 = [v7 healthRecordsExtension];
-  v15 = [v6 FHIRVersionString];
-  v16 = [v14 isSupportedFHIRVersionString:v15];
+  healthRecordsExtension = [profileCopy healthRecordsExtension];
+  fHIRVersionString = [gatewayCopy FHIRVersionString];
+  v16 = [healthRecordsExtension isSupportedFHIRVersionString:fHIRVersionString];
 
   if ((v16 & 1) == 0)
   {
@@ -61,12 +61,12 @@ LABEL_12:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v23;
-      v20 = [v6 FHIRVersionString];
+      countryCode2 = [gatewayCopy FHIRVersionString];
       v21 = HKSensitiveLogItem();
       v25 = 138543874;
-      v26 = a1;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v20;
+      v28 = countryCode2;
       v29 = 2114;
       v30 = v21;
       v22 = "%{public}@ dropping incoming gateway because FHIR version %{public}@ is not supported: %{public}@";

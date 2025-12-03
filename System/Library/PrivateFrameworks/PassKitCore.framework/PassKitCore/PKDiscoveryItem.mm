@@ -1,36 +1,36 @@
 @interface PKDiscoveryItem
-+ (id)activeItemFromEngagementRequest:(id)a3;
-+ (id)convertEngagementRequestToDictionary:(id)a3;
++ (id)activeItemFromEngagementRequest:(id)request;
++ (id)convertEngagementRequestToDictionary:(id)dictionary;
 - (BOOL)hasHitMaxLargeViewCount;
 - (BOOL)hasHitMaxViewCount;
-- (PKDiscoveryItem)initWithCoder:(id)a3;
-- (PKDiscoveryItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKDiscoveryItem)initWithCoder:(id)coder;
+- (PKDiscoveryItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)eventForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateForRuleResult:(BOOL)a3;
-- (void)updateWithDiscoveryItem:(id)a3;
+- (id)eventForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateForRuleResult:(BOOL)result;
+- (void)updateWithDiscoveryItem:(id)item;
 @end
 
 @implementation PKDiscoveryItem
 
-+ (id)convertEngagementRequestToDictionary:(id)a3
++ (id)convertEngagementRequestToDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 clientData];
-  v6 = [v5 objectForKeyedSubscript:@"url"];
+  dictionaryCopy = dictionary;
+  clientData = [dictionaryCopy clientData];
+  v6 = [clientData objectForKeyedSubscript:@"url"];
   if (v6)
   {
 
 LABEL_4:
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = &OBJC_METACLASS___PKDiscoveryItem;
-    v8 = objc_msgSendSuper2(&v23, sel_convertEngagementRequestToDictionary_, v4);
+    v8 = objc_msgSendSuper2(&v23, sel_convertEngagementRequestToDictionary_, dictionaryCopy);
     v9 = [v8 mutableCopy];
 
-    v10 = [v5 objectForKeyedSubscript:@"url"];
+    v10 = [clientData objectForKeyedSubscript:@"url"];
     if (v10)
     {
       [v9 setObject:v10 forKeyedSubscript:@"layoutBundleURL"];
@@ -38,22 +38,22 @@ LABEL_4:
 
     else
     {
-      v11 = [v4 URL];
-      v12 = [v11 absoluteString];
-      [v9 setObject:v12 forKeyedSubscript:@"layoutBundleURL"];
+      v11 = [dictionaryCopy URL];
+      absoluteString = [v11 absoluteString];
+      [v9 setObject:absoluteString forKeyedSubscript:@"layoutBundleURL"];
     }
 
-    v13 = [v5 objectForKeyedSubscript:@"badging"];
+    v13 = [clientData objectForKeyedSubscript:@"badging"];
     [v9 setObject:v13 forKeyedSubscript:@"shouldBadge"];
 
-    v14 = [v5 objectForKeyedSubscript:@"entitledToForceLarge"];
+    v14 = [clientData objectForKeyedSubscript:@"entitledToForceLarge"];
     [v9 setObject:v14 forKeyedSubscript:@"entitledToForceLargeCard"];
 
-    v15 = [v5 objectForKeyedSubscript:@"carouselRankingOrder"];
+    v15 = [clientData objectForKeyedSubscript:@"carouselRankingOrder"];
     [v9 setObject:v15 forKeyedSubscript:@"priority"];
 
     v22 = 0;
-    v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v22];
+    v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:clientData requiringSecureCoding:1 error:&v22];
     v17 = v22;
     [v9 setObject:v16 forKeyedSubscript:@"clientData"];
 
@@ -75,7 +75,7 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v7 = [v4 URL];
+  v7 = [dictionaryCopy URL];
 
   if (v7)
   {
@@ -95,41 +95,41 @@ LABEL_12:
   return v20;
 }
 
-+ (id)activeItemFromEngagementRequest:(id)a3
++ (id)activeItemFromEngagementRequest:(id)request
 {
-  v3 = [a1 convertEngagementRequestToDictionary:a3];
+  v3 = [self convertEngagementRequestToDictionary:request];
   v4 = [[PKDiscoveryItem alloc] initWithDictionary:v3];
   [(PKDiscoveryObject *)v4 setStatus:2];
 
   return v4;
 }
 
-- (PKDiscoveryItem)initWithDictionary:(id)a3
+- (PKDiscoveryItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKDiscoveryItem;
-  v5 = [(PKDiscoveryObject *)&v18 initWithDictionary:v4];
+  v5 = [(PKDiscoveryObject *)&v18 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = [v6 isEqual:@"article"];
 
-    v7 = [v4 PKURLForKey:@"layoutBundleURL"];
+    v7 = [dictionaryCopy PKURLForKey:@"layoutBundleURL"];
     layoutBundleURL = v5->_layoutBundleURL;
     v5->_layoutBundleURL = v7;
 
-    v9 = [v4 PKArrayContaining:objc_opt_class() forKey:@"supportedLocalizations"];
+    v9 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedLocalizations"];
     supportedLocalizations = v5->_supportedLocalizations;
     v5->_supportedLocalizations = v9;
 
-    v5->_shouldBadge = [v4 PKBoolForKey:@"shouldBadge"];
-    v5->_entitledToForceLargeCard = [v4 PKBoolForKey:@"entitledToForceLargeCard"];
-    v11 = [v4 objectForKey:@"priority"];
+    v5->_shouldBadge = [dictionaryCopy PKBoolForKey:@"shouldBadge"];
+    v5->_entitledToForceLargeCard = [dictionaryCopy PKBoolForKey:@"entitledToForceLargeCard"];
+    v11 = [dictionaryCopy objectForKey:@"priority"];
 
     if (v11)
     {
-      v12 = [v4 PKIntegerForKey:@"priority"];
+      v12 = [dictionaryCopy PKIntegerForKey:@"priority"];
       v13 = 1000;
       if (v12 < 1000)
       {
@@ -144,7 +144,7 @@ LABEL_12:
       v14 = 500;
     }
 
-    v15 = [v4 PKDataForKey:@"clientData"];
+    v15 = [dictionaryCopy PKDataForKey:@"clientData"];
     clientData = v5->_clientData;
     v5->_clientData = v15;
 
@@ -154,25 +154,25 @@ LABEL_12:
   return v5;
 }
 
-- (void)updateForRuleResult:(BOOL)a3
+- (void)updateForRuleResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v20 = *MEMORY[0x1E69E9840];
   if ([(PKDiscoveryItem *)self isTerminalStatus])
   {
     v5 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PKDiscoveryObject *)self identifier];
+      identifier = [(PKDiscoveryObject *)self identifier];
       v12 = 138412290;
-      v13 = v6;
+      v13 = identifier;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Discovery Item with identifier: %@ is in terminal state and won't be updated based on rule result", &v12, 0xCu);
     }
   }
 
   else
   {
-    if (v3)
+    if (resultCopy)
     {
       v7 = 2;
     }
@@ -185,18 +185,18 @@ LABEL_12:
     v8 = PKLogFacilityTypeGetObject(0x11uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PKDiscoveryObject *)self identifier];
-      v10 = [(PKDiscoveryObject *)self status];
+      identifier2 = [(PKDiscoveryObject *)self identifier];
+      status = [(PKDiscoveryObject *)self status];
       v11 = "NO";
       v12 = 138413058;
-      v13 = v9;
+      v13 = identifier2;
       v14 = 2048;
-      if (v3)
+      if (resultCopy)
       {
         v11 = "YES";
       }
 
-      v15 = v10;
+      v15 = status;
       v16 = 2048;
       v17 = v7;
       v18 = 2080;
@@ -208,36 +208,36 @@ LABEL_12:
   }
 }
 
-- (void)updateWithDiscoveryItem:(id)a3
+- (void)updateWithDiscoveryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = PKDiscoveryItem;
-  if ([(PKDiscoveryObject *)&v11 updateWithDiscoveryObject:v4])
+  if ([(PKDiscoveryObject *)&v11 updateWithDiscoveryObject:itemCopy])
   {
-    self->_type = [v4 type];
-    v5 = [v4 layoutBundleURL];
+    self->_type = [itemCopy type];
+    layoutBundleURL = [itemCopy layoutBundleURL];
     layoutBundleURL = self->_layoutBundleURL;
-    self->_layoutBundleURL = v5;
+    self->_layoutBundleURL = layoutBundleURL;
 
-    v7 = [v4 supportedLocalizations];
+    supportedLocalizations = [itemCopy supportedLocalizations];
     supportedLocalizations = self->_supportedLocalizations;
-    self->_supportedLocalizations = v7;
+    self->_supportedLocalizations = supportedLocalizations;
 
-    self->_shouldBadge = [v4 shouldBadge];
-    self->_priority = [v4 priority];
-    self->_entitledToForceLargeCard = [v4 entitledToForceLargeCard];
-    v9 = [v4 clientData];
+    self->_shouldBadge = [itemCopy shouldBadge];
+    self->_priority = [itemCopy priority];
+    self->_entitledToForceLargeCard = [itemCopy entitledToForceLargeCard];
+    clientData = [itemCopy clientData];
     clientData = self->_clientData;
-    self->_clientData = v9;
+    self->_clientData = clientData;
   }
 }
 
-- (id)eventForKey:(id)a3
+- (id)eventForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && self->_clientData)
+  keyCopy = key;
+  if (keyCopy && self->_clientData)
   {
     v5 = objc_alloc(MEMORY[0x1E695DFD8]);
     v6 = objc_opt_class();
@@ -251,7 +251,7 @@ LABEL_12:
     if (v11)
     {
       v13 = [v11 PKDictionaryForKey:@"metrics"];
-      v14 = [v13 PKDictionaryForKey:v4];
+      v14 = [v13 PKDictionaryForKey:keyCopy];
       if (v14)
       {
         v15 = [objc_alloc(MEMORY[0x1E698CA08]) initWithUnderlyingDictionary:v14];
@@ -263,7 +263,7 @@ LABEL_12:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v20 = v4;
+          v20 = keyCopy;
           _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "couldn't find event for key: %{public}@", buf, 0xCu);
         }
 
@@ -295,67 +295,67 @@ LABEL_12:
 
 - (BOOL)hasHitMaxViewCount
 {
-  v3 = [(PKDiscoveryObject *)self maxViewCount];
-  if (v3)
+  maxViewCount = [(PKDiscoveryObject *)self maxViewCount];
+  if (maxViewCount)
   {
-    v4 = [(PKDiscoveryObject *)self viewCount];
-    LOBYTE(v3) = v4 >= [(PKDiscoveryObject *)self maxViewCount];
+    viewCount = [(PKDiscoveryObject *)self viewCount];
+    LOBYTE(maxViewCount) = viewCount >= [(PKDiscoveryObject *)self maxViewCount];
   }
 
-  return v3;
+  return maxViewCount;
 }
 
 - (BOOL)hasHitMaxLargeViewCount
 {
-  v3 = [(PKDiscoveryObject *)self maxViewCountLargeCard];
-  if (v3)
+  maxViewCountLargeCard = [(PKDiscoveryObject *)self maxViewCountLargeCard];
+  if (maxViewCountLargeCard)
   {
-    v4 = [(PKDiscoveryObject *)self viewCount];
-    LOBYTE(v3) = v4 >= [(PKDiscoveryObject *)self maxViewCountLargeCard];
+    viewCount = [(PKDiscoveryObject *)self viewCount];
+    LOBYTE(maxViewCountLargeCard) = viewCount >= [(PKDiscoveryObject *)self maxViewCountLargeCard];
   }
 
-  return v3;
+  return maxViewCountLargeCard;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKDiscoveryItem;
-  v4 = a3;
-  [(PKDiscoveryObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_layoutBundleURL forKey:@"layoutBundleURL"];
-  [v4 encodeObject:self->_supportedLocalizations forKey:@"supportedLocalizations"];
-  [v4 encodeInteger:self->_shouldBadge forKey:@"shouldBadge"];
-  [v4 encodeInteger:self->_priority forKey:@"priority"];
-  [v4 encodeBool:self->_entitledToForceLargeCard forKey:@"entitledToForceLargeCard"];
-  [v4 encodeObject:self->_clientData forKey:@"clientData"];
+  coderCopy = coder;
+  [(PKDiscoveryObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_layoutBundleURL forKey:@"layoutBundleURL"];
+  [coderCopy encodeObject:self->_supportedLocalizations forKey:@"supportedLocalizations"];
+  [coderCopy encodeInteger:self->_shouldBadge forKey:@"shouldBadge"];
+  [coderCopy encodeInteger:self->_priority forKey:@"priority"];
+  [coderCopy encodeBool:self->_entitledToForceLargeCard forKey:@"entitledToForceLargeCard"];
+  [coderCopy encodeObject:self->_clientData forKey:@"clientData"];
 }
 
-- (PKDiscoveryItem)initWithCoder:(id)a3
+- (PKDiscoveryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKDiscoveryItem;
-  v5 = [(PKDiscoveryObject *)&v16 initWithCoder:v4];
+  v5 = [(PKDiscoveryObject *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutBundleURL"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutBundleURL"];
     layoutBundleURL = v5->_layoutBundleURL;
     v5->_layoutBundleURL = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedLocalizations"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedLocalizations"];
     supportedLocalizations = v5->_supportedLocalizations;
     v5->_supportedLocalizations = v11;
 
-    v5->_shouldBadge = [v4 decodeIntegerForKey:@"shouldBadge"] != 0;
-    v5->_priority = [v4 decodeIntegerForKey:@"priority"];
-    v5->_entitledToForceLargeCard = [v4 decodeBoolForKey:@"entitledToForceLargeCard"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
+    v5->_shouldBadge = [coderCopy decodeIntegerForKey:@"shouldBadge"] != 0;
+    v5->_priority = [coderCopy decodeIntegerForKey:@"priority"];
+    v5->_entitledToForceLargeCard = [coderCopy decodeBoolForKey:@"entitledToForceLargeCard"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
     clientData = v5->_clientData;
     v5->_clientData = v13;
   }
@@ -363,17 +363,17 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = PKDiscoveryItem;
   v5 = [(PKDiscoveryObject *)&v11 copyWithZone:?];
   *(v5 + 13) = self->_type;
-  v6 = [(NSURL *)self->_layoutBundleURL copyWithZone:a3];
+  v6 = [(NSURL *)self->_layoutBundleURL copyWithZone:zone];
   v7 = *(v5 + 14);
   *(v5 + 14) = v6;
 
-  v8 = [(NSArray *)self->_supportedLocalizations copyWithZone:a3];
+  v8 = [(NSArray *)self->_supportedLocalizations copyWithZone:zone];
   v9 = *(v5 + 15);
   *(v5 + 15) = v8;
 

@@ -1,101 +1,101 @@
 @interface MADPersonIdentificationResultItem
 - (CGRect)boundingBox;
-- (MADPersonIdentificationResultItem)initWithCoder:(id)a3;
-- (MADPersonIdentificationResultItem)initWithPersonIdentifier:(id)a3 personName:(id)a4 mdID:(id)a5 detectionType:(signed __int16)a6 verified:(BOOL)a7 boundingBox:(CGRect)a8 andConfidence:(float)a9;
+- (MADPersonIdentificationResultItem)initWithCoder:(id)coder;
+- (MADPersonIdentificationResultItem)initWithPersonIdentifier:(id)identifier personName:(id)name mdID:(id)d detectionType:(signed __int16)type verified:(BOOL)verified boundingBox:(CGRect)box andConfidence:(float)confidence;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADPersonIdentificationResultItem
 
-- (MADPersonIdentificationResultItem)initWithPersonIdentifier:(id)a3 personName:(id)a4 mdID:(id)a5 detectionType:(signed __int16)a6 verified:(BOOL)a7 boundingBox:(CGRect)a8 andConfidence:(float)a9
+- (MADPersonIdentificationResultItem)initWithPersonIdentifier:(id)identifier personName:(id)name mdID:(id)d detectionType:(signed __int16)type verified:(BOOL)verified boundingBox:(CGRect)box andConfidence:(float)confidence
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = MADPersonIdentificationResultItem;
   v23 = [(MADPersonIdentificationResultItem *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_personIdentifier, a3);
-    objc_storeStrong(&v24->_personName, a4);
-    objc_storeStrong(&v24->_mdID, a5);
-    v24->_detectionType = a6;
-    v24->_verified = a7;
+    objc_storeStrong(&v23->_personIdentifier, identifier);
+    objc_storeStrong(&v24->_personName, name);
+    objc_storeStrong(&v24->_mdID, d);
+    v24->_detectionType = type;
+    v24->_verified = verified;
     v24->_boundingBox.origin.x = x;
     v24->_boundingBox.origin.y = y;
     v24->_boundingBox.size.width = width;
     v24->_boundingBox.size.height = height;
-    v24->_confidence = a9;
+    v24->_confidence = confidence;
   }
 
   return v24;
 }
 
-- (MADPersonIdentificationResultItem)initWithCoder:(id)a3
+- (MADPersonIdentificationResultItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MADPersonIdentificationResultItem;
   v5 = [(MADPersonIdentificationResultItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersonIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersonIdentifier"];
     personIdentifier = v5->_personIdentifier;
     v5->_personIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersonName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersonName"];
     personName = v5->_personName;
     v5->_personName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MegadomeIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MegadomeIdentifier"];
     mdID = v5->_mdID;
     v5->_mdID = v10;
 
-    v5->_detectionType = [v4 decodeInt32ForKey:@"DetectionType"];
-    v5->_verified = [v4 decodeBoolForKey:@"Verified"];
-    [v4 decodeRectForKey:@"BoundingBox"];
+    v5->_detectionType = [coderCopy decodeInt32ForKey:@"DetectionType"];
+    v5->_verified = [coderCopy decodeBoolForKey:@"Verified"];
+    [coderCopy decodeRectForKey:@"BoundingBox"];
     v5->_boundingBox.origin.x = v12;
     v5->_boundingBox.origin.y = v13;
     v5->_boundingBox.size.width = v14;
     v5->_boundingBox.size.height = v15;
-    [v4 decodeFloatForKey:@"Confidence"];
+    [coderCopy decodeFloatForKey:@"Confidence"];
     v5->_confidence = v16;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_personIdentifier forKey:@"PersonIdentifier"];
-  [v5 encodeObject:self->_personName forKey:@"PersonName"];
-  [v5 encodeObject:self->_mdID forKey:@"MegadomeIdentifier"];
-  [v5 encodeInt32:self->_detectionType forKey:@"DetectionType"];
-  [v5 encodeBool:self->_verified forKey:@"Verified"];
-  [v5 encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_personIdentifier forKey:@"PersonIdentifier"];
+  [coderCopy encodeObject:self->_personName forKey:@"PersonName"];
+  [coderCopy encodeObject:self->_mdID forKey:@"MegadomeIdentifier"];
+  [coderCopy encodeInt32:self->_detectionType forKey:@"DetectionType"];
+  [coderCopy encodeBool:self->_verified forKey:@"Verified"];
+  [coderCopy encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
   *&v4 = self->_confidence;
-  [v5 encodeFloat:@"Confidence" forKey:v4];
+  [coderCopy encodeFloat:@"Confidence" forKey:v4];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"person-identifier: %@, ", self->_personIdentifier];
-  [v3 appendFormat:@"person-name: %@, ", self->_personName];
-  [v3 appendFormat:@"megadome-identifier: %@, ", self->_mdID];
-  [v3 appendFormat:@"detection-type: %hd, ", self->_detectionType];
+  [string appendFormat:@"person-identifier: %@, ", self->_personIdentifier];
+  [string appendFormat:@"person-name: %@, ", self->_personName];
+  [string appendFormat:@"megadome-identifier: %@, ", self->_mdID];
+  [string appendFormat:@"detection-type: %hd, ", self->_detectionType];
   if (self->_verified)
   {
     v6 = @"verified";
@@ -106,13 +106,13 @@
     v6 = @"unverified";
   }
 
-  [v3 appendFormat:@"verified: %@, ", v6];
+  [string appendFormat:@"verified: %@, ", v6];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.*f, y:%.*f}, {width:%.*f, height:%.*f}} ", 2, *&self->_boundingBox.origin.x, 2, *&self->_boundingBox.origin.y, 2, *&self->_boundingBox.size.width, 2, *&self->_boundingBox.size.height];
-  [v3 appendFormat:@"bounding-box: %@, ", v7];
+  [string appendFormat:@"bounding-box: %@, ", v7];
 
-  [v3 appendFormat:@"confidence: %.*f>", 2, self->_confidence];
+  [string appendFormat:@"confidence: %.*f>", 2, self->_confidence];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)boundingBox

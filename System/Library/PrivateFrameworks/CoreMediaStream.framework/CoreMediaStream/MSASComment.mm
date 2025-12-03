@@ -1,237 +1,237 @@
 @interface MSASComment
-+ (id)MSASPCommentFromProtocolDictionary:(id)a3;
++ (id)MSASPCommentFromProtocolDictionary:(id)dictionary;
 + (id)comment;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MSASComment)init;
-- (MSASComment)initWithCoder:(id)a3;
+- (MSASComment)initWithCoder:(id)coder;
 - (NSString)email;
 - (NSString)firstName;
 - (NSString)fullName;
 - (NSString)lastName;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSASComment
 
 - (NSString)email
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  email = v2->_email;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  email = selfCopy->_email;
   if (!email)
   {
     v4 = +[MSASPersonInfoManager sharedManager];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 emailForPersonID:v2->_personID];
+      v6 = [v4 emailForPersonID:selfCopy->_personID];
       if (v6)
       {
-        objc_storeStrong(&v2->_email, v6);
+        objc_storeStrong(&selfCopy->_email, v6);
       }
     }
 
-    email = v2->_email;
+    email = selfCopy->_email;
   }
 
   v7 = email;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSString)lastName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastName = v2->_lastName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastName = selfCopy->_lastName;
   if (!lastName)
   {
     v4 = +[MSASPersonInfoManager sharedManager];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 lastNameForPersonID:v2->_personID];
+      v6 = [v4 lastNameForPersonID:selfCopy->_personID];
       if (v6)
       {
-        objc_storeStrong(&v2->_lastName, v6);
+        objc_storeStrong(&selfCopy->_lastName, v6);
       }
     }
 
-    lastName = v2->_lastName;
+    lastName = selfCopy->_lastName;
   }
 
   v7 = lastName;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSString)firstName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  firstName = v2->_firstName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  firstName = selfCopy->_firstName;
   if (!firstName)
   {
     v4 = +[MSASPersonInfoManager sharedManager];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 firstNameForPersonID:v2->_personID];
+      v6 = [v4 firstNameForPersonID:selfCopy->_personID];
       if (v6)
       {
-        objc_storeStrong(&v2->_firstName, v6);
+        objc_storeStrong(&selfCopy->_firstName, v6);
       }
     }
 
-    firstName = v2->_firstName;
+    firstName = selfCopy->_firstName;
   }
 
   v7 = firstName;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSString)fullName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  fullName = v2->_fullName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fullName = selfCopy->_fullName;
   if (!fullName)
   {
     v4 = +[MSASPersonInfoManager sharedManager];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 fullNameForPersonID:v2->_personID];
+      v6 = [v4 fullNameForPersonID:selfCopy->_personID];
       if (v6)
       {
-        objc_storeStrong(&v2->_fullName, v6);
+        objc_storeStrong(&selfCopy->_fullName, v6);
       }
     }
 
-    fullName = v2->_fullName;
+    fullName = selfCopy->_fullName;
   }
 
   v7 = fullName;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   mode = os_trace_get_mode();
   v25 = MEMORY[0x277CCACA8];
   if ((mode & 0x1000000) != 0)
   {
-    v30.receiver = v2;
+    v30.receiver = selfCopy;
     v30.super_class = MSASComment;
     v28 = [(MSASComment *)&v30 description];
-    v27 = [(MSASComment *)v2 GUID];
-    v24 = [(MSASComment *)v2 ID];
-    v26 = [(MSASComment *)v2 fullName];
-    v5 = [(MSASComment *)v2 email];
-    v10 = [(MSASComment *)v2 personID];
-    v14 = [(MSASComment *)v2 timestamp];
-    v15 = [(MSASComment *)v2 clientTimestamp];
-    v16 = [(MSASComment *)v2 isLike];
-    v17 = [(MSASComment *)v2 isCaption];
-    v18 = [(MSASComment *)v2 isBatchComment];
-    v19 = [(MSASComment *)v2 isMine];
-    v20 = [(MSASComment *)v2 content];
-    v21 = [v20 length];
+    gUID = [(MSASComment *)selfCopy GUID];
+    v24 = [(MSASComment *)selfCopy ID];
+    fullName = [(MSASComment *)selfCopy fullName];
+    email = [(MSASComment *)selfCopy email];
+    personID = [(MSASComment *)selfCopy personID];
+    timestamp = [(MSASComment *)selfCopy timestamp];
+    clientTimestamp = [(MSASComment *)selfCopy clientTimestamp];
+    isLike = [(MSASComment *)selfCopy isLike];
+    isCaption = [(MSASComment *)selfCopy isCaption];
+    isBatchComment = [(MSASComment *)selfCopy isBatchComment];
+    isMine = [(MSASComment *)selfCopy isMine];
+    content = [(MSASComment *)selfCopy content];
+    v21 = [content length];
     v22 = @"(Present)";
     if (!v21)
     {
       v22 = @"(No)";
     }
 
-    v13 = [v25 stringWithFormat:@"%@, GUID: %@, ID: %d, name: %@ (%@ %@) server timestamp: %@, client timestamp: %@, is Like: %d, is Caption: %d, is Batch Comment: %d, is Mine: %d, content: %@", v28, v27, v24, v26, v5, v10, v14, v15, v16, v17, v18, v19, v22];
+    v13 = [v25 stringWithFormat:@"%@, GUID: %@, ID: %d, name: %@ (%@ %@) server timestamp: %@, client timestamp: %@, is Like: %d, is Caption: %d, is Batch Comment: %d, is Mine: %d, content: %@", v28, gUID, v24, fullName, email, personID, timestamp, clientTimestamp, isLike, isCaption, isBatchComment, isMine, v22];
   }
 
   else
   {
-    v29.receiver = v2;
+    v29.receiver = selfCopy;
     v29.super_class = MSASComment;
     v28 = [(MSASComment *)&v29 description];
-    v27 = [(MSASComment *)v2 GUID];
-    v4 = [(MSASComment *)v2 ID];
-    v26 = [(MSASComment *)v2 timestamp];
-    v5 = [(MSASComment *)v2 clientTimestamp];
-    v6 = [(MSASComment *)v2 isLike];
-    v7 = [(MSASComment *)v2 isCaption];
-    v8 = [(MSASComment *)v2 isBatchComment];
-    v9 = [(MSASComment *)v2 isMine];
-    v10 = [(MSASComment *)v2 content];
-    v11 = [v10 length];
+    gUID = [(MSASComment *)selfCopy GUID];
+    v4 = [(MSASComment *)selfCopy ID];
+    fullName = [(MSASComment *)selfCopy timestamp];
+    email = [(MSASComment *)selfCopy clientTimestamp];
+    isLike2 = [(MSASComment *)selfCopy isLike];
+    isCaption2 = [(MSASComment *)selfCopy isCaption];
+    isBatchComment2 = [(MSASComment *)selfCopy isBatchComment];
+    isMine2 = [(MSASComment *)selfCopy isMine];
+    personID = [(MSASComment *)selfCopy content];
+    v11 = [personID length];
     v12 = @"(Present)";
     if (!v11)
     {
       v12 = @"(No)";
     }
 
-    v13 = [v25 stringWithFormat:@"%@, GUID: %@, ID: %d, server timestamp: %@, client timestamp: %@, is Like: %d, is Caption: %d, is Batch Comment: %d, is Mine: %d, content: %@", v28, v27, v4, v26, v5, v6, v7, v8, v9, v12];
+    v13 = [v25 stringWithFormat:@"%@, GUID: %@, ID: %d, server timestamp: %@, client timestamp: %@, is Like: %d, is Caption: %d, is Batch Comment: %d, is Mine: %d, content: %@", v28, gUID, v4, fullName, email, isLike2, isCaption2, isBatchComment2, isMine2, v12];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (MSASComment)initWithCoder:(id)a3
+- (MSASComment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MSASComment;
   v5 = [(MSASComment *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     GUID = v5->_GUID;
     v5->_GUID = v6;
 
-    v5->_ID = [v4 decodeIntForKey:@"ID"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v5->_ID = [coderCopy decodeIntForKey:@"ID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientTimestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientTimestamp"];
     clientTimestamp = v5->_clientTimestamp;
     v5->_clientTimestamp = v10;
 
-    v5->_isLike = [v4 decodeBoolForKey:@"isLike"];
-    v5->_isCaption = [v4 decodeBoolForKey:@"isCaption"];
-    v5->_isBatchComment = [v4 decodeBoolForKey:@"isBatchComment"];
-    v5->_isMine = [v4 decodeBoolForKey:@"isMine"];
-    v5->_isDeletable = [v4 decodeBoolForKey:@"isDeletable"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+    v5->_isLike = [coderCopy decodeBoolForKey:@"isLike"];
+    v5->_isCaption = [coderCopy decodeBoolForKey:@"isCaption"];
+    v5->_isBatchComment = [coderCopy decodeBoolForKey:@"isBatchComment"];
+    v5->_isMine = [coderCopy decodeBoolForKey:@"isMine"];
+    v5->_isDeletable = [coderCopy decodeBoolForKey:@"isDeletable"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
     content = v5->_content;
     v5->_content = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
     personID = v5->_personID;
     v5->_personID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
     fullName = v5->_fullName;
     v5->_fullName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     email = v5->_email;
     v5->_email = v22;
   }
@@ -239,115 +239,115 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  GUID = v4->_GUID;
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  GUID = selfCopy->_GUID;
   if (GUID)
   {
-    [v18 encodeObject:GUID forKey:@"GUID"];
+    [coderCopy encodeObject:GUID forKey:@"GUID"];
   }
 
-  [v18 encodeInt:v4->_ID forKey:@"ID"];
-  timestamp = v4->_timestamp;
+  [coderCopy encodeInt:selfCopy->_ID forKey:@"ID"];
+  timestamp = selfCopy->_timestamp;
   if (timestamp)
   {
-    [v18 encodeObject:timestamp forKey:@"timestamp"];
+    [coderCopy encodeObject:timestamp forKey:@"timestamp"];
   }
 
-  clientTimestamp = v4->_clientTimestamp;
+  clientTimestamp = selfCopy->_clientTimestamp;
   if (clientTimestamp)
   {
-    [v18 encodeObject:clientTimestamp forKey:@"clientTimestamp"];
+    [coderCopy encodeObject:clientTimestamp forKey:@"clientTimestamp"];
   }
 
-  [v18 encodeBool:v4->_isLike forKey:@"isLike"];
-  [v18 encodeBool:v4->_isCaption forKey:@"isCaption"];
-  [v18 encodeBool:v4->_isBatchComment forKey:@"isBatchComment"];
-  [v18 encodeBool:v4->_isMine forKey:@"isMine"];
-  [v18 encodeBool:v4->_isDeletable forKey:@"isDeletable"];
-  content = v4->_content;
+  [coderCopy encodeBool:selfCopy->_isLike forKey:@"isLike"];
+  [coderCopy encodeBool:selfCopy->_isCaption forKey:@"isCaption"];
+  [coderCopy encodeBool:selfCopy->_isBatchComment forKey:@"isBatchComment"];
+  [coderCopy encodeBool:selfCopy->_isMine forKey:@"isMine"];
+  [coderCopy encodeBool:selfCopy->_isDeletable forKey:@"isDeletable"];
+  content = selfCopy->_content;
   if (content)
   {
-    [v18 encodeObject:content forKey:@"content"];
+    [coderCopy encodeObject:content forKey:@"content"];
   }
 
-  personID = v4->_personID;
+  personID = selfCopy->_personID;
   if (personID)
   {
-    [v18 encodeObject:personID forKey:@"personID"];
+    [coderCopy encodeObject:personID forKey:@"personID"];
   }
 
-  v10 = [(MSASComment *)v4 firstName];
+  firstName = [(MSASComment *)selfCopy firstName];
 
-  if (v10)
+  if (firstName)
   {
-    v11 = [(MSASComment *)v4 firstName];
-    [v18 encodeObject:v11 forKey:@"firstName"];
+    firstName2 = [(MSASComment *)selfCopy firstName];
+    [coderCopy encodeObject:firstName2 forKey:@"firstName"];
   }
 
-  v12 = [(MSASComment *)v4 lastName];
+  lastName = [(MSASComment *)selfCopy lastName];
 
-  if (v12)
+  if (lastName)
   {
-    v13 = [(MSASComment *)v4 lastName];
-    [v18 encodeObject:v13 forKey:@"lastName"];
+    lastName2 = [(MSASComment *)selfCopy lastName];
+    [coderCopy encodeObject:lastName2 forKey:@"lastName"];
   }
 
-  v14 = [(MSASComment *)v4 fullName];
+  fullName = [(MSASComment *)selfCopy fullName];
 
-  if (v14)
+  if (fullName)
   {
-    v15 = [(MSASComment *)v4 fullName];
-    [v18 encodeObject:v15 forKey:@"fullName"];
+    fullName2 = [(MSASComment *)selfCopy fullName];
+    [coderCopy encodeObject:fullName2 forKey:@"fullName"];
   }
 
-  v16 = [(MSASComment *)v4 email];
+  email = [(MSASComment *)selfCopy email];
 
-  if (v16)
+  if (email)
   {
-    v17 = [(MSASComment *)v4 email];
-    [v18 encodeObject:v17 forKey:@"email"];
+    email2 = [(MSASComment *)selfCopy email];
+    [coderCopy encodeObject:email2 forKey:@"email"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  equalCopy = equal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MSASComment *)v5 GUID];
-    v7 = [v4 GUID];
-    v8 = [v6 isEqualToString:v7];
+    gUID = [(MSASComment *)selfCopy GUID];
+    gUID2 = [equalCopy GUID];
+    v8 = [gUID isEqualToString:gUID2];
   }
 
   else
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = MSASComment;
-    v8 = [(MSASComment *)&v10 isEqual:v4];
+    v8 = [(MSASComment *)&v10 isEqual:equalCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSASComment *)v2 GUID];
-  v4 = [v3 hash];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  gUID = [(MSASComment *)selfCopy GUID];
+  v4 = [gUID hash];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
@@ -358,11 +358,11 @@
   v2 = [(MSASComment *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCACA8] MSMakeUUID];
-    [(MSASComment *)v2 setGUID:v3];
+    mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+    [(MSASComment *)v2 setGUID:mSMakeUUID];
 
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(MSASComment *)v2 setTimestamp:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(MSASComment *)v2 setTimestamp:date];
 
     [(MSASComment *)v2 setID:0xFFFFFFFFLL];
   }
@@ -372,21 +372,21 @@
 
 + (id)comment
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)MSASPCommentFromProtocolDictionary:(id)a3
++ (id)MSASPCommentFromProtocolDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MSASComment);
-  v5 = [v3 objectForKey:@"commentposition"];
+  v5 = [dictionaryCopy objectForKey:@"commentposition"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v7 = [v3 objectForKey:@"commentposition"];
+    v7 = [dictionaryCopy objectForKey:@"commentposition"];
   }
 
   else
@@ -399,11 +399,11 @@
   {
   }
 
-  v8 = [v3 objectForKey:@"comment"];
+  v8 = [dictionaryCopy objectForKey:@"comment"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v3 objectForKey:@"comment"];
+    v9 = [dictionaryCopy objectForKey:@"comment"];
     [(MSASComment *)v4 setContent:v9];
   }
 
@@ -412,11 +412,11 @@
     [(MSASComment *)v4 setContent:0];
   }
 
-  v10 = [v3 objectForKey:@"commenttimestamp"];
+  v10 = [dictionaryCopy objectForKey:@"commenttimestamp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v3 objectForKey:@"commenttimestamp"];
+    v11 = [dictionaryCopy objectForKey:@"commenttimestamp"];
 
     if (!v11)
     {
@@ -435,7 +435,7 @@
   }
 
 LABEL_14:
-  v13 = [v3 objectForKey:@"commentservertimestamp"];
+  v13 = [dictionaryCopy objectForKey:@"commentservertimestamp"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -444,7 +444,7 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v14 = [v3 objectForKey:@"commentservertimestamp"];
+  v14 = [dictionaryCopy objectForKey:@"commentservertimestamp"];
 
   if (!v14 || (v15 = v14, ![v14 length]))
   {
@@ -463,11 +463,11 @@ LABEL_19:
   [(MSASComment *)v4 setTimestamp:v17];
 
 LABEL_21:
-  v18 = [v3 objectForKey:@"personid"];
+  v18 = [dictionaryCopy objectForKey:@"personid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v3 objectForKey:@"personid"];
+    v19 = [dictionaryCopy objectForKey:@"personid"];
     [(MSASComment *)v4 setPersonID:v19];
   }
 
@@ -476,11 +476,11 @@ LABEL_21:
     [(MSASComment *)v4 setPersonID:0];
   }
 
-  v20 = [v3 objectForKey:@"firstname"];
+  v20 = [dictionaryCopy objectForKey:@"firstname"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v3 objectForKey:@"firstname"];
+    v21 = [dictionaryCopy objectForKey:@"firstname"];
     [(MSASComment *)v4 setFirstName:v21];
   }
 
@@ -489,11 +489,11 @@ LABEL_21:
     [(MSASComment *)v4 setFirstName:0];
   }
 
-  v22 = [v3 objectForKey:@"lastname"];
+  v22 = [dictionaryCopy objectForKey:@"lastname"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v3 objectForKey:@"lastname"];
+    v23 = [dictionaryCopy objectForKey:@"lastname"];
     [(MSASComment *)v4 setLastName:v23];
   }
 
@@ -502,11 +502,11 @@ LABEL_21:
     [(MSASComment *)v4 setLastName:0];
   }
 
-  v24 = [v3 objectForKey:@"fullname"];
+  v24 = [dictionaryCopy objectForKey:@"fullname"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [v3 objectForKey:@"fullname"];
+    v25 = [dictionaryCopy objectForKey:@"fullname"];
     [(MSASComment *)v4 setFullName:v25];
   }
 
@@ -515,11 +515,11 @@ LABEL_21:
     [(MSASComment *)v4 setFullName:0];
   }
 
-  v26 = [v3 objectForKey:@"email"];
+  v26 = [dictionaryCopy objectForKey:@"email"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = [v3 objectForKey:@"email"];
+    v27 = [dictionaryCopy objectForKey:@"email"];
     [(MSASComment *)v4 setEmail:v27];
   }
 
@@ -528,12 +528,12 @@ LABEL_21:
     [(MSASComment *)v4 setEmail:0];
   }
 
-  v28 = [v3 objectForKey:@"createdbyme"];
+  v28 = [dictionaryCopy objectForKey:@"createdbyme"];
   objc_opt_class();
   v29 = objc_opt_isKindOfClass();
   if (v29)
   {
-    v30 = [v3 objectForKey:@"createdbyme"];
+    v30 = [dictionaryCopy objectForKey:@"createdbyme"];
   }
 
   else
@@ -546,12 +546,12 @@ LABEL_21:
   {
   }
 
-  v31 = [v3 objectForKey:@"candelete"];
+  v31 = [dictionaryCopy objectForKey:@"candelete"];
   objc_opt_class();
   v32 = objc_opt_isKindOfClass();
   if (v32)
   {
-    v33 = [v3 objectForKey:@"candelete"];
+    v33 = [dictionaryCopy objectForKey:@"candelete"];
   }
 
   else
@@ -564,12 +564,12 @@ LABEL_21:
   {
   }
 
-  v34 = [v3 objectForKey:@"iscaption"];
+  v34 = [dictionaryCopy objectForKey:@"iscaption"];
   objc_opt_class();
   v35 = objc_opt_isKindOfClass();
   if (v35)
   {
-    v36 = [v3 objectForKey:@"iscaption"];
+    v36 = [dictionaryCopy objectForKey:@"iscaption"];
   }
 
   else
@@ -582,12 +582,12 @@ LABEL_21:
   {
   }
 
-  v37 = [v3 objectForKey:@"isbatchcomment"];
+  v37 = [dictionaryCopy objectForKey:@"isbatchcomment"];
   objc_opt_class();
   v38 = objc_opt_isKindOfClass();
   if (v38)
   {
-    v39 = [v3 objectForKey:@"isbatchcomment"];
+    v39 = [dictionaryCopy objectForKey:@"isbatchcomment"];
   }
 
   else
@@ -600,12 +600,12 @@ LABEL_21:
   {
   }
 
-  v40 = [v3 objectForKey:@"commenttype"];
+  v40 = [dictionaryCopy objectForKey:@"commenttype"];
   objc_opt_class();
   v41 = objc_opt_isKindOfClass();
   if (v41)
   {
-    v42 = [v3 objectForKey:@"commenttype"];
+    v42 = [dictionaryCopy objectForKey:@"commenttype"];
   }
 
   else

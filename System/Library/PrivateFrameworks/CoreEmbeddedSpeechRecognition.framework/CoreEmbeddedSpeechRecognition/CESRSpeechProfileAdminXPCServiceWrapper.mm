@@ -1,36 +1,36 @@
 @interface CESRSpeechProfileAdminXPCServiceWrapper
 - (CESRSpeechProfileAdminXPCServiceWrapper)init;
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4;
-- (void)endEvaluation:(id)a3;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
 @end
 
 @implementation CESRSpeechProfileAdminXPCServiceWrapper
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v4 = a3;
-  v5 = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
-  [v5 endEvaluation:v4];
+  evaluationCopy = evaluation;
+  service = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
+  [service endEvaluation:evaluationCopy];
 }
 
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
-  [v8 beginEvaluationWithSetEnumerator:v7 completion:v6];
+  completionCopy = completion;
+  enumeratorCopy = enumerator;
+  service = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
+  [service beginEvaluationWithSetEnumerator:enumeratorCopy completion:completionCopy];
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
-  [v8 rebuildSpeechProfileForUserId:v7 completion:v6];
+  completionCopy = completion;
+  idCopy = id;
+  service = [(CESRSpeechProfileAdminXPCServiceBridge *)xpcServiceBridge service];
+  [service rebuildSpeechProfileForUserId:idCopy completion:completionCopy];
 }
 
 - (CESRSpeechProfileAdminXPCServiceWrapper)init

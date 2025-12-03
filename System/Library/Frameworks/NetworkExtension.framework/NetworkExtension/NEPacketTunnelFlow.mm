@@ -13,29 +13,29 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = packets;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5 || !v5->_interface)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy || !selfCopy->_interface)
   {
     goto LABEL_29;
   }
 
-  buffersSize = v5->_buffersSize;
+  buffersSize = selfCopy->_buffersSize;
   if (buffersSize < [(NSArray *)v4 count])
   {
-    v7 = malloc_type_realloc(v5->_packetDataArray, 8 * [(NSArray *)v4 count], 0x10040436913F5uLL);
+    v7 = malloc_type_realloc(selfCopy->_packetDataArray, 8 * [(NSArray *)v4 count], 0x10040436913F5uLL);
     if (v7)
     {
-      v5->_packetDataArray = v7;
-      v8 = malloc_type_realloc(v5->_packetProtocols, 4 * [(NSArray *)v4 count], 0x100004052888210uLL);
+      selfCopy->_packetDataArray = v7;
+      v8 = malloc_type_realloc(selfCopy->_packetProtocols, 4 * [(NSArray *)v4 count], 0x100004052888210uLL);
       if (v8)
       {
-        v5->_packetProtocols = v8;
-        v9 = malloc_type_realloc(v5->_packetLengths, 8 * [(NSArray *)v4 count], 0x100004000313F17uLL);
+        selfCopy->_packetProtocols = v8;
+        v9 = malloc_type_realloc(selfCopy->_packetLengths, 8 * [(NSArray *)v4 count], 0x100004000313F17uLL);
         if (v9)
         {
-          v5->_packetLengths = v9;
-          v5->_buffersSize = [(NSArray *)v4 count];
+          selfCopy->_packetLengths = v9;
+          selfCopy->_buffersSize = [(NSArray *)v4 count];
           goto LABEL_8;
         }
 
@@ -77,29 +77,29 @@ LABEL_29:
   }
 
 LABEL_8:
-  packetDataArray = v5->_packetDataArray;
-  if (packetDataArray && v5->_packetLengths && v5->_packetProtocols)
+  packetDataArray = selfCopy->_packetDataArray;
+  if (packetDataArray && selfCopy->_packetLengths && selfCopy->_packetProtocols)
   {
     for (i = 0; ; ++i)
     {
       if (i >= [(NSArray *)v4 count])
       {
-        packetDataArray = v5->_packetDataArray;
+        packetDataArray = selfCopy->_packetDataArray;
         goto LABEL_22;
       }
 
       v12 = [(NSArray *)v4 objectAtIndexedSubscript:i];
-      v13 = [v12 data];
+      data = [v12 data];
 
-      if ((isa_nsdata(v13) & 1) == 0)
+      if ((isa_nsdata(data) & 1) == 0)
       {
         break;
       }
 
-      v5->_packetDataArray[i] = [v13 bytes];
-      v5->_packetLengths[i] = [v13 length];
+      selfCopy->_packetDataArray[i] = [data bytes];
+      selfCopy->_packetLengths[i] = [data length];
       v14 = [(NSArray *)v4 objectAtIndexedSubscript:i];
-      v5->_packetProtocols[i] = [v14 protocolFamily];
+      selfCopy->_packetProtocols[i] = [v14 protocolFamily];
     }
 
     v17 = ne_log_obj();
@@ -116,9 +116,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  v16 = NEVirtualInterfaceWriteMultipleIPPackets(v5->_interface, v5->_packetProtocols, packetDataArray, v5->_packetLengths, [(NSArray *)v4 count]) != 0;
+  v16 = NEVirtualInterfaceWriteMultipleIPPackets(selfCopy->_interface, selfCopy->_packetProtocols, packetDataArray, selfCopy->_packetLengths, [(NSArray *)v4 count]) != 0;
 LABEL_30:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x1E69E9840];
   return v16;
@@ -129,14 +129,14 @@ LABEL_30:
   v29 = *MEMORY[0x1E69E9840];
   v6 = packets;
   v7 = protocols;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8 || !v8->_interface)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy || !selfCopy->_interface)
   {
     goto LABEL_43;
   }
 
-  if (v8->_interfaceType == 1)
+  if (selfCopy->_interfaceType == 1)
   {
     v9 = [(NSArray *)v6 count];
     if (v9 != [(NSArray *)v7 count])
@@ -157,21 +157,21 @@ LABEL_30:
     }
   }
 
-  buffersSize = v8->_buffersSize;
+  buffersSize = selfCopy->_buffersSize;
   if (buffersSize < [(NSArray *)v6 count])
   {
-    v11 = malloc_type_realloc(v8->_packetDataArray, 8 * [(NSArray *)v6 count], 0x10040436913F5uLL);
+    v11 = malloc_type_realloc(selfCopy->_packetDataArray, 8 * [(NSArray *)v6 count], 0x10040436913F5uLL);
     if (v11)
     {
-      v8->_packetDataArray = v11;
-      if (v8->_interfaceType != 1)
+      selfCopy->_packetDataArray = v11;
+      if (selfCopy->_interfaceType != 1)
       {
 LABEL_10:
-        v13 = malloc_type_realloc(v8->_packetLengths, 8 * [(NSArray *)v6 count], 0x100004000313F17uLL);
+        v13 = malloc_type_realloc(selfCopy->_packetLengths, 8 * [(NSArray *)v6 count], 0x100004000313F17uLL);
         if (v13)
         {
-          v8->_packetLengths = v13;
-          v8->_buffersSize = [(NSArray *)v6 count];
+          selfCopy->_packetLengths = v13;
+          selfCopy->_buffersSize = [(NSArray *)v6 count];
           goto LABEL_12;
         }
 
@@ -186,10 +186,10 @@ LABEL_10:
         goto LABEL_38;
       }
 
-      v12 = malloc_type_realloc(v8->_packetProtocols, 4 * [(NSArray *)v6 count], 0x100004052888210uLL);
+      v12 = malloc_type_realloc(selfCopy->_packetProtocols, 4 * [(NSArray *)v6 count], 0x100004052888210uLL);
       if (v12)
       {
-        v8->_packetProtocols = v12;
+        selfCopy->_packetProtocols = v12;
         goto LABEL_10;
       }
 
@@ -221,14 +221,14 @@ LABEL_43:
   }
 
 LABEL_12:
-  packetDataArray = v8->_packetDataArray;
-  if (packetDataArray && v8->_packetLengths && (v8->_interfaceType != 1 || v8->_packetProtocols))
+  packetDataArray = selfCopy->_packetDataArray;
+  if (packetDataArray && selfCopy->_packetLengths && (selfCopy->_interfaceType != 1 || selfCopy->_packetProtocols))
   {
     for (i = 0; ; ++i)
     {
       if (i >= [(NSArray *)v6 count])
       {
-        packetDataArray = v8->_packetDataArray;
+        packetDataArray = selfCopy->_packetDataArray;
         goto LABEL_33;
       }
 
@@ -238,9 +238,9 @@ LABEL_12:
         break;
       }
 
-      v8->_packetDataArray[i] = [v16 bytes];
-      v8->_packetLengths[i] = [v16 length];
-      if (v8->_interfaceType == 1)
+      selfCopy->_packetDataArray[i] = [v16 bytes];
+      selfCopy->_packetLengths[i] = [v16 length];
+      if (selfCopy->_interfaceType == 1)
       {
         v17 = [(NSArray *)v7 objectAtIndexedSubscript:i];
         if ((isa_nsnumber(v17) & 1) == 0)
@@ -258,7 +258,7 @@ LABEL_12:
           goto LABEL_42;
         }
 
-        v8->_packetProtocols[i] = [v17 unsignedIntValue];
+        selfCopy->_packetProtocols[i] = [v17 unsignedIntValue];
       }
     }
 
@@ -278,9 +278,9 @@ LABEL_42:
   }
 
 LABEL_33:
-  v19 = NEVirtualInterfaceWriteMultipleIPPackets(v8->_interface, v8->_packetProtocols, packetDataArray, v8->_packetLengths, [(NSArray *)v6 count]) != 0;
+  v19 = NEVirtualInterfaceWriteMultipleIPPackets(selfCopy->_interface, selfCopy->_packetProtocols, packetDataArray, selfCopy->_packetLengths, [(NSArray *)v6 count]) != 0;
 LABEL_44:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x1E69E9840];
   return v19;
@@ -289,26 +289,26 @@ LABEL_44:
 - (void)readPacketObjectsWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    v7 = objc_getProperty(v5, v6, 32, 1);
+    v7 = objc_getProperty(selfCopy, v6, 32, 1);
     if (v7)
     {
     }
 
-    else if (v5->_interface)
+    else if (selfCopy->_interface)
     {
-      objc_setProperty_atomic_copy(v5, v8, v4, 32);
-      if (!v5->_handlerSetup)
+      objc_setProperty_atomic_copy(selfCopy, v8, v4, 32);
+      if (!selfCopy->_handlerSetup)
       {
-        objc_initWeak(&location, v5);
-        interface = v5->_interface;
+        objc_initWeak(&location, selfCopy);
+        interface = selfCopy->_interface;
         if (interface)
         {
           *(interface + 73) = 0;
-          v10 = v5->_interface;
+          v10 = selfCopy->_interface;
         }
 
         else
@@ -321,10 +321,10 @@ LABEL_44:
         v13[2] = __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_invoke;
         v13[3] = &unk_1E7F09860;
         objc_copyWeak(&v14, &location);
-        v13[4] = v5;
+        v13[4] = selfCopy;
         if (NEVirtualInterfaceSetReadMultipleIPPacketsHandler(v10, v13))
         {
-          v5->_handlerSetup = 1;
+          selfCopy->_handlerSetup = 1;
         }
 
         else
@@ -341,11 +341,11 @@ LABEL_44:
         objc_destroyWeak(&location);
       }
 
-      NEVirtualInterfaceReadyToReadMultiple(v5->_interface, 0x40u);
+      NEVirtualInterfaceReadyToReadMultiple(selfCopy->_interface, 0x40u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3, uint64_t a4, uint64_t *a5, uint64_t *a6, unsigned int a7)
@@ -442,24 +442,24 @@ void __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_inv
 - (void)readPacketsWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    if (!objc_getProperty(v5, v6, 96, 1))
+    if (!objc_getProperty(selfCopy, v6, 96, 1))
     {
-      objc_setProperty_atomic_copy(v5, v7, v4, 96);
-      interface = v5->_interface;
+      objc_setProperty_atomic_copy(selfCopy, v7, v4, 96);
+      interface = selfCopy->_interface;
       if (interface)
       {
-        if (!v5->_handlerSetup)
+        if (!selfCopy->_handlerSetup)
         {
-          objc_initWeak(&location, v5);
-          v9 = v5->_interface;
+          objc_initWeak(&location, selfCopy);
+          v9 = selfCopy->_interface;
           if (v9)
           {
             *(v9 + 73) = 0;
-            v10 = v5->_interface;
+            v10 = selfCopy->_interface;
           }
 
           else
@@ -472,10 +472,10 @@ void __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_inv
           v13[2] = __55__NEPacketTunnelFlow_readPacketsWithCompletionHandler___block_invoke;
           v13[3] = &unk_1E7F09860;
           objc_copyWeak(&v14, &location);
-          v13[4] = v5;
+          v13[4] = selfCopy;
           if (NEVirtualInterfaceSetReadMultipleIPPacketsHandler(v10, v13))
           {
-            v5->_handlerSetup = 1;
+            selfCopy->_handlerSetup = 1;
           }
 
           else
@@ -490,7 +490,7 @@ void __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_inv
 
           objc_destroyWeak(&v14);
           objc_destroyWeak(&location);
-          interface = v5->_interface;
+          interface = selfCopy->_interface;
         }
 
         NEVirtualInterfaceReadyToReadMultiple(interface, 0x40u);
@@ -498,7 +498,7 @@ void __61__NEPacketTunnelFlow_readPacketObjectsWithCompletionHandler___block_inv
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __55__NEPacketTunnelFlow_readPacketsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, unsigned int *a3, uint64_t a4, void *a5, uint64_t *a6, unsigned int a7)
@@ -595,9 +595,9 @@ void __55__NEPacketTunnelFlow_readPacketsWithCompletionHandler___block_invoke(ui
 
 - (void)closeVirtualInterface
 {
-  if (a1)
+  if (self)
   {
-    self = a1;
+    self = self;
     objc_sync_enter(self);
     v1 = self[11];
     if (v1)

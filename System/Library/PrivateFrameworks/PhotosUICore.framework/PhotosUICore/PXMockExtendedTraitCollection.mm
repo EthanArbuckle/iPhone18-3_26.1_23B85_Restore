@@ -1,23 +1,23 @@
 @interface PXMockExtendedTraitCollection
 - (CGSize)layoutReferenceSize;
-- (PXMockExtendedTraitCollection)initWithFormFactor:(int64_t)a3 orientation:(int64_t)a4 visibleChromeElements:(unint64_t)a5;
-- (PXMockExtendedTraitCollection)initWithLayoutSizeClass:(int64_t)a3;
-- (PXMockExtendedTraitCollection)initWithViewController:(id)a3;
+- (PXMockExtendedTraitCollection)initWithFormFactor:(int64_t)factor orientation:(int64_t)orientation visibleChromeElements:(unint64_t)elements;
+- (PXMockExtendedTraitCollection)initWithLayoutSizeClass:(int64_t)class;
+- (PXMockExtendedTraitCollection)initWithViewController:(id)controller;
 - (UIEdgeInsets)safeAreaInsets;
 - (void)_updateLayoutReferenceSizeAndDisplayScale;
 - (void)_updateLayoutSizeClass;
 - (void)_updateSafeAreaInsets;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)setContentSizeCategory:(int64_t)a3;
-- (void)setDisplayScale:(double)a3;
-- (void)setFormFactor:(int64_t)a3;
-- (void)setLayoutOrientation:(int64_t)a3;
-- (void)setLayoutReferenceSize:(CGSize)a3;
-- (void)setLayoutSizeClass:(int64_t)a3;
-- (void)setUserInterfaceIdiom:(int64_t)a3;
-- (void)setVisibleChromeElements:(unint64_t)a3;
-- (void)setWindowOrientation:(int64_t)a3;
+- (void)performChanges:(id)changes;
+- (void)setContentSizeCategory:(int64_t)category;
+- (void)setDisplayScale:(double)scale;
+- (void)setFormFactor:(int64_t)factor;
+- (void)setLayoutOrientation:(int64_t)orientation;
+- (void)setLayoutReferenceSize:(CGSize)size;
+- (void)setLayoutSizeClass:(int64_t)class;
+- (void)setUserInterfaceIdiom:(int64_t)idiom;
+- (void)setVisibleChromeElements:(unint64_t)elements;
+- (void)setWindowOrientation:(int64_t)orientation;
 @end
 
 @implementation PXMockExtendedTraitCollection
@@ -46,17 +46,17 @@
 
 - (void)_updateSafeAreaInsets
 {
-  v4 = [(PXMockExtendedTraitCollection *)self formFactor];
-  if (v4)
+  formFactor = [(PXMockExtendedTraitCollection *)self formFactor];
+  if (formFactor)
   {
-    v5 = v4;
-    v6 = [(PXMockExtendedTraitCollection *)self layoutOrientation];
+    v5 = formFactor;
+    layoutOrientation = [(PXMockExtendedTraitCollection *)self layoutOrientation];
     v7 = 0.0;
     v8 = NAN;
     v9 = 20.0;
     v10 = NAN;
     v11 = 44.0;
-    if (v6 == 1)
+    if (layoutOrientation == 1)
     {
       v10 = 44.0;
     }
@@ -113,7 +113,7 @@
 
       else if (((1 << v5) & 0x70) != 0)
       {
-        if (v6 == 1)
+        if (layoutOrientation == 1)
         {
           v15 = 83.0;
         }
@@ -125,7 +125,7 @@
 
         v8 = 34.0;
         v9 = 0.0;
-        if (v6 == 1)
+        if (layoutOrientation == 1)
         {
           v7 = 34.0;
         }
@@ -169,13 +169,13 @@
 
     if ((v18 & 4) != 0)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26.top = v22;
       v26.left = v16;
       v26.bottom = NAN;
       v26.right = v17;
       v24 = NSStringFromUIEdgeInsets(v26);
-      [v23 handleFailureInMethod:a2 object:self file:@"PXMockExtendedTraitCollection.m" lineNumber:493 description:{@"unknown value for chrome elements %li form factor %li (%@)", v19, v5, v24}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockExtendedTraitCollection.m" lineNumber:493 description:{@"unknown value for chrome elements %li form factor %li (%@)", v19, v5, v24}];
     }
 
     else if ((v18 & 8) != 0)
@@ -197,17 +197,17 @@
   switch([(PXMockExtendedTraitCollection *)self formFactor])
   {
     case 0:
-      v8 = [(PXMockExtendedTraitCollection *)self layoutSizeClass];
-      if (v8 >= 3)
+      layoutSizeClass = [(PXMockExtendedTraitCollection *)self layoutSizeClass];
+      if (layoutSizeClass >= 3)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"PXMockExtendedTraitCollection.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockExtendedTraitCollection.m" lineNumber:334 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      v6 = dbl_1A5381DA0[v8];
-      v5 = dbl_1A5381DB8[v8];
+      v6 = dbl_1A5381DA0[layoutSizeClass];
+      v5 = dbl_1A5381DB8[layoutSizeClass];
       v4 = 2.0;
       break;
     case 1:
@@ -299,8 +299,8 @@ LABEL_15:
     v10 = v5;
   }
 
-  v11 = [(PXMockExtendedTraitCollection *)self layoutOrientation];
-  if (v11 == 1)
+  layoutOrientation = [(PXMockExtendedTraitCollection *)self layoutOrientation];
+  if (layoutOrientation == 1)
   {
     v12 = v10;
     v10 = v9;
@@ -308,7 +308,7 @@ LABEL_15:
 
   else
   {
-    if (v11 != 2)
+    if (layoutOrientation != 2)
     {
       goto LABEL_27;
     }
@@ -336,47 +336,47 @@ LABEL_27:
   }
 }
 
-- (void)setWindowOrientation:(int64_t)a3
+- (void)setWindowOrientation:(int64_t)orientation
 {
-  if (self->_windowOrientation != a3)
+  if (self->_windowOrientation != orientation)
   {
-    self->_windowOrientation = a3;
+    self->_windowOrientation = orientation;
     [(PXMockExtendedTraitCollection *)self signalChange:0x40000];
   }
 }
 
-- (void)setContentSizeCategory:(int64_t)a3
+- (void)setContentSizeCategory:(int64_t)category
 {
-  if (self->_contentSizeCategory != a3)
+  if (self->_contentSizeCategory != category)
   {
-    self->_contentSizeCategory = a3;
+    self->_contentSizeCategory = category;
     [(PXMockExtendedTraitCollection *)self signalChange:2048];
   }
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     [(PXMockExtendedTraitCollection *)self signalChange:32];
   }
 }
 
-- (void)setVisibleChromeElements:(unint64_t)a3
+- (void)setVisibleChromeElements:(unint64_t)elements
 {
-  if (self->_visibleChromeElements != a3)
+  if (self->_visibleChromeElements != elements)
   {
-    self->_visibleChromeElements = a3;
+    self->_visibleChromeElements = elements;
     [(PXMockExtendedTraitCollection *)self _invalidateSafeAreaInsets];
   }
 }
 
-- (void)setFormFactor:(int64_t)a3
+- (void)setFormFactor:(int64_t)factor
 {
-  if (self->_formFactor != a3)
+  if (self->_formFactor != factor)
   {
-    self->_formFactor = a3;
+    self->_formFactor = factor;
     [(PXMockExtendedTraitCollection *)self _invalidateLayoutSizeClass];
     [(PXMockExtendedTraitCollection *)self _invalidateLayoutReferenceSizeAndDisplayScale];
 
@@ -384,29 +384,29 @@ LABEL_27:
   }
 }
 
-- (void)setUserInterfaceIdiom:(int64_t)a3
+- (void)setUserInterfaceIdiom:(int64_t)idiom
 {
-  if (self->_userInterfaceIdiom != a3)
+  if (self->_userInterfaceIdiom != idiom)
   {
-    self->_userInterfaceIdiom = a3;
+    self->_userInterfaceIdiom = idiom;
     [(PXMockExtendedTraitCollection *)self signalChange:64];
   }
 }
 
-- (void)setLayoutReferenceSize:(CGSize)a3
+- (void)setLayoutReferenceSize:(CGSize)size
 {
-  if (a3.width != self->_layoutReferenceSize.width || a3.height != self->_layoutReferenceSize.height)
+  if (size.width != self->_layoutReferenceSize.width || size.height != self->_layoutReferenceSize.height)
   {
-    self->_layoutReferenceSize = a3;
+    self->_layoutReferenceSize = size;
     [(PXMockExtendedTraitCollection *)self signalChange:16];
   }
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
     [(PXMockExtendedTraitCollection *)self signalChange:8];
     [(PXMockExtendedTraitCollection *)self _invalidateLayoutSizeClass];
     [(PXMockExtendedTraitCollection *)self _invalidateLayoutReferenceSizeAndDisplayScale];
@@ -415,11 +415,11 @@ LABEL_27:
   }
 }
 
-- (void)setLayoutSizeClass:(int64_t)a3
+- (void)setLayoutSizeClass:(int64_t)class
 {
-  if (self->_layoutSizeClass != a3)
+  if (self->_layoutSizeClass != class)
   {
-    self->_layoutSizeClass = a3;
+    self->_layoutSizeClass = class;
     [(PXMockExtendedTraitCollection *)self signalChange:2];
     [(PXMockExtendedTraitCollection *)self _invalidateLayoutReferenceSizeAndDisplayScale];
 
@@ -435,14 +435,14 @@ LABEL_27:
   [(PXUpdater *)self->_updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXMockExtendedTraitCollection;
-  [(PXMockExtendedTraitCollection *)&v3 performChanges:a3];
+  [(PXMockExtendedTraitCollection *)&v3 performChanges:changes];
 }
 
-- (PXMockExtendedTraitCollection)initWithFormFactor:(int64_t)a3 orientation:(int64_t)a4 visibleChromeElements:(unint64_t)a5
+- (PXMockExtendedTraitCollection)initWithFormFactor:(int64_t)factor orientation:(int64_t)orientation visibleChromeElements:(unint64_t)elements
 {
   v8 = [(PXMockExtendedTraitCollection *)self initWithViewController:0];
   v9 = v8;
@@ -452,9 +452,9 @@ LABEL_27:
     v11[1] = 3221225472;
     v11[2] = __86__PXMockExtendedTraitCollection_initWithFormFactor_orientation_visibleChromeElements___block_invoke;
     v11[3] = &__block_descriptor_56_e48_v16__0___PXMockMutableExtendedTraitCollection__8l;
-    v11[4] = a3;
-    v11[5] = a4;
-    v11[6] = a5;
+    v11[4] = factor;
+    v11[5] = orientation;
+    v11[6] = elements;
     [(PXMockExtendedTraitCollection *)v8 performChanges:v11];
   }
 
@@ -472,7 +472,7 @@ void __86__PXMockExtendedTraitCollection_initWithFormFactor_orientation_visibleC
   [v4 setVisibleChromeElements:a1[6]];
 }
 
-- (PXMockExtendedTraitCollection)initWithLayoutSizeClass:(int64_t)a3
+- (PXMockExtendedTraitCollection)initWithLayoutSizeClass:(int64_t)class
 {
   v4 = [(PXMockExtendedTraitCollection *)self initWithViewController:0];
   v5 = v4;
@@ -482,7 +482,7 @@ void __86__PXMockExtendedTraitCollection_initWithFormFactor_orientation_visibleC
     v7[1] = 3221225472;
     v7[2] = __57__PXMockExtendedTraitCollection_initWithLayoutSizeClass___block_invoke;
     v7[3] = &__block_descriptor_40_e48_v16__0___PXMockMutableExtendedTraitCollection__8l;
-    v7[4] = a3;
+    v7[4] = class;
     [(PXMockExtendedTraitCollection *)v4 performChanges:v7];
   }
 
@@ -497,7 +497,7 @@ void __57__PXMockExtendedTraitCollection_initWithLayoutSizeClass___block_invoke(
   [v3 setLayoutOrientation:1];
 }
 
-- (PXMockExtendedTraitCollection)initWithViewController:(id)a3
+- (PXMockExtendedTraitCollection)initWithViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = PXMockExtendedTraitCollection;

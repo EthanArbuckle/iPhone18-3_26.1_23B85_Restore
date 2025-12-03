@@ -1,5 +1,5 @@
 @interface PreferencesTwoPartValueCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (EKCellShortener)shortener;
 - (TwoPartTextLabel)twoPartTextLabel;
 - (UILabel)largePart2TextLabel;
@@ -7,9 +7,9 @@
 - (void)_layoutSubviewsCore;
 - (void)checkValueWidths;
 - (void)layoutSubviews;
-- (void)layoutText:(id)a3 andValue:(id)a4;
-- (void)setStrikeThroughLargeDetailTextLabel:(BOOL)a3;
-- (void)setStrikeThroughLargePart2TextLabel:(BOOL)a3;
+- (void)layoutText:(id)text andValue:(id)value;
+- (void)setStrikeThroughLargeDetailTextLabel:(BOOL)label;
+- (void)setStrikeThroughLargePart2TextLabel:(BOOL)label;
 - (void)shorten;
 @end
 
@@ -27,14 +27,14 @@
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(TwoPartTextLabel *)self->_twoPartLabel setFont:v6];
 
-    v7 = [(PreferencesTwoPartValueCell *)self valueColor];
-    [(TwoPartTextLabel *)self->_twoPartLabel setTextColor:v7];
+    valueColor = [(PreferencesTwoPartValueCell *)self valueColor];
+    [(TwoPartTextLabel *)self->_twoPartLabel setTextColor:valueColor];
 
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(TwoPartTextLabel *)self->_twoPartLabel setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TwoPartTextLabel *)self->_twoPartLabel setBackgroundColor:clearColor];
 
-    v9 = [(PreferencesTwoPartValueCell *)self contentView];
-    [v9 addSubview:self->_twoPartLabel];
+    contentView = [(PreferencesTwoPartValueCell *)self contentView];
+    [contentView addSubview:self->_twoPartLabel];
 
     twoPartLabel = self->_twoPartLabel;
   }
@@ -51,14 +51,14 @@
     v5 = self->_largePart2TextLabel;
     self->_largePart2TextLabel = v4;
 
-    v6 = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
-    [(UILabel *)self->_largePart2TextLabel setTextColor:v6];
+    tableCellBlueTextColor = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
+    [(UILabel *)self->_largePart2TextLabel setTextColor:tableCellBlueTextColor];
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_largePart2TextLabel setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_largePart2TextLabel setBackgroundColor:clearColor];
 
-    v8 = [(PreferencesTwoPartValueCell *)self contentView];
-    [v8 addSubview:self->_largePart2TextLabel];
+    contentView = [(PreferencesTwoPartValueCell *)self contentView];
+    [contentView addSubview:self->_largePart2TextLabel];
 
     largePart2TextLabel = self->_largePart2TextLabel;
   }
@@ -72,22 +72,22 @@
   v9.receiver = self;
   v9.super_class = PreferencesTwoPartValueCell;
   v4 = [(PreferencesTwoPartValueCell *)&v9 description];
-  v5 = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
-  v6 = [v5 description];
+  twoPartTextLabel = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
+  v6 = [twoPartTextLabel description];
   v7 = [v3 stringWithFormat:@"%@\t%@", v4, v6];
 
   return v7;
 }
 
-- (void)layoutText:(id)a3 andValue:(id)a4
+- (void)layoutText:(id)text andValue:(id)value
 {
-  v94 = a3;
-  v6 = a4;
+  textCopy = text;
+  valueCopy = value;
   IsLeftToRight = CalInterfaceIsLeftToRight();
   [(PreferencesTwoPartValueCell *)self directionalLayoutMargins];
   v9 = v8;
-  v10 = [(PreferencesTwoPartValueCell *)self contentView];
-  [v10 bounds];
+  contentView = [(PreferencesTwoPartValueCell *)self contentView];
+  [contentView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -111,60 +111,60 @@
   v93 = v23;
   v24 = width - v22;
   v25 = MEMORY[0x1E695F060];
-  [v94 sizeThatFits:{width - v22, height}];
+  [textCopy sizeThatFits:{width - v22, height}];
   v27 = v26;
-  v28 = [v94 text];
-  v29 = v28;
-  if (v28 && [v28 length])
+  text = [textCopy text];
+  v29 = text;
+  if (text && [text length])
   {
-    v30 = [v94 superview];
+    superview = [textCopy superview];
 
-    if (!v30)
+    if (!superview)
     {
-      v31 = [(PreferencesTwoPartValueCell *)self contentView];
-      [v31 addSubview:v94];
+      contentView2 = [(PreferencesTwoPartValueCell *)self contentView];
+      [contentView2 addSubview:textCopy];
     }
   }
 
   else
   {
-    [v94 removeFromSuperview];
+    [textCopy removeFromSuperview];
   }
 
   v32 = *v25;
   v33 = *v25;
-  if (v6)
+  if (valueCopy)
   {
-    [v6 sizeThatFits:{v24, height}];
+    [valueCopy sizeThatFits:{v24, height}];
     v33 = v34;
-    v35 = [v6 text];
-    v36 = v35;
-    if (v35 && [v35 length])
+    text2 = [valueCopy text];
+    v36 = text2;
+    if (text2 && [text2 length])
     {
-      v37 = [v6 superview];
+      superview2 = [valueCopy superview];
 
-      if (!v37)
+      if (!superview2)
       {
-        v38 = [(PreferencesTwoPartValueCell *)self contentView];
-        [v38 addSubview:v6];
+        contentView3 = [(PreferencesTwoPartValueCell *)self contentView];
+        [contentView3 addSubview:valueCopy];
       }
     }
 
     else
     {
-      [v6 removeFromSuperview];
+      [valueCopy removeFromSuperview];
     }
   }
 
-  v39 = [v94 numberOfLines];
+  numberOfLines = [textCopy numberOfLines];
   v40 = ceil(v24 * (v27 / (v27 + v33 + 6.0)));
-  [v94 setNumberOfLines:1];
-  [v94 sizeThatFits:{v40, height}];
+  [textCopy setNumberOfLines:1];
+  [textCopy sizeThatFits:{v40, height}];
   v42 = v41;
-  [v94 setNumberOfLines:0];
-  [v94 sizeThatFits:{v40, height}];
-  v45 = v42 * v39;
-  if (v39 <= 0)
+  [textCopy setNumberOfLines:0];
+  [textCopy sizeThatFits:{v40, height}];
+  v45 = v42 * numberOfLines;
+  if (numberOfLines <= 0)
   {
     v45 = 3.40282347e38;
   }
@@ -180,19 +180,19 @@
     v40 = v43;
   }
 
-  [v94 setNumberOfLines:v39];
-  v47 = [v6 numberOfLines];
+  [textCopy setNumberOfLines:numberOfLines];
+  numberOfLines2 = [valueCopy numberOfLines];
   v48 = v24;
   v91 = v40;
   v49 = v24 - v40;
   v50 = v24 - v40 + -6.0;
-  [v6 setNumberOfLines:1];
-  if (v6)
+  [valueCopy setNumberOfLines:1];
+  if (valueCopy)
   {
-    [v6 sizeThatFits:{v50, height}];
+    [valueCopy sizeThatFits:{v50, height}];
     v52 = v51;
-    [v6 setNumberOfLines:0];
-    [v6 sizeThatFits:{v50, height}];
+    [valueCopy setNumberOfLines:0];
+    [valueCopy sizeThatFits:{v50, height}];
     v32 = v54;
   }
 
@@ -203,8 +203,8 @@
     v53 = v52;
   }
 
-  v55 = v52 * v47;
-  if (v47 <= 0)
+  v55 = v52 * numberOfLines2;
+  if (numberOfLines2 <= 0)
   {
     v55 = 3.40282347e38;
   }
@@ -226,21 +226,21 @@
     v57 = v32;
   }
 
-  [v6 setNumberOfLines:v47];
-  v58 = [v94 font];
-  [v58 ascender];
+  [valueCopy setNumberOfLines:numberOfLines2];
+  font = [textCopy font];
+  [font ascender];
   v60 = v59;
-  v61 = [v6 font];
-  [v61 ascender];
+  font2 = [valueCopy font];
+  [font2 ascender];
   v63 = v62;
 
   if (v60 >= v63)
   {
-    v64 = [v94 font];
-    [v64 ascender];
+    font3 = [textCopy font];
+    [font3 ascender];
     v73 = v72;
-    v67 = [v6 font];
-    [v67 ascender];
+    font4 = [valueCopy font];
+    [font4 ascender];
     CalRoundToScreenScale(v73 - v74);
     v71 = v75;
     v70 = 0.0;
@@ -248,11 +248,11 @@
 
   else
   {
-    v64 = [v6 font];
-    [v64 ascender];
+    font3 = [valueCopy font];
+    [font3 ascender];
     v66 = v65;
-    v67 = [v94 font];
-    [v67 ascender];
+    font4 = [textCopy font];
+    [font4 ascender];
     CalRoundToScreenScale(v66 - v68);
     v70 = v69;
     v71 = 0.0;
@@ -306,18 +306,18 @@
   v82 = v102.origin.y;
   v83 = v102.size.width;
   v84 = v102.size.height;
-  v85 = [v94 superview];
+  superview3 = [textCopy superview];
 
-  if (v85)
+  if (superview3)
   {
-    [v94 setFrame:{v92, y, v80, v90}];
+    [textCopy setFrame:{v92, y, v80, v90}];
   }
 
-  v86 = [v6 superview];
+  superview4 = [valueCopy superview];
 
-  if (v86)
+  if (superview4)
   {
-    [v6 setFrame:{v81, v82, v83, v84}];
+    [valueCopy setFrame:{v81, v82, v83, v84}];
   }
 }
 
@@ -326,16 +326,16 @@
   v4.receiver = self;
   v4.super_class = PreferencesTwoPartValueCell;
   [(EKUITableViewCell *)&v4 layoutSubviews];
-  v3 = [(PreferencesTwoPartValueCell *)self textLabel];
-  [(PreferencesTwoPartValueCell *)self layoutText:v3 andValue:self->_twoPartLabel];
+  textLabel = [(PreferencesTwoPartValueCell *)self textLabel];
+  [(PreferencesTwoPartValueCell *)self layoutText:textLabel andValue:self->_twoPartLabel];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PreferencesTwoPartValueCell *)self traitCollection];
-  if (EKUIUsesLargeTextLayout(v6))
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(PreferencesTwoPartValueCell *)self traitCollection];
+  if (EKUIUsesLargeTextLayout(traitCollection))
   {
   }
 
@@ -363,8 +363,8 @@
   v11 = v10;
   [(UILabel *)self->_largePart2TextLabel frame];
   v13 = v12;
-  v14 = [(UILabel *)self->_largePart2TextLabel font];
-  [v14 _bodyLeading];
+  font = [(UILabel *)self->_largePart2TextLabel font];
+  [font _bodyLeading];
   CalRoundToScreenScale((v13 + v15) * 0.5);
   v17 = v11 + v16;
 
@@ -376,21 +376,21 @@ LABEL_5:
   return result;
 }
 
-- (void)setStrikeThroughLargeDetailTextLabel:(BOOL)a3
+- (void)setStrikeThroughLargeDetailTextLabel:(BOOL)label
 {
-  if (self->_strikeThroughLargeDetailTextLabel != a3)
+  if (self->_strikeThroughLargeDetailTextLabel != label)
   {
-    self->_strikeThroughLargeDetailTextLabel = a3;
+    self->_strikeThroughLargeDetailTextLabel = label;
   }
 
   [(PreferencesTwoPartValueCell *)self setNeedsLayout];
 }
 
-- (void)setStrikeThroughLargePart2TextLabel:(BOOL)a3
+- (void)setStrikeThroughLargePart2TextLabel:(BOOL)label
 {
-  if (self->_strikeThroughLargePart2TextLabel != a3)
+  if (self->_strikeThroughLargePart2TextLabel != label)
   {
-    self->_strikeThroughLargePart2TextLabel = a3;
+    self->_strikeThroughLargePart2TextLabel = label;
   }
 
   [(PreferencesTwoPartValueCell *)self setNeedsLayout];
@@ -401,81 +401,81 @@ LABEL_5:
   *&v54.size.width = self;
   *&v54.size.height = PreferencesTwoPartValueCell;
   [(CGSize *)&v54.size layoutSubviews];
-  v3 = [(PreferencesTwoPartValueCell *)self traitCollection];
-  v4 = EKUIUsesLargeTextLayout(v3);
+  traitCollection = [(PreferencesTwoPartValueCell *)self traitCollection];
+  v4 = EKUIUsesLargeTextLayout(traitCollection);
 
   if (v4)
   {
-    v5 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
-    v6 = [v5 text];
+    detailTextLabel = [(PreferencesTwoPartValueCell *)self detailTextLabel];
+    text = [detailTextLabel text];
 
-    v7 = [(PreferencesTwoPartValueCell *)self largePart2TextLabel];
-    v8 = [v7 text];
+    largePart2TextLabel = [(PreferencesTwoPartValueCell *)self largePart2TextLabel];
+    text2 = [largePart2TextLabel text];
 
     v9 = MEMORY[0x1E69DB6B8];
-    if (v6)
+    if (text)
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v6];
+      v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:text];
       v11 = *v9;
       v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_strikeThroughLargeDetailTextLabel];
       [v10 addAttribute:v11 value:v12 range:{0, objc_msgSend(v10, "length")}];
 
-      v13 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
-      [v13 setAttributedText:v10];
+      detailTextLabel2 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
+      [detailTextLabel2 setAttributedText:v10];
     }
 
-    if (v8)
+    if (text2)
     {
-      v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
+      v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:text2];
       v15 = *v9;
       v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_strikeThroughLargePart2TextLabel];
       [v14 addAttribute:v15 value:v16 range:{0, objc_msgSend(v14, "length")}];
 
-      v17 = [(PreferencesTwoPartValueCell *)self largePart2TextLabel];
-      [v17 setAttributedText:v14];
+      largePart2TextLabel2 = [(PreferencesTwoPartValueCell *)self largePart2TextLabel];
+      [largePart2TextLabel2 setAttributedText:v14];
     }
 
     if (self->_largePart2TextLabel)
     {
-      v18 = [(PreferencesTwoPartValueCell *)self textLabel];
-      [v18 sizeToFit];
+      textLabel = [(PreferencesTwoPartValueCell *)self textLabel];
+      [textLabel sizeToFit];
 
-      v19 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
-      [v19 sizeToFit];
+      detailTextLabel3 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
+      [detailTextLabel3 sizeToFit];
 
       [(UILabel *)self->_largePart2TextLabel sizeToFit];
-      v20 = [(PreferencesTwoPartValueCell *)self textLabel];
-      [v20 frame];
+      textLabel2 = [(PreferencesTwoPartValueCell *)self textLabel];
+      [textLabel2 frame];
       v54.origin.y = v21;
       v23 = v22;
       v25 = v24;
       v27 = v26;
 
-      v28 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
-      [v28 frame];
+      detailTextLabel4 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
+      [detailTextLabel4 frame];
       v30 = v29;
       v32 = v31;
       v34 = v33;
       v36 = v35;
 
-      v37 = [(UILabel *)self->_largePart2TextLabel text];
-      v38 = [v37 length];
+      text3 = [(UILabel *)self->_largePart2TextLabel text];
+      v38 = [text3 length];
 
       if (v38)
       {
-        v39 = [(UILabel *)self->_largePart2TextLabel font];
-        [v39 _bodyLeading];
+        font = [(UILabel *)self->_largePart2TextLabel font];
+        [font _bodyLeading];
         CalRoundToScreenScale(v40 * 0.5);
         v42 = v41;
 
         v43 = v23 - v42;
-        v44 = [(PreferencesTwoPartValueCell *)self textLabel];
-        [v44 setFrame:{v54.origin.y, v43, v25, v27}];
+        textLabel3 = [(PreferencesTwoPartValueCell *)self textLabel];
+        [textLabel3 setFrame:{v54.origin.y, v43, v25, v27}];
 
         v45 = v32 - v42;
-        v46 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
+        detailTextLabel5 = [(PreferencesTwoPartValueCell *)self detailTextLabel];
         v54.origin.x = v30;
-        [v46 setFrame:{v30, v45, v34, v36}];
+        [detailTextLabel5 setFrame:{v30, v45, v34, v36}];
 
         [(UILabel *)self->_largePart2TextLabel frame];
         v48 = v47;
@@ -503,8 +503,8 @@ LABEL_5:
         v57.size.width = v34;
         v57.size.height = v36;
         [(UILabel *)self->_largePart2TextLabel setFrame:MinX, CGRectGetMaxY(v57), v48, v50];
-        v53 = [(PreferencesTwoPartValueCell *)self contentView];
-        [v53 addSubview:self->_largePart2TextLabel];
+        contentView = [(PreferencesTwoPartValueCell *)self contentView];
+        [contentView addSubview:self->_largePart2TextLabel];
       }
     }
 
@@ -516,8 +516,8 @@ LABEL_5:
 
   else
   {
-    v52 = [(PreferencesTwoPartValueCell *)self textLabel];
-    [(PreferencesTwoPartValueCell *)self layoutText:v52 andValue:self->_twoPartLabel];
+    textLabel4 = [(PreferencesTwoPartValueCell *)self textLabel];
+    [(PreferencesTwoPartValueCell *)self layoutText:textLabel4 andValue:self->_twoPartLabel];
 
     [(PreferencesTwoPartValueCell *)self checkValueWidths];
   }

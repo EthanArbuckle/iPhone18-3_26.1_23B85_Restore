@@ -1,6 +1,6 @@
 @interface HMDXPCMessageSendPolicyParameters
-- (BOOL)isEqual:(id)a3;
-- (HMDXPCMessageSendPolicyParameters)initWithEntitlements:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDXPCMessageSendPolicyParameters)initWithEntitlements:(unint64_t)entitlements;
 - (id)attributeDescriptions;
 @end
 
@@ -21,10 +21,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -45,8 +45,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDXPCMessageSendPolicyParameters *)self entitlements];
-      v8 = v7 == [(HMDXPCMessageSendPolicyParameters *)v6 entitlements];
+      entitlements = [(HMDXPCMessageSendPolicyParameters *)self entitlements];
+      v8 = entitlements == [(HMDXPCMessageSendPolicyParameters *)v6 entitlements];
     }
 
     else
@@ -58,14 +58,14 @@
   return v8;
 }
 
-- (HMDXPCMessageSendPolicyParameters)initWithEntitlements:(unint64_t)a3
+- (HMDXPCMessageSendPolicyParameters)initWithEntitlements:(unint64_t)entitlements
 {
   v5.receiver = self;
   v5.super_class = HMDXPCMessageSendPolicyParameters;
   result = [(HMDXPCMessageSendPolicyParameters *)&v5 init];
   if (result)
   {
-    result->_entitlements = a3;
+    result->_entitlements = entitlements;
   }
 
   return result;

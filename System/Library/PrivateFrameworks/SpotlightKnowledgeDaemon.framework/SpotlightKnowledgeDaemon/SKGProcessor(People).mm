@@ -42,7 +42,7 @@
   if (v4 && ((v5 = copyDateValueForKey()) != 0 || (v5 = copyDateValueForKey()) != 0 || (v5 = copyDateValueForKey()) != 0 || (v5 = copyDateValueForKey()) != 0))
   {
     v6 = v5;
-    v7 = [a1 scoreFromDate:v5];
+    v7 = [self scoreFromDate:v5];
   }
 
   else
@@ -59,7 +59,7 @@
   if (v4 && ((v5 = copyDateValueForKey()) != 0 || (v5 = copyDateValueForKey()) != 0))
   {
     v6 = v5;
-    v7 = [a1 scoreFromDate:v5];
+    v7 = [self scoreFromDate:v5];
   }
 
   else
@@ -88,25 +88,25 @@
       goto LABEL_16;
     }
 
-    v11 = [a1 personWithName:v7 alternateName:0 contactIdentifier:v6 personIdentifier:0 emails:v9 phones:v10 addresses:0];
-    v12 = [v11 nameComponents];
-    v13 = [v12 firstObject];
+    v11 = [self personWithName:v7 alternateName:0 contactIdentifier:v6 personIdentifier:0 emails:v9 phones:v10 addresses:0];
+    nameComponents = [v11 nameComponents];
+    firstObject = [nameComponents firstObject];
 
-    v14 = [v13 givenName];
-    if (v14)
+    givenName = [firstObject givenName];
+    if (givenName)
     {
-      v25 = v14;
-      v15 = [v13 givenName];
-      v16 = [v8 firstObject];
-      v26 = v15;
-      v17 = v15;
-      v18 = v16;
-      if ([v17 isEqualToString:v16] && (objc_msgSend(v13, "familyName"), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+      v25 = givenName;
+      givenName2 = [firstObject givenName];
+      firstObject2 = [v8 firstObject];
+      v26 = givenName2;
+      v17 = givenName2;
+      v18 = firstObject2;
+      if ([v17 isEqualToString:firstObject2] && (objc_msgSend(firstObject, "familyName"), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v23 = v19;
-        v24 = [v13 familyName];
-        v21 = [v8 lastObject];
-        v22 = [v24 isEqualToString:v21];
+        familyName = [firstObject familyName];
+        lastObject = [v8 lastObject];
+        v22 = [familyName isEqualToString:lastObject];
 
         if (v22)
         {
@@ -119,7 +119,7 @@
       }
     }
 
-    v13 = v11;
+    firstObject = v11;
     v11 = 0;
 LABEL_15:
   }
@@ -151,19 +151,19 @@ LABEL_16:
   v14 = [v7 count];
   if (v14)
   {
-    v18 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
   if ([v12 count])
   {
     [v12 firstObject];
     v15 = v17 = v5;
-    v13 = [a1 personWithName:v18 alternateName:v6 contactIdentifier:v15 personIdentifier:0 emails:v8 phones:v9 addresses:v10];
+    v13 = [self personWithName:firstObject alternateName:v6 contactIdentifier:v15 personIdentifier:0 emails:v8 phones:v9 addresses:v10];
 
     v5 = v17;
     if (!v14)
@@ -174,7 +174,7 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  v13 = [a1 personWithName:v18 alternateName:v6 contactIdentifier:0 personIdentifier:0 emails:v8 phones:v9 addresses:v10];
+  v13 = [self personWithName:firstObject alternateName:v6 contactIdentifier:0 personIdentifier:0 emails:v8 phones:v9 addresses:v10];
   if (v14)
   {
 LABEL_12:
@@ -210,7 +210,7 @@ LABEL_13:
     v15[1] = 3221225472;
     v15[2] = __46__SKGProcessor_People__peopleFromPhotoRecord___block_invoke;
     v15[3] = &unk_27893F058;
-    v15[4] = a1;
+    v15[4] = self;
     v15[5] = &v16;
     enumerateParallelContactInfo(v6, v7, v8, 0, v9, v11, v15);
     objc_autoreleasePoolPop(v13);
@@ -252,7 +252,7 @@ LABEL_13:
       v13[1] = 3221225472;
       v13[2] = __47__SKGProcessor_People__authorsFromPhoneRecord___block_invoke;
       v13[3] = &unk_27893F058;
-      v13[4] = a1;
+      v13[4] = self;
       v13[5] = &v14;
       enumerateParallelContactInfo(v6, v7, 0, 0, v8, 0, v13);
       objc_autoreleasePoolPop(v11);
@@ -295,7 +295,7 @@ LABEL_13:
       v13[1] = 3221225472;
       v13[2] = __50__SKGProcessor_People__recipientsFromPhoneRecord___block_invoke;
       v13[3] = &unk_27893F058;
-      v13[4] = a1;
+      v13[4] = self;
       v13[5] = &v14;
       enumerateParallelContactInfo(v6, v7, 0, 0, v8, 0, v13);
       objc_autoreleasePoolPop(v11);
@@ -335,7 +335,7 @@ LABEL_13:
     v13[1] = 3221225472;
     v13[2] = __46__SKGProcessor_People__peopleFromNotesRecord___block_invoke;
     v13[3] = &unk_27893F058;
-    v13[4] = a1;
+    v13[4] = self;
     v13[5] = &v14;
     enumerateParallelContactInfo(v6, v7, v9, 0, 0, 0, v13);
     objc_autoreleasePoolPop(v11);
@@ -360,7 +360,7 @@ LABEL_13:
   v6 = copyArrayValueForKey();
   if (v6)
   {
-    v7 = [a1 personWithName:0 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:v6 phones:0 addresses:0];
+    v7 = [self personWithName:0 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:v6 phones:0 addresses:0];
   }
 
   else
@@ -380,7 +380,7 @@ LABEL_13:
   v6 = copyStringValueForKey();
   if (v6)
   {
-    v7 = [a1 personWithName:v6 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:0 phones:0 addresses:0];
+    v7 = [self personWithName:v6 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:0 phones:0 addresses:0];
   }
 
   else
@@ -400,7 +400,7 @@ LABEL_13:
   v6 = copyStringValueForKey();
   if (v6)
   {
-    v7 = [a1 personWithName:v6 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:0 phones:0 addresses:0];
+    v7 = [self personWithName:v6 alternateName:0 contactIdentifier:0 personIdentifier:0 emails:0 phones:0 addresses:0];
   }
 
   else
@@ -512,7 +512,7 @@ LABEL_24:
   v33[1] = 3221225472;
   v33[2] = __57__SKGProcessor_People__peopleForAttributeKey_fromRecord___block_invoke;
   v33[3] = &unk_27893F058;
-  v33[4] = a1;
+  v33[4] = self;
   v33[5] = &v34;
   enumerateParallelContactInfo(v10, v11, v12, v25, v13, 0, v33);
   objc_autoreleasePoolPop(v27);
@@ -547,7 +547,7 @@ LABEL_25:
     v14[1] = 3221225472;
     v14[2] = __63__SKGProcessor_People__peopleForSharedAttributeKey_fromRecord___block_invoke;
     v14[3] = &unk_27893F058;
-    v14[4] = a1;
+    v14[4] = self;
     v14[5] = &v15;
     enumerateParallelContactInfo(v9, v10, 0, 0, 0, 0, v14);
     objc_autoreleasePoolPop(v12);
@@ -769,12 +769,12 @@ LABEL_25:
   if (v11)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = [v11 bundleIdentifier];
-    v16 = [v15 isEqualToString:@"com.apple.MobileAddressBook"];
+    bundleIdentifier = [v11 bundleIdentifier];
+    v16 = [bundleIdentifier isEqualToString:@"com.apple.MobileAddressBook"];
 
     if (v16)
     {
-      v17 = [a1 contactFromRecord:v10];
+      v17 = [self contactFromRecord:v10];
       v18 = v17;
       if (v17)
       {
@@ -783,14 +783,14 @@ LABEL_25:
         [v11 addParticipants:v19];
       }
 
-      v20 = [v11 participants];
+      participants = [v11 participants];
 
-      if (!v20)
+      if (!participants)
       {
         goto LABEL_43;
       }
 
-      v21 = [a1 viewedScoreFromRecord:v10];
+      v21 = [self viewedScoreFromRecord:v10];
       if (!v21)
       {
         goto LABEL_15;
@@ -804,21 +804,21 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v23 = [v11 bundleIdentifier];
-    v24 = [v23 isEqualToString:@"com.apple.mobilenotes"];
+    bundleIdentifier2 = [v11 bundleIdentifier];
+    v24 = [bundleIdentifier2 isEqualToString:@"com.apple.mobilenotes"];
 
     if (v24)
     {
-      v25 = [a1 peopleFromNotesRecord:v10];
+      v25 = [self peopleFromNotesRecord:v10];
       goto LABEL_11;
     }
 
-    v29 = [v11 bundleIdentifier];
-    v30 = [v29 isEqualToString:@"com.apple.mobilephone"];
+    bundleIdentifier3 = [v11 bundleIdentifier];
+    v30 = [bundleIdentifier3 isEqualToString:@"com.apple.mobilephone"];
 
     if (v30)
     {
-      v18 = [a1 authorsFromPhoneRecord:v10];
+      v18 = [self authorsFromPhoneRecord:v10];
       if ([v18 count])
       {
         [v11 addAuthors:v18];
@@ -826,22 +826,22 @@ LABEL_43:
 
       else
       {
-        v45 = [a1 recipientsFromPhoneRecord:v10];
+        v45 = [self recipientsFromPhoneRecord:v10];
         if ([v45 count])
         {
           [v11 addRecipients:v45];
         }
       }
 
-      v46 = [v11 authors];
-      if ([v46 count])
+      authors = [v11 authors];
+      if ([authors count])
       {
       }
 
       else
       {
-        v47 = [v11 recipients];
-        v48 = [v47 count];
+        recipients = [v11 recipients];
+        v48 = [recipients count];
 
         if (!v48)
         {
@@ -849,9 +849,9 @@ LABEL_43:
         }
       }
 
-      v36 = [a1 createdScoreFromRecord:v10];
+      v36 = [self createdScoreFromRecord:v10];
       [v11 addInteraction:@"creationDate" score:v36];
-      v49 = [a1 viewedScoreFromRecord:v10];
+      v49 = [self viewedScoreFromRecord:v10];
       v50 = v49;
       if (v49 && ([v49 isEqualToNumber:v36] & 1) == 0)
       {
@@ -862,12 +862,12 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v31 = [v11 bundleIdentifier];
-    v32 = [v31 isEqualToString:@"com.apple.MobileSMS"];
+    bundleIdentifier4 = [v11 bundleIdentifier];
+    v32 = [bundleIdentifier4 isEqualToString:@"com.apple.MobileSMS"];
 
     if (v32)
     {
-      v33 = [a1 accountOwnerFromRecord:v10];
+      v33 = [self accountOwnerFromRecord:v10];
       v18 = v33;
       if (v33)
       {
@@ -876,7 +876,7 @@ LABEL_42:
         [v11 addOwners:v34];
       }
 
-      v35 = [a1 authorFromMessageRecord:v10];
+      v35 = [self authorFromMessageRecord:v10];
       v36 = v35;
       if (v35)
       {
@@ -885,34 +885,34 @@ LABEL_42:
         [v11 addAuthors:v37];
       }
 
-      v38 = [a1 peopleForAttributeKey:@"Recipient" fromRecord:v10];
+      v38 = [self peopleForAttributeKey:@"Recipient" fromRecord:v10];
       [v11 addRecipients:v38];
 
-      v39 = [v11 owners];
-      if (v39)
+      owners = [v11 owners];
+      if (owners)
       {
       }
 
       else
       {
-        v73 = [v11 authors];
-        if (!v73)
+        authors2 = [v11 authors];
+        if (!authors2)
         {
           goto LABEL_42;
         }
 
-        v74 = v73;
-        v75 = [v11 recipients];
+        v74 = authors2;
+        recipients2 = [v11 recipients];
 
-        if (!v75)
+        if (!recipients2)
         {
           goto LABEL_42;
         }
       }
 
-      v40 = [a1 createdScoreFromRecord:v10];
+      v40 = [self createdScoreFromRecord:v10];
       [v11 addInteraction:@"creationDate" score:v40];
-      v41 = [a1 viewedScoreFromRecord:v10];
+      v41 = [self viewedScoreFromRecord:v10];
       v42 = v41;
       if (v41 && ([v41 isEqualToNumber:v40] & 1) == 0)
       {
@@ -922,19 +922,19 @@ LABEL_42:
       goto LABEL_42;
     }
 
-    v43 = [v11 bundleIdentifier];
-    v44 = [v43 isEqualToString:@"com.apple.mobileslideshow"];
+    bundleIdentifier5 = [v11 bundleIdentifier];
+    v44 = [bundleIdentifier5 isEqualToString:@"com.apple.mobileslideshow"];
 
     if (v44)
     {
-      v25 = [a1 peopleFromPhotoRecord:v10];
+      v25 = [self peopleFromPhotoRecord:v10];
 LABEL_11:
       v26 = v25;
       [v11 addParticipants:v25];
 
-      v27 = [v11 participants];
+      participants2 = [v11 participants];
 
-      if (!v27)
+      if (!participants2)
       {
 LABEL_44:
         objc_autoreleasePoolPop(v14);
@@ -942,9 +942,9 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v18 = [a1 createdScoreFromRecord:v10];
+      v18 = [self createdScoreFromRecord:v10];
       [v11 addInteraction:@"creationDate" score:v18];
-      v28 = [a1 viewedScoreFromRecord:v10];
+      v28 = [self viewedScoreFromRecord:v10];
       v21 = v28;
       if (!v28 || ([v28 isEqualToNumber:v18] & 1) != 0)
       {
@@ -954,10 +954,10 @@ LABEL_44:
       goto LABEL_14;
     }
 
-    v53 = [a1 peopleForSharedAttributeKey:@"ReceivedSender" fromRecord:v10];
-    v54 = [a1 peopleForSharedAttributeKey:@"ReceivedRecipient" fromRecord:v10];
-    v55 = [a1 peopleForSharedAttributeKey:@"SentSender" fromRecord:v10];
-    v115 = [a1 peopleForSharedAttributeKey:@"SentRecipient" fromRecord:v10];
+    v53 = [self peopleForSharedAttributeKey:@"ReceivedSender" fromRecord:v10];
+    v54 = [self peopleForSharedAttributeKey:@"ReceivedRecipient" fromRecord:v10];
+    v55 = [self peopleForSharedAttributeKey:@"SentSender" fromRecord:v10];
+    v115 = [self peopleForSharedAttributeKey:@"SentRecipient" fromRecord:v10];
     context = v14;
     v106 = v55;
     if (v53)
@@ -980,11 +980,11 @@ LABEL_44:
             v109 = [v54 objectAtIndexedSubscript:v57];
             v97 = [v107 objectAtIndexedSubscript:v57];
             v99 = [v108 objectAtIndexedSubscript:v57];
-            v95 = [a1 scoreFromDate:v99];
-            v58 = [v11 referenceIdentifier];
-            v59 = [v11 bundleIdentifier];
-            v60 = [v11 protectionClass];
-            v61 = [a1 itemFromRecord:v10 referenceIdentifier:v58 bundleIdentifier:v59 protectionClass:v60];
+            v95 = [self scoreFromDate:v99];
+            referenceIdentifier = [v11 referenceIdentifier];
+            bundleIdentifier6 = [v11 bundleIdentifier];
+            protectionClass = [v11 protectionClass];
+            v61 = [self itemFromRecord:v10 referenceIdentifier:referenceIdentifier bundleIdentifier:bundleIdentifier6 protectionClass:protectionClass];
 
             v123 = v112;
             v62 = [MEMORY[0x277CBEA60] arrayWithObjects:&v123 count:1];
@@ -1040,11 +1040,11 @@ LABEL_44:
           v110 = [v115 objectAtIndexedSubscript:v66];
           v98 = [v107 objectAtIndexedSubscript:v66];
           v100 = [v108 objectAtIndexedSubscript:v66];
-          v96 = [a1 scoreFromDate:v100];
-          v67 = [v11 referenceIdentifier];
-          v68 = [v11 bundleIdentifier];
-          v69 = [v11 protectionClass];
-          v70 = [a1 itemFromRecord:v10 referenceIdentifier:v67 bundleIdentifier:v68 protectionClass:v69];
+          v96 = [self scoreFromDate:v100];
+          referenceIdentifier2 = [v11 referenceIdentifier];
+          bundleIdentifier7 = [v11 bundleIdentifier];
+          protectionClass2 = [v11 protectionClass];
+          v70 = [self itemFromRecord:v10 referenceIdentifier:referenceIdentifier2 bundleIdentifier:bundleIdentifier7 protectionClass:protectionClass2];
 
           v121 = v113;
           v71 = [MEMORY[0x277CBEA60] arrayWithObjects:&v121 count:1];
@@ -1091,11 +1091,11 @@ LABEL_66:
     }
 
     v102 = v54;
-    v114 = [a1 peopleForAttributeKey:@"Author" fromRecord:v10];
+    v114 = [self peopleForAttributeKey:@"Author" fromRecord:v10];
     [v11 addAuthors:?];
-    v111 = [a1 peopleForAttributeKey:@"Recipient" fromRecord:v10];
+    v111 = [self peopleForAttributeKey:@"Recipient" fromRecord:v10];
     [v11 addRecipients:?];
-    v76 = [a1 accountOwnerFromRecord:v10];
+    v76 = [self accountOwnerFromRecord:v10];
     v77 = v76;
     if (v76)
     {
@@ -1107,7 +1107,7 @@ LABEL_66:
     }
 
     v104 = v53;
-    v79 = [a1 ownerFromRecord:v10];
+    v79 = [self ownerFromRecord:v10];
     v80 = v79;
     if (v79)
     {
@@ -1118,7 +1118,7 @@ LABEL_66:
       v14 = context;
     }
 
-    v82 = [a1 lastEditorFromRecord:v10];
+    v82 = [self lastEditorFromRecord:v10];
     v83 = v82;
     if (v80 && v82)
     {
@@ -1146,9 +1146,9 @@ LABEL_66:
     [v11 addParticipants:v87];
 
 LABEL_80:
-    v88 = [a1 createdScoreFromRecord:v10];
+    v88 = [self createdScoreFromRecord:v10];
     [v11 addInteraction:@"creationDate" score:v88];
-    v89 = [a1 viewedScoreFromRecord:v10];
+    v89 = [self viewedScoreFromRecord:v10];
     v90 = v89;
     if (v89 && ([v89 isEqualToNumber:v88] & 1) == 0)
     {
@@ -1174,9 +1174,9 @@ LABEL_45:
   v26 = 0x2020000000;
   v27 = 1;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277D1F480] defaultService];
+  defaultService = [MEMORY[0x277D1F480] defaultService];
   v23 = 0;
-  v9 = [v8 visualIdentifierViewWithError:&v23];
+  v9 = [defaultService visualIdentifierViewWithError:&v23];
   v10 = v23;
   v11 = v25;
   v12 = *(v25 + 24);

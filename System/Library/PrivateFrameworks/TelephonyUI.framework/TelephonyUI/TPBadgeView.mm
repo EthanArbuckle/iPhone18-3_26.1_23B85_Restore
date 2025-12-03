@@ -1,14 +1,14 @@
 @interface TPBadgeView
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4;
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes;
 - (NSString)title;
-- (TPBadgeView)initWithTitle:(id)a3 theme:(unint64_t)a4;
-- (double)scaledLayoutValueForBaseValue:(double)a3 shouldLowerBound:(BOOL)a4;
+- (TPBadgeView)initWithTitle:(id)title theme:(unint64_t)theme;
+- (double)scaledLayoutValueForBaseValue:(double)value shouldLowerBound:(BOOL)bound;
 - (double)suggestedHeight;
 - (void)commonInit;
 - (void)loadConstraints;
-- (void)setSizeCategory:(unint64_t)a3;
-- (void)setTheme:(unint64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setSizeCategory:(unint64_t)category;
+- (void)setTheme:(unint64_t)theme;
+- (void)setTitle:(id)title;
 - (void)unloadConstraints;
 - (void)updateActiveHorizontalConstraints;
 - (void)updateConstraintsConstants;
@@ -19,17 +19,17 @@
 
 @implementation TPBadgeView
 
-- (TPBadgeView)initWithTitle:(id)a3 theme:(unint64_t)a4
+- (TPBadgeView)initWithTitle:(id)title theme:(unint64_t)theme
 {
-  v6 = a3;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = TPBadgeView;
   v7 = [(TPView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    v7->_theme = a4;
-    [(UILabel *)v7->_titleLabel setText:v6];
+    v7->_theme = theme;
+    [(UILabel *)v7->_titleLabel setText:titleCopy];
     [(TPBadgeView *)v8 updateTheme];
   }
 
@@ -47,8 +47,8 @@
   [(TPBadgeView *)self layerCornerRadius];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:?];
   v4 = v3;
-  v5 = [(TPBadgeView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(TPBadgeView *)self layer];
+  [layer setCornerRadius:v4];
 
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
@@ -71,52 +71,52 @@
   v28.receiver = self;
   v28.super_class = TPBadgeView;
   [(TPView *)&v28 loadConstraints];
-  v3 = [(TPBadgeView *)self titleLabel];
-  v4 = [v3 centerXAnchor];
-  v5 = [(TPBadgeView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  centerXAnchor = [titleLabel centerXAnchor];
+  centerXAnchor2 = [(TPBadgeView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   [v6 setActive:1];
-  v7 = [(TPBadgeView *)self widthAnchor];
-  v8 = [(TPBadgeView *)self heightAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  widthAnchor = [(TPBadgeView *)self widthAnchor];
+  heightAnchor = [(TPBadgeView *)self heightAnchor];
+  v9 = [widthAnchor constraintEqualToAnchor:heightAnchor];
 
   v10 = NSStringFromSelector(sel_widthAnchorLayoutConstraint);
   [v9 setIdentifier:v10];
 
   [(TPBadgeView *)self setWidthAnchorLayoutConstraint:v9];
-  v11 = [(TPBadgeView *)self titleLabel];
-  v12 = [v11 leadingAnchor];
-  v13 = [(TPBadgeView *)self leadingAnchor];
+  titleLabel2 = [(TPBadgeView *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  leadingAnchor2 = [(TPBadgeView *)self leadingAnchor];
   [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraintConstant];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:1 shouldLowerBound:?];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:?];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
   v15 = NSStringFromSelector(sel_titleLabelLeadingAnchorLayoutConstraint);
   [v14 setIdentifier:v15];
 
   [(TPBadgeView *)self setTitleLabelLeadingAnchorLayoutConstraint:v14];
-  v16 = [(TPBadgeView *)self trailingAnchor];
-  v17 = [(TPBadgeView *)self titleLabel];
-  v18 = [v17 trailingAnchor];
+  trailingAnchor = [(TPBadgeView *)self trailingAnchor];
+  titleLabel3 = [(TPBadgeView *)self titleLabel];
+  trailingAnchor2 = [titleLabel3 trailingAnchor];
   [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraintConstant];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:1 shouldLowerBound:?];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:?];
 
   v20 = NSStringFromSelector(sel_titleLabelTrailingAnchorLayoutConstraint);
   [v19 setIdentifier:v20];
 
   [(TPBadgeView *)self setTitleLabelTrailingAnchorLayoutConstraint:v19];
   [(TPBadgeView *)self updateActiveHorizontalConstraints];
-  v21 = [(TPBadgeView *)self titleLabel];
-  v22 = [v21 centerYAnchor];
-  v23 = [(TPBadgeView *)self centerYAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  titleLabel4 = [(TPBadgeView *)self titleLabel];
+  centerYAnchor = [titleLabel4 centerYAnchor];
+  centerYAnchor2 = [(TPBadgeView *)self centerYAnchor];
+  v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   [v24 setActive:1];
-  v25 = [(TPBadgeView *)self heightAnchor];
+  heightAnchor2 = [(TPBadgeView *)self heightAnchor];
   [(TPBadgeView *)self suggestedHeight];
-  v26 = [v25 constraintEqualToConstant:?];
+  v26 = [heightAnchor2 constraintEqualToConstant:?];
 
   v27 = NSStringFromSelector(sel_heightAnchorLayoutConstraint);
   [v26 setIdentifier:v27];
@@ -133,47 +133,47 @@
   [(TPBadgeView *)self layerCornerRadius];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:?];
   v4 = v3;
-  v5 = [(TPBadgeView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(TPBadgeView *)self layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [(TPBadgeView *)self titleLabel];
-  v7 = [v6 font];
-  [v7 pointSize];
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v9 = v8;
   [(TPBadgeView *)self heightAnchorLayoutConstraintConstantFontMultiplier];
   v11 = v9 * v10;
-  v12 = [(TPBadgeView *)self heightAnchorLayoutConstraint];
-  [v12 setConstant:v11];
+  heightAnchorLayoutConstraint = [(TPBadgeView *)self heightAnchorLayoutConstraint];
+  [heightAnchorLayoutConstraint setConstant:v11];
 
   [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraintConstant];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:1 shouldLowerBound:?];
   v14 = v13;
-  v15 = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
-  [v15 setConstant:v14];
+  titleLabelLeadingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
+  [titleLabelLeadingAnchorLayoutConstraint setConstant:v14];
 
   [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraintConstant];
   [(TPBadgeView *)self scaledLayoutValueForBaseValue:1 shouldLowerBound:?];
   v17 = v16;
-  v18 = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
-  [v18 setConstant:v17];
+  titleLabelTrailingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
+  [titleLabelTrailingAnchorLayoutConstraint setConstant:v17];
 }
 
 - (void)unloadConstraints
 {
-  v3 = [(TPBadgeView *)self widthAnchorLayoutConstraint];
-  [v3 setActive:0];
+  widthAnchorLayoutConstraint = [(TPBadgeView *)self widthAnchorLayoutConstraint];
+  [widthAnchorLayoutConstraint setActive:0];
 
   [(TPBadgeView *)self setWidthAnchorLayoutConstraint:0];
-  v4 = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
-  [v4 setActive:0];
+  titleLabelLeadingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
+  [titleLabelLeadingAnchorLayoutConstraint setActive:0];
 
   [(TPBadgeView *)self setTitleLabelLeadingAnchorLayoutConstraint:0];
-  v5 = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
-  [v5 setActive:0];
+  titleLabelTrailingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
+  [titleLabelTrailingAnchorLayoutConstraint setActive:0];
 
   [(TPBadgeView *)self setTitleLabelTrailingAnchorLayoutConstraint:0];
-  v6 = [(TPBadgeView *)self heightAnchorLayoutConstraint];
-  [v6 setActive:0];
+  heightAnchorLayoutConstraint = [(TPBadgeView *)self heightAnchorLayoutConstraint];
+  [heightAnchorLayoutConstraint setActive:0];
 
   [(TPBadgeView *)self setHeightAnchorLayoutConstraint:0];
   v7.receiver = self;
@@ -193,10 +193,10 @@
     [(TPBadgeView *)self titleLabelFontSize];
     v5 = *MEMORY[0x1E69DB958];
     v6 = [v4 systemFontOfSize:? weight:?];
-    v7 = [v3 scaledFontForFont:v6 maximumPointSize:22.3125];
+    titleLabel2 = [v3 scaledFontForFont:v6 maximumPointSize:22.3125];
 
-    v8 = [(TPBadgeView *)self titleLabel];
-    [v8 setFont:v7];
+    titleLabel = [(TPBadgeView *)self titleLabel];
+    [titleLabel setFont:titleLabel2];
   }
 
   else
@@ -206,20 +206,20 @@
     [(TPBadgeView *)self scaledLayoutValueForBaseValue:?];
     v10 = *MEMORY[0x1E69DB958];
     v3 = [v9 systemFontOfSize:? weight:?];
-    v7 = [(TPBadgeView *)self titleLabel];
-    [v7 setFont:v3];
+    titleLabel2 = [(TPBadgeView *)self titleLabel];
+    [titleLabel2 setFont:v3];
   }
 }
 
 - (void)updateSizeCategory
 {
-  v3 = [(TPBadgeView *)self sizeCategory];
-  if (v3 <= 5)
+  sizeCategory = [(TPBadgeView *)self sizeCategory];
+  if (sizeCategory <= 5)
   {
-    v4 = dbl_1B48EB7B0[v3];
-    v5 = dbl_1B48EB7E0[v3];
-    v6 = dbl_1B48EB810[v3];
-    [(TPBadgeView *)self setLayerCornerRadius:dbl_1B48EB780[v3]];
+    v4 = dbl_1B48EB7B0[sizeCategory];
+    v5 = dbl_1B48EB7E0[sizeCategory];
+    v6 = dbl_1B48EB810[sizeCategory];
+    [(TPBadgeView *)self setLayerCornerRadius:dbl_1B48EB780[sizeCategory]];
     [(TPBadgeView *)self setTitleLabelFontSize:v4];
     [(TPBadgeView *)self setHeightAnchorLayoutConstraintConstantFontMultiplier:v5];
     [(TPBadgeView *)self setTitleLabelLeadingAnchorLayoutConstraintConstant:v6];
@@ -238,27 +238,27 @@
     {
       if (theme == 2)
       {
-        v15 = [MEMORY[0x1E69DC888] blackColor];
-        [(TPBadgeView *)self setBackgroundColor:v15];
+        blackColor = [MEMORY[0x1E69DC888] blackColor];
+        [(TPBadgeView *)self setBackgroundColor:blackColor];
 
-        v16 = [MEMORY[0x1E69DC888] blackColor];
+        blackColor2 = [MEMORY[0x1E69DC888] blackColor];
 LABEL_23:
-        v29 = v16;
-        v30 = [(TPBadgeView *)self titleLabel];
-        [v30 setBackgroundColor:v29];
+        v29 = blackColor2;
+        titleLabel = [(TPBadgeView *)self titleLabel];
+        [titleLabel setBackgroundColor:v29];
 
-        v8 = [MEMORY[0x1E69DC888] whiteColor];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
         goto LABEL_24;
       }
 
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      [(TPBadgeView *)self setBackgroundColor:v9];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [(TPBadgeView *)self setBackgroundColor:whiteColor2];
 
-      v10 = [MEMORY[0x1E69DC888] whiteColor];
-      v11 = [(TPBadgeView *)self titleLabel];
-      [v11 setBackgroundColor:v10];
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+      titleLabel2 = [(TPBadgeView *)self titleLabel];
+      [titleLabel2 setBackgroundColor:whiteColor3];
 
-      v8 = [MEMORY[0x1E69DC888] _tp_bluePillColor];
+      whiteColor = [MEMORY[0x1E69DC888] _tp_bluePillColor];
     }
 
     else if (theme)
@@ -268,26 +268,26 @@ LABEL_23:
         return;
       }
 
-      v5 = [MEMORY[0x1E69DC888] whiteColor];
-      [(TPBadgeView *)self setBackgroundColor:v5];
+      whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+      [(TPBadgeView *)self setBackgroundColor:whiteColor4];
 
-      v6 = [MEMORY[0x1E69DC888] whiteColor];
-      v7 = [(TPBadgeView *)self titleLabel];
-      [v7 setBackgroundColor:v6];
+      whiteColor5 = [MEMORY[0x1E69DC888] whiteColor];
+      titleLabel3 = [(TPBadgeView *)self titleLabel];
+      [titleLabel3 setBackgroundColor:whiteColor5];
 
-      v8 = [MEMORY[0x1E69DC888] blackColor];
+      whiteColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69DC888] dynamicTertiaryLabelColor];
-      [(TPBadgeView *)self setBackgroundColor:v12];
+      dynamicTertiaryLabelColor = [MEMORY[0x1E69DC888] dynamicTertiaryLabelColor];
+      [(TPBadgeView *)self setBackgroundColor:dynamicTertiaryLabelColor];
 
-      v13 = [MEMORY[0x1E69DC888] clearColor];
-      v14 = [(TPBadgeView *)self titleLabel];
-      [v14 setBackgroundColor:v13];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      titleLabel4 = [(TPBadgeView *)self titleLabel];
+      [titleLabel4 setBackgroundColor:clearColor];
 
-      v8 = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
+      whiteColor = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
     }
   }
 
@@ -297,14 +297,14 @@ LABEL_23:
     {
       if (theme == 4)
       {
-        v25 = [MEMORY[0x1E69DC888] whiteColor];
-        [(TPBadgeView *)self setBackgroundColor:v25];
+        whiteColor6 = [MEMORY[0x1E69DC888] whiteColor];
+        [(TPBadgeView *)self setBackgroundColor:whiteColor6];
 
-        v26 = [MEMORY[0x1E69DC888] whiteColor];
-        v27 = [(TPBadgeView *)self titleLabel];
-        [v27 setBackgroundColor:v26];
+        whiteColor7 = [MEMORY[0x1E69DC888] whiteColor];
+        titleLabel5 = [(TPBadgeView *)self titleLabel];
+        [titleLabel5 setBackgroundColor:whiteColor7];
 
-        v8 = [MEMORY[0x1E69DC888] _tp_greenPillColor];
+        whiteColor = [MEMORY[0x1E69DC888] _tp_greenPillColor];
         goto LABEL_24;
       }
     }
@@ -315,7 +315,7 @@ LABEL_23:
       {
         if (theme == 7)
         {
-          v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+          systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
         }
 
         else
@@ -325,68 +325,68 @@ LABEL_23:
             return;
           }
 
-          v4 = [MEMORY[0x1E69DC888] systemBlueColor];
+          systemGrayColor = [MEMORY[0x1E69DC888] systemBlueColor];
         }
 
-        v28 = v4;
-        [(TPBadgeView *)self setBackgroundColor:v4];
+        v28 = systemGrayColor;
+        [(TPBadgeView *)self setBackgroundColor:systemGrayColor];
 
-        v16 = [MEMORY[0x1E69DC888] clearColor];
+        blackColor2 = [MEMORY[0x1E69DC888] clearColor];
         goto LABEL_23;
       }
 
-      v17 = [MEMORY[0x1E69DC888] labelColor];
-      [(TPBadgeView *)self setBackgroundColor:v17];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(TPBadgeView *)self setBackgroundColor:labelColor];
 
-      v18 = [MEMORY[0x1E69DC888] clearColor];
-      v19 = [(TPBadgeView *)self titleLabel];
-      [v19 setBackgroundColor:v18];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      titleLabel6 = [(TPBadgeView *)self titleLabel];
+      [titleLabel6 setBackgroundColor:clearColor2];
 
-      v20 = [MEMORY[0x1E69DC888] tableBackgroundColor];
-      v21 = [(TPBadgeView *)self titleLabel];
-      [v21 setTextColor:v20];
+      tableBackgroundColor = [MEMORY[0x1E69DC888] tableBackgroundColor];
+      titleLabel7 = [(TPBadgeView *)self titleLabel];
+      [titleLabel7 setTextColor:tableBackgroundColor];
     }
 
-    v22 = [MEMORY[0x1E69DC888] dynamicCarSecondaryColor];
-    [(TPBadgeView *)self setBackgroundColor:v22];
+    dynamicCarSecondaryColor = [MEMORY[0x1E69DC888] dynamicCarSecondaryColor];
+    [(TPBadgeView *)self setBackgroundColor:dynamicCarSecondaryColor];
 
-    v23 = [MEMORY[0x1E69DC888] clearColor];
-    v24 = [(TPBadgeView *)self titleLabel];
-    [v24 setBackgroundColor:v23];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    titleLabel8 = [(TPBadgeView *)self titleLabel];
+    [titleLabel8 setBackgroundColor:clearColor3];
 
-    v8 = [MEMORY[0x1E69DC888] tableBackgroundColor];
+    whiteColor = [MEMORY[0x1E69DC888] tableBackgroundColor];
   }
 
 LABEL_24:
-  v32 = v8;
-  v31 = [(TPBadgeView *)self titleLabel];
-  [v31 setTextColor:v32];
+  v32 = whiteColor;
+  titleLabel9 = [(TPBadgeView *)self titleLabel];
+  [titleLabel9 setTextColor:v32];
 }
 
 - (void)updateActiveHorizontalConstraints
 {
-  v3 = [(TPBadgeView *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  text = [titleLabel text];
+  v5 = [text length];
 
   if (v5 < 2)
   {
-    v8 = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
-    [v8 setActive:0];
+    titleLabelLeadingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
+    [titleLabelLeadingAnchorLayoutConstraint setActive:0];
 
-    v9 = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
-    [v9 setActive:0];
+    titleLabelTrailingAnchorLayoutConstraint = [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
+    [titleLabelTrailingAnchorLayoutConstraint setActive:0];
 
     [(TPBadgeView *)self widthAnchorLayoutConstraint];
   }
 
   else
   {
-    v6 = [(TPBadgeView *)self widthAnchorLayoutConstraint];
-    [v6 setActive:0];
+    widthAnchorLayoutConstraint = [(TPBadgeView *)self widthAnchorLayoutConstraint];
+    [widthAnchorLayoutConstraint setActive:0];
 
-    v7 = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
-    [v7 setActive:1];
+    titleLabelLeadingAnchorLayoutConstraint2 = [(TPBadgeView *)self titleLabelLeadingAnchorLayoutConstraint];
+    [titleLabelLeadingAnchorLayoutConstraint2 setActive:1];
 
     [(TPBadgeView *)self titleLabelTrailingAnchorLayoutConstraint];
   }
@@ -394,36 +394,36 @@ LABEL_24:
   [v10 setActive:1];
 }
 
-- (void)setSizeCategory:(unint64_t)a3
+- (void)setSizeCategory:(unint64_t)category
 {
-  if (self->_sizeCategory != a3)
+  if (self->_sizeCategory != category)
   {
-    self->_sizeCategory = a3;
+    self->_sizeCategory = category;
     [(TPBadgeView *)self updateSizeCategory];
   }
 }
 
-- (void)setTheme:(unint64_t)a3
+- (void)setTheme:(unint64_t)theme
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
+    self->_theme = theme;
     [(TPBadgeView *)self updateTheme];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(TPBadgeView *)self titleLabel];
-  v5 = [v4 text];
+  titleCopy = title;
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  text = [titleLabel text];
 
-  if (([v5 isEqualToString:v7] & 1) == 0)
+  if (([text isEqualToString:titleCopy] & 1) == 0)
   {
-    [(UILabel *)self->_titleLabel setText:v7];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(UILabel *)self->_titleLabel sizeToFit];
-    v6 = [v5 length];
-    if (v6 != [v7 length])
+    v6 = [text length];
+    if (v6 != [titleCopy length])
     {
       [(TPBadgeView *)self updateActiveHorizontalConstraints];
     }
@@ -432,41 +432,41 @@ LABEL_24:
 
 - (NSString)title
 {
-  v2 = [(TPBadgeView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (double)suggestedHeight
 {
   [(TPBadgeView *)self heightAnchorLayoutConstraintConstantFontMultiplier];
   v4 = v3;
-  v5 = [(TPBadgeView *)self titleLabel];
-  v6 = [v5 font];
-  [v6 pointSize];
+  titleLabel = [(TPBadgeView *)self titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v8 = v4 * v7;
 
   return v8;
 }
 
-- (double)scaledLayoutValueForBaseValue:(double)a3 shouldLowerBound:(BOOL)a4
+- (double)scaledLayoutValueForBaseValue:(double)value shouldLowerBound:(BOOL)bound
 {
-  v4 = a4;
+  boundCopy = bound;
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  [v7 _scaledValueForValue:a3];
+  [v7 _scaledValueForValue:value];
   v9 = v8;
 
   if ([(TPBadgeView *)self sizeCategory]== 3)
   {
-    v10 = [(TPBadgeView *)self titleLabel];
-    v11 = [v10 font];
-    [v11 _scaledValueForValue:a3];
+    titleLabel = [(TPBadgeView *)self titleLabel];
+    font = [titleLabel font];
+    [font _scaledValueForValue:value];
     v9 = v12;
   }
 
-  result = fmax(v9, a3);
-  if (!v4)
+  result = fmax(v9, value);
+  if (!boundCopy)
   {
     return v9;
   }
@@ -474,10 +474,10 @@ LABEL_24:
   return result;
 }
 
-- (CGSize)_layoutSizeThatFits:(CGSize)a3 fixedAxes:(unint64_t)a4
+- (CGSize)_layoutSizeThatFits:(CGSize)fits fixedAxes:(unint64_t)axes
 {
   LODWORD(v5) = 1148846080;
-  if (a4)
+  if (axes)
   {
     *&v4 = 1000.0;
   }
@@ -487,12 +487,12 @@ LABEL_24:
     *&v4 = 50.0;
   }
 
-  if ((a4 & 2) == 0)
+  if ((axes & 2) == 0)
   {
     *&v5 = 50.0;
   }
 
-  [(TPBadgeView *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v4, v5];
+  [(TPBadgeView *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v4, v5];
   result.height = v7;
   result.width = v6;
   return result;

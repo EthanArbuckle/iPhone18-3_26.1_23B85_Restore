@@ -3,7 +3,7 @@
 - (CGRect)currentRectForEditedText;
 - (MRMarimbaLayoutManager)init;
 - (void)dealloc;
-- (void)updateWithString:(id)a3;
+- (void)updateWithString:(id)string;
 @end
 
 @implementation MRMarimbaLayoutManager
@@ -28,7 +28,7 @@
   [(MRMarimbaLayoutManager *)&v3 dealloc];
 }
 
-- (void)updateWithString:(id)a3
+- (void)updateWithString:(id)string
 {
   marimbaLayer = self->_marimbaLayer;
   if (marimbaLayer)
@@ -54,7 +54,7 @@
   [(MRTextRenderer *)self->_textRenderer setDefinedSize:?];
   textRenderer = self->_textRenderer;
 
-  [(MRTextRenderer *)textRenderer setText:a3];
+  [(MRTextRenderer *)textRenderer setText:string];
 }
 
 - (CGRect)currentRectForEditedText

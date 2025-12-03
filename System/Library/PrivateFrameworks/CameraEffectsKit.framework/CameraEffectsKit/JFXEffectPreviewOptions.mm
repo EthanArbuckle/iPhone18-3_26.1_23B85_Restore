@@ -1,5 +1,5 @@
 @interface JFXEffectPreviewOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initPreviewOptions;
 @end
 
@@ -14,9 +14,9 @@
   if (v2)
   {
     v2->_quality = 0;
-    v4 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+    rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
     outputColorSpace = v3->_outputColorSpace;
-    v3->_outputColorSpace = v4;
+    v3->_outputColorSpace = rec709GammaColorSpace;
 
     v3->_parentCode = -1;
   }
@@ -24,13 +24,13 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) initPreviewOptions];
-  *(v4 + 8) = self->_parentCode;
-  objc_storeStrong((v4 + 24), self->_outputColorSpace);
-  *(v4 + 16) = self->_quality;
-  return v4;
+  initPreviewOptions = [objc_alloc(objc_opt_class()) initPreviewOptions];
+  *(initPreviewOptions + 8) = self->_parentCode;
+  objc_storeStrong((initPreviewOptions + 24), self->_outputColorSpace);
+  *(initPreviewOptions + 16) = self->_quality;
+  return initPreviewOptions;
 }
 
 @end

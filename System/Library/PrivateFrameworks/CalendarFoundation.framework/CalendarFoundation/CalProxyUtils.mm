@@ -1,22 +1,22 @@
 @interface CalProxyUtils
-+ (id)copyReplyBlockFromInvocation:(id)a3;
-+ (int64_t)replyBlockArgumentIndex:(id)a3;
-+ (void)callReplyHandler:(id)a3 ofInvocation:(id)a4 withErrorCode:(int64_t)a5;
++ (id)copyReplyBlockFromInvocation:(id)invocation;
++ (int64_t)replyBlockArgumentIndex:(id)index;
++ (void)callReplyHandler:(id)handler ofInvocation:(id)invocation withErrorCode:(int64_t)code;
 @end
 
 @implementation CalProxyUtils
 
-+ (int64_t)replyBlockArgumentIndex:(id)a3
++ (int64_t)replyBlockArgumentIndex:(id)index
 {
-  v3 = [a3 methodSignature];
-  v4 = [v3 numberOfArguments];
-  if (v4 < 3)
+  methodSignature = [index methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  if (numberOfArguments < 3)
   {
     goto LABEL_9;
   }
 
-  v5 = v4 - 1;
-  v6 = [v3 getArgumentTypeAtIndex:v4 - 1];
+  v5 = numberOfArguments - 1;
+  v6 = [methodSignature getArgumentTypeAtIndex:numberOfArguments - 1];
   v7 = *v6;
   if (v7 == 64)
   {
@@ -50,10 +50,10 @@ LABEL_10:
   return v5;
 }
 
-+ (id)copyReplyBlockFromInvocation:(id)a3
++ (id)copyReplyBlockFromInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [a1 replyBlockArgumentIndex:v4];
+  invocationCopy = invocation;
+  v5 = [self replyBlockArgumentIndex:invocationCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -62,43 +62,43 @@ LABEL_10:
   else
   {
     v8 = 0;
-    [v4 getArgument:&v8 atIndex:v5];
+    [invocationCopy getArgument:&v8 atIndex:v5];
     v6 = [v8 copy];
   }
 
   return v6;
 }
 
-+ (void)callReplyHandler:(id)a3 ofInvocation:(id)a4 withErrorCode:(int64_t)a5
++ (void)callReplyHandler:(id)handler ofInvocation:(id)invocation withErrorCode:(int64_t)code
 {
-  v5 = a5;
+  codeCopy = code;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  handlerCopy = handler;
+  invocationCopy = invocation;
+  if (handlerCopy)
   {
-    v9 = _Block_signature(v7);
+    v9 = _Block_signature(handlerCopy);
     if (!v9 || (v10 = v9, !*v9))
     {
       v11 = +[CalFoundationLogSubsystem defaultCategory];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [CalProxyUtils callReplyHandler:v8 ofInvocation:v11 withErrorCode:?];
+        [CalProxyUtils callReplyHandler:invocationCopy ofInvocation:v11 withErrorCode:?];
       }
 
       goto LABEL_18;
     }
 
     v11 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:v9];
-    v12 = [v11 numberOfArguments];
-    if (v12 < 2)
+    numberOfArguments = [v11 numberOfArguments];
+    if (numberOfArguments < 2)
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v13 = v12;
+    v13 = numberOfArguments;
     v14 = [v11 getArgumentTypeAtIndex:1];
     v15 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v11];
     v16 = v15;
@@ -123,7 +123,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    HIDWORD(v22) = v5;
+    HIDWORD(v22) = codeCopy;
     [v15 setArgument:&v22 + 4 atIndex:1];
 LABEL_14:
     if (v13 != 2)
@@ -136,7 +136,7 @@ LABEL_14:
       }
     }
 
-    [v16 setTarget:v7];
+    [v16 setTarget:handlerCopy];
     [v16 invoke];
 
     goto LABEL_18;

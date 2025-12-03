@@ -1,27 +1,27 @@
 @interface NTKAnalogHandsView
 - (BOOL)_canRunTimeAnimation;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (void)_addHourMinuteHandsTransitionLayers;
-- (void)_enumerateHourHandViewsWithBlock:(id)a3;
-- (void)_enumerateMinuteHandViewsWithBlock:(id)a3;
-- (void)_enumerateSecondHandViewsWithBlock:(id)a3;
-- (void)_installAltViewsHour:(id)a3 minute:(id)a4 second:(id)a5;
+- (void)_enumerateHourHandViewsWithBlock:(id)block;
+- (void)_enumerateMinuteHandViewsWithBlock:(id)block;
+- (void)_enumerateSecondHandViewsWithBlock:(id)block;
+- (void)_installAltViewsHour:(id)hour minute:(id)minute second:(id)second;
 - (void)_removeHourMinuteHandsTransitionLayers;
-- (void)_setAltHandsAlpha:(double)a3;
-- (void)_setHandsAlpha:(double)a3;
-- (void)applyHourMinuteHandsTransitionFraction:(double)a3 fromStrokeColor:(id)a4 fromFillColor:(id)a5 toStrokeColor:(id)a6 toFillColor:(id)a7;
-- (void)applySecondHandColor:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)_setAltHandsAlpha:(double)alpha;
+- (void)_setHandsAlpha:(double)alpha;
+- (void)applyHourMinuteHandsTransitionFraction:(double)fraction fromStrokeColor:(id)color fromFillColor:(id)fillColor toStrokeColor:(id)strokeColor toFillColor:(id)toFillColor;
+- (void)applySecondHandColor:(id)color;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 @end
 
 @implementation NTKAnalogHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = NTKAnalogHandsView;
-  v3 = [(CLKUIAnalogHandsView *)&v7 initForDevice:a3];
+  v3 = [(CLKUIAnalogHandsView *)&v7 initForDevice:device];
   if (v3)
   {
     v4 = +[NTKTimeOffsetManager sharedManager];
@@ -32,39 +32,39 @@
   return v3;
 }
 
-- (void)_enumerateSecondHandViewsWithBlock:(id)a3
+- (void)_enumerateSecondHandViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5.receiver = self;
   v5.super_class = NTKAnalogHandsView;
-  [(CLKUIAnalogHandsView *)&v5 _enumerateSecondHandViewsWithBlock:v4];
+  [(CLKUIAnalogHandsView *)&v5 _enumerateSecondHandViewsWithBlock:blockCopy];
   if (self->_secondHandViewAlt)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)_enumerateMinuteHandViewsWithBlock:(id)a3
+- (void)_enumerateMinuteHandViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5.receiver = self;
   v5.super_class = NTKAnalogHandsView;
-  [(CLKUIAnalogHandsView *)&v5 _enumerateMinuteHandViewsWithBlock:v4];
+  [(CLKUIAnalogHandsView *)&v5 _enumerateMinuteHandViewsWithBlock:blockCopy];
   if (self->_minuteHandViewAlt)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)_enumerateHourHandViewsWithBlock:(id)a3
+- (void)_enumerateHourHandViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5.receiver = self;
   v5.super_class = NTKAnalogHandsView;
-  [(CLKUIAnalogHandsView *)&v5 _enumerateHourHandViewsWithBlock:v4];
+  [(CLKUIAnalogHandsView *)&v5 _enumerateHourHandViewsWithBlock:blockCopy];
   if (self->_hourHandViewAlt)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -82,156 +82,156 @@
   return [(CLKUIAnalogHandsView *)&v5 _canRunTimeAnimation];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   v8 = self->_overrideDate;
   if ((CLKEqualObjects() & 1) == 0)
   {
     [(CLKUIAnalogHandsView *)self _stopTimeAnimation];
-    v9 = [(NTKAnalogHandsView *)self displayTime];
-    v10 = v9;
-    if (v7)
+    displayTime = [(NTKAnalogHandsView *)self displayTime];
+    v10 = displayTime;
+    if (dateCopy)
     {
-      v11 = v7;
+      v11 = dateCopy;
     }
 
     else
     {
-      v11 = [v9 dateByAddingTimeInterval:a4];
+      v11 = [displayTime dateByAddingTimeInterval:duration];
     }
 
     v12 = v11;
-    objc_storeStrong(&self->_overrideDate, a3);
-    v13 = [(CLKUIAnalogHandsView *)self calendar];
+    objc_storeStrong(&self->_overrideDate, date);
+    calendar = [(CLKUIAnalogHandsView *)self calendar];
     CLKHourMinuteSecondAnglesForTime();
 
-    v14 = [(CLKUIAnalogHandsView *)self hourHandView];
-    [v14 setZRotation:0.0];
+    hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+    [hourHandView setZRotation:0.0];
 
-    v15 = [(NTKAnalogHandsView *)self hourHandViewAlt];
-    [v15 setZRotation:0.0];
+    hourHandViewAlt = [(NTKAnalogHandsView *)self hourHandViewAlt];
+    [hourHandViewAlt setZRotation:0.0];
 
-    v16 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    [v16 setZRotation:0.0];
+    minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+    [minuteHandView setZRotation:0.0];
 
-    v17 = [(NTKAnalogHandsView *)self minuteHandViewAlt];
-    [v17 setZRotation:0.0];
+    minuteHandViewAlt = [(NTKAnalogHandsView *)self minuteHandViewAlt];
+    [minuteHandViewAlt setZRotation:0.0];
 
-    v18 = [(CLKUIAnalogHandsView *)self secondHandView];
-    [v18 setZRotation:0.0];
+    secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+    [secondHandView setZRotation:0.0];
 
-    v19 = [(NTKAnalogHandsView *)self secondHandViewAlt];
-    [v19 setZRotation:0.0];
+    secondHandViewAlt = [(NTKAnalogHandsView *)self secondHandViewAlt];
+    [secondHandViewAlt setZRotation:0.0];
 
-    v20 = [(CLKUIAnalogHandsView *)self delegate];
+    delegate = [(CLKUIAnalogHandsView *)self delegate];
 
-    if (v20)
+    if (delegate)
     {
-      v21 = [(CLKUIAnalogHandsView *)self delegate];
-      v22 = [(CLKUIAnalogHandsView *)self hourHandView];
-      [v21 overrideZRotation:v22 forHandView:0.0];
+      delegate2 = [(CLKUIAnalogHandsView *)self delegate];
+      hourHandView2 = [(CLKUIAnalogHandsView *)self hourHandView];
+      [delegate2 overrideZRotation:hourHandView2 forHandView:0.0];
 
-      v23 = [(NTKAnalogHandsView *)self hourHandViewAlt];
+      hourHandViewAlt2 = [(NTKAnalogHandsView *)self hourHandViewAlt];
 
-      if (v23)
+      if (hourHandViewAlt2)
       {
-        v24 = [(CLKUIAnalogHandsView *)self delegate];
-        v25 = [(NTKAnalogHandsView *)self hourHandViewAlt];
-        [v24 overrideZRotation:v25 forHandView:0.0];
+        delegate3 = [(CLKUIAnalogHandsView *)self delegate];
+        hourHandViewAlt3 = [(NTKAnalogHandsView *)self hourHandViewAlt];
+        [delegate3 overrideZRotation:hourHandViewAlt3 forHandView:0.0];
       }
 
-      v26 = [(CLKUIAnalogHandsView *)self delegate];
-      v27 = [(CLKUIAnalogHandsView *)self minuteHandView];
-      [v26 overrideZRotation:v27 forHandView:0.0];
+      delegate4 = [(CLKUIAnalogHandsView *)self delegate];
+      minuteHandView2 = [(CLKUIAnalogHandsView *)self minuteHandView];
+      [delegate4 overrideZRotation:minuteHandView2 forHandView:0.0];
 
-      v28 = [(NTKAnalogHandsView *)self minuteHandViewAlt];
+      minuteHandViewAlt2 = [(NTKAnalogHandsView *)self minuteHandViewAlt];
 
-      if (v28)
+      if (minuteHandViewAlt2)
       {
-        v29 = [(CLKUIAnalogHandsView *)self delegate];
-        v30 = [(NTKAnalogHandsView *)self minuteHandViewAlt];
-        [v29 overrideZRotation:v30 forHandView:0.0];
+        delegate5 = [(CLKUIAnalogHandsView *)self delegate];
+        minuteHandViewAlt3 = [(NTKAnalogHandsView *)self minuteHandViewAlt];
+        [delegate5 overrideZRotation:minuteHandViewAlt3 forHandView:0.0];
       }
 
-      v31 = [(CLKUIAnalogHandsView *)self delegate];
-      v32 = [(CLKUIAnalogHandsView *)self secondHandView];
-      [v31 overrideZRotation:v32 forHandView:0.0];
+      delegate6 = [(CLKUIAnalogHandsView *)self delegate];
+      secondHandView2 = [(CLKUIAnalogHandsView *)self secondHandView];
+      [delegate6 overrideZRotation:secondHandView2 forHandView:0.0];
 
-      v33 = [(NTKAnalogHandsView *)self secondHandViewAlt];
+      secondHandViewAlt2 = [(NTKAnalogHandsView *)self secondHandViewAlt];
 
-      if (v33)
+      if (secondHandViewAlt2)
       {
-        v34 = [(CLKUIAnalogHandsView *)self delegate];
-        v35 = [(NTKAnalogHandsView *)self secondHandViewAlt];
-        [v34 overrideZRotation:v35 forHandView:0.0];
+        delegate7 = [(CLKUIAnalogHandsView *)self delegate];
+        secondHandViewAlt3 = [(NTKAnalogHandsView *)self secondHandViewAlt];
+        [delegate7 overrideZRotation:secondHandViewAlt3 forHandView:0.0];
       }
     }
 
-    if (!v7)
+    if (!dateCopy)
     {
       [(CLKUIAnalogHandsView *)self _startNewTimeAnimation];
     }
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_timeOffset = a3;
+    self->_timeOffset = offset;
 
     [(CLKUIAnalogHandsView *)self _startNewTimeAnimation];
   }
 }
 
-- (void)_setHandsAlpha:(double)a3
+- (void)_setHandsAlpha:(double)alpha
 {
-  v5 = [(CLKUIAnalogHandsView *)self hourHandView];
-  [v5 setAlpha:a3];
+  hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+  [hourHandView setAlpha:alpha];
 
-  v6 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v6 setAlpha:a3];
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setAlpha:alpha];
 
-  v7 = [(CLKUIAnalogHandsView *)self secondHandView];
-  [v7 setAlpha:a3];
+  secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+  [secondHandView setAlpha:alpha];
 
-  v8 = [(CLKUIAnalogHandsView *)self hourHandView];
-  v9 = [v8 shadowView];
-  [v9 setAlpha:a3];
+  hourHandView2 = [(CLKUIAnalogHandsView *)self hourHandView];
+  shadowView = [hourHandView2 shadowView];
+  [shadowView setAlpha:alpha];
 
-  v10 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  v11 = [v10 shadowView];
-  [v11 setAlpha:a3];
+  minuteHandView2 = [(CLKUIAnalogHandsView *)self minuteHandView];
+  shadowView2 = [minuteHandView2 shadowView];
+  [shadowView2 setAlpha:alpha];
 
-  v13 = [(CLKUIAnalogHandsView *)self secondHandView];
-  v12 = [v13 shadowView];
-  [v12 setAlpha:a3];
+  secondHandView2 = [(CLKUIAnalogHandsView *)self secondHandView];
+  shadowView3 = [secondHandView2 shadowView];
+  [shadowView3 setAlpha:alpha];
 }
 
-- (void)_setAltHandsAlpha:(double)a3
+- (void)_setAltHandsAlpha:(double)alpha
 {
   [(CLKUIHandView *)self->_hourHandViewAlt setAlpha:?];
-  [(CLKUIHandView *)self->_minuteHandViewAlt setAlpha:a3];
-  [(CLKUIHandView *)self->_secondHandViewAlt setAlpha:a3];
-  v5 = [(CLKUIHandView *)self->_hourHandViewAlt shadowView];
-  [v5 setAlpha:a3];
+  [(CLKUIHandView *)self->_minuteHandViewAlt setAlpha:alpha];
+  [(CLKUIHandView *)self->_secondHandViewAlt setAlpha:alpha];
+  shadowView = [(CLKUIHandView *)self->_hourHandViewAlt shadowView];
+  [shadowView setAlpha:alpha];
 
-  v6 = [(CLKUIHandView *)self->_minuteHandViewAlt shadowView];
-  [v6 setAlpha:a3];
+  shadowView2 = [(CLKUIHandView *)self->_minuteHandViewAlt shadowView];
+  [shadowView2 setAlpha:alpha];
 
-  v7 = [(CLKUIHandView *)self->_secondHandViewAlt shadowView];
-  [v7 setAlpha:a3];
+  shadowView3 = [(CLKUIHandView *)self->_secondHandViewAlt shadowView];
+  [shadowView3 setAlpha:alpha];
 }
 
-- (void)_installAltViewsHour:(id)a3 minute:(id)a4 second:(id)a5
+- (void)_installAltViewsHour:(id)hour minute:(id)minute second:(id)second
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeStrong(&self->_hourHandViewAlt, a3);
-  objc_storeStrong(&self->_minuteHandViewAlt, a4);
-  objc_storeStrong(&self->_secondHandViewAlt, a5);
+  hourCopy = hour;
+  minuteCopy = minute;
+  secondCopy = second;
+  objc_storeStrong(&self->_hourHandViewAlt, hour);
+  objc_storeStrong(&self->_minuteHandViewAlt, minute);
+  objc_storeStrong(&self->_secondHandViewAlt, second);
   [(NTKAnalogHandsView *)self addSubview:self->_hourHandViewAlt];
   [(CLKUIHandView *)self->_hourHandViewAlt setNeedsLayout];
   [(NTKAnalogHandsView *)self addSubview:self->_minuteHandViewAlt];
@@ -240,49 +240,49 @@
   [(CLKUIHandView *)self->_secondHandViewAlt setNeedsLayout];
   if ([(CLKUIAnalogHandsView *)self useDirectionalShadows])
   {
-    v11 = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
-    v12 = [(CLKUIHandView *)self->_hourHandViewAlt shadowView];
-    [v11 addSubview:v12];
+    directionalShadowContainerView = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
+    shadowView = [(CLKUIHandView *)self->_hourHandViewAlt shadowView];
+    [directionalShadowContainerView addSubview:shadowView];
 
-    v13 = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
-    v14 = [(CLKUIHandView *)self->_minuteHandViewAlt shadowView];
-    [v13 addSubview:v14];
+    directionalShadowContainerView2 = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
+    shadowView2 = [(CLKUIHandView *)self->_minuteHandViewAlt shadowView];
+    [directionalShadowContainerView2 addSubview:shadowView2];
 
-    v15 = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
-    v16 = [(CLKUIHandView *)self->_secondHandViewAlt shadowView];
-    [v15 addSubview:v16];
+    directionalShadowContainerView3 = [(CLKUIAnalogHandsView *)self directionalShadowContainerView];
+    shadowView3 = [(CLKUIHandView *)self->_secondHandViewAlt shadowView];
+    [directionalShadowContainerView3 addSubview:shadowView3];
   }
 }
 
-- (void)applySecondHandColor:(id)a3
+- (void)applySecondHandColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKAnalogHandsView;
-  v4 = a3;
-  [(CLKUIAnalogHandsView *)&v5 applySecondHandColor:v4];
-  [(NTKHandView *)self->_secondHandViewAlt setColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(CLKUIAnalogHandsView *)&v5 applySecondHandColor:colorCopy];
+  [(NTKHandView *)self->_secondHandViewAlt setColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)applyHourMinuteHandsTransitionFraction:(double)a3 fromStrokeColor:(id)a4 fromFillColor:(id)a5 toStrokeColor:(id)a6 toFillColor:(id)a7
+- (void)applyHourMinuteHandsTransitionFraction:(double)fraction fromStrokeColor:(id)color fromFillColor:(id)fillColor toStrokeColor:(id)strokeColor toFillColor:(id)toFillColor
 {
-  v14 = fabs(a3) < 0.00000011920929;
-  v13 = fabs(a3 + -1.0);
+  v14 = fabs(fraction) < 0.00000011920929;
+  v13 = fabs(fraction + -1.0);
   v14 = v14 || v13 < 0.00000011920929;
   if (v14)
   {
-    v15 = a7;
-    v16 = a6;
-    v17 = a5;
-    v18 = a4;
+    toFillColorCopy = toFillColor;
+    strokeColorCopy = strokeColor;
+    fillColorCopy = fillColor;
+    colorCopy = color;
     [(NTKAnalogHandsView *)self _removeHourMinuteHandsTransitionLayers];
   }
 
   else
   {
-    v19 = a7;
-    v20 = a6;
-    v21 = a5;
-    v22 = a4;
+    toFillColorCopy2 = toFillColor;
+    strokeColorCopy2 = strokeColor;
+    fillColorCopy2 = fillColor;
+    colorCopy2 = color;
     [(NTKAnalogHandsView *)self _addHourMinuteHandsTransitionLayers];
   }
 
@@ -327,41 +327,41 @@
   hourHandTransitionStemLayer = self->_hourHandTransitionStemLayer;
   CATransform3DMakeScale(&v48, v24, 1.0, 1.0);
   [(CALayer *)hourHandTransitionStemLayer setTransform:&v48];
-  -[CALayer setBorderColor:](self->_minuteHandTransitionBodyLayer, "setBorderColor:", [a6 CGColor]);
-  -[CALayer setBorderColor:](self->_minuteHandTransitionPegLayer, "setBorderColor:", [a6 CGColor]);
-  -[CALayer setBackgroundColor:](self->_minuteHandTransitionStemLayer, "setBackgroundColor:", [a6 CGColor]);
-  -[CALayer setBackgroundColor:](self->_minuteHandTransitionBodyLayer, "setBackgroundColor:", [a7 CGColor]);
-  -[CALayer setBackgroundColor:](self->_minuteHandTransitionPegLayer, "setBackgroundColor:", [a7 CGColor]);
-  -[CALayer setBorderColor:](self->_hourHandTransitionBodyLayer, "setBorderColor:", [a6 CGColor]);
-  -[CALayer setBackgroundColor:](self->_hourHandTransitionStemLayer, "setBackgroundColor:", [a6 CGColor]);
-  -[CALayer setBackgroundColor:](self->_hourHandTransitionBodyLayer, "setBackgroundColor:", [a7 CGColor]);
-  if (a3 > 0.6)
+  -[CALayer setBorderColor:](self->_minuteHandTransitionBodyLayer, "setBorderColor:", [strokeColor CGColor]);
+  -[CALayer setBorderColor:](self->_minuteHandTransitionPegLayer, "setBorderColor:", [strokeColor CGColor]);
+  -[CALayer setBackgroundColor:](self->_minuteHandTransitionStemLayer, "setBackgroundColor:", [strokeColor CGColor]);
+  -[CALayer setBackgroundColor:](self->_minuteHandTransitionBodyLayer, "setBackgroundColor:", [toFillColor CGColor]);
+  -[CALayer setBackgroundColor:](self->_minuteHandTransitionPegLayer, "setBackgroundColor:", [toFillColor CGColor]);
+  -[CALayer setBorderColor:](self->_hourHandTransitionBodyLayer, "setBorderColor:", [strokeColor CGColor]);
+  -[CALayer setBackgroundColor:](self->_hourHandTransitionStemLayer, "setBackgroundColor:", [strokeColor CGColor]);
+  -[CALayer setBackgroundColor:](self->_hourHandTransitionBodyLayer, "setBackgroundColor:", [toFillColor CGColor]);
+  if (fraction > 0.6)
   {
-    v41 = a7;
+    fillColorCopy3 = toFillColor;
   }
 
   else
   {
-    v41 = a5;
+    fillColorCopy3 = fillColor;
   }
 
-  if (a3 > 0.6)
+  if (fraction > 0.6)
   {
-    v42 = a6;
+    colorCopy3 = strokeColor;
   }
 
   else
   {
-    v42 = a4;
+    colorCopy3 = color;
   }
 
-  v43 = v42;
-  v44 = v41;
-  v45 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  [v45 setColor:v43];
+  v43 = colorCopy3;
+  v44 = fillColorCopy3;
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  [minuteHandView setColor:v43];
 
-  v46 = [(CLKUIAnalogHandsView *)self hourHandView];
-  [v46 setColor:v43];
+  hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+  [hourHandView setColor:v43];
 
   [(CLKUIAnalogHandsView *)self setInlayColor:v44];
 }
@@ -379,8 +379,8 @@
 
 - (void)_addHourMinuteHandsTransitionLayers
 {
-  v93 = [(CLKUIAnalogHandsView *)self minuteHandConfiguration];
-  v3 = [(CLKUIAnalogHandsView *)self hourHandConfiguration];
+  minuteHandConfiguration = [(CLKUIAnalogHandsView *)self minuteHandConfiguration];
+  hourHandConfiguration = [(CLKUIAnalogHandsView *)self hourHandConfiguration];
   if (!self->_minuteHandTransitionPegLayer)
   {
     v4 = objc_opt_new();
@@ -388,13 +388,13 @@
     self->_minuteHandTransitionPegLayer = v4;
 
     v6 = self->_minuteHandTransitionPegLayer;
-    v7 = [(CLKUIAnalogHandsView *)self minuteHandDot];
-    [v7 center];
+    minuteHandDot = [(CLKUIAnalogHandsView *)self minuteHandDot];
+    [minuteHandDot center];
     [(CALayer *)v6 setPosition:?];
 
-    [v93 pegRadius];
+    [minuteHandConfiguration pegRadius];
     v9 = v8;
-    [v93 pegStrokeWidth];
+    [minuteHandConfiguration pegStrokeWidth];
     [(CALayer *)self->_minuteHandTransitionPegLayer setBounds:0.0, 0.0, v9 + v10 + v9 + v10, v9 + v10 + v9 + v10];
     v11 = self->_minuteHandTransitionPegLayer;
     v12 = _disabledLayerActions();
@@ -413,14 +413,14 @@
 
     v17 = *MEMORY[0x277CBF348];
     v18 = *(MEMORY[0x277CBF348] + 8);
-    [v93 handWidth];
+    [minuteHandConfiguration handWidth];
     v20 = v19;
-    [v93 handLength];
+    [minuteHandConfiguration handLength];
     [(CALayer *)self->_minuteHandTransitionBodyLayer setBounds:v17, v18, v20, v21];
-    v22 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    [v22 bounds];
+    minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+    [minuteHandView bounds];
     v24 = v23 * 0.5;
-    [v93 handLength];
+    [minuteHandConfiguration handLength];
     [(CALayer *)self->_minuteHandTransitionBodyLayer setPosition:v24, v25 * 0.5];
     v26 = self->_minuteHandTransitionBodyLayer;
     v27 = _disabledLayerActions();
@@ -433,20 +433,20 @@
   {
     v28 = *MEMORY[0x277CBF348];
     v29 = *(MEMORY[0x277CBF348] + 8);
-    [v93 armWidth];
+    [minuteHandConfiguration armWidth];
     v31 = v30;
-    [v93 armLength];
+    [minuteHandConfiguration armLength];
     v33 = v32;
     v34 = objc_opt_new();
     minuteHandTransitionStemLayer = self->_minuteHandTransitionStemLayer;
     self->_minuteHandTransitionStemLayer = v34;
 
-    v36 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    [v36 bounds];
+    minuteHandView2 = [(CLKUIAnalogHandsView *)self minuteHandView];
+    [minuteHandView2 bounds];
     v38 = v37 * 0.5;
-    [v93 handLength];
+    [minuteHandConfiguration handLength];
     v40 = v39;
-    [v93 armLength];
+    [minuteHandConfiguration armLength];
     v42 = v40 + v41 * 0.5;
     [(CALayer *)self->_minuteHandTransitionStemLayer setBounds:v28, v29, v31, v33];
     [(CALayer *)self->_minuteHandTransitionStemLayer setPosition:v38, v42];
@@ -457,20 +457,20 @@
 
   if (!self->_hourHandTransitionBodyLayer)
   {
-    v45 = [(CLKUIAnalogHandsView *)self hourHandView];
+    hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
     v46 = objc_opt_new();
     hourHandTransitionBodyLayer = self->_hourHandTransitionBodyLayer;
     self->_hourHandTransitionBodyLayer = v46;
 
     v48 = *MEMORY[0x277CBF348];
     v49 = *(MEMORY[0x277CBF348] + 8);
-    [v3 handWidth];
+    [hourHandConfiguration handWidth];
     v51 = v50;
-    [v3 handLength];
+    [hourHandConfiguration handLength];
     [(CALayer *)self->_hourHandTransitionBodyLayer setBounds:v48, v49, v51, v52];
-    [v45 bounds];
+    [hourHandView bounds];
     v54 = v53 * 0.5;
-    [v3 handLength];
+    [hourHandConfiguration handLength];
     [(CALayer *)self->_hourHandTransitionBodyLayer setPosition:v54, v55 * 0.5];
     v56 = self->_hourHandTransitionBodyLayer;
     v57 = _disabledLayerActions();
@@ -484,19 +484,19 @@
   {
     v59 = *MEMORY[0x277CBF348];
     v60 = *(MEMORY[0x277CBF348] + 8);
-    [v3 armWidth];
+    [hourHandConfiguration armWidth];
     v62 = v61;
-    [v3 armLength];
+    [hourHandConfiguration armLength];
     v64 = v63;
     v65 = objc_opt_new();
     v66 = self->_hourHandTransitionStemLayer;
     self->_hourHandTransitionStemLayer = v65;
 
-    v67 = [(CLKUIAnalogHandsView *)self hourHandView];
+    hourHandView2 = [(CLKUIAnalogHandsView *)self hourHandView];
     [(CALayer *)self->_hourHandTransitionStemLayer setBounds:v59, v60, v62, v64];
-    [v67 bounds];
+    [hourHandView2 bounds];
     v69 = v68 * 0.5;
-    [v67 bounds];
+    [hourHandView2 bounds];
     [(CALayer *)self->_hourHandTransitionStemLayer setPosition:v69, v70 * 0.5];
     v71 = self->_hourHandTransitionStemLayer;
     v72 = _disabledLayerActions();
@@ -505,54 +505,54 @@
     hourHandTransitionStemLayer = self->_hourHandTransitionStemLayer;
   }
 
-  v73 = [(CALayer *)hourHandTransitionStemLayer superlayer];
+  superlayer = [(CALayer *)hourHandTransitionStemLayer superlayer];
 
-  if (!v73)
+  if (!superlayer)
   {
-    v74 = [(CLKUIAnalogHandsView *)self hourHandView];
-    v75 = [v74 transitionContainerView];
-    v76 = [v75 layer];
-    [v76 addSublayer:self->_hourHandTransitionStemLayer];
+    hourHandView3 = [(CLKUIAnalogHandsView *)self hourHandView];
+    transitionContainerView = [hourHandView3 transitionContainerView];
+    layer = [transitionContainerView layer];
+    [layer addSublayer:self->_hourHandTransitionStemLayer];
   }
 
-  v77 = [(CALayer *)self->_hourHandTransitionBodyLayer superlayer];
+  superlayer2 = [(CALayer *)self->_hourHandTransitionBodyLayer superlayer];
 
-  if (!v77)
+  if (!superlayer2)
   {
-    v78 = [(CLKUIAnalogHandsView *)self hourHandView];
-    v79 = [v78 transitionContainerView];
-    v80 = [v79 layer];
-    [v80 addSublayer:self->_hourHandTransitionBodyLayer];
+    hourHandView4 = [(CLKUIAnalogHandsView *)self hourHandView];
+    transitionContainerView2 = [hourHandView4 transitionContainerView];
+    layer2 = [transitionContainerView2 layer];
+    [layer2 addSublayer:self->_hourHandTransitionBodyLayer];
   }
 
-  v81 = [(CALayer *)self->_minuteHandTransitionStemLayer superlayer];
+  superlayer3 = [(CALayer *)self->_minuteHandTransitionStemLayer superlayer];
 
-  if (!v81)
+  if (!superlayer3)
   {
-    v82 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    v83 = [v82 transitionContainerView];
-    v84 = [v83 layer];
-    [v84 addSublayer:self->_minuteHandTransitionStemLayer];
+    minuteHandView3 = [(CLKUIAnalogHandsView *)self minuteHandView];
+    transitionContainerView3 = [minuteHandView3 transitionContainerView];
+    layer3 = [transitionContainerView3 layer];
+    [layer3 addSublayer:self->_minuteHandTransitionStemLayer];
   }
 
-  v85 = [(CALayer *)self->_minuteHandTransitionPegLayer superlayer];
+  superlayer4 = [(CALayer *)self->_minuteHandTransitionPegLayer superlayer];
 
-  if (!v85)
+  if (!superlayer4)
   {
-    v86 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    v87 = [v86 transitionContainerView];
-    v88 = [v87 layer];
-    [v88 addSublayer:self->_minuteHandTransitionPegLayer];
+    minuteHandView4 = [(CLKUIAnalogHandsView *)self minuteHandView];
+    transitionContainerView4 = [minuteHandView4 transitionContainerView];
+    layer4 = [transitionContainerView4 layer];
+    [layer4 addSublayer:self->_minuteHandTransitionPegLayer];
   }
 
-  v89 = [(CALayer *)self->_minuteHandTransitionBodyLayer superlayer];
+  superlayer5 = [(CALayer *)self->_minuteHandTransitionBodyLayer superlayer];
 
-  if (!v89)
+  if (!superlayer5)
   {
-    v90 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    v91 = [v90 transitionContainerView];
-    v92 = [v91 layer];
-    [v92 addSublayer:self->_minuteHandTransitionBodyLayer];
+    minuteHandView5 = [(CLKUIAnalogHandsView *)self minuteHandView];
+    transitionContainerView5 = [minuteHandView5 transitionContainerView];
+    layer5 = [transitionContainerView5 layer];
+    [layer5 addSublayer:self->_minuteHandTransitionBodyLayer];
   }
 }
 

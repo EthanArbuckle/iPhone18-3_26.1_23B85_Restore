@@ -1,7 +1,7 @@
 @interface QSSFinalBlazarResponse
 - (NSString)return_str;
-- (Offset<siri::speech::schema_fb::FinalBlazarResponse>)addObjectToBuffer:(void *)a3;
-- (QSSFinalBlazarResponse)initWithFlatbuffData:(id)a3 root:(const FinalBlazarResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::FinalBlazarResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSFinalBlazarResponse)initWithFlatbuffData:(id)data root:(const FinalBlazarResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -37,28 +37,28 @@ flatbuffers::DetachedBuffer *__38__QSSFinalBlazarResponse_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::FinalBlazarResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::FinalBlazarResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSFinalBlazarResponse *)self return_code];
-  v6 = [(QSSFinalBlazarResponse *)self return_str];
-  v7 = v6;
-  if (!v6)
+  return_code = [(QSSFinalBlazarResponse *)self return_code];
+  return_str = [(QSSFinalBlazarResponse *)self return_str];
+  v7 = return_str;
+  if (!return_str)
   {
-    v6 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  LODWORD(v8) = flatbuffers::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)return_str UTF8String];
+  v9 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 10);
-  v11 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v8);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 10);
+  v11 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, uTF8String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v11 + v10);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v11 + v10);
 }
 
 - (NSString)return_str
@@ -99,42 +99,42 @@ flatbuffers::DetachedBuffer *__38__QSSFinalBlazarResponse_flatbuffData__block_in
   }
 }
 
-- (QSSFinalBlazarResponse)initWithFlatbuffData:(id)a3 root:(const FinalBlazarResponse *)a4 verify:(BOOL)a5
+- (QSSFinalBlazarResponse)initWithFlatbuffData:(id)data root:(const FinalBlazarResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSFinalBlazarResponse;
   v10 = [(QSSFinalBlazarResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -156,9 +156,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

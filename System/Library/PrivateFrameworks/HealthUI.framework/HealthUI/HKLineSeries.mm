@@ -1,31 +1,31 @@
 @interface HKLineSeries
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
 - (HKLineSeries)init;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)_attributedAnnotationWithString:(id)a3 labelStyle:(id)a4;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)_attributedAnnotationWithString:(id)string labelStyle:(id)style;
 - (id)_currentPresentationStyles;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (int64_t)resolutionForTimeScope:(int64_t)a3 traitResolution:(int64_t)a4;
-- (void)_enumerateCoordinateList:(id)a3 withTransform:(CGAffineTransform *)a4 presentationStyle:(id)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7 block:(id)a8;
-- (void)_enumerateCoordinateListByRemovingOffscreenPoints:(id)a3 withTransform:(CGAffineTransform *)a4 presentationStyle:(id)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7 block:(id)a8;
-- (void)_enumeratePathsFromBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 transform:(CGAffineTransform *)a6 presentationStyle:(id)a7 caresAboutSelection:(BOOL)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10 handler:(id)a11;
-- (void)_enumerateSawToothPathsFromBlockCoordinates:(id)a3 transform:(CGAffineTransform *)a4 zoomLevelConfiguration:(id)a5 presentationStyle:(id)a6 caresAboutSelection:(BOOL)a7 axisRect:(CGRect)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10 handler:(id)a11;
-- (void)_enumerateSinePathsFromBlockCoordinates:(id)a3 transfrom:(CGAffineTransform *)a4 zoomLevelConfiguration:(id)a5 presentationStyle:(id)a6 axisRect:(CGRect)a7 handler:(id)a8;
-- (void)_renderLineEndCapsInContext:(CGContext *)a3 endCaps:(id)a4 endCapImage:(id)a5;
-- (void)_renderPointLabelInContext:(CGContext *)a3 renderingData:(id *)a4 numberFormatter:(id)a5 labelAttributes:(id)a6 seriesRenderingDelegate:(id)a7;
-- (void)_renderPointLabelsInContext:(CGContext *)a3 blockCoordinates:(id)a4 axisRect:(CGRect)a5 pointTransform:(CGAffineTransform *)a6 presentationStyle:(id)a7 zoomLevelConfiguration:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)_renderPointMarkersInContext:(CGContext *)a3 blockCoordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 presentationStyle:(id)a6;
-- (void)_updateSecondaryRenderContextWithBlockCoordinates:(id)a3 secondaryRenderContext:(id)a4 pointTransform:(CGAffineTransform *)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7;
-- (void)addAxisAnnotationForString:(id)a3 modelCoordinate:(double)a4 axisAnnotationDelegate:(id)a5;
-- (void)addAxisAnnotationForValue:(double)a3 axisAnnotationDelegate:(id)a4;
-- (void)drawLegendPointLabelInContext:(CGContext *)a3 point:(CGPoint)a4 untransformedPoint:(CGPoint)a5 axisRect:(CGRect)a6 presentationStyle:(id)a7 leftOfPoint:(BOOL)a8;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10;
-- (void)renderPointMarkersInContext:(CGContext *)a3 blockCoordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 pointMarkerStyle:(id)a6 selectedBoundsMarkerStyle:(id)a7 selectedPointMarkerStyle:(id)a8;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (int64_t)resolutionForTimeScope:(int64_t)scope traitResolution:(int64_t)resolution;
+- (void)_enumerateCoordinateList:(id)list withTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect block:(id)block;
+- (void)_enumerateCoordinateListByRemovingOffscreenPoints:(id)points withTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect block:(id)block;
+- (void)_enumeratePathsFromBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration transform:(CGAffineTransform *)transform presentationStyle:(id)style caresAboutSelection:(BOOL)selection seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0 handler:(id)self1;
+- (void)_enumerateSawToothPathsFromBlockCoordinates:(id)coordinates transform:(CGAffineTransform *)transform zoomLevelConfiguration:(id)configuration presentationStyle:(id)style caresAboutSelection:(BOOL)selection axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0 handler:(id)self1;
+- (void)_enumerateSinePathsFromBlockCoordinates:(id)coordinates transfrom:(CGAffineTransform *)transfrom zoomLevelConfiguration:(id)configuration presentationStyle:(id)style axisRect:(CGRect)rect handler:(id)handler;
+- (void)_renderLineEndCapsInContext:(CGContext *)context endCaps:(id)caps endCapImage:(id)image;
+- (void)_renderPointLabelInContext:(CGContext *)context renderingData:(id *)data numberFormatter:(id)formatter labelAttributes:(id)attributes seriesRenderingDelegate:(id)delegate;
+- (void)_renderPointLabelsInContext:(CGContext *)context blockCoordinates:(id)coordinates axisRect:(CGRect)rect pointTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration seriesRenderingDelegate:(id)delegate;
+- (void)_renderPointMarkersInContext:(CGContext *)context blockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform presentationStyle:(id)style;
+- (void)_updateSecondaryRenderContextWithBlockCoordinates:(id)coordinates secondaryRenderContext:(id)context pointTransform:(CGAffineTransform *)transform zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect;
+- (void)addAxisAnnotationForString:(id)string modelCoordinate:(double)coordinate axisAnnotationDelegate:(id)delegate;
+- (void)addAxisAnnotationForValue:(double)value axisAnnotationDelegate:(id)delegate;
+- (void)drawLegendPointLabelInContext:(CGContext *)context point:(CGPoint)point untransformedPoint:(CGPoint)untransformedPoint axisRect:(CGRect)rect presentationStyle:(id)style leftOfPoint:(BOOL)ofPoint;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0;
+- (void)renderPointMarkersInContext:(CGContext *)context blockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform pointMarkerStyle:(id)style selectedBoundsMarkerStyle:(id)markerStyle selectedPointMarkerStyle:(id)pointMarkerStyle;
 @end
 
 @implementation HKLineSeries
@@ -38,8 +38,8 @@
   v2 = [(HKGraphSeries *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] blackColor];
-    v4 = [HKStrokeStyle strokeStyleWithColor:v3 lineWidth:1.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v4 = [HKStrokeStyle strokeStyleWithColor:blackColor lineWidth:1.0];
 
     v5 = objc_alloc_init(HKLineSeriesPresentationStyle);
     [(HKLineSeriesPresentationStyle *)v5 setStrokeStyle:v4];
@@ -88,12 +88,12 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v5 = [(HKLineSeries *)self inactivePresentationStyle];
+  inactivePresentationStyle = [(HKLineSeries *)self inactivePresentationStyle];
 
-  if (v5)
+  if (inactivePresentationStyle)
   {
-    v6 = [(HKLineSeries *)self inactivePresentationStyle];
-    v9[0] = v6;
+    inactivePresentationStyle2 = [(HKLineSeries *)self inactivePresentationStyle];
+    v9[0] = inactivePresentationStyle2;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -107,20 +107,20 @@ LABEL_12:
   return v7;
 }
 
-- (void)_enumerateCoordinateList:(id)a3 withTransform:(CGAffineTransform *)a4 presentationStyle:(id)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7 block:(id)a8
+- (void)_enumerateCoordinateList:(id)list withTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect block:(id)block
 {
-  v10 = a8;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyle_zoomLevelConfiguration_axisRect_block___block_invoke;
   v14[3] = &unk_1E81B6758;
-  v15 = v10;
-  v11 = *&a4->c;
-  v13[0] = *&a4->a;
+  v15 = blockCopy;
+  v11 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v11;
-  v13[2] = *&a4->tx;
-  v12 = v10;
-  [a3 enumerateCoordinatesWithTransform:v13 roundToViewScale:1 block:v14];
+  v13[2] = *&transform->tx;
+  v12 = blockCopy;
+  [list enumerateCoordinatesWithTransform:v13 roundToViewScale:1 block:v14];
 }
 
 void __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyle_zoomLevelConfiguration_axisRect_block___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -134,16 +134,16 @@ void __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyl
   (*(v5 + 16))(v5, v12, v7, v9, v10, v11);
 }
 
-- (void)_enumerateCoordinateListByRemovingOffscreenPoints:(id)a3 withTransform:(CGAffineTransform *)a4 presentationStyle:(id)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7 block:(id)a8
+- (void)_enumerateCoordinateListByRemovingOffscreenPoints:(id)points withTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect block:(id)block
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pointsCopy = points;
+  styleCopy = style;
+  configurationCopy = configuration;
+  blockCopy = block;
   v48.origin.x = x;
   v48.origin.y = y;
   v48.size.width = width;
@@ -154,7 +154,7 @@ void __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyl
   v49.size.width = width;
   v49.size.height = height;
   MaxX = CGRectGetMaxX(v49);
-  v22 = [v16 numCoordinates];
+  numCoordinates = [pointsCopy numCoordinates];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
@@ -174,7 +174,7 @@ void __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyl
   aBlock[3] = &unk_1E81B6780;
   v42 = v44;
   v43 = v23;
-  v24 = v19;
+  v24 = blockCopy;
   v41 = v24;
   v25 = _Block_copy(aBlock);
   v31[0] = MEMORY[0x1E69E9820];
@@ -188,14 +188,14 @@ void __111__HKLineSeries__enumerateCoordinateList_withTransform_presentationStyl
   v26 = v25;
   v32 = v26;
   v27 = v24;
-  v39 = v22;
+  v39 = numCoordinates;
   v33 = v27;
   v35 = v46;
-  v28 = *&a4->c;
-  v30[0] = *&a4->a;
+  v28 = *&transform->c;
+  v30[0] = *&transform->a;
   v30[1] = v28;
-  v30[2] = *&a4->tx;
-  [(HKLineSeries *)self _enumerateCoordinateList:v16 withTransform:v30 presentationStyle:v17 zoomLevelConfiguration:v18 axisRect:v31 block:x, y, width, height];
+  v30[2] = *&transform->tx;
+  [(HKLineSeries *)self _enumerateCoordinateList:pointsCopy withTransform:v30 presentationStyle:styleCopy zoomLevelConfiguration:configurationCopy axisRect:v31 block:x, y, width, height];
   v26[2](v26);
   HKCircularBufferRelease(v23);
 
@@ -254,49 +254,49 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
   }
 }
 
-- (void)_enumeratePathsFromBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 transform:(CGAffineTransform *)a6 presentationStyle:(id)a7 caresAboutSelection:(BOOL)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10 handler:(id)a11
+- (void)_enumeratePathsFromBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration transform:(CGAffineTransform *)transform presentationStyle:(id)style caresAboutSelection:(BOOL)selection seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0 handler:(id)self1
 {
-  v11 = a8;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a7;
-  v25 = a5;
-  v26 = a3;
-  if ([v24 waveForm])
+  selectionCopy = selection;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  pointsCopy = points;
+  handlerCopy = handler;
+  styleCopy = style;
+  configurationCopy = configuration;
+  coordinatesCopy = coordinates;
+  if ([styleCopy waveForm])
   {
-    v27 = *&a6->c;
-    v29 = *&a6->a;
+    v27 = *&transform->c;
+    v29 = *&transform->a;
     v30 = v27;
-    v31 = *&a6->tx;
-    [(HKLineSeries *)self _enumerateSinePathsFromBlockCoordinates:v26 transfrom:&v29 zoomLevelConfiguration:v25 presentationStyle:v24 axisRect:v23 handler:x, y, width, height];
+    v31 = *&transform->tx;
+    [(HKLineSeries *)self _enumerateSinePathsFromBlockCoordinates:coordinatesCopy transfrom:&v29 zoomLevelConfiguration:configurationCopy presentationStyle:styleCopy axisRect:handlerCopy handler:x, y, width, height];
   }
 
   else
   {
-    v28 = *&a6->c;
-    v29 = *&a6->a;
+    v28 = *&transform->c;
+    v29 = *&transform->a;
     v30 = v28;
-    v31 = *&a6->tx;
-    [(HKLineSeries *)self _enumerateSawToothPathsFromBlockCoordinates:v26 transform:&v29 zoomLevelConfiguration:v25 presentationStyle:v24 caresAboutSelection:v11 axisRect:v21 seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y handler:width, height, v22, v23];
+    v31 = *&transform->tx;
+    [(HKLineSeries *)self _enumerateSawToothPathsFromBlockCoordinates:coordinatesCopy transform:&v29 zoomLevelConfiguration:configurationCopy presentationStyle:styleCopy caresAboutSelection:selectionCopy axisRect:delegateCopy seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y handler:width, height, pointsCopy, handlerCopy];
   }
 }
 
-- (void)addAxisAnnotationForValue:(double)a3 axisAnnotationDelegate:(id)a4
+- (void)addAxisAnnotationForValue:(double)value axisAnnotationDelegate:(id)delegate
 {
   v34 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  if (v28)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    v7 = [(HKGraphSeries *)self yAxis];
-    if (v7)
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+    yAxis = [(HKGraphSeries *)self yAxis];
+    if (yAxis)
     {
-      v26 = v7;
+      v26 = yAxis;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
@@ -317,15 +317,15 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
             }
 
             v12 = *(*(&v29 + 1) + 8 * i);
-            v13 = [v12 axisAnnotationStyle];
-            v14 = v13;
-            if (v13)
+            axisAnnotationStyle = [v12 axisAnnotationStyle];
+            v14 = axisAnnotationStyle;
+            if (axisAnnotationStyle)
             {
-              v15 = [v13 numberFormatter];
-              v16 = v15;
-              if (v15)
+              numberFormatter = [axisAnnotationStyle numberFormatter];
+              v16 = numberFormatter;
+              if (numberFormatter)
               {
-                v17 = v15;
+                v17 = numberFormatter;
               }
 
               else
@@ -351,7 +351,7 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
               v23 = v22;
               v24 = [v18 stringFromNumber:v22 displayType:0 unitController:0];
               v25 = [(HKLineSeries *)self _attributedAnnotationWithString:v24 labelStyle:v14];
-              [v28 addAxisAnnotation:v25 forSeries:self modelCoordinate:v6];
+              [delegateCopy addAxisAnnotation:v25 forSeries:self modelCoordinate:v6];
             }
           }
 
@@ -361,29 +361,29 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
         while (v9);
       }
 
-      v7 = v26;
+      yAxis = v26;
     }
   }
 }
 
-- (void)addAxisAnnotationForString:(id)a3 modelCoordinate:(double)a4 axisAnnotationDelegate:(id)a5
+- (void)addAxisAnnotationForString:(id)string modelCoordinate:(double)coordinate axisAnnotationDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  stringCopy = string;
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    v11 = [(HKGraphSeries *)self yAxis];
-    if (v11)
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:coordinate];
+    yAxis = [(HKGraphSeries *)self yAxis];
+    if (yAxis)
     {
-      v19 = v11;
+      v19 = yAxis;
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v12 = [(HKLineSeries *)self _currentPresentationStyles];
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      _currentPresentationStyles = [(HKLineSeries *)self _currentPresentationStyles];
+      v13 = [_currentPresentationStyles countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v13)
       {
         v14 = v13;
@@ -395,16 +395,16 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(_currentPresentationStyles);
             }
 
-            v17 = [*(*(&v20 + 1) + 8 * v16) axisAnnotationStyle];
-            if (v17)
+            axisAnnotationStyle = [*(*(&v20 + 1) + 8 * v16) axisAnnotationStyle];
+            if (axisAnnotationStyle)
             {
-              v18 = [(HKLineSeries *)self _attributedAnnotationWithString:v8 labelStyle:v17];
+              v18 = [(HKLineSeries *)self _attributedAnnotationWithString:stringCopy labelStyle:axisAnnotationStyle];
               if (v18)
               {
-                [v9 addAxisAnnotation:v18 forSeries:self modelCoordinate:v10];
+                [delegateCopy addAxisAnnotation:v18 forSeries:self modelCoordinate:v10];
               }
             }
 
@@ -412,46 +412,46 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
           }
 
           while (v14 != v16);
-          v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v14 = [_currentPresentationStyles countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v14);
       }
 
-      v11 = v19;
+      yAxis = v19;
     }
   }
 }
 
-- (id)_attributedAnnotationWithString:(id)a3 labelStyle:(id)a4
+- (id)_attributedAnnotationWithString:(id)string labelStyle:(id)style
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = *MEMORY[0x1E69DB650];
-  v5 = a3;
-  v6 = [a4 textColor];
-  v12[0] = v6;
+  stringCopy = string;
+  textColor = [style textColor];
+  v12[0] = textColor;
   v11[1] = *MEMORY[0x1E69DB648];
-  v7 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-  v12[1] = v7;
+  hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+  v12[1] = hk_chartAxisLabelFont;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
-  v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v8];
+  v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:v8];
 
   return v9;
 }
 
-- (void)_enumerateSawToothPathsFromBlockCoordinates:(id)a3 transform:(CGAffineTransform *)a4 zoomLevelConfiguration:(id)a5 presentationStyle:(id)a6 caresAboutSelection:(BOOL)a7 axisRect:(CGRect)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10 handler:(id)a11
+- (void)_enumerateSawToothPathsFromBlockCoordinates:(id)coordinates transform:(CGAffineTransform *)transform zoomLevelConfiguration:(id)configuration presentationStyle:(id)style caresAboutSelection:(BOOL)selection axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0 handler:(id)self1
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v33 = a3;
-  v32 = a5;
-  v20 = a6;
-  v21 = a9;
-  v22 = a10;
-  v30 = a11;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  styleCopy = style;
+  delegateCopy = delegate;
+  pointsCopy = points;
+  handlerCopy = handler;
   v70[0] = 0;
   v70[1] = v70;
   v70[2] = 0x3010000000;
@@ -493,30 +493,30 @@ void __136__HKLineSeries__enumerateCoordinateListByRemovingOffscreenPoints_withT
   v35[1] = 3221225472;
   v35[2] = __207__HKLineSeries__enumerateSawToothPathsFromBlockCoordinates_transform_zoomLevelConfiguration_presentationStyle_caresAboutSelection_axisRect_seriesRenderingDelegate_forceGapBetweenUntransformedPoints_handler___block_invoke;
   v35[3] = &unk_1E81B67D0;
-  v23 = v21;
+  v23 = delegateCopy;
   v47 = x;
   v48 = y;
   v49 = width;
   v50 = height;
   v36 = v23;
-  v37 = self;
+  selfCopy = self;
   v40 = v68;
   v41 = &v63;
   v42 = &v58;
-  v24 = v22;
+  v24 = pointsCopy;
   v38 = v24;
   v43 = v52;
   v44 = v70;
-  v25 = v30;
+  v25 = handlerCopy;
   v39 = v25;
   v45 = v67;
   v46 = &v54;
-  v51 = a7;
-  v26 = *&a4->c;
-  v34[0] = *&a4->a;
+  selectionCopy = selection;
+  v26 = *&transform->c;
+  v34[0] = *&transform->a;
   v34[1] = v26;
-  v34[2] = *&a4->tx;
-  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:v33 withTransform:v34 presentationStyle:v20 zoomLevelConfiguration:v32 axisRect:v35 block:x, y, width, height];
+  v34[2] = *&transform->tx;
+  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:coordinatesCopy withTransform:v34 presentationStyle:styleCopy zoomLevelConfiguration:configurationCopy axisRect:v35 block:x, y, width, height];
   if (*(v64 + 24) == 1)
   {
     v27 = [v23 axisAnnotationDelegateForSeries:self];
@@ -744,19 +744,19 @@ LABEL_39:
   }
 }
 
-- (void)_enumerateSinePathsFromBlockCoordinates:(id)a3 transfrom:(CGAffineTransform *)a4 zoomLevelConfiguration:(id)a5 presentationStyle:(id)a6 axisRect:(CGRect)a7 handler:(id)a8
+- (void)_enumerateSinePathsFromBlockCoordinates:(id)coordinates transfrom:(CGAffineTransform *)transfrom zoomLevelConfiguration:(id)configuration presentationStyle:(id)style axisRect:(CGRect)rect handler:(id)handler
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v28 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  [v17 sineWaveSmoothingFactor];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  styleCopy = style;
+  handlerCopy = handler;
+  [styleCopy sineWaveSmoothingFactor];
   v20 = v19;
-  v21 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   v56[0] = 0;
   v56[1] = v56;
   v56[2] = 0x2020000000;
@@ -766,7 +766,7 @@ LABEL_39:
   aBlock[2] = __124__HKLineSeries__enumerateSinePathsFromBlockCoordinates_transfrom_zoomLevelConfiguration_presentationStyle_axisRect_handler___block_invoke;
   aBlock[3] = &unk_1E81B67F8;
   v54 = v56;
-  v22 = v21;
+  v22 = bezierPath;
   v53 = v22;
   v55 = v20;
   v23 = _Block_copy(aBlock);
@@ -813,13 +813,13 @@ LABEL_39:
   v25 = v23;
   v33 = v25;
   v40 = v42;
-  v26 = v18;
+  v26 = handlerCopy;
   v34 = v26;
-  v27 = *&a4->c;
-  v30[0] = *&a4->a;
+  v27 = *&transfrom->c;
+  v30[0] = *&transfrom->a;
   v30[1] = v27;
-  v30[2] = *&a4->tx;
-  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:v28 withTransform:v30 presentationStyle:v17 zoomLevelConfiguration:v16 axisRect:v31 block:x, y, width, height];
+  v30[2] = *&transfrom->tx;
+  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:coordinatesCopy withTransform:v30 presentationStyle:styleCopy zoomLevelConfiguration:configurationCopy axisRect:v31 block:x, y, width, height];
 
   _Block_object_dispose(v41, 8);
   _Block_object_dispose(v42, 8);
@@ -930,34 +930,34 @@ LABEL_9:
   }
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  v9 = *&a6->c;
-  v10[0] = *&a6->a;
+  v9 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v9;
-  v10[2] = *&a6->tx;
-  [(HKLineSeries *)self drawSeriesWithBlockCoordinates:a3 axisRect:a5 zoomLevelConfiguration:v10 pointTransform:a7 renderContext:a8 secondaryRenderContext:a9 seriesRenderingDelegate:a4.origin.x forceGapBetweenUntransformedPoints:a4.origin.y, a4.size.width, a4.size.height, &__block_literal_global_13];
+  v10[2] = *&transform->tx;
+  [(HKLineSeries *)self drawSeriesWithBlockCoordinates:coordinates axisRect:configuration zoomLevelConfiguration:v10 pointTransform:context renderContext:renderContext secondaryRenderContext:delegate seriesRenderingDelegate:rect.origin.x forceGapBetweenUntransformedPoints:rect.origin.y, rect.size.width, rect.size.height, &__block_literal_global_13];
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9 forceGapBetweenUntransformedPoints:(id)a10
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate forceGapBetweenUntransformedPoints:(id)self0
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v118 = *MEMORY[0x1E69E9840];
-  v80 = a3;
-  v74 = a5;
-  v67 = a8;
-  v72 = a9;
-  v70 = a10;
-  c = a7;
-  CGContextSaveGState(a7);
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  renderContextCopy = renderContext;
+  delegateCopy = delegate;
+  pointsCopy = points;
+  c = context;
+  CGContextSaveGState(context);
   v115 = 0u;
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v82 = self;
+  selfCopy = self;
   obj = [(HKLineSeries *)self _currentPresentationStyles];
   v71 = [obj countByEnumeratingWithState:&v113 objects:v117 count:16];
   if (v71)
@@ -977,17 +977,17 @@ LABEL_9:
 
         v73 = v20;
         v83 = *(*(&v113 + 1) + 8 * v20);
-        v22 = [v83 strokeStyle];
-        v23 = [v83 fillStyle];
-        v24 = [(NSArray *)v82->_selectedPresentationStyles firstObject];
-        v77 = [v24 strokeStyle];
+        strokeStyle = [v83 strokeStyle];
+        fillStyle = [v83 fillStyle];
+        firstObject = [(NSArray *)selfCopy->_selectedPresentationStyles firstObject];
+        strokeStyle2 = [firstObject strokeStyle];
 
-        v25 = [(NSArray *)v82->_selectedPresentationStyles firstObject];
-        v79 = [v25 fillStyle];
+        firstObject2 = [(NSArray *)selfCopy->_selectedPresentationStyles firstObject];
+        fillStyle2 = [firstObject2 fillStyle];
 
-        if ([v23 isEqual:v79])
+        if ([fillStyle isEqual:fillStyle2])
         {
-          v26 = [v22 isEqual:v77];
+          v26 = [strokeStyle isEqual:strokeStyle2];
         }
 
         else
@@ -995,8 +995,8 @@ LABEL_9:
           v26 = 0;
         }
 
-        v27 = [v83 endCapStyle];
-        v28 = [(HKLineSeries *)v82 pointMarkerImageForPointMarkerStyle:v27];
+        endCapStyle = [v83 endCapStyle];
+        v28 = [(HKLineSeries *)selfCopy pointMarkerImageForPointMarkerStyle:endCapStyle];
 
         v29 = objc_opt_new();
         v30 = objc_opt_new();
@@ -1007,14 +1007,14 @@ LABEL_9:
         v100[1] = 3221225472;
         v100[2] = __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate_forceGapBetweenUntransformedPoints___block_invoke;
         v100[3] = &unk_1E81B6868;
-        v100[4] = v82;
-        v78 = v22;
+        v100[4] = selfCopy;
+        v78 = strokeStyle;
         v101 = v78;
         v34 = v31;
         v102 = v34;
         v35 = v29;
         v103 = v35;
-        v36 = v23;
+        v36 = fillStyle;
         v104 = v36;
         v109 = x;
         v110 = y;
@@ -1028,11 +1028,11 @@ LABEL_9:
         v107 = v38;
         v76 = v33;
         v108 = v76;
-        v39 = *&a6->c;
-        v97 = *&a6->a;
+        v39 = *&transform->c;
+        v97 = *&transform->a;
         v98 = v39;
-        v99 = *&a6->tx;
-        [(HKLineSeries *)v82 _enumeratePathsFromBlockCoordinates:v80 axisRect:v74 zoomLevelConfiguration:&v97 transform:v83 presentationStyle:v26 caresAboutSelection:v72 seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y handler:width, height, v70, v100];
+        v99 = *&transform->tx;
+        [(HKLineSeries *)selfCopy _enumeratePathsFromBlockCoordinates:coordinatesCopy axisRect:configurationCopy zoomLevelConfiguration:&v97 transform:v83 presentationStyle:v26 caresAboutSelection:delegateCopy seriesRenderingDelegate:x forceGapBetweenUntransformedPoints:y handler:width, height, pointsCopy, v100];
         if (v78)
         {
           if (([v35 isEmpty] & 1) == 0)
@@ -1045,7 +1045,7 @@ LABEL_9:
 
           if (([v34 isEmpty] & 1) == 0)
           {
-            [v77 applyToContext:c];
+            [strokeStyle2 applyToContext:c];
             v41 = v34;
             CGContextAddPath(c, [v34 CGPath]);
             CGContextStrokePath(c);
@@ -1057,47 +1057,47 @@ LABEL_9:
           if (([v37 isEmpty] & 1) == 0)
           {
             v42 = v37;
-            v43 = [v37 CGPath];
-            [(HKGraphSeries *)v82 alpha];
-            [v36 renderPath:v43 context:c axisRect:x alpha:{y, width, height, v44}];
+            cGPath = [v37 CGPath];
+            [(HKGraphSeries *)selfCopy alpha];
+            [v36 renderPath:cGPath context:c axisRect:x alpha:{y, width, height, v44}];
           }
 
           if (([v34 isEmpty] & 1) == 0)
           {
             v45 = v75;
-            v46 = [v75 CGPath];
-            [(HKGraphSeries *)v82 alpha];
-            [v79 renderPath:v46 context:c axisRect:x alpha:{y, width, height, v47}];
+            cGPath2 = [v75 CGPath];
+            [(HKGraphSeries *)selfCopy alpha];
+            [fillStyle2 renderPath:cGPath2 context:c axisRect:x alpha:{y, width, height, v47}];
           }
         }
 
         if (v38)
         {
-          [(HKLineSeries *)v82 _renderLineEndCapsInContext:c endCaps:v76 endCapImage:v38];
+          [(HKLineSeries *)selfCopy _renderLineEndCapsInContext:c endCaps:v76 endCapImage:v38];
         }
 
-        v48 = *&a6->c;
-        v97 = *&a6->a;
+        v48 = *&transform->c;
+        v97 = *&transform->a;
         v98 = v48;
-        v99 = *&a6->tx;
-        [(HKLineSeries *)v82 _renderPointMarkersInContext:c blockCoordinates:v80 pointTransform:&v97 presentationStyle:v83];
-        v49 = [v83 annotationStyle];
-        if (v49)
+        v99 = *&transform->tx;
+        [(HKLineSeries *)selfCopy _renderPointMarkersInContext:c blockCoordinates:coordinatesCopy pointTransform:&v97 presentationStyle:v83];
+        annotationStyle = [v83 annotationStyle];
+        if (annotationStyle)
         {
-          v50 = *&a6->c;
-          v97 = *&a6->a;
+          v50 = *&transform->c;
+          v97 = *&transform->a;
           v98 = v50;
-          v99 = *&a6->tx;
-          [(HKLineSeries *)v82 _renderPointLabelsInContext:c blockCoordinates:v80 axisRect:&v97 pointTransform:v83 presentationStyle:v74 zoomLevelConfiguration:v72 seriesRenderingDelegate:x, y, width, height];
+          v99 = *&transform->tx;
+          [(HKLineSeries *)selfCopy _renderPointLabelsInContext:c blockCoordinates:coordinatesCopy axisRect:&v97 pointTransform:v83 presentationStyle:configurationCopy zoomLevelConfiguration:delegateCopy seriesRenderingDelegate:x, y, width, height];
         }
 
-        v51 = [v83 legendAnnotationStyle];
-        v52 = v51 == 0;
+        legendAnnotationStyle = [v83 legendAnnotationStyle];
+        v52 = legendAnnotationStyle == 0;
 
         if (!v52)
         {
-          v53 = [v83 legendAnnotationStyle];
-          v54 = [v53 leftOfSeries];
+          legendAnnotationStyle2 = [v83 legendAnnotationStyle];
+          leftOfSeries = [legendAnnotationStyle2 leftOfSeries];
 
           *&v97 = 0;
           *(&v97 + 1) = &v97;
@@ -1110,28 +1110,28 @@ LABEL_9:
           v94 = &unk_1C3DAF4DA;
           v95 = 0;
           v96 = 0;
-          v55 = *&a6->c;
-          v88 = *&a6->a;
+          v55 = *&transform->c;
+          v88 = *&transform->a;
           v89 = v55;
-          v90 = *&a6->tx;
-          if (v54)
+          v90 = *&transform->tx;
+          if (leftOfSeries)
           {
-            [v80 firstCoordinateWithTransform:&v88 roundToViewScale:1];
+            [coordinatesCopy firstCoordinateWithTransform:&v88 roundToViewScale:1];
           }
 
           else
           {
-            [v80 lastCoordinateWithTransform:&v88 roundToViewScale:1];
+            [coordinatesCopy lastCoordinateWithTransform:&v88 roundToViewScale:1];
           }
           v56 = ;
           [v56 coordinate];
           v57 = *(&v97 + 1);
           *(*(&v97 + 1) + 32) = v58;
           *(v57 + 40) = v59;
-          v60 = *&a6->c;
-          v88 = *&a6->a;
+          v60 = *&transform->c;
+          v88 = *&transform->a;
           v89 = v60;
-          v90 = *&a6->tx;
+          v90 = *&transform->tx;
           v61 = [v56 copyWithTransform:&v88 roundToViewScale:1];
           [v61 coordinate];
           v62 = v92;
@@ -1146,16 +1146,16 @@ LABEL_9:
           v84[1] = 3221225472;
           v84[2] = __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate_forceGapBetweenUntransformedPoints___block_invoke_2;
           v84[3] = &unk_1E81B6890;
-          v85 = v54;
+          v85 = leftOfSeries;
           v84[4] = v86;
           v84[5] = &v91;
           v84[6] = &v97;
-          v65 = *&a6->c;
-          v88 = *&a6->a;
+          v65 = *&transform->c;
+          v88 = *&transform->a;
           v89 = v65;
-          v90 = *&a6->tx;
-          [(HKLineSeries *)v82 _enumerateCoordinateListByRemovingOffscreenPoints:v80 withTransform:&v88 presentationStyle:v83 zoomLevelConfiguration:v74 axisRect:v84 block:x, y, width, height];
-          [(HKLineSeries *)v82 drawLegendPointLabelInContext:c point:v83 untransformedPoint:v54 axisRect:v92[4] presentationStyle:v92[5] leftOfPoint:*(*(&v97 + 1) + 32), *(*(&v97 + 1) + 40), x, y, width, height];
+          v90 = *&transform->tx;
+          [(HKLineSeries *)selfCopy _enumerateCoordinateListByRemovingOffscreenPoints:coordinatesCopy withTransform:&v88 presentationStyle:v83 zoomLevelConfiguration:configurationCopy axisRect:v84 block:x, y, width, height];
+          [(HKLineSeries *)selfCopy drawLegendPointLabelInContext:c point:v83 untransformedPoint:leftOfSeries axisRect:v92[4] presentationStyle:v92[5] leftOfPoint:*(*(&v97 + 1) + 32), *(*(&v97 + 1) + 40), x, y, width, height];
           _Block_object_dispose(v86, 8);
           _Block_object_dispose(&v91, 8);
           _Block_object_dispose(&v97, 8);
@@ -1172,11 +1172,11 @@ LABEL_9:
   }
 
   CGContextRestoreGState(c);
-  v66 = *&a6->c;
-  v97 = *&a6->a;
+  v66 = *&transform->c;
+  v97 = *&transform->a;
   v98 = v66;
-  v99 = *&a6->tx;
-  [(HKLineSeries *)v82 _updateSecondaryRenderContextWithBlockCoordinates:v80 secondaryRenderContext:v67 pointTransform:&v97 zoomLevelConfiguration:v74 axisRect:x, y, width, height];
+  v99 = *&transform->tx;
+  [(HKLineSeries *)selfCopy _updateSecondaryRenderContextWithBlockCoordinates:coordinatesCopy secondaryRenderContext:renderContextCopy pointTransform:&v97 zoomLevelConfiguration:configurationCopy axisRect:x, y, width, height];
 }
 
 void __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate_forceGapBetweenUntransformedPoints___block_invoke(uint64_t a1, void *a2, double a3, CGFloat a4, double a5, CGFloat MaxY)
@@ -1267,61 +1267,61 @@ uint64_t __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelCo
   return result;
 }
 
-- (void)drawLegendPointLabelInContext:(CGContext *)a3 point:(CGPoint)a4 untransformedPoint:(CGPoint)a5 axisRect:(CGRect)a6 presentationStyle:(id)a7 leftOfPoint:(BOOL)a8
+- (void)drawLegendPointLabelInContext:(CGContext *)context point:(CGPoint)point untransformedPoint:(CGPoint)untransformedPoint axisRect:(CGRect)rect presentationStyle:(id)style leftOfPoint:(BOOL)ofPoint
 {
-  v8 = a8;
-  y = a4.y;
-  x = a4.x;
+  ofPointCopy = ofPoint;
+  y = point.y;
+  x = point.x;
   v33[2] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v12 = [v11 legendAnnotationStyle];
-  v13 = [v12 labelStyle];
+  styleCopy = style;
+  legendAnnotationStyle = [styleCopy legendAnnotationStyle];
+  labelStyle = [legendAnnotationStyle labelStyle];
 
-  v14 = [v13 textColor];
-  v15 = [v13 font];
+  textColor = [labelStyle textColor];
+  font = [labelStyle font];
   v16 = *MEMORY[0x1E69DB650];
   v32[0] = *MEMORY[0x1E69DB648];
   v32[1] = v16;
-  v33[0] = v15;
-  v33[1] = v14;
+  v33[0] = font;
+  v33[1] = textColor;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v19 = [v11 legendAnnotationStyle];
-  v20 = [v19 localizedLabelKey];
-  v21 = [v18 localizedStringForKey:v20 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+  legendAnnotationStyle2 = [styleCopy legendAnnotationStyle];
+  localizedLabelKey = [legendAnnotationStyle2 localizedLabelKey];
+  v21 = [v18 localizedStringForKey:localizedLabelKey value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
   [v21 sizeWithAttributes:v17];
   v23 = v22;
   v25 = v24;
-  if (v8)
+  if (ofPointCopy)
   {
     v26 = x + v22 * -0.5 * 2.0 + -3.0;
-    v27 = [v11 pointMarkerStyle];
+    pointMarkerStyle = [styleCopy pointMarkerStyle];
 
-    [v27 radius];
+    [pointMarkerStyle radius];
     v29 = v26 - v28;
   }
 
   else
   {
-    v27 = [v11 pointMarkerStyle];
+    pointMarkerStyle = [styleCopy pointMarkerStyle];
 
-    [v27 radius];
+    [pointMarkerStyle radius];
     v29 = x + 3.0 + v30;
   }
 
   [(HKLineSeries *)self _renderPointLegendLabelWithText:v21 drawRect:v17 labelAttributes:v29, y + v25 * -0.5, v23, v25];
 }
 
-- (void)_updateSecondaryRenderContextWithBlockCoordinates:(id)a3 secondaryRenderContext:(id)a4 pointTransform:(CGAffineTransform *)a5 zoomLevelConfiguration:(id)a6 axisRect:(CGRect)a7
+- (void)_updateSecondaryRenderContextWithBlockCoordinates:(id)coordinates secondaryRenderContext:(id)context pointTransform:(CGAffineTransform *)transform zoomLevelConfiguration:(id)configuration axisRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  contextCopy = context;
+  configurationCopy = configuration;
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3010000000;
@@ -1350,9 +1350,9 @@ uint64_t __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelCo
   v38 = &__block_literal_global_332_0;
   v39 = v43;
   v40 = v44;
-  v20 = v16;
+  v20 = contextCopy;
   v36 = v20;
-  v37 = self;
+  selfCopy = self;
   v21 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -1367,12 +1367,12 @@ uint64_t __190__HKLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelCo
   v30 = &__block_literal_global_332_0;
   v23 = v20;
   v27 = v23;
-  v28 = self;
-  v24 = *&a5->c;
-  v25[0] = *&a5->a;
+  selfCopy2 = self;
+  v24 = *&transform->c;
+  v25[0] = *&transform->a;
   v25[1] = v24;
-  v25[2] = *&a5->tx;
-  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:v15 withTransform:v25 presentationStyle:0 zoomLevelConfiguration:v17 axisRect:v26 block:x, y, width, height];
+  v25[2] = *&transform->tx;
+  [(HKLineSeries *)self _enumerateCoordinateListByRemovingOffscreenPoints:coordinatesCopy withTransform:v25 presentationStyle:0 zoomLevelConfiguration:configurationCopy axisRect:v26 block:x, y, width, height];
 
   _Block_object_dispose(v43, 8);
   _Block_object_dispose(v44, 8);
@@ -1495,22 +1495,22 @@ LABEL_30:
   *(v23 + 40) = a5;
 }
 
-- (void)_renderLineEndCapsInContext:(CGContext *)a3 endCaps:(id)a4 endCapImage:(id)a5
+- (void)_renderLineEndCapsInContext:(CGContext *)context endCaps:(id)caps endCapImage:(id)image
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  CGContextSaveGState(a3);
-  v9 = HKChartSeriesPointMarkerBaseRect(v8);
+  capsCopy = caps;
+  imageCopy = image;
+  CGContextSaveGState(context);
+  v9 = HKChartSeriesPointMarkerBaseRect(imageCopy);
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v8 CGImage];
+  cGImage = [imageCopy CGImage];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = v7;
+  v17 = capsCopy;
   v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v18)
   {
@@ -1534,7 +1534,7 @@ LABEL_30:
         v32.size.width = v13;
         v32.size.height = v15;
         v33 = CGRectOffset(v32, v23, v25);
-        CGContextDrawImage(a3, v33, v16);
+        CGContextDrawImage(context, v33, cGImage);
         ++v21;
       }
 
@@ -1545,47 +1545,47 @@ LABEL_30:
     while (v19);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)_renderPointMarkersInContext:(CGContext *)a3 blockCoordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 presentationStyle:(id)a6
+- (void)_renderPointMarkersInContext:(CGContext *)context blockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform presentationStyle:(id)style
 {
-  v10 = a4;
-  v11 = [a6 pointMarkerStyle];
+  coordinatesCopy = coordinates;
+  pointMarkerStyle = [style pointMarkerStyle];
   selectedPointMarkerStyle = self->_selectedPointMarkerStyle;
-  v13 = [(NSArray *)self->_selectedPresentationStyles firstObject];
-  v14 = [v13 pointMarkerStyle];
-  v15 = *&a5->c;
-  v16[0] = *&a5->a;
+  firstObject = [(NSArray *)self->_selectedPresentationStyles firstObject];
+  pointMarkerStyle2 = [firstObject pointMarkerStyle];
+  v15 = *&transform->c;
+  v16[0] = *&transform->a;
   v16[1] = v15;
-  v16[2] = *&a5->tx;
-  [(HKLineSeries *)self renderPointMarkersInContext:a3 blockCoordinates:v10 pointTransform:v16 pointMarkerStyle:v11 selectedBoundsMarkerStyle:selectedPointMarkerStyle selectedPointMarkerStyle:v14];
+  v16[2] = *&transform->tx;
+  [(HKLineSeries *)self renderPointMarkersInContext:context blockCoordinates:coordinatesCopy pointTransform:v16 pointMarkerStyle:pointMarkerStyle selectedBoundsMarkerStyle:selectedPointMarkerStyle selectedPointMarkerStyle:pointMarkerStyle2];
 }
 
-- (void)renderPointMarkersInContext:(CGContext *)a3 blockCoordinates:(id)a4 pointTransform:(CGAffineTransform *)a5 pointMarkerStyle:(id)a6 selectedBoundsMarkerStyle:(id)a7 selectedPointMarkerStyle:(id)a8
+- (void)renderPointMarkersInContext:(CGContext *)context blockCoordinates:(id)coordinates pointTransform:(CGAffineTransform *)transform pointMarkerStyle:(id)style selectedBoundsMarkerStyle:(id)markerStyle selectedPointMarkerStyle:(id)pointMarkerStyle
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:a6];
+  coordinatesCopy = coordinates;
+  markerStyleCopy = markerStyle;
+  pointMarkerStyleCopy = pointMarkerStyle;
+  v17 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:style];
   if (v17)
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v18 = HKChartSeriesPointMarkerBaseRect(v17);
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v39 = [v17 CGImage];
-    v25 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:v15];
+    cGImage = [v17 CGImage];
+    v25 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:markerStyleCopy];
     v26 = HKChartSeriesPointMarkerBaseRect(v25);
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v38 = [v25 CGImage];
-    v33 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:v16];
-    v34 = v15;
-    v35 = v14;
-    v36 = [v33 CGImage];
+    cGImage2 = [v25 CGImage];
+    v33 = [(HKLineSeries *)self pointMarkerImageForPointMarkerStyle:pointMarkerStyleCopy];
+    v34 = markerStyleCopy;
+    v35 = coordinatesCopy;
+    cGImage3 = [v33 CGImage];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -1595,7 +1595,7 @@ LABEL_30:
     v41[1] = 3221225472;
     v41[2] = __144__HKLineSeries_renderPointMarkersInContext_blockCoordinates_pointTransform_pointMarkerStyle_selectedBoundsMarkerStyle_selectedPointMarkerStyle___block_invoke;
     v41[3] = &__block_descriptor_192_e114_v64__0___HKLineSeriesBlockCoordinate_8____HKGraphSeriesDataBlockPath_qqq_q_16___HKLineSeriesBlockCoordinate_48_B56l;
-    v41[4] = v39;
+    v41[4] = cGImage;
     *&v41[5] = v18;
     v41[6] = v20;
     v41[7] = v22;
@@ -1604,21 +1604,21 @@ LABEL_30:
     v43 = v54;
     v44 = v55;
     v45 = v56;
-    v46 = v38;
+    v46 = cGImage2;
     v47 = v26;
     v48 = v28;
     v49 = v30;
     v50 = v32;
-    v51 = v36;
-    v52 = a3;
-    v14 = v35;
-    v15 = v34;
-    v37 = *&a5->c;
-    v40[0] = *&a5->a;
+    v51 = cGImage3;
+    contextCopy = context;
+    coordinatesCopy = v35;
+    markerStyleCopy = v34;
+    v37 = *&transform->c;
+    v40[0] = *&transform->a;
     v40[1] = v37;
-    v40[2] = *&a5->tx;
-    [v14 enumerateCoordinatesWithTransform:v40 roundToViewScale:1 block:v41];
-    CGContextRestoreGState(a3);
+    v40[2] = *&transform->tx;
+    [coordinatesCopy enumerateCoordinatesWithTransform:v40 roundToViewScale:1 block:v41];
+    CGContextRestoreGState(context);
   }
 }
 
@@ -1669,33 +1669,33 @@ void __144__HKLineSeries_renderPointMarkersInContext_blockCoordinates_pointTrans
   CGContextDrawImage(v20, v31, v9);
 }
 
-- (void)_renderPointLabelsInContext:(CGContext *)a3 blockCoordinates:(id)a4 axisRect:(CGRect)a5 pointTransform:(CGAffineTransform *)a6 presentationStyle:(id)a7 zoomLevelConfiguration:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)_renderPointLabelsInContext:(CGContext *)context blockCoordinates:(id)coordinates axisRect:(CGRect)rect pointTransform:(CGAffineTransform *)transform presentationStyle:(id)style zoomLevelConfiguration:(id)configuration seriesRenderingDelegate:(id)delegate
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v61[2] = *MEMORY[0x1E69E9840];
-  v18 = a9;
-  v42 = a8;
-  v19 = a7;
-  v41 = a4;
-  v20 = [v19 annotationStyle];
-  v21 = [v20 textColor];
-  v22 = [v20 font];
+  delegateCopy = delegate;
+  configurationCopy = configuration;
+  styleCopy = style;
+  coordinatesCopy = coordinates;
+  annotationStyle = [styleCopy annotationStyle];
+  textColor = [annotationStyle textColor];
+  font = [annotationStyle font];
   v23 = *MEMORY[0x1E69DB650];
   v60[0] = *MEMORY[0x1E69DB648];
   v60[1] = v23;
-  v44 = v22;
-  v45 = v21;
-  v61[0] = v22;
-  v61[1] = v21;
+  v44 = font;
+  v45 = textColor;
+  v61[0] = font;
+  v61[1] = textColor;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:2];
-  v25 = [v20 numberFormatter];
-  v26 = v25;
-  if (v25)
+  numberFormatter = [annotationStyle numberFormatter];
+  v26 = numberFormatter;
+  if (numberFormatter)
   {
-    v27 = v25;
+    v27 = numberFormatter;
   }
 
   else
@@ -1706,7 +1706,7 @@ void __144__HKLineSeries_renderPointMarkersInContext_blockCoordinates_pointTrans
   v28 = v27;
 
   v29 = [HKPointLabelEngine alloc];
-  v30 = [v18 seriesDrawingDuringTiling];
+  seriesDrawingDuringTiling = [delegateCopy seriesDrawingDuringTiling];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __150__HKLineSeries__renderPointLabelsInContext_blockCoordinates_axisRect_pointTransform_presentationStyle_zoomLevelConfiguration_seriesRenderingDelegate___block_invoke;
@@ -1715,28 +1715,28 @@ void __144__HKLineSeries_renderPointMarkersInContext_blockCoordinates_pointTrans
   v58 = v31;
   v32 = v24;
   v59 = v32;
-  v33 = [(HKPointLabelEngine *)v29 initWithBoundingRegion:v30 ^ 1u isLabelShiftingEnabled:v57 labelSizeBlock:x, y, width, height];
-  CGContextSaveGState(a3);
+  height = [(HKPointLabelEngine *)v29 initWithBoundingRegion:seriesDrawingDuringTiling ^ 1u isLabelShiftingEnabled:v57 labelSizeBlock:x, y, width, height];
+  CGContextSaveGState(context);
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __150__HKLineSeries__renderPointLabelsInContext_blockCoordinates_axisRect_pointTransform_presentationStyle_zoomLevelConfiguration_seriesRenderingDelegate___block_invoke_2;
   v50[3] = &unk_1E81B6970;
-  v34 = v33;
+  v34 = height;
   v51 = v34;
-  v52 = self;
-  v35 = self;
-  v56 = a3;
+  selfCopy = self;
+  selfCopy2 = self;
+  contextCopy = context;
   v36 = v31;
   v53 = v36;
   v37 = v32;
   v54 = v37;
-  v38 = v18;
+  v38 = delegateCopy;
   v55 = v38;
-  v39 = *&a6->c;
-  v47 = *&a6->a;
+  v39 = *&transform->c;
+  v47 = *&transform->a;
   v48 = v39;
-  v49 = *&a6->tx;
-  [(HKLineSeries *)v35 _enumerateCoordinateListByRemovingOffscreenPoints:v41 withTransform:&v47 presentationStyle:v19 zoomLevelConfiguration:v42 axisRect:v50 block:x, y, width, height];
+  v49 = *&transform->tx;
+  [(HKLineSeries *)selfCopy2 _enumerateCoordinateListByRemovingOffscreenPoints:coordinatesCopy withTransform:&v47 presentationStyle:styleCopy zoomLevelConfiguration:configurationCopy axisRect:v50 block:x, y, width, height];
 
   if ([(HKPointLabelEngine *)v34 processLastPoint])
   {
@@ -1761,10 +1761,10 @@ void __144__HKLineSeries_renderPointMarkersInContext_blockCoordinates_pointTrans
     v46[0] = v47;
     v46[1] = v48;
     v46[2] = v49;
-    [(HKLineSeries *)v35 _renderPointLabelInContext:a3 renderingData:v46 numberFormatter:v36 labelAttributes:v37 seriesRenderingDelegate:v38];
+    [(HKLineSeries *)selfCopy2 _renderPointLabelInContext:context renderingData:v46 numberFormatter:v36 labelAttributes:v37 seriesRenderingDelegate:v38];
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 double __150__HKLineSeries__renderPointLabelsInContext_blockCoordinates_axisRect_pointTransform_presentationStyle_zoomLevelConfiguration_seriesRenderingDelegate___block_invoke(uint64_t a1)
@@ -1817,65 +1817,65 @@ uint64_t __150__HKLineSeries__renderPointLabelsInContext_blockCoordinates_axisRe
   return result;
 }
 
-- (void)_renderPointLabelInContext:(CGContext *)a3 renderingData:(id *)a4 numberFormatter:(id)a5 labelAttributes:(id)a6 seriesRenderingDelegate:(id)a7
+- (void)_renderPointLabelInContext:(CGContext *)context renderingData:(id *)data numberFormatter:(id)formatter labelAttributes:(id)attributes seriesRenderingDelegate:(id)delegate
 {
-  v19 = a6;
-  v11 = a7;
+  attributesCopy = attributes;
+  delegateCopy = delegate;
   v12 = MEMORY[0x1E696AD98];
-  var1 = a4->var1;
-  v14 = a5;
+  var1 = data->var1;
+  formatterCopy = formatter;
   v15 = [v12 numberWithDouble:var1];
-  v16 = [v14 stringFromNumber:v15 displayType:0 unitController:0];
+  v16 = [formatterCopy stringFromNumber:v15 displayType:0 unitController:0];
 
-  if ((a4->var2 & 2) != 0)
+  if ((data->var2 & 2) != 0)
   {
-    if (([v11 seriesDrawingDuringTiling] & 1) != 0 || objc_msgSend(v11, "seriesDrawingDuringScrolling"))
+    if (([delegateCopy seriesDrawingDuringTiling] & 1) != 0 || objc_msgSend(delegateCopy, "seriesDrawingDuringScrolling"))
     {
-      v17 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+      hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E69DC888] clearColor];
+      hk_chartBackgroundColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
-    v18 = v17;
-    [v16 hk_drawInRect:v19 withAttributes:v17 outlineWidth:a3 outlineColor:a4->var0.origin.x context:{a4->var0.origin.y, a4->var0.size.width, a4->var0.size.height, 8.0}];
+    v18 = hk_chartBackgroundColor;
+    [v16 hk_drawInRect:attributesCopy withAttributes:hk_chartBackgroundColor outlineWidth:context outlineColor:data->var0.origin.x context:{data->var0.origin.y, data->var0.size.width, data->var0.size.height, 8.0}];
   }
 
   else
   {
-    [v16 drawInRect:v19 withAttributes:{a4->var0.origin.x, a4->var0.origin.y, a4->var0.size.width, a4->var0.size.height}];
+    [v16 drawInRect:attributesCopy withAttributes:{data->var0.origin.x, data->var0.origin.y, data->var0.size.width, data->var0.size.height}];
   }
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKLineSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_opt_new();
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81B6998;
-  v23 = v12;
-  v24 = v13;
+  v23 = transform;
+  v24 = transform2;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  v16 = transform2;
+  v17 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v15 blockPath:&v20];
 
   return v18;
@@ -1905,15 +1905,15 @@ void __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke
   }
 }
 
-- (int64_t)resolutionForTimeScope:(int64_t)a3 traitResolution:(int64_t)a4
+- (int64_t)resolutionForTimeScope:(int64_t)scope traitResolution:(int64_t)resolution
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HKLineSeries *)self unhighlightedPresentationStyles];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  unhighlightedPresentationStyles = [(HKLineSeries *)self unhighlightedPresentationStyles];
+  v7 = [unhighlightedPresentationStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1925,16 +1925,16 @@ void __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(unhighlightedPresentationStyles);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) annotationStyle];
-        v13 = v12 != 0;
+        annotationStyle = [*(*(&v15 + 1) + 8 * i) annotationStyle];
+        v13 = annotationStyle != 0;
 
         v9 |= v13;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [unhighlightedPresentationStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1945,9 +1945,9 @@ void __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke
     v9 = 0;
   }
 
-  if (a4 == 1)
+  if (resolution == 1)
   {
-    return (a3 == 5) & v9;
+    return (scope == 5) & v9;
   }
 
   else
@@ -1956,61 +1956,61 @@ void __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  v5 = a4;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKLineSeries distanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v5 coordinate];
+  [coordinateCopy coordinate];
   UIDistanceBetweenPoints();
   v7 = v6;
 
   return v7;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKLineSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 coordinate];
+  [coordinateCopy coordinate];
   v8 = vabdd_f64(v7, x);
 
   return v8;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  v6 = a4;
+  y = point.y;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKLineSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 coordinate];
+  [coordinateCopy coordinate];
   v8 = v7 - y;
 
   return v8;
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 coordinate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [coordinate coordinate];
   v9 = v8;
   v11 = v10;
   v12 = x;
@@ -2021,23 +2021,23 @@ void __58__HKLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke
   return CGRectContainsPoint(*&v12, *&v9);
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a4;
-  [a3 coordinate];
+  thanCopy = than;
+  [coordinate coordinate];
   v7 = v6;
-  [v5 coordinate];
+  [thanCopy coordinate];
   v9 = v8;
 
   return v7 < v9;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a4;
-  [a3 coordinate];
+  thanCopy = than;
+  [coordinate coordinate];
   v7 = v6;
-  [v5 coordinate];
+  [thanCopy coordinate];
   v9 = v8;
 
   return v7 > v9;

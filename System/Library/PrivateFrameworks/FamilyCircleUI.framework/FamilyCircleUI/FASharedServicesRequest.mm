@@ -1,20 +1,20 @@
 @interface FASharedServicesRequest
-- (FASharedServicesRequest)initWithAppleAccount:(id)a3 urlString:(id)a4;
+- (FASharedServicesRequest)initWithAppleAccount:(id)account urlString:(id)string;
 - (id)urlRequest;
 @end
 
 @implementation FASharedServicesRequest
 
-- (FASharedServicesRequest)initWithAppleAccount:(id)a3 urlString:(id)a4
+- (FASharedServicesRequest)initWithAppleAccount:(id)account urlString:(id)string
 {
-  v7 = a3;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = FASharedServicesRequest;
-  v8 = [(AARequest *)&v13 initWithURLString:a4];
+  v8 = [(AARequest *)&v13 initWithURLString:string];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appleAccount, a3);
+    objc_storeStrong(&v8->_appleAccount, account);
     v10 = [objc_alloc(MEMORY[0x277D082E8]) initWithAccount:v9->_appleAccount];
     requestConfigurator = v9->_requestConfigurator;
     v9->_requestConfigurator = v10;
@@ -27,8 +27,8 @@
 {
   v6.receiver = self;
   v6.super_class = FASharedServicesRequest;
-  v3 = [(AARequest *)&v6 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v6 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   [(FARequestConfigurator *)self->_requestConfigurator setAttachSetupHeader:0];

@@ -1,20 +1,20 @@
 @interface CKDVolume
 + (id)mountedVolumes;
-+ (id)volumeForPath:(const char *)a3;
-- (CKDVolume)initWithVolumeUUID:(id)a3 deviceID:(id)a4 mountToPath:(id)a5;
++ (id)volumeForPath:(const char *)path;
+- (CKDVolume)initWithVolumeUUID:(id)d deviceID:(id)iD mountToPath:(id)path;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKDVolume
 
-+ (id)volumeForPath:(const char *)a3
++ (id)volumeForPath:(const char *)path
 {
   v28 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   memset(v27, 0, 496);
   v20 = xmmword_225447C20;
   v21 = 0;
-  if (getattrlist(a3, &v20, &v26, 0x420uLL, 0))
+  if (getattrlist(path, &v20, &v26, 0x420uLL, 0))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -28,7 +28,7 @@
       v18 = __error();
       v19 = strerror(*v18);
       *buf = 136446466;
-      v23 = a3;
+      pathCopy = path;
       v24 = 2082;
       v25 = v19;
       _os_log_debug_impl(&dword_22506F000, v17, OS_LOG_TYPE_DEBUG, "getattrlist() failed for path %{public}s - %{public}s", buf, 0x16u);
@@ -64,7 +64,7 @@
     v9 = 88;
     do
     {
-      v11 = objc_msgSend_volumeForPath_(a1, v6, v13 + v9);
+      v11 = objc_msgSend_volumeForPath_(self, v6, v13 + v9);
       if (v11)
       {
         objc_msgSend_addObject_(v7, v10, v11);
@@ -85,26 +85,26 @@
   return v7;
 }
 
-- (CKDVolume)initWithVolumeUUID:(id)a3 deviceID:(id)a4 mountToPath:(id)a5
+- (CKDVolume)initWithVolumeUUID:(id)d deviceID:(id)iD mountToPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 || !v10)
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
+  if (!dCopy || !iDCopy)
   {
     __assert_rtn("[CKDVolume initWithVolumeUUID:deviceID:mountToPath:]", "CKDVolume.m", 63, "volumeUUID && deviceID && volumeUUID && deviceID");
   }
 
-  v12 = v11;
+  v12 = pathCopy;
   v16.receiver = self;
   v16.super_class = CKDVolume;
   v13 = [(CKDVolume *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_volumeUUID, a3);
-    objc_storeStrong(&v14->_deviceID, a4);
-    objc_storeStrong(&v14->_mountPath, a5);
+    objc_storeStrong(&v13->_volumeUUID, d);
+    objc_storeStrong(&v14->_deviceID, iD);
+    objc_storeStrong(&v14->_mountPath, path);
   }
 
   return v14;

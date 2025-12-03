@@ -1,19 +1,19 @@
 @interface PXSharedLibraryParticipantTableCellModel
 - (PXSharedLibraryParticipantTableCellModel)init;
-- (void)configureForParticipant:(id)a3 displayScale:(double)a4 isRTL:(BOOL)a5;
-- (void)setAddress:(id)a3;
-- (void)setEllipsisButtonAllowed:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRequestID:(int64_t)a3;
+- (void)configureForParticipant:(id)participant displayScale:(double)scale isRTL:(BOOL)l;
+- (void)setAddress:(id)address;
+- (void)setEllipsisButtonAllowed:(BOOL)allowed;
+- (void)setImage:(id)image;
+- (void)setName:(id)name;
+- (void)setRequestID:(int64_t)d;
 @end
 
 @implementation PXSharedLibraryParticipantTableCellModel
 
-- (void)configureForParticipant:(id)a3 displayScale:(double)a4 isRTL:(BOOL)a5
+- (void)configureForParticipant:(id)participant displayScale:(double)scale isRTL:(BOOL)l
 {
-  v5 = a5;
-  v8 = a3;
+  lCopy = l;
+  participantCopy = participant;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -24,18 +24,18 @@
   v18[3] = &unk_1E7735110;
   v18[4] = self;
   v18[5] = &v19;
-  v9 = [v8 fetchImageForTargetSize:v5 displayScale:v18 isRTL:37.0 resultHandler:{37.0, a4}];
+  v9 = [participantCopy fetchImageForTargetSize:lCopy displayScale:v18 isRTL:37.0 resultHandler:{37.0, scale}];
   v20[3] = v9;
-  v10 = [v8 name];
-  v11 = [v8 appleIDAddress];
+  name = [participantCopy name];
+  appleIDAddress = [participantCopy appleIDAddress];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__PXSharedLibraryParticipantTableCellModel_configureForParticipant_displayScale_isRTL___block_invoke_4;
   v14[3] = &unk_1E7735138;
   v17 = &v19;
-  v12 = v10;
+  v12 = name;
   v15 = v12;
-  v13 = v11;
+  v13 = appleIDAddress;
   v16 = v13;
   [(PXSharedLibraryParticipantTableCellModel *)self performChanges:v14];
 
@@ -75,24 +75,24 @@ void __87__PXSharedLibraryParticipantTableCellModel_configureForParticipant_disp
   }
 }
 
-- (void)setEllipsisButtonAllowed:(BOOL)a3
+- (void)setEllipsisButtonAllowed:(BOOL)allowed
 {
-  if (self->_ellipsisButtonAllowed != a3)
+  if (self->_ellipsisButtonAllowed != allowed)
   {
-    self->_ellipsisButtonAllowed = a3;
+    self->_ellipsisButtonAllowed = allowed;
     [(PXSharedLibraryParticipantTableCellModel *)self signalChange:16];
   }
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   address = self->_address;
-  if (address != v4)
+  if (address != addressCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)address isEqualToString:v4];
-    v4 = v9;
+    v9 = addressCopy;
+    v6 = [(NSString *)address isEqualToString:addressCopy];
+    addressCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -100,20 +100,20 @@ void __87__PXSharedLibraryParticipantTableCellModel_configureForParticipant_disp
       self->_address = v7;
 
       [(PXSharedLibraryParticipantTableCellModel *)self signalChange:8];
-      v4 = v9;
+      addressCopy = v9;
     }
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   name = self->_name;
-  if (name != v4)
+  if (name != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)name isEqualToString:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)name isEqualToString:nameCopy];
+    nameCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -121,29 +121,29 @@ void __87__PXSharedLibraryParticipantTableCellModel_configureForParticipant_disp
       self->_name = v7;
 
       [(PXSharedLibraryParticipantTableCellModel *)self signalChange:4];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setRequestID:(int64_t)a3
+- (void)setRequestID:(int64_t)d
 {
-  if (self->_requestID != a3)
+  if (self->_requestID != d)
   {
-    self->_requestID = a3;
+    self->_requestID = d;
     [(PXSharedLibraryParticipantTableCellModel *)self signalChange:2];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   image = self->_image;
-  if (image != v4)
+  if (image != imageCopy)
   {
-    v9 = v4;
-    v6 = [(UIImage *)image isEqual:v4];
-    v4 = v9;
+    v9 = imageCopy;
+    v6 = [(UIImage *)image isEqual:imageCopy];
+    imageCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIImage *)v9 copy];
@@ -151,7 +151,7 @@ void __87__PXSharedLibraryParticipantTableCellModel_configureForParticipant_disp
       self->_image = v7;
 
       [(PXSharedLibraryParticipantTableCellModel *)self signalChange:1];
-      v4 = v9;
+      imageCopy = v9;
     }
   }
 }

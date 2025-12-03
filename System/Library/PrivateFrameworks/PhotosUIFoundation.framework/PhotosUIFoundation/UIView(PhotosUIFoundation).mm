@@ -35,10 +35,10 @@
 
 - (double)px_peripheryInsets
 {
-  v2 = [a1 px_screen];
+  px_screen = [self px_screen];
   if (objc_opt_respondsToSelector())
   {
-    [v2 _peripheryInsets];
+    [px_screen _peripheryInsets];
     v4 = v3;
     v6 = v5;
     v8 = v7;
@@ -53,20 +53,20 @@
     v10 = *(MEMORY[0x1E69DDCE0] + 24);
   }
 
-  [v2 bounds];
+  [px_screen bounds];
   v45 = v4;
   v12 = v6 + v11;
   v14 = v4 + v13;
   v16 = v15 - (v10 + v6);
   v18 = v17 - (v8 + v4);
-  v19 = [v2 coordinateSpace];
-  [v19 convertRect:a1 toCoordinateSpace:{v12, v14, v16, v18}];
+  coordinateSpace = [px_screen coordinateSpace];
+  [coordinateSpace convertRect:self toCoordinateSpace:{v12, v14, v16, v18}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  [a1 bounds];
+  [self bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -124,14 +124,14 @@
 
 - (void)px_screenScale
 {
-  v1 = [a1 px_screen];
-  [v1 scale];
+  px_screen = [self px_screen];
+  [px_screen scale];
 }
 
 - (double)maximumDynamicRangeHeadroom
 {
-  v1 = [a1 px_screen];
-  [v1 maximumDynamicRangeHeadroom];
+  px_screen = [self px_screen];
+  [px_screen maximumDynamicRangeHeadroom];
   v3 = v2;
 
   return v3;
@@ -141,42 +141,42 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = a1;
-  v6 = [v5 superview];
-  if (v6)
+  selfCopy = self;
+  superview = [selfCopy superview];
+  if (superview)
   {
-    [v5 center];
-    [v4 convertPoint:v6 fromView:?];
-    [v5 setCenter:?];
-    if (v5)
+    [selfCopy center];
+    [v4 convertPoint:superview fromView:?];
+    [selfCopy setCenter:?];
+    if (selfCopy)
     {
-      [v5 transform3D];
+      [selfCopy transform3D];
       if (CATransform3DIsIdentity(&v22))
       {
         memset(&v22, 0, 48);
-        [v5 transform];
+        [selfCopy transform];
         if (v4)
         {
 LABEL_5:
-          [v4 px_convertTransform:&v14 fromView:v6];
+          [v4 px_convertTransform:&v14 fromView:superview];
 LABEL_12:
           *&v13.m11 = *&v22.m11;
           *&v13.m13 = *&v22.m13;
           *&v13.m21 = *&v22.m21;
-          [v5 setTransform:&v13];
+          [selfCopy setTransform:&v13];
 LABEL_18:
-          v8 = [v4 layer];
-          v9 = [v8 flipsHorizontalAxis];
+          layer = [v4 layer];
+          flipsHorizontalAxis = [layer flipsHorizontalAxis];
 
-          if (v9)
+          if (flipsHorizontalAxis)
           {
-            v10 = [v5 layer];
-            v11 = [v10 flipsHorizontalAxis];
-            v12 = [v5 layer];
-            [v12 setFlipsHorizontalAxis:v11 ^ 1u];
+            layer2 = [selfCopy layer];
+            flipsHorizontalAxis2 = [layer2 flipsHorizontalAxis];
+            layer3 = [selfCopy layer];
+            [layer3 setFlipsHorizontalAxis:flipsHorizontalAxis2 ^ 1u];
           }
 
-          [v4 addSubview:v5];
+          [v4 addSubview:selfCopy];
           goto LABEL_21;
         }
 
@@ -186,14 +186,14 @@ LABEL_11:
       }
 
       memset(&v22, 0, sizeof(v22));
-      [v5 transform3D];
+      [selfCopy transform3D];
       if (v4)
       {
 LABEL_14:
-        [v4 px_convertTransform3D:&v14 fromView:v6];
+        [v4 px_convertTransform3D:&v14 fromView:superview];
 LABEL_17:
         v13 = v22;
-        [v5 setTransform3D:&v13];
+        [selfCopy setTransform3D:&v13];
         goto LABEL_18;
       }
     }
@@ -238,7 +238,7 @@ LABEL_17:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     LODWORD(v22.m11) = 138412546;
-    *(&v22.m11 + 4) = v5;
+    *(&v22.m11 + 4) = selfCopy;
     WORD2(v22.m12) = 2112;
     *(&v22.m12 + 6) = v4;
     _os_log_error_impl(&dword_1B3F73000, v7, OS_LOG_TYPE_ERROR, "requested to transfer orphaned view %@ to superview %@, which is undefined", &v22, 0x16u);
@@ -268,11 +268,11 @@ LABEL_21:
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = [a1 layer];
-  v9 = [v7 layer];
-  v10 = [v8 ancestorSharedWithLayer:v9];
+  layer = [self layer];
+  layer2 = [v7 layer];
+  v10 = [layer ancestorSharedWithLayer:layer2];
 
-  v11 = [v10 delegate];
+  delegate = [v10 delegate];
   if (v10)
   {
     objc_opt_class();
@@ -282,13 +282,13 @@ LABEL_21:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf.a) = 138413058;
-        *(&buf.a + 4) = a1;
+        *(&buf.a + 4) = self;
         WORD2(buf.b) = 2112;
         *(&buf.b + 6) = v7;
         HIWORD(buf.c) = 2112;
         *&buf.d = v10;
         LOWORD(buf.tx) = 2112;
-        *(&buf.tx + 2) = v11;
+        *(&buf.tx + 2) = delegate;
         _os_log_error_impl(&dword_1B3F73000, v19, OS_LOG_TYPE_ERROR, "Ancestor layer's delegate is not a UIView. self=%@ view=%@ ancestorLayer=%@ ancestorView=%@", &buf, 0x2Au);
       }
 
@@ -296,7 +296,7 @@ LABEL_21:
     }
   }
 
-  if (!v11)
+  if (!delegate)
   {
 LABEL_8:
     v20 = a2[1];
@@ -310,13 +310,13 @@ LABEL_8:
   aBlock[1] = 3221225472;
   aBlock[2] = __59__UIView_PhotosUIFoundation__px_convertTransform_fromView___block_invoke;
   aBlock[3] = &unk_1E7BB74E8;
-  v26 = v11;
-  v12 = v11;
+  v26 = delegate;
+  v12 = delegate;
   v13 = _Block_copy(aBlock);
   memset(&buf, 0, sizeof(buf));
   (v13)[2](&buf);
   memset(&v24, 0, sizeof(v24));
-  (v13[2])(&t1, v13, a1);
+  (v13[2])(&t1, v13, self);
   CGAffineTransformInvert(&v24, &t1);
   v14 = a2[1];
   *a4 = *a2;
@@ -347,11 +347,11 @@ LABEL_9:
 {
   v46 = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = [a1 layer];
-  v9 = [v7 layer];
-  v10 = [v8 ancestorSharedWithLayer:v9];
+  layer = [self layer];
+  layer2 = [v7 layer];
+  v10 = [layer ancestorSharedWithLayer:layer2];
 
-  v11 = [v10 delegate];
+  delegate = [v10 delegate];
   if (v10)
   {
     objc_opt_class();
@@ -361,13 +361,13 @@ LABEL_9:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf.m11) = 138413058;
-        *(&buf.m11 + 4) = a1;
+        *(&buf.m11 + 4) = self;
         WORD2(buf.m12) = 2112;
         *(&buf.m12 + 6) = v7;
         HIWORD(buf.m13) = 2112;
         *&buf.m14 = v10;
         LOWORD(buf.m21) = 2112;
-        *(&buf.m21 + 2) = v11;
+        *(&buf.m21 + 2) = delegate;
         _os_log_error_impl(&dword_1B3F73000, v34, OS_LOG_TYPE_ERROR, "Ancestor layer's delegate is not a UIView. self=%@ view=%@ ancestorLayer=%@ ancestorView=%@", &buf, 0x2Au);
       }
 
@@ -375,7 +375,7 @@ LABEL_9:
     }
   }
 
-  if (!v11)
+  if (!delegate)
   {
 LABEL_8:
     v35 = a2[5];
@@ -397,13 +397,13 @@ LABEL_8:
   aBlock[1] = 3221225472;
   aBlock[2] = __61__UIView_PhotosUIFoundation__px_convertTransform3D_fromView___block_invoke;
   aBlock[3] = &unk_1E7BB74C0;
-  v44 = v11;
-  v12 = v11;
+  v44 = delegate;
+  v12 = delegate;
   v13 = _Block_copy(aBlock);
   memset(&buf, 0, sizeof(buf));
   (v13)[2](&buf);
   memset(&v42, 0, sizeof(v42));
-  (v13[2])(&a, v13, a1);
+  (v13[2])(&a, v13, self);
   CATransform3DInvert(&v42, &a);
   v15 = a2[4];
   v14 = a2[5];
@@ -497,25 +497,25 @@ LABEL_9:
 
 - (id)px_ancestorViewPassingTest:()PhotosUIFoundation
 {
-  v4 = a1;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      if ((*(a3 + 16))(a3, v4))
+      if ((*(a3 + 16))(a3, selfCopy))
       {
         break;
       }
 
-      v5 = [v4 superview];
+      superview = [selfCopy superview];
 
-      v4 = v5;
+      selfCopy = superview;
     }
 
-    while (v5);
+    while (superview);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)px_ancestorViewOfClass:()PhotosUIFoundation
@@ -525,23 +525,23 @@ LABEL_9:
   v5[2] = __53__UIView_PhotosUIFoundation__px_ancestorViewOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e16_B16__0__UIView_8lu32l8;
   v5[4] = a3;
-  v3 = [a1 px_ancestorViewPassingTest:v5];
+  v3 = [self px_ancestorViewPassingTest:v5];
 
   return v3;
 }
 
 - (id)px_rootView
 {
-  v2 = [a1 window];
-  v3 = v2;
-  if (v2)
+  window = [self window];
+  v3 = window;
+  if (window)
   {
-    v4 = v2;
+    v4 = window;
   }
 
   else
   {
-    v4 = [a1 px_ancestorViewPassingTest:&__block_literal_global_6];
+    v4 = [self px_ancestorViewPassingTest:&__block_literal_global_6];
   }
 
   v5 = v4;
@@ -551,28 +551,28 @@ LABEL_9:
 
 - (uint64_t)px_hasHiddenAncestor
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     v3 = 0;
     do
     {
-      v4 = [v2 isHidden];
-      if (v4)
+      isHidden = [v2 isHidden];
+      if (isHidden)
       {
         break;
       }
 
       objc_opt_class();
       v3 |= objc_opt_isKindOfClass();
-      v5 = [v2 superview];
+      superview = [v2 superview];
 
-      v2 = v5;
+      v2 = superview;
     }
 
-    while (v5);
-    v6 = v4 | v3 ^ 1;
+    while (superview);
+    v6 = isHidden | v3 ^ 1;
   }
 
   else
@@ -588,24 +588,24 @@ LABEL_9:
   v19[4] = *MEMORY[0x1E69E9840];
   v4 = a3;
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [a1 addSubview:v4];
+  [self addSubview:v4];
   v15 = MEMORY[0x1E696ACD8];
-  v18 = [v4 topAnchor];
-  v17 = [a1 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[0] = v16;
-  v5 = [v4 leadingAnchor];
-  v6 = [a1 leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[1] = v7;
-  v8 = [a1 trailingAnchor];
-  v9 = [v4 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor = [self trailingAnchor];
+  trailingAnchor2 = [v4 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[2] = v10;
-  v11 = [a1 bottomAnchor];
-  v12 = [v4 bottomAnchor];
+  bottomAnchor = [self bottomAnchor];
+  bottomAnchor2 = [v4 bottomAnchor];
 
-  v13 = [v11 constraintEqualToAnchor:v12];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   [v15 activateConstraints:v14];
@@ -613,22 +613,22 @@ LABEL_9:
 
 - (BOOL)px_intersectsWindowBounds
 {
-  v2 = [a1 window];
-  if (v2)
+  window = [self window];
+  if (window)
   {
-    [a1 frame];
+    [self frame];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [a1 superview];
-    [v2 convertRect:v11 fromView:{v4, v6, v8, v10}];
+    superview = [self superview];
+    [window convertRect:superview fromView:{v4, v6, v8, v10}];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    [v2 bounds];
+    [window bounds];
     v27.origin.x = v20;
     v27.origin.y = v21;
     v27.size.width = v22;
@@ -650,8 +650,8 @@ LABEL_9:
 
 - (double)currentDynamicRangeHeadroom
 {
-  v1 = [a1 px_screen];
-  [v1 currentDynamicRangeHeadroom];
+  px_screen = [self px_screen];
+  [px_screen currentDynamicRangeHeadroom];
   v3 = v2;
 
   return v3;
@@ -660,11 +660,11 @@ LABEL_9:
 - (BOOL)px_isAncestorOfFocusEnvironment:()PhotosUIFoundation
 {
   v4 = a3;
-  v5 = v4;
-  for (i = v4 != 0; v5 != a1 && v5; i = v5 != 0)
+  parentFocusEnvironment = v4;
+  for (i = v4 != 0; parentFocusEnvironment != self && parentFocusEnvironment; i = parentFocusEnvironment != 0)
   {
-    v7 = v5;
-    v5 = [v5 parentFocusEnvironment];
+    v7 = parentFocusEnvironment;
+    parentFocusEnvironment = [parentFocusEnvironment parentFocusEnvironment];
   }
 
   return i;
@@ -683,8 +683,8 @@ LABEL_9:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a1 subviews];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  subviews = [self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v9)
   {
     v10 = *v18;
@@ -694,7 +694,7 @@ LABEL_3:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(subviews);
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
@@ -723,7 +723,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v9 = [subviews countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -741,13 +741,13 @@ LABEL_3:
 {
   v6 = a3;
   v7 = a4;
-  if (v6[2](v6, a1))
+  if (v6[2](v6, self))
   {
     v8 = 0;
-    v7[2](v7, a1, &v8);
+    v7[2](v7, self, &v8);
     if ((v8 & 1) == 0)
     {
-      [a1 px_enumerateDescendantSubviewsPassingTest:v6 usingBlock:v7];
+      [self px_enumerateDescendantSubviewsPassingTest:v6 usingBlock:v7];
     }
   }
 }
@@ -756,20 +756,20 @@ LABEL_3:
 {
   v4 = a3;
   v5 = 0;
-  v4[2](v4, a1, &v5);
+  v4[2](v4, self, &v5);
   if ((v5 & 1) == 0)
   {
-    [a1 px_enumerateDescendantSubviewsUsingBlock:v4];
+    [self px_enumerateDescendantSubviewsUsingBlock:v4];
   }
 }
 
 - (double)px_windowReferenceSize
 {
-  v1 = [a1 window];
-  v2 = v1;
-  if (v1)
+  window = [self window];
+  v2 = window;
+  if (window)
   {
-    [v1 bounds];
+    [window bounds];
     v4 = v3;
   }
 
@@ -783,44 +783,44 @@ LABEL_3:
 
 - (id)px_screen
 {
-  v1 = [a1 window];
-  v2 = [v1 screen];
-  v3 = v2;
-  if (v2)
+  window = [self window];
+  screen = [window screen];
+  v3 = screen;
+  if (screen)
   {
-    v4 = v2;
+    px_mainScreen = screen;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
   }
 
-  v5 = v4;
+  v5 = px_mainScreen;
 
   return v5;
 }
 
 - (uint64_t)px_trailingEdge
 {
-  v1 = PXFlipLayoutDirection([a1 px_layoutDirection]);
+  v1 = PXFlipLayoutDirection([self px_layoutDirection]);
 
   return PXLeadingRectEdge(v1);
 }
 
 - (uint64_t)px_leadingEdge
 {
-  v1 = [a1 px_layoutDirection];
+  px_layoutDirection = [self px_layoutDirection];
 
-  return PXLeadingRectEdge(v1);
+  return PXLeadingRectEdge(px_layoutDirection);
 }
 
 - (uint64_t)px_layoutDirection
 {
-  v1 = [a1 effectiveUserInterfaceLayoutDirection];
-  if (v1)
+  effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    return 2 * (v1 == 1);
+    return 2 * (effectiveUserInterfaceLayoutDirection == 1);
   }
 
   else
@@ -831,8 +831,8 @@ LABEL_3:
 
 + (id)px_contentLoadingView
 {
-  v0 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
-  v1 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v0];
+  loadingConfiguration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+  v1 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:loadingConfiguration];
 
   return v1;
 }
@@ -844,8 +844,8 @@ LABEL_3:
   v9 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
   if (a4)
   {
-    v10 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-    v11 = [v9 configurationByApplyingConfiguration:v10];
+    configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+    v11 = [v9 configurationByApplyingConfiguration:configurationPreferringMulticolor];
 
     v9 = v11;
   }
@@ -857,19 +857,19 @@ LABEL_3:
   v15 = v14;
   v17 = v16;
   v18 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-  v19 = [MEMORY[0x1E69DC888] whiteColor];
-  [v18 setTintColor:v19];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v18 setTintColor:whiteColor];
 
   [v18 setFrame:{0.0, 0.0, v15, v17}];
   if ((a4 & 1) == 0)
   {
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    v21 = [v8 isEqual:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v21 = [v8 isEqual:clearColor];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [MEMORY[0x1E69DC888] whiteColor];
-      v23 = [v13 px_tintedCircularImageWithColor:v22 backgroundColor:v8];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      v23 = [v13 px_tintedCircularImageWithColor:whiteColor2 backgroundColor:v8];
 
       v13 = v23;
     }
@@ -890,7 +890,7 @@ LABEL_3:
   }
 
   v9 = objc_alloc(MEMORY[0x1E69DD278]);
-  v10 = [v9 initWithDuration:px_animateUsingDefaultDampedEaseInEaseOutWithDuration_animations_completion__timingParameters timingParameters:a1];
+  v10 = [v9 initWithDuration:px_animateUsingDefaultDampedEaseInEaseOutWithDuration_animations_completion__timingParameters timingParameters:self];
   v11 = v10;
   if (v7)
   {
@@ -926,8 +926,8 @@ LABEL_3:
 
   else
   {
-    v73 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v73 handleFailureInMethod:a2 object:a1 file:@"UIView+PhotosUIFoundation.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIView+PhotosUIFoundation.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
     if (v30)
     {
@@ -935,8 +935,8 @@ LABEL_3:
     }
   }
 
-  v74 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v74 handleFailureInMethod:a2 object:a1 file:@"UIView+PhotosUIFoundation.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"springAnimation != NULL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIView+PhotosUIFoundation.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"springAnimation != NULL"}];
 
 LABEL_3:
   [v29 center];
@@ -1247,7 +1247,7 @@ LABEL_3:
   v20[0] = *a11;
   v20[1] = v18;
   v20[2] = a11[2];
-  return [a1 _px_animateView:a10 toCenter:v20 bounds:v21 transform:a16 withInitialVelocity:a17 usingSpringAnimation:a18 completion:?];
+  return [self _px_animateView:a10 toCenter:v20 bounds:v21 transform:a16 withInitialVelocity:a17 usingSpringAnimation:a18 completion:?];
 }
 
 + (uint64_t)px_animateView:()PhotosUIFoundation toCenter:bounds:transform:withDuration:delay:usingSpringWithDamping:initialVelocity:options:completion:
@@ -1264,7 +1264,7 @@ LABEL_3:
   v22[0] = *a12;
   v22[1] = v20;
   v22[2] = a12[2];
-  return [a1 _px_animateView:a11 toCenter:v22 bounds:v23 transform:a18 withInitialVelocity:a19 usingSpringAnimation:a20 completion:?];
+  return [self _px_animateView:a11 toCenter:v22 bounds:v23 transform:a18 withInitialVelocity:a19 usingSpringAnimation:a20 completion:?];
 }
 
 @end

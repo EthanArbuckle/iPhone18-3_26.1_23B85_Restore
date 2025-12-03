@@ -1,64 +1,64 @@
 @interface _SFPBCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBContactCopyItem)contactCopyItem;
-- (_SFPBCopyItem)initWithDictionary:(id)a3;
-- (_SFPBCopyItem)initWithFacade:(id)a3;
-- (_SFPBCopyItem)initWithJSON:(id)a3;
+- (_SFPBCopyItem)initWithDictionary:(id)dictionary;
+- (_SFPBCopyItem)initWithFacade:(id)facade;
+- (_SFPBCopyItem)initWithJSON:(id)n;
 - (_SFPBCoreSpotlightCopyItem)spotlightCopyItem;
 - (_SFPBImageCopyItem)imageCopyItem;
 - (_SFPBTextCopyItem)textCopyItem;
 - (_SFPBURLCopyItem)urlCopyItem;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setContactCopyItem:(id)a3;
-- (void)setImageCopyItem:(id)a3;
-- (void)setSpotlightCopyItem:(id)a3;
-- (void)setTextCopyItem:(id)a3;
-- (void)setUrlCopyItem:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setContactCopyItem:(id)item;
+- (void)setImageCopyItem:(id)item;
+- (void)setSpotlightCopyItem:(id)item;
+- (void)setTextCopyItem:(id)item;
+- (void)setUrlCopyItem:(id)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCopyItem
 
-- (_SFPBCopyItem)initWithFacade:(id)a3
+- (_SFPBCopyItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCopyItem *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[_SFPBTextCopyItem alloc] initWithFacade:v4];
+      v6 = [[_SFPBTextCopyItem alloc] initWithFacade:facadeCopy];
       [(_SFPBCopyItem *)v5 setTextCopyItem:v6];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[_SFPBCoreSpotlightCopyItem alloc] initWithFacade:v4];
+      v7 = [[_SFPBCoreSpotlightCopyItem alloc] initWithFacade:facadeCopy];
       [(_SFPBCopyItem *)v5 setSpotlightCopyItem:v7];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[_SFPBImageCopyItem alloc] initWithFacade:v4];
+      v8 = [[_SFPBImageCopyItem alloc] initWithFacade:facadeCopy];
       [(_SFPBCopyItem *)v5 setImageCopyItem:v8];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [[_SFPBContactCopyItem alloc] initWithFacade:v4];
+      v9 = [[_SFPBContactCopyItem alloc] initWithFacade:facadeCopy];
       [(_SFPBCopyItem *)v5 setContactCopyItem:v9];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [[_SFPBURLCopyItem alloc] initWithFacade:v4];
+      v10 = [[_SFPBURLCopyItem alloc] initWithFacade:facadeCopy];
       [(_SFPBCopyItem *)v5 setUrlCopyItem:v10];
     }
 
@@ -68,15 +68,15 @@
   return v5;
 }
 
-- (_SFPBCopyItem)initWithDictionary:(id)a3
+- (_SFPBCopyItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = _SFPBCopyItem;
   v5 = [(_SFPBCopyItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"textCopyItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"textCopyItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       [(_SFPBCopyItem *)v5 setTextCopyItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"spotlightCopyItem"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"spotlightCopyItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(_SFPBCopyItem *)v5 setSpotlightCopyItem:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"imageCopyItem"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"imageCopyItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBCopyItem *)v5 setImageCopyItem:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"contactCopyItem"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"contactCopyItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBCopyItem *)v5 setContactCopyItem:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"urlCopyItem"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"urlCopyItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,30 +122,30 @@
   return v5;
 }
 
-- (_SFPBCopyItem)initWithJSON:(id)a3
+- (_SFPBCopyItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCopyItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCopyItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCopyItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -158,88 +158,88 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactCopyItem)
   {
-    v4 = [(_SFPBCopyItem *)self contactCopyItem];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contactCopyItem = [(_SFPBCopyItem *)self contactCopyItem];
+    dictionaryRepresentation = [contactCopyItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contactCopyItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactCopyItem"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contactCopyItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contactCopyItem"];
     }
   }
 
   if (self->_imageCopyItem)
   {
-    v7 = [(_SFPBCopyItem *)self imageCopyItem];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    imageCopyItem = [(_SFPBCopyItem *)self imageCopyItem];
+    dictionaryRepresentation2 = [imageCopyItem dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"imageCopyItem"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"imageCopyItem"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"imageCopyItem"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"imageCopyItem"];
     }
   }
 
   if (self->_spotlightCopyItem)
   {
-    v10 = [(_SFPBCopyItem *)self spotlightCopyItem];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    spotlightCopyItem = [(_SFPBCopyItem *)self spotlightCopyItem];
+    dictionaryRepresentation3 = [spotlightCopyItem dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"spotlightCopyItem"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"spotlightCopyItem"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"spotlightCopyItem"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"spotlightCopyItem"];
     }
   }
 
   if (self->_textCopyItem)
   {
-    v13 = [(_SFPBCopyItem *)self textCopyItem];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    textCopyItem = [(_SFPBCopyItem *)self textCopyItem];
+    dictionaryRepresentation4 = [textCopyItem dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"textCopyItem"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"textCopyItem"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"textCopyItem"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"textCopyItem"];
     }
   }
 
   if (self->_urlCopyItem)
   {
-    v16 = [(_SFPBCopyItem *)self urlCopyItem];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    urlCopyItem = [(_SFPBCopyItem *)self urlCopyItem];
+    dictionaryRepresentation5 = [urlCopyItem dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"urlCopyItem"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"urlCopyItem"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"urlCopyItem"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"urlCopyItem"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -251,28 +251,28 @@
   return v6 ^ [(_SFPBURLCopyItem *)self->_urlCopyItem hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_SFPBCopyItem *)self textCopyItem];
-  v6 = [v4 textCopyItem];
-  if ((v5 != 0) == (v6 == 0))
+  textCopyItem = [(_SFPBCopyItem *)self textCopyItem];
+  textCopyItem2 = [equalCopy textCopyItem];
+  if ((textCopyItem != 0) == (textCopyItem2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_SFPBCopyItem *)self textCopyItem];
-  if (v7)
+  textCopyItem3 = [(_SFPBCopyItem *)self textCopyItem];
+  if (textCopyItem3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCopyItem *)self textCopyItem];
-    v10 = [v4 textCopyItem];
-    v11 = [v9 isEqual:v10];
+    v8 = textCopyItem3;
+    textCopyItem4 = [(_SFPBCopyItem *)self textCopyItem];
+    textCopyItem5 = [equalCopy textCopyItem];
+    v11 = [textCopyItem4 isEqual:textCopyItem5];
 
     if (!v11)
     {
@@ -284,20 +284,20 @@
   {
   }
 
-  v5 = [(_SFPBCopyItem *)self spotlightCopyItem];
-  v6 = [v4 spotlightCopyItem];
-  if ((v5 != 0) == (v6 == 0))
+  textCopyItem = [(_SFPBCopyItem *)self spotlightCopyItem];
+  textCopyItem2 = [equalCopy spotlightCopyItem];
+  if ((textCopyItem != 0) == (textCopyItem2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_SFPBCopyItem *)self spotlightCopyItem];
-  if (v12)
+  spotlightCopyItem = [(_SFPBCopyItem *)self spotlightCopyItem];
+  if (spotlightCopyItem)
   {
-    v13 = v12;
-    v14 = [(_SFPBCopyItem *)self spotlightCopyItem];
-    v15 = [v4 spotlightCopyItem];
-    v16 = [v14 isEqual:v15];
+    v13 = spotlightCopyItem;
+    spotlightCopyItem2 = [(_SFPBCopyItem *)self spotlightCopyItem];
+    spotlightCopyItem3 = [equalCopy spotlightCopyItem];
+    v16 = [spotlightCopyItem2 isEqual:spotlightCopyItem3];
 
     if (!v16)
     {
@@ -309,20 +309,20 @@
   {
   }
 
-  v5 = [(_SFPBCopyItem *)self imageCopyItem];
-  v6 = [v4 imageCopyItem];
-  if ((v5 != 0) == (v6 == 0))
+  textCopyItem = [(_SFPBCopyItem *)self imageCopyItem];
+  textCopyItem2 = [equalCopy imageCopyItem];
+  if ((textCopyItem != 0) == (textCopyItem2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_SFPBCopyItem *)self imageCopyItem];
-  if (v17)
+  imageCopyItem = [(_SFPBCopyItem *)self imageCopyItem];
+  if (imageCopyItem)
   {
-    v18 = v17;
-    v19 = [(_SFPBCopyItem *)self imageCopyItem];
-    v20 = [v4 imageCopyItem];
-    v21 = [v19 isEqual:v20];
+    v18 = imageCopyItem;
+    imageCopyItem2 = [(_SFPBCopyItem *)self imageCopyItem];
+    imageCopyItem3 = [equalCopy imageCopyItem];
+    v21 = [imageCopyItem2 isEqual:imageCopyItem3];
 
     if (!v21)
     {
@@ -334,20 +334,20 @@
   {
   }
 
-  v5 = [(_SFPBCopyItem *)self contactCopyItem];
-  v6 = [v4 contactCopyItem];
-  if ((v5 != 0) == (v6 == 0))
+  textCopyItem = [(_SFPBCopyItem *)self contactCopyItem];
+  textCopyItem2 = [equalCopy contactCopyItem];
+  if ((textCopyItem != 0) == (textCopyItem2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_SFPBCopyItem *)self contactCopyItem];
-  if (v22)
+  contactCopyItem = [(_SFPBCopyItem *)self contactCopyItem];
+  if (contactCopyItem)
   {
-    v23 = v22;
-    v24 = [(_SFPBCopyItem *)self contactCopyItem];
-    v25 = [v4 contactCopyItem];
-    v26 = [v24 isEqual:v25];
+    v23 = contactCopyItem;
+    contactCopyItem2 = [(_SFPBCopyItem *)self contactCopyItem];
+    contactCopyItem3 = [equalCopy contactCopyItem];
+    v26 = [contactCopyItem2 isEqual:contactCopyItem3];
 
     if (!v26)
     {
@@ -359,12 +359,12 @@
   {
   }
 
-  v5 = [(_SFPBCopyItem *)self urlCopyItem];
-  v6 = [v4 urlCopyItem];
-  if ((v5 != 0) != (v6 == 0))
+  textCopyItem = [(_SFPBCopyItem *)self urlCopyItem];
+  textCopyItem2 = [equalCopy urlCopyItem];
+  if ((textCopyItem != 0) != (textCopyItem2 == 0))
   {
-    v27 = [(_SFPBCopyItem *)self urlCopyItem];
-    if (!v27)
+    urlCopyItem = [(_SFPBCopyItem *)self urlCopyItem];
+    if (!urlCopyItem)
     {
 
 LABEL_30:
@@ -372,10 +372,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_SFPBCopyItem *)self urlCopyItem];
-    v30 = [v4 urlCopyItem];
-    v31 = [v29 isEqual:v30];
+    v28 = urlCopyItem;
+    urlCopyItem2 = [(_SFPBCopyItem *)self urlCopyItem];
+    urlCopyItem3 = [equalCopy urlCopyItem];
+    v31 = [urlCopyItem2 isEqual:urlCopyItem3];
 
     if (v31)
     {
@@ -395,35 +395,35 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBCopyItem *)self textCopyItem];
-  if (v4)
+  toCopy = to;
+  textCopyItem = [(_SFPBCopyItem *)self textCopyItem];
+  if (textCopyItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBCopyItem *)self spotlightCopyItem];
-  if (v5)
+  spotlightCopyItem = [(_SFPBCopyItem *)self spotlightCopyItem];
+  if (spotlightCopyItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBCopyItem *)self imageCopyItem];
-  if (v6)
+  imageCopyItem = [(_SFPBCopyItem *)self imageCopyItem];
+  if (imageCopyItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBCopyItem *)self contactCopyItem];
-  if (v7)
+  contactCopyItem = [(_SFPBCopyItem *)self contactCopyItem];
+  if (contactCopyItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBCopyItem *)self urlCopyItem];
-  if (v8)
+  urlCopyItem = [(_SFPBCopyItem *)self urlCopyItem];
+  if (urlCopyItem)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -444,9 +444,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)setUrlCopyItem:(id)a3
+- (void)setUrlCopyItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   textCopyItem = self->_textCopyItem;
   self->_textCopyItem = 0;
 
@@ -460,14 +460,14 @@ LABEL_28:
   self->_contactCopyItem = 0;
 
   v9 = 5;
-  if (!v4)
+  if (!itemCopy)
   {
     v9 = 0;
   }
 
   self->_whichValue = v9;
   urlCopyItem = self->_urlCopyItem;
-  self->_urlCopyItem = v4;
+  self->_urlCopyItem = itemCopy;
 }
 
 - (_SFPBContactCopyItem)contactCopyItem
@@ -485,9 +485,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)setContactCopyItem:(id)a3
+- (void)setContactCopyItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   textCopyItem = self->_textCopyItem;
   self->_textCopyItem = 0;
 
@@ -500,9 +500,9 @@ LABEL_28:
   urlCopyItem = self->_urlCopyItem;
   self->_urlCopyItem = 0;
 
-  self->_whichValue = 4 * (v4 != 0);
+  self->_whichValue = 4 * (itemCopy != 0);
   contactCopyItem = self->_contactCopyItem;
-  self->_contactCopyItem = v4;
+  self->_contactCopyItem = itemCopy;
 }
 
 - (_SFPBImageCopyItem)imageCopyItem
@@ -520,9 +520,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)setImageCopyItem:(id)a3
+- (void)setImageCopyItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   textCopyItem = self->_textCopyItem;
   self->_textCopyItem = 0;
 
@@ -536,14 +536,14 @@ LABEL_28:
   self->_urlCopyItem = 0;
 
   v9 = 3;
-  if (!v4)
+  if (!itemCopy)
   {
     v9 = 0;
   }
 
   self->_whichValue = v9;
   imageCopyItem = self->_imageCopyItem;
-  self->_imageCopyItem = v4;
+  self->_imageCopyItem = itemCopy;
 }
 
 - (_SFPBCoreSpotlightCopyItem)spotlightCopyItem
@@ -561,9 +561,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)setSpotlightCopyItem:(id)a3
+- (void)setSpotlightCopyItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   textCopyItem = self->_textCopyItem;
   self->_textCopyItem = 0;
 
@@ -576,9 +576,9 @@ LABEL_28:
   urlCopyItem = self->_urlCopyItem;
   self->_urlCopyItem = 0;
 
-  self->_whichValue = 2 * (v4 != 0);
+  self->_whichValue = 2 * (itemCopy != 0);
   spotlightCopyItem = self->_spotlightCopyItem;
-  self->_spotlightCopyItem = v4;
+  self->_spotlightCopyItem = itemCopy;
 }
 
 - (_SFPBTextCopyItem)textCopyItem
@@ -596,9 +596,9 @@ LABEL_28:
   return v3;
 }
 
-- (void)setTextCopyItem:(id)a3
+- (void)setTextCopyItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   spotlightCopyItem = self->_spotlightCopyItem;
   self->_spotlightCopyItem = 0;
 
@@ -611,9 +611,9 @@ LABEL_28:
   urlCopyItem = self->_urlCopyItem;
   self->_urlCopyItem = 0;
 
-  self->_whichValue = v4 != 0;
+  self->_whichValue = itemCopy != 0;
   textCopyItem = self->_textCopyItem;
-  self->_textCopyItem = v4;
+  self->_textCopyItem = itemCopy;
 }
 
 @end

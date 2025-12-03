@@ -1,44 +1,44 @@
 @interface _CDSharedMemoryKeyValueStore
-+ (NSObject)readKeyedDataDictionaryFromMemory:(unint64_t)a3 size:;
++ (NSObject)readKeyedDataDictionaryFromMemory:(unint64_t)memory size:;
 + (id)defaultName;
-+ (id)keyValueStoreWithName:(id)a3 size:(unint64_t)a4;
++ (id)keyValueStoreWithName:(id)name size:(unint64_t)size;
 + (id)log;
 + (id)sharedInstance;
-+ (void)openOrCreateSharedMemoryWithName:(size_t)a3 size:;
-- (BOOL)removeDataForKey:(id)a3;
-- (BOOL)removeDataForKeys:(id)a3;
-- (BOOL)setData:(id)a3 forKey:(id)a4;
++ (void)openOrCreateSharedMemoryWithName:(size_t)name size:;
+- (BOOL)removeDataForKey:(id)key;
+- (BOOL)removeDataForKeys:(id)keys;
+- (BOOL)setData:(id)data forKey:(id)key;
 - (BOOL)syncPersistToShMem;
 - (id)allKeys;
-- (id)dataForKey:(id)a3;
+- (id)dataForKey:(id)key;
 - (id)description;
 - (id)errorForExceedingSizeLimits;
 - (uint64_t)_persistToShMem;
 - (void)_persistToShMem;
-- (void)initWithName:(uint64_t)a3 size:;
+- (void)initWithName:(uint64_t)name size:;
 - (void)schedulePersistToShMem;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation _CDSharedMemoryKeyValueStore
 
 - (void)schedulePersistToShMem
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (!*(a1 + 24))
+    dispatch_assert_queue_V2(*(self + 8));
+    if (!*(self + 24))
     {
       v2 = os_transaction_create();
-      v3 = *(a1 + 24);
-      *(a1 + 24) = v2;
+      v3 = *(self + 24);
+      *(self + 24) = v2;
 
-      v4 = *(a1 + 16);
+      v4 = *(self + 16);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __54___CDSharedMemoryKeyValueStore_schedulePersistToShMem__block_invoke;
       block[3] = &unk_1E7367440;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(v4, block);
     }
   }
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __46___CDSharedMemoryKeyValueStore_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -64,7 +64,7 @@
 - (id)errorForExceedingSizeLimits
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = MEMORY[0x1E696ABC0];
     v6 = *MEMORY[0x1E696A588];
@@ -156,7 +156,7 @@
 
               else
               {
-                v13 = [(_CDSharedMemoryKeyValueStore *)v1 errorForExceedingSizeLimits];
+                errorForExceedingSizeLimits = [(_CDSharedMemoryKeyValueStore *)v1 errorForExceedingSizeLimits];
 
                 v18[0] = MEMORY[0x1E69E9820];
                 v18[1] = 3221225472;
@@ -172,7 +172,7 @@
                   dispatch_once(&_persistToShMem_onceToken, v18);
                 }
 
-                v4 = v13;
+                v4 = errorForExceedingSizeLimits;
               }
 
               ++v9;
@@ -202,7 +202,7 @@
         goto LABEL_28;
       }
 
-      v3 = [(_CDSharedMemoryKeyValueStore *)v1 errorForExceedingSizeLimits];
+      errorForExceedingSizeLimits2 = [(_CDSharedMemoryKeyValueStore *)v1 errorForExceedingSizeLimits];
     }
 
     else
@@ -212,10 +212,10 @@
         [_CDSharedMemoryKeyValueStore _persistToShMem];
       }
 
-      v3 = *(v1 + 32);
+      errorForExceedingSizeLimits2 = *(v1 + 32);
     }
 
-    v4 = v3;
+    v4 = errorForExceedingSizeLimits2;
 LABEL_28:
     _Block_object_dispose(&v24, 8);
 
@@ -234,22 +234,22 @@ LABEL_28:
 
 + (id)defaultName
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
-    v4 = v3;
+    v4 = bundleIdentifier;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if (v6)
+    if (processName)
     {
-      v4 = v6;
+      v4 = processName;
     }
 
     else
@@ -274,7 +274,7 @@ LABEL_28:
   return v0;
 }
 
-+ (void)openOrCreateSharedMemoryWithName:(size_t)a3 size:
++ (void)openOrCreateSharedMemoryWithName:(size_t)name size:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -311,7 +311,7 @@ LABEL_28:
     }
 
     v12 = v11;
-    if (ftruncate(v11, a3))
+    if (ftruncate(v11, name))
     {
       v10 = +[_CDSharedMemoryKeyValueStore log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -322,7 +322,7 @@ LABEL_28:
       goto LABEL_17;
     }
 
-    v9 = mmap(0, a3, 3, 1, v12, 0);
+    v9 = mmap(0, name, 3, 1, v12, 0);
     close(v12);
     if (v9 != -1)
     {
@@ -344,7 +344,7 @@ LABEL_28:
     _os_log_impl(&dword_191750000, v7, OS_LOG_TYPE_DEFAULT, "Opened shared memory", buf, 2u);
   }
 
-  v9 = mmap(0, a3, 3, 1, v6, 0);
+  v9 = mmap(0, name, 3, 1, v6, 0);
   close(v6);
   if (v9 == -1)
   {
@@ -368,22 +368,22 @@ LABEL_18:
   return v9;
 }
 
-+ (NSObject)readKeyedDataDictionaryFromMemory:(unint64_t)a3 size:
++ (NSObject)readKeyedDataDictionaryFromMemory:(unint64_t)memory size:
 {
   objc_opt_self();
   v5 = *(a2 + 8);
   if (*a2)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (!v5)
     {
       goto LABEL_24;
     }
 
     v7 = 16;
-    while (a3 > v7)
+    while (memory > v7)
     {
-      v8 = [_CDSerializableKeyedData keyedDataDeserializedFrom:a3 - v7 maxSize:?];
+      v8 = [_CDSerializableKeyedData keyedDataDeserializedFrom:memory - v7 maxSize:?];
       v10 = v8;
       if (!v8)
       {
@@ -406,11 +406,11 @@ LABEL_18:
 
 LABEL_21:
 
-        v15 = v6;
+        v15 = dictionary;
         goto LABEL_22;
       }
 
-      [v6 setObject:v10 forKeyedSubscript:objc_getProperty(v10, v11, 24, 1)];
+      [dictionary setObject:v10 forKeyedSubscript:objc_getProperty(v10, v11, 24, 1)];
       v12 = [v10[1] length];
       v7 += v12 + [v10[4] length] + 18;
 
@@ -423,7 +423,7 @@ LABEL_21:
     v15 = +[_CDSharedMemoryKeyValueStore log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(_CDSharedMemoryKeyValueStore *)v7 readKeyedDataDictionaryFromMemory:a3 size:v15];
+      [(_CDSharedMemoryKeyValueStore *)v7 readKeyedDataDictionaryFromMemory:memory size:v15];
     }
   }
 
@@ -446,39 +446,39 @@ LABEL_21:
     }
 
 LABEL_22:
-    v6 = 0;
+    dictionary = 0;
   }
 
 LABEL_24:
 
-  return v6;
+  return dictionary;
 }
 
 - (BOOL)syncPersistToShMem
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  persistQueue = v2->_persistQueue;
+  persistQueue = selfCopy->_persistQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50___CDSharedMemoryKeyValueStore_syncPersistToShMem__block_invoke;
   v5[3] = &unk_1E7367398;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(persistQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4
+- (BOOL)setData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -489,35 +489,35 @@ LABEL_24:
   v12[2] = __47___CDSharedMemoryKeyValueStore_setData_forKey___block_invoke;
   v12[3] = &unk_1E7367F20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = keyCopy;
+  v14 = dataCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, v12);
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(dataCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return dataCopy;
 }
 
-- (BOOL)removeDataForKey:(id)a3
+- (BOOL)removeDataForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  keyCopy = key;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  keyCopy2 = key;
+  v6 = [v4 arrayWithObjects:&keyCopy count:1];
 
-  LOBYTE(self) = [(_CDSharedMemoryKeyValueStore *)self removeDataForKeys:v6, v9, v10];
+  LOBYTE(self) = [(_CDSharedMemoryKeyValueStore *)self removeDataForKeys:v6, keyCopy, v10];
   v7 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (BOOL)removeDataForKeys:(id)a3
+- (BOOL)removeDataForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -525,16 +525,16 @@ LABEL_24:
     v7[2] = __50___CDSharedMemoryKeyValueStore_removeDataForKeys___block_invoke;
     v7[3] = &unk_1E7367710;
     v7[4] = self;
-    v8 = v4;
+    v8 = keysCopy;
     dispatch_sync(queue, v7);
   }
 
   return 1;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -546,10 +546,10 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __43___CDSharedMemoryKeyValueStore_dataForKey___block_invoke;
   block[3] = &unk_1E7367248;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -580,14 +580,14 @@ LABEL_24:
   return v3;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_CDSharedMemoryKeyValueStore *)self setData:v7 forKey:v6];
+    [(_CDSharedMemoryKeyValueStore *)self setData:valueCopy forKey:keyCopy];
   }
 }
 
@@ -655,80 +655,80 @@ LABEL_24:
   return v3;
 }
 
-- (void)initWithName:(uint64_t)a3 size:
+- (void)initWithName:(uint64_t)name size:
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (!a1 || ![v5 length])
+  if (!self || ![v5 length])
   {
     goto LABEL_18;
   }
 
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = _CDSharedMemoryKeyValueStore;
   v7 = objc_msgSendSuper2(&v39, sel_init);
-  a1 = v7;
+  self = v7;
   if (v7)
   {
     v7[7] = 0;
-    if (!a3)
+    if (!name)
     {
-      a3 = [objc_opt_class() defaultSize];
+      name = [objc_opt_class() defaultSize];
     }
 
-    a1[8] = a3;
+    self[8] = name;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.CoreDuet.SharedMemoryKeyValueStore", v8);
-    v10 = a1[1];
-    a1[1] = v9;
+    v10 = self[1];
+    self[1] = v9;
 
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_BACKGROUND, 0);
 
     v13 = dispatch_queue_create("com.apple.CoreDuet.SharedMemoryKeyValueStore.Persistence", v12);
-    v14 = a1[2];
-    a1[2] = v13;
+    v14 = self[2];
+    self[2] = v13;
 
     v15 = +[_CDSharedMemoryKeyValueStore log];
-    v16 = a1[5];
-    a1[5] = v15;
+    v16 = self[5];
+    self[5] = v15;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = a1[6];
-    a1[6] = v17;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v18 = self[6];
+    self[6] = dictionary;
 
-    v19 = [_CDSharedMemoryKeyValueStore openOrCreateSharedMemoryWithName:v6 size:a1[8]];
-    a1[7] = v19;
+    v19 = [_CDSharedMemoryKeyValueStore openOrCreateSharedMemoryWithName:v6 size:self[8]];
+    self[7] = v19;
     if (v19)
     {
-      v20 = [_CDSharedMemoryKeyValueStore readKeyedDataDictionaryFromMemory:v19 size:a1[8]];
-      v21 = a1[6];
-      a1[6] = v20;
+      v20 = [_CDSharedMemoryKeyValueStore readKeyedDataDictionaryFromMemory:v19 size:self[8]];
+      v21 = self[6];
+      self[6] = v20;
 
-      if (!a1[6])
+      if (!self[6])
       {
-        v22 = a1[5];
+        v22 = self[5];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           v36 = v6;
           v37 = v22;
-          v38 = [v6 UTF8String];
+          uTF8String = [v6 UTF8String];
           *buf = 136315138;
-          v41 = v38;
+          v41 = uTF8String;
           _os_log_error_impl(&dword_191750000, v37, OS_LOG_TYPE_ERROR, "Failed to read/load store with name %s", buf, 0xCu);
         }
 
-        v23 = [MEMORY[0x1E695DF90] dictionary];
-        v24 = a1[6];
-        a1[6] = v23;
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        v24 = self[6];
+        self[6] = dictionary2;
       }
 
-      v25 = a1[5];
+      v25 = self[5];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = a1[7];
-        v26 = a1[8];
+        v27 = self[7];
+        v26 = self[8];
         *buf = 138412802;
         v41 = v6;
         v42 = 1024;
@@ -741,38 +741,38 @@ LABEL_24:
       goto LABEL_14;
     }
 
-    v29 = a1[5];
+    v29 = self[5];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       v32 = v6;
       v33 = v29;
-      v34 = [v6 UTF8String];
-      v35 = a1[8];
+      uTF8String2 = [v6 UTF8String];
+      v35 = self[8];
       *buf = 136315394;
-      v41 = v34;
+      v41 = uTF8String2;
       v42 = 1024;
       v43 = v35;
       _os_log_error_impl(&dword_191750000, v33, OS_LOG_TYPE_ERROR, "Failed to create store with name %s, size %d", buf, 0x12u);
     }
 
 LABEL_18:
-    v28 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
 LABEL_14:
-  a1 = a1;
-  v28 = a1;
+  self = self;
+  selfCopy = self;
 LABEL_19:
 
   v30 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy;
 }
 
-+ (id)keyValueStoreWithName:(id)a3 size:(unint64_t)a4
++ (id)keyValueStoreWithName:(id)name size:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(_CDSharedMemoryKeyValueStore *)[a1 alloc] initWithName:v6 size:a4];
+  nameCopy = name;
+  v7 = [(_CDSharedMemoryKeyValueStore *)[self alloc] initWithName:nameCopy size:size];
 
   return v7;
 }

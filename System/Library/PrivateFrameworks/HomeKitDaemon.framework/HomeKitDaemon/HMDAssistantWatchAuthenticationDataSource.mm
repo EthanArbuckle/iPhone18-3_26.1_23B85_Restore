@@ -1,15 +1,15 @@
 @interface HMDAssistantWatchAuthenticationDataSource
-- (void)getCurrentRequestIsWatchAuthenticatedWithCompletion:(id)a3;
+- (void)getCurrentRequestIsWatchAuthenticatedWithCompletion:(id)completion;
 @end
 
 @implementation HMDAssistantWatchAuthenticationDataSource
 
-- (void)getCurrentRequestIsWatchAuthenticatedWithCompletion:(id)a3
+- (void)getCurrentRequestIsWatchAuthenticatedWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -26,8 +26,8 @@
   v13[2] = __97__HMDAssistantWatchAuthenticationDataSource_getCurrentRequestIsWatchAuthenticatedWithCompletion___block_invoke;
   v13[3] = &unk_278673E90;
   v14 = v9;
-  v15 = v4;
-  v10 = v4;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v9;
   [v11 getCurrentRequestIsWatchAuthenticatedWithCompletion:v13];
 

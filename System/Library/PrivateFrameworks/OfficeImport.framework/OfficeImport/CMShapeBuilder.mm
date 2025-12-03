@@ -21,9 +21,9 @@
 
 - (float)maxAdjustedValue
 {
-  v2 = [(CMShapeBuilder *)self isOffice12];
+  isOffice12 = [(CMShapeBuilder *)self isOffice12];
   result = 10800.0;
-  if (v2)
+  if (isOffice12)
   {
     return 50000.0;
   }
@@ -36,8 +36,8 @@
   orientedBounds = self->_orientedBounds;
   if (!orientedBounds)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a3 object:self file:@"CMShapeBuilder.mm" lineNumber:44 description:@"oriented bounds not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a3 object:self file:@"CMShapeBuilder.mm" lineNumber:44 description:@"oriented bounds not set"];
 
     orientedBounds = self->_orientedBounds;
   }

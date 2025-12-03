@@ -1,19 +1,19 @@
 @interface CompanionAutoLaunchSettingsViewController
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithCoder:(id)a3;
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithConfiguration:(id)a3;
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithCoder:(id)coder;
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithConfiguration:(id)configuration;
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation CompanionAutoLaunchSettingsViewController
 
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithConfiguration:(id)a3
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR____TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController_iconFetcher;
   v6 = objc_allocWithZone(CSLPRFIconFetcher);
-  v7 = a3;
+  configurationCopy = configuration;
   *(&self->super.super.super.isa + v5) = [v6 init];
-  v8 = v7;
+  v8 = configurationCopy;
   v9 = sub_1A984(v8);
   v11 = v10;
   v13 = v12;
@@ -29,7 +29,7 @@
   return v15;
 }
 
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithCoder:(id)a3
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController_iconFetcher;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(CSLPRFIconFetcher) init];
@@ -40,11 +40,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19D68();
 }
 
-- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27CompanionAutoLaunchSettings41CompanionAutoLaunchSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

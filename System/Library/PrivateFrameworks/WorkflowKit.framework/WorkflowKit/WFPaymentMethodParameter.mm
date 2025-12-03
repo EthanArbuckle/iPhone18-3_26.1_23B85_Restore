@@ -1,28 +1,28 @@
 @interface WFPaymentMethodParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 @end
 
 @implementation WFPaymentMethodParameter
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v5 = a3;
-  v6 = [(WFDynamicEnumerationParameter *)self possibleStates];
-  if (!v6)
+  validCopy = valid;
+  possibleStates = [(WFDynamicEnumerationParameter *)self possibleStates];
+  if (!possibleStates)
   {
-    v3 = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
-    if (!v3)
+    possibleStatesLoadingError = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
+    if (!possibleStatesLoadingError)
     {
       goto LABEL_11;
     }
   }
 
-  v7 = [v5 value];
+  value = [validCopy value];
 
-  if (v6)
+  if (possibleStates)
   {
 
-    if (v7)
+    if (value)
     {
       goto LABEL_5;
     }
@@ -32,24 +32,24 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!value)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  v8 = [(WFDynamicEnumerationParameter *)self possibleStates];
-  v9 = [v8 count];
+  possibleStates2 = [(WFDynamicEnumerationParameter *)self possibleStates];
+  v9 = [possibleStates2 count];
 
   if (v9)
   {
-    v10 = [v5 value];
-    if (v10)
+    value2 = [validCopy value];
+    if (value2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = value2;
       }
 
       else
@@ -65,14 +65,14 @@ LABEL_5:
 
     v13 = v11;
 
-    v14 = [(WFDynamicEnumerationParameter *)self possibleStates];
+    possibleStates3 = [(WFDynamicEnumerationParameter *)self possibleStates];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __50__WFPaymentMethodParameter_parameterStateIsValid___block_invoke;
     v17[3] = &unk_1E837AAC8;
     v18 = v13;
     v15 = v13;
-    v12 = [v14 indexOfObjectPassingTest:v17] != 0x7FFFFFFFFFFFFFFFLL;
+    v12 = [possibleStates3 indexOfObjectPassingTest:v17] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else

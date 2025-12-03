@@ -1,23 +1,23 @@
 @interface PKTransactionReleasedData
-- (BOOL)isAgeVerificationElement:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReleasedData:(id)a3;
-- (BOOL)isPortraitElement:(id)a3;
-- (PKTransactionReleasedData)initWithCoder:(id)a3;
-- (PKTransactionReleasedData)initWithDocumentType:(id)a3;
+- (BOOL)isAgeVerificationElement:(id)element;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReleasedData:(id)data;
+- (BOOL)isPortraitElement:(id)element;
+- (PKTransactionReleasedData)initWithCoder:(id)coder;
+- (PKTransactionReleasedData)initWithDocumentType:(id)type;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unint64_t)verificationType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionReleasedData
 
-- (PKTransactionReleasedData)initWithCoder:(id)a3
+- (PKTransactionReleasedData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentType"];
   if (v5)
   {
     v6 = [(PKTransactionReleasedData *)self initWithDocumentType:v5];
@@ -26,61 +26,61 @@
       v7 = MEMORY[0x1E695DFD8];
       v8 = objc_opt_class();
       v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"elements"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"elements"];
       elements = v6->_elements;
       v6->_elements = v10;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"application"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"application"];
       application = v6->_application;
       v6->_application = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privacyPolicyURL"];
       privacyPolicyURL = v6->_privacyPolicyURL;
       v6->_privacyPolicyURL = v14;
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certificateData"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certificateData"];
       certificateData = v6->_certificateData;
       v6->_certificateData = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantNameOverride"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantNameOverride"];
       merchantNameOverride = v6->_merchantNameOverride;
       v6->_merchantNameOverride = v18;
     }
 
     self = v6;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   documentType = self->_documentType;
-  v5 = a3;
-  [v5 encodeObject:documentType forKey:@"documentType"];
-  [v5 encodeObject:self->_elements forKey:@"elements"];
-  [v5 encodeObject:self->_application forKey:@"application"];
-  [v5 encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
-  [v5 encodeObject:self->_certificateData forKey:@"certificateData"];
-  [v5 encodeObject:self->_merchantNameOverride forKey:@"merchantNameOverride"];
+  coderCopy = coder;
+  [coderCopy encodeObject:documentType forKey:@"documentType"];
+  [coderCopy encodeObject:self->_elements forKey:@"elements"];
+  [coderCopy encodeObject:self->_application forKey:@"application"];
+  [coderCopy encodeObject:self->_privacyPolicyURL forKey:@"privacyPolicyURL"];
+  [coderCopy encodeObject:self->_certificateData forKey:@"certificateData"];
+  [coderCopy encodeObject:self->_merchantNameOverride forKey:@"merchantNameOverride"];
 }
 
-- (PKTransactionReleasedData)initWithDocumentType:(id)a3
+- (PKTransactionReleasedData)initWithDocumentType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = PKTransactionReleasedData;
   v6 = [(PKTransactionReleasedData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentType, a3);
+    objc_storeStrong(&v6->_documentType, type);
   }
 
   return v7;
@@ -88,40 +88,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_documentType];
-  [v3 safelyAddObject:self->_elements];
-  [v3 safelyAddObject:self->_application];
-  [v3 safelyAddObject:self->_privacyPolicyURL];
-  [v3 safelyAddObject:self->_certificateData];
-  [v3 safelyAddObject:self->_merchantNameOverride];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_documentType];
+  [array safelyAddObject:self->_elements];
+  [array safelyAddObject:self->_application];
+  [array safelyAddObject:self->_privacyPolicyURL];
+  [array safelyAddObject:self->_certificateData];
+  [array safelyAddObject:self->_merchantNameOverride];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedData *)self isEqualToReleasedData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedData *)self isEqualToReleasedData:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToReleasedData:(id)a3
+- (BOOL)isEqualToReleasedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   documentType = self->_documentType;
-  v6 = v4[1];
+  v6 = dataCopy[1];
   if (documentType)
   {
     v7 = v6 == 0;
@@ -146,7 +146,7 @@
   }
 
   elements = self->_elements;
-  v9 = v4[2];
+  v9 = dataCopy[2];
   if (elements && v9)
   {
     if (([(NSSet *)elements isEqual:?]& 1) == 0)
@@ -161,7 +161,7 @@
   }
 
   application = self->_application;
-  v11 = v4[3];
+  v11 = dataCopy[3];
   if (application && v11)
   {
     if (![(PKTransactionReleasedDataApplication *)application isEqual:?])
@@ -176,7 +176,7 @@
   }
 
   privacyPolicyURL = self->_privacyPolicyURL;
-  v13 = v4[4];
+  v13 = dataCopy[4];
   if (privacyPolicyURL && v13)
   {
     if (([(NSURL *)privacyPolicyURL isEqual:?]& 1) == 0)
@@ -191,7 +191,7 @@
   }
 
   certificateData = self->_certificateData;
-  v15 = v4[5];
+  v15 = dataCopy[5];
   if (!certificateData || !v15)
   {
     if (certificateData == v15)
@@ -211,7 +211,7 @@ LABEL_31:
 
 LABEL_27:
   merchantNameOverride = self->_merchantNameOverride;
-  v17 = v4[6];
+  v17 = dataCopy[6];
   if (merchantNameOverride && v17)
   {
     v18 = [(NSString *)merchantNameOverride isEqual:?];
@@ -235,8 +235,8 @@ LABEL_32:
   if (elements)
   {
     v5 = [(NSSet *)elements pk_setByApplyingBlock:&__block_literal_global_137];
-    v6 = [v5 allObjects];
-    [v3 setObject:v6 forKey:@"elements"];
+    allObjects = [v5 allObjects];
+    [v3 setObject:allObjects forKey:@"elements"];
   }
 
   application = self->_application;
@@ -288,25 +288,25 @@ LABEL_32:
   return v3;
 }
 
-- (BOOL)isAgeVerificationElement:(id)a3
+- (BOOL)isAgeVerificationElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 elementNamespace];
-  v5 = v4;
-  if (v4 == @"org.iso.18013.5.1")
+  elementCopy = element;
+  elementNamespace = [elementCopy elementNamespace];
+  v5 = elementNamespace;
+  if (elementNamespace == @"org.iso.18013.5.1")
   {
   }
 
   else
   {
-    if (!v4 || !@"org.iso.18013.5.1")
+    if (!elementNamespace || !@"org.iso.18013.5.1")
     {
 
       LOBYTE(v6) = 0;
       goto LABEL_17;
     }
 
-    v6 = [(__CFString *)v4 isEqualToString:@"org.iso.18013.5.1"];
+    v6 = [(__CFString *)elementNamespace isEqualToString:@"org.iso.18013.5.1"];
 
     if (!v6)
     {
@@ -314,15 +314,15 @@ LABEL_32:
     }
   }
 
-  v7 = [v3 identifier];
-  v5 = v7;
-  if (v7 == @"age_in_years")
+  identifier = [elementCopy identifier];
+  v5 = identifier;
+  if (identifier == @"age_in_years")
   {
   }
 
   else
   {
-    if (!v7 || !@"age_in_years")
+    if (!identifier || !@"age_in_years")
     {
 
 LABEL_16:
@@ -330,7 +330,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = [(__CFString *)v7 isEqualToString:@"age_in_years"];
+    v8 = [(__CFString *)identifier isEqualToString:@"age_in_years"];
 
     if ((v8 & 1) == 0)
     {
@@ -345,19 +345,19 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isPortraitElement:(id)a3
+- (BOOL)isPortraitElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 elementNamespace];
-  v5 = v4;
-  if (v4 == @"org.iso.18013.5.1")
+  elementCopy = element;
+  elementNamespace = [elementCopy elementNamespace];
+  identifier = elementNamespace;
+  if (elementNamespace == @"org.iso.18013.5.1")
   {
 
 LABEL_7:
-    v5 = [v3 identifier];
+    identifier = [elementCopy identifier];
     v7 = @"portrait";
     v8 = v7;
-    if (v5 == v7)
+    if (identifier == v7)
     {
       LOBYTE(v6) = 1;
     }
@@ -365,9 +365,9 @@ LABEL_7:
     else
     {
       LOBYTE(v6) = 0;
-      if (v5 && v7)
+      if (identifier && v7)
       {
-        LOBYTE(v6) = [(__CFString *)v5 isEqualToString:v7];
+        LOBYTE(v6) = [(__CFString *)identifier isEqualToString:v7];
       }
     }
 
@@ -375,9 +375,9 @@ LABEL_7:
   }
 
   LOBYTE(v6) = 0;
-  if (v4 && @"org.iso.18013.5.1")
+  if (elementNamespace && @"org.iso.18013.5.1")
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"org.iso.18013.5.1"];
+    v6 = [(__CFString *)elementNamespace isEqualToString:@"org.iso.18013.5.1"];
 
     if (!v6)
     {
@@ -400,8 +400,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PKTransactionReleasedData *)self elements];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  elements = [(PKTransactionReleasedData *)self elements];
+  v4 = [elements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -413,7 +413,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -428,7 +428,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [elements countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

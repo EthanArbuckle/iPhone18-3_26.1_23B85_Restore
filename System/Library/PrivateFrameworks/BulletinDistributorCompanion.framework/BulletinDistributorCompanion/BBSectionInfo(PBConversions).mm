@@ -14,8 +14,8 @@
 {
   v4 = [a3 copy];
   v5 = *MEMORY[0x277CF35C0];
-  v6 = *(a1 + v5);
-  *(a1 + v5) = v4;
+  v6 = *(self + v5);
+  *(self + v5) = v4;
 
   return MEMORY[0x2821F96F8]();
 }
@@ -24,36 +24,36 @@
 {
   v4 = [a3 copy];
   v5 = *MEMORY[0x277CF3598];
-  v6 = *(a1 + v5);
-  *(a1 + v5) = v4;
+  v6 = *(self + v5);
+  *(self + v5) = v4;
 
   return MEMORY[0x2821F96F8]();
 }
 
 - (uint64_t)enableAlertsForGizmo:()PBConversions
 {
-  v5 = [a1 pushSettings];
+  pushSettings = [self pushSettings];
   if (a3)
   {
     v6 = 2;
-    [a1 setAlertType:2];
-    v7 = v5 | 0x20;
+    [self setAlertType:2];
+    v7 = pushSettings | 0x20;
   }
 
   else
   {
-    [a1 setAlertType:0];
-    v7 = v5 & 0xFFFFFFFFFFFFFFDFLL;
+    [self setAlertType:0];
+    v7 = pushSettings & 0xFFFFFFFFFFFFFFDFLL;
     v6 = 1;
   }
 
-  [a1 setPushSettings:v7];
-  [a1 setLockScreenSetting:v6];
-  result = [a1 setShowsOnExternalDevices:a3];
+  [self setPushSettings:v7];
+  [self setLockScreenSetting:v6];
+  result = [self setShowsOnExternalDevices:a3];
   if (a3)
   {
 
-    return [a1 setNotificationCenterSetting:2];
+    return [self setNotificationCenterSetting:2];
   }
 
   return result;
@@ -81,25 +81,25 @@
     v6 = v5;
   }
 
-  [a1 enableAlertsForGizmo:?];
-  [a1 setNotificationCenterSetting:v5];
+  [self enableAlertsForGizmo:?];
+  [self setNotificationCenterSetting:v5];
 
-  return [a1 setAuthorizationStatus:v6];
+  return [self setAuthorizationStatus:v6];
 }
 
 - (unint64_t)blt_overrideShowsAlerts
 {
-  result = [a1 allowsNotifications];
+  result = [self allowsNotifications];
   if (result)
   {
-    if ([a1 alertType])
+    if ([self alertType])
     {
       return 1;
     }
 
     else
     {
-      return ([a1 suppressedSettings] >> 5) & 1;
+      return ([self suppressedSettings] >> 5) & 1;
     }
   }
 
@@ -108,10 +108,10 @@
 
 - (uint64_t)blt_overrideSendToNotificationCenter
 {
-  result = [a1 allowsNotifications];
+  result = [self allowsNotifications];
   if (result)
   {
-    return ([a1 blt_overrideShowsAlerts] & 1) == 0 && objc_msgSend(a1, "notificationCenterSetting") == 2;
+    return ([self blt_overrideShowsAlerts] & 1) == 0 && objc_msgSend(self, "notificationCenterSetting") == 2;
   }
 
   return result;
@@ -146,7 +146,7 @@
         if ([v8 containsObject:{v14, v17}])
         {
           v15 = [v7 valueForKeyPath:v14];
-          [a1 setValue:v15 forKeyPath:v14];
+          [self setValue:v15 forKeyPath:v14];
         }
       }
 

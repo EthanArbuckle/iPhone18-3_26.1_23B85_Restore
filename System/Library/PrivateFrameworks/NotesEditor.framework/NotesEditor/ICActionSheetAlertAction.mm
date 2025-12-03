@@ -1,29 +1,29 @@
 @interface ICActionSheetAlertAction
-+ (id)actionWithTitle:(id)a3 iconImage:(id)a4 style:(int64_t)a5 handler:(id)a6;
-- (ICActionSheetAlertAction)initWithTitle:(id)a3 iconImage:(id)a4 style:(int64_t)a5 handler:(id)a6;
++ (id)actionWithTitle:(id)title iconImage:(id)image style:(int64_t)style handler:(id)handler;
+- (ICActionSheetAlertAction)initWithTitle:(id)title iconImage:(id)image style:(int64_t)style handler:(id)handler;
 @end
 
 @implementation ICActionSheetAlertAction
 
-+ (id)actionWithTitle:(id)a3 iconImage:(id)a4 style:(int64_t)a5 handler:(id)a6
++ (id)actionWithTitle:(id)title iconImage:(id)image style:(int64_t)style handler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithTitle:v12 iconImage:v11 style:a5 handler:v10];
+  handlerCopy = handler;
+  imageCopy = image;
+  titleCopy = title;
+  v13 = [[self alloc] initWithTitle:titleCopy iconImage:imageCopy style:style handler:handlerCopy];
 
   return v13;
 }
 
-- (ICActionSheetAlertAction)initWithTitle:(id)a3 iconImage:(id)a4 style:(int64_t)a5 handler:(id)a6
+- (ICActionSheetAlertAction)initWithTitle:(id)title iconImage:(id)image style:(int64_t)style handler:(id)handler
 {
   v16.receiver = self;
   v16.super_class = ICActionSheetAlertAction;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  imageCopy = image;
+  titleCopy = title;
   v13 = [(ICActionSheetAlertAction *)&v16 class];
-  v14 = [v13 _actionWithTitle:v12 image:v11 style:a5 handler:v10 shouldDismissHandler:{0, v16.receiver, v16.super_class}];
+  v14 = [v13 _actionWithTitle:titleCopy image:imageCopy style:style handler:handlerCopy shouldDismissHandler:{0, v16.receiver, v16.super_class}];
 
   return v14;
 }

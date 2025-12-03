@@ -1,42 +1,42 @@
 @interface CPLCloudKitCoordinator
 + (BOOL)enableTurboMode;
-+ (BOOL)networkBehaviorShouldBeDiscretionaryForForegroundOperation:(BOOL)a3 upload:(BOOL)a4 metadata:(BOOL)a5;
++ (BOOL)networkBehaviorShouldBeDiscretionaryForForegroundOperation:(BOOL)operation upload:(BOOL)upload metadata:(BOOL)metadata;
 + (BOOL)shouldRegisterClient;
 + (BOOL)usesSandboxEnvironment;
 + (CPLCloudKitCoordinator)sharedCoordinator;
 + (id)newOperationConfiguration;
-+ (void)setExecutionIdentifier:(id)a3;
++ (void)setExecutionIdentifier:(id)identifier;
 - (CPLCloudKitCoordinator)init;
-- (id)_bestClientToReceivePushNotification:(id)a3;
-- (id)_clientsInterestedToReceiveAPushNotificationForZoneID:(id)a3;
+- (id)_bestClientToReceivePushNotification:(id)notification;
+- (id)_clientsInterestedToReceiveAPushNotificationForZoneID:(id)d;
 - (id)_defaultClient;
-- (id)databaseForOperationType:(int64_t)a3 relativeToOperationType:(int64_t)a4 forClient:(id)a5;
-- (void)_addClient:(id)a3 interestedInZoneIDs:(id)a4;
-- (void)_addClientInterestedInAllZones:(id)a3;
-- (void)_addClientToInterestingZones:(id)a3;
-- (void)_askNextClient:(id)a3 toProvideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 bestResponseYet:(unint64_t)a8 completionHandler:(id)a9;
+- (id)databaseForOperationType:(int64_t)type relativeToOperationType:(int64_t)operationType forClient:(id)client;
+- (void)_addClient:(id)client interestedInZoneIDs:(id)ds;
+- (void)_addClientInterestedInAllZones:(id)zones;
+- (void)_addClientToInterestingZones:(id)zones;
+- (void)_askNextClient:(id)client toProvideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature bestResponseYet:(unint64_t)yet completionHandler:(id)handler;
 - (void)_coordinatorWillBeUsed;
 - (void)_coordinatorWontBeUsed;
 - (void)_moveToBackgroundIfNecessary;
 - (void)_moveToForeground;
-- (void)_removeClient:(id)a3 interestedInSomeZones:(id)a4;
-- (void)_removeClientFromInterestingZones:(id)a3;
+- (void)_removeClient:(id)client interestedInSomeZones:(id)zones;
+- (void)_removeClientFromInterestingZones:(id)zones;
 - (void)_stopWaitingForPushNotifications;
 - (void)_waitForClients;
 - (void)_waitForClientsIfNecessaryLocked;
-- (void)associateMetric:(id)a3 forClient:(id)a4;
-- (void)center:(id)a3 didReceivePushNotification:(id)a4;
+- (void)associateMetric:(id)metric forClient:(id)client;
+- (void)center:(id)center didReceivePushNotification:(id)notification;
 - (void)coordinatorWontBeUsed;
-- (void)fetchAccountInfoWithCompletionHandler:(id)a3;
-- (void)getLastClientServedWithAPushNotificationWithCompletionHandler:(id)a3;
-- (void)getStatusForClient:(id)a3 completionHandler:(id)a4;
-- (void)launchOperation:(id)a3 type:(int64_t)a4 forClient:(id)a5;
-- (void)noteClient:(id)a3 isIgnoringChangeInZoneID:(id)a4;
-- (void)noteClient:(id)a3 isInForeground:(BOOL)a4;
-- (void)provideCKAssetWithRecordID:(id)a3 fieldName:(id)a4 recordType:(id)a5 signature:(id)a6 completionHandler:(id)a7;
-- (void)registerClient:(id)a3;
-- (void)setPushNotificationCenter:(id)a3;
-- (void)unregisterClient:(id)a3;
+- (void)fetchAccountInfoWithCompletionHandler:(id)handler;
+- (void)getLastClientServedWithAPushNotificationWithCompletionHandler:(id)handler;
+- (void)getStatusForClient:(id)client completionHandler:(id)handler;
+- (void)launchOperation:(id)operation type:(int64_t)type forClient:(id)client;
+- (void)noteClient:(id)client isIgnoringChangeInZoneID:(id)d;
+- (void)noteClient:(id)client isInForeground:(BOOL)foreground;
+- (void)provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature completionHandler:(id)handler;
+- (void)registerClient:(id)client;
+- (void)setPushNotificationCenter:(id)center;
+- (void)unregisterClient:(id)client;
 @end
 
 @implementation CPLCloudKitCoordinator
@@ -92,21 +92,21 @@
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [objc_opt_class() _container];
+    _container = [objc_opt_class() _container];
     container = v2->_container;
-    v2->_container = v6;
+    v2->_container = _container;
 
-    v8 = [objc_opt_class() _zoneishContainer];
+    _zoneishContainer = [objc_opt_class() _zoneishContainer];
     zoneishContainer = v2->_zoneishContainer;
-    v2->_zoneishContainer = v8;
+    v2->_zoneishContainer = _zoneishContainer;
 
-    v10 = [(CKContainer *)v2->_container privateCloudDatabase];
+    privateCloudDatabase = [(CKContainer *)v2->_container privateCloudDatabase];
     database = v2->_database;
-    v2->_database = v10;
+    v2->_database = privateCloudDatabase;
 
-    v12 = [(CKContainer *)v2->_container sharedCloudDatabase];
+    sharedCloudDatabase = [(CKContainer *)v2->_container sharedCloudDatabase];
     sharedDatabase = v2->_sharedDatabase;
-    v2->_sharedDatabase = v12;
+    v2->_sharedDatabase = sharedCloudDatabase;
 
     v14 = objc_alloc_init(NSMutableSet);
     clients = v2->_clients;
@@ -123,21 +123,21 @@
   return v2;
 }
 
-- (void)setPushNotificationCenter:(id)a3
+- (void)setPushNotificationCenter:(id)center
 {
-  v6 = a3;
-  if (v6)
+  centerCopy = center;
+  if (centerCopy)
   {
     if (self->_pushNotificationCenter)
     {
       sub_10019C6B4(a2, self);
     }
 
-    v7 = v6;
-    objc_storeStrong(&self->_pushNotificationCenter, a3);
+    v7 = centerCopy;
+    objc_storeStrong(&self->_pushNotificationCenter, center);
     [(CPLCloudKitPushNotificationCenter *)self->_pushNotificationCenter setDelegate:self];
     [(CPLCloudKitPushNotificationCenter *)self->_pushNotificationCenter setQueue:self->_queue];
-    v6 = v7;
+    centerCopy = v7;
   }
 }
 
@@ -279,9 +279,9 @@
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 cloudKitClientIdentifier];
-          v11 = v10;
-          if (v10)
+          cloudKitClientIdentifier = [v9 cloudKitClientIdentifier];
+          v11 = cloudKitClientIdentifier;
+          if (cloudKitClientIdentifier)
           {
             v12 = v7 == 0;
           }
@@ -302,12 +302,12 @@
 
           else
           {
-            v13 = [v10 isEqual:v7];
+            v13 = [cloudKitClientIdentifier isEqual:v7];
 
             if (v13)
             {
 LABEL_19:
-              v14 = v9;
+              anyObject = v9;
 
               goto LABEL_20;
             }
@@ -325,38 +325,38 @@ LABEL_19:
     }
   }
 
-  v14 = [(NSMutableSet *)self->_clientsInterestedInAllZones anyObject];
+  anyObject = [(NSMutableSet *)self->_clientsInterestedInAllZones anyObject];
 LABEL_20:
 
-  return v14;
+  return anyObject;
 }
 
-- (void)_addClientInterestedInAllZones:(id)a3
+- (void)_addClientInterestedInAllZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   clientsInterestedInAllZones = self->_clientsInterestedInAllZones;
-  v8 = v4;
+  v8 = zonesCopy;
   if (!clientsInterestedInAllZones)
   {
     v6 = objc_alloc_init(NSMutableSet);
     v7 = self->_clientsInterestedInAllZones;
     self->_clientsInterestedInAllZones = v6;
 
-    v4 = v8;
+    zonesCopy = v8;
     clientsInterestedInAllZones = self->_clientsInterestedInAllZones;
   }
 
-  [(NSMutableSet *)clientsInterestedInAllZones addObject:v4];
+  [(NSMutableSet *)clientsInterestedInAllZones addObject:zonesCopy];
 }
 
-- (void)_addClient:(id)a3 interestedInZoneIDs:(id)a4
+- (void)_addClient:(id)client interestedInZoneIDs:(id)ds
 {
-  v6 = a3;
+  clientCopy = client;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a4;
+  obj = ds;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -374,8 +374,8 @@ LABEL_20:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 ownerName];
-        v15 = [v14 isEqualToString:CKCurrentUserDefaultName];
+        ownerName = [v13 ownerName];
+        v15 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
         if (v15)
         {
@@ -411,7 +411,7 @@ LABEL_11:
           [v20 setObject:v21 forKeyedSubscript:v13];
         }
 
-        [v21 addObject:v6];
+        [v21 addObject:clientCopy];
       }
 
       v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -421,21 +421,21 @@ LABEL_11:
   }
 }
 
-- (void)_removeClient:(id)a3 interestedInSomeZones:(id)a4
+- (void)_removeClient:(id)client interestedInSomeZones:(id)zones
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  clientCopy = client;
+  zonesCopy = zones;
+  if (zonesCopy)
   {
     v7 = objc_alloc_init(NSMutableArray);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000525F8;
     v18[3] = &unk_1002749D0;
-    v19 = v5;
+    v19 = clientCopy;
     v8 = v7;
     v20 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:v18];
+    [zonesCopy enumerateKeysAndObjectsUsingBlock:v18];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -456,7 +456,7 @@ LABEL_11:
             objc_enumerationMutation(v9);
           }
 
-          [v6 removeObjectForKey:{*(*(&v14 + 1) + 8 * v13), v14}];
+          [zonesCopy removeObjectForKey:{*(*(&v14 + 1) + 8 * v13), v14}];
           v13 = v13 + 1;
         }
 
@@ -469,41 +469,41 @@ LABEL_11:
   }
 }
 
-- (void)_removeClientFromInterestingZones:(id)a3
+- (void)_removeClientFromInterestingZones:(id)zones
 {
   clientsInterestedInAllZones = self->_clientsInterestedInAllZones;
-  v5 = a3;
-  [(NSMutableSet *)clientsInterestedInAllZones removeObject:v5];
-  [(CPLCloudKitCoordinator *)self _removeClient:v5 interestedInSomeZones:self->_clientsInterestedInSomePrivateZones];
-  [(CPLCloudKitCoordinator *)self _removeClient:v5 interestedInSomeZones:self->_clientsInterestedInSomeSharedZones];
+  zonesCopy = zones;
+  [(NSMutableSet *)clientsInterestedInAllZones removeObject:zonesCopy];
+  [(CPLCloudKitCoordinator *)self _removeClient:zonesCopy interestedInSomeZones:self->_clientsInterestedInSomePrivateZones];
+  [(CPLCloudKitCoordinator *)self _removeClient:zonesCopy interestedInSomeZones:self->_clientsInterestedInSomeSharedZones];
 }
 
-- (void)_addClientToInterestingZones:(id)a3
+- (void)_addClientToInterestingZones:(id)zones
 {
-  v4 = a3;
-  v5 = [v4 interestingZoneIDsForCoordinator:self];
+  zonesCopy = zones;
+  v5 = [zonesCopy interestingZoneIDsForCoordinator:self];
   v6 = v5;
   if (v5)
   {
-    [(CPLCloudKitCoordinator *)self _addClient:v4 interestedInZoneIDs:v5];
+    [(CPLCloudKitCoordinator *)self _addClient:zonesCopy interestedInZoneIDs:v5];
   }
 
   else
   {
-    [(CPLCloudKitCoordinator *)self _addClientInterestedInAllZones:v4];
+    [(CPLCloudKitCoordinator *)self _addClientInterestedInAllZones:zonesCopy];
   }
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100052890;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = clientCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -511,21 +511,21 @@ LABEL_11:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = clientCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)unregisterClient:(id)a3
+- (void)unregisterClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100052A0C;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = clientCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -533,7 +533,7 @@ LABEL_11:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = clientCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -563,17 +563,17 @@ LABEL_11:
   }
 }
 
-- (void)noteClient:(id)a3 isInForeground:(BOOL)a4
+- (void)noteClient:(id)client isInForeground:(BOOL)foreground
 {
-  v6 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100052D70;
   v12[3] = &unk_100273930;
   v12[4] = self;
-  v13 = v6;
-  v14 = a4;
+  v13 = clientCopy;
+  foregroundCopy = foreground;
   v8 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -581,27 +581,27 @@ LABEL_11:
   block[3] = &unk_100271E98;
   v16 = v8;
   v9 = queue;
-  v10 = v6;
+  v10 = clientCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
 
-+ (void)setExecutionIdentifier:(id)a3
++ (void)setExecutionIdentifier:(id)identifier
 {
-  v3 = [a3 copy];
+  v3 = [identifier copy];
   v4 = qword_1002C51C8;
   qword_1002C51C8 = v3;
 }
 
-- (void)launchOperation:(id)a3 type:(int64_t)a4 forClient:(id)a5
+- (void)launchOperation:(id)operation type:(int64_t)type forClient:(id)client
 {
-  v14 = a3;
-  v9 = a5;
-  if (a4 <= 1)
+  operationCopy = operation;
+  clientCopy = client;
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_20;
       }
@@ -609,10 +609,10 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        sub_10019CB1C(v14, a2, self);
+        sub_10019CB1C(operationCopy, a2, self);
       }
 
-      v12 = [(CPLCloudKitCoordinator *)self database];
+      database = [(CPLCloudKitCoordinator *)self database];
     }
 
     else
@@ -620,32 +620,32 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        sub_10019CC14(v14, a2, self);
+        sub_10019CC14(operationCopy, a2, self);
       }
 
-      v12 = [(CPLCloudKitCoordinator *)self container];
+      database = [(CPLCloudKitCoordinator *)self container];
     }
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          sub_10019C834(v14, a2, self);
+          sub_10019C834(operationCopy, a2, self);
         }
 
-        v10 = [(CPLCloudKitCoordinator *)self zoneishContainer];
-        v11 = [v10 privateCloudDatabase];
+        zoneishContainer = [(CPLCloudKitCoordinator *)self zoneishContainer];
+        privateCloudDatabase = [zoneishContainer privateCloudDatabase];
       }
 
       else
       {
-        if (a4 != 4)
+        if (type != 4)
         {
           goto LABEL_20;
         }
@@ -653,15 +653,15 @@ LABEL_11:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          sub_10019C92C(v14, a2, self);
+          sub_10019C92C(operationCopy, a2, self);
         }
 
-        v10 = [(CPLCloudKitCoordinator *)self zoneishContainer];
-        v11 = [v10 sharedCloudDatabase];
+        zoneishContainer = [(CPLCloudKitCoordinator *)self zoneishContainer];
+        privateCloudDatabase = [zoneishContainer sharedCloudDatabase];
       }
 
-      v13 = v11;
-      [v11 addOperation:v14];
+      v13 = privateCloudDatabase;
+      [privateCloudDatabase addOperation:operationCopy];
 
       goto LABEL_19;
     }
@@ -669,24 +669,24 @@ LABEL_11:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      sub_10019CA24(v14, a2, self);
+      sub_10019CA24(operationCopy, a2, self);
     }
 
-    v12 = [(CPLCloudKitCoordinator *)self sharedDatabase];
+    database = [(CPLCloudKitCoordinator *)self sharedDatabase];
   }
 
-  v10 = v12;
-  [v12 addOperation:v14];
+  zoneishContainer = database;
+  [database addOperation:operationCopy];
 LABEL_19:
 
 LABEL_20:
 }
 
-- (void)associateMetric:(id)a3 forClient:(id)a4
+- (void)associateMetric:(id)metric forClient:(id)client
 {
-  v5 = a3;
-  v6 = [(CPLCloudKitCoordinator *)self container];
-  [v5 setContainer:v6];
+  metricCopy = metric;
+  container = [(CPLCloudKitCoordinator *)self container];
+  [metricCopy setContainer:container];
 }
 
 + (BOOL)shouldRegisterClient
@@ -706,30 +706,30 @@ LABEL_20:
   return v2 & 1;
 }
 
-+ (BOOL)networkBehaviorShouldBeDiscretionaryForForegroundOperation:(BOOL)a3 upload:(BOOL)a4 metadata:(BOOL)a5
++ (BOOL)networkBehaviorShouldBeDiscretionaryForForegroundOperation:(BOOL)operation upload:(BOOL)upload metadata:(BOOL)metadata
 {
-  if (a3)
+  if (operation)
   {
     return 0;
   }
 
   else
   {
-    return [a1 enableTurboMode] ^ 1;
+    return [self enableTurboMode] ^ 1;
   }
 }
 
-- (id)databaseForOperationType:(int64_t)a3 relativeToOperationType:(int64_t)a4 forClient:(id)a5
+- (id)databaseForOperationType:(int64_t)type relativeToOperationType:(int64_t)operationType forClient:(id)client
 {
-  v9 = a5;
-  if (a3 == 1 || a3 == 3)
+  clientCopy = client;
+  if (type == 1 || type == 3)
   {
     v10 = 1;
   }
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       sub_10019CD0C(a2, self);
     }
@@ -737,7 +737,7 @@ LABEL_20:
     v10 = 0;
   }
 
-  if ((a4 - 1) < 2)
+  if ((operationType - 1) < 2)
   {
     if (v10)
     {
@@ -751,9 +751,9 @@ LABEL_20:
     v10 = ;
   }
 
-  else if ((a4 - 3) >= 2)
+  else if ((operationType - 3) >= 2)
   {
-    if (!a4)
+    if (!operationType)
     {
       sub_10019CD84(a2, self);
     }
@@ -761,16 +761,16 @@ LABEL_20:
 
   else
   {
-    v11 = [(CPLCloudKitCoordinator *)self zoneishContainer];
-    v12 = v11;
+    zoneishContainer = [(CPLCloudKitCoordinator *)self zoneishContainer];
+    v12 = zoneishContainer;
     if (v10)
     {
-      [v11 privateCloudDatabase];
+      [zoneishContainer privateCloudDatabase];
     }
 
     else
     {
-      [v11 sharedCloudDatabase];
+      [zoneishContainer sharedCloudDatabase];
     }
     v10 = ;
   }
@@ -778,18 +778,18 @@ LABEL_20:
   return v10;
 }
 
-- (void)getStatusForClient:(id)a3 completionHandler:(id)a4
+- (void)getStatusForClient:(id)client completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  handlerCopy = handler;
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000534A4;
   v14[3] = &unk_100271DE0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = clientCopy;
+  v16 = handlerCopy;
   v9 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -797,22 +797,22 @@ LABEL_20:
   block[3] = &unk_100271E98;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = handlerCopy;
+  v12 = clientCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
 
-- (void)getLastClientServedWithAPushNotificationWithCompletionHandler:(id)a3
+- (void)getLastClientServedWithAPushNotificationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10005388C;
   v10[3] = &unk_100272350;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -820,74 +820,74 @@ LABEL_20:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)_askNextClient:(id)a3 toProvideCKAssetWithRecordID:(id)a4 fieldName:(id)a5 recordType:(id)a6 signature:(id)a7 bestResponseYet:(unint64_t)a8 completionHandler:(id)a9
+- (void)_askNextClient:(id)client toProvideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature bestResponseYet:(unint64_t)yet completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = [v15 nextObject];
-  if (v21)
+  clientCopy = client;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  nextObject = [clientCopy nextObject];
+  if (nextObject)
   {
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100053A80;
     v30[3] = &unk_1002749F8;
-    v37 = a8;
-    v36 = v20;
+    yetCopy = yet;
+    v36 = handlerCopy;
     v30[4] = self;
-    v31 = v15;
-    v32 = v16;
-    v33 = v17;
-    v22 = v18;
-    v29 = v20;
-    v23 = v15;
-    v24 = v18;
-    v25 = v17;
-    v26 = v16;
+    v31 = clientCopy;
+    v32 = dCopy;
+    v33 = nameCopy;
+    v22 = typeCopy;
+    v29 = handlerCopy;
+    v23 = clientCopy;
+    v24 = typeCopy;
+    v25 = nameCopy;
+    v26 = dCopy;
     v27 = v22;
     v34 = v22;
-    v35 = v19;
+    v35 = signatureCopy;
     v28 = v27;
-    v16 = v26;
-    v17 = v25;
-    v18 = v24;
-    v15 = v23;
-    v20 = v29;
-    [v21 coordinator:self provideCKAssetWithRecordID:v32 fieldName:v33 recordType:v28 signature:v35 completionHandler:v30];
+    dCopy = v26;
+    nameCopy = v25;
+    typeCopy = v24;
+    clientCopy = v23;
+    handlerCopy = v29;
+    [nextObject coordinator:self provideCKAssetWithRecordID:v32 fieldName:v33 recordType:v28 signature:v35 completionHandler:v30];
   }
 
   else
   {
-    (*(v20 + 2))(v20, 0, a8);
+    (*(handlerCopy + 2))(handlerCopy, 0, yet);
   }
 }
 
-- (void)provideCKAssetWithRecordID:(id)a3 fieldName:(id)a4 recordType:(id)a5 signature:(id)a6 completionHandler:(id)a7
+- (void)provideCKAssetWithRecordID:(id)d fieldName:(id)name recordType:(id)type signature:(id)signature completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  nameCopy = name;
+  typeCopy = type;
+  signatureCopy = signature;
+  handlerCopy = handler;
   queue = self->_queue;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100053CC4;
   v26[3] = &unk_100273DF8;
   v26[4] = self;
-  v27 = v12;
-  v28 = v13;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
+  v27 = dCopy;
+  v28 = nameCopy;
+  v29 = typeCopy;
+  v30 = signatureCopy;
+  v31 = handlerCopy;
   v18 = v26;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -895,20 +895,20 @@ LABEL_20:
   block[3] = &unk_100271E98;
   v33 = v18;
   v19 = queue;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
+  v20 = handlerCopy;
+  v21 = signatureCopy;
+  v22 = typeCopy;
+  v23 = nameCopy;
+  v24 = dCopy;
   v25 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v19, v25);
 }
 
-- (id)_clientsInterestedToReceiveAPushNotificationForZoneID:(id)a3
+- (id)_clientsInterestedToReceiveAPushNotificationForZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 ownerName];
-  v6 = [v5 isEqualToString:CKCurrentUserDefaultName];
+  dCopy = d;
+  ownerName = [dCopy ownerName];
+  v6 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   v7 = 48;
   if (v6)
@@ -916,21 +916,21 @@ LABEL_20:
     v7 = 56;
   }
 
-  v8 = [*(&self->super.isa + v7) objectForKeyedSubscript:v4];
+  v8 = [*(&self->super.isa + v7) objectForKeyedSubscript:dCopy];
 
   return v8;
 }
 
-- (id)_bestClientToReceivePushNotification:(id)a3
+- (id)_bestClientToReceivePushNotification:(id)notification
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 recordZoneID], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  notificationCopy = notification;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([notificationCopy recordZoneID], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [(CPLCloudKitCoordinator *)self _clientsInterestedToReceiveAPushNotificationForZoneID:v5];
-    v8 = [v7 anyObject];
+    anyObject = [v7 anyObject];
 
-    if (v8)
+    if (anyObject)
     {
       goto LABEL_32;
     }
@@ -945,12 +945,12 @@ LABEL_20:
     {
 
 LABEL_31:
-      v8 = [(CPLCloudKitCoordinator *)self _defaultClient];
+      anyObject = [(CPLCloudKitCoordinator *)self _defaultClient];
       goto LABEL_32;
     }
 
     v11 = v10;
-    v29 = v4;
+    v29 = notificationCopy;
     v12 = 0;
     v13 = *v31;
     v14 = CPLLibraryIdentifierSystemLibrary;
@@ -966,11 +966,11 @@ LABEL_31:
         v16 = *(*(&v30 + 1) + 8 * i);
         if ([v16 isInterestedInZoneID:v6 forCoordinator:self])
         {
-          v8 = v16;
+          anyObject = v16;
 
-          v17 = [v8 cloudKitClientIdentifier];
-          v18 = v17;
-          if (v17)
+          cloudKitClientIdentifier = [anyObject cloudKitClientIdentifier];
+          v18 = cloudKitClientIdentifier;
+          if (cloudKitClientIdentifier)
           {
             v19 = v14 == 0;
           }
@@ -982,9 +982,9 @@ LABEL_31:
 
           if (v19)
           {
-            v20 = v17 | v14;
+            v20 = cloudKitClientIdentifier | v14;
 
-            v12 = v8;
+            v12 = anyObject;
             if (!v20)
             {
               goto LABEL_20;
@@ -993,9 +993,9 @@ LABEL_31:
 
           else
           {
-            v21 = [v17 isEqual:v14];
+            v21 = [cloudKitClientIdentifier isEqual:v14];
 
-            v12 = v8;
+            v12 = anyObject;
             if (v21)
             {
               goto LABEL_20;
@@ -1005,14 +1005,14 @@ LABEL_31:
       }
 
       v11 = [(NSMutableSet *)v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
-      v8 = v12;
+      anyObject = v12;
     }
 
     while (v11);
 LABEL_20:
 
-    v4 = v29;
-    if (!v8)
+    notificationCopy = v29;
+    if (!anyObject)
     {
       goto LABEL_31;
     }
@@ -1021,32 +1021,32 @@ LABEL_20:
   else
   {
     v22 = objc_opt_respondsToSelector();
-    v23 = [(CPLCloudKitCoordinator *)self _defaultClient];
-    v8 = v23;
+    _defaultClient = [(CPLCloudKitCoordinator *)self _defaultClient];
+    anyObject = _defaultClient;
     v6 = 0;
-    if ((v22 & 1) != 0 && !v23)
+    if ((v22 & 1) != 0 && !_defaultClient)
     {
-      v24 = [v4 databaseScope];
-      if (v24 == 3)
+      databaseScope = [notificationCopy databaseScope];
+      if (databaseScope == 3)
       {
         clientsInterestedInSomeSharedZones = self->_clientsInterestedInSomeSharedZones;
       }
 
       else
       {
-        if (v24 != 2)
+        if (databaseScope != 2)
         {
           v6 = 0;
-          v8 = 0;
+          anyObject = 0;
           goto LABEL_32;
         }
 
         clientsInterestedInSomeSharedZones = self->_clientsInterestedInSomePrivateZones;
       }
 
-      v26 = [(NSMutableDictionary *)clientsInterestedInSomeSharedZones allValues];
-      v27 = [v26 firstObject];
-      v8 = [v27 anyObject];
+      allValues = [(NSMutableDictionary *)clientsInterestedInSomeSharedZones allValues];
+      firstObject = [allValues firstObject];
+      anyObject = [firstObject anyObject];
 
       v6 = 0;
     }
@@ -1054,7 +1054,7 @@ LABEL_20:
 
 LABEL_32:
 
-  return v8;
+  return anyObject;
 }
 
 - (void)_stopWaitingForPushNotifications
@@ -1074,18 +1074,18 @@ LABEL_32:
   }
 }
 
-- (void)noteClient:(id)a3 isIgnoringChangeInZoneID:(id)a4
+- (void)noteClient:(id)client isIgnoringChangeInZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  dCopy = d;
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100054260;
   v14[3] = &unk_1002721A0;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = clientCopy;
+  selfCopy = self;
+  v17 = dCopy;
   v9 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1093,23 +1093,23 @@ LABEL_32:
   block[3] = &unk_100271E98;
   v19 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = dCopy;
+  v12 = clientCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
 
-- (void)fetchAccountInfoWithCompletionHandler:(id)a3
+- (void)fetchAccountInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   container = self->_container;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000544D4;
   v7[3] = &unk_100274A48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [CPLCallObserver observeAsyncCallOn:container selector:"accountInfoWithCompletionHandler:" block:v7];
 }
 
@@ -1125,13 +1125,13 @@ LABEL_32:
     }
   }
 
-  v4 = [(CPLCloudKitCoordinator *)self container];
+  container = [(CPLCloudKitCoordinator *)self container];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000518E0;
   v6[3] = &unk_100271F40;
   v6[4] = self;
-  [CPLCallObserver observeSyncCallOn:v4 selector:"unregisterFromUploadRequestsWithMachServiceName:" block:v6];
+  [CPLCallObserver observeSyncCallOn:container selector:"unregisterFromUploadRequestsWithMachServiceName:" block:v6];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -1141,7 +1141,7 @@ LABEL_32:
   [CPLCallObserver observeSyncCallOn:self selector:"_stopWaitingForPushNotifications" block:v5];
 }
 
-- (void)center:(id)a3 didReceivePushNotification:(id)a4
+- (void)center:(id)center didReceivePushNotification:(id)notification
 {
   sub_10002B0F4();
   v30 = v4;
@@ -1151,38 +1151,38 @@ LABEL_32:
   dispatch_assert_queue_V2(*(v7 + 8));
   if ([*(v7 + 24) count] == 1)
   {
-    v10 = [*(v7 + 24) anyObject];
+    anyObject = [*(v7 + 24) anyObject];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v11 = sub_10005189C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v10 cloudKitClientIdentifier];
+        cloudKitClientIdentifier = [anyObject cloudKitClientIdentifier];
         sub_100054B6C();
         sub_1000139AC(&_mh_execute_header, v13, v14, "Serving push notification to only client %{public}@: %@", v15, v16, v17, v18, v28);
       }
     }
 
 LABEL_12:
-    [v10 coordinatorDidReceiveAPushNotification:v7];
+    [anyObject coordinatorDidReceiveAPushNotification:v7];
     goto LABEL_13;
   }
 
-  v10 = [v7 _bestClientToReceivePushNotification:v9];
-  if (v10)
+  anyObject = [v7 _bestClientToReceivePushNotification:v9];
+  if (anyObject)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v19 = sub_10005189C();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v10 cloudKitClientIdentifier];
+        cloudKitClientIdentifier2 = [anyObject cloudKitClientIdentifier];
         sub_100054B6C();
         sub_1000139AC(&_mh_execute_header, v21, v22, "Serving push notification to client %{public}@: %@", v23, v24, v25, v26, v28);
       }
     }
 
-    objc_storeStrong((v7 + 64), v10);
+    objc_storeStrong((v7 + 64), anyObject);
     goto LABEL_12;
   }
 

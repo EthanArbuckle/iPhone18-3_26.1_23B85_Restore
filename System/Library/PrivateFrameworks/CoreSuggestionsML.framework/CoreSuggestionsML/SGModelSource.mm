@@ -1,15 +1,15 @@
 @interface SGModelSource
-- (SGModelSource)initWithSessionDescriptor:(id)a3 modelClass:(Class)a4;
+- (SGModelSource)initWithSessionDescriptor:(id)descriptor modelClass:(Class)class;
 @end
 
 @implementation SGModelSource
 
-- (SGModelSource)initWithSessionDescriptor:(id)a3 modelClass:(Class)a4
+- (SGModelSource)initWithSessionDescriptor:(id)descriptor modelClass:(Class)class
 {
-  v8 = a3;
-  if (v8)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    if (a4)
+    if (class)
     {
       goto LABEL_3;
     }
@@ -17,17 +17,17 @@
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGModelFeatures.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGModelFeatures.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
 
-    if (a4)
+    if (class)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"SGModelFeatures.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"modelClass"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGModelFeatures.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"modelClass"}];
 
 LABEL_3:
   v14.receiver = self;
@@ -36,8 +36,8 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionDescriptor, a3);
-    objc_storeStrong(&v10->_modelClass, a4);
+    objc_storeStrong(&v9->_sessionDescriptor, descriptor);
+    objc_storeStrong(&v10->_modelClass, class);
   }
 
   return v10;

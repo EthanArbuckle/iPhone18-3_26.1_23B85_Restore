@@ -1,15 +1,15 @@
 @interface _UIActionSliderKnob
-- (_UIActionSliderKnob)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_UIActionSliderKnob)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UIActionSliderKnob
 
-- (_UIActionSliderKnob)initWithFrame:(CGRect)a3
+- (_UIActionSliderKnob)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIActionSliderKnob;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -34,11 +34,11 @@
   }
 
   UIGraphicsPushContext(v5);
-  v6 = [(_UIActionSliderKnob *)self knobColor];
-  v8 = v6;
-  if (v6)
+  knobColor = [(_UIActionSliderKnob *)self knobColor];
+  v8 = knobColor;
+  if (knobColor)
   {
-    CGContextSetFillColorWithColor(v5, [v6 CGColor]);
+    CGContextSetFillColorWithColor(v5, [knobColor CGColor]);
   }
 
   else

@@ -1,25 +1,25 @@
 @interface KTPeerOverride
-- (KTPeerOverride)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KTPeerOverride)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTPeerOverride
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[KTPeerOverride uiStatus](self forKey:{"uiStatus"), @"uiStatus"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[KTPeerOverride uiStatus](self forKey:{"uiStatus"), @"uiStatus"}];
 }
 
-- (KTPeerOverride)initWithCoder:(id)a3
+- (KTPeerOverride)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = KTPeerOverride;
   v5 = [(KTPeerOverride *)&v7 init];
   if (v5)
   {
-    -[KTPeerOverride setUiStatus:](v5, "setUiStatus:", [v4 decodeIntForKey:@"uiStatus"]);
+    -[KTPeerOverride setUiStatus:](v5, "setUiStatus:", [coderCopy decodeIntForKey:@"uiStatus"]);
   }
 
   return v5;

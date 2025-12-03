@@ -1,18 +1,18 @@
 @interface AXVoiceOverActivity
 - (AXVoiceOverActivity)init;
-- (AXVoiceOverActivity)initWithCoder:(id)a3;
-- (BOOL)identicalProperty:(id)a3 property2:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isIdenticalTo:(id)a3;
+- (AXVoiceOverActivity)initWithCoder:(id)coder;
+- (BOOL)identicalProperty:(id)property property2:(id)property2;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isIdenticalTo:(id)to;
 - (NSNumber)speechRate;
 - (NSNumber)volume;
 - (NSString)voiceIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSpeechRate:(id)a3;
-- (void)setVoiceIdentifier:(id)a3;
-- (void)setVolume:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSpeechRate:(id)rate;
+- (void)setVoiceIdentifier:(id)identifier;
+- (void)setVolume:(id)volume;
 @end
 
 @implementation AXVoiceOverActivity
@@ -22,456 +22,456 @@
   v5.receiver = self;
   v5.super_class = AXVoiceOverActivity;
   v2 = [(AXVoiceOverActivity *)&v5 init];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(AXVoiceOverActivity *)v2 setUuid:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(AXVoiceOverActivity *)v2 setUuid:uUID];
 
   return v2;
 }
 
 - (NSNumber)speechRate
 {
-  v2 = [(AXVoiceOverActivity *)self voiceSelection];
-  v3 = [v2 rate];
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
+  rate = [voiceSelection rate];
 
-  return v3;
+  return rate;
 }
 
 - (NSNumber)volume
 {
-  v2 = [(AXVoiceOverActivity *)self voiceSelection];
-  v3 = [v2 volume];
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
+  volume = [voiceSelection volume];
 
-  return v3;
+  return volume;
 }
 
 - (NSString)voiceIdentifier
 {
-  v2 = [(AXVoiceOverActivity *)self voiceSelection];
-  v3 = [v2 voiceId];
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
+  voiceId = [voiceSelection voiceId];
 
-  return v3;
+  return voiceId;
 }
 
-- (void)setVoiceIdentifier:(id)a3
+- (void)setVoiceIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(AXVoiceOverActivity *)self voiceSelection];
+  identifierCopy = identifier;
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
 
-  if (!v4)
+  if (!voiceSelection)
   {
     v5 = objc_alloc(MEMORY[0x1E6988768]);
-    v6 = [(AXVoiceOverActivity *)self speechRate];
-    v7 = [(AXVoiceOverActivity *)self volume];
-    v8 = [v5 initWithVoiceId:v10 rate:v6 pitch:0 volume:v7 voiceSettings:0 effects:0 boundLanguage:0];
+    speechRate = [(AXVoiceOverActivity *)self speechRate];
+    volume = [(AXVoiceOverActivity *)self volume];
+    v8 = [v5 initWithVoiceId:identifierCopy rate:speechRate pitch:0 volume:volume voiceSettings:0 effects:0 boundLanguage:0];
     [(AXVoiceOverActivity *)self setVoiceSelection:v8];
   }
 
-  v9 = [(AXVoiceOverActivity *)self voiceSelection];
-  [v9 setVoiceId:v10];
+  voiceSelection2 = [(AXVoiceOverActivity *)self voiceSelection];
+  [voiceSelection2 setVoiceId:identifierCopy];
 }
 
-- (void)setSpeechRate:(id)a3
+- (void)setSpeechRate:(id)rate
 {
-  v10 = a3;
-  v4 = [(AXVoiceOverActivity *)self voiceSelection];
+  rateCopy = rate;
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
 
-  if (!v4)
+  if (!voiceSelection)
   {
     v5 = objc_alloc(MEMORY[0x1E6988768]);
-    v6 = [(AXVoiceOverActivity *)self voiceIdentifier];
-    v7 = [(AXVoiceOverActivity *)self volume];
-    v8 = [v5 initWithVoiceId:v6 rate:v10 pitch:0 volume:v7 voiceSettings:0 effects:0 boundLanguage:0];
+    voiceIdentifier = [(AXVoiceOverActivity *)self voiceIdentifier];
+    volume = [(AXVoiceOverActivity *)self volume];
+    v8 = [v5 initWithVoiceId:voiceIdentifier rate:rateCopy pitch:0 volume:volume voiceSettings:0 effects:0 boundLanguage:0];
     [(AXVoiceOverActivity *)self setVoiceSelection:v8];
   }
 
-  v9 = [(AXVoiceOverActivity *)self voiceSelection];
-  [v9 setRate:v10];
+  voiceSelection2 = [(AXVoiceOverActivity *)self voiceSelection];
+  [voiceSelection2 setRate:rateCopy];
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
-  v10 = a3;
-  v4 = [(AXVoiceOverActivity *)self voiceSelection];
+  volumeCopy = volume;
+  voiceSelection = [(AXVoiceOverActivity *)self voiceSelection];
 
-  if (!v4)
+  if (!voiceSelection)
   {
     v5 = objc_alloc(MEMORY[0x1E6988768]);
-    v6 = [(AXVoiceOverActivity *)self voiceIdentifier];
-    v7 = [(AXVoiceOverActivity *)self speechRate];
-    v8 = [v5 initWithVoiceId:v6 rate:v7 pitch:0 volume:v10 voiceSettings:0 effects:0 boundLanguage:0];
+    voiceIdentifier = [(AXVoiceOverActivity *)self voiceIdentifier];
+    speechRate = [(AXVoiceOverActivity *)self speechRate];
+    v8 = [v5 initWithVoiceId:voiceIdentifier rate:speechRate pitch:0 volume:volumeCopy voiceSettings:0 effects:0 boundLanguage:0];
     [(AXVoiceOverActivity *)self setVoiceSelection:v8];
   }
 
-  v9 = [(AXVoiceOverActivity *)self voiceSelection];
-  [v9 setVolume:v10];
+  voiceSelection2 = [(AXVoiceOverActivity *)self voiceSelection];
+  [voiceSelection2 setVolume:volumeCopy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[AXVoiceOverActivity builtIn](self forKey:{"builtIn"), @"builtIn"}];
-  v5 = [(AXVoiceOverActivity *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AXVoiceOverActivity builtIn](self forKey:{"builtIn"), @"builtIn"}];
+  uuid = [(AXVoiceOverActivity *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v6 = [(AXVoiceOverActivity *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(AXVoiceOverActivity *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(AXVoiceOverActivity *)self textualContexts];
-  [v4 encodeObject:v7 forKey:@"textualContext"];
+  textualContexts = [(AXVoiceOverActivity *)self textualContexts];
+  [coderCopy encodeObject:textualContexts forKey:@"textualContext"];
 
-  v8 = [(AXVoiceOverActivity *)self appIdentifiers];
-  [v4 encodeObject:v8 forKey:@"appIdentifier"];
+  appIdentifiers = [(AXVoiceOverActivity *)self appIdentifiers];
+  [coderCopy encodeObject:appIdentifiers forKey:@"appIdentifier"];
 
-  v9 = [(AXVoiceOverActivity *)self punctuationGroup];
-  [v4 encodeObject:v9 forKey:@"punctuationGroup"];
+  punctuationGroup = [(AXVoiceOverActivity *)self punctuationGroup];
+  [coderCopy encodeObject:punctuationGroup forKey:@"punctuationGroup"];
 
-  v10 = [(AXVoiceOverActivity *)self voiceIdentifier];
-  [v4 encodeObject:v10 forKey:@"voiceIdentifier"];
+  voiceIdentifier = [(AXVoiceOverActivity *)self voiceIdentifier];
+  [coderCopy encodeObject:voiceIdentifier forKey:@"voiceIdentifier"];
 
-  v11 = [(AXVoiceOverActivity *)self speechRate];
-  [v4 encodeObject:v11 forKey:@"speechRate"];
+  speechRate = [(AXVoiceOverActivity *)self speechRate];
+  [coderCopy encodeObject:speechRate forKey:@"speechRate"];
 
-  v12 = [(AXVoiceOverActivity *)self volume];
-  [v4 encodeObject:v12 forKey:@"volume"];
+  volume = [(AXVoiceOverActivity *)self volume];
+  [coderCopy encodeObject:volume forKey:@"volume"];
 
-  v13 = [(AXVoiceOverActivity *)self soundMuted];
-  [v4 encodeObject:v13 forKey:@"soundMuted"];
+  soundMuted = [(AXVoiceOverActivity *)self soundMuted];
+  [coderCopy encodeObject:soundMuted forKey:@"soundMuted"];
 
-  v14 = [(AXVoiceOverActivity *)self speechMuted];
-  [v4 encodeObject:v14 forKey:@"speechMuted"];
+  speechMuted = [(AXVoiceOverActivity *)self speechMuted];
+  [coderCopy encodeObject:speechMuted forKey:@"speechMuted"];
 
-  v15 = [(AXVoiceOverActivity *)self audioDucking];
-  [v4 encodeObject:v15 forKey:@"audioDucking"];
+  audioDucking = [(AXVoiceOverActivity *)self audioDucking];
+  [coderCopy encodeObject:audioDucking forKey:@"audioDucking"];
 
-  v16 = [(AXVoiceOverActivity *)self audioDuckingAmount];
-  [v4 encodeObject:v16 forKey:@"audioDuckingAmount"];
+  audioDuckingAmount = [(AXVoiceOverActivity *)self audioDuckingAmount];
+  [coderCopy encodeObject:audioDuckingAmount forKey:@"audioDuckingAmount"];
 
-  v17 = [(AXVoiceOverActivity *)self modifierKeys];
-  [v4 encodeObject:v17 forKey:@"modifierKeys"];
+  modifierKeys = [(AXVoiceOverActivity *)self modifierKeys];
+  [coderCopy encodeObject:modifierKeys forKey:@"modifierKeys"];
 
-  v18 = [(AXVoiceOverActivity *)self brailleTable];
-  [v4 encodeObject:v18 forKey:@"brailleTable"];
+  brailleTable = [(AXVoiceOverActivity *)self brailleTable];
+  [coderCopy encodeObject:brailleTable forKey:@"brailleTable"];
 
-  v19 = [(AXVoiceOverActivity *)self brailleInputTable];
-  [v4 encodeObject:v19 forKey:@"brailleInputTable"];
+  brailleInputTable = [(AXVoiceOverActivity *)self brailleInputTable];
+  [coderCopy encodeObject:brailleInputTable forKey:@"brailleInputTable"];
 
-  v20 = [(AXVoiceOverActivity *)self brailleStatusCellGeneral];
-  [v4 encodeObject:v20 forKey:@"brailleStatusCellGeneral"];
+  brailleStatusCellGeneral = [(AXVoiceOverActivity *)self brailleStatusCellGeneral];
+  [coderCopy encodeObject:brailleStatusCellGeneral forKey:@"brailleStatusCellGeneral"];
 
-  v21 = [(AXVoiceOverActivity *)self brailleStatusCellText];
-  [v4 encodeObject:v21 forKey:@"brailleStatusCellText"];
+  brailleStatusCellText = [(AXVoiceOverActivity *)self brailleStatusCellText];
+  [coderCopy encodeObject:brailleStatusCellText forKey:@"brailleStatusCellText"];
 
-  v22 = [(AXVoiceOverActivity *)self tableHeaders];
-  [v4 encodeObject:v22 forKey:@"tableHeaders"];
+  tableHeaders = [(AXVoiceOverActivity *)self tableHeaders];
+  [coderCopy encodeObject:tableHeaders forKey:@"tableHeaders"];
 
-  v23 = [(AXVoiceOverActivity *)self tableRowAndColumn];
-  [v4 encodeObject:v23 forKey:@"tableRowAndColumn"];
+  tableRowAndColumn = [(AXVoiceOverActivity *)self tableRowAndColumn];
+  [coderCopy encodeObject:tableRowAndColumn forKey:@"tableRowAndColumn"];
 
-  v24 = [(AXVoiceOverActivity *)self speakEmojis];
-  [v4 encodeObject:v24 forKey:@"speakEmojis"];
+  speakEmojis = [(AXVoiceOverActivity *)self speakEmojis];
+  [coderCopy encodeObject:speakEmojis forKey:@"speakEmojis"];
 
-  v25 = [(AXVoiceOverActivity *)self imageDescriptions];
-  [v4 encodeObject:v25 forKey:@"imageDescriptions"];
+  imageDescriptions = [(AXVoiceOverActivity *)self imageDescriptions];
+  [coderCopy encodeObject:imageDescriptions forKey:@"imageDescriptions"];
 
-  v26 = [(AXVoiceOverActivity *)self containerFeedback];
-  [v4 encodeObject:v26 forKey:@"containerFeedback"];
+  containerFeedback = [(AXVoiceOverActivity *)self containerFeedback];
+  [coderCopy encodeObject:containerFeedback forKey:@"containerFeedback"];
 
-  v27 = [(AXVoiceOverActivity *)self numberFeedback];
-  [v4 encodeObject:v27 forKey:@"numberFeedback"];
+  numberFeedback = [(AXVoiceOverActivity *)self numberFeedback];
+  [coderCopy encodeObject:numberFeedback forKey:@"numberFeedback"];
 
-  v28 = [(AXVoiceOverActivity *)self brailleOutput];
-  [v4 encodeObject:v28 forKey:@"brailleOutput"];
+  brailleOutput = [(AXVoiceOverActivity *)self brailleOutput];
+  [coderCopy encodeObject:brailleOutput forKey:@"brailleOutput"];
 
-  v29 = [(AXVoiceOverActivity *)self brailleInput];
-  [v4 encodeObject:v29 forKey:@"brailleInput"];
+  brailleInput = [(AXVoiceOverActivity *)self brailleInput];
+  [coderCopy encodeObject:brailleInput forKey:@"brailleInput"];
 
-  v30 = [(AXVoiceOverActivity *)self brailleAutoAdvanceDuration];
-  [v4 encodeObject:v30 forKey:@"brailleAutoAdvanceDuration"];
+  brailleAutoAdvanceDuration = [(AXVoiceOverActivity *)self brailleAutoAdvanceDuration];
+  [coderCopy encodeObject:brailleAutoAdvanceDuration forKey:@"brailleAutoAdvanceDuration"];
 
-  v31 = [(AXVoiceOverActivity *)self hints];
-  [v4 encodeObject:v31 forKey:@"hints"];
+  hints = [(AXVoiceOverActivity *)self hints];
+  [coderCopy encodeObject:hints forKey:@"hints"];
 
-  v32 = [(AXVoiceOverActivity *)self typingStyle];
-  [v4 encodeObject:v32 forKey:@"typingStyle"];
+  typingStyle = [(AXVoiceOverActivity *)self typingStyle];
+  [coderCopy encodeObject:typingStyle forKey:@"typingStyle"];
 
-  v33 = [(AXVoiceOverActivity *)self navigationStyle];
-  [v4 encodeObject:v33 forKey:@"navigationStyle"];
+  navigationStyle = [(AXVoiceOverActivity *)self navigationStyle];
+  [coderCopy encodeObject:navigationStyle forKey:@"navigationStyle"];
 
-  v34 = [(AXVoiceOverActivity *)self brailleAlerts];
-  [v4 encodeObject:v34 forKey:@"brailleAlerts"];
+  brailleAlerts = [(AXVoiceOverActivity *)self brailleAlerts];
+  [coderCopy encodeObject:brailleAlerts forKey:@"brailleAlerts"];
 
-  v35 = [(AXVoiceOverActivity *)self brailleFormatting];
-  [v4 encodeObject:v35 forKey:@"brailleFormatting"];
+  brailleFormatting = [(AXVoiceOverActivity *)self brailleFormatting];
+  [coderCopy encodeObject:brailleFormatting forKey:@"brailleFormatting"];
 
-  v36 = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
-  [v4 encodeObject:v36 forKey:@"brailleStartAutoActivateOnTextFields"];
+  brailleStartAutoActivateOnTextFields = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
+  [coderCopy encodeObject:brailleStartAutoActivateOnTextFields forKey:@"brailleStartAutoActivateOnTextFields"];
 }
 
-- (AXVoiceOverActivity)initWithCoder:(id)a3
+- (AXVoiceOverActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   [(AXVoiceOverActivity *)v5 setUuid:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   [(AXVoiceOverActivity *)v5 setName:v7];
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"textualContext"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"textualContext"];
   [(AXVoiceOverActivity *)v5 setTextualContexts:v11];
 
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"appIdentifier"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"appIdentifier"];
   [(AXVoiceOverActivity *)v5 setAppIdentifiers:v15];
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"punctuationGroup"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"punctuationGroup"];
   [(AXVoiceOverActivity *)v5 setPunctuationGroup:v16];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voiceIdentifier"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voiceIdentifier"];
   [(AXVoiceOverActivity *)v5 setVoiceIdentifier:v17];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speechRate"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speechRate"];
   [(AXVoiceOverActivity *)v5 setSpeechRate:v18];
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"volume"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"volume"];
   [(AXVoiceOverActivity *)v5 setVolume:v19];
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"soundMuted"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"soundMuted"];
   [(AXVoiceOverActivity *)v5 setSoundMuted:v20];
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speechMuted"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speechMuted"];
   [(AXVoiceOverActivity *)v5 setSpeechMuted:v21];
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioDucking"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioDucking"];
   [(AXVoiceOverActivity *)v5 setAudioDucking:v22];
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioDuckingAmount"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioDuckingAmount"];
   [(AXVoiceOverActivity *)v5 setAudioDuckingAmount:v23];
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifierKeys"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifierKeys"];
   [(AXVoiceOverActivity *)v5 setModifierKeys:v24];
 
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleStatusCellGeneral"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleStatusCellGeneral"];
   [(AXVoiceOverActivity *)v5 setBrailleStatusCellGeneral:v25];
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleStatusCellText"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleStatusCellText"];
   [(AXVoiceOverActivity *)v5 setBrailleStatusCellText:v26];
 
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleTable"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleTable"];
   [(AXVoiceOverActivity *)v5 setBrailleTable:v27];
 
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleInputTable"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleInputTable"];
   [(AXVoiceOverActivity *)v5 setBrailleInputTable:v28];
 
-  v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"speakEmojis"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speakEmojis"];
   [(AXVoiceOverActivity *)v5 setSpeakEmojis:v29];
 
-  v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageDescriptions"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDescriptions"];
   [(AXVoiceOverActivity *)v5 setImageDescriptions:v30];
 
-  v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerFeedback"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerFeedback"];
   [(AXVoiceOverActivity *)v5 setContainerFeedback:v31];
 
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberFeedback"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberFeedback"];
   [(AXVoiceOverActivity *)v5 setNumberFeedback:v32];
 
-  v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tableRowAndColumn"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tableRowAndColumn"];
   [(AXVoiceOverActivity *)v5 setTableRowAndColumn:v33];
 
-  v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tableHeaders"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tableHeaders"];
   [(AXVoiceOverActivity *)v5 setTableHeaders:v34];
 
-  v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleOutput"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleOutput"];
   [(AXVoiceOverActivity *)v5 setBrailleOutput:v35];
 
-  v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleInput"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleInput"];
   [(AXVoiceOverActivity *)v5 setBrailleInput:v36];
 
-  v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleAutoAdvanceDuration"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleAutoAdvanceDuration"];
   [(AXVoiceOverActivity *)v5 setBrailleAutoAdvanceDuration:v37];
 
-  v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hints"];
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hints"];
   [(AXVoiceOverActivity *)v5 setHints:v38];
 
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typingStyle"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typingStyle"];
   [(AXVoiceOverActivity *)v5 setTypingStyle:v39];
 
-  v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"navigationStyle"];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"navigationStyle"];
   [(AXVoiceOverActivity *)v5 setNavigationStyle:v40];
 
-  v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleAlerts"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleAlerts"];
   [(AXVoiceOverActivity *)v5 setBrailleAlerts:v41];
 
-  v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleFormatting"];
+  v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleFormatting"];
   [(AXVoiceOverActivity *)v5 setBrailleFormatting:v42];
 
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brailleStartAutoActivateOnTextFields"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brailleStartAutoActivateOnTextFields"];
   [(AXVoiceOverActivity *)v5 setBrailleStartAutoActivateOnTextFields:v43];
 
-  v44 = [v4 decodeBoolForKey:@"builtIn"];
+  v44 = [coderCopy decodeBoolForKey:@"builtIn"];
   [(AXVoiceOverActivity *)v5 setBuiltIn:v44];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(AXVoiceOverActivity *)self uuid];
-  [v4 setUuid:v5];
+  uuid = [(AXVoiceOverActivity *)self uuid];
+  [v4 setUuid:uuid];
 
-  v6 = [(AXVoiceOverActivity *)self name];
-  [v4 setName:v6];
+  name = [(AXVoiceOverActivity *)self name];
+  [v4 setName:name];
 
-  v7 = [(AXVoiceOverActivity *)self textualContexts];
-  [v4 setTextualContexts:v7];
+  textualContexts = [(AXVoiceOverActivity *)self textualContexts];
+  [v4 setTextualContexts:textualContexts];
 
-  v8 = [(AXVoiceOverActivity *)self appIdentifiers];
-  [v4 setAppIdentifiers:v8];
+  appIdentifiers = [(AXVoiceOverActivity *)self appIdentifiers];
+  [v4 setAppIdentifiers:appIdentifiers];
 
-  v9 = [(AXVoiceOverActivity *)self punctuationGroup];
-  [v4 setPunctuationGroup:v9];
+  punctuationGroup = [(AXVoiceOverActivity *)self punctuationGroup];
+  [v4 setPunctuationGroup:punctuationGroup];
 
-  v10 = [(AXVoiceOverActivity *)self voiceIdentifier];
-  [v4 setVoiceIdentifier:v10];
+  voiceIdentifier = [(AXVoiceOverActivity *)self voiceIdentifier];
+  [v4 setVoiceIdentifier:voiceIdentifier];
 
-  v11 = [(AXVoiceOverActivity *)self speechRate];
-  [v4 setSpeechRate:v11];
+  speechRate = [(AXVoiceOverActivity *)self speechRate];
+  [v4 setSpeechRate:speechRate];
 
-  v12 = [(AXVoiceOverActivity *)self volume];
-  [v4 setVolume:v12];
+  volume = [(AXVoiceOverActivity *)self volume];
+  [v4 setVolume:volume];
 
-  v13 = [(AXVoiceOverActivity *)self speechMuted];
-  [v4 setSpeechMuted:v13];
+  speechMuted = [(AXVoiceOverActivity *)self speechMuted];
+  [v4 setSpeechMuted:speechMuted];
 
-  v14 = [(AXVoiceOverActivity *)self audioDucking];
-  [v4 setAudioDucking:v14];
+  audioDucking = [(AXVoiceOverActivity *)self audioDucking];
+  [v4 setAudioDucking:audioDucking];
 
-  v15 = [(AXVoiceOverActivity *)self audioDuckingAmount];
-  [v4 setAudioDuckingAmount:v15];
+  audioDuckingAmount = [(AXVoiceOverActivity *)self audioDuckingAmount];
+  [v4 setAudioDuckingAmount:audioDuckingAmount];
 
-  v16 = [(AXVoiceOverActivity *)self soundMuted];
-  [v4 setSoundMuted:v16];
+  soundMuted = [(AXVoiceOverActivity *)self soundMuted];
+  [v4 setSoundMuted:soundMuted];
 
   [v4 setBuiltIn:{-[AXVoiceOverActivity builtIn](self, "builtIn")}];
-  v17 = [(AXVoiceOverActivity *)self modifierKeys];
-  [v4 setModifierKeys:v17];
+  modifierKeys = [(AXVoiceOverActivity *)self modifierKeys];
+  [v4 setModifierKeys:modifierKeys];
 
-  v18 = [(AXVoiceOverActivity *)self brailleStatusCellGeneral];
-  [v4 setBrailleStatusCellGeneral:v18];
+  brailleStatusCellGeneral = [(AXVoiceOverActivity *)self brailleStatusCellGeneral];
+  [v4 setBrailleStatusCellGeneral:brailleStatusCellGeneral];
 
-  v19 = [(AXVoiceOverActivity *)self brailleStatusCellText];
-  [v4 setBrailleStatusCellText:v19];
+  brailleStatusCellText = [(AXVoiceOverActivity *)self brailleStatusCellText];
+  [v4 setBrailleStatusCellText:brailleStatusCellText];
 
-  v20 = [(AXVoiceOverActivity *)self brailleTable];
-  [v4 setBrailleTable:v20];
+  brailleTable = [(AXVoiceOverActivity *)self brailleTable];
+  [v4 setBrailleTable:brailleTable];
 
-  v21 = [(AXVoiceOverActivity *)self brailleInputTable];
-  [v4 setBrailleInputTable:v21];
+  brailleInputTable = [(AXVoiceOverActivity *)self brailleInputTable];
+  [v4 setBrailleInputTable:brailleInputTable];
 
-  v22 = [(AXVoiceOverActivity *)self tableHeaders];
-  [v4 setTableHeaders:v22];
+  tableHeaders = [(AXVoiceOverActivity *)self tableHeaders];
+  [v4 setTableHeaders:tableHeaders];
 
-  v23 = [(AXVoiceOverActivity *)self tableRowAndColumn];
-  [v4 setTableRowAndColumn:v23];
+  tableRowAndColumn = [(AXVoiceOverActivity *)self tableRowAndColumn];
+  [v4 setTableRowAndColumn:tableRowAndColumn];
 
-  v24 = [(AXVoiceOverActivity *)self speakEmojis];
-  [v4 setSpeakEmojis:v24];
+  speakEmojis = [(AXVoiceOverActivity *)self speakEmojis];
+  [v4 setSpeakEmojis:speakEmojis];
 
-  v25 = [(AXVoiceOverActivity *)self imageDescriptions];
-  [v4 setImageDescriptions:v25];
+  imageDescriptions = [(AXVoiceOverActivity *)self imageDescriptions];
+  [v4 setImageDescriptions:imageDescriptions];
 
-  v26 = [(AXVoiceOverActivity *)self containerFeedback];
-  [v4 setContainerFeedback:v26];
+  containerFeedback = [(AXVoiceOverActivity *)self containerFeedback];
+  [v4 setContainerFeedback:containerFeedback];
 
-  v27 = [(AXVoiceOverActivity *)self numberFeedback];
-  [v4 setNumberFeedback:v27];
+  numberFeedback = [(AXVoiceOverActivity *)self numberFeedback];
+  [v4 setNumberFeedback:numberFeedback];
 
-  v28 = [(AXVoiceOverActivity *)self brailleInput];
-  [v4 setBrailleInput:v28];
+  brailleInput = [(AXVoiceOverActivity *)self brailleInput];
+  [v4 setBrailleInput:brailleInput];
 
-  v29 = [(AXVoiceOverActivity *)self brailleOutput];
-  [v4 setBrailleOutput:v29];
+  brailleOutput = [(AXVoiceOverActivity *)self brailleOutput];
+  [v4 setBrailleOutput:brailleOutput];
 
-  v30 = [(AXVoiceOverActivity *)self brailleAutoAdvanceDuration];
-  [v4 setBrailleAutoAdvanceDuration:v30];
+  brailleAutoAdvanceDuration = [(AXVoiceOverActivity *)self brailleAutoAdvanceDuration];
+  [v4 setBrailleAutoAdvanceDuration:brailleAutoAdvanceDuration];
 
-  v31 = [(AXVoiceOverActivity *)self hints];
-  [v4 setHints:v31];
+  hints = [(AXVoiceOverActivity *)self hints];
+  [v4 setHints:hints];
 
-  v32 = [(AXVoiceOverActivity *)self typingStyle];
-  [v4 setTypingStyle:v32];
+  typingStyle = [(AXVoiceOverActivity *)self typingStyle];
+  [v4 setTypingStyle:typingStyle];
 
-  v33 = [(AXVoiceOverActivity *)self navigationStyle];
-  [v4 setNavigationStyle:v33];
+  navigationStyle = [(AXVoiceOverActivity *)self navigationStyle];
+  [v4 setNavigationStyle:navigationStyle];
 
-  v34 = [(AXVoiceOverActivity *)self brailleAlerts];
-  [v4 setBrailleAlerts:v34];
+  brailleAlerts = [(AXVoiceOverActivity *)self brailleAlerts];
+  [v4 setBrailleAlerts:brailleAlerts];
 
-  v35 = [(AXVoiceOverActivity *)self brailleFormatting];
-  [v4 setBrailleFormatting:v35];
+  brailleFormatting = [(AXVoiceOverActivity *)self brailleFormatting];
+  [v4 setBrailleFormatting:brailleFormatting];
 
-  v36 = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
-  [v4 setBrailleStartAutoActivateOnTextFields:v36];
+  brailleStartAutoActivateOnTextFields = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
+  [v4 setBrailleStartAutoActivateOnTextFields:brailleStartAutoActivateOnTextFields];
 
   return v4;
 }
 
-- (BOOL)identicalProperty:(id)a3 property2:(id)a4
+- (BOOL)identicalProperty:(id)property property2:(id)property2
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = (v5 || !v6) && (!v5 || v6) && (!v5 || !v6 || [v5 isEqual:v6]);
+  propertyCopy = property;
+  property2Copy = property2;
+  v7 = property2Copy;
+  v8 = (propertyCopy || !property2Copy) && (!propertyCopy || property2Copy) && (!propertyCopy || !property2Copy || [propertyCopy isEqual:property2Copy]);
 
   return v8;
 }
 
-- (BOOL)isIdenticalTo:(id)a3
+- (BOOL)isIdenticalTo:(id)to
 {
-  v4 = a3;
-  v5 = [(AXVoiceOverActivity *)self speechRate];
-  v6 = [v4 speechRate];
-  v7 = [(AXVoiceOverActivity *)self identicalProperty:v5 property2:v6];
+  toCopy = to;
+  speechRate = [(AXVoiceOverActivity *)self speechRate];
+  speechRate2 = [toCopy speechRate];
+  v7 = [(AXVoiceOverActivity *)self identicalProperty:speechRate property2:speechRate2];
 
   if (v7
-    && (-[AXVoiceOverActivity volume](self, "volume"), v8 = objc_claimAutoreleasedReturnValue(), [v4 volume], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v8, v9), v9, v8, v10)
-    && (-[AXVoiceOverActivity speechMuted](self, "speechMuted"), v11 = objc_claimAutoreleasedReturnValue(), [v4 speechMuted], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v11, v12), v12, v11, v13)
-    && (-[AXVoiceOverActivity soundMuted](self, "soundMuted"), v14 = objc_claimAutoreleasedReturnValue(), [v4 soundMuted], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v14, v15), v15, v14, v16)
-    && (-[AXVoiceOverActivity voiceIdentifier](self, "voiceIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), [v4 voiceIdentifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v17, v18), v18, v17, v19)
-    && (-[AXVoiceOverActivity textualContexts](self, "textualContexts"), v20 = objc_claimAutoreleasedReturnValue(), [v4 textualContexts], v21 = objc_claimAutoreleasedReturnValue(), v22 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v20, v21), v21, v20, v22)
-    && (-[AXVoiceOverActivity name](self, "name"), v23 = objc_claimAutoreleasedReturnValue(), [v4 name], v24 = objc_claimAutoreleasedReturnValue(), v25 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v23, v24), v24, v23, v25)
-    && (-[AXVoiceOverActivity appIdentifiers](self, "appIdentifiers"), v26 = objc_claimAutoreleasedReturnValue(), [v4 appIdentifiers], v27 = objc_claimAutoreleasedReturnValue(), v28 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v26, v27), v27, v26, v28)
-    && (-[AXVoiceOverActivity modifierKeys](self, "modifierKeys"), v29 = objc_claimAutoreleasedReturnValue(), [v4 modifierKeys], v30 = objc_claimAutoreleasedReturnValue(), v31 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v29, v30), v30, v29, v31)
-    && (-[AXVoiceOverActivity brailleStatusCellText](self, "brailleStatusCellText"), v32 = objc_claimAutoreleasedReturnValue(), [v4 brailleStatusCellText], v33 = objc_claimAutoreleasedReturnValue(), v34 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v32, v33), v33, v32, v34)
-    && (-[AXVoiceOverActivity brailleStatusCellGeneral](self, "brailleStatusCellGeneral"), v35 = objc_claimAutoreleasedReturnValue(), [v4 brailleStatusCellGeneral], v36 = objc_claimAutoreleasedReturnValue(), v37 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v35, v36), v36, v35, v37)
-    && (-[AXVoiceOverActivity brailleTable](self, "brailleTable"), v38 = objc_claimAutoreleasedReturnValue(), [v4 brailleTable], v39 = objc_claimAutoreleasedReturnValue(), v40 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v38, v39), v39, v38, v40)
-    && (-[AXVoiceOverActivity brailleInputTable](self, "brailleInputTable"), v41 = objc_claimAutoreleasedReturnValue(), [v4 brailleInputTable], v42 = objc_claimAutoreleasedReturnValue(), v43 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v41, v42), v42, v41, v43)
-    && (-[AXVoiceOverActivity tableHeaders](self, "tableHeaders"), v44 = objc_claimAutoreleasedReturnValue(), [v4 tableHeaders], v45 = objc_claimAutoreleasedReturnValue(), v46 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v44, v45), v45, v44, v46)
-    && (-[AXVoiceOverActivity tableRowAndColumn](self, "tableRowAndColumn"), v47 = objc_claimAutoreleasedReturnValue(), [v4 tableRowAndColumn], v48 = objc_claimAutoreleasedReturnValue(), v49 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v47, v48), v48, v47, v49)
-    && (-[AXVoiceOverActivity speakEmojis](self, "speakEmojis"), v50 = objc_claimAutoreleasedReturnValue(), [v4 speakEmojis], v51 = objc_claimAutoreleasedReturnValue(), v52 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v50, v51), v51, v50, v52)
-    && (-[AXVoiceOverActivity imageDescriptions](self, "imageDescriptions"), v53 = objc_claimAutoreleasedReturnValue(), [v4 imageDescriptions], v54 = objc_claimAutoreleasedReturnValue(), v55 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v53, v54), v54, v53, v55)
-    && (-[AXVoiceOverActivity containerFeedback](self, "containerFeedback"), v56 = objc_claimAutoreleasedReturnValue(), [v4 containerFeedback], v57 = objc_claimAutoreleasedReturnValue(), v58 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v56, v57), v57, v56, v58)
-    && (-[AXVoiceOverActivity numberFeedback](self, "numberFeedback"), v59 = objc_claimAutoreleasedReturnValue(), [v4 numberFeedback], v60 = objc_claimAutoreleasedReturnValue(), v61 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v59, v60), v60, v59, v61)
-    && (-[AXVoiceOverActivity brailleOutput](self, "brailleOutput"), v62 = objc_claimAutoreleasedReturnValue(), [v4 brailleOutput], v63 = objc_claimAutoreleasedReturnValue(), v64 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v62, v63), v63, v62, v64)
-    && (-[AXVoiceOverActivity brailleInput](self, "brailleInput"), v65 = objc_claimAutoreleasedReturnValue(), [v4 brailleInput], v66 = objc_claimAutoreleasedReturnValue(), v67 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v65, v66), v66, v65, v67)
-    && (-[AXVoiceOverActivity brailleAutoAdvanceDuration](self, "brailleAutoAdvanceDuration"), v68 = objc_claimAutoreleasedReturnValue(), [v4 brailleAutoAdvanceDuration], v69 = objc_claimAutoreleasedReturnValue(), v70 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v68, v69), v69, v68, v70)
-    && (-[AXVoiceOverActivity audioDucking](self, "audioDucking"), v71 = objc_claimAutoreleasedReturnValue(), [v4 audioDucking], v72 = objc_claimAutoreleasedReturnValue(), v73 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v71, v72), v72, v71, v73)
-    && (-[AXVoiceOverActivity audioDuckingAmount](self, "audioDuckingAmount"), v74 = objc_claimAutoreleasedReturnValue(), [v4 audioDuckingAmount], v75 = objc_claimAutoreleasedReturnValue(), v76 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v74, v75), v75, v74, v76)
-    && (-[AXVoiceOverActivity hints](self, "hints"), v77 = objc_claimAutoreleasedReturnValue(), [v4 hints], v78 = objc_claimAutoreleasedReturnValue(), v79 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v77, v78), v78, v77, v79)
-    && (-[AXVoiceOverActivity typingStyle](self, "typingStyle"), v80 = objc_claimAutoreleasedReturnValue(), [v4 typingStyle], v81 = objc_claimAutoreleasedReturnValue(), v82 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v80, v81), v81, v80, v82)
-    && (-[AXVoiceOverActivity navigationStyle](self, "navigationStyle"), v83 = objc_claimAutoreleasedReturnValue(), [v4 navigationStyle], v84 = objc_claimAutoreleasedReturnValue(), v85 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v83, v84), v84, v83, v85)
-    && (-[AXVoiceOverActivity brailleAlerts](self, "brailleAlerts"), v86 = objc_claimAutoreleasedReturnValue(), [v4 brailleAlerts], v87 = objc_claimAutoreleasedReturnValue(), v88 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v86, v87), v87, v86, v88)
-    && (-[AXVoiceOverActivity brailleFormatting](self, "brailleFormatting"), v89 = objc_claimAutoreleasedReturnValue(), [v4 brailleFormatting], v90 = objc_claimAutoreleasedReturnValue(), v91 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v89, v90), v90, v89, v91))
+    && (-[AXVoiceOverActivity volume](self, "volume"), v8 = objc_claimAutoreleasedReturnValue(), [toCopy volume], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v8, v9), v9, v8, v10)
+    && (-[AXVoiceOverActivity speechMuted](self, "speechMuted"), v11 = objc_claimAutoreleasedReturnValue(), [toCopy speechMuted], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v11, v12), v12, v11, v13)
+    && (-[AXVoiceOverActivity soundMuted](self, "soundMuted"), v14 = objc_claimAutoreleasedReturnValue(), [toCopy soundMuted], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v14, v15), v15, v14, v16)
+    && (-[AXVoiceOverActivity voiceIdentifier](self, "voiceIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), [toCopy voiceIdentifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v17, v18), v18, v17, v19)
+    && (-[AXVoiceOverActivity textualContexts](self, "textualContexts"), v20 = objc_claimAutoreleasedReturnValue(), [toCopy textualContexts], v21 = objc_claimAutoreleasedReturnValue(), v22 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v20, v21), v21, v20, v22)
+    && (-[AXVoiceOverActivity name](self, "name"), v23 = objc_claimAutoreleasedReturnValue(), [toCopy name], v24 = objc_claimAutoreleasedReturnValue(), v25 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v23, v24), v24, v23, v25)
+    && (-[AXVoiceOverActivity appIdentifiers](self, "appIdentifiers"), v26 = objc_claimAutoreleasedReturnValue(), [toCopy appIdentifiers], v27 = objc_claimAutoreleasedReturnValue(), v28 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v26, v27), v27, v26, v28)
+    && (-[AXVoiceOverActivity modifierKeys](self, "modifierKeys"), v29 = objc_claimAutoreleasedReturnValue(), [toCopy modifierKeys], v30 = objc_claimAutoreleasedReturnValue(), v31 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v29, v30), v30, v29, v31)
+    && (-[AXVoiceOverActivity brailleStatusCellText](self, "brailleStatusCellText"), v32 = objc_claimAutoreleasedReturnValue(), [toCopy brailleStatusCellText], v33 = objc_claimAutoreleasedReturnValue(), v34 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v32, v33), v33, v32, v34)
+    && (-[AXVoiceOverActivity brailleStatusCellGeneral](self, "brailleStatusCellGeneral"), v35 = objc_claimAutoreleasedReturnValue(), [toCopy brailleStatusCellGeneral], v36 = objc_claimAutoreleasedReturnValue(), v37 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v35, v36), v36, v35, v37)
+    && (-[AXVoiceOverActivity brailleTable](self, "brailleTable"), v38 = objc_claimAutoreleasedReturnValue(), [toCopy brailleTable], v39 = objc_claimAutoreleasedReturnValue(), v40 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v38, v39), v39, v38, v40)
+    && (-[AXVoiceOverActivity brailleInputTable](self, "brailleInputTable"), v41 = objc_claimAutoreleasedReturnValue(), [toCopy brailleInputTable], v42 = objc_claimAutoreleasedReturnValue(), v43 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v41, v42), v42, v41, v43)
+    && (-[AXVoiceOverActivity tableHeaders](self, "tableHeaders"), v44 = objc_claimAutoreleasedReturnValue(), [toCopy tableHeaders], v45 = objc_claimAutoreleasedReturnValue(), v46 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v44, v45), v45, v44, v46)
+    && (-[AXVoiceOverActivity tableRowAndColumn](self, "tableRowAndColumn"), v47 = objc_claimAutoreleasedReturnValue(), [toCopy tableRowAndColumn], v48 = objc_claimAutoreleasedReturnValue(), v49 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v47, v48), v48, v47, v49)
+    && (-[AXVoiceOverActivity speakEmojis](self, "speakEmojis"), v50 = objc_claimAutoreleasedReturnValue(), [toCopy speakEmojis], v51 = objc_claimAutoreleasedReturnValue(), v52 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v50, v51), v51, v50, v52)
+    && (-[AXVoiceOverActivity imageDescriptions](self, "imageDescriptions"), v53 = objc_claimAutoreleasedReturnValue(), [toCopy imageDescriptions], v54 = objc_claimAutoreleasedReturnValue(), v55 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v53, v54), v54, v53, v55)
+    && (-[AXVoiceOverActivity containerFeedback](self, "containerFeedback"), v56 = objc_claimAutoreleasedReturnValue(), [toCopy containerFeedback], v57 = objc_claimAutoreleasedReturnValue(), v58 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v56, v57), v57, v56, v58)
+    && (-[AXVoiceOverActivity numberFeedback](self, "numberFeedback"), v59 = objc_claimAutoreleasedReturnValue(), [toCopy numberFeedback], v60 = objc_claimAutoreleasedReturnValue(), v61 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v59, v60), v60, v59, v61)
+    && (-[AXVoiceOverActivity brailleOutput](self, "brailleOutput"), v62 = objc_claimAutoreleasedReturnValue(), [toCopy brailleOutput], v63 = objc_claimAutoreleasedReturnValue(), v64 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v62, v63), v63, v62, v64)
+    && (-[AXVoiceOverActivity brailleInput](self, "brailleInput"), v65 = objc_claimAutoreleasedReturnValue(), [toCopy brailleInput], v66 = objc_claimAutoreleasedReturnValue(), v67 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v65, v66), v66, v65, v67)
+    && (-[AXVoiceOverActivity brailleAutoAdvanceDuration](self, "brailleAutoAdvanceDuration"), v68 = objc_claimAutoreleasedReturnValue(), [toCopy brailleAutoAdvanceDuration], v69 = objc_claimAutoreleasedReturnValue(), v70 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v68, v69), v69, v68, v70)
+    && (-[AXVoiceOverActivity audioDucking](self, "audioDucking"), v71 = objc_claimAutoreleasedReturnValue(), [toCopy audioDucking], v72 = objc_claimAutoreleasedReturnValue(), v73 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v71, v72), v72, v71, v73)
+    && (-[AXVoiceOverActivity audioDuckingAmount](self, "audioDuckingAmount"), v74 = objc_claimAutoreleasedReturnValue(), [toCopy audioDuckingAmount], v75 = objc_claimAutoreleasedReturnValue(), v76 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v74, v75), v75, v74, v76)
+    && (-[AXVoiceOverActivity hints](self, "hints"), v77 = objc_claimAutoreleasedReturnValue(), [toCopy hints], v78 = objc_claimAutoreleasedReturnValue(), v79 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v77, v78), v78, v77, v79)
+    && (-[AXVoiceOverActivity typingStyle](self, "typingStyle"), v80 = objc_claimAutoreleasedReturnValue(), [toCopy typingStyle], v81 = objc_claimAutoreleasedReturnValue(), v82 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v80, v81), v81, v80, v82)
+    && (-[AXVoiceOverActivity navigationStyle](self, "navigationStyle"), v83 = objc_claimAutoreleasedReturnValue(), [toCopy navigationStyle], v84 = objc_claimAutoreleasedReturnValue(), v85 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v83, v84), v84, v83, v85)
+    && (-[AXVoiceOverActivity brailleAlerts](self, "brailleAlerts"), v86 = objc_claimAutoreleasedReturnValue(), [toCopy brailleAlerts], v87 = objc_claimAutoreleasedReturnValue(), v88 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v86, v87), v87, v86, v88)
+    && (-[AXVoiceOverActivity brailleFormatting](self, "brailleFormatting"), v89 = objc_claimAutoreleasedReturnValue(), [toCopy brailleFormatting], v90 = objc_claimAutoreleasedReturnValue(), v91 = -[AXVoiceOverActivity identicalProperty:property2:](self, "identicalProperty:property2:", v89, v90), v90, v89, v91))
   {
-    v92 = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
-    v93 = [v4 brailleStartAutoActivateOnTextFields];
-    v94 = [(AXVoiceOverActivity *)self identicalProperty:v92 property2:v93];
+    brailleStartAutoActivateOnTextFields = [(AXVoiceOverActivity *)self brailleStartAutoActivateOnTextFields];
+    brailleStartAutoActivateOnTextFields2 = [toCopy brailleStartAutoActivateOnTextFields];
+    v94 = [(AXVoiceOverActivity *)self identicalProperty:brailleStartAutoActivateOnTextFields property2:brailleStartAutoActivateOnTextFields2];
   }
 
   else
@@ -482,15 +482,15 @@
   return v94;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXVoiceOverActivity *)self uuid];
-    v6 = [v4 uuid];
-    v7 = [v5 isEqual:v6];
+    uuid = [(AXVoiceOverActivity *)self uuid];
+    uuid2 = [equalCopy uuid];
+    v7 = [uuid isEqual:uuid2];
   }
 
   else
@@ -507,13 +507,13 @@
   v13.receiver = self;
   v13.super_class = AXVoiceOverActivity;
   v4 = [(AXVoiceOverActivity *)&v13 description];
-  v5 = [(AXVoiceOverActivity *)self name];
-  v6 = [(AXVoiceOverActivity *)self appIdentifiers];
-  v7 = [(AXVoiceOverActivity *)self voiceIdentifier];
-  v8 = [(AXVoiceOverActivity *)self punctuationGroup];
-  v9 = [(AXVoiceOverActivity *)self volume];
-  v10 = [(AXVoiceOverActivity *)self speechRate];
-  v11 = [v3 stringWithFormat:@"%@: name: %@, apps: %@, voice: %@, punctuation: %@, volume: %@, rate: %@", v4, v5, v6, v7, v8, v9, v10];
+  name = [(AXVoiceOverActivity *)self name];
+  appIdentifiers = [(AXVoiceOverActivity *)self appIdentifiers];
+  voiceIdentifier = [(AXVoiceOverActivity *)self voiceIdentifier];
+  punctuationGroup = [(AXVoiceOverActivity *)self punctuationGroup];
+  volume = [(AXVoiceOverActivity *)self volume];
+  speechRate = [(AXVoiceOverActivity *)self speechRate];
+  v11 = [v3 stringWithFormat:@"%@: name: %@, apps: %@, voice: %@, punctuation: %@, volume: %@, rate: %@", v4, name, appIdentifiers, voiceIdentifier, punctuationGroup, volume, speechRate];
 
   return v11;
 }

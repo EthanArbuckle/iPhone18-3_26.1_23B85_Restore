@@ -1,10 +1,10 @@
 @interface LPContactsBadgeStyle
-- (LPContactsBadgeStyle)initWithPlatform:(int64_t)a3;
+- (LPContactsBadgeStyle)initWithPlatform:(int64_t)platform;
 @end
 
 @implementation LPContactsBadgeStyle
 
-- (LPContactsBadgeStyle)initWithPlatform:(int64_t)a3
+- (LPContactsBadgeStyle)initWithPlatform:(int64_t)platform
 {
   v8.receiver = self;
   v8.super_class = LPContactsBadgeStyle;

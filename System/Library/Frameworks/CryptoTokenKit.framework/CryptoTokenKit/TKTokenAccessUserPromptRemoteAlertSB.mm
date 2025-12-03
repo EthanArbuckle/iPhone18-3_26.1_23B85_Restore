@@ -1,11 +1,11 @@
 @interface TKTokenAccessUserPromptRemoteAlertSB
 + (BOOL)isAvailable;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (int64_t)promptUserToEvaluateRequest:(id)a3 error:(id *)a4;
-- (void)registerTokenAccessRequestCorrelationID:(id)a3 access:(int64_t)a4 reply:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (int64_t)promptUserToEvaluateRequest:(id)request error:(id *)error;
+- (void)registerTokenAccessRequestCorrelationID:(id)d access:(int64_t)access reply:(id)reply;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation TKTokenAccessUserPromptRemoteAlertSB
@@ -38,24 +38,24 @@
   return 0;
 }
 
-- (int64_t)promptUserToEvaluateRequest:(id)a3 error:(id *)a4
+- (int64_t)promptUserToEvaluateRequest:(id)request error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v44 = a3;
+  requestCopy = request;
   self->_grantedAccess = 0;
-  objc_storeStrong(&self->_accessRequest, a3);
+  objc_storeStrong(&self->_accessRequest, request);
   if (self->_remoteAlertHandle)
   {
     [TKTokenAccessUserPromptRemoteAlertSB promptUserToEvaluateRequest:a2 error:self];
   }
 
-  v7 = [MEMORY[0x1E696B0D8] anonymousListener];
-  [v7 setDelegate:self];
-  [v7 resume];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+  [anonymousListener setDelegate:self];
+  [anonymousListener resume];
   v43 = objc_alloc_init(getSBSRemoteAlertConfigurationContextClass());
-  v8 = [v7 endpoint];
-  v9 = [v8 _endpoint];
-  [v43 setXpcEndpoint:v9];
+  endpoint = [anonymousListener endpoint];
+  _endpoint = [endpoint _endpoint];
+  [v43 setXpcEndpoint:_endpoint];
 
   v39 = [objc_alloc(getSBSRemoteAlertDefinitionClass()) initWithServiceName:@"com.apple.ctkui" viewControllerClassName:@"TKUITokenAccessPromptVC"];
   v10 = [getSBSRemoteAlertHandleClass() newHandleWithDefinition:v39 configurationContext:v43];
@@ -64,11 +64,11 @@
 
   [(SBSRemoteAlertHandle *)self->_remoteAlertHandle registerObserver:self];
   BSAuditTokenClass = getBSAuditTokenClass();
-  v13 = [v44 clientConnection];
-  v14 = v13;
-  if (v13)
+  clientConnection = [requestCopy clientConnection];
+  v14 = clientConnection;
+  if (clientConnection)
   {
-    [v13 auditToken];
+    [clientConnection auditToken];
   }
 
   else
@@ -106,7 +106,7 @@
   [v19 setShouldDismissOnUILock:1];
   v20 = objc_alloc_init(getSBSRemoteAlertActivationContextClass());
   [v20 setPresentationTarget:v19];
-  v21 = [[TKTokenAccessUserPromptInfo alloc] initWithTokenAccessRequest:v44];
+  v21 = [[TKTokenAccessUserPromptInfo alloc] initWithTokenAccessRequest:requestCopy];
   v22 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v21 requiringSecureCoding:1 error:0];
   v54 = @"kTKTokenAccessUserPromptInfo";
   v55[0] = v22;
@@ -129,7 +129,7 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       grantedAccess = self->_grantedAccess;
       if (grantedAccess != 1)
@@ -158,12 +158,12 @@
         v52 = *MEMORY[0x1E696A278];
         v53 = v34;
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v35];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v35];
       }
     }
 
-    [v7 suspend];
-    [v7 invalidate];
+    [anonymousListener suspend];
+    [anonymousListener invalidate];
     v36 = self->_grantedAccess;
   }
 
@@ -188,25 +188,25 @@ __CFString *__74__TKTokenAccessUserPromptRemoteAlertSB_promptUserToEvaluateReque
   return @"Access request was cancelled";
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_1F5A8D070];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   remoteAlertHandle = self->_remoteAlertHandle;
   if (remoteAlertHandle)
   {
-    v5 = remoteAlertHandle == a3;
+    v5 = remoteAlertHandle == activate;
   }
 
   else
@@ -222,13 +222,13 @@ __CFString *__74__TKTokenAccessUserPromptRemoteAlertSB_promptUserToEvaluateReque
   self->_grantedAccess = 0;
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   p_remoteAlertHandle = &self->_remoteAlertHandle;
   remoteAlertHandle = self->_remoteAlertHandle;
   if (remoteAlertHandle)
   {
-    v7 = remoteAlertHandle == a3;
+    v7 = remoteAlertHandle == deactivate;
   }
 
   else
@@ -249,12 +249,12 @@ __CFString *__74__TKTokenAccessUserPromptRemoteAlertSB_promptUserToEvaluateReque
   [(SBSRemoteAlertHandle *)remoteAlertHandle invalidate];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   remoteAlertHandle = self->_remoteAlertHandle;
   if (remoteAlertHandle)
   {
-    v6 = remoteAlertHandle == a3;
+    v6 = remoteAlertHandle == handle;
   }
 
   else
@@ -275,24 +275,24 @@ __CFString *__74__TKTokenAccessUserPromptRemoteAlertSB_promptUserToEvaluateReque
   dispatch_semaphore_signal(remoteAlertSemaphore);
 }
 
-- (void)registerTokenAccessRequestCorrelationID:(id)a3 access:(int64_t)a4 reply:(id)a5
+- (void)registerTokenAccessRequestCorrelationID:(id)d access:(int64_t)access reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(TKTokenAccessRequest *)self->_accessRequest correlationID];
-  v12 = [v9 isEqual:v11];
+  dCopy = d;
+  replyCopy = reply;
+  correlationID = [(TKTokenAccessRequest *)self->_accessRequest correlationID];
+  v12 = [dCopy isEqual:correlationID];
 
   if ((v12 & 1) == 0)
   {
     [TKTokenAccessUserPromptRemoteAlertSB registerTokenAccessRequestCorrelationID:a2 access:self reply:?];
   }
 
-  v13 = [(TKTokenAccessRequest *)self->_accessRequest correlationID];
-  v14 = [v9 isEqual:v13];
+  correlationID2 = [(TKTokenAccessRequest *)self->_accessRequest correlationID];
+  v14 = [dCopy isEqual:correlationID2];
 
   if (v14)
   {
-    self->_grantedAccess = a4;
+    self->_grantedAccess = access;
     v15 = [[TKTokenAccessUserPromptInfo alloc] initWithTokenAccessRequest:self->_accessRequest];
     v16 = TK_LOG_user_prompt();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -301,7 +301,7 @@ __CFString *__74__TKTokenAccessUserPromptRemoteAlertSB_promptUserToEvaluateReque
     }
   }
 
-  v10[2](v10);
+  replyCopy[2](replyCopy);
   dispatch_semaphore_signal(self->_remoteAlertSemaphore);
 }
 

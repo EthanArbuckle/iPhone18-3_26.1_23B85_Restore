@@ -1,20 +1,20 @@
 @interface _UITabSidebarBottomBarWrapperView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_UITabSidebarBottomBarWrapperView)initWithView:(id)a3 intrinsicContentSizeInvalidationHandler:(id)a4;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_UITabSidebarBottomBarWrapperView)initWithView:(id)view intrinsicContentSizeInvalidationHandler:(id)handler;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation _UITabSidebarBottomBarWrapperView
 
-- (_UITabSidebarBottomBarWrapperView)initWithView:(id)a3 intrinsicContentSizeInvalidationHandler:(id)a4
+- (_UITabSidebarBottomBarWrapperView)initWithView:(id)view intrinsicContentSizeInvalidationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  viewCopy = view;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (viewCopy)
   {
-    if (v9)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -22,8 +22,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UITabSidebarBottomBarWrapperView.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITabSidebarBottomBarWrapperView.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
     if (v10)
     {
@@ -31,11 +31,11 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"_UITabSidebarBottomBarWrapperView.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"invalidationHandler != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITabSidebarBottomBarWrapperView.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"invalidationHandler != nil"}];
 
 LABEL_3:
-  [v8 frame];
+  [viewCopy frame];
   v18.receiver = self;
   v18.super_class = _UITabSidebarBottomBarWrapperView;
   v11 = [(UIView *)&v18 initWithFrame:?];
@@ -43,9 +43,9 @@ LABEL_3:
   if (v11)
   {
     [(UIView *)v11 bounds];
-    [v8 setFrame:?];
-    [(UIView *)v12 addSubview:v8];
-    objc_storeStrong(&v12->_view, a3);
+    [viewCopy setFrame:?];
+    [(UIView *)v12 addSubview:viewCopy];
+    objc_storeStrong(&v12->_view, view);
     v13 = [v10 copy];
     intrinsicContentSizeInvalidationHandler = v12->_intrinsicContentSizeInvalidationHandler;
     v12->_intrinsicContentSizeInvalidationHandler = v13;
@@ -73,23 +73,23 @@ LABEL_3:
     v10 = v10 - (v12 + v14);
   }
 
-  v15 = [(_UITabSidebarBottomBarWrapperView *)self view];
-  [v15 setFrame:{v4, v6, v8, v10}];
+  view = [(_UITabSidebarBottomBarWrapperView *)self view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIView *)self->_view systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIView *)self->_view systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UITabSidebarBottomBarWrapperView;
-  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:a3];
+  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:view];
   (*(self->_intrinsicContentSizeInvalidationHandler + 2))();
 }
 

@@ -1,14 +1,14 @@
 @interface DisplayLinkCallbackWrapper
-- (void)displayLinkCallback:(id)a3;
+- (void)displayLinkCallback:(id)callback;
 @end
 
 @implementation DisplayLinkCallbackWrapper
 
-- (void)displayLinkCallback:(id)a3
+- (void)displayLinkCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
 
-  DisplayLinkCallbackWrapper.displayLinkCallback(_:)(v3);
+  DisplayLinkCallbackWrapper.displayLinkCallback(_:)(callbackCopy);
 }
 
 @end

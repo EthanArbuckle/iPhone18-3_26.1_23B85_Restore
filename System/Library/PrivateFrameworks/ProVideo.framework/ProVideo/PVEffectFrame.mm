@@ -1,5 +1,5 @@
 @interface PVEffectFrame
-+ (id)frameWithEffect:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeTextFrames:(BOOL)a7 minimumHitSize:(double)a8 hitSizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
++ (id)frameWithEffect:(id)effect atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeTextFrames:(BOOL)frames minimumHitSize:(double)size hitSizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
 - (CGPoint)center;
 - (CGPoint)midpoint;
 - (CGRect)objectBounds;
@@ -8,17 +8,17 @@
 - (CGSize)effectSize;
 - (CGSize)viewSize;
 - (PVCGPointQuad)cornerPoints;
-- (PVEffectFrame)initWithEffect:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeTextFrames:(BOOL)a7 minimumHitSize:(double)a8 hitSizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11;
-- (__n128)setTransform:(__int128 *)a3;
-- (__n128)setTransformInfo:(__int128 *)a3;
+- (PVEffectFrame)initWithEffect:(id)effect atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeTextFrames:(BOOL)frames minimumHitSize:(double)size hitSizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1;
+- (__n128)setTransform:(__int128 *)transform;
+- (__n128)setTransformInfo:(__int128 *)info;
 - (__n128)transform;
 - (__n128)transformInfo;
 - (id)description;
 - (void)dealloc;
-- (void)setCornerPoints:(PVCGPointQuad *)a3;
-- (void)setExpandedHitAreaPath:(CGPath *)a3;
-- (void)setHitAreaPath:(CGPath *)a3;
-- (void)setTime:(id *)a3;
+- (void)setCornerPoints:(PVCGPointQuad *)points;
+- (void)setExpandedHitAreaPath:(CGPath *)path;
+- (void)setHitAreaPath:(CGPath *)path;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PVEffectFrame
@@ -32,54 +32,54 @@
   [(PVEffectFrame *)&v3 dealloc];
 }
 
-+ (id)frameWithEffect:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeTextFrames:(BOOL)a7 minimumHitSize:(double)a8 hitSizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
++ (id)frameWithEffect:(id)effect atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeTextFrames:(BOOL)frames minimumHitSize:(double)size hitSizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
-  v11 = *&a11;
-  height = a10.height;
-  width = a10.width;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v21 = a3;
-  v22 = [a1 alloc];
-  v25 = *a4;
-  v23 = [v22 initWithEffect:v21 atTime:&v25 forcePosterFrame:v18 includeDropShadow:v17 includeTextFrames:v16 minimumHitSize:v11 hitSizeThreshold:a8 viewSize:a9 viewOrigin:{width, height}];
+  v11 = *&origin;
+  height = viewSize.height;
+  width = viewSize.width;
+  framesCopy = frames;
+  shadowCopy = shadow;
+  frameCopy = frame;
+  effectCopy = effect;
+  v22 = [self alloc];
+  v25 = *time;
+  v23 = [v22 initWithEffect:effectCopy atTime:&v25 forcePosterFrame:frameCopy includeDropShadow:shadowCopy includeTextFrames:framesCopy minimumHitSize:v11 hitSizeThreshold:size viewSize:threshold viewOrigin:{width, height}];
 
   return v23;
 }
 
-- (PVEffectFrame)initWithEffect:(id)a3 atTime:(id *)a4 forcePosterFrame:(BOOL)a5 includeDropShadow:(BOOL)a6 includeTextFrames:(BOOL)a7 minimumHitSize:(double)a8 hitSizeThreshold:(double)a9 viewSize:(CGSize)a10 viewOrigin:(int)a11
+- (PVEffectFrame)initWithEffect:(id)effect atTime:(id *)time forcePosterFrame:(BOOL)frame includeDropShadow:(BOOL)shadow includeTextFrames:(BOOL)frames minimumHitSize:(double)size hitSizeThreshold:(double)threshold viewSize:(CGSize)self0 viewOrigin:(int)self1
 {
-  v11 = *&a11;
-  width = a10.width;
-  height = a10.height;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v19 = a3;
+  v11 = *&origin;
+  width = viewSize.width;
+  height = viewSize.height;
+  framesCopy = frames;
+  shadowCopy = shadow;
+  frameCopy = frame;
+  effectCopy = effect;
   v86.receiver = self;
   v86.super_class = PVEffectFrame;
   v20 = [(PVEffectFrame *)&v86 init];
   v21 = v20;
   if (v20)
   {
-    v22 = *&a4->var0;
-    *(v20 + 17) = a4->var3;
+    v22 = *&time->var0;
+    *(v20 + 17) = time->var3;
     *(v20 + 120) = v22;
-    v20[8] = v16;
-    *(v20 + 3) = [v19 origin];
-    [v19 outputSize];
+    v20[8] = frameCopy;
+    *(v20 + 3) = [effectCopy origin];
+    [effectCopy outputSize];
     *(v21 + 9) = v23;
     *(v21 + 10) = v24;
     *(v21 + 4) = v11;
     v25 = height;
     *(v21 + 11) = width;
     *(v21 + 12) = height;
-    if (v19)
+    if (effectCopy)
     {
-      v78 = *&a4->var0;
-      *&v79 = a4->var3;
-      [v19 cornersAtTime:&v78 forcePosterFrame:v16 includeDropShadow:v15 scale:v11 viewSize:1.0 viewOrigin:{1.0, width, height}];
+      v78 = *&time->var0;
+      *&v79 = time->var3;
+      [effectCopy cornersAtTime:&v78 forcePosterFrame:frameCopy includeDropShadow:shadowCopy scale:v11 viewSize:1.0 viewOrigin:{1.0, width, height}];
       v25 = height;
     }
 
@@ -99,9 +99,9 @@
     *(v21 + 16) = v27;
     v89 = 0uLL;
     v90 = 0u;
-    v78 = *&a4->var0;
-    *&v79 = a4->var3;
-    [v19 convertPointToView:&v89 atTime:&v78 forcePosterFrame:v16 includeTransformAnimation:1 includePlayableAspectScale:1 viewSize:v11 viewOrigin:{width, v25}];
+    v78 = *&time->var0;
+    *&v79 = time->var3;
+    [effectCopy convertPointToView:&v89 atTime:&v78 forcePosterFrame:frameCopy includeTransformAnimation:1 includePlayableAspectScale:1 viewSize:v11 viewOrigin:{width, v25}];
     *(v21 + 13) = v28;
     *(v21 + 14) = v29;
     v84 = 0u;
@@ -112,9 +112,9 @@
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v89 = *&a4->var0;
-    *&v90 = a4->var3;
-    v30 = [v19 transformAtTime:&v89 forcePosterFrame:v16 viewSize:v11 viewOrigin:{width, height}];
+    v89 = *&time->var0;
+    *&v90 = time->var3;
+    v30 = [effectCopy transformAtTime:&v89 forcePosterFrame:frameCopy viewSize:v11 viewOrigin:{width, height}];
     v31 = v30;
     if (v30)
     {
@@ -134,8 +134,8 @@
     }
 
     v32 = +[PVHostApplicationDelegateHandler sharedInstance];
-    v33 = [v32 wantsToIncludeCoordinateSystemTranslationInEffectViewTransform];
-    if (v11 == 1 && (v33 & 1) == 0)
+    wantsToIncludeCoordinateSystemTranslationInEffectViewTransform = [v32 wantsToIncludeCoordinateSystemTranslationInEffectViewTransform];
+    if (v11 == 1 && (wantsToIncludeCoordinateSystemTranslationInEffectViewTransform & 1) == 0)
     {
       v34.f64[0] = width;
       v34.f64[1] = height;
@@ -188,47 +188,47 @@
     v90 = v45;
     v91 = v46;
     v92 = v47;
-    [v19 outputROI];
+    [effectCopy outputROI];
     *(v21 + 18) = v49;
     *(v21 + 19) = v50;
     *(v21 + 20) = v51;
     *(v21 + 21) = v52;
     v89 = 0u;
     v90 = 0u;
-    v70 = *&a4->var0;
-    *&v71 = a4->var3;
-    if ([v19 bounds:&v89 atTime:&v70 forcePosterFrame:v16 includeDropShadow:v15 includeMasks:1])
+    v70 = *&time->var0;
+    *&v71 = time->var3;
+    if ([effectCopy bounds:&v89 atTime:&v70 forcePosterFrame:frameCopy includeDropShadow:shadowCopy includeMasks:1])
     {
       v53 = v90;
       *(v21 + 11) = v89;
       *(v21 + 12) = v53;
     }
 
-    *(v21 + 6) = a8;
-    *(v21 + 7) = a9;
-    v70 = *&a4->var0;
-    *&v71 = a4->var3;
-    v54 = [v19 hitAreaPointsAtTime:&v70 forcePosterFrame:v16 includeDropShadow:v15 scale:v11 viewSize:1.0 viewOrigin:{1.0, width, height}];
+    *(v21 + 6) = size;
+    *(v21 + 7) = threshold;
+    v70 = *&time->var0;
+    *&v71 = time->var3;
+    v54 = [effectCopy hitAreaPointsAtTime:&v70 forcePosterFrame:frameCopy includeDropShadow:shadowCopy scale:v11 viewSize:1.0 viewOrigin:{1.0, width, height}];
     v55 = *(v21 + 3);
     *(v21 + 3) = v54;
 
-    v70 = *&a4->var0;
-    *&v71 = a4->var3;
-    *(v21 + 4) = [v19 createPathsForHitTestingAtTime:&v70 forcePosterFrame:v16 scale:1 adjustForMinimumSize:v11 minimumSize:v21 + 40 sizeThreshold:1.0 viewSize:1.0 viewOrigin:a8 outExpandedPath:{a9, width, height}];
-    if (v14)
+    v70 = *&time->var0;
+    *&v71 = time->var3;
+    *(v21 + 4) = [effectCopy createPathsForHitTestingAtTime:&v70 forcePosterFrame:frameCopy scale:1 adjustForMinimumSize:v11 minimumSize:v21 + 40 sizeThreshold:1.0 viewSize:1.0 viewOrigin:size outExpandedPath:{threshold, width, height}];
+    if (framesCopy)
     {
-      v70 = *&a4->var0;
-      *&v71 = a4->var3;
-      v56 = [v19 textTransformsAtTime:&v70 forcePosterFrame:v16 viewSize:v11 viewOrigin:{width, height}];
-      v70 = *&a4->var0;
-      *&v71 = a4->var3;
-      v57 = [v19 textEditingBoundsAtTime:&v70 forcePosterFrame:v16 useParagraphBounds:1 includeDropShadow:0 includeMasks:1];
+      v70 = *&time->var0;
+      *&v71 = time->var3;
+      v56 = [effectCopy textTransformsAtTime:&v70 forcePosterFrame:frameCopy viewSize:v11 viewOrigin:{width, height}];
+      v70 = *&time->var0;
+      *&v71 = time->var3;
+      v57 = [effectCopy textEditingBoundsAtTime:&v70 forcePosterFrame:frameCopy useParagraphBounds:1 includeDropShadow:0 includeMasks:1];
       v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v56, "count")}];
       var18[0] = MEMORY[0x277D85DD0];
       var18[1] = *"";
       var18[2] = __144__PVEffectFrame_initWithEffect_atTime_forcePosterFrame_includeDropShadow_includeTextFrames_minimumHitSize_hitSizeThreshold_viewSize_viewOrigin___block_invoke;
       var18[3] = &unk_279AA5A78;
-      vars8 = v19;
+      vars8 = effectCopy;
       v68 = v32;
       v69 = v58;
       v59 = v57;
@@ -491,18 +491,18 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
   return result;
 }
 
-- (void)setHitAreaPath:(CGPath *)a3
+- (void)setHitAreaPath:(CGPath *)path
 {
-  CGPathRetain(a3);
+  CGPathRetain(path);
   CGPathRelease(self->_hitAreaPath);
-  self->_hitAreaPath = a3;
+  self->_hitAreaPath = path;
 }
 
-- (void)setExpandedHitAreaPath:(CGPath *)a3
+- (void)setExpandedHitAreaPath:(CGPath *)path
 {
-  CGPathRetain(a3);
+  CGPathRetain(path);
   CGPathRelease(self->_expandedHitAreaPath);
-  self->_expandedHitAreaPath = a3;
+  self->_expandedHitAreaPath = path;
 }
 
 - (id)description
@@ -515,15 +515,15 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
   v23 = CMTimeCopyDescription(0, &time);
   v3 = [MEMORY[0x277CCABB0] numberWithBool:{-[PVEffectFrame forcePosterFrame](self, "forcePosterFrame")}];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(PVEffectFrame *)self effectOrigin];
-  if (v5 >= 3)
+  effectOrigin = [(PVEffectFrame *)self effectOrigin];
+  if (effectOrigin >= 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = effectOrigin;
   }
 
   v22 = [v4 stringWithUTF8String:PVCoordinateSystemOriginNames[v6]];
@@ -532,15 +532,15 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
   [(PVEffectFrame *)self center];
   v7 = NSStringFromCGPoint(v31);
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(PVEffectFrame *)self viewOrigin];
-  if (v9 >= 3)
+  viewOrigin = [(PVEffectFrame *)self viewOrigin];
+  if (viewOrigin >= 3)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v9;
+    v10 = viewOrigin;
   }
 
   v20 = [v8 stringWithUTF8String:PVCoordinateSystemOriginNames[v10]];
@@ -550,21 +550,21 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
   v11 = NSStringFromPVCGPointQuad(&time, 3);
   [(PVEffectFrame *)self objectBounds];
   v18 = NSStringFromCGRect(v33);
-  v12 = [(PVEffectFrame *)self hitAreaPoints];
+  hitAreaPoints = [(PVEffectFrame *)self hitAreaPoints];
   [(PVEffectFrame *)self transform];
   v13 = NSStringFromSIMDDouble4x4(&time.value, 4);
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(PVEffectFrame *)self textFrames];
-  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-  v26 = [v25 stringWithFormat:@"%@\ntime: %@\nforcePosterFrame: %@\neffectOrigin: %@\neffectSize: %@\n\ncenter: %@\n\nviewOrigin: %@\nviewSize: %@\n\ncornerPoints:\n%@\n\nobjectBounds: %@\n\nhitAreaPoints: %@\n\ntransform:\n%@\n\ntextFrames (count): %@", v24, v23, v3, v22, v21, v7, v20, v19, v11, v18, v12, v13, v16];
+  textFrames = [(PVEffectFrame *)self textFrames];
+  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(textFrames, "count")}];
+  v26 = [v25 stringWithFormat:@"%@\ntime: %@\nforcePosterFrame: %@\neffectOrigin: %@\neffectSize: %@\n\ncenter: %@\n\nviewOrigin: %@\nviewSize: %@\n\ncornerPoints:\n%@\n\nobjectBounds: %@\n\nhitAreaPoints: %@\n\ntransform:\n%@\n\ntextFrames (count): %@", v24, v23, v3, v22, v21, v7, v20, v19, v11, v18, hitAreaPoints, v13, v16];
 
   return v26;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 
@@ -597,12 +597,12 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
   return self;
 }
 
-- (void)setCornerPoints:(PVCGPointQuad *)a3
+- (void)setCornerPoints:(PVCGPointQuad *)points
 {
-  a = a3->a;
-  b = a3->b;
-  d = a3->d;
-  self->_cornerPoints.c = a3->c;
+  a = points->a;
+  b = points->b;
+  d = points->d;
+  self->_cornerPoints.c = points->c;
   self->_cornerPoints.d = d;
   self->_cornerPoints.a = a;
   self->_cornerPoints.b = b;
@@ -645,75 +645,75 @@ CGFloat *__38__PVEffectFrame_viewSpaceObjectBounds__block_invoke(uint64_t a1, in
 
 - (__n128)transform
 {
-  v2 = *(a1 + 352);
-  *(a2 + 64) = *(a1 + 336);
+  v2 = *(self + 352);
+  *(a2 + 64) = *(self + 336);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 384);
-  *(a2 + 96) = *(a1 + 368);
+  v3 = *(self + 384);
+  *(a2 + 96) = *(self + 368);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 288);
-  *a2 = *(a1 + 272);
+  v4 = *(self + 288);
+  *a2 = *(self + 272);
   *(a2 + 16) = v4;
-  result = *(a1 + 304);
-  v6 = *(a1 + 320);
+  result = *(self + 304);
+  v6 = *(self + 320);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;
 }
 
-- (__n128)setTransform:(__int128 *)a3
+- (__n128)setTransform:(__int128 *)transform
 {
-  v3 = *a3;
-  v4 = a3[1];
-  v5 = a3[3];
-  *(a1 + 304) = a3[2];
-  *(a1 + 320) = v5;
-  *(a1 + 272) = v3;
-  *(a1 + 288) = v4;
-  result = a3[4];
-  v7 = a3[5];
-  v8 = a3[7];
-  *(a1 + 368) = a3[6];
-  *(a1 + 384) = v8;
-  *(a1 + 336) = result;
-  *(a1 + 352) = v7;
+  v3 = *transform;
+  v4 = transform[1];
+  v5 = transform[3];
+  *(self + 304) = transform[2];
+  *(self + 320) = v5;
+  *(self + 272) = v3;
+  *(self + 288) = v4;
+  result = transform[4];
+  v7 = transform[5];
+  v8 = transform[7];
+  *(self + 368) = transform[6];
+  *(self + 384) = v8;
+  *(self + 336) = result;
+  *(self + 352) = v7;
   return result;
 }
 
 - (__n128)transformInfo
 {
-  v2 = *(a1 + 480);
-  *(a2 + 64) = *(a1 + 464);
+  v2 = *(self + 480);
+  *(a2 + 64) = *(self + 464);
   *(a2 + 80) = v2;
-  v3 = *(a1 + 512);
-  *(a2 + 96) = *(a1 + 496);
+  v3 = *(self + 512);
+  *(a2 + 96) = *(self + 496);
   *(a2 + 112) = v3;
-  v4 = *(a1 + 416);
-  *a2 = *(a1 + 400);
+  v4 = *(self + 416);
+  *a2 = *(self + 400);
   *(a2 + 16) = v4;
-  result = *(a1 + 432);
-  v6 = *(a1 + 448);
+  result = *(self + 432);
+  v6 = *(self + 448);
   *(a2 + 32) = result;
   *(a2 + 48) = v6;
   return result;
 }
 
-- (__n128)setTransformInfo:(__int128 *)a3
+- (__n128)setTransformInfo:(__int128 *)info
 {
-  v3 = *a3;
-  v4 = a3[1];
-  v5 = a3[3];
-  *(a1 + 432) = a3[2];
-  *(a1 + 448) = v5;
-  *(a1 + 400) = v3;
-  *(a1 + 416) = v4;
-  result = a3[4];
-  v7 = a3[5];
-  v8 = a3[7];
-  *(a1 + 496) = a3[6];
-  *(a1 + 512) = v8;
-  *(a1 + 464) = result;
-  *(a1 + 480) = v7;
+  v3 = *info;
+  v4 = info[1];
+  v5 = info[3];
+  *(self + 432) = info[2];
+  *(self + 448) = v5;
+  *(self + 400) = v3;
+  *(self + 416) = v4;
+  result = info[4];
+  v7 = info[5];
+  v8 = info[7];
+  *(self + 496) = info[6];
+  *(self + 512) = v8;
+  *(self + 464) = result;
+  *(self + 480) = v7;
   return result;
 }
 

@@ -1,9 +1,9 @@
 @interface PKMessageTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (PKMessageTableViewSettingsRow)initWithIdentifier:(id)a3 contentConfiguration:(id)a4;
+- (PKMessageTableViewSettingsRow)initWithIdentifier:(id)identifier contentConfiguration:(id)configuration;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (void)setActionOnDismiss:(id)a3;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
+- (void)setActionOnDismiss:(id)dismiss;
 @end
 
 @implementation PKMessageTableViewSettingsRow
@@ -15,41 +15,41 @@
   return NSStringFromClass(v2);
 }
 
-- (PKMessageTableViewSettingsRow)initWithIdentifier:(id)a3 contentConfiguration:(id)a4
+- (PKMessageTableViewSettingsRow)initWithIdentifier:(id)identifier contentConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = PKMessageTableViewSettingsRow;
   v8 = [(PKMessageTableViewSettingsRow *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_config, a4);
+    objc_storeStrong(&v8->_config, configuration);
   }
 
   return v8;
 }
 
-- (void)setActionOnDismiss:(id)a3
+- (void)setActionOnDismiss:(id)dismiss
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(dismiss);
   actionOnDismiss = self->_actionOnDismiss;
   self->_actionOnDismiss = v4;
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [[PKMessageTableCell alloc] initWithStyle:0 reuseIdentifier:v6];
+    v7 = [[PKMessageTableCell alloc] initWithStyle:0 reuseIdentifier:cellReuseIdentifier];
   }
 
   [(PKMessageTableCell *)v7 setContent:self->_config];

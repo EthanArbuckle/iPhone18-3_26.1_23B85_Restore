@@ -10,9 +10,9 @@
   v3 = ne_log_large_obj();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(NEProfilePayloadBase *)self payloadAtom];
+    payloadAtom = [(NEProfilePayloadBase *)self payloadAtom];
     v7 = 138412290;
-    v8 = v6;
+    v8 = payloadAtom;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "To-Do: NEProfilePayloadContentFilter validatePayload: dict %@", &v7, 0xCu);
   }
 

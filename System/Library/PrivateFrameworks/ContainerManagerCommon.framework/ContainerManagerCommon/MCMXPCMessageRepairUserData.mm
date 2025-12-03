@@ -1,5 +1,5 @@
 @interface MCMXPCMessageRepairUserData
-- (MCMXPCMessageRepairUserData)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageRepairUserData)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (NSURL)url;
 - (char)sandboxToken;
 - (unsigned)disposition;
@@ -45,27 +45,27 @@
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = MCMXPCMessageRepairUserData;
-  v2 = [(MCMXPCMessageBase *)&v6 disposition];
-  if (v2 == 1)
+  disposition = [(MCMXPCMessageBase *)&v6 disposition];
+  if (disposition == 1)
   {
     v3 = containermanager_copy_global_configuration();
-    v2 = [v3 runmode] == 0;
+    disposition = [v3 runmode] == 0;
   }
 
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return disposition;
 }
 
-- (MCMXPCMessageRepairUserData)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageRepairUserData)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = MCMXPCMessageRepairUserData;
-  v9 = [(MCMXPCMessageBase *)&v17 initWithXPCObject:v8 context:a4 error:a5];
+  v9 = [(MCMXPCMessageBase *)&v17 initWithXPCObject:objectCopy context:context error:error];
   if (v9)
   {
-    string = xpc_dictionary_get_string(v8, "SandboxToken");
+    string = xpc_dictionary_get_string(objectCopy, "SandboxToken");
     if (string)
     {
       string = strndup(string, 0x800uLL);
@@ -75,7 +75,7 @@
     url = v9->_url;
     v9->_url = 0;
 
-    v12 = [(MCMXPCMessageBase *)v9 nsStringValueFromXPCObject:v8 key:"Path"];
+    v12 = [(MCMXPCMessageBase *)v9 nsStringValueFromXPCObject:objectCopy key:"Path"];
     if (v12)
     {
       v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:1 relativeToURL:0];

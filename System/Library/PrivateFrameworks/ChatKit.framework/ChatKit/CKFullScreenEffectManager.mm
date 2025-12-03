@@ -1,30 +1,30 @@
 @interface CKFullScreenEffectManager
-+ (double)delayBeforeEffectWithIdentifier:(id)a3;
-+ (double)idleDurationAfterEffectWithIdentifier:(id)a3;
-+ (id)localizedMaskStringForEffectWithIdentifier:(id)a3;
++ (double)delayBeforeEffectWithIdentifier:(id)identifier;
++ (double)idleDurationAfterEffectWithIdentifier:(id)identifier;
++ (id)localizedMaskStringForEffectWithIdentifier:(id)identifier;
 - (CKFullScreenEffectManager)init;
 - (CKFullScreenEffectManagerDelegate)delegate;
-- (id)effectForIdentifier:(id)a3;
+- (id)effectForIdentifier:(id)identifier;
 - (id)effectIdentifiers;
 - (id)fullscreenEffectMap;
-- (id)localizedDisplayNameForEffectWithIdentifier:(id)a3;
-- (id)localizedPickerTitleForEffectWithIdentifier:(id)a3;
-- (void)beginHoldingUpdatesForKey:(id)a3;
+- (id)localizedDisplayNameForEffectWithIdentifier:(id)identifier;
+- (id)localizedPickerTitleForEffectWithIdentifier:(id)identifier;
+- (void)beginHoldingUpdatesForKey:(id)key;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)endHoldingUpdatesForKey:(id)a3;
-- (void)fullScreenEffectDidPrepareSoundEffect:(id)a3;
-- (void)startFullscreenEffectForChatItem:(id)a3 language:(id)a4;
+- (void)endHoldingUpdatesForKey:(id)key;
+- (void)fullScreenEffectDidPrepareSoundEffect:(id)effect;
+- (void)startFullscreenEffectForChatItem:(id)item language:(id)language;
 - (void)stopFullscreenEffect;
 - (void)triggerNextEffect;
 @end
 
 @implementation CKFullScreenEffectManager
 
-+ (id)localizedMaskStringForEffectWithIdentifier:(id)a3
++ (id)localizedMaskStringForEffectWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
   {
     v4 = @"SUMMARY_BALLOONS_MESSAGE";
 LABEL_19:
@@ -34,49 +34,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
   {
     v4 = @"SUMMARY_CONFETTI_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKLasersEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKLasersEffect"])
   {
     v4 = @"SUMMARY_LASERS_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKFireworksEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKFireworksEffect"])
   {
     v4 = @"SUMMARY_FIREWORKS_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKShootingStarEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKShootingStarEffect"])
   {
     v4 = @"SUMMARY_SHOOTING_STAR_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKSparklesEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKSparklesEffect"])
   {
     v4 = @"SUMMARY_CELEBRATION_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKHeartEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKHeartEffect"])
   {
     v4 = @"SUMMARY_LOVE_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKEchoEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKEchoEffect"])
   {
     v4 = @"SUMMARY_ECHO_MESSAGE";
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"])
   {
     v4 = @"SUMMARY_SPOTLIGHT_MESSAGE";
     goto LABEL_19;
@@ -97,8 +97,8 @@ LABEL_20:
   {
     v3 = [[CKScheduledUpdater alloc] initWithTarget:v2 action:sel_triggerNextEffect];
     [(CKFullScreenEffectManager *)v2 setTriggerUpdater:v3];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
   }
 
   return v2;
@@ -106,8 +106,8 @@ LABEL_20:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKScheduledUpdater *)self->_triggerUpdater invalidate];
   [(NSTimer *)self->_effectDurationTimer invalidate];
@@ -129,9 +129,9 @@ LABEL_20:
   if (!sFullscreenEffectMap)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/System/Library/Messages/iMessageEffects"];
-    v6 = [v4 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:7 errorHandler:&__block_literal_global_37];
+    v6 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:0 options:7 errorHandler:&__block_literal_global_37];
 
     v18 = 0u;
     v19 = 0u;
@@ -152,10 +152,10 @@ LABEL_20:
           }
 
           v11 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:*(*(&v16 + 1) + 8 * i)];
-          v12 = [v11 bundleIdentifier];
-          if (v12)
+          bundleIdentifier = [v11 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [v3 setObject:v11 forKey:v12];
+            [v3 setObject:v11 forKey:bundleIdentifier];
           }
 
           else if (IMOSLoggingEnabled())
@@ -206,25 +206,25 @@ uint64_t __48__CKFullScreenEffectManager_fullscreenEffectMap__block_invoke(uint6
   return 1;
 }
 
-- (id)localizedDisplayNameForEffectWithIdentifier:(id)a3
+- (id)localizedDisplayNameForEffectWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  fullscreenEffectMap = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
+  v6 = [fullscreenEffectMap objectForKey:identifierCopy];
 
-  v7 = [v6 localizedInfoDictionary];
-  v8 = [v7 objectForKey:@"CFBundleDisplayName"];
+  localizedInfoDictionary = [v6 localizedInfoDictionary];
+  v8 = [localizedInfoDictionary objectForKey:@"CFBundleDisplayName"];
 
   return v8;
 }
 
-- (id)localizedPickerTitleForEffectWithIdentifier:(id)a3
+- (id)localizedPickerTitleForEffectWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
-  if (v6)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     v7 = @"AXEffectPickerTitle";
   }
@@ -234,11 +234,11 @@ uint64_t __48__CKFullScreenEffectManager_fullscreenEffectMap__block_invoke(uint6
     v7 = @"EffectPickerTitle";
   }
 
-  v8 = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
-  v9 = [v8 objectForKey:v4];
+  fullscreenEffectMap = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
+  v9 = [fullscreenEffectMap objectForKey:identifierCopy];
 
-  v10 = [v9 localizedInfoDictionary];
-  v11 = [v10 objectForKey:v7];
+  localizedInfoDictionary = [v9 localizedInfoDictionary];
+  v11 = [localizedInfoDictionary objectForKey:v7];
 
   return v11;
 }
@@ -259,13 +259,13 @@ uint64_t __48__CKFullScreenEffectManager_fullscreenEffectMap__block_invoke(uint6
   return v2;
 }
 
-- (id)effectForIdentifier:(id)a3
+- (id)effectForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
-    v6 = [v5 objectForKey:v4];
+    fullscreenEffectMap = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
+    v6 = [fullscreenEffectMap objectForKey:identifierCopy];
 
     if (v6)
     {
@@ -275,7 +275,7 @@ uint64_t __48__CKFullScreenEffectManager_fullscreenEffectMap__block_invoke(uint6
       }
 
       v7 = objc_alloc_init([v6 principalClass]);
-      [v7 setIdentifier:v4];
+      [v7 setIdentifier:identifierCopy];
     }
 
     else
@@ -292,15 +292,15 @@ uint64_t __48__CKFullScreenEffectManager_fullscreenEffectMap__block_invoke(uint6
   return v7;
 }
 
-- (void)startFullscreenEffectForChatItem:(id)a3 language:(id)a4
+- (void)startFullscreenEffectForChatItem:(id)item language:(id)language
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  languageCopy = language;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v6 supportsCommunicationSafety] && objc_msgSend(v6, "isCommSafetySensitive"))
+    if ([itemCopy supportsCommunicationSafety] && objc_msgSend(itemCopy, "isCommSafetySensitive"))
     {
       if (IMOSLoggingEnabled())
       {
@@ -317,11 +317,11 @@ LABEL_16:
 
     else
     {
-      v10 = [v6 message];
-      v11 = [v10 subject];
-      v12 = [v11 isStewie];
+      message = [itemCopy message];
+      subject = [message subject];
+      isStewie = [subject isStewie];
 
-      if (v12)
+      if (isStewie)
       {
         if (IMOSLoggingEnabled())
         {
@@ -342,8 +342,8 @@ LABEL_16:
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v13 = [(CKFullScreenEffectManager *)self effectQueue];
-        v14 = [v13 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        effectQueue = [(CKFullScreenEffectManager *)self effectQueue];
+        v14 = [effectQueue countByEnumeratingWithState:&v50 objects:v54 count:16];
         if (v14)
         {
           v15 = *v51;
@@ -353,11 +353,11 @@ LABEL_16:
             {
               if (*v51 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(effectQueue);
               }
 
-              v17 = [*(*(&v50 + 1) + 8 * i) triggeringChatItem];
-              v18 = [v17 isEqual:v6];
+              triggeringChatItem = [*(*(&v50 + 1) + 8 * i) triggeringChatItem];
+              v18 = [triggeringChatItem isEqual:itemCopy];
 
               if (v18)
               {
@@ -366,7 +366,7 @@ LABEL_16:
               }
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v50 objects:v54 count:16];
+            v14 = [effectQueue countByEnumeratingWithState:&v50 objects:v54 count:16];
             if (v14)
             {
               continue;
@@ -380,9 +380,9 @@ LABEL_16:
         aBlock[1] = 3221225472;
         aBlock[2] = __71__CKFullScreenEffectManager_startFullscreenEffectForChatItem_language___block_invoke;
         aBlock[3] = &unk_1E72EEAA0;
-        v19 = v6;
+        v19 = itemCopy;
         v48 = v19;
-        v49 = self;
+        selfCopy = self;
         v20 = _Block_copy(aBlock);
         if (__CurrentTestName)
         {
@@ -400,7 +400,7 @@ LABEL_16:
                 v26 = @"HappyBirthday";
               }
 
-              v27 = [(CKFullScreenEffectManager *)self effectIdentifiers];
+              effectIdentifiers = [(CKFullScreenEffectManager *)self effectIdentifiers];
               v44[0] = MEMORY[0x1E69E9820];
               v44[1] = 3221225472;
               v44[2] = __71__CKFullScreenEffectManager_startFullscreenEffectForChatItem_language___block_invoke_145;
@@ -408,31 +408,31 @@ LABEL_16:
               v45 = v26;
               v46 = v19;
               v28 = v26;
-              [v27 enumerateObjectsUsingBlock:v44];
+              [effectIdentifiers enumerateObjectsUsingBlock:v44];
             }
           }
         }
 
-        v29 = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
-        v30 = [v19 message];
-        v31 = [v30 expressiveSendStyleID];
-        v32 = [v29 objectForKey:v31];
+        fullscreenEffectMap = [(CKFullScreenEffectManager *)self fullscreenEffectMap];
+        message2 = [v19 message];
+        expressiveSendStyleID = [message2 expressiveSendStyleID];
+        v32 = [fullscreenEffectMap objectForKey:expressiveSendStyleID];
         v33 = v32 == 0;
 
         if (v33)
         {
           if ([MEMORY[0x1E69A8020] supportsScreenEffects])
           {
-            v39 = [MEMORY[0x1E69C7510] sharedManager];
-            v40 = [v19 message];
-            v41 = [v40 plainBody];
+            mEMORY[0x1E69C7510] = [MEMORY[0x1E69C7510] sharedManager];
+            message3 = [v19 message];
+            plainBody = [message3 plainBody];
             v42[0] = MEMORY[0x1E69E9820];
             v42[1] = 3221225472;
             v42[2] = __71__CKFullScreenEffectManager_startFullscreenEffectForChatItem_language___block_invoke_149;
             v42[3] = &unk_1E72EEAF0;
             v42[4] = self;
             v43 = v20;
-            [v39 responsesForMessage:v41 maximumResponses:1 forContext:0 withLanguage:v7 options:576 completionBlock:v42];
+            [mEMORY[0x1E69C7510] responsesForMessage:plainBody maximumResponses:1 forContext:0 withLanguage:languageCopy options:576 completionBlock:v42];
           }
         }
 
@@ -443,17 +443,17 @@ LABEL_16:
             v34 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
             {
-              v35 = [v19 message];
-              v36 = [v35 expressiveSendStyleID];
+              message4 = [v19 message];
+              expressiveSendStyleID2 = [message4 expressiveSendStyleID];
               *buf = 138412290;
-              v56 = v36;
+              v56 = expressiveSendStyleID2;
               _os_log_impl(&dword_19020E000, v34, OS_LOG_TYPE_INFO, "Starting effect for explicit identifier: %@", buf, 0xCu);
             }
           }
 
-          v37 = [v19 message];
-          v38 = [v37 expressiveSendStyleID];
-          (*(v20 + 2))(v20, v38, 0);
+          message5 = [v19 message];
+          expressiveSendStyleID3 = [message5 expressiveSendStyleID];
+          (*(v20 + 2))(v20, expressiveSendStyleID3, 0);
         }
       }
     }
@@ -656,89 +656,89 @@ LABEL_23:
 
 - (void)triggerNextEffect
 {
-  v3 = [(CKFullScreenEffectManager *)self effectQueue];
-  v4 = [v3 count];
+  effectQueue = [(CKFullScreenEffectManager *)self effectQueue];
+  v4 = [effectQueue count];
 
   if (v4)
   {
-    v5 = [(CKFullScreenEffectManager *)self effectQueue];
-    v7 = [v5 firstObject];
+    effectQueue2 = [(CKFullScreenEffectManager *)self effectQueue];
+    firstObject = [effectQueue2 firstObject];
 
-    v6 = [(CKFullScreenEffectManager *)self effectDurationTimer];
-    [v6 invalidate];
+    effectDurationTimer = [(CKFullScreenEffectManager *)self effectDurationTimer];
+    [effectDurationTimer invalidate];
 
     [(CKFullScreenEffectManager *)self beginHoldingUpdatesForKey:@"CKFullscreenEffectManagerUpdatesPlaying"];
-    [v7 prepareSoundEffect];
+    [firstObject prepareSoundEffect];
   }
 }
 
-- (void)fullScreenEffectDidPrepareSoundEffect:(id)a3
+- (void)fullScreenEffectDidPrepareSoundEffect:(id)effect
 {
-  v12 = a3;
-  [v12 duration];
+  effectCopy = effect;
+  [effectCopy duration];
   v5 = v4;
   if (__CurrentTestName)
   {
-    v6 = [v12 identifier];
-    [CKFullScreenEffectManager idleDurationAfterEffectWithIdentifier:v6];
+    identifier = [effectCopy identifier];
+    [CKFullScreenEffectManager idleDurationAfterEffectWithIdentifier:identifier];
     v8 = v7;
 
     v5 = v5 - v8;
   }
 
   v9 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel_stopFullscreenEffect selector:0 userInfo:0 repeats:v5];
-  v10 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v10 addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
 
   [(CKFullScreenEffectManager *)self setEffectDurationTimer:v9];
-  [(CKFullScreenEffectManager *)self setCurrentEffect:v12];
-  v11 = [(CKFullScreenEffectManager *)self delegate];
-  [v11 effectManager:self didStartEffect:v12];
+  [(CKFullScreenEffectManager *)self setCurrentEffect:effectCopy];
+  delegate = [(CKFullScreenEffectManager *)self delegate];
+  [delegate effectManager:self didStartEffect:effectCopy];
 }
 
 - (void)stopFullscreenEffect
 {
-  v3 = [(CKFullScreenEffectManager *)self effectDurationTimer];
-  [v3 invalidate];
+  effectDurationTimer = [(CKFullScreenEffectManager *)self effectDurationTimer];
+  [effectDurationTimer invalidate];
 
   [(CKFullScreenEffectManager *)self setEffectDurationTimer:0];
-  v7 = [(CKFullScreenEffectManager *)self currentEffect];
-  if (v7)
+  currentEffect = [(CKFullScreenEffectManager *)self currentEffect];
+  if (currentEffect)
   {
     [(CKFullScreenEffectManager *)self setCurrentEffect:0];
     [(CKFullScreenEffectManager *)self endHoldingUpdatesForKey:@"CKFullscreenEffectManagerUpdatesPlaying"];
-    v4 = [(CKFullScreenEffectManager *)self delegate];
-    [v4 effectManager:self didStopEffect:v7];
+    delegate = [(CKFullScreenEffectManager *)self delegate];
+    [delegate effectManager:self didStopEffect:currentEffect];
 
-    v5 = [(CKFullScreenEffectManager *)self effectQueue];
-    [v5 removeObject:v7];
+    effectQueue = [(CKFullScreenEffectManager *)self effectQueue];
+    [effectQueue removeObject:currentEffect];
   }
 
-  v6 = [(CKFullScreenEffectManager *)self triggerUpdater];
-  [v6 setNeedsUpdate];
+  triggerUpdater = [(CKFullScreenEffectManager *)self triggerUpdater];
+  [triggerUpdater setNeedsUpdate];
 }
 
-- (void)beginHoldingUpdatesForKey:(id)a3
+- (void)beginHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKFullScreenEffectManager *)self triggerUpdater];
-  [v5 beginHoldingUpdatesForKey:v4];
+  keyCopy = key;
+  triggerUpdater = [(CKFullScreenEffectManager *)self triggerUpdater];
+  [triggerUpdater beginHoldingUpdatesForKey:keyCopy];
 }
 
-- (void)endHoldingUpdatesForKey:(id)a3
+- (void)endHoldingUpdatesForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKFullScreenEffectManager *)self triggerUpdater];
-  [v5 endHoldingUpdatesForKey:v4];
+  keyCopy = key;
+  triggerUpdater = [(CKFullScreenEffectManager *)self triggerUpdater];
+  [triggerUpdater endHoldingUpdatesForKey:keyCopy];
 }
 
-+ (double)delayBeforeEffectWithIdentifier:(id)a3
++ (double)delayBeforeEffectWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = 1.0;
-  if (([v3 isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"] & 1) == 0)
+  if (([identifierCopy isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
+    if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
     {
       v4 = 0.15;
     }
@@ -752,15 +752,15 @@ LABEL_23:
   return v4;
 }
 
-+ (double)idleDurationAfterEffectWithIdentifier:(id)a3
++ (double)idleDurationAfterEffectWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
   {
     v4 = 0.4;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
+  else if ([identifierCopy isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
   {
     v4 = 0.55;
   }

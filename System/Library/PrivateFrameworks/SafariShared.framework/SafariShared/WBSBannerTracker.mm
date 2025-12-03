@@ -3,11 +3,11 @@
 - (WBSBannerTracker)init;
 - (id)_filePath;
 - (void)_saveOnInteralQueue;
-- (void)blockBannerForIdentifier:(id)a3;
+- (void)blockBannerForIdentifier:(id)identifier;
 - (void)clear;
-- (void)isBannerBlockedForIdentifier:(id)a3 completion:(id)a4;
+- (void)isBannerBlockedForIdentifier:(id)identifier completion:(id)completion;
 - (void)load;
-- (void)unblockBannerForIdentifier:(id)a3;
+- (void)unblockBannerForIdentifier:(id)identifier;
 @end
 
 @implementation WBSBannerTracker
@@ -128,7 +128,7 @@ void __29__WBSBannerTracker__filePath__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__WBSBannerTracker_sharedTracker__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTracker_once != -1)
   {
     dispatch_once(&sharedTracker_once, block);
@@ -177,16 +177,16 @@ void __25__WBSBannerTracker_clear__block_invoke(uint64_t a1)
 
 - (void)_saveOnInteralQueue
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_1BB6F3000, v5, v6, "Failed to serialize banner tracker plist: %{public}@", v7, v8, v9, v10, 2u);
 }
 
-- (void)isBannerBlockedForIdentifier:(id)a3 completion:(id)a4
+- (void)isBannerBlockedForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
     [(WBSBannerTracker *)self load];
     internalQueue = self->_internalQueue;
@@ -195,14 +195,14 @@ void __25__WBSBannerTracker_clear__block_invoke(uint64_t a1)
     block[2] = __60__WBSBannerTracker_isBannerBlockedForIdentifier_completion___block_invoke;
     block[3] = &unk_1E7FB6E08;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = identifierCopy;
+    v11 = completionCopy;
     dispatch_async(internalQueue, block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -259,10 +259,10 @@ uint64_t __60__WBSBannerTracker_isBannerBlockedForIdentifier_completion___block_
   return v3(v1, v2);
 }
 
-- (void)blockBannerForIdentifier:(id)a3
+- (void)blockBannerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     [(WBSBannerTracker *)self load];
     internalQueue = self->_internalQueue;
@@ -271,7 +271,7 @@ uint64_t __60__WBSBannerTracker_isBannerBlockedForIdentifier_completion___block_
     v6[2] = __45__WBSBannerTracker_blockBannerForIdentifier___block_invoke;
     v6[3] = &unk_1E7FB6E30;
     v6[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     dispatch_async(internalQueue, v6);
   }
 }
@@ -327,9 +327,9 @@ LABEL_7:
   return [*(a1 + 32) _saveOnInteralQueue];
 }
 
-- (void)unblockBannerForIdentifier:(id)a3
+- (void)unblockBannerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(WBSBannerTracker *)self load];
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -337,8 +337,8 @@ LABEL_7:
   v7[2] = __47__WBSBannerTracker_unblockBannerForIdentifier___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(internalQueue, v7);
 }
 

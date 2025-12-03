@@ -1,68 +1,68 @@
 @interface PLUSSchemaPLUSContactSuggestionUsageSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithJSON:(id)a3;
+- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAbandonmentCount:(BOOL)a3;
-- (void)setHasActivationCount:(BOOL)a3;
-- (void)setHasAverageTimeBetweenActivationsInMs:(BOOL)a3;
-- (void)setHasConfirmationSelectedCount:(BOOL)a3;
-- (void)setHasDisambiguationSelectedCount:(BOOL)a3;
-- (void)setHasDomain:(BOOL)a3;
-- (void)setHasPresentationCount:(BOOL)a3;
-- (void)setHasTimeUntilFirstActivationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAbandonmentCount:(BOOL)count;
+- (void)setHasActivationCount:(BOOL)count;
+- (void)setHasAverageTimeBetweenActivationsInMs:(BOOL)ms;
+- (void)setHasConfirmationSelectedCount:(BOOL)count;
+- (void)setHasDisambiguationSelectedCount:(BOOL)count;
+- (void)setHasDomain:(BOOL)domain;
+- (void)setHasPresentationCount:(BOOL)count;
+- (void)setHasTimeUntilFirstActivationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactSuggestionUsageSummary
 
-- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PLUSSchemaPLUSContactSuggestionUsageSummary;
   v5 = [(PLUSSchemaPLUSContactSuggestionUsageSummary *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionGenerationTimeSince1970InMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionGenerationTimeSince1970InMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setSuggestionGenerationTimeSince1970InMs:](v5, "setSuggestionGenerationTimeSince1970InMs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"timeUntilFirstActivationInMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timeUntilFirstActivationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setTimeUntilFirstActivationInMs:](v5, "setTimeUntilFirstActivationInMs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"averageTimeBetweenActivationsInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"averageTimeBetweenActivationsInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setAverageTimeBetweenActivationsInMs:](v5, "setAverageTimeBetweenActivationsInMs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"activationCount", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"activationCount", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setActivationCount:](v5, "setActivationCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"presentationCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"presentationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setPresentationCount:](v5, "setPresentationCount:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"confirmationSelectedCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"confirmationSelectedCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"disambiguationSelectedCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationSelectedCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"abandonmentCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"abandonmentCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestionUsageSummary setAbandonmentCount:](v5, "setAbandonmentCount:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"domain"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactSuggestionUsageSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactSuggestionUsageSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactSuggestionUsageSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactSuggestionUsageSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x80) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSContactSuggestionUsageSummary abandonmentCount](self, "abandonmentCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"abandonmentCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"abandonmentCount"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSContactSuggestionUsageSummary activationCount](self, "activationCount")}];
-  [v3 setObject:v8 forKeyedSubscript:@"activationCount"];
+  [dictionary setObject:v8 forKeyedSubscript:@"activationCount"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLUSSchemaPLUSContactSuggestionUsageSummary averageTimeBetweenActivationsInMs](self, "averageTimeBetweenActivationsInMs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"averageTimeBetweenActivationsInMs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"averageTimeBetweenActivationsInMs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSContactSuggestionUsageSummary confirmationSelectedCount](self, "confirmationSelectedCount")}];
-  [v3 setObject:v10 forKeyedSubscript:@"confirmationSelectedCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"confirmationSelectedCount"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSContactSuggestionUsageSummary disambiguationSelectedCount](self, "disambiguationSelectedCount")}];
-  [v3 setObject:v11 forKeyedSubscript:@"disambiguationSelectedCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"disambiguationSelectedCount"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -234,7 +234,7 @@ LABEL_19:
     v13 = off_1E78E06B8[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"domain"];
+  [dictionary setObject:v13 forKeyedSubscript:@"domain"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -249,7 +249,7 @@ LABEL_8:
 
 LABEL_23:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLUSSchemaPLUSContactSuggestionUsageSummary presentationCount](self, "presentationCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"presentationCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"presentationCount"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -265,19 +265,19 @@ LABEL_9:
 
 LABEL_24:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLUSSchemaPLUSContactSuggestionUsageSummary suggestionGenerationTimeSince1970InMs](self, "suggestionGenerationTimeSince1970InMs")}];
-  [v3 setObject:v15 forKeyedSubscript:@"suggestionGenerationTimeSince1970InMs"];
+  [dictionary setObject:v15 forKeyedSubscript:@"suggestionGenerationTimeSince1970InMs"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLUSSchemaPLUSContactSuggestionUsageSummary timeUntilFirstActivationInMs](self, "timeUntilFirstActivationInMs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"timeUntilFirstActivationInMs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"timeUntilFirstActivationInMs"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -405,16 +405,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -423,13 +423,13 @@ LABEL_10:
   if (*&has)
   {
     suggestionGenerationTimeSince1970InMs = self->_suggestionGenerationTimeSince1970InMs;
-    if (suggestionGenerationTimeSince1970InMs != [v4 suggestionGenerationTimeSince1970InMs])
+    if (suggestionGenerationTimeSince1970InMs != [equalCopy suggestionGenerationTimeSince1970InMs])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -441,13 +441,13 @@ LABEL_10:
   if (v8)
   {
     timeUntilFirstActivationInMs = self->_timeUntilFirstActivationInMs;
-    if (timeUntilFirstActivationInMs != [v4 timeUntilFirstActivationInMs])
+    if (timeUntilFirstActivationInMs != [equalCopy timeUntilFirstActivationInMs])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -459,13 +459,13 @@ LABEL_10:
   if (v10)
   {
     averageTimeBetweenActivationsInMs = self->_averageTimeBetweenActivationsInMs;
-    if (averageTimeBetweenActivationsInMs != [v4 averageTimeBetweenActivationsInMs])
+    if (averageTimeBetweenActivationsInMs != [equalCopy averageTimeBetweenActivationsInMs])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -477,13 +477,13 @@ LABEL_10:
   if (v12)
   {
     activationCount = self->_activationCount;
-    if (activationCount != [v4 activationCount])
+    if (activationCount != [equalCopy activationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -495,13 +495,13 @@ LABEL_10:
   if (v14)
   {
     presentationCount = self->_presentationCount;
-    if (presentationCount != [v4 presentationCount])
+    if (presentationCount != [equalCopy presentationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -513,13 +513,13 @@ LABEL_10:
   if (v16)
   {
     confirmationSelectedCount = self->_confirmationSelectedCount;
-    if (confirmationSelectedCount != [v4 confirmationSelectedCount])
+    if (confirmationSelectedCount != [equalCopy confirmationSelectedCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -531,13 +531,13 @@ LABEL_10:
   if (v18)
   {
     disambiguationSelectedCount = self->_disambiguationSelectedCount;
-    if (disambiguationSelectedCount != [v4 disambiguationSelectedCount])
+    if (disambiguationSelectedCount != [equalCopy disambiguationSelectedCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -549,10 +549,10 @@ LABEL_10:
   if (v20)
   {
     abandonmentCount = self->_abandonmentCount;
-    if (abandonmentCount == [v4 abandonmentCount])
+    if (abandonmentCount == [equalCopy abandonmentCount])
     {
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
       goto LABEL_34;
     }
 
@@ -571,7 +571,7 @@ LABEL_34:
   if (v22)
   {
     domain = self->_domain;
-    if (domain != [v4 domain])
+    if (domain != [equalCopy domain])
     {
       goto LABEL_38;
     }
@@ -583,9 +583,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -702,9 +702,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasDomain:(BOOL)a3
+- (void)setHasDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 256;
   }
@@ -717,9 +717,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAbandonmentCount:(BOOL)a3
+- (void)setHasAbandonmentCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -732,9 +732,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDisambiguationSelectedCount:(BOOL)a3
+- (void)setHasDisambiguationSelectedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -747,9 +747,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasConfirmationSelectedCount:(BOOL)a3
+- (void)setHasConfirmationSelectedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -762,9 +762,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPresentationCount:(BOOL)a3
+- (void)setHasPresentationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -777,9 +777,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasActivationCount:(BOOL)a3
+- (void)setHasActivationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -792,9 +792,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAverageTimeBetweenActivationsInMs:(BOOL)a3
+- (void)setHasAverageTimeBetweenActivationsInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -807,9 +807,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTimeUntilFirstActivationInMs:(BOOL)a3
+- (void)setHasTimeUntilFirstActivationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }

@@ -9,16 +9,16 @@
 - (UIView)viewToAlignWith;
 - (int64_t)partIndex;
 - (unint64_t)scrollPosition;
-- (void)setAllowOverScroll:(BOOL)a3;
-- (void)setAnimated:(BOOL)a3;
-- (void)setAutoDismissHightlight:(BOOL)a3;
-- (void)setEmphasize:(BOOL)a3;
-- (void)setHighlight:(BOOL)a3;
-- (void)setInlineReplyOverlay:(BOOL)a3;
-- (void)setMessageGUID:(id)a3;
-- (void)setPartIndex:(int64_t)a3;
-- (void)setScrollPosition:(unint64_t)a3;
-- (void)setViewToAlignWith:(id)a3;
+- (void)setAllowOverScroll:(BOOL)scroll;
+- (void)setAnimated:(BOOL)animated;
+- (void)setAutoDismissHightlight:(BOOL)hightlight;
+- (void)setEmphasize:(BOOL)emphasize;
+- (void)setHighlight:(BOOL)highlight;
+- (void)setInlineReplyOverlay:(BOOL)overlay;
+- (void)setMessageGUID:(id)d;
+- (void)setPartIndex:(int64_t)index;
+- (void)setScrollPosition:(unint64_t)position;
+- (void)setViewToAlignWith:(id)with;
 @end
 
 @implementation CKTranscriptMessageScrollConfiguration
@@ -32,7 +32,7 @@
   return v2;
 }
 
-- (void)setMessageGUID:(id)a3
+- (void)setMessageGUID:(id)d
 {
   v4 = sub_190D56F10();
   v6 = v5;
@@ -49,11 +49,11 @@
   return *(self + v3);
 }
 
-- (void)setPartIndex:(int64_t)a3
+- (void)setPartIndex:(int64_t)index
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_partIndex;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = index;
 }
 
 - (BOOL)animated
@@ -63,11 +63,11 @@
   return *(self + v3);
 }
 
-- (void)setAnimated:(BOOL)a3
+- (void)setAnimated:(BOOL)animated
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_animated;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = animated;
 }
 
 - (BOOL)inlineReplyOverlay
@@ -77,11 +77,11 @@
   return *(self + v3);
 }
 
-- (void)setInlineReplyOverlay:(BOOL)a3
+- (void)setInlineReplyOverlay:(BOOL)overlay
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_inlineReplyOverlay;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = overlay;
 }
 
 - (BOOL)highlight
@@ -91,11 +91,11 @@
   return *(self + v3);
 }
 
-- (void)setHighlight:(BOOL)a3
+- (void)setHighlight:(BOOL)highlight
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_highlight;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = highlight;
 }
 
 - (BOOL)emphasize
@@ -105,11 +105,11 @@
   return *(self + v3);
 }
 
-- (void)setEmphasize:(BOOL)a3
+- (void)setEmphasize:(BOOL)emphasize
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_emphasize;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = emphasize;
 }
 
 - (BOOL)autoDismissHightlight
@@ -119,11 +119,11 @@
   return *(self + v3);
 }
 
-- (void)setAutoDismissHightlight:(BOOL)a3
+- (void)setAutoDismissHightlight:(BOOL)hightlight
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_autoDismissHightlight;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = hightlight;
 }
 
 - (unint64_t)scrollPosition
@@ -133,11 +133,11 @@
   return *(self + v3);
 }
 
-- (void)setScrollPosition:(unint64_t)a3
+- (void)setScrollPosition:(unint64_t)position
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_scrollPosition;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = position;
 }
 
 - (UIView)viewToAlignWith
@@ -147,13 +147,13 @@
   return *(self + v3);
 }
 
-- (void)setViewToAlignWith:(id)a3
+- (void)setViewToAlignWith:(id)with
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_viewToAlignWith;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = with;
+  withCopy = with;
 }
 
 - (BOOL)allowOverScroll
@@ -163,11 +163,11 @@
   return *(self + v3);
 }
 
-- (void)setAllowOverScroll:(BOOL)a3
+- (void)setAllowOverScroll:(BOOL)scroll
 {
   v5 = OBJC_IVAR___CKTranscriptMessageScrollConfiguration_allowOverScroll;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = scroll;
 }
 
 @end

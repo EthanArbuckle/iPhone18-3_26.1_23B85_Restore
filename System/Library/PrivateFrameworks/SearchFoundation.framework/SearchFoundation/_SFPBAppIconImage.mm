@@ -1,33 +1,33 @@
 @interface _SFPBAppIconImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBAppIconImage)initWithDictionary:(id)a3;
-- (_SFPBAppIconImage)initWithFacade:(id)a3;
-- (_SFPBAppIconImage)initWithJSON:(id)a3;
+- (_SFPBAppIconImage)initWithDictionary:(id)dictionary;
+- (_SFPBAppIconImage)initWithFacade:(id)facade;
+- (_SFPBAppIconImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setBundleIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBAppIconImage
 
-- (_SFPBAppIconImage)initWithFacade:(id)a3
+- (_SFPBAppIconImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBAppIconImage *)self init];
   if (v5)
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [facadeCopy bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = [v4 bundleIdentifier];
-      [(_SFPBAppIconImage *)v5 setBundleIdentifier:v7];
+      bundleIdentifier2 = [facadeCopy bundleIdentifier];
+      [(_SFPBAppIconImage *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    if ([v4 hasIconType])
+    if ([facadeCopy hasIconType])
     {
-      -[_SFPBAppIconImage setIconType:](v5, "setIconType:", [v4 iconType]);
+      -[_SFPBAppIconImage setIconType:](v5, "setIconType:", [facadeCopy iconType]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBAppIconImage)initWithDictionary:(id)a3
+- (_SFPBAppIconImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBAppIconImage;
   v5 = [(_SFPBAppIconImage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBAppIconImage *)v5 setBundleIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"iconType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"iconType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBAppIconImage)initWithJSON:(id)a3
+- (_SFPBAppIconImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBAppIconImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBAppIconImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBAppIconImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,57 +101,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleIdentifier)
   {
-    v4 = [(_SFPBAppIconImage *)self bundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_SFPBAppIconImage *)self bundleIdentifier];
+    v5 = [bundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_iconType)
   {
-    v6 = [(_SFPBAppIconImage *)self iconType];
-    if (v6 >= 3)
+    iconType = [(_SFPBAppIconImage *)self iconType];
+    if (iconType >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", iconType];
     }
 
     else
     {
-      v7 = off_1E7ACE548[v6];
+      v7 = off_1E7ACE548[iconType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"iconType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"iconType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBAppIconImage *)self bundleIdentifier];
-    v6 = [v4 bundleIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    bundleIdentifier = [(_SFPBAppIconImage *)self bundleIdentifier];
+    bundleIdentifier2 = [equalCopy bundleIdentifier];
+    v7 = bundleIdentifier2;
+    if ((bundleIdentifier != 0) != (bundleIdentifier2 == 0))
     {
-      v8 = [(_SFPBAppIconImage *)self bundleIdentifier];
-      if (!v8)
+      bundleIdentifier3 = [(_SFPBAppIconImage *)self bundleIdentifier];
+      if (!bundleIdentifier3)
       {
 
 LABEL_10:
         iconType = self->_iconType;
-        v13 = iconType == [v4 iconType];
+        v13 = iconType == [equalCopy iconType];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBAppIconImage *)self bundleIdentifier];
-      v11 = [v4 bundleIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = bundleIdentifier3;
+      bundleIdentifier4 = [(_SFPBAppIconImage *)self bundleIdentifier];
+      bundleIdentifier5 = [equalCopy bundleIdentifier];
+      v12 = [bundleIdentifier4 isEqual:bundleIdentifier5];
 
       if (v12)
       {
@@ -170,11 +170,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBAppIconImage *)self bundleIdentifier];
-  if (v4)
+  toCopy = to;
+  bundleIdentifier = [(_SFPBAppIconImage *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -185,9 +185,9 @@ LABEL_8:
   }
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 

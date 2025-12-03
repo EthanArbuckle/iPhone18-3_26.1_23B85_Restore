@@ -1,59 +1,59 @@
 @interface SMSessionTriggerDestinationETAUpdateState
-- (SMSessionTriggerDestinationETAUpdateState)initWithCoder:(id)a3;
-- (SMSessionTriggerDestinationETAUpdateState)initWithDistanceRemaining:(double)a3 distanceDifference:(double)a4 nominalTravelTimeRemaining:(double)a5 nominalTravelTimeDifference:(double)a6 nominalTravelTimeShorter:(BOOL)a7 remainingDistanceShorter:(BOOL)a8 shouldUpdateETAUpperBound:(BOOL)a9;
-- (void)encodeWithCoder:(id)a3;
+- (SMSessionTriggerDestinationETAUpdateState)initWithCoder:(id)coder;
+- (SMSessionTriggerDestinationETAUpdateState)initWithDistanceRemaining:(double)remaining distanceDifference:(double)difference nominalTravelTimeRemaining:(double)timeRemaining nominalTravelTimeDifference:(double)timeDifference nominalTravelTimeShorter:(BOOL)shorter remainingDistanceShorter:(BOOL)distanceShorter shouldUpdateETAUpperBound:(BOOL)bound;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionTriggerDestinationETAUpdateState
 
-- (SMSessionTriggerDestinationETAUpdateState)initWithDistanceRemaining:(double)a3 distanceDifference:(double)a4 nominalTravelTimeRemaining:(double)a5 nominalTravelTimeDifference:(double)a6 nominalTravelTimeShorter:(BOOL)a7 remainingDistanceShorter:(BOOL)a8 shouldUpdateETAUpperBound:(BOOL)a9
+- (SMSessionTriggerDestinationETAUpdateState)initWithDistanceRemaining:(double)remaining distanceDifference:(double)difference nominalTravelTimeRemaining:(double)timeRemaining nominalTravelTimeDifference:(double)timeDifference nominalTravelTimeShorter:(BOOL)shorter remainingDistanceShorter:(BOOL)distanceShorter shouldUpdateETAUpperBound:(BOOL)bound
 {
   v17.receiver = self;
   v17.super_class = SMSessionTriggerDestinationETAUpdateState;
   result = [(SMSessionTriggerDestinationETAUpdateState *)&v17 init];
   if (result)
   {
-    result->_distanceRemaining = a3;
-    result->_distanceDifference = a4;
-    result->_nominalTravelTimeRemaining = a5;
-    result->_nominalTravelTimeDifference = a6;
-    result->_nominalTravelTimeShorter = a7;
-    result->_remainingDistanceShorter = a8;
-    result->_shouldUpdateETAUpperBound = a9;
+    result->_distanceRemaining = remaining;
+    result->_distanceDifference = difference;
+    result->_nominalTravelTimeRemaining = timeRemaining;
+    result->_nominalTravelTimeDifference = timeDifference;
+    result->_nominalTravelTimeShorter = shorter;
+    result->_remainingDistanceShorter = distanceShorter;
+    result->_shouldUpdateETAUpperBound = bound;
   }
 
   return result;
 }
 
-- (SMSessionTriggerDestinationETAUpdateState)initWithCoder:(id)a3
+- (SMSessionTriggerDestinationETAUpdateState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceRemainingKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceRemainingKey"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceDifferenceKey"];
+  [coderCopy decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceDifferenceKey"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeRemainingKey"];
+  [coderCopy decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeRemainingKey"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeDifferenceKey"];
+  [coderCopy decodeDoubleForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeDifferenceKey"];
   v12 = v11;
-  v13 = [v4 decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeShorterKey"];
-  v14 = [v4 decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateRemainingDistanceShorterKey"];
-  v15 = [v4 decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateShouldUpdateETAUpperBoundKey"];
+  v13 = [coderCopy decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeShorterKey"];
+  v14 = [coderCopy decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateRemainingDistanceShorterKey"];
+  v15 = [coderCopy decodeBoolForKey:@"__kSMSessionTriggerDestinationETAUpdateStateShouldUpdateETAUpperBoundKey"];
 
   return [(SMSessionTriggerDestinationETAUpdateState *)self initWithDistanceRemaining:v13 distanceDifference:v14 nominalTravelTimeRemaining:v15 nominalTravelTimeDifference:v6 nominalTravelTimeShorter:v8 remainingDistanceShorter:v10 shouldUpdateETAUpperBound:v12];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   distanceRemaining = self->_distanceRemaining;
-  v5 = a3;
-  [v5 encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceRemainingKey" forKey:distanceRemaining];
-  [v5 encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceDifferenceKey" forKey:self->_distanceDifference];
-  [v5 encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeRemainingKey" forKey:self->_nominalTravelTimeRemaining];
-  [v5 encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeDifferenceKey" forKey:self->_nominalTravelTimeDifference];
-  [v5 encodeBool:self->_nominalTravelTimeShorter forKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeShorterKey"];
-  [v5 encodeBool:self->_remainingDistanceShorter forKey:@"__kSMSessionTriggerDestinationETAUpdateStateRemainingDistanceShorterKey"];
-  [v5 encodeBool:self->_shouldUpdateETAUpperBound forKey:@"__kSMSessionTriggerDestinationETAUpdateStateShouldUpdateETAUpperBoundKey"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceRemainingKey" forKey:distanceRemaining];
+  [coderCopy encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateDistanceDifferenceKey" forKey:self->_distanceDifference];
+  [coderCopy encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeRemainingKey" forKey:self->_nominalTravelTimeRemaining];
+  [coderCopy encodeDouble:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeDifferenceKey" forKey:self->_nominalTravelTimeDifference];
+  [coderCopy encodeBool:self->_nominalTravelTimeShorter forKey:@"__kSMSessionTriggerDestinationETAUpdateStateNominalTravelTimeShorterKey"];
+  [coderCopy encodeBool:self->_remainingDistanceShorter forKey:@"__kSMSessionTriggerDestinationETAUpdateStateRemainingDistanceShorterKey"];
+  [coderCopy encodeBool:self->_shouldUpdateETAUpperBound forKey:@"__kSMSessionTriggerDestinationETAUpdateStateShouldUpdateETAUpperBoundKey"];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SMIDSMessageWaitingForAck
-- (SMIDSMessageWaitingForAck)initWithIdentifier:(id)a3 destinations:(id)a4 message:(id)a5 pendingRetryCount:(int64_t)a6 messageSentDate:(id)a7 callback:(id)a8;
+- (SMIDSMessageWaitingForAck)initWithIdentifier:(id)identifier destinations:(id)destinations message:(id)message pendingRetryCount:(int64_t)count messageSentDate:(id)date callback:(id)callback;
 @end
 
 @implementation SMIDSMessageWaitingForAck
 
-- (SMIDSMessageWaitingForAck)initWithIdentifier:(id)a3 destinations:(id)a4 message:(id)a5 pendingRetryCount:(int64_t)a6 messageSentDate:(id)a7 callback:(id)a8
+- (SMIDSMessageWaitingForAck)initWithIdentifier:(id)identifier destinations:(id)destinations message:(id)message pendingRetryCount:(int64_t)count messageSentDate:(id)date callback:(id)callback
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v28 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (!v15)
+  identifierCopy = identifier;
+  destinationsCopy = destinations;
+  messageCopy = message;
+  dateCopy = date;
+  callbackCopy = callback;
+  v19 = callbackCopy;
+  if (!identifierCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!destinationsCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!messageCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a6 < 0)
+  if (count < 0)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v18)
+  if (!callbackCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -88,22 +88,22 @@ LABEL_20:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_identifier, a3);
-    objc_storeStrong(&v21->_destinations, a4);
-    objc_storeStrong(&v21->_message, a5);
-    v21->_pendingRetryCount = a6;
+    objc_storeStrong(&v20->_identifier, identifier);
+    objc_storeStrong(&v21->_destinations, destinations);
+    objc_storeStrong(&v21->_message, message);
+    v21->_pendingRetryCount = count;
     v22 = _Block_copy(v19);
     callback = v21->_callback;
     v21->_callback = v22;
 
-    objc_storeStrong(&v21->_messageSentDate, a7);
+    objc_storeStrong(&v21->_messageSentDate, date);
   }
 
   self = v21;
-  v24 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v24;
+  return selfCopy;
 }
 
 @end

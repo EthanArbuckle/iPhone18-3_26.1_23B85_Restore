@@ -2,8 +2,8 @@
 - (GEOWiFiQualityNetworkSearch)remoteRequest;
 - (NSPredicate)localFetchPredicate;
 - (TBNetworkFetchRequestDescriptor)init;
-- (TBNetworkFetchRequestDescriptor)initWithBSSIDs:(id)a3 maxCacheAge:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TBNetworkFetchRequestDescriptor)initWithBSSIDs:(id)ds maxCacheAge:(id)age;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TBNetworkFetchRequestDescriptor
@@ -15,17 +15,17 @@
   if (!localFetchPredicate)
   {
     v4 = MEMORY[0x277CCAC30];
-    v5 = [(NSSet *)self->_bssids reformatBSSIDs];
-    v6 = [v4 predicateWithFormat:@"bssid IN %@", v5];
+    reformatBSSIDs = [(NSSet *)self->_bssids reformatBSSIDs];
+    v6 = [v4 predicateWithFormat:@"bssid IN %@", reformatBSSIDs];
 
-    v7 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
+    maxCacheAge = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
 
-    if (v7)
+    if (maxCacheAge)
     {
       v8 = MEMORY[0x277CCA920];
       v9 = MEMORY[0x277CCAC30];
-      v10 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
-      v11 = [v9 predicateWithFormat:@"created > %@", v10];
+      maxCacheAge2 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
+      v11 = [v9 predicateWithFormat:@"created > %@", maxCacheAge2];
       v17[0] = v11;
       v17[1] = v6;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
@@ -45,25 +45,25 @@
   return localFetchPredicate;
 }
 
-- (TBNetworkFetchRequestDescriptor)initWithBSSIDs:(id)a3 maxCacheAge:(id)a4
+- (TBNetworkFetchRequestDescriptor)initWithBSSIDs:(id)ds maxCacheAge:(id)age
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  ageCopy = age;
   v20.receiver = self;
   v20.super_class = TBNetworkFetchRequestDescriptor;
   v9 = [(TBNetworkFetchRequestDescriptor *)&v20 init];
-  objc_storeStrong(&v9->_bssids, a3);
+  objc_storeStrong(&v9->_bssids, ds);
   bssids = v9->_bssids;
   if (bssids && [(NSSet *)bssids count])
   {
     v9->_type = 1;
-    objc_storeStrong(&v9->_maxCacheAge, a4);
+    objc_storeStrong(&v9->_maxCacheAge, age);
     v11 = objc_alloc(MEMORY[0x277CBE428]);
     v12 = +[TBAccessPointMO entityName];
     v13 = [v11 initWithEntityName:v12];
 
-    v14 = [(TBNetworkFetchRequestDescriptor *)v9 localFetchPredicate];
-    [v13 setPredicate:v14];
+    localFetchPredicate = [(TBNetworkFetchRequestDescriptor *)v9 localFetchPredicate];
+    [v13 setPredicate:localFetchPredicate];
 
     v15 = [[TBLocalFetchRequestDescriptor alloc] initWithFetchRequest:v13];
     localFetchDescriptor = v9->_localFetchDescriptor;
@@ -96,8 +96,8 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(TBNetworkFetchRequestDescriptor *)self bssids];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    bssids = [(TBNetworkFetchRequestDescriptor *)self bssids];
+    v6 = [bssids countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -109,13 +109,13 @@
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(bssids);
           }
 
           v10 = *(*(&v17 + 1) + 8 * v9);
           v11 = objc_alloc_init(MEMORY[0x277D0EE48]);
-          v12 = [v10 reformatBSSID];
-          [v11 setIdentifier:v12];
+          reformatBSSID = [v10 reformatBSSID];
+          [v11 setIdentifier:reformatBSSID];
 
           v13 = objc_alloc_init(MEMORY[0x277D0EE68]);
           [v13 addBss:v11];
@@ -125,7 +125,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [bssids countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
@@ -142,20 +142,20 @@
   return remoteRequest;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(TBNetworkFetchRequestDescriptor *)self bssids];
-  v7 = [v6 copyWithZone:a3];
+  bssids = [(TBNetworkFetchRequestDescriptor *)self bssids];
+  v7 = [bssids copyWithZone:zone];
   [v5 setBssids:v7];
 
   [v5 setType:{-[TBNetworkFetchRequestDescriptor type](self, "type")}];
-  v8 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
+  maxCacheAge = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
 
-  if (v8)
+  if (maxCacheAge)
   {
-    v9 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
-    v10 = [v9 copyWithZone:a3];
+    maxCacheAge2 = [(TBNetworkFetchRequestDescriptor *)self maxCacheAge];
+    v10 = [maxCacheAge2 copyWithZone:zone];
     [v5 setMaxCacheAge:v10];
   }
 
@@ -163,8 +163,8 @@
   v12 = +[TBAccessPointMO entityName];
   v13 = [v11 initWithEntityName:v12];
 
-  v14 = [(TBNetworkFetchRequestDescriptor *)self localFetchPredicate];
-  v15 = [v14 copyWithZone:a3];
+  localFetchPredicate = [(TBNetworkFetchRequestDescriptor *)self localFetchPredicate];
+  v15 = [localFetchPredicate copyWithZone:zone];
   [v13 setPredicate:v15];
 
   v16 = [[TBLocalFetchRequestDescriptor alloc] initWithFetchRequest:v13];

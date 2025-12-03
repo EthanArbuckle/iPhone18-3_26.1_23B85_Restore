@@ -1,10 +1,10 @@
 @interface _ICLLPlaybackItemContainer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackItemContainer
@@ -27,23 +27,23 @@
   return v6 ^ [(NSString *)self->_stationHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_15:
     v9 = 0;
@@ -51,13 +51,13 @@ LABEL_15:
   }
 
   mediaId = self->_mediaId;
-  if (mediaId | *(v4 + 3) && ![(NSString *)mediaId isEqual:?])
+  if (mediaId | *(equalCopy + 3) && ![(NSString *)mediaId isEqual:?])
   {
     goto LABEL_15;
   }
 
   containerId = self->_containerId;
-  if (containerId | *(v4 + 1))
+  if (containerId | *(equalCopy + 1))
   {
     if (![(NSString *)containerId isEqual:?])
     {
@@ -66,7 +66,7 @@ LABEL_15:
   }
 
   featureName = self->_featureName;
-  if (featureName | *(v4 + 2))
+  if (featureName | *(equalCopy + 2))
   {
     if (![(NSString *)featureName isEqual:?])
     {
@@ -75,7 +75,7 @@ LABEL_15:
   }
 
   stationHash = self->_stationHash;
-  if (stationHash | *(v4 + 4))
+  if (stationHash | *(equalCopy + 4))
   {
     v9 = [(NSString *)stationHash isEqual:?];
   }
@@ -90,9 +90,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -100,94 +100,94 @@ LABEL_16:
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(NSString *)self->_mediaId copyWithZone:a3];
+  v7 = [(NSString *)self->_mediaId copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_containerId copyWithZone:a3];
+  v9 = [(NSString *)self->_containerId copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(NSString *)self->_featureName copyWithZone:a3];
+  v11 = [(NSString *)self->_featureName copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(NSString *)self->_stationHash copyWithZone:a3];
+  v13 = [(NSString *)self->_stationHash copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_containerId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_featureName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stationHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   mediaId = self->_mediaId;
   if (mediaId)
   {
-    [v3 setObject:mediaId forKey:@"mediaId"];
+    [dictionary setObject:mediaId forKey:@"mediaId"];
   }
 
   containerId = self->_containerId;
   if (containerId)
   {
-    [v3 setObject:containerId forKey:@"containerId"];
+    [dictionary setObject:containerId forKey:@"containerId"];
   }
 
   featureName = self->_featureName;
   if (featureName)
   {
-    [v3 setObject:featureName forKey:@"featureName"];
+    [dictionary setObject:featureName forKey:@"featureName"];
   }
 
   stationHash = self->_stationHash;
   if (stationHash)
   {
-    [v3 setObject:stationHash forKey:@"stationHash"];
+    [dictionary setObject:stationHash forKey:@"stationHash"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -196,8 +196,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackItemContainer;
   v4 = [(_ICLLPlaybackItemContainer *)&v8 description];
-  v5 = [(_ICLLPlaybackItemContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackItemContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

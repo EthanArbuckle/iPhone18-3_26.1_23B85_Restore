@@ -1,19 +1,19 @@
 @interface ADRetryManager
 - (BOOL)_canRestartRequest;
-- (BOOL)_commandRefsOrIsCurrentRequest:(id)a3;
-- (BOOL)commandRefsRestartCommand:(id)a3;
+- (BOOL)_commandRefsOrIsCurrentRequest:(id)request;
+- (BOOL)commandRefsRestartCommand:(id)command;
 - (NSString)latestMappedRequestId;
 - (id)nakedObjectsToRetry;
 - (id)objectsToRetry;
 - (id)retryRequestId;
 - (void)_clearRequestCommands;
-- (void)_objectsToRemapFromRefId:(id)a3 toRefId:(id)a4 retryFullRequest:(BOOL)a5 commandsToRetry:(id)a6;
-- (void)appendSessionObjectToRequest:(id)a3;
-- (void)beginRetryableRequest:(id)a3;
+- (void)_objectsToRemapFromRefId:(id)id toRefId:(id)refId retryFullRequest:(BOOL)request commandsToRetry:(id)retry;
+- (void)appendSessionObjectToRequest:(id)request;
+- (void)beginRetryableRequest:(id)request;
 - (void)clearNakedObjects;
-- (void)endRetryableRequestForCommand:(id)a3;
-- (void)endRetryableRequestForCommandAceId:(id)a3 refId:(id)a4;
-- (void)setLastReceivedCommand:(id)a3;
+- (void)endRetryableRequestForCommand:(id)command;
+- (void)endRetryableRequestForCommandAceId:(id)id refId:(id)refId;
+- (void)setLastReceivedCommand:(id)command;
 @end
 
 @implementation ADRetryManager
@@ -43,41 +43,41 @@
   latestMappedRequestId = self->_latestMappedRequestId;
   if (latestMappedRequestId)
   {
-    v3 = latestMappedRequestId;
+    originalRequestId = latestMappedRequestId;
   }
 
   else
   {
-    v3 = [(ADRetryManager *)self originalRequestId];
+    originalRequestId = [(ADRetryManager *)self originalRequestId];
   }
 
-  return v3;
+  return originalRequestId;
 }
 
 - (id)retryRequestId
 {
   if ([(ADRetryManager *)self _canRestartRequest])
   {
-    v3 = [(SARestartRequest *)self->_restartRequest aceId];
+    aceId = [(SARestartRequest *)self->_restartRequest aceId];
   }
 
   else
   {
-    v3 = 0;
+    aceId = 0;
   }
 
-  return v3;
+  return aceId;
 }
 
-- (BOOL)commandRefsRestartCommand:(id)a3
+- (BOOL)commandRefsRestartCommand:(id)command
 {
   restartRequest = self->_restartRequest;
-  v4 = a3;
-  v5 = [(SARestartRequest *)restartRequest aceId];
-  v6 = [v4 refId];
+  commandCopy = command;
+  aceId = [(SARestartRequest *)restartRequest aceId];
+  refId = [commandCopy refId];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(commandCopy) = [aceId isEqualToString:refId];
+  return commandCopy;
 }
 
 - (id)objectsToRetry
@@ -88,11 +88,11 @@
   {
     restartRequest = self->_restartRequest;
     v5 = v3;
-    v6 = [(SARestartRequest *)restartRequest lastResponseId];
+    lastResponseId = [(SARestartRequest *)restartRequest lastResponseId];
     v20 = 136315394;
     v21 = "[ADRetryManager objectsToRetry]";
     v22 = 2112;
-    v23 = v6;
+    v23 = lastResponseId;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Can restart request if %@", &v20, 0x16u);
   }
 
@@ -106,9 +106,9 @@
   if ([(ADRetryManager *)self _canRestartRequest])
   {
     [v8 addObject:self->_restartRequest];
-    v9 = [(SARestartRequest *)self->_restartRequest requestId];
-    v10 = [(SARestartRequest *)self->_restartRequest aceId];
-    [(ADRetryManager *)self _objectsToRemapFromRefId:v9 toRefId:v10 retryFullRequest:0 commandsToRetry:v8];
+    requestId = [(SARestartRequest *)self->_restartRequest requestId];
+    aceId = [(SARestartRequest *)self->_restartRequest aceId];
+    [(ADRetryManager *)self _objectsToRemapFromRefId:requestId toRefId:aceId retryFullRequest:0 commandsToRetry:v8];
 LABEL_14:
 
     goto LABEL_15;
@@ -125,29 +125,29 @@ LABEL_14:
   originalRequest = self->_originalRequest;
   if (originalRequest)
   {
-    v9 = [(SAServerBoundCommand *)originalRequest aceId];
+    requestId = [(SAServerBoundCommand *)originalRequest aceId];
     latestMappedRequestId = self->_latestMappedRequestId;
     if (!latestMappedRequestId)
     {
       v14 = AFSiriLogContextDaemon;
       v15 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR);
-      latestMappedRequestId = v9;
+      latestMappedRequestId = requestId;
       if (v15)
       {
         v20 = 136315394;
         v21 = "[ADRetryManager objectsToRetry]";
         v22 = 2112;
-        v23 = v9;
+        v23 = requestId;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s latestMappedRequestId is not set for %@", &v20, 0x16u);
-        latestMappedRequestId = v9;
+        latestMappedRequestId = requestId;
       }
     }
 
-    v10 = latestMappedRequestId;
+    aceId = latestMappedRequestId;
     v16 = [(SAServerBoundCommand *)self->_originalRequest copy];
-    [v16 setAceId:v10];
+    [v16 setAceId:aceId];
     [v8 addObject:v16];
-    [(ADRetryManager *)self _objectsToRemapFromRefId:v9 toRefId:v10 retryFullRequest:1 commandsToRetry:v8];
+    [(ADRetryManager *)self _objectsToRemapFromRefId:requestId toRefId:aceId retryFullRequest:1 commandsToRetry:v8];
 
     goto LABEL_14;
   }
@@ -173,12 +173,12 @@ LABEL_15:
   return v17;
 }
 
-- (void)_objectsToRemapFromRefId:(id)a3 toRefId:(id)a4 retryFullRequest:(BOOL)a5 commandsToRetry:(id)a6
+- (void)_objectsToRemapFromRefId:(id)id toRefId:(id)refId retryFullRequest:(BOOL)request commandsToRetry:(id)retry
 {
-  v7 = a5;
-  v28 = a3;
-  v26 = a4;
-  v10 = a6;
+  requestCopy = request;
+  idCopy = id;
+  refIdCopy = refId;
+  retryCopy = retry;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -190,15 +190,15 @@ LABEL_15:
     v13 = v11;
     v14 = *v30;
     v15 = @"restart request";
-    if (v7)
+    if (requestCopy)
     {
       v15 = @"for full request";
     }
 
     v25 = v15;
-    if (v28)
+    if (idCopy)
     {
-      v16 = v26 == 0;
+      v16 = refIdCopy == 0;
     }
 
     else
@@ -230,7 +230,7 @@ LABEL_15:
           v37 = 2112;
           v38 = v25;
           _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s object is %@ %@", buf, 0x20u);
-          if (!v7)
+          if (!requestCopy)
           {
 LABEL_16:
             if (![v19 siriCore_isRestartable])
@@ -240,26 +240,26 @@ LABEL_16:
           }
         }
 
-        else if (!v7)
+        else if (!requestCopy)
         {
           goto LABEL_16;
         }
 
         if (v17)
         {
-          if (([v26 isEqualToString:v28] & 1) == 0)
+          if (([refIdCopy isEqualToString:idCopy] & 1) == 0)
           {
-            v21 = [v19 refId];
-            v22 = [v21 isEqualToString:v28];
+            refId = [v19 refId];
+            v22 = [refId isEqualToString:idCopy];
 
             if (v22)
             {
-              [v19 setRefId:v26];
+              [v19 setRefId:refIdCopy];
             }
           }
         }
 
-        [v10 addObject:{v19, v24}];
+        [retryCopy addObject:{v19, v24}];
 LABEL_22:
         v18 = v18 + 1;
       }
@@ -275,15 +275,15 @@ LABEL_22:
 
 - (BOOL)_canRestartRequest
 {
-  v2 = [(SARestartRequest *)self->_restartRequest lastResponseId];
-  v3 = v2 != 0;
+  lastResponseId = [(SARestartRequest *)self->_restartRequest lastResponseId];
+  v3 = lastResponseId != 0;
 
   return v3;
 }
 
-- (void)setLastReceivedCommand:(id)a3
+- (void)setLastReceivedCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -292,14 +292,14 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v6, 0xCu);
   }
 
-  [(SARestartRequest *)self->_restartRequest setLastResponseId:v4];
+  [(SARestartRequest *)self->_restartRequest setLastResponseId:commandCopy];
 }
 
-- (void)endRetryableRequestForCommandAceId:(id)a3 refId:(id)a4
+- (void)endRetryableRequestForCommandAceId:(id)id refId:(id)refId
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SARestartRequest *)self->_restartRequest requestId];
+  idCopy = id;
+  refIdCopy = refId;
+  requestId = [(SARestartRequest *)self->_restartRequest requestId];
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -308,13 +308,13 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s ", &v12, 0xCu);
   }
 
-  if (([v7 isEqualToString:v8] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", v8))
+  if (([refIdCopy isEqualToString:requestId] & 1) != 0 || objc_msgSend(idCopy, "isEqualToString:", requestId))
   {
     [(ADRetryManager *)self _clearRequestCommands];
   }
 
-  v10 = [(SARestartRequest *)self->_restartRequest aceId];
-  v11 = [v10 isEqualToString:v7];
+  aceId = [(SARestartRequest *)self->_restartRequest aceId];
+  v11 = [aceId isEqualToString:refIdCopy];
 
   if (v11)
   {
@@ -322,9 +322,9 @@ LABEL_22:
   }
 }
 
-- (void)endRetryableRequestForCommand:(id)a3
+- (void)endRetryableRequestForCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -333,34 +333,34 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v6, 0xCu);
   }
 
-  if (!v4 || [(ADRetryManager *)self _commandRefsOrIsCurrentRequest:v4]|| [(ADRetryManager *)self commandRefsRestartCommand:v4])
+  if (!commandCopy || [(ADRetryManager *)self _commandRefsOrIsCurrentRequest:commandCopy]|| [(ADRetryManager *)self commandRefsRestartCommand:commandCopy])
   {
     [(ADRetryManager *)self _clearRequestCommands];
   }
 }
 
-- (void)appendSessionObjectToRequest:(id)a3
+- (void)appendSessionObjectToRequest:(id)request
 {
-  v9 = a3;
-  if ([v9 siriCore_isRetryable])
+  requestCopy = request;
+  if ([requestCopy siriCore_isRetryable])
   {
     requestObjects = self->_requestObjects;
     if (requestObjects)
     {
-      v5 = v9;
+      v5 = requestCopy;
     }
 
     else
     {
       requestObjects = self->_nakedObjects;
-      v6 = v9;
+      v6 = requestCopy;
       if (!requestObjects)
       {
         v7 = objc_alloc_init(NSMutableArray);
         nakedObjects = self->_nakedObjects;
         self->_nakedObjects = v7;
 
-        v6 = v9;
+        v6 = requestCopy;
         requestObjects = self->_nakedObjects;
       }
 
@@ -371,9 +371,9 @@ LABEL_22:
   }
 }
 
-- (void)beginRetryableRequest:(id)a3
+- (void)beginRetryableRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (self->_restartRequest)
   {
     v5 = AFSiriLogContextDaemon;
@@ -390,21 +390,21 @@ LABEL_22:
   v6 = objc_alloc_init(SARestartRequest);
   v7 = SiriCoreUUIDStringCreate();
   [v6 setAceId:v7];
-  v8 = [v4 aceId];
-  [v6 setRequestId:v8];
+  aceId = [requestCopy aceId];
+  [v6 setRequestId:aceId];
 
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v6 aceId];
-    v12 = [v6 requestId];
+    aceId2 = [v6 aceId];
+    requestId = [v6 requestId];
     v18 = 136315650;
     v19 = "[ADRetryManager beginRetryableRequest:]";
     v20 = 2112;
-    v21 = v11;
+    v21 = aceId2;
     v22 = 2112;
-    v23 = v12;
+    v23 = requestId;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s AceId of RestartRequest is %@ requestId is %@", &v18, 0x20u);
   }
 
@@ -417,25 +417,25 @@ LABEL_22:
   self->_requestObjects = v15;
 
   originalRequest = self->_originalRequest;
-  self->_originalRequest = v4;
+  self->_originalRequest = requestCopy;
 }
 
-- (BOOL)_commandRefsOrIsCurrentRequest:(id)a3
+- (BOOL)_commandRefsOrIsCurrentRequest:(id)request
 {
   restartRequest = self->_restartRequest;
-  v4 = a3;
-  v5 = [(SARestartRequest *)restartRequest requestId];
-  v6 = [v4 refId];
-  v7 = [v4 aceId];
+  requestCopy = request;
+  requestId = [(SARestartRequest *)restartRequest requestId];
+  refId = [requestCopy refId];
+  aceId = [requestCopy aceId];
 
-  if ([v6 isEqualToString:v5])
+  if ([refId isEqualToString:requestId])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v7 isEqualToString:v5];
+    v8 = [aceId isEqualToString:requestId];
   }
 
   return v8;

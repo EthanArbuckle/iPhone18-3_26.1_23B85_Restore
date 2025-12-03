@@ -1,82 +1,82 @@
 @interface GQHUtils
-+ (__CFString)createHtmlHrefForLinkUri:(__CFString *)a3 state:(id)a4;
++ (__CFString)createHtmlHrefForLinkUri:(__CFString *)uri state:(id)state;
 @end
 
 @implementation GQHUtils
 
-+ (__CFString)createHtmlHrefForLinkUri:(__CFString *)a3 state:(id)a4
++ (__CFString)createHtmlHrefForLinkUri:(__CFString *)uri state:(id)state
 {
-  v5 = a3;
-  if (CFStringHasPrefix(a3, @"#"))
+  uriCopy = uri;
+  if (CFStringHasPrefix(uri, @"#"))
   {
-    Length = CFStringGetLength(v5);
+    Length = CFStringGetLength(uriCopy);
     if (Length >= 2)
     {
       v12.length = Length - 1;
       v12.location = 1;
-      v7 = CFStringCreateWithSubstring(0, v5, v12);
-      v5 = CFStringCreateWithFormat(0, 0, @"javascript:location.hash='%@';", v7);
+      v7 = CFStringCreateWithSubstring(0, uriCopy, v12);
+      uriCopy = CFStringCreateWithFormat(0, 0, @"javascript:location.hash='%@';", v7);
       CFRelease(v7);
-      return v5;
+      return uriCopy;
     }
   }
 
-  if (!CFStringHasPrefix(v5, @"?"))
+  if (!CFStringHasPrefix(uriCopy, @"?"))
   {
-    CFRetain(v5);
-    return v5;
+    CFRetain(uriCopy);
+    return uriCopy;
   }
 
-  v8 = [a4 currentSlide];
-  if (CFStringCompare(v5, @"?slide=first", 0))
+  currentSlide = [state currentSlide];
+  if (CFStringCompare(uriCopy, @"?slide=first", 0))
   {
-    if (CFStringCompare(v5, @"?slide=last", 0) == kCFCompareEqualTo)
+    if (CFStringCompare(uriCopy, @"?slide=last", 0) == kCFCompareEqualTo)
     {
       return @"#slideId_last";
     }
 
-    if (CFStringCompare(v5, @"?slide=+1", 0))
+    if (CFStringCompare(uriCopy, @"?slide=+1", 0))
     {
-      if (CFStringCompare(v5, @"?slide=-1", 0))
+      if (CFStringCompare(uriCopy, @"?slide=-1", 0))
       {
-        if (CFStringHasPrefix(v5, @"?id="))
+        if (CFStringHasPrefix(uriCopy, @"?id="))
         {
           v9 = CFStringGetLength(@"?id=");
-          v13.length = CFStringGetLength(v5) - v9;
+          v13.length = CFStringGetLength(uriCopy) - v9;
           v13.location = v9;
-          v10 = CFStringCreateWithSubstring(0, v5, v13);
-          v5 = CFStringCreateWithFormat(0, 0, @"#%@", v10);
+          v10 = CFStringCreateWithSubstring(0, uriCopy, v13);
+          uriCopy = CFStringCreateWithFormat(0, 0, @"#%@", v10);
           CFRelease(v10);
-          if (v5)
+          if (uriCopy)
           {
-            return v5;
+            return uriCopy;
           }
         }
       }
 
       else
       {
-        v8 = (v8 - 1);
+        currentSlide = (currentSlide - 1);
       }
     }
 
     else
     {
-      v8 = (v8 + 1);
+      currentSlide = (currentSlide + 1);
     }
   }
 
   else
   {
-    v8 = 1;
+    currentSlide = 1;
   }
 
-  if (v8 == [a4 currentSlide])
+  if (currentSlide == [state currentSlide])
   {
     return 0;
   }
 
-  return CFStringCreateWithFormat(0, 0, @"#slideId_%d", v8);
+  return CFStringCreateWithFormat(0, 0, @"#slideId_%d", currentSlide);
 }
 
 @end

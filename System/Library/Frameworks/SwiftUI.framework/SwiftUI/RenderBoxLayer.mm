@@ -1,19 +1,19 @@
 @interface RenderBoxLayer
 - (BOOL)needsSynchronousUpdate;
 - (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)init;
-- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithLayer:(id)a3;
-- (void)setNeedsSynchronousUpdate:(BOOL)a3;
+- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithLayer:(id)layer;
+- (void)setNeedsSynchronousUpdate:(BOOL)update;
 @end
 
 @implementation RenderBoxLayer
 
-- (void)setNeedsSynchronousUpdate:(BOOL)a3
+- (void)setNeedsSynchronousUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(RBLayer *)&v4 setNeedsSynchronousUpdate:v3];
+  [(RBLayer *)&v4 setNeedsSynchronousUpdate:updateCopy];
 }
 
 - (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)init
@@ -25,13 +25,13 @@
 
 - (BOOL)needsSynchronousUpdate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RenderBoxLayer.needsSynchronousUpdate.getter();
 
   return v3 & 1;
 }
 
-- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -47,12 +47,12 @@
   return v6;
 }
 
-- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_0CB954C9DC99A8A907C58D7882F9389E14RenderBoxLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(RBLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(RBLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

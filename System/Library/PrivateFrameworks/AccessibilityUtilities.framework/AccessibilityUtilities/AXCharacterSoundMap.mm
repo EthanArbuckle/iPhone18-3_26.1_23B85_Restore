@@ -1,6 +1,6 @@
 @interface AXCharacterSoundMap
 - (AXCharacterSoundMap)init;
-- (id)_linguisticStringForCharacter:(id)a3 language:(id)a4 linguisticType:(int64_t)a5 andVoiceIdentifier:(id)a6;
+- (id)_linguisticStringForCharacter:(id)character language:(id)language linguisticType:(int64_t)type andVoiceIdentifier:(id)identifier;
 @end
 
 @implementation AXCharacterSoundMap
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (id)_linguisticStringForCharacter:(id)a3 language:(id)a4 linguisticType:(int64_t)a5 andVoiceIdentifier:(id)a6
+- (id)_linguisticStringForCharacter:(id)character language:(id)language linguisticType:(int64_t)type andVoiceIdentifier:(id)identifier
 {
   v76 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = AXLanguageConvertToCanonicalForm(v11);
-  v14 = AXLanguageCanonicalFormToGeneralLanguage(v11);
+  characterCopy = character;
+  languageCopy = language;
+  identifierCopy = identifier;
+  v13 = AXLanguageConvertToCanonicalForm(languageCopy);
+  v14 = AXLanguageCanonicalFormToGeneralLanguage(languageCopy);
   if ([(__CFString *)v14 isEqualToString:@"no"])
   {
 
@@ -37,11 +37,11 @@
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v69 = v11;
-  v66 = a5;
-  if (a5)
+  v69 = languageCopy;
+  typeCopy = type;
+  if (type)
   {
-    if (a5 != 1)
+    if (type != 1)
     {
       v18 = 0;
       v19 = 0;
@@ -64,11 +64,11 @@
 LABEL_9:
   v20 = [(NSMutableDictionary *)self->_phDictionaries objectForKey:v18];
   v70 = v14;
-  v62 = v12;
-  v63 = v10;
+  v62 = identifierCopy;
+  v63 = characterCopy;
   v67 = v18;
   v68 = v13;
-  v64 = self;
+  selfCopy = self;
   v65 = v19;
   if (v20 || ([(NSMutableDictionary *)self->_phDictionaries objectForKey:v19], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -78,11 +78,11 @@ LABEL_9:
 
   v38 = MEMORY[0x1E696AEC0];
   v39 = [v13 componentsSeparatedByString:@"-"];
-  v40 = [v39 firstObject];
+  firstObject = [v39 firstObject];
   v41 = [v13 componentsSeparatedByString:@"-"];
-  v42 = [v41 lastObject];
-  v43 = [v42 uppercaseString];
-  v44 = [v38 stringWithFormat:@"%@_%@", v40, v43];
+  lastObject = [v41 lastObject];
+  uppercaseString = [lastObject uppercaseString];
+  v44 = [v38 stringWithFormat:@"%@_%@", firstObject, uppercaseString];
 
   v45 = AXSAccessibilityUtilitiesPath();
   v61 = v44;
@@ -112,8 +112,8 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v55 = [(__CFString *)v70 uppercaseString];
-  v56 = [(__CFString *)v70 stringByAppendingFormat:@"_%@", v55];
+  uppercaseString2 = [(__CFString *)v70 uppercaseString];
+  v56 = [(__CFString *)v70 stringByAppendingFormat:@"_%@", uppercaseString2];
 
   v57 = AXSAccessibilityUtilitiesPath();
   v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v56];
@@ -169,16 +169,16 @@ LABEL_12:
     while (v24);
   }
 
-  v12 = v62;
-  v10 = v63;
+  identifierCopy = v62;
+  characterCopy = v63;
   v30 = v68;
   v31 = v69;
 LABEL_22:
-  [(NSMutableDictionary *)v64->_phDictionaries setObject:v15 forKey:v67];
-  v32 = [v10 lowercaseString];
-  v33 = [v15 objectForKey:v32];
+  [(NSMutableDictionary *)selfCopy->_phDictionaries setObject:v15 forKey:v67];
+  lowercaseString = [characterCopy lowercaseString];
+  v33 = [v15 objectForKey:lowercaseString];
 
-  if (v66 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (typeCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v34 = v33;
     if (v33)
@@ -189,7 +189,7 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  v34 = [v33 objectForKey:v12];
+  v34 = [v33 objectForKey:identifierCopy];
   if (!v34)
   {
     v34 = [v33 objectForKey:@"default"];
@@ -204,8 +204,8 @@ LABEL_22:
   if (!v34)
   {
 LABEL_31:
-    v36 = [v10 uppercaseString];
-    v34 = [v15 objectForKey:v36];
+    uppercaseString3 = [characterCopy uppercaseString];
+    v34 = [v15 objectForKey:uppercaseString3];
   }
 
 LABEL_32:

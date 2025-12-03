@@ -1,31 +1,31 @@
 @interface CMContinuityCaptureRapportServer
-+ (id)rapportDeviceForSession:(id)a3;
-- (CMContinuityCaptureRapportServer)initWithRapportDisplaySession:(id)a3 queue:(id)a4 voucher:(id)a5 incomingStreamRequestHandler:(id)a6;
++ (id)rapportDeviceForSession:(id)session;
+- (CMContinuityCaptureRapportServer)initWithRapportDisplaySession:(id)session queue:(id)queue voucher:(id)voucher incomingStreamRequestHandler:(id)handler;
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock;
 - (ContinuityCaptureTaskDelegate)delegate;
 - (NSDate)sessionActivationStartTime;
 - (NSUUID)sessionUUID;
 - (void)cancel;
-- (void)createStreamWithIdentifier:(id)a3 isMediaStream:(BOOL)a4 completion:(id)a5;
-- (void)invalidateCurrentSession:(id)a3;
-- (void)parseAndActOnStreamsSetupInfo:(id)a3;
-- (void)parseAndNotifySessionStartInfo:(id)a3 transportInfo:(id)a4;
+- (void)createStreamWithIdentifier:(id)identifier isMediaStream:(BOOL)stream completion:(id)completion;
+- (void)invalidateCurrentSession:(id)session;
+- (void)parseAndActOnStreamsSetupInfo:(id)info;
+- (void)parseAndNotifySessionStartInfo:(id)info transportInfo:(id)transportInfo;
 - (void)relayTerminationComplete;
-- (void)resetDisplaySession:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setupRemoteDisplaySession:(id)a3;
+- (void)resetDisplaySession:(id)session;
+- (void)setDelegate:(id)delegate;
+- (void)setupRemoteDisplaySession:(id)session;
 @end
 
 @implementation CMContinuityCaptureRapportServer
 
-- (void)resetDisplaySession:(id)a3
+- (void)resetDisplaySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[CMContinuityCaptureRapportServer resetDisplaySession:]";
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -38,8 +38,8 @@
   v8[2] = __56__CMContinuityCaptureRapportServer_resetDisplaySession___block_invoke;
   v8[3] = &unk_278D5C0A8;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
@@ -68,35 +68,35 @@ void __56__CMContinuityCaptureRapportServer_resetDisplaySession___block_invoke(u
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CMContinuityCaptureRapportServer;
-  v4 = a3;
-  [(CMContinuityCaptureRapportTransportBase *)&v5 setTaskDelegate:v4];
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  [(CMContinuityCaptureRapportTransportBase *)&v5 setTaskDelegate:delegateCopy];
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timeSyncClock;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timeSyncClock;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)invalidateCurrentSession:(id)a3
+- (void)invalidateCurrentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     rpDisplaySession = self->_rpDisplaySession;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = rpDisplaySession;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalidate current session %{public}@", &v9, 0x16u);
@@ -105,31 +105,31 @@ void __56__CMContinuityCaptureRapportServer_resetDisplaySession___block_invoke(u
   [(CMContinuityCaptureTransportRapportDevice *)self->_device teardownActiveRapportStreams];
   [(NSMutableSet *)self->_createdIdentifiers removeAllObjects];
   [(CMContinuityCaptureRapportTransportBase *)self disposeTimeSyncClock];
-  v7 = self;
-  objc_sync_enter(v7);
-  timeSyncClock = v7->_timeSyncClock;
-  v7->_timeSyncClock = 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  timeSyncClock = selfCopy2->_timeSyncClock;
+  selfCopy2->_timeSyncClock = 0;
 
-  objc_sync_exit(v7);
-  if (v4)
+  objc_sync_exit(selfCopy2);
+  if (sessionCopy)
   {
-    v4[2](v4);
+    sessionCopy[2](sessionCopy);
   }
 }
 
 - (NSDate)sessionActivationStartTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sessionActivationStartTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sessionActivationStartTime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (id)rapportDeviceForSession:(id)a3
++ (id)rapportDeviceForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -155,7 +155,7 @@ void __56__CMContinuityCaptureRapportServer_resetDisplaySession___block_invoke(u
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543362;
-      v21 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ use default camera capabilities", &v20, 0xCu);
     }
 
@@ -174,8 +174,8 @@ void __56__CMContinuityCaptureRapportServer_resetDisplaySession___block_invoke(u
   if (v8)
   {
     v16 = [CMContinuityCaptureTransportRapportDevice alloc];
-    v17 = [v4 destinationDevice];
-    v18 = [(CMContinuityCaptureTransportRapportDevice *)v16 initWithRapportDevice:v17 capabilities:v24[5] remote:0];
+    destinationDevice = [sessionCopy destinationDevice];
+    v18 = [(CMContinuityCaptureTransportRapportDevice *)v16 initWithRapportDevice:destinationDevice capabilities:v24[5] remote:0];
   }
 
   else
@@ -198,47 +198,47 @@ uint64_t __60__CMContinuityCaptureRapportServer_rapportDeviceForSession___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)createStreamWithIdentifier:(id)a3 isMediaStream:(BOOL)a4 completion:(id)a5
+- (void)createStreamWithIdentifier:(id)identifier isMediaStream:(BOOL)stream completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(location, self);
-  if ([(NSMutableSet *)self->_createdIdentifiers containsObject:v8])
+  if ([(NSMutableSet *)self->_createdIdentifiers containsObject:identifierCopy])
   {
     v10 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2114;
-      v44 = v8;
+      v44 = identifierCopy;
       _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ already created, skip", buf, 0x16u);
     }
 
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    [(NSMutableSet *)self->_createdIdentifiers addObject:v8];
+    [(NSMutableSet *)self->_createdIdentifiers addObject:identifierCopy];
     v11 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2080;
       v44 = "[CMContinuityCaptureRapportServer createStreamWithIdentifier:isMediaStream:completion:]";
       v45 = 2114;
-      v46 = v8;
+      v46 = identifierCopy;
       _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ %s %{public}@", buf, 0x20u);
     }
 
     v12 = objc_alloc_init(MEMORY[0x277D44210]);
-    [(NSMutableDictionary *)self->_pendingActivateStreamsByIdentifier setObject:v12 forKeyedSubscript:v8];
-    [v12 setStreamID:v8];
+    [(NSMutableDictionary *)self->_pendingActivateStreamsByIdentifier setObject:v12 forKeyedSubscript:identifierCopy];
+    [v12 setStreamID:identifierCopy];
     [v12 setMessenger:self->_rpDisplaySession];
-    if (v6)
+    if (streamCopy)
     {
       v13 = 3;
     }
@@ -266,7 +266,7 @@ uint64_t __60__CMContinuityCaptureRapportServer_rapportDeviceForSession___block_
     dispatch_async_and_wait(v14, block);
 
     objc_destroyWeak(&v40);
-    if (v6)
+    if (streamCopy)
     {
       [v16 setDelegatedProcessUPID:CMContinuityCaptureGetMediaProcessUniqueID(0)];
     }
@@ -278,7 +278,7 @@ uint64_t __60__CMContinuityCaptureRapportServer_rapportDeviceForSession___block_
     v34[3] = &unk_278D5D6F8;
     objc_copyWeak(&v36, location);
     objc_copyWeak(&v37, buf);
-    v17 = v8;
+    v17 = identifierCopy;
     v35 = v17;
     v18 = MEMORY[0x245D12020](v34);
     v30[0] = MEMORY[0x277D85DD0];
@@ -295,8 +295,8 @@ uint64_t __60__CMContinuityCaptureRapportServer_rapportDeviceForSession___block_
     v26[3] = &unk_278D5D720;
     objc_copyWeak(&v28, location);
     objc_copyWeak(&v29, buf);
-    v22 = v9;
-    v27 = v9;
+    v22 = completionCopy;
+    v27 = completionCopy;
     v20 = MEMORY[0x245D12020](v26);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -324,7 +324,7 @@ uint64_t __60__CMContinuityCaptureRapportServer_rapportDeviceForSession___block_
     objc_destroyWeak(&v36);
     objc_destroyWeak(buf);
 
-    v9 = v22;
+    completionCopy = v22;
   }
 
   objc_destroyWeak(location);
@@ -495,16 +495,16 @@ void __88__CMContinuityCaptureRapportServer_createStreamWithIdentifier_isMediaSt
   }
 }
 
-- (void)parseAndActOnStreamsSetupInfo:(id)a3
+- (void)parseAndActOnStreamsSetupInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(location, self);
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 objectForKeyedSubscript:@"ContinuityCaptureRapportClientStreamsSetupKey"];
+  v5 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientStreamsSetupKey"];
   if (v5)
   {
     v15 = v5;
-    v16 = v4;
+    v16 = infoCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -526,14 +526,14 @@ void __88__CMContinuityCaptureRapportServer_createStreamWithIdentifier_isMediaSt
           v9 = *(*(&v28 + 1) + 8 * i);
           v10 = [v9 objectForKeyedSubscript:{@"ContinuityCaptureRapportClientSetStreamMessageDataIdentifierKey", v15, v16}];
           v11 = [v9 objectForKeyedSubscript:@"ContinuityCaptureRapportClientSetStreamMessageDataIsMediaTypeKey"];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
           v13 = CMContinuityCaptureLog(2);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             currentSessionID = self->_currentSessionID;
             *buf = 138543874;
-            v22 = self;
+            selfCopy = self;
             v23 = 2048;
             v24 = currentSessionID;
             v25 = 2114;
@@ -549,7 +549,7 @@ void __88__CMContinuityCaptureRapportServer_createStreamWithIdentifier_isMediaSt
             v18[3] = &unk_278D5C660;
             objc_copyWeak(&v20, location);
             v19 = v10;
-            [(CMContinuityCaptureRapportServer *)self createStreamWithIdentifier:v19 isMediaStream:v12 completion:v18];
+            [(CMContinuityCaptureRapportServer *)self createStreamWithIdentifier:v19 isMediaStream:bOOLValue completion:v18];
 
             objc_destroyWeak(&v20);
           }
@@ -562,7 +562,7 @@ void __88__CMContinuityCaptureRapportServer_createStreamWithIdentifier_isMediaSt
     }
 
     v5 = v15;
-    v4 = v16;
+    infoCopy = v16;
   }
 
   objc_destroyWeak(location);
@@ -596,22 +596,22 @@ void __66__CMContinuityCaptureRapportServer_parseAndActOnStreamsSetupInfo___bloc
   }
 }
 
-- (void)parseAndNotifySessionStartInfo:(id)a3 transportInfo:(id)a4
+- (void)parseAndNotifySessionStartInfo:(id)info transportInfo:(id)transportInfo
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  transportInfoCopy = transportInfo;
   objc_initWeak(&location, self);
   dispatch_assert_queue_V2(self->_queue);
-  if (!v6)
+  if (!infoCopy)
   {
     goto LABEL_18;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientSessionIDKey"];
+  v8 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientSessionIDKey"];
 
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientSessionIDKey"];
+    v9 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientSessionIDKey"];
     self->_currentSessionID = [v9 unsignedLongLongValue];
 
     v10 = CMContinuityCaptureLog(2);
@@ -619,21 +619,21 @@ void __66__CMContinuityCaptureRapportServer_parseAndActOnStreamsSetupInfo___bloc
     {
       currentSessionID = self->_currentSessionID;
       *buf = 138543618;
-      v48 = self;
+      selfCopy6 = self;
       v49 = 2048;
       v50 = currentSessionID;
       _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ [sessionID:%llx] connected to host", buf, 0x16u);
     }
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
+  v12 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
 
   if (!v12)
   {
 LABEL_18:
-    if (v7)
+    if (transportInfoCopy)
     {
-      v21 = [v7 objectForKeyedSubscript:*MEMORY[0x277D44298]];
+      v21 = [transportInfoCopy objectForKeyedSubscript:*MEMORY[0x277D44298]];
       peerAddress = self->_peerAddress;
       self->_peerAddress = v21;
 
@@ -642,32 +642,32 @@ LABEL_18:
       {
         v24 = self->_peerAddress;
         *buf = 138543619;
-        v48 = self;
+        selfCopy6 = self;
         v49 = 2113;
         v50 = v24;
         _os_log_impl(&dword_242545000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ peerAddress:%{private}@", buf, 0x16u);
       }
 
       v25 = *MEMORY[0x277D44270];
-      v26 = [v7 objectForKeyedSubscript:*MEMORY[0x277D44270]];
+      v26 = [transportInfoCopy objectForKeyedSubscript:*MEMORY[0x277D44270]];
 
       if (v26)
       {
-        v27 = [v7 objectForKeyedSubscript:v25];
-        v28 = [v27 unsignedIntegerValue];
+        v27 = [transportInfoCopy objectForKeyedSubscript:v25];
+        unsignedIntegerValue = [v27 unsignedIntegerValue];
 
         v29 = CMContinuityCaptureLog(2);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v48 = self;
+          selfCopy6 = self;
           v49 = 2048;
-          v50 = v28;
+          v50 = unsignedIntegerValue;
           _os_log_impl(&dword_242545000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ dataLinkType:%lu", buf, 0x16u);
         }
 
         v30 = 1;
-        if ((v28 - 7) < 3)
+        if ((unsignedIntegerValue - 7) < 3)
         {
           v30 = 2;
         }
@@ -679,7 +679,7 @@ LABEL_18:
           v32 = self->_currentSessionID;
           currentTransport = self->_currentTransport;
           *buf = 138543874;
-          v48 = self;
+          selfCopy6 = self;
           v49 = 2048;
           v50 = v32;
           v51 = 1024;
@@ -689,15 +689,15 @@ LABEL_18:
       }
     }
 
-    if (v6)
+    if (infoCopy)
     {
-      v34 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientPreStartConfigurationKey"];
+      v34 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientPreStartConfigurationKey"];
 
       if (v34)
       {
         v35 = MEMORY[0x277CCAAC8];
         v36 = objc_opt_class();
-        v37 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientPreStartConfigurationKey"];
+        v37 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientPreStartConfigurationKey"];
         v46 = 0;
         v38 = [v35 unarchivedObjectOfClass:v36 fromData:v37 error:&v46];
         v39 = v46;
@@ -740,9 +740,9 @@ LABEL_39:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v48 = self;
+      selfCopy6 = self;
       v49 = 2112;
-      v50 = v7;
+      v50 = transportInfoCopy;
       _os_log_impl(&dword_242545000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ TransportInfo %@", buf, 0x16u);
     }
 
@@ -752,9 +752,9 @@ LABEL_39:
   v13 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
+    v14 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
     *buf = 138543618;
-    v48 = self;
+    selfCopy6 = self;
     v49 = 2114;
     v50 = v14;
     _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ inActiveEntities on connection change %{public}@", buf, 0x16u);
@@ -768,7 +768,7 @@ LABEL_39:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v17 = [v6 objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
+    v17 = [infoCopy objectForKeyedSubscript:@"ContinuityCaptureRapportClientInActiveEntitiesForConnectionChange"];
     v18 = [v17 countByEnumeratingWithState:&v54 objects:v53 count:16];
     if (v18)
     {
@@ -854,7 +854,7 @@ void __81__CMContinuityCaptureRapportServer_parseAndNotifySessionStartInfo_trans
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCaptureRapportServer relayTerminationComplete]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -934,35 +934,35 @@ LABEL_7:
   }
 }
 
-- (void)setupRemoteDisplaySession:(id)a3
+- (void)setupRemoteDisplaySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
-  objc_storeStrong(&self->_rpDisplaySession, a3);
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [MEMORY[0x277CBEAA8] date];
-  sessionActivationStartTime = v6->_sessionActivationStartTime;
-  v6->_sessionActivationStartTime = v7;
+  objc_storeStrong(&self->_rpDisplaySession, session);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  date = [MEMORY[0x277CBEAA8] date];
+  sessionActivationStartTime = selfCopy->_sessionActivationStartTime;
+  selfCopy->_sessionActivationStartTime = date;
 
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  sessionUUID = v6->_sessionUUID;
-  v6->_sessionUUID = v9;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  sessionUUID = selfCopy->_sessionUUID;
+  selfCopy->_sessionUUID = uUID;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v11 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    device = v6->_device;
-    v13 = [(RPRemoteDisplaySession *)self->_rpDisplaySession destinationDevice];
+    device = selfCopy->_device;
+    destinationDevice = [(RPRemoteDisplaySession *)self->_rpDisplaySession destinationDevice];
     *buf = 138544130;
-    v23 = v6;
+    v23 = selfCopy;
     v24 = 2080;
     v25 = "[CMContinuityCaptureRapportServer setupRemoteDisplaySession:]";
     v26 = 2114;
     v27 = device;
     v28 = 2114;
-    v29 = v13;
+    v29 = destinationDevice;
     _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ %s Device %{public}@ destinationDevice %{public}@ ", buf, 0x2Au);
   }
 
@@ -971,14 +971,14 @@ LABEL_7:
   v20[2] = __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_invoke;
   v20[3] = &unk_278D5C1E8;
   objc_copyWeak(&v21, &location);
-  [v5 setErrorHandler:v20];
+  [sessionCopy setErrorHandler:v20];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_invoke_41;
   v18 = &unk_278D5D7C0;
   objc_copyWeak(&v19, &location);
   v14 = MEMORY[0x245D12020](&v15);
-  [v5 registerEventID:@"ContinuityCaptureSessionEventID" options:0 handler:{v14, v15, v16, v17, v18}];
+  [sessionCopy registerEventID:@"ContinuityCaptureSessionEventID" options:0 handler:{v14, v15, v16, v17, v18}];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v21);
@@ -1289,10 +1289,10 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
 
 - (NSUUID)sessionUUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sessionUUID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sessionUUID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1304,7 +1304,7 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
   {
     pendingActivateStreamsByIdentifier = self->_pendingActivateStreamsByIdentifier;
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = pendingActivateStreamsByIdentifier;
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ _pendingActivateStreamsByIdentifier %{public}@", buf, 0x16u);
@@ -1314,8 +1314,8 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_pendingActivateStreamsByIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  allValues = [(NSMutableDictionary *)self->_pendingActivateStreamsByIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1326,13 +1326,13 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * i) invalidate];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v7);
@@ -1342,17 +1342,17 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
   [(CMContinuityCaptureRapportServer *)self invalidateCurrentSession:0];
 }
 
-- (CMContinuityCaptureRapportServer)initWithRapportDisplaySession:(id)a3 queue:(id)a4 voucher:(id)a5 incomingStreamRequestHandler:(id)a6
+- (CMContinuityCaptureRapportServer)initWithRapportDisplaySession:(id)session queue:(id)queue voucher:(id)voucher incomingStreamRequestHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [CMContinuityCaptureRapportServer rapportDeviceForSession:v10];
-  if (v14 && (v30.receiver = self, v30.super_class = CMContinuityCaptureRapportServer, v15 = [(CMContinuityCaptureRapportTransportBase *)&v30 initWithRapportDevice:v14 queue:v11 taskDelegate:0], (self = v15) != 0))
+  sessionCopy = session;
+  queueCopy = queue;
+  voucherCopy = voucher;
+  handlerCopy = handler;
+  v14 = [CMContinuityCaptureRapportServer rapportDeviceForSession:sessionCopy];
+  if (v14 && (v30.receiver = self, v30.super_class = CMContinuityCaptureRapportServer, v15 = [(CMContinuityCaptureRapportTransportBase *)&v30 initWithRapportDevice:v14 queue:queueCopy taskDelegate:0], (self = v15) != 0))
   {
-    objc_storeStrong(&v15->_queue, a4);
-    objc_storeStrong(&self->_voucher, a5);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(&self->_voucher, voucher);
     objc_storeStrong(&self->_device, v14);
     v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
     createdIdentifiers = self->_createdIdentifiers;
@@ -1363,7 +1363,7 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
     pendingActivateStreamsByIdentifier = self->_pendingActivateStreamsByIdentifier;
     self->_pendingActivateStreamsByIdentifier = v18;
 
-    [(CMContinuityCaptureRapportTransportBase *)self setIncomingStreamRequestHandler:v13];
+    [(CMContinuityCaptureRapportTransportBase *)self setIncomingStreamRequestHandler:handlerCopy];
     v20 = [[CMContinuityCaptureRemoteCompositeDevice alloc] initWithTransportServer:self videoPreviewLayer:0];
     compositeDevice = self->_compositeDevice;
     self->_compositeDevice = v20;
@@ -1373,23 +1373,23 @@ void __62__CMContinuityCaptureRapportServer_setupRemoteDisplaySession___block_in
     {
       v23 = self->_compositeDevice;
       v26 = 138543618;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = v23;
       _os_log_impl(&dword_242545000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ composite device %{public}@", &v26, 0x16u);
     }
 
-    [(CMContinuityCaptureRapportServer *)self setupRemoteDisplaySession:v10];
+    [(CMContinuityCaptureRapportServer *)self setupRemoteDisplaySession:sessionCopy];
     self = self;
-    v24 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy2 = 0;
   }
 
-  return v24;
+  return selfCopy2;
 }
 
 - (void)parseAndNotifySessionStartInfo:(os_log_t)log transportInfo:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

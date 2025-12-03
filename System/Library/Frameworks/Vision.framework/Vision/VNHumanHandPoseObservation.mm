@@ -8,10 +8,10 @@
 
 - (VNChirality)chirality
 {
-  v2 = [(VNRecognizedPointsObservation *)self recognizedPointsSpecifier];
-  v3 = [v2 chirality];
+  recognizedPointsSpecifier = [(VNRecognizedPointsObservation *)self recognizedPointsSpecifier];
+  chirality = [recognizedPointsSpecifier chirality];
 
-  return v3;
+  return chirality;
 }
 
 - (NSDictionary)recognizedPointsForJointsGroupName:(VNHumanHandPoseObservationJointsGroupName)jointsGroupName error:(NSError *)error

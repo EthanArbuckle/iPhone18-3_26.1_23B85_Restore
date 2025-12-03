@@ -1,8 +1,8 @@
 @interface CarAutohidingLabel
-- (CarAutohidingLabel)initWithCoder:(id)a3;
-- (CarAutohidingLabel)initWithFrame:(CGRect)a3;
+- (CarAutohidingLabel)initWithCoder:(id)coder;
+- (CarAutohidingLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAutohide:(BOOL)a3 forAxis:(int64_t)a4;
+- (void)setAutohide:(BOOL)autohide forAxis:(int64_t)axis;
 @end
 
 @implementation CarAutohidingLabel
@@ -19,8 +19,8 @@
     v3 = v4;
   }
 
-  v5 = [(CarAutohidingLabel *)self font];
-  [v5 lineHeight];
+  font = [(CarAutohidingLabel *)self font];
+  [font lineHeight];
   v7 = v6 * v3;
 
   if (self->_autohideForVerticalSquishing)
@@ -53,16 +53,16 @@
   [(CarAutohidingLabel *)self setHidden:v8];
 }
 
-- (void)setAutohide:(BOOL)a3 forAxis:(int64_t)a4
+- (void)setAutohide:(BOOL)autohide forAxis:(int64_t)axis
 {
-  if (a4 == 1)
+  if (axis == 1)
   {
     v4 = &OBJC_IVAR___CarAutohidingLabel__autohideForVerticalSquishing;
   }
 
   else
   {
-    if (a4)
+    if (axis)
     {
       return;
     }
@@ -70,14 +70,14 @@
     v4 = &OBJC_IVAR___CarAutohidingLabel__autohideForHorizontalSquishing;
   }
 
-  *(&self->super.super.super.super.isa + *v4) = a3;
+  *(&self->super.super.super.super.isa + *v4) = autohide;
 }
 
-- (CarAutohidingLabel)initWithCoder:(id)a3
+- (CarAutohidingLabel)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CarAutohidingLabel;
-  result = [(CarAutohidingLabel *)&v4 initWithCoder:a3];
+  result = [(CarAutohidingLabel *)&v4 initWithCoder:coder];
   if (result)
   {
     result->_autohideForVerticalSquishing = 1;
@@ -86,11 +86,11 @@
   return result;
 }
 
-- (CarAutohidingLabel)initWithFrame:(CGRect)a3
+- (CarAutohidingLabel)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CarAutohidingLabel;
-  result = [(CarAutohidingLabel *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CarAutohidingLabel *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_autohideForVerticalSquishing = 1;

@@ -1,21 +1,21 @@
 @interface FPWakeForURLSessionOperation
-- (id)initForProvider:(id)a3 sessionIdentifier:(id)a4;
+- (id)initForProvider:(id)provider sessionIdentifier:(id)identifier;
 - (void)actionMain;
 @end
 
 @implementation FPWakeForURLSessionOperation
 
-- (id)initForProvider:(id)a3 sessionIdentifier:(id)a4
+- (id)initForProvider:(id)provider sessionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:a3 domainIdentifier:@"NSFileProviderDomainDefaultIdentifier"];
+  identifierCopy = identifier;
+  v8 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:provider domainIdentifier:@"NSFileProviderDomainDefaultIdentifier"];
   v11.receiver = self;
   v11.super_class = FPWakeForURLSessionOperation;
   v9 = [(FPActionOperation *)&v11 initWithProvider:v8 action:0];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionIdentifier, a4);
+    objc_storeStrong(&v9->_sessionIdentifier, identifier);
     [(FPActionOperation *)v9 setSetupRemoteOperationService:1];
   }
 
@@ -24,14 +24,14 @@
 
 - (void)actionMain
 {
-  v3 = [(FPActionOperation *)self remoteServiceProxy];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
   sessionIdentifier = self->_sessionIdentifier;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__FPWakeForURLSessionOperation_actionMain__block_invoke;
   v5[3] = &unk_1E7939C00;
   v5[4] = self;
-  [v3 wakeForSessionIdentifier:sessionIdentifier completionHandler:v5];
+  [remoteServiceProxy wakeForSessionIdentifier:sessionIdentifier completionHandler:v5];
 }
 
 void __42__FPWakeForURLSessionOperation_actionMain__block_invoke(uint64_t a1, void *a2)

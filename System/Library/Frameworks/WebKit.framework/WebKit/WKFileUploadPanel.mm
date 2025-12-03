@@ -1,16 +1,16 @@
 @interface WKFileUploadPanel
-- (WKFileUploadPanel)initWithView:(id)a3;
+- (WKFileUploadPanel)initWithView:(id)view;
 - (void)_cancel;
-- (void)_chooseFiles:(id)a3 displayString:(id)a4 iconImage:(id)a5;
-- (void)_chooseMediaItems:(id)a3;
+- (void)_chooseFiles:(id)files displayString:(id)string iconImage:(id)image;
+- (void)_chooseMediaItems:(id)items;
 - (void)_dispatchDidDismiss;
 - (void)dealloc;
-- (void)presentWithParameters:(void *)a3 resultListener:(void *)a4;
+- (void)presentWithParameters:(void *)parameters resultListener:(void *)listener;
 @end
 
 @implementation WKFileUploadPanel
 
-- (WKFileUploadPanel)initWithView:(id)a3
+- (WKFileUploadPanel)initWithView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WKFileUploadPanel;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_view.m_weakReference, a3);
+    objc_storeWeak(&v4->_view.m_weakReference, view);
   }
 
   return v5;
@@ -56,17 +56,17 @@
   [(WKFileUploadPanel *)self _dispatchDidDismiss];
 }
 
-- (void)_chooseMediaItems:(id)a3
+- (void)_chooseMediaItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v6 = 0;
   v7 = 0;
-  v8 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v8 = [items countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v8)
   {
     v9 = *v20;
@@ -76,11 +76,11 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        [v5 addObject:{objc_msgSend(v11, "fileURL")}];
+        [array addObject:{objc_msgSend(v11, "fileURL")}];
         if (!v6)
         {
           if (v11)
@@ -98,16 +98,16 @@
         v7 += [v11 isVideo];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v8 = [items countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [a3 count];
-  if ([a3 count] == 1)
+  v12 = [items count];
+  if ([items count] == 1)
   {
-    v14 = [objc_msgSend(objc_msgSend(a3 "firstObject")];
+    v14 = [objc_msgSend(objc_msgSend(items "firstObject")];
 LABEL_19:
     v18 = v14;
     goto LABEL_20;
@@ -137,16 +137,16 @@ LABEL_19:
   v18 = 0;
 LABEL_20:
   [(WKFileUploadPanel *)self _dismissDisplayAnimated:1];
-  [(WKFileUploadPanel *)self _chooseFiles:v5 displayString:v18 iconImage:v6];
+  [(WKFileUploadPanel *)self _chooseFiles:array displayString:v18 iconImage:v6];
   if (v6)
   {
   }
 }
 
-- (void)_chooseFiles:(id)a3 displayString:(id)a4 iconImage:(id)a5
+- (void)_chooseFiles:(id)files displayString:(id)string iconImage:(id)image
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = [a3 count];
+  v9 = [files count];
   if (v9)
   {
     v35 = 0;
@@ -164,7 +164,7 @@ LABEL_20:
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v10 = [a3 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v10 = [files countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (v10)
       {
         v11 = *v32;
@@ -175,11 +175,11 @@ LABEL_20:
           {
             if (*v32 != v11)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(files);
             }
 
-            v13 = [*(*(&v31 + 1) + 8 * v12) fileSystemRepresentation];
-            WTF::String::fromUTF8(&v37, v13, v14);
+            fileSystemRepresentation = [*(*(&v31 + 1) + 8 * v12) fileSystemRepresentation];
+            WTF::String::fromUTF8(&v37, fileSystemRepresentation, v14);
             LODWORD(v16) = HIDWORD(v36);
             if (HIDWORD(v36) == v36)
             {
@@ -210,23 +210,23 @@ LABEL_20:
           }
 
           while (v10 != v12);
-          v22 = [a3 countByEnumeratingWithState:&v31 objects:v38 count:16];
+          v22 = [files countByEnumeratingWithState:&v31 objects:v38 count:16];
           v10 = v22;
         }
 
         while (v22);
       }
 
-      v23 = UIImagePNGRepresentation(a5);
+      v23 = UIImagePNGRepresentation(image);
       API::Data::create([(NSData *)v23 length], [(NSData *)v23 bytes], &v37);
       if (!v37 || (v24 = *(v37 + 1)) == 0)
       {
-        v25 = 0;
+        _apiObject = 0;
         v26 = 1;
 LABEL_21:
         m_ptr = self->_listener.m_ptr;
-        MEMORY[0x19EB02040](&v37, a4);
-        WebKit::WebOpenPanelResultListenerProxy::chooseFiles(m_ptr, &v35, &v37, v25);
+        MEMORY[0x19EB02040](&v37, string);
+        WebKit::WebOpenPanelResultListenerProxy::chooseFiles(m_ptr, &v35, &v37, _apiObject);
         v29 = v37;
         v37 = 0;
         if (v29 && atomic_fetch_add_explicit(v29, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -237,15 +237,15 @@ LABEL_21:
         [(WKFileUploadPanel *)self _dispatchDidDismiss];
         if ((v26 & 1) == 0)
         {
-          CFRelease(v25[1]);
+          CFRelease(_apiObject[1]);
         }
 
         WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v35, v30);
         return;
       }
 
-      v25 = [v24 _apiObject];
-      if ((*(*v25 + 2))(v25) == 8)
+      _apiObject = [v24 _apiObject];
+      if ((*(*_apiObject + 2))(_apiObject) == 8)
       {
         v26 = 0;
         goto LABEL_21;
@@ -260,23 +260,23 @@ LABEL_21:
   [(WKFileUploadPanel *)self _cancel];
 }
 
-- (void)presentWithParameters:(void *)a3 resultListener:(void *)a4
+- (void)presentWithParameters:(void *)parameters resultListener:(void *)listener
 {
   v67 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (listener)
   {
-    CFRetain(*(a4 + 1));
+    CFRetain(*(listener + 1));
   }
 
   m_ptr = self->_listener.m_ptr;
-  self->_listener.m_ptr = a4;
+  self->_listener.m_ptr = listener;
   if (m_ptr)
   {
     CFRelease(*(m_ptr + 1));
   }
 
-  self->_allowDirectories = *(a3 + 16);
-  self->_allowMultipleFiles = *(a3 + 17);
+  self->_allowDirectories = *(parameters + 16);
+  self->_allowMultipleFiles = *(parameters + 17);
   self->_isMenuPreviouslyRepositioned = 0;
   [objc_loadWeak(&self->_view.m_weakReference) lastInteractionLocation];
   self->_interactionPoint.x = v6;
@@ -285,7 +285,7 @@ LABEL_21:
   [Weak convertPoint:objc_msgSend(objc_msgSend(objc_loadWeak(&self->_view.m_weakReference) toView:{"webView"), "window"), self->_interactionPoint.x, self->_interactionPoint.y}];
   self->_interactionPointInWindow.x = v9;
   self->_interactionPointInWindow.y = v10;
-  API::Array::createStringArray(a3 + 24, &v58);
+  API::Array::createStringArray(parameters + 24, &v58);
   v11 = v58;
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(v58 + 7)];
   API::Array::elementsOfType<API::String>(v11, v63);
@@ -359,7 +359,7 @@ LABEL_23:
     while (v13 != v14);
   }
 
-  API::Array::createStringArray(a3 + 40, &v57);
+  API::Array::createStringArray(parameters + 40, &v57);
   v23 = v57;
   API::Array::elementsOfType<API::String>(v57, v63);
   v24 = v64;

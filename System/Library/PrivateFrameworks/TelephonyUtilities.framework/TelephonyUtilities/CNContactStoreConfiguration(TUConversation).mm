@@ -9,17 +9,17 @@
   v3 = MEMORY[0x1E695CE28];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 provider];
+  provider = [v4 provider];
 
-  v7 = [v6 assumedIdentity];
+  assumedIdentity = [provider assumedIdentity];
 
-  if (!v7)
+  if (!assumedIdentity)
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v8 tu_assumedIdentity];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    assumedIdentity = [mainBundle tu_assumedIdentity];
   }
 
-  [v5 setAssumedIdentity:v7];
+  [v5 setAssumedIdentity:assumedIdentity];
   v9 = objc_alloc_init(TUFeatureFlags);
   if ([(TUFeatureFlags *)v9 junkFilteringEnabled])
   {

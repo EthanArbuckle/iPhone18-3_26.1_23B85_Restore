@@ -1,12 +1,12 @@
 @interface PKDownloadRemoteAssetConfiguration
-+ (id)cardArtConfigurationWithSEIDs:(id)a3;
-+ (id)configurationWithCloudStoreDelegate:(id)a3;
-+ (id)configurationWithCloudStoreDelegate:(id)a3 seids:(id)a4;
-+ (id)configurationWithSEIDs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDownloadRemoteAssetConfiguration:(id)a3;
++ (id)cardArtConfigurationWithSEIDs:(id)ds;
++ (id)configurationWithCloudStoreDelegate:(id)delegate;
++ (id)configurationWithCloudStoreDelegate:(id)delegate seids:(id)seids;
++ (id)configurationWithSEIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDownloadRemoteAssetConfiguration:(id)configuration;
 - (PKDownloadRemoteAssetConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -26,49 +26,49 @@
   return result;
 }
 
-+ (id)configurationWithSEIDs:(id)a3
++ (id)configurationWithSEIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
   seids = v4->_seids;
-  v4->_seids = v3;
+  v4->_seids = dsCopy;
 
   return v4;
 }
 
-+ (id)cardArtConfigurationWithSEIDs:(id)a3
++ (id)cardArtConfigurationWithSEIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
   seids = v4->_seids;
-  v4->_seids = v3;
+  v4->_seids = dsCopy;
 
   v4->_includeEncryptedAssets = 0;
 
   return v4;
 }
 
-+ (id)configurationWithCloudStoreDelegate:(id)a3
++ (id)configurationWithCloudStoreDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
   cloudStoreCoordinatorDelegate = v4->_cloudStoreCoordinatorDelegate;
-  v4->_cloudStoreCoordinatorDelegate = v3;
+  v4->_cloudStoreCoordinatorDelegate = delegateCopy;
 
   return v4;
 }
 
-+ (id)configurationWithCloudStoreDelegate:(id)a3 seids:(id)a4
++ (id)configurationWithCloudStoreDelegate:(id)delegate seids:(id)seids
 {
-  v5 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  seidsCopy = seids;
   v7 = objc_alloc_init(PKDownloadRemoteAssetConfiguration);
   cloudStoreCoordinatorDelegate = v7->_cloudStoreCoordinatorDelegate;
-  v7->_cloudStoreCoordinatorDelegate = v5;
-  v9 = v5;
+  v7->_cloudStoreCoordinatorDelegate = delegateCopy;
+  v9 = delegateCopy;
 
   seids = v7->_seids;
-  v7->_seids = v6;
+  v7->_seids = seidsCopy;
 
   return v7;
 }
@@ -100,11 +100,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_seids)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_cloudStoreCoordinatorDelegate)
@@ -125,28 +125,28 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDownloadRemoteAssetConfiguration *)self isEqualToDownloadRemoteAssetConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDownloadRemoteAssetConfiguration *)self isEqualToDownloadRemoteAssetConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDownloadRemoteAssetConfiguration:(id)a3
+- (BOOL)isEqualToDownloadRemoteAssetConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   seids = self->_seids;
-  v6 = *(v4 + 2);
+  v6 = *(configurationCopy + 2);
   if (seids)
   {
     v7 = v6 == 0;
@@ -171,7 +171,7 @@
   }
 
   cloudStoreCoordinatorDelegate = self->_cloudStoreCoordinatorDelegate;
-  v9 = *(v4 + 3);
+  v9 = *(configurationCopy + 3);
   if (cloudStoreCoordinatorDelegate && v9)
   {
     if (([(PKCloudStoreCoordinatorDelegate *)cloudStoreCoordinatorDelegate isEqual:?]& 1) == 0)
@@ -185,13 +185,13 @@
     goto LABEL_22;
   }
 
-  if (self->_screenScale != v4[4])
+  if (self->_screenScale != configurationCopy[4])
   {
     goto LABEL_22;
   }
 
   suffix = self->_suffix;
-  v11 = *(v4 + 5);
+  v11 = *(configurationCopy + 5);
   if (!suffix || !v11)
   {
     if (suffix == v11)
@@ -210,18 +210,18 @@ LABEL_22:
   }
 
 LABEL_20:
-  if (self->_ignoreRequiredAssetDownloadFailures != *(v4 + 8))
+  if (self->_ignoreRequiredAssetDownloadFailures != *(configurationCopy + 8))
   {
     goto LABEL_22;
   }
 
-  v12 = self->_includeEncryptedAssets == *(v4 + 9);
+  v12 = self->_includeEncryptedAssets == *(configurationCopy + 9);
 LABEL_23:
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKDownloadRemoteAssetConfiguration allocWithZone:?]];
   v5 = [(NSArray *)self->_seids copy];

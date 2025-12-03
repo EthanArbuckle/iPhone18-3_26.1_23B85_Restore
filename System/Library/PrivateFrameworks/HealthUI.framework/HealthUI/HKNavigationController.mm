@@ -1,11 +1,11 @@
 @interface HKNavigationController
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)horizontalSizeClassDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)horizontalSizeClassDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 - (void)onInternalSettingsGesture;
-- (void)reparentViewControllerIfNecessaryWithTraitCollection:(id)a3 previousTraitCollection:(id)a4;
+- (void)reparentViewControllerIfNecessaryWithTraitCollection:(id)collection previousTraitCollection:(id)traitCollection;
 - (void)updateTraits;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -37,14 +37,14 @@
 
 - (void)updateTraits
 {
-  v3 = [(HKNavigationController *)self view];
-  [v3 bounds];
+  view = [(HKNavigationController *)self view];
+  [view bounds];
   v5 = v4;
-  v6 = [(HKNavigationController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(HKNavigationController *)self view];
+  [view2 safeAreaInsets];
   v8 = v5 - v7;
-  v9 = [(HKNavigationController *)self view];
-  [v9 safeAreaInsets];
+  view3 = [(HKNavigationController *)self view];
+  [view3 safeAreaInsets];
   v11 = v8 - v10;
 
   v12 = [HKWidthDesignationProvider widthDesignationFromViewWidth:v11];
@@ -58,98 +58,98 @@
     v13 = 2;
   }
 
-  v14 = [(HKNavigationController *)self traitOverrides];
-  [v14 setNSIntegerValue:v12 forTrait:objc_opt_class()];
+  traitOverrides = [(HKNavigationController *)self traitOverrides];
+  [traitOverrides setNSIntegerValue:v12 forTrait:objc_opt_class()];
 
-  v15 = [(HKNavigationController *)self traitOverrides];
-  [v15 setNSIntegerValue:v13 forTrait:objc_opt_class()];
+  traitOverrides2 = [(HKNavigationController *)self traitOverrides];
+  [traitOverrides2 setNSIntegerValue:v13 forTrait:objc_opt_class()];
 
-  v16 = [(HKNavigationController *)self view];
-  v17 = [v16 window];
+  view4 = [(HKNavigationController *)self view];
+  window = [view4 window];
 
-  if (v17)
+  if (window)
   {
 
     [(HKNavigationController *)self updateTraitsIfNeeded];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HKNavigationController;
-  [(HKNavigationController *)&v8 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E696C608] sharedBehavior];
-  v5 = [v4 isAppleInternalInstall];
+  [(HKNavigationController *)&v8 viewDidAppear:appear];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x1E696C608] isAppleInternalInstall];
 
-  if (v5)
+  if (isAppleInternalInstall)
   {
-    v6 = [(HKNavigationController *)self navigationBar];
-    v7 = [(HKNavigationController *)self internalSettingsGestureRecognizer];
-    [v6 addGestureRecognizer:v7];
+    navigationBar = [(HKNavigationController *)self navigationBar];
+    internalSettingsGestureRecognizer = [(HKNavigationController *)self internalSettingsGestureRecognizer];
+    [navigationBar addGestureRecognizer:internalSettingsGestureRecognizer];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = HKNavigationController;
-  [(HKNavigationController *)&v8 viewDidDisappear:a3];
-  v4 = [MEMORY[0x1E696C608] sharedBehavior];
-  v5 = [v4 isAppleInternalInstall];
+  [(HKNavigationController *)&v8 viewDidDisappear:disappear];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x1E696C608] isAppleInternalInstall];
 
-  if (v5)
+  if (isAppleInternalInstall)
   {
-    v6 = [(HKNavigationController *)self navigationBar];
-    v7 = [(HKNavigationController *)self internalSettingsGestureRecognizer];
-    [v6 removeGestureRecognizer:v7];
+    navigationBar = [(HKNavigationController *)self navigationBar];
+    internalSettingsGestureRecognizer = [(HKNavigationController *)self internalSettingsGestureRecognizer];
+    [navigationBar removeGestureRecognizer:internalSettingsGestureRecognizer];
   }
 }
 
-- (void)horizontalSizeClassDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)horizontalSizeClassDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(HKNavigationController *)self view];
-  v8 = [v7 window];
+  environmentCopy = environment;
+  collectionCopy = collection;
+  view = [(HKNavigationController *)self view];
+  window = [view window];
 
-  if (v8)
+  if (window)
   {
-    v9 = [v10 traitCollection];
-    [(HKNavigationController *)self reparentViewControllerIfNecessaryWithTraitCollection:v9 previousTraitCollection:v6];
+    traitCollection = [environmentCopy traitCollection];
+    [(HKNavigationController *)self reparentViewControllerIfNecessaryWithTraitCollection:traitCollection previousTraitCollection:collectionCopy];
   }
 }
 
 - (void)onInternalSettingsGesture
 {
-  v3 = [(HKNavigationController *)self topViewController];
-  v4 = [v3 conformsToProtocol:&unk_1F43D7090];
+  topViewController = [(HKNavigationController *)self topViewController];
+  v4 = [topViewController conformsToProtocol:&unk_1F43D7090];
 
   if (v4)
   {
-    v5 = [(HKNavigationController *)self topViewController];
-    [v5 onInternalSettingsGesture];
+    topViewController2 = [(HKNavigationController *)self topViewController];
+    [topViewController2 onInternalSettingsGesture];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [(HKNavigationController *)self topViewController];
-  v4 = v3;
-  if (v3)
+  topViewController = [(HKNavigationController *)self topViewController];
+  v4 = topViewController;
+  if (topViewController)
   {
-    v5 = [v3 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v5 = 6;
+    supportedInterfaceOrientations = 6;
   }
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
-- (void)reparentViewControllerIfNecessaryWithTraitCollection:(id)a3 previousTraitCollection:(id)a4
+- (void)reparentViewControllerIfNecessaryWithTraitCollection:(id)collection previousTraitCollection:(id)traitCollection
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -159,13 +159,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v12.is_nil = v9;
-  v10 = v9;
-  v12.value.super.isa = a4;
-  HKNavigationController.reparentViewControllerIfNecessary(traitCollection:previousTraitCollection:)(v7, v12);
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  selfCopy = self;
+  v12.is_nil = selfCopy;
+  v10 = selfCopy;
+  v12.value.super.isa = traitCollection;
+  HKNavigationController.reparentViewControllerIfNecessary(traitCollection:previousTraitCollection:)(collectionCopy, v12);
 }
 
 @end

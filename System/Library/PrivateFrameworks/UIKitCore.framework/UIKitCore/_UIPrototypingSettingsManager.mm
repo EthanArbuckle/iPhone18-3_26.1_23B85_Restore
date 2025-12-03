@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (NSArray)allSettings;
 - (_UIPrototypingSettingsManager)init;
-- (id)settingOfType:(int64_t)a3 withName:(id)a4;
+- (id)settingOfType:(int64_t)type withName:(id)name;
 - (void)deleteAllStoredSettings;
 - (void)synchronizeStoredSettings;
 @end
@@ -28,9 +28,9 @@
   v2 = [(_UIPrototypingSettingsManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storedSettings = v2->_storedSettings;
-    v2->_storedSettings = v3;
+    v2->_storedSettings = dictionary;
 
     [(_UIPrototypingSettingsManager *)v2 synchronizeStoredSettings];
   }
@@ -38,19 +38,19 @@
   return v2;
 }
 
-- (id)settingOfType:(int64_t)a3 withName:(id)a4
+- (id)settingOfType:(int64_t)type withName:(id)name
 {
-  v6 = a4;
-  v7 = [(_UIPrototypingSettingsManager *)self storedSettings];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  storedSettings = [(_UIPrototypingSettingsManager *)self storedSettings];
+  v8 = [storedSettings objectForKeyedSubscript:nameCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(_UIPrototypingValue);
-    [(_UIPrototypingValue *)v8 setType:a3];
-    [(_UIPrototypingValue *)v8 setName:v6];
-    v9 = [(_UIPrototypingSettingsManager *)self storedSettings];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    [(_UIPrototypingValue *)v8 setType:type];
+    [(_UIPrototypingValue *)v8 setName:nameCopy];
+    storedSettings2 = [(_UIPrototypingSettingsManager *)self storedSettings];
+    [storedSettings2 setObject:v8 forKeyedSubscript:nameCopy];
   }
 
   return v8;
@@ -58,16 +58,16 @@
 
 - (NSArray)allSettings
 {
-  v2 = [(_UIPrototypingSettingsManager *)self storedSettings];
-  v3 = [v2 allValues];
+  storedSettings = [(_UIPrototypingSettingsManager *)self storedSettings];
+  allValues = [storedSettings allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (void)synchronizeStoredSettings
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 valueForKey:@"_UIKitStoredPrototypingValues"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"_UIKitStoredPrototypingValues"];
 
   if (v4)
   {
@@ -79,27 +79,27 @@
     [v4 enumerateKeysAndObjectsUsingBlock:v14];
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(_UIPrototypingSettingsManager *)self storedSettings];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  storedSettings = [(_UIPrototypingSettingsManager *)self storedSettings];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __58___UIPrototypingSettingsManager_synchronizeStoredSettings__block_invoke_2;
   v12 = &unk_1E7127D48;
-  v13 = v5;
-  v7 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v9];
+  v13 = dictionary;
+  v7 = dictionary;
+  [storedSettings enumerateKeysAndObjectsUsingBlock:&v9];
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setObject:v7 forKey:@"_UIKitStoredPrototypingValues"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setObject:v7 forKey:@"_UIKitStoredPrototypingValues"];
 }
 
 - (void)deleteAllStoredSettings
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObjectForKey:@"_UIKitStoredPrototypingValues"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"_UIKitStoredPrototypingValues"];
 
-  v4 = [(_UIPrototypingSettingsManager *)self storedSettings];
-  [v4 removeAllObjects];
+  storedSettings = [(_UIPrototypingSettingsManager *)self storedSettings];
+  [storedSettings removeAllObjects];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MPSNNReduceRowSum
 - (MPSNNReduceRowSum)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNReduceRowSum)initWithDevice:(id)device;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
 @end
 
 @implementation MPSNNReduceRowSum
@@ -13,11 +13,11 @@
   return [(MPSNNReduceUnary *)&v4 initWithDevice:device reduceOperation:11];
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v14.receiver = self;
   v14.super_class = MPSNNReduceRowSum;
-  v6 = [(MPSCNNKernel *)&v14 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
+  v6 = [(MPSCNNKernel *)&v14 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
   objc_msgSend_setWidth_(v6, v7, 1, v8, v9, v10, v11, v12);
   return v6;
 }

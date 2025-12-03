@@ -1,6 +1,6 @@
 @interface _MKUserLocationInternalView
 - (MKUserLocationView)parentView;
-- (double)_pointsForDistance:(double)a3;
+- (double)_pointsForDistance:(double)distance;
 - (id)_annotationContainer;
 - (id)_containerView;
 - (id)_mapView;
@@ -10,10 +10,10 @@
 
 - (id)_mapView
 {
-  v2 = [(_MKUserLocationInternalView *)self parentView];
-  v3 = [v2 _mapView];
+  parentView = [(_MKUserLocationInternalView *)self parentView];
+  _mapView = [parentView _mapView];
 
-  return v3;
+  return _mapView;
 }
 
 - (MKUserLocationView)parentView
@@ -25,34 +25,34 @@
 
 - (id)_containerView
 {
-  v2 = [(_MKUserLocationInternalView *)self parentView];
-  v3 = [v2 _containerView];
+  parentView = [(_MKUserLocationInternalView *)self parentView];
+  _containerView = [parentView _containerView];
 
-  return v3;
+  return _containerView;
 }
 
 - (id)_annotationContainer
 {
-  v2 = [(_MKUserLocationInternalView *)self parentView];
-  v3 = [v2 _annotationContainer];
+  parentView = [(_MKUserLocationInternalView *)self parentView];
+  _annotationContainer = [parentView _annotationContainer];
 
-  return v3;
+  return _annotationContainer;
 }
 
-- (double)_pointsForDistance:(double)a3
+- (double)_pointsForDistance:(double)distance
 {
-  v5 = [(_MKUserLocationInternalView *)self parentView];
-  v6 = v5;
-  if (v5)
+  parentView = [(_MKUserLocationInternalView *)self parentView];
+  v6 = parentView;
+  if (parentView)
   {
-    [v5 _pointsForDistance:a3];
+    [parentView _pointsForDistance:distance];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = _MKUserLocationInternalView;
-    [(MKAnnotationView *)&v10 _pointsForDistance:a3];
+    [(MKAnnotationView *)&v10 _pointsForDistance:distance];
   }
 
   v8 = v7;

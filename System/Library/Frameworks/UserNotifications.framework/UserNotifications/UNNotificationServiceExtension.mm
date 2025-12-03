@@ -1,6 +1,6 @@
 @interface UNNotificationServiceExtension
 - (UNNotificationServiceExtension)init;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void *)contentHandler;
 - (void)serviceExtensionTimeWillExpire;
 @end
@@ -55,8 +55,8 @@
     [(UNNotificationServiceExtension *)v7 didReceiveNotificationRequest:v8 withContentHandler:v9, v10, v11, v12, v13, v14];
   }
 
-  v15 = [(UNNotificationRequest *)v5 content];
-  v6[2](v6, v15);
+  content = [(UNNotificationRequest *)v5 content];
+  v6[2](v6, content);
 }
 
 - (void)serviceExtensionTimeWillExpire
@@ -68,11 +68,11 @@
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_class();
-  v7 = UNSafeCast(v6, v5);
+  v7 = UNSafeCast(v6, contextCopy);
   v8 = v7;
   if (v7)
   {
@@ -81,7 +81,7 @@
 
   else
   {
-    [(UNNotificationServiceExtension *)a2 beginRequestWithExtensionContext:v5];
+    [(UNNotificationServiceExtension *)a2 beginRequestWithExtensionContext:contextCopy];
   }
 }
 

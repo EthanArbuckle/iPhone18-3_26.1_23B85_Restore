@@ -1,50 +1,50 @@
 @interface BTLEXpcConnection
-+ (id)createNSDictionaryFromXpcDictionary:(id)a3;
-- (BTLEXpcConnection)initWithConnection:(id)a3;
++ (id)createNSDictionaryFromXpcDictionary:(id)dictionary;
+- (BTLEXpcConnection)initWithConnection:(id)connection;
 - (id)bundleIdentifier;
-- (void)authenticationDidFail:(id)a3;
-- (void)authenticationDidSucceed:(id)a3;
-- (void)handleCATTBatteryServiceDeviceConnectedMsg:(id)a3;
-- (void)handleClassicDeviceUnexpectedDisconnectionMsg:(id)a3;
-- (void)handleClassicPairStateRequestMsg:(id)a3;
-- (void)handleClassicPairStateResponseMsg:(id)a3;
-- (void)handleConnectAlwaysMsg:(id)a3;
-- (void)handleConnectClassicDeviceMsg:(id)a3;
-- (void)handleConnectOnceMsg:(id)a3;
-- (void)handleDOAPDeviceConnectedMsg:(id)a3;
-- (void)handleDisconnectClassicDeviceMsg:(id)a3;
+- (void)authenticationDidFail:(id)fail;
+- (void)authenticationDidSucceed:(id)succeed;
+- (void)handleCATTBatteryServiceDeviceConnectedMsg:(id)msg;
+- (void)handleClassicDeviceUnexpectedDisconnectionMsg:(id)msg;
+- (void)handleClassicPairStateRequestMsg:(id)msg;
+- (void)handleClassicPairStateResponseMsg:(id)msg;
+- (void)handleConnectAlwaysMsg:(id)msg;
+- (void)handleConnectClassicDeviceMsg:(id)msg;
+- (void)handleConnectOnceMsg:(id)msg;
+- (void)handleDOAPDeviceConnectedMsg:(id)msg;
+- (void)handleDisconnectClassicDeviceMsg:(id)msg;
 - (void)handleDisconnection;
-- (void)handleEvent:(id)a3;
-- (void)handleHRMDeviceConnectedMsg:(id)a3;
-- (void)handleLeaEasyPairRequestMsg:(id)a3;
-- (void)handleLeaEasyPairResponseMsg:(id)a3;
-- (void)handleLeaStoreBondingInfoRequestMsg:(id)a3;
-- (void)handleLeaStoreBondingInfoResponseMsg:(id)a3;
-- (void)handleMFiAccessoryAuthMsg:(id)a3;
-- (void)handleMsg:(id)a3;
-- (void)handleNotifyPiconetClockMsg:(id)a3;
-- (void)handleNotifyPrimaryBudSideMsg:(id)a3;
-- (void)handlePersistServerServicesMsg:(id)a3;
-- (void)handlePreWarmMFiAccessoryAuthMsg:(id)a3;
-- (void)handleStoreClassicDeviceSettingsMsg:(id)a3;
-- (void)handleStoreClassicLinkKeyRequestExtendedMsg:(id)a3;
-- (void)handleStoreClassicLinkKeyRequestMsg:(id)a3;
-- (void)handleStoreClassicLinkKeyResponseMsg:(id)a3;
-- (void)handleUARPAACPTransportChangeMsg:(id)a3;
-- (void)handleUARPDataOverAACPMsg:(id)a3;
-- (void)handleUARPDeviceConnectedMsg:(id)a3;
-- (void)handleVersionInfoRequestMsg:(id)a3;
-- (void)handleVersionInfoResponseMsg:(id)a3;
-- (void)peerIsNotUsingBuiltinService:(id)a3;
-- (void)peerIsUsingBuiltinService:(id)a3;
-- (void)sendMsg:(id)a3 args:(id)a4;
+- (void)handleEvent:(id)event;
+- (void)handleHRMDeviceConnectedMsg:(id)msg;
+- (void)handleLeaEasyPairRequestMsg:(id)msg;
+- (void)handleLeaEasyPairResponseMsg:(id)msg;
+- (void)handleLeaStoreBondingInfoRequestMsg:(id)msg;
+- (void)handleLeaStoreBondingInfoResponseMsg:(id)msg;
+- (void)handleMFiAccessoryAuthMsg:(id)msg;
+- (void)handleMsg:(id)msg;
+- (void)handleNotifyPiconetClockMsg:(id)msg;
+- (void)handleNotifyPrimaryBudSideMsg:(id)msg;
+- (void)handlePersistServerServicesMsg:(id)msg;
+- (void)handlePreWarmMFiAccessoryAuthMsg:(id)msg;
+- (void)handleStoreClassicDeviceSettingsMsg:(id)msg;
+- (void)handleStoreClassicLinkKeyRequestExtendedMsg:(id)msg;
+- (void)handleStoreClassicLinkKeyRequestMsg:(id)msg;
+- (void)handleStoreClassicLinkKeyResponseMsg:(id)msg;
+- (void)handleUARPAACPTransportChangeMsg:(id)msg;
+- (void)handleUARPDataOverAACPMsg:(id)msg;
+- (void)handleUARPDeviceConnectedMsg:(id)msg;
+- (void)handleVersionInfoRequestMsg:(id)msg;
+- (void)handleVersionInfoResponseMsg:(id)msg;
+- (void)peerIsNotUsingBuiltinService:(id)service;
+- (void)peerIsUsingBuiltinService:(id)service;
+- (void)sendMsg:(id)msg args:(id)args;
 @end
 
 @implementation BTLEXpcConnection
 
-- (BTLEXpcConnection)initWithConnection:(id)a3
+- (BTLEXpcConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_100074350();
@@ -56,7 +56,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     xpc_connection_set_target_queue(v7->_connection, &_dispatch_main_q);
     connection = v7->_connection;
     handler[0] = _NSConcreteStackBlock;
@@ -155,18 +155,18 @@ LABEL_13:
   return v6;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
-    [(BTLEXpcConnection *)self handleMsg:v4];
+    [(BTLEXpcConnection *)self handleMsg:eventCopy];
   }
 
   else if (type == &_xpc_type_error)
   {
-    if (v4 == &_xpc_error_connection_invalid)
+    if (eventCopy == &_xpc_error_connection_invalid)
     {
       [(BTLEXpcConnection *)self handleDisconnection];
     }
@@ -198,23 +198,23 @@ LABEL_13:
   [v5 handleXpcDisconnection:self];
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100074540(v5, v4);
+    sub_100074540(v5, msgCopy);
   }
 
-  string = xpc_dictionary_get_string(v4, "kMsgId");
-  v7 = xpc_dictionary_get_value(v4, "kMsgArgs");
-  v8 = [NSString stringWithFormat:@"handle%sMsg:", string];
-  v9 = NSSelectorFromString(v8);
+  string = xpc_dictionary_get_string(msgCopy, "kMsgId");
+  v7 = xpc_dictionary_get_value(msgCopy, "kMsgArgs");
+  string = [NSString stringWithFormat:@"handle%sMsg:", string];
+  v9 = NSSelectorFromString(string);
 
   if (xpc_dictionary_expects_reply())
   {
-    v10 = v4;
+    v10 = msgCopy;
   }
 
   else
@@ -225,17 +225,17 @@ LABEL_13:
   [self v9];
 }
 
-- (void)handleConnectOnceMsg:(id)a3
+- (void)handleConnectOnceMsg:(id)msg
 {
-  xuuid = xpc_dictionary_get_value(a3, "kPeerIdentifier");
+  xuuid = xpc_dictionary_get_value(msg, "kPeerIdentifier");
   v3 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(xuuid)];
   v4 = +[ConnectionManager instance];
   [v4 connectOnce:v3];
 }
 
-- (void)handleConnectAlwaysMsg:(id)a3
+- (void)handleConnectAlwaysMsg:(id)msg
 {
-  v3 = xpc_dictionary_get_value(a3, "kPeerIdentifiers");
+  v3 = xpc_dictionary_get_value(msg, "kPeerIdentifiers");
   +[NSMutableArray array];
   applier[0] = _NSConcreteStackBlock;
   applier[1] = 3221225472;
@@ -247,9 +247,9 @@ LABEL_13:
   [v5 connectAlways:v4];
 }
 
-- (void)handlePersistServerServicesMsg:(id)a3
+- (void)handlePersistServerServicesMsg:(id)msg
 {
-  v3 = xpc_dictionary_get_BOOL(a3, "kPersist");
+  v3 = xpc_dictionary_get_BOOL(msg, "kPersist");
   v4 = +[ServerServiceManager instance];
   [v4 setPersist:v3];
 
@@ -257,11 +257,11 @@ LABEL_13:
   [v5 setPersist:v3];
 }
 
-- (void)handleNotifyPiconetClockMsg:(id)a3
+- (void)handleNotifyPiconetClockMsg:(id)msg
 {
-  v3 = a3;
-  uint64 = xpc_dictionary_get_uint64(v3, "kPiconetClock");
-  v5 = xpc_dictionary_get_uint64(v3, "kPiconetPhaseClock");
+  msgCopy = msg;
+  uint64 = xpc_dictionary_get_uint64(msgCopy, "kPiconetClock");
+  v5 = xpc_dictionary_get_uint64(msgCopy, "kPiconetPhaseClock");
 
   v6 = +[NSNotificationCenter defaultCenter];
   v10[0] = @"PiconetClockUserInfoKey";
@@ -274,86 +274,86 @@ LABEL_13:
   [v6 postNotificationName:@"PiconetClockNotification" object:0 userInfo:v9];
 }
 
-- (void)handleConnectClassicDeviceMsg:(id)a3
+- (void)handleConnectClassicDeviceMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceAddress")];
-  uint64 = xpc_dictionary_get_uint64(v3, "kQuickDisconnectEnabled");
+  v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceAddress")];
+  uint64 = xpc_dictionary_get_uint64(msgCopy, "kQuickDisconnectEnabled");
 
   v6 = [NSNumber numberWithUnsignedLongLong:uint64];
   [v7 connectDevice:v4 quickDisconnectEnabled:v6];
 }
 
-- (void)handleDisconnectClassicDeviceMsg:(id)a3
+- (void)handleDisconnectClassicDeviceMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v6 = +[EndpointManager instance];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v5 = [NSString stringWithUTF8String:string];
   [v6 disconnectDevice:v5];
 }
 
-- (void)handleClassicDeviceUnexpectedDisconnectionMsg:(id)a3
+- (void)handleClassicDeviceUnexpectedDisconnectionMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v6 = +[EndpointManager instance];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v5 = [NSString stringWithUTF8String:string];
   [v6 unexpectedDisconnection:v5];
 }
 
-- (void)handleVersionInfoRequestMsg:(id)a3
+- (void)handleVersionInfoRequestMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kEasyPairingVersion")];
-  string = xpc_dictionary_get_string(v3, "kCloudAccount");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kEasyPairingVersion")];
+  string = xpc_dictionary_get_string(msgCopy, "kCloudAccount");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 requestVersionInfo:v4 cloudAccount:v6];
 }
 
-- (void)handleVersionInfoResponseMsg:(id)a3
+- (void)handleVersionInfoResponseMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v8 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kEasyPairingVersion")];
-  v5 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kCloudAccount")];
-  uint64 = xpc_dictionary_get_uint64(v3, "kEasyPairingStatus");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kEasyPairingVersion")];
+  v5 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kCloudAccount")];
+  uint64 = xpc_dictionary_get_uint64(msgCopy, "kEasyPairingStatus");
 
   v7 = [NSNumber numberWithUnsignedLongLong:uint64];
   [v8 respondVersionInfo:v4 cloudAccount:v5 easyPairingStatus:v7];
 }
 
-- (void)handleClassicPairStateRequestMsg:(id)a3
+- (void)handleClassicPairStateRequestMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v6 = +[EndpointManager instance];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v5 = [NSString stringWithUTF8String:string];
   [v6 requestPairStateForDevice:v5];
 }
 
-- (void)handleClassicPairStateResponseMsg:(id)a3
+- (void)handleClassicPairStateResponseMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kDevicePairState")];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kDevicePairState")];
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 respondToPairState:v4 device:v6];
 }
 
-- (void)handleStoreClassicLinkKeyRequestMsg:(id)a3
+- (void)handleStoreClassicLinkKeyRequestMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   length = 0;
-  data = xpc_dictionary_get_data(v3, "kDeviceLinkKey", &length);
+  data = xpc_dictionary_get_data(msgCopy, "kDeviceLinkKey", &length);
   if (length)
   {
     v5 = data;
@@ -376,17 +376,17 @@ LABEL_13:
     }
 
     v11 = +[EndpointManager instance];
-    v12 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceName")];
-    v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceAddress")];
+    v12 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceName")];
+    v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceAddress")];
     [v11 requestStoreLinkKey:v10 name:v12 device:v13];
   }
 }
 
-- (void)handleStoreClassicLinkKeyRequestExtendedMsg:(id)a3
+- (void)handleStoreClassicLinkKeyRequestExtendedMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   length = 0;
-  data = xpc_dictionary_get_data(v3, "kDeviceLinkKey", &length);
+  data = xpc_dictionary_get_data(msgCopy, "kDeviceLinkKey", &length);
   if (length)
   {
     v5 = data;
@@ -409,29 +409,29 @@ LABEL_13:
     }
 
     v11 = +[EndpointManager instance];
-    v12 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceName")];
-    v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceAddress")];
-    v14 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kDeviceServiceMask")];
-    v15 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kClassOfDevice")];
+    v12 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceName")];
+    v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceAddress")];
+    v14 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kDeviceServiceMask")];
+    v15 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kClassOfDevice")];
     [v11 requestStoreLinkKeyExtended:v10 name:v12 device:v13 deviceServiceMask:v14 classOfDevice:v15];
   }
 }
 
-- (void)handleStoreClassicLinkKeyResponseMsg:(id)a3
+- (void)handleStoreClassicLinkKeyResponseMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kStoreClassicLinkKeyResult")];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kStoreClassicLinkKeyResult")];
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 respondToStoreLinkKey:v4 device:v6];
 }
 
-- (void)handleStoreClassicDeviceSettingsMsg:(id)a3
+- (void)handleStoreClassicDeviceSettingsMsg:(id)msg
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_value(v3, "kClassicDeviceSettings");
+  msgCopy = msg;
+  v4 = xpc_dictionary_get_value(msgCopy, "kClassicDeviceSettings");
   v5 = &MGGetBoolAnswer_ptr;
   xdict = v4;
   if (v4)
@@ -553,36 +553,36 @@ LABEL_13:
   }
 
   v27 = +[EndpointManager instance];
-  v28 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(v3, "kClassicDeviceMicMode")}];
-  v29 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(v3, "kClassicDeviceInEarEnable")}];
-  v30 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(v3, "kClassicDeviceDoubleTapMode")}];
-  v31 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kDeviceName")];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  v28 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(msgCopy, "kClassicDeviceMicMode")}];
+  v29 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(msgCopy, "kClassicDeviceInEarEnable")}];
+  v30 = [v5[502] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(msgCopy, "kClassicDeviceDoubleTapMode")}];
+  v31 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kDeviceName")];
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v33 = [NSString stringWithUTF8String:string];
   [v27 storeDeviceSettings:v28 inEarEnable:v29 doubleTapMode:v30 deviceSettings:v8 deviceName:v31 device:v33];
 }
 
-- (void)handleNotifyPrimaryBudSideMsg:(id)a3
+- (void)handleNotifyPrimaryBudSideMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kPrimaryBudSide")];
-  string = xpc_dictionary_get_string(v3, "kDeviceAddress");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kPrimaryBudSide")];
+  string = xpc_dictionary_get_string(msgCopy, "kDeviceAddress");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 notifyPrimaryBudSide:v4 device:v6];
 }
 
-- (void)handleMFiAccessoryAuthMsg:(id)a3
+- (void)handleMFiAccessoryAuthMsg:(id)msg
 {
-  xuuid = xpc_dictionary_get_value(a3, "kPeerIdentifier");
+  xuuid = xpc_dictionary_get_value(msg, "kPeerIdentifier");
   v3 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(xuuid)];
   v4 = +[ConnectionManager instance];
   [v4 performMFiAuth:v3];
 }
 
-- (void)handlePreWarmMFiAccessoryAuthMsg:(id)a3
+- (void)handlePreWarmMFiAccessoryAuthMsg:(id)msg
 {
   v3 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -595,13 +595,13 @@ LABEL_13:
   [v4 launchServer];
 }
 
-- (void)handleDOAPDeviceConnectedMsg:(id)a3
+- (void)handleDOAPDeviceConnectedMsg:(id)msg
 {
   v3 = +[CattManager instance];
   [v3 registerServices];
 }
 
-- (void)handleUARPDeviceConnectedMsg:(id)a3
+- (void)handleUARPDeviceConnectedMsg:(id)msg
 {
   v3 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -614,9 +614,9 @@ LABEL_13:
   [v4 registerServices];
 }
 
-- (void)handleUARPAACPTransportChangeMsg:(id)a3
+- (void)handleUARPAACPTransportChangeMsg:(id)msg
 {
-  v3 = xpc_dictionary_get_value(a3, "kUARPDeviceUUID");
+  v3 = xpc_dictionary_get_value(msg, "kUARPDeviceUUID");
   v4 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v3)];
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -629,13 +629,13 @@ LABEL_13:
   [v6 addUARPTransportDict:v4 UARPAACPSupported:v7];
 }
 
-- (void)handleUARPDataOverAACPMsg:(id)a3
+- (void)handleUARPDataOverAACPMsg:(id)msg
 {
   length = 0;
-  v3 = a3;
-  v4 = xpc_dictionary_get_value(v3, "kUARPDeviceUUID");
+  msgCopy = msg;
+  v4 = xpc_dictionary_get_value(msgCopy, "kUARPDeviceUUID");
   v5 = [[NSUUID alloc] initWithUUIDBytes:xpc_uuid_get_bytes(v4)];
-  data = xpc_dictionary_get_data(v3, "kUARPData", &length);
+  data = xpc_dictionary_get_data(msgCopy, "kUARPData", &length);
 
   v7 = [NSData dataWithBytes:data length:length];
   v8 = qword_1000DDBC8;
@@ -648,9 +648,9 @@ LABEL_13:
   [v9 relayAACPUARP:v5 uarpMsg:v7 error:0];
 }
 
-- (void)handleCATTBatteryServiceDeviceConnectedMsg:(id)a3
+- (void)handleCATTBatteryServiceDeviceConnectedMsg:(id)msg
 {
-  xdict = a3;
+  xdict = msg;
   if (_os_feature_enabled_impl())
   {
     v3 = xpc_dictionary_get_value(xdict, "kPeerIdentifier");
@@ -659,8 +659,8 @@ LABEL_13:
     {
       v5 = [[NSUUID alloc] initWithUUIDBytes:bytes];
       v6 = [NSUUID alloc];
-      v7 = [v5 UUIDString];
-      v8 = [v6 initWithUUIDString:v7];
+      uUIDString = [v5 UUIDString];
+      v8 = [v6 initWithUUIDString:uUIDString];
 
       if (v8)
       {
@@ -673,7 +673,7 @@ LABEL_13:
   _objc_release_x2();
 }
 
-- (void)handleHRMDeviceConnectedMsg:(id)a3
+- (void)handleHRMDeviceConnectedMsg:(id)msg
 {
   v3 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -686,9 +686,9 @@ LABEL_13:
   [v4 registerServices];
 }
 
-- (void)handleLeaEasyPairRequestMsg:(id)a3
+- (void)handleLeaEasyPairRequestMsg:(id)msg
 {
-  xdict = a3;
+  xdict = msg;
   v3 = xpc_dictionary_get_value(xdict, "kLeaDeviceTags");
   if (v3)
   {
@@ -715,26 +715,26 @@ LABEL_13:
   }
 }
 
-- (void)handleLeaEasyPairResponseMsg:(id)a3
+- (void)handleLeaEasyPairResponseMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kLeaDevicePairState")];
-  string = xpc_dictionary_get_string(v3, "kLeaDeviceAddress");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kLeaDevicePairState")];
+  string = xpc_dictionary_get_string(msgCopy, "kLeaDeviceAddress");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 respondToLeaEasyPair:v4 device:v6];
 }
 
-- (void)handleLeaStoreBondingInfoRequestMsg:(id)a3
+- (void)handleLeaStoreBondingInfoRequestMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v27 = 0;
   length = 0;
   v26 = 0;
-  data = xpc_dictionary_get_data(v3, "kLeaDeviceRand", &length);
-  v5 = xpc_dictionary_get_data(v3, "kLeaDeviceLtk", &v27);
-  v6 = xpc_dictionary_get_data(v3, "kLeaDeviceIrk", &v26);
+  data = xpc_dictionary_get_data(msgCopy, "kLeaDeviceRand", &length);
+  v5 = xpc_dictionary_get_data(msgCopy, "kLeaDeviceLtk", &v27);
+  v6 = xpc_dictionary_get_data(msgCopy, "kLeaDeviceIrk", &v26);
   v7 = +[NSArray array];
   v8 = v7;
   if (length)
@@ -790,27 +790,27 @@ LABEL_13:
   }
 
   v22 = +[EndpointManager instance];
-  v23 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kLeaDeviceEdiv")];
-  v24 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kLeaDeviceName")];
-  v25 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kLeaDeviceAddress")];
+  v23 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kLeaDeviceEdiv")];
+  v24 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kLeaDeviceName")];
+  v25 = [NSString stringWithUTF8String:xpc_dictionary_get_string(msgCopy, "kLeaDeviceAddress")];
   [v22 requestLeaStoreBondingInfo:v23 rand:v11 ltk:v16 irk:v21 name:v24 device:v25];
 }
 
-- (void)handleLeaStoreBondingInfoResponseMsg:(id)a3
+- (void)handleLeaStoreBondingInfoResponseMsg:(id)msg
 {
-  v3 = a3;
+  msgCopy = msg;
   v7 = +[EndpointManager instance];
-  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(v3, "kLeaStoreBondingInfoResult")];
-  string = xpc_dictionary_get_string(v3, "kLeaDeviceAddress");
+  v4 = [NSNumber numberWithUnsignedLongLong:xpc_dictionary_get_uint64(msgCopy, "kLeaStoreBondingInfoResult")];
+  string = xpc_dictionary_get_string(msgCopy, "kLeaDeviceAddress");
 
   v6 = [NSString stringWithUTF8String:string];
   [v7 respondToLeaStoreBondingInfo:v4 device:v6];
 }
 
-+ (id)createNSDictionaryFromXpcDictionary:(id)a3
++ (id)createNSDictionaryFromXpcDictionary:(id)dictionary
 {
-  v3 = a3;
-  count = xpc_dictionary_get_count(v3);
+  dictionaryCopy = dictionary;
+  count = xpc_dictionary_get_count(dictionaryCopy);
   v5 = 8 * count;
   v6 = applier - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v6, 8 * count);
@@ -826,7 +826,7 @@ LABEL_13:
   applier[4] = v12;
   applier[5] = v6;
   applier[6] = v6;
-  xpc_dictionary_apply(v3, applier);
+  xpc_dictionary_apply(dictionaryCopy, applier);
   v7 = [[NSDictionary alloc] initWithObjects:v6 forKeys:v6 count:count];
   _Block_object_dispose(v12, 8);
   if (count)
@@ -852,15 +852,15 @@ LABEL_13:
   return v7;
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v6 = a4;
-  v7 = a3;
+  argsCopy = args;
+  msgCopy = msg;
   v8 = xpc_dictionary_create(0, 0, 0);
-  v9 = [v7 UTF8String];
+  uTF8String = [msgCopy UTF8String];
 
-  xpc_dictionary_set_string(v8, "kMsgId", v9);
-  if (v6)
+  xpc_dictionary_set_string(v8, "kMsgId", uTF8String);
+  if (argsCopy)
   {
     v10 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(v8, "kMsgArgs", v10);
@@ -871,26 +871,26 @@ LABEL_13:
     sub_100074738();
   }
 
-  v11 = [(BTLEXpcConnection *)self connection];
-  xpc_connection_send_message(v11, v8);
+  connection = [(BTLEXpcConnection *)self connection];
+  xpc_connection_send_message(connection, v8);
 }
 
-- (void)authenticationDidSucceed:(id)a3
+- (void)authenticationDidSucceed:(id)succeed
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  succeedCopy = succeed;
+  object = [succeedCopy object];
+  userInfo = [succeedCopy userInfo];
 
-  if (v6)
+  if (userInfo)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"AuthenticationServiceCertClassUserInfoKey"];
+    userInfo2 = [succeedCopy userInfo];
+    msgIdentifier2 = [userInfo2 objectForKeyedSubscript:@"AuthenticationServiceCertClassUserInfoKey"];
 
     v13[0] = @"kPeerIdentifier";
-    v9 = [v5 msgIdentifier];
+    msgIdentifier = [object msgIdentifier];
     v13[1] = @"kCertClass";
-    v14[0] = v9;
-    v14[1] = v8;
+    v14[0] = msgIdentifier;
+    v14[1] = msgIdentifier2;
     v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
     [(BTLEXpcConnection *)self sendMsg:@"AuthenticationDidSucceed" args:v10];
   }
@@ -898,39 +898,39 @@ LABEL_13:
   else
   {
     v11 = @"kPeerIdentifier";
-    v8 = [v5 msgIdentifier];
-    v12 = v8;
-    v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    [(BTLEXpcConnection *)self sendMsg:@"AuthenticationDidSucceed" args:v9];
+    msgIdentifier2 = [object msgIdentifier];
+    v12 = msgIdentifier2;
+    msgIdentifier = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+    [(BTLEXpcConnection *)self sendMsg:@"AuthenticationDidSucceed" args:msgIdentifier];
   }
 }
 
-- (void)authenticationDidFail:(id)a3
+- (void)authenticationDidFail:(id)fail
 {
-  v4 = [a3 object];
+  object = [fail object];
   v7 = @"kPeerIdentifier";
-  v5 = [v4 msgIdentifier];
-  v8 = v5;
+  msgIdentifier = [object msgIdentifier];
+  v8 = msgIdentifier;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(BTLEXpcConnection *)self sendMsg:@"AuthenticationDidFail" args:v6];
 }
 
-- (void)peerIsUsingBuiltinService:(id)a3
+- (void)peerIsUsingBuiltinService:(id)service
 {
-  v4 = [a3 object];
+  object = [service object];
   v7 = @"kPeerIdentifier";
-  v5 = [v4 msgIdentifier];
-  v8 = v5;
+  msgIdentifier = [object msgIdentifier];
+  v8 = msgIdentifier;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(BTLEXpcConnection *)self sendMsg:@"PeerIsUsingBuiltinService" args:v6];
 }
 
-- (void)peerIsNotUsingBuiltinService:(id)a3
+- (void)peerIsNotUsingBuiltinService:(id)service
 {
-  v4 = [a3 object];
+  object = [service object];
   v7 = @"kPeerIdentifier";
-  v5 = [v4 msgIdentifier];
-  v8 = v5;
+  msgIdentifier = [object msgIdentifier];
+  v8 = msgIdentifier;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [(BTLEXpcConnection *)self sendMsg:@"PeerIsNotUsingBuiltinService" args:v6];
 }

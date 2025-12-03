@@ -1,29 +1,29 @@
 @interface TPSSingleTipViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setTip:(id)a3;
+- (void)setTip:(id)tip;
 @end
 
 @implementation TPSSingleTipViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPSSingleTipViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"TPSSingleTipViewController" hasInstanceVariable:@"_imageAssetView" withType:"TPSImageAssetView"];
-  [v3 validateClass:@"TPSImageAssetView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"TPSSingleTipViewController" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSTip" hasInstanceMethod:@"fullContentAssets" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSAssets" hasInstanceMethod:@"alt" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSSingleTipViewController" hasInstanceMethod:@"setTip:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TPSSingleTipViewController" hasInstanceVariable:@"_pendingTip" withType:"TPSTip"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPSSingleTipViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"TPSSingleTipViewController" hasInstanceVariable:@"_imageAssetView" withType:"TPSImageAssetView"];
+  [validationsCopy validateClass:@"TPSImageAssetView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"TPSSingleTipViewController" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSTip" hasInstanceMethod:@"fullContentAssets" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSAssets" hasInstanceMethod:@"alt" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSSingleTipViewController" hasInstanceMethod:@"setTip:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TPSSingleTipViewController" hasInstanceVariable:@"_pendingTip" withType:"TPSTip"];
 }
 
-- (void)setTip:(id)a3
+- (void)setTip:(id)tip
 {
   v4.receiver = self;
   v4.super_class = TPSSingleTipViewControllerAccessibility;
-  [(TPSSingleTipViewControllerAccessibility *)&v4 setTip:a3];
+  [(TPSSingleTipViewControllerAccessibility *)&v4 setTip:tip];
   [(TPSSingleTipViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -43,10 +43,10 @@
   }
 
   [v4 setIsAccessibilityElement:1];
-  v6 = [v4 layer];
-  v7 = [v6 sublayers];
+  layer = [v4 layer];
+  sublayers = [layer sublayers];
 
-  v8 = [v7 indexOfObjectPassingTest:&__block_literal_global_0];
+  v8 = [sublayers indexOfObjectPassingTest:&__block_literal_global_0];
   v9 = [v5 safeValueForKey:@"fullContentAssets"];
   v10 = [v9 safeStringForKey:@"alt"];
 
@@ -67,9 +67,9 @@
 
   objc_opt_class();
   v13 = __UIAccessibilityCastAsClass();
-  v14 = [v13 view];
+  view = [v13 view];
 
-  [v14 setAccessibilityIdentifier:kAXSingleTipsViewIdentifier];
+  [view setAccessibilityIdentifier:kAXSingleTipsViewIdentifier];
 }
 
 uint64_t __85__TPSSingleTipViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke(uint64_t a1, void *a2)

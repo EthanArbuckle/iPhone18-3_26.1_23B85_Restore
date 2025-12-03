@@ -20,43 +20,43 @@
 - (id)rc_recordingMetadata
 {
   v2 = objc_opt_new();
-  v3 = [a1 metadata];
+  metadata = [self metadata];
   v4 = *MEMORY[0x277CE5FC0];
-  v5 = firstStringValue(v3, @"com.apple.iTunes.voice-memo-uuid", *MEMORY[0x277CE5FC0]);
+  v5 = firstStringValue(metadata, @"com.apple.iTunes.voice-memo-uuid", *MEMORY[0x277CE5FC0]);
   if (v5)
   {
     [v2 setObject:v5 forKeyedSubscript:@"uniqueID"];
   }
 
-  v6 = [MEMORY[0x277CE6520] metadataItemsFromArray:v3 withKey:*MEMORY[0x277CE5F18] keySpace:*MEMORY[0x277CE5F98]];
+  v6 = [MEMORY[0x277CE6520] metadataItemsFromArray:metadata withKey:*MEMORY[0x277CE5F18] keySpace:*MEMORY[0x277CE5F98]];
   v7 = [v6 na_map:&__block_literal_global_159_0];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    [v2 setObject:v8 forKeyedSubscript:@"date"];
+    [v2 setObject:firstObject forKeyedSubscript:@"date"];
   }
 
-  v9 = firstStringValue(v3, *MEMORY[0x277CE6008], *MEMORY[0x277CE5FB8]);
+  v9 = firstStringValue(metadata, *MEMORY[0x277CE6008], *MEMORY[0x277CE5FB8]);
   v10 = v9;
   if (v9 && [v9 length])
   {
     [v2 setObject:v10 forKeyedSubscript:@"title"];
   }
 
-  v11 = firstStringValue(v3, @"com.apple.iTunes.music-memo-note", v4);
+  v11 = firstStringValue(metadata, @"com.apple.iTunes.music-memo-note", v4);
   if (v11)
   {
     [v2 setObject:v11 forKeyedSubscript:@"musicMemoTextNote"];
   }
 
-  v12 = firstNumberValue(v3, @"com.apple.iTunes.music-memo-rating", v4);
+  v12 = firstNumberValue(metadata, @"com.apple.iTunes.music-memo-rating", v4);
   if (v12)
   {
     [v2 setObject:v12 forKeyedSubscript:@"musicMemoStarRating"];
   }
 
-  v13 = firstStringValue(v3, @"com.apple.iTunes.music-memo-tags", v4);
+  v13 = firstStringValue(metadata, @"com.apple.iTunes.music-memo-tags", v4);
   if (v13)
   {
     [v2 setObject:v13 forKeyedSubscript:@"musicMemoTags"];
@@ -68,33 +68,33 @@
 - (id)rc_sharingMetadata
 {
   v2 = objc_opt_new();
-  v3 = [a1 metadata];
+  metadata = [self metadata];
   v4 = *MEMORY[0x277CE5FC0];
-  v5 = firstNumberValue(v3, @"com.apple.iTunes.voice-memo-plrt", *MEMORY[0x277CE5FC0]);
+  v5 = firstNumberValue(metadata, @"com.apple.iTunes.voice-memo-plrt", *MEMORY[0x277CE5FC0]);
   if (v5)
   {
     [v2 setObject:v5 forKeyedSubscript:@"com.apple.iTunes.voice-memo-plrt"];
   }
 
-  v6 = firstNumberValue(v3, @"com.apple.iTunes.voice-memo-lrmx", v4);
+  v6 = firstNumberValue(metadata, @"com.apple.iTunes.voice-memo-lrmx", v4);
   if (v6)
   {
     [v2 setObject:v6 forKeyedSubscript:@"com.apple.iTunes.voice-memo-lrmx"];
   }
 
-  v7 = firstNumberValue(v3, @"com.apple.iTunes.voice-memo-sivl", v4);
+  v7 = firstNumberValue(metadata, @"com.apple.iTunes.voice-memo-sivl", v4);
   if (v7)
   {
     [v2 setObject:v7 forKeyedSubscript:@"com.apple.iTunes.voice-memo-sivl"];
   }
 
-  v8 = firstNumberValue(v3, @"com.apple.iTunes.voice-memo-nhnc", v4);
+  v8 = firstNumberValue(metadata, @"com.apple.iTunes.voice-memo-nhnc", v4);
   if (v8)
   {
     [v2 setObject:v8 forKeyedSubscript:@"com.apple.iTunes.voice-memo-nhnc"];
   }
 
-  v9 = firstNumberValue(v3, @"com.apple.iTunes.voice-memo-skps", v4);
+  v9 = firstNumberValue(metadata, @"com.apple.iTunes.voice-memo-skps", v4);
   if (v9)
   {
     [v2 setObject:v9 forKeyedSubscript:@"com.apple.iTunes.voice-memo-skps"];
@@ -112,7 +112,7 @@
   [v7 setKey:v6];
 
   v8 = objc_opt_class();
-  *&v9 = a1;
+  *&v9 = self;
   v10 = [v8 _scaledIntFromFloat:v9];
   [v7 setValue:v10];
 
@@ -123,7 +123,7 @@
 {
   v8 = a3;
   v9 = [RCCaptureFormat AVAssetAuthoringMetadataWithRecordingMetadata:a4];
-  v10 = [a1 rc_updateMetadataInFile:v8 withMetadata:v9 error:a5];
+  v10 = [self rc_updateMetadataInFile:v8 withMetadata:v9 error:a5];
 
   return v10;
 }
@@ -149,8 +149,8 @@
 
 - (id)rc_audioTracks
 {
-  v1 = [a1 _rc_all_audioTracks];
-  v2 = [v1 na_filter:&__block_literal_global_20];
+  _rc_all_audioTracks = [self _rc_all_audioTracks];
+  v2 = [_rc_all_audioTracks na_filter:&__block_literal_global_20];
 
   return v2;
 }
@@ -158,17 +158,17 @@
 - (id)rc_audioTracksPreferringSpatial
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [[RCSpatialAsset alloc] initWithAsset:a1];
+  v2 = [[RCSpatialAsset alloc] initWithAsset:self];
   v3 = v2;
   if (v2)
   {
-    v4 = [(RCSpatialAsset *)v2 spatialTrack];
-    v5 = [(RCSpatialAsset *)v3 overdubTrack];
-    v6 = v5;
-    if (v5)
+    spatialTrack = [(RCSpatialAsset *)v2 spatialTrack];
+    overdubTrack = [(RCSpatialAsset *)v3 overdubTrack];
+    v6 = overdubTrack;
+    if (overdubTrack)
     {
-      v14 = v4;
-      v15 = v5;
+      v14 = spatialTrack;
+      v15 = overdubTrack;
       v7 = MEMORY[0x277CBEA60];
       v8 = &v14;
       v9 = 2;
@@ -176,23 +176,23 @@
 
     else
     {
-      v13 = v4;
+      v13 = spatialTrack;
       v7 = MEMORY[0x277CBEA60];
       v8 = &v13;
       v9 = 1;
     }
 
-    v10 = [v7 arrayWithObjects:v8 count:{v9, v13, v14, v15, v16}];
+    rc_audioTracks = [v7 arrayWithObjects:v8 count:{v9, v13, v14, v15, v16}];
   }
 
   else
   {
-    v10 = [a1 rc_audioTracks];
+    rc_audioTracks = [self rc_audioTracks];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return rc_audioTracks;
 }
 
 - (id)rc_playbackFormat
@@ -202,8 +202,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v1 = [a1 rc_audioTracks];
-  v2 = [v1 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  rc_audioTracks = [self rc_audioTracks];
+  v2 = [rc_audioTracks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v2)
   {
     v3 = v2;
@@ -216,16 +216,16 @@
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(rc_audioTracks);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) formatDescriptions];
-        if ([v8 count])
+        formatDescriptions = [*(*(&v16 + 1) + 8 * i) formatDescriptions];
+        if ([formatDescriptions count])
         {
           v9 = 0;
           do
           {
-            v10 = [v8 objectAtIndexedSubscript:v9];
+            v10 = [formatDescriptions objectAtIndexedSubscript:v9];
 
             StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v10);
             if (StreamBasicDescription)
@@ -250,11 +250,11 @@
             ++v9;
           }
 
-          while ([v8 count] > v9);
+          while ([formatDescriptions count] > v9);
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v3 = [rc_audioTracks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v3);
@@ -284,7 +284,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [a1 rc_audioTracks];
+  obj = [self rc_audioTracks];
   v26 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   v1 = 0;
   v2 = 0;
@@ -303,13 +303,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v27 + 1) + 8 * i) formatDescriptions];
-        if ([v7 count])
+        formatDescriptions = [*(*(&v27 + 1) + 8 * i) formatDescriptions];
+        if ([formatDescriptions count])
         {
           v8 = 0;
           do
           {
-            v9 = [v7 objectAtIndexedSubscript:v8];
+            v9 = [formatDescriptions objectAtIndexedSubscript:v8];
 
             StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v9);
             if (StreamBasicDescription)
@@ -362,7 +362,7 @@
             ++v8;
           }
 
-          while ([v7 count] > v8);
+          while ([formatDescriptions count] > v8);
         }
       }
 
@@ -377,7 +377,7 @@
     mSampleRate = 0.0;
   }
 
-  v19 = [a1 createExportSettingsForSampleRate:v2 channelCount:v1 formatRanking:mSampleRate];
+  v19 = [self createExportSettingsForSampleRate:v2 channelCount:v1 formatRanking:mSampleRate];
   v20 = [objc_alloc(MEMORY[0x277CB83A8]) initWithSettings:v19];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -401,13 +401,13 @@
   }
 
   v9 = [RCAudioExportFormatRankings objectAtIndexedSubscript:v5];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
 
   v17[0] = *MEMORY[0x277CB82E0];
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   v18[0] = v11;
   v17[1] = *MEMORY[0x277CB8280];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:unsignedIntValue];
   v18[1] = v12;
   v17[2] = *MEMORY[0x277CB82B0];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a4];
@@ -422,13 +422,13 @@
 - (id)rc_allCodecNames
 {
   v40 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [a1 _rc_all_audioTracks];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  _rc_all_audioTracks = [self _rc_all_audioTracks];
+  v4 = [_rc_all_audioTracks countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -439,7 +439,7 @@
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_rc_all_audioTracks);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
@@ -447,8 +447,8 @@
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v9 = [v8 formatDescriptions];
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        formatDescriptions = [v8 formatDescriptions];
+        v10 = [formatDescriptions countByEnumeratingWithState:&v29 objects:v38 count:16];
         if (v10)
         {
           v11 = v10;
@@ -459,23 +459,23 @@
             {
               if (*v30 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(formatDescriptions);
               }
 
               if (*(*(&v29 + 1) + 8 * j))
               {
-                [v2 addObject:?];
+                [array addObject:?];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            v11 = [formatDescriptions countByEnumeratingWithState:&v29 objects:v38 count:16];
           }
 
           while (v11);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [_rc_all_audioTracks countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -486,7 +486,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v2;
+  v15 = array;
   v16 = [v15 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v16)
   {
@@ -504,7 +504,7 @@
         StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(*(*(&v25 + 1) + 8 * k));
         if (StreamBasicDescription)
         {
-          v21 = [a1 _codecNameForFormatID:{StreamBasicDescription->mFormatID, v25}];
+          v21 = [self _codecNameForFormatID:{StreamBasicDescription->mFormatID, v25}];
           if (v21)
           {
             [v14 addObject:v21];
@@ -518,11 +518,11 @@
     while (v17);
   }
 
-  v22 = [v14 allObjects];
+  allObjects = [v14 allObjects];
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return allObjects;
 }
 
 - (__CFString)_codecNameForFormatID:()RCAdditions
@@ -552,9 +552,9 @@ LABEL_7:
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 asset];
+  asset = [v4 asset];
 
-  if (v5 == a1)
+  if (asset == self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -580,18 +580,18 @@ LABEL_7:
 
             v9 = *(*(&v26 + 1) + 8 * i);
             v10 = MEMORY[0x277CE6650];
-            v11 = [v9 sourceURL];
-            v12 = [v10 assetWithURL:v11];
+            sourceURL = [v9 sourceURL];
+            v12 = [v10 assetWithURL:sourceURL];
 
             v13 = [[RCSpatialAsset alloc] initWithAsset:v12];
             if (v13)
             {
               v14 = v13;
-              v15 = [v9 sourceTrackID];
-              v16 = [(RCSpatialAsset *)v14 spatialTrack];
-              v17 = [v16 trackID];
+              sourceTrackID = [v9 sourceTrackID];
+              spatialTrack = [(RCSpatialAsset *)v14 spatialTrack];
+              trackID = [spatialTrack trackID];
 
-              if (v15 == v17)
+              if (sourceTrackID == trackID)
               {
                 v6 = 1;
                 goto LABEL_18;
@@ -614,13 +614,13 @@ LABEL_18:
 
     else
     {
-      v18 = [[RCSpatialAsset alloc] initWithAsset:a1];
+      v18 = [[RCSpatialAsset alloc] initWithAsset:self];
       v19 = v18;
       if (v18)
       {
-        v20 = [(RCSpatialAsset *)v18 spatialTrack];
-        v21 = [v20 trackID];
-        v6 = v21 == [v4 trackID];
+        spatialTrack2 = [(RCSpatialAsset *)v18 spatialTrack];
+        trackID2 = [spatialTrack2 trackID];
+        v6 = trackID2 == [v4 trackID];
       }
 
       else
@@ -645,8 +645,8 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 tracks];
-    v3 = [v2 na_flatMap:&__block_literal_global_90];
+    tracks = [self tracks];
+    v3 = [tracks na_flatMap:&__block_literal_global_90];
 
     v15 = 0u;
     v16 = 0u;
@@ -667,9 +667,9 @@ LABEL_18:
           }
 
           v8 = [MEMORY[0x277CE6650] assetWithURL:*(*(&v13 + 1) + 8 * i)];
-          v9 = [v8 rc_hasSpatialTracks];
+          rc_hasSpatialTracks = [v8 rc_hasSpatialTracks];
 
-          if (v9)
+          if (rc_hasSpatialTracks)
           {
             v5 = 1;
             goto LABEL_13;
@@ -691,7 +691,7 @@ LABEL_13:
 
   else
   {
-    v10 = [[RCSpatialAsset alloc] initWithAsset:a1];
+    v10 = [[RCSpatialAsset alloc] initWithAsset:self];
     v5 = v10 != 0;
   }
 

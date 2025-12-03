@@ -1,17 +1,17 @@
 @interface BSUIRelativeDateLabel
 - (id)_timelineIdentifier;
-- (id)_timelinesForDateInterval:(id)a3;
+- (id)_timelinesForDateInterval:(id)interval;
 - (id)constructLabelString;
-- (void)_setOverrideTimerFireInfo:(id)a3;
-- (void)_timelinesForDateInterval:(id)a3 completion:(id)a4;
-- (void)_updateWithFrameSpecifier:(id)a3;
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4;
+- (void)_setOverrideTimerFireInfo:(id)info;
+- (void)_timelinesForDateInterval:(id)interval completion:(id)completion;
+- (void)_updateWithFrameSpecifier:(id)specifier;
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
-- (void)setTimeZoneRelativeStartDate:(id)a3 absoluteStartDate:(id)a4;
-- (void)timerFiredWithValue:(unint64_t)a3 forResolution:(unint64_t)a4 comparedToNow:(int64_t)a5;
-- (void)willMoveToWindow:(id)a3;
+- (void)setTimeZoneRelativeStartDate:(id)date absoluteStartDate:(id)startDate;
+- (void)timerFiredWithValue:(unint64_t)value forResolution:(unint64_t)resolution comparedToNow:(int64_t)now;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation BSUIRelativeDateLabel
@@ -34,15 +34,15 @@
     comparedToNow = self->_comparedToNow;
   }
 
-  v8 = [(BSUIDefaultDateLabel *)self timeZoneRelativeStartDate];
+  timeZoneRelativeStartDate = [(BSUIDefaultDateLabel *)self timeZoneRelativeStartDate];
 
-  if (v8)
+  if (timeZoneRelativeStartDate)
   {
     if ([(BSUIDefaultDateLabel *)self isEffectiveAllDay])
     {
       v31.receiver = self;
       v31.super_class = BSUIRelativeDateLabel;
-      v9 = [(BSUIDefaultDateLabel *)&v31 constructLabelString];
+      constructLabelString = [(BSUIDefaultDateLabel *)&v31 constructLabelString];
       goto LABEL_8;
     }
 
@@ -106,13 +106,13 @@
         }
 
         v18 = LABEL_31:;
-        v19 = [v11 localizedStringWithFormat:v18, value];
+        value = [v11 localizedStringWithFormat:v18, value];
         goto LABEL_36;
       }
 
       v29.receiver = self;
       v29.super_class = BSUIRelativeDateLabel;
-      v9 = [(BSUIDefaultDateLabel *)&v29 constructLabelString];
+      constructLabelString = [(BSUIDefaultDateLabel *)&v29 constructLabelString];
     }
 
     else
@@ -127,9 +127,9 @@
         v20 = MEMORY[0x1E696AEC0];
         v13 = +[NSBundle bs_baseBoardUIBundle];
         v18 = [v13 localizedStringForKey:@"RELATIVE_DATE_PAST_DAYS" value:&stru_1F1587660 table:&stru_1F1587660];
-        v19 = [v20 localizedStringWithFormat:v18, value];
+        value = [v20 localizedStringWithFormat:v18, value];
 LABEL_36:
-        v10 = v19;
+        v10 = value;
 
         if (!v10)
         {
@@ -141,7 +141,7 @@ LABEL_36:
 
       v30.receiver = self;
       v30.super_class = BSUIRelativeDateLabel;
-      v9 = [(BSUIDefaultDateLabel *)&v30 constructLabelString];
+      constructLabelString = [(BSUIDefaultDateLabel *)&v30 constructLabelString];
     }
   }
 
@@ -149,17 +149,17 @@ LABEL_36:
   {
     v32.receiver = self;
     v32.super_class = BSUIRelativeDateLabel;
-    v9 = [(BSUIDefaultDateLabel *)&v32 constructLabelString];
+    constructLabelString = [(BSUIDefaultDateLabel *)&v32 constructLabelString];
   }
 
 LABEL_8:
-  v10 = v9;
-  if (!v9)
+  v10 = constructLabelString;
+  if (!constructLabelString)
   {
 LABEL_41:
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [(BSUIDefaultDateLabel *)self timeZoneRelativeStartDate];
-    v24 = [v22 stringWithFormat:@"value=%llu resolution=%u comparedToNow=%i timeZoneRelativeStartDate=%@ isEffectiveAllDay=%{BOOL}i", value, resolution, comparedToNow, v23, -[BSUIDefaultDateLabel isEffectiveAllDay](self, "isEffectiveAllDay")];
+    timeZoneRelativeStartDate2 = [(BSUIDefaultDateLabel *)self timeZoneRelativeStartDate];
+    v24 = [v22 stringWithFormat:@"value=%llu resolution=%u comparedToNow=%i timeZoneRelativeStartDate=%@ isEffectiveAllDay=%{BOOL}i", value, resolution, comparedToNow, timeZoneRelativeStartDate2, -[BSUIDefaultDateLabel isEffectiveAllDay](self, "isEffectiveAllDay")];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -171,7 +171,7 @@ LABEL_41:
       v35 = 2114;
       v36 = v27;
       v37 = 2048;
-      v38 = self;
+      selfCopy = self;
       v39 = 2114;
       v40 = @"BSUIRelativeDateLabel.m";
       v41 = 1024;
@@ -195,10 +195,10 @@ LABEL_37:
 
 - (void)didMoveToWindow
 {
-  v5 = [(BSUIRelativeDateLabel *)self window];
-  v3 = [v5 windowScene];
-  v4 = [v3 _alwaysOnEnvironment];
-  [v4 addObserver:self];
+  window = [(BSUIRelativeDateLabel *)self window];
+  windowScene = [window windowScene];
+  _alwaysOnEnvironment = [windowScene _alwaysOnEnvironment];
+  [_alwaysOnEnvironment addObserver:self];
 }
 
 - (void)prepareForReuse
@@ -217,15 +217,15 @@ LABEL_37:
   [(BSUIDefaultDateLabel *)&v4 prepareForReuse];
 }
 
-- (void)setTimeZoneRelativeStartDate:(id)a3 absoluteStartDate:(id)a4
+- (void)setTimeZoneRelativeStartDate:(id)date absoluteStartDate:(id)startDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  startDateCopy = startDate;
   v11.receiver = self;
   v11.super_class = BSUIRelativeDateLabel;
-  [(BSUIDefaultDateLabel *)&v11 setTimeZoneRelativeStartDate:v6 absoluteStartDate:v7];
+  [(BSUIDefaultDateLabel *)&v11 setTimeZoneRelativeStartDate:dateCopy absoluteStartDate:startDateCopy];
   relativeDateTimer = self->_relativeDateTimer;
-  if (v7 && !relativeDateTimer)
+  if (startDateCopy && !relativeDateTimer)
   {
     v9 = objc_alloc_init(MEMORY[0x1E698E758]);
     v10 = self->_relativeDateTimer;
@@ -235,7 +235,7 @@ LABEL_37:
     relativeDateTimer = self->_relativeDateTimer;
   }
 
-  [(BSRelativeDateTimer *)relativeDateTimer setDate:v7];
+  [(BSRelativeDateTimer *)relativeDateTimer setDate:startDateCopy];
 }
 
 - (void)dealloc
@@ -247,28 +247,28 @@ LABEL_37:
   [(BSUIDefaultDateLabel *)&v3 dealloc];
 }
 
-- (void)timerFiredWithValue:(unint64_t)a3 forResolution:(unint64_t)a4 comparedToNow:(int64_t)a5
+- (void)timerFiredWithValue:(unint64_t)value forResolution:(unint64_t)resolution comparedToNow:(int64_t)now
 {
-  self->_value = a3;
-  self->_resolution = a4;
-  self->_comparedToNow = a5;
+  self->_value = value;
+  self->_resolution = resolution;
+  self->_comparedToNow = now;
   [(BSUIDefaultDateLabel *)self updateTextIfNecessary];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v11 = a3;
-  v4 = [(BSUIRelativeDateLabel *)self window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _alwaysOnEnvironment];
-  [v6 removeObserver:self];
+  windowCopy = window;
+  window = [(BSUIRelativeDateLabel *)self window];
+  windowScene = [window windowScene];
+  _alwaysOnEnvironment = [windowScene _alwaysOnEnvironment];
+  [_alwaysOnEnvironment removeObserver:self];
 
-  v7 = [v11 windowScene];
-  v8 = v7;
-  if (self->_invalidateTimelineOnReuse && v7 != 0)
+  windowScene2 = [windowCopy windowScene];
+  v8 = windowScene2;
+  if (self->_invalidateTimelineOnReuse && windowScene2 != 0)
   {
-    v10 = [v7 _backlightSceneEnvironment];
-    [v10 invalidateAllTimelinesForReason:@"BSUIRelativeDateLabel Reuse"];
+    _backlightSceneEnvironment = [windowScene2 _backlightSceneEnvironment];
+    [_backlightSceneEnvironment invalidateAllTimelinesForReason:@"BSUIRelativeDateLabel Reuse"];
 
     self->_invalidateTimelineOnReuse = 0;
   }
@@ -276,21 +276,21 @@ LABEL_37:
 
 - (id)_timelineIdentifier
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSUIRelativeDateLabel: 0x%p", a1];
+    self = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSUIRelativeDateLabel: 0x%p", self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setOverrideTimerFireInfo:(id)a3
+- (void)_setOverrideTimerFireInfo:(id)info
 {
-  v6 = a3;
-  if (self->_overrideTimerFireInfo != v6)
+  infoCopy = info;
+  if (self->_overrideTimerFireInfo != infoCopy)
   {
-    v4 = [(BSRelativeDateTimerFireInfo *)v6 copy];
+    v4 = [(BSRelativeDateTimerFireInfo *)infoCopy copy];
     overrideTimerFireInfo = self->_overrideTimerFireInfo;
     self->_overrideTimerFireInfo = v4;
 
@@ -298,20 +298,20 @@ LABEL_37:
   }
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v26 = [MEMORY[0x1E695DF70] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x1E695DF70] array];
   relativeDateTimer = self->_relativeDateTimer;
-  v6 = [v4 startDate];
-  v7 = [(BSRelativeDateTimer *)relativeDateTimer nextFireAfterDate:v6];
+  startDate = [intervalCopy startDate];
+  v7 = [(BSRelativeDateTimer *)relativeDateTimer nextFireAfterDate:startDate];
   v8 = 0;
   while (1)
   {
 
-    v9 = [v7 fireDate];
-    v10 = [v4 containsDate:v9];
+    fireDate = [v7 fireDate];
+    v10 = [intervalCopy containsDate:fireDate];
 
     if (!v10)
     {
@@ -319,9 +319,9 @@ LABEL_37:
     }
 
     [(BSUIRelativeDateLabel *)self _setOverrideTimerFireInfo:v7];
-    v6 = [(BSUIRelativeDateLabel *)self text];
-    v11 = [v8 isEqualToString:v6];
-    v12 = [v6 copy];
+    startDate = [(BSUIRelativeDateLabel *)self text];
+    v11 = [v8 isEqualToString:startDate];
+    v12 = [startDate copy];
 
     if ((v11 & 1) == 0)
     {
@@ -336,16 +336,16 @@ LABEL_37:
       }
 
       v14 = MEMORY[0x1E698E510];
-      v15 = [v7 fireDate];
+      fireDate2 = [v7 fireDate];
       v16 = [v7 copy];
-      v17 = [v14 entryForPresentationTime:v15 withRequestedFidelity:v13 animated:0 userObject:v16];
+      v17 = [v14 entryForPresentationTime:fireDate2 withRequestedFidelity:v13 animated:0 userObject:v16];
 
-      [v26 addObject:v17];
+      [array addObject:v17];
     }
 
     v18 = self->_relativeDateTimer;
-    v19 = [v7 fireDate];
-    v20 = [(BSRelativeDateTimer *)v18 nextFireAfterDate:v19];
+    fireDate3 = [v7 fireDate];
+    v20 = [(BSRelativeDateTimer *)v18 nextFireAfterDate:fireDate3];
 
     v8 = v12;
     v7 = v20;
@@ -354,7 +354,7 @@ LABEL_37:
   [(BSUIRelativeDateLabel *)self _setOverrideTimerFireInfo:0];
   v21 = MEMORY[0x1E698E508];
   v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSUIRelativeDateLabel: 0x%p", self];
-  v23 = [v21 timelineWithEntries:v26 identifier:v22 configure:0];
+  v23 = [v21 timelineWithEntries:array identifier:v22 configure:0];
 
   v27[0] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
@@ -362,28 +362,28 @@ LABEL_37:
   return v24;
 }
 
-- (void)_timelinesForDateInterval:(id)a3 completion:(id)a4
+- (void)_timelinesForDateInterval:(id)interval completion:(id)completion
 {
-  v7 = a4;
-  v6 = [(BSUIRelativeDateLabel *)self _timelinesForDateInterval:a3];
-  if (v7)
+  completionCopy = completion;
+  v6 = [(BSUIRelativeDateLabel *)self _timelinesForDateInterval:interval];
+  if (completionCopy)
   {
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, v6);
   }
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3
+- (void)_updateWithFrameSpecifier:(id)specifier
 {
-  v12 = a3;
-  if (v12)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v4 = [(BSUIRelativeDateLabel *)self _timelineIdentifier];
-    v5 = [v12 entrySpecifierForTimelineIdentifier:v4];
+    _timelineIdentifier = [(BSUIRelativeDateLabel *)self _timelineIdentifier];
+    v5 = [specifierCopy entrySpecifierForTimelineIdentifier:_timelineIdentifier];
 
-    v6 = [v5 timelineEntry];
-    v7 = [v6 userObject];
+    timelineEntry = [v5 timelineEntry];
+    userObject = [timelineEntry userObject];
     v8 = objc_opt_class();
-    v9 = v7;
+    v9 = userObject;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -413,14 +413,14 @@ LABEL_37:
   }
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  [(BSUIRelativeDateLabel *)self _updateWithFrameSpecifier:v7];
-  if (v6)
+  specifierCopy = specifier;
+  completionCopy = completion;
+  [(BSUIRelativeDateLabel *)self _updateWithFrameSpecifier:specifierCopy];
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface WOCoreWorkoutConfiguration
-+ (id)deserializeFrom:(id)a3;
-+ (id)deserializeFromPersistence:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeFrom:(id)from;
++ (id)deserializeFromPersistence:(id)persistence;
+- (BOOL)isEqual:(id)equal;
 - (FIUIWorkoutActivityType)activityType;
 - (NSString)analyticsKey;
 - (NSString)analyticsSubActivities;
 - (WOCoreWorkoutConfiguration)init;
 - (id)serialize;
 - (int64_t)hash;
-- (void)setActivityType:(id)a3;
+- (void)setActivityType:(id)type;
 @end
 
 @implementation WOCoreWorkoutConfiguration
@@ -20,28 +20,28 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setActivityType:(id)a3
+- (void)setActivityType:(id)type
 {
   v5 = OBJC_IVAR___WOCoreWorkoutConfiguration_activityType;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = type;
+  typeCopy = type;
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutConfiguration.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -50,7 +50,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = WorkoutConfiguration.isEqual(_:)(v8);
@@ -66,16 +66,16 @@
   return result;
 }
 
-+ (id)deserializeFromPersistence:(id)a3
++ (id)deserializeFromPersistence:(id)persistence
 {
   v3 = one-time initialization token for shared;
-  v4 = a3;
+  persistenceCopy = persistence;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  static WorkoutConfiguration.deserialize(from:requiringOccurrence:validator:)(v4, 0, static WorkoutConfigurationValidator.shared, v13);
+  static WorkoutConfiguration.deserialize(from:requiringOccurrence:validator:)(persistenceCopy, 0, static WorkoutConfigurationValidator.shared, v13);
 
   v5 = v14;
   if (v14)
@@ -101,15 +101,15 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WorkoutConfiguration.serialize()();
 
   return v3;
 }
 
-+ (id)deserializeFrom:(id)a3
++ (id)deserializeFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

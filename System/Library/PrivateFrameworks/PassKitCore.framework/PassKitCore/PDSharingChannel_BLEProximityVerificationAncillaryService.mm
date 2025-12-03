@@ -1,35 +1,35 @@
 @interface PDSharingChannel_BLEProximityVerificationAncillaryService
 - (BOOL)isRunning;
-- (id)_initWithDelegate:(id)a3;
-- (id)initAdvertiserDelegate:(id)a3 completion:(id)a4;
-- (id)initDetectorWithAdvertisement:(id)a3 remoteDevice:(id)a4 delegate:(id)a5 completion:(id)a6;
-- (void)_invalidateWithShouldNotify:(BOOL)a3;
+- (id)_initWithDelegate:(id)delegate;
+- (id)initAdvertiserDelegate:(id)delegate completion:(id)completion;
+- (id)initDetectorWithAdvertisement:(id)advertisement remoteDevice:(id)device delegate:(id)delegate completion:(id)completion;
+- (void)_invalidateWithShouldNotify:(BOOL)notify;
 - (void)dealloc;
 - (void)start;
 @end
 
 @implementation PDSharingChannel_BLEProximityVerificationAncillaryService
 
-- (id)_initWithDelegate:(id)a3
+- (id)_initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PDSharingChannel_BLEProximityVerificationAncillaryService;
   v5 = [(PDSharingChannel_BLEProximityVerificationAncillaryService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v6;
 }
 
-- (id)initAdvertiserDelegate:(id)a3 completion:(id)a4
+- (id)initAdvertiserDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PDSharingChannel_BLEProximityVerificationAncillaryService *)self _initWithDelegate:a3];
+  completionCopy = completion;
+  v7 = [(PDSharingChannel_BLEProximityVerificationAncillaryService *)self _initWithDelegate:delegate];
   if (v7)
   {
     v8 = objc_alloc_init(PKProximityAdvertiser);
@@ -37,7 +37,7 @@
     v7[6] = v8;
 
     v7[2] = 0;
-    v10 = objc_retainBlock(v6);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v7[7];
     v7[7] = v10;
   }
@@ -45,21 +45,21 @@
   return v7;
 }
 
-- (id)initDetectorWithAdvertisement:(id)a3 remoteDevice:(id)a4 delegate:(id)a5 completion:(id)a6
+- (id)initDetectorWithAdvertisement:(id)advertisement remoteDevice:(id)device delegate:(id)delegate completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(PDSharingChannel_BLEProximityVerificationAncillaryService *)self _initWithDelegate:a5];
+  deviceCopy = device;
+  completionCopy = completion;
+  v11 = [(PDSharingChannel_BLEProximityVerificationAncillaryService *)self _initWithDelegate:delegate];
   if (v11)
   {
     v12 = [PKProximityDetector alloc];
-    v13 = [v9 bluetoothUUID];
-    v14 = [v12 initWithAdvertisingDeviceUUID:v13];
+    bluetoothUUID = [deviceCopy bluetoothUUID];
+    v14 = [v12 initWithAdvertisingDeviceUUID:bluetoothUUID];
     v15 = v11[4];
     v11[4] = v14;
 
     v11[2] = 1;
-    v16 = objc_retainBlock(v10);
+    v16 = objc_retainBlock(completionCopy);
     v17 = v11[5];
     v11[5] = v16;
   }
@@ -152,9 +152,9 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)_invalidateWithShouldNotify:(BOOL)a3
+- (void)_invalidateWithShouldNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
@@ -186,7 +186,7 @@ LABEL_4:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (notifyCopy)
   {
     [WeakRetained ancillaryServiceDidTerminate:self];
   }

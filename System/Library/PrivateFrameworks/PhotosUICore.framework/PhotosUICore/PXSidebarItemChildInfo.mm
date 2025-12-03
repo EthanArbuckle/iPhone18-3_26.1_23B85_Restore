@@ -1,39 +1,39 @@
 @interface PXSidebarItemChildInfo
-- (PXSidebarItemChildInfo)initWithListItem:(id)a3 dataSection:(id)a4 childIndex:(int64_t)a5;
+- (PXSidebarItemChildInfo)initWithListItem:(id)item dataSection:(id)section childIndex:(int64_t)index;
 @end
 
 @implementation PXSidebarItemChildInfo
 
-- (PXSidebarItemChildInfo)initWithListItem:(id)a3 dataSection:(id)a4 childIndex:(int64_t)a5
+- (PXSidebarItemChildInfo)initWithListItem:(id)item dataSection:(id)section childIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  sectionCopy = section;
   v32.receiver = self;
   v32.super_class = PXSidebarItemChildInfo;
   v10 = [(PXSidebarItemChildInfo *)&v32 init];
   if (v10)
   {
-    v11 = [v9 content];
-    v12 = [v8 collection];
-    v13 = [v12 px_collectionListRepresentation];
-    v14 = v13;
-    if (v13)
+    content = [sectionCopy content];
+    collection = [itemCopy collection];
+    px_collectionListRepresentation = [collection px_collectionListRepresentation];
+    v14 = px_collectionListRepresentation;
+    if (px_collectionListRepresentation)
     {
-      v15 = v13;
+      collection2 = px_collectionListRepresentation;
     }
 
     else
     {
-      v15 = [v8 collection];
+      collection2 = [itemCopy collection];
     }
 
     collection = v10->_collection;
-    v10->_collection = v15;
+    v10->_collection = collection2;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v11;
+      v17 = content;
     }
 
     else
@@ -42,21 +42,21 @@
     }
 
     objc_storeStrong(&v10->_fetchResult, v17);
-    v18 = [v9 count];
-    if (a5 == -1 || (v19 = v18, v18 < 1))
+    v18 = [sectionCopy count];
+    if (index == -1 || (v19 = v18, v18 < 1))
     {
       v10->_childIndexInFetchResult = -1;
     }
 
     else
     {
-      if (v18 != a5)
+      if (v18 != index)
       {
-        v20 = [v9 objectAtIndex:a5];
-        v21 = [v20 representedObject];
+        v20 = [sectionCopy objectAtIndex:index];
+        representedObject = [v20 representedObject];
         if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v22 = v21;
+          v22 = representedObject;
         }
 
         else
@@ -68,12 +68,12 @@
         v10->_childObject = v22;
       }
 
-      v24 = [v9 objectAtIndex:a5 - (v19 == a5)];
+      v24 = [sectionCopy objectAtIndex:index - (v19 == index)];
       fetchResult = v10->_fetchResult;
-      v26 = [v24 collection];
-      v27 = [(PHFetchResult *)fetchResult indexOfObject:v26];
+      collection3 = [v24 collection];
+      v27 = [(PHFetchResult *)fetchResult indexOfObject:collection3];
       v28 = v27;
-      if (v19 == a5)
+      if (v19 == index)
       {
         v29 = v27 + 1;
       }

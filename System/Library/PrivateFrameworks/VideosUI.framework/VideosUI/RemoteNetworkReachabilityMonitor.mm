@@ -2,7 +2,7 @@
 + (_TtC8VideosUI32RemoteNetworkReachabilityMonitor)shared;
 - (BOOL)isLikelyReachable;
 - (BOOL)isReachable;
-- (void)checkRemoteServerReachabilityWithCompletionHandler:(id)a3;
+- (void)checkRemoteServerReachabilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation RemoteNetworkReachabilityMonitor
@@ -16,7 +16,7 @@
 
 - (BOOL)isLikelyReachable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RemoteNetworkReachabilityMonitor.isLikelyReachable()();
 
   return v3;
@@ -24,19 +24,19 @@
 
 - (BOOL)isReachable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RemoteNetworkReachabilityMonitor.isReachable()();
 
   return v3;
 }
 
-- (void)checkRemoteServerReachabilityWithCompletionHandler:(id)a3
+- (void)checkRemoteServerReachabilityWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1E38364EC(&unk_1E42B0240, v5);
 }

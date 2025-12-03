@@ -6,21 +6,21 @@
 
 - (uint64_t)productCode
 {
-  v2 = [a1 vendorID];
-  if (!v2)
+  vendorID = [self vendorID];
+  if (!vendorID)
   {
-    if ([a1 deviceFlags] >= 2)
+    if ([self deviceFlags] >= 2)
     {
-      v2 = 0;
+      vendorID = 0;
     }
 
     else
     {
-      v2 = 76;
+      vendorID = 76;
     }
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%d, %d", v2, objc_msgSend(a1, "productID")];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%d, %d", vendorID, objc_msgSend(self, "productID")];
 }
 
 @end

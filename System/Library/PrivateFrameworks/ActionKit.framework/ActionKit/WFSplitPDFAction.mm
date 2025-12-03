@@ -1,18 +1,18 @@
 @interface WFSplitPDFAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSplitPDFAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__WFSplitPDFAction_runAsynchronouslyWithInput___block_invoke;
   v4[3] = &unk_278C1AE60;
   v4[4] = self;
-  v3 = a3;
-  [v3 getObjectRepresentation:v4 forClass:getPDFDocumentClass()];
+  inputCopy = input;
+  [inputCopy getObjectRepresentation:v4 forClass:getPDFDocumentClass()];
 }
 
 void __47__WFSplitPDFAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

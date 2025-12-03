@@ -1,16 +1,16 @@
 @interface PKDashboardFooterTextItem
-+ (id)initWithFDICConfiguration:(id)a3;
-+ (id)itemWithFooterText:(id)a3;
++ (id)initWithFDICConfiguration:(id)configuration;
++ (id)itemWithFooterText:(id)text;
 - (UIEdgeInsets)customContentInsets;
 @end
 
 @implementation PKDashboardFooterTextItem
 
-+ (id)itemWithFooterText:(id)a3
++ (id)itemWithFooterText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(PKDashboardFooterTextItem);
-  [(PKDashboardFooterTextItem *)v4 setFooterText:v3];
+  [(PKDashboardFooterTextItem *)v4 setFooterText:textCopy];
 
   [(PKDashboardFooterTextItem *)v4 setBottomInsetType:1];
   [(PKDashboardFooterTextItem *)v4 setUseCustomContentInsets:0];
@@ -18,11 +18,11 @@
   return v4;
 }
 
-+ (id)initWithFDICConfiguration:(id)a3
++ (id)initWithFDICConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(PKDashboardFooterTextItem);
-  [(PKDashboardFooterTextItem *)v4 setFDICConfiguration:v3];
+  [(PKDashboardFooterTextItem *)v4 setFDICConfiguration:configurationCopy];
 
   [(PKDashboardFooterTextItem *)v4 setBottomInsetType:0];
   [(PKDashboardFooterTextItem *)v4 setUseCustomContentInsets:0];

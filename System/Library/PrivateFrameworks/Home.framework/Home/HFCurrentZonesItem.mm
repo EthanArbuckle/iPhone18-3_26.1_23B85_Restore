@@ -1,21 +1,21 @@
 @interface HFCurrentZonesItem
 - (HFCurrentZonesItem)init;
-- (HFCurrentZonesItem)initWithRoom:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFCurrentZonesItem)initWithRoom:(id)room;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFCurrentZonesItem
 
-- (HFCurrentZonesItem)initWithRoom:(id)a3
+- (HFCurrentZonesItem)initWithRoom:(id)room
 {
-  v5 = a3;
+  roomCopy = room;
   v9.receiver = self;
   v9.super_class = HFCurrentZonesItem;
   v6 = [(HFCurrentZonesItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_room, a3);
+    objc_storeStrong(&v6->_room, room);
   }
 
   return v7;
@@ -23,35 +23,35 @@
 
 - (HFCurrentZonesItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithRoom_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCurrentZonesItem.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HFCurrentZonesItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCurrentZonesItem.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HFCurrentZonesItem init]", v5}];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HFCurrentZonesItem *)self room];
-  v7 = [v6 hf_allZones];
-  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_77];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  room = [(HFCurrentZonesItem *)self room];
+  hf_allZones = [room hf_allZones];
+  v8 = [hf_allZones sortedArrayUsingComparator:&__block_literal_global_77];
 
   if ([v8 count])
   {
     if ([v8 count] <= 1)
     {
       v9 = _HFLocalizedStringWithDefaultValue(@"HFZoneModuleCurrentZonesSingularTitle", @"HFZoneModuleCurrentZonesSingularTitle", 1);
-      [v5 setObject:v9 forKeyedSubscript:@"title"];
+      [dictionary setObject:v9 forKeyedSubscript:@"title"];
 
-      v10 = [v8 firstObject];
-      v11 = [v10 name];
-      v12 = v11;
-      if (v11)
+      firstObject = [v8 firstObject];
+      name = [firstObject name];
+      v12 = name;
+      if (name)
       {
-        v13 = v11;
+        v13 = name;
       }
 
       else
@@ -59,13 +59,13 @@
         v13 = &stru_2824B1A78;
       }
 
-      [v5 setObject:v13 forKeyedSubscript:@"description"];
+      [dictionary setObject:v13 forKeyedSubscript:@"description"];
 
       goto LABEL_10;
     }
 
     v16 = _HFLocalizedStringWithDefaultValue(@"HFZoneModuleCurrentZonesPluralTitle", @"HFZoneModuleCurrentZonesPluralTitle", 1);
-    [v5 setObject:v16 forKeyedSubscript:@"title"];
+    [dictionary setObject:v16 forKeyedSubscript:@"title"];
 
     v15 = @"HFZoneModuleCurrentZonesMultipleZonesDescription";
   }
@@ -73,22 +73,22 @@
   else
   {
     v14 = _HFLocalizedStringWithDefaultValue(@"HFZoneModuleCurrentZonesSingularTitle", @"HFZoneModuleCurrentZonesSingularTitle", 1);
-    [v5 setObject:v14 forKeyedSubscript:@"title"];
+    [dictionary setObject:v14 forKeyedSubscript:@"title"];
 
     v15 = @"HFZoneModuleCurrentZonesNone";
   }
 
-  v10 = _HFLocalizedStringWithDefaultValue(v15, v15, 1);
-  [v5 setObject:v10 forKeyedSubscript:@"description"];
+  firstObject = _HFLocalizedStringWithDefaultValue(v15, v15, 1);
+  [dictionary setObject:firstObject forKeyedSubscript:@"description"];
 LABEL_10:
 
   v21[0] = objc_opt_class();
   v21[1] = objc_opt_class();
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-  [v5 setObject:v17 forKeyedSubscript:@"dependentHomeKitClasses"];
+  [dictionary setObject:v17 forKeyedSubscript:@"dependentHomeKitClasses"];
 
-  [v5 setObject:v8 forKeyedSubscript:@"HFCurrentZonesResultKey"];
-  v18 = [HFItemUpdateOutcome outcomeWithResults:v5];
+  [dictionary setObject:v8 forKeyedSubscript:@"HFCurrentZonesResultKey"];
+  v18 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
   [v4 finishWithResult:v18];
 
   v19 = *MEMORY[0x277D85DE8];

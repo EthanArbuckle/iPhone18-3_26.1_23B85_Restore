@@ -1,28 +1,28 @@
 @interface ErrorAction
-- (ErrorAction)initWithTitle:(id)a3 message:(id)a4 options:(id)a5;
+- (ErrorAction)initWithTitle:(id)title message:(id)message options:(id)options;
 @end
 
 @implementation ErrorAction
 
-- (ErrorAction)initWithTitle:(id)a3 message:(id)a4 options:(id)a5
+- (ErrorAction)initWithTitle:(id)title message:(id)message options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = ErrorAction;
   v11 = [(ErrorAction *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [messageCopy copy];
     message = v11->_message;
     v11->_message = v14;
 
-    objc_storeStrong(&v11->_options, a5);
+    objc_storeStrong(&v11->_options, options);
   }
 
   return v11;

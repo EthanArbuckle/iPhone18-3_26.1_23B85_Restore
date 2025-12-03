@@ -1,14 +1,14 @@
 @interface PSHeaderSpinnerCell
-- (PSHeaderSpinnerCell)initWithSpecifier:(id)a3;
+- (PSHeaderSpinnerCell)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
+- (void)setAnimating:(BOOL)animating;
 @end
 
 @implementation PSHeaderSpinnerCell
 
-- (PSHeaderSpinnerCell)initWithSpecifier:(id)a3
+- (PSHeaderSpinnerCell)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v23.receiver = self;
   v23.super_class = PSHeaderSpinnerCell;
   v5 = [(PSHeaderSpinnerCell *)&v23 init];
@@ -31,9 +31,9 @@
     v11 = +[UIColor clearColor];
     [(UILabel *)v5->_text setBackgroundColor:v11];
 
-    v12 = [v4 name];
+    name = [specifierCopy name];
     name = v5->_name;
-    v5->_name = v12;
+    v5->_name = name;
 
     v14 = v5->_text;
     v22.receiver = v5;
@@ -48,11 +48,11 @@
     v21.receiver = v5;
     v21.super_class = PSHeaderSpinnerCell;
     [(PSHeaderSpinnerCell *)&v21 addSubview:v17];
-    [v4 setProperty:v5 forKey:@"PSHeaderSpinner"];
-    v18 = [v4 propertyForKey:@"PSHeaderSpinner_Animate"];
-    v19 = [v18 BOOLValue];
+    [specifierCopy setProperty:v5 forKey:@"PSHeaderSpinner"];
+    v18 = [specifierCopy propertyForKey:@"PSHeaderSpinner_Animate"];
+    bOOLValue = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue)
     {
       [(UIActivityIndicatorView *)v5->_spinner startAnimating];
     }
@@ -61,10 +61,10 @@
   return v5;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
   spinner = self->_spinner;
-  if (a3)
+  if (animating)
   {
     [(UIActivityIndicatorView *)spinner startAnimating];
   }
@@ -92,8 +92,8 @@
   {
     [(PSHeaderSpinnerCell *)self bounds];
     v12 = v11;
-    v13 = [(PSHeaderSpinnerCell *)self superview];
-    [v13 _backgroundInset];
+    superview = [(PSHeaderSpinnerCell *)self superview];
+    [superview _backgroundInset];
     v15 = v12 - v14;
     PreferencesTableViewCellLeftPad();
     v17 = v15 - v16 - v4;
@@ -101,8 +101,8 @@
 
   else
   {
-    v13 = [(PSHeaderSpinnerCell *)self superview];
-    [v13 _backgroundInset];
+    superview = [(PSHeaderSpinnerCell *)self superview];
+    [superview _backgroundInset];
     v19 = v18;
     PreferencesTableViewCellLeftPad();
     v17 = v19 + v20;
@@ -120,8 +120,8 @@
     v23 = v4 + v17 + 10.0;
   }
 
-  v24 = [(UILabel *)self->_text text];
-  v25 = [v24 length];
+  text = [(UILabel *)self->_text text];
+  v25 = [text length];
 
   if (!v25)
   {

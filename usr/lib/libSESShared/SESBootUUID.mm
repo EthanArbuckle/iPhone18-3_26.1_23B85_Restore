@@ -1,8 +1,8 @@
 @interface SESBootUUID
-+ (BOOL)isFirstLaunchAfterBootForKey:(id)a3;
++ (BOOL)isFirstLaunchAfterBootForKey:(id)key;
 + (id)getBootUUID;
 + (id)getInstance;
-+ (void)setFirstLaunchAfterBootDoneForKey:(id)a3;
++ (void)setFirstLaunchAfterBootDoneForKey:(id)key;
 @end
 
 @implementation SESBootUUID
@@ -40,14 +40,14 @@ void __26__SESBootUUID_getInstance__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isFirstLaunchAfterBootForKey:(id)a3
++ (BOOL)isFirstLaunchAfterBootForKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SESBootUUID getInstance];
   objc_sync_enter(v4);
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.seserviced"];
-  v6 = [v5 valueForKey:v3];
+  v6 = [v5 valueForKey:keyCopy];
   v7 = v6;
   if (v4[1])
   {
@@ -74,7 +74,7 @@ void __26__SESBootUUID_getInstance__block_invoke()
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v3;
+    v15 = keyCopy;
     v16 = 1024;
     v17 = v11;
     _os_log_impl(&dword_1E0FCB000, v10, OS_LOG_TYPE_INFO, "First launch after boot for %@ %d", &v14, 0x12u);
@@ -85,19 +85,19 @@ void __26__SESBootUUID_getInstance__block_invoke()
   return v11;
 }
 
-+ (void)setFirstLaunchAfterBootDoneForKey:(id)a3
++ (void)setFirstLaunchAfterBootDoneForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SESBootUUID getInstance];
   objc_sync_enter(v4);
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.seserviced"];
-  [v5 setObject:v4[1] forKey:v3];
+  [v5 setObject:v4[1] forKey:keyCopy];
   v6 = SESDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = keyCopy;
     _os_log_impl(&dword_1E0FCB000, v6, OS_LOG_TYPE_INFO, "First launch after boot complete for %@", &v8, 0xCu);
   }
 
@@ -108,9 +108,9 @@ void __26__SESBootUUID_getInstance__block_invoke()
 + (id)getBootUUID
 {
   v2 = +[SESBootUUID getInstance];
-  v3 = [v2 bootUUID];
+  bootUUID = [v2 bootUUID];
 
-  return v3;
+  return bootUUID;
 }
 
 @end

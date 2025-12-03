@@ -1,25 +1,25 @@
 @interface NTKUpNextDisabledDataSourcesEditOption
-+ (id)optionWithDisabledDataSourceIdentifiers:(id)a3 forDevice:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NTKUpNextDisabledDataSourcesEditOption)initWithCoder:(id)a3;
-- (NTKUpNextDisabledDataSourcesEditOption)initWithDisabledDataSourceIdentifiers:(id)a3 forDevice:(id)a4;
-- (NTKUpNextDisabledDataSourcesEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
++ (id)optionWithDisabledDataSourceIdentifiers:(id)identifiers forDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (NTKUpNextDisabledDataSourcesEditOption)initWithCoder:(id)coder;
+- (NTKUpNextDisabledDataSourcesEditOption)initWithDisabledDataSourceIdentifiers:(id)identifiers forDevice:(id)device;
+- (NTKUpNextDisabledDataSourcesEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 - (id)_alphabeticallySortedIdentifiers;
 - (id)dailySnapshotKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKUpNextDisabledDataSourcesEditOption
 
-- (NTKUpNextDisabledDataSourcesEditOption)initWithDisabledDataSourceIdentifiers:(id)a3 forDevice:(id)a4
+- (NTKUpNextDisabledDataSourcesEditOption)initWithDisabledDataSourceIdentifiers:(id)identifiers forDevice:(id)device
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v11.receiver = self;
   v11.super_class = NTKUpNextDisabledDataSourcesEditOption;
-  v7 = [(NTKEditOption *)&v11 initWithDevice:a4];
+  v7 = [(NTKEditOption *)&v11 initWithDevice:device];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifiersCopy copy];
     disabledBundleIdentifiers = v7->_disabledBundleIdentifiers;
     v7->_disabledBundleIdentifiers = v8;
   }
@@ -27,33 +27,33 @@
   return v7;
 }
 
-+ (id)optionWithDisabledDataSourceIdentifiers:(id)a3 forDevice:(id)a4
++ (id)optionWithDisabledDataSourceIdentifiers:(id)identifiers forDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKUpNextDisabledDataSourcesEditOption alloc] initWithDisabledDataSourceIdentifiers:v6 forDevice:v5];
+  deviceCopy = device;
+  identifiersCopy = identifiers;
+  v7 = [[NTKUpNextDisabledDataSourcesEditOption alloc] initWithDisabledDataSourceIdentifiers:identifiersCopy forDevice:deviceCopy];
 
   return v7;
 }
 
-- (NTKUpNextDisabledDataSourcesEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKUpNextDisabledDataSourcesEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  representationCopy = representation;
+  deviceCopy = device;
+  if (representationCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
-    self = [(NTKUpNextDisabledDataSourcesEditOption *)self initWithDisabledDataSourceIdentifiers:v8 forDevice:v7];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:representationCopy];
+    self = [(NTKUpNextDisabledDataSourcesEditOption *)self initWithDisabledDataSourceIdentifiers:v8 forDevice:deviceCopy];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dailySnapshotKey
@@ -94,28 +94,28 @@
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
-  v9 = [v8 stringValue];
+  stringValue = [v8 stringValue];
 
-  return v9;
+  return stringValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NTKUpNextDisabledDataSourcesEditOption;
-  v4 = a3;
-  [(NTKEditOption *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NTKEditOption *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NTKUpNextDisabledDataSourcesEditOption *)self _alphabeticallySortedIdentifiers:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"kDisabledDataSourcesKey"];
+  [coderCopy encodeObject:v5 forKey:@"kDisabledDataSourcesKey"];
 }
 
-- (NTKUpNextDisabledDataSourcesEditOption)initWithCoder:(id)a3
+- (NTKUpNextDisabledDataSourcesEditOption)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NTKUpNextDisabledDataSourcesEditOption;
-  v5 = [(NTKEditOption *)&v14 initWithCoder:v4];
+  v5 = [(NTKEditOption *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -125,7 +125,7 @@
     v8 = [v6 setWithArray:v7];
 
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:@"kDisabledDataSourcesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kDisabledDataSourcesKey"];
     v11 = [v9 setWithArray:v10];
     disabledBundleIdentifiers = v5->_disabledBundleIdentifiers;
     v5->_disabledBundleIdentifiers = v11;
@@ -136,19 +136,19 @@
 
 - (id)_alphabeticallySortedIdentifiers
 {
-  v2 = [(NSSet *)self->_disabledBundleIdentifiers allObjects];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_1478];
+  allObjects = [(NSSet *)self->_disabledBundleIdentifiers allObjects];
+  v3 = [allObjects sortedArrayUsingComparator:&__block_literal_global_1478];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = NTKEqualObjects(self->_disabledBundleIdentifiers, v4[2]);
+    v5 = NTKEqualObjects(self->_disabledBundleIdentifiers, equalCopy[2]);
   }
 
   else

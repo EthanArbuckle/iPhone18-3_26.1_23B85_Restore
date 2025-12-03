@@ -18,7 +18,7 @@
   v24 = 0x3010000000;
   v25 = &unk_269AF2087;
   v26 = xmmword_269AE64C0;
-  v9 = [a1 _attributedStringWithFieldsFromDate:v8];
+  v9 = [self _attributedStringWithFieldsFromDate:v8];
   v10 = [v9 length];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -31,7 +31,7 @@
   [v11 enumerateAttributesInRange:0 options:v10 usingBlock:{0, v18}];
   *a4 = v28[5];
   *a5 = v23[4] == 0;
-  v12 = [a1 stringFromDate:v8];
+  v12 = [self stringFromDate:v8];
   v13 = v12;
   v14 = v23[4];
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)

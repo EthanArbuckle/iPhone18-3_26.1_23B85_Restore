@@ -3,18 +3,18 @@
 - (void)animate;
 - (void)forceRemoveAnimations;
 - (void)interruptAndReset;
-- (void)p_didFailWithError:(id)a3;
+- (void)p_didFailWithError:(id)error;
 - (void)p_didStartVideo;
 - (void)p_didStopVideo;
 - (void)p_scheduleVideoAtStartTime;
 - (void)p_startVideo;
 - (void)p_stopVideo;
 - (void)pauseAnimations;
-- (void)registerForAmbientBuildStartCallback:(SEL)a3 target:(id)a4;
-- (void)removeAnimationsAndFinish:(BOOL)a3;
+- (void)registerForAmbientBuildStartCallback:(SEL)callback target:(id)target;
+- (void)removeAnimationsAndFinish:(BOOL)finish;
 - (void)resumeAnimationsIfPaused;
 - (void)stopAnimations;
-- (void)updateAnimationsForLayerTime:(double)a3;
+- (void)updateAnimationsForLayerTime:(double)time;
 @end
 
 @implementation KNWebVideoRenderer
@@ -37,17 +37,17 @@
   }
 }
 
-- (void)updateAnimationsForLayerTime:(double)a3
+- (void)updateAnimationsForLayerTime:(double)time
 {
-  if (self->_startTime <= a3)
+  if (self->_startTime <= time)
   {
     (MEMORY[0x2821F9670])(self, sel_p_startVideo);
   }
 }
 
-- (void)removeAnimationsAndFinish:(BOOL)a3
+- (void)removeAnimationsAndFinish:(BOOL)finish
 {
-  objc_msgSend_p_stopVideo(self, a2, a3);
+  objc_msgSend_p_stopVideo(self, a2, finish);
 
   MEMORY[0x2821F9670](self, sel_p_didStopVideo, v4);
 }
@@ -101,20 +101,20 @@
   MEMORY[0x2821F9670](self, sel_p_didStopVideo, v4);
 }
 
-- (void)registerForAmbientBuildStartCallback:(SEL)a3 target:(id)a4
+- (void)registerForAmbientBuildStartCallback:(SEL)callback target:(id)target
 {
-  objc_storeWeak(&self->_ambientBuildStartCallbackTarget, a4);
-  if (a3)
+  objc_storeWeak(&self->_ambientBuildStartCallbackTarget, target);
+  if (callback)
   {
-    v6 = a3;
+    callbackCopy = callback;
   }
 
   else
   {
-    v6 = 0;
+    callbackCopy = 0;
   }
 
-  self->_ambientBuildCallbackSelector = v6;
+  self->_ambientBuildCallbackSelector = callbackCopy;
 }
 
 - (void)p_didStartVideo
@@ -191,14 +191,14 @@
 
 - (void)p_startVideo
 {
-  v4 = objc_msgSend_buildInRenderer(self, a2, v2);
-  v9 = v4;
-  if (!v4)
+  selfCopy = objc_msgSend_buildInRenderer(self, a2, v2);
+  v9 = selfCopy;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v7 = objc_msgSend_textureSet(v4, v5, v6);
+  v7 = objc_msgSend_textureSet(selfCopy, v5, v6);
   posterImageTextureSet = self->_posterImageTextureSet;
   self->_posterImageTextureSet = v7;
 }
@@ -226,9 +226,9 @@
   }
 }
 
-- (void)p_didFailWithError:(id)a3
+- (void)p_didFailWithError:(id)error
 {
-  objc_msgSend_p_stopVideo(self, a2, a3);
+  objc_msgSend_p_stopVideo(self, a2, error);
 
   MEMORY[0x2821F9670](self, sel_p_didStopVideo, v4);
 }

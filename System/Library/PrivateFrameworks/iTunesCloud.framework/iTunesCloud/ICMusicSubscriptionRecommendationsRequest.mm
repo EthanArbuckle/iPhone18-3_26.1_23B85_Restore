@@ -1,7 +1,7 @@
 @interface ICMusicSubscriptionRecommendationsRequest
-- (ICMusicSubscriptionRecommendationsRequest)initWithRequestContext:(id)a3 seedItemID:(int64_t)a4 isLibraryID:(BOOL)a5 maxResultCount:(int64_t)a6;
+- (ICMusicSubscriptionRecommendationsRequest)initWithRequestContext:(id)context seedItemID:(int64_t)d isLibraryID:(BOOL)iD maxResultCount:(int64_t)count;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICMusicSubscriptionRecommendationsRequest
@@ -15,7 +15,7 @@
     seedItemID = self->_seedItemID;
     isLibraryID = self->_isLibraryID;
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = seedItemID;
     v13 = 1024;
@@ -201,32 +201,32 @@ void __52__ICMusicSubscriptionRecommendationsRequest_execute__block_invoke_26(ui
   }
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__ICMusicSubscriptionRecommendationsRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICMusicSubscriptionRecommendationsRequest)initWithRequestContext:(id)a3 seedItemID:(int64_t)a4 isLibraryID:(BOOL)a5 maxResultCount:(int64_t)a6
+- (ICMusicSubscriptionRecommendationsRequest)initWithRequestContext:(id)context seedItemID:(int64_t)d isLibraryID:(BOOL)iD maxResultCount:(int64_t)count
 {
-  v11 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = ICMusicSubscriptionRecommendationsRequest;
   v12 = [(ICRequestOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestContext, a3);
-    v13->_seedItemID = a4;
-    v13->_isLibraryID = a5;
-    v13->_maxResultCount = a6;
+    objc_storeStrong(&v12->_requestContext, context);
+    v13->_seedItemID = d;
+    v13->_isLibraryID = iD;
+    v13->_maxResultCount = count;
   }
 
   return v13;

@@ -1,13 +1,13 @@
 @interface CSQueueViewControllerDataSource
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation CSQueueViewControllerDataSource
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:a4];
+  v4 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:path];
   if ([v4 isAddSongsItem])
   {
     v5 = 0;
@@ -16,50 +16,50 @@
   else
   {
     v6 = +[CSShieldManager sharedManager];
-    v7 = [v6 playbackManager];
-    v8 = [v7 tracklist];
-    v9 = [v8 reorderCommand];
-    v10 = [v4 responseItem];
-    v5 = [v9 canMoveItem:v10];
+    playbackManager = [v6 playbackManager];
+    tracklist = [playbackManager tracklist];
+    reorderCommand = [tracklist reorderCommand];
+    responseItem = [v4 responseItem];
+    v5 = [reorderCommand canMoveItem:responseItem];
   }
 
   return v5;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  if (([v7 isEqual:v8] & 1) == 0)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (([pathCopy isEqual:indexPathCopy] & 1) == 0)
   {
-    v9 = [(UITableViewDiffableDataSource *)self snapshot];
-    v10 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:v7];
-    v11 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:v8];
+    snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+    v10 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:pathCopy];
+    v11 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:indexPathCopy];
     v12 = +[CSShieldManager sharedManager];
-    v13 = [v12 playbackManager];
-    v14 = [v13 tracklist];
+    playbackManager = [v12 playbackManager];
+    tracklist = [playbackManager tracklist];
 
-    v15 = [v7 row];
-    if (v15 < [v8 row])
+    v15 = [pathCopy row];
+    if (v15 < [indexPathCopy row])
     {
-      [v9 moveItemWithIdentifier:v10 afterItemWithIdentifier:{v11, v14}];
-      v16 = [v14 reorderCommand];
-      v17 = [v10 responseItem];
-      v18 = [v11 responseItem];
-      [v16 moveItem:v17 afterItem:v18];
+      [snapshot moveItemWithIdentifier:v10 afterItemWithIdentifier:{v11, tracklist}];
+      reorderCommand = [tracklist reorderCommand];
+      responseItem = [v10 responseItem];
+      responseItem2 = [v11 responseItem];
+      [reorderCommand moveItem:responseItem afterItem:responseItem2];
     }
 
     else
     {
-      [v9 moveItemWithIdentifier:v10 beforeItemWithIdentifier:{v11, v14}];
-      v16 = [v14 reorderCommand];
-      v17 = [v10 responseItem];
-      v18 = [v11 responseItem];
-      [v16 moveItem:v17 beforeItem:v18];
+      [snapshot moveItemWithIdentifier:v10 beforeItemWithIdentifier:{v11, tracklist}];
+      reorderCommand = [tracklist reorderCommand];
+      responseItem = [v10 responseItem];
+      responseItem2 = [v11 responseItem];
+      [reorderCommand moveItem:responseItem beforeItem:responseItem2];
     }
     v19 = ;
 
-    [(UITableViewDiffableDataSource *)self applySnapshot:v9 animatingDifferences:0];
+    [(UITableViewDiffableDataSource *)self applySnapshot:snapshot animatingDifferences:0];
     v20 = MEMORY[0x277D278B8];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;

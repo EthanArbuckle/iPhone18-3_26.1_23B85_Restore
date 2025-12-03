@@ -1,106 +1,106 @@
 @interface NCNotificationRootList
 + (NSSet)presentableTypes;
 - (BOOL)_areHighlightsEnabled;
-- (BOOL)_isAlertingNotificationRequest:(id)a3;
+- (BOOL)_isAlertingNotificationRequest:(id)request;
 - (BOOL)_isCurrentDigestListAboveHistorySectionList;
-- (BOOL)_isCurrentListDisplayStyleSettingEqualTo:(int64_t)a3;
-- (BOOL)_isEligibleForStackElevationMigrationWithGroupList:(id)a3 areGenerativeModelsAvailable:(BOOL)a4;
-- (BOOL)_isLockScreenPersistenceNotificationRequest:(id)a3;
-- (BOOL)_isNotificationRequest:(id)a3 forSectionList:(id)a4;
-- (BOOL)_isPersistentPass:(id)a3;
+- (BOOL)_isCurrentListDisplayStyleSettingEqualTo:(int64_t)to;
+- (BOOL)_isEligibleForStackElevationMigrationWithGroupList:(id)list areGenerativeModelsAvailable:(BOOL)available;
+- (BOOL)_isLockScreenPersistenceNotificationRequest:(id)request;
+- (BOOL)_isNotificationRequest:(id)request forSectionList:(id)list;
+- (BOOL)_isPersistentPass:(id)pass;
 - (BOOL)_isPersistentStateCurrentDigestInMissedSection;
-- (BOOL)_isRequestEligibleForStackElevation:(id)a3;
+- (BOOL)_isRequestEligibleForStackElevation:(id)elevation;
 - (BOOL)_shouldInsertCurrentDigestIntoMissedSectionList;
-- (BOOL)_shouldInsertNotificationRequestToHighlightedSectionList:(id)a3;
+- (BOOL)_shouldInsertNotificationRequestToHighlightedSectionList:(id)list;
 - (BOOL)_suppressesCurrentDigestForNotifications;
-- (BOOL)_suppressesForLists:(id)a3 forProminentContentThreshold:(int64_t)a4;
+- (BOOL)_suppressesForLists:(id)lists forProminentContentThreshold:(int64_t)threshold;
 - (BOOL)_suppressesHighlightsPlatterForNotifications;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)containsNotificationRequest:(id)a3;
+- (BOOL)containsNotificationRequest:(id)request;
 - (BOOL)hasVisibleContentToReveal;
 - (BOOL)hasVisibleUrgentBreakthroughContent;
-- (BOOL)isNotificationStructuredSectionListCollapsable:(id)a3;
+- (BOOL)isNotificationStructuredSectionListCollapsable:(id)collapsable;
 - (BOOL)isScrollingListContent;
-- (BOOL)notificationStructuredSectionList:(id)a3 areNotificationsLoadedForSectionIdentifier:(id)a4;
-- (BOOL)notificationStructuredSectionList:(id)a3 shouldFilterNotificationRequest:(id)a4;
-- (BOOL)removeNotificationRequest:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)shouldDelayDeliveryOfNotificationRequest:(id)a3;
-- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)a3;
+- (BOOL)notificationStructuredSectionList:(id)list areNotificationsLoadedForSectionIdentifier:(id)identifier;
+- (BOOL)notificationStructuredSectionList:(id)list shouldFilterNotificationRequest:(id)request;
+- (BOOL)removeNotificationRequest:(id)request;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)shouldDelayDeliveryOfNotificationRequest:(id)request;
+- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)component;
 - (CGRect)aggregatedVisibleContentExtent;
-- (Class)notificationListCacheNotificationViewControllerClass:(id)a3;
+- (Class)notificationListCacheNotificationViewControllerClass:(id)class;
 - (NCNotificationRootListDelegate)delegate;
 - (NSString)logDescription;
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7;
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack;
 - (double)scrollViewVisibleContentLayoutOffsetY;
 - (double)visibleRectBottomMarginForRollUnder;
 - (id)_digestTestRecipe;
-- (id)_filterNotificationsInGroupLists:(id)a3 withDestinationsForSectionList:(id)a4;
-- (id)_higherSectionToElevateForNotificationRequest:(id)a3 currentSectionType:(unint64_t)a4;
-- (id)_initWithListView:(id)a3 delegate:(id)a4;
-- (id)_insertNotificationRequest:(id)a3;
+- (id)_filterNotificationsInGroupLists:(id)lists withDestinationsForSectionList:(id)list;
+- (id)_higherSectionToElevateForNotificationRequest:(id)request currentSectionType:(unint64_t)type;
+- (id)_initWithListView:(id)view delegate:(id)delegate;
+- (id)_insertNotificationRequest:(id)request;
 - (id)_listInfoForPersistentState;
 - (id)_listInfoForStateCapture;
-- (id)_missedSectionTitleForDNDMode:(id)a3;
-- (id)_newDigestSectionListWithTitle:(id)a3 sectionType:(unint64_t)a4 summaryOrderProvider:(id)a5 logDescription:(id)a6;
-- (id)_newMissedSectionWithTitle:(id)a3 summaryHeading:(id)a4 logDescription:(id)a5 dndMode:(id)a6;
-- (id)_newSummaryOrderProviderOfType:(unint64_t)a3 fromSummaryOrderProvider:(id)a4;
-- (id)_newSummaryOrderProviderOfType:(unint64_t)a3 summaryHeading:(id)a4 summaryDate:(id)a5 atxDigestDeliveryTime:(int64_t)a6 isOnboardingSummary:(BOOL)a7;
+- (id)_missedSectionTitleForDNDMode:(id)mode;
+- (id)_newDigestSectionListWithTitle:(id)title sectionType:(unint64_t)type summaryOrderProvider:(id)provider logDescription:(id)description;
+- (id)_newMissedSectionWithTitle:(id)title summaryHeading:(id)heading logDescription:(id)description dndMode:(id)mode;
+- (id)_newSummaryOrderProviderOfType:(unint64_t)type fromSummaryOrderProvider:(id)provider;
+- (id)_newSummaryOrderProviderOfType:(unint64_t)type summaryHeading:(id)heading summaryDate:(id)date atxDigestDeliveryTime:(int64_t)time isOnboardingSummary:(BOOL)summary;
 - (id)_notificationListSections;
 - (id)_notificationMigrationOverrideTestRecipe;
 - (id)_notificationSectionListsForEnumeration;
-- (id)_sectionContainsNotificationRequest:(id)a3;
-- (id)_sectionForInsertingNotificationRequest:(id)a3;
-- (id)_sectionForStoredNotificationRequestOfSectionType:(unint64_t)a3;
+- (id)_sectionContainsNotificationRequest:(id)request;
+- (id)_sectionForInsertingNotificationRequest:(id)request;
+- (id)_sectionForStoredNotificationRequestOfSectionType:(unint64_t)type;
 - (id)_sectionListsForPersistentState;
 - (id)_sectionListsThatSuppressDigest;
 - (id)_sectionListsThatSuppressLargeFormatContent;
-- (id)_sectionOfSectionType:(unint64_t)a3;
+- (id)_sectionOfSectionType:(unint64_t)type;
 - (id)_sectionsForStateDump;
 - (id)_visibleNotificationRequests;
 - (id)initForTesting;
-- (id)insertSupplementaryViewsContainerAtListPosition:(unint64_t)a3 identifier:(id)a4 withDescription:(id)a5;
-- (id)matchingRequestForRequest:(id)a3 inList:(id)a4;
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4;
-- (id)notificationRequestWithNotificationIdentifier:(id)a3 sectionIdentifier:(id)a4;
-- (id)notificationStructuredSectionList:(id)a3 requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)a4 isLongLook:(BOOL)a5;
-- (id)suggestionManager:(id)a3 notificationRequestForUUID:(id)a4;
-- (id)suggestionManager:(id)a3 requestsSectionSettingsForSectionIdentifier:(id)a4;
-- (id)suggestionManagerRequestsCurrentModeConfiguration:(id)a3;
-- (int64_t)_atxDigestDeliveryTimeForDeliveryOrder:(int64_t)a3;
+- (id)insertSupplementaryViewsContainerAtListPosition:(unint64_t)position identifier:(id)identifier withDescription:(id)description;
+- (id)matchingRequestForRequest:(id)request inList:(id)list;
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index;
+- (id)notificationRequestWithNotificationIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier;
+- (id)notificationStructuredSectionList:(id)list requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look;
+- (id)suggestionManager:(id)manager notificationRequestForUUID:(id)d;
+- (id)suggestionManager:(id)manager requestsSectionSettingsForSectionIdentifier:(id)identifier;
+- (id)suggestionManagerRequestsCurrentModeConfiguration:(id)configuration;
+- (int64_t)_atxDigestDeliveryTimeForDeliveryOrder:(int64_t)order;
 - (int64_t)_numberOfLiveActivities;
 - (int64_t)currentListDisplayStyleSetting;
 - (unint64_t)count;
 - (unint64_t)historyCount;
 - (unint64_t)incomingCount;
 - (unint64_t)notificationCount;
-- (unint64_t)notificationListViewNumberOfItems:(id)a3;
+- (unint64_t)notificationListViewNumberOfItems:(id)items;
 - (unint64_t)totalNotificationCount;
 - (unint64_t)visibleNotificationCount;
 - (void)_addStateCaptureBlock;
-- (void)_cancelTouchesOnLiveActivities:(BOOL)a3;
-- (void)_checkAndReloadSuggestionForNotificationRequest:(id)a3 withHighlightsListCount:(unint64_t)a4;
-- (void)_clearAllNotifications:(BOOL)a3 supplementaryViewControllers:(BOOL)a4;
-- (void)_configureCurrentDigestSectionListWithDigestInfo:(id)a3 sectionType:(unint64_t)a4 summaryOrderProviderType:(unint64_t)a5;
+- (void)_cancelTouchesOnLiveActivities:(BOOL)activities;
+- (void)_checkAndReloadSuggestionForNotificationRequest:(id)request withHighlightsListCount:(unint64_t)count;
+- (void)_clearAllNotifications:(BOOL)notifications supplementaryViewControllers:(BOOL)controllers;
+- (void)_configureCurrentDigestSectionListWithDigestInfo:(id)info sectionType:(unint64_t)type summaryOrderProviderType:(unint64_t)providerType;
 - (void)_configureHighlightsSectionListIfNeeded;
-- (void)_configureNotificationSectionList:(id)a3 notificationCache:(id)a4 notificationListViewRevealed:(BOOL)a5 logDescription:(id)a6;
+- (void)_configureNotificationSectionList:(id)list notificationCache:(id)cache notificationListViewRevealed:(BOOL)revealed logDescription:(id)description;
 - (void)_configureOverrideMigrationOverlayLabelIfNecessary;
-- (void)_configureUpcomingDigestSectionListWithDigestInfo:(id)a3;
-- (void)_configureUpcomingMissedSectionForDNDMode:(id)a3;
+- (void)_configureUpcomingDigestSectionListWithDigestInfo:(id)info;
+- (void)_configureUpcomingMissedSectionForDNDMode:(id)mode;
 - (void)_dissolveCurrentDigestSectionListToHistorySection;
 - (void)_dissolveUpcomingDigestSectionListToHistorySection;
-- (void)_elevateGroupInOtherSectionsIfNeededWithRequest:(id)a3 toSection:(id)a4;
-- (void)_emitPowerLogForScrolling:(BOOL)a3;
+- (void)_elevateGroupInOtherSectionsIfNeededWithRequest:(id)request toSection:(id)section;
+- (void)_emitPowerLogForScrolling:(BOOL)scrolling;
 - (void)_insertCurrentDigestSectionList;
 - (void)_insertCurrentDigestSectionListToHistorySectionList;
 - (void)_insertCurrentDigestSectionListToMissedSectionList;
-- (void)_insertCurrentDigestSectionListToSectionList:(id)a3 atIndex:(unint64_t)a4;
-- (void)_insertSectionListInHistorySectionList:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
+- (void)_insertCurrentDigestSectionListToSectionList:(id)list atIndex:(unint64_t)index;
+- (void)_insertSectionListInHistorySectionList:(id)list atIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)_migrateCurrentDigestSectionListToReadSection;
-- (void)_migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:(id)a3;
-- (void)_migrateNotificationsFromList:(id)a3 toList:(id)a4 passingTest:(id)a5 filterRequestsPassingTest:(id)a6 hideToList:(BOOL)a7 clearRequests:(BOOL)a8 filterForDestination:(BOOL)a9 animateRemoval:(BOOL)a10 reorderGroupNotifications:(BOOL)a11;
-- (void)_migrateOnScheduleNotificationRequests:(id)a3 fromSection:(id)a4 toSection:(id)a5 clearRequests:(BOOL)a6 filterForDestination:(BOOL)a7 animateRemoval:(BOOL)a8;
-- (void)_migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:(id)a3;
+- (void)_migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:(id)section;
+- (void)_migrateNotificationsFromList:(id)list toList:(id)toList passingTest:(id)test filterRequestsPassingTest:(id)passingTest hideToList:(BOOL)hideToList clearRequests:(BOOL)requests filterForDestination:(BOOL)destination animateRemoval:(BOOL)self0 reorderGroupNotifications:(BOOL)self1;
+- (void)_migrateOnScheduleNotificationRequests:(id)requests fromSection:(id)section toSection:(id)toSection clearRequests:(BOOL)clearRequests filterForDestination:(BOOL)destination animateRemoval:(BOOL)removal;
+- (void)_migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:(id)section;
 - (void)_migrateUpcomingDigestSectionListToCurrentDigestSectionList;
 - (void)_migrateUpcomingMissedSectionToIncoming;
 - (void)_notificationListDidChangeContent;
@@ -109,88 +109,88 @@
 - (void)_removeCurrentDigestSectionList;
 - (void)_removeCurrentDigestSectionListFromContainingSectionList;
 - (void)_removeCurrentDigestSectionListFromMissedSectionList;
-- (void)_removeCurrentDigestSectionListFromSectionList:(id)a3;
-- (void)_removeSectionListInHistorySectionList:(id)a3 animated:(BOOL)a4;
+- (void)_removeCurrentDigestSectionListFromSectionList:(id)list;
+- (void)_removeSectionListInHistorySectionList:(id)list animated:(BOOL)animated;
 - (void)_scheduleAllNotificationRequestsForMigrationFromHighlightList;
 - (void)_scheduleNotificationDigestMigrationIfNecessary;
-- (void)_scheduleNotificationRequestsForMigrationFromIncomingListPassingTest:(id)a3;
-- (void)_setHighlightsFeatureEnabled:(BOOL)a3;
+- (void)_scheduleNotificationRequestsForMigrationFromIncomingListPassingTest:(id)test;
+- (void)_setHighlightsFeatureEnabled:(BOOL)enabled;
 - (void)_setupNotificationSectionLists;
-- (void)_signpostScrollingBegan:(BOOL)a3;
+- (void)_signpostScrollingBegan:(BOOL)began;
 - (void)_sortNotificationGroupsIfNecessary;
 - (void)_toggleCurrentDigestSectionListVisibility;
 - (void)_toggleCurrentDigestSectionListVisibilityInHistorySection;
 - (void)_toggleUpcomingDigestSectionListVisibility;
 - (void)_toggleUpcomingMissedSectionListVisibility;
-- (void)_toggleVisibilityInHistorySectionListForSectionList:(id)a3 atIndex:(unint64_t)a4 isSectionHidden:(BOOL)a5 animated:(BOOL)a6;
+- (void)_toggleVisibilityInHistorySectionListForSectionList:(id)list atIndex:(unint64_t)index isSectionHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)_updateForceExpansionForHighlights;
 - (void)_updateNotificationListDisplayStyleSetting;
 - (void)_updateNotificationListPersistentState;
-- (void)_updateOverrideMigrationOverlayLabelWithText:(id)a3 forOverrideState:(BOOL)a4;
-- (void)_updateSystemSettingsForUpdatedNotificationListDisplayStyleSetting:(int64_t)a3;
+- (void)_updateOverrideMigrationOverlayLabelWithText:(id)text forOverrideState:(BOOL)state;
+- (void)_updateSystemSettingsForUpdatedNotificationListDisplayStyleSetting:(int64_t)setting;
 - (void)_updateTransactionIfNecessary;
-- (void)_updateUpcomingDigestSectionListWithDigestInfo:(id)a3;
+- (void)_updateUpcomingDigestSectionListWithDigestInfo:(id)info;
 - (void)_updateVisibilityForSectionLists;
-- (void)_updateVisibleRectForContentOffset:(CGPoint)a3 size:(CGSize)a4;
+- (void)_updateVisibleRectForContentOffset:(CGPoint)offset size:(CGSize)size;
 - (void)_upgradeCurrentDigestSectionListForPromotionAboveFold;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
-- (void)collapseGroupForNotificationRequest:(id)a3 withCompletion:(id)a4;
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4;
-- (void)forwardInvocation:(id)a3;
-- (void)handleCoverSheetVisibilityChange:(BOOL)a3;
-- (void)handleWake:(BOOL)a3;
+- (void)adjustForLegibilitySettingsChange:(id)change;
+- (void)collapseGroupForNotificationRequest:(id)request withCompletion:(id)completion;
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleCoverSheetVisibilityChange:(BOOL)change;
+- (void)handleWake:(BOOL)wake;
 - (void)listViewControllerPresentedByUserAction;
-- (void)migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection:(BOOL)a3;
-- (void)modifyNotificationRequest:(id)a3;
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3;
-- (void)notificationListBaseComponentRequestsClearingAll:(id)a3;
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4;
+- (void)migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection:(BOOL)section;
+- (void)modifyNotificationRequest:(id)request;
+- (void)notificationListBaseComponentDidRemoveAll:(id)all;
+- (void)notificationListBaseComponentRequestsClearingAll:(id)all;
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request;
 - (void)notificationListDidLayoutSubviews;
-- (void)notificationListMigrationScheduler:(id)a3 requestsMigratingNotificationRequests:(id)a4;
-- (void)notificationListMigrationSchedulerRequestsMigratingNotificationDigest:(id)a3;
-- (void)notificationStructuredSectionList:(id)a3 transitionedGroupedStateIsGrouped:(BOOL)a4;
-- (void)notificationStructuredSectionListDidClearAllNotificationRequests:(id)a3;
-- (void)notificationStructuredSectionListRequestsClearingSection:(id)a3;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)persistentStateManager:(id)a3 didFetchMigrationTime:(id)a4 forNotificationRequest:(id)a5;
-- (void)persistentStateManager:(id)a3 didFetchStoredListInfo:(id)a4;
-- (void)persistentStateManager:(id)a3 didFetchSummaryMigrationTime:(id)a4;
-- (void)persistentStateManager:(id)a3 didMigratedTimeSensitiveForNotificationRequest:(id)a4;
-- (void)persistentStateManager:(id)a3 finishedLoadingDataForSectionType:(unint64_t)a4;
-- (void)persistentStateManager:(id)a3 hasStoredDataForSectionType:(unint64_t)a4;
+- (void)notificationListMigrationScheduler:(id)scheduler requestsMigratingNotificationRequests:(id)requests;
+- (void)notificationListMigrationSchedulerRequestsMigratingNotificationDigest:(id)digest;
+- (void)notificationStructuredSectionList:(id)list transitionedGroupedStateIsGrouped:(BOOL)grouped;
+- (void)notificationStructuredSectionListDidClearAllNotificationRequests:(id)requests;
+- (void)notificationStructuredSectionListRequestsClearingSection:(id)section;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)persistentStateManager:(id)manager didFetchMigrationTime:(id)time forNotificationRequest:(id)request;
+- (void)persistentStateManager:(id)manager didFetchStoredListInfo:(id)info;
+- (void)persistentStateManager:(id)manager didFetchSummaryMigrationTime:(id)time;
+- (void)persistentStateManager:(id)manager didMigratedTimeSensitiveForNotificationRequest:(id)request;
+- (void)persistentStateManager:(id)manager finishedLoadingDataForSectionType:(unint64_t)type;
+- (void)persistentStateManager:(id)manager hasStoredDataForSectionType:(unint64_t)type;
 - (void)prepareForUIAppear;
-- (void)publishScheduledDigest:(id)a3 upcomingDigest:(id)a4;
-- (void)publishUpcomingDigest:(id)a3;
-- (void)recycleView:(id)a3;
-- (void)reloadNotificationRequest:(id)a3;
-- (void)removeOverrideNotificationListDisplayStyleSettingForReason:(id)a3;
-- (void)revokeUpcomingDigest:(id)a3;
-- (void)setActiveDNDModeConfiguration:(id)a3;
-- (void)setCurrentListDisplayStyleSetting:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceAuthenticated:(BOOL)a3;
-- (void)setOnboardingSummaryVisible:(BOOL)a3;
-- (void)setOverrideMigrationToHistory:(BOOL)a3;
-- (void)setOverrideNotificationListDisplayStyleSetting:(int64_t)a3 forReason:(id)a4 hideNotificationCount:(BOOL)a5;
-- (void)setScheduledDeliveryEnabled:(BOOL)a3;
-- (void)setVisibleRectBottomMarginForRollUnder:(double)a3;
-- (void)suggestionManager:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6;
-- (void)suggestionManager:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)suggestionManager:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)suggestionManager:(id)a3 setModeConfiguration:(id)a4;
-- (void)suggestionManager:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7;
-- (void)suggestionManager:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)supplementaryViewSectionDidChangeContent:(id)a3;
+- (void)publishScheduledDigest:(id)digest upcomingDigest:(id)upcomingDigest;
+- (void)publishUpcomingDigest:(id)digest;
+- (void)recycleView:(id)view;
+- (void)reloadNotificationRequest:(id)request;
+- (void)removeOverrideNotificationListDisplayStyleSettingForReason:(id)reason;
+- (void)revokeUpcomingDigest:(id)digest;
+- (void)setActiveDNDModeConfiguration:(id)configuration;
+- (void)setCurrentListDisplayStyleSetting:(int64_t)setting;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
+- (void)setOnboardingSummaryVisible:(BOOL)visible;
+- (void)setOverrideMigrationToHistory:(BOOL)history;
+- (void)setOverrideNotificationListDisplayStyleSetting:(int64_t)setting forReason:(id)reason hideNotificationCount:(BOOL)count;
+- (void)setScheduledDeliveryEnabled:(BOOL)enabled;
+- (void)setVisibleRectBottomMarginForRollUnder:(double)under;
+- (void)suggestionManager:(id)manager requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view;
+- (void)suggestionManager:(id)manager setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier;
+- (void)suggestionManager:(id)manager setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier;
+- (void)suggestionManager:(id)manager setModeConfiguration:(id)configuration;
+- (void)suggestionManager:(id)manager setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier;
+- (void)suggestionManager:(id)manager setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier;
+- (void)supplementaryViewSectionDidChangeContent:(id)content;
 - (void)testDigestTimerFired;
 - (void)testDigestTimerRevoke;
 - (void)testDigestTimerUpdated;
 - (void)testPromoteUpcomingDigestToCurrentDigest;
-- (void)toggleFilteringForSectionIdentifier:(id)a3 shouldFilter:(BOOL)a4;
-- (void)toggleMissedSectionActive:(BOOL)a3 forDNDMode:(id)a4 hideVisibleNotifications:(BOOL)a5;
-- (void)updateListViewVisibleRectForSize:(CGSize)a3;
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4;
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4;
+- (void)toggleFilteringForSectionIdentifier:(id)identifier shouldFilter:(BOOL)filter;
+- (void)toggleMissedSectionActive:(BOOL)active forDNDMode:(id)mode hideVisibleNotifications:(BOOL)notifications;
+- (void)updateListViewVisibleRectForSize:(CGSize)size;
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings;
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings;
 @end
 
 @implementation NCNotificationRootList
@@ -201,14 +201,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__NCNotificationRootList_notificationCount__block_invoke;
   v6[3] = &unk_278370130;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [notificationSections enumerateObjectsUsingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -237,8 +237,8 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
 - (id)_notificationSectionListsForEnumeration
 {
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v4 = [(NCNotificationRootList *)self notificationSections];
-  v5 = [v3 initWithArray:v4];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  v5 = [v3 initWithArray:notificationSections];
 
   if (self->_currentDigestSectionList && !-[NCNotificationCombinedSectionList containsSectionList:](self->_historySectionList, "containsSectionList:") && ([v5 containsObject:self->_currentDigestSectionList] & 1) == 0)
   {
@@ -265,8 +265,8 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+  v3 = [_notificationSectionListsForEnumeration countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -278,14 +278,14 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_notificationSectionListsForEnumeration);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) sortNotificationGroupListsIfNecessary];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_notificationSectionListsForEnumeration countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -315,21 +315,21 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
 {
   if (self->_upcomingDigestSectionList)
   {
-    v3 = [(NCNotificationRootList *)self _upcomingDigestSectionListIndexInHistorySectionList];
+    _upcomingDigestSectionListIndexInHistorySectionList = [(NCNotificationRootList *)self _upcomingDigestSectionListIndexInHistorySectionList];
     upcomingDigestSectionList = self->_upcomingDigestSectionList;
-    v5 = [(NCNotificationRootList *)self isUpcomingDigestVisible];
-    v6 = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
+    isUpcomingDigestVisible = [(NCNotificationRootList *)self isUpcomingDigestVisible];
+    isNotificationHistoryRevealed = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
 
-    [(NCNotificationRootList *)self _toggleVisibilityInHistorySectionListForSectionList:upcomingDigestSectionList atIndex:v3 isSectionHidden:!v5 animated:v6];
+    [(NCNotificationRootList *)self _toggleVisibilityInHistorySectionListForSectionList:upcomingDigestSectionList atIndex:_upcomingDigestSectionListIndexInHistorySectionList isSectionHidden:!isUpcomingDigestVisible animated:isNotificationHistoryRevealed];
   }
 }
 
 - (void)_toggleUpcomingMissedSectionListVisibility
 {
   upcomingMissedSectionList = self->_upcomingMissedSectionList;
-  v4 = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
+  isNotificationHistoryRevealed = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
 
-  [(NCNotificationRootList *)self _toggleVisibilityInHistorySectionListForSectionList:upcomingMissedSectionList atIndex:0 isSectionHidden:0 animated:v4];
+  [(NCNotificationRootList *)self _toggleVisibilityInHistorySectionListForSectionList:upcomingMissedSectionList atIndex:0 isSectionHidden:0 animated:isNotificationHistoryRevealed];
 }
 
 - (void)_toggleCurrentDigestSectionListVisibility
@@ -347,12 +347,12 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
 
   if ([(NCNotificationCombinedSectionList *)currentDigestSectionList count])
   {
-    v6 = [(NCNotificationRootList *)self notificationSections];
-    if (([(NCNotificationSummarizedSectionList *)v6 containsObject:self->_currentDigestSectionList]& 1) == 0 && ![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:self->_currentDigestSectionList]&& ![(NCNotificationCombinedSectionList *)self->_upcomingMissedSectionList containsSectionList:self->_currentDigestSectionList]&& [(NCNotificationCombinedSectionList *)self->_currentDigestSectionList count]&& ([(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType]== 4 || [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType]== 8))
+    notificationSections = [(NCNotificationRootList *)self notificationSections];
+    if (([(NCNotificationSummarizedSectionList *)notificationSections containsObject:self->_currentDigestSectionList]& 1) == 0 && ![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:self->_currentDigestSectionList]&& ![(NCNotificationCombinedSectionList *)self->_upcomingMissedSectionList containsSectionList:self->_currentDigestSectionList]&& [(NCNotificationCombinedSectionList *)self->_currentDigestSectionList count]&& ([(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType]== 4 || [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType]== 8))
     {
-      v4 = [(NCNotificationRootList *)self deferCurrentDigestPresentationForPersistedDataLoad];
+      deferCurrentDigestPresentationForPersistedDataLoad = [(NCNotificationRootList *)self deferCurrentDigestPresentationForPersistedDataLoad];
 
-      if (!v4)
+      if (!deferCurrentDigestPresentationForPersistedDataLoad)
       {
         [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList setDeviceAuthenticated:[(NCNotificationRootList *)self deviceAuthenticated]];
 
@@ -362,7 +362,7 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
       return;
     }
 
-    v5 = v6;
+    v5 = notificationSections;
   }
 
   else
@@ -385,16 +385,16 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
 
     else if (![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:self->_currentDigestSectionList])
     {
-      v4 = [(NCNotificationRootList *)self notificationSections];
-      if (([v4 containsObject:self->_currentDigestSectionList] & 1) != 0 || !-[NCNotificationCombinedSectionList count](self->_currentDigestSectionList, "count"))
+      notificationSections = [(NCNotificationRootList *)self notificationSections];
+      if (([notificationSections containsObject:self->_currentDigestSectionList] & 1) != 0 || !-[NCNotificationCombinedSectionList count](self->_currentDigestSectionList, "count"))
       {
       }
 
       else
       {
-        v3 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType];
+        sectionType = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList sectionType];
 
-        if (v3 == 6)
+        if (sectionType == 6)
         {
 
           [(NCNotificationRootList *)self _insertCurrentDigestSectionListToHistorySectionList];
@@ -411,17 +411,17 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v10 = 138543362;
-    v11 = v5;
+    v11 = logDescription;
     _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating Notification List Persistent State", &v10, 0xCu);
   }
 
-  v6 = [(NCNotificationRootList *)self _sectionListsForPersistentState];
-  v7 = [(NCNotificationRootList *)self persistentStateManager];
+  _sectionListsForPersistentState = [(NCNotificationRootList *)self _sectionListsForPersistentState];
+  persistentStateManager = [(NCNotificationRootList *)self persistentStateManager];
   migrationScheduler = self->_migrationScheduler;
-  v9 = [(NCNotificationRootList *)self _listInfoForPersistentState];
-  [v7 updatePersistentStateForNotificationList:self sectionLists:v6 listCache:0 migrationScheduler:migrationScheduler listInfo:v9 detailed:0];
+  _listInfoForPersistentState = [(NCNotificationRootList *)self _listInfoForPersistentState];
+  [persistentStateManager updatePersistentStateForNotificationList:self sectionLists:_sectionListsForPersistentState listCache:0 migrationScheduler:migrationScheduler listInfo:_listInfoForPersistentState detailed:0];
 }
 
 - (id)_sectionListsForPersistentState
@@ -489,20 +489,20 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
     upcomingMissedSectionList = self->_upcomingMissedSectionList;
     if (upcomingMissedSectionList && [(NCNotificationCombinedSectionList *)upcomingMissedSectionList containsSectionList:self->_currentDigestSectionList])
     {
-      v5 = 1;
+      _isPersistentStateCurrentDigestInMissedSection = 1;
     }
 
     else if ([(NCNotificationRootList *)self deferCurrentDigestPresentationForPersistedDataLoad])
     {
-      v5 = [(NCNotificationRootList *)self _isPersistentStateCurrentDigestInMissedSection];
+      _isPersistentStateCurrentDigestInMissedSection = [(NCNotificationRootList *)self _isPersistentStateCurrentDigestInMissedSection];
     }
 
     else
     {
-      v5 = 0;
+      _isPersistentStateCurrentDigestInMissedSection = 0;
     }
 
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:_isPersistentStateCurrentDigestInMissedSection];
     [v3 setObject:v6 forKey:@"isCurrentDigestInMissedSection"];
   }
 
@@ -549,13 +549,13 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__NCNotificationRootList_totalNotificationCount__block_invoke;
   v5[3] = &unk_278370158;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [notificationSections enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -576,11 +576,11 @@ uint64_t __43__NCNotificationRootList_notificationCount__block_invoke(uint64_t a
     return 0;
   }
 
-  v2 = self;
-  v3 = [(NCNotificationRootList *)self notificationSections];
-  LOBYTE(v2) = [v3 containsObject:v2->_currentDigestSectionList];
+  selfCopy = self;
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  LOBYTE(selfCopy) = [notificationSections containsObject:selfCopy->_currentDigestSectionList];
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __48__NCNotificationRootList_totalNotificationCount__block_invoke(uint64_t a1, void *a2)
@@ -593,21 +593,21 @@ uint64_t __48__NCNotificationRootList_totalNotificationCount__block_invoke(uint6
 - (id)_notificationListSections
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationRootList *)self supplementaryViewsSections];
-  [v3 addObjectsFromArray:v4];
+  supplementaryViewsSections = [(NCNotificationRootList *)self supplementaryViewsSections];
+  [v3 addObjectsFromArray:supplementaryViewsSections];
 
-  v5 = [(NCNotificationRootList *)self notificationSections];
-  [v3 addObjectsFromArray:v5];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  [v3 addObjectsFromArray:notificationSections];
 
   return v3;
 }
 
 - (unint64_t)visibleNotificationCount
 {
-  v3 = [(NCNotificationStructuredSectionList *)self->_incomingSectionList notificationCount];
-  v4 = [(NCNotificationStructuredSectionList *)self->_criticalSectionList notificationCount]+ v3;
-  v5 = [(NCNotificationStructuredSectionList *)self->_persistentSectionList notificationCount];
-  v6 = v4 + v5 + [(NCNotificationStructuredSectionList *)self->_prominentIncomingSectionList notificationCount];
+  notificationCount = [(NCNotificationStructuredSectionList *)self->_incomingSectionList notificationCount];
+  v4 = [(NCNotificationStructuredSectionList *)self->_criticalSectionList notificationCount]+ notificationCount;
+  notificationCount2 = [(NCNotificationStructuredSectionList *)self->_persistentSectionList notificationCount];
+  v6 = v4 + notificationCount2 + [(NCNotificationStructuredSectionList *)self->_prominentIncomingSectionList notificationCount];
   v7 = v6 + [(NCNotificationStructuredSectionList *)self->_highlightedSectionList notificationCount];
   return v7 + [(NCNotificationRootList *)self _isCurrentDigestListAboveHistorySectionList];
 }
@@ -666,21 +666,21 @@ uint64_t __48__NCNotificationRootList_totalNotificationCount__block_invoke(uint6
   v3 = *(MEMORY[0x277CBF398] + 16);
   v19 = *MEMORY[0x277CBF398];
   v20 = v3;
-  v4 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invoke;
   v14[3] = &unk_278370158;
   v14[4] = &v15;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [notificationSections enumerateObjectsUsingBlock:v14];
 
-  v5 = [(NCNotificationRootList *)self supplementaryViewsSections];
+  supplementaryViewsSections = [(NCNotificationRootList *)self supplementaryViewsSections];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invoke_2;
   v13[3] = &unk_278370108;
   v13[4] = &v15;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [supplementaryViewsSections enumerateObjectsUsingBlock:v13];
 
   IsNull = CGRectIsNull(v16[1]);
   v7 = v16;
@@ -696,9 +696,9 @@ uint64_t __48__NCNotificationRootList_totalNotificationCount__block_invoke(uint6
     size = v16[1].size;
     self->_aggregatedVisibleContentExtent.origin = v16[1].origin;
     self->_aggregatedVisibleContentExtent.size = size;
-    v10 = [(NCNotificationRootList *)self rootListView];
-    v11 = [v10 debugView];
-    [v11 displayRect:@"aggregatedVisibleContentExtent" withName:{self->_aggregatedVisibleContentExtent.origin.x, self->_aggregatedVisibleContentExtent.origin.y, self->_aggregatedVisibleContentExtent.size.width, self->_aggregatedVisibleContentExtent.size.height}];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    debugView = [rootListView debugView];
+    [debugView displayRect:@"aggregatedVisibleContentExtent" withName:{self->_aggregatedVisibleContentExtent.origin.x, self->_aggregatedVisibleContentExtent.origin.y, self->_aggregatedVisibleContentExtent.size.width, self->_aggregatedVisibleContentExtent.size.height}];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -774,8 +774,8 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
 
 - (void)listViewControllerPresentedByUserAction
 {
-  v2 = [(NCNotificationRootList *)self notificationListStalenessEventTracker];
-  [v2 handleEvent:0];
+  notificationListStalenessEventTracker = [(NCNotificationRootList *)self notificationListStalenessEventTracker];
+  [notificationListStalenessEventTracker handleEvent:0];
 }
 
 - (void)_performDeferredMigrationIfNecessary
@@ -787,9 +787,9 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v11 = 138543362;
-      v12 = v5;
+      v12 = logDescription;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ performing deferred migration of current digest", &v11, 0xCu);
     }
 
@@ -803,10 +803,10 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       v9 = [(NSMutableArray *)self->_notificationRequestsPendingMigration bs_map:&__block_literal_global_194];
       v11 = 138543618;
-      v12 = v8;
+      v12 = logDescription2;
       v13 = 2114;
       v14 = v9;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ performing deferred migration of requests pending migration %{public}@", &v11, 0x16u);
@@ -821,10 +821,10 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   }
 }
 
-- (id)_initWithListView:(id)a3 delegate:(id)a4
+- (id)_initWithListView:(id)view delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v55.receiver = self;
   v55.super_class = NCNotificationRootList;
   v9 = [(NCNotificationRootList *)&v55 init];
@@ -834,7 +834,7 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   }
 
   objc_storeStrong(&__sharedInstance, v9);
-  objc_storeWeak(&v9->_delegate, v8);
+  objc_storeWeak(&v9->_delegate, delegateCopy);
   v10 = objc_alloc_init(NCNotificationListCache);
   notificationListCache = v9->_notificationListCache;
   v9->_notificationListCache = v10;
@@ -877,12 +877,12 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   v9->_performingClearAll = 0;
   *&v9->_missedSectionActive = 0;
   v9->_upcomingDigestVisible = 1;
-  v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v27 = [v26 objectForKey:@"NCOverrideNotificationMigrationToHistory"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v27 = [standardUserDefaults objectForKey:@"NCOverrideNotificationMigrationToHistory"];
   if (v27)
   {
-    v28 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9->_overrideMigrationToHistory = [v28 BOOLForKey:@"NCOverrideNotificationMigrationToHistory"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9->_overrideMigrationToHistory = [standardUserDefaults2 BOOLForKey:@"NCOverrideNotificationMigrationToHistory"];
   }
 
   else
@@ -891,13 +891,13 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   }
 
   v9->_overrideNotificationMigrateHighlightToHistoryTimeIntervalKey = -1.0;
-  v29 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v30 = [v29 objectForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v30 = [standardUserDefaults3 objectForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
   if (v30)
   {
     v31 = v30;
-    v32 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v32 doubleForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
+    standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults4 doubleForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
     v34 = v33;
 
     if (v34 <= 0.0)
@@ -905,20 +905,20 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
       goto LABEL_9;
     }
 
-    v29 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v29 doubleForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults3 doubleForKey:@"NCOverrideNotificationMigrateHighlightToHistoryTimeIntervalKey"];
     v9->_overrideNotificationMigrateHighlightToHistoryTimeIntervalKey = v35;
   }
 
 LABEL_9:
   v9->_overrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey = -1.0;
-  v36 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v37 = [v36 objectForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
+  standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v37 = [standardUserDefaults5 objectForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
   if (v37)
   {
     v38 = v37;
-    v39 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v39 doubleForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
+    standardUserDefaults6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults6 doubleForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
     v41 = v40;
 
     if (v41 <= 0.0)
@@ -926,25 +926,25 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    v36 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v36 doubleForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
+    standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults5 doubleForKey:@"NCOverrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey"];
     v9->_overrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey = v42;
   }
 
 LABEL_13:
-  v43 = [(NCNotificationRootList *)v9 _digestTestRecipe];
-  [(PTDomain *)NCUNUIKitPrototypeDomain registerTestRecipe:v43];
+  _digestTestRecipe = [(NCNotificationRootList *)v9 _digestTestRecipe];
+  [(PTDomain *)NCUNUIKitPrototypeDomain registerTestRecipe:_digestTestRecipe];
 
-  v44 = [(NCNotificationRootList *)v9 _notificationMigrationOverrideTestRecipe];
-  [(PTDomain *)NCUNUIKitPrototypeDomain registerTestRecipe:v44];
+  _notificationMigrationOverrideTestRecipe = [(NCNotificationRootList *)v9 _notificationMigrationOverrideTestRecipe];
+  [(PTDomain *)NCUNUIKitPrototypeDomain registerTestRecipe:_notificationMigrationOverrideTestRecipe];
 
   v45 = +[NCNotificationListStalenessEventTracker eventTrackerWithAutomaticCollation];
   notificationListStalenessEventTracker = v9->_notificationListStalenessEventTracker;
   v9->_notificationListStalenessEventTracker = v45;
 
-  v47 = [(NCNotificationRootList *)v9 notificationListStalenessEventTracker];
-  v48 = [(NCNotificationRootList *)v9 incomingSectionList];
-  [v47 setStructuredSectionList:v48];
+  notificationListStalenessEventTracker = [(NCNotificationRootList *)v9 notificationListStalenessEventTracker];
+  incomingSectionList = [(NCNotificationRootList *)v9 incomingSectionList];
+  [notificationListStalenessEventTracker setStructuredSectionList:incomingSectionList];
 
   v49 = [[NCNotificationListPersistentStateManager alloc] initWithDelegate:v9];
   persistentStateManager = v9->_persistentStateManager;
@@ -954,11 +954,11 @@ LABEL_13:
   migrationScheduler = v9->_migrationScheduler;
   v9->_migrationScheduler = v51;
 
-  v53 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v53 addObserver:v9 forKeyPath:@"NCOverrideNotificationMigrationToHistory" options:1 context:0];
+  standardUserDefaults7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults7 addObserver:v9 forKeyPath:@"NCOverrideNotificationMigrationToHistory" options:1 context:0];
 
   [(NCNotificationRootList *)v9 _addStateCaptureBlock];
-  objc_storeStrong(&v9->_rootListView, a3);
+  objc_storeStrong(&v9->_rootListView, view);
   [(NCNotificationListViewProtocol *)v9->_rootListView setDataSource:v9];
   [(NCNotificationListViewProtocol *)v9->_rootListView _setAutomaticContentOffsetAdjustmentEnabled:0];
   [(NCNotificationListViewProtocol *)v9->_rootListView setLayoutFromBottom:0];
@@ -974,36 +974,36 @@ LABEL_15:
   return v9;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_delegate, v6);
-  v4 = v6;
-  if (v6)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
     rootListView = self->_rootListView;
-    [v6 insetHorizontalMarginForNotificationListComponent:self];
+    [delegateCopy insetHorizontalMarginForNotificationListComponent:self];
     [(NCNotificationListViewProtocol *)rootListView setHorizontalInsetMargin:?];
-    v4 = v6;
+    v4 = delegateCopy;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:{@"NCOverrideNotificationMigrationToHistory", a4, a5, a6}])
+  if ([path isEqualToString:{@"NCOverrideNotificationMigrationToHistory", object, change, context}])
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    self->_overrideMigrationToHistory = [v7 BOOLForKey:@"NCOverrideNotificationMigrationToHistory"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    self->_overrideMigrationToHistory = [standardUserDefaults BOOLForKey:@"NCOverrideNotificationMigrationToHistory"];
 
     v8 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       overrideMigrationToHistory = self->_overrideMigrationToHistory;
       v12 = 138543618;
-      v13 = v10;
+      v13 = logDescription;
       v14 = 1024;
       v15 = overrideMigrationToHistory;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ setting override migration to history to %{BOOL}d on user defaults value change", &v12, 0x12u);
@@ -1011,9 +1011,9 @@ LABEL_15:
   }
 }
 
-- (void)migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection:(BOOL)a3
+- (void)migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection:(BOOL)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v50 = *MEMORY[0x277D85DE8];
   if ([(NCNotificationRootList *)self overrideMigrationToHistory])
   {
@@ -1021,9 +1021,9 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       *buf = 138543362;
-      v49 = v7;
+      v49 = logDescription;
       v8 = "%{public}@ not migrating notifications from incoming section to history section because override is set";
 LABEL_4:
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -1034,14 +1034,14 @@ LABEL_4:
     return;
   }
 
-  v9 = [(NCNotificationRootList *)self highlightedSectionList];
-  if ([v9 count])
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+  if ([highlightedSectionList count])
   {
     goto LABEL_8;
   }
 
-  v10 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-  if ([v10 count])
+  prominentIncomingSectionList = [(NCNotificationRootList *)self prominentIncomingSectionList];
+  if ([prominentIncomingSectionList count])
   {
 
 LABEL_8:
@@ -1051,14 +1051,14 @@ LABEL_9:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       *buf = 138543362;
-      v49 = v14;
+      v49 = logDescription2;
       _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating notifications from incoming section to history section", buf, 0xCu);
     }
 
-    v15 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-    v16 = [(NCNotificationRootList *)self incomingSectionList];
+    prominentIncomingSectionList2 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+    incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection___block_invoke;
@@ -1066,25 +1066,25 @@ LABEL_9:
     v47[4] = self;
     BYTE2(v38) = 0;
     LOWORD(v38) = 0;
-    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v15 passingTest:v16 filterRequestsPassingTest:0 hideToList:v47 clearRequests:0 filterForDestination:0 animateRemoval:v38 reorderGroupNotifications:?];
+    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:prominentIncomingSectionList2 passingTest:incomingSectionList filterRequestsPassingTest:0 hideToList:v47 clearRequests:0 filterForDestination:0 animateRemoval:v38 reorderGroupNotifications:?];
 
-    LODWORD(v16) = _NCStackElevation();
+    LODWORD(incomingSectionList) = _NCStackElevation();
     v17 = *v11;
     v18 = os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT);
-    if (v16)
+    if (incomingSectionList)
     {
       if (v18)
       {
         v19 = v17;
-        v20 = [(NCNotificationRootList *)self logDescription];
+        logDescription3 = [(NCNotificationRootList *)self logDescription];
         *buf = 138543362;
-        v49 = v20;
+        v49 = logDescription3;
         _os_log_impl(&dword_21E77E000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating notifications in stack if needed", buf, 0xCu);
       }
 
       v21 = +[NCPlatformEligibility areGenerativeModelsAvailable];
-      v22 = [(NCNotificationRootList *)self incomingSectionList];
-      v23 = [(NCNotificationRootList *)self historySectionList];
+      incomingSectionList2 = [(NCNotificationRootList *)self incomingSectionList];
+      historySectionList = [(NCNotificationRootList *)self historySectionList];
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection___block_invoke_54;
@@ -1093,10 +1093,10 @@ LABEL_9:
       v46 = v21;
       BYTE2(v39) = 0;
       LOWORD(v39) = 1;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v22 passingTest:v23 filterRequestsPassingTest:v45 hideToList:0 clearRequests:v3 filterForDestination:1 animateRemoval:v39 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:incomingSectionList2 passingTest:historySectionList filterRequestsPassingTest:v45 hideToList:0 clearRequests:sectionCopy filterForDestination:1 animateRemoval:v39 reorderGroupNotifications:?];
 
-      v24 = [(NCNotificationRootList *)self incomingSectionList];
-      v25 = [(NCNotificationRootList *)self historySectionList];
+      incomingSectionList3 = [(NCNotificationRootList *)self incomingSectionList];
+      historySectionList2 = [(NCNotificationRootList *)self historySectionList];
       v42[4] = self;
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
@@ -1110,7 +1110,7 @@ LABEL_9:
       v42[3] = &unk_27836FFD8;
       BYTE2(v40) = 0;
       LOWORD(v40) = 1;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v24 passingTest:v25 filterRequestsPassingTest:v43 hideToList:v42 clearRequests:v3 filterForDestination:1 animateRemoval:v40 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:incomingSectionList3 passingTest:historySectionList2 filterRequestsPassingTest:v43 hideToList:v42 clearRequests:sectionCopy filterForDestination:1 animateRemoval:v40 reorderGroupNotifications:?];
     }
 
     else
@@ -1118,14 +1118,14 @@ LABEL_9:
       if (v18)
       {
         v26 = v17;
-        v27 = [(NCNotificationRootList *)self logDescription];
+        logDescription4 = [(NCNotificationRootList *)self logDescription];
         *buf = 138543362;
-        v49 = v27;
+        v49 = logDescription4;
         _os_log_impl(&dword_21E77E000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating individual notifications", buf, 0xCu);
       }
 
-      v28 = [(NCNotificationRootList *)self incomingSectionList];
-      v29 = [(NCNotificationRootList *)self historySectionList];
+      incomingSectionList4 = [(NCNotificationRootList *)self incomingSectionList];
+      historySectionList3 = [(NCNotificationRootList *)self historySectionList];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection___block_invoke_2;
@@ -1133,7 +1133,7 @@ LABEL_9:
       v41[4] = self;
       BYTE2(v39) = 0;
       LOWORD(v39) = 1;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v28 passingTest:v29 filterRequestsPassingTest:&__block_literal_global_5 hideToList:v41 clearRequests:v3 filterForDestination:1 animateRemoval:v39 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:incomingSectionList4 passingTest:historySectionList3 filterRequestsPassingTest:&__block_literal_global_5 hideToList:v41 clearRequests:sectionCopy filterForDestination:1 animateRemoval:v39 reorderGroupNotifications:?];
     }
 
     if ([(NCNotificationRootList *)self deferDigestMigration]&& [(NCNotificationRootList *)self _isCurrentDigestListAboveHistorySectionList])
@@ -1142,9 +1142,9 @@ LABEL_9:
       if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
       {
         v31 = v30;
-        v32 = [(NCNotificationRootList *)self logDescription];
+        logDescription5 = [(NCNotificationRootList *)self logDescription];
         *buf = 138543362;
-        v49 = v32;
+        v49 = logDescription5;
         _os_log_impl(&dword_21E77E000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ performing deferred migration of current digest", buf, 0xCu);
       }
 
@@ -1174,8 +1174,8 @@ LABEL_9:
     return;
   }
 
-  v35 = [(NCNotificationRootList *)self incomingSectionList];
-  v36 = [v35 count];
+  incomingSectionList5 = [(NCNotificationRootList *)self incomingSectionList];
+  v36 = [incomingSectionList5 count];
 
   if (v36)
   {
@@ -1186,9 +1186,9 @@ LABEL_9:
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v37;
-    v7 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     *buf = 138543362;
-    v49 = v7;
+    v49 = logDescription;
     v8 = "%{public}@ not migrating notifications to history section because highlight/prominent/incoming are empty";
     goto LABEL_4;
   }
@@ -1535,56 +1535,56 @@ BOOL __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHist
   return v4;
 }
 
-- (void)toggleFilteringForSectionIdentifier:(id)a3 shouldFilter:(BOOL)a4
+- (void)toggleFilteringForSectionIdentifier:(id)identifier shouldFilter:(BOOL)filter
 {
-  v6 = a3;
-  v7 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+  identifierCopy = identifier;
+  _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __75__NCNotificationRootList_toggleFilteringForSectionIdentifier_shouldFilter___block_invoke;
   v12 = &unk_278370068;
-  v13 = v6;
-  v14 = a4;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:&v9];
+  v13 = identifierCopy;
+  filterCopy = filter;
+  v8 = identifierCopy;
+  [_notificationSectionListsForEnumeration enumerateObjectsUsingBlock:&v9];
 
   [(NCNotificationRootList *)self _notificationListDidChangeContent:v9];
   [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
 }
 
-- (void)toggleMissedSectionActive:(BOOL)a3 forDNDMode:(id)a4 hideVisibleNotifications:(BOOL)a5
+- (void)toggleMissedSectionActive:(BOOL)active forDNDMode:(id)mode hideVisibleNotifications:(BOOL)notifications
 {
-  v5 = a5;
-  v6 = a3;
+  notificationsCopy = notifications;
+  activeCopy = active;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  modeCopy = mode;
   v9 = MEMORY[0x277D77DD0];
   v10 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     missedSectionActive = self->_missedSectionActive;
     v20 = 138543874;
-    v21 = v12;
+    v21 = logDescription;
     v22 = 1024;
     *v23 = missedSectionActive;
     *&v23[4] = 1024;
-    *&v23[6] = v6;
+    *&v23[6] = activeCopy;
     _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ toggle missed section; wasActive: %d, isActive: %d.", &v20, 0x18u);
   }
 
-  if (self->_missedSectionActive != v6)
+  if (self->_missedSectionActive != activeCopy)
   {
-    if (v6)
+    if (activeCopy)
     {
-      if (v5)
+      if (notificationsCopy)
       {
         [(NCNotificationRootList *)self migrateNotificationsFromIncomingSectionToHistorySectionAndHideHistorySection:[(NCNotificationRootList *)self deviceAuthenticated]^ 1];
         [(NCNotificationRootList *)self _migrateCurrentDigestSectionListToReadSection];
       }
 
-      [(NCNotificationRootList *)self _configureUpcomingMissedSectionForDNDMode:v8];
+      [(NCNotificationRootList *)self _configureUpcomingMissedSectionForDNDMode:modeCopy];
     }
 
     else
@@ -1595,18 +1595,18 @@ BOOL __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHist
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [(NCNotificationRootList *)self logDescription];
-          v17 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-          v18 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
-          v19 = [(NCNotificationStructuredSectionList *)self->_incomingSectionList logDescription];
+          logDescription2 = [(NCNotificationRootList *)self logDescription];
+          logDescription3 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+          logDescription4 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
+          logDescription5 = [(NCNotificationStructuredSectionList *)self->_incomingSectionList logDescription];
           v20 = 138544130;
-          v21 = v16;
+          v21 = logDescription2;
           v22 = 2114;
-          *v23 = v17;
+          *v23 = logDescription3;
           *&v23[8] = 2114;
-          v24 = v18;
+          v24 = logDescription4;
           v25 = 2114;
-          v26 = v19;
+          v26 = logDescription5;
           _os_log_impl(&dword_21E77E000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating current digest %{public}@ from %{public}@ to %{public}@ as missed section was deactivated.", &v20, 0x2Au);
         }
 
@@ -1620,32 +1620,32 @@ BOOL __103__NCNotificationRootList_migrateNotificationsFromIncomingSectionToHist
       [(NCNotificationRootList *)self _notificationListDidChangeContent];
     }
 
-    self->_missedSectionActive = v6;
+    self->_missedSectionActive = activeCopy;
     [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
   }
 }
 
-- (id)notificationRequestWithNotificationIdentifier:(id)a3 sectionIdentifier:(id)a4
+- (id)notificationRequestWithNotificationIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  sectionIdentifierCopy = sectionIdentifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__0;
   v21 = __Block_byref_object_dispose__0;
   v22 = 0;
-  v8 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__NCNotificationRootList_notificationRequestWithNotificationIdentifier_sectionIdentifier___block_invoke;
   v13[3] = &unk_278370090;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = sectionIdentifierCopy;
   v15 = v10;
   v16 = &v17;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [notificationSections enumerateObjectsUsingBlock:v13];
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -1704,89 +1704,89 @@ void __90__NCNotificationRootList_notificationRequestWithNotificationIdentifier_
 LABEL_12:
 }
 
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCNotificationRootList *)self notificationSections];
+  requestCopy = request;
+  completionCopy = completion;
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__NCNotificationRootList_expandGroupForNotificationRequest_withCompletion___block_invoke;
   v11[3] = &unk_2783700B8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateObjectsUsingBlock:v11];
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
+  [notificationSections enumerateObjectsUsingBlock:v11];
 }
 
-- (void)collapseGroupForNotificationRequest:(id)a3 withCompletion:(id)a4
+- (void)collapseGroupForNotificationRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCNotificationRootList *)self notificationSections];
+  requestCopy = request;
+  completionCopy = completion;
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__NCNotificationRootList_collapseGroupForNotificationRequest_withCompletion___block_invoke;
   v11[3] = &unk_2783700B8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateObjectsUsingBlock:v11];
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
+  [notificationSections enumerateObjectsUsingBlock:v11];
 }
 
 - (BOOL)hasVisibleContentToReveal
 {
   if (![(NCNotificationRootList *)self deviceAuthenticated])
   {
-    v5 = [(NCNotificationRootList *)self incomingSectionList];
-    if ([v5 hasVisibleContentToReveal])
+    incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+    if ([incomingSectionList hasVisibleContentToReveal])
     {
-      v4 = 1;
+      hasVisibleContentToReveal = 1;
 LABEL_23:
 
-      return v4;
+      return hasVisibleContentToReveal;
     }
 
-    v6 = [(NCNotificationRootList *)self highlightedSectionList];
-    if ([v6 hasVisibleContentToReveal])
+    highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+    if ([highlightedSectionList hasVisibleContentToReveal])
     {
-      v4 = 1;
+      hasVisibleContentToReveal = 1;
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v7 = [(NCNotificationRootList *)self _isCurrentDigestListAboveHistorySectionList];
-    if (v7)
+    _isCurrentDigestListAboveHistorySectionList = [(NCNotificationRootList *)self _isCurrentDigestListAboveHistorySectionList];
+    if (_isCurrentDigestListAboveHistorySectionList)
     {
-      v2 = [(NCNotificationRootList *)self currentDigestSectionList];
-      if ([v2 hasVisibleContentToReveal])
+      currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+      if ([currentDigestSectionList hasVisibleContentToReveal])
       {
-        v4 = 1;
+        hasVisibleContentToReveal = 1;
         goto LABEL_21;
       }
 
       if (([(NCNotificationRootList *)self isNotificationHistoryRevealed]& 1) == 0)
       {
-        v4 = 0;
+        hasVisibleContentToReveal = 0;
         goto LABEL_21;
       }
     }
 
     else if (![(NCNotificationRootList *)self isNotificationHistoryRevealed])
     {
-      v4 = 0;
+      hasVisibleContentToReveal = 0;
       goto LABEL_22;
     }
 
-    v8 = [(NCNotificationRootList *)self upcomingDigestSectionList];
-    if ([v8 hasVisibleContentToReveal])
+    upcomingDigestSectionList = [(NCNotificationRootList *)self upcomingDigestSectionList];
+    if ([upcomingDigestSectionList hasVisibleContentToReveal])
     {
 
-      v4 = 1;
-      if (!v7)
+      hasVisibleContentToReveal = 1;
+      if (!_isCurrentDigestListAboveHistorySectionList)
       {
         goto LABEL_22;
       }
@@ -1794,12 +1794,12 @@ LABEL_22:
 
     else
     {
-      v9 = [(NCNotificationRootList *)self upcomingMissedSectionList];
-      if ([v9 hasVisibleContentToReveal])
+      upcomingMissedSectionList = [(NCNotificationRootList *)self upcomingMissedSectionList];
+      if ([upcomingMissedSectionList hasVisibleContentToReveal])
       {
 
-        v4 = 1;
-        if (!v7)
+        hasVisibleContentToReveal = 1;
+        if (!_isCurrentDigestListAboveHistorySectionList)
         {
           goto LABEL_22;
         }
@@ -1807,10 +1807,10 @@ LABEL_22:
 
       else
       {
-        v10 = [(NCNotificationRootList *)self historySectionList];
-        v4 = [v10 hasVisibleContentToReveal];
+        historySectionList = [(NCNotificationRootList *)self historySectionList];
+        hasVisibleContentToReveal = [historySectionList hasVisibleContentToReveal];
 
-        if (!v7)
+        if (!_isCurrentDigestListAboveHistorySectionList)
         {
           goto LABEL_22;
         }
@@ -1825,58 +1825,58 @@ LABEL_21:
   return 0;
 }
 
-- (void)updateNotificationSystemSettings:(id)a3 previousSystemSettings:(id)a4
+- (void)updateNotificationSystemSettings:(id)settings previousSystemSettings:(id)systemSettings
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  -[NCNotificationRootList setScheduledDeliveryEnabled:](self, "setScheduledDeliveryEnabled:", [v6 isScheduledDeliveryEnabled]);
-  v8 = [(NCNotificationRootList *)self digestScheduleManager];
+  settingsCopy = settings;
+  systemSettingsCopy = systemSettings;
+  -[NCNotificationRootList setScheduledDeliveryEnabled:](self, "setScheduledDeliveryEnabled:", [settingsCopy isScheduledDeliveryEnabled]);
+  digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
 
-  if (v8)
+  if (digestScheduleManager)
   {
-    v9 = [(NCNotificationRootList *)self digestScheduleManager];
-    v10 = [v6 scheduledDeliveryTimes];
-    [v9 setDigestScheduleTimes:v10];
+    digestScheduleManager2 = [(NCNotificationRootList *)self digestScheduleManager];
+    scheduledDeliveryTimes = [settingsCopy scheduledDeliveryTimes];
+    [digestScheduleManager2 setDigestScheduleTimes:scheduledDeliveryTimes];
   }
 
   v11 = MEMORY[0x277D77DD0];
-  if (!v7 || (v12 = [v6 shouldScheduledDeliveryShowNextSummary], v12 != objc_msgSend(v7, "shouldScheduledDeliveryShowNextSummary")))
+  if (!systemSettingsCopy || (v12 = [settingsCopy shouldScheduledDeliveryShowNextSummary], v12 != objc_msgSend(systemSettingsCopy, "shouldScheduledDeliveryShowNextSummary")))
   {
-    self->_upcomingDigestVisible = [v6 shouldScheduledDeliveryShowNextSummary];
+    self->_upcomingDigestVisible = [settingsCopy shouldScheduledDeliveryShowNextSummary];
     v13 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       upcomingDigestVisible = self->_upcomingDigestVisible;
       v26 = 138543618;
-      v27 = v15;
+      v27 = logDescription;
       v28 = 1024;
       LODWORD(v29) = upcomingDigestVisible;
       _os_log_impl(&dword_21E77E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ toggling visibility of upcoming digest to %{BOOL}d", &v26, 0x12u);
     }
 
     [(NCNotificationRootList *)self _toggleUpcomingDigestSectionListVisibility];
-    if (!v7)
+    if (!systemSettingsCopy)
     {
       goto LABEL_17;
     }
   }
 
-  v17 = [v6 listDisplayStyleSetting];
-  if (v17 != [v7 listDisplayStyleSetting])
+  listDisplayStyleSetting = [settingsCopy listDisplayStyleSetting];
+  if (listDisplayStyleSetting != [systemSettingsCopy listDisplayStyleSetting])
   {
 LABEL_17:
     v18 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(NCNotificationRootList *)self logDescription];
-      v21 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:{objc_msgSend(v6, "listDisplayStyleSetting")}];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
+      v21 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:{objc_msgSend(settingsCopy, "listDisplayStyleSetting")}];
       v22 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:{-[NCNotificationRootList currentListDisplayStyleSetting](self, "currentListDisplayStyleSetting")}];
       v26 = 138543874;
-      v27 = v20;
+      v27 = logDescription2;
       v28 = 2114;
       v29 = v21;
       v30 = 2114;
@@ -1884,22 +1884,22 @@ LABEL_17:
       _os_log_impl(&dword_21E77E000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ updating notification list display system setting to %{public}@ from %{public}@ on system settings change", &v26, 0x20u);
     }
 
-    v23 = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "listDisplayStyleSetting")}];
-    [v23 setValue:v24 forKey:@"NCNotificationListDisplayStyleReasonSystemSetting"];
+    notificationListDisplayStyleSettingsForReason = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(settingsCopy, "listDisplayStyleSetting")}];
+    [notificationListDisplayStyleSettingsForReason setValue:v24 forKey:@"NCNotificationListDisplayStyleReasonSystemSetting"];
 
     [(NCNotificationRootList *)self _updateNotificationListDisplayStyleSetting];
-    if (!v7)
+    if (!systemSettingsCopy)
     {
       goto LABEL_13;
     }
   }
 
-  v25 = [v6 areHighlightsEnabled];
-  if (v25 != [v7 areHighlightsEnabled])
+  areHighlightsEnabled = [settingsCopy areHighlightsEnabled];
+  if (areHighlightsEnabled != [systemSettingsCopy areHighlightsEnabled])
   {
 LABEL_13:
-    -[NCNotificationRootList _setHighlightsFeatureEnabled:](self, "_setHighlightsFeatureEnabled:", [v6 areHighlightsEnabled]);
+    -[NCNotificationRootList _setHighlightsFeatureEnabled:](self, "_setHighlightsFeatureEnabled:", [settingsCopy areHighlightsEnabled]);
   }
 }
 
@@ -1909,15 +1909,15 @@ LABEL_13:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(NCNotificationRootList *)self _visibleNotificationRequests];
-  if (-[NCNotificationRootList isMissedSectionActive](self, "isMissedSectionActive") && [v3 count])
+  _visibleNotificationRequests = [(NCNotificationRootList *)self _visibleNotificationRequests];
+  if (-[NCNotificationRootList isMissedSectionActive](self, "isMissedSectionActive") && [_visibleNotificationRequests count])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__NCNotificationRootList_hasVisibleUrgentBreakthroughContent__block_invoke;
     v6[3] = &unk_2783700E0;
     v6[4] = &v7;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [_visibleNotificationRequests enumerateObjectsUsingBlock:v6];
   }
 
   v4 = *(v8 + 24);
@@ -1945,25 +1945,25 @@ void __61__NCNotificationRootList_hasVisibleUrgentBreakthroughContent__block_inv
   *a4 = *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (void)_checkAndReloadSuggestionForNotificationRequest:(id)a3 withHighlightsListCount:(unint64_t)a4
+- (void)_checkAndReloadSuggestionForNotificationRequest:(id)request withHighlightsListCount:(unint64_t)count
 {
-  v10 = a3;
-  v6 = [(NCNotificationRootList *)self suggestionManager];
-  [v6 checkSuggestionNeededForNotificationRequest:v10 withHighlightsListCount:a4];
+  requestCopy = request;
+  suggestionManager = [(NCNotificationRootList *)self suggestionManager];
+  [suggestionManager checkSuggestionNeededForNotificationRequest:requestCopy withHighlightsListCount:count];
 
-  v7 = [(NCNotificationRootList *)self loadedNotificationSections];
-  v8 = [v10 sectionIdentifier];
-  if ([v7 containsObject:v8])
+  loadedNotificationSections = [(NCNotificationRootList *)self loadedNotificationSections];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  if ([loadedNotificationSections containsObject:sectionIdentifier])
   {
-    v9 = [(NCNotificationRootList *)self containsNotificationRequest:v10];
+    v9 = [(NCNotificationRootList *)self containsNotificationRequest:requestCopy];
 
     if (v9)
     {
       goto LABEL_6;
     }
 
-    v7 = [(NCNotificationRootList *)self suggestionManager];
-    [v7 reloadRemoteSuggestions];
+    loadedNotificationSections = [(NCNotificationRootList *)self suggestionManager];
+    [loadedNotificationSections reloadRemoteSuggestions];
   }
 
   else
@@ -1973,26 +1973,26 @@ void __61__NCNotificationRootList_hasVisibleUrgentBreakthroughContent__block_inv
 LABEL_6:
 }
 
-- (void)setOnboardingSummaryVisible:(BOOL)a3
+- (void)setOnboardingSummaryVisible:(BOOL)visible
 {
   v59 = *MEMORY[0x277D85DE8];
-  if (self->_onboardingSummaryVisible != a3)
+  if (self->_onboardingSummaryVisible != visible)
   {
-    v3 = a3;
+    visibleCopy = visible;
     v5 = MEMORY[0x277D77DD0];
     v6 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       *buf = 138543618;
-      v56 = v8;
+      v56 = logDescription;
       v57 = 1024;
-      LODWORD(v58) = v3;
+      LODWORD(v58) = visibleCopy;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ setting onboarding summary visible = %{BOOL}d", buf, 0x12u);
     }
 
-    if (v3)
+    if (visibleCopy)
     {
       if (self->_currentDigestSectionList)
       {
@@ -2005,11 +2005,11 @@ LABEL_6:
 
       else
       {
-        v15 = [(NCNotificationCombinedSectionList *)self->_historySectionList allNotificationRequests];
-        v16 = [v15 copy];
+        allNotificationRequests = [(NCNotificationCombinedSectionList *)self->_historySectionList allNotificationRequests];
+        v16 = [allNotificationRequests copy];
 
-        v17 = [MEMORY[0x277CBEAA8] date];
-        v18 = [v17 dateByAddingTimeInterval:-86400.0];
+        date = [MEMORY[0x277CBEAA8] date];
+        v18 = [date dateByAddingTimeInterval:-86400.0];
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
         v52[2] = __54__NCNotificationRootList_setOnboardingSummaryVisible___block_invoke;
@@ -2034,16 +2034,16 @@ LABEL_6:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             v23 = v22;
-            v24 = [(NCNotificationRootList *)self logDescription];
+            logDescription2 = [(NCNotificationRootList *)self logDescription];
             *buf = 138543618;
-            v56 = v24;
+            v56 = logDescription2;
             v57 = 2048;
             v58 = v21;
             _os_log_impl(&dword_21E77E000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ creating onboarding summary with notification count %lu", buf, 0x16u);
           }
 
-          v25 = [MEMORY[0x277CBEA80] currentCalendar];
-          v26 = [v25 components:124 fromDate:v17];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          v26 = [currentCalendar components:124 fromDate:date];
 
           v27 = vdupq_n_s64([v26 hour]);
           v28 = vbslq_s8(vcgtq_s64(xmmword_21E9462B0, v27), vsubq_s64(xmmword_21E9462B0, v27), vaddq_s64(v27, xmmword_21E9462A0));
@@ -2070,8 +2070,8 @@ LABEL_6:
 
           [v26 setHour:v30];
           [v26 setMinute:0];
-          v32 = [MEMORY[0x277CBEA80] currentCalendar];
-          v33 = [v32 dateFromComponents:v26];
+          currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+          v33 = [currentCalendar2 dateFromComponents:v26];
 
           v34 = NCUserNotificationsUIKitFrameworkBundle();
           v35 = [v34 localizedStringForKey:v31 value:&stru_282FE84F8 table:0];
@@ -2117,7 +2117,7 @@ LABEL_6:
           block[3] = &unk_27836F6A8;
           block[4] = self;
           dispatch_after(v42, MEMORY[0x277D85CD0], block);
-          self->_onboardingSummaryVisible = v3;
+          self->_onboardingSummaryVisible = visibleCopy;
 
           v19 = v45;
           v16 = v46;
@@ -2131,14 +2131,14 @@ LABEL_6:
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [(NCNotificationRootList *)self logDescription];
+        logDescription3 = [(NCNotificationRootList *)self logDescription];
         *buf = 138543362;
-        v56 = v12;
+        v56 = logDescription3;
         _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ removing onboarding summary from list", buf, 0xCu);
       }
 
-      v13 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList listView];
-      [v13 setGrouped:1];
+      listView = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList listView];
+      [listView setGrouped:1];
 
       [(NCNotificationRootList *)self _removeCurrentDigestSectionList];
       currentDigestSectionList = self->_currentDigestSectionList;
@@ -2168,26 +2168,26 @@ BOOL __54__NCNotificationRootList_setOnboardingSummaryVisible___block_invoke(uin
   return v6;
 }
 
-- (id)insertSupplementaryViewsContainerAtListPosition:(unint64_t)a3 identifier:(id)a4 withDescription:(id)a5
+- (id)insertSupplementaryViewsContainerAtListPosition:(unint64_t)position identifier:(id)identifier withDescription:(id)description
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v10 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     *buf = 138543874;
-    *&buf[4] = v12;
+    *&buf[4] = logDescription;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = descriptionCopy;
     *&buf[22] = 2048;
-    v23 = a3;
+    positionCopy = position;
     _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting supplementary views container for %{public}@ at position %lu", buf, 0x20u);
   }
 
-  v13 = [[NCNotificationListSupplementaryViewsSection alloc] initWithPosition:a3];
+  v13 = [[NCNotificationListSupplementaryViewsSection alloc] initWithPosition:position];
   supplementaryCache = self->_supplementaryCache;
   if (!supplementaryCache)
   {
@@ -2200,16 +2200,16 @@ BOOL __54__NCNotificationRootList_setOnboardingSummaryVisible___block_invoke(uin
   }
 
   [(NCNotificationListSupplementaryViewsSection *)v13 setNotificationListCache:supplementaryCache];
-  [(NCNotificationListSupplementaryViewsSection *)v13 setIdentifier:v8];
-  [(NCNotificationListSupplementaryViewsSection *)v13 setDescriptionString:v9];
+  [(NCNotificationListSupplementaryViewsSection *)v13 setIdentifier:identifierCopy];
+  [(NCNotificationListSupplementaryViewsSection *)v13 setDescriptionString:descriptionCopy];
   [(NCNotificationListSupplementaryViewsSection *)v13 setDelegate:self];
   [(NCNotificationRootList *)self _updateIndexForReveal];
   v17 = 0;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v23 = 0;
-  if (a3 != 1)
+  positionCopy = 0;
+  if (position != 1)
   {
     supplementaryViewsSections = self->_supplementaryViewsSections;
     v21[0] = MEMORY[0x277D85DD0];
@@ -2222,8 +2222,8 @@ BOOL __54__NCNotificationRootList_setOnboardingSummaryVisible___block_invoke(uin
   }
 
   [(NSMutableArray *)self->_supplementaryViewsSections insertObject:v13 atIndex:v17];
-  v19 = [(NCNotificationRootList *)self rootListView];
-  [v19 insertViewAtIndex:*(*&buf[8] + 24) animated:0];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView insertViewAtIndex:*(*&buf[8] + 24) animated:0];
 
   _Block_object_dispose(buf, 8);
 
@@ -2245,38 +2245,38 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   }
 }
 
-- (void)setOverrideNotificationListDisplayStyleSetting:(int64_t)a3 forReason:(id)a4 hideNotificationCount:(BOOL)a5
+- (void)setOverrideNotificationListDisplayStyleSetting:(int64_t)setting forReason:(id)reason hideNotificationCount:(BOOL)count
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  reasonCopy = reason;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationRootList *)self logDescription];
-    v11 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:a3];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    v11 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:setting];
     v14 = 138543874;
-    v15 = v10;
+    v15 = logDescription;
     v16 = 2114;
     v17 = v11;
     v18 = 2114;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ setting override notification list display style setting to %{public}@ for reason %{public}@", &v14, 0x20u);
   }
 
-  v12 = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v12 setValue:v13 forKey:v7];
+  notificationListDisplayStyleSettingsForReason = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:setting];
+  [notificationListDisplayStyleSettingsForReason setValue:v13 forKey:reasonCopy];
 
   [(NCNotificationRootList *)self _updateNotificationListDisplayStyleSetting];
 }
 
-- (void)removeOverrideNotificationListDisplayStyleSettingForReason:(id)a3
+- (void)removeOverrideNotificationListDisplayStyleSettingForReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
-  v6 = [v5 objectForKey:v4];
+  reasonCopy = reason;
+  notificationListDisplayStyleSettingsForReason = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
+  v6 = [notificationListDisplayStyleSettingsForReason objectForKey:reasonCopy];
 
   if (v6)
   {
@@ -2284,36 +2284,36 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v11 = 138543618;
-      v12 = v9;
+      v12 = logDescription;
       v13 = 2114;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ removing override notification list display style setting for reason %{public}@", &v11, 0x16u);
     }
 
-    v10 = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
-    [v10 removeObjectForKey:v4];
+    notificationListDisplayStyleSettingsForReason2 = [(NCNotificationRootList *)self notificationListDisplayStyleSettingsForReason];
+    [notificationListDisplayStyleSettingsForReason2 removeObjectForKey:reasonCopy];
 
     [(NCNotificationRootList *)self _updateNotificationListDisplayStyleSetting];
   }
 }
 
-- (void)setActiveDNDModeConfiguration:(id)a3
+- (void)setActiveDNDModeConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_activeDNDModeConfiguration, a3);
-    v5 = [(NCNotificationRootList *)self rootListView];
-    [v5 setNeedsLayout];
+    objc_storeStrong(&self->_activeDNDModeConfiguration, configuration);
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView setNeedsLayout];
   }
 }
 
-- (void)updateListViewVisibleRectForSize:(CGSize)a3
+- (void)updateListViewVisibleRectForSize:(CGSize)size
 {
-  v4 = [(NCNotificationRootList *)self rootListView];
-  [v4 contentOffset];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView contentOffset];
   [NCNotificationRootList _updateVisibleRectForContentOffset:"_updateVisibleRectForContentOffset:size:" size:?];
 }
 
@@ -2324,10 +2324,10 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     return 0;
   }
 
-  v3 = [(NCNotificationListViewProtocol *)self->_rootListView panGestureRecognizer];
-  [v3 locationInView:self->_rootListView];
+  panGestureRecognizer = [(NCNotificationListViewProtocol *)self->_rootListView panGestureRecognizer];
+  [panGestureRecognizer locationInView:self->_rootListView];
   v5 = v4;
-  [v3 velocityInView:self->_rootListView];
+  [panGestureRecognizer velocityInView:self->_rootListView];
   v7 = v6;
   [(NCNotificationListViewProtocol *)self->_rootListView firstItemOffset];
   v9 = v5 >= v8 || v7 < 0.0;
@@ -2335,9 +2335,9 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   return v9;
 }
 
-- (void)handleWake:(BOOL)a3
+- (void)handleWake:(BOOL)wake
 {
-  v3 = a3;
+  wakeCopy = wake;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
@@ -2359,7 +2359,7 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) handleWake:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) handleWake:{wakeCopy, v9}];
       }
 
       while (v6 != v8);
@@ -2370,9 +2370,9 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   }
 }
 
-- (void)handleCoverSheetVisibilityChange:(BOOL)a3
+- (void)handleCoverSheetVisibilityChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
@@ -2394,7 +2394,7 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) handleCoverSheetVisibilityChange:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) handleCoverSheetVisibilityChange:{changeCopy, v9}];
       }
 
       while (v6 != v8);
@@ -2407,23 +2407,23 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
 
 - (double)visibleRectBottomMarginForRollUnder
 {
-  v2 = [(NCNotificationRootList *)self rootListView];
-  [v2 visibleRectBottomMarginForRollUnder];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView visibleRectBottomMarginForRollUnder];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVisibleRectBottomMarginForRollUnder:(double)a3
+- (void)setVisibleRectBottomMarginForRollUnder:(double)under
 {
-  v4 = [(NCNotificationRootList *)self rootListView];
-  [v4 setVisibleRectBottomMarginForRollUnder:a3];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView setVisibleRectBottomMarginForRollUnder:under];
 }
 
 - (unint64_t)count
 {
-  v2 = [(NCNotificationRootList *)self notificationSections];
-  v3 = [v2 count];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  v3 = [notificationSections count];
 
   return v3;
 }
@@ -2437,17 +2437,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   return v4;
 }
 
-- (id)matchingRequestForRequest:(id)a3 inList:(id)a4
+- (id)matchingRequestForRequest:(id)request inList:(id)list
 {
-  v5 = a3;
-  v6 = [a4 allNotificationRequests];
+  requestCopy = request;
+  allNotificationRequests = [list allNotificationRequests];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__NCNotificationRootList_matchingRequestForRequest_inList___block_invoke;
   v11[3] = &unk_278370180;
-  v12 = v5;
-  v7 = v5;
-  v8 = [v6 indexOfObjectPassingTest:v11];
+  v12 = requestCopy;
+  v7 = requestCopy;
+  v8 = [allNotificationRequests indexOfObjectPassingTest:v11];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -2455,18 +2455,18 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
 
   else
   {
-    v9 = [v6 objectAtIndex:v8];
+    v9 = [allNotificationRequests objectAtIndex:v8];
   }
 
   return v9;
 }
 
-- (BOOL)removeNotificationRequest:(id)a3
+- (BOOL)removeNotificationRequest:(id)request
 {
   v151 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestDestinations];
-  v6 = [v5 count];
+  requestCopy = request;
+  requestDestinations = [requestCopy requestDestinations];
+  v6 = [requestDestinations count];
 
   v7 = MEMORY[0x277D77DD0];
   if (!v6)
@@ -2478,26 +2478,26 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v9 = [(NCNotificationRootList *)self criticalSectionList];
-  v10 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v9];
+  criticalSectionList = [(NCNotificationRootList *)self criticalSectionList];
+  v10 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:criticalSectionList];
 
-  if (v10 && (-[NCNotificationRootList criticalSectionList](self, "criticalSectionList"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 removeNotificationRequest:v4], v11, v12))
+  if (v10 && (-[NCNotificationRootList criticalSectionList](self, "criticalSectionList"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 removeNotificationRequest:requestCopy], v11, v12))
   {
     v13 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(NCNotificationRootList *)self logDescription];
-      v16 = [v4 notificationIdentifier];
-      v17 = [v16 un_logDigest];
-      v18 = [(NCNotificationRootList *)self criticalSectionList];
-      v19 = [v18 logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      criticalSectionList2 = [(NCNotificationRootList *)self criticalSectionList];
+      logDescription2 = [criticalSectionList2 logDescription];
       *buf = 138543874;
-      v144 = v15;
+      v144 = logDescription;
       v145 = 2114;
-      v146 = v17;
+      v146 = un_logDigest;
       v147 = 2114;
-      v148 = v19;
+      v148 = logDescription2;
       _os_log_impl(&dword_21E77E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
     }
 
@@ -2509,13 +2509,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     v20 = 0;
   }
 
-  v21 = [(NCNotificationRootList *)self persistentSectionList];
-  v22 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v21];
+  persistentSectionList = [(NCNotificationRootList *)self persistentSectionList];
+  v22 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:persistentSectionList];
 
   if (v22)
   {
-    v23 = [(NCNotificationRootList *)self persistentSectionList];
-    v24 = [v23 removeNotificationRequest:v4];
+    persistentSectionList2 = [(NCNotificationRootList *)self persistentSectionList];
+    v24 = [persistentSectionList2 removeNotificationRequest:requestCopy];
 
     if (v24)
     {
@@ -2523,17 +2523,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [(NCNotificationRootList *)self logDescription];
-        v28 = [v4 notificationIdentifier];
-        v29 = [v28 un_logDigest];
-        v30 = [(NCNotificationRootList *)self persistentSectionList];
-        v31 = [v30 logDescription];
+        logDescription3 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier2 = [requestCopy notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
+        persistentSectionList3 = [(NCNotificationRootList *)self persistentSectionList];
+        logDescription4 = [persistentSectionList3 logDescription];
         *buf = 138543874;
-        v144 = v27;
+        v144 = logDescription3;
         v145 = 2114;
-        v146 = v29;
+        v146 = un_logDigest2;
         v147 = 2114;
-        v148 = v31;
+        v148 = logDescription4;
         _os_log_impl(&dword_21E77E000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2541,13 +2541,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v32 = [(NCNotificationRootList *)self highlightedSectionList];
-  v33 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v32];
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+  v33 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:highlightedSectionList];
 
   if (v33)
   {
-    v34 = [(NCNotificationRootList *)self highlightedSectionList];
-    v35 = [v34 removeNotificationRequest:v4];
+    highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
+    v35 = [highlightedSectionList2 removeNotificationRequest:requestCopy];
 
     if (v35)
     {
@@ -2555,17 +2555,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v37 = v36;
-        v38 = [(NCNotificationRootList *)self logDescription];
-        v39 = [v4 notificationIdentifier];
-        v40 = [v39 un_logDigest];
-        v41 = [(NCNotificationRootList *)self highlightedSectionList];
-        v42 = [v41 logDescription];
+        logDescription5 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier3 = [requestCopy notificationIdentifier];
+        un_logDigest3 = [notificationIdentifier3 un_logDigest];
+        highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
+        logDescription6 = [highlightedSectionList3 logDescription];
         *buf = 138543874;
-        v144 = v38;
+        v144 = logDescription5;
         v145 = 2114;
-        v146 = v40;
+        v146 = un_logDigest3;
         v147 = 2114;
-        v148 = v42;
+        v148 = logDescription6;
         _os_log_impl(&dword_21E77E000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2573,18 +2573,18 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v43 = [(NCNotificationRootList *)self incomingSectionList];
-  v44 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v43];
+  incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+  v44 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:incomingSectionList];
 
   if (v44)
   {
-    v45 = [(NCNotificationRootList *)self incomingSectionList];
-    v46 = [(NCNotificationRootList *)self matchingRequestForRequest:v4 inList:v45];
+    incomingSectionList2 = [(NCNotificationRootList *)self incomingSectionList];
+    v46 = [(NCNotificationRootList *)self matchingRequestForRequest:requestCopy inList:incomingSectionList2];
 
     if (v46)
     {
-      v47 = [v46 requestDestinations];
-      v48 = [v47 containsObject:@"BulletinDestinationNotificationCenter"];
+      requestDestinations2 = [v46 requestDestinations];
+      v48 = [requestDestinations2 containsObject:@"BulletinDestinationNotificationCenter"];
 
       v49 = v48 ^ 1;
     }
@@ -2594,41 +2594,41 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       v49 = 1;
     }
 
-    v50 = [v4 requestDestinations];
-    v51 = [v50 containsObject:@"BulletinDestinationNotificationCenter"];
+    requestDestinations3 = [requestCopy requestDestinations];
+    v51 = [requestDestinations3 containsObject:@"BulletinDestinationNotificationCenter"];
 
     if ((v49 & 1) == 0 && (v51 & 1) == 0)
     {
-      v52 = [(NCNotificationRootList *)self historySectionList];
-      [v52 insertNotificationRequest:v46];
+      historySectionList = [(NCNotificationRootList *)self historySectionList];
+      [historySectionList insertNotificationRequest:v46];
 
       v53 = *v7;
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         log = v53;
-        v140 = [(NCNotificationRootList *)self logDescription];
-        v142 = [v46 notificationIdentifier];
-        v54 = [v142 un_logDigest];
-        v55 = [(NCNotificationRootList *)self incomingSectionList];
-        v56 = [v55 logDescription];
-        v57 = [(NCNotificationRootList *)self historySectionList];
-        v58 = [v57 logDescription];
+        logDescription7 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier4 = [v46 notificationIdentifier];
+        un_logDigest4 = [notificationIdentifier4 un_logDigest];
+        incomingSectionList3 = [(NCNotificationRootList *)self incomingSectionList];
+        logDescription8 = [incomingSectionList3 logDescription];
+        historySectionList2 = [(NCNotificationRootList *)self historySectionList];
+        logDescription9 = [historySectionList2 logDescription];
         *buf = 138544130;
-        v144 = v140;
+        v144 = logDescription7;
         v145 = 2114;
-        v146 = v54;
+        v146 = un_logDigest4;
         v147 = 2114;
-        v148 = v56;
+        v148 = logDescription8;
         v149 = 2114;
-        v150 = v58;
+        v150 = logDescription9;
         _os_log_impl(&dword_21E77E000, log, OS_LOG_TYPE_DEFAULT, "%{public}@ Migrating notification request %{public}@ from %{public}@ to %{public}@ on removal", buf, 0x2Au);
 
         v7 = MEMORY[0x277D77DD0];
       }
     }
 
-    v59 = [(NCNotificationRootList *)self incomingSectionList];
-    v60 = [v59 removeNotificationRequest:v4];
+    incomingSectionList4 = [(NCNotificationRootList *)self incomingSectionList];
+    v60 = [incomingSectionList4 removeNotificationRequest:requestCopy];
 
     if (v60)
     {
@@ -2636,17 +2636,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v62 = v61;
-        v63 = [(NCNotificationRootList *)self logDescription];
-        v64 = [v4 notificationIdentifier];
-        v65 = [v64 un_logDigest];
-        v66 = [(NCNotificationRootList *)self incomingSectionList];
-        v67 = [v66 logDescription];
+        logDescription10 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier5 = [requestCopy notificationIdentifier];
+        un_logDigest5 = [notificationIdentifier5 un_logDigest];
+        incomingSectionList5 = [(NCNotificationRootList *)self incomingSectionList];
+        logDescription11 = [incomingSectionList5 logDescription];
         *buf = 138543874;
-        v144 = v63;
+        v144 = logDescription10;
         v145 = 2114;
-        v146 = v65;
+        v146 = un_logDigest5;
         v147 = 2114;
-        v148 = v67;
+        v148 = logDescription11;
         _os_log_impl(&dword_21E77E000, v62, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2655,8 +2655,8 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
 
     if ([(NCNotificationRootList *)self isMissedSectionActive])
     {
-      v68 = [(NCNotificationRootList *)self upcomingMissedSectionList];
-      v69 = [v68 removeNotificationRequest:v4];
+      upcomingMissedSectionList = [(NCNotificationRootList *)self upcomingMissedSectionList];
+      v69 = [upcomingMissedSectionList removeNotificationRequest:requestCopy];
 
       if (v69)
       {
@@ -2664,17 +2664,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
         if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
         {
           v71 = v70;
-          v72 = [(NCNotificationRootList *)self logDescription];
-          v73 = [v4 notificationIdentifier];
-          v74 = [v73 un_logDigest];
-          v75 = [(NCNotificationRootList *)self upcomingMissedSectionList];
-          v76 = [v75 logDescription];
+          logDescription12 = [(NCNotificationRootList *)self logDescription];
+          notificationIdentifier6 = [requestCopy notificationIdentifier];
+          un_logDigest6 = [notificationIdentifier6 un_logDigest];
+          upcomingMissedSectionList2 = [(NCNotificationRootList *)self upcomingMissedSectionList];
+          logDescription13 = [upcomingMissedSectionList2 logDescription];
           *buf = 138543874;
-          v144 = v72;
+          v144 = logDescription12;
           v145 = 2114;
-          v146 = v74;
+          v146 = un_logDigest6;
           v147 = 2114;
-          v148 = v76;
+          v148 = logDescription13;
           _os_log_impl(&dword_21E77E000, v71, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
         }
 
@@ -2683,13 +2683,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v77 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-  v78 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v77];
+  prominentIncomingSectionList = [(NCNotificationRootList *)self prominentIncomingSectionList];
+  v78 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:prominentIncomingSectionList];
 
   if (v78)
   {
-    v79 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-    v80 = [v79 removeNotificationRequest:v4];
+    prominentIncomingSectionList2 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+    v80 = [prominentIncomingSectionList2 removeNotificationRequest:requestCopy];
 
     if (v80)
     {
@@ -2697,17 +2697,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v82 = v81;
-        v83 = [(NCNotificationRootList *)self logDescription];
-        v84 = [v4 notificationIdentifier];
-        v85 = [v84 un_logDigest];
-        v86 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-        v87 = [v86 logDescription];
+        logDescription14 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier7 = [requestCopy notificationIdentifier];
+        un_logDigest7 = [notificationIdentifier7 un_logDigest];
+        prominentIncomingSectionList3 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+        logDescription15 = [prominentIncomingSectionList3 logDescription];
         *buf = 138543874;
-        v144 = v83;
+        v144 = logDescription14;
         v145 = 2114;
-        v146 = v85;
+        v146 = un_logDigest7;
         v147 = 2114;
-        v148 = v87;
+        v148 = logDescription15;
         _os_log_impl(&dword_21E77E000, v82, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2715,13 +2715,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v88 = [(NCNotificationRootList *)self historySectionList];
-  v89 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v88];
+  historySectionList3 = [(NCNotificationRootList *)self historySectionList];
+  v89 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:historySectionList3];
 
   if (v89)
   {
-    v90 = [(NCNotificationRootList *)self historySectionList];
-    v91 = [v90 removeNotificationRequest:v4];
+    historySectionList4 = [(NCNotificationRootList *)self historySectionList];
+    v91 = [historySectionList4 removeNotificationRequest:requestCopy];
 
     if (v91)
     {
@@ -2729,17 +2729,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v93 = v92;
-        v94 = [(NCNotificationRootList *)self logDescription];
-        v95 = [v4 notificationIdentifier];
-        v96 = [v95 un_logDigest];
-        v97 = [(NCNotificationRootList *)self historySectionList];
-        v98 = [v97 logDescription];
+        logDescription16 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier8 = [requestCopy notificationIdentifier];
+        un_logDigest8 = [notificationIdentifier8 un_logDigest];
+        historySectionList5 = [(NCNotificationRootList *)self historySectionList];
+        logDescription17 = [historySectionList5 logDescription];
         *buf = 138543874;
-        v144 = v94;
+        v144 = logDescription16;
         v145 = 2114;
-        v146 = v96;
+        v146 = un_logDigest8;
         v147 = 2114;
-        v148 = v98;
+        v148 = logDescription17;
         _os_log_impl(&dword_21E77E000, v93, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2747,13 +2747,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v99 = [(NCNotificationRootList *)self currentDigestSectionList];
-  v100 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v99];
+  currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+  v100 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:currentDigestSectionList];
 
   if (v100)
   {
-    v101 = [(NCNotificationRootList *)self currentDigestSectionList];
-    v102 = [v101 removeNotificationRequest:v4];
+    currentDigestSectionList2 = [(NCNotificationRootList *)self currentDigestSectionList];
+    v102 = [currentDigestSectionList2 removeNotificationRequest:requestCopy];
 
     if (v102)
     {
@@ -2761,17 +2761,17 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v104 = v103;
-        v105 = [(NCNotificationRootList *)self logDescription];
-        v106 = [v4 notificationIdentifier];
-        v107 = [v106 un_logDigest];
-        v108 = [(NCNotificationRootList *)self currentDigestSectionList];
-        v109 = [v108 logDescription];
+        logDescription18 = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier9 = [requestCopy notificationIdentifier];
+        un_logDigest9 = [notificationIdentifier9 un_logDigest];
+        currentDigestSectionList3 = [(NCNotificationRootList *)self currentDigestSectionList];
+        logDescription19 = [currentDigestSectionList3 logDescription];
         *buf = 138543874;
-        v144 = v105;
+        v144 = logDescription18;
         v145 = 2114;
-        v146 = v107;
+        v146 = un_logDigest9;
         v147 = 2114;
-        v148 = v109;
+        v148 = logDescription19;
         _os_log_impl(&dword_21E77E000, v104, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
       }
 
@@ -2779,26 +2779,26 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
     }
   }
 
-  v110 = [(NCNotificationRootList *)self upcomingDigestSectionList];
-  v111 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v110];
+  upcomingDigestSectionList = [(NCNotificationRootList *)self upcomingDigestSectionList];
+  v111 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:upcomingDigestSectionList];
 
-  if (v111 && (-[NCNotificationRootList upcomingDigestSectionList](self, "upcomingDigestSectionList"), v112 = objc_claimAutoreleasedReturnValue(), v113 = [v112 removeNotificationRequest:v4], v112, v113))
+  if (v111 && (-[NCNotificationRootList upcomingDigestSectionList](self, "upcomingDigestSectionList"), v112 = objc_claimAutoreleasedReturnValue(), v113 = [v112 removeNotificationRequest:requestCopy], v112, v113))
   {
     v114 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v115 = v114;
-      v116 = [(NCNotificationRootList *)self logDescription];
-      v117 = [v4 notificationIdentifier];
-      v118 = [v117 un_logDigest];
-      v119 = [(NCNotificationRootList *)self upcomingDigestSectionList];
-      v120 = [v119 logDescription];
+      logDescription20 = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier10 = [requestCopy notificationIdentifier];
+      un_logDigest10 = [notificationIdentifier10 un_logDigest];
+      upcomingDigestSectionList2 = [(NCNotificationRootList *)self upcomingDigestSectionList];
+      logDescription21 = [upcomingDigestSectionList2 logDescription];
       *buf = 138543874;
-      v144 = v116;
+      v144 = logDescription20;
       v145 = 2114;
-      v146 = v118;
+      v146 = un_logDigest10;
       v147 = 2114;
-      v148 = v120;
+      v148 = logDescription21;
       _os_log_impl(&dword_21E77E000, v115, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification request %{public}@ from %{public}@", buf, 0x20u);
     }
   }
@@ -2813,13 +2813,13 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
   {
     v122 = v121;
-    v123 = [(NCNotificationRootList *)self logDescription];
-    v124 = [v4 notificationIdentifier];
-    v125 = [v124 un_logDigest];
+    logDescription22 = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier11 = [requestCopy notificationIdentifier];
+    un_logDigest11 = [notificationIdentifier11 un_logDigest];
     *buf = 138543618;
-    v144 = v123;
+    v144 = logDescription22;
     v145 = 2114;
-    v146 = v125;
+    v146 = un_logDigest11;
     _os_log_impl(&dword_21E77E000, v122, OS_LOG_TYPE_DEFAULT, "%{public}@ updating list views for removed notification request %{public}@", buf, 0x16u);
   }
 
@@ -2830,8 +2830,8 @@ void __101__NCNotificationRootList_insertSupplementaryViewsContainerAtListPositi
   [(NCNotificationRootList *)self _updateForceExpansionForHighlights];
   v126 = 1;
 LABEL_62:
-  v127 = [(NCNotificationRootList *)self historySectionList];
-  v128 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v127];
+  historySectionList6 = [(NCNotificationRootList *)self historySectionList];
+  v128 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:historySectionList6];
 
   if (v128)
   {
@@ -2839,89 +2839,89 @@ LABEL_62:
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v130 = v129;
-      v131 = [(NCNotificationRootList *)self logDescription];
-      v132 = [v4 notificationIdentifier];
-      v133 = [v132 un_logDigest];
+      logDescription23 = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier12 = [requestCopy notificationIdentifier];
+      un_logDigest12 = [notificationIdentifier12 un_logDigest];
       *buf = 138543618;
-      v144 = v131;
+      v144 = logDescription23;
       v145 = 2114;
-      v146 = v133;
+      v146 = un_logDigest12;
       _os_log_impl(&dword_21E77E000, v130, OS_LOG_TYPE_DEFAULT, "%{public}@ Clear request  %{public}@ from cache as it removed from history section", buf, 0x16u);
     }
 
-    v134 = [(NCNotificationRootList *)self notificationListCache];
-    [v134 removeNotificationRequest:v4];
+    notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+    [notificationListCache removeNotificationRequest:requestCopy];
 
-    v135 = [(NCNotificationRootList *)self notificationSummaryCache];
-    [v135 removeNotificationRequest:v4];
+    notificationSummaryCache = [(NCNotificationRootList *)self notificationSummaryCache];
+    [notificationSummaryCache removeNotificationRequest:requestCopy];
 
-    v136 = [(NCNotificationRootList *)self suggestionManager];
-    [v136 clearSuggestionForNotificationRequest:v4];
+    suggestionManager = [(NCNotificationRootList *)self suggestionManager];
+    [suggestionManager clearSuggestionForNotificationRequest:requestCopy];
 
-    v137 = [(NCNotificationRootList *)self migrationScheduler];
-    [v137 removeMigrationForNotificationRequest:v4];
+    migrationScheduler = [(NCNotificationRootList *)self migrationScheduler];
+    [migrationScheduler removeMigrationForNotificationRequest:requestCopy];
 
-    v138 = [(NCNotificationRootList *)self migrationScheduler];
-    [v138 removeMigratedTimeSensitiveNotificationRequests:v4];
+    migrationScheduler2 = [(NCNotificationRootList *)self migrationScheduler];
+    [migrationScheduler2 removeMigratedTimeSensitiveNotificationRequests:requestCopy];
   }
 
   return v126;
 }
 
-- (void)modifyNotificationRequest:(id)a3
+- (void)modifyNotificationRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationRootList *)self logDescription];
-    v8 = [v4 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v11 = 138543618;
-    v12 = v7;
+    v12 = logDescription;
     v13 = 2114;
-    v14 = v9;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ modifying notification request %{public}@", &v11, 0x16u);
   }
 
-  v10 = [(NCNotificationRootList *)self _insertNotificationRequest:v4];
+  v10 = [(NCNotificationRootList *)self _insertNotificationRequest:requestCopy];
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)reloadNotificationRequest:(id)a3
+- (void)reloadNotificationRequest:(id)request
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationRootList *)self logDescription];
-    v8 = [v4 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543618;
-    v17 = v7;
+    v17 = logDescription;
     v18 = 2114;
-    v19 = v9;
+    v19 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ reloading notification request %{public}@", buf, 0x16u);
   }
 
-  v10 = [(NCNotificationRootList *)self notificationListCache];
-  [v10 clearCachedHeightsForNotificationRequest:v4];
+  notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+  [notificationListCache clearCachedHeightsForNotificationRequest:requestCopy];
 
-  v11 = [(NCNotificationRootList *)self notificationSummaryCache];
-  [v11 clearCachedHeightsForNotificationRequest:v4];
+  notificationSummaryCache = [(NCNotificationRootList *)self notificationSummaryCache];
+  [notificationSummaryCache clearCachedHeightsForNotificationRequest:requestCopy];
 
-  v12 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__NCNotificationRootList_reloadNotificationRequest___block_invoke;
   v14[3] = &unk_27836F768;
-  v15 = v4;
-  v13 = v4;
-  [v12 enumerateObjectsUsingBlock:v14];
+  v15 = requestCopy;
+  v13 = requestCopy;
+  [notificationSections enumerateObjectsUsingBlock:v14];
 }
 
 void __52__NCNotificationRootList_reloadNotificationRequest___block_invoke(uint64_t a1, void *a2)
@@ -2933,76 +2933,76 @@ void __52__NCNotificationRootList_reloadNotificationRequest___block_invoke(uint6
   }
 }
 
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(NCNotificationRootList *)self _willUpdateNotificationSectionSettings:v6 previousSectionSettings:v7];
+  settingsCopy = settings;
+  sectionSettingsCopy = sectionSettings;
+  [(NCNotificationRootList *)self _willUpdateNotificationSectionSettings:settingsCopy previousSectionSettings:sectionSettingsCopy];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(NCNotificationRootList *)self criticalSectionList];
+  criticalSectionList = [(NCNotificationRootList *)self criticalSectionList];
 
-  if (v9)
+  if (criticalSectionList)
   {
-    v10 = [(NCNotificationRootList *)self criticalSectionList];
-    [v8 addObject:v10];
+    criticalSectionList2 = [(NCNotificationRootList *)self criticalSectionList];
+    [v8 addObject:criticalSectionList2];
   }
 
-  v11 = [(NCNotificationRootList *)self persistentSectionList];
+  persistentSectionList = [(NCNotificationRootList *)self persistentSectionList];
 
-  if (v11)
+  if (persistentSectionList)
   {
-    v12 = [(NCNotificationRootList *)self persistentSectionList];
-    [v8 addObject:v12];
+    persistentSectionList2 = [(NCNotificationRootList *)self persistentSectionList];
+    [v8 addObject:persistentSectionList2];
   }
 
-  v13 = [(NCNotificationRootList *)self highlightedSectionList];
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
 
-  if (v13)
+  if (highlightedSectionList)
   {
-    v14 = [(NCNotificationRootList *)self highlightedSectionList];
-    [v8 addObject:v14];
+    highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
+    [v8 addObject:highlightedSectionList2];
   }
 
-  v15 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+  prominentIncomingSectionList = [(NCNotificationRootList *)self prominentIncomingSectionList];
 
-  if (v15)
+  if (prominentIncomingSectionList)
   {
-    v16 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-    [v8 addObject:v16];
+    prominentIncomingSectionList2 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+    [v8 addObject:prominentIncomingSectionList2];
   }
 
-  v17 = [(NCNotificationRootList *)self incomingSectionList];
+  incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
 
-  if (v17)
+  if (incomingSectionList)
   {
-    v18 = [(NCNotificationRootList *)self incomingSectionList];
-    [v8 addObject:v18];
+    incomingSectionList2 = [(NCNotificationRootList *)self incomingSectionList];
+    [v8 addObject:incomingSectionList2];
   }
 
-  v19 = [(NCNotificationRootList *)self upcomingMissedSectionList];
+  upcomingMissedSectionList = [(NCNotificationRootList *)self upcomingMissedSectionList];
 
-  if (v19)
+  if (upcomingMissedSectionList)
   {
-    v20 = [(NCNotificationRootList *)self upcomingMissedSectionList];
-    [v8 addObject:v20];
+    upcomingMissedSectionList2 = [(NCNotificationRootList *)self upcomingMissedSectionList];
+    [v8 addObject:upcomingMissedSectionList2];
   }
 
-  if (v7)
+  if (sectionSettingsCopy)
   {
-    v21 = [v6 showsInLockScreen];
-    if (v21 != [v7 showsInLockScreen] && (objc_msgSend(v6, "showsInLockScreen") & 1) == 0)
+    showsInLockScreen = [settingsCopy showsInLockScreen];
+    if (showsInLockScreen != [sectionSettingsCopy showsInLockScreen] && (objc_msgSend(settingsCopy, "showsInLockScreen") & 1) == 0)
     {
       v22 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [(NCNotificationRootList *)self logDescription];
-        v25 = [v6 sectionIdentifier];
+        logDescription = [(NCNotificationRootList *)self logDescription];
+        sectionIdentifier = [settingsCopy sectionIdentifier];
         *buf = 138543618;
-        v64 = v24;
+        v64 = logDescription;
         v65 = 2114;
-        v66 = v25;
+        v66 = sectionIdentifier;
         _os_log_impl(&dword_21E77E000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ moving notifications to history section for %{public}@ on Show in Lock Screen turned OFF", buf, 0x16u);
       }
 
@@ -3011,37 +3011,37 @@ void __52__NCNotificationRootList_reloadNotificationRequest___block_invoke(uint6
       v61[2] = __84__NCNotificationRootList_updateNotificationSectionSettings_previousSectionSettings___block_invoke;
       v61[3] = &unk_2783701D0;
       v61[4] = self;
-      v62 = v6;
+      v62 = settingsCopy;
       [v8 enumerateObjectsUsingBlock:v61];
       [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
     }
 
-    v26 = [v6 muteAssertion];
-    v27 = [v7 muteAssertion];
-    v28 = v27;
-    if (v26 == v27)
+    muteAssertion = [settingsCopy muteAssertion];
+    muteAssertion2 = [sectionSettingsCopy muteAssertion];
+    v28 = muteAssertion2;
+    if (muteAssertion == muteAssertion2)
     {
     }
 
     else
     {
-      v29 = [v6 muteAssertion];
+      muteAssertion3 = [settingsCopy muteAssertion];
 
-      if (v29)
+      if (muteAssertion3)
       {
         v30 = *MEMORY[0x277D77DD0];
         if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
         {
           v31 = v30;
-          v32 = [(NCNotificationRootList *)self logDescription];
-          v33 = [v6 sectionIdentifier];
-          v34 = [v6 muteAssertion];
+          logDescription2 = [(NCNotificationRootList *)self logDescription];
+          sectionIdentifier2 = [settingsCopy sectionIdentifier];
+          muteAssertion4 = [settingsCopy muteAssertion];
           *buf = 138543874;
-          v64 = v32;
+          v64 = logDescription2;
           v65 = 2114;
-          v66 = v33;
+          v66 = sectionIdentifier2;
           v67 = 2112;
-          v68 = v34;
+          v68 = muteAssertion4;
           _os_log_impl(&dword_21E77E000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ moving notifications to history section for %{public}@ on mute assertion change to %@", buf, 0x20u);
         }
 
@@ -3050,25 +3050,25 @@ void __52__NCNotificationRootList_reloadNotificationRequest___block_invoke(uint6
         v59[2] = __84__NCNotificationRootList_updateNotificationSectionSettings_previousSectionSettings___block_invoke_88;
         v59[3] = &unk_2783701D0;
         v59[4] = self;
-        v60 = v6;
+        v60 = settingsCopy;
         [v8 enumerateObjectsUsingBlock:v59];
         [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
       }
     }
 
-    v35 = [v6 isScheduledDeliveryEnabled];
-    if (v35 != [v7 isScheduledDeliveryEnabled] && objc_msgSend(v6, "isScheduledDeliveryEnabled"))
+    isScheduledDeliveryEnabled = [settingsCopy isScheduledDeliveryEnabled];
+    if (isScheduledDeliveryEnabled != [sectionSettingsCopy isScheduledDeliveryEnabled] && objc_msgSend(settingsCopy, "isScheduledDeliveryEnabled"))
     {
       v36 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
       {
         v37 = v36;
-        v38 = [(NCNotificationRootList *)self logDescription];
-        v39 = [v6 sectionIdentifier];
+        logDescription3 = [(NCNotificationRootList *)self logDescription];
+        sectionIdentifier3 = [settingsCopy sectionIdentifier];
         *buf = 138543618;
-        v64 = v38;
+        v64 = logDescription3;
         v65 = 2114;
-        v66 = v39;
+        v66 = sectionIdentifier3;
         _os_log_impl(&dword_21E77E000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ moving notifications to upcoming digest for %{public}@ on Scheduled Delivery setting enabled", buf, 0x16u);
       }
 
@@ -3077,57 +3077,57 @@ void __52__NCNotificationRootList_reloadNotificationRequest___block_invoke(uint6
       v57[2] = __84__NCNotificationRootList_updateNotificationSectionSettings_previousSectionSettings___block_invoke_90;
       v57[3] = &unk_2783701D0;
       v57[4] = self;
-      v58 = v6;
+      v58 = settingsCopy;
       [v8 enumerateObjectsUsingBlock:v57];
       [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
     }
 
-    v40 = [v6 isPrioritizationEnabled];
-    if (v40 != [v7 isPrioritizationEnabled] && (objc_msgSend(v6, "isPrioritizationEnabled") & 1) == 0)
+    isPrioritizationEnabled = [settingsCopy isPrioritizationEnabled];
+    if (isPrioritizationEnabled != [sectionSettingsCopy isPrioritizationEnabled] && (objc_msgSend(settingsCopy, "isPrioritizationEnabled") & 1) == 0)
     {
       v41 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
       {
         v42 = v41;
-        v43 = [(NCNotificationRootList *)self logDescription];
-        v44 = [v6 sectionIdentifier];
+        logDescription4 = [(NCNotificationRootList *)self logDescription];
+        sectionIdentifier4 = [settingsCopy sectionIdentifier];
         *buf = 138543618;
-        v64 = v43;
+        v64 = logDescription4;
         v65 = 2114;
-        v66 = v44;
+        v66 = sectionIdentifier4;
         _os_log_impl(&dword_21E77E000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ moving notifications from highlights to history for %{public}@ on prioritization disabled", buf, 0x16u);
       }
 
-      v45 = [(NCNotificationRootList *)self highlightedSectionList];
+      highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
 
-      if (v45)
+      if (highlightedSectionList3)
       {
-        v46 = [(NCNotificationRootList *)self highlightedSectionList];
-        v47 = [(NCNotificationRootList *)self historySectionList];
+        highlightedSectionList4 = [(NCNotificationRootList *)self highlightedSectionList];
+        historySectionList = [(NCNotificationRootList *)self historySectionList];
         v55[0] = MEMORY[0x277D85DD0];
         v55[1] = 3221225472;
         v55[2] = __84__NCNotificationRootList_updateNotificationSectionSettings_previousSectionSettings___block_invoke_92;
         v55[3] = &unk_2783701A8;
-        v56 = v6;
+        v56 = settingsCopy;
         BYTE2(v51) = 0;
         LOWORD(v51) = 256;
-        [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v46 passingTest:v47 filterRequestsPassingTest:v55 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v51 reorderGroupNotifications:?];
+        [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:highlightedSectionList4 passingTest:historySectionList filterRequestsPassingTest:v55 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v51 reorderGroupNotifications:?];
       }
 
       [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
     }
   }
 
-  v48 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __84__NCNotificationRootList_updateNotificationSectionSettings_previousSectionSettings___block_invoke_2_93;
   v52[3] = &unk_2783701D0;
-  v53 = v6;
-  v54 = v7;
-  v49 = v7;
-  v50 = v6;
-  [v48 enumerateObjectsUsingBlock:v52];
+  v53 = settingsCopy;
+  v54 = sectionSettingsCopy;
+  v49 = sectionSettingsCopy;
+  v50 = settingsCopy;
+  [notificationSections enumerateObjectsUsingBlock:v52];
 
   [(NCSuggestionManager *)self->_suggestionManager updateNotificationSectionSettings:v50 previousSectionSettings:v49];
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
@@ -3231,15 +3231,15 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
 
 - (double)scrollViewVisibleContentLayoutOffsetY
 {
-  v3 = [(NCNotificationRootList *)self rootListView];
-  [v3 contentLayoutOffset];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView contentLayoutOffset];
   v5 = v4;
 
-  v6 = [(NCNotificationRootList *)self rootListView];
-  [v6 contentOffset];
+  rootListView2 = [(NCNotificationRootList *)self rootListView];
+  [rootListView2 contentOffset];
   v8 = v7;
-  v9 = [(NCNotificationRootList *)self rootListView];
-  [v9 contentInset];
+  rootListView3 = [(NCNotificationRootList *)self rootListView];
+  [rootListView3 contentInset];
   v11 = v8 + v10;
 
   v12 = v11 <= v5 || v5 <= 0.0;
@@ -3252,20 +3252,20 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
   return result;
 }
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
-  if (self->_deviceAuthenticated != a3)
+  if (self->_deviceAuthenticated != authenticated)
   {
     v13 = v3;
     v14 = v4;
-    v5 = a3;
-    self->_deviceAuthenticated = a3;
-    v7 = [(NCNotificationRootList *)self suggestionManager];
-    [v7 setDeviceAuthenticated:v5];
+    authenticatedCopy = authenticated;
+    self->_deviceAuthenticated = authenticated;
+    suggestionManager = [(NCNotificationRootList *)self suggestionManager];
+    [suggestionManager setDeviceAuthenticated:authenticatedCopy];
 
     v8 = MEMORY[0x277CBEB58];
-    v9 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
-    v10 = [v8 setWithSet:v9];
+    _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+    v10 = [v8 setWithSet:_notificationSectionListsForEnumeration];
 
     if (self->_upcomingDigestSectionList)
     {
@@ -3286,7 +3286,7 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
     v11[1] = 3221225472;
     v11[2] = __49__NCNotificationRootList_setDeviceAuthenticated___block_invoke;
     v11[3] = &__block_descriptor_33_e49_v24__0__NCNotificationStructuredSectionList_8_B16l;
-    v12 = v5;
+    v12 = authenticatedCopy;
     [v10 enumerateObjectsUsingBlock:v11];
     if (([(NCNotificationRootList *)self isNotificationHistoryRevealed]& 1) == 0)
     {
@@ -3297,12 +3297,12 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
   }
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self loadedNotificationSections];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  loadedNotificationSections = [(NCNotificationRootList *)self loadedNotificationSections];
+  v6 = [loadedNotificationSections containsObject:identifierCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -3310,24 +3310,24 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       *buf = 138543618;
-      v25 = v9;
+      v25 = logDescription;
       v26 = 2114;
-      v27 = v4;
+      v27 = identifierCopy;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ notifications loaded for section %{public}@", buf, 0x16u);
     }
 
-    v10 = [(NCNotificationRootList *)self loadedNotificationSections];
-    v11 = [v4 copy];
-    [v10 addObject:v11];
+    loadedNotificationSections2 = [(NCNotificationRootList *)self loadedNotificationSections];
+    v11 = [identifierCopy copy];
+    [loadedNotificationSections2 addObject:v11];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(NCNotificationRootList *)self notificationSections];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    notificationSections = [(NCNotificationRootList *)self notificationSections];
+    v13 = [notificationSections countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3338,39 +3338,39 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(notificationSections);
           }
 
           v17 = *(*(&v19 + 1) + 8 * i);
           if ([v17 preloadsNotificationRequests])
           {
-            [v17 notificationsLoadedForSectionIdentifier:v4];
+            [v17 notificationsLoadedForSectionIdentifier:identifierCopy];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [notificationSections countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
     }
 
-    v18 = [(NCNotificationRootList *)self persistentStateManager];
-    [v18 notificationsLoadedForSectionIdentifier:v4];
+    persistentStateManager = [(NCNotificationRootList *)self persistentStateManager];
+    [persistentStateManager notificationsLoadedForSectionIdentifier:identifierCopy];
   }
 }
 
-- (id)_sectionContainsNotificationRequest:(id)a3
+- (id)_sectionContainsNotificationRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self notificationSections];
+  requestCopy = request;
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __62__NCNotificationRootList__sectionContainsNotificationRequest___block_invoke;
   v22[3] = &unk_278370218;
-  v6 = v4;
+  v6 = requestCopy;
   v23 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v22];
+  v7 = [notificationSections indexOfObjectPassingTest:v22];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3378,13 +3378,13 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRootList *)self logDescription];
-      v11 = [v6 notificationIdentifier];
-      v12 = [v11 un_logDigest];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier = [v6 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      v25 = v10;
+      v25 = logDescription;
       v26 = 2114;
-      v27 = v12;
+      v27 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Request %{public}@ does not exist in the lists.", buf, 0x16u);
     }
 
@@ -3393,21 +3393,21 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
 
   else
   {
-    v14 = [(NCNotificationRootList *)self notificationSections];
-    v13 = [v14 objectAtIndex:v7];
+    notificationSections2 = [(NCNotificationRootList *)self notificationSections];
+    v13 = [notificationSections2 objectAtIndex:v7];
 
     v15 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(NCNotificationRootList *)self logDescription];
-      v18 = [v6 notificationIdentifier];
-      v19 = [v18 un_logDigest];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier2 = [v6 notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier2 un_logDigest];
       v20 = NCNotificationListSectionTypeString([v13 sectionType]);
       *buf = 138543874;
-      v25 = v17;
+      v25 = logDescription2;
       v26 = 2114;
-      v27 = v19;
+      v27 = un_logDigest2;
       v28 = 2114;
       v29 = v20;
       _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Found request %{public}@ in section %{public}@", buf, 0x20u);
@@ -3417,27 +3417,27 @@ uint64_t __84__NCNotificationRootList_updateNotificationSectionSettings_previous
   return v13;
 }
 
-- (BOOL)containsNotificationRequest:(id)a3
+- (BOOL)containsNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__NCNotificationRootList_containsNotificationRequest___block_invoke;
   v8[3] = &unk_278370240;
-  v6 = v4;
+  v6 = requestCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [notificationSections enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(notificationSections) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return notificationSections;
 }
 
 uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -3452,7 +3452,7 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
   return result;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = NCNotificationRootList;
@@ -3461,7 +3461,7 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
     v5 = 1;
   }
 
-  else if ([NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:a3])
+  else if ([NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:selector])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -3475,102 +3475,102 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
   return v5 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (+[NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListComponentDelegateMethod:", [v4 selector]))
+  invocationCopy = invocation;
+  if (+[NCNotificationStructuredListUtilities isNotificationListComponentDelegateMethod:](NCNotificationStructuredListUtilities, "isNotificationListComponentDelegateMethod:", [invocationCopy selector]))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v4 invokeWithTarget:WeakRetained];
+      [invocationCopy invokeWithTarget:WeakRetained];
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = NCNotificationRootList;
-      [(NCNotificationRootList *)&v6 forwardInvocation:v4];
+      [(NCNotificationRootList *)&v6 forwardInvocation:invocationCopy];
     }
   }
 }
 
-- (void)notificationListBaseComponentRequestsClearingAll:(id)a3
+- (void)notificationListBaseComponentRequestsClearingAll:(id)all
 {
-  v4 = a3;
-  v5 = [objc_opt_class() presentableTypes];
+  allCopy = all;
+  presentableTypes = [objc_opt_class() presentableTypes];
   v6 = +[NCNotificationStructuredSectionList presentableTypes];
-  v7 = [v5 isSubsetOfSet:v6];
+  v7 = [presentableTypes isSubsetOfSet:v6];
 
   v8 = objc_opt_class();
-  v9 = [v8 presentableTypes];
+  presentableTypes2 = [v8 presentableTypes];
   v10 = +[NCNotificationListSupplementaryViewsSection presentableTypes];
-  v11 = [v9 isSubsetOfSet:v10];
+  v11 = [presentableTypes2 isSubsetOfSet:v10];
 
   [(NCNotificationRootList *)self _clearAllNotifications:v7 supplementaryViewControllers:v11];
 }
 
-- (id)notificationStructuredSectionList:(id)a3 requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)a4 isLongLook:(BOOL)a5
+- (id)notificationStructuredSectionList:(id)list requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(NCNotificationRootList *)self suggestionManager];
-  v9 = [v8 auxiliaryOptionsContentProviderForNotificationRequest:v7 isLongLook:v5];
+  lookCopy = look;
+  requestCopy = request;
+  suggestionManager = [(NCNotificationRootList *)self suggestionManager];
+  v9 = [suggestionManager auxiliaryOptionsContentProviderForNotificationRequest:requestCopy isLongLook:lookCopy];
 
   return v9;
 }
 
-- (BOOL)notificationStructuredSectionList:(id)a3 shouldFilterNotificationRequest:(id)a4
+- (BOOL)notificationStructuredSectionList:(id)list shouldFilterNotificationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self delegate];
-  LOBYTE(self) = [v6 notificationRootList:self shouldFilterNotificationRequest:v5];
+  requestCopy = request;
+  delegate = [(NCNotificationRootList *)self delegate];
+  LOBYTE(self) = [delegate notificationRootList:self shouldFilterNotificationRequest:requestCopy];
 
   return self;
 }
 
-- (BOOL)notificationStructuredSectionList:(id)a3 areNotificationsLoadedForSectionIdentifier:(id)a4
+- (BOOL)notificationStructuredSectionList:(id)list areNotificationsLoadedForSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self loadedNotificationSections];
-  v7 = [v6 containsObject:v5];
+  identifierCopy = identifier;
+  loadedNotificationSections = [(NCNotificationRootList *)self loadedNotificationSections];
+  v7 = [loadedNotificationSections containsObject:identifierCopy];
 
   return v7;
 }
 
-- (void)notificationStructuredSectionList:(id)a3 transitionedGroupedStateIsGrouped:(BOOL)a4
+- (void)notificationStructuredSectionList:(id)list transitionedGroupedStateIsGrouped:(BOOL)grouped
 {
-  if (self->_currentDigestSectionList == a3 || self->_upcomingDigestSectionList == a3)
+  if (self->_currentDigestSectionList == list || self->_upcomingDigestSectionList == list)
   {
-    v5 = [(NCNotificationRootList *)self rootListView];
-    [v5 setNeedsLayout];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView setNeedsLayout];
   }
 }
 
-- (void)notificationStructuredSectionListRequestsClearingSection:(id)a3
+- (void)notificationStructuredSectionListRequestsClearingSection:(id)section
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationRootList *)self logDescription];
-    v8 = [v4 logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    logDescription2 = [sectionCopy logDescription];
     v9 = 138543618;
-    v10 = v7;
+    v10 = logDescription;
     v11 = 2114;
-    v12 = v8;
+    v12 = logDescription2;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ requested to clear %{public}@ from the list", &v9, 0x16u);
   }
 
-  [v4 clearAll];
+  [sectionCopy clearAll];
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)notificationStructuredSectionListDidClearAllNotificationRequests:(id)a3
+- (void)notificationStructuredSectionListDidClearAllNotificationRequests:(id)requests
 {
-  if (self->_currentDigestSectionList == a3)
+  if (self->_currentDigestSectionList == requests)
   {
     [(NCNotificationRootList *)self _removeCurrentDigestSectionListFromContainingSectionList];
     currentDigestSectionList = self->_currentDigestSectionList;
@@ -3580,72 +3580,72 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (BOOL)isNotificationStructuredSectionListCollapsable:(id)a3
+- (BOOL)isNotificationStructuredSectionListCollapsable:(id)collapsable
 {
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self highlightedSectionList];
+  collapsableCopy = collapsable;
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
 
-  return v5 == v4;
+  return highlightedSectionList == collapsableCopy;
 }
 
-- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)a3
+- (BOOL)shouldScrollToTopForNotificationListBaseComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self rootListView];
-  [v5 contentSize];
+  componentCopy = component;
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView contentSize];
   v7 = v6;
 
-  v8 = [v4 listView];
+  listView = [componentCopy listView];
 
-  [v8 frame];
+  [listView frame];
   Height = CGRectGetHeight(v16);
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v11 = CGRectGetHeight(v17);
 
-  v12 = [(NCNotificationRootList *)self rootListView];
-  [v12 contentInset];
+  rootListView2 = [(NCNotificationRootList *)self rootListView];
+  [rootListView2 contentInset];
   v14 = v13;
 
   return v7 - Height + v14 < v11;
 }
 
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self delegate];
-  [v6 notificationListComponent:self didRemoveNotificationRequest:v5];
+  requestCopy = request;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self didRemoveNotificationRequest:requestCopy];
 
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3
+- (void)notificationListBaseComponentDidRemoveAll:(id)all
 {
-  v4 = [(NCNotificationRootList *)self delegate];
-  [v4 notificationListBaseComponentDidRemoveAll:self];
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListBaseComponentDidRemoveAll:self];
 
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)supplementaryViewSectionDidChangeContent:(id)a3
+- (void)supplementaryViewSectionDidChangeContent:(id)content
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentCopy = content;
   if ([(NCNotificationRootList *)self _hasLiveActivitiesWithThreshold:1])
   {
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [v4 descriptionString];
+      descriptionString = [contentCopy descriptionString];
       v9 = 138543362;
-      v10 = v7;
+      v10 = descriptionString;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Moving digest for live activity %{public}@", &v9, 0xCu);
     }
 
-    v8 = [(NCNotificationRootList *)self currentDigestSectionList];
-    [v8 collapseSummarizedSectionList];
+    currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+    [currentDigestSectionList collapseSummarizedSectionList];
 
     [(NCNotificationRootList *)self _migrateCurrentDigestSectionListToReadSection];
   }
@@ -3653,13 +3653,13 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
   [(NCNotificationRootList *)self _updateForceExpansionForHighlights];
 }
 
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack
 {
-  v9 = [(NCNotificationRootList *)self _notificationListSections:a3];
+  v9 = [(NCNotificationRootList *)self _notificationListSections:view];
   v10 = 0.0;
-  if ([v9 count] > a4)
+  if ([v9 count] > index)
   {
-    v11 = [v9 objectAtIndex:a4];
+    v11 = [v9 objectAtIndex:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -3685,9 +3685,9 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
 
       v15 = v14;
 
-      v16 = [v15 listView];
+      listView = [v15 listView];
 
-      [v16 sizeThatFits:{a5, 0.0}];
+      [listView sizeThatFits:{width, 0.0}];
       v10 = v17;
     }
   }
@@ -3695,17 +3695,17 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
   return v10;
 }
 
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index
 {
-  v6 = [(NCNotificationRootList *)self _notificationListSections];
-  if ([v6 count] <= a4)
+  _notificationListSections = [(NCNotificationRootList *)self _notificationListSections];
+  if ([_notificationListSections count] <= index)
   {
-    v8 = 0;
+    listView = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndex:a4];
+    v7 = [_notificationListSections objectAtIndex:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -3731,16 +3731,16 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
 
       v12 = v11;
 
-      v8 = [v12 listView];
+      listView = [v12 listView];
     }
 
     else
     {
-      v8 = 0;
+      listView = 0;
     }
 
-    v13 = [(NCNotificationRootList *)self rootListView];
-    [v13 frame];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -3755,27 +3755,27 @@ uint64_t __54__NCNotificationRootList_containsNotificationRequest___block_invoke
     v26.origin.y = v17;
     v26.size.width = v19;
     v26.size.height = v21;
-    [v8 setFrame:{0.0, 0.0, Width, CGRectGetHeight(v26)}];
+    [listView setFrame:{0.0, 0.0, Width, CGRectGetHeight(v26)}];
   }
 
-  return v8;
+  return listView;
 }
 
-- (unint64_t)notificationListViewNumberOfItems:(id)a3
+- (unint64_t)notificationListViewNumberOfItems:(id)items
 {
-  v3 = [(NCNotificationRootList *)self _notificationListSections];
-  v4 = [v3 count];
+  _notificationListSections = [(NCNotificationRootList *)self _notificationListSections];
+  v4 = [_notificationListSections count];
 
   return v4;
 }
 
-- (void)recycleView:(id)a3
+- (void)recycleView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 recycleVisibleViews];
+    [viewCopy recycleVisibleViews];
   }
 }
 
@@ -3785,113 +3785,113 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   [v2 notificationRootListDidUpdateVisibleContentExtent:*(a1 + 32)];
 }
 
-- (void)suggestionManager:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6
+- (void)suggestionManager:(id)manager requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCNotificationRootList *)self delegate];
-  [v11 notificationListComponent:self requestsPresentingManagementViewForNotificationRequest:v10 managementViewType:a4 withPresentingView:v9 completion:0];
+  viewCopy = view;
+  requestCopy = request;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self requestsPresentingManagementViewForNotificationRequest:requestCopy managementViewType:type withPresentingView:viewCopy completion:0];
 }
 
-- (id)suggestionManager:(id)a3 requestsSectionSettingsForSectionIdentifier:(id)a4
+- (id)suggestionManager:(id)manager requestsSectionSettingsForSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self delegate];
-  v7 = [v6 notificationListComponent:self sectionSettingsForSectionIdentifier:v5];
+  identifierCopy = identifier;
+  delegate = [(NCNotificationRootList *)self delegate];
+  v7 = [delegate notificationListComponent:self sectionSettingsForSectionIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)suggestionManager:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7
+- (void)suggestionManager:(id)manager setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier
 {
-  v9 = a4;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(NCNotificationRootList *)self delegate];
-  [v14 notificationListComponent:self setMuted:v9 untilDate:v13 forSectionIdentifier:v12 threadIdentifier:v11];
+  mutedCopy = muted;
+  threadIdentifierCopy = threadIdentifier;
+  identifierCopy = identifier;
+  dateCopy = date;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self setMuted:mutedCopy untilDate:dateCopy forSectionIdentifier:identifierCopy threadIdentifier:threadIdentifierCopy];
 }
 
-- (void)suggestionManager:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)suggestionManager:(id)manager setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCNotificationRootList *)self delegate];
-  [v8 notificationListComponent:self setScheduledDelivery:v5 forSectionIdentifier:v7];
+  deliveryCopy = delivery;
+  identifierCopy = identifier;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self setScheduledDelivery:deliveryCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)suggestionManager:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)suggestionManager:(id)manager setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCNotificationRootList *)self delegate];
-  [v8 notificationListComponent:self setAllowsTimeSensitive:v5 forSectionIdentifier:v7];
+  sensitiveCopy = sensitive;
+  identifierCopy = identifier;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self setAllowsTimeSensitive:sensitiveCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)suggestionManager:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)suggestionManager:(id)manager setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCNotificationRootList *)self delegate];
-  [v8 notificationListComponent:self setAllowsDirectMessages:v5 forSectionIdentifier:v7];
+  messagesCopy = messages;
+  identifierCopy = identifier;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self setAllowsDirectMessages:messagesCopy forSectionIdentifier:identifierCopy];
 }
 
-- (id)suggestionManager:(id)a3 notificationRequestForUUID:(id)a4
+- (id)suggestionManager:(id)manager notificationRequestForUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self delegate];
-  v7 = [v6 notificationListComponent:self notificationRequestForUUID:v5];
+  dCopy = d;
+  delegate = [(NCNotificationRootList *)self delegate];
+  v7 = [delegate notificationListComponent:self notificationRequestForUUID:dCopy];
 
   return v7;
 }
 
-- (id)suggestionManagerRequestsCurrentModeConfiguration:(id)a3
+- (id)suggestionManagerRequestsCurrentModeConfiguration:(id)configuration
 {
-  v4 = [(NCNotificationRootList *)self delegate];
-  v5 = [v4 notificationListComponentRequestsCurrentModeConfiguration:self];
+  delegate = [(NCNotificationRootList *)self delegate];
+  v5 = [delegate notificationListComponentRequestsCurrentModeConfiguration:self];
 
   return v5;
 }
 
-- (void)suggestionManager:(id)a3 setModeConfiguration:(id)a4
+- (void)suggestionManager:(id)manager setModeConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [(NCNotificationRootList *)self delegate];
-  [v6 notificationListComponent:self setModeConfiguration:v5];
+  configurationCopy = configuration;
+  delegate = [(NCNotificationRootList *)self delegate];
+  [delegate notificationListComponent:self setModeConfiguration:configurationCopy];
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+  changeCopy = change;
+  _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__NCNotificationRootList_adjustForLegibilitySettingsChange___block_invoke;
   v7[3] = &unk_278370268;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = changeCopy;
+  v6 = changeCopy;
+  [_notificationSectionListsForEnumeration enumerateObjectsUsingBlock:v7];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_112];
+  _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+  [_notificationSectionListsForEnumeration enumerateObjectsUsingBlock:&__block_literal_global_112];
 
   [(NSMutableArray *)self->_supplementaryViewsSections enumerateObjectsUsingBlock:&__block_literal_global_114];
-  v4 = [(NCNotificationRootList *)self notificationListCache];
-  [v4 adjustForContentSizeCategoryChange];
+  notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+  [notificationListCache adjustForContentSizeCategoryChange];
 
-  v5 = [(NCNotificationRootList *)self supplementaryCache];
-  [v5 adjustForContentSizeCategoryChange];
+  supplementaryCache = [(NCNotificationRootList *)self supplementaryCache];
+  [supplementaryCache adjustForContentSizeCategoryChange];
 
-  v6 = [(NCNotificationRootList *)self notificationSummaryCache];
-  [v6 adjustForContentSizeCategoryChange];
+  notificationSummaryCache = [(NCNotificationRootList *)self notificationSummaryCache];
+  [notificationSummaryCache adjustForContentSizeCategoryChange];
 
   return 1;
 }
 
-- (Class)notificationListCacheNotificationViewControllerClass:(id)a3
+- (Class)notificationListCacheNotificationViewControllerClass:(id)class
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -3909,71 +3909,71 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   return v5;
 }
 
-- (void)publishScheduledDigest:(id)a3 upcomingDigest:(id)a4
+- (void)publishScheduledDigest:(id)digest upcomingDigest:(id)upcomingDigest
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  digestCopy = digest;
+  upcomingDigestCopy = upcomingDigest;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v11 = 138543618;
-    v12 = v10;
+    v12 = logDescription;
     v13 = 2114;
-    v14 = v6;
+    v14 = digestCopy;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ received request from Digest Schedule Manager to promote upcoming digest to current with digest info = %{public}@", &v11, 0x16u);
   }
 
   [(NCNotificationRootList *)self _dissolveCurrentDigestSectionListToHistorySection];
   [(NCNotificationRootList *)self _migrateUpcomingDigestSectionListToCurrentDigestSectionList];
-  [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:v7];
+  [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:upcomingDigestCopy];
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)publishUpcomingDigest:(id)a3
+- (void)publishUpcomingDigest:(id)digest
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  digestCopy = digest;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v8 = 138543618;
-    v9 = v7;
+    v9 = logDescription;
     v10 = 2114;
-    v11 = v4;
+    v11 = digestCopy;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ received request Digest Schedule Manager to publish upcoming digest with digest info = %{public}@", &v8, 0x16u);
   }
 
   if (self->_upcomingDigestSectionList)
   {
-    [(NCNotificationRootList *)self _updateUpcomingDigestSectionListWithDigestInfo:v4];
+    [(NCNotificationRootList *)self _updateUpcomingDigestSectionListWithDigestInfo:digestCopy];
   }
 
   else
   {
-    [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:v4];
+    [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:digestCopy];
   }
 
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)revokeUpcomingDigest:(id)a3
+- (void)revokeUpcomingDigest:(id)digest
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  digestCopy = digest;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v8 = 138543618;
-    v9 = v7;
+    v9 = logDescription;
     v10 = 2114;
-    v11 = v4;
+    v11 = digestCopy;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ received request from Digest Schedule Manager to cancel digest with digest info = %{public}@", &v8, 0x16u);
   }
 
@@ -3982,11 +3982,11 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)persistentStateManager:(id)a3 didFetchSummaryMigrationTime:(id)a4
+- (void)persistentStateManager:(id)manager didFetchSummaryMigrationTime:(id)time
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  [v5 timeIntervalSinceNow];
+  timeCopy = time;
+  [timeCopy timeIntervalSinceNow];
   v7 = v6;
   v8 = *MEMORY[0x277D77DD0];
   v9 = os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT);
@@ -3995,11 +3995,11 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
     if (v9)
     {
       v12 = v8;
-      v13 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v14 = 138543618;
-      v15 = v13;
+      v15 = logDescription;
       v16 = 2112;
-      v17 = v5;
+      v17 = timeCopy;
       _os_log_impl(&dword_21E77E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ persisted stored migration time for digest at %@ has expired!", &v14, 0x16u);
     }
   }
@@ -4009,46 +4009,46 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
     if (v9)
     {
       v10 = v8;
-      v11 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       v14 = 138543618;
-      v15 = v11;
+      v15 = logDescription2;
       v16 = 2112;
-      v17 = v5;
+      v17 = timeCopy;
       _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ received persisted stored migration time for digest at %@", &v14, 0x16u);
     }
 
-    [(NCNotificationListMigrationScheduler *)self->_migrationScheduler setMigrationDateForNotificationDigest:v5];
+    [(NCNotificationListMigrationScheduler *)self->_migrationScheduler setMigrationDateForNotificationDigest:timeCopy];
   }
 }
 
-- (void)persistentStateManager:(id)a3 hasStoredDataForSectionType:(unint64_t)a4
+- (void)persistentStateManager:(id)manager hasStoredDataForSectionType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v7 = MEMORY[0x277D77DD0];
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationRootList *)self logDescription];
-    v11 = NCNotificationListSectionTypeString(a4);
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    v11 = NCNotificationListSectionTypeString(type);
     v16 = 138543618;
-    v17 = v10;
+    v17 = logDescription;
     v18 = 2114;
     v19 = v11;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ has persisted stored data for section %{public}@", &v16, 0x16u);
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v12 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       v15 = NCNotificationListSectionTypeString(4uLL);
       v16 = 138543618;
-      v17 = v14;
+      v17 = logDescription2;
       v18 = 2114;
       v19 = v15;
       _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ deferring presentation of section %{public}@ pending stored data load", &v16, 0x16u);
@@ -4058,34 +4058,34 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   }
 }
 
-- (void)persistentStateManager:(id)a3 finishedLoadingDataForSectionType:(unint64_t)a4
+- (void)persistentStateManager:(id)manager finishedLoadingDataForSectionType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v7 = MEMORY[0x277D77DD0];
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationRootList *)self logDescription];
-    v11 = NCNotificationListSectionTypeString(a4);
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    v11 = NCNotificationListSectionTypeString(type);
     v16 = 138543618;
-    v17 = v10;
+    v17 = logDescription;
     v18 = 2114;
     v19 = v11;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ finished loading stored data for section %{public}@", &v16, 0x16u);
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v12 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       v15 = NCNotificationListSectionTypeString(4uLL);
       v16 = 138543618;
-      v17 = v14;
+      v17 = logDescription2;
       v18 = 2114;
       v19 = v15;
       _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ enabling presentation for section %{public}@ on stored data load finish", &v16, 0x16u);
@@ -4107,87 +4107,87 @@ void __59__NCNotificationRootList_notificationListDidLayoutSubviews__block_invok
   }
 }
 
-- (void)persistentStateManager:(id)a3 didFetchMigrationTime:(id)a4 forNotificationRequest:(id)a5
+- (void)persistentStateManager:(id)manager didFetchMigrationTime:(id)time forNotificationRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  timeCopy = time;
+  requestCopy = request;
   v9 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(NCNotificationRootList *)self logDescription];
-    v12 = [v8 notificationIdentifier];
-    v13 = [v12 un_logDigest];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543874;
-    v18 = v11;
+    v18 = logDescription;
     v19 = 2114;
-    v20 = v13;
+    v20 = un_logDigest;
     v21 = 2112;
-    v22 = v7;
+    v22 = timeCopy;
     _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ received persisted stored migration time for request %{public}@ at %@", buf, 0x20u);
   }
 
   migrationScheduler = self->_migrationScheduler;
-  v16 = v8;
+  v16 = requestCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-  [(NCNotificationListMigrationScheduler *)migrationScheduler addMigrationForNotificationRequests:v15 forDate:v7];
+  [(NCNotificationListMigrationScheduler *)migrationScheduler addMigrationForNotificationRequests:v15 forDate:timeCopy];
 }
 
-- (void)persistentStateManager:(id)a3 didFetchStoredListInfo:(id)a4
+- (void)persistentStateManager:(id)manager didFetchStoredListInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v11 = 138543618;
-    v12 = v8;
+    v12 = logDescription;
     v13 = 2114;
-    v14 = v5;
+    v14 = infoCopy;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received persisted stored info = %{public}@", &v11, 0x16u);
   }
 
-  v9 = [v5 copy];
+  v9 = [infoCopy copy];
   persistentStoredListInfo = self->_persistentStoredListInfo;
   self->_persistentStoredListInfo = v9;
 }
 
-- (void)persistentStateManager:(id)a3 didMigratedTimeSensitiveForNotificationRequest:(id)a4
+- (void)persistentStateManager:(id)manager didMigratedTimeSensitiveForNotificationRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  requestCopy = request;
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(NCNotificationRootList *)self logDescription];
-    v9 = [v5 notificationIdentifier];
-    v10 = [v9 un_logDigest];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v11 = 138543618;
-    v12 = v8;
+    v12 = logDescription;
     v13 = 2114;
-    v14 = v10;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received persisted stored migrated time sensitive request %{public}@", &v11, 0x16u);
   }
 
-  [(NCNotificationListMigrationScheduler *)self->_migrationScheduler addMigratedTimeSensitiveNotificationRequests:v5];
+  [(NCNotificationListMigrationScheduler *)self->_migrationScheduler addMigratedTimeSensitiveNotificationRequests:requestCopy];
 }
 
-- (void)notificationListMigrationSchedulerRequestsMigratingNotificationDigest:(id)a3
+- (void)notificationListMigrationSchedulerRequestsMigratingNotificationDigest:(id)digest
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  digestCopy = digest;
   v5 = MEMORY[0x277D77DD0];
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v13 = 138543362;
-    v14 = v8;
+    v14 = logDescription;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ migration scheduler requesting digest migration", &v13, 0xCu);
   }
 
@@ -4208,9 +4208,9 @@ LABEL_9:
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(NCNotificationRootList *)self logDescription];
+    logDescription2 = [(NCNotificationRootList *)self logDescription];
     v13 = 138543362;
-    v14 = v11;
+    v14 = logDescription2;
     _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ deferring digest migration while device backlight is full", &v13, 0xCu);
   }
 
@@ -4220,21 +4220,21 @@ LABEL_10:
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
-- (void)notificationListMigrationScheduler:(id)a3 requestsMigratingNotificationRequests:(id)a4
+- (void)notificationListMigrationScheduler:(id)scheduler requestsMigratingNotificationRequests:(id)requests
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  requestsCopy = requests;
   v8 = MEMORY[0x277D77DD0];
   v9 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(NCNotificationRootList *)self logDescription];
-    v12 = [v7 count];
-    v13 = [v7 bs_map:&__block_literal_global_120];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    v12 = [requestsCopy count];
+    v13 = [requestsCopy bs_map:&__block_literal_global_120];
     *buf = 138543874;
-    v25 = v11;
+    v25 = logDescription;
     v26 = 2048;
     v27 = v12;
     v28 = 2112;
@@ -4242,19 +4242,19 @@ LABEL_10:
     _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ migration scheduler requesting migration for %lu requests = %@", buf, 0x20u);
   }
 
-  v14 = [(NCNotificationRootList *)self rootListView];
-  v15 = [v14 traitCollection];
-  v16 = [v15 _backlightLuminance];
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  traitCollection = [rootListView traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v16 == 2)
+  if (_backlightLuminance == 2)
   {
     v17 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
       *buf = 138543362;
-      v25 = v19;
+      v25 = logDescription2;
       _os_log_impl(&dword_21E77E000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ deferring migration of requests while backlight is full", buf, 0xCu);
     }
 
@@ -4268,13 +4268,13 @@ LABEL_10:
       notificationRequestsPendingMigration = self->_notificationRequestsPendingMigration;
     }
 
-    [(NSMutableArray *)notificationRequestsPendingMigration addObjectsFromArray:v7];
+    [(NSMutableArray *)notificationRequestsPendingMigration addObjectsFromArray:requestsCopy];
   }
 
   else
   {
-    [(NCNotificationRootList *)self _migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:v7];
-    [(NCNotificationRootList *)self _migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:v7];
+    [(NCNotificationRootList *)self _migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:requestsCopy];
+    [(NCNotificationRootList *)self _migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:requestsCopy];
   }
 
   v23[0] = MEMORY[0x277D85DD0];
@@ -4282,7 +4282,7 @@ LABEL_10:
   v23[2] = __99__NCNotificationRootList_notificationListMigrationScheduler_requestsMigratingNotificationRequests___block_invoke_121;
   v23[3] = &unk_27836F610;
   v23[4] = self;
-  [v7 enumerateObjectsUsingBlock:v23];
+  [requestsCopy enumerateObjectsUsingBlock:v23];
   [(NCNotificationRootList *)self _notificationListDidChangeContent];
 }
 
@@ -4294,13 +4294,13 @@ id __99__NCNotificationRootList_notificationListMigrationScheduler_requestsMigra
   return v3;
 }
 
-- (void)_signpostScrollingBegan:(BOOL)a3
+- (void)_signpostScrollingBegan:(BOOL)began
 {
-  v3 = a3;
+  beganCopy = began;
   [(NCNotificationRootList *)self _emitPowerLogForScrolling:?];
   v4 = *MEMORY[0x277D77DD0];
   v5 = os_signpost_enabled(*MEMORY[0x277D77DD0]);
-  if (v3)
+  if (beganCopy)
   {
     if (v5)
     {
@@ -4327,28 +4327,28 @@ LABEL_6:
   kdebug_trace();
 }
 
-- (void)_emitPowerLogForScrolling:(BOOL)a3
+- (void)_emitPowerLogForScrolling:(BOOL)scrolling
 {
   if (os_variant_has_internal_content())
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    v6 = [(NCNotificationRootList *)self delegate];
+    delegate = [(NCNotificationRootList *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 notificationRootListRequestsDiagnosticsDictionary:self];
+      v7 = [delegate notificationRootListRequestsDiagnosticsDictionary:self];
 
       v5 = v7;
     }
 
-    v8 = [(NCNotificationRootList *)self _powerlogBackgroundQueue];
+    _powerlogBackgroundQueue = [(NCNotificationRootList *)self _powerlogBackgroundQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke;
     v10[3] = &unk_27836F898;
-    v12 = a3;
+    scrollingCopy = scrolling;
     v11 = v5;
     v9 = v5;
-    dispatch_async(v8, v10);
+    dispatch_async(_powerlogBackgroundQueue, v10);
   }
 }
 
@@ -4381,35 +4381,35 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
   return result;
 }
 
-- (void)_cancelTouchesOnLiveActivities:(BOOL)a3
+- (void)_cancelTouchesOnLiveActivities:(BOOL)activities
 {
   supplementaryViewsSections = self->_supplementaryViewsSections;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__NCNotificationRootList__cancelTouchesOnLiveActivities___block_invoke;
   v4[3] = &__block_descriptor_33_e60_v32__0__NCNotificationListSupplementaryViewsSection_8Q16_B24l;
-  v5 = a3;
+  activitiesCopy = activities;
   [(NSMutableArray *)supplementaryViewsSections enumerateObjectsUsingBlock:v4];
 }
 
-- (void)_clearAllNotifications:(BOOL)a3 supplementaryViewControllers:(BOOL)a4
+- (void)_clearAllNotifications:(BOOL)notifications supplementaryViewControllers:(BOOL)controllers
 {
-  v4 = a4;
-  v5 = a3;
+  controllersCopy = controllers;
+  notificationsCopy = notifications;
   v19 = *MEMORY[0x277D85DE8];
-  if (a3 || a4)
+  if (notifications || controllers)
   {
     v7 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v13 = 138543874;
-      v14 = v9;
+      v14 = logDescription;
       v15 = 1024;
-      v16 = v5;
+      v16 = notificationsCopy;
       v17 = 1024;
-      v18 = v4;
+      v18 = controllersCopy;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ clearing all notification requests: %d supplementary view controller:%d", &v13, 0x18u);
     }
 
@@ -4417,16 +4417,16 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
     [v10 notificationCenterClearAll];
 
     self->_performingClearAll = 1;
-    if (v5)
+    if (notificationsCopy)
     {
-      v11 = [(NCNotificationRootList *)self notificationSections];
-      [v11 enumerateObjectsUsingBlock:&__block_literal_global_143];
+      notificationSections = [(NCNotificationRootList *)self notificationSections];
+      [notificationSections enumerateObjectsUsingBlock:&__block_literal_global_143];
     }
 
-    if (v4)
+    if (controllersCopy)
     {
-      v12 = [(NCNotificationRootList *)self supplementaryViewsSections];
-      [v12 enumerateObjectsUsingBlock:&__block_literal_global_145];
+      supplementaryViewsSections = [(NCNotificationRootList *)self supplementaryViewsSections];
+      [supplementaryViewsSections enumerateObjectsUsingBlock:&__block_literal_global_145];
     }
 
     self->_performingClearAll = 0;
@@ -4435,33 +4435,33 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
   }
 }
 
-- (void)setScheduledDeliveryEnabled:(BOOL)a3
+- (void)setScheduledDeliveryEnabled:(BOOL)enabled
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_scheduledDeliveryEnabled != a3)
+  if (self->_scheduledDeliveryEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationRootList *)self logDescription];
-      v8 = v7;
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      v8 = logDescription;
       v9 = @"disabled";
-      if (v3)
+      if (enabledCopy)
       {
         v9 = @"enabled";
       }
 
       v13 = 138543618;
-      v14 = v7;
+      v14 = logDescription;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ setting scheduled delivery %@", &v13, 0x16u);
     }
 
-    self->_scheduledDeliveryEnabled = v3;
-    if (v3)
+    self->_scheduledDeliveryEnabled = enabledCopy;
+    if (enabledCopy)
     {
       v10 = objc_alloc_init(NCDigestScheduleManager);
       digestScheduleManager = self->_digestScheduleManager;
@@ -4481,98 +4481,98 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
   }
 }
 
-- (void)_updateVisibleRectForContentOffset:(CGPoint)a3 size:(CGSize)a4
+- (void)_updateVisibleRectForContentOffset:(CGPoint)offset size:(CGSize)size
 {
-  width = a4.width;
-  x = a3.x;
-  v6 = fmin(a3.y, 0.0);
-  v7 = a3.y - v6;
-  v8 = a4.height + v6;
-  v9 = [(NCNotificationRootList *)self rootListView];
-  [v9 setVisibleRect:{x, v7, width, v8}];
+  width = size.width;
+  x = offset.x;
+  v6 = fmin(offset.y, 0.0);
+  v7 = offset.y - v6;
+  v8 = size.height + v6;
+  rootListView = [(NCNotificationRootList *)self rootListView];
+  [rootListView setVisibleRect:{x, v7, width, v8}];
 }
 
-- (void)_configureNotificationSectionList:(id)a3 notificationCache:(id)a4 notificationListViewRevealed:(BOOL)a5 logDescription:(id)a6
+- (void)_configureNotificationSectionList:(id)list notificationCache:(id)cache notificationListViewRevealed:(BOOL)revealed logDescription:(id)description
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  [v12 setDelegate:self];
-  [v12 setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
-  [v12 setNotificationListCache:v11];
+  revealedCopy = revealed;
+  descriptionCopy = description;
+  cacheCopy = cache;
+  listCopy = list;
+  [listCopy setDelegate:self];
+  [listCopy setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
+  [listCopy setNotificationListCache:cacheCopy];
 
-  [v12 setNotificationListViewRevealed:v6];
-  [v12 setLogDescription:v10];
+  [listCopy setNotificationListViewRevealed:revealedCopy];
+  [listCopy setLogDescription:descriptionCopy];
 }
 
-- (void)_setHighlightsFeatureEnabled:(BOOL)a3
+- (void)_setHighlightsFeatureEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v47 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D77DD0];
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     *buf = 138543618;
-    v44 = v8;
+    v44 = logDescription;
     v45 = 1024;
-    LODWORD(v46) = v3;
+    LODWORD(v46) = enabledCopy;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ highlights feature enabled: %d", buf, 0x12u);
   }
 
-  v9 = [(NCNotificationRootList *)self notificationSections];
-  v10 = [(NCNotificationRootList *)self highlightedSectionList];
-  v11 = [v9 containsObject:v10];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+  v11 = [notificationSections containsObject:highlightedSectionList];
 
-  if (v3)
+  if (enabledCopy)
   {
     if ((v11 & 1) == 0)
     {
       [(NCNotificationRootList *)self _configureHighlightsSectionListIfNeeded];
-      v12 = [(NCNotificationRootList *)self highlightedSectionList];
+      highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
 
-      if (v12)
+      if (highlightedSectionList2)
       {
         v13 = *v5;
         if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [(NCNotificationRootList *)self logDescription];
-          v16 = [(NCNotificationRootList *)self highlightedSectionList];
-          v17 = [v16 logDescription];
+          logDescription2 = [(NCNotificationRootList *)self logDescription];
+          highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
+          logDescription3 = [highlightedSectionList3 logDescription];
           *buf = 138543618;
-          v44 = v15;
+          v44 = logDescription2;
           v45 = 2114;
-          v46 = v17;
+          v46 = logDescription3;
           _os_log_impl(&dword_21E77E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ adding %{public}@ to visible section", buf, 0x16u);
         }
 
-        v18 = [(NCNotificationRootList *)self highlightedSectionList];
-        [v18 setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
+        highlightedSectionList4 = [(NCNotificationRootList *)self highlightedSectionList];
+        [highlightedSectionList4 setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
 
-        v19 = [(NCNotificationRootList *)self _notificationListSections];
-        v20 = [v19 indexOfObject:self->_prominentIncomingSectionList];
+        _notificationListSections = [(NCNotificationRootList *)self _notificationListSections];
+        v20 = [_notificationListSections indexOfObject:self->_prominentIncomingSectionList];
 
-        v21 = [(NCNotificationRootList *)self notificationSections];
-        v22 = [v21 indexOfObject:self->_prominentIncomingSectionList];
+        notificationSections2 = [(NCNotificationRootList *)self notificationSections];
+        v22 = [notificationSections2 indexOfObject:self->_prominentIncomingSectionList];
 
-        v23 = [(NCNotificationRootList *)self notificationSections];
-        v24 = [(NCNotificationRootList *)self highlightedSectionList];
-        [v23 insertObject:v24 atIndex:v22];
+        notificationSections3 = [(NCNotificationRootList *)self notificationSections];
+        highlightedSectionList5 = [(NCNotificationRootList *)self highlightedSectionList];
+        [notificationSections3 insertObject:highlightedSectionList5 atIndex:v22];
 
-        v25 = [(NCNotificationRootList *)self rootListView];
-        [v25 insertViewAtIndex:v20 animated:1];
+        rootListView = [(NCNotificationRootList *)self rootListView];
+        [rootListView insertViewAtIndex:v20 animated:1];
 
-        v26 = [(NCNotificationRootList *)self highlightedSectionList];
-        [(NCNotificationRootList *)self _setRevealed:1 forSection:v26];
+        highlightedSectionList6 = [(NCNotificationRootList *)self highlightedSectionList];
+        [(NCNotificationRootList *)self _setRevealed:1 forSection:highlightedSectionList6];
 
         [(NCNotificationRootList *)self _updateIndexForReveal];
         [(NCNotificationRootList *)self _notificationListDidChangeContent];
-        v27 = [(NCNotificationRootList *)self highlightedSectionList];
-        [(NCNotificationRootList *)self _notificationSectionsDidAdd:v27];
+        highlightedSectionList7 = [(NCNotificationRootList *)self highlightedSectionList];
+        [(NCNotificationRootList *)self _notificationSectionsDidAdd:highlightedSectionList7];
       }
     }
   }
@@ -4583,35 +4583,35 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       v29 = v28;
-      v30 = [(NCNotificationRootList *)self logDescription];
-      v31 = [(NCNotificationRootList *)self highlightedSectionList];
-      v32 = [v31 logDescription];
+      logDescription4 = [(NCNotificationRootList *)self logDescription];
+      highlightedSectionList8 = [(NCNotificationRootList *)self highlightedSectionList];
+      logDescription5 = [highlightedSectionList8 logDescription];
       *buf = 138543618;
-      v44 = v30;
+      v44 = logDescription4;
       v45 = 2114;
-      v46 = v32;
+      v46 = logDescription5;
       _os_log_impl(&dword_21E77E000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ from visible section", buf, 0x16u);
     }
 
-    v33 = [(NCNotificationRootList *)self highlightedSectionList];
-    v34 = [(NCNotificationRootList *)self incomingSectionList];
+    highlightedSectionList9 = [(NCNotificationRootList *)self highlightedSectionList];
+    incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
     BYTE2(v42) = 0;
     LOWORD(v42) = 256;
-    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v33 passingTest:v34 filterRequestsPassingTest:0 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v42 reorderGroupNotifications:?];
+    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:highlightedSectionList9 passingTest:incomingSectionList filterRequestsPassingTest:0 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v42 reorderGroupNotifications:?];
 
-    v35 = [(NCNotificationRootList *)self _notificationListSections];
-    v36 = [(NCNotificationRootList *)self highlightedSectionList];
-    v37 = [v35 indexOfObject:v36];
+    _notificationListSections2 = [(NCNotificationRootList *)self _notificationListSections];
+    highlightedSectionList10 = [(NCNotificationRootList *)self highlightedSectionList];
+    v37 = [_notificationListSections2 indexOfObject:highlightedSectionList10];
 
-    v38 = [(NCNotificationRootList *)self notificationSections];
-    v39 = [(NCNotificationRootList *)self highlightedSectionList];
-    [v38 removeObject:v39];
+    notificationSections4 = [(NCNotificationRootList *)self notificationSections];
+    highlightedSectionList11 = [(NCNotificationRootList *)self highlightedSectionList];
+    [notificationSections4 removeObject:highlightedSectionList11];
 
-    v40 = [(NCNotificationRootList *)self rootListView];
-    [v40 removeViewAtIndex:v37 animated:1 isHorizontallyDisplaced:0];
+    rootListView2 = [(NCNotificationRootList *)self rootListView];
+    [rootListView2 removeViewAtIndex:v37 animated:1 isHorizontallyDisplaced:0];
 
-    v41 = [(NCNotificationRootList *)self highlightedSectionList];
-    [(NCNotificationRootList *)self _setRevealed:0 forSection:v41];
+    highlightedSectionList12 = [(NCNotificationRootList *)self highlightedSectionList];
+    [(NCNotificationRootList *)self _setRevealed:0 forSection:highlightedSectionList12];
 
     [(NCNotificationRootList *)self _updateIndexForReveal];
     [(NCNotificationRootList *)self _notificationListDidChangeContent];
@@ -4627,9 +4627,9 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v22 = 138543362;
-      v23 = v13;
+      v23 = logDescription;
       _os_log_impl(&dword_21E77E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Configuring highlights sections", &v22, 0xCu);
     }
 
@@ -4637,15 +4637,15 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
     v5 = [v14 localizedStringForKey:@"NOTIFICATION_LIST_HEADER_IMPORTANT_HIGHLIGHTS" value:&stru_282FE84F8 table:0];
 
     v15 = [[NCNotificationListHighlights alloc] initWithTitle:v5 sectionType:10];
-    v16 = [(NCNotificationRootList *)self rootListView];
-    [v16 bounds];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView bounds];
     [(NCNotificationListHighlights *)v15 setContentSize:v17, v18];
 
-    v19 = [(NCNotificationRootList *)self notificationListCache];
-    [(NCNotificationRootList *)self _configureNotificationSectionList:v15 notificationCache:v19 notificationListViewRevealed:1 logDescription:@"Important Section"];
+    notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+    [(NCNotificationRootList *)self _configureNotificationSectionList:v15 notificationCache:notificationListCache notificationListViewRevealed:1 logDescription:@"Important Section"];
 
-    v20 = [(NCNotificationStructuredSectionList *)v15 listView];
-    [v20 setGrouped:0];
+    listView = [(NCNotificationStructuredSectionList *)v15 listView];
+    [listView setGrouped:0];
 
     [(NCNotificationStructuredSectionList *)v15 setSupportsDynamicGrouping:0];
     [(NCNotificationStructuredSectionList *)v15 setSectionListDestination:@"BulletinDestinationLockScreen"];
@@ -4662,94 +4662,94 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
     }
 
     v5 = v4;
-    v6 = [(NCNotificationRootList *)self logDescription];
+    logDescription2 = [(NCNotificationRootList *)self logDescription];
     v7 = _NCIsNotificationHighlightsAllowed();
     v8 = +[NCPlatformEligibility areGenerativeModelsAvailable];
-    v9 = [(NCNotificationRootList *)self _areHighlightsEnabled];
-    v10 = [(NCNotificationRootList *)self highlightedSectionList];
+    _areHighlightsEnabled = [(NCNotificationRootList *)self _areHighlightsEnabled];
+    highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
     v22 = 138544386;
-    v23 = v6;
+    v23 = logDescription2;
     v24 = 1024;
     v25 = v7;
     v26 = 1024;
     v27 = v8;
     v28 = 1024;
-    v29 = v9;
+    v29 = _areHighlightsEnabled;
     v30 = 1024;
-    v31 = v10 != 0;
+    v31 = highlightedSectionList != 0;
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip configuring Highlights sections list; highlightFF: %d; areGenerativeModelsAvailable: %d; areHighlightsEnabled: %d; highlightedSectionExisted: %d", &v22, 0x24u);
   }
 }
 
 - (BOOL)_areHighlightsEnabled
 {
-  v2 = self;
-  v3 = [(NCNotificationRootList *)self delegate];
-  LOBYTE(v2) = [v3 notificationRootListAreHighlightsEnabled:v2];
+  selfCopy = self;
+  delegate = [(NCNotificationRootList *)self delegate];
+  LOBYTE(selfCopy) = [delegate notificationRootListAreHighlightsEnabled:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_setupNotificationSectionLists
 {
   obj = [[NCNotificationStructuredSectionList alloc] initWithTitle:0 sectionType:12];
-  v3 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:obj notificationCache:v3 notificationListViewRevealed:1 logDescription:@"Critical Section"];
+  notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:obj notificationCache:notificationListCache notificationListViewRevealed:1 logDescription:@"Critical Section"];
 
   [(NCNotificationStructuredSectionList *)obj setSupportsDynamicGrouping:0];
   [(NCNotificationStructuredSectionList *)obj setSectionListDestination:@"BulletinDestinationLockScreen"];
-  v4 = [(NCNotificationRootList *)self notificationSections];
-  [v4 addObject:obj];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections addObject:obj];
 
   objc_storeStrong(&self->_criticalSectionList, obj);
   v5 = [[NCNotificationStructuredSectionList alloc] initWithTitle:0 sectionType:11];
-  v6 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v5 notificationCache:v6 notificationListViewRevealed:1 logDescription:@"Persistent Section"];
+  notificationListCache2 = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v5 notificationCache:notificationListCache2 notificationListViewRevealed:1 logDescription:@"Persistent Section"];
 
   [(NCNotificationStructuredSectionList *)v5 setSupportsDynamicGrouping:0];
   [(NCNotificationStructuredSectionList *)v5 setSectionListDestination:@"BulletinDestinationLockScreen"];
-  v7 = [(NCNotificationRootList *)self notificationSections];
-  [v7 addObject:v5];
+  notificationSections2 = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections2 addObject:v5];
 
   persistentSectionList = self->_persistentSectionList;
   self->_persistentSectionList = v5;
   v9 = v5;
 
   [(NCNotificationRootList *)self _configureHighlightsSectionListIfNeeded];
-  v10 = [(NCNotificationRootList *)self highlightedSectionList];
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
 
-  if (v10)
+  if (highlightedSectionList)
   {
-    v11 = [(NCNotificationRootList *)self notificationSections];
-    v12 = [(NCNotificationRootList *)self highlightedSectionList];
-    [v11 addObject:v12];
+    notificationSections3 = [(NCNotificationRootList *)self notificationSections];
+    highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
+    [notificationSections3 addObject:highlightedSectionList2];
 
-    v13 = [(NCNotificationRootList *)self highlightedSectionList];
-    [(NCNotificationRootList *)self _setRevealed:1 forSection:v13];
+    highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
+    [(NCNotificationRootList *)self _setRevealed:1 forSection:highlightedSectionList3];
   }
 
   v14 = [[NCNotificationStructuredSectionList alloc] initWithTitle:0 sectionType:1];
-  v15 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v14 notificationCache:v15 notificationListViewRevealed:1 logDescription:@"Prominent Incoming Section"];
+  notificationListCache3 = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v14 notificationCache:notificationListCache3 notificationListViewRevealed:1 logDescription:@"Prominent Incoming Section"];
 
   [(NCNotificationStructuredSectionList *)v14 setSupportsDynamicGrouping:0];
   [(NCNotificationStructuredSectionList *)v14 setSectionListDestination:@"BulletinDestinationLockScreen"];
-  v16 = [(NCNotificationRootList *)self notificationSections];
-  [v16 addObject:v14];
+  notificationSections4 = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections4 addObject:v14];
 
   prominentIncomingSectionList = self->_prominentIncomingSectionList;
   self->_prominentIncomingSectionList = v14;
   v18 = v14;
 
   v19 = [[NCNotificationStructuredSectionList alloc] initWithTitle:0 sectionType:2];
-  v20 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v19 notificationCache:v20 notificationListViewRevealed:1 logDescription:@"Incoming Section"];
+  notificationListCache4 = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v19 notificationCache:notificationListCache4 notificationListViewRevealed:1 logDescription:@"Incoming Section"];
 
   [(NCNotificationStructuredSectionList *)v19 setSupportsDynamicGrouping:1];
   [(NCNotificationStructuredSectionList *)v19 setPreloadsNotificationRequests:1];
   [(NCNotificationStructuredSectionList *)v19 setSectionListDestination:@"BulletinDestinationLockScreen"];
-  v21 = [(NCNotificationRootList *)self notificationSections];
-  [v21 addObject:v19];
+  notificationSections5 = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections5 addObject:v19];
 
   incomingSectionList = self->_incomingSectionList;
   self->_incomingSectionList = v19;
@@ -4759,53 +4759,53 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
   v25 = [v24 localizedStringForKey:@"NOTIFICATION_LIST_HEADER_NOTIFICATION_CENTER" value:&stru_282FE84F8 table:0];
 
   v26 = [[NCNotificationCombinedSectionList alloc] initWithTitle:v25 sectionType:0];
-  v27 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v26 notificationCache:v27 notificationListViewRevealed:0 logDescription:@"History Section"];
+  notificationListCache5 = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v26 notificationCache:notificationListCache5 notificationListViewRevealed:0 logDescription:@"History Section"];
 
   [(NCNotificationStructuredSectionList *)v26 setHistorySection:1];
   [(NCNotificationStructuredSectionList *)v26 setPreloadsNotificationRequests:1];
   [(NCNotificationStructuredSectionList *)v26 setSectionListDestination:@"BulletinDestinationNotificationCenter"];
-  v28 = [(NCNotificationRootList *)self notificationSections];
-  [v28 addObject:v26];
+  notificationSections6 = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections6 addObject:v26];
 
   historySectionList = self->_historySectionList;
   self->_historySectionList = v26;
 
   if ([(NCNotificationRootList *)self isScheduledDeliveryEnabled])
   {
-    v30 = [(NCNotificationRootList *)self digestScheduleManager];
-    v31 = [v30 upcomingScheduledDigestInfo];
+    digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
+    upcomingScheduledDigestInfo = [digestScheduleManager upcomingScheduledDigestInfo];
 
-    if (v31)
+    if (upcomingScheduledDigestInfo)
     {
-      [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:v31];
+      [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:upcomingScheduledDigestInfo];
     }
   }
 }
 
-- (BOOL)_isLockScreenPersistenceNotificationRequest:(id)a3
+- (BOOL)_isLockScreenPersistenceNotificationRequest:(id)request
 {
-  v3 = [a3 options];
-  v4 = [v3 lockScreenPersistence] == 2;
+  options = [request options];
+  v4 = [options lockScreenPersistence] == 2;
 
   return v4;
 }
 
-- (BOOL)_isPersistentPass:(id)a3
+- (BOOL)_isPersistentPass:(id)pass
 {
-  v3 = [a3 sectionIdentifier];
-  v4 = [v3 isEqual:@"com.apple.springboard.pass"];
+  sectionIdentifier = [pass sectionIdentifier];
+  v4 = [sectionIdentifier isEqual:@"com.apple.springboard.pass"];
 
   return v4;
 }
 
-- (BOOL)_isAlertingNotificationRequest:(id)a3
+- (BOOL)_isAlertingNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 options];
-  if ([v4 canTurnOnDisplay])
+  requestCopy = request;
+  options = [requestCopy options];
+  if ([options canTurnOnDisplay])
   {
-    v5 = [v3 interruptionLevel] != 0;
+    v5 = [requestCopy interruptionLevel] != 0;
   }
 
   else
@@ -4816,29 +4816,29 @@ uint64_t __52__NCNotificationRootList__emitPowerLogForScrolling___block_invoke_2
   return v5;
 }
 
-- (BOOL)_isNotificationRequest:(id)a3 forSectionList:(id)a4
+- (BOOL)_isNotificationRequest:(id)request forSectionList:(id)list
 {
-  v5 = a4;
-  v6 = [a3 requestDestinations];
-  v7 = [v5 sectionListDestination];
+  listCopy = list;
+  requestDestinations = [request requestDestinations];
+  sectionListDestination = [listCopy sectionListDestination];
 
-  LOBYTE(v5) = [v6 containsObject:v7];
-  return v5;
+  LOBYTE(listCopy) = [requestDestinations containsObject:sectionListDestination];
+  return listCopy;
 }
 
-- (BOOL)_shouldInsertNotificationRequestToHighlightedSectionList:(id)a3
+- (BOOL)_shouldInsertNotificationRequestToHighlightedSectionList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   if (![(NCNotificationRootList *)self _areHighlightsEnabled])
   {
     v6 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v13 = 138543362;
-      v14 = v8;
+      v14 = logDescription;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ highlight setting is disabled", &v13, 0xCu);
 LABEL_8:
     }
@@ -4848,19 +4848,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v4 isHighlight] & 1) == 0)
+  if (([listCopy isHighlight] & 1) == 0)
   {
     v9 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v9;
-      v8 = [(NCNotificationRootList *)self logDescription];
-      v10 = [v4 notificationIdentifier];
-      v11 = [v10 un_logDigest];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier = [listCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v13 = 138543618;
-      v14 = v8;
+      v14 = logDescription;
       v15 = 2114;
-      v16 = v11;
+      v16 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ request %{public}@ is not highlighted", &v13, 0x16u);
 
       goto LABEL_8;
@@ -4875,40 +4875,40 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)shouldDelayDeliveryOfNotificationRequest:(id)a3
+- (BOOL)shouldDelayDeliveryOfNotificationRequest:(id)request
 {
-  v3 = [a3 alertOptions];
-  v4 = [v3 suppression] == 2;
+  alertOptions = [request alertOptions];
+  v4 = [alertOptions suppression] == 2;
 
   return v4;
 }
 
-- (id)_sectionForInsertingNotificationRequest:(id)a3
+- (id)_sectionForInsertingNotificationRequest:(id)request
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self persistentStateManager];
-  v6 = [v5 sectionForStoredNotificationRequest:v4];
+  requestCopy = request;
+  persistentStateManager = [(NCNotificationRootList *)self persistentStateManager];
+  v6 = [persistentStateManager sectionForStoredNotificationRequest:requestCopy];
 
   v7 = [(NCNotificationRootList *)self _sectionForStoredNotificationRequestOfSectionType:v6];
   v8 = MEMORY[0x277D77DD0];
   if (v7)
   {
-    v9 = v7;
+    persistentSectionList = v7;
     v10 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v13 = NCNotificationListSectionTypeString(v6);
-      v14 = [v4 notificationIdentifier];
-      v15 = [v14 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543874;
-      v50 = v12;
+      v50 = logDescription;
       v51 = 2112;
       v52 = v13;
       v53 = 2112;
-      v54 = v15;
+      v54 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ found existing section %@ for request %@ from notification list persistent state", buf, 0x20u);
     }
 
@@ -4917,17 +4917,17 @@ LABEL_10:
 
   if ([(NCNotificationRootList *)self isScheduledDeliveryEnabled])
   {
-    v16 = [(NCNotificationRootList *)self currentDigestSectionList];
-    if ([(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v16])
+    currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+    if ([(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:currentDigestSectionList])
     {
-      v17 = [(NCNotificationRootList *)self currentDigestSectionList];
-      v18 = [v17 containsNotificationRequest:v4];
+      currentDigestSectionList2 = [(NCNotificationRootList *)self currentDigestSectionList];
+      v18 = [currentDigestSectionList2 containsNotificationRequest:requestCopy];
 
       if (v18)
       {
-        v19 = [(NCNotificationRootList *)self currentDigestSectionList];
+        currentDigestSectionList3 = [(NCNotificationRootList *)self currentDigestSectionList];
 LABEL_18:
-        v9 = v19;
+        persistentSectionList = currentDigestSectionList3;
         goto LABEL_19;
       }
     }
@@ -4939,47 +4939,47 @@ LABEL_18:
 
   if ([(NCNotificationRootList *)self isScheduledDeliveryEnabled])
   {
-    v20 = [(NCNotificationRootList *)self upcomingDigestSectionList];
-    v21 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v20];
+    upcomingDigestSectionList = [(NCNotificationRootList *)self upcomingDigestSectionList];
+    v21 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:upcomingDigestSectionList];
 
     if (v21)
     {
-      v19 = [(NCNotificationRootList *)self upcomingDigestSectionList];
+      currentDigestSectionList3 = [(NCNotificationRootList *)self upcomingDigestSectionList];
       goto LABEL_18;
     }
   }
 
   if ([(NCNotificationRootList *)self isMissedSectionActive])
   {
-    if ([(NCNotificationRootList *)self shouldDelayDeliveryOfNotificationRequest:v4])
+    if ([(NCNotificationRootList *)self shouldDelayDeliveryOfNotificationRequest:requestCopy])
     {
-      v22 = [(NCNotificationRootList *)self upcomingMissedSectionList];
-      v23 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v22];
+      upcomingMissedSectionList = [(NCNotificationRootList *)self upcomingMissedSectionList];
+      v23 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:upcomingMissedSectionList];
 
       if (v23)
       {
-        v19 = [(NCNotificationRootList *)self upcomingMissedSectionList];
+        currentDigestSectionList3 = [(NCNotificationRootList *)self upcomingMissedSectionList];
         goto LABEL_18;
       }
     }
   }
 
-  if ([(NCNotificationRootList *)self _isCriticalNotificationRequest:v4])
+  if ([(NCNotificationRootList *)self _isCriticalNotificationRequest:requestCopy])
   {
-    v19 = [(NCNotificationRootList *)self criticalSectionList];
+    currentDigestSectionList3 = [(NCNotificationRootList *)self criticalSectionList];
     goto LABEL_18;
   }
 
-  if (![(NCNotificationRootList *)self _isPersistentPass:v4])
+  if (![(NCNotificationRootList *)self _isPersistentPass:requestCopy])
   {
-    v40 = [(NCNotificationRootList *)self highlightedSectionList];
-    if ([(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v40])
+    highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+    if ([(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:highlightedSectionList])
     {
-      v41 = [(NCNotificationRootList *)self _shouldInsertNotificationRequestToHighlightedSectionList:v4];
+      v41 = [(NCNotificationRootList *)self _shouldInsertNotificationRequestToHighlightedSectionList:requestCopy];
 
       if (v41)
       {
-        v19 = [(NCNotificationRootList *)self highlightedSectionList];
+        currentDigestSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
         goto LABEL_18;
       }
     }
@@ -4988,14 +4988,14 @@ LABEL_18:
     {
     }
 
-    v42 = [(NCNotificationRootList *)self prominentIncomingSectionList];
-    if ([(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v42])
+    prominentIncomingSectionList = [(NCNotificationRootList *)self prominentIncomingSectionList];
+    if ([(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:prominentIncomingSectionList])
     {
-      v43 = [(NCNotificationRootList *)self _shouldInsertNotificationRequestToProminentIncomingSectionList:v4];
+      v43 = [(NCNotificationRootList *)self _shouldInsertNotificationRequestToProminentIncomingSectionList:requestCopy];
 
       if (v43)
       {
-        v19 = [(NCNotificationRootList *)self prominentIncomingSectionList];
+        currentDigestSectionList3 = [(NCNotificationRootList *)self prominentIncomingSectionList];
         goto LABEL_18;
       }
     }
@@ -5004,32 +5004,32 @@ LABEL_18:
     {
     }
 
-    v44 = [(NCNotificationRootList *)self incomingSectionList];
-    v45 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v44];
+    incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+    v45 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:incomingSectionList];
 
     if (v45)
     {
-      v19 = [(NCNotificationRootList *)self incomingSectionList];
+      currentDigestSectionList3 = [(NCNotificationRootList *)self incomingSectionList];
     }
 
     else
     {
-      v46 = [(NCNotificationRootList *)self historySectionList];
-      v47 = [(NCNotificationRootList *)self _isNotificationRequest:v4 forSectionList:v46];
+      historySectionList = [(NCNotificationRootList *)self historySectionList];
+      v47 = [(NCNotificationRootList *)self _isNotificationRequest:requestCopy forSectionList:historySectionList];
 
       if (!v47)
       {
-        v9 = 0;
+        persistentSectionList = 0;
         goto LABEL_19;
       }
 
-      v19 = [(NCNotificationRootList *)self historySectionList];
+      currentDigestSectionList3 = [(NCNotificationRootList *)self historySectionList];
     }
 
     goto LABEL_18;
   }
 
-  v9 = [(NCNotificationRootList *)self persistentSectionList];
+  persistentSectionList = [(NCNotificationRootList *)self persistentSectionList];
   v39 = *v8;
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -5038,69 +5038,69 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (v9 == self->_historySectionList)
+  if (persistentSectionList == self->_historySectionList)
   {
     p_incomingSectionList = &self->_incomingSectionList;
-    if ([(NCNotificationStructuredSectionList *)self->_incomingSectionList containsNotificationRequest:v4]|| (p_incomingSectionList = &self->_prominentIncomingSectionList, [(NCNotificationStructuredSectionList *)self->_prominentIncomingSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_highlightedSectionList, [(NCNotificationStructuredSectionList *)self->_highlightedSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_persistentSectionList, [(NCNotificationStructuredSectionList *)self->_persistentSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_criticalSectionList, [(NCNotificationStructuredSectionList *)self->_criticalSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_upcomingMissedSectionList, [(NCNotificationCombinedSectionList *)self->_upcomingMissedSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_upcomingDigestSectionList, [(NCNotificationCombinedSectionList *)self->_upcomingDigestSectionList containsNotificationRequest:v4]) || (p_incomingSectionList = &self->_currentDigestSectionList, [(NCNotificationCombinedSectionList *)self->_currentDigestSectionList containsNotificationRequest:v4]))
+    if ([(NCNotificationStructuredSectionList *)self->_incomingSectionList containsNotificationRequest:requestCopy]|| (p_incomingSectionList = &self->_prominentIncomingSectionList, [(NCNotificationStructuredSectionList *)self->_prominentIncomingSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_highlightedSectionList, [(NCNotificationStructuredSectionList *)self->_highlightedSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_persistentSectionList, [(NCNotificationStructuredSectionList *)self->_persistentSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_criticalSectionList, [(NCNotificationStructuredSectionList *)self->_criticalSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_upcomingMissedSectionList, [(NCNotificationCombinedSectionList *)self->_upcomingMissedSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_upcomingDigestSectionList, [(NCNotificationCombinedSectionList *)self->_upcomingDigestSectionList containsNotificationRequest:requestCopy]) || (p_incomingSectionList = &self->_currentDigestSectionList, [(NCNotificationCombinedSectionList *)self->_currentDigestSectionList containsNotificationRequest:requestCopy]))
     {
       v25 = *p_incomingSectionList;
 
-      v9 = v25;
+      persistentSectionList = v25;
     }
   }
 
-  v26 = [(NCNotificationRootList *)self _higherSectionToElevateForNotificationRequest:v4 currentSectionType:[(NCNotificationStructuredSectionList *)v9 sectionType]];
+  v26 = [(NCNotificationRootList *)self _higherSectionToElevateForNotificationRequest:requestCopy currentSectionType:[(NCNotificationStructuredSectionList *)persistentSectionList sectionType]];
   v27 = v26;
   if (v26)
   {
     v28 = v26;
 
-    v9 = v28;
+    persistentSectionList = v28;
   }
 
   v29 = *v8;
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
   {
     v30 = v29;
-    v31 = [(NCNotificationRootList *)self logDescription];
-    v32 = [v4 notificationIdentifier];
-    v33 = [v32 un_logDigest];
-    v34 = [v4 sectionIdentifier];
-    v35 = [v4 threadIdentifier];
-    [v35 un_logDigest];
-    v36 = v48 = v4;
-    v37 = NCNotificationListSectionTypeString([(NCNotificationStructuredSectionList *)v9 sectionType]);
+    logDescription2 = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier2 = [requestCopy notificationIdentifier];
+    un_logDigest2 = [notificationIdentifier2 un_logDigest];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    threadIdentifier = [requestCopy threadIdentifier];
+    [threadIdentifier un_logDigest];
+    v36 = v48 = requestCopy;
+    v37 = NCNotificationListSectionTypeString([(NCNotificationStructuredSectionList *)persistentSectionList sectionType]);
     *buf = 138544386;
-    v50 = v31;
+    v50 = logDescription2;
     v51 = 2114;
-    v52 = v33;
+    v52 = un_logDigest2;
     v53 = 2114;
-    v54 = v34;
+    v54 = sectionIdentifier;
     v55 = 2114;
     v56 = v36;
     v57 = 2114;
     v58 = v37;
     _os_log_impl(&dword_21E77E000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Section for new request %{public}@ for Group List [%{public}@:%{public}@] is %{public}@", buf, 0x34u);
 
-    v4 = v48;
+    requestCopy = v48;
   }
 
-  return v9;
+  return persistentSectionList;
 }
 
-- (BOOL)_isRequestEligibleForStackElevation:(id)a3
+- (BOOL)_isRequestEligibleForStackElevation:(id)elevation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elevationCopy = elevation;
   if ((_NCStackElevation() & 1) == 0)
   {
     v8 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v17 = 138543362;
-      v18 = v10;
+      v18 = logDescription;
       v11 = "%{public}@ stack elevation feature disabled";
 LABEL_9:
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, v11, &v17, 0xCu);
@@ -5118,9 +5118,9 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v12;
-      v10 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v17 = 138543362;
-      v18 = v10;
+      v18 = logDescription;
       v11 = "%{public}@ generative model unavailable";
       goto LABEL_9;
     }
@@ -5128,10 +5128,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = [v4 options];
-  v6 = [v5 canShowSummary];
+  options = [elevationCopy options];
+  canShowSummary = [options canShowSummary];
 
-  if ((v6 & 1) == 0)
+  if ((canShowSummary & 1) == 0)
   {
     v14 = *MEMORY[0x277D77DD0];
     if (!os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
@@ -5140,13 +5140,13 @@ LABEL_11:
     }
 
     v9 = v14;
-    v10 = [(NCNotificationRootList *)self logDescription];
-    v15 = [v4 notificationIdentifier];
-    v16 = [v15 un_logDigest];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    notificationIdentifier = [elevationCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v17 = 138543618;
-    v18 = v10;
+    v18 = logDescription;
     v19 = 2114;
-    v20 = v16;
+    v20 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ request %{public}@ summarization settings disabled", &v17, 0x16u);
 
     goto LABEL_10;
@@ -5158,46 +5158,46 @@ LABEL_12:
   return v7;
 }
 
-- (id)_higherSectionToElevateForNotificationRequest:(id)a3 currentSectionType:(unint64_t)a4
+- (id)_higherSectionToElevateForNotificationRequest:(id)request currentSectionType:(unint64_t)type
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![(NCNotificationRootList *)self _isRequestEligibleForStackElevation:v6])
+  requestCopy = request;
+  if (![(NCNotificationRootList *)self _isRequestEligibleForStackElevation:requestCopy])
   {
     v18 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(NCNotificationRootList *)self logDescription];
-      v21 = [v6 notificationIdentifier];
-      v22 = [v21 un_logDigest];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      *&buf[4] = v20;
+      *&buf[4] = logDescription;
       *&buf[12] = 2114;
-      *&buf[14] = v22;
+      *&buf[14] = un_logDigest;
       _os_log_impl(&dword_21E77E000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip finding hider section with request %{public}@; stack elevation not eligible", buf, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v7 = [v6 content];
-  v8 = [v7 isCommunicationType];
+  content = [requestCopy content];
+  isCommunicationType = [content isCommunicationType];
 
-  if ((v8 & 1) == 0)
+  if ((isCommunicationType & 1) == 0)
   {
     v23 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [(NCNotificationRootList *)self logDescription];
-      v26 = [v6 notificationIdentifier];
-      v27 = [v26 un_logDigest];
-      v28 = NCNotificationListSectionTypeString(a4);
+      logDescription2 = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier2 = [requestCopy notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier2 un_logDigest];
+      v28 = NCNotificationListSectionTypeString(type);
       *buf = 138543874;
-      *&buf[4] = v25;
+      *&buf[4] = logDescription2;
       *&buf[12] = 2114;
-      *&buf[14] = v27;
+      *&buf[14] = un_logDigest2;
       *&buf[22] = 2114;
       v38 = v28;
       _os_log_impl(&dword_21E77E000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip finding hider section with request %{public}@ in current section %{public}@; it's not communication request", buf, 0x20u);
@@ -5207,7 +5207,7 @@ LABEL_12:
   }
 
   v9 = NCStackElevationPriorityForSectionTypeString();
-  v10 = NCNotificationListSectionTypeString(a4);
+  v10 = NCNotificationListSectionTypeString(type);
   v11 = [v9 indexOfObject:v10];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -5216,14 +5216,14 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(NCNotificationRootList *)self logDescription];
-      v15 = [v6 notificationIdentifier];
-      v16 = [v15 un_logDigest];
-      v17 = NCNotificationListSectionTypeString(a4);
+      logDescription3 = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
+      v17 = NCNotificationListSectionTypeString(type);
       *buf = 138543874;
-      *&buf[4] = v14;
+      *&buf[4] = logDescription3;
       *&buf[12] = 2114;
-      *&buf[14] = v16;
+      *&buf[14] = un_logDigest3;
       *&buf[22] = 2114;
       v38 = v17;
       _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip finding higher section with request %{public}@ in current section %{public}@; it's not in allow list", buf, 0x20u);
@@ -5246,9 +5246,9 @@ LABEL_10:
   v32[2] = __91__NCNotificationRootList__higherSectionToElevateForNotificationRequest_currentSectionType___block_invoke;
   v32[3] = &unk_278370310;
   v35 = v11;
-  v36 = a4;
+  typeCopy = type;
   v32[4] = self;
-  v33 = v6;
+  v33 = requestCopy;
   v34 = buf;
   [v31 enumerateObjectsUsingBlock:v32];
 
@@ -5363,20 +5363,20 @@ void __91__NCNotificationRootList__higherSectionToElevateForNotificationRequest_
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     v7 = 138543362;
-    v8 = v5;
+    v8 = logDescription;
     _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ regrouping all expanded notification groups", &v7, 0xCu);
   }
 
-  v6 = [(NCNotificationRootList *)self notificationSections];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_184];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  [notificationSections enumerateObjectsUsingBlock:&__block_literal_global_184];
 }
 
 - (id)_visibleNotificationRequests
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationRootList *)self notificationSections];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__NCNotificationRootList__visibleNotificationRequests__block_invoke;
@@ -5384,7 +5384,7 @@ void __91__NCNotificationRootList__higherSectionToElevateForNotificationRequest_
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [notificationSections enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -5406,64 +5406,64 @@ void __54__NCNotificationRootList__visibleNotificationRequests__block_invoke(uin
 
 - (unint64_t)incomingCount
 {
-  v2 = [(NCNotificationRootList *)self incomingSectionList];
-  v3 = [v2 notificationCount];
+  incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+  notificationCount = [incomingSectionList notificationCount];
 
-  return v3;
+  return notificationCount;
 }
 
 - (unint64_t)historyCount
 {
-  v2 = [(NCNotificationRootList *)self historySectionList];
-  v3 = [v2 notificationCount];
+  historySectionList = [(NCNotificationRootList *)self historySectionList];
+  notificationCount = [historySectionList notificationCount];
 
-  return v3;
+  return notificationCount;
 }
 
-- (void)setOverrideMigrationToHistory:(BOOL)a3
+- (void)setOverrideMigrationToHistory:(BOOL)history
 {
-  if (self->_overrideMigrationToHistory != a3)
+  if (self->_overrideMigrationToHistory != history)
   {
-    v4 = a3;
-    self->_overrideMigrationToHistory = a3;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setBool:v4 forKey:@"NCOverrideNotificationMigrationToHistory"];
+    historyCopy = history;
+    self->_overrideMigrationToHistory = history;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:historyCopy forKey:@"NCOverrideNotificationMigrationToHistory"];
   }
 }
 
-- (void)setCurrentListDisplayStyleSetting:(int64_t)a3
+- (void)setCurrentListDisplayStyleSetting:(int64_t)setting
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:setting];
   self->_currentListDisplayStyleSetting = v4;
 
   MEMORY[0x2821F96F8](v4);
 }
 
-- (BOOL)_isCurrentListDisplayStyleSettingEqualTo:(int64_t)a3
+- (BOOL)_isCurrentListDisplayStyleSettingEqualTo:(int64_t)to
 {
   currentListDisplayStyleSetting = self->_currentListDisplayStyleSetting;
   if (currentListDisplayStyleSetting)
   {
-    LOBYTE(currentListDisplayStyleSetting) = [(NSNumber *)currentListDisplayStyleSetting integerValue]== a3;
+    LOBYTE(currentListDisplayStyleSetting) = [(NSNumber *)currentListDisplayStyleSetting integerValue]== to;
   }
 
   return currentListDisplayStyleSetting;
 }
 
-- (void)_updateSystemSettingsForUpdatedNotificationListDisplayStyleSetting:(int64_t)a3
+- (void)_updateSystemSettingsForUpdatedNotificationListDisplayStyleSetting:(int64_t)setting
 {
-  v8 = [(NCNotificationRootList *)self delegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(NCNotificationRootList *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v8 notificationSystemSettingsForNotificationListComponent:self];
+    v5 = [delegate notificationSystemSettingsForNotificationListComponent:self];
     v6 = v5;
-    if (v5 && [v5 listDisplayStyleSetting] != a3)
+    if (v5 && [v5 listDisplayStyleSetting] != setting)
     {
       v7 = [v6 mutableCopy];
-      [v7 setListDisplayStyleSetting:a3];
+      [v7 setListDisplayStyleSetting:setting];
       if (objc_opt_respondsToSelector())
       {
-        [v8 notificationListComponent:self setNotificationSystemSettings:v7];
+        [delegate notificationListComponent:self setNotificationSystemSettings:v7];
       }
     }
   }
@@ -5480,7 +5480,7 @@ void __54__NCNotificationRootList__visibleNotificationRequests__block_invoke(uin
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = [(NCNotificationRootList *)self currentListDisplayStyleSetting];
+  currentListDisplayStyleSetting = [(NCNotificationRootList *)self currentListDisplayStyleSetting];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5506,12 +5506,12 @@ void __54__NCNotificationRootList__visibleNotificationRequests__block_invoke(uin
     v4 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v6 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:v20[3]];
       v7 = [MEMORY[0x277D77E68] stringForNotificationListDisplayStyleSetting:{-[NCNotificationRootList currentListDisplayStyleSetting](self, "currentListDisplayStyleSetting")}];
       v8 = v14[5];
       *buf = 138544130;
-      v24 = v5;
+      v24 = logDescription;
       v25 = 2114;
       v26 = v6;
       v27 = 2114;
@@ -5524,8 +5524,8 @@ void __54__NCNotificationRootList__visibleNotificationRequests__block_invoke(uin
     [(NCNotificationRootList *)self setCurrentListDisplayStyleSetting:v20[3]];
   }
 
-  v9 = [(NCNotificationRootList *)self currentListDisplayStyleSettingReason];
-  v10 = [v9 isEqualToString:@"NCNotificationListDisplayStyleSettingOverrideReasonSleep"];
+  currentListDisplayStyleSettingReason = [(NCNotificationRootList *)self currentListDisplayStyleSettingReason];
+  v10 = [currentListDisplayStyleSettingReason isEqualToString:@"NCNotificationListDisplayStyleSettingOverrideReasonSleep"];
 
   v11 = [v14[5] isEqualToString:@"NCNotificationListDisplayStyleSettingOverrideReasonSleep"];
   [(NCNotificationRootList *)self setCurrentListDisplayStyleSettingReason:v14[5]];
@@ -5552,14 +5552,14 @@ void __68__NCNotificationRootList__updateNotificationListDisplayStyleSetting__bl
   }
 }
 
-- (id)_insertNotificationRequest:(id)a3
+- (id)_insertNotificationRequest:(id)request
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self _sectionForInsertingNotificationRequest:v4];
+  requestCopy = request;
+  v5 = [(NCNotificationRootList *)self _sectionForInsertingNotificationRequest:requestCopy];
   v6 = MEMORY[0x277CBEB58];
-  v7 = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
-  v8 = [v6 setWithSet:v7];
+  _notificationSectionListsForEnumeration = [(NCNotificationRootList *)self _notificationSectionListsForEnumeration];
+  v8 = [v6 setWithSet:_notificationSectionListsForEnumeration];
 
   if (self->_upcomingDigestSectionList)
   {
@@ -5568,13 +5568,13 @@ void __68__NCNotificationRootList__updateNotificationListDisplayStyleSetting__bl
 
   if (self->_currentDigestSectionList)
   {
-    v9 = [(NCNotificationRootList *)self _sectionListsThatSuppressDigest];
-    v10 = [v5 sectionType];
+    _sectionListsThatSuppressDigest = [(NCNotificationRootList *)self _sectionListsThatSuppressDigest];
+    sectionType = [v5 sectionType];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v9;
+    v11 = _sectionListsThatSuppressDigest;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v12)
     {
@@ -5589,25 +5589,25 @@ void __68__NCNotificationRootList__updateNotificationListDisplayStyleSetting__bl
             objc_enumerationMutation(v11);
           }
 
-          if ([*(*(&v29 + 1) + 8 * i) sectionType] == v10)
+          if ([*(*(&v29 + 1) + 8 * i) sectionType] == sectionType)
           {
 
             v16 = *MEMORY[0x277D77DD0];
             if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
             {
               v17 = v16;
-              v18 = [(NCNotificationRootList *)self logDescription];
-              v19 = [v4 notificationIdentifier];
-              v20 = [v19 un_logDigest];
+              logDescription = [(NCNotificationRootList *)self logDescription];
+              notificationIdentifier = [requestCopy notificationIdentifier];
+              un_logDigest = [notificationIdentifier un_logDigest];
               *buf = 138543618;
-              v34 = v18;
+              v34 = logDescription;
               v35 = 2114;
-              v36 = v20;
+              v36 = un_logDigest;
               _os_log_impl(&dword_21E77E000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Moving digest for inserted notification %{public}@", buf, 0x16u);
             }
 
-            v21 = [(NCNotificationRootList *)self currentDigestSectionList];
-            [v21 collapseSummarizedSectionList];
+            currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+            [currentDigestSectionList collapseSummarizedSectionList];
 
             [(NCNotificationRootList *)self _migrateCurrentDigestSectionListToReadSection];
             goto LABEL_16;
@@ -5645,7 +5645,7 @@ LABEL_16:
   v27[1] = 3221225472;
   v27[2] = __53__NCNotificationRootList__insertNotificationRequest___block_invoke;
   v27[3] = &unk_278370268;
-  v22 = v4;
+  v22 = requestCopy;
   v28 = v22;
   [v8 enumerateObjectsUsingBlock:v27];
   if (v5)
@@ -5670,47 +5670,47 @@ LABEL_16:
   return v25;
 }
 
-- (void)_migrateNotificationsFromList:(id)a3 toList:(id)a4 passingTest:(id)a5 filterRequestsPassingTest:(id)a6 hideToList:(BOOL)a7 clearRequests:(BOOL)a8 filterForDestination:(BOOL)a9 animateRemoval:(BOOL)a10 reorderGroupNotifications:(BOOL)a11
+- (void)_migrateNotificationsFromList:(id)list toList:(id)toList passingTest:(id)test filterRequestsPassingTest:(id)passingTest hideToList:(BOOL)hideToList clearRequests:(BOOL)requests filterForDestination:(BOOL)destination animateRemoval:(BOOL)self0 reorderGroupNotifications:(BOOL)self1
 {
-  v11 = a8;
-  v12 = a7;
-  v17 = a10;
+  requestsCopy = requests;
+  hideToListCopy = hideToList;
+  removalCopy2 = removal;
   v44 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
+  listCopy = list;
+  toListCopy = toList;
+  testCopy = test;
+  passingTestCopy = passingTest;
   v22 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
     [(NCNotificationRootList *)self logDescription];
-    v24 = v35 = v12;
-    [v18 logDescription];
-    v25 = v11;
-    v26 = v21;
-    v28 = v27 = v20;
-    v29 = [v19 logDescription];
+    v24 = v35 = hideToListCopy;
+    [listCopy logDescription];
+    v25 = requestsCopy;
+    v26 = passingTestCopy;
+    v28 = v27 = testCopy;
+    logDescription = [toListCopy logDescription];
     *buf = 138543874;
     v39 = v24;
     v40 = 2114;
     v41 = v28;
     v42 = 2114;
-    v43 = v29;
+    v43 = logDescription;
     _os_log_impl(&dword_21E77E000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating notification requests from %{public}@ to %{public}@", buf, 0x20u);
 
-    v20 = v27;
-    v21 = v26;
-    v11 = v25;
-    v17 = a10;
+    testCopy = v27;
+    passingTestCopy = v26;
+    requestsCopy = v25;
+    removalCopy2 = removal;
 
-    v12 = v35;
+    hideToListCopy = v35;
   }
 
-  v30 = [v18 removeNotificationGroupListsForMigrationPassingTest:v20 filterRequestsPassingTest:v21 animate:v17];
+  v30 = [listCopy removeNotificationGroupListsForMigrationPassingTest:testCopy filterRequestsPassingTest:passingTestCopy animate:removalCopy2];
   v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = v31;
-  if (v11)
+  if (requestsCopy)
   {
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
@@ -5720,9 +5720,9 @@ LABEL_16:
     [v30 enumerateObjectsUsingBlock:v36];
   }
 
-  if (a9)
+  if (destination)
   {
-    v33 = [(NCNotificationRootList *)self _filterNotificationsInGroupLists:v30 withDestinationsForSectionList:v19];
+    v33 = [(NCNotificationRootList *)self _filterNotificationsInGroupLists:v30 withDestinationsForSectionList:toListCopy];
 
     v30 = v33;
   }
@@ -5734,23 +5734,23 @@ LABEL_16:
 
   if ([v30 count])
   {
-    if (v12)
+    if (hideToListCopy)
     {
-      [(NCNotificationRootList *)self _setRevealed:0 forSection:v19];
-      if (![v19 sectionType])
+      [(NCNotificationRootList *)self _setRevealed:0 forSection:toListCopy];
+      if (![toListCopy sectionType])
       {
         [(NCNotificationRootList *)self _scrollToSystemPreferredPageTypeIfPossible];
       }
     }
   }
 
-  [v19 mergeNotificationGroups:v30 reorderGroupNotifications:a11];
+  [toListCopy mergeNotificationGroups:v30 reorderGroupNotifications:notifications];
   if ([v32 count])
   {
-    v34 = [(NCNotificationRootList *)self delegate];
-    [v34 notificationRootList:self requestsClearingFromIncomingSectionNotificationRequests:v32];
+    delegate = [(NCNotificationRootList *)self delegate];
+    [delegate notificationRootList:self requestsClearingFromIncomingSectionNotificationRequests:v32];
 
-    if ([v18 sectionType] == 2 && !objc_msgSend(v19, "sectionType"))
+    if ([listCopy sectionType] == 2 && !objc_msgSend(toListCopy, "sectionType"))
     {
       [v32 enumerateObjectsUsingBlock:&__block_literal_global_192];
     }
@@ -5771,17 +5771,17 @@ void __188__NCNotificationRootList__migrateNotificationsFromList_toList_passingT
   [v3 hideNotificationRequest:v2];
 }
 
-- (id)_filterNotificationsInGroupLists:(id)a3 withDestinationsForSectionList:(id)a4
+- (id)_filterNotificationsInGroupLists:(id)lists withDestinationsForSectionList:(id)list
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listsCopy = lists;
+  listCopy = list;
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = listsCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -5797,12 +5797,12 @@ void __188__NCNotificationRootList__migrateNotificationsFromList_toList_passingT
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 allNotificationRequests];
+        allNotificationRequests = [v11 allNotificationRequests];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v13 = [allNotificationRequests countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v13)
         {
           v14 = v13;
@@ -5813,17 +5813,17 @@ void __188__NCNotificationRootList__migrateNotificationsFromList_toList_passingT
             {
               if (*v23 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allNotificationRequests);
               }
 
               v17 = *(*(&v22 + 1) + 8 * j);
-              if (![(NCNotificationRootList *)self _isNotificationRequest:v17 forSectionList:v7])
+              if (![(NCNotificationRootList *)self _isNotificationRequest:v17 forSectionList:listCopy])
               {
                 [v11 removeNotificationRequest:v17];
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v14 = [allNotificationRequests countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v14);
@@ -5844,35 +5844,35 @@ void __188__NCNotificationRootList__migrateNotificationsFromList_toList_passingT
   return v20;
 }
 
-- (void)_scheduleNotificationRequestsForMigrationFromIncomingListPassingTest:(id)a3
+- (void)_scheduleNotificationRequestsForMigrationFromIncomingListPassingTest:(id)test
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testCopy = test;
   v5 = MEMORY[0x277D77DD0];
   v6 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(NCNotificationRootList *)self logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
     *buf = 138543362;
-    v26 = v8;
+    v26 = logDescription;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling migration for incoming list.", buf, 0xCu);
   }
 
-  v9 = [(NCNotificationRootList *)self incomingSectionList];
-  v10 = [v9 allNotificationRequests];
+  incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+  allNotificationRequests = [incomingSectionList allNotificationRequests];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __95__NCNotificationRootList__scheduleNotificationRequestsForMigrationFromIncomingListPassingTest___block_invoke;
   v22[3] = &unk_2783703A8;
-  v12 = v4;
+  v12 = testCopy;
   v24 = v12;
   v22[4] = self;
   v13 = v11;
   v23 = v13;
-  [v10 enumerateObjectsUsingBlock:v22];
+  [allNotificationRequests enumerateObjectsUsingBlock:v22];
   v14 = 3600.0;
   if (os_variant_has_internal_content())
   {
@@ -5883,10 +5883,10 @@ void __188__NCNotificationRootList__migrateNotificationsFromList_toList_passingT
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(NCNotificationRootList *)self logDescription];
+        logDescription2 = [(NCNotificationRootList *)self logDescription];
         [(NCNotificationRootList *)self overrideNotificationMigrateTimeSensitiveToHistoryTimeIntervalKey];
         *buf = 138543618;
-        v26 = v18;
+        v26 = logDescription2;
         v27 = 2050;
         v28 = v19;
         _os_log_impl(&dword_21E77E000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Found override value for TimeSensitive migrate timeInterval %{public}.2f.", buf, 0x16u);
@@ -5930,28 +5930,28 @@ void __95__NCNotificationRootList__scheduleNotificationRequestsForMigrationFromI
 - (void)_scheduleAllNotificationRequestsForMigrationFromHighlightList
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(NCNotificationRootList *)self highlightedSectionList];
-  if (v3)
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+  if (highlightedSectionList)
   {
-    v4 = v3;
-    v5 = [(NCNotificationRootList *)self highlightedSectionList];
-    v6 = [v5 notificationCount];
+    v4 = highlightedSectionList;
+    highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
+    notificationCount = [highlightedSectionList2 notificationCount];
 
-    if (v6)
+    if (notificationCount)
     {
       v7 = MEMORY[0x277D77DD0];
       v8 = *MEMORY[0x277D77DD0];
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
-        v10 = [(NCNotificationRootList *)self logDescription];
+        logDescription = [(NCNotificationRootList *)self logDescription];
         v21 = 138543362;
-        v22 = v10;
+        v22 = logDescription;
         _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling migration for all notifications in highlight list.", &v21, 0xCu);
       }
 
-      v11 = [(NCNotificationRootList *)self highlightedSectionList];
-      v12 = [v11 allNotificationRequests];
+      highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
+      allNotificationRequests = [highlightedSectionList3 allNotificationRequests];
 
       v13 = 900.0;
       if (os_variant_has_internal_content())
@@ -5963,10 +5963,10 @@ void __95__NCNotificationRootList__scheduleNotificationRequestsForMigrationFromI
           if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
           {
             v16 = v15;
-            v17 = [(NCNotificationRootList *)self logDescription];
+            logDescription2 = [(NCNotificationRootList *)self logDescription];
             [(NCNotificationRootList *)self overrideNotificationMigrateHighlightToHistoryTimeIntervalKey];
             v21 = 138543618;
-            v22 = v17;
+            v22 = logDescription2;
             v23 = 2050;
             v24 = v18;
             _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Found override value for Highlight migrate timeInterval %{public}.2f.", &v21, 0x16u);
@@ -5978,7 +5978,7 @@ void __95__NCNotificationRootList__scheduleNotificationRequestsForMigrationFromI
       }
 
       v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v13];
-      [(NCNotificationListMigrationScheduler *)self->_migrationScheduler addMigrationForNotificationRequests:v12 forDate:v20];
+      [(NCNotificationListMigrationScheduler *)self->_migrationScheduler addMigrationForNotificationRequests:allNotificationRequests forDate:v20];
     }
   }
 }
@@ -6007,20 +6007,20 @@ id __62__NCNotificationRootList__performDeferredMigrationIfNecessary__block_invo
   return v3;
 }
 
-- (BOOL)_isEligibleForStackElevationMigrationWithGroupList:(id)a3 areGenerativeModelsAvailable:(BOOL)a4
+- (BOOL)_isEligibleForStackElevationMigrationWithGroupList:(id)list areGenerativeModelsAvailable:(BOOL)available
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  listCopy = list;
+  v7 = listCopy;
+  if (!available)
   {
     v9 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(NCNotificationRootList *)self logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
       v15 = 138543362;
-      v16 = v11;
+      v16 = logDescription;
       _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ generative models are not available", &v15, 0xCu);
 LABEL_8:
     }
@@ -6030,18 +6030,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v6 isEligibleForStackElevationMigration] & 1) == 0)
+  if (([listCopy isEligibleForStackElevationMigration] & 1) == 0)
   {
     v12 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v12;
-      v11 = [(NCNotificationRootList *)self logDescription];
-      v13 = [v7 logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [v7 logDescription];
       v15 = 138543618;
-      v16 = v11;
+      v16 = logDescription;
       v17 = 2114;
-      v18 = v13;
+      v18 = logDescription2;
       _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ thread %{public}@ is not is not eligible for stack elevation", &v15, 0x16u);
 
       goto LABEL_8;
@@ -6056,32 +6056,32 @@ LABEL_10:
   return v8;
 }
 
-- (void)_migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:(id)a3
+- (void)_migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection:(id)section
 {
-  v4 = a3;
-  v5 = [(NCNotificationRootList *)self highlightedSectionList];
+  sectionCopy = section;
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
 
-  if (v5)
+  if (highlightedSectionList)
   {
     if (_NCStackElevation())
     {
       v6 = +[NCPlatformEligibility areGenerativeModelsAvailable];
-      v7 = [(NCNotificationRootList *)self highlightedSectionList];
-      v8 = [(NCNotificationRootList *)self incomingSectionList];
+      highlightedSectionList2 = [(NCNotificationRootList *)self highlightedSectionList];
+      incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection___block_invoke;
       v26[3] = &unk_2783703D0;
       v26[4] = self;
       v28 = v6;
-      v9 = v4;
+      v9 = sectionCopy;
       v27 = v9;
       BYTE2(v15) = 0;
       LOWORD(v15) = 0;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v7 passingTest:v8 filterRequestsPassingTest:v26 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v15 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:highlightedSectionList2 passingTest:incomingSectionList filterRequestsPassingTest:v26 hideToList:0 clearRequests:0 filterForDestination:0 animateRemoval:v15 reorderGroupNotifications:?];
 
-      v10 = [(NCNotificationRootList *)self highlightedSectionList];
-      v11 = [(NCNotificationRootList *)self incomingSectionList];
+      highlightedSectionList3 = [(NCNotificationRootList *)self highlightedSectionList];
+      incomingSectionList2 = [(NCNotificationRootList *)self incomingSectionList];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection___block_invoke_196;
@@ -6093,23 +6093,23 @@ LABEL_10:
       v21[2] = __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection___block_invoke_197;
       v21[3] = &unk_2783703F8;
       v22 = v9;
-      v23 = self;
+      selfCopy = self;
       BYTE2(v16) = 0;
       LOWORD(v16) = 0;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v10 passingTest:v11 filterRequestsPassingTest:v24 hideToList:v21 clearRequests:0 filterForDestination:0 animateRemoval:v16 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:highlightedSectionList3 passingTest:incomingSectionList2 filterRequestsPassingTest:v24 hideToList:v21 clearRequests:0 filterForDestination:0 animateRemoval:v16 reorderGroupNotifications:?];
 
       v12 = v27;
     }
 
     else
     {
-      v13 = [(NCNotificationRootList *)self highlightedSectionList];
-      v14 = [(NCNotificationRootList *)self incomingSectionList];
+      highlightedSectionList4 = [(NCNotificationRootList *)self highlightedSectionList];
+      incomingSectionList3 = [(NCNotificationRootList *)self incomingSectionList];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection___block_invoke_198;
       v19[3] = &unk_2783701A8;
-      v20 = v4;
+      v20 = sectionCopy;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequestsFromHighlightToIncomingSection___block_invoke_3;
@@ -6117,7 +6117,7 @@ LABEL_10:
       v18 = v20;
       BYTE2(v15) = 0;
       LOWORD(v15) = 0;
-      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v13 passingTest:v14 filterRequestsPassingTest:v19 hideToList:v17 clearRequests:0 filterForDestination:0 animateRemoval:v15 reorderGroupNotifications:?];
+      [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:highlightedSectionList4 passingTest:incomingSectionList3 filterRequestsPassingTest:v19 hideToList:v17 clearRequests:0 filterForDestination:0 animateRemoval:v15 reorderGroupNotifications:?];
 
       v12 = v20;
     }
@@ -6325,20 +6325,20 @@ BOOL __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequest
   return v6;
 }
 
-- (void)_migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:(id)a3
+- (void)_migrateOnScheduleNotificationRequestsFromIncomingSectionToHistorySection:(id)section
 {
-  v4 = a3;
-  v6 = [(NCNotificationRootList *)self incomingSectionList];
-  v5 = [(NCNotificationRootList *)self historySectionList];
-  [(NCNotificationRootList *)self _migrateOnScheduleNotificationRequests:v4 fromSection:v6 toSection:v5 clearRequests:1 filterForDestination:1 animateRemoval:0];
+  sectionCopy = section;
+  incomingSectionList = [(NCNotificationRootList *)self incomingSectionList];
+  historySectionList = [(NCNotificationRootList *)self historySectionList];
+  [(NCNotificationRootList *)self _migrateOnScheduleNotificationRequests:sectionCopy fromSection:incomingSectionList toSection:historySectionList clearRequests:1 filterForDestination:1 animateRemoval:0];
 }
 
-- (void)_migrateOnScheduleNotificationRequests:(id)a3 fromSection:(id)a4 toSection:(id)a5 clearRequests:(BOOL)a6 filterForDestination:(BOOL)a7 animateRemoval:(BOOL)a8
+- (void)_migrateOnScheduleNotificationRequests:(id)requests fromSection:(id)section toSection:(id)toSection clearRequests:(BOOL)clearRequests filterForDestination:(BOOL)destination animateRemoval:(BOOL)removal
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  clearRequestsCopy = clearRequests;
+  requestsCopy = requests;
+  sectionCopy = section;
+  toSectionCopy = toSection;
   if (_NCStackElevation())
   {
     v17 = +[NCPlatformEligibility areGenerativeModelsAvailable];
@@ -6348,17 +6348,17 @@ BOOL __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequest
     v41[3] = &unk_278370420;
     v41[4] = self;
     v45 = v17;
-    v18 = v14;
+    v18 = requestsCopy;
     v42 = v18;
-    v26 = v14;
-    v19 = v15;
+    v26 = requestsCopy;
+    v19 = sectionCopy;
     v43 = v19;
-    v20 = v16;
+    v20 = toSectionCopy;
     v44 = v20;
     BYTE2(v24) = 0;
-    BYTE1(v24) = a8;
-    LOBYTE(v24) = a7;
-    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v19 passingTest:v20 filterRequestsPassingTest:v41 hideToList:0 clearRequests:1 filterForDestination:v10 animateRemoval:v24 reorderGroupNotifications:?];
+    BYTE1(v24) = removal;
+    LOBYTE(v24) = destination;
+    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v19 passingTest:v20 filterRequestsPassingTest:v41 hideToList:0 clearRequests:1 filterForDestination:clearRequestsCopy animateRemoval:v24 reorderGroupNotifications:?];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __137__NCNotificationRootList__migrateOnScheduleNotificationRequests_fromSection_toSection_clearRequests_filterForDestination_animateRemoval___block_invoke_201;
@@ -6370,15 +6370,15 @@ BOOL __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequest
     v34[2] = __137__NCNotificationRootList__migrateOnScheduleNotificationRequests_fromSection_toSection_clearRequests_filterForDestination_animateRemoval___block_invoke_202;
     v34[3] = &unk_278370448;
     v35 = v18;
-    v36 = self;
+    selfCopy = self;
     v37 = v19;
     v38 = v20;
     v21 = v20;
     v22 = v19;
-    v14 = v26;
-    *(&v25 + 1) = a8;
-    LOBYTE(v25) = a7;
-    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v22 passingTest:v21 filterRequestsPassingTest:v39 hideToList:v34 clearRequests:1 filterForDestination:v10 animateRemoval:v25 reorderGroupNotifications:?];
+    requestsCopy = v26;
+    *(&v25 + 1) = removal;
+    LOBYTE(v25) = destination;
+    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v22 passingTest:v21 filterRequestsPassingTest:v39 hideToList:v34 clearRequests:1 filterForDestination:clearRequestsCopy animateRemoval:v25 reorderGroupNotifications:?];
 
     v23 = v42;
   }
@@ -6389,19 +6389,19 @@ BOOL __103__NCNotificationRootList__migrateNonActiveHighlightNotificationRequest
     v32[1] = 3221225472;
     v32[2] = __137__NCNotificationRootList__migrateOnScheduleNotificationRequests_fromSection_toSection_clearRequests_filterForDestination_animateRemoval___block_invoke_203;
     v32[3] = &unk_2783701A8;
-    v33 = v14;
+    v33 = requestsCopy;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __137__NCNotificationRootList__migrateOnScheduleNotificationRequests_fromSection_toSection_clearRequests_filterForDestination_animateRemoval___block_invoke_3;
     v27[3] = &unk_278370448;
     v28 = v33;
-    v29 = self;
-    v30 = v15;
-    v31 = v16;
+    selfCopy2 = self;
+    v30 = sectionCopy;
+    v31 = toSectionCopy;
     BYTE2(v24) = 0;
-    BYTE1(v24) = a8;
-    LOBYTE(v24) = a7;
-    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:v15 passingTest:v16 filterRequestsPassingTest:v32 hideToList:v27 clearRequests:1 filterForDestination:v10 animateRemoval:v24 reorderGroupNotifications:?];
+    BYTE1(v24) = removal;
+    LOBYTE(v24) = destination;
+    [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:sectionCopy passingTest:toSectionCopy filterRequestsPassingTest:v32 hideToList:v27 clearRequests:1 filterForDestination:clearRequestsCopy animateRemoval:v24 reorderGroupNotifications:?];
 
     v23 = v33;
   }
@@ -6771,20 +6771,20 @@ LABEL_10:
   return v7;
 }
 
-- (void)_elevateGroupInOtherSectionsIfNeededWithRequest:(id)a3 toSection:(id)a4
+- (void)_elevateGroupInOtherSectionsIfNeededWithRequest:(id)request toSection:(id)section
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NCNotificationRootList *)self _isRequestEligibleForStackElevation:v6])
+  requestCopy = request;
+  sectionCopy = section;
+  if ([(NCNotificationRootList *)self _isRequestEligibleForStackElevation:requestCopy])
   {
-    v8 = [v6 content];
-    v9 = [v8 isCommunicationType];
+    content = [requestCopy content];
+    isCommunicationType = [content isCommunicationType];
 
-    if (v9)
+    if (isCommunicationType)
     {
       v10 = NCStackElevationPriorityForSectionTypeString();
-      v11 = NCNotificationListSectionTypeString([v7 sectionType]);
+      v11 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
       v12 = [v10 indexOfObject:v11];
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -6793,14 +6793,14 @@ LABEL_10:
         if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [(NCNotificationRootList *)self logDescription];
-          v16 = [v6 notificationIdentifier];
-          v17 = [v16 un_logDigest];
-          v18 = NCNotificationListSectionTypeString([v7 sectionType]);
+          logDescription = [(NCNotificationRootList *)self logDescription];
+          notificationIdentifier = [requestCopy notificationIdentifier];
+          un_logDigest = [notificationIdentifier un_logDigest];
+          v18 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
           *buf = 138543874;
-          v42 = v15;
+          v42 = logDescription;
           v43 = 2114;
-          v44 = v17;
+          v44 = un_logDigest;
           v45 = 2114;
           v46 = v18;
           v19 = "%{public}@ Skip elevate same groups in other section with request %{public}@ in section %{public}@; it's not in allow list";
@@ -6814,7 +6814,7 @@ LABEL_11:
 
       else
       {
-        v23 = [v7 existingIndexOfGroupForNotificationRequestForInsertion:v6];
+        v23 = [sectionCopy existingIndexOfGroupForNotificationRequestForInsertion:requestCopy];
         if (v23 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v24 = *MEMORY[0x277D77DD0];
@@ -6824,14 +6824,14 @@ LABEL_11:
           }
 
           v14 = v24;
-          v15 = [(NCNotificationRootList *)self logDescription];
-          v16 = [v6 notificationIdentifier];
-          v17 = [v16 un_logDigest];
-          v18 = NCNotificationListSectionTypeString([v7 sectionType]);
+          logDescription = [(NCNotificationRootList *)self logDescription];
+          notificationIdentifier = [requestCopy notificationIdentifier];
+          un_logDigest = [notificationIdentifier un_logDigest];
+          v18 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
           *buf = 138543874;
-          v42 = v15;
+          v42 = logDescription;
           v43 = 2114;
-          v44 = v17;
+          v44 = un_logDigest;
           v45 = 2114;
           v46 = v18;
           _os_log_error_impl(&dword_21E77E000, v14, OS_LOG_TYPE_ERROR, "%{public}@ No group found with request %{public}@ in section %{public}@", buf, 0x20u);
@@ -6839,24 +6839,24 @@ LABEL_11:
         }
 
         v25 = v23;
-        v26 = [v7 allNotificationGroups];
-        v27 = [v26 objectAtIndex:v25];
+        allNotificationGroups = [sectionCopy allNotificationGroups];
+        v27 = [allNotificationGroups objectAtIndex:v25];
 
         v28 = *MEMORY[0x277D77DD0];
         if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
         {
           log = v28;
-          v35 = [(NCNotificationRootList *)self logDescription];
-          v29 = [v27 logDescription];
-          v30 = [v6 notificationIdentifier];
-          v31 = [v30 un_logDigest];
-          v32 = NCNotificationListSectionTypeString([v7 sectionType]);
+          logDescription2 = [(NCNotificationRootList *)self logDescription];
+          logDescription3 = [v27 logDescription];
+          notificationIdentifier2 = [requestCopy notificationIdentifier];
+          un_logDigest2 = [notificationIdentifier2 un_logDigest];
+          v32 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
           *buf = 138544130;
-          v42 = v35;
+          v42 = logDescription2;
           v43 = 2114;
-          v44 = v29;
+          v44 = logDescription3;
           v45 = 2114;
-          v46 = v31;
+          v46 = un_logDigest2;
           v47 = 2114;
           v48 = v32;
           _os_log_impl(&dword_21E77E000, log, OS_LOG_TYPE_DEFAULT, "%{public}@ Elevating same group %{public}@ in other sections with request %{public}@ in section %{public}@", buf, 0x2Au);
@@ -6869,7 +6869,7 @@ LABEL_11:
         v37[3] = &unk_278370498;
         v40 = v12;
         v37[4] = self;
-        v38 = v7;
+        v38 = sectionCopy;
         v39 = v27;
         v34 = v27;
         [v33 enumerateObjectsUsingBlock:v37];
@@ -6882,14 +6882,14 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
       {
         v14 = v22;
-        v15 = [(NCNotificationRootList *)self logDescription];
-        v16 = [v6 notificationIdentifier];
-        v17 = [v16 un_logDigest];
-        v18 = NCNotificationListSectionTypeString([v7 sectionType]);
+        logDescription = [(NCNotificationRootList *)self logDescription];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
+        v18 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
         *buf = 138543874;
-        v42 = v15;
+        v42 = logDescription;
         v43 = 2114;
-        v44 = v17;
+        v44 = un_logDigest;
         v45 = 2114;
         v46 = v18;
         v19 = "%{public}@ Skip elevate same groups in other section with request %{public}@ in section %{public}@; it's not communication request";
@@ -6904,13 +6904,13 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v14 = v20;
-      v15 = [(NCNotificationRootList *)self logDescription];
-      v21 = [v6 notificationIdentifier];
-      v17 = [v21 un_logDigest];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier3 un_logDigest];
       *buf = 138543618;
-      v42 = v15;
+      v42 = logDescription;
       v43 = 2114;
-      v44 = v17;
+      v44 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip elevate same groups in other section with request %{public}@; stack elevation not eligible", buf, 0x16u);
 
 LABEL_12:
@@ -7037,11 +7037,11 @@ uint64_t __84__NCNotificationRootList__elevateGroupInOtherSectionsIfNeededWithRe
   return v4;
 }
 
-- (id)_sectionOfSectionType:(unint64_t)a3
+- (id)_sectionOfSectionType:(unint64_t)type
 {
-  if (a3 <= 0xC && ((0x1C7Fu >> a3) & 1) != 0)
+  if (type <= 0xC && ((0x1C7Fu >> type) & 1) != 0)
   {
-    v4 = *(&self->super.isa + qword_21E9462C8[a3]);
+    v4 = *(&self->super.isa + qword_21E9462C8[type]);
   }
 
   else
@@ -7058,22 +7058,22 @@ uint64_t __84__NCNotificationRootList__elevateGroupInOtherSectionsIfNeededWithRe
   if (persistentStoredListInfo)
   {
     v3 = [(NSDictionary *)persistentStoredListInfo objectForKey:@"isCurrentDigestInMissedSection"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(persistentStoredListInfo) = v4;
+    LOBYTE(persistentStoredListInfo) = bOOLValue;
   }
 
   return persistentStoredListInfo;
 }
 
-- (id)_sectionForStoredNotificationRequestOfSectionType:(unint64_t)a3
+- (id)_sectionForStoredNotificationRequestOfSectionType:(unint64_t)type
 {
   v5 = 0;
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 9)
+    if (type > 9)
     {
-      switch(a3)
+      switch(type)
       {
         case 0xAuLL:
           p_highlightedSectionList = &self->_highlightedSectionList;
@@ -7091,9 +7091,9 @@ uint64_t __84__NCNotificationRootList__elevateGroupInOtherSectionsIfNeededWithRe
       goto LABEL_28;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         goto LABEL_30;
       }
@@ -7107,16 +7107,16 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       p_highlightedSectionList = &self->_prominentIncomingSectionList;
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_30;
       }
@@ -7127,7 +7127,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     p_highlightedSectionList = &self->_upcomingMissedSectionList;
     goto LABEL_28;
@@ -7138,9 +7138,9 @@ LABEL_15:
   currentDigestSectionList = self->_currentDigestSectionList;
   if (!currentDigestSectionList)
   {
-    v8 = [(NCDigestScheduleManager *)self->_digestScheduleManager previouslyScheduledDigestInfo];
-    v9 = [(NCNotificationRootList *)self _isPersistentStateCurrentDigestInMissedSection];
-    if (a3 == 6 || v9)
+    previouslyScheduledDigestInfo = [(NCDigestScheduleManager *)self->_digestScheduleManager previouslyScheduledDigestInfo];
+    _isPersistentStateCurrentDigestInMissedSection = [(NCNotificationRootList *)self _isPersistentStateCurrentDigestInMissedSection];
+    if (type == 6 || _isPersistentStateCurrentDigestInMissedSection)
     {
       v11 = 2;
     }
@@ -7150,7 +7150,7 @@ LABEL_15:
       v11 = 1;
     }
 
-    [(NCNotificationRootList *)self _configureCurrentDigestSectionListWithDigestInfo:v8 sectionType:a3 summaryOrderProviderType:v11];
+    [(NCNotificationRootList *)self _configureCurrentDigestSectionListWithDigestInfo:previouslyScheduledDigestInfo sectionType:type summaryOrderProviderType:v11];
 
     goto LABEL_28;
   }
@@ -7162,126 +7162,126 @@ LABEL_30:
   return v5;
 }
 
-- (void)_insertSectionListInHistorySectionList:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)_insertSectionListInHistorySectionList:(id)list atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:v8])
+  listCopy = list;
+  if (![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:listCopy])
   {
     v9 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(NCNotificationRootList *)self logDescription];
-      v12 = [v8 logDescription];
-      v13 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [listCopy logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
       v14 = 138543874;
-      v15 = v11;
+      v15 = logDescription;
       v16 = 2114;
-      v17 = v12;
+      v17 = logDescription2;
       v18 = 2114;
-      v19 = v13;
+      v19 = logDescription3;
       _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting %{public}@ to %{public}@", &v14, 0x20u);
     }
 
-    [(NCNotificationCombinedSectionList *)self->_historySectionList insertNotificationSectionList:v8 atIndex:a4 animated:v5];
-    [v8 setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
+    [(NCNotificationCombinedSectionList *)self->_historySectionList insertNotificationSectionList:listCopy atIndex:index animated:animatedCopy];
+    [listCopy setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 collapseSummarizedSectionList];
+      [listCopy collapseSummarizedSectionList];
     }
   }
 }
 
-- (void)_removeSectionListInHistorySectionList:(id)a3 animated:(BOOL)a4
+- (void)_removeSectionListInHistorySectionList:(id)list animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:v6])
+  listCopy = list;
+  if ([(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:listCopy])
   {
     v7 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(NCNotificationRootList *)self logDescription];
-      v10 = [v6 logDescription];
-      v11 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [listCopy logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
       v12 = 138543874;
-      v13 = v9;
+      v13 = logDescription;
       v14 = 2114;
-      v15 = v10;
+      v15 = logDescription2;
       v16 = 2114;
-      v17 = v11;
+      v17 = logDescription3;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ from %{public}@", &v12, 0x20u);
     }
 
-    [(NCNotificationCombinedSectionList *)self->_historySectionList removeNotificationSectionList:v6 animated:v4];
+    [(NCNotificationCombinedSectionList *)self->_historySectionList removeNotificationSectionList:listCopy animated:animatedCopy];
   }
 }
 
-- (void)_toggleVisibilityInHistorySectionListForSectionList:(id)a3 atIndex:(unint64_t)a4 isSectionHidden:(BOOL)a5 animated:(BOOL)a6
+- (void)_toggleVisibilityInHistorySectionListForSectionList:(id)list atIndex:(unint64_t)index isSectionHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  if (v10)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  listCopy = list;
+  if (listCopy)
   {
-    v11 = v10;
-    if (-[NCNotificationCombinedSectionList containsSectionList:](self->_historySectionList, "containsSectionList:", v10) || ![v11 notificationCount] || v7)
+    v11 = listCopy;
+    if (-[NCNotificationCombinedSectionList containsSectionList:](self->_historySectionList, "containsSectionList:", listCopy) || ![v11 notificationCount] || hiddenCopy)
     {
-      v10 = [(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:v11];
-      if (v10)
+      listCopy = [(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:v11];
+      if (listCopy)
       {
-        v10 = [v11 notificationCount];
-        if (!v10 || v7)
+        listCopy = [v11 notificationCount];
+        if (!listCopy || hiddenCopy)
         {
-          v10 = [(NCNotificationRootList *)self _removeSectionListInHistorySectionList:v11 animated:v6];
+          listCopy = [(NCNotificationRootList *)self _removeSectionListInHistorySectionList:v11 animated:animatedCopy];
         }
       }
     }
 
     else
     {
-      v10 = [(NCNotificationRootList *)self _insertSectionListInHistorySectionList:v11 atIndex:a4 animated:v6];
+      listCopy = [(NCNotificationRootList *)self _insertSectionListInHistorySectionList:v11 atIndex:index animated:animatedCopy];
     }
   }
 
-  MEMORY[0x2821F96F8](v10);
+  MEMORY[0x2821F96F8](listCopy);
 }
 
-- (id)_newMissedSectionWithTitle:(id)a3 summaryHeading:(id)a4 logDescription:(id)a5 dndMode:(id)a6
+- (id)_newMissedSectionWithTitle:(id)title summaryHeading:(id)heading logDescription:(id)description dndMode:(id)mode
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NCNotificationCombinedSectionList *)[NCNotificationSummarizedSectionList alloc] initWithTitle:v13 sectionType:3];
+  modeCopy = mode;
+  descriptionCopy = description;
+  headingCopy = heading;
+  titleCopy = title;
+  v14 = [(NCNotificationCombinedSectionList *)[NCNotificationSummarizedSectionList alloc] initWithTitle:titleCopy sectionType:3];
 
-  v15 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:0 summaryHeading:v12 summaryDate:0 atxDigestDeliveryTime:2 isOnboardingSummary:0];
-  [v15 setDndMode:v10];
+  v15 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:0 summaryHeading:headingCopy summaryDate:0 atxDigestDeliveryTime:2 isOnboardingSummary:0];
+  [v15 setDndMode:modeCopy];
 
-  v16 = [(NCNotificationRootList *)self notificationListCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v14 notificationCache:v16 notificationListViewRevealed:[(NCNotificationRootList *)self isNotificationHistoryRevealed] logDescription:v11];
+  notificationListCache = [(NCNotificationRootList *)self notificationListCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v14 notificationCache:notificationListCache notificationListViewRevealed:[(NCNotificationRootList *)self isNotificationHistoryRevealed] logDescription:descriptionCopy];
 
   [(NCNotificationSummarizedSectionList *)v14 setSummaryOrderProvider:v15];
   [(NCNotificationStructuredSectionList *)v14 setSectionListDestination:@"BulletinDestinationLockScreen"];
-  v17 = [(NCNotificationStructuredSectionList *)v14 listView];
-  [v17 setGrouped:1];
+  listView = [(NCNotificationStructuredSectionList *)v14 listView];
+  [listView setGrouped:1];
 
   return v14;
 }
 
-- (void)_configureUpcomingMissedSectionForDNDMode:(id)a3
+- (void)_configureUpcomingMissedSectionForDNDMode:(id)mode
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   if (!self->_upcomingMissedSectionList)
   {
-    v5 = [(NCNotificationRootList *)self _missedSectionTitleForDNDMode:v4];
-    v6 = [(NCNotificationRootList *)self _newMissedSectionWithTitle:v5 summaryHeading:v5 logDescription:@"Upcoming Missed Section" dndMode:v4];
+    v5 = [(NCNotificationRootList *)self _missedSectionTitleForDNDMode:modeCopy];
+    v6 = [(NCNotificationRootList *)self _newMissedSectionWithTitle:v5 summaryHeading:v5 logDescription:@"Upcoming Missed Section" dndMode:modeCopy];
     upcomingMissedSectionList = self->_upcomingMissedSectionList;
     self->_upcomingMissedSectionList = v6;
 
@@ -7289,34 +7289,34 @@ LABEL_30:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRootList *)self logDescription];
-      v11 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
-      v12 = [v4 modeIdentifier];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
+      modeIdentifier = [modeCopy modeIdentifier];
       v13 = 138544130;
-      v14 = v10;
+      v14 = logDescription;
       v15 = 2114;
-      v16 = v11;
+      v16 = logDescription2;
       v17 = 2112;
       v18 = v5;
       v19 = 2114;
-      v20 = v12;
+      v20 = modeIdentifier;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ configured new %{public}@ with title %@ for mode %{public}@", &v13, 0x2Au);
     }
   }
 }
 
-- (id)_missedSectionTitleForDNDMode:(id)a3
+- (id)_missedSectionTitleForDNDMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = NCUserNotificationsUIKitFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"NOTIFICATION_LIST_MISSED_SECTION_HEADER_DO_NOT_DISTURB" value:&stru_282FE84F8 table:0];
 
-  v6 = [v3 semanticType];
-  if (v6 <= 3)
+  semanticType = [modeCopy semanticType];
+  if (semanticType <= 3)
   {
-    if (v6 > 1)
+    if (semanticType > 1)
     {
-      if (v6 == 2)
+      if (semanticType == 2)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = v7;
@@ -7333,7 +7333,7 @@ LABEL_30:
       goto LABEL_20;
     }
 
-    if (!v6)
+    if (!semanticType)
     {
       v7 = NCUserNotificationsUIKitFrameworkBundle();
       v8 = v7;
@@ -7341,7 +7341,7 @@ LABEL_30:
       goto LABEL_20;
     }
 
-    if (v6 == 1)
+    if (semanticType == 1)
     {
       v7 = NCUserNotificationsUIKitFrameworkBundle();
       v8 = v7;
@@ -7352,9 +7352,9 @@ LABEL_30:
 
   else
   {
-    if (v6 <= 5)
+    if (semanticType <= 5)
     {
-      if (v6 == 4)
+      if (semanticType == 4)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = v7;
@@ -7371,7 +7371,7 @@ LABEL_30:
       goto LABEL_20;
     }
 
-    switch(v6)
+    switch(semanticType)
     {
       case 6:
         v7 = NCUserNotificationsUIKitFrameworkBundle();
@@ -7396,8 +7396,8 @@ LABEL_20:
   v12 = MEMORY[0x277CCACA8];
   v8 = NCUserNotificationsUIKitFrameworkBundle();
   v13 = [v8 localizedStringForKey:@"NOTIFICATION_LIST_MISSED_SECTION_HEADER_GENERAL" value:&stru_282FE84F8 table:0];
-  v14 = [v3 name];
-  v10 = [v12 stringWithFormat:v13, v14];
+  name = [modeCopy name];
+  v10 = [v12 stringWithFormat:v13, name];
 
   v5 = v13;
 LABEL_21:
@@ -7414,24 +7414,24 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
-      v6 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
-      v7 = [(NCNotificationStructuredSectionList *)self->_incomingSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_incomingSectionList logDescription];
       *buf = 138543874;
-      v18 = v5;
+      v18 = logDescription;
       v19 = 2114;
-      v20 = v6;
+      v20 = logDescription2;
       v21 = 2114;
-      v22 = v7;
+      v22 = logDescription3;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ migrating all notifications from %{public}@ to %{public}@", buf, 0x20u);
     }
 
     v8 = +[NCNotificationEventTracker sharedInstance];
-    v9 = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList atxUUID];
-    [v8 missedBundleExpired:v9];
+    atxUUID = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList atxUUID];
+    [v8 missedBundleExpired:atxUUID];
 
-    v10 = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
-    [v10 atxLogSummaryPlatterRemoval];
+    summaryOrderProvider = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
+    [summaryOrderProvider atxLogSummaryPlatterRemoval];
 
     upcomingMissedSectionList = self->_upcomingMissedSectionList;
     prominentIncomingSectionList = self->_prominentIncomingSectionList;
@@ -7452,56 +7452,56 @@ LABEL_21:
   }
 }
 
-- (id)_newDigestSectionListWithTitle:(id)a3 sectionType:(unint64_t)a4 summaryOrderProvider:(id)a5 logDescription:(id)a6
+- (id)_newDigestSectionListWithTitle:(id)title sectionType:(unint64_t)type summaryOrderProvider:(id)provider logDescription:(id)description
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[NCNotificationSummarizedInlineExpandingSectionList alloc] initWithTitle:v12 sectionType:a4];
+  descriptionCopy = description;
+  providerCopy = provider;
+  titleCopy = title;
+  v13 = [[NCNotificationSummarizedInlineExpandingSectionList alloc] initWithTitle:titleCopy sectionType:type];
 
-  v14 = [(NCNotificationRootList *)self notificationSummaryCache];
-  [(NCNotificationRootList *)self _configureNotificationSectionList:v13 notificationCache:v14 notificationListViewRevealed:1 logDescription:v10];
+  notificationSummaryCache = [(NCNotificationRootList *)self notificationSummaryCache];
+  [(NCNotificationRootList *)self _configureNotificationSectionList:v13 notificationCache:notificationSummaryCache notificationListViewRevealed:1 logDescription:descriptionCopy];
 
-  [(NCNotificationSummarizedSectionList *)v13 setSummaryOrderProvider:v11];
-  v15 = [(NCNotificationStructuredSectionList *)v13 listView];
-  [v15 setGrouped:1];
+  [(NCNotificationSummarizedSectionList *)v13 setSummaryOrderProvider:providerCopy];
+  listView = [(NCNotificationStructuredSectionList *)v13 listView];
+  [listView setGrouped:1];
 
   [(NCNotificationRootList *)self _setRevealed:1 forSection:v13];
   [(NCNotificationStructuredSectionList *)v13 setSectionListDestination:@"BulletinDestinationDigest"];
   return v13;
 }
 
-- (id)_newSummaryOrderProviderOfType:(unint64_t)a3 summaryHeading:(id)a4 summaryDate:(id)a5 atxDigestDeliveryTime:(int64_t)a6 isOnboardingSummary:(BOOL)a7
+- (id)_newSummaryOrderProviderOfType:(unint64_t)type summaryHeading:(id)heading summaryDate:(id)date atxDigestDeliveryTime:(int64_t)time isOnboardingSummary:(BOOL)summary
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = [NCNotificationSummaryOrderProvider notificationSummaryOrderProviderOfType:a3];
-  [v14 setOnboardingSummary:v7];
+  summaryCopy = summary;
+  dateCopy = date;
+  headingCopy = heading;
+  v14 = [NCNotificationSummaryOrderProvider notificationSummaryOrderProviderOfType:type];
+  [v14 setOnboardingSummary:summaryCopy];
   [v14 setDeviceAuthenticated:{-[NCNotificationRootList deviceAuthenticated](self, "deviceAuthenticated")}];
-  [v14 setSummaryHeading:v13];
+  [v14 setSummaryHeading:headingCopy];
 
-  [v14 setSummaryDate:v12];
-  [v14 setAtxDigestDeliveryTime:a6];
+  [v14 setSummaryDate:dateCopy];
+  [v14 setAtxDigestDeliveryTime:time];
   return v14;
 }
 
-- (id)_newSummaryOrderProviderOfType:(unint64_t)a3 fromSummaryOrderProvider:(id)a4
+- (id)_newSummaryOrderProviderOfType:(unint64_t)type fromSummaryOrderProvider:(id)provider
 {
-  v6 = a4;
-  v7 = [v6 summaryHeading];
-  v8 = [v6 summaryDate];
-  v9 = [v6 atxDigestDeliveryTime];
+  providerCopy = provider;
+  summaryHeading = [providerCopy summaryHeading];
+  summaryDate = [providerCopy summaryDate];
+  atxDigestDeliveryTime = [providerCopy atxDigestDeliveryTime];
 
-  v10 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:a3 summaryHeading:v7 summaryDate:v8 atxDigestDeliveryTime:v9 isOnboardingSummary:0];
+  v10 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:type summaryHeading:summaryHeading summaryDate:summaryDate atxDigestDeliveryTime:atxDigestDeliveryTime isOnboardingSummary:0];
   return v10;
 }
 
-- (int64_t)_atxDigestDeliveryTimeForDeliveryOrder:(int64_t)a3
+- (int64_t)_atxDigestDeliveryTimeForDeliveryOrder:(int64_t)order
 {
-  if (a3)
+  if (order)
   {
-    return a3 == 2;
+    return order == 2;
   }
 
   else
@@ -7510,10 +7510,10 @@ LABEL_21:
   }
 }
 
-- (void)_configureUpcomingDigestSectionListWithDigestInfo:(id)a3
+- (void)_configureUpcomingDigestSectionListWithDigestInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (self->_upcomingDigestSectionList)
   {
     v5 = *MEMORY[0x277D77DD0];
@@ -7527,8 +7527,8 @@ LABEL_21:
   {
     v6 = NCUserNotificationsUIKitFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"NOTIFICATION_SUMMARY_HEADER_NEXT" value:&stru_282FE84F8 table:0];
-    v8 = [v4 scheduleDate];
-    v9 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", 2, v7, v8, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [v4 deliveryOrder]), 0);
+    scheduleDate = [infoCopy scheduleDate];
+    v9 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", 2, v7, scheduleDate, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [infoCopy deliveryOrder]), 0);
 
     v10 = NCUserNotificationsUIKitFrameworkBundle();
     v11 = [v10 localizedStringForKey:@"NOTIFICATION_SUMMARY_SECTION_TITLE_NEXT" value:&stru_282FE84F8 table:0];
@@ -7540,43 +7540,43 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(NCNotificationRootList *)self logDescription];
-      v17 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
       v18 = 138543874;
-      v19 = v16;
+      v19 = logDescription;
       v20 = 2114;
-      v21 = v17;
+      v21 = logDescription2;
       v22 = 2114;
-      v23 = v4;
+      v23 = infoCopy;
       _os_log_impl(&dword_21E77E000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ configured new %{public}@ with digest info : %{public}@", &v18, 0x20u);
     }
   }
 }
 
-- (void)_updateUpcomingDigestSectionListWithDigestInfo:(id)a3
+- (void)_updateUpcomingDigestSectionListWithDigestInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationCombinedSectionList *)self->_upcomingDigestSectionList allNotificationRequests];
-  v6 = [v5 copy];
+  infoCopy = info;
+  allNotificationRequests = [(NCNotificationCombinedSectionList *)self->_upcomingDigestSectionList allNotificationRequests];
+  v6 = [allNotificationRequests copy];
 
   [(NCNotificationRootList *)self _removeSectionListInHistorySectionList:self->_upcomingDigestSectionList animated:0];
   upcomingDigestSectionList = self->_upcomingDigestSectionList;
   self->_upcomingDigestSectionList = 0;
 
-  [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:v4];
+  [(NCNotificationRootList *)self _configureUpcomingDigestSectionListWithDigestInfo:infoCopy];
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationRootList *)self logDescription];
-    v11 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
+    logDescription = [(NCNotificationRootList *)self logDescription];
+    logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
     *buf = 138543874;
-    v23 = v10;
+    v23 = logDescription;
     v24 = 2114;
-    v25 = v11;
+    v25 = logDescription2;
     v26 = 2114;
-    v27 = v4;
+    v27 = infoCopy;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ replaced existing with new %{public}@ with digest info : %{public}@", buf, 0x20u);
   }
 
@@ -7620,15 +7620,15 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
-      v6 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
-      v7 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
       *buf = 138543874;
-      v11 = v5;
+      v11 = logDescription;
       v12 = 2114;
-      v13 = v6;
+      v13 = logDescription2;
       v14 = 2114;
-      v15 = v7;
+      v15 = logDescription3;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ and moving all notifications to %{public}@", buf, 0x20u);
     }
 
@@ -7641,11 +7641,11 @@ LABEL_21:
   }
 }
 
-- (void)_configureCurrentDigestSectionListWithDigestInfo:(id)a3 sectionType:(unint64_t)a4 summaryOrderProviderType:(unint64_t)a5
+- (void)_configureCurrentDigestSectionListWithDigestInfo:(id)info sectionType:(unint64_t)type summaryOrderProviderType:(unint64_t)providerType
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
+  infoCopy = info;
+  v9 = infoCopy;
   if (self->_currentDigestSectionList)
   {
     v10 = *MEMORY[0x277D77DD0];
@@ -7657,13 +7657,13 @@ LABEL_21:
 
   else
   {
-    v11 = [v8 headerString];
-    v12 = [v9 scheduleDate];
-    v13 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", a5, v11, v12, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [v9 deliveryOrder]), a4 == 8);
+    headerString = [infoCopy headerString];
+    scheduleDate = [v9 scheduleDate];
+    v13 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", providerType, headerString, scheduleDate, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [v9 deliveryOrder]), type == 8);
 
-    v14 = [v9 titleString];
-    v15 = NCNotificationListSectionTypeString(a4);
-    v16 = [(NCNotificationRootList *)self _newDigestSectionListWithTitle:v14 sectionType:a4 summaryOrderProvider:v13 logDescription:v15];
+    titleString = [v9 titleString];
+    v15 = NCNotificationListSectionTypeString(type);
+    v16 = [(NCNotificationRootList *)self _newDigestSectionListWithTitle:titleString sectionType:type summaryOrderProvider:v13 logDescription:v15];
     currentDigestSectionList = self->_currentDigestSectionList;
     self->_currentDigestSectionList = v16;
 
@@ -7671,12 +7671,12 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(NCNotificationRootList *)self logDescription];
-      v21 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
       v22 = 138543874;
-      v23 = v20;
+      v23 = logDescription;
       v24 = 2114;
-      v25 = v21;
+      v25 = logDescription2;
       v26 = 2114;
       v27 = v9;
       _os_log_impl(&dword_21E77E000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ configured new %{public}@ with digest info : %{public}@", &v22, 0x20u);
@@ -7693,49 +7693,49 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
-      v6 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
       v16 = 138543618;
-      v17 = v5;
+      v17 = logDescription;
       v18 = 2114;
-      v19 = v6;
+      v19 = logDescription2;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting %{public}@ to visible section", &v16, 0x16u);
     }
 
-    v7 = [(NCNotificationRootList *)self _notificationListSections];
-    v8 = [(NCNotificationRootList *)self _suppressesCurrentDigestForNotifications];
-    v9 = [v7 indexOfObject:self->_incomingSectionList];
-    v10 = [(NCNotificationRootList *)self notificationSections];
-    v11 = [v10 indexOfObject:self->_incomingSectionList];
+    _notificationListSections = [(NCNotificationRootList *)self _notificationListSections];
+    _suppressesCurrentDigestForNotifications = [(NCNotificationRootList *)self _suppressesCurrentDigestForNotifications];
+    v9 = [_notificationListSections indexOfObject:self->_incomingSectionList];
+    notificationSections = [(NCNotificationRootList *)self notificationSections];
+    v11 = [notificationSections indexOfObject:self->_incomingSectionList];
 
     [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList setDeviceAuthenticated:[(NCNotificationRootList *)self deviceAuthenticated]];
-    v12 = [(NCNotificationRootList *)self notificationSections];
-    [v12 insertObject:self->_currentDigestSectionList atIndex:v11];
+    notificationSections2 = [(NCNotificationRootList *)self notificationSections];
+    [notificationSections2 insertObject:self->_currentDigestSectionList atIndex:v11];
 
-    v13 = [(NCNotificationRootList *)self rootListView];
-    [v13 insertViewAtIndex:v9 animated:1];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView insertViewAtIndex:v9 animated:1];
 
     [(NCNotificationRootList *)self _updateIndexForReveal];
     if ([(NCNotificationRootList *)self currentListDisplayStyleSetting]== 2)
     {
-      if (v8)
+      if (_suppressesCurrentDigestForNotifications)
       {
-        v14 = 0;
+        isNotificationHistoryRevealed = 0;
       }
 
       else
       {
-        v14 = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
+        isNotificationHistoryRevealed = [(NCNotificationRootList *)self isNotificationHistoryRevealed];
       }
 
-      [(NCNotificationRootList *)self _setRevealed:v14 forSection:self->_currentDigestSectionList];
+      [(NCNotificationRootList *)self _setRevealed:isNotificationHistoryRevealed forSection:self->_currentDigestSectionList];
     }
 
     [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
-    v15 = [(NCNotificationRootList *)self currentDigestSectionList];
-    [(NCNotificationRootList *)self _notificationSectionsDidAdd:v15];
+    currentDigestSectionList = [(NCNotificationRootList *)self currentDigestSectionList];
+    [(NCNotificationRootList *)self _notificationSectionsDidAdd:currentDigestSectionList];
 
-    if (v8)
+    if (_suppressesCurrentDigestForNotifications)
     {
       [(NCNotificationRootList *)self _migrateCurrentDigestSectionListToReadSection];
     }
@@ -7751,77 +7751,77 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
-      v6 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
       v11 = 138543618;
-      v12 = v5;
+      v12 = logDescription;
       v13 = 2114;
-      v14 = v6;
+      v14 = logDescription2;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ from visible section", &v11, 0x16u);
     }
 
-    v7 = [(NCNotificationRootList *)self _notificationListSections];
-    v8 = [v7 indexOfObject:self->_currentDigestSectionList];
-    v9 = [(NCNotificationRootList *)self notificationSections];
-    [v9 removeObject:self->_currentDigestSectionList];
+    _notificationListSections = [(NCNotificationRootList *)self _notificationListSections];
+    v8 = [_notificationListSections indexOfObject:self->_currentDigestSectionList];
+    notificationSections = [(NCNotificationRootList *)self notificationSections];
+    [notificationSections removeObject:self->_currentDigestSectionList];
 
-    v10 = [(NCNotificationRootList *)self rootListView];
-    [v10 removeViewAtIndex:v8 animated:1 isHorizontallyDisplaced:{-[NCNotificationSummarizedSectionList isHorizontallyDisplaced](self->_currentDigestSectionList, "isHorizontallyDisplaced")}];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView removeViewAtIndex:v8 animated:1 isHorizontallyDisplaced:{-[NCNotificationSummarizedSectionList isHorizontallyDisplaced](self->_currentDigestSectionList, "isHorizontallyDisplaced")}];
 
     [(NCNotificationRootList *)self _updateIndexForReveal];
     [(NCNotificationRootList *)self _updateDelegateAndSubclassIfNecessaryOfContentChange];
   }
 }
 
-- (void)_insertCurrentDigestSectionListToSectionList:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertCurrentDigestSectionListToSectionList:(id)list atIndex:(unint64_t)index
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  listCopy = list;
   currentDigestSectionList = self->_currentDigestSectionList;
-  if (currentDigestSectionList && -[NCNotificationCombinedSectionList count](currentDigestSectionList, "count") && ([v6 containsSectionList:self->_currentDigestSectionList] & 1) == 0)
+  if (currentDigestSectionList && -[NCNotificationCombinedSectionList count](currentDigestSectionList, "count") && ([listCopy containsSectionList:self->_currentDigestSectionList] & 1) == 0)
   {
     v8 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRootList *)self logDescription];
-      v11 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-      v12 = [v6 logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription3 = [listCopy logDescription];
       v13 = 138544130;
-      v14 = v10;
+      v14 = logDescription;
       v15 = 2114;
-      v16 = v11;
+      v16 = logDescription2;
       v17 = 2114;
-      v18 = v12;
+      v18 = logDescription3;
       v19 = 2048;
-      v20 = a4;
+      indexCopy = index;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting %{public}@ to %{public}@ at index %lu", &v13, 0x2Au);
     }
 
-    [v6 insertNotificationSectionList:self->_currentDigestSectionList atIndex:a4 animated:{-[NCNotificationRootList isNotificationHistoryRevealed](self, "isNotificationHistoryRevealed")}];
+    [listCopy insertNotificationSectionList:self->_currentDigestSectionList atIndex:index animated:{-[NCNotificationRootList isNotificationHistoryRevealed](self, "isNotificationHistoryRevealed")}];
   }
 }
 
-- (void)_removeCurrentDigestSectionListFromSectionList:(id)a3
+- (void)_removeCurrentDigestSectionListFromSectionList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentDigestSectionList && [v4 containsSectionList:?])
+  listCopy = list;
+  v5 = listCopy;
+  if (self->_currentDigestSectionList && [listCopy containsSectionList:?])
   {
     v6 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(NCNotificationRootList *)self logDescription];
-      v9 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-      v10 = [v5 logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription3 = [v5 logDescription];
       v11 = 138543874;
-      v12 = v8;
+      v12 = logDescription;
       v13 = 2114;
-      v14 = v9;
+      v14 = logDescription2;
       v15 = 2114;
-      v16 = v10;
+      v16 = logDescription3;
       _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ from %{public}@", &v11, 0x20u);
     }
 
@@ -7832,15 +7832,15 @@ LABEL_21:
 - (void)_insertCurrentDigestSectionListToMissedSectionList
 {
   [(NCNotificationRootList *)self _insertCurrentDigestSectionListToSectionList:self->_upcomingMissedSectionList atIndex:0];
-  v3 = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
-  [v3 updateLeadingSummaryPlatterView];
+  summaryOrderProvider = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
+  [summaryOrderProvider updateLeadingSummaryPlatterView];
 }
 
 - (void)_removeCurrentDigestSectionListFromMissedSectionList
 {
   [(NCNotificationRootList *)self _removeCurrentDigestSectionListFromSectionList:self->_upcomingMissedSectionList];
-  v3 = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
-  [v3 updateLeadingSummaryPlatterView];
+  summaryOrderProvider = [(NCNotificationSummarizedSectionList *)self->_upcomingMissedSectionList summaryOrderProvider];
+  [summaryOrderProvider updateLeadingSummaryPlatterView];
 }
 
 - (void)_insertCurrentDigestSectionListToHistorySectionList
@@ -7853,15 +7853,15 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(NCNotificationRootList *)self logDescription];
-      v7 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-      v8 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
       v9 = 138543874;
-      v10 = v6;
+      v10 = logDescription;
       v11 = 2114;
-      v12 = v7;
+      v12 = logDescription2;
       v13 = 2114;
-      v14 = v8;
+      v14 = logDescription3;
       _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting %{public}@ to %{public}@ at chronologically", &v9, 0x20u);
     }
 
@@ -7871,8 +7871,8 @@ LABEL_21:
 
 - (void)_removeCurrentDigestSectionListFromContainingSectionList
 {
-  v3 = [(NCNotificationRootList *)self notificationSections];
-  v4 = [v3 containsObject:self->_currentDigestSectionList];
+  notificationSections = [(NCNotificationRootList *)self notificationSections];
+  v4 = [notificationSections containsObject:self->_currentDigestSectionList];
 
   if (v4)
   {
@@ -7898,10 +7898,10 @@ LABEL_21:
   currentDigestSectionList = self->_currentDigestSectionList;
   if (currentDigestSectionList)
   {
-    v7 = [(NCNotificationSummarizedSectionList *)currentDigestSectionList summaryOrderProvider];
-    v4 = [v7 summaryHeading];
-    v5 = [v7 summaryDate];
-    v6 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", 1, v4, v5, [v7 atxDigestDeliveryTime], 0);
+    summaryOrderProvider = [(NCNotificationSummarizedSectionList *)currentDigestSectionList summaryOrderProvider];
+    summaryHeading = [summaryOrderProvider summaryHeading];
+    summaryDate = [summaryOrderProvider summaryDate];
+    v6 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", 1, summaryHeading, summaryDate, [summaryOrderProvider atxDigestDeliveryTime], 0);
 
     [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList setSummaryOrderProvider:v6];
   }
@@ -7917,12 +7917,12 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(NCNotificationRootList *)self logDescription];
-      v7 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_upcomingDigestSectionList logDescription];
       v32 = 138543618;
-      v33 = v6;
+      v33 = logDescription;
       v34 = 2114;
-      v35 = v7;
+      v35 = logDescription2;
       _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ moving %{public}@ to current digest", &v32, 0x16u);
     }
 
@@ -7941,12 +7941,12 @@ LABEL_21:
     }
 
     [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList setLogDescription:@"Current Digest"];
-    v10 = [(NCNotificationRootList *)self digestScheduleManager];
-    v11 = [v10 previouslyScheduledDigestInfo];
+    digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
+    previouslyScheduledDigestInfo = [digestScheduleManager previouslyScheduledDigestInfo];
 
     v12 = self->_currentDigestSectionList;
-    v13 = [v11 titleString];
-    [(NCNotificationStructuredSectionList *)v12 setTitle:v13];
+    titleString = [previouslyScheduledDigestInfo titleString];
+    [(NCNotificationStructuredSectionList *)v12 setTitle:titleString];
 
     if ([(NCNotificationRootList *)self isMissedSectionActive])
     {
@@ -7958,9 +7958,9 @@ LABEL_21:
       v14 = 1;
     }
 
-    v15 = [v11 headerString];
-    v16 = [v11 scheduleDate];
-    v17 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", v14, v15, v16, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [v11 deliveryOrder]), 0);
+    headerString = [previouslyScheduledDigestInfo headerString];
+    scheduleDate = [previouslyScheduledDigestInfo scheduleDate];
+    v17 = -[NCNotificationRootList _newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:](self, "_newSummaryOrderProviderOfType:summaryHeading:summaryDate:atxDigestDeliveryTime:isOnboardingSummary:", v14, headerString, scheduleDate, -[NCNotificationRootList _atxDigestDeliveryTimeForDeliveryOrder:](self, "_atxDigestDeliveryTimeForDeliveryOrder:", [previouslyScheduledDigestInfo deliveryOrder]), 0);
 
     [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList setSummaryOrderProvider:v17];
     [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList setSectionType:4];
@@ -7976,15 +7976,15 @@ LABEL_21:
         if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v19;
-          v21 = [(NCNotificationRootList *)self logDescription];
-          v22 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-          v23 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
+          logDescription3 = [(NCNotificationRootList *)self logDescription];
+          logDescription4 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+          logDescription5 = [(NCNotificationStructuredSectionList *)self->_upcomingMissedSectionList logDescription];
           v32 = 138543874;
-          v33 = v21;
+          v33 = logDescription3;
           v34 = 2114;
-          v35 = v22;
+          v35 = logDescription4;
           v36 = 2114;
-          v37 = v23;
+          v37 = logDescription5;
           _os_log_impl(&dword_21E77E000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ moving %{public}@ to %{public}@ because missed section is active and exclusive.", &v32, 0x20u);
         }
 
@@ -7996,12 +7996,12 @@ LABEL_21:
         [(NCNotificationRootList *)self _insertCurrentDigestSectionList];
       }
 
-      v29 = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList summaryOrderProvider];
-      [v29 atxLogSummaryPlatterShownIsUpcoming:0];
+      summaryOrderProvider = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList summaryOrderProvider];
+      [summaryOrderProvider atxLogSummaryPlatterShownIsUpcoming:0];
 
       v30 = +[NCNotificationEventTracker sharedInstance];
-      v31 = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList atxUUID];
-      [v30 digestAppeared:v31];
+      atxUUID = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList atxUUID];
+      [v30 digestAppeared:atxUUID];
 
       [(NCNotificationListMigrationScheduler *)self->_migrationScheduler setMigrationDateForNotificationDigest:0];
     }
@@ -8012,12 +8012,12 @@ LABEL_21:
       if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
-        v26 = [(NCNotificationRootList *)self logDescription];
-        v27 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+        logDescription6 = [(NCNotificationRootList *)self logDescription];
+        logDescription7 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
         v32 = 138543618;
-        v33 = v26;
+        v33 = logDescription6;
         v34 = 2114;
-        v35 = v27;
+        v35 = logDescription7;
         _os_log_impl(&dword_21E77E000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ not presenting current digest %{public}@ because it has no notifications", &v32, 0x16u);
       }
 
@@ -8032,20 +8032,20 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
   if (self->_currentDigestSectionList && ![(NCNotificationCombinedSectionList *)self->_historySectionList containsSectionList:?])
   {
-    v3 = [(NCNotificationRootList *)self _isCurrentDigestListInMissedSectionList];
+    _isCurrentDigestListInMissedSectionList = [(NCNotificationRootList *)self _isCurrentDigestListInMissedSectionList];
     v4 = *MEMORY[0x277D77DD0];
     v5 = os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (_isCurrentDigestListInMissedSectionList)
     {
       if (v5)
       {
         v6 = v4;
-        v7 = [(NCNotificationRootList *)self logDescription];
-        v8 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+        logDescription = [(NCNotificationRootList *)self logDescription];
+        logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
         v14 = 138543618;
-        v15 = v7;
+        v15 = logDescription;
         v16 = 2114;
-        v17 = v8;
+        v17 = logDescription2;
         _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ moving %{public}@ from missed section to history", &v14, 0x16u);
       }
 
@@ -8057,12 +8057,12 @@ LABEL_21:
       if (v5)
       {
         v9 = v4;
-        v10 = [(NCNotificationRootList *)self logDescription];
-        v11 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+        logDescription3 = [(NCNotificationRootList *)self logDescription];
+        logDescription4 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
         v14 = 138543618;
-        v15 = v10;
+        v15 = logDescription3;
         v16 = 2114;
-        v17 = v11;
+        v17 = logDescription4;
         _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ moving %{public}@ from visible section to history", &v14, 0x16u);
       }
 
@@ -8071,8 +8071,8 @@ LABEL_21:
 
     [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList setLogDescription:@"Read Digest"];
     [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList setSectionType:6];
-    v12 = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList summaryOrderProvider];
-    v13 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:2 fromSummaryOrderProvider:v12];
+    summaryOrderProvider = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList summaryOrderProvider];
+    v13 = [(NCNotificationRootList *)self _newSummaryOrderProviderOfType:2 fromSummaryOrderProvider:summaryOrderProvider];
 
     [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList setSummaryOrderProvider:v13];
     [(NCNotificationRootList *)self _setRevealed:1 forSection:self->_currentDigestSectionList];
@@ -8090,15 +8090,15 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationRootList *)self logDescription];
-      v6 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
-      v7 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
+      logDescription = [(NCNotificationRootList *)self logDescription];
+      logDescription2 = [(NCNotificationStructuredSectionList *)self->_currentDigestSectionList logDescription];
+      logDescription3 = [(NCNotificationStructuredSectionList *)self->_historySectionList logDescription];
       *buf = 138543874;
-      v13 = v5;
+      v13 = logDescription;
       v14 = 2114;
-      v15 = v6;
+      v15 = logDescription2;
       v16 = 2114;
-      v17 = v7;
+      v17 = logDescription3;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ removing %{public}@ and moving all notifications to %{public}@", buf, 0x20u);
     }
 
@@ -8107,8 +8107,8 @@ LABEL_21:
     LOWORD(v11) = 1;
     [NCNotificationRootList _migrateNotificationsFromList:"_migrateNotificationsFromList:toList:passingTest:filterRequestsPassingTest:hideToList:clearRequests:filterForDestination:animateRemoval:reorderGroupNotifications:" toList:self->_currentDigestSectionList passingTest:self->_historySectionList filterRequestsPassingTest:0 hideToList:0 clearRequests:0 filterForDestination:1 animateRemoval:v11 reorderGroupNotifications:?];
     v8 = +[NCNotificationEventTracker sharedInstance];
-    v9 = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList atxUUID];
-    [v8 digestExpired:v9];
+    atxUUID = [(NCNotificationSummarizedSectionList *)self->_currentDigestSectionList atxUUID];
+    [v8 digestExpired:atxUUID];
 
     currentDigestSectionList = self->_currentDigestSectionList;
     self->_currentDigestSectionList = 0;
@@ -8117,22 +8117,22 @@ LABEL_21:
 
 - (BOOL)_shouldInsertCurrentDigestIntoMissedSectionList
 {
-  v3 = [(NCNotificationRootList *)self isMissedSectionActive];
-  v4 = [(NCNotificationRootList *)self activeDNDModeConfiguration];
-  v5 = v4;
-  if (v3 && v4)
+  isMissedSectionActive = [(NCNotificationRootList *)self isMissedSectionActive];
+  activeDNDModeConfiguration = [(NCNotificationRootList *)self activeDNDModeConfiguration];
+  v5 = activeDNDModeConfiguration;
+  if (isMissedSectionActive && activeDNDModeConfiguration)
   {
-    LOBYTE(v3) = [v4 nc_modeConfigurationHasExclusiveAppConfigurationType];
+    LOBYTE(isMissedSectionActive) = [activeDNDModeConfiguration nc_modeConfigurationHasExclusiveAppConfigurationType];
   }
 
-  return v3;
+  return isMissedSectionActive;
 }
 
 - (id)_sectionListsThatSuppressDigest
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(NCNotificationRootList *)self _sectionListsThatSuppressLargeFormatContent];
-  v5 = [v3 arrayWithArray:v4];
+  _sectionListsThatSuppressLargeFormatContent = [(NCNotificationRootList *)self _sectionListsThatSuppressLargeFormatContent];
+  v5 = [v3 arrayWithArray:_sectionListsThatSuppressLargeFormatContent];
 
   if (v5)
   {
@@ -8154,11 +8154,11 @@ LABEL_21:
 
 - (id)_sectionListsThatSuppressLargeFormatContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_criticalSectionList)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_persistentSectionList)
@@ -8178,45 +8178,45 @@ LABEL_21:
 
 - (BOOL)_suppressesCurrentDigestForNotifications
 {
-  v2 = self;
-  v3 = [(NCNotificationRootList *)self _sectionListsThatSuppressDigest];
-  LOBYTE(v2) = [(NCNotificationRootList *)v2 _suppressesForLists:v3 forProminentContentThreshold:1];
+  selfCopy = self;
+  _sectionListsThatSuppressDigest = [(NCNotificationRootList *)self _sectionListsThatSuppressDigest];
+  LOBYTE(selfCopy) = [(NCNotificationRootList *)selfCopy _suppressesForLists:_sectionListsThatSuppressDigest forProminentContentThreshold:1];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_suppressesHighlightsPlatterForNotifications
 {
-  v2 = self;
-  v3 = [(NCNotificationRootList *)self _sectionListsThatSuppressLargeFormatContent];
-  LOBYTE(v2) = [(NCNotificationRootList *)v2 _suppressesForLists:v3 forProminentContentThreshold:3];
+  selfCopy = self;
+  _sectionListsThatSuppressLargeFormatContent = [(NCNotificationRootList *)self _sectionListsThatSuppressLargeFormatContent];
+  LOBYTE(selfCopy) = [(NCNotificationRootList *)selfCopy _suppressesForLists:_sectionListsThatSuppressLargeFormatContent forProminentContentThreshold:3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateForceExpansionForHighlights
 {
-  v5 = [(NCNotificationRootList *)self highlightedSectionList];
-  v3 = [v5 forceExpanded];
-  v4 = [(NCNotificationRootList *)self _suppressesHighlightsPlatterForNotifications];
-  if (v3 != v4)
+  highlightedSectionList = [(NCNotificationRootList *)self highlightedSectionList];
+  forceExpanded = [highlightedSectionList forceExpanded];
+  _suppressesHighlightsPlatterForNotifications = [(NCNotificationRootList *)self _suppressesHighlightsPlatterForNotifications];
+  if (forceExpanded != _suppressesHighlightsPlatterForNotifications)
   {
-    [v5 setForceExpanded:v4];
+    [highlightedSectionList setForceExpanded:_suppressesHighlightsPlatterForNotifications];
   }
 }
 
-- (BOOL)_suppressesForLists:(id)a3 forProminentContentThreshold:(int64_t)a4
+- (BOOL)_suppressesForLists:(id)lists forProminentContentThreshold:(int64_t)threshold
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  listsCopy = lists;
+  if (threshold)
   {
-    v7 = [(NCNotificationRootList *)self _numberOfLiveActivities];
+    _numberOfLiveActivities = [(NCNotificationRootList *)self _numberOfLiveActivities];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = listsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -8231,8 +8231,8 @@ LABEL_21:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) allNotificationRequests];
-          v7 += [v13 count];
+          allNotificationRequests = [*(*(&v15 + 1) + 8 * i) allNotificationRequests];
+          _numberOfLiveActivities += [allNotificationRequests count];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -8241,10 +8241,10 @@ LABEL_21:
       while (v10);
     }
 
-    LOBYTE(a4) = v7 >= a4;
+    LOBYTE(threshold) = _numberOfLiveActivities >= threshold;
   }
 
-  return a4;
+  return threshold;
 }
 
 - (int64_t)_numberOfLiveActivities
@@ -8254,8 +8254,8 @@ LABEL_21:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(NCNotificationRootList *)self supplementaryViewsSections];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  supplementaryViewsSections = [(NCNotificationRootList *)self supplementaryViewsSections];
+  v3 = [supplementaryViewsSections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -8266,21 +8266,21 @@ LABEL_21:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(supplementaryViewsSections);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = [v8 isEqualToString:@"LiveActivities"];
+        identifier = [v7 identifier];
+        v9 = [identifier isEqualToString:@"LiveActivities"];
 
         if (v9)
         {
-          v10 = [v7 supplementaryViewControllersCount];
+          supplementaryViewControllersCount = [v7 supplementaryViewControllersCount];
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [supplementaryViewsSections countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -8290,10 +8290,10 @@ LABEL_21:
     }
   }
 
-  v10 = 0;
+  supplementaryViewControllersCount = 0;
 LABEL_11:
 
-  return v10;
+  return supplementaryViewControllersCount;
 }
 
 - (void)_addStateCaptureBlock
@@ -8406,10 +8406,10 @@ void __47__NCNotificationRootList__addStateCaptureBlock__block_invoke_4(uint64_t
 - (id)_listInfoForStateCapture
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(NCNotificationRootList *)self _listInfoForPersistentState];
-  if (v4)
+  _listInfoForPersistentState = [(NCNotificationRootList *)self _listInfoForPersistentState];
+  if (_listInfoForPersistentState)
   {
-    [v3 addEntriesFromDictionary:v4];
+    [v3 addEntriesFromDictionary:_listInfoForPersistentState];
   }
 
   if (self->_upcomingDigestSectionList)
@@ -8647,13 +8647,13 @@ uint64_t __66__NCNotificationRootList__notificationMigrationOverrideTestRecipe__
 
 - (void)_configureOverrideMigrationOverlayLabelIfNecessary
 {
-  v3 = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
+  overrideMigrationOverlayLabel = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
 
-  if (!v3)
+  if (!overrideMigrationOverlayLabel)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
-    v5 = [(NCNotificationRootList *)self rootListView];
-    [v5 bounds];
+    rootListView = [(NCNotificationRootList *)self rootListView];
+    [rootListView bounds];
     v13 = [v4 initWithFrame:?];
 
     [v13 setNumberOfLines:0];
@@ -8661,35 +8661,35 @@ uint64_t __66__NCNotificationRootList__notificationMigrationOverrideTestRecipe__
     v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
     [v13 setFont:v6];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [v13 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v13 setTextColor:whiteColor];
 
-    v8 = [v13 layer];
+    layer = [v13 layer];
     LODWORD(v9) = 1041865114;
-    [v8 setShadowOpacity:v9];
+    [layer setShadowOpacity:v9];
 
-    v10 = [v13 layer];
-    [v10 setShadowRadius:5.0];
+    layer2 = [v13 layer];
+    [layer2 setShadowRadius:5.0];
 
-    v11 = [v13 layer];
-    [v11 setShadowOffset:{0.0, 2.0}];
+    layer3 = [v13 layer];
+    [layer3 setShadowOffset:{0.0, 2.0}];
 
-    v12 = [(NCNotificationRootList *)self rootListView];
-    [v12 addSubview:v13];
+    rootListView2 = [(NCNotificationRootList *)self rootListView];
+    [rootListView2 addSubview:v13];
 
     [(NCNotificationRootList *)self setOverrideMigrationOverlayLabel:v13];
   }
 }
 
-- (void)_updateOverrideMigrationOverlayLabelWithText:(id)a3 forOverrideState:(BOOL)a4
+- (void)_updateOverrideMigrationOverlayLabelWithText:(id)text forOverrideState:(BOOL)state
 {
-  v6 = a3;
+  textCopy = text;
   [(NCNotificationRootList *)self _configureOverrideMigrationOverlayLabelIfNecessary];
-  v7 = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
-  [v7 setText:v6];
+  overrideMigrationOverlayLabel = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
+  [overrideMigrationOverlayLabel setText:textCopy];
 
-  v8 = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
-  [v8 setAlpha:0.0];
+  overrideMigrationOverlayLabel2 = [(NCNotificationRootList *)self overrideMigrationOverlayLabel];
+  [overrideMigrationOverlayLabel2 setAlpha:0.0];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -8701,7 +8701,7 @@ uint64_t __66__NCNotificationRootList__notificationMigrationOverrideTestRecipe__
   v9[2] = __88__NCNotificationRootList__updateOverrideMigrationOverlayLabelWithText_forOverrideState___block_invoke_2;
   v9[3] = &unk_278370510;
   v9[4] = self;
-  v10 = a4;
+  stateCopy = state;
   [MEMORY[0x277D75D18] animateWithDuration:0 delay:v11 options:v9 animations:0.3 completion:0.0];
 }
 
@@ -8773,26 +8773,26 @@ uint64_t __88__NCNotificationRootList__updateOverrideMigrationOverlayLabelWithTe
 
 - (void)testDigestTimerFired
 {
-  v3 = [(NCNotificationRootList *)self digestScheduleManager];
-  v4 = [v3 upcomingScheduledDigestInfo];
+  digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
+  upcomingScheduledDigestInfo = [digestScheduleManager upcomingScheduledDigestInfo];
 
-  [(NCNotificationRootList *)self publishScheduledDigest:v4 upcomingDigest:v4];
+  [(NCNotificationRootList *)self publishScheduledDigest:upcomingScheduledDigestInfo upcomingDigest:upcomingScheduledDigestInfo];
 }
 
 - (void)testDigestTimerUpdated
 {
-  v3 = [(NCNotificationRootList *)self digestScheduleManager];
-  v4 = [v3 upcomingScheduledDigestInfo];
+  digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
+  upcomingScheduledDigestInfo = [digestScheduleManager upcomingScheduledDigestInfo];
 
-  [(NCNotificationRootList *)self publishUpcomingDigest:v4];
+  [(NCNotificationRootList *)self publishUpcomingDigest:upcomingScheduledDigestInfo];
 }
 
 - (void)testDigestTimerRevoke
 {
-  v3 = [(NCNotificationRootList *)self digestScheduleManager];
-  v4 = [v3 upcomingScheduledDigestInfo];
+  digestScheduleManager = [(NCNotificationRootList *)self digestScheduleManager];
+  upcomingScheduledDigestInfo = [digestScheduleManager upcomingScheduledDigestInfo];
 
-  [(NCNotificationRootList *)self revokeUpcomingDigest:v4];
+  [(NCNotificationRootList *)self revokeUpcomingDigest:upcomingScheduledDigestInfo];
 }
 
 - (void)setOnboardingSummaryVisible:(void *)a1 .cold.1(void *a1, void *a2)

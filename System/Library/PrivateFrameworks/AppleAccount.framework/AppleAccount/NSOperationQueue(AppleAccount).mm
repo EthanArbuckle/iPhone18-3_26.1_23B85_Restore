@@ -9,7 +9,7 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSOperationQueue(AppleAccount) *)a2 aa_operationQueueWithUnderlyingQueue:a1];
+    [(NSOperationQueue(AppleAccount) *)a2 aa_operationQueueWithUnderlyingQueue:self];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E696ADC8]);

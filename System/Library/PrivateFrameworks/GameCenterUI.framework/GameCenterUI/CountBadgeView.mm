@@ -1,5 +1,5 @@
 @interface CountBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityCountLabel;
 - (void)layoutSubviews;
@@ -7,9 +7,9 @@
 
 @implementation CountBadgeView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24E32DF68();
   v6 = v5;
 
@@ -22,13 +22,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E32E0D0();
 }
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E32E2C8();
 
   return v3;

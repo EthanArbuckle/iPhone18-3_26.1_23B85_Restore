@@ -1,11 +1,11 @@
 @interface TUIAnimationStep
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation TUIAnimationStep
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimationStep allocWithZone:?]];
   v5 = v4;

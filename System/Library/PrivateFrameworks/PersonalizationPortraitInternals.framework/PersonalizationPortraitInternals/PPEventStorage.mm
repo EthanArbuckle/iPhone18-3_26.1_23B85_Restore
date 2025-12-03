@@ -1,38 +1,38 @@
 @interface PPEventStorage
 + (id)defaultStorage;
-- (BOOL)_isAllDayOrMultiDayEvent:(_BOOL8)a1;
+- (BOOL)_isAllDayOrMultiDayEvent:(_BOOL8)event;
 - (BOOL)attemptToPurgeImmediately;
-- (BOOL)eventKitChangeIsEvent:(id)a3;
-- (BOOL)shouldIgnoreEventsOnCalendarWithObjectID:(id)a3;
-- (BOOL)shouldIngestEvent:(id)a3;
-- (PPEventStorage)initWithEventStorePurger:(id)a3;
-- (PPEventStorage)initWithEventStorePurgerGetter:(id)a3;
+- (BOOL)eventKitChangeIsEvent:(id)event;
+- (BOOL)shouldIgnoreEventsOnCalendarWithObjectID:(id)d;
+- (BOOL)shouldIngestEvent:(id)event;
+- (PPEventStorage)initWithEventStorePurger:(id)purger;
+- (PPEventStorage)initWithEventStorePurgerGetter:(id)getter;
 - (id)_loadCalendars;
-- (id)eventWithExternalID:(id)a3;
-- (id)eventWithIdentifier:(id)a3;
-- (id)eventsInRange:(_NSRange)a3;
-- (id)nlEventsInRange:(_NSRange)a3;
-- (id)resolveEventFromEKChange:(id)a3;
-- (id)suggestedEventsInRange:(_NSRange)a3 ekStore:(id)a4;
-- (void)enumerateEventsFromEKObjectIDs:(void *)a3 expandingRecurrencesInRange:(char)a4 withFiltering:(void *)a5 usingBlock:;
-- (void)enumerateEventsInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)iterateEventsFrom:(id)a3 to:(id)a4 inChunks:(int)a5 withBlock:(id)a6;
-- (void)runBlockWithPurgerDisabled:(id)a3;
-- (void)setInvisibleCalendarIdentifiers:(id)a3;
+- (id)eventWithExternalID:(id)d;
+- (id)eventWithIdentifier:(id)identifier;
+- (id)eventsInRange:(_NSRange)range;
+- (id)nlEventsInRange:(_NSRange)range;
+- (id)resolveEventFromEKChange:(id)change;
+- (id)suggestedEventsInRange:(_NSRange)range ekStore:(id)store;
+- (void)enumerateEventsFromEKObjectIDs:(void *)ds expandingRecurrencesInRange:(char)range withFiltering:(void *)filtering usingBlock:;
+- (void)enumerateEventsInRange:(_NSRange)range usingBlock:(id)block;
+- (void)iterateEventsFrom:(id)from to:(id)to inChunks:(int)chunks withBlock:(id)block;
+- (void)runBlockWithPurgerDisabled:(id)disabled;
+- (void)setInvisibleCalendarIdentifiers:(id)identifiers;
 @end
 
 @implementation PPEventStorage
 
-- (void)setInvisibleCalendarIdentifiers:(id)a3
+- (void)setInvisibleCalendarIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PPEventStorage_setInvisibleCalendarIdentifiers___block_invoke;
   v7[3] = &unk_278976820;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -55,11 +55,11 @@ void __29__PPEventStorage_clearCaches__block_invoke(uint64_t a1, void *a2)
   v3[4] = 0;
 }
 
-- (BOOL)shouldIgnoreEventsOnCalendarWithObjectID:(id)a3
+- (BOOL)shouldIgnoreEventsOnCalendarWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -72,7 +72,7 @@ void __29__PPEventStorage_clearCaches__block_invoke(uint64_t a1, void *a2)
     v9[3] = &unk_2789767F8;
     v9[4] = self;
     v11 = &v12;
-    v10 = v4;
+    v10 = dCopy;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = *(v13 + 24);
 
@@ -105,7 +105,7 @@ uint64_t __59__PPEventStorage_shouldIgnoreEventsOnCalendarWithObjectID___block_i
 
 - (id)_loadCalendars
 {
-  if (a1)
+  if (self)
   {
     v4 = 0;
     v5 = &v4;
@@ -119,8 +119,8 @@ uint64_t __59__PPEventStorage_shouldIgnoreEventsOnCalendarWithObjectID___block_i
     v3[3] = &unk_2789768D8;
     v3[5] = &v4;
     v3[6] = sel__loadCalendars;
-    v3[4] = a1;
-    [a1 runBlockWithPurgerDisabled:v3];
+    v3[4] = self;
+    [self runBlockWithPurgerDisabled:v3];
     v1 = v5[5];
     _Block_object_dispose(&v4, 8);
   }
@@ -233,9 +233,9 @@ id __32__PPEventStorage__loadCalendars__block_invoke_2_90(uint64_t a1, void *a2)
   return v3;
 }
 
-- (BOOL)shouldIngestEvent:(id)a3
+- (BOOL)shouldIngestEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -246,7 +246,7 @@ id __32__PPEventStorage__loadCalendars__block_invoke_2_90(uint64_t a1, void *a2)
   v8[2] = __36__PPEventStorage_shouldIngestEvent___block_invoke;
   v8[3] = &unk_2789767F8;
   v8[4] = self;
-  v6 = v4;
+  v6 = eventCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)lock runWithLockAcquired:v8];
@@ -290,43 +290,43 @@ void __36__PPEventStorage_shouldIngestEvent___block_invoke(uint64_t a1, void *a2
 LABEL_8:
 }
 
-- (BOOL)_isAllDayOrMultiDayEvent:(_BOOL8)a1
+- (BOOL)_isAllDayOrMultiDayEvent:(_BOOL8)event
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (event)
   {
     if ([v3 isAllDay])
     {
-      a1 = 1;
+      event = 1;
     }
 
     else
     {
-      v5 = [v4 endDate];
-      v6 = [v4 startDate];
-      [v5 timeIntervalSinceDate:v6];
-      a1 = v7 >= 86400.0;
+      endDate = [v4 endDate];
+      startDate = [v4 startDate];
+      [endDate timeIntervalSinceDate:startDate];
+      event = v7 >= 86400.0;
     }
   }
 
-  return a1;
+  return event;
 }
 
-- (BOOL)eventKitChangeIsEvent:(id)a3
+- (BOOL)eventKitChangeIsEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v3 entityType] == 2;
+  v4 = (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [eventCopy entityType] == 2;
 
   return v4;
 }
 
-- (id)eventWithExternalID:(id)a3
+- (id)eventWithExternalID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -339,7 +339,7 @@ LABEL_8:
     v9[1] = 3221225472;
     v9[2] = __38__PPEventStorage_eventWithExternalID___block_invoke;
     v9[3] = &unk_2789765B0;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = v13[5];
@@ -407,25 +407,25 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEventsFromEKObjectIDs:(void *)a3 expandingRecurrencesInRange:(char)a4 withFiltering:(void *)a5 usingBlock:
+- (void)enumerateEventsFromEKObjectIDs:(void *)ds expandingRecurrencesInRange:(char)range withFiltering:(void *)filtering usingBlock:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1 && [v9 count])
+  dsCopy = ds;
+  filteringCopy = filtering;
+  if (self && [v9 count])
   {
     v12 = objc_opt_new();
-    v13 = *(a1 + 16);
+    v13 = *(self + 16);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __102__PPEventStorage_enumerateEventsFromEKObjectIDs_expandingRecurrencesInRange_withFiltering_usingBlock___block_invoke;
     v15[3] = &unk_2789767D0;
-    v21 = a4;
+    rangeCopy = range;
     v16 = v9;
-    v17 = a1;
-    v18 = v10;
+    selfCopy = self;
+    v18 = dsCopy;
     v19 = v12;
-    v20 = v11;
+    v20 = filteringCopy;
     v14 = v12;
     [v13 runWithLockAcquired:v15];
   }
@@ -785,11 +785,11 @@ LABEL_72:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolveEventFromEKChange:(id)a3
+- (id)resolveEventFromEKChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -802,7 +802,7 @@ LABEL_72:
     v9[1] = 3221225472;
     v9[2] = __43__PPEventStorage_resolveEventFromEKChange___block_invoke;
     v9[3] = &unk_2789765B0;
-    v10 = v4;
+    v10 = changeCopy;
     v11 = &v12;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = v13[5];
@@ -831,15 +831,15 @@ void __43__PPEventStorage_resolveEventFromEKChange___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)iterateEventsFrom:(id)a3 to:(id)a4 inChunks:(int)a5 withBlock:(id)a6
+- (void)iterateEventsFrom:(id)from to:(id)to inChunks:(int)chunks withBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!a5)
+  fromCopy = from;
+  toCopy = to;
+  blockCopy = block;
+  if (!chunks)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PPEventStorage.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"numberOfChunks"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEventStorage.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"numberOfChunks"}];
   }
 
   lock = self->_lock;
@@ -847,14 +847,14 @@ void __43__PPEventStorage_resolveEventFromEKChange___block_invoke(uint64_t a1, v
   v19[1] = 3221225472;
   v19[2] = __58__PPEventStorage_iterateEventsFrom_to_inChunks_withBlock___block_invoke;
   v19[3] = &unk_278976788;
-  v20 = v12;
-  v21 = v11;
-  v24 = a5;
-  v22 = self;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
+  v20 = toCopy;
+  v21 = fromCopy;
+  chunksCopy = chunks;
+  selfCopy = self;
+  v23 = blockCopy;
+  v15 = blockCopy;
+  v16 = fromCopy;
+  v17 = toCopy;
   [(_PASLock *)lock runWithLockAcquired:v19];
 }
 
@@ -947,10 +947,10 @@ void __58__PPEventStorage_iterateEventsFrom_to_inChunks_withBlock___block_invoke
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)nlEventsInRange:(_NSRange)a3
+- (id)nlEventsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1012,12 +1012,12 @@ void __34__PPEventStorage_nlEventsInRange___block_invoke_2(void *a1, void *a2)
   }
 }
 
-- (id)suggestedEventsInRange:(_NSRange)a3 ekStore:(id)a4
+- (id)suggestedEventsInRange:(_NSRange)range ekStore:(id)store
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  storeCopy = store;
   v8 = objc_opt_new();
   v9 = pp_events_log_handle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -1031,7 +1031,7 @@ void __34__PPEventStorage_nlEventsInRange___block_invoke_2(void *a1, void *a2)
 
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:location];
     v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:(location + length)];
-    v14 = [v7 predicateForEventsWithStartDate:v12 endDate:v13 calendars:0];
+    v14 = [storeCopy predicateForEventsWithStartDate:v12 endDate:v13 calendars:0];
     if (v14)
     {
       v15 = v14;
@@ -1041,7 +1041,7 @@ void __34__PPEventStorage_nlEventsInRange___block_invoke_2(void *a1, void *a2)
       v22[3] = &unk_2789766C0;
       v22[4] = self;
       v23 = v8;
-      [v7 enumerateEventsMatchingPredicate:v15 usingBlock:v22];
+      [storeCopy enumerateEventsMatchingPredicate:v15 usingBlock:v22];
 
       goto LABEL_10;
     }
@@ -1067,8 +1067,8 @@ LABEL_18:
     _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEFAULT, "PPEventStorage: suggestedEventsInRange: large query, using suggested event predicate", buf, 2u);
   }
 
-  v11 = [v7 predicateForEventsCreatedFromSuggestion];
-  if (!v11)
+  predicateForEventsCreatedFromSuggestion = [storeCopy predicateForEventsCreatedFromSuggestion];
+  if (!predicateForEventsCreatedFromSuggestion)
   {
     v12 = pp_events_log_handle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1080,7 +1080,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v12 = v11;
+  v12 = predicateForEventsCreatedFromSuggestion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __49__PPEventStorage_suggestedEventsInRange_ekStore___block_invoke;
@@ -1088,7 +1088,7 @@ LABEL_18:
   v26 = location;
   v27 = length;
   v25 = v8;
-  [v7 enumerateEventsMatchingPredicate:v12 usingBlock:v24];
+  [storeCopy enumerateEventsMatchingPredicate:v12 usingBlock:v24];
   v13 = v25;
 LABEL_10:
 
@@ -1144,12 +1144,12 @@ void __49__PPEventStorage_suggestedEventsInRange_ekStore___block_invoke_55(uint6
   }
 }
 
-- (void)enumerateEventsInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateEventsInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v40 = *MEMORY[0x277D85DE8];
-  v19 = a4;
+  blockCopy = block;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -1203,7 +1203,7 @@ LABEL_3:
       v20[4] = self;
       v20[5] = v14;
       v21 = v8;
-      v22 = v19;
+      v22 = blockCopy;
       v23 = &v24;
       [(PPEventStorage *)self runBlockWithPurgerDisabled:v20];
       if (!(v13 % 0xA))
@@ -1413,10 +1413,10 @@ void __59__PPEventStorage__predicateForRange_loadDefaultProperties___block_invok
   *(v9 + 40) = v8;
 }
 
-- (id)eventsInRange:(_NSRange)a3
+- (id)eventsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_opt_new();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -1461,9 +1461,9 @@ void __32__PPEventStorage_eventsInRange___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (id)eventWithIdentifier:(id)a3
+- (id)eventWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1476,7 +1476,7 @@ void __32__PPEventStorage_eventsInRange___block_invoke_2(uint64_t a1, void *a2)
   v9[2] = __38__PPEventStorage_eventWithIdentifier___block_invoke;
   v9[3] = &unk_2789765B0;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[5];
@@ -1499,13 +1499,13 @@ void __38__PPEventStorage_eventWithIdentifier___block_invoke(uint64_t a1, void *
   *(v6 + 40) = v5;
 }
 
-- (void)runBlockWithPurgerDisabled:(id)a3
+- (void)runBlockWithPurgerDisabled:(id)disabled
 {
-  v6 = a3;
+  disabledCopy = disabled;
   v4 = os_transaction_create();
   [(_PASLock *)self->_lock runWithLockAcquired:&__block_literal_global_42];
   v5 = objc_autoreleasePoolPush();
-  v6[2]();
+  disabledCopy[2]();
   objc_autoreleasePoolPop(v5);
   [(_PASLock *)self->_lock runWithLockAcquired:&__block_literal_global_44];
 }
@@ -1585,16 +1585,16 @@ void __43__PPEventStorage_attemptToPurgeImmediately__block_invoke(uint64_t a1, v
   }
 }
 
-- (PPEventStorage)initWithEventStorePurgerGetter:(id)a3
+- (PPEventStorage)initWithEventStorePurgerGetter:(id)getter
 {
-  v4 = a3;
+  getterCopy = getter;
   v17.receiver = self;
   v17.super_class = PPEventStorage;
   v5 = [(PPEventStorage *)&v17 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    v7 = [v4 copy];
+    v7 = [getterCopy copy];
     purgerGetter = v5->_purgerGetter;
     v5->_purgerGetter = v7;
 
@@ -1616,15 +1616,15 @@ void __43__PPEventStorage_attemptToPurgeImmediately__block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (PPEventStorage)initWithEventStorePurger:(id)a3
+- (PPEventStorage)initWithEventStorePurger:(id)purger
 {
-  v4 = a3;
+  purgerCopy = purger;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__PPEventStorage_initWithEventStorePurger___block_invoke;
   v8[3] = &unk_278976568;
-  v9 = v4;
-  v5 = v4;
+  v9 = purgerCopy;
+  v5 = purgerCopy;
   v6 = [(PPEventStorage *)self initWithEventStorePurgerGetter:v8];
 
   return v6;

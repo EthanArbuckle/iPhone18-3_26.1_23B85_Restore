@@ -1,6 +1,6 @@
 @interface T1SupervisoryBlock
-+ (id)supervisoryBlockWithNad:(unsigned __int8)a3 operation:(char)a4 type:(char)a5 informationField:(id)a6 redundancyCode:(char)a7;
-- (T1SupervisoryBlock)initWithData:(id)a3;
++ (id)supervisoryBlockWithNad:(unsigned __int8)nad operation:(char)operation type:(char)type informationField:(id)field redundancyCode:(char)code;
+- (T1SupervisoryBlock)initWithData:(id)data;
 - (char)operation;
 - (id)description;
 - (id)operationStr;
@@ -10,11 +10,11 @@
 
 @implementation T1SupervisoryBlock
 
-- (T1SupervisoryBlock)initWithData:(id)a3
+- (T1SupervisoryBlock)initWithData:(id)data
 {
   v8.receiver = self;
   v8.super_class = T1SupervisoryBlock;
-  v3 = [(T1TPDUBlock *)&v8 initWithData:a3 needAck:0];
+  v3 = [(T1TPDUBlock *)&v8 initWithData:data needAck:0];
   v4 = v3;
   if (v3)
   {
@@ -96,30 +96,30 @@ LABEL_17:
   v4 = [(T1TPDUBlock *)&v8 description];
   [v3 appendFormat:@"{ %@", v4];
 
-  v5 = [(T1SupervisoryBlock *)self operationStr];
-  [v3 appendFormat:@"op: %@ ", v5];
+  operationStr = [(T1SupervisoryBlock *)self operationStr];
+  [v3 appendFormat:@"op: %@ ", operationStr];
 
-  v6 = [(T1SupervisoryBlock *)self typeStr];
-  [v3 appendFormat:@"type: %@ }", v6];
+  typeStr = [(T1SupervisoryBlock *)self typeStr];
+  [v3 appendFormat:@"type: %@ }", typeStr];
 
   return v3;
 }
 
-+ (id)supervisoryBlockWithNad:(unsigned __int8)a3 operation:(char)a4 type:(char)a5 informationField:(id)a6 redundancyCode:(char)a7
++ (id)supervisoryBlockWithNad:(unsigned __int8)nad operation:(char)operation type:(char)type informationField:(id)field redundancyCode:(char)code
 {
-  v7 = a7;
-  v8 = a5;
-  v9 = a4;
-  v22 = a3;
-  v10 = a6;
-  if (v9 >= 4)
+  codeCopy = code;
+  typeCopy = type;
+  operationCopy = operation;
+  nadCopy = nad;
+  fieldCopy = field;
+  if (operationCopy >= 4)
   {
     [NSException raise:NSInvalidArgumentException format:@"Unsupported operation parameter"];
   }
 
   v11 = +[NSMutableData data];
-  [v11 appendBytes:&v22 length:1];
-  if (v8)
+  [v11 appendBytes:&nadCopy length:1];
+  if (typeCopy)
   {
     v12 = -32;
   }
@@ -129,16 +129,16 @@ LABEL_17:
     v12 = -64;
   }
 
-  v21 = v12 | v9;
+  v21 = v12 | operationCopy;
   [v11 appendBytes:&v21 length:1];
-  v20 = [v10 length];
+  v20 = [fieldCopy length];
   [v11 appendBytes:&v20 length:1];
-  if ([v10 length])
+  if ([fieldCopy length])
   {
-    [v11 appendData:v10];
+    [v11 appendData:fieldCopy];
   }
 
-  if (v7)
+  if (codeCopy)
   {
     v18 = [RedundancyCheck crc16:v11];
     v13 = &v18;
@@ -177,8 +177,8 @@ LABEL_17:
 - (unsigned)uint8Value
 {
   v4 = 0;
-  v2 = [(T1TPDUBlock *)self informationField];
-  [v2 getBytes:&v4 length:1];
+  informationField = [(T1TPDUBlock *)self informationField];
+  [informationField getBytes:&v4 length:1];
 
   return v4;
 }

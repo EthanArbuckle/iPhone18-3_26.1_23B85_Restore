@@ -1,30 +1,30 @@
 @interface WFSelectPhotoActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithOutput:(id)a3 error:(id)a4;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithPhotoPickerTypes:(id)a3 selectMultiple:(BOOL)a4 completionHandler:(id)a5;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithOutput:(id)output error:(id)error;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithPhotoPickerTypes:(id)types selectMultiple:(BOOL)multiple completionHandler:(id)handler;
 @end
 
 @implementation WFSelectPhotoActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFSelectPhotoActionUIKitUserInterface *)self finishWithOutput:0 error:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFSelectPhotoActionUIKitUserInterface *)self finishWithOutput:0 error:userCancelledError];
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a4;
+  pickingCopy = picking;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__WFSelectPhotoActionUIKitUserInterface_picker_didFinishPicking___block_invoke;
   v8[3] = &unk_278C375A0;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a3 dismissViewControllerAnimated:1 completion:v8];
+  v9 = pickingCopy;
+  selfCopy = self;
+  v7 = pickingCopy;
+  [picker dismissViewControllerAnimated:1 completion:v8];
 }
 
 void __65__WFSelectPhotoActionUIKitUserInterface_picker_didFinishPicking___block_invoke(uint64_t a1)
@@ -49,18 +49,18 @@ void __65__WFSelectPhotoActionUIKitUserInterface_picker_didFinishPicking___block
   [v3 finishWithOutput:v2 error:v4];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFSelectPhotoActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSelectPhotoActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -75,42 +75,42 @@ uint64_t __81__WFSelectPhotoActionUIKitUserInterface_cancelPresentationWithCompl
   return v4();
 }
 
-- (void)finishWithOutput:(id)a3 error:(id)a4
+- (void)finishWithOutput:(id)output error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFSelectPhotoActionUIKitUserInterface *)self completionHandler];
+  outputCopy = output;
+  errorCopy = error;
+  completionHandler = [(WFSelectPhotoActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFSelectPhotoActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFSelectPhotoActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, outputCopy, errorCopy);
   }
 
   [(WFSelectPhotoActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithPhotoPickerTypes:(id)a3 selectMultiple:(BOOL)a4 completionHandler:(id)a5
+- (void)showWithPhotoPickerTypes:(id)types selectMultiple:(BOOL)multiple completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  typesCopy = types;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFSelectPhotoActionUIKitUserInterface.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSelectPhotoActionUIKitUserInterface.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  [(WFSelectPhotoActionUIKitUserInterface *)self setCompletionHandler:v10];
+  [(WFSelectPhotoActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__WFSelectPhotoActionUIKitUserInterface_showWithPhotoPickerTypes_selectMultiple_completionHandler___block_invoke;
   block[3] = &unk_278C369C0;
-  v16 = self;
-  v17 = v10;
-  v18 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v10;
+  selfCopy = self;
+  v17 = handlerCopy;
+  multipleCopy = multiple;
+  v15 = typesCopy;
+  v11 = typesCopy;
+  v12 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

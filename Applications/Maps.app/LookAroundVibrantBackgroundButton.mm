@@ -1,13 +1,13 @@
 @interface LookAroundVibrantBackgroundButton
-+ (id)customButtonWithImage:(id)a3 title:(id)a4 target:(id)a5 action:(SEL)a6;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
++ (id)customButtonWithImage:(id)image title:(id)title target:(id)target action:(SEL)action;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (LookAroundVibrantBackgroundButton)init;
-- (LookAroundVibrantBackgroundButton)initWithFrame:(CGRect)a3;
+- (LookAroundVibrantBackgroundButton)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 title:(id)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image title:(id)title;
 - (void)updateTheme;
 @end
 
@@ -15,36 +15,36 @@
 
 - (void)updateTheme
 {
-  v3 = [(LookAroundVibrantBackgroundButton *)self tintAdjustmentMode];
-  v4 = [(LookAroundVibrantBackgroundButton *)self mk_theme];
-  v5 = v4;
-  if (v3 == 2)
+  tintAdjustmentMode = [(LookAroundVibrantBackgroundButton *)self tintAdjustmentMode];
+  mk_theme = [(LookAroundVibrantBackgroundButton *)self mk_theme];
+  v5 = mk_theme;
+  if (tintAdjustmentMode == 2)
   {
-    [v4 disabledActionRowTextColor];
+    [mk_theme disabledActionRowTextColor];
   }
 
   else
   {
-    [v4 tintColor];
+    [mk_theme tintColor];
   }
   v11 = ;
 
   [(LookAroundVibrantBackgroundButton *)self setTitleColor:v11 forState:0];
-  v6 = [(LookAroundVibrantBackgroundButton *)self isHighlighted];
-  v7 = [(LookAroundVibrantBackgroundButton *)self mk_theme];
-  v8 = v7;
-  if (v6)
+  isHighlighted = [(LookAroundVibrantBackgroundButton *)self isHighlighted];
+  mk_theme2 = [(LookAroundVibrantBackgroundButton *)self mk_theme];
+  v8 = mk_theme2;
+  if (isHighlighted)
   {
-    [v7 buttonHighlightedColor];
+    [mk_theme2 buttonHighlightedColor];
   }
 
   else
   {
-    [v7 buttonNormalColor];
+    [mk_theme2 buttonNormalColor];
   }
   v9 = ;
-  v10 = [(MKVibrantView *)self->_vibrantView contentView];
-  [v10 setBackgroundColor:v9];
+  contentView = [(MKVibrantView *)self->_vibrantView contentView];
+  [contentView setBackgroundColor:v9];
 }
 
 - (void)layoutSubviews
@@ -55,27 +55,27 @@
   [(LookAroundVibrantBackgroundButton *)self sendSubviewToBack:self->_vibrantView];
 }
 
-- (void)setImage:(id)a3 title:(id)a4
+- (void)setImage:(id)image title:(id)title
 {
-  v6 = a4;
-  [(LookAroundVibrantBackgroundButton *)self setImage:a3 forState:0];
-  [(LookAroundVibrantBackgroundButton *)self setTitle:v6 forState:0];
+  titleCopy = title;
+  [(LookAroundVibrantBackgroundButton *)self setImage:image forState:0];
+  [(LookAroundVibrantBackgroundButton *)self setTitle:titleCopy forState:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = LookAroundVibrantBackgroundButton;
-  [(LookAroundVibrantBackgroundButton *)&v4 setHighlighted:a3];
+  [(LookAroundVibrantBackgroundButton *)&v4 setHighlighted:highlighted];
   [(LookAroundVibrantBackgroundButton *)self updateTheme];
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31.receiver = self;
   v31.super_class = LookAroundVibrantBackgroundButton;
   [(LookAroundVibrantBackgroundButton *)&v31 titleRectForContentRect:?];
@@ -97,11 +97,11 @@
     v19 = fmax(v13 - v17, 0.0);
     v20 = v18 - (width + v16);
     v21 = +[UIApplication sharedApplication];
-    v22 = [v21 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v21 userInterfaceLayoutDirection];
 
     v23 = -(v20 * 0.5 + 17.0);
     v24 = -v19;
-    if (v22 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v24 = v19;
       v23 = v20 * 0.5 + 17.0;
@@ -134,12 +134,12 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v30.receiver = self;
   v30.super_class = LookAroundVibrantBackgroundButton;
   [(LookAroundVibrantBackgroundButton *)&v30 imageRectForContentRect:?];
@@ -160,11 +160,11 @@
     v18 = fmax(v17 - v16, 0.0);
     v19 = fmin(v17, v16) * -0.5 + 34.0;
     v20 = +[UIApplication sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v20 userInterfaceLayoutDirection];
 
     v22 = -(v19 + width * -0.5);
     v23 = -v18;
-    if (v21 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v23 = v18;
       v22 = v19 + width * -0.5;
@@ -190,11 +190,11 @@
   return result;
 }
 
-- (LookAroundVibrantBackgroundButton)initWithFrame:(CGRect)a3
+- (LookAroundVibrantBackgroundButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LookAroundVibrantBackgroundButton;
-  v3 = [(LookAroundVibrantBackgroundButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LookAroundVibrantBackgroundButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -226,14 +226,14 @@
   v3 = [UIImageSymbolConfiguration configurationWithScale:3];
   [(LookAroundVibrantBackgroundButton *)self setPreferredSymbolConfiguration:v3 forImageInState:0];
 
-  v4 = [(LookAroundVibrantBackgroundButton *)self titleLabel];
-  [v4 setNumberOfLines:2];
+  titleLabel = [(LookAroundVibrantBackgroundButton *)self titleLabel];
+  [titleLabel setNumberOfLines:2];
 
-  v5 = [(LookAroundVibrantBackgroundButton *)self titleLabel];
-  [v5 setTextAlignment:4];
+  titleLabel2 = [(LookAroundVibrantBackgroundButton *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v6 = [(LookAroundVibrantBackgroundButton *)self titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_10163BEC0];
+  titleLabel3 = [(LookAroundVibrantBackgroundButton *)self titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel3 withFontProvider:&stru_10163BEC0];
 
   v7 = objc_opt_new();
   [(LookAroundVibrantBackgroundButton *)self setBackgroundImage:v7 forState:0];
@@ -246,21 +246,21 @@
   [(MKVibrantView *)self->_vibrantView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKVibrantView *)self->_vibrantView setUserInteractionEnabled:0];
   [(LookAroundVibrantBackgroundButton *)self addSubview:self->_vibrantView];
-  v22 = [(MKVibrantView *)self->_vibrantView topAnchor];
-  v21 = [(LookAroundVibrantBackgroundButton *)self topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor = [(MKVibrantView *)self->_vibrantView topAnchor];
+  topAnchor2 = [(LookAroundVibrantBackgroundButton *)self topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[0] = v20;
-  v19 = [(MKVibrantView *)self->_vibrantView bottomAnchor];
-  v10 = [(LookAroundVibrantBackgroundButton *)self bottomAnchor];
-  v11 = [v19 constraintEqualToAnchor:v10];
+  bottomAnchor = [(MKVibrantView *)self->_vibrantView bottomAnchor];
+  bottomAnchor2 = [(LookAroundVibrantBackgroundButton *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[1] = v11;
-  v12 = [(MKVibrantView *)self->_vibrantView leadingAnchor];
-  v13 = [(LookAroundVibrantBackgroundButton *)self leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  leadingAnchor = [(MKVibrantView *)self->_vibrantView leadingAnchor];
+  leadingAnchor2 = [(LookAroundVibrantBackgroundButton *)self leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[2] = v14;
-  v15 = [(MKVibrantView *)self->_vibrantView trailingAnchor];
-  v16 = [(LookAroundVibrantBackgroundButton *)self trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  trailingAnchor = [(MKVibrantView *)self->_vibrantView trailingAnchor];
+  trailingAnchor2 = [(LookAroundVibrantBackgroundButton *)self trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[3] = v17;
   v18 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v18];
@@ -268,24 +268,24 @@
   [(LookAroundVibrantBackgroundButton *)self updateTheme];
 }
 
-+ (id)customButtonWithImage:(id)a3 title:(id)a4 target:(id)a5 action:(SEL)a6
++ (id)customButtonWithImage:(id)image title:(id)title target:(id)target action:(SEL)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 buttonWithType:0];
+  imageCopy = image;
+  titleCopy = title;
+  targetCopy = target;
+  v13 = [self buttonWithType:0];
   v14 = v13;
-  if (v10)
+  if (imageCopy)
   {
-    [v13 setImage:v10 forState:0];
+    [v13 setImage:imageCopy forState:0];
   }
 
-  if (v11)
+  if (titleCopy)
   {
-    [v14 setTitle:v11 forState:0];
+    [v14 setTitle:titleCopy forState:0];
   }
 
-  [v14 addTarget:v12 action:a6 forControlEvents:64];
+  [v14 addTarget:targetCopy action:action forControlEvents:64];
 
   return v14;
 }

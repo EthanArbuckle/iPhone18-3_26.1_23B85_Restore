@@ -1,27 +1,27 @@
 @interface RFSchemaRFInteractionPerformed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFInteractionPerformed)initWithDictionary:(id)a3;
-- (RFSchemaRFInteractionPerformed)initWithJSON:(id)a3;
+- (RFSchemaRFInteractionPerformed)initWithDictionary:(id)dictionary;
+- (RFSchemaRFInteractionPerformed)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCommandType:(BOOL)a3;
-- (void)setHasVisualComponent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCommandType:(BOOL)type;
+- (void)setHasVisualComponent:(BOOL)component;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFInteractionPerformed
 
-- (RFSchemaRFInteractionPerformed)initWithDictionary:(id)a3
+- (RFSchemaRFInteractionPerformed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = RFSchemaRFInteractionPerformed;
   v5 = [(RFSchemaRFInteractionPerformed *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,21 +29,21 @@
       [(RFSchemaRFInteractionPerformed *)v5 setActionName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userInteraction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userInteraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFInteractionPerformed setUserInteraction:](v5, "setUserInteraction:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"visualComponent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"visualComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFInteractionPerformed setVisualComponent:](v5, "setVisualComponent:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"componentName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"componentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,14 +51,14 @@
       [(RFSchemaRFInteractionPerformed *)v5 setComponentName:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"commandType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"commandType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RFSchemaRFInteractionPerformed setCommandType:](v5, "setCommandType:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"componentIndex"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"componentIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (RFSchemaRFInteractionPerformed)initWithJSON:(id)a3
+- (RFSchemaRFInteractionPerformed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFInteractionPerformed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFInteractionPerformed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFInteractionPerformed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionName)
   {
-    v4 = [(RFSchemaRFInteractionPerformed *)self actionName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actionName"];
+    actionName = [(RFSchemaRFInteractionPerformed *)self actionName];
+    v5 = [actionName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionName"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -129,21 +129,21 @@
       v7 = off_1E78E1BA0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"commandType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"commandType"];
   }
 
   if (self->_componentIndex)
   {
-    v8 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"componentIndex"];
+    componentIndex = [(RFSchemaRFInteractionPerformed *)self componentIndex];
+    v9 = [componentIndex copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"componentIndex"];
   }
 
   if (self->_componentName)
   {
-    v10 = [(RFSchemaRFInteractionPerformed *)self componentName];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"componentName"];
+    componentName = [(RFSchemaRFInteractionPerformed *)self componentName];
+    v11 = [componentName copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"componentName"];
   }
 
   has = self->_has;
@@ -160,7 +160,7 @@
       v14 = off_1E78E1BE8[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"userInteraction"];
+    [dictionary setObject:v14 forKeyedSubscript:@"userInteraction"];
     has = self->_has;
   }
 
@@ -177,12 +177,12 @@
       v16 = off_1E78E1C18[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"visualComponent"];
+    [dictionary setObject:v16 forKeyedSubscript:@"visualComponent"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -224,28 +224,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_componentIndex hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(RFSchemaRFInteractionPerformed *)self actionName];
-  v6 = [v4 actionName];
-  if ((v5 != 0) == (v6 == 0))
+  actionName = [(RFSchemaRFInteractionPerformed *)self actionName];
+  actionName2 = [equalCopy actionName];
+  if ((actionName != 0) == (actionName2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(RFSchemaRFInteractionPerformed *)self actionName];
-  if (v7)
+  actionName3 = [(RFSchemaRFInteractionPerformed *)self actionName];
+  if (actionName3)
   {
-    v8 = v7;
-    v9 = [(RFSchemaRFInteractionPerformed *)self actionName];
-    v10 = [v4 actionName];
-    v11 = [v9 isEqual:v10];
+    v8 = actionName3;
+    actionName4 = [(RFSchemaRFInteractionPerformed *)self actionName];
+    actionName5 = [equalCopy actionName];
+    v11 = [actionName4 isEqual:actionName5];
 
     if (!v11)
     {
@@ -258,7 +258,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = v4[48];
+  v13 = equalCopy[48];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_27;
@@ -267,13 +267,13 @@ LABEL_6:
   if (*&has)
   {
     userInteraction = self->_userInteraction;
-    if (userInteraction != [v4 userInteraction])
+    if (userInteraction != [equalCopy userInteraction])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[48];
+    v13 = equalCopy[48];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -285,26 +285,26 @@ LABEL_6:
   if (v15)
   {
     visualComponent = self->_visualComponent;
-    if (visualComponent != [v4 visualComponent])
+    if (visualComponent != [equalCopy visualComponent])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(RFSchemaRFInteractionPerformed *)self componentName];
-  v6 = [v4 componentName];
-  if ((v5 != 0) == (v6 == 0))
+  actionName = [(RFSchemaRFInteractionPerformed *)self componentName];
+  actionName2 = [equalCopy componentName];
+  if ((actionName != 0) == (actionName2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(RFSchemaRFInteractionPerformed *)self componentName];
-  if (v17)
+  componentName = [(RFSchemaRFInteractionPerformed *)self componentName];
+  if (componentName)
   {
-    v18 = v17;
-    v19 = [(RFSchemaRFInteractionPerformed *)self componentName];
-    v20 = [v4 componentName];
-    v21 = [v19 isEqual:v20];
+    v18 = componentName;
+    componentName2 = [(RFSchemaRFInteractionPerformed *)self componentName];
+    componentName3 = [equalCopy componentName];
+    v21 = [componentName2 isEqual:componentName3];
 
     if (!v21)
     {
@@ -317,7 +317,7 @@ LABEL_6:
   }
 
   v22 = (*&self->_has >> 2) & 1;
-  if (v22 != ((v4[48] >> 2) & 1))
+  if (v22 != ((equalCopy[48] >> 2) & 1))
   {
     goto LABEL_27;
   }
@@ -325,23 +325,23 @@ LABEL_6:
   if (v22)
   {
     commandType = self->_commandType;
-    if (commandType != [v4 commandType])
+    if (commandType != [equalCopy commandType])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
-  v6 = [v4 componentIndex];
-  if ((v5 != 0) == (v6 == 0))
+  actionName = [(RFSchemaRFInteractionPerformed *)self componentIndex];
+  actionName2 = [equalCopy componentIndex];
+  if ((actionName != 0) == (actionName2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v24 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
-  if (!v24)
+  componentIndex = [(RFSchemaRFInteractionPerformed *)self componentIndex];
+  if (!componentIndex)
   {
 
 LABEL_30:
@@ -349,10 +349,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v25 = v24;
-  v26 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
-  v27 = [v4 componentIndex];
-  v28 = [v26 isEqual:v27];
+  v25 = componentIndex;
+  componentIndex2 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
+  componentIndex3 = [equalCopy componentIndex];
+  v28 = [componentIndex2 isEqual:componentIndex3];
 
   if (v28)
   {
@@ -366,12 +366,12 @@ LABEL_28:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(RFSchemaRFInteractionPerformed *)self actionName];
+  toCopy = to;
+  actionName = [(RFSchemaRFInteractionPerformed *)self actionName];
 
-  if (v4)
+  if (actionName)
   {
     PBDataWriterWriteStringField();
   }
@@ -388,9 +388,9 @@ LABEL_28:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(RFSchemaRFInteractionPerformed *)self componentName];
+  componentName = [(RFSchemaRFInteractionPerformed *)self componentName];
 
-  if (v6)
+  if (componentName)
   {
     PBDataWriterWriteStringField();
   }
@@ -400,19 +400,19 @@ LABEL_28:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(RFSchemaRFInteractionPerformed *)self componentIndex];
+  componentIndex = [(RFSchemaRFInteractionPerformed *)self componentIndex];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (componentIndex)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasCommandType:(BOOL)a3
+- (void)setHasCommandType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -425,9 +425,9 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVisualComponent:(BOOL)a3
+- (void)setHasVisualComponent:(BOOL)component
 {
-  if (a3)
+  if (component)
   {
     v3 = 2;
   }

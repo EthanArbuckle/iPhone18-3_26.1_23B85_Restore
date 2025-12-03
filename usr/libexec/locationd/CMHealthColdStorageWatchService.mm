@@ -1,32 +1,32 @@
 @interface CMHealthColdStorageWatchService
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)checkDeferral:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)checkDeferral:(id)deferral;
 - (CMHealthColdStorageWatchService)init;
 - (id).cxx_construct;
 - (void)beginService;
-- (void)continueSync:(id)a3;
+- (void)continueSync:(id)sync;
 - (void)endService;
-- (void)onCompanionNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onSyncActivity:(id)a3;
+- (void)onCompanionNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onSyncActivity:(id)activity;
 - (void)resetAnalytics;
 - (void)saveCurrentSyncProgress;
 - (void)sendAnalytics;
-- (void)sendCompanionData:(id)a3 activity:(id)a4;
-- (void)setActivityAsDone:(id)a3;
+- (void)sendCompanionData:(id)data activity:(id)activity;
+- (void)setActivityAsDone:(id)done;
 - (void)setUpAggregationOnTimer;
 - (void)setupSyncActivity;
 @end
 
 @implementation CMHealthColdStorageWatchService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -196,12 +196,12 @@
   dispatch_resume(self->fAggregationTimer);
 }
 
-- (void)onCompanionNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onCompanionNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CMHealthColdStorageWatchService universe](self "universe")];
-  if (*a3 == 5)
+  if (*notification == 5)
   {
-    self->fCompanionConnected = *a4;
+    self->fCompanionConnected = *data;
   }
 
   else
@@ -214,7 +214,7 @@
     v7 = qword_1025D4538;
     if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_ERROR))
     {
-      v8 = *a3;
+      v8 = *notification;
       v9[0] = 67109120;
       v9[1] = v8;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "[WatchService] Unhandled notification type, %d", v9, 8u);
@@ -222,16 +222,16 @@
 
     if (sub_10000A100(121, 0))
     {
-      sub_1018DFBC4(a3);
+      sub_1018DFBC4(notification);
     }
   }
 }
 
-- (void)sendCompanionData:(id)a3 activity:(id)a4
+- (void)sendCompanionData:(id)data activity:(id)activity
 {
   v7 = objc_autoreleasePoolPush();
   v11 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v11];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:1 error:&v11];
   if (v11)
   {
     ++self->fStats.numErrors;
@@ -253,7 +253,7 @@
       sub_1018DFCE0();
     }
 
-    [(CMHealthColdStorageWatchService *)self setActivityAsDone:a4];
+    [(CMHealthColdStorageWatchService *)self setActivityAsDone:activity];
   }
 
   else
@@ -264,15 +264,15 @@
     v10[3] = &unk_102462EF8;
     v10[4] = v8;
     v10[5] = self;
-    v10[6] = a4;
+    v10[6] = activity;
     [objc_msgSend(objc_msgSend(-[CMHealthColdStorageWatchService universe](self "universe")];
   }
 
-  [a3 removeAllObjects];
+  [data removeAllObjects];
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)continueSync:(id)a3
+- (void)continueSync:(id)sync
 {
   if ([(CMHealthColdStorageWatchService *)self checkDeferral:?])
   {
@@ -350,7 +350,7 @@
     }
 
     self->fLastBatchSize = v8;
-    [(CMHealthColdStorageWatchService *)self sendCompanionData:v5 activity:a3];
+    [(CMHealthColdStorageWatchService *)self sendCompanionData:v5 activity:sync];
 
     return;
   }
@@ -396,13 +396,13 @@ LABEL_22:
       sub_1018E00F4();
     }
 
-    [(CMHealthColdStorageWatchService *)self setActivityAsDone:a3];
+    [(CMHealthColdStorageWatchService *)self setActivityAsDone:sync];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    [(CMHealthColdStorageWatchService *)self continueSync:a3];
+    [(CMHealthColdStorageWatchService *)self continueSync:sync];
     objc_autoreleasePoolPop(v14);
   }
 }
@@ -478,11 +478,11 @@ LABEL_22:
   xpc_release(v3);
 }
 
-- (void)onSyncActivity:(id)a3
+- (void)onSyncActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    state = xpc_activity_get_state(a3);
+    state = xpc_activity_get_state(activity);
     if (state == 4 || (v6 = state, state == 2))
     {
       if (self->fCompanionConnected)
@@ -492,7 +492,7 @@ LABEL_22:
         v10[2] = sub_1005E950C;
         v10[3] = &unk_1024473F0;
         v10[4] = self;
-        v10[5] = a3;
+        v10[5] = activity;
         [objc_msgSend(-[CMHealthColdStorageWatchService universe](self "universe")];
       }
 
@@ -515,7 +515,7 @@ LABEL_22:
           sub_1018E03E8();
         }
 
-        [(CMHealthColdStorageWatchService *)self setActivityAsDone:a3];
+        [(CMHealthColdStorageWatchService *)self setActivityAsDone:activity];
       }
     }
 
@@ -565,11 +565,11 @@ LABEL_22:
   }
 }
 
-- (BOOL)checkDeferral:(id)a3
+- (BOOL)checkDeferral:(id)deferral
 {
-  if (a3)
+  if (deferral)
   {
-    should_defer = xpc_activity_should_defer(a3);
+    should_defer = xpc_activity_should_defer(deferral);
     if (should_defer)
     {
       if (qword_1025D4530 != -1)
@@ -590,7 +590,7 @@ LABEL_22:
         sub_1018E06DC();
       }
 
-      if (xpc_activity_set_state(a3, 3))
+      if (xpc_activity_set_state(deferral, 3))
       {
         if (qword_1025D4530 != -1)
         {
@@ -620,7 +620,7 @@ LABEL_22:
         v8 = qword_1025D4538;
         if (os_log_type_enabled(qword_1025D4538, OS_LOG_TYPE_FAULT))
         {
-          state = xpc_activity_get_state(a3);
+          state = xpc_activity_get_state(deferral);
           v12 = 134349056;
           v13 = state;
           _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_FAULT, "[WatchService] Failed to defer activity. Current state is %{public}ld", &v12, 0xCu);
@@ -654,10 +654,10 @@ LABEL_22:
   return should_defer;
 }
 
-- (void)setActivityAsDone:(id)a3
+- (void)setActivityAsDone:(id)done
 {
   [(CMHealthColdStorageWatchService *)self sendAnalytics];
-  if (!xpc_activity_set_state(a3, 5))
+  if (!xpc_activity_set_state(done, 5))
   {
     if (qword_1025D4530 != -1)
     {
@@ -670,7 +670,7 @@ LABEL_22:
       v7 = 136446466;
       v8 = "com.apple.locationd.Motion.ColdStorageWatchSync";
       v9 = 2050;
-      state = xpc_activity_get_state(a3);
+      state = xpc_activity_get_state(done);
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_FAULT, "[WatchService] failed to mark %{public}s activity as Done. Current state is %{public}ld", &v7, 0x16u);
     }
 

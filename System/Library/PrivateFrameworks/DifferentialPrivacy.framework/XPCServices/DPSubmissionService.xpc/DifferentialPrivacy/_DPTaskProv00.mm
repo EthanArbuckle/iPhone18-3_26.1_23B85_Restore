@@ -1,22 +1,22 @@
 @interface _DPTaskProv00
-- (_DPTaskProv00)initWithDonation:(id)a3 leaderURL:(id)a4 helperURL:(id)a5 error:(id *)a6;
+- (_DPTaskProv00)initWithDonation:(id)donation leaderURL:(id)l helperURL:(id)rL error:(id *)error;
 - (id)encodedQueryConfig;
-- (id)encodedTaskConfigWithError:(id *)a3;
+- (id)encodedTaskConfigWithError:(id *)error;
 - (id)encodedVDAFConfig;
 @end
 
 @implementation _DPTaskProv00
 
-- (_DPTaskProv00)initWithDonation:(id)a3 leaderURL:(id)a4 helperURL:(id)a5 error:(id *)a6
+- (_DPTaskProv00)initWithDonation:(id)donation leaderURL:(id)l helperURL:(id)rL error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = _DPTaskProv00;
-  v7 = [(_DPTaskProv *)&v12 initWithDonation:a3 leaderURL:a4 helperURL:a5 error:?];
+  v7 = [(_DPTaskProv *)&v12 initWithDonation:donation leaderURL:l helperURL:rL error:?];
   v8 = v7;
   if (v7 && [(_DPTaskProv *)v7 vdafType]!= -65536)
   {
     v10 = [_DPDediscoError errorWithCode:700 description:@"TaskProv00 cannot handle any VDAF other than Prio2."];
-    [v10 logAndStoreInError:a6];
+    [v10 logAndStoreInError:error];
 
     v9 = 0;
   }
@@ -29,38 +29,38 @@
   return v9;
 }
 
-- (id)encodedTaskConfigWithError:(id *)a3
+- (id)encodedTaskConfigWithError:(id *)error
 {
-  v5 = [(_DPTaskProv *)self encodedTaskConfig];
+  encodedTaskConfig = [(_DPTaskProv *)self encodedTaskConfig];
 
-  if (v5)
+  if (encodedTaskConfig)
   {
-    v6 = [(_DPTaskProv *)self encodedTaskConfig];
+    encodedTaskConfig2 = [(_DPTaskProv *)self encodedTaskConfig];
   }
 
   else
   {
     v7 = objc_alloc_init(_DPBigEndianDataEncoder);
-    v8 = [(_DPTaskProv *)self taskInfo];
-    v9 = [v8 length];
+    taskInfo = [(_DPTaskProv *)self taskInfo];
+    v9 = [taskInfo length];
 
     if (v9 < 0x100)
     {
-      v11 = [(_DPTaskProv *)self taskInfo];
-      [v7 writeUChar:{objc_msgSend(v11, "length")}];
+      taskInfo2 = [(_DPTaskProv *)self taskInfo];
+      [v7 writeUChar:{objc_msgSend(taskInfo2, "length")}];
 
-      v12 = [(_DPTaskProv *)self taskInfo];
-      [v7 appendData:v12];
+      taskInfo3 = [(_DPTaskProv *)self taskInfo];
+      [v7 appendData:taskInfo3];
 
       v13 = objc_alloc_init(_DPBigEndianDataEncoder);
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v14 = [(_DPTaskProv *)self leaderURL];
-      v34[0] = v14;
-      v15 = [(_DPTaskProv *)self helperURL];
-      v34[1] = v15;
+      leaderURL = [(_DPTaskProv *)self leaderURL];
+      v34[0] = leaderURL;
+      helperURL = [(_DPTaskProv *)self helperURL];
+      v34[1] = helperURL;
       v16 = [NSArray arrayWithObjects:v34 count:2];
 
       v17 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -81,7 +81,7 @@
             if ([v21 length] >> 16)
             {
               v10 = [_DPDediscoError errorWithCode:800 description:@"URL length exceeds 64KB."];
-              [v10 logAndStoreInError:a3];
+              [v10 logAndStoreInError:error];
 
               goto LABEL_16;
             }
@@ -100,58 +100,58 @@
         }
       }
 
-      v22 = [v13 buffer];
-      v23 = [v22 length];
+      buffer = [v13 buffer];
+      v23 = [buffer length];
 
       if (v23 < 0x10000)
       {
-        v25 = [v13 buffer];
-        [v7 writeUInt16:{objc_msgSend(v25, "length")}];
+        buffer2 = [v13 buffer];
+        [v7 writeUInt16:{objc_msgSend(buffer2, "length")}];
 
-        v26 = [v13 buffer];
-        [v7 appendData:v26];
+        buffer3 = [v13 buffer];
+        [v7 appendData:buffer3];
 
-        v27 = [(_DPTaskProv00 *)self encodedQueryConfig];
-        [v7 appendData:v27];
+        encodedQueryConfig = [(_DPTaskProv00 *)self encodedQueryConfig];
+        [v7 appendData:encodedQueryConfig];
 
         [v7 writeUInt64:{-[_DPTaskProv taskExpiration](self, "taskExpiration")}];
-        v28 = [(_DPTaskProv00 *)self encodedVDAFConfig];
-        [v7 appendData:v28];
+        encodedVDAFConfig = [(_DPTaskProv00 *)self encodedVDAFConfig];
+        [v7 appendData:encodedVDAFConfig];
 
-        v29 = [v7 buffer];
-        [(_DPTaskProv *)self setEncodedTaskConfig:v29];
+        buffer4 = [v7 buffer];
+        [(_DPTaskProv *)self setEncodedTaskConfig:buffer4];
 
-        v6 = [(_DPTaskProv *)self encodedTaskConfig];
+        encodedTaskConfig2 = [(_DPTaskProv *)self encodedTaskConfig];
         v10 = 0;
       }
 
       else
       {
         v10 = [_DPDediscoError errorWithCode:800 description:@"Aggregator endpoints length exceeds 64KB."];
-        [v10 logAndStoreInError:a3];
+        [v10 logAndStoreInError:error];
 LABEL_16:
-        v6 = 0;
+        encodedTaskConfig2 = 0;
       }
     }
 
     else
     {
       v10 = [_DPDediscoError errorWithCode:800 description:@"Task info length exceeds 256B."];
-      [v10 logAndStoreInError:a3];
-      v6 = 0;
+      [v10 logAndStoreInError:error];
+      encodedTaskConfig2 = 0;
     }
   }
 
-  return v6;
+  return encodedTaskConfig2;
 }
 
 - (id)encodedVDAFConfig
 {
   v3 = [[_DPBigEndianDataEncoder alloc] initWithCapacity:14];
   [v3 writeUChar:2];
-  v4 = [(_DPTaskProv *)self donation];
-  v5 = [v4 metadata];
-  v6 = [v5 objectForKeyedSubscript:kDPMetadataDediscoTaskConfig];
+  donation = [(_DPTaskProv *)self donation];
+  metadata = [donation metadata];
+  v6 = [metadata objectForKeyedSubscript:kDPMetadataDediscoTaskConfig];
   v7 = [v6 objectForKeyedSubscript:kDPMetadataDediscoTaskConfigDPConfig];
   v8 = [v7 objectForKeyedSubscript:kDPMetadataDediscoTaskConfigDPConfigLocalEpsilon];
   [v8 floatValue];
@@ -161,12 +161,12 @@ LABEL_16:
   LODWORD(v11) = v10;
   [v3 writeFloat32:v11];
   [v3 writeUInt32:{-[_DPTaskProv vdafType](self, "vdafType")}];
-  v12 = [(_DPTaskProv *)self donation];
-  [v3 writeUInt32:{objc_msgSend(v12, "dimension")}];
+  donation2 = [(_DPTaskProv *)self donation];
+  [v3 writeUInt32:{objc_msgSend(donation2, "dimension")}];
 
-  v13 = [v3 buffer];
+  buffer = [v3 buffer];
 
-  return v13;
+  return buffer;
 }
 
 - (id)encodedQueryConfig
@@ -177,9 +177,9 @@ LABEL_16:
   [v3 writeUInt16:kDPTaskProvMaxBatchQueryCount];
   [v3 writeUInt32:{-[_DPTaskProv minBatchSize](self, "minBatchSize")}];
   [v3 writeUInt32:{-[_DPTaskProv maxBatchSize](self, "maxBatchSize")}];
-  v4 = [v3 buffer];
+  buffer = [v3 buffer];
 
-  return v4;
+  return buffer;
 }
 
 @end

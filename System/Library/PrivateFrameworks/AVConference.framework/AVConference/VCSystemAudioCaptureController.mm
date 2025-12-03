@@ -1,19 +1,19 @@
 @interface VCSystemAudioCaptureController
-+ (BOOL)isValidConfiguration:(const tagVCSystemAudioCaptureControllerConfig *)a3;
-+ (id)captureServerConfigForAudioConfig:(tagVCSystemAudioCaptureControllerConfig *)a3 forClient:(id)a4;
-+ (int)captureSourceForSystemAudioCaptureControllerConfig:(tagVCSystemAudioCaptureControllerConfig *)a3;
-+ (int)captureSourceForTypePreSpatialSessionType:(unsigned int)a3;
-+ (int)captureSourceForTypeProcessID:(int)a3;
++ (BOOL)isValidConfiguration:(const tagVCSystemAudioCaptureControllerConfig *)configuration;
++ (id)captureServerConfigForAudioConfig:(tagVCSystemAudioCaptureControllerConfig *)config forClient:(id)client;
++ (int)captureSourceForSystemAudioCaptureControllerConfig:(tagVCSystemAudioCaptureControllerConfig *)config;
++ (int)captureSourceForTypePreSpatialSessionType:(unsigned int)type;
++ (int)captureSourceForTypeProcessID:(int)d;
 - (VCSystemAudioCaptureController)init;
-- (VCSystemAudioCaptureController)initWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3;
-- (id)dispatchQueueNameWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3;
+- (VCSystemAudioCaptureController)initWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config;
+- (id)dispatchQueueNameWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config;
 - (void)dealloc;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
-- (void)handleAudioSessionMediaServicesWereResetNotification:(id)a3;
-- (void)setupLogPrefixWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3;
-- (void)startClient:(id)a3;
-- (void)stopClient:(id)a3;
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
+- (void)handleAudioSessionMediaServicesWereResetNotification:(id)notification;
+- (void)setupLogPrefixWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config;
+- (void)startClient:(id)client;
+- (void)stopClient:(id)client;
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings;
 @end
 
 @implementation VCSystemAudioCaptureController
@@ -27,7 +27,7 @@
   return [(VCSystemAudioCaptureController *)self initWithConfig:v3];
 }
 
-- (VCSystemAudioCaptureController)initWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3
+- (VCSystemAudioCaptureController)initWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config
 {
   v35 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -38,7 +38,7 @@
     return v4;
   }
 
-  if (![VCSystemAudioCaptureController isValidConfiguration:a3])
+  if (![VCSystemAudioCaptureController isValidConfiguration:config])
   {
     [VCSystemAudioCaptureController initWithConfig:];
 LABEL_26:
@@ -46,7 +46,7 @@ LABEL_26:
     return 0;
   }
 
-  [v4 setupLogPrefixWithConfig:a3];
+  [v4 setupLogPrefixWithConfig:config];
   if (objc_opt_class() == v4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -106,7 +106,7 @@ LABEL_13:
     }
   }
 
-  v13 = [v4 dispatchQueueNameWithConfig:a3];
+  v13 = [v4 dispatchQueueNameWithConfig:config];
   if (!v13)
   {
     [VCSystemAudioCaptureController initWithConfig:v4];
@@ -114,9 +114,9 @@ LABEL_13:
   }
 
   v14 = v13;
-  v15 = [(__CFString *)v13 UTF8String];
+  uTF8String = [(__CFString *)v13 UTF8String];
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
-  v17 = dispatch_queue_create_with_target_V2(v15, 0, CustomRootQueue);
+  v17 = dispatch_queue_create_with_target_V2(uTF8String, 0, CustomRootQueue);
   *(v4 + 21) = v17;
   if (!v17)
   {
@@ -124,26 +124,26 @@ LABEL_13:
     goto LABEL_26;
   }
 
-  captureContext = a3->tapSettings.captureContext;
+  captureContext = config->tapSettings.captureContext;
   if (captureContext)
   {
     CFRetain(captureContext);
   }
 
-  excludedPids = a3->tapSettings.excludedPids;
+  excludedPids = config->tapSettings.excludedPids;
   if (excludedPids)
   {
     CFRetain(excludedPids);
   }
 
-  remoteDeviceInfo = a3->remoteDeviceInfo;
-  v21 = *&a3->tapSettings.source;
-  *(v4 + 200) = *&a3->tapSettings.tapType;
+  remoteDeviceInfo = config->remoteDeviceInfo;
+  v21 = *&config->tapSettings.source;
+  *(v4 + 200) = *&config->tapSettings.tapType;
   *(v4 + 216) = v21;
   *(v4 + 29) = remoteDeviceInfo;
-  v22 = [objc_alloc(MEMORY[0x1E6958460]) initAuxiliarySession];
-  *(v4 + 24) = v22;
-  if (!v22)
+  initAuxiliarySession = [objc_alloc(MEMORY[0x1E6958460]) initAuxiliarySession];
+  *(v4 + 24) = initAuxiliarySession;
+  if (!initAuxiliarySession)
   {
     [VCSystemAudioCaptureController initWithConfig:];
     goto LABEL_26;
@@ -205,7 +205,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -237,16 +237,16 @@ LABEL_11:
   [(VCObject *)&v14 dealloc];
 }
 
-+ (BOOL)isValidConfiguration:(const tagVCSystemAudioCaptureControllerConfig *)a3
++ (BOOL)isValidConfiguration:(const tagVCSystemAudioCaptureControllerConfig *)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
     +[VCSystemAudioCaptureController isValidConfiguration:];
     return v8;
   }
 
-  tapType = a3->tapSettings.tapType;
-  if (a3->tapSettings.tapType >= 3)
+  tapType = configuration->tapSettings.tapType;
+  if (configuration->tapSettings.tapType >= 3)
   {
     +[VCSystemAudioCaptureController isValidConfiguration:];
     return v7;
@@ -254,14 +254,14 @@ LABEL_11:
 
   if (tapType == 2)
   {
-    if (a3->tapSettings.captureContext)
+    if (configuration->tapSettings.captureContext)
     {
       +[VCSystemAudioCaptureController isValidConfiguration:];
       return v5;
     }
   }
 
-  else if (tapType == 1 && a3->tapSettings.var0.audioProcessIdToTap)
+  else if (tapType == 1 && configuration->tapSettings.var0.audioProcessIdToTap)
   {
     +[VCSystemAudioCaptureController isValidConfiguration:];
     return v6;
@@ -270,17 +270,17 @@ LABEL_11:
   return 1;
 }
 
-- (void)setupLogPrefixWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3
+- (void)setupLogPrefixWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config
 {
-  tapType = a3->tapSettings.tapType;
-  if (a3->tapSettings.tapType == 2)
+  tapType = config->tapSettings.tapType;
+  if (config->tapSettings.tapType == 2)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CaptureContext=%@ ", a3->tapSettings.captureContext];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CaptureContext=%@ ", config->tapSettings.captureContext];
   }
 
   else if (tapType == 1)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SessionType(pre-spatial)=%d ", a3->tapSettings.var0.sessionTypeToTap];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SessionType(pre-spatial)=%d ", config->tapSettings.var0.sessionTypeToTap];
   }
 
   else
@@ -290,20 +290,20 @@ LABEL_11:
       return;
     }
 
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PID=%d ", a3->tapSettings.var0.sessionTypeToTap];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PID=%d ", config->tapSettings.var0.sessionTypeToTap];
   }
 
   [(VCObject *)self setLogPrefix:v5];
 }
 
-- (id)dispatchQueueNameWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)a3
+- (id)dispatchQueueNameWithConfig:(const tagVCSystemAudioCaptureControllerConfig *)config
 {
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"com.apple.AVConference.systemAudioCaptureController"];
   v5 = v4;
-  tapType = a3->tapSettings.tapType;
-  if (a3->tapSettings.tapType == 2)
+  tapType = config->tapSettings.tapType;
+  if (config->tapSettings.tapType == 2)
   {
-    [v4 appendFormat:@".scene_id%@", a3->tapSettings.captureContext];
+    [v4 appendFormat:@".scene_id%@", config->tapSettings.captureContext];
   }
 
   else if (tapType == 1)
@@ -313,36 +313,36 @@ LABEL_11:
 
   else if (!tapType)
   {
-    [v4 appendFormat:@".pid_%d", a3->tapSettings.var0.sessionTypeToTap];
+    [v4 appendFormat:@".pid_%d", config->tapSettings.var0.sessionTypeToTap];
   }
 
   return v5;
 }
 
-+ (id)captureServerConfigForAudioConfig:(tagVCSystemAudioCaptureControllerConfig *)a3 forClient:(id)a4
++ (id)captureServerConfigForAudioConfig:(tagVCSystemAudioCaptureControllerConfig *)config forClient:(id)client
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v6 = *&a3->tapSettings.source;
-  v14 = *&a3->tapSettings.tapType;
+  v6 = *&config->tapSettings.source;
+  v14 = *&config->tapSettings.tapType;
   v15 = v6;
-  v7 = [a4 clientFormat];
-  v12 = [a4 sinkIO];
+  clientFormat = [client clientFormat];
+  sinkIO = [client sinkIO];
   v13 = VCSystemAudioCaptureController_PushAudioSamples;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:&v11 objCType:"{?={tagVCAudioFrameFormat={AudioStreamBasicDescription=dIIIIIIII}I}^v^?{tagVCSystemAudioCaptureTapSettings=I(?=iI)^{__CFString}I@}@}"];
   v17[0] = @"SystemAudioCaptureConfig";
   v17[1] = @"SystemAudioCaptureClient";
   v18[0] = v8;
-  v18[1] = a4;
+  v18[1] = client;
   v9 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:{2), "mutableCopy"}];
-  [v9 setObject:a3->remoteDeviceInfo forKeyedSubscript:@"SystemAudioRemoteDeviceInfo"];
-  [v9 setObject:a3->tapSettings.excludedPids forKeyedSubscript:@"SystemAudioCaptureConfigExcludedPids"];
+  [v9 setObject:config->remoteDeviceInfo forKeyedSubscript:@"SystemAudioRemoteDeviceInfo"];
+  [v9 setObject:config->tapSettings.excludedPids forKeyedSubscript:@"SystemAudioCaptureConfigExcludedPids"];
   return v9;
 }
 
-+ (int)captureSourceForTypePreSpatialSessionType:(unsigned int)a3
++ (int)captureSourceForTypePreSpatialSessionType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }
@@ -353,35 +353,35 @@ LABEL_11:
   }
 }
 
-+ (int)captureSourceForTypeProcessID:(int)a3
++ (int)captureSourceForTypeProcessID:(int)d
 {
-  if (a3 < 0xFFFFFFFD)
+  if (d < 0xFFFFFFFD)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD486D8[a3 + 3];
+    return dword_1DBD486D8[d + 3];
   }
 }
 
-+ (int)captureSourceForSystemAudioCaptureControllerConfig:(tagVCSystemAudioCaptureControllerConfig *)a3
++ (int)captureSourceForSystemAudioCaptureControllerConfig:(tagVCSystemAudioCaptureControllerConfig *)config
 {
-  if (a3->tapSettings.tapType == 1)
+  if (config->tapSettings.tapType == 1)
   {
-    return [VCSystemAudioCaptureController captureSourceForTypePreSpatialSessionType:a3->tapSettings.var0.sessionTypeToTap];
+    return [VCSystemAudioCaptureController captureSourceForTypePreSpatialSessionType:config->tapSettings.var0.sessionTypeToTap];
   }
 
-  if (a3->tapSettings.tapType)
+  if (config->tapSettings.tapType)
   {
     return 0;
   }
 
-  return [VCSystemAudioCaptureController captureSourceForTypeProcessID:a3->tapSettings.var0.sessionTypeToTap];
+  return [VCSystemAudioCaptureController captureSourceForTypeProcessID:config->tapSettings.var0.sessionTypeToTap];
 }
 
-- (void)handleAudioSessionMediaServicesWereResetNotification:(id)a3
+- (void)handleAudioSessionMediaServicesWereResetNotification:(id)notification
 {
   v31 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -400,9 +400,9 @@ LABEL_11:
         v21 = 1024;
         v22 = 198;
         v23 = 2112;
-        v24 = a3;
+        notificationCopy = notification;
         v25 = 2112;
-        v26 = client;
+        selfCopy = client;
         v9 = " [%s] %s:%d notification=%@, _client=%@";
         v10 = v7;
         v11 = 48;
@@ -438,11 +438,11 @@ LABEL_11:
         v21 = 1024;
         v22 = 198;
         v23 = 2112;
-        v24 = v5;
+        notificationCopy = v5;
         v25 = 2048;
-        v26 = self;
+        selfCopy = self;
         v27 = 2112;
-        v28 = a3;
+        notificationCopy2 = notification;
         v29 = 2112;
         v30 = v14;
         v9 = " [%s] %s:%d %@(%p) notification=%@, _client=%@";
@@ -630,7 +630,7 @@ LABEL_16:
   return result;
 }
 
-- (void)startClient:(id)a3
+- (void)startClient:(id)client
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -683,7 +683,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v5;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v8 = " [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -692,7 +692,7 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     v18[0] = MEMORY[0x1E69E9820];
@@ -700,7 +700,7 @@ LABEL_11:
     v18[2] = __46__VCSystemAudioCaptureController_startClient___block_invoke;
     v18[3] = &unk_1E85F37F0;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = client;
     dispatch_async(dispatchQueue, v18);
   }
 
@@ -743,7 +743,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v14;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) nil client", buf, 0x30u);
       }
     }
@@ -862,7 +862,7 @@ uint64_t __46__VCSystemAudioCaptureController_startClient___block_invoke(uint64_
   return [objc_msgSend(*(a1 + 40) "delegate")];
 }
 
-- (void)stopClient:(id)a3
+- (void)stopClient:(id)client
 {
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -915,7 +915,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v5;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v8 = " [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -924,7 +924,7 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (client)
   {
     dispatchQueue = self->_dispatchQueue;
     v18[0] = MEMORY[0x1E69E9820];
@@ -932,7 +932,7 @@ LABEL_11:
     v18[2] = __45__VCSystemAudioCaptureController_stopClient___block_invoke;
     v18[3] = &unk_1E85F37F0;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = client;
     dispatch_async(dispatchQueue, v18);
   }
 
@@ -975,7 +975,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v14;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) nil client", buf, 0x30u);
       }
     }
@@ -1064,7 +1064,7 @@ uint64_t __45__VCSystemAudioCaptureController_stopClient___block_invoke(uint64_t
   return [objc_msgSend(*(a1 + 40) "delegate")];
 }
 
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings
 {
   v18 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1117,7 +1117,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v7;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         v10 = " [%s] %s:%d %@(%p) not handled";
         v11 = v14;
         v12 = 48;
@@ -1126,13 +1126,13 @@ LABEL_11:
     }
   }
 
-  [a3 setDirection:{a4->var0, *v15, *&v15[16], v16, v17}];
-  [a3 setSpatialAudioDisabled:a4->var1];
-  [a3 setIsVoiceActivityEnabled:a4->var2];
-  [a3 setIsMediaPriorityEnabled:a4->var3];
+  [client setDirection:{settings->var0, *v15, *&v15[16], v16, selfCopy}];
+  [client setSpatialAudioDisabled:settings->var1];
+  [client setIsVoiceActivityEnabled:settings->var2];
+  [client setIsMediaPriorityEnabled:settings->var3];
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   v22 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1185,7 +1185,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v4;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) not handled";
         v8 = v11;
         v9 = 48;

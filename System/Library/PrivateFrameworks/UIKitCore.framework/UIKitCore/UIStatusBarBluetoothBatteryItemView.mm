@@ -1,5 +1,5 @@
 @interface UIStatusBarBluetoothBatteryItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (UIEdgeInsets)_accessibilityHUDBatteryInsidesInsets;
 - (double)extraLeftPadding;
 - (id)accessibilityHUDRepresentation;
@@ -8,9 +8,9 @@
 
 @implementation UIStatusBarBluetoothBatteryItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = *([a3 rawData] + 2264);
+  v5 = *([data rawData] + 2264);
   if (v5 > 100.0)
   {
     v5 = 100.0;
@@ -31,20 +31,20 @@
   v3 = [(UIStatusBarItemView *)self imageWithShadowNamed:@"HeadsetBatteryBG"];
   [(UIStatusBarBluetoothBatteryItemView *)self _normalizedCapacity];
   v5 = v4;
-  v6 = [(UIStatusBarItemView *)self foregroundStyle];
-  v7 = [v6 bluetoothBatteryImageNameWithCapacity:v5];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v7 = [foregroundStyle bluetoothBatteryImageNameWithCapacity:v5];
 
-  v8 = [(UIStatusBarItemView *)self foregroundStyle];
-  v9 = [v8 cachedImageNamed:v7 inTempGroup:@"TempGroupBTBattery"];
+  foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+  v9 = [foregroundStyle2 cachedImageNamed:v7 inTempGroup:@"TempGroupBTBattery"];
 
   if (!v9)
   {
-    v10 = [v3 image];
-    [v10 size];
+    image = [v3 image];
+    [image size];
     v12 = v11;
     v14 = v13;
-    v15 = [(UIStatusBarItemView *)self foregroundStyle];
-    if ([v15 usesVerticalLayout])
+    foregroundStyle3 = [(UIStatusBarItemView *)self foregroundStyle];
+    if ([foregroundStyle3 usesVerticalLayout])
     {
       v16 = v14;
     }
@@ -67,36 +67,36 @@
     }
 
     CGContextSaveGState(v18);
-    v19 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v19 scale];
+    foregroundStyle4 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle4 scale];
     v21 = v20;
 
-    v22 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v22 height];
+    foregroundStyle5 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle5 height];
     v24 = (v23 - v14) * 0.5;
 
     CGContextTranslateCTM(v18, 0.0, round(v21 * v24) / v21);
-    [v10 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    v25 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v25 drawBluetoothBatteryInsidesWithSize:v12 capacity:{v14, v5}];
+    [image drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    foregroundStyle6 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle6 drawBluetoothBatteryInsidesWithSize:v12 capacity:{v14, v5}];
 
     v9 = [(UIStatusBarItemView *)self imageFromImageContextClippedToWidth:v12];
     CGContextRestoreGState(v18);
     [(UIStatusBarItemView *)self endImageContext];
-    v26 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v26 cacheImage:v9 named:v7 inTempGroup:@"TempGroupBTBattery"];
+    foregroundStyle7 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle7 cacheImage:v9 named:v7 inTempGroup:@"TempGroupBTBattery"];
   }
 
-  v27 = [v3 shadowImage];
-  v28 = [_UILegibilityImageSet imageFromImage:v9 withShadowImage:v27];
+  shadowImage = [v3 shadowImage];
+  v28 = [_UILegibilityImageSet imageFromImage:v9 withShadowImage:shadowImage];
 
   return v28;
 }
 
 - (double)extraLeftPadding
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v2 bluetoothBatteryExtraPadding];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle bluetoothBatteryExtraPadding];
   v4 = v3;
 
   return v4;
@@ -123,8 +123,8 @@
     v4 = v3;
     v5 = [UIImage kitImageNamed:@"AXHUD_HeadsetBatteryBG.png"];
     v6 = [UIImage kitImageNamed:@"AXHUD_HeadsetBatteryInsides.png"];
-    v7 = [(UIStatusBarItemView *)self foregroundStyle];
-    v8 = [v7 bluetoothBatteryColorForCapacity:0 usingTintColor:v4];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    v8 = [foregroundStyle bluetoothBatteryColorForCapacity:0 usingTintColor:v4];
 
     v9 = [v6 _flatImageWithColor:v8];
 
@@ -134,8 +134,8 @@
     v13 = 75.0 / v12;
     v14 = v11 * (75.0 / v12);
     v15 = v12 * (75.0 / v12);
-    v16 = [objc_opt_self() mainScreen];
-    [v16 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v14, v15, v17);
 
     v18 = *MEMORY[0x1E695EFF8];

@@ -1,15 +1,15 @@
 @interface MSStickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MSStickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MSStickerView" hasInstanceMethod:@"sticker" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MSSticker" hasInstanceMethod:@"localizedDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MSStickerView" hasInstanceMethod:@"sticker" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MSSticker" hasInstanceMethod:@"localizedDescription" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

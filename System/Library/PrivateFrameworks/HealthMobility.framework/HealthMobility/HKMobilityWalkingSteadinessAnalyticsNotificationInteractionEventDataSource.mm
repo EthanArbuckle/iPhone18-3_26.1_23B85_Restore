@@ -1,33 +1,33 @@
 @interface HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource
-- (HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource)initWithHealthStore:(id)a3 category:(id)a4 action:(id)a5 isShowingPregnancyContent:(BOOL)a6;
-- (id)_walkingSteadinessEventValueForCategory:(id)a3;
-- (id)notificationClassificationWithError:(id *)a3;
-- (id)notificationTypeWithError:(id *)a3;
+- (HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource)initWithHealthStore:(id)store category:(id)category action:(id)action isShowingPregnancyContent:(BOOL)content;
+- (id)_walkingSteadinessEventValueForCategory:(id)category;
+- (id)notificationClassificationWithError:(id *)error;
+- (id)notificationTypeWithError:(id *)error;
 @end
 
 @implementation HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource
 
-- (HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource)initWithHealthStore:(id)a3 category:(id)a4 action:(id)a5 isShowingPregnancyContent:(BOOL)a6
+- (HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource)initWithHealthStore:(id)store category:(id)category action:(id)action isShowingPregnancyContent:(BOOL)content
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  categoryCopy = category;
+  actionCopy = action;
   v17.receiver = self;
   v17.super_class = HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource;
   v14 = [(HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_healthStore, a3);
-    objc_storeStrong(&v15->_category, a4);
-    objc_storeStrong(&v15->_actionIdentifier, a5);
-    v15->_isShowingPregnancyContent = a6;
+    objc_storeStrong(&v14->_healthStore, store);
+    objc_storeStrong(&v15->_category, category);
+    objc_storeStrong(&v15->_actionIdentifier, action);
+    v15->_isShowingPregnancyContent = content;
   }
 
   return v15;
 }
 
-- (id)notificationClassificationWithError:(id *)a3
+- (id)notificationClassificationWithError:(id *)error
 {
   v3 = [(HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource *)self _walkingSteadinessEventValueForCategory:self->_category];
   v4 = v3;
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (id)notificationTypeWithError:(id *)a3
+- (id)notificationTypeWithError:(id *)error
 {
   v3 = [(HKMobilityWalkingSteadinessAnalyticsNotificationInteractionEventDataSource *)self _walkingSteadinessEventValueForCategory:self->_category];
   v4 = v3;
@@ -61,25 +61,25 @@
   return v5;
 }
 
-- (id)_walkingSteadinessEventValueForCategory:(id)a3
+- (id)_walkingSteadinessEventValueForCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MobilityAppPlugin.WalkingSteadinessInitial.Low"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"MobilityAppPlugin.WalkingSteadinessInitial.Low"])
   {
     v4 = &unk_2863D6BD8;
   }
 
-  else if ([v3 isEqualToString:@"MobilityAppPlugin.WalkingSteadinessInitial.VeryLow"])
+  else if ([categoryCopy isEqualToString:@"MobilityAppPlugin.WalkingSteadinessInitial.VeryLow"])
   {
     v4 = &unk_2863D6BF0;
   }
 
-  else if ([v3 isEqualToString:@"MobilityAppPlugin.WalkingSteadinessRepeat.Low"])
+  else if ([categoryCopy isEqualToString:@"MobilityAppPlugin.WalkingSteadinessRepeat.Low"])
   {
     v4 = &unk_2863D6C08;
   }
 
-  else if ([v3 isEqualToString:@"MobilityAppPlugin.WalkingSteadinessRepeat.VeryLow"])
+  else if ([categoryCopy isEqualToString:@"MobilityAppPlugin.WalkingSteadinessRepeat.VeryLow"])
   {
     v4 = &unk_2863D6C20;
   }

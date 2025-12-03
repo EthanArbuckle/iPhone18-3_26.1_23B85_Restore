@@ -1,42 +1,42 @@
 @interface SXComponentStyle
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (id)fillWithValue:(id)a3 withType:(int)a4;
-- (id)maskWithValue:(id)a3 withType:(int)a4;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (id)fillWithValue:(id)value withType:(int)type;
+- (id)maskWithValue:(id)value withType:(int)type;
 - (unint64_t)traits;
 @end
 
 @implementation SXComponentStyle
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_48;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXComponentStyle;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-- (id)fillWithValue:(id)a3 withType:(int)a4
+- (id)fillWithValue:(id)value withType:(int)type
 {
-  if (a4 == 5)
+  if (type == 5)
   {
-    v5 = a3;
+    valueCopy = value;
     v6 = objc_opt_class();
-    v7 = [v5 objectForKey:@"type"];
+    v7 = [valueCopy objectForKey:@"type"];
     v8 = [SXClassFactory classForBaseClass:v6 type:v7];
 
     v9 = [v8 alloc];
-    v10 = [(SXJSONObject *)self specificationVersion];
-    v11 = [v9 initWithJSONObject:v5 andVersion:v10];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
+    v11 = [v9 initWithJSONObject:valueCopy andVersion:specificationVersion];
   }
 
   else
@@ -47,18 +47,18 @@
   return v11;
 }
 
-- (id)maskWithValue:(id)a3 withType:(int)a4
+- (id)maskWithValue:(id)value withType:(int)type
 {
-  if (a4 == 5)
+  if (type == 5)
   {
-    v5 = a3;
+    valueCopy = value;
     v6 = objc_opt_class();
-    v7 = [v5 objectForKey:@"type"];
+    v7 = [valueCopy objectForKey:@"type"];
     v8 = [SXClassFactory classForBaseClass:v6 type:v7];
 
     v9 = [v8 alloc];
-    v10 = [(SXJSONObject *)self specificationVersion];
-    v11 = [v9 initWithJSONObject:v5 andVersion:v10];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
+    v11 = [v9 initWithJSONObject:valueCopy andVersion:specificationVersion];
   }
 
   else
@@ -71,7 +71,7 @@
 
 - (unint64_t)traits
 {
-  v3 = [(SXComponentStyle *)self fill];
+  fill = [(SXComponentStyle *)self fill];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -80,7 +80,7 @@
     return 2;
   }
 
-  v6 = [(SXComponentStyle *)self fill];
+  fill2 = [(SXComponentStyle *)self fill];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 

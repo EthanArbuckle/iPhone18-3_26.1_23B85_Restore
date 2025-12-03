@@ -1,88 +1,88 @@
 @interface MUILocalizedBlackPearlStrings
-+ (id)allCurrentAndFutureMessagesAutomaticallyCategorizedForDisplayName:(id)a3;
-+ (id)allCurrentAndFutureMessagesFromDisplayName:(id)a3 willBeCategorizedInBucket:(int64_t)a4;
-+ (id)categorizeAllMessagesForDisplayName:(id)a3;
-+ (id)resetUserOverrideForNumberOfOverrides:(int64_t)a3;
-+ (id)timeSensitiveBannerSubtitleForCategoryType:(unint64_t)a3;
-+ (id)timeSensitiveTitleForCategoryType:(unint64_t)a3;
-+ (id)titleForManuallyCategorizingMessagesFromDisplayName:(id)a3 toBucket:(int64_t)a4;
-+ (id)titleForRestoringAutomaticCategorizationForDisplayName:(id)a3;
++ (id)allCurrentAndFutureMessagesAutomaticallyCategorizedForDisplayName:(id)name;
++ (id)allCurrentAndFutureMessagesFromDisplayName:(id)name willBeCategorizedInBucket:(int64_t)bucket;
++ (id)categorizeAllMessagesForDisplayName:(id)name;
++ (id)resetUserOverrideForNumberOfOverrides:(int64_t)overrides;
++ (id)timeSensitiveBannerSubtitleForCategoryType:(unint64_t)type;
++ (id)timeSensitiveTitleForCategoryType:(unint64_t)type;
++ (id)titleForManuallyCategorizingMessagesFromDisplayName:(id)name toBucket:(int64_t)bucket;
++ (id)titleForRestoringAutomaticCategorizationForDisplayName:(id)name;
 @end
 
 @implementation MUILocalizedBlackPearlStrings
 
-+ (id)resetUserOverrideForNumberOfOverrides:(int64_t)a3
++ (id)resetUserOverrideForNumberOfOverrides:(int64_t)overrides
 {
   v4 = _EFLocalizedStringFromTable();
-  v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, a3];
+  overrides = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, overrides];
 
-  return v5;
+  return overrides;
 }
 
-+ (id)allCurrentAndFutureMessagesAutomaticallyCategorizedForDisplayName:(id)a3
++ (id)allCurrentAndFutureMessagesAutomaticallyCategorizedForDisplayName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = _EFLocalizedStringFromTable();
-  v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, v3];
+  nameCopy = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, nameCopy];
 
-  return v5;
+  return nameCopy;
 }
 
-+ (id)categorizeAllMessagesForDisplayName:(id)a3
++ (id)categorizeAllMessagesForDisplayName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = _EFLocalizedStringFromTable();
-  v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, v3];
+  nameCopy = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, nameCopy];
 
-  return v5;
+  return nameCopy;
 }
 
-+ (id)allCurrentAndFutureMessagesFromDisplayName:(id)a3 willBeCategorizedInBucket:(int64_t)a4
++ (id)allCurrentAndFutureMessagesFromDisplayName:(id)name willBeCategorizedInBucket:(int64_t)bucket
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = _EFLocalizedStringFromTable();
   v7 = MEMORY[0x277CCACA8];
-  v8 = MUILocalizedStringFromBucket(a4);
-  v9 = [v7 localizedStringWithFormat:v6, v5, v8];
+  v8 = MUILocalizedStringFromBucket(bucket);
+  v9 = [v7 localizedStringWithFormat:v6, nameCopy, v8];
 
   return v9;
 }
 
-+ (id)titleForRestoringAutomaticCategorizationForDisplayName:(id)a3
++ (id)titleForRestoringAutomaticCategorizationForDisplayName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = _EFLocalizedStringFromTable();
-  v5 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, v3];
+  nameCopy = [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, nameCopy];
 
-  return v5;
+  return nameCopy;
 }
 
-+ (id)titleForManuallyCategorizingMessagesFromDisplayName:(id)a3 toBucket:(int64_t)a4
++ (id)titleForManuallyCategorizingMessagesFromDisplayName:(id)name toBucket:(int64_t)bucket
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = _EFLocalizedStringFromTable();
   v7 = MEMORY[0x277CCACA8];
-  v8 = MUILocalizedStringFromBucket(a4);
-  v9 = [v7 localizedStringWithFormat:v6, v5, v8];
+  v8 = MUILocalizedStringFromBucket(bucket);
+  v9 = [v7 localizedStringWithFormat:v6, nameCopy, v8];
 
   return v9;
 }
 
-+ (id)timeSensitiveTitleForCategoryType:(unint64_t)a3
++ (id)timeSensitiveTitleForCategoryType:(unint64_t)type
 {
   v4 = _EFLocalizedStringFromTable();
   v5 = MEMORY[0x277CCACA8];
-  v6 = MUILocalizedStringSingularFromCategory(a3);
+  v6 = MUILocalizedStringSingularFromCategory(type);
   v7 = [v5 localizedStringWithFormat:v4, v6];
 
   return v7;
 }
 
-+ (id)timeSensitiveBannerSubtitleForCategoryType:(unint64_t)a3
++ (id)timeSensitiveBannerSubtitleForCategoryType:(unint64_t)type
 {
   v4 = _EFLocalizedStringFromTable();
   v5 = MEMORY[0x277CCACA8];
-  v6 = MUIBucketFromEMCategoryType(a3);
+  v6 = MUIBucketFromEMCategoryType(type);
   v7 = MUILocalizedStringFromBucket(v6);
   v8 = [v5 localizedStringWithFormat:v4, v7];
 

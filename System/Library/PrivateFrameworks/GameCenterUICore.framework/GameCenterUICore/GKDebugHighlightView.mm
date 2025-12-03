@@ -1,6 +1,6 @@
 @interface GKDebugHighlightView
 - (GKDebugHighlightView)init;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation GKDebugHighlightView
@@ -12,8 +12,8 @@
   v2 = [(GKDebugHighlightView *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(GKDebugHighlightView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(GKDebugHighlightView *)v2 setBackgroundColor:clearColor];
 
     [(GKDebugHighlightView *)v2 setAutoresizingMask:0];
     [(GKDebugHighlightView *)v2 setOpaque:0];
@@ -22,16 +22,16 @@
   return v2;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(GKDebugHighlightView *)self bounds:a3.origin.x];
+  [(GKDebugHighlightView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v17 = [(GKDebugHighlightView *)self color];
-  v12 = [v17 colorWithAlphaComponent:0.75];
-  v13 = [v17 colorWithAlphaComponent:0.25];
+  color = [(GKDebugHighlightView *)self color];
+  v12 = [color colorWithAlphaComponent:0.75];
+  v13 = [color colorWithAlphaComponent:0.25];
   [v12 setStroke];
   [v13 setFill];
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -63,10 +63,10 @@
     CGContextFillRect(CurrentContext, v22);
   }
 
-  [v17 set];
-  v15 = [(GKDebugHighlightView *)self caption];
+  [color set];
+  caption = [(GKDebugHighlightView *)self caption];
   v16 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
-  [v15 _legacy_drawInRect:v16 withFont:{v5, v7, v9, v11}];
+  [caption _legacy_drawInRect:v16 withFont:{v5, v7, v9, v11}];
 }
 
 @end

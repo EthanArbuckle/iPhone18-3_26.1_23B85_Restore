@@ -1,13 +1,13 @@
 @interface ClarityUIThingsToKnowOnboardingController
-- (ClarityUIThingsToKnowOnboardingController)initWithCompletion:(id)a3;
+- (ClarityUIThingsToKnowOnboardingController)initWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation ClarityUIThingsToKnowOnboardingController
 
-- (ClarityUIThingsToKnowOnboardingController)initWithCompletion:(id)a3
+- (ClarityUIThingsToKnowOnboardingController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"THINGS_TO_KNOW", @"ClarityUISettings");
   v6 = AXLocStringKeyForModel();
   v7 = settingsLocString(v6, @"ClarityUISettings");
@@ -18,7 +18,7 @@
 
   if (v9)
   {
-    v10 = objc_retainBlock(v4);
+    v10 = objc_retainBlock(completionCopy);
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v10;
 
@@ -37,12 +37,12 @@
     }
 
     v15 = +[OBBulletedListItemLinkButton linkButton];
-    v16 = [v15 configuration];
+    configuration = [v15 configuration];
 
     v17 = settingsLocString(@"LEARN_MORE_LINK", @"ClarityUISettings");
-    [v16 setTitle:v17];
+    [configuration setTitle:v17];
 
-    [v16 setContentInsets:{20.0, 0.0, 20.0, 0.0}];
+    [configuration setContentInsets:{20.0, 0.0, 20.0, 0.0}];
     objc_initWeak(&location, v9);
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -50,11 +50,11 @@
     v37[3] = &unk_257790;
     objc_copyWeak(&v38, &location);
     v18 = [UIAction actionWithHandler:v37];
-    v19 = [OBBulletedListItemLinkButton buttonWithConfiguration:v16 primaryAction:v18];
+    v19 = [OBBulletedListItemLinkButton buttonWithConfiguration:configuration primaryAction:v18];
     v20 = +[UIDevice currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    userInterfaceIdiom = [v20 userInterfaceIdiom];
 
-    if (!v21)
+    if (!userInterfaceIdiom)
     {
       if (v12)
       {
@@ -87,8 +87,8 @@
     [v32 setTitle:v33 forState:0];
 
     [v32 addTarget:v9 action:"_nextButtonTapped:" forControlEvents:0x2000];
-    v34 = [(ClarityUIThingsToKnowOnboardingController *)v9 buttonTray];
-    [v34 addButton:v32];
+    buttonTray = [(ClarityUIThingsToKnowOnboardingController *)v9 buttonTray];
+    [buttonTray addButton:v32];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -109,8 +109,8 @@ void __64__ClarityUIThingsToKnowOnboardingController_initWithCompletion___block_
   v5.super_class = ClarityUIThingsToKnowOnboardingController;
   [(ClarityUIThingsToKnowOnboardingController *)&v5 viewDidLoad];
   v3 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  v4 = [(ClarityUIThingsToKnowOnboardingController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(ClarityUIThingsToKnowOnboardingController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 }
 
 - (void)initWithCompletion:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

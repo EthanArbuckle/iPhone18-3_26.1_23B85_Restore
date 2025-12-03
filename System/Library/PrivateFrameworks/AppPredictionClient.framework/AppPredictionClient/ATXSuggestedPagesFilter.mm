@@ -1,34 +1,34 @@
 @interface ATXSuggestedPagesFilter
-- (ATXSuggestedPagesFilter)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXSuggestedPagesFilter)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSuggestedPagesFilter
 
-- (ATXSuggestedPagesFilter)initWithCoder:(id)a3
+- (ATXSuggestedPagesFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ATXSuggestedPagesFilter;
   v5 = [(ATXSuggestedPagesFilter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
     modeUUID = v5->_modeUUID;
     v5->_modeUUID = v6;
 
-    v5->_pageType = [v4 decodeIntegerForKey:@"pageType"];
+    v5->_pageType = [coderCopy decodeIntegerForKey:@"pageType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modeUUID = self->_modeUUID;
-  v5 = a3;
-  [v5 encodeObject:modeUUID forKey:@"modeUUID"];
-  [v5 encodeInteger:self->_pageType forKey:@"pageType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modeUUID forKey:@"modeUUID"];
+  [coderCopy encodeInteger:self->_pageType forKey:@"pageType"];
 }
 
 @end

@@ -9,17 +9,17 @@
   if ([(PCSCKKSOperation *)self startOperation])
   {
     [(PCSCKKSOperation *)self checkDependencies];
-    v3 = [(PCSCKKSOperationBlock *)self block];
-    v3[2](v3, 0);
+    block = [(PCSCKKSOperationBlock *)self block];
+    block[2](block, 0);
 
     [(PCSCKKSOperation *)self completeOperation];
   }
 
   else
   {
-    v5 = [(PCSCKKSOperationBlock *)self block];
-    v4 = [(PCSCKKSOperation *)self error];
-    v5[2](v5, v4);
+    block2 = [(PCSCKKSOperationBlock *)self block];
+    error = [(PCSCKKSOperation *)self error];
+    block2[2](block2, error);
   }
 }
 

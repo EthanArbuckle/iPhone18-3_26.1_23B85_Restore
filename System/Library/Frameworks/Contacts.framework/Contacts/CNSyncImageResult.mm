@@ -1,31 +1,31 @@
 @interface CNSyncImageResult
 - (CGRect)cropRect;
-- (CNSyncImageResult)initWithType:(unint64_t)a3 imageData:(id)a4 cropRect:(CGRect)a5 imageHash:(id)a6;
+- (CNSyncImageResult)initWithType:(unint64_t)type imageData:(id)data cropRect:(CGRect)rect imageHash:(id)hash;
 @end
 
 @implementation CNSyncImageResult
 
-- (CNSyncImageResult)initWithType:(unint64_t)a3 imageData:(id)a4 cropRect:(CGRect)a5 imageHash:(id)a6
+- (CNSyncImageResult)initWithType:(unint64_t)type imageData:(id)data cropRect:(CGRect)rect imageHash:(id)hash
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  hashCopy = hash;
   v20.receiver = self;
   v20.super_class = CNSyncImageResult;
   v16 = [(CNSyncImageResult *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    v16->_type = a3;
-    objc_storeStrong(&v16->_imageData, a4);
+    v16->_type = type;
+    objc_storeStrong(&v16->_imageData, data);
     v17->_cropRect.origin.x = x;
     v17->_cropRect.origin.y = y;
     v17->_cropRect.size.width = width;
     v17->_cropRect.size.height = height;
-    objc_storeStrong(&v17->_imageHash, a6);
+    objc_storeStrong(&v17->_imageHash, hash);
     v18 = v17;
   }
 

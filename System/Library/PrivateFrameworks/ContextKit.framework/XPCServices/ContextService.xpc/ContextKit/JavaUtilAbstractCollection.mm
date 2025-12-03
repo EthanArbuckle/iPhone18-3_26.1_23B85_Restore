@@ -1,21 +1,21 @@
 @interface JavaUtilAbstractCollection
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
 - (NSString)description;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (void)clear;
 @end
 
 @implementation JavaUtilAbstractCollection
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3 || (v4 = [a3 iterator]) == 0)
+  if (!collection || (v4 = [collection iterator]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -37,14 +37,14 @@
 
 - (void)clear
 {
-  v2 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v2)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = v2;
-  if ([v2 hasNext])
+  v3 = iterator;
+  if ([iterator hasNext])
   {
     do
     {
@@ -56,44 +56,44 @@
   }
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractCollection *)self iterator];
-  v5 = v4;
-  if (a3)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  v5 = iterator;
+  if (id)
   {
-    if (v4)
+    if (iterator)
     {
       do
       {
-        v6 = [v5 hasNext];
+        hasNext = [v5 hasNext];
       }
 
-      while ((v6 & 1) != 0 && ([a3 isEqual:{objc_msgSend(v5, "next")}] & 1) == 0);
-      return v6;
+      while ((hasNext & 1) != 0 && ([id isEqual:{objc_msgSend(v5, "next")}] & 1) == 0);
+      return hasNext;
     }
 
 LABEL_10:
     JreThrowNullPointerException();
   }
 
-  if (!v4)
+  if (!iterator)
   {
     goto LABEL_10;
   }
 
   do
   {
-    v6 = [v5 hasNext];
+    hasNext = [v5 hasNext];
   }
 
-  while ((v6 & 1) != 0 && [v5 next]);
-  return v6;
+  while ((hasNext & 1) != 0 && [v5 next]);
+  return hasNext;
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3 || (v4 = [a3 iterator]) == 0)
+  if (!collection || (v4 = [collection iterator]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -101,24 +101,24 @@ LABEL_10:
   v5 = v4;
   do
   {
-    v6 = [v5 hasNext];
+    hasNext = [v5 hasNext];
   }
 
-  while ((v6 & 1) != 0 && -[JavaUtilAbstractCollection containsWithId:](self, "containsWithId:", [v5 next]));
-  return v6 ^ 1;
+  while ((hasNext & 1) != 0 && -[JavaUtilAbstractCollection containsWithId:](self, "containsWithId:", [v5 next]));
+  return hasNext ^ 1;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  v4 = [(JavaUtilAbstractCollection *)self iterator];
-  v5 = v4;
-  if (a3)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  v5 = iterator;
+  if (id)
   {
-    if (v4)
+    if (iterator)
     {
       while (([v5 hasNext] & 1) != 0)
       {
-        if ([a3 isEqual:{objc_msgSend(v5, "next")}])
+        if ([id isEqual:{objc_msgSend(v5, "next")}])
         {
           goto LABEL_9;
         }
@@ -131,7 +131,7 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  if (!v4)
+  if (!iterator)
   {
     goto LABEL_11;
   }
@@ -149,21 +149,21 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
-  v4 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = iterator;
   v6 = 0;
-  if ([v4 hasNext])
+  if ([iterator hasNext])
   {
-    while (a3)
+    while (collection)
     {
-      if ([a3 containsWithId:{objc_msgSend(v5, "next")}])
+      if ([collection containsWithId:{objc_msgSend(v5, "next")}])
       {
         [v5 remove];
         v6 = 1;
@@ -182,21 +182,21 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
-  v4 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = iterator;
   v6 = 0;
-  if ([v4 hasNext])
+  if ([iterator hasNext])
   {
-    while (a3)
+    while (collection)
     {
-      if (([a3 containsWithId:{objc_msgSend(v5, "next")}] & 1) == 0)
+      if (([collection containsWithId:{objc_msgSend(v5, "next")}] & 1) == 0)
       {
         [v5 remove];
         v6 = 1;
@@ -222,18 +222,18 @@ LABEL_8:
   return [(JavaUtilAbstractCollection *)self toArrayWithNSObjectArray:v3];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = a3;
+  arrayCopy = array;
   v5 = [(JavaUtilAbstractCollection *)self size];
-  if (v3->super.size_ < v5)
+  if (arrayCopy->super.size_ < v5)
   {
-    v3 = [IOSObjectArray arrayWithLength:v5 type:*&v3->isRetained_];
+    arrayCopy = [IOSObjectArray arrayWithLength:v5 type:*&arrayCopy->isRetained_];
   }
 
   v15 = 0u;
@@ -258,7 +258,7 @@ LABEL_8:
         }
 
         v8 = v11 + 1;
-        IOSObjectArray_Set(v3, v11++, *(*(&v13 + 1) + 8 * v10++));
+        IOSObjectArray_Set(arrayCopy, v11++, *(*(&v13 + 1) + 8 * v10++));
       }
 
       while (v7 != v10);
@@ -268,7 +268,7 @@ LABEL_8:
     while (v7);
   }
 
-  return v3;
+  return arrayCopy;
 }
 
 - (NSString)description
@@ -280,26 +280,26 @@ LABEL_8:
 
   v4 = new_JavaLangStringBuilder_initWithInt_(16 * [(JavaUtilAbstractCollection *)self size]);
   [(JavaLangStringBuilder *)v4 appendWithChar:91];
-  v5 = [(JavaUtilAbstractCollection *)self iterator];
-  if (!v5)
+  iterator = [(JavaUtilAbstractCollection *)self iterator];
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5;
-  if ([v5 hasNext])
+  v6 = iterator;
+  if ([iterator hasNext])
   {
     do
     {
-      v7 = [v6 next];
-      if (v7 == self)
+      next = [v6 next];
+      if (next == self)
       {
         [(JavaLangStringBuilder *)v4 appendWithNSString:@"(this Collection)"];
       }
 
       else
       {
-        [(JavaLangStringBuilder *)v4 appendWithId:v7];
+        [(JavaLangStringBuilder *)v4 appendWithId:next];
       }
 
       if ([v6 hasNext])

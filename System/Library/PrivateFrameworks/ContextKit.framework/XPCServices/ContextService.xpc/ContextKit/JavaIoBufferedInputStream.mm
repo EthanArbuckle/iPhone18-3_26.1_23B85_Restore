@@ -1,11 +1,11 @@
 @interface JavaIoBufferedInputStream
 - (int)available;
 - (int)read;
-- (int64_t)skipWithLong:(int64_t)a3;
+- (int64_t)skipWithLong:(int64_t)long;
 - (void)__javaClone;
 - (void)close;
 - (void)dealloc;
-- (void)markWithInt:(int)a3;
+- (void)markWithInt:(int)int;
 - (void)reset;
 @end
 
@@ -32,9 +32,9 @@
 
   count = self->count_;
   pos = self->pos_;
-  v8 = [v3 available];
+  available = [v3 available];
   objc_sync_exit(self);
-  return count - pos + v8;
+  return count - pos + available;
 }
 
 - (void)close
@@ -50,10 +50,10 @@
   }
 }
 
-- (void)markWithInt:(int)a3
+- (void)markWithInt:(int)int
 {
   objc_sync_enter(self);
-  self->marklimit_ = a3;
+  self->marklimit_ = int;
   self->markpos_ = self->pos_;
 
   objc_sync_exit(self);
@@ -139,7 +139,7 @@ LABEL_8:
   objc_sync_exit(self);
 }
 
-- (int64_t)skipWithLong:(int64_t)a3
+- (int64_t)skipWithLong:(int64_t)long
 {
   objc_sync_enter(self);
   v5 = atomic_load(&self->buf_);
@@ -149,9 +149,9 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (a3 < 1)
+  if (long < 1)
   {
-    a3 = 0;
+    long = 0;
     goto LABEL_11;
   }
 
@@ -164,9 +164,9 @@ LABEL_17:
   count = self->count_;
   pos = self->pos_;
   v9 = count - pos;
-  if (a3 <= count - pos)
+  if (long <= count - pos)
   {
-    v11 = pos + a3;
+    v11 = pos + long;
 LABEL_10:
     self->pos_ = v11;
     goto LABEL_11;
@@ -174,33 +174,33 @@ LABEL_10:
 
   self->pos_ = count;
   v10 = v9;
-  if (self->markpos_ != -1 && self->marklimit_ >= a3)
+  if (self->markpos_ != -1 && self->marklimit_ >= long)
   {
     if (sub_1001AE96C(self, v6, v5) == -1)
     {
-      a3 = v10;
+      long = v10;
       goto LABEL_11;
     }
 
     v11 = self->count_;
     v13 = self->pos_;
-    if (a3 - v10 <= v11 - v13)
+    if (long - v10 <= v11 - v13)
     {
-      v11 = v13 + a3 - v10;
+      v11 = v13 + long - v10;
     }
 
     else
     {
-      a3 = v11 - v13 + v10;
+      long = v11 - v13 + v10;
     }
 
     goto LABEL_10;
   }
 
-  a3 = [v6 skipWithLong:a3 - v9] + v9;
+  long = [v6 skipWithLong:long - v9] + v9;
 LABEL_11:
   objc_sync_exit(self);
-  return a3;
+  return long;
 }
 
 - (void)dealloc

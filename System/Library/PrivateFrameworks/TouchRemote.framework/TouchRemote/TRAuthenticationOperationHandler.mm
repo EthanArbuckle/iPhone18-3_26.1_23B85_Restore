@@ -1,15 +1,15 @@
 @interface TRAuthenticationOperationHandler
-- (TRAuthenticationOperationHandler)initWithCompanionAuthHandler:(id)a3 proxyAuthHandler:(id)a4;
-- (TRAuthenticationOperationHandler)initWithCompanionAuthHandlerWithError:(id)a3 proxyAuthHandler:(id)a4;
-- (void)registerMessageHandlersForSession:(id)a3;
+- (TRAuthenticationOperationHandler)initWithCompanionAuthHandler:(id)handler proxyAuthHandler:(id)authHandler;
+- (TRAuthenticationOperationHandler)initWithCompanionAuthHandlerWithError:(id)error proxyAuthHandler:(id)handler;
+- (void)registerMessageHandlersForSession:(id)session;
 @end
 
 @implementation TRAuthenticationOperationHandler
 
-- (TRAuthenticationOperationHandler)initWithCompanionAuthHandler:(id)a3 proxyAuthHandler:(id)a4
+- (TRAuthenticationOperationHandler)initWithCompanionAuthHandler:(id)handler proxyAuthHandler:(id)authHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  authHandlerCopy = authHandler;
   v20.receiver = self;
   v20.super_class = TRAuthenticationOperationHandler;
   v8 = [(TRAuthenticationOperationHandler *)&v20 init];
@@ -20,7 +20,7 @@
     v18[1] = 3221225472;
     v18[2] = __82__TRAuthenticationOperationHandler_initWithCompanionAuthHandler_proxyAuthHandler___block_invoke;
     v18[3] = &unk_279DCF410;
-    v19 = v6;
+    v19 = handlerCopy;
     v10 = [(TRCompanionAuthOperationHandler *)v9 initWithCompanionAuthHandler:v18];
     companionAuthHandler = v8->_companionAuthHandler;
     v8->_companionAuthHandler = v10;
@@ -30,7 +30,7 @@
     v16[1] = 3221225472;
     v16[2] = __82__TRAuthenticationOperationHandler_initWithCompanionAuthHandler_proxyAuthHandler___block_invoke_2;
     v16[3] = &unk_279DCF410;
-    v17 = v7;
+    v17 = authHandlerCopy;
     v13 = [(TRProxyAuthOperationHandler *)v12 initWithProxyAuthHandler:v16];
     proxyAuthHandler = v8->_proxyAuthHandler;
     v8->_proxyAuthHandler = v13;
@@ -39,10 +39,10 @@
   return v8;
 }
 
-- (TRAuthenticationOperationHandler)initWithCompanionAuthHandlerWithError:(id)a3 proxyAuthHandler:(id)a4
+- (TRAuthenticationOperationHandler)initWithCompanionAuthHandlerWithError:(id)error proxyAuthHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = TRAuthenticationOperationHandler;
   v8 = [(TRAuthenticationOperationHandler *)&v20 init];
@@ -53,7 +53,7 @@
     v18[1] = 3221225472;
     v18[2] = __91__TRAuthenticationOperationHandler_initWithCompanionAuthHandlerWithError_proxyAuthHandler___block_invoke;
     v18[3] = &unk_279DCF438;
-    v19 = v6;
+    v19 = errorCopy;
     v10 = [(TRCompanionAuthOperationHandler *)v9 initWithCompanionAuthHandlerWithError:v18];
     companionAuthHandler = v8->_companionAuthHandler;
     v8->_companionAuthHandler = v10;
@@ -63,7 +63,7 @@
     v16[1] = 3221225472;
     v16[2] = __91__TRAuthenticationOperationHandler_initWithCompanionAuthHandlerWithError_proxyAuthHandler___block_invoke_2;
     v16[3] = &unk_279DCF438;
-    v17 = v7;
+    v17 = handlerCopy;
     v13 = [(TRProxyAuthOperationHandler *)v12 initWithProxyAuthHandlerWithError:v16];
     proxyAuthHandler = v8->_proxyAuthHandler;
     v8->_proxyAuthHandler = v13;
@@ -72,12 +72,12 @@
   return v8;
 }
 
-- (void)registerMessageHandlersForSession:(id)a3
+- (void)registerMessageHandlersForSession:(id)session
 {
   companionAuthHandler = self->_companionAuthHandler;
-  v5 = a3;
-  [(TRCompanionAuthOperationHandler *)companionAuthHandler registerMessageHandlersForSession:v5];
-  [(TRProxyAuthOperationHandler *)self->_proxyAuthHandler registerMessageHandlersForSession:v5];
+  sessionCopy = session;
+  [(TRCompanionAuthOperationHandler *)companionAuthHandler registerMessageHandlersForSession:sessionCopy];
+  [(TRProxyAuthOperationHandler *)self->_proxyAuthHandler registerMessageHandlersForSession:sessionCopy];
 }
 
 @end

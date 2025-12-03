@@ -1,62 +1,62 @@
 @interface CHXGraphicProperties
-+ (BOOL)isGraphicPropertiesContainedByXmlElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)oadGraphicPropertiesFromXmlElementWithGraphicProperties:(_xmlNode *)a3 state:(id)a4;
-+ (void)setGraphicPropertiesFromXmlElementWithGraphicProperties:(id)a3 element:(_xmlNode *)a4 state:(id)a5;
++ (BOOL)isGraphicPropertiesContainedByXmlElement:(_xmlNode *)element state:(id)state;
++ (id)oadGraphicPropertiesFromXmlElementWithGraphicProperties:(_xmlNode *)properties state:(id)state;
++ (void)setGraphicPropertiesFromXmlElementWithGraphicProperties:(id)properties element:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXGraphicProperties
 
-+ (id)oadGraphicPropertiesFromXmlElementWithGraphicProperties:(_xmlNode *)a3 state:(id)a4
++ (id)oadGraphicPropertiesFromXmlElementWithGraphicProperties:(_xmlNode *)properties state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADGraphicProperties);
-  [a1 setGraphicPropertiesFromXmlElementWithGraphicProperties:v7 element:a3 state:v6];
+  [self setGraphicPropertiesFromXmlElementWithGraphicProperties:v7 element:properties state:stateCopy];
 
   return v7;
 }
 
-+ (void)setGraphicPropertiesFromXmlElementWithGraphicProperties:(id)a3 element:(_xmlNode *)a4 state:(id)a5
++ (void)setGraphicPropertiesFromXmlElementWithGraphicProperties:(id)properties element:(_xmlNode *)element state:(id)state
 {
-  v15 = a3;
-  v7 = a5;
-  if (v15 && a4)
+  propertiesCopy = properties;
+  stateCopy = state;
+  if (propertiesCopy && element)
   {
-    v8 = [v7 drawingState];
-    v9 = [v8 OAXChartNamespace];
-    v10 = OCXFindChild(a4, v9, "spPr");
+    drawingState = [stateCopy drawingState];
+    oAXChartNamespace = [drawingState OAXChartNamespace];
+    v10 = OCXFindChild(element, oAXChartNamespace, "spPr");
 
     if (v10)
     {
-      v11 = [v7 drawingState];
-      [OAXGraphic readPropertiesFromXmlNode:v10 graphicProperties:v15 drawingState:v11];
+      drawingState2 = [stateCopy drawingState];
+      [OAXGraphic readPropertiesFromXmlNode:v10 graphicProperties:propertiesCopy drawingState:drawingState2];
     }
 
-    v12 = [v7 drawingState];
-    v13 = [v12 OAXChartNamespace];
-    v14 = OCXFindChild(a4, v13, "layout");
+    drawingState3 = [stateCopy drawingState];
+    oAXChartNamespace2 = [drawingState3 OAXChartNamespace];
+    v14 = OCXFindChild(element, oAXChartNamespace2, "layout");
 
     if (v14)
     {
-      [CHXLayout readFrom:v14 graphicProperties:v15 state:v7];
+      [CHXLayout readFrom:v14 graphicProperties:propertiesCopy state:stateCopy];
     }
   }
 }
 
-+ (BOOL)isGraphicPropertiesContainedByXmlElement:(_xmlNode *)a3 state:(id)a4
++ (BOOL)isGraphicPropertiesContainedByXmlElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 drawingState];
-  v7 = [v6 OAXChartNamespace];
-  if (OCXFindChild(a3, v7, "spPr"))
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  if (OCXFindChild(element, oAXChartNamespace, "spPr"))
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v5 drawingState];
-    v10 = [v9 OAXChartNamespace];
-    v8 = OCXFindChild(a3, v10, "layout") != 0;
+    drawingState2 = [stateCopy drawingState];
+    oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+    v8 = OCXFindChild(element, oAXChartNamespace2, "layout") != 0;
   }
 
   return v8;

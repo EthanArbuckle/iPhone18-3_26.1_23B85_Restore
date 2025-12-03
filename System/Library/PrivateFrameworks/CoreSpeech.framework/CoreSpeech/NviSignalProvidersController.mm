@@ -1,28 +1,28 @@
 @interface NviSignalProvidersController
 + (void)initialize;
-- (BOOL)_setupSignalProviders:(id)a3;
-- (NviSignalProvidersController)initWithAssetsProvider:(id)a3 dataSourceMap:(id)a4 signalProviderToDataSourceMap:(id)a5;
-- (void)_iterateSignalMask:(unint64_t)a3 withHandler:(id)a4;
-- (void)_startDataSourcesWithContext:(id)a3;
-- (void)_startSignalProvidersWithContext:(id)a3;
+- (BOOL)_setupSignalProviders:(id)providers;
+- (NviSignalProvidersController)initWithAssetsProvider:(id)provider dataSourceMap:(id)map signalProviderToDataSourceMap:(id)sourceMap;
+- (void)_iterateSignalMask:(unint64_t)mask withHandler:(id)handler;
+- (void)_startDataSourcesWithContext:(id)context;
+- (void)_startSignalProvidersWithContext:(id)context;
 - (void)_stopCurrentlyRunningSignalProviders;
 - (void)_stopDataSources;
 - (void)dealloc;
-- (void)registerSignalProviderDelegate:(id)a3 forSignalTypes:(unint64_t)a4;
-- (void)registerSignalProviderDelegateForAllSignalTypes:(id)a3;
+- (void)registerSignalProviderDelegate:(id)delegate forSignalTypes:(unint64_t)types;
+- (void)registerSignalProviderDelegateForAllSignalTypes:(id)types;
 - (void)reset;
-- (void)startWithNviContext:(id)a3;
+- (void)startWithNviContext:(id)context;
 - (void)stop;
-- (void)unregisterSignalProviderDelegate:(id)a3 forSignalType:(unint64_t)a4;
-- (void)unregisterSignalProviderDelegateForAllSignalTypes:(id)a3;
+- (void)unregisterSignalProviderDelegate:(id)delegate forSignalType:(unint64_t)type;
+- (void)unregisterSignalProviderDelegateForAllSignalTypes:(id)types;
 @end
 
 @implementation NviSignalProvidersController
 
-- (void)unregisterSignalProviderDelegateForAllSignalTypes:(id)a3
+- (void)unregisterSignalProviderDelegateForAllSignalTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -44,7 +44,7 @@
         }
 
         v10 = [(NSMapTable *)self->_sigProvidersMap objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9), v12];
-        [v10 removeDelegate:v4];
+        [v10 removeDelegate:typesCopy];
 
         ++v9;
       }
@@ -59,10 +59,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerSignalProviderDelegateForAllSignalTypes:(id)a3
+- (void)registerSignalProviderDelegateForAllSignalTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -84,7 +84,7 @@
         }
 
         v10 = [(NSMapTable *)self->_sigProvidersMap objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9), v12];
-        [v10 addDelegate:v4];
+        [v10 addDelegate:typesCopy];
 
         ++v9;
       }
@@ -99,34 +99,34 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterSignalProviderDelegate:(id)a3 forSignalType:(unint64_t)a4
+- (void)unregisterSignalProviderDelegate:(id)delegate forSignalType:(unint64_t)type
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__NviSignalProvidersController_unregisterSignalProviderDelegate_forSignalType___block_invoke;
   v8[3] = &unk_2784C4150;
-  v9 = v6;
-  v7 = v6;
-  [(NviSignalProvidersController *)self _iterateSignalMask:a4 withHandler:v8];
+  v9 = delegateCopy;
+  v7 = delegateCopy;
+  [(NviSignalProvidersController *)self _iterateSignalMask:type withHandler:v8];
 }
 
-- (void)registerSignalProviderDelegate:(id)a3 forSignalTypes:(unint64_t)a4
+- (void)registerSignalProviderDelegate:(id)delegate forSignalTypes:(unint64_t)types
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__NviSignalProvidersController_registerSignalProviderDelegate_forSignalTypes___block_invoke;
   v8[3] = &unk_2784C4150;
-  v9 = v6;
-  v7 = v6;
-  [(NviSignalProvidersController *)self _iterateSignalMask:a4 withHandler:v8];
+  v9 = delegateCopy;
+  v7 = delegateCopy;
+  [(NviSignalProvidersController *)self _iterateSignalMask:types withHandler:v8];
 }
 
-- (void)_iterateSignalMask:(unint64_t)a3 withHandler:(id)a4
+- (void)_iterateSignalMask:(unint64_t)mask withHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = 0;
   *&v8 = 136315394;
   v17 = v8;
@@ -134,12 +134,12 @@
   {
     v9 = (1 << v7);
     sigProvidersMap = self->_sigProvidersMap;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v9 & a3, v17}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v9 & mask, v17}];
     v12 = [(NSMapTable *)sigProvidersMap objectForKeyedSubscript:v11];
 
     if (v12)
     {
-      v6[2](v6, v12);
+      handlerCopy[2](handlerCopy, v12);
     }
 
     else
@@ -148,11 +148,11 @@
       if (os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [NviUtils strRepForNviSignalType:v9 & a3];
+        mask = [NviUtils strRepForNviSignalType:v9 & mask];
         *buf = v17;
         v19 = "[NviSignalProvidersController _iterateSignalMask:withHandler:]";
         v20 = 2112;
-        v21 = v15;
+        v21 = mask;
         _os_log_impl(&dword_222E4D000, v14, OS_LOG_TYPE_DEFAULT, "%s WARN: Cannot find SignalProvider for %@. Skipping", buf, 0x16u);
       }
     }
@@ -214,9 +214,9 @@
   }
 
   v10 = dispatch_time(0, 2000000000);
-  v11 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v12 = dispatch_group_wait(v3, v10);
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v14 = NviLogContextFacility;
   v15 = os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -232,7 +232,7 @@
   else if (v15)
   {
     v16 = v14;
-    [v13 timeIntervalSinceDate:v11];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315394;
     v27 = "[NviSignalProvidersController _stopCurrentlyRunningSignalProviders]";
     v28 = 2048;
@@ -312,9 +312,9 @@ void __68__NviSignalProvidersController__stopCurrentlyRunningSignalProviders__bl
   }
 
   v10 = dispatch_time(0, 2000000000);
-  v11 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v12 = dispatch_group_wait(v3, v10);
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v14 = NviLogContextFacility;
   v15 = os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -330,7 +330,7 @@ void __68__NviSignalProvidersController__stopCurrentlyRunningSignalProviders__bl
   else if (v15)
   {
     v16 = v14;
-    [v13 timeIntervalSinceDate:v11];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315394;
     v27 = "[NviSignalProvidersController _stopDataSources]";
     v28 = 2048;
@@ -407,17 +407,17 @@ void __48__NviSignalProvidersController__stopDataSources__block_invoke(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithNviContext:(id)a3
+- (void)startWithNviContext:(id)context
 {
-  v4 = a3;
-  [(NviSignalProvidersController *)self _startSignalProvidersWithContext:v4];
-  [(NviSignalProvidersController *)self _startDataSourcesWithContext:v4];
+  contextCopy = context;
+  [(NviSignalProvidersController *)self _startSignalProvidersWithContext:contextCopy];
+  [(NviSignalProvidersController *)self _startDataSourcesWithContext:contextCopy];
 }
 
-- (void)_startSignalProvidersWithContext:(id)a3
+- (void)_startSignalProvidersWithContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  contextCopy = context;
   v4 = [(NviAssetsProvider *)self->_assetsProvider signalProvidersMapForContext:?];
   v5 = [MEMORY[0x277CCAA50] hashTableWithOptions:0];
   currActiveSigProvTypes = self->_currActiveSigProvTypes;
@@ -471,7 +471,7 @@ void __48__NviSignalProvidersController__stopDataSources__block_invoke(uint64_t 
         v19 = v10;
         v32 = v19;
         v33 = v9;
-        [v17 startWithNviContext:v30 didStartHandler:v31];
+        [v17 startWithNviContext:contextCopy didStartHandler:v31];
       }
 
       v13 = [v19 countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -481,9 +481,9 @@ void __48__NviSignalProvidersController__stopDataSources__block_invoke(uint64_t 
   }
 
   v20 = dispatch_time(0, 2000000000);
-  v21 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v22 = dispatch_group_wait(v9, v20);
-  v23 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v24 = NviLogContextFacility;
   v25 = os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT);
   if (v22)
@@ -499,7 +499,7 @@ void __48__NviSignalProvidersController__stopDataSources__block_invoke(uint64_t 
   else if (v25)
   {
     v26 = v24;
-    [v23 timeIntervalSinceDate:v21];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315394;
     v39 = "[NviSignalProvidersController _startSignalProvidersWithContext:]";
     v40 = 2048;
@@ -545,10 +545,10 @@ void __65__NviSignalProvidersController__startSignalProvidersWithContext___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startDataSourcesWithContext:(id)a3
+- (void)_startDataSourcesWithContext:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  contextCopy = context;
   v4 = dispatch_group_create();
   v27 = 0u;
   v28 = 0u;
@@ -590,7 +590,7 @@ void __65__NviSignalProvidersController__startSignalProvidersWithContext___block
         v25[3] = &unk_2784C4100;
         v25[4] = v10;
         v26 = v4;
-        [v11 startWithNviContext:v24 didStartHandler:v25];
+        [v11 startWithNviContext:contextCopy didStartHandler:v25];
       }
 
       v7 = [(NSHashTable *)obj countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -600,9 +600,9 @@ void __65__NviSignalProvidersController__startSignalProvidersWithContext___block
   }
 
   v13 = dispatch_time(0, 2000000000);
-  v14 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v15 = dispatch_group_wait(v4, v13);
-  v16 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v17 = NviLogContextFacility;
   v18 = os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT);
   if (v15)
@@ -618,7 +618,7 @@ void __65__NviSignalProvidersController__startSignalProvidersWithContext___block
   else if (v18)
   {
     v19 = v17;
-    [v16 timeIntervalSinceDate:v14];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315394;
     v32 = "[NviSignalProvidersController _startDataSourcesWithContext:]";
     v33 = 2048;
@@ -656,10 +656,10 @@ void __61__NviSignalProvidersController__startDataSourcesWithContext___block_inv
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setupSignalProviders:(id)a3
+- (BOOL)_setupSignalProviders:(id)providers
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providersCopy = providers;
   v5 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
   sigProvidersMap = self->_sigProvidersMap;
   self->_sigProvidersMap = v5;
@@ -668,7 +668,7 @@ void __61__NviSignalProvidersController__startDataSourcesWithContext___block_inv
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v4;
+  v7 = providersCopy;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v8)
   {
@@ -690,9 +690,9 @@ void __61__NviSignalProvidersController__startDataSourcesWithContext___block_inv
 
         if (!v15)
         {
-          v18 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v19 = +[NviUtils strRepForNviSignalType:](NviUtils, "strRepForNviSignalType:", [v12 unsignedIntegerValue]);
-          [v18 handleFailureInMethod:a2 object:self file:@"NviSignalProvidersController.m" lineNumber:72 description:{@"No DataSource found for SignalType: %@", v19}];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"NviSignalProvidersController.m" lineNumber:72 description:{@"No DataSource found for SignalType: %@", v19}];
         }
 
         if ([v12 unsignedIntegerValue] != 4)
@@ -782,7 +782,7 @@ LABEL_22:
     *buf = 136315394;
     v7 = "[NviSignalProvidersController dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_222E4D000, v3, OS_LOG_TYPE_DEFAULT, "%s %p dealloced", buf, 0x16u);
   }
 
@@ -792,17 +792,17 @@ LABEL_22:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (NviSignalProvidersController)initWithAssetsProvider:(id)a3 dataSourceMap:(id)a4 signalProviderToDataSourceMap:(id)a5
+- (NviSignalProvidersController)initWithAssetsProvider:(id)provider dataSourceMap:(id)map signalProviderToDataSourceMap:(id)sourceMap
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  mapCopy = map;
+  sourceMapCopy = sourceMap;
   v18.receiver = self;
   v18.super_class = NviSignalProvidersController;
   v12 = [(NviSignalProvidersController *)&v18 init];
   p_isa = &v12->super.isa;
-  if (v12 && (objc_storeStrong(&v12->_assetsProvider, a3), objc_storeStrong(p_isa + 2, a4), ![p_isa _setupSignalProviders:v11]))
+  if (v12 && (objc_storeStrong(&v12->_assetsProvider, provider), objc_storeStrong(p_isa + 2, map), ![p_isa _setupSignalProviders:sourceMapCopy]))
   {
     v15 = 0;
   }
@@ -828,7 +828,7 @@ LABEL_22:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && InitNviLogging_once != -1)
+  if (objc_opt_class() == self && InitNviLogging_once != -1)
   {
 
     dispatch_once(&InitNviLogging_once, &__block_literal_global_17108);

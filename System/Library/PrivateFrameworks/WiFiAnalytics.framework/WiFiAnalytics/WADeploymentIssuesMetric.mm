@@ -1,11 +1,11 @@
 @interface WADeploymentIssuesMetric
 - (WADeploymentIssuesMetric)init;
 - (id)coreAnalyticsRepresentation;
-- (unint64_t)countForIssueType:(unint64_t)a3;
-- (unint64_t)percentageForIssueType:(unint64_t)a3;
+- (unint64_t)countForIssueType:(unint64_t)type;
+- (unint64_t)percentageForIssueType:(unint64_t)type;
 - (unint64_t)recommendationCount;
 - (unint64_t)recommendationPercentage;
-- (void)addIssue:(id)a3;
+- (void)addIssue:(id)issue;
 @end
 
 @implementation WADeploymentIssuesMetric
@@ -32,18 +32,18 @@
   return v2;
 }
 
-- (void)addIssue:(id)a3
+- (void)addIssue:(id)issue
 {
   networks = self->_networks;
-  v5 = a3;
-  v6 = [v5 ssid];
-  [(NSCountedSet *)networks addObject:v6];
+  issueCopy = issue;
+  ssid = [issueCopy ssid];
+  [(NSCountedSet *)networks addObject:ssid];
 
   issues = self->_issues;
   v8 = MEMORY[0x1E696AD98];
-  v9 = [v5 type];
+  type = [issueCopy type];
 
-  v10 = [v8 numberWithUnsignedInteger:v9];
+  v10 = [v8 numberWithUnsignedInteger:type];
   [(NSCountedSet *)issues addObject:v10];
 }
 
@@ -106,8 +106,8 @@ id __34__WADeploymentIssuesMetric_submit__block_invoke(uint64_t a1)
   result = [(WADeploymentIssuesMetric *)self eligibleNetworkCount];
   if (result)
   {
-    v4 = [(WADeploymentIssuesMetric *)self recommendationCount];
-    return 100 * (v4 / [(WADeploymentIssuesMetric *)self eligibleNetworkCount]);
+    recommendationCount = [(WADeploymentIssuesMetric *)self recommendationCount];
+    return 100 * (recommendationCount / [(WADeploymentIssuesMetric *)self eligibleNetworkCount]);
   }
 
   return result;
@@ -115,27 +115,27 @@ id __34__WADeploymentIssuesMetric_submit__block_invoke(uint64_t a1)
 
 - (unint64_t)recommendationCount
 {
-  v2 = [(WADeploymentIssuesMetric *)self networks];
-  v3 = [v2 count];
+  networks = [(WADeploymentIssuesMetric *)self networks];
+  v3 = [networks count];
 
   return v3;
 }
 
-- (unint64_t)countForIssueType:(unint64_t)a3
+- (unint64_t)countForIssueType:(unint64_t)type
 {
-  v4 = [(WADeploymentIssuesMetric *)self issues];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 countForObject:v5];
+  issues = [(WADeploymentIssuesMetric *)self issues];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [issues countForObject:v5];
 
   return v6;
 }
 
-- (unint64_t)percentageForIssueType:(unint64_t)a3
+- (unint64_t)percentageForIssueType:(unint64_t)type
 {
   result = [(WADeploymentIssuesMetric *)self eligibleNetworkCount];
   if (result)
   {
-    v6 = [(WADeploymentIssuesMetric *)self countForIssueType:a3];
+    v6 = [(WADeploymentIssuesMetric *)self countForIssueType:type];
     return 100 * (v6 / [(WADeploymentIssuesMetric *)self eligibleNetworkCount]);
   }
 

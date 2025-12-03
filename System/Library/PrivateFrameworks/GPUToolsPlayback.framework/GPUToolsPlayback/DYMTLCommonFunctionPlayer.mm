@@ -4,7 +4,7 @@
 - (DYLayerManager)layerManager;
 - (DYLayerManager)strongLayerManager;
 - (id).cxx_construct;
-- (id)layerForID:(unint64_t)a3;
+- (id)layerForID:(unint64_t)d;
 - (void)executePlatformFunction;
 @end
 
@@ -17,15 +17,15 @@
   return WeakRetained;
 }
 
-- (id)layerForID:(unint64_t)a3
+- (id)layerForID:(unint64_t)d
 {
-  v5 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-  v6 = [v5 layerForID:a3];
+  strongLayerManager = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+  v6 = [strongLayerManager layerForID:d];
 
   if (!v6)
   {
-    v7 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-    v6 = [v7 createLayerWithID:a3 contentRect:0 contentsScale:0 properties:0.0 isCoreAnimationSurface:{0.0, 1.0, 1.0, 1.0}];
+    strongLayerManager2 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+    v6 = [strongLayerManager2 createLayerWithID:d contentRect:0 contentsScale:0 properties:0.0 isCoreAnimationSurface:{0.0, 1.0, 1.0, 1.0}];
   }
 
   v8 = v6;
@@ -38,16 +38,16 @@
   if ([(DYMTLCommonFunctionPlayer *)self _isPresentFunction])
   {
     v3 = [(DYMTLFunctionPlayer *)self objectForKey:*(*(&self->super.super.super.isa + *MEMORY[0x277D0AFA0]))[9]];
-    v4 = [v3 layer];
+    layer = [v3 layer];
 
-    if (v4)
+    if (layer)
     {
-      v5 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-      v6 = [v3 layer];
-      [v5 prepareLayerForPresent:v6];
+      strongLayerManager = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+      layer2 = [v3 layer];
+      [strongLayerManager prepareLayerForPresent:layer2];
 
-      v7 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-      [v7 applyLayersVisibility];
+      strongLayerManager2 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+      [strongLayerManager2 applyLayersVisibility];
     }
   }
 
@@ -134,14 +134,14 @@ LABEL_19:
 
       if (v5 == -6653)
       {
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
         v11 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 0).n64_f64[0];
         v12 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 1uLL).n64_f64[0];
-        v13 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-        [v13 updateLayer:v68 contentRect:0 contentsScale:0.0 properties:0.0 windowRect:{v11, v12, 1.0, 0, 0, 0x4059000000000000, 0x4059000000000000}];
+        strongLayerManager = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager updateLayer:strongLayerManager10 contentRect:0 contentsScale:0.0 properties:0.0 windowRect:{v11, v12, 1.0, 0, 0, 0x4059000000000000, 0x4059000000000000}];
 
-        [v68 setDrawableSize:{v11, v12}];
-        [v68 setFramebufferOnly:0];
+        [strongLayerManager10 setDrawableSize:{v11, v12}];
+        [strongLayerManager10 setFramebufferOnly:0];
         goto LABEL_59;
       }
     }
@@ -151,8 +151,8 @@ LABEL_19:
       if (v5 == -6656)
       {
 LABEL_18:
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
-        [v68 setPixelFormat:GPUTools::FD::Argument::ViewAsScalarArray<MTLPixelFormat>(v4 + 72, 0)];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        [strongLayerManager10 setPixelFormat:GPUTools::FD::Argument::ViewAsScalarArray<MTLPixelFormat>(v4 + 72, 0)];
         goto LABEL_59;
       }
 
@@ -164,16 +164,16 @@ LABEL_8:
         v8 = objc_autoreleasePoolPush();
         do
         {
-          v9 = [v7 nextDrawable];
+          nextDrawable = [v7 nextDrawable];
         }
 
-        while (!v9);
+        while (!nextDrawable);
         v72 = &v71;
         v10 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong}>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto15CAMetalDrawable}* {__strong}>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_drawableMap.__table_.__bucket_list_.__ptr_, &v71);
-        objc_storeStrong(v10 + 3, v9);
+        objc_storeStrong(v10 + 3, nextDrawable);
         v72 = &v71;
         *(std::__hash_table<std::__hash_value_type<unsigned long long,BOOL>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,BOOL>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,BOOL>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,BOOL>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_drawableRenderabilityStatusMap.__table_.__bucket_list_.__ptr_, &v71) + 24) = 1;
-        [(DYMTLFunctionPlayer *)self setObject:v9 forKey:v71];
+        [(DYMTLFunctionPlayer *)self setObject:nextDrawable forKey:v71];
 
         objc_autoreleasePoolPop(v8);
         goto LABEL_65;
@@ -194,16 +194,16 @@ LABEL_65:
     switch(v5)
     {
       case -7168:
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
-        [v68 setPresentsWithTransaction:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned int>(*(&self->super.super.super.isa + v3) + 72, 0) != 0}];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        [strongLayerManager10 setPresentsWithTransaction:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned int>(*(&self->super.super.super.isa + v3) + 72, 0) != 0}];
         goto LABEL_59;
       case -7167:
         v71 = GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0);
         v72 = &v71;
         v54 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong}>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto15CAMetalDrawable}* {__strong}>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::piecewise_construct_t const&<>>(&self->_drawableMap.__table_.__bucket_list_.__ptr_, &v71)[3];
-        v55 = [v54 texture];
-        DYMTLAddDrawableTextureDescriptor(v55);
-        [(DYMTLFunctionPlayer *)self setObject:v55 forKey:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(*(&self->super.super.super.isa + v3) + 24, 0)];
+        texture = [v54 texture];
+        DYMTLAddDrawableTextureDescriptor(texture);
+        [(DYMTLFunctionPlayer *)self setObject:texture forKey:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(*(&self->super.super.super.isa + v3) + 24, 0)];
 
         goto LABEL_65;
       case -7166:
@@ -211,36 +211,36 @@ LABEL_65:
       case -7165:
         goto LABEL_18;
       case -7164:
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
         v25.n64_u64[0] = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 0).n64_u64[0];
         v26.n64_u64[0] = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 1uLL).n64_u64[0];
         v27 = *(MEMORY[0x277CBF3A8] + 8);
         if (*MEMORY[0x277CBF3A8] == v25.n64_f64[0] && v27 == v26.n64_f64[0])
         {
-          [v68 bounds];
+          [strongLayerManager10 bounds];
           v30 = v29;
-          [v68 contentsScale];
+          [strongLayerManager10 contentsScale];
           v32 = v31;
-          [v68 bounds];
+          [strongLayerManager10 bounds];
           v34 = v33;
-          [v68 contentsScale];
+          [strongLayerManager10 contentsScale];
           v25.n64_f64[0] = v30 * v32;
           v26.n64_f64[0] = v34 * v35;
         }
 
-        [v68 setDrawableSize:{v25.n64_f64[0], v26.n64_f64[0], v27}];
+        [strongLayerManager10 setDrawableSize:{v25.n64_f64[0], v26.n64_f64[0], v27}];
         goto LABEL_59;
       case -7163:
         goto LABEL_19;
       case -7162:
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
         v56 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 0).n64_f64[0];
         v57 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 1uLL).n64_f64[0];
         v58 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 2uLL).n64_f64[0];
         v59 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 72, 3uLL).n64_f64[0];
         v60 = GPUTools::FD::Argument::ViewAsScalarArray<double>(v4 + 96, 0).n64_f64[0];
-        v61 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-        [v61 updateLayer:v68 contentRect:0 contentsScale:v56 properties:{v57, v58, v59, v60}];
+        strongLayerManager2 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager2 updateLayer:strongLayerManager10 contentRect:0 contentsScale:v56 properties:{v57, v58, v59, v60}];
 
         goto LABEL_59;
       case -7161:
@@ -251,8 +251,8 @@ LABEL_65:
         *(std::__hash_table<std::__hash_value_type<unsigned long long,BOOL>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,BOOL>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,BOOL>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,BOOL>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_drawableRenderabilityStatusMap.__table_.__bucket_list_.__ptr_, &v71) + 24) = 0;
         goto LABEL_65;
       case -7160:
-        v68 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
-        [v68 setFramebufferOnly:{GPUTools::FD::Argument::ViewAsScalarArray<BOOL>(v4 + 72, 0)}];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
+        [strongLayerManager10 setFramebufferOnly:{GPUTools::FD::Argument::ViewAsScalarArray<BOOL>(v4 + 72, 0)}];
         goto LABEL_59;
       case -7159:
         v39 = [(DYMTLCommonFunctionPlayer *)self layerForID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)];
@@ -275,8 +275,8 @@ LABEL_65:
         v83[1] = v51;
         v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:2];
 
-        v53 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-        [v53 updateLayer:v39 contentRect:v52 contentsScale:*&v69 properties:v40 windowRect:{v41, v42, v43, v44, v45, v46, v47}];
+        strongLayerManager3 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager3 updateLayer:v39 contentRect:v52 contentsScale:*&v69 properties:v40 windowRect:{v41, v42, v43, v44, v45, v46, v47}];
 
         goto LABEL_65;
       case -7158:
@@ -285,12 +285,12 @@ LABEL_65:
         v18 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong}>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto15CAMetalDrawable}* {__strong}>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_drawableMap.__table_.__bucket_list_.__ptr_, &v71)[3];
         if (v18)
         {
-          v62 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          v63 = [v18 layer];
-          [v62 prepareLayerForPresent:v63];
+          strongLayerManager4 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          layer = [v18 layer];
+          [strongLayerManager4 prepareLayerForPresent:layer];
 
-          v64 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          [v64 applyLayersVisibility];
+          strongLayerManager5 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          [strongLayerManager5 applyLayersVisibility];
 
           [v18 present];
         }
@@ -302,12 +302,12 @@ LABEL_65:
         v18 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong}>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto15CAMetalDrawable}* {__strong}>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_drawableMap.__table_.__bucket_list_.__ptr_, &v71)[3];
         if (v18)
         {
-          v19 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          v20 = [v18 layer];
-          [v19 prepareLayerForPresent:v20];
+          strongLayerManager6 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          layer2 = [v18 layer];
+          [strongLayerManager6 prepareLayerForPresent:layer2];
 
-          v21 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          [v21 applyLayersVisibility];
+          strongLayerManager7 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          [strongLayerManager7 applyLayersVisibility];
 
           [v18 presentAtTime:{GPUTools::FD::Argument::ViewAsScalarArray<double>(*(&self->super.super.super.isa + v3) + 72, 0).n64_f64[0]}];
         }
@@ -319,20 +319,20 @@ LABEL_65:
         v18 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong}>,std::__unordered_map_hasher<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,objc_object  {objcproto15CAMetalDrawable}* {__strong},std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto15CAMetalDrawable}* {__strong}>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::piecewise_construct_t const&<>>(&self->_drawableMap.__table_.__bucket_list_.__ptr_, &v71)[3];
         if (v18)
         {
-          v36 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          v37 = [v18 layer];
-          [v36 prepareLayerForPresent:v37];
+          strongLayerManager8 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          layer3 = [v18 layer];
+          [strongLayerManager8 prepareLayerForPresent:layer3];
 
-          v38 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-          [v38 applyLayersVisibility];
+          strongLayerManager9 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+          [strongLayerManager9 applyLayersVisibility];
 
           [v18 presentAfterMinimumDuration:{GPUTools::FD::Argument::ViewAsScalarArray<double>(*(&self->super.super.super.isa + v3) + 72, 0).n64_f64[0]}];
         }
 
         break;
       case -7155:
-        v68 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-        [v68 setInterfaceOrientation:{GPUTools::FD::Argument::ViewAsScalarArray<int>(v4 + 72, 0)}];
+        strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+        [strongLayerManager10 setInterfaceOrientation:{GPUTools::FD::Argument::ViewAsScalarArray<int>(v4 + 72, 0)}];
         goto LABEL_59;
       default:
         goto LABEL_62;
@@ -356,16 +356,16 @@ LABEL_65:
 
     v72 = v22;
     v73[0] = v23;
-    v24 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-    [v24 setTransform:v4 + 72 forLayerID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6 withScreenToLayerScale:{0), &v72}];
+    strongLayerManager11 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+    [strongLayerManager11 setTransform:v4 + 72 forLayerID:GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6 withScreenToLayerScale:{0), &v72}];
 
     goto LABEL_65;
   }
 
   if (v5 == -8182)
   {
-    v68 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-    [v68 setPosition:v4 + 72 forLayerID:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)}];
+    strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+    [strongLayerManager10 setPosition:v4 + 72 forLayerID:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)}];
     goto LABEL_59;
   }
 
@@ -374,8 +374,8 @@ LABEL_65:
     goto LABEL_62;
   }
 
-  v68 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
-  [v68 setAnchorPoint:v4 + 72 forLayerID:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)}];
+  strongLayerManager10 = [(DYMTLCommonFunctionPlayer *)self strongLayerManager];
+  [strongLayerManager10 setAnchorPoint:v4 + 72 forLayerID:{GPUTools::FD::Argument::ViewAsScalarArray<unsigned long long>(v6, 0)}];
 LABEL_59:
   v65 = *MEMORY[0x277D85DE8];
 }

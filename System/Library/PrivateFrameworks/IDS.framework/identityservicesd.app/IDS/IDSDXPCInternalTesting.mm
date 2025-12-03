@@ -1,65 +1,65 @@
 @interface IDSDXPCInternalTesting
 - (BOOL)hasEntitlementForPushReplay;
-- (IDSDXPCInternalTesting)initWithQueue:(id)a3 connection:(id)a4 offGridStateManager:(id)a5;
+- (IDSDXPCInternalTesting)initWithQueue:(id)queue connection:(id)connection offGridStateManager:(id)manager;
 - (id)_registeredIdentityTimestamps;
 - (id)transparentEndpointViewer;
-- (void)assertTransportThreadRealTimeMode:(BOOL)a3 completionHandler:(id)a4;
-- (void)autoBugCaptureWithCompletion:(id)a3;
-- (void)checkServerStorageForService:(id)a3 withCompletion:(id)a4;
-- (void)clearAllSenderKeysWithCompletion:(id)a3;
-- (void)clearCacheAndUpdatePeersForService:(id)a3;
-- (void)clearCacheWithCompletion:(id)a3;
-- (void)currentECVersionWithBlock:(id)a3;
-- (void)deviceChangedForDeviceID:(id)a3 isNearby:(BOOL)a4 isConnected:(BOOL)a5 isCloudConnected:(BOOL)a6 completionHandler:(id)a7;
-- (void)fetchCurrentDeviceKVSKey:(id)a3;
-- (void)fetchEndpointCacheStateForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6;
-- (void)fetchPrivateClientDataDescriptionForService:(id)a3 completion:(id)a4;
-- (void)fetchPrivateDeviceDataDescription:(id)a3;
-- (void)fetchStewieStateWithCompletion:(id)a3;
-- (void)fetchStoredUserDescriptions:(id)a3;
-- (void)fetchTransparentEndpointsForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 verifyAgainstTrustCircle:(BOOL)a6 completion:(id)a7;
-- (void)fetchVerifierKVSTrustedDevicesWithCompletion:(id)a3;
-- (void)fetchXPCStateDescriptionForProcesses:(id)a3 withCompletion:(id)a4;
-- (void)forceAccountRenewalOnService:(id)a3;
+- (void)assertTransportThreadRealTimeMode:(BOOL)mode completionHandler:(id)handler;
+- (void)autoBugCaptureWithCompletion:(id)completion;
+- (void)checkServerStorageForService:(id)service withCompletion:(id)completion;
+- (void)clearAllSenderKeysWithCompletion:(id)completion;
+- (void)clearCacheAndUpdatePeersForService:(id)service;
+- (void)clearCacheWithCompletion:(id)completion;
+- (void)currentECVersionWithBlock:(id)block;
+- (void)deviceChangedForDeviceID:(id)d isNearby:(BOOL)nearby isConnected:(BOOL)connected isCloudConnected:(BOOL)cloudConnected completionHandler:(id)handler;
+- (void)fetchCurrentDeviceKVSKey:(id)key;
+- (void)fetchEndpointCacheStateForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion;
+- (void)fetchPrivateClientDataDescriptionForService:(id)service completion:(id)completion;
+- (void)fetchPrivateDeviceDataDescription:(id)description;
+- (void)fetchStewieStateWithCompletion:(id)completion;
+- (void)fetchStoredUserDescriptions:(id)descriptions;
+- (void)fetchTransparentEndpointsForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI verifyAgainstTrustCircle:(BOOL)circle completion:(id)completion;
+- (void)fetchVerifierKVSTrustedDevicesWithCompletion:(id)completion;
+- (void)fetchXPCStateDescriptionForProcesses:(id)processes withCompletion:(id)completion;
+- (void)forceAccountRenewalOnService:(id)service;
 - (void)forceAccountSync;
-- (void)idsProtocolVersion:(id)a3;
-- (void)kickVerificationForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6;
-- (void)listDonatedHandlesWithCompletion:(id)a3;
-- (void)listRegistrationEventTracesForService:(id)a3 summary:(BOOL)a4 completion:(id)a5;
-- (void)listRegistrationHistoryWithBAADigests:(BOOL)a3 completion:(id)a4;
-- (void)listSenderKeysForURIs:(id)a3 completion:(id)a4;
-- (void)nukeTransparencyStateWithCompletion:(id)a3;
-- (void)oneToOneECCQuicktestEncryptionWithData:(id)a3 completion:(id)a4;
-- (void)popupPromptWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 defaultUrl:(id)a6 alternateButton:(id)a7 alternatrUrl:(id)a8 completion:(id)a9;
-- (void)postNewDeviceNotification:(id)a3 iCloudSignIn:(BOOL)a4 iMessageSignIn:(BOOL)a5 facetimeSignIn:(BOOL)a6 forAppleID:(id)a7;
-- (void)registeredIdentityTimestampsWithBlock:(id)a3;
-- (void)removeAllKVSTrustedDevices:(id)a3;
-- (void)removeConnectionWithConnectionName:(id)a3 completionHandler:(id)a4;
-- (void)resetStewieStateWithCompletion:(id)a3;
-- (void)sendBatchMessageProcessedForTopic:(id)a3;
-- (void)sendFakePushFromFile:(id)a3 completion:(id)a4;
-- (void)sendSenderKeyToURI:(id)a3 completion:(id)a4;
-- (void)sendServerStorageProcessedForService:(id)a3 withCompletion:(id)a4;
-- (void)setECVersion:(unsigned int)a3 withCompletion:(id)a4;
-- (void)setForceKeyRoll:(BOOL)a3 withCompletion:(id)a4;
-- (void)setOffGridMode:(int64_t)a3 options:(id)a4 completion:(id)a5;
-- (void)tapToRadarWithTitle:(id)a3 message:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)triggerAllFirewallNotificationsWithHandle:(id)a3 delay:(double)a4 service:(id)a5;
-- (void)triggerAllTemporaryPhoneNotificationsWithHandle:(id)a3 delay:(double)a4;
-- (void)triggerFirewallDBCleanupWithInterval:(double)a3;
-- (void)triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)a3;
-- (void)triggerKeyRollWithCompletion:(id)a3;
+- (void)idsProtocolVersion:(id)version;
+- (void)kickVerificationForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion;
+- (void)listDonatedHandlesWithCompletion:(id)completion;
+- (void)listRegistrationEventTracesForService:(id)service summary:(BOOL)summary completion:(id)completion;
+- (void)listRegistrationHistoryWithBAADigests:(BOOL)digests completion:(id)completion;
+- (void)listSenderKeysForURIs:(id)is completion:(id)completion;
+- (void)nukeTransparencyStateWithCompletion:(id)completion;
+- (void)oneToOneECCQuicktestEncryptionWithData:(id)data completion:(id)completion;
+- (void)popupPromptWithTitle:(id)title message:(id)message defaultButton:(id)button defaultUrl:(id)url alternateButton:(id)alternateButton alternatrUrl:(id)alternatrUrl completion:(id)completion;
+- (void)postNewDeviceNotification:(id)notification iCloudSignIn:(BOOL)in iMessageSignIn:(BOOL)signIn facetimeSignIn:(BOOL)facetimeSignIn forAppleID:(id)d;
+- (void)registeredIdentityTimestampsWithBlock:(id)block;
+- (void)removeAllKVSTrustedDevices:(id)devices;
+- (void)removeConnectionWithConnectionName:(id)name completionHandler:(id)handler;
+- (void)resetStewieStateWithCompletion:(id)completion;
+- (void)sendBatchMessageProcessedForTopic:(id)topic;
+- (void)sendFakePushFromFile:(id)file completion:(id)completion;
+- (void)sendSenderKeyToURI:(id)i completion:(id)completion;
+- (void)sendServerStorageProcessedForService:(id)service withCompletion:(id)completion;
+- (void)setECVersion:(unsigned int)version withCompletion:(id)completion;
+- (void)setForceKeyRoll:(BOOL)roll withCompletion:(id)completion;
+- (void)setOffGridMode:(int64_t)mode options:(id)options completion:(id)completion;
+- (void)tapToRadarWithTitle:(id)title message:(id)message context:(id)context completion:(id)completion;
+- (void)triggerAllFirewallNotificationsWithHandle:(id)handle delay:(double)delay service:(id)service;
+- (void)triggerAllTemporaryPhoneNotificationsWithHandle:(id)handle delay:(double)delay;
+- (void)triggerFirewallDBCleanupWithInterval:(double)interval;
+- (void)triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)status;
+- (void)triggerKeyRollWithCompletion:(id)completion;
 - (void)triggerRestrictedMessageCleanup;
-- (void)updateCurrentDeviceInKVS:(id)a3;
+- (void)updateCurrentDeviceInKVS:(id)s;
 @end
 
 @implementation IDSDXPCInternalTesting
 
-- (IDSDXPCInternalTesting)initWithQueue:(id)a3 connection:(id)a4 offGridStateManager:(id)a5
+- (IDSDXPCInternalTesting)initWithQueue:(id)queue connection:(id)connection offGridStateManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  connectionCopy = connection;
+  managerCopy = manager;
   if (CUTIsInternalInstall())
   {
     v16.receiver = self;
@@ -68,28 +68,28 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_queue, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v12->_queue, queue);
+      objc_storeStrong(p_isa + 2, connection);
+      objc_storeStrong(p_isa + 3, manager);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)oneToOneECCQuicktestEncryptionWithData:(id)a3 completion:(id)a4
+- (void)oneToOneECCQuicktestEncryptionWithData:(id)data completion:(id)completion
 {
-  v5 = a3;
+  dataCopy = data;
   v80 = 0;
-  v62 = a4;
+  completionCopy = completion;
   v6 = [IDSNGMFullDeviceIdentity identityWithAccess:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly usageIdentifier:@"com.apple.idstool" error:&v80];
   v7 = v80;
   v79 = v7;
@@ -104,7 +104,7 @@
   v12 = [v10 publicDeviceIdentityWithError:&v77];
   v13 = v77;
 
-  v14 = v5;
+  v14 = dataCopy;
   v15 = +[NSMutableDictionary dictionary];
   v16 = +[NSData data];
   v17 = +[NSData data];
@@ -141,13 +141,13 @@
   v23 = [v65 dataRepresentationWithError:&v74];
   v24 = v74;
 
-  v25 = [v8 identityData];
-  v26 = [v8 prekeyData];
+  identityData = [v8 identityData];
+  prekeyData = [v8 prekeyData];
   v73 = v24;
   v27 = [v10 dataRepresentationWithError:&v73];
   v28 = v73;
 
-  v29 = [v19 identityData];
+  identityData2 = [v19 identityData];
   v56 = v19;
   [v19 prekeyData];
   v30 = v55 = v14;
@@ -157,9 +157,9 @@
   v32 = v72;
 
   v71 = v32;
-  v58 = v26;
-  v59 = v25;
-  v33 = [IDSNGMPublicDeviceIdentity identityWithIdentityData:v25 prekeyData:v26 error:&v71];
+  v58 = prekeyData;
+  v59 = identityData;
+  v33 = [IDSNGMPublicDeviceIdentity identityWithIdentityData:identityData prekeyData:prekeyData error:&v71];
   v34 = v71;
 
   v70 = v34;
@@ -168,7 +168,7 @@
   v36 = v70;
 
   v69 = v36;
-  v37 = [IDSNGMPublicDeviceIdentity identityWithIdentityData:"identityWithIdentityData:prekeyData:error:" prekeyData:v29 error:?];
+  v37 = [IDSNGMPublicDeviceIdentity identityWithIdentityData:"identityWithIdentityData:prekeyData:error:" prekeyData:identityData2 error:?];
   v38 = v69;
 
   v39 = +[NSData data];
@@ -224,12 +224,12 @@
     CFDictionarySetValue(v47, @"decryptedAgain", v43);
   }
 
-  v62[2](v62, v47, v44);
+  completionCopy[2](completionCopy, v47, v44);
 }
 
-- (void)clearCacheWithCompletion:(id)a3
+- (void)clearCacheWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IDSFoundationLog utilities];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,21 +239,21 @@
 
   v5 = getpid();
   kill(v5, 30);
-  v3[2](v3);
+  completionCopy[2](completionCopy);
 }
 
-- (void)registeredIdentityTimestampsWithBlock:(id)a3
+- (void)registeredIdentityTimestampsWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(IDSDXPCInternalTesting *)self _registeredIdentityTimestamps];
-  (*(a3 + 2))(v5, v6);
+  blockCopy = block;
+  _registeredIdentityTimestamps = [(IDSDXPCInternalTesting *)self _registeredIdentityTimestamps];
+  (*(block + 2))(blockCopy, _registeredIdentityTimestamps);
 }
 
-- (void)triggerKeyRollWithCompletion:(id)a3
+- (void)triggerKeyRollWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IDSRegistrationKeyManager sharedInstance];
-  v6 = [v5 forceRoll];
+  forceRoll = [v5 forceRoll];
 
   v7 = +[IDSRegistrationKeyManager sharedInstance];
   [v7 setForceRoll:1];
@@ -269,11 +269,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_1003EEA38;
   v23[3] = &unk_100BDABA8;
-  v9 = v4;
+  v9 = completionCopy;
   v23[4] = self;
   v24 = v9;
   v25 = &v27;
-  v26 = v6;
+  v26 = forceRoll;
   v10 = [v8 addBlockForRegistrationCompletion:v23];
   v11 = v28[5];
   v28[5] = v10;
@@ -315,98 +315,98 @@
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)setForceKeyRoll:(BOOL)a3 withCompletion:(id)a4
+- (void)setForceKeyRoll:(BOOL)roll withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  rollCopy = roll;
+  completionCopy = completion;
   v5 = +[IDSRegistrationKeyManager sharedInstance];
-  [v5 setForceRoll:v4];
+  [v5 setForceRoll:rollCopy];
 
-  v6[2]();
+  completionCopy[2]();
 }
 
-- (void)currentECVersionWithBlock:(id)a3
+- (void)currentECVersionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = +[IDSRegistrationKeyManager sharedInstance];
-  v5 = [v6 identityDataSource];
-  (*(a3 + 2))(v4, [v5 ngmVersion]);
+  identityDataSource = [v6 identityDataSource];
+  (*(block + 2))(blockCopy, [identityDataSource ngmVersion]);
 }
 
-- (void)setECVersion:(unsigned int)a3 withCompletion:(id)a4
+- (void)setECVersion:(unsigned int)version withCompletion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&version;
+  completionCopy = completion;
   v5 = [NSNumber numberWithUnsignedInt:v4];
   IMSetAppValueForKey();
 
-  v6[2]();
+  completionCopy[2]();
 }
 
-- (void)checkServerStorageForService:(id)a3 withCompletion:(id)a4
+- (void)checkServerStorageForService:(id)service withCompletion:(id)completion
 {
-  v7 = a4;
-  v5 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
   v6 = +[IDSServerStorageStateMachine sharedInstance];
-  [v6 incomingStorageRequestForTopic:v5 primary:0 messageContext:0 sendReasonPathID:25];
+  [v6 incomingStorageRequestForTopic:serviceCopy primary:0 messageContext:0 sendReasonPathID:25];
 
-  v7[2]();
+  completionCopy[2]();
 }
 
-- (void)sendServerStorageProcessedForService:(id)a3 withCompletion:(id)a4
+- (void)sendServerStorageProcessedForService:(id)service withCompletion:(id)completion
 {
-  v7 = a4;
-  v5 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
   v6 = +[IDSServerStorageStateMachine sharedInstance];
-  [v6 sendBatchProcessedForTopic:v5];
+  [v6 sendBatchProcessedForTopic:serviceCopy];
 
-  v7[2]();
+  completionCopy[2]();
 }
 
-- (void)tapToRadarWithTitle:(id)a3 message:(id)a4 context:(id)a5 completion:(id)a6
+- (void)tapToRadarWithTitle:(id)title message:(id)message context:(id)context completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = [[IDSTapToRadarRequest alloc] initWithTitle:v12 message:v11];
+  completionCopy = completion;
+  contextCopy = context;
+  messageCopy = message;
+  titleCopy = title;
+  v14 = [[IDSTapToRadarRequest alloc] initWithTitle:titleCopy message:messageCopy];
 
-  v13 = [[IDSTapToRadarContext alloc] initWithDictionary:v10];
+  v13 = [[IDSTapToRadarContext alloc] initWithDictionary:contextCopy];
   [IDSTapToRadar launchWithRequest:v14 context:v13];
-  v9[2](v9);
+  completionCopy[2](completionCopy);
 }
 
-- (void)popupPromptWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 defaultUrl:(id)a6 alternateButton:(id)a7 alternatrUrl:(id)a8 completion:(id)a9
+- (void)popupPromptWithTitle:(id)title message:(id)message defaultButton:(id)button defaultUrl:(id)url alternateButton:(id)alternateButton alternatrUrl:(id)alternatrUrl completion:(id)completion
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [[IDSPopupPrompt alloc] initWithTitle:v21 promptMessage:v20];
+  completionCopy = completion;
+  alternatrUrlCopy = alternatrUrl;
+  alternateButtonCopy = alternateButton;
+  urlCopy = url;
+  buttonCopy = button;
+  messageCopy = message;
+  titleCopy = title;
+  v22 = [[IDSPopupPrompt alloc] initWithTitle:titleCopy promptMessage:messageCopy];
 
-  [v22 launchPromptWithButton:v19 defaultUrl:v18 alternateButton:v17 alternateUrl:v16];
-  v15[2](v15);
+  [v22 launchPromptWithButton:buttonCopy defaultUrl:urlCopy alternateButton:alternateButtonCopy alternateUrl:alternatrUrlCopy];
+  completionCopy[2](completionCopy);
 }
 
-- (void)autoBugCaptureWithCompletion:(id)a3
+- (void)autoBugCaptureWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1003EF024;
   v4[3] = &unk_100BDABD0;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   [IDSAutoBugCapture triggerCaptureWithEvent:0 context:@"IDSToolTrigger" completion:v4];
 }
 
-- (void)forceAccountRenewalOnService:(id)a3
+- (void)forceAccountRenewalOnService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[IDSDServiceController sharedInstance];
-  v5 = [v4 serviceWithPushTopic:v3];
+  v5 = [v4 serviceWithPushTopic:serviceCopy];
 
   v6 = +[IDSDAccountController sharedInstance];
   v7 = [v6 appleIDAccountOnService:v5];
@@ -414,17 +414,17 @@
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 uniqueID];
+    uniqueID = [v7 uniqueID];
     v12 = 138412546;
-    v13 = v9;
+    v13 = uniqueID;
     v14 = 2112;
-    v15 = v3;
+    v15 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Told to force renew account %@ on service %@", &v12, 0x16u);
   }
 
   v10 = +[IDSAppleIDRegistrationCenter sharedInstance];
-  v11 = [v7 registration];
-  [v10 authenticateRegistration:v11 forceRenewal:1 requireSilentAuth:0];
+  registration = [v7 registration];
+  [v10 authenticateRegistration:registration forceRenewal:1 requireSilentAuth:0];
 }
 
 - (BOOL)hasEntitlementForPushReplay
@@ -450,18 +450,18 @@
   return v3;
 }
 
-- (void)sendFakePushFromFile:(id)a3 completion:(id)a4
+- (void)sendFakePushFromFile:(id)file completion:(id)completion
 {
-  v48 = a3;
-  v6 = a4;
+  fileCopy = file;
+  completionCopy = completion;
   if (CUTIsInternalInstall() && [(IDSDXPCInternalTesting *)self hasEntitlementForPushReplay])
   {
-    v44 = v6;
+    v44 = completionCopy;
     v7 = objc_alloc_init(IDSDaemon);
-    v8 = [(IDSDaemon *)v7 pushHandlerForAPSDelegatePort];
+    pushHandlerForAPSDelegatePort = [(IDSDaemon *)v7 pushHandlerForAPSDelegatePort];
 
-    v46 = v8;
-    if (!v8)
+    v46 = pushHandlerForAPSDelegatePort;
+    if (!pushHandlerForAPSDelegatePort)
     {
       v46 = objc_alloc_init(IDSPushHandler);
     }
@@ -470,23 +470,23 @@
     v47 = objc_alloc_init(NSMutableArray);
     [v47 addObject:@"File(s) executed:"];
     v9 = +[NSFileManager defaultManager];
-    [v9 fileExistsAtPath:v48 isDirectory:&v51];
+    [v9 fileExistsAtPath:fileCopy isDirectory:&v51];
 
     if (v51)
     {
       v10 = +[NSFileManager defaultManager];
-      v11 = [v10 enumeratorAtPath:v48];
+      v11 = [v10 enumeratorAtPath:fileCopy];
 
-      v12 = [v11 nextObject];
-      if (v12)
+      nextObject = [v11 nextObject];
+      if (nextObject)
       {
-        v13 = v12;
+        v13 = nextObject;
         v45 = v11;
         do
         {
           if ([v13 hasSuffix:@".data"])
           {
-            v14 = [v48 stringByAppendingPathComponent:v13];
+            v14 = [fileCopy stringByAppendingPathComponent:v13];
             v49 = 0;
             v15 = [NSData dataWithContentsOfFile:v14 options:0 error:&v49];
             v16 = v49;
@@ -528,24 +528,24 @@
 
             else
             {
-              v17 = [NSString stringWithFormat:@"%@ read error %@", v48, v16];
+              v17 = [NSString stringWithFormat:@"%@ read error %@", fileCopy, v16];
               [v47 addObject:v17];
             }
           }
 
-          v29 = [v11 nextObject];
+          nextObject2 = [v11 nextObject];
 
-          v13 = v29;
+          v13 = nextObject2;
         }
 
-        while (v29);
+        while (nextObject2);
       }
     }
 
     else
     {
       v50 = 0;
-      v30 = [NSData dataWithContentsOfFile:v48 options:0 error:&v50];
+      v30 = [NSData dataWithContentsOfFile:fileCopy options:0 error:&v50];
       v11 = v50;
       if (v30)
       {
@@ -571,7 +571,7 @@
               v43 = [v38 initWithTopic:v40 userInfo:v42];
 
               [v46 connection:0 didReceiveIncomingMessage:v43];
-              [v47 addObject:v48];
+              [v47 addObject:fileCopy];
             }
 
             v11 = v35;
@@ -581,34 +581,34 @@
 
       else
       {
-        v31 = [NSString stringWithFormat:@"%@ read error %@", v48, v11];
+        v31 = [NSString stringWithFormat:@"%@ read error %@", fileCopy, v11];
         [v47 addObject:v31];
       }
     }
 
-    v6 = v44;
+    completionCopy = v44;
 
-    v6[2](v6, v47);
+    completionCopy[2](completionCopy, v47);
   }
 }
 
-- (void)postNewDeviceNotification:(id)a3 iCloudSignIn:(BOOL)a4 iMessageSignIn:(BOOL)a5 facetimeSignIn:(BOOL)a6 forAppleID:(id)a7
+- (void)postNewDeviceNotification:(id)notification iCloudSignIn:(BOOL)in iMessageSignIn:(BOOL)signIn facetimeSignIn:(BOOL)facetimeSignIn forAppleID:(id)d
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = a7;
-  v16 = v11;
-  if (v10)
+  facetimeSignInCopy = facetimeSignIn;
+  signInCopy = signIn;
+  inCopy = in;
+  notificationCopy = notification;
+  dCopy = d;
+  v16 = notificationCopy;
+  if (inCopy)
   {
     v14 = +[IDSAppleIDNotificationCenter sharedInstance];
-    [v14 addUsageNotificationForSession:@"Session Guid" appleID:v12 alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeMultiplex1];
+    [v14 addUsageNotificationForSession:@"Session Guid" appleID:dCopy alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeMultiplex1];
 
-    if (!v9)
+    if (!signInCopy)
     {
 LABEL_3:
-      if (!v8)
+      if (!facetimeSignInCopy)
       {
         goto LABEL_5;
       }
@@ -617,19 +617,19 @@ LABEL_3:
     }
   }
 
-  else if (!v9)
+  else if (!signInCopy)
   {
     goto LABEL_3;
   }
 
   v15 = +[IDSAppleIDNotificationCenter sharedInstance];
-  [v15 addUsageNotificationForSession:@"Session Guid" appleID:v12 alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeiMessage];
+  [v15 addUsageNotificationForSession:@"Session Guid" appleID:dCopy alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeiMessage];
 
-  if (v8)
+  if (facetimeSignInCopy)
   {
 LABEL_4:
     v13 = +[IDSAppleIDNotificationCenter sharedInstance];
-    [v13 addUsageNotificationForSession:@"Session Guid" appleID:v12 alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeFaceTime];
+    [v13 addUsageNotificationForSession:@"Session Guid" appleID:dCopy alias:@"foo2@apple.com" deviceName:@"Foo's New Device" hardwareVersion:v16 deviceCapabilities:0 serviceType:IDSRegistrationServiceTypeFaceTime];
   }
 
 LABEL_5:
@@ -638,118 +638,118 @@ LABEL_5:
 - (id)transparentEndpointViewer
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 transparentEndpointViewer];
+  transparentEndpointViewer = [v2 transparentEndpointViewer];
 
-  return v3;
+  return transparentEndpointViewer;
 }
 
-- (void)fetchEndpointCacheStateForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6
+- (void)fetchEndpointCacheStateForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  completionCopy = completion;
+  rICopy = rI;
+  iCopy = i;
+  identifierCopy = identifier;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1003EFA40;
   v16[3] = &unk_100BDAC38;
-  v17 = v10;
-  v15 = v10;
-  [v14 internal_fetchEndpointCacheStateForServiceIdentifier:v13 localURI:v12 remoteURI:v11 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [transparentEndpointViewer internal_fetchEndpointCacheStateForServiceIdentifier:identifierCopy localURI:iCopy remoteURI:rICopy completion:v16];
 }
 
-- (void)fetchTransparentEndpointsForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 verifyAgainstTrustCircle:(BOOL)a6 completion:(id)a7
+- (void)fetchTransparentEndpointsForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI verifyAgainstTrustCircle:(BOOL)circle completion:(id)completion
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  circleCopy = circle;
+  completionCopy = completion;
+  rICopy = rI;
+  iCopy = i;
+  identifierCopy = identifier;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1003F0014;
   v18[3] = &unk_100BDAC60;
-  v19 = v12;
-  v17 = v12;
-  [v16 internal_fetchTransparentEndpointsForServiceIdentifier:v15 localURI:v14 remoteURI:v13 verifyAgainstTrustCircle:v7 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [transparentEndpointViewer internal_fetchTransparentEndpointsForServiceIdentifier:identifierCopy localURI:iCopy remoteURI:rICopy verifyAgainstTrustCircle:circleCopy completion:v18];
 }
 
-- (void)kickVerificationForServiceIdentifier:(id)a3 localURI:(id)a4 remoteURI:(id)a5 completion:(id)a6
+- (void)kickVerificationForServiceIdentifier:(id)identifier localURI:(id)i remoteURI:(id)rI completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  completionCopy = completion;
+  rICopy = rI;
+  iCopy = i;
+  identifierCopy = identifier;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1003F0310;
   v16[3] = &unk_100BDA9F0;
-  v17 = v10;
-  v15 = v10;
-  [v14 internal_kickVerificationForServiceIdentifier:v13 localURI:v12 remoteURI:v11 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [transparentEndpointViewer internal_kickVerificationForServiceIdentifier:identifierCopy localURI:iCopy remoteURI:rICopy completion:v16];
 }
 
-- (void)fetchVerifierKVSTrustedDevicesWithCompletion:(id)a3
+- (void)fetchVerifierKVSTrustedDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  completionCopy = completion;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F041C;
   v7[3] = &unk_100BDAB30;
-  v8 = v4;
-  v6 = v4;
-  [v5 internal_fetchVerifierKVSTrustedDevicesWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [transparentEndpointViewer internal_fetchVerifierKVSTrustedDevicesWithCompletion:v7];
 }
 
-- (void)removeAllKVSTrustedDevices:(id)a3
+- (void)removeAllKVSTrustedDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  devicesCopy = devices;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F04D8;
   v7[3] = &unk_100BD9328;
-  v8 = v4;
-  v6 = v4;
-  [v5 internal_removeAllKVSTrustedDevices:v7];
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  [transparentEndpointViewer internal_removeAllKVSTrustedDevices:v7];
 }
 
-- (void)fetchCurrentDeviceKVSKey:(id)a3
+- (void)fetchCurrentDeviceKVSKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  keyCopy = key;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F0594;
   v7[3] = &unk_100BDAC88;
-  v8 = v4;
-  v6 = v4;
-  [v5 internal_fetchCurrentDeviceKVSKey:v7];
+  v8 = keyCopy;
+  v6 = keyCopy;
+  [transparentEndpointViewer internal_fetchCurrentDeviceKVSKey:v7];
 }
 
-- (void)updateCurrentDeviceInKVS:(id)a3
+- (void)updateCurrentDeviceInKVS:(id)s
 {
-  v4 = a3;
-  v5 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  sCopy = s;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F0650;
   v7[3] = &unk_100BDACB0;
-  v8 = v4;
-  v6 = v4;
-  [v5 internal_updateCurrentDeviceInKVS:v7];
+  v8 = sCopy;
+  v6 = sCopy;
+  [transparentEndpointViewer internal_updateCurrentDeviceInKVS:v7];
 }
 
-- (void)triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)a3
+- (void)triggerKTCDPAccountStatusNotificationWithAccountStatus:(int64_t)status
 {
-  if (a3 < 5)
+  if (status < 5)
   {
-    v6 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
-    [v6 internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:a3];
+    transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+    [transparentEndpointViewer internal_triggerKTCDPAccountStatusNotificationWithAccountStatus:status];
   }
 
   else
@@ -757,7 +757,7 @@ LABEL_5:
     v4 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [NSNumber numberWithInteger:a3];
+      v5 = [NSNumber numberWithInteger:status];
       *buf = 138412290;
       v8 = v5;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Inputed account status not valid, doing nothing. { accountStatus: %@ }", buf, 0xCu);
@@ -765,25 +765,25 @@ LABEL_5:
   }
 }
 
-- (void)nukeTransparencyStateWithCompletion:(id)a3
+- (void)nukeTransparencyStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
+  completionCopy = completion;
+  transparentEndpointViewer = [(IDSDXPCInternalTesting *)self transparentEndpointViewer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F082C;
   v7[3] = &unk_100BDA9F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 internal_nukeTransparencyState:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [transparentEndpointViewer internal_nukeTransparencyState:v7];
 }
 
-- (void)fetchStoredUserDescriptions:(id)a3
+- (void)fetchStoredUserDescriptions:(id)descriptions
 {
-  v35 = a3;
+  descriptionsCopy = descriptions;
   v3 = +[IDSDaemon sharedInstance];
-  v4 = [v3 registrationConductor];
-  v5 = [v4 userStore];
+  registrationConductor = [v3 registrationConductor];
+  userStore = [registrationConductor userStore];
 
   v6 = objc_alloc_init(NSMutableString);
   [v6 appendString:@"Stored Users:\n"];
@@ -792,7 +792,7 @@ LABEL_5:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v7 = [v5 usersWithRealm:1];
+  v7 = [userStore usersWithRealm:1];
   v8 = [v7 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v8)
   {
@@ -808,7 +808,7 @@ LABEL_5:
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
-        v13 = [v5 propertiesForUser:v12];
+        v13 = [userStore propertiesForUser:v12];
         v14 = [v12 description];
         [v6 appendFormat:@"      %@\n", v14];
 
@@ -827,7 +827,7 @@ LABEL_5:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v16 = [v5 usersWithRealm:0];
+  v16 = [userStore usersWithRealm:0];
   v17 = [v16 countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v17)
   {
@@ -843,7 +843,7 @@ LABEL_5:
         }
 
         v21 = *(*(&v40 + 1) + 8 * j);
-        v22 = [v5 propertiesForUser:v21];
+        v22 = [userStore propertiesForUser:v21];
         v23 = [v21 description];
         [v6 appendFormat:@"      %@\n", v23];
 
@@ -862,7 +862,7 @@ LABEL_5:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v25 = [v5 usersWithRealm:2];
+  v25 = [userStore usersWithRealm:2];
   v26 = [v25 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v26)
   {
@@ -878,7 +878,7 @@ LABEL_5:
         }
 
         v30 = *(*(&v36 + 1) + 8 * k);
-        v31 = [v5 propertiesForUser:v30];
+        v31 = [userStore propertiesForUser:v30];
         v32 = [v30 description];
         [v6 appendFormat:@"      %@\n", v32];
 
@@ -893,54 +893,54 @@ LABEL_5:
   }
 
   v34 = [v6 copy];
-  v35[2](v35, v34);
+  descriptionsCopy[2](descriptionsCopy, v34);
 }
 
-- (void)fetchPrivateClientDataDescriptionForService:(id)a3 completion:(id)a4
+- (void)fetchPrivateClientDataDescriptionForService:(id)service completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v7 = +[IDSRegistrationController sharedInstance];
-  v8 = [v7 activeRegistrationsToRegister];
-  v9 = [v8 _copyForEnumerating];
+  activeRegistrationsToRegister = [v7 activeRegistrationsToRegister];
+  _copyForEnumerating = [activeRegistrationsToRegister _copyForEnumerating];
 
   v10 = +[IDSRegistrationKeyManager sharedInstance];
   v11 = +[IDSKeyTransparencyVerifier sharedInstance];
-  v12 = [IDSClientDataGenerator clientDatasForRegistrations:v9 registerID:0 keyStore:v10 keyTransparencyVerifier:v11];
+  v12 = [IDSClientDataGenerator clientDatasForRegistrations:_copyForEnumerating registerID:0 keyStore:v10 keyTransparencyVerifier:v11];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1003F0E0C;
   v15[3] = &unk_100BDAD00;
-  v16 = v5;
-  v17 = v6;
-  v13 = v5;
-  v14 = v6;
+  v16 = serviceCopy;
+  v17 = completionCopy;
+  v13 = serviceCopy;
+  v14 = completionCopy;
   [v12 registerResultBlock:v15];
 }
 
-- (void)fetchPrivateDeviceDataDescription:(id)a3
+- (void)fetchPrivateDeviceDataDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = +[IDSRegistrationCenter sharedInstance];
   v6 = [v4 privateDeviceDataForKVSSuccess:0];
 
   v5 = [v6 debugDescription];
-  v3[2](v3, v5);
+  descriptionCopy[2](descriptionCopy, v5);
 }
 
-- (void)clearCacheAndUpdatePeersForService:(id)a3
+- (void)clearCacheAndUpdatePeersForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[IDSKeyTransparencyVerifier sharedInstance];
-  [v4 clearCacheAndUpdatePeersForService:v3 optIn:0];
+  [v4 clearCacheAndUpdatePeersForService:serviceCopy optIn:0];
 }
 
-- (void)removeConnectionWithConnectionName:(id)a3 completionHandler:(id)a4
+- (void)removeConnectionWithConnectionName:(id)name completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
   v7 = +[IDSPairingManager sharedInstance];
-  v8 = [v7 pairedDeviceUniqueID];
+  pairedDeviceUniqueID = [v7 pairedDeviceUniqueID];
 
   v11[0] = IDSOpenSocketOptionCBUUIDKey;
   v11[1] = IDSOpenSocketOptionDeviceUniqueIDKey;
@@ -949,26 +949,26 @@ LABEL_5:
   v12[2] = @"idstest";
   v12[3] = @"localdelivery";
   v12[0] = @"12345678-7654-DADA-DADA-DADADADADADA";
-  v12[1] = v8;
+  v12[1] = pairedDeviceUniqueID;
   v11[4] = IDSOpenSocketOptionStreamNameKey;
-  v12[4] = v6;
+  v12[4] = nameCopy;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:5];
   v10 = +[IDSUTunController sharedInstance];
 
   [v10 closeSocketWithOptions:v9];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)deviceChangedForDeviceID:(id)a3 isNearby:(BOOL)a4 isConnected:(BOOL)a5 isCloudConnected:(BOOL)a6 completionHandler:(id)a7
+- (void)deviceChangedForDeviceID:(id)d isNearby:(BOOL)nearby isConnected:(BOOL)connected isCloudConnected:(BOOL)cloudConnected completionHandler:(id)handler
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  cloudConnectedCopy = cloudConnected;
+  connectedCopy = connected;
+  nearbyCopy = nearby;
+  dCopy = d;
   v11 = +[IMRGLog registration];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v9)
+    if (nearbyCopy)
     {
       v12 = @"YES";
     }
@@ -981,13 +981,13 @@ LABEL_5:
     v26 = 138412546;
     v27 = v12;
     v28 = 2112;
-    v29 = v10;
+    v29 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received nearby change to %@ for device with uniqueID %@", &v26, 0x16u);
   }
 
   v13 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v14 = v13;
-  if (v9)
+  if (nearbyCopy)
   {
     v15 = kIDSDeviceStatePropertiesIsNearby;
   }
@@ -997,12 +997,12 @@ LABEL_5:
     v15 = 0;
   }
 
-  [v13 setState:v15 forProperty:kIDSDeviceStatePropertiesIsNearby deviceUniqueID:v10];
+  [v13 setState:v15 forProperty:kIDSDeviceStatePropertiesIsNearby deviceUniqueID:dCopy];
 
   v16 = +[IMRGLog registration];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8)
+    if (connectedCopy)
     {
       v17 = @"YES";
     }
@@ -1015,13 +1015,13 @@ LABEL_5:
     v26 = 138412546;
     v27 = v17;
     v28 = 2112;
-    v29 = v10;
+    v29 = dCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received connected change to %@ for device with uniqueID %@", &v26, 0x16u);
   }
 
   v18 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v19 = v18;
-  if (v8)
+  if (connectedCopy)
   {
     v20 = kIDSDeviceStatePropertiesIsConnected;
   }
@@ -1031,12 +1031,12 @@ LABEL_5:
     v20 = 0;
   }
 
-  [v18 setState:v20 forProperty:kIDSDeviceStatePropertiesIsConnected deviceUniqueID:v10];
+  [v18 setState:v20 forProperty:kIDSDeviceStatePropertiesIsConnected deviceUniqueID:dCopy];
 
   v21 = +[IMRGLog registration];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7)
+    if (cloudConnectedCopy)
     {
       v22 = @"YES";
     }
@@ -1049,13 +1049,13 @@ LABEL_5:
     v26 = 138412546;
     v27 = v22;
     v28 = 2112;
-    v29 = v10;
+    v29 = dCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Received cloud connected change to %@ for device with uniqueID %@", &v26, 0x16u);
   }
 
   v23 = +[IDSDevicePropertiesStateNotifier sharedInstance];
   v24 = v23;
-  if (v7)
+  if (cloudConnectedCopy)
   {
     v25 = kIDSDeviceStatePropertiesIsCloudConnected;
   }
@@ -1065,65 +1065,65 @@ LABEL_5:
     v25 = 0;
   }
 
-  [v23 setState:v25 forProperty:kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:v10];
+  [v23 setState:v25 forProperty:kIDSDeviceStatePropertiesIsCloudConnected deviceUniqueID:dCopy];
 }
 
-- (void)assertTransportThreadRealTimeMode:(BOOL)a3 completionHandler:(id)a4
+- (void)assertTransportThreadRealTimeMode:(BOOL)mode completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   IDSTransportThreadAddBlock();
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (id)_registeredIdentityTimestamps
 {
   v2 = +[IDSRegistrationKeyManager sharedInstance];
-  v3 = [v2 config];
-  v4 = [v3 registeredIdentityContainer];
-  v5 = [v4 valueForKeyPath:@"ngmFullDeviceIdentity.devicePrekeys.publicPrekey.timestamp"];
+  config = [v2 config];
+  registeredIdentityContainer = [config registeredIdentityContainer];
+  v5 = [registeredIdentityContainer valueForKeyPath:@"ngmFullDeviceIdentity.devicePrekeys.publicPrekey.timestamp"];
   v6 = [v5 __imArrayByApplyingBlock:&stru_100BDAD40];
 
   return v6;
 }
 
-- (void)triggerFirewallDBCleanupWithInterval:(double)a3
+- (void)triggerFirewallDBCleanupWithInterval:(double)interval
 {
   v4 = +[IDSFirewallStore sharedInstance];
-  [v4 runCleanupWithExpirationInterval:a3];
+  [v4 runCleanupWithExpirationInterval:interval];
 }
 
-- (void)triggerAllFirewallNotificationsWithHandle:(id)a3 delay:(double)a4 service:(id)a5
+- (void)triggerAllFirewallNotificationsWithHandle:(id)handle delay:(double)delay service:(id)service
 {
-  v7 = a3;
-  v8 = a5;
+  handleCopy = handle;
+  serviceCopy = service;
   v9 = +[IDSDServiceController sharedInstance];
   v10 = v9;
-  if (v8)
+  if (serviceCopy)
   {
-    v11 = [v9 serviceWithIdentifier:v8];
+    v11 = [v9 serviceWithIdentifier:serviceCopy];
 
     if (v11)
     {
       v29 = v11;
-      v12 = [NSArray arrayWithObjects:&v29 count:1];
+      allServices = [NSArray arrayWithObjects:&v29 count:1];
     }
 
     else
     {
-      v12 = 0;
+      allServices = 0;
     }
   }
 
   else
   {
-    v12 = [v9 allServices];
+    allServices = [v9 allServices];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v12;
+  v13 = allServices;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -1146,9 +1146,9 @@ LABEL_5:
           v20 = 3221225472;
           v21 = sub_1003F1A00;
           v22 = &unk_100BD6E40;
-          v23 = v7;
+          v23 = handleCopy;
           im_dispatch_after_primary_queue();
-          v17 = v17 + a4;
+          v17 = v17 + delay;
         }
 
         v18 = v18 + 1;
@@ -1162,15 +1162,15 @@ LABEL_5:
   }
 }
 
-- (void)triggerAllTemporaryPhoneNotificationsWithHandle:(id)a3 delay:(double)a4
+- (void)triggerAllTemporaryPhoneNotificationsWithHandle:(id)handle delay:(double)delay
 {
-  v4 = a3;
-  v5 = [[IDSPhoneUser alloc] initWithLabelID:@"AAA" phoneBookNumber:v4];
+  handleCopy = handle;
+  v5 = [[IDSPhoneUser alloc] initWithLabelID:@"AAA" phoneBookNumber:handleCopy];
 
   v6 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:v5];
-  v7 = [(IDSTemporaryPhoneUser *)v6 temporaryPhoneUserWithFinishedRegistration];
+  temporaryPhoneUserWithFinishedRegistration = [(IDSTemporaryPhoneUser *)v6 temporaryPhoneUserWithFinishedRegistration];
 
-  v10 = v7;
+  v10 = temporaryPhoneUserWithFinishedRegistration;
   im_dispatch_after_primary_queue();
   v9 = v10;
   im_dispatch_after_primary_queue();
@@ -1184,101 +1184,101 @@ LABEL_5:
   [v2 _restrictedMessageCleanupTimerFired];
 }
 
-- (void)resetStewieStateWithCompletion:(id)a3
+- (void)resetStewieStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IDSDaemon sharedInstance];
-  v6 = [v4 registrationConductor];
+  registrationConductor = [v4 registrationConductor];
 
-  v5 = [v6 stewieCoordinator];
-  [v5 clearAllState];
-  v3[2](v3);
+  stewieCoordinator = [registrationConductor stewieCoordinator];
+  [stewieCoordinator clearAllState];
+  completionCopy[2](completionCopy);
 }
 
-- (void)fetchStewieStateWithCompletion:(id)a3
+- (void)fetchStewieStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IDSDaemon sharedInstance];
-  v7 = [v4 registrationConductor];
+  registrationConductor = [v4 registrationConductor];
 
-  v5 = [v7 stewieCoordinator];
-  v6 = [v5 fetchCurrentState];
-  v3[2](v3, v6);
+  stewieCoordinator = [registrationConductor stewieCoordinator];
+  fetchCurrentState = [stewieCoordinator fetchCurrentState];
+  completionCopy[2](completionCopy, fetchCurrentState);
 }
 
-- (void)sendSenderKeyToURI:(id)a3 completion:(id)a4
+- (void)sendSenderKeyToURI:(id)i completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  iCopy = i;
   v7 = +[IDSDAccountController sharedInstance];
   v8 = +[IDSDServiceController sharedInstance];
   v9 = [v8 serviceWithIdentifier:IDSServiceNameiMessage];
   v10 = [v7 registeredAccountsOnService:v9];
 
-  v23 = v6;
+  v23 = iCopy;
   v11 = [NSArray arrayWithObjects:&v23 count:1];
   v12 = [IDSQueryUtilities accountToQueryFrom:v10 fromURI:0 destinationURIs:v11 allowLocalAccount:0];
 
   v13 = +[IDSDaemon sharedInstance];
-  v14 = [v13 senderKeyDistributionManager];
+  senderKeyDistributionManager = [v13 senderKeyDistributionManager];
 
-  v22 = v6;
+  v22 = iCopy;
   v15 = [NSArray arrayWithObjects:&v22 count:1];
-  v16 = [v12 loginID];
-  v17 = [IDSURI URIWithUnprefixedURI:v16];
+  loginID = [v12 loginID];
+  v17 = [IDSURI URIWithUnprefixedURI:loginID];
   v18 = +[_TtC17identityservicesd23IDSSenderKeySendContext idstool];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1003F2064;
   v20[3] = &unk_100BDAD68;
-  v21 = v5;
-  v19 = v5;
-  [v14 generateAndSendKeyIfNeededToURIs:v15 fromURI:v17 context:v18 completion:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [senderKeyDistributionManager generateAndSendKeyIfNeededToURIs:v15 fromURI:v17 context:v18 completion:v20];
 }
 
-- (void)listSenderKeysForURIs:(id)a3 completion:(id)a4
+- (void)listSenderKeysForURIs:(id)is completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  isCopy = is;
   v7 = +[IDSDaemon sharedInstance];
-  v9 = [v7 senderKeyDistributionManager];
+  senderKeyDistributionManager = [v7 senderKeyDistributionManager];
 
-  v8 = [v9 formattedSenderKeyListFor:v6];
+  v8 = [senderKeyDistributionManager formattedSenderKeyListFor:isCopy];
 
-  v5[2](v5, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)clearAllSenderKeysWithCompletion:(id)a3
+- (void)clearAllSenderKeysWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IDSDaemon sharedInstance];
-  v5 = [v4 persistenceManager];
+  persistenceManager = [v4 persistenceManager];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003F21E8;
   v7[3] = &unk_100BDAD68;
-  v8 = v3;
-  v6 = v3;
-  [v5 deleteAllSenderKeysWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [persistenceManager deleteAllSenderKeysWithCompletion:v7];
 }
 
-- (void)listDonatedHandlesWithCompletion:(id)a3
+- (void)listDonatedHandlesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[IDSDaemon sharedInstance];
-  v6 = [v4 senderKeyDistributionManager];
+  senderKeyDistributionManager = [v4 senderKeyDistributionManager];
 
-  v5 = [v6 formattedDonatedHandleList];
-  v3[2](v3, v5);
+  formattedDonatedHandleList = [senderKeyDistributionManager formattedDonatedHandleList];
+  completionCopy[2](completionCopy, formattedDonatedHandleList);
 }
 
-- (void)setOffGridMode:(int64_t)a3 options:(id)a4 completion:(id)a5
+- (void)setOffGridMode:(int64_t)mode options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(IDSDXPCInternalTesting *)self offGridStateManager];
-  [v10 setOffGridMode:a3 allowOnlineEnablement:1 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  offGridStateManager = [(IDSDXPCInternalTesting *)self offGridStateManager];
+  [offGridStateManager setOffGridMode:mode allowOnlineEnablement:1 options:optionsCopy completion:completionCopy];
 }
 
 - (void)forceAccountSync
@@ -1287,25 +1287,25 @@ LABEL_5:
   [v2 resetAndResynchronizeEverything];
 }
 
-- (void)listRegistrationHistoryWithBAADigests:(BOOL)a3 completion:(id)a4
+- (void)listRegistrationHistoryWithBAADigests:(BOOL)digests completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  digestsCopy = digests;
+  completionCopy = completion;
   v8 = +[IDSRegistrationRequestTracker sharedInstance];
-  v7 = [v8 eventHistoryStringWithWantsBAADigests:v5];
-  (*(a4 + 2))(v6, v7);
+  v7 = [v8 eventHistoryStringWithWantsBAADigests:digestsCopy];
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)listRegistrationEventTracesForService:(id)a3 summary:(BOOL)a4 completion:(id)a5
+- (void)listRegistrationEventTracesForService:(id)service summary:(BOOL)summary completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = (a5 + 16);
-  v9 = a5;
+  summaryCopy = summary;
+  serviceCopy = service;
+  v8 = (completion + 16);
+  completionCopy = completion;
   v10 = +[IDSRegistrationEventTracing sharedInstance];
-  if (v7)
+  if (serviceCopy)
   {
-    v13 = v7;
+    v13 = serviceCopy;
     v11 = [NSArray arrayWithObjects:&v13 count:1];
   }
 
@@ -1314,51 +1314,51 @@ LABEL_5:
     v11 = &__NSArray0__struct;
   }
 
-  v12 = [v10 fetchLastRegistrationStatesForServices:v11 summary:v6];
-  (*v8)(v9, v12);
+  v12 = [v10 fetchLastRegistrationStatesForServices:v11 summary:summaryCopy];
+  (*v8)(completionCopy, v12);
 
-  if (v7)
+  if (serviceCopy)
   {
   }
 }
 
-- (void)idsProtocolVersion:(id)a3
+- (void)idsProtocolVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v6 = _IDSIDProtocolVersionNumber();
   v4 = +[IDSDAccountController sharedInstance];
-  v5 = [v4 forceReregValue];
+  forceReregValue = [v4 forceReregValue];
 
-  v3[2](v3, v6, v5);
+  versionCopy[2](versionCopy, v6, forceReregValue);
 }
 
-- (void)sendBatchMessageProcessedForTopic:(id)a3
+- (void)sendBatchMessageProcessedForTopic:(id)topic
 {
-  v3 = a3;
+  topicCopy = topic;
   v4 = +[IDSDaemon sharedInstance];
-  v5 = [v4 serverStorageStateMachine];
+  serverStorageStateMachine = [v4 serverStorageStateMachine];
 
-  [v5 sendBatchProcessedForTopic:v3];
+  [serverStorageStateMachine sendBatchProcessedForTopic:topicCopy];
 }
 
-- (void)fetchXPCStateDescriptionForProcesses:(id)a3 withCompletion:(id)a4
+- (void)fetchXPCStateDescriptionForProcesses:(id)processes withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  processesCopy = processes;
+  completionCopy = completion;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = +[IDSDaemon sharedInstance];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1003F2720;
   v15 = &unk_100BDAD90;
-  v16 = v5;
+  v16 = processesCopy;
   v17 = v7;
   v9 = v7;
-  v10 = v5;
+  v10 = processesCopy;
   [v8 _iterateOverConnectedListeners:&v12];
 
   v11 = [v9 componentsJoinedByString:{@"\n", v12, v13, v14, v15}];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
 @end

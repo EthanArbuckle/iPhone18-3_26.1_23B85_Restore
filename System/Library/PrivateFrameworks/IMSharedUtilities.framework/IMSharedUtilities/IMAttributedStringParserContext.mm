@@ -1,18 +1,18 @@
 @interface IMAttributedStringParserContext
-- (IMAttributedStringParserContext)initWithAttributedString:(id)a3;
+- (IMAttributedStringParserContext)initWithAttributedString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation IMAttributedStringParserContext
 
-- (IMAttributedStringParserContext)initWithAttributedString:(id)a3
+- (IMAttributedStringParserContext)initWithAttributedString:(id)string
 {
   v6.receiver = self;
   v6.super_class = IMAttributedStringParserContext;
   v4 = [(IMAttributedStringParserContext *)&v6 init];
   if (v4)
   {
-    v4->_inString = a3;
+    v4->_inString = string;
   }
 
   return v4;

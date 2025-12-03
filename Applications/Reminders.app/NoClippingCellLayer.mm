@@ -1,6 +1,6 @@
 @interface NoClippingCellLayer
 - (_TtC9RemindersP33_02588857A361830D4C82E6221760820319NoClippingCellLayer)init;
-- (_TtC9RemindersP33_02588857A361830D4C82E6221760820319NoClippingCellLayer)initWithLayer:(id)a3;
+- (_TtC9RemindersP33_02588857A361830D4C82E6221760820319NoClippingCellLayer)initWithLayer:(id)layer;
 @end
 
 @implementation NoClippingCellLayer
@@ -12,7 +12,7 @@
   return [(NoClippingCellLayer *)&v3 init];
 }
 
-- (_TtC9RemindersP33_02588857A361830D4C82E6221760820319NoClippingCellLayer)initWithLayer:(id)a3
+- (_TtC9RemindersP33_02588857A361830D4C82E6221760820319NoClippingCellLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();

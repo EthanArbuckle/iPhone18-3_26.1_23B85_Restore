@@ -1,22 +1,22 @@
 @interface AAFTapToRadarHelper
-- (id)_notificationDictionaryForRequest:(id)a3;
-- (int64_t)_deviceClassesFromTypes:(id)a3;
-- (void)_launchTTRWithRequest:(id)a3 completion:(id)a4;
-- (void)_showAlertForRequest:(id)a3 completion:(id)a4;
-- (void)handleRadarRequest:(id)a3 completion:(id)a4;
-- (void)silentTapToRadarWithRequest:(id)a3 completion:(id)a4;
-- (void)tapToRadarWithRequest:(id)a3 completion:(id)a4;
+- (id)_notificationDictionaryForRequest:(id)request;
+- (int64_t)_deviceClassesFromTypes:(id)types;
+- (void)_launchTTRWithRequest:(id)request completion:(id)completion;
+- (void)_showAlertForRequest:(id)request completion:(id)completion;
+- (void)handleRadarRequest:(id)request completion:(id)completion;
+- (void)silentTapToRadarWithRequest:(id)request completion:(id)completion;
+- (void)tapToRadarWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AAFTapToRadarHelper
 
-- (void)tapToRadarWithRequest:(id)a3 completion:(id)a4
+- (void)tapToRadarWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (+[AFUtilities isInternalBuild])
   {
-    [(AAFTapToRadarHelper *)self _showAlertForRequest:v6 completion:v7];
+    [(AAFTapToRadarHelper *)self _showAlertForRequest:requestCopy completion:completionCopy];
   }
 
   else
@@ -27,19 +27,19 @@
       [AAFTapToRadarHelper tapToRadarWithRequest:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AAFTTRErrorDomain" code:1 userInfo:0];
-      v7[2](v7, v9);
+      completionCopy[2](completionCopy, v9);
     }
   }
 }
 
-- (void)_showAlertForRequest:(id)a3 completion:(id)a4
+- (void)_showAlertForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAFTapToRadarHelper *)self _notificationDictionaryForRequest:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = [(AAFTapToRadarHelper *)self _notificationDictionaryForRequest:requestCopy];
   error = 0;
   v9 = CFUserNotificationCreate(*MEMORY[0x1E695E480], 0.0, 0, &error, v8);
   if (v9)
@@ -52,8 +52,8 @@
     block[3] = &unk_1E831BC40;
     v17 = v10;
     block[4] = self;
-    v16 = v7;
-    v15 = v6;
+    v16 = completionCopy;
+    v15 = requestCopy;
     dispatch_async(v11, block);
   }
 
@@ -65,10 +65,10 @@
       [(AAFTapToRadarHelper *)v8 _showAlertForRequest:v12 completion:?];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.AAFTTRErrorDomain" code:2 userInfo:0];
-      (*(v7 + 2))(v7, v13);
+      (*(completionCopy + 2))(completionCopy, v13);
     }
   }
 }
@@ -123,28 +123,28 @@ LABEL_12:
   CFRelease(*(a1 + 56));
 }
 
-- (id)_notificationDictionaryForRequest:(id)a3
+- (id)_notificationDictionaryForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_new();
-  v5 = [v3 alertTitle];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695EE58]];
+  alertTitle = [requestCopy alertTitle];
+  [v4 setObject:alertTitle forKeyedSubscript:*MEMORY[0x1E695EE58]];
 
-  v6 = [v3 alertMessage];
-  [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E695EE60]];
+  alertMessage = [requestCopy alertMessage];
+  [v4 setObject:alertMessage forKeyedSubscript:*MEMORY[0x1E695EE60]];
 
-  v7 = [v3 alertDefaultButtonText];
-  [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695EE78]];
+  alertDefaultButtonText = [requestCopy alertDefaultButtonText];
+  [v4 setObject:alertDefaultButtonText forKeyedSubscript:*MEMORY[0x1E695EE78]];
 
-  v8 = [v3 alertCancelButtonText];
-  [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x1E695EE70]];
+  alertCancelButtonText = [requestCopy alertCancelButtonText];
+  [v4 setObject:alertCancelButtonText forKeyedSubscript:*MEMORY[0x1E695EE70]];
 
-  v9 = [v3 alertOtherButtonText];
+  alertOtherButtonText = [requestCopy alertOtherButtonText];
 
-  if (v9)
+  if (alertOtherButtonText)
   {
-    v10 = [v3 alertOtherButtonText];
-    [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+    alertOtherButtonText2 = [requestCopy alertOtherButtonText];
+    [v4 setObject:alertOtherButtonText2 forKeyedSubscript:*MEMORY[0x1E695EE98]];
   }
 
   v11 = MEMORY[0x1E695E118];
@@ -152,58 +152,58 @@ LABEL_12:
   [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69D44E8]];
   [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69D4488]];
   v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v13 = [v12 resourceURL];
-  [v4 setObject:v13 forKeyedSubscript:*MEMORY[0x1E695EE90]];
+  resourceURL = [v12 resourceURL];
+  [v4 setObject:resourceURL forKeyedSubscript:*MEMORY[0x1E695EE90]];
 
   return v4;
 }
 
-- (void)_launchTTRWithRequest:(id)a3 completion:(id)a4
+- (void)_launchTTRWithRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E696AF20];
-  v7 = a3;
+  requestCopy = request;
   v8 = objc_alloc_init(v6);
   [v8 setScheme:@"tap-to-radar"];
   [v8 setHost:@"new"];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = objc_alloc(MEMORY[0x1E696AF60]);
-  v11 = [v7 componentName];
-  v12 = [v10 initWithName:@"ComponentName" value:v11];
-  [v9 addObject:v12];
+  componentName = [requestCopy componentName];
+  v12 = [v10 initWithName:@"ComponentName" value:componentName];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x1E696AF60]);
-  v14 = [v7 componentVersion];
-  v15 = [v13 initWithName:@"ComponentVersion" value:v14];
-  [v9 addObject:v15];
+  componentVersion = [requestCopy componentVersion];
+  v15 = [v13 initWithName:@"ComponentVersion" value:componentVersion];
+  [array addObject:v15];
 
   v16 = objc_alloc(MEMORY[0x1E696AF60]);
-  v17 = [v7 componentID];
-  v18 = [v16 initWithName:@"ComponentID" value:v17];
-  [v9 addObject:v18];
+  componentID = [requestCopy componentID];
+  v18 = [v16 initWithName:@"ComponentID" value:componentID];
+  [array addObject:v18];
 
   v19 = objc_alloc(MEMORY[0x1E696AF60]);
-  v20 = [v7 radarTitle];
-  v21 = [v19 initWithName:@"Title" value:v20];
-  [v9 addObject:v21];
+  radarTitle = [requestCopy radarTitle];
+  v21 = [v19 initWithName:@"Title" value:radarTitle];
+  [array addObject:v21];
 
   v22 = objc_alloc(MEMORY[0x1E696AF60]);
-  v23 = [v7 radarDescription];
-  v24 = [v22 initWithName:@"Description" value:v23];
-  [v9 addObject:v24];
+  radarDescription = [requestCopy radarDescription];
+  v24 = [v22 initWithName:@"Description" value:radarDescription];
+  [array addObject:v24];
 
   v25 = objc_alloc(MEMORY[0x1E696AF60]);
-  v26 = [v7 formattedKeywords];
-  v27 = [v25 initWithName:@"Keywords" value:v26];
-  [v9 addObject:v27];
+  formattedKeywords = [requestCopy formattedKeywords];
+  v27 = [v25 initWithName:@"Keywords" value:formattedKeywords];
+  [array addObject:v27];
 
   v28 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Classification" value:@"Serious Bug"];
-  [v9 addObject:v28];
+  [array addObject:v28];
 
   v29 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Reproducibility" value:@"I Didn't Try"];
-  [v9 addObject:v29];
+  [array addObject:v29];
 
-  LODWORD(v29) = [v7 fullDiagnostic];
+  LODWORD(v29) = [requestCopy fullDiagnostic];
   v30 = objc_alloc(MEMORY[0x1E696AF60]);
   if (v29)
   {
@@ -216,18 +216,18 @@ LABEL_12:
   }
 
   v32 = [v30 initWithName:@"AutoDiagnostics" value:v31];
-  [v9 addObject:v32];
+  [array addObject:v32];
 
-  [v8 setQueryItems:v9];
-  v33 = [MEMORY[0x1E6963608] defaultWorkspace];
+  [v8 setQueryItems:array];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v34 = [v8 URL];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __56__AAFTapToRadarHelper__launchTTRWithRequest_completion___block_invoke;
   v36[3] = &unk_1E831BC68;
-  v37 = v5;
-  v35 = v5;
-  [v33 openURL:v34 configuration:0 completionHandler:v36];
+  v37 = completionCopy;
+  v35 = completionCopy;
+  [defaultWorkspace openURL:v34 configuration:0 completionHandler:v36];
 }
 
 void __56__AAFTapToRadarHelper__launchTTRWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -256,15 +256,15 @@ void __56__AAFTapToRadarHelper__launchTTRWithRequest_completion___block_invoke(u
   }
 }
 
-- (void)silentTapToRadarWithRequest:(id)a3 completion:(id)a4
+- (void)silentTapToRadarWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (getTapToRadarServiceClass())
   {
     if (+[AFUtilities isInternalBuild])
     {
-      [(AAFTapToRadarHelper *)self handleRadarRequest:v6 completion:v7];
+      [(AAFTapToRadarHelper *)self handleRadarRequest:requestCopy completion:completionCopy];
       goto LABEL_13;
     }
 
@@ -274,7 +274,7 @@ void __56__AAFTapToRadarHelper__launchTTRWithRequest_completion___block_invoke(u
       [AAFTapToRadarHelper tapToRadarWithRequest:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = 1;
@@ -290,27 +290,27 @@ void __56__AAFTapToRadarHelper__launchTTRWithRequest_completion___block_invoke(u
       [AAFTapToRadarHelper silentTapToRadarWithRequest:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = 3;
 LABEL_12:
       v12 = [v9 errorWithDomain:@"com.apple.AAFTTRErrorDomain" code:v10 userInfo:0];
-      v7[2](v7, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 
 LABEL_13:
 }
 
-- (void)handleRadarRequest:(id)a3 completion:(id)a4
+- (void)handleRadarRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _AAFLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [AAFTapToRadarHelper handleRadarRequest:v6 completion:v8];
+    [AAFTapToRadarHelper handleRadarRequest:requestCopy completion:v8];
   }
 
   v37 = 0;
@@ -335,11 +335,11 @@ LABEL_13:
   _Block_object_dispose(&v37, 8);
   v11 = objc_alloc_init(v9);
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 componentName];
-  v14 = [v12 stringWithFormat:@"%@ detected an error", v13];
+  componentName = [requestCopy componentName];
+  v14 = [v12 stringWithFormat:@"%@ detected an error", componentName];
 
-  v15 = [v6 radarTitle];
-  [v11 setTitle:v15];
+  radarTitle = [requestCopy radarTitle];
+  [v11 setTitle:radarTitle];
 
   v37 = 0;
   v38 = &v37;
@@ -362,38 +362,38 @@ LABEL_13:
   v17 = v16;
   _Block_object_dispose(&v37, 8);
   v18 = [v16 alloc];
-  v19 = [v6 componentName];
-  v20 = [v6 componentVersion];
-  v21 = [v6 componentID];
-  v22 = [v18 initWithName:v19 version:v20 identifier:{objc_msgSend(v21, "intValue")}];
+  componentName2 = [requestCopy componentName];
+  componentVersion = [requestCopy componentVersion];
+  componentID = [requestCopy componentID];
+  v22 = [v18 initWithName:componentName2 version:componentVersion identifier:{objc_msgSend(componentID, "intValue")}];
   [v11 setComponent:v22];
 
-  v23 = [v6 radarDescription];
-  [v11 setProblemDescription:v23];
+  radarDescription = [requestCopy radarDescription];
+  [v11 setProblemDescription:radarDescription];
 
   [v11 setReproducibility:6];
   [v11 setClassification:7];
-  v24 = [v6 keywordIDs];
-  [v11 setKeywords:v24];
+  keywordIDs = [requestCopy keywordIDs];
+  [v11 setKeywords:keywordIDs];
 
-  v25 = [v6 deviceTypes];
-  [v11 setRemoteDeviceClasses:{-[AAFTapToRadarHelper _deviceClassesFromTypes:](self, "_deviceClassesFromTypes:", v25)}];
+  deviceTypes = [requestCopy deviceTypes];
+  [v11 setRemoteDeviceClasses:{-[AAFTapToRadarHelper _deviceClassesFromTypes:](self, "_deviceClassesFromTypes:", deviceTypes)}];
 
-  if ([v6 fullDiagnostic])
+  if ([requestCopy fullDiagnostic])
   {
     [v11 setAutoDiagnostics:6];
   }
 
-  v26 = [getTapToRadarServiceClass() shared];
+  shared = [getTapToRadarServiceClass() shared];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __53__AAFTapToRadarHelper_handleRadarRequest_completion___block_invoke;
   v29[3] = &unk_1E831BC90;
   v30 = v14;
-  v31 = v7;
-  v27 = v7;
+  v31 = completionCopy;
+  v27 = completionCopy;
   v28 = v14;
-  [v26 createDraft:v11 forProcessNamed:0 withDisplayReason:v28 completionHandler:v29];
+  [shared createDraft:v11 forProcessNamed:0 withDisplayReason:v28 completionHandler:v29];
 }
 
 void __53__AAFTapToRadarHelper_handleRadarRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -421,31 +421,31 @@ void __53__AAFTapToRadarHelper_handleRadarRequest_completion___block_invoke(uint
   }
 }
 
-- (int64_t)_deviceClassesFromTypes:(id)a3
+- (int64_t)_deviceClassesFromTypes:(id)types
 {
-  v3 = a3;
-  v4 = [v3 containsString:@"iPhone"];
-  if ([v3 containsString:@"iPad"])
+  typesCopy = types;
+  v4 = [typesCopy containsString:@"iPhone"];
+  if ([typesCopy containsString:@"iPad"])
   {
     v4 |= 2uLL;
   }
 
-  if ([v3 containsString:@"Mac"])
+  if ([typesCopy containsString:@"Mac"])
   {
     v4 |= 0x20uLL;
   }
 
-  if ([v3 containsString:@"Watch"])
+  if ([typesCopy containsString:@"Watch"])
   {
     v4 |= 4uLL;
   }
 
-  if ([v3 containsString:@"AppleTV"])
+  if ([typesCopy containsString:@"AppleTV"])
   {
     v4 |= 8uLL;
   }
 
-  if ([v3 containsString:@"HomePod"])
+  if ([typesCopy containsString:@"HomePod"])
   {
     v5 = v4 | 0x10;
   }
@@ -455,7 +455,7 @@ void __53__AAFTapToRadarHelper_handleRadarRequest_completion___block_invoke(uint
     v5 = v4;
   }
 
-  v6 = [v3 containsString:@"Vision"];
+  v6 = [typesCopy containsString:@"Vision"];
 
   if (v6)
   {

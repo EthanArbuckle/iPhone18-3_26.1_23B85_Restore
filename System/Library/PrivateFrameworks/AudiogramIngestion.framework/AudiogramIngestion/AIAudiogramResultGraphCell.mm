@@ -1,24 +1,24 @@
 @interface AIAudiogramResultGraphCell
-- (AIAudiogramResultGraphCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setAudiogram:(id)a3;
+- (AIAudiogramResultGraphCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setAudiogram:(id)audiogram;
 @end
 
 @implementation AIAudiogramResultGraphCell
 
-- (AIAudiogramResultGraphCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AIAudiogramResultGraphCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v63[4] = *MEMORY[0x277D85DE8];
   v53.receiver = self;
   v53.super_class = AIAudiogramResultGraphCell;
-  v51 = a4;
-  v5 = [(AIAudiogramResultGraphCell *)&v53 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(AIAudiogramResultGraphCell *)&v53 initWithStyle:style reuseIdentifier:?];
   v6 = v5;
   if (v5)
   {
     [(AIAudiogramResultGraphCell *)v5 setSelectionStyle:0];
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(AIAudiogramResultGraphCell *)v6 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(AIAudiogramResultGraphCell *)v6 setBackgroundColor:systemBackgroundColor];
 
     v59 = 0;
     v60 = &v59;
@@ -98,43 +98,43 @@
     v16 = [[v14 alloc] initWithUnitController:v49 sampleTypeUpdateController:v50 minimumAudiogramHeight:400.0];
     [(AIAudiogramResultGraphCell *)v6 setAudiogramChart:v16];
 
-    v17 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v18 = [v17 view];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    audiogramChart = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view = [audiogramChart view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(AIAudiogramResultGraphCell *)v6 contentView];
-    v20 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v21 = [v20 view];
-    [v19 addSubview:v21];
+    contentView = [(AIAudiogramResultGraphCell *)v6 contentView];
+    audiogramChart2 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view2 = [audiogramChart2 view];
+    [contentView addSubview:view2];
 
     v32 = MEMORY[0x277CCAAD0];
-    v48 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v47 = [v48 view];
-    v45 = [v47 leadingAnchor];
-    v46 = [(AIAudiogramResultGraphCell *)v6 contentView];
-    v44 = [v46 leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:16.0];
+    audiogramChart3 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view3 = [audiogramChart3 view];
+    leadingAnchor = [view3 leadingAnchor];
+    contentView2 = [(AIAudiogramResultGraphCell *)v6 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v63[0] = v43;
-    v42 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v41 = [v42 view];
-    v39 = [v41 trailingAnchor];
-    v40 = [(AIAudiogramResultGraphCell *)v6 contentView];
-    v38 = [v40 trailingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:-16.0];
+    audiogramChart4 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view4 = [audiogramChart4 view];
+    trailingAnchor = [view4 trailingAnchor];
+    contentView3 = [(AIAudiogramResultGraphCell *)v6 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v63[1] = v37;
-    v36 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v35 = [v36 view];
-    v33 = [v35 topAnchor];
-    v34 = [(AIAudiogramResultGraphCell *)v6 contentView];
-    v22 = [v34 topAnchor];
-    v23 = [v33 constraintEqualToAnchor:v22];
+    audiogramChart5 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view5 = [audiogramChart5 view];
+    topAnchor = [view5 topAnchor];
+    contentView4 = [(AIAudiogramResultGraphCell *)v6 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v63[2] = v23;
-    v24 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
-    v25 = [v24 view];
-    v26 = [v25 bottomAnchor];
-    v27 = [(AIAudiogramResultGraphCell *)v6 contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28 constant:-16.0];
+    audiogramChart6 = [(AIAudiogramResultGraphCell *)v6 audiogramChart];
+    view6 = [audiogramChart6 view];
+    bottomAnchor = [view6 bottomAnchor];
+    contentView5 = [(AIAudiogramResultGraphCell *)v6 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     v63[3] = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:4];
     [v32 activateConstraints:v30];
@@ -143,23 +143,23 @@
   return v6;
 }
 
-- (void)setAudiogram:(id)a3
+- (void)setAudiogram:(id)audiogram
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_audiogram, a3);
-  v6 = [(AIAudiogramResultGraphCell *)self audiogramChart];
-  v7 = v6;
-  if (v5)
+  audiogramCopy = audiogram;
+  objc_storeStrong(&self->_audiogram, audiogram);
+  audiogramChart = [(AIAudiogramResultGraphCell *)self audiogramChart];
+  v7 = audiogramChart;
+  if (audiogramCopy)
   {
-    v17[0] = v5;
+    v17[0] = audiogramCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     [v7 setAudiograms:v8];
   }
 
   else
   {
-    [v6 setAudiograms:MEMORY[0x277CBEBF8]];
+    [audiogramChart setAudiograms:MEMORY[0x277CBEBF8]];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
@@ -203,19 +203,19 @@ void __43__AIAudiogramResultGraphCell_setAudiogram___block_invoke(uint64_t a1)
   [v3 _updateHeaderState];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(AIAudiogramResultGraphCell *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(AIAudiogramResultGraphCell *)self pointInside:event withEvent:test.x, test.y])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

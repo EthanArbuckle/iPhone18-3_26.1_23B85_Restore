@@ -1,36 +1,36 @@
 @interface CuratedCollectionItemAppClipView
-- (CuratedCollectionItemAppClipView)initWithFrame:(CGRect)a3;
+- (CuratedCollectionItemAppClipView)initWithFrame:(CGRect)frame;
 - (void)_updateFonts;
 - (void)_updateFromModel;
-- (void)setViewModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setViewModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CuratedCollectionItemAppClipView
 
 - (void)_updateFromModel
 {
-  v3 = [(CuratedCollectionItemAppClipViewModel *)self->_viewModel title];
-  [(UILabel *)self->_titleLabel setText:v3];
+  title = [(CuratedCollectionItemAppClipViewModel *)self->_viewModel title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v4 = [(CuratedCollectionItemAppClipViewModel *)self->_viewModel subtitle];
-  [(UILabel *)self->_subtitleLabel setText:v4];
+  subtitle = [(CuratedCollectionItemAppClipViewModel *)self->_viewModel subtitle];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
   objc_initWeak(&location, self);
   v5 = self->_viewModel;
   viewModel = self->_viewModel;
-  v7 = [(CuratedCollectionItemAppClipView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(CuratedCollectionItemAppClipView *)self traitCollection];
+  [traitCollection displayScale];
   if (v8 > 0.0)
   {
-    v9 = [(CuratedCollectionItemAppClipView *)self traitCollection];
-    [v9 displayScale];
+    traitCollection2 = [(CuratedCollectionItemAppClipView *)self traitCollection];
+    [traitCollection2 displayScale];
   }
 
   else
   {
-    v9 = +[UIScreen mainScreen];
-    [v9 scale];
+    traitCollection2 = +[UIScreen mainScreen];
+    [traitCollection2 scale];
   }
 
   v11 = v10;
@@ -47,18 +47,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_viewModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(CuratedCollectionItemAppClipViewModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(CuratedCollectionItemAppClipViewModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewModel, a3);
+      objc_storeStrong(&self->_viewModel, model);
       [(CuratedCollectionItemAppClipView *)self _updateFromModel];
       v6 = v8;
     }
@@ -78,26 +78,26 @@
   [(UIImageView *)self->_appClipSymbolImageView setPreferredSymbolConfiguration:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = CuratedCollectionItemAppClipView;
-  [(CuratedCollectionItemAppClipView *)&v14 traitCollectionDidChange:v4];
-  v5 = [(CuratedCollectionItemAppClipView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = sub_10008FB5C(v6, v7);
+  [(CuratedCollectionItemAppClipView *)&v14 traitCollectionDidChange:changeCopy];
+  traitCollection = [(CuratedCollectionItemAppClipView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
 
   if (v8)
   {
     [(CuratedCollectionItemAppClipView *)self _updateFonts];
   }
 
-  v9 = [(CuratedCollectionItemAppClipView *)self traitCollection];
-  [v9 displayScale];
+  traitCollection2 = [(CuratedCollectionItemAppClipView *)self traitCollection];
+  [traitCollection2 displayScale];
   v11 = v10;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v13 = v12;
 
   if (v11 != v13)
@@ -106,20 +106,20 @@
   }
 }
 
-- (CuratedCollectionItemAppClipView)initWithFrame:(CGRect)a3
+- (CuratedCollectionItemAppClipView)initWithFrame:(CGRect)frame
 {
   v52.receiver = self;
   v52.super_class = CuratedCollectionItemAppClipView;
-  v3 = [(CuratedCollectionItemAppClipView *)&v52 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CuratedCollectionItemAppClipView *)&v52 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CuratedCollectionItemAppClipView *)v3 setClipsToBounds:1];
-    v5 = [(CuratedCollectionItemAppClipView *)v4 layer];
-    [v5 setCornerCurve:kCACornerCurveContinuous];
+    layer = [(CuratedCollectionItemAppClipView *)v4 layer];
+    [layer setCornerCurve:kCACornerCurveContinuous];
 
-    v6 = [(CuratedCollectionItemAppClipView *)v4 layer];
-    [v6 setCornerRadius:10.0];
+    layer2 = [(CuratedCollectionItemAppClipView *)v4 layer];
+    [layer2 setCornerRadius:10.0];
 
     [(CuratedCollectionItemAppClipView *)v4 setAccessibilityIdentifier:@"CuratedCollectionItemAppClip"];
     v7 = [UILabel alloc];
@@ -188,27 +188,27 @@
     [(UIStackView *)v4->_contentStackView setSpacing:10.0];
     [(UIStackView *)v4->_contentStackView setAccessibilityIdentifier:@"ContentStackView"];
     [(CuratedCollectionItemAppClipView *)v4 addSubview:v4->_contentStackView];
-    v51 = [(UIStackView *)v4->_contentStackView topAnchor];
-    v50 = [(CuratedCollectionItemAppClipView *)v4 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:12.0];
+    topAnchor = [(UIStackView *)v4->_contentStackView topAnchor];
+    topAnchor2 = [(CuratedCollectionItemAppClipView *)v4 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     v53[0] = v49;
-    v48 = [(UIStackView *)v4->_contentStackView leadingAnchor];
-    v47 = [(CuratedCollectionItemAppClipView *)v4 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:16.0];
+    leadingAnchor = [(UIStackView *)v4->_contentStackView leadingAnchor];
+    leadingAnchor2 = [(CuratedCollectionItemAppClipView *)v4 leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v53[1] = v46;
-    v45 = [(UIStackView *)v4->_contentStackView trailingAnchor];
-    v44 = [(CuratedCollectionItemAppClipView *)v4 trailingAnchor];
-    v33 = [v45 constraintEqualToAnchor:v44 constant:-16.0];
+    trailingAnchor = [(UIStackView *)v4->_contentStackView trailingAnchor];
+    trailingAnchor2 = [(CuratedCollectionItemAppClipView *)v4 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v53[2] = v33;
-    v34 = [(UIStackView *)v4->_contentStackView bottomAnchor];
-    v35 = [(CuratedCollectionItemAppClipView *)v4 bottomAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:-12.0];
+    bottomAnchor = [(UIStackView *)v4->_contentStackView bottomAnchor];
+    bottomAnchor2 = [(CuratedCollectionItemAppClipView *)v4 bottomAnchor];
+    v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
     v53[3] = v36;
-    v37 = [(UIImageView *)v4->_artworkImageView widthAnchor];
-    v38 = [v37 constraintEqualToConstant:30.0];
+    widthAnchor = [(UIImageView *)v4->_artworkImageView widthAnchor];
+    v38 = [widthAnchor constraintEqualToConstant:30.0];
     v53[4] = v38;
-    v39 = [(UIImageView *)v4->_artworkImageView heightAnchor];
-    v40 = [v39 constraintEqualToConstant:30.0];
+    heightAnchor = [(UIImageView *)v4->_artworkImageView heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:30.0];
     v53[5] = v40;
     v41 = [NSArray arrayWithObjects:v53 count:6];
     [NSLayoutConstraint activateConstraints:v41];

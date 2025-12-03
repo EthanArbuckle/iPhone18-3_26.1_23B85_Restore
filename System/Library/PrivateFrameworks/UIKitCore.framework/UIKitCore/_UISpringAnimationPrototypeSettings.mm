@@ -42,8 +42,8 @@
   v11 = MEMORY[0x1E69C6638];
   v21[0] = v10;
   v12 = MEMORY[0x1E69C65E8];
-  v13 = [MEMORY[0x1E69C6640] action];
-  v14 = [v12 rowWithTitle:@"Restore Defaults" action:v13];
+  action = [MEMORY[0x1E69C6640] action];
+  v14 = [v12 rowWithTitle:@"Restore Defaults" action:action];
   v20 = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
   v16 = [v11 sectionWithRows:v15];

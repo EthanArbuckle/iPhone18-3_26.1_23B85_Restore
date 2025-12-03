@@ -1,14 +1,14 @@
 @interface MagazineSectionsInteractor
 - (_TtC7NewsUI226MagazineSectionsInteractor)init;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 @end
 
 @implementation MagazineSectionsInteractor
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_219458D48();
 }
 

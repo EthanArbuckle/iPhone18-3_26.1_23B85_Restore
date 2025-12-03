@@ -1,9 +1,9 @@
 @interface DOCOutlineHeaderView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -19,45 +19,45 @@
   (*((*MEMORY[0x277D85000] & *v2) + 0x168))(0);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   DOCOutlineHeaderView.updateConfiguration(using:)(v8);
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  DOCOutlineHeaderView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  DOCOutlineHeaderView.apply(_:)(attributesCopy);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCOutlineHeaderView();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v8.receiver;
-  v6 = [(DOCOutlineHeaderView *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(DOCOutlineHeaderView *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   [v6 setZIndex_];
   [v6 setAlpha_];
 
   return v6;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.isa) + 0xC0);
-  v8 = self;
+  selfCopy = self;
   v9 = v7();
   [v9 systemLayoutSizeFittingSize_];
   v11 = v10;
@@ -71,17 +71,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCOutlineHeaderView.layoutSubviews()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   DOCOutlineHeaderView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 

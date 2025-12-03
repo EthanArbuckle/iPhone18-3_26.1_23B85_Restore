@@ -1,22 +1,22 @@
 @interface EQKitMathMLMLongDivision
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMLongDivision
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v13.receiver = self;
   v13.super_class = EQKitMathMLMLongDivision;
   v6 = [(EQKitMathMLMLongDivision *)&v13 init];
   if (v6)
   {
-    v7 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+    v7 = [parser parseChildrenAsArrayFromXMLNode:node];
     if ([v7 count] < 3)
     {
-      [a4 reportError:5 withNode:a3];
+      [parser reportError:5 withNode:node];
 
       return 0;
     }

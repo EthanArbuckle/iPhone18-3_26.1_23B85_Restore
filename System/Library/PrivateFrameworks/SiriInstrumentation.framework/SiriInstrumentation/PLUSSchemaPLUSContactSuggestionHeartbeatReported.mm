@@ -1,27 +1,27 @@
 @interface PLUSSchemaPLUSContactSuggestionHeartbeatReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addSuggestionSummaries:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestionSummaries:(id)summaries;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactSuggestionHeartbeatReported
 
-- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PLUSSchemaPLUSContactSuggestionHeartbeatReported;
   v5 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionSummaries"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionSummaries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactSuggestionHeartbeatReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,10 +108,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_suggestionSummaries count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -131,16 +131,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -150,26 +150,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"suggestionSummaries"];
+    [dictionary setObject:array forKeyedSubscript:@"suggestionSummaries"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
-    v6 = [v4 suggestionSummaries];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    suggestionSummaries = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
+    suggestionSummaries2 = [equalCopy suggestionSummaries];
+    v7 = suggestionSummaries2;
+    if ((suggestionSummaries != 0) != (suggestionSummaries2 == 0))
     {
-      v8 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
-      if (!v8)
+      suggestionSummaries3 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
+      if (!suggestionSummaries3)
       {
 
 LABEL_10:
@@ -177,10 +177,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
-      v11 = [v4 suggestionSummaries];
-      v12 = [v10 isEqual:v11];
+      v9 = suggestionSummaries3;
+      suggestionSummaries4 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries];
+      suggestionSummaries5 = [equalCopy suggestionSummaries];
+      v12 = [suggestionSummaries4 isEqual:suggestionSummaries5];
 
       if (v12)
       {
@@ -199,10 +199,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -235,32 +235,32 @@ LABEL_8:
   }
 }
 
-- (void)addSuggestionSummaries:(id)a3
+- (void)addSuggestionSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   suggestionSummaries = self->_suggestionSummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!suggestionSummaries)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestionSummaries;
-    self->_suggestionSummaries = v6;
+    self->_suggestionSummaries = array;
 
-    v4 = v8;
+    summariesCopy = v8;
     suggestionSummaries = self->_suggestionSummaries;
   }
 
-  [(NSArray *)suggestionSummaries addObject:v4];
+  [(NSArray *)suggestionSummaries addObject:summariesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSContactSuggestionHeartbeatReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self suggestionSummaries:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(PLUSSchemaPLUSContactSuggestionHeartbeatReported *)self setSuggestionSummaries:v7];
 

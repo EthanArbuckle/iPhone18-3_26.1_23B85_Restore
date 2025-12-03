@@ -3,15 +3,15 @@
 - (MKPointAnnotation)init;
 - (MKPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (MKPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(NSString *)title subtitle:(NSString *)subtitle;
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4;
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error;
 - (id)feature;
 @end
 
 @implementation MKPointAnnotation
 
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(MKPointAnnotation *)self init];
   if (!v7)
   {
@@ -21,12 +21,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"type"];
+    v8 = [objectCopy objectForKeyedSubscript:@"type"];
     v9 = _geoJSONGeometryType(v8);
 
     if (v9 == 1)
     {
-      v10 = [v6 objectForKeyedSubscript:@"coordinates"];
+      v10 = [objectCopy objectForKeyedSubscript:@"coordinates"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -61,30 +61,30 @@ LABEL_30:
               goto LABEL_31;
             }
 
-            if (a4)
+            if (error)
             {
               v22 = MEMORY[0x1E696AEC0];
               v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+.8f, %+.8f", *&v20.latitude, *&v20.longitude];
               v24 = [v22 stringWithFormat:@"Invalid coordinate position: %@", v23];
-              *a4 = _errorWithReason(v24);
+              *error = _errorWithReason(v24);
             }
           }
 
-          else if (a4)
+          else if (error)
           {
-            *a4 = _errorWithReason(@"GeoJSON positions must be an array of numbers");
+            *error = _errorWithReason(@"GeoJSON positions must be an array of numbers");
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v11 = @"GeoJSON positions must have at least two values";
 LABEL_16:
-          *a4 = _errorWithReason(v11);
+          *error = _errorWithReason(v11);
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v11 = @"coordinate value is not an array";
         goto LABEL_16;
@@ -94,7 +94,7 @@ LABEL_16:
       goto LABEL_30;
     }
 
-    if (a4)
+    if (error)
     {
       v12 = @"Input is not a Point GeoJSON object";
       goto LABEL_12;
@@ -105,7 +105,7 @@ LABEL_13:
     goto LABEL_31;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -113,7 +113,7 @@ LABEL_13:
   v12 = @"Point object must be a dictionary";
 LABEL_12:
   _errorWithReason(v12);
-  *a4 = v13 = 0;
+  *error = v13 = 0;
 LABEL_31:
 
   return v13;
@@ -139,14 +139,14 @@ LABEL_31:
       v5 = self->_customFeature;
       self->_customFeature = v4;
 
-      v6 = [(MKShape *)self title];
-      v7 = [v6 length];
+      title = [(MKShape *)self title];
+      v7 = [title length];
 
       v8 = self->_customFeature;
       if (v7)
       {
-        v9 = [(MKShape *)self title];
-        [(VKCustomFeature *)v8 setText:v9 locale:0];
+        title2 = [(MKShape *)self title];
+        [(VKCustomFeature *)v8 setText:title2 locale:0];
       }
 
       else
@@ -154,22 +154,22 @@ LABEL_31:
         [(VKCustomFeature *)self->_customFeature setText:@" " locale:0];
       }
 
-      v10 = [(MKShape *)self subtitle];
-      v11 = [v10 length];
+      subtitle = [(MKShape *)self subtitle];
+      v11 = [subtitle length];
 
       if (v11)
       {
         v12 = self->_customFeature;
-        v13 = [(MKShape *)self subtitle];
-        [(VKCustomFeature *)v12 setAnnotationText:v13 locale:0];
+        subtitle2 = [(MKShape *)self subtitle];
+        [(VKCustomFeature *)v12 setAnnotationText:subtitle2 locale:0];
       }
 
-      v14 = [MEMORY[0x1E69A1DB0] genericMarkerStyleAttributes];
-      v15 = v14;
+      genericMarkerStyleAttributes = [MEMORY[0x1E69A1DB0] genericMarkerStyleAttributes];
+      v15 = genericMarkerStyleAttributes;
       if (self->_representation == 2)
       {
         v17 = 0x100010022;
-        [v14 replaceAttributes:&v17 count:1];
+        [genericMarkerStyleAttributes replaceAttributes:&v17 count:1];
       }
 
       [(VKCustomFeature *)self->_customFeature setStyleAttributes:v15];

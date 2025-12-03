@@ -1,18 +1,18 @@
 @interface STCoreOrganizationSettings
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)fetchResultsRequestsForChangesToOrganizationSettingsForUserWithDSID:(id)a3;
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error;
++ (id)fetchResultsRequestsForChangesToOrganizationSettingsForUserWithDSID:(id)d;
 + (id)keyPathsForValuesAffectingIsCommunicationSafetyRestricted;
 - (BOOL)isCommunicationSafetyReceivingRestricted;
 - (BOOL)isCommunicationSafetyRestricted;
 - (BOOL)isCommunicationSafetySendingRestricted;
 - (BOOL)isEyeReliefEnabled;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
 - (NSString)description;
-- (id)defaultSettingsForFamilyMemberOfType:(id)a3;
+- (id)defaultSettingsForFamilyMemberOfType:(id)type;
 - (id)dictionaryRepresentation;
 - (int64_t)contentPrivacySiriImageGenerationRestriction;
-- (void)_changeAppLimitsFromAskToWarn:(id)a3;
-- (void)setContentPrivacySiriImageGenerationRestriction:(int64_t)a3;
+- (void)_changeAppLimitsFromAskToWarn:(id)warn;
+- (void)setContentPrivacySiriImageGenerationRestriction:(int64_t)restriction;
 @end
 
 @implementation STCoreOrganizationSettings
@@ -23,15 +23,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isCommunicationSafetyReceivingRestricted
@@ -40,21 +40,21 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)fetchResultsRequestsForChangesToOrganizationSettingsForUserWithDSID:(id)a3
++ (id)fetchResultsRequestsForChangesToOrganizationSettingsForUserWithDSID:(id)d
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"user.dsid", a3];
+  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"user.dsid", d];
   v4 = +[STLocalOrganizationSettings fetchRequest];
   [v4 setPredicate:v3];
   v5 = +[STiCloudOrganizationSettings fetchRequest];
@@ -80,34 +80,34 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isCommunicationSafetyRestricted
 {
-  v3 = [(STCoreOrganizationSettings *)self isCommunicationSafetySendingRestricted];
-  if (v3)
+  isCommunicationSafetySendingRestricted = [(STCoreOrganizationSettings *)self isCommunicationSafetySendingRestricted];
+  if (isCommunicationSafetySendingRestricted)
   {
 
-    LOBYTE(v3) = [(STCoreOrganizationSettings *)self isCommunicationSafetyReceivingRestricted];
+    LOBYTE(isCommunicationSafetySendingRestricted) = [(STCoreOrganizationSettings *)self isCommunicationSafetyReceivingRestricted];
   }
 
-  return v3;
+  return isCommunicationSafetySendingRestricted;
 }
 
 + (id)keyPathsForValuesAffectingIsCommunicationSafetyRestricted
 {
-  v3 = [a1 keyPathsForValuesAffectingIsCommunicationSafetySendingRestricted];
-  v4 = [a1 keyPathsForValuesAffectingIsCommunicationSafetyReceivingRestricted];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  keyPathsForValuesAffectingIsCommunicationSafetySendingRestricted = [self keyPathsForValuesAffectingIsCommunicationSafetySendingRestricted];
+  keyPathsForValuesAffectingIsCommunicationSafetyReceivingRestricted = [self keyPathsForValuesAffectingIsCommunicationSafetyReceivingRestricted];
+  v5 = [keyPathsForValuesAffectingIsCommunicationSafetySendingRestricted setByAddingObjectsFromSet:keyPathsForValuesAffectingIsCommunicationSafetyReceivingRestricted];
 
   return v5;
 }
@@ -118,30 +118,30 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v4 = 0;
+    longLongValue = 0;
   }
 
-  return v4;
+  return longLongValue;
 }
 
-- (void)setContentPrivacySiriImageGenerationRestriction:(int64_t)a3
+- (void)setContentPrivacySiriImageGenerationRestriction:(int64_t)restriction
 {
   [(STCoreOrganizationSettings *)self willChangeValueForKey:@"contentPrivacySiriImageGenerationRestriction"];
-  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:restriction];
   [(STCoreOrganizationSettings *)self setPrimitiveValue:v5 forKey:@"contentPrivacySiriImageGenerationRestriction"];
 
   [(STCoreOrganizationSettings *)self didChangeValueForKey:@"contentPrivacySiriImageGenerationRestriction"];
 }
 
-- (id)defaultSettingsForFamilyMemberOfType:(id)a3
+- (id)defaultSettingsForFamilyMemberOfType:(id)type
 {
   v7[3] = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"Child"])
+  if ([type isEqualToString:@"Child"])
   {
     v6[0] = @"isEyeReliefEnabled";
     v6[1] = @"isCommunicationSafetySendingRestricted";
@@ -162,37 +162,37 @@
   return v3;
 }
 
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a3 objectForKeyedSubscript:@"user"];
-  v10 = [a1 fetchRequest];
+  contextCopy = context;
+  v9 = [representation objectForKeyedSubscript:@"user"];
+  fetchRequest = [self fetchRequest];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"user.dsid", v9];
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  v12 = [v10 execute:a5];
+  v12 = [fetchRequest execute:error];
   v13 = v12;
   if (!v12)
   {
     goto LABEL_8;
   }
 
-  v14 = [v12 firstObject];
-  if (!v14)
+  firstObject = [v12 firstObject];
+  if (!firstObject)
   {
-    v15 = [STCoreUser fetchUserWithDSID:v9 inContext:v8 error:a5];
+    v15 = [STCoreUser fetchUserWithDSID:v9 inContext:contextCopy error:error];
     if (v15)
     {
       v16 = v15;
-      v14 = [[a1 alloc] initWithContext:v8];
-      [v14 setUser:v16];
+      firstObject = [[self alloc] initWithContext:contextCopy];
+      [firstObject setUser:v16];
 
       goto LABEL_5;
     }
 
 LABEL_8:
-    v14 = 0;
+    firstObject = 0;
     goto LABEL_9;
   }
 
@@ -201,19 +201,19 @@ LABEL_5:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v14;
+    v21 = firstObject;
     _os_log_impl(&dword_1B831F000, v17, OS_LOG_TYPE_DEFAULT, "Settings created via the legacy path. Settings: %@", buf, 0xCu);
   }
 
 LABEL_9:
   v18 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return firstObject;
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"modificationDate"];
+  v4 = [representation objectForKeyedSubscript:@"modificationDate"];
   if (v4)
   {
     [(STCoreOrganizationSettings *)self setModificationDate:v4];
@@ -226,90 +226,90 @@ LABEL_9:
 {
   v22.receiver = self;
   v22.super_class = STCoreOrganizationSettings;
-  v3 = [(STUniquedManagedObject *)&v22 dictionaryRepresentation];
-  v4 = [(STCoreOrganizationSettings *)self user];
-  v5 = [v4 dsid];
-  [v3 setObject:v5 forKeyedSubscript:@"user"];
+  dictionaryRepresentation = [(STUniquedManagedObject *)&v22 dictionaryRepresentation];
+  user = [(STCoreOrganizationSettings *)self user];
+  dsid = [user dsid];
+  [dictionaryRepresentation setObject:dsid forKeyedSubscript:@"user"];
 
-  v6 = [(STCoreOrganizationSettings *)self passcode];
-  [v3 setObject:v6 forKeyedSubscript:@"passcode"];
+  passcode = [(STCoreOrganizationSettings *)self passcode];
+  [dictionaryRepresentation setObject:passcode forKeyedSubscript:@"passcode"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings allLimitsEnabled](self, "allLimitsEnabled")}];
-  [v3 setObject:v7 forKeyedSubscript:@"allLimitsEnabled"];
+  [dictionaryRepresentation setObject:v7 forKeyedSubscript:@"allLimitsEnabled"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[STCoreOrganizationSettings defaultUserPolicies](self, "defaultUserPolicies")}];
-  [v3 setObject:v8 forKeyedSubscript:@"defaultUserPolicies"];
+  [dictionaryRepresentation setObject:v8 forKeyedSubscript:@"defaultUserPolicies"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[STCoreOrganizationSettings communicationPolicy](self, "communicationPolicy")}];
-  [v3 setObject:v9 forKeyedSubscript:@"communicationPolicy"];
+  [dictionaryRepresentation setObject:v9 forKeyedSubscript:@"communicationPolicy"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[STCoreOrganizationSettings communicationWhileLimitedPolicy](self, "communicationWhileLimitedPolicy")}];
-  [v3 setObject:v10 forKeyedSubscript:@"communicationWhileLimitedPolicy"];
+  [dictionaryRepresentation setObject:v10 forKeyedSubscript:@"communicationWhileLimitedPolicy"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[STCoreOrganizationSettings contactManagementState](self, "contactManagementState")}];
-  [v3 setObject:v11 forKeyedSubscript:@"contactManagementState"];
+  [dictionaryRepresentation setObject:v11 forKeyedSubscript:@"contactManagementState"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[STCoreOrganizationSettings contentPrivacySiriImageGenerationRestriction](self, "contentPrivacySiriImageGenerationRestriction")}];
-  [v3 setObject:v12 forKeyedSubscript:@"contentPrivacySiriImageGenerationRestriction"];
+  [dictionaryRepresentation setObject:v12 forKeyedSubscript:@"contentPrivacySiriImageGenerationRestriction"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings isCommunicationSafetySendingRestricted](self, "isCommunicationSafetySendingRestricted")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
+  [dictionaryRepresentation setObject:v13 forKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings isCommunicationSafetyReceivingRestricted](self, "isCommunicationSafetyReceivingRestricted")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
+  [dictionaryRepresentation setObject:v14 forKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings isCommunicationSafetyNotificationEnabled](self, "isCommunicationSafetyNotificationEnabled")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isCommunicationSafetyNotificationEnabled"];
+  [dictionaryRepresentation setObject:v15 forKeyedSubscript:@"isCommunicationSafetyNotificationEnabled"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings isCommunicationSafetyAnalyticsEnabled](self, "isCommunicationSafetyAnalyticsEnabled")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isCommunicationSafetyAnalyticsEnabled"];
+  [dictionaryRepresentation setObject:v16 forKeyedSubscript:@"isCommunicationSafetyAnalyticsEnabled"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[STCoreOrganizationSettings isEyeReliefEnabled](self, "isEyeReliefEnabled")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isEyeReliefEnabled"];
+  [dictionaryRepresentation setObject:v17 forKeyedSubscript:@"isEyeReliefEnabled"];
 
-  v18 = [(STCoreOrganizationSettings *)self modificationDate];
+  modificationDate = [(STCoreOrganizationSettings *)self modificationDate];
 
-  if (v18)
+  if (modificationDate)
   {
-    v19 = [(STCoreOrganizationSettings *)self modificationDate];
-    [v3 setObject:v19 forKeyedSubscript:@"modificationDate"];
+    modificationDate2 = [(STCoreOrganizationSettings *)self modificationDate];
+    [dictionaryRepresentation setObject:modificationDate2 forKeyedSubscript:@"modificationDate"];
   }
 
-  v20 = [v3 copy];
+  v20 = [dictionaryRepresentation copy];
 
   return v20;
 }
 
-- (void)_changeAppLimitsFromAskToWarn:(id)a3
+- (void)_changeAppLimitsFromAskToWarn:(id)warn
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 type];
-  if ([v4 isEqualToString:@"usage-limit"])
+  warnCopy = warn;
+  type = [warnCopy type];
+  if ([type isEqualToString:@"usage-limit"])
   {
 
     goto LABEL_4;
   }
 
-  v5 = [v3 type];
-  v6 = [v5 isEqualToString:@"downtime"];
+  type2 = [warnCopy type];
+  v6 = [type2 isEqualToString:@"downtime"];
 
   if (v6)
   {
 LABEL_4:
-    v7 = [v3 configurations];
-    v8 = [v7 anyObject];
+    configurations = [warnCopy configurations];
+    anyObject = [configurations anyObject];
 
-    if (!v8)
+    if (!anyObject)
     {
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v9 = [v8 payloadPlist];
+    payloadPlist = [anyObject payloadPlist];
 
-    if (!v9)
+    if (!payloadPlist)
     {
       v13 = +[STLog persistence];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -321,9 +321,9 @@ LABEL_31:
     }
 
     v10 = MEMORY[0x1E6996208];
-    v11 = [v8 payloadPlist];
+    payloadPlist2 = [anyObject payloadPlist];
     v28 = 0;
-    v12 = [v10 declarationForData:v11 error:&v28];
+    v12 = [v10 declarationForData:payloadPlist2 error:&v28];
     v13 = v28;
 
     if (v12)
@@ -332,8 +332,8 @@ LABEL_31:
       if (objc_opt_isKindOfClass())
       {
         v14 = v12;
-        v15 = [v14 payloadMode];
-        v16 = [v15 isEqualToString:*MEMORY[0x1E6996190]];
+        payloadMode = [v14 payloadMode];
+        v16 = [payloadMode isEqualToString:*MEMORY[0x1E6996190]];
 
         if (v16)
         {
@@ -344,9 +344,9 @@ LABEL_21:
           v23 = +[STLog persistence];
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v8 identifier];
+            identifier = [anyObject identifier];
             *buf = 138543362;
-            v30 = v24;
+            v30 = identifier;
             _os_log_impl(&dword_1B831F000, v23, OS_LOG_TYPE_DEFAULT, "Updating configuration payload %{public}@ from ask to warn", buf, 0xCu);
           }
 
@@ -357,7 +357,7 @@ LABEL_21:
 
           if (v14)
           {
-            [v8 setPayloadPlist:v14];
+            [anyObject setPayloadPlist:v14];
           }
 
           else
@@ -365,7 +365,7 @@ LABEL_21:
             v25 = +[STLog persistence];
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
-              [STCoreOrganizationSettings _changeAppLimitsFromAskToWarn:v8];
+              [STCoreOrganizationSettings _changeAppLimitsFromAskToWarn:anyObject];
             }
           }
 
@@ -379,8 +379,8 @@ LABEL_21:
         if (objc_opt_isKindOfClass())
         {
           v14 = v12;
-          v19 = [v14 payloadMode];
-          v20 = [v19 isEqualToString:*MEMORY[0x1E69961B8]];
+          payloadMode2 = [v14 payloadMode];
+          v20 = [payloadMode2 isEqualToString:*MEMORY[0x1E69961B8]];
 
           if (v20)
           {
@@ -401,8 +401,8 @@ LABEL_30:
           }
 
           v14 = v12;
-          v21 = [v14 payloadMode];
-          v22 = [v21 isEqualToString:*MEMORY[0x1E69961A8]];
+          payloadMode3 = [v14 payloadMode];
+          v22 = [payloadMode3 isEqualToString:*MEMORY[0x1E69961A8]];
 
           if (v22)
           {
@@ -418,7 +418,7 @@ LABEL_30:
       v14 = +[STLog persistence];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [STCoreOrganizationSettings _changeAppLimitsFromAskToWarn:v8];
+        [STCoreOrganizationSettings _changeAppLimitsFromAskToWarn:anyObject];
       }
     }
 
@@ -438,10 +438,10 @@ LABEL_32:
 {
   v8 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  v9 = [(STCoreOrganizationSettings *)self user];
-  v6 = [v9 dsid];
-  v3 = [(STCoreOrganizationSettings *)self passcode];
-  v4 = [v8 stringWithFormat:@"<%@: %p> ({\n user: %@\n passcode enabled: %d\n allLimitsEnabled: %d\n defaultUserPolicies: %lu\n communicationPolicy: %lld\n communicationWhileLimitedPolicy: %lld\n contactManagementState: %lld\n contentPrivacySiriImageGenerationRestriction: %lld\n isCommunicationSafetySendingRestricted: %d\n isCommunicationSafetyReceivingRestricted: %d\n isCommunicationSafetyNotificationEnabled: %d\n isCommunicationSafetyAnalyticsEnabled: %d\n isEyeReliefEnabled: %d\n)}", v7, self, v6, v3 != 0, -[STCoreOrganizationSettings allLimitsEnabled](self, "allLimitsEnabled"), -[STCoreOrganizationSettings defaultUserPolicies](self, "defaultUserPolicies"), -[STCoreOrganizationSettings communicationPolicy](self, "communicationPolicy"), -[STCoreOrganizationSettings communicationWhileLimitedPolicy](self, "communicationWhileLimitedPolicy"), -[STCoreOrganizationSettings contactManagementState](self, "contactManagementState"), -[STCoreOrganizationSettings contentPrivacySiriImageGenerationRestriction](self, "contentPrivacySiriImageGenerationRestriction"), -[STCoreOrganizationSettings isCommunicationSafetySendingRestricted](self, "isCommunicationSafetySendingRestricted"), -[STCoreOrganizationSettings isCommunicationSafetyReceivingRestricted](self, "isCommunicationSafetyReceivingRestricted"), -[STCoreOrganizationSettings isCommunicationSafetyNotificationEnabled](self, "isCommunicationSafetyNotificationEnabled"), -[STCoreOrganizationSettings isCommunicationSafetyAnalyticsEnabled](self, "isCommunicationSafetyAnalyticsEnabled"), -[STCoreOrganizationSettings isEyeReliefEnabled](self, "isEyeReliefEnabled")];
+  user = [(STCoreOrganizationSettings *)self user];
+  dsid = [user dsid];
+  passcode = [(STCoreOrganizationSettings *)self passcode];
+  v4 = [v8 stringWithFormat:@"<%@: %p> ({\n user: %@\n passcode enabled: %d\n allLimitsEnabled: %d\n defaultUserPolicies: %lu\n communicationPolicy: %lld\n communicationWhileLimitedPolicy: %lld\n contactManagementState: %lld\n contentPrivacySiriImageGenerationRestriction: %lld\n isCommunicationSafetySendingRestricted: %d\n isCommunicationSafetyReceivingRestricted: %d\n isCommunicationSafetyNotificationEnabled: %d\n isCommunicationSafetyAnalyticsEnabled: %d\n isEyeReliefEnabled: %d\n)}", v7, self, dsid, passcode != 0, -[STCoreOrganizationSettings allLimitsEnabled](self, "allLimitsEnabled"), -[STCoreOrganizationSettings defaultUserPolicies](self, "defaultUserPolicies"), -[STCoreOrganizationSettings communicationPolicy](self, "communicationPolicy"), -[STCoreOrganizationSettings communicationWhileLimitedPolicy](self, "communicationWhileLimitedPolicy"), -[STCoreOrganizationSettings contactManagementState](self, "contactManagementState"), -[STCoreOrganizationSettings contentPrivacySiriImageGenerationRestriction](self, "contentPrivacySiriImageGenerationRestriction"), -[STCoreOrganizationSettings isCommunicationSafetySendingRestricted](self, "isCommunicationSafetySendingRestricted"), -[STCoreOrganizationSettings isCommunicationSafetyReceivingRestricted](self, "isCommunicationSafetyReceivingRestricted"), -[STCoreOrganizationSettings isCommunicationSafetyNotificationEnabled](self, "isCommunicationSafetyNotificationEnabled"), -[STCoreOrganizationSettings isCommunicationSafetyAnalyticsEnabled](self, "isCommunicationSafetyAnalyticsEnabled"), -[STCoreOrganizationSettings isEyeReliefEnabled](self, "isEyeReliefEnabled")];
 
   return v4;
 }

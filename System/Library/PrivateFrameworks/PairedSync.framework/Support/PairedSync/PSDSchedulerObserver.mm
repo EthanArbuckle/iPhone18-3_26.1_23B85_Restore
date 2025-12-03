@@ -1,23 +1,23 @@
 @interface PSDSchedulerObserver
-- (PSDSchedulerObserver)initWithObserver:(id)a3;
+- (PSDSchedulerObserver)initWithObserver:(id)observer;
 - (PSDSchedulerObserver)observer;
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSchedulerObserver
 
-- (PSDSchedulerObserver)initWithObserver:(id)a3
+- (PSDSchedulerObserver)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v10.receiver = self;
   v10.super_class = PSDSchedulerObserver;
   v5 = [(PSDSchedulerObserver *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
     *&v6->_flags = *&v6->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -46,42 +46,42 @@
   return v6;
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
   if (*&self->_flags)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(PSDSchedulerObserver *)self observer];
-    [v9 scheduler:v8 willStartSyncSession:v7];
+    sessionCopy = session;
+    schedulerCopy = scheduler;
+    observer = [(PSDSchedulerObserver *)self observer];
+    [observer scheduler:schedulerCopy willStartSyncSession:sessionCopy];
   }
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(PSDSchedulerObserver *)self observer];
-    [v9 scheduler:v8 didUpdateSyncSessionWithUpdate:v7];
+    updateCopy = update;
+    schedulerCopy = scheduler;
+    observer = [(PSDSchedulerObserver *)self observer];
+    [observer scheduler:schedulerCopy didUpdateSyncSessionWithUpdate:updateCopy];
   }
 }
 
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  schedulerCopy = scheduler;
+  sessionCopy = session;
+  blockCopy = block;
   if ((*&self->_flags & 4) != 0 && ([(PSDSchedulerObserver *)self observer], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [(PSDSchedulerObserver *)self observer];
-    [v11 scheduler:v12 didClearSyncSession:v8 withBlock:v9];
+    observer = [(PSDSchedulerObserver *)self observer];
+    [observer scheduler:schedulerCopy didClearSyncSession:sessionCopy withBlock:blockCopy];
   }
 
   else
   {
-    v9[2](v9);
+    blockCopy[2](blockCopy);
   }
 }
 

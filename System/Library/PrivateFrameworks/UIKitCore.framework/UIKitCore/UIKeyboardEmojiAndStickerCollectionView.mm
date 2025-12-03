@@ -1,45 +1,45 @@
 @interface UIKeyboardEmojiAndStickerCollectionView
-- (UIKeyboardEmojiAndStickerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4 emojiGraphicsTraits:(id)a5;
+- (UIKeyboardEmojiAndStickerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout emojiGraphicsTraits:(id)traits;
 - (UIResponder)hitTestResponder;
-- (id)closestCellForPoint:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)closestCellForPoint:(CGPoint)point;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)disableConflictingGestureRecognizers;
 - (void)enableConflictingGestureRecognizers;
 - (void)layoutSubviews;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)willCancelVariants:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)willCancelVariants:(id)variants;
 @end
 
 @implementation UIKeyboardEmojiAndStickerCollectionView
 
-- (UIKeyboardEmojiAndStickerCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4 emojiGraphicsTraits:(id)a5
+- (UIKeyboardEmojiAndStickerCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout emojiGraphicsTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitsCopy = traits;
   v19.receiver = self;
   v19.super_class = UIKeyboardEmojiAndStickerCollectionView;
-  v13 = [(UICollectionView *)&v19 initWithFrame:a4 collectionViewLayout:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(UICollectionView *)&v19 initWithFrame:layout collectionViewLayout:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_emojiGraphicsTraits, a5);
+    objc_storeStrong(&height->_emojiGraphicsTraits, traits);
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     gestureRecognizersToEnable = v14->_gestureRecognizersToEnable;
     v14->_gestureRecognizersToEnable = v15;
 
-    if (v12 && v12[8] == 1)
+    if (traitsCopy && traitsCopy[8] == 1)
     {
       [(UIScrollView *)v14 _setAutomaticContentOffsetAdjustmentEnabled:0];
     }
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v14 selector:sel_willCancelVariants_ name:@"UIKeyboardWillCancelEmojiVariants" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel_willCancelVariants_ name:@"UIKeyboardWillCancelEmojiVariants" object:0];
   }
 
   return v14;
@@ -47,9 +47,9 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(UICollectionView *)self dataSource];
+  dataSource = [(UICollectionView *)self dataSource];
 
-  if (v3)
+  if (dataSource)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -67,10 +67,10 @@ id __57__UIKeyboardEmojiAndStickerCollectionView_layoutSubviews__block_invoke(ui
   return objc_msgSendSuper2(&v2, sel_layoutSubviews);
 }
 
-- (id)closestCellForPoint:(CGPoint)a3
+- (id)closestCellForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v42 = *MEMORY[0x1E69E9840];
   [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits emojiKeyWidth];
   v7 = v6;
@@ -80,8 +80,8 @@ id __57__UIKeyboardEmojiAndStickerCollectionView_layoutSubviews__block_invoke(ui
   v10 = v6 + v6;
   v11 = y;
   v12 = y + v6 + v6;
-  v13 = [(UICollectionView *)self collectionViewLayout];
-  v14 = [v13 layoutAttributesForElementsInRect:{v8, v9, v10, v12}];
+  collectionViewLayout = [(UICollectionView *)self collectionViewLayout];
+  v14 = [collectionViewLayout layoutAttributesForElementsInRect:{v8, v9, v10, v12}];
 
   v39 = 0u;
   v40 = 0u;
@@ -138,8 +138,8 @@ id __57__UIKeyboardEmojiAndStickerCollectionView_layoutSubviews__block_invoke(ui
 
   if (v18)
   {
-    v33 = [v18 indexPath];
-    v34 = [(UICollectionView *)self cellForItemAtIndexPath:v33];
+    indexPath = [v18 indexPath];
+    v34 = [(UICollectionView *)self cellForItemAtIndexPath:indexPath];
 
 LABEL_20:
     goto LABEL_22;
@@ -154,18 +154,18 @@ LABEL_22:
 - (void)disableConflictingGestureRecognizers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     do
     {
       v14 = 0u;
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v5 = [v4 gestureRecognizers];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      gestureRecognizers = [v4 gestureRecognizers];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = v6;
@@ -177,7 +177,7 @@ LABEL_22:
           {
             if (*v13 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(gestureRecognizers);
             }
 
             v10 = *(*(&v12 + 1) + 8 * v9);
@@ -195,18 +195,18 @@ LABEL_22:
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v7 = [gestureRecognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v7);
       }
 
-      v11 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v11;
+      v4 = superview2;
     }
 
-    while (v11);
+    while (superview2);
   }
 }
 
@@ -246,22 +246,22 @@ LABEL_22:
   [(NSMutableArray *)self->_gestureRecognizersToEnable removeAllObjects];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v30 = a3;
-  v6 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([(UIKeyboardEmojiAndStickerCollectionView *)self isInSearchPopover])
   {
-    v7 = [v30 anyObject];
-    [v7 locationInView:self];
+    anyObject = [beganCopy anyObject];
+    [anyObject locationInView:self];
     v8 = [(UIKeyboardEmojiAndStickerCollectionView *)self closestCellForPoint:?];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 emoji];
+      emoji = [v8 emoji];
 
-      if (v9)
+      if (emoji)
       {
         v10 = +[UIKeyboardImpl activeInstance];
         [v10 clearForwardingInputDelegateAndResign:0];
@@ -294,10 +294,10 @@ LABEL_22:
     goto LABEL_19;
   }
 
-  v18 = [(UICollectionView *)self collectionViewLayout];
-  v19 = [v18 scrollDirection];
+  collectionViewLayout = [(UICollectionView *)self collectionViewLayout];
+  scrollDirection = [collectionViewLayout scrollDirection];
 
-  if (v19 || [(UIScrollView *)self isDragging]|| ([(UIScrollView *)self contentOffset], v20 < 0.0))
+  if (scrollDirection || [(UIScrollView *)self isDragging]|| ([(UIScrollView *)self contentOffset], v20 < 0.0))
   {
     v21 = 0;
   }
@@ -312,71 +312,71 @@ LABEL_22:
     v21 = v28 <= v29;
   }
 
-  if (v21 || v19 == 1 && v12)
+  if (v21 || scrollDirection == 1 && v12)
   {
 LABEL_19:
     [(UICollectionView *)self setScrollEnabled:0];
     [(UIKeyboardEmojiAndStickerCollectionView *)self disableConflictingGestureRecognizers];
-    v22 = [(UICollectionView *)self indexPathsForSelectedItems];
-    v23 = [v22 firstObject];
-    [(UICollectionView *)self deselectItemAtIndexPath:v23 animated:0];
+    indexPathsForSelectedItems = [(UICollectionView *)self indexPathsForSelectedItems];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [(UICollectionView *)self deselectItemAtIndexPath:firstObject animated:0];
 
-    v24 = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
-    [v24 touchesBegan:v30 withEvent:v6];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
+    [hitTestResponder touchesBegan:beganCopy withEvent:eventCopy];
   }
 
 LABEL_20:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v8 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (![(UIScrollView *)self isDragging])
   {
-    v7 = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
-    [v7 touchesMoved:v8 withEvent:v6];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
+    [hitTestResponder touchesMoved:movedCopy withEvent:eventCopy];
 
     self->_touchDidMove = 1;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v8 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (![(UIScrollView *)self isDragging])
   {
-    v7 = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
-    [v7 touchesEnded:v8 withEvent:v6];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
+    [hitTestResponder touchesEnded:endedCopy withEvent:eventCopy];
   }
 
   [(UICollectionView *)self setScrollEnabled:1];
   [(UIKeyboardEmojiAndStickerCollectionView *)self enableConflictingGestureRecognizers];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v8 = a3;
-  v6 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (![(UIScrollView *)self isDragging])
   {
-    v7 = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
-    [v7 touchesCancelled:v8 withEvent:v6];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionView *)self hitTestResponder];
+    [hitTestResponder touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 
   [(UICollectionView *)self setScrollEnabled:1];
   [(UIKeyboardEmojiAndStickerCollectionView *)self enableConflictingGestureRecognizers];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = UIKeyboardEmojiAndStickerCollectionView;
-  v8 = [(UIScrollView *)&v24 hitTest:v7 withEvent:x, y];
+  v8 = [(UIScrollView *)&v24 hitTest:eventCopy withEvent:x, y];
   if (v8 == self)
   {
     v9 = [(UIKeyboardEmojiAndStickerCollectionView *)self closestCellForPoint:x, y];
@@ -420,7 +420,7 @@ LABEL_20:
         v19 = 0.0;
       }
 
-      v20 = [v9 hitTest:v7 withEvent:{v16, v19}];
+      v20 = [v9 hitTest:eventCopy withEvent:{v16, v19}];
       v21 = v20;
       if (v20)
       {
@@ -434,31 +434,31 @@ LABEL_20:
   return v8;
 }
 
-- (void)willCancelVariants:(id)a3
+- (void)willCancelVariants:(id)variants
 {
-  v18 = a3;
-  v4 = [(UIView *)self window];
+  variantsCopy = variants;
+  window = [(UIView *)self window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [v18 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"key"];
+    userInfo = [variantsCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"key"];
 
-    v7 = [v18 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"touch"];
+    userInfo2 = [variantsCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"touch"];
 
     [v6 frame];
     MidX = CGRectGetMidX(v20);
     [v6 frame];
     MidY = CGRectGetMidY(v21);
-    v11 = [(UIView *)self superview];
-    [(UIView *)self convertPoint:v11 fromView:MidX, MidY];
+    superview = [(UIView *)self superview];
+    [(UIView *)self convertPoint:superview fromView:MidX, MidY];
     v13 = v12;
     v15 = v14;
 
     v16 = [(UIKeyboardEmojiAndStickerCollectionView *)self closestCellForPoint:v13, v15];
-    v17 = [v16 emojiLabel];
-    [v17 willCancelVariantsWithTouch:v8];
+    emojiLabel = [v16 emojiLabel];
+    [emojiLabel willCancelVariantsWithTouch:v8];
   }
 }
 

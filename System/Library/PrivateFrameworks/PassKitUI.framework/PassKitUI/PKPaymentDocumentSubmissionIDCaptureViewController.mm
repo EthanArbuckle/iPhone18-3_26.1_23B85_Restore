@@ -1,30 +1,30 @@
 @interface PKPaymentDocumentSubmissionIDCaptureViewController
-- (PKPaymentDocumentSubmissionIDCaptureViewController)initWithController:(id)a3 context:(int64_t)a4 featureIdentifier:(unint64_t)a5;
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
+- (PKPaymentDocumentSubmissionIDCaptureViewController)initWithController:(id)controller context:(int64_t)context featureIdentifier:(unint64_t)identifier;
+- (void)cameraReader:(id)reader didFailWithError:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
 - (void)dealloc;
 - (void)loadView;
-- (void)updateUIWithState:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateUIWithState:(int64_t)state;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentDocumentSubmissionIDCaptureViewController
 
-- (PKPaymentDocumentSubmissionIDCaptureViewController)initWithController:(id)a3 context:(int64_t)a4 featureIdentifier:(unint64_t)a5
+- (PKPaymentDocumentSubmissionIDCaptureViewController)initWithController:(id)controller context:(int64_t)context featureIdentifier:(unint64_t)identifier
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
   v10 = [(CRCameraReader *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_featureIdentifier = a5;
-    objc_storeStrong(&v10->_captureController, a3);
+    v10->_featureIdentifier = identifier;
+    objc_storeStrong(&v10->_captureController, controller);
     if ([(PKPaymentDocumentSubmissionController *)v11->_captureController side])
     {
       v20 = *MEMORY[0x1E6999008];
@@ -40,13 +40,13 @@
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     [(CRCameraReader *)v11 setOutputObjectTypes:v13];
 
-    if (a5 != 1)
+    if (identifier != 1)
     {
       goto LABEL_10;
     }
 
-    v14 = [v9 selectedDocument];
-    [v14 preferredWidth];
+    selectedDocument = [controllerCopy selectedDocument];
+    [selectedDocument preferredWidth];
     v16 = v15;
 
     if (PKPeerPaymentHighResIDVImage())
@@ -63,7 +63,7 @@ LABEL_10:
         [(CRCameraReader *)v11 setDelegate:v11];
         [(CRCameraReader *)v11 setHidePlacementText:1];
         v11->_reachedTimeout = 0;
-        v11->_context = a4;
+        v11->_context = context;
         goto LABEL_11;
       }
     }
@@ -95,9 +95,9 @@ LABEL_11:
   v15.receiver = self;
   v15.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
   [(CRCameraReader *)&v15 loadView];
-  v3 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
+  view = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
   cameraView = self->_cameraView;
-  self->_cameraView = v3;
+  self->_cameraView = view;
 
   [(UIView *)self->_cameraView setClipsToBounds:1];
   v5 = [PKCameraCaptureInstructionView alloc];
@@ -130,14 +130,14 @@ LABEL_11:
   v10.receiver = self;
   v10.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
   [(PKPaymentDocumentSubmissionIDCaptureViewController *)&v10 viewDidLoad];
-  v3 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
+  view = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   if (self->_featureIdentifier == 1)
   {
-    v5 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self navigationItem];
-    [v5 setBackBarButtonItem:0];
+    navigationItem = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self navigationItem];
+    [navigationItem setBackBarButtonItem:0];
     buttonCancel = self->_buttonCancel;
     if (!buttonCancel)
     {
@@ -148,12 +148,12 @@ LABEL_11:
       buttonCancel = self->_buttonCancel;
     }
 
-    [v5 setLeftBarButtonItem:buttonCancel];
-    v9 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self navigationItem];
-    [v9 setHidesBackButton:1];
+    [navigationItem setLeftBarButtonItem:buttonCancel];
+    navigationItem2 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1];
   }
 
-  PKPaymentSetupApplyContextAppearance(self->_context, v3);
+  PKPaymentSetupApplyContextAppearance(self->_context, view);
 }
 
 - (void)viewDidLayoutSubviews
@@ -161,13 +161,13 @@ LABEL_11:
   v20.receiver = self;
   v20.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
   [(CRCameraReader *)&v20 viewDidLayoutSubviews];
-  v3 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
-  [v3 bounds];
+  view = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   [(PKCameraCaptureInstructionView *)self->_cameraInstructionView sizeThatFits:v9, v11 - v14];
@@ -192,11 +192,11 @@ LABEL_11:
   [(UIView *)self->_cameraView setNeedsLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
-  [(CRCameraReader *)&v7 viewWillAppear:a3];
+  [(CRCameraReader *)&v7 viewWillAppear:appear];
   [(CRCameraReader *)self start];
   [(PKPaymentDocumentSubmissionController *)self->_captureController setDelegate:self];
   self->_reachedTimeout = 0;
@@ -221,12 +221,12 @@ uint64_t __69__PKPaymentDocumentSubmissionIDCaptureViewController_viewWillAppear
   return [v1 updateUIWithState:v2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKPaymentDocumentSubmissionIDCaptureViewController;
-  [(PKPaymentDocumentSubmissionIDCaptureViewController *)&v9 viewDidAppear:a3];
+  [(PKPaymentDocumentSubmissionIDCaptureViewController *)&v9 viewDidAppear:appear];
   if (os_variant_has_internal_ui())
   {
     v4 = PKCIPInputFile();
@@ -277,21 +277,21 @@ uint64_t __69__PKPaymentDocumentSubmissionIDCaptureViewController_viewWillAppear
   }
 }
 
-- (void)updateUIWithState:(int64_t)a3
+- (void)updateUIWithState:(int64_t)state
 {
-  v5 = [(PKCameraCaptureInstructionView *)self->_cameraInstructionView headerView];
-  if (a3 == 2)
+  headerView = [(PKCameraCaptureInstructionView *)self->_cameraInstructionView headerView];
+  if (state == 2)
   {
     [(CRCameraReader *)self setEnableAltIDCardScan:self->_reachedTimeout];
-    v6 = [(PKPaymentDocumentSubmissionController *)self->_captureController preferredLanguage];
+    preferredLanguage = [(PKPaymentDocumentSubmissionController *)self->_captureController preferredLanguage];
     [(PKPaymentDocumentSubmissionController *)self->_captureController side];
-    v7 = [v5 titleLabel];
+    titleLabel = [headerView titleLabel];
     v8 = PKLocalizedApplyFeatureString();
-    [v7 setText:v8];
+    [titleLabel setText:v8];
 
-    v9 = [v5 subtitleLabel];
+    subtitleLabel = [headerView subtitleLabel];
     v12 = PKLocalizedApplyFeatureString();
-    [v9 setText:v12];
+    [subtitleLabel setText:v12];
   }
 
   else
@@ -301,23 +301,23 @@ uint64_t __69__PKPaymentDocumentSubmissionIDCaptureViewController_viewWillAppear
     self->_timerTryAgain = 0;
 
     self->_reachedTimeout = 0;
-    v11 = [(PKPaymentDocumentSubmissionController *)self->_captureController nextViewController];
-    v6 = v11;
-    if (v11)
+    nextViewController = [(PKPaymentDocumentSubmissionController *)self->_captureController nextViewController];
+    preferredLanguage = nextViewController;
+    if (nextViewController)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __72__PKPaymentDocumentSubmissionIDCaptureViewController_updateUIWithState___block_invoke;
       v15[3] = &unk_1E8010A10;
       v15[4] = self;
-      v16 = v11;
+      v16 = nextViewController;
       dispatch_async(MEMORY[0x1E69E96A0], v15);
     }
   }
 
   context = self->_context;
-  v14 = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(context, v14);
+  view = [(PKPaymentDocumentSubmissionIDCaptureViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(context, view);
 }
 
 void __72__PKPaymentDocumentSubmissionIDCaptureViewController_updateUIWithState___block_invoke(uint64_t a1)
@@ -326,31 +326,31 @@ void __72__PKPaymentDocumentSubmissionIDCaptureViewController_updateUIWithState_
   [v2 pk_presentPaymentSetupViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
-  v9 = a4;
-  v5 = [v9 count];
-  v6 = v9;
+  objectsCopy = objects;
+  v5 = [objectsCopy count];
+  v6 = objectsCopy;
   if (v5)
   {
-    v7 = [v9 firstObject];
-    v8 = [v7 imageValue];
-    if (v8)
+    firstObject = [objectsCopy firstObject];
+    imageValue = [firstObject imageValue];
+    if (imageValue)
     {
       PKAnalyticsSendEventForFeature();
-      [(PKPaymentDocumentSubmissionController *)self->_captureController capturedImage:v8];
+      [(PKPaymentDocumentSubmissionController *)self->_captureController capturedImage:imageValue];
     }
 
-    v6 = v9;
+    v6 = objectsCopy;
   }
 }
 
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4
+- (void)cameraReader:(id)reader didFailWithError:(id)error
 {
   captureController = self->_captureController;
   if (captureController)
   {
-    [(PKPaymentDocumentSubmissionController *)captureController captureFailedWithError:a4];
+    [(PKPaymentDocumentSubmissionController *)captureController captureFailedWithError:error];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface MastheadView
 - (UIColor)backgroundColor;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setBackgroundColor:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation MastheadView
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D813C730();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D813C918(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D813C918(color);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1D813CAC8(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1D813CAC8(event, x, y);
 
   return v10;
 }

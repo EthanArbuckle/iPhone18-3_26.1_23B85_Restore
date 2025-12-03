@@ -12,7 +12,7 @@
   {
     if (a3 == 2)
     {
-      v7 = [v5 multipleBigEmojiFont];
+      multipleBigEmojiFont = [v5 multipleBigEmojiFont];
     }
 
     else
@@ -22,7 +22,7 @@
         goto LABEL_11;
       }
 
-      v7 = [v5 singleBigAssetFont];
+      multipleBigEmojiFont = [v5 singleBigAssetFont];
     }
   }
 
@@ -33,15 +33,15 @@
       goto LABEL_11;
     }
 
-    v7 = [v5 singleBigEmojiFont];
+    multipleBigEmojiFont = [v5 singleBigEmojiFont];
   }
 
   else
   {
-    v7 = [v5 balloonTextFont];
+    multipleBigEmojiFont = [v5 balloonTextFont];
   }
 
-  v3 = v7;
+  v3 = multipleBigEmojiFont;
 LABEL_11:
 
   return v3;

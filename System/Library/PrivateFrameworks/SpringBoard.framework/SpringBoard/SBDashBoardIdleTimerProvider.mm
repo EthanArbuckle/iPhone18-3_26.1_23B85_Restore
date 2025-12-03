@@ -1,21 +1,21 @@
 @interface SBDashBoardIdleTimerProvider
-- (SBDashBoardIdleTimerProvider)initWithDelegate:(id)a3;
+- (SBDashBoardIdleTimerProvider)initWithDelegate:(id)delegate;
 - (SBDashBoardIdleTimerProviderDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)effectiveIdleTimerBehavior;
 - (id)succinctDescription;
-- (void)_proposeEffectiveIdleTimerBehaviorForReason:(id)a3;
-- (void)_proposeIdleTimerBehavior:(id)a3 forReason:(id)a4;
-- (void)addDisabledIdleTimerAssertionReason:(id)a3;
+- (void)_proposeEffectiveIdleTimerBehaviorForReason:(id)reason;
+- (void)_proposeIdleTimerBehavior:(id)behavior forReason:(id)reason;
+- (void)addDisabledIdleTimerAssertionReason:(id)reason;
 - (void)dealloc;
-- (void)idleTimerDidExpire:(id)a3;
-- (void)idleTimerDidRefresh:(id)a3;
-- (void)idleTimerDidWarn:(id)a3;
-- (void)removeDisabledIdleTimerAssertionReason:(id)a3;
+- (void)idleTimerDidExpire:(id)expire;
+- (void)idleTimerDidRefresh:(id)refresh;
+- (void)idleTimerDidWarn:(id)warn;
+- (void)removeDisabledIdleTimerAssertionReason:(id)reason;
 - (void)resetIdleTimer;
-- (void)setIdleTimer:(id)a3;
-- (void)updateIdleTimerWithIdleDimProvider:(id)a3 reason:(id)a4;
+- (void)setIdleTimer:(id)timer;
+- (void)updateIdleTimerWithIdleDimProvider:(id)provider reason:(id)reason;
 @end
 
 @implementation SBDashBoardIdleTimerProvider
@@ -45,16 +45,16 @@
   [(SBIdleTimer *)idleTimer reset];
 }
 
-- (SBDashBoardIdleTimerProvider)initWithDelegate:(id)a3
+- (SBDashBoardIdleTimerProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SBDashBoardIdleTimerProvider;
   v5 = [(SBDashBoardIdleTimerProvider *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     idleTimer = v6->_idleTimer;
     v6->_idleTimer = 0;
 
@@ -93,31 +93,31 @@ id __49__SBDashBoardIdleTimerProvider_initWithDelegate___block_invoke(uint64_t a
   [(SBDashBoardIdleTimerProvider *)&v3 dealloc];
 }
 
-- (void)setIdleTimer:(id)a3
+- (void)setIdleTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   [(SBIdleTimer *)self->_idleTimer removeIdleTimerObserver:self];
   idleTimer = self->_idleTimer;
-  self->_idleTimer = v4;
-  v6 = v4;
+  self->_idleTimer = timerCopy;
+  v6 = timerCopy;
 
   [(SBIdleTimer *)v6 addIdleTimerObserver:self];
 }
 
-- (void)updateIdleTimerWithIdleDimProvider:(id)a3 reason:(id)a4
+- (void)updateIdleTimerWithIdleDimProvider:(id)provider reason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  reasonCopy = reason;
   p_idleTimerProvider = &self->_idleTimerProvider;
-  v10 = [(SBFIdleTimerBehaviorProviding *)self->_idleTimerProvider idleTimerDuration];
-  if (v10 != [v7 idleTimerDuration] || (v11 = -[SBFIdleTimerBehaviorProviding idleWarnMode](*p_idleTimerProvider, "idleWarnMode"), v11 != objc_msgSend(v7, "idleWarnMode")) || (v12 = -[SBFIdleTimerBehaviorProviding idleTimerMode](*p_idleTimerProvider, "idleTimerMode"), v12 != objc_msgSend(v7, "idleTimerMode")))
+  idleTimerDuration = [(SBFIdleTimerBehaviorProviding *)self->_idleTimerProvider idleTimerDuration];
+  if (idleTimerDuration != [providerCopy idleTimerDuration] || (v11 = -[SBFIdleTimerBehaviorProviding idleWarnMode](*p_idleTimerProvider, "idleWarnMode"), v11 != objc_msgSend(providerCopy, "idleWarnMode")) || (v12 = -[SBFIdleTimerBehaviorProviding idleTimerMode](*p_idleTimerProvider, "idleTimerMode"), v12 != objc_msgSend(providerCopy, "idleTimerMode")))
   {
-    objc_storeStrong(&self->_idleTimerProvider, a3);
-    v13 = [(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled];
+    objc_storeStrong(&self->_idleTimerProvider, provider);
+    isIdleTimerEnabled = [(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled];
     v14 = SBLogIdleTimer();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (isIdleTimerEnabled)
     {
       if (v15)
       {
@@ -126,12 +126,12 @@ id __49__SBDashBoardIdleTimerProvider_initWithDelegate___block_invoke(uint64_t a
         v20 = 138543618;
         v21 = v17;
         v22 = 2114;
-        v23 = v8;
+        v23 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating idle timer for reason: %{public}@", &v20, 0x16u);
       }
 
-      v14 = [(SBDashBoardIdleTimerProvider *)self _copyIdleTimerBehaviorForBehaviorProvider:v7];
-      [(SBDashBoardIdleTimerProvider *)self _proposeIdleTimerBehavior:v14 forReason:v8];
+      v14 = [(SBDashBoardIdleTimerProvider *)self _copyIdleTimerBehaviorForBehaviorProvider:providerCopy];
+      [(SBDashBoardIdleTimerProvider *)self _proposeIdleTimerBehavior:v14 forReason:reasonCopy];
     }
 
     else if (v15)
@@ -141,17 +141,17 @@ id __49__SBDashBoardIdleTimerProvider_initWithDelegate___block_invoke(uint64_t a
       v20 = 138543618;
       v21 = v19;
       v22 = 2114;
-      v23 = v8;
+      v23 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating idle timer for reason: %{public}@ (but not active)", &v20, 0x16u);
     }
   }
 }
 
-- (void)addDisabledIdleTimerAssertionReason:(id)a3
+- (void)addDisabledIdleTimerAssertionReason:(id)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_disabledIdleTimerAssertions containsObject:v4])
+  reasonCopy = reason;
+  if ([(NSMutableSet *)self->_disabledIdleTimerAssertions containsObject:reasonCopy])
   {
     v5 = SBLogIdleTimer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -161,7 +161,7 @@ id __49__SBDashBoardIdleTimerProvider_initWithDelegate___block_invoke(uint64_t a
       v14 = 138543618;
       v15 = v7;
       v16 = 2114;
-      v17 = v4;
+      v17 = reasonCopy;
       v8 = "%{public}@ - Skipping add disabled reason: %{public}@ as it already exist in _disabledIdleTimerAssertion";
 LABEL_7:
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, v8, &v14, 0x16u);
@@ -173,7 +173,7 @@ LABEL_7:
   }
 
   v9 = [(NSMutableSet *)self->_disabledIdleTimerAssertions count];
-  [(NSMutableSet *)self->_disabledIdleTimerAssertions addObject:v4];
+  [(NSMutableSet *)self->_disabledIdleTimerAssertions addObject:reasonCopy];
   v5 = SBLogIdleTimer();
   v10 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -185,7 +185,7 @@ LABEL_7:
       v14 = 138543618;
       v15 = v7;
       v16 = 2114;
-      v17 = v4;
+      v17 = reasonCopy;
       v8 = "%{public}@ - Added idle timer disabled reason: %{public}@";
       goto LABEL_7;
     }
@@ -202,19 +202,19 @@ LABEL_8:
     v14 = 138543618;
     v15 = v13;
     v16 = 2114;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - Disabling idle timer for reason: %{public}@", &v14, 0x16u);
   }
 
-  [(SBDashBoardIdleTimerProvider *)self _proposeEffectiveIdleTimerBehaviorForReason:v4];
+  [(SBDashBoardIdleTimerProvider *)self _proposeEffectiveIdleTimerBehaviorForReason:reasonCopy];
 LABEL_9:
 }
 
-- (void)removeDisabledIdleTimerAssertionReason:(id)a3
+- (void)removeDisabledIdleTimerAssertionReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_disabledIdleTimerAssertions containsObject:v4]& 1) == 0)
+  reasonCopy = reason;
+  if (([(NSMutableSet *)self->_disabledIdleTimerAssertions containsObject:reasonCopy]& 1) == 0)
   {
     v7 = SBLogIdleTimer();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -224,7 +224,7 @@ LABEL_9:
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v4;
+      v18 = reasonCopy;
       v13 = "%{public}@ - Skipping remove disabled reason: %{public}@ as it doesn't exist in _disabledIdleTimerAssertions";
 LABEL_11:
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, v13, &v15, 0x16u);
@@ -236,7 +236,7 @@ LABEL_12:
   }
 
   v5 = [(NSMutableSet *)self->_disabledIdleTimerAssertions count];
-  [(NSMutableSet *)self->_disabledIdleTimerAssertions removeObject:v4];
+  [(NSMutableSet *)self->_disabledIdleTimerAssertions removeObject:reasonCopy];
   v6 = [(NSMutableSet *)self->_disabledIdleTimerAssertions count];
   v7 = SBLogIdleTimer();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -249,7 +249,7 @@ LABEL_12:
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v4;
+      v18 = reasonCopy;
       v13 = "%{public}@ - Removed idle timer disabled reason: %{public}@";
       goto LABEL_11;
     }
@@ -264,19 +264,19 @@ LABEL_12:
     v15 = 138543618;
     v16 = v10;
     v17 = 2114;
-    v18 = v4;
+    v18 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - Reenabling idle timer as last reason removed: %{public}@", &v15, 0x16u);
   }
 
-  [(SBDashBoardIdleTimerProvider *)self _proposeEffectiveIdleTimerBehaviorForReason:v4];
+  [(SBDashBoardIdleTimerProvider *)self _proposeEffectiveIdleTimerBehaviorForReason:reasonCopy];
 LABEL_13:
 }
 
-- (void)idleTimerDidRefresh:(id)a3
+- (void)idleTimerDidRefresh:(id)refresh
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == v4)
+  refreshCopy = refresh;
+  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == refreshCopy)
   {
     v5 = SBLogIdleTimer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -286,7 +286,7 @@ LABEL_13:
       v9 = 138543618;
       v10 = v7;
       v11 = 2114;
-      v12 = v4;
+      v12 = refreshCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Idle timer refreshed %{public}@", &v9, 0x16u);
     }
 
@@ -295,11 +295,11 @@ LABEL_13:
   }
 }
 
-- (void)idleTimerDidExpire:(id)a3
+- (void)idleTimerDidExpire:(id)expire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == v4)
+  expireCopy = expire;
+  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == expireCopy)
   {
     v5 = SBLogIdleTimer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -309,7 +309,7 @@ LABEL_13:
       v9 = 138543618;
       v10 = v7;
       v11 = 2114;
-      v12 = v4;
+      v12 = expireCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Idle timer expired %{public}@", &v9, 0x16u);
     }
 
@@ -318,11 +318,11 @@ LABEL_13:
   }
 }
 
-- (void)idleTimerDidWarn:(id)a3
+- (void)idleTimerDidWarn:(id)warn
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == v4)
+  warnCopy = warn;
+  if ([(SBDashBoardIdleTimerProvider *)self isIdleTimerEnabled]&& self->_idleTimer == warnCopy)
   {
     v5 = SBLogIdleTimer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -332,7 +332,7 @@ LABEL_13:
       v9 = 138543618;
       v10 = v7;
       v11 = 2114;
-      v12 = v4;
+      v12 = warnCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%{public}@ - Idle timer warned %{public}@", &v9, 0x16u);
     }
 
@@ -343,32 +343,32 @@ LABEL_13:
 
 - (id)succinctDescription
 {
-  v2 = [(SBDashBoardIdleTimerProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDashBoardIdleTimerProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDashBoardIdleTimerProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDashBoardIdleTimerProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBDashBoardIdleTimerProvider *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBDashBoardIdleTimerProvider *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__SBDashBoardIdleTimerProvider_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -383,19 +383,19 @@ void __70__SBDashBoardIdleTimerProvider_descriptionBuilderWithMultilinePrefix___
   v2 = [*(a1 + 40) appendObject:*(*(a1 + 32) + 8) withName:@"IdleTimer"];
 }
 
-- (void)_proposeEffectiveIdleTimerBehaviorForReason:(id)a3
+- (void)_proposeEffectiveIdleTimerBehaviorForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBDashBoardIdleTimerProvider *)self effectiveIdleTimerBehavior];
-  [(SBDashBoardIdleTimerProvider *)self _proposeIdleTimerBehavior:v5 forReason:v4];
+  reasonCopy = reason;
+  effectiveIdleTimerBehavior = [(SBDashBoardIdleTimerProvider *)self effectiveIdleTimerBehavior];
+  [(SBDashBoardIdleTimerProvider *)self _proposeIdleTimerBehavior:effectiveIdleTimerBehavior forReason:reasonCopy];
 }
 
-- (void)_proposeIdleTimerBehavior:(id)a3 forReason:(id)a4
+- (void)_proposeIdleTimerBehavior:(id)behavior forReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  behaviorCopy = behavior;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained dashBoardIdleTimerProvider:self didProposeBehavior:v7 reason:v6];
+  v9 = [WeakRetained dashBoardIdleTimerProvider:self didProposeBehavior:behaviorCopy reason:reasonCopy];
 
   [(SBDashBoardIdleTimerProvider *)self setIdleTimer:v9];
 }

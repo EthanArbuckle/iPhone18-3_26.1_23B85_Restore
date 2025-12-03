@@ -2,11 +2,11 @@
 - (BOOL)areAssociatedAccountsOutOfDate;
 - (BOOL)areRecurringPaymentsOutOfDate;
 - (BOOL)isAccountOutOfDate;
-- (BOOL)isEligibleForRecurringPaymentsForUser:(id)a3;
-- (BOOL)isEligibleForThresholdTopUpForUser:(id)a3;
+- (BOOL)isEligibleForRecurringPaymentsForUser:(id)user;
+- (BOOL)isEligibleForThresholdTopUpForUser:(id)user;
 - (BOOL)isEligibleForUserInfoUpdates;
-- (BOOL)isEligibleToAddMoneyForUser:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEligibleToAddMoneyForUser:(id)user;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsAssociatedAccountStateAction;
 - (BOOL)supportsBillingAddress;
 - (BOOL)supportsCardBalancePromotion;
@@ -26,8 +26,8 @@
 - (BOOL)supportsThresholdTopUp;
 - (BOOL)supportsTransferToBank;
 - (BOOL)termsAcceptanceRequired;
-- (BOOL)transactionAmountIsValid:(id)a3 feature:(id)a4;
-- (BOOL)willTriggerIdentityVerificationForTransactionAmount:(id)a3;
+- (BOOL)transactionAmountIsValid:(id)valid feature:(id)feature;
+- (BOOL)willTriggerIdentityVerificationForTransactionAmount:(id)amount;
 - (NSArray)defaultSuggestions;
 - (NSDictionary)maximumTransferAmounts;
 - (NSDictionary)minimumTransferAmounts;
@@ -36,27 +36,27 @@
 - (NSString)associatedPassTypeIdentifier;
 - (NSString)termsIdentifier;
 - (NSURL)termsURL;
-- (PKPeerPaymentAccount)initWithCoder:(id)a3;
-- (PKPeerPaymentAccount)initWithDictionary:(id)a3;
-- (PKPeerPaymentAccount)initWithDictionary:(id)a3 lastUpdated:(id)a4;
-- (PKPeerPaymentAccount)peerPaymentAccountWithAltDSID:(id)a3;
-- (PKPeerPaymentAccount)peerPaymentAccountWithIdentifier:(id)a3;
-- (id)_featureWithIdentifier:(id)a3;
-- (id)accountInvitationWithAltDSID:(id)a3;
+- (PKPeerPaymentAccount)initWithCoder:(id)coder;
+- (PKPeerPaymentAccount)initWithDictionary:(id)dictionary;
+- (PKPeerPaymentAccount)initWithDictionary:(id)dictionary lastUpdated:(id)updated;
+- (PKPeerPaymentAccount)peerPaymentAccountWithAltDSID:(id)d;
+- (PKPeerPaymentAccount)peerPaymentAccountWithIdentifier:(id)identifier;
+- (id)_featureWithIdentifier:(id)identifier;
+- (id)accountInvitationWithAltDSID:(id)d;
 - (id)associatedPassUniqueID;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssociatedAccountInformation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssociatedAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentAccount
 
 - (id)associatedPassUniqueID
 {
-  v3 = [(PKPeerPaymentAccount *)self associatedPassTypeIdentifier];
-  v4 = [(PKPeerPaymentAccount *)self associatedPassSerialNumber];
-  v5 = PKGeneratePassUniqueID(v3, v4);
+  associatedPassTypeIdentifier = [(PKPeerPaymentAccount *)self associatedPassTypeIdentifier];
+  associatedPassSerialNumber = [(PKPeerPaymentAccount *)self associatedPassSerialNumber];
+  v5 = PKGeneratePassUniqueID(associatedPassTypeIdentifier, associatedPassSerialNumber);
 
   return v5;
 }
@@ -108,8 +108,8 @@
     proactiveFetchPeriod = self->_proactiveFetchPeriod;
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceDate:self->_lastUpdated];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_lastUpdated];
   v6 = v5 >= proactiveFetchPeriod;
 
   return v6;
@@ -117,17 +117,17 @@
 
 - (BOOL)supportsSendToUser
 {
-  v2 = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
-  v3 = v2 != 0;
+  sendToUserFeatureDescriptor = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
+  v3 = sendToUserFeatureDescriptor != 0;
 
   return v3;
 }
 
-- (PKPeerPaymentAccount)initWithDictionary:(id)a3 lastUpdated:(id)a4
+- (PKPeerPaymentAccount)initWithDictionary:(id)dictionary lastUpdated:(id)updated
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  updatedCopy = updated;
   v85.receiver = self;
   v85.super_class = PKPeerPaymentAccount;
   v8 = [(PKPeerPaymentAccount *)&v85 init];
@@ -136,42 +136,42 @@
     goto LABEL_33;
   }
 
-  v9 = [v6 PKStringForKey:@"state"];
+  v9 = [dictionaryCopy PKStringForKey:@"state"];
   v8->_state = PKPeerPaymentAccountStateFromString(v9);
 
-  v10 = [v6 PKStringForKey:@"stage"];
+  v10 = [dictionaryCopy PKStringForKey:@"stage"];
   v8->_stage = PKPeerPaymentAccountStageFromString(v10);
 
-  v11 = [v6 PKStringForKey:@"stateReason"];
+  v11 = [dictionaryCopy PKStringForKey:@"stateReason"];
   v8->_stateReason = PKPeerPaymentAccountStateReasonFromString(v11);
 
-  v12 = [v6 PKStringForKey:@"personToPersonRestrictionType"];
+  v12 = [dictionaryCopy PKStringForKey:@"personToPersonRestrictionType"];
   v8->_sendRestrictionType = PKPeerPaymentAccountSendRestrictionTypeFromString(v12);
 
-  v13 = [v6 PKStringForKey:@"receiveRestrictionType"];
+  v13 = [dictionaryCopy PKStringForKey:@"receiveRestrictionType"];
   v8->_receiveRestrictionType = PKPeerPaymentAccountReceiveRestrictionTypeFromString(v13);
 
-  v14 = [v6 PKStringForKey:@"countryCode"];
+  v14 = [dictionaryCopy PKStringForKey:@"countryCode"];
   countryCode = v8->_countryCode;
   v8->_countryCode = v14;
 
-  v16 = [v6 PKStringForKey:@"role"];
+  v16 = [dictionaryCopy PKStringForKey:@"role"];
   v8->_role = PKPeerPaymentAccountRoleFromString(v16);
 
-  v17 = [v6 PKStringForKey:@"identifier"];
+  v17 = [dictionaryCopy PKStringForKey:@"identifier"];
   identifier = v8->_identifier;
   v8->_identifier = v17;
 
-  v19 = [v6 PKDateForKey:@"createdDate"];
+  v19 = [dictionaryCopy PKDateForKey:@"createdDate"];
   createdDate = v8->_createdDate;
   v8->_createdDate = v19;
 
-  v21 = [v6 PKDateForKey:@"identifiedDate"];
+  v21 = [dictionaryCopy PKDateForKey:@"identifiedDate"];
   identifiedDate = v8->_identifiedDate;
   v8->_identifiedDate = v21;
 
-  v23 = [v6 PKDecimalNumberFromStringForKey:@"currentBalance"];
-  v24 = [v6 PKStringForKey:@"currency"];
+  v23 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"currentBalance"];
+  v24 = [dictionaryCopy PKStringForKey:@"currency"];
   v25 = 0;
   if (v23 && v24)
   {
@@ -181,13 +181,13 @@
   currentBalance = v8->_currentBalance;
   v8->_currentBalance = v25;
 
-  v27 = [v6 PKDecimalNumberFromStringForKey:@"maximumBalance"];
+  v27 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"maximumBalance"];
   maximumBalance = v8->_maximumBalance;
   v8->_maximumBalance = v27;
 
   v29 = v8->_maximumBalance;
-  v30 = [MEMORY[0x1E696AB90] zero];
-  if ([(NSDecimalNumber *)v29 compare:v30]== NSOrderedSame)
+  zero = [MEMORY[0x1E696AB90] zero];
+  if ([(NSDecimalNumber *)v29 compare:zero]== NSOrderedSame)
   {
 
 LABEL_9:
@@ -198,8 +198,8 @@ LABEL_9:
   }
 
   v31 = v8->_maximumBalance;
-  v32 = [MEMORY[0x1E696AB90] zero];
-  v33 = [(NSDecimalNumber *)v31 compare:v32];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v33 = [(NSDecimalNumber *)v31 compare:zero2];
 
   if (v33 == -1)
   {
@@ -207,9 +207,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  v80 = v7;
-  v8->_identityVerificationRequired = [v6 PKBoolForKey:@"identityVerificationRequired"];
-  v35 = [v6 PKDecimalNumberFromStringForKey:@"amountRemainingUntilIdentityVerification"];
+  v80 = updatedCopy;
+  v8->_identityVerificationRequired = [dictionaryCopy PKBoolForKey:@"identityVerificationRequired"];
+  v35 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amountRemainingUntilIdentityVerification"];
   v36 = v35;
   v79 = v23;
   if (v35)
@@ -225,31 +225,31 @@ LABEL_10:
   amountRemainingUntilIdentityVerification = v8->_amountRemainingUntilIdentityVerification;
   v8->_amountRemainingUntilIdentityVerification = v37;
 
-  objc_storeStrong(&v8->_lastUpdated, a4);
-  [v6 PKDoubleForKey:@"proactiveFetchPeriod"];
+  objc_storeStrong(&v8->_lastUpdated, updated);
+  [dictionaryCopy PKDoubleForKey:@"proactiveFetchPeriod"];
   v8->_proactiveFetchPeriod = v39;
-  [v6 PKDoubleForKey:@"accountFetchAfterTransactionWaitPeriod"];
+  [dictionaryCopy PKDoubleForKey:@"accountFetchAfterTransactionWaitPeriod"];
   v8->_accountFetchAfterTransactionWaitPeriod = v40;
-  [v6 PKDoubleForKey:@"accountFetchAfterTransactionWaitTolerance"];
+  [dictionaryCopy PKDoubleForKey:@"accountFetchAfterTransactionWaitTolerance"];
   v8->_accountFetchAfterTransactionWaitTolerance = v41;
-  v8->_termsAcceptanceRequired = [v6 PKBoolForKey:@"termsAcceptanceRequired"];
-  v42 = [v6 PKStringForKey:@"termsIdentifier"];
+  v8->_termsAcceptanceRequired = [dictionaryCopy PKBoolForKey:@"termsAcceptanceRequired"];
+  v42 = [dictionaryCopy PKStringForKey:@"termsIdentifier"];
   termsIdentifier = v8->_termsIdentifier;
   v8->_termsIdentifier = v42;
 
-  v44 = [v6 PKURLForKey:@"termsURL"];
+  v44 = [dictionaryCopy PKURLForKey:@"termsURL"];
   termsURL = v8->_termsURL;
   v8->_termsURL = v44;
 
-  v46 = [v6 PKURLForKey:@"associatedPassURL"];
+  v46 = [dictionaryCopy PKURLForKey:@"associatedPassURL"];
   associatedPassURL = v8->_associatedPassURL;
   v8->_associatedPassURL = v46;
 
-  v48 = [v6 PKStringForKey:@"associatedPassSerialNumber"];
+  v48 = [dictionaryCopy PKStringForKey:@"associatedPassSerialNumber"];
   associatedPassSerialNumber = v8->_associatedPassSerialNumber;
   v8->_associatedPassSerialNumber = v48;
 
-  v50 = [v6 PKStringForKey:@"associatedPassTypeIdentifier"];
+  v50 = [dictionaryCopy PKStringForKey:@"associatedPassTypeIdentifier"];
   associatedPassTypeIdentifier = v8->_associatedPassTypeIdentifier;
   v8->_associatedPassTypeIdentifier = v50;
 
@@ -258,7 +258,7 @@ LABEL_10:
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v53 = [v6 PKArrayContaining:objc_opt_class() forKey:@"supportedFeatures"];
+  v53 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedFeatures"];
   v54 = [v53 countByEnumeratingWithState:&v81 objects:v86 count:16];
   if (v54)
   {
@@ -290,22 +290,22 @@ LABEL_10:
   supportedFeatureDescriptors = v8->_supportedFeatureDescriptors;
   v8->_supportedFeatureDescriptors = v59;
 
-  v7 = v80;
-  v61 = [[PKPeerPaymentAssociatedAccountInformation alloc] initWithDictionary:v6 lastUpdated:v80];
+  updatedCopy = v80;
+  v61 = [[PKPeerPaymentAssociatedAccountInformation alloc] initWithDictionary:dictionaryCopy lastUpdated:v80];
   associatedAccountInformation = v8->_associatedAccountInformation;
   v8->_associatedAccountInformation = v61;
 
-  v8->_pendingPaymentCount = [v6 PKIntegerForKey:@"pendingPaymentCount"];
-  v8->_identityVerificationForDisbursementsRequired = [v6 PKBoolForKey:@"identityVerificationForDisbursementsRequired"];
-  v63 = [v6 PKStringForKey:@"altDSID"];
+  v8->_pendingPaymentCount = [dictionaryCopy PKIntegerForKey:@"pendingPaymentCount"];
+  v8->_identityVerificationForDisbursementsRequired = [dictionaryCopy PKBoolForKey:@"identityVerificationForDisbursementsRequired"];
+  v63 = [dictionaryCopy PKStringForKey:@"altDSID"];
   altDSID = v8->_altDSID;
   v8->_altDSID = v63;
 
-  v65 = [v6 PKSetContaining:objc_opt_class() forKey:@"cloudStoreZoneNames"];
+  v65 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"cloudStoreZoneNames"];
   cloudStoreZoneNames = v8->_cloudStoreZoneNames;
   v8->_cloudStoreZoneNames = v65;
 
-  v67 = [v6 PKDictionaryForKey:@"additionalPushTopics"];
+  v67 = [dictionaryCopy PKDictionaryForKey:@"additionalPushTopics"];
   if (v67)
   {
     v68 = [[PKPeerPaymentAdditionalPushTopics alloc] initWithDictionary:v67];
@@ -313,7 +313,7 @@ LABEL_10:
     v8->_additionalPushTopics = v68;
   }
 
-  v70 = [v6 PKIntegerForKey:@"deviceScoreEncryptedPayloadVersion"];
+  v70 = [dictionaryCopy PKIntegerForKey:@"deviceScoreEncryptedPayloadVersion"];
   v71 = 1;
   if (v70 != 1)
   {
@@ -326,8 +326,8 @@ LABEL_10:
   }
 
   v8->_deviceScoreEncryptedPayloadVersion = v71;
-  v8->_hasRecurringPayments = [v6 PKBoolForKey:@"hasRecurringPayments"];
-  v72 = [v6 PKDictionaryForKey:@"paymentModeIdentifiers"];
+  v8->_hasRecurringPayments = [dictionaryCopy PKBoolForKey:@"hasRecurringPayments"];
+  v72 = [dictionaryCopy PKDictionaryForKey:@"paymentModeIdentifiers"];
   if (v72)
   {
     v73 = [[PKPeerPaymentPaymentModeIdentifiers alloc] initWithDictionary:v72];
@@ -335,7 +335,7 @@ LABEL_10:
     v8->_paymentModeIdentifiers = v73;
   }
 
-  v75 = [v6 PKDictionaryForKey:@"encryptionCertificatesVersions"];
+  v75 = [dictionaryCopy PKDictionaryForKey:@"encryptionCertificatesVersions"];
   if (v75)
   {
     v76 = [[PKPeerPaymentEncryptionCertificatesVersions alloc] initWithDictionary:v75];
@@ -360,11 +360,11 @@ LABEL_33:
   return v5;
 }
 
-- (PKPeerPaymentAccount)peerPaymentAccountWithIdentifier:(id)a3
+- (PKPeerPaymentAccount)peerPaymentAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_identifier;
-  v6 = v4;
+  v6 = identifierCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -382,7 +382,7 @@ LABEL_33:
     }
 
 LABEL_7:
-    v9 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -401,12 +401,12 @@ LABEL_9:
   v13 = v7;
   v14 = &v15;
   [(PKPeerPaymentAssociatedAccountInformation *)associatedAccountInformation enumerateAssociatedAccountsUsingBlock:v12];
-  v9 = v16[5];
+  selfCopy = v16[5];
 
   _Block_object_dispose(&v15, 8);
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 void __57__PKPeerPaymentAccount_peerPaymentAccountWithIdentifier___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -441,11 +441,11 @@ LABEL_7:
 LABEL_9:
 }
 
-- (PKPeerPaymentAccount)peerPaymentAccountWithAltDSID:(id)a3
+- (PKPeerPaymentAccount)peerPaymentAccountWithAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_altDSID;
-  v6 = v4;
+  v6 = dCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -463,7 +463,7 @@ LABEL_9:
     }
 
 LABEL_7:
-    v9 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -482,12 +482,12 @@ LABEL_9:
   v13 = v7;
   v14 = &v15;
   [(PKPeerPaymentAssociatedAccountInformation *)associatedAccountInformation enumerateAssociatedAccountsUsingBlock:v12];
-  v9 = v16[5];
+  selfCopy = v16[5];
 
   _Block_object_dispose(&v15, 8);
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 void __54__PKPeerPaymentAccount_peerPaymentAccountWithAltDSID___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -522,11 +522,11 @@ LABEL_7:
 LABEL_9:
 }
 
-- (id)accountInvitationWithAltDSID:(id)a3
+- (id)accountInvitationWithAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -539,7 +539,7 @@ LABEL_9:
     v9[1] = 3221225472;
     v9[2] = __53__PKPeerPaymentAccount_accountInvitationWithAltDSID___block_invoke;
     v9[3] = &unk_1E79D6218;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
     [(PKPeerPaymentAssociatedAccountInformation *)associatedAccountInformation enumerateAccountInvitationsUsingBlock:v9];
     v7 = v13[5];
@@ -608,16 +608,16 @@ LABEL_11:
 
   [(PKPeerPaymentAssociatedAccountInformation *)self->_associatedAccountInformation proactiveAssociatedAccountFetchPeriod];
   v4 = v3;
-  v5 = [(PKPeerPaymentAssociatedAccountInformation *)self->_associatedAccountInformation lastUpdated];
-  if (v5)
+  lastUpdated = [(PKPeerPaymentAssociatedAccountInformation *)self->_associatedAccountInformation lastUpdated];
+  if (lastUpdated)
   {
     if (v4 <= 0.0)
     {
       v4 = *&PKPeerPaymentAssociatedAccountDefaultProactiveFetchPeriod;
     }
 
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v6 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:lastUpdated];
     v8 = v7 >= v4;
   }
 
@@ -636,8 +636,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(PKPeerPaymentAccount *)self recurringPaymentsFeatureDescriptor];
-  [v3 proactiveFetchPeriod];
+  recurringPaymentsFeatureDescriptor = [(PKPeerPaymentAccount *)self recurringPaymentsFeatureDescriptor];
+  [recurringPaymentsFeatureDescriptor proactiveFetchPeriod];
   v5 = v4;
 
   v6 = PKPeerPaymentRecurringPaymentsLastUpdated();
@@ -648,8 +648,8 @@ LABEL_11:
       v5 = *&PKPeerPaymentRecurringPaymentsDefaultProactiveFetchPeriod;
     }
 
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v6];
     v9 = v8 >= v5;
   }
 
@@ -661,34 +661,34 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isEligibleToAddMoneyForUser:(id)a3
+- (BOOL)isEligibleToAddMoneyForUser:(id)user
 {
   v4 = 0;
-  if (a3 && self->_role == 1)
+  if (user && self->_role == 1)
   {
-    v4 = [a3 memberType] == 2;
+    v4 = [user memberType] == 2;
   }
 
   return self->_state == 1 && !v4;
 }
 
-- (BOOL)isEligibleForRecurringPaymentsForUser:(id)a3
+- (BOOL)isEligibleForRecurringPaymentsForUser:(id)user
 {
   v4 = 0;
-  if (a3 && self->_role == 1)
+  if (user && self->_role == 1)
   {
-    v4 = [a3 memberType] == 2;
+    v4 = [user memberType] == 2;
   }
 
   return self->_state - 3 > 0xFFFFFFFFFFFFFFFDLL && !v4;
 }
 
-- (BOOL)isEligibleForThresholdTopUpForUser:(id)a3
+- (BOOL)isEligibleForThresholdTopUpForUser:(id)user
 {
   v4 = 0;
-  if (a3 && self->_role == 1)
+  if (user && self->_role == 1)
   {
-    v4 = [a3 memberType] == 2;
+    v4 = [user memberType] == 2;
   }
 
   return self->_state - 3 > 0xFFFFFFFFFFFFFFFDLL && !v4;
@@ -696,45 +696,45 @@ LABEL_11:
 
 - (BOOL)isEligibleForUserInfoUpdates
 {
-  v3 = [(PKPeerPaymentAccount *)self supportsBillingAddress];
-  if (v3)
+  supportsBillingAddress = [(PKPeerPaymentAccount *)self supportsBillingAddress];
+  if (supportsBillingAddress)
   {
 
-    LOBYTE(v3) = [(PKPeerPaymentAccount *)self isOwnerAccountPersonalized];
+    LOBYTE(supportsBillingAddress) = [(PKPeerPaymentAccount *)self isOwnerAccountPersonalized];
   }
 
-  return v3;
+  return supportsBillingAddress;
 }
 
-- (BOOL)willTriggerIdentityVerificationForTransactionAmount:(id)a3
+- (BOOL)willTriggerIdentityVerificationForTransactionAmount:(id)amount
 {
   if (self->_stage == 3)
   {
     return 0;
   }
 
-  v4 = [(NSDecimalNumber *)self->_amountRemainingUntilIdentityVerification decimalNumberBySubtracting:a3];
-  v5 = [MEMORY[0x1E696AB90] zero];
-  v3 = [v4 compare:v5] == -1;
+  v4 = [(NSDecimalNumber *)self->_amountRemainingUntilIdentityVerification decimalNumberBySubtracting:amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v3 = [v4 compare:zero] == -1;
 
   return v3;
 }
 
-- (BOOL)transactionAmountIsValid:(id)a3 feature:(id)a4
+- (BOOL)transactionAmountIsValid:(id)valid feature:(id)feature
 {
-  if (!a4)
+  if (!feature)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 minimumAmount];
-  v8 = [v6 compare:v7];
+  featureCopy = feature;
+  validCopy = valid;
+  minimumAmount = [featureCopy minimumAmount];
+  v8 = [validCopy compare:minimumAmount];
 
-  v9 = [v5 maximumAmount];
+  maximumAmount = [featureCopy maximumAmount];
 
-  v10 = [v6 compare:v9];
+  v10 = [validCopy compare:maximumAmount];
   return v8 != -1 && v10 != 1;
 }
 
@@ -802,17 +802,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setAssociatedAccountInformation:(id)a3
+- (void)setAssociatedAccountInformation:(id)information
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  informationCopy = information;
+  v6 = informationCopy;
   associatedAccountInformation = self->_associatedAccountInformation;
   p_associatedAccountInformation = &self->_associatedAccountInformation;
   v7 = associatedAccountInformation;
-  if (v5 && v7)
+  if (informationCopy && v7)
   {
-    if ([v5 isEqual:?])
+    if ([informationCopy isEqual:?])
     {
       goto LABEL_14;
     }
@@ -820,19 +820,19 @@ LABEL_11:
     v7 = *p_associatedAccountInformation;
   }
 
-  else if (v7 == v5)
+  else if (v7 == informationCopy)
   {
     goto LABEL_14;
   }
 
   v10 = v7;
-  objc_storeStrong(p_associatedAccountInformation, a3);
+  objc_storeStrong(p_associatedAccountInformation, information);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 associatedAccountRemovalRecords];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  associatedAccountRemovalRecords = [v10 associatedAccountRemovalRecords];
+  v12 = [associatedAccountRemovalRecords countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -843,16 +843,16 @@ LABEL_11:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(associatedAccountRemovalRecords);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
         v17 = *p_associatedAccountInformation;
-        v18 = [v16 altDSID];
-        [v17 markAssociatedAccountRemovalRecordWithAltDSID:v18 hasPresentedNotification:{objc_msgSend(v16, "hasPresentedNotification")}];
+        altDSID = [v16 altDSID];
+        [v17 markAssociatedAccountRemovalRecordWithAltDSID:altDSID hasPresentedNotification:{objc_msgSend(v16, "hasPresentedNotification")}];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [associatedAccountRemovalRecords countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
@@ -861,79 +861,79 @@ LABEL_11:
 LABEL_14:
 }
 
-- (PKPeerPaymentAccount)initWithCoder:(id)a3
+- (PKPeerPaymentAccount)initWithCoder:(id)coder
 {
   v62[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v60.receiver = self;
   v60.super_class = PKPeerPaymentAccount;
   v5 = [(PKPeerPaymentAccount *)&v60 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_role = [v4 decodeIntegerForKey:@"role"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdDate"];
+    v5->_role = [coderCopy decodeIntegerForKey:@"role"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdDate"];
     createdDate = v5->_createdDate;
     v5->_createdDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifiedDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifiedDate"];
     identifiedDate = v5->_identifiedDate;
     v5->_identifiedDate = v10;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v5->_stage = [v4 decodeIntegerForKey:@"stage"];
-    v5->_stateReason = [v4 decodeIntegerForKey:@"stateReason"];
-    v5->_sendRestrictionType = [v4 decodeIntegerForKey:@"personToPersonRestrictionType"];
-    v5->_receiveRestrictionType = [v4 decodeIntegerForKey:@"receiveRestrictionType"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_stage = [coderCopy decodeIntegerForKey:@"stage"];
+    v5->_stateReason = [coderCopy decodeIntegerForKey:@"stateReason"];
+    v5->_sendRestrictionType = [coderCopy decodeIntegerForKey:@"personToPersonRestrictionType"];
+    v5->_receiveRestrictionType = [coderCopy decodeIntegerForKey:@"receiveRestrictionType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumBalance"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumBalance"];
     maximumBalance = v5->_maximumBalance;
     v5->_maximumBalance = v16;
 
-    v5->_identityVerificationRequired = [v4 decodeBoolForKey:@"identityVerificationRequired"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountRemainingUntilIdentityVerification"];
+    v5->_identityVerificationRequired = [coderCopy decodeBoolForKey:@"identityVerificationRequired"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountRemainingUntilIdentityVerification"];
     amountRemainingUntilIdentityVerification = v5->_amountRemainingUntilIdentityVerification;
     v5->_amountRemainingUntilIdentityVerification = v18;
 
-    v5->_accountStateDirty = [v4 decodeBoolForKey:@"accountStateDirty"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v5->_accountStateDirty = [coderCopy decodeBoolForKey:@"accountStateDirty"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v20;
 
-    [v4 decodeDoubleForKey:@"proactiveFetchPeriod"];
+    [coderCopy decodeDoubleForKey:@"proactiveFetchPeriod"];
     v5->_proactiveFetchPeriod = v22;
-    [v4 decodeDoubleForKey:@"accountFetchAfterTransactionWaitPeriod"];
+    [coderCopy decodeDoubleForKey:@"accountFetchAfterTransactionWaitPeriod"];
     v5->_accountFetchAfterTransactionWaitPeriod = v23;
-    [v4 decodeDoubleForKey:@"accountFetchAfterTransactionWaitTolerance"];
+    [coderCopy decodeDoubleForKey:@"accountFetchAfterTransactionWaitTolerance"];
     v5->_accountFetchAfterTransactionWaitTolerance = v24;
-    v5->_termsAcceptanceRequired = [v4 decodeBoolForKey:@"termsAcceptanceRequired"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
+    v5->_termsAcceptanceRequired = [coderCopy decodeBoolForKey:@"termsAcceptanceRequired"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
     termsIdentifier = v5->_termsIdentifier;
     v5->_termsIdentifier = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
     termsURL = v5->_termsURL;
     v5->_termsURL = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassURL"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassURL"];
     associatedPassURL = v5->_associatedPassURL;
     v5->_associatedPassURL = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassSerialNumber"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassSerialNumber"];
     associatedPassSerialNumber = v5->_associatedPassSerialNumber;
     v5->_associatedPassSerialNumber = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassTypeIdentifier"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedPassTypeIdentifier"];
     associatedPassTypeIdentifier = v5->_associatedPassTypeIdentifier;
     v5->_associatedPassTypeIdentifier = v33;
 
@@ -942,13 +942,13 @@ LABEL_14:
     v62[1] = objc_opt_class();
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
     v37 = [v35 setWithArray:v36];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"supportedFeatureDescriptors"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"supportedFeatureDescriptors"];
     supportedFeatureDescriptors = v5->_supportedFeatureDescriptors;
     v5->_supportedFeatureDescriptors = v38;
 
-    v5->_pendingPaymentCount = [v4 decodeIntegerForKey:@"pendingPaymentCount"];
-    v5->_identityVerificationForDisbursementsRequired = [v4 decodeBoolForKey:@"identityVerificationForDisbursementsRequired"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v5->_pendingPaymentCount = [coderCopy decodeIntegerForKey:@"pendingPaymentCount"];
+    v5->_identityVerificationForDisbursementsRequired = [coderCopy decodeBoolForKey:@"identityVerificationForDisbursementsRequired"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v40;
 
@@ -957,24 +957,24 @@ LABEL_14:
     v61[1] = objc_opt_class();
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
     v44 = [v42 setWithArray:v43];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"cloudStoreZoneNames"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"cloudStoreZoneNames"];
     cloudStoreZoneNames = v5->_cloudStoreZoneNames;
     v5->_cloudStoreZoneNames = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"additionalPushTopics"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"additionalPushTopics"];
     additionalPushTopics = v5->_additionalPushTopics;
     v5->_additionalPushTopics = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedAccountInformation"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedAccountInformation"];
     associatedAccountInformation = v5->_associatedAccountInformation;
     v5->_associatedAccountInformation = v51;
 
-    v5->_hasDisplayedAssociatedAccountActiveNotification = [v4 decodeBoolForKey:@"hasDisplayedAssociatedAccountActiveNotification"];
-    v53 = [v4 decodeIntegerForKey:@"deviceScoreEncryptedPayloadVersion"];
+    v5->_hasDisplayedAssociatedAccountActiveNotification = [coderCopy decodeBoolForKey:@"hasDisplayedAssociatedAccountActiveNotification"];
+    v53 = [coderCopy decodeIntegerForKey:@"deviceScoreEncryptedPayloadVersion"];
     v54 = 1;
     if (v53 != 1)
     {
@@ -987,12 +987,12 @@ LABEL_14:
     }
 
     v5->_deviceScoreEncryptedPayloadVersion = v54;
-    v5->_hasRecurringPayments = [v4 decodeBoolForKey:@"hasRecurringPayments"];
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentModeIdentifiers"];
+    v5->_hasRecurringPayments = [coderCopy decodeBoolForKey:@"hasRecurringPayments"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentModeIdentifiers"];
     paymentModeIdentifiers = v5->_paymentModeIdentifiers;
     v5->_paymentModeIdentifiers = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionCertificatesVersions"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionCertificatesVersions"];
     encryptionCertificatesVersions = v5->_encryptionCertificatesVersions;
     v5->_encryptionCertificatesVersions = v57;
   }
@@ -1000,48 +1000,48 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_role forKey:@"role"];
-  [v5 encodeObject:self->_createdDate forKey:@"createdDate"];
-  [v5 encodeObject:self->_identifiedDate forKey:@"identifiedDate"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInteger:self->_stage forKey:@"stage"];
-  [v5 encodeInteger:self->_stateReason forKey:@"stateReason"];
-  [v5 encodeInteger:self->_sendRestrictionType forKey:@"personToPersonRestrictionType"];
-  [v5 encodeInteger:self->_receiveRestrictionType forKey:@"receiveRestrictionType"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_currentBalance forKey:@"currentBalance"];
-  [v5 encodeObject:self->_maximumBalance forKey:@"maximumBalance"];
-  [v5 encodeBool:self->_identityVerificationRequired forKey:@"identityVerificationRequired"];
-  [v5 encodeObject:self->_amountRemainingUntilIdentityVerification forKey:@"amountRemainingUntilIdentityVerification"];
-  [v5 encodeBool:self->_accountStateDirty forKey:@"accountStateDirty"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
-  [v5 encodeDouble:@"accountFetchAfterTransactionWaitPeriod" forKey:self->_accountFetchAfterTransactionWaitPeriod];
-  [v5 encodeDouble:@"accountFetchAfterTransactionWaitTolerance" forKey:self->_accountFetchAfterTransactionWaitTolerance];
-  [v5 encodeBool:self->_termsAcceptanceRequired forKey:@"termsAcceptanceRequired"];
-  [v5 encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
-  [v5 encodeObject:self->_termsURL forKey:@"termsURL"];
-  [v5 encodeObject:self->_associatedPassURL forKey:@"associatedPassURL"];
-  [v5 encodeObject:self->_associatedPassSerialNumber forKey:@"associatedPassSerialNumber"];
-  [v5 encodeObject:self->_associatedPassTypeIdentifier forKey:@"associatedPassTypeIdentifier"];
-  [v5 encodeObject:self->_supportedFeatureDescriptors forKey:@"supportedFeatureDescriptors"];
-  [v5 encodeInteger:self->_pendingPaymentCount forKey:@"pendingPaymentCount"];
-  [v5 encodeBool:self->_identityVerificationForDisbursementsRequired forKey:@"identityVerificationForDisbursementsRequired"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeObject:self->_cloudStoreZoneNames forKey:@"cloudStoreZoneNames"];
-  [v5 encodeObject:self->_additionalPushTopics forKey:@"additionalPushTopics"];
-  [v5 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
-  [v5 encodeObject:self->_associatedAccountInformation forKey:@"associatedAccountInformation"];
-  [v5 encodeBool:self->_hasDisplayedAssociatedAccountActiveNotification forKey:@"hasDisplayedAssociatedAccountActiveNotification"];
-  [v5 encodeInteger:self->_deviceScoreEncryptedPayloadVersion forKey:@"deviceScoreEncryptedPayloadVersion"];
-  [v5 encodeBool:self->_hasRecurringPayments forKey:@"hasRecurringPayments"];
-  [v5 encodeObject:self->_paymentModeIdentifiers forKey:@"paymentModeIdentifiers"];
-  [v5 encodeObject:self->_encryptionCertificatesVersions forKey:@"encryptionCertificatesVersions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_role forKey:@"role"];
+  [coderCopy encodeObject:self->_createdDate forKey:@"createdDate"];
+  [coderCopy encodeObject:self->_identifiedDate forKey:@"identifiedDate"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInteger:self->_stage forKey:@"stage"];
+  [coderCopy encodeInteger:self->_stateReason forKey:@"stateReason"];
+  [coderCopy encodeInteger:self->_sendRestrictionType forKey:@"personToPersonRestrictionType"];
+  [coderCopy encodeInteger:self->_receiveRestrictionType forKey:@"receiveRestrictionType"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_currentBalance forKey:@"currentBalance"];
+  [coderCopy encodeObject:self->_maximumBalance forKey:@"maximumBalance"];
+  [coderCopy encodeBool:self->_identityVerificationRequired forKey:@"identityVerificationRequired"];
+  [coderCopy encodeObject:self->_amountRemainingUntilIdentityVerification forKey:@"amountRemainingUntilIdentityVerification"];
+  [coderCopy encodeBool:self->_accountStateDirty forKey:@"accountStateDirty"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeDouble:@"proactiveFetchPeriod" forKey:self->_proactiveFetchPeriod];
+  [coderCopy encodeDouble:@"accountFetchAfterTransactionWaitPeriod" forKey:self->_accountFetchAfterTransactionWaitPeriod];
+  [coderCopy encodeDouble:@"accountFetchAfterTransactionWaitTolerance" forKey:self->_accountFetchAfterTransactionWaitTolerance];
+  [coderCopy encodeBool:self->_termsAcceptanceRequired forKey:@"termsAcceptanceRequired"];
+  [coderCopy encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
+  [coderCopy encodeObject:self->_termsURL forKey:@"termsURL"];
+  [coderCopy encodeObject:self->_associatedPassURL forKey:@"associatedPassURL"];
+  [coderCopy encodeObject:self->_associatedPassSerialNumber forKey:@"associatedPassSerialNumber"];
+  [coderCopy encodeObject:self->_associatedPassTypeIdentifier forKey:@"associatedPassTypeIdentifier"];
+  [coderCopy encodeObject:self->_supportedFeatureDescriptors forKey:@"supportedFeatureDescriptors"];
+  [coderCopy encodeInteger:self->_pendingPaymentCount forKey:@"pendingPaymentCount"];
+  [coderCopy encodeBool:self->_identityVerificationForDisbursementsRequired forKey:@"identityVerificationForDisbursementsRequired"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_cloudStoreZoneNames forKey:@"cloudStoreZoneNames"];
+  [coderCopy encodeObject:self->_additionalPushTopics forKey:@"additionalPushTopics"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeObject:self->_associatedAccountInformation forKey:@"associatedAccountInformation"];
+  [coderCopy encodeBool:self->_hasDisplayedAssociatedAccountActiveNotification forKey:@"hasDisplayedAssociatedAccountActiveNotification"];
+  [coderCopy encodeInteger:self->_deviceScoreEncryptedPayloadVersion forKey:@"deviceScoreEncryptedPayloadVersion"];
+  [coderCopy encodeBool:self->_hasRecurringPayments forKey:@"hasRecurringPayments"];
+  [coderCopy encodeObject:self->_paymentModeIdentifiers forKey:@"paymentModeIdentifiers"];
+  [coderCopy encodeObject:self->_encryptionCertificatesVersions forKey:@"encryptionCertificatesVersions"];
 }
 
 - (id)description
@@ -1239,9 +1239,9 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1249,7 +1249,7 @@ LABEL_14:
   }
 
   identifier = self->_identifier;
-  v6 = *(v4 + 2);
+  v6 = *(equalCopy + 2);
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -1264,7 +1264,7 @@ LABEL_14:
   }
 
   createdDate = self->_createdDate;
-  v8 = *(v4 + 4);
+  v8 = *(equalCopy + 4);
   if (createdDate && v8)
   {
     if (([(NSDate *)createdDate isEqual:?]& 1) == 0)
@@ -1279,7 +1279,7 @@ LABEL_14:
   }
 
   identifiedDate = self->_identifiedDate;
-  v10 = *(v4 + 5);
+  v10 = *(equalCopy + 5);
   if (identifiedDate && v10)
   {
     if (([(NSDate *)identifiedDate isEqual:?]& 1) == 0)
@@ -1294,7 +1294,7 @@ LABEL_14:
   }
 
   countryCode = self->_countryCode;
-  v12 = *(v4 + 11);
+  v12 = *(equalCopy + 11);
   if (countryCode && v12)
   {
     if (([(NSString *)countryCode isEqual:?]& 1) == 0)
@@ -1309,7 +1309,7 @@ LABEL_14:
   }
 
   currentBalance = self->_currentBalance;
-  v14 = *(v4 + 12);
+  v14 = *(equalCopy + 12);
   if (currentBalance && v14)
   {
     if (![(PKCurrencyAmount *)currentBalance isEqual:?])
@@ -1324,7 +1324,7 @@ LABEL_14:
   }
 
   maximumBalance = self->_maximumBalance;
-  v16 = *(v4 + 13);
+  v16 = *(equalCopy + 13);
   if (maximumBalance && v16)
   {
     if (([(NSDecimalNumber *)maximumBalance isEqual:?]& 1) == 0)
@@ -1339,7 +1339,7 @@ LABEL_14:
   }
 
   termsIdentifier = self->_termsIdentifier;
-  v18 = *(v4 + 19);
+  v18 = *(equalCopy + 19);
   if (termsIdentifier && v18)
   {
     if (([(NSString *)termsIdentifier isEqual:?]& 1) == 0)
@@ -1354,7 +1354,7 @@ LABEL_14:
   }
 
   termsURL = self->_termsURL;
-  v20 = *(v4 + 20);
+  v20 = *(equalCopy + 20);
   if (termsURL && v20)
   {
     if (([(NSURL *)termsURL isEqual:?]& 1) == 0)
@@ -1369,7 +1369,7 @@ LABEL_14:
   }
 
   associatedPassURL = self->_associatedPassURL;
-  v22 = *(v4 + 21);
+  v22 = *(equalCopy + 21);
   if (associatedPassURL && v22)
   {
     if (([(NSURL *)associatedPassURL isEqual:?]& 1) == 0)
@@ -1384,7 +1384,7 @@ LABEL_14:
   }
 
   associatedPassSerialNumber = self->_associatedPassSerialNumber;
-  v24 = *(v4 + 22);
+  v24 = *(equalCopy + 22);
   if (associatedPassSerialNumber && v24)
   {
     if (([(NSString *)associatedPassSerialNumber isEqual:?]& 1) == 0)
@@ -1399,7 +1399,7 @@ LABEL_14:
   }
 
   associatedPassTypeIdentifier = self->_associatedPassTypeIdentifier;
-  v26 = *(v4 + 23);
+  v26 = *(equalCopy + 23);
   if (associatedPassTypeIdentifier && v26)
   {
     if (([(NSString *)associatedPassTypeIdentifier isEqual:?]& 1) == 0)
@@ -1414,7 +1414,7 @@ LABEL_14:
   }
 
   supportedFeatureDescriptors = self->_supportedFeatureDescriptors;
-  v28 = *(v4 + 33);
+  v28 = *(equalCopy + 33);
   if (supportedFeatureDescriptors && v28)
   {
     if (([(NSSet *)supportedFeatureDescriptors isEqual:?]& 1) == 0)
@@ -1428,7 +1428,7 @@ LABEL_14:
     goto LABEL_89;
   }
 
-  v29 = *(v4 + 25);
+  v29 = *(equalCopy + 25);
   v30 = self->_altDSID;
   v31 = v29;
   v32 = v31;
@@ -1452,7 +1452,7 @@ LABEL_14:
   }
 
   cloudStoreZoneNames = self->_cloudStoreZoneNames;
-  v35 = *(v4 + 26);
+  v35 = *(equalCopy + 26);
   if (cloudStoreZoneNames && v35)
   {
     if (([(NSSet *)cloudStoreZoneNames isEqual:?]& 1) == 0)
@@ -1467,7 +1467,7 @@ LABEL_14:
   }
 
   additionalPushTopics = self->_additionalPushTopics;
-  v37 = *(v4 + 27);
+  v37 = *(equalCopy + 27);
   if (additionalPushTopics && v37)
   {
     if (![(PKPeerPaymentAdditionalPushTopics *)additionalPushTopics isEqual:?])
@@ -1482,7 +1482,7 @@ LABEL_14:
   }
 
   associatedAccountInformation = self->_associatedAccountInformation;
-  v39 = *(v4 + 28);
+  v39 = *(equalCopy + 28);
   if (associatedAccountInformation && v39)
   {
     if (![(PKPeerPaymentAssociatedAccountInformation *)associatedAccountInformation isEqual:?])
@@ -1496,7 +1496,7 @@ LABEL_14:
     goto LABEL_89;
   }
 
-  v40 = *(v4 + 29);
+  v40 = *(equalCopy + 29);
   v30 = self->_transactionSourceIdentifier;
   v41 = v40;
   v32 = v41;
@@ -1521,7 +1521,7 @@ LABEL_88:
 
 LABEL_92:
   paymentModeIdentifiers = self->_paymentModeIdentifiers;
-  v46 = *(v4 + 31);
+  v46 = *(equalCopy + 31);
   if (paymentModeIdentifiers && v46)
   {
     if (![(PKPeerPaymentPaymentModeIdentifiers *)paymentModeIdentifiers isEqual:?])
@@ -1536,7 +1536,7 @@ LABEL_92:
   }
 
   encryptionCertificatesVersions = self->_encryptionCertificatesVersions;
-  v48 = *(v4 + 32);
+  v48 = *(equalCopy + 32);
   if (encryptionCertificatesVersions && v48)
   {
     if (![(PKPeerPaymentEncryptionCertificatesVersions *)encryptionCertificatesVersions isEqual:?])
@@ -1550,10 +1550,10 @@ LABEL_92:
     goto LABEL_89;
   }
 
-  if (self->_identityVerificationRequired == *(v4 + 8))
+  if (self->_identityVerificationRequired == *(equalCopy + 8))
   {
     amountRemainingUntilIdentityVerification = self->_amountRemainingUntilIdentityVerification;
-    v50 = *(v4 + 14);
+    v50 = *(equalCopy + 14);
     if (amountRemainingUntilIdentityVerification && v50)
     {
       if (([(NSDecimalNumber *)amountRemainingUntilIdentityVerification isEqual:?]& 1) == 0)
@@ -1567,9 +1567,9 @@ LABEL_92:
       goto LABEL_89;
     }
 
-    if (self->_termsAcceptanceRequired == *(v4 + 10) && self->_proactiveFetchPeriod == v4[16] && self->_accountFetchAfterTransactionWaitPeriod == v4[17] && self->_accountFetchAfterTransactionWaitTolerance == v4[18] && self->_role == *(v4 + 3) && self->_state == *(v4 + 6) && self->_stateReason == *(v4 + 8) && self->_sendRestrictionType == *(v4 + 9) && self->_receiveRestrictionType == *(v4 + 10) && self->_stage == *(v4 + 7) && self->_pendingPaymentCount == *(v4 + 24) && self->_identityVerificationForDisbursementsRequired == *(v4 + 11) && self->_hasDisplayedAssociatedAccountActiveNotification == *(v4 + 12) && self->_deviceScoreEncryptedPayloadVersion == *(v4 + 30))
+    if (self->_termsAcceptanceRequired == *(equalCopy + 10) && self->_proactiveFetchPeriod == equalCopy[16] && self->_accountFetchAfterTransactionWaitPeriod == equalCopy[17] && self->_accountFetchAfterTransactionWaitTolerance == equalCopy[18] && self->_role == *(equalCopy + 3) && self->_state == *(equalCopy + 6) && self->_stateReason == *(equalCopy + 8) && self->_sendRestrictionType == *(equalCopy + 9) && self->_receiveRestrictionType == *(equalCopy + 10) && self->_stage == *(equalCopy + 7) && self->_pendingPaymentCount == *(equalCopy + 24) && self->_identityVerificationForDisbursementsRequired == *(equalCopy + 11) && self->_hasDisplayedAssociatedAccountActiveNotification == *(equalCopy + 12) && self->_deviceScoreEncryptedPayloadVersion == *(equalCopy + 30))
     {
-      v43 = self->_hasRecurringPayments == *(v4 + 13);
+      v43 = self->_hasRecurringPayments == *(equalCopy + 13);
       goto LABEL_90;
     }
   }
@@ -1583,28 +1583,28 @@ LABEL_90:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_createdDate];
-  [v3 safelyAddObject:self->_identifiedDate];
-  [v3 safelyAddObject:self->_countryCode];
-  [v3 safelyAddObject:self->_currentBalance];
-  [v3 safelyAddObject:self->_maximumBalance];
-  [v3 safelyAddObject:self->_amountRemainingUntilIdentityVerification];
-  [v3 safelyAddObject:self->_termsIdentifier];
-  [v3 safelyAddObject:self->_termsURL];
-  [v3 safelyAddObject:self->_associatedPassURL];
-  [v3 safelyAddObject:self->_associatedPassSerialNumber];
-  [v3 safelyAddObject:self->_associatedPassTypeIdentifier];
-  [v3 safelyAddObject:self->_supportedFeatureDescriptors];
-  [v3 safelyAddObject:self->_altDSID];
-  [v3 safelyAddObject:self->_cloudStoreZoneNames];
-  [v3 safelyAddObject:self->_additionalPushTopics];
-  [v3 safelyAddObject:self->_transactionSourceIdentifier];
-  [v3 safelyAddObject:self->_associatedAccountInformation];
-  [v3 safelyAddObject:self->_paymentModeIdentifiers];
-  [v3 safelyAddObject:self->_encryptionCertificatesVersions];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_createdDate];
+  [array safelyAddObject:self->_identifiedDate];
+  [array safelyAddObject:self->_countryCode];
+  [array safelyAddObject:self->_currentBalance];
+  [array safelyAddObject:self->_maximumBalance];
+  [array safelyAddObject:self->_amountRemainingUntilIdentityVerification];
+  [array safelyAddObject:self->_termsIdentifier];
+  [array safelyAddObject:self->_termsURL];
+  [array safelyAddObject:self->_associatedPassURL];
+  [array safelyAddObject:self->_associatedPassSerialNumber];
+  [array safelyAddObject:self->_associatedPassTypeIdentifier];
+  [array safelyAddObject:self->_supportedFeatureDescriptors];
+  [array safelyAddObject:self->_altDSID];
+  [array safelyAddObject:self->_cloudStoreZoneNames];
+  [array safelyAddObject:self->_additionalPushTopics];
+  [array safelyAddObject:self->_transactionSourceIdentifier];
+  [array safelyAddObject:self->_associatedAccountInformation];
+  [array safelyAddObject:self->_paymentModeIdentifiers];
+  [array safelyAddObject:self->_encryptionCertificatesVersions];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_identityVerificationRequired - v4 + 32 * v4;
   v6 = self->_termsAcceptanceRequired - v5 + 32 * v5;
   v7 = self->_proactiveFetchPeriod - v6 + 32 * v6;
@@ -1627,150 +1627,150 @@ LABEL_90:
 
 - (BOOL)supportsLoadFromCard
 {
-  v2 = [(PKPeerPaymentAccount *)self loadFromCardFeatureDescriptor];
-  v3 = v2 != 0;
+  loadFromCardFeatureDescriptor = [(PKPeerPaymentAccount *)self loadFromCardFeatureDescriptor];
+  v3 = loadFromCardFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsTransferToBank
 {
-  v2 = [(PKPeerPaymentAccount *)self transferToBankFeatureDescriptor];
-  v3 = v2 != 0;
+  transferToBankFeatureDescriptor = [(PKPeerPaymentAccount *)self transferToBankFeatureDescriptor];
+  v3 = transferToBankFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsRequestFromUser
 {
-  v2 = [(PKPeerPaymentAccount *)self requestFromUserFeatureDescriptor];
-  v3 = v2 != 0;
+  requestFromUserFeatureDescriptor = [(PKPeerPaymentAccount *)self requestFromUserFeatureDescriptor];
+  v3 = requestFromUserFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsSendFromWallet
 {
-  v2 = [(PKPeerPaymentAccount *)self sendFromWalletFeatureDescriptor];
-  v3 = v2 != 0;
+  sendFromWalletFeatureDescriptor = [(PKPeerPaymentAccount *)self sendFromWalletFeatureDescriptor];
+  v3 = sendFromWalletFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsRequestFromWallet
 {
-  v2 = [(PKPeerPaymentAccount *)self requestFromWalletFeatureDescriptor];
-  v3 = v2 != 0;
+  requestFromWalletFeatureDescriptor = [(PKPeerPaymentAccount *)self requestFromWalletFeatureDescriptor];
+  v3 = requestFromWalletFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsPendingRequestAction
 {
-  v2 = [(PKPeerPaymentAccount *)self pendingRequestActionFeatureDescriptor];
-  v3 = v2 != 0;
+  pendingRequestActionFeatureDescriptor = [(PKPeerPaymentAccount *)self pendingRequestActionFeatureDescriptor];
+  v3 = pendingRequestActionFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsRecurringPayments
 {
-  v2 = [(PKPeerPaymentAccount *)self recurringPaymentsFeatureDescriptor];
-  v3 = v2 != 0;
+  recurringPaymentsFeatureDescriptor = [(PKPeerPaymentAccount *)self recurringPaymentsFeatureDescriptor];
+  v3 = recurringPaymentsFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsThresholdTopUp
 {
-  v2 = [(PKPeerPaymentAccount *)self thresholdTopUpFeatureDescriptor];
-  v3 = v2 != 0;
+  thresholdTopUpFeatureDescriptor = [(PKPeerPaymentAccount *)self thresholdTopUpFeatureDescriptor];
+  v3 = thresholdTopUpFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsCardBalancePromotion
 {
-  v2 = [(PKPeerPaymentAccount *)self cardBalancePromotionFeatureDescriptor];
-  v3 = v2 != 0;
+  cardBalancePromotionFeatureDescriptor = [(PKPeerPaymentAccount *)self cardBalancePromotionFeatureDescriptor];
+  v3 = cardBalancePromotionFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsInstantWithdrawal
 {
-  v2 = [(PKPeerPaymentAccount *)self instantWithdrawalPromotionFeatureDescriptor];
-  v3 = v2 != 0;
+  instantWithdrawalPromotionFeatureDescriptor = [(PKPeerPaymentAccount *)self instantWithdrawalPromotionFeatureDescriptor];
+  v3 = instantWithdrawalPromotionFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsAssociatedAccountStateAction
 {
-  v2 = [(PKPeerPaymentAccount *)self associatedAccountStateActionFeatureDescriptor];
-  v3 = v2 != 0;
+  associatedAccountStateActionFeatureDescriptor = [(PKPeerPaymentAccount *)self associatedAccountStateActionFeatureDescriptor];
+  v3 = associatedAccountStateActionFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsPreserveCurrentBalance
 {
-  v2 = [(PKPeerPaymentAccount *)self preserveCurrentBalanceFeatureDescriptor];
-  v3 = v2 != 0;
+  preserveCurrentBalanceFeatureDescriptor = [(PKPeerPaymentAccount *)self preserveCurrentBalanceFeatureDescriptor];
+  v3 = preserveCurrentBalanceFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsFamilySharing
 {
-  v2 = [(PKPeerPaymentAccount *)self supportsFamilySharingFeatureDescriptor];
-  v3 = v2 != 0;
+  supportsFamilySharingFeatureDescriptor = [(PKPeerPaymentAccount *)self supportsFamilySharingFeatureDescriptor];
+  v3 = supportsFamilySharingFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsGraduationWhileAssociatedAccountLocked
 {
-  v2 = [(PKPeerPaymentAccount *)self supportsGraduationWhileAssociatedAccountLockedFeatureDescriptor];
-  v3 = v2 != 0;
+  supportsGraduationWhileAssociatedAccountLockedFeatureDescriptor = [(PKPeerPaymentAccount *)self supportsGraduationWhileAssociatedAccountLockedFeatureDescriptor];
+  v3 = supportsGraduationWhileAssociatedAccountLockedFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsDeviceTap
 {
-  v2 = [(PKPeerPaymentAccount *)self deviceTapFeatureDescriptor];
-  v3 = v2 != 0;
+  deviceTapFeatureDescriptor = [(PKPeerPaymentAccount *)self deviceTapFeatureDescriptor];
+  v3 = deviceTapFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsGroupMessage
 {
-  v2 = [(PKPeerPaymentAccount *)self groupMessageFeatureDescriptor];
-  v3 = v2 != 0;
+  groupMessageFeatureDescriptor = [(PKPeerPaymentAccount *)self groupMessageFeatureDescriptor];
+  v3 = groupMessageFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsBillingAddress
 {
-  v2 = [(PKPeerPaymentAccount *)self billingAddressFeatureDescriptor];
-  v3 = v2 != 0;
+  billingAddressFeatureDescriptor = [(PKPeerPaymentAccount *)self billingAddressFeatureDescriptor];
+  v3 = billingAddressFeatureDescriptor != 0;
 
   return v3;
 }
 
-- (id)_featureWithIdentifier:(id)a3
+- (id)_featureWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PKPeerPaymentAccount *)self supportedFeatureDescriptors];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  supportedFeatureDescriptors = [(PKPeerPaymentAccount *)self supportedFeatureDescriptors];
+  v6 = [supportedFeatureDescriptors countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1780,16 +1780,16 @@ LABEL_90:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedFeatureDescriptors);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if ([v10 isEqualToString:v4])
+        identifier = [v9 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
-          v11 = [v9 isSupported];
+          isSupported = [v9 isSupported];
 
-          if (v11)
+          if (isSupported)
           {
             v6 = v9;
             goto LABEL_12;
@@ -1801,7 +1801,7 @@ LABEL_90:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [supportedFeatureDescriptors countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1812,12 +1812,12 @@ LABEL_12:
   return v6;
 }
 
-- (PKPeerPaymentAccount)initWithDictionary:(id)a3
+- (PKPeerPaymentAccount)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [(PKPeerPaymentAccount *)self initWithDictionary:v5 lastUpdated:v6];
+  dictionaryCopy = dictionary;
+  date = [v4 date];
+  v7 = [(PKPeerPaymentAccount *)self initWithDictionary:dictionaryCopy lastUpdated:date];
 
   return v7;
 }
@@ -1825,17 +1825,17 @@ LABEL_12:
 - (NSDictionary)minimumTransferAmounts
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentAccount *)self currentBalance];
-  v4 = [v3 currency];
+  currentBalance = [(PKPeerPaymentAccount *)self currentBalance];
+  currency = [currentBalance currency];
 
-  v5 = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
-  v6 = [v5 minimumAmount];
+  sendToUserFeatureDescriptor = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
+  minimumAmount = [sendToUserFeatureDescriptor minimumAmount];
 
   v7 = 0;
-  if (v4 && v6)
+  if (currency && minimumAmount)
   {
-    v9 = v4;
-    v10[0] = v6;
+    v9 = currency;
+    v10[0] = minimumAmount;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -1845,17 +1845,17 @@ LABEL_12:
 - (NSDictionary)maximumTransferAmounts
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentAccount *)self currentBalance];
-  v4 = [v3 currency];
+  currentBalance = [(PKPeerPaymentAccount *)self currentBalance];
+  currency = [currentBalance currency];
 
-  v5 = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
-  v6 = [v5 maximumAmount];
+  sendToUserFeatureDescriptor = [(PKPeerPaymentAccount *)self sendToUserFeatureDescriptor];
+  maximumAmount = [sendToUserFeatureDescriptor maximumAmount];
 
   v7 = 0;
-  if (v4 && v6)
+  if (currency && maximumAmount)
   {
-    v9 = v4;
-    v10[0] = v6;
+    v9 = currency;
+    v10[0] = maximumAmount;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 

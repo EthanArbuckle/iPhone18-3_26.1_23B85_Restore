@@ -1,41 +1,41 @@
 @interface CRTextRecognizerModelEspressoOutput
 - ($FD4688982923A924290ECB669CAF1EC2)output_label_prob_map;
-- (CRTextRecognizerModelEspressoOutput)initWithOutputLabelProbs:(id *)a3 featureInfo:(id)a4 batchSize:(unint64_t)a5;
+- (CRTextRecognizerModelEspressoOutput)initWithOutputLabelProbs:(id *)probs featureInfo:(id)info batchSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation CRTextRecognizerModelEspressoOutput
 
-- (CRTextRecognizerModelEspressoOutput)initWithOutputLabelProbs:(id *)a3 featureInfo:(id)a4 batchSize:(unint64_t)a5
+- (CRTextRecognizerModelEspressoOutput)initWithOutputLabelProbs:(id *)probs featureInfo:(id)info batchSize:(unint64_t)size
 {
-  v9 = a4;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = CRTextRecognizerModelEspressoOutput;
   v10 = [(CRTextRecognizerModelEspressoOutput *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a3->var0;
-    v13 = *a3->var2;
-    *(v10 + 56) = *&a3->var2[2];
+    v12 = *&probs->var0;
+    v13 = *probs->var2;
+    *(v10 + 56) = *&probs->var2[2];
     *(v10 + 40) = v13;
     *(v10 + 24) = v12;
-    v14 = *a3->var3;
-    v15 = *&a3->var3[2];
-    v16 = *&a3->var4;
-    *(v10 + 120) = *&a3->var6;
+    v14 = *probs->var3;
+    v15 = *&probs->var3[2];
+    v16 = *&probs->var4;
+    *(v10 + 120) = *&probs->var6;
     *(v10 + 104) = v16;
     *(v10 + 88) = v15;
     *(v10 + 72) = v14;
-    v17 = *&a3->var8;
-    v18 = *&a3->var10;
-    v19 = *&a3->var12;
-    *(v10 + 23) = *&a3->var14;
+    v17 = *&probs->var8;
+    v18 = *&probs->var10;
+    v19 = *&probs->var12;
+    *(v10 + 23) = *&probs->var14;
     *(v10 + 168) = v19;
     *(v10 + 152) = v18;
     *(v10 + 136) = v17;
-    objc_storeStrong(v10 + 1, a4);
-    v11->_batchSize = a5;
+    objc_storeStrong(v10 + 1, info);
+    v11->_batchSize = size;
   }
 
   return v11;

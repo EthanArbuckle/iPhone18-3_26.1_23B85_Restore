@@ -1,13 +1,13 @@
 @interface PGHolidayDateSummarizedFeature
-- (PGHolidayDateSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 holidayName:(id)a5;
+- (PGHolidayDateSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset holidayName:(id)name;
 @end
 
 @implementation PGHolidayDateSummarizedFeature
 
-- (PGHolidayDateSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 holidayName:(id)a5
+- (PGHolidayDateSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset holidayName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  presentCopy = present;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = PGHolidayDateSummarizedFeature;
   v10 = [(PGHolidayDateSummarizedFeature *)&v15 init];
@@ -15,12 +15,12 @@
   if (v10)
   {
     v10->_type = 5;
-    v12 = PGSummarizedFeatureConsolidatedDateIntervals(v8);
+    v12 = PGSummarizedFeatureConsolidatedDateIntervals(presentCopy);
     intervalsPresent = v11->_intervalsPresent;
     v11->_intervalsPresent = v12;
 
-    v11->_isMandatoryForKeyAsset = a4;
-    objc_storeStrong(&v11->_holidayName, a5);
+    v11->_isMandatoryForKeyAsset = asset;
+    objc_storeStrong(&v11->_holidayName, name);
   }
 
   return v11;

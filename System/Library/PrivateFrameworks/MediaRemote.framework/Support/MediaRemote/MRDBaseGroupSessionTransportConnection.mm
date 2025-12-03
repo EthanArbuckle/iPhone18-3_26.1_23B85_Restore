@@ -1,27 +1,27 @@
 @interface MRDBaseGroupSessionTransportConnection
-- (BOOL)hasAccessToPlayerPath:(id)a3;
-- (BOOL)isAllowedToSendMessageType:(unint64_t)a3;
+- (BOOL)hasAccessToPlayerPath:(id)path;
+- (BOOL)isAllowedToSendMessageType:(unint64_t)type;
 - (MRDBaseGroupSession)groupSession;
-- (MRDBaseGroupSessionTransportConnection)initWithGroupSession:(id)a3 participantIdentifier:(id)a4 dataSource:(id)a5;
+- (MRDBaseGroupSessionTransportConnection)initWithGroupSession:(id)session participantIdentifier:(id)identifier dataSource:(id)source;
 - (NSString)description;
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4;
-- (void)session:(id)a3 didReceiveMessageData:(id)a4 fromParticipant:(id)a5;
+- (unint64_t)sendTransportData:(id)data options:(id)options;
+- (void)session:(id)session didReceiveMessageData:(id)data fromParticipant:(id)participant;
 @end
 
 @implementation MRDBaseGroupSessionTransportConnection
 
-- (MRDBaseGroupSessionTransportConnection)initWithGroupSession:(id)a3 participantIdentifier:(id)a4 dataSource:(id)a5
+- (MRDBaseGroupSessionTransportConnection)initWithGroupSession:(id)session participantIdentifier:(id)identifier dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = MRDBaseGroupSessionTransportConnection;
-  v10 = [(MRDBaseGroupSessionTransportConnection *)&v17 initWithDataSource:a5];
+  v10 = [(MRDBaseGroupSessionTransportConnection *)&v17 initWithDataSource:source];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_groupSession, v8);
-    v12 = [v9 copy];
+    objc_storeWeak(&v10->_groupSession, sessionCopy);
+    v12 = [identifierCopy copy];
     participantIdentifier = v11->_participantIdentifier;
     v11->_participantIdentifier = v12;
   }
@@ -44,47 +44,47 @@
 {
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_groupSession);
-  v5 = [WeakRetained identifier];
-  v6 = [NSString stringWithFormat:@"<%@:%p session=%@ participant=%@>", v3, self, v5, self->_participantIdentifier];
+  identifier = [WeakRetained identifier];
+  v6 = [NSString stringWithFormat:@"<%@:%p session=%@ participant=%@>", v3, self, identifier, self->_participantIdentifier];
 
   return v6;
 }
 
-- (unint64_t)sendTransportData:(id)a3 options:(id)a4
+- (unint64_t)sendTransportData:(id)data options:(id)options
 {
-  v5 = a3;
-  v6 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
-  v7 = [(MRDBaseGroupSessionTransportConnection *)self participantIdentifier];
-  v11 = v7;
+  dataCopy = data;
+  groupSession = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
+  participantIdentifier = [(MRDBaseGroupSessionTransportConnection *)self participantIdentifier];
+  v11 = participantIdentifier;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  [v6 sendMessageData:v5 toParticipants:v8];
+  [groupSession sendMessageData:dataCopy toParticipants:v8];
 
-  v9 = [v5 length];
+  v9 = [dataCopy length];
   return v9;
 }
 
-- (void)session:(id)a3 didReceiveMessageData:(id)a4 fromParticipant:(id)a5
+- (void)session:(id)session didReceiveMessageData:(id)data fromParticipant:(id)participant
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(MRDBaseGroupSessionTransportConnection *)self participantIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  dataCopy = data;
+  participantCopy = participant;
+  participantIdentifier = [(MRDBaseGroupSessionTransportConnection *)self participantIdentifier];
+  v9 = [participantCopy isEqualToString:participantIdentifier];
 
   if (v9)
   {
-    [(MRDBaseGroupSessionTransportConnection *)self _notifyDelegateDidReceiveData:v10];
+    [(MRDBaseGroupSessionTransportConnection *)self _notifyDelegateDidReceiveData:dataCopy];
   }
 }
 
-- (BOOL)hasAccessToPlayerPath:(id)a3
+- (BOOL)hasAccessToPlayerPath:(id)path
 {
-  v3 = [a3 client];
-  v4 = [v3 isSystemMediaApplication];
+  client = [path client];
+  isSystemMediaApplication = [client isSystemMediaApplication];
 
-  return v4;
+  return isSystemMediaApplication;
 }
 
-- (BOOL)isAllowedToSendMessageType:(unint64_t)a3
+- (BOOL)isAllowedToSendMessageType:(unint64_t)type
 {
   if (qword_1005293F0 != -1)
   {
@@ -92,7 +92,7 @@
   }
 
   v4 = qword_1005293E8;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   LOBYTE(v4) = [v4 containsObject:v5];
 
   return v4;

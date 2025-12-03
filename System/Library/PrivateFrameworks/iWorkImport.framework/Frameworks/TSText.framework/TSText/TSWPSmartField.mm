@@ -1,42 +1,42 @@
 @interface TSWPSmartField
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEquivalentToObject:(id)a3;
-- (TSWPSmartField)initWithContext:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEquivalentToObject:(id)object;
+- (TSWPSmartField)initWithContext:(id)context;
 - (TSWPStorage)parentStorage;
 - (_NSRange)range;
-- (id)copyWithContext:(id)a3;
-- (id)initFromSmartField:(id)a3;
+- (id)copyWithContext:(id)context;
+- (id)initFromSmartField:(id)field;
 - (unsigned)smartFieldKind;
-- (void)i_setTextAttributeUUIDString:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
+- (void)i_setTextAttributeUUIDString:(id)string;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (void)resetTextAttributeUUIDString;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPSmartField
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x277CBEAD8], v5, *MEMORY[0x277CBE658], @"It is illegal to instantiate TSWPSmartField it is abstract", 0);;
     objc_exception_throw(v7);
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___TSWPSmartField;
-  return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
 }
 
-- (TSWPSmartField)initWithContext:(id)a3
+- (TSWPSmartField)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = TSWPSmartField;
-  v7 = [(TSWPSmartField *)&v14 initWithContext:v4];
+  v7 = [(TSWPSmartField *)&v14 initWithContext:contextCopy];
   if (v7)
   {
     v8 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v5, v6);
@@ -48,42 +48,42 @@
   return v7;
 }
 
-- (id)initFromSmartField:(id)a3
+- (id)initFromSmartField:(id)field
 {
-  v4 = a3;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  fieldCopy = field;
+  v7 = objc_msgSend_context(fieldCopy, v5, v6);
   v17.receiver = self;
   v17.super_class = TSWPSmartField;
   v8 = [(TSWPSmartField *)&v17 initWithContext:v7];
 
   if (v8)
   {
-    v11 = objc_msgSend_textAttributeUUIDString(v4, v9, v10);
+    v11 = objc_msgSend_textAttributeUUIDString(fieldCopy, v9, v10);
     textAttributeUUIDString = v8->_textAttributeUUIDString;
     v8->_textAttributeUUIDString = v11;
 
-    v15 = objc_msgSend_parentStorage(v4, v13, v14);
+    v15 = objc_msgSend_parentStorage(fieldCopy, v13, v14);
     objc_storeWeak(&v8->_parentStorage, v15);
   }
 
   return v8;
 }
 
-- (void)i_setTextAttributeUUIDString:(id)a3
+- (void)i_setTextAttributeUUIDString:(id)string
 {
-  v7 = a3;
-  if (self->_textAttributeUUIDString != v7)
+  stringCopy = string;
+  if (self->_textAttributeUUIDString != stringCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_textAttributeUUIDString, a3);
+    objc_storeStrong(&self->_textAttributeUUIDString, string);
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithContext_(v5, v6, v4);
+  v7 = objc_msgSend_initWithContext_(v5, v6, contextCopy);
   objc_storeStrong(v7 + 8, self->_textAttributeUUIDString);
 
   return v7;
@@ -148,26 +148,26 @@
   return result;
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = objc_msgSend_context(a3, a2, a3, a4);
+  v6 = objc_msgSend_context(root, a2, root, context);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v5, v6);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v5 = objc_msgSend_context(a3, a2, a3);
+  v5 = objc_msgSend_context(root, a2, root);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v4, v5);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v9 = *MEMORY[0x277D85DE8];
   textAttributeUUIDString = self->_textAttributeUUIDString;
   if (textAttributeUUIDString)
   {
     sub_276D9F478(v6, textAttributeUUIDString);
-    sub_276DD7900(a3, __s);
+    sub_276DD7900(archive, __s);
     if (v7)
     {
       free(v7);
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v3 = a3;
+  archiverCopy = archiver;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPSmartField saveToArchiver:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPSmartField.mm");
@@ -197,20 +197,20 @@
   objc_exception_throw(v21);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16))
   {
-    v11 = v6;
+    v11 = unarchiverCopy;
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = objc_msgSend_tsp_initWithProtobufString_(v7, v8, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v10 = objc_msgSend_tsp_initWithProtobufString_(v7, v8, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     if (v10)
     {
       objc_msgSend_i_setTextAttributeUUIDString_(self, v9, v10);
     }
 
-    v6 = v11;
+    unarchiverCopy = v11;
   }
 }
 
@@ -221,18 +221,18 @@
   objc_msgSend_i_setTextAttributeUUIDString_(self, v7, v6);
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (self == objectCopy)
   {
     isEqualToString = 1;
   }
 
   else
   {
-    if (v4)
+    if (objectCopy)
     {
       objc_opt_class();
       v6 = TSUDynamicCast();

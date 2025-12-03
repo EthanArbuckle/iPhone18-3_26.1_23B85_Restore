@@ -1,14 +1,14 @@
 @interface ATXContextHeuristicCache
 - (ATXContextHeuristicCache)init;
-- (id)allRelevantSuggestionsForDate:(id)a3;
+- (id)allRelevantSuggestionsForDate:(id)date;
 - (id)heuristicsCached;
-- (id)nextChangeAfterDate:(id)a3;
-- (id)suggestionsForKey:(id)a3;
+- (id)nextChangeAfterDate:(id)date;
+- (id)suggestionsForKey:(id)key;
 - (void)dealloc;
-- (void)evict:(id)a3;
+- (void)evict:(id)evict;
 - (void)evictAll;
-- (void)evictBefore:(id)a3;
-- (void)setSuggestions:(id)a3 forKey:(id)a4;
+- (void)evictBefore:(id)before;
+- (void)setSuggestions:(id)suggestions forKey:(id)key;
 @end
 
 @implementation ATXContextHeuristicCache
@@ -42,41 +42,41 @@
   [(ATXContextHeuristicCache *)&v3 dealloc];
 }
 
-- (id)suggestionsForKey:(id)a3
+- (id)suggestionsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:keyCopy];
 
   pthread_mutex_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setSuggestions:(id)a3 forKey:(id)a4
+- (void)setSuggestions:(id)suggestions forKey:(id)key
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  keyCopy = key;
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_cache setObject:suggestionsCopy forKeyedSubscript:keyCopy];
   v8 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v7;
+    v33 = keyCopy;
     v34 = 2048;
-    v35 = [v6 count];
+    v35 = [suggestionsCopy count];
     _os_log_impl(&dword_23E3EA000, v8, OS_LOG_TYPE_DEFAULT, "[Cache internal] Adding suggestions for key %@: %lu", buf, 0x16u);
   }
 
-  v23 = v7;
+  v23 = keyCopy;
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = suggestionsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v9)
   {
@@ -95,32 +95,32 @@
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        v14 = [v13 atxActionCriteria];
+        atxActionCriteria = [v13 atxActionCriteria];
         v15 = __atxlog_handle_context_heuristic();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v13 uiSpecification];
-          v16 = [v27 title];
-          v17 = [v13 uiSpecification];
-          v18 = [v17 reason];
-          v19 = [v18 hash];
-          v20 = [v14 startDate];
-          v21 = [v14 endDate];
+          uiSpecification = [v13 uiSpecification];
+          title = [uiSpecification title];
+          uiSpecification2 = [v13 uiSpecification];
+          reason = [uiSpecification2 reason];
+          v19 = [reason hash];
+          startDate = [atxActionCriteria startDate];
+          endDate = [atxActionCriteria endDate];
           *buf = 138413058;
-          v33 = v16;
+          v33 = title;
           v34 = 2048;
           v35 = v19;
           v36 = 2112;
-          v37 = v20;
+          v37 = startDate;
           v38 = 2112;
-          v39 = v21;
+          v39 = endDate;
           _os_log_impl(&dword_23E3EA000, v15, OS_LOG_TYPE_DEFAULT, "[Cache internal] Adding criteria for suggestion %@, reason.hash %lu, start: %@ end: %@", buf, 0x2Au);
 
           v11 = v24;
           v10 = v25;
         }
 
-        [(NSHashTable *)self->_criteriaTable addObject:v14];
+        [(NSHashTable *)self->_criteriaTable addObject:atxActionCriteria];
         ++v12;
       }
 
@@ -138,24 +138,24 @@
 - (id)heuristicsCached
 {
   pthread_mutex_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_cache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cache allKeys];
   pthread_mutex_unlock(&self->_lock);
-  v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v3];
+  v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:allKeys];
 
   return v4;
 }
 
-- (id)allRelevantSuggestionsForDate:(id)a3
+- (id)allRelevantSuggestionsForDate:(id)date
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   pthread_mutex_lock(&self->_lock);
   v27 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = self;
+  selfCopy = self;
   obj = self->_cache;
   v25 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v33 objects:v44 count:16];
   if (v25)
@@ -172,7 +172,7 @@
         }
 
         v26 = v5;
-        v6 = [(NSMutableDictionary *)v24->_cache objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v5)];
+        v6 = [(NSMutableDictionary *)selfCopy->_cache objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v5)];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
@@ -193,23 +193,23 @@
               }
 
               v11 = *(*(&v29 + 1) + 8 * i);
-              v12 = [v11 atxActionCriteria];
+              atxActionCriteria = [v11 atxActionCriteria];
               v13 = __atxlog_handle_context_heuristic();
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
               {
-                v14 = [v12 startDate];
-                v15 = [v12 endDate];
+                startDate = [atxActionCriteria startDate];
+                endDate = [atxActionCriteria endDate];
                 *buf = 138412802;
-                v38 = v4;
+                v38 = dateCopy;
                 v39 = 2112;
-                v40 = v14;
+                v40 = startDate;
                 v41 = 2112;
-                v42 = v15;
+                v42 = endDate;
                 _os_log_impl(&dword_23E3EA000, v13, OS_LOG_TYPE_DEFAULT, "[Cache internal] Considering date: %@ for interval %@ - %@", buf, 0x20u);
               }
 
-              v16 = [v12 dateInterval];
-              v17 = [v16 containsDate:v4];
+              dateInterval = [atxActionCriteria dateInterval];
+              v17 = [dateInterval containsDate:dateCopy];
 
               if (v17)
               {
@@ -244,7 +244,7 @@
     while (v25);
   }
 
-  pthread_mutex_unlock(&v24->_lock);
+  pthread_mutex_unlock(&selfCopy->_lock);
   v19 = [v27 copy];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -252,10 +252,10 @@
   return v19;
 }
 
-- (id)nextChangeAfterDate:(id)a3
+- (id)nextChangeAfterDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   pthread_mutex_lock(&self->_lock);
   v33 = 0u;
   v34 = 0u;
@@ -283,73 +283,73 @@
       }
 
       v11 = *(*(&v33 + 1) + 8 * v10);
-      v12 = [v11 startDate];
-      if (v12)
+      startDate = [v11 startDate];
+      if (startDate)
       {
       }
 
       else
       {
-        v13 = [v11 endDate];
+        endDate = [v11 endDate];
 
-        if (!v13)
+        if (!endDate)
         {
           goto LABEL_18;
         }
       }
 
-      v14 = [v11 startDate];
+      startDate2 = [v11 startDate];
 
-      if (v14)
+      if (startDate2)
       {
-        [v4 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         v16 = v15;
-        v17 = [v11 startDate];
-        [v17 timeIntervalSinceReferenceDate];
+        startDate3 = [v11 startDate];
+        [startDate3 timeIntervalSinceReferenceDate];
         v19 = v18;
 
         if (v16 < v19)
         {
-          v20 = [v11 startDate];
-          v21 = [v8 earlierDate:v20];
+          startDate4 = [v11 startDate];
+          v21 = [v8 earlierDate:startDate4];
           if (v21)
           {
             goto LABEL_16;
           }
 
-          v22 = [v11 startDate];
+          startDate5 = [v11 startDate];
           goto LABEL_17;
         }
       }
 
-      v23 = [v11 endDate];
+      endDate2 = [v11 endDate];
 
-      if (v23)
+      if (endDate2)
       {
-        [v4 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         v25 = v24;
-        v26 = [v11 endDate];
-        [v26 timeIntervalSinceReferenceDate];
+        endDate3 = [v11 endDate];
+        [endDate3 timeIntervalSinceReferenceDate];
         v28 = v27;
 
         if (v25 < v28)
         {
-          v20 = [v11 endDate];
-          v21 = [v8 earlierDate:v20];
+          startDate4 = [v11 endDate];
+          v21 = [v8 earlierDate:startDate4];
           if (v21)
           {
 LABEL_16:
-            v22 = v21;
-            v21 = v22;
+            startDate5 = v21;
+            v21 = startDate5;
           }
 
           else
           {
-            v22 = [v11 endDate];
+            startDate5 = [v11 endDate];
           }
 
 LABEL_17:
-          v29 = v22;
+          v29 = startDate5;
 
           v8 = v29;
         }
@@ -373,10 +373,10 @@ LABEL_24:
   return v8;
 }
 
-- (void)evictBefore:(id)a3
+- (void)evictBefore:(id)before
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beforeCopy = before;
   pthread_mutex_lock(&self->_lock);
   [(NSMutableDictionary *)self->_cache allKeys];
   v16 = 0u;
@@ -403,7 +403,7 @@ LABEL_24:
         v14[1] = 3221225472;
         v14[2] = __40__ATXContextHeuristicCache_evictBefore___block_invoke;
         v14[3] = &unk_278C3CD80;
-        v15 = v4;
+        v15 = beforeCopy;
         v11 = [v10 _pas_filteredArrayWithTest:v14];
         [(NSMutableDictionary *)self->_cache setObject:v11 forKeyedSubscript:v9];
       }
@@ -448,20 +448,20 @@ uint64_t __40__ATXContextHeuristicCache_evictBefore___block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (void)evict:(id)a3
+- (void)evict:(id)evict
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  evictCopy = evict;
   v5 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = evictCopy;
     _os_log_impl(&dword_23E3EA000, v5, OS_LOG_TYPE_DEFAULT, "[Cache internal] Removing %@", &v7, 0xCu);
   }
 
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_cache removeObjectForKey:evictCopy];
   pthread_mutex_unlock(&self->_lock);
 
   v6 = *MEMORY[0x277D85DE8];
@@ -473,9 +473,9 @@ uint64_t __40__ATXContextHeuristicCache_evictBefore___block_invoke(uint64_t a1, 
   v3 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ATXContextHeuristicCache *)self heuristicsCached];
+    heuristicsCached = [(ATXContextHeuristicCache *)self heuristicsCached];
     v8 = 138412290;
-    v9 = v4;
+    v9 = heuristicsCached;
     _os_log_impl(&dword_23E3EA000, v3, OS_LOG_TYPE_DEFAULT, "[Cache internal] Removing all heuristics %@", &v8, 0xCu);
   }
 

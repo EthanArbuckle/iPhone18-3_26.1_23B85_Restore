@@ -1,11 +1,11 @@
 @interface HKQuantityDatum
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKQuantityDatum)init;
-- (HKQuantityDatum)initWithCoder:(id)a3;
-- (HKQuantityDatum)initWithIdentifier:(id)a3 dateInterval:(id)a4 quantity:(id)a5 resumeContext:(id)a6;
+- (HKQuantityDatum)initWithCoder:(id)coder;
+- (HKQuantityDatum)initWithIdentifier:(id)identifier dateInterval:(id)interval quantity:(id)quantity resumeContext:(id)context;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQuantityDatum
@@ -20,30 +20,30 @@
   return 0;
 }
 
-- (HKQuantityDatum)initWithIdentifier:(id)a3 dateInterval:(id)a4 quantity:(id)a5 resumeContext:(id)a6
+- (HKQuantityDatum)initWithIdentifier:(id)identifier dateInterval:(id)interval quantity:(id)quantity resumeContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  quantityCopy = quantity;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = HKQuantityDatum;
   v14 = [(HKQuantityDatum *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     UUID = v14->_UUID;
     v14->_UUID = v15;
 
-    v17 = [v11 copy];
+    v17 = [intervalCopy copy];
     dateInterval = v14->_dateInterval;
     v14->_dateInterval = v17;
 
-    v19 = [v12 copy];
+    v19 = [quantityCopy copy];
     quantity = v14->_quantity;
     v14->_quantity = v19;
 
-    v21 = [v13 copy];
+    v21 = [contextCopy copy];
     resumeContext = v14->_resumeContext;
     v14->_resumeContext = v21;
   }
@@ -51,39 +51,39 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"hkqd_id"];
-  [v5 encodeObject:self->_dateInterval forKey:@"hkqd_dt"];
-  [v5 encodeObject:self->_quantity forKey:@"hkqd_qt"];
-  [v5 encodeObject:self->_resumeContext forKey:@"hkqd_cxt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"hkqd_id"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"hkqd_dt"];
+  [coderCopy encodeObject:self->_quantity forKey:@"hkqd_qt"];
+  [coderCopy encodeObject:self->_resumeContext forKey:@"hkqd_cxt"];
 }
 
-- (HKQuantityDatum)initWithCoder:(id)a3
+- (HKQuantityDatum)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_id"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_dt"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_qt"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_cxt"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_id"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_dt"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_qt"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hkqd_cxt"];
 
   v9 = [(HKQuantityDatum *)self initWithIdentifier:v5 dateInterval:v6 quantity:v7 resumeContext:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(NSUUID *)self->_UUID isEqual:v4[1]]|| ![(NSDateInterval *)self->_dateInterval isEqual:v4[3]]|| ![(HKQuantity *)self->_quantity isEqual:v4[2]])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(NSUUID *)self->_UUID isEqual:equalCopy[1]]|| ![(NSDateInterval *)self->_dateInterval isEqual:equalCopy[3]]|| ![(HKQuantity *)self->_quantity isEqual:equalCopy[2]])
   {
     goto LABEL_8;
   }
 
   resumeContext = self->_resumeContext;
-  v6 = v4[4];
+  v6 = equalCopy[4];
   if (resumeContext == v6)
   {
     v7 = 1;
@@ -117,10 +117,10 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HKQuantityDatum *)self UUID];
-  v5 = [(HKQuantityDatum *)self dateInterval];
-  v6 = [(HKQuantityDatum *)self quantity];
-  v7 = [v3 stringWithFormat:@"<%@: %@, quantity: %@>", v4, v5, v6];
+  uUID = [(HKQuantityDatum *)self UUID];
+  dateInterval = [(HKQuantityDatum *)self dateInterval];
+  quantity = [(HKQuantityDatum *)self quantity];
+  v7 = [v3 stringWithFormat:@"<%@: %@, quantity: %@>", uUID, dateInterval, quantity];
 
   return v7;
 }

@@ -1,19 +1,19 @@
 @interface ICTextBackgroundView
-- (ICTextBackgroundView)initWithCoder:(id)a3;
-- (ICTextBackgroundView)initWithFrame:(CGRect)a3;
+- (ICTextBackgroundView)initWithCoder:(id)coder;
+- (ICTextBackgroundView)initWithFrame:(CGRect)frame;
 - (UIView)contentView;
 - (id)backgroundColor;
 - (void)createLayout;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation ICTextBackgroundView
 
-- (ICTextBackgroundView)initWithFrame:(CGRect)a3
+- (ICTextBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICTextBackgroundView;
-  v3 = [(ICTextBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICTextBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,20 +23,20 @@
   return v4;
 }
 
-- (ICTextBackgroundView)initWithCoder:(id)a3
+- (ICTextBackgroundView)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = ICTextBackgroundView;
-  v3 = [(ICTextBackgroundView *)&v10 initWithCoder:a3];
+  v3 = [(ICTextBackgroundView *)&v10 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
     [(ICTextBackgroundView *)v3 createLayout];
     v9.receiver = v4;
     v9.super_class = ICTextBackgroundView;
-    v5 = [(ICTextBackgroundView *)&v9 backgroundColor];
-    v6 = [(ICTextBackgroundView *)v4 contentView];
-    [v6 setBackgroundColor:v5];
+    backgroundColor = [(ICTextBackgroundView *)&v9 backgroundColor];
+    contentView = [(ICTextBackgroundView *)v4 contentView];
+    [contentView setBackgroundColor:backgroundColor];
 
     v8.receiver = v4;
     v8.super_class = ICTextBackgroundView;
@@ -49,23 +49,23 @@
 - (void)createLayout
 {
   [(ICTextBackgroundView *)self setUserInteractionEnabled:0];
-  v3 = [(ICTextBackgroundView *)self contentView];
-  [(ICTextBackgroundView *)self addSubview:v3];
+  contentView = [(ICTextBackgroundView *)self contentView];
+  [(ICTextBackgroundView *)self addSubview:contentView];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(ICTextBackgroundView *)self contentView];
-  v3 = [v2 backgroundColor];
+  contentView = [(ICTextBackgroundView *)self contentView];
+  backgroundColor = [contentView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ICTextBackgroundView *)self contentView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  contentView = [(ICTextBackgroundView *)self contentView];
+  [contentView setBackgroundColor:colorCopy];
 }
 
 - (UIView)contentView

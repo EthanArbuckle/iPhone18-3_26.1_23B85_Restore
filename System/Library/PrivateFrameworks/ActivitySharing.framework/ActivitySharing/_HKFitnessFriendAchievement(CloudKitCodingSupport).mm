@@ -10,23 +10,23 @@
 - (ASCodableCloudKitAchievement)codableAchievement
 {
   v2 = objc_alloc_init(ASCodableCloudKitAchievement);
-  v3 = _ASCodableCloudKitSampleForSample(a1);
+  v3 = _ASCodableCloudKitSampleForSample(self);
   [(ASCodableCloudKitAchievement *)v2 setSample:v3];
 
-  v4 = [a1 completedDate];
-  [v4 timeIntervalSinceReferenceDate];
+  completedDate = [self completedDate];
+  [completedDate timeIntervalSinceReferenceDate];
   [(ASCodableCloudKitAchievement *)v2 setCompletedDate:?];
 
-  v5 = [a1 value];
-  v6 = [v5 objCType];
-  if (v6)
+  value = [self value];
+  objCType = [value objCType];
+  if (objCType)
   {
-    v7 = *v6 & 0xFD;
+    v7 = *objCType & 0xFD;
 
     if (v7 == 100)
     {
-      v8 = [a1 value];
-      [v8 doubleValue];
+      value2 = [self value];
+      [value2 doubleValue];
       [(ASCodableCloudKitAchievement *)v2 setDoubleValue:?];
       goto LABEL_6;
     }
@@ -36,19 +36,19 @@
   {
   }
 
-  v8 = [a1 value];
-  -[ASCodableCloudKitAchievement setIntValue:](v2, "setIntValue:", [v8 longLongValue]);
+  value2 = [self value];
+  -[ASCodableCloudKitAchievement setIntValue:](v2, "setIntValue:", [value2 longLongValue]);
 LABEL_6:
 
-  v9 = [a1 templateUniqueName];
+  templateUniqueName = [self templateUniqueName];
   [(ASCodableCloudKitAchievement *)v2 setWorkoutActivityType:ACHWorkoutActivityTypeForTemplateUniqueName()];
 
-  v10 = [a1 templateUniqueName];
+  templateUniqueName2 = [self templateUniqueName];
   v11 = ACHLegacyDefinitionIdentifierForTemplateUniqueName();
   [(ASCodableCloudKitAchievement *)v2 setDefinitionIdentifier:v11];
 
-  v12 = [a1 templateUniqueName];
-  [(ASCodableCloudKitAchievement *)v2 setTemplateUniqueName:v12];
+  templateUniqueName3 = [self templateUniqueName];
+  [(ASCodableCloudKitAchievement *)v2 setTemplateUniqueName:templateUniqueName3];
 
   return v2;
 }
@@ -59,16 +59,16 @@ LABEL_6:
   v7 = a3;
   v8 = [v6 alloc];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [a1 UUID];
-  v11 = [v9 stringWithFormat:@"%@-%@", @"ActivitySharingAchievement", v10];
+  uUID = [self UUID];
+  v11 = [v9 stringWithFormat:@"%@-%@", @"ActivitySharingAchievement", uUID];
   v12 = [v8 initWithRecordName:v11 zoneID:v7];
 
   v13 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingAchievement" recordID:v12];
   _ASUpdateSchemaVersionOnRecord(2, v13, a4);
-  v14 = [a1 codableAchievement];
-  v15 = [v14 data];
-  v16 = [v13 encryptedValues];
-  [v16 setObject:v15 forKeyedSubscript:@"EncryptedData"];
+  codableAchievement = [self codableAchievement];
+  data = [codableAchievement data];
+  encryptedValues = [v13 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   return v13;
 }
@@ -79,8 +79,8 @@ LABEL_6:
   v7 = a4;
   if (_ASCloudKitSchemaVersionForRecord(v6) == 2)
   {
-    v8 = [v6 encryptedValues];
-    v9 = [v8 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [v6 encryptedValues];
+    v9 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@ LABEL_6:
     if (v10)
     {
       v12 = [[ASCodableCloudKitAchievement alloc] initWithData:v10];
-      v11 = [a1 fitnessFriendAchievementWithCodableAchievement:v12 friendUUID:v7];
+      v11 = [self fitnessFriendAchievementWithCodableAchievement:v12 friendUUID:v7];
     }
 
     else
@@ -133,13 +133,13 @@ LABEL_6:
   v8 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
   if ([v5 hasTemplateUniqueName])
   {
-    v9 = [v5 templateUniqueName];
-    if (v9)
+    templateUniqueName = [v5 templateUniqueName];
+    if (templateUniqueName)
     {
 LABEL_3:
-      v10 = [v5 hasDoubleValue];
+      hasDoubleValue = [v5 hasDoubleValue];
       v11 = MEMORY[0x277CCABB0];
-      if (v10)
+      if (hasDoubleValue)
       {
         [v5 doubleValue];
         [v11 numberWithDouble:?];
@@ -150,11 +150,11 @@ LABEL_3:
         [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v5, "intValue")}];
       }
       v15 = ;
-      v14 = [MEMORY[0x277CCDDC0] achievementWithTemplateUniqueName:v9 completedDate:v8 value:v15 friendUUID:v6];
+      v14 = [MEMORY[0x277CCDDC0] achievementWithTemplateUniqueName:templateUniqueName completedDate:v8 value:v15 friendUUID:v6];
       v16 = MEMORY[0x277CCAD78];
-      v17 = [v5 sample];
-      v18 = [v17 uuid];
-      v19 = [v16 hk_UUIDWithData:v18];
+      sample = [v5 sample];
+      uuid = [sample uuid];
+      v19 = [v16 hk_UUIDWithData:uuid];
 
       [v14 _setUUID:v19];
       goto LABEL_11;
@@ -163,11 +163,11 @@ LABEL_3:
 
   else
   {
-    v12 = [v5 definitionIdentifier];
+    definitionIdentifier = [v5 definitionIdentifier];
     [v5 workoutActivityType];
-    v9 = ACHTemplateUniqueNameForLegacyAchievementInfo();
+    templateUniqueName = ACHTemplateUniqueNameForLegacyAchievementInfo();
 
-    if (v9)
+    if (templateUniqueName)
     {
       goto LABEL_3;
     }

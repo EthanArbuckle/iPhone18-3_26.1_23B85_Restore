@@ -1,6 +1,6 @@
 @interface NAUILayoutConstraintSet
 - (BOOL)isActive;
-- (NAUILayoutConstraintSet)initWithOwningView:(id)a3 constraintBuilder:(id)a4;
+- (NAUILayoutConstraintSet)initWithOwningView:(id)view constraintBuilder:(id)builder;
 - (UIView)owningView;
 - (void)activateIfNeeded;
 - (void)invalidate;
@@ -9,10 +9,10 @@
 
 @implementation NAUILayoutConstraintSet
 
-- (NAUILayoutConstraintSet)initWithOwningView:(id)a3 constraintBuilder:(id)a4
+- (NAUILayoutConstraintSet)initWithOwningView:(id)view constraintBuilder:(id)builder
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, view);
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = NAUILayoutConstraintSet;
   v7 = [(NAUILayoutConstraintSet *)&v12 init];
@@ -21,7 +21,7 @@
     v8 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v7->_owningView, v8);
 
-    v9 = MEMORY[0x25F8702F0](v6);
+    v9 = MEMORY[0x25F8702F0](builderCopy);
     builder = v7->_builder;
     v7->_builder = v9;
   }
@@ -32,8 +32,8 @@
 
 - (BOOL)isActive
 {
-  v2 = [(NAUILayoutConstraintSet *)self constraints];
-  v3 = v2 != 0;
+  constraints = [(NAUILayoutConstraintSet *)self constraints];
+  v3 = constraints != 0;
 
   return v3;
 }
@@ -42,13 +42,13 @@
 {
   if (![(NAUILayoutConstraintSet *)self isActive])
   {
-    v3 = [(NAUILayoutConstraintSet *)self owningView];
+    owningView = [(NAUILayoutConstraintSet *)self owningView];
 
-    if (v3)
+    if (owningView)
     {
-      v4 = [(NAUILayoutConstraintSet *)self builder];
-      v5 = [(NAUILayoutConstraintSet *)self owningView];
-      v6 = (v4)[2](v4, v5);
+      builder = [(NAUILayoutConstraintSet *)self builder];
+      owningView2 = [(NAUILayoutConstraintSet *)self owningView];
+      v6 = (builder)[2](builder, owningView2);
       v7 = v6;
       if (v6)
       {
@@ -63,8 +63,8 @@
       [(NAUILayoutConstraintSet *)self setConstraints:v8];
 
       v9 = MEMORY[0x277CFD388];
-      v10 = [(NAUILayoutConstraintSet *)self constraints];
-      [v9 activateConstraints:v10];
+      constraints = [(NAUILayoutConstraintSet *)self constraints];
+      [v9 activateConstraints:constraints];
     }
   }
 }
@@ -74,29 +74,29 @@
   if ([(NAUILayoutConstraintSet *)self isActive])
   {
     v3 = MEMORY[0x277CFD388];
-    v4 = [(NAUILayoutConstraintSet *)self constraints];
-    [v3 deactivateConstraints:v4];
+    constraints = [(NAUILayoutConstraintSet *)self constraints];
+    [v3 deactivateConstraints:constraints];
 
     [(NAUILayoutConstraintSet *)self setConstraints:0];
-    v5 = [(NAUILayoutConstraintSet *)self owningView];
-    [v5 setNeedsUpdateConstraints];
+    owningView = [(NAUILayoutConstraintSet *)self owningView];
+    [owningView setNeedsUpdateConstraints];
   }
 }
 
 - (void)updateConstraintConstants
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(NAUILayoutConstraintSet *)self owningView];
-  if (v3)
+  owningView = [(NAUILayoutConstraintSet *)self owningView];
+  if (owningView)
   {
-    v4 = v3;
-    v5 = [(NAUILayoutConstraintSet *)self isActive];
+    v4 = owningView;
+    isActive = [(NAUILayoutConstraintSet *)self isActive];
 
-    if (v5)
+    if (isActive)
     {
-      v6 = [(NAUILayoutConstraintSet *)self builder];
-      v7 = [(NAUILayoutConstraintSet *)self owningView];
-      v8 = (v6)[2](v6, v7);
+      builder = [(NAUILayoutConstraintSet *)self builder];
+      owningView2 = [(NAUILayoutConstraintSet *)self owningView];
+      v8 = (builder)[2](builder, owningView2);
       v9 = v8;
       v10 = MEMORY[0x277CBEBF8];
       if (v8)
@@ -127,13 +127,13 @@
             }
 
             v16 = *(*(&v22 + 1) + 8 * v15);
-            v17 = [(NAUILayoutConstraintSet *)self constraints];
+            constraints = [(NAUILayoutConstraintSet *)self constraints];
             v21[0] = MEMORY[0x277D85DD0];
             v21[1] = 3221225472;
             v21[2] = __52__NAUILayoutConstraintSet_updateConstraintConstants__block_invoke;
             v21[3] = &unk_279966768;
             v21[4] = v16;
-            v18 = [v17 na_firstObjectPassingTest:v21];
+            v18 = [constraints na_firstObjectPassingTest:v21];
 
             if (v18)
             {
@@ -143,8 +143,8 @@
 
             else
             {
-              v19 = [(NAUILayoutConstraintSet *)self constraints];
-              NSLog(&cfstr_FoundNewConstr.isa, v16, "[NAUILayoutConstraintSet updateConstraintConstants]", v19);
+              constraints2 = [(NAUILayoutConstraintSet *)self constraints];
+              NSLog(&cfstr_FoundNewConstr.isa, v16, "[NAUILayoutConstraintSet updateConstraintConstants]", constraints2);
             }
 
             ++v15;

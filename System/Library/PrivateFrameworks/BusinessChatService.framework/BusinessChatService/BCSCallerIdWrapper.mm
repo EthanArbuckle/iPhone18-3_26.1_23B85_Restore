@@ -1,13 +1,13 @@
 @interface BCSCallerIdWrapper
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSCallerIdWrapper
@@ -18,27 +18,27 @@
   v8.receiver = self;
   v8.super_class = BCSCallerIdWrapper;
   v4 = [(BCSCallerIdWrapper *)&v8 description];
-  v5 = [(BCSCallerIdWrapper *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSCallerIdWrapper *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   phone = self->_phone;
   if (phone)
   {
-    [v3 setObject:phone forKey:@"phone"];
+    [dictionary setObject:phone forKey:@"phone"];
   }
 
   message = self->_message;
   if (message)
   {
-    v7 = [(BCSCallerIdMessage *)message dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"message"];
+    dictionaryRepresentation = [(BCSCallerIdMessage *)message dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"message"];
   }
 
   if (*&self->_has)
@@ -50,14 +50,14 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -68,18 +68,18 @@
       while (1)
       {
         LOBYTE(v27[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v27 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v27 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v27[0] & 0x7F) << v6;
@@ -97,9 +97,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -114,18 +114,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v27[0]) = 0;
-          v21 = [a3 position] + 1;
-          if (v21 >= [a3 position] && (v22 = objc_msgSend(a3, "position") + 1, v22 <= objc_msgSend(a3, "length")))
+          v21 = [from position] + 1;
+          if (v21 >= [from position] && (v22 = objc_msgSend(from, "position") + 1, v22 <= objc_msgSend(from, "length")))
           {
-            v23 = [a3 data];
-            [v23 getBytes:v27 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:v27 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v20 |= (v27[0] & 0x7F) << v18;
@@ -143,7 +143,7 @@ LABEL_15:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v24 = 0;
         }
@@ -163,7 +163,7 @@ LABEL_38:
         objc_storeStrong(&self->_message, v17);
         v27[0] = 0;
         v27[1] = 0;
-        if (!PBReaderPlaceMark() || !BCSCallerIdMessageReadFrom(v17, a3))
+        if (!PBReaderPlaceMark() || !BCSCallerIdMessageReadFrom(v17, from))
         {
 
           return 0;
@@ -184,70 +184,70 @@ LABEL_38:
         return 0;
       }
 
-      v25 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v25 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_phone)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_message)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     modTime = self->_modTime;
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_phone)
   {
-    [v4 setPhone:?];
-    v4 = v5;
+    [toCopy setPhone:?];
+    toCopy = v5;
   }
 
   if (self->_message)
   {
     [v5 setMessage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_modTime;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = self->_modTime;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_phone copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_phone copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(BCSCallerIdMessage *)self->_message copyWithZone:a3];
+  v8 = [(BCSCallerIdMessage *)self->_message copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -260,16 +260,16 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   phone = self->_phone;
-  if (phone | *(v4 + 3))
+  if (phone | *(equalCopy + 3))
   {
     if (![(NSString *)phone isEqual:?])
     {
@@ -278,7 +278,7 @@ LABEL_38:
   }
 
   message = self->_message;
-  if (message | *(v4 + 2))
+  if (message | *(equalCopy + 2))
   {
     if (![(BCSCallerIdMessage *)message isEqual:?])
     {
@@ -286,10 +286,10 @@ LABEL_38:
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_modTime == *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_modTime == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_11;
@@ -321,18 +321,18 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[3])
   {
     [(BCSCallerIdWrapper *)self setPhone:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   message = self->_message;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (message)
   {
     if (!v6)
@@ -353,11 +353,11 @@ LABEL_11:
     [(BCSCallerIdWrapper *)self setMessage:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_modTime = v4[1];
+    self->_modTime = fromCopy[1];
     *&self->_has |= 1u;
   }
 

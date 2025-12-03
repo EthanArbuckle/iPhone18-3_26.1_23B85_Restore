@@ -1,36 +1,36 @@
 @interface NEURLParser
-+ (id)matchingStringsForURL:(const char *)a3;
++ (id)matchingStringsForURL:(const char *)l;
 @end
 
 @implementation NEURLParser
 
-+ (id)matchingStringsForURL:(const char *)a3
++ (id)matchingStringsForURL:(const char *)l
 {
   v76 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
     v4 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+    v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:l];
     v6 = [v4 initWithString:v5];
 
     v7 = MEMORY[0x1E695DFA8];
-    v8 = [v6 pathComponents];
-    v9 = [v7 setWithCapacity:{objc_msgSend(v8, "count")}];
+    pathComponents = [v6 pathComponents];
+    v9 = [v7 setWithCapacity:{objc_msgSend(pathComponents, "count")}];
 
-    v10 = [v6 host];
+    host = [v6 host];
 
-    if (v10)
+    if (host)
     {
-      v67 = a3;
-      v11 = [v6 host];
-      if (([v11 hasPrefix:@"www."] & 1) == 0)
+      lCopy = l;
+      host2 = [v6 host];
+      if (([host2 hasPrefix:@"www."] & 1) == 0)
       {
-        v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", @"www.", v11];
+        v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", @"www.", host2];
 
-        v11 = v12;
+        host2 = v12;
       }
 
-      v13 = v11;
+      v13 = host2;
       objc_opt_self();
       v68 = v13;
       v69 = v6;
@@ -80,8 +80,8 @@
         v21 = 0;
       }
 
-      v22 = [v21 allObjects];
-      [v9 addObjectsFromArray:v22];
+      allObjects = [v21 allObjects];
+      [v9 addObjectsFromArray:allObjects];
 
       v23 = [v13 stringByReplacingOccurrencesOfString:@"www." withString:&stru_1F403BB50];
       if (v23)
@@ -155,13 +155,13 @@
         }
 
         v6 = v69;
-        v38 = [v69 query];
+        query = [v69 query];
 
-        if (v38)
+        if (query)
         {
           v39 = MEMORY[0x1E696AEC0];
-          v40 = [v69 query];
-          v41 = [v39 stringWithFormat:@"?%@", v40];
+          query2 = [v69 query];
+          v41 = [v39 stringWithFormat:@"?%@", query2];
 
           v42 = [v25 stringByAppendingString:v41];
 
@@ -179,7 +179,7 @@
             [v9 addObject:v46];
           }
 
-          v47 = v67;
+          v47 = lCopy;
           if (([v43 hasSuffix:@"/"] & 1) == 0)
           {
             v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", v43, @"/"];
@@ -191,16 +191,16 @@
         {
           v43 = v26;
           v42 = v25;
-          v47 = v67;
+          v47 = lCopy;
         }
 
-        v49 = [v69 fragment];
+        fragment = [v69 fragment];
 
-        if (v49)
+        if (fragment)
         {
           v50 = MEMORY[0x1E696AEC0];
-          v51 = [v69 fragment];
-          v52 = [v50 stringWithFormat:@"#%@", v51];
+          fragment2 = [v69 fragment];
+          v52 = [v50 stringWithFormat:@"#%@", fragment2];
 
           v53 = [v42 stringByAppendingString:v52];
 
@@ -245,12 +245,12 @@
 
         if (v9)
         {
-          v10 = [v9 copy];
+          host = [v9 copy];
         }
 
         else
         {
-          v10 = 0;
+          host = 0;
         }
 
         v23 = v65;
@@ -258,19 +258,19 @@
 
       else
       {
-        v10 = 0;
+        host = 0;
       }
     }
   }
 
   else
   {
-    v10 = 0;
+    host = 0;
   }
 
   v63 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return host;
 }
 
 @end

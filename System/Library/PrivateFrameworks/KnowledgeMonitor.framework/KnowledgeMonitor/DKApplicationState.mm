@@ -1,32 +1,32 @@
 @interface DKApplicationState
-- (DKApplicationState)initWithDisplayType:(unint64_t)a3 element:(id)a4;
+- (DKApplicationState)initWithDisplayType:(unint64_t)type element:(id)element;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation DKApplicationState
 
-- (DKApplicationState)initWithDisplayType:(unint64_t)a3 element:(id)a4
+- (DKApplicationState)initWithDisplayType:(unint64_t)type element:(id)element
 {
-  v6 = a4;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = DKApplicationState;
   v7 = [(DKApplicationState *)&v15 init];
   if (v7)
   {
-    v8 = [v6 bundleIdentifier];
-    v9 = v8;
-    if (v8)
+    bundleIdentifier = [elementCopy bundleIdentifier];
+    v9 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v10 = v8;
+      identifier = bundleIdentifier;
     }
 
     else
     {
-      v10 = [v6 identifier];
+      identifier = [elementCopy identifier];
     }
 
-    v11 = v10;
+    v11 = identifier;
 
     if ([&unk_2838F77C0 containsObject:v11])
     {
@@ -38,11 +38,11 @@
     application = v7->_application;
     v7->_application = v12;
 
-    v7->_level = [v6 level];
-    v7->_zIndex = [v6 zOrderIndex];
-    v7->_hasKeyboardFocus = [v6 hasKeyboardFocus];
-    v7->_role = [v6 layoutRole];
-    v7->_displayType = a3;
+    v7->_level = [elementCopy level];
+    v7->_zIndex = [elementCopy zOrderIndex];
+    v7->_hasKeyboardFocus = [elementCopy hasKeyboardFocus];
+    v7->_role = [elementCopy layoutRole];
+    v7->_displayType = type;
   }
 
   return v7;
@@ -63,13 +63,13 @@
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 level];
-  v6 = [(DKApplicationState *)self level];
-  v7 = v5 == v6;
-  if (v5 < v6)
+  compareCopy = compare;
+  level = [compareCopy level];
+  level2 = [(DKApplicationState *)self level];
+  v7 = level == level2;
+  if (level < level2)
   {
     v8 = -1;
   }
@@ -82,30 +82,30 @@
   if (v7)
   {
     zIndex = self->_zIndex;
-    v10 = [v4 zIndex];
-    v11 = zIndex == v10;
-    v8 = zIndex < v10 ? -1 : 1;
+    zIndex = [compareCopy zIndex];
+    v11 = zIndex == zIndex;
+    v8 = zIndex < zIndex ? -1 : 1;
     if (v11)
     {
-      v12 = [v4 hasKeyboardFocus];
+      hasKeyboardFocus = [compareCopy hasKeyboardFocus];
       hasKeyboardFocus = self->_hasKeyboardFocus;
-      v8 = v12 < hasKeyboardFocus ? -1 : 1;
-      if (v12 == hasKeyboardFocus)
+      v8 = hasKeyboardFocus < hasKeyboardFocus ? -1 : 1;
+      if (hasKeyboardFocus == hasKeyboardFocus)
       {
-        v14 = [v4 role];
+        role = [compareCopy role];
         role = self->_role;
-        v8 = v14 < role ? -1 : 1;
-        if (v14 == role)
+        v8 = role < role ? -1 : 1;
+        if (role == role)
         {
           displayType = self->_displayType;
-          v17 = [v4 displayType];
+          displayType = [compareCopy displayType];
           v18 = -1;
-          if (displayType >= v17)
+          if (displayType >= displayType)
           {
             v18 = 1;
           }
 
-          if (displayType == v17)
+          if (displayType == displayType)
           {
             v8 = 0;
           }

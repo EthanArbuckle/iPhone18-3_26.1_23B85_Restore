@@ -1,7 +1,7 @@
 @interface HSISPCapturePlugIn
 + (id)defaultPlugIn;
 - (HSISPCapturePlugIn)init;
-- (id)device:(id *)a3;
+- (id)device:(id *)device;
 - (void)init;
 @end
 
@@ -56,7 +56,7 @@ LABEL_12:
   {
     v8 = [v7 rangeAtIndex:1];
     v10 = [v6 substringWithRange:{v8, v9}];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
   else
@@ -66,23 +66,23 @@ LABEL_12:
       [(HSISPCapturePlugIn *)v6 init];
     }
 
-    v11 = 0;
+    integerValue = 0;
   }
 
-  if (v11 < 1)
+  if (integerValue < 1)
   {
     v13 = 0;
     goto LABEL_14;
   }
 
-  v35 = self;
+  selfCopy = self;
   while (1)
   {
-    CFProperty = [MEMORY[0x277CCACA8] stringWithFormat:@"H%ld", v11];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ISPCaptureDeviceCreate", CFProperty];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/MediaCapture/%@ISP.mediacapture", CFProperty];
-    v18 = v16;
-    v19 = v17;
+    CFProperty = [MEMORY[0x277CCACA8] stringWithFormat:@"H%ld", integerValue];
+    cFProperty = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ISPCaptureDeviceCreate", CFProperty];
+    cFProperty2 = [MEMORY[0x277CCACA8] stringWithFormat:@"/System/Library/MediaCapture/%@ISP.mediacapture", CFProperty];
+    v18 = cFProperty;
+    v19 = cFProperty2;
     v20 = HSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -91,8 +91,8 @@ LABEL_12:
       _os_log_debug_impl(&dword_2510E6000, v20, OS_LOG_TYPE_DEBUG, "Will attempt to create plugin at path %@.", buf, 0xCu);
     }
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    v22 = [v21 fileExistsAtPath:v19];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v22 = [defaultManager fileExistsAtPath:v19];
 
     if ((v22 & 1) == 0)
     {
@@ -126,17 +126,17 @@ LABEL_12:
 
 LABEL_31:
 
-    if (v11-- < 2)
+    if (integerValue-- < 2)
     {
       v13 = 0;
-      self = v35;
+      self = selfCopy;
       goto LABEL_14;
     }
   }
 
   v25 = v24;
-  v26 = [v18 UTF8String];
-  v27 = dlsym(v25, v26);
+  uTF8String = [v18 UTF8String];
+  v27 = dlsym(v25, uTF8String);
   if (!v27)
   {
     v28 = HSLogHandle();
@@ -144,7 +144,7 @@ LABEL_31:
     {
       v29 = dlerror();
       *buf = 136315394;
-      v37 = v26;
+      v37 = uTF8String;
       v38 = 2080;
       v39 = v29;
       v30 = v28;
@@ -159,9 +159,9 @@ LABEL_35:
 
   v34 = v27;
 
-  self = v35;
-  v35->_createFunction = v34;
-  v13 = v35;
+  self = selfCopy;
+  selfCopy->_createFunction = v34;
+  v13 = selfCopy;
 
 LABEL_13:
 LABEL_14:
@@ -170,7 +170,7 @@ LABEL_14:
   return v13;
 }
 
-- (id)device:(id *)a3
+- (id)device:(id *)device
 {
   v28[1] = *MEMORY[0x277D85DE8];
   cf = 0;
@@ -181,7 +181,7 @@ LABEL_14:
     v6 = __HSDescribeFigDeviceStatus(v4);
     if (v6)
     {
-      if (a3)
+      if (device)
       {
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create FigCaptureDeviceRef! %@!", v6];
         v8 = MEMORY[0x277CCA9B8];
@@ -197,11 +197,11 @@ LABEL_12:
         v20 = [v8 errorWithDomain:v9 code:v10 userInfo:v19];
 
         v21 = v20;
-        *a3 = v20;
+        *device = v20;
       }
     }
 
-    else if (a3)
+    else if (device)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create FigCaptureDeviceRef!"];
       v7 = v17;
@@ -249,7 +249,7 @@ LABEL_14:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2510E6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Expected to find 2 matched regex groups {H\\d+, \\d+} in %@.", &v2, 0xCu);
   v1 = *MEMORY[0x277D85DE8];
 }

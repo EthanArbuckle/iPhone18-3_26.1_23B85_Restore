@@ -4,19 +4,19 @@
 - (id)createAuxiliaryRecordDeletionEvent;
 - (id)createSyncDownEvent;
 - (id)createSyncUpEvent;
-- (id)dictionaryRepresentationForRecord:(id)a3 withCoordinator:(id)a4;
+- (id)dictionaryRepresentationForRecord:(id)record withCoordinator:(id)coordinator;
 - (id)fileURL;
-- (id)symbolNameForRecordType:(id)a3;
-- (void)appendEvent:(id)a3;
+- (id)symbolNameForRecordType:(id)type;
+- (void)appendEvent:(id)event;
 - (void)persistEvents;
-- (void)syncCoordinator:(id)a3 didBeginSyncDownWithConfigurations:(id)a4;
-- (void)syncCoordinator:(id)a3 didFetchRecord:(id)a4 localBookmarkUUID:(id)a5 localBookmarkWasCreated:(BOOL)a6;
-- (void)syncCoordinator:(id)a3 didSendRecordBatch:(id)a4 deletedRecordIDBatch:(id)a5;
-- (void)syncCoordinatorDidBeginDeletingAuxiliaryRecords:(id)a3;
-- (void)syncCoordinatorDidBeginSyncUp:(id)a3;
-- (void)syncCoordinatorDidFinishDeletingAuxiliaryRecords:(id)a3;
-- (void)syncCoordinatorDidFinishSyncDown:(id)a3;
-- (void)syncCoordinatorDidFinishSyncUp:(id)a3;
+- (void)syncCoordinator:(id)coordinator didBeginSyncDownWithConfigurations:(id)configurations;
+- (void)syncCoordinator:(id)coordinator didFetchRecord:(id)record localBookmarkUUID:(id)d localBookmarkWasCreated:(BOOL)created;
+- (void)syncCoordinator:(id)coordinator didSendRecordBatch:(id)batch deletedRecordIDBatch:(id)dBatch;
+- (void)syncCoordinatorDidBeginDeletingAuxiliaryRecords:(id)records;
+- (void)syncCoordinatorDidBeginSyncUp:(id)up;
+- (void)syncCoordinatorDidFinishDeletingAuxiliaryRecords:(id)records;
+- (void)syncCoordinatorDidFinishSyncDown:(id)down;
+- (void)syncCoordinatorDidFinishSyncUp:(id)up;
 @end
 
 @implementation CloudTabGroupSyncDebugger
@@ -42,9 +42,9 @@
     events = v2->_events;
     v2->_events = v3;
 
-    v5 = [(CloudTabGroupSyncDebugger *)v2 fileURL];
+    fileURL = [(CloudTabGroupSyncDebugger *)v2 fileURL];
     v18 = 0;
-    v6 = [NSData dataWithContentsOfURL:v5 options:8 error:&v18];
+    v6 = [NSData dataWithContentsOfURL:fileURL options:8 error:&v18];
     v7 = v18;
 
     if (v6)
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)appendEvent:(id)a3
+- (void)appendEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
     [(NSMutableArray *)self->_events addObject:?];
     if ([(NSMutableArray *)self->_events count]>= 0x15)
@@ -142,30 +142,30 @@
   return v2;
 }
 
-- (id)dictionaryRepresentationForRecord:(id)a3 withCoordinator:(id)a4
+- (id)dictionaryRepresentationForRecord:(id)record withCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  coordinatorCopy = coordinator;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [v5 recordChangeTag];
-  [v7 setObject:v8 forKeyedSubscript:@"Change Tag"];
+  recordChangeTag = [recordCopy recordChangeTag];
+  [v7 setObject:recordChangeTag forKeyedSubscript:@"Change Tag"];
 
-  v9 = [v5 recordID];
-  v10 = [v9 ckShortDescription];
-  [v7 setObject:v10 forKeyedSubscript:@"Record ID"];
+  recordID = [recordCopy recordID];
+  ckShortDescription = [recordID ckShortDescription];
+  [v7 setObject:ckShortDescription forKeyedSubscript:@"Record ID"];
 
-  v11 = [v5 recordType];
+  recordType = [recordCopy recordType];
   v12 = v7;
-  [v7 setObject:v11 forKeyedSubscript:@"Record Type"];
+  [v7 setObject:recordType forKeyedSubscript:@"Record Type"];
 
-  v13 = v6;
-  v14 = [v6 _configurationForRecord:v5];
+  v13 = coordinatorCopy;
+  v14 = [coordinatorCopy _configurationForRecord:recordCopy];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v5;
-  obj = [v5 allKeys];
+  v15 = recordCopy;
+  obj = [recordCopy allKeys];
   v16 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
@@ -195,30 +195,30 @@
   return v12;
 }
 
-- (id)symbolNameForRecordType:(id)a3
+- (id)symbolNameForRecordType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqual:@"TabGroup"])
+  typeCopy = type;
+  if ([typeCopy isEqual:@"TabGroup"])
   {
     v4 = @"square.on.square";
   }
 
-  else if ([v3 isEqual:@"TabGroupTab"])
+  else if ([typeCopy isEqual:@"TabGroupTab"])
   {
     v4 = @"square.text.square";
   }
 
-  else if ([v3 isEqual:@"TabGroupScopedBookmarkList"])
+  else if ([typeCopy isEqual:@"TabGroupScopedBookmarkList"])
   {
     v4 = @"folder";
   }
 
-  else if ([v3 isEqual:@"TabGroupScopedBookmarkLeaf"])
+  else if ([typeCopy isEqual:@"TabGroupScopedBookmarkLeaf"])
   {
     v4 = @"bookmark";
   }
 
-  else if ([v3 isEqual:@"TabGroupTabParticipantPresence"])
+  else if ([typeCopy isEqual:@"TabGroupTabParticipantPresence"])
   {
     v4 = @"person.crop.circle";
   }
@@ -241,9 +241,9 @@
     v5 = v9;
     if (v4)
     {
-      v6 = [(CloudTabGroupSyncDebugger *)self fileURL];
+      fileURL = [(CloudTabGroupSyncDebugger *)self fileURL];
       v8 = v5;
-      [v4 writeToURL:v6 options:0 error:&v8];
+      [v4 writeToURL:fileURL options:0 error:&v8];
       v7 = v8;
 
       v5 = v7;
@@ -251,14 +251,14 @@
   }
 }
 
-- (void)syncCoordinatorDidBeginSyncUp:(id)a3
+- (void)syncCoordinatorDidBeginSyncUp:(id)up
 {
-  v4 = [(CloudTabGroupSyncDebugger *)self createSyncUpEvent];
+  createSyncUpEvent = [(CloudTabGroupSyncDebugger *)self createSyncUpEvent];
   currentSyncUpEvent = self->_currentSyncUpEvent;
-  self->_currentSyncUpEvent = v4;
+  self->_currentSyncUpEvent = createSyncUpEvent;
 }
 
-- (void)syncCoordinatorDidFinishSyncUp:(id)a3
+- (void)syncCoordinatorDidFinishSyncUp:(id)up
 {
   v4 = +[NSDate now];
   [(CloudTabGroupSyncEvent *)self->_currentSyncUpEvent setEndDate:v4];
@@ -268,22 +268,22 @@
   self->_currentSyncUpEvent = 0;
 }
 
-- (void)syncCoordinator:(id)a3 didBeginSyncDownWithConfigurations:(id)a4
+- (void)syncCoordinator:(id)coordinator didBeginSyncDownWithConfigurations:(id)configurations
 {
-  v5 = a4;
-  v6 = [(CloudTabGroupSyncDebugger *)self createSyncDownEvent];
+  configurationsCopy = configurations;
+  createSyncDownEvent = [(CloudTabGroupSyncDebugger *)self createSyncDownEvent];
   currentSyncDownEvent = self->_currentSyncDownEvent;
-  self->_currentSyncDownEvent = v6;
+  self->_currentSyncDownEvent = createSyncDownEvent;
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10007E080;
   v8[3] = &unk_100135148;
   v8[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [configurationsCopy enumerateKeysAndObjectsUsingBlock:v8];
 }
 
-- (void)syncCoordinatorDidFinishSyncDown:(id)a3
+- (void)syncCoordinatorDidFinishSyncDown:(id)down
 {
   if (self->_currentSyncDownEvent)
   {
@@ -296,14 +296,14 @@
   }
 }
 
-- (void)syncCoordinatorDidBeginDeletingAuxiliaryRecords:(id)a3
+- (void)syncCoordinatorDidBeginDeletingAuxiliaryRecords:(id)records
 {
-  v4 = [(CloudTabGroupSyncDebugger *)self createAuxiliaryRecordDeletionEvent];
+  createAuxiliaryRecordDeletionEvent = [(CloudTabGroupSyncDebugger *)self createAuxiliaryRecordDeletionEvent];
   currentSyncUpEvent = self->_currentSyncUpEvent;
-  self->_currentSyncUpEvent = v4;
+  self->_currentSyncUpEvent = createAuxiliaryRecordDeletionEvent;
 }
 
-- (void)syncCoordinatorDidFinishDeletingAuxiliaryRecords:(id)a3
+- (void)syncCoordinatorDidFinishDeletingAuxiliaryRecords:(id)records
 {
   v4 = +[NSDate now];
   [(CloudTabGroupSyncEvent *)self->_currentSyncUpEvent setEndDate:v4];
@@ -313,11 +313,11 @@
   self->_currentSyncUpEvent = 0;
 }
 
-- (void)syncCoordinator:(id)a3 didSendRecordBatch:(id)a4 deletedRecordIDBatch:(id)a5
+- (void)syncCoordinator:(id)coordinator didSendRecordBatch:(id)batch deletedRecordIDBatch:(id)dBatch
 {
-  v33 = a3;
-  v8 = a4;
-  v30 = a5;
+  coordinatorCopy = coordinator;
+  batchCopy = batch;
+  dBatchCopy = dBatch;
   v9 = objc_alloc_init(CloudTabGroupSyncEvent);
   [(CloudTabGroupSyncEvent *)v9 setTitle:@"Send Batch"];
   [(CloudTabGroupSyncEvent *)v9 setSymbolName:@"paperplane"];
@@ -325,7 +325,7 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v8;
+  obj = batchCopy;
   v10 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v10)
   {
@@ -344,15 +344,15 @@
         v14 = *(*(&v38 + 1) + 8 * v13);
         v15 = objc_alloc_init(CloudTabGroupSyncEvent);
         [(CloudTabGroupSyncEvent *)v15 setTitle:@"Save Record"];
-        v16 = [v14 recordID];
-        v17 = [v16 ckShortDescription];
-        [(CloudTabGroupSyncEvent *)v15 setSubtitle:v17];
+        recordID = [v14 recordID];
+        ckShortDescription = [recordID ckShortDescription];
+        [(CloudTabGroupSyncEvent *)v15 setSubtitle:ckShortDescription];
 
-        v18 = [v14 recordType];
-        v19 = [(CloudTabGroupSyncDebugger *)self symbolNameForRecordType:v18];
+        recordType = [v14 recordType];
+        v19 = [(CloudTabGroupSyncDebugger *)self symbolNameForRecordType:recordType];
         [(CloudTabGroupSyncEvent *)v15 setSymbolName:v19];
 
-        v20 = [(CloudTabGroupSyncDebugger *)self dictionaryRepresentationForRecord:v14 withCoordinator:v33];
+        v20 = [(CloudTabGroupSyncDebugger *)self dictionaryRepresentationForRecord:v14 withCoordinator:coordinatorCopy];
         [(CloudTabGroupSyncEvent *)v15 setMetadata:v20];
 
         [(CloudTabGroupSyncEvent *)v9 addChildEvent:v15];
@@ -370,7 +370,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = v30;
+  v31 = dBatchCopy;
   v21 = [v31 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v21)
   {
@@ -389,13 +389,13 @@
         v25 = *(*(&v34 + 1) + 8 * v24);
         v26 = objc_alloc_init(CloudTabGroupSyncEvent);
         [(CloudTabGroupSyncEvent *)v26 setTitle:@"Delete Record"];
-        v27 = [v25 ckShortDescription];
-        [(CloudTabGroupSyncEvent *)v26 setSubtitle:v27];
+        ckShortDescription2 = [v25 ckShortDescription];
+        [(CloudTabGroupSyncEvent *)v26 setSubtitle:ckShortDescription2];
 
         [(CloudTabGroupSyncEvent *)v26 setSymbolName:@"trash.circle"];
         v42 = @"Record ID";
-        v28 = [v25 ckShortDescription];
-        v43 = v28;
+        ckShortDescription3 = [v25 ckShortDescription];
+        v43 = ckShortDescription3;
         v29 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         [(CloudTabGroupSyncEvent *)v26 setMetadata:v29];
 
@@ -413,32 +413,32 @@
   [(CloudTabGroupSyncEvent *)self->_currentSyncUpEvent addChildEvent:v9];
 }
 
-- (void)syncCoordinator:(id)a3 didFetchRecord:(id)a4 localBookmarkUUID:(id)a5 localBookmarkWasCreated:(BOOL)a6
+- (void)syncCoordinator:(id)coordinator didFetchRecord:(id)record localBookmarkUUID:(id)d localBookmarkWasCreated:(BOOL)created
 {
-  v8 = a4;
+  recordCopy = record;
   if (self->_currentSyncDownEvent)
   {
-    v9 = a3;
+    coordinatorCopy = coordinator;
     v10 = objc_alloc_init(CloudTabGroupSyncEvent);
     [(CloudTabGroupSyncEvent *)v10 setTitle:@"Fetched Record"];
-    v11 = [v8 recordID];
-    v12 = [v11 ckShortDescription];
-    [(CloudTabGroupSyncEvent *)v10 setSubtitle:v12];
+    recordID = [recordCopy recordID];
+    ckShortDescription = [recordID ckShortDescription];
+    [(CloudTabGroupSyncEvent *)v10 setSubtitle:ckShortDescription];
 
-    v13 = [v8 recordType];
-    v14 = [(CloudTabGroupSyncDebugger *)self symbolNameForRecordType:v13];
+    recordType = [recordCopy recordType];
+    v14 = [(CloudTabGroupSyncDebugger *)self symbolNameForRecordType:recordType];
     [(CloudTabGroupSyncEvent *)v10 setSymbolName:v14];
 
-    v15 = [(CloudTabGroupSyncDebugger *)self dictionaryRepresentationForRecord:v8 withCoordinator:v9];
+    v15 = [(CloudTabGroupSyncDebugger *)self dictionaryRepresentationForRecord:recordCopy withCoordinator:coordinatorCopy];
 
     [(CloudTabGroupSyncEvent *)v10 setMetadata:v15];
-    v16 = [(CloudTabGroupSyncEvent *)self->_currentSyncDownEvent childEvents];
+    childEvents = [(CloudTabGroupSyncEvent *)self->_currentSyncDownEvent childEvents];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10007E838;
     v18[3] = &unk_100135170;
-    v19 = v8;
-    v17 = [v16 safari_firstObjectPassingTest:v18];
+    v19 = recordCopy;
+    v17 = [childEvents safari_firstObjectPassingTest:v18];
 
     [v17 addChildEvent:v10];
   }

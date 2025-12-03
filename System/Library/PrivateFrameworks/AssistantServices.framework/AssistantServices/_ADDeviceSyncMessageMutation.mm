@@ -1,5 +1,5 @@
 @interface _ADDeviceSyncMessageMutation
-- (_ADDeviceSyncMessageMutation)initWithBase:(id)a3;
+- (_ADDeviceSyncMessageMutation)initWithBase:(id)base;
 - (id)getCommandPullDeltaRequest;
 - (id)getCommandPullDeltaResponse;
 - (id)getCommandPullGenerationsRequest;
@@ -18,120 +18,120 @@
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_commandPullSnapshotResponse;
+    commandPullSnapshotResponse = self->_commandPullSnapshotResponse;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullSnapshotResponse];
+    commandPullSnapshotResponse = [(ADDeviceSyncMessage *)self->_base commandPullSnapshotResponse];
   }
 
-  return v2;
+  return commandPullSnapshotResponse;
 }
 
 - (id)getCommandPullSnapshotRequest
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_commandPullSnapshotRequest;
+    commandPullSnapshotRequest = self->_commandPullSnapshotRequest;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullSnapshotRequest];
+    commandPullSnapshotRequest = [(ADDeviceSyncMessage *)self->_base commandPullSnapshotRequest];
   }
 
-  return v2;
+  return commandPullSnapshotRequest;
 }
 
 - (id)getCommandPullDeltaResponse
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_commandPullDeltaResponse;
+    commandPullDeltaResponse = self->_commandPullDeltaResponse;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullDeltaResponse];
+    commandPullDeltaResponse = [(ADDeviceSyncMessage *)self->_base commandPullDeltaResponse];
   }
 
-  return v2;
+  return commandPullDeltaResponse;
 }
 
 - (id)getCommandPullDeltaRequest
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_commandPullDeltaRequest;
+    commandPullDeltaRequest = self->_commandPullDeltaRequest;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullDeltaRequest];
+    commandPullDeltaRequest = [(ADDeviceSyncMessage *)self->_base commandPullDeltaRequest];
   }
 
-  return v2;
+  return commandPullDeltaRequest;
 }
 
 - (id)getCommandPullGenerationsResponse
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_commandPullGenerationsResponse;
+    commandPullGenerationsResponse = self->_commandPullGenerationsResponse;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullGenerationsResponse];
+    commandPullGenerationsResponse = [(ADDeviceSyncMessage *)self->_base commandPullGenerationsResponse];
   }
 
-  return v2;
+  return commandPullGenerationsResponse;
 }
 
 - (id)getCommandPullGenerationsRequest
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_commandPullGenerationsRequest;
+    commandPullGenerationsRequest = self->_commandPullGenerationsRequest;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPullGenerationsRequest];
+    commandPullGenerationsRequest = [(ADDeviceSyncMessage *)self->_base commandPullGenerationsRequest];
   }
 
-  return v2;
+  return commandPullGenerationsRequest;
 }
 
 - (id)getCommandPushGenerationsResponse
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_commandPushGenerationsResponse;
+    commandPushGenerationsResponse = self->_commandPushGenerationsResponse;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPushGenerationsResponse];
+    commandPushGenerationsResponse = [(ADDeviceSyncMessage *)self->_base commandPushGenerationsResponse];
   }
 
-  return v2;
+  return commandPushGenerationsResponse;
 }
 
 - (id)getCommandPushGenerationsRequest
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_commandPushGenerationsRequest;
+    commandPushGenerationsRequest = self->_commandPushGenerationsRequest;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncMessage *)self->_base commandPushGenerationsRequest];
+    commandPushGenerationsRequest = [(ADDeviceSyncMessage *)self->_base commandPushGenerationsRequest];
   }
 
-  return v2;
+  return commandPushGenerationsRequest;
 }
 
 - (int64_t)getType
@@ -160,16 +160,16 @@
   }
 }
 
-- (_ADDeviceSyncMessageMutation)initWithBase:(id)a3
+- (_ADDeviceSyncMessageMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceSyncMessageMutation;
   v6 = [(_ADDeviceSyncMessageMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

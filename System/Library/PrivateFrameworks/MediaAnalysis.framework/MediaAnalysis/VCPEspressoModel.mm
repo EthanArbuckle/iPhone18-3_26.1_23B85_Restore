@@ -1,19 +1,19 @@
 @interface VCPEspressoModel
-- (BOOL)buildModelWithConfig:(id)a3 error:(id *)a4;
-- (BOOL)prepareModelWithFile:(id)a3 engine:(int)a4 config:(id)a5 error:(id *)a6;
-- (BOOL)updateModelWithConfig:(id)a3 error:(id *)a4;
-- (id)initModelWithName:(id)a3 andConfig:(id)a4;
-- (int)loadModel:(id)a3;
+- (BOOL)buildModelWithConfig:(id)config error:(id *)error;
+- (BOOL)prepareModelWithFile:(id)file engine:(int)engine config:(id)config error:(id *)error;
+- (BOOL)updateModelWithConfig:(id)config error:(id *)error;
+- (id)initModelWithName:(id)name andConfig:(id)config;
+- (int)loadModel:(id)model;
 - (void)dealloc;
 - (void)freeModel;
 @end
 
 @implementation VCPEspressoModel
 
-- (id)initModelWithName:(id)a3 andConfig:(id)a4
+- (id)initModelWithName:(id)name andConfig:(id)config
 {
-  v6 = a4;
-  v7 = [a3 stringByAppendingFormat:@".espresso.net"];
+  configCopy = config;
+  v7 = [name stringByAppendingFormat:@".espresso.net"];
   v16.receiver = self;
   v16.super_class = VCPEspressoModel;
   v8 = [(VCPEspressoModel *)&v16 init];
@@ -21,7 +21,7 @@
   if (v8)
   {
     v15 = 0;
-    v10 = [(VCPEspressoModel *)v8 prepareModelWithFile:v7 engine:10007 config:v6 error:&v15];
+    v10 = [(VCPEspressoModel *)v8 prepareModelWithFile:v7 engine:10007 config:configCopy error:&v15];
     v11 = v15;
     if (v10)
     {
@@ -45,18 +45,18 @@
   return v13;
 }
 
-- (int)loadModel:(id)a3
+- (int)loadModel:(id)model
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v5 = [v4 resourceURL];
+  modelCopy = model;
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:v3 relativeToURL:v5];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:modelCopy relativeToURL:resourceURL];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 path];
-    [v8 UTF8String];
+    path = [v6 path];
+    [path UTF8String];
     v9 = espresso_plan_add_network();
   }
 
@@ -68,11 +68,11 @@
   return v9;
 }
 
-- (BOOL)prepareModelWithFile:(id)a3 engine:(int)a4 config:(id)a5 error:(id *)a6
+- (BOOL)prepareModelWithFile:(id)file engine:(int)engine config:(id)config error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  fileCopy = file;
+  configCopy = config;
   v11 = dispatch_queue_create("callback queue", 0);
   callbackQueue = self->_callbackQueue;
   self->_callbackQueue = v11;
@@ -85,74 +85,74 @@
     self->_plan = plan;
     if (plan)
     {
-      if ([(VCPEspressoModel *)self loadModel:v9])
+      if ([(VCPEspressoModel *)self loadModel:fileCopy])
       {
-        if (a6)
+        if (error)
         {
           v15 = MEMORY[0x1E696ABC0];
           v25 = *MEMORY[0x1E696A578];
-          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Load Error", v9];
-          v26 = v16;
+          fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Load Error", fileCopy];
+          v26 = fileCopy;
           v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
           v18 = [v15 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
 LABEL_14:
-          *a6 = v18;
+          *error = v18;
 
-          LOBYTE(a6) = 0;
+          LOBYTE(error) = 0;
         }
       }
 
-      else if ([(VCPEspressoModel *)self buildModelWithConfig:v10 error:a6])
+      else if ([(VCPEspressoModel *)self buildModelWithConfig:configCopy error:error])
       {
-        LOBYTE(a6) = 1;
+        LOBYTE(error) = 1;
       }
 
-      else if (a6)
+      else if (error)
       {
         v21 = MEMORY[0x1E696ABC0];
         v23 = *MEMORY[0x1E696A578];
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Build Model Error"];
-        v24 = v16;
+        fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Build Model Error"];
+        v24 = fileCopy;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
         v18 = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
         goto LABEL_14;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A578];
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Create Plan Error"];
-      v28 = v16;
+      fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Create Plan Error"];
+      v28 = fileCopy;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v18 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
       goto LABEL_14;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
     v29 = *MEMORY[0x1E696A578];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Create Context Error"];
-    v30[0] = v16;
+    fileCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Create Context Error"];
+    v30[0] = fileCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v18 = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
     goto LABEL_14;
   }
 
-  return a6;
+  return error;
 }
 
-- (BOOL)buildModelWithConfig:(id)a3 error:(id *)a4
+- (BOOL)buildModelWithConfig:(id)config error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 UTF8String], espresso_network_select_configuration()))
+  configCopy = config;
+  v6 = configCopy;
+  if (configCopy && ([configCopy UTF8String], espresso_network_select_configuration()))
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A578];
@@ -161,9 +161,9 @@ LABEL_14:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v10 = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v9];
 LABEL_8:
-      *a4 = v10;
+      *error = v10;
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
@@ -171,11 +171,11 @@ LABEL_8:
   {
     if (!espresso_plan_build())
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_10;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A578];
@@ -189,34 +189,34 @@ LABEL_8:
 
 LABEL_10:
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateModelWithConfig:(id)a3 error:(id *)a4
+- (BOOL)updateModelWithConfig:(id)config error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configCopy = config;
   if (espresso_plan_build_clean())
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A578];
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Clean Plan Error"];
       v12[0] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      *a4 = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v9];
+      *error = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v9];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a4) = [(VCPEspressoModel *)self buildModelWithConfig:v6 error:a4];
+    LOBYTE(error) = [(VCPEspressoModel *)self buildModelWithConfig:configCopy error:error];
   }
 
-  return a4;
+  return error;
 }
 
 - (void)freeModel

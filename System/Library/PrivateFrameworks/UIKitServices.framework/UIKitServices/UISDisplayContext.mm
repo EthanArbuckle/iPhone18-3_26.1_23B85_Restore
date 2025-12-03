@@ -1,13 +1,13 @@
 @interface UISDisplayContext
 + (id)defaultContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (UISDisplayContext)initWithDisplayConfiguration:(id)a3 displayEdgeInfo:(id)a4 exclusionArea:(id)a5;
-- (UISDisplayContext)initWithXPCDictionary:(id)a3;
-- (id)_initWithDisplayContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (UISDisplayContext)initWithDisplayConfiguration:(id)configuration displayEdgeInfo:(id)info exclusionArea:(id)area;
+- (UISDisplayContext)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithDisplayContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UISDisplayContext
@@ -32,13 +32,13 @@
 
   v4 = v3;
   _Block_object_dispose(&v10, 8);
-  v5 = [v3 mainDisplay];
-  if (v5)
+  mainDisplay = [v3 mainDisplay];
+  if (mainDisplay)
   {
-    v6 = [objc_alloc(MEMORY[0x1E699FAC0]) initWithCADisplay:v5];
+    v6 = [objc_alloc(MEMORY[0x1E699FAC0]) initWithCADisplay:mainDisplay];
     if (v6)
     {
-      v7 = [[a1 alloc] initWithDisplayConfiguration:v6];
+      v7 = [[self alloc] initWithDisplayConfiguration:v6];
       goto LABEL_8;
     }
   }
@@ -54,27 +54,27 @@ LABEL_8:
   return v7;
 }
 
-- (UISDisplayContext)initWithDisplayConfiguration:(id)a3 displayEdgeInfo:(id)a4 exclusionArea:(id)a5
+- (UISDisplayContext)initWithDisplayConfiguration:(id)configuration displayEdgeInfo:(id)info exclusionArea:(id)area
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  infoCopy = info;
+  areaCopy = area;
   v19.receiver = self;
   v19.super_class = UISDisplayContext;
   v11 = [(UISDisplayContext *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [configurationCopy copy];
     displayConfiguration = v11->_displayConfiguration;
     v11->_displayConfiguration = v12;
 
-    v14 = [v9 copy];
+    v14 = [infoCopy copy];
     displayEdgeInfo = v11->_displayEdgeInfo;
     v11->_displayEdgeInfo = v14;
 
     v11->_artworkSubtype = 0;
     v11->_userInterfaceStyle = 0;
-    v16 = [v10 copy];
+    v16 = [areaCopy copy];
     exclusionArea = v11->_exclusionArea;
     v11->_exclusionArea = v16;
   }
@@ -82,26 +82,26 @@ LABEL_8:
   return v11;
 }
 
-- (id)_initWithDisplayContext:(id)a3
+- (id)_initWithDisplayContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 displayConfiguration];
-  v6 = [v4 displayEdgeInfo];
-  v7 = [v4 exclusionArea];
-  v8 = [(UISDisplayContext *)self initWithDisplayConfiguration:v5 displayEdgeInfo:v6 exclusionArea:v7];
+  contextCopy = context;
+  displayConfiguration = [contextCopy displayConfiguration];
+  displayEdgeInfo = [contextCopy displayEdgeInfo];
+  exclusionArea = [contextCopy exclusionArea];
+  v8 = [(UISDisplayContext *)self initWithDisplayConfiguration:displayConfiguration displayEdgeInfo:displayEdgeInfo exclusionArea:exclusionArea];
 
   if (v8)
   {
-    v8->_artworkSubtype = [v4 artworkSubtype];
-    v8->_userInterfaceStyle = [v4 userInterfaceStyle];
+    v8->_artworkSubtype = [contextCopy artworkSubtype];
+    v8->_userInterfaceStyle = [contextCopy userInterfaceStyle];
   }
 
   return v8;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
   xpc_dictionary_set_uint64(xdict, "ArtworkSubtype", self->_artworkSubtype);
@@ -109,9 +109,9 @@ LABEL_8:
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (UISDisplayContext)initWithXPCDictionary:(id)a3
+- (UISDisplayContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = UISDisplayContext;
   v5 = [(UISDisplayContext *)&v13 init];
@@ -125,8 +125,8 @@ LABEL_8:
     displayEdgeInfo = v5->_displayEdgeInfo;
     v5->_displayEdgeInfo = v8;
 
-    v5->_artworkSubtype = xpc_dictionary_get_uint64(v4, "ArtworkSubtype");
-    v5->_userInterfaceStyle = xpc_dictionary_get_uint64(v4, "UserInterfaceStyle");
+    v5->_artworkSubtype = xpc_dictionary_get_uint64(dictionaryCopy, "ArtworkSubtype");
+    v5->_userInterfaceStyle = xpc_dictionary_get_uint64(dictionaryCopy, "UserInterfaceStyle");
     v10 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
     exclusionArea = v5->_exclusionArea;
     v5->_exclusionArea = v10;
@@ -135,23 +135,23 @@ LABEL_8:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UISMutableDisplayContext alloc];
 
   return [(UISDisplayContext *)v4 _initWithDisplayContext:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_10;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v17 = 1;
     goto LABEL_16;
@@ -161,29 +161,29 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(UISDisplayContext *)self displayConfiguration];
-    v8 = [(UISDisplayContext *)v6 displayConfiguration];
-    if ([v7 isEqual:v8])
+    displayConfiguration = [(UISDisplayContext *)self displayConfiguration];
+    displayConfiguration2 = [(UISDisplayContext *)v6 displayConfiguration];
+    if ([displayConfiguration isEqual:displayConfiguration2])
     {
-      v9 = [(UISDisplayContext *)self displayEdgeInfo];
-      v10 = [(UISDisplayContext *)v6 displayEdgeInfo];
-      if ([v9 isEqual:v10] && (v11 = -[UISDisplayContext artworkSubtype](self, "artworkSubtype"), v11 == -[UISDisplayContext artworkSubtype](v6, "artworkSubtype")) && (v12 = -[UISDisplayContext userInterfaceStyle](self, "userInterfaceStyle"), v12 == -[UISDisplayContext userInterfaceStyle](v6, "userInterfaceStyle")))
+      displayEdgeInfo = [(UISDisplayContext *)self displayEdgeInfo];
+      displayEdgeInfo2 = [(UISDisplayContext *)v6 displayEdgeInfo];
+      if ([displayEdgeInfo isEqual:displayEdgeInfo2] && (v11 = -[UISDisplayContext artworkSubtype](self, "artworkSubtype"), v11 == -[UISDisplayContext artworkSubtype](v6, "artworkSubtype")) && (v12 = -[UISDisplayContext userInterfaceStyle](self, "userInterfaceStyle"), v12 == -[UISDisplayContext userInterfaceStyle](v6, "userInterfaceStyle")))
       {
-        v13 = [(UISDisplayContext *)self exclusionArea];
-        v14 = [(UISDisplayContext *)v6 exclusionArea];
-        if (v13 == v14)
+        exclusionArea = [(UISDisplayContext *)self exclusionArea];
+        exclusionArea2 = [(UISDisplayContext *)v6 exclusionArea];
+        if (exclusionArea == exclusionArea2)
         {
           v17 = 1;
         }
 
         else
         {
-          v15 = [(UISDisplayContext *)self exclusionArea];
+          exclusionArea3 = [(UISDisplayContext *)self exclusionArea];
           [(UISDisplayContext *)v6 exclusionArea];
-          v16 = v19 = v13;
-          v17 = [v15 isEqual:v16];
+          v16 = v19 = exclusionArea;
+          v17 = [exclusionArea3 isEqual:v16];
 
-          v13 = v19;
+          exclusionArea = v19;
         }
       }
 
@@ -212,14 +212,14 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(UISDisplayContext *)self displayConfiguration];
-  v4 = [v3 hash];
-  v5 = [(UISDisplayContext *)self displayEdgeInfo];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(UISDisplayContext *)self artworkSubtype];
-  v8 = v7 ^ [(UISDisplayContext *)self userInterfaceStyle];
-  v9 = [(UISDisplayContext *)self exclusionArea];
-  v10 = v8 ^ [v9 hash];
+  displayConfiguration = [(UISDisplayContext *)self displayConfiguration];
+  v4 = [displayConfiguration hash];
+  displayEdgeInfo = [(UISDisplayContext *)self displayEdgeInfo];
+  v6 = [displayEdgeInfo hash] ^ v4;
+  artworkSubtype = [(UISDisplayContext *)self artworkSubtype];
+  v8 = artworkSubtype ^ [(UISDisplayContext *)self userInterfaceStyle];
+  exclusionArea = [(UISDisplayContext *)self exclusionArea];
+  v10 = v8 ^ [exclusionArea hash];
 
   return v6 ^ v10;
 }
@@ -232,9 +232,9 @@ LABEL_16:
   v6 = [v3 appendUnsignedInteger:self->_artworkSubtype withName:@"ArtworkSubtype"];
   v7 = [v3 appendUnsignedInteger:self->_userInterfaceStyle withName:@"UserInterfaceStyle"];
   v8 = [v3 appendObject:self->_exclusionArea withName:@"ExclusionArea"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

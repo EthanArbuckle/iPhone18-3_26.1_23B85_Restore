@@ -1,24 +1,24 @@
 @interface CSAudioLatencyEstimatorClient
-- (CSAudioLatencyEstimatorClient)initWithActiveMessageClient:(id)a3;
+- (CSAudioLatencyEstimatorClient)initWithActiveMessageClient:(id)client;
 - (void)_invalidateEstimator;
-- (void)_start:(id)a3;
+- (void)_start:(id)_start;
 - (void)cancel;
 - (void)dealloc;
-- (void)start:(id)a3;
+- (void)start:(id)start;
 @end
 
 @implementation CSAudioLatencyEstimatorClient
 
-- (CSAudioLatencyEstimatorClient)initWithActiveMessageClient:(id)a3
+- (CSAudioLatencyEstimatorClient)initWithActiveMessageClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v28.receiver = self;
   v28.super_class = CSAudioLatencyEstimatorClient;
   v6 = [(CSAudioLatencyEstimatorClient *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activeMessageClient, a3);
+    objc_storeStrong(&v6->_activeMessageClient, client);
     v8 = dispatch_queue_create("com.apple.CSAudioLatencyEstimatorClient.estimator", 0);
     estimatorQueue = v7->_estimatorQueue;
     v7->_estimatorQueue = v8;
@@ -28,9 +28,9 @@
     v7->_server = v10;
 
     v12 = v7->_server;
-    v13 = [(CSAudioLatencyEstimatorClient *)v7 activeMessageClient];
-    v14 = [v13 dispatchQueue];
-    [(CUMessageSessionServer *)v12 setDispatchQueue:v14];
+    activeMessageClient = [(CSAudioLatencyEstimatorClient *)v7 activeMessageClient];
+    dispatchQueue = [activeMessageClient dispatchQueue];
+    [(CUMessageSessionServer *)v12 setDispatchQueue:dispatchQueue];
 
     v15 = ContinuitySingLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -197,14 +197,14 @@ void __61__CSAudioLatencyEstimatorClient_initWithActiveMessageClient___block_inv
   v5 = v3;
   dispatch_async(estimatorQueue, block);
   v6 = self->_server;
-  v7 = [(CUMessageSessionServer *)v6 dispatchQueue];
+  dispatchQueue = [(CUMessageSessionServer *)v6 dispatchQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__CSAudioLatencyEstimatorClient_dealloc__block_invoke_2;
   v10[3] = &unk_278E0ACD8;
   v11 = v6;
   v8 = v6;
-  dispatch_async(v7, v10);
+  dispatch_async(dispatchQueue, v10);
 
   v9.receiver = self;
   v9.super_class = CSAudioLatencyEstimatorClient;
@@ -219,9 +219,9 @@ uint64_t __40__CSAudioLatencyEstimatorClient_dealloc__block_invoke(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -230,15 +230,15 @@ uint64_t __40__CSAudioLatencyEstimatorClient_dealloc__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: CSAudioLatencyEstimatorClient start", buf, 0xCu);
   }
 
-  v6 = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
+  estimatorQueue = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__CSAudioLatencyEstimatorClient_start___block_invoke;
   v8[3] = &unk_278E0AF88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = startCopy;
+  v7 = startCopy;
+  dispatch_async(estimatorQueue, v8);
 }
 
 - (void)cancel
@@ -251,20 +251,20 @@ uint64_t __40__CSAudioLatencyEstimatorClient_dealloc__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: CSAudioLatencyEstimatorClient cancel", buf, 0xCu);
   }
 
-  v4 = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
+  estimatorQueue = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__CSAudioLatencyEstimatorClient_cancel__block_invoke;
   block[3] = &unk_278E0ACD8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(estimatorQueue, block);
 }
 
-- (void)_start:(id)a3
+- (void)_start:(id)_start
 {
-  v4 = a3;
-  v5 = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
-  dispatch_assert_queue_V2(v5);
+  _startCopy = _start;
+  estimatorQueue = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
+  dispatch_assert_queue_V2(estimatorQueue);
 
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -277,25 +277,25 @@ uint64_t __40__CSAudioLatencyEstimatorClient_dealloc__block_invoke(uint64_t a1)
   if (!self->_estimator)
   {
     v7 = objc_alloc(MEMORY[0x277D6C488]);
-    v8 = [(CSAudioLatencyEstimatorClient *)self server];
-    v9 = [v8 templateSession];
-    v10 = [v7 initWithMessageSession:v9];
+    server = [(CSAudioLatencyEstimatorClient *)self server];
+    templateSession = [server templateSession];
+    v10 = [v7 initWithMessageSession:templateSession];
     estimator = self->_estimator;
     self->_estimator = v10;
   }
 
-  v12 = [(CSAudioLatencyEstimatorClient *)self estimator];
-  [v12 activate];
+  estimator = [(CSAudioLatencyEstimatorClient *)self estimator];
+  [estimator activate];
   objc_initWeak(buf, self);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __40__CSAudioLatencyEstimatorClient__start___block_invoke;
   v17 = &unk_278E0BFA0;
   objc_copyWeak(&v19, buf);
-  v13 = v4;
+  v13 = _startCopy;
   v18 = v13;
-  [v12 setProgressEventHandler:&v14];
-  [v12 estimate];
+  [estimator setProgressEventHandler:&v14];
+  [estimator estimate];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -339,12 +339,12 @@ LABEL_13:
 
 - (void)_invalidateEstimator
 {
-  v3 = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
-  dispatch_assert_queue_V2(v3);
+  estimatorQueue = [(CSAudioLatencyEstimatorClient *)self estimatorQueue];
+  dispatch_assert_queue_V2(estimatorQueue);
 
-  v5 = [(CSAudioLatencyEstimatorClient *)self estimator];
-  [v5 setProgressEventHandler:0];
-  [v5 invalidate];
+  estimator = [(CSAudioLatencyEstimatorClient *)self estimator];
+  [estimator setProgressEventHandler:0];
+  [estimator invalidate];
   estimator = self->_estimator;
   self->_estimator = 0;
 }

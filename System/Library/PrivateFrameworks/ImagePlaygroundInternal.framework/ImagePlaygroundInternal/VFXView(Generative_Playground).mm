@@ -9,14 +9,14 @@
 
 - (void)vfx_setClearBackground
 {
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [a1 setBackgroundColor:v2];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [self setBackgroundColor:clearColor];
 }
 
 - (void)vfx_setExtendedLinearSRGBColorSpace
 {
   v2 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F108]);
-  [a1 _vfx_setColorSpace:v2];
+  [self _vfx_setColorSpace:v2];
 
   CGColorSpaceRelease(v2);
 }
@@ -24,7 +24,7 @@
 - (void)vfx_setLinearSRGBColorSpace
 {
   v2 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1B0]);
-  [a1 _vfx_setColorSpace:v2];
+  [self _vfx_setColorSpace:v2];
 
   CGColorSpaceRelease(v2);
 }
@@ -33,15 +33,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_setColorSpace_ withObject:a3];
+    [self performSelector:sel_setColorSpace_ withObject:a3];
     v4 = a3;
   }
 
   else
   {
-    v5 = [a1 layer];
-    [v5 setColorspace:a3];
-    v4 = v5;
+    layer = [self layer];
+    [layer setColorspace:a3];
+    v4 = layer;
   }
 }
 

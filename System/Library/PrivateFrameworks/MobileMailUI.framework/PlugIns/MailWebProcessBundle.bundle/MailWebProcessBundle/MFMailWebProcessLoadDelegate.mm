@@ -1,17 +1,17 @@
 @interface MFMailWebProcessLoadDelegate
 - (MFMailWebProcessLoadDelegate)init;
 - (id)externalConstants;
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequest:(id)request redirectResponse:(id)response;
 - (void)_synchronizeGlobalObjectContext;
-- (void)registerDictionary:(id)a3 name:(id)a4;
-- (void)setDictionary:(id)a3 forWebViewDictionaryWithName:(id)a4;
-- (void)setValuesForKeysWithDictionary:(id)a3 forWebViewDictionaryWithName:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didFailLoadForResource:(unint64_t)a5 error:(id)a6;
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didFinishLoadForResource:(unint64_t)a5;
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didInitiateLoadForResource:(unint64_t)a5 request:(id)a6;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
+- (void)registerDictionary:(id)dictionary name:(id)name;
+- (void)setDictionary:(id)dictionary forWebViewDictionaryWithName:(id)name;
+- (void)setValuesForKeysWithDictionary:(id)dictionary forWebViewDictionaryWithName:(id)name;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didFailLoadForResource:(unint64_t)resource error:(id)error;
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didFinishLoadForResource:(unint64_t)resource;
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didInitiateLoadForResource:(unint64_t)resource request:(id)request;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
 @end
 
 @implementation MFMailWebProcessLoadDelegate
@@ -37,46 +37,46 @@
   return v2;
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v9 = a4;
-  v5 = [(NSMutableDictionary *)self->_resourceIdentifiersToRequestURLs allValues];
-  v6 = [v5 ef_filter:&stru_8248];
+  frameCopy = frame;
+  allValues = [(NSMutableDictionary *)self->_resourceIdentifiersToRequestURLs allValues];
+  v6 = [allValues ef_filter:&stru_8248];
 
-  v7 = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
-  v8 = [v9 URL];
-  [v7 webProcessDidFinishDocumentLoadForURL:v8 andRequestedRemoteURLs:v6];
+  mailDelegate = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
+  v8 = [frameCopy URL];
+  [mailDelegate webProcessDidFinishDocumentLoadForURL:v8 andRequestedRemoteURLs:v6];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame
 {
-  v7 = a4;
-  v5 = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
-  v6 = [v7 URL];
-  [v5 webProcessDidFinishLoadForURL:v6];
+  frameCopy = frame;
+  mailDelegate = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
+  v6 = [frameCopy URL];
+  [mailDelegate webProcessDidFinishLoadForURL:v6];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didInitiateLoadForResource:(unint64_t)a5 request:(id)a6
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didInitiateLoadForResource:(unint64_t)resource request:(id)request
 {
   resourceIdentifiersToRequestURLs = self->_resourceIdentifiersToRequestURLs;
-  v9 = [a6 URL];
-  v8 = [NSNumber numberWithUnsignedLongLong:a5];
+  v9 = [request URL];
+  v8 = [NSNumber numberWithUnsignedLongLong:resource];
   [(NSMutableDictionary *)resourceIdentifiersToRequestURLs setObject:v9 forKey:v8];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didFinishLoadForResource:(unint64_t)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didFinishLoadForResource:(unint64_t)resource
 {
   resourceIdentifiersToRequestURLs = self->_resourceIdentifiersToRequestURLs;
-  v6 = [NSNumber numberWithUnsignedLongLong:a5, a4];
+  frame = [NSNumber numberWithUnsignedLongLong:resource, frame];
   [(NSMutableDictionary *)resourceIdentifiersToRequestURLs removeObjectForKey:?];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
-  v11 = a4;
-  v7 = a5;
+  frameCopy = frame;
+  worldCopy = world;
   [(MFMailWebProcessLoadDelegate *)self setDidSynchronize:0];
-  v8 = [v11 jsContextForWorld:v7];
+  v8 = [frameCopy jsContextForWorld:worldCopy];
   [(MFMailWebProcessLoadDelegate *)self setCurrentJSContext:v8];
   v9 = [v8 objectForKeyedSubscript:@"Range"];
   v10 = [v9 objectForKeyedSubscript:@"prototype"];
@@ -85,50 +85,50 @@
   [(MFMailWebProcessLoadDelegate *)self _synchronizeGlobalObjectContext];
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 didFailLoadForResource:(unint64_t)a5 error:(id)a6
+- (void)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame didFailLoadForResource:(unint64_t)resource error:(id)error
 {
-  v8 = a6;
+  errorCopy = error;
   v9 = MFLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v8 ef_publicDescription];
-    sub_3448(v10, v17, v9);
+    ef_publicDescription = [errorCopy ef_publicDescription];
+    sub_3448(ef_publicDescription, v17, v9);
   }
 
   resourceIdentifiersToRequestURLs = self->_resourceIdentifiersToRequestURLs;
-  v12 = [NSNumber numberWithUnsignedLongLong:a5];
+  v12 = [NSNumber numberWithUnsignedLongLong:resource];
   v13 = [(NSMutableDictionary *)resourceIdentifiersToRequestURLs objectForKey:v12];
 
-  v14 = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
-  [v14 webProcessDidFailLoadingResourceWithURL:v13];
+  mailDelegate = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
+  [mailDelegate webProcessDidFailLoadingResourceWithURL:v13];
 
   v15 = self->_resourceIdentifiersToRequestURLs;
-  v16 = [NSNumber numberWithUnsignedLongLong:a5];
+  v16 = [NSNumber numberWithUnsignedLongLong:resource];
   [(NSMutableDictionary *)v15 removeObjectForKey:v16];
 }
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequest:(id)a5 redirectResponse:(id)a6
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequest:(id)request redirectResponse:(id)response
 {
-  v7 = a5;
-  v8 = [v7 URL];
-  v9 = [v8 mf_isResourceURL];
+  requestCopy = request;
+  v8 = [requestCopy URL];
+  mf_isResourceURL = [v8 mf_isResourceURL];
 
-  if (v9)
+  if (mf_isResourceURL)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [requestCopy mutableCopy];
     [v10 setTimeoutInterval:300.0];
-    v11 = v7;
+    v11 = requestCopy;
     goto LABEL_18;
   }
 
-  v11 = [v7 URL];
-  v12 = [v11 scheme];
-  v13 = [v12 lowercaseString];
+  v11 = [requestCopy URL];
+  scheme = [v11 scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (([v13 isEqualToString:MSBlobURLScheme] & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", MSDataURLScheme) & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", MSFileURLScheme) & 1) == 0)
+  if (([lowercaseString isEqualToString:MSBlobURLScheme] & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", MSDataURLScheme) & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", MSFileURLScheme) & 1) == 0)
   {
-    v14 = [(MFMailWebProcessLoadDelegate *)self externalConstants];
-    v15 = [v14 objectForKeyedSubscript:@"showRemoteImages"];
+    externalConstants = [(MFMailWebProcessLoadDelegate *)self externalConstants];
+    v15 = [externalConstants objectForKeyedSubscript:@"showRemoteImages"];
     v16 = v15;
     v17 = &__kCFBooleanTrue;
     if (v15)
@@ -152,66 +152,66 @@ LABEL_16:
         goto LABEL_21;
       }
 
-      v19 = [(MFMailWebProcessLoadDelegate *)self externalConstants];
-      v20 = [v19 objectForKeyedSubscript:@"remoteContentToLoadWithoutProxy"];
+      externalConstants2 = [(MFMailWebProcessLoadDelegate *)self externalConstants];
+      v20 = [externalConstants2 objectForKeyedSubscript:@"remoteContentToLoadWithoutProxy"];
 
-      v21 = [v11 absoluteString];
-      v22 = [v20 containsObject:v21];
+      absoluteString = [v11 absoluteString];
+      v22 = [v20 containsObject:absoluteString];
 
       if (v22)
       {
         goto LABEL_21;
       }
 
-      v23 = [(MFMailWebProcessLoadDelegate *)self remoteContentProxySchemePrefix];
+      remoteContentProxySchemePrefix = [(MFMailWebProcessLoadDelegate *)self remoteContentProxySchemePrefix];
 
-      if (v23)
+      if (remoteContentProxySchemePrefix)
       {
-        v24 = [(MFMailWebProcessLoadDelegate *)self remoteContentProxySchemePrefix];
+        remoteContentProxySchemePrefix2 = [(MFMailWebProcessLoadDelegate *)self remoteContentProxySchemePrefix];
       }
 
       else
       {
 LABEL_21:
-        v28 = [(MFMailWebProcessLoadDelegate *)self remoteContentNoProxySchemePrefix];
+        remoteContentNoProxySchemePrefix = [(MFMailWebProcessLoadDelegate *)self remoteContentNoProxySchemePrefix];
 
-        if (!v28)
+        if (!remoteContentNoProxySchemePrefix)
         {
           goto LABEL_16;
         }
 
-        v24 = [(MFMailWebProcessLoadDelegate *)self remoteContentNoProxySchemePrefix];
+        remoteContentProxySchemePrefix2 = [(MFMailWebProcessLoadDelegate *)self remoteContentNoProxySchemePrefix];
       }
 
-      v29 = v24;
-      if (!v24)
+      v29 = remoteContentProxySchemePrefix2;
+      if (!remoteContentProxySchemePrefix2)
       {
         goto LABEL_16;
       }
 
-      v26 = [v7 mutableCopy];
-      v30 = [v29 stringByAppendingString:v13];
+      v26 = [requestCopy mutableCopy];
+      v30 = [v29 stringByAppendingString:lowercaseString];
       v31 = [v11 ef_urlByReplacingSchemeWithScheme:v30];
       [v26 setURL:v31];
 
-      v25 = v7;
-      v7 = v29;
+      mailDelegate = requestCopy;
+      requestCopy = v29;
     }
 
     else
     {
-      v25 = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
-      [v25 webProcessDidBlockLoadingResourceWithURL:v11];
+      mailDelegate = [(MFMailWebProcessLoadDelegate *)self mailDelegate];
+      [mailDelegate webProcessDidBlockLoadingResourceWithURL:v11];
       v26 = 0;
     }
 
-    v7 = v26;
+    requestCopy = v26;
     goto LABEL_16;
   }
 
 LABEL_17:
 
-  v10 = v7;
+  v10 = requestCopy;
 LABEL_18:
 
   return v10;
@@ -219,77 +219,77 @@ LABEL_18:
 
 - (id)externalConstants
 {
-  v2 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
-  v3 = [v2 objectForKeyedSubscript:@"externalConstants"];
+  dictionaryWrappers = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+  v3 = [dictionaryWrappers objectForKeyedSubscript:@"externalConstants"];
 
   return v3;
 }
 
 - (void)_synchronizeGlobalObjectContext
 {
-  v3 = [(MFMailWebProcessLoadDelegate *)self currentJSContext];
-  if (v3)
+  currentJSContext = [(MFMailWebProcessLoadDelegate *)self currentJSContext];
+  if (currentJSContext)
   {
-    v4 = v3;
-    v5 = [(MFMailWebProcessLoadDelegate *)self didSynchronize];
+    v4 = currentJSContext;
+    didSynchronize = [(MFMailWebProcessLoadDelegate *)self didSynchronize];
 
-    if ((v5 & 1) == 0)
+    if ((didSynchronize & 1) == 0)
     {
-      v6 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+      dictionaryWrappers = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_2290;
       v7[3] = &unk_82B0;
       v7[4] = self;
-      [v6 enumerateKeysAndObjectsUsingBlock:v7];
+      [dictionaryWrappers enumerateKeysAndObjectsUsingBlock:v7];
 
       [(MFMailWebProcessLoadDelegate *)self setDidSynchronize:1];
     }
   }
 }
 
-- (void)registerDictionary:(id)a3 name:(id)a4
+- (void)registerDictionary:(id)dictionary name:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  dictionaryWrappers = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+  v8 = [dictionaryWrappers objectForKeyedSubscript:nameCopy];
 
   if (!v8)
   {
-    v9 = [[MFMailWebProcessDictionaryWrapper alloc] initWithName:v6];
-    [(MFMailWebProcessDictionaryWrapper *)v9 setDictionary:v11];
-    v10 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
-    [v10 setObject:v9 forKeyedSubscript:v6];
+    v9 = [[MFMailWebProcessDictionaryWrapper alloc] initWithName:nameCopy];
+    [(MFMailWebProcessDictionaryWrapper *)v9 setDictionary:dictionaryCopy];
+    dictionaryWrappers2 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+    [dictionaryWrappers2 setObject:v9 forKeyedSubscript:nameCopy];
 
     [(MFMailWebProcessLoadDelegate *)self setDidSynchronize:0];
     [(MFMailWebProcessLoadDelegate *)self _synchronizeGlobalObjectContext];
   }
 }
 
-- (void)setDictionary:(id)a3 forWebViewDictionaryWithName:(id)a4
+- (void)setDictionary:(id)dictionary forWebViewDictionaryWithName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  dictionaryWrappers = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+  v8 = [dictionaryWrappers objectForKeyedSubscript:nameCopy];
 
   if (v8)
   {
-    [v8 setDictionary:v9];
+    [v8 setDictionary:dictionaryCopy];
   }
 }
 
-- (void)setValuesForKeysWithDictionary:(id)a3 forWebViewDictionaryWithName:(id)a4
+- (void)setValuesForKeysWithDictionary:(id)dictionary forWebViewDictionaryWithName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  dictionaryWrappers = [(MFMailWebProcessLoadDelegate *)self dictionaryWrappers];
+  v8 = [dictionaryWrappers objectForKeyedSubscript:nameCopy];
 
   if (v8)
   {
-    [v8 setValuesForKeysWithDictionary:v9];
+    [v8 setValuesForKeysWithDictionary:dictionaryCopy];
   }
 }
 

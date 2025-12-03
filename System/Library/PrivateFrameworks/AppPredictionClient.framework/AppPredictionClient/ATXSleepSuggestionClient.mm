@@ -1,6 +1,6 @@
 @interface ATXSleepSuggestionClient
 - (ATXSleepSuggestionClient)init;
-- (void)predictedSleepSuggestionWithCompletionHandler:(id)a3;
+- (void)predictedSleepSuggestionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXSleepSuggestionClient
@@ -47,17 +47,17 @@ void __32__ATXSleepSuggestionClient_init__block_invoke_5()
   }
 }
 
-- (void)predictedSleepSuggestionWithCompletionHandler:(id)a3
+- (void)predictedSleepSuggestionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ATXSleepSuggestionClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ATXSleepSuggestionClient *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__ATXSleepSuggestionClient_predictedSleepSuggestionWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 predictedSleepSuggestionWithCompletionHandler:v6];
 }
 

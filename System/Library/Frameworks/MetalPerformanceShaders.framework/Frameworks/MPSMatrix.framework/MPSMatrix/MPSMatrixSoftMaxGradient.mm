@@ -3,7 +3,7 @@
 - (MPSMatrixSoftMaxGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSMatrixSoftMaxGradient)initWithDevice:(id)device;
 - (void)encodeToCommandBuffer:(id)commandBuffer gradientMatrix:(MPSMatrix *)gradientMatrix forwardOutputMatrix:(MPSMatrix *)forwardOutputMatrix resultMatrix:(MPSMatrix *)resultMatrix;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSMatrixSoftMaxGradient
@@ -169,14 +169,14 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v15.receiver = self;
   v15.super_class = MPSMatrixSoftMaxGradient;
   [(MPSMatrixBinaryKernel *)&v15 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_sourceColumns, @"MPMatrixSoftMaxGradient._sourceColumns;", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_sourceRows, @"MPMatrixSoftMaxGradient._sourceRows", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_sourceColumns, @"MPMatrixSoftMaxGradient._sourceColumns;", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_sourceRows, @"MPMatrixSoftMaxGradient._sourceRows", v11, v12, v13, v14);
 }
 
 - (MPSMatrixSoftMaxGradient)copyWithZone:(NSZone *)zone device:(id)device

@@ -2,9 +2,9 @@
 - (NSString)conversation_id;
 - (NSString)request_id;
 - (NSString)source_locale;
-- (Offset<siri::speech::schema_fb::SpeechTranslationServerEndpointFeatures>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SpeechTranslationServerEndpointFeatures>)addObjectToBuffer:(void *)buffer;
 - (QSSServerEndpointFeatures)server_endpoint_features;
-- (QSSSpeechTranslationServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationServerEndpointFeatures *)a4 verify:(BOOL)a5;
+- (QSSSpeechTranslationServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const SpeechTranslationServerEndpointFeatures *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -39,59 +39,59 @@ flatbuffers::DetachedBuffer *__58__QSSSpeechTranslationServerEndpointFeatures_fl
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::SpeechTranslationServerEndpointFeatures>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SpeechTranslationServerEndpointFeatures>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSSpeechTranslationServerEndpointFeatures *)self conversation_id];
-  v6 = v5;
-  if (!v5)
+  conversation_id = [(QSSSpeechTranslationServerEndpointFeatures *)self conversation_id];
+  v6 = conversation_id;
+  if (!conversation_id)
   {
-    v5 = &stru_2879AE8E0;
+    conversation_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)conversation_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSSpeechTranslationServerEndpointFeatures *)self request_id];
-  v11 = v10;
-  if (!v10)
+  request_id = [(QSSSpeechTranslationServerEndpointFeatures *)self request_id];
+  v11 = request_id;
+  if (!request_id)
   {
-    v10 = &stru_2879AE8E0;
+    request_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSSpeechTranslationServerEndpointFeatures *)self source_locale];
-  v16 = v15;
-  if (!v15)
+  source_locale = [(QSSSpeechTranslationServerEndpointFeatures *)self source_locale];
+  v16 = source_locale;
+  if (!source_locale)
   {
-    v15 = &stru_2879AE8E0;
+    source_locale = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  LODWORD(v17) = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)source_locale UTF8String];
+  v18 = strlen(uTF8String3);
+  LODWORD(uTF8String3) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v19 = [(QSSSpeechTranslationServerEndpointFeatures *)self server_endpoint_features];
-  v20 = [v19 addObjectToBuffer:a3];
+  server_endpoint_features = [(QSSSpeechTranslationServerEndpointFeatures *)self server_endpoint_features];
+  v20 = [server_endpoint_features addObjectToBuffer:buffer];
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v22 = *(a3 + 5);
-  v21 = *(a3 + 6);
-  v23 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v17);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v22 = *(buffer + 5);
+  v21 = *(buffer + 6);
+  v23 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String3);
   if (v20)
   {
-    v24 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v20);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v24);
+    v24 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v20);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v24);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v23 - v21 + v22);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v23 - v21 + v22);
 }
 
 - (QSSServerEndpointFeatures)server_endpoint_features
@@ -188,42 +188,42 @@ flatbuffers::DetachedBuffer *__58__QSSSpeechTranslationServerEndpointFeatures_fl
   return v6;
 }
 
-- (QSSSpeechTranslationServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationServerEndpointFeatures *)a4 verify:(BOOL)a5
+- (QSSSpeechTranslationServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const SpeechTranslationServerEndpointFeatures *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSSpeechTranslationServerEndpointFeatures;
   v10 = [(QSSSpeechTranslationServerEndpointFeatures *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -245,9 +245,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

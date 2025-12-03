@@ -1,16 +1,16 @@
 @interface WKUIScrollEdgeEffect
 - (BOOL)isHidden;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (WKUIScrollEdgeEffect)initWithScrollView:(id)a3 scrollEdgeEffect:(id)a4 boxSide:(unsigned __int8)a5;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (WKUIScrollEdgeEffect)initWithScrollView:(id)view scrollEdgeEffect:(id)effect boxSide:(unsigned __int8)side;
 - (id)description;
-- (void)_setHidden:(BOOL)a3 fromSource:(unsigned __int8)a4;
-- (void)setStyle:(id)a3;
+- (void)_setHidden:(BOOL)hidden fromSource:(unsigned __int8)source;
+- (void)setStyle:(id)style;
 @end
 
 @implementation WKUIScrollEdgeEffect
 
-- (WKUIScrollEdgeEffect)initWithScrollView:(id)a3 scrollEdgeEffect:(id)a4 boxSide:(unsigned __int8)a5
+- (WKUIScrollEdgeEffect)initWithScrollView:(id)view scrollEdgeEffect:(id)effect boxSide:(unsigned __int8)side
 {
   v11.receiver = self;
   v11.super_class = WKUIScrollEdgeEffect;
@@ -18,16 +18,16 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scrollView, a3);
-    v9->_boxSide = a5;
-    objc_storeWeak(&v9->_effect, a4);
+    objc_storeWeak(&v8->_scrollView, view);
+    v9->_boxSide = side;
+    objc_storeWeak(&v9->_effect, effect);
     v9->_hiddenSources.m_storage = 0;
   }
 
   return v9;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = WKUIScrollEdgeEffect;
@@ -45,7 +45,7 @@
   return v4 & 1;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v6.receiver = self;
   v6.super_class = WKUIScrollEdgeEffect;
@@ -70,13 +70,13 @@
   return [Weak isHidden];
 }
 
-- (void)_setHidden:(BOOL)a3 fromSource:(unsigned __int8)a4
+- (void)_setHidden:(BOOL)hidden fromSource:(unsigned __int8)source
 {
   m_storage = self->_hiddenSources.m_storage;
   v5 = self->_hiddenSources.m_storage != 0;
-  v6 = m_storage & ~a4;
-  v7 = m_storage | a4;
-  if (a3)
+  v6 = m_storage & ~source;
+  v7 = m_storage | source;
+  if (hidden)
   {
     v8 = v7;
   }
@@ -106,11 +106,11 @@
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   usesHardStyle = self->_usesHardStyle;
-  self->_usesHardStyle = [a3 isEqual:{objc_msgSend(MEMORY[0x1E69DCED8], "hardStyle")}];
-  [objc_loadWeak(&self->_effect) setStyle:a3];
+  self->_usesHardStyle = [style isEqual:{objc_msgSend(MEMORY[0x1E69DCED8], "hardStyle")}];
+  [objc_loadWeak(&self->_effect) setStyle:style];
   if (!self->_boxSide && usesHardStyle != self->_usesHardStyle)
   {
     Weak = objc_loadWeak(&self->_scrollView);

@@ -1,20 +1,20 @@
 @interface AFBDictionaryEnumerator
-- (AFBDictionaryEnumerator)initWithDictionary:(id)a3;
+- (AFBDictionaryEnumerator)initWithDictionary:(id)dictionary;
 - (id)nextObject;
 @end
 
 @implementation AFBDictionaryEnumerator
 
-- (AFBDictionaryEnumerator)initWithDictionary:(id)a3
+- (AFBDictionaryEnumerator)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AFBDictionaryEnumerator;
   v6 = [(AFBDictionaryEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dict, a3);
+    objc_storeStrong(&v6->_dict, dictionary);
     v7->_index = 0;
   }
 

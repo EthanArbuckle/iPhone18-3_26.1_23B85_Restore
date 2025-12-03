@@ -1,18 +1,18 @@
 @interface HFCameraClipPlayerAccessibility
-- (void)seekToOffset:(double)a3 inItem:(id)a4;
+- (void)seekToOffset:(double)offset inItem:(id)item;
 @end
 
 @implementation HFCameraClipPlayerAccessibility
 
-- (void)seekToOffset:(double)a3 inItem:(id)a4
+- (void)seekToOffset:(double)offset inItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = HFCameraClipPlayerAccessibility;
-  [(HFCameraClipPlayerAccessibility *)&v7 seekToOffset:a4 inItem:a3];
+  [(HFCameraClipPlayerAccessibility *)&v7 seekToOffset:item inItem:offset];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     objc_opt_class();
-    v5 = [(HFCameraClipPlayerAccessibility *)self delegate];
+    delegate = [(HFCameraClipPlayerAccessibility *)self delegate];
     v6 = __UIAccessibilityCastAsClass();
     [v6 pause];
   }

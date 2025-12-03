@@ -2,23 +2,23 @@
 - (FINode)progressNode;
 - (id).cxx_construct;
 - (id)startObserving:;
-- (uint64_t)progressChanged:(uint64_t)a1;
+- (uint64_t)progressChanged:(uint64_t)changed;
 - (uint64_t)startObserving:;
-- (void)progressChanged:(id)a3;
+- (void)progressChanged:(id)changed;
 - (void)startObserving:;
-- (void)startObserving:(id)a3;
+- (void)startObserving:(id)observing;
 - (void)stopObserving;
 @end
 
 @implementation DSFileProgress
 
-- (void)startObserving:(id)a3
+- (void)startObserving:(id)observing
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observingCopy = observing;
   objc_initWeak(&location, self);
   objc_copyWeak(&to, &location);
-  v5 = v4;
+  v5 = observingCopy;
   v20 = v5;
   v30 = 0;
   v28 = &unk_1F5F3DC60;
@@ -88,48 +88,48 @@
   self->_observers.__end_ = begin;
 }
 
-- (void)progressChanged:(id)a3
+- (void)progressChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = [v4 kind];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E696A888]];
+    kind = [changedCopy kind];
+    v7 = [kind isEqualToString:*MEMORY[0x1E696A888]];
 
     if (v7)
     {
-      v8 = [(DSFileProgress *)self progressNode];
-      if (v8)
+      progressNode = [(DSFileProgress *)self progressNode];
+      if (progressNode)
       {
-        v9 = [v5 userInfo];
-        OperationTypeFromProgress(v9, &v38);
+        userInfo = [v5 userInfo];
+        OperationTypeFromProgress(userInfo, &v38);
 
-        v10 = [v5 userInfo];
+        userInfo2 = [v5 userInfo];
         v11 = *MEMORY[0x1E696A858];
-        v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696A858]];
+        v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A858]];
         v13 = static_objc_cast<NSString,objc_object * {__strong}>(v12);
         v14 = [v13 isEqualToString:*MEMORY[0x1E696A848]];
 
-        v15 = [v5 userInfo];
-        v16 = [v15 objectForKeyedSubscript:v11];
+        userInfo3 = [v5 userInfo];
+        v16 = [userInfo3 objectForKeyedSubscript:v11];
         v17 = static_objc_cast<NSString,objc_object * {__strong}>(v16);
-        LOBYTE(v10) = [v17 isEqualToString:*MEMORY[0x1E696A870]];
+        LOBYTE(userInfo2) = [v17 isEqualToString:*MEMORY[0x1E696A870]];
 
-        v18 = [v5 userInfo];
-        v19 = [v18 objectForKeyedSubscript:*MEMORY[0x1E696A800]];
+        userInfo4 = [v5 userInfo];
+        v19 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x1E696A800]];
         v20 = static_objc_cast<NSString,objc_object * {__strong}>(v19);
         [v20 doubleValue];
         v22 = v21;
 
-        objc_initWeak(&location, v8);
+        objc_initWeak(&location, progressNode);
         objc_copyWeak(&to, &location);
         v34 = &stru_1F5F42870;
         CFRetain(&stru_1F5F42870);
         TString::SetStringRefAsImmutable(&v34, v38.fString.fRef);
         v35 = v5;
         LOBYTE(v36) = v14;
-        BYTE1(v36) = v10;
+        BYTE1(v36) = userInfo2;
         *(&v36 + 1) = v22;
         v23 = TProgressMap::GetProgressDispatchQueue(v35);
         block[0] = MEMORY[0x1E69E9820];
@@ -184,11 +184,11 @@ void __34__DSFileProgress_progressChanged___block_invoke(uint64_t a1)
   ExceptionSafeBlock(v2);
 }
 
-- (uint64_t)progressChanged:(uint64_t)a1
+- (uint64_t)progressChanged:(uint64_t)changed
 {
-  TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef((a1 + 8));
-  objc_destroyWeak(a1);
-  return a1;
+  TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef((changed + 8));
+  objc_destroyWeak(changed);
+  return changed;
 }
 
 - (FINode)progressNode
@@ -209,19 +209,19 @@ void __34__DSFileProgress_progressChanged___block_invoke(uint64_t a1)
 - (void)startObserving:
 {
   v23 = *MEMORY[0x1E69E9840];
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((self + 16));
   v3 = WeakRetained;
   if (WeakRetained)
   {
     v4 = WeakRetained;
     objc_sync_enter(v4);
     v5 = objc_loadWeakRetained(v4 + 4);
-    v6 = [v5 fileURL];
-    v7 = [*(a1 + 8) userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A880]];
+    fileURL = [v5 fileURL];
+    userInfo = [*(self + 8) userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A880]];
     v9 = objc_cast<NSURL,objc_object * {__strong}>(v8);
 
-    if ((IsEqual(v9, &v6->super) & 1) == 0)
+    if ((IsEqual(v9, &fileURL->super) & 1) == 0)
     {
       NodeForURL(v9, v16);
       v10 = TNodeFromFINode(*v16);
@@ -231,7 +231,7 @@ void __34__DSFileProgress_progressChanged___block_invoke(uint64_t a1)
       v12 = LogObj(5);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = SanitizedURL(v6);
+        v13 = SanitizedURL(fileURL);
         v14 = SanitizedURL(v9);
         *v16 = 138544130;
         *&v16[4] = v13;
@@ -254,8 +254,8 @@ void __34__DSFileProgress_progressChanged___block_invoke(uint64_t a1)
 - (id)startObserving:
 {
   *a2 = &unk_1F5F3DC60;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  result = *(a1 + 16);
+  objc_copyWeak((a2 + 8), (self + 8));
+  result = *(self + 16);
   *(a2 + 16) = result;
   return result;
 }
@@ -263,7 +263,7 @@ void __34__DSFileProgress_progressChanged___block_invoke(uint64_t a1)
 - (uint64_t)startObserving:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -23,9 +23,9 @@
     v3->_serverRemote = 0;
 
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
     providerUID = v3->_providerUID;
-    v3->_providerUID = v8;
+    v3->_providerUID = uUIDString;
 
     supportedPairingTypes = v3->_supportedPairingTypes;
     v3->_supportedPairingTypes = 0;

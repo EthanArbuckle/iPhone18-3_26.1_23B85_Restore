@@ -1,5 +1,5 @@
 @interface BarPopoverSourceInfo
-- (BarPopoverSourceInfo)initWithBrowserController:(id)a3 barItem:(int64_t)a4;
+- (BarPopoverSourceInfo)initWithBrowserController:(id)controller barItem:(int64_t)item;
 - (CGRect)popoverSourceRect;
 - (NSString)description;
 - (UIBarButtonItem)barButtonItem;
@@ -9,18 +9,18 @@
 
 @implementation BarPopoverSourceInfo
 
-- (BarPopoverSourceInfo)initWithBrowserController:(id)a3 barItem:(int64_t)a4
+- (BarPopoverSourceInfo)initWithBrowserController:(id)controller barItem:(int64_t)item
 {
-  v7 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = BarPopoverSourceInfo;
   v8 = [(BarPopoverSourceInfo *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_barItem = a4;
-    objc_storeStrong(&v8->_browserController, a3);
-    if (a4 == 11 && (_SFDeviceIsPad() & 1) == 0)
+    v8->_barItem = item;
+    objc_storeStrong(&v8->_browserController, controller);
+    if (item == 11 && (_SFDeviceIsPad() & 1) == 0)
     {
       v9->_shouldDismissIfSourceRemovedAfterRepositioning = 1;
     }
@@ -34,7 +34,7 @@
 - (id)_sourceInfo
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(BrowserController *)self->_browserController barManager];
+  barManager = [(BrowserController *)self->_browserController barManager];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -47,18 +47,18 @@
   v14[2] = __35__BarPopoverSourceInfo__sourceInfo__block_invoke;
   v14[3] = &unk_2781DBC40;
   v14[4] = &v15;
-  [v3 performWithRegistrationContainingItem:barItem block:v14];
+  [barManager performWithRegistrationContainingItem:barItem block:v14];
   v5 = v16[5];
   if (!v5)
   {
-    v6 = [(BrowserController *)self->_browserController rootViewController];
+    rootViewController = [(BrowserController *)self->_browserController rootViewController];
     v7 = WBS_LOG_CHANNEL_PREFIXUserInterface();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      v10 = [v6 navigationController];
-      v11 = v10;
+      navigationController = [rootViewController navigationController];
+      v11 = navigationController;
       v12 = @"is NOT";
-      if (v6)
+      if (rootViewController)
       {
         v13 = @"is NOT";
       }
@@ -69,10 +69,10 @@
       }
 
       *buf = 138543874;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v13;
-      if (!v10)
+      if (!navigationController)
       {
         v12 = @"is";
       }
@@ -125,42 +125,42 @@ void __35__BarPopoverSourceInfo__sourceInfo__block_invoke(uint64_t a1, uint64_t 
 
 - (UIBarButtonItem)barButtonItem
 {
-  v2 = [(BarPopoverSourceInfo *)self _sourceInfo];
+  _sourceInfo = [(BarPopoverSourceInfo *)self _sourceInfo];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 barButtonItem];
+    barButtonItem = [_sourceInfo barButtonItem];
   }
 
   else
   {
-    v3 = 0;
+    barButtonItem = 0;
   }
 
-  return v3;
+  return barButtonItem;
 }
 
 - (UIView)popoverSourceView
 {
-  v2 = [(BarPopoverSourceInfo *)self _sourceInfo];
+  _sourceInfo = [(BarPopoverSourceInfo *)self _sourceInfo];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 popoverSourceView];
+    popoverSourceView = [_sourceInfo popoverSourceView];
   }
 
   else
   {
-    v3 = 0;
+    popoverSourceView = 0;
   }
 
-  return v3;
+  return popoverSourceView;
 }
 
 - (CGRect)popoverSourceRect
 {
-  v2 = [(BarPopoverSourceInfo *)self _sourceInfo];
+  _sourceInfo = [(BarPopoverSourceInfo *)self _sourceInfo];
   if (objc_opt_respondsToSelector())
   {
-    [v2 popoverSourceRect];
+    [_sourceInfo popoverSourceRect];
     v4 = v3;
     v6 = v5;
     v8 = v7;

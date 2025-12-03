@@ -7,8 +7,8 @@
 
 - (id)hksp_valueForProperty:()HKSPProperty
 {
-  v4 = [a3 propertyName];
-  v5 = [a1 valueForKey:v4];
+  propertyName = [a3 propertyName];
+  v5 = [self valueForKey:propertyName];
 
   return v5;
 }
@@ -16,8 +16,8 @@
 - (void)hksp_setValue:()HKSPProperty forProperty:
 {
   v6 = a3;
-  v7 = [a4 propertyName];
-  [a1 setValue:v6 forKey:v7];
+  propertyName = [a4 propertyName];
+  [self setValue:v6 forKey:propertyName];
 }
 
 @end

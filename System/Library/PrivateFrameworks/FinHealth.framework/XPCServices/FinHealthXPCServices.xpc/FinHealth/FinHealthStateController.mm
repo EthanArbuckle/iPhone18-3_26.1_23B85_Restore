@@ -1,56 +1,56 @@
 @interface FinHealthStateController
-- (BOOL)invalidateTransactionByTransaction:(id)a3;
+- (BOOL)invalidateTransactionByTransaction:(id)transaction;
 - (BOOL)suggestAutoReload;
 - (id)_checkEventDeletion;
 - (id)_clientConnection;
-- (id)_getRecurringChangeOverTimePeriod:(int64_t)a3;
-- (id)_insertOrUpdateTransactionPostDirtyState:(id)a3;
+- (id)_getRecurringChangeOverTimePeriod:(int64_t)period;
+- (id)_insertOrUpdateTransactionPostDirtyState:(id)state;
 - (id)_newClientConnection;
-- (id)_processAggregateFeaturesWithHardReset:(BOOL)a3 forceStalenessCheck:(BOOL)a4;
+- (id)_processAggregateFeaturesWithHardReset:(BOOL)reset forceStalenessCheck:(BOOL)check;
 - (id)_remoteObjectProxyWithErrorHandler;
-- (id)featuresWithAmountSums:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4;
-- (id)getAllPredictedPeerPaymentsAfterDate:(id)a3;
-- (id)getCompundFeaturesOverTimRangeFrom:(id)a3 to:(id)a4;
-- (id)getDetailedCategoryAggregateRecordsWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 timeOfDay:(unint64_t)a5;
-- (id)getLostSavingsOverTime:(id)a3 from:(id)a4 to:(id)a5;
-- (id)getLostSavingsValueFromCompoundFeatures:(id)a3;
-- (id)getMerchantForTransactionId:(id)a3;
-- (id)getRecurringChangeForMessagingOverTimePeriod:(int64_t)a3;
-- (id)getTransactionByTransaction:(id)a3;
-- (id)insertOrUpdateTransaction:(id)a3;
-- (id)insertOrUpdateTransactions:(id)a3;
-- (id)predictionLabelForModelName:(id)a3 modelVersion:(id)a4;
-- (id)transactionsByGroupID:(id)a3;
-- (id)transactionsInInternalAnyState:(unint64_t)a3 forPass:(id)a4;
-- (void)_excludeRecurringFromEventTaggingCandidates:(id)a3;
-- (void)_tagFlightTransactionsWithTripEvents:(id)a3;
-- (void)_transactionWithTransactionID:(id)a3 completion:(id)a4;
-- (void)aggregateFeaturesWithHandler:(id)a3;
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4;
-- (void)computeAndPersistDetailedCategoryRecords:(id)a3 withRecurringCounts:(id)a4;
-- (void)countMerchantDetailedCategoryRecordsWithDictionary:(id)a3 fHTransaction:(id)a4;
-- (void)countRecurringMerchantDetailedCategoryRecords:(id)a3;
-- (void)deleteAllData:(id)a3;
-- (void)deleteAllDataForPasses:(id)a3 force:(BOOL)a4 completion:(id)a5;
+- (id)featuresWithAmountSums:(id)sums startDate:(id)date endDate:(id)endDate;
+- (id)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component;
+- (id)getAllPredictedPeerPaymentsAfterDate:(id)date;
+- (id)getCompundFeaturesOverTimRangeFrom:(id)from to:(id)to;
+- (id)getDetailedCategoryAggregateRecordsWithCountryCode:(id)code timeWindow:(unint64_t)window timeOfDay:(unint64_t)day;
+- (id)getLostSavingsOverTime:(id)time from:(id)from to:(id)to;
+- (id)getLostSavingsValueFromCompoundFeatures:(id)features;
+- (id)getMerchantForTransactionId:(id)id;
+- (id)getRecurringChangeForMessagingOverTimePeriod:(int64_t)period;
+- (id)getTransactionByTransaction:(id)transaction;
+- (id)insertOrUpdateTransaction:(id)transaction;
+- (id)insertOrUpdateTransactions:(id)transactions;
+- (id)predictionLabelForModelName:(id)name modelVersion:(id)version;
+- (id)transactionsByGroupID:(id)d;
+- (id)transactionsInInternalAnyState:(unint64_t)state forPass:(id)pass;
+- (void)_excludeRecurringFromEventTaggingCandidates:(id)candidates;
+- (void)_tagFlightTransactionsWithTripEvents:(id)events;
+- (void)_transactionWithTransactionID:(id)d completion:(id)completion;
+- (void)aggregateFeaturesWithHandler:(id)handler;
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion;
+- (void)computeAndPersistDetailedCategoryRecords:(id)records withRecurringCounts:(id)counts;
+- (void)countMerchantDetailedCategoryRecordsWithDictionary:(id)dictionary fHTransaction:(id)transaction;
+- (void)countRecurringMerchantDetailedCategoryRecords:(id)records;
+- (void)deleteAllData:(id)data;
+- (void)deleteAllDataForPasses:(id)passes force:(BOOL)force completion:(id)completion;
 - (void)deleteAllDetailedCategoryRecords;
-- (void)insertDetailedCategoryAggregateFeature:(id)a3 amountSpent:(id)a4 transactionCount:(unint64_t)a5 countryCode:(id)a6 recurringTransactionRatio:(double)a7 timeOfDay:(unint64_t)a8 timeWindow:(unint64_t)a9 startDate:(id)a10 endDate:(id)a11;
+- (void)insertDetailedCategoryAggregateFeature:(id)feature amountSpent:(id)spent transactionCount:(unint64_t)count countryCode:(id)code recurringTransactionRatio:(double)ratio timeOfDay:(unint64_t)day timeWindow:(unint64_t)window startDate:(id)self0 endDate:(id)self1;
 - (void)predictAndPersistCardPreselectPropensityModel;
-- (void)removeAllEntriesFromTable:(id)a3;
-- (void)transactionBatches:(unint64_t)a3 batch:(id)a4;
+- (void)removeAllEntriesFromTable:(id)table;
+- (void)transactionBatches:(unint64_t)batches batch:(id)batch;
 @end
 
 @implementation FinHealthStateController
 
-- (id)insertOrUpdateTransactions:(id)a3
+- (id)insertOrUpdateTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = objc_autoreleasePoolPush();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = transactionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -87,30 +87,30 @@
   return v13;
 }
 
-- (id)insertOrUpdateTransaction:(id)a3
+- (id)insertOrUpdateTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = FinHealthLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 identifier];
-    [v4 accountType];
+    identifier = [transactionCopy identifier];
+    [transactionCopy accountType];
     v7 = FHTransactionAccountTypeToString();
     *buf = 136315650;
     *&buf[4] = "[FinHealthStateController insertOrUpdateTransaction:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = identifier;
     *&buf[22] = 2112;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%s]. Received transaction.identifier: %@ accountType: %@", buf, 0x20u);
   }
 
-  if (![v4 accountType] || objc_msgSend(v4, "accountType") != 2 && objc_msgSend(v4, "accountType") != 1 && objc_msgSend(v4, "accountType") != 4)
+  if (![transactionCopy accountType] || objc_msgSend(transactionCopy, "accountType") != 2 && objc_msgSend(transactionCopy, "accountType") != 1 && objc_msgSend(transactionCopy, "accountType") != 4)
   {
     goto LABEL_10;
   }
 
-  v8 = [(FHDatabaseManager *)self->_dbMgr getTransactionInternalState:v4];
+  v8 = [(FHDatabaseManager *)self->_dbMgr getTransactionInternalState:transactionCopy];
   if (v8 == 1)
   {
     *buf = 0;
@@ -119,14 +119,14 @@
     v14 = sub_100002F5C;
     v15 = sub_100002F6C;
     v16 = 0;
-    v10 = [v4 identifier];
+    identifier2 = [transactionCopy identifier];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100002F74;
     v12[3] = &unk_100020A78;
     v12[4] = self;
     v12[5] = buf;
-    [(FinHealthStateController *)self _transactionWithTransactionID:v10 completion:v12];
+    [(FinHealthStateController *)self _transactionWithTransactionID:identifier2 completion:v12];
 
     v9 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -134,14 +134,14 @@
 
   else
   {
-    if (!v8 && ![(FHDatabaseManager *)self->_dbMgr insertTransactionInInternalStateDirty:v4])
+    if (!v8 && ![(FHDatabaseManager *)self->_dbMgr insertTransactionInInternalStateDirty:transactionCopy])
     {
 LABEL_10:
       v9 = 0;
       goto LABEL_13;
     }
 
-    v9 = [(FinHealthStateController *)self _insertOrUpdateTransactionPostDirtyState:v4];
+    v9 = [(FinHealthStateController *)self _insertOrUpdateTransactionPostDirtyState:transactionCopy];
   }
 
 LABEL_13:
@@ -149,14 +149,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)_insertOrUpdateTransactionPostDirtyState:(id)a3
+- (id)_insertOrUpdateTransactionPostDirtyState:(id)state
 {
-  v4 = a3;
-  if ([(FHDatabaseManager *)self->_dbMgr updateTransactionWholeRaw:v4])
+  stateCopy = state;
+  if ([(FHDatabaseManager *)self->_dbMgr updateTransactionWholeRaw:stateCopy])
   {
     dbMgr = self->_dbMgr;
-    v6 = [v4 identifier];
-    v7 = [(FHDatabaseManager *)dbMgr featuresForTransaction:v6];
+    identifier = [stateCopy identifier];
+    v7 = [(FHDatabaseManager *)dbMgr featuresForTransaction:identifier];
   }
 
   else
@@ -167,17 +167,17 @@ LABEL_13:
   return v7;
 }
 
-- (void)countMerchantDetailedCategoryRecordsWithDictionary:(id)a3 fHTransaction:(id)a4
+- (void)countMerchantDetailedCategoryRecordsWithDictionary:(id)dictionary fHTransaction:(id)transaction
 {
-  v61 = a3;
-  v5 = a4;
+  dictionaryCopy = dictionary;
+  transactionCopy = transaction;
   context = objc_autoreleasePoolPush();
-  v6 = [v5 merchantDetailedCategory];
-  v7 = [v61 objectForKey:v6];
+  merchantDetailedCategory = [transactionCopy merchantDetailedCategory];
+  v7 = [dictionaryCopy objectForKey:merchantDetailedCategory];
 
   if (!v7)
   {
-    v8 = v5;
+    v8 = transactionCopy;
     v9 = objc_alloc_init(NSMutableDictionary);
     do
     {
@@ -199,22 +199,22 @@ LABEL_13:
     }
 
     while (v7 != 4);
-    v5 = v8;
-    v16 = [v8 merchantDetailedCategory];
-    [v61 setObject:v9 forKey:v16];
+    transactionCopy = v8;
+    merchantDetailedCategory2 = [v8 merchantDetailedCategory];
+    [dictionaryCopy setObject:v9 forKey:merchantDetailedCategory2];
   }
 
-  v17 = [v5 transactionDate];
-  v18 = [v5 timeZone];
+  transactionDate = [transactionCopy transactionDate];
+  timeZone = [transactionCopy timeZone];
   TimeOfDay = GetTimeOfDay();
 
   v19 = GetProcessingDate();
-  v20 = [v5 countryCode];
-  v21 = v20;
+  countryCode = [transactionCopy countryCode];
+  v21 = countryCode;
   v22 = &stru_100021298;
-  if (v20)
+  if (countryCode)
   {
-    v22 = v20;
+    v22 = countryCode;
   }
 
   v23 = v22;
@@ -225,21 +225,21 @@ LABEL_13:
   v55 = v19;
   v25 = &MKCoordinateRegionMakeWithDistance_ptr;
   v60 = v23;
-  v58 = v5;
+  v58 = transactionCopy;
   do
   {
     v26 = objc_autoreleasePoolPush();
     TimeWindowToSeconds();
     v27 = [v19 dateByAddingTimeInterval:?];
-    v28 = [v5 transactionDate];
+    transactionDate2 = [transactionCopy transactionDate];
     v62 = v27;
-    v29 = [v28 compare:v27];
+    v29 = [transactionDate2 compare:v27];
 
     if (v29 == 1)
     {
       v57 = v26;
-      v30 = [v5 merchantDetailedCategory];
-      v31 = [v61 objectForKeyedSubscript:v30];
+      merchantDetailedCategory3 = [transactionCopy merchantDetailedCategory];
+      v31 = [dictionaryCopy objectForKeyedSubscript:merchantDetailedCategory3];
       v32 = [v25[169] numberWithUnsignedInteger:v24];
       v33 = [v31 objectForKeyedSubscript:v32];
       v34 = [v25[169] numberWithUnsignedInteger:TimeOfDay];
@@ -258,11 +258,11 @@ LABEL_13:
       [v38 setOrAddToDecimalValue:v39 forKey:v54];
 
       v40 = [v35 objectForKeyedSubscript:v60];
-      v41 = [v58 amount];
-      [v40 setOrAddToDecimalValue:v41 forKey:v59];
+      amount = [v58 amount];
+      [v40 setOrAddToDecimalValue:amount forKey:v59];
 
-      v42 = [v58 merchantDetailedCategory];
-      v43 = [v61 objectForKeyedSubscript:v42];
+      merchantDetailedCategory4 = [v58 merchantDetailedCategory];
+      v43 = [dictionaryCopy objectForKeyedSubscript:merchantDetailedCategory4];
       v44 = [v25[169] numberWithUnsignedInteger:v24];
       v45 = [v43 objectForKeyedSubscript:v44];
       v46 = [v45 objectForKeyedSubscript:&off_100021B70];
@@ -281,10 +281,10 @@ LABEL_13:
       [v49 setOrAddToDecimalValue:v50 forKey:v54];
 
       v51 = [v46 objectForKeyedSubscript:v60];
-      v52 = [v58 amount];
-      [v51 setOrAddToDecimalValue:v52 forKey:v59];
+      amount2 = [v58 amount];
+      [v51 setOrAddToDecimalValue:amount2 forKey:v59];
 
-      v5 = v58;
+      transactionCopy = v58;
       v19 = v55;
       v25 = &MKCoordinateRegionMakeWithDistance_ptr;
       v26 = v57;
@@ -299,9 +299,9 @@ LABEL_13:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)countRecurringMerchantDetailedCategoryRecords:(id)a3
+- (void)countRecurringMerchantDetailedCategoryRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_autoreleasePoolPush();
   v6 = [(FHDatabaseManager *)self->_dbMgr getRecurringTransactionIdentifiersByClass:9];
   v14 = 0u;
@@ -327,11 +327,11 @@ LABEL_13:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 merchantDetailedCategory];
+          merchantDetailedCategory = [v11 merchantDetailedCategory];
 
-          if (v13)
+          if (merchantDetailedCategory)
           {
-            [(FinHealthStateController *)self countMerchantDetailedCategoryRecordsWithDictionary:v4 fHTransaction:v12];
+            [(FinHealthStateController *)self countMerchantDetailedCategoryRecordsWithDictionary:recordsCopy fHTransaction:v12];
           }
         }
 
@@ -348,17 +348,17 @@ LABEL_13:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)computeAndPersistDetailedCategoryRecords:(id)a3 withRecurringCounts:(id)a4
+- (void)computeAndPersistDetailedCategoryRecords:(id)records withRecurringCounts:(id)counts
 {
-  v5 = a3;
-  v29 = a4;
+  recordsCopy = records;
+  countsCopy = counts;
   v28 = objc_autoreleasePoolPush();
   v37 = GetProcessingDate();
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
+  obj = recordsCopy;
   v31 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v31)
   {
@@ -416,15 +416,15 @@ LABEL_13:
                   v20 = *(*(&v42 + 1) + 8 * i);
                   v21 = [v15 objectForKeyedSubscript:v20];
                   v22 = [v21 objectForKeyedSubscript:v6];
-                  v23 = [v22 intValue];
+                  intValue = [v22 intValue];
 
-                  if (v23 >= 1)
+                  if (intValue >= 1)
                   {
                     v24 = [v15 objectForKeyedSubscript:v20];
                     v25 = [v24 objectForKeyedSubscript:v35];
                     v26 = [v15 objectForKeyedSubscript:v20];
                     v27 = [v26 objectForKeyedSubscript:v6];
-                    -[FinHealthStateController insertDetailedCategoryAggregateFeature:amountSpent:transactionCount:countryCode:recurringTransactionRatio:timeOfDay:timeWindow:startDate:endDate:](self, "insertDetailedCategoryAggregateFeature:amountSpent:transactionCount:countryCode:recurringTransactionRatio:timeOfDay:timeWindow:startDate:endDate:", v39, v25, [v27 intValue], v20, v41, v40, 0.0, v38, v37, v28, v29);
+                    -[FinHealthStateController insertDetailedCategoryAggregateFeature:amountSpent:transactionCount:countryCode:recurringTransactionRatio:timeOfDay:timeWindow:startDate:endDate:](self, "insertDetailedCategoryAggregateFeature:amountSpent:transactionCount:countryCode:recurringTransactionRatio:timeOfDay:timeWindow:startDate:endDate:", v39, v25, [v27 intValue], v20, v41, v40, 0.0, v38, v37, v28, countsCopy);
                   }
                 }
 
@@ -458,51 +458,51 @@ LABEL_13:
   objc_autoreleasePoolPop(v28);
 }
 
-- (void)insertDetailedCategoryAggregateFeature:(id)a3 amountSpent:(id)a4 transactionCount:(unint64_t)a5 countryCode:(id)a6 recurringTransactionRatio:(double)a7 timeOfDay:(unint64_t)a8 timeWindow:(unint64_t)a9 startDate:(id)a10 endDate:(id)a11
+- (void)insertDetailedCategoryAggregateFeature:(id)feature amountSpent:(id)spent transactionCount:(unint64_t)count countryCode:(id)code recurringTransactionRatio:(double)ratio timeOfDay:(unint64_t)day timeWindow:(unint64_t)window startDate:(id)self0 endDate:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a10;
-  v21 = a11;
+  featureCopy = feature;
+  spentCopy = spent;
+  codeCopy = code;
+  dateCopy = date;
+  endDateCopy = endDate;
   v22 = [FHDatabaseEntity alloc];
   v23 = [v22 initWithEntity:FHDetailedCategoryAggregateFeaturesTableName];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100003C70;
   v30[3] = &unk_100020AA0;
-  v31 = v17;
-  v32 = v18;
-  v37 = a7;
-  v38 = a8;
-  v39 = a9;
-  v33 = v19;
-  v34 = v20;
-  v35 = v21;
-  v36 = a5;
-  v24 = v21;
-  v25 = v20;
-  v26 = v19;
-  v27 = v18;
-  v28 = v17;
+  v31 = featureCopy;
+  v32 = spentCopy;
+  ratioCopy = ratio;
+  dayCopy = day;
+  windowCopy = window;
+  v33 = codeCopy;
+  v34 = dateCopy;
+  v35 = endDateCopy;
+  countCopy = count;
+  v24 = endDateCopy;
+  v25 = dateCopy;
+  v26 = codeCopy;
+  v27 = spentCopy;
+  v28 = featureCopy;
   v29 = [FHDatabaseInsertOrUpdateFromBuilder initWithBuilder:v30];
   [v23 insertOrUpdate:v29 upsert:1];
 }
 
-- (id)getDetailedCategoryAggregateRecordsWithCountryCode:(id)a3 timeWindow:(unint64_t)a4 timeOfDay:(unint64_t)a5
+- (id)getDetailedCategoryAggregateRecordsWithCountryCode:(id)code timeWindow:(unint64_t)window timeOfDay:(unint64_t)day
 {
-  v7 = a3;
+  codeCopy = code;
   v8 = [FHDatabaseEntity alloc];
   v9 = [v8 initWithEntity:FHDetailedCategoryAggregateFeaturesTableName];
-  v10 = [v9 fieldsInOrder];
-  v11 = [v10 subarrayWithRange:{1, objc_msgSend(v10, "count") - 1}];
+  fieldsInOrder = [v9 fieldsInOrder];
+  v11 = [fieldsInOrder subarrayWithRange:{1, objc_msgSend(fieldsInOrder, "count") - 1}];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10000406C;
   v32[3] = &unk_100020AC8;
-  v34 = a4;
-  v35 = a5;
-  v12 = v7;
+  windowCopy = window;
+  dayCopy = day;
+  v12 = codeCopy;
   v33 = v12;
   v13 = [FHDatabaseClauseFromBuilder initWithBuilder:v32];
   v26 = 0;
@@ -523,8 +523,8 @@ LABEL_13:
   v18[2] = sub_100004104;
   v18[3] = &unk_100020AF0;
   v15 = v12;
-  v22 = a4;
-  v23 = a5;
+  windowCopy2 = window;
+  dayCopy2 = day;
   v19 = v15;
   v20 = v24;
   v21 = &v26;
@@ -545,15 +545,15 @@ LABEL_13:
   [v3 clearData];
 }
 
-- (id)generatePredictionWithModelType:(id)a3 withModelPathComponent:(id)a4
+- (id)generatePredictionWithModelType:(id)type withModelPathComponent:(id)component
 {
-  v6 = a4;
-  if ([a3 isEqualToString:FHModelIncomeClassificationName])
+  componentCopy = component;
+  if ([type isEqualToString:FHModelIncomeClassificationName])
   {
-    if (v6)
+    if (componentCopy)
     {
       v7 = FHModelDirectory();
-      v8 = [v7 stringByAppendingPathComponent:v6];
+      v8 = [v7 stringByAppendingPathComponent:componentCopy];
       v9 = [NSURL URLWithString:v8];
     }
 
@@ -575,38 +575,38 @@ LABEL_13:
   return v10;
 }
 
-- (id)transactionsByGroupID:(id)a3
+- (id)transactionsByGroupID:(id)d
 {
-  v3 = [(FHDatabaseManager *)self->_dbMgr transactionsByGroupId:a3];
+  v3 = [(FHDatabaseManager *)self->_dbMgr transactionsByGroupId:d];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)aggregateFeaturesWithHandler:(id)a3
+- (void)aggregateFeaturesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000046DC;
     v6[3] = &unk_100020B58;
-    v7 = v4;
+    v7 = handlerCopy;
     [(FinHealthStateController *)self aggregateFeaturesWithProcessSource:0 completion:v6];
   }
 }
 
-- (void)aggregateFeaturesWithProcessSource:(id)a3 completion:(id)a4
+- (void)aggregateFeaturesWithProcessSource:(id)source completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  sourceCopy = source;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v11)
+    if (sourceCopy)
     {
-      v7 = [v11 isEqualToString:@"finhealthd"];
+      v7 = [sourceCopy isEqualToString:@"finhealthd"];
       v8 = 1;
       if (v7)
       {
@@ -622,14 +622,14 @@ LABEL_13:
 
     v9 = [(FinHealthStateController *)self _processAggregateFeaturesWithHardReset:1 forceStalenessCheck:v8];
     v10 = [v9 description];
-    v6[2](v6, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
   }
 }
 
-- (id)_processAggregateFeaturesWithHardReset:(BOOL)a3 forceStalenessCheck:(BOOL)a4
+- (id)_processAggregateFeaturesWithHardReset:(BOOL)reset forceStalenessCheck:(BOOL)check
 {
-  v4 = a4;
-  v5 = a3;
+  checkCopy = check;
+  resetCopy = reset;
   v6 = FinHealthLogObject();
   v7 = FinHealthLogObject();
   v8 = os_signpost_id_make_with_pointer(v7, self);
@@ -654,7 +654,7 @@ LABEL_13:
   [v12 timeIntervalSinceReferenceDate];
   v14 = v13;
 
-  if (v4)
+  if (checkCopy)
   {
     if (v11)
     {
@@ -701,18 +701,18 @@ LABEL_13:
   v61 = objc_alloc_init(NSMutableDictionary);
   v60 = objc_alloc_init(NSMutableDictionary);
   v70 = objc_alloc_init(FinHealthRealtimeFeaturesRequest);
-  if (v5)
+  if (resetCopy)
   {
     v59 = objc_autoreleasePoolPush();
     v66 = objc_alloc_init(FinHealthGeoFeatures);
     bypassMapService = self->_bypassMapService;
     self->_bypassMapService = 1;
-    v62 = [(FinHealthStateController *)self _checkEventDeletion];
-    v65 = [v62 firstObject];
-    v20 = [v62 objectAtIndexedSubscript:1];
+    _checkEventDeletion = [(FinHealthStateController *)self _checkEventDeletion];
+    firstObject = [_checkEventDeletion firstObject];
+    v20 = [_checkEventDeletion objectAtIndexedSubscript:1];
     [(FinHealthRealtimeFeaturesRequest *)v70 setPastTimeRangesToRetagEvents:v20];
 
-    v64 = [v62 lastObject];
+    lastObject = [_checkEventDeletion lastObject];
     v21 = 0;
     v73 = 0;
     v72 = sqlDefaultBatchSize;
@@ -743,49 +743,49 @@ LABEL_13:
           }
 
           v27 = *(*(&v88 + 1) + 8 * i);
-          v28 = [v27 displayName];
+          displayName = [v27 displayName];
 
-          if (v28)
+          if (displayName)
           {
-            v29 = [v27 displayName];
-            v30 = [v18 objectForKey:v29];
+            displayName2 = [v27 displayName];
+            v30 = [v18 objectForKey:displayName2];
             if (v30)
             {
-              v31 = [[NSDecimalNumber alloc] initWithInteger:{objc_msgSend(v30, "integerValue") + 1}];
+              peerPaymentCounterpartHandle3 = [[NSDecimalNumber alloc] initWithInteger:{objc_msgSend(v30, "integerValue") + 1}];
             }
 
             else
             {
-              v31 = +[NSDecimalNumber one];
+              peerPaymentCounterpartHandle3 = +[NSDecimalNumber one];
             }
 
-            [v18 setObject:v31 forKey:v29];
+            [v18 setObject:peerPaymentCounterpartHandle3 forKey:displayName2];
           }
 
           else
           {
-            v32 = [v27 peerPaymentCounterpartHandle];
+            peerPaymentCounterpartHandle = [v27 peerPaymentCounterpartHandle];
 
-            if (!v32)
+            if (!peerPaymentCounterpartHandle)
             {
               continue;
             }
 
-            v33 = [v27 peerPaymentCounterpartHandle];
-            v34 = [v19 objectForKey:v33];
+            peerPaymentCounterpartHandle2 = [v27 peerPaymentCounterpartHandle];
+            v34 = [v19 objectForKey:peerPaymentCounterpartHandle2];
 
             if (v34)
             {
-              v29 = [[NSDecimalNumber alloc] initWithInteger:{objc_msgSend(v34, "integerValue") + 1}];
+              displayName2 = [[NSDecimalNumber alloc] initWithInteger:{objc_msgSend(v34, "integerValue") + 1}];
             }
 
             else
             {
-              v29 = +[NSDecimalNumber one];
+              displayName2 = +[NSDecimalNumber one];
             }
 
-            v31 = [v27 peerPaymentCounterpartHandle];
-            [v19 setObject:v29 forKey:v31];
+            peerPaymentCounterpartHandle3 = [v27 peerPaymentCounterpartHandle];
+            [v19 setObject:displayName2 forKey:peerPaymentCounterpartHandle3];
           }
         }
 
@@ -814,12 +814,12 @@ LABEL_38:
       v21 = v23;
       v80 = v21;
       v87 = bypassMapService;
-      v37 = v65;
+      v37 = firstObject;
       v81 = v37;
-      v82 = self;
+      selfCopy = self;
       v38 = v70;
       v83 = v38;
-      v39 = v64;
+      v39 = lastObject;
       v84 = v39;
       v85 = v69;
       [(FinHealthRealtimeFeaturesRequest *)v38 evaluateEventTagging:v21 bypassMapService:bypassMapService completion:v78];
@@ -869,8 +869,8 @@ LABEL_38:
   objc_autoreleasePoolPop(v44);
   os_unfair_lock_unlock(&self->_lockAggregationComputation);
   os_unfair_lock_lock(&self->_lockAggregationComputation);
-  v47 = [v69 allObjects];
-  [(FinHealthStateController *)self _excludeRecurringFromEventTaggingCandidates:v47];
+  allObjects = [v69 allObjects];
+  [(FinHealthStateController *)self _excludeRecurringFromEventTaggingCandidates:allObjects];
 
   os_unfair_lock_unlock(&self->_lockAggregationComputation);
   os_unfair_lock_lock(&self->_lockAggregationComputation);
@@ -882,7 +882,7 @@ LABEL_38:
   v75[2] = sub_100005CC8;
   v48 = v75[3] = &unk_100020BF8;
   v76 = v48;
-  v77 = self;
+  selfCopy2 = self;
   [v40 enumerateObjectsUsingBlock:v75];
   os_unfair_lock_lock(&self->_lockAggregationComputation);
   [(FHDatabaseManager *)self->_dbMgr predictRecurringTransactions];
@@ -945,16 +945,16 @@ LABEL_38:
 
 - (id)_checkEventDeletion
 {
-  v3 = [(FHDatabaseManager *)self->_dbMgr getTaggedPastCalendarEvents];
+  getTaggedPastCalendarEvents = [(FHDatabaseManager *)self->_dbMgr getTaggedPastCalendarEvents];
   v4 = objc_opt_new();
   v54 = objc_opt_new();
   v53 = objc_opt_new();
-  if ([v3 count])
+  if ([getTaggedPastCalendarEvents count])
   {
     v50 = v4;
     v5 = FHFeatureEventDateRangeKey;
-    v6 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", FHFeatureEventDateRangeKey];
-    v7 = [v3 valueForKeyPath:v6];
+    fHFeatureEventDateRangeKey = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", FHFeatureEventDateRangeKey];
+    v7 = [getTaggedPastCalendarEvents valueForKeyPath:fHFeatureEventDateRangeKey];
     v52 = [NSMutableArray arrayWithArray:v7];
 
     v8 = [[EKEventStore alloc] initWithEKOptions:128];
@@ -962,8 +962,8 @@ LABEL_38:
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v51 = v3;
-    obj = v3;
+    v51 = getTaggedPastCalendarEvents;
+    obj = getTaggedPastCalendarEvents;
     v9 = [obj countByEnumeratingWithState:&v64 objects:v77 count:16];
     if (v9)
     {
@@ -1020,9 +1020,9 @@ LABEL_38:
 
           v24 = *(*(&v60 + 1) + 8 * j);
           dbMgr = self->_dbMgr;
-          v26 = [v24 firstObject];
-          v27 = [v24 lastObject];
-          [(FHDatabaseManager *)dbMgr deleteTaggedEventsInTimeRange:v22 startDate:v26 comparatorOfEndDate:v22 endDate:v27];
+          firstObject = [v24 firstObject];
+          lastObject = [v24 lastObject];
+          [(FHDatabaseManager *)dbMgr deleteTaggedEventsInTimeRange:v22 startDate:firstObject comparatorOfEndDate:v22 endDate:lastObject];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v60 objects:v76 count:16];
@@ -1053,9 +1053,9 @@ LABEL_38:
 
           v33 = *(*(&v56 + 1) + 8 * k);
           v34 = self->_dbMgr;
-          v35 = [v33 firstObject];
-          v36 = [v33 lastObject];
-          v37 = [(FHDatabaseManager *)v34 getTransactionIdsInTimeRangeFrom:v35 to:v36];
+          firstObject2 = [v33 firstObject];
+          lastObject2 = [v33 lastObject];
+          v37 = [(FHDatabaseManager *)v34 getTransactionIdsInTimeRangeFrom:firstObject2 to:lastObject2];
           [v50 addObjectsFromArray:v37];
         }
 
@@ -1077,7 +1077,7 @@ LABEL_38:
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "taggedPastEvents %@, dateRanges :%@, transactionIdsWithValidPastEvents %@", buf, 0x20u);
     }
 
-    v3 = v51;
+    getTaggedPastCalendarEvents = v51;
   }
 
   v39 = self->_dbMgr;
@@ -1088,29 +1088,29 @@ LABEL_38:
   v44 = +[NSDate now];
   [(FHDatabaseManager *)v39 deleteTaggedEventsInTimeRange:v40 startDate:v42 comparatorOfEndDate:v43 endDate:v44];
 
-  v45 = [v4 allObjects];
-  v68[0] = v45;
-  v46 = [v54 allObjects];
-  v68[1] = v46;
-  v47 = [v53 allObjects];
-  v68[2] = v47;
+  allObjects = [v4 allObjects];
+  v68[0] = allObjects;
+  allObjects2 = [v54 allObjects];
+  v68[1] = allObjects2;
+  allObjects3 = [v53 allObjects];
+  v68[2] = allObjects3;
   v48 = [NSArray arrayWithObjects:v68 count:3];
 
   return v48;
 }
 
-- (void)_tagFlightTransactionsWithTripEvents:(id)a3
+- (void)_tagFlightTransactionsWithTripEvents:(id)events
 {
-  v54 = a3;
-  v4 = [v54 getEvents];
+  eventsCopy = events;
+  getEvents = [eventsCopy getEvents];
   v33 = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
-  v34 = [v4 filteredArrayUsingPredicate:?];
+  v34 = [getEvents filteredArrayUsingPredicate:?];
   if ([v34 count])
   {
     v57 = [(FHDatabaseManager *)self->_dbMgr getTransactionsByDetailedCategory:merchantDetailedCategoryAirline];
     if ([v57 count])
     {
-      v32 = v4;
+      v32 = getEvents;
       v46 = [[EKEventStore alloc] initWithEKOptions:128];
       v72 = 0u;
       v73 = 0u;
@@ -1124,7 +1124,7 @@ LABEL_38:
         v45 = eventMetadataKey;
         v44 = eventMetadataSchemaOrgKey;
         v55 = FHSmartFeatureCompoundTypeTripEvents;
-        v56 = self;
+        selfCopy = self;
         do
         {
           v5 = 0;
@@ -1142,8 +1142,8 @@ LABEL_38:
             v70 = 0u;
             v71 = 0u;
             v53 = v6;
-            v41 = [v6 tripParts];
-            v7 = [v41 countByEnumeratingWithState:&v68 objects:v78 count:16];
+            tripParts = [v6 tripParts];
+            v7 = [tripParts countByEnumeratingWithState:&v68 objects:v78 count:16];
             if (v7)
             {
               v8 = v7;
@@ -1157,7 +1157,7 @@ LABEL_38:
                 {
                   if (*v69 != v9)
                   {
-                    objc_enumerationMutation(v41);
+                    objc_enumerationMutation(tripParts);
                   }
 
                   v11 = *(*(&v68 + 1) + 8 * v10);
@@ -1168,8 +1168,8 @@ LABEL_38:
                     v67 = 0u;
                     v64 = 0u;
                     v65 = 0u;
-                    v43 = [v11 eventIdentifiers];
-                    v48 = [v43 countByEnumeratingWithState:&v64 objects:v77 count:16];
+                    eventIdentifiers = [v11 eventIdentifiers];
+                    v48 = [eventIdentifiers countByEnumeratingWithState:&v64 objects:v77 count:16];
                     if (v48)
                     {
                       v47 = *v65;
@@ -1180,7 +1180,7 @@ LABEL_38:
                         {
                           if (*v65 != v47)
                           {
-                            objc_enumerationMutation(v43);
+                            objc_enumerationMutation(eventIdentifiers);
                           }
 
                           v51 = v12;
@@ -1214,15 +1214,15 @@ LABEL_38:
                                 if ([v19 count])
                                 {
                                   v20 = [FHSmartCompoundFeatureRankedValue alloc];
-                                  v21 = [v54 tripEventTitleNomalization:v53];
+                                  v21 = [eventsCopy tripEventTitleNomalization:v53];
                                   v22 = [[NSDecimalNumber alloc] initWithInteger:300];
                                   v23 = [v20 initWithLabelAndRank:v21 featureRank:v22];
 
-                                  v24 = [v19 firstObject];
-                                  v25 = [v24 identifier];
+                                  firstObject = [v19 firstObject];
+                                  identifier = [firstObject identifier];
 
                                   v26 = objc_alloc_init(FHRealtimeFeaturesResponse);
-                                  v27 = [(FinHealthStateController *)self compoundFeaturesForTransaction:v25];
+                                  v27 = [(FinHealthStateController *)self compoundFeaturesForTransaction:identifier];
                                   v28 = [NSMutableDictionary dictionaryWithDictionary:v27];
 
                                   v29 = [v28 valueForKey:v55];
@@ -1235,10 +1235,10 @@ LABEL_38:
                                     [v28 setObject:v31 forKey:v55];
 
                                     [v26 setSmartCompoundFeatures:v28];
-                                    [(FHDatabaseManager *)v56->_dbMgr insertFeaturesCompoundRealtime:v25 realtimeFeatures:v26];
+                                    [(FHDatabaseManager *)selfCopy->_dbMgr insertFeaturesCompoundRealtime:identifier realtimeFeatures:v26];
                                   }
 
-                                  self = v56;
+                                  self = selfCopy;
                                 }
                               }
 
@@ -1252,7 +1252,7 @@ LABEL_38:
                         }
 
                         while ((v51 + 1) != v48);
-                        v48 = [v43 countByEnumeratingWithState:&v64 objects:v77 count:16];
+                        v48 = [eventIdentifiers countByEnumeratingWithState:&v64 objects:v77 count:16];
                       }
 
                       while (v48);
@@ -1267,7 +1267,7 @@ LABEL_38:
                 }
 
                 while (v10 != v8);
-                v8 = [v41 countByEnumeratingWithState:&v68 objects:v78 count:16];
+                v8 = [tripParts countByEnumeratingWithState:&v68 objects:v78 count:16];
               }
 
               while (v8);
@@ -1283,16 +1283,16 @@ LABEL_38:
         while (v37);
       }
 
-      v4 = v32;
+      getEvents = v32;
     }
   }
 }
 
-- (void)_excludeRecurringFromEventTaggingCandidates:(id)a3
+- (void)_excludeRecurringFromEventTaggingCandidates:(id)candidates
 {
-  v4 = [NSMutableSet setWithArray:a3];
-  v5 = [(FHDatabaseManager *)self->_dbMgr getRecurringTransactionIdentifiers];
-  v6 = [NSSet setWithArray:v5];
+  v4 = [NSMutableSet setWithArray:candidates];
+  getRecurringTransactionIdentifiers = [(FHDatabaseManager *)self->_dbMgr getRecurringTransactionIdentifiers];
+  v6 = [NSSet setWithArray:getRecurringTransactionIdentifiers];
   [v4 intersectSet:v6];
 
   v17 = v4;
@@ -1339,29 +1339,29 @@ LABEL_38:
   }
 }
 
-- (void)deleteAllDataForPasses:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)deleteAllDataForPasses:(id)passes force:(BOOL)force completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  passesCopy = passes;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
   v10 = objc_opt_new();
   v11 = v10;
-  if (v9)
+  if (completionCopy)
   {
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100006D64;
     v17 = &unk_100020C88;
-    v21 = a4;
-    v18 = self;
+    forceCopy = force;
+    selfCopy = self;
     v20 = &v22;
     v12 = v10;
     v19 = v12;
-    [v8 enumerateObjectsUsingBlock:&v14];
-    [(FinHealthStateController *)self removeAllEntriesFromTable:FHFeaturesEventsTableName, v14, v15, v16, v17, v18];
+    [passesCopy enumerateObjectsUsingBlock:&v14];
+    [(FinHealthStateController *)self removeAllEntriesFromTable:FHFeaturesEventsTableName, v14, v15, v16, v17, selfCopy];
     [(FinHealthStateController *)self removeAllEntriesFromTable:FHMerchantAggregateFeaturesTableName];
     [(FinHealthStateController *)self removeAllEntriesFromTable:FHDetailedCategoryAggregateFeaturesTableName];
     [(FinHealthStateController *)self removeAllEntriesFromTable:FHAmountAggregateFeaturesTableName];
@@ -1370,23 +1370,23 @@ LABEL_38:
     [(FHDatabaseManager *)self->_dbMgr clearCardProcessingHistory];
     if (*(v23 + 24) == 1)
     {
-      v9[2](v9, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
       v13 = [NSError errorWithDomain:FHErrorDomain code:10004 userInfo:v12];
-      (v9)[2](v9, 0, v13);
+      (completionCopy)[2](completionCopy, 0, v13);
     }
   }
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)deleteAllData:(id)a3
+- (void)deleteAllData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = FHDataDirectory();
     v6 = [v5 stringByAppendingString:FHRelativeInferredProductsFileName];
@@ -1399,11 +1399,11 @@ LABEL_38:
     v9 = FinHealthLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v8 localizedDescription];
+      localizedDescription = [v8 localizedDescription];
       *buf = 138412546;
       v18 = v6;
       v19 = 2112;
-      v20 = v10;
+      v20 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "filePath: %@ delete error: %@", buf, 0x16u);
     }
 
@@ -1420,14 +1420,14 @@ LABEL_38:
       [(FinHealthStateController *)self _createDBManagerAndAssociatedProperties:0];
     }
 
-    v4[2](v4, v12, v13);
+    dataCopy[2](dataCopy, v12, v13);
   }
 }
 
-- (void)_transactionWithTransactionID:(id)a3 completion:(id)a4
+- (void)_transactionWithTransactionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = FinHealthLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1436,32 +1436,32 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v9 = [(FinHealthStateController *)self _remoteObjectProxyWithErrorHandler];
+  _remoteObjectProxyWithErrorHandler = [(FinHealthStateController *)self _remoteObjectProxyWithErrorHandler];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000071A8;
   v11[3] = &unk_100020CB0;
-  v12 = v6;
-  v10 = v6;
-  [v9 transactionWithTransactionID:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_remoteObjectProxyWithErrorHandler transactionWithTransactionID:dCopy completion:v11];
 }
 
-- (id)getTransactionByTransaction:(id)a3
+- (id)getTransactionByTransaction:(id)transaction
 {
   dbMgr = self->_dbMgr;
-  v4 = [a3 identifier];
-  v5 = [(FHDatabaseManager *)dbMgr getTransactionByIdentifier:v4];
+  identifier = [transaction identifier];
+  v5 = [(FHDatabaseManager *)dbMgr getTransactionByIdentifier:identifier];
 
   return v5;
 }
 
-- (id)transactionsInInternalAnyState:(unint64_t)a3 forPass:(id)a4
+- (id)transactionsInInternalAnyState:(unint64_t)state forPass:(id)pass
 {
-  v6 = a4;
+  passCopy = pass;
   v7 = objc_opt_new();
   for (i = 0; i != 8; ++i)
   {
-    v9 = [(FHDatabaseManager *)self->_dbMgr getTransactionsByInternalState:a3 internalState:i];
+    v9 = [(FHDatabaseManager *)self->_dbMgr getTransactionsByInternalState:state internalState:i];
     [v7 addObjectsFromArray:v9];
   }
 
@@ -1470,8 +1470,8 @@ LABEL_38:
 
   if (v11)
   {
-    v12 = [NSPredicate predicateWithFormat:@"SELF.%K == %@", @"transactionSourceIdentifier", v6];
-    v13 = [v7 filteredArrayUsingPredicate:v12];
+    passCopy = [NSPredicate predicateWithFormat:@"SELF.%K == %@", @"transactionSourceIdentifier", passCopy];
+    v13 = [v7 filteredArrayUsingPredicate:passCopy];
     v14 = [NSArray arrayWithArray:v13];
   }
 
@@ -1491,18 +1491,18 @@ LABEL_38:
   return v14;
 }
 
-- (BOOL)invalidateTransactionByTransaction:(id)a3
+- (BOOL)invalidateTransactionByTransaction:(id)transaction
 {
   dbMgr = self->_dbMgr;
-  v4 = [a3 identifier];
-  LOBYTE(dbMgr) = [(FHDatabaseManager *)dbMgr updateTransactionInternalStateByIdentifier:v4 newInternalState:6];
+  identifier = [transaction identifier];
+  LOBYTE(dbMgr) = [(FHDatabaseManager *)dbMgr updateTransactionInternalStateByIdentifier:identifier newInternalState:6];
 
   return dbMgr;
 }
 
-- (void)transactionBatches:(unint64_t)a3 batch:(id)a4
+- (void)transactionBatches:(unint64_t)batches batch:(id)batch
 {
-  v6 = a4;
+  batchCopy = batch;
   v7 = objc_alloc_init(NSMutableArray);
   dbMgr = self->_dbMgr;
   v9 = sqlRowLimitUnlimited;
@@ -1510,10 +1510,10 @@ LABEL_38:
   v13[1] = 3221225472;
   v13[2] = sub_1000075A8;
   v13[3] = &unk_100020CD8;
-  v15 = v6;
-  v16 = a3;
+  v15 = batchCopy;
+  batchesCopy = batches;
   v14 = v7;
-  v10 = v6;
+  v10 = batchCopy;
   v11 = v7;
   [(FHDatabaseManager *)dbMgr streamTransactionsWithLimit:v9 internalState:2 onTransaction:v13];
   v12 = [v11 copy];
@@ -1531,17 +1531,17 @@ LABEL_38:
   }
 
   os_unfair_lock_lock(&self->_lockConnection);
-  v4 = [(FinHealthStateController *)self connection];
+  connection = [(FinHealthStateController *)self connection];
 
-  v5 = FinHealthLogObject();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  _newClientConnection = FinHealthLogObject();
+  v6 = os_log_type_enabled(_newClientConnection, OS_LOG_TYPE_DEBUG);
+  if (connection)
   {
     if (v6)
     {
       v9 = 136315138;
       v10 = "[FinHealthStateController _clientConnection]";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s, reusing _clientConnection", &v9, 0xCu);
+      _os_log_impl(&_mh_execute_header, _newClientConnection, OS_LOG_TYPE_DEBUG, "%s, reusing _clientConnection", &v9, 0xCu);
     }
   }
 
@@ -1551,17 +1551,17 @@ LABEL_38:
     {
       v9 = 136315138;
       v10 = "[FinHealthStateController _clientConnection]";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s, _clientConnection nil", &v9, 0xCu);
+      _os_log_impl(&_mh_execute_header, _newClientConnection, OS_LOG_TYPE_DEBUG, "%s, _clientConnection nil", &v9, 0xCu);
     }
 
-    v5 = [(FinHealthStateController *)self _newClientConnection];
-    [(FinHealthStateController *)self setConnection:v5];
+    _newClientConnection = [(FinHealthStateController *)self _newClientConnection];
+    [(FinHealthStateController *)self setConnection:_newClientConnection];
   }
 
   os_unfair_lock_unlock(&self->_lockConnection);
-  v7 = [(FinHealthStateController *)self connection];
+  connection2 = [(FinHealthStateController *)self connection];
 
-  return v7;
+  return connection2;
 }
 
 - (id)_newClientConnection
@@ -1601,13 +1601,13 @@ LABEL_38:
 - (id)_remoteObjectProxyWithErrorHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(FinHealthStateController *)self _clientConnection];
+  _clientConnection = [(FinHealthStateController *)self _clientConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100007CC4;
   v6[3] = &unk_100020D28;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [_clientConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -1615,16 +1615,16 @@ LABEL_38:
   return v4;
 }
 
-- (void)removeAllEntriesFromTable:(id)a3
+- (void)removeAllEntriesFromTable:(id)table
 {
-  v3 = a3;
-  v4 = [[FHDatabaseEntity alloc] initWithEntity:v3];
-  v5 = [v4 clearData];
+  tableCopy = table;
+  v4 = [[FHDatabaseEntity alloc] initWithEntity:tableCopy];
+  clearData = [v4 clearData];
   v6 = FinHealthLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = @"Failed to perform";
-    if (v5)
+    if (clearData)
     {
       v7 = @"Successfully performed operation";
     }
@@ -1632,29 +1632,29 @@ LABEL_38:
     v8 = 138412546;
     v9 = v7;
     v10 = 2112;
-    v11 = v3;
+    v11 = tableCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@: delete all records on table: %@", &v8, 0x16u);
   }
 }
 
-- (id)getMerchantForTransactionId:(id)a3
+- (id)getMerchantForTransactionId:(id)id
 {
-  v3 = [(FHDatabaseManager *)self->_dbMgr getTransactionByIdentifier:a3];
-  v4 = [v3 displayName];
+  v3 = [(FHDatabaseManager *)self->_dbMgr getTransactionByIdentifier:id];
+  displayName = [v3 displayName];
 
-  return v4;
+  return displayName;
 }
 
-- (id)getCompundFeaturesOverTimRangeFrom:(id)a3 to:(id)a4
+- (id)getCompundFeaturesOverTimRangeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v8 = objc_alloc_init(NSMutableDictionary);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(FHDatabaseManager *)self->_dbMgr getTransactionIdsInTimeRangeFrom:v6 to:v7, 0];
+  v9 = [(FHDatabaseManager *)self->_dbMgr getTransactionIdsInTimeRangeFrom:fromCopy to:toCopy, 0];
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -1683,36 +1683,36 @@ LABEL_38:
   return v8;
 }
 
-- (id)getLostSavingsValueFromCompoundFeatures:(id)a3
+- (id)getLostSavingsValueFromCompoundFeatures:(id)features
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = FHSmartFeatureCompoundTypeLostSavings, [v3 objectForKeyedSubscript:FHSmartFeatureCompoundTypeLostSavings], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  featuresCopy = features;
+  v4 = featuresCopy;
+  if (featuresCopy && (v5 = FHSmartFeatureCompoundTypeLostSavings, [featuresCopy objectForKeyedSubscript:FHSmartFeatureCompoundTypeLostSavings], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v4 objectForKeyedSubscript:v5];
     v8 = [v7 objectAtIndex:0];
-    v9 = [v8 featureRank];
+    featureRank = [v8 featureRank];
   }
 
   else
   {
-    v9 = +[NSDecimalNumber zero];
+    featureRank = +[NSDecimalNumber zero];
   }
 
-  return v9;
+  return featureRank;
 }
 
-- (id)getLostSavingsOverTime:(id)a3 from:(id)a4 to:(id)a5
+- (id)getLostSavingsOverTime:(id)time from:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timeCopy = time;
+  fromCopy = from;
+  toCopy = to;
   v11 = objc_opt_new();
-  v30 = v10;
-  v31 = v9;
-  v12 = [(FinHealthStateController *)self getCompundFeaturesOverTimRangeFrom:v9 to:v10];
+  v30 = toCopy;
+  v31 = fromCopy;
+  v12 = [(FinHealthStateController *)self getCompundFeaturesOverTimRangeFrom:fromCopy to:toCopy];
   v13 = v12;
-  if (v8)
+  if (timeCopy)
   {
     v38 = 0uLL;
     v39 = 0uLL;
@@ -1734,7 +1734,7 @@ LABEL_38:
 
           v18 = *(*(&v36 + 1) + 8 * i);
           v19 = [(FinHealthStateController *)self getMerchantForTransactionId:v18];
-          if ([v19 isEqualToString:v8])
+          if ([v19 isEqualToString:timeCopy])
           {
             v20 = [v13 objectForKeyedSubscript:v18];
             v21 = [(FinHealthStateController *)self getLostSavingsValueFromCompoundFeatures:v20];
@@ -1786,9 +1786,9 @@ LABEL_38:
   return v28;
 }
 
-- (id)getRecurringChangeForMessagingOverTimePeriod:(int64_t)a3
+- (id)getRecurringChangeForMessagingOverTimePeriod:(int64_t)period
 {
-  v3 = [(FinHealthStateController *)self _getRecurringChangeOverTimePeriod:a3];
+  v3 = [(FinHealthStateController *)self _getRecurringChangeOverTimePeriod:period];
   v4 = objc_opt_new();
   v5 = [v3 count];
   v6 = messagingQueryKeyAmount;
@@ -1858,13 +1858,13 @@ LABEL_38:
   return v24;
 }
 
-- (id)_getRecurringChangeOverTimePeriod:(int64_t)a3
+- (id)_getRecurringChangeOverTimePeriod:(int64_t)period
 {
   v37 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = +[NSDate now];
   v7 = objc_alloc_init(NSDateComponents);
-  [v7 setDay:-a3];
+  [v7 setDay:-period];
   v29 = +[NSCalendar currentCalendar];
   v30 = v7;
   v28 = [v29 dateByAddingComponents:v7 toDate:v6 options:0];
@@ -1883,7 +1883,7 @@ LABEL_38:
     v33 = messagingQueryKeyMerchant;
     v32 = messagingQueryKeyAmount;
     v35 = v5;
-    v36 = self;
+    selfCopy = self;
     v34 = FHSmartFeatureCompoundTypeRecurringChange;
     do
     {
@@ -1903,8 +1903,8 @@ LABEL_38:
         {
           v19 = v10;
           v20 = v11;
-          v21 = [v18 firstObject];
-          [v21 featureRank];
+          firstObject = [v18 firstObject];
+          [firstObject featureRank];
           v23 = v22 = v8;
           v24 = [NSDictionary dictionaryWithObjectsAndKeys:v15, v33, v23, v32, 0];
           [v37 addObject:v24];
@@ -1915,7 +1915,7 @@ LABEL_38:
 
           v8 = v22;
           v5 = v35;
-          self = v36;
+          self = selfCopy;
           [v35 addObject:v15];
         }
       }
@@ -1938,14 +1938,14 @@ LABEL_38:
   return v25;
 }
 
-- (id)featuresWithAmountSums:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)featuresWithAmountSums:(id)sums startDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sumsCopy = sums;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = objc_opt_new();
-  v55 = v8;
-  v12 = [(FHDatabaseManager *)self->_dbMgr getTransactionSmartFeaturesForApplication:v8];
+  v55 = sumsCopy;
+  v12 = [(FHDatabaseManager *)self->_dbMgr getTransactionSmartFeaturesForApplication:sumsCopy];
   v54 = objc_opt_new();
   v77 = 0u;
   v78 = 0u;
@@ -1953,13 +1953,13 @@ LABEL_38:
   v80 = 0u;
   v13 = v12;
   v58 = v13;
-  v59 = v10;
+  v59 = endDateCopy;
   v63 = [v13 countByEnumeratingWithState:&v77 objects:v86 count:16];
   if (v63)
   {
     v62 = *v78;
-    v56 = self;
-    v57 = v9;
+    selfCopy = self;
+    v57 = dateCopy;
     do
     {
       v14 = 0;
@@ -1973,27 +1973,27 @@ LABEL_38:
         v64 = v14;
         v15 = *(*(&v77 + 1) + 8 * v14);
         dbMgr = self->_dbMgr;
-        v17 = [v15 transactionIdentifier];
-        v18 = [(FHDatabaseManager *)dbMgr getTransactionByIdentifier:v17];
+        transactionIdentifier = [v15 transactionIdentifier];
+        v18 = [(FHDatabaseManager *)dbMgr getTransactionByIdentifier:transactionIdentifier];
 
-        v19 = [v18 transactionDate];
-        [v10 timeIntervalSinceDate:v9];
+        transactionDate = [v18 transactionDate];
+        [endDateCopy timeIntervalSinceDate:dateCopy];
         if (v20 >= 0.0)
         {
-          [v19 timeIntervalSinceDate:v9];
+          [transactionDate timeIntervalSinceDate:dateCopy];
           if (v21 >= 0.0)
           {
-            [v10 timeIntervalSinceDate:v19];
+            [endDateCopy timeIntervalSinceDate:transactionDate];
             if (v22 > 0.0)
             {
               v60 = v15;
-              v61 = v19;
+              v61 = transactionDate;
               v75 = 0u;
               v76 = 0u;
               v73 = 0u;
               v74 = 0u;
-              v23 = [v15 aggregateFeatures];
-              v24 = [v23 countByEnumeratingWithState:&v73 objects:v85 count:16];
+              aggregateFeatures = [v15 aggregateFeatures];
+              v24 = [aggregateFeatures countByEnumeratingWithState:&v73 objects:v85 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -2004,23 +2004,23 @@ LABEL_38:
                   {
                     if (*v74 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(aggregateFeatures);
                     }
 
                     v28 = *(*(&v73 + 1) + 8 * i);
                     v29 = [v11 objectForKey:v28];
-                    v30 = [v18 amount];
+                    amount = [v18 amount];
                     if (v29)
                     {
-                      v31 = [v29 decimalNumberByAdding:v30];
+                      v31 = [v29 decimalNumberByAdding:amount];
 
-                      v30 = v31;
+                      amount = v31;
                     }
 
-                    [v11 setObject:v30 forKey:v28];
+                    [v11 setObject:amount forKey:v28];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v73 objects:v85 count:16];
+                  v25 = [aggregateFeatures countByEnumeratingWithState:&v73 objects:v85 count:16];
                 }
 
                 while (v25);
@@ -2030,8 +2030,8 @@ LABEL_38:
               v72 = 0u;
               v69 = 0u;
               v70 = 0u;
-              v32 = [v60 compoundFeatures];
-              v33 = [v32 countByEnumeratingWithState:&v69 objects:v84 count:16];
+              compoundFeatures = [v60 compoundFeatures];
+              v33 = [compoundFeatures countByEnumeratingWithState:&v69 objects:v84 count:16];
               if (v33)
               {
                 v34 = v33;
@@ -2042,36 +2042,36 @@ LABEL_38:
                   {
                     if (*v70 != v35)
                     {
-                      objc_enumerationMutation(v32);
+                      objc_enumerationMutation(compoundFeatures);
                     }
 
                     v37 = *(*(&v69 + 1) + 8 * j);
-                    v38 = [v37 compoundFeatureKey];
-                    v39 = [v11 objectForKey:v38];
+                    compoundFeatureKey = [v37 compoundFeatureKey];
+                    v39 = [v11 objectForKey:compoundFeatureKey];
 
-                    v40 = [v18 amount];
+                    amount2 = [v18 amount];
                     if (v39)
                     {
-                      v41 = [v39 decimalNumberByAdding:v40];
+                      v41 = [v39 decimalNumberByAdding:amount2];
 
-                      v40 = v41;
+                      amount2 = v41;
                     }
 
-                    v42 = [v37 compoundFeatureKey];
-                    [v11 setObject:v40 forKey:v42];
+                    compoundFeatureKey2 = [v37 compoundFeatureKey];
+                    [v11 setObject:amount2 forKey:compoundFeatureKey2];
                   }
 
-                  v34 = [v32 countByEnumeratingWithState:&v69 objects:v84 count:16];
+                  v34 = [compoundFeatures countByEnumeratingWithState:&v69 objects:v84 count:16];
                 }
 
                 while (v34);
               }
 
-              v9 = v57;
+              dateCopy = v57;
               v13 = v58;
-              v10 = v59;
-              self = v56;
-              v19 = v61;
+              endDateCopy = v59;
+              self = selfCopy;
+              transactionDate = v61;
             }
           }
         }
@@ -2090,8 +2090,8 @@ LABEL_38:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v43 = [v11 allKeys];
-  v44 = [v43 countByEnumeratingWithState:&v65 objects:v83 count:16];
+  allKeys = [v11 allKeys];
+  v44 = [allKeys countByEnumeratingWithState:&v65 objects:v83 count:16];
   if (v44)
   {
     v45 = v44;
@@ -2102,7 +2102,7 @@ LABEL_38:
       {
         if (*v66 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(allKeys);
         }
 
         v48 = *(*(&v65 + 1) + 8 * k);
@@ -2111,7 +2111,7 @@ LABEL_38:
         [v54 addObject:v50];
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v65 objects:v83 count:16];
+      v45 = [allKeys countByEnumeratingWithState:&v65 objects:v83 count:16];
     }
 
     while (v45);
@@ -2130,11 +2130,11 @@ LABEL_38:
   return v52;
 }
 
-- (id)getAllPredictedPeerPaymentsAfterDate:(id)a3
+- (id)getAllPredictedPeerPaymentsAfterDate:(id)date
 {
-  v4 = [NSPredicate predicateWithFormat:@"SELF.%K >= %@", FHPeerPaymentForecastingSignalDateKey, a3];
-  v5 = [(FHDatabaseManager *)self->_dbMgr getFilteredPeerPaymentForecastingSignals];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  date = [NSPredicate predicateWithFormat:@"SELF.%K >= %@", FHPeerPaymentForecastingSignalDateKey, date];
+  getFilteredPeerPaymentForecastingSignals = [(FHDatabaseManager *)self->_dbMgr getFilteredPeerPaymentForecastingSignals];
+  v6 = [getFilteredPeerPaymentForecastingSignals filteredArrayUsingPredicate:date];
   v7 = [v6 sortedArrayUsingComparator:&stru_100020DA8];
 
   return v7;
@@ -2142,9 +2142,9 @@ LABEL_38:
 
 - (BOOL)suggestAutoReload
 {
-  v3 = [(FHDatabaseManager *)self->_dbMgr getCurrentCashBalance];
+  getCurrentCashBalance = [(FHDatabaseManager *)self->_dbMgr getCurrentCashBalance];
   v4 = +[NSDecimalNumber defaultDatabaseAmountMultiplier];
-  v5 = [v3 decimalNumberByDividingBy:v4];
+  v5 = [getCurrentCashBalance decimalNumberByDividingBy:v4];
 
   v6 = +[NSDecimalNumber zero];
   v7 = [v5 compare:v6];
@@ -2156,8 +2156,8 @@ LABEL_38:
 
   else
   {
-    v8 = [(FHDatabaseManager *)self->_dbMgr getExpectedWeeklySpend];
-    v9 = [v5 decimalNumberByAdding:v8];
+    getExpectedWeeklySpend = [(FHDatabaseManager *)self->_dbMgr getExpectedWeeklySpend];
+    v9 = [v5 decimalNumberByAdding:getExpectedWeeklySpend];
     v10 = +[NSDecimalNumber zero];
     v11 = [v9 compare:v10] == -1;
   }
@@ -2165,16 +2165,16 @@ LABEL_38:
   return v11;
 }
 
-- (id)predictionLabelForModelName:(id)a3 modelVersion:(id)a4
+- (id)predictionLabelForModelName:(id)name modelVersion:(id)version
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  nameCopy = name;
+  versionCopy = version;
+  if (!versionCopy)
   {
-    v6 = [FHModel retrievePersistedModelVersion:v5];
+    versionCopy = [FHModel retrievePersistedModelVersion:nameCopy];
   }
 
-  v7 = [FHModel predictionLabelForModelName:v5 modelVersion:v6];
+  v7 = [FHModel predictionLabelForModelName:nameCopy modelVersion:versionCopy];
 
   return v7;
 }
@@ -2184,15 +2184,15 @@ LABEL_38:
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(FHCardPreselectPropensityModel);
   dbMgr = self->_dbMgr;
-  v6 = [v4 modelName];
-  v7 = [v4 modelVersion];
-  v8 = [NSString stringWithFormat:@"%@:%@", v6, v7];
-  v9 = [v4 trialId];
-  [(FHDatabaseManager *)dbMgr updateProcessingTimeForFeature:v8 data:v9];
+  modelName = [v4 modelName];
+  modelVersion = [v4 modelVersion];
+  v8 = [NSString stringWithFormat:@"%@:%@", modelName, modelVersion];
+  trialId = [v4 trialId];
+  [(FHDatabaseManager *)dbMgr updateProcessingTimeForFeature:v8 data:trialId];
 
   v10 = +[PKDiscoveryService sharedInstance];
-  v11 = [v4 featureSet];
-  v12 = [v11 array];
+  featureSet = [v4 featureSet];
+  array = [featureSet array];
 
   v13 = FinHealthLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2200,7 +2200,7 @@ LABEL_38:
     *buf = 136315394;
     v19 = "[FinHealthStateController predictAndPersistCardPreselectPropensityModel]";
     v20 = 2112;
-    v21 = v12;
+    v21 = array;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s CardPreselect Feature Set %@", buf, 0x16u);
   }
 
@@ -2212,7 +2212,7 @@ LABEL_38:
   objc_copyWeak(&v17, buf);
   v14 = v4;
   v16 = v14;
-  [v10 fetchUserProperties:v12 withParameters:0 completion:v15];
+  [v10 fetchUserProperties:array withParameters:0 completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);

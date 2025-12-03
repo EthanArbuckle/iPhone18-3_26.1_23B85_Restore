@@ -1,17 +1,17 @@
 @interface _TVMonogramInitialsSilhouetteImageGenerator
-+ (BOOL)_isRomanName:(id)a3;
-+ (id)_initialsForFirstName:(id)a3 lastName:(id)a4;
-+ (id)monogramImageWithDescription:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)cancelLoad:(id)a3;
++ (BOOL)_isRomanName:(id)name;
++ (id)_initialsForFirstName:(id)name lastName:(id)lastName;
++ (id)monogramImageWithDescription:(id)description;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _TVMonogramInitialsSilhouetteImageGenerator
 
-+ (BOOL)_isRomanName:(id)a3
++ (BOOL)_isRomanName:(id)name
 {
-  if (a3)
+  if (name)
   {
     return CNStringContainsNonLatinCharacters() ^ 1;
   }
@@ -22,20 +22,20 @@
   }
 }
 
-+ (id)_initialsForFirstName:(id)a3 lastName:(id)a4
++ (id)_initialsForFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if (!(v5 | v6) || ![objc_opt_class() _isRomanName:v5] || !objc_msgSend(objc_opt_class(), "_isRomanName:", v6))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if (!(nameCopy | lastNameCopy) || ![objc_opt_class() _isRomanName:nameCopy] || !objc_msgSend(objc_opt_class(), "_isRomanName:", lastNameCopy))
   {
     goto LABEL_16;
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 length];
+  v8 = [nameCopy length];
   if (v8)
   {
-    v9 = [v5 substringWithRange:{0, 1}];
+    v9 = [nameCopy substringWithRange:{0, 1}];
   }
 
   else
@@ -43,10 +43,10 @@
     v9 = &stru_287E12870;
   }
 
-  v10 = [v6 length];
+  v10 = [lastNameCopy length];
   if (v10)
   {
-    v11 = [v6 substringWithRange:{0, 1}];
+    v11 = [lastNameCopy substringWithRange:{0, 1}];
   }
 
   else
@@ -70,32 +70,32 @@ LABEL_16:
     v12 = 0;
   }
 
-  v13 = [v12 uppercaseString];
+  uppercaseString = [v12 uppercaseString];
 
-  return v13;
+  return uppercaseString;
 }
 
-+ (id)monogramImageWithDescription:(id)a3
++ (id)monogramImageWithDescription:(id)description
 {
-  v4 = a3;
-  [v4 size];
+  descriptionCopy = description;
+  [descriptionCopy size];
   v6 = v5;
   v8 = v7;
-  [v4 cornerRadius];
+  [descriptionCopy cornerRadius];
   v10 = v9;
-  v11 = [v4 fillColor];
-  v12 = v11;
-  if (v11)
+  fillColor = [descriptionCopy fillColor];
+  v12 = fillColor;
+  if (fillColor)
   {
-    v13 = v11;
+    blackColor = fillColor;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v14 = v13;
+  v14 = blackColor;
 
   v15 = +[TVGraphicsImageRenderer preferredFormat];
   [v15 setPreferredRange:2];
@@ -111,22 +111,22 @@ LABEL_16:
   v28 = v6;
   v29 = v8;
   v21 = v14;
-  v22 = v4;
-  v30 = a1;
-  v16 = v4;
+  v22 = descriptionCopy;
+  selfCopy = self;
+  v16 = descriptionCopy;
   v17 = v14;
   v18 = [TVGraphicsImageRenderer imageWithSize:v15 format:v20 actions:v6, v8];
 
   return v18;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -137,24 +137,24 @@ LABEL_16:
   v5 = v4;
   if ([v5 preferedMonogramType] == 2)
   {
-    v6 = [v5 firstName];
-    v7 = [v5 lastName];
-    v8 = [v5 text];
-    v9 = [v5 font];
-    v34 = [v9 fontName];
-    v10 = [v5 fillColor];
-    v11 = v10;
-    if (v10)
+    firstName = [v5 firstName];
+    lastName = [v5 lastName];
+    text = [v5 text];
+    font = [v5 font];
+    fontName = [font fontName];
+    fillColor = [v5 fillColor];
+    v11 = fillColor;
+    if (fillColor)
     {
-      v12 = v10;
+      blackColor = fillColor;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    v17 = v12;
+    v17 = blackColor;
 
     v38 = 0.0;
     v36 = 0.0;
@@ -162,30 +162,30 @@ LABEL_16:
     v35 = 0;
     [v17 getRed:&v38 green:&v37 blue:&v36 alpha:&v35];
     v18 = MEMORY[0x277CCACA8];
-    if ([v8 length])
+    if ([text length])
     {
-      v19 = v8;
+      v19 = text;
     }
 
     else
     {
-      v19 = v6;
+      v19 = firstName;
     }
 
-    v20 = v7;
-    if ([v8 length])
+    v20 = lastName;
+    if ([text length])
     {
-      v7 = &stru_287E12870;
+      lastName = &stru_287E12870;
     }
 
-    [v9 pointSize];
+    [font pointSize];
     v22 = v21;
     [v5 cornerRadius];
     v23 = &off_26CE87000;
     LODWORD(v23) = vcvtad_u64_f64(v38 * 255.0);
     LODWORD(v24) = vcvtad_u64_f64(v37 * 255.0);
     LODWORD(v25) = vcvtad_u64_f64(v36 * 255.0);
-    v13 = [v18 stringWithFormat:@"%@_%@_%@_%.0f_%.0f_%02X%02X%02X%.1f", v19, v7, v34, v22, v26, v23, v24, v25, v35];
+    v13 = [v18 stringWithFormat:@"%@_%@_%@_%.0f_%.0f_%02X%02X%02X%.1f", v19, lastName, fontName, v22, v26, v23, v24, v25, v35];
   }
 
   else
@@ -196,25 +196,25 @@ LABEL_16:
       goto LABEL_25;
     }
 
-    v14 = [v5 fillColor];
-    v15 = v14;
-    if (v14)
+    fillColor2 = [v5 fillColor];
+    v15 = fillColor2;
+    if (fillColor2)
     {
-      v16 = v14;
+      blackColor2 = fillColor2;
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] blackColor];
+      blackColor2 = [MEMORY[0x277D75348] blackColor];
     }
 
-    v6 = v16;
+    firstName = blackColor2;
 
     v38 = 0.0;
     v36 = 0.0;
     v37 = 0.0;
     v35 = 0;
-    [v6 getRed:&v38 green:&v37 blue:&v36 alpha:&v35];
+    [firstName getRed:&v38 green:&v37 blue:&v36 alpha:&v35];
     v27 = MEMORY[0x277CCACA8];
     if ([v5 shouldFallBackToSilhouette])
     {
@@ -239,11 +239,11 @@ LABEL_25:
   return v13;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a8;
+  objectCopy = object;
+  loaderCopy = loader;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -253,7 +253,7 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v11;
+    v14 = objectCopy;
   }
 
   else
@@ -272,13 +272,13 @@ LABEL_25:
     v24[3] = &unk_279D70E10;
     v27 = &v28;
     v25 = v15;
-    v26 = v13;
+    v26 = handlerCopy;
     v18 = [v17 blockOperationWithBlock:v24];
     v19 = v29[5];
     v29[5] = v18;
 
-    v20 = [(_TVMonogramImageGenerator *)self imageGeneratorQueue];
-    [v20 addOperation:v29[5]];
+    imageGeneratorQueue = [(_TVMonogramImageGenerator *)self imageGeneratorQueue];
+    [imageGeneratorQueue addOperation:v29[5]];
 
     v21 = v25;
   }
@@ -286,7 +286,7 @@ LABEL_25:
   else
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVMLKitErrorDomain" code:11 userInfo:0];
-    (*(v13 + 2))(v13, 0, 0, 0, 0, v21);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v21);
   }
 
   v22 = v29[5];
@@ -295,13 +295,13 @@ LABEL_25:
   return v22;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 cancel];
+    [loadCopy cancel];
   }
 }
 

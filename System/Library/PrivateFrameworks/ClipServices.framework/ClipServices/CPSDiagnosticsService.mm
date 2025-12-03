@@ -1,24 +1,24 @@
 @interface CPSDiagnosticsService
-+ (void)fetchABRMetadataWithURL:(id)a3 completion:(id)a4;
-+ (void)fetchAMPMetadataWithBundleID:(id)a3 completion:(id)a4;
++ (void)fetchABRMetadataWithURL:(id)l completion:(id)completion;
++ (void)fetchAMPMetadataWithBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation CPSDiagnosticsService
 
-+ (void)fetchABRMetadataWithURL:(id)a3 completion:(id)a4
++ (void)fetchABRMetadataWithURL:(id)l completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  lCopy = l;
   v7 = +[CPSDaemonConnection sharedConnection];
-  [v7 fetchABRMetadataForDiagnosticsWithURL:v6 completion:v5];
+  [v7 fetchABRMetadataForDiagnosticsWithURL:lCopy completion:completionCopy];
 }
 
-+ (void)fetchAMPMetadataWithBundleID:(id)a3 completion:(id)a4
++ (void)fetchAMPMetadataWithBundleID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
-  [v7 fetchAMPMetadataForDiagnosticsWithBundleID:v6 completion:v5];
+  [v7 fetchAMPMetadataForDiagnosticsWithBundleID:dCopy completion:completionCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface CKAppStripPredictiveType3DRotationTransition
-- (void)transitionFromView:(id)a3 toView:(id)a4 withDirection:(int64_t)a5 completion:(id)a6;
+- (void)transitionFromView:(id)view toView:(id)toView withDirection:(int64_t)direction completion:(id)completion;
 @end
 
 @implementation CKAppStripPredictiveType3DRotationTransition
 
-- (void)transitionFromView:(id)a3 toView:(id)a4 withDirection:(int64_t)a5 completion:(id)a6
+- (void)transitionFromView:(id)view toView:(id)toView withDirection:(int64_t)direction completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 superview];
-  v13 = v12;
-  if (a5 <= 0)
+  viewCopy = view;
+  toViewCopy = toView;
+  completionCopy = completion;
+  superview = [viewCopy superview];
+  v13 = superview;
+  if (direction <= 0)
   {
     v14 = 1.57079633;
   }
@@ -21,7 +21,7 @@
     v14 = -1.57079633;
   }
 
-  if (a5 <= 0)
+  if (direction <= 0)
   {
     v15 = -1.57079633;
   }
@@ -31,37 +31,37 @@
     v15 = 1.57079633;
   }
 
-  [v12 bringSubviewToFront:v10];
-  [v10 setAlpha:1.0];
-  [v9 setAlpha:1.0];
-  v16 = [v10 layer];
-  [v16 setDoubleSided:0];
+  [superview bringSubviewToFront:toViewCopy];
+  [toViewCopy setAlpha:1.0];
+  [viewCopy setAlpha:1.0];
+  layer = [toViewCopy layer];
+  [layer setDoubleSided:0];
 
-  v17 = [v9 layer];
-  [v17 setDoubleSided:0];
+  layer2 = [viewCopy layer];
+  [layer2 setDoubleSided:0];
 
   [v13 bounds];
   v19 = v18 * 0.5;
-  v20 = [v10 layer];
-  [v20 setAnchorPointZ:v19];
+  layer3 = [toViewCopy layer];
+  [layer3 setAnchorPointZ:v19];
 
-  v21 = [v9 layer];
-  [v21 setAnchorPointZ:v19];
+  layer4 = [viewCopy layer];
+  [layer4 setAnchorPointZ:v19];
 
-  v22 = [v9 layer];
-  [v22 setZPosition:v19];
+  layer5 = [viewCopy layer];
+  [layer5 setZPosition:v19];
 
-  v23 = [v10 layer];
-  [v23 setZPosition:v19];
+  layer6 = [toViewCopy layer];
+  [layer6 setZPosition:v19];
 
   memset(&v40, 0, sizeof(v40));
   CATransform3DMakeRotation(&v40, v14, 1.0, 0.0, 0.0);
   v39 = v40;
-  v24 = [v10 layer];
+  layer7 = [toViewCopy layer];
   v38 = v39;
-  [v24 setTransform:&v38];
+  [layer7 setTransform:&v38];
 
-  v25 = [v9 layer];
+  layer8 = [viewCopy layer];
   v26 = *(MEMORY[0x1E69792E8] + 64);
   v27 = *(MEMORY[0x1E69792E8] + 96);
   v28 = *(MEMORY[0x1E69792E8] + 112);
@@ -75,7 +75,7 @@
   *&v38.m21 = *(MEMORY[0x1E69792E8] + 32);
   *&v38.m23 = v30;
   *&v38.m31 = v26;
-  [v25 setTransform:&v38];
+  [layer8 setTransform:&v38];
 
   v31 = MEMORY[0x1E69DD250];
   v34[0] = MEMORY[0x1E69E9820];
@@ -83,11 +83,11 @@
   v34[2] = __99__CKAppStripPredictiveType3DRotationTransition_transitionFromView_toView_withDirection_completion___block_invoke;
   v34[3] = &unk_1E72EBC38;
   v37 = v15;
-  v35 = v9;
-  v36 = v10;
-  v32 = v10;
-  v33 = v9;
-  [v31 animateWithDuration:0 delay:v34 usingSpringWithDamping:v11 initialSpringVelocity:0.5 options:0.0 animations:14.0 completion:0.0];
+  v35 = viewCopy;
+  v36 = toViewCopy;
+  v32 = toViewCopy;
+  v33 = viewCopy;
+  [v31 animateWithDuration:0 delay:v34 usingSpringWithDamping:completionCopy initialSpringVelocity:0.5 options:0.0 animations:14.0 completion:0.0];
 }
 
 void __99__CKAppStripPredictiveType3DRotationTransition_transitionFromView_toView_withDirection_completion___block_invoke(uint64_t a1)

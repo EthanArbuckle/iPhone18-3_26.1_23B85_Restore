@@ -1,12 +1,12 @@
 @interface MTLRasterizationRateLayerDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLRasterizationRateLayerDescriptorInternal)init;
-- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)a3;
-- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)a3 horizontal:(const float *)a4 vertical:(const float *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)count;
+- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)count horizontal:(const float *)horizontal vertical:(const float *)vertical;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
-- (void)setSampleCount:(id *)a3;
+- (void)setSampleCount:(id *)count;
 @end
 
 @implementation MTLRasterizationRateLayerDescriptorInternal
@@ -19,34 +19,34 @@
   return 0;
 }
 
-- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)a3
+- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)count
 {
-  v11 = *a3;
+  v11 = *count;
   v10.receiver = self;
   v10.super_class = MTLRasterizationRateLayerDescriptorInternal;
   v4 = [(MTLRasterizationRateLayerDescriptor *)&v10 initWithSampleCount:&v11];
   if (v4)
   {
-    if (!a3->var0)
+    if (!count->var0)
     {
       goto LABEL_7;
     }
 
-    var1 = a3->var1;
+    var1 = count->var1;
     if (!var1)
     {
       goto LABEL_7;
     }
 
-    v6 = malloc_type_calloc(var1 + a3->var0, 4uLL, 0x100004052888210uLL);
+    v6 = malloc_type_calloc(var1 + count->var0, 4uLL, 0x100004052888210uLL);
     *(v4 + 1) = v6;
     if (!v6)
     {
       goto LABEL_7;
     }
 
-    v7 = *&a3->var0;
-    *(v4 + 1) = *&a3->var0;
+    v7 = *&count->var0;
+    *(v4 + 1) = *&count->var0;
     *(v4 + 4) = 0;
     *(v4 + 7) = 0;
     *(v4 + 40) = v7;
@@ -64,15 +64,15 @@ LABEL_7:
   return v4;
 }
 
-- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)a3 horizontal:(const float *)a4 vertical:(const float *)a5
+- (MTLRasterizationRateLayerDescriptorInternal)initWithSampleCount:(id *)count horizontal:(const float *)horizontal vertical:(const float *)vertical
 {
-  v10 = *a3;
+  v10 = *count;
   v7 = [(MTLRasterizationRateLayerDescriptorInternal *)self initWithSampleCount:&v10];
   v8 = v7;
   if (v7)
   {
-    memcpy([(MTLRasterizationRateLayerDescriptorInternal *)v7 horizontalSampleStorage], a4, 4 * v7->_size.width);
-    memcpy([(MTLRasterizationRateLayerDescriptorInternal *)v8 verticalSampleStorage], a5, 4 * v8->_size.height);
+    memcpy([(MTLRasterizationRateLayerDescriptorInternal *)v7 horizontalSampleStorage], horizontal, 4 * v7->_size.width);
+    memcpy([(MTLRasterizationRateLayerDescriptorInternal *)v8 verticalSampleStorage], vertical, 4 * v8->_size.height);
   }
 
   return v8;
@@ -87,9 +87,9 @@ LABEL_7:
   [(MTLRasterizationRateLayerDescriptorInternal *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MTLRasterizationRateLayerDescriptorInternal allocWithZone:a3];
+  v4 = [MTLRasterizationRateLayerDescriptorInternal allocWithZone:zone];
   size = self->_size;
   v5 = [(MTLRasterizationRateLayerDescriptorInternal *)v4 initWithSampleCount:&size];
   v6 = v5;
@@ -103,19 +103,19 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  result = (objc_opt_isKindOfClass() & 1) != 0 && (width = self->_size.width, width == *(a3 + 2)) && (height = self->_size.height, height == *(a3 + 3)) && self->_currentSampleCount.width == *(a3 + 5) && self->_currentSampleCount.height == *(a3 + 6) && memcmp(self->_data, *(a3 + 1), 4 * (height + width)) == 0;
+  result = (objc_opt_isKindOfClass() & 1) != 0 && (width = self->_size.width, width == *(equal + 2)) && (height = self->_size.height, height == *(equal + 3)) && self->_currentSampleCount.width == *(equal + 5) && self->_currentSampleCount.height == *(equal + 6) && memcmp(self->_data, *(equal + 1), 4 * (height + width)) == 0;
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v20[18] = *MEMORY[0x1E69E9840];
   p_size = &self->_size;
@@ -149,7 +149,7 @@ LABEL_7:
     while (v12 < self->_size.height);
   }
 
-  v13 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v13 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v14 = MEMORY[0x1E696AEC0];
   v19.receiver = self;
   v19.super_class = MTLRasterizationRateLayerDescriptorInternal;
@@ -178,10 +178,10 @@ LABEL_7:
   return result;
 }
 
-- (void)setSampleCount:(id *)a3
+- (void)setSampleCount:(id *)count
 {
-  var2 = a3->var2;
-  *&self->_currentSampleCount.width = *&a3->var0;
+  var2 = count->var2;
+  *&self->_currentSampleCount.width = *&count->var0;
   self->_currentSampleCount.depth = var2;
 }
 

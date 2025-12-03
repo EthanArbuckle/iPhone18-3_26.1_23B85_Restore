@@ -1,15 +1,15 @@
 @interface CKTranscriptLegibilityInternalButton
 - (CKTranscriptLegibilityInternalButtonDelegate)legibilityButtonDelegate;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CKTranscriptLegibilityInternalButton
 
 - (void)layoutSubviews
 {
-  v3 = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
-  [v3 frame];
+  titleLabel = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
+  [titleLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -18,8 +18,8 @@
   v22.receiver = self;
   v22.super_class = CKTranscriptLegibilityInternalButton;
   [(CKTranscriptLegibilityInternalButton *)&v22 layoutSubviews];
-  v12 = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
-  [v12 frame];
+  titleLabel2 = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
+  [titleLabel2 frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -32,15 +32,15 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = CKTranscriptLegibilityInternalButton;
   [(CKTranscriptLegibilityInternalButton *)&v7 setHighlighted:?];
   if (self->_dimsOnHighlight)
   {
-    if (v3)
+    if (highlightedCopy)
     {
       v5 = 0.3;
     }
@@ -50,8 +50,8 @@
       v5 = 1.0;
     }
 
-    v6 = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
-    [v6 setAlpha:v5];
+    titleLabel = [(CKTranscriptLegibilityInternalButton *)self titleLabel];
+    [titleLabel setAlpha:v5];
   }
 }
 

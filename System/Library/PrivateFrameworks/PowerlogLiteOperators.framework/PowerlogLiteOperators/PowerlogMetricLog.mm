@@ -1,1724 +1,1724 @@
 @interface PowerlogMetricLog
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKCellularCdma1XConnectionHist:(id)a3;
-- (void)addKCellularCdma1XProtocolStackStateHist:(id)a3;
-- (void)addKCellularCdma1XRrState:(id)a3;
-- (void)addKCellularCdma1XRxDiversityHist:(id)a3;
-- (void)addKCellularCdma1XServingCellRx0EcIoHist:(id)a3;
-- (void)addKCellularCdma1XServingCellRx0RssiHist:(id)a3;
-- (void)addKCellularCdma1XServingCellRx1EcIoHist:(id)a3;
-- (void)addKCellularCdma1XServingCellRx1RssiHist:(id)a3;
-- (void)addKCellularCdma1XTxPowerHist:(id)a3;
-- (void)addKCellularCdmaEvdoProtocolStackStateHist:(id)a3;
-- (void)addKCellularCdmaEvdoRrState:(id)a3;
-- (void)addKCellularCdmaEvdoRxDiversityHist:(id)a3;
-- (void)addKCellularCdmaEvdoServingCellRx0EcIoHist:(id)a3;
-- (void)addKCellularCdmaEvdoServingCellRx0RssiHist:(id)a3;
-- (void)addKCellularCdmaEvdoServingCellRx1EcIoHist:(id)a3;
-- (void)addKCellularCdmaEvdoServingCellRx1RssiHist:(id)a3;
-- (void)addKCellularCdmaEvdoTxPowerHist:(id)a3;
-- (void)addKCellularCellPlmnSearchCount:(id)a3;
-- (void)addKCellularCellPlmnSearchHist:(id)a3;
-- (void)addKCellularDownlinkIpPacketFilterStatus:(id)a3;
-- (void)addKCellularDvfsStats:(id)a3;
-- (void)addKCellularFwCoreStats:(id)a3;
-- (void)addKCellularGsmConnectedModeHist:(id)a3;
-- (void)addKCellularGsmL1State:(id)a3;
-- (void)addKCellularGsmServingCellRssiHist:(id)a3;
-- (void)addKCellularGsmServingCellSnrHist:(id)a3;
-- (void)addKCellularGsmTxPowerHist:(id)a3;
-- (void)addKCellularLqmStateChange:(id)a3;
-- (void)addKCellularLteAdvancedRxStateHist:(id)a3;
-- (void)addKCellularLteCdrxConfig:(id)a3;
-- (void)addKCellularLteComponentCarrierInfo:(id)a3;
-- (void)addKCellularLteDlSccStateHist:(id)a3;
-- (void)addKCellularLteDlSccStateHistV3:(id)a3;
-- (void)addKCellularLteFwDuplexMode:(id)a3;
-- (void)addKCellularLtePagingCycle:(id)a3;
-- (void)addKCellularLtePdcchStateHist:(id)a3;
-- (void)addKCellularLtePdcchStateStats:(id)a3;
-- (void)addKCellularLteRadioLinkFailure:(id)a3;
-- (void)addKCellularLteRrcState:(id)a3;
-- (void)addKCellularLteRxDiversityHist:(id)a3;
-- (void)addKCellularLteRxTxStateHist:(id)a3;
-- (void)addKCellularLteServingCellRsrpHist:(id)a3;
-- (void)addKCellularLteServingCellSinrHist:(id)a3;
-- (void)addKCellularLteSleepStateHist:(id)a3;
-- (void)addKCellularLteTdsGsmHwStats:(id)a3;
-- (void)addKCellularLteTotalDlTbsHist:(id)a3;
-- (void)addKCellularLteTxPowerHist:(id)a3;
-- (void)addKCellularLteUlSccStateHist:(id)a3;
-- (void)addKCellularLteWcdmaGsmHwStats:(id)a3;
-- (void)addKCellularLteWcdmaTdsHwStats:(id)a3;
-- (void)addKCellularPerClientProfileTriggerCount:(id)a3;
-- (void)addKCellularPeripheralStats:(id)a3;
-- (void)addKCellularPmicHwStats:(id)a3;
-- (void)addKCellularPmuAverageCurrent:(id)a3;
-- (void)addKCellularProtocolStackCpuStats:(id)a3;
-- (void)addKCellularProtocolStackPowerState:(id)a3;
-- (void)addKCellularProtocolStackState:(id)a3;
-- (void)addKCellularProtocolStackStateHist2:(id)a3;
-- (void)addKCellularProtocolStackStateHist:(id)a3;
-- (void)addKCellularServiceLost:(id)a3;
-- (void)addKCellularServingCellRfBandHist:(id)a3;
-- (void)addKCellularTdsL1State:(id)a3;
-- (void)addKCellularTdsRabModeHist:(id)a3;
-- (void)addKCellularTdsRabTypeHist:(id)a3;
-- (void)addKCellularTdsRrcState:(id)a3;
-- (void)addKCellularTdsRxDiversityHist:(id)a3;
-- (void)addKCellularTdsServingCellRx0RscpHist:(id)a3;
-- (void)addKCellularTdsServingCellRx0RssiHist:(id)a3;
-- (void)addKCellularTdsServingCellRx1RscpHist:(id)a3;
-- (void)addKCellularTdsServingCellRx1RssiHist:(id)a3;
-- (void)addKCellularTdsTxPowerHist:(id)a3;
-- (void)addKCellularWcdmaCarrierStatusHist:(id)a3;
-- (void)addKCellularWcdmaCpcStat:(id)a3;
-- (void)addKCellularWcdmaDataInactivityBeforeIdle:(id)a3;
-- (void)addKCellularWcdmaIdleToConnectedUserData:(id)a3;
-- (void)addKCellularWcdmaL1State:(id)a3;
-- (void)addKCellularWcdmaRabModeHist:(id)a3;
-- (void)addKCellularWcdmaRabStatus:(id)a3;
-- (void)addKCellularWcdmaRabTypeHist:(id)a3;
-- (void)addKCellularWcdmaReceiverStatusOnC0Hist:(id)a3;
-- (void)addKCellularWcdmaReceiverStatusOnC1Hist:(id)a3;
-- (void)addKCellularWcdmaRrcConfiguration:(id)a3;
-- (void)addKCellularWcdmaRrcConnectionState:(id)a3;
-- (void)addKCellularWcdmaRxDiversityHist:(id)a3;
-- (void)addKCellularWcdmaServingCellRx0EcNoHist:(id)a3;
-- (void)addKCellularWcdmaServingCellRx0RssiHist:(id)a3;
-- (void)addKCellularWcdmaServingCellRx1EcNoHist:(id)a3;
-- (void)addKCellularWcdmaServingCellRx1RssiHist:(id)a3;
-- (void)addKCellularWcdmaTxPowerHist:(id)a3;
-- (void)addKCellularWcdmaVadHist:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKCellularCdma1XConnectionHist:(id)hist;
+- (void)addKCellularCdma1XProtocolStackStateHist:(id)hist;
+- (void)addKCellularCdma1XRrState:(id)state;
+- (void)addKCellularCdma1XRxDiversityHist:(id)hist;
+- (void)addKCellularCdma1XServingCellRx0EcIoHist:(id)hist;
+- (void)addKCellularCdma1XServingCellRx0RssiHist:(id)hist;
+- (void)addKCellularCdma1XServingCellRx1EcIoHist:(id)hist;
+- (void)addKCellularCdma1XServingCellRx1RssiHist:(id)hist;
+- (void)addKCellularCdma1XTxPowerHist:(id)hist;
+- (void)addKCellularCdmaEvdoProtocolStackStateHist:(id)hist;
+- (void)addKCellularCdmaEvdoRrState:(id)state;
+- (void)addKCellularCdmaEvdoRxDiversityHist:(id)hist;
+- (void)addKCellularCdmaEvdoServingCellRx0EcIoHist:(id)hist;
+- (void)addKCellularCdmaEvdoServingCellRx0RssiHist:(id)hist;
+- (void)addKCellularCdmaEvdoServingCellRx1EcIoHist:(id)hist;
+- (void)addKCellularCdmaEvdoServingCellRx1RssiHist:(id)hist;
+- (void)addKCellularCdmaEvdoTxPowerHist:(id)hist;
+- (void)addKCellularCellPlmnSearchCount:(id)count;
+- (void)addKCellularCellPlmnSearchHist:(id)hist;
+- (void)addKCellularDownlinkIpPacketFilterStatus:(id)status;
+- (void)addKCellularDvfsStats:(id)stats;
+- (void)addKCellularFwCoreStats:(id)stats;
+- (void)addKCellularGsmConnectedModeHist:(id)hist;
+- (void)addKCellularGsmL1State:(id)state;
+- (void)addKCellularGsmServingCellRssiHist:(id)hist;
+- (void)addKCellularGsmServingCellSnrHist:(id)hist;
+- (void)addKCellularGsmTxPowerHist:(id)hist;
+- (void)addKCellularLqmStateChange:(id)change;
+- (void)addKCellularLteAdvancedRxStateHist:(id)hist;
+- (void)addKCellularLteCdrxConfig:(id)config;
+- (void)addKCellularLteComponentCarrierInfo:(id)info;
+- (void)addKCellularLteDlSccStateHist:(id)hist;
+- (void)addKCellularLteDlSccStateHistV3:(id)v3;
+- (void)addKCellularLteFwDuplexMode:(id)mode;
+- (void)addKCellularLtePagingCycle:(id)cycle;
+- (void)addKCellularLtePdcchStateHist:(id)hist;
+- (void)addKCellularLtePdcchStateStats:(id)stats;
+- (void)addKCellularLteRadioLinkFailure:(id)failure;
+- (void)addKCellularLteRrcState:(id)state;
+- (void)addKCellularLteRxDiversityHist:(id)hist;
+- (void)addKCellularLteRxTxStateHist:(id)hist;
+- (void)addKCellularLteServingCellRsrpHist:(id)hist;
+- (void)addKCellularLteServingCellSinrHist:(id)hist;
+- (void)addKCellularLteSleepStateHist:(id)hist;
+- (void)addKCellularLteTdsGsmHwStats:(id)stats;
+- (void)addKCellularLteTotalDlTbsHist:(id)hist;
+- (void)addKCellularLteTxPowerHist:(id)hist;
+- (void)addKCellularLteUlSccStateHist:(id)hist;
+- (void)addKCellularLteWcdmaGsmHwStats:(id)stats;
+- (void)addKCellularLteWcdmaTdsHwStats:(id)stats;
+- (void)addKCellularPerClientProfileTriggerCount:(id)count;
+- (void)addKCellularPeripheralStats:(id)stats;
+- (void)addKCellularPmicHwStats:(id)stats;
+- (void)addKCellularPmuAverageCurrent:(id)current;
+- (void)addKCellularProtocolStackCpuStats:(id)stats;
+- (void)addKCellularProtocolStackPowerState:(id)state;
+- (void)addKCellularProtocolStackState:(id)state;
+- (void)addKCellularProtocolStackStateHist2:(id)hist2;
+- (void)addKCellularProtocolStackStateHist:(id)hist;
+- (void)addKCellularServiceLost:(id)lost;
+- (void)addKCellularServingCellRfBandHist:(id)hist;
+- (void)addKCellularTdsL1State:(id)state;
+- (void)addKCellularTdsRabModeHist:(id)hist;
+- (void)addKCellularTdsRabTypeHist:(id)hist;
+- (void)addKCellularTdsRrcState:(id)state;
+- (void)addKCellularTdsRxDiversityHist:(id)hist;
+- (void)addKCellularTdsServingCellRx0RscpHist:(id)hist;
+- (void)addKCellularTdsServingCellRx0RssiHist:(id)hist;
+- (void)addKCellularTdsServingCellRx1RscpHist:(id)hist;
+- (void)addKCellularTdsServingCellRx1RssiHist:(id)hist;
+- (void)addKCellularTdsTxPowerHist:(id)hist;
+- (void)addKCellularWcdmaCarrierStatusHist:(id)hist;
+- (void)addKCellularWcdmaCpcStat:(id)stat;
+- (void)addKCellularWcdmaDataInactivityBeforeIdle:(id)idle;
+- (void)addKCellularWcdmaIdleToConnectedUserData:(id)data;
+- (void)addKCellularWcdmaL1State:(id)state;
+- (void)addKCellularWcdmaRabModeHist:(id)hist;
+- (void)addKCellularWcdmaRabStatus:(id)status;
+- (void)addKCellularWcdmaRabTypeHist:(id)hist;
+- (void)addKCellularWcdmaReceiverStatusOnC0Hist:(id)hist;
+- (void)addKCellularWcdmaReceiverStatusOnC1Hist:(id)hist;
+- (void)addKCellularWcdmaRrcConfiguration:(id)configuration;
+- (void)addKCellularWcdmaRrcConnectionState:(id)state;
+- (void)addKCellularWcdmaRxDiversityHist:(id)hist;
+- (void)addKCellularWcdmaServingCellRx0EcNoHist:(id)hist;
+- (void)addKCellularWcdmaServingCellRx0RssiHist:(id)hist;
+- (void)addKCellularWcdmaServingCellRx1EcNoHist:(id)hist;
+- (void)addKCellularWcdmaServingCellRx1RssiHist:(id)hist;
+- (void)addKCellularWcdmaTxPowerHist:(id)hist;
+- (void)addKCellularWcdmaVadHist:(id)hist;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PowerlogMetricLog
 
-- (void)addKCellularPerClientProfileTriggerCount:(id)a3
+- (void)addKCellularPerClientProfileTriggerCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   kCellularPerClientProfileTriggerCounts = self->_kCellularPerClientProfileTriggerCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!kCellularPerClientProfileTriggerCounts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularPerClientProfileTriggerCounts;
     self->_kCellularPerClientProfileTriggerCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     kCellularPerClientProfileTriggerCounts = self->_kCellularPerClientProfileTriggerCounts;
   }
 
-  [(NSMutableArray *)kCellularPerClientProfileTriggerCounts addObject:v4];
+  [(NSMutableArray *)kCellularPerClientProfileTriggerCounts addObject:countCopy];
 }
 
-- (void)addKCellularProtocolStackCpuStats:(id)a3
+- (void)addKCellularProtocolStackCpuStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularProtocolStackCpuStats = self->_kCellularProtocolStackCpuStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularProtocolStackCpuStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularProtocolStackCpuStats;
     self->_kCellularProtocolStackCpuStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularProtocolStackCpuStats = self->_kCellularProtocolStackCpuStats;
   }
 
-  [(NSMutableArray *)kCellularProtocolStackCpuStats addObject:v4];
+  [(NSMutableArray *)kCellularProtocolStackCpuStats addObject:statsCopy];
 }
 
-- (void)addKCellularPeripheralStats:(id)a3
+- (void)addKCellularPeripheralStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularPeripheralStats = self->_kCellularPeripheralStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularPeripheralStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularPeripheralStats;
     self->_kCellularPeripheralStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularPeripheralStats = self->_kCellularPeripheralStats;
   }
 
-  [(NSMutableArray *)kCellularPeripheralStats addObject:v4];
+  [(NSMutableArray *)kCellularPeripheralStats addObject:statsCopy];
 }
 
-- (void)addKCellularDvfsStats:(id)a3
+- (void)addKCellularDvfsStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularDvfsStats = self->_kCellularDvfsStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularDvfsStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularDvfsStats;
     self->_kCellularDvfsStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularDvfsStats = self->_kCellularDvfsStats;
   }
 
-  [(NSMutableArray *)kCellularDvfsStats addObject:v4];
+  [(NSMutableArray *)kCellularDvfsStats addObject:statsCopy];
 }
 
-- (void)addKCellularLteWcdmaGsmHwStats:(id)a3
+- (void)addKCellularLteWcdmaGsmHwStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularLteWcdmaGsmHwStats = self->_kCellularLteWcdmaGsmHwStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularLteWcdmaGsmHwStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteWcdmaGsmHwStats;
     self->_kCellularLteWcdmaGsmHwStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularLteWcdmaGsmHwStats = self->_kCellularLteWcdmaGsmHwStats;
   }
 
-  [(NSMutableArray *)kCellularLteWcdmaGsmHwStats addObject:v4];
+  [(NSMutableArray *)kCellularLteWcdmaGsmHwStats addObject:statsCopy];
 }
 
-- (void)addKCellularLteTdsGsmHwStats:(id)a3
+- (void)addKCellularLteTdsGsmHwStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularLteTdsGsmHwStats = self->_kCellularLteTdsGsmHwStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularLteTdsGsmHwStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteTdsGsmHwStats;
     self->_kCellularLteTdsGsmHwStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularLteTdsGsmHwStats = self->_kCellularLteTdsGsmHwStats;
   }
 
-  [(NSMutableArray *)kCellularLteTdsGsmHwStats addObject:v4];
+  [(NSMutableArray *)kCellularLteTdsGsmHwStats addObject:statsCopy];
 }
 
-- (void)addKCellularPmuAverageCurrent:(id)a3
+- (void)addKCellularPmuAverageCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   kCellularPmuAverageCurrents = self->_kCellularPmuAverageCurrents;
-  v8 = v4;
+  v8 = currentCopy;
   if (!kCellularPmuAverageCurrents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularPmuAverageCurrents;
     self->_kCellularPmuAverageCurrents = v6;
 
-    v4 = v8;
+    currentCopy = v8;
     kCellularPmuAverageCurrents = self->_kCellularPmuAverageCurrents;
   }
 
-  [(NSMutableArray *)kCellularPmuAverageCurrents addObject:v4];
+  [(NSMutableArray *)kCellularPmuAverageCurrents addObject:currentCopy];
 }
 
-- (void)addKCellularFwCoreStats:(id)a3
+- (void)addKCellularFwCoreStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularFwCoreStats = self->_kCellularFwCoreStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularFwCoreStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularFwCoreStats;
     self->_kCellularFwCoreStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularFwCoreStats = self->_kCellularFwCoreStats;
   }
 
-  [(NSMutableArray *)kCellularFwCoreStats addObject:v4];
+  [(NSMutableArray *)kCellularFwCoreStats addObject:statsCopy];
 }
 
-- (void)addKCellularLteWcdmaTdsHwStats:(id)a3
+- (void)addKCellularLteWcdmaTdsHwStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularLteWcdmaTdsHwStats = self->_kCellularLteWcdmaTdsHwStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularLteWcdmaTdsHwStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteWcdmaTdsHwStats;
     self->_kCellularLteWcdmaTdsHwStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularLteWcdmaTdsHwStats = self->_kCellularLteWcdmaTdsHwStats;
   }
 
-  [(NSMutableArray *)kCellularLteWcdmaTdsHwStats addObject:v4];
+  [(NSMutableArray *)kCellularLteWcdmaTdsHwStats addObject:statsCopy];
 }
 
-- (void)addKCellularPmicHwStats:(id)a3
+- (void)addKCellularPmicHwStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularPmicHwStats = self->_kCellularPmicHwStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularPmicHwStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularPmicHwStats;
     self->_kCellularPmicHwStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularPmicHwStats = self->_kCellularPmicHwStats;
   }
 
-  [(NSMutableArray *)kCellularPmicHwStats addObject:v4];
+  [(NSMutableArray *)kCellularPmicHwStats addObject:statsCopy];
 }
 
-- (void)addKCellularGsmServingCellRssiHist:(id)a3
+- (void)addKCellularGsmServingCellRssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularGsmServingCellRssiHists = self->_kCellularGsmServingCellRssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularGsmServingCellRssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularGsmServingCellRssiHists;
     self->_kCellularGsmServingCellRssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularGsmServingCellRssiHists = self->_kCellularGsmServingCellRssiHists;
   }
 
-  [(NSMutableArray *)kCellularGsmServingCellRssiHists addObject:v4];
+  [(NSMutableArray *)kCellularGsmServingCellRssiHists addObject:histCopy];
 }
 
-- (void)addKCellularGsmServingCellSnrHist:(id)a3
+- (void)addKCellularGsmServingCellSnrHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularGsmServingCellSnrHists = self->_kCellularGsmServingCellSnrHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularGsmServingCellSnrHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularGsmServingCellSnrHists;
     self->_kCellularGsmServingCellSnrHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularGsmServingCellSnrHists = self->_kCellularGsmServingCellSnrHists;
   }
 
-  [(NSMutableArray *)kCellularGsmServingCellSnrHists addObject:v4];
+  [(NSMutableArray *)kCellularGsmServingCellSnrHists addObject:histCopy];
 }
 
-- (void)addKCellularGsmTxPowerHist:(id)a3
+- (void)addKCellularGsmTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularGsmTxPowerHists = self->_kCellularGsmTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularGsmTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularGsmTxPowerHists;
     self->_kCellularGsmTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularGsmTxPowerHists = self->_kCellularGsmTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularGsmTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularGsmTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularGsmConnectedModeHist:(id)a3
+- (void)addKCellularGsmConnectedModeHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularGsmConnectedModeHists = self->_kCellularGsmConnectedModeHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularGsmConnectedModeHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularGsmConnectedModeHists;
     self->_kCellularGsmConnectedModeHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularGsmConnectedModeHists = self->_kCellularGsmConnectedModeHists;
   }
 
-  [(NSMutableArray *)kCellularGsmConnectedModeHists addObject:v4];
+  [(NSMutableArray *)kCellularGsmConnectedModeHists addObject:histCopy];
 }
 
-- (void)addKCellularGsmL1State:(id)a3
+- (void)addKCellularGsmL1State:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularGsmL1States = self->_kCellularGsmL1States;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularGsmL1States)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularGsmL1States;
     self->_kCellularGsmL1States = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularGsmL1States = self->_kCellularGsmL1States;
   }
 
-  [(NSMutableArray *)kCellularGsmL1States addObject:v4];
+  [(NSMutableArray *)kCellularGsmL1States addObject:stateCopy];
 }
 
-- (void)addKCellularWcdmaCpcStat:(id)a3
+- (void)addKCellularWcdmaCpcStat:(id)stat
 {
-  v4 = a3;
+  statCopy = stat;
   kCellularWcdmaCpcStats = self->_kCellularWcdmaCpcStats;
-  v8 = v4;
+  v8 = statCopy;
   if (!kCellularWcdmaCpcStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaCpcStats;
     self->_kCellularWcdmaCpcStats = v6;
 
-    v4 = v8;
+    statCopy = v8;
     kCellularWcdmaCpcStats = self->_kCellularWcdmaCpcStats;
   }
 
-  [(NSMutableArray *)kCellularWcdmaCpcStats addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaCpcStats addObject:statCopy];
 }
 
-- (void)addKCellularWcdmaRxDiversityHist:(id)a3
+- (void)addKCellularWcdmaRxDiversityHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaRxDiversityHists = self->_kCellularWcdmaRxDiversityHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaRxDiversityHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRxDiversityHists;
     self->_kCellularWcdmaRxDiversityHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaRxDiversityHists = self->_kCellularWcdmaRxDiversityHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRxDiversityHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRxDiversityHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaServingCellRx0RssiHist:(id)a3
+- (void)addKCellularWcdmaServingCellRx0RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaServingCellRx0RssiHists = self->_kCellularWcdmaServingCellRx0RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaServingCellRx0RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaServingCellRx0RssiHists;
     self->_kCellularWcdmaServingCellRx0RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaServingCellRx0RssiHists = self->_kCellularWcdmaServingCellRx0RssiHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaServingCellRx0RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaServingCellRx0RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaServingCellRx1RssiHist:(id)a3
+- (void)addKCellularWcdmaServingCellRx1RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaServingCellRx1RssiHists = self->_kCellularWcdmaServingCellRx1RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaServingCellRx1RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaServingCellRx1RssiHists;
     self->_kCellularWcdmaServingCellRx1RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaServingCellRx1RssiHists = self->_kCellularWcdmaServingCellRx1RssiHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaServingCellRx1RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaServingCellRx1RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaServingCellRx0EcNoHist:(id)a3
+- (void)addKCellularWcdmaServingCellRx0EcNoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaServingCellRx0EcNoHists = self->_kCellularWcdmaServingCellRx0EcNoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaServingCellRx0EcNoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaServingCellRx0EcNoHists;
     self->_kCellularWcdmaServingCellRx0EcNoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaServingCellRx0EcNoHists = self->_kCellularWcdmaServingCellRx0EcNoHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaServingCellRx0EcNoHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaServingCellRx0EcNoHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaServingCellRx1EcNoHist:(id)a3
+- (void)addKCellularWcdmaServingCellRx1EcNoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaServingCellRx1EcNoHists = self->_kCellularWcdmaServingCellRx1EcNoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaServingCellRx1EcNoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaServingCellRx1EcNoHists;
     self->_kCellularWcdmaServingCellRx1EcNoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaServingCellRx1EcNoHists = self->_kCellularWcdmaServingCellRx1EcNoHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaServingCellRx1EcNoHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaServingCellRx1EcNoHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaTxPowerHist:(id)a3
+- (void)addKCellularWcdmaTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaTxPowerHists = self->_kCellularWcdmaTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaTxPowerHists;
     self->_kCellularWcdmaTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaTxPowerHists = self->_kCellularWcdmaTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaReceiverStatusOnC0Hist:(id)a3
+- (void)addKCellularWcdmaReceiverStatusOnC0Hist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaReceiverStatusOnC0Hists = self->_kCellularWcdmaReceiverStatusOnC0Hists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaReceiverStatusOnC0Hists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaReceiverStatusOnC0Hists;
     self->_kCellularWcdmaReceiverStatusOnC0Hists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaReceiverStatusOnC0Hists = self->_kCellularWcdmaReceiverStatusOnC0Hists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaReceiverStatusOnC0Hists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaReceiverStatusOnC0Hists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaReceiverStatusOnC1Hist:(id)a3
+- (void)addKCellularWcdmaReceiverStatusOnC1Hist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaReceiverStatusOnC1Hists = self->_kCellularWcdmaReceiverStatusOnC1Hists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaReceiverStatusOnC1Hists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaReceiverStatusOnC1Hists;
     self->_kCellularWcdmaReceiverStatusOnC1Hists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaReceiverStatusOnC1Hists = self->_kCellularWcdmaReceiverStatusOnC1Hists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaReceiverStatusOnC1Hists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaReceiverStatusOnC1Hists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaCarrierStatusHist:(id)a3
+- (void)addKCellularWcdmaCarrierStatusHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaCarrierStatusHists = self->_kCellularWcdmaCarrierStatusHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaCarrierStatusHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaCarrierStatusHists;
     self->_kCellularWcdmaCarrierStatusHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaCarrierStatusHists = self->_kCellularWcdmaCarrierStatusHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaCarrierStatusHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaCarrierStatusHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaRabModeHist:(id)a3
+- (void)addKCellularWcdmaRabModeHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaRabModeHists = self->_kCellularWcdmaRabModeHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaRabModeHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRabModeHists;
     self->_kCellularWcdmaRabModeHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaRabModeHists = self->_kCellularWcdmaRabModeHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRabModeHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRabModeHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaRabTypeHist:(id)a3
+- (void)addKCellularWcdmaRabTypeHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaRabTypeHists = self->_kCellularWcdmaRabTypeHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaRabTypeHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRabTypeHists;
     self->_kCellularWcdmaRabTypeHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaRabTypeHists = self->_kCellularWcdmaRabTypeHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRabTypeHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRabTypeHists addObject:histCopy];
 }
 
-- (void)addKCellularWcdmaRrcConnectionState:(id)a3
+- (void)addKCellularWcdmaRrcConnectionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularWcdmaRrcConnectionStates = self->_kCellularWcdmaRrcConnectionStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularWcdmaRrcConnectionStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRrcConnectionStates;
     self->_kCellularWcdmaRrcConnectionStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularWcdmaRrcConnectionStates = self->_kCellularWcdmaRrcConnectionStates;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRrcConnectionStates addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRrcConnectionStates addObject:stateCopy];
 }
 
-- (void)addKCellularWcdmaRrcConfiguration:(id)a3
+- (void)addKCellularWcdmaRrcConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   kCellularWcdmaRrcConfigurations = self->_kCellularWcdmaRrcConfigurations;
-  v8 = v4;
+  v8 = configurationCopy;
   if (!kCellularWcdmaRrcConfigurations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRrcConfigurations;
     self->_kCellularWcdmaRrcConfigurations = v6;
 
-    v4 = v8;
+    configurationCopy = v8;
     kCellularWcdmaRrcConfigurations = self->_kCellularWcdmaRrcConfigurations;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRrcConfigurations addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRrcConfigurations addObject:configurationCopy];
 }
 
-- (void)addKCellularWcdmaRabStatus:(id)a3
+- (void)addKCellularWcdmaRabStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   kCellularWcdmaRabStatus = self->_kCellularWcdmaRabStatus;
-  v8 = v4;
+  v8 = statusCopy;
   if (!kCellularWcdmaRabStatus)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaRabStatus;
     self->_kCellularWcdmaRabStatus = v6;
 
-    v4 = v8;
+    statusCopy = v8;
     kCellularWcdmaRabStatus = self->_kCellularWcdmaRabStatus;
   }
 
-  [(NSMutableArray *)kCellularWcdmaRabStatus addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaRabStatus addObject:statusCopy];
 }
 
-- (void)addKCellularWcdmaL1State:(id)a3
+- (void)addKCellularWcdmaL1State:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularWcdmaL1States = self->_kCellularWcdmaL1States;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularWcdmaL1States)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaL1States;
     self->_kCellularWcdmaL1States = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularWcdmaL1States = self->_kCellularWcdmaL1States;
   }
 
-  [(NSMutableArray *)kCellularWcdmaL1States addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaL1States addObject:stateCopy];
 }
 
-- (void)addKCellularWcdmaDataInactivityBeforeIdle:(id)a3
+- (void)addKCellularWcdmaDataInactivityBeforeIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   kCellularWcdmaDataInactivityBeforeIdles = self->_kCellularWcdmaDataInactivityBeforeIdles;
-  v8 = v4;
+  v8 = idleCopy;
   if (!kCellularWcdmaDataInactivityBeforeIdles)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaDataInactivityBeforeIdles;
     self->_kCellularWcdmaDataInactivityBeforeIdles = v6;
 
-    v4 = v8;
+    idleCopy = v8;
     kCellularWcdmaDataInactivityBeforeIdles = self->_kCellularWcdmaDataInactivityBeforeIdles;
   }
 
-  [(NSMutableArray *)kCellularWcdmaDataInactivityBeforeIdles addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaDataInactivityBeforeIdles addObject:idleCopy];
 }
 
-- (void)addKCellularWcdmaIdleToConnectedUserData:(id)a3
+- (void)addKCellularWcdmaIdleToConnectedUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   kCellularWcdmaIdleToConnectedUserDatas = self->_kCellularWcdmaIdleToConnectedUserDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!kCellularWcdmaIdleToConnectedUserDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaIdleToConnectedUserDatas;
     self->_kCellularWcdmaIdleToConnectedUserDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     kCellularWcdmaIdleToConnectedUserDatas = self->_kCellularWcdmaIdleToConnectedUserDatas;
   }
 
-  [(NSMutableArray *)kCellularWcdmaIdleToConnectedUserDatas addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaIdleToConnectedUserDatas addObject:dataCopy];
 }
 
-- (void)addKCellularWcdmaVadHist:(id)a3
+- (void)addKCellularWcdmaVadHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularWcdmaVadHists = self->_kCellularWcdmaVadHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularWcdmaVadHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularWcdmaVadHists;
     self->_kCellularWcdmaVadHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularWcdmaVadHists = self->_kCellularWcdmaVadHists;
   }
 
-  [(NSMutableArray *)kCellularWcdmaVadHists addObject:v4];
+  [(NSMutableArray *)kCellularWcdmaVadHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsRxDiversityHist:(id)a3
+- (void)addKCellularTdsRxDiversityHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsRxDiversityHists = self->_kCellularTdsRxDiversityHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsRxDiversityHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsRxDiversityHists;
     self->_kCellularTdsRxDiversityHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsRxDiversityHists = self->_kCellularTdsRxDiversityHists;
   }
 
-  [(NSMutableArray *)kCellularTdsRxDiversityHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsRxDiversityHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsServingCellRx0RssiHist:(id)a3
+- (void)addKCellularTdsServingCellRx0RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsServingCellRx0RssiHists = self->_kCellularTdsServingCellRx0RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsServingCellRx0RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsServingCellRx0RssiHists;
     self->_kCellularTdsServingCellRx0RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsServingCellRx0RssiHists = self->_kCellularTdsServingCellRx0RssiHists;
   }
 
-  [(NSMutableArray *)kCellularTdsServingCellRx0RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsServingCellRx0RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsServingCellRx1RssiHist:(id)a3
+- (void)addKCellularTdsServingCellRx1RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsServingCellRx1RssiHists = self->_kCellularTdsServingCellRx1RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsServingCellRx1RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsServingCellRx1RssiHists;
     self->_kCellularTdsServingCellRx1RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsServingCellRx1RssiHists = self->_kCellularTdsServingCellRx1RssiHists;
   }
 
-  [(NSMutableArray *)kCellularTdsServingCellRx1RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsServingCellRx1RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsServingCellRx0RscpHist:(id)a3
+- (void)addKCellularTdsServingCellRx0RscpHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsServingCellRx0RscpHists = self->_kCellularTdsServingCellRx0RscpHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsServingCellRx0RscpHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsServingCellRx0RscpHists;
     self->_kCellularTdsServingCellRx0RscpHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsServingCellRx0RscpHists = self->_kCellularTdsServingCellRx0RscpHists;
   }
 
-  [(NSMutableArray *)kCellularTdsServingCellRx0RscpHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsServingCellRx0RscpHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsServingCellRx1RscpHist:(id)a3
+- (void)addKCellularTdsServingCellRx1RscpHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsServingCellRx1RscpHists = self->_kCellularTdsServingCellRx1RscpHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsServingCellRx1RscpHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsServingCellRx1RscpHists;
     self->_kCellularTdsServingCellRx1RscpHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsServingCellRx1RscpHists = self->_kCellularTdsServingCellRx1RscpHists;
   }
 
-  [(NSMutableArray *)kCellularTdsServingCellRx1RscpHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsServingCellRx1RscpHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsTxPowerHist:(id)a3
+- (void)addKCellularTdsTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsTxPowerHists = self->_kCellularTdsTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsTxPowerHists;
     self->_kCellularTdsTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsTxPowerHists = self->_kCellularTdsTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularTdsTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsRabModeHist:(id)a3
+- (void)addKCellularTdsRabModeHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsRabModeHists = self->_kCellularTdsRabModeHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsRabModeHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsRabModeHists;
     self->_kCellularTdsRabModeHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsRabModeHists = self->_kCellularTdsRabModeHists;
   }
 
-  [(NSMutableArray *)kCellularTdsRabModeHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsRabModeHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsRabTypeHist:(id)a3
+- (void)addKCellularTdsRabTypeHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularTdsRabTypeHists = self->_kCellularTdsRabTypeHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularTdsRabTypeHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsRabTypeHists;
     self->_kCellularTdsRabTypeHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularTdsRabTypeHists = self->_kCellularTdsRabTypeHists;
   }
 
-  [(NSMutableArray *)kCellularTdsRabTypeHists addObject:v4];
+  [(NSMutableArray *)kCellularTdsRabTypeHists addObject:histCopy];
 }
 
-- (void)addKCellularTdsRrcState:(id)a3
+- (void)addKCellularTdsRrcState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularTdsRrcStates = self->_kCellularTdsRrcStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularTdsRrcStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsRrcStates;
     self->_kCellularTdsRrcStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularTdsRrcStates = self->_kCellularTdsRrcStates;
   }
 
-  [(NSMutableArray *)kCellularTdsRrcStates addObject:v4];
+  [(NSMutableArray *)kCellularTdsRrcStates addObject:stateCopy];
 }
 
-- (void)addKCellularTdsL1State:(id)a3
+- (void)addKCellularTdsL1State:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularTdsL1States = self->_kCellularTdsL1States;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularTdsL1States)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularTdsL1States;
     self->_kCellularTdsL1States = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularTdsL1States = self->_kCellularTdsL1States;
   }
 
-  [(NSMutableArray *)kCellularTdsL1States addObject:v4];
+  [(NSMutableArray *)kCellularTdsL1States addObject:stateCopy];
 }
 
-- (void)addKCellularLteFwDuplexMode:(id)a3
+- (void)addKCellularLteFwDuplexMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   kCellularLteFwDuplexModes = self->_kCellularLteFwDuplexModes;
-  v8 = v4;
+  v8 = modeCopy;
   if (!kCellularLteFwDuplexModes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteFwDuplexModes;
     self->_kCellularLteFwDuplexModes = v6;
 
-    v4 = v8;
+    modeCopy = v8;
     kCellularLteFwDuplexModes = self->_kCellularLteFwDuplexModes;
   }
 
-  [(NSMutableArray *)kCellularLteFwDuplexModes addObject:v4];
+  [(NSMutableArray *)kCellularLteFwDuplexModes addObject:modeCopy];
 }
 
-- (void)addKCellularLteServingCellRsrpHist:(id)a3
+- (void)addKCellularLteServingCellRsrpHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteServingCellRsrpHists = self->_kCellularLteServingCellRsrpHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteServingCellRsrpHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteServingCellRsrpHists;
     self->_kCellularLteServingCellRsrpHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteServingCellRsrpHists = self->_kCellularLteServingCellRsrpHists;
   }
 
-  [(NSMutableArray *)kCellularLteServingCellRsrpHists addObject:v4];
+  [(NSMutableArray *)kCellularLteServingCellRsrpHists addObject:histCopy];
 }
 
-- (void)addKCellularLteServingCellSinrHist:(id)a3
+- (void)addKCellularLteServingCellSinrHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteServingCellSinrHists = self->_kCellularLteServingCellSinrHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteServingCellSinrHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteServingCellSinrHists;
     self->_kCellularLteServingCellSinrHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteServingCellSinrHists = self->_kCellularLteServingCellSinrHists;
   }
 
-  [(NSMutableArray *)kCellularLteServingCellSinrHists addObject:v4];
+  [(NSMutableArray *)kCellularLteServingCellSinrHists addObject:histCopy];
 }
 
-- (void)addKCellularLteSleepStateHist:(id)a3
+- (void)addKCellularLteSleepStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteSleepStateHists = self->_kCellularLteSleepStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteSleepStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteSleepStateHists;
     self->_kCellularLteSleepStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteSleepStateHists = self->_kCellularLteSleepStateHists;
   }
 
-  [(NSMutableArray *)kCellularLteSleepStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLteSleepStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteTxPowerHist:(id)a3
+- (void)addKCellularLteTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteTxPowerHists = self->_kCellularLteTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteTxPowerHists;
     self->_kCellularLteTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteTxPowerHists = self->_kCellularLteTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularLteTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularLteTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularLteDlSccStateHist:(id)a3
+- (void)addKCellularLteDlSccStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteDlSccStateHists = self->_kCellularLteDlSccStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteDlSccStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteDlSccStateHists;
     self->_kCellularLteDlSccStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteDlSccStateHists = self->_kCellularLteDlSccStateHists;
   }
 
-  [(NSMutableArray *)kCellularLteDlSccStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLteDlSccStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteUlSccStateHist:(id)a3
+- (void)addKCellularLteUlSccStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteUlSccStateHists = self->_kCellularLteUlSccStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteUlSccStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteUlSccStateHists;
     self->_kCellularLteUlSccStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteUlSccStateHists = self->_kCellularLteUlSccStateHists;
   }
 
-  [(NSMutableArray *)kCellularLteUlSccStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLteUlSccStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteAdvancedRxStateHist:(id)a3
+- (void)addKCellularLteAdvancedRxStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteAdvancedRxStateHists = self->_kCellularLteAdvancedRxStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteAdvancedRxStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteAdvancedRxStateHists;
     self->_kCellularLteAdvancedRxStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteAdvancedRxStateHists = self->_kCellularLteAdvancedRxStateHists;
   }
 
-  [(NSMutableArray *)kCellularLteAdvancedRxStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLteAdvancedRxStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteComponentCarrierInfo:(id)a3
+- (void)addKCellularLteComponentCarrierInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   kCellularLteComponentCarrierInfos = self->_kCellularLteComponentCarrierInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!kCellularLteComponentCarrierInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteComponentCarrierInfos;
     self->_kCellularLteComponentCarrierInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     kCellularLteComponentCarrierInfos = self->_kCellularLteComponentCarrierInfos;
   }
 
-  [(NSMutableArray *)kCellularLteComponentCarrierInfos addObject:v4];
+  [(NSMutableArray *)kCellularLteComponentCarrierInfos addObject:infoCopy];
 }
 
-- (void)addKCellularLteRxTxStateHist:(id)a3
+- (void)addKCellularLteRxTxStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteRxTxStateHists = self->_kCellularLteRxTxStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteRxTxStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteRxTxStateHists;
     self->_kCellularLteRxTxStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteRxTxStateHists = self->_kCellularLteRxTxStateHists;
   }
 
-  [(NSMutableArray *)kCellularLteRxTxStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLteRxTxStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteTotalDlTbsHist:(id)a3
+- (void)addKCellularLteTotalDlTbsHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteTotalDlTbsHists = self->_kCellularLteTotalDlTbsHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteTotalDlTbsHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteTotalDlTbsHists;
     self->_kCellularLteTotalDlTbsHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteTotalDlTbsHists = self->_kCellularLteTotalDlTbsHists;
   }
 
-  [(NSMutableArray *)kCellularLteTotalDlTbsHists addObject:v4];
+  [(NSMutableArray *)kCellularLteTotalDlTbsHists addObject:histCopy];
 }
 
-- (void)addKCellularLteDlSccStateHistV3:(id)a3
+- (void)addKCellularLteDlSccStateHistV3:(id)v3
 {
-  v4 = a3;
+  v3Copy = v3;
   kCellularLteDlSccStateHistV3s = self->_kCellularLteDlSccStateHistV3s;
-  v8 = v4;
+  v8 = v3Copy;
   if (!kCellularLteDlSccStateHistV3s)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteDlSccStateHistV3s;
     self->_kCellularLteDlSccStateHistV3s = v6;
 
-    v4 = v8;
+    v3Copy = v8;
     kCellularLteDlSccStateHistV3s = self->_kCellularLteDlSccStateHistV3s;
   }
 
-  [(NSMutableArray *)kCellularLteDlSccStateHistV3s addObject:v4];
+  [(NSMutableArray *)kCellularLteDlSccStateHistV3s addObject:v3Copy];
 }
 
-- (void)addKCellularLteRxDiversityHist:(id)a3
+- (void)addKCellularLteRxDiversityHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLteRxDiversityHists = self->_kCellularLteRxDiversityHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLteRxDiversityHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteRxDiversityHists;
     self->_kCellularLteRxDiversityHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLteRxDiversityHists = self->_kCellularLteRxDiversityHists;
   }
 
-  [(NSMutableArray *)kCellularLteRxDiversityHists addObject:v4];
+  [(NSMutableArray *)kCellularLteRxDiversityHists addObject:histCopy];
 }
 
-- (void)addKCellularLtePdcchStateHist:(id)a3
+- (void)addKCellularLtePdcchStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularLtePdcchStateHists = self->_kCellularLtePdcchStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularLtePdcchStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLtePdcchStateHists;
     self->_kCellularLtePdcchStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularLtePdcchStateHists = self->_kCellularLtePdcchStateHists;
   }
 
-  [(NSMutableArray *)kCellularLtePdcchStateHists addObject:v4];
+  [(NSMutableArray *)kCellularLtePdcchStateHists addObject:histCopy];
 }
 
-- (void)addKCellularLteRrcState:(id)a3
+- (void)addKCellularLteRrcState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularLteRrcStates = self->_kCellularLteRrcStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularLteRrcStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteRrcStates;
     self->_kCellularLteRrcStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularLteRrcStates = self->_kCellularLteRrcStates;
   }
 
-  [(NSMutableArray *)kCellularLteRrcStates addObject:v4];
+  [(NSMutableArray *)kCellularLteRrcStates addObject:stateCopy];
 }
 
-- (void)addKCellularLtePagingCycle:(id)a3
+- (void)addKCellularLtePagingCycle:(id)cycle
 {
-  v4 = a3;
+  cycleCopy = cycle;
   kCellularLtePagingCycles = self->_kCellularLtePagingCycles;
-  v8 = v4;
+  v8 = cycleCopy;
   if (!kCellularLtePagingCycles)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLtePagingCycles;
     self->_kCellularLtePagingCycles = v6;
 
-    v4 = v8;
+    cycleCopy = v8;
     kCellularLtePagingCycles = self->_kCellularLtePagingCycles;
   }
 
-  [(NSMutableArray *)kCellularLtePagingCycles addObject:v4];
+  [(NSMutableArray *)kCellularLtePagingCycles addObject:cycleCopy];
 }
 
-- (void)addKCellularLteCdrxConfig:(id)a3
+- (void)addKCellularLteCdrxConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   kCellularLteCdrxConfigs = self->_kCellularLteCdrxConfigs;
-  v8 = v4;
+  v8 = configCopy;
   if (!kCellularLteCdrxConfigs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteCdrxConfigs;
     self->_kCellularLteCdrxConfigs = v6;
 
-    v4 = v8;
+    configCopy = v8;
     kCellularLteCdrxConfigs = self->_kCellularLteCdrxConfigs;
   }
 
-  [(NSMutableArray *)kCellularLteCdrxConfigs addObject:v4];
+  [(NSMutableArray *)kCellularLteCdrxConfigs addObject:configCopy];
 }
 
-- (void)addKCellularLteRadioLinkFailure:(id)a3
+- (void)addKCellularLteRadioLinkFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   kCellularLteRadioLinkFailures = self->_kCellularLteRadioLinkFailures;
-  v8 = v4;
+  v8 = failureCopy;
   if (!kCellularLteRadioLinkFailures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLteRadioLinkFailures;
     self->_kCellularLteRadioLinkFailures = v6;
 
-    v4 = v8;
+    failureCopy = v8;
     kCellularLteRadioLinkFailures = self->_kCellularLteRadioLinkFailures;
   }
 
-  [(NSMutableArray *)kCellularLteRadioLinkFailures addObject:v4];
+  [(NSMutableArray *)kCellularLteRadioLinkFailures addObject:failureCopy];
 }
 
-- (void)addKCellularLtePdcchStateStats:(id)a3
+- (void)addKCellularLtePdcchStateStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   kCellularLtePdcchStateStats = self->_kCellularLtePdcchStateStats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!kCellularLtePdcchStateStats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLtePdcchStateStats;
     self->_kCellularLtePdcchStateStats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     kCellularLtePdcchStateStats = self->_kCellularLtePdcchStateStats;
   }
 
-  [(NSMutableArray *)kCellularLtePdcchStateStats addObject:v4];
+  [(NSMutableArray *)kCellularLtePdcchStateStats addObject:statsCopy];
 }
 
-- (void)addKCellularLqmStateChange:(id)a3
+- (void)addKCellularLqmStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   kCellularLqmStateChanges = self->_kCellularLqmStateChanges;
-  v8 = v4;
+  v8 = changeCopy;
   if (!kCellularLqmStateChanges)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularLqmStateChanges;
     self->_kCellularLqmStateChanges = v6;
 
-    v4 = v8;
+    changeCopy = v8;
     kCellularLqmStateChanges = self->_kCellularLqmStateChanges;
   }
 
-  [(NSMutableArray *)kCellularLqmStateChanges addObject:v4];
+  [(NSMutableArray *)kCellularLqmStateChanges addObject:changeCopy];
 }
 
-- (void)addKCellularServiceLost:(id)a3
+- (void)addKCellularServiceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   kCellularServiceLosts = self->_kCellularServiceLosts;
-  v8 = v4;
+  v8 = lostCopy;
   if (!kCellularServiceLosts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularServiceLosts;
     self->_kCellularServiceLosts = v6;
 
-    v4 = v8;
+    lostCopy = v8;
     kCellularServiceLosts = self->_kCellularServiceLosts;
   }
 
-  [(NSMutableArray *)kCellularServiceLosts addObject:v4];
+  [(NSMutableArray *)kCellularServiceLosts addObject:lostCopy];
 }
 
-- (void)addKCellularProtocolStackStateHist:(id)a3
+- (void)addKCellularProtocolStackStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularProtocolStackStateHists = self->_kCellularProtocolStackStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularProtocolStackStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularProtocolStackStateHists;
     self->_kCellularProtocolStackStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularProtocolStackStateHists = self->_kCellularProtocolStackStateHists;
   }
 
-  [(NSMutableArray *)kCellularProtocolStackStateHists addObject:v4];
+  [(NSMutableArray *)kCellularProtocolStackStateHists addObject:histCopy];
 }
 
-- (void)addKCellularCellPlmnSearchCount:(id)a3
+- (void)addKCellularCellPlmnSearchCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   kCellularCellPlmnSearchCounts = self->_kCellularCellPlmnSearchCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!kCellularCellPlmnSearchCounts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCellPlmnSearchCounts;
     self->_kCellularCellPlmnSearchCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     kCellularCellPlmnSearchCounts = self->_kCellularCellPlmnSearchCounts;
   }
 
-  [(NSMutableArray *)kCellularCellPlmnSearchCounts addObject:v4];
+  [(NSMutableArray *)kCellularCellPlmnSearchCounts addObject:countCopy];
 }
 
-- (void)addKCellularCellPlmnSearchHist:(id)a3
+- (void)addKCellularCellPlmnSearchHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCellPlmnSearchHists = self->_kCellularCellPlmnSearchHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCellPlmnSearchHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCellPlmnSearchHists;
     self->_kCellularCellPlmnSearchHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCellPlmnSearchHists = self->_kCellularCellPlmnSearchHists;
   }
 
-  [(NSMutableArray *)kCellularCellPlmnSearchHists addObject:v4];
+  [(NSMutableArray *)kCellularCellPlmnSearchHists addObject:histCopy];
 }
 
-- (void)addKCellularProtocolStackPowerState:(id)a3
+- (void)addKCellularProtocolStackPowerState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularProtocolStackPowerStates = self->_kCellularProtocolStackPowerStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularProtocolStackPowerStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularProtocolStackPowerStates;
     self->_kCellularProtocolStackPowerStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularProtocolStackPowerStates = self->_kCellularProtocolStackPowerStates;
   }
 
-  [(NSMutableArray *)kCellularProtocolStackPowerStates addObject:v4];
+  [(NSMutableArray *)kCellularProtocolStackPowerStates addObject:stateCopy];
 }
 
-- (void)addKCellularDownlinkIpPacketFilterStatus:(id)a3
+- (void)addKCellularDownlinkIpPacketFilterStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   kCellularDownlinkIpPacketFilterStatus = self->_kCellularDownlinkIpPacketFilterStatus;
-  v8 = v4;
+  v8 = statusCopy;
   if (!kCellularDownlinkIpPacketFilterStatus)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularDownlinkIpPacketFilterStatus;
     self->_kCellularDownlinkIpPacketFilterStatus = v6;
 
-    v4 = v8;
+    statusCopy = v8;
     kCellularDownlinkIpPacketFilterStatus = self->_kCellularDownlinkIpPacketFilterStatus;
   }
 
-  [(NSMutableArray *)kCellularDownlinkIpPacketFilterStatus addObject:v4];
+  [(NSMutableArray *)kCellularDownlinkIpPacketFilterStatus addObject:statusCopy];
 }
 
-- (void)addKCellularServingCellRfBandHist:(id)a3
+- (void)addKCellularServingCellRfBandHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularServingCellRfBandHists = self->_kCellularServingCellRfBandHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularServingCellRfBandHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularServingCellRfBandHists;
     self->_kCellularServingCellRfBandHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularServingCellRfBandHists = self->_kCellularServingCellRfBandHists;
   }
 
-  [(NSMutableArray *)kCellularServingCellRfBandHists addObject:v4];
+  [(NSMutableArray *)kCellularServingCellRfBandHists addObject:histCopy];
 }
 
-- (void)addKCellularProtocolStackStateHist2:(id)a3
+- (void)addKCellularProtocolStackStateHist2:(id)hist2
 {
-  v4 = a3;
+  hist2Copy = hist2;
   kCellularProtocolStackStateHist2s = self->_kCellularProtocolStackStateHist2s;
-  v8 = v4;
+  v8 = hist2Copy;
   if (!kCellularProtocolStackStateHist2s)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularProtocolStackStateHist2s;
     self->_kCellularProtocolStackStateHist2s = v6;
 
-    v4 = v8;
+    hist2Copy = v8;
     kCellularProtocolStackStateHist2s = self->_kCellularProtocolStackStateHist2s;
   }
 
-  [(NSMutableArray *)kCellularProtocolStackStateHist2s addObject:v4];
+  [(NSMutableArray *)kCellularProtocolStackStateHist2s addObject:hist2Copy];
 }
 
-- (void)addKCellularProtocolStackState:(id)a3
+- (void)addKCellularProtocolStackState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularProtocolStackStates = self->_kCellularProtocolStackStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularProtocolStackStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularProtocolStackStates;
     self->_kCellularProtocolStackStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularProtocolStackStates = self->_kCellularProtocolStackStates;
   }
 
-  [(NSMutableArray *)kCellularProtocolStackStates addObject:v4];
+  [(NSMutableArray *)kCellularProtocolStackStates addObject:stateCopy];
 }
 
-- (void)addKCellularCdma1XRxDiversityHist:(id)a3
+- (void)addKCellularCdma1XRxDiversityHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XRxDiversityHists = self->_kCellularCdma1XRxDiversityHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XRxDiversityHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XRxDiversityHists;
     self->_kCellularCdma1XRxDiversityHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XRxDiversityHists = self->_kCellularCdma1XRxDiversityHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XRxDiversityHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XRxDiversityHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XServingCellRx0RssiHist:(id)a3
+- (void)addKCellularCdma1XServingCellRx0RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XServingCellRx0RssiHists = self->_kCellularCdma1XServingCellRx0RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XServingCellRx0RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XServingCellRx0RssiHists;
     self->_kCellularCdma1XServingCellRx0RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XServingCellRx0RssiHists = self->_kCellularCdma1XServingCellRx0RssiHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XServingCellRx0RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XServingCellRx0RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XServingCellRx1RssiHist:(id)a3
+- (void)addKCellularCdma1XServingCellRx1RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XServingCellRx1RssiHists = self->_kCellularCdma1XServingCellRx1RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XServingCellRx1RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XServingCellRx1RssiHists;
     self->_kCellularCdma1XServingCellRx1RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XServingCellRx1RssiHists = self->_kCellularCdma1XServingCellRx1RssiHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XServingCellRx1RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XServingCellRx1RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XServingCellRx0EcIoHist:(id)a3
+- (void)addKCellularCdma1XServingCellRx0EcIoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XServingCellRx0EcIoHists = self->_kCellularCdma1XServingCellRx0EcIoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XServingCellRx0EcIoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XServingCellRx0EcIoHists;
     self->_kCellularCdma1XServingCellRx0EcIoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XServingCellRx0EcIoHists = self->_kCellularCdma1XServingCellRx0EcIoHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XServingCellRx0EcIoHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XServingCellRx0EcIoHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XServingCellRx1EcIoHist:(id)a3
+- (void)addKCellularCdma1XServingCellRx1EcIoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XServingCellRx1EcIoHists = self->_kCellularCdma1XServingCellRx1EcIoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XServingCellRx1EcIoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XServingCellRx1EcIoHists;
     self->_kCellularCdma1XServingCellRx1EcIoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XServingCellRx1EcIoHists = self->_kCellularCdma1XServingCellRx1EcIoHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XServingCellRx1EcIoHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XServingCellRx1EcIoHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XTxPowerHist:(id)a3
+- (void)addKCellularCdma1XTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XTxPowerHists = self->_kCellularCdma1XTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XTxPowerHists;
     self->_kCellularCdma1XTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XTxPowerHists = self->_kCellularCdma1XTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XProtocolStackStateHist:(id)a3
+- (void)addKCellularCdma1XProtocolStackStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XProtocolStackStateHists = self->_kCellularCdma1XProtocolStackStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XProtocolStackStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XProtocolStackStateHists;
     self->_kCellularCdma1XProtocolStackStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XProtocolStackStateHists = self->_kCellularCdma1XProtocolStackStateHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XProtocolStackStateHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XProtocolStackStateHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XConnectionHist:(id)a3
+- (void)addKCellularCdma1XConnectionHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdma1XConnectionHists = self->_kCellularCdma1XConnectionHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdma1XConnectionHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XConnectionHists;
     self->_kCellularCdma1XConnectionHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdma1XConnectionHists = self->_kCellularCdma1XConnectionHists;
   }
 
-  [(NSMutableArray *)kCellularCdma1XConnectionHists addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XConnectionHists addObject:histCopy];
 }
 
-- (void)addKCellularCdma1XRrState:(id)a3
+- (void)addKCellularCdma1XRrState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularCdma1XRrStates = self->_kCellularCdma1XRrStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularCdma1XRrStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdma1XRrStates;
     self->_kCellularCdma1XRrStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularCdma1XRrStates = self->_kCellularCdma1XRrStates;
   }
 
-  [(NSMutableArray *)kCellularCdma1XRrStates addObject:v4];
+  [(NSMutableArray *)kCellularCdma1XRrStates addObject:stateCopy];
 }
 
-- (void)addKCellularCdmaEvdoRxDiversityHist:(id)a3
+- (void)addKCellularCdmaEvdoRxDiversityHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoRxDiversityHists = self->_kCellularCdmaEvdoRxDiversityHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoRxDiversityHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoRxDiversityHists;
     self->_kCellularCdmaEvdoRxDiversityHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoRxDiversityHists = self->_kCellularCdmaEvdoRxDiversityHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoRxDiversityHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoRxDiversityHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoServingCellRx0RssiHist:(id)a3
+- (void)addKCellularCdmaEvdoServingCellRx0RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoServingCellRx0RssiHists = self->_kCellularCdmaEvdoServingCellRx0RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoServingCellRx0RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoServingCellRx0RssiHists;
     self->_kCellularCdmaEvdoServingCellRx0RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoServingCellRx0RssiHists = self->_kCellularCdmaEvdoServingCellRx0RssiHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoServingCellRx1RssiHist:(id)a3
+- (void)addKCellularCdmaEvdoServingCellRx1RssiHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoServingCellRx1RssiHists = self->_kCellularCdmaEvdoServingCellRx1RssiHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoServingCellRx1RssiHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoServingCellRx1RssiHists;
     self->_kCellularCdmaEvdoServingCellRx1RssiHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoServingCellRx1RssiHists = self->_kCellularCdmaEvdoServingCellRx1RssiHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1RssiHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1RssiHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoServingCellRx0EcIoHist:(id)a3
+- (void)addKCellularCdmaEvdoServingCellRx0EcIoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoServingCellRx0EcIoHists = self->_kCellularCdmaEvdoServingCellRx0EcIoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoServingCellRx0EcIoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoServingCellRx0EcIoHists;
     self->_kCellularCdmaEvdoServingCellRx0EcIoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoServingCellRx0EcIoHists = self->_kCellularCdmaEvdoServingCellRx0EcIoHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0EcIoHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0EcIoHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoServingCellRx1EcIoHist:(id)a3
+- (void)addKCellularCdmaEvdoServingCellRx1EcIoHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoServingCellRx1EcIoHists = self->_kCellularCdmaEvdoServingCellRx1EcIoHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoServingCellRx1EcIoHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoServingCellRx1EcIoHists;
     self->_kCellularCdmaEvdoServingCellRx1EcIoHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoServingCellRx1EcIoHists = self->_kCellularCdmaEvdoServingCellRx1EcIoHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1EcIoHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1EcIoHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoTxPowerHist:(id)a3
+- (void)addKCellularCdmaEvdoTxPowerHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoTxPowerHists = self->_kCellularCdmaEvdoTxPowerHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoTxPowerHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoTxPowerHists;
     self->_kCellularCdmaEvdoTxPowerHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoTxPowerHists = self->_kCellularCdmaEvdoTxPowerHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoTxPowerHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoTxPowerHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoProtocolStackStateHist:(id)a3
+- (void)addKCellularCdmaEvdoProtocolStackStateHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   kCellularCdmaEvdoProtocolStackStateHists = self->_kCellularCdmaEvdoProtocolStackStateHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!kCellularCdmaEvdoProtocolStackStateHists)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoProtocolStackStateHists;
     self->_kCellularCdmaEvdoProtocolStackStateHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     kCellularCdmaEvdoProtocolStackStateHists = self->_kCellularCdmaEvdoProtocolStackStateHists;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoProtocolStackStateHists addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoProtocolStackStateHists addObject:histCopy];
 }
 
-- (void)addKCellularCdmaEvdoRrState:(id)a3
+- (void)addKCellularCdmaEvdoRrState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   kCellularCdmaEvdoRrStates = self->_kCellularCdmaEvdoRrStates;
-  v8 = v4;
+  v8 = stateCopy;
   if (!kCellularCdmaEvdoRrStates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_kCellularCdmaEvdoRrStates;
     self->_kCellularCdmaEvdoRrStates = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     kCellularCdmaEvdoRrStates = self->_kCellularCdmaEvdoRrStates;
   }
 
-  [(NSMutableArray *)kCellularCdmaEvdoRrStates addObject:v4];
+  [(NSMutableArray *)kCellularCdmaEvdoRrStates addObject:stateCopy];
 }
 
 - (id)description
@@ -1727,8 +1727,8 @@
   v8.receiver = self;
   v8.super_class = PowerlogMetricLog;
   v4 = [(PowerlogMetricLog *)&v8 description];
-  v5 = [(PowerlogMetricLog *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PowerlogMetricLog *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1736,7 +1736,7 @@
 - (id)dictionaryRepresentation
 {
   v1087 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_kCellularPerClientProfileTriggerCounts count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_kCellularPerClientProfileTriggerCounts, "count")}];
@@ -1760,8 +1760,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v993 + 1) + 8 * v9) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v993 + 1) + 8 * v9) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
 
           ++v9;
         }
@@ -1773,7 +1773,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"kCellularPerClientProfileTriggerCount"];
+    [dictionary setObject:v4 forKey:@"kCellularPerClientProfileTriggerCount"];
   }
 
   if ([(NSMutableArray *)self->_kCellularProtocolStackCpuStats count])
@@ -1799,8 +1799,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v989 + 1) + 8 * v16) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v989 + 1) + 8 * v16) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
 
           ++v16;
         }
@@ -1812,7 +1812,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"kCellularProtocolStackCpuStats"];
+    [dictionary setObject:v11 forKey:@"kCellularProtocolStackCpuStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularPeripheralStats count])
@@ -1838,8 +1838,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v985 + 1) + 8 * v23) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v985 + 1) + 8 * v23) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
 
           ++v23;
         }
@@ -1851,7 +1851,7 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"kCellularPeripheralStats"];
+    [dictionary setObject:v18 forKey:@"kCellularPeripheralStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularDvfsStats count])
@@ -1877,8 +1877,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v981 + 1) + 8 * v30) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation4 = [*(*(&v981 + 1) + 8 * v30) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation4];
 
           ++v30;
         }
@@ -1890,7 +1890,7 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"kCellularDvfsStats"];
+    [dictionary setObject:v25 forKey:@"kCellularDvfsStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteWcdmaGsmHwStats count])
@@ -1916,8 +1916,8 @@
             objc_enumerationMutation(v33);
           }
 
-          v38 = [*(*(&v977 + 1) + 8 * v37) dictionaryRepresentation];
-          [v32 addObject:v38];
+          dictionaryRepresentation5 = [*(*(&v977 + 1) + 8 * v37) dictionaryRepresentation];
+          [v32 addObject:dictionaryRepresentation5];
 
           ++v37;
         }
@@ -1929,7 +1929,7 @@
       while (v35);
     }
 
-    [v3 setObject:v32 forKey:@"kCellularLteWcdmaGsmHwStats"];
+    [dictionary setObject:v32 forKey:@"kCellularLteWcdmaGsmHwStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteTdsGsmHwStats count])
@@ -1955,8 +1955,8 @@
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v973 + 1) + 8 * v44) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation6 = [*(*(&v973 + 1) + 8 * v44) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation6];
 
           ++v44;
         }
@@ -1968,7 +1968,7 @@
       while (v42);
     }
 
-    [v3 setObject:v39 forKey:@"kCellularLteTdsGsmHwStats"];
+    [dictionary setObject:v39 forKey:@"kCellularLteTdsGsmHwStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularPmuAverageCurrents count])
@@ -1994,8 +1994,8 @@
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v969 + 1) + 8 * v51) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation7 = [*(*(&v969 + 1) + 8 * v51) dictionaryRepresentation];
+          [v46 addObject:dictionaryRepresentation7];
 
           ++v51;
         }
@@ -2007,7 +2007,7 @@
       while (v49);
     }
 
-    [v3 setObject:v46 forKey:@"kCellularPmuAverageCurrent"];
+    [dictionary setObject:v46 forKey:@"kCellularPmuAverageCurrent"];
   }
 
   if ([(NSMutableArray *)self->_kCellularFwCoreStats count])
@@ -2033,8 +2033,8 @@
             objc_enumerationMutation(v54);
           }
 
-          v59 = [*(*(&v965 + 1) + 8 * v58) dictionaryRepresentation];
-          [v53 addObject:v59];
+          dictionaryRepresentation8 = [*(*(&v965 + 1) + 8 * v58) dictionaryRepresentation];
+          [v53 addObject:dictionaryRepresentation8];
 
           ++v58;
         }
@@ -2046,7 +2046,7 @@
       while (v56);
     }
 
-    [v3 setObject:v53 forKey:@"kCellularFwCoreStats"];
+    [dictionary setObject:v53 forKey:@"kCellularFwCoreStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteWcdmaTdsHwStats count])
@@ -2072,8 +2072,8 @@
             objc_enumerationMutation(v61);
           }
 
-          v66 = [*(*(&v961 + 1) + 8 * v65) dictionaryRepresentation];
-          [v60 addObject:v66];
+          dictionaryRepresentation9 = [*(*(&v961 + 1) + 8 * v65) dictionaryRepresentation];
+          [v60 addObject:dictionaryRepresentation9];
 
           ++v65;
         }
@@ -2085,7 +2085,7 @@
       while (v63);
     }
 
-    [v3 setObject:v60 forKey:@"kCellularLteWcdmaTdsHwStats"];
+    [dictionary setObject:v60 forKey:@"kCellularLteWcdmaTdsHwStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularPmicHwStats count])
@@ -2111,8 +2111,8 @@
             objc_enumerationMutation(v68);
           }
 
-          v73 = [*(*(&v957 + 1) + 8 * v72) dictionaryRepresentation];
-          [v67 addObject:v73];
+          dictionaryRepresentation10 = [*(*(&v957 + 1) + 8 * v72) dictionaryRepresentation];
+          [v67 addObject:dictionaryRepresentation10];
 
           ++v72;
         }
@@ -2124,7 +2124,7 @@
       while (v70);
     }
 
-    [v3 setObject:v67 forKey:@"kCellularPmicHwStats"];
+    [dictionary setObject:v67 forKey:@"kCellularPmicHwStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularGsmServingCellRssiHists count])
@@ -2150,8 +2150,8 @@
             objc_enumerationMutation(v75);
           }
 
-          v80 = [*(*(&v953 + 1) + 8 * v79) dictionaryRepresentation];
-          [v74 addObject:v80];
+          dictionaryRepresentation11 = [*(*(&v953 + 1) + 8 * v79) dictionaryRepresentation];
+          [v74 addObject:dictionaryRepresentation11];
 
           ++v79;
         }
@@ -2163,7 +2163,7 @@
       while (v77);
     }
 
-    [v3 setObject:v74 forKey:@"kCellularGsmServingCellRssiHist"];
+    [dictionary setObject:v74 forKey:@"kCellularGsmServingCellRssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularGsmServingCellSnrHists count])
@@ -2189,8 +2189,8 @@
             objc_enumerationMutation(v82);
           }
 
-          v87 = [*(*(&v949 + 1) + 8 * v86) dictionaryRepresentation];
-          [v81 addObject:v87];
+          dictionaryRepresentation12 = [*(*(&v949 + 1) + 8 * v86) dictionaryRepresentation];
+          [v81 addObject:dictionaryRepresentation12];
 
           ++v86;
         }
@@ -2202,7 +2202,7 @@
       while (v84);
     }
 
-    [v3 setObject:v81 forKey:@"kCellularGsmServingCellSnrHist"];
+    [dictionary setObject:v81 forKey:@"kCellularGsmServingCellSnrHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularGsmTxPowerHists count])
@@ -2228,8 +2228,8 @@
             objc_enumerationMutation(v89);
           }
 
-          v94 = [*(*(&v945 + 1) + 8 * v93) dictionaryRepresentation];
-          [v88 addObject:v94];
+          dictionaryRepresentation13 = [*(*(&v945 + 1) + 8 * v93) dictionaryRepresentation];
+          [v88 addObject:dictionaryRepresentation13];
 
           ++v93;
         }
@@ -2241,7 +2241,7 @@
       while (v91);
     }
 
-    [v3 setObject:v88 forKey:@"kCellularGsmTxPowerHist"];
+    [dictionary setObject:v88 forKey:@"kCellularGsmTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularGsmConnectedModeHists count])
@@ -2267,8 +2267,8 @@
             objc_enumerationMutation(v96);
           }
 
-          v101 = [*(*(&v941 + 1) + 8 * v100) dictionaryRepresentation];
-          [v95 addObject:v101];
+          dictionaryRepresentation14 = [*(*(&v941 + 1) + 8 * v100) dictionaryRepresentation];
+          [v95 addObject:dictionaryRepresentation14];
 
           ++v100;
         }
@@ -2280,7 +2280,7 @@
       while (v98);
     }
 
-    [v3 setObject:v95 forKey:@"kCellularGsmConnectedModeHist"];
+    [dictionary setObject:v95 forKey:@"kCellularGsmConnectedModeHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularGsmL1States count])
@@ -2306,8 +2306,8 @@
             objc_enumerationMutation(v103);
           }
 
-          v108 = [*(*(&v937 + 1) + 8 * v107) dictionaryRepresentation];
-          [v102 addObject:v108];
+          dictionaryRepresentation15 = [*(*(&v937 + 1) + 8 * v107) dictionaryRepresentation];
+          [v102 addObject:dictionaryRepresentation15];
 
           ++v107;
         }
@@ -2319,7 +2319,7 @@
       while (v105);
     }
 
-    [v3 setObject:v102 forKey:@"kCellularGsmL1State"];
+    [dictionary setObject:v102 forKey:@"kCellularGsmL1State"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaCpcStats count])
@@ -2345,8 +2345,8 @@
             objc_enumerationMutation(v110);
           }
 
-          v115 = [*(*(&v933 + 1) + 8 * v114) dictionaryRepresentation];
-          [v109 addObject:v115];
+          dictionaryRepresentation16 = [*(*(&v933 + 1) + 8 * v114) dictionaryRepresentation];
+          [v109 addObject:dictionaryRepresentation16];
 
           ++v114;
         }
@@ -2358,7 +2358,7 @@
       while (v112);
     }
 
-    [v3 setObject:v109 forKey:@"kCellularWcdmaCpcStat"];
+    [dictionary setObject:v109 forKey:@"kCellularWcdmaCpcStat"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRxDiversityHists count])
@@ -2384,8 +2384,8 @@
             objc_enumerationMutation(v117);
           }
 
-          v122 = [*(*(&v929 + 1) + 8 * v121) dictionaryRepresentation];
-          [v116 addObject:v122];
+          dictionaryRepresentation17 = [*(*(&v929 + 1) + 8 * v121) dictionaryRepresentation];
+          [v116 addObject:dictionaryRepresentation17];
 
           ++v121;
         }
@@ -2397,7 +2397,7 @@
       while (v119);
     }
 
-    [v3 setObject:v116 forKey:@"kCellularWcdmaRxDiversityHist"];
+    [dictionary setObject:v116 forKey:@"kCellularWcdmaRxDiversityHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaServingCellRx0RssiHists count])
@@ -2423,8 +2423,8 @@
             objc_enumerationMutation(v124);
           }
 
-          v129 = [*(*(&v925 + 1) + 8 * v128) dictionaryRepresentation];
-          [v123 addObject:v129];
+          dictionaryRepresentation18 = [*(*(&v925 + 1) + 8 * v128) dictionaryRepresentation];
+          [v123 addObject:dictionaryRepresentation18];
 
           ++v128;
         }
@@ -2436,7 +2436,7 @@
       while (v126);
     }
 
-    [v3 setObject:v123 forKey:@"kCellularWcdmaServingCellRx0RssiHist"];
+    [dictionary setObject:v123 forKey:@"kCellularWcdmaServingCellRx0RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaServingCellRx1RssiHists count])
@@ -2462,8 +2462,8 @@
             objc_enumerationMutation(v131);
           }
 
-          v136 = [*(*(&v921 + 1) + 8 * v135) dictionaryRepresentation];
-          [v130 addObject:v136];
+          dictionaryRepresentation19 = [*(*(&v921 + 1) + 8 * v135) dictionaryRepresentation];
+          [v130 addObject:dictionaryRepresentation19];
 
           ++v135;
         }
@@ -2475,7 +2475,7 @@
       while (v133);
     }
 
-    [v3 setObject:v130 forKey:@"kCellularWcdmaServingCellRx1RssiHist"];
+    [dictionary setObject:v130 forKey:@"kCellularWcdmaServingCellRx1RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaServingCellRx0EcNoHists count])
@@ -2501,8 +2501,8 @@
             objc_enumerationMutation(v138);
           }
 
-          v143 = [*(*(&v917 + 1) + 8 * v142) dictionaryRepresentation];
-          [v137 addObject:v143];
+          dictionaryRepresentation20 = [*(*(&v917 + 1) + 8 * v142) dictionaryRepresentation];
+          [v137 addObject:dictionaryRepresentation20];
 
           ++v142;
         }
@@ -2514,7 +2514,7 @@
       while (v140);
     }
 
-    [v3 setObject:v137 forKey:@"kCellularWcdmaServingCellRx0EcNoHist"];
+    [dictionary setObject:v137 forKey:@"kCellularWcdmaServingCellRx0EcNoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaServingCellRx1EcNoHists count])
@@ -2540,8 +2540,8 @@
             objc_enumerationMutation(v145);
           }
 
-          v150 = [*(*(&v913 + 1) + 8 * v149) dictionaryRepresentation];
-          [v144 addObject:v150];
+          dictionaryRepresentation21 = [*(*(&v913 + 1) + 8 * v149) dictionaryRepresentation];
+          [v144 addObject:dictionaryRepresentation21];
 
           ++v149;
         }
@@ -2553,7 +2553,7 @@
       while (v147);
     }
 
-    [v3 setObject:v144 forKey:@"kCellularWcdmaServingCellRx1EcNoHist"];
+    [dictionary setObject:v144 forKey:@"kCellularWcdmaServingCellRx1EcNoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaTxPowerHists count])
@@ -2579,8 +2579,8 @@
             objc_enumerationMutation(v152);
           }
 
-          v157 = [*(*(&v909 + 1) + 8 * v156) dictionaryRepresentation];
-          [v151 addObject:v157];
+          dictionaryRepresentation22 = [*(*(&v909 + 1) + 8 * v156) dictionaryRepresentation];
+          [v151 addObject:dictionaryRepresentation22];
 
           ++v156;
         }
@@ -2592,7 +2592,7 @@
       while (v154);
     }
 
-    [v3 setObject:v151 forKey:@"kCellularWcdmaTxPowerHist"];
+    [dictionary setObject:v151 forKey:@"kCellularWcdmaTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaReceiverStatusOnC0Hists count])
@@ -2618,8 +2618,8 @@
             objc_enumerationMutation(v159);
           }
 
-          v164 = [*(*(&v905 + 1) + 8 * v163) dictionaryRepresentation];
-          [v158 addObject:v164];
+          dictionaryRepresentation23 = [*(*(&v905 + 1) + 8 * v163) dictionaryRepresentation];
+          [v158 addObject:dictionaryRepresentation23];
 
           ++v163;
         }
@@ -2631,7 +2631,7 @@
       while (v161);
     }
 
-    [v3 setObject:v158 forKey:@"kCellularWcdmaReceiverStatusOnC0Hist"];
+    [dictionary setObject:v158 forKey:@"kCellularWcdmaReceiverStatusOnC0Hist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaReceiverStatusOnC1Hists count])
@@ -2657,8 +2657,8 @@
             objc_enumerationMutation(v166);
           }
 
-          v171 = [*(*(&v901 + 1) + 8 * v170) dictionaryRepresentation];
-          [v165 addObject:v171];
+          dictionaryRepresentation24 = [*(*(&v901 + 1) + 8 * v170) dictionaryRepresentation];
+          [v165 addObject:dictionaryRepresentation24];
 
           ++v170;
         }
@@ -2670,7 +2670,7 @@
       while (v168);
     }
 
-    [v3 setObject:v165 forKey:@"kCellularWcdmaReceiverStatusOnC1Hist"];
+    [dictionary setObject:v165 forKey:@"kCellularWcdmaReceiverStatusOnC1Hist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaCarrierStatusHists count])
@@ -2696,8 +2696,8 @@
             objc_enumerationMutation(v173);
           }
 
-          v178 = [*(*(&v897 + 1) + 8 * v177) dictionaryRepresentation];
-          [v172 addObject:v178];
+          dictionaryRepresentation25 = [*(*(&v897 + 1) + 8 * v177) dictionaryRepresentation];
+          [v172 addObject:dictionaryRepresentation25];
 
           ++v177;
         }
@@ -2709,7 +2709,7 @@
       while (v175);
     }
 
-    [v3 setObject:v172 forKey:@"kCellularWcdmaCarrierStatusHist"];
+    [dictionary setObject:v172 forKey:@"kCellularWcdmaCarrierStatusHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRabModeHists count])
@@ -2735,8 +2735,8 @@
             objc_enumerationMutation(v180);
           }
 
-          v185 = [*(*(&v893 + 1) + 8 * v184) dictionaryRepresentation];
-          [v179 addObject:v185];
+          dictionaryRepresentation26 = [*(*(&v893 + 1) + 8 * v184) dictionaryRepresentation];
+          [v179 addObject:dictionaryRepresentation26];
 
           ++v184;
         }
@@ -2748,7 +2748,7 @@
       while (v182);
     }
 
-    [v3 setObject:v179 forKey:@"kCellularWcdmaRabModeHist"];
+    [dictionary setObject:v179 forKey:@"kCellularWcdmaRabModeHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRabTypeHists count])
@@ -2774,8 +2774,8 @@
             objc_enumerationMutation(v187);
           }
 
-          v192 = [*(*(&v889 + 1) + 8 * v191) dictionaryRepresentation];
-          [v186 addObject:v192];
+          dictionaryRepresentation27 = [*(*(&v889 + 1) + 8 * v191) dictionaryRepresentation];
+          [v186 addObject:dictionaryRepresentation27];
 
           ++v191;
         }
@@ -2787,7 +2787,7 @@
       while (v189);
     }
 
-    [v3 setObject:v186 forKey:@"kCellularWcdmaRabTypeHist"];
+    [dictionary setObject:v186 forKey:@"kCellularWcdmaRabTypeHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRrcConnectionStates count])
@@ -2813,8 +2813,8 @@
             objc_enumerationMutation(v194);
           }
 
-          v199 = [*(*(&v885 + 1) + 8 * v198) dictionaryRepresentation];
-          [v193 addObject:v199];
+          dictionaryRepresentation28 = [*(*(&v885 + 1) + 8 * v198) dictionaryRepresentation];
+          [v193 addObject:dictionaryRepresentation28];
 
           ++v198;
         }
@@ -2826,7 +2826,7 @@
       while (v196);
     }
 
-    [v3 setObject:v193 forKey:@"kCellularWcdmaRrcConnectionState"];
+    [dictionary setObject:v193 forKey:@"kCellularWcdmaRrcConnectionState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRrcConfigurations count])
@@ -2852,8 +2852,8 @@
             objc_enumerationMutation(v201);
           }
 
-          v206 = [*(*(&v881 + 1) + 8 * v205) dictionaryRepresentation];
-          [v200 addObject:v206];
+          dictionaryRepresentation29 = [*(*(&v881 + 1) + 8 * v205) dictionaryRepresentation];
+          [v200 addObject:dictionaryRepresentation29];
 
           ++v205;
         }
@@ -2865,7 +2865,7 @@
       while (v203);
     }
 
-    [v3 setObject:v200 forKey:@"kCellularWcdmaRrcConfiguration"];
+    [dictionary setObject:v200 forKey:@"kCellularWcdmaRrcConfiguration"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaRabStatus count])
@@ -2891,8 +2891,8 @@
             objc_enumerationMutation(v208);
           }
 
-          v213 = [*(*(&v877 + 1) + 8 * v212) dictionaryRepresentation];
-          [v207 addObject:v213];
+          dictionaryRepresentation30 = [*(*(&v877 + 1) + 8 * v212) dictionaryRepresentation];
+          [v207 addObject:dictionaryRepresentation30];
 
           ++v212;
         }
@@ -2904,7 +2904,7 @@
       while (v210);
     }
 
-    [v3 setObject:v207 forKey:@"kCellularWcdmaRabStatus"];
+    [dictionary setObject:v207 forKey:@"kCellularWcdmaRabStatus"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaL1States count])
@@ -2930,8 +2930,8 @@
             objc_enumerationMutation(v215);
           }
 
-          v220 = [*(*(&v873 + 1) + 8 * v219) dictionaryRepresentation];
-          [v214 addObject:v220];
+          dictionaryRepresentation31 = [*(*(&v873 + 1) + 8 * v219) dictionaryRepresentation];
+          [v214 addObject:dictionaryRepresentation31];
 
           ++v219;
         }
@@ -2943,7 +2943,7 @@
       while (v217);
     }
 
-    [v3 setObject:v214 forKey:@"kCellularWcdmaL1State"];
+    [dictionary setObject:v214 forKey:@"kCellularWcdmaL1State"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaDataInactivityBeforeIdles count])
@@ -2969,8 +2969,8 @@
             objc_enumerationMutation(v222);
           }
 
-          v227 = [*(*(&v869 + 1) + 8 * v226) dictionaryRepresentation];
-          [v221 addObject:v227];
+          dictionaryRepresentation32 = [*(*(&v869 + 1) + 8 * v226) dictionaryRepresentation];
+          [v221 addObject:dictionaryRepresentation32];
 
           ++v226;
         }
@@ -2982,7 +2982,7 @@
       while (v224);
     }
 
-    [v3 setObject:v221 forKey:@"kCellularWcdmaDataInactivityBeforeIdle"];
+    [dictionary setObject:v221 forKey:@"kCellularWcdmaDataInactivityBeforeIdle"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaIdleToConnectedUserDatas count])
@@ -3008,8 +3008,8 @@
             objc_enumerationMutation(v229);
           }
 
-          v234 = [*(*(&v865 + 1) + 8 * v233) dictionaryRepresentation];
-          [v228 addObject:v234];
+          dictionaryRepresentation33 = [*(*(&v865 + 1) + 8 * v233) dictionaryRepresentation];
+          [v228 addObject:dictionaryRepresentation33];
 
           ++v233;
         }
@@ -3021,7 +3021,7 @@
       while (v231);
     }
 
-    [v3 setObject:v228 forKey:@"kCellularWcdmaIdleToConnectedUserData"];
+    [dictionary setObject:v228 forKey:@"kCellularWcdmaIdleToConnectedUserData"];
   }
 
   if ([(NSMutableArray *)self->_kCellularWcdmaVadHists count])
@@ -3047,8 +3047,8 @@
             objc_enumerationMutation(v236);
           }
 
-          v241 = [*(*(&v861 + 1) + 8 * v240) dictionaryRepresentation];
-          [v235 addObject:v241];
+          dictionaryRepresentation34 = [*(*(&v861 + 1) + 8 * v240) dictionaryRepresentation];
+          [v235 addObject:dictionaryRepresentation34];
 
           ++v240;
         }
@@ -3060,7 +3060,7 @@
       while (v238);
     }
 
-    [v3 setObject:v235 forKey:@"kCellularWcdmaVadHist"];
+    [dictionary setObject:v235 forKey:@"kCellularWcdmaVadHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsRxDiversityHists count])
@@ -3086,8 +3086,8 @@
             objc_enumerationMutation(v243);
           }
 
-          v248 = [*(*(&v857 + 1) + 8 * v247) dictionaryRepresentation];
-          [v242 addObject:v248];
+          dictionaryRepresentation35 = [*(*(&v857 + 1) + 8 * v247) dictionaryRepresentation];
+          [v242 addObject:dictionaryRepresentation35];
 
           ++v247;
         }
@@ -3099,7 +3099,7 @@
       while (v245);
     }
 
-    [v3 setObject:v242 forKey:@"kCellularTdsRxDiversityHist"];
+    [dictionary setObject:v242 forKey:@"kCellularTdsRxDiversityHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsServingCellRx0RssiHists count])
@@ -3125,8 +3125,8 @@
             objc_enumerationMutation(v250);
           }
 
-          v255 = [*(*(&v853 + 1) + 8 * v254) dictionaryRepresentation];
-          [v249 addObject:v255];
+          dictionaryRepresentation36 = [*(*(&v853 + 1) + 8 * v254) dictionaryRepresentation];
+          [v249 addObject:dictionaryRepresentation36];
 
           ++v254;
         }
@@ -3138,7 +3138,7 @@
       while (v252);
     }
 
-    [v3 setObject:v249 forKey:@"kCellularTdsServingCellRx0RssiHist"];
+    [dictionary setObject:v249 forKey:@"kCellularTdsServingCellRx0RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsServingCellRx1RssiHists count])
@@ -3164,8 +3164,8 @@
             objc_enumerationMutation(v257);
           }
 
-          v262 = [*(*(&v849 + 1) + 8 * v261) dictionaryRepresentation];
-          [v256 addObject:v262];
+          dictionaryRepresentation37 = [*(*(&v849 + 1) + 8 * v261) dictionaryRepresentation];
+          [v256 addObject:dictionaryRepresentation37];
 
           ++v261;
         }
@@ -3177,7 +3177,7 @@
       while (v259);
     }
 
-    [v3 setObject:v256 forKey:@"kCellularTdsServingCellRx1RssiHist"];
+    [dictionary setObject:v256 forKey:@"kCellularTdsServingCellRx1RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsServingCellRx0RscpHists count])
@@ -3203,8 +3203,8 @@
             objc_enumerationMutation(v264);
           }
 
-          v269 = [*(*(&v845 + 1) + 8 * v268) dictionaryRepresentation];
-          [v263 addObject:v269];
+          dictionaryRepresentation38 = [*(*(&v845 + 1) + 8 * v268) dictionaryRepresentation];
+          [v263 addObject:dictionaryRepresentation38];
 
           ++v268;
         }
@@ -3216,7 +3216,7 @@
       while (v266);
     }
 
-    [v3 setObject:v263 forKey:@"kCellularTdsServingCellRx0RscpHist"];
+    [dictionary setObject:v263 forKey:@"kCellularTdsServingCellRx0RscpHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsServingCellRx1RscpHists count])
@@ -3242,8 +3242,8 @@
             objc_enumerationMutation(v271);
           }
 
-          v276 = [*(*(&v841 + 1) + 8 * v275) dictionaryRepresentation];
-          [v270 addObject:v276];
+          dictionaryRepresentation39 = [*(*(&v841 + 1) + 8 * v275) dictionaryRepresentation];
+          [v270 addObject:dictionaryRepresentation39];
 
           ++v275;
         }
@@ -3255,7 +3255,7 @@
       while (v273);
     }
 
-    [v3 setObject:v270 forKey:@"kCellularTdsServingCellRx1RscpHist"];
+    [dictionary setObject:v270 forKey:@"kCellularTdsServingCellRx1RscpHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsTxPowerHists count])
@@ -3281,8 +3281,8 @@
             objc_enumerationMutation(v278);
           }
 
-          v283 = [*(*(&v837 + 1) + 8 * v282) dictionaryRepresentation];
-          [v277 addObject:v283];
+          dictionaryRepresentation40 = [*(*(&v837 + 1) + 8 * v282) dictionaryRepresentation];
+          [v277 addObject:dictionaryRepresentation40];
 
           ++v282;
         }
@@ -3294,7 +3294,7 @@
       while (v280);
     }
 
-    [v3 setObject:v277 forKey:@"kCellularTdsTxPowerHist"];
+    [dictionary setObject:v277 forKey:@"kCellularTdsTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsRabModeHists count])
@@ -3320,8 +3320,8 @@
             objc_enumerationMutation(v285);
           }
 
-          v290 = [*(*(&v833 + 1) + 8 * v289) dictionaryRepresentation];
-          [v284 addObject:v290];
+          dictionaryRepresentation41 = [*(*(&v833 + 1) + 8 * v289) dictionaryRepresentation];
+          [v284 addObject:dictionaryRepresentation41];
 
           ++v289;
         }
@@ -3333,7 +3333,7 @@
       while (v287);
     }
 
-    [v3 setObject:v284 forKey:@"kCellularTdsRabModeHist"];
+    [dictionary setObject:v284 forKey:@"kCellularTdsRabModeHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsRabTypeHists count])
@@ -3359,8 +3359,8 @@
             objc_enumerationMutation(v292);
           }
 
-          v297 = [*(*(&v829 + 1) + 8 * v296) dictionaryRepresentation];
-          [v291 addObject:v297];
+          dictionaryRepresentation42 = [*(*(&v829 + 1) + 8 * v296) dictionaryRepresentation];
+          [v291 addObject:dictionaryRepresentation42];
 
           ++v296;
         }
@@ -3372,7 +3372,7 @@
       while (v294);
     }
 
-    [v3 setObject:v291 forKey:@"kCellularTdsRabTypeHist"];
+    [dictionary setObject:v291 forKey:@"kCellularTdsRabTypeHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsRrcStates count])
@@ -3398,8 +3398,8 @@
             objc_enumerationMutation(v299);
           }
 
-          v304 = [*(*(&v825 + 1) + 8 * v303) dictionaryRepresentation];
-          [v298 addObject:v304];
+          dictionaryRepresentation43 = [*(*(&v825 + 1) + 8 * v303) dictionaryRepresentation];
+          [v298 addObject:dictionaryRepresentation43];
 
           ++v303;
         }
@@ -3411,7 +3411,7 @@
       while (v301);
     }
 
-    [v3 setObject:v298 forKey:@"kCellularTdsRrcState"];
+    [dictionary setObject:v298 forKey:@"kCellularTdsRrcState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularTdsL1States count])
@@ -3437,8 +3437,8 @@
             objc_enumerationMutation(v306);
           }
 
-          v311 = [*(*(&v821 + 1) + 8 * v310) dictionaryRepresentation];
-          [v305 addObject:v311];
+          dictionaryRepresentation44 = [*(*(&v821 + 1) + 8 * v310) dictionaryRepresentation];
+          [v305 addObject:dictionaryRepresentation44];
 
           ++v310;
         }
@@ -3450,7 +3450,7 @@
       while (v308);
     }
 
-    [v3 setObject:v305 forKey:@"kCellularTdsL1State"];
+    [dictionary setObject:v305 forKey:@"kCellularTdsL1State"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteFwDuplexModes count])
@@ -3476,8 +3476,8 @@
             objc_enumerationMutation(v313);
           }
 
-          v318 = [*(*(&v817 + 1) + 8 * v317) dictionaryRepresentation];
-          [v312 addObject:v318];
+          dictionaryRepresentation45 = [*(*(&v817 + 1) + 8 * v317) dictionaryRepresentation];
+          [v312 addObject:dictionaryRepresentation45];
 
           ++v317;
         }
@@ -3489,7 +3489,7 @@
       while (v315);
     }
 
-    [v3 setObject:v312 forKey:@"kCellularLteFwDuplexMode"];
+    [dictionary setObject:v312 forKey:@"kCellularLteFwDuplexMode"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteServingCellRsrpHists count])
@@ -3515,8 +3515,8 @@
             objc_enumerationMutation(v320);
           }
 
-          v325 = [*(*(&v813 + 1) + 8 * v324) dictionaryRepresentation];
-          [v319 addObject:v325];
+          dictionaryRepresentation46 = [*(*(&v813 + 1) + 8 * v324) dictionaryRepresentation];
+          [v319 addObject:dictionaryRepresentation46];
 
           ++v324;
         }
@@ -3528,7 +3528,7 @@
       while (v322);
     }
 
-    [v3 setObject:v319 forKey:@"kCellularLteServingCellRsrpHist"];
+    [dictionary setObject:v319 forKey:@"kCellularLteServingCellRsrpHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteServingCellSinrHists count])
@@ -3554,8 +3554,8 @@
             objc_enumerationMutation(v327);
           }
 
-          v332 = [*(*(&v809 + 1) + 8 * v331) dictionaryRepresentation];
-          [v326 addObject:v332];
+          dictionaryRepresentation47 = [*(*(&v809 + 1) + 8 * v331) dictionaryRepresentation];
+          [v326 addObject:dictionaryRepresentation47];
 
           ++v331;
         }
@@ -3567,7 +3567,7 @@
       while (v329);
     }
 
-    [v3 setObject:v326 forKey:@"kCellularLteServingCellSinrHist"];
+    [dictionary setObject:v326 forKey:@"kCellularLteServingCellSinrHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteSleepStateHists count])
@@ -3593,8 +3593,8 @@
             objc_enumerationMutation(v334);
           }
 
-          v339 = [*(*(&v805 + 1) + 8 * v338) dictionaryRepresentation];
-          [v333 addObject:v339];
+          dictionaryRepresentation48 = [*(*(&v805 + 1) + 8 * v338) dictionaryRepresentation];
+          [v333 addObject:dictionaryRepresentation48];
 
           ++v338;
         }
@@ -3606,7 +3606,7 @@
       while (v336);
     }
 
-    [v3 setObject:v333 forKey:@"kCellularLteSleepStateHist"];
+    [dictionary setObject:v333 forKey:@"kCellularLteSleepStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteTxPowerHists count])
@@ -3632,8 +3632,8 @@
             objc_enumerationMutation(v341);
           }
 
-          v346 = [*(*(&v801 + 1) + 8 * v345) dictionaryRepresentation];
-          [v340 addObject:v346];
+          dictionaryRepresentation49 = [*(*(&v801 + 1) + 8 * v345) dictionaryRepresentation];
+          [v340 addObject:dictionaryRepresentation49];
 
           ++v345;
         }
@@ -3645,7 +3645,7 @@
       while (v343);
     }
 
-    [v3 setObject:v340 forKey:@"kCellularLteTxPowerHist"];
+    [dictionary setObject:v340 forKey:@"kCellularLteTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteDlSccStateHists count])
@@ -3671,8 +3671,8 @@
             objc_enumerationMutation(v348);
           }
 
-          v353 = [*(*(&v797 + 1) + 8 * v352) dictionaryRepresentation];
-          [v347 addObject:v353];
+          dictionaryRepresentation50 = [*(*(&v797 + 1) + 8 * v352) dictionaryRepresentation];
+          [v347 addObject:dictionaryRepresentation50];
 
           ++v352;
         }
@@ -3684,7 +3684,7 @@
       while (v350);
     }
 
-    [v3 setObject:v347 forKey:@"kCellularLteDlSccStateHist"];
+    [dictionary setObject:v347 forKey:@"kCellularLteDlSccStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteUlSccStateHists count])
@@ -3710,8 +3710,8 @@
             objc_enumerationMutation(v355);
           }
 
-          v360 = [*(*(&v793 + 1) + 8 * v359) dictionaryRepresentation];
-          [v354 addObject:v360];
+          dictionaryRepresentation51 = [*(*(&v793 + 1) + 8 * v359) dictionaryRepresentation];
+          [v354 addObject:dictionaryRepresentation51];
 
           ++v359;
         }
@@ -3723,7 +3723,7 @@
       while (v357);
     }
 
-    [v3 setObject:v354 forKey:@"kCellularLteUlSccStateHist"];
+    [dictionary setObject:v354 forKey:@"kCellularLteUlSccStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteAdvancedRxStateHists count])
@@ -3749,8 +3749,8 @@
             objc_enumerationMutation(v362);
           }
 
-          v367 = [*(*(&v789 + 1) + 8 * v366) dictionaryRepresentation];
-          [v361 addObject:v367];
+          dictionaryRepresentation52 = [*(*(&v789 + 1) + 8 * v366) dictionaryRepresentation];
+          [v361 addObject:dictionaryRepresentation52];
 
           ++v366;
         }
@@ -3762,7 +3762,7 @@
       while (v364);
     }
 
-    [v3 setObject:v361 forKey:@"kCellularLteAdvancedRxStateHist"];
+    [dictionary setObject:v361 forKey:@"kCellularLteAdvancedRxStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteComponentCarrierInfos count])
@@ -3788,8 +3788,8 @@
             objc_enumerationMutation(v369);
           }
 
-          v374 = [*(*(&v785 + 1) + 8 * v373) dictionaryRepresentation];
-          [v368 addObject:v374];
+          dictionaryRepresentation53 = [*(*(&v785 + 1) + 8 * v373) dictionaryRepresentation];
+          [v368 addObject:dictionaryRepresentation53];
 
           ++v373;
         }
@@ -3801,7 +3801,7 @@
       while (v371);
     }
 
-    [v3 setObject:v368 forKey:@"kCellularLteComponentCarrierInfo"];
+    [dictionary setObject:v368 forKey:@"kCellularLteComponentCarrierInfo"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteRxTxStateHists count])
@@ -3827,8 +3827,8 @@
             objc_enumerationMutation(v376);
           }
 
-          v381 = [*(*(&v781 + 1) + 8 * v380) dictionaryRepresentation];
-          [v375 addObject:v381];
+          dictionaryRepresentation54 = [*(*(&v781 + 1) + 8 * v380) dictionaryRepresentation];
+          [v375 addObject:dictionaryRepresentation54];
 
           ++v380;
         }
@@ -3840,7 +3840,7 @@
       while (v378);
     }
 
-    [v3 setObject:v375 forKey:@"kCellularLteRxTxStateHist"];
+    [dictionary setObject:v375 forKey:@"kCellularLteRxTxStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteTotalDlTbsHists count])
@@ -3866,8 +3866,8 @@
             objc_enumerationMutation(v383);
           }
 
-          v388 = [*(*(&v777 + 1) + 8 * v387) dictionaryRepresentation];
-          [v382 addObject:v388];
+          dictionaryRepresentation55 = [*(*(&v777 + 1) + 8 * v387) dictionaryRepresentation];
+          [v382 addObject:dictionaryRepresentation55];
 
           ++v387;
         }
@@ -3879,7 +3879,7 @@
       while (v385);
     }
 
-    [v3 setObject:v382 forKey:@"kCellularLteTotalDlTbsHist"];
+    [dictionary setObject:v382 forKey:@"kCellularLteTotalDlTbsHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteDlSccStateHistV3s count])
@@ -3905,8 +3905,8 @@
             objc_enumerationMutation(v390);
           }
 
-          v395 = [*(*(&v773 + 1) + 8 * v394) dictionaryRepresentation];
-          [v389 addObject:v395];
+          dictionaryRepresentation56 = [*(*(&v773 + 1) + 8 * v394) dictionaryRepresentation];
+          [v389 addObject:dictionaryRepresentation56];
 
           ++v394;
         }
@@ -3918,7 +3918,7 @@
       while (v392);
     }
 
-    [v3 setObject:v389 forKey:@"kCellularLteDlSccStateHistV3"];
+    [dictionary setObject:v389 forKey:@"kCellularLteDlSccStateHistV3"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteRxDiversityHists count])
@@ -3944,8 +3944,8 @@
             objc_enumerationMutation(v397);
           }
 
-          v402 = [*(*(&v769 + 1) + 8 * v401) dictionaryRepresentation];
-          [v396 addObject:v402];
+          dictionaryRepresentation57 = [*(*(&v769 + 1) + 8 * v401) dictionaryRepresentation];
+          [v396 addObject:dictionaryRepresentation57];
 
           ++v401;
         }
@@ -3957,7 +3957,7 @@
       while (v399);
     }
 
-    [v3 setObject:v396 forKey:@"kCellularLteRxDiversityHist"];
+    [dictionary setObject:v396 forKey:@"kCellularLteRxDiversityHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLtePdcchStateHists count])
@@ -3983,8 +3983,8 @@
             objc_enumerationMutation(v404);
           }
 
-          v409 = [*(*(&v765 + 1) + 8 * v408) dictionaryRepresentation];
-          [v403 addObject:v409];
+          dictionaryRepresentation58 = [*(*(&v765 + 1) + 8 * v408) dictionaryRepresentation];
+          [v403 addObject:dictionaryRepresentation58];
 
           ++v408;
         }
@@ -3996,7 +3996,7 @@
       while (v406);
     }
 
-    [v3 setObject:v403 forKey:@"kCellularLtePdcchStateHist"];
+    [dictionary setObject:v403 forKey:@"kCellularLtePdcchStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteRrcStates count])
@@ -4022,8 +4022,8 @@
             objc_enumerationMutation(v411);
           }
 
-          v416 = [*(*(&v761 + 1) + 8 * v415) dictionaryRepresentation];
-          [v410 addObject:v416];
+          dictionaryRepresentation59 = [*(*(&v761 + 1) + 8 * v415) dictionaryRepresentation];
+          [v410 addObject:dictionaryRepresentation59];
 
           ++v415;
         }
@@ -4035,7 +4035,7 @@
       while (v413);
     }
 
-    [v3 setObject:v410 forKey:@"kCellularLteRrcState"];
+    [dictionary setObject:v410 forKey:@"kCellularLteRrcState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLtePagingCycles count])
@@ -4061,8 +4061,8 @@
             objc_enumerationMutation(v418);
           }
 
-          v423 = [*(*(&v757 + 1) + 8 * v422) dictionaryRepresentation];
-          [v417 addObject:v423];
+          dictionaryRepresentation60 = [*(*(&v757 + 1) + 8 * v422) dictionaryRepresentation];
+          [v417 addObject:dictionaryRepresentation60];
 
           ++v422;
         }
@@ -4074,7 +4074,7 @@
       while (v420);
     }
 
-    [v3 setObject:v417 forKey:@"kCellularLtePagingCycle"];
+    [dictionary setObject:v417 forKey:@"kCellularLtePagingCycle"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteCdrxConfigs count])
@@ -4100,8 +4100,8 @@
             objc_enumerationMutation(v425);
           }
 
-          v430 = [*(*(&v753 + 1) + 8 * v429) dictionaryRepresentation];
-          [v424 addObject:v430];
+          dictionaryRepresentation61 = [*(*(&v753 + 1) + 8 * v429) dictionaryRepresentation];
+          [v424 addObject:dictionaryRepresentation61];
 
           ++v429;
         }
@@ -4113,7 +4113,7 @@
       while (v427);
     }
 
-    [v3 setObject:v424 forKey:@"kCellularLteCdrxConfig"];
+    [dictionary setObject:v424 forKey:@"kCellularLteCdrxConfig"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLteRadioLinkFailures count])
@@ -4139,8 +4139,8 @@
             objc_enumerationMutation(v432);
           }
 
-          v437 = [*(*(&v749 + 1) + 8 * v436) dictionaryRepresentation];
-          [v431 addObject:v437];
+          dictionaryRepresentation62 = [*(*(&v749 + 1) + 8 * v436) dictionaryRepresentation];
+          [v431 addObject:dictionaryRepresentation62];
 
           ++v436;
         }
@@ -4152,7 +4152,7 @@
       while (v434);
     }
 
-    [v3 setObject:v431 forKey:@"kCellularLteRadioLinkFailure"];
+    [dictionary setObject:v431 forKey:@"kCellularLteRadioLinkFailure"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLtePdcchStateStats count])
@@ -4178,8 +4178,8 @@
             objc_enumerationMutation(v439);
           }
 
-          v444 = [*(*(&v745 + 1) + 8 * v443) dictionaryRepresentation];
-          [v438 addObject:v444];
+          dictionaryRepresentation63 = [*(*(&v745 + 1) + 8 * v443) dictionaryRepresentation];
+          [v438 addObject:dictionaryRepresentation63];
 
           ++v443;
         }
@@ -4191,7 +4191,7 @@
       while (v441);
     }
 
-    [v3 setObject:v438 forKey:@"kCellularLtePdcchStateStats"];
+    [dictionary setObject:v438 forKey:@"kCellularLtePdcchStateStats"];
   }
 
   if ([(NSMutableArray *)self->_kCellularLqmStateChanges count])
@@ -4217,8 +4217,8 @@
             objc_enumerationMutation(v446);
           }
 
-          v451 = [*(*(&v741 + 1) + 8 * v450) dictionaryRepresentation];
-          [v445 addObject:v451];
+          dictionaryRepresentation64 = [*(*(&v741 + 1) + 8 * v450) dictionaryRepresentation];
+          [v445 addObject:dictionaryRepresentation64];
 
           ++v450;
         }
@@ -4230,7 +4230,7 @@
       while (v448);
     }
 
-    [v3 setObject:v445 forKey:@"kCellularLqmStateChange"];
+    [dictionary setObject:v445 forKey:@"kCellularLqmStateChange"];
   }
 
   if ([(NSMutableArray *)self->_kCellularServiceLosts count])
@@ -4256,8 +4256,8 @@
             objc_enumerationMutation(v453);
           }
 
-          v458 = [*(*(&v737 + 1) + 8 * v457) dictionaryRepresentation];
-          [v452 addObject:v458];
+          dictionaryRepresentation65 = [*(*(&v737 + 1) + 8 * v457) dictionaryRepresentation];
+          [v452 addObject:dictionaryRepresentation65];
 
           ++v457;
         }
@@ -4269,7 +4269,7 @@
       while (v455);
     }
 
-    [v3 setObject:v452 forKey:@"kCellularServiceLost"];
+    [dictionary setObject:v452 forKey:@"kCellularServiceLost"];
   }
 
   if ([(NSMutableArray *)self->_kCellularProtocolStackStateHists count])
@@ -4295,8 +4295,8 @@
             objc_enumerationMutation(v460);
           }
 
-          v465 = [*(*(&v733 + 1) + 8 * v464) dictionaryRepresentation];
-          [v459 addObject:v465];
+          dictionaryRepresentation66 = [*(*(&v733 + 1) + 8 * v464) dictionaryRepresentation];
+          [v459 addObject:dictionaryRepresentation66];
 
           ++v464;
         }
@@ -4308,7 +4308,7 @@
       while (v462);
     }
 
-    [v3 setObject:v459 forKey:@"kCellularProtocolStackStateHist"];
+    [dictionary setObject:v459 forKey:@"kCellularProtocolStackStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCellPlmnSearchCounts count])
@@ -4334,8 +4334,8 @@
             objc_enumerationMutation(v467);
           }
 
-          v472 = [*(*(&v729 + 1) + 8 * v471) dictionaryRepresentation];
-          [v466 addObject:v472];
+          dictionaryRepresentation67 = [*(*(&v729 + 1) + 8 * v471) dictionaryRepresentation];
+          [v466 addObject:dictionaryRepresentation67];
 
           ++v471;
         }
@@ -4347,7 +4347,7 @@
       while (v469);
     }
 
-    [v3 setObject:v466 forKey:@"kCellularCellPlmnSearchCount"];
+    [dictionary setObject:v466 forKey:@"kCellularCellPlmnSearchCount"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCellPlmnSearchHists count])
@@ -4373,8 +4373,8 @@
             objc_enumerationMutation(v474);
           }
 
-          v479 = [*(*(&v725 + 1) + 8 * v478) dictionaryRepresentation];
-          [v473 addObject:v479];
+          dictionaryRepresentation68 = [*(*(&v725 + 1) + 8 * v478) dictionaryRepresentation];
+          [v473 addObject:dictionaryRepresentation68];
 
           ++v478;
         }
@@ -4386,7 +4386,7 @@
       while (v476);
     }
 
-    [v3 setObject:v473 forKey:@"kCellularCellPlmnSearchHist"];
+    [dictionary setObject:v473 forKey:@"kCellularCellPlmnSearchHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularProtocolStackPowerStates count])
@@ -4412,8 +4412,8 @@
             objc_enumerationMutation(v481);
           }
 
-          v486 = [*(*(&v721 + 1) + 8 * v485) dictionaryRepresentation];
-          [v480 addObject:v486];
+          dictionaryRepresentation69 = [*(*(&v721 + 1) + 8 * v485) dictionaryRepresentation];
+          [v480 addObject:dictionaryRepresentation69];
 
           ++v485;
         }
@@ -4425,7 +4425,7 @@
       while (v483);
     }
 
-    [v3 setObject:v480 forKey:@"kCellularProtocolStackPowerState"];
+    [dictionary setObject:v480 forKey:@"kCellularProtocolStackPowerState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularDownlinkIpPacketFilterStatus count])
@@ -4451,8 +4451,8 @@
             objc_enumerationMutation(v488);
           }
 
-          v493 = [*(*(&v717 + 1) + 8 * v492) dictionaryRepresentation];
-          [v487 addObject:v493];
+          dictionaryRepresentation70 = [*(*(&v717 + 1) + 8 * v492) dictionaryRepresentation];
+          [v487 addObject:dictionaryRepresentation70];
 
           ++v492;
         }
@@ -4464,7 +4464,7 @@
       while (v490);
     }
 
-    [v3 setObject:v487 forKey:@"kCellularDownlinkIpPacketFilterStatus"];
+    [dictionary setObject:v487 forKey:@"kCellularDownlinkIpPacketFilterStatus"];
   }
 
   if ([(NSMutableArray *)self->_kCellularServingCellRfBandHists count])
@@ -4490,8 +4490,8 @@
             objc_enumerationMutation(v495);
           }
 
-          v500 = [*(*(&v713 + 1) + 8 * v499) dictionaryRepresentation];
-          [v494 addObject:v500];
+          dictionaryRepresentation71 = [*(*(&v713 + 1) + 8 * v499) dictionaryRepresentation];
+          [v494 addObject:dictionaryRepresentation71];
 
           ++v499;
         }
@@ -4503,7 +4503,7 @@
       while (v497);
     }
 
-    [v3 setObject:v494 forKey:@"kCellularServingCellRfBandHist"];
+    [dictionary setObject:v494 forKey:@"kCellularServingCellRfBandHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularProtocolStackStateHist2s count])
@@ -4529,8 +4529,8 @@
             objc_enumerationMutation(v502);
           }
 
-          v507 = [*(*(&v709 + 1) + 8 * v506) dictionaryRepresentation];
-          [v501 addObject:v507];
+          dictionaryRepresentation72 = [*(*(&v709 + 1) + 8 * v506) dictionaryRepresentation];
+          [v501 addObject:dictionaryRepresentation72];
 
           ++v506;
         }
@@ -4542,7 +4542,7 @@
       while (v504);
     }
 
-    [v3 setObject:v501 forKey:@"kCellularProtocolStackStateHist2"];
+    [dictionary setObject:v501 forKey:@"kCellularProtocolStackStateHist2"];
   }
 
   if ([(NSMutableArray *)self->_kCellularProtocolStackStates count])
@@ -4568,8 +4568,8 @@
             objc_enumerationMutation(v509);
           }
 
-          v514 = [*(*(&v705 + 1) + 8 * v513) dictionaryRepresentation];
-          [v508 addObject:v514];
+          dictionaryRepresentation73 = [*(*(&v705 + 1) + 8 * v513) dictionaryRepresentation];
+          [v508 addObject:dictionaryRepresentation73];
 
           ++v513;
         }
@@ -4581,7 +4581,7 @@
       while (v511);
     }
 
-    [v3 setObject:v508 forKey:@"kCellularProtocolStackState"];
+    [dictionary setObject:v508 forKey:@"kCellularProtocolStackState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XRxDiversityHists count])
@@ -4607,8 +4607,8 @@
             objc_enumerationMutation(v516);
           }
 
-          v521 = [*(*(&v701 + 1) + 8 * v520) dictionaryRepresentation];
-          [v515 addObject:v521];
+          dictionaryRepresentation74 = [*(*(&v701 + 1) + 8 * v520) dictionaryRepresentation];
+          [v515 addObject:dictionaryRepresentation74];
 
           ++v520;
         }
@@ -4620,7 +4620,7 @@
       while (v518);
     }
 
-    [v3 setObject:v515 forKey:@"kCellularCdma1XRxDiversityHist"];
+    [dictionary setObject:v515 forKey:@"kCellularCdma1XRxDiversityHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XServingCellRx0RssiHists count])
@@ -4646,8 +4646,8 @@
             objc_enumerationMutation(v523);
           }
 
-          v528 = [*(*(&v697 + 1) + 8 * v527) dictionaryRepresentation];
-          [v522 addObject:v528];
+          dictionaryRepresentation75 = [*(*(&v697 + 1) + 8 * v527) dictionaryRepresentation];
+          [v522 addObject:dictionaryRepresentation75];
 
           ++v527;
         }
@@ -4659,7 +4659,7 @@
       while (v525);
     }
 
-    [v3 setObject:v522 forKey:@"kCellularCdma1XServingCellRx0RssiHist"];
+    [dictionary setObject:v522 forKey:@"kCellularCdma1XServingCellRx0RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XServingCellRx1RssiHists count])
@@ -4685,8 +4685,8 @@
             objc_enumerationMutation(v530);
           }
 
-          v535 = [*(*(&v693 + 1) + 8 * v534) dictionaryRepresentation];
-          [v529 addObject:v535];
+          dictionaryRepresentation76 = [*(*(&v693 + 1) + 8 * v534) dictionaryRepresentation];
+          [v529 addObject:dictionaryRepresentation76];
 
           ++v534;
         }
@@ -4698,7 +4698,7 @@
       while (v532);
     }
 
-    [v3 setObject:v529 forKey:@"kCellularCdma1XServingCellRx1RssiHist"];
+    [dictionary setObject:v529 forKey:@"kCellularCdma1XServingCellRx1RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XServingCellRx0EcIoHists count])
@@ -4724,8 +4724,8 @@
             objc_enumerationMutation(v537);
           }
 
-          v542 = [*(*(&v689 + 1) + 8 * v541) dictionaryRepresentation];
-          [v536 addObject:v542];
+          dictionaryRepresentation77 = [*(*(&v689 + 1) + 8 * v541) dictionaryRepresentation];
+          [v536 addObject:dictionaryRepresentation77];
 
           ++v541;
         }
@@ -4737,7 +4737,7 @@
       while (v539);
     }
 
-    [v3 setObject:v536 forKey:@"kCellularCdma1XServingCellRx0EcIoHist"];
+    [dictionary setObject:v536 forKey:@"kCellularCdma1XServingCellRx0EcIoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XServingCellRx1EcIoHists count])
@@ -4763,8 +4763,8 @@
             objc_enumerationMutation(v544);
           }
 
-          v549 = [*(*(&v685 + 1) + 8 * v548) dictionaryRepresentation];
-          [v543 addObject:v549];
+          dictionaryRepresentation78 = [*(*(&v685 + 1) + 8 * v548) dictionaryRepresentation];
+          [v543 addObject:dictionaryRepresentation78];
 
           ++v548;
         }
@@ -4776,7 +4776,7 @@
       while (v546);
     }
 
-    [v3 setObject:v543 forKey:@"kCellularCdma1XServingCellRx1EcIoHist"];
+    [dictionary setObject:v543 forKey:@"kCellularCdma1XServingCellRx1EcIoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XTxPowerHists count])
@@ -4802,8 +4802,8 @@
             objc_enumerationMutation(v551);
           }
 
-          v556 = [*(*(&v681 + 1) + 8 * v555) dictionaryRepresentation];
-          [v550 addObject:v556];
+          dictionaryRepresentation79 = [*(*(&v681 + 1) + 8 * v555) dictionaryRepresentation];
+          [v550 addObject:dictionaryRepresentation79];
 
           ++v555;
         }
@@ -4815,7 +4815,7 @@
       while (v553);
     }
 
-    [v3 setObject:v550 forKey:@"kCellularCdma1XTxPowerHist"];
+    [dictionary setObject:v550 forKey:@"kCellularCdma1XTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XProtocolStackStateHists count])
@@ -4841,8 +4841,8 @@
             objc_enumerationMutation(v558);
           }
 
-          v563 = [*(*(&v677 + 1) + 8 * v562) dictionaryRepresentation];
-          [v557 addObject:v563];
+          dictionaryRepresentation80 = [*(*(&v677 + 1) + 8 * v562) dictionaryRepresentation];
+          [v557 addObject:dictionaryRepresentation80];
 
           ++v562;
         }
@@ -4854,7 +4854,7 @@
       while (v560);
     }
 
-    [v3 setObject:v557 forKey:@"kCellularCdma1XProtocolStackStateHist"];
+    [dictionary setObject:v557 forKey:@"kCellularCdma1XProtocolStackStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XConnectionHists count])
@@ -4880,8 +4880,8 @@
             objc_enumerationMutation(v565);
           }
 
-          v570 = [*(*(&v673 + 1) + 8 * v569) dictionaryRepresentation];
-          [v564 addObject:v570];
+          dictionaryRepresentation81 = [*(*(&v673 + 1) + 8 * v569) dictionaryRepresentation];
+          [v564 addObject:dictionaryRepresentation81];
 
           ++v569;
         }
@@ -4893,7 +4893,7 @@
       while (v567);
     }
 
-    [v3 setObject:v564 forKey:@"kCellularCdma1XConnectionHist"];
+    [dictionary setObject:v564 forKey:@"kCellularCdma1XConnectionHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdma1XRrStates count])
@@ -4919,8 +4919,8 @@
             objc_enumerationMutation(v572);
           }
 
-          v577 = [*(*(&v669 + 1) + 8 * v576) dictionaryRepresentation];
-          [v571 addObject:v577];
+          dictionaryRepresentation82 = [*(*(&v669 + 1) + 8 * v576) dictionaryRepresentation];
+          [v571 addObject:dictionaryRepresentation82];
 
           ++v576;
         }
@@ -4932,7 +4932,7 @@
       while (v574);
     }
 
-    [v3 setObject:v571 forKey:@"kCellularCdma1XRrState"];
+    [dictionary setObject:v571 forKey:@"kCellularCdma1XRrState"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoRxDiversityHists count])
@@ -4958,8 +4958,8 @@
             objc_enumerationMutation(v579);
           }
 
-          v584 = [*(*(&v665 + 1) + 8 * v583) dictionaryRepresentation];
-          [v578 addObject:v584];
+          dictionaryRepresentation83 = [*(*(&v665 + 1) + 8 * v583) dictionaryRepresentation];
+          [v578 addObject:dictionaryRepresentation83];
 
           ++v583;
         }
@@ -4971,7 +4971,7 @@
       while (v581);
     }
 
-    [v3 setObject:v578 forKey:@"kCellularCdmaEvdoRxDiversityHist"];
+    [dictionary setObject:v578 forKey:@"kCellularCdmaEvdoRxDiversityHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoServingCellRx0RssiHists count])
@@ -4997,8 +4997,8 @@
             objc_enumerationMutation(v586);
           }
 
-          v591 = [*(*(&v661 + 1) + 8 * v590) dictionaryRepresentation];
-          [v585 addObject:v591];
+          dictionaryRepresentation84 = [*(*(&v661 + 1) + 8 * v590) dictionaryRepresentation];
+          [v585 addObject:dictionaryRepresentation84];
 
           ++v590;
         }
@@ -5010,7 +5010,7 @@
       while (v588);
     }
 
-    [v3 setObject:v585 forKey:@"kCellularCdmaEvdoServingCellRx0RssiHist"];
+    [dictionary setObject:v585 forKey:@"kCellularCdmaEvdoServingCellRx0RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoServingCellRx1RssiHists count])
@@ -5036,8 +5036,8 @@
             objc_enumerationMutation(v593);
           }
 
-          v598 = [*(*(&v657 + 1) + 8 * v597) dictionaryRepresentation];
-          [v592 addObject:v598];
+          dictionaryRepresentation85 = [*(*(&v657 + 1) + 8 * v597) dictionaryRepresentation];
+          [v592 addObject:dictionaryRepresentation85];
 
           ++v597;
         }
@@ -5049,7 +5049,7 @@
       while (v595);
     }
 
-    [v3 setObject:v592 forKey:@"kCellularCdmaEvdoServingCellRx1RssiHist"];
+    [dictionary setObject:v592 forKey:@"kCellularCdmaEvdoServingCellRx1RssiHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoServingCellRx0EcIoHists count])
@@ -5075,8 +5075,8 @@
             objc_enumerationMutation(v600);
           }
 
-          v605 = [*(*(&v653 + 1) + 8 * v604) dictionaryRepresentation];
-          [v599 addObject:v605];
+          dictionaryRepresentation86 = [*(*(&v653 + 1) + 8 * v604) dictionaryRepresentation];
+          [v599 addObject:dictionaryRepresentation86];
 
           ++v604;
         }
@@ -5088,7 +5088,7 @@
       while (v602);
     }
 
-    [v3 setObject:v599 forKey:@"kCellularCdmaEvdoServingCellRx0EcIoHist"];
+    [dictionary setObject:v599 forKey:@"kCellularCdmaEvdoServingCellRx0EcIoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoServingCellRx1EcIoHists count])
@@ -5114,8 +5114,8 @@
             objc_enumerationMutation(v607);
           }
 
-          v612 = [*(*(&v649 + 1) + 8 * v611) dictionaryRepresentation];
-          [v606 addObject:v612];
+          dictionaryRepresentation87 = [*(*(&v649 + 1) + 8 * v611) dictionaryRepresentation];
+          [v606 addObject:dictionaryRepresentation87];
 
           ++v611;
         }
@@ -5127,7 +5127,7 @@
       while (v609);
     }
 
-    [v3 setObject:v606 forKey:@"kCellularCdmaEvdoServingCellRx1EcIoHist"];
+    [dictionary setObject:v606 forKey:@"kCellularCdmaEvdoServingCellRx1EcIoHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoTxPowerHists count])
@@ -5153,8 +5153,8 @@
             objc_enumerationMutation(v614);
           }
 
-          v619 = [*(*(&v645 + 1) + 8 * v618) dictionaryRepresentation];
-          [v613 addObject:v619];
+          dictionaryRepresentation88 = [*(*(&v645 + 1) + 8 * v618) dictionaryRepresentation];
+          [v613 addObject:dictionaryRepresentation88];
 
           ++v618;
         }
@@ -5166,7 +5166,7 @@
       while (v616);
     }
 
-    [v3 setObject:v613 forKey:@"kCellularCdmaEvdoTxPowerHist"];
+    [dictionary setObject:v613 forKey:@"kCellularCdmaEvdoTxPowerHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoProtocolStackStateHists count])
@@ -5192,8 +5192,8 @@
             objc_enumerationMutation(v621);
           }
 
-          v626 = [*(*(&v641 + 1) + 8 * v625) dictionaryRepresentation];
-          [v620 addObject:v626];
+          dictionaryRepresentation89 = [*(*(&v641 + 1) + 8 * v625) dictionaryRepresentation];
+          [v620 addObject:dictionaryRepresentation89];
 
           ++v625;
         }
@@ -5205,7 +5205,7 @@
       while (v623);
     }
 
-    [v3 setObject:v620 forKey:@"kCellularCdmaEvdoProtocolStackStateHist"];
+    [dictionary setObject:v620 forKey:@"kCellularCdmaEvdoProtocolStackStateHist"];
   }
 
   if ([(NSMutableArray *)self->_kCellularCdmaEvdoRrStates count])
@@ -5231,8 +5231,8 @@
             objc_enumerationMutation(v628);
           }
 
-          v633 = [*(*(&v637 + 1) + 8 * v632) dictionaryRepresentation];
-          [v627 addObject:v633];
+          dictionaryRepresentation90 = [*(*(&v637 + 1) + 8 * v632) dictionaryRepresentation];
+          [v627 addObject:dictionaryRepresentation90];
 
           ++v632;
         }
@@ -5244,19 +5244,19 @@
       while (v630);
     }
 
-    [v3 setObject:v627 forKey:@"kCellularCdmaEvdoRrState"];
+    [dictionary setObject:v627 forKey:@"kCellularCdmaEvdoRrState"];
   }
 
-  v634 = v3;
+  v634 = dictionary;
 
   v635 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v996 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v902 = 0u;
   v903 = 0u;
   v904 = 0u;
@@ -8140,1364 +8140,1364 @@
   v545 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v364 = a3;
+  toCopy = to;
   if ([(PowerlogMetricLog *)self kCellularPerClientProfileTriggerCountsCount])
   {
-    [v364 clearKCellularPerClientProfileTriggerCounts];
-    v4 = [(PowerlogMetricLog *)self kCellularPerClientProfileTriggerCountsCount];
-    if (v4)
+    [toCopy clearKCellularPerClientProfileTriggerCounts];
+    kCellularPerClientProfileTriggerCountsCount = [(PowerlogMetricLog *)self kCellularPerClientProfileTriggerCountsCount];
+    if (kCellularPerClientProfileTriggerCountsCount)
     {
-      v5 = v4;
+      v5 = kCellularPerClientProfileTriggerCountsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PowerlogMetricLog *)self kCellularPerClientProfileTriggerCountAtIndex:i];
-        [v364 addKCellularPerClientProfileTriggerCount:v7];
+        [toCopy addKCellularPerClientProfileTriggerCount:v7];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularProtocolStackCpuStatsCount])
   {
-    [v364 clearKCellularProtocolStackCpuStats];
-    v8 = [(PowerlogMetricLog *)self kCellularProtocolStackCpuStatsCount];
-    if (v8)
+    [toCopy clearKCellularProtocolStackCpuStats];
+    kCellularProtocolStackCpuStatsCount = [(PowerlogMetricLog *)self kCellularProtocolStackCpuStatsCount];
+    if (kCellularProtocolStackCpuStatsCount)
     {
-      v9 = v8;
+      v9 = kCellularProtocolStackCpuStatsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PowerlogMetricLog *)self kCellularProtocolStackCpuStatsAtIndex:j];
-        [v364 addKCellularProtocolStackCpuStats:v11];
+        [toCopy addKCellularProtocolStackCpuStats:v11];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularPeripheralStatsCount])
   {
-    [v364 clearKCellularPeripheralStats];
-    v12 = [(PowerlogMetricLog *)self kCellularPeripheralStatsCount];
-    if (v12)
+    [toCopy clearKCellularPeripheralStats];
+    kCellularPeripheralStatsCount = [(PowerlogMetricLog *)self kCellularPeripheralStatsCount];
+    if (kCellularPeripheralStatsCount)
     {
-      v13 = v12;
+      v13 = kCellularPeripheralStatsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PowerlogMetricLog *)self kCellularPeripheralStatsAtIndex:k];
-        [v364 addKCellularPeripheralStats:v15];
+        [toCopy addKCellularPeripheralStats:v15];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularDvfsStatsCount])
   {
-    [v364 clearKCellularDvfsStats];
-    v16 = [(PowerlogMetricLog *)self kCellularDvfsStatsCount];
-    if (v16)
+    [toCopy clearKCellularDvfsStats];
+    kCellularDvfsStatsCount = [(PowerlogMetricLog *)self kCellularDvfsStatsCount];
+    if (kCellularDvfsStatsCount)
     {
-      v17 = v16;
+      v17 = kCellularDvfsStatsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(PowerlogMetricLog *)self kCellularDvfsStatsAtIndex:m];
-        [v364 addKCellularDvfsStats:v19];
+        [toCopy addKCellularDvfsStats:v19];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteWcdmaGsmHwStatsCount])
   {
-    [v364 clearKCellularLteWcdmaGsmHwStats];
-    v20 = [(PowerlogMetricLog *)self kCellularLteWcdmaGsmHwStatsCount];
-    if (v20)
+    [toCopy clearKCellularLteWcdmaGsmHwStats];
+    kCellularLteWcdmaGsmHwStatsCount = [(PowerlogMetricLog *)self kCellularLteWcdmaGsmHwStatsCount];
+    if (kCellularLteWcdmaGsmHwStatsCount)
     {
-      v21 = v20;
+      v21 = kCellularLteWcdmaGsmHwStatsCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(PowerlogMetricLog *)self kCellularLteWcdmaGsmHwStatsAtIndex:n];
-        [v364 addKCellularLteWcdmaGsmHwStats:v23];
+        [toCopy addKCellularLteWcdmaGsmHwStats:v23];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteTdsGsmHwStatsCount])
   {
-    [v364 clearKCellularLteTdsGsmHwStats];
-    v24 = [(PowerlogMetricLog *)self kCellularLteTdsGsmHwStatsCount];
-    if (v24)
+    [toCopy clearKCellularLteTdsGsmHwStats];
+    kCellularLteTdsGsmHwStatsCount = [(PowerlogMetricLog *)self kCellularLteTdsGsmHwStatsCount];
+    if (kCellularLteTdsGsmHwStatsCount)
     {
-      v25 = v24;
+      v25 = kCellularLteTdsGsmHwStatsCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(PowerlogMetricLog *)self kCellularLteTdsGsmHwStatsAtIndex:ii];
-        [v364 addKCellularLteTdsGsmHwStats:v27];
+        [toCopy addKCellularLteTdsGsmHwStats:v27];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularPmuAverageCurrentsCount])
   {
-    [v364 clearKCellularPmuAverageCurrents];
-    v28 = [(PowerlogMetricLog *)self kCellularPmuAverageCurrentsCount];
-    if (v28)
+    [toCopy clearKCellularPmuAverageCurrents];
+    kCellularPmuAverageCurrentsCount = [(PowerlogMetricLog *)self kCellularPmuAverageCurrentsCount];
+    if (kCellularPmuAverageCurrentsCount)
     {
-      v29 = v28;
+      v29 = kCellularPmuAverageCurrentsCount;
       for (jj = 0; jj != v29; ++jj)
       {
         v31 = [(PowerlogMetricLog *)self kCellularPmuAverageCurrentAtIndex:jj];
-        [v364 addKCellularPmuAverageCurrent:v31];
+        [toCopy addKCellularPmuAverageCurrent:v31];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularFwCoreStatsCount])
   {
-    [v364 clearKCellularFwCoreStats];
-    v32 = [(PowerlogMetricLog *)self kCellularFwCoreStatsCount];
-    if (v32)
+    [toCopy clearKCellularFwCoreStats];
+    kCellularFwCoreStatsCount = [(PowerlogMetricLog *)self kCellularFwCoreStatsCount];
+    if (kCellularFwCoreStatsCount)
     {
-      v33 = v32;
+      v33 = kCellularFwCoreStatsCount;
       for (kk = 0; kk != v33; ++kk)
       {
         v35 = [(PowerlogMetricLog *)self kCellularFwCoreStatsAtIndex:kk];
-        [v364 addKCellularFwCoreStats:v35];
+        [toCopy addKCellularFwCoreStats:v35];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteWcdmaTdsHwStatsCount])
   {
-    [v364 clearKCellularLteWcdmaTdsHwStats];
-    v36 = [(PowerlogMetricLog *)self kCellularLteWcdmaTdsHwStatsCount];
-    if (v36)
+    [toCopy clearKCellularLteWcdmaTdsHwStats];
+    kCellularLteWcdmaTdsHwStatsCount = [(PowerlogMetricLog *)self kCellularLteWcdmaTdsHwStatsCount];
+    if (kCellularLteWcdmaTdsHwStatsCount)
     {
-      v37 = v36;
+      v37 = kCellularLteWcdmaTdsHwStatsCount;
       for (mm = 0; mm != v37; ++mm)
       {
         v39 = [(PowerlogMetricLog *)self kCellularLteWcdmaTdsHwStatsAtIndex:mm];
-        [v364 addKCellularLteWcdmaTdsHwStats:v39];
+        [toCopy addKCellularLteWcdmaTdsHwStats:v39];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularPmicHwStatsCount])
   {
-    [v364 clearKCellularPmicHwStats];
-    v40 = [(PowerlogMetricLog *)self kCellularPmicHwStatsCount];
-    if (v40)
+    [toCopy clearKCellularPmicHwStats];
+    kCellularPmicHwStatsCount = [(PowerlogMetricLog *)self kCellularPmicHwStatsCount];
+    if (kCellularPmicHwStatsCount)
     {
-      v41 = v40;
+      v41 = kCellularPmicHwStatsCount;
       for (nn = 0; nn != v41; ++nn)
       {
         v43 = [(PowerlogMetricLog *)self kCellularPmicHwStatsAtIndex:nn];
-        [v364 addKCellularPmicHwStats:v43];
+        [toCopy addKCellularPmicHwStats:v43];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsRrcStatesCount])
   {
-    [v364 clearKCellularTdsRrcStates];
-    v44 = [(PowerlogMetricLog *)self kCellularTdsRrcStatesCount];
-    if (v44)
+    [toCopy clearKCellularTdsRrcStates];
+    kCellularTdsRrcStatesCount = [(PowerlogMetricLog *)self kCellularTdsRrcStatesCount];
+    if (kCellularTdsRrcStatesCount)
     {
-      v45 = v44;
+      v45 = kCellularTdsRrcStatesCount;
       for (i1 = 0; i1 != v45; ++i1)
       {
         v47 = [(PowerlogMetricLog *)self kCellularTdsRrcStateAtIndex:i1];
-        [v364 addKCellularTdsRrcState:v47];
+        [toCopy addKCellularTdsRrcState:v47];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteRrcStatesCount])
   {
-    [v364 clearKCellularLteRrcStates];
-    v48 = [(PowerlogMetricLog *)self kCellularLteRrcStatesCount];
-    if (v48)
+    [toCopy clearKCellularLteRrcStates];
+    kCellularLteRrcStatesCount = [(PowerlogMetricLog *)self kCellularLteRrcStatesCount];
+    if (kCellularLteRrcStatesCount)
     {
-      v49 = v48;
+      v49 = kCellularLteRrcStatesCount;
       for (i2 = 0; i2 != v49; ++i2)
       {
         v51 = [(PowerlogMetricLog *)self kCellularLteRrcStateAtIndex:i2];
-        [v364 addKCellularLteRrcState:v51];
+        [toCopy addKCellularLteRrcState:v51];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLtePagingCyclesCount])
   {
-    [v364 clearKCellularLtePagingCycles];
-    v52 = [(PowerlogMetricLog *)self kCellularLtePagingCyclesCount];
-    if (v52)
+    [toCopy clearKCellularLtePagingCycles];
+    kCellularLtePagingCyclesCount = [(PowerlogMetricLog *)self kCellularLtePagingCyclesCount];
+    if (kCellularLtePagingCyclesCount)
     {
-      v53 = v52;
+      v53 = kCellularLtePagingCyclesCount;
       for (i3 = 0; i3 != v53; ++i3)
       {
         v55 = [(PowerlogMetricLog *)self kCellularLtePagingCycleAtIndex:i3];
-        [v364 addKCellularLtePagingCycle:v55];
+        [toCopy addKCellularLtePagingCycle:v55];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteCdrxConfigsCount])
   {
-    [v364 clearKCellularLteCdrxConfigs];
-    v56 = [(PowerlogMetricLog *)self kCellularLteCdrxConfigsCount];
-    if (v56)
+    [toCopy clearKCellularLteCdrxConfigs];
+    kCellularLteCdrxConfigsCount = [(PowerlogMetricLog *)self kCellularLteCdrxConfigsCount];
+    if (kCellularLteCdrxConfigsCount)
     {
-      v57 = v56;
+      v57 = kCellularLteCdrxConfigsCount;
       for (i4 = 0; i4 != v57; ++i4)
       {
         v59 = [(PowerlogMetricLog *)self kCellularLteCdrxConfigAtIndex:i4];
-        [v364 addKCellularLteCdrxConfig:v59];
+        [toCopy addKCellularLteCdrxConfig:v59];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteRadioLinkFailuresCount])
   {
-    [v364 clearKCellularLteRadioLinkFailures];
-    v60 = [(PowerlogMetricLog *)self kCellularLteRadioLinkFailuresCount];
-    if (v60)
+    [toCopy clearKCellularLteRadioLinkFailures];
+    kCellularLteRadioLinkFailuresCount = [(PowerlogMetricLog *)self kCellularLteRadioLinkFailuresCount];
+    if (kCellularLteRadioLinkFailuresCount)
     {
-      v61 = v60;
+      v61 = kCellularLteRadioLinkFailuresCount;
       for (i5 = 0; i5 != v61; ++i5)
       {
         v63 = [(PowerlogMetricLog *)self kCellularLteRadioLinkFailureAtIndex:i5];
-        [v364 addKCellularLteRadioLinkFailure:v63];
+        [toCopy addKCellularLteRadioLinkFailure:v63];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLtePdcchStateStatsCount])
   {
-    [v364 clearKCellularLtePdcchStateStats];
-    v64 = [(PowerlogMetricLog *)self kCellularLtePdcchStateStatsCount];
-    if (v64)
+    [toCopy clearKCellularLtePdcchStateStats];
+    kCellularLtePdcchStateStatsCount = [(PowerlogMetricLog *)self kCellularLtePdcchStateStatsCount];
+    if (kCellularLtePdcchStateStatsCount)
     {
-      v65 = v64;
+      v65 = kCellularLtePdcchStateStatsCount;
       for (i6 = 0; i6 != v65; ++i6)
       {
         v67 = [(PowerlogMetricLog *)self kCellularLtePdcchStateStatsAtIndex:i6];
-        [v364 addKCellularLtePdcchStateStats:v67];
+        [toCopy addKCellularLtePdcchStateStats:v67];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLqmStateChangesCount])
   {
-    [v364 clearKCellularLqmStateChanges];
-    v68 = [(PowerlogMetricLog *)self kCellularLqmStateChangesCount];
-    if (v68)
+    [toCopy clearKCellularLqmStateChanges];
+    kCellularLqmStateChangesCount = [(PowerlogMetricLog *)self kCellularLqmStateChangesCount];
+    if (kCellularLqmStateChangesCount)
     {
-      v69 = v68;
+      v69 = kCellularLqmStateChangesCount;
       for (i7 = 0; i7 != v69; ++i7)
       {
         v71 = [(PowerlogMetricLog *)self kCellularLqmStateChangeAtIndex:i7];
-        [v364 addKCellularLqmStateChange:v71];
+        [toCopy addKCellularLqmStateChange:v71];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularServiceLostsCount])
   {
-    [v364 clearKCellularServiceLosts];
-    v72 = [(PowerlogMetricLog *)self kCellularServiceLostsCount];
-    if (v72)
+    [toCopy clearKCellularServiceLosts];
+    kCellularServiceLostsCount = [(PowerlogMetricLog *)self kCellularServiceLostsCount];
+    if (kCellularServiceLostsCount)
     {
-      v73 = v72;
+      v73 = kCellularServiceLostsCount;
       for (i8 = 0; i8 != v73; ++i8)
       {
         v75 = [(PowerlogMetricLog *)self kCellularServiceLostAtIndex:i8];
-        [v364 addKCellularServiceLost:v75];
+        [toCopy addKCellularServiceLost:v75];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularGsmServingCellRssiHistsCount])
   {
-    [v364 clearKCellularGsmServingCellRssiHists];
-    v76 = [(PowerlogMetricLog *)self kCellularGsmServingCellRssiHistsCount];
-    if (v76)
+    [toCopy clearKCellularGsmServingCellRssiHists];
+    kCellularGsmServingCellRssiHistsCount = [(PowerlogMetricLog *)self kCellularGsmServingCellRssiHistsCount];
+    if (kCellularGsmServingCellRssiHistsCount)
     {
-      v77 = v76;
+      v77 = kCellularGsmServingCellRssiHistsCount;
       for (i9 = 0; i9 != v77; ++i9)
       {
         v79 = [(PowerlogMetricLog *)self kCellularGsmServingCellRssiHistAtIndex:i9];
-        [v364 addKCellularGsmServingCellRssiHist:v79];
+        [toCopy addKCellularGsmServingCellRssiHist:v79];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularGsmServingCellSnrHistsCount])
   {
-    [v364 clearKCellularGsmServingCellSnrHists];
-    v80 = [(PowerlogMetricLog *)self kCellularGsmServingCellSnrHistsCount];
-    if (v80)
+    [toCopy clearKCellularGsmServingCellSnrHists];
+    kCellularGsmServingCellSnrHistsCount = [(PowerlogMetricLog *)self kCellularGsmServingCellSnrHistsCount];
+    if (kCellularGsmServingCellSnrHistsCount)
     {
-      v81 = v80;
+      v81 = kCellularGsmServingCellSnrHistsCount;
       for (i10 = 0; i10 != v81; ++i10)
       {
         v83 = [(PowerlogMetricLog *)self kCellularGsmServingCellSnrHistAtIndex:i10];
-        [v364 addKCellularGsmServingCellSnrHist:v83];
+        [toCopy addKCellularGsmServingCellSnrHist:v83];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularGsmTxPowerHistsCount])
   {
-    [v364 clearKCellularGsmTxPowerHists];
-    v84 = [(PowerlogMetricLog *)self kCellularGsmTxPowerHistsCount];
-    if (v84)
+    [toCopy clearKCellularGsmTxPowerHists];
+    kCellularGsmTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularGsmTxPowerHistsCount];
+    if (kCellularGsmTxPowerHistsCount)
     {
-      v85 = v84;
+      v85 = kCellularGsmTxPowerHistsCount;
       for (i11 = 0; i11 != v85; ++i11)
       {
         v87 = [(PowerlogMetricLog *)self kCellularGsmTxPowerHistAtIndex:i11];
-        [v364 addKCellularGsmTxPowerHist:v87];
+        [toCopy addKCellularGsmTxPowerHist:v87];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularGsmConnectedModeHistsCount])
   {
-    [v364 clearKCellularGsmConnectedModeHists];
-    v88 = [(PowerlogMetricLog *)self kCellularGsmConnectedModeHistsCount];
-    if (v88)
+    [toCopy clearKCellularGsmConnectedModeHists];
+    kCellularGsmConnectedModeHistsCount = [(PowerlogMetricLog *)self kCellularGsmConnectedModeHistsCount];
+    if (kCellularGsmConnectedModeHistsCount)
     {
-      v89 = v88;
+      v89 = kCellularGsmConnectedModeHistsCount;
       for (i12 = 0; i12 != v89; ++i12)
       {
         v91 = [(PowerlogMetricLog *)self kCellularGsmConnectedModeHistAtIndex:i12];
-        [v364 addKCellularGsmConnectedModeHist:v91];
+        [toCopy addKCellularGsmConnectedModeHist:v91];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularGsmL1StatesCount])
   {
-    [v364 clearKCellularGsmL1States];
-    v92 = [(PowerlogMetricLog *)self kCellularGsmL1StatesCount];
-    if (v92)
+    [toCopy clearKCellularGsmL1States];
+    kCellularGsmL1StatesCount = [(PowerlogMetricLog *)self kCellularGsmL1StatesCount];
+    if (kCellularGsmL1StatesCount)
     {
-      v93 = v92;
+      v93 = kCellularGsmL1StatesCount;
       for (i13 = 0; i13 != v93; ++i13)
       {
         v95 = [(PowerlogMetricLog *)self kCellularGsmL1StateAtIndex:i13];
-        [v364 addKCellularGsmL1State:v95];
+        [toCopy addKCellularGsmL1State:v95];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaCpcStatsCount])
   {
-    [v364 clearKCellularWcdmaCpcStats];
-    v96 = [(PowerlogMetricLog *)self kCellularWcdmaCpcStatsCount];
-    if (v96)
+    [toCopy clearKCellularWcdmaCpcStats];
+    kCellularWcdmaCpcStatsCount = [(PowerlogMetricLog *)self kCellularWcdmaCpcStatsCount];
+    if (kCellularWcdmaCpcStatsCount)
     {
-      v97 = v96;
+      v97 = kCellularWcdmaCpcStatsCount;
       for (i14 = 0; i14 != v97; ++i14)
       {
         v99 = [(PowerlogMetricLog *)self kCellularWcdmaCpcStatAtIndex:i14];
-        [v364 addKCellularWcdmaCpcStat:v99];
+        [toCopy addKCellularWcdmaCpcStat:v99];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRxDiversityHistsCount])
   {
-    [v364 clearKCellularWcdmaRxDiversityHists];
-    v100 = [(PowerlogMetricLog *)self kCellularWcdmaRxDiversityHistsCount];
-    if (v100)
+    [toCopy clearKCellularWcdmaRxDiversityHists];
+    kCellularWcdmaRxDiversityHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaRxDiversityHistsCount];
+    if (kCellularWcdmaRxDiversityHistsCount)
     {
-      v101 = v100;
+      v101 = kCellularWcdmaRxDiversityHistsCount;
       for (i15 = 0; i15 != v101; ++i15)
       {
         v103 = [(PowerlogMetricLog *)self kCellularWcdmaRxDiversityHistAtIndex:i15];
-        [v364 addKCellularWcdmaRxDiversityHist:v103];
+        [toCopy addKCellularWcdmaRxDiversityHist:v103];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0RssiHistsCount])
   {
-    [v364 clearKCellularWcdmaServingCellRx0RssiHists];
-    v104 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0RssiHistsCount];
-    if (v104)
+    [toCopy clearKCellularWcdmaServingCellRx0RssiHists];
+    kCellularWcdmaServingCellRx0RssiHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0RssiHistsCount];
+    if (kCellularWcdmaServingCellRx0RssiHistsCount)
     {
-      v105 = v104;
+      v105 = kCellularWcdmaServingCellRx0RssiHistsCount;
       for (i16 = 0; i16 != v105; ++i16)
       {
         v107 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0RssiHistAtIndex:i16];
-        [v364 addKCellularWcdmaServingCellRx0RssiHist:v107];
+        [toCopy addKCellularWcdmaServingCellRx0RssiHist:v107];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1RssiHistsCount])
   {
-    [v364 clearKCellularWcdmaServingCellRx1RssiHists];
-    v108 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1RssiHistsCount];
-    if (v108)
+    [toCopy clearKCellularWcdmaServingCellRx1RssiHists];
+    kCellularWcdmaServingCellRx1RssiHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1RssiHistsCount];
+    if (kCellularWcdmaServingCellRx1RssiHistsCount)
     {
-      v109 = v108;
+      v109 = kCellularWcdmaServingCellRx1RssiHistsCount;
       for (i17 = 0; i17 != v109; ++i17)
       {
         v111 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1RssiHistAtIndex:i17];
-        [v364 addKCellularWcdmaServingCellRx1RssiHist:v111];
+        [toCopy addKCellularWcdmaServingCellRx1RssiHist:v111];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0EcNoHistsCount])
   {
-    [v364 clearKCellularWcdmaServingCellRx0EcNoHists];
-    v112 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0EcNoHistsCount];
-    if (v112)
+    [toCopy clearKCellularWcdmaServingCellRx0EcNoHists];
+    kCellularWcdmaServingCellRx0EcNoHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0EcNoHistsCount];
+    if (kCellularWcdmaServingCellRx0EcNoHistsCount)
     {
-      v113 = v112;
+      v113 = kCellularWcdmaServingCellRx0EcNoHistsCount;
       for (i18 = 0; i18 != v113; ++i18)
       {
         v115 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx0EcNoHistAtIndex:i18];
-        [v364 addKCellularWcdmaServingCellRx0EcNoHist:v115];
+        [toCopy addKCellularWcdmaServingCellRx0EcNoHist:v115];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1EcNoHistsCount])
   {
-    [v364 clearKCellularWcdmaServingCellRx1EcNoHists];
-    v116 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1EcNoHistsCount];
-    if (v116)
+    [toCopy clearKCellularWcdmaServingCellRx1EcNoHists];
+    kCellularWcdmaServingCellRx1EcNoHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1EcNoHistsCount];
+    if (kCellularWcdmaServingCellRx1EcNoHistsCount)
     {
-      v117 = v116;
+      v117 = kCellularWcdmaServingCellRx1EcNoHistsCount;
       for (i19 = 0; i19 != v117; ++i19)
       {
         v119 = [(PowerlogMetricLog *)self kCellularWcdmaServingCellRx1EcNoHistAtIndex:i19];
-        [v364 addKCellularWcdmaServingCellRx1EcNoHist:v119];
+        [toCopy addKCellularWcdmaServingCellRx1EcNoHist:v119];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaTxPowerHistsCount])
   {
-    [v364 clearKCellularWcdmaTxPowerHists];
-    v120 = [(PowerlogMetricLog *)self kCellularWcdmaTxPowerHistsCount];
-    if (v120)
+    [toCopy clearKCellularWcdmaTxPowerHists];
+    kCellularWcdmaTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaTxPowerHistsCount];
+    if (kCellularWcdmaTxPowerHistsCount)
     {
-      v121 = v120;
+      v121 = kCellularWcdmaTxPowerHistsCount;
       for (i20 = 0; i20 != v121; ++i20)
       {
         v123 = [(PowerlogMetricLog *)self kCellularWcdmaTxPowerHistAtIndex:i20];
-        [v364 addKCellularWcdmaTxPowerHist:v123];
+        [toCopy addKCellularWcdmaTxPowerHist:v123];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC0HistsCount])
   {
-    [v364 clearKCellularWcdmaReceiverStatusOnC0Hists];
-    v124 = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC0HistsCount];
-    if (v124)
+    [toCopy clearKCellularWcdmaReceiverStatusOnC0Hists];
+    kCellularWcdmaReceiverStatusOnC0HistsCount = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC0HistsCount];
+    if (kCellularWcdmaReceiverStatusOnC0HistsCount)
     {
-      v125 = v124;
+      v125 = kCellularWcdmaReceiverStatusOnC0HistsCount;
       for (i21 = 0; i21 != v125; ++i21)
       {
         v127 = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC0HistAtIndex:i21];
-        [v364 addKCellularWcdmaReceiverStatusOnC0Hist:v127];
+        [toCopy addKCellularWcdmaReceiverStatusOnC0Hist:v127];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC1HistsCount])
   {
-    [v364 clearKCellularWcdmaReceiverStatusOnC1Hists];
-    v128 = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC1HistsCount];
-    if (v128)
+    [toCopy clearKCellularWcdmaReceiverStatusOnC1Hists];
+    kCellularWcdmaReceiverStatusOnC1HistsCount = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC1HistsCount];
+    if (kCellularWcdmaReceiverStatusOnC1HistsCount)
     {
-      v129 = v128;
+      v129 = kCellularWcdmaReceiverStatusOnC1HistsCount;
       for (i22 = 0; i22 != v129; ++i22)
       {
         v131 = [(PowerlogMetricLog *)self kCellularWcdmaReceiverStatusOnC1HistAtIndex:i22];
-        [v364 addKCellularWcdmaReceiverStatusOnC1Hist:v131];
+        [toCopy addKCellularWcdmaReceiverStatusOnC1Hist:v131];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaCarrierStatusHistsCount])
   {
-    [v364 clearKCellularWcdmaCarrierStatusHists];
-    v132 = [(PowerlogMetricLog *)self kCellularWcdmaCarrierStatusHistsCount];
-    if (v132)
+    [toCopy clearKCellularWcdmaCarrierStatusHists];
+    kCellularWcdmaCarrierStatusHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaCarrierStatusHistsCount];
+    if (kCellularWcdmaCarrierStatusHistsCount)
     {
-      v133 = v132;
+      v133 = kCellularWcdmaCarrierStatusHistsCount;
       for (i23 = 0; i23 != v133; ++i23)
       {
         v135 = [(PowerlogMetricLog *)self kCellularWcdmaCarrierStatusHistAtIndex:i23];
-        [v364 addKCellularWcdmaCarrierStatusHist:v135];
+        [toCopy addKCellularWcdmaCarrierStatusHist:v135];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRabModeHistsCount])
   {
-    [v364 clearKCellularWcdmaRabModeHists];
-    v136 = [(PowerlogMetricLog *)self kCellularWcdmaRabModeHistsCount];
-    if (v136)
+    [toCopy clearKCellularWcdmaRabModeHists];
+    kCellularWcdmaRabModeHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaRabModeHistsCount];
+    if (kCellularWcdmaRabModeHistsCount)
     {
-      v137 = v136;
+      v137 = kCellularWcdmaRabModeHistsCount;
       for (i24 = 0; i24 != v137; ++i24)
       {
         v139 = [(PowerlogMetricLog *)self kCellularWcdmaRabModeHistAtIndex:i24];
-        [v364 addKCellularWcdmaRabModeHist:v139];
+        [toCopy addKCellularWcdmaRabModeHist:v139];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRabTypeHistsCount])
   {
-    [v364 clearKCellularWcdmaRabTypeHists];
-    v140 = [(PowerlogMetricLog *)self kCellularWcdmaRabTypeHistsCount];
-    if (v140)
+    [toCopy clearKCellularWcdmaRabTypeHists];
+    kCellularWcdmaRabTypeHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaRabTypeHistsCount];
+    if (kCellularWcdmaRabTypeHistsCount)
     {
-      v141 = v140;
+      v141 = kCellularWcdmaRabTypeHistsCount;
       for (i25 = 0; i25 != v141; ++i25)
       {
         v143 = [(PowerlogMetricLog *)self kCellularWcdmaRabTypeHistAtIndex:i25];
-        [v364 addKCellularWcdmaRabTypeHist:v143];
+        [toCopy addKCellularWcdmaRabTypeHist:v143];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRrcConnectionStatesCount])
   {
-    [v364 clearKCellularWcdmaRrcConnectionStates];
-    v144 = [(PowerlogMetricLog *)self kCellularWcdmaRrcConnectionStatesCount];
-    if (v144)
+    [toCopy clearKCellularWcdmaRrcConnectionStates];
+    kCellularWcdmaRrcConnectionStatesCount = [(PowerlogMetricLog *)self kCellularWcdmaRrcConnectionStatesCount];
+    if (kCellularWcdmaRrcConnectionStatesCount)
     {
-      v145 = v144;
+      v145 = kCellularWcdmaRrcConnectionStatesCount;
       for (i26 = 0; i26 != v145; ++i26)
       {
         v147 = [(PowerlogMetricLog *)self kCellularWcdmaRrcConnectionStateAtIndex:i26];
-        [v364 addKCellularWcdmaRrcConnectionState:v147];
+        [toCopy addKCellularWcdmaRrcConnectionState:v147];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRrcConfigurationsCount])
   {
-    [v364 clearKCellularWcdmaRrcConfigurations];
-    v148 = [(PowerlogMetricLog *)self kCellularWcdmaRrcConfigurationsCount];
-    if (v148)
+    [toCopy clearKCellularWcdmaRrcConfigurations];
+    kCellularWcdmaRrcConfigurationsCount = [(PowerlogMetricLog *)self kCellularWcdmaRrcConfigurationsCount];
+    if (kCellularWcdmaRrcConfigurationsCount)
     {
-      v149 = v148;
+      v149 = kCellularWcdmaRrcConfigurationsCount;
       for (i27 = 0; i27 != v149; ++i27)
       {
         v151 = [(PowerlogMetricLog *)self kCellularWcdmaRrcConfigurationAtIndex:i27];
-        [v364 addKCellularWcdmaRrcConfiguration:v151];
+        [toCopy addKCellularWcdmaRrcConfiguration:v151];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaRabStatusCount])
   {
-    [v364 clearKCellularWcdmaRabStatus];
-    v152 = [(PowerlogMetricLog *)self kCellularWcdmaRabStatusCount];
-    if (v152)
+    [toCopy clearKCellularWcdmaRabStatus];
+    kCellularWcdmaRabStatusCount = [(PowerlogMetricLog *)self kCellularWcdmaRabStatusCount];
+    if (kCellularWcdmaRabStatusCount)
     {
-      v153 = v152;
+      v153 = kCellularWcdmaRabStatusCount;
       for (i28 = 0; i28 != v153; ++i28)
       {
         v155 = [(PowerlogMetricLog *)self kCellularWcdmaRabStatusAtIndex:i28];
-        [v364 addKCellularWcdmaRabStatus:v155];
+        [toCopy addKCellularWcdmaRabStatus:v155];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaL1StatesCount])
   {
-    [v364 clearKCellularWcdmaL1States];
-    v156 = [(PowerlogMetricLog *)self kCellularWcdmaL1StatesCount];
-    if (v156)
+    [toCopy clearKCellularWcdmaL1States];
+    kCellularWcdmaL1StatesCount = [(PowerlogMetricLog *)self kCellularWcdmaL1StatesCount];
+    if (kCellularWcdmaL1StatesCount)
     {
-      v157 = v156;
+      v157 = kCellularWcdmaL1StatesCount;
       for (i29 = 0; i29 != v157; ++i29)
       {
         v159 = [(PowerlogMetricLog *)self kCellularWcdmaL1StateAtIndex:i29];
-        [v364 addKCellularWcdmaL1State:v159];
+        [toCopy addKCellularWcdmaL1State:v159];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaDataInactivityBeforeIdlesCount])
   {
-    [v364 clearKCellularWcdmaDataInactivityBeforeIdles];
-    v160 = [(PowerlogMetricLog *)self kCellularWcdmaDataInactivityBeforeIdlesCount];
-    if (v160)
+    [toCopy clearKCellularWcdmaDataInactivityBeforeIdles];
+    kCellularWcdmaDataInactivityBeforeIdlesCount = [(PowerlogMetricLog *)self kCellularWcdmaDataInactivityBeforeIdlesCount];
+    if (kCellularWcdmaDataInactivityBeforeIdlesCount)
     {
-      v161 = v160;
+      v161 = kCellularWcdmaDataInactivityBeforeIdlesCount;
       for (i30 = 0; i30 != v161; ++i30)
       {
         v163 = [(PowerlogMetricLog *)self kCellularWcdmaDataInactivityBeforeIdleAtIndex:i30];
-        [v364 addKCellularWcdmaDataInactivityBeforeIdle:v163];
+        [toCopy addKCellularWcdmaDataInactivityBeforeIdle:v163];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaIdleToConnectedUserDatasCount])
   {
-    [v364 clearKCellularWcdmaIdleToConnectedUserDatas];
-    v164 = [(PowerlogMetricLog *)self kCellularWcdmaIdleToConnectedUserDatasCount];
-    if (v164)
+    [toCopy clearKCellularWcdmaIdleToConnectedUserDatas];
+    kCellularWcdmaIdleToConnectedUserDatasCount = [(PowerlogMetricLog *)self kCellularWcdmaIdleToConnectedUserDatasCount];
+    if (kCellularWcdmaIdleToConnectedUserDatasCount)
     {
-      v165 = v164;
+      v165 = kCellularWcdmaIdleToConnectedUserDatasCount;
       for (i31 = 0; i31 != v165; ++i31)
       {
         v167 = [(PowerlogMetricLog *)self kCellularWcdmaIdleToConnectedUserDataAtIndex:i31];
-        [v364 addKCellularWcdmaIdleToConnectedUserData:v167];
+        [toCopy addKCellularWcdmaIdleToConnectedUserData:v167];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularWcdmaVadHistsCount])
   {
-    [v364 clearKCellularWcdmaVadHists];
-    v168 = [(PowerlogMetricLog *)self kCellularWcdmaVadHistsCount];
-    if (v168)
+    [toCopy clearKCellularWcdmaVadHists];
+    kCellularWcdmaVadHistsCount = [(PowerlogMetricLog *)self kCellularWcdmaVadHistsCount];
+    if (kCellularWcdmaVadHistsCount)
     {
-      v169 = v168;
+      v169 = kCellularWcdmaVadHistsCount;
       for (i32 = 0; i32 != v169; ++i32)
       {
         v171 = [(PowerlogMetricLog *)self kCellularWcdmaVadHistAtIndex:i32];
-        [v364 addKCellularWcdmaVadHist:v171];
+        [toCopy addKCellularWcdmaVadHist:v171];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsRxDiversityHistsCount])
   {
-    [v364 clearKCellularTdsRxDiversityHists];
-    v172 = [(PowerlogMetricLog *)self kCellularTdsRxDiversityHistsCount];
-    if (v172)
+    [toCopy clearKCellularTdsRxDiversityHists];
+    kCellularTdsRxDiversityHistsCount = [(PowerlogMetricLog *)self kCellularTdsRxDiversityHistsCount];
+    if (kCellularTdsRxDiversityHistsCount)
     {
-      v173 = v172;
+      v173 = kCellularTdsRxDiversityHistsCount;
       for (i33 = 0; i33 != v173; ++i33)
       {
         v175 = [(PowerlogMetricLog *)self kCellularTdsRxDiversityHistAtIndex:i33];
-        [v364 addKCellularTdsRxDiversityHist:v175];
+        [toCopy addKCellularTdsRxDiversityHist:v175];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsServingCellRx0RssiHistsCount])
   {
-    [v364 clearKCellularTdsServingCellRx0RssiHists];
-    v176 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RssiHistsCount];
-    if (v176)
+    [toCopy clearKCellularTdsServingCellRx0RssiHists];
+    kCellularTdsServingCellRx0RssiHistsCount = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RssiHistsCount];
+    if (kCellularTdsServingCellRx0RssiHistsCount)
     {
-      v177 = v176;
+      v177 = kCellularTdsServingCellRx0RssiHistsCount;
       for (i34 = 0; i34 != v177; ++i34)
       {
         v179 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RssiHistAtIndex:i34];
-        [v364 addKCellularTdsServingCellRx0RssiHist:v179];
+        [toCopy addKCellularTdsServingCellRx0RssiHist:v179];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsServingCellRx1RssiHistsCount])
   {
-    [v364 clearKCellularTdsServingCellRx1RssiHists];
-    v180 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RssiHistsCount];
-    if (v180)
+    [toCopy clearKCellularTdsServingCellRx1RssiHists];
+    kCellularTdsServingCellRx1RssiHistsCount = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RssiHistsCount];
+    if (kCellularTdsServingCellRx1RssiHistsCount)
     {
-      v181 = v180;
+      v181 = kCellularTdsServingCellRx1RssiHistsCount;
       for (i35 = 0; i35 != v181; ++i35)
       {
         v183 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RssiHistAtIndex:i35];
-        [v364 addKCellularTdsServingCellRx1RssiHist:v183];
+        [toCopy addKCellularTdsServingCellRx1RssiHist:v183];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsServingCellRx0RscpHistsCount])
   {
-    [v364 clearKCellularTdsServingCellRx0RscpHists];
-    v184 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RscpHistsCount];
-    if (v184)
+    [toCopy clearKCellularTdsServingCellRx0RscpHists];
+    kCellularTdsServingCellRx0RscpHistsCount = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RscpHistsCount];
+    if (kCellularTdsServingCellRx0RscpHistsCount)
     {
-      v185 = v184;
+      v185 = kCellularTdsServingCellRx0RscpHistsCount;
       for (i36 = 0; i36 != v185; ++i36)
       {
         v187 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx0RscpHistAtIndex:i36];
-        [v364 addKCellularTdsServingCellRx0RscpHist:v187];
+        [toCopy addKCellularTdsServingCellRx0RscpHist:v187];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsServingCellRx1RscpHistsCount])
   {
-    [v364 clearKCellularTdsServingCellRx1RscpHists];
-    v188 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RscpHistsCount];
-    if (v188)
+    [toCopy clearKCellularTdsServingCellRx1RscpHists];
+    kCellularTdsServingCellRx1RscpHistsCount = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RscpHistsCount];
+    if (kCellularTdsServingCellRx1RscpHistsCount)
     {
-      v189 = v188;
+      v189 = kCellularTdsServingCellRx1RscpHistsCount;
       for (i37 = 0; i37 != v189; ++i37)
       {
         v191 = [(PowerlogMetricLog *)self kCellularTdsServingCellRx1RscpHistAtIndex:i37];
-        [v364 addKCellularTdsServingCellRx1RscpHist:v191];
+        [toCopy addKCellularTdsServingCellRx1RscpHist:v191];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsTxPowerHistsCount])
   {
-    [v364 clearKCellularTdsTxPowerHists];
-    v192 = [(PowerlogMetricLog *)self kCellularTdsTxPowerHistsCount];
-    if (v192)
+    [toCopy clearKCellularTdsTxPowerHists];
+    kCellularTdsTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularTdsTxPowerHistsCount];
+    if (kCellularTdsTxPowerHistsCount)
     {
-      v193 = v192;
+      v193 = kCellularTdsTxPowerHistsCount;
       for (i38 = 0; i38 != v193; ++i38)
       {
         v195 = [(PowerlogMetricLog *)self kCellularTdsTxPowerHistAtIndex:i38];
-        [v364 addKCellularTdsTxPowerHist:v195];
+        [toCopy addKCellularTdsTxPowerHist:v195];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsRabModeHistsCount])
   {
-    [v364 clearKCellularTdsRabModeHists];
-    v196 = [(PowerlogMetricLog *)self kCellularTdsRabModeHistsCount];
-    if (v196)
+    [toCopy clearKCellularTdsRabModeHists];
+    kCellularTdsRabModeHistsCount = [(PowerlogMetricLog *)self kCellularTdsRabModeHistsCount];
+    if (kCellularTdsRabModeHistsCount)
     {
-      v197 = v196;
+      v197 = kCellularTdsRabModeHistsCount;
       for (i39 = 0; i39 != v197; ++i39)
       {
         v199 = [(PowerlogMetricLog *)self kCellularTdsRabModeHistAtIndex:i39];
-        [v364 addKCellularTdsRabModeHist:v199];
+        [toCopy addKCellularTdsRabModeHist:v199];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsRabTypeHistsCount])
   {
-    [v364 clearKCellularTdsRabTypeHists];
-    v200 = [(PowerlogMetricLog *)self kCellularTdsRabTypeHistsCount];
-    if (v200)
+    [toCopy clearKCellularTdsRabTypeHists];
+    kCellularTdsRabTypeHistsCount = [(PowerlogMetricLog *)self kCellularTdsRabTypeHistsCount];
+    if (kCellularTdsRabTypeHistsCount)
     {
-      v201 = v200;
+      v201 = kCellularTdsRabTypeHistsCount;
       for (i40 = 0; i40 != v201; ++i40)
       {
         v203 = [(PowerlogMetricLog *)self kCellularTdsRabTypeHistAtIndex:i40];
-        [v364 addKCellularTdsRabTypeHist:v203];
+        [toCopy addKCellularTdsRabTypeHist:v203];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularTdsL1StatesCount])
   {
-    [v364 clearKCellularTdsL1States];
-    v204 = [(PowerlogMetricLog *)self kCellularTdsL1StatesCount];
-    if (v204)
+    [toCopy clearKCellularTdsL1States];
+    kCellularTdsL1StatesCount = [(PowerlogMetricLog *)self kCellularTdsL1StatesCount];
+    if (kCellularTdsL1StatesCount)
     {
-      v205 = v204;
+      v205 = kCellularTdsL1StatesCount;
       for (i41 = 0; i41 != v205; ++i41)
       {
         v207 = [(PowerlogMetricLog *)self kCellularTdsL1StateAtIndex:i41];
-        [v364 addKCellularTdsL1State:v207];
+        [toCopy addKCellularTdsL1State:v207];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteFwDuplexModesCount])
   {
-    [v364 clearKCellularLteFwDuplexModes];
-    v208 = [(PowerlogMetricLog *)self kCellularLteFwDuplexModesCount];
-    if (v208)
+    [toCopy clearKCellularLteFwDuplexModes];
+    kCellularLteFwDuplexModesCount = [(PowerlogMetricLog *)self kCellularLteFwDuplexModesCount];
+    if (kCellularLteFwDuplexModesCount)
     {
-      v209 = v208;
+      v209 = kCellularLteFwDuplexModesCount;
       for (i42 = 0; i42 != v209; ++i42)
       {
         v211 = [(PowerlogMetricLog *)self kCellularLteFwDuplexModeAtIndex:i42];
-        [v364 addKCellularLteFwDuplexMode:v211];
+        [toCopy addKCellularLteFwDuplexMode:v211];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteServingCellRsrpHistsCount])
   {
-    [v364 clearKCellularLteServingCellRsrpHists];
-    v212 = [(PowerlogMetricLog *)self kCellularLteServingCellRsrpHistsCount];
-    if (v212)
+    [toCopy clearKCellularLteServingCellRsrpHists];
+    kCellularLteServingCellRsrpHistsCount = [(PowerlogMetricLog *)self kCellularLteServingCellRsrpHistsCount];
+    if (kCellularLteServingCellRsrpHistsCount)
     {
-      v213 = v212;
+      v213 = kCellularLteServingCellRsrpHistsCount;
       for (i43 = 0; i43 != v213; ++i43)
       {
         v215 = [(PowerlogMetricLog *)self kCellularLteServingCellRsrpHistAtIndex:i43];
-        [v364 addKCellularLteServingCellRsrpHist:v215];
+        [toCopy addKCellularLteServingCellRsrpHist:v215];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteServingCellSinrHistsCount])
   {
-    [v364 clearKCellularLteServingCellSinrHists];
-    v216 = [(PowerlogMetricLog *)self kCellularLteServingCellSinrHistsCount];
-    if (v216)
+    [toCopy clearKCellularLteServingCellSinrHists];
+    kCellularLteServingCellSinrHistsCount = [(PowerlogMetricLog *)self kCellularLteServingCellSinrHistsCount];
+    if (kCellularLteServingCellSinrHistsCount)
     {
-      v217 = v216;
+      v217 = kCellularLteServingCellSinrHistsCount;
       for (i44 = 0; i44 != v217; ++i44)
       {
         v219 = [(PowerlogMetricLog *)self kCellularLteServingCellSinrHistAtIndex:i44];
-        [v364 addKCellularLteServingCellSinrHist:v219];
+        [toCopy addKCellularLteServingCellSinrHist:v219];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteSleepStateHistsCount])
   {
-    [v364 clearKCellularLteSleepStateHists];
-    v220 = [(PowerlogMetricLog *)self kCellularLteSleepStateHistsCount];
-    if (v220)
+    [toCopy clearKCellularLteSleepStateHists];
+    kCellularLteSleepStateHistsCount = [(PowerlogMetricLog *)self kCellularLteSleepStateHistsCount];
+    if (kCellularLteSleepStateHistsCount)
     {
-      v221 = v220;
+      v221 = kCellularLteSleepStateHistsCount;
       for (i45 = 0; i45 != v221; ++i45)
       {
         v223 = [(PowerlogMetricLog *)self kCellularLteSleepStateHistAtIndex:i45];
-        [v364 addKCellularLteSleepStateHist:v223];
+        [toCopy addKCellularLteSleepStateHist:v223];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteTxPowerHistsCount])
   {
-    [v364 clearKCellularLteTxPowerHists];
-    v224 = [(PowerlogMetricLog *)self kCellularLteTxPowerHistsCount];
-    if (v224)
+    [toCopy clearKCellularLteTxPowerHists];
+    kCellularLteTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularLteTxPowerHistsCount];
+    if (kCellularLteTxPowerHistsCount)
     {
-      v225 = v224;
+      v225 = kCellularLteTxPowerHistsCount;
       for (i46 = 0; i46 != v225; ++i46)
       {
         v227 = [(PowerlogMetricLog *)self kCellularLteTxPowerHistAtIndex:i46];
-        [v364 addKCellularLteTxPowerHist:v227];
+        [toCopy addKCellularLteTxPowerHist:v227];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteDlSccStateHistsCount])
   {
-    [v364 clearKCellularLteDlSccStateHists];
-    v228 = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistsCount];
-    if (v228)
+    [toCopy clearKCellularLteDlSccStateHists];
+    kCellularLteDlSccStateHistsCount = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistsCount];
+    if (kCellularLteDlSccStateHistsCount)
     {
-      v229 = v228;
+      v229 = kCellularLteDlSccStateHistsCount;
       for (i47 = 0; i47 != v229; ++i47)
       {
         v231 = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistAtIndex:i47];
-        [v364 addKCellularLteDlSccStateHist:v231];
+        [toCopy addKCellularLteDlSccStateHist:v231];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteUlSccStateHistsCount])
   {
-    [v364 clearKCellularLteUlSccStateHists];
-    v232 = [(PowerlogMetricLog *)self kCellularLteUlSccStateHistsCount];
-    if (v232)
+    [toCopy clearKCellularLteUlSccStateHists];
+    kCellularLteUlSccStateHistsCount = [(PowerlogMetricLog *)self kCellularLteUlSccStateHistsCount];
+    if (kCellularLteUlSccStateHistsCount)
     {
-      v233 = v232;
+      v233 = kCellularLteUlSccStateHistsCount;
       for (i48 = 0; i48 != v233; ++i48)
       {
         v235 = [(PowerlogMetricLog *)self kCellularLteUlSccStateHistAtIndex:i48];
-        [v364 addKCellularLteUlSccStateHist:v235];
+        [toCopy addKCellularLteUlSccStateHist:v235];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteAdvancedRxStateHistsCount])
   {
-    [v364 clearKCellularLteAdvancedRxStateHists];
-    v236 = [(PowerlogMetricLog *)self kCellularLteAdvancedRxStateHistsCount];
-    if (v236)
+    [toCopy clearKCellularLteAdvancedRxStateHists];
+    kCellularLteAdvancedRxStateHistsCount = [(PowerlogMetricLog *)self kCellularLteAdvancedRxStateHistsCount];
+    if (kCellularLteAdvancedRxStateHistsCount)
     {
-      v237 = v236;
+      v237 = kCellularLteAdvancedRxStateHistsCount;
       for (i49 = 0; i49 != v237; ++i49)
       {
         v239 = [(PowerlogMetricLog *)self kCellularLteAdvancedRxStateHistAtIndex:i49];
-        [v364 addKCellularLteAdvancedRxStateHist:v239];
+        [toCopy addKCellularLteAdvancedRxStateHist:v239];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteComponentCarrierInfosCount])
   {
-    [v364 clearKCellularLteComponentCarrierInfos];
-    v240 = [(PowerlogMetricLog *)self kCellularLteComponentCarrierInfosCount];
-    if (v240)
+    [toCopy clearKCellularLteComponentCarrierInfos];
+    kCellularLteComponentCarrierInfosCount = [(PowerlogMetricLog *)self kCellularLteComponentCarrierInfosCount];
+    if (kCellularLteComponentCarrierInfosCount)
     {
-      v241 = v240;
+      v241 = kCellularLteComponentCarrierInfosCount;
       for (i50 = 0; i50 != v241; ++i50)
       {
         v243 = [(PowerlogMetricLog *)self kCellularLteComponentCarrierInfoAtIndex:i50];
-        [v364 addKCellularLteComponentCarrierInfo:v243];
+        [toCopy addKCellularLteComponentCarrierInfo:v243];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteRxTxStateHistsCount])
   {
-    [v364 clearKCellularLteRxTxStateHists];
-    v244 = [(PowerlogMetricLog *)self kCellularLteRxTxStateHistsCount];
-    if (v244)
+    [toCopy clearKCellularLteRxTxStateHists];
+    kCellularLteRxTxStateHistsCount = [(PowerlogMetricLog *)self kCellularLteRxTxStateHistsCount];
+    if (kCellularLteRxTxStateHistsCount)
     {
-      v245 = v244;
+      v245 = kCellularLteRxTxStateHistsCount;
       for (i51 = 0; i51 != v245; ++i51)
       {
         v247 = [(PowerlogMetricLog *)self kCellularLteRxTxStateHistAtIndex:i51];
-        [v364 addKCellularLteRxTxStateHist:v247];
+        [toCopy addKCellularLteRxTxStateHist:v247];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteTotalDlTbsHistsCount])
   {
-    [v364 clearKCellularLteTotalDlTbsHists];
-    v248 = [(PowerlogMetricLog *)self kCellularLteTotalDlTbsHistsCount];
-    if (v248)
+    [toCopy clearKCellularLteTotalDlTbsHists];
+    kCellularLteTotalDlTbsHistsCount = [(PowerlogMetricLog *)self kCellularLteTotalDlTbsHistsCount];
+    if (kCellularLteTotalDlTbsHistsCount)
     {
-      v249 = v248;
+      v249 = kCellularLteTotalDlTbsHistsCount;
       for (i52 = 0; i52 != v249; ++i52)
       {
         v251 = [(PowerlogMetricLog *)self kCellularLteTotalDlTbsHistAtIndex:i52];
-        [v364 addKCellularLteTotalDlTbsHist:v251];
+        [toCopy addKCellularLteTotalDlTbsHist:v251];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteDlSccStateHistV3sCount])
   {
-    [v364 clearKCellularLteDlSccStateHistV3s];
-    v252 = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistV3sCount];
-    if (v252)
+    [toCopy clearKCellularLteDlSccStateHistV3s];
+    kCellularLteDlSccStateHistV3sCount = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistV3sCount];
+    if (kCellularLteDlSccStateHistV3sCount)
     {
-      v253 = v252;
+      v253 = kCellularLteDlSccStateHistV3sCount;
       for (i53 = 0; i53 != v253; ++i53)
       {
         v255 = [(PowerlogMetricLog *)self kCellularLteDlSccStateHistV3AtIndex:i53];
-        [v364 addKCellularLteDlSccStateHistV3:v255];
+        [toCopy addKCellularLteDlSccStateHistV3:v255];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLteRxDiversityHistsCount])
   {
-    [v364 clearKCellularLteRxDiversityHists];
-    v256 = [(PowerlogMetricLog *)self kCellularLteRxDiversityHistsCount];
-    if (v256)
+    [toCopy clearKCellularLteRxDiversityHists];
+    kCellularLteRxDiversityHistsCount = [(PowerlogMetricLog *)self kCellularLteRxDiversityHistsCount];
+    if (kCellularLteRxDiversityHistsCount)
     {
-      v257 = v256;
+      v257 = kCellularLteRxDiversityHistsCount;
       for (i54 = 0; i54 != v257; ++i54)
       {
         v259 = [(PowerlogMetricLog *)self kCellularLteRxDiversityHistAtIndex:i54];
-        [v364 addKCellularLteRxDiversityHist:v259];
+        [toCopy addKCellularLteRxDiversityHist:v259];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularLtePdcchStateHistsCount])
   {
-    [v364 clearKCellularLtePdcchStateHists];
-    v260 = [(PowerlogMetricLog *)self kCellularLtePdcchStateHistsCount];
-    if (v260)
+    [toCopy clearKCellularLtePdcchStateHists];
+    kCellularLtePdcchStateHistsCount = [(PowerlogMetricLog *)self kCellularLtePdcchStateHistsCount];
+    if (kCellularLtePdcchStateHistsCount)
     {
-      v261 = v260;
+      v261 = kCellularLtePdcchStateHistsCount;
       for (i55 = 0; i55 != v261; ++i55)
       {
         v263 = [(PowerlogMetricLog *)self kCellularLtePdcchStateHistAtIndex:i55];
-        [v364 addKCellularLtePdcchStateHist:v263];
+        [toCopy addKCellularLtePdcchStateHist:v263];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularProtocolStackStateHistsCount])
   {
-    [v364 clearKCellularProtocolStackStateHists];
-    v264 = [(PowerlogMetricLog *)self kCellularProtocolStackStateHistsCount];
-    if (v264)
+    [toCopy clearKCellularProtocolStackStateHists];
+    kCellularProtocolStackStateHistsCount = [(PowerlogMetricLog *)self kCellularProtocolStackStateHistsCount];
+    if (kCellularProtocolStackStateHistsCount)
     {
-      v265 = v264;
+      v265 = kCellularProtocolStackStateHistsCount;
       for (i56 = 0; i56 != v265; ++i56)
       {
         v267 = [(PowerlogMetricLog *)self kCellularProtocolStackStateHistAtIndex:i56];
-        [v364 addKCellularProtocolStackStateHist:v267];
+        [toCopy addKCellularProtocolStackStateHist:v267];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCellPlmnSearchCountsCount])
   {
-    [v364 clearKCellularCellPlmnSearchCounts];
-    v268 = [(PowerlogMetricLog *)self kCellularCellPlmnSearchCountsCount];
-    if (v268)
+    [toCopy clearKCellularCellPlmnSearchCounts];
+    kCellularCellPlmnSearchCountsCount = [(PowerlogMetricLog *)self kCellularCellPlmnSearchCountsCount];
+    if (kCellularCellPlmnSearchCountsCount)
     {
-      v269 = v268;
+      v269 = kCellularCellPlmnSearchCountsCount;
       for (i57 = 0; i57 != v269; ++i57)
       {
         v271 = [(PowerlogMetricLog *)self kCellularCellPlmnSearchCountAtIndex:i57];
-        [v364 addKCellularCellPlmnSearchCount:v271];
+        [toCopy addKCellularCellPlmnSearchCount:v271];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCellPlmnSearchHistsCount])
   {
-    [v364 clearKCellularCellPlmnSearchHists];
-    v272 = [(PowerlogMetricLog *)self kCellularCellPlmnSearchHistsCount];
-    if (v272)
+    [toCopy clearKCellularCellPlmnSearchHists];
+    kCellularCellPlmnSearchHistsCount = [(PowerlogMetricLog *)self kCellularCellPlmnSearchHistsCount];
+    if (kCellularCellPlmnSearchHistsCount)
     {
-      v273 = v272;
+      v273 = kCellularCellPlmnSearchHistsCount;
       for (i58 = 0; i58 != v273; ++i58)
       {
         v275 = [(PowerlogMetricLog *)self kCellularCellPlmnSearchHistAtIndex:i58];
-        [v364 addKCellularCellPlmnSearchHist:v275];
+        [toCopy addKCellularCellPlmnSearchHist:v275];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularProtocolStackPowerStatesCount])
   {
-    [v364 clearKCellularProtocolStackPowerStates];
-    v276 = [(PowerlogMetricLog *)self kCellularProtocolStackPowerStatesCount];
-    if (v276)
+    [toCopy clearKCellularProtocolStackPowerStates];
+    kCellularProtocolStackPowerStatesCount = [(PowerlogMetricLog *)self kCellularProtocolStackPowerStatesCount];
+    if (kCellularProtocolStackPowerStatesCount)
     {
-      v277 = v276;
+      v277 = kCellularProtocolStackPowerStatesCount;
       for (i59 = 0; i59 != v277; ++i59)
       {
         v279 = [(PowerlogMetricLog *)self kCellularProtocolStackPowerStateAtIndex:i59];
-        [v364 addKCellularProtocolStackPowerState:v279];
+        [toCopy addKCellularProtocolStackPowerState:v279];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularDownlinkIpPacketFilterStatusCount])
   {
-    [v364 clearKCellularDownlinkIpPacketFilterStatus];
-    v280 = [(PowerlogMetricLog *)self kCellularDownlinkIpPacketFilterStatusCount];
-    if (v280)
+    [toCopy clearKCellularDownlinkIpPacketFilterStatus];
+    kCellularDownlinkIpPacketFilterStatusCount = [(PowerlogMetricLog *)self kCellularDownlinkIpPacketFilterStatusCount];
+    if (kCellularDownlinkIpPacketFilterStatusCount)
     {
-      v281 = v280;
+      v281 = kCellularDownlinkIpPacketFilterStatusCount;
       for (i60 = 0; i60 != v281; ++i60)
       {
         v283 = [(PowerlogMetricLog *)self kCellularDownlinkIpPacketFilterStatusAtIndex:i60];
-        [v364 addKCellularDownlinkIpPacketFilterStatus:v283];
+        [toCopy addKCellularDownlinkIpPacketFilterStatus:v283];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularServingCellRfBandHistsCount])
   {
-    [v364 clearKCellularServingCellRfBandHists];
-    v284 = [(PowerlogMetricLog *)self kCellularServingCellRfBandHistsCount];
-    if (v284)
+    [toCopy clearKCellularServingCellRfBandHists];
+    kCellularServingCellRfBandHistsCount = [(PowerlogMetricLog *)self kCellularServingCellRfBandHistsCount];
+    if (kCellularServingCellRfBandHistsCount)
     {
-      v285 = v284;
+      v285 = kCellularServingCellRfBandHistsCount;
       for (i61 = 0; i61 != v285; ++i61)
       {
         v287 = [(PowerlogMetricLog *)self kCellularServingCellRfBandHistAtIndex:i61];
-        [v364 addKCellularServingCellRfBandHist:v287];
+        [toCopy addKCellularServingCellRfBandHist:v287];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularProtocolStackStateHist2sCount])
   {
-    [v364 clearKCellularProtocolStackStateHist2s];
-    v288 = [(PowerlogMetricLog *)self kCellularProtocolStackStateHist2sCount];
-    if (v288)
+    [toCopy clearKCellularProtocolStackStateHist2s];
+    kCellularProtocolStackStateHist2sCount = [(PowerlogMetricLog *)self kCellularProtocolStackStateHist2sCount];
+    if (kCellularProtocolStackStateHist2sCount)
     {
-      v289 = v288;
+      v289 = kCellularProtocolStackStateHist2sCount;
       for (i62 = 0; i62 != v289; ++i62)
       {
         v291 = [(PowerlogMetricLog *)self kCellularProtocolStackStateHist2AtIndex:i62];
-        [v364 addKCellularProtocolStackStateHist2:v291];
+        [toCopy addKCellularProtocolStackStateHist2:v291];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularProtocolStackStatesCount])
   {
-    [v364 clearKCellularProtocolStackStates];
-    v292 = [(PowerlogMetricLog *)self kCellularProtocolStackStatesCount];
-    if (v292)
+    [toCopy clearKCellularProtocolStackStates];
+    kCellularProtocolStackStatesCount = [(PowerlogMetricLog *)self kCellularProtocolStackStatesCount];
+    if (kCellularProtocolStackStatesCount)
     {
-      v293 = v292;
+      v293 = kCellularProtocolStackStatesCount;
       for (i63 = 0; i63 != v293; ++i63)
       {
         v295 = [(PowerlogMetricLog *)self kCellularProtocolStackStateAtIndex:i63];
-        [v364 addKCellularProtocolStackState:v295];
+        [toCopy addKCellularProtocolStackState:v295];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XRxDiversityHistsCount])
   {
-    [v364 clearKCellularCdma1XRxDiversityHists];
-    v296 = [(PowerlogMetricLog *)self kCellularCdma1XRxDiversityHistsCount];
-    if (v296)
+    [toCopy clearKCellularCdma1XRxDiversityHists];
+    kCellularCdma1XRxDiversityHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XRxDiversityHistsCount];
+    if (kCellularCdma1XRxDiversityHistsCount)
     {
-      v297 = v296;
+      v297 = kCellularCdma1XRxDiversityHistsCount;
       for (i64 = 0; i64 != v297; ++i64)
       {
         v299 = [(PowerlogMetricLog *)self kCellularCdma1XRxDiversityHistAtIndex:i64];
-        [v364 addKCellularCdma1XRxDiversityHist:v299];
+        [toCopy addKCellularCdma1XRxDiversityHist:v299];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0RssiHistsCount])
   {
-    [v364 clearKCellularCdma1XServingCellRx0RssiHists];
-    v300 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0RssiHistsCount];
-    if (v300)
+    [toCopy clearKCellularCdma1XServingCellRx0RssiHists];
+    kCellularCdma1XServingCellRx0RssiHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0RssiHistsCount];
+    if (kCellularCdma1XServingCellRx0RssiHistsCount)
     {
-      v301 = v300;
+      v301 = kCellularCdma1XServingCellRx0RssiHistsCount;
       for (i65 = 0; i65 != v301; ++i65)
       {
         v303 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0RssiHistAtIndex:i65];
-        [v364 addKCellularCdma1XServingCellRx0RssiHist:v303];
+        [toCopy addKCellularCdma1XServingCellRx0RssiHist:v303];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1RssiHistsCount])
   {
-    [v364 clearKCellularCdma1XServingCellRx1RssiHists];
-    v304 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1RssiHistsCount];
-    if (v304)
+    [toCopy clearKCellularCdma1XServingCellRx1RssiHists];
+    kCellularCdma1XServingCellRx1RssiHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1RssiHistsCount];
+    if (kCellularCdma1XServingCellRx1RssiHistsCount)
     {
-      v305 = v304;
+      v305 = kCellularCdma1XServingCellRx1RssiHistsCount;
       for (i66 = 0; i66 != v305; ++i66)
       {
         v307 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1RssiHistAtIndex:i66];
-        [v364 addKCellularCdma1XServingCellRx1RssiHist:v307];
+        [toCopy addKCellularCdma1XServingCellRx1RssiHist:v307];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0EcIoHistsCount])
   {
-    [v364 clearKCellularCdma1XServingCellRx0EcIoHists];
-    v308 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0EcIoHistsCount];
-    if (v308)
+    [toCopy clearKCellularCdma1XServingCellRx0EcIoHists];
+    kCellularCdma1XServingCellRx0EcIoHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0EcIoHistsCount];
+    if (kCellularCdma1XServingCellRx0EcIoHistsCount)
     {
-      v309 = v308;
+      v309 = kCellularCdma1XServingCellRx0EcIoHistsCount;
       for (i67 = 0; i67 != v309; ++i67)
       {
         v311 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx0EcIoHistAtIndex:i67];
-        [v364 addKCellularCdma1XServingCellRx0EcIoHist:v311];
+        [toCopy addKCellularCdma1XServingCellRx0EcIoHist:v311];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1EcIoHistsCount])
   {
-    [v364 clearKCellularCdma1XServingCellRx1EcIoHists];
-    v312 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1EcIoHistsCount];
-    if (v312)
+    [toCopy clearKCellularCdma1XServingCellRx1EcIoHists];
+    kCellularCdma1XServingCellRx1EcIoHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1EcIoHistsCount];
+    if (kCellularCdma1XServingCellRx1EcIoHistsCount)
     {
-      v313 = v312;
+      v313 = kCellularCdma1XServingCellRx1EcIoHistsCount;
       for (i68 = 0; i68 != v313; ++i68)
       {
         v315 = [(PowerlogMetricLog *)self kCellularCdma1XServingCellRx1EcIoHistAtIndex:i68];
-        [v364 addKCellularCdma1XServingCellRx1EcIoHist:v315];
+        [toCopy addKCellularCdma1XServingCellRx1EcIoHist:v315];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XTxPowerHistsCount])
   {
-    [v364 clearKCellularCdma1XTxPowerHists];
-    v316 = [(PowerlogMetricLog *)self kCellularCdma1XTxPowerHistsCount];
-    if (v316)
+    [toCopy clearKCellularCdma1XTxPowerHists];
+    kCellularCdma1XTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XTxPowerHistsCount];
+    if (kCellularCdma1XTxPowerHistsCount)
     {
-      v317 = v316;
+      v317 = kCellularCdma1XTxPowerHistsCount;
       for (i69 = 0; i69 != v317; ++i69)
       {
         v319 = [(PowerlogMetricLog *)self kCellularCdma1XTxPowerHistAtIndex:i69];
-        [v364 addKCellularCdma1XTxPowerHist:v319];
+        [toCopy addKCellularCdma1XTxPowerHist:v319];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XProtocolStackStateHistsCount])
   {
-    [v364 clearKCellularCdma1XProtocolStackStateHists];
-    v320 = [(PowerlogMetricLog *)self kCellularCdma1XProtocolStackStateHistsCount];
-    if (v320)
+    [toCopy clearKCellularCdma1XProtocolStackStateHists];
+    kCellularCdma1XProtocolStackStateHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XProtocolStackStateHistsCount];
+    if (kCellularCdma1XProtocolStackStateHistsCount)
     {
-      v321 = v320;
+      v321 = kCellularCdma1XProtocolStackStateHistsCount;
       for (i70 = 0; i70 != v321; ++i70)
       {
         v323 = [(PowerlogMetricLog *)self kCellularCdma1XProtocolStackStateHistAtIndex:i70];
-        [v364 addKCellularCdma1XProtocolStackStateHist:v323];
+        [toCopy addKCellularCdma1XProtocolStackStateHist:v323];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XConnectionHistsCount])
   {
-    [v364 clearKCellularCdma1XConnectionHists];
-    v324 = [(PowerlogMetricLog *)self kCellularCdma1XConnectionHistsCount];
-    if (v324)
+    [toCopy clearKCellularCdma1XConnectionHists];
+    kCellularCdma1XConnectionHistsCount = [(PowerlogMetricLog *)self kCellularCdma1XConnectionHistsCount];
+    if (kCellularCdma1XConnectionHistsCount)
     {
-      v325 = v324;
+      v325 = kCellularCdma1XConnectionHistsCount;
       for (i71 = 0; i71 != v325; ++i71)
       {
         v327 = [(PowerlogMetricLog *)self kCellularCdma1XConnectionHistAtIndex:i71];
-        [v364 addKCellularCdma1XConnectionHist:v327];
+        [toCopy addKCellularCdma1XConnectionHist:v327];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdma1XRrStatesCount])
   {
-    [v364 clearKCellularCdma1XRrStates];
-    v328 = [(PowerlogMetricLog *)self kCellularCdma1XRrStatesCount];
-    if (v328)
+    [toCopy clearKCellularCdma1XRrStates];
+    kCellularCdma1XRrStatesCount = [(PowerlogMetricLog *)self kCellularCdma1XRrStatesCount];
+    if (kCellularCdma1XRrStatesCount)
     {
-      v329 = v328;
+      v329 = kCellularCdma1XRrStatesCount;
       for (i72 = 0; i72 != v329; ++i72)
       {
         v331 = [(PowerlogMetricLog *)self kCellularCdma1XRrStateAtIndex:i72];
-        [v364 addKCellularCdma1XRrState:v331];
+        [toCopy addKCellularCdma1XRrState:v331];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoRxDiversityHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoRxDiversityHists];
-    v332 = [(PowerlogMetricLog *)self kCellularCdmaEvdoRxDiversityHistsCount];
-    if (v332)
+    [toCopy clearKCellularCdmaEvdoRxDiversityHists];
+    kCellularCdmaEvdoRxDiversityHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoRxDiversityHistsCount];
+    if (kCellularCdmaEvdoRxDiversityHistsCount)
     {
-      v333 = v332;
+      v333 = kCellularCdmaEvdoRxDiversityHistsCount;
       for (i73 = 0; i73 != v333; ++i73)
       {
         v335 = [(PowerlogMetricLog *)self kCellularCdmaEvdoRxDiversityHistAtIndex:i73];
-        [v364 addKCellularCdmaEvdoRxDiversityHist:v335];
+        [toCopy addKCellularCdmaEvdoRxDiversityHist:v335];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0RssiHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoServingCellRx0RssiHists];
-    v336 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0RssiHistsCount];
-    if (v336)
+    [toCopy clearKCellularCdmaEvdoServingCellRx0RssiHists];
+    kCellularCdmaEvdoServingCellRx0RssiHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0RssiHistsCount];
+    if (kCellularCdmaEvdoServingCellRx0RssiHistsCount)
     {
-      v337 = v336;
+      v337 = kCellularCdmaEvdoServingCellRx0RssiHistsCount;
       for (i74 = 0; i74 != v337; ++i74)
       {
         v339 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0RssiHistAtIndex:i74];
-        [v364 addKCellularCdmaEvdoServingCellRx0RssiHist:v339];
+        [toCopy addKCellularCdmaEvdoServingCellRx0RssiHist:v339];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1RssiHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoServingCellRx1RssiHists];
-    v340 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1RssiHistsCount];
-    if (v340)
+    [toCopy clearKCellularCdmaEvdoServingCellRx1RssiHists];
+    kCellularCdmaEvdoServingCellRx1RssiHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1RssiHistsCount];
+    if (kCellularCdmaEvdoServingCellRx1RssiHistsCount)
     {
-      v341 = v340;
+      v341 = kCellularCdmaEvdoServingCellRx1RssiHistsCount;
       for (i75 = 0; i75 != v341; ++i75)
       {
         v343 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1RssiHistAtIndex:i75];
-        [v364 addKCellularCdmaEvdoServingCellRx1RssiHist:v343];
+        [toCopy addKCellularCdmaEvdoServingCellRx1RssiHist:v343];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0EcIoHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoServingCellRx0EcIoHists];
-    v344 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0EcIoHistsCount];
-    if (v344)
+    [toCopy clearKCellularCdmaEvdoServingCellRx0EcIoHists];
+    kCellularCdmaEvdoServingCellRx0EcIoHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0EcIoHistsCount];
+    if (kCellularCdmaEvdoServingCellRx0EcIoHistsCount)
     {
-      v345 = v344;
+      v345 = kCellularCdmaEvdoServingCellRx0EcIoHistsCount;
       for (i76 = 0; i76 != v345; ++i76)
       {
         v347 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx0EcIoHistAtIndex:i76];
-        [v364 addKCellularCdmaEvdoServingCellRx0EcIoHist:v347];
+        [toCopy addKCellularCdmaEvdoServingCellRx0EcIoHist:v347];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1EcIoHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoServingCellRx1EcIoHists];
-    v348 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1EcIoHistsCount];
-    if (v348)
+    [toCopy clearKCellularCdmaEvdoServingCellRx1EcIoHists];
+    kCellularCdmaEvdoServingCellRx1EcIoHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1EcIoHistsCount];
+    if (kCellularCdmaEvdoServingCellRx1EcIoHistsCount)
     {
-      v349 = v348;
+      v349 = kCellularCdmaEvdoServingCellRx1EcIoHistsCount;
       for (i77 = 0; i77 != v349; ++i77)
       {
         v351 = [(PowerlogMetricLog *)self kCellularCdmaEvdoServingCellRx1EcIoHistAtIndex:i77];
-        [v364 addKCellularCdmaEvdoServingCellRx1EcIoHist:v351];
+        [toCopy addKCellularCdmaEvdoServingCellRx1EcIoHist:v351];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoTxPowerHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoTxPowerHists];
-    v352 = [(PowerlogMetricLog *)self kCellularCdmaEvdoTxPowerHistsCount];
-    if (v352)
+    [toCopy clearKCellularCdmaEvdoTxPowerHists];
+    kCellularCdmaEvdoTxPowerHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoTxPowerHistsCount];
+    if (kCellularCdmaEvdoTxPowerHistsCount)
     {
-      v353 = v352;
+      v353 = kCellularCdmaEvdoTxPowerHistsCount;
       for (i78 = 0; i78 != v353; ++i78)
       {
         v355 = [(PowerlogMetricLog *)self kCellularCdmaEvdoTxPowerHistAtIndex:i78];
-        [v364 addKCellularCdmaEvdoTxPowerHist:v355];
+        [toCopy addKCellularCdmaEvdoTxPowerHist:v355];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoProtocolStackStateHistsCount])
   {
-    [v364 clearKCellularCdmaEvdoProtocolStackStateHists];
-    v356 = [(PowerlogMetricLog *)self kCellularCdmaEvdoProtocolStackStateHistsCount];
-    if (v356)
+    [toCopy clearKCellularCdmaEvdoProtocolStackStateHists];
+    kCellularCdmaEvdoProtocolStackStateHistsCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoProtocolStackStateHistsCount];
+    if (kCellularCdmaEvdoProtocolStackStateHistsCount)
     {
-      v357 = v356;
+      v357 = kCellularCdmaEvdoProtocolStackStateHistsCount;
       for (i79 = 0; i79 != v357; ++i79)
       {
         v359 = [(PowerlogMetricLog *)self kCellularCdmaEvdoProtocolStackStateHistAtIndex:i79];
-        [v364 addKCellularCdmaEvdoProtocolStackStateHist:v359];
+        [toCopy addKCellularCdmaEvdoProtocolStackStateHist:v359];
       }
     }
   }
 
   if ([(PowerlogMetricLog *)self kCellularCdmaEvdoRrStatesCount])
   {
-    [v364 clearKCellularCdmaEvdoRrStates];
-    v360 = [(PowerlogMetricLog *)self kCellularCdmaEvdoRrStatesCount];
-    if (v360)
+    [toCopy clearKCellularCdmaEvdoRrStates];
+    kCellularCdmaEvdoRrStatesCount = [(PowerlogMetricLog *)self kCellularCdmaEvdoRrStatesCount];
+    if (kCellularCdmaEvdoRrStatesCount)
     {
-      v361 = v360;
+      v361 = kCellularCdmaEvdoRrStatesCount;
       for (i80 = 0; i80 != v361; ++i80)
       {
         v363 = [(PowerlogMetricLog *)self kCellularCdmaEvdoRrStateAtIndex:i80];
-        [v364 addKCellularCdmaEvdoRrState:v363];
+        [toCopy addKCellularCdmaEvdoRrState:v363];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v999 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v905 = 0u;
   v906 = 0u;
   v907 = 0u;
@@ -9518,7 +9518,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v905 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v905 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addKCellularPerClientProfileTriggerCount:v11];
 
         ++v10;
@@ -9551,7 +9551,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v901 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v901 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addKCellularProtocolStackCpuStats:v17];
 
         ++v16;
@@ -9584,7 +9584,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v897 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v897 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addKCellularPeripheralStats:v23];
 
         ++v22;
@@ -9617,7 +9617,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v893 + 1) + 8 * v28) copyWithZone:a3];
+        v29 = [*(*(&v893 + 1) + 8 * v28) copyWithZone:zone];
         [v5 addKCellularDvfsStats:v29];
 
         ++v28;
@@ -9650,7 +9650,7 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v889 + 1) + 8 * v34) copyWithZone:a3];
+        v35 = [*(*(&v889 + 1) + 8 * v34) copyWithZone:zone];
         [v5 addKCellularLteWcdmaGsmHwStats:v35];
 
         ++v34;
@@ -9683,7 +9683,7 @@
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v885 + 1) + 8 * v40) copyWithZone:a3];
+        v41 = [*(*(&v885 + 1) + 8 * v40) copyWithZone:zone];
         [v5 addKCellularLteTdsGsmHwStats:v41];
 
         ++v40;
@@ -9716,7 +9716,7 @@
           objc_enumerationMutation(v42);
         }
 
-        v47 = [*(*(&v881 + 1) + 8 * v46) copyWithZone:a3];
+        v47 = [*(*(&v881 + 1) + 8 * v46) copyWithZone:zone];
         [v5 addKCellularPmuAverageCurrent:v47];
 
         ++v46;
@@ -9749,7 +9749,7 @@
           objc_enumerationMutation(v48);
         }
 
-        v53 = [*(*(&v877 + 1) + 8 * v52) copyWithZone:a3];
+        v53 = [*(*(&v877 + 1) + 8 * v52) copyWithZone:zone];
         [v5 addKCellularFwCoreStats:v53];
 
         ++v52;
@@ -9782,7 +9782,7 @@
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v873 + 1) + 8 * v58) copyWithZone:a3];
+        v59 = [*(*(&v873 + 1) + 8 * v58) copyWithZone:zone];
         [v5 addKCellularLteWcdmaTdsHwStats:v59];
 
         ++v58;
@@ -9815,7 +9815,7 @@
           objc_enumerationMutation(v60);
         }
 
-        v65 = [*(*(&v869 + 1) + 8 * v64) copyWithZone:a3];
+        v65 = [*(*(&v869 + 1) + 8 * v64) copyWithZone:zone];
         [v5 addKCellularPmicHwStats:v65];
 
         ++v64;
@@ -9848,7 +9848,7 @@
           objc_enumerationMutation(v66);
         }
 
-        v71 = [*(*(&v865 + 1) + 8 * v70) copyWithZone:a3];
+        v71 = [*(*(&v865 + 1) + 8 * v70) copyWithZone:zone];
         [v5 addKCellularTdsRrcState:v71];
 
         ++v70;
@@ -9881,7 +9881,7 @@
           objc_enumerationMutation(v72);
         }
 
-        v77 = [*(*(&v861 + 1) + 8 * v76) copyWithZone:a3];
+        v77 = [*(*(&v861 + 1) + 8 * v76) copyWithZone:zone];
         [v5 addKCellularLteRrcState:v77];
 
         ++v76;
@@ -9914,7 +9914,7 @@
           objc_enumerationMutation(v78);
         }
 
-        v83 = [*(*(&v857 + 1) + 8 * v82) copyWithZone:a3];
+        v83 = [*(*(&v857 + 1) + 8 * v82) copyWithZone:zone];
         [v5 addKCellularLtePagingCycle:v83];
 
         ++v82;
@@ -9947,7 +9947,7 @@
           objc_enumerationMutation(v84);
         }
 
-        v89 = [*(*(&v853 + 1) + 8 * v88) copyWithZone:a3];
+        v89 = [*(*(&v853 + 1) + 8 * v88) copyWithZone:zone];
         [v5 addKCellularLteCdrxConfig:v89];
 
         ++v88;
@@ -9980,7 +9980,7 @@
           objc_enumerationMutation(v90);
         }
 
-        v95 = [*(*(&v849 + 1) + 8 * v94) copyWithZone:a3];
+        v95 = [*(*(&v849 + 1) + 8 * v94) copyWithZone:zone];
         [v5 addKCellularLteRadioLinkFailure:v95];
 
         ++v94;
@@ -10013,7 +10013,7 @@
           objc_enumerationMutation(v96);
         }
 
-        v101 = [*(*(&v845 + 1) + 8 * v100) copyWithZone:a3];
+        v101 = [*(*(&v845 + 1) + 8 * v100) copyWithZone:zone];
         [v5 addKCellularLtePdcchStateStats:v101];
 
         ++v100;
@@ -10046,7 +10046,7 @@
           objc_enumerationMutation(v102);
         }
 
-        v107 = [*(*(&v841 + 1) + 8 * v106) copyWithZone:a3];
+        v107 = [*(*(&v841 + 1) + 8 * v106) copyWithZone:zone];
         [v5 addKCellularLqmStateChange:v107];
 
         ++v106;
@@ -10079,7 +10079,7 @@
           objc_enumerationMutation(v108);
         }
 
-        v113 = [*(*(&v837 + 1) + 8 * v112) copyWithZone:a3];
+        v113 = [*(*(&v837 + 1) + 8 * v112) copyWithZone:zone];
         [v5 addKCellularServiceLost:v113];
 
         ++v112;
@@ -10112,7 +10112,7 @@
           objc_enumerationMutation(v114);
         }
 
-        v119 = [*(*(&v833 + 1) + 8 * v118) copyWithZone:a3];
+        v119 = [*(*(&v833 + 1) + 8 * v118) copyWithZone:zone];
         [v5 addKCellularGsmServingCellRssiHist:v119];
 
         ++v118;
@@ -10145,7 +10145,7 @@
           objc_enumerationMutation(v120);
         }
 
-        v125 = [*(*(&v829 + 1) + 8 * v124) copyWithZone:a3];
+        v125 = [*(*(&v829 + 1) + 8 * v124) copyWithZone:zone];
         [v5 addKCellularGsmServingCellSnrHist:v125];
 
         ++v124;
@@ -10178,7 +10178,7 @@
           objc_enumerationMutation(v126);
         }
 
-        v131 = [*(*(&v825 + 1) + 8 * v130) copyWithZone:a3];
+        v131 = [*(*(&v825 + 1) + 8 * v130) copyWithZone:zone];
         [v5 addKCellularGsmTxPowerHist:v131];
 
         ++v130;
@@ -10211,7 +10211,7 @@
           objc_enumerationMutation(v132);
         }
 
-        v137 = [*(*(&v821 + 1) + 8 * v136) copyWithZone:a3];
+        v137 = [*(*(&v821 + 1) + 8 * v136) copyWithZone:zone];
         [v5 addKCellularGsmConnectedModeHist:v137];
 
         ++v136;
@@ -10244,7 +10244,7 @@
           objc_enumerationMutation(v138);
         }
 
-        v143 = [*(*(&v817 + 1) + 8 * v142) copyWithZone:a3];
+        v143 = [*(*(&v817 + 1) + 8 * v142) copyWithZone:zone];
         [v5 addKCellularGsmL1State:v143];
 
         ++v142;
@@ -10277,7 +10277,7 @@
           objc_enumerationMutation(v144);
         }
 
-        v149 = [*(*(&v813 + 1) + 8 * v148) copyWithZone:a3];
+        v149 = [*(*(&v813 + 1) + 8 * v148) copyWithZone:zone];
         [v5 addKCellularWcdmaCpcStat:v149];
 
         ++v148;
@@ -10310,7 +10310,7 @@
           objc_enumerationMutation(v150);
         }
 
-        v155 = [*(*(&v809 + 1) + 8 * v154) copyWithZone:a3];
+        v155 = [*(*(&v809 + 1) + 8 * v154) copyWithZone:zone];
         [v5 addKCellularWcdmaRxDiversityHist:v155];
 
         ++v154;
@@ -10343,7 +10343,7 @@
           objc_enumerationMutation(v156);
         }
 
-        v161 = [*(*(&v805 + 1) + 8 * v160) copyWithZone:a3];
+        v161 = [*(*(&v805 + 1) + 8 * v160) copyWithZone:zone];
         [v5 addKCellularWcdmaServingCellRx0RssiHist:v161];
 
         ++v160;
@@ -10376,7 +10376,7 @@
           objc_enumerationMutation(v162);
         }
 
-        v167 = [*(*(&v801 + 1) + 8 * v166) copyWithZone:a3];
+        v167 = [*(*(&v801 + 1) + 8 * v166) copyWithZone:zone];
         [v5 addKCellularWcdmaServingCellRx1RssiHist:v167];
 
         ++v166;
@@ -10409,7 +10409,7 @@
           objc_enumerationMutation(v168);
         }
 
-        v173 = [*(*(&v797 + 1) + 8 * v172) copyWithZone:a3];
+        v173 = [*(*(&v797 + 1) + 8 * v172) copyWithZone:zone];
         [v5 addKCellularWcdmaServingCellRx0EcNoHist:v173];
 
         ++v172;
@@ -10442,7 +10442,7 @@
           objc_enumerationMutation(v174);
         }
 
-        v179 = [*(*(&v793 + 1) + 8 * v178) copyWithZone:a3];
+        v179 = [*(*(&v793 + 1) + 8 * v178) copyWithZone:zone];
         [v5 addKCellularWcdmaServingCellRx1EcNoHist:v179];
 
         ++v178;
@@ -10475,7 +10475,7 @@
           objc_enumerationMutation(v180);
         }
 
-        v185 = [*(*(&v789 + 1) + 8 * v184) copyWithZone:a3];
+        v185 = [*(*(&v789 + 1) + 8 * v184) copyWithZone:zone];
         [v5 addKCellularWcdmaTxPowerHist:v185];
 
         ++v184;
@@ -10508,7 +10508,7 @@
           objc_enumerationMutation(v186);
         }
 
-        v191 = [*(*(&v785 + 1) + 8 * v190) copyWithZone:a3];
+        v191 = [*(*(&v785 + 1) + 8 * v190) copyWithZone:zone];
         [v5 addKCellularWcdmaReceiverStatusOnC0Hist:v191];
 
         ++v190;
@@ -10541,7 +10541,7 @@
           objc_enumerationMutation(v192);
         }
 
-        v197 = [*(*(&v781 + 1) + 8 * v196) copyWithZone:a3];
+        v197 = [*(*(&v781 + 1) + 8 * v196) copyWithZone:zone];
         [v5 addKCellularWcdmaReceiverStatusOnC1Hist:v197];
 
         ++v196;
@@ -10574,7 +10574,7 @@
           objc_enumerationMutation(v198);
         }
 
-        v203 = [*(*(&v777 + 1) + 8 * v202) copyWithZone:a3];
+        v203 = [*(*(&v777 + 1) + 8 * v202) copyWithZone:zone];
         [v5 addKCellularWcdmaCarrierStatusHist:v203];
 
         ++v202;
@@ -10607,7 +10607,7 @@
           objc_enumerationMutation(v204);
         }
 
-        v209 = [*(*(&v773 + 1) + 8 * v208) copyWithZone:a3];
+        v209 = [*(*(&v773 + 1) + 8 * v208) copyWithZone:zone];
         [v5 addKCellularWcdmaRabModeHist:v209];
 
         ++v208;
@@ -10640,7 +10640,7 @@
           objc_enumerationMutation(v210);
         }
 
-        v215 = [*(*(&v769 + 1) + 8 * v214) copyWithZone:a3];
+        v215 = [*(*(&v769 + 1) + 8 * v214) copyWithZone:zone];
         [v5 addKCellularWcdmaRabTypeHist:v215];
 
         ++v214;
@@ -10673,7 +10673,7 @@
           objc_enumerationMutation(v216);
         }
 
-        v221 = [*(*(&v765 + 1) + 8 * v220) copyWithZone:a3];
+        v221 = [*(*(&v765 + 1) + 8 * v220) copyWithZone:zone];
         [v5 addKCellularWcdmaRrcConnectionState:v221];
 
         ++v220;
@@ -10706,7 +10706,7 @@
           objc_enumerationMutation(v222);
         }
 
-        v227 = [*(*(&v761 + 1) + 8 * v226) copyWithZone:a3];
+        v227 = [*(*(&v761 + 1) + 8 * v226) copyWithZone:zone];
         [v5 addKCellularWcdmaRrcConfiguration:v227];
 
         ++v226;
@@ -10739,7 +10739,7 @@
           objc_enumerationMutation(v228);
         }
 
-        v233 = [*(*(&v757 + 1) + 8 * v232) copyWithZone:a3];
+        v233 = [*(*(&v757 + 1) + 8 * v232) copyWithZone:zone];
         [v5 addKCellularWcdmaRabStatus:v233];
 
         ++v232;
@@ -10772,7 +10772,7 @@
           objc_enumerationMutation(v234);
         }
 
-        v239 = [*(*(&v753 + 1) + 8 * v238) copyWithZone:a3];
+        v239 = [*(*(&v753 + 1) + 8 * v238) copyWithZone:zone];
         [v5 addKCellularWcdmaL1State:v239];
 
         ++v238;
@@ -10805,7 +10805,7 @@
           objc_enumerationMutation(v240);
         }
 
-        v245 = [*(*(&v749 + 1) + 8 * v244) copyWithZone:a3];
+        v245 = [*(*(&v749 + 1) + 8 * v244) copyWithZone:zone];
         [v5 addKCellularWcdmaDataInactivityBeforeIdle:v245];
 
         ++v244;
@@ -10838,7 +10838,7 @@
           objc_enumerationMutation(v246);
         }
 
-        v251 = [*(*(&v745 + 1) + 8 * v250) copyWithZone:a3];
+        v251 = [*(*(&v745 + 1) + 8 * v250) copyWithZone:zone];
         [v5 addKCellularWcdmaIdleToConnectedUserData:v251];
 
         ++v250;
@@ -10871,7 +10871,7 @@
           objc_enumerationMutation(v252);
         }
 
-        v257 = [*(*(&v741 + 1) + 8 * v256) copyWithZone:a3];
+        v257 = [*(*(&v741 + 1) + 8 * v256) copyWithZone:zone];
         [v5 addKCellularWcdmaVadHist:v257];
 
         ++v256;
@@ -10904,7 +10904,7 @@
           objc_enumerationMutation(v258);
         }
 
-        v263 = [*(*(&v737 + 1) + 8 * v262) copyWithZone:a3];
+        v263 = [*(*(&v737 + 1) + 8 * v262) copyWithZone:zone];
         [v5 addKCellularTdsRxDiversityHist:v263];
 
         ++v262;
@@ -10937,7 +10937,7 @@
           objc_enumerationMutation(v264);
         }
 
-        v269 = [*(*(&v733 + 1) + 8 * v268) copyWithZone:a3];
+        v269 = [*(*(&v733 + 1) + 8 * v268) copyWithZone:zone];
         [v5 addKCellularTdsServingCellRx0RssiHist:v269];
 
         ++v268;
@@ -10970,7 +10970,7 @@
           objc_enumerationMutation(v270);
         }
 
-        v275 = [*(*(&v729 + 1) + 8 * v274) copyWithZone:a3];
+        v275 = [*(*(&v729 + 1) + 8 * v274) copyWithZone:zone];
         [v5 addKCellularTdsServingCellRx1RssiHist:v275];
 
         ++v274;
@@ -11003,7 +11003,7 @@
           objc_enumerationMutation(v276);
         }
 
-        v281 = [*(*(&v725 + 1) + 8 * v280) copyWithZone:a3];
+        v281 = [*(*(&v725 + 1) + 8 * v280) copyWithZone:zone];
         [v5 addKCellularTdsServingCellRx0RscpHist:v281];
 
         ++v280;
@@ -11036,7 +11036,7 @@
           objc_enumerationMutation(v282);
         }
 
-        v287 = [*(*(&v721 + 1) + 8 * v286) copyWithZone:a3];
+        v287 = [*(*(&v721 + 1) + 8 * v286) copyWithZone:zone];
         [v5 addKCellularTdsServingCellRx1RscpHist:v287];
 
         ++v286;
@@ -11069,7 +11069,7 @@
           objc_enumerationMutation(v288);
         }
 
-        v293 = [*(*(&v717 + 1) + 8 * v292) copyWithZone:a3];
+        v293 = [*(*(&v717 + 1) + 8 * v292) copyWithZone:zone];
         [v5 addKCellularTdsTxPowerHist:v293];
 
         ++v292;
@@ -11102,7 +11102,7 @@
           objc_enumerationMutation(v294);
         }
 
-        v299 = [*(*(&v713 + 1) + 8 * v298) copyWithZone:a3];
+        v299 = [*(*(&v713 + 1) + 8 * v298) copyWithZone:zone];
         [v5 addKCellularTdsRabModeHist:v299];
 
         ++v298;
@@ -11135,7 +11135,7 @@
           objc_enumerationMutation(v300);
         }
 
-        v305 = [*(*(&v709 + 1) + 8 * v304) copyWithZone:a3];
+        v305 = [*(*(&v709 + 1) + 8 * v304) copyWithZone:zone];
         [v5 addKCellularTdsRabTypeHist:v305];
 
         ++v304;
@@ -11168,7 +11168,7 @@
           objc_enumerationMutation(v306);
         }
 
-        v311 = [*(*(&v705 + 1) + 8 * v310) copyWithZone:a3];
+        v311 = [*(*(&v705 + 1) + 8 * v310) copyWithZone:zone];
         [v5 addKCellularTdsL1State:v311];
 
         ++v310;
@@ -11201,7 +11201,7 @@
           objc_enumerationMutation(v312);
         }
 
-        v317 = [*(*(&v701 + 1) + 8 * v316) copyWithZone:a3];
+        v317 = [*(*(&v701 + 1) + 8 * v316) copyWithZone:zone];
         [v5 addKCellularLteFwDuplexMode:v317];
 
         ++v316;
@@ -11234,7 +11234,7 @@
           objc_enumerationMutation(v318);
         }
 
-        v323 = [*(*(&v697 + 1) + 8 * v322) copyWithZone:a3];
+        v323 = [*(*(&v697 + 1) + 8 * v322) copyWithZone:zone];
         [v5 addKCellularLteServingCellRsrpHist:v323];
 
         ++v322;
@@ -11267,7 +11267,7 @@
           objc_enumerationMutation(v324);
         }
 
-        v329 = [*(*(&v693 + 1) + 8 * v328) copyWithZone:a3];
+        v329 = [*(*(&v693 + 1) + 8 * v328) copyWithZone:zone];
         [v5 addKCellularLteServingCellSinrHist:v329];
 
         ++v328;
@@ -11300,7 +11300,7 @@
           objc_enumerationMutation(v330);
         }
 
-        v335 = [*(*(&v689 + 1) + 8 * v334) copyWithZone:a3];
+        v335 = [*(*(&v689 + 1) + 8 * v334) copyWithZone:zone];
         [v5 addKCellularLteSleepStateHist:v335];
 
         ++v334;
@@ -11333,7 +11333,7 @@
           objc_enumerationMutation(v336);
         }
 
-        v341 = [*(*(&v685 + 1) + 8 * v340) copyWithZone:a3];
+        v341 = [*(*(&v685 + 1) + 8 * v340) copyWithZone:zone];
         [v5 addKCellularLteTxPowerHist:v341];
 
         ++v340;
@@ -11366,7 +11366,7 @@
           objc_enumerationMutation(v342);
         }
 
-        v347 = [*(*(&v681 + 1) + 8 * v346) copyWithZone:a3];
+        v347 = [*(*(&v681 + 1) + 8 * v346) copyWithZone:zone];
         [v5 addKCellularLteDlSccStateHist:v347];
 
         ++v346;
@@ -11399,7 +11399,7 @@
           objc_enumerationMutation(v348);
         }
 
-        v353 = [*(*(&v677 + 1) + 8 * v352) copyWithZone:a3];
+        v353 = [*(*(&v677 + 1) + 8 * v352) copyWithZone:zone];
         [v5 addKCellularLteUlSccStateHist:v353];
 
         ++v352;
@@ -11432,7 +11432,7 @@
           objc_enumerationMutation(v354);
         }
 
-        v359 = [*(*(&v673 + 1) + 8 * v358) copyWithZone:a3];
+        v359 = [*(*(&v673 + 1) + 8 * v358) copyWithZone:zone];
         [v5 addKCellularLteAdvancedRxStateHist:v359];
 
         ++v358;
@@ -11465,7 +11465,7 @@
           objc_enumerationMutation(v360);
         }
 
-        v365 = [*(*(&v669 + 1) + 8 * v364) copyWithZone:a3];
+        v365 = [*(*(&v669 + 1) + 8 * v364) copyWithZone:zone];
         [v5 addKCellularLteComponentCarrierInfo:v365];
 
         ++v364;
@@ -11498,7 +11498,7 @@
           objc_enumerationMutation(v366);
         }
 
-        v371 = [*(*(&v665 + 1) + 8 * v370) copyWithZone:a3];
+        v371 = [*(*(&v665 + 1) + 8 * v370) copyWithZone:zone];
         [v5 addKCellularLteRxTxStateHist:v371];
 
         ++v370;
@@ -11531,7 +11531,7 @@
           objc_enumerationMutation(v372);
         }
 
-        v377 = [*(*(&v661 + 1) + 8 * v376) copyWithZone:a3];
+        v377 = [*(*(&v661 + 1) + 8 * v376) copyWithZone:zone];
         [v5 addKCellularLteTotalDlTbsHist:v377];
 
         ++v376;
@@ -11564,7 +11564,7 @@
           objc_enumerationMutation(v378);
         }
 
-        v383 = [*(*(&v657 + 1) + 8 * v382) copyWithZone:a3];
+        v383 = [*(*(&v657 + 1) + 8 * v382) copyWithZone:zone];
         [v5 addKCellularLteDlSccStateHistV3:v383];
 
         ++v382;
@@ -11597,7 +11597,7 @@
           objc_enumerationMutation(v384);
         }
 
-        v389 = [*(*(&v653 + 1) + 8 * v388) copyWithZone:a3];
+        v389 = [*(*(&v653 + 1) + 8 * v388) copyWithZone:zone];
         [v5 addKCellularLteRxDiversityHist:v389];
 
         ++v388;
@@ -11630,7 +11630,7 @@
           objc_enumerationMutation(v390);
         }
 
-        v395 = [*(*(&v649 + 1) + 8 * v394) copyWithZone:a3];
+        v395 = [*(*(&v649 + 1) + 8 * v394) copyWithZone:zone];
         [v5 addKCellularLtePdcchStateHist:v395];
 
         ++v394;
@@ -11663,7 +11663,7 @@
           objc_enumerationMutation(v396);
         }
 
-        v401 = [*(*(&v645 + 1) + 8 * v400) copyWithZone:a3];
+        v401 = [*(*(&v645 + 1) + 8 * v400) copyWithZone:zone];
         [v5 addKCellularProtocolStackStateHist:v401];
 
         ++v400;
@@ -11696,7 +11696,7 @@
           objc_enumerationMutation(v402);
         }
 
-        v407 = [*(*(&v641 + 1) + 8 * v406) copyWithZone:a3];
+        v407 = [*(*(&v641 + 1) + 8 * v406) copyWithZone:zone];
         [v5 addKCellularCellPlmnSearchCount:v407];
 
         ++v406;
@@ -11729,7 +11729,7 @@
           objc_enumerationMutation(v408);
         }
 
-        v413 = [*(*(&v637 + 1) + 8 * v412) copyWithZone:a3];
+        v413 = [*(*(&v637 + 1) + 8 * v412) copyWithZone:zone];
         [v5 addKCellularCellPlmnSearchHist:v413];
 
         ++v412;
@@ -11762,7 +11762,7 @@
           objc_enumerationMutation(v414);
         }
 
-        v419 = [*(*(&v633 + 1) + 8 * v418) copyWithZone:a3];
+        v419 = [*(*(&v633 + 1) + 8 * v418) copyWithZone:zone];
         [v5 addKCellularProtocolStackPowerState:v419];
 
         ++v418;
@@ -11795,7 +11795,7 @@
           objc_enumerationMutation(v420);
         }
 
-        v425 = [*(*(&v629 + 1) + 8 * v424) copyWithZone:a3];
+        v425 = [*(*(&v629 + 1) + 8 * v424) copyWithZone:zone];
         [v5 addKCellularDownlinkIpPacketFilterStatus:v425];
 
         ++v424;
@@ -11828,7 +11828,7 @@
           objc_enumerationMutation(v426);
         }
 
-        v431 = [*(*(&v625 + 1) + 8 * v430) copyWithZone:a3];
+        v431 = [*(*(&v625 + 1) + 8 * v430) copyWithZone:zone];
         [v5 addKCellularServingCellRfBandHist:v431];
 
         ++v430;
@@ -11861,7 +11861,7 @@
           objc_enumerationMutation(v432);
         }
 
-        v437 = [*(*(&v621 + 1) + 8 * v436) copyWithZone:a3];
+        v437 = [*(*(&v621 + 1) + 8 * v436) copyWithZone:zone];
         [v5 addKCellularProtocolStackStateHist2:v437];
 
         ++v436;
@@ -11894,7 +11894,7 @@
           objc_enumerationMutation(v438);
         }
 
-        v443 = [*(*(&v617 + 1) + 8 * v442) copyWithZone:a3];
+        v443 = [*(*(&v617 + 1) + 8 * v442) copyWithZone:zone];
         [v5 addKCellularProtocolStackState:v443];
 
         ++v442;
@@ -11927,7 +11927,7 @@
           objc_enumerationMutation(v444);
         }
 
-        v449 = [*(*(&v613 + 1) + 8 * v448) copyWithZone:a3];
+        v449 = [*(*(&v613 + 1) + 8 * v448) copyWithZone:zone];
         [v5 addKCellularCdma1XRxDiversityHist:v449];
 
         ++v448;
@@ -11960,7 +11960,7 @@
           objc_enumerationMutation(v450);
         }
 
-        v455 = [*(*(&v609 + 1) + 8 * v454) copyWithZone:a3];
+        v455 = [*(*(&v609 + 1) + 8 * v454) copyWithZone:zone];
         [v5 addKCellularCdma1XServingCellRx0RssiHist:v455];
 
         ++v454;
@@ -11993,7 +11993,7 @@
           objc_enumerationMutation(v456);
         }
 
-        v461 = [*(*(&v605 + 1) + 8 * v460) copyWithZone:a3];
+        v461 = [*(*(&v605 + 1) + 8 * v460) copyWithZone:zone];
         [v5 addKCellularCdma1XServingCellRx1RssiHist:v461];
 
         ++v460;
@@ -12026,7 +12026,7 @@
           objc_enumerationMutation(v462);
         }
 
-        v467 = [*(*(&v601 + 1) + 8 * v466) copyWithZone:a3];
+        v467 = [*(*(&v601 + 1) + 8 * v466) copyWithZone:zone];
         [v5 addKCellularCdma1XServingCellRx0EcIoHist:v467];
 
         ++v466;
@@ -12059,7 +12059,7 @@
           objc_enumerationMutation(v468);
         }
 
-        v473 = [*(*(&v597 + 1) + 8 * v472) copyWithZone:a3];
+        v473 = [*(*(&v597 + 1) + 8 * v472) copyWithZone:zone];
         [v5 addKCellularCdma1XServingCellRx1EcIoHist:v473];
 
         ++v472;
@@ -12092,7 +12092,7 @@
           objc_enumerationMutation(v474);
         }
 
-        v479 = [*(*(&v593 + 1) + 8 * v478) copyWithZone:a3];
+        v479 = [*(*(&v593 + 1) + 8 * v478) copyWithZone:zone];
         [v5 addKCellularCdma1XTxPowerHist:v479];
 
         ++v478;
@@ -12125,7 +12125,7 @@
           objc_enumerationMutation(v480);
         }
 
-        v485 = [*(*(&v589 + 1) + 8 * v484) copyWithZone:a3];
+        v485 = [*(*(&v589 + 1) + 8 * v484) copyWithZone:zone];
         [v5 addKCellularCdma1XProtocolStackStateHist:v485];
 
         ++v484;
@@ -12158,7 +12158,7 @@
           objc_enumerationMutation(v486);
         }
 
-        v491 = [*(*(&v585 + 1) + 8 * v490) copyWithZone:a3];
+        v491 = [*(*(&v585 + 1) + 8 * v490) copyWithZone:zone];
         [v5 addKCellularCdma1XConnectionHist:v491];
 
         ++v490;
@@ -12191,7 +12191,7 @@
           objc_enumerationMutation(v492);
         }
 
-        v497 = [*(*(&v581 + 1) + 8 * v496) copyWithZone:a3];
+        v497 = [*(*(&v581 + 1) + 8 * v496) copyWithZone:zone];
         [v5 addKCellularCdma1XRrState:v497];
 
         ++v496;
@@ -12224,7 +12224,7 @@
           objc_enumerationMutation(v498);
         }
 
-        v503 = [*(*(&v577 + 1) + 8 * v502) copyWithZone:a3];
+        v503 = [*(*(&v577 + 1) + 8 * v502) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoRxDiversityHist:v503];
 
         ++v502;
@@ -12257,7 +12257,7 @@
           objc_enumerationMutation(v504);
         }
 
-        v509 = [*(*(&v573 + 1) + 8 * v508) copyWithZone:a3];
+        v509 = [*(*(&v573 + 1) + 8 * v508) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoServingCellRx0RssiHist:v509];
 
         ++v508;
@@ -12290,7 +12290,7 @@
           objc_enumerationMutation(v510);
         }
 
-        v515 = [*(*(&v569 + 1) + 8 * v514) copyWithZone:a3];
+        v515 = [*(*(&v569 + 1) + 8 * v514) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoServingCellRx1RssiHist:v515];
 
         ++v514;
@@ -12323,7 +12323,7 @@
           objc_enumerationMutation(v516);
         }
 
-        v521 = [*(*(&v565 + 1) + 8 * v520) copyWithZone:a3];
+        v521 = [*(*(&v565 + 1) + 8 * v520) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoServingCellRx0EcIoHist:v521];
 
         ++v520;
@@ -12356,7 +12356,7 @@
           objc_enumerationMutation(v522);
         }
 
-        v527 = [*(*(&v561 + 1) + 8 * v526) copyWithZone:a3];
+        v527 = [*(*(&v561 + 1) + 8 * v526) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoServingCellRx1EcIoHist:v527];
 
         ++v526;
@@ -12389,7 +12389,7 @@
           objc_enumerationMutation(v528);
         }
 
-        v533 = [*(*(&v557 + 1) + 8 * v532) copyWithZone:a3];
+        v533 = [*(*(&v557 + 1) + 8 * v532) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoTxPowerHist:v533];
 
         ++v532;
@@ -12422,7 +12422,7 @@
           objc_enumerationMutation(v534);
         }
 
-        v539 = [*(*(&v553 + 1) + 8 * v538) copyWithZone:a3];
+        v539 = [*(*(&v553 + 1) + 8 * v538) copyWithZone:zone];
         [v5 addKCellularCdmaEvdoProtocolStackStateHist:v539];
 
         ++v538;
@@ -12455,7 +12455,7 @@
           objc_enumerationMutation(v540);
         }
 
-        v545 = [*(*(&v549 + 1) + 8 * v544) copyWithZone:{a3, v549}];
+        v545 = [*(*(&v549 + 1) + 8 * v544) copyWithZone:{zone, v549}];
         [v5 addKCellularCdmaEvdoRrState:v545];
 
         ++v544;
@@ -12473,16 +12473,16 @@
   return v546;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_182;
   }
 
   kCellularPerClientProfileTriggerCounts = self->_kCellularPerClientProfileTriggerCounts;
-  if (kCellularPerClientProfileTriggerCounts | v4[51])
+  if (kCellularPerClientProfileTriggerCounts | equalCopy[51])
   {
     if (![(NSMutableArray *)kCellularPerClientProfileTriggerCounts isEqual:?])
     {
@@ -12491,495 +12491,495 @@
   }
 
   kCellularProtocolStackCpuStats = self->_kCellularProtocolStackCpuStats;
-  if (kCellularProtocolStackCpuStats | v4[55] && ![(NSMutableArray *)kCellularProtocolStackCpuStats isEqual:?])
+  if (kCellularProtocolStackCpuStats | equalCopy[55] && ![(NSMutableArray *)kCellularProtocolStackCpuStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularPeripheralStats = self->_kCellularPeripheralStats;
-  if (kCellularPeripheralStats | v4[52] && ![(NSMutableArray *)kCellularPeripheralStats isEqual:?])
+  if (kCellularPeripheralStats | equalCopy[52] && ![(NSMutableArray *)kCellularPeripheralStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularDvfsStats = self->_kCellularDvfsStats;
-  if (kCellularDvfsStats | v4[21] && ![(NSMutableArray *)kCellularDvfsStats isEqual:?])
+  if (kCellularDvfsStats | equalCopy[21] && ![(NSMutableArray *)kCellularDvfsStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteWcdmaGsmHwStats = self->_kCellularLteWcdmaGsmHwStats;
-  if (kCellularLteWcdmaGsmHwStats | v4[49] && ![(NSMutableArray *)kCellularLteWcdmaGsmHwStats isEqual:?])
+  if (kCellularLteWcdmaGsmHwStats | equalCopy[49] && ![(NSMutableArray *)kCellularLteWcdmaGsmHwStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteTdsGsmHwStats = self->_kCellularLteTdsGsmHwStats;
-  if (kCellularLteTdsGsmHwStats | v4[45] && ![(NSMutableArray *)kCellularLteTdsGsmHwStats isEqual:?])
+  if (kCellularLteTdsGsmHwStats | equalCopy[45] && ![(NSMutableArray *)kCellularLteTdsGsmHwStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularPmuAverageCurrents = self->_kCellularPmuAverageCurrents;
-  if (kCellularPmuAverageCurrents | v4[54] && ![(NSMutableArray *)kCellularPmuAverageCurrents isEqual:?])
+  if (kCellularPmuAverageCurrents | equalCopy[54] && ![(NSMutableArray *)kCellularPmuAverageCurrents isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularFwCoreStats = self->_kCellularFwCoreStats;
-  if (kCellularFwCoreStats | v4[22] && ![(NSMutableArray *)kCellularFwCoreStats isEqual:?])
+  if (kCellularFwCoreStats | equalCopy[22] && ![(NSMutableArray *)kCellularFwCoreStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteWcdmaTdsHwStats = self->_kCellularLteWcdmaTdsHwStats;
-  if (kCellularLteWcdmaTdsHwStats | v4[50] && ![(NSMutableArray *)kCellularLteWcdmaTdsHwStats isEqual:?])
+  if (kCellularLteWcdmaTdsHwStats | equalCopy[50] && ![(NSMutableArray *)kCellularLteWcdmaTdsHwStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularPmicHwStats = self->_kCellularPmicHwStats;
-  if (kCellularPmicHwStats | v4[53] && ![(NSMutableArray *)kCellularPmicHwStats isEqual:?])
+  if (kCellularPmicHwStats | equalCopy[53] && ![(NSMutableArray *)kCellularPmicHwStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsRrcStates = self->_kCellularTdsRrcStates;
-  if (kCellularTdsRrcStates | v4[65] && ![(NSMutableArray *)kCellularTdsRrcStates isEqual:?])
+  if (kCellularTdsRrcStates | equalCopy[65] && ![(NSMutableArray *)kCellularTdsRrcStates isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteRrcStates = self->_kCellularLteRrcStates;
-  if (kCellularLteRrcStates | v4[39] && ![(NSMutableArray *)kCellularLteRrcStates isEqual:?])
+  if (kCellularLteRrcStates | equalCopy[39] && ![(NSMutableArray *)kCellularLteRrcStates isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLtePagingCycles = self->_kCellularLtePagingCycles;
-  if (kCellularLtePagingCycles | v4[35] && ![(NSMutableArray *)kCellularLtePagingCycles isEqual:?])
+  if (kCellularLtePagingCycles | equalCopy[35] && ![(NSMutableArray *)kCellularLtePagingCycles isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteCdrxConfigs = self->_kCellularLteCdrxConfigs;
-  if (kCellularLteCdrxConfigs | v4[30] && ![(NSMutableArray *)kCellularLteCdrxConfigs isEqual:?])
+  if (kCellularLteCdrxConfigs | equalCopy[30] && ![(NSMutableArray *)kCellularLteCdrxConfigs isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteRadioLinkFailures = self->_kCellularLteRadioLinkFailures;
-  if (kCellularLteRadioLinkFailures | v4[38] && ![(NSMutableArray *)kCellularLteRadioLinkFailures isEqual:?])
+  if (kCellularLteRadioLinkFailures | equalCopy[38] && ![(NSMutableArray *)kCellularLteRadioLinkFailures isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLtePdcchStateStats = self->_kCellularLtePdcchStateStats;
-  if (kCellularLtePdcchStateStats | v4[37] && ![(NSMutableArray *)kCellularLtePdcchStateStats isEqual:?])
+  if (kCellularLtePdcchStateStats | equalCopy[37] && ![(NSMutableArray *)kCellularLtePdcchStateStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLqmStateChanges = self->_kCellularLqmStateChanges;
-  if (kCellularLqmStateChanges | v4[28] && ![(NSMutableArray *)kCellularLqmStateChanges isEqual:?])
+  if (kCellularLqmStateChanges | equalCopy[28] && ![(NSMutableArray *)kCellularLqmStateChanges isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularServiceLosts = self->_kCellularServiceLosts;
-  if (kCellularServiceLosts | v4[60] && ![(NSMutableArray *)kCellularServiceLosts isEqual:?])
+  if (kCellularServiceLosts | equalCopy[60] && ![(NSMutableArray *)kCellularServiceLosts isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularGsmServingCellRssiHists = self->_kCellularGsmServingCellRssiHists;
-  if (kCellularGsmServingCellRssiHists | v4[25] && ![(NSMutableArray *)kCellularGsmServingCellRssiHists isEqual:?])
+  if (kCellularGsmServingCellRssiHists | equalCopy[25] && ![(NSMutableArray *)kCellularGsmServingCellRssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularGsmServingCellSnrHists = self->_kCellularGsmServingCellSnrHists;
-  if (kCellularGsmServingCellSnrHists | v4[26] && ![(NSMutableArray *)kCellularGsmServingCellSnrHists isEqual:?])
+  if (kCellularGsmServingCellSnrHists | equalCopy[26] && ![(NSMutableArray *)kCellularGsmServingCellSnrHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularGsmTxPowerHists = self->_kCellularGsmTxPowerHists;
-  if (kCellularGsmTxPowerHists | v4[27] && ![(NSMutableArray *)kCellularGsmTxPowerHists isEqual:?])
+  if (kCellularGsmTxPowerHists | equalCopy[27] && ![(NSMutableArray *)kCellularGsmTxPowerHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularGsmConnectedModeHists = self->_kCellularGsmConnectedModeHists;
-  if (kCellularGsmConnectedModeHists | v4[23] && ![(NSMutableArray *)kCellularGsmConnectedModeHists isEqual:?])
+  if (kCellularGsmConnectedModeHists | equalCopy[23] && ![(NSMutableArray *)kCellularGsmConnectedModeHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularGsmL1States = self->_kCellularGsmL1States;
-  if (kCellularGsmL1States | v4[24] && ![(NSMutableArray *)kCellularGsmL1States isEqual:?])
+  if (kCellularGsmL1States | equalCopy[24] && ![(NSMutableArray *)kCellularGsmL1States isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaCpcStats = self->_kCellularWcdmaCpcStats;
-  if (kCellularWcdmaCpcStats | v4[73] && ![(NSMutableArray *)kCellularWcdmaCpcStats isEqual:?])
+  if (kCellularWcdmaCpcStats | equalCopy[73] && ![(NSMutableArray *)kCellularWcdmaCpcStats isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRxDiversityHists = self->_kCellularWcdmaRxDiversityHists;
-  if (kCellularWcdmaRxDiversityHists | v4[84] && ![(NSMutableArray *)kCellularWcdmaRxDiversityHists isEqual:?])
+  if (kCellularWcdmaRxDiversityHists | equalCopy[84] && ![(NSMutableArray *)kCellularWcdmaRxDiversityHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaServingCellRx0RssiHists = self->_kCellularWcdmaServingCellRx0RssiHists;
-  if (kCellularWcdmaServingCellRx0RssiHists | v4[86] && ![(NSMutableArray *)kCellularWcdmaServingCellRx0RssiHists isEqual:?])
+  if (kCellularWcdmaServingCellRx0RssiHists | equalCopy[86] && ![(NSMutableArray *)kCellularWcdmaServingCellRx0RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaServingCellRx1RssiHists = self->_kCellularWcdmaServingCellRx1RssiHists;
-  if (kCellularWcdmaServingCellRx1RssiHists | v4[88] && ![(NSMutableArray *)kCellularWcdmaServingCellRx1RssiHists isEqual:?])
+  if (kCellularWcdmaServingCellRx1RssiHists | equalCopy[88] && ![(NSMutableArray *)kCellularWcdmaServingCellRx1RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaServingCellRx0EcNoHists = self->_kCellularWcdmaServingCellRx0EcNoHists;
-  if (kCellularWcdmaServingCellRx0EcNoHists | v4[85] && ![(NSMutableArray *)kCellularWcdmaServingCellRx0EcNoHists isEqual:?])
+  if (kCellularWcdmaServingCellRx0EcNoHists | equalCopy[85] && ![(NSMutableArray *)kCellularWcdmaServingCellRx0EcNoHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaServingCellRx1EcNoHists = self->_kCellularWcdmaServingCellRx1EcNoHists;
-  if (kCellularWcdmaServingCellRx1EcNoHists | v4[87] && ![(NSMutableArray *)kCellularWcdmaServingCellRx1EcNoHists isEqual:?])
+  if (kCellularWcdmaServingCellRx1EcNoHists | equalCopy[87] && ![(NSMutableArray *)kCellularWcdmaServingCellRx1EcNoHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaTxPowerHists = self->_kCellularWcdmaTxPowerHists;
-  if (kCellularWcdmaTxPowerHists | v4[89] && ![(NSMutableArray *)kCellularWcdmaTxPowerHists isEqual:?])
+  if (kCellularWcdmaTxPowerHists | equalCopy[89] && ![(NSMutableArray *)kCellularWcdmaTxPowerHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaReceiverStatusOnC0Hists = self->_kCellularWcdmaReceiverStatusOnC0Hists;
-  if (kCellularWcdmaReceiverStatusOnC0Hists | v4[80] && ![(NSMutableArray *)kCellularWcdmaReceiverStatusOnC0Hists isEqual:?])
+  if (kCellularWcdmaReceiverStatusOnC0Hists | equalCopy[80] && ![(NSMutableArray *)kCellularWcdmaReceiverStatusOnC0Hists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaReceiverStatusOnC1Hists = self->_kCellularWcdmaReceiverStatusOnC1Hists;
-  if (kCellularWcdmaReceiverStatusOnC1Hists | v4[81] && ![(NSMutableArray *)kCellularWcdmaReceiverStatusOnC1Hists isEqual:?])
+  if (kCellularWcdmaReceiverStatusOnC1Hists | equalCopy[81] && ![(NSMutableArray *)kCellularWcdmaReceiverStatusOnC1Hists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaCarrierStatusHists = self->_kCellularWcdmaCarrierStatusHists;
-  if (kCellularWcdmaCarrierStatusHists | v4[72] && ![(NSMutableArray *)kCellularWcdmaCarrierStatusHists isEqual:?])
+  if (kCellularWcdmaCarrierStatusHists | equalCopy[72] && ![(NSMutableArray *)kCellularWcdmaCarrierStatusHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRabModeHists = self->_kCellularWcdmaRabModeHists;
-  if (kCellularWcdmaRabModeHists | v4[77] && ![(NSMutableArray *)kCellularWcdmaRabModeHists isEqual:?])
+  if (kCellularWcdmaRabModeHists | equalCopy[77] && ![(NSMutableArray *)kCellularWcdmaRabModeHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRabTypeHists = self->_kCellularWcdmaRabTypeHists;
-  if (kCellularWcdmaRabTypeHists | v4[79] && ![(NSMutableArray *)kCellularWcdmaRabTypeHists isEqual:?])
+  if (kCellularWcdmaRabTypeHists | equalCopy[79] && ![(NSMutableArray *)kCellularWcdmaRabTypeHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRrcConnectionStates = self->_kCellularWcdmaRrcConnectionStates;
-  if (kCellularWcdmaRrcConnectionStates | v4[83] && ![(NSMutableArray *)kCellularWcdmaRrcConnectionStates isEqual:?])
+  if (kCellularWcdmaRrcConnectionStates | equalCopy[83] && ![(NSMutableArray *)kCellularWcdmaRrcConnectionStates isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRrcConfigurations = self->_kCellularWcdmaRrcConfigurations;
-  if (kCellularWcdmaRrcConfigurations | v4[82] && ![(NSMutableArray *)kCellularWcdmaRrcConfigurations isEqual:?])
+  if (kCellularWcdmaRrcConfigurations | equalCopy[82] && ![(NSMutableArray *)kCellularWcdmaRrcConfigurations isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaRabStatus = self->_kCellularWcdmaRabStatus;
-  if (kCellularWcdmaRabStatus | v4[78] && ![(NSMutableArray *)kCellularWcdmaRabStatus isEqual:?])
+  if (kCellularWcdmaRabStatus | equalCopy[78] && ![(NSMutableArray *)kCellularWcdmaRabStatus isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaL1States = self->_kCellularWcdmaL1States;
-  if (kCellularWcdmaL1States | v4[76] && ![(NSMutableArray *)kCellularWcdmaL1States isEqual:?])
+  if (kCellularWcdmaL1States | equalCopy[76] && ![(NSMutableArray *)kCellularWcdmaL1States isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaDataInactivityBeforeIdles = self->_kCellularWcdmaDataInactivityBeforeIdles;
-  if (kCellularWcdmaDataInactivityBeforeIdles | v4[74] && ![(NSMutableArray *)kCellularWcdmaDataInactivityBeforeIdles isEqual:?])
+  if (kCellularWcdmaDataInactivityBeforeIdles | equalCopy[74] && ![(NSMutableArray *)kCellularWcdmaDataInactivityBeforeIdles isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaIdleToConnectedUserDatas = self->_kCellularWcdmaIdleToConnectedUserDatas;
-  if (kCellularWcdmaIdleToConnectedUserDatas | v4[75] && ![(NSMutableArray *)kCellularWcdmaIdleToConnectedUserDatas isEqual:?])
+  if (kCellularWcdmaIdleToConnectedUserDatas | equalCopy[75] && ![(NSMutableArray *)kCellularWcdmaIdleToConnectedUserDatas isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularWcdmaVadHists = self->_kCellularWcdmaVadHists;
-  if (kCellularWcdmaVadHists | v4[90] && ![(NSMutableArray *)kCellularWcdmaVadHists isEqual:?])
+  if (kCellularWcdmaVadHists | equalCopy[90] && ![(NSMutableArray *)kCellularWcdmaVadHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsRxDiversityHists = self->_kCellularTdsRxDiversityHists;
-  if (kCellularTdsRxDiversityHists | v4[66] && ![(NSMutableArray *)kCellularTdsRxDiversityHists isEqual:?])
+  if (kCellularTdsRxDiversityHists | equalCopy[66] && ![(NSMutableArray *)kCellularTdsRxDiversityHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsServingCellRx0RssiHists = self->_kCellularTdsServingCellRx0RssiHists;
-  if (kCellularTdsServingCellRx0RssiHists | v4[68] && ![(NSMutableArray *)kCellularTdsServingCellRx0RssiHists isEqual:?])
+  if (kCellularTdsServingCellRx0RssiHists | equalCopy[68] && ![(NSMutableArray *)kCellularTdsServingCellRx0RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsServingCellRx1RssiHists = self->_kCellularTdsServingCellRx1RssiHists;
-  if (kCellularTdsServingCellRx1RssiHists | v4[70] && ![(NSMutableArray *)kCellularTdsServingCellRx1RssiHists isEqual:?])
+  if (kCellularTdsServingCellRx1RssiHists | equalCopy[70] && ![(NSMutableArray *)kCellularTdsServingCellRx1RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsServingCellRx0RscpHists = self->_kCellularTdsServingCellRx0RscpHists;
-  if (kCellularTdsServingCellRx0RscpHists | v4[67] && ![(NSMutableArray *)kCellularTdsServingCellRx0RscpHists isEqual:?])
+  if (kCellularTdsServingCellRx0RscpHists | equalCopy[67] && ![(NSMutableArray *)kCellularTdsServingCellRx0RscpHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsServingCellRx1RscpHists = self->_kCellularTdsServingCellRx1RscpHists;
-  if (kCellularTdsServingCellRx1RscpHists | v4[69] && ![(NSMutableArray *)kCellularTdsServingCellRx1RscpHists isEqual:?])
+  if (kCellularTdsServingCellRx1RscpHists | equalCopy[69] && ![(NSMutableArray *)kCellularTdsServingCellRx1RscpHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsTxPowerHists = self->_kCellularTdsTxPowerHists;
-  if (kCellularTdsTxPowerHists | v4[71] && ![(NSMutableArray *)kCellularTdsTxPowerHists isEqual:?])
+  if (kCellularTdsTxPowerHists | equalCopy[71] && ![(NSMutableArray *)kCellularTdsTxPowerHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsRabModeHists = self->_kCellularTdsRabModeHists;
-  if (kCellularTdsRabModeHists | v4[63] && ![(NSMutableArray *)kCellularTdsRabModeHists isEqual:?])
+  if (kCellularTdsRabModeHists | equalCopy[63] && ![(NSMutableArray *)kCellularTdsRabModeHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsRabTypeHists = self->_kCellularTdsRabTypeHists;
-  if (kCellularTdsRabTypeHists | v4[64] && ![(NSMutableArray *)kCellularTdsRabTypeHists isEqual:?])
+  if (kCellularTdsRabTypeHists | equalCopy[64] && ![(NSMutableArray *)kCellularTdsRabTypeHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularTdsL1States = self->_kCellularTdsL1States;
-  if (kCellularTdsL1States | v4[62] && ![(NSMutableArray *)kCellularTdsL1States isEqual:?])
+  if (kCellularTdsL1States | equalCopy[62] && ![(NSMutableArray *)kCellularTdsL1States isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteFwDuplexModes = self->_kCellularLteFwDuplexModes;
-  if (kCellularLteFwDuplexModes | v4[34] && ![(NSMutableArray *)kCellularLteFwDuplexModes isEqual:?])
+  if (kCellularLteFwDuplexModes | equalCopy[34] && ![(NSMutableArray *)kCellularLteFwDuplexModes isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteServingCellRsrpHists = self->_kCellularLteServingCellRsrpHists;
-  if (kCellularLteServingCellRsrpHists | v4[42] && ![(NSMutableArray *)kCellularLteServingCellRsrpHists isEqual:?])
+  if (kCellularLteServingCellRsrpHists | equalCopy[42] && ![(NSMutableArray *)kCellularLteServingCellRsrpHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteServingCellSinrHists = self->_kCellularLteServingCellSinrHists;
-  if (kCellularLteServingCellSinrHists | v4[43] && ![(NSMutableArray *)kCellularLteServingCellSinrHists isEqual:?])
+  if (kCellularLteServingCellSinrHists | equalCopy[43] && ![(NSMutableArray *)kCellularLteServingCellSinrHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteSleepStateHists = self->_kCellularLteSleepStateHists;
-  if (kCellularLteSleepStateHists | v4[44] && ![(NSMutableArray *)kCellularLteSleepStateHists isEqual:?])
+  if (kCellularLteSleepStateHists | equalCopy[44] && ![(NSMutableArray *)kCellularLteSleepStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteTxPowerHists = self->_kCellularLteTxPowerHists;
-  if (kCellularLteTxPowerHists | v4[47] && ![(NSMutableArray *)kCellularLteTxPowerHists isEqual:?])
+  if (kCellularLteTxPowerHists | equalCopy[47] && ![(NSMutableArray *)kCellularLteTxPowerHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteDlSccStateHists = self->_kCellularLteDlSccStateHists;
-  if (kCellularLteDlSccStateHists | v4[33] && ![(NSMutableArray *)kCellularLteDlSccStateHists isEqual:?])
+  if (kCellularLteDlSccStateHists | equalCopy[33] && ![(NSMutableArray *)kCellularLteDlSccStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteUlSccStateHists = self->_kCellularLteUlSccStateHists;
-  if (kCellularLteUlSccStateHists | v4[48] && ![(NSMutableArray *)kCellularLteUlSccStateHists isEqual:?])
+  if (kCellularLteUlSccStateHists | equalCopy[48] && ![(NSMutableArray *)kCellularLteUlSccStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteAdvancedRxStateHists = self->_kCellularLteAdvancedRxStateHists;
-  if (kCellularLteAdvancedRxStateHists | v4[29] && ![(NSMutableArray *)kCellularLteAdvancedRxStateHists isEqual:?])
+  if (kCellularLteAdvancedRxStateHists | equalCopy[29] && ![(NSMutableArray *)kCellularLteAdvancedRxStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteComponentCarrierInfos = self->_kCellularLteComponentCarrierInfos;
-  if (kCellularLteComponentCarrierInfos | v4[31] && ![(NSMutableArray *)kCellularLteComponentCarrierInfos isEqual:?])
+  if (kCellularLteComponentCarrierInfos | equalCopy[31] && ![(NSMutableArray *)kCellularLteComponentCarrierInfos isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteRxTxStateHists = self->_kCellularLteRxTxStateHists;
-  if (kCellularLteRxTxStateHists | v4[41] && ![(NSMutableArray *)kCellularLteRxTxStateHists isEqual:?])
+  if (kCellularLteRxTxStateHists | equalCopy[41] && ![(NSMutableArray *)kCellularLteRxTxStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteTotalDlTbsHists = self->_kCellularLteTotalDlTbsHists;
-  if (kCellularLteTotalDlTbsHists | v4[46] && ![(NSMutableArray *)kCellularLteTotalDlTbsHists isEqual:?])
+  if (kCellularLteTotalDlTbsHists | equalCopy[46] && ![(NSMutableArray *)kCellularLteTotalDlTbsHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteDlSccStateHistV3s = self->_kCellularLteDlSccStateHistV3s;
-  if (kCellularLteDlSccStateHistV3s | v4[32] && ![(NSMutableArray *)kCellularLteDlSccStateHistV3s isEqual:?])
+  if (kCellularLteDlSccStateHistV3s | equalCopy[32] && ![(NSMutableArray *)kCellularLteDlSccStateHistV3s isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLteRxDiversityHists = self->_kCellularLteRxDiversityHists;
-  if (kCellularLteRxDiversityHists | v4[40] && ![(NSMutableArray *)kCellularLteRxDiversityHists isEqual:?])
+  if (kCellularLteRxDiversityHists | equalCopy[40] && ![(NSMutableArray *)kCellularLteRxDiversityHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularLtePdcchStateHists = self->_kCellularLtePdcchStateHists;
-  if (kCellularLtePdcchStateHists | v4[36] && ![(NSMutableArray *)kCellularLtePdcchStateHists isEqual:?])
+  if (kCellularLtePdcchStateHists | equalCopy[36] && ![(NSMutableArray *)kCellularLtePdcchStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularProtocolStackStateHists = self->_kCellularProtocolStackStateHists;
-  if (kCellularProtocolStackStateHists | v4[58] && ![(NSMutableArray *)kCellularProtocolStackStateHists isEqual:?])
+  if (kCellularProtocolStackStateHists | equalCopy[58] && ![(NSMutableArray *)kCellularProtocolStackStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCellPlmnSearchCounts = self->_kCellularCellPlmnSearchCounts;
-  if (kCellularCellPlmnSearchCounts | v4[18] && ![(NSMutableArray *)kCellularCellPlmnSearchCounts isEqual:?])
+  if (kCellularCellPlmnSearchCounts | equalCopy[18] && ![(NSMutableArray *)kCellularCellPlmnSearchCounts isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCellPlmnSearchHists = self->_kCellularCellPlmnSearchHists;
-  if (kCellularCellPlmnSearchHists | v4[19] && ![(NSMutableArray *)kCellularCellPlmnSearchHists isEqual:?])
+  if (kCellularCellPlmnSearchHists | equalCopy[19] && ![(NSMutableArray *)kCellularCellPlmnSearchHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularProtocolStackPowerStates = self->_kCellularProtocolStackPowerStates;
-  if (kCellularProtocolStackPowerStates | v4[56] && ![(NSMutableArray *)kCellularProtocolStackPowerStates isEqual:?])
+  if (kCellularProtocolStackPowerStates | equalCopy[56] && ![(NSMutableArray *)kCellularProtocolStackPowerStates isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularDownlinkIpPacketFilterStatus = self->_kCellularDownlinkIpPacketFilterStatus;
-  if (kCellularDownlinkIpPacketFilterStatus | v4[20] && ![(NSMutableArray *)kCellularDownlinkIpPacketFilterStatus isEqual:?])
+  if (kCellularDownlinkIpPacketFilterStatus | equalCopy[20] && ![(NSMutableArray *)kCellularDownlinkIpPacketFilterStatus isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularServingCellRfBandHists = self->_kCellularServingCellRfBandHists;
-  if (kCellularServingCellRfBandHists | v4[61] && ![(NSMutableArray *)kCellularServingCellRfBandHists isEqual:?])
+  if (kCellularServingCellRfBandHists | equalCopy[61] && ![(NSMutableArray *)kCellularServingCellRfBandHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularProtocolStackStateHist2s = self->_kCellularProtocolStackStateHist2s;
-  if (kCellularProtocolStackStateHist2s | v4[57] && ![(NSMutableArray *)kCellularProtocolStackStateHist2s isEqual:?])
+  if (kCellularProtocolStackStateHist2s | equalCopy[57] && ![(NSMutableArray *)kCellularProtocolStackStateHist2s isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularProtocolStackStates = self->_kCellularProtocolStackStates;
-  if (kCellularProtocolStackStates | v4[59] && ![(NSMutableArray *)kCellularProtocolStackStates isEqual:?])
+  if (kCellularProtocolStackStates | equalCopy[59] && ![(NSMutableArray *)kCellularProtocolStackStates isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XRxDiversityHists = self->_kCellularCdma1XRxDiversityHists;
-  if (kCellularCdma1XRxDiversityHists | v4[4] && ![(NSMutableArray *)kCellularCdma1XRxDiversityHists isEqual:?])
+  if (kCellularCdma1XRxDiversityHists | equalCopy[4] && ![(NSMutableArray *)kCellularCdma1XRxDiversityHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XServingCellRx0RssiHists = self->_kCellularCdma1XServingCellRx0RssiHists;
-  if (kCellularCdma1XServingCellRx0RssiHists | v4[6] && ![(NSMutableArray *)kCellularCdma1XServingCellRx0RssiHists isEqual:?])
+  if (kCellularCdma1XServingCellRx0RssiHists | equalCopy[6] && ![(NSMutableArray *)kCellularCdma1XServingCellRx0RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XServingCellRx1RssiHists = self->_kCellularCdma1XServingCellRx1RssiHists;
-  if (kCellularCdma1XServingCellRx1RssiHists | v4[8] && ![(NSMutableArray *)kCellularCdma1XServingCellRx1RssiHists isEqual:?])
+  if (kCellularCdma1XServingCellRx1RssiHists | equalCopy[8] && ![(NSMutableArray *)kCellularCdma1XServingCellRx1RssiHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XServingCellRx0EcIoHists = self->_kCellularCdma1XServingCellRx0EcIoHists;
-  if (kCellularCdma1XServingCellRx0EcIoHists | v4[5] && ![(NSMutableArray *)kCellularCdma1XServingCellRx0EcIoHists isEqual:?])
+  if (kCellularCdma1XServingCellRx0EcIoHists | equalCopy[5] && ![(NSMutableArray *)kCellularCdma1XServingCellRx0EcIoHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XServingCellRx1EcIoHists = self->_kCellularCdma1XServingCellRx1EcIoHists;
-  if (kCellularCdma1XServingCellRx1EcIoHists | v4[7] && ![(NSMutableArray *)kCellularCdma1XServingCellRx1EcIoHists isEqual:?])
+  if (kCellularCdma1XServingCellRx1EcIoHists | equalCopy[7] && ![(NSMutableArray *)kCellularCdma1XServingCellRx1EcIoHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XTxPowerHists = self->_kCellularCdma1XTxPowerHists;
-  if (kCellularCdma1XTxPowerHists | v4[9] && ![(NSMutableArray *)kCellularCdma1XTxPowerHists isEqual:?])
+  if (kCellularCdma1XTxPowerHists | equalCopy[9] && ![(NSMutableArray *)kCellularCdma1XTxPowerHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XProtocolStackStateHists = self->_kCellularCdma1XProtocolStackStateHists;
-  if (kCellularCdma1XProtocolStackStateHists | v4[2] && ![(NSMutableArray *)kCellularCdma1XProtocolStackStateHists isEqual:?])
+  if (kCellularCdma1XProtocolStackStateHists | equalCopy[2] && ![(NSMutableArray *)kCellularCdma1XProtocolStackStateHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XConnectionHists = self->_kCellularCdma1XConnectionHists;
-  if (kCellularCdma1XConnectionHists | v4[1] && ![(NSMutableArray *)kCellularCdma1XConnectionHists isEqual:?])
+  if (kCellularCdma1XConnectionHists | equalCopy[1] && ![(NSMutableArray *)kCellularCdma1XConnectionHists isEqual:?])
   {
     goto LABEL_182;
   }
 
   kCellularCdma1XRrStates = self->_kCellularCdma1XRrStates;
-  if (kCellularCdma1XRrStates | v4[3] && ![(NSMutableArray *)kCellularCdma1XRrStates isEqual:?])
+  if (kCellularCdma1XRrStates | equalCopy[3] && ![(NSMutableArray *)kCellularCdma1XRrStates isEqual:?])
   {
     goto LABEL_182;
   }
 
-  if (((kCellularCdmaEvdoRxDiversityHists = self->_kCellularCdmaEvdoRxDiversityHists, !(kCellularCdmaEvdoRxDiversityHists | v4[12])) || [(NSMutableArray *)kCellularCdmaEvdoRxDiversityHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx0RssiHists = self->_kCellularCdmaEvdoServingCellRx0RssiHists, !(kCellularCdmaEvdoServingCellRx0RssiHists | v4[14])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0RssiHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx1RssiHists = self->_kCellularCdmaEvdoServingCellRx1RssiHists, !(kCellularCdmaEvdoServingCellRx1RssiHists | v4[16])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1RssiHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx0EcIoHists = self->_kCellularCdmaEvdoServingCellRx0EcIoHists, !(kCellularCdmaEvdoServingCellRx0EcIoHists | v4[13])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0EcIoHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx1EcIoHists = self->_kCellularCdmaEvdoServingCellRx1EcIoHists, !(kCellularCdmaEvdoServingCellRx1EcIoHists | v4[15])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1EcIoHists isEqual:?]) && ((kCellularCdmaEvdoTxPowerHists = self->_kCellularCdmaEvdoTxPowerHists, !(kCellularCdmaEvdoTxPowerHists | v4[17])) || [(NSMutableArray *)kCellularCdmaEvdoTxPowerHists isEqual:?]) && ((kCellularCdmaEvdoProtocolStackStateHists = self->_kCellularCdmaEvdoProtocolStackStateHists, !(kCellularCdmaEvdoProtocolStackStateHists | v4[10])) || [(NSMutableArray *)kCellularCdmaEvdoProtocolStackStateHists isEqual:?]))
+  if (((kCellularCdmaEvdoRxDiversityHists = self->_kCellularCdmaEvdoRxDiversityHists, !(kCellularCdmaEvdoRxDiversityHists | equalCopy[12])) || [(NSMutableArray *)kCellularCdmaEvdoRxDiversityHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx0RssiHists = self->_kCellularCdmaEvdoServingCellRx0RssiHists, !(kCellularCdmaEvdoServingCellRx0RssiHists | equalCopy[14])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0RssiHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx1RssiHists = self->_kCellularCdmaEvdoServingCellRx1RssiHists, !(kCellularCdmaEvdoServingCellRx1RssiHists | equalCopy[16])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1RssiHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx0EcIoHists = self->_kCellularCdmaEvdoServingCellRx0EcIoHists, !(kCellularCdmaEvdoServingCellRx0EcIoHists | equalCopy[13])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx0EcIoHists isEqual:?]) && ((kCellularCdmaEvdoServingCellRx1EcIoHists = self->_kCellularCdmaEvdoServingCellRx1EcIoHists, !(kCellularCdmaEvdoServingCellRx1EcIoHists | equalCopy[15])) || [(NSMutableArray *)kCellularCdmaEvdoServingCellRx1EcIoHists isEqual:?]) && ((kCellularCdmaEvdoTxPowerHists = self->_kCellularCdmaEvdoTxPowerHists, !(kCellularCdmaEvdoTxPowerHists | equalCopy[17])) || [(NSMutableArray *)kCellularCdmaEvdoTxPowerHists isEqual:?]) && ((kCellularCdmaEvdoProtocolStackStateHists = self->_kCellularCdmaEvdoProtocolStackStateHists, !(kCellularCdmaEvdoProtocolStackStateHists | equalCopy[10])) || [(NSMutableArray *)kCellularCdmaEvdoProtocolStackStateHists isEqual:?]))
   {
     kCellularCdmaEvdoRrStates = self->_kCellularCdmaEvdoRrStates;
-    if (kCellularCdmaEvdoRrStates | v4[11])
+    if (kCellularCdmaEvdoRrStates | equalCopy[11])
     {
       v95 = [(NSMutableArray *)kCellularCdmaEvdoRrStates isEqual:?];
     }
@@ -13093,15 +13093,15 @@ LABEL_182:
   return v81 ^ v91 ^ [(NSMutableArray *)self->_kCellularCdmaEvdoRrStates hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v906 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v812 = 0u;
   v813 = 0u;
   v814 = 0u;
   v815 = 0u;
-  v5 = v4[51];
+  v5 = fromCopy[51];
   v6 = [v5 countByEnumeratingWithState:&v812 objects:v905 count:16];
   if (v6)
   {
@@ -13131,7 +13131,7 @@ LABEL_182:
   v810 = 0u;
   v809 = 0u;
   v808 = 0u;
-  v10 = v4[55];
+  v10 = fromCopy[55];
   v11 = [v10 countByEnumeratingWithState:&v808 objects:v904 count:16];
   if (v11)
   {
@@ -13161,7 +13161,7 @@ LABEL_182:
   v806 = 0u;
   v805 = 0u;
   v804 = 0u;
-  v15 = v4[52];
+  v15 = fromCopy[52];
   v16 = [v15 countByEnumeratingWithState:&v804 objects:v903 count:16];
   if (v16)
   {
@@ -13191,7 +13191,7 @@ LABEL_182:
   v802 = 0u;
   v801 = 0u;
   v800 = 0u;
-  v20 = v4[21];
+  v20 = fromCopy[21];
   v21 = [v20 countByEnumeratingWithState:&v800 objects:v902 count:16];
   if (v21)
   {
@@ -13221,7 +13221,7 @@ LABEL_182:
   v798 = 0u;
   v797 = 0u;
   v796 = 0u;
-  v25 = v4[49];
+  v25 = fromCopy[49];
   v26 = [v25 countByEnumeratingWithState:&v796 objects:v901 count:16];
   if (v26)
   {
@@ -13251,7 +13251,7 @@ LABEL_182:
   v794 = 0u;
   v793 = 0u;
   v792 = 0u;
-  v30 = v4[45];
+  v30 = fromCopy[45];
   v31 = [v30 countByEnumeratingWithState:&v792 objects:v900 count:16];
   if (v31)
   {
@@ -13281,7 +13281,7 @@ LABEL_182:
   v790 = 0u;
   v789 = 0u;
   v788 = 0u;
-  v35 = v4[54];
+  v35 = fromCopy[54];
   v36 = [v35 countByEnumeratingWithState:&v788 objects:v899 count:16];
   if (v36)
   {
@@ -13311,7 +13311,7 @@ LABEL_182:
   v786 = 0u;
   v785 = 0u;
   v784 = 0u;
-  v40 = v4[22];
+  v40 = fromCopy[22];
   v41 = [v40 countByEnumeratingWithState:&v784 objects:v898 count:16];
   if (v41)
   {
@@ -13341,7 +13341,7 @@ LABEL_182:
   v782 = 0u;
   v781 = 0u;
   v780 = 0u;
-  v45 = v4[50];
+  v45 = fromCopy[50];
   v46 = [v45 countByEnumeratingWithState:&v780 objects:v897 count:16];
   if (v46)
   {
@@ -13371,7 +13371,7 @@ LABEL_182:
   v778 = 0u;
   v777 = 0u;
   v776 = 0u;
-  v50 = v4[53];
+  v50 = fromCopy[53];
   v51 = [v50 countByEnumeratingWithState:&v776 objects:v896 count:16];
   if (v51)
   {
@@ -13401,7 +13401,7 @@ LABEL_182:
   v774 = 0u;
   v773 = 0u;
   v772 = 0u;
-  v55 = v4[65];
+  v55 = fromCopy[65];
   v56 = [v55 countByEnumeratingWithState:&v772 objects:v895 count:16];
   if (v56)
   {
@@ -13431,7 +13431,7 @@ LABEL_182:
   v770 = 0u;
   v769 = 0u;
   v768 = 0u;
-  v60 = v4[39];
+  v60 = fromCopy[39];
   v61 = [v60 countByEnumeratingWithState:&v768 objects:v894 count:16];
   if (v61)
   {
@@ -13461,7 +13461,7 @@ LABEL_182:
   v766 = 0u;
   v765 = 0u;
   v764 = 0u;
-  v65 = v4[35];
+  v65 = fromCopy[35];
   v66 = [v65 countByEnumeratingWithState:&v764 objects:v893 count:16];
   if (v66)
   {
@@ -13491,7 +13491,7 @@ LABEL_182:
   v762 = 0u;
   v761 = 0u;
   v760 = 0u;
-  v70 = v4[30];
+  v70 = fromCopy[30];
   v71 = [v70 countByEnumeratingWithState:&v760 objects:v892 count:16];
   if (v71)
   {
@@ -13521,7 +13521,7 @@ LABEL_182:
   v758 = 0u;
   v757 = 0u;
   v756 = 0u;
-  v75 = v4[38];
+  v75 = fromCopy[38];
   v76 = [v75 countByEnumeratingWithState:&v756 objects:v891 count:16];
   if (v76)
   {
@@ -13551,7 +13551,7 @@ LABEL_182:
   v754 = 0u;
   v753 = 0u;
   v752 = 0u;
-  v80 = v4[37];
+  v80 = fromCopy[37];
   v81 = [v80 countByEnumeratingWithState:&v752 objects:v890 count:16];
   if (v81)
   {
@@ -13581,7 +13581,7 @@ LABEL_182:
   v750 = 0u;
   v749 = 0u;
   v748 = 0u;
-  v85 = v4[28];
+  v85 = fromCopy[28];
   v86 = [v85 countByEnumeratingWithState:&v748 objects:v889 count:16];
   if (v86)
   {
@@ -13611,7 +13611,7 @@ LABEL_182:
   v746 = 0u;
   v745 = 0u;
   v744 = 0u;
-  v90 = v4[60];
+  v90 = fromCopy[60];
   v91 = [v90 countByEnumeratingWithState:&v744 objects:v888 count:16];
   if (v91)
   {
@@ -13641,7 +13641,7 @@ LABEL_182:
   v742 = 0u;
   v741 = 0u;
   v740 = 0u;
-  v95 = v4[25];
+  v95 = fromCopy[25];
   v96 = [v95 countByEnumeratingWithState:&v740 objects:v887 count:16];
   if (v96)
   {
@@ -13671,7 +13671,7 @@ LABEL_182:
   v738 = 0u;
   v737 = 0u;
   v736 = 0u;
-  v100 = v4[26];
+  v100 = fromCopy[26];
   v101 = [v100 countByEnumeratingWithState:&v736 objects:v886 count:16];
   if (v101)
   {
@@ -13701,7 +13701,7 @@ LABEL_182:
   v734 = 0u;
   v733 = 0u;
   v732 = 0u;
-  v105 = v4[27];
+  v105 = fromCopy[27];
   v106 = [v105 countByEnumeratingWithState:&v732 objects:v885 count:16];
   if (v106)
   {
@@ -13731,7 +13731,7 @@ LABEL_182:
   v730 = 0u;
   v729 = 0u;
   v728 = 0u;
-  v110 = v4[23];
+  v110 = fromCopy[23];
   v111 = [v110 countByEnumeratingWithState:&v728 objects:v884 count:16];
   if (v111)
   {
@@ -13761,7 +13761,7 @@ LABEL_182:
   v726 = 0u;
   v725 = 0u;
   v724 = 0u;
-  v115 = v4[24];
+  v115 = fromCopy[24];
   v116 = [v115 countByEnumeratingWithState:&v724 objects:v883 count:16];
   if (v116)
   {
@@ -13791,7 +13791,7 @@ LABEL_182:
   v722 = 0u;
   v721 = 0u;
   v720 = 0u;
-  v120 = v4[73];
+  v120 = fromCopy[73];
   v121 = [v120 countByEnumeratingWithState:&v720 objects:v882 count:16];
   if (v121)
   {
@@ -13821,7 +13821,7 @@ LABEL_182:
   v718 = 0u;
   v717 = 0u;
   v716 = 0u;
-  v125 = v4[84];
+  v125 = fromCopy[84];
   v126 = [v125 countByEnumeratingWithState:&v716 objects:v881 count:16];
   if (v126)
   {
@@ -13851,7 +13851,7 @@ LABEL_182:
   v714 = 0u;
   v713 = 0u;
   v712 = 0u;
-  v130 = v4[86];
+  v130 = fromCopy[86];
   v131 = [v130 countByEnumeratingWithState:&v712 objects:v880 count:16];
   if (v131)
   {
@@ -13881,7 +13881,7 @@ LABEL_182:
   v710 = 0u;
   v709 = 0u;
   v708 = 0u;
-  v135 = v4[88];
+  v135 = fromCopy[88];
   v136 = [v135 countByEnumeratingWithState:&v708 objects:v879 count:16];
   if (v136)
   {
@@ -13911,7 +13911,7 @@ LABEL_182:
   v706 = 0u;
   v705 = 0u;
   v704 = 0u;
-  v140 = v4[85];
+  v140 = fromCopy[85];
   v141 = [v140 countByEnumeratingWithState:&v704 objects:v878 count:16];
   if (v141)
   {
@@ -13941,7 +13941,7 @@ LABEL_182:
   v702 = 0u;
   v701 = 0u;
   v700 = 0u;
-  v145 = v4[87];
+  v145 = fromCopy[87];
   v146 = [v145 countByEnumeratingWithState:&v700 objects:v877 count:16];
   if (v146)
   {
@@ -13971,7 +13971,7 @@ LABEL_182:
   v698 = 0u;
   v697 = 0u;
   v696 = 0u;
-  v150 = v4[89];
+  v150 = fromCopy[89];
   v151 = [v150 countByEnumeratingWithState:&v696 objects:v876 count:16];
   if (v151)
   {
@@ -14001,7 +14001,7 @@ LABEL_182:
   v694 = 0u;
   v693 = 0u;
   v692 = 0u;
-  v155 = v4[80];
+  v155 = fromCopy[80];
   v156 = [v155 countByEnumeratingWithState:&v692 objects:v875 count:16];
   if (v156)
   {
@@ -14031,7 +14031,7 @@ LABEL_182:
   v690 = 0u;
   v689 = 0u;
   v688 = 0u;
-  v160 = v4[81];
+  v160 = fromCopy[81];
   v161 = [v160 countByEnumeratingWithState:&v688 objects:v874 count:16];
   if (v161)
   {
@@ -14061,7 +14061,7 @@ LABEL_182:
   v686 = 0u;
   v685 = 0u;
   v684 = 0u;
-  v165 = v4[72];
+  v165 = fromCopy[72];
   v166 = [v165 countByEnumeratingWithState:&v684 objects:v873 count:16];
   if (v166)
   {
@@ -14091,7 +14091,7 @@ LABEL_182:
   v682 = 0u;
   v681 = 0u;
   v680 = 0u;
-  v170 = v4[77];
+  v170 = fromCopy[77];
   v171 = [v170 countByEnumeratingWithState:&v680 objects:v872 count:16];
   if (v171)
   {
@@ -14121,7 +14121,7 @@ LABEL_182:
   v678 = 0u;
   v677 = 0u;
   v676 = 0u;
-  v175 = v4[79];
+  v175 = fromCopy[79];
   v176 = [v175 countByEnumeratingWithState:&v676 objects:v871 count:16];
   if (v176)
   {
@@ -14151,7 +14151,7 @@ LABEL_182:
   v674 = 0u;
   v673 = 0u;
   v672 = 0u;
-  v180 = v4[83];
+  v180 = fromCopy[83];
   v181 = [v180 countByEnumeratingWithState:&v672 objects:v870 count:16];
   if (v181)
   {
@@ -14181,7 +14181,7 @@ LABEL_182:
   v670 = 0u;
   v669 = 0u;
   v668 = 0u;
-  v185 = v4[82];
+  v185 = fromCopy[82];
   v186 = [v185 countByEnumeratingWithState:&v668 objects:v869 count:16];
   if (v186)
   {
@@ -14211,7 +14211,7 @@ LABEL_182:
   v666 = 0u;
   v665 = 0u;
   v664 = 0u;
-  v190 = v4[78];
+  v190 = fromCopy[78];
   v191 = [v190 countByEnumeratingWithState:&v664 objects:v868 count:16];
   if (v191)
   {
@@ -14241,7 +14241,7 @@ LABEL_182:
   v662 = 0u;
   v661 = 0u;
   v660 = 0u;
-  v195 = v4[76];
+  v195 = fromCopy[76];
   v196 = [v195 countByEnumeratingWithState:&v660 objects:v867 count:16];
   if (v196)
   {
@@ -14271,7 +14271,7 @@ LABEL_182:
   v658 = 0u;
   v657 = 0u;
   v656 = 0u;
-  v200 = v4[74];
+  v200 = fromCopy[74];
   v201 = [v200 countByEnumeratingWithState:&v656 objects:v866 count:16];
   if (v201)
   {
@@ -14301,7 +14301,7 @@ LABEL_182:
   v654 = 0u;
   v653 = 0u;
   v652 = 0u;
-  v205 = v4[75];
+  v205 = fromCopy[75];
   v206 = [v205 countByEnumeratingWithState:&v652 objects:v865 count:16];
   if (v206)
   {
@@ -14331,7 +14331,7 @@ LABEL_182:
   v650 = 0u;
   v649 = 0u;
   v648 = 0u;
-  v210 = v4[90];
+  v210 = fromCopy[90];
   v211 = [v210 countByEnumeratingWithState:&v648 objects:v864 count:16];
   if (v211)
   {
@@ -14361,7 +14361,7 @@ LABEL_182:
   v646 = 0u;
   v645 = 0u;
   v644 = 0u;
-  v215 = v4[66];
+  v215 = fromCopy[66];
   v216 = [v215 countByEnumeratingWithState:&v644 objects:v863 count:16];
   if (v216)
   {
@@ -14391,7 +14391,7 @@ LABEL_182:
   v642 = 0u;
   v641 = 0u;
   v640 = 0u;
-  v220 = v4[68];
+  v220 = fromCopy[68];
   v221 = [v220 countByEnumeratingWithState:&v640 objects:v862 count:16];
   if (v221)
   {
@@ -14421,7 +14421,7 @@ LABEL_182:
   v638 = 0u;
   v637 = 0u;
   v636 = 0u;
-  v225 = v4[70];
+  v225 = fromCopy[70];
   v226 = [v225 countByEnumeratingWithState:&v636 objects:v861 count:16];
   if (v226)
   {
@@ -14451,7 +14451,7 @@ LABEL_182:
   v634 = 0u;
   v633 = 0u;
   v632 = 0u;
-  v230 = v4[67];
+  v230 = fromCopy[67];
   v231 = [v230 countByEnumeratingWithState:&v632 objects:v860 count:16];
   if (v231)
   {
@@ -14481,7 +14481,7 @@ LABEL_182:
   v630 = 0u;
   v629 = 0u;
   v628 = 0u;
-  v235 = v4[69];
+  v235 = fromCopy[69];
   v236 = [v235 countByEnumeratingWithState:&v628 objects:v859 count:16];
   if (v236)
   {
@@ -14511,7 +14511,7 @@ LABEL_182:
   v626 = 0u;
   v625 = 0u;
   v624 = 0u;
-  v240 = v4[71];
+  v240 = fromCopy[71];
   v241 = [v240 countByEnumeratingWithState:&v624 objects:v858 count:16];
   if (v241)
   {
@@ -14541,7 +14541,7 @@ LABEL_182:
   v622 = 0u;
   v621 = 0u;
   v620 = 0u;
-  v245 = v4[63];
+  v245 = fromCopy[63];
   v246 = [v245 countByEnumeratingWithState:&v620 objects:v857 count:16];
   if (v246)
   {
@@ -14571,7 +14571,7 @@ LABEL_182:
   v618 = 0u;
   v617 = 0u;
   v616 = 0u;
-  v250 = v4[64];
+  v250 = fromCopy[64];
   v251 = [v250 countByEnumeratingWithState:&v616 objects:v856 count:16];
   if (v251)
   {
@@ -14601,7 +14601,7 @@ LABEL_182:
   v614 = 0u;
   v613 = 0u;
   v612 = 0u;
-  v255 = v4[62];
+  v255 = fromCopy[62];
   v256 = [v255 countByEnumeratingWithState:&v612 objects:v855 count:16];
   if (v256)
   {
@@ -14631,7 +14631,7 @@ LABEL_182:
   v610 = 0u;
   v609 = 0u;
   v608 = 0u;
-  v260 = v4[34];
+  v260 = fromCopy[34];
   v261 = [v260 countByEnumeratingWithState:&v608 objects:v854 count:16];
   if (v261)
   {
@@ -14661,7 +14661,7 @@ LABEL_182:
   v606 = 0u;
   v605 = 0u;
   v604 = 0u;
-  v265 = v4[42];
+  v265 = fromCopy[42];
   v266 = [v265 countByEnumeratingWithState:&v604 objects:v853 count:16];
   if (v266)
   {
@@ -14691,7 +14691,7 @@ LABEL_182:
   v602 = 0u;
   v601 = 0u;
   v600 = 0u;
-  v270 = v4[43];
+  v270 = fromCopy[43];
   v271 = [v270 countByEnumeratingWithState:&v600 objects:v852 count:16];
   if (v271)
   {
@@ -14721,7 +14721,7 @@ LABEL_182:
   v598 = 0u;
   v597 = 0u;
   v596 = 0u;
-  v275 = v4[44];
+  v275 = fromCopy[44];
   v276 = [v275 countByEnumeratingWithState:&v596 objects:v851 count:16];
   if (v276)
   {
@@ -14751,7 +14751,7 @@ LABEL_182:
   v594 = 0u;
   v593 = 0u;
   v592 = 0u;
-  v280 = v4[47];
+  v280 = fromCopy[47];
   v281 = [v280 countByEnumeratingWithState:&v592 objects:v850 count:16];
   if (v281)
   {
@@ -14781,7 +14781,7 @@ LABEL_182:
   v590 = 0u;
   v589 = 0u;
   v588 = 0u;
-  v285 = v4[33];
+  v285 = fromCopy[33];
   v286 = [v285 countByEnumeratingWithState:&v588 objects:v849 count:16];
   if (v286)
   {
@@ -14811,7 +14811,7 @@ LABEL_182:
   v586 = 0u;
   v585 = 0u;
   v584 = 0u;
-  v290 = v4[48];
+  v290 = fromCopy[48];
   v291 = [v290 countByEnumeratingWithState:&v584 objects:v848 count:16];
   if (v291)
   {
@@ -14841,7 +14841,7 @@ LABEL_182:
   v582 = 0u;
   v581 = 0u;
   v580 = 0u;
-  v295 = v4[29];
+  v295 = fromCopy[29];
   v296 = [v295 countByEnumeratingWithState:&v580 objects:v847 count:16];
   if (v296)
   {
@@ -14871,7 +14871,7 @@ LABEL_182:
   v578 = 0u;
   v577 = 0u;
   v576 = 0u;
-  v300 = v4[31];
+  v300 = fromCopy[31];
   v301 = [v300 countByEnumeratingWithState:&v576 objects:v846 count:16];
   if (v301)
   {
@@ -14901,7 +14901,7 @@ LABEL_182:
   v574 = 0u;
   v573 = 0u;
   v572 = 0u;
-  v305 = v4[41];
+  v305 = fromCopy[41];
   v306 = [v305 countByEnumeratingWithState:&v572 objects:v845 count:16];
   if (v306)
   {
@@ -14931,7 +14931,7 @@ LABEL_182:
   v570 = 0u;
   v569 = 0u;
   v568 = 0u;
-  v310 = v4[46];
+  v310 = fromCopy[46];
   v311 = [v310 countByEnumeratingWithState:&v568 objects:v844 count:16];
   if (v311)
   {
@@ -14961,7 +14961,7 @@ LABEL_182:
   v566 = 0u;
   v565 = 0u;
   v564 = 0u;
-  v315 = v4[32];
+  v315 = fromCopy[32];
   v316 = [v315 countByEnumeratingWithState:&v564 objects:v843 count:16];
   if (v316)
   {
@@ -14991,7 +14991,7 @@ LABEL_182:
   v562 = 0u;
   v561 = 0u;
   v560 = 0u;
-  v320 = v4[40];
+  v320 = fromCopy[40];
   v321 = [v320 countByEnumeratingWithState:&v560 objects:v842 count:16];
   if (v321)
   {
@@ -15021,7 +15021,7 @@ LABEL_182:
   v558 = 0u;
   v557 = 0u;
   v556 = 0u;
-  v325 = v4[36];
+  v325 = fromCopy[36];
   v326 = [v325 countByEnumeratingWithState:&v556 objects:v841 count:16];
   if (v326)
   {
@@ -15051,7 +15051,7 @@ LABEL_182:
   v554 = 0u;
   v553 = 0u;
   v552 = 0u;
-  v330 = v4[58];
+  v330 = fromCopy[58];
   v331 = [v330 countByEnumeratingWithState:&v552 objects:v840 count:16];
   if (v331)
   {
@@ -15081,7 +15081,7 @@ LABEL_182:
   v550 = 0u;
   v549 = 0u;
   v548 = 0u;
-  v335 = v4[18];
+  v335 = fromCopy[18];
   v336 = [v335 countByEnumeratingWithState:&v548 objects:v839 count:16];
   if (v336)
   {
@@ -15111,7 +15111,7 @@ LABEL_182:
   v546 = 0u;
   v545 = 0u;
   v544 = 0u;
-  v340 = v4[19];
+  v340 = fromCopy[19];
   v341 = [v340 countByEnumeratingWithState:&v544 objects:v838 count:16];
   if (v341)
   {
@@ -15141,7 +15141,7 @@ LABEL_182:
   v542 = 0u;
   v541 = 0u;
   v540 = 0u;
-  v345 = v4[56];
+  v345 = fromCopy[56];
   v346 = [v345 countByEnumeratingWithState:&v540 objects:v837 count:16];
   if (v346)
   {
@@ -15171,7 +15171,7 @@ LABEL_182:
   v538 = 0u;
   v537 = 0u;
   v536 = 0u;
-  v350 = v4[20];
+  v350 = fromCopy[20];
   v351 = [v350 countByEnumeratingWithState:&v536 objects:v836 count:16];
   if (v351)
   {
@@ -15201,7 +15201,7 @@ LABEL_182:
   v534 = 0u;
   v533 = 0u;
   v532 = 0u;
-  v355 = v4[61];
+  v355 = fromCopy[61];
   v356 = [v355 countByEnumeratingWithState:&v532 objects:v835 count:16];
   if (v356)
   {
@@ -15231,7 +15231,7 @@ LABEL_182:
   v530 = 0u;
   v529 = 0u;
   v528 = 0u;
-  v360 = v4[57];
+  v360 = fromCopy[57];
   v361 = [v360 countByEnumeratingWithState:&v528 objects:v834 count:16];
   if (v361)
   {
@@ -15261,7 +15261,7 @@ LABEL_182:
   v526 = 0u;
   v525 = 0u;
   v524 = 0u;
-  v365 = v4[59];
+  v365 = fromCopy[59];
   v366 = [v365 countByEnumeratingWithState:&v524 objects:v833 count:16];
   if (v366)
   {
@@ -15291,7 +15291,7 @@ LABEL_182:
   v522 = 0u;
   v521 = 0u;
   v520 = 0u;
-  v370 = v4[4];
+  v370 = fromCopy[4];
   v371 = [v370 countByEnumeratingWithState:&v520 objects:v832 count:16];
   if (v371)
   {
@@ -15321,7 +15321,7 @@ LABEL_182:
   v519 = 0u;
   v516 = 0u;
   v517 = 0u;
-  v375 = v4[6];
+  v375 = fromCopy[6];
   v376 = [v375 countByEnumeratingWithState:&v516 objects:v831 count:16];
   if (v376)
   {
@@ -15351,7 +15351,7 @@ LABEL_182:
   v515 = 0u;
   v512 = 0u;
   v513 = 0u;
-  v380 = v4[8];
+  v380 = fromCopy[8];
   v381 = [v380 countByEnumeratingWithState:&v512 objects:v830 count:16];
   if (v381)
   {
@@ -15381,7 +15381,7 @@ LABEL_182:
   v511 = 0u;
   v508 = 0u;
   v509 = 0u;
-  v385 = v4[5];
+  v385 = fromCopy[5];
   v386 = [v385 countByEnumeratingWithState:&v508 objects:v829 count:16];
   if (v386)
   {
@@ -15411,7 +15411,7 @@ LABEL_182:
   v507 = 0u;
   v504 = 0u;
   v505 = 0u;
-  v390 = v4[7];
+  v390 = fromCopy[7];
   v391 = [v390 countByEnumeratingWithState:&v504 objects:v828 count:16];
   if (v391)
   {
@@ -15441,7 +15441,7 @@ LABEL_182:
   v503 = 0u;
   v500 = 0u;
   v501 = 0u;
-  v395 = v4[9];
+  v395 = fromCopy[9];
   v396 = [v395 countByEnumeratingWithState:&v500 objects:v827 count:16];
   if (v396)
   {
@@ -15471,7 +15471,7 @@ LABEL_182:
   v499 = 0u;
   v496 = 0u;
   v497 = 0u;
-  v400 = v4[2];
+  v400 = fromCopy[2];
   v401 = [v400 countByEnumeratingWithState:&v496 objects:v826 count:16];
   if (v401)
   {
@@ -15501,7 +15501,7 @@ LABEL_182:
   v495 = 0u;
   v492 = 0u;
   v493 = 0u;
-  v405 = v4[1];
+  v405 = fromCopy[1];
   v406 = [v405 countByEnumeratingWithState:&v492 objects:v825 count:16];
   if (v406)
   {
@@ -15531,7 +15531,7 @@ LABEL_182:
   v491 = 0u;
   v488 = 0u;
   v489 = 0u;
-  v410 = v4[3];
+  v410 = fromCopy[3];
   v411 = [v410 countByEnumeratingWithState:&v488 objects:v824 count:16];
   if (v411)
   {
@@ -15561,7 +15561,7 @@ LABEL_182:
   v487 = 0u;
   v484 = 0u;
   v485 = 0u;
-  v415 = v4[12];
+  v415 = fromCopy[12];
   v416 = [v415 countByEnumeratingWithState:&v484 objects:v823 count:16];
   if (v416)
   {
@@ -15591,7 +15591,7 @@ LABEL_182:
   v483 = 0u;
   v480 = 0u;
   v481 = 0u;
-  v420 = v4[14];
+  v420 = fromCopy[14];
   v421 = [v420 countByEnumeratingWithState:&v480 objects:v822 count:16];
   if (v421)
   {
@@ -15621,7 +15621,7 @@ LABEL_182:
   v479 = 0u;
   v476 = 0u;
   v477 = 0u;
-  v425 = v4[16];
+  v425 = fromCopy[16];
   v426 = [v425 countByEnumeratingWithState:&v476 objects:v821 count:16];
   if (v426)
   {
@@ -15651,7 +15651,7 @@ LABEL_182:
   v475 = 0u;
   v472 = 0u;
   v473 = 0u;
-  v430 = v4[13];
+  v430 = fromCopy[13];
   v431 = [v430 countByEnumeratingWithState:&v472 objects:v820 count:16];
   if (v431)
   {
@@ -15681,7 +15681,7 @@ LABEL_182:
   v471 = 0u;
   v468 = 0u;
   v469 = 0u;
-  v435 = v4[15];
+  v435 = fromCopy[15];
   v436 = [v435 countByEnumeratingWithState:&v468 objects:v819 count:16];
   if (v436)
   {
@@ -15711,7 +15711,7 @@ LABEL_182:
   v467 = 0u;
   v464 = 0u;
   v465 = 0u;
-  v440 = v4[17];
+  v440 = fromCopy[17];
   v441 = [v440 countByEnumeratingWithState:&v464 objects:v818 count:16];
   if (v441)
   {
@@ -15741,7 +15741,7 @@ LABEL_182:
   v463 = 0u;
   v460 = 0u;
   v461 = 0u;
-  v445 = v4[10];
+  v445 = fromCopy[10];
   v446 = [v445 countByEnumeratingWithState:&v460 objects:v817 count:16];
   if (v446)
   {
@@ -15771,7 +15771,7 @@ LABEL_182:
   v459 = 0u;
   v456 = 0u;
   v457 = 0u;
-  v450 = v4[11];
+  v450 = fromCopy[11];
   v451 = [v450 countByEnumeratingWithState:&v456 objects:v816 count:16];
   if (v451)
   {

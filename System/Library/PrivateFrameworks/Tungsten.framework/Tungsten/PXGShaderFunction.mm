@@ -1,7 +1,7 @@
 @interface PXGShaderFunction
 + (NSArray)shaderFunctions;
 + (NSDictionary)shaderFunctionByName;
-- (PXGShaderFunction)initWithName:(id)a3 assignmentVariable:(id)a4 isOpaque:(BOOL)a5;
+- (PXGShaderFunction)initWithName:(id)name assignmentVariable:(id)variable isOpaque:(BOOL)opaque;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,8 +10,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXGShaderFunction *)self name];
-  v3 = [v2 hash];
+  name = [(PXGShaderFunction *)self name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -21,39 +21,39 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGShaderFunction *)self name];
-  v7 = [(PXGShaderFunction *)self assignmentVariable];
-  v8 = [(PXGShaderFunction *)self isOpaque];
+  name = [(PXGShaderFunction *)self name];
+  assignmentVariable = [(PXGShaderFunction *)self assignmentVariable];
+  isOpaque = [(PXGShaderFunction *)self isOpaque];
   v9 = @"NO";
-  if (v8)
+  if (isOpaque)
   {
     v9 = @"YES";
   }
 
   v10 = v9;
-  v11 = [v3 stringWithFormat:@"<%@:%p name:%@ assignmentVariable:%@ isOpaque:%@>", v5, self, v6, v7, v10];;
+  v11 = [v3 stringWithFormat:@"<%@:%p name:%@ assignmentVariable:%@ isOpaque:%@>", v5, self, name, assignmentVariable, v10];;
 
   return v11;
 }
 
-- (PXGShaderFunction)initWithName:(id)a3 assignmentVariable:(id)a4 isOpaque:(BOOL)a5
+- (PXGShaderFunction)initWithName:(id)name assignmentVariable:(id)variable isOpaque:(BOOL)opaque
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  variableCopy = variable;
   v16.receiver = self;
   v16.super_class = PXGShaderFunction;
   v10 = [(PXGShaderFunction *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v13 = [v9 copy];
+    v13 = [variableCopy copy];
     assignmentVariable = v10->_assignmentVariable;
     v10->_assignmentVariable = v13;
 
-    v10->_isOpaque = a5;
+    v10->_isOpaque = opaque;
   }
 
   return v10;

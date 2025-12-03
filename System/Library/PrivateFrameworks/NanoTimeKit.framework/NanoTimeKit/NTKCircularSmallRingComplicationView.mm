@@ -1,19 +1,19 @@
 @interface NTKCircularSmallRingComplicationView
-- (NTKCircularSmallRingComplicationView)initWithFrame:(CGRect)a3;
+- (NTKCircularSmallRingComplicationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setForegroundColor:(id)a3;
-- (void)setUsesMediumLayout:(BOOL)a3;
-- (void)updateRingWithOverrideColor:(id)a3;
-- (void)updateRingWithRingDescription:(id)a3;
+- (void)setForegroundColor:(id)color;
+- (void)setUsesMediumLayout:(BOOL)layout;
+- (void)updateRingWithOverrideColor:(id)color;
+- (void)updateRingWithRingDescription:(id)description;
 @end
 
 @implementation NTKCircularSmallRingComplicationView
 
-- (NTKCircularSmallRingComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularSmallRingComplicationView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NTKCircularSmallRingComplicationView;
-  v3 = [(NTKCircularComplicationView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCircularComplicationView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,12 +29,12 @@
   return v4;
 }
 
-- (void)setUsesMediumLayout:(BOOL)a3
+- (void)setUsesMediumLayout:(BOOL)layout
 {
   self->_didDrawOnce = 0;
   v3.receiver = self;
   v3.super_class = NTKCircularSmallRingComplicationView;
-  [(NTKCircularComplicationView *)&v3 setUsesMediumLayout:a3];
+  [(NTKCircularComplicationView *)&v3 setUsesMediumLayout:layout];
 }
 
 - (void)layoutSubviews
@@ -44,35 +44,35 @@
   [(NTKCircularComplicationView *)&v4 layoutSubviews];
   [(NTKCircularSmallRingComplicationView *)self bounds];
   [(NTKCircularComplicationView *)self _layoutConstants];
-  v3 = [(NTKCircularComplicationView *)self device];
+  device = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   [(CLKUIColoringImageView *)self->_fillFractionRing setFrame:?];
 }
 
-- (void)updateRingWithRingDescription:(id)a3
+- (void)updateRingWithRingDescription:(id)description
 {
-  v4 = a3;
-  [v4 fillFraction];
+  descriptionCopy = description;
+  [descriptionCopy fillFraction];
   if (!CLKFloatEqualsFloat() || !self->_didDrawOnce)
   {
-    [v4 fillFraction];
+    [descriptionCopy fillFraction];
     self->_fillFraction = v5;
     [(NTKCircularComplicationView *)self _layoutConstants];
-    [v4 setRadius:v8 * 0.5];
+    [descriptionCopy setRadius:v8 * 0.5];
     [(NTKCircularComplicationView *)self _layoutConstants];
-    [v4 setStrokeWidth:v7];
-    v6 = [v4 ringImage];
-    [(CLKUIColoringImageView *)self->_fillFractionRing setImage:v6];
+    [descriptionCopy setStrokeWidth:v7];
+    ringImage = [descriptionCopy ringImage];
+    [(CLKUIColoringImageView *)self->_fillFractionRing setImage:ringImage];
 
     self->_didDrawOnce = 1;
     [(NTKCircularSmallRingComplicationView *)self setNeedsLayout];
   }
 }
 
-- (void)updateRingWithOverrideColor:(id)a3
+- (void)updateRingWithOverrideColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&self->_ringOverrideColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_ringOverrideColor, color);
   if (self->_ringOverrideColor)
   {
     [(CLKUIColoringImageView *)self->_fillFractionRing setColor:?];
@@ -80,18 +80,18 @@
 
   else
   {
-    v5 = [(NTKCircularComplicationView *)self _computedForegroundColor];
-    [(CLKUIColoringImageView *)self->_fillFractionRing setColor:v5];
+    _computedForegroundColor = [(NTKCircularComplicationView *)self _computedForegroundColor];
+    [(CLKUIColoringImageView *)self->_fillFractionRing setColor:_computedForegroundColor];
   }
 
   [(NTKCircularSmallRingComplicationView *)self setNeedsLayout];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = NTKCircularSmallRingComplicationView;
-  [(NTKCircularComplicationView *)&v4 setForegroundColor:a3];
+  [(NTKCircularComplicationView *)&v4 setForegroundColor:color];
   if (self->_ringOverrideColor)
   {
     [(CLKUIColoringImageView *)self->_fillFractionRing setColor:?];

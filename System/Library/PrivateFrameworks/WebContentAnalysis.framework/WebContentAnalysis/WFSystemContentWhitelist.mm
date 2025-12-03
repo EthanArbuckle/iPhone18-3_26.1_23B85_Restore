@@ -1,16 +1,16 @@
 @interface WFSystemContentWhitelist
 + (id)defaultSystemWhitelist;
-+ (id)newWhitelistItemFromPlistEntry:(id)a3;
-- (BOOL)isURLWhitelisted:(id)a3;
-- (WFSystemContentWhitelist)initWithWhitelistURL:(id)a3;
++ (id)newWhitelistItemFromPlistEntry:(id)entry;
+- (BOOL)isURLWhitelisted:(id)whitelisted;
+- (WFSystemContentWhitelist)initWithWhitelistURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation WFSystemContentWhitelist
 
-+ (id)newWhitelistItemFromPlistEntry:(id)a3
++ (id)newWhitelistItemFromPlistEntry:(id)entry
 {
-  v3 = [a3 objectForKeyedSubscript:@"WFSystemContentWhitelistDomainGlob"];
+  v3 = [entry objectForKeyedSubscript:@"WFSystemContentWhitelistDomainGlob"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __50__WFSystemContentWhitelist_defaultSystemWhitelist__block_invoke;
   block[3] = &unk_279E7DDC0;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSystemWhitelist_onceToken != -1)
   {
     dispatch_once(&defaultSystemWhitelist_onceToken, block);
@@ -44,7 +44,7 @@ WFSystemContentWhitelist *__50__WFSystemContentWhitelist_defaultSystemWhitelist_
   return result;
 }
 
-- (WFSystemContentWhitelist)initWithWhitelistURL:(id)a3
+- (WFSystemContentWhitelist)initWithWhitelistURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
@@ -53,7 +53,7 @@ WFSystemContentWhitelist *__50__WFSystemContentWhitelist_defaultSystemWhitelist_
   if (v4)
   {
     v24 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:0 error:&v24];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:0 error:&v24];
     if (v5 && (v6 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:0 error:&v24]) != 0)
     {
       v7 = v6;
@@ -117,7 +117,7 @@ WFSystemContentWhitelist *__50__WFSystemContentWhitelist_defaultSystemWhitelist_
       v17 = __WFDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [(WFSystemContentWhitelist *)a3 initWithWhitelistURL:v17];
+        [(WFSystemContentWhitelist *)l initWithWhitelistURL:v17];
       }
 
       v4 = 0;
@@ -135,7 +135,7 @@ WFSystemContentWhitelist *__50__WFSystemContentWhitelist_defaultSystemWhitelist_
   [(WFSystemContentWhitelist *)&v3 dealloc];
 }
 
-- (BOOL)isURLWhitelisted:(id)a3
+- (BOOL)isURLWhitelisted:(id)whitelisted
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -158,7 +158,7 @@ WFSystemContentWhitelist *__50__WFSystemContentWhitelist_defaultSystemWhitelist_
           objc_enumerationMutation(whitelistItems);
         }
 
-        if ([*(*(&v11 + 1) + 8 * v8) matchesURL:a3])
+        if ([*(*(&v11 + 1) + 8 * v8) matchesURL:whitelisted])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;

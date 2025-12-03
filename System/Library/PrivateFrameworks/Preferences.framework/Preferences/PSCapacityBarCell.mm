@@ -1,48 +1,48 @@
 @interface PSCapacityBarCell
-+ (id)specifierWithTitle:(id)a3;
-+ (id)specifierWithTitle:(id)a3 useStandardFontSizeForSizeLabel:(BOOL)a4;
-- (PSCapacityBarCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (PSCapacityBarCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)usageString:(id)a3;
++ (id)specifierWithTitle:(id)title;
++ (id)specifierWithTitle:(id)title useStandardFontSizeForSizeLabel:(BOOL)label;
+- (PSCapacityBarCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (PSCapacityBarCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)usageString:(id)string;
 - (void)addHorizontalLegends;
 - (void)addVerticalLegends;
 - (void)createCommonConstraints;
 - (void)createLargeConstraints;
-- (void)createLegends:(id)a3;
+- (void)createLegends:(id)legends;
 - (void)createNormalConstraints;
 - (void)initializeViews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
 @implementation PSCapacityBarCell
 
-+ (id)specifierWithTitle:(id)a3
++ (id)specifierWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_1EFE45030 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v4 setProperty:objc_opt_class() forKey:@"cellClass"];
-  [v4 setProperty:v3 forKey:@"label"];
+  [v4 setProperty:titleCopy forKey:@"label"];
 
   return v4;
 }
 
-+ (id)specifierWithTitle:(id)a3 useStandardFontSizeForSizeLabel:(BOOL)a4
++ (id)specifierWithTitle:(id)title useStandardFontSizeForSizeLabel:(BOOL)label
 {
-  v4 = a4;
-  v5 = [a1 specifierWithTitle:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  labelCopy = label;
+  v5 = [self specifierWithTitle:title];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:labelCopy];
   [v5 setProperty:v6 forKey:@"psCapBarSizeLblUsesStandardFont"];
 
   return v5;
 }
 
-- (PSCapacityBarCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSCapacityBarCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PSCapacityBarCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -52,17 +52,17 @@
   return v5;
 }
 
-- (PSCapacityBarCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSCapacityBarCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = PSCapacityBarCell;
-  v9 = [(PSTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
     [(PSCapacityBarCell *)v9 initializeViews];
-    [(PSCapacityBarCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(PSCapacityBarCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   return v10;
@@ -73,16 +73,16 @@
   v38[4] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = PSCapacityBarCell;
-  v3 = [(PSTableCell *)&v37 titleLabel];
-  [v3 setText:0];
+  titleLabel = [(PSTableCell *)&v37 titleLabel];
+  [titleLabel setText:0];
 
   v36.receiver = self;
   v36.super_class = PSCapacityBarCell;
-  v4 = [(PSTableCell *)&v36 titleLabel];
-  [v4 setHidden:1];
+  titleLabel2 = [(PSTableCell *)&v36 titleLabel];
+  [titleLabel2 setHidden:1];
 
-  v5 = [(PSCapacityBarCell *)self contentView];
-  [v5 layoutIfNeeded];
+  contentView = [(PSCapacityBarCell *)self contentView];
+  [contentView layoutIfNeeded];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   bigFont = self->_bigFont;
   self->_bigFont = v6;
@@ -110,7 +110,7 @@
   [(UILabel *)self->_titleLabel setAdjustsFontForContentSizeCategory:1];
   LODWORD(v18) = 1132068864;
   [(UILabel *)self->_titleLabel setContentHuggingPriority:0 forAxis:v18];
-  [v5 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
   sizeLabel = self->_sizeLabel;
   self->_sizeLabel = v19;
@@ -126,14 +126,14 @@
   [(UILabel *)self->_sizeLabel setAdjustsFontForContentSizeCategory:1];
   LODWORD(v21) = 1144750080;
   [(UILabel *)self->_sizeLabel setContentHuggingPriority:0 forAxis:v21];
-  [v5 addSubview:self->_sizeLabel];
+  [contentView addSubview:self->_sizeLabel];
   v22 = [[PSCapacityBarView alloc] initWithFrame:v12, v13, v14, v15];
   barView = self->_barView;
   self->_barView = v22;
 
   [(PSCapacityBarView *)self->_barView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PSCapacityBarView *)self->_barView setAccessibilityIdentifier:@"CategoryBar"];
-  [v5 addSubview:self->_barView];
+  [contentView addSubview:self->_barView];
   v24 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithFrame:{v12, v13, v14, v15}];
   legendView = self->_legendView;
   self->_legendView = v24;
@@ -142,7 +142,7 @@
   [(UIStackView *)self->_legendView setAccessibilityIdentifier:@"Legend"];
   LODWORD(v26) = 1148846080;
   [(UIStackView *)self->_legendView setContentHuggingPriority:1 forAxis:v26];
-  [v5 addSubview:self->_legendView];
+  [contentView addSubview:self->_legendView];
   v27 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
   loadingLabel = self->_loadingLabel;
   self->_loadingLabel = v27;
@@ -169,7 +169,7 @@
   v38[2] = self->_barView;
   v38[3] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
-  [v5 setAccessibilityElements:v35];
+  [contentView setAccessibilityElements:v35];
 
   [(PSCapacityBarCell *)self setNeedsUpdateConstraints];
   [(PSCapacityBarCell *)self setNeedsLayout];
@@ -177,18 +177,18 @@
 
 - (void)createNormalConstraints
 {
-  v11 = [(PSCapacityBarCell *)self contentView];
+  contentView = [(PSCapacityBarCell *)self contentView];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:6];
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:v11 attribute:5 multiplier:1.0 constant:15.0];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v4];
 
   v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:6 relatedBy:0 toItem:self->_sizeLabel attribute:5 multiplier:1.0 constant:-12.0];
   [(NSMutableArray *)v3 addObject:v5];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:0 toItem:v11 attribute:6 multiplier:1.0 constant:-15.0];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-15.0];
   [(NSMutableArray *)v3 addObject:v6];
 
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:10.0];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:3 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v7];
 
   v8 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:12 relatedBy:0 toItem:self->_titleLabel attribute:12 multiplier:1.0 constant:0.0];
@@ -203,30 +203,30 @@
 
 - (void)createLargeConstraints
 {
-  v14 = [(PSCapacityBarCell *)self contentView];
+  contentView = [(PSCapacityBarCell *)self contentView];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:9];
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:v14 attribute:5 multiplier:1.0 constant:15.0];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v4];
 
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:6 relatedBy:-1 toItem:v14 attribute:6 multiplier:1.0 constant:-15.0];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:6 relatedBy:-1 toItem:contentView attribute:6 multiplier:1.0 constant:-15.0];
   [(NSMutableArray *)v3 addObject:v5];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:5 relatedBy:0 toItem:v14 attribute:5 multiplier:1.0 constant:15.0];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v6];
 
-  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:-1 toItem:v14 attribute:6 multiplier:1.0 constant:-15.0];
+  v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:-1 toItem:contentView attribute:6 multiplier:1.0 constant:-15.0];
   [(NSMutableArray *)v3 addObject:v7];
 
-  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:3 relatedBy:0 toItem:v14 attribute:3 multiplier:1.0 constant:10.0];
+  v8 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:3 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v8];
 
-  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:v14 attribute:4 relatedBy:1 toItem:self->_titleLabel attribute:4 multiplier:1.0 constant:10.0];
+  v9 = [MEMORY[0x1E696ACD8] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_titleLabel attribute:4 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v9];
 
   v10 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_sizeLabel attribute:3 relatedBy:0 toItem:self->_titleLabel attribute:4 multiplier:1.0 constant:4.0];
   [(NSMutableArray *)v3 addObject:v10];
 
-  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:v14 attribute:4 relatedBy:1 toItem:self->_sizeLabel attribute:4 multiplier:1.0 constant:10.0];
+  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_sizeLabel attribute:4 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v11];
 
   v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:3 relatedBy:0 toItem:self->_sizeLabel attribute:4 multiplier:1.0 constant:10.0];
@@ -238,15 +238,15 @@
 
 - (void)createCommonConstraints
 {
-  v17 = [(PSCapacityBarCell *)self contentView];
+  contentView = [(PSCapacityBarCell *)self contentView];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:12.0];
+  v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:12.0];
   [(NSMutableArray *)v3 addObject:v4];
 
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:6 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:-12.0];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-12.0];
   [(NSMutableArray *)v3 addObject:v5];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:4 relatedBy:1 toItem:self->_barView attribute:4 multiplier:1.0 constant:10.0];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_barView attribute:4 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v6];
 
   v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_barView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:16.0];
@@ -260,16 +260,16 @@
 
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
 
-  v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_legendView attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:15.0];
+  v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_legendView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v11 addObject:v12];
 
-  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_legendView attribute:6 relatedBy:-1 toItem:v17 attribute:6 multiplier:1.0 constant:-15.0];
+  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_legendView attribute:6 relatedBy:-1 toItem:contentView attribute:6 multiplier:1.0 constant:-15.0];
   [(NSMutableArray *)v11 addObject:v13];
 
   v14 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_legendView attribute:3 relatedBy:0 toItem:self->_barView attribute:4 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v11 addObject:v14];
 
-  v15 = [MEMORY[0x1E696ACD8] constraintWithItem:v17 attribute:4 relatedBy:1 toItem:self->_legendView attribute:4 multiplier:1.0 constant:10.0];
+  v15 = [MEMORY[0x1E696ACD8] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_legendView attribute:4 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v11 addObject:v15];
 
   legendConstraints = self->_legendConstraints;
@@ -328,8 +328,8 @@
   [(UIStackView *)self->_legendView setSpacing:12.0];
   v3 = self->_legends;
   [(PSCapacityBarLegendView *)self->_otherLegend layoutIfNeeded];
-  v4 = [(PSCapacityBarCell *)self contentView];
-  [v4 frame];
+  contentView = [(PSCapacityBarCell *)self contentView];
+  [contentView frame];
   v6 = v5 + -30.0;
 
   if (self->_showOtherLegend)
@@ -393,9 +393,9 @@ LABEL_13:
 - (void)updateConstraints
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(PSCapacityBarCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(PSCapacityBarCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -440,8 +440,8 @@ LABEL_10:
     [MEMORY[0x1E696ACD8] activateConstraints:self->_commonConstraints];
   }
 
-  v9 = [(UILabel *)self->_titleLabel font];
-  [v9 lineHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font lineHeight];
   v11 = v10;
 
   v12 = 16.0;
@@ -459,12 +459,12 @@ LABEL_10:
   {
     [(UIStackView *)self->_legendView setHidden:1];
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_legendConstraints];
-    v13 = [(UIStackView *)self->_legendView subviews];
+    subviews = [(UIStackView *)self->_legendView subviews];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v14 = [subviews countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
@@ -475,13 +475,13 @@ LABEL_10:
         {
           if (*v28 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v27 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v15 = [subviews countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v15);
@@ -491,12 +491,12 @@ LABEL_10:
   else
   {
     [MEMORY[0x1E696ACD8] activateConstraints:self->_legendConstraints];
-    v13 = [(UIStackView *)self->_legendView subviews];
+    subviews = [(UIStackView *)self->_legendView subviews];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v18 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v18 = [subviews countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v18)
     {
       v19 = v18;
@@ -507,13 +507,13 @@ LABEL_10:
         {
           if (*v24 != v20)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v23 + 1) + 8 * j) removeFromSuperview];
         }
 
-        v19 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v19 = [subviews countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v19);
@@ -537,19 +537,19 @@ LABEL_10:
   [(PSCapacityBarCell *)&v22 updateConstraints];
 }
 
-- (void)createLegends:(id)a3
+- (void)createLegends:(id)legends
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 orderedCategories];
-  if ([v4 count] && !self->_forceLoading)
+  orderedCategories = [legends orderedCategories];
+  if ([orderedCategories count] && !self->_forceLoading)
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count") + 1}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(orderedCategories, "count") + 1}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v4;
-    v6 = v4;
+    v16 = orderedCategories;
+    v6 = orderedCategories;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -567,8 +567,8 @@ LABEL_10:
           v11 = *(*(&v17 + 1) + 8 * i);
           if ([v11 bytes])
           {
-            v12 = [v11 identifier];
-            v13 = [v12 isEqualToString:@"_CAT_OTHER_"];
+            identifier = [v11 identifier];
+            v13 = [identifier isEqualToString:@"_CAT_OTHER_"];
 
             if ((v13 & 1) == 0)
             {
@@ -591,7 +591,7 @@ LABEL_10:
       [(NSArray *)v5 addObject:self->_otherLegend];
     }
 
-    v4 = v16;
+    orderedCategories = v16;
   }
 
   else
@@ -604,12 +604,12 @@ LABEL_10:
   self->_legends = v5;
 }
 
-- (id)usageString:(id)a3
+- (id)usageString:(id)string
 {
-  v4 = a3;
-  if ([v4 capacity])
+  stringCopy = string;
+  if ([stringCopy capacity])
   {
-    v5 = [v4 bytesUsed];
+    bytesUsed = [stringCopy bytesUsed];
     v6 = 1024;
     if (!self->_sizesAreMem)
     {
@@ -622,9 +622,9 @@ LABEL_10:
       v7 = 0x40000000;
     }
 
-    if (v7 < v5)
+    if (v7 < bytesUsed)
     {
-      v8 = v5 / v7;
+      v8 = bytesUsed / v7;
       v9 = v6;
       while (v8 > v9)
       {
@@ -646,13 +646,13 @@ LABEL_10:
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v37.receiver = self;
   v37.super_class = PSCapacityBarCell;
-  [(PSTableCell *)&v37 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"psCapBarLoading"];
+  [(PSTableCell *)&v37 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"psCapBarLoading"];
   if (v5)
   {
     [(UILabel *)self->_loadingLabel setText:v5];
@@ -664,7 +664,7 @@ LABEL_10:
     [(UILabel *)self->_loadingLabel setText:v6];
   }
 
-  v7 = [v4 propertyForKey:@"psCapBarOtherDataLegendText"];
+  v7 = [specifierCopy propertyForKey:@"psCapBarOtherDataLegendText"];
   if (v7)
   {
     p_otherLegend = &self->_otherLegend;
@@ -678,10 +678,10 @@ LABEL_10:
     [(PSCapacityBarLegendView *)self->_otherLegend setText:v9];
   }
 
-  v10 = [v4 propertyForKey:@"psCapBarSizesAreMem"];
+  v10 = [specifierCopy propertyForKey:@"psCapBarSizesAreMem"];
   self->_sizesAreMem = [v10 BOOLValue];
 
-  v11 = [v4 propertyForKey:@"psCapBarSizeFormat"];
+  v11 = [specifierCopy propertyForKey:@"psCapBarSizeFormat"];
   v12 = v11;
   if (!v11)
   {
@@ -693,36 +693,36 @@ LABEL_10:
   {
   }
 
-  v13 = [v4 propertyForKey:@"psCapBarData"];
+  v13 = [specifierCopy propertyForKey:@"psCapBarData"];
   v14 = [(PSCapacityBarCell *)self usageString:v13];
   v36.receiver = self;
   v36.super_class = PSCapacityBarCell;
-  v15 = [(PSTableCell *)&v36 titleLabel];
-  [v15 setText:v14];
+  titleLabel = [(PSTableCell *)&v36 titleLabel];
+  [titleLabel setText:v14];
 
   [(UILabel *)self->_sizeLabel setText:v14];
   -[UILabel setHidden:](self->_sizeLabel, "setHidden:", [v14 length] == 0);
-  v16 = [v4 propertyForKey:@"psCapBarSizeLblUsesStandardFont"];
-  v17 = [v16 BOOLValue];
+  v16 = [specifierCopy propertyForKey:@"psCapBarSizeLblUsesStandardFont"];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     [(UILabel *)self->_sizeLabel setFont:self->_bigFont];
   }
 
-  v18 = [v4 propertyForKey:@"psCapBarBackgroundColor"];
+  v18 = [specifierCopy propertyForKey:@"psCapBarBackgroundColor"];
   [(PSCapacityBarView *)self->_barView setBarBackgroundColor:v18];
 
-  v19 = [v4 propertyForKey:@"psCapBarOtherDataColor"];
+  v19 = [specifierCopy propertyForKey:@"psCapBarOtherDataColor"];
   [(PSCapacityBarView *)self->_barView setBarOtherDataColor:v19];
 
-  v20 = [v4 propertyForKey:@"psCapBarSeparatorColor"];
+  v20 = [specifierCopy propertyForKey:@"psCapBarSeparatorColor"];
   [(PSCapacityBarView *)self->_barView setBarSeparatorColor:v20];
 
-  v21 = [v4 propertyForKey:@"psCapBarBackgroundColor"];
+  v21 = [specifierCopy propertyForKey:@"psCapBarBackgroundColor"];
   [(PSCapacityBarView *)self->_barView setBarBackgroundColor:v21];
 
-  v22 = [v4 propertyForKey:@"psCapBarTitleTextColor"];
+  v22 = [specifierCopy propertyForKey:@"psCapBarTitleTextColor"];
   if (v22)
   {
     p_titleLabel = &self->_titleLabel;
@@ -731,12 +731,12 @@ LABEL_10:
 
   else
   {
-    v24 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     p_titleLabel = &self->_titleLabel;
-    [(UILabel *)self->_titleLabel setTextColor:v24];
+    [(UILabel *)self->_titleLabel setTextColor:labelColor];
   }
 
-  v25 = [v4 propertyForKey:@"psCapBarSizeTextColor"];
+  v25 = [specifierCopy propertyForKey:@"psCapBarSizeTextColor"];
   if (v25)
   {
     [(UILabel *)self->_sizeLabel setTextColor:v25];
@@ -744,40 +744,40 @@ LABEL_10:
 
   else
   {
-    v26 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_sizeLabel setTextColor:v26];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_sizeLabel setTextColor:labelColor2];
   }
 
-  v27 = [v4 propertyForKey:@"psCapBarLegendTextColor"];
-  v28 = v27;
+  v27 = [specifierCopy propertyForKey:@"psCapBarLegendTextColor"];
+  labelColor3 = v27;
   if (!v27)
   {
-    v28 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor3 = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  objc_storeStrong(&self->_legendTextColor, v28);
+  objc_storeStrong(&self->_legendTextColor, labelColor3);
   if (!v27)
   {
   }
 
-  v29 = [(PSCapacityBarView *)self->_barView barOtherDataColor];
-  [(PSCapacityBarLegendView *)*p_otherLegend setColor:v29];
+  barOtherDataColor = [(PSCapacityBarView *)self->_barView barOtherDataColor];
+  [(PSCapacityBarLegendView *)*p_otherLegend setColor:barOtherDataColor];
 
   [(PSCapacityBarLegendView *)*p_otherLegend setTextColor:self->_legendTextColor];
-  v30 = [v4 propertyForKey:@"psCapBarHideLegend"];
+  v30 = [specifierCopy propertyForKey:@"psCapBarHideLegend"];
   self->_hideLegend = [v30 BOOLValue];
 
-  v31 = [v4 propertyForKey:@"psCapBarShowOtherDataLegend"];
+  v31 = [specifierCopy propertyForKey:@"psCapBarShowOtherDataLegend"];
   self->_showOtherLegend = [v31 BOOLValue];
 
-  v32 = [v4 propertyForKey:@"psCapBarForceLoading"];
+  v32 = [specifierCopy propertyForKey:@"psCapBarForceLoading"];
   self->_forceLoading = [v32 BOOLValue];
 
   [(PSCapacityBarCell *)self createLegends:v13];
   [(PSCapacityBarView *)self->_barView setBarData:v13];
-  v33 = [v4 propertyForKey:@"label"];
-  v34 = [(UILabel *)*p_titleLabel text];
-  v35 = [v33 isEqualToString:v34];
+  v33 = [specifierCopy propertyForKey:@"label"];
+  text = [(UILabel *)*p_titleLabel text];
+  v35 = [v33 isEqualToString:text];
 
   if ((v35 & 1) == 0)
   {
@@ -788,11 +788,11 @@ LABEL_10:
   [(PSCapacityBarCell *)self setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PSCapacityBarCell;
-  [(PSCapacityBarCell *)&v4 traitCollectionDidChange:a3];
+  [(PSCapacityBarCell *)&v4 traitCollectionDidChange:change];
   [(PSCapacityBarCell *)self setNeedsUpdateConstraints];
   [(PSCapacityBarCell *)self setNeedsLayout];
 }

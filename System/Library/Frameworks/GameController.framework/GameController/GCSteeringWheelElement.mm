@@ -1,10 +1,10 @@
 @interface GCSteeringWheelElement
 + (unsigned)updateContextSize;
-- (BOOL)isEqualToElement:(id)a3;
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5;
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5;
-- (GCSteeringWheelElement)initWithParameters:(id)a3;
-- (GCSteeringWheelElement)initWithTemplate:(id)a3 context:(id)a4;
+- (BOOL)isEqualToElement:(id)element;
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp;
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with;
+- (GCSteeringWheelElement)initWithParameters:(id)parameters;
+- (GCSteeringWheelElement)initWithTemplate:(id)template context:(id)context;
 - (NSSet)sources;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -32,27 +32,27 @@
 - (uint64_t)_setValueDidChangeHandler:(uint64_t)result;
 - (uint64_t)_sources;
 - (uint64_t)_valueDidChangeHandler;
-- (void)postCommit:(const void *)a3 sender:(id)a4;
-- (void)preCommit:(const void *)a3 sender:(id)a4;
+- (void)postCommit:(const void *)commit sender:(id)sender;
+- (void)preCommit:(const void *)commit sender:(id)sender;
 @end
 
 @implementation GCSteeringWheelElement
 
-- (GCSteeringWheelElement)initWithTemplate:(id)a3 context:(id)a4
+- (GCSteeringWheelElement)initWithTemplate:(id)template context:(id)context
 {
   v10.receiver = self;
   v10.super_class = GCSteeringWheelElement;
-  v5 = a4;
-  v6 = a3;
-  v7 = [(_GCDevicePhysicalInputElement *)&v10 initWithTemplate:v6 context:v5];
-  v7->_sourcesSlot = [v5 view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:{v6[7], v10.receiver, v10.super_class}];
-  v7->_maximumDegreesOfRotationSlot = [v5 view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[8]];
-  v7->_rotationValueFieldSlot = [v5 view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[9]];
-  v7->_valueChangedHandlerSlot = [v5 view:v7 allocateObjectSlot:2 withCopyOfValueFromView:v6 slot:v6[10]];
-  v7->_deltaChangedHandlerSlot = [v5 view:v7 allocateObjectSlot:2 withCopyOfValueFromView:v6 slot:v6[11]];
-  v7->_valueSlot = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[12]];
-  v7->_deltaSlot = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[13]];
-  v8 = [v5 view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[14]];
+  contextCopy = context;
+  templateCopy = template;
+  v7 = [(_GCDevicePhysicalInputElement *)&v10 initWithTemplate:templateCopy context:contextCopy];
+  v7->_sourcesSlot = [contextCopy view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:{templateCopy[7], v10.receiver, v10.super_class}];
+  v7->_maximumDegreesOfRotationSlot = [contextCopy view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[8]];
+  v7->_rotationValueFieldSlot = [contextCopy view:v7 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[9]];
+  v7->_valueChangedHandlerSlot = [contextCopy view:v7 allocateObjectSlot:2 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
+  v7->_deltaChangedHandlerSlot = [contextCopy view:v7 allocateObjectSlot:2 withCopyOfValueFromView:templateCopy slot:templateCopy[11]];
+  v7->_valueSlot = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[12]];
+  v7->_deltaSlot = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[13]];
+  v8 = [contextCopy view:v7 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[14]];
 
   v7->_timestampSlot = v8;
   return v7;
@@ -60,14 +60,14 @@
 
 + (unsigned)updateContextSize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___GCSteeringWheelElement;
   return objc_msgSendSuper2(&v3, sel_updateContextSize) + 1;
 }
 
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with
 {
-  v6 = a4;
+  usagesCopy = usages;
   v38.receiver = self;
   v38.super_class = GCSteeringWheelElement;
   v9 = [_GCDevicePhysicalInputElement update:sel_update_forUsages_with_ forUsages:? with:?];
@@ -76,10 +76,10 @@
   {
     v10 = +[_GCDevicePhysicalInputElement updateContextSize];
     MyUpdateContext_Offset_7 = v10;
-    if ((v6 & 2) == 0)
+    if ((usagesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v6 & 4) == 0)
+      if ((usagesCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -88,18 +88,18 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((usagesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  v23 = [(GCSteeringWheelElement *)a5 _sources];
-  v24 = [(GCSteeringWheelElement *)self _setSources:v23];
-  *(a3 + v10) = *(a3 + v10) & 0xFE | v24;
+  _sources = [(GCSteeringWheelElement *)with _sources];
+  v24 = [(GCSteeringWheelElement *)self _setSources:_sources];
+  *(update + v10) = *(update + v10) & 0xFE | v24;
 
-  if (a5)
+  if (with)
   {
-    v25 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+    v25 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
     v26 = v25;
     if (self)
     {
@@ -131,10 +131,10 @@ LABEL_26:
   }
 
 LABEL_29:
-  *(a3 + v10) = *(a3 + v10) & 0xFD | v28;
-  if (a5)
+  *(update + v10) = *(update + v10) & 0xFD | v28;
+  if (with)
   {
-    v29 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    v29 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     if (self)
     {
       goto LABEL_31;
@@ -165,20 +165,20 @@ LABEL_31:
   }
 
 LABEL_34:
-  *(a3 + v10) = *(a3 + v10) & 0xFB | v31;
+  *(update + v10) = *(update + v10) & 0xFB | v31;
   v9 |= v24 | v27 | v30;
-  if ((v6 & 4) == 0)
+  if ((usagesCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v6 & 8) == 0)
+    if ((usagesCopy & 8) == 0)
     {
       return v9 & 1;
     }
 
 LABEL_5:
-    if (a5)
+    if (with)
     {
-      v11 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+      v11 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
       v12 = v11;
       if (self)
       {
@@ -204,10 +204,10 @@ LABEL_7:
         }
 
 LABEL_10:
-        *(a3 + v10) = *(a3 + v10) & 0xDF | v14;
-        if (a5)
+        *(update + v10) = *(update + v10) & 0xDF | v14;
+        if (with)
         {
-          v15 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+          v15 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
           v16 = v15;
           if (self)
           {
@@ -233,10 +233,10 @@ LABEL_12:
             }
 
 LABEL_15:
-            *(a3 + v10) = *(a3 + v10) & 0xBF | v18;
-            if (a5)
+            *(update + v10) = *(update + v10) & 0xBF | v18;
+            if (with)
             {
-              v19 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+              v19 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
             }
 
             else
@@ -264,7 +264,7 @@ LABEL_15:
               v21 = 0;
             }
 
-            *(a3 + v10) = *(a3 + v10) & 0x7F | v21;
+            *(update + v10) = *(update + v10) & 0x7F | v21;
             v9 |= v13 | v17 | v20;
             return v9 & 1;
           }
@@ -282,8 +282,8 @@ LABEL_15:
   }
 
 LABEL_35:
-  v32 = [(GCSteeringWheelElement *)a5 _valueDidChangeHandler];
-  v33 = [(GCSteeringWheelElement *)self _setValueDidChangeHandler:v32];
+  _valueDidChangeHandler = [(GCSteeringWheelElement *)with _valueDidChangeHandler];
+  v33 = [(GCSteeringWheelElement *)self _setValueDidChangeHandler:_valueDidChangeHandler];
   if (v33)
   {
     v34 = 8;
@@ -294,10 +294,10 @@ LABEL_35:
     v34 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xF7 | v34;
+  *(update + v10) = *(update + v10) & 0xF7 | v34;
 
-  v35 = [(GCSteeringWheelElement *)a5 _deltaDidChangeHandler];
-  v36 = [(GCSteeringWheelElement *)self _setDeltaDidChangeHandler:v35];
+  _deltaDidChangeHandler = [(GCSteeringWheelElement *)with _deltaDidChangeHandler];
+  v36 = [(GCSteeringWheelElement *)self _setDeltaDidChangeHandler:_deltaDidChangeHandler];
   if (v36)
   {
     v37 = 16;
@@ -308,10 +308,10 @@ LABEL_35:
     v37 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xEF | v37;
+  *(update + v10) = *(update + v10) & 0xEF | v37;
   v9 |= v33 | v36;
 
-  if ((v6 & 8) != 0)
+  if ((usagesCopy & 8) != 0)
   {
     goto LABEL_5;
   }
@@ -319,11 +319,11 @@ LABEL_35:
   return v9 & 1;
 }
 
-- (void)preCommit:(const void *)a3 sender:(id)a4
+- (void)preCommit:(const void *)commit sender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = GCSteeringWheelElement;
-  [(_GCDevicePhysicalInputElement *)&v8 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v8 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_7;
   if (MyUpdateContext_Offset_7 == -1)
   {
@@ -331,11 +331,11 @@ LABEL_35:
     MyUpdateContext_Offset_7 = v6;
   }
 
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if (v7)
   {
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if ((v7 & 2) == 0)
     {
 LABEL_5:
@@ -348,13 +348,13 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + v6) & 2) == 0)
+  else if ((*(commit + v6) & 2) == 0)
   {
     goto LABEL_5;
   }
 
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 8) == 0)
   {
 LABEL_6:
@@ -368,7 +368,7 @@ LABEL_6:
 
 LABEL_13:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x10) == 0)
   {
 LABEL_7:
@@ -382,7 +382,7 @@ LABEL_7:
 
 LABEL_14:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x20) == 0)
   {
 LABEL_8:
@@ -396,7 +396,7 @@ LABEL_8:
 
 LABEL_15:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v7 = *(a3 + v6);
+  v7 = *(commit + v6);
   if ((v7 & 0x40) == 0)
   {
 LABEL_9:
@@ -415,17 +415,17 @@ LABEL_17:
 
 LABEL_16:
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  if ((*(a3 + v6) & 0x80) != 0)
+  if ((*(commit + v6) & 0x80) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (void)postCommit:(const void *)a3 sender:(id)a4
+- (void)postCommit:(const void *)commit sender:(id)sender
 {
   v9.receiver = self;
   v9.super_class = GCSteeringWheelElement;
-  [(_GCDevicePhysicalInputElement *)&v9 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v9 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_7;
   if (MyUpdateContext_Offset_7 == -1)
   {
@@ -433,7 +433,7 @@ LABEL_16:
     MyUpdateContext_Offset_7 = v6;
   }
 
-  v7 = a3 + v6;
+  v7 = commit + v6;
   v8 = *v7;
   if (*v7)
   {
@@ -552,14 +552,14 @@ LABEL_20:
   }
 }
 
-- (BOOL)isEqualToElement:(id)a3
+- (BOOL)isEqualToElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v7.receiver = self;
   v7.super_class = GCSteeringWheelElement;
-  if ([(_GCDevicePhysicalInputElement *)&v7 isEqualToElement:v4])
+  if ([(_GCDevicePhysicalInputElement *)&v7 isEqualToElement:elementCopy])
   {
-    [(GCSteeringWheelElement *)self isEqualToElement:v4, &v8];
+    [(GCSteeringWheelElement *)self isEqualToElement:elementCopy, &v8];
     v5 = v8;
   }
 
@@ -574,14 +574,14 @@ LABEL_20:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCDevicePhysicalInputElement *)self identifier];
+  identifier = [(_GCDevicePhysicalInputElement *)self identifier];
   [(GCSteeringWheelElement *)self value];
-  v6 = [v3 stringWithFormat:@"<Steering Wheel '%@' value = %f>", v4, v5];;
+  v6 = [v3 stringWithFormat:@"<Steering Wheel '%@' value = %f>", identifier, v5];;
 
   return v6;
 }
 
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp
 {
   v18.receiver = self;
   v18.super_class = GCSteeringWheelElement;
@@ -597,7 +597,7 @@ LABEL_20:
     }
 
 LABEL_9:
-    [a4 floatValueForElement:0];
+    [event floatValueForElement:0];
     if (v17 == 0.0)
     {
       return v9;
@@ -617,7 +617,7 @@ LABEL_3:
   {
     v12 = v11;
     v13 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
-    [a4 floatValueForElement:v12];
+    [event floatValueForElement:v12];
     if (v14 != v13)
     {
       v15 = v14 - v13;
@@ -625,7 +625,7 @@ LABEL_3:
       [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:&self->_deltaSlot forSlot:?];
       [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:&self->_timestampSlot forSlot:?];
 LABEL_6:
-      *(a3 + v10) |= 0xE0u;
+      *(update + v10) |= 0xE0u;
       return 1;
     }
   }
@@ -633,18 +633,18 @@ LABEL_6:
   return v9;
 }
 
-- (GCSteeringWheelElement)initWithParameters:(id)a3
+- (GCSteeringWheelElement)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v10.receiver = self;
   v10.super_class = GCSteeringWheelElement;
-  v5 = [(_GCDevicePhysicalInputElement *)&v10 initWithParameters:v4];
-  v6 = [(_GCSteeringWheelElementParameters *)v4 sources];
-  [(GCSteeringWheelElement *)v5 _setSources:v6];
+  v5 = [(_GCDevicePhysicalInputElement *)&v10 initWithParameters:parametersCopy];
+  sources = [(_GCSteeringWheelElementParameters *)parametersCopy sources];
+  [(GCSteeringWheelElement *)v5 _setSources:sources];
 
-  if (v4)
+  if (parametersCopy)
   {
-    v7 = v4[10];
+    v7 = parametersCopy[10];
     if (!v5)
     {
       goto LABEL_4;
@@ -661,7 +661,7 @@ LABEL_3:
   }
 
 LABEL_4:
-  if (!v4)
+  if (!parametersCopy)
   {
     v8 = 0;
     if (!v5)
@@ -672,7 +672,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v8 = *(v4 + 7);
+  v8 = *(parametersCopy + 7);
   if (v5)
   {
 LABEL_6:
@@ -691,8 +691,8 @@ LABEL_7:
     v3 = result;
     if (!a2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__setSources_ object:v3 file:@"GCSteeringWheelElement.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setSources_ object:v3 file:@"GCSteeringWheelElement.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
     }
 
     return [(_GCDevicePhysicalInputView *)v3 _testAndSetObjectValue:a2 forSlot:v3 + 56 policy:771];
@@ -734,12 +734,12 @@ LABEL_7:
 
 - (double)_maximumDegreesOfRotation
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?];
+  v1 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
   *&result = OUTLINED_FUNCTION_3_3(v1);
   return result;
 }
@@ -804,12 +804,12 @@ LABEL_7:
 
 - (double)_value
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?];
+  v1 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
   *&result = OUTLINED_FUNCTION_3_3(v1);
   return result;
 }
@@ -826,12 +826,12 @@ LABEL_7:
 
 - (double)_delta
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?];
+  v1 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
   *&result = OUTLINED_FUNCTION_3_3(v1);
   return result;
 }
@@ -848,9 +848,9 @@ LABEL_7:
 
 - (double)_lastTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   }
 
   else
@@ -872,9 +872,9 @@ LABEL_7:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCDevicePhysicalInputElement *)self identifier];
-  v5 = [(_GCDevicePhysicalInputElement *)self localizedName];
-  v6 = [(_GCDevicePhysicalInputElement *)self sfSymbolsName];
+  identifier = [(_GCDevicePhysicalInputElement *)self identifier];
+  localizedName = [(_GCDevicePhysicalInputElement *)self localizedName];
+  sfSymbolsName = [(_GCDevicePhysicalInputElement *)self sfSymbolsName];
   if (self)
   {
     v7 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
@@ -888,7 +888,7 @@ LABEL_7:
   [(GCSteeringWheelElement *)self value];
   v9 = v8;
   [(GCSteeringWheelElement *)self delta];
-  v11 = [v3 stringWithFormat:@"<Steering Wheel %p '%@' name = '%@', symbol = '%@', source = %zi, value = %f (%f)>", self, v4, v5, v6, v7, *&v9, v10];;
+  v11 = [v3 stringWithFormat:@"<Steering Wheel %p '%@' name = '%@', symbol = '%@', source = %zi, value = %f (%f)>", self, identifier, localizedName, sfSymbolsName, v7, *&v9, v10];;
 
   return v11;
 }
@@ -906,9 +906,9 @@ LABEL_7:
 
 - (id)valueDidChangeHandler
 {
-  v2 = [(GCSteeringWheelElement *)self _valueDidChangeHandler];
+  _valueDidChangeHandler = [(GCSteeringWheelElement *)self _valueDidChangeHandler];
 
-  return v2;
+  return _valueDidChangeHandler;
 }
 
 - (float)value
@@ -957,16 +957,16 @@ LABEL_7:
 
 - (NSSet)sources
 {
-  v2 = [(GCSteeringWheelElement *)self _sources];
+  _sources = [(GCSteeringWheelElement *)self _sources];
 
-  return v2;
+  return _sources;
 }
 
 - (id)deltaDidChangeHandler
 {
-  v2 = [(GCSteeringWheelElement *)self _deltaDidChangeHandler];
+  _deltaDidChangeHandler = [(GCSteeringWheelElement *)self _deltaDidChangeHandler];
 
-  return v2;
+  return _deltaDidChangeHandler;
 }
 
 - (float)delta

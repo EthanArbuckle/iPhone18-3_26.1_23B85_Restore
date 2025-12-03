@@ -1,27 +1,27 @@
 @interface AccountAutomaticPaymentsEnterAmountView.Coordinator
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
 - (_TtCV9PassKitUI39AccountAutomaticPaymentsEnterAmountView11Coordinator)init;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
 @end
 
 @implementation AccountAutomaticPaymentsEnterAmountView.Coordinator
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  LOBYTE(a5) = sub_1BD7E7B88(a3, a4, a5);
+  viewCopy = view;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  LOBYTE(to) = sub_1BD7E7B88(view, from, to);
 
-  return a5 & 1;
+  return to & 1;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD7E7E80(a3);
+  amountCopy = amount;
+  selfCopy = self;
+  sub_1BD7E7E80(amount);
 }
 
 - (_TtCV9PassKitUI39AccountAutomaticPaymentsEnterAmountView11Coordinator)init

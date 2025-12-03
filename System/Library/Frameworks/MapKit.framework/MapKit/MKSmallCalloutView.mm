@@ -1,52 +1,52 @@
 @interface MKSmallCalloutView
 - (CGSize)preferredContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MKSmallCalloutView)initWithFrame:(CGRect)a3;
-- (MKSmallCalloutView)initWithFrame:(CGRect)a3 metrics:(id *)a4;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MKSmallCalloutView)initWithFrame:(CGRect)frame;
+- (MKSmallCalloutView)initWithFrame:(CGRect)frame metrics:(id *)metrics;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_updatePreferredContentSize;
 - (void)_updatePreferredContentSizeIfNeeded;
 - (void)beginMapsTransitionMovingSideways;
 - (void)dealloc;
 - (void)reset;
-- (void)setCalloutSubtitle:(id)a3 animated:(BOOL)a4;
-- (void)setCalloutTitle:(id)a3;
-- (void)setDetailView:(id)a3 animated:(BOOL)a4;
-- (void)setLeftView:(id)a3 animated:(BOOL)a4;
-- (void)setMaximumWidth:(double)a3;
-- (void)setMinimumWidth:(double)a3;
-- (void)setRightView:(id)a3 animated:(BOOL)a4;
+- (void)setCalloutSubtitle:(id)subtitle animated:(BOOL)animated;
+- (void)setCalloutTitle:(id)title;
+- (void)setDetailView:(id)view animated:(BOOL)animated;
+- (void)setLeftView:(id)view animated:(BOOL)animated;
+- (void)setMaximumWidth:(double)width;
+- (void)setMinimumWidth:(double)width;
+- (void)setRightView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation MKSmallCalloutView
 
-- (void)setDetailView:(id)a3 animated:(BOOL)a4
+- (void)setDetailView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v7 = [(_MKUILabel *)self->_subtitleLabel text];
-    v8 = [v7 length];
+    text = [(_MKUILabel *)self->_subtitleLabel text];
+    v8 = [text length];
 
     if (v8)
     {
-      v6 = self->_subtitleLabel;
+      viewCopy = self->_subtitleLabel;
     }
 
     else
     {
-      v6 = 0;
+      viewCopy = 0;
     }
   }
 
-  if (v6 != self->_externalDetailView)
+  if (viewCopy != self->_externalDetailView)
   {
     v9 = self->_detailView;
     v10 = self->_detailViewBottomConstraint;
     v11 = self->_detailViewTrailingConstraint;
-    objc_storeStrong(&self->_externalDetailView, v6);
-    objc_storeStrong(&self->_detailView, v6);
+    objc_storeStrong(&self->_externalDetailView, viewCopy);
+    objc_storeStrong(&self->_detailView, viewCopy);
     [(_MKCalloutAccessoryView *)self->_detailView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v12) = 1132068864;
     [(_MKCalloutAccessoryView *)self->_detailView _mapkit_setContentCompressionResistancePriority:0 forAxis:v12];
@@ -65,7 +65,7 @@
     }
 
     v15 = 1.0;
-    if (v4)
+    if (animatedCopy)
     {
       v15 = 0.0;
     }
@@ -73,7 +73,7 @@
     [(_MKCalloutAccessoryView *)detailView setAlpha:v15];
     if (self->_detailView)
     {
-      v42 = v4;
+      v42 = animatedCopy;
       v43 = v11;
       v44 = v10;
       v45 = v9;
@@ -105,8 +105,8 @@
 
       v30 = MEMORY[0x1E696ACD8];
       v31 = self->_detailView;
-      v32 = [(MKSmallCalloutView *)self layoutMarginsGuide];
-      v33 = [v30 constraintWithItem:v31 attribute:3 relatedBy:1 toItem:v32 attribute:3 multiplier:1.0 constant:top];
+      layoutMarginsGuide = [(MKSmallCalloutView *)self layoutMarginsGuide];
+      v33 = [v30 constraintWithItem:v31 attribute:3 relatedBy:1 toItem:layoutMarginsGuide attribute:3 multiplier:1.0 constant:top];
       detailViewMinTopConstraint = self->_detailViewMinTopConstraint;
       self->_detailViewMinTopConstraint = v33;
 
@@ -119,7 +119,7 @@
       self->_detailViewTrailingConstraint = v36;
 
       [(MKSmallCalloutView *)self addConstraint:self->_detailViewTrailingConstraint];
-      v4 = v42;
+      animatedCopy = v42;
       if (v42)
       {
         [(MKSmallCalloutView *)self updateConstraintsIfNeeded];
@@ -150,7 +150,7 @@
     v54[4] = self;
     v38 = MEMORY[0x1A58E9F30](v54);
     v39 = v38;
-    if (v4)
+    if (animatedCopy)
     {
       v40 = MEMORY[0x1E69DD250];
       v49[0] = MEMORY[0x1E69E9820];
@@ -167,7 +167,7 @@
       v46[2] = __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3;
       v46[3] = &unk_1E76CDB88;
       v47 = v50;
-      v48 = self;
+      selfCopy = self;
       [v40 _mapkit_animateWithDuration:v49 animations:v46 completion:0.349999994];
     }
 
@@ -263,22 +263,22 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
   return result;
 }
 
-- (void)setRightView:(id)a3 animated:(BOOL)a4
+- (void)setRightView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v78[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (self->_externalRightView != v7)
+  viewCopy = view;
+  if (self->_externalRightView != viewCopy)
   {
-    v57 = v4;
+    v57 = animatedCopy;
     v64 = self->_rightView;
     v63 = self->_rightViewHorizontalPositionConstraint;
     v61 = self->_rightViewCenterContentMarginConstraint;
     v60 = self->_rightViewTopSpacerBottomConstraint;
     v8 = self->_rightViewTopSpacer;
     v59 = self->_rightViewRightSpacer;
-    objc_storeStrong(&self->_externalRightView, a3);
-    if (v7)
+    objc_storeStrong(&self->_externalRightView, view);
+    if (viewCopy)
     {
       v9 = [[_MKCalloutAccessoryWrapperView alloc] initWithView:self->_externalRightView];
       rightView = self->_rightView;
@@ -293,11 +293,11 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
       self->_rightView = 0;
     }
 
-    v12 = [(_MKCalloutAccessoryView *)self->_rightView _mapkit_accessoryControlToExtendWithCallout];
-    v58 = v12;
-    if (v12)
+    _mapkit_accessoryControlToExtendWithCallout = [(_MKCalloutAccessoryView *)self->_rightView _mapkit_accessoryControlToExtendWithCallout];
+    v58 = _mapkit_accessoryControlToExtendWithCallout;
+    if (_mapkit_accessoryControlToExtendWithCallout)
     {
-      v13 = v12;
+      v13 = _mapkit_accessoryControlToExtendWithCallout;
     }
 
     else
@@ -310,7 +310,7 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
     if (v14)
     {
       v55 = v8;
-      v56 = v7;
+      v56 = viewCopy;
       [(_MKCalloutAccessoryView *)v14 frame];
       if ((50.0 - v15) * 0.5 > 0.0)
       {
@@ -331,8 +331,8 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
       [v18 setPriority:v19];
       v20 = MEMORY[0x1E696ACD8];
       v21 = self->_rightView;
-      v22 = [(MKSmallCalloutView *)self layoutMarginsGuide];
-      v23 = [v20 constraintWithItem:v21 attribute:3 relatedBy:1 toItem:v22 attribute:3 multiplier:1.0 constant:0.0];
+      layoutMarginsGuide = [(MKSmallCalloutView *)self layoutMarginsGuide];
+      v23 = [v20 constraintWithItem:v21 attribute:3 relatedBy:1 toItem:layoutMarginsGuide attribute:3 multiplier:1.0 constant:0.0];
 
       LODWORD(v24) = 1148846080;
       [v23 setPriority:v24];
@@ -346,8 +346,8 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
       [(MKSmallCalloutView *)self addLayoutGuide:self->_rightViewTopSpacer];
       v27 = MEMORY[0x1E696ACD8];
       v28 = self->_rightViewTopSpacer;
-      v29 = [(MKSmallCalloutView *)self layoutMarginsGuide];
-      v30 = [v27 constraintWithItem:v28 attribute:3 relatedBy:0 toItem:v29 attribute:3 multiplier:1.0 constant:0.0];
+      layoutMarginsGuide2 = [(MKSmallCalloutView *)self layoutMarginsGuide];
+      v30 = [v27 constraintWithItem:v28 attribute:3 relatedBy:0 toItem:layoutMarginsGuide2 attribute:3 multiplier:1.0 constant:0.0];
       [(MKSmallCalloutView *)self addConstraint:v30];
 
       v31 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_rightViewTopSpacer attribute:4 relatedBy:0 toItem:self->_rightView attribute:3 multiplier:1.0 constant:0.0];
@@ -404,7 +404,7 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
       v51 = v61;
 
       v8 = v55;
-      v7 = v56;
+      viewCopy = v56;
     }
 
     else
@@ -448,7 +448,7 @@ uint64_t __45__MKSmallCalloutView_setDetailView_animated___block_invoke_3(uint64
       v65[2] = __44__MKSmallCalloutView_setRightView_animated___block_invoke_2;
       v65[3] = &unk_1E76CDAE8;
       v66 = v71;
-      v67 = self;
+      selfCopy = self;
       v68 = v8;
       v52 = v59;
       v69 = v59;
@@ -527,12 +527,12 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
   return result;
 }
 
-- (void)setLeftView:(id)a3 animated:(BOOL)a4
+- (void)setLeftView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v85[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (self->_externalLeftView != v7)
+  viewCopy = view;
+  if (self->_externalLeftView != viewCopy)
   {
     v8 = self->_leftView;
     v68 = self->_leftViewMinCalloutWidthConstraint;
@@ -541,8 +541,8 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
     v70 = self->_leftViewTopSpacerBottomConstraint;
     v65 = self->_leftViewLeftSpacer;
     v64 = self->_leftViewTopSpacer;
-    objc_storeStrong(&self->_externalLeftView, a3);
-    if (v7)
+    objc_storeStrong(&self->_externalLeftView, view);
+    if (viewCopy)
     {
       v9 = [[_MKCalloutAccessoryWrapperView alloc] initWithView:self->_externalLeftView];
       leftView = self->_leftView;
@@ -560,7 +560,7 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
     v12 = self->_leftView;
     if (v12)
     {
-      v62 = v4;
+      v62 = animatedCopy;
       v63 = v8;
       [(_MKCalloutAccessoryView *)v12 frame];
       if ((50.0 - v13) * 0.5 > 0.0)
@@ -582,8 +582,8 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
       [v16 setPriority:v17];
       v18 = MEMORY[0x1E696ACD8];
       v19 = self->_leftView;
-      v20 = [(MKSmallCalloutView *)self layoutMarginsGuide];
-      v21 = [v18 constraintWithItem:v19 attribute:3 relatedBy:1 toItem:v20 attribute:3 multiplier:1.0 constant:0.0];
+      layoutMarginsGuide = [(MKSmallCalloutView *)self layoutMarginsGuide];
+      v21 = [v18 constraintWithItem:v19 attribute:3 relatedBy:1 toItem:layoutMarginsGuide attribute:3 multiplier:1.0 constant:0.0];
 
       LODWORD(v22) = 1148846080;
       [v21 setPriority:v22];
@@ -598,8 +598,8 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
       [(MKSmallCalloutView *)self addLayoutGuide:self->_leftViewTopSpacer];
       v25 = MEMORY[0x1E696ACD8];
       v26 = self->_leftViewTopSpacer;
-      v27 = [(MKSmallCalloutView *)self layoutMarginsGuide];
-      v28 = [v25 constraintWithItem:v26 attribute:3 relatedBy:0 toItem:v27 attribute:3 multiplier:1.0 constant:0.0];
+      layoutMarginsGuide2 = [(MKSmallCalloutView *)self layoutMarginsGuide];
+      v28 = [v25 constraintWithItem:v26 attribute:3 relatedBy:0 toItem:layoutMarginsGuide2 attribute:3 multiplier:1.0 constant:0.0];
       [(MKSmallCalloutView *)self addConstraint:v28];
 
       v29 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_leftViewTopSpacer attribute:4 relatedBy:0 toItem:self->_leftView attribute:3 multiplier:1.0 constant:0.0];
@@ -622,14 +622,14 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
       v36 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_leftViewLeftSpacer attribute:7 relatedBy:-1 toItem:0 attribute:0 multiplier:1.0 constant:16.0];
       [(MKSmallCalloutView *)self addConstraint:v36];
 
-      v37 = [(_MKCalloutAccessoryView *)self->_leftView leadingAnchor];
-      v38 = [(UILayoutGuide *)self->_leftViewLeftSpacer trailingAnchor];
-      v39 = [v37 constraintEqualToAnchor:v38];
+      leadingAnchor = [(_MKCalloutAccessoryView *)self->_leftView leadingAnchor];
+      trailingAnchor = [(UILayoutGuide *)self->_leftViewLeftSpacer trailingAnchor];
+      v39 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
 
       [(MKSmallCalloutView *)self addConstraint:v39];
-      v40 = [(UILayoutGuide *)self->_centerContentLeadingGuide trailingAnchor];
-      v41 = [(_MKCalloutAccessoryView *)self->_leftView trailingAnchor];
-      v42 = [v40 constraintGreaterThanOrEqualToAnchor:v41 constant:self->_metrics.padding.left];
+      trailingAnchor2 = [(UILayoutGuide *)self->_centerContentLeadingGuide trailingAnchor];
+      trailingAnchor3 = [(_MKCalloutAccessoryView *)self->_leftView trailingAnchor];
+      v42 = [trailingAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:self->_metrics.padding.left];
 
       [(MKSmallCalloutView *)self addConstraint:v42];
       v43 = self->_leftViewTopSpacerBottomConstraint;
@@ -640,16 +640,16 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
       objc_storeStrong(&self->_leftViewHorizontalPositionConstraint, v39);
       objc_storeStrong(&self->_leftViewCenterContentMarginConstraint, v42);
       v45 = self->_leftView;
-      v4 = v62;
+      animatedCopy = v62;
       v69 = v44;
       if (v62)
       {
         [(_MKCalloutAccessoryView *)v45 setAlpha:0.0];
         [MEMORY[0x1E696ACD8] deactivateConstraints:v44];
         [(NSLayoutConstraint *)self->_leftViewMinCalloutWidthConstraint setActive:0];
-        v46 = [(_MKCalloutAccessoryView *)self->_leftView trailingAnchor];
-        v47 = [(MKSmallCalloutView *)self leadingAnchor];
-        v48 = [v46 constraintEqualToAnchor:v47];
+        trailingAnchor4 = [(_MKCalloutAccessoryView *)self->_leftView trailingAnchor];
+        leadingAnchor2 = [(MKSmallCalloutView *)self leadingAnchor];
+        v48 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor2];
 
         [v48 setActive:1];
         v84 = v48;
@@ -692,7 +692,7 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
 
     [(UIView *)self _mapkit_setNeedsLayout];
     [(UIView *)self _mapkit_setNeedsUpdateConstraints];
-    if (v4)
+    if (animatedCopy)
     {
       v56 = MEMORY[0x1E69DD250];
       v76[0] = MEMORY[0x1E69E9820];
@@ -712,7 +712,7 @@ uint64_t __44__MKSmallCalloutView_setRightView_animated___block_invoke_2(uint64_
       v71[2] = __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2;
       v71[3] = &unk_1E76CDAE8;
       v72 = v77;
-      v73 = self;
+      selfCopy = self;
       v57 = v65;
       v74 = v65;
       v58 = v64;
@@ -799,12 +799,12 @@ uint64_t __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)setCalloutSubtitle:(id)a3 animated:(BOOL)a4
+- (void)setCalloutSubtitle:(id)subtitle animated:(BOOL)animated
 {
-  v4 = a4;
-  v19 = a3;
-  v6 = [(_MKUILabel *)self->_subtitleLabel text];
-  if ([v19 isEqualToString:v6])
+  animatedCopy = animated;
+  subtitleCopy = subtitle;
+  text = [(_MKUILabel *)self->_subtitleLabel text];
+  if ([subtitleCopy isEqualToString:text])
   {
 
     goto LABEL_17;
@@ -816,7 +816,7 @@ uint64_t __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2(uint64_t
 
   else
   {
-    v7 = [v19 length];
+    v7 = [subtitleCopy length];
 
     if (!v7)
     {
@@ -835,7 +835,7 @@ uint64_t __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2(uint64_t
     v9 = 0;
   }
 
-  if (![v19 length])
+  if (![subtitleCopy length])
   {
     subtitleLabel = self->_subtitleLabel;
     self->_subtitleLabel = 0;
@@ -848,14 +848,14 @@ uint64_t __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2(uint64_t
     goto LABEL_16;
   }
 
-  if (!v4)
+  if (!animatedCopy)
   {
     v10 = self->_subtitleLabel;
     if (v10)
     {
       if (self->_detailView == v10)
       {
-        [(_MKUILabel *)v10 setText:v19];
+        [(_MKUILabel *)v10 setText:subtitleCopy];
         [(UIView *)self _mapkit_setNeedsUpdateConstraints];
         [(MKSmallCalloutView *)self _setNeedsUpdatePreferredContentSize];
         goto LABEL_17;
@@ -868,47 +868,47 @@ uint64_t __43__MKSmallCalloutView_setLeftView_animated___block_invoke_2(uint64_t
   v13 = self->_subtitleLabel;
   self->_subtitleLabel = v12;
 
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [(_MKUILabel *)self->_subtitleLabel setBackgroundColor:v14];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_MKUILabel *)self->_subtitleLabel setBackgroundColor:clearColor];
 
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [(_MKUILabel *)self->_subtitleLabel setFont:v15];
 
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(_MKUILabel *)self->_subtitleLabel setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(_MKUILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
   [(_MKUILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(_MKUILabel *)self->_subtitleLabel setLineBreakMode:4];
   LODWORD(v17) = 1132068864;
   [(UIView *)self->_subtitleLabel _mapkit_setContentCompressionResistancePriority:0 forAxis:v17];
-  [(_MKUILabel *)self->_subtitleLabel setText:v19];
+  [(_MKUILabel *)self->_subtitleLabel setText:subtitleCopy];
   if (!v9)
   {
 LABEL_16:
-    [(MKSmallCalloutView *)self setDetailView:0 animated:v4];
+    [(MKSmallCalloutView *)self setDetailView:0 animated:animatedCopy];
   }
 
 LABEL_17:
 }
 
-- (void)setCalloutTitle:(id)a3
+- (void)setCalloutTitle:(id)title
 {
-  v11 = a3;
-  v4 = [(_MKUILabel *)self->_titleLabel text];
-  if ([v11 isEqualToString:v4])
+  titleCopy = title;
+  text = [(_MKUILabel *)self->_titleLabel text];
+  if ([titleCopy isEqualToString:text])
   {
 
     goto LABEL_10;
   }
 
-  v5 = [(_MKUILabel *)self->_titleLabel text];
-  if (v5)
+  text2 = [(_MKUILabel *)self->_titleLabel text];
+  if (text2)
   {
 
 LABEL_6:
-    [(_MKUILabel *)self->_titleLabel setText:v11];
-    v7 = [(_MKUILabel *)self->_titleLabel text];
-    v8 = [v7 length];
+    [(_MKUILabel *)self->_titleLabel setText:titleCopy];
+    text3 = [(_MKUILabel *)self->_titleLabel text];
+    v8 = [text3 length];
 
     titleLabelConstraints = self->_titleLabelConstraints;
     if (v8)
@@ -929,7 +929,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v6 = [v11 length];
+  v6 = [titleCopy length];
 
   if (v6)
   {
@@ -968,9 +968,9 @@ LABEL_10:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MKSmallCalloutView *)self _updatePreferredContentSizeIfNeeded:a3.width];
+  [(MKSmallCalloutView *)self _updatePreferredContentSizeIfNeeded:fits.width];
   width = self->_preferredContentSize.width;
   height = self->_preferredContentSize.height;
   result.height = height;
@@ -1001,29 +1001,29 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MKSmallCalloutView;
   [(MKSmallCalloutView *)&v4 dealloc];
 }
 
-- (void)setMaximumWidth:(double)a3
+- (void)setMaximumWidth:(double)width
 {
-  [(NSLayoutConstraint *)self->_maxWidthConstraint setConstant:a3];
+  [(NSLayoutConstraint *)self->_maxWidthConstraint setConstant:width];
 
   [(MKSmallCalloutView *)self _setNeedsUpdatePreferredContentSize];
 }
 
-- (void)setMinimumWidth:(double)a3
+- (void)setMinimumWidth:(double)width
 {
-  [(NSLayoutConstraint *)self->_minWidthConstraint setConstant:a3];
+  [(NSLayoutConstraint *)self->_minWidthConstraint setConstant:width];
 
   [(MKSmallCalloutView *)self _setNeedsUpdatePreferredContentSize];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v4 = MEMORY[0x1E69DB878];
   v5 = *MEMORY[0x1E69DDCF8];
@@ -1057,26 +1057,26 @@ LABEL_10:
   [(MKSmallCalloutView *)self _setNeedsUpdatePreferredContentSize];
 }
 
-- (MKSmallCalloutView)initWithFrame:(CGRect)a3 metrics:(id *)a4
+- (MKSmallCalloutView)initWithFrame:(CGRect)frame metrics:(id *)metrics
 {
   v135.receiver = self;
   v135.super_class = MKSmallCalloutView;
-  v5 = [(MKSmallCalloutView *)&v135 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(MKSmallCalloutView *)&v135 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v7 = *&a4->var2;
-    *&v5->_metrics.margin = *&a4->var0;
+    v7 = *&metrics->var2;
+    *&v5->_metrics.margin = *&metrics->var0;
     *&v5->_metrics.arrowBase = v7;
-    v8 = *&a4->var8.bottom;
-    v10 = *&a4->var4;
-    v9 = *&a4->var5.var1.var1;
-    *&v5->_metrics.padding.top = *&a4->var8.top;
+    v8 = *&metrics->var8.bottom;
+    v10 = *&metrics->var4;
+    v9 = *&metrics->var5.var1.var1;
+    *&v5->_metrics.padding.top = *&metrics->var8.top;
     *&v5->_metrics.padding.bottom = v8;
     *&v5->_metrics.useRadialSmoothing = v10;
     *&v5->_metrics.var0.nonRadialSmoothing.arrowPointFactor = v9;
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKSmallCalloutView *)v6 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKSmallCalloutView *)v6 setBackgroundColor:clearColor];
 
     [(MKSmallCalloutView *)v6 setClipsToBounds:0];
     v12 = [_MKSmallCalloutPassthroughButton alloc];
@@ -1096,37 +1096,37 @@ LABEL_10:
 
     [(UIView *)v6->_unmaskedContainerView setClipsToBounds:1];
     cornerRadius = v6->_metrics.cornerRadius;
-    v19 = [(UIView *)v6->_unmaskedContainerView layer];
-    [v19 setCornerRadius:cornerRadius];
+    layer = [(UIView *)v6->_unmaskedContainerView layer];
+    [layer setCornerRadius:cornerRadius];
 
     [(UIView *)v6->_unmaskedContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MKSmallCalloutView *)v6 addSubview:v6->_unmaskedContainerView];
     v20 = MEMORY[0x1E696ACD8];
     v21 = v6->_unmaskedContainerView;
-    v22 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v23 = [v20 constraintWithItem:v21 attribute:1 relatedBy:0 toItem:v22 attribute:1 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v23 = [v20 constraintWithItem:v21 attribute:1 relatedBy:0 toItem:layoutMarginsGuide attribute:1 multiplier:1.0 constant:0.0];
     unmaskedContainerLeadingConstraint = v6->_unmaskedContainerLeadingConstraint;
     v6->_unmaskedContainerLeadingConstraint = v23;
 
     [(MKSmallCalloutView *)v6 addConstraint:v6->_unmaskedContainerLeadingConstraint];
     v25 = MEMORY[0x1E696ACD8];
     v26 = v6->_unmaskedContainerView;
-    v27 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v28 = [v25 constraintWithItem:v26 attribute:3 relatedBy:0 toItem:v27 attribute:3 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide2 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v28 = [v25 constraintWithItem:v26 attribute:3 relatedBy:0 toItem:layoutMarginsGuide2 attribute:3 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v28];
 
     v29 = MEMORY[0x1E696ACD8];
     v30 = v6->_unmaskedContainerView;
-    v31 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v32 = [v29 constraintWithItem:v30 attribute:2 relatedBy:0 toItem:v31 attribute:2 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide3 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v32 = [v29 constraintWithItem:v30 attribute:2 relatedBy:0 toItem:layoutMarginsGuide3 attribute:2 multiplier:1.0 constant:0.0];
     unmaskedContainerTrailingConstraint = v6->_unmaskedContainerTrailingConstraint;
     v6->_unmaskedContainerTrailingConstraint = v32;
 
     [(MKSmallCalloutView *)v6 addConstraint:v6->_unmaskedContainerTrailingConstraint];
     v34 = MEMORY[0x1E696ACD8];
     v35 = v6->_unmaskedContainerView;
-    v36 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v37 = [v34 constraintWithItem:v35 attribute:4 relatedBy:0 toItem:v36 attribute:4 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide4 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v37 = [v34 constraintWithItem:v35 attribute:4 relatedBy:0 toItem:layoutMarginsGuide4 attribute:4 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v37];
 
     v38 = [MEMORY[0x1E696ACD8] constraintWithItem:v6->_maskedContainerView attribute:5 relatedBy:0 toItem:v6 attribute:5 multiplier:1.0 constant:0.0];
@@ -1148,20 +1148,20 @@ LABEL_10:
     [(MKSmallCalloutView *)v6 addLayoutGuide:v6->_centerContentLeadingGuide];
     v44 = MEMORY[0x1E696ACD8];
     v45 = v6->_centerContentLeadingGuide;
-    v46 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v47 = [v44 constraintWithItem:v45 attribute:3 relatedBy:0 toItem:v46 attribute:3 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide5 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v47 = [v44 constraintWithItem:v45 attribute:3 relatedBy:0 toItem:layoutMarginsGuide5 attribute:3 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v47];
 
     v48 = MEMORY[0x1E696ACD8];
     v49 = v6->_centerContentLeadingGuide;
-    v50 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v51 = [v48 constraintWithItem:v49 attribute:4 relatedBy:0 toItem:v50 attribute:4 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide6 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v51 = [v48 constraintWithItem:v49 attribute:4 relatedBy:0 toItem:layoutMarginsGuide6 attribute:4 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v51];
 
     v52 = MEMORY[0x1E696ACD8];
     v53 = v6->_centerContentLeadingGuide;
-    v54 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v55 = [v52 constraintWithItem:v53 attribute:5 relatedBy:0 toItem:v54 attribute:5 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide7 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v55 = [v52 constraintWithItem:v53 attribute:5 relatedBy:0 toItem:layoutMarginsGuide7 attribute:5 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v55];
 
     v56 = [MEMORY[0x1E696ACD8] constraintWithItem:v6->_centerContentLeadingGuide attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
@@ -1178,20 +1178,20 @@ LABEL_10:
     [(MKSmallCalloutView *)v6 addLayoutGuide:v6->_centerContentTrailingGuide];
     v61 = MEMORY[0x1E696ACD8];
     v62 = v6->_centerContentTrailingGuide;
-    v63 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v64 = [v61 constraintWithItem:v62 attribute:3 relatedBy:0 toItem:v63 attribute:3 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide8 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v64 = [v61 constraintWithItem:v62 attribute:3 relatedBy:0 toItem:layoutMarginsGuide8 attribute:3 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v64];
 
     v65 = MEMORY[0x1E696ACD8];
     v66 = v6->_centerContentTrailingGuide;
-    v67 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v68 = [v65 constraintWithItem:v66 attribute:4 relatedBy:0 toItem:v67 attribute:4 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide9 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v68 = [v65 constraintWithItem:v66 attribute:4 relatedBy:0 toItem:layoutMarginsGuide9 attribute:4 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v68];
 
     v69 = MEMORY[0x1E696ACD8];
     v70 = v6->_centerContentTrailingGuide;
-    v71 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
-    v72 = [v69 constraintWithItem:v70 attribute:6 relatedBy:0 toItem:v71 attribute:6 multiplier:1.0 constant:0.0];
+    layoutMarginsGuide10 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    v72 = [v69 constraintWithItem:v70 attribute:6 relatedBy:0 toItem:layoutMarginsGuide10 attribute:6 multiplier:1.0 constant:0.0];
     [(MKSmallCalloutView *)v6 addConstraint:v72];
 
     v73 = [MEMORY[0x1E696ACD8] constraintWithItem:v6->_centerContentTrailingGuide attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
@@ -1207,8 +1207,8 @@ LABEL_10:
     titleLabel = v6->_titleLabel;
     v6->_titleLabel = v77;
 
-    v79 = [MEMORY[0x1E69DC888] clearColor];
-    [(_MKUILabel *)v6->_titleLabel setBackgroundColor:v79];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(_MKUILabel *)v6->_titleLabel setBackgroundColor:clearColor2];
 
     v80 = MEMORY[0x1E69DB878];
     v81 = *MEMORY[0x1E69DDCF8];
@@ -1216,8 +1216,8 @@ LABEL_10:
     v83 = [v80 fontWithDescriptor:v82 size:0.0];
     [(_MKUILabel *)v6->_titleLabel setFont:v83];
 
-    v84 = [MEMORY[0x1E69DC888] labelColor];
-    [(_MKUILabel *)v6->_titleLabel setTextColor:v84];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(_MKUILabel *)v6->_titleLabel setTextColor:labelColor];
 
     [(_MKUILabel *)v6->_titleLabel setLineBreakMode:4];
     [(_MKUILabel *)v6->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1226,41 +1226,41 @@ LABEL_10:
     LODWORD(v86) = 1148829696;
     [(UIView *)v6->_titleLabel _mapkit_setContentCompressionResistancePriority:1 forAxis:v86];
     [(MKSmallCalloutView *)v6 addSubview:v6->_titleLabel];
-    v87 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v88 = [MEMORY[0x1E696ACD8] constraintWithItem:v6->_titleLabel attribute:5 relatedBy:0 toItem:v6->_centerContentLeadingGuide attribute:6 multiplier:1.0 constant:0.0];
-    [(NSArray *)v87 addObject:v88];
+    [(NSArray *)array addObject:v88];
 
     v89 = [MEMORY[0x1E696ACD8] constraintWithItem:v6->_titleLabel attribute:6 relatedBy:-1 toItem:v6->_centerContentTrailingGuide attribute:5 multiplier:1.0 constant:0.0];
-    [(NSArray *)v87 addObject:v89];
+    [(NSArray *)array addObject:v89];
 
     v90 = MEMORY[0x1E696ACD8];
     v91 = _NSDictionaryOfVariableBindings(&cfstr_Titlelabel_0.isa, v6->_titleLabel, 0);
     v92 = [v90 constraintsWithVisualFormat:@"V:|-(>=0)-[_titleLabel]-(>=0)-|" options:0 metrics:0 views:v91];
-    [(NSArray *)v87 addObjectsFromArray:v92];
+    [(NSArray *)array addObjectsFromArray:v92];
 
     v93 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v81];
     v94 = MEMORY[0x1E696ACD8];
     v95 = v6->_titleLabel;
-    v96 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    layoutMarginsGuide11 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
     [v93 _scaledValueForValue:30.0];
-    v98 = [v94 constraintWithItem:v95 attribute:12 relatedBy:1 toItem:v96 attribute:3 multiplier:1.0 constant:v97];
+    v98 = [v94 constraintWithItem:v95 attribute:12 relatedBy:1 toItem:layoutMarginsGuide11 attribute:3 multiplier:1.0 constant:v97];
     titleBaselineFromTopMinimumConstraint = v6->_titleBaselineFromTopMinimumConstraint;
     v6->_titleBaselineFromTopMinimumConstraint = v98;
 
     LODWORD(v100) = 1148829696;
     [(NSLayoutConstraint *)v6->_titleBaselineFromTopMinimumConstraint setPriority:v100];
-    [(NSArray *)v87 addObject:v6->_titleBaselineFromTopMinimumConstraint];
+    [(NSArray *)array addObject:v6->_titleBaselineFromTopMinimumConstraint];
     v101 = MEMORY[0x1E696ACD8];
     v102 = v6->_titleLabel;
-    v103 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
+    layoutMarginsGuide12 = [(MKSmallCalloutView *)v6 layoutMarginsGuide];
     [v93 _scaledValueForValue:30.0];
-    v105 = [v101 constraintWithItem:v102 attribute:12 relatedBy:0 toItem:v103 attribute:3 multiplier:1.0 constant:v104];
+    v105 = [v101 constraintWithItem:v102 attribute:12 relatedBy:0 toItem:layoutMarginsGuide12 attribute:3 multiplier:1.0 constant:v104];
     titleBaselineFromTopConstraint = v6->_titleBaselineFromTopConstraint;
     v6->_titleBaselineFromTopConstraint = v105;
 
     LODWORD(v107) = 1144750080;
     [(NSLayoutConstraint *)v6->_titleBaselineFromTopConstraint setPriority:v107];
-    [(NSArray *)v87 addObject:v6->_titleBaselineFromTopConstraint];
+    [(NSArray *)array addObject:v6->_titleBaselineFromTopConstraint];
     v108 = MEMORY[0x1E696ACD8];
     v109 = v6->_titleLabel;
     v110 = v6->_unmaskedContainerView;
@@ -1271,15 +1271,15 @@ LABEL_10:
 
     LODWORD(v114) = 1148829696;
     [(NSLayoutConstraint *)v6->_titleMinimumBaselineToBottomConstraint setPriority:v114];
-    [(NSArray *)v87 addObject:v6->_titleMinimumBaselineToBottomConstraint];
-    [(MKSmallCalloutView *)v6 addConstraints:v87];
+    [(NSArray *)array addObject:v6->_titleMinimumBaselineToBottomConstraint];
+    [(MKSmallCalloutView *)v6 addConstraints:array];
     titleLabelConstraints = v6->_titleLabelConstraints;
-    v6->_titleLabelConstraints = v87;
-    v116 = v87;
+    v6->_titleLabelConstraints = array;
+    v116 = array;
 
     [MEMORY[0x1E696ACD8] deactivateConstraints:v6->_titleLabelConstraints];
-    v117 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v117 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v119 = v118;
     v121 = v120;
     v123 = v122;
@@ -1323,14 +1323,14 @@ LABEL_10:
     v6->_maxWidthConstraint = v131;
 
     [(MKSmallCalloutView *)v6 addConstraint:v6->_maxWidthConstraint];
-    v133 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v133 addObserver:v6 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v6;
 }
 
-- (MKSmallCalloutView)initWithFrame:(CGRect)a3
+- (MKSmallCalloutView)initWithFrame:(CGRect)frame
 {
   v4[0] = xmmword_1A30F6E90;
   v4[1] = xmmword_1A30F6EA0;
@@ -1339,7 +1339,7 @@ LABEL_10:
   v7 = 257;
   v8 = xmmword_1A30F6E80;
   v9 = xmmword_1A30F6E80;
-  return [(MKSmallCalloutView *)self initWithFrame:v4 metrics:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(MKSmallCalloutView *)self initWithFrame:v4 metrics:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

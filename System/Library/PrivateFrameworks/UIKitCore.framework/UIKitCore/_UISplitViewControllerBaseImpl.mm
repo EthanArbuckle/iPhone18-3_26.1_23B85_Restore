@@ -3,18 +3,18 @@
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)prefersInterfaceOrientationLocked;
 - (BOOL)prefersPointerLocked;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (CGRect)_frameForChildContentContainer:(id)a3;
-- (CGSize)_contentSizeForChildViewController:(id)a3 inPopoverController:(id)a4;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (CGRect)_frameForChildContentContainer:(id)container;
+- (CGSize)_contentSizeForChildViewController:(id)controller inPopoverController:(id)popoverController;
 - (CGSize)_preferredContentSize;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (NSArray)_childViewControllersToSendViewWillTransitionToSize;
 - (NSArray)_multitaskingDragExclusionRects;
 - (NSArray)preferredFocusEnvironments;
 - (UIActivityItemsConfigurationReading)_effectiveActivityItemsConfiguration;
 - (UIEdgeInsets)_additionalSidebarSafeAreaInsets;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)a3;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)controller;
 - (UIFocusEnvironment)_overridingPreferredFocusEnvironment;
 - (UIResponder)_deepestActionResponder;
 - (UISplitViewController)splitViewController;
@@ -22,16 +22,16 @@
 - (UIView)preferredFocusedView;
 - (UIViewController)_viewControllerForObservableScrollView;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_UISplitViewControllerBaseImpl)initWithSplitViewController:(id)a3;
+- (_UISplitViewControllerBaseImpl)initWithSplitViewController:(id)controller;
 - (_UITabContainerView)tabBarHostedView;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_didUpdateFocusInContext:(id)a3;
-- (void)removeChildViewController:(id)a3;
-- (void)setView:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)_didUpdateFocusInContext:(id)context;
+- (void)removeChildViewController:(id)controller;
+- (void)setView:(id)view;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _UISplitViewControllerBaseImpl
@@ -46,9 +46,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_supportedInterfaceOrientations];
+  _super_supportedInterfaceOrientations = [WeakRetained _super_supportedInterfaceOrientations];
 
-  return v3;
+  return _super_supportedInterfaceOrientations;
 }
 
 - (UISplitViewController)splitViewController
@@ -61,12 +61,12 @@
 - (BOOL)_disableAutomaticKeyboardBehavior
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_disableAutomaticKeyboardBehavior];
+  _super_disableAutomaticKeyboardBehavior = [WeakRetained _super_disableAutomaticKeyboardBehavior];
 
-  return v3;
+  return _super_disableAutomaticKeyboardBehavior;
 }
 
-- (_UISplitViewControllerBaseImpl)initWithSplitViewController:(id)a3
+- (_UISplitViewControllerBaseImpl)initWithSplitViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = _UISplitViewControllerBaseImpl;
@@ -74,7 +74,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_splitViewController, a3);
+    objc_storeWeak(&v4->_splitViewController, controller);
     viewControllers = v5->_viewControllers;
     v5->_viewControllers = MEMORY[0x1E695E0F0];
   }
@@ -99,84 +99,84 @@
 - (UIViewController)childViewControllerForStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_childViewControllerForStatusBarStyle];
+  _super_childViewControllerForStatusBarStyle = [WeakRetained _super_childViewControllerForStatusBarStyle];
 
-  return v3;
+  return _super_childViewControllerForStatusBarStyle;
 }
 
 - (UIResponder)_deepestActionResponder
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_deepestActionResponder];
+  _super_deepestActionResponder = [WeakRetained _super_deepestActionResponder];
 
-  return v3;
+  return _super_deepestActionResponder;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_preferredInterfaceOrientationForPresentation];
+  _super_preferredInterfaceOrientationForPresentation = [WeakRetained _super_preferredInterfaceOrientationForPresentation];
 
-  return v3;
+  return _super_preferredInterfaceOrientationForPresentation;
 }
 
 - (NSArray)_multitaskingDragExclusionRects
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_multitaskingDragExclusionRects];
+  _super_multitaskingDragExclusionRects = [WeakRetained _super_multitaskingDragExclusionRects];
 
-  return v3;
+  return _super_multitaskingDragExclusionRects;
 }
 
 - (NSArray)_childViewControllersToSendViewWillTransitionToSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_childViewControllersToSendViewWillTransitionToSize];
+  _super_childViewControllersToSendViewWillTransitionToSize = [WeakRetained _super_childViewControllersToSendViewWillTransitionToSize];
 
-  return v3;
+  return _super_childViewControllersToSendViewWillTransitionToSize;
 }
 
 - (BOOL)prefersPointerLocked
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_prefersPointerLocked];
+  _super_prefersPointerLocked = [WeakRetained _super_prefersPointerLocked];
 
-  return v3;
+  return _super_prefersPointerLocked;
 }
 
 - (BOOL)prefersInterfaceOrientationLocked
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_prefersInterfaceOrientationLocked];
+  _super_prefersInterfaceOrientationLocked = [WeakRetained _super_prefersInterfaceOrientationLocked];
 
-  return v3;
+  return _super_prefersInterfaceOrientationLocked;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_prefersHomeIndicatorAutoHidden];
+  _super_prefersHomeIndicatorAutoHidden = [WeakRetained _super_prefersHomeIndicatorAutoHidden];
 
-  return v3;
+  return _super_prefersHomeIndicatorAutoHidden;
 }
 
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_preferredScreenEdgesDeferringSystemGestures];
+  _super_preferredScreenEdgesDeferringSystemGestures = [WeakRetained _super_preferredScreenEdgesDeferringSystemGestures];
 
-  return v3;
+  return _super_preferredScreenEdgesDeferringSystemGestures;
 }
 
 - (UIActivityItemsConfigurationReading)_effectiveActivityItemsConfiguration
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_effectiveActivityItemsConfiguration];
+  _super_effectiveActivityItemsConfiguration = [WeakRetained _super_effectiveActivityItemsConfiguration];
 
-  return v3;
+  return _super_effectiveActivityItemsConfiguration;
 }
 
-- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)a3
+- (UIEdgeInsets)_tvOSColumnStyleExtraInsetsForChildViewController:(id)controller
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -189,12 +189,12 @@
   return result;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_sizeForChildContentContainer:a3 withParentContainerSize:{width, height}];
+  [WeakRetained _super_sizeForChildContentContainer:container withParentContainerSize:{width, height}];
   v9 = v8;
   v11 = v10;
 
@@ -205,7 +205,7 @@
   return result;
 }
 
-- (CGRect)_frameForChildContentContainer:(id)a3
+- (CGRect)_frameForChildContentContainer:(id)container
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -218,7 +218,7 @@
   return result;
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
   v4 = 0.0;
   v5 = 0.0;
@@ -231,27 +231,27 @@
   return result;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_setView:a3];
+  [WeakRetained _super_setView:view];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [WeakRetained _super_willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_viewWillTransitionToSize:a4 withTransitionCoordinator:{width, height}];
+  [WeakRetained _super_viewWillTransitionToSize:coordinator withTransitionCoordinator:{width, height}];
 }
 
-- (CGSize)_contentSizeForChildViewController:(id)a3 inPopoverController:(id)a4
+- (CGSize)_contentSizeForChildViewController:(id)controller inPopoverController:(id)popoverController
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
@@ -260,48 +260,48 @@
   return result;
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_removeChildViewController:a3];
+  [WeakRetained _super_removeChildViewController:controller];
 }
 
 - (UIView)preferredFocusedView
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_preferredFocusedView];
+  _super_preferredFocusedView = [WeakRetained _super_preferredFocusedView];
 
-  return v3;
+  return _super_preferredFocusedView;
 }
 
 - (NSArray)preferredFocusEnvironments
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_preferredFocusEnvironments];
+  _super_preferredFocusEnvironments = [WeakRetained _super_preferredFocusEnvironments];
 
-  return v3;
+  return _super_preferredFocusEnvironments;
 }
 
 - (UIFocusEnvironment)_overridingPreferredFocusEnvironment
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _super_overridingPreferredFocusEnvironment];
+  _super_overridingPreferredFocusEnvironment = [WeakRetained _super_overridingPreferredFocusEnvironment];
 
-  return v3;
+  return _super_overridingPreferredFocusEnvironment;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  LOBYTE(a3) = [WeakRetained _super_shouldUpdateFocusInContext:a3];
+  LOBYTE(context) = [WeakRetained _super_shouldUpdateFocusInContext:context];
 
-  return a3;
+  return context;
 }
 
-- (void)_didUpdateFocusInContext:(id)a3
+- (void)_didUpdateFocusInContext:(id)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  [WeakRetained _super_didUpdateFocusInContext:a3];
+  [WeakRetained _super_didUpdateFocusInContext:context];
 }
 
 - (UISplitViewControllerDelegate)delegate

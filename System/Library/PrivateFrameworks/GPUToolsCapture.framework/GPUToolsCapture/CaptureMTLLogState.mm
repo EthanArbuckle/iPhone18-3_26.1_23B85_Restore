@@ -1,6 +1,6 @@
 @interface CaptureMTLLogState
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLLogState)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLLogState)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -17,13 +17,13 @@
   [(CaptureMTLLogState *)&v3 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLLogState *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLLogState *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -78,19 +78,19 @@
   }
 }
 
-- (CaptureMTLLogState)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLLogState)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTLLogState;
   v8 = [(CaptureMTLLogState *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

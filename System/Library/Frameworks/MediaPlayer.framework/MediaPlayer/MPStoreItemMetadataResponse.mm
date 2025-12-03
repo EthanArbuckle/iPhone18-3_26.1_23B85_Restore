@@ -5,37 +5,37 @@
 - (NSArray)itemIdentifiers;
 - (NSArray)lastBatchStoreItemDictionaries;
 - (NSDate)earliestExpirationDate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)storeItemMetadataForItemIdentifier:(id)a3 returningIsFinalMetadata:(BOOL *)a4;
-- (void)setStoreItemMetadata:(id)a3 forItemIdentifier:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)storeItemMetadataForItemIdentifier:(id)identifier returningIsFinalMetadata:(BOOL *)metadata;
+- (void)setStoreItemMetadata:(id)metadata forItemIdentifier:(id)identifier;
 @end
 
 @implementation MPStoreItemMetadataResponse
 
-- (void)setStoreItemMetadata:(id)a3 forItemIdentifier:(id)a4
+- (void)setStoreItemMetadata:(id)metadata forItemIdentifier:(id)identifier
 {
-  if (a3)
+  if (metadata)
   {
-    if (a4)
+    if (identifier)
     {
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
     }
   }
 }
 
-- (id)storeItemMetadataForItemIdentifier:(id)a3 returningIsFinalMetadata:(BOOL *)a4
+- (id)storeItemMetadataForItemIdentifier:(id)identifier returningIsFinalMetadata:(BOOL *)metadata
 {
-  if (a3)
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_itemIdentifierToStoreItemMetadata objectForKey:a3, a4];
+    metadata = [(NSMutableDictionary *)self->_itemIdentifierToStoreItemMetadata objectForKey:identifier, metadata];
   }
 
   else
   {
-    v5 = 0;
+    metadata = 0;
   }
 
-  return v5;
+  return metadata;
 }
 
 - (BOOL)isExpired
@@ -118,11 +118,11 @@ void __53__MPStoreItemMetadataResponse_earliestExpirationDate__block_invoke(uint
 
 - (NSArray)itemIdentifiers
 {
-  v2 = [(NSMutableDictionary *)self->_itemIdentifierToStoreItemMetadata allKeys];
-  v3 = v2;
-  if (v2)
+  allKeys = [(NSMutableDictionary *)self->_itemIdentifierToStoreItemMetadata allKeys];
+  v3 = allKeys;
+  if (allKeys)
   {
-    v4 = v2;
+    v4 = allKeys;
   }
 
   else
@@ -152,15 +152,15 @@ void __53__MPStoreItemMetadataResponse_earliestExpirationDate__block_invoke(uint
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MPStoreItemMetadataResponse *)self lastBatchItemIdentifiers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  lastBatchItemIdentifiers = [(MPStoreItemMetadataResponse *)self lastBatchItemIdentifiers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(lastBatchItemIdentifiers, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MPStoreItemMetadataResponse *)self lastBatchItemIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  lastBatchItemIdentifiers2 = [(MPStoreItemMetadataResponse *)self lastBatchItemIdentifiers];
+  v7 = [lastBatchItemIdentifiers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -171,19 +171,19 @@ void __53__MPStoreItemMetadataResponse_earliestExpirationDate__block_invoke(uint
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(lastBatchItemIdentifiers2);
         }
 
         v11 = [(NSMutableDictionary *)self->_itemIdentifierToStoreItemMetadata objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i)];
-        v12 = [v11 effectiveStorePlatformDictionary];
+        effectiveStorePlatformDictionary = [v11 effectiveStorePlatformDictionary];
 
-        if (v12)
+        if (effectiveStorePlatformDictionary)
         {
-          [v5 addObject:v12];
+          [v5 addObject:effectiveStorePlatformDictionary];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [lastBatchItemIdentifiers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -194,9 +194,9 @@ void __53__MPStoreItemMetadataResponse_earliestExpirationDate__block_invoke(uint
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSArray *)self->_cacheMissItemIdentifiers copy];
@@ -229,9 +229,9 @@ void __53__MPStoreItemMetadataResponse_earliestExpirationDate__block_invoke(uint
   v2 = [(MPStoreItemMetadataResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemIdentifierToStoreItemMetadata = v2->_itemIdentifierToStoreItemMetadata;
-    v2->_itemIdentifierToStoreItemMetadata = v3;
+    v2->_itemIdentifierToStoreItemMetadata = dictionary;
   }
 
   return v2;

@@ -1,23 +1,23 @@
 @interface LNActivityProvider
-- (BOOL)queryAppIntentActivityForBundleIdentifier:(id)a3 sinceSeconds:(double)a4;
-- (BOOL)shouldLogRBSError:(id)a3;
+- (BOOL)queryAppIntentActivityForBundleIdentifier:(id)identifier sinceSeconds:(double)seconds;
+- (BOOL)shouldLogRBSError:(id)error;
 @end
 
 @implementation LNActivityProvider
 
-- (BOOL)shouldLogRBSError:(id)a3
+- (BOOL)shouldLogRBSError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:*MEMORY[0x1E69C76A0]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x1E69C76A0]])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 code];
+  code = [errorCopy code];
 
-  if (v5 != 3)
+  if (code != 3)
   {
 LABEL_5:
     v6 = 1;
@@ -30,11 +30,11 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)queryAppIntentActivityForBundleIdentifier:(id)a3 sinceSeconds:(double)a4
+- (BOOL)queryAppIntentActivityForBundleIdentifier:(id)identifier sinceSeconds:(double)seconds
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:identifierCopy];
   v25 = 0;
   v8 = [MEMORY[0x1E69C75D0] handleForPredicate:v7 error:&v25];
   v9 = v25;
@@ -45,25 +45,25 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    v10 = getLNLogCategoryGeneral();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    assertions = getLNLogCategoryGeneral();
+    if (os_log_type_enabled(assertions, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v27 = v6;
+      v27 = identifierCopy;
       v28 = 2112;
       v29 = v9;
-      _os_log_impl(&dword_19763D000, v10, OS_LOG_TYPE_ERROR, "Failed to obtain process handle for %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_19763D000, assertions, OS_LOG_TYPE_ERROR, "Failed to obtain process handle for %@: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v11 = [v8 currentState];
-    v10 = [v11 assertions];
+    currentState = [v8 currentState];
+    assertions = [currentState assertions];
 
-    if (v10)
+    if (assertions)
     {
-      v12 = [v10 valueForKey:@"domain"];
+      v12 = [assertions valueForKey:@"domain"];
       if (v12)
       {
         v13 = MEMORY[0x1E696AEC0];
@@ -81,47 +81,47 @@ LABEL_6:
   }
 
 LABEL_10:
-  if (a4 != 0.0)
+  if (seconds != 0.0)
   {
-    v10 = [objc_alloc(MEMORY[0x1E698F2E0]) initWithUseCase:@"LNActivityProvider"];
+    assertions = [objc_alloc(MEMORY[0x1E698F2E0]) initWithUseCase:@"LNActivityProvider"];
     v18 = [MEMORY[0x1E695DF00] now];
     [v18 timeIntervalSince1970];
-    v20 = v19 - a4;
+    v20 = v19 - seconds;
 
-    v12 = [v10 executeQuery:@"SELECT eventTimestamp FROM App.Intents.Transcript WHERE bundleID=%@ AND eventTimestamp >= %f", v6, *&v20];
+    v12 = [assertions executeQuery:@"SELECT eventTimestamp FROM App.Intents.Transcript WHERE bundleID=%@ AND eventTimestamp >= %f", identifierCopy, *&v20];
     if (([v12 next] & 1) == 0)
     {
-      v21 = [v12 error];
+      error = [v12 error];
 
-      if (v21)
+      if (error)
       {
-        v21 = getLNLogCategoryGeneral();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        error = getLNLogCategoryGeneral();
+        if (os_log_type_enabled(error, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v12 error];
+          error2 = [v12 error];
           *buf = 138412290;
-          v27 = v22;
-          _os_log_impl(&dword_19763D000, v21, OS_LOG_TYPE_ERROR, "Failed to query Biome transcript: %@", buf, 0xCu);
+          v27 = error2;
+          _os_log_impl(&dword_19763D000, error, OS_LOG_TYPE_ERROR, "Failed to query Biome transcript: %@", buf, 0xCu);
         }
 
-        LOBYTE(v21) = 0;
+        LOBYTE(error) = 0;
       }
 
       goto LABEL_18;
     }
 
 LABEL_12:
-    LOBYTE(v21) = 1;
+    LOBYTE(error) = 1;
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  LOBYTE(v21) = 0;
+  LOBYTE(error) = 0;
 LABEL_19:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v21;
+  return error;
 }
 
 @end

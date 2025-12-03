@@ -1,23 +1,23 @@
 @interface __NSSetM
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (double)clumpingFactor;
 - (double)clumpingInterestingThreshold;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)member:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)member:(id)member;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)countForObject:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)countForObject:(id)object;
 - (void)_mutate;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 count:(unint64_t)a4;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects count:(unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation __NSSetM
@@ -266,7 +266,7 @@ LABEL_29:
   return v4;
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   if (__cf_tsanReadFunction)
   {
@@ -282,7 +282,7 @@ LABEL_29:
 
   v8 = *(__NSSetSizes_0 + ((v7 >> 23) & 0x1F8));
   objs = p_storage->objs;
-  v10 = [a3 hash] % v8;
+  v10 = [member hash] % v8;
   v11 = v8 <= 1 ? 1 : v8;
   v12 = v8;
   while (1)
@@ -301,7 +301,7 @@ LABEL_29:
       }
     }
 
-    else if (v13 == a3 || ([(state *)v13 isEqual:a3]& 1) != 0)
+    else if (v13 == member || ([(state *)v13 isEqual:member]& 1) != 0)
     {
       v12 = v10;
       goto LABEL_23;
@@ -343,14 +343,14 @@ LABEL_23:
   return p_storage->objs[v12];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v36 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
   if (__cf_tsanWriteFunction)
   {
-    __cf_tsanWriteFunction(v36, v3, __CFTSANTagMutableSet);
-    if (a3)
+    __cf_tsanWriteFunction(selfCopy, v3, __CFTSANTagMutableSet);
+    if (object)
     {
       goto LABEL_3;
     }
@@ -366,14 +366,14 @@ LABEL_56:
     objc_exception_throw(v33);
   }
 
-  if (!a3)
+  if (!object)
   {
     goto LABEL_56;
   }
 
 LABEL_3:
-  v5 = v36;
-  v6 = atomic_load(&v36->cow);
+  v5 = selfCopy;
+  v6 = atomic_load(&selfCopy->cow);
   p_storage = &v5->storage;
   muts = v5->storage.var0.var0.muts;
   if (muts >> 9 < 0x7D)
@@ -397,7 +397,7 @@ LABEL_3:
     if (*(v6 + 6) != 1 || *(v6 + 4) != 0)
     {
       --*(v6 + 6);
-      _cow_mutate_slow(v36, v6, __NSSet_cowCallbacks);
+      _cow_mutate_slow(selfCopy, v6, __NSSet_cowCallbacks);
     }
 
     os_unfair_lock_unlock(v6);
@@ -431,7 +431,7 @@ LABEL_3:
     objs = p_storage->objs;
     v15 = v13;
     v16 = 0;
-    v17 = [a3 hash] % v13;
+    v17 = [object hash] % v13;
     v13 = (v13 & 0xFFFFFFFE) != 0 ? v13 : 1;
     v18 = v15;
     while (1)
@@ -451,7 +451,7 @@ LABEL_3:
         }
       }
 
-      else if (v19 == a3 || ([(state *)v19 isEqual:a3]& 1) != 0)
+      else if (v19 == object || ([(state *)v19 isEqual:object]& 1) != 0)
       {
         v18 = v17;
         goto LABEL_37;
@@ -495,7 +495,7 @@ LABEL_37:
       v21 = v12 + 1;
     }
 
-    __rehashs(v36, v21);
+    __rehashs(selfCopy, v21);
     v12 = *(&p_storage->var0.var0 + 1) >> 26;
     LODWORD(v13) = __NSSetSizes_0[2 * v12];
   }
@@ -507,18 +507,18 @@ LABEL_37:
   }
 
   v24 = v35 & 0x3FFFFFF;
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((object & 0x8000000000000000) == 0)
   {
-    v25 = a3;
+    objectCopy = object;
   }
 
-  objs[v18] = a3;
+  objs[v18] = object;
   *(&p_storage->var0.var0 + 1) = *(&p_storage->var0.var0 + 1) & 0xFC000000 | (*(&p_storage->var0.var0 + 1) + 1) & 0x3FFFFFF;
   if (__NSSetCapacities_0[v12] < v24)
   {
     v26 = *MEMORY[0x1E69E9840];
 
-    __rehashs(v36, v12 + 1);
+    __rehashs(selfCopy, v12 + 1);
   }
 
   else
@@ -528,7 +528,7 @@ LABEL_54:
   }
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   if (__cf_tsanReadFunction)
   {
@@ -544,7 +544,7 @@ LABEL_54:
 
   v8 = *(__NSSetSizes_0 + ((v7 >> 23) & 0x1F8));
   objs = p_storage->objs;
-  v10 = [a3 hash] % v8;
+  v10 = [object hash] % v8;
   v11 = v8 <= 1 ? 1 : v8;
   v12 = v8;
   while (1)
@@ -563,7 +563,7 @@ LABEL_54:
       }
     }
 
-    else if (v13 == a3 || ([(state *)v13 isEqual:a3]& 1) != 0)
+    else if (v13 == object || ([(state *)v13 isEqual:object]& 1) != 0)
     {
       v12 = v10;
       goto LABEL_23;
@@ -601,7 +601,7 @@ LABEL_23:
   return v15 != &___NSSetM_DeletedMarker && v15 != 0;
 }
 
-- (unint64_t)countForObject:(id)a3
+- (unint64_t)countForObject:(id)object
 {
   if (__cf_tsanReadFunction)
   {
@@ -617,7 +617,7 @@ LABEL_23:
 
   v8 = *(__NSSetSizes_0 + ((v7 >> 23) & 0x1F8));
   objs = p_storage->objs;
-  v10 = [a3 hash] % v8;
+  v10 = [object hash] % v8;
   v11 = v8 <= 1 ? 1 : v8;
   v12 = v8;
   while (1)
@@ -636,7 +636,7 @@ LABEL_23:
       }
     }
 
-    else if (v13 == a3 || ([(state *)v13 isEqual:a3]& 1) != 0)
+    else if (v13 == object || ([(state *)v13 isEqual:object]& 1) != 0)
     {
       v12 = v10;
       goto LABEL_23;
@@ -745,24 +745,24 @@ LABEL_23:
   return 1.0 - (2 * (v2 & 0x3FFFFFF)) / v3 + (v2 & 0x3FFFFFF) * (v2 & 0x3FFFFFF) / v3 / v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v5, __CFTSANTagMutableSet);
-    if (a4)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a5)
+  if (count)
   {
     v16 = _os_log_pack_size();
     v18 = v24 - ((MEMORY[0x1EEE9AC00](v16, v17) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -770,13 +770,13 @@ LABEL_23:
     *v19 = 136315394;
     *(v19 + 4) = "[__NSSetM countByEnumeratingWithState:objects:count:]";
     *(v19 + 12) = 2048;
-    *(v19 + 14) = a5;
-    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetM countByEnumeratingWithState:objects:count:]", a5);
+    *(v19 + 14) = count;
+    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSSetM countByEnumeratingWithState:objects:count:]", count);
     goto LABEL_23;
   }
 
 LABEL_4:
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v16 = _os_log_pack_size();
     v18 = v24 - ((MEMORY[0x1EEE9AC00](v16, v21) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -784,18 +784,18 @@ LABEL_4:
     *v22 = 136315394;
     *(v22 + 4) = "[__NSSetM countByEnumeratingWithState:objects:count:]";
     *(v22 + 12) = 2048;
-    *(v22 + 14) = a5;
-    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetM countByEnumeratingWithState:objects:count:]", a5);
+    *(v22 + 14) = count;
+    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSSetM countByEnumeratingWithState:objects:count:]", count);
 LABEL_23:
     v23 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v20) osLogPack:0 size:v18, v16];
     objc_exception_throw(v23);
   }
 
-  var0 = a3->var0;
+  var0 = state->var0;
   v11 = *(__NSSetSizes_0 + ((*(&self->storage.var0.var0 + 1) >> 23) & 0x1F8));
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var2 = &self->storage.var0.mutations;
+    state->var2 = &self->storage.var0.mutations;
   }
 
   if (var0 >= v11)
@@ -805,9 +805,9 @@ LABEL_23:
 
   else
   {
-    a3->var1 = a4;
+    state->var1 = objects;
     result = 0;
-    if (a5)
+    if (count)
     {
       do
       {
@@ -824,30 +824,30 @@ LABEL_23:
 
         if (!v14)
         {
-          a4[result++] = v13;
+          objects[result++] = v13;
         }
 
         ++var0;
       }
 
-      while (var0 < v11 && result < a5);
+      while (var0 < v11 && result < count);
     }
 
-    a3->var0 = var0;
+    state->var0 = var0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a3;
+  optionsCopy = options;
   v23[6] = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v4, __CFTSANTagMutableSet);
-    if (a4)
+    if (block)
     {
       goto LABEL_3;
     }
@@ -863,7 +863,7 @@ LABEL_14:
     objc_exception_throw(v21);
   }
 
-  if (!a4)
+  if (!block)
   {
     goto LABEL_14;
   }
@@ -876,9 +876,9 @@ LABEL_3:
   v23[1] = 3221225472;
   v23[2] = __mset_enumerateObjectsWithOptionsUsingBlock_block_invoke;
   v23[3] = &unk_1E6DD0010;
-  v23[4] = a4;
+  v23[4] = block;
   v23[5] = objs;
-  if ((__NSCollectionHandleConcurrentEnumerationIfSpecified(v6, 0, v9, v23) & 1) == 0)
+  if ((__NSCollectionHandleConcurrentEnumerationIfSpecified(optionsCopy, 0, v9, v23) & 1) == 0)
   {
     v22[7] = 0;
     if (v9)
@@ -899,7 +899,7 @@ LABEL_3:
         if (!v13)
         {
           v14 = _CFAutoreleasePoolPush();
-          __NSSET_IS_CALLING_OUT_TO_A_BLOCK__(a4);
+          __NSSET_IS_CALLING_OUT_TO_A_BLOCK__(block);
           _CFAutoreleasePoolPop(v14);
         }
       }
@@ -909,7 +909,7 @@ LABEL_3:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getObjects:(id *)a3 count:(unint64_t)a4
+- (void)getObjects:(id *)objects count:(unint64_t)count
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
@@ -917,7 +917,7 @@ LABEL_3:
     __cf_tsanReadFunction(self, v4, __CFTSANTagMutableSet);
   }
 
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v16 = _os_log_pack_size();
     v18 = v24 - ((MEMORY[0x1EEE9AC00](v16, v17) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -925,12 +925,12 @@ LABEL_3:
     *v19 = 136315394;
     *(v19 + 4) = "mset_getObjectsCount";
     *(v19 + 12) = 2048;
-    *(v19 + 14) = a4;
-    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "mset_getObjectsCount", a4);
+    *(v19 + 14) = count;
+    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "mset_getObjectsCount", count);
     goto LABEL_23;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v16 = _os_log_pack_size();
     v18 = v24 - ((MEMORY[0x1EEE9AC00](v16, v21) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -938,21 +938,21 @@ LABEL_3:
     *v22 = 136315394;
     *(v22 + 4) = "mset_getObjectsCount";
     *(v22 + 12) = 2048;
-    *(v22 + 14) = a4;
-    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "mset_getObjectsCount", a4);
+    *(v22 + 14) = count;
+    v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "mset_getObjectsCount", count);
 LABEL_23:
     v23 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v20) osLogPack:0 size:v18, v16];
     objc_exception_throw(v23);
   }
 
   v8 = *(&self->storage.var0.var0 + 1);
-  v9 = v8 & 0x3FFFFFF;
-  if (v9 >= a4)
+  countCopy = v8 & 0x3FFFFFF;
+  if (countCopy >= count)
   {
-    v9 = a4;
+    countCopy = count;
   }
 
-  if (v9)
+  if (countCopy)
   {
     v10 = v8 >> 26 == 0;
   }
@@ -981,11 +981,11 @@ LABEL_23:
 
       if (!v14)
       {
-        *a3++ = v13;
-        LODWORD(v9) = v9 - 1;
+        *objects++ = v13;
+        LODWORD(countCopy) = countCopy - 1;
       }
 
-      if (!v9)
+      if (!countCopy)
       {
         break;
       }
@@ -999,7 +999,7 @@ LABEL_23:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v31[1] = *MEMORY[0x1E69E9840];
   if (__cf_tsanWriteFunction)
@@ -1037,7 +1037,7 @@ LABEL_23:
   }
 
   self->storage.var0.var0.muts = v8;
-  if (!a3)
+  if (!object)
   {
     v25 = _os_log_pack_size();
     v27 = v31 - ((MEMORY[0x1EEE9AC00](v25, v26) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1059,7 +1059,7 @@ LABEL_23:
   v11 = __NSSetSizes_0[2 * (v10 >> 26)];
   objs = self->storage.objs;
   v13 = 0;
-  v14 = [a3 hash] % v11;
+  v14 = [object hash] % v11;
   v15 = v11 <= 1 ? 1 : v11;
   v16 = v11;
   while (1)
@@ -1079,7 +1079,7 @@ LABEL_23:
       }
     }
 
-    else if (v17 == a3 || ([(state *)v17 isEqual:a3]& 1) != 0)
+    else if (v17 == object || ([(state *)v17 isEqual:object]& 1) != 0)
     {
       v16 = v14;
       goto LABEL_35;
@@ -1174,7 +1174,7 @@ LABEL_50:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {
@@ -1184,7 +1184,7 @@ LABEL_50:
   return __NSSetM_copy(self, a2);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {

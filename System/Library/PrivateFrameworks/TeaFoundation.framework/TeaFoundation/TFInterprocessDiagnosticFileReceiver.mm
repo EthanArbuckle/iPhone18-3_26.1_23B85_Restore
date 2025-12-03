@@ -1,11 +1,11 @@
 @interface TFInterprocessDiagnosticFileReceiver
-- (TFInterprocessDiagnosticFileReceiver)initWithNotificationName:(id)a3 diagnosticFileListURL:(id)a4 log:(id)a5;
+- (TFInterprocessDiagnosticFileReceiver)initWithNotificationName:(id)name diagnosticFileListURL:(id)l log:(id)log;
 - (id)diagnosticFileURLs;
 @end
 
 @implementation TFInterprocessDiagnosticFileReceiver
 
-- (TFInterprocessDiagnosticFileReceiver)initWithNotificationName:(id)a3 diagnosticFileListURL:(id)a4 log:(id)a5
+- (TFInterprocessDiagnosticFileReceiver)initWithNotificationName:(id)name diagnosticFileListURL:(id)l log:(id)log
 {
   v6 = sub_1BF17923C();
   v7 = *(*(v6 - 8) + 64);
@@ -14,7 +14,7 @@
   v10 = sub_1BF17A0AC();
   v12 = v11;
   sub_1BF1791BC();
-  return InterprocessDiagnosticFileReceiver.init(interprocessDiagnosticFilesNotificationName:diagnosticFileListURL:log:)(v10, v12, v9, a5);
+  return InterprocessDiagnosticFileReceiver.init(interprocessDiagnosticFilesNotificationName:diagnosticFileListURL:log:)(v10, v12, v9, log);
 }
 
 - (id)diagnosticFileURLs

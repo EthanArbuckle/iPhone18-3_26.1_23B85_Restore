@@ -1,8 +1,8 @@
 @interface SIAnalyticsIndexData
-- (SIAnalyticsIndexData)initWithPrefix:(id)a3 data:(id)a4;
+- (SIAnalyticsIndexData)initWithPrefix:(id)prefix data:(id)data;
 - (id)heartbeatData;
-- (void)incrementCount:(int64_t)a3 forKey:(id)a4;
-- (void)setTimestamp:(double)a3 forKey:(id)a4;
+- (void)incrementCount:(int64_t)count forKey:(id)key;
+- (void)setTimestamp:(double)timestamp forKey:(id)key;
 @end
 
 @implementation SIAnalyticsIndexData
@@ -15,29 +15,29 @@
   return v3;
 }
 
-- (void)incrementCount:(int64_t)a3 forKey:(id)a4
+- (void)incrementCount:(int64_t)count forKey:(id)key
 {
   os_unfair_lock_lock(&self->_heartbeatLock);
-  v7 = [(NSMutableDictionary *)self->_heartbeatData objectForKeyedSubscript:a4];
-  if (v7)
+  longValue = [(NSMutableDictionary *)self->_heartbeatData objectForKeyedSubscript:key];
+  if (longValue)
   {
-    v7 = [v7 longValue];
+    longValue = [longValue longValue];
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithLong:&v7[a3]], a4);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithLong:&longValue[count]], key);
 
   os_unfair_lock_unlock(&self->_heartbeatLock);
 }
 
-- (void)setTimestamp:(double)a3 forKey:(id)a4
+- (void)setTimestamp:(double)timestamp forKey:(id)key
 {
   os_unfair_lock_lock(&self->_heartbeatLock);
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithLong:a3], a4);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_heartbeatData, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithLong:timestamp], key);
 
   os_unfair_lock_unlock(&self->_heartbeatLock);
 }
 
-- (SIAnalyticsIndexData)initWithPrefix:(id)a3 data:(id)a4
+- (SIAnalyticsIndexData)initWithPrefix:(id)prefix data:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -46,8 +46,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_prefix = a3;
-    v6->_heartbeatData = [a4 mutableCopy];
+    v6->_prefix = prefix;
+    v6->_heartbeatData = [data mutableCopy];
     v7->_heartbeatLock._os_unfair_lock_opaque = 0;
     if (dword_1EBF46B20 >= 5)
     {
@@ -56,7 +56,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = a3;
+        prefixCopy = prefix;
         _os_log_impl(&dword_1C278D000, v11, OS_LOG_TYPE_DEFAULT, "index init:%@", buf, 0xCu);
       }
 

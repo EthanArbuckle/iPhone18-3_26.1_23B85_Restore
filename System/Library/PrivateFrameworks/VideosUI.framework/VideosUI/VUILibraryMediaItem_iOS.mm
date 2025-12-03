@@ -1,16 +1,16 @@
 @interface VUILibraryMediaItem_iOS
 + (void)initialize;
-- (BOOL)hasTrait:(id)a3;
-- (BOOL)isEqualToMediaItem:(id)a3;
+- (BOOL)hasTrait:(id)trait;
+- (BOOL)isEqualToMediaItem:(id)item;
 - (TVImageLoader)imageLoader;
-- (VUILibraryMediaItem_iOS)initWithMPMediaItem:(id)a3;
+- (VUILibraryMediaItem_iOS)initWithMPMediaItem:(id)item;
 - (id)_localPlaybackFilePathURL;
-- (id)mediaItemMetadataForProperty:(id)a3;
+- (id)mediaItemMetadataForProperty:(id)property;
 - (id)mediaItemURL;
 - (void)_schedulePlaybackPositionInfoPersistence;
-- (void)prepareForLoadingWithCompletion:(id)a3;
-- (void)updateBookmarkWithSuggestedTime:(double)a3 forElapsedTime:(double)a4 duration:(double)a5 playbackOfMediaItemIsEnding:(BOOL)a6;
-- (void)updatePlayCountForElapsedTime:(double)a3 duration:(double)a4;
+- (void)prepareForLoadingWithCompletion:(id)completion;
+- (void)updateBookmarkWithSuggestedTime:(double)time forElapsedTime:(double)elapsedTime duration:(double)duration playbackOfMediaItemIsEnding:(BOOL)ending;
+- (void)updatePlayCountForElapsedTime:(double)time duration:(double)duration;
 @end
 
 @implementation VUILibraryMediaItem_iOS
@@ -23,30 +23,30 @@
   }
 }
 
-- (VUILibraryMediaItem_iOS)initWithMPMediaItem:(id)a3
+- (VUILibraryMediaItem_iOS)initWithMPMediaItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = VUILibraryMediaItem_iOS;
   v6 = [(TVPBaseMediaItem *)&v13 init];
   if (v6)
   {
-    if (v5)
+    if (itemCopy)
     {
-      v6->_persistentID = [v5 persistentID];
-      objc_storeStrong(&v6->_mpMediaItem, a3);
-      v7 = [v5 mediaLibrary];
+      v6->_persistentID = [itemCopy persistentID];
+      objc_storeStrong(&v6->_mpMediaItem, item);
+      mediaLibrary = [itemCopy mediaLibrary];
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v7 ml3Library];
+        ml3Library = [mediaLibrary ml3Library];
       }
 
       else
       {
-        v8 = 0;
+        ml3Library = 0;
       }
 
-      v10 = [objc_alloc(MEMORY[0x1E69B3538]) initWithPersistentID:v6->_persistentID inLibrary:v8];
+      v10 = [objc_alloc(MEMORY[0x1E69B3538]) initWithPersistentID:v6->_persistentID inLibrary:ml3Library];
       ml3Track = v6->_ml3Track;
       v6->_ml3Track = v10;
     }
@@ -67,21 +67,21 @@
 - (TVImageLoader)imageLoader
 {
   v2 = +[VUIMediaLibraryManager defaultManager];
-  v3 = [v2 deviceMediaLibrary];
+  deviceMediaLibrary = [v2 deviceMediaLibrary];
 
-  return v3;
+  return deviceMediaLibrary;
 }
 
-- (BOOL)isEqualToMediaItem:(id)a3
+- (BOOL)isEqualToMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == itemCopy)
   {
 LABEL_7:
     v7 = 1;
@@ -96,8 +96,8 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v6 = [(VUILibraryMediaItem_iOS *)v5 persistentID];
-  if ([(VUILibraryMediaItem_iOS *)self persistentID]&& v6 && [(VUILibraryMediaItem_iOS *)self persistentID]== v6)
+  persistentID = [(VUILibraryMediaItem_iOS *)v5 persistentID];
+  if ([(VUILibraryMediaItem_iOS *)self persistentID]&& persistentID && [(VUILibraryMediaItem_iOS *)self persistentID]== persistentID)
   {
     goto LABEL_7;
   }
@@ -121,87 +121,87 @@ LABEL_14:
 
 - (id)mediaItemURL
 {
-  v3 = [(VUILibraryMediaItem_iOS *)self mediaItemURLInternal];
+  mediaItemURLInternal = [(VUILibraryMediaItem_iOS *)self mediaItemURLInternal];
 
-  if (!v3)
+  if (!mediaItemURLInternal)
   {
-    v4 = [(VUILibraryMediaItem_iOS *)self _localPlaybackFilePathURL];
-    [(VUILibraryMediaItem_iOS *)self setMediaItemURLInternal:v4];
+    _localPlaybackFilePathURL = [(VUILibraryMediaItem_iOS *)self _localPlaybackFilePathURL];
+    [(VUILibraryMediaItem_iOS *)self setMediaItemURLInternal:_localPlaybackFilePathURL];
   }
 
   return [(VUILibraryMediaItem_iOS *)self mediaItemURLInternal];
 }
 
-- (BOOL)hasTrait:(id)a3
+- (BOOL)hasTrait:(id)trait
 {
-  v4 = a3;
-  if (![v4 isEqualToString:*MEMORY[0x1E69D5E88]])
+  traitCopy = trait;
+  if (![traitCopy isEqualToString:*MEMORY[0x1E69D5E88]])
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E69D5E90]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69D5E78]))
+    if ([traitCopy isEqualToString:*MEMORY[0x1E69D5E90]] & 1) != 0 || (objc_msgSend(traitCopy, "isEqualToString:", *MEMORY[0x1E69D5E78]))
     {
-      v6 = 1;
+      bOOLValue = 1;
       goto LABEL_7;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69D5E48]])
+    if ([traitCopy isEqualToString:*MEMORY[0x1E69D5E48]])
     {
-      v8 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-      v9 = v8;
+      ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
+      v9 = ml3Track;
       v10 = MEMORY[0x1E69B3078];
     }
 
     else
     {
-      if (![v4 isEqualToString:*MEMORY[0x1E69D5E38]])
+      if (![traitCopy isEqualToString:*MEMORY[0x1E69D5E38]])
       {
-        if ([v4 isEqualToString:*MEMORY[0x1E69D5E58]])
+        if ([traitCopy isEqualToString:*MEMORY[0x1E69D5E58]])
         {
-          v12 = [(VUILibraryMediaItem_iOS *)self _localPlaybackFilePathURL];
-          v6 = v12 != 0;
+          _localPlaybackFilePathURL = [(VUILibraryMediaItem_iOS *)self _localPlaybackFilePathURL];
+          bOOLValue = _localPlaybackFilePathURL != 0;
 
           goto LABEL_7;
         }
 
         v13.receiver = self;
         v13.super_class = VUILibraryMediaItem_iOS;
-        v5 = [(TVPBaseMediaItem *)&v13 hasTrait:v4];
+        _supportsBookmarks = [(TVPBaseMediaItem *)&v13 hasTrait:traitCopy];
         goto LABEL_3;
       }
 
-      v8 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-      v9 = v8;
+      ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
+      v9 = ml3Track;
       v10 = MEMORY[0x1E69B3008];
     }
 
-    v11 = [v8 valueForProperty:*v10];
-    v6 = [v11 BOOLValue];
+    v11 = [ml3Track valueForProperty:*v10];
+    bOOLValue = [v11 BOOLValue];
 
     goto LABEL_7;
   }
 
-  v5 = [(VUILibraryMediaItem_iOS *)self _supportsBookmarks];
+  _supportsBookmarks = [(VUILibraryMediaItem_iOS *)self _supportsBookmarks];
 LABEL_3:
-  v6 = v5;
+  bOOLValue = _supportsBookmarks;
 LABEL_7:
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)mediaItemMetadataForProperty:(id)a3
+- (id)mediaItemMetadataForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = *MEMORY[0x1E69D5DC0];
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5DC0]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5DC0]])
   {
-    v6 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+    ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
 
-    if (v6)
+    if (ml3Track)
     {
-      v7 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-      v8 = v7;
+      ml3Track2 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+      v8 = ml3Track2;
       v9 = MEMORY[0x1E69B3380];
 LABEL_4:
-      v10 = [v7 valueForProperty:*v9];
+      v10 = [ml3Track2 valueForProperty:*v9];
 LABEL_48:
       v35 = v10;
 LABEL_49:
@@ -209,18 +209,18 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    v71 = self;
+    selfCopy = self;
     v72 = VUILibraryMediaItem_iOS;
-    v15 = &v71;
+    v15 = &selfCopy;
     goto LABEL_24;
   }
 
   v5 = *MEMORY[0x1E69D5C78];
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5C78]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5C78]])
   {
-    v11 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+    ml3Track3 = [(VUILibraryMediaItem_iOS *)self ml3Track];
 
-    if (!v11)
+    if (!ml3Track3)
     {
       v68.receiver = self;
       v68.super_class = VUILibraryMediaItem_iOS;
@@ -228,40 +228,40 @@ LABEL_49:
       goto LABEL_24;
     }
 
-    v12 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-    v13 = [v12 valueForProperty:*MEMORY[0x1E69B3138]];
-    v14 = [v13 unsignedIntValue];
+    ml3Track4 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+    v13 = [ml3Track4 valueForProperty:*MEMORY[0x1E69B3138]];
+    unsignedIntValue = [v13 unsignedIntValue];
 
-    if ((v14 & 0x200) != 0)
+    if ((unsignedIntValue & 0x200) != 0)
     {
       v26 = MEMORY[0x1E69D5ED0];
     }
 
-    else if ((v14 & 0x2000) != 0)
+    else if ((unsignedIntValue & 0x2000) != 0)
     {
       v26 = MEMORY[0x1E69D5EB0];
     }
 
     else
     {
-      if ((v14 & 0x800) == 0)
+      if ((unsignedIntValue & 0x800) == 0)
       {
-        v69 = self;
+        selfCopy2 = self;
         v70 = VUILibraryMediaItem_iOS;
-        v15 = &v69;
+        v15 = &selfCopy2;
 LABEL_24:
-        objc_msgSendSuper2(v15, sel_mediaItemMetadataForProperty_, v5, v59.receiver, v59.super_class, v60, v61, v62, v63, v64, v65, v66, v67, v68.receiver, v68.super_class, v69, v70, v71, v72);
+        objc_msgSendSuper2(v15, sel_mediaItemMetadataForProperty_, v5, v59.receiver, v59.super_class, selfCopy5, v61, selfCopy4, v63, selfCopy6, v65, selfCopy3, v67, v68.receiver, v68.super_class, selfCopy2, v70, selfCopy, v72);
         v25 = LABEL_25:;
 LABEL_39:
         v35 = v25;
         goto LABEL_50;
       }
 
-      v41 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-      v42 = [v41 valueForProperty:*MEMORY[0x1E69B30E8]];
-      v43 = [v42 BOOLValue];
+      ml3Track5 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+      v42 = [ml3Track5 valueForProperty:*MEMORY[0x1E69B30E8]];
+      bOOLValue = [v42 BOOLValue];
 
-      if (v43)
+      if (bOOLValue)
       {
         v26 = MEMORY[0x1E69D5EC8];
       }
@@ -277,7 +277,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5D60]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5D60]])
   {
     v16 = [(VUILibraryMediaItem_iOS *)self mediaItemMetadataForProperty:v5];
     v8 = v16;
@@ -312,27 +312,27 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5AB0]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5AB0]])
   {
-    v19 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-    if (v19)
+    mpMediaItem = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    if (mpMediaItem)
     {
-      v20 = v19;
-      v21 = [(VUILibraryMediaItem_iOS *)self imageLoader];
+      v20 = mpMediaItem;
+      imageLoader = [(VUILibraryMediaItem_iOS *)self imageLoader];
 
-      if (v21)
+      if (imageLoader)
       {
-        v22 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-        v23 = v22;
+        mpMediaItem2 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+        v23 = mpMediaItem2;
         v24 = 0;
 LABEL_35:
-        v31 = [v22 vui_imageLoadParamsWithImageType:v24];
+        v31 = [mpMediaItem2 vui_imageLoadParamsWithImageType:v24];
 
         v32 = MEMORY[0x1E69D5958];
 LABEL_36:
         v33 = [v32 alloc];
-        v34 = [(VUILibraryMediaItem_iOS *)self imageLoader];
-        v35 = [v33 initWithObject:v31 imageLoader:v34 groupType:0];
+        imageLoader2 = [(VUILibraryMediaItem_iOS *)self imageLoader];
+        v35 = [v33 initWithObject:v31 imageLoader:imageLoader2 groupType:0];
 
         goto LABEL_50;
       }
@@ -341,18 +341,18 @@ LABEL_36:
     goto LABEL_79;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5AA8]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5AA8]])
   {
-    v28 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-    if (v28)
+    mpMediaItem3 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    if (mpMediaItem3)
     {
-      v29 = v28;
-      v30 = [(VUILibraryMediaItem_iOS *)self imageLoader];
+      v29 = mpMediaItem3;
+      imageLoader3 = [(VUILibraryMediaItem_iOS *)self imageLoader];
 
-      if (v30)
+      if (imageLoader3)
       {
-        v22 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-        v23 = v22;
+        mpMediaItem2 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+        v23 = mpMediaItem2;
         v24 = 1;
         goto LABEL_35;
       }
@@ -361,18 +361,18 @@ LABEL_36:
     goto LABEL_79;
   }
 
-  if (([v4 isEqualToString:@"VUIMediaItemMetadataArtworkEpisodePreviewVUIImageProxy"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"VUIMediaItemMetadataPostPlayVUIImageProxy"))
+  if (([propertyCopy isEqualToString:@"VUIMediaItemMetadataArtworkEpisodePreviewVUIImageProxy"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"VUIMediaItemMetadataPostPlayVUIImageProxy"))
   {
-    v36 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-    if (v36)
+    mpMediaItem4 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    if (mpMediaItem4)
     {
-      v37 = v36;
-      v38 = [(VUILibraryMediaItem_iOS *)self imageLoader];
+      v37 = mpMediaItem4;
+      imageLoader4 = [(VUILibraryMediaItem_iOS *)self imageLoader];
 
-      if (v38)
+      if (imageLoader4)
       {
-        v39 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-        v31 = [v39 vui_imageLoadParamsWithImageType:1];
+        mpMediaItem5 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+        v31 = [mpMediaItem5 vui_imageLoadParamsWithImageType:1];
 
         v32 = MEMORY[0x1E69DF730];
         goto LABEL_36;
@@ -383,37 +383,37 @@ LABEL_36:
   }
 
   v5 = *MEMORY[0x1E69D5B80];
-  if ([v4 isEqualToString:*MEMORY[0x1E69D5B80]])
+  if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5B80]])
   {
-    v44 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    mpMediaItem6 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
 
-    if (!v44)
+    if (!mpMediaItem6)
     {
-      v66 = self;
+      selfCopy3 = self;
       v67 = VUILibraryMediaItem_iOS;
-      v15 = &v66;
+      v15 = &selfCopy3;
       goto LABEL_24;
     }
 
-    v45 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-    v46 = v45;
+    mpMediaItem7 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    v46 = mpMediaItem7;
     v47 = MEMORY[0x1E696F998];
   }
 
   else
   {
     v5 = *MEMORY[0x1E69D5D30];
-    if (![v4 isEqualToString:*MEMORY[0x1E69D5D30]])
+    if (![propertyCopy isEqualToString:*MEMORY[0x1E69D5D30]])
     {
       v5 = *MEMORY[0x1E69D5B20];
-      if ([v4 isEqualToString:*MEMORY[0x1E69D5B20]])
+      if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5B20]])
       {
-        v50 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+        mpMediaItem8 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
 
-        if (v50)
+        if (mpMediaItem8)
         {
-          v51 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-          v8 = [v51 valueForProperty:*MEMORY[0x1E696F970]];
+          mpMediaItem9 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+          v8 = [mpMediaItem9 valueForProperty:*MEMORY[0x1E696F970]];
 
           v52 = [v8 vui_stringForKey:@"ratingLevel"];
           v53 = v52;
@@ -430,36 +430,36 @@ LABEL_36:
           goto LABEL_49;
         }
 
-        v62 = self;
+        selfCopy4 = self;
         v63 = VUILibraryMediaItem_iOS;
-        v15 = &v62;
+        v15 = &selfCopy4;
         goto LABEL_24;
       }
 
       v5 = *MEMORY[0x1E69D5B08];
-      if ([v4 isEqualToString:*MEMORY[0x1E69D5B08]])
+      if ([propertyCopy isEqualToString:*MEMORY[0x1E69D5B08]])
       {
-        v54 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+        ml3Track6 = [(VUILibraryMediaItem_iOS *)self ml3Track];
 
-        if (!v54)
+        if (!ml3Track6)
         {
-          v60 = self;
+          selfCopy5 = self;
           v61 = VUILibraryMediaItem_iOS;
-          v15 = &v60;
+          v15 = &selfCopy5;
           goto LABEL_24;
         }
 
-        v55 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-        v56 = [v55 valueForProperty:*MEMORY[0x1E69B3138]];
-        v57 = [v56 unsignedIntValue];
+        ml3Track7 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+        v56 = [ml3Track7 valueForProperty:*MEMORY[0x1E69B3138]];
+        unsignedIntValue2 = [v56 unsignedIntValue];
 
-        if ((v57 & 0x200) != 0)
+        if ((unsignedIntValue2 & 0x200) != 0)
         {
           v26 = MEMORY[0x1E69D5B18];
           goto LABEL_38;
         }
 
-        if ((v57 & 0x800) != 0)
+        if ((unsignedIntValue2 & 0x800) != 0)
         {
           v26 = MEMORY[0x1E69D5B10];
           goto LABEL_38;
@@ -468,18 +468,18 @@ LABEL_36:
 
       else
       {
-        if (![v4 isEqualToString:@"VUIMediaItemMetadataKeyVideoQuality"])
+        if (![propertyCopy isEqualToString:@"VUIMediaItemMetadataKeyVideoQuality"])
         {
-          [(VUIBaseMediaItem *)&v59 mediaItemMetadataForProperty:v4, self, VUILibraryMediaItem_iOS, v60, v61, v62, v63, v64, v65, v66, v67, v68.receiver, v68.super_class, v69, v70, v71, v72];
+          [(VUIBaseMediaItem *)&v59 mediaItemMetadataForProperty:propertyCopy, self, VUILibraryMediaItem_iOS, selfCopy5, v61, selfCopy4, v63, selfCopy6, v65, selfCopy3, v67, v68.receiver, v68.super_class, selfCopy2, v70, selfCopy, v72];
           goto LABEL_25;
         }
 
-        v58 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+        mpMediaItem10 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
 
-        if (v58)
+        if (mpMediaItem10)
         {
-          v7 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-          v8 = v7;
+          ml3Track2 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+          v8 = ml3Track2;
           v9 = MEMORY[0x1E696FB90];
           goto LABEL_4;
         }
@@ -490,22 +490,22 @@ LABEL_79:
       goto LABEL_50;
     }
 
-    v48 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    mpMediaItem11 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
 
-    if (!v48)
+    if (!mpMediaItem11)
     {
-      v64 = self;
+      selfCopy6 = self;
       v65 = VUILibraryMediaItem_iOS;
-      v15 = &v64;
+      v15 = &selfCopy6;
       goto LABEL_24;
     }
 
-    v45 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-    v46 = v45;
+    mpMediaItem7 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+    v46 = mpMediaItem7;
     v47 = MEMORY[0x1E696FB10];
   }
 
-  v35 = [v45 valueForProperty:*v47];
+  v35 = [mpMediaItem7 valueForProperty:*v47];
 
   if (v35)
   {
@@ -517,11 +517,11 @@ LABEL_50:
   return v35;
 }
 
-- (void)prepareForLoadingWithCompletion:(id)a3
+- (void)prepareForLoadingWithCompletion:(id)completion
 {
-  v17 = a3;
-  v4 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-  v5 = [v4 valueForProperty:*MEMORY[0x1E69B2E20]];
+  completionCopy = completion;
+  ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
+  v5 = [ml3Track valueForProperty:*MEMORY[0x1E69B2E20]];
 
   if (objc_opt_respondsToSelector())
   {
@@ -529,8 +529,8 @@ LABEL_50:
     v7 = v6 / 1000.0;
     if (v6 / 1000.0 > 0.0)
     {
-      v8 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-      v9 = [v8 valueForProperty:*MEMORY[0x1E69B3288]];
+      ml3Track2 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+      v9 = [ml3Track2 valueForProperty:*MEMORY[0x1E69B3288]];
 
       if (v9 && ([v9 doubleValue], v10 > 0.0))
       {
@@ -548,79 +548,79 @@ LABEL_50:
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
       v15 = [(VUIMediaStartTimeInfo *)v13 initWithStartTime:v14 timestamp:v12 type:0 source:@"Media Library"];
 
-      v16 = [(VUIBaseMediaItem *)self startTimeCollection];
-      [v16 addStartTimeInfo:v15];
+      startTimeCollection = [(VUIBaseMediaItem *)self startTimeCollection];
+      [startTimeCollection addStartTimeInfo:v15];
     }
   }
 
-  if (v17)
+  if (completionCopy)
   {
-    v17[2](v17, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)updateBookmarkWithSuggestedTime:(double)a3 forElapsedTime:(double)a4 duration:(double)a5 playbackOfMediaItemIsEnding:(BOOL)a6
+- (void)updateBookmarkWithSuggestedTime:(double)time forElapsedTime:(double)elapsedTime duration:(double)duration playbackOfMediaItemIsEnding:(BOOL)ending
 {
-  v11 = [(VUILibraryMediaItem_iOS *)self playbackPositionInfo:a6];
+  v11 = [(VUILibraryMediaItem_iOS *)self playbackPositionInfo:ending];
   if (!v11)
   {
     v11 = objc_alloc_init(VUIPlaybackPositionInfo);
     [(VUILibraryMediaItem_iOS *)self _schedulePlaybackPositionInfoPersistence];
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:time];
   [(VUIPlaybackPositionInfo *)v11 setBookmarkTime:v8];
 
   [(VUILibraryMediaItem_iOS *)self setPlaybackPositionInfo:v11];
-  v9 = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v9 setValue:v10 forProperty:*MEMORY[0x1E696F950] withCompletionBlock:0];
+  mpMediaItem = [(VUILibraryMediaItem_iOS *)self mpMediaItem];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [mpMediaItem setValue:v10 forProperty:*MEMORY[0x1E696F950] withCompletionBlock:0];
 }
 
-- (void)updatePlayCountForElapsedTime:(double)a3 duration:(double)a4
+- (void)updatePlayCountForElapsedTime:(double)time duration:(double)duration
 {
-  v12 = [(VUILibraryMediaItem_iOS *)self playbackPositionInfo];
-  if (!v12)
+  playbackPositionInfo = [(VUILibraryMediaItem_iOS *)self playbackPositionInfo];
+  if (!playbackPositionInfo)
   {
-    v12 = objc_alloc_init(VUIPlaybackPositionInfo);
+    playbackPositionInfo = objc_alloc_init(VUIPlaybackPositionInfo);
     [(VUILibraryMediaItem_iOS *)self _schedulePlaybackPositionInfoPersistence];
   }
 
-  v7 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-  v8 = [v7 valueForProperty:*MEMORY[0x1E69B3158]];
-  v9 = [v8 unsignedIntegerValue];
+  ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
+  v8 = [ml3Track valueForProperty:*MEMORY[0x1E69B3158]];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  [MEMORY[0x1E69D5A48] playedThresholdTimeForDuration:a4];
-  if (v10 < a3)
+  [MEMORY[0x1E69D5A48] playedThresholdTimeForDuration:duration];
+  if (v10 < time)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 + 1];
-    [(VUIPlaybackPositionInfo *)v12 setPlayCount:v11];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    [(VUIPlaybackPositionInfo *)playbackPositionInfo setPlayCount:v11];
   }
 
-  if (a3 > 5.0)
+  if (time > 5.0)
   {
-    [(VUIPlaybackPositionInfo *)v12 setHasBeenPlayed:MEMORY[0x1E695E118]];
+    [(VUIPlaybackPositionInfo *)playbackPositionInfo setHasBeenPlayed:MEMORY[0x1E695E118]];
   }
 
-  [(VUILibraryMediaItem_iOS *)self setPlaybackPositionInfo:v12];
+  [(VUILibraryMediaItem_iOS *)self setPlaybackPositionInfo:playbackPositionInfo];
 }
 
 - (id)_localPlaybackFilePathURL
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-  v4 = [v3 valueForProperty:*MEMORY[0x1E69B2F48]];
+  ml3Track = [(VUILibraryMediaItem_iOS *)self ml3Track];
+  v4 = [ml3Track valueForProperty:*MEMORY[0x1E69B2F48]];
 
-  v5 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-  v6 = [v5 valueForProperty:*MEMORY[0x1E69B3098]];
-  v7 = [v6 BOOLValue];
+  ml3Track2 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+  v6 = [ml3Track2 valueForProperty:*MEMORY[0x1E69B3098]];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [(VUILibraryMediaItem_iOS *)self ml3Track];
-  v9 = [v8 valueForProperty:*MEMORY[0x1E69B3100]];
-  v10 = [v9 BOOLValue];
+  ml3Track3 = [(VUILibraryMediaItem_iOS *)self ml3Track];
+  v9 = [ml3Track3 valueForProperty:*MEMORY[0x1E69B3100]];
+  bOOLValue2 = [v9 BOOLValue];
 
   v11 = 0;
-  if (v7 && (v10 & 1) == 0)
+  if (bOOLValue && (bOOLValue2 & 1) == 0)
   {
     if ([v4 length] < 2)
     {

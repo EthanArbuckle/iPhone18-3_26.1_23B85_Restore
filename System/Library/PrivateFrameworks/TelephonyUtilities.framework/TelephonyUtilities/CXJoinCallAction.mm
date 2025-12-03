@@ -8,28 +8,28 @@
 
 - (TUScreenSharingRequest)tuScreenSharingRequest
 {
-  v3 = [(CXJoinCallAction *)self remoteMembers];
-  v4 = [v3 anyObject];
+  remoteMembers = [(CXJoinCallAction *)self remoteMembers];
+  anyObject = [remoteMembers anyObject];
 
-  v5 = [v4 handle];
-  v6 = [v5 tuHandle];
+  handle = [anyObject handle];
+  tuHandle = [handle tuHandle];
 
   v7 = 0;
-  if ([(CXJoinCallAction *)self isValidScreenSharingRequest]&& v6)
+  if ([(CXJoinCallAction *)self isValidScreenSharingRequest]&& tuHandle)
   {
-    v8 = [(CXJoinCallAction *)self screenShareRequestType];
-    if (v8 == 2)
+    screenShareRequestType = [(CXJoinCallAction *)self screenShareRequestType];
+    if (screenShareRequestType == 2)
     {
       v9 = [TUScreenSharingRequest alloc];
-      v10 = [(CXJoinCallAction *)self shouldSendLegacyScreenSharingInvite];
-      v11 = [(CXJoinCallAction *)self screenSharingRequestMetadata];
-      v12 = [v11 tuMetadata];
-      v7 = [v9 initWithHandle:v6 shareMyScreen:1 originType:1 shouldSendLegacyInvite:v10 metadata:v12];
+      shouldSendLegacyScreenSharingInvite = [(CXJoinCallAction *)self shouldSendLegacyScreenSharingInvite];
+      screenSharingRequestMetadata = [(CXJoinCallAction *)self screenSharingRequestMetadata];
+      tuMetadata = [screenSharingRequestMetadata tuMetadata];
+      v7 = [v9 initWithHandle:tuHandle shareMyScreen:1 originType:1 shouldSendLegacyInvite:shouldSendLegacyScreenSharingInvite metadata:tuMetadata];
     }
 
-    else if (v8 == 1)
+    else if (screenShareRequestType == 1)
     {
-      v7 = [[TUScreenSharingRequest alloc] initWithHandle:v6 shareMyScreen:0 originType:1 shouldSendLegacyInvite:-[CXJoinCallAction shouldSendLegacyScreenSharingInvite](self metadata:{"shouldSendLegacyScreenSharingInvite"), 0}];
+      v7 = [[TUScreenSharingRequest alloc] initWithHandle:tuHandle shareMyScreen:0 originType:1 shouldSendLegacyInvite:-[CXJoinCallAction shouldSendLegacyScreenSharingInvite](self metadata:{"shouldSendLegacyScreenSharingInvite"), 0}];
     }
 
     else
@@ -48,8 +48,8 @@
     return 1;
   }
 
-  v3 = [(CXJoinCallAction *)self remoteMembers];
-  v4 = [v3 count];
+  remoteMembers = [(CXJoinCallAction *)self remoteMembers];
+  v4 = [remoteMembers count];
 
   if (v4 == 1)
   {
@@ -67,15 +67,15 @@
 
 - (TUConversationParticipantCluster)tuParticipantCluster
 {
-  v3 = [(CXJoinCallAction *)self participantCluster];
+  participantCluster = [(CXJoinCallAction *)self participantCluster];
 
-  if (v3)
+  if (participantCluster)
   {
     v4 = [TUConversationParticipantCluster alloc];
-    v5 = [(CXJoinCallAction *)self participantCluster];
-    v6 = [v5 UUID];
-    v7 = [(CXJoinCallAction *)self participantCluster];
-    v8 = [v4 initWithUUID:v6 type:{objc_msgSend(v7, "type")}];
+    participantCluster2 = [(CXJoinCallAction *)self participantCluster];
+    uUID = [participantCluster2 UUID];
+    participantCluster3 = [(CXJoinCallAction *)self participantCluster];
+    v8 = [v4 initWithUUID:uUID type:{objc_msgSend(participantCluster3, "type")}];
   }
 
   else

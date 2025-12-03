@@ -1,10 +1,10 @@
 @interface _MKStackingPlaceholderView
-- (_MKStackingPlaceholderView)initWithHeight:(double)a3;
+- (_MKStackingPlaceholderView)initWithHeight:(double)height;
 @end
 
 @implementation _MKStackingPlaceholderView
 
-- (_MKStackingPlaceholderView)initWithHeight:(double)a3
+- (_MKStackingPlaceholderView)initWithHeight:(double)height
 {
   v10.receiver = self;
   v10.super_class = _MKStackingPlaceholderView;
@@ -12,8 +12,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(_MKStackingPlaceholderView *)v4 heightAnchor];
-    v7 = [v6 constraintEqualToConstant:a3];
+    heightAnchor = [(_MKStackingPlaceholderView *)v4 heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:height];
     contentHeightConstraint = v5->_contentHeightConstraint;
     v5->_contentHeightConstraint = v7;
 

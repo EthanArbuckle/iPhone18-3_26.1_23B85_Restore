@@ -1,17 +1,17 @@
 @interface VisitsLoader
-+ (void)shouldShowNotificationWithCompletionHandler:(id)a3;
++ (void)shouldShowNotificationWithCompletionHandler:(id)handler;
 - (_TtC4Maps12VisitsLoader)init;
-- (void)loadVisitsWithCompletionHandler:(id)a3;
+- (void)loadVisitsWithCompletionHandler:(id)handler;
 @end
 
 @implementation VisitsLoader
 
-- (void)loadVisitsWithCompletionHandler:(id)a3
+- (void)loadVisitsWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,19 +27,19 @@
   v12[3] = 0;
   v12[4] = &unk_1011F9360;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v7, &unk_1011F66B0, v12);
 }
 
-+ (void)shouldShowNotificationWithCompletionHandler:(id)a3
++ (void)shouldShowNotificationWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = type metadata accessor for TaskPriority();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();

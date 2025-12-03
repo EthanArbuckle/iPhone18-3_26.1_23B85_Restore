@@ -1,26 +1,26 @@
 @interface SISchemaUUFRFatalError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUFRFatalError)initWithDictionary:(id)a3;
-- (SISchemaUUFRFatalError)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUUFRFatalError)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRFatalError)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRFatalError
 
-- (SISchemaUUFRFatalError)initWithDictionary:(id)a3
+- (SISchemaUUFRFatalError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaUUFRFatalError;
   v5 = [(SISchemaUUFRFatalError *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(SISchemaUUFRFatalError *)v5 setErrorDomain:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUUFRFatalError setErrorCode:](v5, "setErrorCode:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"siriResponseContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaUUFRFatalError)initWithJSON:(id)a3
+- (SISchemaUUFRFatalError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRFatalError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRFatalError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRFatalError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaUUFRFatalError errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v5 = [(SISchemaUUFRFatalError *)self errorDomain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(SISchemaUUFRFatalError *)self errorDomain];
+    v6 = [errorDomain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
   if (self->_siriResponseContext)
   {
-    v7 = [(SISchemaUUFRFatalError *)self siriResponseContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    siriResponseContext = [(SISchemaUUFRFatalError *)self siriResponseContext];
+    dictionaryRepresentation = [siriResponseContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"siriResponseContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriResponseContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"siriResponseContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriResponseContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,28 +136,28 @@
   return v4 ^ v3 ^ [(SISchemaSiriResponseContext *)self->_siriResponseContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(SISchemaUUFRFatalError *)self errorDomain];
-  v6 = [v4 errorDomain];
-  if ((v5 != 0) == (v6 == 0))
+  errorDomain = [(SISchemaUUFRFatalError *)self errorDomain];
+  errorDomain2 = [equalCopy errorDomain];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(SISchemaUUFRFatalError *)self errorDomain];
-  if (v7)
+  errorDomain3 = [(SISchemaUUFRFatalError *)self errorDomain];
+  if (errorDomain3)
   {
-    v8 = v7;
-    v9 = [(SISchemaUUFRFatalError *)self errorDomain];
-    v10 = [v4 errorDomain];
-    v11 = [v9 isEqual:v10];
+    v8 = errorDomain3;
+    errorDomain4 = [(SISchemaUUFRFatalError *)self errorDomain];
+    errorDomain5 = [equalCopy errorDomain];
+    v11 = [errorDomain4 isEqual:errorDomain5];
 
     if (!v11)
     {
@@ -169,7 +169,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -177,18 +177,18 @@
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(SISchemaUUFRFatalError *)self siriResponseContext];
-  v6 = [v4 siriResponseContext];
-  if ((v5 != 0) != (v6 == 0))
+  errorDomain = [(SISchemaUUFRFatalError *)self siriResponseContext];
+  errorDomain2 = [equalCopy siriResponseContext];
+  if ((errorDomain != 0) != (errorDomain2 == 0))
   {
-    v13 = [(SISchemaUUFRFatalError *)self siriResponseContext];
-    if (!v13)
+    siriResponseContext = [(SISchemaUUFRFatalError *)self siriResponseContext];
+    if (!siriResponseContext)
     {
 
 LABEL_18:
@@ -196,10 +196,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaUUFRFatalError *)self siriResponseContext];
-    v16 = [v4 siriResponseContext];
-    v17 = [v15 isEqual:v16];
+    v14 = siriResponseContext;
+    siriResponseContext2 = [(SISchemaUUFRFatalError *)self siriResponseContext];
+    siriResponseContext3 = [equalCopy siriResponseContext];
+    v17 = [siriResponseContext2 isEqual:siriResponseContext3];
 
     if (v17)
     {
@@ -219,12 +219,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaUUFRFatalError *)self errorDomain];
+  toCopy = to;
+  errorDomain = [(SISchemaUUFRFatalError *)self errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -234,29 +234,29 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(SISchemaUUFRFatalError *)self siriResponseContext];
+  siriResponseContext = [(SISchemaUUFRFatalError *)self siriResponseContext];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (siriResponseContext)
   {
-    v7 = [(SISchemaUUFRFatalError *)self siriResponseContext];
+    siriResponseContext2 = [(SISchemaUUFRFatalError *)self siriResponseContext];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaUUFRFatalError;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUUFRFatalError *)self siriResponseContext:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUUFRFatalError *)self deleteSiriResponseContext];
   }

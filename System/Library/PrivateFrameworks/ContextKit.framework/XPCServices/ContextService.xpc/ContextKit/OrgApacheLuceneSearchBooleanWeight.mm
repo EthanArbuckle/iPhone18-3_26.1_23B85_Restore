@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneSearchBooleanWeight
-- (float)coordWithInt:(int)a3 withInt:(int)a4;
+- (float)coordWithInt:(int)int withInt:(int)withInt;
 - (float)getValueForNormalization;
-- (id)BOOLeanScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)BOOLeanScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)extractTermsWithJavaUtilSet:(id)a3;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)extractTermsWithJavaUtilSet:(id)set;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanWeight
 
-- (void)extractTermsWithJavaUtilSet:(id)a3
+- (void)extractTermsWithJavaUtilSet:(id)set
 {
   v14 = 0u;
   v15 = 0u;
@@ -59,7 +59,7 @@ LABEL_17:
             goto LABEL_17;
           }
 
-          [v13 extractTermsWithJavaUtilSet:a3];
+          [v13 extractTermsWithJavaUtilSet:set];
         }
 
         v8 = (v8 + 1);
@@ -146,12 +146,12 @@ LABEL_15:
   return v8 * (v16 * v17);
 }
 
-- (float)coordWithInt:(int)a3 withInt:(int)a4
+- (float)coordWithInt:(int)int withInt:(int)withInt
 {
-  if (a3)
+  if (int)
   {
     LODWORD(v5) = 1.0;
-    if (a4 != 1)
+    if (withInt != 1)
     {
       similarity = self->similarity_;
       if (!similarity)
@@ -171,7 +171,7 @@ LABEL_15:
   return *&v5;
 }
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
   query = self->query_;
   if (!query || ([(OrgApacheLuceneSearchQuery *)query getBoost], v9 = v8, v19 = 0u, v20 = 0u, v21 = 0u, v22 = 0u, (weights = self->weights_) == 0))
@@ -184,7 +184,7 @@ LABEL_12:
   if (v11)
   {
     v14 = v11;
-    v15 = v9 * a4;
+    v15 = v9 * withFloat;
     v16 = *v20;
     do
     {
@@ -201,7 +201,7 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        *&v12 = a3;
+        *&v12 = float;
         *&v13 = v15;
         [v18 normalizeWithFloat:v12 withFloat:{v13, v19}];
       }
@@ -213,7 +213,7 @@ LABEL_12:
   }
 }
 
-- (id)BOOLeanScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)BOOLeanScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   bulkScorerSize = self->bulkScorerSize_;
   if (!bulkScorerSize)
@@ -253,7 +253,7 @@ LABEL_12:
           goto LABEL_20;
         }
 
-        v14 = [v13 bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:{a3, v23}];
+        v14 = [v13 bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:{context, v23}];
         if (v14)
         {
           [(JavaUtilArrayList *)v8 addWithId:v14];
@@ -297,7 +297,7 @@ LABEL_20:
   return 0;
 }
 
-- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   v5 = [(OrgApacheLuceneSearchBooleanWeight *)self BOOLeanScorerWithOrgApacheLuceneIndexLeafReaderContext:?];
   if (!v5)
@@ -318,7 +318,7 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  if (!a3 || (v9 = [a3 reader]) == 0)
+  if (!context || (v9 = [context reader]) == 0)
   {
 LABEL_11:
     JreThrowNullPointerException();
@@ -331,13 +331,13 @@ LABEL_8:
 LABEL_9:
     v11.receiver = self;
     v11.super_class = OrgApacheLuceneSearchBooleanWeight;
-    return [(OrgApacheLuceneSearchWeight *)&v11 bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+    return [(OrgApacheLuceneSearchWeight *)&v11 bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:context];
   }
 
   return v6;
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   query = self->query_;
   if (!query)
@@ -345,12 +345,12 @@ LABEL_9:
     goto LABEL_39;
   }
 
-  v6 = [(OrgApacheLuceneSearchBooleanQuery *)query getMinimumNumberShouldMatch];
+  getMinimumNumberShouldMatch = [(OrgApacheLuceneSearchBooleanQuery *)query getMinimumNumberShouldMatch];
   v7 = new_JavaUtilArrayList_init();
   v48 = new_JavaUtilArrayList_init();
   v47 = new_JavaUtilArrayList_init();
   v8 = new_JavaUtilArrayList_init();
-  v9 = [(OrgApacheLuceneSearchBooleanQuery *)self->query_ iterator];
+  iterator = [(OrgApacheLuceneSearchBooleanQuery *)self->query_ iterator];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -362,9 +362,9 @@ LABEL_39:
     JreThrowNullPointerException();
   }
 
-  v11 = v9;
-  v45 = v6;
-  v46 = self;
+  v11 = iterator;
+  v45 = getMinimumNumberShouldMatch;
+  selfCopy = self;
   v12 = [(JavaUtilArrayList *)weights countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v12)
   {
@@ -385,14 +385,14 @@ LABEL_39:
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        v17 = [v11 next];
+        next = [v11 next];
         if (!v16)
         {
           goto LABEL_39;
         }
 
-        v18 = v17;
-        v19 = [v16 scorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+        v18 = next;
+        v19 = [v16 scorerWithOrgApacheLuceneIndexLeafReaderContext:context];
         if (v19)
         {
           if (!v18)
@@ -419,9 +419,9 @@ LABEL_21:
           }
 
           [(JavaUtilArrayList *)v7 addWithId:v20];
-          v21 = [v18 isScoring];
+          isScoring = [v18 isScoring];
           v22 = v48;
-          if (v21)
+          if (isScoring)
           {
             goto LABEL_21;
           }
@@ -461,28 +461,28 @@ LABEL_21:
     return 0;
   }
 
-  if (!v46->needsScores_ && !v23 && [(JavaUtilArrayList *)v7 size]>= 1)
+  if (!selfCopy->needsScores_ && !v23 && [(JavaUtilArrayList *)v7 size]>= 1)
   {
     [(JavaUtilArrayList *)v8 clear];
   }
 
   if ([(JavaUtilArrayList *)v8 isEmpty])
   {
-    v25 = sub_1000DA07C(v46, v7, v48, v46->disableCoord_);
-    return sub_1000D9FA4(v46, &v25->super.super.super.super.isa, v47);
+    v25 = sub_1000DA07C(selfCopy, v7, v48, selfCopy->disableCoord_);
+    return sub_1000D9FA4(selfCopy, &v25->super.super.super.super.isa, v47);
   }
 
   if ([(JavaUtilArrayList *)v7 isEmpty])
   {
-    v25 = sub_1000DA1B0(v46, v8, v23, v46->disableCoord_);
-    return sub_1000D9FA4(v46, &v25->super.super.super.super.isa, v47);
+    v25 = sub_1000DA1B0(selfCopy, v8, v23, selfCopy->disableCoord_);
+    return sub_1000D9FA4(selfCopy, &v25->super.super.super.super.isa, v47);
   }
 
-  v26 = sub_1000DA07C(v46, v7, v48, 1);
-  v27 = sub_1000D9FA4(v46, &v26->super.super.super.super.isa, v47);
-  v28 = sub_1000DA1B0(v46, v8, v23, 1);
+  v26 = sub_1000DA07C(selfCopy, v7, v48, 1);
+  v27 = sub_1000D9FA4(selfCopy, &v26->super.super.super.super.isa, v47);
+  v28 = sub_1000DA1B0(selfCopy, v8, v23, 1);
   v29 = v28;
-  if (v46->disableCoord_)
+  if (selfCopy->disableCoord_)
   {
     if (v23 < 1)
     {
@@ -499,7 +499,7 @@ LABEL_21:
     v32 = [IOSObjectArray arrayWithObjects:v55 count:2 type:OrgApacheLuceneSearchScorer_class_()];
     v33 = JavaUtilArrays_asListWithNSObjectArray_(v32);
     v34 = 1.0;
-    v35 = v46;
+    v35 = selfCopy;
     v36 = v31;
   }
 
@@ -509,12 +509,12 @@ LABEL_21:
     {
       if (v23 < 1)
       {
-        v41 = new_OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_withInt_withFloatArray_(&v27->super.super.super.isa, v29, [(JavaUtilArrayList *)v48 size], v46->coords_);
+        v41 = new_OrgApacheLuceneSearchBooleanTopLevelScorers_ReqMultiOptScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_withInt_withFloatArray_(&v27->super.super.super.isa, v29, [(JavaUtilArrayList *)v48 size], selfCopy->coords_);
       }
 
       else
       {
-        v41 = new_OrgApacheLuceneSearchBooleanTopLevelScorers_CoordinatingConjunctionScorer_initWithOrgApacheLuceneSearchWeight_withFloatArray_withOrgApacheLuceneSearchScorer_withInt_withOrgApacheLuceneSearchScorer_(v46, v46->coords_, v27, [(JavaUtilArrayList *)v48 size], v29);
+        v41 = new_OrgApacheLuceneSearchBooleanTopLevelScorers_CoordinatingConjunctionScorer_initWithOrgApacheLuceneSearchWeight_withFloatArray_withOrgApacheLuceneSearchScorer_withInt_withOrgApacheLuceneSearchScorer_(selfCopy, selfCopy->coords_, v27, [(JavaUtilArrayList *)v48 size], v29);
       }
 
       return v41;
@@ -522,9 +522,9 @@ LABEL_21:
 
     if (v23 < 1)
     {
-      [(OrgApacheLuceneSearchBooleanWeight *)v46 coordWithInt:[(JavaUtilArrayList *)v48 size] withInt:v46->maxCoord_];
+      [(OrgApacheLuceneSearchBooleanWeight *)selfCopy coordWithInt:[(JavaUtilArrayList *)v48 size] withInt:selfCopy->maxCoord_];
       v43 = v42;
-      [(OrgApacheLuceneSearchBooleanWeight *)v46 coordWithInt:[(JavaUtilArrayList *)v48 size]+ 1 withInt:v46->maxCoord_];
+      [(OrgApacheLuceneSearchBooleanWeight *)selfCopy coordWithInt:[(JavaUtilArrayList *)v48 size]+ 1 withInt:selfCopy->maxCoord_];
       v41 = new_OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_withFloat_withFloat_(&v27->super.super.super.isa, v29, v43, v44);
       return v41;
     }
@@ -537,8 +537,8 @@ LABEL_21:
     v53[1] = v29;
     v39 = [IOSObjectArray arrayWithObjects:v53 count:2 type:OrgApacheLuceneSearchScorer_class_()];
     v40 = JavaUtilArrays_asListWithNSObjectArray_(v39);
-    [(OrgApacheLuceneSearchBooleanWeight *)v46 coordWithInt:[(JavaUtilArrayList *)v48 size]+ 1 withInt:v46->maxCoord_];
-    v35 = v46;
+    [(OrgApacheLuceneSearchBooleanWeight *)selfCopy coordWithInt:[(JavaUtilArrayList *)v48 size]+ 1 withInt:selfCopy->maxCoord_];
+    v35 = selfCopy;
     v36 = v38;
     v33 = v40;
   }

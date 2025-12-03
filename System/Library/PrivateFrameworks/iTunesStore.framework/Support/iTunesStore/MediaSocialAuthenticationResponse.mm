@@ -1,8 +1,8 @@
 @interface MediaSocialAuthenticationResponse
 - (MediaSocialAuthenticationResponse)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addPostIdentifier:(int64_t)a3;
-- (void)addUploadIdentifier:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addPostIdentifier:(int64_t)identifier;
+- (void)addUploadIdentifier:(int64_t)identifier;
 @end
 
 @implementation MediaSocialAuthenticationResponse
@@ -26,21 +26,21 @@
   return v2;
 }
 
-- (void)addPostIdentifier:(int64_t)a3
+- (void)addPostIdentifier:(int64_t)identifier
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:identifier];
   [(NSMutableOrderedSet *)self->_postIdentifiers addObject:v4];
 }
 
-- (void)addUploadIdentifier:(int64_t)a3
+- (void)addUploadIdentifier:(int64_t)identifier
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:identifier];
   [(NSMutableOrderedSet *)self->_uploadIdentifiers addObject:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccountIdentifier:self->_accountIdentifier];
   [v4 setAuthenticateResponse:self->_authenticateResponse];
   [v4 setPostIdentifiers:self->_postIdentifiers];

@@ -1,8 +1,8 @@
 @interface WCM_AirplayController
 - (WCM_AirplayController)init;
 - (void)dealloc;
-- (void)handleAirplayCritical:(id)a3;
-- (void)handleMessage:(id)a3;
+- (void)handleAirplayCritical:(id)critical;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation WCM_AirplayController
@@ -34,16 +34,16 @@
   [(WCM_Controller *)&v3 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64)
   {
     [WCM_Logging logLevel:2 message:@"Received airplay message-id: %lld", uint64];
     if (uint64 == 1900)
     {
 
-      [(WCM_AirplayController *)self handleAirplayCritical:a3];
+      [(WCM_AirplayController *)self handleAirplayCritical:message];
     }
 
     else
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)handleAirplayCritical:(id)a3
+- (void)handleAirplayCritical:(id)critical
 {
-  dictionary = xpc_dictionary_get_dictionary(a3, "kMessageArgs");
+  dictionary = xpc_dictionary_get_dictionary(critical, "kMessageArgs");
   [(WCM_AirplayController *)self setMAirplayIsCritical:xpc_dictionary_get_BOOL(dictionary, "kWCMAirplayCritical")];
   if (xpc_dictionary_get_value(dictionary, "kWCMAirplayDuration"))
   {

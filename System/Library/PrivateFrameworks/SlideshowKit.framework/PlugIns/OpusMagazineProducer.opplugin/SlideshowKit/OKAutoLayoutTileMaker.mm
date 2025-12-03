@@ -1,12 +1,12 @@
 @interface OKAutoLayoutTileMaker
-- (BOOL)_isQualifiedFrame:(CGRect)a3;
-- (BOOL)_isQualifiedOneUpLayout:(id)a3;
+- (BOOL)_isQualifiedFrame:(CGRect)frame;
+- (BOOL)_isQualifiedOneUpLayout:(id)layout;
 - (OKAutoLayoutTileMaker)init;
-- (id)convertTiles:(id)a3 toResolution:(unint64_t)a4 :(unint64_t)a5 borderInPx:(unint64_t)a6 offsetX:(unint64_t)a7 offsetY:(unint64_t)a8;
-- (id)layoutsForFrames:(unint64_t)a3 inRect:(CGRect)a4 borderInPx:(unint64_t)a5;
-- (void)_findNextFrameFromGrid:(id)a3 curIndex:(unint64_t)a4 maxIndex:(unint64_t)a5 curFrames:(id)a6 layouts:(id)a7;
-- (void)_oneUpLayouts:(id)a3;
-- (void)_prepare:(double)a3;
+- (id)convertTiles:(id)tiles toResolution:(unint64_t)resolution :(unint64_t)a5 borderInPx:(unint64_t)px offsetX:(unint64_t)x offsetY:(unint64_t)y;
+- (id)layoutsForFrames:(unint64_t)frames inRect:(CGRect)rect borderInPx:(unint64_t)px;
+- (void)_findNextFrameFromGrid:(id)grid curIndex:(unint64_t)index maxIndex:(unint64_t)maxIndex curFrames:(id)frames layouts:(id)layouts;
+- (void)_oneUpLayouts:(id)layouts;
+- (void)_prepare:(double)_prepare;
 - (void)dealloc;
 @end
 
@@ -43,9 +43,9 @@
   [(OKAutoLayoutTileMaker *)&v4 dealloc];
 }
 
-- (void)_prepare:(double)a3
+- (void)_prepare:(double)_prepare
 {
-  self->_blockAspectRatio = self->_rows * a3 / self->_columns;
+  self->_blockAspectRatio = self->_rows * _prepare / self->_columns;
   tileTable = self->_tileTable;
   if (tileTable)
   {
@@ -56,12 +56,12 @@
   self->_tileTable = [[OKAutoLayoutGrid alloc] initWithRows:self->_rows columns:self->_columns];
 }
 
-- (BOOL)_isQualifiedOneUpLayout:(id)a3
+- (BOOL)_isQualifiedOneUpLayout:(id)layout
 {
   result = 0;
-  if ([a3 count] == &dword_0 + 1)
+  if ([layout count] == &dword_0 + 1)
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{0), "CGRectValue"}];
+    [objc_msgSend(layout objectAtIndexedSubscript:{0), "CGRectValue"}];
     rows = self->_rows;
     columns = self->_columns;
     if (1.0 - v7 * v8 / (columns * rows) <= self->_oneUpWhitespaceAllowed)
@@ -91,12 +91,12 @@
   return result;
 }
 
-- (BOOL)_isQualifiedFrame:(CGRect)a3
+- (BOOL)_isQualifiedFrame:(CGRect)frame
 {
   result = 0;
-  if (a3.size.width * a3.size.height / (self->_rows * self->_columns) >= self->_minFrameArea)
+  if (frame.size.width * frame.size.height / (self->_rows * self->_columns) >= self->_minFrameArea)
   {
-    v3 = a3.size.width * self->_blockAspectRatio / a3.size.height;
+    v3 = frame.size.width * self->_blockAspectRatio / frame.size.height;
     if (v3 <= self->_maxFrameAspectRatio && v3 >= self->_minFrameAspectRatio)
     {
       return 1;
@@ -106,10 +106,10 @@
   return result;
 }
 
-- (void)_oneUpLayouts:(id)a3
+- (void)_oneUpLayouts:(id)layouts
 {
   v23 = [NSValue valueWithCGRect:0.0, 0.0, self->_columns, self->_rows];
-  [a3 addObject:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v23, 1)}];
+  [layouts addObject:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v23, 1)}];
   oneUpWhitespaceAllowed = self->_oneUpWhitespaceAllowed;
   if (oneUpWhitespaceAllowed != 0.0)
   {
@@ -127,11 +127,11 @@
           rows = self->_rows;
           if ([(OKAutoLayoutTileMaker *)self _isQualifiedFrame:v9, 0.0, v10, rows])
           {
-            v22 = [NSValue valueWithCGRect:v9, 0.0, v10, rows];
-            v12 = [NSArray arrayWithObjects:&v22 count:1];
+            rows = [NSValue valueWithCGRect:v9, 0.0, v10, rows];
+            v12 = [NSArray arrayWithObjects:&rows count:1];
             if ([(OKAutoLayoutTileMaker *)self _isQualifiedOneUpLayout:v12])
             {
-              [a3 addObject:v12];
+              [layouts addObject:v12];
             }
           }
 
@@ -164,7 +164,7 @@
             v20 = [NSArray arrayWithObjects:&v21 count:1];
             if ([(OKAutoLayoutTileMaker *)self _isQualifiedOneUpLayout:v20])
             {
-              [a3 addObject:v20];
+              [layouts addObject:v20];
             }
           }
 
@@ -180,16 +180,16 @@
   }
 }
 
-- (void)_findNextFrameFromGrid:(id)a3 curIndex:(unint64_t)a4 maxIndex:(unint64_t)a5 curFrames:(id)a6 layouts:(id)a7
+- (void)_findNextFrameFromGrid:(id)grid curIndex:(unint64_t)index maxIndex:(unint64_t)maxIndex curFrames:(id)frames layouts:(id)layouts
 {
-  *&v25 = a5;
-  *(&v25 + 1) = a4;
-  if (a4 <= a5)
+  *&v25 = maxIndex;
+  *(&v25 + 1) = index;
+  if (index <= maxIndex)
   {
     if (v25 == 0)
     {
 
-      [(OKAutoLayoutTileMaker *)self _oneUpLayouts:a7];
+      [(OKAutoLayoutTileMaker *)self _oneUpLayouts:layouts];
     }
 
     else
@@ -198,9 +198,9 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      if (a5)
+      if (maxIndex)
       {
-        v9 = a4 == a5;
+        v9 = index == maxIndex;
       }
 
       else
@@ -209,7 +209,7 @@
       }
 
       v10 = v9;
-      obj = [a3 nextPossibleRects:{v10, a7}];
+      obj = [grid nextPossibleRects:{v10, layouts}];
       v11 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v11)
       {
@@ -232,23 +232,23 @@
             v23 = v22;
             if ([(OKAutoLayoutTileMaker *)self _isQualifiedFrame:?])
             {
-              [a3 mark:*(&v25 + 1) forAreaX:v17 Y:v19 W:v21 H:v23];
-              [a6 addObject:v15];
+              [grid mark:*(&v25 + 1) forAreaX:v17 Y:v19 W:v21 H:v23];
+              [frames addObject:v15];
               if (*(&v25 + 1) + 1 <= v25)
               {
-                [OKAutoLayoutTileMaker _findNextFrameFromGrid:"_findNextFrameFromGrid:curIndex:maxIndex:curFrames:layouts:" curIndex:a3 maxIndex:? curFrames:? layouts:?];
+                [OKAutoLayoutTileMaker _findNextFrameFromGrid:"_findNextFrameFromGrid:curIndex:maxIndex:curFrames:layouts:" curIndex:grid maxIndex:? curFrames:? layouts:?];
               }
 
-              else if (([a3 hasAnyEmptyTiles] & 1) == 0)
+              else if (([grid hasAnyEmptyTiles] & 1) == 0)
               {
-                if ([a6 count])
+                if ([frames count])
                 {
-                  [v24 addObject:{+[NSArray arrayWithArray:](NSArray, "arrayWithArray:", a6)}];
+                  [v24 addObject:{+[NSArray arrayWithArray:](NSArray, "arrayWithArray:", frames)}];
                 }
               }
 
-              [a6 removeLastObject];
-              [a3 unmarkForAreaX:v17 Y:v19 W:v21 H:v23];
+              [frames removeLastObject];
+              [grid unmarkForAreaX:v17 Y:v19 W:v21 H:v23];
             }
           }
 
@@ -261,16 +261,16 @@
   }
 }
 
-- (id)layoutsForFrames:(unint64_t)a3 inRect:(CGRect)a4 borderInPx:(unint64_t)a5
+- (id)layoutsForFrames:(unint64_t)frames inRect:(CGRect)rect borderInPx:(unint64_t)px
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = +[NSMutableArray array];
   v13 = +[NSMutableArray array];
   [(OKAutoLayoutTileMaker *)self _prepare:width / height];
-  [(OKAutoLayoutTileMaker *)self _findNextFrameFromGrid:self->_tileTable curIndex:0 maxIndex:a3 - 1 curFrames:v13 layouts:v12];
+  [(OKAutoLayoutTileMaker *)self _findNextFrameFromGrid:self->_tileTable curIndex:0 maxIndex:frames - 1 curFrames:v13 layouts:v12];
   v14 = +[NSMutableArray array];
   v20 = 0u;
   v21 = 0u;
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [v14 addObject:{-[OKAutoLayoutTileMaker convertTiles:toResolution::borderInPx:offsetX:offsetY:](self, "convertTiles:toResolution::borderInPx:offsetX:offsetY:", *(*(&v20 + 1) + 8 * i), width, height, a5, x, y)}];
+        [v14 addObject:{-[OKAutoLayoutTileMaker convertTiles:toResolution::borderInPx:offsetX:offsetY:](self, "convertTiles:toResolution::borderInPx:offsetX:offsetY:", *(*(&v20 + 1) + 8 * i), width, height, px, x, y)}];
       }
 
       v16 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -302,7 +302,7 @@
   return v14;
 }
 
-- (id)convertTiles:(id)a3 toResolution:(unint64_t)a4 :(unint64_t)a5 borderInPx:(unint64_t)a6 offsetX:(unint64_t)a7 offsetY:(unint64_t)a8
+- (id)convertTiles:(id)tiles toResolution:(unint64_t)resolution :(unint64_t)a5 borderInPx:(unint64_t)px offsetX:(unint64_t)x offsetY:(unint64_t)y
 {
   rows = self->_rows;
   columns = self->_columns;
@@ -311,15 +311,15 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  v17 = [tiles countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v17)
   {
     v18 = v17;
-    v19 = a7;
-    v20 = ((a4 - a6) / columns);
-    v21 = (a6 >> 1);
-    v22 = a8;
-    v23 = ((a5 - a6) / rows);
+    xCopy = x;
+    v20 = ((resolution - px) / columns);
+    v21 = (px >> 1);
+    yCopy = y;
+    v23 = ((a5 - px) / rows);
     v24 = *v40;
     do
     {
@@ -327,15 +327,15 @@
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tiles);
         }
 
         [*(*(&v39 + 1) + 8 * i) CGRectValue];
-        v30 = v19 + v29 * v20 + v21;
+        v30 = xCopy + v29 * v20 + v21;
         v31 = v28 * v23;
         if (v29 + v27 == self->_columns)
         {
-          v32 = a4 - v30 - v21;
+          v32 = resolution - v30 - v21;
         }
 
         else
@@ -344,19 +344,19 @@
         }
 
         v33 = v26 + v28;
-        v34 = a5 - (v22 + v26 * v23 + v21) - v21;
+        v34 = a5 - (yCopy + v26 * v23 + v21) - v21;
         if (v33 != self->_rows)
         {
           v34 = v31;
         }
 
         v35 = v30;
-        v36 = v22 + v26 * v23 + v21;
-        v44 = CGRectInset(*(&v32 - 2), (a6 >> 1), (a6 >> 1));
+        v36 = yCopy + v26 * v23 + v21;
+        v44 = CGRectInset(*(&v32 - 2), (px >> 1), (px >> 1));
         [v16 addObject:{+[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:", v44.origin.x, v44.origin.y, v44.size.width, v44.size.height)}];
       }
 
-      v18 = [a3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v18 = [tiles countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v18);

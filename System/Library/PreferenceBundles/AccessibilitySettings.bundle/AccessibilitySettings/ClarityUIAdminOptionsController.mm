@@ -1,7 +1,7 @@
 @interface ClarityUIAdminOptionsController
 - (ClarityUIAdminOptionsController)init;
 - (id)specifiers;
-- (void)_showAdminPasscodeSetupController:(id)a3;
+- (void)_showAdminPasscodeSetupController:(id)controller;
 @end
 
 @implementation ClarityUIAdminOptionsController
@@ -14,8 +14,8 @@
   if (v2)
   {
     v3 = settingsLocString(@"ADMIN_OPTIONS", @"ClarityUISettings");
-    v4 = [(ClarityUIAdminOptionsController *)v2 navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(ClarityUIAdminOptionsController *)v2 navigationItem];
+    [navigationItem setTitle:v3];
 
     v5 = objc_opt_new();
     setupNavigationController = v2->_setupNavigationController;
@@ -59,7 +59,7 @@
   return v4;
 }
 
-- (void)_showAdminPasscodeSetupController:(id)a3
+- (void)_showAdminPasscodeSetupController:(id)controller
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;

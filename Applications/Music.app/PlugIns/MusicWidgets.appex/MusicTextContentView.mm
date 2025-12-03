@@ -1,6 +1,6 @@
 @interface MusicTextContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MusicTextContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MusicTextContentView)initWithFrame:(CGRect)frame;
 - (UILabel)currentAccessibilityLabel;
 @end
 
@@ -25,15 +25,15 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR___MusicTextContentView_label) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR___MusicTextContentView_label) sizeThatFits:{fits.width, fits.height}];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (MusicTextContentView)initWithFrame:(CGRect)a3
+- (MusicTextContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

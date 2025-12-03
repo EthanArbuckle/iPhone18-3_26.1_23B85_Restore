@@ -1,7 +1,7 @@
 @interface PanicReport
-- (PanicReport)initWithPanicString:(id)a3 otherString:(id)a4 buildVersion:(id)a5 panicFlags:(unint64_t)a6 panicType:(id)a7 incidentID:(id)a8 rootsInstalled:(id)a9;
+- (PanicReport)initWithPanicString:(id)string otherString:(id)otherString buildVersion:(id)version panicFlags:(unint64_t)flags panicType:(id)type incidentID:(id)d rootsInstalled:(id)installed;
 - (id)additionalIPSMetadata;
-- (id)createUUIDString:(unsigned int)a3;
+- (id)createUUIDString:(unsigned int)string;
 - (id)getBuildVersionString;
 - (id)incidentID;
 - (id)parseExtPaniclog;
@@ -9,12 +9,12 @@
 - (id)problemType;
 - (id)reportNamePrefix;
 - (void)donateToBiome;
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4;
-- (void)processExtPaniclogFlags:(unsigned int)a3 data_id:(id)a4 data:(id)a5 additionalBuffers:(id)a6 addToExtPaniclog:(BOOL *)a7;
-- (void)setBiomeProperties:(id)a3;
-- (void)setPatternUUID:(id)a3;
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block;
+- (void)processExtPaniclogFlags:(unsigned int)flags data_id:(id)data_id data:(id)data additionalBuffers:(id)buffers addToExtPaniclog:(BOOL *)paniclog;
+- (void)setBiomeProperties:(id)properties;
+- (void)setPatternUUID:(id)d;
 - (void)setSOCIdAndRev;
-- (void)setUtilizationInfo:(id)a3;
+- (void)setUtilizationInfo:(id)info;
 @end
 
 @implementation PanicReport
@@ -37,29 +37,29 @@
 
     v6 = [BMDiagnosticsPanic alloc];
     v7 = [NSNumber numberWithDouble:*&self->OSAStackShotReport_opaque[OBJC_IVAR___OSAReport__capture_time]];
-    v8 = [(PanicReport *)self incidentID];
-    v9 = [v6 initWithCaptureTime:v7 incidentID:v8 patternUUID:self->_patternUUID patternType:self->_patternType];
+    incidentID = [(PanicReport *)self incidentID];
+    v9 = [v6 initWithCaptureTime:v7 incidentID:incidentID patternUUID:self->_patternUUID patternType:self->_patternType];
 
     v10 = BiomeLibrary();
-    v11 = [v10 Diagnostics];
-    v12 = [v11 Panic];
-    v13 = [v12 source];
-    [v13 sendEvent:v9];
+    diagnostics = [v10 Diagnostics];
+    panic = [diagnostics Panic];
+    source = [panic source];
+    [source sendEvent:v9];
   }
 }
 
-- (void)setBiomeProperties:(id)a3
+- (void)setBiomeProperties:(id)properties
 {
-  v4 = [a3 copy];
+  v4 = [properties copy];
   biomeProperties = self->_biomeProperties;
   self->_biomeProperties = v4;
 
   _objc_release_x1();
 }
 
-- (void)setPatternUUID:(id)a3
+- (void)setPatternUUID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   patternUUID = self->_patternUUID;
   self->_patternUUID = v4;
 
@@ -83,33 +83,33 @@
   v2 = *&self->OSAStackShotReport_opaque[OBJC_IVAR___OSAReport__incidentID];
   if (v2)
   {
-    v3 = v2;
+    incidentID = v2;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PanicReport;
-    v3 = [(PanicReport *)&v5 incidentID];
+    incidentID = [(PanicReport *)&v5 incidentID];
   }
 
-  return v3;
+  return incidentID;
 }
 
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v150[0] = @"incident";
-  v104 = [(PanicReport *)self incidentID];
-  v151[0] = v104;
+  incidentID = [(PanicReport *)self incidentID];
+  v151[0] = incidentID;
   v150[1] = @"crashReporterKey";
   v101 = +[OSASystemConfiguration sharedInstance];
-  v99 = [v101 crashReporterKey];
-  v151[1] = v99;
+  crashReporterKey = [v101 crashReporterKey];
+  v151[1] = crashReporterKey;
   v150[2] = @"product";
   v98 = +[OSASystemConfiguration sharedInstance];
-  v97 = [v98 modelCode];
-  v151[2] = v97;
+  modelCode = [v98 modelCode];
+  v151[2] = modelCode;
   v150[3] = @"socId";
   v96 = [NSString stringWithFormat:@"%x", self->_socId];
   v151[3] = v96;
@@ -117,11 +117,11 @@
   v95 = [NSString stringWithFormat:@"%x", self->_socRev];
   v151[4] = v95;
   v150[5] = @"build";
-  v94 = [(PanicReport *)self getBuildVersionString];
-  v151[5] = v94;
+  getBuildVersionString = [(PanicReport *)self getBuildVersionString];
+  v151[5] = getBuildVersionString;
   v150[6] = @"kernel";
-  v6 = [objc_opt_class() kernelVersionDescription];
-  v151[6] = v6;
+  kernelVersionDescription = [objc_opt_class() kernelVersionDescription];
+  v151[6] = kernelVersionDescription;
   v150[7] = @"date";
   v7 = *&self->OSAStackShotReport_opaque[OBJC_IVAR___OSAReport__capture_time];
   v8 = OSADateFormat();
@@ -155,12 +155,12 @@
   v14 = [NSString stringWithFormat:@"0x%llx", self->_panicProcessingFlags];
   v151[11] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v151 forKeys:v150 count:12];
-  v5[2](v5, v15);
+  blockCopy[2](blockCopy, v15);
 
-  v16 = self;
-  v17 = [(PanicReport *)self problemType];
-  v18 = [OSALog commonFieldsForBody:v17];
-  v5[2](v5, v18);
+  selfCopy = self;
+  problemType = [(PanicReport *)self problemType];
+  v18 = [OSALog commonFieldsForBody:problemType];
+  blockCopy[2](blockCopy, v18);
 
   panicInitiator = self->_panicInitiator;
   if (panicInitiator)
@@ -168,12 +168,12 @@
     v148 = @"panicInitiator";
     v149 = panicInitiator;
     v20 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
-    v5[2](v5, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_isInterruptedCoredump)
   {
-    v5[2](v5, &off_10003C590);
+    blockCopy[2](blockCopy, &off_10003C590);
   }
 
   if ([(NSString *)self->_otherString length])
@@ -181,7 +181,7 @@
     v146 = @"otherString";
     otherString = self->_otherString;
     v21 = [NSDictionary dictionaryWithObjects:&otherString forKeys:&v146 count:1];
-    v5[2](v5, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
   if (self->_foregroundAppHashSet)
@@ -190,10 +190,10 @@
     if (foregroundAppHash)
     {
       v144 = @"foregroundAppHash";
-      v23 = [NSString stringWithFormat:@"%@", foregroundAppHash];
-      v145 = v23;
+      foregroundAppHash = [NSString stringWithFormat:@"%@", foregroundAppHash];
+      v145 = foregroundAppHash;
       v24 = [NSDictionary dictionaryWithObjects:&v145 forKeys:&v144 count:1];
-      v5[2](v5, v24);
+      blockCopy[2](blockCopy, v24);
     }
   }
 
@@ -208,7 +208,7 @@
     v142 = @"PanicLogUtilizationMetrics";
     v143 = utilizationInfo;
     v26 = [NSDictionary dictionaryWithObjects:&v143 forKeys:&v142 count:1];
-    v5[2](v5, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
   if (qword_100042A88 != -1)
@@ -230,7 +230,7 @@
       v140 = @"ECID";
       v141 = v27;
       v29 = [NSDictionary dictionaryWithObjects:&v141 forKeys:&v140 count:1];
-      v5[2](v5, v29);
+      blockCopy[2](blockCopy, v29);
     }
   }
 
@@ -240,17 +240,17 @@
     v138 = @"patternUUIDs";
     v139 = patternUUID;
     v31 = [NSDictionary dictionaryWithObjects:&v139 forKeys:&v138 count:1];
-    v5[2](v5, v31);
+    blockCopy[2](blockCopy, v31);
   }
 
   if ([objc_opt_class() isInLDM])
   {
-    v5[2](v5, &off_10003C5B8);
+    blockCopy[2](blockCopy, &off_10003C5B8);
   }
 
   if ([objc_opt_class() isDeveloperMode])
   {
-    v5[2](v5, &off_10003C5E0);
+    blockCopy[2](blockCopy, &off_10003C5E0);
   }
 
   if (qword_100042A88 != -1)
@@ -271,18 +271,18 @@
   if (dword_100042A90)
   {
 LABEL_39:
-    v5[2](v5, &off_10003C608);
+    blockCopy[2](blockCopy, &off_10003C608);
   }
 
-  v32 = [objc_opt_class() bootProgressRegister];
-  v33 = v32;
-  if (v32)
+  bootProgressRegister = [objc_opt_class() bootProgressRegister];
+  v33 = bootProgressRegister;
+  if (bootProgressRegister)
   {
     v136 = @"bootProgressRegister";
-    v34 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v32 unsignedLongLongValue]);
+    v34 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [bootProgressRegister unsignedLongLongValue]);
     v137 = v34;
     v35 = [NSDictionary dictionaryWithObjects:&v137 forKeys:&v136 count:1];
-    v5[2](v5, v35);
+    blockCopy[2](blockCopy, v35);
   }
 
   if (objc_opt_class())
@@ -291,33 +291,33 @@ LABEL_39:
     v36 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", +[CRAuthRepairInspector getStatus]);
     v135 = v36;
     v37 = [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
-    v5[2](v5, v37);
+    blockCopy[2](blockCopy, v37);
   }
 
-  if ([(NSString *)v16->_socdNandContainer length])
+  if ([(NSString *)selfCopy->_socdNandContainer length])
   {
     v132 = @"SOCDNandContainer";
-    socdNandContainer = v16->_socdNandContainer;
+    socdNandContainer = selfCopy->_socdNandContainer;
     v38 = [NSDictionary dictionaryWithObjects:&socdNandContainer forKeys:&v132 count:1];
-    v5[2](v5, v38);
+    blockCopy[2](blockCopy, v38);
   }
 
-  v103 = v16;
+  v103 = selfCopy;
   v100 = v33;
   if (os_variant_has_internal_diagnostics())
   {
-    v39 = [(PanicReport *)v16 parseExtPaniclog];
-    v40 = v39;
-    if (v39)
+    parseExtPaniclog = [(PanicReport *)selfCopy parseExtPaniclog];
+    v40 = parseExtPaniclog;
+    if (parseExtPaniclog)
     {
-      v41 = [v39 objectForKeyedSubscript:@"extPaniclogData"];
+      v41 = [parseExtPaniclog objectForKeyedSubscript:@"extPaniclogData"];
       if (v41)
       {
         v130 = @"ExtensiblePaniclog";
         v42 = [v40 objectForKeyedSubscript:@"extPaniclogData"];
         v131 = v42;
         v43 = [NSDictionary dictionaryWithObjects:&v131 forKeys:&v130 count:1];
-        v5[2](v5, v43);
+        blockCopy[2](blockCopy, v43);
       }
 
       v44 = [v40 objectForKeyedSubscript:@"additionalData"];
@@ -349,7 +349,7 @@ LABEL_39:
               v127 = v51;
               v128 = v52;
               v53 = [NSDictionary dictionaryWithObjects:&v128 forKeys:&v127 count:1];
-              v5[2](v5, v53);
+              blockCopy[2](blockCopy, v53);
             }
 
             v48 = [v46 countByEnumeratingWithState:&v111 objects:v129 count:16];
@@ -358,28 +358,28 @@ LABEL_39:
           while (v48);
         }
 
-        v16 = v103;
+        selfCopy = v103;
         v41 = v105;
       }
     }
   }
 
-  if ([(NSString *)v16->_storagePanicData length])
+  if ([(NSString *)selfCopy->_storagePanicData length])
   {
-    storagePanicData = v16->_storagePanicData;
+    storagePanicData = selfCopy->_storagePanicData;
     v125 = @"storagePanicData";
     v126 = storagePanicData;
     v55 = [NSDictionary dictionaryWithObjects:&v126 forKeys:&v125 count:1];
-    v5[2](v5, v55);
+    blockCopy[2](blockCopy, v55);
   }
 
-  v102 = v5;
+  v102 = blockCopy;
   v106 = objc_alloc_init(NSMutableArray);
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v56 = v16->_socdContainerArray;
+  v56 = selfCopy->_socdContainerArray;
   v57 = [(NSMutableArray *)v56 countByEnumeratingWithState:&v107 objects:v124 count:16];
   if (v57)
   {
@@ -470,8 +470,8 @@ LABEL_39:
   v74 = objc_alloc_init(OSABinaryImageCatalog);
   [(PanicReport *)v103 decodeKCDataWithBlock:v102 withTuning:&off_10003C630 usingCatalog:v74];
   v118 = @"binaryImages";
-  v75 = [v74 reportUsedImages];
-  v119 = v75;
+  reportUsedImages = [v74 reportUsedImages];
+  v119 = reportUsedImages;
   v76 = [NSDictionary dictionaryWithObjects:&v119 forKeys:&v118 count:1];
   v102[2](v102, v76);
 
@@ -775,28 +775,28 @@ LABEL_9:
   return v10;
 }
 
-- (void)processExtPaniclogFlags:(unsigned int)a3 data_id:(id)a4 data:(id)a5 additionalBuffers:(id)a6 addToExtPaniclog:(BOOL *)a7
+- (void)processExtPaniclogFlags:(unsigned int)flags data_id:(id)data_id data:(id)data additionalBuffers:(id)buffers addToExtPaniclog:(BOOL *)paniclog
 {
-  if (a3)
+  if (flags)
   {
-    [a6 setObject:a5 forKey:a4];
-    *a7 = 0;
+    [buffers setObject:data forKey:data_id];
+    *paniclog = 0;
   }
 }
 
-- (id)createUUIDString:(unsigned int)a3
+- (id)createUUIDString:(unsigned int)string
 {
   v5 = [NSUUID alloc];
-  v6 = [(NSData *)self->_extPaniclog subdataWithRange:a3, 16];
+  v6 = [(NSData *)self->_extPaniclog subdataWithRange:string, 16];
   v7 = [v5 initWithUUIDBytes:{objc_msgSend(v6, "bytes")}];
 
   if (v7)
   {
-    v8 = [v7 UUIDString];
-    v9 = v8;
-    if (v8)
+    uUIDString = [v7 UUIDString];
+    v9 = uUIDString;
+    if (uUIDString)
     {
-      v10 = v8;
+      v10 = uUIDString;
     }
 
     else
@@ -895,11 +895,11 @@ LABEL_9:
 
 - (id)additionalIPSMetadata
 {
-  v3 = [(PanicReport *)self incidentID];
-  v4 = [NSMutableDictionary dictionaryWithObject:v3 forKey:kOSALogMetadataIncidentID];
+  incidentID = [(PanicReport *)self incidentID];
+  v4 = [NSMutableDictionary dictionaryWithObject:incidentID forKey:kOSALogMetadataIncidentID];
 
-  v5 = [(PanicReport *)self getBuildVersionString];
-  [v4 setObject:v5 forKeyedSubscript:@"os_version"];
+  getBuildVersionString = [(PanicReport *)self getBuildVersionString];
+  [v4 setObject:getBuildVersionString forKeyedSubscript:@"os_version"];
 
   v6 = self->_rootsInstalled;
   if (v6 || (v10 = 8, v11 = 0, !sysctlbyname("kern.roots_installed", &v11, &v10, 0, 0)) && ([NSNumber numberWithUnsignedLongLong:v11], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -932,28 +932,28 @@ LABEL_9:
 - (id)getBuildVersionString
 {
   v3 = +[OSASystemConfiguration sharedInstance];
-  v4 = [v3 productNameVersionBuildString];
+  productNameVersionBuildString = [v3 productNameVersionBuildString];
 
   if ([(NSString *)self->_buildVersion length])
   {
     v5 = +[OSASystemConfiguration sharedInstance];
-    v6 = [v5 productName];
-    v7 = [NSString stringWithFormat:@"%@ %@", v6, self->_buildVersion];
+    productName = [v5 productName];
+    v7 = [NSString stringWithFormat:@"%@ %@", productName, self->_buildVersion];
 
-    v4 = v7;
+    productNameVersionBuildString = v7;
   }
 
-  return v4;
+  return productNameVersionBuildString;
 }
 
-- (void)setUtilizationInfo:(id)a3
+- (void)setUtilizationInfo:(id)info
 {
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_utilizationInfo, a3);
-    v5 = v6;
+    v6 = infoCopy;
+    objc_storeStrong(&self->_utilizationInfo, info);
+    infoCopy = v6;
   }
 }
 
@@ -964,35 +964,35 @@ LABEL_9:
   sub_10000C250("arm-io", "chip-revision", &self->_socRev);
 }
 
-- (PanicReport)initWithPanicString:(id)a3 otherString:(id)a4 buildVersion:(id)a5 panicFlags:(unint64_t)a6 panicType:(id)a7 incidentID:(id)a8 rootsInstalled:(id)a9
+- (PanicReport)initWithPanicString:(id)string otherString:(id)otherString buildVersion:(id)version panicFlags:(unint64_t)flags panicType:(id)type incidentID:(id)d rootsInstalled:(id)installed
 {
-  v16 = a3;
-  v17 = a4;
-  v45 = a5;
-  v18 = a7;
-  v19 = a8;
-  v44 = a9;
+  stringCopy = string;
+  otherStringCopy = otherString;
+  versionCopy = version;
+  typeCopy = type;
+  dCopy = d;
+  installedCopy = installed;
   v47 = 0;
   v20 = [(PanicReport *)self initForPid:0 process:0 withReason:0 exceptionCode:&v47 exceptionCodeCount:1 stackshotFlags:0];
   v21 = v20;
   if (v20)
   {
-    if (v19)
+    if (dCopy)
     {
-      [(PanicReport *)v20 setIncidentID:v19];
+      [(PanicReport *)v20 setIncidentID:dCopy];
     }
 
-    objc_storeStrong(&v21->_panicString, a3);
-    objc_storeStrong(&v21->_otherString, a4);
-    objc_storeStrong(&v21->_buildVersion, a5);
-    v21->_panicFlags = a6;
-    v21->_isBtnReset = (a6 & 0x80) != 0;
-    v43 = v18;
-    v21->_isInterruptedCoredump = [v18 isEqual:@"interrupted coredump panic"];
-    objc_storeStrong(&v21->_rootsInstalled, a9);
+    objc_storeStrong(&v21->_panicString, string);
+    objc_storeStrong(&v21->_otherString, otherString);
+    objc_storeStrong(&v21->_buildVersion, version);
+    v21->_panicFlags = flags;
+    v21->_isBtnReset = (flags & 0x80) != 0;
+    v43 = typeCopy;
+    v21->_isInterruptedCoredump = [typeCopy isEqual:@"interrupted coredump panic"];
+    objc_storeStrong(&v21->_rootsInstalled, installed);
     v21->_panicProcessingFlags = 0;
-    v22 = v16;
-    v23 = v16;
+    v22 = stringCopy;
+    v23 = stringCopy;
     if (![v23 containsString:@"esr: "] || (v24 = objc_msgSend(v23, "rangeOfString:", @"esr: "), v24 == 0x7FFFFFFFFFFFFFFFLL) || (v25 = v24, v26 = objc_msgSend(@"esr: ", "length"), objc_msgSend(v23, "substringFromIndex:", &v25[v26]), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "rangeOfString:", @" "), v27, v28 == 0x7FFFFFFFFFFFFFFFLL))
     {
       v29 = 0;
@@ -1009,8 +1009,8 @@ LABEL_9:
     }
 
     v21->_isMTEPanic = v29;
-    v16 = v22;
-    v18 = v43;
+    stringCopy = v22;
+    typeCopy = v43;
     if (&_AnalyticsSendEventLazy)
     {
       if (v21->_isBtnReset)

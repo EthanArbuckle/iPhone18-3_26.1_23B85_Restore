@@ -1,18 +1,18 @@
 @interface IMScheduledSectionDateChatItem
-- (IMScheduledSectionDateChatItem)initWithItem:(id)a3;
+- (IMScheduledSectionDateChatItem)initWithItem:(id)item;
 @end
 
 @implementation IMScheduledSectionDateChatItem
 
-- (IMScheduledSectionDateChatItem)initWithItem:(id)a3
+- (IMScheduledSectionDateChatItem)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = IMScheduledSectionDateChatItem;
-  v7 = [(IMChatItem *)&v11 _initWithItem:v4];
+  v7 = [(IMChatItem *)&v11 _initWithItem:itemCopy];
   if (v7)
   {
-    v8 = objc_msgSend_time(v4, v5, v6);
+    v8 = objc_msgSend_time(itemCopy, v5, v6);
     date = v7->_date;
     v7->_date = v8;
   }

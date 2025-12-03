@@ -18,21 +18,21 @@
 
 - (BOOL)cmsBoolForKey:()CMSCodingUtils withDefault:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 compare:MEMORY[0x277CBEC28]];
+      integerValue = [v5 compare:MEMORY[0x277CBEC28]];
 LABEL_6:
-      a4 = v6 != 0;
+      a4 = integerValue != 0;
       goto LABEL_7;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
       goto LABEL_6;
     }
   }
@@ -44,7 +44,7 @@ LABEL_7:
 
 - (uint64_t)cmsOptionalBoolForKey:()CMSCodingUtils
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -65,7 +65,7 @@ LABEL_7:
 
 - (id)cmsOptionalNumberForKey:()CMSCodingUtils
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -82,7 +82,7 @@ LABEL_7:
 
 - (uint64_t)cmsIntegerForKey:()CMSCodingUtils withDefault:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -94,7 +94,7 @@ LABEL_7:
 
 - (uint64_t)cmsUnsignedForKey:()CMSCodingUtils withDefault:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -106,7 +106,7 @@ LABEL_7:
 
 - (double)cmsDoubleForKey:()CMSCodingUtils withDefault:
 {
-  v3 = [a1 objectForKey:?];
+  v3 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -119,7 +119,7 @@ LABEL_7:
 
 - (id)cmsOptionalStringForKey:()CMSCodingUtils
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -137,7 +137,7 @@ LABEL_7:
 - (id)cmsOptionalURLForKey:()CMSCodingUtils relativeToURL:
 {
   v6 = a4;
-  v7 = [a1 objectForKey:a3];
+  v7 = [self objectForKey:a3];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -182,7 +182,7 @@ LABEL_13:
 
 - (id)cmsOptionalDateForKey:()CMSCodingUtils
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -201,7 +201,7 @@ LABEL_13:
 - (id)cmsOptionalArrayOfClass:()CMSCodingUtils forKey:
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a1 objectForKey:a4];
+  v4 = [self objectForKey:a4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -258,7 +258,7 @@ LABEL_12:
 
 - (id)cmsOptionalDecodedClass:()CMSCodingUtils forKey:
 {
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -275,7 +275,7 @@ LABEL_12:
 
 - (id)cmsOptionalArrayOfDecodedClass:()CMSCodingUtils forKey:
 {
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -301,7 +301,7 @@ LABEL_12:
 
 - (id)cmsOptionalDictionaryForKey:()CMSCodingUtils
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = cmsSafeDictionary(v1);
 
   return v2;

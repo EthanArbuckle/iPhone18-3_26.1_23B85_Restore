@@ -1,6 +1,6 @@
 @interface NDANFDecodingService
 - (NDANFDecodingService)init;
-- (void)decodeANFDocumentData:(id)a3 completion:(id)a4;
+- (void)decodeANFDocumentData:(id)data completion:(id)completion;
 @end
 
 @implementation NDANFDecodingService
@@ -20,14 +20,14 @@
   return v2;
 }
 
-- (void)decodeANFDocumentData:(id)a3 completion:(id)a4
+- (void)decodeANFDocumentData:(id)data completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(NDANFDecodingService *)self anfHelper];
-  v9 = [v10 manifestFromANFDocumentData:v8];
+  completionCopy = completion;
+  dataCopy = data;
+  anfHelper = [(NDANFDecodingService *)self anfHelper];
+  v9 = [anfHelper manifestFromANFDocumentData:dataCopy];
 
-  (*(a4 + 2))(v7, v9, 0);
+  (*(completion + 2))(completionCopy, v9, 0);
 }
 
 @end

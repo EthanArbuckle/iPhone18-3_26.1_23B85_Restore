@@ -1,24 +1,24 @@
 @interface PRSettingsObserver
-- (PRSettingsObserver)initWithSettings:(id)a3 queue:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startObserving:(id)a3 observeImmediately:(BOOL)a4 callback:(id)a5;
-- (void)stopObserving:(id)a3;
+- (PRSettingsObserver)initWithSettings:(id)settings queue:(id)queue;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startObserving:(id)observing observeImmediately:(BOOL)immediately callback:(id)callback;
+- (void)stopObserving:(id)observing;
 @end
 
 @implementation PRSettingsObserver
 
-- (PRSettingsObserver)initWithSettings:(id)a3 queue:(id)a4
+- (PRSettingsObserver)initWithSettings:(id)settings queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = PRSettingsObserver;
   v9 = [(PRSettingsObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_settings, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_settings, settings);
     v11 = objc_alloc_init(NSMutableDictionary);
     settingsSubscriptions = v10->_settingsSubscriptions;
     v10->_settingsSubscriptions = v11;
@@ -27,26 +27,26 @@
   return v10;
 }
 
-- (void)startObserving:(id)a3 observeImmediately:(BOOL)a4 callback:(id)a5
+- (void)startObserving:(id)observing observeImmediately:(BOOL)immediately callback:(id)callback
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  immediatelyCopy = immediately;
+  observingCopy = observing;
+  callbackCopy = callback;
+  v10 = callbackCopy;
+  if (observingCopy && callbackCopy)
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    settingsSubscriptions = v11->_settingsSubscriptions;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    settingsSubscriptions = selfCopy->_settingsSubscriptions;
     v13 = objc_retainBlock(v10);
-    [(NSMutableDictionary *)settingsSubscriptions setObject:v13 forKey:v8];
+    [(NSMutableDictionary *)settingsSubscriptions setObject:v13 forKey:observingCopy];
 
-    [v11->_settings addObserver:v11 forKeyPath:v8 options:0 context:0];
-    objc_sync_exit(v11);
+    [selfCopy->_settings addObserver:selfCopy forKeyPath:observingCopy options:0 context:0];
+    objc_sync_exit(selfCopy);
 
-    if (v6)
+    if (immediatelyCopy)
     {
-      queue = v11->_queue;
+      queue = selfCopy->_queue;
       if (queue)
       {
         v16[0] = _NSConcreteStackBlock;
@@ -54,13 +54,13 @@
         v16[2] = sub_10039485C;
         v16[3] = &unk_1009A8958;
         v18 = v10;
-        v17 = v8;
+        v17 = observingCopy;
         dispatch_async(queue, v16);
       }
 
       else
       {
-        (v10)[2](v10, v8);
+        (v10)[2](v10, observingCopy);
       }
     }
   }
@@ -75,28 +75,28 @@
   }
 }
 
-- (void)stopObserving:(id)a3
+- (void)stopObserving:(id)observing
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v4->_settings removeObserver:v4 forKeyPath:v5];
-  [(NSMutableDictionary *)v4->_settingsSubscriptions removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  observingCopy = observing;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [selfCopy->_settings removeObserver:selfCopy forKeyPath:observingCopy];
+  [(NSMutableDictionary *)selfCopy->_settingsSubscriptions removeObjectForKey:observingCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(NSMutableDictionary *)v12->_settingsSubscriptions objectForKey:v9];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = [(NSMutableDictionary *)selfCopy->_settingsSubscriptions objectForKey:pathCopy];
   v14 = v13;
   if (v13)
   {
-    queue = v12->_queue;
+    queue = selfCopy->_queue;
     if (queue)
     {
       v17[0] = _NSConcreteStackBlock;
@@ -104,13 +104,13 @@
       v17[2] = sub_100394A78;
       v17[3] = &unk_1009A8958;
       v19 = v13;
-      v18 = v9;
+      v18 = pathCopy;
       dispatch_sync(queue, v17);
     }
 
     else
     {
-      (v13)[2](v13, v9);
+      (v13)[2](v13, pathCopy);
     }
   }
 
@@ -119,13 +119,13 @@
     v16 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_1004C698C(v9, v16);
+      sub_1004C698C(pathCopy, v16);
     }
 
-    [v12->_settings removeObserver:v12 forKeyPath:v9];
+    [selfCopy->_settings removeObserver:selfCopy forKeyPath:pathCopy];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
 @end

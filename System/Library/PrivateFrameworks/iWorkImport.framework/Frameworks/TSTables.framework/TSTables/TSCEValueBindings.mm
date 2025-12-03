@@ -1,16 +1,16 @@
 @interface TSCEValueBindings
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lookup:(const unsigned int *)a3;
-- (void)bindValue:(id)a3 atSymbol:(const unsigned int *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lookup:(const unsigned int *)lookup;
+- (void)bindValue:(id)value atSymbol:(const unsigned int *)symbol;
 @end
 
 @implementation TSCEValueBindings
 
-- (void)bindValue:(id)a3 atSymbol:(const unsigned int *)a4
+- (void)bindValue:(id)value atSymbol:(const unsigned int *)symbol
 {
-  v6 = a3;
-  v7 = *a4;
+  valueCopy = value;
+  v7 = *symbol;
   begin = self->_valuesBySymbol.__begin_;
   var0 = self->_valuesBySymbol.var0;
   p_valuesBySymbol = &self->_valuesBySymbol;
@@ -19,17 +19,17 @@
     v12 = 0;
     sub_22130B75C(p_valuesBySymbol, (v7 + 10), &v12);
 
-    v7 = *a4;
+    v7 = *symbol;
     begin = p_valuesBySymbol->__begin_;
   }
 
   v11 = begin[v7];
-  begin[v7] = v6;
+  begin[v7] = valueCopy;
 }
 
-- (id)lookup:(const unsigned int *)a3
+- (id)lookup:(const unsigned int *)lookup
 {
-  v4 = *a3;
+  v4 = *lookup;
   begin = self->_valuesBySymbol.__begin_;
   if (v4 >= self->_valuesBySymbol.var0 - begin)
   {
@@ -44,7 +44,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

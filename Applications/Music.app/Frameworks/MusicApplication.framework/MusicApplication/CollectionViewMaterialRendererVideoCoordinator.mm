@@ -1,15 +1,15 @@
 @interface CollectionViewMaterialRendererVideoCoordinator
 - (_TtC16MusicApplication46CollectionViewMaterialRendererVideoCoordinator)init;
-- (void)outputMediaDataWillChange:(id)a3;
+- (void)outputMediaDataWillChange:(id)change;
 @end
 
 @implementation CollectionViewMaterialRendererVideoCoordinator
 
-- (void)outputMediaDataWillChange:(id)a3
+- (void)outputMediaDataWillChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_113E0C(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_113E0C(changeCopy);
 }
 
 - (_TtC16MusicApplication46CollectionViewMaterialRendererVideoCoordinator)init

@@ -1,16 +1,16 @@
 @interface RamXPC
-- (RamXPC)initWithCoder:(id)a3;
-- (RamXPC)initWithSize:(unint64_t)a3;
+- (RamXPC)initWithCoder:(id)coder;
+- (RamXPC)initWithSize:(unint64_t)size;
 - (id)description;
 - (void)createRamBackend;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RamXPC
 
-- (RamXPC)initWithSize:(unint64_t)a3
+- (RamXPC)initWithSize:(unint64_t)size
 {
-  v5 = a3;
+  sizeCopy = size;
   v4.receiver = self;
   v4.super_class = RamXPC;
   if ([(RamXPC *)&v4 init])
@@ -32,16 +32,16 @@
   std::allocate_shared[abi:ne200100]<Ram,std::allocator<Ram>,unsigned long long,boost::uuids::uuid,0>();
 }
 
-- (RamXPC)initWithCoder:(id)a3
+- (RamXPC)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RamXPC;
-  if ([(BackendXPC *)&v8 initWithCoder:v4])
+  if ([(BackendXPC *)&v8 initWithCoder:coderCopy])
   {
-    v7 = [v4 decodeInt64ForKey:@"size"];
-    [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeInt64ForKey:@"size"];
+    [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [objc_claimAutoreleasedReturnValue() getUUIDBytes:v9];
     std::allocate_shared[abi:ne200100]<BackendNull,std::allocator<BackendNull>,unsigned long long &,boost::uuids::uuid &,0>();
   }
@@ -50,21 +50,21 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RamXPC;
-  [(BackendXPC *)&v8 encodeWithCoder:v4];
+  [(BackendXPC *)&v8 encodeWithCoder:coderCopy];
   [(BackendXPC *)self backend];
-  [v4 encodeInt64:(*(*v6 + 40))() forKey:@"size"];
+  [coderCopy encodeInt64:(*(*v6 + 40))() forKey:@"size"];
   if (v7)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v7);
   }
 
-  v5 = [(BackendXPC *)self instanceID];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  instanceID = [(BackendXPC *)self instanceID];
+  [coderCopy encodeObject:instanceID forKey:@"identifier"];
 }
 
 - (id)description

@@ -1,7 +1,7 @@
 @interface SSUMatcherBuildParams
-- (BOOL)isEqual:(id)a3;
-- (SSUMatcherBuildParams)initWithModelAssetsDirectoryURL:(id)a3 datasetAssetsDirectoryURL:(id)a4 cacheDirectoryURL:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SSUMatcherBuildParams)initWithModelAssetsDirectoryURL:(id)l datasetAssetsDirectoryURL:(id)rL cacheDirectoryURL:(id)uRL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,7 +14,7 @@
   return [(NSURL *)self->_cacheDirectoryURL hash]- v4 + 32 * v4 + 29791;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   modelAssetsDirectoryURL = self->_modelAssetsDirectoryURL;
@@ -24,20 +24,20 @@
   return [v4 initWithModelAssetsDirectoryURL:modelAssetsDirectoryURL datasetAssetsDirectoryURL:datasetAssetsDirectoryURL cacheDirectoryURL:cacheDirectoryURL];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   modelAssetsDirectoryURL = self->_modelAssetsDirectoryURL;
-  v6 = [v4 modelAssetsDirectoryURL];
-  if ([(NSURL *)modelAssetsDirectoryURL isEqual:v6])
+  modelAssetsDirectoryURL = [equalCopy modelAssetsDirectoryURL];
+  if ([(NSURL *)modelAssetsDirectoryURL isEqual:modelAssetsDirectoryURL])
   {
     datasetAssetsDirectoryURL = self->_datasetAssetsDirectoryURL;
-    v8 = [v4 datasetAssetsDirectoryURL];
-    if ([(NSURL *)datasetAssetsDirectoryURL isEqual:v8])
+    datasetAssetsDirectoryURL = [equalCopy datasetAssetsDirectoryURL];
+    if ([(NSURL *)datasetAssetsDirectoryURL isEqual:datasetAssetsDirectoryURL])
     {
       cacheDirectoryURL = self->_cacheDirectoryURL;
-      v10 = [v4 cacheDirectoryURL];
-      v11 = [(NSURL *)cacheDirectoryURL isEqual:v10];
+      cacheDirectoryURL = [equalCopy cacheDirectoryURL];
+      v11 = [(NSURL *)cacheDirectoryURL isEqual:cacheDirectoryURL];
     }
 
     else
@@ -54,24 +54,24 @@
   return v11;
 }
 
-- (SSUMatcherBuildParams)initWithModelAssetsDirectoryURL:(id)a3 datasetAssetsDirectoryURL:(id)a4 cacheDirectoryURL:(id)a5
+- (SSUMatcherBuildParams)initWithModelAssetsDirectoryURL:(id)l datasetAssetsDirectoryURL:(id)rL cacheDirectoryURL:(id)uRL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v18.receiver = self;
   v18.super_class = SSUMatcherBuildParams;
   v11 = [(SSUMatcherBuildParams *)&v18 init];
   modelAssetsDirectoryURL = v11->_modelAssetsDirectoryURL;
-  v11->_modelAssetsDirectoryURL = v8;
-  v13 = v8;
+  v11->_modelAssetsDirectoryURL = lCopy;
+  v13 = lCopy;
 
   datasetAssetsDirectoryURL = v11->_datasetAssetsDirectoryURL;
-  v11->_datasetAssetsDirectoryURL = v9;
-  v15 = v9;
+  v11->_datasetAssetsDirectoryURL = rLCopy;
+  v15 = rLCopy;
 
   cacheDirectoryURL = v11->_cacheDirectoryURL;
-  v11->_cacheDirectoryURL = v10;
+  v11->_cacheDirectoryURL = uRLCopy;
 
   return v11;
 }

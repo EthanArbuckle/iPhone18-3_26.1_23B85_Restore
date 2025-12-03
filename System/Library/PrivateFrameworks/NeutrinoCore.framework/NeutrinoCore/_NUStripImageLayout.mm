@@ -2,20 +2,20 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)borderSize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileCounts;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileSize;
-- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)a3;
-- (BOOL)isEqualToLayout:(id)a3;
-- (_NUStripImageLayout)initWithImageSize:(id)a3 stripHeight:(int64_t)a4;
-- (id)tileInfoAtIndex:(int64_t)a3;
+- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)index;
+- (BOOL)isEqualToLayout:(id)layout;
+- (_NUStripImageLayout)initWithImageSize:(id)size stripHeight:(int64_t)height;
+- (id)tileInfoAtIndex:(int64_t)index;
 @end
 
 @implementation _NUStripImageLayout
 
-- (BOOL)isEqualToLayout:(id)a3
+- (BOOL)isEqualToLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v7.receiver = self;
   v7.super_class = _NUStripImageLayout;
-  v5 = [(NUImageLayout *)&v7 isEqualToLayout:v4]&& self->_stripHeight == v4[3] && self->_stripCount == v4[4];
+  v5 = [(NUImageLayout *)&v7 isEqualToLayout:layoutCopy]&& self->_stripHeight == layoutCopy[3] && self->_stripCount == layoutCopy[4];
 
   return v5;
 }
@@ -40,14 +40,14 @@
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileSize
 {
-  v3 = [(NUImageLayout *)self imageSize];
+  imageSize = [(NUImageLayout *)self imageSize];
   stripHeight = self->_stripHeight;
   result.var1 = stripHeight;
-  result.var0 = v3;
+  result.var0 = imageSize;
   return result;
 }
 
-- (id)tileInfoAtIndex:(int64_t)a3
+- (id)tileInfoAtIndex:(int64_t)index
 {
   v8 = 0u;
   v9 = 0u;
@@ -56,12 +56,12 @@
   v7[1] = v9;
   v6[0] = v8;
   v6[1] = v9;
-  v4 = [NUTileInfo tileInfoWithIndex:a3 size:v9 frameRect:v7 contentRect:v6];
+  v4 = [NUTileInfo tileInfoWithIndex:index size:v9 frameRect:v7 contentRect:v6];
 
   return v4;
 }
 
-- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)a3
+- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)index
 {
   v33 = *MEMORY[0x1E69E9840];
   if (a4 < 0 || [(_NUStripImageLayout *)self tileCount]<= a4)
@@ -83,8 +83,8 @@
       if (v19)
       {
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v22;
         *&buf[12] = 2114;
@@ -95,8 +95,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -114,10 +114,10 @@
     *(&v8 + 1) = v9;
     v29 = v8;
     v10 = self->_stripHeight * a4;
-    v11 = [(NUImageLayout *)self imageSize];
+    imageSize = [(NUImageLayout *)self imageSize];
     *&v12 = 0;
     *(&v12 + 1) = v10;
-    *&v13 = v11;
+    *&v13 = imageSize;
     *(&v13 + 1) = self->_stripHeight;
     *buf = 0;
     *&buf[8] = 0;
@@ -133,17 +133,17 @@
   return result;
 }
 
-- (_NUStripImageLayout)initWithImageSize:(id)a3 stripHeight:(int64_t)a4
+- (_NUStripImageLayout)initWithImageSize:(id)size stripHeight:(int64_t)height
 {
-  var1 = a3.var1;
+  var1 = size.var1;
   v8.receiver = self;
   v8.super_class = _NUStripImageLayout;
-  result = [(NUImageLayout *)&v8 initWithImageSize:a3.var0];
+  result = [(NUImageLayout *)&v8 initWithImageSize:size.var0];
   if (result)
   {
-    result->_stripHeight = a4;
-    v7 = var1 / a4;
-    if (var1 != var1 / a4 * a4)
+    result->_stripHeight = height;
+    v7 = var1 / height;
+    if (var1 != var1 / height * height)
     {
       ++v7;
     }

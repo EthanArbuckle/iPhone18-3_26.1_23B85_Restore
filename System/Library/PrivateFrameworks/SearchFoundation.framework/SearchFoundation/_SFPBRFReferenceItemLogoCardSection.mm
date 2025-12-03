@@ -1,28 +1,28 @@
 @interface _SFPBRFReferenceItemLogoCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFReferenceItemLogoCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFReferenceItemLogoCardSection)initWithFacade:(id)a3;
-- (_SFPBRFReferenceItemLogoCardSection)initWithJSON:(id)a3;
+- (_SFPBRFReferenceItemLogoCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFReferenceItemLogoCardSection)initWithFacade:(id)facade;
+- (_SFPBRFReferenceItemLogoCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFReferenceItemLogoCardSection
 
-- (_SFPBRFReferenceItemLogoCardSection)initWithFacade:(id)a3
+- (_SFPBRFReferenceItemLogoCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFReferenceItemLogoCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 thumbnail];
+    thumbnail = [facadeCopy thumbnail];
 
-    if (v6)
+    if (thumbnail)
     {
       v7 = [_SFPBRFVisualProperty alloc];
-      v8 = [v4 thumbnail];
-      v9 = [(_SFPBRFVisualProperty *)v7 initWithFacade:v8];
+      thumbnail2 = [facadeCopy thumbnail];
+      v9 = [(_SFPBRFVisualProperty *)v7 initWithFacade:thumbnail2];
       [(_SFPBRFReferenceItemLogoCardSection *)v5 setThumbnail:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBRFReferenceItemLogoCardSection)initWithDictionary:(id)a3
+- (_SFPBRFReferenceItemLogoCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFReferenceItemLogoCardSection;
   v5 = [(_SFPBRFReferenceItemLogoCardSection *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBRFReferenceItemLogoCardSection)initWithJSON:(id)a3
+- (_SFPBRFReferenceItemLogoCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFReferenceItemLogoCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFReferenceItemLogoCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFReferenceItemLogoCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_thumbnail)
   {
-    v4 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    thumbnail = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
+    dictionaryRepresentation = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"thumbnail"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"thumbnail"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
-    v6 = [v4 thumbnail];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    thumbnail = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
+    thumbnail2 = [equalCopy thumbnail];
+    v7 = thumbnail2;
+    if ((thumbnail != 0) != (thumbnail2 == 0))
     {
-      v8 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
-      if (!v8)
+      thumbnail3 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
+      if (!thumbnail3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
-      v11 = [v4 thumbnail];
-      v12 = [v10 isEqual:v11];
+      v9 = thumbnail3;
+      thumbnail4 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
+      thumbnail5 = [equalCopy thumbnail];
+      v12 = [thumbnail4 isEqual:thumbnail5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
-  if (v4)
+  toCopy = to;
+  thumbnail = [(_SFPBRFReferenceItemLogoCardSection *)self thumbnail];
+  if (thumbnail)
   {
     PBDataWriterWriteSubmessage();
   }

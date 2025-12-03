@@ -1,26 +1,26 @@
 @interface CRLConnectionLineMagnetInfo
 - (CGPoint)position;
-- (CRLConnectionLineMagnetInfo)initWithType:(unint64_t)a3 position:(CGPoint)a4 layout:(id)a5 connected:(BOOL)a6;
+- (CRLConnectionLineMagnetInfo)initWithType:(unint64_t)type position:(CGPoint)position layout:(id)layout connected:(BOOL)connected;
 @end
 
 @implementation CRLConnectionLineMagnetInfo
 
-- (CRLConnectionLineMagnetInfo)initWithType:(unint64_t)a3 position:(CGPoint)a4 layout:(id)a5 connected:(BOOL)a6
+- (CRLConnectionLineMagnetInfo)initWithType:(unint64_t)type position:(CGPoint)position layout:(id)layout connected:(BOOL)connected
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a5;
+  y = position.y;
+  x = position.x;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = CRLConnectionLineMagnetInfo;
   v13 = [(CRLConnectionLineMagnetInfo *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->mMagnetType = a3;
+    v13->mMagnetType = type;
     v13->mPosition.x = x;
     v13->mPosition.y = y;
-    objc_storeStrong(&v13->mLayout, a5);
-    v14->mConnected = a6;
+    objc_storeStrong(&v13->mLayout, layout);
+    v14->mConnected = connected;
   }
 
   return v14;

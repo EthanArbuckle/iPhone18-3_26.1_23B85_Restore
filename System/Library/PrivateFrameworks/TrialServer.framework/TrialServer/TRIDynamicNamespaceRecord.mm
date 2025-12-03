@@ -1,38 +1,38 @@
 @interface TRIDynamicNamespaceRecord
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDynamicNamespaceRecord:(id)a3;
-- (TRIDynamicNamespaceRecord)initWithCoder:(id)a3;
-- (TRIDynamicNamespaceRecord)initWithName:(id)a3 teamId:(id)a4 appContainer:(id)a5 cloudKitContainer:(int)a6 compatibilityVersion:(unsigned int)a7 defaultsFileURL:(id)a8 hasFetched:(BOOL)a9;
-- (id)copyWithReplacementAppContainer:(id)a3;
-- (id)copyWithReplacementDefaultsFileURL:(id)a3;
-- (id)copyWithReplacementName:(id)a3;
-- (id)copyWithReplacementTeamId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDynamicNamespaceRecord:(id)record;
+- (TRIDynamicNamespaceRecord)initWithCoder:(id)coder;
+- (TRIDynamicNamespaceRecord)initWithName:(id)name teamId:(id)id appContainer:(id)container cloudKitContainer:(int)kitContainer compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l hasFetched:(BOOL)fetched;
+- (id)copyWithReplacementAppContainer:(id)container;
+- (id)copyWithReplacementDefaultsFileURL:(id)l;
+- (id)copyWithReplacementName:(id)name;
+- (id)copyWithReplacementTeamId:(id)id;
 - (id)description;
 - (unint64_t)hash;
-- (void)defaultEncodeWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)defaultEncodeWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIDynamicNamespaceRecord
 
-- (TRIDynamicNamespaceRecord)initWithName:(id)a3 teamId:(id)a4 appContainer:(id)a5 cloudKitContainer:(int)a6 compatibilityVersion:(unsigned int)a7 defaultsFileURL:(id)a8 hasFetched:(BOOL)a9
+- (TRIDynamicNamespaceRecord)initWithName:(id)name teamId:(id)id appContainer:(id)container cloudKitContainer:(int)kitContainer compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l hasFetched:(BOOL)fetched
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (v15)
+  nameCopy = name;
+  idCopy = id;
+  containerCopy = container;
+  lCopy = l;
+  if (nameCopy)
   {
-    if (v16)
+    if (idCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"teamId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"teamId != nil"}];
 
-    if (v17)
+    if (containerCopy)
     {
       goto LABEL_4;
     }
@@ -40,23 +40,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
 
-  if (!v16)
+  if (!idCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v17)
+  if (containerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"appContainer != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"appContainer != nil"}];
 
 LABEL_4:
   v27.receiver = self;
@@ -65,70 +65,70 @@ LABEL_4:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_name, a3);
-    objc_storeStrong(&v20->_teamId, a4);
-    objc_storeStrong(&v20->_appContainer, a5);
-    v20->_cloudKitContainer = a6;
-    v20->_compatibilityVersion = a7;
-    objc_storeStrong(&v20->_defaultsFileURL, a8);
-    v20->_hasFetched = a9;
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v20->_teamId, id);
+    objc_storeStrong(&v20->_appContainer, container);
+    v20->_cloudKitContainer = kitContainer;
+    v20->_compatibilityVersion = version;
+    objc_storeStrong(&v20->_defaultsFileURL, l);
+    v20->_hasFetched = fetched;
   }
 
   return v20;
 }
 
-- (id)copyWithReplacementName:(id)a3
+- (id)copyWithReplacementName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc(objc_opt_class());
   LOBYTE(v8) = self->_hasFetched;
-  v6 = [v5 initWithName:v4 teamId:self->_teamId appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
+  v6 = [v5 initWithName:nameCopy teamId:self->_teamId appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
 
   return v6;
 }
 
-- (id)copyWithReplacementTeamId:(id)a3
+- (id)copyWithReplacementTeamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   LOBYTE(v8) = self->_hasFetched;
-  v6 = [v5 initWithName:self->_name teamId:v4 appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
+  v6 = [v5 initWithName:self->_name teamId:idCopy appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
 
   return v6;
 }
 
-- (id)copyWithReplacementAppContainer:(id)a3
+- (id)copyWithReplacementAppContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = objc_alloc(objc_opt_class());
   LOBYTE(v8) = self->_hasFetched;
-  v6 = [v5 initWithName:self->_name teamId:self->_teamId appContainer:v4 cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
+  v6 = [v5 initWithName:self->_name teamId:self->_teamId appContainer:containerCopy cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:self->_defaultsFileURL hasFetched:v8];
 
   return v6;
 }
 
-- (id)copyWithReplacementDefaultsFileURL:(id)a3
+- (id)copyWithReplacementDefaultsFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc(objc_opt_class());
   LOBYTE(v8) = self->_hasFetched;
-  v6 = [v5 initWithName:self->_name teamId:self->_teamId appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:v4 hasFetched:v8];
+  v6 = [v5 initWithName:self->_name teamId:self->_teamId appContainer:self->_appContainer cloudKitContainer:self->_cloudKitContainer compatibilityVersion:self->_compatibilityVersion defaultsFileURL:lCopy hasFetched:v8];
 
   return v6;
 }
 
-- (BOOL)isEqualToDynamicNamespaceRecord:(id)a3
+- (BOOL)isEqualToDynamicNamespaceRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_17;
   }
 
   v6 = self->_name == 0;
-  v7 = [v4 name];
-  v8 = v7 != 0;
+  name = [recordCopy name];
+  v8 = name != 0;
 
   if (v6 == v8)
   {
@@ -138,8 +138,8 @@ LABEL_4:
   name = self->_name;
   if (name)
   {
-    v10 = [v5 name];
-    v11 = [(NSString *)name isEqual:v10];
+    name2 = [v5 name];
+    v11 = [(NSString *)name isEqual:name2];
 
     if (!v11)
     {
@@ -148,8 +148,8 @@ LABEL_4:
   }
 
   v12 = self->_teamId == 0;
-  v13 = [v5 teamId];
-  v14 = v13 != 0;
+  teamId = [v5 teamId];
+  v14 = teamId != 0;
 
   if (v12 == v14)
   {
@@ -159,8 +159,8 @@ LABEL_4:
   teamId = self->_teamId;
   if (teamId)
   {
-    v16 = [v5 teamId];
-    v17 = [(NSString *)teamId isEqual:v16];
+    teamId2 = [v5 teamId];
+    v17 = [(NSString *)teamId isEqual:teamId2];
 
     if (!v17)
     {
@@ -169,8 +169,8 @@ LABEL_4:
   }
 
   v18 = self->_appContainer == 0;
-  v19 = [v5 appContainer];
-  v20 = v19 != 0;
+  appContainer = [v5 appContainer];
+  v20 = appContainer != 0;
 
   if (v18 == v20)
   {
@@ -180,8 +180,8 @@ LABEL_4:
   appContainer = self->_appContainer;
   if (appContainer)
   {
-    v22 = [v5 appContainer];
-    v23 = [(TRIAppContainer *)appContainer isEqual:v22];
+    appContainer2 = [v5 appContainer];
+    v23 = [(TRIAppContainer *)appContainer isEqual:appContainer2];
 
     if (!v23)
     {
@@ -202,8 +202,8 @@ LABEL_4:
   }
 
   v26 = self->_defaultsFileURL == 0;
-  v27 = [v5 defaultsFileURL];
-  v28 = v27 != 0;
+  defaultsFileURL = [v5 defaultsFileURL];
+  v28 = defaultsFileURL != 0;
 
   if (v26 == v28 || (defaultsFileURL = self->_defaultsFileURL) != 0 && ([v5 defaultsFileURL], v30 = objc_claimAutoreleasedReturnValue(), v31 = -[NSURL isEqual:](defaultsFileURL, "isEqual:", v30), v30, !v31))
   {
@@ -220,18 +220,18 @@ LABEL_17:
   return v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIDynamicNamespaceRecord *)self isEqualToDynamicNamespaceRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIDynamicNamespaceRecord *)self isEqualToDynamicNamespaceRecord:v5];
   }
 
   return v6;
@@ -248,22 +248,22 @@ LABEL_17:
   return self->_hasFetched - (v8 - v7 + 32 * v7) + 32 * (v8 - v7 + 32 * v7);
 }
 
-- (TRIDynamicNamespaceRecord)initWithCoder:(id)a3
+- (TRIDynamicNamespaceRecord)initWithCoder:(id)coder
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamId"];
     if (!v6)
     {
-      v15 = [v4 error];
+      error = [coderCopy error];
 
-      if (v15)
+      if (error)
       {
         v6 = 0;
-        v13 = 0;
+        selfCopy = 0;
 LABEL_33:
 
         goto LABEL_34;
@@ -273,7 +273,7 @@ LABEL_33:
       v44 = @"Retrieved nil serialized value for nonnull TRIDynamicNamespaceRecord.teamId";
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
       v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:2 userInfo:v8];
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
       goto LABEL_30;
     }
 
@@ -289,31 +289,31 @@ LABEL_33:
       v42 = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v20 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:3 userInfo:v19];
-      [v4 failWithError:v20];
+      [coderCopy failWithError:v20];
 
 LABEL_15:
 LABEL_16:
 
 LABEL_30:
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_31;
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appContainer"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appContainer"];
     if (v7)
     {
       v8 = v7;
-      v9 = [v4 decodeInt64ForKey:@"cloudKitContainer"];
+      v9 = [coderCopy decodeInt64ForKey:@"cloudKitContainer"];
       if (!v9)
       {
-        v22 = [v4 error];
+        error2 = [coderCopy error];
 
-        if (v22)
+        if (error2)
         {
           goto LABEL_25;
         }
 
-        if (([v4 containsValueForKey:@"cloudKitContainer"] & 1) == 0)
+        if (([coderCopy containsValueForKey:@"cloudKitContainer"] & 1) == 0)
         {
           v37 = *MEMORY[0x277CCA450];
           v38 = @"Missing serialized value for TRIDynamicNamespaceRecord.cloudKitContainer";
@@ -324,50 +324,50 @@ LABEL_30:
         }
       }
 
-      v10 = [v4 decodeInt64ForKey:@"compatibilityVersion"];
+      v10 = [coderCopy decodeInt64ForKey:@"compatibilityVersion"];
       if (v10)
       {
         goto LABEL_7;
       }
 
-      v26 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (!v26)
+      if (!error3)
       {
-        if ([v4 containsValueForKey:@"compatibilityVersion"])
+        if ([coderCopy containsValueForKey:@"compatibilityVersion"])
         {
 LABEL_7:
-          v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultsFileURL"];
+          v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultsFileURL"];
           if (!v11)
           {
-            v28 = [v4 error];
+            error4 = [coderCopy error];
 
-            if (v28)
+            if (error4)
             {
               v11 = 0;
               goto LABEL_30;
             }
           }
 
-          v12 = [v4 decodeInt64ForKey:@"hasFetched"];
+          v12 = [coderCopy decodeInt64ForKey:@"hasFetched"];
           if (v12)
           {
             goto LABEL_9;
           }
 
-          v29 = [v4 error];
+          error5 = [coderCopy error];
 
-          if (v29)
+          if (error5)
           {
             goto LABEL_30;
           }
 
-          if ([v4 containsValueForKey:@"hasFetched"])
+          if ([coderCopy containsValueForKey:@"hasFetched"])
           {
 LABEL_9:
             LOBYTE(v32) = v12 != 0;
             self = [(TRIDynamicNamespaceRecord *)self initWithName:v5 teamId:v6 appContainer:v8 cloudKitContainer:v9 compatibilityVersion:v10 defaultsFileURL:v11 hasFetched:v32];
-            v13 = self;
+            selfCopy = self;
 LABEL_31:
 
             goto LABEL_32;
@@ -377,7 +377,7 @@ LABEL_31:
           v34 = @"Missing serialized value for TRIDynamicNamespaceRecord.hasFetched";
           v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
           v19 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:1 userInfo:v18];
-          [v4 failWithError:v19];
+          [coderCopy failWithError:v19];
           goto LABEL_15;
         }
 
@@ -389,22 +389,22 @@ LABEL_31:
 LABEL_37:
         v11 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
         v18 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:1 userInfo:v11];
-        [v4 failWithError:v18];
+        [coderCopy failWithError:v18];
         goto LABEL_16;
       }
     }
 
     else
     {
-      v21 = [v4 error];
+      error6 = [coderCopy error];
 
-      if (!v21)
+      if (!error6)
       {
         v39 = *MEMORY[0x277CCA450];
         v40 = @"Retrieved nil serialized value for nonnull TRIDynamicNamespaceRecord.appContainer";
         v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v27 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:2 userInfo:v11];
-        [v4 failWithError:v27];
+        [coderCopy failWithError:v27];
 
         v8 = 0;
         goto LABEL_30;
@@ -414,57 +414,57 @@ LABEL_37:
     }
 
 LABEL_25:
-    v13 = 0;
+    selfCopy = 0;
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v14 = [v4 error];
+  error7 = [coderCopy error];
 
-  if (!v14)
+  if (!error7)
   {
     v45 = *MEMORY[0x277CCA450];
     v46[0] = @"Retrieved nil serialized value for nonnull TRIDynamicNamespaceRecord.name";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     v8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIDynamicNamespaceRecordOCNTErrorDomain" code:2 userInfo:v6];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
     goto LABEL_25;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_34:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (void)defaultEncodeWithCoder:(id)a3
+- (void)defaultEncodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   name = self->_name;
-  v9 = v4;
+  v9 = coderCopy;
   if (name)
   {
-    [v4 encodeObject:name forKey:@"name"];
-    v4 = v9;
+    [coderCopy encodeObject:name forKey:@"name"];
+    coderCopy = v9;
   }
 
   teamId = self->_teamId;
   if (teamId)
   {
     [v9 encodeObject:teamId forKey:@"teamId"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   appContainer = self->_appContainer;
   if (appContainer)
   {
     [v9 encodeObject:appContainer forKey:@"appContainer"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
-  [v4 encodeInt64:self->_cloudKitContainer forKey:@"cloudKitContainer"];
+  [coderCopy encodeInt64:self->_cloudKitContainer forKey:@"cloudKitContainer"];
   [v9 encodeInt64:self->_compatibilityVersion forKey:@"compatibilityVersion"];
   defaultsFileURL = self->_defaultsFileURL;
   if (defaultsFileURL)
@@ -475,17 +475,17 @@ LABEL_34:
   [v9 encodeInt64:self->_hasFetched forKey:@"hasFetched"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:309 description:{@"Do not use NSKeyedArchiver to persist instances of TRIDynamicNamespaceRecord to disk. If you want to persist this object to disk, create a protobuf schema."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:309 description:{@"Do not use NSKeyedArchiver to persist instances of TRIDynamicNamespaceRecord to disk. If you want to persist this object to disk, create a protobuf schema."}];
   }
 
-  [(TRIDynamicNamespaceRecord *)self defaultEncodeWithCoder:v6];
+  [(TRIDynamicNamespaceRecord *)self defaultEncodeWithCoder:coderCopy];
 }
 
 - (id)description

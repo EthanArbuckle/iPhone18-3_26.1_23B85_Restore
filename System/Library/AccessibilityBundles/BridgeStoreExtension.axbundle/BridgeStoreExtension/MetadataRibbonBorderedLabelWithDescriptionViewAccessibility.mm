@@ -28,9 +28,9 @@
   {
     v7 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityAppStoreLocalizedString(@"ranking.with.category");
-    v9 = [v3 accessibilityLabel];
-    v10 = [v5 accessibilityLabel];
-    v11 = [v7 stringWithFormat:v8, v9, v10];
+    accessibilityLabel = [v3 accessibilityLabel];
+    accessibilityLabel2 = [v5 accessibilityLabel];
+    v11 = [v7 stringWithFormat:v8, accessibilityLabel, accessibilityLabel2];
   }
 
   return v11;

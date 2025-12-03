@@ -1,11 +1,11 @@
 @interface VGBodyPoseGuidanceOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VGBodyPoseGuidanceOptions)init;
-- (VGBodyPoseGuidanceOptions)initWithCoder:(id)a3;
-- (VGBodyPoseGuidanceOptions)initWithSuiteName:(id)a3;
+- (VGBodyPoseGuidanceOptions)initWithCoder:(id)coder;
+- (VGBodyPoseGuidanceOptions)initWithSuiteName:(id)name;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDefaultsWithSuiteName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDefaultsWithSuiteName:(id)name;
 @end
 
 @implementation VGBodyPoseGuidanceOptions
@@ -81,24 +81,24 @@
   return v2;
 }
 
-- (VGBodyPoseGuidanceOptions)initWithSuiteName:(id)a3
+- (VGBodyPoseGuidanceOptions)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(VGBodyPoseGuidanceOptions *)self init];
   v6 = v5;
   if (v5)
   {
-    [(VGBodyPoseGuidanceOptions *)v5 setDefaultsWithSuiteName:v4];
+    [(VGBodyPoseGuidanceOptions *)v5 setDefaultsWithSuiteName:nameCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)setDefaultsWithSuiteName:(id)a3
+- (void)setDefaultsWithSuiteName:(id)name
 {
-  v63 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v63];
+  nameCopy = name;
+  v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
   v5 = [v4 objectForKey:@"torsoHeadTargetMin"];
 
   if (v5)
@@ -332,241 +332,241 @@
   }
 }
 
-- (VGBodyPoseGuidanceOptions)initWithCoder:(id)a3
+- (VGBodyPoseGuidanceOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VGBodyPoseGuidanceOptions *)self init];
   if (v5)
   {
     [objc_opt_class() defaultTorsoHeadTargetMin];
     v5->_torsoHeadTargetMin = v6;
-    if ([v4 containsValueForKey:@"torsoHeadTargetMin"])
+    if ([coderCopy containsValueForKey:@"torsoHeadTargetMin"])
     {
-      [v4 decodeFloatForKey:@"torsoHeadTargetMin"];
+      [coderCopy decodeFloatForKey:@"torsoHeadTargetMin"];
       v5->_torsoHeadTargetMin = v7;
     }
 
     [objc_opt_class() defaultTorsoHeadTargetMax];
     v5->_torsoHeadTargetMax = v8;
-    if ([v4 containsValueForKey:@"torsoHeadTargetMax"])
+    if ([coderCopy containsValueForKey:@"torsoHeadTargetMax"])
     {
-      [v4 decodeFloatForKey:@"torsoHeadTargetMax"];
+      [coderCopy decodeFloatForKey:@"torsoHeadTargetMax"];
       v5->_torsoHeadTargetMax = v9;
     }
 
     [objc_opt_class() defaultTorsoHeadMarginMin];
     v5->_torsoHeadMarginMin = v10;
-    if ([v4 containsValueForKey:@"torsoHeadMarginMin"])
+    if ([coderCopy containsValueForKey:@"torsoHeadMarginMin"])
     {
-      [v4 decodeFloatForKey:@"torsoHeadMarginMin"];
+      [coderCopy decodeFloatForKey:@"torsoHeadMarginMin"];
       v5->_torsoHeadMarginMin = v11;
     }
 
     [objc_opt_class() defaultTorsoHeadMarginMax];
     v5->_torsoHeadMarginMax = v12;
-    if ([v4 containsValueForKey:@"torsoHeadMarginMax"])
+    if ([coderCopy containsValueForKey:@"torsoHeadMarginMax"])
     {
-      [v4 decodeFloatForKey:@"torsoHeadMarginMax"];
+      [coderCopy decodeFloatForKey:@"torsoHeadMarginMax"];
       v5->_torsoHeadMarginMax = v13;
     }
 
     [objc_opt_class() defaultShouldersTwistTargetMin];
     v5->_shouldersTwistTargetMin = v14;
-    if ([v4 containsValueForKey:@"shouldersTwistTargetMin"])
+    if ([coderCopy containsValueForKey:@"shouldersTwistTargetMin"])
     {
-      [v4 decodeFloatForKey:@"shouldersTwistTargetMin"];
+      [coderCopy decodeFloatForKey:@"shouldersTwistTargetMin"];
       v5->_shouldersTwistTargetMin = v15;
     }
 
     [objc_opt_class() defaultShouldersTwistTargetMax];
     v5->_shouldersTwistTargetMax = v16;
-    if ([v4 containsValueForKey:@"shouldersTwistTargetMax"])
+    if ([coderCopy containsValueForKey:@"shouldersTwistTargetMax"])
     {
-      [v4 decodeFloatForKey:@"shouldersTwistTargetMax"];
+      [coderCopy decodeFloatForKey:@"shouldersTwistTargetMax"];
       v5->_shouldersTwistTargetMax = v17;
     }
 
     [objc_opt_class() defaultShouldersTwistMarginMin];
     v5->_shouldersTwistMarginMin = v18;
-    if ([v4 containsValueForKey:@"shouldersTwistMarginMin"])
+    if ([coderCopy containsValueForKey:@"shouldersTwistMarginMin"])
     {
-      [v4 decodeFloatForKey:@"shouldersTwistMarginMin"];
+      [coderCopy decodeFloatForKey:@"shouldersTwistMarginMin"];
       v5->_shouldersTwistMarginMin = v19;
     }
 
     [objc_opt_class() defaultShouldersTwistMarginMax];
     v5->_shouldersTwistMarginMax = v20;
-    if ([v4 containsValueForKey:@"shouldersTwistMarginMax"])
+    if ([coderCopy containsValueForKey:@"shouldersTwistMarginMax"])
     {
-      [v4 decodeFloatForKey:@"shouldersTwistMarginMax"];
+      [coderCopy decodeFloatForKey:@"shouldersTwistMarginMax"];
       v5->_shouldersTwistMarginMax = v21;
     }
 
     [objc_opt_class() defaultLeftElbowTargetMin];
     v5->_leftElbowTargetMin = v22;
-    if ([v4 containsValueForKey:@"leftElbowTargetMin"])
+    if ([coderCopy containsValueForKey:@"leftElbowTargetMin"])
     {
-      [v4 decodeFloatForKey:@"leftElbowTargetMin"];
+      [coderCopy decodeFloatForKey:@"leftElbowTargetMin"];
       v5->_leftElbowTargetMin = v23;
     }
 
     [objc_opt_class() defaultLeftElbowTargetMax];
     v5->_leftElbowTargetMax = v24;
-    if ([v4 containsValueForKey:@"leftElbowTargetMax"])
+    if ([coderCopy containsValueForKey:@"leftElbowTargetMax"])
     {
-      [v4 decodeFloatForKey:@"leftElbowTargetMax"];
+      [coderCopy decodeFloatForKey:@"leftElbowTargetMax"];
       v5->_leftElbowTargetMax = v25;
     }
 
     [objc_opt_class() defaultLeftElbowMarginMin];
     v5->_leftElbowMarginMin = v26;
-    if ([v4 containsValueForKey:@"leftElbowMarginMin"])
+    if ([coderCopy containsValueForKey:@"leftElbowMarginMin"])
     {
-      [v4 decodeFloatForKey:@"leftElbowMarginMin"];
+      [coderCopy decodeFloatForKey:@"leftElbowMarginMin"];
       v5->_leftElbowMarginMin = v27;
     }
 
     [objc_opt_class() defaultLeftElbowMarginMax];
     v5->_leftElbowMarginMax = v28;
-    if ([v4 containsValueForKey:@"leftElbowMarginMax"])
+    if ([coderCopy containsValueForKey:@"leftElbowMarginMax"])
     {
-      [v4 decodeFloatForKey:@"leftElbowMarginMax"];
+      [coderCopy decodeFloatForKey:@"leftElbowMarginMax"];
       v5->_leftElbowMarginMax = v29;
     }
 
     [objc_opt_class() defaultRightElbowTargetMin];
     v5->_rightElbowTargetMin = v30;
-    if ([v4 containsValueForKey:@"rightElbowTargetMin"])
+    if ([coderCopy containsValueForKey:@"rightElbowTargetMin"])
     {
-      [v4 decodeFloatForKey:@"rightElbowTargetMin"];
+      [coderCopy decodeFloatForKey:@"rightElbowTargetMin"];
       v5->_rightElbowTargetMin = v31;
     }
 
     [objc_opt_class() defaultRightElbowTargetMax];
     v5->_rightElbowTargetMax = v32;
-    if ([v4 containsValueForKey:@"rightElbowTargetMax"])
+    if ([coderCopy containsValueForKey:@"rightElbowTargetMax"])
     {
-      [v4 decodeFloatForKey:@"rightElbowTargetMax"];
+      [coderCopy decodeFloatForKey:@"rightElbowTargetMax"];
       v5->_rightElbowTargetMax = v33;
     }
 
     [objc_opt_class() defaultRightElbowMarginMin];
     v5->_rightElbowMarginMin = v34;
-    if ([v4 containsValueForKey:@"rightElbowMarginMin"])
+    if ([coderCopy containsValueForKey:@"rightElbowMarginMin"])
     {
-      [v4 decodeFloatForKey:@"rightElbowMarginMin"];
+      [coderCopy decodeFloatForKey:@"rightElbowMarginMin"];
       v5->_rightElbowMarginMin = v35;
     }
 
     [objc_opt_class() defaultRightElbowMarginMax];
     v5->_rightElbowMarginMax = v36;
-    if ([v4 containsValueForKey:@"rightElbowMarginMax"])
+    if ([coderCopy containsValueForKey:@"rightElbowMarginMax"])
     {
-      [v4 decodeFloatForKey:@"rightElbowMarginMax"];
+      [coderCopy decodeFloatForKey:@"rightElbowMarginMax"];
       v5->_rightElbowMarginMax = v37;
     }
 
     [objc_opt_class() defaultShouldersHeightAsymmetryTargetMin];
     v5->_shouldersHeightAsymmetryTargetMin = v38;
-    if ([v4 containsValueForKey:@"shouldersHeightAsymmetryTargetMin"])
+    if ([coderCopy containsValueForKey:@"shouldersHeightAsymmetryTargetMin"])
     {
-      [v4 decodeFloatForKey:@"shouldersHeightAsymmetryTargetMin"];
+      [coderCopy decodeFloatForKey:@"shouldersHeightAsymmetryTargetMin"];
       v5->_shouldersHeightAsymmetryTargetMin = v39;
     }
 
     [objc_opt_class() defaultShouldersHeightAsymmetryTargetMax];
     v5->_shouldersHeightAsymmetryTargetMax = v40;
-    if ([v4 containsValueForKey:@"shouldersHeightAsymmetryTargetMax"])
+    if ([coderCopy containsValueForKey:@"shouldersHeightAsymmetryTargetMax"])
     {
-      [v4 decodeFloatForKey:@"shouldersHeightAsymmetryTargetMax"];
+      [coderCopy decodeFloatForKey:@"shouldersHeightAsymmetryTargetMax"];
       v5->_shouldersHeightAsymmetryTargetMax = v41;
     }
 
     [objc_opt_class() defaultShouldersHeightAsymmetryMarginMin];
     v5->_shouldersHeightAsymmetryMarginMin = v42;
-    if ([v4 containsValueForKey:@"shouldersHeightAsymmetryMarginMin"])
+    if ([coderCopy containsValueForKey:@"shouldersHeightAsymmetryMarginMin"])
     {
-      [v4 decodeFloatForKey:@"shouldersHeightAsymmetryMarginMin"];
+      [coderCopy decodeFloatForKey:@"shouldersHeightAsymmetryMarginMin"];
       v5->_shouldersHeightAsymmetryMarginMin = v43;
     }
 
     [objc_opt_class() defaultShouldersHeightAsymmetryMarginMax];
     v5->_shouldersHeightAsymmetryMarginMax = v44;
-    if ([v4 containsValueForKey:@"shouldersHeightAsymmetryMarginMax"])
+    if ([coderCopy containsValueForKey:@"shouldersHeightAsymmetryMarginMax"])
     {
-      [v4 decodeFloatForKey:@"shouldersHeightAsymmetryMarginMax"];
+      [coderCopy decodeFloatForKey:@"shouldersHeightAsymmetryMarginMax"];
       v5->_shouldersHeightAsymmetryMarginMax = v45;
     }
 
     [objc_opt_class() defaultLeftShoulderForwardTargetMin];
     v5->_leftShoulderForwardTargetMin = v46;
-    if ([v4 containsValueForKey:@"leftShoulderForwardTargetMin"])
+    if ([coderCopy containsValueForKey:@"leftShoulderForwardTargetMin"])
     {
-      [v4 decodeFloatForKey:@"leftShoulderForwardTargetMin"];
+      [coderCopy decodeFloatForKey:@"leftShoulderForwardTargetMin"];
       v5->_leftShoulderForwardTargetMin = v47;
     }
 
     [objc_opt_class() defaultLeftShoulderForwardTargetMax];
     v5->_leftShoulderForwardTargetMax = v48;
-    if ([v4 containsValueForKey:@"leftShoulderForwardTargetMax"])
+    if ([coderCopy containsValueForKey:@"leftShoulderForwardTargetMax"])
     {
-      [v4 decodeFloatForKey:@"leftShoulderForwardTargetMax"];
+      [coderCopy decodeFloatForKey:@"leftShoulderForwardTargetMax"];
       v5->_leftShoulderForwardTargetMax = v49;
     }
 
     [objc_opt_class() defaultLeftShoulderForwardMarginMin];
     v5->_leftShoulderForwardMarginMin = v50;
-    if ([v4 containsValueForKey:@"leftShoulderForwardMarginMin"])
+    if ([coderCopy containsValueForKey:@"leftShoulderForwardMarginMin"])
     {
-      [v4 decodeFloatForKey:@"leftShoulderForwardMarginMin"];
+      [coderCopy decodeFloatForKey:@"leftShoulderForwardMarginMin"];
       v5->_leftShoulderForwardMarginMin = v51;
     }
 
     [objc_opt_class() defaultLeftShoulderForwardMarginMax];
     v5->_leftShoulderForwardMarginMax = v52;
-    if ([v4 containsValueForKey:@"leftShoulderForwardMarginMax"])
+    if ([coderCopy containsValueForKey:@"leftShoulderForwardMarginMax"])
     {
-      [v4 decodeFloatForKey:@"leftShoulderForwardMarginMax"];
+      [coderCopy decodeFloatForKey:@"leftShoulderForwardMarginMax"];
       v5->_leftShoulderForwardMarginMax = v53;
     }
 
     [objc_opt_class() defaultRightShoulderForwardTargetMin];
     v5->_rightShoulderForwardTargetMin = v54;
-    if ([v4 containsValueForKey:@"rightShoulderForwardTargetMin"])
+    if ([coderCopy containsValueForKey:@"rightShoulderForwardTargetMin"])
     {
-      [v4 decodeFloatForKey:@"rightShoulderForwardTargetMin"];
+      [coderCopy decodeFloatForKey:@"rightShoulderForwardTargetMin"];
       v5->_rightShoulderForwardTargetMin = v55;
     }
 
     [objc_opt_class() defaultRightShoulderForwardTargetMax];
     v5->_rightShoulderForwardTargetMax = v56;
-    if ([v4 containsValueForKey:@"rightShoulderForwardTargetMax"])
+    if ([coderCopy containsValueForKey:@"rightShoulderForwardTargetMax"])
     {
-      [v4 decodeFloatForKey:@"rightShoulderForwardTargetMax"];
+      [coderCopy decodeFloatForKey:@"rightShoulderForwardTargetMax"];
       v5->_rightShoulderForwardTargetMax = v57;
     }
 
     [objc_opt_class() defaultRightShoulderForwardMarginMin];
     v5->_rightShoulderForwardMarginMin = v58;
-    if ([v4 containsValueForKey:@"rightShoulderForwardMarginMin"])
+    if ([coderCopy containsValueForKey:@"rightShoulderForwardMarginMin"])
     {
-      [v4 decodeFloatForKey:@"rightShoulderForwardMarginMin"];
+      [coderCopy decodeFloatForKey:@"rightShoulderForwardMarginMin"];
       v5->_rightShoulderForwardMarginMin = v59;
     }
 
     [objc_opt_class() defaultRightShoulderForwardMarginMax];
     v5->_rightShoulderForwardMarginMax = v60;
-    if ([v4 containsValueForKey:@"rightShoulderForwardMarginMax"])
+    if ([coderCopy containsValueForKey:@"rightShoulderForwardMarginMax"])
     {
-      [v4 decodeFloatForKey:@"rightShoulderForwardMarginMax"];
+      [coderCopy decodeFloatForKey:@"rightShoulderForwardMarginMax"];
       v5->_rightShoulderForwardMarginMax = v61;
     }
 
     [objc_opt_class() defaultBestAlignmentToleranceAngleFrontPose];
     v5->_bestAlignmentToleranceAngleFrontPose = v62;
-    if ([v4 containsValueForKey:@"bestAlignmentToleranceAngleFrontPose"])
+    if ([coderCopy containsValueForKey:@"bestAlignmentToleranceAngleFrontPose"])
     {
-      [v4 decodeFloatForKey:@"bestAlignmentToleranceAngleFrontPose"];
+      [coderCopy decodeFloatForKey:@"bestAlignmentToleranceAngleFrontPose"];
       v5->_bestAlignmentToleranceAngleFrontPose = v63;
     }
 
@@ -576,12 +576,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_torsoHeadTargetMin;
-  v34 = v4;
-  [v4 encodeFloat:@"torsoHeadTargetMin" forKey:v5];
+  v34 = coderCopy;
+  [coderCopy encodeFloat:@"torsoHeadTargetMin" forKey:v5];
   *&v6 = self->_torsoHeadTargetMax;
   [v34 encodeFloat:@"torsoHeadTargetMax" forKey:v6];
   *&v7 = self->_torsoHeadMarginMin;
@@ -640,13 +640,13 @@
   [v34 encodeFloat:@"bestAlignmentToleranceAngleFrontPose" forKey:v33];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     torsoHeadTargetMin = self->_torsoHeadTargetMin;
     [v5 torsoHeadTargetMin];
     if (torsoHeadTargetMin != v7)

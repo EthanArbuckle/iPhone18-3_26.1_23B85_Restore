@@ -1,14 +1,14 @@
 @interface SBFAnimationSettings
-+ (BOOL)ignoresKey:(id)a3;
-+ (id)_moduleWithSectionTitle:(id)a3 delay:(BOOL)a4 frameRate:(BOOL)a5;
++ (BOOL)ignoresKey:(id)key;
++ (id)_moduleWithSectionTitle:(id)title delay:(BOOL)delay frameRate:(BOOL)rate;
 - (SBFAnimationSettings)initWithDefaultValues;
 - (double)calculatedDuration;
 - (id)BSAnimationSettings;
 - (void)dealloc;
 - (void)setDefaultValues;
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
-- (void)setSpeed:(double)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
+- (void)setSpeed:(double)speed;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation SBFAnimationSettings
@@ -21,16 +21,16 @@
     goto LABEL_25;
   }
 
-  v4 = [(SBFAnimationSettings *)self curve];
-  if (v4 == 393216)
+  curve = [(SBFAnimationSettings *)self curve];
+  if (curve == 393216)
   {
-    v5 = [(SBFAnimationSettings *)self controlPoint1Settings];
-    [v5 pointValue];
+    controlPoint1Settings = [(SBFAnimationSettings *)self controlPoint1Settings];
+    [controlPoint1Settings pointValue];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(SBFAnimationSettings *)self controlPoint2Settings];
-    [v10 pointValue];
+    controlPoint2Settings = [(SBFAnimationSettings *)self controlPoint2Settings];
+    [controlPoint2Settings pointValue];
     v12 = v11;
     v14 = v13;
 
@@ -45,7 +45,7 @@ LABEL_14:
   }
 
   v20 = 0;
-  v21 = __ROR8__(v4, 16);
+  v21 = __ROR8__(curve, 16);
   if (v21 > 1)
   {
     if (v21 == 2)
@@ -112,8 +112,8 @@ LABEL_15:
   speed = self->_speed;
   *&speed = speed;
   [v34 setSpeed:speed];
-  v40 = [(SBFAnimationSettings *)self preferredFrameRateRange];
-  [v40 frameRateRange];
+  preferredFrameRateRange = [(SBFAnimationSettings *)self preferredFrameRateRange];
+  [preferredFrameRateRange frameRateRange];
   IsEqualToRange = CAFrameRateRangeIsEqualToRange(v50, *MEMORY[0x1E69792B8]);
 
   if (IsEqualToRange)
@@ -131,13 +131,13 @@ LABEL_15:
     [v34 setPreferredFrameRateRange:?];
   }
 
-  v43 = [(SBFAnimationSettings *)self preferredFrameRateRange];
-  v44 = [v43 highFrameRateReason];
+  preferredFrameRateRange2 = [(SBFAnimationSettings *)self preferredFrameRateRange];
+  highFrameRateReason = [preferredFrameRateRange2 highFrameRateReason];
 
-  if (v44)
+  if (highFrameRateReason)
   {
-    v45 = [(SBFAnimationSettings *)self preferredFrameRateRange];
-    [v34 setHighFrameRateReason:{objc_msgSend(v45, "highFrameRateReason")}];
+    preferredFrameRateRange3 = [(SBFAnimationSettings *)self preferredFrameRateRange];
+    [v34 setHighFrameRateReason:{objc_msgSend(preferredFrameRateRange3, "highFrameRateReason")}];
   }
 
   v46 = [v34 copy];
@@ -165,19 +165,19 @@ LABEL_25:
   [(SBFAnimationSettings *)self setInitialVelocity:0.0];
   [(SBFAnimationSettings *)self setSpeed:1.0];
   [(SBFAnimationSettings *)self setFrameRate:0];
-  v3 = [(SBFAnimationSettings *)self preferredFrameRateRange];
-  [v3 setDefaultValues];
+  preferredFrameRateRange = [(SBFAnimationSettings *)self preferredFrameRateRange];
+  [preferredFrameRateRange setDefaultValues];
 }
 
 - (SBFAnimationSettings)initWithDefaultValues
 {
   v5.receiver = self;
   v5.super_class = SBFAnimationSettings;
-  v2 = [(PTSettings *)&v5 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v5 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(PTSettings *)v2 addKeyPathObserver:v2];
+    [(PTSettings *)initWithDefaultValues addKeyPathObserver:initWithDefaultValues];
   }
 
   return v3;
@@ -191,27 +191,27 @@ LABEL_25:
   [(PTSettings *)&v3 dealloc];
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"calculatedDuration"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"calculatedDuration"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"speed"];
+    v4 = [keyCopy isEqualToString:@"speed"];
   }
 
   return v4;
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isEqualToString:@"calculatedDuration"] & 1) == 0)
+  settingsCopy = settings;
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"calculatedDuration"] & 1) == 0)
   {
     exportedSettings = self->_exportedSettings;
     self->_exportedSettings = 0;
@@ -221,126 +221,126 @@ LABEL_25:
 
   v9.receiver = self;
   v9.super_class = SBFAnimationSettings;
-  [(PTSettings *)&v9 settings:v6 changedValueForKeyPath:v7];
+  [(PTSettings *)&v9 settings:settingsCopy changedValueForKeyPath:pathCopy];
 }
 
-- (void)setSpeed:(double)a3
+- (void)setSpeed:(double)speed
 {
-  if (self->_speed != a3)
+  if (self->_speed != speed)
   {
-    self->_speed = a3;
+    self->_speed = speed;
     self->_exportedSettings = 0;
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  v11 = [(SBFAnimationSettings *)self preferredFrameRateRange];
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  preferredFrameRateRange = [(SBFAnimationSettings *)self preferredFrameRateRange];
   *&v8 = minimum;
   *&v9 = maximum;
   *&v10 = preferred;
-  [v11 setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
+  [preferredFrameRateRange setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
 }
 
 - (double)calculatedDuration
 {
-  v2 = [(SBFAnimationSettings *)self BSAnimationSettings];
-  [v2 duration];
+  bSAnimationSettings = [(SBFAnimationSettings *)self BSAnimationSettings];
+  [bSAnimationSettings duration];
   v4 = v3;
 
   return v4;
 }
 
-+ (id)_moduleWithSectionTitle:(id)a3 delay:(BOOL)a4 frameRate:(BOOL)a5
++ (id)_moduleWithSectionTitle:(id)title delay:(BOOL)delay frameRate:(BOOL)rate
 {
-  v55 = a5;
-  v5 = a4;
+  rateCopy = rate;
+  delayCopy = delay;
   v56[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  titleCopy = title;
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"animationType == %d", 1];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"animationType == %d", 0];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"curve == %d", 393216];
-  v10 = [MEMORY[0x1E695DF70] array];
+  393216 = [MEMORY[0x1E696AE18] predicateWithFormat:@"curve == %d", 393216];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = [MEMORY[0x1E69C65F0] rowWithTitle:@"Animation" valueKeyPath:@"animationType"];
   v12 = [v11 possibleValues:&unk_1F3D3ED90 titles:&unk_1F3D3EDA8];
-  [v10 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x1E69C6620] rowWithTitle:@"Duration" valueKeyPath:@"duration"];
   v14 = [v13 between:0.0 and:10.0];
   v15 = [v14 condition:v8];
-  [v10 addObject:v15];
+  [array addObject:v15];
 
-  if (v5)
+  if (delayCopy)
   {
     v16 = [MEMORY[0x1E69C6620] rowWithTitle:@"Delay" valueKeyPath:@"delay"];
     v17 = [v16 between:-1.0 and:10.0];
-    [v10 addObject:v17];
+    [array addObject:v17];
   }
 
   v18 = [MEMORY[0x1E69C6620] rowWithTitle:@"Mass" valueKeyPath:@"mass"];
   v19 = [v18 between:0.0 and:10000.0];
   v20 = [v19 condition:v7];
-  [v10 addObject:v20];
+  [array addObject:v20];
 
   v21 = [MEMORY[0x1E69C6620] rowWithTitle:@"Stiffness" valueKeyPath:@"stiffness"];
   v22 = [v21 between:0.0 and:1000000.0];
   v23 = [v22 precision:2];
   v24 = [v23 condition:v7];
-  [v10 addObject:v24];
+  [array addObject:v24];
 
   v25 = [MEMORY[0x1E69C6620] rowWithTitle:@"Damping" valueKeyPath:@"damping"];
   v26 = [v25 between:0.0 and:1000000.0];
   v27 = [v26 precision:2];
   v28 = [v27 condition:v7];
-  [v10 addObject:v28];
+  [array addObject:v28];
 
   v29 = [MEMORY[0x1E69C6620] rowWithTitle:@"Epsilon" valueKeyPath:@"epsilon"];
   v30 = [v29 between:0.0 and:0.5];
   v31 = [v30 precision:4];
   v32 = [v31 condition:v7];
-  [v10 addObject:v32];
+  [array addObject:v32];
 
   v33 = [MEMORY[0x1E69C6620] rowWithTitle:@"Initial Velocity" valueKeyPath:@"initialVelocity"];
   v34 = [v33 between:0.0 and:10000.0];
   v35 = [v34 precision:2];
   v36 = [v35 condition:v7];
-  [v10 addObject:v36];
+  [array addObject:v36];
 
   v37 = [SBReadonlyRow rowWithTitle:@"Calculated Duration" valueKeyPath:@"calculatedDuration"];
   v38 = [v37 condition:v7];
   v39 = [v38 valueFormatter:&__block_literal_global_27];
-  [v10 addObject:v39];
+  [array addObject:v39];
 
   v40 = [MEMORY[0x1E69C65F0] rowWithTitle:@"Curve" valueKeyPath:@"curve"];
   v41 = [v40 possibleValues:&unk_1F3D3EDD8 titles:&unk_1F3D3EDC0];
-  [v10 addObject:v41];
+  [array addObject:v41];
 
   v42 = [MEMORY[0x1E69C6608] rowWithTitle:@"Control Point 1" childSettingsKeyPath:@"controlPoint1Settings"];
-  v43 = [v42 condition:v9];
-  [v10 addObject:v43];
+  v43 = [v42 condition:393216];
+  [array addObject:v43];
 
   v44 = [MEMORY[0x1E69C6608] rowWithTitle:@"Control Point 2" childSettingsKeyPath:@"controlPoint2Settings"];
-  v45 = [v44 condition:v9];
-  [v10 addObject:v45];
+  v45 = [v44 condition:393216];
+  [array addObject:v45];
 
-  if (v55)
+  if (rateCopy)
   {
     v46 = [MEMORY[0x1E69C6608] rowWithTitle:@"Frame Rate Range" childSettingsKeyPath:@"preferredFrameRateRange"];
-    [v10 addObject:v46];
+    [array addObject:v46];
 
     v47 = [MEMORY[0x1E69C65F0] rowWithTitle:@"Frame Rate (Deprecated)" valueKeyPath:@"frameRate"];
     v48 = [v47 possibleValues:&unk_1F3D3EE20 titles:&unk_1F3D3EDF0];
     v49 = [v48 possibleShortTitles:&unk_1F3D3EE08];
-    [v10 addObject:v49];
+    [array addObject:v49];
   }
 
   v50 = MEMORY[0x1E69C6630];
-  v51 = [MEMORY[0x1E69C6630] sectionWithRows:v10 title:v6];
+  v51 = [MEMORY[0x1E69C6630] sectionWithRows:array title:titleCopy];
   v56[0] = v51;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
   v53 = [v50 moduleWithTitle:0 contents:v52];

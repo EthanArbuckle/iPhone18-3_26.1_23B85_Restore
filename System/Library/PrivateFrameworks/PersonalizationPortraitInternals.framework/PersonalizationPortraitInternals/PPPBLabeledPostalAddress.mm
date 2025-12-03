@@ -1,60 +1,60 @@
 @interface PPPBLabeledPostalAddress
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBLabeledPostalAddress
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(PPPBLabeledPostalAddress *)self setLabel:?];
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(PPPBLabeledPostalAddress *)self setStreet:?];
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
     [(PPPBLabeledPostalAddress *)self setSubLocality:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(PPPBLabeledPostalAddress *)self setCity:?];
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(PPPBLabeledPostalAddress *)self setSubAdministrativeArea:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(PPPBLabeledPostalAddress *)self setState:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(PPPBLabeledPostalAddress *)self setPostalCode:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PPPBLabeledPostalAddress *)self setCountry:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PPPBLabeledPostalAddress *)self setIsoCountryCode:?];
   }
@@ -73,16 +73,16 @@
   return v9 ^ v10 ^ [(NSString *)self->_isoCountryCode hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   label = self->_label;
-  if (label | v4[4])
+  if (label | equalCopy[4])
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -90,10 +90,10 @@
     }
   }
 
-  if (((street = self->_street, !(street | v4[7])) || [(NSString *)street isEqual:?]) && ((subLocality = self->_subLocality, !(subLocality | v4[9])) || [(NSString *)subLocality isEqual:?]) && ((city = self->_city, !(city | v4[1])) || [(NSString *)city isEqual:?]) && ((subAdministrativeArea = self->_subAdministrativeArea, !(subAdministrativeArea | v4[8])) || [(NSString *)subAdministrativeArea isEqual:?]) && ((state = self->_state, !(state | v4[6])) || [(NSString *)state isEqual:?]) && ((postalCode = self->_postalCode, !(postalCode | v4[5])) || [(NSString *)postalCode isEqual:?]) && ((country = self->_country, !(country | v4[2])) || [(NSString *)country isEqual:?]))
+  if (((street = self->_street, !(street | equalCopy[7])) || [(NSString *)street isEqual:?]) && ((subLocality = self->_subLocality, !(subLocality | equalCopy[9])) || [(NSString *)subLocality isEqual:?]) && ((city = self->_city, !(city | equalCopy[1])) || [(NSString *)city isEqual:?]) && ((subAdministrativeArea = self->_subAdministrativeArea, !(subAdministrativeArea | equalCopy[8])) || [(NSString *)subAdministrativeArea isEqual:?]) && ((state = self->_state, !(state | equalCopy[6])) || [(NSString *)state isEqual:?]) && ((postalCode = self->_postalCode, !(postalCode | equalCopy[5])) || [(NSString *)postalCode isEqual:?]) && ((country = self->_country, !(country | equalCopy[2])) || [(NSString *)country isEqual:?]))
   {
     isoCountryCode = self->_isoCountryCode;
-    if (isoCountryCode | v4[3])
+    if (isoCountryCode | equalCopy[3])
     {
       v14 = [(NSString *)isoCountryCode isEqual:?];
     }
@@ -113,174 +113,174 @@ LABEL_20:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_street copyWithZone:a3];
+  v8 = [(NSString *)self->_street copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSString *)self->_subLocality copyWithZone:a3];
+  v10 = [(NSString *)self->_subLocality copyWithZone:zone];
   v11 = v5[9];
   v5[9] = v10;
 
-  v12 = [(NSString *)self->_city copyWithZone:a3];
+  v12 = [(NSString *)self->_city copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
-  v14 = [(NSString *)self->_subAdministrativeArea copyWithZone:a3];
+  v14 = [(NSString *)self->_subAdministrativeArea copyWithZone:zone];
   v15 = v5[8];
   v5[8] = v14;
 
-  v16 = [(NSString *)self->_state copyWithZone:a3];
+  v16 = [(NSString *)self->_state copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
-  v18 = [(NSString *)self->_postalCode copyWithZone:a3];
+  v18 = [(NSString *)self->_postalCode copyWithZone:zone];
   v19 = v5[5];
   v5[5] = v18;
 
-  v20 = [(NSString *)self->_country copyWithZone:a3];
+  v20 = [(NSString *)self->_country copyWithZone:zone];
   v21 = v5[2];
   v5[2] = v20;
 
-  v22 = [(NSString *)self->_isoCountryCode copyWithZone:a3];
+  v22 = [(NSString *)self->_isoCountryCode copyWithZone:zone];
   v23 = v5[3];
   v5[3] = v22;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v5;
+    [toCopy setLabel:?];
+    toCopy = v5;
   }
 
   if (self->_street)
   {
     [v5 setStreet:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subLocality)
   {
     [v5 setSubLocality:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_city)
   {
     [v5 setCity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subAdministrativeArea)
   {
     [v5 setSubAdministrativeArea:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_state)
   {
     [v5 setState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_postalCode)
   {
     [v5 setPostalCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     [v5 setCountry:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_isoCountryCode)
   {
     [v5 setIsoCountryCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_street)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subLocality)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_city)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subAdministrativeArea)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_state)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_postalCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_isoCountryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   street = self->_street;
@@ -340,8 +340,8 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = PPPBLabeledPostalAddress;
   v4 = [(PPPBLabeledPostalAddress *)&v8 description];
-  v5 = [(PPPBLabeledPostalAddress *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBLabeledPostalAddress *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

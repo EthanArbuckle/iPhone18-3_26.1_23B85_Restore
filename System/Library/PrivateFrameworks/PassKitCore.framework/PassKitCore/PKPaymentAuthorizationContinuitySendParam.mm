@@ -1,16 +1,16 @@
 @interface PKPaymentAuthorizationContinuitySendParam
-+ (id)paramWithRemotePaymentRequest:(id)a3;
++ (id)paramWithRemotePaymentRequest:(id)request;
 @end
 
 @implementation PKPaymentAuthorizationContinuitySendParam
 
-+ (id)paramWithRemotePaymentRequest:(id)a3
++ (id)paramWithRemotePaymentRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setRemotePaymentRequest:v4];
+  requestCopy = request;
+  param = [self param];
+  [param setRemotePaymentRequest:requestCopy];
 
-  return v5;
+  return param;
 }
 
 @end

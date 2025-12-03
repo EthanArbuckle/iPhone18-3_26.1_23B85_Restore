@@ -1,11 +1,11 @@
 @interface AXBOpaqueTouchSettingsManager
 + (id)sharedInstance;
 - (id)initSharedInstance;
-- (void)_applyPreferencesToDeviceService:(__IOHIDServiceClient *)a3;
+- (void)_applyPreferencesToDeviceService:(__IOHIDServiceClient *)service;
 - (void)_resendPreferencesToServices;
 - (void)dealloc;
-- (void)deviceServiceAppeared:(__IOHIDServiceClient *)a3;
-- (void)deviceServiceDisappeared:(__IOHIDServiceClient *)a3;
+- (void)deviceServiceAppeared:(__IOHIDServiceClient *)appeared;
+- (void)deviceServiceDisappeared:(__IOHIDServiceClient *)disappeared;
 - (void)start;
 @end
 
@@ -24,9 +24,9 @@
 
     v5 = *MEMORY[0x29EDB8ED8];
     v2->_systemFilterClient = IOHIDEventSystemClientCreate();
-    v6 = [MEMORY[0x29EDB8DE8] array];
-    [v6 addObject:&unk_2A21219F0];
-    [v6 addObject:&unk_2A2121A18];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array addObject:&unk_2A21219F0];
+    [array addObject:&unk_2A2121A18];
     systemFilterClient = v2->_systemFilterClient;
     IOHIDEventSystemClientSetMatchingMultiple();
     v8 = v2->_systemFilterClient;
@@ -73,7 +73,7 @@ uint64_t __47__AXBOpaqueTouchSettingsManager_sharedInstance__block_invoke()
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_applyPreferencesToDeviceService:(__IOHIDServiceClient *)a3
+- (void)_applyPreferencesToDeviceService:(__IOHIDServiceClient *)service
 {
   v19 = *MEMORY[0x29EDCA608];
   v4 = AXLogCommon();
@@ -83,12 +83,12 @@ uint64_t __47__AXBOpaqueTouchSettingsManager_sharedInstance__block_invoke()
     _os_log_impl(&dword_29BBBD000, v4, OS_LOG_TYPE_DEFAULT, "Applying preferences to service", buf, 2u);
   }
 
-  if (IOHIDServiceClientConformsTo(a3, 0xFF60u, 0x1000u))
+  if (IOHIDServiceClientConformsTo(service, 0xFF60u, 0x1000u))
   {
     _AXSOpaqueTouchTapSpeed();
     valuePtr = (v5 * 1000.0);
     v6 = CFNumberCreate(*MEMORY[0x29EDB8ED8], kCFNumberSInt64Type, &valuePtr);
-    IOHIDServiceClientSetProperty(a3, @"DoubleTapDeltaMs", v6);
+    IOHIDServiceClientSetProperty(service, @"DoubleTapDeltaMs", v6);
     CFRelease(v6);
     v7 = _AXSAllowOpaqueTouchGestures();
     v8 = MEMORY[0x29EDB8EF8];
@@ -97,7 +97,7 @@ uint64_t __47__AXBOpaqueTouchSettingsManager_sharedInstance__block_invoke()
       v8 = MEMORY[0x29EDB8F00];
     }
 
-    IOHIDServiceClientSetProperty(a3, @"GesturesDisabled", *v8);
+    IOHIDServiceClientSetProperty(service, @"GesturesDisabled", *v8);
     v9 = AXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -111,18 +111,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (IOHIDServiceClientConformsTo(a3, 0xDu, 0xCu))
+  if (IOHIDServiceClientConformsTo(service, 0xDu, 0xCu))
   {
     v10 = MEMORY[0x29EDBA070];
-    v11 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    IOHIDServiceClientSetProperty(a3, @"TrackpadExternallyDisabled", [v10 numberWithBool:{objc_msgSend(v11, "ignoreTrackpad")}]);
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    IOHIDServiceClientSetProperty(service, @"TrackpadExternallyDisabled", [v10 numberWithBool:{objc_msgSend(mEMORY[0x29EDBDFA0], "ignoreTrackpad")}]);
 
     v9 = AXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = MEMORY[0x29EDBA070];
-      v13 = [MEMORY[0x29EDBDFA0] sharedInstance];
-      v14 = [v12 numberWithBool:{objc_msgSend(v13, "ignoreTrackpad")}];
+      mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
+      v14 = [v12 numberWithBool:{objc_msgSend(mEMORY[0x29EDBDFA0]2, "ignoreTrackpad")}];
       *buf = 138412290;
       v18 = v14;
       _os_log_impl(&dword_29BBBD000, v9, OS_LOG_TYPE_DEFAULT, "Applying ignore trackpad from service discovery %@", buf, 0xCu);
@@ -135,40 +135,40 @@ LABEL_12:
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)deviceServiceAppeared:(__IOHIDServiceClient *)a3
+- (void)deviceServiceAppeared:(__IOHIDServiceClient *)appeared
 {
   v10 = *MEMORY[0x29EDCA608];
   v5 = AXLogAccessories();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = a3;
+    appearedCopy = appeared;
     _os_log_impl(&dword_29BBBD000, v5, OS_LOG_TYPE_DEFAULT, "Accessibility noticed opaque touch service appearing: %@", &v8, 0xCu);
   }
 
   IOHIDServiceClientRegisterRemovalCallback();
-  v6 = a3;
-  if (([(NSMutableArray *)self->_trackedServices containsObject:v6]& 1) == 0)
+  appearedCopy2 = appeared;
+  if (([(NSMutableArray *)self->_trackedServices containsObject:appearedCopy2]& 1) == 0)
   {
-    [(NSMutableArray *)self->_trackedServices addObject:v6];
-    [(AXBOpaqueTouchSettingsManager *)self _applyPreferencesToDeviceService:v6];
+    [(NSMutableArray *)self->_trackedServices addObject:appearedCopy2];
+    [(AXBOpaqueTouchSettingsManager *)self _applyPreferencesToDeviceService:appearedCopy2];
   }
 
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)deviceServiceDisappeared:(__IOHIDServiceClient *)a3
+- (void)deviceServiceDisappeared:(__IOHIDServiceClient *)disappeared
 {
   v9 = *MEMORY[0x29EDCA608];
   v5 = AXLogAccessories();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = a3;
+    disappearedCopy = disappeared;
     _os_log_impl(&dword_29BBBD000, v5, OS_LOG_TYPE_DEFAULT, "Accessibility noticed opaque touch service disappearing: %@", &v7, 0xCu);
   }
 
-  [(NSMutableArray *)self->_trackedServices removeObject:a3];
+  [(NSMutableArray *)self->_trackedServices removeObject:disappeared];
   v6 = *MEMORY[0x29EDCA608];
 }
 

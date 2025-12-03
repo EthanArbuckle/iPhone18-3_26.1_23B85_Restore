@@ -1,7 +1,7 @@
 @interface VoiceDialLastNameDataSource
-- (BOOL)getName:(id *)a3 phoneticName:(id *)a4 atIndex:(unint64_t)a5 forPerson:(void *)a6;
-- (int)typeOfNameAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfMainNameOfType:(int)a3;
+- (BOOL)getName:(id *)name phoneticName:(id *)phoneticName atIndex:(unint64_t)index forPerson:(void *)person;
+- (int)typeOfNameAtIndex:(unint64_t)index;
+- (unint64_t)indexOfMainNameOfType:(int)type;
 - (unint64_t)personNameCount;
 @end
 
@@ -14,44 +14,44 @@
   return [(VoiceDialNameDataSource *)&v3 personNameCount]+ 1;
 }
 
-- (BOOL)getName:(id *)a3 phoneticName:(id *)a4 atIndex:(unint64_t)a5 forPerson:(void *)a6
+- (BOOL)getName:(id *)name phoneticName:(id *)phoneticName atIndex:(unint64_t)index forPerson:(void *)person
 {
   v16.receiver = self;
   v16.super_class = VoiceDialLastNameDataSource;
-  v11 = [(VoiceDialNameDataSource *)&v16 personNameCount];
-  if (v11 <= a5)
+  personNameCount = [(VoiceDialNameDataSource *)&v16 personNameCount];
+  if (personNameCount <= index)
   {
-    v12 = v11;
-    if (a3)
+    v12 = personNameCount;
+    if (name)
     {
       v13 = 0;
-      *a3 = 0;
-      if (v12 == a5)
+      *name = 0;
+      if (v12 == index)
       {
         if ([(VoiceDialNameDataSource *)self useCompositeNamesOnly])
         {
-          v13 = *a3;
+          v13 = *name;
         }
 
         else
         {
-          v13 = ABRecordCopyValue(a6, *MEMORY[0x29EDBE210]);
-          *a3 = v13;
+          v13 = ABRecordCopyValue(person, *MEMORY[0x29EDBE210]);
+          *name = v13;
         }
       }
 
-      LOBYTE(a3) = v13 != 0;
+      LOBYTE(name) = v13 != 0;
     }
 
-    if (a4)
+    if (phoneticName)
     {
-      *a4 = 0;
-      if (v12 == a5 && ![(VoiceDialNameDataSource *)self useCompositeNamesOnly])
+      *phoneticName = 0;
+      if (v12 == index && ![(VoiceDialNameDataSource *)self useCompositeNamesOnly])
       {
-        *a4 = [(VoiceDialNameDataSource *)self copyPronunciationPropertyForPerson:a6 withNameType:1];
+        *phoneticName = [(VoiceDialNameDataSource *)self copyPronunciationPropertyForPerson:person withNameType:1];
       }
 
-      LOBYTE(a3) = (a3 & 1) != 0 || *a4 != 0;
+      LOBYTE(name) = (name & 1) != 0 || *phoneticName != 0;
     }
   }
 
@@ -59,15 +59,15 @@
   {
     v15.receiver = self;
     v15.super_class = VoiceDialLastNameDataSource;
-    LOBYTE(a3) = [(VoiceDialNameDataSource *)&v15 getName:a3 phoneticName:a4 atIndex:a5 forPerson:a6];
+    LOBYTE(name) = [(VoiceDialNameDataSource *)&v15 getName:name phoneticName:phoneticName atIndex:index forPerson:person];
   }
 
-  return a3;
+  return name;
 }
 
-- (unint64_t)indexOfMainNameOfType:(int)a3
+- (unint64_t)indexOfMainNameOfType:(int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v5.receiver = self;
     v5.super_class = VoiceDialLastNameDataSource;
@@ -82,14 +82,14 @@
   }
 }
 
-- (int)typeOfNameAtIndex:(unint64_t)a3
+- (int)typeOfNameAtIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = VoiceDialLastNameDataSource;
-  v5 = [(VoiceDialNameDataSource *)&v8 personNameCount];
-  if (v5 <= a3)
+  personNameCount = [(VoiceDialNameDataSource *)&v8 personNameCount];
+  if (personNameCount <= index)
   {
-    if (v5 == a3)
+    if (personNameCount == index)
     {
       return 1;
     }
@@ -104,7 +104,7 @@
   {
     v7.receiver = self;
     v7.super_class = VoiceDialLastNameDataSource;
-    return [(VoiceDialNameDataSource *)&v7 typeOfNameAtIndex:a3];
+    return [(VoiceDialNameDataSource *)&v7 typeOfNameAtIndex:index];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CoreRepairCoreXPCService
-- (void)generateRepairReport:(id)a3 withReply:(id)a4;
+- (void)generateRepairReport:(id)report withReply:(id)reply;
 @end
 
 @implementation CoreRepairCoreXPCService
 
-- (void)generateRepairReport:(id)a3 withReply:(id)a4
+- (void)generateRepairReport:(id)report withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [CRRepairReport generateReport:a3 error:0];
-  (*(a4 + 2))(v6, v7);
+  replyCopy = reply;
+  v7 = [CRRepairReport generateReport:report error:0];
+  (*(reply + 2))(replyCopy, v7);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface BKDisplayRenderOverlayAppleLogo
-+ (id)overlayWithLevel:(float)a3 display:(id)a4;
-- (BKDisplayRenderOverlayAppleLogo)initWithOverlayDescriptor:(id)a3 level:(float)a4;
-- (id)_prepareContentLayerForPresentation:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
++ (id)overlayWithLevel:(float)level display:(id)display;
+- (BKDisplayRenderOverlayAppleLogo)initWithOverlayDescriptor:(id)descriptor level:(float)level;
+- (id)_prepareContentLayerForPresentation:(id)presentation;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_cleanUpContentLayer;
 @end
 
 @implementation BKDisplayRenderOverlayAppleLogo
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = BKDisplayRenderOverlayAppleLogo;
-  v4 = [(BKDisplayBootUIRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BKDisplayBootUIRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   puiProgressWindow = self->_puiProgressWindow;
   if (puiProgressWindow)
@@ -30,7 +30,7 @@
   self->_puiProgressWindow = 0;
 }
 
-- (id)_prepareContentLayerForPresentation:(id)a3
+- (id)_prepareContentLayerForPresentation:(id)presentation
 {
   v4 = [PUIProgressWindow alloc];
   [(BKDisplayRenderOverlay *)self level];
@@ -39,21 +39,21 @@
   self->_puiProgressWindow = v5;
 
   [(PUIProgressWindow *)self->_puiProgressWindow setVisible:1];
-  v7 = [(PUIProgressWindow *)self->_puiProgressWindow layer];
-  [v7 setDisableUpdateMask:{objc_msgSend(v7, "disableUpdateMask") | 0x10}];
-  v8 = [(BKDisplayRenderOverlay *)self display];
-  v9 = [v8 uniqueId];
+  layer = [(PUIProgressWindow *)self->_puiProgressWindow layer];
+  [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") | 0x10}];
+  display = [(BKDisplayRenderOverlay *)self display];
+  uniqueId = [display uniqueId];
 
-  sub_100028DEC(v9);
+  sub_100028DEC(uniqueId);
 
-  return v7;
+  return layer;
 }
 
-- (BKDisplayRenderOverlayAppleLogo)initWithOverlayDescriptor:(id)a3 level:(float)a4
+- (BKDisplayRenderOverlayAppleLogo)initWithOverlayDescriptor:(id)descriptor level:(float)level
 {
   v7.receiver = self;
   v7.super_class = BKDisplayRenderOverlayAppleLogo;
-  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 initWithOverlayDescriptor:a3 level:?];
+  v4 = [(BKDisplayBootUIRenderOverlay *)&v7 initWithOverlayDescriptor:descriptor level:?];
   v5 = v4;
   if (v4)
   {
@@ -63,17 +63,17 @@
   return v5;
 }
 
-+ (id)overlayWithLevel:(float)a3 display:(id)a4
++ (id)overlayWithLevel:(float)level display:(id)display
 {
-  v5 = a4;
+  displayCopy = display;
   v6 = [BKSDisplayRenderOverlayDescriptor alloc];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 initWithName:v8 display:v5];
+  v9 = [v6 initWithName:v8 display:displayCopy];
 
   [v9 setLockBacklight:0];
   v10 = [BKDisplayRenderOverlayAppleLogo alloc];
-  *&v11 = a3;
+  *&v11 = level;
   v12 = [(BKDisplayRenderOverlayAppleLogo *)v10 initWithOverlayDescriptor:v9 level:v11];
 
   return v12;

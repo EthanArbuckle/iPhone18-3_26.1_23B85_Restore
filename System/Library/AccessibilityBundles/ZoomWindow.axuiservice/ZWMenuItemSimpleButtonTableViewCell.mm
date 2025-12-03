@@ -1,16 +1,16 @@
 @interface ZWMenuItemSimpleButtonTableViewCell
-- (ZWMenuItemSimpleButtonTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ZWMenuItemSimpleButtonTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_applyTitleLabelColor;
-- (void)setIsChecked:(BOOL)a3;
+- (void)setIsChecked:(BOOL)checked;
 @end
 
 @implementation ZWMenuItemSimpleButtonTableViewCell
 
-- (ZWMenuItemSimpleButtonTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ZWMenuItemSimpleButtonTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v90.receiver = self;
   v90.super_class = ZWMenuItemSimpleButtonTableViewCell;
-  v4 = [(ZWMenuItemSimpleButtonTableViewCell *)&v90 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ZWMenuItemSimpleButtonTableViewCell *)&v90 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     if (_UISolariumEnabled())
@@ -19,139 +19,139 @@
       v5 = +[UIColor clearColor];
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 setBackgroundColor:v5];
 
-      v6 = objc_alloc_init(UIView);
+      textLabel = objc_alloc_init(UIView);
       v7 = +[UIColor secondarySystemFillColor];
-      [v6 setBackgroundColor:v7];
+      [textLabel setBackgroundColor:v7];
 
-      v8 = [v6 layer];
-      [v8 setCornerRadius:27.0];
+      layer = [textLabel layer];
+      [layer setCornerRadius:27.0];
 
-      v9 = [v6 layer];
-      [v9 setMasksToBounds:1];
+      layer2 = [textLabel layer];
+      [layer2 setMasksToBounds:1];
 
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v10 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
-      [v10 addSubview:v6];
+      [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+      contentView = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
+      [contentView addSubview:textLabel];
 
       v88 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:24.0];
       v89 = [UIImage systemImageNamed:@"checkmark" withConfiguration:v88];
       v11 = [[UIImageView alloc] initWithImage:v89];
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 setCheckmarkImageView:v11];
 
-      v12 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      checkmarkImageView = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      [checkmarkImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v13 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      [v13 setHidden:1];
+      checkmarkImageView2 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      [checkmarkImageView2 setHidden:1];
 
       v14 = +[UIColor whiteColor];
-      v15 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      [v15 setTintColor:v14];
+      checkmarkImageView3 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      [checkmarkImageView3 setTintColor:v14];
 
-      v16 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      [v6 addSubview:v16];
+      checkmarkImageView4 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      [textLabel addSubview:checkmarkImageView4];
 
       v17 = objc_opt_new();
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 setCellLabel:v17];
 
       v18 = +[UIColor whiteColor];
-      v19 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v19 setTextColor:v18];
+      cellLabel = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel setTextColor:v18];
 
-      v20 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v20 setNumberOfLines:0];
+      cellLabel2 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel2 setNumberOfLines:0];
 
-      v21 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v21 setTextAlignment:1];
+      cellLabel3 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel3 setTextAlignment:1];
 
-      v22 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+      cellLabel4 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v23 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-      v24 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v24 setFont:v23];
+      cellLabel5 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel5 setFont:v23];
 
-      v25 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v25 setAdjustsFontForContentSizeCategory:1];
+      cellLabel6 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [cellLabel6 setAdjustsFontForContentSizeCategory:1];
 
-      v26 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      [v6 addSubview:v26];
+      cellLabel7 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      [textLabel addSubview:cellLabel7];
 
-      v27 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v28 = [v27 trailingAnchor];
-      v29 = [v6 trailingAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      cellLabel8 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      trailingAnchor = [cellLabel8 trailingAnchor];
+      trailingAnchor2 = [textLabel trailingAnchor];
+      v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 setLabelTrailingToPillConstraint:v30];
 
-      v31 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v32 = [v31 trailingAnchor];
-      v33 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      v34 = [v33 leadingAnchor];
-      v35 = [v32 constraintEqualToAnchor:v34];
+      cellLabel9 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      trailingAnchor3 = [cellLabel9 trailingAnchor];
+      checkmarkImageView5 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      leadingAnchor = [checkmarkImageView5 leadingAnchor];
+      v35 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor];
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 setLabelTrailingToCheckmarkConstraint:v35];
 
-      v87 = [v6 heightAnchor];
-      v86 = [v87 constraintGreaterThanOrEqualToConstant:55.0];
+      heightAnchor = [textLabel heightAnchor];
+      v86 = [heightAnchor constraintGreaterThanOrEqualToConstant:55.0];
       v91[0] = v86;
-      v84 = [v6 topAnchor];
-      v85 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
-      v83 = [v85 topAnchor];
-      v82 = [v84 constraintEqualToAnchor:v83 constant:4.0];
+      topAnchor = [textLabel topAnchor];
+      contentView2 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
+      topAnchor2 = [contentView2 topAnchor];
+      v82 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
       v91[1] = v82;
-      v80 = [v6 leadingAnchor];
-      v81 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
-      v79 = [v81 leadingAnchor];
-      v78 = [v80 constraintEqualToAnchor:v79 constant:16.0];
+      leadingAnchor2 = [textLabel leadingAnchor];
+      contentView3 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
+      leadingAnchor3 = [contentView3 leadingAnchor];
+      v78 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
       v91[2] = v78;
-      v76 = [v6 trailingAnchor];
-      v77 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
-      v75 = [v77 trailingAnchor];
-      v74 = [v76 constraintEqualToAnchor:v75 constant:-16.0];
+      trailingAnchor4 = [textLabel trailingAnchor];
+      contentView4 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
+      trailingAnchor5 = [contentView4 trailingAnchor];
+      v74 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
       v91[3] = v74;
-      v73 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v72 = [v73 centerXAnchor];
-      v71 = [v6 centerXAnchor];
-      v70 = [v72 constraintEqualToAnchor:v71];
+      cellLabel10 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      centerXAnchor = [cellLabel10 centerXAnchor];
+      centerXAnchor2 = [textLabel centerXAnchor];
+      v70 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v91[4] = v70;
-      v69 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v68 = [v69 centerYAnchor];
-      v67 = [v6 centerYAnchor];
-      v66 = [v68 constraintEqualToAnchor:v67];
+      cellLabel11 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      centerYAnchor = [cellLabel11 centerYAnchor];
+      centerYAnchor2 = [textLabel centerYAnchor];
+      v66 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v91[5] = v66;
-      v65 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v64 = [v65 leadingAnchor];
-      v63 = [v6 leadingAnchor];
-      v62 = [v64 constraintGreaterThanOrEqualToAnchor:v63];
+      cellLabel12 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      leadingAnchor4 = [cellLabel12 leadingAnchor];
+      leadingAnchor5 = [textLabel leadingAnchor];
+      v62 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:leadingAnchor5];
       v91[6] = v62;
-      v61 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 labelTrailingToPillConstraint];
-      v91[7] = v61;
-      v60 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      v59 = [v60 trailingAnchor];
-      v58 = [v6 trailingAnchor];
-      v57 = [v59 constraintEqualToAnchor:v58 constant:-10.0];
+      labelTrailingToPillConstraint = [(ZWMenuItemSimpleButtonTableViewCell *)v4 labelTrailingToPillConstraint];
+      v91[7] = labelTrailingToPillConstraint;
+      checkmarkImageView6 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      trailingAnchor6 = [checkmarkImageView6 trailingAnchor];
+      trailingAnchor7 = [textLabel trailingAnchor];
+      v57 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-10.0];
       v91[8] = v57;
-      v56 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      v55 = [v56 centerYAnchor];
-      v54 = [v6 centerYAnchor];
-      v53 = [v55 constraintEqualToAnchor:v54];
+      checkmarkImageView7 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      centerYAnchor3 = [checkmarkImageView7 centerYAnchor];
+      centerYAnchor4 = [textLabel centerYAnchor];
+      v53 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v91[9] = v53;
-      v52 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      v51 = [v52 widthAnchor];
-      v50 = [v51 constraintEqualToConstant:24.0];
+      checkmarkImageView8 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      widthAnchor = [checkmarkImageView8 widthAnchor];
+      v50 = [widthAnchor constraintEqualToConstant:24.0];
       v91[10] = v50;
-      v49 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
-      v48 = [v49 heightAnchor];
-      v47 = [v48 constraintEqualToConstant:24.0];
+      checkmarkImageView9 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 checkmarkImageView];
+      heightAnchor2 = [checkmarkImageView9 heightAnchor];
+      v47 = [heightAnchor2 constraintEqualToConstant:24.0];
       v91[11] = v47;
-      v46 = [v6 bottomAnchor];
-      v36 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
-      v37 = [v36 bottomAnchor];
-      v38 = [v46 constraintEqualToAnchor:v37 constant:10.0];
+      bottomAnchor = [textLabel bottomAnchor];
+      cellLabel13 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 cellLabel];
+      bottomAnchor2 = [cellLabel13 bottomAnchor];
+      v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:10.0];
       v91[12] = v38;
-      v39 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
-      v40 = [v39 bottomAnchor];
-      v41 = [v6 bottomAnchor];
-      v42 = [v40 constraintEqualToAnchor:v41 constant:4.0];
+      contentView5 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 contentView];
+      bottomAnchor3 = [contentView5 bottomAnchor];
+      bottomAnchor4 = [textLabel bottomAnchor];
+      v42 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:4.0];
       v91[13] = v42;
       v43 = [NSArray arrayWithObjects:v91 count:14];
       [NSLayoutConstraint activateConstraints:v43];
@@ -161,11 +161,11 @@
 
     else
     {
-      v6 = [(ZWMenuItemSimpleButtonTableViewCell *)v4 textLabel];
+      textLabel = [(ZWMenuItemSimpleButtonTableViewCell *)v4 textLabel];
       [(ZWMenuItemSimpleButtonTableViewCell *)v4 _applyTitleLabelColor];
-      [v6 setTextAlignment:1];
-      [v6 setLineBreakMode:4];
-      [v6 setNumberOfLines:1];
+      [textLabel setTextAlignment:1];
+      [textLabel setLineBreakMode:4];
+      [textLabel setNumberOfLines:1];
       v44 = +[NSNotificationCenter defaultCenter];
       [v44 addObserver:v4 selector:"_applyTitleLabelColor" name:UIAccessibilityInvertColorsStatusDidChangeNotification object:0];
     }
@@ -174,27 +174,27 @@
   return v4;
 }
 
-- (void)setIsChecked:(BOOL)a3
+- (void)setIsChecked:(BOOL)checked
 {
-  v3 = a3;
-  self->_isChecked = a3;
-  v5 = [(ZWMenuItemSimpleButtonTableViewCell *)self checkmarkImageView];
-  [v5 setHidden:v3 ^ 1];
+  checkedCopy = checked;
+  self->_isChecked = checked;
+  checkmarkImageView = [(ZWMenuItemSimpleButtonTableViewCell *)self checkmarkImageView];
+  [checkmarkImageView setHidden:checkedCopy ^ 1];
 
-  v6 = [(ZWMenuItemSimpleButtonTableViewCell *)self labelTrailingToPillConstraint];
-  [v6 setActive:v3 ^ 1];
+  labelTrailingToPillConstraint = [(ZWMenuItemSimpleButtonTableViewCell *)self labelTrailingToPillConstraint];
+  [labelTrailingToPillConstraint setActive:checkedCopy ^ 1];
 
-  v7 = [(ZWMenuItemSimpleButtonTableViewCell *)self labelTrailingToCheckmarkConstraint];
-  [v7 setActive:v3];
+  labelTrailingToCheckmarkConstraint = [(ZWMenuItemSimpleButtonTableViewCell *)self labelTrailingToCheckmarkConstraint];
+  [labelTrailingToCheckmarkConstraint setActive:checkedCopy];
 
-  v8 = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
-  [v8 setNeedsUpdateConstraints];
+  contentView = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
+  [contentView setNeedsUpdateConstraints];
 
-  v9 = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
-  [v9 updateConstraintsIfNeeded];
+  contentView2 = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
+  [contentView2 updateConstraintsIfNeeded];
 
-  v10 = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
-  [v10 layoutIfNeeded];
+  contentView3 = [(ZWMenuItemSimpleButtonTableViewCell *)self contentView];
+  [contentView3 layoutIfNeeded];
 }
 
 - (void)_applyTitleLabelColor

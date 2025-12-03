@@ -1,19 +1,19 @@
 @interface _UIKBRTTouchInfo
-+ (id)createTouchInfoForTouch:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5;
++ (id)createTouchInfoForTouch:(id)touch withIdentifier:(id)identifier canLogTouch:(BOOL)logTouch;
 + (id)touchDict;
-+ (id)touchInfoForTouch:(id)a3 withIdentifier:(id)a4;
-+ (void)setTouchInfo:(id)a3 forIdentifier:(id)a4;
-- (BOOL)willChangeTouchInfo:(id)a3 toState:(char)a4;
++ (id)touchInfoForTouch:(id)touch withIdentifier:(id)identifier;
++ (void)setTouchInfo:(id)info forIdentifier:(id)identifier;
+- (BOOL)willChangeTouchInfo:(id)info toState:(char)state;
 - (CGPoint)currentTouchPoint;
 - (CGPoint)originalTouchPoint;
-- (_UIKBRTTouchInfo)initWithTouch:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5;
-- (id)setOfTouchesToIgnoreWhenSettingTouchInfo:(id)a3 toState:(char)a4;
+- (_UIKBRTTouchInfo)initWithTouch:(id)touch withIdentifier:(id)identifier canLogTouch:(BOOL)logTouch;
+- (id)setOfTouchesToIgnoreWhenSettingTouchInfo:(id)info toState:(char)state;
 - (void)cleanup;
 - (void)dealloc;
 - (void)fireTimerNow;
 - (void)invalidateTimer;
-- (void)setTimerWithTimeInterval:(double)a3 onQueue:(id)a4 do:(id)a5;
-- (void)updateTouch:(id)a3;
+- (void)setTimerWithTimeInterval:(double)interval onQueue:(id)queue do:(id)do;
+- (void)updateTouch:(id)touch;
 @end
 
 @implementation _UIKBRTTouchInfo
@@ -30,68 +30,68 @@
   return v3;
 }
 
-+ (void)setTouchInfo:(id)a3 forIdentifier:(id)a4
++ (void)setTouchInfo:(id)info forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 touchDict];
-  v8 = v7;
-  if (v9)
+  infoCopy = info;
+  identifierCopy = identifier;
+  touchDict = [self touchDict];
+  v8 = touchDict;
+  if (infoCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [touchDict setObject:infoCopy forKey:identifierCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [touchDict removeObjectForKey:identifierCopy];
   }
 }
 
-+ (id)touchInfoForTouch:(id)a3 withIdentifier:(id)a4
++ (id)touchInfoForTouch:(id)touch withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 touchDict];
-  v9 = [v8 objectForKey:v6];
+  identifierCopy = identifier;
+  touchCopy = touch;
+  touchDict = [self touchDict];
+  v9 = [touchDict objectForKey:identifierCopy];
 
-  [v9 updateTouch:v7];
+  [v9 updateTouch:touchCopy];
 
   return v9;
 }
 
-+ (id)createTouchInfoForTouch:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5
++ (id)createTouchInfoForTouch:(id)touch withIdentifier:(id)identifier canLogTouch:(BOOL)logTouch
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_UIKBRTTouchInfo alloc] initWithTouch:v9 withIdentifier:v8 canLogTouch:v5];
+  logTouchCopy = logTouch;
+  identifierCopy = identifier;
+  touchCopy = touch;
+  v10 = [[_UIKBRTTouchInfo alloc] initWithTouch:touchCopy withIdentifier:identifierCopy canLogTouch:logTouchCopy];
 
-  [a1 setTouchInfo:v10 forIdentifier:v8];
+  [self setTouchInfo:v10 forIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (_UIKBRTTouchInfo)initWithTouch:(id)a3 withIdentifier:(id)a4 canLogTouch:(BOOL)a5
+- (_UIKBRTTouchInfo)initWithTouch:(id)touch withIdentifier:(id)identifier canLogTouch:(BOOL)logTouch
 {
-  v7 = a3;
-  v8 = a4;
+  touchCopy = touch;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = _UIKBRTTouchInfo;
   v9 = [(_UIKBRTTouchInfo *)&v20 init];
   if (v9)
   {
-    [v7 timestamp];
+    [touchCopy timestamp];
     v9->_originalTimestamp = v10;
     v9->_currentTimestamp = v10;
-    v11 = [v7 view];
-    [v7 locationInView:v11];
+    view = [touchCopy view];
+    [touchCopy locationInView:view];
     v9->_originalTouchPoint.x = v12;
     v9->_originalTouchPoint.y = v13;
     v9->_currentTouchPoint = v9->_originalTouchPoint;
 
-    [v7 majorRadius];
+    [touchCopy majorRadius];
     v9->_maximumRadius = v14;
-    [v7 _zGradient];
+    [touchCopy _zGradient];
     v16 = v15;
     v9->_originalZGradient = v16;
     v9->_currentZGradient = v16;
@@ -99,7 +99,7 @@
     timerQueue = v9->_timerQueue;
     v9->_timerQueue = v17;
 
-    objc_storeStrong(&v9->_touchIdentifier, a4);
+    objc_storeStrong(&v9->_touchIdentifier, identifier);
     v9->_currentTouchState = 0;
     v9->_preRuleTouchState = -1;
   }
@@ -115,45 +115,45 @@
   [(_UIKBRTTouchInfo *)&v3 dealloc];
 }
 
-- (void)updateTouch:(id)a3
+- (void)updateTouch:(id)touch
 {
-  v4 = a3;
-  [v4 timestamp];
+  touchCopy = touch;
+  [touchCopy timestamp];
   self->_currentTimestamp = v5;
-  v6 = [v4 view];
-  [v4 locationInView:v6];
+  view = [touchCopy view];
+  [touchCopy locationInView:view];
   self->_currentTouchPoint.x = v7;
   self->_currentTouchPoint.y = v8;
 
   maximumRadius = self->_maximumRadius;
-  [v4 majorRadius];
+  [touchCopy majorRadius];
   if (maximumRadius >= v10)
   {
     v10 = maximumRadius;
   }
 
   self->_maximumRadius = v10;
-  [v4 _zGradient];
+  [touchCopy _zGradient];
   v12 = v11;
 
   self->_currentZGradient = v12;
 }
 
-- (void)setTimerWithTimeInterval:(double)a3 onQueue:(id)a4 do:(id)a5
+- (void)setTimerWithTimeInterval:(double)interval onQueue:(id)queue do:(id)do
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  doCopy = do;
   timerQueue = self->_timerQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56___UIKBRTTouchInfo_setTimerWithTimeInterval_onQueue_do___block_invoke;
   v13[3] = &unk_1E7118860;
-  v16 = a3;
+  intervalCopy = interval;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = doCopy;
+  v11 = doCopy;
+  v12 = queueCopy;
   dispatch_sync(timerQueue, v13);
 }
 
@@ -162,8 +162,8 @@
   [(_UIKBRTTimerBlock *)self->_timer fireNow];
   if (self->_timer)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UIKBRTTouchInfo.m" lineNumber:232 description:@"_timer is not nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKBRTTouchInfo.m" lineNumber:232 description:@"_timer is not nil!"];
   }
 }
 
@@ -180,8 +180,8 @@
 
 - (void)cleanup
 {
-  v3 = [(_UIKBRTObject *)self owner];
-  [v3 _uikbrtRemove:self];
+  owner = [(_UIKBRTObject *)self owner];
+  [owner _uikbrtRemove:self];
 
   v4 = objc_opt_class();
   touchIdentifier = self->_touchIdentifier;
@@ -189,15 +189,15 @@
   [v4 setTouchInfo:0 forIdentifier:touchIdentifier];
 }
 
-- (id)setOfTouchesToIgnoreWhenSettingTouchInfo:(id)a3 toState:(char)a4
+- (id)setOfTouchesToIgnoreWhenSettingTouchInfo:(id)info toState:(char)state
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_opt_new();
   currentTouchState = self->_currentTouchState;
-  v8 = [(_UIKBRTTouchInfo *)self nextTouch];
+  nextTouch = [(_UIKBRTTouchInfo *)self nextTouch];
 
-  if (v8 == v5)
+  if (nextTouch == infoCopy)
   {
     while (currentTouchState == 3)
     {
@@ -210,12 +210,12 @@
       {
         if (currentTouchState == 6)
         {
-          [v5 originalTimestamp];
+          [infoCopy originalTimestamp];
           v19 = v18 - self->_originalTimestamp;
           if (v19 <= _UIGet_UIKBRT_SetDownTapInterval())
           {
             v27[0] = self;
-            v27[1] = v5;
+            v27[1] = infoCopy;
             v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
             [v6 addObjectsFromArray:v20];
           }
@@ -224,14 +224,14 @@
         goto LABEL_34;
       }
 
-      [v5 originalTimestamp];
+      [infoCopy originalTimestamp];
       v15 = v14 - self->_originalTimestamp;
       if (v15 > _UIGet_UIKBRT_SetDownTapInterval())
       {
         goto LABEL_34;
       }
 
-      v10 = v5;
+      v10 = infoCopy;
       v11 = 4;
     }
 
@@ -240,34 +240,34 @@
       switch(currentTouchState)
       {
         case 0u:
-          [v5 originalTimestamp];
+          [infoCopy originalTimestamp];
           v22 = v21 - self->_originalTimestamp;
           if (v22 > _UIGet_UIKBRT_SetDownTapInterval())
           {
             goto LABEL_34;
           }
 
-          v23 = [(_UIKBRTTouchInfo *)self previousTouch];
-          v24 = [v23 setOfTouchesToIgnoreWhenSettingTouchInfo:self toState:1];
+          previousTouch = [(_UIKBRTTouchInfo *)self previousTouch];
+          nextTouch2 = [previousTouch setOfTouchesToIgnoreWhenSettingTouchInfo:self toState:1];
 
-          if ([v24 count])
+          if ([nextTouch2 count])
           {
-            [v6 unionSet:v24];
+            [v6 unionSet:nextTouch2];
           }
 
           else
           {
             self->_currentTouchState = 1;
-            [v5 setCurrentTouchState:1];
+            [infoCopy setCurrentTouchState:1];
           }
 
           goto LABEL_33;
         case 1u:
-          v10 = v5;
+          v10 = infoCopy;
           v11 = 1;
           break;
         case 2u:
-          v10 = v5;
+          v10 = infoCopy;
           v11 = 2;
           break;
         default:
@@ -279,9 +279,9 @@
     goto LABEL_34;
   }
 
-  v9 = [(_UIKBRTTouchInfo *)self previousTouch];
+  previousTouch2 = [(_UIKBRTTouchInfo *)self previousTouch];
 
-  if (v9 != v5)
+  if (previousTouch2 != infoCopy)
   {
     goto LABEL_34;
   }
@@ -298,10 +298,10 @@
       if (!currentTouchState)
       {
         originalTimestamp = self->_originalTimestamp;
-        [v5 originalTimestamp];
+        [infoCopy originalTimestamp];
         if (originalTimestamp - v13 <= _UIGet_UIKBRT_SetDownTapInterval())
         {
-          [v5 setCurrentTouchState:1];
+          [infoCopy setCurrentTouchState:1];
           self->_currentTouchState = 1;
         }
       }
@@ -321,8 +321,8 @@
 
 LABEL_32:
     [v6 addObject:self];
-    v24 = [(_UIKBRTTouchInfo *)self nextTouch];
-    v25 = [v24 setOfTouchesToIgnoreWhenSettingTouchInfo:self toState:6];
+    nextTouch2 = [(_UIKBRTTouchInfo *)self nextTouch];
+    v25 = [nextTouch2 setOfTouchesToIgnoreWhenSettingTouchInfo:self toState:6];
     [v6 unionSet:v25];
 
 LABEL_33:
@@ -330,7 +330,7 @@ LABEL_33:
   }
 
   v16 = self->_originalTimestamp;
-  [v5 originalTimestamp];
+  [infoCopy originalTimestamp];
   if (v16 - v17 > _UIGet_UIKBRT_SetDownTapInterval())
   {
     [v6 addObject:self];
@@ -341,18 +341,18 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)willChangeTouchInfo:(id)a3 toState:(char)a4
+- (BOOL)willChangeTouchInfo:(id)info toState:(char)state
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 != 8)
+  stateCopy = state;
+  infoCopy = info;
+  if (stateCopy != 8)
   {
     goto LABEL_14;
   }
 
-  v7 = [(_UIKBRTTouchInfo *)self nextTouch];
+  nextTouch = [(_UIKBRTTouchInfo *)self nextTouch];
 
-  if (v7 == v6)
+  if (nextTouch == infoCopy)
   {
     v12 = &OBJC_IVAR____UIKBRTTouchInfo__currentTouchState;
     do
@@ -367,9 +367,9 @@ LABEL_34:
 
   else
   {
-    v8 = [(_UIKBRTTouchInfo *)self previousTouch];
+    previousTouch = [(_UIKBRTTouchInfo *)self previousTouch];
 
-    if (v8 != v6)
+    if (previousTouch != infoCopy)
     {
 LABEL_14:
       v13 = 0;
@@ -389,7 +389,7 @@ LABEL_14:
 
   if (v11 == 6)
   {
-    [v6 originalTimestamp];
+    [infoCopy originalTimestamp];
     v15 = v14 - self->_originalTimestamp;
     if (v15 > _UIGet_UIKBRT_SetDownTapInterval())
     {

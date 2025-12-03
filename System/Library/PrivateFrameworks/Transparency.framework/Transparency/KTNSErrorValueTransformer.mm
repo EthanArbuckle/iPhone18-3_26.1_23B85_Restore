@@ -1,8 +1,8 @@
 @interface KTNSErrorValueTransformer
 + (void)registerTransformer;
 - (id)allowedTopLevelClasses;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation KTNSErrorValueTransformer
@@ -25,13 +25,13 @@
   [v2 setValueTransformer:v4 forName:v3];
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  valueCopy = value;
   v10 = 0;
-  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:valueCopy error:&v10];
 
   v6 = v10;
   if (v6)
@@ -62,14 +62,14 @@ uint64_t __46__KTNSErrorValueTransformer_transformedValue___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E697AAC0] cleanseErrorForXPC:v3];
+    v4 = [MEMORY[0x1E697AAC0] cleanseErrorForXPC:valueCopy];
 
     v5 = [TransparencyError truncateUnderlyingErrorDepth:v4 maxDepth:10];
 
@@ -96,7 +96,7 @@ uint64_t __46__KTNSErrorValueTransformer_transformedValue___block_invoke()
   else
   {
     v6 = 0;
-    v5 = v3;
+    v5 = valueCopy;
   }
 
   v9 = *MEMORY[0x1E69E9840];

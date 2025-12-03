@@ -1,14 +1,14 @@
 @interface BKBookParser
-+ (BOOL)canParse:(id)a3;
-+ (id)parserForBook:(id)a3;
-- (BKBookParser)initWithBook:(id)a3;
++ (BOOL)canParse:(id)parse;
++ (id)parserForBook:(id)book;
+- (BKBookParser)initWithBook:(id)book;
 @end
 
 @implementation BKBookParser
 
-+ (BOOL)canParse:(id)a3
++ (BOOL)canParse:(id)parse
 {
-  v3 = a3;
+  parseCopy = parse;
   v4 = BookFormatByFilePath();
   if (v4)
   {
@@ -17,15 +17,15 @@
 
   else
   {
-    v6 = ITEpubFolder::isMimeCorrect(v3, 0, 0, v5) != 0;
+    v6 = ITEpubFolder::isMimeCorrect(parseCopy, 0, 0, v5) != 0;
   }
 
   return v6;
 }
 
-+ (id)parserForBook:(id)a3
++ (id)parserForBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_10:
@@ -33,12 +33,12 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v4 = [v3 contentType];
-  if (v4)
+  contentType = [bookCopy contentType];
+  if (contentType)
   {
-    if (v4 != 2)
+    if (contentType != 2)
     {
-      if (v4 != 3)
+      if (contentType != 3)
       {
         v5 = BCIMLog();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@ LABEL_10:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v10 = 138412290;
-          v11 = v3;
+          v11 = bookCopy;
           _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "@Unrecognized book content type: %@", &v10, 0xCu);
         }
       }
@@ -72,20 +72,20 @@ LABEL_10:
     v8 = off_1E12E0;
   }
 
-  v7 = [objc_alloc(*v8) initWithBook:v3];
+  v7 = [objc_alloc(*v8) initWithBook:bookCopy];
 LABEL_14:
 
   return v7;
 }
 
-- (BKBookParser)initWithBook:(id)a3
+- (BKBookParser)initWithBook:(id)book
 {
-  v5 = a3;
+  bookCopy = book;
   v6 = [(BKBookParser *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_book, a3);
+    objc_storeStrong(&v6->_book, book);
   }
 
   return v7;

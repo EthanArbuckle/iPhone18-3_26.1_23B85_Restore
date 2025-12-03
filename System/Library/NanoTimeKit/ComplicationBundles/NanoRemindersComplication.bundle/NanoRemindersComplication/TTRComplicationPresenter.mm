@@ -1,31 +1,31 @@
 @interface TTRComplicationPresenter
-+ (Class)templateGeneratorClassForComplicationFamily:(int64_t)a3;
-+ (id)templateGeneratorForComplicationFamily:(int64_t)a3;
++ (Class)templateGeneratorClassForComplicationFamily:(int64_t)family;
++ (id)templateGeneratorForComplicationFamily:(int64_t)family;
 - (NSURL)launchURLForTimelineEntries;
-- (TTRComplicationPresenter)initWithModelSource:(id)a3 router:(id)a4 complicationFamily:(int64_t)a5;
+- (TTRComplicationPresenter)initWithModelSource:(id)source router:(id)router complicationFamily:(int64_t)family;
 - (TTRComplicationPresenterDelegate)delegate;
-- (void)complicationTimelineModelSourceModelDidChange:(id)a3;
+- (void)complicationTimelineModelSourceModelDidChange:(id)change;
 - (void)pauseViewModelUpdates;
 - (void)resumeViewModelUpdates;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation TTRComplicationPresenter
 
-- (TTRComplicationPresenter)initWithModelSource:(id)a3 router:(id)a4 complicationFamily:(int64_t)a5
+- (TTRComplicationPresenter)initWithModelSource:(id)source router:(id)router complicationFamily:(int64_t)family
 {
-  v9 = a3;
-  v10 = a4;
+  sourceCopy = source;
+  routerCopy = router;
   v19.receiver = self;
   v19.super_class = TTRComplicationPresenter;
   v11 = [(TTRComplicationPresenter *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_modelSource, a3);
+    objc_storeStrong(&v11->_modelSource, source);
     [(TTRComplicationTimelineModelSource *)v12->_modelSource setDelegate:v12];
-    objc_storeStrong(&v12->_router, a4);
-    v13 = [objc_opt_class() templateGeneratorForComplicationFamily:a5];
+    objc_storeStrong(&v12->_router, router);
+    v13 = [objc_opt_class() templateGeneratorForComplicationFamily:family];
     v14 = v13;
     if (v13)
     {
@@ -37,7 +37,7 @@
       v16 = +[REMLog ui];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        sub_7B7C(a5, v16);
+        sub_7B7C(family, v16);
       }
 
       v15 = objc_alloc_init(TTREmptyComplicationTemplateGenerator);
@@ -52,52 +52,52 @@
   return v12;
 }
 
-- (void)complicationTimelineModelSourceModelDidChange:(id)a3
+- (void)complicationTimelineModelSourceModelDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [TTRComplicationTimelineViewModel alloc];
-  v8 = [v4 model];
+  model = [changeCopy model];
 
-  v6 = [(TTRComplicationPresenter *)self templateGenerator];
-  v7 = [(TTRComplicationTimelineViewModel *)v5 initWithTimelineModel:v8 templateGenerator:v6];
+  templateGenerator = [(TTRComplicationPresenter *)self templateGenerator];
+  v7 = [(TTRComplicationTimelineViewModel *)v5 initWithTimelineModel:model templateGenerator:templateGenerator];
   [(TTRComplicationPresenter *)self setViewModel:v7];
 }
 
 - (void)pauseViewModelUpdates
 {
-  v2 = [(TTRComplicationPresenter *)self modelSource];
-  [v2 pauseUpdates];
+  modelSource = [(TTRComplicationPresenter *)self modelSource];
+  [modelSource pauseUpdates];
 }
 
 - (void)resumeViewModelUpdates
 {
-  v2 = [(TTRComplicationPresenter *)self modelSource];
-  [v2 resumeUpdates];
+  modelSource = [(TTRComplicationPresenter *)self modelSource];
+  [modelSource resumeUpdates];
 }
 
 - (NSURL)launchURLForTimelineEntries
 {
-  v3 = [(TTRComplicationPresenter *)self viewModel];
+  viewModel = [(TTRComplicationPresenter *)self viewModel];
   v4 = +[NSDate date];
-  v5 = [v3 entriesInSameDayAsDate:v4 limit:1];
+  v5 = [viewModel entriesInSameDayAsDate:v4 limit:1];
 
-  v6 = [(TTRComplicationPresenter *)self router];
-  v7 = [v6 launchURLForTimelineWithEntryCount:{objc_msgSend(v5, "count")}];
+  router = [(TTRComplicationPresenter *)self router];
+  v7 = [router launchURLForTimelineWithEntryCount:{objc_msgSend(v5, "count")}];
 
   return v7;
 }
 
-+ (Class)templateGeneratorClassForComplicationFamily:(int64_t)a3
++ (Class)templateGeneratorClassForComplicationFamily:(int64_t)family
 {
-  if (NTKComplicationFamilyUtilitarianLargeNarrow == a3)
+  if (NTKComplicationFamilyUtilitarianLargeNarrow == family)
   {
     v4 = off_10300;
     goto LABEL_3;
   }
 
-  if (a3 <= 0xC && ((0x1FDFu >> a3) & 1) != 0)
+  if (family <= 0xC && ((0x1FDFu >> family) & 1) != 0)
   {
-    v4 = (&off_104C0)[a3];
+    v4 = (&off_104C0)[family];
 LABEL_3:
     v5 = *v4;
     v6 = objc_opt_class();
@@ -110,18 +110,18 @@ LABEL_3:
   return v6;
 }
 
-+ (id)templateGeneratorForComplicationFamily:(int64_t)a3
++ (id)templateGeneratorForComplicationFamily:(int64_t)family
 {
-  v3 = objc_alloc_init([a1 templateGeneratorClassForComplicationFamily:a3]);
+  v3 = objc_alloc_init([self templateGeneratorClassForComplicationFamily:family]);
 
   return v3;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  objc_storeStrong(&self->_viewModel, a3);
-  v4 = [(TTRComplicationPresenter *)self delegate];
-  [v4 complicationPresenterDidUpdateViewModel:self];
+  objc_storeStrong(&self->_viewModel, model);
+  delegate = [(TTRComplicationPresenter *)self delegate];
+  [delegate complicationPresenterDidUpdateViewModel:self];
 }
 
 - (TTRComplicationPresenterDelegate)delegate

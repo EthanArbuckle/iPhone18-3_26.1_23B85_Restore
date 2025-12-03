@@ -1,6 +1,6 @@
 @interface _NURenderResource
 - (_NURenderResource)init;
-- (_NURenderResource)initWithResource:(id)a3 key:(id)a4;
+- (_NURenderResource)initWithResource:(id)resource key:(id)key;
 - (id)description;
 @end
 
@@ -11,23 +11,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(_NURenderResource *)self key];
-  v6 = [(_NURenderResource *)self inUse];
-  v7 = [(_NURenderResource *)self useCount];
-  v8 = [(_NURenderResource *)self lastUseTime];
-  [v8 timeIntervalSinceNow];
+  inUse = [(_NURenderResource *)self inUse];
+  useCount = [(_NURenderResource *)self useCount];
+  lastUseTime = [(_NURenderResource *)self lastUseTime];
+  [lastUseTime timeIntervalSinceNow];
   v10 = -v9;
-  v11 = [(_NURenderResource *)self object];
-  v12 = [v3 stringWithFormat:@"<%@:%p key:'%@' in use:%d count:%lu age:%0.3fs object:%@>", v4, self, v5, v6, v7, *&v10, v11];
+  object = [(_NURenderResource *)self object];
+  v12 = [v3 stringWithFormat:@"<%@:%p key:'%@' in use:%d count:%lu age:%0.3fs object:%@>", v4, self, v5, inUse, useCount, *&v10, object];
 
   return v12;
 }
 
-- (_NURenderResource)initWithResource:(id)a3 key:(id)a4
+- (_NURenderResource)initWithResource:(id)resource key:(id)key
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  resourceCopy = resource;
+  keyCopy = key;
+  if (!resourceCopy)
   {
     v14 = NUAssertLogger_12301();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v28;
         v49 = 2114;
@@ -60,8 +60,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -70,8 +70,8 @@
     _NUAssertFailHandler("[_NURenderResource initWithResource:key:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderResourcePool.m", 152, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "object != nil");
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = keyCopy;
+  if (!keyCopy)
   {
     v21 = NUAssertLogger_12301();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -92,8 +92,8 @@
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v38 callStackSymbols];
+        v41 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v37;
         v49 = 2114;
@@ -104,8 +104,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -117,7 +117,7 @@
   v46.receiver = self;
   v46.super_class = _NURenderResource;
   v10 = [(_NURenderResource *)&v46 init];
-  objc_storeStrong(&v10->_object, a3);
+  objc_storeStrong(&v10->_object, resource);
   v11 = [v9 copy];
   key = v10->_key;
   v10->_key = v11;
@@ -178,8 +178,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -195,8 +195,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

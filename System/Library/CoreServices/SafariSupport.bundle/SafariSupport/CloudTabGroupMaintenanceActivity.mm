@@ -1,27 +1,27 @@
 @interface CloudTabGroupMaintenanceActivity
-- (CloudTabGroupMaintenanceActivity)initWithConfiguration:(id)a3;
+- (CloudTabGroupMaintenanceActivity)initWithConfiguration:(id)configuration;
 - (CloudTabGroupMaintenanceActivityDelegate)delegate;
 - (void)registerActivity;
 @end
 
 @implementation CloudTabGroupMaintenanceActivity
 
-- (CloudTabGroupMaintenanceActivity)initWithConfiguration:(id)a3
+- (CloudTabGroupMaintenanceActivity)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = CloudTabGroupMaintenanceActivity;
   v6 = [(CloudTabGroupMaintenanceActivity *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [NSString stringWithFormat:@"com.apple.SafariBookmarksSyncAgent.%@.%p", v9, v7];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v13;
 

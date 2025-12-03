@@ -2,10 +2,10 @@
 + (BOOL)deviceSpeakerIsInUse;
 + (BOOL)headphonesAreInUse;
 - (BOOL)activate;
-- (BOOL)deactivateWithForce:(BOOL)a3;
+- (BOOL)deactivateWithForce:(BOOL)force;
 - (MNAudioSessionAccessDelegate)delegate;
 - (MNAudioSessionResourceAccess)init;
-- (id)_stringForAVAudioSessionErrorCode:(int64_t)a3;
+- (id)_stringForAVAudioSessionErrorCode:(int64_t)code;
 - (unint64_t)promptStyle;
 - (void)_changeNumChannels;
 @end
@@ -19,153 +19,153 @@
   return WeakRetained;
 }
 
-- (id)_stringForAVAudioSessionErrorCode:(int64_t)a3
+- (id)_stringForAVAudioSessionErrorCode:(int64_t)code
 {
-  if (a3 <= 561145186)
+  if (code <= 561145186)
   {
-    if (a3 <= 560161139)
+    if (code <= 560161139)
     {
-      switch(a3)
+      switch(code)
       {
         case -50:
-          v4 = @"AVAudioSessionErrorCodeBadParam";
+          code = @"AVAudioSessionErrorCodeBadParam";
 
-          return v4;
+          return code;
         case 0:
-          v4 = @"AVAudioSessionErrorCodeNone";
+          code = @"AVAudioSessionErrorCodeNone";
 
-          return v4;
+          return code;
         case 560030580:
-          v4 = @"AVAudioSessionErrorCodeIsBusy";
+          code = @"AVAudioSessionErrorCodeIsBusy";
 
-          return v4;
+          return code;
       }
     }
 
-    else if (a3 > 561015904)
+    else if (code > 561015904)
     {
-      if (a3 == 561015905)
+      if (code == 561015905)
       {
-        v4 = @"AVAudioSessionErrorCodeCannotStartPlaying";
+        code = @"AVAudioSessionErrorCodeCannotStartPlaying";
 
-        return v4;
+        return code;
       }
 
-      if (a3 == 561017449)
+      if (code == 561017449)
       {
-        v4 = @"AVAudioSessionErrorCodeInsufficientPriority";
+        code = @"AVAudioSessionErrorCodeInsufficientPriority";
 
-        return v4;
+        return code;
       }
     }
 
     else
     {
-      if (a3 == 560161140)
+      if (code == 560161140)
       {
-        v4 = @"AVAudioSessionErrorCodeIncompatibleCategory";
+        code = @"AVAudioSessionErrorCodeIncompatibleCategory";
 
-        return v4;
+        return code;
       }
 
-      if (a3 == 560557684)
+      if (code == 560557684)
       {
-        v4 = @"AVAudioSessionErrorCodeCannotInterruptOthers";
+        code = @"AVAudioSessionErrorCodeCannotInterruptOthers";
 
-        return v4;
+        return code;
       }
     }
 
 LABEL_64:
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UNKNOWN: %ld", a3];
+    code = [MEMORY[0x1E696AEC0] stringWithFormat:@"UNKNOWN: %ld", code];
 
-    return v4;
+    return code;
   }
 
-  if (a3 > 1768841570)
+  if (code > 1768841570)
   {
-    if (a3 > 1936290408)
+    if (code > 1936290408)
     {
-      if (a3 == 1936290409)
+      if (code == 1936290409)
       {
-        v4 = @"AVAudioSessionErrorCodeSiriIsRecording";
+        code = @"AVAudioSessionErrorCodeSiriIsRecording";
 
-        return v4;
+        return code;
       }
 
-      if (a3 == 2003329396)
+      if (code == 2003329396)
       {
-        v4 = @"AVAudioSessionErrorCodeUnspecified";
+        code = @"AVAudioSessionErrorCodeUnspecified";
 
-        return v4;
+        return code;
       }
     }
 
     else
     {
-      if (a3 == 1768841571)
+      if (code == 1768841571)
       {
-        v4 = @"AVAudioSessionErrorCodeSessionNotActive";
+        code = @"AVAudioSessionErrorCodeSessionNotActive";
 
-        return v4;
+        return code;
       }
 
-      if (a3 == 1836282486)
+      if (code == 1836282486)
       {
-        v4 = @"AVAudioSessionErrorCodeMediaServicesFailed";
+        code = @"AVAudioSessionErrorCodeMediaServicesFailed";
 
-        return v4;
+        return code;
       }
     }
 
     goto LABEL_64;
   }
 
-  if (a3 > 561210738)
+  if (code > 561210738)
   {
-    if (a3 == 561210739)
+    if (code == 561210739)
     {
-      v4 = @"AVAudioSessionErrorCodeExpiredSession";
+      code = @"AVAudioSessionErrorCodeExpiredSession";
 
-      return v4;
+      return code;
     }
 
-    if (a3 == 1701737535)
+    if (code == 1701737535)
     {
-      v4 = @"AVAudioSessionErrorCodeMissingEntitlement";
+      code = @"AVAudioSessionErrorCodeMissingEntitlement";
 
-      return v4;
+      return code;
     }
 
     goto LABEL_64;
   }
 
-  if (a3 != 561145187)
+  if (code != 561145187)
   {
-    if (a3 == 561145203)
+    if (code == 561145203)
     {
-      v4 = @"AVAudioSessionErrorCodeResourceNotAvailable";
+      code = @"AVAudioSessionErrorCodeResourceNotAvailable";
 
-      return v4;
+      return code;
     }
 
     goto LABEL_64;
   }
 
-  v4 = @"AVAudioSessionErrorCodeCannotStartRecording";
+  code = @"AVAudioSessionErrorCodeCannotStartRecording";
 
-  return v4;
+  return code;
 }
 
-- (BOOL)deactivateWithForce:(BOOL)a3
+- (BOOL)deactivateWithForce:(BOOL)force
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_state)
   {
-    a3 = 1;
+    force = 1;
   }
 
-  if (a3)
+  if (force)
   {
     self->_state = 1;
     v5 = GetAudioLogForMNAudioSessionResourceAccessCategory();
@@ -207,7 +207,7 @@ LABEL_64:
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return a3;
+  return force;
 }
 
 void __52__MNAudioSessionResourceAccess_deactivateWithForce___block_invoke(uint64_t a1)
@@ -480,9 +480,9 @@ LABEL_14:
 - (void)_changeNumChannels
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698D710] sharedInstance];
+  mEMORY[0x1E698D710] = [MEMORY[0x1E698D710] sharedInstance];
   v19 = 0;
-  v4 = [v3 setPreferredOutputNumberOfChannels:1 error:&v19];
+  v4 = [mEMORY[0x1E698D710] setPreferredOutputNumberOfChannels:1 error:&v19];
   v5 = v19;
 
   v6 = GetAudioLogForMNAudioSessionResourceAccessCategory();
@@ -505,13 +505,13 @@ LABEL_14:
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "Ⓓ    Successfully set the channel count", buf, 2u);
     }
 
-    v16 = [(MNAudioSessionResourceAccess *)self delegate];
+    delegate = [(MNAudioSessionResourceAccess *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v14 = [(MNAudioSessionResourceAccess *)self delegate];
-      [v14 audioSessionResourceAccess:self didSetChannelCount:1];
+      delegate2 = [(MNAudioSessionResourceAccess *)self delegate];
+      [delegate2 audioSessionResourceAccess:self didSetChannelCount:1];
       goto LABEL_13;
     }
   }
@@ -525,7 +525,7 @@ LABEL_14:
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_ERROR, "⒟    Error setting the channel count: %@", buf, 0xCu);
     }
 
-    v9 = [(MNAudioSessionResourceAccess *)self delegate];
+    delegate3 = [(MNAudioSessionResourceAccess *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
@@ -535,10 +535,10 @@ LABEL_14:
       v20 = *MEMORY[0x1E696AA08];
       v21 = v5;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v14 = [v11 errorWithDomain:@"MNAudioSystemError" code:3404 userInfo:v13];
+      delegate2 = [v11 errorWithDomain:@"MNAudioSystemError" code:3404 userInfo:v13];
 
-      v15 = [(MNAudioSessionResourceAccess *)self delegate];
-      [v15 audioSessionResourceAccess:self didFailWhileSettingChannelCount:v14];
+      delegate4 = [(MNAudioSessionResourceAccess *)self delegate];
+      [delegate4 audioSessionResourceAccess:self didFailWhileSettingChannelCount:delegate2];
 
 LABEL_13:
     }
@@ -554,10 +554,10 @@ LABEL_13:
     return 1936224884;
   }
 
-  v3 = [MEMORY[0x1E698D710] sharedInstance];
-  v4 = [v3 promptStyle];
+  mEMORY[0x1E698D710] = [MEMORY[0x1E698D710] sharedInstance];
+  promptStyle = [mEMORY[0x1E698D710] promptStyle];
 
-  return v4;
+  return promptStyle;
 }
 
 - (MNAudioSessionResourceAccess)init
@@ -585,11 +585,11 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [MEMORY[0x1E698D710] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  mEMORY[0x1E698D710] = [MEMORY[0x1E698D710] sharedInstance];
+  currentRoute = [mEMORY[0x1E698D710] currentRoute];
+  outputs = [currentRoute outputs];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [outputs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -601,11 +601,11 @@ LABEL_13:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) portType];
-        v11 = [v10 isEqualToString:v8];
+        portType = [*(*(&v15 + 1) + 8 * i) portType];
+        v11 = [portType isEqualToString:v8];
 
         if (v11)
         {
@@ -614,7 +614,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [outputs countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -638,11 +638,11 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [MEMORY[0x1E698D710] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  mEMORY[0x1E698D710] = [MEMORY[0x1E698D710] sharedInstance];
+  currentRoute = [mEMORY[0x1E698D710] currentRoute];
+  outputs = [currentRoute outputs];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [outputs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -652,7 +652,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) isHeadphones])
@@ -662,7 +662,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [outputs countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;

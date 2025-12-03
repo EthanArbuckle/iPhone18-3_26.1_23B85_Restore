@@ -1,14 +1,14 @@
 @interface IMThreadSafeBalloonPluginMap
-- (IMThreadSafeBalloonPluginMap)initWithConcurrentDataQueue:(id)a3;
+- (IMThreadSafeBalloonPluginMap)initWithConcurrentDataQueue:(id)queue;
 - (NSArray)allIdentifiers;
 - (NSArray)allPlugins;
 - (NSDictionary)dictionaryMapCopy;
-- (id)pluginForIdentifier:(id)a3;
+- (id)pluginForIdentifier:(id)identifier;
 - (unint64_t)count;
-- (void)removePluginWithIdentifier:(id)a3;
-- (void)removePluginsWithIdentifiers:(id)a3;
-- (void)setPlugin:(id)a3 forIdentifier:(id)a4;
-- (void)updateWithMap:(id)a3;
+- (void)removePluginWithIdentifier:(id)identifier;
+- (void)removePluginsWithIdentifiers:(id)identifiers;
+- (void)setPlugin:(id)plugin forIdentifier:(id)identifier;
+- (void)updateWithMap:(id)map;
 @end
 
 @implementation IMThreadSafeBalloonPluginMap
@@ -82,9 +82,9 @@
   return v5;
 }
 
-- (IMThreadSafeBalloonPluginMap)initWithConcurrentDataQueue:(id)a3
+- (IMThreadSafeBalloonPluginMap)initWithConcurrentDataQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = IMThreadSafeBalloonPluginMap;
   v8 = [(IMThreadSafeBalloonPluginMap *)&v12 init];
@@ -94,15 +94,15 @@
     map = v8->_map;
     v8->_map = v9;
 
-    objc_storeStrong(&v8->_dataQueue, a3);
+    objc_storeStrong(&v8->_dataQueue, queue);
   }
 
   return v8;
 }
 
-- (id)pluginForIdentifier:(id)a3
+- (id)pluginForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -114,10 +114,10 @@
   block[1] = 3221225472;
   block[2] = sub_1A82AA4F0;
   block[3] = &unk_1E7810CE0;
-  v12 = v4;
+  v12 = identifierCopy;
   v13 = &v14;
   block[4] = self;
-  v8 = v4;
+  v8 = identifierCopy;
   dispatch_sync(v7, block);
 
   v9 = v15[5];
@@ -126,62 +126,62 @@
   return v9;
 }
 
-- (void)setPlugin:(id)a3 forIdentifier:(id)a4
+- (void)setPlugin:(id)plugin forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  identifierCopy = identifier;
   v10 = objc_msgSend_dataQueue(self, v8, v9);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1A82AA634;
   block[3] = &unk_1E7810D08;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = pluginCopy;
+  v15 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = pluginCopy;
   dispatch_barrier_sync(v10, block);
 }
 
-- (void)updateWithMap:(id)a3
+- (void)updateWithMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v7 = objc_msgSend_dataQueue(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1A82AA73C;
   v9[3] = &unk_1E7810140;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = mapCopy;
+  selfCopy = self;
+  v8 = mapCopy;
   dispatch_barrier_sync(v7, v9);
 }
 
-- (void)removePluginWithIdentifier:(id)a3
+- (void)removePluginWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_dataQueue(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1A82AA8E0;
   v9[3] = &unk_1E7810140;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   dispatch_barrier_sync(v7, v9);
 }
 
-- (void)removePluginsWithIdentifiers:(id)a3
+- (void)removePluginsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v7 = objc_msgSend_dataQueue(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1A82AA9E8;
   v9[3] = &unk_1E7810140;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = identifiersCopy;
+  selfCopy = self;
+  v8 = identifiersCopy;
   dispatch_barrier_sync(v7, v9);
 }
 

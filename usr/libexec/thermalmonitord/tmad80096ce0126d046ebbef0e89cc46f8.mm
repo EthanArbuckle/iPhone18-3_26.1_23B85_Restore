@@ -1,19 +1,19 @@
 @interface tmad80096ce0126d046ebbef0e89cc46f8
-- (id)initProduct:(id)a3;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (id)initProduct:(id)product;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tmad80096ce0126d046ebbef0e89cc46f8
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v4.receiver = self;
   v4.super_class = tmad80096ce0126d046ebbef0e89cc46f8;
-  return [(CommonProduct *)&v4 initProduct:a3];
+  return [(CommonProduct *)&v4 initProduct:product];
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = qword_1000AB824;
   v5 = dword_1000AB850;

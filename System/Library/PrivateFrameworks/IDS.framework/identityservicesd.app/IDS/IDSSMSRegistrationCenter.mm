@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (IDSPhoneUserRegistry)phoneUserRegistry;
 - (IDSSMSRegistrationCenter)init;
-- (IDSSMSRegistrationCenter)initWithRestoreMonitor:(id)a3 systemMonitor:(id)a4;
+- (IDSSMSRegistrationCenter)initWithRestoreMonitor:(id)monitor systemMonitor:(id)systemMonitor;
 - (IDSUserStore)userStore;
-- (void)_noteRegistrationAttemptForIdentifier:(id)a3 withRegistrationInfo:(id)a4;
-- (void)_notifyFailureWithError:(int64_t)a3 registration:(id)a4 identifier:(id)a5;
+- (void)_noteRegistrationAttemptForIdentifier:(id)identifier withRegistrationInfo:(id)info;
+- (void)_notifyFailureWithError:(int64_t)error registration:(id)registration identifier:(id)identifier;
 - (void)_notifyNeedsNewIdentification;
-- (void)_notifySuccess:(id)a3 token:(id)a4 identifier:(id)a5;
-- (void)_reportDailyPNRStatusForSimSlot:(unint64_t)a3;
-- (void)addListener:(id)a3;
-- (void)cancelActionsForRegistrationInfo:(id)a3;
+- (void)_notifySuccess:(id)success token:(id)token identifier:(id)identifier;
+- (void)_reportDailyPNRStatusForSimSlot:(unint64_t)slot;
+- (void)addListener:(id)listener;
+- (void)cancelActionsForRegistrationInfo:(id)info;
 - (void)notePhoneNumberRegistrationReset;
-- (void)postSMSRegistrationConsentNotificationWithCompletion:(id)a3;
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 failedIdentificationWithRegistrationReason:(int64_t)a6;
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 identifiedPhoneNumber:(id)a6 token:(id)a7 tokenType:(int64_t)a8;
+- (void)postSMSRegistrationConsentNotificationWithCompletion:(id)completion;
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier failedIdentificationWithRegistrationReason:(int64_t)reason;
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier identifiedPhoneNumber:(id)number token:(id)token tokenType:(int64_t)tokenType;
 - (void)reportDailyMetric;
-- (void)sendRegistration:(id)a3;
+- (void)sendRegistration:(id)registration;
 @end
 
 @implementation IDSSMSRegistrationCenter
@@ -36,19 +36,19 @@
 - (IDSUserStore)userStore
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 registrationConductor];
-  v4 = [v3 userStore];
+  registrationConductor = [v2 registrationConductor];
+  userStore = [registrationConductor userStore];
 
-  return v4;
+  return userStore;
 }
 
 - (IDSPhoneUserRegistry)phoneUserRegistry
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 registrationConductor];
-  v4 = [v3 phoneUserRegistry];
+  registrationConductor = [v2 registrationConductor];
+  phoneUserRegistry = [registrationConductor phoneUserRegistry];
 
-  return v4;
+  return phoneUserRegistry;
 }
 
 - (IDSSMSRegistrationCenter)init
@@ -60,10 +60,10 @@
   return v5;
 }
 
-- (IDSSMSRegistrationCenter)initWithRestoreMonitor:(id)a3 systemMonitor:(id)a4
+- (IDSSMSRegistrationCenter)initWithRestoreMonitor:(id)monitor systemMonitor:(id)systemMonitor
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  systemMonitorCopy = systemMonitor;
   v17.receiver = self;
   v17.super_class = IDSSMSRegistrationCenter;
   v9 = [(IDSSMSRegistrationCenter *)&v17 init];
@@ -77,8 +77,8 @@
     pushHandler = v9->_pushHandler;
     v9->_pushHandler = v12;
 
-    objc_storeStrong(&v9->_restoreMonitor, a3);
-    objc_storeStrong(&v9->_systemMonitor, a4);
+    objc_storeStrong(&v9->_restoreMonitor, monitor);
+    objc_storeStrong(&v9->_systemMonitor, systemMonitor);
     v14 = [[IDSRateLimiter alloc] initWithLimit:10 timeLimit:259200.0];
     registrationAttemptRateLimiter = v9->_registrationAttemptRateLimiter;
     v9->_registrationAttemptRateLimiter = v14;
@@ -87,66 +87,66 @@
   return v9;
 }
 
-- (void)sendRegistration:(id)a3
+- (void)sendRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   v5 = [[IDSRegistrationEventTracingAuthenticationEvent alloc] initWithAuthenticationType:@"PhoneAuth"];
   v6 = +[IDSRegistrationEventTracing sharedInstance];
-  v7 = [v4 registrationTraceID];
-  [v6 beginEvent:v5 identifier:v7];
+  registrationTraceID = [registrationCopy registrationTraceID];
+  [v6 beginEvent:v5 identifier:registrationTraceID];
 
-  if (v4)
+  if (registrationCopy)
   {
-    v8 = [v4 userUniqueIdentifier];
+    userUniqueIdentifier = [registrationCopy userUniqueIdentifier];
 
-    if (v8)
+    if (userUniqueIdentifier)
     {
-      if (([(NSMutableArray *)self->_registrations containsObjectIdenticalTo:v4]& 1) == 0)
+      if (([(NSMutableArray *)self->_registrations containsObjectIdenticalTo:registrationCopy]& 1) == 0)
       {
-        [(NSMutableArray *)self->_registrations addObject:v4];
-        v9 = [(IDSSMSRegistrationCenter *)self pushHandler];
-        v10 = [v9 pushToken];
-        [v4 setPushToken:v10];
+        [(NSMutableArray *)self->_registrations addObject:registrationCopy];
+        pushHandler = [(IDSSMSRegistrationCenter *)self pushHandler];
+        pushToken = [pushHandler pushToken];
+        [registrationCopy setPushToken:pushToken];
 
-        v11 = [v4 userUniqueIdentifier];
+        userUniqueIdentifier2 = [registrationCopy userUniqueIdentifier];
         v12 = +[IMRGLog sms];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v4 pushToken];
+          pushToken2 = [registrationCopy pushToken];
           v19 = 138412802;
-          v20 = v11;
+          v20 = userUniqueIdentifier2;
           v21 = 2112;
-          v22 = v4;
+          v22 = registrationCopy;
           v23 = 2112;
-          v24 = v13;
+          v24 = pushToken2;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Calling into Phone User Registry to start Phone Number Validation Request. { uniqueIdentifier: %@, registration: %@, pushToken: %@ }", &v19, 0x20u);
         }
 
-        v14 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-        [v14 addListener:self];
+        phoneUserRegistry = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+        [phoneUserRegistry addListener:self];
 
-        v15 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:v11];
+        v15 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:userUniqueIdentifier2];
         v16 = +[IDSRegistrationEventTracing sharedInstance];
-        v17 = [v4 registrationTraceID];
-        [v16 beginEvent:v15 identifier:v17];
+        registrationTraceID2 = [registrationCopy registrationTraceID];
+        [v16 beginEvent:v15 identifier:registrationTraceID2];
 
-        v18 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-        [v18 requestPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:v11 requestOption:0];
+        phoneUserRegistry2 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+        [phoneUserRegistry2 requestPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:userUniqueIdentifier2 requestOption:0];
       }
     }
   }
 }
 
-- (void)cancelActionsForRegistrationInfo:(id)a3
+- (void)cancelActionsForRegistrationInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   if ([(NSMutableArray *)self->_registrations containsObjectIdenticalTo:?])
   {
-    [(NSMutableArray *)self->_registrations removeObjectIdenticalTo:v6];
-    [(IDSSMSRegistrationCenter *)self _notifyFailureWithError:0 registration:v6 identifier:0];
-    v4 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-    v5 = [v6 userUniqueIdentifier];
-    [v4 cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:v5];
+    [(NSMutableArray *)self->_registrations removeObjectIdenticalTo:infoCopy];
+    [(IDSSMSRegistrationCenter *)self _notifyFailureWithError:0 registration:infoCopy identifier:0];
+    phoneUserRegistry = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+    userUniqueIdentifier = [infoCopy userUniqueIdentifier];
+    [phoneUserRegistry cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:userUniqueIdentifier];
   }
 }
 
@@ -157,7 +157,7 @@
   [(IDSSMSRegistrationCenter *)self _reportDailyPNRStatusForSimSlot:1];
 }
 
-- (void)_reportDailyPNRStatusForSimSlot:(unint64_t)a3
+- (void)_reportDailyPNRStatusForSimSlot:(unint64_t)slot
 {
   v32 = 0u;
   v33 = 0u;
@@ -181,25 +181,25 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v32 + 1) + 8 * v9) slot] == a3)
+        if ([*(*(&v32 + 1) + 8 * v9) slot] == slot)
         {
 
           v11 = [IDSPersistentMap alloc];
-          v12 = [NSString stringWithFormat:@"com.apple.identityservices.dailyPNRData.%lu", a3];
+          slot = [NSString stringWithFormat:@"com.apple.identityservices.dailyPNRData.%lu", slot];
           v36[0] = objc_opt_class();
           v36[1] = objc_opt_class();
           v13 = [NSArray arrayWithObjects:v36 count:2];
           v14 = [NSSet setWithArray:v13];
-          v10 = [(IDSPersistentMap *)v11 initWithIdentifier:v12 versionNumber:0 decodableClasses:v14 migrationBlock:0];
+          v10 = [(IDSPersistentMap *)v11 initWithIdentifier:slot versionNumber:0 decodableClasses:v14 migrationBlock:0];
 
-          v15 = [v10 copyDictionaryRepresentation];
+          copyDictionaryRepresentation = [v10 copyDictionaryRepresentation];
           v16 = +[IDSCTAdapter sharedInstance];
-          v17 = [v16 hasMultipleSIMs];
+          hasMultipleSIMs = [v16 hasMultipleSIMs];
 
-          v18 = [v15 objectForKey:IDSPNRRegStatusMetricPNRdKey];
-          v19 = [v18 BOOLValue];
+          v18 = [copyDictionaryRepresentation objectForKey:IDSPNRRegStatusMetricPNRdKey];
+          bOOLValue = [v18 BOOLValue];
 
-          v20 = [v15 objectForKey:IDSPNRRegStatusMetricPNRTimestampKey];
+          v20 = [copyDictionaryRepresentation objectForKey:IDSPNRRegStatusMetricPNRTimestampKey];
           [v20 doubleValue];
           v22 = v21;
 
@@ -217,14 +217,14 @@
             v26 = -(v25 - v22);
           }
 
-          v27 = [v15 objectForKey:IDSPNRRegStatusMetricPNRMechanismKey];
+          v27 = [copyDictionaryRepresentation objectForKey:IDSPNRRegStatusMetricPNRMechanismKey];
           v28 = 0;
-          if (v26 <= 86400.0 && v19 != 0)
+          if (v26 <= 86400.0 && bOOLValue != 0)
           {
-            v28 = [v15 objectForKey:IDSPNRRegStatusMetricPNRErrorCodeKey];
+            v28 = [copyDictionaryRepresentation objectForKey:IDSPNRRegStatusMetricPNRErrorCodeKey];
           }
 
-          v30 = [[IDSRegistrationDailyPNRStatusMetric alloc] initWithPNRCurrentlyRegistered:v19 pnrRegisteredToday:v26 <= 86400.0 pnrMechanism:v27 errorCode:v28 hasMultipleSIMs:v17];
+          v30 = [[IDSRegistrationDailyPNRStatusMetric alloc] initWithPNRCurrentlyRegistered:bOOLValue pnrRegisteredToday:v26 <= 86400.0 pnrMechanism:v27 errorCode:v28 hasMultipleSIMs:hasMultipleSIMs];
           v31 = +[IDSCoreAnalyticsLogger defaultLogger];
           [v31 logMetric:v30];
 
@@ -249,7 +249,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v38 = a3;
+    slotCopy = slot;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No sim present in slot, not reporting anything. { simSlot: %lu }", buf, 0xCu);
   }
 
@@ -258,43 +258,43 @@ LABEL_20:
 
 - (void)notePhoneNumberRegistrationReset
 {
-  v2 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-  [v2 notePhoneNumberRegistrationReset];
+  phoneUserRegistry = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+  [phoneUserRegistry notePhoneNumberRegistrationReset];
 }
 
-- (void)_noteRegistrationAttemptForIdentifier:(id)a3 withRegistrationInfo:(id)a4
+- (void)_noteRegistrationAttemptForIdentifier:(id)identifier withRegistrationInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v8 = +[IMRGLog sms];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2048;
-    v15 = [v7 registrationStatus];
+    registrationStatus = [infoCopy registrationStatus];
     v16 = 1024;
-    v17 = [v7 registrationType];
+    registrationType = [infoCopy registrationType];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Noting registration attempt for user identifier {%@} with current registration state {%ld} of type {%d}", buf, 0x1Cu);
   }
 
-  [(IDSRateLimiter *)self->_registrationAttemptRateLimiter noteItem:v6];
-  if (+[IDSAutoBugCapture isSupported]&& ([(IDSRateLimiter *)self->_registrationAttemptRateLimiter underLimitForItem:v6]& 1) == 0)
+  [(IDSRateLimiter *)self->_registrationAttemptRateLimiter noteItem:identifierCopy];
+  if (+[IDSAutoBugCapture isSupported]&& ([(IDSRateLimiter *)self->_registrationAttemptRateLimiter underLimitForItem:identifierCopy]& 1) == 0)
   {
-    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Registration attempted exceeded for user identifier {%@} with current registration state {%ld} of type {%d}", v6, [v7 registrationStatus], objc_msgSend(v7, "registrationType"));
+    +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Registration attempted exceeded for user identifier {%@} with current registration state {%ld} of type {%d}", identifierCopy, [infoCopy registrationStatus], objc_msgSend(infoCopy, "registrationType"));
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1004931AC;
     v11 = v10[3] = &unk_100BD9500;
     v9 = v11;
     [IDSAutoBugCapture triggerCaptureWithEvent:205 context:v9 completion:v10];
-    [(IDSRateLimiter *)self->_registrationAttemptRateLimiter clearItem:v6];
+    [(IDSRateLimiter *)self->_registrationAttemptRateLimiter clearItem:identifierCopy];
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v7 = a3;
+  listenerCopy = listener;
   if (([(NSMutableArray *)self->_handlers containsObjectIdenticalTo:?]& 1) == 0)
   {
     handlers = self->_handlers;
@@ -307,35 +307,35 @@ LABEL_20:
       handlers = self->_handlers;
     }
 
-    [(NSMutableArray *)handlers addObject:v7];
+    [(NSMutableArray *)handlers addObject:listenerCopy];
   }
 }
 
-- (void)_notifyFailureWithError:(int64_t)a3 registration:(id)a4 identifier:(id)a5
+- (void)_notifyFailureWithError:(int64_t)error registration:(id)registration identifier:(id)identifier
 {
-  v29 = a4;
-  v31 = a5;
-  v8 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-  [v8 cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:v31];
+  registrationCopy = registration;
+  identifierCopy = identifier;
+  phoneUserRegistry = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+  [phoneUserRegistry cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:identifierCopy];
 
-  if (!v29 || ([(NSMutableArray *)self->_registrations containsObjectIdenticalTo:v29]& 1) == 0)
+  if (!registrationCopy || ([(NSMutableArray *)self->_registrations containsObjectIdenticalTo:registrationCopy]& 1) == 0)
   {
-    v28 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:v31];
+    v28 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:identifierCopy];
     v9 = +[IDSRegistrationEventTracing sharedInstance];
-    v10 = [NSError errorWithDomain:@"IDSSMSRegistrationCenterError" code:a3 userInfo:0];
-    [v9 endEvent:v28 identifier:v31 error:v10];
+    v10 = [NSError errorWithDomain:@"IDSSMSRegistrationCenterError" code:error userInfo:0];
+    [v9 endEvent:v28 identifier:identifierCopy error:v10];
 
-    if (v29)
+    if (registrationCopy)
     {
-      v11 = v29;
+      v11 = registrationCopy;
       [(NSMutableArray *)self->_registrations removeObjectIdenticalTo:v11];
       [v11 setRegistrationStatus:-1];
-      v12 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+      _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      obj = v12;
+      obj = _copyForEnumerating;
       v13 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
       if (v13)
       {
@@ -352,7 +352,7 @@ LABEL_20:
             v16 = *(*(&v42 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v16 center:self failedIdentification:v11 error:a3];
+              [v16 center:self failedIdentification:v11 error:error];
             }
           }
 
@@ -385,18 +385,18 @@ LABEL_20:
             }
 
             v19 = *(*(&v38 + 1) + 8 * j);
-            v20 = [v19 userUniqueIdentifier];
-            v21 = [v20 isEqualToString:v31];
+            userUniqueIdentifier = [v19 userUniqueIdentifier];
+            v21 = [userUniqueIdentifier isEqualToString:identifierCopy];
 
             if (v21)
             {
               [v19 setRegistrationStatus:-1];
-              v22 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+              _copyForEnumerating2 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
               v36 = 0u;
               v37 = 0u;
               v34 = 0u;
               v35 = 0u;
-              v23 = v22;
+              v23 = _copyForEnumerating2;
               v24 = [v23 countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v24)
               {
@@ -413,7 +413,7 @@ LABEL_20:
                     v27 = *(*(&v34 + 1) + 8 * k);
                     if (objc_opt_respondsToSelector())
                     {
-                      [v27 center:self failedIdentification:v19 error:a3];
+                      [v27 center:self failedIdentification:v19 error:error];
                     }
                   }
 
@@ -438,13 +438,13 @@ LABEL_20:
   }
 }
 
-- (void)_notifySuccess:(id)a3 token:(id)a4 identifier:(id)a5
+- (void)_notifySuccess:(id)success token:(id)token identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v44 = a5;
-  v10 = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
-  [v10 cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:v44];
+  successCopy = success;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  phoneUserRegistry = [(IDSSMSRegistrationCenter *)self phoneUserRegistry];
+  [phoneUserRegistry cancelPhoneNumberIdentificationForServiceType:1 withUniqueIdentifier:identifierCopy];
 
   v39 = objc_alloc_init(NSMutableArray);
   if ([(NSMutableArray *)self->_registrations count])
@@ -452,9 +452,9 @@ LABEL_20:
     v11 = +[IDSPACStateTracker sharedInstance];
     [v11 notePNRSuccess];
 
-    v42 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:v44];
+    v42 = [[IDSRegistrationEventTracingPNREvent alloc] initWithSimUniqueIdentifier:identifierCopy];
     v12 = +[IDSRegistrationEventTracing sharedInstance];
-    [v12 endEvent:v42 identifier:v44 error:0];
+    [v12 endEvent:v42 identifier:identifierCopy error:0];
 
     v60 = 0u;
     v61 = 0u;
@@ -475,8 +475,8 @@ LABEL_20:
           }
 
           v17 = *(*(&v58 + 1) + 8 * i);
-          v18 = [v17 userUniqueIdentifier];
-          v19 = [v18 isEqualToString:v44];
+          userUniqueIdentifier = [v17 userUniqueIdentifier];
+          v19 = [userUniqueIdentifier isEqualToString:identifierCopy];
 
           if (v19)
           {
@@ -484,8 +484,8 @@ LABEL_20:
             v20 = +[IDSPACStateTracker sharedInstance];
             [v20 notePhoneAuthCertLost:7];
 
-            [v17 setPhoneNumber:v8];
-            [v17 setMainID:v8];
+            [v17 setPhoneNumber:successCopy];
+            [v17 setMainID:successCopy];
             [v17 setRegistrationCert:0];
             [v17 setUris:0];
             v21 = +[IMRGLog sms];
@@ -565,12 +565,12 @@ LABEL_20:
               [v26 setRegistrationStatus:6];
             }
 
-            v28 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+            _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
             v48 = 0u;
             v49 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v27 = v28;
+            v27 = _copyForEnumerating;
             v29 = [v27 countByEnumeratingWithState:&v46 objects:v62 count:16];
             if (v29)
             {
@@ -587,7 +587,7 @@ LABEL_20:
                   v32 = *(*(&v46 + 1) + 8 * j);
                   if (objc_opt_respondsToSelector())
                   {
-                    [v32 center:self succeededIdentification:v26 phoneNumber:v8 token:v9];
+                    [v32 center:self succeededIdentification:v26 phoneNumber:successCopy token:tokenCopy];
                   }
                 }
 
@@ -611,12 +611,12 @@ LABEL_20:
 
   else
   {
-    v33 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+    _copyForEnumerating2 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v33;
+    obj = _copyForEnumerating2;
     v34 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v34)
     {
@@ -633,7 +633,7 @@ LABEL_20:
           v37 = *(*(&v54 + 1) + 8 * k);
           if (objc_opt_respondsToSelector())
           {
-            [v37 center:self succeededIdentification:0 phoneNumber:v8 token:v9];
+            [v37 center:self succeededIdentification:0 phoneNumber:successCopy token:tokenCopy];
           }
         }
 
@@ -647,12 +647,12 @@ LABEL_20:
 
 - (void)_notifyNeedsNewIdentification
 {
-  v3 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+  _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = _copyForEnumerating;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -684,9 +684,9 @@ LABEL_20:
   }
 }
 
-- (void)postSMSRegistrationConsentNotificationWithCompletion:(id)a3
+- (void)postSMSRegistrationConsentNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -707,7 +707,7 @@ LABEL_20:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * i) serviceType];
+        serviceType = [*(*(&v22 + 1) + 8 * i) serviceType];
         if ((IDSIsFaceTimeRegistrationServiceType() & 1) == 0 && (IDSIsCallingRegistrationServiceType() & 1) == 0)
         {
           v8 |= IDSIsiMessageRegistrationServiceType();
@@ -732,29 +732,29 @@ LABEL_20:
   v20[1] = 3221225472;
   v20[2] = sub_100494338;
   v20[3] = &unk_100BDD640;
-  v21 = v4;
-  v19 = v4;
+  v21 = completionCopy;
+  v19 = completionCopy;
   [v18 addUserNotification:v17 listener:0 completionHandler:v20];
 }
 
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 identifiedPhoneNumber:(id)a6 token:(id)a7 tokenType:(int64_t)a8
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier identifiedPhoneNumber:(id)number token:(id)token tokenType:(int64_t)tokenType
 {
-  v11 = a7;
-  v12 = a6;
-  v14 = a5;
-  v13 = [(IDSSMSRegistrationCenter *)self registrationReasonTracker];
-  [v13 clearPNRReasonForUserUniqueIdentifier:v14];
+  tokenCopy = token;
+  numberCopy = number;
+  identifierCopy = identifier;
+  registrationReasonTracker = [(IDSSMSRegistrationCenter *)self registrationReasonTracker];
+  [registrationReasonTracker clearPNRReasonForUserUniqueIdentifier:identifierCopy];
 
-  [(IDSSMSRegistrationCenter *)self _notifySuccess:v12 token:v11 identifier:v14];
+  [(IDSSMSRegistrationCenter *)self _notifySuccess:numberCopy token:tokenCopy identifier:identifierCopy];
 }
 
-- (void)registry:(id)a3 serviceType:(int64_t)a4 identifier:(id)a5 failedIdentificationWithRegistrationReason:(int64_t)a6
+- (void)registry:(id)registry serviceType:(int64_t)type identifier:(id)identifier failedIdentificationWithRegistrationReason:(int64_t)reason
 {
-  v9 = a5;
-  v8 = [(IDSSMSRegistrationCenter *)self registrationReasonTracker];
-  [v8 clearPNRReasonForUserUniqueIdentifier:v9];
+  identifierCopy = identifier;
+  registrationReasonTracker = [(IDSSMSRegistrationCenter *)self registrationReasonTracker];
+  [registrationReasonTracker clearPNRReasonForUserUniqueIdentifier:identifierCopy];
 
-  [(IDSSMSRegistrationCenter *)self _notifyFailureWithError:a6 registration:0 identifier:v9];
+  [(IDSSMSRegistrationCenter *)self _notifyFailureWithError:reason registration:0 identifier:identifierCopy];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface ACXIDSMessaging
-+ (id)messagerWithIDSServiceName:(id)a3;
-- (ACXIDSMessaging)initWithServiceName:(id)a3;
-- (ACXIDSMessaging)initWithServiceName:(id)a3 IDSService:(id)a4;
++ (id)messagerWithIDSServiceName:(id)name;
+- (ACXIDSMessaging)initWithServiceName:(id)name;
+- (ACXIDSMessaging)initWithServiceName:(id)name IDSService:(id)service;
 - (ACXIDSMessagingDelegate)delegate;
 - (ACXIDSMessagingDeviceManager)deviceManager;
-- (void)asyncTransaction:(id)a3;
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7 handleReply:(id)a8;
-- (void)sendResponse:(id)a3 toMessage:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)setDeviceManager:(id)a3 delegate:(id)a4;
+- (void)asyncTransaction:(id)transaction;
+- (void)sendMessage:(id)message toDevice:(id)device withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description handleReply:(id)reply;
+- (void)sendResponse:(id)response toMessage:(id)message withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)setDeviceManager:(id)manager delegate:(id)delegate;
 @end
 
 @implementation ACXIDSMessaging
 
-+ (id)messagerWithIDSServiceName:(id)a3
++ (id)messagerWithIDSServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -34,10 +34,10 @@
   block[1] = 3221225472;
   block[2] = sub_100017324;
   block[3] = &unk_10008D298;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = nameCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -46,19 +46,19 @@
   return v7;
 }
 
-- (ACXIDSMessaging)initWithServiceName:(id)a3
+- (ACXIDSMessaging)initWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [[IDSService alloc] initWithService:v4];
-  v6 = [(ACXIDSMessaging *)self initWithServiceName:v4 IDSService:v5];
+  nameCopy = name;
+  v5 = [[IDSService alloc] initWithService:nameCopy];
+  v6 = [(ACXIDSMessaging *)self initWithServiceName:nameCopy IDSService:v5];
 
   return v6;
 }
 
-- (ACXIDSMessaging)initWithServiceName:(id)a3 IDSService:(id)a4
+- (ACXIDSMessaging)initWithServiceName:(id)name IDSService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  serviceCopy = service;
   v18.receiver = self;
   v18.super_class = ACXIDSMessaging;
   v8 = [(ACXIDSMessaging *)&v18 init];
@@ -76,11 +76,11 @@
   internalQueue = v8->_internalQueue;
   v8->_internalQueue = v12;
 
-  v14 = [v6 copy];
+  v14 = [nameCopy copy];
   serviceName = v8->_serviceName;
   v8->_serviceName = v14;
 
-  objc_storeStrong(&v8->_service, a4);
+  objc_storeStrong(&v8->_service, service);
   if (!v8->_service)
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
@@ -100,116 +100,116 @@ LABEL_3:
   return v16;
 }
 
-- (void)setDeviceManager:(id)a3 delegate:(id)a4
+- (void)setDeviceManager:(id)manager delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXIDSMessaging *)self internalQueue];
+  managerCopy = manager;
+  delegateCopy = delegate;
+  internalQueue = [(ACXIDSMessaging *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017658;
   block[3] = &unk_10008CA48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = managerCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = managerCopy;
+  dispatch_sync(internalQueue, block);
 }
 
-- (void)asyncTransaction:(id)a3
+- (void)asyncTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(ACXIDSMessaging *)self internalQueue];
-  sub_100005828(v5, v4);
+  transactionCopy = transaction;
+  internalQueue = [(ACXIDSMessaging *)self internalQueue];
+  sub_100005828(internalQueue, transactionCopy);
 }
 
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7 handleReply:(id)a8
+- (void)sendMessage:(id)message toDevice:(id)device withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description handleReply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000179B0;
   v20[3] = &unk_10008D2C0;
-  v24 = a7;
-  v25 = a8;
-  v26 = a6;
-  v21 = v15;
-  v22 = self;
-  v27 = a5;
-  v23 = v14;
-  v16 = v24;
-  v17 = v14;
-  v18 = v15;
-  v19 = v25;
+  descriptionCopy = description;
+  replyCopy = reply;
+  timeoutCopy = timeout;
+  v21 = deviceCopy;
+  selfCopy = self;
+  priorityCopy = priority;
+  v23 = messageCopy;
+  v16 = descriptionCopy;
+  v17 = messageCopy;
+  v18 = deviceCopy;
+  v19 = replyCopy;
   [(ACXIDSMessaging *)self asyncTransaction:v20];
 }
 
-- (void)sendResponse:(id)a3 toMessage:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7
+- (void)sendResponse:(id)response toMessage:(id)message withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [v13 idsContext];
-  v16 = [v15 expectsPeerResponse];
+  responseCopy = response;
+  messageCopy = message;
+  descriptionCopy = description;
+  idsContext = [messageCopy idsContext];
+  expectsPeerResponse = [idsContext expectsPeerResponse];
 
-  if (v16)
+  if (expectsPeerResponse)
   {
-    v17 = [(ACXIDSMessaging *)self internalQueue];
+    internalQueue = [(ACXIDSMessaging *)self internalQueue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100017FD8;
     v20[3] = &unk_10008D2E8;
-    v21 = v13;
-    v22 = v14;
-    v23 = self;
-    v25 = a6;
-    v24 = v12;
-    v26 = a5;
-    sub_100005828(v17, v20);
+    v21 = messageCopy;
+    v22 = descriptionCopy;
+    selfCopy = self;
+    timeoutCopy = timeout;
+    v24 = responseCopy;
+    priorityCopy = priority;
+    sub_100005828(internalQueue, v20);
   }
 
   else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
   {
-    v18 = [(ACXIDSMessaging *)self serviceName];
-    v19 = [v13 message];
+    serviceName = [(ACXIDSMessaging *)self serviceName];
+    message = [messageCopy message];
     MOLogWrite();
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v24 = a5;
-  v10 = a6;
-  v11 = a7;
-  v12 = [v11 incomingResponseIdentifier];
-  if (v12)
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  if (incomingResponseIdentifier)
   {
-    v13 = [(ACXIDSMessaging *)self pendingReplies];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    pendingReplies = [(ACXIDSMessaging *)self pendingReplies];
+    delegate = [pendingReplies objectForKeyedSubscript:incomingResponseIdentifier];
 
-    if (v14)
+    if (delegate)
     {
-      v15 = [[ACXIDSMessage alloc] initWithMessage:v24 idsContext:v11 fromID:v10];
+      serviceName2 = [[ACXIDSMessage alloc] initWithMessage:messageCopy idsContext:contextCopy fromID:dCopy];
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
-        v16 = [(ACXIDSMessaging *)self serviceName];
-        v17 = [v11 incomingResponseIdentifier];
-        [v11 outgoingResponseIdentifier];
-        v23 = v20 = v17;
-        v19 = v16;
+        serviceName = [(ACXIDSMessaging *)self serviceName];
+        incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+        [contextCopy outgoingResponseIdentifier];
+        v23 = v20 = incomingResponseIdentifier2;
+        v19 = serviceName;
         MOLogWrite();
       }
 
-      [v14 runReplyHandlerWithMessage:v15 error:{0, v19, v20, v23}];
+      [delegate runReplyHandlerWithMessage:serviceName2 error:{0, v19, v20, v23}];
       goto LABEL_18;
     }
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v15 = [(ACXIDSMessaging *)self serviceName];
-      v22 = [v11 outgoingResponseIdentifier];
+      serviceName2 = [(ACXIDSMessaging *)self serviceName];
+      outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
       MOLogWrite();
 
 LABEL_18:
@@ -218,65 +218,65 @@ LABEL_18:
 
   else
   {
-    v14 = [(ACXIDSMessaging *)self delegate];
-    if (v14)
+    delegate = [(ACXIDSMessaging *)self delegate];
+    if (delegate)
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
-        v18 = [(ACXIDSMessaging *)self serviceName];
-        v21 = [v11 outgoingResponseIdentifier];
+        serviceName3 = [(ACXIDSMessaging *)self serviceName];
+        outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
         MOLogWrite();
       }
 
-      v15 = [[ACXIDSMessage alloc] initWithMessage:v24 idsContext:v11 fromID:v10];
-      [v14 incomingMessage:v15 fromDevice:v10];
+      serviceName2 = [[ACXIDSMessage alloc] initWithMessage:messageCopy idsContext:contextCopy fromID:dCopy];
+      [delegate incomingMessage:serviceName2 fromDevice:dCopy];
       goto LABEL_18;
     }
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v15 = [(ACXIDSMessaging *)self serviceName];
+      serviceName2 = [(ACXIDSMessaging *)self serviceName];
       MOLogWrite();
       goto LABEL_18;
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v14 = a5;
-  v10 = a7;
-  if (!a6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
-    v11 = [(ACXIDSMessaging *)self pendingReplies];
-    v12 = [v11 objectForKeyedSubscript:v14];
+    pendingReplies = [(ACXIDSMessaging *)self pendingReplies];
+    v12 = [pendingReplies objectForKeyedSubscript:identifierCopy];
 
     if (v12)
     {
-      [v12 runReplyHandlerWithMessage:0 error:v10];
+      [v12 runReplyHandlerWithMessage:0 error:errorCopy];
     }
 
     else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v13 = [(ACXIDSMessaging *)self serviceName];
+      serviceName = [(ACXIDSMessaging *)self serviceName];
       MOLogWrite();
     }
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v8 = a4;
-  v5 = [(ACXIDSMessaging *)self deviceManager];
-  v6 = v5;
-  if (v5)
+  changedCopy = changed;
+  deviceManager = [(ACXIDSMessaging *)self deviceManager];
+  v6 = deviceManager;
+  if (deviceManager)
   {
-    [v5 updatedIDSDevices:v8 forMessager:self];
+    [deviceManager updatedIDSDevices:changedCopy forMessager:self];
   }
 
   else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
   {
-    v7 = [(ACXIDSMessaging *)self serviceName];
+    serviceName = [(ACXIDSMessaging *)self serviceName];
     MOLogWrite();
   }
 }

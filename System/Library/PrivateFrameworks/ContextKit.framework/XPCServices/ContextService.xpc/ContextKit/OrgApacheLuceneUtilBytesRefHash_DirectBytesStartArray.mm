@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray
-- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)a3;
-- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)a3 withOrgApacheLuceneUtilCounter:(id)a4;
+- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)int;
+- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)int withOrgApacheLuceneUtilCounter:(id)counter;
 - (id)grow;
 - (id)init__;
 - (void)dealloc;
@@ -8,18 +8,18 @@
 
 @implementation OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray
 
-- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)a3 withOrgApacheLuceneUtilCounter:(id)a4
+- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)int withOrgApacheLuceneUtilCounter:(id)counter
 {
-  JreStrongAssign(&self->bytesUsed_, a4);
-  self->initSize_ = a3;
+  JreStrongAssign(&self->bytesUsed_, counter);
+  self->initSize_ = int;
   return self;
 }
 
-- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)a3
+- (OrgApacheLuceneUtilBytesRefHash_DirectBytesStartArray)initWithInt:(int)int
 {
   v5 = OrgApacheLuceneUtilCounter_newCounter();
   JreStrongAssign(&self->bytesUsed_, v5);
-  self->initSize_ = a3;
+  self->initSize_ = int;
   return self;
 }
 

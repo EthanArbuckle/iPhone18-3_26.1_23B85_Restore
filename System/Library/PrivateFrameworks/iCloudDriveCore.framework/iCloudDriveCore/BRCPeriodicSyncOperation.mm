@@ -1,34 +1,34 @@
 @interface BRCPeriodicSyncOperation
-- (BOOL)scheduleSyncDownIfNeededForZoneID:(id)a3 zoneIfAny:(id)a4 zoneType:(unsigned __int8 *)a5;
-- (BOOL)shouldRetryForError:(id)a3;
-- (BRCPeriodicSyncOperation)initWithContainerScheduler:(id)a3 metadataChangeToken:(id)a4 zoneHealthChangeToken:(id)a5 sideCarChangeToken:(id)a6 sessionContext:(id)a7;
+- (BOOL)scheduleSyncDownIfNeededForZoneID:(id)d zoneIfAny:(id)any zoneType:(unsigned __int8 *)type;
+- (BOOL)shouldRetryForError:(id)error;
+- (BRCPeriodicSyncOperation)initWithContainerScheduler:(id)scheduler metadataChangeToken:(id)token zoneHealthChangeToken:(id)changeToken sideCarChangeToken:(id)carChangeToken sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCPeriodicSyncOperation
 
-- (BRCPeriodicSyncOperation)initWithContainerScheduler:(id)a3 metadataChangeToken:(id)a4 zoneHealthChangeToken:(id)a5 sideCarChangeToken:(id)a6 sessionContext:(id)a7
+- (BRCPeriodicSyncOperation)initWithContainerScheduler:(id)scheduler metadataChangeToken:(id)token zoneHealthChangeToken:(id)changeToken sideCarChangeToken:(id)carChangeToken sessionContext:(id)context
 {
-  v21 = a3;
-  v20 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v15 syncContextProvider];
-  v17 = [v16 defaultSyncContext];
+  schedulerCopy = scheduler;
+  tokenCopy = token;
+  changeTokenCopy = changeToken;
+  carChangeTokenCopy = carChangeToken;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
 
   v22.receiver = self;
   v22.super_class = BRCPeriodicSyncOperation;
-  v18 = [(_BRCOperation *)&v22 initWithName:@"sync-down/periodic-sync" syncContext:v17 sessionContext:v15];
+  v18 = [(_BRCOperation *)&v22 initWithName:@"sync-down/periodic-sync" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_scheduler, a3);
-    objc_storeStrong(&v18->_metadataChangeToken, a4);
-    objc_storeStrong(&v18->_zoneHealthChangeToken, a5);
-    objc_storeStrong(&v18->_sideCarChangeToken, a6);
-    [(BRCPeriodicSyncOperation *)v18 setQualityOfService:9, v20, v21];
+    objc_storeStrong(&v18->_scheduler, scheduler);
+    objc_storeStrong(&v18->_metadataChangeToken, token);
+    objc_storeStrong(&v18->_zoneHealthChangeToken, changeToken);
+    objc_storeStrong(&v18->_sideCarChangeToken, carChangeToken);
+    [(BRCPeriodicSyncOperation *)v18 setQualityOfService:9, tokenCopy, schedulerCopy];
   }
 
   return v18;
@@ -41,20 +41,20 @@
   return v2;
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
   v4.receiver = self;
   v4.super_class = BRCPeriodicSyncOperation;
-  return [(_BRCOperation *)&v4 shouldRetryForError:a3];
+  return [(_BRCOperation *)&v4 shouldRetryForError:error];
 }
 
-- (BOOL)scheduleSyncDownIfNeededForZoneID:(id)a3 zoneIfAny:(id)a4 zoneType:(unsigned __int8 *)a5
+- (BOOL)scheduleSyncDownIfNeededForZoneID:(id)d zoneIfAny:(id)any zoneType:(unsigned __int8 *)type
 {
   v78 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BRCContainerScheduler *)self->_scheduler session];
-  v11 = [v8 zoneName];
+  dCopy = d;
+  anyCopy = any;
+  session = [(BRCContainerScheduler *)self->_scheduler session];
+  zoneName = [dCopy zoneName];
   memset(v71, 0, sizeof(v71));
   __brc_create_section(0, "[BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:zoneIfAny:zoneType:]", 75, 0, v71);
   v12 = brc_bread_crumbs();
@@ -64,21 +64,21 @@
     *buf = 134218498;
     v73 = v71[0];
     v74 = 2112;
-    v75 = v11;
+    v75 = zoneName;
     v76 = 2112;
     v77 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx considering whether or not to schedule sync down for %@%@", buf, 0x20u);
   }
 
-  if (![v11 isEqualToString:*MEMORY[0x277CFAD58]])
+  if (![zoneName isEqualToString:*MEMORY[0x277CFAD58]])
   {
-    if ([v11 isEqualToString:*MEMORY[0x277CFADD0]])
+    if ([zoneName isEqualToString:*MEMORY[0x277CFADD0]])
     {
       zoneHealthChangeToken = self->_zoneHealthChangeToken;
-      v21 = [v9 currentServerChangeToken];
+      currentServerChangeToken = [anyCopy currentServerChangeToken];
       v16 = zoneHealthChangeToken;
-      v22 = v21;
-      v18 = v22;
+      v22 = currentServerChangeToken;
+      periodicSyncInvestigation = v22;
       if (v16 == v22)
       {
         goto LABEL_18;
@@ -106,26 +106,26 @@
       }
 
       scheduler = self->_scheduler;
-      v35 = [(_BRCOperation *)self group];
-      [(BRCContainerScheduler *)scheduler scheduleSyncDownForZoneHealthWithGroup:v35];
+      group = [(_BRCOperation *)self group];
+      [(BRCContainerScheduler *)scheduler scheduleSyncDownForZoneHealthWithGroup:group];
       v36 = 4;
 LABEL_40:
 
-      *a5 |= v36;
+      *type |= v36;
 LABEL_41:
-      v18 = [v10 periodicSyncInvestigation];
-      [v18 startInvestigation];
+      periodicSyncInvestigation = [session periodicSyncInvestigation];
+      [periodicSyncInvestigation startInvestigation];
       v28 = 1;
       goto LABEL_42;
     }
 
-    if ([v11 isEqualToString:*MEMORY[0x277CFB070]])
+    if ([zoneName isEqualToString:*MEMORY[0x277CFB070]])
     {
       sideCarChangeToken = self->_sideCarChangeToken;
-      v25 = [v9 currentServerChangeToken];
+      currentServerChangeToken2 = [anyCopy currentServerChangeToken];
       v16 = sideCarChangeToken;
-      v26 = v25;
-      v18 = v26;
+      v26 = currentServerChangeToken2;
+      periodicSyncInvestigation = v26;
       if (v16 == v26)
       {
         goto LABEL_18;
@@ -153,14 +153,14 @@ LABEL_41:
       }
 
       v49 = self->_scheduler;
-      v35 = [(_BRCOperation *)self group];
-      [(BRCContainerScheduler *)v49 scheduleSyncDownForSideCarWithGroup:v35];
+      group = [(_BRCOperation *)self group];
+      [(BRCContainerScheduler *)v49 scheduleSyncDownForSideCarWithGroup:group];
       v36 = 2;
       goto LABEL_40;
     }
 
-    v70 = [v10 privateServerZoneByID:v11];
-    v69 = [v70 clientZone];
+    v70 = [session privateServerZoneByID:zoneName];
+    clientZone = [v70 clientZone];
     if (!v70)
     {
       v66 = brc_bread_crumbs();
@@ -171,24 +171,24 @@ LABEL_41:
       }
     }
 
-    if ([v69 isSyncBlocked])
+    if ([clientZone isSyncBlocked])
     {
       v29 = brc_bread_crumbs();
       v30 = brc_default_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [v70 clientZone];
-        [BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:v31 zoneIfAny:v29 zoneType:buf];
+        clientZone2 = [v70 clientZone];
+        [BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:clientZone2 zoneIfAny:v29 zoneType:buf];
       }
 
       goto LABEL_47;
     }
 
-    v37 = [v70 changeState];
-    v38 = [v37 changeToken];
-    v39 = [v9 currentServerChangeToken];
-    v40 = v38;
-    v41 = v39;
+    changeState = [v70 changeState];
+    changeToken = [changeState changeToken];
+    currentServerChangeToken3 = [anyCopy currentServerChangeToken];
+    v40 = changeToken;
+    v41 = currentServerChangeToken3;
     v42 = v41;
     if (v40 == v41)
     {
@@ -207,8 +207,8 @@ LABEL_41:
       if ((v43 & 1) == 0)
       {
 LABEL_46:
-        v50 = [v70 clientZone];
-        v68 = ([v50 syncState] & 0xA) == 0;
+        clientZone3 = [v70 clientZone];
+        v68 = ([clientZone3 syncState] & 0xA) == 0;
 
         if (v68)
         {
@@ -216,17 +216,17 @@ LABEL_46:
           v62 = brc_default_log();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
           {
-            v63 = [v70 clientZone];
-            [BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:v63 zoneIfAny:v61 zoneType:buf];
+            clientZone4 = [v70 clientZone];
+            [BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:clientZone4 zoneIfAny:v61 zoneType:buf];
           }
 
-          v64 = [v70 clientZone];
-          v65 = [(_BRCOperation *)self group];
-          [v64 scheduleSyncDownWithGroup:v65];
+          clientZone5 = [v70 clientZone];
+          group2 = [(_BRCOperation *)self group];
+          [clientZone5 scheduleSyncDownWithGroup:group2];
 
-          *a5 |= 8u;
+          *type |= 8u;
           v51 = 1;
-          if (!v9)
+          if (!anyCopy)
           {
 LABEL_55:
 
@@ -241,18 +241,18 @@ LABEL_56:
           }
 
 LABEL_48:
-          if (([v69 enhancedDrivePrivacyEnabled] & 1) == 0)
+          if (([clientZone enhancedDrivePrivacyEnabled] & 1) == 0)
           {
-            v52 = [v69 mangledID];
-            v53 = [BRCUserDefaults defaultsForMangledID:v52];
-            v54 = [v53 supportsEnhancedDrivePrivacy];
+            mangledID = [clientZone mangledID];
+            v53 = [BRCUserDefaults defaultsForMangledID:mangledID];
+            supportsEnhancedDrivePrivacy = [v53 supportsEnhancedDrivePrivacy];
 
-            if (v54)
+            if (supportsEnhancedDrivePrivacy)
             {
-              v55 = [v9 requiredFeatures];
-              v56 = [v55 recordFeatures];
+              requiredFeatures = [anyCopy requiredFeatures];
+              recordFeatures = [requiredFeatures recordFeatures];
 
-              if ([v56 hasValue:*MEMORY[0x277CFAC38] forName:*MEMORY[0x277CFAC30]])
+              if ([recordFeatures hasValue:*MEMORY[0x277CFAC38] forName:*MEMORY[0x277CFAC30]])
               {
                 v57 = brc_bread_crumbs();
                 v58 = brc_notifications_log();
@@ -261,7 +261,7 @@ LABEL_48:
                   [BRCPeriodicSyncOperation scheduleSyncDownIfNeededForZoneID:zoneIfAny:zoneType:];
                 }
 
-                [v69 setStateBits:0x400000];
+                [clientZone setStateBits:0x400000];
               }
             }
           }
@@ -271,7 +271,7 @@ LABEL_48:
 
 LABEL_47:
         v51 = 0;
-        if (!v9)
+        if (!anyCopy)
         {
           goto LABEL_55;
         }
@@ -284,10 +284,10 @@ LABEL_47:
   }
 
   metadataChangeToken = self->_metadataChangeToken;
-  v15 = [v9 currentServerChangeToken];
+  currentServerChangeToken4 = [anyCopy currentServerChangeToken];
   v16 = metadataChangeToken;
-  v17 = v15;
-  v18 = v17;
+  v17 = currentServerChangeToken4;
+  periodicSyncInvestigation = v17;
   if (v16 != v17)
   {
     if (v17)
@@ -312,8 +312,8 @@ LABEL_47:
     }
 
     v34 = self->_scheduler;
-    v35 = [(_BRCOperation *)self group];
-    [(BRCContainerScheduler *)v34 scheduleSyncDownForContainerMetadataWithGroup:v35];
+    group = [(_BRCOperation *)self group];
+    [(BRCContainerScheduler *)v34 scheduleSyncDownForContainerMetadataWithGroup:group];
     v36 = 1;
     goto LABEL_40;
   }
@@ -333,43 +333,43 @@ LABEL_57:
 - (void)main
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(_BRCOperation *)self group];
+  group = [(_BRCOperation *)self group];
 
-  if (!v3)
+  if (!group)
   {
     [BRCPeriodicSyncOperation main];
   }
 
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
-  [v4 addObject:v5];
+  brc_containerMetadataZoneID = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
+  [v4 addObject:brc_containerMetadataZoneID];
 
-  v6 = [MEMORY[0x277CBC5F8] brc_zoneHealthZoneID];
-  [v4 addObject:v6];
+  brc_zoneHealthZoneID = [MEMORY[0x277CBC5F8] brc_zoneHealthZoneID];
+  [v4 addObject:brc_zoneHealthZoneID];
 
   if (self->_sideCarChangeToken)
   {
-    v7 = [MEMORY[0x277CBC5F8] brc_sideCarZoneID];
-    [v4 addObject:v7];
+    brc_sideCarZoneID = [MEMORY[0x277CBC5F8] brc_sideCarZoneID];
+    [v4 addObject:brc_sideCarZoneID];
   }
 
-  v8 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
+  zoneAppRetriever = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __32__BRCPeriodicSyncOperation_main__block_invoke;
   v22[3] = &unk_278506078;
   v9 = v4;
   v23 = v9;
-  [v8 enumeratePrivateServerZones:v22];
+  [zoneAppRetriever enumeratePrivateServerZones:v22];
 
   v10 = [objc_alloc(MEMORY[0x277CBC3D0]) initWithRecordZoneIDs:v9];
   v11 = objc_opt_new();
   [v10 setConfiguration:v11];
 
   v12 = +[BRCContainerCellularSettings containerCellularSettings];
-  v13 = [v12 isCellularEnabled];
-  v14 = [v10 configuration];
-  [v14 setAllowsCellularAccess:v13];
+  isCellularEnabled = [v12 isCellularEnabled];
+  configuration = [v10 configuration];
+  [configuration setAllowsCellularAccess:isCellularEnabled];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -391,8 +391,8 @@ LABEL_57:
   }
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v10 configuration];
-  v19 = [v17 numberWithBool:{objc_msgSend(v18, "allowsCellularAccess")}];
+  configuration2 = [v10 configuration];
+  v19 = [v17 numberWithBool:{objc_msgSend(configuration2, "allowsCellularAccess")}];
   [(_BRCOperation *)self addSubOperation:v10 overrideContext:0 allowsCellularAccess:v19];
 
   v20 = *MEMORY[0x277D85DE8];

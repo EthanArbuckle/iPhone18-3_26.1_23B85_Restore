@@ -1,11 +1,11 @@
 @interface SBPBSlideOverConfiguration
-- (BOOL)isEqual:(id)a3;
-- (double)copyTo:(uint64_t)a1;
-- (double)mergeFrom:(uint64_t)a1;
+- (BOOL)isEqual:(id)equal;
+- (double)copyTo:(uint64_t)to;
+- (double)mergeFrom:(uint64_t)from;
 - (double)slideOverSizeHeight;
 - (double)slideOverSizeWidth;
 - (double)slideOverYOffsetFromCorner;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)setSlideOverCorner:(uint64_t)result;
@@ -20,7 +20,7 @@
 - (uint64_t)slideOverIsActive;
 - (uint64_t)slideOverIsStashed;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBSlideOverConfiguration
@@ -31,42 +31,42 @@
   v8.receiver = self;
   v8.super_class = SBPBSlideOverConfiguration;
   v4 = [(SBPBSlideOverConfiguration *)&v8 description];
-  v5 = [(SBPBSlideOverConfiguration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBSlideOverConfiguration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_slideOverCorner];
-  [v3 setObject:v4 forKey:@"slideOverCorner"];
+  [dictionary setObject:v4 forKey:@"slideOverCorner"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_slideOverYOffsetFromCorner];
-  [v3 setObject:v5 forKey:@"slideOverYOffsetFromCorner"];
+  [dictionary setObject:v5 forKey:@"slideOverYOffsetFromCorner"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_slideOverSizeHeight];
-  [v3 setObject:v6 forKey:@"slideOverSizeHeight"];
+  [dictionary setObject:v6 forKey:@"slideOverSizeHeight"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_slideOverSizeWidth];
-  [v3 setObject:v7 forKey:@"slideOverSizeWidth"];
+  [dictionary setObject:v7 forKey:@"slideOverSizeWidth"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_slideOverIsActive];
-  [v3 setObject:v8 forKey:@"slideOverIsActive"];
+  [dictionary setObject:v8 forKey:@"slideOverIsActive"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_slideOverIsStashed];
-  [v3 setObject:v9 forKey:@"slideOverIsStashed"];
+  [dictionary setObject:v9 forKey:@"slideOverIsStashed"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_slideOverDodgesDock];
-  [v3 setObject:v10 forKey:@"slideOverDodgesDock"];
+  [dictionary setObject:v10 forKey:@"slideOverDodgesDock"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteInt64Field();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
@@ -76,9 +76,9 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_slideOverCorner;
   *(result + 4) = *&self->_slideOverYOffsetFromCorner;
   *(result + 2) = *&self->_slideOverSizeHeight;
@@ -89,17 +89,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_slideOverCorner != *(v4 + 1) || self->_slideOverYOffsetFromCorner != *(v4 + 4) || self->_slideOverSizeHeight != *(v4 + 2) || self->_slideOverSizeWidth != *(v4 + 3))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_slideOverCorner != *(equalCopy + 1) || self->_slideOverYOffsetFromCorner != *(equalCopy + 4) || self->_slideOverSizeHeight != *(equalCopy + 2) || self->_slideOverSizeWidth != *(equalCopy + 3))
   {
     goto LABEL_12;
   }
 
   if (self->_slideOverIsActive)
   {
-    if ((v4[41] & 1) == 0)
+    if ((equalCopy[41] & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -107,22 +107,22 @@
 LABEL_10:
     if (self->_slideOverIsStashed)
     {
-      if ((v4[42] & 1) == 0)
+      if ((equalCopy[42] & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (v4[42])
+    else if (equalCopy[42])
     {
       goto LABEL_12;
     }
 
-    v5 = self->_slideOverDodgesDock == v4[40];
+    v5 = self->_slideOverDodgesDock == equalCopy[40];
     goto LABEL_13;
   }
 
-  if ((v4[41] & 1) == 0)
+  if ((equalCopy[41] & 1) == 0)
   {
     goto LABEL_10;
   }
@@ -212,35 +212,35 @@ LABEL_13:
   return v13 ^ (2654435761 * self->_slideOverCorner) ^ v19 ^ v24 ^ (2654435761 * self->_slideOverIsActive) ^ (2654435761 * self->_slideOverIsStashed) ^ (2654435761 * self->_slideOverDodgesDock);
 }
 
-- (double)copyTo:(uint64_t)a1
+- (double)copyTo:(uint64_t)to
 {
-  if (a1)
+  if (to)
   {
-    *(a2 + 8) = *(a1 + 8);
-    *(a2 + 32) = *(a1 + 32);
-    *(a2 + 16) = *(a1 + 16);
-    result = *(a1 + 24);
+    *(a2 + 8) = *(to + 8);
+    *(a2 + 32) = *(to + 32);
+    *(a2 + 16) = *(to + 16);
+    result = *(to + 24);
     *(a2 + 24) = result;
-    *(a2 + 41) = *(a1 + 41);
-    *(a2 + 42) = *(a1 + 42);
-    *(a2 + 40) = *(a1 + 40);
+    *(a2 + 41) = *(to + 41);
+    *(a2 + 42) = *(to + 42);
+    *(a2 + 40) = *(to + 40);
   }
 
   return result;
 }
 
-- (double)mergeFrom:(uint64_t)a1
+- (double)mergeFrom:(uint64_t)from
 {
-  if (a1)
+  if (from)
   {
-    *(a1 + 8) = *(a2 + 8);
-    *(a1 + 32) = *(a2 + 32);
-    *(a1 + 16) = *(a2 + 16);
+    *(from + 8) = *(a2 + 8);
+    *(from + 32) = *(a2 + 32);
+    *(from + 16) = *(a2 + 16);
     result = *(a2 + 24);
-    *(a1 + 24) = result;
-    *(a1 + 41) = *(a2 + 41);
-    *(a1 + 42) = *(a2 + 42);
-    *(a1 + 40) = *(a2 + 40);
+    *(from + 24) = result;
+    *(from + 41) = *(a2 + 41);
+    *(from + 42) = *(a2 + 42);
+    *(from + 40) = *(a2 + 40);
   }
 
   return result;
@@ -268,9 +268,9 @@ LABEL_13:
 
 - (double)slideOverYOffsetFromCorner
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 32);
+    return OUTLINED_FUNCTION_2_1(self, 32);
   }
 
   else
@@ -291,9 +291,9 @@ LABEL_13:
 
 - (double)slideOverSizeHeight
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 16);
+    return OUTLINED_FUNCTION_2_1(self, 16);
   }
 
   else
@@ -314,9 +314,9 @@ LABEL_13:
 
 - (double)slideOverSizeWidth
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_1(a1, 24);
+    return OUTLINED_FUNCTION_2_1(self, 24);
   }
 
   else
@@ -337,9 +337,9 @@ LABEL_13:
 
 - (uint64_t)slideOverIsActive
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 41));
+    return OUTLINED_FUNCTION_0_9(*(self + 41));
   }
 
   else
@@ -360,9 +360,9 @@ LABEL_13:
 
 - (uint64_t)slideOverIsStashed
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 42));
+    return OUTLINED_FUNCTION_0_9(*(self + 42));
   }
 
   else
@@ -383,9 +383,9 @@ LABEL_13:
 
 - (uint64_t)slideOverDodgesDock
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 40));
+    return OUTLINED_FUNCTION_0_9(*(self + 40));
   }
 
   else

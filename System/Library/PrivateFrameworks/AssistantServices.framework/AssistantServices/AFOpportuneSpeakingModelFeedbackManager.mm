@@ -1,11 +1,11 @@
 @interface AFOpportuneSpeakingModelFeedbackManager
 - (AFOpportuneSpeakingModelFeedbackManager)init;
-- (BOOL)interactionDetectedForSpeakableId:(id)a3;
-- (id)lastNegativeFeedbackForContact:(id)a3;
-- (void)fetchNotificationUsageForSpeakableId:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withHandler:(id)a6;
+- (BOOL)interactionDetectedForSpeakableId:(id)id;
+- (id)lastNegativeFeedbackForContact:(id)contact;
+- (void)fetchNotificationUsageForSpeakableId:(id)id withStartDate:(id)date withEndDate:(id)endDate withHandler:(id)handler;
 - (void)loadIfNecessary;
 - (void)save;
-- (void)setLastNegativeFeedbackForContact:(id)a3;
+- (void)setLastNegativeFeedbackForContact:(id)contact;
 @end
 
 @implementation AFOpportuneSpeakingModelFeedbackManager
@@ -17,9 +17,9 @@
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AC08]);
     v4 = AFOpportuneSpeakingModelFeedbackPath();
-    v5 = [v4 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
     v20 = 0;
-    v6 = [v3 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v20];
+    v6 = [v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v20];
     v7 = v20;
 
     if (v6)
@@ -139,10 +139,10 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)interactionDetectedForSpeakableId:(id)a3
+- (BOOL)interactionDetectedForSpeakableId:(id)id
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_usageEventsBySpeakableId objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_usageEventsBySpeakableId objectForKey:id];
   v4 = v3;
   if (v3)
   {
@@ -167,11 +167,11 @@
 
           v10 = [*(*(&v17 + 1) + 8 * i) objectForKey:{@"EventType", v17}];
           v11 = [MEMORY[0x1E696AD98] numberWithInt:6];
-          v12 = [v11 stringValue];
+          stringValue = [v11 stringValue];
 
           if (v10)
           {
-            v13 = v12 == 0;
+            v13 = stringValue == 0;
           }
 
           else
@@ -179,7 +179,7 @@
             v13 = 1;
           }
 
-          if (!v13 && ([v10 isEqualToString:v12] & 1) != 0)
+          if (!v13 && ([v10 isEqualToString:stringValue] & 1) != 0)
           {
 
             v14 = 1;
@@ -210,23 +210,23 @@ LABEL_17:
   return v14;
 }
 
-- (void)fetchNotificationUsageForSpeakableId:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5 withHandler:(id)a6
+- (void)fetchNotificationUsageForSpeakableId:(id)id withStartDate:(id)date withEndDate:(id)endDate withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v14 = BiomeLibrary();
-  v15 = [v14 Notification];
-  v16 = [v15 Usage];
+  notification = [v14 Notification];
+  usage = [notification Usage];
 
-  v17 = [objc_alloc(MEMORY[0x1E698F2D0]) initWithStartDate:v11 endDate:v12 maxEvents:0 lastN:0 reversed:0];
-  v18 = [v16 publisherWithUseCase:@"Assistant" options:v17];
+  v17 = [objc_alloc(MEMORY[0x1E698F2D0]) initWithStartDate:dateCopy endDate:endDateCopy maxEvents:0 lastN:0 reversed:0];
+  v18 = [usage publisherWithUseCase:@"Assistant" options:v17];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpeakableId_withStartDate_withEndDate_withHandler___block_invoke;
   v34[3] = &unk_1E7348F88;
-  v19 = v10;
+  v19 = idCopy;
   v35 = v19;
   v20 = [v18 filterWithIsIncluded:v34];
 
@@ -240,7 +240,7 @@ LABEL_17:
   v22 = v19;
   v29 = v22;
   v30 = v21;
-  v23 = v13;
+  v23 = handlerCopy;
   v31 = v23;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -340,17 +340,17 @@ void __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpe
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)setLastNegativeFeedbackForContact:(id)a3
+- (void)setLastNegativeFeedbackForContact:(id)contact
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v14 = 136315394;
     v15 = "[AFOpportuneSpeakingModelFeedbackManager setLastNegativeFeedbackForContact:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = contactCopy;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s contact: %@", &v14, 0x16u);
   }
 
@@ -361,21 +361,21 @@ void __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpe
     self->_feedback = v6;
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [v4 length];
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = [contactCopy length];
   v10 = self->_feedback;
   if (v9)
   {
-    v11 = [(AFOpportuneSpeakingModelFeedback *)v10 negativeFeedbackByContact];
-    v12 = [v11 mutableCopy];
+    negativeFeedbackByContact = [(AFOpportuneSpeakingModelFeedback *)v10 negativeFeedbackByContact];
+    v12 = [negativeFeedbackByContact mutableCopy];
 
-    [v12 setObject:v8 forKey:v4];
+    [v12 setObject:date forKey:contactCopy];
     [(AFOpportuneSpeakingModelFeedback *)self->_feedback setNegativeFeedbackByContact:v12];
   }
 
   else
   {
-    [(AFOpportuneSpeakingModelFeedback *)v10 setLastNegativeFeedback:v8];
+    [(AFOpportuneSpeakingModelFeedback *)v10 setLastNegativeFeedback:date];
   }
 
   [(AFOpportuneSpeakingModelFeedbackManager *)self save];
@@ -383,22 +383,22 @@ void __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpe
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lastNegativeFeedbackForContact:(id)a3
+- (id)lastNegativeFeedbackForContact:(id)contact
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   [(AFOpportuneSpeakingModelFeedbackManager *)self loadIfNecessary];
-  v5 = [v4 length];
+  v5 = [contactCopy length];
   feedback = self->_feedback;
   if (v5)
   {
-    v7 = [(AFOpportuneSpeakingModelFeedback *)feedback negativeFeedbackByContact];
-    v8 = [v7 objectForKey:v4];
+    negativeFeedbackByContact = [(AFOpportuneSpeakingModelFeedback *)feedback negativeFeedbackByContact];
+    lastNegativeFeedback = [negativeFeedbackByContact objectForKey:contactCopy];
   }
 
   else
   {
-    v8 = [(AFOpportuneSpeakingModelFeedback *)feedback lastNegativeFeedback];
+    lastNegativeFeedback = [(AFOpportuneSpeakingModelFeedback *)feedback lastNegativeFeedback];
   }
 
   v9 = AFSiriLogContextService;
@@ -407,13 +407,13 @@ void __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpe
     v12 = 136315394;
     v13 = "[AFOpportuneSpeakingModelFeedbackManager lastNegativeFeedbackForContact:]";
     v14 = 2112;
-    v15 = v8;
+    v15 = lastNegativeFeedback;
     _os_log_debug_impl(&dword_1912FE000, v9, OS_LOG_TYPE_DEBUG, "%s %@", &v12, 0x16u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return lastNegativeFeedback;
 }
 
 - (AFOpportuneSpeakingModelFeedbackManager)init
@@ -428,9 +428,9 @@ void __118__AFOpportuneSpeakingModelFeedbackManager_fetchNotificationUsageForSpe
     usageEventsBySpeakableId = v2->_usageEventsBySpeakableId;
     v2->_usageEventsBySpeakableId = v3;
 
-    v5 = [get_DKKnowledgeStoreClass() knowledgeStore];
+    knowledgeStore = [get_DKKnowledgeStoreClass() knowledgeStore];
     knowledgeStore = v2->_knowledgeStore;
-    v2->_knowledgeStore = v5;
+    v2->_knowledgeStore = knowledgeStore;
 
     if (!v2->_knowledgeStore)
     {

@@ -18,24 +18,24 @@
 - (id)initBase;
 - (void)beginInterruption;
 - (void)dealloc;
-- (void)decodeError:(id)a3;
+- (void)decodeError:(id)error;
 - (void)endInterruption;
-- (void)endInterruptionWithFlags:(id)a3;
+- (void)endInterruptionWithFlags:(id)flags;
 - (void)finalize;
-- (void)finishedPlaying:(id)a3;
-- (void)handleInterruption:(id)a3;
+- (void)finishedPlaying:(id)playing;
+- (void)handleInterruption:(id)interruption;
 - (void)privRemoveSessionListener;
-- (void)setAudioSession:(id)a3;
+- (void)setAudioSession:(id)session;
 - (void)setChannelAssignments:(NSArray *)channelAssignments;
 - (void)setCurrentTime:(NSTimeInterval)currentTime;
 - (void)setDelegate:(id)delegate;
 - (void)setEnableRate:(BOOL)enableRate;
 - (void)setMeteringEnabled:(BOOL)meteringEnabled;
-- (void)setMixToUplink:(BOOL)a3;
+- (void)setMixToUplink:(BOOL)uplink;
 - (void)setPan:(float)pan;
 - (void)setRate:(float)rate;
-- (void)setSTSLabel:(id)a3;
-- (void)setUseInjectionDevice:(BOOL)a3;
+- (void)setSTSLabel:(id)label;
+- (void)setUseInjectionDevice:(BOOL)device;
 - (void)setVolume:(float)volume;
 - (void)setVolume:(float)volume fadeDuration:(NSTimeInterval)duration;
 @end
@@ -74,11 +74,11 @@
   return v3;
 }
 
-- (void)setSTSLabel:(id)a3
+- (void)setSTSLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = *(self->_impl + 11);
-  if (!a3)
+  if (!label)
   {
 LABEL_7:
     v6 = *(v4 + 67);
@@ -92,18 +92,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  CFRetain(a3);
-  v5 = CFGetTypeID(v3);
+  CFRetain(label);
+  v5 = CFGetTypeID(labelCopy);
   if (v5 != CFStringGetTypeID())
   {
-    CFRelease(v3);
-    v3 = 0;
+    CFRelease(labelCopy);
+    labelCopy = 0;
     goto LABEL_7;
   }
 
   v6 = *(v4 + 67);
-  *(v4 + 67) = v3;
-  CFRetain(v3);
+  *(v4 + 67) = labelCopy;
+  CFRetain(labelCopy);
   v7 = 0;
   if (v6)
   {
@@ -115,13 +115,13 @@ LABEL_9:
   AVAudioPlayerCpp::applySTSLabelToQueueIfPossible(v4);
   if ((v7 & 1) == 0)
   {
-    CFRelease(v3);
+    CFRelease(labelCopy);
   }
 }
 
-- (void)setMixToUplink:(BOOL)a3
+- (void)setMixToUplink:(BOOL)uplink
 {
-  if (a3)
+  if (uplink)
   {
     v3 = 256;
   }
@@ -134,9 +134,9 @@ LABEL_9:
   *(*(self->_impl + 11) + 24) = *(*(self->_impl + 11) + 24) & 0xFFFFFEFF | v3;
 }
 
-- (void)setUseInjectionDevice:(BOOL)a3
+- (void)setUseInjectionDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 0x80000;
   }
@@ -149,17 +149,17 @@ LABEL_9:
   *(*(self->_impl + 11) + 24) = *(*(self->_impl + 11) + 24) & 0xFFF7FFFF | v3;
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   objc_sync_enter(self);
   impl = self->_impl;
   [(AVAudioPlayer *)self stop];
   [(AVAudioPlayer *)self privRemoveSessionListener];
   v7 = *(impl + 11);
-  *(v7 + 456) = [a3 opaqueSessionID];
+  *(v7 + 456) = [session opaqueSessionID];
 
-  *(impl + 8) = a3;
+  *(impl + 8) = session;
   tryToSetPlayerSessionListener(self);
 
   objc_sync_exit(self);
@@ -217,16 +217,16 @@ LABEL_9:
               if (v16)
               {
                 *v15 = [*(*(&v26 + 1) + 8 * v14) owningPortUID];
-                v17 = [v16 channelNumber];
+                channelNumber = [v16 channelNumber];
               }
 
               else
               {
-                v17 = 0;
+                channelNumber = 0;
                 *v15 = 0;
               }
 
-              *(v15 + 2) = v17;
+              *(v15 + 2) = channelNumber;
               ++v14;
               v15 += 16;
             }
@@ -451,8 +451,8 @@ LABEL_9:
 
 - (AVAudioPlayer)initWithData:(NSData *)data fileTypeHint:(NSString *)utiString error:(NSError *)outError
 {
-  v7 = [(AVAudioPlayer *)self initBase];
-  if (v7)
+  initBase = [(AVAudioPlayer *)self initBase];
+  if (initBase)
   {
     if (outError)
     {
@@ -464,7 +464,7 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        *(v7->_impl + 2) = data;
+        *(initBase->_impl + 2) = data;
         v8 = data;
         operator new();
       }
@@ -475,18 +475,18 @@ LABEL_9:
       *outError = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10875 userInfo:0];
     }
 
-    v9 = v7;
+    v9 = initBase;
     return 0;
   }
 
-  return v7;
+  return initBase;
 }
 
 - (AVAudioPlayer)initWithContentsOfURL:(NSURL *)url fileTypeHint:(NSString *)utiString error:(NSError *)outError
 {
-  v7 = [(AVAudioPlayer *)self initBase];
-  v8 = v7;
-  if (v7)
+  initBase = [(AVAudioPlayer *)self initBase];
+  v8 = initBase;
+  if (initBase)
   {
     if (outError)
     {
@@ -505,7 +505,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    *(v7->_impl + 3) = url;
+    *(initBase->_impl + 3) = url;
     v9 = url;
     operator new();
   }
@@ -539,18 +539,18 @@ LABEL_7:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)endInterruptionWithFlags:(id)a3
+- (void)endInterruptionWithFlags:(id)flags
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(AVAudioPlayer *)self delegate];
+  delegate = [(AVAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 audioPlayerEndInterruption:self withOptions:{objc_msgSend(a3, "unsignedLongLongValue")}];
+    [delegate audioPlayerEndInterruption:self withOptions:{objc_msgSend(flags, "unsignedLongLongValue")}];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v6 audioPlayerEndInterruption:self withFlags:{objc_msgSend(a3, "unsignedLongLongValue")}];
+    [delegate audioPlayerEndInterruption:self withFlags:{objc_msgSend(flags, "unsignedLongLongValue")}];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -564,11 +564,11 @@ LABEL_7:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
   impl = self->_impl;
-  v6 = [a3 userInfo];
-  v7 = [objc_msgSend(v6 valueForKey:{*MEMORY[0x1E698D580]), "intValue"}];
+  userInfo = [interruption userInfo];
+  v7 = [objc_msgSend(userInfo valueForKey:{*MEMORY[0x1E698D580]), "intValue"}];
   if (v7)
   {
     if (v7 == 1)
@@ -626,8 +626,8 @@ LABEL_7:
         *(impl + 10) = 0;
         if (v13)
         {
-          v14 = [a3 userInfo];
-          if ([objc_msgSend(v14 valueForKey:{*MEMORY[0x1E698D568]), "intValue"}] == 1)
+          userInfo2 = [interruption userInfo];
+          if ([objc_msgSend(userInfo2 valueForKey:{*MEMORY[0x1E698D568]), "intValue"}] == 1)
           {
             *(impl + 10) |= 1uLL;
           }
@@ -651,34 +651,34 @@ LABEL_7:
   {
     if (*(impl + 72) == 1)
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 removeObserver:self name:*MEMORY[0x1E698D550] object:impl[8]];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E698D550] object:impl[8]];
       *(impl + 72) = 0;
     }
   }
 }
 
-- (void)decodeError:(id)a3
+- (void)decodeError:(id)error
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(AVAudioPlayer *)self delegate];
+  delegate = [(AVAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v7 = objc_alloc(MEMORY[0x1E696ABC0]);
-    [v6 audioPlayerDecodeErrorDidOccur:self error:{objc_msgSend(v7, "initWithDomain:code:userInfo:", *MEMORY[0x1E696A768], objc_msgSend(a3, "unsignedIntValue"), 0)}];
+    [delegate audioPlayerDecodeErrorDidOccur:self error:{objc_msgSend(v7, "initWithDomain:code:userInfo:", *MEMORY[0x1E696A768], objc_msgSend(error, "unsignedIntValue"), 0)}];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)finishedPlaying:(id)a3
+- (void)finishedPlaying:(id)playing
 {
   [(AVAudioPlayer *)self stop];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(AVAudioPlayer *)self delegate];
+  delegate = [(AVAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 audioPlayerDidFinishPlaying:self successfully:{objc_msgSend(a3, "BOOLValue")}];
+    [delegate audioPlayerDidFinishPlaying:self successfully:{objc_msgSend(playing, "BOOLValue")}];
   }
 
   objc_autoreleasePoolPop(v5);

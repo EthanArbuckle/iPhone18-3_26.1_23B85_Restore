@@ -1,21 +1,21 @@
 @interface PlaceContextViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PlaceContextViewModel)initWithCurrentLocation;
 - (PlaceContextViewModel)initWithLibraryContextForPinnedItem;
-- (PlaceContextViewModel)initWithLibraryContextForPlaceNote:(id)a3;
-- (PlaceContextViewModel)initWithLibraryContextForUserCollectionName:(id)a3;
-- (PlaceContextViewModel)initWithType:(unint64_t)a3 image:(id)a4 attributedString:(id)a5;
-- (PlaceContextViewModel)initWithType:(unint64_t)a3 image:(id)a4 string:(id)a5 stringHighlightRanges:(id)a6;
-- (id)attributedStringHighlightedWithString:(id)a3 stringHighlightRanges:(id)a4;
-- (id)attributedStringWithString:(id)a3 stringHighlightRanges:(id)a4;
+- (PlaceContextViewModel)initWithLibraryContextForPlaceNote:(id)note;
+- (PlaceContextViewModel)initWithLibraryContextForUserCollectionName:(id)name;
+- (PlaceContextViewModel)initWithType:(unint64_t)type image:(id)image attributedString:(id)string;
+- (PlaceContextViewModel)initWithType:(unint64_t)type image:(id)image string:(id)string stringHighlightRanges:(id)ranges;
+- (id)attributedStringHighlightedWithString:(id)string stringHighlightRanges:(id)ranges;
+- (id)attributedStringWithString:(id)string stringHighlightRanges:(id)ranges;
 @end
 
 @implementation PlaceContextViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -25,23 +25,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(PlaceContextViewModel *)v5 type]== self->_type)
       {
-        v6 = [(PlaceContextViewModel *)v5 image];
-        v7 = v6;
-        if (v6 == self->_image || [(UIImage *)v6 isEqual:?])
+        image = [(PlaceContextViewModel *)v5 image];
+        v7 = image;
+        if (image == self->_image || [(UIImage *)image isEqual:?])
         {
-          v8 = [(PlaceContextViewModel *)v5 attributedString];
-          v9 = v8;
-          if (v8 == self->_attributedString)
+          attributedString = [(PlaceContextViewModel *)v5 attributedString];
+          v9 = attributedString;
+          if (attributedString == self->_attributedString)
           {
             v10 = 1;
           }
 
           else
           {
-            v10 = [(NSAttributedString *)v8 isEqual:?];
+            v10 = [(NSAttributedString *)attributedString isEqual:?];
           }
         }
 
@@ -69,11 +69,11 @@
 - (PlaceContextViewModel)initWithCurrentLocation
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v3 isAuthorizedForPreciseLocation];
 
-  if (v4)
+  if (isAuthorizedForPreciseLocation)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -94,10 +94,10 @@
 
     self = v10;
 
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (PlaceContextViewModel)initWithLibraryContextForPinnedItem
@@ -126,10 +126,10 @@
   return v10;
 }
 
-- (PlaceContextViewModel)initWithLibraryContextForUserCollectionName:(id)a3
+- (PlaceContextViewModel)initWithLibraryContextForUserCollectionName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v5 = [UIImage systemImageNamed:@"checkmark"];
     v6 = [NSAttributedString alloc];
@@ -137,7 +137,7 @@
     v7 = +[UIColor systemBlueColor];
     v16 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v9 = [v6 initWithString:v4 attributes:v8];
+    v9 = [v6 initWithString:nameCopy attributes:v8];
 
     v10 = [(PlaceContextViewModel *)self initWithType:2 image:v5 attributedString:v9];
     if (v10)
@@ -149,50 +149,50 @@
 
     self = v10;
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (PlaceContextViewModel)initWithLibraryContextForPlaceNote:(id)a3
+- (PlaceContextViewModel)initWithLibraryContextForPlaceNote:(id)note
 {
-  v4 = a3;
-  if ([v4 length])
+  noteCopy = note;
+  if ([noteCopy length])
   {
-    v5 = [[NSAttributedString alloc] initWithString:v4];
+    v5 = [[NSAttributedString alloc] initWithString:noteCopy];
     v6 = [(PlaceContextViewModel *)self initWithType:1 image:0 attributedString:v5];
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)attributedStringWithString:(id)a3 stringHighlightRanges:(id)a4
+- (id)attributedStringWithString:(id)string stringHighlightRanges:(id)ranges
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableAttributedString alloc] initWithString:v5];
-  if ([v6 count])
+  stringCopy = string;
+  rangesCopy = ranges;
+  v7 = [[NSMutableAttributedString alloc] initWithString:stringCopy];
+  if ([rangesCopy count])
   {
-    v19 = v5;
+    v19 = stringCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = rangesCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -209,8 +209,8 @@
 
           v13 = *(*(&v20 + 1) + 8 * i);
           v14 = +[UIColor systemBlueColor];
-          v15 = [v13 rangeValue];
-          [v7 addAttribute:NSForegroundColorAttributeName value:v14 range:{v15, v16}];
+          rangeValue = [v13 rangeValue];
+          [v7 addAttribute:NSForegroundColorAttributeName value:v14 range:{rangeValue, v16}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -219,7 +219,7 @@
       while (v10);
     }
 
-    v5 = v19;
+    stringCopy = v19;
   }
 
   v17 = [v7 copy];
@@ -227,19 +227,19 @@
   return v17;
 }
 
-- (id)attributedStringHighlightedWithString:(id)a3 stringHighlightRanges:(id)a4
+- (id)attributedStringHighlightedWithString:(id)string stringHighlightRanges:(id)ranges
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableAttributedString alloc] initWithString:v5];
-  if ([v6 count])
+  stringCopy = string;
+  rangesCopy = ranges;
+  v7 = [[NSMutableAttributedString alloc] initWithString:stringCopy];
+  if ([rangesCopy count])
   {
-    v19 = v5;
+    v19 = stringCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = rangesCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -256,8 +256,8 @@
 
           v13 = *(*(&v20 + 1) + 8 * i);
           v14 = +[UIColor whiteColor];
-          v15 = [v13 rangeValue];
-          [v7 addAttribute:NSForegroundColorAttributeName value:v14 range:{v15, v16}];
+          rangeValue = [v13 rangeValue];
+          [v7 addAttribute:NSForegroundColorAttributeName value:v14 range:{rangeValue, v16}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -266,7 +266,7 @@
       while (v10);
     }
 
-    v5 = v19;
+    stringCopy = v19;
   }
 
   v17 = [v7 copy];
@@ -274,42 +274,42 @@
   return v17;
 }
 
-- (PlaceContextViewModel)initWithType:(unint64_t)a3 image:(id)a4 attributedString:(id)a5
+- (PlaceContextViewModel)initWithType:(unint64_t)type image:(id)image attributedString:(id)string
 {
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = PlaceContextViewModel;
   v11 = [(PlaceContextViewModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_image, a4);
-    objc_storeStrong(&v12->_attributedString, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_image, image);
+    objc_storeStrong(&v12->_attributedString, string);
   }
 
   return v12;
 }
 
-- (PlaceContextViewModel)initWithType:(unint64_t)a3 image:(id)a4 string:(id)a5 stringHighlightRanges:(id)a6
+- (PlaceContextViewModel)initWithType:(unint64_t)type image:(id)image string:(id)string stringHighlightRanges:(id)ranges
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  imageCopy = image;
+  stringCopy = string;
+  rangesCopy = ranges;
   v21.receiver = self;
   v21.super_class = PlaceContextViewModel;
   v14 = [(PlaceContextViewModel *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_image, a4);
-    v16 = [(PlaceContextViewModel *)v15 attributedStringWithString:v12 stringHighlightRanges:v13];
+    v14->_type = type;
+    objc_storeStrong(&v14->_image, image);
+    v16 = [(PlaceContextViewModel *)v15 attributedStringWithString:stringCopy stringHighlightRanges:rangesCopy];
     attributedString = v15->_attributedString;
     v15->_attributedString = v16;
 
-    v18 = [(PlaceContextViewModel *)v15 attributedStringHighlightedWithString:v12 stringHighlightRanges:v13];
+    v18 = [(PlaceContextViewModel *)v15 attributedStringHighlightedWithString:stringCopy stringHighlightRanges:rangesCopy];
     highlightedAttributedString = v15->_highlightedAttributedString;
     v15->_highlightedAttributedString = v18;
   }

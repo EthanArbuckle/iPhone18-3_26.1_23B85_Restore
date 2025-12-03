@@ -1,19 +1,19 @@
 @interface ASDGatherLogsRequest
 + (void)clearHARFiles;
-- (ASDGatherLogsRequest)initWithOptions:(id)a3;
+- (ASDGatherLogsRequest)initWithOptions:(id)options;
 - (id)_combineAllLogs;
 - (id)_createCombinedHarFile;
-- (void)_copyDB:(void *)a1 fullSourcePath:(void *)a2 toDir:(void *)a3 datbaseBase:(void *)a4;
-- (void)createHARFileArchiveWithCompletionBlock:(id)a3;
-- (void)createLogFileArchiveWithCompletionBlock:(id)a3;
-- (void)gatherLogsWithCompletionBlock:(id)a3;
+- (void)_copyDB:(void *)b fullSourcePath:(void *)path toDir:(void *)dir datbaseBase:(void *)base;
+- (void)createHARFileArchiveWithCompletionBlock:(id)block;
+- (void)createLogFileArchiveWithCompletionBlock:(id)block;
+- (void)gatherLogsWithCompletionBlock:(id)block;
 @end
 
 @implementation ASDGatherLogsRequest
 
-- (ASDGatherLogsRequest)initWithOptions:(id)a3
+- (ASDGatherLogsRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = ASDGatherLogsRequest;
   v5 = [(ASDGatherLogsRequest *)&v15 init];
@@ -29,7 +29,7 @@
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v12;
   }
@@ -43,8 +43,8 @@
   objc_opt_self();
   objc_opt_self();
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/var/mobile/Library/Logs/%@/HTTPArchives", @"com.apple.StoreServices"];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:v2 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v2 error:0];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -69,7 +69,7 @@
         {
           v11 = [v2 stringByAppendingPathComponent:v10];
           v14 = v7;
-          [v3 removeItemAtPath:v11 error:&v14];
+          [defaultManager removeItemAtPath:v11 error:&v14];
           v12 = v14;
 
           v7 = v12;
@@ -90,11 +90,11 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createLogFileArchiveWithCompletionBlock:(id)a3
+- (void)createLogFileArchiveWithCompletionBlock:(id)block
 {
   v5 = self->_options;
-  v6 = a3;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -105,16 +105,16 @@
   v9[2] = __64__ASDGatherLogsRequest__sendRequestWithOptions_completionBlock___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   v10 = v8;
   dispatch_async(accessQueue, v9);
 }
 
-- (void)createHARFileArchiveWithCompletionBlock:(id)a3
+- (void)createHARFileArchiveWithCompletionBlock:(id)block
 {
   v5 = self->_options;
-  v6 = a3;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -125,16 +125,16 @@
   v9[2] = __71__ASDGatherLogsRequest__sendHarFileRequestWithOptions_completionBlock___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   v10 = v8;
   dispatch_async(accessQueue, v9);
 }
 
-- (void)gatherLogsWithCompletionBlock:(id)a3
+- (void)gatherLogsWithCompletionBlock:(id)block
 {
   v5 = self->_options;
-  v6 = a3;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -145,7 +145,7 @@
   v9[2] = __70__ASDGatherLogsRequest__sendGatherRequestWithOptions_completionBlock___block_invoke;
   v9[3] = &unk_1E7CDBE48;
   v9[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   v10 = v8;
   dispatch_async(accessQueue, v9);
 }
@@ -167,7 +167,7 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 - (id)_combineAllLogs
 {
   v50[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v1 = [@"/var/mobile/Library/Caches/com.apple.appstored/" stringByAppendingPathComponent:@"scratch"];
     [MEMORY[0x1E696AC08] defaultManager];
@@ -175,7 +175,7 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
     [v39 removeItemAtPath:v1 error:&v42];
     v2 = @"appstored";
     v3 = v1;
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v38 = v3;
     v5 = [v3 stringByAppendingPathComponent:@"appstored"];
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.log", @"appstored"];
@@ -183,7 +183,7 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 
     v44 = 0;
     v40 = v7;
-    [v4 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v44];
+    [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v44];
     v8 = v44;
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/var/mobile/Library/Logs/com.apple.%@/", @"appstored"];
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.log", @"appstored"];
@@ -217,18 +217,18 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 
           v19 = *(*(&v46 + 1) + 8 * i);
           v20 = [v9 stringByAppendingPathComponent:v19];
-          if ([v4 fileExistsAtPath:v20])
+          if ([defaultManager fileExistsAtPath:v20])
           {
             v21 = [v40 stringByAppendingPathComponent:v19];
             v43 = v8;
-            [v4 copyItemAtPath:v20 toPath:v21 error:&v43];
+            [defaultManager copyItemAtPath:v20 toPath:v21 error:&v43];
             v22 = v43;
 
             if (v22)
             {
               v23 = *MEMORY[0x1E69E9848];
-              v24 = [v22 localizedDescription];
-              fprintf(v23, "\nError copying file: %s", [v24 UTF8String]);
+              localizedDescription = [v22 localizedDescription];
+              fprintf(v23, "\nError copying file: %s", [localizedDescription UTF8String]);
             }
 
             v8 = v22;
@@ -256,17 +256,17 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
     v28 = v25;
     if (BOMCopierNew())
     {
-      v29 = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
-      [v29 open];
+      initToMemory = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
+      [initToMemory open];
       *&v46 = @"createPKZip";
       v30 = [MEMORY[0x1E696AD98] numberWithBool:1];
       *(&v46 + 1) = @"outputStream";
       v45[0] = v30;
-      v45[1] = v29;
+      v45[1] = initToMemory;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v46 count:2];
 
-      v32 = [v28 path];
-      [v32 fileSystemRepresentation];
+      path = [v28 path];
+      [path fileSystemRepresentation];
       v33 = BOMCopierCopyWithOptions();
 
       if (v33)
@@ -277,7 +277,7 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 
       else
       {
-        v34 = [v29 propertyForKey:*MEMORY[0x1E695DA30]];
+        v34 = [initToMemory propertyForKey:*MEMORY[0x1E695DA30]];
         BOMCopierFree();
       }
     }
@@ -302,31 +302,31 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
   return v35;
 }
 
-- (void)_copyDB:(void *)a1 fullSourcePath:(void *)a2 toDir:(void *)a3 datbaseBase:(void *)a4
+- (void)_copyDB:(void *)b fullSourcePath:(void *)path toDir:(void *)dir datbaseBase:(void *)base
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v7 = a1;
-  v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v33 = v9;
-  v34 = v7;
-  v12 = [v9 stringByAppendingPathComponent:v7];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb", v10];
-  v14 = [v12 stringByAppendingPathComponent:v13];
+  bCopy = b;
+  pathCopy = path;
+  dirCopy = dir;
+  baseCopy = base;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v33 = dirCopy;
+  v34 = bCopy;
+  v12 = [dirCopy stringByAppendingPathComponent:bCopy];
+  baseCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb", baseCopy];
+  v14 = [v12 stringByAppendingPathComponent:baseCopy];
 
   v42 = 0;
   v35 = v14;
-  [v11 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:&v42];
+  [defaultManager createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:&v42];
   v15 = v42;
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb", v10];
-  v44[0] = v16;
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb-shm", v10];
-  v44[1] = v17;
-  v32 = v10;
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb-wal", v10];
-  v44[2] = v18;
+  baseCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb", baseCopy];
+  v44[0] = baseCopy2;
+  baseCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb-shm", baseCopy];
+  v44[1] = baseCopy3;
+  v32 = baseCopy;
+  baseCopy4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.sqlitedb-wal", baseCopy];
+  v44[2] = baseCopy4;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
 
   v40 = 0u;
@@ -349,22 +349,22 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
         }
 
         v24 = *(*(&v38 + 1) + 8 * i);
-        v25 = [v8 stringByAppendingPathComponent:v24];
-        if ([v11 fileExistsAtPath:v25])
+        v25 = [pathCopy stringByAppendingPathComponent:v24];
+        if ([defaultManager fileExistsAtPath:v25])
         {
           v26 = [v35 stringByAppendingPathComponent:v24];
           v37 = v15;
-          [v11 copyItemAtPath:v25 toPath:v26 error:&v37];
+          [defaultManager copyItemAtPath:v25 toPath:v26 error:&v37];
           v27 = v37;
 
           if (v27)
           {
             v28 = *MEMORY[0x1E69E9848];
             [v27 localizedDescription];
-            v30 = v29 = v8;
+            v30 = v29 = pathCopy;
             fprintf(v28, "\nError copying file: %s", [v30 UTF8String]);
 
-            v8 = v29;
+            pathCopy = v29;
           }
 
           v15 = v27;
@@ -383,16 +383,16 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 - (id)_createCombinedHarFile
 {
   v106 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     objc_opt_self();
     v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/var/mobile/Library/Logs/%@/HTTPArchives", @"com.apple.StoreServices"];
-    v3 = [*(v1 + 32) fileName];
-    v4 = v3;
-    if (v3)
+    fileName = [*(selfCopy + 32) fileName];
+    v4 = fileName;
+    if (fileName)
     {
-      v5 = v3;
+      v5 = fileName;
     }
 
     else
@@ -402,9 +402,9 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
 
     v61 = [v2 stringByAppendingPathComponent:v5];
 
-    v64 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v64 contentsOfDirectoryAtPath:v2 error:0];
-    if ([*(v1 + 32) verbose])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager contentsOfDirectoryAtPath:v2 error:0];
+    if ([*(selfCopy + 32) verbose])
     {
       v7 = objc_opt_class();
       NSLog(&cfstr_CheckingForLdF.isa, v7, [v6 count], v2);
@@ -418,7 +418,7 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
     v97 = 0u;
     obj = v6;
     v8 = [obj countByEnumeratingWithState:&v94 objects:v105 count:16];
-    v74 = v1;
+    v74 = selfCopy;
     if (v8)
     {
       v9 = v8;
@@ -444,20 +444,20 @@ void __47__ASDGatherLogsRequest__appstoredContainerPath__block_invoke()
             goto LABEL_17;
           }
 
-          v13 = [*(v1 + 32) fileName];
-          if (v13)
+          fileName2 = [*(selfCopy + 32) fileName];
+          if (fileName2)
           {
-            v14 = v13;
-            v15 = [*(v1 + 32) fileName];
-            v16 = [v12 isEqualToString:v15];
+            v14 = fileName2;
+            fileName3 = [*(selfCopy + 32) fileName];
+            v16 = [v12 isEqualToString:fileName3];
 
-            v1 = v74;
+            selfCopy = v74;
             if (v16)
             {
 LABEL_17:
-              v17 = [*(v1 + 32) verbose];
+              verbose = [*(selfCopy + 32) verbose];
               v18 = @"Skipping file: %@";
-              if (!v17)
+              if (!verbose)
               {
                 goto LABEL_19;
               }
@@ -469,9 +469,9 @@ LABEL_18:
           }
 
           [v76 addObject:v12];
-          v19 = [*(v1 + 32) verbose];
+          verbose2 = [*(selfCopy + 32) verbose];
           v18 = @"Including har file: %@";
-          if (v19)
+          if (verbose2)
           {
             goto LABEL_18;
           }
@@ -502,7 +502,7 @@ LABEL_19:
     {
       v67 = *v91;
       v26 = v63;
-      v25 = v64;
+      v25 = defaultManager;
       do
       {
         v27 = 0;
@@ -535,9 +535,9 @@ LABEL_19:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v35 = [*(v1 + 32) urlFilters];
+              urlFilters = [*(selfCopy + 32) urlFilters];
 
-              if (v35)
+              if (urlFilters)
               {
                 v65 = v31;
                 v86 = 0u;
@@ -576,8 +576,8 @@ LABEL_19:
                         v83 = 0u;
                         v80 = 0u;
                         v81 = 0u;
-                        v46 = [*(v74 + 32) urlFilters];
-                        v47 = [v46 countByEnumeratingWithState:&v80 objects:v102 count:16];
+                        urlFilters2 = [*(v74 + 32) urlFilters];
+                        v47 = [urlFilters2 countByEnumeratingWithState:&v80 objects:v102 count:16];
                         if (v47)
                         {
                           v48 = v47;
@@ -588,7 +588,7 @@ LABEL_19:
                             {
                               if (*v81 != v49)
                               {
-                                objc_enumerationMutation(v46);
+                                objc_enumerationMutation(urlFilters2);
                               }
 
                               if ([v45 containsString:*(*(&v80 + 1) + 8 * i)])
@@ -597,7 +597,7 @@ LABEL_19:
                               }
                             }
 
-                            v48 = [v46 countByEnumeratingWithState:&v80 objects:v102 count:16];
+                            v48 = [urlFilters2 countByEnumeratingWithState:&v80 objects:v102 count:16];
                           }
 
                           while (v48);
@@ -620,8 +620,8 @@ LABEL_19:
                 }
 
                 v26 = v63;
-                v25 = v64;
-                v1 = v74;
+                v25 = defaultManager;
+                selfCopy = v74;
                 v22 = v62;
                 v31 = v65;
               }
@@ -678,7 +678,7 @@ LABEL_19:
     else
     {
       v57 = v61;
-      if ([*(v1 + 32) verbose])
+      if ([*(selfCopy + 32) verbose])
       {
         v58 = objc_opt_class();
         NSLog(&cfstr_CreatedMergedH.isa, v58, v61);

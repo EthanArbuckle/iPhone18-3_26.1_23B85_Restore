@@ -1,7 +1,7 @@
 @interface MPAVRoutingTableViewCellSubtitleTextState
 - (BOOL)hasVisibleTextTypeToShow;
 - (NSString)stringForCurrentVisibleTextType;
-- (id)_stringForVisibleTextType:(unint64_t)a3;
+- (id)_stringForVisibleTextType:(unint64_t)type;
 - (unint64_t)_nextAvailableVisibleTextType;
 @end
 
@@ -31,16 +31,16 @@
   return currentVisibleTextType;
 }
 
-- (id)_stringForVisibleTextType:(unint64_t)a3
+- (id)_stringForVisibleTextType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&self->_routeUID + a3);
+    v3 = *(&self->_routeUID + type);
   }
 
   if ([v3 length])

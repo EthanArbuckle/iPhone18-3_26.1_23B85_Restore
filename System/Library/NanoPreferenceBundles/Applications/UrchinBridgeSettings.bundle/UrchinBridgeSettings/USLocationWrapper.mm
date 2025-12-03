@@ -1,7 +1,7 @@
 @interface USLocationWrapper
 + (USLocationWrapper)shared;
-- (void)loadLocationsWithCompletion:(id)a3;
-- (void)setWithSelectedLocation:(id)a3;
+- (void)loadLocationsWithCompletion:(id)completion;
+- (void)setWithSelectedLocation:(id)location;
 @end
 
 @implementation USLocationWrapper
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (void)loadLocationsWithCompletion:(id)a3
+- (void)loadLocationsWithCompletion:(id)completion
 {
   v5 = (*(*(sub_49F4(&qword_11508, &qword_7340) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = sub_61FC();
@@ -34,11 +34,11 @@
   v11[4] = self;
   v11[5] = sub_50BC;
   v11[6] = v9;
-  v12 = self;
+  selfCopy = self;
   sub_3AE8(0, 0, v7, &unk_7378, v11);
 }
 
-- (void)setWithSelectedLocation:(id)a3
+- (void)setWithSelectedLocation:(id)location
 {
   v5 = (*(*(sub_49F4(&qword_11508, &qword_7340) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
@@ -49,9 +49,9 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v9[5] = a3;
-  v10 = a3;
-  v11 = self;
+  v9[5] = location;
+  locationCopy = location;
+  selfCopy = self;
   sub_3AE8(0, 0, v7, &unk_7350, v9);
 }
 

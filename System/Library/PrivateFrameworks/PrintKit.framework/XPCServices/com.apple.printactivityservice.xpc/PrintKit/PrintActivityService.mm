@@ -7,22 +7,22 @@
 
 - (void)startLiveActivity
 {
-  v3 = [(PrintActivityService *)self printActivityObject];
+  printActivityObject = [(PrintActivityService *)self printActivityObject];
 
-  if (!v3)
+  if (!printActivityObject)
   {
     v4 = objc_opt_new();
     [(PrintActivityService *)self setPrintActivityObject:v4];
   }
 
-  v5 = [(PrintActivityService *)self printActivityObject];
-  [v5 startPrintLiveActivity];
+  printActivityObject2 = [(PrintActivityService *)self printActivityObject];
+  [printActivityObject2 startPrintLiveActivity];
 }
 
 - (void)stopLiveActivity
 {
-  v2 = [(PrintActivityService *)self printActivityObject];
-  [v2 stopPrintLiveActivity];
+  printActivityObject = [(PrintActivityService *)self printActivityObject];
+  [printActivityObject stopPrintLiveActivity];
 }
 
 @end

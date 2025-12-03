@@ -1,5 +1,5 @@
 @interface IDSMagnetCorruptionMetric
-- (IDSMagnetCorruptionMetric)initWithCorrectFramesSinceLastCorruption:(unint64_t)a3 correctRawBytesSinceLastCorruption:(unint64_t)a4 discardedRawBytes:(unint64_t)a5 recoveryTimeInMs:(unint64_t)a6 linkType:(unint64_t)a7;
+- (IDSMagnetCorruptionMetric)initWithCorrectFramesSinceLastCorruption:(unint64_t)corruption correctRawBytesSinceLastCorruption:(unint64_t)lastCorruption discardedRawBytes:(unint64_t)bytes recoveryTimeInMs:(unint64_t)ms linkType:(unint64_t)type;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -41,18 +41,18 @@
   return v3;
 }
 
-- (IDSMagnetCorruptionMetric)initWithCorrectFramesSinceLastCorruption:(unint64_t)a3 correctRawBytesSinceLastCorruption:(unint64_t)a4 discardedRawBytes:(unint64_t)a5 recoveryTimeInMs:(unint64_t)a6 linkType:(unint64_t)a7
+- (IDSMagnetCorruptionMetric)initWithCorrectFramesSinceLastCorruption:(unint64_t)corruption correctRawBytesSinceLastCorruption:(unint64_t)lastCorruption discardedRawBytes:(unint64_t)bytes recoveryTimeInMs:(unint64_t)ms linkType:(unint64_t)type
 {
   v13.receiver = self;
   v13.super_class = IDSMagnetCorruptionMetric;
   result = [(IDSMagnetCorruptionMetric *)&v13 init];
   if (result)
   {
-    result->_correctFramesSinceLastCorruption = a3;
-    result->_correctRawBytesSinceLastCorruption = a4;
-    result->_discardedRawBytes = a5;
-    result->_recoveryTimeInMs = a6;
-    result->_linkType = a7;
+    result->_correctFramesSinceLastCorruption = corruption;
+    result->_correctRawBytesSinceLastCorruption = lastCorruption;
+    result->_discardedRawBytes = bytes;
+    result->_recoveryTimeInMs = ms;
+    result->_linkType = type;
   }
 
   return result;

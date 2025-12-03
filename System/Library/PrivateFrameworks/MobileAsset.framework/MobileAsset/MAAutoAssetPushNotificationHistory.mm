@@ -1,8 +1,8 @@
 @interface MAAutoAssetPushNotificationHistory
 + (id)sharedInstance;
-- (BOOL)_loadHistoryWithError:(id *)a3;
-- (BOOL)addNotificationsToHistory:(id)a3 withError:(id *)a4;
-- (BOOL)clearHistoryWithError:(id *)a3;
+- (BOOL)_loadHistoryWithError:(id *)error;
+- (BOOL)addNotificationsToHistory:(id)history withError:(id *)error;
+- (BOOL)clearHistoryWithError:(id *)error;
 - (MAAutoAssetPushNotificationHistory)init;
 - (NSArray)notificationHistory;
 - (id)_historyURL;
@@ -76,13 +76,13 @@ uint64_t __52__MAAutoAssetPushNotificationHistory_sharedInstance__block_invoke()
   return v6;
 }
 
-- (BOOL)_loadHistoryWithError:(id *)a3
+- (BOOL)_loadHistoryWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _historyURL = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
+  path = [_historyURL path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   v9 = _MAClientLog(@"PushNotification");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -95,8 +95,8 @@ uint64_t __52__MAAutoAssetPushNotificationHistory_sharedInstance__block_invoke()
     }
 
     v11 = MEMORY[0x1E695DEC8];
-    v12 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
-    v13 = [v11 arrayWithContentsOfURL:v12];
+    _historyURL2 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
+    v13 = [v11 arrayWithContentsOfURL:_historyURL2];
     [(MAAutoAssetPushNotificationHistory *)self setNotificationHistory:v13];
 
 LABEL_5:
@@ -111,27 +111,27 @@ LABEL_5:
   }
 
   v15 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/persisted");
-  v12 = [v15 stringByAppendingPathComponent:@"PushNotificationManager"];
+  _historyURL2 = [v15 stringByAppendingPathComponent:@"PushNotificationManager"];
 
   v24 = 0;
-  if (([v5 fileExistsAtPath:v12 isDirectory:&v24] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:_historyURL2 isDirectory:&v24] & 1) == 0)
   {
     v16 = _MAClientLog(@"PushNotification");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v12;
+      v26 = _historyURL2;
       _os_log_impl(&dword_197AD5000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ doesn't exist, create it", buf, 0xCu);
     }
 
-    if (([v5 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:a3] & 1) == 0)
+    if (([defaultManager createDirectoryAtPath:_historyURL2 withIntermediateDirectories:1 attributes:0 error:error] & 1) == 0)
     {
       v22 = _MAClientLog(@"PushNotification");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        if (a3)
+        if (error)
         {
-          v23 = *a3;
+          v23 = *error;
         }
 
         else
@@ -148,8 +148,8 @@ LABEL_5:
     }
   }
 
-  v17 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
-  v14 = [MEMORY[0x1E695E0F0] writeToURL:v17 error:a3];
+  _historyURL3 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
+  v14 = [MEMORY[0x1E695E0F0] writeToURL:_historyURL3 error:error];
 
   v18 = _MAClientLog(@"PushNotification");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -170,19 +170,19 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)addNotificationsToHistory:(id)a3 withError:(id *)a4
+- (BOOL)addNotificationsToHistory:(id)history withError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(MAAutoAssetPushNotificationHistory *)self _loadHistoryWithError:a4];
-  v7 = [(MAAutoAssetPushNotificationHistory *)self notificationHistory];
-  v8 = [v7 mutableCopy];
+  historyCopy = history;
+  [(MAAutoAssetPushNotificationHistory *)self _loadHistoryWithError:error];
+  notificationHistory = [(MAAutoAssetPushNotificationHistory *)self notificationHistory];
+  v8 = [notificationHistory mutableCopy];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = historyCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
@@ -198,8 +198,8 @@ LABEL_17:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * v13) historyRepresentation];
-        [v8 addObject:v14];
+        historyRepresentation = [*(*(&v21 + 1) + 8 * v13) historyRepresentation];
+        [v8 addObject:historyRepresentation];
 
         ++v13;
       }
@@ -211,15 +211,15 @@ LABEL_17:
     while (v11);
   }
 
-  v15 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
-  v16 = [v8 writeToURL:v15 error:a4];
+  _historyURL = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
+  v16 = [v8 writeToURL:_historyURL error:error];
 
   if ((v16 & 1) == 0)
   {
     v17 = _MAClientLog(@"PushNotification");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = *a4;
+      v18 = *error;
       *buf = 138543362;
       v26 = v18;
       _os_log_impl(&dword_197AD5000, v17, OS_LOG_TYPE_ERROR, "Error writing notifications to history: %{public}@", buf, 0xCu);
@@ -230,12 +230,12 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)clearHistoryWithError:(id *)a3
+- (BOOL)clearHistoryWithError:(id *)error
 {
-  v4 = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
-  LOBYTE(a3) = [MEMORY[0x1E695E0F0] writeToURL:v4 error:a3];
+  _historyURL = [(MAAutoAssetPushNotificationHistory *)self _historyURL];
+  LOBYTE(error) = [MEMORY[0x1E695E0F0] writeToURL:_historyURL error:error];
 
-  return a3;
+  return error;
 }
 
 @end

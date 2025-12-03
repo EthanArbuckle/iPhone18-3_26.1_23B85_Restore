@@ -2,40 +2,40 @@
 - (NSString)renderingStyle;
 - (double)dialogMixBias;
 - (unint64_t)renderingVersion;
-- (void)setDialogMixBias:(double)a3;
-- (void)setRenderingStyle:(id)a3;
-- (void)setRenderingVersion:(unint64_t)a3;
+- (void)setDialogMixBias:(double)bias;
+- (void)setRenderingStyle:(id)style;
+- (void)setRenderingVersion:(unint64_t)version;
 @end
 
 @implementation PICinematicAudioAdjustmentController
 
-- (void)setRenderingVersion:(unint64_t)a3
+- (void)setRenderingVersion:(unint64_t)version
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  [v4 setObject:v5 forKeyedSubscript:@"renderingVersion"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:v5 forKeyedSubscript:@"renderingVersion"];
 }
 
-- (void)setRenderingStyle:(id)a3
+- (void)setRenderingStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(PIAdjustmentController *)self adjustment];
-  [v5 setObject:v4 forKeyedSubscript:@"renderingStyle"];
+  styleCopy = style;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:styleCopy forKeyedSubscript:@"renderingStyle"];
 }
 
 - (unint64_t)renderingVersion
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"renderingVersion"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"renderingVersion"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)renderingStyle
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"renderingStyle"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"renderingStyle"];
 
   if (v3)
   {
@@ -52,19 +52,19 @@
   return &v4->isa;
 }
 
-- (void)setDialogMixBias:(double)a3
+- (void)setDialogMixBias:(double)bias
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:bias];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PICinematicAudioAdjustmentController dialogMixBiasKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (double)dialogMixBias
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PICinematicAudioAdjustmentController dialogMixBiasKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   if (v4)
   {

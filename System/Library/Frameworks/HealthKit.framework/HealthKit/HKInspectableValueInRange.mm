@@ -1,35 +1,35 @@
 @interface HKInspectableValueInRange
-+ (id)valueInRangeWithLow:(id)a3 high:(id)a4 currentValue:(id)a5 unit:(id)a6;
++ (id)valueInRangeWithLow:(id)low high:(id)high currentValue:(id)value unit:(id)unit;
 - (BOOL)hasRenderableContent;
-- (HKInspectableValueInRange)initWithCoder:(id)a3;
+- (HKInspectableValueInRange)initWithCoder:(id)coder;
 - (id)_currentValueDoubleRepresentation;
-- (id)_initValueInRangeWithLow:(id)a3 high:(id)a4 currentValue:(id)a5 unit:(id)a6;
-- (id)_numberForValue:(id)a3;
-- (id)_numberForValueCollection:(id)a3;
+- (id)_initValueInRangeWithLow:(id)low high:(id)high currentValue:(id)value unit:(id)unit;
+- (id)_numberForValue:(id)value;
+- (id)_numberForValueCollection:(id)collection;
 - (id)description;
 - (int64_t)currentValueRelation;
 - (void)_assertValidRange;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKInspectableValueInRange
 
-- (id)_initValueInRangeWithLow:(id)a3 high:(id)a4 currentValue:(id)a5 unit:(id)a6
+- (id)_initValueInRangeWithLow:(id)low high:(id)high currentValue:(id)value unit:(id)unit
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lowCopy = low;
+  highCopy = high;
+  valueCopy = value;
+  unitCopy = unit;
   v20.receiver = self;
   v20.super_class = HKInspectableValueInRange;
   v15 = [(HKInspectableValueInRange *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_lowValue, a3);
-    objc_storeStrong(&v16->_highValue, a4);
-    objc_storeStrong(&v16->_currentValue, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_lowValue, low);
+    objc_storeStrong(&v16->_highValue, high);
+    objc_storeStrong(&v16->_currentValue, value);
+    v17 = [unitCopy copy];
     unitString = v16->_unitString;
     v16->_unitString = v17;
 
@@ -39,44 +39,44 @@
   return v16;
 }
 
-+ (id)valueInRangeWithLow:(id)a3 high:(id)a4 currentValue:(id)a5 unit:(id)a6
++ (id)valueInRangeWithLow:(id)low high:(id)high currentValue:(id)value unit:(id)unit
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v13)
+  lowCopy = low;
+  highCopy = high;
+  valueCopy = value;
+  unitCopy = unit;
+  if (!valueCopy)
   {
-    [HKInspectableValueInRange valueInRangeWithLow:a2 high:a1 currentValue:? unit:?];
+    [HKInspectableValueInRange valueInRangeWithLow:a2 high:self currentValue:? unit:?];
   }
 
-  v15 = [[HKInspectableValueInRange alloc] _initValueInRangeWithLow:v11 high:v12 currentValue:v13 unit:v14];
+  v15 = [[HKInspectableValueInRange alloc] _initValueInRangeWithLow:lowCopy high:highCopy currentValue:valueCopy unit:unitCopy];
 
   return v15;
 }
 
 - (void)_assertValidRange
 {
-  v3 = [(HKInspectableValueInRange *)self lowValue];
-  if (v3)
+  lowValue = [(HKInspectableValueInRange *)self lowValue];
+  if (lowValue)
   {
   }
 
   else
   {
-    v4 = [(HKInspectableValueInRange *)self highValue];
+    highValue = [(HKInspectableValueInRange *)self highValue];
 
-    if (!v4)
+    if (!highValue)
     {
       return;
     }
   }
 
-  v5 = [(HKInspectableValueInRange *)self lowValue];
-  if (v5)
+  lowValue2 = [(HKInspectableValueInRange *)self lowValue];
+  if (lowValue2)
   {
-    v6 = [(HKInspectableValueInRange *)self lowValue];
-    v7 = [v6 valueType] == 0;
+    lowValue3 = [(HKInspectableValueInRange *)self lowValue];
+    v7 = [lowValue3 valueType] == 0;
   }
 
   else
@@ -84,11 +84,11 @@
     v7 = 0;
   }
 
-  v8 = [(HKInspectableValueInRange *)self highValue];
-  if (v8)
+  highValue2 = [(HKInspectableValueInRange *)self highValue];
+  if (highValue2)
   {
-    v9 = [(HKInspectableValueInRange *)self highValue];
-    v10 = [v9 valueType] == 0;
+    highValue3 = [(HKInspectableValueInRange *)self highValue];
+    v10 = [highValue3 valueType] == 0;
 
     if (!v10 && !v7)
     {
@@ -114,97 +114,97 @@
 
 - (id)_currentValueDoubleRepresentation
 {
-  v3 = [(HKInspectableValueInRange *)self currentValue];
-  v4 = [(HKInspectableValueInRange *)self _numberForValueCollection:v3];
+  currentValue = [(HKInspectableValueInRange *)self currentValue];
+  v4 = [(HKInspectableValueInRange *)self _numberForValueCollection:currentValue];
 
   return v4;
 }
 
 - (int64_t)currentValueRelation
 {
-  v3 = [(HKInspectableValueInRange *)self lowValue];
-  if (v3)
+  lowValue = [(HKInspectableValueInRange *)self lowValue];
+  if (lowValue)
   {
   }
 
   else
   {
-    v4 = [(HKInspectableValueInRange *)self highValue];
+    highValue = [(HKInspectableValueInRange *)self highValue];
 
-    if (!v4)
+    if (!highValue)
     {
       return 3;
     }
   }
 
-  v5 = [(HKInspectableValueInRange *)self _currentValueDoubleRepresentation];
-  v6 = v5;
-  if (!v5)
+  _currentValueDoubleRepresentation = [(HKInspectableValueInRange *)self _currentValueDoubleRepresentation];
+  v6 = _currentValueDoubleRepresentation;
+  if (!_currentValueDoubleRepresentation)
   {
-    v9 = 0;
+    lowValue2 = 0;
     goto LABEL_9;
   }
 
-  [v5 doubleValue];
+  [_currentValueDoubleRepresentation doubleValue];
   v8 = v7;
-  v9 = [(HKInspectableValueInRange *)self lowValue];
+  lowValue2 = [(HKInspectableValueInRange *)self lowValue];
   v10 = 0.0;
-  if (!v9)
+  if (!lowValue2)
   {
     goto LABEL_13;
   }
 
-  v11 = [(HKInspectableValueInRange *)self lowValue];
+  lowValue3 = [(HKInspectableValueInRange *)self lowValue];
   v12 = +[HKInspectableValue inspectableValueWithNull];
-  v13 = [v11 isEqual:v12];
+  v13 = [lowValue3 isEqual:v12];
 
   if (v13)
   {
-    v9 = 0;
+    lowValue2 = 0;
     goto LABEL_13;
   }
 
-  v16 = [(HKInspectableValueInRange *)self lowValueNumberRepresentation];
-  v9 = v16;
-  if (!v16)
+  lowValueNumberRepresentation = [(HKInspectableValueInRange *)self lowValueNumberRepresentation];
+  lowValue2 = lowValueNumberRepresentation;
+  if (!lowValueNumberRepresentation)
   {
 LABEL_9:
     v14 = 0;
     goto LABEL_10;
   }
 
-  [v16 doubleValue];
+  [lowValueNumberRepresentation doubleValue];
   v10 = v17;
 LABEL_13:
-  v18 = [(HKInspectableValueInRange *)self highValue];
-  if (!v18)
+  highValue2 = [(HKInspectableValueInRange *)self highValue];
+  if (!highValue2)
   {
     goto LABEL_15;
   }
 
-  v19 = v18;
-  v20 = [(HKInspectableValueInRange *)self highValue];
+  v19 = highValue2;
+  highValue3 = [(HKInspectableValueInRange *)self highValue];
   v21 = +[HKInspectableValue inspectableValueWithNull];
-  v22 = [v20 isEqual:v21];
+  v22 = [highValue3 isEqual:v21];
 
   if (v22)
   {
 LABEL_15:
     v23 = 0;
     v14 = 0;
-    v24 = v9 != 0;
+    v24 = lowValue2 != 0;
     v25 = 0.0;
     goto LABEL_16;
   }
 
-  v27 = [(HKInspectableValueInRange *)self highValueNumberRepresentation];
-  v14 = v27;
-  if (v27)
+  highValueNumberRepresentation = [(HKInspectableValueInRange *)self highValueNumberRepresentation];
+  v14 = highValueNumberRepresentation;
+  if (highValueNumberRepresentation)
   {
-    [v27 doubleValue];
-    v24 = v9 != 0;
+    [highValueNumberRepresentation doubleValue];
+    v24 = lowValue2 != 0;
     v23 = 1;
-    if (!v9 || v25 - v10 > 2.22044605e-16)
+    if (!lowValue2 || v25 - v10 > 2.22044605e-16)
     {
 LABEL_16:
       if (v24 && v8 < v10)
@@ -235,19 +235,19 @@ LABEL_22:
 
 - (BOOL)hasRenderableContent
 {
-  v3 = [(HKInspectableValueInRange *)self currentValue];
-  if ([v3 collectionType])
+  currentValue = [(HKInspectableValueInRange *)self currentValue];
+  if ([currentValue collectionType])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HKInspectableValueInRange *)self currentValue];
-    v6 = [v5 inspectableValue];
-    v7 = [v6 valueType];
+    currentValue2 = [(HKInspectableValueInRange *)self currentValue];
+    inspectableValue = [currentValue2 inspectableValue];
+    valueType = [inspectableValue valueType];
 
-    if (!v7)
+    if (!valueType)
     {
       return 0;
     }
@@ -279,39 +279,39 @@ LABEL_22:
       return 1;
     }
 
-    v3 = [(HKInspectableValueInRange *)self highValue];
-    v4 = v3 == 0;
+    currentValue = [(HKInspectableValueInRange *)self highValue];
+    v4 = currentValue == 0;
   }
 
   return v4;
 }
 
-- (id)_numberForValueCollection:(id)a3
+- (id)_numberForValueCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 collectionType];
-  if ((v5 - 2) < 2)
+  collectionCopy = collection;
+  collectionType = [collectionCopy collectionType];
+  if ((collectionType - 2) < 2)
   {
-    v7 = [v4 inspectableValues];
-    v8 = [v7 firstObject];
-    v9 = [(HKInspectableValueInRange *)self _numberForValue:v8];
+    inspectableValues = [collectionCopy inspectableValues];
+    firstObject = [inspectableValues firstObject];
+    v9 = [(HKInspectableValueInRange *)self _numberForValue:firstObject];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5 == 1)
+  if (collectionType == 1)
   {
-    v6 = [v4 min];
+    inspectableValue = [collectionCopy min];
     goto LABEL_7;
   }
 
-  if (!v5)
+  if (!collectionType)
   {
-    v6 = [v4 inspectableValue];
+    inspectableValue = [collectionCopy inspectableValue];
 LABEL_7:
-    v7 = v6;
-    v9 = [(HKInspectableValueInRange *)self _numberForValue:v6];
+    inspectableValues = inspectableValue;
+    v9 = [(HKInspectableValueInRange *)self _numberForValue:inspectableValue];
     goto LABEL_8;
   }
 
@@ -321,40 +321,40 @@ LABEL_9:
   return v9;
 }
 
-- (id)_numberForValue:(id)a3
+- (id)_numberForValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 valueType];
-  if ((v4 - 5) < 2)
+  valueCopy = value;
+  valueType = [valueCopy valueType];
+  if ((valueType - 5) < 2)
   {
-    v5 = [v3 codedQuantityValue];
-    v7 = [v5 numberValue];
+    codedQuantityValue = [valueCopy codedQuantityValue];
+    numberValue = [codedQuantityValue numberValue];
     goto LABEL_6;
   }
 
-  if (v4 == 10)
+  if (valueType == 10)
   {
-    v7 = [v3 inspectableIntegerValue];
+    numberValue = [valueCopy inspectableIntegerValue];
   }
 
   else
   {
-    if (v4 == 1)
+    if (valueType == 1)
     {
-      v5 = [v3 ratioValue];
-      v6 = [v5 numerator];
-      v7 = [v6 numberValue];
+      codedQuantityValue = [valueCopy ratioValue];
+      numerator = [codedQuantityValue numerator];
+      numberValue = [numerator numberValue];
 
 LABEL_6:
       goto LABEL_9;
     }
 
-    v7 = 0;
+    numberValue = 0;
   }
 
 LABEL_9:
 
-  return v7;
+  return numberValue;
 }
 
 - (id)description
@@ -367,27 +367,27 @@ LABEL_9:
   return v6;
 }
 
-- (HKInspectableValueInRange)initWithCoder:(id)a3
+- (HKInspectableValueInRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HKInspectableValueInRange;
   v5 = [(HKInspectableValueInRange *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LowValueKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LowValueKey"];
     lowValue = v5->_lowValue;
     v5->_lowValue = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HighValueKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HighValueKey"];
     highValue = v5->_highValue;
     v5->_highValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentValueKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentValueKey"];
     currentValue = v5->_currentValue;
     v5->_currentValue = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnitStringKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnitStringKey"];
     unitString = v5->_unitString;
     v5->_unitString = v12;
 
@@ -406,14 +406,14 @@ LABEL_6:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lowValue = self->_lowValue;
-  v5 = a3;
-  [v5 encodeObject:lowValue forKey:@"LowValueKey"];
-  [v5 encodeObject:self->_highValue forKey:@"HighValueKey"];
-  [v5 encodeObject:self->_currentValue forKey:@"CurrentValueKey"];
-  [v5 encodeObject:self->_unitString forKey:@"UnitStringKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lowValue forKey:@"LowValueKey"];
+  [coderCopy encodeObject:self->_highValue forKey:@"HighValueKey"];
+  [coderCopy encodeObject:self->_currentValue forKey:@"CurrentValueKey"];
+  [coderCopy encodeObject:self->_unitString forKey:@"UnitStringKey"];
 }
 
 + (void)valueInRangeWithLow:(uint64_t)a1 high:(uint64_t)a2 currentValue:unit:.cold.1(uint64_t a1, uint64_t a2)

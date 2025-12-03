@@ -1,15 +1,15 @@
 @interface SFSiteIconCell
-- (SFSiteIconCell)initWithCoder:(id)a3;
-- (SFSiteIconCell)initWithFrame:(CGRect)a3;
+- (SFSiteIconCell)initWithCoder:(id)coder;
+- (SFSiteIconCell)initWithFrame:(CGRect)frame;
 - (id)focusEffect;
-- (void)_setAction:(id)a3 backgroundEffect:(id)a4;
-- (void)configureUsingAction:(id)a3 backgroundEffect:(id)a4;
+- (void)_setAction:(id)action backgroundEffect:(id)effect;
+- (void)configureUsingAction:(id)action backgroundEffect:(id)effect;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconFromBookmark:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIcon:(id)icon;
+- (void)setIconFromBookmark:(id)bookmark;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
@@ -20,8 +20,8 @@
   v4.receiver = self;
   v4.super_class = SFSiteIconCell;
   [(SFSiteIconCell *)&v4 updateConstraints];
-  v3 = [(UILabel *)self->_subtitleLabel text];
-  -[UILabel setHidden:](self->_subtitleLabel, "setHidden:", [v3 length] == 0);
+  text = [(UILabel *)self->_subtitleLabel text];
+  -[UILabel setHidden:](self->_subtitleLabel, "setHidden:", [text length] == 0);
 }
 
 - (void)layoutSubviews
@@ -29,34 +29,34 @@
   v7.receiver = self;
   v7.super_class = SFSiteIconCell;
   [(SFSiteIconCell *)&v7 layoutSubviews];
-  v3 = [(SFSiteIconCell *)self traitCollection];
-  v4 = [v3 sf_alternateUserInterfaceStyle];
+  traitCollection = [(SFSiteIconCell *)self traitCollection];
+  sf_alternateUserInterfaceStyle = [traitCollection sf_alternateUserInterfaceStyle];
 
-  [(UILabel *)self->_titleLabel setOverrideUserInterfaceStyle:v4];
-  [(UILabel *)self->_subtitleLabel setOverrideUserInterfaceStyle:v4];
-  v5 = [(SFSiteIconCell *)self traitCollection];
-  v6 = [v5 sf_alternateTintColor];
-  [(UILabel *)self->_titleLabel setTintColor:v6];
+  [(UILabel *)self->_titleLabel setOverrideUserInterfaceStyle:sf_alternateUserInterfaceStyle];
+  [(UILabel *)self->_subtitleLabel setOverrideUserInterfaceStyle:sf_alternateUserInterfaceStyle];
+  traitCollection2 = [(SFSiteIconCell *)self traitCollection];
+  sf_alternateTintColor = [traitCollection2 sf_alternateTintColor];
+  [(UILabel *)self->_titleLabel setTintColor:sf_alternateTintColor];
 }
 
-- (SFSiteIconCell)initWithFrame:(CGRect)a3
+- (SFSiteIconCell)initWithFrame:(CGRect)frame
 {
   v53[8] = *MEMORY[0x1E69E9840];
   v52.receiver = self;
   v52.super_class = SFSiteIconCell;
-  v3 = [(SFSiteIconCell *)&v52 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFSiteIconCell *)&v52 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFSiteIconCell *)v3 setAccessibilityIdentifier:@"SFSiteIconCell"];
-    v5 = [(SFSiteIconCell *)v4 contentView];
+    contentView = [(SFSiteIconCell *)v4 contentView];
     v6 = objc_alloc_init(_SFSiteIconView);
     iconView = v4->_iconView;
     v4->_iconView = v6;
 
     [(_SFSiteIconView *)v4->_iconView setAllowsDropShadow:1];
     [(_SFSiteIconView *)v4->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v4->_iconView];
+    [contentView addSubview:v4->_iconView];
     v8 = objc_alloc(MEMORY[0x1E69DD250]);
     [(_SFSiteIconView *)v4->_iconView bounds];
     v9 = [v8 initWithFrame:?];
@@ -87,8 +87,8 @@
     [(UILabel *)v4->_titleLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
-    v18 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v18];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_titleLabel _setUseShortcutIntrinsicContentSize:1];
@@ -96,41 +96,41 @@
     [(UILabel *)v4->_titleLabel setContentHuggingPriority:1 forAxis:v19];
     LODWORD(v20) = 1148846080;
     [(UILabel *)v4->_titleLabel setContentCompressionResistancePriority:1 forAxis:v20];
-    [v5 addSubview:v4->_titleLabel];
-    v21 = [(UILabel *)v4->_titleLabel widthAnchor];
-    v22 = [v5 widthAnchor];
-    v47 = [v21 constraintEqualToAnchor:v22 multiplier:1.15];
+    [contentView addSubview:v4->_titleLabel];
+    widthAnchor = [(UILabel *)v4->_titleLabel widthAnchor];
+    widthAnchor2 = [contentView widthAnchor];
+    v47 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.15];
 
     v41 = MEMORY[0x1E696ACD8];
-    v51 = [(_SFSiteIconView *)v4->_iconView widthAnchor];
-    v50 = [(_SFSiteIconView *)v4->_iconView heightAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    widthAnchor3 = [(_SFSiteIconView *)v4->_iconView widthAnchor];
+    heightAnchor = [(_SFSiteIconView *)v4->_iconView heightAnchor];
+    v49 = [widthAnchor3 constraintEqualToAnchor:heightAnchor];
     v53[0] = v49;
-    v48 = [(_SFSiteIconView *)v4->_iconView widthAnchor];
-    v46 = [v5 widthAnchor];
-    v45 = [v48 constraintEqualToAnchor:v46];
+    widthAnchor4 = [(_SFSiteIconView *)v4->_iconView widthAnchor];
+    widthAnchor5 = [contentView widthAnchor];
+    v45 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
     v53[1] = v45;
-    v44 = [(_SFSiteIconView *)v4->_iconView centerXAnchor];
-    v43 = [v5 centerXAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    centerXAnchor = [(_SFSiteIconView *)v4->_iconView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v42 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v53[2] = v42;
     v53[3] = v47;
-    v39 = [(UILabel *)v4->_titleLabel centerXAnchor];
-    v38 = [v5 centerXAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    centerXAnchor3 = [(UILabel *)v4->_titleLabel centerXAnchor];
+    centerXAnchor4 = [contentView centerXAnchor];
+    v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v53[4] = v37;
-    v36 = [(_SFSiteIconView *)v4->_iconView topAnchor];
-    v40 = v5;
-    v35 = [v5 topAnchor];
-    v23 = [v36 constraintEqualToAnchor:v35];
+    topAnchor = [(_SFSiteIconView *)v4->_iconView topAnchor];
+    v40 = contentView;
+    topAnchor2 = [contentView topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v53[5] = v23;
-    v24 = [(UILabel *)v4->_titleLabel topAnchor];
-    v25 = [(_SFSiteIconView *)v4->_iconView bottomAnchor];
-    v26 = [v24 constraintEqualToSystemSpacingBelowAnchor:v25 multiplier:1.0];
+    topAnchor3 = [(UILabel *)v4->_titleLabel topAnchor];
+    bottomAnchor = [(_SFSiteIconView *)v4->_iconView bottomAnchor];
+    v26 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
     v53[6] = v26;
-    v27 = [v5 bottomAnchor];
-    v28 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    bottomAnchor2 = [contentView bottomAnchor];
+    bottomAnchor3 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v29 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     LODWORD(v30) = 1143930880;
     v31 = [v29 sf_withPriority:v30];
     v53[7] = v31;
@@ -143,14 +143,14 @@
   return v4;
 }
 
-- (SFSiteIconCell)initWithCoder:(id)a3
+- (SFSiteIconCell)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFSiteIconCell;
-  return [(SFSiteIconCell *)&v4 initWithCoder:a3];
+  return [(SFSiteIconCell *)&v4 initWithCoder:coder];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = SFSiteIconCell;
@@ -160,7 +160,7 @@
   v5[2] = __33__SFSiteIconCell_setHighlighted___block_invoke;
   v5[3] = &unk_1E721BFA8;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v5 completion:0];
 }
 
@@ -178,40 +178,40 @@
   return [v2 effectWithRoundedRect:v12 cornerRadius:v4 curve:{v6, v8, v10, v11}];
 }
 
-- (void)setIconFromBookmark:(id)a3
+- (void)setIconFromBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   [(SFSiteIconCell *)self _setAction:0];
-  [(_SFSiteIconView *)self->_iconView setBookmark:v4];
+  [(_SFSiteIconView *)self->_iconView setBookmark:bookmarkCopy];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [(SFSiteIconCell *)self _setAction:0];
-  [(_SFSiteIconView *)self->_iconView setImage:v4];
+  [(_SFSiteIconView *)self->_iconView setImage:iconCopy];
 
   [(SFSiteIconCell *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(SFSiteIconCell *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitleLabel = self->_subtitleLabel;
   if (subtitleLabel)
   {
     goto LABEL_5;
   }
 
-  if ([v4 length])
+  if ([subtitleCopy length])
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v7 = self->_subtitleLabel;
@@ -228,32 +228,32 @@
     [(UILabel *)self->_subtitleLabel setFont:v11];
     [(UILabel *)self->_subtitleLabel setMaximumContentSizeCategory:*MEMORY[0x1E69DDC50]];
     [(UILabel *)self->_subtitleLabel setTextAlignment:1];
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)self->_subtitleLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v13) = 1148846080;
     [(UILabel *)self->_subtitleLabel setContentHuggingPriority:1 forAxis:v13];
     LODWORD(v14) = 1148846080;
     [(UILabel *)self->_subtitleLabel setContentCompressionResistancePriority:1 forAxis:v14];
-    v15 = [(SFSiteIconCell *)self contentView];
-    [v15 addSubview:self->_subtitleLabel];
+    contentView = [(SFSiteIconCell *)self contentView];
+    [contentView addSubview:self->_subtitleLabel];
     v24 = MEMORY[0x1E696ACD8];
-    v29 = [(UILabel *)self->_subtitleLabel widthAnchor];
-    v28 = [v15 widthAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    widthAnchor = [(UILabel *)self->_subtitleLabel widthAnchor];
+    widthAnchor2 = [contentView widthAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v30[0] = v27;
-    v26 = [(UILabel *)self->_subtitleLabel centerXAnchor];
-    v25 = [v15 centerXAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25];
+    centerXAnchor = [(UILabel *)self->_subtitleLabel centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v30[1] = v23;
-    v22 = [(UILabel *)self->_subtitleLabel topAnchor];
-    v16 = [(UILabel *)self->_titleLabel bottomAnchor];
-    v17 = [v22 constraintEqualToAnchor:v16 constant:0.0];
+    topAnchor = [(UILabel *)self->_subtitleLabel topAnchor];
+    bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
     v30[2] = v17;
-    v18 = [v15 bottomAnchor];
-    v19 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor2 = [contentView bottomAnchor];
+    bottomAnchor3 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+    v20 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v30[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
     [v24 activateConstraints:v21];
@@ -263,34 +263,34 @@
   if (subtitleLabel)
   {
 LABEL_5:
-    [(UILabel *)subtitleLabel setText:v4];
+    [(UILabel *)subtitleLabel setText:subtitleCopy];
     [(SFSiteIconCell *)self setNeedsLayout];
   }
 }
 
-- (void)configureUsingAction:(id)a3 backgroundEffect:(id)a4
+- (void)configureUsingAction:(id)action backgroundEffect:(id)effect
 {
-  v6 = a4;
-  v7 = a3;
+  effectCopy = effect;
+  actionCopy = action;
   [(SFSiteIconCell *)self setTitle:&stru_1EFF36230];
   [(SFSiteIconCell *)self setSubtitle:&stru_1EFF36230];
-  [(SFSiteIconCell *)self _setAction:v7 backgroundEffect:v6];
+  [(SFSiteIconCell *)self _setAction:actionCopy backgroundEffect:effectCopy];
 
   [(SFSiteIconCell *)self layoutIfNeeded];
 }
 
-- (void)_setAction:(id)a3 backgroundEffect:(id)a4
+- (void)_setAction:(id)action backgroundEffect:(id)effect
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(_SFSiteIconView *)self->_iconView action];
+  actionCopy = action;
+  effectCopy = effect;
+  action = [(_SFSiteIconView *)self->_iconView action];
   v8 = WBSIsEqual();
 
   if ((v8 & 1) == 0)
   {
-    [(_SFSiteIconView *)self->_iconView setAction:v10 backgroundEffect:v6];
-    v9 = [v10 title];
-    [(SFSiteIconCell *)self setAccessibilityLabel:v9];
+    [(_SFSiteIconView *)self->_iconView setAction:actionCopy backgroundEffect:effectCopy];
+    title = [actionCopy title];
+    [(SFSiteIconCell *)self setAccessibilityLabel:title];
   }
 }
 

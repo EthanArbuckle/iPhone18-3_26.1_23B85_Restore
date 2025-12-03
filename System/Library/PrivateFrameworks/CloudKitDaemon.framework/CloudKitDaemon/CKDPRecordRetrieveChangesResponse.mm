@@ -1,40 +1,40 @@
 @interface CKDPRecordRetrieveChangesResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)statusAsString:(int)a3;
-- (int)StringAsStatus:(id)a3;
+- (id)statusAsString:(int)string;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)addChangedDeltas:(id)a3;
-- (void)addChangedRecord:(id)a3;
-- (void)addChangedShare:(id)a3;
-- (void)addSyncObligations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPendingArchivedRecords:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addChangedDeltas:(id)deltas;
+- (void)addChangedRecord:(id)record;
+- (void)addChangedShare:(id)share;
+- (void)addSyncObligations:(id)obligations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPendingArchivedRecords:(BOOL)records;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordRetrieveChangesResponse
 
-- (void)addChangedRecord:(id)a3
+- (void)addChangedRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   changedRecords = self->_changedRecords;
-  v8 = v4;
+  v8 = recordCopy;
   if (!changedRecords)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changedRecords;
     self->_changedRecords = v6;
 
-    v4 = v8;
+    recordCopy = v8;
     changedRecords = self->_changedRecords;
   }
 
-  objc_msgSend_addObject_(changedRecords, v4, v4);
+  objc_msgSend_addObject_(changedRecords, recordCopy, recordCopy);
 }
 
 - (int)status
@@ -50,35 +50,35 @@
   }
 }
 
-- (id)statusAsString:(int)a3
+- (id)statusAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CB50[a3 - 1];
+    v4 = off_27854CB50[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"inconsistent"))
+  statusCopy = status;
+  if (objc_msgSend_isEqualToString_(statusCopy, v4, @"inconsistent"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"consistent"))
+  else if (objc_msgSend_isEqualToString_(statusCopy, v5, @"consistent"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"noPendingChanges"))
+  else if (objc_msgSend_isEqualToString_(statusCopy, v7, @"noPendingChanges"))
   {
     v6 = 3;
   }
@@ -91,27 +91,27 @@
   return v6;
 }
 
-- (void)addChangedShare:(id)a3
+- (void)addChangedShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   changedShares = self->_changedShares;
-  v8 = v4;
+  v8 = shareCopy;
   if (!changedShares)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changedShares;
     self->_changedShares = v6;
 
-    v4 = v8;
+    shareCopy = v8;
     changedShares = self->_changedShares;
   }
 
-  objc_msgSend_addObject_(changedShares, v4, v4);
+  objc_msgSend_addObject_(changedShares, shareCopy, shareCopy);
 }
 
-- (void)setHasPendingArchivedRecords:(BOOL)a3
+- (void)setHasPendingArchivedRecords:(BOOL)records
 {
-  if (a3)
+  if (records)
   {
     v3 = 2;
   }
@@ -124,40 +124,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addChangedDeltas:(id)a3
+- (void)addChangedDeltas:(id)deltas
 {
-  v4 = a3;
+  deltasCopy = deltas;
   changedDeltas = self->_changedDeltas;
-  v8 = v4;
+  v8 = deltasCopy;
   if (!changedDeltas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changedDeltas;
     self->_changedDeltas = v6;
 
-    v4 = v8;
+    deltasCopy = v8;
     changedDeltas = self->_changedDeltas;
   }
 
-  objc_msgSend_addObject_(changedDeltas, v4, v4);
+  objc_msgSend_addObject_(changedDeltas, deltasCopy, deltasCopy);
 }
 
-- (void)addSyncObligations:(id)a3
+- (void)addSyncObligations:(id)obligations
 {
-  v4 = a3;
+  obligationsCopy = obligations;
   syncObligations = self->_syncObligations;
-  v8 = v4;
+  v8 = obligationsCopy;
   if (!syncObligations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_syncObligations;
     self->_syncObligations = v6;
 
-    v4 = v8;
+    obligationsCopy = v8;
     syncObligations = self->_syncObligations;
   }
 
-  objc_msgSend_addObject_(syncObligations, v4, v4);
+  objc_msgSend_addObject_(syncObligations, obligationsCopy, obligationsCopy);
 }
 
 - (id)description
@@ -370,10 +370,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -532,12 +532,12 @@
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v45 = a3;
+  toCopy = to;
   if (objc_msgSend_changedRecordsCount(self, v4, v5))
   {
-    objc_msgSend_clearChangedRecords(v45, v6, v7);
+    objc_msgSend_clearChangedRecords(toCopy, v6, v7);
     v10 = objc_msgSend_changedRecordsCount(self, v8, v9);
     if (v10)
     {
@@ -545,7 +545,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_changedRecordAtIndex_(self, v6, i);
-        objc_msgSend_addChangedRecord_(v45, v14, v13);
+        objc_msgSend_addChangedRecord_(toCopy, v14, v13);
       }
     }
   }
@@ -553,24 +553,24 @@
   syncContinuationToken = self->_syncContinuationToken;
   if (syncContinuationToken)
   {
-    objc_msgSend_setSyncContinuationToken_(v45, v6, syncContinuationToken);
+    objc_msgSend_setSyncContinuationToken_(toCopy, v6, syncContinuationToken);
   }
 
   clientChangeToken = self->_clientChangeToken;
   if (clientChangeToken)
   {
-    objc_msgSend_setClientChangeToken_(v45, v6, clientChangeToken);
+    objc_msgSend_setClientChangeToken_(toCopy, v6, clientChangeToken);
   }
 
   if (*&self->_has)
   {
-    *(v45 + 10) = self->_status;
-    *(v45 + 76) |= 1u;
+    *(toCopy + 10) = self->_status;
+    *(toCopy + 76) |= 1u;
   }
 
   if (objc_msgSend_changedSharesCount(self, v6, clientChangeToken))
   {
-    objc_msgSend_clearChangedShares(v45, v17, v18);
+    objc_msgSend_clearChangedShares(toCopy, v17, v18);
     v21 = objc_msgSend_changedSharesCount(self, v19, v20);
     if (v21)
     {
@@ -578,20 +578,20 @@
       for (j = 0; j != v22; ++j)
       {
         v24 = objc_msgSend_changedShareAtIndex_(self, v17, j);
-        objc_msgSend_addChangedShare_(v45, v25, v24);
+        objc_msgSend_addChangedShare_(toCopy, v25, v24);
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v45 + 72) = self->_pendingArchivedRecords;
-    *(v45 + 76) |= 2u;
+    *(toCopy + 72) = self->_pendingArchivedRecords;
+    *(toCopy + 76) |= 2u;
   }
 
   if (objc_msgSend_changedDeltasCount(self, v17, v18))
   {
-    objc_msgSend_clearChangedDeltas(v45, v26, v27);
+    objc_msgSend_clearChangedDeltas(toCopy, v26, v27);
     v30 = objc_msgSend_changedDeltasCount(self, v28, v29);
     if (v30)
     {
@@ -599,14 +599,14 @@
       for (k = 0; k != v31; ++k)
       {
         v33 = objc_msgSend_changedDeltasAtIndex_(self, v26, k);
-        objc_msgSend_addChangedDeltas_(v45, v34, v33);
+        objc_msgSend_addChangedDeltas_(toCopy, v34, v33);
       }
     }
   }
 
   if (objc_msgSend_syncObligationsCount(self, v26, v27))
   {
-    objc_msgSend_clearSyncObligations(v45, v35, v36);
+    objc_msgSend_clearSyncObligations(toCopy, v35, v36);
     v39 = objc_msgSend_syncObligationsCount(self, v37, v38);
     if (v39)
     {
@@ -614,7 +614,7 @@
       for (m = 0; m != v40; ++m)
       {
         v42 = objc_msgSend_syncObligationsAtIndex_(self, v35, m);
-        objc_msgSend_addSyncObligations_(v45, v43, v42);
+        objc_msgSend_addSyncObligations_(toCopy, v43, v42);
       }
     }
   }
@@ -622,15 +622,15 @@
   zoneAttributesChange = self->_zoneAttributesChange;
   if (zoneAttributesChange)
   {
-    objc_msgSend_setZoneAttributesChange_(v45, v35, zoneAttributesChange);
+    objc_msgSend_setZoneAttributesChange_(toCopy, v35, zoneAttributesChange);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v78 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v70 = 0u;
   v71 = 0u;
@@ -651,7 +651,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v70 + 1) + 8 * i), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v70 + 1) + 8 * i), v14, zone);
         objc_msgSend_addChangedRecord_(v10, v19, v18);
       }
 
@@ -661,11 +661,11 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_syncContinuationToken, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_syncContinuationToken, v20, zone);
   v22 = *(v10 + 48);
   *(v10 + 48) = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_clientChangeToken, v23, zone);
   v25 = *(v10 + 32);
   *(v10 + 32) = v24;
 
@@ -694,7 +694,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v66 + 1) + 8 * j), v29, a3);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v66 + 1) + 8 * j), v29, zone);
         objc_msgSend_addChangedShare_(v10, v34, v33);
       }
 
@@ -729,7 +729,7 @@
           objc_enumerationMutation(v35);
         }
 
-        v42 = objc_msgSend_copyWithZone_(*(*(&v62 + 1) + 8 * k), v38, a3);
+        v42 = objc_msgSend_copyWithZone_(*(*(&v62 + 1) + 8 * k), v38, zone);
         objc_msgSend_addChangedDeltas_(v10, v43, v42);
       }
 
@@ -758,7 +758,7 @@
           objc_enumerationMutation(v44);
         }
 
-        v51 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * m), v47, a3, v58);
+        v51 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * m), v47, zone, v58);
         objc_msgSend_addSyncObligations_(v10, v52, v51);
       }
 
@@ -768,7 +768,7 @@
     while (v48);
   }
 
-  v54 = objc_msgSend_copyWithZone_(self->_zoneAttributesChange, v53, a3);
+  v54 = objc_msgSend_copyWithZone_(self->_zoneAttributesChange, v53, zone);
   v55 = *(v10 + 64);
   *(v10 + 64) = v54;
 
@@ -776,17 +776,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_25;
   }
 
   changedRecords = self->_changedRecords;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (changedRecords | v9)
   {
     if (!objc_msgSend_isEqual_(changedRecords, v7, v9))
@@ -796,7 +796,7 @@
   }
 
   syncContinuationToken = self->_syncContinuationToken;
-  v11 = v4[6];
+  v11 = equalCopy[6];
   if (syncContinuationToken | v11)
   {
     if (!objc_msgSend_isEqual_(syncContinuationToken, v7, v11))
@@ -806,7 +806,7 @@
   }
 
   clientChangeToken = self->_clientChangeToken;
-  v13 = v4[4];
+  v13 = equalCopy[4];
   if (clientChangeToken | v13)
   {
     if (!objc_msgSend_isEqual_(clientChangeToken, v7, v13))
@@ -816,22 +816,22 @@
   }
 
   has = self->_has;
-  v15 = *(v4 + 76);
+  v15 = *(equalCopy + 76);
   if (has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_status != *(v4 + 10))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_status != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_25;
   }
 
   changedShares = self->_changedShares;
-  v17 = v4[3];
+  v17 = equalCopy[3];
   if (changedShares | v17)
   {
     if (!objc_msgSend_isEqual_(changedShares, v7, v17))
@@ -840,7 +840,7 @@
     }
 
     has = self->_has;
-    v15 = *(v4 + 76);
+    v15 = *(equalCopy + 76);
   }
 
   if ((has & 2) == 0)
@@ -860,30 +860,30 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v26 = *(v4 + 72);
+  v26 = *(equalCopy + 72);
   if (self->_pendingArchivedRecords)
   {
-    if ((v4[9] & 1) == 0)
+    if ((equalCopy[9] & 1) == 0)
     {
       goto LABEL_25;
     }
   }
 
-  else if (v4[9])
+  else if (equalCopy[9])
   {
     goto LABEL_25;
   }
 
 LABEL_18:
   changedDeltas = self->_changedDeltas;
-  v19 = v4[1];
+  v19 = equalCopy[1];
   if (changedDeltas | v19 && !objc_msgSend_isEqual_(changedDeltas, v7, v19))
   {
     goto LABEL_25;
   }
 
   syncObligations = self->_syncObligations;
-  v21 = v4[7];
+  v21 = equalCopy[7];
   if (syncObligations | v21)
   {
     if (!objc_msgSend_isEqual_(syncObligations, v7, v21))
@@ -893,7 +893,7 @@ LABEL_18:
   }
 
   zoneAttributesChange = self->_zoneAttributesChange;
-  v23 = v4[8];
+  v23 = equalCopy[8];
   if (zoneAttributesChange | v23)
   {
     isEqual = objc_msgSend_isEqual_(zoneAttributesChange, v7, v23);
@@ -941,15 +941,15 @@ LABEL_26:
   return v22 ^ objc_msgSend_hash(self->_zoneAttributesChange, v23, v24);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v52, v59, 16);
   if (v7)
   {
@@ -973,21 +973,21 @@ LABEL_26:
     while (v9);
   }
 
-  v13 = *(v4 + 6);
+  v13 = *(fromCopy + 6);
   if (v13)
   {
     objc_msgSend_setSyncContinuationToken_(self, v12, v13);
   }
 
-  v14 = *(v4 + 4);
+  v14 = *(fromCopy + 4);
   if (v14)
   {
     objc_msgSend_setClientChangeToken_(self, v12, v14);
   }
 
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
-    self->_status = *(v4 + 10);
+    self->_status = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -995,7 +995,7 @@ LABEL_26:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = *(v4 + 3);
+  v15 = *(fromCopy + 3);
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v48, v58, 16);
   if (v17)
   {
@@ -1019,9 +1019,9 @@ LABEL_26:
     while (v19);
   }
 
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
-    self->_pendingArchivedRecords = *(v4 + 72);
+    self->_pendingArchivedRecords = *(fromCopy + 72);
     *&self->_has |= 2u;
   }
 
@@ -1029,7 +1029,7 @@ LABEL_26:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v22 = *(v4 + 1);
+  v22 = *(fromCopy + 1);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v44, v57, 16);
   if (v24)
   {
@@ -1057,7 +1057,7 @@ LABEL_26:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v29 = *(v4 + 7);
+  v29 = *(fromCopy + 7);
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v30, &v40, v56, 16);
   if (v31)
   {
@@ -1082,7 +1082,7 @@ LABEL_26:
   }
 
   zoneAttributesChange = self->_zoneAttributesChange;
-  v38 = *(v4 + 8);
+  v38 = *(fromCopy + 8);
   if (zoneAttributesChange)
   {
     if (v38)

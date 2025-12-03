@@ -1,15 +1,15 @@
 @interface THHighlightContentLayer
 + (id)layer;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setHighlightColor:(CGColor *)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)setHighlightColor:(CGColor *)color;
 @end
 
 @implementation THHighlightContentLayer
 
 + (id)layer
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___THHighlightContentLayer;
   v2 = objc_msgSendSuper2(&v4, "layer");
   [v2 setBlendMode:0];
@@ -24,28 +24,28 @@
   [(THHighlightContentLayer *)&v3 dealloc];
 }
 
-- (void)setHighlightColor:(CGColor *)a3
+- (void)setHighlightColor:(CGColor *)color
 {
   highlightColor = self->_highlightColor;
-  if (highlightColor != a3)
+  if (highlightColor != color)
   {
     CGColorRelease(highlightColor);
-    self->_highlightColor = CGColorRetain(a3);
+    self->_highlightColor = CGColorRetain(color);
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
-  CGContextSetFillColorWithColor(a3, [(THHighlightContentLayer *)self backgroundColor]);
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, [(THHighlightContentLayer *)self backgroundColor]);
   [(THHighlightContentLayer *)self bounds];
-  CGContextFillRect(a3, v6);
-  CGContextSetBlendMode(a3, self->_blendMode);
-  CGContextSetFillColorWithColor(a3, [(THHighlightContentLayer *)self highlightColor]);
+  CGContextFillRect(context, v6);
+  CGContextSetBlendMode(context, self->_blendMode);
+  CGContextSetFillColorWithColor(context, [(THHighlightContentLayer *)self highlightColor]);
   [(THHighlightContentLayer *)self bounds];
-  CGContextFillRect(a3, v7);
+  CGContextFillRect(context, v7);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

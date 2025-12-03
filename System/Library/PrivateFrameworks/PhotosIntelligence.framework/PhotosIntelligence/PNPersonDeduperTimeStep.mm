@@ -1,20 +1,20 @@
 @interface PNPersonDeduperTimeStep
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6;
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6;
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type;
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock;
 @end
 
 @implementation PNPersonDeduperTimeStep
 
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock
 {
   v81 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  personsCopy = persons;
+  otherPersonsCopy = otherPersons;
+  blockCopy = block;
+  resultBlockCopy = resultBlock;
+  if (personsCopy)
   {
-    if (v12)
+    if (otherPersonsCopy)
     {
       goto LABEL_3;
     }
@@ -22,22 +22,22 @@
 
   else
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"persons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"persons"}];
 
-    if (v12)
+    if (otherPersonsCopy)
     {
 LABEL_3:
-      if (v13)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_45:
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v50 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
-      if (v14)
+      if (resultBlockCopy)
       {
         goto LABEL_5;
       }
@@ -46,33 +46,33 @@ LABEL_45:
     }
   }
 
-  v49 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v49 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
 
-  if (!v13)
+  if (!blockCopy)
   {
     goto LABEL_45;
   }
 
 LABEL_4:
-  if (v14)
+  if (resultBlockCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_46:
-  v51 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v51 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperTimeStep.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
 
 LABEL_5:
   v15 = +[PNPersonClusterManager personProcessingSortDescriptors];
-  v16 = [v11 sortedArrayUsingDescriptors:v15];
+  v16 = [personsCopy sortedArrayUsingDescriptors:v15];
   v62 = v15;
-  v17 = [v12 sortedArrayUsingDescriptors:v15];
+  v17 = [otherPersonsCopy sortedArrayUsingDescriptors:v15];
   v66 = [MEMORY[0x1E695DFA8] set];
   v65 = [v16 mutableCopy];
-  v18 = [v11 count];
-  v19 = [v12 count];
+  v18 = [personsCopy count];
+  v19 = [otherPersonsCopy count];
   if (v18 <= v19)
   {
     v20 = v19;
@@ -96,9 +96,9 @@ LABEL_5:
       v23 = v66;
       if ([v66 count])
       {
-        v24 = [v66 allObjects];
-        [v22 removeObjectsInArray:v24];
-        [v65 removeObjectsInArray:v24];
+        allObjects = [v66 allObjects];
+        [v22 removeObjectsInArray:allObjects];
+        [v65 removeObjectsInArray:allObjects];
       }
 
       v73 = 0u;
@@ -113,9 +113,9 @@ LABEL_5:
         v26 = *v72;
         v27 = 0.0;
         v28 = 0.0;
-        v58 = v12;
-        v59 = v11;
-        v57 = v14;
+        v58 = otherPersonsCopy;
+        v59 = personsCopy;
+        v57 = resultBlockCopy;
         v53 = v22;
         v54 = *v72;
         v60 = v25;
@@ -157,13 +157,13 @@ LABEL_5:
                   v38 = objc_autoreleasePoolPush();
                   *&v39 = ((v28 * v27) + (v21 * v61)) / (v21 * (v61 + 2));
                   [(PNPersonDeduperStep *)self setProgress:v39];
-                  if ([(PNPersonDeduperStep *)self shouldStop]|| [(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v13])
+                  if ([(PNPersonDeduperStep *)self shouldStop]|| [(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:blockCopy])
                   {
                     objc_autoreleasePoolPop(v38);
 
-                    v12 = v58;
-                    v11 = v59;
-                    v14 = v57;
+                    otherPersonsCopy = v58;
+                    personsCopy = v59;
+                    resultBlockCopy = v57;
                     v45 = v62;
                     v16 = v64;
                     v23 = v66;
@@ -172,16 +172,16 @@ LABEL_5:
                   }
 
                   v40 = objc_autoreleasePoolPush();
-                  [(PNPersonDeduperStep *)self addPotentialMergeCandidateForPerson:v31 withOtherPerson:v37 updateBlock:v13];
+                  [(PNPersonDeduperStep *)self addPotentialMergeCandidateForPerson:v31 withOtherPerson:v37 updateBlock:blockCopy];
                   objc_autoreleasePoolPop(v40);
                   v27 = v27 + 1.0;
                   objc_autoreleasePoolPop(v38);
                 }
 
                 v34 = [v32 countByEnumeratingWithState:&v67 objects:v79 count:16];
-                v12 = v58;
-                v11 = v59;
-                v14 = v57;
+                otherPersonsCopy = v58;
+                personsCopy = v59;
+                resultBlockCopy = v57;
                 v23 = v66;
                 if (v34)
                 {
@@ -215,7 +215,7 @@ LABEL_5:
         break;
       }
 
-      v42 = [(PNPersonDeduperStep *)self mergeCandidatePersonsWithUpdateBlock:v13];
+      v42 = [(PNPersonDeduperStep *)self mergeCandidatePersonsWithUpdateBlock:blockCopy];
       if ([v42 count] && !-[PNPersonDeduperStep shouldStop](self, "shouldStop"))
       {
         [v23 unionSet:v42];
@@ -255,12 +255,12 @@ LABEL_5:
   else
   {
 LABEL_39:
-    v32 = [v11 mutableCopy];
-    v46 = [v12 mutableCopy];
+    v32 = [personsCopy mutableCopy];
+    v46 = [otherPersonsCopy mutableCopy];
     v23 = v66;
     [v32 minusSet:v66];
     [v46 minusSet:v66];
-    v14[2](v14, v32, v46);
+    resultBlockCopy[2](resultBlockCopy, v32, v46);
     v45 = v62;
 LABEL_40:
 
@@ -270,29 +270,29 @@ LABEL_40:
   }
 }
 
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type
 {
-  v6 = a6;
-  v9 = [(PNPersonDeduperStep *)self profile:a3];
-  v10 = [v9 shouldRelaxThreshold];
-  v11 = [(PNPersonDeduperStep *)self profile];
-  v12 = v11;
-  if (v10)
+  typeCopy = type;
+  v9 = [(PNPersonDeduperStep *)self profile:similar];
+  shouldRelaxThreshold = [v9 shouldRelaxThreshold];
+  profile = [(PNPersonDeduperStep *)self profile];
+  v12 = profile;
+  if (shouldRelaxThreshold)
   {
-    [v11 normalMaximumDistance];
+    [profile normalMaximumDistance];
   }
 
   else
   {
-    [v11 strictMaximumDistance];
+    [profile strictMaximumDistance];
   }
 
   v14 = v13;
 
   *&v14 = v14;
   LODWORD(v15) = LODWORD(v14);
-  [(PNPersonDeduperStep *)self adjustedThreshold:v6 forMinAgeType:v15];
-  return v16 > a5;
+  [(PNPersonDeduperStep *)self adjustedThreshold:typeCopy forMinAgeType:v15];
+  return v16 > distance;
 }
 
 @end

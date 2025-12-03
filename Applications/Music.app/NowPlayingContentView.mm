@@ -1,27 +1,27 @@
 @interface NowPlayingContentView
 - (AVPlayerLayer)accessibilityPlayerVideoLayer;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NowPlayingContentView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (key)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v6;
-    v7 = self;
+    key = v6;
+    selfCopy = self;
     v8 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -35,7 +35,7 @@
     return 1;
   }
 
-  if (a3)
+  if (key)
   {
     v13._countAndFlagsBits = 0x776F64616873;
     v13._object = 0xE600000000000000;
@@ -50,20 +50,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100056FE4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(NowPlayingContentView *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  if (!v5 || v7 != [v5 userInterfaceStyle])
+  changeCopy = change;
+  [(NowPlayingContentView *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  if (!changeCopy || userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     [v4 setNeedsLayout];
   }
@@ -71,13 +71,13 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005AA14();
 }
 
 - (AVPlayerLayer)accessibilityPlayerVideoLayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_100661448();
   v4 = v3;
 

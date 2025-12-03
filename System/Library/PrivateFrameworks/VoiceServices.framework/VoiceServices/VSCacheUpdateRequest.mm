@@ -1,6 +1,6 @@
 @interface VSCacheUpdateRequest
-- (VSCacheUpdateRequest)initWithModelIdentifier:(id)a3 classIdentifier:(id)a4;
-- (id)coalescedRequest:(id)a3;
+- (VSCacheUpdateRequest)initWithModelIdentifier:(id)identifier classIdentifier:(id)classIdentifier;
+- (id)coalescedRequest:(id)request;
 - (id)description;
 - (void)dealloc;
 @end
@@ -24,20 +24,20 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"model <%@> class <%@>", modelID, classID];
 }
 
-- (id)coalescedRequest:(id)a3
+- (id)coalescedRequest:(id)request
 {
-  v3 = a3;
-  v5 = [a3 modelIdentifier];
-  v6 = [v3 classIdentifier];
-  if (v5)
+  requestCopy = request;
+  modelIdentifier = [request modelIdentifier];
+  classIdentifier = [requestCopy classIdentifier];
+  if (modelIdentifier)
   {
     if (!self->_modelID)
     {
       return self;
     }
 
-    v7 = v6;
-    if (![v5 isEqualToString:?])
+    v7 = classIdentifier;
+    if (![modelIdentifier isEqualToString:?])
     {
       return 0;
     }
@@ -61,7 +61,7 @@
     }
   }
 
-  return v3;
+  return requestCopy;
 }
 
 - (void)dealloc
@@ -71,13 +71,13 @@
   [(VSCacheUpdateRequest *)&v3 dealloc];
 }
 
-- (VSCacheUpdateRequest)initWithModelIdentifier:(id)a3 classIdentifier:(id)a4
+- (VSCacheUpdateRequest)initWithModelIdentifier:(id)identifier classIdentifier:(id)classIdentifier
 {
   v6 = [(VSCacheUpdateRequest *)self init];
   if (v6)
   {
-    v6->_modelID = a3;
-    v6->_classID = a4;
+    v6->_modelID = identifier;
+    v6->_classID = classIdentifier;
   }
 
   return v6;

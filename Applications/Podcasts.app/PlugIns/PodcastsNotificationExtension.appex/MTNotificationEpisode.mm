@@ -1,72 +1,72 @@
 @interface MTNotificationEpisode
-+ (unint64_t)versionOfDictionaryRepresentation:(id)a3;
-- (MTNotificationEpisode)initWithDictionaryRepresentation:(id)a3;
-- (MTNotificationEpisode)initWithUuid:(id)a3 storeTrackId:(int64_t)a4 bestTitle:(id)a5 bestSummary:(id)a6 pubDate:(id)a7 duration:(double)a8 byteSize:(int64_t)a9 isVideo:(BOOL)a10 sortPropertyValues:(id)a11 podcastUuid:(id)a12 podcastTitle:(id)a13 podcastStoreCollectionId:(int64_t)a14;
-- (id)_representationByMigratingLegacyKeysInRepresentation:(id)a3;
++ (unint64_t)versionOfDictionaryRepresentation:(id)representation;
+- (MTNotificationEpisode)initWithDictionaryRepresentation:(id)representation;
+- (MTNotificationEpisode)initWithUuid:(id)uuid storeTrackId:(int64_t)id bestTitle:(id)title bestSummary:(id)summary pubDate:(id)date duration:(double)duration byteSize:(int64_t)size isVideo:(BOOL)self0 sortPropertyValues:(id)self1 podcastUuid:(id)self2 podcastTitle:(id)self3 podcastStoreCollectionId:(int64_t)self4;
+- (id)_representationByMigratingLegacyKeysInRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
-- (void)_upgradeRepresentationFrom0To1:(id)a3;
+- (void)_upgradeRepresentationFrom0To1:(id)to1;
 @end
 
 @implementation MTNotificationEpisode
 
-+ (unint64_t)versionOfDictionaryRepresentation:(id)a3
++ (unint64_t)versionOfDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"_version"];
+  representationCopy = representation;
+  unsignedIntegerValue = [representationCopy objectForKeyedSubscript:@"_version"];
 
-  if (v4)
+  if (unsignedIntegerValue)
   {
-    v5 = [v3 objectForKeyedSubscript:@"_version"];
-    v4 = [v5 unsignedIntegerValue];
+    v5 = [representationCopy objectForKeyedSubscript:@"_version"];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (MTNotificationEpisode)initWithUuid:(id)a3 storeTrackId:(int64_t)a4 bestTitle:(id)a5 bestSummary:(id)a6 pubDate:(id)a7 duration:(double)a8 byteSize:(int64_t)a9 isVideo:(BOOL)a10 sortPropertyValues:(id)a11 podcastUuid:(id)a12 podcastTitle:(id)a13 podcastStoreCollectionId:(int64_t)a14
+- (MTNotificationEpisode)initWithUuid:(id)uuid storeTrackId:(int64_t)id bestTitle:(id)title bestSummary:(id)summary pubDate:(id)date duration:(double)duration byteSize:(int64_t)size isVideo:(BOOL)self0 sortPropertyValues:(id)self1 podcastUuid:(id)self2 podcastTitle:(id)self3 podcastStoreCollectionId:(int64_t)self4
 {
-  v20 = a3;
-  v21 = a5;
-  obj = a6;
-  v22 = a6;
-  v31 = a7;
-  v33 = a7;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  uuidCopy = uuid;
+  titleCopy = title;
+  obj = summary;
+  summaryCopy = summary;
+  dateCopy = date;
+  dateCopy2 = date;
+  valuesCopy = values;
+  podcastUuidCopy = podcastUuid;
+  podcastTitleCopy = podcastTitle;
   v34.receiver = self;
   v34.super_class = MTNotificationEpisode;
   v26 = [(MTNotificationEpisode *)&v34 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_uuid, a3);
-    v27->_storeTrackId = a4;
-    objc_storeStrong(&v27->_bestTitle, a5);
+    objc_storeStrong(&v26->_uuid, uuid);
+    v27->_storeTrackId = id;
+    objc_storeStrong(&v27->_bestTitle, title);
     objc_storeStrong(&v27->_bestSummary, obj);
-    objc_storeStrong(&v27->_pubDate, v31);
-    v27->_duration = a8;
-    v27->_byteSize = a9;
-    v27->_isVideo = a10;
-    objc_storeStrong(&v27->_sortPropertyValues, a11);
-    objc_storeStrong(&v27->_podcastUuid, a12);
-    objc_storeStrong(&v27->_podcastTitle, a13);
-    v27->_podcastStoreCollectionId = a14;
+    objc_storeStrong(&v27->_pubDate, dateCopy);
+    v27->_duration = duration;
+    v27->_byteSize = size;
+    v27->_isVideo = video;
+    objc_storeStrong(&v27->_sortPropertyValues, values);
+    objc_storeStrong(&v27->_podcastUuid, podcastUuid);
+    objc_storeStrong(&v27->_podcastTitle, podcastTitle);
+    v27->_podcastStoreCollectionId = collectionId;
   }
 
   return v27;
 }
 
-- (MTNotificationEpisode)initWithDictionaryRepresentation:(id)a3
+- (MTNotificationEpisode)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v29.receiver = self;
   v29.super_class = MTNotificationEpisode;
   v5 = [(MTNotificationEpisode *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(MTNotificationEpisode *)v5 _representationByMigratingLegacyKeysInRepresentation:v4];
+    v7 = [(MTNotificationEpisode *)v5 _representationByMigratingLegacyKeysInRepresentation:representationCopy];
 
     v8 = [v7 objectForKeyedSubscript:@"episodeUuid"];
     uuid = v6->_uuid;
@@ -112,7 +112,7 @@
     v27 = [v7 objectForKeyedSubscript:@"podcastStoreCollectionId"];
     v6->_podcastStoreCollectionId = [v27 longLongValue];
 
-    v4 = v7;
+    representationCopy = v7;
   }
 
   return v6;
@@ -121,11 +121,11 @@
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MTNotificationEpisode *)self uuid];
-  v5 = v4;
-  if (v4)
+  uuid = [(MTNotificationEpisode *)self uuid];
+  v5 = uuid;
+  if (uuid)
   {
-    v6 = v4;
+    v6 = uuid;
   }
 
   else
@@ -138,11 +138,11 @@
   v7 = [NSNumber numberWithLongLong:[(MTNotificationEpisode *)self storeTrackId]];
   [v3 setObject:v7 forKeyedSubscript:@"episodeStoreTrackId"];
 
-  v8 = [(MTNotificationEpisode *)self bestTitle];
-  v9 = v8;
-  if (v8)
+  bestTitle = [(MTNotificationEpisode *)self bestTitle];
+  v9 = bestTitle;
+  if (bestTitle)
   {
-    v10 = v8;
+    v10 = bestTitle;
   }
 
   else
@@ -152,11 +152,11 @@
 
   [v3 setObject:v10 forKeyedSubscript:@"bestTitle"];
 
-  v11 = [(MTNotificationEpisode *)self bestSummary];
-  v12 = v11;
-  if (v11)
+  bestSummary = [(MTNotificationEpisode *)self bestSummary];
+  v12 = bestSummary;
+  if (bestSummary)
   {
-    v13 = v11;
+    v13 = bestSummary;
   }
 
   else
@@ -182,11 +182,11 @@
   v17 = [NSNumber numberWithBool:[(MTNotificationEpisode *)self isVideo]];
   [v3 setObject:v17 forKeyedSubscript:@"isVideoNumber"];
 
-  v18 = [(MTNotificationEpisode *)self sortPropertyValues];
-  v19 = v18;
-  if (v18)
+  sortPropertyValues = [(MTNotificationEpisode *)self sortPropertyValues];
+  v19 = sortPropertyValues;
+  if (sortPropertyValues)
   {
-    v20 = v18;
+    v20 = sortPropertyValues;
   }
 
   else
@@ -196,11 +196,11 @@
 
   [v3 setObject:v20 forKeyedSubscript:@"sortPropertyValues"];
 
-  v21 = [(MTNotificationEpisode *)self podcastUuid];
-  v22 = v21;
-  if (v21)
+  podcastUuid = [(MTNotificationEpisode *)self podcastUuid];
+  v22 = podcastUuid;
+  if (podcastUuid)
   {
-    v23 = v21;
+    v23 = podcastUuid;
   }
 
   else
@@ -210,11 +210,11 @@
 
   [v3 setObject:v23 forKeyedSubscript:@"podcastUuid"];
 
-  v24 = [(MTNotificationEpisode *)self podcastTitle];
-  v25 = v24;
-  if (v24)
+  podcastTitle = [(MTNotificationEpisode *)self podcastTitle];
+  v25 = podcastTitle;
+  if (podcastTitle)
   {
-    v26 = v24;
+    v26 = podcastTitle;
   }
 
   else
@@ -232,19 +232,19 @@
   return v3;
 }
 
-- (id)_representationByMigratingLegacyKeysInRepresentation:(id)a3
+- (id)_representationByMigratingLegacyKeysInRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [objc_opt_class() versionOfDictionaryRepresentation:v4];
+  representationCopy = representation;
+  v5 = [objc_opt_class() versionOfDictionaryRepresentation:representationCopy];
   if (v5 == 1)
   {
-    v6 = v4;
+    v6 = representationCopy;
   }
 
   else
   {
     v8 = v5;
-    v6 = [v4 mutableCopy];
+    v6 = [representationCopy mutableCopy];
     if (!v8)
     {
       [(MTNotificationEpisode *)self _upgradeRepresentationFrom0To1:v6];
@@ -263,24 +263,24 @@ LABEL_10:
   return v6;
 }
 
-- (void)_upgradeRepresentationFrom0To1:(id)a3
+- (void)_upgradeRepresentationFrom0To1:(id)to1
 {
-  v8 = a3;
-  v3 = [v8 objectForKeyedSubscript:@"bestTitle"];
+  to1Copy = to1;
+  v3 = [to1Copy objectForKeyedSubscript:@"bestTitle"];
 
   if (!v3)
   {
-    v4 = [v8 objectForKeyedSubscript:@"episodeTitle"];
-    [v8 setObject:v4 forKeyedSubscript:@"bestTitle"];
+    v4 = [to1Copy objectForKeyedSubscript:@"episodeTitle"];
+    [to1Copy setObject:v4 forKeyedSubscript:@"bestTitle"];
   }
 
-  v5 = [v8 objectForKeyedSubscript:@"bestSummary"];
+  v5 = [to1Copy objectForKeyedSubscript:@"bestSummary"];
 
   if (!v5)
   {
-    v6 = [v8 objectForKeyedSubscript:@"itemDescription"];
-    v7 = [v6 stringBySmartlyStrippingHTML];
-    [v8 setObject:v7 forKeyedSubscript:@"bestSummary"];
+    v6 = [to1Copy objectForKeyedSubscript:@"itemDescription"];
+    stringBySmartlyStrippingHTML = [v6 stringBySmartlyStrippingHTML];
+    [to1Copy setObject:stringBySmartlyStrippingHTML forKeyedSubscript:@"bestSummary"];
   }
 }
 

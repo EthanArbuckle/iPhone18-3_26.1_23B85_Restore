@@ -1,5 +1,5 @@
 @interface ProgressViewController
-- (_TtC18CosmeticAssessment22ProgressViewController)initWithSpinnerText:(id)a3;
+- (_TtC18CosmeticAssessment22ProgressViewController)initWithSpinnerText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -15,11 +15,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_247C7C744();
 }
 
-- (_TtC18CosmeticAssessment22ProgressViewController)initWithSpinnerText:(id)a3
+- (_TtC18CosmeticAssessment22ProgressViewController)initWithSpinnerText:(id)text
 {
   sub_247D1FEA8();
   sub_247D1FE98();

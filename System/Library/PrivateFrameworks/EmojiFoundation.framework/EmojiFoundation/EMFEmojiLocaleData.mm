@@ -1,17 +1,17 @@
 @interface EMFEmojiLocaleData
-+ (EMFEmojiLocaleData)emojiLocaleDataWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
-+ (EMFEmojiLocaleData)emojiLocaleDataWithLocaleIdentifier:(id)a3;
++ (EMFEmojiLocaleData)emojiLocaleDataWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
++ (EMFEmojiLocaleData)emojiLocaleDataWithLocaleIdentifier:(id)identifier;
 - (EMFAnchoredSearchManager)anchoredSearchManager;
-- (EMFEmojiLocaleData)initWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
-- (EMFEmojiLocaleData)initWithLocaleIdentifier:(id)a3;
+- (EMFEmojiLocaleData)initWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
+- (EMFEmojiLocaleData)initWithLocaleIdentifier:(id)identifier;
 - (EMFEmojiSearchEngine)searchEngine;
 - (NSArray)emojiTokens;
 - (id)description;
-- (id)emojiTokensForOptions:(unint64_t)a3 presentationStyle:(int)a4;
-- (id)emojiTokensForText:(id)a3 phoneticReading:(id)a4 options:(unint64_t)a5 searchType:(int)a6 includePrefixMatches:(BOOL)a7;
+- (id)emojiTokensForOptions:(unint64_t)options presentationStyle:(int)style;
+- (id)emojiTokensForText:(id)text phoneticReading:(id)reading options:(unint64_t)options searchType:(int)type includePrefixMatches:(BOOL)matches;
 - (void)dealloc;
-- (void)enumerateAnchoredReplacementCandidatesForContext:(id)a3 withOptions:(unsigned int)a4 usingBlock:(id)a5;
-- (void)enumerateSearchResultsInText:(id)a3 range:(_NSRange)a4 options:(unint64_t)a5 searchType:(int)a6 usingBlock:(id)a7;
+- (void)enumerateAnchoredReplacementCandidatesForContext:(id)context withOptions:(unsigned int)options usingBlock:(id)block;
+- (void)enumerateSearchResultsInText:(id)text range:(_NSRange)range options:(unint64_t)options searchType:(int)type usingBlock:(id)block;
 - (void)preheatSearchEngine;
 - (void)searchEngine;
 @end
@@ -35,16 +35,16 @@
   [(EMFEmojiLocaleData *)&v5 dealloc];
 }
 
-+ (EMFEmojiLocaleData)emojiLocaleDataWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
++ (EMFEmojiLocaleData)emojiLocaleDataWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
-  v3 = [[a1 alloc] initWithCEMEmojiLocaleData:a3];
+  v3 = [[self alloc] initWithCEMEmojiLocaleData:data];
 
   return v3;
 }
 
-- (EMFEmojiLocaleData)initWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
+- (EMFEmojiLocaleData)initWithCEMEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
-  if (a3)
+  if (data)
   {
     v8.receiver = self;
     v8.super_class = EMFEmojiLocaleData;
@@ -55,7 +55,7 @@
       localeIdentifier = v4->_localeIdentifier;
       v4->_localeIdentifier = v5;
 
-      v4->_localeDataRef = CFRetain(a3);
+      v4->_localeDataRef = CFRetain(data);
       v4->_didTryLoadingSearchEngine = 0;
     }
   }
@@ -69,23 +69,23 @@
   return v4;
 }
 
-+ (EMFEmojiLocaleData)emojiLocaleDataWithLocaleIdentifier:(id)a3
++ (EMFEmojiLocaleData)emojiLocaleDataWithLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLocaleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithLocaleIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (EMFEmojiLocaleData)initWithLocaleIdentifier:(id)a3
+- (EMFEmojiLocaleData)initWithLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = EMFEmojiLocaleData;
   v5 = [(EMFEmojiLocaleData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     localeIdentifier = v5->_localeIdentifier;
     v5->_localeIdentifier = v6;
 
@@ -115,14 +115,14 @@
   return v3;
 }
 
-- (void)enumerateSearchResultsInText:(id)a3 range:(_NSRange)a4 options:(unint64_t)a5 searchType:(int)a6 usingBlock:(id)a7
+- (void)enumerateSearchResultsInText:(id)text range:(_NSRange)range options:(unint64_t)options searchType:(int)type usingBlock:(id)block
 {
-  v10 = a7;
-  if (v10)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v11 = a3;
-    [(EMFEmojiLocaleData *)self cfCompareFlagsFromNSOptions:a5];
-    v12 = v10;
+    textCopy = text;
+    [(EMFEmojiLocaleData *)self cfCompareFlagsFromNSOptions:options];
+    v12 = blockCopy;
     CEMEmojiLocaleDataEnumerateSearchResultsInStringWithBlock();
   }
 }
@@ -133,17 +133,17 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)emojiTokensForText:(id)a3 phoneticReading:(id)a4 options:(unint64_t)a5 searchType:(int)a6 includePrefixMatches:(BOOL)a7
+- (id)emojiTokensForText:(id)text phoneticReading:(id)reading options:(unint64_t)options searchType:(int)type includePrefixMatches:(BOOL)matches
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(EMFEmojiLocaleData *)self searchEngine];
+  textCopy = text;
+  readingCopy = reading;
+  searchEngine = [(EMFEmojiLocaleData *)self searchEngine];
 
-  if (v12)
+  if (searchEngine)
   {
-    v13 = [(EMFEmojiLocaleData *)self searchEngine];
-    v14 = [v13 performStringQuery:v10];
+    searchEngine2 = [(EMFEmojiLocaleData *)self searchEngine];
+    v14 = [searchEngine2 performStringQuery:textCopy];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = 0u;
@@ -155,7 +155,7 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
     if (v17)
     {
       v18 = v17;
-      v25 = v11;
+      v25 = readingCopy;
       v19 = 0;
       v20 = *v27;
       do
@@ -182,13 +182,13 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
 
       while (v18);
 
-      v11 = v25;
+      readingCopy = v25;
     }
   }
 
   else
   {
-    [(EMFEmojiLocaleData *)self cfCompareFlagsFromNSOptions:a5];
+    [(EMFEmojiLocaleData *)self cfCompareFlagsFromNSOptions:options];
     EmojiTokensForString = CEMEmojiLocaleDataCreateEmojiTokensForString();
     v15 = [EMFEmojiToken emojiTokensForCEMEmojiTokens:EmojiTokensForString];
     if (EmojiTokensForString)
@@ -200,9 +200,9 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
   return v15;
 }
 
-- (id)emojiTokensForOptions:(unint64_t)a3 presentationStyle:(int)a4
+- (id)emojiTokensForOptions:(unint64_t)options presentationStyle:(int)style
 {
-  v4 = a3;
+  optionsCopy = options;
   v6 = CEMCopyEmojiTokens();
   v7 = [EMFEmojiToken emojiTokensForCEMEmojiTokens:v6];
   if (v6)
@@ -210,7 +210,7 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
     CFRelease(v6);
   }
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v8 = [v7 mutableCopy];
     v9 = [EMFEmojiCategory categoryWithIdentifier:@"EMFEmojiCategoryFlags"];
@@ -309,9 +309,9 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
 
 - (void)preheatSearchEngine
 {
-  v3 = [(EMFEmojiLocaleData *)self searchEngine];
-  v4 = [(EMFEmojiLocaleData *)self searchEngine];
-  [v4 preheat];
+  searchEngine = [(EMFEmojiLocaleData *)self searchEngine];
+  searchEngine2 = [(EMFEmojiLocaleData *)self searchEngine];
+  [searchEngine2 preheat];
 }
 
 - (EMFAnchoredSearchManager)anchoredSearchManager
@@ -329,18 +329,18 @@ void __87__EMFEmojiLocaleData_enumerateSearchResultsInText_range_options_searchT
   return anchoredSearchManager;
 }
 
-- (void)enumerateAnchoredReplacementCandidatesForContext:(id)a3 withOptions:(unsigned int)a4 usingBlock:(id)a5
+- (void)enumerateAnchoredReplacementCandidatesForContext:(id)context withOptions:(unsigned int)options usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(EMFEmojiLocaleData *)self anchoredSearchManager];
-  [v10 enumerateAnchoredReplacementCandidatesForContext:v9 withOptions:a4 usingBlock:v8];
+  blockCopy = block;
+  contextCopy = context;
+  anchoredSearchManager = [(EMFEmojiLocaleData *)self anchoredSearchManager];
+  [anchoredSearchManager enumerateAnchoredReplacementCandidatesForContext:contextCopy withOptions:options usingBlock:blockCopy];
 }
 
 - (void)searchEngine
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_1AF04E000, a2, OS_LOG_TYPE_DEBUG, "Loaded emoji search engine for locale '%@'", &v3, 0xCu);

@@ -1,10 +1,10 @@
 @interface MTKnownFieldMethod
-- (MTKnownFieldMethod)initWithIMP:(void *)a3 accessor:(SEL)a4;
+- (MTKnownFieldMethod)initWithIMP:(void *)p accessor:(SEL)accessor;
 @end
 
 @implementation MTKnownFieldMethod
 
-- (MTKnownFieldMethod)initWithIMP:(void *)a3 accessor:(SEL)a4
+- (MTKnownFieldMethod)initWithIMP:(void *)p accessor:(SEL)accessor
 {
   v9.receiver = self;
   v9.super_class = MTKnownFieldMethod;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    [(MTKnownFieldMethod *)v6 setImp:a3];
-    [(MTKnownFieldMethod *)v7 setAccessor:a4];
+    [(MTKnownFieldMethod *)v6 setImp:p];
+    [(MTKnownFieldMethod *)v7 setAccessor:accessor];
   }
 
   return v7;

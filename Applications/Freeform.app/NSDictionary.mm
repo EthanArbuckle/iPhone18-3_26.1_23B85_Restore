@@ -1,13 +1,13 @@
 @interface NSDictionary
-- (BOOL)crl_enumerateBoardItemNestedRecursivelyUsingBlock:(id)a3;
+- (BOOL)crl_enumerateBoardItemNestedRecursivelyUsingBlock:(id)block;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)crl_enumerateBoardItemNestedRecursivelyUsingBlock:(id)a3
+- (BOOL)crl_enumerateBoardItemNestedRecursivelyUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4[2](v4, self))
+  blockCopy = block;
+  if (blockCopy[2](blockCopy, self))
   {
     v5 = 1;
   }
@@ -15,7 +15,7 @@
   else
   {
     v6 = [(NSDictionary *)self objectForKeyedSubscript:@"groupChildren"];
-    v5 = [v6 crl_enumerateAllBoardItemsNestedRecursivelyUsingBlock:v4];
+    v5 = [v6 crl_enumerateAllBoardItemsNestedRecursivelyUsingBlock:blockCopy];
   }
 
   return v5;

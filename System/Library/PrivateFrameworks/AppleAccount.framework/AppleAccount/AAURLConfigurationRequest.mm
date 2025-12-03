@@ -37,8 +37,8 @@
 {
   v5.receiver = self;
   v5.super_class = AAURLConfigurationRequest;
-  v2 = [(AARequest *)&v5 urlRequest];
-  v3 = [v2 mutableCopy];
+  urlRequest = [(AARequest *)&v5 urlRequest];
+  v3 = [urlRequest mutableCopy];
 
   [v3 aa_addMultiUserDeviceHeaderIfEnabled];
 

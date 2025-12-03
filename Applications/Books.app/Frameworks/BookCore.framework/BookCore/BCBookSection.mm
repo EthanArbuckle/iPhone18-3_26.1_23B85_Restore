@@ -1,33 +1,33 @@
 @interface BCBookSection
-+ (BCBookSection)bookSectionWithStartPosition:(id)a3 endPosition:(id)a4;
-- (BOOL)intersects:(id)a3;
++ (BCBookSection)bookSectionWithStartPosition:(id)position endPosition:(id)endPosition;
+- (BOOL)intersects:(id)intersects;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareWithSection:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareWithSection:(id)section;
 @end
 
 @implementation BCBookSection
 
-+ (BCBookSection)bookSectionWithStartPosition:(id)a3 endPosition:(id)a4
++ (BCBookSection)bookSectionWithStartPosition:(id)position endPosition:(id)endPosition
 {
-  v5 = a4;
-  v6 = a3;
+  endPositionCopy = endPosition;
+  positionCopy = position;
   v7 = objc_alloc_init(BCBookSection);
-  [(BCBookSection *)v7 setStartPosition:v6];
+  [(BCBookSection *)v7 setStartPosition:positionCopy];
 
-  [(BCBookSection *)v7 setEndPosition:v5];
+  [(BCBookSection *)v7 setEndPosition:endPositionCopy];
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BCBookSection *)self startPosition];
-  v6 = [v5 compare:v4];
+  compareCopy = compare;
+  startPosition = [(BCBookSection *)self startPosition];
+  v6 = [startPosition compare:compareCopy];
 
-  v7 = [(BCBookSection *)self endPosition];
-  v8 = [v7 compare:v4];
+  endPosition = [(BCBookSection *)self endPosition];
+  v8 = [endPosition compare:compareCopy];
 
   if (v8 == -1)
   {
@@ -50,32 +50,32 @@
   }
 }
 
-- (int64_t)compareWithSection:(id)a3
+- (int64_t)compareWithSection:(id)section
 {
-  v4 = a3;
-  v5 = [(BCBookSection *)self startPosition];
-  v6 = [v4 startPosition];
+  sectionCopy = section;
+  startPosition = [(BCBookSection *)self startPosition];
+  startPosition2 = [sectionCopy startPosition];
 
-  v7 = [v5 compare:v6];
+  v7 = [startPosition compare:startPosition2];
   return v7;
 }
 
-- (BOOL)intersects:(id)a3
+- (BOOL)intersects:(id)intersects
 {
-  if (!a3)
+  if (!intersects)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(BCBookSection *)self startPosition];
-  v6 = [v4 endPosition];
-  v7 = [v5 compare:v6];
+  intersectsCopy = intersects;
+  startPosition = [(BCBookSection *)self startPosition];
+  endPosition = [intersectsCopy endPosition];
+  v7 = [startPosition compare:endPosition];
 
-  v8 = [(BCBookSection *)self endPosition];
-  v9 = [v4 startPosition];
+  endPosition2 = [(BCBookSection *)self endPosition];
+  startPosition2 = [intersectsCopy startPosition];
 
-  v10 = [v8 compare:v9];
+  v10 = [endPosition2 compare:startPosition2];
   return v7 != &dword_0 + 1 && v10 + 1 != 0;
 }
 
@@ -83,11 +83,11 @@
 {
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"BCBookSection\n"];
-  v4 = [(BCBookSection *)self startPosition];
-  [v3 appendFormat:@"        startPosition . . . . : %@\n", v4];
+  startPosition = [(BCBookSection *)self startPosition];
+  [v3 appendFormat:@"        startPosition . . . . : %@\n", startPosition];
 
-  v5 = [(BCBookSection *)self endPosition];
-  [v3 appendFormat:@"        endPosition . . . . . : %@", v5];
+  endPosition = [(BCBookSection *)self endPosition];
+  [v3 appendFormat:@"        endPosition . . . . . : %@", endPosition];
 
   return v3;
 }

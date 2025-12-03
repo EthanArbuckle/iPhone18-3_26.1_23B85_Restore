@@ -1,24 +1,24 @@
 @interface MFModernAtomBackgroundView
-- (MFModernAtomBackgroundView)initWithFrame:(CGRect)a3;
+- (MFModernAtomBackgroundView)initWithFrame:(CGRect)frame;
 - (MFModernAtomView)hostAtomView;
 - (UIEdgeInsets)_backgroundBleedArea;
 - (double)separatorWidth;
 - (id)_chevronImage;
-- (void)_setSelectionStyle:(unint64_t)a3;
+- (void)_setSelectionStyle:(unint64_t)style;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 style:(unint64_t)a5;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated style:(unint64_t)style;
+- (void)setSeparatorStyle:(int64_t)style;
 - (void)tintColorDidChange;
 @end
 
 @implementation MFModernAtomBackgroundView
 
-- (MFModernAtomBackgroundView)initWithFrame:(CGRect)a3
+- (MFModernAtomBackgroundView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = MFModernAtomBackgroundView;
-  v3 = [(MFModernAtomBackgroundView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFModernAtomBackgroundView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,19 +30,19 @@
     selectedView = v4->_selectedView;
     v4->_selectedView = v6;
 
-    v8 = [(MFModernAtomBackgroundView *)v4 tintColor];
-    [(UIView *)v4->_selectedView setBackgroundColor:v8];
+    tintColor = [(MFModernAtomBackgroundView *)v4 tintColor];
+    [(UIView *)v4->_selectedView setBackgroundColor:tintColor];
 
     [(UIView *)v4->_selectedView setAlpha:0.0];
     [(UIView *)v4->_selectedView setAutoresizingMask:2];
-    v9 = [(UIView *)v4->_selectedView layer];
-    [v9 setShouldRasterize:1];
+    layer = [(UIView *)v4->_selectedView layer];
+    [layer setShouldRasterize:1];
 
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
-    v13 = [(UIView *)v4->_selectedView layer];
-    [v13 setRasterizationScale:v12];
+    layer2 = [(UIView *)v4->_selectedView layer];
+    [layer2 setRasterizationScale:v12];
 
     [(MFModernAtomBackgroundView *)v4 addSubview:v4->_selectedView];
     v4->_selectionStyle = 0;
@@ -53,17 +53,17 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(MFModernAtomBackgroundView *)self tintColor];
+  tintColor = [(MFModernAtomBackgroundView *)self tintColor];
   [(UIView *)self->_selectedView setBackgroundColor:?];
 }
 
 - (double)separatorWidth
 {
-  v3 = [(MFModernAtomBackgroundView *)self hostAtomView];
-  v4 = [v3 isWrappingEnabled];
+  hostAtomView = [(MFModernAtomBackgroundView *)self hostAtomView];
+  isWrappingEnabled = [hostAtomView isWrappingEnabled];
 
   result = 0.0;
-  if ((v4 & 1) == 0)
+  if ((isWrappingEnabled & 1) == 0)
   {
     separatorStyle = self->_separatorStyle;
     [(UIView *)self->_separatorView bounds];
@@ -104,8 +104,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v38 = [(MFModernAtomBackgroundView *)self hostAtomView];
-  v11 = [v38 separatorIsLeftAligned];
+  hostAtomView = [(MFModernAtomBackgroundView *)self hostAtomView];
+  separatorIsLeftAligned = [hostAtomView separatorIsLeftAligned];
   v12 = v8;
   if ((self->_selectionStyle & 0x20) != 0)
   {
@@ -114,7 +114,7 @@
   }
 
   v14 = v4;
-  if (((self->_separatorStyle == 0) & v11) == 1)
+  if (((self->_separatorStyle == 0) & separatorIsLeftAligned) == 1)
   {
     [(MFModernAtomBackgroundView *)self separatorWidth];
     v14 = v4 + v15;
@@ -122,7 +122,7 @@
 
   [(UIView *)self->_selectedView setFrame:v14, v6, v12, v10];
   [(MFModernAtomBackgroundView *)self _setSelectionStyle:self->_selectionStyle];
-  if (([v38 isWrappingEnabled] & 1) == 0)
+  if (([hostAtomView isWrappingEnabled] & 1) == 0)
   {
     [(UIView *)self->_separatorView sizeToFit];
     [(UIView *)self->_separatorView frame];
@@ -131,7 +131,7 @@
     UIRoundToViewScale();
     v21 = v20;
     v22 = floor(v4 + v8 - v17) + -3.0;
-    if (v11)
+    if (separatorIsLeftAligned)
     {
       v23 = 3.0;
     }
@@ -146,51 +146,51 @@
       goto LABEL_23;
     }
 
-    v24 = [v38 accessoryIconView];
-    v25 = [v38 presentationOptions];
-    if (v11)
+    accessoryIconView = [hostAtomView accessoryIconView];
+    presentationOptions = [hostAtomView presentationOptions];
+    if (separatorIsLeftAligned)
     {
-      v26 = [v24 iconImages];
-      v27 = [v26 count];
+      iconImages = [accessoryIconView iconImages];
+      v27 = [iconImages count];
 
       if (v27)
       {
-        [v24 frame];
+        [accessoryIconView frame];
         MinX = CGRectGetMinX(v40);
-        [v24 iconPadding];
+        [accessoryIconView iconPadding];
         v30 = MinX + v29 + -3.0;
       }
 
       else
       {
-        v35 = [v38 titleLabel];
-        [v35 frame];
+        titleLabel = [hostAtomView titleLabel];
+        [titleLabel frame];
         v30 = CGRectGetMinX(v42);
       }
 
       v23 = v30 - v17;
-      if ((v25 & 4) == 0)
+      if ((presentationOptions & 4) == 0)
       {
         goto LABEL_22;
       }
 
-      v36 = [v38 activityIndicator];
-      [v36 frame];
+      activityIndicator = [hostAtomView activityIndicator];
+      [activityIndicator frame];
       v23 = v23 - (CGRectGetWidth(v43) + 3.0);
     }
 
     else
     {
-      v31 = [v24 iconImages];
-      v32 = [v31 count];
+      iconImages2 = [accessoryIconView iconImages];
+      v32 = [iconImages2 count];
 
       if (v32)
       {
-        [v24 frame];
+        [accessoryIconView frame];
         MaxX = CGRectGetMaxX(v41);
-        [v24 iconPadding];
+        [accessoryIconView iconPadding];
         v23 = MaxX - v34 + 3.0;
-        if ((v25 & 4) == 0)
+        if ((presentationOptions & 4) == 0)
         {
           goto LABEL_22;
         }
@@ -198,11 +198,11 @@
 
       else
       {
-        v37 = [v38 titleLabel];
-        [v37 frame];
+        titleLabel2 = [hostAtomView titleLabel];
+        [titleLabel2 frame];
         v23 = CGRectGetMaxX(v44);
 
-        if ((v25 & 4) == 0)
+        if ((presentationOptions & 4) == 0)
         {
 LABEL_22:
 
@@ -212,8 +212,8 @@ LABEL_23:
         }
       }
 
-      v36 = [v38 activityIndicator];
-      [v36 frame];
+      activityIndicator = [hostAtomView activityIndicator];
+      [activityIndicator frame];
       v23 = v23 + CGRectGetWidth(v45) + 3.0;
     }
 
@@ -223,11 +223,11 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_setSelectionStyle:(unint64_t)a3
+- (void)_setSelectionStyle:(unint64_t)style
 {
-  v3 = a3;
-  self->_selectionStyle = a3;
-  if ((~a3 & 0xCLL) != 0)
+  styleCopy = style;
+  self->_selectionStyle = style;
+  if ((~style & 0xCLL) != 0)
   {
     [(MFModernAtomBackgroundView *)self bounds];
     v6 = v5;
@@ -235,12 +235,12 @@ LABEL_24:
     v10 = v9;
     v12 = v11;
     v13 = 10;
-    if ((v3 & 4) == 0)
+    if ((styleCopy & 4) == 0)
     {
       v13 = -1;
     }
 
-    if ((v3 & 8) != 0)
+    if ((styleCopy & 8) != 0)
     {
       v14 = 5;
     }
@@ -250,38 +250,38 @@ LABEL_24:
       v14 = v13;
     }
 
-    if ((v3 & 0x20) != 0)
+    if ((styleCopy & 0x20) != 0)
     {
       [(MFModernAtomBackgroundView *)self _backgroundBleedArea];
       v10 = v10 + v15;
     }
 
-    v19 = [MEMORY[0x1E69794A0] layer];
-    [v19 setAnchorPoint:{0.0, 0.0}];
-    [v19 setBounds:{v6, v8, v10, v12}];
+    layer = [MEMORY[0x1E69794A0] layer];
+    [layer setAnchorPoint:{0.0, 0.0}];
+    [layer setBounds:{v6, v8, v10, v12}];
     v16 = MEMORY[0x1E69DC728];
     [(UIView *)self->_selectedView bounds];
     v17 = [v16 bezierPathWithRoundedRect:v14 byRoundingCorners:? cornerRadii:?];
-    [v19 setPath:{objc_msgSend(v17, "CGPath")}];
+    [layer setPath:{objc_msgSend(v17, "CGPath")}];
 
-    v18 = [(UIView *)self->_selectedView layer];
-    [v18 setMask:v19];
+    layer2 = [(UIView *)self->_selectedView layer];
+    [layer2 setMask:layer];
   }
 
   else
   {
-    v19 = [(UIView *)self->_selectedView layer];
-    [v19 setMask:0];
+    layer = [(UIView *)self->_selectedView layer];
+    [layer setMask:0];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4 style:(unint64_t)a5
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated style:(unint64_t)style
 {
-  v5 = a4;
-  if (self->_selected != a3 || self->_selectionStyle != a5)
+  animatedCopy = animated;
+  if (self->_selected != selected || self->_selectionStyle != style)
   {
-    self->_selected = a3;
-    [(MFModernAtomBackgroundView *)self _setSelectionStyle:a5];
+    self->_selected = selected;
+    [(MFModernAtomBackgroundView *)self _setSelectionStyle:style];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __57__MFModernAtomBackgroundView_setSelected_animated_style___block_invoke;
@@ -289,7 +289,7 @@ LABEL_24:
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
     v8 = v7;
-    if (v5)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:0.15];
     }
@@ -338,12 +338,12 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
     _chevronImage__chevronImageCache = v3;
   }
 
-  v5 = [(MFModernAtomBackgroundView *)self hostAtomView];
-  v6 = [v5 _preferredIconVariant];
-  v7 = [v5 isPrimaryAddressAtom];
-  if (v6 < 6)
+  hostAtomView = [(MFModernAtomBackgroundView *)self hostAtomView];
+  _preferredIconVariant = [hostAtomView _preferredIconVariant];
+  isPrimaryAddressAtom = [hostAtomView isPrimaryAddressAtom];
+  if (_preferredIconVariant < 6)
   {
-    v8 = v7;
+    v8 = isPrimaryAddressAtom;
   }
 
   else
@@ -353,40 +353,40 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
 
   if (v8 == 1)
   {
-    ++v6;
+    ++_preferredIconVariant;
   }
 
   else
   {
-    v9 = [v5 titleFont];
+    titleFont = [hostAtomView titleFont];
     v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-    v11 = [v9 isEqual:v10];
+    v11 = [titleFont isEqual:v10];
 
     if (v11)
     {
-      if (v6 == 1)
+      if (_preferredIconVariant == 1)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = v6;
+        v12 = _preferredIconVariant;
       }
 
-      if (v6 >= 2)
+      if (_preferredIconVariant >= 2)
       {
-        v6 -= 2;
+        _preferredIconVariant -= 2;
       }
 
       else
       {
-        v6 = v12;
+        _preferredIconVariant = v12;
       }
     }
   }
 
-  v13 = _MFAtomViewIconImageVariantNameForGlyphType(@"chevron", v6);
+  v13 = _MFAtomViewIconImageVariantNameForGlyphType(@"chevron", _preferredIconVariant);
   v14 = [_chevronImage__chevronImageCache objectForKeyedSubscript:v13];
   if (!v14)
   {
@@ -402,31 +402,31 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
   return v14;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  self->_separatorStyle = a3;
-  v5 = [(MFModernAtomBackgroundView *)self hostAtomView];
-  v6 = [v5 isWrappingEnabled] ^ 1;
+  self->_separatorStyle = style;
+  hostAtomView = [(MFModernAtomBackgroundView *)self hostAtomView];
+  v6 = [hostAtomView isWrappingEnabled] ^ 1;
   separatorView = self->_separatorView;
-  if (a3 == 2)
+  if (style == 2)
   {
     LOBYTE(v6) = 0;
   }
 
   if (v6)
   {
-    if (!separatorView || self->_separatorStyle != a3)
+    if (!separatorView || self->_separatorStyle != style)
     {
-      if (a3)
+      if (style)
       {
-        if (a3 != 1)
+        if (style != 1)
         {
           __assert_rtn("[MFModernAtomBackgroundView setSeparatorStyle:]", "MFModernAtomView.m", 1567, "0 && unexpected separatorStyle");
         }
 
-        v9 = [(MFModernAtomBackgroundView *)self _chevronImage];
-        v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
-        if ([v5 separatorIsLeftAligned])
+        _chevronImage = [(MFModernAtomBackgroundView *)self _chevronImage];
+        v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_chevronImage];
+        if ([hostAtomView separatorIsLeftAligned])
         {
           CGAffineTransformMakeScale(&v19, -1.0, 1.0);
         }
@@ -456,8 +456,8 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
         v14 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
         [v10 setTextColor:v14];
 
-        v15 = [MEMORY[0x1E69DC888] clearColor];
-        [v10 setBackgroundColor:v15];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [v10 setBackgroundColor:clearColor];
 
         [v10 setAutoresizingMask:0];
         [v10 sizeToFit];
@@ -487,18 +487,18 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
   v7.receiver = self;
   v7.super_class = MFModernAtomBackgroundView;
   [(MFModernAtomBackgroundView *)&v7 invalidateIntrinsicContentSize];
-  v3 = [(MFModernAtomBackgroundView *)self hostAtomView];
-  v4 = [v3 isWrappingEnabled];
+  hostAtomView = [(MFModernAtomBackgroundView *)self hostAtomView];
+  isWrappingEnabled = [hostAtomView isWrappingEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isWrappingEnabled & 1) == 0)
   {
     if ([(MFModernAtomBackgroundView *)self separatorStyle]== 1)
     {
-      v5 = [(MFModernAtomBackgroundView *)self _chevronImage];
+      _chevronImage = [(MFModernAtomBackgroundView *)self _chevronImage];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(UIView *)self->_separatorView setImage:v5];
+        [(UIView *)self->_separatorView setImage:_chevronImage];
       }
 
       goto LABEL_8;
@@ -509,9 +509,9 @@ uint64_t __57__MFModernAtomBackgroundView_setSelected_animated_style___block_inv
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = self->_separatorView;
+        _chevronImage = self->_separatorView;
         v6 = +[MFModernAtomView defaultFont];
-        [(UIView *)v5 setFont:v6];
+        [(UIView *)_chevronImage setFont:v6];
 
 LABEL_8:
       }

@@ -1,36 +1,36 @@
 @interface VUILibraryProductViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (VUILibraryProductViewController)initWithMediaItem:(id)a3;
-- (id)_productInfoViewWithMediaItem:(id)a3;
-- (id)_productLockupViewWithMediaItem:(id)a3;
-- (id)_productSectionForHeader:(id)a3 data:(id)a4 group:(id)a5 maxItemCount:(unint64_t)a6;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_updateAfterContentWasManuallyDeleted:(BOOL)a3;
-- (void)configureWithCollectionView:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (VUILibraryProductViewController)initWithMediaItem:(id)item;
+- (id)_productInfoViewWithMediaItem:(id)item;
+- (id)_productLockupViewWithMediaItem:(id)item;
+- (id)_productSectionForHeader:(id)header data:(id)data group:(id)group maxItemCount:(unint64_t)count;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_updateAfterContentWasManuallyDeleted:(BOOL)deleted;
+- (void)configureWithCollectionView:(id)view;
 - (void)contentDescriptionExpanded;
-- (void)didSelectButton:(id)a3;
+- (void)didSelectButton:(id)button;
 - (void)loadView;
-- (void)setDownloadButton:(id)a3;
+- (void)setDownloadButton:(id)button;
 - (void)start;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation VUILibraryProductViewController
 
-- (VUILibraryProductViewController)initWithMediaItem:(id)a3
+- (VUILibraryProductViewController)initWithMediaItem:(id)item
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = VUILibraryProductViewController;
   v6 = [(VUILibraryStackViewController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaItem, a3);
+    objc_storeStrong(&v6->_mediaItem, item);
     v8 = objc_alloc_init(VUIViewControllerContentPresenter);
     contentPresenter = v7->_contentPresenter;
     v7->_contentPresenter = v8;
@@ -81,17 +81,17 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
   v5.super_class = VUILibraryProductViewController;
   [(VUILibraryStackViewController *)&v5 viewDidLoad];
   [(VUILibraryProductViewController *)self start];
-  v3 = [(VUILibraryProductViewController *)self navigationItem];
-  [v3 _setSupportsTwoLineLargeTitles:1];
-  v4 = [(VUIMediaEntity *)self->_mediaItem title];
-  [(VUILibraryProductViewController *)self setTitle:v4];
+  navigationItem = [(VUILibraryProductViewController *)self navigationItem];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
+  title = [(VUIMediaEntity *)self->_mediaItem title];
+  [(VUILibraryProductViewController *)self setTitle:title];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VUILibraryProductViewController;
-  [(VUILibraryStackViewController *)&v4 viewDidAppear:a3];
+  [(VUILibraryStackViewController *)&v4 viewDidAppear:appear];
   [(VUILibraryProductViewController *)self reportMetricsPageEvent];
 }
 
@@ -100,8 +100,8 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
   v4.receiver = self;
   v4.super_class = VUILibraryProductViewController;
   [(VUILibraryProductViewController *)&v4 loadView];
-  v3 = [(VUILibraryProductViewController *)self contentPresenter];
-  [v3 setRootViewForViewController:self];
+  contentPresenter = [(VUILibraryProductViewController *)self contentPresenter];
+  [contentPresenter setRootViewForViewController:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -109,29 +109,29 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
   v5.receiver = self;
   v5.super_class = VUILibraryProductViewController;
   [(VUILibraryProductViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(VUILibraryProductViewController *)self contentPresenter];
-  v4 = [(VUILibraryProductViewController *)self view];
-  [v4 bounds];
-  [v3 configureCurrentViewFrameForBounds:?];
+  contentPresenter = [(VUILibraryProductViewController *)self contentPresenter];
+  view = [(VUILibraryProductViewController *)self view];
+  [view bounds];
+  [contentPresenter configureCurrentViewFrameForBounds:?];
 }
 
-- (void)configureWithCollectionView:(id)a3
+- (void)configureWithCollectionView:(id)view
 {
-  v4 = a3;
-  [v4 setDataSource:self];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"VUICollectionViewWrapperCellReuseIdentifier"];
+  viewCopy = view;
+  [viewCopy setDataSource:self];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"VUICollectionViewWrapperCellReuseIdentifier"];
 }
 
 - (void)start
 {
-  v3 = [(VUILibraryStackViewController *)self stackView];
-  v4 = [(VUILibraryProductViewController *)self contentPresenter];
-  [v4 setContentView:v3];
+  stackView = [(VUILibraryStackViewController *)self stackView];
+  contentPresenter = [(VUILibraryProductViewController *)self contentPresenter];
+  [contentPresenter setContentView:stackView];
 
-  v5 = [(VUILibraryProductViewController *)self contentPresenter];
+  contentPresenter2 = [(VUILibraryProductViewController *)self contentPresenter];
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"LIBRARY_GENERIC_FETCH_ERROR_TITLE"];
-  [v5 setNoContentErrorTitle:v7];
+  [contentPresenter2 setNoContentErrorTitle:v7];
 
   v8 = [(VUILibraryProductViewController *)self _productLockupViewWithMediaItem:self->_mediaItem];
   productLockupView = self->_productLockupView;
@@ -144,10 +144,10 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
     mediaItem = self->_mediaItem;
     if (isKindOfClass)
     {
-      v12 = [(VUIMediaItem *)mediaItem mediaItem];
-      v13 = [v12 vui_isHomeSharingMediaItem];
+      mediaItem = [(VUIMediaItem *)mediaItem mediaItem];
+      vui_isHomeSharingMediaItem = [mediaItem vui_isHomeSharingMediaItem];
 
-      if (v13)
+      if (vui_isHomeSharingMediaItem)
       {
         v14 = 0;
         goto LABEL_14;
@@ -162,9 +162,9 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
     mediaItem = 0;
   }
 
-  v15 = [(VUIMediaEntity *)mediaItem assetController];
-  v16 = v15;
-  if (v15 && [v15 supportsStartingDownload])
+  assetController = [(VUIMediaEntity *)mediaItem assetController];
+  v16 = assetController;
+  if (assetController && [assetController supportsStartingDownload])
   {
     v14 = [[VUIDownloadButton alloc] initWithMediaEntity:self->_mediaItem type:9];
   }
@@ -175,10 +175,10 @@ void __53__VUILibraryProductViewController_initWithMediaItem___block_invoke(uint
   }
 
   [(VUIDownloadButton *)v14 setUsesDefaultConfiguration:1];
-  v17 = [MEMORY[0x1E69DC938] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v18 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(VUIDownloadButton *)v14 setShowsTextInDownloadedState:1];
   }
@@ -203,8 +203,8 @@ LABEL_14:
   productInfoView = self->_productInfoView;
   self->_productInfoView = v20;
 
-  v22 = [(VUILibraryProductViewController *)self contentPresenter];
-  [v22 setCurrentContentViewType:3];
+  contentPresenter3 = [(VUILibraryProductViewController *)self contentPresenter];
+  [contentPresenter3 setCurrentContentViewType:3];
 }
 
 void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint64_t a2, int a3)
@@ -224,14 +224,14 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"VUICollectionViewWrapperCellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 section];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"VUICollectionViewWrapperCellReuseIdentifier" forIndexPath:pathCopy];
+  section = [pathCopy section];
 
   v9 = &OBJC_IVAR___VUILibraryProductViewController__productInfoView;
-  if (!v8)
+  if (!section)
   {
     v9 = &OBJC_IVAR___VUILibraryProductViewController__productLockupView;
   }
@@ -241,12 +241,12 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
   return v7;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [VUIViewSpacer spacerB:a3];
+  [VUIViewSpacer spacerB:view];
   v7 = v6;
-  v8 = [(VUILibraryProductViewController *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v8 forTraitCollection:v7];
+  traitCollection = [(VUILibraryProductViewController *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:v7];
   v10 = v9;
 
   v11 = 0.0;
@@ -260,20 +260,20 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  [a3 bounds];
+  pathCopy = path;
+  [view bounds];
   Width = CGRectGetWidth(v22);
   if ([MEMORY[0x1E69DF6F0] isPad])
   {
-    v9 = [(VUILibraryProductViewController *)self vuiIsRTL];
-    v10 = [(VUILibraryProductViewController *)self view];
-    [v10 safeAreaInsets];
+    vuiIsRTL = [(VUILibraryProductViewController *)self vuiIsRTL];
+    view = [(VUILibraryProductViewController *)self view];
+    [view safeAreaInsets];
     v12 = v11;
     v14 = v13;
 
-    if (v9)
+    if (vuiIsRTL)
     {
       Width = Width - v14;
     }
@@ -284,9 +284,9 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
     }
   }
 
-  v15 = [v7 section];
+  section = [pathCopy section];
   v16 = &OBJC_IVAR___VUILibraryProductViewController__productInfoView;
-  if (!v15)
+  if (!section)
   {
     v16 = &OBJC_IVAR___VUILibraryProductViewController__productLockupView;
   }
@@ -303,12 +303,12 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
 
 - (void)contentDescriptionExpanded
 {
-  v3 = [(VUILibraryStackViewController *)self stackCollectionView];
-  v2 = [v3 collectionViewLayout];
-  [v2 invalidateLayout];
+  stackCollectionView = [(VUILibraryStackViewController *)self stackCollectionView];
+  collectionViewLayout = [stackCollectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = self->_mediaItem;
@@ -317,14 +317,14 @@ void __40__VUILibraryProductViewController_start__block_invoke(uint64_t a1, uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(VUIMediaItem *)v3 videosPlayable];
+      videosPlayable = [(VUIMediaItem *)v3 videosPlayable];
       v5 = [VUIMediaInfo alloc];
-      v13[0] = v4;
+      v13[0] = videosPlayable;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
       v7 = [(VUIMediaInfo *)v5 initWithPlaybackContext:3 videosPlayables:v6 imageProxies:0 storeDictionary:0];
 
-      v8 = [MEMORY[0x1E695DF00] date];
-      [v7 setUserPlaybackInitiationDate:v8 openURLCompletionDate:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [v7 setUserPlaybackInitiationDate:date openURLCompletionDate:0];
     }
 
     else
@@ -344,8 +344,8 @@ LABEL_10:
 
       v9 = [VUIMediaInfo alloc];
       v12 = v3;
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
-      v7 = [(VUIMediaInfo *)v9 initWithPlaybackContext:3 vuiMediaItems:v4];
+      videosPlayable = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
+      v7 = [(VUIMediaInfo *)v9 initWithPlaybackContext:3 vuiMediaItems:videosPlayable];
     }
 
     if (v7)
@@ -374,23 +374,23 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)setDownloadButton:(id)a3
+- (void)setDownloadButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   downloadButton = self->_downloadButton;
-  v9 = v5;
-  if (downloadButton != v5)
+  v9 = buttonCopy;
+  if (downloadButton != buttonCopy)
   {
     if (downloadButton)
     {
       [(VUIDownloadButton *)downloadButton removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_downloadButton, a3);
+    objc_storeStrong(&self->_downloadButton, button);
     if (self->_downloadButton)
     {
-      v7 = [(VUILibraryProductViewController *)self view];
-      v8 = [v7 effectiveUserInterfaceLayoutDirection] == 1;
+      view = [(VUILibraryProductViewController *)self view];
+      v8 = [view effectiveUserInterfaceLayoutDirection] == 1;
 
       [(VUIButton *)self->_downloadButton setImageTrailsTextContent:v8];
       [(VUIProductLockupView *)self->_productLockupView setDownloadView:self->_downloadButton];
@@ -398,76 +398,76 @@ LABEL_12:
   }
 }
 
-- (id)_productLockupViewWithMediaItem:(id)a3
+- (id)_productLockupViewWithMediaItem:(id)item
 {
   v4 = [VUIProductLockupView productLockupViewWithMedia:self->_mediaItem];
   [v4 setDelegate:self];
-  v5 = [v4 leftButton];
-  [v5 setDelegate:self];
+  leftButton = [v4 leftButton];
+  [leftButton setDelegate:self];
 
   return v4;
 }
 
-- (id)_productInfoViewWithMediaItem:(id)a3
+- (id)_productInfoViewWithMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 credits];
-  v7 = [v6 cast];
-  v8 = [v7 count];
+  credits = [itemCopy credits];
+  cast = [credits cast];
+  v8 = [cast count];
 
   if (v8)
   {
     v9 = +[VUILocalizationManager sharedInstance];
     v10 = [v9 localizedStringForKey:@"PRODUCT_INFO_CAST_HEADER"];
-    v11 = [v4 credits];
-    v12 = [v11 cast];
-    v13 = [(VUILibraryProductViewController *)self _productSectionForHeader:v10 data:v12 group:0 maxItemCount:10];
+    credits2 = [itemCopy credits];
+    cast2 = [credits2 cast];
+    v13 = [(VUILibraryProductViewController *)self _productSectionForHeader:v10 data:cast2 group:0 maxItemCount:10];
 
     [v5 addObject:v13];
   }
 
-  v14 = [v4 credits];
-  v15 = [v14 directors];
-  v16 = [v15 count];
+  credits3 = [itemCopy credits];
+  directors = [credits3 directors];
+  v16 = [directors count];
 
   if (v16)
   {
     v17 = +[VUILocalizationManager sharedInstance];
     v18 = [v17 localizedStringForKey:@"PRODUCT_INFO_DIRECTORS_HEADER"];
-    v19 = [v4 credits];
-    v20 = [v19 directors];
-    v21 = [(VUILibraryProductViewController *)self _productSectionForHeader:v18 data:v20 group:@"InfoAllOthersGroup" maxItemCount:5];
+    credits4 = [itemCopy credits];
+    directors2 = [credits4 directors];
+    v21 = [(VUILibraryProductViewController *)self _productSectionForHeader:v18 data:directors2 group:@"InfoAllOthersGroup" maxItemCount:5];
 
     [v5 addObject:v21];
   }
 
-  v22 = [v4 credits];
-  v23 = [v22 producers];
-  v24 = [v23 count];
+  credits5 = [itemCopy credits];
+  producers = [credits5 producers];
+  v24 = [producers count];
 
   if (v24)
   {
     v25 = +[VUILocalizationManager sharedInstance];
     v26 = [v25 localizedStringForKey:@"PRODUCT_INFO_PRODUCERS_HEADER"];
-    v27 = [v4 credits];
-    v28 = [v27 producers];
-    v29 = [(VUILibraryProductViewController *)self _productSectionForHeader:v26 data:v28 group:@"InfoAllOthersGroup" maxItemCount:5];
+    credits6 = [itemCopy credits];
+    producers2 = [credits6 producers];
+    v29 = [(VUILibraryProductViewController *)self _productSectionForHeader:v26 data:producers2 group:@"InfoAllOthersGroup" maxItemCount:5];
 
     [v5 addObject:v29];
   }
 
-  v30 = [v4 credits];
-  v31 = [v30 screenwriters];
-  v32 = [v31 count];
+  credits7 = [itemCopy credits];
+  screenwriters = [credits7 screenwriters];
+  v32 = [screenwriters count];
 
   if (v32)
   {
     v33 = +[VUILocalizationManager sharedInstance];
     v34 = [v33 localizedStringForKey:@"PRODUCT_INFO_SCREENWRITERS_HEADER"];
-    v35 = [v4 credits];
-    v36 = [v35 screenwriters];
-    v37 = [(VUILibraryProductViewController *)self _productSectionForHeader:v34 data:v36 group:@"InfoAllOthersGroup" maxItemCount:5];
+    credits8 = [itemCopy credits];
+    screenwriters2 = [credits8 screenwriters];
+    v37 = [(VUILibraryProductViewController *)self _productSectionForHeader:v34 data:screenwriters2 group:@"InfoAllOthersGroup" maxItemCount:5];
 
     [v5 addObject:v37];
   }
@@ -487,11 +487,11 @@ LABEL_12:
   return v39;
 }
 
-- (id)_productSectionForHeader:(id)a3 data:(id)a4 group:(id)a5 maxItemCount:(unint64_t)a6
+- (id)_productSectionForHeader:(id)header data:(id)data group:(id)group maxItemCount:(unint64_t)count
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  groupCopy = group;
+  dataCopy = data;
+  headerCopy = header;
   v12 = objc_alloc_init(VUILibraryProductInfoSection);
   v13 = objc_opt_new();
   v18 = MEMORY[0x1E69E9820];
@@ -499,17 +499,17 @@ LABEL_12:
   v20 = __84__VUILibraryProductViewController__productSectionForHeader_data_group_maxItemCount___block_invoke;
   v21 = &unk_1E87318D8;
   v22 = v13;
-  v23 = a6;
+  countCopy = count;
   v14 = v13;
-  [v10 enumerateObjectsUsingBlock:&v18];
+  [dataCopy enumerateObjectsUsingBlock:&v18];
 
   v15 = [v14 copy];
   [(VUILibraryProductInfoSection *)v12 setDataViews:v15];
 
-  v16 = [VUILibraryProductInfoSection headerViewWithString:v11];
+  v16 = [VUILibraryProductInfoSection headerViewWithString:headerCopy];
 
   [(VUILibraryProductInfoSection *)v12 setHeaderContentView:v16];
-  [(VUILibraryProductInfoSection *)v12 setGroupName:v9];
+  [(VUILibraryProductInfoSection *)v12 setGroupName:groupCopy];
 
   return v12;
 }
@@ -524,12 +524,12 @@ void __84__VUILibraryProductViewController__productSectionForHeader_data_group_m
   }
 }
 
-- (void)_updateAfterContentWasManuallyDeleted:(BOOL)a3
+- (void)_updateAfterContentWasManuallyDeleted:(BOOL)deleted
 {
-  if (!a3)
+  if (!deleted)
   {
-    v5 = [(VUILibraryProductViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(VUILibraryProductViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 

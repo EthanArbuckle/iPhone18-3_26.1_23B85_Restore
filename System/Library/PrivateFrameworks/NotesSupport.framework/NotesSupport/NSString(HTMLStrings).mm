@@ -8,23 +8,23 @@
 
 - (uint64_t)ic_HTMLInsertionPoint
 {
-  v2 = [a1 length];
-  v3 = [a1 _HTMLRangeOfLastTagBeforeIndex:{objc_msgSend(a1, "length")}];
+  v2 = [self length];
+  v3 = [self _HTMLRangeOfLastTagBeforeIndex:{objc_msgSend(self, "length")}];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v3;
-    v6 = [a1 substringWithRange:{v3, v4}];
+    v6 = [self substringWithRange:{v3, v4}];
     v16 = 0;
     v7 = [v6 _HTMLTagNameClosing:&v16];
     v8 = v7;
     if (v16 == 1 && ![v7 caseInsensitiveCompare:@"html"])
     {
-      v11 = [a1 _HTMLRangeOfLastTagBeforeIndex:v5];
+      v11 = [self _HTMLRangeOfLastTagBeforeIndex:v5];
       v9 = 0x7FFFFFFFFFFFFFFFLL;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v13 = v11;
-        v14 = [a1 substringWithRange:{v11, v12}];
+        v14 = [self substringWithRange:{v11, v12}];
 
         v15 = [v14 _HTMLTagNameClosing:&v16];
 
@@ -53,21 +53,21 @@
 
 - (uint64_t)_HTMLRangeOfLastTagBeforeIndex:()HTMLStrings
 {
-  v5 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v6 = [v5 mutableCopy];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  v6 = [alphanumericCharacterSet mutableCopy];
   [v6 addCharactersInString:@">"];
-  v7 = [a1 rangeOfCharacterFromSet:v6 options:4 range:{0, a3}];
+  v7 = [self rangeOfCharacterFromSet:v6 options:4 range:{0, a3}];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = v7;
-    v11 = [a1 substringWithRange:{v7, v8}];
+    v11 = [self substringWithRange:{v7, v8}];
     v12 = [v11 isEqualToString:@">"];
 
     v9 = 0x7FFFFFFFFFFFFFFFLL;
     if (v12)
     {
-      v13 = [a1 rangeOfString:@"<" options:4 range:{0, v10}];
+      v13 = [self rangeOfString:@"<" options:4 range:{0, v10}];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = v13;
@@ -80,10 +80,10 @@
 
 - (id)_HTMLTagNameClosing:()HTMLStrings
 {
-  v5 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v6 = [v5 mutableCopy];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  v6 = [alphanumericCharacterSet mutableCopy];
   [v6 addCharactersInString:@"/>"];
-  v7 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+  v7 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__NSString_HTMLStrings___HTMLTagNameClosing___block_invoke;
@@ -113,11 +113,11 @@
   }
 
   v12 = v9[2](v9);
-  if ([v12 length] && objc_msgSend(v5, "characterIsMember:", objc_msgSend(v12, "characterAtIndex:", 0)))
+  if ([v12 length] && objc_msgSend(alphanumericCharacterSet, "characterIsMember:", objc_msgSend(v12, "characterAtIndex:", 0)))
   {
-    v13 = [v5 invertedSet];
+    invertedSet = [alphanumericCharacterSet invertedSet];
     v17 = 0;
-    v14 = [v8 scanUpToCharactersFromSet:v13 intoString:&v17];
+    v14 = [v8 scanUpToCharactersFromSet:invertedSet intoString:&v17];
     v15 = v17;
 
     if (v14)

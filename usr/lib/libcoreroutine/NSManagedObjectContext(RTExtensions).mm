@@ -18,7 +18,7 @@
     [v13 setSortDescriptors:v11];
     [v13 setReturnsObjectsAsFaults:0];
     v17 = 0;
-    v14 = [a1 executeFetchRequest:v13 error:&v17];
+    v14 = [self executeFetchRequest:v13 error:&v17];
     v15 = v17;
     if (a6)
     {
@@ -52,7 +52,7 @@
   v12 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v11];
   [v12 setResultType:2];
   v21 = 0;
-  v13 = [a1 executeRequest:v12 error:&v21];
+  v13 = [self executeRequest:v12 error:&v21];
   v14 = v21;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -60,13 +60,13 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v19 = NSStringFromSelector(a2);
-      v20 = [v13 result];
+      result = [v13 result];
       *buf = 138413058;
       v23 = v19;
       v24 = 2112;
       v25 = v12;
       v26 = 2112;
-      v27 = v20;
+      v27 = result;
       v28 = 2112;
       v29 = v14;
       _os_log_debug_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEBUG, "%@, request, %@, deleted count, %@, error, %@", buf, 0x2Au);

@@ -1,15 +1,15 @@
 @interface TSProximityPINCodeViewController
-- (TSProximityPINCodeViewController)initWithPIN:(id)a3;
+- (TSProximityPINCodeViewController)initWithPIN:(id)n;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)updatePIN:(id)a3;
+- (void)updatePIN:(id)n;
 - (void)viewDidLoad;
 @end
 
 @implementation TSProximityPINCodeViewController
 
-- (TSProximityPINCodeViewController)initWithPIN:(id)a3
+- (TSProximityPINCodeViewController)initWithPIN:(id)n
 {
-  v5 = a3;
+  nCopy = n;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"PROXIMITY_TRANSFER_PIN_CODE_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
 
@@ -21,23 +21,23 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_pin, a3);
+    objc_storeStrong(&v10->_pin, n);
   }
 
   return v10;
 }
 
-- (void)updatePIN:(id)a3
+- (void)updatePIN:(id)n
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pin, a3);
+  nCopy = n;
+  objc_storeStrong(&self->_pin, n);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__TSProximityPINCodeViewController_updatePIN___block_invoke;
   v7[3] = &unk_279B44490;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -60,11 +60,11 @@ void __46__TSProximityPINCodeViewController_updatePIN___block_invoke(uint64_t a1
   self->_pinCodeLabel = v4;
 
   [(UILabel *)self->_pinCodeLabel setNumberOfLines:0];
-  v6 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)self->_pinCodeLabel setTextColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)self->_pinCodeLabel setTextColor:labelColor];
 
-  v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(UILabel *)self->_pinCodeLabel setBackgroundColor:v7];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(UILabel *)self->_pinCodeLabel setBackgroundColor:systemBackgroundColor];
 
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769A8]];
   [(UILabel *)self->_pinCodeLabel setFont:v8];
@@ -74,24 +74,24 @@ void __46__TSProximityPINCodeViewController_updatePIN___block_invoke(uint64_t a1
   LODWORD(v9) = 1148846080;
   [(UILabel *)self->_pinCodeLabel setContentHuggingPriority:1 forAxis:v9];
   [(UILabel *)self->_pinCodeLabel setText:self->_pin];
-  v10 = [(TSProximityPINCodeViewController *)self contentView];
-  [v10 addSubview:self->_pinCodeLabel];
+  contentView = [(TSProximityPINCodeViewController *)self contentView];
+  [contentView addSubview:self->_pinCodeLabel];
 
   v22 = MEMORY[0x277CCAAD0];
-  v25 = [(UILabel *)self->_pinCodeLabel centerXAnchor];
-  v26 = [(TSProximityPINCodeViewController *)self contentView];
-  v24 = [v26 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UILabel *)self->_pinCodeLabel centerXAnchor];
+  contentView2 = [(TSProximityPINCodeViewController *)self contentView];
+  centerXAnchor2 = [contentView2 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v28[0] = v23;
-  v11 = [(UILabel *)self->_pinCodeLabel centerYAnchor];
-  v12 = [(TSProximityPINCodeViewController *)self view];
-  v13 = [v12 centerYAnchor];
-  v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13];
+  centerYAnchor = [(UILabel *)self->_pinCodeLabel centerYAnchor];
+  view = [(TSProximityPINCodeViewController *)self view];
+  centerYAnchor2 = [view centerYAnchor];
+  v14 = [centerYAnchor constraintGreaterThanOrEqualToAnchor:centerYAnchor2];
   v28[1] = v14;
-  v15 = [(UILabel *)self->_pinCodeLabel topAnchor];
-  v16 = [(TSProximityPINCodeViewController *)self headerView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintGreaterThanOrEqualToAnchor:v17];
+  topAnchor = [(UILabel *)self->_pinCodeLabel topAnchor];
+  headerView = [(TSProximityPINCodeViewController *)self headerView];
+  bottomAnchor = [headerView bottomAnchor];
+  v18 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor];
   v28[2] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
   [v22 activateConstraints:v19];

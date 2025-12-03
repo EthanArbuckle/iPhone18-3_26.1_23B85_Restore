@@ -31,7 +31,7 @@
   v3[2] = __49__NSError_MSErrorUtilities__MSMMCSRetryAfterDate__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -49,7 +49,7 @@
   v3[2] = __43__NSError_MSErrorUtilities__MSIsQuotaError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -70,7 +70,7 @@
   v12 = &v14;
   v13 = a4;
   v11 = v7;
-  [a1 _MSApplyBlock:v10];
+  [self _MSApplyBlock:v10];
   v8 = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
@@ -88,7 +88,7 @@
   v3[2] = __46__NSError_MSErrorUtilities__MSIsBadTokenError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -105,7 +105,7 @@
   v3[2] = __42__NSError_MSErrorUtilities__MSIsAuthError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -122,7 +122,7 @@
   v3[2] = __38__NSError_MSErrorUtilities__MSIsFatal__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -139,7 +139,7 @@
   v3[2] = __40__NSError_MSErrorUtilities__MSIsCounted__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -156,7 +156,7 @@
   v3[2] = __43__NSError_MSErrorUtilities__MSNeedsBackoff__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -173,7 +173,7 @@
   v3[2] = __54__NSError_MSErrorUtilities__MSIsTemporaryNetworkError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MSApplyBlock:v3];
+  [self _MSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -183,10 +183,10 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = a1;
-  if (v5)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v6 = v5;
+    v6 = selfCopy;
     v7 = 0;
     v8 = *MEMORY[0x277D25478];
     v9 = *MEMORY[0x277CCA7E8];
@@ -199,8 +199,8 @@
         goto LABEL_22;
       }
 
-      v10 = [v6 userInfo];
-      v11 = [v10 objectForKey:v8];
+      userInfo = [v6 userInfo];
+      v11 = [userInfo objectForKey:v8];
 
       if ([v11 count])
       {
@@ -247,8 +247,8 @@
         v8 = v23;
       }
 
-      v18 = [v6 userInfo];
-      v19 = [v18 objectForKey:v9];
+      userInfo2 = [v6 userInfo];
+      v19 = [userInfo2 objectForKey:v9];
 
       v20 = v7 + 1;
       if (!v19)
@@ -279,17 +279,17 @@ LABEL_22:
 
 - (id)MSFindPrimaryError
 {
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   v2 = *MEMORY[0x277CCA7E8];
-  v3 = [v1 objectForKey:*MEMORY[0x277CCA7E8]];
+  v3 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
   if (v3)
   {
     v4 = -1;
     do
     {
-      v5 = [v3 userInfo];
-      v6 = [v5 objectForKey:@"MSErrorIsPrimary"];
+      userInfo2 = [v3 userInfo];
+      v6 = [userInfo2 objectForKey:@"MSErrorIsPrimary"];
 
       if (v6)
       {
@@ -307,8 +307,8 @@ LABEL_22:
       }
 
       ++v4;
-      v7 = [v3 userInfo];
-      v8 = [v7 objectForKey:v2];
+      userInfo3 = [v3 userInfo];
+      v8 = [userInfo3 objectForKey:v2];
 
       if (!v8)
       {
@@ -338,15 +338,15 @@ LABEL_12:
 
 - (id)MSMakePrimaryError
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 mutableCopy];
+  userInfo = [self userInfo];
+  v3 = [userInfo mutableCopy];
 
   v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v3 setObject:v4 forKey:@"MSErrorIsPrimary"];
 
   v5 = MEMORY[0x277CCA9B8];
-  v6 = [a1 domain];
-  v7 = [v5 errorWithDomain:v6 code:objc_msgSend(a1 userInfo:{"code"), v3}];
+  domain = [self domain];
+  v7 = [v5 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v3}];
 
   return v7;
 }
@@ -360,31 +360,31 @@ LABEL_12:
     v8 = NSStringFromClass(v7);
     v3 = [v6 stringWithFormat:@"%@:\n", v8];
 
-    v9 = [a1 domain];
-    [v3 appendFormat:@"Domain  : %@\nCode    : %ld\n", v9, objc_msgSend(a1, "code")];
+    domain = [self domain];
+    [v3 appendFormat:@"Domain  : %@\nCode    : %ld\n", domain, objc_msgSend(self, "code")];
 
-    v10 = [a1 userInfo];
-    v11 = [a1 localizedDescription];
-    v12 = v11;
-    if (v11)
+    userInfo = [self userInfo];
+    localizedDescription = [self localizedDescription];
+    v12 = localizedDescription;
+    if (localizedDescription)
     {
-      [v3 appendFormat:@"Desc    : %@\n", v11];
+      [v3 appendFormat:@"Desc    : %@\n", localizedDescription];
     }
 
-    v13 = [a1 localizedRecoverySuggestion];
-    v14 = v13;
-    if (v13)
+    localizedRecoverySuggestion = [self localizedRecoverySuggestion];
+    v14 = localizedRecoverySuggestion;
+    if (localizedRecoverySuggestion)
     {
-      [v3 appendFormat:@"Sugg    : %@\n", v13];
+      [v3 appendFormat:@"Sugg    : %@\n", localizedRecoverySuggestion];
     }
 
-    if ([v10 count])
+    if ([userInfo count])
     {
-      [v3 appendFormat:@"UserInfo: %@\n", v10];
+      [v3 appendFormat:@"UserInfo: %@\n", userInfo];
     }
 
-    v15 = [a1 userInfo];
-    v16 = [v15 objectForKey:*MEMORY[0x277CCA7E8]];
+    userInfo2 = [self userInfo];
+    v16 = [userInfo2 objectForKey:*MEMORY[0x277CCA7E8]];
 
     if (v16)
     {
@@ -408,28 +408,28 @@ LABEL_12:
   v12 = a5;
   v13 = a6;
   v14 = a7;
-  v15 = [v13 MSFindPrimaryError];
-  v16 = v15;
-  if (!v15)
+  mSFindPrimaryError = [v13 MSFindPrimaryError];
+  v16 = mSFindPrimaryError;
+  if (!mSFindPrimaryError)
   {
-    v15 = v13;
+    mSFindPrimaryError = v13;
   }
 
-  v17 = [v15 localizedDescription];
+  localizedDescription = [mSFindPrimaryError localizedDescription];
   if (v14)
   {
-    v18 = [v14 mutableCopy];
+    dictionary = [v14 mutableCopy];
   }
 
   else
   {
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v19 = v18;
+  v19 = dictionary;
   if (v12)
   {
-    [v18 setObject:v12 forKey:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x277CCA450]];
   }
 
   if (v13)
@@ -437,9 +437,9 @@ LABEL_12:
     [v19 setObject:v13 forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  if (v17)
+  if (localizedDescription)
   {
-    [v19 setObject:v17 forKey:*MEMORY[0x277CCA498]];
+    [v19 setObject:localizedDescription forKey:*MEMORY[0x277CCA498]];
   }
 
   v20 = [MEMORY[0x277CCA9B8] errorWithDomain:v11 code:a4 userInfo:v19];

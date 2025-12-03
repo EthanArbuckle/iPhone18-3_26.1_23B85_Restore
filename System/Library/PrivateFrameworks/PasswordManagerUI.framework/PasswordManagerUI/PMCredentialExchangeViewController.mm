@@ -1,32 +1,32 @@
 @interface PMCredentialExchangeViewController
-- (PMCredentialExchangeViewController)initWithCoder:(id)a3;
-- (PMCredentialExchangeViewController)initWithExportedCredentialData:(id)a3 exporterBundleID:(id)a4;
-- (PMCredentialExchangeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (PMCredentialExchangeViewController)initWithCoder:(id)coder;
+- (PMCredentialExchangeViewController)initWithExportedCredentialData:(id)data exporterBundleID:(id)d;
+- (PMCredentialExchangeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PMCredentialExchangeViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  PMCredentialExchangeViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  PMCredentialExchangeViewController.viewWillAppear(_:)(appear);
 }
 
-- (PMCredentialExchangeViewController)initWithExportedCredentialData:(id)a3 exporterBundleID:(id)a4
+- (PMCredentialExchangeViewController)initWithExportedCredentialData:(id)data exporterBundleID:(id)d
 {
-  v5 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v7 = a4;
-    v8 = v5;
-    v5 = sub_21CB80C84();
+    dCopy = d;
+    v8 = dataCopy;
+    dataCopy = sub_21CB80C84();
     v10 = v9;
   }
 
   else
   {
-    v11 = a4;
+    dCopy2 = d;
     v10 = 0xF000000000000000;
   }
 
@@ -48,12 +48,12 @@
   v16.receiver = self;
   v16.super_class = PMCredentialExchangeViewController;
   v14 = [(ASExportViewController *)&v16 initWithExportedCredentialData:v12 exporterBundleID:v13];
-  sub_21C7902FC(v5, v10);
+  sub_21C7902FC(dataCopy, v10);
 
   return v14;
 }
 
-- (PMCredentialExchangeViewController)initWithCoder:(id)a3
+- (PMCredentialExchangeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___PMCredentialExchangeViewController_viewDidCancel) = 0;
   result = sub_21CB861C4();
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (PMCredentialExchangeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PMCredentialExchangeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

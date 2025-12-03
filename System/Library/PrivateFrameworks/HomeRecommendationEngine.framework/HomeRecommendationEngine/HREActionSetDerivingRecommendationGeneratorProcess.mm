@@ -1,6 +1,6 @@
 @interface HREActionSetDerivingRecommendationGeneratorProcess
-- (id)_createRecommendationWithActionSet:(id)a3 trigger:(id)a4;
-- (id)_recommendationForActionSet:(id)a3 trigger:(id)a4;
+- (id)_createRecommendationWithActionSet:(id)set trigger:(id)trigger;
+- (id)_recommendationForActionSet:(id)set trigger:(id)trigger;
 - (id)generateRecommendations;
 @end
 
@@ -11,28 +11,28 @@
   v3 = objc_opt_new();
   if (([(HREStandardAsyncRecommendationGenerationProcess *)self options]& 1) != 0)
   {
-    v4 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-    v5 = [v4 actionSets];
+    home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+    actionSets = [home actionSets];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __77__HREActionSetDerivingRecommendationGeneratorProcess_generateRecommendations__block_invoke;
     v12[3] = &unk_2797765E0;
     v13 = v3;
-    v14 = self;
-    [v5 na_each:v12];
+    selfCopy = self;
+    [actionSets na_each:v12];
   }
 
   if (([(HREStandardAsyncRecommendationGenerationProcess *)self options]& 2) != 0)
   {
-    v6 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-    v7 = [v6 triggers];
+    home2 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+    triggers = [home2 triggers];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__HREActionSetDerivingRecommendationGeneratorProcess_generateRecommendations__block_invoke_2;
     v9[3] = &unk_279776608;
     v10 = v3;
-    v11 = self;
-    [v7 na_each:v9];
+    selfCopy2 = self;
+    [triggers na_each:v9];
   }
 
   return v3;
@@ -52,29 +52,29 @@ void __77__HREActionSetDerivingRecommendationGeneratorProcess_generateRecommenda
   [v2 na_safeAddObject:v3];
 }
 
-- (id)_recommendationForActionSet:(id)a3 trigger:(id)a4
+- (id)_recommendationForActionSet:(id)set trigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ![v7 hf_triggerType])
+  setCopy = set;
+  triggerCopy = trigger;
+  v8 = triggerCopy;
+  if (triggerCopy && ![triggerCopy hf_triggerType])
   {
     v16 = 0;
   }
 
   else
   {
-    v9 = [(HREActionSetDerivingRecommendationGeneratorProcess *)self _createRecommendationWithActionSet:v6 trigger:v8];
+    v9 = [(HREActionSetDerivingRecommendationGeneratorProcess *)self _createRecommendationWithActionSet:setCopy trigger:v8];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 actions];
-      v12 = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
-      v13 = [HRERecommendableObjectUtilities filterRecommendableObjects:v12 excludingObjectsInActions:v11];
+      actions = [v9 actions];
+      sourceRecommendableObjects = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
+      v13 = [HRERecommendableObjectUtilities filterRecommendableObjects:sourceRecommendableObjects excludingObjectsInActions:actions];
 
       if ([v13 count])
       {
-        v14 = [HREDerivedActionUtilities derivedActionsForActionableObjects:v13 fromActions:v11];
+        v14 = [HREDerivedActionUtilities derivedActionsForActionableObjects:v13 fromActions:actions];
         [v10 addActions:v14];
 
         if ([v10 containsMeaningfulChanges])
@@ -105,62 +105,62 @@ void __77__HREActionSetDerivingRecommendationGeneratorProcess_generateRecommenda
   return v16;
 }
 
-- (id)_createRecommendationWithActionSet:(id)a3 trigger:(id)a4
+- (id)_createRecommendationWithActionSet:(id)set trigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  triggerCopy = trigger;
   v8 = [[HREIdentifierBuilder alloc] initWithBaseIdentifier:@"derived"];
-  if (!v7)
+  if (!triggerCopy)
   {
-    if (!v6)
+    if (!setCopy)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
     v19 = objc_alloc(MEMORY[0x277D14398]);
-    v20 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-    v14 = [v19 initWithExistingObject:v6 inHome:v20];
+    home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+    v14 = [v19 initWithExistingObject:setCopy inHome:home];
 
-    v21 = [v6 uniqueIdentifier];
-    v22 = [v21 UUIDString];
-    [(HREIdentifierBuilder *)v8 setObject:v22 forKey:@"actionSet"];
+    uniqueIdentifier = [setCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    [(HREIdentifierBuilder *)v8 setObject:uUIDString forKey:@"actionSet"];
 
     v23 = [HREActionSetRecommendation alloc];
-    v24 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-    v11 = [(HRERecommendation *)v23 initWithHome:v24];
+    home2 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+    v11 = [(HRERecommendation *)v23 initWithHome:home2];
 
-    v25 = [(HREActionSetRecommendation *)v11 mutableActionSetBuilders];
-    [v25 addObject:v14];
+    mutableActionSetBuilders = [(HREActionSetRecommendation *)v11 mutableActionSetBuilders];
+    [mutableActionSetBuilders addObject:v14];
 
     [(HREActionSetRecommendation *)v11 setSelectedActionSetBuilder:v14];
 LABEL_6:
 
 LABEL_7:
-    v26 = [(HRERecommendation *)v11 defaultAnalyticsData];
-    [v26 setObject:@"derived" forKeyedSubscript:*MEMORY[0x277D13580]];
+    defaultAnalyticsData = [(HRERecommendation *)v11 defaultAnalyticsData];
+    [defaultAnalyticsData setObject:@"derived" forKeyedSubscript:*MEMORY[0x277D13580]];
 
     [(HRERecommendation *)v11 setIdentifierBuilder:v8];
     goto LABEL_9;
   }
 
   v9 = [HRETriggerRecommendation alloc];
-  v10 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-  v11 = [(HRERecommendation *)v9 initWithHome:v10];
+  home3 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+  v11 = [(HRERecommendation *)v9 initWithHome:home3];
 
-  v12 = [v7 uniqueIdentifier];
-  v13 = [v12 UUIDString];
-  [(HREIdentifierBuilder *)v8 setObject:v13 forKey:@"trigger"];
+  uniqueIdentifier2 = [triggerCopy uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
+  [(HREIdentifierBuilder *)v8 setObject:uUIDString2 forKey:@"trigger"];
 
   v14 = objc_alloc_init(HRERecommendationEmptyTriggerBuilderContext);
   v15 = MEMORY[0x277D14C48];
-  v16 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-  v17 = [v15 triggerBuilderForTrigger:v7 inHome:v16 context:v14 assertsFailure:0];
+  home4 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+  v17 = [v15 triggerBuilderForTrigger:triggerCopy inHome:home4 context:v14 assertsFailure:0];
 
   if (v17)
   {
-    v18 = [(HREActionSetRecommendation *)v11 mutableTriggerBuilders];
-    [v18 addObject:v17];
+    mutableTriggerBuilders = [(HREActionSetRecommendation *)v11 mutableTriggerBuilders];
+    [mutableTriggerBuilders addObject:v17];
 
     goto LABEL_6;
   }

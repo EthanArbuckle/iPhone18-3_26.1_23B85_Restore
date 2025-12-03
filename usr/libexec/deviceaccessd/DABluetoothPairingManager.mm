@@ -2,22 +2,22 @@
 - (DABluetoothPairingManager)init;
 - (id)_getNextTask;
 - (id)getCurrentTaskBluetoothIdentifier;
-- (void)_reportEvent:(int64_t)a3 error:(id)a4 endCurrentTask:(BOOL)a5;
-- (void)_reportFailure:(id)a3;
+- (void)_reportEvent:(int64_t)event error:(id)error endCurrentTask:(BOOL)task;
+- (void)_reportFailure:(id)failure;
 - (void)_runNextTask;
 - (void)cancelAll;
 - (void)cancelCurrentTask;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)forgetBluetoothDevice:(id)a3 completion:(id)a4;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)forgetBluetoothDevice:(id)device completion:(id)completion;
 - (void)invalidate;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)persistBluetoothDevice:(id)a3 pairingRequired:(BOOL)a4 pairWithCTKD:(BOOL)a5 displayName:(id)a6 taskTimeout:(id)a7 appConfirmsAuth:(BOOL)a8 supportsHID:(BOOL)a9 completion:(id)a10;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)persistBluetoothDevice:(id)device pairingRequired:(BOOL)required pairWithCTKD:(BOOL)d displayName:(id)name taskTimeout:(id)timeout appConfirmsAuth:(BOOL)auth supportsHID:(BOOL)iD completion:(id)self0;
 @end
 
 @implementation DABluetoothPairingManager
@@ -63,21 +63,21 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)persistBluetoothDevice:(id)a3 pairingRequired:(BOOL)a4 pairWithCTKD:(BOOL)a5 displayName:(id)a6 taskTimeout:(id)a7 appConfirmsAuth:(BOOL)a8 supportsHID:(BOOL)a9 completion:(id)a10
+- (void)persistBluetoothDevice:(id)device pairingRequired:(BOOL)required pairWithCTKD:(BOOL)d displayName:(id)name taskTimeout:(id)timeout appConfirmsAuth:(BOOL)auth supportsHID:(BOOL)iD completion:(id)self0
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = a10;
+  deviceCopy = device;
+  nameCopy = name;
+  timeoutCopy = timeout;
+  completionCopy = completion;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
     sub_100036810();
   }
 
-  v20 = objc_retainBlock(v19);
-  v21 = v16;
-  v22 = v17;
-  v23 = v18;
+  v20 = objc_retainBlock(completionCopy);
+  v21 = deviceCopy;
+  v22 = nameCopy;
+  v23 = timeoutCopy;
   bluetoothUUID = self->_bluetoothUUID;
   self->_bluetoothUUID = v21;
 
@@ -92,11 +92,11 @@
     v26[5] = v21;
     v26[7] = v23;
     v26[8] = v20;
-    v27 = a4;
-    v28 = a5;
+    requiredCopy = required;
+    dCopy = d;
     v26[6] = v22;
-    v29 = a8;
-    v30 = a9;
+    authCopy = auth;
+    iDCopy = iD;
     dispatch_async(dispatchQueue, v26);
   }
 
@@ -106,18 +106,18 @@
   }
 }
 
-- (void)forgetBluetoothDevice:(id)a3 completion:(id)a4
+- (void)forgetBluetoothDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
     cbCentralManager = self->_cbCentralManager;
     LogPrintF();
   }
 
-  v8 = objc_retainBlock(v7);
-  v9 = v6;
+  v8 = objc_retainBlock(completionCopy);
+  v9 = deviceCopy;
   dispatchQueue = self->_dispatchQueue;
   if (dispatchQueue)
   {
@@ -214,25 +214,25 @@
         sub_100036B30(&self->_taskList);
       }
 
-      v4 = [(DABluetoothPairingManager *)self _getNextTask];
+      _getNextTask = [(DABluetoothPairingManager *)self _getNextTask];
       currentTask = self->_currentTask;
-      self->_currentTask = v4;
+      self->_currentTask = _getNextTask;
 
       self->_currentTaskEndEvent = 0;
       v6 = self->_currentTask;
-      v7 = [(DABluetoothTask *)v6 taskTimeout];
-      v8 = [v7 integerValue];
+      taskTimeout = [(DABluetoothTask *)v6 taskTimeout];
+      integerValue = [taskTimeout integerValue];
       dispatchQueue = self->_dispatchQueue;
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10002CF98;
       v33[3] = &unk_100058B58;
       v33[4] = self;
-      [(DABluetoothTask *)v6 setTimerTimeout:dispatchQueue queue:v33 handler:v8];
+      [(DABluetoothTask *)v6 setTimerTimeout:dispatchQueue queue:v33 handler:integerValue];
 
       cbCentralManager = self->_cbCentralManager;
-      v11 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
-      v34 = v11;
+      bluetoothUUID = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+      v34 = bluetoothUUID;
       v12 = [NSArray arrayWithObjects:&v34 count:1];
       v13 = [(CBCentralManager *)cbCentralManager retrievePeripheralsWithIdentifiers:v12];
 
@@ -243,10 +243,10 @@
           sub_100036C78(&self->_currentTask);
         }
 
-        v24 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+        bluetoothUUID2 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
         v30 = self->_currentTask;
         v25 = DAErrorF();
-        [(DABluetoothPairingManager *)self _reportFailure:v25, v24, v30];
+        [(DABluetoothPairingManager *)self _reportFailure:v25, bluetoothUUID2, v30];
 
         goto LABEL_35;
       }
@@ -255,8 +255,8 @@
       cbPeripheral = self->_cbPeripheral;
       self->_cbPeripheral = v14;
 
-      v16 = [(DABluetoothTask *)self->_currentTask btOperation];
-      switch(v16)
+      btOperation = [(DABluetoothTask *)self->_currentTask btOperation];
+      switch(btOperation)
       {
         case 10:
           goto LABEL_70;
@@ -302,11 +302,11 @@ LABEL_70:
             sub_100036C30(&self->_currentTask);
           }
 
-          v29 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+          bluetoothUUID3 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
           v32 = self->_currentTask;
           v28 = DAErrorF();
 
-          [(DABluetoothPairingManager *)self _reportFailure:v28, v29, v32];
+          [(DABluetoothPairingManager *)self _reportFailure:v28, bluetoothUUID3, v32];
           break;
       }
 
@@ -317,10 +317,10 @@ LABEL_35:
 
     if (*p_currentTask)
     {
-      v26 = [(DABluetoothTask *)*p_currentTask bluetoothUUID];
+      bluetoothUUID4 = [(DABluetoothTask *)*p_currentTask bluetoothUUID];
       v31 = self->_currentTask;
       v27 = DAErrorF();
-      [(DABluetoothPairingManager *)self _reportFailure:v27, v26, v31];
+      [(DABluetoothPairingManager *)self _reportFailure:v27, bluetoothUUID4, v31];
     }
 
     if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
@@ -347,29 +347,29 @@ LABEL_35:
     v21 = self->_cbCentralManager;
     self->_cbCentralManager = v20;
 
-    v22 = [(CBCentralManager *)self->_cbCentralManager sharedPairingAgent];
+    sharedPairingAgent = [(CBCentralManager *)self->_cbCentralManager sharedPairingAgent];
     cbPairingAgent = self->_cbPairingAgent;
-    self->_cbPairingAgent = v22;
+    self->_cbPairingAgent = sharedPairingAgent;
 
     [(CBPairingAgent *)self->_cbPairingAgent setDelegate:self];
   }
 }
 
-- (void)_reportEvent:(int64_t)a3 error:(id)a4 endCurrentTask:(BOOL)a5
+- (void)_reportEvent:(int64_t)event error:(id)error endCurrentTask:(BOOL)task
 {
-  v5 = a5;
-  v27 = a4;
+  taskCopy = task;
+  errorCopy = error;
   if (dword_1000607A0 > 50 || dword_1000607A0 == -1 && !_LogCategory_Initialize())
   {
     goto LABEL_33;
   }
 
-  if (a3 <= 19)
+  if (event <= 19)
   {
-    if (a3)
+    if (event)
     {
-      v8 = v27;
-      if (a3 == 10)
+      v8 = errorCopy;
+      if (event == 10)
       {
         v9 = @"DABluetoothEventAccessoryConnected";
         goto LABEL_18;
@@ -380,24 +380,24 @@ LABEL_35:
 
     v9 = @"DABluetoothEventUnknown";
 LABEL_16:
-    v8 = v27;
+    v8 = errorCopy;
     goto LABEL_18;
   }
 
-  if (a3 == 20)
+  if (event == 20)
   {
     v9 = @"DABluetoothEventCompleted";
     goto LABEL_16;
   }
 
-  if (a3 == 30)
+  if (event == 30)
   {
     v9 = @"DABluetoothEventFailed";
     goto LABEL_16;
   }
 
-  v8 = v27;
-  if (a3 == 40)
+  v8 = errorCopy;
+  if (event == 40)
   {
     v9 = @"DABluetoothEventPairingRequested";
     goto LABEL_18;
@@ -446,7 +446,7 @@ LABEL_29:
   v11 = @"DABluetoothEventPairingRequested";
 LABEL_30:
   v12 = "no";
-  if (v5)
+  if (taskCopy)
   {
     v12 = "yes";
   }
@@ -463,28 +463,28 @@ LABEL_33:
     v13 = self->_currentTask;
     if (v13)
     {
-      v14 = [(DABluetoothTask *)v13 pairedCTKD];
-      v15 = [(CBPeripheral *)self->_cbPeripheral identifier];
-      v16 = [[DABluetoothPairingInfo alloc] initWithBluetoothIdentifier:v15 pairedCTKD:v14 appConfirmsAuth:-[DABluetoothTask appConfirmsAuth](self->_currentTask pairingRequired:{"appConfirmsAuth", v22, v23, v24, v25, currentTask), -[DABluetoothTask btOperation](self->_currentTask, "btOperation") == 10}];
-      if (!v27)
+      pairedCTKD = [(DABluetoothTask *)v13 pairedCTKD];
+      identifier = [(CBPeripheral *)self->_cbPeripheral identifier];
+      v16 = [[DABluetoothPairingInfo alloc] initWithBluetoothIdentifier:identifier pairedCTKD:pairedCTKD appConfirmsAuth:-[DABluetoothTask appConfirmsAuth](self->_currentTask pairingRequired:{"appConfirmsAuth", v22, v23, v24, v25, currentTask), -[DABluetoothTask btOperation](self->_currentTask, "btOperation") == 10}];
+      if (!errorCopy)
       {
         cbPeripheral = self->_cbPeripheral;
-        v18 = [(DABluetoothTask *)self->_currentTask displayName];
-        [(CBPeripheral *)cbPeripheral setCustomProperty:@"ASK_DISPLAY_NAME" value:v18];
+        displayName = [(DABluetoothTask *)self->_currentTask displayName];
+        [(CBPeripheral *)cbPeripheral setCustomProperty:@"ASK_DISPLAY_NAME" value:displayName];
       }
 
-      v19 = [(DABluetoothTask *)self->_currentTask eventHandler];
-      (v19)[2](v19, a3, v16, v27);
+      eventHandler = [(DABluetoothTask *)self->_currentTask eventHandler];
+      (eventHandler)[2](eventHandler, event, v16, errorCopy);
     }
   }
 
-  if (v5)
+  if (taskCopy)
   {
     self->_busy = [(NSMutableArray *)self->_taskList count]!= 0;
     [(DABluetoothTask *)self->_currentTask cancelTimer];
     v20 = self->_cbPeripheral;
     self->_cbPeripheral = 0;
-    self->_currentTaskEndEvent = a3;
+    self->_currentTaskEndEvent = event;
 
     v21 = self->_currentTask;
     self->_currentTask = 0;
@@ -493,25 +493,25 @@ LABEL_33:
   }
 }
 
-- (void)_reportFailure:(id)a3
+- (void)_reportFailure:(id)failure
 {
-  v4 = a3;
-  v8 = v4;
+  failureCopy = failure;
+  v8 = failureCopy;
   if (dword_1000607A0 <= 50)
   {
-    if (dword_1000607A0 != -1 || (v5 = _LogCategory_Initialize(), v4 = v8, v5))
+    if (dword_1000607A0 != -1 || (v5 = _LogCategory_Initialize(), failureCopy = v8, v5))
     {
       currentTask = self->_currentTask;
-      v7 = v4;
+      v7 = failureCopy;
       LogPrintF();
-      v4 = v8;
+      failureCopy = v8;
     }
   }
 
-  [(DABluetoothPairingManager *)self _reportEvent:30 error:v4 endCurrentTask:1, currentTask, v7];
+  [(DABluetoothPairingManager *)self _reportEvent:30 error:failureCopy endCurrentTask:1, currentTask, v7];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v5 = self->_cbCentralManager;
   v4 = [(CBCentralManager *)v5 state]== 5 || [(CBCentralManager *)v5 state]== 10;
@@ -524,68 +524,68 @@ LABEL_33:
   [(DABluetoothPairingManager *)self _runNextTask];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  servicesCopy = services;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    v18 = v7;
+    v18 = servicesCopy;
     currentTask = self->_currentTask;
-    v17 = v6;
+    v17 = peripheralCopy;
     LogPrintF();
   }
 
-  if (!v7 && self->_currentTask && ([v6 identifier], v8 = objc_claimAutoreleasedReturnValue(), -[DABluetoothTask bluetoothUUID](self->_currentTask, "bluetoothUUID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
+  if (!servicesCopy && self->_currentTask && ([peripheralCopy identifier], v8 = objc_claimAutoreleasedReturnValue(), -[DABluetoothTask bluetoothUUID](self->_currentTask, "bluetoothUUID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
   {
     mitmPairing = self->_mitmPairing;
-    v12 = [(DABluetoothTask *)self->_currentTask pairCTKD];
+    pairCTKD = [(DABluetoothTask *)self->_currentTask pairCTKD];
     v21[0] = CBPairingOptionsUseMITMAuthentication;
     v13 = [NSNumber numberWithBool:mitmPairing];
     v21[1] = @"kCBMsgArgPairingOptionsDisableCTKD";
     v22[0] = v13;
-    v14 = [NSNumber numberWithInt:v12 ^ 1];
+    v14 = [NSNumber numberWithInt:pairCTKD ^ 1];
     v22[1] = v14;
-    v15 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
+    identifier = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
 
     if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
     {
-      v17 = v6;
-      v18 = v15;
+      v17 = peripheralCopy;
+      v18 = identifier;
       LogPrintF();
     }
 
-    [(CBPairingAgent *)self->_cbPairingAgent pairPeer:v6 options:v15, v17, v18, currentTask];
+    [(CBPairingAgent *)self->_cbPairingAgent pairPeer:peripheralCopy options:identifier, v17, v18, currentTask];
   }
 
   else
   {
     if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
     {
-      v17 = v7;
-      v18 = v6;
+      v17 = servicesCopy;
+      v18 = peripheralCopy;
       LogPrintF();
     }
 
-    v15 = [v6 identifier];
+    identifier = [peripheralCopy identifier];
     v19 = self->_currentTask;
     v16 = DAErrorF();
-    [(DABluetoothPairingManager *)self _reportFailure:v16, v15, v19];
+    [(DABluetoothPairingManager *)self _reportFailure:v16, identifier, v19];
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v20 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    v17 = v6;
+    v17 = peripheralCopy;
     currentTask = self->_currentTask;
     LogPrintF();
   }
 
-  if (!self->_currentTask || ([v6 identifier], v7 = objc_claimAutoreleasedReturnValue(), -[DABluetoothTask bluetoothUUID](self->_currentTask, "bluetoothUUID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, !v9))
+  if (!self->_currentTask || ([peripheralCopy identifier], v7 = objc_claimAutoreleasedReturnValue(), -[DABluetoothTask bluetoothUUID](self->_currentTask, "bluetoothUUID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, !v9))
   {
     if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
     {
@@ -595,18 +595,18 @@ LABEL_33:
     goto LABEL_16;
   }
 
-  v10 = [(DABluetoothTask *)self->_currentTask btOperation];
+  btOperation = [(DABluetoothTask *)self->_currentTask btOperation];
   v11 = self->_currentTask;
-  if (v10 != 10)
+  if (btOperation != 10)
   {
     if ([(DABluetoothTask *)v11 btOperation]== 20)
     {
       [(CBPeripheral *)self->_cbPeripheral tag:@"DA_ASK_RETAIN_DEVICE"];
       v14 = [(DABluetoothTask *)self->_currentTask appConfirmsAuth]^ 1;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 20;
 LABEL_22:
-      [(DABluetoothPairingManager *)v12 _reportEvent:v13 error:0 endCurrentTask:v14, v17, currentTask];
+      [(DABluetoothPairingManager *)selfCopy2 _reportEvent:v13 error:0 endCurrentTask:v14, v17, currentTask];
       goto LABEL_17;
     }
 
@@ -616,10 +616,10 @@ LABEL_22:
     }
 
 LABEL_16:
-    v15 = [v6 identifier];
+    identifier = [peripheralCopy identifier];
     v19 = self->_currentTask;
     v16 = DAErrorF();
-    [(DABluetoothPairingManager *)self _reportFailure:v16, v15, v19];
+    [(DABluetoothPairingManager *)self _reportFailure:v16, identifier, v19];
 
     goto LABEL_17;
   }
@@ -631,63 +631,63 @@ LABEL_16:
       sub_100036DA8();
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 10;
     v14 = 0;
     goto LABEL_22;
   }
 
-  [v6 setDelegate:self];
-  [v6 discoverServices:0];
+  [peripheralCopy setDelegate:self];
+  [peripheralCopy discoverServices:0];
 LABEL_17:
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    v13 = v9;
+    v13 = errorCopy;
     currentTask = self->_currentTask;
-    v12 = v8;
+    v12 = peripheralCopy;
     LogPrintF();
   }
 
   [(CBPeripheral *)self->_cbPeripheral untag:@"DA_ASK_RETAIN_DEVICE", v12, v13, currentTask];
-  v10 = [v8 identifier];
+  identifier = [peripheralCopy identifier];
   v14 = self->_currentTask;
   v11 = DAErrorF();
-  [(DABluetoothPairingManager *)self _reportFailure:v11, v10, v14];
+  [(DABluetoothPairingManager *)self _reportFailure:v11, identifier, v14];
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v15 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  pairingCopy = pairing;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    v12 = v6;
+    v12 = pairingCopy;
     currentTask = self->_currentTask;
     LogPrintF();
   }
 
   if (self->_currentTask)
   {
-    v7 = [v6 identifier];
-    v8 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
-    v9 = [v7 isEqual:v8];
+    identifier = [pairingCopy identifier];
+    bluetoothUUID = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+    v9 = [identifier isEqual:bluetoothUUID];
 
     if (v9)
     {
       if ([(DABluetoothTask *)self->_currentTask supportsHID]&& ([(CBPeripheral *)self->_cbPeripheral hasTag:@"_HID_DEVICE_"]& 1) == 0)
       {
         [(CBPairingAgent *)self->_cbPairingAgent unpairPeer:self->_cbPeripheral];
-        v10 = [v6 identifier];
+        identifier2 = [pairingCopy identifier];
         v14 = self->_currentTask;
         v11 = DAErrorF();
-        [(DABluetoothPairingManager *)self _reportFailure:v11, v10, v14];
+        [(DABluetoothPairingManager *)self _reportFailure:v11, identifier2, v14];
       }
 
       [(CBPeripheral *)self->_cbPeripheral tag:@"DA_ASK_RETAIN_DEVICE", v12, currentTask];
@@ -706,37 +706,37 @@ LABEL_17:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    sub_100036E28(v9, self);
+    sub_100036E28(errorCopy, self);
   }
 
   if (self->_currentTask)
   {
-    v10 = [v8 identifier];
-    v11 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
-    v12 = [v10 isEqual:v11];
+    identifier = [pairingCopy identifier];
+    bluetoothUUID = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+    v12 = [identifier isEqual:bluetoothUUID];
 
     if (v12)
     {
-      [v8 untag:@"DA_ASK_RETAIN_DEVICE"];
-      v13 = [v8 identifier];
+      [pairingCopy untag:@"DA_ASK_RETAIN_DEVICE"];
+      identifier2 = [pairingCopy identifier];
       currentTask = self->_currentTask;
       v14 = DAErrorF();
-      [(DABluetoothPairingManager *)self _reportFailure:v14, v13, currentTask, v9];
+      [(DABluetoothPairingManager *)self _reportFailure:v14, identifier2, currentTask, errorCopy];
     }
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v11 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  unpairCopy = unpair;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
     currentTask = self->_currentTask;
@@ -745,9 +745,9 @@ LABEL_17:
 
   if (self->_currentTask)
   {
-    v7 = [v6 identifier];
-    v8 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
-    v9 = [v7 isEqual:v8];
+    identifier = [unpairCopy identifier];
+    bluetoothUUID = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+    v9 = [identifier isEqual:bluetoothUUID];
 
     if (v9)
     {
@@ -756,38 +756,38 @@ LABEL_17:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v30 = a3;
-  v10 = a4;
-  v11 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
-    v26 = v11;
+    v26 = passkeyCopy;
     currentTask = self->_currentTask;
-    v24 = v10;
-    v25 = a5;
+    v24 = pairingCopy;
+    typeCopy = type;
     LogPrintF();
   }
 
   if (self->_currentTask)
   {
-    v12 = [v10 identifier];
-    v13 = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
-    v14 = [v12 isEqual:v13];
+    identifier = [pairingCopy identifier];
+    bluetoothUUID = [(DABluetoothTask *)self->_currentTask bluetoothUUID];
+    v14 = [identifier isEqual:bluetoothUUID];
 
     if (v14)
     {
-      if (a5 > 1)
+      if (type > 1)
       {
-        if (a5 == 4)
+        if (type == 4)
         {
           v15 = 0;
           v16 = 40;
           goto LABEL_17;
         }
 
-        if (a5 == 2)
+        if (type == 2)
         {
           v15 = 0;
           v16 = 30;
@@ -797,19 +797,19 @@ LABEL_17:
 
       else
       {
-        if (!a5)
+        if (!type)
         {
           v15 = 0;
           v16 = 10;
           goto LABEL_17;
         }
 
-        if (a5 == 1)
+        if (type == 1)
         {
           v15 = 0;
           v16 = 20;
 LABEL_17:
-          v17 = v11;
+          v17 = passkeyCopy;
           if (dword_1000607A0 <= 50 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
           {
             sub_100036E9C();
@@ -822,33 +822,33 @@ LABEL_17:
           else if (v15)
           {
 LABEL_21:
-            v18 = [v10 identifier];
+            identifier2 = [pairingCopy identifier];
             v27 = self->_currentTask;
-            v19 = DAErrorF();
-            [(DABluetoothPairingManager *)self _reportEvent:30 error:v19 endCurrentTask:1, v18, a5, v27];
+            eventHandler = DAErrorF();
+            [(DABluetoothPairingManager *)self _reportEvent:30 error:eventHandler endCurrentTask:1, identifier2, type, v27];
 LABEL_26:
 
             goto LABEL_27;
           }
 
           v20 = [DABluetoothPairingInfo alloc];
-          v21 = [v10 identifier];
-          v18 = [v20 initWithBluetoothIdentifier:v21 pairingType:v16];
+          identifier3 = [pairingCopy identifier];
+          identifier2 = [v20 initWithBluetoothIdentifier:identifier3 pairingType:v16];
 
-          if (v18)
+          if (identifier2)
           {
-            [v18 setPasskey:v17];
-            v19 = [(DABluetoothTask *)self->_currentTask eventHandler];
-            (v19)[2](v19, 40, v18, 0);
+            [identifier2 setPasskey:v17];
+            eventHandler = [(DABluetoothTask *)self->_currentTask eventHandler];
+            (eventHandler)[2](eventHandler, 40, identifier2, 0);
           }
 
           else
           {
-            v19 = [(DABluetoothTask *)self->_currentTask eventHandler];
-            v22 = [v10 identifier];
+            eventHandler = [(DABluetoothTask *)self->_currentTask eventHandler];
+            identifier4 = [pairingCopy identifier];
             v28 = self->_currentTask;
             v23 = DAErrorF();
-            (v19)[2](v19, 30, 0, v23);
+            (eventHandler)[2](eventHandler, 30, 0, v23);
           }
 
           goto LABEL_26;

@@ -1,24 +1,24 @@
 @interface CCUICASpringAnimationFactory
-- (CCUICASpringAnimationFactory)initWithParameters:(id)a3 speed:(double)a4;
+- (CCUICASpringAnimationFactory)initWithParameters:(id)parameters speed:(double)speed;
 - (double)animationDuration;
 - (id)_animation;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 - (void)_animation;
 @end
 
 @implementation CCUICASpringAnimationFactory
 
-- (CCUICASpringAnimationFactory)initWithParameters:(id)a3 speed:(double)a4
+- (CCUICASpringAnimationFactory)initWithParameters:(id)parameters speed:(double)speed
 {
-  v7 = a3;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = CCUICASpringAnimationFactory;
   v8 = [(CCUICASpringAnimationFactory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parameters, a3);
-    v9->_speed = a4;
+    objc_storeStrong(&v8->_parameters, parameters);
+    v9->_speed = speed;
   }
 
   return v9;
@@ -26,37 +26,37 @@
 
 - (double)animationDuration
 {
-  v2 = [(CCUICASpringAnimationFactory *)self _animation];
-  [v2 durationForEpsilon:0.0];
+  _animation = [(CCUICASpringAnimationFactory *)self _animation];
+  [_animation durationForEpsilon:0.0];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CCUICASpringAnimationFactory *)self _animation];
-  [v6 setKeyPath:v5];
+  pathCopy = path;
+  _animation = [(CCUICASpringAnimationFactory *)self _animation];
+  [_animation setKeyPath:pathCopy];
 
-  return v6;
+  return _animation;
 }
 
 - (id)_animation
 {
-  v3 = [MEMORY[0x277CD9FA0] animation];
+  animation = [MEMORY[0x277CD9FA0] animation];
   [(CCUICASpringAnimationParameters *)self->_parameters mass];
-  [v3 setMass:?];
+  [animation setMass:?];
   [(CCUICASpringAnimationParameters *)self->_parameters stiffness];
-  [v3 setStiffness:?];
+  [animation setStiffness:?];
   [(CCUICASpringAnimationParameters *)self->_parameters damping];
-  [v3 setDamping:?];
+  [animation setDamping:?];
   speed = self->_speed;
   *&speed = speed;
-  [v3 setSpeed:speed];
-  v5 = [(CCUICASpringAnimationParameters *)self->_parameters timingFunction];
+  [animation setSpeed:speed];
+  timingFunction = [(CCUICASpringAnimationParameters *)self->_parameters timingFunction];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = timingFunction;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -131,16 +131,16 @@
     [CCUICASpringAnimationFactory _animation];
   }
 
-  [v3 setTimingFunction:v10];
+  [animation setTimingFunction:v10];
 
-  return v3;
+  return animation;
 }
 
 - (void)_animation
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CAMediaTimingFunction *CATimingFunctionFromDescription(__strong id<CCUIAnimationTimingFunctionDescription>)"];
-  [v1 handleFailureInFunction:v0 file:@"CCUIAnimationRunner.m" lineNumber:36 description:@"Unknown timing function"];
+  [currentHandler handleFailureInFunction:v0 file:@"CCUIAnimationRunner.m" lineNumber:36 description:@"Unknown timing function"];
 }
 
 @end

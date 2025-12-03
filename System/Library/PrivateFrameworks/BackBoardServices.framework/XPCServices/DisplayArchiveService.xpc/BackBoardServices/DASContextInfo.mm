@@ -1,6 +1,6 @@
 @interface DASContextInfo
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithIdentifier:(unsigned int)a3 pid:(int)a4 raw:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithIdentifier:(unsigned int)identifier pid:(int)pid raw:(id)raw;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -14,21 +14,21 @@
   [v3 appendString:v4 withName:@"id"];
 
   v5 = [v3 appendInt:self->_pid withName:@"pid"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [BSEqualsBuilder builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [BSEqualsBuilder builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   identifier = self->_identifier;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000016B4;
   v18[3] = &unk_1000103E8;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendUnsignedInteger:identifier counterpart:v18];
   pid = self->_pid;
@@ -54,18 +54,18 @@
   return v6;
 }
 
-- (id)_initWithIdentifier:(unsigned int)a3 pid:(int)a4 raw:(id)a5
+- (id)_initWithIdentifier:(unsigned int)identifier pid:(int)pid raw:(id)raw
 {
-  v8 = a5;
+  rawCopy = raw;
   v14.receiver = self;
   v14.super_class = DASContextInfo;
   v9 = [(DASContextInfo *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_identifier = a3;
-    v9->_pid = a4;
-    v11 = [v8 copy];
+    v9->_identifier = identifier;
+    v9->_pid = pid;
+    v11 = [rawCopy copy];
     raw = v10->_raw;
     v10->_raw = v11;
   }

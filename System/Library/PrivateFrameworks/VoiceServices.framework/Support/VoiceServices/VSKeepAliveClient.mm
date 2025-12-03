@@ -2,7 +2,7 @@
 - (BOOL)_shouldChangeAudioSession;
 - (void)cancel;
 - (void)dealloc;
-- (void)maintainWithAudioType:(int64_t)a3 keepAudioSessionActive:(BOOL)a4;
+- (void)maintainWithAudioType:(int64_t)type keepAudioSessionActive:(BOOL)active;
 @end
 
 @implementation VSKeepAliveClient
@@ -32,13 +32,13 @@
   }
 }
 
-- (void)maintainWithAudioType:(int64_t)a3 keepAudioSessionActive:(BOOL)a4
+- (void)maintainWithAudioType:(int64_t)type keepAudioSessionActive:(BOOL)active
 {
   if (!self->_isActive)
   {
     self->_isActive = 1;
-    self->_activity = a3 & 3;
-    self->_keepSessionActive = a4;
+    self->_activity = type & 3;
+    self->_keepSessionActive = active;
     if ([(VSKeepAliveClient *)self _shouldChangeAudioSession])
     {
       sub_1000EB450(1, self->_activity);

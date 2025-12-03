@@ -1,16 +1,16 @@
 @interface EKUILocationSearchResultCell
-- (EKUILocationSearchResultCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUILocationSearchResultCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)defaultContentConfiguration;
 - (void)updateSeparatorInset;
 @end
 
 @implementation EKUILocationSearchResultCell
 
-- (EKUILocationSearchResultCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUILocationSearchResultCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = EKUILocationSearchResultCell;
-  v4 = [(EKUILocationSearchResultCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(EKUILocationSearchResultCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -33,29 +33,29 @@
 {
   v12.receiver = self;
   v12.super_class = EKUILocationSearchResultCell;
-  v2 = [(EKUILocationSearchResultCell *)&v12 defaultContentConfiguration];
-  v3 = [v2 textProperties];
-  [v3 setNumberOfLines:1];
+  defaultContentConfiguration = [(EKUILocationSearchResultCell *)&v12 defaultContentConfiguration];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setNumberOfLines:1];
 
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v5 = [v2 secondaryTextProperties];
-  [v5 setColor:v4];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  v6 = [v2 secondaryTextProperties];
-  [v6 setNumberOfLines:1];
+  secondaryTextProperties2 = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setNumberOfLines:1];
 
-  [v2 setImageToTextPadding:10.0];
-  [v2 setAxesPreservingSuperviewLayoutMargins:1];
-  [v2 setDirectionalLayoutMargins:{11.0, 0.0, 11.0, 0.0}];
+  [defaultContentConfiguration setImageToTextPadding:10.0];
+  [defaultContentConfiguration setAxesPreservingSuperviewLayoutMargins:1];
+  [defaultContentConfiguration setDirectionalLayoutMargins:{11.0, 0.0, 11.0, 0.0}];
   [MEMORY[0x1E69669E0] conferenceImageSize];
   v8 = v7;
-  v9 = [v2 imageProperties];
-  [v9 setReservedLayoutSize:{v8, v8}];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{v8, v8}];
 
-  v10 = [v2 imageProperties];
-  [v10 setMaximumSize:{v8, v8}];
+  imageProperties2 = [defaultContentConfiguration imageProperties];
+  [imageProperties2 setMaximumSize:{v8, v8}];
 
-  return v2;
+  return defaultContentConfiguration;
 }
 
 @end

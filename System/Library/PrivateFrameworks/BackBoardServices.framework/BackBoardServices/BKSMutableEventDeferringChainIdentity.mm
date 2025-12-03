@@ -1,16 +1,16 @@
 @interface BKSMutableEventDeferringChainIdentity
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDisplay:(id)a3;
-- (void)setEnvironment:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDisplay:(id)display;
+- (void)setEnvironment:(id)environment;
 @end
 
 @implementation BKSMutableEventDeferringChainIdentity
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
@@ -27,7 +27,7 @@
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSEventDeferringChainIdentity.m";
       v33 = 1024;
@@ -43,18 +43,18 @@
     JUMPOUT(0x1863AC504);
   }
 
-  v6 = v5;
+  v6 = environmentCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(BKSHIDEventDeferringEnvironment *)v6 classForCoder];
-    if (!v17)
+    classForCoder = [(BKSHIDEventDeferringEnvironment *)v6 classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"environment", v18, v20];
@@ -69,7 +69,7 @@
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSEventDeferringChainIdentity.m";
       v33 = 1024;
@@ -90,11 +90,11 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplay:(id)a3
+- (void)setDisplay:(id)display
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  displayCopy = display;
+  if (!displayCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
@@ -111,7 +111,7 @@
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSEventDeferringChainIdentity.m";
       v33 = 1024;
@@ -127,18 +127,18 @@
     JUMPOUT(0x1863AC808);
   }
 
-  v6 = v5;
+  v6 = displayCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(BKSHIDEventDisplay *)v6 classForCoder];
-    if (!v17)
+    classForCoder = [(BKSHIDEventDisplay *)v6 classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v18, v20];
@@ -153,7 +153,7 @@
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSEventDeferringChainIdentity.m";
       v33 = 1024;
@@ -174,7 +174,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSEventDeferringChainIdentity alloc];
 

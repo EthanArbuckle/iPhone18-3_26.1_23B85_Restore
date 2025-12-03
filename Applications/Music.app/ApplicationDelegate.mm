@@ -1,44 +1,44 @@
 @interface ApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (UIResponder)nextResponder;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (id)application:(id)a3 handlerForIntent:(id)a4;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (id)application:(id)application handlerForIntent:(id)intent;
 - (uint64_t)userNotificationCenter:openSettingsForNotification:;
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 willPresentNotification:(UNNotification *)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation ApplicationDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10035EAC8(&qword_101180898, type metadata accessor for LaunchOptionsKey);
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_100024B50();
 
   return v8 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10002C0B8(v9, v10);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_10002C0B8(sessionCopy, optionsCopy);
 
   return v12;
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -48,23 +48,23 @@
   type metadata accessor for OpenURLOptionsKey(0);
   sub_10035EAC8(&qword_1011808A8, type metadata accessor for OpenURLOptionsKey);
   v11 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_10035E554(v12, v10, v11);
+  applicationCopy = application;
+  selfCopy = self;
+  v14 = sub_10035E554(applicationCopy, v10, v11);
 
   (*(v8 + 8))(v10, v7);
   return v14 & 1;
 }
 
-- (void)userNotificationCenter:(UNUserNotificationCenter *)a3 willPresentNotification:(UNNotification *)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(id)handler
 {
   v9 = sub_10010FC20(&unk_101181520);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = center;
+  v13[3] = notification;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -79,21 +79,21 @@
   v16[3] = 0;
   v16[4] = &unk_100EC7B88;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_10035E0F8(0, 0, v11, &unk_100EC7B98, v16);
 }
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10035D8C4();
 
   return v3;
 }
 
-- (id)application:(id)a3 handlerForIntent:(id)a4
+- (id)application:(id)application handlerForIntent:(id)intent
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
@@ -116,8 +116,8 @@
   v6 = &v19[-((v5 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v7);
   v9 = &v19[-v8];
-  v10 = [objc_opt_self() sharedApplication];
-  v11 = [v10 connectedScenes];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  connectedScenes = [sharedApplication connectedScenes];
   sub_100009F78(0, &qword_1011839F0);
   sub_100061F5C();
   v12 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
@@ -182,14 +182,14 @@ LABEL_3:
   }
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -199,16 +199,16 @@ LABEL_3:
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_10059FAE0(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_10059FAE0(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }

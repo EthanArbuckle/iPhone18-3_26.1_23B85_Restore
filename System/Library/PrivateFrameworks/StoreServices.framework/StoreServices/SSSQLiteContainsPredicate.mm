@@ -1,10 +1,10 @@
 @interface SSSQLiteContainsPredicate
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5;
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4;
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty;
++ (id)containsPredicateWithProperty:(id)property values:(id)values;
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 - (void)dealloc;
 @end
 
@@ -17,38 +17,38 @@
   [(SSSQLitePropertyPredicate *)&v3 dealloc];
 }
 
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4
++ (id)containsPredicateWithProperty:(id)property values:(id)values
 {
   v6 = objc_alloc_init(objc_opt_class());
-  v6[1] = [a3 copy];
+  v6[1] = [property copy];
   *(v6 + 16) = 0;
-  v6[5] = [a4 copy];
+  v6[5] = [values copy];
 
   return v6;
 }
 
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty
 {
   v8 = objc_alloc_init(objc_opt_class());
-  v8[1] = [a3 copy];
+  v8[1] = [property copy];
   *(v8 + 16) = 0;
-  v8[3] = a4;
-  v8[4] = [a5 copy];
+  v8[3] = query;
+  v8[4] = [queryProperty copy];
 
   return v8;
 }
 
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values
 {
   v6 = objc_alloc_init(objc_opt_class());
-  v6[1] = [a3 copy];
+  v6[1] = [property copy];
   *(v6 + 16) = 1;
-  v6[5] = [a4 copy];
+  v6[5] = [values copy];
 
   return v6;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   v17 = *MEMORY[0x1E69E9840];
   if (self->_query)
@@ -79,8 +79,8 @@
             objc_enumerationMutation(values);
           }
 
-          SSSQLiteBindFoundationValueToStatement(a3, *a4, *(*(&v12 + 1) + 8 * i));
-          ++*a4;
+          SSSQLiteBindFoundationValueToStatement(statement, *index, *(*(&v12 + 1) + 8 * i));
+          ++*index;
         }
 
         v9 = [values countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -91,28 +91,28 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = SSSQLiteContainsPredicate;
   v5 = [(SSSQLitePropertyPredicate *)&v10 isEqual:?];
   if (v5)
   {
-    v6 = [(SSSQLiteContainsPredicate *)self isNegative];
-    if (v6 == [a3 isNegative])
+    isNegative = [(SSSQLiteContainsPredicate *)self isNegative];
+    if (isNegative == [equal isNegative])
     {
-      v7 = [(SSSQLiteContainsPredicate *)self values];
-      if (v7 == [a3 values] || (v5 = -[NSArray isEqual:](-[SSSQLiteContainsPredicate values](self, "values"), "isEqual:", objc_msgSend(a3, "values"))) != 0)
+      values = [(SSSQLiteContainsPredicate *)self values];
+      if (values == [equal values] || (v5 = -[NSArray isEqual:](-[SSSQLiteContainsPredicate values](self, "values"), "isEqual:", objc_msgSend(equal, "values"))) != 0)
       {
-        v8 = [(SSSQLiteContainsPredicate *)self query];
-        if (v8 == [a3 query])
+        query = [(SSSQLiteContainsPredicate *)self query];
+        if (query == [equal query])
         {
           LOBYTE(v5) = 1;
         }
 
         else
         {
-          LOBYTE(v5) = -[SSSQLiteQuery isEqual:](-[SSSQLiteContainsPredicate query](self, "query"), "isEqual:", [a3 query]);
+          LOBYTE(v5) = -[SSSQLiteQuery isEqual:](-[SSSQLiteContainsPredicate query](self, "query"), "isEqual:", [equal query]);
         }
       }
     }
@@ -126,10 +126,10 @@
   return v5;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [(objc_class *)a3 disambiguatedSQLForProperty:[(SSSQLitePropertyPredicate *)self property]];
+  v4 = [(objc_class *)class disambiguatedSQLForProperty:[(SSSQLitePropertyPredicate *)self property]];
   v5 = [MEMORY[0x1E696AD60] stringWithString:v4];
   v6 = v5;
   if (self->_negative)

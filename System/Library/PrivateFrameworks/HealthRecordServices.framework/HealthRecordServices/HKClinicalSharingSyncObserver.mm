@@ -1,38 +1,38 @@
 @interface HKClinicalSharingSyncObserver
-- (HKClinicalSharingSyncObserver)initWithConnection:(id)a3 delegateQueue:(id)a4;
-- (HKClinicalSharingSyncObserver)initWithDelegateQueue:(id)a3;
+- (HKClinicalSharingSyncObserver)initWithConnection:(id)connection delegateQueue:(id)queue;
+- (HKClinicalSharingSyncObserver)initWithDelegateQueue:(id)queue;
 - (HKClinicalSharingSyncObserverDelegate)delegate;
-- (void)client_syncDidFinishWithError:(id)a3;
-- (void)client_syncDidStartWithInfo:(id)a3;
+- (void)client_syncDidFinishWithError:(id)error;
+- (void)client_syncDidStartWithInfo:(id)info;
 - (void)connectionInterrupted;
 - (void)invalidate;
-- (void)resumeWithCompletion:(id)a3;
+- (void)resumeWithCompletion:(id)completion;
 @end
 
 @implementation HKClinicalSharingSyncObserver
 
-- (HKClinicalSharingSyncObserver)initWithDelegateQueue:(id)a3
+- (HKClinicalSharingSyncObserver)initWithDelegateQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[HKHealthRecordsDaemonConnection sharedConnection];
-  v6 = [(HKClinicalSharingSyncObserver *)self initWithConnection:v5 delegateQueue:v4];
+  v6 = [(HKClinicalSharingSyncObserver *)self initWithConnection:v5 delegateQueue:queueCopy];
 
   return v6;
 }
 
-- (HKClinicalSharingSyncObserver)initWithConnection:(id)a3 delegateQueue:(id)a4
+- (HKClinicalSharingSyncObserver)initWithConnection:(id)connection delegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HKClinicalSharingSyncObserver;
   v8 = [(HKClinicalSharingSyncObserver *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegateQueue, a4);
+    objc_storeStrong(&v8->_delegateQueue, queue);
     v9->_lock._os_unfair_lock_opaque = 0;
-    v10 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:v6 serviceIdentifier:@"ClinicalSharingSyncObserver" exportedObject:v9];
+    v10 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:connectionCopy serviceIdentifier:@"ClinicalSharingSyncObserver" exportedObject:v9];
     proxyProvider = v9->_proxyProvider;
     v9->_proxyProvider = &v10->super;
   }
@@ -40,9 +40,9 @@
   return v9;
 }
 
-- (void)resumeWithCompletion:(id)a3
+- (void)resumeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (!WeakRetained)
@@ -56,7 +56,7 @@
   v14[1] = 3221225472;
   v14[2] = __54__HKClinicalSharingSyncObserver_resumeWithCompletion___block_invoke;
   v14[3] = &unk_2796DD020;
-  v15 = v5;
+  v15 = completionCopy;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __54__HKClinicalSharingSyncObserver_resumeWithCompletion___block_invoke_305;
@@ -131,14 +131,14 @@ void __54__HKClinicalSharingSyncObserver_resumeWithCompletion___block_invoke_2_3
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)client_syncDidFinishWithError:(id)a3
+- (void)client_syncDidFinishWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2C0];
   v6 = os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (errorCopy)
   {
     if (v6)
     {
@@ -146,7 +146,7 @@ void __54__HKClinicalSharingSyncObserver_resumeWithCompletion___block_invoke_2_3
       *buf = 138412546;
       v17 = objc_opt_class();
       v18 = 2114;
-      v19 = v4;
+      v19 = errorCopy;
       v8 = "%@: sync failed: %{public}@";
       v9 = v7;
       v10 = 22;
@@ -174,8 +174,8 @@ LABEL_6:
   v14[2] = __63__HKClinicalSharingSyncObserver_client_syncDidFinishWithError___block_invoke;
   v14[3] = &unk_2796DD068;
   v14[4] = self;
-  v15 = v4;
-  v12 = v4;
+  v15 = errorCopy;
+  v12 = errorCopy;
   dispatch_async(delegateQueue, v14);
   os_unfair_lock_unlock(&self->_lock);
 
@@ -188,10 +188,10 @@ void __63__HKClinicalSharingSyncObserver_client_syncDidFinishWithError___block_i
   [v2 clinicalSharingSyncObserver:*(a1 + 32) syncDidFinishWithError:*(a1 + 40)];
 }
 
-- (void)client_syncDidStartWithInfo:(id)a3
+- (void)client_syncDidStartWithInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2C0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_DEFAULT))
@@ -200,7 +200,7 @@ void __63__HKClinicalSharingSyncObserver_client_syncDidFinishWithError___block_i
     *buf = 138412546;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v4;
+    v15 = infoCopy;
     _os_log_impl(&dword_2519FE000, v6, OS_LOG_TYPE_DEFAULT, "%@: sync did start: %{public}@", buf, 0x16u);
   }
 
@@ -212,8 +212,8 @@ void __63__HKClinicalSharingSyncObserver_client_syncDidFinishWithError___block_i
   v10[2] = __61__HKClinicalSharingSyncObserver_client_syncDidStartWithInfo___block_invoke;
   v10[3] = &unk_2796DD068;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = infoCopy;
+  v8 = infoCopy;
   dispatch_async(delegateQueue, v10);
   os_unfair_lock_unlock(&self->_lock);
 

@@ -1,21 +1,21 @@
 @interface LPSharingStatusMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPSharingStatusMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPSharingStatusMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
 @end
 
 @implementation LPSharingStatusMetadata
 
-- (LPSharingStatusMetadata)initWithCoder:(id)a3
+- (LPSharingStatusMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = LPSharingStatusMetadata;
   v5 = [(LPSharingStatusMetadata *)&v10 init];
   if (v5)
   {
-    v6 = decodeAttributedStringForKey(v4, @"status");
+    v6 = decodeAttributedStringForKey(coderCopy, @"status");
     status = v5->_status;
     v5->_status = v6;
 
@@ -25,13 +25,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPSharingStatusMetadata allocWithZone:a3];
+  v4 = [LPSharingStatusMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPSharingStatusMetadata *)self status];
-    [(LPSharingStatusMetadata *)v4 setStatus:v5];
+    status = [(LPSharingStatusMetadata *)self status];
+    [(LPSharingStatusMetadata *)v4 setStatus:status];
 
     v6 = v4;
   }
@@ -39,12 +39,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = LPSharingStatusMetadata;
-  if ([(LPSharingStatusMetadata *)&v7 isEqual:v4])
+  if ([(LPSharingStatusMetadata *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objectsAreEqual_0(v4[2], self->_status);
+      v5 = objectsAreEqual_0(equalCopy[2], self->_status);
     }
 
     else
@@ -66,20 +66,20 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 unspecializedPresentationProperties];
-  if (sizeClassAllowsStatusTransformation([v4 effectiveSizeClass]))
+  transformerCopy = transformer;
+  unspecializedPresentationProperties = [transformerCopy unspecializedPresentationProperties];
+  if (sizeClassAllowsStatusTransformation([transformerCopy effectiveSizeClass]))
   {
-    v6 = [(LPSharingStatusMetadata *)self status];
-    v7 = [v5 captionBar];
-    v8 = [v7 bottom];
-    v9 = [v8 leading];
-    [v9 setAttributedText:v6];
+    status = [(LPSharingStatusMetadata *)self status];
+    captionBar = [unspecializedPresentationProperties captionBar];
+    bottom = [captionBar bottom];
+    leading = [bottom leading];
+    [leading setAttributedText:status];
   }
 
-  return v5;
+  return unspecializedPresentationProperties;
 }
 
 @end

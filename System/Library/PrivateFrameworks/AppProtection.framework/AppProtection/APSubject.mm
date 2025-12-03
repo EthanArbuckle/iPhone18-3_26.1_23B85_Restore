@@ -1,7 +1,7 @@
 @interface APSubject
 + (id)subjectMonitorRegistry;
 - (APSubject)init;
-- (APSubject)initWithArena:(id)a3;
+- (APSubject)initWithArena:(id)arena;
 - (BOOL)hidden;
 - (BOOL)locked;
 - (id)effectiveBundleIdentifier;
@@ -31,9 +31,9 @@
   return v8;
 }
 
-- (APSubject)initWithArena:(id)a3
+- (APSubject)initWithArena:(id)arena
 {
-  sub_185ADF8F0(a3 + OBJC_IVAR____TtC13AppProtectionP33_215D8CF8FF516198782505704A9473C518ClientArenaWrapper_arena, self + OBJC_IVAR___APSubject_clientArenaStorage);
+  sub_185ADF8F0(arena + OBJC_IVAR____TtC13AppProtectionP33_215D8CF8FF516198782505704A9473C518ClientArenaWrapper_arena, self + OBJC_IVAR___APSubject_clientArenaStorage);
   v5.receiver = self;
   v5.super_class = APSubject;
   return [(APSubject *)&v5 init];

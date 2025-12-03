@@ -1,53 +1,53 @@
 @interface CinematicFramingRenderer
 - ($BFB66DEB4EA2CF190BAABA286C893F32)calibrationParams;
-- (BOOL)_pointInFramingSpaceLandscapeLeftIsValid:(CGRect)a3 withDisplayRect:;
-- (CGPoint)_projectPointInFramingSpaceLandscapeLeft:(CGPoint)a3 toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)a4;
-- (CGPoint)projectPointInFramingSpace:(CGPoint)a3 toDisplayRectInFramingSpace:(CGRect)a4;
-- (CGRect)_adjustDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)a3;
+- (BOOL)_pointInFramingSpaceLandscapeLeftIsValid:(CGRect)valid withDisplayRect:;
+- (CGPoint)_projectPointInFramingSpaceLandscapeLeft:(CGPoint)left toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)landscapeLeft;
+- (CGPoint)projectPointInFramingSpace:(CGPoint)space toDisplayRectInFramingSpace:(CGRect)framingSpace;
+- (CGRect)_adjustDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)left;
 - (CGRect)_framingSpaceBoundsLandscapeLeft;
-- (CGRect)_moveDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)a3;
-- (CGRect)_projectRectInFramingSpaceLandscapeLeft:(CGRect)a3 toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)a4;
-- (CGRect)_warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:(CGRect)a3 calibrationParameters:(id *)a4;
-- (CGRect)adjustDisplayRectToFitInFramingSpace:(CGRect)a3;
-- (CGRect)computeNewCoordinatesInOrientation:(int)a3 forViewportInCurrentOrientation:(CGRect)a4;
+- (CGRect)_moveDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)left;
+- (CGRect)_projectRectInFramingSpaceLandscapeLeft:(CGRect)left toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)landscapeLeft;
+- (CGRect)_warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:(CGRect)left calibrationParameters:(id *)parameters;
+- (CGRect)adjustDisplayRectToFitInFramingSpace:(CGRect)space;
+- (CGRect)computeNewCoordinatesInOrientation:(int)orientation forViewportInCurrentOrientation:(CGRect)currentOrientation;
 - (CGRect)framingSpaceBounds;
 - (CGRect)outputROI;
-- (CGRect)projectRectInFramingSpace:(CGRect)a3 toDisplayRectInFramingSpace:(CGRect)a4;
-- (CGRect)warpRectInInputImageCoordinatesToFramingSpace:(CGRect)a3;
-- (CGSize)_scaleDisplayRectSizeToFit:(CGSize)a3;
-- (CGSize)_searchValidSizeForStartSize:(CGSize)a3 invalidPoint:;
-- (CinematicFramingRenderer)initWithOutputDimensions:(id)a3;
-- (double)_rotationMatrixForDisplayRect:(double)a3;
-- (float)_getHeightDerivativeForWidth:(float)a3 widthDerivative:(float)a4 outputAspectRatioInDeviceOrientation:(float)a5;
-- (float)_getHeightForWidth:(float)a3 outputAspectRatioInDeviceOrientation:(float)a4;
-- (float)_getWidthForHeight:(float)a3 outputAspectRatioInDeviceOrientation:(float)a4;
-- (float)getHeightDerivativeForWidth:(float)a3 widthDerivative:(float)a4;
-- (float)getHeightForWidth:(float)a3;
-- (float)getWidthForHeight:(float)a3;
+- (CGRect)projectRectInFramingSpace:(CGRect)space toDisplayRectInFramingSpace:(CGRect)framingSpace;
+- (CGRect)warpRectInInputImageCoordinatesToFramingSpace:(CGRect)space;
+- (CGSize)_scaleDisplayRectSizeToFit:(CGSize)fit;
+- (CGSize)_searchValidSizeForStartSize:(CGSize)size invalidPoint:;
+- (CinematicFramingRenderer)initWithOutputDimensions:(id)dimensions;
+- (double)_rotationMatrixForDisplayRect:(double)rect;
+- (float)_getHeightDerivativeForWidth:(float)width widthDerivative:(float)derivative outputAspectRatioInDeviceOrientation:(float)orientation;
+- (float)_getHeightForWidth:(float)width outputAspectRatioInDeviceOrientation:(float)orientation;
+- (float)_getWidthForHeight:(float)height outputAspectRatioInDeviceOrientation:(float)orientation;
+- (float)getHeightDerivativeForWidth:(float)width widthDerivative:(float)derivative;
+- (float)getHeightForWidth:(float)width;
+- (float)getWidthForHeight:(float)height;
 - (float)maxAllowedViewportWidth;
 - (float)outputAspectRatioInDeviceOrientation;
-- (float32x2_t)_outputPlaneSizeForDisplayRect:(CGFloat)a3;
-- (float32x2_t)_searchEarliestValidPointOnIntervalWithStart:(float32x2_t)a3 andEnd:(CGFloat)a4 displayRect:(CGFloat)a5;
-- (id)_compileComputeShader:(id)a3 pixelFormat:(unint64_t)a4;
+- (float32x2_t)_outputPlaneSizeForDisplayRect:(CGFloat)rect;
+- (float32x2_t)_searchEarliestValidPointOnIntervalWithStart:(float32x2_t)start andEnd:(CGFloat)end displayRect:(CGFloat)rect;
+- (id)_compileComputeShader:(id)shader pixelFormat:(unint64_t)format;
 - (int)_compileShaders;
-- (int)_createComputePipelinesForShaders:(id)a3;
+- (int)_createComputePipelinesForShaders:(id)shaders;
 - (int)_outputPlaneCcwRotations;
-- (int)processBuffer:(__CVBuffer *)a3 cropRect:(CGRect)a4 outputPixelBuffer:(__CVBuffer *)a5;
-- (int)registerCalibrationData:(id)a3;
+- (int)processBuffer:(__CVBuffer *)buffer cropRect:(CGRect)rect outputPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)registerCalibrationData:(id)data;
 - (uint64_t)_compileShaders;
 - (uint64_t)initializeMetal;
-- (void)_filterDetectionsInInputImageCoordinates:(id)a3 trackType:(int64_t)a4;
-- (void)_setShaderParametersForDisplayRect:(CGRect)a3 outputROI:(CGRect)a4 calibrationParameters:(id *)a5 commandEncoder:(id)a6;
+- (void)_filterDetectionsInInputImageCoordinates:(id)coordinates trackType:(int64_t)type;
+- (void)_setShaderParametersForDisplayRect:(CGRect)rect outputROI:(CGRect)i calibrationParameters:(id *)parameters commandEncoder:(id)encoder;
 - (void)dealloc;
 - (void)finish;
 - (void)initializeMetal;
-- (void)registerGravityX:(float)a3 y:(float)a4 z:(float)a5;
-- (void)warpMetadataInInputImageCoordinatesToFramingSpace:(id)a3;
+- (void)registerGravityX:(float)x y:(float)y z:(float)z;
+- (void)warpMetadataInInputImageCoordinatesToFramingSpace:(id)space;
 @end
 
 @implementation CinematicFramingRenderer
 
-- (CinematicFramingRenderer)initWithOutputDimensions:(id)a3
+- (CinematicFramingRenderer)initWithOutputDimensions:(id)dimensions
 {
   v17.receiver = self;
   v17.super_class = CinematicFramingRenderer;
@@ -55,7 +55,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_outputDimensions = a3;
+    v4->_outputDimensions = dimensions;
     *v4->_gravity = xmmword_2434F7660;
     v4->_additionalCameraRotation = 0.0;
     [(CinematicFramingRenderer *)v4 setCameraOrientation:0];
@@ -93,15 +93,15 @@
   [(CinematicFramingRenderer *)&v4 dealloc];
 }
 
-- (CGRect)computeNewCoordinatesInOrientation:(int)a3 forViewportInCurrentOrientation:(CGRect)a4
+- (CGRect)computeNewCoordinatesInOrientation:(int)orientation forViewportInCurrentOrientation:(CGRect)currentOrientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3)
+  height = currentOrientation.size.height;
+  width = currentOrientation.size.width;
+  y = currentOrientation.origin.y;
+  x = currentOrientation.origin.x;
+  if (orientation)
   {
-    v8 = computeNumberOfCCWRotationsFromInputToFramingSpaceForCameraOrientation(a3, self->_isFrontCamera, self->_frontCameraHas180DegreesRotation) - self->_numCCWRotationsFromInputToFramingSpace + 4;
+    v8 = computeNumberOfCCWRotationsFromInputToFramingSpaceForCameraOrientation(orientation, self->_isFrontCamera, self->_frontCameraHas180DegreesRotation) - self->_numCCWRotationsFromInputToFramingSpace + 4;
     v9 = v8 & 3;
     v11 = -v8;
     v10 = v11 < 0;
@@ -133,29 +133,29 @@
   return result;
 }
 
-- (int)registerCalibrationData:(id)a3
+- (int)registerCalibrationData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return -12780;
   }
 
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
   v6 = [v5 objectForKeyedSubscript:@"Width"];
   [v6 floatValue];
   *self->_anon_90 = v7;
 
-  v8 = [v4 objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
+  v8 = [dataCopy objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
   v9 = [v8 objectForKeyedSubscript:@"Height"];
   [v9 floatValue];
   *&self->_anon_90[4] = v10;
 
-  v11 = [v4 objectForKeyedSubscript:@"IntrinsicMatrix"];
-  v12 = [v11 bytes];
-  v14 = v12[1];
-  v13 = v12[2];
-  *&self->_anon_90[16] = *v12;
+  v11 = [dataCopy objectForKeyedSubscript:@"IntrinsicMatrix"];
+  bytes = [v11 bytes];
+  v14 = bytes[1];
+  v13 = bytes[2];
+  *&self->_anon_90[16] = *bytes;
   *&self->_anon_90[32] = v14;
   *&self->_anon_90[48] = v13;
   v15 = *&self->_anon_90[16];
@@ -167,20 +167,20 @@
   *&self->_anon_90[80] = vtrn2q_s32(v15, v16).u64[0];
   *&self->_anon_90[104] = DWORD2(v17);
   *&self->_anon_90[96] = vzip1q_s32(vdupq_laneq_s32(v15, 2), vdupq_laneq_s32(v16, 2)).u64[0];
-  v18 = [v4 objectForKeyedSubscript:@"PixelSize"];
+  v18 = [dataCopy objectForKeyedSubscript:@"PixelSize"];
   [v18 floatValue];
   v20 = v19;
 
   *&self->_anon_90[128] = v20 * v20;
-  v21 = [v4 objectForKeyedSubscript:@"DistortionCalibrationValidMaxRadiusInPixels"];
-  v22 = [v4 objectForKeyedSubscript:@"LensDistortionCenter"];
+  v21 = [dataCopy objectForKeyedSubscript:@"DistortionCalibrationValidMaxRadiusInPixels"];
+  v22 = [dataCopy objectForKeyedSubscript:@"LensDistortionCenter"];
   v23 = [v22 objectForKeyedSubscript:@"X"];
 
-  v24 = [v4 objectForKeyedSubscript:@"LensDistortionCenter"];
+  v24 = [dataCopy objectForKeyedSubscript:@"LensDistortionCenter"];
   v25 = [v24 objectForKeyedSubscript:@"Y"];
 
-  v26 = [v4 objectForKeyedSubscript:@"LensDistortionCoefficients"];
-  v27 = [v4 objectForKeyedSubscript:@"InverseLensDistortionCoefficients"];
+  v26 = [dataCopy objectForKeyedSubscript:@"LensDistortionCoefficients"];
+  v27 = [dataCopy objectForKeyedSubscript:@"InverseLensDistortionCoefficients"];
 
   if (v21)
   {
@@ -212,46 +212,46 @@
     *&self->_anon_90[120] = v33;
     [v25 floatValue];
     *&self->_anon_90[124] = v34;
-    v35 = [v26 bytes];
-    v36 = v35[1];
-    *&self->_anon_90[168] = *v35;
+    bytes2 = [v26 bytes];
+    v36 = bytes2[1];
+    *&self->_anon_90[168] = *bytes2;
     *&self->_anon_90[184] = v36;
     v37 = &self->_anon_90[136];
-    v38 = [v27 bytes];
-    v39 = v38[1];
-    *v37 = *v38;
+    bytes3 = [v27 bytes];
+    v39 = bytes3[1];
+    *v37 = *bytes3;
     *(v37 + 1) = v39;
   }
 
   return 0;
 }
 
-- (void)registerGravityX:(float)a3 y:(float)a4 z:(float)a5
+- (void)registerGravityX:(float)x y:(float)y z:(float)z
 {
-  v7 = vmulq_f32(*&a3, *&a3);
+  v7 = vmulq_f32(*&x, *&x);
   *&v8 = v7.f32[2] + vaddv_f32(*v7.f32);
   *v7.f32 = vrsqrte_f32(v8);
   *v7.f32 = vmul_f32(*v7.f32, vrsqrts_f32(v8, vmul_f32(*v7.f32, *v7.f32)));
-  *self->_gravity = vmulq_n_f32(*&a3, vmul_f32(*v7.f32, vrsqrts_f32(v8, vmul_f32(*v7.f32, *v7.f32))).f32[0]);
+  *self->_gravity = vmulq_n_f32(*&x, vmul_f32(*v7.f32, vrsqrts_f32(v8, vmul_f32(*v7.f32, *v7.f32))).f32[0]);
 }
 
-- (int)processBuffer:(__CVBuffer *)a3 cropRect:(CGRect)a4 outputPixelBuffer:(__CVBuffer *)a5
+- (int)processBuffer:(__CVBuffer *)buffer cropRect:(CGRect)rect outputPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v77 = 0;
   v78 = 0;
   v74 = 0;
   v75 = 0;
-  v8 = rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v8 = rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  if ((PixelFormatIs420(PixelFormatType) & 1) == 0 || (v16 = CVPixelBufferGetPixelFormatType(a5), (PixelFormatIs420(v16) & 1) == 0) || CVPixelBufferGetWidth(a5) != self->_outputDimensions.width || CVPixelBufferGetHeight(a5) != self->_outputDimensions.height)
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  if ((PixelFormatIs420(PixelFormatType) & 1) == 0 || (v16 = CVPixelBufferGetPixelFormatType(pixelBuffer), (PixelFormatIs420(v16) & 1) == 0) || CVPixelBufferGetWidth(pixelBuffer) != self->_outputDimensions.width || CVPixelBufferGetHeight(pixelBuffer) != self->_outputDimensions.height)
   {
     fig_log_get_emitter();
 LABEL_37:
     FigDebugAssert3();
-    v26 = 0;
+    computeCommandEncoder = 0;
     v19 = 0;
     v17 = -12780;
     goto LABEL_29;
@@ -262,18 +262,18 @@ LABEL_37:
     [(CinematicFramingRenderer *)self initializeMetal];
   }
 
-  v17 = cachedTexturesFromPixelBuffer(a3, v76, self->_cvMetalTextureCacheRef);
+  v17 = cachedTexturesFromPixelBuffer(buffer, v76, self->_cvMetalTextureCacheRef);
   if (v17)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
 LABEL_35:
-    v26 = 0;
+    computeCommandEncoder = 0;
     v19 = 0;
     goto LABEL_29;
   }
 
-  v17 = cachedTexturesFromPixelBuffer(a5, v73, self->_cvMetalTextureCacheRef);
+  v17 = cachedTexturesFromPixelBuffer(pixelBuffer, v73, self->_cvMetalTextureCacheRef);
   if (v17)
   {
     fig_log_get_emitter();
@@ -287,22 +287,22 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  v18 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v19 = v18;
-  if (v18)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v19 = commandBuffer;
+  if (commandBuffer)
   {
-    [v18 setLabel:@"CinematicFramingRenderer.processBuffer"];
+    [commandBuffer setLabel:@"CinematicFramingRenderer.processBuffer"];
     if (v73[0])
     {
       v20 = 0;
       v21 = 1;
       while (1)
       {
-        v22 = [*&v73[2 * v21] pixelFormat];
+        pixelFormat = [*&v73[2 * v21] pixelFormat];
         pipelineComputeStates = self->_pipelineComputeStates;
-        if (v22 != 10)
+        if (pixelFormat != 10)
         {
-          if (v22 != 30)
+          if (pixelFormat != 30)
           {
             goto LABEL_27;
           }
@@ -322,16 +322,16 @@ LABEL_27:
         }
 
         v25 = v24;
-        v26 = [v19 computeCommandEncoder];
+        computeCommandEncoder = [v19 computeCommandEncoder];
 
-        if (!v26)
+        if (!computeCommandEncoder)
         {
           break;
         }
 
-        [v26 setComputePipelineState:v25];
-        [v26 setTexture:*&v76[8 * v21] atIndex:0];
-        [v26 setTexture:*&v73[2 * v21] atIndex:1];
+        [computeCommandEncoder setComputePipelineState:v25];
+        [computeCommandEncoder setTexture:*&v76[8 * v21] atIndex:0];
+        [computeCommandEncoder setTexture:*&v73[2 * v21] atIndex:1];
         [(CinematicFramingRenderer *)self outputROI];
         width = self->_outputDimensions.width;
         v28 = width;
@@ -377,23 +377,23 @@ LABEL_27:
         v51 = *&self->_anon_90[16];
         v60 = *self->_anon_90;
         v61 = v51;
-        [(CinematicFramingRenderer *)self _setShaderParametersForDisplayRect:&v60 outputROI:v26 calibrationParameters:v8 commandEncoder:v10, v12, v14, v41, v38 / height, v42, v43 / height];
+        [(CinematicFramingRenderer *)self _setShaderParametersForDisplayRect:&v60 outputROI:computeCommandEncoder calibrationParameters:v8 commandEncoder:v10, v12, v14, v41, v38 / height, v42, v43 / height];
         v52 = v19;
-        v53 = [(MTLComputePipelineState *)v25 threadExecutionWidth];
-        v54 = [(MTLComputePipelineState *)v25 maxTotalThreadsPerThreadgroup];
-        v55 = [*&v73[2 * v21] width];
-        v56 = [*&v73[2 * v21] height];
-        *&v60 = v55;
-        *(&v60 + 1) = v56;
+        threadExecutionWidth = [(MTLComputePipelineState *)v25 threadExecutionWidth];
+        maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v25 maxTotalThreadsPerThreadgroup];
+        width = [*&v73[2 * v21] width];
+        height = [*&v73[2 * v21] height];
+        *&v60 = width;
+        *(&v60 + 1) = height;
         *&v61 = 1;
-        v59[0] = v53;
-        v59[1] = v54 / v53;
+        v59[0] = threadExecutionWidth;
+        v59[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
         v59[2] = 1;
-        [v26 dispatchThreads:&v60 threadsPerThreadgroup:v59];
-        [v26 endEncoding];
+        [computeCommandEncoder dispatchThreads:&v60 threadsPerThreadgroup:v59];
+        [computeCommandEncoder endEncoding];
         v19 = v52;
 
-        v20 = v26;
+        v20 = computeCommandEncoder;
         if (v21++ >= v73[0])
         {
           goto LABEL_26;
@@ -406,12 +406,12 @@ LABEL_27:
       v17 = -12786;
 LABEL_28:
 
-      v26 = v20;
+      computeCommandEncoder = v20;
     }
 
     else
     {
-      v26 = 0;
+      computeCommandEncoder = 0;
 LABEL_26:
       [v19 commit];
       [v19 waitUntilCompleted];
@@ -423,7 +423,7 @@ LABEL_26:
   {
     fig_log_get_emitter();
     FigDebugAssert3();
-    v26 = 0;
+    computeCommandEncoder = 0;
     v19 = 0;
     v17 = -12786;
   }
@@ -435,10 +435,10 @@ LABEL_29:
 
 - (void)finish
 {
-  v4 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v4 setLabel:@"CinematicFramingRenderer.finish"];
-  [v4 commit];
-  [v4 waitUntilCompleted];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"CinematicFramingRenderer.finish"];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   cvMetalTextureCacheRef = self->_cvMetalTextureCacheRef;
   if (cvMetalTextureCacheRef)
   {
@@ -446,22 +446,22 @@ LABEL_29:
   }
 }
 
-- (void)_filterDetectionsInInputImageCoordinates:(id)a3 trackType:(int64_t)a4
+- (void)_filterDetectionsInInputImageCoordinates:(id)coordinates trackType:(int64_t)type
 {
-  v30 = self;
-  v5 = a3;
+  selfCopy = self;
+  coordinatesCopy = coordinates;
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = coordinatesCopy;
   v7 = [obj countByEnumeratingWithState:&v38 objects:v37 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v39;
-    kalmanFilterManager = v30->_kalmanFilterManager;
+    kalmanFilterManager = selfCopy->_kalmanFilterManager;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -472,26 +472,26 @@ LABEL_29:
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v13 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v12, "oid", v30)}];
+        v13 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v12, "oid", selfCopy)}];
         [v6 addObject:v13];
 
-        v14 = kalmanFilterManager[a4];
+        v14 = kalmanFilterManager[type];
         v15 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v12, "oid")}];
         v16 = [(NSMutableDictionary *)v14 objectForKey:v15];
 
         if (!v16)
         {
           v16 = objc_alloc_init(KalmanFilter);
-          v17 = kalmanFilterManager[a4];
+          v17 = kalmanFilterManager[type];
           v18 = v8;
           v19 = v6;
-          v20 = a4;
+          typeCopy = type;
           v21 = v9;
           v22 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v12, "oid")}];
           [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v22];
 
           v9 = v21;
-          a4 = v20;
+          type = typeCopy;
           v6 = v19;
           v8 = v18;
         }
@@ -509,11 +509,11 @@ LABEL_29:
 
   v35 = 0u;
   v36 = 0u;
-  v23 = v30->_kalmanFilterManager;
+  v23 = selfCopy->_kalmanFilterManager;
   v33 = 0u;
   v34 = 0u;
-  v24 = [(NSMutableDictionary *)v30->_kalmanFilterManager[a4] allKeys];
-  v25 = [v24 countByEnumeratingWithState:&v33 objects:v32 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_kalmanFilterManager[type] allKeys];
+  v25 = [allKeys countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v25)
   {
     v26 = v25;
@@ -524,30 +524,30 @@ LABEL_29:
       {
         if (*v34 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v33 + 1) + 8 * j);
-        if (([v6 containsObject:{v29, v30}] & 1) == 0)
+        if (([v6 containsObject:{v29, selfCopy}] & 1) == 0)
         {
-          [(NSMutableDictionary *)v23[a4] removeObjectForKey:v29];
+          [(NSMutableDictionary *)v23[type] removeObjectForKey:v29];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v33 objects:v32 count:16];
     }
 
     while (v26);
   }
 }
 
-- (CGPoint)projectPointInFramingSpace:(CGPoint)a3 toDisplayRectInFramingSpace:(CGRect)a4
+- (CGPoint)projectPointInFramingSpace:(CGPoint)space toDisplayRectInFramingSpace:(CGRect)framingSpace
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = rotatePointCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, a3.x, a3.y);
+  height = framingSpace.size.height;
+  width = framingSpace.size.width;
+  y = framingSpace.origin.y;
+  x = framingSpace.origin.x;
+  v9 = rotatePointCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, space.x, space.y);
   v11 = v10;
   v15 = rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, x, y, width, height);
 
@@ -557,13 +557,13 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)projectRectInFramingSpace:(CGRect)a3 toDisplayRectInFramingSpace:(CGRect)a4
+- (CGRect)projectRectInFramingSpace:(CGRect)space toDisplayRectInFramingSpace:(CGRect)framingSpace
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  height = framingSpace.size.height;
+  width = framingSpace.size.width;
+  y = framingSpace.origin.y;
+  x = framingSpace.origin.x;
+  v9 = rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, space.origin.x, space.origin.y, space.size.width, space.size.height);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -577,18 +577,18 @@ LABEL_29:
   return result;
 }
 
-- (void)warpMetadataInInputImageCoordinatesToFramingSpace:(id)a3
+- (void)warpMetadataInInputImageCoordinatesToFramingSpace:(id)space
 {
-  v4 = a3;
-  v5 = [v4 bodyDetections];
-  [(CinematicFramingRenderer *)self _filterDetectionsInInputImageCoordinates:v5 trackType:0];
+  spaceCopy = space;
+  bodyDetections = [spaceCopy bodyDetections];
+  [(CinematicFramingRenderer *)self _filterDetectionsInInputImageCoordinates:bodyDetections trackType:0];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v4 bodyDetections];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  bodyDetections2 = [spaceCopy bodyDetections];
+  v7 = [bodyDetections2 countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -599,7 +599,7 @@ LABEL_29:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bodyDetections2);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
@@ -608,21 +608,21 @@ LABEL_29:
         [v11 setBounds:?];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v8 = [bodyDetections2 countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [v4 faceDetections];
-  [(CinematicFramingRenderer *)self _filterDetectionsInInputImageCoordinates:v12 trackType:1];
+  faceDetections = [spaceCopy faceDetections];
+  [(CinematicFramingRenderer *)self _filterDetectionsInInputImageCoordinates:faceDetections trackType:1];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [v4 faceDetections];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  faceDetections2 = [spaceCopy faceDetections];
+  v14 = [faceDetections2 countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v14)
   {
     v15 = v14;
@@ -633,7 +633,7 @@ LABEL_29:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(faceDetections2);
         }
 
         v18 = *(*(&v20 + 1) + 8 * j);
@@ -642,14 +642,14 @@ LABEL_29:
         [v18 setBounds:?];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v15 = [faceDetections2 countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v15);
   }
 }
 
-- (CGRect)warpRectInInputImageCoordinatesToFramingSpace:(CGRect)a3
+- (CGRect)warpRectInInputImageCoordinatesToFramingSpace:(CGRect)space
 {
   v4 = *&self->_anon_90[176];
   v18[10] = *&self->_anon_90[160];
@@ -670,7 +670,7 @@ LABEL_29:
   v9 = *&self->_anon_90[16];
   v18[0] = *self->_anon_90;
   v18[1] = v9;
-  [(CinematicFramingRenderer *)self _warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:v18 calibrationParameters:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CinematicFramingRenderer *)self _warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:v18 calibrationParameters:space.origin.x, space.origin.y, space.size.width, space.size.height];
   v14 = rotateRectCCW(self->_numCCWRotationsFromInputToFramingSpace, v10, v11, v12, v13);
   result.size.height = v17;
   result.size.width = v16;
@@ -679,12 +679,12 @@ LABEL_29:
   return result;
 }
 
-- (float32x2_t)_outputPlaneSizeForDisplayRect:(CGFloat)a3
+- (float32x2_t)_outputPlaneSizeForDisplayRect:(CGFloat)rect
 {
-  Width = CGRectGetWidth(*&a1);
-  v19.origin.x = a1;
+  Width = CGRectGetWidth(*&self);
+  v19.origin.x = self;
   v19.origin.y = a2;
-  v19.size.width = a3;
+  v19.size.width = rect;
   v19.size.height = a4;
   Height = CGRectGetHeight(v19);
   v9.f64[0] = Width;
@@ -699,7 +699,7 @@ LABEL_29:
   return vadd_f32(v15, v15);
 }
 
-- (double)_rotationMatrixForDisplayRect:(double)a3
+- (double)_rotationMatrixForDisplayRect:(double)rect
 {
   MidY = CGRectGetMidY(*&a2);
   v11 = __sincosf_stret(MidY * -0.5);
@@ -710,7 +710,7 @@ LABEL_29:
   v80 = v13;
   v76 = v15;
   *v13.i64 = a2;
-  *v14.i64 = a3;
+  *v14.i64 = rect;
   *v15.i64 = a4;
   v16 = a5;
   MidX = CGRectGetMidX(*v13.f32);
@@ -721,7 +721,7 @@ LABEL_29:
   v71 = v21;
   v73 = v20;
   v69 = v22;
-  if ([a1 cameraOrientation] == 1 || objc_msgSend(a1, "cameraOrientation") == 2)
+  if ([self cameraOrientation] == 1 || objc_msgSend(self, "cameraOrientation") == 2)
   {
     v23 = 0;
     v25 = v71;
@@ -781,13 +781,13 @@ LABEL_29:
   v33 = v87;
   v33.i32[3] = 0;
   v77 = v33;
-  [a1 gravity];
+  [self gravity];
   v35 = vmvnq_s8(vorrq_s8(vcltzq_f32(v34), vcgezq_f32(v34)));
   v35.i32[3] = v35.i32[2];
   v36 = 0.0;
-  if ((vmaxvq_u32(v35) & 0x80000000) == 0 && [a1 cameraOrientation] && (objc_msgSend(a1, "visualizeViewport") & 1) == 0)
+  if ((vmaxvq_u32(v35) & 0x80000000) == 0 && [self cameraOrientation] && (objc_msgSend(self, "visualizeViewport") & 1) == 0)
   {
-    if (a1[52])
+    if (self[52])
     {
       v37 = -1;
     }
@@ -799,10 +799,10 @@ LABEL_29:
 
     v38 = vdupq_n_s32(v37);
     v68 = vbslq_s8(v38, xmmword_2434F7670, xmmword_2434F76E0);
-    [a1 gravity];
+    [self gravity];
     v40 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v68, v39.f32[0]), xmmword_2434F76F0, *v39.f32, 1), vbslq_s8(v67, xmmword_2434F7C20, xmmword_2434F7680), v39, 2);
     v75 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v74, v40.f32[0]), v72, *v40.f32, 1), v70, v40, 2);
-    v41 = [a1 numCCWRotationsFromInputToFramingSpace] * 1.57079633;
+    v41 = [self numCCWRotationsFromInputToFramingSpace] * 1.57079633;
     v42 = __sincosf_stret(v41 * 0.5);
     v43 = vmulq_n_f32(xmmword_2434F7680, v42.__sinval);
     v44 = v43;
@@ -839,7 +839,7 @@ LABEL_29:
     v36 = v57;
   }
 
-  [a1 additionalCameraRotation];
+  [self additionalCameraRotation];
   v59 = v36 + v58 * 3.14159265 / 180.0;
   v60 = __sincosf_stret(v59 * 0.5);
   v61 = vmulq_n_f32(xmmword_2434F7680, v60.__sinval);
@@ -862,15 +862,15 @@ LABEL_29:
   return *v85.i64;
 }
 
-- (CGPoint)_projectPointInFramingSpaceLandscapeLeft:(CGPoint)a3 toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)a4
+- (CGPoint)_projectPointInFramingSpaceLandscapeLeft:(CGPoint)left toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)landscapeLeft
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  [(CinematicFramingRenderer *)self _rotationMatrixForDisplayRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  height = landscapeLeft.size.height;
+  width = landscapeLeft.size.width;
+  y = landscapeLeft.origin.y;
+  x = landscapeLeft.origin.x;
+  v8 = left.y;
+  v9 = left.x;
+  [(CinematicFramingRenderer *)self _rotationMatrixForDisplayRect:landscapeLeft.origin.x, landscapeLeft.origin.y, landscapeLeft.size.width, landscapeLeft.size.height];
   v27 = __invert_f3(v26);
   v22 = v27.columns[0];
   v23 = v27.columns[2];
@@ -890,18 +890,18 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)_projectRectInFramingSpaceLandscapeLeft:(CGRect)a3 toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)a4
+- (CGRect)_projectRectInFramingSpaceLandscapeLeft:(CGRect)left toDisplayRectInFramingSpaceLandscapeLeft:(CGRect)landscapeLeft
 {
-  y = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v5 = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  y = landscapeLeft.origin.y;
+  height = landscapeLeft.size.height;
+  width = landscapeLeft.size.width;
+  v5 = landscapeLeft.origin.y;
+  x = landscapeLeft.origin.x;
+  v7 = left.size.height;
+  v8 = left.size.width;
+  v9 = left.origin.y;
+  v10 = left.origin.x;
+  MidX = CGRectGetMidX(left);
   v29.origin.x = v10;
   v29.origin.y = v9;
   v29.size.width = v8;
@@ -951,13 +951,13 @@ LABEL_29:
   return result;
 }
 
-- (CGRect)_warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:(CGRect)a3 calibrationParameters:(id *)a4
+- (CGRect)_warpRectInInputImageCoordinatesToFramingSpaceInLandscapeLeft:(CGRect)left calibrationParameters:(id *)parameters
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = left.size.height;
+  width = left.size.width;
+  y = left.origin.y;
+  x = left.origin.x;
+  MidX = CGRectGetMidX(left);
   v96.origin.x = x;
   v96.origin.y = y;
   v96.size.width = width;
@@ -965,36 +965,36 @@ LABEL_29:
   MinY = CGRectGetMinY(v96);
   v10.f64[0] = MidX;
   v10.f64[1] = MinY;
-  var6 = a4->var5.var6;
-  v12 = *&a4->var6.var1;
-  var6_low = LOBYTE(a4[1].var5.var6);
-  v14 = vmul_f32(*&a4->var2, vcvt_f32_f64(v10));
+  var6 = parameters->var5.var6;
+  v12 = *&parameters->var6.var1;
+  var6_low = LOBYTE(parameters[1].var5.var6);
+  v14 = vmul_f32(*&parameters->var2, vcvt_f32_f64(v10));
   v80 = *(&v12 + 1);
   if (var6_low)
   {
-    v15 = *&a4->var5.var7;
-    var5 = a4->var5.var5;
-    v17 = *&a4->var5.var1;
-    v18 = *&a4->var4;
-    v81 = *&a4->var2;
+    v15 = *&parameters->var5.var7;
+    var5 = parameters->var5.var5;
+    v17 = *&parameters->var5.var1;
+    v18 = *&parameters->var4;
+    v81 = *&parameters->var2;
     v82 = v18;
     v83 = v17;
     v84 = __PAIR64__(LODWORD(var6), LODWORD(var5));
     v85 = v15;
-    v20 = *&a4->var6.var5;
-    v19 = *&a4[1].var3;
+    v20 = *&parameters->var6.var5;
+    v19 = *&parameters[1].var3;
     v86 = v12;
     v87 = v20;
-    v21 = *&a4[1].var5.var2;
+    v21 = *&parameters[1].var5.var2;
     v88 = v19;
     v89 = v21;
     v90 = var6_low;
-    *&v95[15] = *&a4[2].var5.var7;
-    *v95 = *(&a4[2].var5.var3 + 1);
-    v94 = *(&a4[2].var4 + 1);
-    v93 = *(&a4[1].var6.var6 + 1);
-    v91 = *(&a4[1].var5.var6 + 1);
-    v92 = *(&a4[1].var6.var2 + 1);
+    *&v95[15] = *&parameters[2].var5.var7;
+    *v95 = *(&parameters[2].var5.var3 + 1);
+    v94 = *(&parameters[2].var4 + 1);
+    v93 = *(&parameters[1].var6.var6 + 1);
+    v91 = *(&parameters[1].var5.var6 + 1);
+    v92 = *(&parameters[1].var6.var2 + 1);
     v14 = undistortPoint(&v81, v14);
   }
 
@@ -1011,36 +1011,36 @@ LABEL_29:
   MaxY = CGRectGetMaxY(v98);
   v23.f64[0] = v76;
   v23.f64[1] = MaxY;
-  v24 = a4->var5.var6;
-  v25 = *&a4->var6.var1;
-  v26 = LOBYTE(a4[1].var5.var6);
-  v27 = vmul_f32(*&a4->var2, vcvt_f32_f64(v23));
+  v24 = parameters->var5.var6;
+  v25 = *&parameters->var6.var1;
+  v26 = LOBYTE(parameters[1].var5.var6);
+  v27 = vmul_f32(*&parameters->var2, vcvt_f32_f64(v23));
   v77 = *(&v25 + 1);
   if (v26)
   {
-    v28 = *&a4->var5.var7;
-    v29 = a4->var5.var5;
-    v30 = *&a4->var5.var1;
-    v31 = *&a4->var4;
-    v81 = *&a4->var2;
+    v28 = *&parameters->var5.var7;
+    v29 = parameters->var5.var5;
+    v30 = *&parameters->var5.var1;
+    v31 = *&parameters->var4;
+    v81 = *&parameters->var2;
     v82 = v31;
     v83 = v30;
     v84 = __PAIR64__(LODWORD(v24), LODWORD(v29));
     v85 = v28;
-    v33 = *&a4->var6.var5;
-    v32 = *&a4[1].var3;
+    v33 = *&parameters->var6.var5;
+    v32 = *&parameters[1].var3;
     v86 = v25;
     v87 = v33;
-    v34 = *&a4[1].var5.var2;
+    v34 = *&parameters[1].var5.var2;
     v88 = v32;
     v89 = v34;
     v90 = v26;
-    *&v95[15] = *&a4[2].var5.var7;
-    *v95 = *(&a4[2].var5.var3 + 1);
-    v94 = *(&a4[2].var4 + 1);
-    v93 = *(&a4[1].var6.var6 + 1);
-    v91 = *(&a4[1].var5.var6 + 1);
-    v92 = *(&a4[1].var6.var2 + 1);
+    *&v95[15] = *&parameters[2].var5.var7;
+    *v95 = *(&parameters[2].var5.var3 + 1);
+    v94 = *(&parameters[2].var4 + 1);
+    v93 = *(&parameters[1].var6.var6 + 1);
+    v91 = *(&parameters[1].var5.var6 + 1);
+    v92 = *(&parameters[1].var6.var2 + 1);
     v27 = undistortPoint(&v81, v27);
   }
 
@@ -1057,35 +1057,35 @@ LABEL_29:
   MidY = CGRectGetMidY(v100);
   v36.f64[0] = MinX;
   v36.f64[1] = MidY;
-  v37 = *&a4->var5.var1;
-  v38 = *&a4->var6.var1;
-  v39 = LOBYTE(a4[1].var5.var6);
-  v40 = vmul_f32(*&a4->var2, vcvt_f32_f64(v36));
+  v37 = *&parameters->var5.var1;
+  v38 = *&parameters->var6.var1;
+  v39 = LOBYTE(parameters[1].var5.var6);
+  v40 = vmul_f32(*&parameters->var2, vcvt_f32_f64(v36));
   v72 = *&v38;
   v74 = *&v37;
   if (v39)
   {
-    v41 = *&a4->var5.var7;
-    v42 = *&a4->var4;
-    v81 = *&a4->var2;
+    v41 = *&parameters->var5.var7;
+    v42 = *&parameters->var4;
+    v81 = *&parameters->var2;
     v82 = v42;
     v83 = v37;
-    v84 = *&a4->var5.var5;
+    v84 = *&parameters->var5.var5;
     v85 = v41;
-    v43 = *&a4->var6.var5;
-    v44 = *&a4[1].var3;
+    v43 = *&parameters->var6.var5;
+    v44 = *&parameters[1].var3;
     v86 = v38;
     v87 = v43;
-    v45 = *&a4[1].var5.var2;
+    v45 = *&parameters[1].var5.var2;
     v88 = v44;
     v89 = v45;
     v90 = v39;
-    *&v95[15] = *&a4[2].var5.var7;
-    *v95 = *(&a4[2].var5.var3 + 1);
-    v94 = *(&a4[2].var4 + 1);
-    v93 = *(&a4[1].var6.var6 + 1);
-    v91 = *(&a4[1].var5.var6 + 1);
-    v92 = *(&a4[1].var6.var2 + 1);
+    *&v95[15] = *&parameters[2].var5.var7;
+    *v95 = *(&parameters[2].var5.var3 + 1);
+    v94 = *(&parameters[2].var4 + 1);
+    v93 = *(&parameters[1].var6.var6 + 1);
+    v91 = *(&parameters[1].var5.var6 + 1);
+    v92 = *(&parameters[1].var6.var2 + 1);
     LODWORD(v71) = undistortPoint(&v81, v40).u32[0];
   }
 
@@ -1106,35 +1106,35 @@ LABEL_29:
   v46 = CGRectGetMidY(v102);
   v47.f64[0] = MaxX;
   v47.f64[1] = v46;
-  v48 = *&a4->var5.var1;
-  v49 = *&a4->var6.var1;
-  v50 = LOBYTE(a4[1].var5.var6);
-  v51 = vmul_f32(*&a4->var2, vcvt_f32_f64(v47));
+  v48 = *&parameters->var5.var1;
+  v49 = *&parameters->var6.var1;
+  v50 = LOBYTE(parameters[1].var5.var6);
+  v51 = vmul_f32(*&parameters->var2, vcvt_f32_f64(v47));
   v68 = *&v49;
   v70 = *&v48;
   if (v50)
   {
-    v52 = *&a4->var5.var7;
-    v53 = *&a4->var4;
-    v81 = *&a4->var2;
+    v52 = *&parameters->var5.var7;
+    v53 = *&parameters->var4;
+    v81 = *&parameters->var2;
     v82 = v53;
     v83 = v48;
-    v84 = *&a4->var5.var5;
+    v84 = *&parameters->var5.var5;
     v85 = v52;
-    v54 = *&a4->var6.var5;
-    v55 = *&a4[1].var3;
+    v54 = *&parameters->var6.var5;
+    v55 = *&parameters[1].var3;
     v86 = v49;
     v87 = v54;
-    v56 = *&a4[1].var5.var2;
+    v56 = *&parameters[1].var5.var2;
     v88 = v55;
     v89 = v56;
     v90 = v50;
-    *&v95[15] = *&a4[2].var5.var7;
-    *v95 = *(&a4[2].var5.var3 + 1);
-    v94 = *(&a4[2].var4 + 1);
-    v93 = *(&a4[1].var6.var6 + 1);
-    v91 = *(&a4[1].var5.var6 + 1);
-    v92 = *(&a4[1].var6.var2 + 1);
+    *&v95[15] = *&parameters[2].var5.var7;
+    *v95 = *(&parameters[2].var5.var3 + 1);
+    v94 = *(&parameters[2].var4 + 1);
+    v93 = *(&parameters[1].var6.var6 + 1);
+    v91 = *(&parameters[1].var5.var6 + 1);
+    v92 = *(&parameters[1].var6.var2 + 1);
     LODWORD(v67) = undistortPoint(&v81, v51).u32[0];
     v57 = v72;
     v58 = v74;
@@ -1210,40 +1210,40 @@ LABEL_29:
   return result;
 }
 
-- (float)getHeightDerivativeForWidth:(float)a3 widthDerivative:(float)a4
+- (float)getHeightDerivativeForWidth:(float)width widthDerivative:(float)derivative
 {
   [(CinematicFramingRenderer *)self outputAspectRatioInDeviceOrientation];
   LODWORD(v7) = LODWORD(v8);
-  *&v8 = a3;
-  *&v9 = a4;
+  *&v8 = width;
+  *&v9 = derivative;
 
   [(CinematicFramingRenderer *)self _getHeightDerivativeForWidth:v8 widthDerivative:v9 outputAspectRatioInDeviceOrientation:v7];
   return result;
 }
 
-- (float)getHeightForWidth:(float)a3
+- (float)getHeightForWidth:(float)width
 {
   [(CinematicFramingRenderer *)self outputAspectRatioInDeviceOrientation];
   LODWORD(v5) = LODWORD(v6);
-  *&v6 = a3;
+  *&v6 = width;
 
   [(CinematicFramingRenderer *)self _getHeightForWidth:v6 outputAspectRatioInDeviceOrientation:v5];
   return result;
 }
 
-- (float)getWidthForHeight:(float)a3
+- (float)getWidthForHeight:(float)height
 {
   [(CinematicFramingRenderer *)self outputAspectRatioInDeviceOrientation];
   LODWORD(v5) = LODWORD(v6);
-  *&v6 = a3;
+  *&v6 = height;
 
   [(CinematicFramingRenderer *)self _getWidthForHeight:v6 outputAspectRatioInDeviceOrientation:v5];
   return result;
 }
 
-- (CGRect)adjustDisplayRectToFitInFramingSpace:(CGRect)a3
+- (CGRect)adjustDisplayRectToFitInFramingSpace:(CGRect)space
 {
-  [(CinematicFramingRenderer *)self _adjustDisplayRectToFitInFramingSpaceLandscapeLeft:rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height)];
+  [(CinematicFramingRenderer *)self _adjustDisplayRectToFitInFramingSpaceLandscapeLeft:rotateRectCCW(4 - self->_numCCWRotationsFromInputToFramingSpace, space.origin.x, space.origin.y, space.size.width, space.size.height)];
   numCCWRotationsFromInputToFramingSpace = self->_numCCWRotationsFromInputToFramingSpace;
 
   v9 = rotateRectCCW(numCCWRotationsFromInputToFramingSpace, v4, v5, v6, v7);
@@ -1300,35 +1300,35 @@ LABEL_29:
   return result;
 }
 
-- (float)_getHeightDerivativeForWidth:(float)a3 widthDerivative:(float)a4 outputAspectRatioInDeviceOrientation:(float)a5
+- (float)_getHeightDerivativeForWidth:(float)width widthDerivative:(float)derivative outputAspectRatioInDeviceOrientation:(float)orientation
 {
-  v5 = a4 * a5;
-  v6 = a5 * a5;
-  v7 = __sincosf_stret(a3 * 0.5);
+  v5 = derivative * orientation;
+  v6 = orientation * orientation;
+  v7 = __sincosf_stret(width * 0.5);
   return v5 / ((v7.__sinval * v7.__sinval) + ((v7.__cosval * v6) * v7.__cosval));
 }
 
-- (float)_getHeightForWidth:(float)a3 outputAspectRatioInDeviceOrientation:(float)a4
+- (float)_getHeightForWidth:(float)width outputAspectRatioInDeviceOrientation:(float)orientation
 {
-  v5 = tanf(a3 * 0.5);
-  v6 = atanf(v5 / a4);
+  v5 = tanf(width * 0.5);
+  v6 = atanf(v5 / orientation);
   return v6 + v6;
 }
 
-- (float)_getWidthForHeight:(float)a3 outputAspectRatioInDeviceOrientation:(float)a4
+- (float)_getWidthForHeight:(float)height outputAspectRatioInDeviceOrientation:(float)orientation
 {
-  v5 = tanf(a3 * 0.5);
-  v6 = atanf(v5 * a4);
+  v5 = tanf(height * 0.5);
+  v6 = atanf(v5 * orientation);
   return v6 + v6;
 }
 
-- (CGRect)_adjustDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)a3
+- (CGRect)_adjustDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)left
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(CinematicFramingRenderer *)self _scaleDisplayRectSizeToFit:a3.size.width, a3.size.height];
+  height = left.size.height;
+  width = left.size.width;
+  y = left.origin.y;
+  x = left.origin.x;
+  [(CinematicFramingRenderer *)self _scaleDisplayRectSizeToFit:left.size.width, left.size.height];
   v9 = v8;
   v11 = v10;
   v19.origin.x = x;
@@ -1355,10 +1355,10 @@ LABEL_29:
   return result;
 }
 
-- (CGSize)_scaleDisplayRectSizeToFit:(CGSize)a3
+- (CGSize)_scaleDisplayRectSizeToFit:(CGSize)fit
 {
-  height = a3.height;
-  width = a3.width;
+  height = fit.height;
+  width = fit.width;
   v6 = -1;
   v7 = -1.0;
   do
@@ -1400,13 +1400,13 @@ LABEL_29:
   return result;
 }
 
-- (CGSize)_searchValidSizeForStartSize:(CGSize)a3 invalidPoint:
+- (CGSize)_searchValidSizeForStartSize:(CGSize)size invalidPoint:
 {
   v4 = v3;
-  v15 = a3;
-  v16 = *&a3.height;
-  height = a3.height;
-  v7 = vcvt_f32_f64(a3);
+  sizeCopy = size;
+  v16 = *&size.height;
+  height = size.height;
+  v7 = vcvt_f32_f64(size);
   v8 = 1.0;
   v9 = 10;
   v10 = 0.5;
@@ -1414,7 +1414,7 @@ LABEL_29:
   {
     v11 = ((v8 + v10) * 0.5) + 0.05;
     v12 = vmul_n_f32(v7, v11);
-    if ([(CinematicFramingRenderer *)self _pointInFramingSpaceLandscapeLeftIsValid:COERCE_DOUBLE(vmul_n_f32(v4 withDisplayRect:v11)), -v12.f32[0] * 0.5, -v12.f32[1] * 0.5, v12.f32[0], v12.f32[1], v15, v16])
+    if ([(CinematicFramingRenderer *)self _pointInFramingSpaceLandscapeLeftIsValid:COERCE_DOUBLE(vmul_n_f32(v4 withDisplayRect:v11)), -v12.f32[0] * 0.5, -v12.f32[1] * 0.5, v12.f32[0], v12.f32[1], sizeCopy, v16])
     {
       v10 = (v8 + v10) * 0.5;
     }
@@ -1428,19 +1428,19 @@ LABEL_29:
   }
 
   while (v9);
-  v13 = v15.width * v10;
+  v13 = sizeCopy.width * v10;
   v14 = *&v16 * v10;
   result.height = v14;
   result.width = v13;
   return result;
 }
 
-- (CGRect)_moveDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)a3
+- (CGRect)_moveDisplayRectToFitInFramingSpaceLandscapeLeft:(CGRect)left
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = left.size.height;
+  width = left.size.width;
+  y = left.origin.y;
+  x = left.origin.x;
   [(CinematicFramingRenderer *)self framingSpaceBounds];
   v8 = CGRectGetWidth(v63);
   v64.origin.x = x;
@@ -1586,7 +1586,7 @@ LABEL_29:
   return CGRectInset(*&v46, v51, v50);
 }
 
-- (float32x2_t)_searchEarliestValidPointOnIntervalWithStart:(float32x2_t)a3 andEnd:(CGFloat)a4 displayRect:(CGFloat)a5
+- (float32x2_t)_searchEarliestValidPointOnIntervalWithStart:(float32x2_t)start andEnd:(CGFloat)end displayRect:(CGFloat)rect
 {
   v21 = a2.n128_f32[1];
   v22 = a2.n128_f32[0];
@@ -1594,27 +1594,27 @@ LABEL_29:
   do
   {
     v23 = a2;
-    v24 = vmul_f32(vadd_f32(a2.n128_u64[0], a3), 0x3F0000003F000000);
-    v25.origin.x = a4;
-    v25.origin.y = a5;
+    v24 = vmul_f32(vadd_f32(a2.n128_u64[0], start), 0x3F0000003F000000);
+    v25.origin.x = end;
+    v25.origin.y = rect;
     v25.size.width = a6;
     v25.size.height = a7;
     v14 = CGRectGetMinX(v25) + *v24.i32 - v22;
-    v26.origin.x = a4;
-    v26.origin.y = a5;
+    v26.origin.x = end;
+    v26.origin.y = rect;
     v26.size.width = a6;
     v26.size.height = a7;
     v15 = CGRectGetMinY(v26) + *&v24.i32[1] - v21;
-    v27.origin.x = a4;
-    v27.origin.y = a5;
+    v27.origin.x = end;
+    v27.origin.y = rect;
     v27.size.width = a6;
     v27.size.height = a7;
     Width = CGRectGetWidth(v27);
-    v28.origin.x = a4;
-    v28.origin.y = a5;
+    v28.origin.x = end;
+    v28.origin.y = rect;
     v28.size.width = a6;
     v28.size.height = a7;
-    v17 = [a1 _pointInFramingSpaceLandscapeLeftIsValid:*&v24 withDisplayRect:{v14, v15, Width, CGRectGetHeight(v28)}];
+    v17 = [self _pointInFramingSpaceLandscapeLeftIsValid:*&v24 withDisplayRect:{v14, v15, Width, CGRectGetHeight(v28)}];
     a2.n128_u64[1] = v23.n128_u64[1];
     if (v17)
     {
@@ -1628,25 +1628,25 @@ LABEL_29:
 
     v19 = vdup_n_s32(v18);
     a2.n128_u64[0] = vbsl_s8(v19, v23.n128_u64[0], v24);
-    a3 = vbsl_s8(v19, v24, a3);
+    start = vbsl_s8(v19, v24, start);
     --v13;
   }
 
   while (v13);
-  return a3;
+  return start;
 }
 
-- (BOOL)_pointInFramingSpaceLandscapeLeftIsValid:(CGRect)a3 withDisplayRect:
+- (BOOL)_pointInFramingSpaceLandscapeLeftIsValid:(CGRect)valid withDisplayRect:
 {
   v4 = v3;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v32 = *(&a3.origin.x + 1);
-  v9 = *&a3.origin.x;
-  v45.origin.x = a3.origin.y;
-  v45.origin.y = a3.size.width;
-  v45.size.width = a3.size.height;
+  height = valid.size.height;
+  width = valid.size.width;
+  y = valid.origin.y;
+  v32 = *(&valid.origin.x + 1);
+  v9 = *&valid.origin.x;
+  v45.origin.x = valid.origin.y;
+  v45.origin.y = valid.size.width;
+  v45.size.width = valid.size.height;
   v45.size.height = v3;
   v10 = v9 - CGRectGetMidX(v45);
   v33 = tanf(v10);
@@ -1701,13 +1701,13 @@ LABEL_29:
 
 - (void)initializeMetal
 {
-  v3 = [MEMORY[0x277CF6C78] metalDevice];
+  metalDevice = [MEMORY[0x277CF6C78] metalDevice];
   metalDevice = self->_metalDevice;
-  self->_metalDevice = v3;
+  self->_metalDevice = metalDevice;
 
-  v5 = [(MTLDevice *)self->_metalDevice newCommandQueue];
+  newCommandQueue = [(MTLDevice *)self->_metalDevice newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v5;
+  self->_commandQueue = newCommandQueue;
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = self->_metalDevice;
@@ -1742,13 +1742,13 @@ LABEL_29:
   return v2;
 }
 
-- (int)_createComputePipelinesForShaders:(id)a3
+- (int)_createComputePipelinesForShaders:(id)shaders
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = shaders;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v21 count:16];
   if (v4)
   {
@@ -1766,20 +1766,20 @@ LABEL_29:
 
         v9 = *(*(&v22 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:@"index"];
-        v11 = [v10 unsignedIntValue];
+        unsignedIntValue = [v10 unsignedIntValue];
 
         v12 = [v9 objectForKeyedSubscript:@"pixelFormat"];
-        v13 = [v12 unsignedIntValue];
+        unsignedIntValue2 = [v12 unsignedIntValue];
 
         MTLPixelFormatGetInfoForDevice();
         if ((v20 & 0x10) != 0)
         {
           v14 = [v9 objectForKeyedSubscript:@"kernelName"];
-          v15 = [(CinematicFramingRenderer *)self _compileComputeShader:v14 pixelFormat:v13];
-          v16 = pipelineComputeStates[v11];
-          pipelineComputeStates[v11] = v15;
+          v15 = [(CinematicFramingRenderer *)self _compileComputeShader:v14 pixelFormat:unsignedIntValue2];
+          v16 = pipelineComputeStates[unsignedIntValue];
+          pipelineComputeStates[unsignedIntValue] = v15;
 
-          if (!pipelineComputeStates[v11])
+          if (!pipelineComputeStates[unsignedIntValue])
           {
             [CinematicFramingRenderer _createComputePipelinesForShaders:];
             v17 = -12786;
@@ -1804,10 +1804,10 @@ LABEL_11:
   return v17;
 }
 
-- (id)_compileComputeShader:(id)a3 pixelFormat:(unint64_t)a4
+- (id)_compileComputeShader:(id)shader pixelFormat:(unint64_t)format
 {
-  v5 = a3;
-  if (!v5)
+  shaderCopy = shader;
+  if (!shaderCopy)
   {
     [CinematicFramingRenderer _compileComputeShader:pixelFormat:];
     v7 = 0;
@@ -1824,13 +1824,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v6 setLabel:v5];
-  v8 = [(MTLLibrary *)self->_library newFunctionWithName:v5];
+  [v6 setLabel:shaderCopy];
+  v8 = [(MTLLibrary *)self->_library newFunctionWithName:shaderCopy];
   [v7 setComputeFunction:v8];
 
-  v9 = [v7 computeFunction];
+  computeFunction = [v7 computeFunction];
 
-  if (!v9)
+  if (!computeFunction)
   {
     [CinematicFramingRenderer _compileComputeShader:pixelFormat:];
     goto LABEL_12;
@@ -1847,17 +1847,17 @@ LABEL_6:
   return v10;
 }
 
-- (void)_setShaderParametersForDisplayRect:(CGRect)a3 outputROI:(CGRect)a4 calibrationParameters:(id *)a5 commandEncoder:(id)a6
+- (void)_setShaderParametersForDisplayRect:(CGRect)rect outputROI:(CGRect)i calibrationParameters:(id *)parameters commandEncoder:(id)encoder
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = a6;
+  width = i.size.width;
+  height = i.size.height;
+  x = i.origin.x;
+  y = i.origin.y;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  encoderCopy = encoder;
   [(CinematicFramingRenderer *)self _rotationMatrixForDisplayRect:v10, v9, v8, v7];
   v30 = v14;
   v31 = v13;
@@ -1865,7 +1865,7 @@ LABEL_6:
   [(CinematicFramingRenderer *)self _outputPlaneSizeForDisplayRect:v10, v9, v8, v7];
   v17 = v16;
   v18 = vmul_f32(v16, 0xBF000000BF000000);
-  v19 = [(CinematicFramingRenderer *)self _outputPlaneCcwRotations];
+  _outputPlaneCcwRotations = [(CinematicFramingRenderer *)self _outputPlaneCcwRotations];
   v20.f64[0] = x;
   v20.f64[1] = y;
   v58 = 0u;
@@ -1895,27 +1895,27 @@ LABEL_6:
   v40 = vzip1q_s32(v31, v30).u64[0];
   v42 = vtrn2q_s32(v31, v30).u64[0];
   v44 = vzip1q_s32(vdupq_laneq_s32(v31, 2), vdupq_laneq_s32(v30, 2)).u64[0];
-  v22 = *&a5[2].var5.var3;
-  v56 = *&a5[2].var4;
+  v22 = *&parameters[2].var5.var3;
+  v56 = *&parameters[2].var4;
   v57 = v22;
-  v58 = *&a5[2].var5.var7;
-  v23 = *&a5[1].var5.var6;
-  v52 = *&a5[1].var5.var2;
+  v58 = *&parameters[2].var5.var7;
+  v23 = *&parameters[1].var5.var6;
+  v52 = *&parameters[1].var5.var2;
   v53 = v23;
-  v24 = *&a5[1].var6.var6;
-  v54 = *&a5[1].var6.var2;
+  v24 = *&parameters[1].var6.var6;
+  v54 = *&parameters[1].var6.var2;
   v55 = v24;
-  v25 = *&a5->var6.var1;
-  v48 = *&a5->var5.var5;
+  v25 = *&parameters->var6.var1;
+  v48 = *&parameters->var5.var5;
   v49 = v25;
-  v26 = *&a5[1].var3;
-  v50 = *&a5->var6.var5;
+  v26 = *&parameters[1].var3;
+  v50 = *&parameters->var6.var5;
   v51 = v26;
-  v27 = *&a5->var5.var1;
-  v46 = *&a5->var2;
+  v27 = *&parameters->var5.var1;
+  v46 = *&parameters->var2;
   v47 = v27;
-  LODWORD(v59) = v19;
-  [v12 setBytes:v35 length:512 atIndex:0];
+  LODWORD(v59) = _outputPlaneCcwRotations;
+  [encoderCopy setBytes:v35 length:512 atIndex:0];
 }
 
 - ($BFB66DEB4EA2CF190BAABA286C893F32)calibrationParams

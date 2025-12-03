@@ -1,16 +1,16 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC8SOSBuddy11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (void)application:didDiscardSceneSessions:;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationWillTerminate:(id)terminate;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_1000276E8(&qword_100354990, type metadata accessor for LaunchOptionsKey);
@@ -22,24 +22,24 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = sub_100026C34(v5);
 
   return v7 & 1;
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v3 = self;
+  selfCopy = self;
   sub_100027464();
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = self;
-  v10 = sub_10010682C(v7, v8);
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v10 = sub_10010682C(sessionCopy, optionsCopy);
 
   return v10;
 }

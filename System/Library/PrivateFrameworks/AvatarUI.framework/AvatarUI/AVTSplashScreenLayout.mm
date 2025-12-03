@@ -1,19 +1,19 @@
 @interface AVTSplashScreenLayout
 + (BOOL)isSmallScreen;
-+ (CGRect)buttonFrameForString:(id)a3 containerSize:(CGSize)a4 edgeInsets:(UIEdgeInsets)a5;
-+ (CGRect)primaryVideoFrameForContentFrame:(CGRect)a3 wantsSecondaryVideo:(BOOL)a4;
-+ (CGRect)secondaryVideoFrameForContentFrame:(CGRect)a3;
-+ (CGRect)subTitleFrameForString:(id)a3 titleFrame:(CGRect)a4 buttonFrame:(CGRect)a5 wantsSecondaryVideo:(BOOL)a6 containerSize:(CGSize)a7 labelEdgePadding:(double)a8;
-+ (CGRect)titleFrameForString:(id)a3 yOrigin:(double)a4 containerSize:(CGSize)a5 labelEdgePadding:(double)a6;
++ (CGRect)buttonFrameForString:(id)string containerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets;
++ (CGRect)primaryVideoFrameForContentFrame:(CGRect)frame wantsSecondaryVideo:(BOOL)video;
++ (CGRect)secondaryVideoFrameForContentFrame:(CGRect)frame;
++ (CGRect)subTitleFrameForString:(id)string titleFrame:(CGRect)frame buttonFrame:(CGRect)buttonFrame wantsSecondaryVideo:(BOOL)video containerSize:(CGSize)size labelEdgePadding:(double)padding;
++ (CGRect)titleFrameForString:(id)string yOrigin:(double)origin containerSize:(CGSize)size labelEdgePadding:(double)padding;
 + (CGSize)primaryVideoSize;
 + (CGSize)secondaryVideoSize;
 + (UIButton)blueButton;
 + (UIButton)cancelButton;
-+ (double)defaultLabelEdgePaddingForLabelEdgePaddingStyle:(unint64_t)a3 contentSizeCategory:(id)a4 numberOfLines:(int64_t)a5;
-- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)a3 edgeInsets:(UIEdgeInsets)a4 wantsSecondaryVideo:(BOOL)a5 labelEdgePaddingStyle:(unint64_t)a6;
-- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)a3 edgeInsets:(UIEdgeInsets)a4 wantsSecondaryVideo:(BOOL)a5 labelEdgePaddingStyle:(unint64_t)a6 currentContentSizeCategory:(id)a7;
++ (double)defaultLabelEdgePaddingForLabelEdgePaddingStyle:(unint64_t)style contentSizeCategory:(id)category numberOfLines:(int64_t)lines;
+- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets wantsSecondaryVideo:(BOOL)video labelEdgePaddingStyle:(unint64_t)style;
+- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets wantsSecondaryVideo:(BOOL)video labelEdgePaddingStyle:(unint64_t)style currentContentSizeCategory:(id)category;
 - (AVTSplashScreenLayoutDelegate)delegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)buttonFrame;
 - (CGRect)primaryVideoFrame;
 - (CGRect)secondaryVideoFrame;
@@ -23,17 +23,17 @@
 - (CGSize)unconstrainedContentSize;
 - (UIEdgeInsets)edgeInsets;
 - (unint64_t)hash;
-- (void)calculateLayoutWithTitleString:(id)a3 subTitleString:(id)a4 buttonTitle:(id)a5;
+- (void)calculateLayoutWithTitleString:(id)string subTitleString:(id)titleString buttonTitle:(id)title;
 - (void)dealloc;
-- (void)didChangeContentSizeCategory:(id)a3;
+- (void)didChangeContentSizeCategory:(id)category;
 @end
 
 @implementation AVTSplashScreenLayout
 
 + (BOOL)isSmallScreen
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
   return v4 <= 568.0;
@@ -41,9 +41,9 @@
 
 + (CGSize)primaryVideoSize
 {
-  v2 = [a1 isSmallScreen];
+  isSmallScreen = [self isSmallScreen];
   v3 = 480.0;
-  if (v2)
+  if (isSmallScreen)
   {
     v3 = 100.0;
   }
@@ -56,15 +56,15 @@
 
 + (CGSize)secondaryVideoSize
 {
-  v2 = [a1 isSmallScreen];
+  isSmallScreen = [self isSmallScreen];
   v3 = 854.0;
-  if (v2)
+  if (isSmallScreen)
   {
     v3 = 245.0;
   }
 
   v4 = 238.0;
-  if (v2)
+  if (isSmallScreen)
   {
     v4 = 50.0;
   }
@@ -84,8 +84,8 @@
   [v2 setTitleColor:v4 forState:1];
 
   v5 = +[AVTUIFontRepository splashContinueButtonFont];
-  v6 = [v2 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setFont:v5];
 
   v7 = +[AVTUIColorRepository splashScreenButtonBackgroundColor];
   [v2 setBackgroundColor:v7];
@@ -99,21 +99,21 @@
 {
   v2 = [MEMORY[0x1E69DC738] buttonWithType:1];
   v3 = +[AVTUIFontRepository splashContinueButtonFont];
-  v4 = [v2 titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setFont:v3];
 
   [v2 setRole:2];
 
   return v2;
 }
 
-+ (double)defaultLabelEdgePaddingForLabelEdgePaddingStyle:(unint64_t)a3 contentSizeCategory:(id)a4 numberOfLines:(int64_t)a5
++ (double)defaultLabelEdgePaddingForLabelEdgePaddingStyle:(unint64_t)style contentSizeCategory:(id)category numberOfLines:(int64_t)lines
 {
   result = 24.0;
-  if (a3 == 1)
+  if (style == 1)
   {
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(a4);
-    v8 = a5 > 3 || IsAccessibilityCategory;
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(category);
+    v8 = lines > 3 || IsAccessibilityCategory;
     result = 74.0;
     if (v8)
     {
@@ -124,13 +124,13 @@
   return result;
 }
 
-+ (CGRect)buttonFrameForString:(id)a3 containerSize:(CGSize)a4 edgeInsets:(UIEdgeInsets)a5
++ (CGRect)buttonFrameForString:(id)string containerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets
 {
-  bottom = a5.bottom;
-  height = a4.height;
-  width = a4.width;
+  bottom = insets.bottom;
+  height = size.height;
+  width = size.width;
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a4.width + -48.0;
+  v9 = size.width + -48.0;
   if (v9 <= 325.0)
   {
     v10 = v9;
@@ -142,11 +142,11 @@
   }
 
   v20 = *MEMORY[0x1E69DB648];
-  v11 = a3;
-  v12 = [a1 buttonFont];
-  v21[0] = v12;
+  stringCopy = string;
+  buttonFont = [self buttonFont];
+  v21[0] = buttonFont;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  [v11 boundingRectWithSize:0 options:v13 attributes:0 context:{v10 + -32.0, 1.79769313e308}];
+  [stringCopy boundingRectWithSize:0 options:v13 attributes:0 context:{v10 + -32.0, 1.79769313e308}];
   v15 = v14;
 
   v16 = fmax(v15 + 28.0, 50.0);
@@ -160,54 +160,54 @@
   return result;
 }
 
-+ (CGRect)titleFrameForString:(id)a3 yOrigin:(double)a4 containerSize:(CGSize)a5 labelEdgePadding:(double)a6
++ (CGRect)titleFrameForString:(id)string yOrigin:(double)origin containerSize:(CGSize)size labelEdgePadding:(double)padding
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v9 = a5.width - a6 * 2.0;
-  v10 = a3;
-  v11 = [a1 titleFont];
-  [v11 lineHeight];
+  v9 = size.width - padding * 2.0;
+  stringCopy = string;
+  titleFont = [self titleFont];
+  [titleFont lineHeight];
   v13 = ceil(v12);
-  v14 = [a1 titleFont];
-  [v14 leading];
+  titleFont2 = [self titleFont];
+  [titleFont2 leading];
   v16 = v15 + v13 * 2.0;
   v25 = *MEMORY[0x1E69DB648];
-  v17 = [a1 titleFont];
-  v26[0] = v17;
+  titleFont3 = [self titleFont];
+  v26[0] = titleFont3;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  [v10 boundingRectWithSize:1 options:v18 attributes:0 context:{v9, v16}];
+  [stringCopy boundingRectWithSize:1 options:v18 attributes:0 context:{v9, v16}];
   v20 = v19;
 
   v21 = ceil(v20);
-  v22 = a6;
-  v23 = a4;
+  paddingCopy = padding;
+  originCopy = origin;
   v24 = v9;
   result.size.height = v21;
   result.size.width = v24;
-  result.origin.y = v23;
-  result.origin.x = v22;
+  result.origin.y = originCopy;
+  result.origin.x = paddingCopy;
   return result;
 }
 
-+ (CGRect)subTitleFrameForString:(id)a3 titleFrame:(CGRect)a4 buttonFrame:(CGRect)a5 wantsSecondaryVideo:(BOOL)a6 containerSize:(CGSize)a7 labelEdgePadding:(double)a8
++ (CGRect)subTitleFrameForString:(id)string titleFrame:(CGRect)frame buttonFrame:(CGRect)buttonFrame wantsSecondaryVideo:(BOOL)video containerSize:(CGSize)size labelEdgePadding:(double)padding
 {
-  v8 = a6;
-  y = a5.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  x = a4.origin.x;
+  videoCopy = video;
+  y = buttonFrame.origin.y;
+  height = frame.size.height;
+  width = frame.size.width;
+  v11 = frame.origin.y;
+  x = frame.origin.x;
   v40[1] = *MEMORY[0x1E69E9840];
   v39 = *MEMORY[0x1E69DB648];
-  v14 = a3;
-  v15 = [a1 subTitleFont];
-  v40[0] = v15;
+  stringCopy = string;
+  subTitleFont = [self subTitleFont];
+  v40[0] = subTitleFont;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-  [v14 boundingRectWithSize:1 options:v16 attributes:0 context:{a8 + v41 * -2.0, 1.79769313e308}];
+  [stringCopy boundingRectWithSize:1 options:v16 attributes:0 context:{padding + v41 * -2.0, 1.79769313e308}];
   v18 = v17;
 
-  v19 = [a1 subTitleFont];
-  [v19 _scaledValueForValue:32.0];
+  subTitleFont2 = [self subTitleFont];
+  [subTitleFont2 _scaledValueForValue:32.0];
   v21 = v20;
 
   v42.origin.x = x;
@@ -215,16 +215,16 @@
   v42.size.width = width;
   v42.size.height = height;
   MaxY = CGRectGetMaxY(v42);
-  v23 = [a1 titleFont];
-  [v23 descender];
+  titleFont = [self titleFont];
+  [titleFont descender];
   v25 = MaxY + v24;
-  v26 = [a1 subTitleFont];
-  [v26 ascender];
+  subTitleFont3 = [self subTitleFont];
+  [subTitleFont3 ascender];
   v28 = v25 + v21 - v27;
 
   [objc_opt_class() primaryVideoSize];
   v30 = y + -40.0 + v29 * -0.3 + -40.0 - v28;
-  if (v8)
+  if (videoCopy)
   {
     [objc_opt_class() secondaryVideoSize];
     v30 = v30 + v31 * -0.3;
@@ -253,7 +253,7 @@
 
   v35 = v41;
   v36 = v28;
-  v37 = a8 + v41 * -2.0;
+  v37 = padding + v41 * -2.0;
   result.size.height = v34;
   result.size.width = v37;
   result.origin.y = v36;
@@ -261,15 +261,15 @@
   return result;
 }
 
-+ (CGRect)primaryVideoFrameForContentFrame:(CGRect)a3 wantsSecondaryVideo:(BOOL)a4
++ (CGRect)primaryVideoFrameForContentFrame:(CGRect)frame wantsSecondaryVideo:(BOOL)video
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = CGRectGetHeight(a3);
-  if (v4)
+  videoCopy = video;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = CGRectGetHeight(frame);
+  if (videoCopy)
   {
     v10 = v9 * 0.7;
   }
@@ -309,13 +309,13 @@
   return result;
 }
 
-+ (CGRect)secondaryVideoFrameForContentFrame:(CGRect)a3
++ (CGRect)secondaryVideoFrameForContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetHeight(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = CGRectGetHeight(frame);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -341,31 +341,31 @@
   return result;
 }
 
-- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)a3 edgeInsets:(UIEdgeInsets)a4 wantsSecondaryVideo:(BOOL)a5 labelEdgePaddingStyle:(unint64_t)a6
+- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets wantsSecondaryVideo:(BOOL)video labelEdgePaddingStyle:(unint64_t)style
 {
-  v7 = a5;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 preferredContentSizeCategory];
-  v17 = [(AVTSplashScreenLayout *)self initWithContainerSize:v7 edgeInsets:a6 wantsSecondaryVideo:v16 labelEdgePaddingStyle:width currentContentSizeCategory:height, top, left, bottom, right];
+  videoCopy = video;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  right = [(AVTSplashScreenLayout *)self initWithContainerSize:videoCopy edgeInsets:style wantsSecondaryVideo:preferredContentSizeCategory labelEdgePaddingStyle:width currentContentSizeCategory:height, top, left, bottom, right];
 
-  return v17;
+  return right;
 }
 
-- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)a3 edgeInsets:(UIEdgeInsets)a4 wantsSecondaryVideo:(BOOL)a5 labelEdgePaddingStyle:(unint64_t)a6 currentContentSizeCategory:(id)a7
+- (AVTSplashScreenLayout)initWithContainerSize:(CGSize)size edgeInsets:(UIEdgeInsets)insets wantsSecondaryVideo:(BOOL)video labelEdgePaddingStyle:(unint64_t)style currentContentSizeCategory:(id)category
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v16 = a7;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  categoryCopy = category;
   v23.receiver = self;
   v23.super_class = AVTSplashScreenLayout;
   v17 = [(AVTSplashScreenLayout *)&v23 init];
@@ -374,21 +374,21 @@
   {
     v17->_containerSize.width = width;
     v17->_containerSize.height = height;
-    v17->_labelEdgePaddingStyle = a6;
+    v17->_labelEdgePaddingStyle = style;
     v17->_edgeInsets.top = top;
     v17->_edgeInsets.left = left;
     v17->_edgeInsets.bottom = bottom;
     v17->_edgeInsets.right = right;
-    v17->_wantsSecondaryVideo = a5;
-    v19 = [v16 copy];
+    v17->_wantsSecondaryVideo = video;
+    v19 = [categoryCopy copy];
     currentContentSizeCategory = v18->_currentContentSizeCategory;
     v18->_currentContentSizeCategory = v19;
 
     v18->_needsLayout = 1;
     v18->_constrainToContainer = [objc_opt_class() isSmallScreen] ^ 1;
     v18->_unconstrainedContentSize = *MEMORY[0x1E695F060];
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v18 selector:sel_didChangeContentSizeCategory_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel_didChangeContentSizeCategory_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v18;
@@ -396,33 +396,33 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AVTSplashScreenLayout;
   [(AVTSplashScreenLayout *)&v4 dealloc];
 }
 
-- (void)calculateLayoutWithTitleString:(id)a3 subTitleString:(id)a4 buttonTitle:(id)a5
+- (void)calculateLayoutWithTitleString:(id)string subTitleString:(id)titleString buttonTitle:(id)title
 {
   v201[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  titleStringCopy = titleString;
+  titleCopy = title;
   if ([(AVTSplashScreenLayout *)self labelEdgePaddingStyle]== 1)
   {
     [(AVTSplashScreenLayout *)self containerSize];
     v12 = v11 + -148.0;
     v200 = *MEMORY[0x1E69DB648];
-    v13 = [objc_opt_class() subTitleFont];
-    v201[0] = v13;
+    subTitleFont = [objc_opt_class() subTitleFont];
+    v201[0] = subTitleFont;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v201 forKeys:&v200 count:1];
-    [v9 boundingRectWithSize:1 options:v14 attributes:0 context:{v12, 1.79769313e308}];
+    [titleStringCopy boundingRectWithSize:1 options:v14 attributes:0 context:{v12, 1.79769313e308}];
     v16 = v15;
 
-    v17 = [objc_opt_class() subTitleFont];
-    [v17 lineHeight];
+    subTitleFont2 = [objc_opt_class() subTitleFont];
+    [subTitleFont2 lineHeight];
     v19 = vcvtmd_s64_f64(ceil(v16) / v18);
   }
 
@@ -438,7 +438,7 @@
     v22 = v21;
     v24 = v23;
     [(AVTSplashScreenLayout *)self edgeInsets];
-    [v20 buttonFrameForString:v10 containerSize:v22 edgeInsets:{v24, v25, v26, v27, v28}];
+    [v20 buttonFrameForString:titleCopy containerSize:v22 edgeInsets:{v24, v25, v26, v27, v28}];
     v30 = v29;
     v190 = v31;
     v188 = v32;
@@ -481,32 +481,32 @@
 
     v180 = v42;
     v53 = objc_opt_class();
-    v54 = [(AVTSplashScreenLayout *)self labelEdgePaddingStyle];
-    v55 = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
-    [v53 defaultLabelEdgePaddingForLabelEdgePaddingStyle:v54 contentSizeCategory:v55 numberOfLines:v19];
+    labelEdgePaddingStyle = [(AVTSplashScreenLayout *)self labelEdgePaddingStyle];
+    currentContentSizeCategory = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
+    [v53 defaultLabelEdgePaddingForLabelEdgePaddingStyle:labelEdgePaddingStyle contentSizeCategory:currentContentSizeCategory numberOfLines:v19];
     v57 = v56;
 
     [(AVTSplashScreenLayout *)self edgeInsets];
     v59 = v58 + 96.0;
-    v60 = [objc_opt_class() titleFont];
-    [v60 ascender];
+    titleFont = [objc_opt_class() titleFont];
+    [titleFont ascender];
     v62 = v59 - v61;
 
     v63 = objc_opt_class();
     [(AVTSplashScreenLayout *)self containerSize];
-    [v63 titleFrameForString:v8 yOrigin:v62 containerSize:v64 labelEdgePadding:{v65, v57}];
+    [v63 titleFrameForString:stringCopy yOrigin:v62 containerSize:v64 labelEdgePadding:{v65, v57}];
     v67 = v66;
     v69 = v68;
     v71 = v70;
     v73 = v72;
     v74 = objc_opt_class();
-    v75 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
+    wantsSecondaryVideo = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
     [(AVTSplashScreenLayout *)self containerSize];
     v183 = v71;
     v186 = v67;
     v189 = v69;
     v178 = v73;
-    [v74 subTitleFrameForString:v9 titleFrame:v75 buttonFrame:v67 wantsSecondaryVideo:v69 containerSize:v71 labelEdgePadding:{v73, v30, v190, v188, v34, v76, v77, *&v57}];
+    [v74 subTitleFrameForString:titleStringCopy titleFrame:wantsSecondaryVideo buttonFrame:v67 wantsSecondaryVideo:v69 containerSize:v71 labelEdgePadding:{v73, v30, v190, v188, v34, v76, v77, *&v57}];
     v79 = v78;
     v81 = v80;
     v83 = v82;
@@ -533,30 +533,30 @@
 
     else
     {
-      v91 = [objc_opt_class() titleFont];
-      [v91 _scaledValueForValue:v89 - v180 + 96.0];
+      titleFont2 = [objc_opt_class() titleFont];
+      [titleFont2 _scaledValueForValue:v89 - v180 + 96.0];
       v93 = v92;
 
       v94 = self->_edgeInsets.top + fmax(v93, 58.0);
-      v95 = [objc_opt_class() titleFont];
-      [v95 ascender];
+      titleFont3 = [objc_opt_class() titleFont];
+      [titleFont3 ascender];
       v97 = v94 - v96;
 
       v98 = objc_opt_class();
       [(AVTSplashScreenLayout *)self containerSize];
-      [v98 titleFrameForString:v8 yOrigin:v97 containerSize:v99 labelEdgePadding:{v100, v57}];
+      [v98 titleFrameForString:stringCopy yOrigin:v97 containerSize:v99 labelEdgePadding:{v100, v57}];
       v102 = v101;
       v104 = v103;
       v106 = v105;
       v108 = v107;
       v109 = objc_opt_class();
-      v110 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
+      wantsSecondaryVideo2 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
       [(AVTSplashScreenLayout *)self containerSize];
       v186 = v102;
       v189 = v104;
       v183 = v106;
       v178 = v108;
-      [v109 subTitleFrameForString:v9 titleFrame:v110 buttonFrame:v102 wantsSecondaryVideo:v104 containerSize:v106 labelEdgePadding:{v108, v185, v190, v188, v184, v111, v112, *&v57}];
+      [v109 subTitleFrameForString:titleStringCopy titleFrame:wantsSecondaryVideo2 buttonFrame:v102 wantsSecondaryVideo:v104 containerSize:v106 labelEdgePadding:{v108, v185, v190, v188, v184, v111, v112, *&v57}];
       v79 = v113;
       v115 = v114;
       v117 = v116;
@@ -583,9 +583,9 @@
 
     else
     {
-      v120 = [(AVTSplashScreenLayout *)self constrainToContainer];
-      v121 = !v120;
-      if (!v120)
+      constrainToContainer = [(AVTSplashScreenLayout *)self constrainToContainer];
+      v121 = !constrainToContainer;
+      if (!constrainToContainer)
       {
         v89 = v90;
       }
@@ -636,8 +636,8 @@
     v147 = v187;
     if (v121)
     {
-      v148 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
-      if (v148)
+      wantsSecondaryVideo3 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
+      if (wantsSecondaryVideo3)
       {
         v149 = v176;
       }
@@ -647,7 +647,7 @@
         v149 = v137;
       }
 
-      if (v148)
+      if (wantsSecondaryVideo3)
       {
         v150 = v145;
       }
@@ -657,7 +657,7 @@
         v150 = v187;
       }
 
-      if (v148)
+      if (wantsSecondaryVideo3)
       {
         v151 = v143;
       }
@@ -668,7 +668,7 @@
       }
 
       v152 = v179;
-      if (v148)
+      if (wantsSecondaryVideo3)
       {
         v152 = v141;
       }
@@ -763,30 +763,30 @@
   }
 }
 
-- (void)didChangeContentSizeCategory:(id)a3
+- (void)didChangeContentSizeCategory:(id)category
 {
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  [(AVTSplashScreenLayout *)self setTitleFrame:a3, *MEMORY[0x1E695F058], v5, v6, v7];
+  [(AVTSplashScreenLayout *)self setTitleFrame:category, *MEMORY[0x1E695F058], v5, v6, v7];
   [(AVTSplashScreenLayout *)self setSubTitleFrame:v4, v5, v6, v7];
   [(AVTSplashScreenLayout *)self setPrimaryVideoFrame:v4, v5, v6, v7];
   [(AVTSplashScreenLayout *)self setSecondaryVideoFrame:v4, v5, v6, v7];
   [(AVTSplashScreenLayout *)self setButtonFrame:v4, v5, v6, v7];
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = [v9 copy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v10 = [preferredContentSizeCategory copy];
   [(AVTSplashScreenLayout *)self setCurrentContentSizeCategory:v10];
 
   [(AVTSplashScreenLayout *)self setNeedsLayout:1];
-  v11 = [(AVTSplashScreenLayout *)self delegate];
-  [v11 splashScreenLayoutDidChange:self];
+  delegate = [(AVTSplashScreenLayout *)self delegate];
+  [delegate splashScreenLayoutDidChange:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -794,7 +794,7 @@
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   [(AVTSplashScreenLayout *)self containerSize];
   v7 = v6;
   v9 = v8;
@@ -816,12 +816,12 @@
     goto LABEL_7;
   }
 
-  v27 = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
-  if (v27 == [v5 wantsSecondaryVideo])
+  wantsSecondaryVideo = [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
+  if (wantsSecondaryVideo == [v5 wantsSecondaryVideo])
   {
-    v28 = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
-    v29 = [v5 currentContentSizeCategory];
-    v13 = [v28 isEqualToString:v29];
+    currentContentSizeCategory = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
+    currentContentSizeCategory2 = [v5 currentContentSizeCategory];
+    v13 = [currentContentSizeCategory isEqualToString:currentContentSizeCategory2];
   }
 
   else
@@ -869,8 +869,8 @@ LABEL_9:
   }
 
   [(AVTSplashScreenLayout *)self wantsSecondaryVideo];
-  v17 = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
-  v18 = v16 ^ [v17 hash];
+  currentContentSizeCategory = [(AVTSplashScreenLayout *)self currentContentSizeCategory];
+  v18 = v16 ^ [currentContentSizeCategory hash];
 
   return v15 ^ v18;
 }

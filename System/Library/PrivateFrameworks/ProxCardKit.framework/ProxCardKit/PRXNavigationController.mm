@@ -1,23 +1,23 @@
 @interface PRXNavigationController
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 @end
 
 @implementation PRXNavigationController
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = PRXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(PRXNavigationController *)v4 preferredContentSizeDidChangeForChildContentContainer:v5];
+    [(PRXNavigationController *)containerCopy preferredContentSizeDidChangeForChildContentContainer:v5];
   }
 
-  v6 = [(PRXNavigationController *)self topViewController];
-  v7 = v6;
-  if (!v6 || [v6 isEqual:v4])
+  topViewController = [(PRXNavigationController *)self topViewController];
+  v7 = topViewController;
+  if (!topViewController || [topViewController isEqual:containerCopy])
   {
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(PRXNavigationController *)self setPreferredContentSize:?];
   }
 }

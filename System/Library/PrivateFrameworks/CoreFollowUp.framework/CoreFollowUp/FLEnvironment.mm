@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __35__FLEnvironment_currentEnvironment__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentEnvironment_onceToken != -1)
   {
     dispatch_once(&currentEnvironment_onceToken, block);
@@ -231,8 +231,8 @@ void __40__FLEnvironment_stressBundleIdentifiers__block_invoke()
 - (BOOL)normalizeExpirationToMidnight
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(FLEnvironment *)self followupDefaults];
-  v3 = [v2 valueForKey:@"NormalizeToMidnight"];
+  followupDefaults = [(FLEnvironment *)self followupDefaults];
+  v3 = [followupDefaults valueForKey:@"NormalizeToMidnight"];
 
   v4 = _FLLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -244,18 +244,18 @@ void __40__FLEnvironment_stressBundleIdentifiers__block_invoke()
 
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = normalizeExpirationToMidnight_result;
+    bOOLValue = normalizeExpirationToMidnight_result;
   }
 
-  normalizeExpirationToMidnight_result = v5;
+  normalizeExpirationToMidnight_result = bOOLValue;
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return bOOLValue;
 }
 
 - (double)oneDayTimeInterval

@@ -1,12 +1,12 @@
 @interface _PXBrowserDataSourceSelection
 - (NSArray)assets;
-- (_PXBrowserDataSourceSelection)initWithIndexPaths:(id)a3 dataSource:(id)a4;
-- (id)assetReferenceAtIndex:(int64_t)a3;
-- (id)displayAssetAtIndex:(int64_t)a3;
+- (_PXBrowserDataSourceSelection)initWithIndexPaths:(id)paths dataSource:(id)source;
+- (id)assetReferenceAtIndex:(int64_t)index;
+- (id)displayAssetAtIndex:(int64_t)index;
 - (int64_t)assetCount;
 - (int64_t)containerAssetCount;
 - (int64_t)estimatedAssetCount;
-- (int64_t)indexOfAssetReference:(id)a3;
+- (int64_t)indexOfAssetReference:(id)reference;
 - (int64_t)mediaType;
 @end
 
@@ -14,30 +14,30 @@
 
 - (int64_t)containerAssetCount
 {
-  v2 = [(_PXBrowserDataSourceSelection *)self dataSource];
-  v3 = [v2 totalNumberOfItems];
+  dataSource = [(_PXBrowserDataSourceSelection *)self dataSource];
+  totalNumberOfItems = [dataSource totalNumberOfItems];
 
-  return v3;
+  return totalNumberOfItems;
 }
 
-- (int64_t)indexOfAssetReference:(id)a3
+- (int64_t)indexOfAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"asset"];
-  v7 = [v5 objectForKeyedSubscript:@"indexPath"];
-  v8 = [v5 objectForKeyedSubscript:@"selectionPointer"];
-  v9 = [v5 objectForKeyedSubscript:@"dataSourceVersion"];
-  v10 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-  v11 = [v10 indexOfObject:v7];
+  referenceCopy = reference;
+  v6 = [referenceCopy objectForKeyedSubscript:@"asset"];
+  v7 = [referenceCopy objectForKeyedSubscript:@"indexPath"];
+  v8 = [referenceCopy objectForKeyedSubscript:@"selectionPointer"];
+  v9 = [referenceCopy objectForKeyedSubscript:@"dataSourceVersion"];
+  indexPaths = [(_PXBrowserDataSourceSelection *)self indexPaths];
+  v11 = [indexPaths indexOfObject:v7];
 
-  v12 = [(_PXBrowserDataSourceSelection *)self dataSource];
-  if ([v8 pointerValue] != self || (v13 = objc_msgSend(v12, "versionIdentifier"), v13 != objc_msgSend(v9, "longValue")))
+  dataSource = [(_PXBrowserDataSourceSelection *)self dataSource];
+  if ([v8 pointerValue] != self || (v13 = objc_msgSend(dataSource, "versionIdentifier"), v13 != objc_msgSend(v9, "longValue")))
   {
-    v17 = [v12 indexPathForDisplayAsset:v6 hintIndexPath:v7];
-    if (v17)
+    currentHandler = [dataSource indexPathForDisplayAsset:v6 hintIndexPath:v7];
+    if (currentHandler)
     {
-      v18 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-      v11 = [v18 indexOfObject:v17];
+      indexPaths2 = [(_PXBrowserDataSourceSelection *)self indexPaths];
+      v11 = [indexPaths2 indexOfObject:currentHandler];
     }
 
     else
@@ -52,8 +52,8 @@
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = a2;
-    v15 = [v12 displayAssetAtIndexPath:v7];
-    v16 = [v5 objectForKeyedSubscript:@"asset"];
+    v15 = [dataSource displayAssetAtIndexPath:v7];
+    v16 = [referenceCopy objectForKeyedSubscript:@"asset"];
     v21 = [v15 isEqual:v16];
 
     if (v21)
@@ -63,8 +63,8 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:v20 object:self file:@"PXBrowserSnapshot.m" lineNumber:233 description:@"version mismatch"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v20 object:self file:@"PXBrowserSnapshot.m" lineNumber:233 description:@"version mismatch"];
 LABEL_9:
 
     goto LABEL_10;
@@ -75,13 +75,13 @@ LABEL_11:
   return v14;
 }
 
-- (id)assetReferenceAtIndex:(int64_t)a3
+- (id)assetReferenceAtIndex:(int64_t)index
 {
-  v5 = [(_PXBrowserDataSourceSelection *)self assets];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  assets = [(_PXBrowserDataSourceSelection *)self assets];
+  v6 = [assets objectAtIndexedSubscript:index];
 
-  v7 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  indexPaths = [(_PXBrowserDataSourceSelection *)self indexPaths];
+  v8 = [indexPaths objectAtIndexedSubscript:index];
 
   v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
   [v9 setObject:v6 forKeyedSubscript:@"asset"];
@@ -90,41 +90,41 @@ LABEL_11:
   [v9 setObject:v10 forKeyedSubscript:@"selectionPointer"];
 
   v11 = MEMORY[0x1E696AD98];
-  v12 = [(_PXBrowserDataSourceSelection *)self dataSource];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "versionIdentifier")}];
+  dataSource = [(_PXBrowserDataSourceSelection *)self dataSource];
+  v13 = [v11 numberWithInteger:{objc_msgSend(dataSource, "versionIdentifier")}];
   [v9 setObject:v13 forKeyedSubscript:@"dataSourceVersion"];
 
   return v9;
 }
 
-- (id)displayAssetAtIndex:(int64_t)a3
+- (id)displayAssetAtIndex:(int64_t)index
 {
-  v4 = [(_PXBrowserDataSourceSelection *)self assets];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  assets = [(_PXBrowserDataSourceSelection *)self assets];
+  v5 = [assets objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)mediaType
 {
-  v2 = [(_PXBrowserDataSourceSelection *)self assets];
-  v3 = PXMediaTypeForAssets(v2);
+  assets = [(_PXBrowserDataSourceSelection *)self assets];
+  v3 = PXMediaTypeForAssets(assets);
 
   return v3;
 }
 
 - (int64_t)assetCount
 {
-  v2 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-  v3 = [v2 count];
+  indexPaths = [(_PXBrowserDataSourceSelection *)self indexPaths];
+  v3 = [indexPaths count];
 
   return v3;
 }
 
 - (int64_t)estimatedAssetCount
 {
-  v2 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-  v3 = [v2 count];
+  indexPaths = [(_PXBrowserDataSourceSelection *)self indexPaths];
+  v3 = [indexPaths count];
 
   return v3;
 }
@@ -135,9 +135,9 @@ LABEL_11:
   assets = self->_assets;
   if (!assets)
   {
-    v4 = [(_PXBrowserDataSourceSelection *)self indexPaths];
-    v5 = [(_PXBrowserDataSourceSelection *)self dataSource];
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    indexPaths = [(_PXBrowserDataSourceSelection *)self indexPaths];
+    dataSource = [(_PXBrowserDataSourceSelection *)self dataSource];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(indexPaths, "count")}];
     v7 = self->_assets;
     self->_assets = v6;
 
@@ -145,7 +145,7 @@ LABEL_11:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v4;
+    v8 = indexPaths;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -162,7 +162,7 @@ LABEL_11:
           }
 
           v13 = self->_assets;
-          v14 = [v5 displayAssetAtIndexPath:{*(*(&v16 + 1) + 8 * v12), v16}];
+          v14 = [dataSource displayAssetAtIndexPath:{*(*(&v16 + 1) + 8 * v12), v16}];
           [(NSMutableArray *)v13 addObject:v14];
 
           ++v12;
@@ -181,20 +181,20 @@ LABEL_11:
   return assets;
 }
 
-- (_PXBrowserDataSourceSelection)initWithIndexPaths:(id)a3 dataSource:(id)a4
+- (_PXBrowserDataSourceSelection)initWithIndexPaths:(id)paths dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = _PXBrowserDataSourceSelection;
   v8 = [(_PXBrowserDataSourceSelection *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [pathsCopy copy];
     indexPaths = v8->_indexPaths;
     v8->_indexPaths = v9;
 
-    objc_storeStrong(&v8->_dataSource, a4);
+    objc_storeStrong(&v8->_dataSource, source);
   }
 
   return v8;

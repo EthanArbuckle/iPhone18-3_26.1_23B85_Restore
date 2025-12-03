@@ -1,38 +1,38 @@
 @interface WFDCMapsLinkContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (NSDictionary)additionalRepresentationsForSerialization;
 - (id)mapsLink;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFDCMapsLinkContentItem
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationCopy = representation;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
-    v17 = [(WFDCMapsLinkContentItem *)self mapsLink];
-    v18 = [v17 mapsAppURL];
+    mapsLink = [(WFDCMapsLinkContentItem *)self mapsLink];
+    mapsAppURL = [mapsLink mapsAppURL];
     v19 = WFLocalizedString(@"Apple Maps URL");
-    v8[2](v8, v18, v19, 0);
+    representationCopy[2](representationCopy, mapsAppURL, v19, 0);
 
 LABEL_9:
     goto LABEL_26;
   }
 
-  v10 = NSStringFromClass(a5);
+  v10 = NSStringFromClass(class);
   v11 = [@"MKMapItem" isEqualToString:v10];
 
   if (!v11)
   {
-    v17 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (v8)[2](v8, 0, 0, v17);
+    mapsLink = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (representationCopy)[2](representationCopy, 0, 0, mapsLink);
     goto LABEL_9;
   }
 
@@ -55,58 +55,58 @@ LABEL_9:
   v13 = v12;
   _Block_object_dispose(&v45, 8);
   v14 = objc_alloc_init(v12);
-  v15 = [(WFDCMapsLinkContentItem *)self mapsLink];
-  v16 = [v15 centerLocation];
-  if (v16)
+  mapsLink2 = [(WFDCMapsLinkContentItem *)self mapsLink];
+  centerLocation = [mapsLink2 centerLocation];
+  if (centerLocation)
   {
-    [v14 setNaturalLanguageQuery:v16];
+    [v14 setNaturalLanguageQuery:centerLocation];
   }
 
   else
   {
-    v20 = [(WFDCMapsLinkContentItem *)self mapsLink];
-    v21 = [v20 searchLocation];
-    if (v21)
+    mapsLink3 = [(WFDCMapsLinkContentItem *)self mapsLink];
+    searchLocation = [mapsLink3 searchLocation];
+    if (searchLocation)
     {
-      [v14 setNaturalLanguageQuery:v21];
+      [v14 setNaturalLanguageQuery:searchLocation];
     }
 
     else
     {
-      v36 = [(WFDCMapsLinkContentItem *)self mapsLink];
-      v22 = [v36 destinationAddress];
-      if (v22)
+      mapsLink4 = [(WFDCMapsLinkContentItem *)self mapsLink];
+      destinationAddress = [mapsLink4 destinationAddress];
+      if (destinationAddress)
       {
-        [v14 setNaturalLanguageQuery:v22];
+        [v14 setNaturalLanguageQuery:destinationAddress];
       }
 
       else
       {
-        v35 = [(WFDCMapsLinkContentItem *)self mapsLink];
-        v23 = [v35 startAddress];
-        if (v23)
+        mapsLink5 = [(WFDCMapsLinkContentItem *)self mapsLink];
+        startAddress = [mapsLink5 startAddress];
+        if (startAddress)
         {
-          v24 = v23;
-          [v14 setNaturalLanguageQuery:v23];
+          v24 = startAddress;
+          [v14 setNaturalLanguageQuery:startAddress];
         }
 
         else
         {
-          v34 = [(WFDCMapsLinkContentItem *)self mapsLink];
-          v25 = [v34 searchNearQuery];
-          if (v25)
+          mapsLink6 = [(WFDCMapsLinkContentItem *)self mapsLink];
+          searchNearQuery = [mapsLink6 searchNearQuery];
+          if (searchNearQuery)
           {
-            v26 = v25;
-            [v14 setNaturalLanguageQuery:v25];
+            v26 = searchNearQuery;
+            [v14 setNaturalLanguageQuery:searchNearQuery];
           }
 
           else
           {
-            v27 = self;
+            selfCopy = self;
             v26 = 0;
-            v33 = [(WFDCMapsLinkContentItem *)v27 mapsLink];
-            v32 = [v33 searchQuery];
-            [v14 setNaturalLanguageQuery:v32];
+            mapsLink7 = [(WFDCMapsLinkContentItem *)selfCopy mapsLink];
+            searchQuery = [mapsLink7 searchQuery];
+            [v14 setNaturalLanguageQuery:searchQuery];
           }
 
           v24 = 0;
@@ -139,7 +139,7 @@ LABEL_9:
   v37[2] = __73__WFDCMapsLinkContentItem_generateObjectRepresentation_options_forClass___block_invoke;
   v37[3] = &unk_278347A00;
   v38 = v14;
-  v39 = v8;
+  v39 = representationCopy;
   v31 = v14;
   [v30 startWithCompletionHandler:v37];
 
@@ -208,33 +208,33 @@ void __73__WFDCMapsLinkContentItem_generateObjectRepresentation_options_forClass
 - (NSDictionary)additionalRepresentationsForSerialization
 {
   v3 = objc_opt_new();
-  v4 = [(WFDCMapsLinkContentItem *)self mapsLink];
-  v5 = [v4 mapsAppURL];
-  v6 = [*MEMORY[0x277CE1E90] identifier];
-  [v3 setObject:v5 forKey:v6];
+  mapsLink = [(WFDCMapsLinkContentItem *)self mapsLink];
+  mapsAppURL = [mapsLink mapsAppURL];
+  identifier = [*MEMORY[0x277CE1E90] identifier];
+  [v3 setObject:mapsAppURL forKey:identifier];
 
   v9.receiver = self;
   v9.super_class = WFDCMapsLinkContentItem;
-  v7 = [(WFContentItem *)&v9 additionalRepresentationsForSerialization];
-  [v3 addEntriesFromDictionary:v7];
+  additionalRepresentationsForSerialization = [(WFContentItem *)&v9 additionalRepresentationsForSerialization];
+  [v3 addEntriesFromDictionary:additionalRepresentationsForSerialization];
 
   return v3;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Maps Links", @"Maps Links");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Maps Link", @"Maps Link");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

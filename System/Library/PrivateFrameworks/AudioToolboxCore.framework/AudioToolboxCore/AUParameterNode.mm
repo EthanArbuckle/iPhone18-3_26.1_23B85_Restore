@@ -1,12 +1,12 @@
 @interface AUParameterNode
 - (AUParameterGroup)parentNode;
-- (AUParameterNode)initWithID:(id)a3 name:(id)a4;
+- (AUParameterNode)initWithID:(id)d name:(id)name;
 - (AUParameterObserverToken)tokenByAddingParameterObserver:(AUParameterObserver)observer;
 - (NSString)displayNameWithLength:(NSInteger)maximumLength;
 - (NSString)keyPath;
 - (id)_rootParent;
 - (id)description;
-- (void)_addRecObserver:(id)a3 autoObserver:(id)a4;
+- (void)_addRecObserver:(id)observer autoObserver:(id)autoObserver;
 - (void)dealloc;
 - (void)removeParameterObserver:(AUParameterObserverToken)token;
 @end
@@ -22,51 +22,51 @@
 
 - (NSString)displayNameWithLength:(NSInteger)maximumLength
 {
-  v4 = self;
-  v5 = v4;
-  if (v4)
+  selfCopy = self;
+  v5 = selfCopy;
+  if (selfCopy)
   {
-    v6 = v4;
+    v6 = selfCopy;
     while (1)
     {
-      v7 = [v6 implementorDisplayNameWithLengthCallback];
-      v8 = v7;
-      if (v7)
+      implementorDisplayNameWithLengthCallback = [v6 implementorDisplayNameWithLengthCallback];
+      v8 = implementorDisplayNameWithLengthCallback;
+      if (implementorDisplayNameWithLengthCallback)
       {
         break;
       }
 
-      v9 = [v6 parentNode];
+      parentNode = [v6 parentNode];
 
-      v6 = v9;
-      if (!v9)
+      v6 = parentNode;
+      if (!parentNode)
       {
         goto LABEL_5;
       }
     }
 
-    v10 = (*(v7 + 16))(v7, v5, maximumLength);
+    displayName = (*(implementorDisplayNameWithLengthCallback + 16))(implementorDisplayNameWithLengthCallback, v5, maximumLength);
   }
 
   else
   {
 LABEL_5:
-    v10 = [(AUParameterNode *)v5 displayName];
+    displayName = [(AUParameterNode *)v5 displayName];
   }
 
-  return v10;
+  return displayName;
 }
 
 - (void)removeParameterObserver:(AUParameterObserverToken)token
 {
   if (token)
   {
-    v5 = [(AUParameterNode *)self _rootParent];
-    v6 = v5;
-    if (v5)
+    _rootParent = [(AUParameterNode *)self _rootParent];
+    v6 = _rootParent;
+    if (_rootParent)
     {
       v7 = *(token + 8);
-      v8 = [v5 observationQueue];
+      observationQueue = [_rootParent observationQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __43__AUParameterNode_removeParameterObserver___block_invoke;
@@ -74,7 +74,7 @@ LABEL_5:
       block[4] = self;
       block[5] = token;
       v10 = v7;
-      dispatch_sync(v8, block);
+      dispatch_sync(observationQueue, block);
     }
   }
 }
@@ -139,29 +139,29 @@ LABEL_15:
   return result;
 }
 
-- (void)_addRecObserver:(id)a3 autoObserver:(id)a4
+- (void)_addRecObserver:(id)observer autoObserver:(id)autoObserver
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  autoObserverCopy = autoObserver;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(AUParameterNode *)self _rootParent];
-  v9 = v8;
-  if (v8)
+  _rootParent = [(AUParameterNode *)self _rootParent];
+  v9 = _rootParent;
+  if (_rootParent)
   {
-    v10 = [v8 observationQueue];
+    observationQueue = [_rootParent observationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__AUParameterNode__addRecObserver_autoObserver___block_invoke;
     block[3] = &unk_1E72C12F0;
     block[4] = self;
     v14 = v9;
-    v15 = v6;
+    v15 = observerCopy;
     v17 = &v18;
-    v16 = v7;
-    dispatch_sync(v10, block);
+    v16 = autoObserverCopy;
+    dispatch_sync(observationQueue, block);
   }
 
   v11 = v19[3];
@@ -198,11 +198,11 @@ void __48__AUParameterNode__addRecObserver_autoObserver___block_invoke(uint64_t 
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(AUParameterNode *)self _rootParent];
-  v6 = v5;
-  if (v5)
+  _rootParent = [(AUParameterNode *)self _rootParent];
+  v6 = _rootParent;
+  if (_rootParent)
   {
-    v7 = [v5 observationQueue];
+    observationQueue = [_rootParent observationQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __50__AUParameterNode_tokenByAddingParameterObserver___block_invoke;
@@ -211,7 +211,7 @@ void __48__AUParameterNode__addRecObserver_autoObserver___block_invoke(uint64_t 
     v11 = v6;
     v13 = &v14;
     v12 = v4;
-    dispatch_sync(v7, v10);
+    dispatch_sync(observationQueue, v10);
   }
 
   v8 = v15[3];
@@ -238,67 +238,67 @@ void __50__AUParameterNode_tokenByAddingParameterObserver___block_invoke(uint64_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AUParameterNode *)self identifier];
-  v6 = [(AUParameterNode *)self displayName];
-  v7 = [v3 stringWithFormat:@"<%@: %p, %@, %@>", v4, self, v5, v6];
+  identifier = [(AUParameterNode *)self identifier];
+  displayName = [(AUParameterNode *)self displayName];
+  v7 = [v3 stringWithFormat:@"<%@: %p, %@, %@>", v4, self, identifier, displayName];
 
   return v7;
 }
 
 - (id)_rootParent
 {
-  v3 = [(AUParameterNode *)self parentNode];
-  if (v3)
+  parentNode = [(AUParameterNode *)self parentNode];
+  if (parentNode)
   {
-    v4 = v3;
-    for (i = 0; ; v4 = i)
+    selfCopy = parentNode;
+    for (i = 0; ; selfCopy = i)
     {
-      v6 = [(AUParameterNode *)v4 parentNode];
+      parentNode2 = [(AUParameterNode *)selfCopy parentNode];
 
-      if (!v6)
+      if (!parentNode2)
       {
         break;
       }
 
-      i = v6;
+      i = parentNode2;
     }
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (NSString)keyPath
 {
-  v3 = [(AUParameterNode *)self identifier];
-  v4 = [(AUParameterNode *)self parentNode];
-  v5 = v4;
-  if (v4)
+  identifier = [(AUParameterNode *)self identifier];
+  parentNode = [(AUParameterNode *)self parentNode];
+  v5 = parentNode;
+  if (parentNode)
   {
-    v6 = [v4 keyPath];
-    if ([v6 length])
+    keyPath = [parentNode keyPath];
+    if ([keyPath length])
     {
-      v7 = [(AUParameterNode *)self parentNode];
-      v8 = [v7 keyPath];
-      v9 = [v8 stringByAppendingFormat:@".%@", v3];
+      parentNode2 = [(AUParameterNode *)self parentNode];
+      keyPath2 = [parentNode2 keyPath];
+      v9 = [keyPath2 stringByAppendingFormat:@".%@", identifier];
 
-      v6 = v3;
-      v3 = v9;
+      keyPath = identifier;
+      identifier = v9;
     }
   }
 
-  return v3;
+  return identifier;
 }
 
 - (void)dealloc
@@ -338,15 +338,15 @@ void __50__AUParameterNode_tokenByAddingParameterObserver___block_invoke(uint64_
   [(AUParameterNode *)&v6 dealloc];
 }
 
-- (AUParameterNode)initWithID:(id)a3 name:(id)a4
+- (AUParameterNode)initWithID:(id)d name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 containsString:@"."])
+  dCopy = d;
+  nameCopy = name;
+  if ([dCopy containsString:@"."])
   {
     v12 = MEMORY[0x1E695DF30];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Identifier '%@' contains '.', which is reserved as a delimiter", v7];
-    v14 = [v12 exceptionWithName:@"AUInvalidNodeInfoException" reason:v13 userInfo:0];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Identifier '%@' contains '.', which is reserved as a delimiter", dCopy];
+    v14 = [v12 exceptionWithName:@"AUInvalidNodeInfoException" reason:dCopy userInfo:0];
     v15 = v14;
 
     objc_exception_throw(v14);
@@ -358,8 +358,8 @@ void __50__AUParameterNode_tokenByAddingParameterObserver___block_invoke(uint64_
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_displayName, a4);
+    objc_storeStrong(&v9->_identifier, d);
+    objc_storeStrong(&v10->_displayName, name);
   }
 
   return v10;

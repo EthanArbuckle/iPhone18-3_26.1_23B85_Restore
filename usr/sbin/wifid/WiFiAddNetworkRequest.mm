@@ -1,13 +1,13 @@
 @interface WiFiAddNetworkRequest
-- (WiFiAddNetworkRequest)initWithClient:(__WiFiClient *)a3 network:(__WiFiNetwork *)a4 bundleId:(id)a5 localizedAppName:(id)a6 originator:(int)a7 poweredOff:(BOOL)a8 wapi:(BOOL)a9 sessionBased:(BOOL)a10 useSSIDPrefix:(BOOL)a11 callback:(void *)a12 context:(void *)a13 bypassPrompt:(BOOL)a14;
+- (WiFiAddNetworkRequest)initWithClient:(__WiFiClient *)client network:(__WiFiNetwork *)network bundleId:(id)id localizedAppName:(id)name originator:(int)originator poweredOff:(BOOL)off wapi:(BOOL)wapi sessionBased:(BOOL)self0 useSSIDPrefix:(BOOL)self1 callback:(void *)self2 context:(void *)self3 bypassPrompt:(BOOL)self4;
 - (__CFDictionary)_createAlertDictionary;
 - (void)dealloc;
-- (void)setNetworkMatchingPrefix:(__WiFiNetwork *)a3;
+- (void)setNetworkMatchingPrefix:(__WiFiNetwork *)prefix;
 @end
 
 @implementation WiFiAddNetworkRequest
 
-- (WiFiAddNetworkRequest)initWithClient:(__WiFiClient *)a3 network:(__WiFiNetwork *)a4 bundleId:(id)a5 localizedAppName:(id)a6 originator:(int)a7 poweredOff:(BOOL)a8 wapi:(BOOL)a9 sessionBased:(BOOL)a10 useSSIDPrefix:(BOOL)a11 callback:(void *)a12 context:(void *)a13 bypassPrompt:(BOOL)a14
+- (WiFiAddNetworkRequest)initWithClient:(__WiFiClient *)client network:(__WiFiNetwork *)network bundleId:(id)id localizedAppName:(id)name originator:(int)originator poweredOff:(BOOL)off wapi:(BOOL)wapi sessionBased:(BOOL)self0 useSSIDPrefix:(BOOL)self1 callback:(void *)self2 context:(void *)self3 bypassPrompt:(BOOL)self4
 {
   v21 = objc_autoreleasePoolPush();
   v27.receiver = self;
@@ -19,42 +19,42 @@
   }
 
   v23 = v22;
-  v22->_client = a3;
-  if (!a4)
+  v22->_client = client;
+  if (!network)
   {
     goto LABEL_11;
   }
 
-  v22->_network = a4;
-  if (!a5)
+  v22->_network = network;
+  if (!id)
   {
     goto LABEL_11;
   }
 
-  if (a7)
+  if (originator)
   {
-    v22->_localizedApplicationName = [a6 copy];
+    v22->_localizedApplicationName = [name copy];
   }
 
-  v23->_originator = a7;
-  v23->_bundleId = [a5 copy];
-  v23->_poweredOff = a8;
-  v23->_wapi = a9;
-  v23->_sessionBased = a10;
-  v23->_callback = a12;
-  v23->_context = a13;
-  v23->_usingPrefix = a11;
-  v23->_bypassPrompt = a14;
-  v24 = [(WiFiAddNetworkRequest *)v23 _createAlertDictionary];
-  if (!v24)
+  v23->_originator = originator;
+  v23->_bundleId = [id copy];
+  v23->_poweredOff = off;
+  v23->_wapi = wapi;
+  v23->_sessionBased = based;
+  v23->_callback = callback;
+  v23->_context = context;
+  v23->_usingPrefix = prefix;
+  v23->_bypassPrompt = prompt;
+  _createAlertDictionary = [(WiFiAddNetworkRequest *)v23 _createAlertDictionary];
+  if (!_createAlertDictionary)
   {
-    sub_100187B58(a5);
+    sub_100187B58(id);
 LABEL_11:
     v23 = 0;
     goto LABEL_9;
   }
 
-  v23->_alertDictionary = v24;
+  v23->_alertDictionary = _createAlertDictionary;
   CFRetain(v23->_network);
   client = v23->_client;
   if (client)
@@ -88,15 +88,15 @@ LABEL_9:
   [(WiFiAddNetworkRequest *)&v5 dealloc];
 }
 
-- (void)setNetworkMatchingPrefix:(__WiFiNetwork *)a3
+- (void)setNetworkMatchingPrefix:(__WiFiNetwork *)prefix
 {
   if (self->_usingPrefix)
   {
     network = self->_network;
-    v6 = sub_10000A878(a3);
+    v6 = sub_10000A878(prefix);
     sub_10000AD34(network, @"SSID_STR", v6);
     v7 = self->_network;
-    v8 = sub_10001CA74(a3);
+    v8 = sub_10001CA74(prefix);
     sub_10000AD34(v7, @"SSID", v8);
 
     self->_alertDictionary = [(WiFiAddNetworkRequest *)self _createAlertDictionary];

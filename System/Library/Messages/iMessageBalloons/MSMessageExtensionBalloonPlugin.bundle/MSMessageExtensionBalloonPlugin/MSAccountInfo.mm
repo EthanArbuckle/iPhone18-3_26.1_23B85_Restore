@@ -66,16 +66,16 @@
 
   if (v8)
   {
-    v16 = [v8 strippedLogin];
+    strippedLogin = [v8 strippedLogin];
     goto LABEL_16;
   }
 
 LABEL_15:
-  v16 = [v9 strippedLogin];
+  strippedLogin = [v9 strippedLogin];
   v8 = 0;
 LABEL_16:
 
-  return v16;
+  return strippedLogin;
 }
 
 @end

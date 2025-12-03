@@ -2,10 +2,10 @@
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
 + (BOOL)isEnabled;
 + (id)friendlyName;
-- (PedestrianARSessionMonitor)initWithObserver:(id)a3;
+- (PedestrianARSessionMonitor)initWithObserver:(id)observer;
 - (PedestrianARSessionMonitorObserver)observer;
 - (void)dealloc;
-- (void)setShouldShowPedestrianAR:(BOOL)a3;
+- (void)setShouldShowPedestrianAR:(BOOL)r;
 @end
 
 @implementation PedestrianARSessionMonitor
@@ -17,25 +17,25 @@
   return WeakRetained;
 }
 
-- (void)setShouldShowPedestrianAR:(BOOL)a3
+- (void)setShouldShowPedestrianAR:(BOOL)r
 {
-  if (self->_shouldShowPedestrianAR != a3)
+  if (self->_shouldShowPedestrianAR != r)
   {
-    v3 = a3;
+    rCopy = r;
     v5 = sub_100A39E8C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v8 = @"NO";
-      if (v3)
+      if (rCopy)
       {
         v8 = @"YES";
       }
 
       v9 = v8;
       v11 = 134349570;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v7;
       v15 = 2112;
@@ -43,9 +43,9 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %@: updating state: %@", &v11, 0x20u);
     }
 
-    self->_shouldShowPedestrianAR = v3;
-    v10 = [(PedestrianARSessionMonitor *)self observer];
-    [v10 monitor:self didChangeState:self->_shouldShowPedestrianAR];
+    self->_shouldShowPedestrianAR = rCopy;
+    observer = [(PedestrianARSessionMonitor *)self observer];
+    [observer monitor:self didChangeState:self->_shouldShowPedestrianAR];
   }
 }
 
@@ -57,7 +57,7 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] %@ deallocing", buf, 0x16u);
@@ -68,10 +68,10 @@
   [(PedestrianARSessionMonitor *)&v6 dealloc];
 }
 
-- (PedestrianARSessionMonitor)initWithObserver:(id)a3
+- (PedestrianARSessionMonitor)initWithObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v10 = sub_10006D178();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -117,7 +117,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] %@ initializing", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
   }
 
   return v5;
@@ -165,7 +165,7 @@
 
 + (BOOL)isEnabled
 {
-  [a1 enablementGEOConfigKey];
+  [self enablementGEOConfigKey];
 
   return GEOConfigGetBOOL();
 }

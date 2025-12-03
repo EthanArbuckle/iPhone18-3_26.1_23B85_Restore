@@ -4,9 +4,9 @@
 - (id)_hourMarker;
 - (id)_largeTick;
 - (id)_smallTick;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (id)transitionalPaletteFromDialColor:(unint64_t)a3 toDialColor:(unint64_t)a4;
+- (id)transitionalPaletteFromDialColor:(unint64_t)color toDialColor:(unint64_t)dialColor;
 - (id)tritiumPalette;
 @end
 
@@ -25,22 +25,22 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = NTKBlackcombColorPalette;
-  v4 = [(NTKFaceColorPalette *)&v7 identifier];
-  v5 = [v3 stringWithFormat:@"%@-%lu", v4, self->_dialColorStyle];
+  identifier = [(NTKFaceColorPalette *)&v7 identifier];
+  v5 = [v3 stringWithFormat:@"%@-%lu", identifier, self->_dialColorStyle];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKBlackcombColorPalette;
-  v4 = [(NTKFaceColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKFaceColorPalette *)&v6 copyWithZone:zone];
   v4[11] = [(NTKBlackcombColorPalette *)self dialColorStyle];
   return v4;
 }
 
-- (id)transitionalPaletteFromDialColor:(unint64_t)a3 toDialColor:(unint64_t)a4
+- (id)transitionalPaletteFromDialColor:(unint64_t)color toDialColor:(unint64_t)dialColor
 {
   dialColorTransitionalPalette = self->_dialColorTransitionalPalette;
   if (!dialColorTransitionalPalette)
@@ -52,18 +52,18 @@
     dialColorTransitionalPalette = self->_dialColorTransitionalPalette;
   }
 
-  v10 = [(NTKInterpolatedColorPalette *)dialColorTransitionalPalette fromPalette];
-  v11 = [(NTKInterpolatedColorPalette *)self->_dialColorTransitionalPalette toPalette];
-  v12 = [(NTKFaceColorPalette *)self configuration];
-  v13 = [v12 copy];
-  [v10 setConfiguration:v13];
+  fromPalette = [(NTKInterpolatedColorPalette *)dialColorTransitionalPalette fromPalette];
+  toPalette = [(NTKInterpolatedColorPalette *)self->_dialColorTransitionalPalette toPalette];
+  configuration = [(NTKFaceColorPalette *)self configuration];
+  v13 = [configuration copy];
+  [fromPalette setConfiguration:v13];
 
-  v14 = [(NTKFaceColorPalette *)self configuration];
-  v15 = [v14 copy];
-  [v11 setConfiguration:v15];
+  configuration2 = [(NTKFaceColorPalette *)self configuration];
+  v15 = [configuration2 copy];
+  [toPalette setConfiguration:v15];
 
-  [v10 setDialColorStyle:a3];
-  [v11 setDialColorStyle:a4];
+  [fromPalette setDialColorStyle:color];
+  [toPalette setDialColorStyle:dialColor];
   v16 = self->_dialColorTransitionalPalette;
   v17 = v16;
 
@@ -72,50 +72,50 @@
 
 - (id)_background
 {
-  v3 = [(NTKBlackcombColorPalette *)self dialColorStyle];
-  if (v3 == 1)
+  dialColorStyle = [(NTKBlackcombColorPalette *)self dialColorStyle];
+  if (dialColorStyle == 1)
   {
-    v3 = [(NTKBlackcombColorPalette *)self lightBackground];
+    dialColorStyle = [(NTKBlackcombColorPalette *)self lightBackground];
   }
 
-  else if (!v3)
+  else if (!dialColorStyle)
   {
-    v3 = [(NTKBlackcombColorPalette *)self darkBackground];
+    dialColorStyle = [(NTKBlackcombColorPalette *)self darkBackground];
   }
 
-  return v3;
+  return dialColorStyle;
 }
 
 - (id)_hourMarker
 {
-  v3 = [(NTKBlackcombColorPalette *)self dialColorStyle];
-  if (v3 == 1)
+  dialColorStyle = [(NTKBlackcombColorPalette *)self dialColorStyle];
+  if (dialColorStyle == 1)
   {
-    v3 = [(NTKBlackcombColorPalette *)self darkHourMarker];
+    dialColorStyle = [(NTKBlackcombColorPalette *)self darkHourMarker];
   }
 
-  else if (!v3)
+  else if (!dialColorStyle)
   {
-    v3 = [(NTKBlackcombColorPalette *)self lightHourMarker];
+    dialColorStyle = [(NTKBlackcombColorPalette *)self lightHourMarker];
   }
 
-  return v3;
+  return dialColorStyle;
 }
 
 - (id)_smallTick
 {
-  v2 = [(NTKBlackcombColorPalette *)self hourMarker];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  hourMarker = [(NTKBlackcombColorPalette *)self hourMarker];
+  v3 = [hourMarker colorWithAlphaComponent:0.3];
 
   return v3;
 }
 
 - (id)_largeTick
 {
-  v4 = [(NTKBlackcombColorPalette *)self dialColorStyle];
-  if (v4)
+  dialColorStyle = [(NTKBlackcombColorPalette *)self dialColorStyle];
+  if (dialColorStyle)
   {
-    if (v4 != 1)
+    if (dialColorStyle != 1)
     {
       goto LABEL_6;
     }
@@ -128,8 +128,8 @@
     v5 = 0.7;
   }
 
-  v6 = [(NTKBlackcombColorPalette *)self hourMarker];
-  v2 = [v6 colorWithAlphaComponent:v5];
+  hourMarker = [(NTKBlackcombColorPalette *)self hourMarker];
+  v2 = [hourMarker colorWithAlphaComponent:v5];
 
 LABEL_6:
 
@@ -140,10 +140,10 @@ LABEL_6:
 {
   v4.receiver = self;
   v4.super_class = NTKBlackcombColorPalette;
-  v2 = [(NTKFaceColorPalette *)&v4 tritiumPalette];
-  [v2 setDialColorStyle:0];
+  tritiumPalette = [(NTKFaceColorPalette *)&v4 tritiumPalette];
+  [tritiumPalette setDialColorStyle:0];
 
-  return v2;
+  return tritiumPalette;
 }
 
 @end

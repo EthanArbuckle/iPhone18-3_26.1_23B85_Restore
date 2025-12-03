@@ -1,34 +1,34 @@
 @interface MLRTask
-- (MLRTask)initWithCoder:(id)a3;
-- (MLRTask)initWithParameters:(id)a3 attachments:(id)a4;
-- (MLRTask)initWithParametersDict:(id)a3;
+- (MLRTask)initWithCoder:(id)coder;
+- (MLRTask)initWithParameters:(id)parameters attachments:(id)attachments;
+- (MLRTask)initWithParametersDict:(id)dict;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLRTask
 
-- (MLRTask)initWithParameters:(id)a3 attachments:(id)a4
+- (MLRTask)initWithParameters:(id)parameters attachments:(id)attachments
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  attachmentsCopy = attachments;
   v12.receiver = self;
   v12.super_class = MLRTask;
   v9 = [(MLRTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parameters, a3);
-    objc_storeStrong(&v10->_attachments, a4);
+    objc_storeStrong(&v9->_parameters, parameters);
+    objc_storeStrong(&v10->_attachments, attachments);
   }
 
   return v10;
 }
 
-- (MLRTask)initWithParametersDict:(id)a3
+- (MLRTask)initWithParametersDict:(id)dict
 {
-  v4 = a3;
-  v5 = [[MLRTaskParameters alloc] initWithParametersDict:v4];
+  dictCopy = dict;
+  v5 = [[MLRTaskParameters alloc] initWithParametersDict:dictCopy];
 
   v6 = [MLRTaskAttachments alloc];
   v7 = [(MLRTaskAttachments *)v6 initWithURLs:MEMORY[0x277CBEBF8]];
@@ -47,19 +47,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   parameters = self->_parameters;
-  v5 = a3;
-  [v5 encodeObject:parameters forKey:@"parameters"];
-  [v5 encodeObject:self->_attachments forKey:@"attachments"];
+  coderCopy = coder;
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
+  [coderCopy encodeObject:self->_attachments forKey:@"attachments"];
 }
 
-- (MLRTask)initWithCoder:(id)a3
+- (MLRTask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attachments"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameters"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attachments"];
 
   v7 = [(MLRTask *)self initWithParameters:v5 attachments:v6];
   return v7;

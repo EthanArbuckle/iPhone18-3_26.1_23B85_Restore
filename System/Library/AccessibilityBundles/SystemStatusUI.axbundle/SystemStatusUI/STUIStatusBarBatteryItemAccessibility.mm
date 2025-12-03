@@ -1,22 +1,22 @@
 @interface STUIStatusBarBatteryItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarBatteryItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarBatteryItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"batteryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"percentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarBatteryItem" isKindOfClass:@"STUIStatusBarItem"];
-  [v3 validateClass:@"STUIStatusBarBatteryItem" hasClassMethod:@"percentDisplayIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"batteryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"percentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDisplayItem" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBatteryItem" isKindOfClass:@"STUIStatusBarItem"];
+  [validationsCopy validateClass:@"STUIStatusBarBatteryItem" hasClassMethod:@"percentDisplayIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarBatteryItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,14 +42,14 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = STUIStatusBarBatteryItemAccessibility;
-  v8 = [(STUIStatusBarBatteryItemAccessibility *)&v22 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 safeValueForKey:@"identifier"];
+  v8 = [(STUIStatusBarBatteryItemAccessibility *)&v22 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  v9 = [itemCopy safeValueForKey:@"identifier"];
   v10 = [objc_opt_class() safeValueForKey:@"percentDisplayIdentifier"];
   if ([v9 isEqual:v10])
   {
@@ -57,7 +57,7 @@
     objc_initWeak(&location, v11);
     v12 = [(STUIStatusBarBatteryItemAccessibility *)self safeUIViewForKey:@"percentView"];
     objc_initWeak(&from, v12);
-    if ([v7 safeBoolForKey:@"isEnabled"])
+    if ([itemCopy safeBoolForKey:@"isEnabled"])
     {
       v17[0] = MEMORY[0x29EDCA5F8];
       v17[1] = 3221225472;

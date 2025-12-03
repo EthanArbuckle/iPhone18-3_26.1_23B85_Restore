@@ -1,40 +1,40 @@
 @interface BKHIDGenericGestureEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)_postEvent:(__IOHIDEvent *)a3 toDestination:(id)a4 usingDispatcher:(id)a5;
-- (void)serviceDidDisappear:(id)a3;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)_postEvent:(__IOHIDEvent *)event toDestination:(id)destination usingDispatcher:(id)dispatcher;
+- (void)serviceDidDisappear:(id)disappear;
 @end
 
 @implementation BKHIDGenericGestureEventProcessor
 
-- (void)_postEvent:(__IOHIDEvent *)a3 toDestination:(id)a4 usingDispatcher:(id)a5
+- (void)_postEvent:(__IOHIDEvent *)event toDestination:(id)destination usingDispatcher:(id)dispatcher
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  destinationCopy = destination;
+  dispatcherCopy = dispatcher;
   v8 = BKLogGenericGesture();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = destinationCopy;
     _os_log_impl(&dword_241980000, v8, OS_LOG_TYPE_DEFAULT, "  send to %{public}@", &v12, 0xCu);
   }
 
   Copy = IOHIDEventCreateCopy();
-  v10 = [MEMORY[0x277CF0610] baseAttributesFromProvider:v6];
+  v10 = [MEMORY[0x277CF0610] baseAttributesFromProvider:destinationCopy];
   BKSHIDEventSetAttributes();
-  [v7 postEvent:Copy toDestination:v6];
+  [dispatcherCopy postEvent:Copy toDestination:destinationCopy];
 
   CFRelease(Copy);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disappearCopy = disappear;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 senderID];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v5];
+  senderID = [disappearCopy senderID];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:senderID];
   v7 = [(NSMutableDictionary *)self->_pendingDestinationsPerSenderID objectForKey:v6];
   if ([v7 count])
   {
@@ -93,13 +93,13 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
-  objc_storeStrong(&self->_eventDispatcher, a5);
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
+  objc_storeStrong(&self->_eventDispatcher, dispatcher);
   if (IOHIDEventGetType() == 39)
   {
     v11 = BKLogGenericGesture();
@@ -127,7 +127,7 @@
 
     v14 = Phase;
     os_unfair_lock_lock(&self->_lock);
-    v44 = [v8 senderID];
+    senderID = [senderCopy senderID];
     [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
     v45 = v15 = v14 & 0xC;
     v16 = [(NSMutableDictionary *)self->_pendingDestinationsPerSenderID objectForKeyedSubscript:?];
@@ -140,7 +140,7 @@
     else
     {
       v17 = v16;
-      v16 = [v9 destinationsForEvent:v10 fromSender:v8];
+      v16 = [dispatcherCopy destinationsForEvent:v10 fromSender:senderCopy];
       v46 = v16;
     }
 
@@ -163,7 +163,7 @@
             objc_enumerationMutation(v20);
           }
 
-          [(BKHIDGenericGestureEventProcessor *)self _postEvent:v10 toDestination:*(*(&v47 + 1) + 8 * i) usingDispatcher:v9];
+          [(BKHIDGenericGestureEventProcessor *)self _postEvent:v10 toDestination:*(*(&v47 + 1) + 8 * i) usingDispatcher:dispatcherCopy];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -182,14 +182,14 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v52 = v44;
+          v52 = senderID;
           _os_log_impl(&dword_241980000, v26, OS_LOG_TYPE_DEFAULT, "  sender:%llX remove all destinations", buf, 0xCu);
         }
 
         [(NSMutableDictionary *)self->_pendingDestinationsPerSenderID removeObjectForKey:v45];
         [(NSMutableDictionary *)self->_genericGestureTypePerSenderID removeObjectForKey:v45];
         v27 = objc_opt_class();
-        v28 = v8;
+        v28 = senderCopy;
         if (v27)
         {
           if (objc_opt_isKindOfClass())
@@ -248,14 +248,14 @@ LABEL_41:
         {
           v37 = [v46 bs_map:&__block_literal_global];
           *buf = 134218242;
-          v52 = v44;
+          v52 = senderID;
           v53 = 2114;
           v54 = v37;
           _os_log_impl(&dword_241980000, v36, OS_LOG_TYPE_DEFAULT, "  sender:%llX acquire destinations:%{public}@", buf, 0x16u);
         }
 
         v38 = objc_opt_class();
-        v39 = v8;
+        v39 = senderCopy;
         if (v38)
         {
           if (objc_opt_isKindOfClass())

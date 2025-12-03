@@ -1,9 +1,9 @@
 @interface HDOntologyTSVScanner
-- (BOOL)scanLongLong:(int64_t *)a3;
-- (BOOL)scanString:(id *)a3;
+- (BOOL)scanLongLong:(int64_t *)long;
+- (BOOL)scanString:(id *)string;
 - (HDOntologyTSVScanner)init;
-- (HDOntologyTSVScanner)initWithString:(id)a3;
-- (id)_unescapeTSVField:(uint64_t)a1;
+- (HDOntologyTSVScanner)initWithString:(id)string;
+- (id)_unescapeTSVField:(uint64_t)field;
 - (id)description;
 @end
 
@@ -19,15 +19,15 @@
   return 0;
 }
 
-- (HDOntologyTSVScanner)initWithString:(id)a3
+- (HDOntologyTSVScanner)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = HDOntologyTSVScanner;
   v5 = [(HDOntologyTSVScanner *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v4];
+    v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:stringCopy];
     scanner = v5->_scanner;
     v5->_scanner = v6;
 
@@ -39,10 +39,10 @@
 
 - (id)description
 {
-  v3 = [(NSScanner *)self->_scanner string];
-  v4 = [(NSScanner *)self->_scanner scanLocation];
-  v5 = [v3 length];
-  v6 = v5 + ~v4;
+  string = [(NSScanner *)self->_scanner string];
+  scanLocation = [(NSScanner *)self->_scanner scanLocation];
+  v5 = [string length];
+  v6 = v5 + ~scanLocation;
   if (v6 >= 0xA)
   {
     v7 = 10;
@@ -50,7 +50,7 @@
 
   else
   {
-    v7 = v5 + ~v4;
+    v7 = v5 + ~scanLocation;
   }
 
   if (v6 >= 0xA)
@@ -63,15 +63,15 @@
     v8 = &stru_28636E7C8;
   }
 
-  v9 = [v3 substringWithRange:{v4, v7}];
+  v9 = [string substringWithRange:{scanLocation, v7}];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p %@%@>", objc_opt_class(), self, v9, v8];
 
   return v10;
 }
 
-- (BOOL)scanLongLong:(int64_t *)a3
+- (BOOL)scanLongLong:(int64_t *)long
 {
-  v4 = [(NSScanner *)self->_scanner scanLongLong:a3];
+  v4 = [(NSScanner *)self->_scanner scanLongLong:long];
   if (![(NSScanner *)self->_scanner scanString:@"\t" intoString:0])
   {
     [(HDOntologyTSVScanner *)self scanString:0];
@@ -80,22 +80,22 @@
   return v4;
 }
 
-- (BOOL)scanString:(id *)a3
+- (BOOL)scanString:(id *)string
 {
-  v5 = [(NSScanner *)self->_scanner scanUpToString:@"\t" intoString:a3];
+  v5 = [(NSScanner *)self->_scanner scanUpToString:@"\t" intoString:string];
   v6 = v5;
-  if (a3 && v5)
+  if (string && v5)
   {
-    *a3 = [(HDOntologyTSVScanner *)self _unescapeTSVField:?];
+    *string = [(HDOntologyTSVScanner *)self _unescapeTSVField:?];
   }
 
   [(NSScanner *)self->_scanner scanString:@"\t" intoString:0];
   return v6;
 }
 
-- (id)_unescapeTSVField:(uint64_t)a1
+- (id)_unescapeTSVField:(uint64_t)field
 {
-  if (a1)
+  if (field)
   {
     v2 = [MEMORY[0x277CCAB68] stringWithString:a2];
     [v2 replaceOccurrencesOfString:@"\\t" withString:@"\t" options:2 range:{0, objc_msgSend(v2, "length")}];

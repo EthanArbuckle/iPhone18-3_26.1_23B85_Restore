@@ -1,7 +1,7 @@
 @interface EBState
-- (EBState)initWithCancelDelegate:(id)a3;
+- (EBState)initWithCancelDelegate:(id)delegate;
 - (void)dealloc;
-- (void)setResources:(id)a3;
+- (void)setResources:(id)resources;
 @end
 
 @implementation EBState
@@ -43,9 +43,9 @@
   [(EBState *)&v7 dealloc];
 }
 
-- (EBState)initWithCancelDelegate:(id)a3
+- (EBState)initWithCancelDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = EBState;
   v6 = [(EBState *)&v9 init];
@@ -54,22 +54,22 @@
   {
     *(v6 + 24) = 0u;
     *(v6 + 8) = 0u;
-    objc_storeStrong(v6 + 7, a3);
+    objc_storeStrong(v6 + 7, delegate);
   }
 
   return v7;
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   mResources = self->mResources;
   p_mResources = &self->mResources;
-  if (mResources != v5)
+  if (mResources != resourcesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mResources, a3);
-    v5 = v8;
+    v8 = resourcesCopy;
+    objc_storeStrong(p_mResources, resources);
+    resourcesCopy = v8;
   }
 }
 

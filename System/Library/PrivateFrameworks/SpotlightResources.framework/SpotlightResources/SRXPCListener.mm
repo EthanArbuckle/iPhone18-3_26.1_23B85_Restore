@@ -1,21 +1,21 @@
 @interface SRXPCListener
-+ (void)handleCommand:(unint64_t)a3 info:(id)a4 reply:(id)a5 error:(id *)a6;
-+ (void)handleMessage:(id)a3 error:(id *)a4;
++ (void)handleCommand:(unint64_t)command info:(id)info reply:(id)reply error:(id *)error;
++ (void)handleMessage:(id)message error:(id *)error;
 @end
 
 @implementation SRXPCListener
 
-+ (void)handleCommand:(unint64_t)a3 info:(id)a4 reply:(id)a5 error:(id *)a6
++ (void)handleCommand:(unint64_t)command info:(id)info reply:(id)reply error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  infoCopy = info;
+  replyCopy = reply;
+  if (command == 1)
   {
-    string = xpc_dictionary_get_string(v9, "l");
+    string = xpc_dictionary_get_string(infoCopy, "l");
     if (string)
     {
       v15 = string;
-      v16 = xpc_dictionary_get_string(v9, "d");
+      v16 = xpc_dictionary_get_string(infoCopy, "d");
       if (v16)
       {
         v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v16];
@@ -35,70 +35,70 @@
 
       empty = xpc_dictionary_create_empty();
       xpc_dictionary_set_uint64(empty, "av", v24);
-      xpc_dictionary_set_value(v10, "i", empty);
+      xpc_dictionary_set_value(replyCopy, "i", empty);
 
       goto LABEL_23;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-3 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-3 userInfo:0];
     }
 
-    v21 = v10;
+    v21 = replyCopy;
     v22 = -3;
 LABEL_20:
     xpc_dictionary_set_int64(v21, "e", v22);
     goto LABEL_23;
   }
 
-  if (a3)
+  if (command)
   {
     v20 = SRLogCategoryAssets();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [SRXPCListener handleCommand:a3 info:v20 reply:? error:?];
+      [SRXPCListener handleCommand:command info:v20 reply:? error:?];
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-7 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-7 userInfo:0];
     }
 
-    v21 = v10;
+    v21 = replyCopy;
     v22 = -7;
     goto LABEL_20;
   }
 
-  v11 = [[SRAssetBundleQuery alloc] initWithXPCObject:v9 isResult:0];
+  v11 = [[SRAssetBundleQuery alloc] initWithXPCObject:infoCopy isResult:0];
   v12 = +[SRAssetBundleCache sharedInstance];
   [v12 queryCache:v11 loading:0];
 
-  v13 = [(SRAssetBundleQuery *)v11 xpcObject];
-  if (v13)
+  xpcObject = [(SRAssetBundleQuery *)v11 xpcObject];
+  if (xpcObject)
   {
-    xpc_dictionary_set_value(v10, "i", v13);
+    xpc_dictionary_set_value(replyCopy, "i", xpcObject);
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-4 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-4 userInfo:0];
     }
 
-    xpc_dictionary_set_int64(v10, "e", -4);
+    xpc_dictionary_set_int64(replyCopy, "e", -4);
   }
 
 LABEL_23:
 }
 
-+ (void)handleMessage:(id)a3 error:(id *)a4
++ (void)handleMessage:(id)message error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && MEMORY[0x1B2705140](v6) == MEMORY[0x1E69E9E80])
+  messageCopy = message;
+  v7 = messageCopy;
+  if (messageCopy && MEMORY[0x1B2705140](messageCopy) == MEMORY[0x1E69E9E80])
   {
     v9 = xpc_dictionary_get_remote_connection(v7);
     reply = xpc_dictionary_create_reply(v7);
@@ -117,13 +117,13 @@ LABEL_23:
       _os_signpost_emit_with_name_impl(&dword_1AE58E000, v18, OS_SIGNPOST_EVENT, v14, "HandleRequest", "pid:%llu, qos:%llu", &v20, 0x16u);
     }
 
-    [a1 handleCommand:uint64 info:v16 reply:reply error:a4];
+    [self handleCommand:uint64 info:v16 reply:reply error:error];
     xpc_connection_send_message(v9, reply);
   }
 
   else
   {
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-2 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"SpotlightResourcesErrorDomain" code:-2 userInfo:0];
     v8 = SRLogCategorySafety();
     v9 = v8;
     v10 = handleMessage_error__errorCount;

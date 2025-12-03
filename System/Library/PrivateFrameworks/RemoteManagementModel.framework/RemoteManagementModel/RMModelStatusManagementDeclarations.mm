@@ -1,11 +1,11 @@
 @interface RMModelStatusManagementDeclarations
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6;
-+ (id)buildWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6;
++ (id)buildRequiredOnlyWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management;
++ (id)buildWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusManagementDeclarations
@@ -26,36 +26,36 @@
   return v4;
 }
 
-+ (id)buildWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6
++ (id)buildWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  managementCopy = management;
+  assetsCopy = assets;
+  configurationsCopy = configurations;
+  activationsCopy = activations;
   v13 = objc_opt_new();
-  [v13 setStatusActivations:v12];
+  [v13 setStatusActivations:activationsCopy];
 
-  [v13 setStatusConfigurations:v11];
-  [v13 setStatusAssets:v10];
+  [v13 setStatusConfigurations:configurationsCopy];
+  [v13 setStatusAssets:assetsCopy];
 
-  [v13 setStatusManagement:v9];
+  [v13 setStatusManagement:managementCopy];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithActivations:(id)a3 configurations:(id)a4 assets:(id)a5 management:(id)a6
++ (id)buildRequiredOnlyWithActivations:(id)activations configurations:(id)configurations assets:(id)assets management:(id)management
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  managementCopy = management;
+  assetsCopy = assets;
+  configurationsCopy = configurations;
+  activationsCopy = activations;
   v13 = objc_opt_new();
-  [v13 setStatusActivations:v12];
+  [v13 setStatusActivations:activationsCopy];
 
-  [v13 setStatusConfigurations:v11];
-  [v13 setStatusAssets:v10];
+  [v13 setStatusConfigurations:configurationsCopy];
+  [v13 setStatusAssets:assetsCopy];
 
-  [v13 setStatusManagement:v9];
+  [v13 setStatusManagement:managementCopy];
 
   return v13;
 }
@@ -112,12 +112,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusManagementDeclarations allowedStatusKeys];
   [v11 minusSet:v12];
@@ -125,11 +125,11 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  LOWORD(v16) = a4;
-  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"activations" forKeyPath:@"statusActivations" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v16 error:a5]&& (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"configurations" forKeyPath:@"statusConfigurations" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v17 error:a5]) && (LOWORD(v18) = a4, [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"assets" forKeyPath:@"statusAssets" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v18 error:a5]))
+  LOWORD(v16) = type;
+  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"activations" forKeyPath:@"statusActivations" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v16 error:error]&& (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"configurations" forKeyPath:@"statusConfigurations" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v17 error:error]) && (LOWORD(v18) = type, [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"assets" forKeyPath:@"statusAssets" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v18 error:error]))
   {
-    LOWORD(v19) = a4;
-    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"management" forKeyPath:@"statusManagement" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v19 error:a5];
+    LOWORD(v19) = type;
+    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"management" forKeyPath:@"statusManagement" classType:objc_opt_class() nested:0 isRequired:1 defaultValue:0 serializationType:v19 error:error];
   }
 
   else
@@ -140,51 +140,51 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusManagementDeclarations *)self statusActivations];
+  statusActivations = [(RMModelStatusManagementDeclarations *)self statusActivations];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __64__RMModelStatusManagementDeclarations_serializePayloadWithType___block_invoke;
   v18[3] = &__block_descriptor_34_e71___NSDictionary_16__0__RMModelStatusManagementDeclarations_Declaration_8l;
-  v19 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"activations" value:v6 itemSerializer:v18 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"activations" value:statusActivations itemSerializer:v18 isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusManagementDeclarations *)self statusConfigurations];
+  statusConfigurations = [(RMModelStatusManagementDeclarations *)self statusConfigurations];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__RMModelStatusManagementDeclarations_serializePayloadWithType___block_invoke_2;
   v16[3] = &__block_descriptor_34_e71___NSDictionary_16__0__RMModelStatusManagementDeclarations_Declaration_8l;
-  v17 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"configurations" value:v7 itemSerializer:v16 isRequired:1 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"configurations" value:statusConfigurations itemSerializer:v16 isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelStatusManagementDeclarations *)self statusAssets];
+  statusAssets = [(RMModelStatusManagementDeclarations *)self statusAssets];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__RMModelStatusManagementDeclarations_serializePayloadWithType___block_invoke_3;
   v14[3] = &__block_descriptor_34_e71___NSDictionary_16__0__RMModelStatusManagementDeclarations_Declaration_8l;
-  v15 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"assets" value:v8 itemSerializer:v14 isRequired:1 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"assets" value:statusAssets itemSerializer:v14 isRequired:1 defaultValue:0];
 
-  v9 = [(RMModelStatusManagementDeclarations *)self statusManagement];
+  statusManagement = [(RMModelStatusManagementDeclarations *)self statusManagement];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__RMModelStatusManagementDeclarations_serializePayloadWithType___block_invoke_4;
   v12[3] = &__block_descriptor_34_e71___NSDictionary_16__0__RMModelStatusManagementDeclarations_Declaration_8l;
-  v13 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"management" value:v9 itemSerializer:v12 isRequired:1 defaultValue:0];
+  typeCopy4 = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"management" value:statusManagement itemSerializer:v12 isRequired:1 defaultValue:0];
 
   v10 = [v5 copy];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelStatusManagementDeclarations;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSArray *)self->_statusActivations copy];
   v6 = v4[2];
   v4[2] = v5;

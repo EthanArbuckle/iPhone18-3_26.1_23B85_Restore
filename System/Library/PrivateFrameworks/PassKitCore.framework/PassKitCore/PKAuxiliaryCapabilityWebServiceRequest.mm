@@ -1,19 +1,19 @@
 @interface PKAuxiliaryCapabilityWebServiceRequest
-- (PKAuxiliaryCapabilityWebServiceRequest)initWithPass:(id)a3;
+- (PKAuxiliaryCapabilityWebServiceRequest)initWithPass:(id)pass;
 @end
 
 @implementation PKAuxiliaryCapabilityWebServiceRequest
 
-- (PKAuxiliaryCapabilityWebServiceRequest)initWithPass:(id)a3
+- (PKAuxiliaryCapabilityWebServiceRequest)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKAuxiliaryCapabilityWebServiceRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;

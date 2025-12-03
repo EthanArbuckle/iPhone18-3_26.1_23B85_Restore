@@ -1,8 +1,8 @@
 @interface MLCPoolingLayer
-+ (BOOL)supportsDataType:(int)a3 onDevice:(id)a4;
++ (BOOL)supportsDataType:(int)type onDevice:(id)device;
 + (MLCPoolingLayer)layerWithDescriptor:(MLCPoolingDescriptor *)descriptor;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCPoolingLayer)initWithDescriptor:(id)a3;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCPoolingLayer)initWithDescriptor:(id)descriptor;
 - (id)description;
 - (id)summarizedDOTDescription;
 @end
@@ -12,77 +12,77 @@
 + (MLCPoolingLayer)layerWithDescriptor:(MLCPoolingDescriptor *)descriptor
 {
   v4 = descriptor;
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
 
-- (MLCPoolingLayer)initWithDescriptor:(id)a3
+- (MLCPoolingLayer)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v18.receiver = self;
   v18.super_class = MLCPoolingLayer;
   v6 = [(MLCLayer *)&v18 initWithLabel:@"Pooling"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
     v17.receiver = v7;
     v17.super_class = MLCPoolingLayer;
-    -[MLCLayer setKernelWidth:](&v17, sel_setKernelWidth_, [v5 kernelWidth]);
+    -[MLCLayer setKernelWidth:](&v17, sel_setKernelWidth_, [descriptorCopy kernelWidth]);
     v16.receiver = v7;
     v16.super_class = MLCPoolingLayer;
-    -[MLCLayer setKernelHeight:](&v16, sel_setKernelHeight_, [v5 kernelHeight]);
+    -[MLCLayer setKernelHeight:](&v16, sel_setKernelHeight_, [descriptorCopy kernelHeight]);
     v15.receiver = v7;
     v15.super_class = MLCPoolingLayer;
-    -[MLCLayer setDilationRateInX:](&v15, sel_setDilationRateInX_, [v5 dilationRateInX]);
+    -[MLCLayer setDilationRateInX:](&v15, sel_setDilationRateInX_, [descriptorCopy dilationRateInX]);
     v14.receiver = v7;
     v14.super_class = MLCPoolingLayer;
-    -[MLCLayer setDilationRateInY:](&v14, sel_setDilationRateInY_, [v5 dilationRateInY]);
+    -[MLCLayer setDilationRateInY:](&v14, sel_setDilationRateInY_, [descriptorCopy dilationRateInY]);
     v13.receiver = v7;
     v13.super_class = MLCPoolingLayer;
-    -[MLCLayer setStrideInX:](&v13, sel_setStrideInX_, [v5 strideInX]);
+    -[MLCLayer setStrideInX:](&v13, sel_setStrideInX_, [descriptorCopy strideInX]);
     v12.receiver = v7;
     v12.super_class = MLCPoolingLayer;
-    -[MLCLayer setStrideInY:](&v12, sel_setStrideInY_, [v5 strideInY]);
+    -[MLCLayer setStrideInY:](&v12, sel_setStrideInY_, [descriptorCopy strideInY]);
     v11.receiver = v7;
     v11.super_class = MLCPoolingLayer;
-    -[MLCLayer setPaddingPolicy:](&v11, sel_setPaddingPolicy_, [v5 paddingPolicy]);
+    -[MLCLayer setPaddingPolicy:](&v11, sel_setPaddingPolicy_, [descriptorCopy paddingPolicy]);
     v10.receiver = v7;
     v10.super_class = MLCPoolingLayer;
-    -[MLCLayer setPaddingSizeInX:](&v10, sel_setPaddingSizeInX_, [v5 paddingSizeInX]);
+    -[MLCLayer setPaddingSizeInX:](&v10, sel_setPaddingSizeInX_, [descriptorCopy paddingSizeInX]);
     v9.receiver = v7;
     v9.super_class = MLCPoolingLayer;
-    -[MLCLayer setPaddingSizeInY:](&v9, sel_setPaddingSizeInY_, [v5 paddingSizeInY]);
+    -[MLCLayer setPaddingSizeInY:](&v9, sel_setPaddingSizeInY_, [descriptorCopy paddingSizeInY]);
   }
 
   return v7;
 }
 
-+ (BOOL)supportsDataType:(int)a3 onDevice:(id)a4
++ (BOOL)supportsDataType:(int)type onDevice:(id)device
 {
-  if ([a4 type])
+  if ([device type])
   {
-    return a3 == 1;
+    return type == 1;
   }
 
   else
   {
-    return ((a3 - 1) & 0xFFFFFFFD) == 0;
+    return ((type - 1) & 0xFFFFFFFD) == 0;
   }
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v72 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 dataType];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  dataType = [descriptor dataType];
 
-  if (![MLCPoolingLayer supportsDataType:v14 onDevice:v9])
+  if (![MLCPoolingLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v29 = +[MLCLog framework];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -91,46 +91,46 @@
       *buf = 138412802;
       *&buf[4] = v30;
       *&buf[12] = 1024;
-      *&buf[14] = v14;
+      *&buf[14] = dataType;
       *&buf[18] = 2112;
-      *&buf[20] = v9;
+      *&buf[20] = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v29, OS_LOG_TYPE_ERROR, "%@: pooling layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
     }
 
     goto LABEL_28;
   }
 
-  v15 = [v10 objectAtIndexedSubscript:0];
-  v16 = [v15 descriptor];
-  v17 = [v16 shape];
-  v18 = [v17 count];
+  v15 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v15 descriptor];
+  shape = [descriptor2 shape];
+  v18 = [shape count];
 
   if (v18 == 4)
   {
     v68 = a2;
-    v31 = [v10 objectAtIndexedSubscript:0];
-    v32 = [v31 descriptor];
-    v33 = [v32 shape];
-    v34 = [v33 objectAtIndexedSubscript:3];
-    v69 = [v34 unsignedIntegerValue];
+    v31 = [tensorsCopy objectAtIndexedSubscript:0];
+    descriptor3 = [v31 descriptor];
+    shape2 = [descriptor3 shape];
+    v34 = [shape2 objectAtIndexedSubscript:3];
+    unsignedIntegerValue = [v34 unsignedIntegerValue];
 
-    v35 = [v10 objectAtIndexedSubscript:0];
-    v36 = [v35 descriptor];
-    v37 = [v36 shape];
-    v38 = [v37 objectAtIndexedSubscript:2];
-    v39 = [v38 unsignedIntegerValue];
+    v35 = [tensorsCopy objectAtIndexedSubscript:0];
+    descriptor4 = [v35 descriptor];
+    shape3 = [descriptor4 shape];
+    v38 = [shape3 objectAtIndexedSubscript:2];
+    unsignedIntegerValue2 = [v38 unsignedIntegerValue];
 
-    v40 = [v11 descriptor];
-    v41 = [v40 shape];
-    v42 = [v41 objectAtIndexedSubscript:3];
-    v26 = [v42 unsignedIntegerValue];
+    descriptor5 = [tensorCopy descriptor];
+    shape4 = [descriptor5 shape];
+    v42 = [shape4 objectAtIndexedSubscript:3];
+    unsignedIntegerValue3 = [v42 unsignedIntegerValue];
 
-    v43 = [v11 descriptor];
-    v44 = [v43 shape];
-    v45 = [v44 objectAtIndexedSubscript:2];
-    v28 = [v45 unsignedIntegerValue];
+    descriptor6 = [tensorCopy descriptor];
+    shape5 = [descriptor6 shape];
+    v45 = [shape5 objectAtIndexedSubscript:2];
+    unsignedIntegerValue4 = [v45 unsignedIntegerValue];
 
-    v27 = v39;
+    v27 = unsignedIntegerValue2;
   }
 
   else
@@ -147,19 +147,19 @@
     }
 
     v68 = a2;
-    v19 = [v10 objectAtIndexedSubscript:0];
-    v20 = [v19 descriptor];
-    v21 = [v20 shape];
-    v22 = [v21 objectAtIndexedSubscript:2];
-    v69 = [v22 unsignedIntegerValue];
+    v19 = [tensorsCopy objectAtIndexedSubscript:0];
+    descriptor7 = [v19 descriptor];
+    shape6 = [descriptor7 shape];
+    v22 = [shape6 objectAtIndexedSubscript:2];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-    v23 = [v11 descriptor];
-    v24 = [v23 shape];
-    v25 = [v24 objectAtIndexedSubscript:2];
-    v26 = [v25 unsignedIntegerValue];
+    descriptor8 = [tensorCopy descriptor];
+    shape7 = [descriptor8 shape];
+    v25 = [shape7 objectAtIndexedSubscript:2];
+    unsignedIntegerValue3 = [v25 unsignedIntegerValue];
 
     v27 = 1.0;
-    v28 = 1;
+    unsignedIntegerValue4 = 1;
   }
 
   if ([(MLCLayer *)self paddingPolicy]== 2)
@@ -167,17 +167,17 @@
     *buf = [(MLCLayer *)self paddingSizeInX];
     *&buf[8] = [(MLCLayer *)self paddingSizeInX];
     *&buf[16] = [(MLCLayer *)self paddingSizeInY];
-    v46 = [(MLCLayer *)self paddingSizeInY];
+    paddingSizeInY = [(MLCLayer *)self paddingSizeInY];
   }
 
   else
   {
-    v47 = [(MLCPoolingLayer *)self descriptor];
-    v48 = [v47 poolingType];
+    descriptor9 = [(MLCPoolingLayer *)self descriptor];
+    poolingType = [descriptor9 poolingType];
 
-    v49 = ([(MLCLayer *)self strideInX]* v26);
-    v50 = v69;
-    if (v48 == 2)
+    v49 = ([(MLCLayer *)self strideInX]* unsignedIntegerValue3);
+    v50 = unsignedIntegerValue;
+    if (poolingType == 2)
     {
       v51 = v50 - [(MLCLayer *)self kernelWidth];
       v52 = v49 - (v51 + [(MLCLayer *)self strideInX]);
@@ -189,14 +189,14 @@
       v53 = 0.5;
       *buf = (v52 * 0.5);
       *&buf[8] = (v52 - *buf);
-      v54 = ([(MLCLayer *)self strideInY]* v28);
-      v55 = [(MLCLayer *)self kernelHeight];
+      v54 = ([(MLCLayer *)self strideInY]* unsignedIntegerValue4);
+      kernelHeight = [(MLCLayer *)self kernelHeight];
     }
 
     else
     {
-      v56 = [(MLCLayer *)self dilationRateInX];
-      v57 = v50 - (([(MLCLayer *)self kernelWidth]- 1) * v56 + 1);
+      dilationRateInX = [(MLCLayer *)self dilationRateInX];
+      v57 = v50 - (([(MLCLayer *)self kernelWidth]- 1) * dilationRateInX + 1);
       v58 = v49 - (v57 + [(MLCLayer *)self strideInX]);
       if (v58 < 0.0)
       {
@@ -206,25 +206,25 @@
       v53 = 0.5;
       *buf = (v58 * 0.5);
       *&buf[8] = (v58 - *buf);
-      v54 = ([(MLCLayer *)self strideInY]* v28);
-      v59 = [(MLCLayer *)self dilationRateInY];
-      v55 = (([(MLCLayer *)self kernelHeight]- 1) * v59 + 1);
+      v54 = ([(MLCLayer *)self strideInY]* unsignedIntegerValue4);
+      dilationRateInY = [(MLCLayer *)self dilationRateInY];
+      kernelHeight = (([(MLCLayer *)self kernelHeight]- 1) * dilationRateInY + 1);
     }
 
-    v60 = v54 - ((v27 - v55) + [(MLCLayer *)self strideInY]);
+    v60 = v54 - ((v27 - kernelHeight) + [(MLCLayer *)self strideInY]);
     if (v60 < 0.0)
     {
       v60 = 0.0;
     }
 
     *&buf[16] = (v60 * v53);
-    v46 = (v60 - *&buf[16]);
+    paddingSizeInY = (v60 - *&buf[16]);
   }
 
-  *&buf[24] = v46;
-  v61 = [v9 computeEngine];
-  v62 = [(MLCPoolingLayer *)self descriptor];
-  v29 = [v61 poolingLayerWithDescriptor:v62 paddingSizes:buf];
+  *&buf[24] = paddingSizeInY;
+  computeEngine = [deviceCopy computeEngine];
+  descriptor10 = [(MLCPoolingLayer *)self descriptor];
+  v29 = [computeEngine poolingLayerWithDescriptor:descriptor10 paddingSizes:buf];
 
   if (!v29 || ![v29 count])
   {
@@ -239,12 +239,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v63 = [v9 computeEngine];
-  v64 = [v63 compileLayerDeviceOps:v29 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v64 = [computeEngine2 compileLayerDeviceOps:v29 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v70.receiver = self;
   v70.super_class = MLCPoolingLayer;
-  [(MLCLayer *)&v70 bindDevice:v9 deviceOps:v29];
+  [(MLCLayer *)&v70 bindDevice:deviceCopy deviceOps:v29];
 LABEL_29:
 
   v66 = *MEMORY[0x277D85DE8];
@@ -256,72 +256,72 @@ LABEL_29:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCPoolingLayer *)self descriptor];
-  v7 = [(MLCLayer *)self conditionalTreeNode];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { poolingDescriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  descriptor = [(MLCPoolingLayer *)self descriptor];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { poolingDescriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, descriptor, conditionalTreeNode, resultTensors];
 
   return v9;
 }
 
 - (id)summarizedDOTDescription
 {
-  v3 = [(MLCPoolingLayer *)self descriptor];
-  v4 = [v3 paddingPolicy];
+  descriptor = [(MLCPoolingLayer *)self descriptor];
+  paddingPolicy = [descriptor paddingPolicy];
 
-  if (v4 >= 2)
+  if (paddingPolicy >= 2)
   {
-    if (v4 != 2)
+    if (paddingPolicy != 2)
     {
       v36 = 0;
       goto LABEL_7;
     }
 
     v6 = MEMORY[0x277CCACA8];
-    v5 = [(MLCPoolingLayer *)self descriptor];
-    v7 = MLCPaddingPolicyDebugDescription([v5 paddingPolicy]);
-    v8 = [(MLCPoolingLayer *)self descriptor];
-    v9 = [v8 paddingSizeInX];
-    v10 = [(MLCPoolingLayer *)self descriptor];
-    v36 = [v6 stringWithFormat:@"%@ (%lu, %lu)", v7, v9, objc_msgSend(v10, "paddingSizeInY")];
+    descriptor2 = [(MLCPoolingLayer *)self descriptor];
+    v7 = MLCPaddingPolicyDebugDescription([descriptor2 paddingPolicy]);
+    descriptor3 = [(MLCPoolingLayer *)self descriptor];
+    paddingSizeInX = [descriptor3 paddingSizeInX];
+    descriptor4 = [(MLCPoolingLayer *)self descriptor];
+    v36 = [v6 stringWithFormat:@"%@ (%lu, %lu)", v7, paddingSizeInX, objc_msgSend(descriptor4, "paddingSizeInY")];
   }
 
   else
   {
-    v5 = [(MLCPoolingLayer *)self descriptor];
-    v36 = MLCPaddingPolicyDebugDescription([v5 paddingPolicy]);
+    descriptor2 = [(MLCPoolingLayer *)self descriptor];
+    v36 = MLCPaddingPolicyDebugDescription([descriptor2 paddingPolicy]);
   }
 
 LABEL_7:
   v34 = MEMORY[0x277CCAB68];
   v11 = objc_opt_class();
   v32 = NSStringFromClass(v11);
-  v31 = [(MLCLayer *)self layerID];
-  v35 = [(MLCPoolingLayer *)self descriptor];
-  v30 = MLCPoolingTypeDebugDescription([v35 poolingType]);
-  v33 = [(MLCPoolingLayer *)self descriptor];
-  v29 = [v33 kernelWidth];
-  v12 = [(MLCPoolingLayer *)self descriptor];
-  v13 = [v12 kernelHeight];
-  v14 = [(MLCPoolingLayer *)self descriptor];
-  v15 = [v14 dilationRateInX];
-  v16 = [(MLCPoolingLayer *)self descriptor];
-  v17 = [v16 dilationRateInY];
-  v18 = [(MLCPoolingLayer *)self descriptor];
-  v19 = [v18 strideInX];
-  v20 = [(MLCPoolingLayer *)self descriptor];
-  v21 = [v34 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Pooling Type: %@     Kernel: (%lu, %lu)<BR />Dilation: (%lu, %lu)  Stride: (%lu, %lu)<BR />Padding: %@", v32, v31, v30, v29, v13, v15, v17, v19, objc_msgSend(v20, "strideInY"), v36];
+  layerID = [(MLCLayer *)self layerID];
+  descriptor5 = [(MLCPoolingLayer *)self descriptor];
+  v30 = MLCPoolingTypeDebugDescription([descriptor5 poolingType]);
+  descriptor6 = [(MLCPoolingLayer *)self descriptor];
+  kernelWidth = [descriptor6 kernelWidth];
+  descriptor7 = [(MLCPoolingLayer *)self descriptor];
+  kernelHeight = [descriptor7 kernelHeight];
+  descriptor8 = [(MLCPoolingLayer *)self descriptor];
+  dilationRateInX = [descriptor8 dilationRateInX];
+  descriptor9 = [(MLCPoolingLayer *)self descriptor];
+  dilationRateInY = [descriptor9 dilationRateInY];
+  descriptor10 = [(MLCPoolingLayer *)self descriptor];
+  strideInX = [descriptor10 strideInX];
+  descriptor11 = [(MLCPoolingLayer *)self descriptor];
+  v21 = [v34 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Pooling Type: %@     Kernel: (%lu, %lu)<BR />Dilation: (%lu, %lu)  Stride: (%lu, %lu)<BR />Padding: %@", v32, layerID, v30, kernelWidth, kernelHeight, dilationRateInX, dilationRateInY, strideInX, objc_msgSend(descriptor11, "strideInY"), v36];
 
-  v22 = [(MLCPoolingLayer *)self descriptor];
-  LODWORD(v15) = [v22 poolingType];
+  descriptor12 = [(MLCPoolingLayer *)self descriptor];
+  LODWORD(dilationRateInX) = [descriptor12 poolingType];
 
-  if (v15 == 2)
+  if (dilationRateInX == 2)
   {
     v23 = MEMORY[0x277CCACA8];
-    v24 = [(MLCPoolingLayer *)self descriptor];
-    v25 = [v24 countIncludesPadding];
+    descriptor13 = [(MLCPoolingLayer *)self descriptor];
+    countIncludesPadding = [descriptor13 countIncludesPadding];
     v26 = @"NO";
-    if (v25)
+    if (countIncludesPadding)
     {
       v26 = @"YES";
     }

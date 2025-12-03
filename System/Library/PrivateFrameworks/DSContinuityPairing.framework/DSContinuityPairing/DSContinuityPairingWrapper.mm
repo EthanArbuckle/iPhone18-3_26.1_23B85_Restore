@@ -1,7 +1,7 @@
 @interface DSContinuityPairingWrapper
 - (DSContinuityPairingWrapper)init;
-- (void)fetchContinuityEligibleDevicesWithCompletion:(id)a3;
-- (void)unpairHostWithDeviceID:(id)a3 completion:(id)a4;
+- (void)fetchContinuityEligibleDevicesWithCompletion:(id)completion;
+- (void)unpairHostWithDeviceID:(id)d completion:(id)completion;
 @end
 
 @implementation DSContinuityPairingWrapper
@@ -20,19 +20,19 @@
   return v2;
 }
 
-- (void)fetchContinuityEligibleDevicesWithCompletion:(id)a3
+- (void)fetchContinuityEligibleDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DSContinuityPairingWrapper *)self continuityPairing];
-  [v5 fetchContinuityDevicesWithCompletionHandler:v4];
+  completionCopy = completion;
+  continuityPairing = [(DSContinuityPairingWrapper *)self continuityPairing];
+  [continuityPairing fetchContinuityDevicesWithCompletionHandler:completionCopy];
 }
 
-- (void)unpairHostWithDeviceID:(id)a3 completion:(id)a4
+- (void)unpairHostWithDeviceID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSContinuityPairingWrapper *)self continuityPairing];
-  [v8 unpairDeviceWith:v7 completionHandler:v6];
+  completionCopy = completion;
+  dCopy = d;
+  continuityPairing = [(DSContinuityPairingWrapper *)self continuityPairing];
+  [continuityPairing unpairDeviceWith:dCopy completionHandler:completionCopy];
 }
 
 @end

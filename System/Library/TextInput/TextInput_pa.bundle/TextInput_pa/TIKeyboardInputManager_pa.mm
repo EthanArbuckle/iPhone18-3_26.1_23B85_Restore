@@ -1,7 +1,7 @@
 @interface TIKeyboardInputManager_pa
-- (id)deleteFromInput:(unint64_t *)a3;
+- (id)deleteFromInput:(unint64_t *)input;
 - (void)initImplementation;
-- (void)syncToLayoutState:(id)a3;
+- (void)syncToLayoutState:(id)state;
 @end
 
 @implementation TIKeyboardInputManager_pa
@@ -17,32 +17,32 @@
   return result;
 }
 
-- (void)syncToLayoutState:(id)a3
+- (void)syncToLayoutState:(id)state
 {
   v6.receiver = self;
   v6.super_class = TIKeyboardInputManager_pa;
-  v4 = a3;
-  [(TIKeyboardInputManagerIndic *)&v6 syncToLayoutState:v4];
-  v5 = [v4 softwareLayout];
+  stateCopy = state;
+  [(TIKeyboardInputManagerIndic *)&v6 syncToLayoutState:stateCopy];
+  softwareLayout = [stateCopy softwareLayout];
 
-  -[TIKeyboardInputManager_pa setIsPhoneticLayout:](self, "setIsPhoneticLayout:", [v5 isEqualToString:@"Punjabi-Phonetic"]);
+  -[TIKeyboardInputManager_pa setIsPhoneticLayout:](self, "setIsPhoneticLayout:", [softwareLayout isEqualToString:@"Punjabi-Phonetic"]);
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
   v31[4] = *MEMORY[0x29EDCA608];
-  if (a3)
+  if (input)
   {
-    *a3 = 1;
+    *input = 1;
   }
 
   v5 = *MEMORY[0x29EDC7290];
   if (*(&self->super.super.super.super.isa + v5))
   {
-    v6 = [(TIKeyboardInputManager_pa *)self inputIndex];
+    inputIndex = [(TIKeyboardInputManager_pa *)self inputIndex];
     if (*(&self->super.super.super.super.isa + v5))
     {
-      v7 = v6 == 0;
+      v7 = inputIndex == 0;
     }
 
     else
@@ -50,11 +50,11 @@
       v7 = 1;
     }
 
-    if (v7 || (v8 = v6, v9 = *MEMORY[0x29EDC7288], [*(&self->super.super.super.super.isa + v9) length] < v6))
+    if (v7 || (v8 = inputIndex, v9 = *MEMORY[0x29EDC7288], [*(&self->super.super.super.super.isa + v9) length] < inputIndex))
     {
       v30.receiver = self;
       v30.super_class = TIKeyboardInputManager_pa;
-      v10 = [(TIKeyboardInputManager_pa *)&v30 deleteFromInput:a3];
+      v10 = [(TIKeyboardInputManager_pa *)&v30 deleteFromInput:input];
     }
 
     else
@@ -108,7 +108,7 @@
       v27 = [(TIKeyboardInputManager_pa *)self internalStringToExternal:v26];
 
       KB::String::~String(v31);
-      v10 = [(TIKeyboardInputManager_pa *)self suffixOfDesiredString:v27 toAppendToInputString:*(&self->super.super.super.super.isa + v9) withInputIndex:v11 afterDeletionCount:a3];
+      v10 = [(TIKeyboardInputManager_pa *)self suffixOfDesiredString:v27 toAppendToInputString:*(&self->super.super.super.super.isa + v9) withInputIndex:v11 afterDeletionCount:input];
       [*(&self->super.super.super.super.isa + v9) setString:v24];
       if (![v10 length])
       {

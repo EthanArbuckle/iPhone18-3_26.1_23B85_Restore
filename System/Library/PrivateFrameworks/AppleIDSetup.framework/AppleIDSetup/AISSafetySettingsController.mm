@@ -1,20 +1,20 @@
 @interface AISSafetySettingsController
 - (AISSafetySettingsController)init;
-- (void)shouldPresentSafetySettingsUsingOnlyLocalChecksWithContext:(AISSafetySettingsContext *)a3 completionHandler:(id)a4;
-- (void)shouldPresentSafetySettingsWithContext:(AISSafetySettingsContext *)a3 completionHandler:(id)a4;
+- (void)shouldPresentSafetySettingsUsingOnlyLocalChecksWithContext:(AISSafetySettingsContext *)context completionHandler:(id)handler;
+- (void)shouldPresentSafetySettingsWithContext:(AISSafetySettingsContext *)context completionHandler:(id)handler;
 @end
 
 @implementation AISSafetySettingsController
 
-- (void)shouldPresentSafetySettingsWithContext:(AISSafetySettingsContext *)a3 completionHandler:(id)a4
+- (void)shouldPresentSafetySettingsWithContext:(AISSafetySettingsContext *)context completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24075A3D4();
@@ -29,20 +29,20 @@
   v15[3] = 0;
   v15[4] = &unk_24076FBD8;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076FBE0, v15);
 }
 
-- (void)shouldPresentSafetySettingsUsingOnlyLocalChecksWithContext:(AISSafetySettingsContext *)a3 completionHandler:(id)a4
+- (void)shouldPresentSafetySettingsUsingOnlyLocalChecksWithContext:(AISSafetySettingsContext *)context completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24075A3D4();
@@ -57,8 +57,8 @@
   v15[3] = 0;
   v15[4] = &unk_240767F10;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076FBC0, v15);
 }
 

@@ -10,9 +10,9 @@
   if (!workerContext)
   {
     v4 = +[ICNoteContext sharedContext];
-    v5 = [v4 workerManagedObjectContext];
+    workerManagedObjectContext = [v4 workerManagedObjectContext];
     v6 = self->_workerContext;
-    self->_workerContext = v5;
+    self->_workerContext = workerManagedObjectContext;
 
     workerContext = self->_workerContext;
   }

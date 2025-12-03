@@ -1,104 +1,104 @@
 @interface MRApplicationConnectionMessage
-- (MRApplicationConnectionMessage)initWithCoder:(id)a3;
-- (MRApplicationConnectionMessage)initWithEncodedUnderlyingMessage:(id)a3;
-- (MRApplicationConnectionMessage)initWithProtobuf:(id)a3;
-- (MRApplicationConnectionMessage)initWithProtobufData:(id)a3;
+- (MRApplicationConnectionMessage)initWithCoder:(id)coder;
+- (MRApplicationConnectionMessage)initWithEncodedUnderlyingMessage:(id)message;
+- (MRApplicationConnectionMessage)initWithProtobuf:(id)protobuf;
+- (MRApplicationConnectionMessage)initWithProtobufData:(id)data;
 - (NSData)protobufData;
 - (_MRApplicationConnectionMessageProtobuf)protobuf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRApplicationConnectionMessage
 
-- (MRApplicationConnectionMessage)initWithEncodedUnderlyingMessage:(id)a3
+- (MRApplicationConnectionMessage)initWithEncodedUnderlyingMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = MRApplicationConnectionMessage;
   v6 = [(MRApplicationConnectionMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingMessage, a3);
+    objc_storeStrong(&v6->_underlyingMessage, message);
   }
 
   return v7;
 }
 
-- (MRApplicationConnectionMessage)initWithProtobufData:(id)a3
+- (MRApplicationConnectionMessage)initWithProtobufData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRApplicationConnectionMessageProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRApplicationConnectionMessageProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRApplicationConnectionMessage *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRApplicationConnectionMessage)initWithProtobuf:(id)a3
+- (MRApplicationConnectionMessage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v10.receiver = self;
     v10.super_class = MRApplicationConnectionMessage;
     v5 = [(MRApplicationConnectionMessage *)&v10 init];
     if (v5)
     {
-      v6 = [v4 underlyingMessage];
+      underlyingMessage = [protobufCopy underlyingMessage];
       underlyingMessage = v5->_underlyingMessage;
-      v5->_underlyingMessage = v6;
+      v5->_underlyingMessage = underlyingMessage;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (_MRApplicationConnectionMessageProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRApplicationConnectionMessageProtobuf);
-  v4 = [(MRApplicationConnectionMessage *)self underlyingMessage];
-  [(_MRApplicationConnectionMessageProtobuf *)v3 setUnderlyingMessage:v4];
+  underlyingMessage = [(MRApplicationConnectionMessage *)self underlyingMessage];
+  [(_MRApplicationConnectionMessageProtobuf *)v3 setUnderlyingMessage:underlyingMessage];
 
   return v3;
 }
 
 - (NSData)protobufData
 {
-  v2 = [(MRApplicationConnectionMessage *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRApplicationConnectionMessage *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRApplicationConnectionMessage *)self protobufData];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  protobufData = [(MRApplicationConnectionMessage *)self protobufData];
+  [coderCopy encodeObject:protobufData forKey:@"protobufData"];
 }
 
-- (MRApplicationConnectionMessage)initWithCoder:(id)a3
+- (MRApplicationConnectionMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(MRApplicationConnectionMessage *)self initWithProtobufData:v5];
   return v6;

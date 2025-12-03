@@ -1,67 +1,67 @@
 @interface SQLiteEntity
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)memoryEntityForPersistentID:(int64_t)a3 withProperties:(id)a4 usingConnection:(id)a5;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)memoryEntityForPersistentID:(int64_t)d withProperties:(id)properties usingConnection:(id)connection;
 - (BOOL)deleteFromDatabase;
 - (BOOL)existsInDatabase;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValuesWithDictionary:(id)a3;
-- (SQLiteEntity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4;
-- (SQLiteEntity)initWithPropertyValues:(id)a3 onConnection:(id)a4;
-- (id)getValuesForProperties:(id)a3;
-- (id)valueForProperty:(id)a3;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValuesWithDictionary:(id)dictionary;
+- (SQLiteEntity)initWithPersistentID:(int64_t)d onConnection:(id)connection;
+- (SQLiteEntity)initWithPropertyValues:(id)values onConnection:(id)connection;
+- (id)getValuesForProperties:(id)properties;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation SQLiteEntity
 
-+ (id)memoryEntityForPersistentID:(int64_t)a3 withProperties:(id)a4 usingConnection:(id)a5
++ (id)memoryEntityForPersistentID:(int64_t)d withProperties:(id)properties usingConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 memoryEntityClass];
-  v11 = v10;
-  if (!v8)
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  memoryEntityClass = [self memoryEntityClass];
+  v11 = memoryEntityClass;
+  if (!propertiesCopy)
   {
-    v8 = [(objc_class *)v10 defaultProperties];
+    propertiesCopy = [(objc_class *)memoryEntityClass defaultProperties];
   }
 
-  v12 = [[a1 alloc] initWithPersistentID:a3 onConnection:v9];
+  v12 = [[self alloc] initWithPersistentID:d onConnection:connectionCopy];
 
-  v13 = [[v11 alloc] initWithDatabaseEntity:v12 properties:v8];
+  v13 = [[v11 alloc] initWithDatabaseEntity:v12 properties:propertiesCopy];
 
   return v13;
 }
 
-- (SQLiteEntity)initWithPersistentID:(int64_t)a3 onConnection:(id)a4
+- (SQLiteEntity)initWithPersistentID:(int64_t)d onConnection:(id)connection
 {
-  v7 = a4;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = SQLiteEntity;
   v8 = [(SQLiteEntity *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a4);
-    v9->_persistentID = a3;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_persistentID = d;
   }
 
   return v9;
 }
 
-- (SQLiteEntity)initWithPropertyValues:(id)a3 onConnection:(id)a4
+- (SQLiteEntity)initWithPropertyValues:(id)values onConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"ROWID"];
+  valuesCopy = values;
+  connectionCopy = connection;
+  v8 = [valuesCopy objectForKey:@"ROWID"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
     v11 = CFUUIDCreate(0);
-    v10 = *&CFUUIDGetUUIDBytes(v11);
+    longLongValue = *&CFUUIDGetUUIDBytes(v11);
     CFRelease(v11);
   }
 
@@ -73,10 +73,10 @@
   v17 = 3221225472;
   v18 = sub_10033E2A0;
   v19 = &unk_100523CF0;
-  v12 = sub_10033E19C(self, v6);
+  v12 = sub_10033E19C(self, valuesCopy);
   v20 = v12;
-  v23 = v10;
-  v13 = v7;
+  v23 = longLongValue;
+  v13 = connectionCopy;
   v21 = v13;
   v22 = &v24;
   sub_10022CC88(v13, &v16);
@@ -86,29 +86,29 @@
     self = 0;
   }
 
-  v14 = [(SQLiteEntity *)self initWithPersistentID:v10 onConnection:v13, v16, v17, v18, v19];
+  v14 = [(SQLiteEntity *)self initWithPersistentID:longLongValue onConnection:v13, v16, v17, v18, v19];
 
   _Block_object_dispose(&v24, 8);
   return v14;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 joinClauseForProperty:v4];
+  propertyCopy = property;
+  v5 = [self joinClauseForProperty:propertyCopy];
 
   if (v5)
   {
-    v6 = v4;
+    propertyCopy = propertyCopy;
   }
 
   else
   {
-    v7 = [a1 databaseTable];
-    v6 = [NSString stringWithFormat:@"%@.%@", v7, v4];
+    databaseTable = [self databaseTable];
+    propertyCopy = [NSString stringWithFormat:@"%@.%@", databaseTable, propertyCopy];
   }
 
-  return v6;
+  return propertyCopy;
 }
 
 - (BOOL)deleteFromDatabase
@@ -127,13 +127,13 @@
   sub_10022CC88(connection, v9);
   if (*(v11 + 24) == 1)
   {
-    v4 = [(SQLiteEntity *)self persistentID];
+    persistentID = [(SQLiteEntity *)self persistentID];
     v5 = dispatch_get_global_queue(21, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10033EC4C;
     block[3] = &unk_10051BD00;
-    block[4] = v4;
+    block[4] = persistentID;
     dispatch_async(v5, block);
 
     v6 = *(v11 + 24);
@@ -155,8 +155,8 @@
   v11 = 0x2020000000;
   v12 = 0;
   v3 = [NSString alloc];
-  v4 = [objc_opt_class() databaseTable];
-  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", v4, @"ROWID"];
+  databaseTable = [objc_opt_class() databaseTable];
+  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", databaseTable, @"ROWID"];
 
   connection = self->_connection;
   v8[0] = _NSConcreteStackBlock;
@@ -172,21 +172,21 @@
   return self;
 }
 
-- (id)getValuesForProperties:(id)a3
+- (id)getValuesForProperties:(id)properties
 {
-  v4 = a3;
-  if ([v4 count] == 1 && (objc_msgSend(v4, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"ROWID"), v5, v6))
+  propertiesCopy = properties;
+  if ([propertiesCopy count] == 1 && (objc_msgSend(propertiesCopy, "objectAtIndexedSubscript:", 0), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"ROWID"), v5, v6))
   {
     v37 = @"ROWID";
-    v7 = [NSNumber numberWithLongLong:self->_persistentID];
-    v38 = v7;
+    databaseTable = [NSNumber numberWithLongLong:self->_persistentID];
+    v38 = databaseTable;
     v8 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   }
 
   else
   {
     v9 = objc_opt_class();
-    v7 = [v9 databaseTable];
+    databaseTable = [v9 databaseTable];
     v10 = [[NSMutableString alloc] initWithString:@"SELECT "];
     v11 = objc_alloc_init(NSMutableSet);
     v32[0] = _NSConcreteStackBlock;
@@ -198,9 +198,9 @@
     v33 = v12;
     v13 = v11;
     v34 = v13;
-    [v4 enumerateObjectsUsingBlock:v32];
+    [propertiesCopy enumerateObjectsUsingBlock:v32];
     [v12 appendString:@" FROM "];
-    [v12 appendString:v7];
+    [v12 appendString:databaseTable];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -232,16 +232,16 @@
     }
 
     [v12 appendString:@" WHERE "];
-    [v12 appendString:v7];
+    [v12 appendString:databaseTable];
     [v12 appendString:@".ROWID = ?;"];
-    v20 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    v20 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [propertiesCopy count]);
     connection = self->_connection;
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10033F2D8;
     v25[3] = &unk_100523D90;
     v25[4] = self;
-    v26 = v4;
+    v26 = propertiesCopy;
     v22 = v20;
     v27 = v22;
     sub_10022C3C4(connection, v12, v25);
@@ -252,21 +252,21 @@
   return v8;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   v8 = [NSDictionary alloc];
   v9 = v8;
-  if (v6)
+  if (valueCopy)
   {
-    v10 = [v8 initWithObjectsAndKeys:{v6, v7, 0}];
+    v10 = [v8 initWithObjectsAndKeys:{valueCopy, propertyCopy, 0}];
   }
 
   else
   {
     v11 = +[NSNull null];
-    v10 = [v9 initWithObjectsAndKeys:{v11, v7, 0}];
+    v10 = [v9 initWithObjectsAndKeys:{v11, propertyCopy, 0}];
   }
 
   v12 = [(SQLiteEntity *)self setValuesWithDictionary:v10];
@@ -274,25 +274,25 @@
   return v12;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3
+- (BOOL)setValuesWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   connection = self->_connection;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10033F6F8;
   v11[3] = &unk_100523E08;
   v11[4] = self;
-  v8 = v4;
+  v8 = dictionaryCopy;
   v12 = v8;
   v15 = v5;
-  v9 = v6;
+  v9 = databaseTable;
   v13 = v9;
   v14 = &v16;
   sub_10022CC88(connection, v11);
@@ -302,13 +302,13 @@
   return v5;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v9 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v9 count:1];
-  v6 = [(SQLiteEntity *)self getValuesForProperties:v5, v9];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  propertyCopy2 = property;
+  v5 = [NSArray arrayWithObjects:&propertyCopy count:1];
+  propertyCopy = [(SQLiteEntity *)self getValuesForProperties:v5, propertyCopy];
+  v7 = [propertyCopy objectForKeyedSubscript:propertyCopy2];
 
   return v7;
 }

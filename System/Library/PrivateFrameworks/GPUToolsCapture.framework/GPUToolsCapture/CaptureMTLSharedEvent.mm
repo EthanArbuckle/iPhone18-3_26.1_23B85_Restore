@@ -1,14 +1,14 @@
 @interface CaptureMTLSharedEvent
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)waitUntilSignaledValue:(unint64_t)a3 timeoutMS:(unint64_t)a4;
-- (CaptureMTLSharedEvent)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)waitUntilSignaledValue:(unint64_t)value timeoutMS:(unint64_t)s;
+- (CaptureMTLSharedEvent)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
 - (id)newSharedEventHandle;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)notifyListener:(id)a3 atValue:(unint64_t)a4 block:(id)a5;
-- (void)setLabel:(id)a3;
-- (void)setSignaledValue:(unint64_t)a3;
+- (void)notifyListener:(id)listener atValue:(unint64_t)value block:(id)block;
+- (void)setLabel:(id)label;
+- (void)setSignaledValue:(unint64_t)value;
 - (void)touch;
 @end
 
@@ -40,10 +40,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLSharedEvent *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLSharedEvent *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -62,14 +62,14 @@
   [(CaptureMTLSharedEvent *)&v13 dealloc];
 }
 
-- (void)setSignaledValue:(unint64_t)a3
+- (void)setSignaledValue:(unint64_t)value
 {
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLSharedEventSPI *)self->_baseObject setSignaledValue:a3];
+  [(MTLSharedEventSPI *)self->_baseObject setSignaledValue:value];
   v6 = v16;
   *(v16 + 8) = -15975;
   v7 = BYTE9(v17);
@@ -89,10 +89,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLSharedEvent *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLSharedEvent *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -101,22 +101,22 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = value;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLSharedEventSPI *)self->_baseObject setLabel:v4];
+  [(MTLSharedEventSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15974;
   v7 = BYTE9(v20);
@@ -136,10 +136,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLSharedEvent *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLSharedEvent *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -147,16 +147,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -165,13 +165,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLSharedEventSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLSharedEventSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -226,19 +226,19 @@
   }
 }
 
-- (BOOL)waitUntilSignaledValue:(unint64_t)a3 timeoutMS:(unint64_t)a4
+- (BOOL)waitUntilSignaledValue:(unint64_t)value timeoutMS:(unint64_t)s
 {
-  v4 = a4;
-  if (a4 && ((dword_31F7C8 & 0x4000000) != 0 || *(boundaryTrackerInstance + 20)))
+  sCopy = s;
+  if (s && ((dword_31F7C8 & 0x4000000) != 0 || *(boundaryTrackerInstance + 20)))
   {
-    v4 = a4 + 1000 * qword_31F7A8;
+    sCopy = s + 1000 * qword_31F7A8;
   }
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__CaptureMTLSharedEvent_waitUntilSignaledValue_timeoutMS___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = v4;
+  block[4] = sCopy;
   if (waitUntilSignaledValue_timeoutMS__onceToken != -1)
   {
     dispatch_once(&waitUntilSignaledValue_timeoutMS__onceToken, block);
@@ -249,7 +249,7 @@
   v19 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v19);
-  v8 = [(MTLSharedEventSPI *)self->_baseObject waitUntilSignaledValue:a3 timeoutMS:v4];
+  v8 = [(MTLSharedEventSPI *)self->_baseObject waitUntilSignaledValue:value timeoutMS:sCopy];
   v9 = v20;
   *(v20 + 8) = -15422;
   v10 = BYTE9(v21);
@@ -269,10 +269,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLSharedEvent *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLSharedEvent *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -281,8 +281,8 @@
   }
 
   *v11 = var0;
-  *(v11 + 1) = a3;
-  *(v11 + 2) = v4;
+  *(v11 + 1) = value;
+  *(v11 + 2) = sCopy;
   *(v11 + 6) = v8;
   *(v11 + 7) = 0;
   s();
@@ -303,21 +303,21 @@ void __58__CaptureMTLSharedEvent_waitUntilSignaledValue_timeoutMS___block_invoke
   }
 }
 
-- (void)notifyListener:(id)a3 atValue:(unint64_t)a4 block:(id)a5
+- (void)notifyListener:(id)listener atValue:(unint64_t)value block:(id)block
 {
-  v8 = a5;
-  v9 = self;
-  baseObject = v9->_baseObject;
+  blockCopy = block;
+  selfCopy = self;
+  baseObject = selfCopy->_baseObject;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __54__CaptureMTLSharedEvent_notifyListener_atValue_block___block_invoke;
   v13[3] = &unk_2F26A8;
-  v14 = v9;
-  v15 = v8;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  [(MTLSharedEventSPI *)baseObject notifyListener:a3 atValue:a4 block:v13];
+  v14 = selfCopy;
+  v15 = blockCopy;
+  valueCopy = value;
+  v11 = selfCopy;
+  v12 = blockCopy;
+  [(MTLSharedEventSPI *)baseObject notifyListener:listener atValue:value block:v13];
 }
 
 - (id)newSharedEventHandle
@@ -327,7 +327,7 @@ void __58__CaptureMTLSharedEvent_waitUntilSignaledValue_timeoutMS___block_invoke
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLSharedEventSPI *)self->_baseObject newSharedEventHandle];
+  newSharedEventHandle = [(MTLSharedEventSPI *)self->_baseObject newSharedEventHandle];
   v5 = v16;
   *(v16 + 8) = -15907;
   v6 = BYTE9(v17);
@@ -347,10 +347,10 @@ void __58__CaptureMTLSharedEvent_waitUntilSignaledValue_timeoutMS___block_invoke
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLSharedEvent *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLSharedEvent *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -359,30 +359,30 @@ void __58__CaptureMTLSharedEvent_waitUntilSignaledValue_timeoutMS___block_invoke
   }
 
   *v7 = var0;
-  *(v7 + 1) = v4;
+  *(v7 + 1) = newSharedEventHandle;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return newSharedEventHandle;
 }
 
-- (CaptureMTLSharedEvent)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLSharedEvent)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLSharedEvent;
   v9 = [(CaptureMTLSharedEvent *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_captureDevice, a4);
-    objc_storeStrong(&v10->_baseObject, a3);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_captureDevice, device);
+    objc_storeStrong(&v10->_baseObject, object);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

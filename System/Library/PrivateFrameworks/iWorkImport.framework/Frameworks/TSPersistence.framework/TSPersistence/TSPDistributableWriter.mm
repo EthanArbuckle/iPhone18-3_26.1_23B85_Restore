@@ -1,6 +1,6 @@
 @interface TSPDistributableWriter
-- (BOOL)_processEntry:(id)a3 tocEntries:(id)a4 progressContext:(id)a5 error:(id *)a6;
-- (BOOL)goAndReportProgress:(BOOL)a3 error:(id *)a4 context:(id)a5;
+- (BOOL)_processEntry:(id)entry tocEntries:(id)entries progressContext:(id)context error:(id *)error;
+- (BOOL)goAndReportProgress:(BOOL)progress error:(id *)error context:(id)context;
 - (void)dealloc;
 @end
 
@@ -28,10 +28,10 @@
   [(TSPDistributableWriter *)&v5 dealloc];
 }
 
-- (BOOL)goAndReportProgress:(BOOL)a3 error:(id *)a4 context:(id)a5
+- (BOOL)goAndReportProgress:(BOOL)progress error:(id *)error context:(id)context
 {
-  v6 = a3;
-  v8 = a5;
+  progressCopy = progress;
+  contextCopy = context;
   v9 = [TSPDistributableArchiveEntry alloc];
   v12 = objc_msgSend_initWithIdentifier_(v9, v10, 1);
   if (!v12)
@@ -46,31 +46,31 @@
 
   v28 = 100;
   objc_msgSend_numberOfDatabaseObjects_error_(self->_database, v11, &v28, 0);
-  if (v6)
+  if (progressCopy)
   {
-    objc_msgSend_createStageWithSteps_(v8, v20, v21, v28);
-    v23 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v22, v12, 0, v8, a4);
+    objc_msgSend_createStageWithSteps_(contextCopy, v20, v21, v28);
+    v23 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v22, v12, 0, contextCopy, error);
   }
 
   else
   {
-    v23 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v20, v12, 0, 0, a4);
+    v23 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v20, v12, 0, 0, error);
   }
 
   v26 = v23;
-  if (v6)
+  if (progressCopy)
   {
-    objc_msgSend_endStage(v8, v24, v25);
+    objc_msgSend_endStage(contextCopy, v24, v25);
   }
 
   return v26;
 }
 
-- (BOOL)_processEntry:(id)a3 tocEntries:(id)a4 progressContext:(id)a5 error:(id *)a6
+- (BOOL)_processEntry:(id)entry tocEntries:(id)entries progressContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v14 = a5;
+  entryCopy = entry;
+  entriesCopy = entries;
+  contextCopy = context;
   v15 = atomic_load(&self->_isCancelled);
   if (v15)
   {
@@ -78,7 +78,7 @@
   }
 
   encodedIds = self->_encodedIds;
-  v17 = objc_msgSend_identifier(v10, v12, v13);
+  v17 = objc_msgSend_identifier(entryCopy, v12, v13);
   v22 = encodedIds[1];
   v21 = (encodedIds + 1);
   v20 = v22;
@@ -111,7 +111,7 @@ LABEL_9:
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPDistributableWriter(Private) _processEntry:tocEntries:progressContext:error:]");
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDistributableWriter.mm");
-    v31 = objc_msgSend_identifier(v10, v29, v30);
+    v31 = objc_msgSend_identifier(entryCopy, v29, v30);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v26, v28, 179, 0, "Already wrote entry for identifier %llu", v31);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34);
@@ -123,9 +123,9 @@ LABEL_9:
     goto LABEL_38;
   }
 
-  v67 = objc_msgSend_identifier(v10, v18, v19);
+  v67 = objc_msgSend_identifier(entryCopy, v18, v19);
   sub_276A5B668(v24, &v67);
-  if (!objc_msgSend_populateDistributableArchiveEntry_database_fileManager_(TSPDatabaseArchiveManager, v35, v10, self->_database, self->_fileManager))
+  if (!objc_msgSend_populateDistributableArchiveEntry_database_fileManager_(TSPDatabaseArchiveManager, v35, entryCopy, self->_database, self->_fileManager))
   {
     goto LABEL_38;
   }
@@ -134,16 +134,16 @@ LABEL_9:
   self->_processedEntriesCount = v38;
   if (__ROR8__(0x8F5C28F5C28F5C29 * v38, 1) <= 0x51EB851EB851EB8uLL)
   {
-    objc_msgSend_advanceProgress_(v14, v36, v37, 50.0);
+    objc_msgSend_advanceProgress_(contextCopy, v36, v37, 50.0);
   }
 
-  if (objc_msgSend_classType(v10, v36, v37) == 201 || objc_msgSend_classType(v10, v39, v40) == 208)
+  if (objc_msgSend_classType(entryCopy, v36, v37) == 201 || objc_msgSend_classType(entryCopy, v39, v40) == 208)
   {
     v42 = 1;
     goto LABEL_39;
   }
 
-  if (!objc_msgSend_writeEntry_offset_headerLength_error_(self->_outputStream, v41, v10, 0, 0, a6))
+  if (!objc_msgSend_writeEntry_offset_headerLength_error_(self->_outputStream, v41, entryCopy, 0, 0, error))
   {
 LABEL_38:
     v42 = 0;
@@ -151,9 +151,9 @@ LABEL_38:
   }
 
   typesSeen = self->_typesSeen;
-  v66 = objc_msgSend_classType(v10, v43, v44);
+  v66 = objc_msgSend_classType(entryCopy, v43, v44);
   sub_276AE6AA0(typesSeen, &v66);
-  v48 = objc_msgSend_ownedIds(v10, v46, v47);
+  v48 = objc_msgSend_ownedIds(entryCopy, v46, v47);
   v49 = v48 + 1;
   v50 = *v48;
   do
@@ -196,7 +196,7 @@ LABEL_38:
 LABEL_29:
       v57 = [TSPDistributableArchiveEntry alloc];
       v59 = objc_msgSend_initWithIdentifier_(v57, v58, v50[4]);
-      v61 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v60, v59, v11, v14, a6);
+      v61 = objc_msgSend__processEntry_tocEntries_progressContext_error_(self, v60, v59, entriesCopy, contextCopy, error);
     }
 
     v62 = v50[1];

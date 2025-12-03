@@ -8,23 +8,23 @@
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v12[0] = @"sessionUUID";
-  v3 = [(ATXDigestOnboardingSuggestionMetrics *)self sessionUUID];
-  v4 = v3;
-  if (!v3)
+  sessionUUID = [(ATXDigestOnboardingSuggestionMetrics *)self sessionUUID];
+  null = sessionUUID;
+  if (!sessionUUID)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"suggestionOutcome";
-  v5 = [(ATXDigestOnboardingSuggestionMetrics *)self outcome];
-  v6 = v5;
-  if (!v5)
+  outcome = [(ATXDigestOnboardingSuggestionMetrics *)self outcome];
+  null2 = outcome;
+  if (!outcome)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"timeToResolution";
   v7 = MEMORY[0x277CCABB0];
   [(ATXDigestOnboardingSuggestionMetrics *)self timeToResolution];
@@ -32,11 +32,11 @@
   v13[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-  if (!v5)
+  if (!outcome)
   {
   }
 
-  if (!v3)
+  if (!sessionUUID)
   {
   }
 

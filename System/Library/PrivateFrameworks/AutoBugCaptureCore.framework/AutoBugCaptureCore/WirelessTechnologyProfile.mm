@@ -1,12 +1,12 @@
 @interface WirelessTechnologyProfile
-+ (id)fetchFormattedHomeCarrierNameForContext:(id)a3;
-+ (id)fetchMCCMNCHomeCarrierNameForContext:(id)a3;
++ (id)fetchFormattedHomeCarrierNameForContext:(id)context;
++ (id)fetchMCCMNCHomeCarrierNameForContext:(id)context;
 + (id)fetchRegulatoryDomainCountry;
 + (id)sharedInstance;
 - (WirelessTechnologyProfile)init;
 - (id)fetchHomeCarrier;
-- (void)carrierBundleChange:(id)a3;
-- (void)currentDataSimChanged:(id)a3;
+- (void)carrierBundleChange:(id)change;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
 - (void)subscriptionInfoDidChange;
 - (void)updateHomeCarrier;
@@ -59,14 +59,14 @@ uint64_t __43__WirelessTechnologyProfile_sharedInstance__block_invoke()
 
     out_token = -1;
     objc_initWeak(&location, v2);
-    v9 = [*MEMORY[0x277D443B8] UTF8String];
+    uTF8String = [*MEMORY[0x277D443B8] UTF8String];
     v10 = v2->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __33__WirelessTechnologyProfile_init__block_invoke;
     handler[3] = &unk_278CF09E0;
     objc_copyWeak(&v20, &location);
-    v11 = notify_register_dispatch(v9, &out_token, v10, handler);
+    v11 = notify_register_dispatch(uTF8String, &out_token, v10, handler);
     if (v11)
     {
       v12 = symptomsLogHandle();
@@ -85,8 +85,8 @@ uint64_t __43__WirelessTechnologyProfile_sharedInstance__block_invoke()
     v14 = +[CoreTelephonyShim sharedInstance];
     [v14 addDelegate:v2];
 
-    v15 = [(WirelessTechnologyProfile *)v2 fetchHomeCarrier];
-    [(WirelessTechnologyProfile *)v2 setHomeCarrier:v15];
+    fetchHomeCarrier = [(WirelessTechnologyProfile *)v2 fetchHomeCarrier];
+    [(WirelessTechnologyProfile *)v2 setHomeCarrier:fetchHomeCarrier];
 
     v16 = v2;
     objc_destroyWeak(&v20);
@@ -136,15 +136,15 @@ void __33__WirelessTechnologyProfile_init__block_invoke(uint64_t a1)
     fetchRegulatoryDomainCountry_enUSLocale = v2;
   }
 
-  v4 = [MEMORY[0x277D443A8] lastKnownEstimates];
-  if ([v4 count])
+  lastKnownEstimates = [MEMORY[0x277D443A8] lastKnownEstimates];
+  if ([lastKnownEstimates count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 countryCode];
+    v5 = [lastKnownEstimates objectAtIndexedSubscript:0];
+    countryCode = [v5 countryCode];
 
-    if (v6)
+    if (countryCode)
     {
-      v7 = [fetchRegulatoryDomainCountry_enUSLocale localizedStringForCountryCode:v6];
+      v7 = [fetchRegulatoryDomainCountry_enUSLocale localizedStringForCountryCode:countryCode];
       v8 = v7;
       if (v7)
       {
@@ -177,11 +177,11 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v6 = symptomsLogHandle();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  countryCode = symptomsLogHandle();
+  if (os_log_type_enabled(countryCode, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_ERROR, "Error while fetching regulatory domain country: no estimates", buf, 2u);
+    _os_log_impl(&dword_241804000, countryCode, OS_LOG_TYPE_ERROR, "Error while fetching regulatory domain country: no estimates", buf, 2u);
   }
 
   v9 = @"Unknown";
@@ -190,10 +190,10 @@ LABEL_17:
   return v9;
 }
 
-+ (id)fetchFormattedHomeCarrierNameForContext:(id)a3
++ (id)fetchFormattedHomeCarrierNameForContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   if (!fetchFormattedHomeCarrierNameForContext__sInvalidCarrierNames)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_28537A6B0];
@@ -204,7 +204,7 @@ LABEL_17:
   v6 = +[CoreTelephonyShim sharedInstance];
   v7 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:1];
   v25 = 0;
-  v8 = [v6 copyCarrierBundleValue:v3 key:@"CarrierName" bundleType:v7 error:&v25];
+  v8 = [v6 copyCarrierBundleValue:contextCopy key:@"CarrierName" bundleType:v7 error:&v25];
   v9 = v25;
 
   if (!v9)
@@ -248,7 +248,7 @@ LABEL_17:
           v14 = +[CoreTelephonyShim sharedInstance];
           v15 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:5];
           v23 = 0;
-          v12 = [v14 copyCarrierBundleValue:v3 key:@"ISOAlpha2CountryCode" bundleType:v15 error:&v23];
+          v12 = [v14 copyCarrierBundleValue:contextCopy key:@"ISOAlpha2CountryCode" bundleType:v15 error:&v23];
           v9 = v23;
 
           if (!v9)
@@ -269,17 +269,17 @@ LABEL_17:
                     if ([v17 length]== 2)
                     {
                       v18 = objc_alloc(MEMORY[0x277CCACA8]);
-                      v19 = [v17 uppercaseString];
-                      v13 = [v18 initWithFormat:@"%@ %@", v11, v19];
+                      uppercaseString = [v17 uppercaseString];
+                      v13 = [v18 initWithFormat:@"%@ %@", v11, uppercaseString];
                     }
 
                     else
                     {
-                      v19 = symptomsLogHandle();
-                      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+                      uppercaseString = symptomsLogHandle();
+                      if (os_log_type_enabled(uppercaseString, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 0;
-                        _os_log_impl(&dword_241804000, v19, OS_LOG_TYPE_ERROR, "Country code has unexpected length", buf, 2u);
+                        _os_log_impl(&dword_241804000, uppercaseString, OS_LOG_TYPE_ERROR, "Country code has unexpected length", buf, 2u);
                       }
 
                       v13 = 0;
@@ -349,13 +349,13 @@ LABEL_29:
   return v13;
 }
 
-+ (id)fetchMCCMNCHomeCarrierNameForContext:(id)a3
++ (id)fetchMCCMNCHomeCarrierNameForContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = +[CoreTelephonyShim sharedInstance];
   v15 = 0;
-  v5 = [v4 copyMobileCountryCode:v3 error:&v15];
+  v5 = [v4 copyMobileCountryCode:contextCopy error:&v15];
   v6 = v15;
 
   if (v6)
@@ -383,7 +383,7 @@ LABEL_29:
   {
     v8 = +[CoreTelephonyShim sharedInstance];
     v14 = 0;
-    v9 = [v8 copyMobileNetworkCode:v3 error:&v14];
+    v9 = [v8 copyMobileNetworkCode:contextCopy error:&v14];
     v6 = v14;
 
     if (!v6 && v9)
@@ -412,11 +412,11 @@ LABEL_15:
 - (id)fetchHomeCarrier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(WirelessTechnologyProfile *)self dataContext];
-  if (v3)
+  dataContext = [(WirelessTechnologyProfile *)self dataContext];
+  if (dataContext)
   {
 LABEL_5:
-    v6 = [WirelessTechnologyProfile fetchFormattedHomeCarrierNameForContext:v3];
+    v6 = [WirelessTechnologyProfile fetchFormattedHomeCarrierNameForContext:dataContext];
     v5 = v6;
     if (v6)
     {
@@ -426,7 +426,7 @@ LABEL_5:
 
     else
     {
-      v8 = [WirelessTechnologyProfile fetchMCCMNCHomeCarrierNameForContext:v3];
+      v8 = [WirelessTechnologyProfile fetchMCCMNCHomeCarrierNameForContext:dataContext];
       v9 = v8;
       v10 = @"Unknown";
       if (v8)
@@ -442,12 +442,12 @@ LABEL_5:
 
   v4 = +[CoreTelephonyShim sharedInstance];
   v14 = 0;
-  v3 = [v4 getCurrentDataSubscriptionContextSync:&v14];
+  dataContext = [v4 getCurrentDataSubscriptionContextSync:&v14];
   v5 = v14;
 
-  if (!v5 && v3)
+  if (!v5 && dataContext)
   {
-    [(WirelessTechnologyProfile *)self setDataContext:v3];
+    [(WirelessTechnologyProfile *)self setDataContext:dataContext];
     goto LABEL_5;
   }
 
@@ -476,8 +476,8 @@ LABEL_13:
     _os_log_impl(&dword_241804000, v3, OS_LOG_TYPE_INFO, "Received notification for home carrier, updating value", v5, 2u);
   }
 
-  v4 = [(WirelessTechnologyProfile *)self fetchHomeCarrier];
-  [(WirelessTechnologyProfile *)self setHomeCarrier:v4];
+  fetchHomeCarrier = [(WirelessTechnologyProfile *)self fetchHomeCarrier];
+  [(WirelessTechnologyProfile *)self setHomeCarrier:fetchHomeCarrier];
 }
 
 - (void)subscriptionInfoDidChange
@@ -504,22 +504,22 @@ LABEL_13:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v9 = [(WirelessTechnologyProfile *)self dataContext];
-      v10 = [v9 uuid];
-      v11 = [v4 uuid];
+      dataContext = [(WirelessTechnologyProfile *)self dataContext];
+      uuid = [dataContext uuid];
+      uuid2 = [v4 uuid];
       *buf = 138412546;
-      v18 = v10;
+      v18 = uuid;
       v19 = 2112;
-      v20 = v11;
+      v20 = uuid2;
       _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_INFO, "subscriptionInfoDidChange: %@ -> %@", buf, 0x16u);
     }
 
     if (v4)
     {
-      v12 = [v4 uuid];
-      v13 = [(WirelessTechnologyProfile *)self dataContext];
-      v14 = [v13 uuid];
-      v15 = [v12 isEqual:v14];
+      uuid3 = [v4 uuid];
+      dataContext2 = [(WirelessTechnologyProfile *)self dataContext];
+      uuid4 = [dataContext2 uuid];
+      v15 = [uuid3 isEqual:uuid4];
 
       if ((v15 & 1) == 0)
       {
@@ -538,33 +538,33 @@ LABEL_13:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = symptomsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(WirelessTechnologyProfile *)self dataContext];
-    v7 = [v6 uuid];
-    v8 = [v4 uuid];
+    dataContext = [(WirelessTechnologyProfile *)self dataContext];
+    uuid = [dataContext uuid];
+    uuid2 = [changedCopy uuid];
     v14 = 138412546;
-    v15 = v7;
+    v15 = uuid;
     v16 = 2112;
-    v17 = v8;
+    v17 = uuid2;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "currentDataSimChanged: %@ -> %@", &v14, 0x16u);
   }
 
-  if (v4)
+  if (changedCopy)
   {
-    v9 = [v4 uuid];
-    v10 = [(WirelessTechnologyProfile *)self dataContext];
-    v11 = [v10 uuid];
-    v12 = [v9 isEqual:v11];
+    uuid3 = [changedCopy uuid];
+    dataContext2 = [(WirelessTechnologyProfile *)self dataContext];
+    uuid4 = [dataContext2 uuid];
+    v12 = [uuid3 isEqual:uuid4];
 
     if ((v12 & 1) == 0)
     {
-      [(WirelessTechnologyProfile *)self setDataContext:v4];
+      [(WirelessTechnologyProfile *)self setDataContext:changedCopy];
       [(WirelessTechnologyProfile *)self updateHomeCarrier];
     }
   }
@@ -572,23 +572,23 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = symptomsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [changeCopy uuid];
     v12 = 138412290;
-    v13 = v6;
+    v13 = uuid;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "carrierBundleChange: %@", &v12, 0xCu);
   }
 
-  v7 = [v4 uuid];
-  v8 = [(WirelessTechnologyProfile *)self dataContext];
-  v9 = [v8 uuid];
-  v10 = [v7 isEqual:v9];
+  uuid2 = [changeCopy uuid];
+  dataContext = [(WirelessTechnologyProfile *)self dataContext];
+  uuid3 = [dataContext uuid];
+  v10 = [uuid2 isEqual:uuid3];
 
   if (v10)
   {

@@ -1,26 +1,26 @@
 @interface LACDTOLocationProviderPersistenceDecorator
-- (LACDTOLocationProviderPersistenceDecorator)initWithLocationProvider:(id)a3 store:(id)a4 featureFlags:(id)a5 cacheEnabled:(BOOL)a6;
-- (id)_kvsValueForLocationState:(id)a3;
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3;
+- (LACDTOLocationProviderPersistenceDecorator)initWithLocationProvider:(id)provider store:(id)store featureFlags:(id)flags cacheEnabled:(BOOL)enabled;
+- (id)_kvsValueForLocationState:(id)state;
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationProviderPersistenceDecorator
 
-- (LACDTOLocationProviderPersistenceDecorator)initWithLocationProvider:(id)a3 store:(id)a4 featureFlags:(id)a5 cacheEnabled:(BOOL)a6
+- (LACDTOLocationProviderPersistenceDecorator)initWithLocationProvider:(id)provider store:(id)store featureFlags:(id)flags cacheEnabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  providerCopy = provider;
+  storeCopy = store;
+  flagsCopy = flags;
   v18.receiver = self;
   v18.super_class = LACDTOLocationProviderPersistenceDecorator;
   v14 = [(LACDTOLocationProviderPersistenceDecorator *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_locationProvider, a3);
-    objc_storeStrong(&v15->_store, a4);
-    objc_storeStrong(&v15->_featureFlags, a5);
-    v15->_isCacheEnabled = a6;
+    objc_storeStrong(&v14->_locationProvider, provider);
+    objc_storeStrong(&v15->_store, store);
+    objc_storeStrong(&v15->_featureFlags, flags);
+    v15->_isCacheEnabled = enabled;
     locationState = v15->_locationState;
     v15->_locationState = 0;
   }
@@ -28,9 +28,9 @@
   return v15;
 }
 
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   locationProvider = self->_locationProvider;
   v7[0] = MEMORY[0x1E69E9820];
@@ -38,7 +38,7 @@
   v7[2] = __86__LACDTOLocationProviderPersistenceDecorator_checkIsInFamiliarLocationWithCompletion___block_invoke;
   v7[3] = &unk_1E7A958A8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTOLocationProvider *)locationProvider checkIsInFamiliarLocationWithCompletion:v7];
 
@@ -123,20 +123,20 @@ void __86__LACDTOLocationProviderPersistenceDecorator_checkIsInFamiliarLocationW
   }
 }
 
-- (id)_kvsValueForLocationState:(id)a3
+- (id)_kvsValueForLocationState:(id)state
 {
-  v4 = a3;
-  if ([v4 rawValue] == -1)
+  stateCopy = state;
+  if ([stateCopy rawValue] == -1)
   {
     v5 = 0;
   }
 
   else
   {
-    if ((-[LACFeatureFlagsProviderDTO featureFlagDimpleKeyZeroDelayRatchetEnabled](self->_featureFlags, "featureFlagDimpleKeyZeroDelayRatchetEnabled") & 1) != 0 || [v4 rawValue] != 2)
+    if ((-[LACFeatureFlagsProviderDTO featureFlagDimpleKeyZeroDelayRatchetEnabled](self->_featureFlags, "featureFlagDimpleKeyZeroDelayRatchetEnabled") & 1) != 0 || [stateCopy rawValue] != 2)
     {
       v9 = [LACDTOKVStoreValue alloc];
-      v8 = [v4 rawValue];
+      rawValue = [stateCopy rawValue];
       v7 = v9;
     }
 
@@ -149,10 +149,10 @@ void __86__LACDTOLocationProviderPersistenceDecorator_checkIsInFamiliarLocationW
       }
 
       v7 = [LACDTOKVStoreValue alloc];
-      v8 = LACDTOLocationStateRawValueAwayFromFamiliarLocation;
+      rawValue = LACDTOLocationStateRawValueAwayFromFamiliarLocation;
     }
 
-    v5 = [(LACDTOKVStoreValue *)v7 initWithByte:v8];
+    v5 = [(LACDTOKVStoreValue *)v7 initWithByte:rawValue];
   }
 
   return v5;

@@ -7,13 +7,13 @@
 - (id)patchedPairedPeerWithPeerInfo:()APPairingClientCoreUtils
 {
   v5 = objc_alloc_init(MEMORY[0x277D028D8]);
-  [v5 setAcl:{objc_msgSend(a1, "acl")}];
-  [v5 setAltIRK:{objc_msgSend(a1, "altIRK")}];
-  [v5 setIdentifier:{objc_msgSend(a1, "identifier")}];
-  [v5 setModel:{objc_msgSend(a1, "model")}];
-  [v5 setName:{objc_msgSend(a1, "name")}];
-  [v5 setPublicKey:{objc_msgSend(a1, "publicKey")}];
-  v6 = [objc_msgSend(a1 "info")];
+  [v5 setAcl:{objc_msgSend(self, "acl")}];
+  [v5 setAltIRK:{objc_msgSend(self, "altIRK")}];
+  [v5 setIdentifier:{objc_msgSend(self, "identifier")}];
+  [v5 setModel:{objc_msgSend(self, "model")}];
+  [v5 setName:{objc_msgSend(self, "name")}];
+  [v5 setPublicKey:{objc_msgSend(self, "publicKey")}];
+  v6 = [objc_msgSend(self "info")];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);

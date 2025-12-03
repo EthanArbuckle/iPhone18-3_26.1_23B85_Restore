@@ -1,42 +1,42 @@
 @interface PDFDocumentView
 - (CGSize)documentViewSize;
 - (CGVector)_scaleFromLayerTransforms;
-- (PDFDocumentView)initWithPDFView:(id)a3;
-- (id)_createPageView:(id)a3;
-- (id)backgroundImageForPage:(id)a3 withQuality:(int *)a4;
-- (id)createPageViewForPageAtIndex:(unint64_t)a3 withFrame:(CGRect)a4;
+- (PDFDocumentView)initWithPDFView:(id)view;
+- (id)_createPageView:(id)view;
+- (id)backgroundImageForPage:(id)page withQuality:(int *)quality;
+- (id)createPageViewForPageAtIndex:(unint64_t)index withFrame:(CGRect)frame;
 - (id)document;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pageViewForPageAtIndex:(unint64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pageViewForPageAtIndex:(unint64_t)index;
 - (id)pdfView;
-- (void)_reAddPageOverlaysStartingAtIndex:(unint64_t)a3;
-- (void)_removePageOverlaysStartingAtIndex:(unint64_t)a3;
-- (void)_shiftPagesAtIndex:(unint64_t)a3 downwards:(BOOL)a4;
+- (void)_reAddPageOverlaysStartingAtIndex:(unint64_t)index;
+- (void)_removePageOverlaysStartingAtIndex:(unint64_t)index;
+- (void)_shiftPagesAtIndex:(unint64_t)index downwards:(BOOL)downwards;
 - (void)_updateVisibility;
-- (void)_updateVisibilityDelegateForVisiblePageView:(id)a3 atIndex:(unint64_t)a4;
-- (void)changedBoundsForBoxNotification:(id)a3;
+- (void)_updateVisibilityDelegateForVisiblePageView:(id)view atIndex:(unint64_t)index;
+- (void)changedBoundsForBoxNotification:(id)notification;
 - (void)dealloc;
-- (void)didInsertPage:(id)a3 atIndex:(unint64_t)a4;
-- (void)didRemovePage:(id)a3 atIndex:(unint64_t)a4;
-- (void)didRotatePageNotification:(id)a3;
-- (void)didSwapPage:(id)a3 atIndex:(unint64_t)a4 forPage:(id)a5 atIndex:(unint64_t)a6;
-- (void)forceUpdateActivePageIndex:(unint64_t)a3 withMaxDuration:(double)a4;
+- (void)didInsertPage:(id)page atIndex:(unint64_t)index;
+- (void)didRemovePage:(id)page atIndex:(unint64_t)index;
+- (void)didRotatePageNotification:(id)notification;
+- (void)didSwapPage:(id)page atIndex:(unint64_t)index forPage:(id)forPage atIndex:(unint64_t)atIndex;
+- (void)forceUpdateActivePageIndex:(unint64_t)index withMaxDuration:(double)duration;
 - (void)layoutDocumentView;
-- (void)previewRotateShiftPages:(double)a3;
-- (void)recieveBackgroundImage:(id)a3 atBackgroundQuality:(int)a4 forPage:(id)a5;
-- (void)removePageViewForPageAtIndex:(unint64_t)a3;
-- (void)setDocument:(id)a3;
+- (void)previewRotateShiftPages:(double)pages;
+- (void)recieveBackgroundImage:(id)image atBackgroundQuality:(int)quality forPage:(id)page;
+- (void)removePageViewForPageAtIndex:(unint64_t)index;
+- (void)setDocument:(id)document;
 - (void)updateNotificationsForDocument;
 - (void)updateVisibility;
-- (void)willRemovePage:(id)a3 atIndex:(unint64_t)a4;
-- (void)willSwapPage:(id)a3 atIndex:(unint64_t)a4 forPage:(id)a5 atIndex:(unint64_t)a6;
+- (void)willRemovePage:(id)page atIndex:(unint64_t)index;
+- (void)willSwapPage:(id)page atIndex:(unint64_t)index forPage:(id)forPage atIndex:(unint64_t)atIndex;
 @end
 
 @implementation PDFDocumentView
 
-- (PDFDocumentView)initWithPDFView:(id)a3
+- (PDFDocumentView)initWithPDFView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = PDFDocumentView;
   v5 = [(PDFTextInputView *)&v11 initWithDelegate:self];
@@ -46,19 +46,19 @@
     v7 = v5->_private;
     v5->_private = v6;
 
-    objc_storeWeak(&v5->_private->pdfView, v4);
-    v8 = [v4 renderingProperties];
-    objc_storeWeak(&v5->_private->renderingProperties, v8);
+    objc_storeWeak(&v5->_private->pdfView, viewCopy);
+    renderingProperties = [viewCopy renderingProperties];
+    objc_storeWeak(&v5->_private->renderingProperties, renderingProperties);
     v5->_private->ignoreChangedBoundsForBoxNotification = 1;
     [(PDFDocumentView *)v5 updateNotificationsForDocument];
-    if (([v8 isUsingPDFExtensionView] & 1) == 0)
+    if (([renderingProperties isUsingPDFExtensionView] & 1) == 0)
     {
       [(PDFDocumentView *)v5 becomeFirstResponder];
     }
 
     [(PDFTextInputView *)v5 updateGestureRecognizerDependencies];
-    v9 = [(PDFDocumentView *)v5 layer];
-    [v9 setAllowsEdgeAntialiasing:0];
+    layer = [(PDFDocumentView *)v5 layer];
+    [layer setAllowsEdgeAntialiasing:0];
   }
 
   return v5;
@@ -75,20 +75,20 @@
     v4->pageBackgroundManager = 0;
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = PDFDocumentView;
   [(PDFDocumentView *)&v7 dealloc];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  documentCopy = document;
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
-  if (WeakRetained != v4)
+  if (WeakRetained != documentCopy)
   {
     [(NSMutableDictionary *)self->_private->pageViews allValues];
     v29 = 0u;
@@ -111,10 +111,10 @@
 
           v9 = *(*(&v27 + 1) + 8 * v8);
           v10 = objc_loadWeakRetained(&self->_private->pdfView);
-          v11 = [v9 visibilityDelegateIndex];
-          [v10 callPageVisibilityDelegateMethod:2 forPageView:v9 atPageIndex:v11];
+          visibilityDelegateIndex = [v9 visibilityDelegateIndex];
+          [v10 callPageVisibilityDelegateMethod:2 forPageView:v9 atPageIndex:visibilityDelegateIndex];
           [v9 removeFromSuperview];
-          [v10 callPageVisibilityDelegateMethod:3 forPageView:v9 atPageIndex:v11];
+          [v10 callPageVisibilityDelegateMethod:3 forPageView:v9 atPageIndex:visibilityDelegateIndex];
 
           ++v8;
         }
@@ -126,14 +126,14 @@
       while (v6);
     }
 
-    objc_storeWeak(&self->_private->document, v4);
+    objc_storeWeak(&self->_private->document, documentCopy);
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = self->_private;
     pageViews = v13->pageViews;
     v13->pageViews = v12;
 
     self->_private->pageFrames.__end_ = self->_private->pageFrames.__begin_;
-    [v4 setPageChangeDelegate:self];
+    [documentCopy setPageChangeDelegate:self];
     v15 = [PDFDocumentContentView alloc];
     [(PDFDocumentView *)self frame];
     v16 = [(PDFDocumentContentView *)v15 initWithFrame:?];
@@ -148,9 +148,9 @@
       [(PDFPageBackgroundManager *)pageBackgroundManager cancel];
     }
 
-    if (v4)
+    if (documentCopy)
     {
-      if ([v4 isLinearized] && (objc_msgSend(v4, "hasHighLatencyDataProvider") & 1) != 0)
+      if ([documentCopy isLinearized] && (objc_msgSend(documentCopy, "hasHighLatencyDataProvider") & 1) != 0)
       {
         goto LABEL_17;
       }
@@ -186,22 +186,22 @@ LABEL_17:
 
 - (void)updateNotificationsForDocument
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
-  [v4 removeObserver:self name:@"PDFPageChangedBoundsForBox" object:0];
-  [v4 removeObserver:self name:@"PDFPageDidRotate" object:0];
-  [v4 removeObserver:self name:@"PDFPageDidChangeBounds" object:0];
+  [defaultCenter removeObserver:self name:@"PDFPageChangedBoundsForBox" object:0];
+  [defaultCenter removeObserver:self name:@"PDFPageDidRotate" object:0];
+  [defaultCenter removeObserver:self name:@"PDFPageDidChangeBounds" object:0];
   if (WeakRetained)
   {
-    [v4 addObserver:self selector:sel_changedBoundsForBoxNotification_ name:@"PDFPageChangedBoundsForBox" object:WeakRetained];
-    [v4 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidRotate" object:WeakRetained];
-    [v4 addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel_changedBoundsForBoxNotification_ name:@"PDFPageChangedBoundsForBox" object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidRotate" object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel_didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:WeakRetained];
   }
 }
 
-- (id)pageViewForPageAtIndex:(unint64_t)a3
+- (id)pageViewForPageAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || ![(NSMutableDictionary *)self->_private->pageViews count])
+  if (index == 0x7FFFFFFFFFFFFFFFLL || ![(NSMutableDictionary *)self->_private->pageViews count])
   {
     v7 = 0;
   }
@@ -209,35 +209,35 @@ LABEL_17:
   else
   {
     pageViews = self->_private->pageViews;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v7 = [(NSMutableDictionary *)pageViews objectForKey:v6];
   }
 
   return v7;
 }
 
-- (id)createPageViewForPageAtIndex:(unint64_t)a3 withFrame:(CGRect)a4
+- (id)createPageViewForPageAtIndex:(unint64_t)index withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   if (WeakRetained)
   {
     v11 = objc_loadWeakRetained(&self->_private->document);
-    v25 = a3;
-    v12 = [v11 pageAtIndex:a3];
+    indexCopy = index;
+    v12 = [v11 pageAtIndex:index];
 
     [v12 setView:WeakRetained];
     v13 = [(PDFDocumentView *)self _createPageView:v12];
     [v13 setFrame:{x, y, width, height}];
     v14 = self->_private->pageViews;
     objc_sync_enter(v14);
-    [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v13 atPageIndex:v25];
+    [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v13 atPageIndex:indexCopy];
     pageViews = self->_private->pageViews;
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:indexCopy];
     [(NSMutableDictionary *)pageViews setObject:v13 forKey:v16];
 
     [v13 setNeedsLayout];
@@ -265,8 +265,8 @@ LABEL_17:
           }
 
           v21 = *(*(&v26 + 1) + 8 * i);
-          v22 = [v21 pages];
-          v23 = [v22 containsObject:v12];
+          pages = [v21 pages];
+          v23 = [pages containsObject:v12];
 
           if (v23)
           {
@@ -280,7 +280,7 @@ LABEL_17:
       while (v18);
     }
 
-    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v13 atPageIndex:v25];
+    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v13 atPageIndex:indexCopy];
   }
 
   else
@@ -291,23 +291,23 @@ LABEL_17:
   return v13;
 }
 
-- (void)removePageViewForPageAtIndex:(unint64_t)a3
+- (void)removePageViewForPageAtIndex:(unint64_t)index
 {
   obj = self->_private->pageViews;
   objc_sync_enter(obj);
   pageViews = self->_private->pageViews;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v7 = [(NSMutableDictionary *)pageViews objectForKey:v6];
 
-  v8 = [v7 visibilityDelegateIndex];
+  visibilityDelegateIndex = [v7 visibilityDelegateIndex];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v7 atPageIndex:v8];
+  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v7 atPageIndex:visibilityDelegateIndex];
   v10 = self->_private->pageViews;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   [v7 removeFromSuperview];
-  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v7 atPageIndex:v8];
+  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v7 atPageIndex:visibilityDelegateIndex];
 
   objc_sync_exit(obj);
 }
@@ -317,16 +317,16 @@ LABEL_17:
   v41 = *MEMORY[0x1E69E9840];
   self->_private->ignoreChangedBoundsForBoxNotification = 1;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v3 = [WeakRetained PDFLayout];
+  pDFLayout = [WeakRetained PDFLayout];
   self->_private->pageFrames.__end_ = self->_private->pageFrames.__begin_;
   v4 = objc_loadWeakRetained(&self->_private->document);
-  v5 = [WeakRetained currentPage];
-  if (!v5)
+  currentPage = [WeakRetained currentPage];
+  if (!currentPage)
   {
-    v5 = [v4 pageAtIndex:?];
+    currentPage = [v4 pageAtIndex:?];
   }
 
-  [v3 contentSizeWithCurrentPage:v5];
+  [pDFLayout contentSizeWithCurrentPage:currentPage];
   v7 = v6;
   v8 = self->_private;
   v8->documentViewSize.width = v9;
@@ -337,20 +337,20 @@ LABEL_17:
   v12.n128_u64[0] = 0;
   v13.n128_u64[0] = 0;
   [(PDFDocumentView *)self setBounds:PDFRectMake(v12, v13, self->_private->documentViewSize.width, self->_private->documentViewSize.height)];
-  v14 = [WeakRetained documentScrollView];
+  documentScrollView = [WeakRetained documentScrollView];
   [(PDFDocumentView *)self frame];
-  [v14 setContentSize:{v15, v16}];
-  [v14 centerAlign];
+  [documentScrollView setContentSize:{v15, v16}];
+  [documentScrollView centerAlign];
 
-  v17 = [v4 pageCount];
-  std::vector<CGRect>::resize(&self->_private->pageFrames.__begin_, v17);
-  if (v17 >= 1)
+  pageCount = [v4 pageCount];
+  std::vector<CGRect>::resize(&self->_private->pageFrames.__begin_, pageCount);
+  if (pageCount >= 1)
   {
     v18 = 0;
     v19 = 0;
     do
     {
-      v20 = [v3 boundsForPageAtIndex:v19];
+      v20 = [pDFLayout boundsForPageAtIndex:v19];
       v21 = *(v20 + 16);
       v22 = *(v20 + 24);
       [(PDFDocumentView *)self _pixelAlignPageFrameOrigin:*v20, *(v20 + 8), v21, v22];
@@ -363,15 +363,15 @@ LABEL_17:
       ++v18;
     }
 
-    while ((v17 & 0x7FFFFFFF) != v19);
+    while ((pageCount & 0x7FFFFFFF) != v19);
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = [(NSMutableDictionary *)self->_private->pageViews allValues];
-  v27 = [v26 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  allValues = [(NSMutableDictionary *)self->_private->pageViews allValues];
+  v27 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v27)
   {
     v28 = *v37;
@@ -381,12 +381,12 @@ LABEL_17:
       {
         if (*v37 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allValues);
         }
 
         v30 = *(*(&v36 + 1) + 8 * i);
-        v31 = [v30 page];
-        v32 = [v4 indexForPage:v31];
+        page = [v30 page];
+        v32 = [v4 indexForPage:page];
         begin = self->_private->pageFrames.__begin_;
         if (v32 < self->_private->pageFrames.__end_ - begin)
         {
@@ -394,7 +394,7 @@ LABEL_17:
         }
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v27 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v27);
@@ -442,15 +442,15 @@ LABEL_17:
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 PDFLayout];
-      v7 = [v6 functionalDisplayMode];
-      v8 = [v5 currentPage];
-      v9 = v8;
-      v10 = v7 == 2 || v7 == 0;
-      v11 = v10 && v8 == 0;
+      pDFLayout = [v4 PDFLayout];
+      functionalDisplayMode = [pDFLayout functionalDisplayMode];
+      currentPage = [v5 currentPage];
+      v9 = currentPage;
+      v10 = functionalDisplayMode == 2 || functionalDisplayMode == 0;
+      v11 = v10 && currentPage == 0;
       if (!v11 && self->_private->pageFrames.__begin_ != self->_private->pageFrames.__end_)
       {
-        v62 = v6;
+        v62 = pDFLayout;
         v63 = v5;
         [v5 bounds];
         [v5 convertRect:self toView:?];
@@ -487,19 +487,19 @@ LABEL_17:
         v72 = 0;
         v73 = 0;
         v71 = &v72;
-        if (v7)
+        if (functionalDisplayMode)
         {
-          if (v7 == 2)
+          if (functionalDisplayMode == 2)
           {
             v68 = [WeakRetained indexForPage:v9];
             std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long>(&v71, &v68);
-            v29 = [v5 currentPage];
-            v30 = [v6 facingPageForPage:v29];
+            currentPage2 = [v5 currentPage];
+            v30 = [pDFLayout facingPageForPage:currentPage2];
 
             if (v30)
             {
-              v31 = [v5 displaysAsBook];
-              v32 = v68 ? 0 : v31;
+              displaysAsBook = [v5 displaysAsBook];
+              v32 = v68 ? 0 : displaysAsBook;
               if ((v32 & 1) == 0)
               {
                 v74[0] = [WeakRetained indexForPage:v30];
@@ -698,7 +698,7 @@ LABEL_17:
         std::set<unsigned long>::set[abi:ne200100](v67, &v71);
         v60 = v58;
         v66 = v60;
-        v6 = v62;
+        pDFLayout = v62;
         v5 = v63;
         [(NSMutableDictionary *)v59 enumerateKeysAndObjectsUsingBlock:v65];
         v64[0] = MEMORY[0x1E69E9820];
@@ -755,15 +755,15 @@ LABEL_9:
   }
 }
 
-- (void)previewRotateShiftPages:(double)a3
+- (void)previewRotateShiftPages:(double)pages
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableDictionary *)self->_private->pageViews allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_private->pageViews allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -773,39 +773,39 @@ LABEL_9:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         [v8 frame];
-        [v8 setFrame:v9 + a3];
+        [v8 setFrame:v9 + pages];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)forceUpdateActivePageIndex:(unint64_t)a3 withMaxDuration:(double)a4
+- (void)forceUpdateActivePageIndex:(unint64_t)index withMaxDuration:(double)duration
 {
   [(PDFDocumentView *)self updateVisibility];
   pageBackgroundManager = self->_private->pageBackgroundManager;
 
-  [(PDFPageBackgroundManager *)pageBackgroundManager forceUpdateActivePageIndex:a3 withMaxDuration:a4];
+  [(PDFPageBackgroundManager *)pageBackgroundManager forceUpdateActivePageIndex:index withMaxDuration:duration];
 }
 
-- (id)_createPageView:(id)a3
+- (id)_createPageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   v6 = [PDFPageView alloc];
   v7 = objc_loadWeakRetained(&self->_private->renderingProperties);
-  v8 = [(PDFPageView *)v6 initWithPage:v4 geometryInterface:WeakRetained andRenderingProperties:v7];
+  v8 = [(PDFPageView *)v6 initWithPage:viewCopy geometryInterface:WeakRetained andRenderingProperties:v7];
 
-  v9 = [(PDFDocumentView *)self document];
-  v10 = [v9 indexForPage:v4];
+  document = [(PDFDocumentView *)self document];
+  v10 = [document indexForPage:viewCopy];
 
   v13 = 0;
   v11 = [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:v10 withFoundQuality:&v13];
@@ -817,148 +817,148 @@ LABEL_9:
   return v8;
 }
 
-- (void)didInsertPage:(id)a3 atIndex:(unint64_t)a4
+- (void)didInsertPage:(id)page atIndex:(unint64_t)index
 {
-  v11 = a3;
-  [(PDFDocumentView *)self _shiftPagesAtIndex:a4 downwards:1];
+  pageCopy = page;
+  [(PDFDocumentView *)self _shiftPagesAtIndex:index downwards:1];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [v11 setView:WeakRetained];
-  v7 = [(PDFDocumentView *)self _createPageView:v11];
-  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v7 atPageIndex:a4];
+  [pageCopy setView:WeakRetained];
+  v7 = [(PDFDocumentView *)self _createPageView:pageCopy];
+  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v7 atPageIndex:index];
   [(PDFDocumentView *)self addSubview:v7];
   pageViews = self->_private->pageViews;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)pageViews setObject:v7 forKey:v9];
 
-  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didInsertPageAtIndex:a4];
-  v10 = [WeakRetained PDFLayout];
-  [v10 invalidateInternalDocumentGeometry];
+  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didInsertPageAtIndex:index];
+  pDFLayout = [WeakRetained PDFLayout];
+  [pDFLayout invalidateInternalDocumentGeometry];
   [(PDFDocumentView *)self layoutDocumentView];
-  [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v7 atPageIndex:a4];
-  [(PDFDocumentView *)self _reAddPageOverlaysStartingAtIndex:a4 + 1];
+  [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v7 atPageIndex:index];
+  [(PDFDocumentView *)self _reAddPageOverlaysStartingAtIndex:index + 1];
   [(PDFDocumentView *)self updateVisibility];
 }
 
-- (void)willRemovePage:(id)a3 atIndex:(unint64_t)a4
+- (void)willRemovePage:(id)page atIndex:(unint64_t)index
 {
-  [(PDFDocumentView *)self _removePageOverlaysStartingAtIndex:a4 + 1];
+  [(PDFDocumentView *)self _removePageOverlaysStartingAtIndex:index + 1];
   pageViews = self->_private->pageViews;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v10 = [(NSMutableDictionary *)pageViews objectForKey:v7];
 
-  v8 = [v10 visibilityDelegateIndex];
+  visibilityDelegateIndex = [v10 visibilityDelegateIndex];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v10 atPageIndex:v8];
+  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v10 atPageIndex:visibilityDelegateIndex];
 }
 
-- (void)didRemovePage:(id)a3 atIndex:(unint64_t)a4
+- (void)didRemovePage:(id)page atIndex:(unint64_t)index
 {
-  [a3 setView:0];
+  [page setView:0];
   pageViews = self->_private->pageViews;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v14 = [(NSMutableDictionary *)pageViews objectForKey:v7];
 
-  v8 = [v14 visibilityDelegateIndex];
+  visibilityDelegateIndex = [v14 visibilityDelegateIndex];
   v9 = self->_private->pageViews;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
   [v14 removeFromSuperview];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v14 atPageIndex:v8];
+  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v14 atPageIndex:visibilityDelegateIndex];
 
-  [(PDFDocumentView *)self _shiftPagesAtIndex:a4 + 1 downwards:0];
-  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didRemovePageAtIndex:a4];
+  [(PDFDocumentView *)self _shiftPagesAtIndex:index + 1 downwards:0];
+  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didRemovePageAtIndex:index];
   v12 = objc_loadWeakRetained(&self->_private->pdfView);
-  v13 = [v12 PDFLayout];
-  [v13 invalidateInternalDocumentGeometry];
+  pDFLayout = [v12 PDFLayout];
+  [pDFLayout invalidateInternalDocumentGeometry];
   [(PDFDocumentView *)self layoutDocumentView];
-  [(PDFDocumentView *)self _reAddPageOverlaysStartingAtIndex:a4];
+  [(PDFDocumentView *)self _reAddPageOverlaysStartingAtIndex:index];
   [(PDFDocumentView *)self updateVisibility];
 }
 
-- (void)willSwapPage:(id)a3 atIndex:(unint64_t)a4 forPage:(id)a5 atIndex:(unint64_t)a6
+- (void)willSwapPage:(id)page atIndex:(unint64_t)index forPage:(id)forPage atIndex:(unint64_t)atIndex
 {
   pageViews = self->_private->pageViews;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v16 = [(NSMutableDictionary *)pageViews objectForKey:v9];
 
   v10 = self->_private->pageViews;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:atIndex];
   v12 = [(NSMutableDictionary *)v10 objectForKey:v11];
 
-  v13 = [v16 visibilityDelegateIndex];
-  v14 = [v12 visibilityDelegateIndex];
+  visibilityDelegateIndex = [v16 visibilityDelegateIndex];
+  visibilityDelegateIndex2 = [v12 visibilityDelegateIndex];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v16 atPageIndex:v13];
-  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v16 atPageIndex:v13];
-  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v12 atPageIndex:v14];
-  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v12 atPageIndex:v14];
+  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v16 atPageIndex:visibilityDelegateIndex];
+  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v16 atPageIndex:visibilityDelegateIndex];
+  [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v12 atPageIndex:visibilityDelegateIndex2];
+  [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v12 atPageIndex:visibilityDelegateIndex2];
 }
 
-- (void)didSwapPage:(id)a3 atIndex:(unint64_t)a4 forPage:(id)a5 atIndex:(unint64_t)a6
+- (void)didSwapPage:(id)page atIndex:(unint64_t)index forPage:(id)forPage atIndex:(unint64_t)atIndex
 {
   pageViews = self->_private->pageViews;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v24 = [(NSMutableDictionary *)pageViews objectForKey:v10];
 
   v11 = self->_private->pageViews;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:atIndex];
   v13 = [(NSMutableDictionary *)v11 objectForKey:v12];
 
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v24 atPageIndex:a6];
-  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v13 atPageIndex:a4];
+  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v24 atPageIndex:atIndex];
+  [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v13 atPageIndex:index];
   v15 = self->_private->pageViews;
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [(NSMutableDictionary *)v15 removeObjectForKey:v16];
 
   v17 = self->_private->pageViews;
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:atIndex];
   [(NSMutableDictionary *)v17 removeObjectForKey:v18];
 
   if (v24)
   {
     v19 = self->_private->pageViews;
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:atIndex];
     [(NSMutableDictionary *)v19 setObject:v24 forKey:v20];
   }
 
   if (v13)
   {
     v21 = self->_private->pageViews;
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     [(NSMutableDictionary *)v21 setObject:v13 forKey:v22];
   }
 
-  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didSwapPageAtIndex:a4 withIndex:a6];
-  v23 = [WeakRetained PDFLayout];
-  [v23 invalidateInternalDocumentGeometry];
+  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager didSwapPageAtIndex:index withIndex:atIndex];
+  pDFLayout = [WeakRetained PDFLayout];
+  [pDFLayout invalidateInternalDocumentGeometry];
   [(PDFDocumentView *)self layoutDocumentView];
   if (v24)
   {
-    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v24 atPageIndex:a6];
+    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v24 atPageIndex:atIndex];
   }
 
   if (v13)
   {
-    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v13 atPageIndex:a4];
+    [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v13 atPageIndex:index];
   }
 
   [(PDFDocumentView *)self updateVisibility];
 }
 
-- (void)_shiftPagesAtIndex:(unint64_t)a3 downwards:(BOOL)a4
+- (void)_shiftPagesAtIndex:(unint64_t)index downwards:(BOOL)downwards
 {
-  v4 = a4;
+  downwardsCopy = downwards;
   v36 = *MEMORY[0x1E69E9840];
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(NSMutableDictionary *)self->_private->pageViews allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  allKeys = [(NSMutableDictionary *)self->_private->pageViews allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
     v9 = *v31;
@@ -968,26 +968,26 @@ LABEL_9:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        if ([v11 unsignedIntegerValue] >= a3)
+        if ([v11 unsignedIntegerValue] >= index)
         {
           v12 = [(NSMutableDictionary *)self->_private->pageViews objectForKey:v11];
           [v25 setObject:v12 forKey:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v8);
   }
 
   pageViews = self->_private->pageViews;
-  v14 = [v25 allKeys];
-  [(NSMutableDictionary *)pageViews removeObjectsForKeys:v14];
+  allKeys2 = [v25 allKeys];
+  [(NSMutableDictionary *)pageViews removeObjectsForKeys:allKeys2];
 
   v28 = 0u;
   v29 = 0u;
@@ -998,7 +998,7 @@ LABEL_9:
   if (v15)
   {
     v16 = *v27;
-    if (v4)
+    if (downwardsCopy)
     {
       v17 = 1;
     }
@@ -1018,10 +1018,10 @@ LABEL_9:
         }
 
         v19 = *(*(&v26 + 1) + 8 * j);
-        v20 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
         v21 = [v25 objectForKey:v19];
         v22 = self->_private->pageViews;
-        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v20 + v17];
+        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + v17];
         [(NSMutableDictionary *)v22 setObject:v21 forKey:v23];
       }
 
@@ -1032,15 +1032,15 @@ LABEL_9:
   }
 }
 
-- (void)_removePageOverlaysStartingAtIndex:(unint64_t)a3
+- (void)_removePageOverlaysStartingAtIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_private->pageViews allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_private->pageViews allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1050,36 +1050,36 @@ LABEL_9:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 unsignedIntegerValue] >= a3)
+        if ([v9 unsignedIntegerValue] >= index)
         {
           v10 = [(NSMutableDictionary *)self->_private->pageViews objectForKey:v9];
-          v11 = [v10 visibilityDelegateIndex];
+          visibilityDelegateIndex = [v10 visibilityDelegateIndex];
           WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-          [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v10 atPageIndex:v11];
-          [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v10 atPageIndex:v11];
+          [WeakRetained callPageVisibilityDelegateMethod:2 forPageView:v10 atPageIndex:visibilityDelegateIndex];
+          [WeakRetained callPageVisibilityDelegateMethod:3 forPageView:v10 atPageIndex:visibilityDelegateIndex];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_reAddPageOverlaysStartingAtIndex:(unint64_t)a3
+- (void)_reAddPageOverlaysStartingAtIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_private->pageViews allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_private->pageViews allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1089,56 +1089,56 @@ LABEL_9:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 unsignedIntegerValue];
-        if (v10 >= a3)
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        if (unsignedIntegerValue >= index)
         {
           v11 = [(NSMutableDictionary *)self->_private->pageViews objectForKey:v9];
           WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-          [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v11 atPageIndex:v10];
-          [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v11 atPageIndex:v10];
+          [WeakRetained callPageVisibilityDelegateMethod:0 forPageView:v11 atPageIndex:unsignedIntegerValue];
+          [WeakRetained callPageVisibilityDelegateMethod:1 forPageView:v11 atPageIndex:unsignedIntegerValue];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateVisibilityDelegateForVisiblePageView:(id)a3 atIndex:(unint64_t)a4
+- (void)_updateVisibilityDelegateForVisiblePageView:(id)view atIndex:(unint64_t)index
 {
-  v11 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v8 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
 
-    if (v8)
+    if (delegate)
     {
-      v9 = [v11 visibilityDelegateIndex];
-      v10 = v9;
-      if (v9 == 0x7FFFFFFFFFFFFFFFLL || v9 != a4)
+      visibilityDelegateIndex = [viewCopy visibilityDelegateIndex];
+      v10 = visibilityDelegateIndex;
+      if (visibilityDelegateIndex == 0x7FFFFFFFFFFFFFFFLL || visibilityDelegateIndex != index)
       {
-        if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+        if (visibilityDelegateIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v7 callPageVisibilityDelegateMethod:2 forPageView:v11 atPageIndex:v9];
-          [v7 callPageVisibilityDelegateMethod:3 forPageView:v11 atPageIndex:v10];
+          [v7 callPageVisibilityDelegateMethod:2 forPageView:viewCopy atPageIndex:visibilityDelegateIndex];
+          [v7 callPageVisibilityDelegateMethod:3 forPageView:viewCopy atPageIndex:v10];
         }
 
-        [v7 callPageVisibilityDelegateMethod:0 forPageView:v11 atPageIndex:a4];
-        [v7 callPageVisibilityDelegateMethod:1 forPageView:v11 atPageIndex:a4];
+        [v7 callPageVisibilityDelegateMethod:0 forPageView:viewCopy atPageIndex:index];
+        [v7 callPageVisibilityDelegateMethod:1 forPageView:viewCopy atPageIndex:index];
       }
     }
   }
 }
 
-- (void)changedBoundsForBoxNotification:(id)a3
+- (void)changedBoundsForBoxNotification:(id)notification
 {
   if (!self->_private->ignoreChangedBoundsForBoxNotification)
   {
@@ -1146,7 +1146,7 @@ LABEL_9:
   }
 }
 
-- (void)didRotatePageNotification:(id)a3
+- (void)didRotatePageNotification:(id)notification
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -1176,13 +1176,13 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (id)backgroundImageForPage:(id)a3 withQuality:(int *)a4
+- (id)backgroundImageForPage:(id)page withQuality:(int *)quality
 {
-  v6 = a3;
+  pageCopy = page;
   v7 = self->_private->pageViews;
   objc_sync_enter(v7);
-  v8 = [(PDFDocumentView *)self document];
-  v9 = [v8 indexForPage:v6];
+  document = [(PDFDocumentView *)self document];
+  v9 = [document indexForPage:pageCopy];
 
   pageViews = self->_private->pageViews;
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
@@ -1190,29 +1190,29 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
 
   if (v12 && [v12 hasBackgroundImage])
   {
-    *a4 = [v12 backgroundImageQuality];
-    v13 = [v12 backgroundImage];
+    *quality = [v12 backgroundImageQuality];
+    backgroundImage = [v12 backgroundImage];
   }
 
   else
   {
-    v13 = 0;
+    backgroundImage = 0;
   }
 
   objc_sync_exit(v7);
 
-  return v13;
+  return backgroundImage;
 }
 
-- (void)recieveBackgroundImage:(id)a3 atBackgroundQuality:(int)a4 forPage:(id)a5
+- (void)recieveBackgroundImage:(id)image atBackgroundQuality:(int)quality forPage:(id)page
 {
-  v6 = *&a4;
-  v15 = a3;
-  v8 = a5;
+  v6 = *&quality;
+  imageCopy = image;
+  pageCopy = page;
   v9 = self->_private->pageViews;
   objc_sync_enter(v9);
-  v10 = [(PDFDocumentView *)self document];
-  v11 = [v10 indexForPage:v8];
+  document = [(PDFDocumentView *)self document];
+  v11 = [document indexForPage:pageCopy];
 
   pageViews = self->_private->pageViews;
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
@@ -1220,7 +1220,7 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
 
   if (v14)
   {
-    [v14 setBackgroundImage:v15 atBackgroundQuality:v6];
+    [v14 setBackgroundImage:imageCopy atBackgroundQuality:v6];
   }
 
   objc_sync_exit(v9);
@@ -1242,17 +1242,17 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v32.receiver = self;
   v32.super_class = PDFDocumentView;
-  v8 = [(PDFDocumentView *)&v32 hitTest:v7 withEvent:x, y];
+  v8 = [(PDFDocumentView *)&v32 hitTest:eventCopy withEvent:x, y];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   v10 = objc_loadWeakRetained(&self->_private->pointerTrackingView);
-  if ([v7 type] == 11)
+  if ([eventCopy type] == 11)
   {
     [(PDFDocumentView *)self convertPoint:WeakRetained toView:x, y];
     v12 = v11;
@@ -1264,9 +1264,9 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
     v20 = [v15 annotationAtPoint:?];
     if (v20 || ([v15 scannedAnnotationAtPoint:{v17, v19}], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v21 = [v10 annotation];
+      annotation = [v10 annotation];
 
-      if (v20 != v21)
+      if (v20 != annotation)
       {
         [v10 removeFromSuperview];
         [v20 bounds];
@@ -1288,7 +1288,7 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
 
   if ([WeakRetained isInMarkupMode] & 1) != 0 || (objc_msgSend(WeakRetained, "isFormDetectionEnabled"))
   {
-    v27 = [WeakRetained hitTestForSubviewsOfView:self atLocation:v7 withEvent:{x, y}];
+    v27 = [WeakRetained hitTestForSubviewsOfView:self atLocation:eventCopy withEvent:{x, y}];
     v28 = v27;
     if (v27)
     {
@@ -1315,9 +1315,9 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   v4 = objc_loadWeakRetained(&self->_private->renderingProperties);
-  v5 = [v4 isUsingPDFExtensionView];
+  isUsingPDFExtensionView = [v4 isUsingPDFExtensionView];
 
-  if (v5)
+  if (isUsingPDFExtensionView)
   {
     [WeakRetained extensionViewZoomScale];
     v7 = v6;
@@ -1325,8 +1325,8 @@ void __45__PDFDocumentView_didRotatePageNotification___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [WeakRetained documentScrollView];
-    [v8 zoomScale];
+    documentScrollView = [WeakRetained documentScrollView];
+    [documentScrollView zoomScale];
     v7 = v9;
   }
 

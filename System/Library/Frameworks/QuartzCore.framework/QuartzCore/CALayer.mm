@@ -1,29 +1,29 @@
 @interface CALayer
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (CALayer)allocWithZone:(_NSZone *)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (CALayer)allocWithZone:(_NSZone *)zone;
 + (CALayer)layer;
-+ (CALayer)layerWithRenderLayer:(void *)a3 options:(id)a4;
++ (CALayer)layerWithRenderLayer:(void *)layer options:(id)options;
 + (CGFloat)cornerCurveExpansionFactor:(CALayerCornerCurve)curve;
 + (id)defaultValueForKey:(NSString *)key;
-+ (void)CAMLParserEndElement:(id)a3;
-+ (void)CAMLParserStartElement:(id)a3;
++ (void)CAMLParserEndElement:(id)element;
++ (void)CAMLParserStartElement:(id)element;
 + (void)initialize;
-- (BOOL)CAMLTypeSupportedForKey:(id)a3;
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
+- (BOOL)CAMLTypeSupportedForKey:(id)key;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
 - (BOOL)autoreverses;
 - (BOOL)containsPoint:(CGPoint)p;
-- (BOOL)getRendererInfo:(_CARenderRendererInfo *)a3 size:(unint64_t)a4;
+- (BOOL)getRendererInfo:(_CARenderRendererInfo *)info size:(unint64_t)size;
 - (BOOL)ignoresHitTesting;
-- (BOOL)isDescendantOf:(id)a3;
+- (BOOL)isDescendantOf:(id)of;
 - (BOOL)layoutIsActive;
 - (BOOL)needsDisplay;
-- (BOOL)remapAnimation:(id)a3 forKey:(id)a4;
+- (BOOL)remapAnimation:(id)animation forKey:(id)key;
 - (BOOL)shouldArchiveValueForKey:(NSString *)key;
 - (CAAnimation)animationForKey:(NSString *)key;
 - (CACornerRadii)cornerRadii;
 - (CALayer)hitTest:(CGPoint)p;
 - (CALayer)init;
-- (CALayer)initWithCoder:(id)a3;
+- (CALayer)initWithCoder:(id)coder;
 - (CALayer)initWithLayer:(id)layer;
 - (CALayer)modelLayer;
 - (CALayer)presentationLayer;
@@ -58,7 +58,7 @@
 - (CGPoint)convertPoint:(CGPoint)p fromLayer:(CALayer *)l;
 - (CGPoint)convertPoint:(CGPoint)p toLayer:(CALayer *)l;
 - (CGPoint)position;
-- (CGRect)_visibleRectOfLayer:(id)a3;
+- (CGRect)_visibleRectOfLayer:(id)layer;
 - (CGRect)bounds;
 - (CGRect)contentsCenter;
 - (CGRect)contentsDirtyRect;
@@ -104,56 +104,56 @@
 - (float)rimOpacity;
 - (float)shadowOpacity;
 - (float)speed;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)CA_archivingValueForKey:(id)a3;
-- (id)_initWithReference:(id)a3;
+- (id)CAMLTypeForKey:(id)key;
+- (id)CA_archivingValueForKey:(id)key;
+- (id)_initWithReference:(id)reference;
 - (id)_layoutHash;
 - (id)actionForKey:(NSString *)event;
-- (id)ancestorSharedWithLayer:(id)a3;
+- (id)ancestorSharedWithLayer:(id)layer;
 - (id)compositingFilter;
 - (id)context;
 - (id)cornerContents;
 - (id)debugDescription;
 - (id)delegate;
-- (id)dependentStatesOfState:(id)a3;
-- (id)implicitAnimationForKeyPath:(id)a3;
-- (id)layerAtTime:(double)a3;
+- (id)dependentStatesOfState:(id)state;
+- (id)implicitAnimationForKeyPath:(id)path;
+- (id)layerAtTime:(double)time;
 - (id)layerBeingDrawn;
-- (id)optimizationOpportunities:(BOOL)a3;
+- (id)optimizationOpportunities:(BOOL)opportunities;
 - (id)recursiveDescription;
-- (id)stateTransitionFrom:(id)a3 to:(id)a4;
-- (id)stateWithName:(id)a3;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)stateTransitionFrom:(id)from to:(id)to;
+- (id)stateWithName:(id)name;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)retainCount;
 - (unsigned)_renderImageCopyFlags;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
 - (unsigned)_thread_flags;
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5;
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key;
 - (void)_colorSpaceDidChange;
-- (void)_contentsFormatDidChange:(id)a3;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
+- (void)_contentsFormatDidChange:(id)change;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
 - (void)_display;
 - (void)_performPreLayoutUpdate;
-- (void)_renderBackgroundInContext:(CGContext *)a3;
-- (void)_renderBorderInContext:(CGContext *)a3;
-- (void)_renderForegroundInContext:(CGContext *)a3;
-- (void)_renderSublayersInContext:(CGContext *)a3;
+- (void)_renderBackgroundInContext:(CGContext *)context;
+- (void)_renderBorderInContext:(CGContext *)context;
+- (void)_renderForegroundInContext:(CGContext *)context;
+- (void)_renderSublayersInContext:(CGContext *)context;
 - (void)_saveCurrentLayoutHash;
-- (void)_scrollPoint:(CGPoint)a3 fromLayer:(id)a4;
-- (void)_scrollRect:(CGRect)a3 fromLayer:(id)a4;
-- (void)_validateLayoutHashHasChangedWithLayoutTime:(double)a3;
+- (void)_scrollPoint:(CGPoint)point fromLayer:(id)layer;
+- (void)_scrollRect:(CGRect)rect fromLayer:(id)layer;
+- (void)_validateLayoutHashHasChangedWithLayoutTime:(double)time;
 - (void)addAnimation:(CAAnimation *)anim forKey:(NSString *)key;
-- (void)addIdentifier:(id)a3;
-- (void)addPresentationModifier:(id)a3;
+- (void)addIdentifier:(id)identifier;
+- (void)addPresentationModifier:(id)modifier;
 - (void)addSublayer:(CALayer *)layer;
 - (void)dealloc;
 - (void)display;
 - (void)displayIfNeeded;
 - (void)drawInContext:(CGContextRef)ctx;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)insertState:(id)a3 atIndex:(unsigned int)a4;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)insertState:(id)state atIndex:(unsigned int)index;
 - (void)insertSublayer:(CALayer *)layer above:(CALayer *)sibling;
 - (void)insertSublayer:(CALayer *)layer atIndex:(unsigned int)idx;
 - (void)insertSublayer:(CALayer *)layer below:(CALayer *)sibling;
@@ -163,57 +163,57 @@
 - (void)layoutSublayers;
 - (void)prepareContents;
 - (void)regionBeingDrawn;
-- (void)reloadValueForKeyPath:(id)a3;
+- (void)reloadValueForKeyPath:(id)path;
 - (void)removeAllAnimations;
 - (void)removeAnimationForKey:(NSString *)key;
-- (void)removeIdentifier:(id)a3;
-- (void)removePresentationModifier:(id)a3;
-- (void)removeState:(id)a3;
+- (void)removeIdentifier:(id)identifier;
+- (void)removePresentationModifier:(id)modifier;
+- (void)removeState:(id)state;
 - (void)renderInContext:(CGContextRef)ctx;
 - (void)replaceSublayer:(CALayer *)oldLayer with:(CALayer *)newLayer;
 - (void)setActions:(NSDictionary *)actions;
 - (void)setAffineTransform:(CGAffineTransform *)m;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
 - (void)setAnchorPointZ:(CGFloat)anchorPointZ;
-- (void)setAutoreverses:(BOOL)a3;
+- (void)setAutoreverses:(BOOL)autoreverses;
 - (void)setBackgroundColor:(CGColorRef)backgroundColor;
-- (void)setBackgroundColorPhase:(CGSize)a3;
+- (void)setBackgroundColorPhase:(CGSize)phase;
 - (void)setBackgroundFilters:(NSArray *)backgroundFilters;
-- (void)setBeginTime:(double)a3;
+- (void)setBeginTime:(double)time;
 - (void)setBorderColor:(CGColorRef)borderColor;
-- (void)setBorderOffset:(double)a3;
+- (void)setBorderOffset:(double)offset;
 - (void)setBorderWidth:(CGFloat)borderWidth;
 - (void)setBounds:(CGRect)bounds;
 - (void)setCompositingFilter:(id)compositingFilter;
 - (void)setContents:(id)contents;
-- (void)setContentsCDRStrength:(double)a3;
+- (void)setContentsCDRStrength:(double)strength;
 - (void)setContentsCenter:(CGRect)contentsCenter;
 - (void)setContentsChanged;
-- (void)setContentsDirtyRect:(CGRect)a3;
-- (void)setContentsEDRStrength:(double)a3;
+- (void)setContentsDirtyRect:(CGRect)rect;
+- (void)setContentsEDRStrength:(double)strength;
 - (void)setContentsFormat:(CALayerContentsFormat)contentsFormat;
 - (void)setContentsGravity:(CALayerContentsGravity)contentsGravity;
-- (void)setContentsHeadroom:(double)a3;
-- (void)setContentsMaximumDesiredEDR:(double)a3;
-- (void)setContentsMultiplyColor:(CGColor *)a3;
+- (void)setContentsHeadroom:(double)headroom;
+- (void)setContentsMaximumDesiredEDR:(double)r;
+- (void)setContentsMultiplyColor:(CGColor *)color;
 - (void)setContentsRect:(CGRect)contentsRect;
 - (void)setContentsScale:(CGFloat)contentsScale;
-- (void)setContentsScaling:(id)a3;
-- (void)setContentsSwizzle:(id)a3;
-- (void)setContinuousCorners:(BOOL)a3;
-- (void)setCornerContents:(id)a3;
-- (void)setCornerContentsCenter:(CGRect)a3;
+- (void)setContentsScaling:(id)scaling;
+- (void)setContentsSwizzle:(id)swizzle;
+- (void)setContinuousCorners:(BOOL)corners;
+- (void)setCornerContents:(id)contents;
+- (void)setCornerContentsCenter:(CGRect)center;
 - (void)setCornerCurve:(CALayerCornerCurve)cornerCurve;
-- (void)setCornerRadii:(CACornerRadii *)a3;
+- (void)setCornerRadii:(CACornerRadii *)radii;
 - (void)setCornerRadius:(CGFloat)cornerRadius;
-- (void)setDisplayMaximumDesiredEDR:(double)a3;
-- (void)setDuration:(double)a3;
-- (void)setFillMode:(id)a3;
+- (void)setDisplayMaximumDesiredEDR:(double)r;
+- (void)setDuration:(double)duration;
+- (void)setFillMode:(id)mode;
 - (void)setFilters:(NSArray *)filters;
 - (void)setFrame:(CGRect)frame;
-- (void)setGain:(float)a3;
+- (void)setGain:(float)gain;
 - (void)setMagnificationFilter:(CALayerContentsFilter)magnificationFilter;
-- (void)setMeshTransform:(id)a3;
+- (void)setMeshTransform:(id)transform;
 - (void)setMinificationFilter:(CALayerContentsFilter)minificationFilter;
 - (void)setMinificationFilterBias:(float)minificationFilterBias;
 - (void)setName:(NSString *)name;
@@ -222,29 +222,29 @@
 - (void)setNeedsPreLayoutUpdate;
 - (void)setOpacity:(float)opacity;
 - (void)setPosition:(CGPoint)position;
-- (void)setPreferredDynamicRange:(id)a3;
-- (void)setPresentationModifiers:(id)a3;
+- (void)setPreferredDynamicRange:(id)range;
+- (void)setPresentationModifiers:(id)modifiers;
 - (void)setRasterizationScale:(CGFloat)rasterizationScale;
-- (void)setRepeatCount:(float)a3;
-- (void)setRepeatDuration:(double)a3;
-- (void)setRimColor:(CGColor *)a3;
-- (void)setRimOpacity:(float)a3;
-- (void)setRimWidth:(double)a3;
-- (void)setSecurityMode:(id)a3;
+- (void)setRepeatCount:(float)count;
+- (void)setRepeatDuration:(double)duration;
+- (void)setRimColor:(CGColor *)color;
+- (void)setRimOpacity:(float)opacity;
+- (void)setRimWidth:(double)width;
+- (void)setSecurityMode:(id)mode;
 - (void)setShadowColor:(CGColorRef)shadowColor;
 - (void)setShadowOffset:(CGSize)shadowOffset;
 - (void)setShadowOpacity:(float)shadowOpacity;
 - (void)setShadowPath:(CGPathRef)shadowPath;
 - (void)setShadowRadius:(CGFloat)shadowRadius;
-- (void)setSizeRequisition:(CGSize)a3;
-- (void)setSpeed:(float)a3;
+- (void)setSizeRequisition:(CGSize)requisition;
+- (void)setSpeed:(float)speed;
 - (void)setStyle:(NSDictionary *)style;
-- (void)setTimeOffset:(double)a3;
-- (void)setToneMapMode:(id)a3;
+- (void)setTimeOffset:(double)offset;
+- (void)setToneMapMode:(id)mode;
 - (void)setTransform:(CATransform3D *)transform;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKeyPath:(id)path;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)setZPosition:(CGFloat)zPosition;
 @end
 
@@ -274,7 +274,7 @@
 
 + (CALayer)layer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -615,14 +615,14 @@
 - (void)removeAllAnimations
 {
   v3 = CA::Transaction::ensure_compat(self);
-  v4 = [(CALayer *)self modelLayer];
-  if (!v4)
+  modelLayer = [(CALayer *)self modelLayer];
+  if (!modelLayer)
   {
     return;
   }
 
-  v5 = v4;
-  v6 = *(v4->_attr.layer + 35);
+  v5 = modelLayer;
+  v6 = *(modelLayer->_attr.layer + 35);
   if (!v6)
   {
     return;
@@ -906,9 +906,9 @@ LABEL_14:
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = CA::Transaction::ensure_compat(self);
-  v4 = [(CALayer *)self modelLayer];
-  v5 = v4;
-  if (v4)
+  modelLayer = [(CALayer *)self modelLayer];
+  v5 = modelLayer;
+  if (modelLayer)
   {
     v6 = *(v3 + 29);
     *(v3 + 29) = v6 + 1;
@@ -942,7 +942,7 @@ LABEL_14:
       v10 = 8 * v5;
       if ((8 * v5) <= 0x1000)
       {
-        MEMORY[0x1EEE9AC00](v4);
+        MEMORY[0x1EEE9AC00](modelLayer);
         v11 = v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
         bzero(v11, 8 * v5);
         goto LABEL_14;
@@ -1258,23 +1258,23 @@ LABEL_5:
 
   v16 = *(layer + 15);
   v17 = image_format_for_contents_format(*(layer + 11) & 7, [v5 isOpaque]);
-  v18 = [v5 _overrideImageFormat];
-  if (v18 == -1)
+  _overrideImageFormat = [v5 _overrideImageFormat];
+  if (_overrideImageFormat == -1)
   {
     v19 = v17;
   }
 
   else
   {
-    v19 = v18;
+    v19 = _overrideImageFormat;
   }
 
-  v20 = [v5 minificationFilter];
-  v80 = v20 != @"linear" && CAInternAtom(v20, 0) == 466;
-  v24 = [v5 wantsExtendedDynamicRangeContent];
+  minificationFilter = [v5 minificationFilter];
+  v80 = minificationFilter != @"linear" && CAInternAtom(minificationFilter, 0) == 466;
+  wantsExtendedDynamicRangeContent = [v5 wantsExtendedDynamicRangeContent];
   if ([v5 preferredDynamicRange] == @"standard")
   {
-    v25 = v24;
+    v25 = wantsExtendedDynamicRangeContent;
   }
 
   else
@@ -1304,15 +1304,15 @@ LABEL_5:
       LODWORD(v29) = default_contents_image_format(layer);
     }
 
-    v30 = [*(layer + 2) _retainColorSpace];
+    _retainColorSpace = [*(layer + 2) _retainColorSpace];
     color = 0;
-    space = v30;
+    space = _retainColorSpace;
     if (v29 == 36)
     {
       v84 = 0u;
       v85 = 0u;
       memset(buf, 0, sizeof(buf));
-      CACGContextEvaluator::CACGContextEvaluator(buf, v3, Weak, v30);
+      CACGContextEvaluator::CACGContextEvaluator(buf, v3, Weak, _retainColorSpace);
       backing_callback(*&buf[56], layer);
       v31 = CACGContextEvaluator::suggested_format(buf, [v5 isOpaque], &color, v79);
       if (v31 == -1)
@@ -1483,14 +1483,14 @@ LABEL_5:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v37 = [v5 contents];
-  v38 = v37;
-  if (!v37)
+  contents = [v5 contents];
+  v38 = contents;
+  if (!contents)
   {
     goto LABEL_63;
   }
 
-  v39 = CFGetTypeID(v37);
+  v39 = CFGetTypeID(contents);
   if (CABackingStoreGetTypeID::once[0] != -1)
   {
     dispatch_once(CABackingStoreGetTypeID::once, &__block_literal_global_1020);
@@ -1512,9 +1512,9 @@ LABEL_63:
     v40 = CABackingStoreCreate();
     if (v40)
     {
-      v41 = [*(layer + 2) _retainColorSpace];
-      CABackingStoreSetColorSpace(v40, v41);
-      CGColorSpaceRelease(v41);
+      _retainColorSpace2 = [*(layer + 2) _retainColorSpace];
+      CABackingStoreSetColorSpace(v40, _retainColorSpace2);
+      CGColorSpaceRelease(_retainColorSpace2);
       CABackingStoreInvalidate(v40, 0);
     }
   }
@@ -1679,31 +1679,31 @@ LABEL_134:
 
 - (unsigned)_renderImageCopyFlags
 {
-  v3 = [(CALayer *)self minificationFilter];
-  if (v3 == @"linear")
+  minificationFilter = [(CALayer *)self minificationFilter];
+  if (minificationFilter == @"linear")
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = v3;
-    v5 = CAInternAtom(v3, 0) == 466;
+    v4 = minificationFilter;
+    v5 = CAInternAtom(minificationFilter, 0) == 466;
     if (((CAInternAtom(v4, 0) - 466) & 0xFFFFFEFF) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  v6 = [(CALayer *)self contentsScaling];
-  if (v6 == @"stretch" || v6 != @"repeat" && ![(__CFString *)v6 isEqualToString:@"repeat"])
+  contentsScaling = [(CALayer *)self contentsScaling];
+  if (contentsScaling == @"stretch" || contentsScaling != @"repeat" && ![(__CFString *)contentsScaling isEqualToString:@"repeat"])
   {
     v5 |= 0x100u;
   }
 
 LABEL_7:
-  v7 = [(CALayer *)self contentsSwizzle];
-  if (v7 != @"RGBA" && (v7 == @"AAAA" || [(__CFString *)v7 isEqualToString:@"AAAA"]))
+  contentsSwizzle = [(CALayer *)self contentsSwizzle];
+  if (contentsSwizzle != @"RGBA" && (contentsSwizzle == @"AAAA" || [(__CFString *)contentsSwizzle isEqualToString:@"AAAA"]))
   {
     v5 |= 8u;
   }
@@ -2005,7 +2005,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     kContentsStringHash = [@"contents" hash];
     kCATransitionClass = objc_opt_class();
@@ -2301,35 +2301,35 @@ LABEL_31:
   return is_active;
 }
 
-- (id)stateTransitionFrom:(id)a3 to:(id)a4
+- (id)stateTransitionFrom:(id)from to:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (from)
   {
-    v4 = a3;
+    fromCopy = from;
   }
 
   else
   {
-    v4 = &stru_1EF20BE80;
+    fromCopy = &stru_1EF20BE80;
   }
 
   v14 = 0u;
   v15 = 0u;
-  if (a4)
+  if (to)
   {
-    v5 = a4;
+    toCopy = to;
   }
 
   else
   {
-    v5 = &stru_1EF20BE80;
+    toCopy = &stru_1EF20BE80;
   }
 
   v16 = 0uLL;
   v17 = 0uLL;
-  v6 = [(CALayer *)self stateTransitions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  stateTransitions = [(CALayer *)self stateTransitions];
+  v7 = [stateTransitions countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (!v7)
   {
     return 0;
@@ -2343,7 +2343,7 @@ LABEL_9:
   {
     if (*v15 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(stateTransitions);
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
@@ -2357,7 +2357,7 @@ LABEL_9:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v8 = [stateTransitions countByEnumeratingWithState:&v14 objects:v13 count:16];
       if (v8)
       {
         goto LABEL_9;
@@ -2368,18 +2368,18 @@ LABEL_9:
   }
 }
 
-- (id)dependentStatesOfState:(id)a3
+- (id)dependentStatesOfState:(id)state
 {
   Mutable = CFSetCreateMutable(0, 0, 0);
-  addDependentStates(a3, Mutable, [(CALayer *)self states]);
+  addDependentStates(state, Mutable, [(CALayer *)self states]);
 
   return Mutable;
 }
 
-- (id)stateWithName:(id)a3
+- (id)stateWithName:(id)name
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
@@ -2388,8 +2388,8 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CALayer *)self states];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  states = [(CALayer *)self states];
+  v5 = [states countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (!v5)
   {
     return 0;
@@ -2403,7 +2403,7 @@ LABEL_4:
   {
     if (*v13 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(states);
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
@@ -2414,7 +2414,7 @@ LABEL_4:
 
     if (v6 == ++v8)
     {
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [states countByEnumeratingWithState:&v12 objects:v11 count:16];
       v9 = 0;
       if (v6)
       {
@@ -2426,13 +2426,13 @@ LABEL_4:
   }
 }
 
-- (void)removeState:(id)a3
+- (void)removeState:(id)state
 {
-  v5 = [(CALayer *)self states];
-  if (v5)
+  states = [(CALayer *)self states];
+  if (states)
   {
-    v6 = v5;
-    v7 = [v5 indexOfObjectIdenticalTo:a3];
+    v6 = states;
+    v7 = [states indexOfObjectIdenticalTo:state];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = v7;
@@ -2443,7 +2443,7 @@ LABEL_4:
   }
 }
 
-- (void)insertState:(id)a3 atIndex:(unsigned int)a4
+- (void)insertState:(id)state atIndex:(unsigned int)index
 {
   v7 = [-[CALayer states](self "states")];
   if (!v7)
@@ -2452,17 +2452,17 @@ LABEL_4:
   }
 
   v9 = v7;
-  if ([v7 count] >= a4)
+  if ([v7 count] >= index)
   {
-    v8 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v8 = [v9 count];
+    indexCopy = [v9 count];
   }
 
-  [v9 insertObject:a3 atIndex:v8];
+  [v9 insertObject:state atIndex:indexCopy];
   [(CALayer *)self setStates:v9];
 }
 
@@ -2476,17 +2476,17 @@ LABEL_4:
   return result;
 }
 
-- (CGRect)_visibleRectOfLayer:(id)a3
+- (CGRect)_visibleRectOfLayer:(id)layer
 {
-  v4 = [(CALayer *)self superlayer];
-  if (v4)
+  superlayer = [(CALayer *)self superlayer];
+  if (superlayer)
   {
-    [(CALayer *)v4 _visibleRectOfLayer:a3];
+    [(CALayer *)superlayer _visibleRectOfLayer:layer];
   }
 
   else
   {
-    [a3 bounds];
+    [layer bounds];
   }
 
   result.size.height = v8;
@@ -2496,24 +2496,24 @@ LABEL_4:
   return result;
 }
 
-- (void)_scrollRect:(CGRect)a3 fromLayer:(id)a4
+- (void)_scrollRect:(CGRect)rect fromLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CALayer *)self superlayer];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  superlayer = [(CALayer *)self superlayer];
 
-  [(CALayer *)v9 _scrollRect:a4 fromLayer:x, y, width, height];
+  [(CALayer *)superlayer _scrollRect:layer fromLayer:x, y, width, height];
 }
 
-- (void)_scrollPoint:(CGPoint)a3 fromLayer:(id)a4
+- (void)_scrollPoint:(CGPoint)point fromLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CALayer *)self superlayer];
+  y = point.y;
+  x = point.x;
+  superlayer = [(CALayer *)self superlayer];
 
-  [(CALayer *)v7 _scrollPoint:a4 fromLayer:x, y];
+  [(CALayer *)superlayer _scrollPoint:layer fromLayer:x, y];
 }
 
 + (CGFloat)cornerCurveExpansionFactor:(CALayerCornerCurve)curve
@@ -2528,9 +2528,9 @@ LABEL_4:
   return result;
 }
 
-- (void)setPreferredDynamicRange:(id)a3
+- (void)setPreferredDynamicRange:(id)range
 {
-  if (a3 == @"standard")
+  if (range == @"standard")
   {
     v8 = 0;
     v9 = 0;
@@ -2539,7 +2539,7 @@ LABEL_4:
 
   else
   {
-    v4 = CAInternAtom(a3, 0);
+    v4 = CAInternAtom(range, 0);
     v5 = v4 != 129;
     if (v4 == 299)
     {
@@ -2663,49 +2663,49 @@ LABEL_4:
   CA::Layer::setter(self->_attr.layer, 0x284, 0x11, &v3);
 }
 
-- (void)setRimWidth:(double)a3
+- (void)setRimWidth:(double)width
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = width;
   CA::Layer::setter(self->_attr.layer, 0x267, 0x12, v3);
 }
 
-- (void)setRimOpacity:(float)a3
+- (void)setRimOpacity:(float)opacity
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x265, 0x11, &v3);
+  opacityCopy = opacity;
+  CA::Layer::setter(self->_attr.layer, 0x265, 0x11, &opacityCopy);
 }
 
-- (void)setRimColor:(CGColor *)a3
+- (void)setRimColor:(CGColor *)color
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = color;
   CA::Layer::setter(self->_attr.layer, 0x264, 2, v3);
 }
 
-- (void)setContentsSwizzle:(id)a3
+- (void)setContentsSwizzle:(id)swizzle
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = swizzle;
   CA::Layer::setter(self->_attr.layer, 0x99, 3, v3);
 }
 
-- (void)setContentsMultiplyColor:(CGColor *)a3
+- (void)setContentsMultiplyColor:(CGColor *)color
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = color;
   CA::Layer::setter(self->_attr.layer, 0x93, 2, v3);
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
   v6 = *MEMORY[0x1E69E9840];
-  maxXMaxY = a3->maxXMaxY;
-  v5[0] = a3->minXMaxY;
+  maxXMaxY = radii->maxXMaxY;
+  v5[0] = radii->minXMaxY;
   v5[1] = maxXMaxY;
-  minXMinY = a3->minXMinY;
-  v5[2] = a3->maxXMinY;
+  minXMinY = radii->minXMinY;
+  v5[2] = radii->maxXMinY;
   v5[3] = minXMinY;
   CA::Layer::setter(self->_attr.layer, 0xA3, 0x19, v5);
 }
@@ -2724,10 +2724,10 @@ LABEL_4:
   CA::Layer::setter(self->_attr.layer, 0x4D, 0x12, v3);
 }
 
-- (void)setBorderOffset:(double)a3
+- (void)setBorderOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = offset;
   CA::Layer::setter(self->_attr.layer, 0x4B, 0x12, v3);
 }
 
@@ -2795,46 +2795,46 @@ LABEL_4:
   CA::Layer::setter(self->_attr.layer, 0x3E, 2, v3);
 }
 
-- (void)setDisplayMaximumDesiredEDR:(double)a3
+- (void)setDisplayMaximumDesiredEDR:(double)r
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = r;
   CA::Layer::setter(self->_attr.layer, 0xCB, 0x12, v3);
 }
 
-- (void)setContentsMaximumDesiredEDR:(double)a3
+- (void)setContentsMaximumDesiredEDR:(double)r
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = r;
   CA::Layer::setter(self->_attr.layer, 0x92, 0x12, v3);
 }
 
-- (void)setContentsHeadroom:(double)a3
+- (void)setContentsHeadroom:(double)headroom
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = headroom;
   CA::Layer::setter(self->_attr.layer, 0x91, 0x12, v3);
 }
 
-- (void)setContentsEDRStrength:(double)a3
+- (void)setContentsEDRStrength:(double)strength
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = strength;
   CA::Layer::setter(self->_attr.layer, 0x8A, 0x12, v3);
 }
 
-- (void)setContentsCDRStrength:(double)a3
+- (void)setContentsCDRStrength:(double)strength
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = strength;
   CA::Layer::setter(self->_attr.layer, 0x85, 0x12, v3);
 }
 
-- (void)setGain:(float)a3
+- (void)setGain:(float)gain
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x117, 0x11, &v3);
+  gainCopy = gain;
+  CA::Layer::setter(self->_attr.layer, 0x117, 0x11, &gainCopy);
 }
 
 - (void)setMinificationFilterBias:(float)minificationFilterBias
@@ -2858,11 +2858,11 @@ LABEL_4:
   CA::Layer::setter(self->_attr.layer, 0x1F4, 3, v3);
 }
 
-- (void)setContentsDirtyRect:(CGRect)a3
+- (void)setContentsDirtyRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x88, 0x15, &v3.origin.x);
+  rectCopy = rect;
+  CA::Layer::setter(self->_attr.layer, 0x88, 0x15, &rectCopy.origin.x);
 }
 
 - (CGRect)contentsDirtyRect
@@ -2882,11 +2882,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setCornerContentsCenter:(CGRect)a3
+- (void)setCornerContentsCenter:(CGRect)center
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0xA0, 0x15, &v3.origin.x);
+  centerCopy = center;
+  CA::Layer::setter(self->_attr.layer, 0xA0, 0x15, &centerCopy.origin.x);
 }
 
 - (CGRect)cornerContentsCenter
@@ -2920,10 +2920,10 @@ LABEL_4:
   CA::Layer::setter(self->_attr.layer, 0x96, 0x15, &v3.origin.x);
 }
 
-- (void)setCornerContents:(id)a3
+- (void)setCornerContents:(id)contents
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = contents;
   CA::Layer::setter(self->_attr.layer, 0x9F, 2, v3);
 }
 
@@ -2942,59 +2942,59 @@ LABEL_4:
   return *v3;
 }
 
-- (void)setFillMode:(id)a3
+- (void)setFillMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = mode;
   CA::Layer::setter(self->_attr.layer, 0xFA, 3, v3);
 }
 
-- (void)setAutoreverses:(BOOL)a3
+- (void)setAutoreverses:(BOOL)autoreverses
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x38, 7, &v3);
+  autoreversesCopy = autoreverses;
+  CA::Layer::setter(self->_attr.layer, 0x38, 7, &autoreversesCopy);
 }
 
-- (void)setRepeatDuration:(double)a3
+- (void)setRepeatDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = duration;
   CA::Layer::setter(self->_attr.layer, 0x25D, 0x12, v3);
 }
 
-- (void)setRepeatCount:(float)a3
+- (void)setRepeatCount:(float)count
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x25C, 0x11, &v3);
+  countCopy = count;
+  CA::Layer::setter(self->_attr.layer, 0x25C, 0x11, &countCopy);
 }
 
-- (void)setSpeed:(float)a3
+- (void)setSpeed:(float)speed
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x29F, 0x11, &v3);
+  speedCopy = speed;
+  CA::Layer::setter(self->_attr.layer, 0x29F, 0x11, &speedCopy);
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = duration;
   CA::Layer::setter(self->_attr.layer, 0xD3, 0x12, v3);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = offset;
   CA::Layer::setter(self->_attr.layer, 0x2C1, 0x12, v3);
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = time;
   CA::Layer::setter(self->_attr.layer, 0x41, 0x12, v3);
 }
 
@@ -3017,9 +3017,9 @@ LABEL_4:
   return v6;
 }
 
-- (void)setContinuousCorners:(BOOL)a3
+- (void)setContinuousCorners:(BOOL)corners
 {
-  if (a3)
+  if (corners)
   {
     v3 = @"continuous";
   }
@@ -3102,13 +3102,13 @@ LABEL_9:
   return result;
 }
 
-- (void)_validateLayoutHashHasChangedWithLayoutTime:(double)a3
+- (void)_validateLayoutHashHasChangedWithLayoutTime:(double)time
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(CALayer *)self _previousLayoutHash];
-  if (v5)
+  _previousLayoutHash = [(CALayer *)self _previousLayoutHash];
+  if (_previousLayoutHash)
   {
-    if ([v5 isEqualToNumber:{-[CALayer _layoutHash](self, "_layoutHash")}])
+    if ([_previousLayoutHash isEqualToNumber:{-[CALayer _layoutHash](self, "_layoutHash")}])
     {
       kdebug_trace();
       if (BYTE9(xmmword_1ED4E982C) == 1)
@@ -3136,7 +3136,7 @@ LABEL_9:
           v10 = 136315394;
           v11 = [-[CALayer debugDescription](self "debugDescription")];
           v12 = 2048;
-          v13 = a3;
+          timeCopy = time;
           _os_log_impl(&dword_183AA6000, v9, OS_LOG_TYPE_DEFAULT, "Redundant layout on %s which took %f ms", &v10, 0x16u);
         }
       }
@@ -3348,12 +3348,12 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
   }
 }
 
-- (void)_contentsFormatDidChange:(id)a3
+- (void)_contentsFormatDidChange:(id)change
 {
   layer = self->_attr.layer;
-  v4 = [a3 integerValue];
-  v5 = v4;
-  v6 = CA::Transaction::ensure_compat(v4);
+  integerValue = [change integerValue];
+  v5 = integerValue;
+  v6 = CA::Transaction::ensure_compat(integerValue);
   v7 = layer[2];
   v8 = *(v6 + 29);
   *(v6 + 29) = v8 + 1;
@@ -3384,11 +3384,11 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v6 = [v4 contents];
-  v7 = v6;
-  if (v6)
+  contents = [v4 contents];
+  v7 = contents;
+  if (contents)
   {
-    v8 = CFGetTypeID(v6);
+    v8 = CFGetTypeID(contents);
     if (CABackingStoreGetTypeID::once[0] != -1)
     {
       dispatch_once(CABackingStoreGetTypeID::once, &__block_literal_global_1020);
@@ -3396,13 +3396,13 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
 
     if (v8 == CABackingStoreGetTypeID::type)
     {
-      v9 = [layer[2] _retainColorSpace];
-      if (CABackingStoreSetColorSpace(v7, v9))
+      _retainColorSpace = [layer[2] _retainColorSpace];
+      if (CABackingStoreSetColorSpace(v7, _retainColorSpace))
       {
         [v4 setNeedsDisplay];
       }
 
-      CGColorSpaceRelease(v9);
+      CGColorSpaceRelease(_retainColorSpace);
       LODWORD(v7) = 0;
     }
 
@@ -3435,7 +3435,7 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
   CA::Transaction::unlock(v3);
 }
 
-- (void)_renderBorderInContext:(CGContext *)a3
+- (void)_renderBorderInContext:(CGContext *)context
 {
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v5)
@@ -3452,22 +3452,22 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
 
   [(CALayer *)self borderWidth];
   v8 = v7;
-  v9 = [(CALayer *)self borderColor];
+  borderColor = [(CALayer *)self borderColor];
   if (v8 > 0.0)
   {
-    v10 = v9;
-    if (v9)
+    v10 = borderColor;
+    if (borderColor)
     {
-      if (CGColorGetAlpha(v9) > 0.0)
+      if (CGColorGetAlpha(borderColor) > 0.0)
       {
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         if (![(CALayer *)self edgeAntialiasingMask])
         {
-          CGContextSetShouldAntialias(a3, 0);
+          CGContextSetShouldAntialias(context, 0);
         }
 
-        CGContextSetStrokeColorWithColor(a3, v10);
-        CGContextSetLineWidth(a3, v8);
+        CGContextSetStrokeColorWithColor(context, v10);
+        CGContextSetLineWidth(context, v8);
         [(CALayer *)self bounds];
         v11 = v8 * 0.5;
         v25 = CGRectInset(v24, v8 * 0.5, v8 * 0.5);
@@ -3503,9 +3503,9 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
           }
         }
 
-        CA_CGContextAddRoundRect(a3, [(CALayer *)self _continuousCorners], x, y, width, height, v20);
+        CA_CGContextAddRoundRect(context, [(CALayer *)self _continuousCorners], x, y, width, height, v20);
         CA::Transaction::unlock(v5);
-        CGContextStrokePath(a3);
+        CGContextStrokePath(context);
         v22 = *(v5 + 29);
         *(v5 + 29) = v22 + 1;
         if (!v22)
@@ -3513,7 +3513,7 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
           os_unfair_lock_lock(&CA::Transaction::transaction_lock);
         }
 
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
     }
   }
@@ -3521,7 +3521,7 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
   CA::Transaction::unlock(v5);
 }
 
-- (void)_renderSublayersInContext:(CGContext *)a3
+- (void)_renderSublayersInContext:(CGContext *)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -3550,25 +3550,25 @@ uint64_t __22__CALayer__layoutHash__block_invoke(uint64_t a1, void *a2, char a3)
       CA::Layer::get_frame_transform(v11[2], &v16, 0);
       if (CA_CGAffineTransformIsValid())
       {
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         memset(&v15, 0, sizeof(v15));
         CGContextGetBaseCTM();
         transform = v16;
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
         t1 = v16;
         v12 = v15;
         CGAffineTransformConcat(&transform, &t1, &v12);
         CGContextSetBaseCTM();
-        [v11 renderInContext:a3];
+        [v11 renderInContext:context];
         transform = v15;
         CGContextSetBaseCTM();
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
     }
   }
 }
 
-- (void)_renderForegroundInContext:(CGContext *)a3
+- (void)_renderForegroundInContext:(CGContext *)context
 {
   v113 = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -3607,13 +3607,13 @@ LABEL_7:
 
     if (v16 == CABackingStoreGetTypeID::type)
     {
-      v18 = CABackingStoreCopyCGImage(tinted_contents);
+      image = CABackingStoreCopyCGImage(tinted_contents);
       v19 = CABackingStoreCopyTintColor(tinted_contents);
       if (v19)
       {
         v20 = v19;
-        tinted_contents = create_tinted_contents(v18, v19, 0);
-        CGImageRelease(v18);
+        tinted_contents = create_tinted_contents(image, v19, 0);
+        CGImageRelease(image);
         CGColorRelease(v20);
 LABEL_17:
         v17 = 1;
@@ -3622,20 +3622,20 @@ LABEL_17:
 
       v17 = 1;
 LABEL_35:
-      tinted_contents = v18;
+      tinted_contents = image;
       goto LABEL_47;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(mach_port_t *)tinted_contents image];
-      if (v18)
+      image = [(mach_port_t *)tinted_contents image];
+      if (image)
       {
-        v21 = [(mach_port_t *)tinted_contents tint];
-        if (v21)
+        tint = [(mach_port_t *)tinted_contents tint];
+        if (tint)
         {
-          tinted_contents = create_tinted_contents(v18, v21, 0);
+          tinted_contents = create_tinted_contents(image, tint, 0);
           goto LABEL_17;
         }
 
@@ -3694,19 +3694,19 @@ LABEL_33:
       if (atomic_fetch_add(v26 + 2, 0xFFFFFFFF) != 1)
       {
 LABEL_47:
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         if (!tinted_contents)
         {
           CA::Transaction::unlock(v5);
-          [(CALayer *)self _prepareContext:a3];
+          [(CALayer *)self _prepareContext:context];
           v117.origin.x = v9;
           v117.origin.y = v11;
           v117.size.width = v13;
           v117.size.height = v15;
-          CGContextClipToRect(a3, v117);
-          CGContextBeginTransparencyLayer(a3, 0);
+          CGContextClipToRect(context, v117);
+          CGContextBeginTransparencyLayer(context, 0);
           [CA::Layer::layer_being_drawn(self->_attr.layer v5];
-          CGContextEndTransparencyLayer(a3);
+          CGContextEndTransparencyLayer(context);
           v54 = *(v5 + 29);
           *(v5 + 29) = v54 + 1;
           if (!v54)
@@ -3777,7 +3777,7 @@ LABEL_47:
         *&t1.tx = v105;
         [(CALayer *)self contentsTransform];
         CGAffineTransformConcat(&transform, &t1, &t2);
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
         if ((*(self->_attr.layer + 1) & 0x400000) == 0)
         {
           transform.b = 0.0;
@@ -3785,31 +3785,31 @@ LABEL_47:
           transform.a = 1.0;
           *&transform.d = xmmword_183E20F00;
           transform.ty = Height;
-          CGContextConcatCTM(a3, &transform);
+          CGContextConcatCTM(context, &transform);
         }
 
         if (![(CALayer *)self edgeAntialiasingMask])
         {
-          CGContextSetShouldAntialias(a3, 0);
+          CGContextSetShouldAntialias(context, 0);
         }
 
         v114.origin.x = 0.0;
         v114.origin.y = 0.0;
         v114.size.width = Width;
         v114.size.height = Height;
-        CGContextClipToRect(a3, v114);
+        CGContextClipToRect(context, v114);
         if ((v17 & 1) == 0)
         {
           CGImageRetain(tinted_contents);
         }
 
         v46 = layer[13];
-        v47 = [(CALayer *)self contentsMultiplyColor];
-        v48 = [(CALayer *)self contentsSwizzle];
-        if (v48 == @"RGBA" || ![(__CFString *)v48 isEqualToString:@"AAAA"])
+        contentsMultiplyColor = [(CALayer *)self contentsMultiplyColor];
+        contentsSwizzle = [(CALayer *)self contentsSwizzle];
+        if (contentsSwizzle == @"RGBA" || ![(__CFString *)contentsSwizzle isEqualToString:@"AAAA"])
         {
           v51 = 0;
-          if (!v47 || v47 == white)
+          if (!contentsMultiplyColor || contentsMultiplyColor == white)
           {
 LABEL_74:
             if (!(layer[14] & 0x80 | v46 & 0x10000) || (v53 = v103, v52 = v104, v103 == 1.0) && v104 == 1.0)
@@ -3821,13 +3821,13 @@ LABEL_74:
                 v115.origin.x = v98;
                 v115.size.width = v99;
                 v115.size.height = v100;
-                CGContextClipToMask(a3, v115, tinted_contents);
-                CGContextSetFillColorWithColor(a3, v47);
+                CGContextClipToMask(context, v115, tinted_contents);
+                CGContextSetFillColorWithColor(context, contentsMultiplyColor);
                 v116.origin.y = v97;
                 v116.origin.x = v98;
                 v116.size.width = v99;
                 v116.size.height = v100;
-                CGContextFillRect(a3, v116);
+                CGContextFillRect(context, v116);
               }
 
               else
@@ -3846,7 +3846,7 @@ LABEL_74:
                 v118.origin.x = v98;
                 v118.size.width = v99;
                 v118.size.height = v100;
-                CGContextDrawImage(a3, v118, v55);
+                CGContextDrawImage(context, v118, v55);
               }
 
               v56 = *(v5 + 29);
@@ -3874,17 +3874,17 @@ LABEL_74:
               v61 = v60;
               v63 = v62;
               v65 = v64;
-              CGContextBeginTransparencyLayer(a3, 0);
-              CGContextSetBlendMode(a3, kCGBlendModeCopy);
+              CGContextBeginTransparencyLayer(context, 0);
+              CGContextSetBlendMode(context, kCGBlendModeCopy);
               if ((*(self->_attr.layer + 1) & 0x400000) == 0)
               {
                 v61 = 1.0 - (v61 + v65);
               }
 
-              v66 = [(CALayer *)self literalContentsCenter];
+              literalContentsCenter = [(CALayer *)self literalContentsCenter];
               if (v63 == 0.0)
               {
-                if (v66)
+                if (literalContentsCenter)
                 {
                   v63 = 0.01;
                 }
@@ -3899,7 +3899,7 @@ LABEL_74:
 
               if (v65 == 0.0)
               {
-                if (v66)
+                if (literalContentsCenter)
                 {
                   v65 = 0.01;
                 }
@@ -3989,7 +3989,7 @@ LABEL_74:
                 v111 = v110;
               }
 
-              CGContextSetShouldAntialias(a3, 0);
+              CGContextSetShouldAntialias(context, 0);
               CA::Transaction::unlock(v5);
               v72 = 0;
               v73 = 0.0;
@@ -4071,21 +4071,21 @@ LABEL_74:
                               break;
                             }
 
-                            CGContextSaveGState(a3);
-                            CGContextScaleCTM(a3, 1.0 / v103, 1.0 / v104);
+                            CGContextSaveGState(context);
+                            CGContextScaleCTM(context, 1.0 / v103, 1.0 / v104);
                             v123.origin.x = i;
                             v123.origin.y = v84;
                             v123.size.width = v79;
                             v123.size.height = rect;
-                            CGContextClipToRect(a3, v123);
-                            CGContextTranslateCTM(a3, i, v84);
-                            CGContextTranslateCTM(a3, v85, ty);
+                            CGContextClipToRect(context, v123);
+                            CGContextTranslateCTM(context, i, v84);
+                            CGContextTranslateCTM(context, v85, ty);
                             v124.origin.y = v97;
                             v124.origin.x = v98;
                             v124.size.width = v99;
                             v124.size.height = v100;
-                            CGContextDrawImage(a3, v124, v57);
-                            CGContextRestoreGState(a3);
+                            CGContextDrawImage(context, v124, v57);
+                            CGContextRestoreGState(context);
                           }
 
                           v84 = v84 + v96;
@@ -4094,21 +4094,21 @@ LABEL_74:
 
                       else
                       {
-                        CGContextSaveGState(a3);
+                        CGContextSaveGState(context);
                         v125.origin.x = v76;
                         v125.size.height = v92;
                         v125.origin.y = v93;
                         v125.size.width = v94 - v76;
-                        CGContextClipToRect(a3, v125);
-                        CGContextTranslateCTM(a3, v76, v93);
-                        CGContextScaleCTM(a3, v78 / v79, sy);
-                        CGContextTranslateCTM(a3, -v77, ty);
+                        CGContextClipToRect(context, v125);
+                        CGContextTranslateCTM(context, v76, v93);
+                        CGContextScaleCTM(context, v78 / v79, sy);
+                        CGContextTranslateCTM(context, -v77, ty);
                         v126.origin.y = v97;
                         v126.origin.x = v98;
                         v126.size.width = v99;
                         v126.size.height = v100;
-                        CGContextDrawImage(a3, v126, v57);
-                        CGContextRestoreGState(a3);
+                        CGContextDrawImage(context, v126, v57);
+                        CGContextRestoreGState(context);
                       }
                     }
 
@@ -4123,7 +4123,7 @@ LABEL_74:
               }
 
               while (v72 != 3);
-              CGContextEndTransparencyLayer(a3);
+              CGContextEndTransparencyLayer(context);
               v87 = *(v5 + 29);
               *(v5 + 29) = v87 + 1;
               if (v87)
@@ -4144,7 +4144,7 @@ LABEL_86:
 LABEL_144:
               CGImageRelease(tinted_contents);
 LABEL_145:
-              CGContextRestoreGState(a3);
+              CGContextRestoreGState(context);
               goto LABEL_146;
             }
 
@@ -4153,14 +4153,14 @@ LABEL_143:
             goto LABEL_144;
           }
 
-          v50 = create_tinted_contents(tinted_contents, v47, 0);
+          v50 = create_tinted_contents(tinted_contents, contentsMultiplyColor, 0);
         }
 
         else
         {
-          if (v47)
+          if (contentsMultiplyColor)
           {
-            v49 = v47;
+            v49 = contentsMultiplyColor;
           }
 
           else
@@ -4180,18 +4180,18 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v30 = [(mach_port_t *)tinted_contents CA_copyRenderValue];
-    v26 = v30;
-    if (!v30)
+    cA_copyRenderValue = [(mach_port_t *)tinted_contents CA_copyRenderValue];
+    v26 = cA_copyRenderValue;
+    if (!cA_copyRenderValue)
     {
       goto LABEL_33;
     }
 
-    v31 = *(v30 + 12);
+    v31 = *(cA_copyRenderValue + 12);
     if (v31 == 57)
     {
-      v33 = *(v30 + 16);
-      v34 = (*(*v30 + 104))(v30);
+      v33 = *(cA_copyRenderValue + 16);
+      v34 = (*(*cA_copyRenderValue + 104))(cA_copyRenderValue);
       if (v34 > 0x23)
       {
         LOBYTE(v35) = 0;
@@ -4214,7 +4214,7 @@ LABEL_46:
         goto LABEL_45;
       }
 
-      v32 = CA::Render::Image::copy_cgimage(v30);
+      v32 = CA::Render::Image::copy_cgimage(cA_copyRenderValue);
     }
 
     tinted_contents = v32;
@@ -4232,7 +4232,7 @@ LABEL_146:
   CA::Transaction::unlock(v5);
 }
 
-- (void)_renderBackgroundInContext:(CGContext *)a3
+- (void)_renderBackgroundInContext:(CGContext *)context
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -4248,9 +4248,9 @@ LABEL_146:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v7 = [(CALayer *)self backgroundColor];
-  v8 = v7;
-  if (v7 && CGColorGetAlpha(v7) > 0.0)
+  backgroundColor = [(CALayer *)self backgroundColor];
+  v8 = backgroundColor;
+  if (backgroundColor && CGColorGetAlpha(backgroundColor) > 0.0)
   {
     [(CALayer *)self bounds];
     v10 = v9;
@@ -4266,7 +4266,7 @@ LABEL_146:
     {
       CGContextGetBaseCTM();
       v27 = v22;
-      CGContextGetCTM(&v22, a3);
+      CGContextGetCTM(&v22, context);
       v26 = v22;
       if ((*(self->_attr.layer + 1) & 0x400000) == 0)
       {
@@ -4279,7 +4279,7 @@ LABEL_146:
         CGPatternGetStep();
         v29.height = fmod(v16, v20);
         v29.width = 0.0;
-        CGContextSetPatternPhase(a3, v29);
+        CGContextSetPatternPhase(context, v29);
       }
 
       if (CGPatternGetShading())
@@ -4294,13 +4294,13 @@ LABEL_146:
       CGContextSetBaseCTM();
     }
 
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     if (![(CALayer *)self edgeAntialiasingMask])
     {
-      CGContextSetShouldAntialias(a3, 0);
+      CGContextSetShouldAntialias(context, 0);
     }
 
-    CGContextSetFillColorWithColor(a3, v8);
+    CGContextSetFillColorWithColor(context, v8);
     if ([(CALayer *)self _usesCornerRadii])
     {
       v23 = 0u;
@@ -4310,16 +4310,16 @@ LABEL_146:
         [(CALayer *)self cornerRadii:*&v22.a];
       }
 
-      CA_CGContextAddUnevenRoundRect(a3, &v22, v10, v12, v14, v16);
+      CA_CGContextAddUnevenRoundRect(context, &v22, v10, v12, v14, v16);
     }
 
     else
     {
-      CA_CGContextAddRoundRect(a3, [(CALayer *)self _continuousCorners], v10, v12, v14, v16, v18);
+      CA_CGContextAddRoundRect(context, [(CALayer *)self _continuousCorners], v10, v12, v14, v16, v18);
     }
 
     CA::Transaction::unlock(v5);
-    CGContextFillPath(a3);
+    CGContextFillPath(context);
     v21 = *(v5 + 29);
     *(v5 + 29) = v21 + 1;
     if (!v21)
@@ -4327,7 +4327,7 @@ LABEL_146:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
     if (Pattern)
     {
       v22 = v27;
@@ -4346,7 +4346,7 @@ LABEL_146:
     return;
   }
 
-  v5 = [(CALayer *)self opacity];
+  opacity = [(CALayer *)self opacity];
   if (v6 <= 0.0)
   {
     return;
@@ -4356,18 +4356,18 @@ LABEL_146:
   if ((*(self->_attr.layer + 1) & 0x60000) == 0)
   {
     [(CALayer *)self layoutIfNeeded];
-    v5 = [(CALayer *)self displayIfNeeded];
+    opacity = [(CALayer *)self displayIfNeeded];
   }
 
   v8 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v8)
   {
-    v8 = CA::Transaction::create(v5);
+    v8 = CA::Transaction::create(opacity);
   }
 
   [(CALayer *)self shadowOpacity];
   v10 = v9;
-  v11 = [(CALayer *)self masksToBounds];
+  masksToBounds = [(CALayer *)self masksToBounds];
   v12 = *(v8 + 29);
   *(v8 + 29) = v12 + 1;
   if (!v12)
@@ -4375,9 +4375,9 @@ LABEL_146:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v13 = [(CALayer *)self mask];
+  mask = [(CALayer *)self mask];
   CA::Transaction::unlock(v8);
-  if (v11)
+  if (masksToBounds)
   {
     [(CALayer *)self bounds];
     v15 = v14;
@@ -4414,7 +4414,7 @@ LABEL_146:
     }
   }
 
-  if (v13)
+  if (mask)
   {
     CGContextBeginTransparencyLayer(ctx, 0);
   }
@@ -4426,13 +4426,13 @@ LABEL_146:
     CGContextSetAlpha(ctx, v7);
   }
 
-  v24 = [(CALayer *)self compositingFilter];
-  if (v24)
+  compositingFilter = [(CALayer *)self compositingFilter];
+  if (compositingFilter)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = CAInternAtom(v24, 0);
+      v25 = CAInternAtom(compositingFilter, 0);
     }
 
     else
@@ -4443,7 +4443,7 @@ LABEL_146:
         goto LABEL_61;
       }
 
-      v25 = CAInternAtom([(__CFString *)v24 type], 0);
+      v25 = CAInternAtom([(__CFString *)compositingFilter type], 0);
     }
 
     if (v25 <= 292)
@@ -4618,9 +4618,9 @@ LABEL_81:
   v31 = v30;
   [(CALayer *)self shadowRadius];
   v33 = v32;
-  v34 = [(CALayer *)self shadowColor];
-  v35 = v34;
-  if (v34 && CGColorGetAlpha(v34) > 0.0)
+  shadowColor = [(CALayer *)self shadowColor];
+  v35 = shadowColor;
+  if (shadowColor && CGColorGetAlpha(shadowColor) > 0.0)
   {
     if (v10 == 1.0)
     {
@@ -4692,10 +4692,10 @@ LABEL_98:
   }
 
   CGContextRestoreGState(ctx);
-  if (v13)
+  if (mask)
   {
     memset(&v49, 0, sizeof(v49));
-    CA::Layer::get_frame_transform(v13->_attr.layer, &v49, 0);
+    CA::Layer::get_frame_transform(mask->_attr.layer, &v49, 0);
     if (CA_CGAffineTransformIsValid())
     {
       CGContextSaveGState(ctx);
@@ -4709,7 +4709,7 @@ LABEL_98:
       CGContextSetBaseCTM();
       CGContextSetBlendMode(ctx, kCGBlendModeDestinationIn);
       CGContextBeginTransparencyLayer(ctx, 0);
-      [(CALayer *)v13 renderInContext:ctx];
+      [(CALayer *)mask renderInContext:ctx];
       CGContextEndTransparencyLayer(ctx);
       v48[0] = v48[1];
       CGContextSetBaseCTM();
@@ -4719,7 +4719,7 @@ LABEL_98:
     CGContextEndTransparencyLayer(ctx);
   }
 
-  if (v11)
+  if (masksToBounds)
   {
     CGContextRestoreGState(ctx);
   }
@@ -4757,11 +4757,11 @@ LABEL_98:
     if (width != 0.0 && height != 0.0)
     {
       v8 = *(layer + 2);
-      v9 = [v8 contents];
-      v10 = v9;
-      if (v9)
+      contents = [v8 contents];
+      v10 = contents;
+      if (contents)
       {
-        v11 = CFGetTypeID(v9);
+        v11 = CFGetTypeID(contents);
         if (CABackingStoreGetTypeID::once[0] != -1)
         {
           v16 = v11;
@@ -4815,14 +4815,14 @@ LABEL_98:
 - (CAAnimation)animationForKey:(NSString *)key
 {
   v5 = CA::Transaction::ensure_compat(self);
-  v6 = [(CALayer *)self modelLayer];
-  if (!v6)
+  modelLayer = [(CALayer *)self modelLayer];
+  if (!modelLayer)
   {
     return 0;
   }
 
-  v7 = v6;
-  if (!*(v6->_attr.layer + 35) || ![(NSString *)key length])
+  v7 = modelLayer;
+  if (!*(modelLayer->_attr.layer + 35) || ![(NSString *)key length])
   {
     return 0;
   }
@@ -4863,11 +4863,11 @@ LABEL_13:
 - (void)removeAnimationForKey:(NSString *)key
 {
   v5 = CA::Transaction::ensure_compat(self);
-  v6 = [(CALayer *)self modelLayer];
-  if (v6)
+  modelLayer = [(CALayer *)self modelLayer];
+  if (modelLayer)
   {
-    v7 = v6;
-    if (*(v6->_attr.layer + 35))
+    v7 = modelLayer;
+    if (*(modelLayer->_attr.layer + 35))
     {
       if ([(NSString *)key length])
       {
@@ -4923,44 +4923,44 @@ LABEL_20:
   }
 }
 
-- (BOOL)remapAnimation:(id)a3 forKey:(id)a4
+- (BOOL)remapAnimation:(id)animation forKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || CAInternAtom([a3 keyPath], 0) != 572)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || CAInternAtom([animation keyPath], 0) != 572)
   {
     return 0;
   }
 
-  v6 = [a3 mutableCopy];
-  v7 = [a3 mutableCopy];
+  v6 = [animation mutableCopy];
+  v7 = [animation mutableCopy];
   [v6 setKeyPath:@"contentsCDRStrength"];
   v8 = CA::Transaction::ensure_compat([v7 setKeyPath:@"contentsEDRStrength"]);
   v15 = 0;
   if (!CA::Transaction::get_value(*(v8 + 13), 37, 7, &v15) || (v15 & 1) == 0)
   {
-    v9 = [(CALayer *)self presentationLayer];
-    if (v9)
+    presentationLayer = [(CALayer *)self presentationLayer];
+    if (presentationLayer)
     {
-      v10 = v9;
-      [v6 setFromValue:{CAObject_valueForAtom(v9, 0x85u)}];
+      v10 = presentationLayer;
+      [v6 setFromValue:{CAObject_valueForAtom(presentationLayer, 0x85u)}];
       [v7 setFromValue:{CAObject_valueForAtom(v10, 0x8Au)}];
     }
   }
 
-  if ([objc_msgSend(a3 "toValue")])
+  if ([objc_msgSend(animation "toValue")])
   {
     v11 = &unk_1EF22B8E0;
   }
 
-  else if ([objc_msgSend(a3 "toValue")] & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "toValue"), "isEqual:", @"automatic"))
+  else if ([objc_msgSend(animation "toValue")] & 1) != 0 || (objc_msgSend(objc_msgSend(animation, "toValue"), "isEqual:", @"automatic"))
   {
     v11 = &unk_1EF22B8E0;
   }
 
   else
   {
-    if (![objc_msgSend(a3 "toValue")])
+    if (![objc_msgSend(animation "toValue")])
     {
       goto LABEL_14;
     }
@@ -4996,14 +4996,14 @@ LABEL_14:
   {
     v15 = v7;
     v8 = CA::Transaction::ensure_compat(v7);
-    v9 = [(CALayer *)self modelLayer];
-    if (v9)
+    modelLayer = [(CALayer *)self modelLayer];
+    if (modelLayer)
     {
-      v10 = v9;
+      v10 = modelLayer;
       v18[0] = 0;
       v16 = 0;
-      v17 = [(CAAnimation *)v15 delegate];
-      if (!v17 && CA::Transaction::get_value(v8[13], 38, 2, &v17) && v17)
+      delegate = [(CAAnimation *)v15 delegate];
+      if (!delegate && CA::Transaction::get_value(v8[13], 38, 2, &delegate) && delegate)
       {
         [(CAAnimation *)v15 setDelegate:?];
       }
@@ -5023,15 +5023,15 @@ LABEL_14:
       [(CAAnimation *)v15 duration];
       if (v12 <= 0.000001)
       {
-        v14 = lookup_delegate_methods(v8, v17);
+        v14 = lookup_delegate_methods(v8, delegate);
         if ((v14 & 0x40) != 0)
         {
-          [(objc_object *)v17 animationDidStart:v15];
+          [(objc_object *)delegate animationDidStart:v15];
         }
 
         if (v14 < 0)
         {
-          [(objc_object *)v17 animationDidStop:v15 finished:1];
+          [(objc_object *)delegate animationDidStop:v15 finished:1];
         }
 
         if (key)
@@ -5049,10 +5049,10 @@ LABEL_14:
 
         if (objc_opt_isKindOfClass())
         {
-          v13 = [(CAAnimation *)v15 keyPath];
+          keyPath = [(CAAnimation *)v15 keyPath];
           if (key)
           {
-            if (!v13)
+            if (!keyPath)
             {
               [(CAAnimation *)v15 setKeyPath:key];
             }
@@ -5186,7 +5186,7 @@ LABEL_24:
     return;
   }
 
-  v6 = self;
+  selfCopy = self;
   layer = self->_attr.layer;
   if ((*(layer + 1) & 0x60000) != 0)
   {
@@ -5201,11 +5201,11 @@ LABEL_24:
 
   v9 = CA::Transaction::ensure_compat(self);
   v12 = CA::Layer::retain_parent(oldLayer->_attr.layer, v9);
-  v13 = v6->_attr.layer;
+  v13 = selfCopy->_attr.layer;
   if (v12 != v13)
   {
-    [MEMORY[0x1E695DF30] raise:@"CALayerInvalid" format:{@"replaced layer %@ is not a sublayer of %@", oldLayer, v6}];
-    v13 = v6->_attr.layer;
+    [MEMORY[0x1E695DF30] raise:@"CALayerInvalid" format:{@"replaced layer %@ is not a sublayer of %@", oldLayer, selfCopy}];
+    v13 = selfCopy->_attr.layer;
   }
 
   v14 = v9[29];
@@ -5392,7 +5392,7 @@ LABEL_45:
     return;
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = self->_attr.layer;
   if ((*(v7 + 1) & 0x60000) != 0)
   {
@@ -5413,7 +5413,7 @@ LABEL_45:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v11 = v6->_attr.layer;
+  v11 = selfCopy->_attr.layer;
   if (sibling)
   {
     v12 = CA::Layer::sublayers(v11);
@@ -5460,7 +5460,7 @@ LABEL_17:
     }
 
 LABEL_24:
-    CA::Layer::insert_sublayer(v6->_attr.layer, v9, layer, v14);
+    CA::Layer::insert_sublayer(selfCopy->_attr.layer, v9, layer, v14);
     goto LABEL_25;
   }
 
@@ -5477,7 +5477,7 @@ LABEL_25:
     return;
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = self->_attr.layer;
   if ((*(v7 + 1) & 0x60000) != 0)
   {
@@ -5498,7 +5498,7 @@ LABEL_25:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v11 = v6->_attr.layer;
+  v11 = selfCopy->_attr.layer;
   if (sibling)
   {
     v12 = CA::Layer::sublayers(v11);
@@ -5545,7 +5545,7 @@ LABEL_17:
     }
 
 LABEL_24:
-    CA::Layer::insert_sublayer(v6->_attr.layer, v9, layer, v14);
+    CA::Layer::insert_sublayer(selfCopy->_attr.layer, v9, layer, v14);
     goto LABEL_25;
   }
 
@@ -5559,7 +5559,7 @@ LABEL_25:
 {
   if (layer)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = self->_attr.layer;
     if ((*(v5 + 1) & 0x60000) != 0)
     {
@@ -5580,7 +5580,7 @@ LABEL_25:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    CA::Layer::insert_sublayer(v4->_attr.layer, v7, layer, 0xFFFFFFFFFFFFFFFFLL);
+    CA::Layer::insert_sublayer(selfCopy->_attr.layer, v7, layer, 0xFFFFFFFFFFFFFFFFLL);
 
     CA::Transaction::unlock(v7);
   }
@@ -5590,7 +5590,7 @@ LABEL_25:
 {
   if (layer)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = self->_attr.layer;
     if ((*(v7 + 1) & 0x60000) != 0)
     {
@@ -5611,7 +5611,7 @@ LABEL_25:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    CA::Layer::insert_sublayer(v6->_attr.layer, v9, layer, idx);
+    CA::Layer::insert_sublayer(selfCopy->_attr.layer, v9, layer, idx);
 
     CA::Transaction::unlock(v9);
   }
@@ -5624,24 +5624,24 @@ LABEL_25:
   CA::Layer::setter(self->_attr.layer, 0x21B, 0x11, &v3);
 }
 
-- (void)setContentsScaling:(id)a3
+- (void)setContentsScaling:(id)scaling
 {
-  v4 = [a3 isEqualToString:@"repeat"];
+  v4 = [scaling isEqualToString:@"repeat"];
   layer = self->_attr.layer;
 
   CA::Layer::set_bit(layer, 0x98u, 80, 175, v4, 0, 0);
 }
 
-- (void)setToneMapMode:(id)a3
+- (void)setToneMapMode:(id)mode
 {
-  if (a3 == @"automatic")
+  if (mode == @"automatic")
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = CAInternAtom(a3, 0);
+    v4 = CAInternAtom(mode, 0);
     if (v4 == 311)
     {
       v5 = 2;
@@ -5704,16 +5704,16 @@ LABEL_25:
   return *v3;
 }
 
-- (void)setSecurityMode:(id)a3
+- (void)setSecurityMode:(id)mode
 {
-  if ([a3 isEqualToString:@"unrestricted"])
+  if ([mode isEqualToString:@"unrestricted"])
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = [a3 isEqualToString:@"insecure"];
+    v5 = [mode isEqualToString:@"insecure"];
   }
 
   layer = self->_attr.layer;
@@ -6000,13 +6000,13 @@ LABEL_25:
     return 0;
   }
 
-  v7 = [(CALayer *)self allowsHitTesting];
-  if (!v7)
+  allowsHitTesting = [(CALayer *)self allowsHitTesting];
+  if (!allowsHitTesting)
   {
     return 0;
   }
 
-  v8 = CA::Transaction::ensure_compat(v7);
+  v8 = CA::Transaction::ensure_compat(allowsHitTesting);
   v11 = *(v8 + 29);
   *(v8 + 29) = v11 + 1;
   if (!v11)
@@ -6044,7 +6044,7 @@ LABEL_25:
     {
       if (*(v21 + 8) && [(CALayer *)self sortsSublayers])
       {
-        v18 = 0;
+        selfCopy = 0;
         v26 = -INFINITY;
         v27 = v22;
         do
@@ -6053,7 +6053,7 @@ LABEL_25:
           v24 = v26 + 0.00001;
           if (v23 > v26 + 0.00001)
           {
-            v18 = *v27;
+            selfCopy = *v27;
             v26 = v23;
           }
 
@@ -6065,7 +6065,7 @@ LABEL_25:
 
       else
       {
-        v18 = *v22;
+        selfCopy = *v22;
       }
 
       do
@@ -6080,22 +6080,22 @@ LABEL_25:
 
     else if ([(CALayer *)self containsPoint:*&v30])
     {
-      v18 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v18 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   CA::Transaction::unlock(v8);
-  return v18;
+  return selfCopy;
 }
 
 - (CFTimeInterval)convertTime:(CFTimeInterval)t toLayer:(CALayer *)l
@@ -6750,9 +6750,9 @@ LABEL_57:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  CAObject_encodeWithCoder(self, a3);
+  CAObject_encodeWithCoder(self, coder);
   if (*(self->_attr.layer + 35))
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -6775,14 +6775,14 @@ LABEL_57:
     }
 
     CA::Transaction::unlock(v6);
-    [a3 encodeObject:v5 forKey:@"CALayerAnimations"];
-    [a3 encodeObject:v9 forKey:@"CALayerAnimationKeys"];
+    [coder encodeObject:v5 forKey:@"CALayerAnimations"];
+    [coder encodeObject:v9 forKey:@"CALayerAnimationKeys"];
   }
 }
 
-- (CALayer)initWithCoder:(id)a3
+- (CALayer)initWithCoder:(id)coder
 {
-  v4 = CAObject_initWithCoder(self, a3);
+  v4 = CAObject_initWithCoder(self, coder);
   if (v4)
   {
     if (CALayerDecodeAnimations(CALayer *,NSCoder *)::once[0] != -1)
@@ -6790,8 +6790,8 @@ LABEL_57:
       dispatch_once(CALayerDecodeAnimations(CALayer *,NSCoder *)::once, &__block_literal_global_13828);
     }
 
-    v5 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"CALayerAnimations"}];
-    v6 = [a3 decodeObjectOfClasses:CALayerDecodeAnimations(CALayer * forKey:{NSCoder *)::keys_classes, @"CALayerAnimationKeys"}];
+    v5 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"CALayerAnimations"}];
+    v6 = [coder decodeObjectOfClasses:CALayerDecodeAnimations(CALayer * forKey:{NSCoder *)::keys_classes, @"CALayerAnimationKeys"}];
     if (v5)
     {
       v7 = v6 == 0;
@@ -6833,15 +6833,15 @@ LABEL_57:
   return v4;
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!value)
   {
     goto LABEL_11;
   }
 
-  v7 = CAInternAtom(a4, 0);
+  v7 = CAInternAtom(key, 0);
   if (v7 <= 578)
   {
     if (v7 == 131)
@@ -6852,7 +6852,7 @@ LABEL_57:
         return 1;
       }
 
-      v11 = CFGetTypeID(a3);
+      v11 = CFGetTypeID(value);
       if (v11 == CGImageGetTypeID())
       {
         return 1;
@@ -6918,14 +6918,14 @@ LABEL_57:
 
     if (v7 == 159)
     {
-      v8 = CFGetTypeID(a3);
+      v8 = CFGetTypeID(value);
       return v8 == CGImageGetTypeID();
     }
 
 LABEL_11:
     v12.receiver = self;
     v12.super_class = CALayer;
-    return [&v12 CA_validateValue:a3 forKey:a4];
+    return [&v12 CA_validateValue:value forKey:key];
   }
 
   if (v7 != 579 && v7 != 694)
@@ -6935,21 +6935,21 @@ LABEL_11:
 
   objc_opt_class();
 
-  return CAObject_validateArrayOfClass(a3);
+  return CAObject_validateArrayOfClass(value);
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  v7 = [a4 rangeOfString:@"."];
+  v7 = [path rangeOfString:@"."];
   if (!v8)
   {
 
-    [(CALayer *)self setValue:a3 forKey:a4];
+    [(CALayer *)self setValue:value forKey:path];
     return;
   }
 
   v9 = v7;
-  v10 = [a4 substringToIndex:v7];
+  v10 = [path substringToIndex:v7];
   v11 = CAInternAtom(v10, 0);
   v12 = v11;
   v13 = *(self->_attr.layer + 1) & 0x60000;
@@ -6993,7 +6993,7 @@ LABEL_9:
     if ((v22[24] & 1) == 0)
     {
 LABEL_26:
-      v18 = [(CALayer *)self actionForKey:a4];
+      v18 = [(CALayer *)self actionForKey:path];
       goto LABEL_48;
     }
 
@@ -7003,7 +7003,7 @@ LABEL_48:
   }
 
 LABEL_10:
-  v19 = [a4 substringFromIndex:v9 + 1];
+  v19 = [path substringFromIndex:v9 + 1];
   if (v12 <= 135)
   {
     switch(v12)
@@ -7018,7 +7018,7 @@ LABEL_10:
         goto LABEL_19;
       default:
 LABEL_28:
-        CAObject_setValueForKeyPath_(self, a3, v10, v19, 0);
+        CAObject_setValueForKeyPath_(self, value, v10, v19, 0);
         if (v18)
         {
           v23 = v17;
@@ -7036,7 +7036,7 @@ LABEL_28:
 
 LABEL_43:
 
-        [v18 runActionForKey:a4 object:self arguments:0];
+        [v18 runActionForKey:path object:self arguments:0];
         return;
     }
 
@@ -7067,7 +7067,7 @@ LABEL_19:
   v21 = 0;
   v20 = 1;
 LABEL_36:
-  CAObject_setValueForKeyPath_(self, a3, v10, v19, v21);
+  CAObject_setValueForKeyPath_(self, value, v10, v19, v21);
   if (v17)
   {
     v24 = *(v15 + 29);
@@ -7089,12 +7089,12 @@ LABEL_36:
   }
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v18[0] = a3;
+  v18[0] = value;
   v7 = CA::Transaction::ensure_compat(self);
-  v8 = CAInternAtom(a4, 1);
+  v8 = CAInternAtom(key, 1);
   v9 = *(v7 + 29);
   *(v7 + 29) = v9 + 1;
   if (!v9)
@@ -7105,7 +7105,7 @@ LABEL_36:
   layer = self->_attr.layer;
   v17 = 0;
   v11 = *(layer + 9);
-  if (!v11 || !CA::AttrList::get(v11, v8, 1, &v17) || ([v17 isEqual:a3] & 1) == 0)
+  if (!v11 || !CA::AttrList::get(v11, v8, 1, &v17) || ([v17 isEqual:value] & 1) == 0)
   {
     v16 = 0;
     String = CAAtomGetString(v8);
@@ -7129,21 +7129,21 @@ LABEL_36:
   CA::Transaction::unlock(v7);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if ((*(self->_attr.layer + 1) & 0x60000) != 0x40000 || ![(CALayer *)self _renderLayerDefinesProperty:CAInternAtom(a4, 0)])
+  if ((*(self->_attr.layer + 1) & 0x60000) != 0x40000 || ![(CALayer *)self _renderLayerDefinesProperty:CAInternAtom(key, 0)])
   {
     v7 = +[CALayer superclass];
 
-    CAObject_setValueForKey(self, v7, a3, a4);
+    CAObject_setValueForKey(self, v7, value, key);
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = CA::Transaction::ensure_compat(self);
-  v6 = CAInternAtom(a3, 1);
+  v6 = CAInternAtom(key, 1);
   v7 = *(v5 + 29);
   *(v5 + 29) = v7 + 1;
   if (!v7)
@@ -7164,41 +7164,41 @@ LABEL_36:
   return v10;
 }
 
-- (id)CA_archivingValueForKey:(id)a3
+- (id)CA_archivingValueForKey:(id)key
 {
-  v4 = self;
+  selfCopy = self;
   if ((~*(self->_attr.layer + 1) & 0x68000) == 0)
   {
-    v4 = [(CALayer *)self modelLayer];
+    selfCopy = [(CALayer *)self modelLayer];
   }
 
   v5 = +[CALayer superclass];
 
-  return CAObject_valueForKey(v4, v5, a3);
+  return CAObject_valueForKey(selfCopy, v5, key);
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v5 = +[CALayer superclass];
 
-  return CAObject_valueForKey(self, v5, a3);
+  return CAObject_valueForKey(self, v5, key);
 }
 
 - (id)debugDescription
 {
   v3 = CA::Transaction::ensure_compat(self);
   layer = self->_attr.layer;
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v6 = objc_opt_class();
-  [(__CFString *)v5 appendFormat:@"<%@:%p; ", NSStringFromClass(v6), self];
-  v7 = [(CALayer *)self name];
-  if (v7)
+  [(__CFString *)string appendFormat:@"<%@:%p; ", NSStringFromClass(v6), self];
+  name = [(CALayer *)self name];
+  if (name)
   {
-    [(__CFString *)v5 appendFormat:@"name = %@; ", v7];
+    [(__CFString *)string appendFormat:@"name = %@; ", name];
   }
 
-  [(__CFString *)v5 appendFormat:@"position = CGPoint (%g %g); ", *(layer + 10), *(layer + 11)];
-  [(__CFString *)v5 appendFormat:@"bounds = CGRect (%g %g; %g %g); ", *(layer + 12), *(layer + 13), *(layer + 14), *(layer + 15)];
+  [(__CFString *)string appendFormat:@"position = CGPoint (%g %g); ", *(layer + 10), *(layer + 11)];
+  [(__CFString *)string appendFormat:@"bounds = CGRect (%g %g; %g %g); ", *(layer + 12), *(layer + 13), *(layer + 14), *(layer + 15)];
   if (layer[136] != 1)
   {
     Weak = *(layer + 16);
@@ -7214,18 +7214,18 @@ LABEL_36:
   if (Weak)
   {
 LABEL_7:
-    [(__CFString *)v5 appendFormat:@"delegate = %@; ", Weak];
+    [(__CFString *)string appendFormat:@"delegate = %@; ", Weak];
   }
 
 LABEL_8:
   if (*(layer + 18))
   {
-    [(__CFString *)v5 appendFormat:@"contents = %@; ", *(layer + 18)];
+    [(__CFString *)string appendFormat:@"contents = %@; ", *(layer + 18)];
   }
 
   if (CA::Layer::sublayers(layer))
   {
-    -[__CFString appendFormat:](v5, "appendFormat:", @"sublayers = (");
+    -[__CFString appendFormat:](string, "appendFormat:", @"sublayers = (");
     v9 = *(CA::Layer::sublayers(layer) + 2);
     if (v9)
     {
@@ -7248,16 +7248,16 @@ LABEL_8:
           v13 = *v13;
         }
 
-        [(__CFString *)v5 appendFormat:@"%s%@", v11, v13[i]];
+        [(__CFString *)string appendFormat:@"%s%@", v11, v13[i]];
       }
     }
 
-    [(__CFString *)v5 appendFormat:@"; "]);
+    [(__CFString *)string appendFormat:@"; "]);
   }
 
   if (CA::Layer::mask(layer))
   {
-    [(__CFString *)v5 appendFormat:@"mask = %@; ", CA::Layer::mask(layer)];
+    [(__CFString *)string appendFormat:@"mask = %@; ", CA::Layer::mask(layer)];
   }
 
   v14 = (layer + 44);
@@ -7277,7 +7277,7 @@ LABEL_8:
         v17 = "YES";
       }
 
-      [(__CFString *)v5 appendFormat:@"%s = %s; ", *(v15 + 1), v17];
+      [(__CFString *)string appendFormat:@"%s = %s; ", *(v15 + 1), v17];
     }
 
     v15 += 8;
@@ -7294,31 +7294,31 @@ LABEL_8:
 
   if ((layer[57] & 0x20) != 0)
   {
-    [(__CFString *)v5 appendString:@"anchorPoint = CGPoint (0 0); "];
+    [(__CFString *)string appendString:@"anchorPoint = CGPoint (0 0); "];
   }
 
   v19 = *v14;
   if (((*v14 >> 26) & 3) != 0)
   {
-    [(__CFString *)v5 appendFormat:@"contentsScale = %u; ", (v19 >> 26) & 3];
+    [(__CFString *)string appendFormat:@"contentsScale = %u; ", (v19 >> 26) & 3];
     v19 = *v14;
   }
 
   v20 = (v19 >> 28) & 3;
   if (v20)
   {
-    [(__CFString *)v5 appendFormat:@"rasterizationScale = %u; ", v20];
+    [(__CFString *)string appendFormat:@"rasterizationScale = %u; ", v20];
   }
 
   v21 = *(layer + 9);
   if (v21)
   {
-    CA::AttrList::append_description(*v21, v5);
+    CA::AttrList::append_description(*v21, string);
   }
 
   if (*(layer + 35))
   {
-    [(__CFString *)v5 appendString:@"; animations = ["];
+    [(__CFString *)string appendString:@"; animations = ["];
     v22 = *(layer + 35);
     if (v22)
     {
@@ -7329,17 +7329,17 @@ LABEL_8:
         {
           if ((v23 & 1) == 0)
           {
-            [(__CFString *)v5 appendString:@" "];
+            [(__CFString *)string appendString:@" "];
           }
 
           if (v22[2])
           {
-            [(__CFString *)v5 appendFormat:@"%@=%@", v22[2], v22[1]];
+            [(__CFString *)string appendFormat:@"%@=%@", v22[2], v22[1]];
           }
 
           else
           {
-            [(__CFString *)v5 appendFormat:@"%@", v22[1], v25];
+            [(__CFString *)string appendFormat:@"%@", v22[1], v25];
           }
 
           v23 = 0;
@@ -7351,15 +7351,15 @@ LABEL_8:
       while (v22);
     }
 
-    [(__CFString *)v5 appendString:@"]"];
+    [(__CFString *)string appendString:@"]"];
   }
 
   CA::Transaction::unlock(v3);
-  [(__CFString *)v5 appendString:@">"];
-  return v5;
+  [(__CFString *)string appendString:@">"];
+  return string;
 }
 
-- (id)_initWithReference:(id)a3
+- (id)_initWithReference:(id)reference
 {
   v17 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -7375,7 +7375,7 @@ LABEL_8:
   v6 = v5;
   if (v5)
   {
-    v7 = *(a3 + 2);
+    v7 = *(reference + 2);
     v10 = *(v7 + 40);
     v8 = v7 + 40;
     v9 = v10;
@@ -7434,7 +7434,7 @@ LABEL_8:
       layer = v6->_attr.layer;
     }
 
-    CA::Layer::set_model_layer(layer, v11, *(a3 + 2));
+    CA::Layer::set_model_layer(layer, v11, *(reference + 2));
   }
 
   return v6;
@@ -7522,19 +7522,19 @@ LABEL_8:
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v4 = objc_opt_class();
 
-  return CAObject_automaticallyNotifiesObserversForKey(v4, a3);
+  return CAObject_automaticallyNotifiesObserversForKey(v4, key);
 }
 
-+ (CALayer)allocWithZone:(_NSZone *)a3
++ (CALayer)allocWithZone:(_NSZone *)zone
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CALayer;
-  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   if (result)
   {
     result->_attr.refcount = 1;
@@ -7926,18 +7926,18 @@ LABEL_32:
   return v5;
 }
 
-- (void)setBackgroundColorPhase:(CGSize)a3
+- (void)setBackgroundColorPhase:(CGSize)phase
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x3F, 0x14, &v3.width);
+  phaseCopy = phase;
+  CA::Layer::setter(self->_attr.layer, 0x3F, 0x14, &phaseCopy.width);
 }
 
-- (void)setSizeRequisition:(CGSize)a3
+- (void)setSizeRequisition:(CGSize)requisition
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->_attr.layer, 0x28F, 0x14, &v3.width);
+  requisitionCopy = requisition;
+  CA::Layer::setter(self->_attr.layer, 0x28F, 0x14, &requisitionCopy.width);
 }
 
 - (CGSize)sizeRequisition
@@ -7953,7 +7953,7 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)CAMLTypeSupportedForKey:(id)a3
+- (BOOL)CAMLTypeSupportedForKey:(id)key
 {
   os_unfair_lock_lock(&[CALayer(CALayerPrivate) CAMLTypeSupportedForKey:]::lock);
   v5 = [CALayer(CALayerPrivate) CAMLTypeSupportedForKey:]::keys;
@@ -7963,15 +7963,15 @@ LABEL_32:
     [CALayer(CALayerPrivate) CAMLTypeSupportedForKey:]::keys = v5;
   }
 
-  if (([v5 containsObject:a3] & 1) == 0)
+  if (([v5 containsObject:key] & 1) == 0)
   {
-    if (!CAObject_CAMLTypeSupportedForKey(self, a3))
+    if (!CAObject_CAMLTypeSupportedForKey(self, key))
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    [-[CALayer(CALayerPrivate) CAMLTypeSupportedForKey:]::keys addObject:a3];
+    [-[CALayer(CALayerPrivate) CAMLTypeSupportedForKey:]::keys addObject:key];
   }
 
   v6 = 1;
@@ -7980,19 +7980,19 @@ LABEL_8:
   return v6;
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
-  if ([a3 isEqualToString:@"animations"])
+  if ([key isEqualToString:@"animations"])
   {
     return @"NSDictionary";
   }
 
-  return CAObject_CAMLTypeForKey(self, a3);
+  return CAObject_CAMLTypeForKey(self, key);
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
-  v5 = CAObject_encodeWithCAMLWriter(self, a3);
+  v5 = CAObject_encodeWithCAMLWriter(self, writer);
   if (*(self->_attr.layer + 35))
   {
     v6 = CA::Transaction::ensure_compat(v5);
@@ -8003,48 +8003,48 @@ LABEL_8:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    [a3 beginPropertyElement:@"animations"];
-    [a3 beginElement:1];
+    [writer beginPropertyElement:@"animations"];
+    [writer beginElement:1];
     for (i = *(self->_attr.layer + 35); i; i = *i)
     {
-      if (i[2] && (*(i + 58) & 1) == 0 && (*(i + 61) & 1) == 0 && (![i[1] isRemovedOnCompletion] || (objc_msgSend(a3, "encodingForReverseSerializationTest") & 1) != 0))
+      if (i[2] && (*(i + 58) & 1) == 0 && (*(i + 61) & 1) == 0 && (![i[1] isRemovedOnCompletion] || (objc_msgSend(writer, "encodingForReverseSerializationTest") & 1) != 0))
       {
-        [a3 beginPropertyElement:i[2]];
-        [a3 encodeObject:i[1]];
-        [a3 endElement];
+        [writer beginPropertyElement:i[2]];
+        [writer encodeObject:i[1]];
+        [writer endElement];
       }
     }
 
-    [a3 endElement];
-    [a3 endElement];
+    [writer endElement];
+    [writer endElement];
 
     CA::Transaction::unlock(v6);
   }
 }
 
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key
 {
-  if ([a5 isEqualToString:@"animations"])
+  if ([key isEqualToString:@"animations"])
   {
 
-    CFDictionaryApplyFunction(a4, add_animation, self);
+    CFDictionaryApplyFunction(value, add_animation, self);
   }
 
   else
   {
 
-    [(CALayer *)self setValue:a4 forKey:a5];
+    [(CALayer *)self setValue:value forKey:key];
   }
 }
 
 - (id)recursiveDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  appendLayerDescription(self, v3, 0);
-  return v3;
+  string = [MEMORY[0x1E696AD60] string];
+  appendLayerDescription(self, string, 0);
+  return string;
 }
 
-- (void)removeIdentifier:(id)a3
+- (void)removeIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -8062,14 +8062,14 @@ LABEL_8:
   CA::Layer::getter(layer, 0x135u, 2, &theSet);
   if (theSet)
   {
-    CFSetRemoveValue(theSet, a3);
+    CFSetRemoveValue(theSet, identifier);
   }
 
   CA::Layer::end_change(layer, v6, 309, @"identifiers", v9.isa);
   CA::Transaction::unlock(v6);
 }
 
-- (void)addIdentifier:(id)a3
+- (void)addIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -8094,12 +8094,12 @@ LABEL_8:
     v8 = allocator;
   }
 
-  CFSetAddValue(v8, a3);
+  CFSetAddValue(v8, identifier);
   CA::Layer::end_change(layer, v6, 309, @"identifiers", v10.isa);
   CA::Transaction::unlock(v6);
 }
 
-- (void)setPresentationModifiers:(id)a3
+- (void)setPresentationModifiers:(id)modifiers
 {
   v9[1] = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -8114,7 +8114,7 @@ LABEL_8:
   v8 = *(layer + 36);
   v9[0] = 0;
   CA::Layer::begin_change(layer, v6, @"presentationModifiers", v9, v5);
-  *(layer + 36) = [a3 mutableCopy];
+  *(layer + 36) = [modifiers mutableCopy];
   CA::Layer::end_change(layer, v6, 579, @"presentationModifiers", v9[0]);
   if (v8)
   {
@@ -8124,7 +8124,7 @@ LABEL_8:
   CA::Transaction::unlock(v6);
 }
 
-- (void)removePresentationModifier:(id)a3
+- (void)removePresentationModifier:(id)modifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -8138,13 +8138,13 @@ LABEL_8:
 
   v8[0] = 0;
   CA::Layer::begin_change(layer, v6, @"presentationModifiers", v8, v5);
-  [layer[36] removeObject:a3];
+  [layer[36] removeObject:modifier];
   CA::Layer::end_change(layer, v6, 579, @"presentationModifiers", v8[0]);
 
   CA::Transaction::unlock(v6);
 }
 
-- (void)addPresentationModifier:(id)a3
+- (void)addPresentationModifier:(id)modifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -8165,44 +8165,44 @@ LABEL_8:
     *(layer + 36) = v8;
   }
 
-  [v8 addObject:a3];
+  [v8 addObject:modifier];
   CA::Layer::end_change(layer, v6, 579, @"presentationModifiers", v9[0]);
 
   CA::Transaction::unlock(v6);
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
-  v4 = CAAtomIndexInArray(53, &[CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::geom_atoms, a3);
+  v4 = CAAtomIndexInArray(53, &[CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::geom_atoms, flags);
   v5 = 0;
   do
   {
     v6 = [CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::non_image_atoms[v5];
   }
 
-  while (v6 != a3 && v5++ != 7);
+  while (v6 != flags && v5++ != 7);
   v8 = 0;
   do
   {
     v9 = [CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::velocity_atoms[v8];
   }
 
-  while (v9 != a3 && v8++ != 7);
+  while (v9 != flags && v8++ != 7);
   v11 = 0;
   do
   {
     v12 = [CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::color_atoms[v11];
   }
 
-  while (v12 != a3 && v11++ != 7);
+  while (v12 != flags && v11++ != 7);
   v14 = 0;
   do
   {
     v15 = [CALayer(CALayerPrivate) _renderLayerPropertyAnimationFlags:]::edr_atoms[v14];
   }
 
-  while (v15 != a3 && v14++ != 3);
-  if (v6 == a3)
+  while (v15 != flags && v14++ != 3);
+  if (v6 == flags)
   {
     v17 = 16 * (v4 != -1);
   }
@@ -8212,27 +8212,27 @@ LABEL_8:
     v17 = (16 * (v4 != -1)) | 0x20;
   }
 
-  if (a3 == 539 || a3 == 296)
+  if (flags == 539 || flags == 296)
   {
     v17 |= 0x100u;
   }
 
-  if (a3 == 515)
+  if (flags == 515)
   {
     v17 |= 0x40u;
   }
 
-  if (v9 == a3)
+  if (v9 == flags)
   {
     v17 |= 0x800u;
   }
 
-  if (v12 != a3)
+  if (v12 != flags)
   {
     v17 |= 0x1000u;
   }
 
-  if (v15 == a3)
+  if (v15 == flags)
   {
     return v17 | 0x10000;
   }
@@ -8243,9 +8243,9 @@ LABEL_8:
   }
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
-  v6 = a4;
+  flagsCopy = flags;
   v341 = *MEMORY[0x1E69E9840];
   if (x_malloc_get_zone::once != -1)
   {
@@ -8282,8 +8282,8 @@ LABEL_8:
 
   *(v9 + 3) = v12;
   layer = self->_attr.layer;
-  v324 = v6;
-  if ((v6 & 8) == 0)
+  v324 = flagsCopy;
+  if ((flagsCopy & 8) == 0)
   {
     v14 = 0;
     goto LABEL_436;
@@ -8301,7 +8301,7 @@ LABEL_8:
       {
         v19 = v18;
         v20 = (v16 + 8);
-        v321 = a5;
+        commitFlagsCopy = commitFlags;
         if (v20[1] != 1 || v20[2])
         {
           v20 = *v20;
@@ -8334,7 +8334,7 @@ LABEL_8:
         }
 
         CA::Render::Layer::set_sublayers(v11, v19);
-        a5 = v321;
+        commitFlags = commitFlagsCopy;
         if (atomic_fetch_add(v19 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v19 + 16))(v19);
@@ -8370,29 +8370,29 @@ LABEL_8:
     *(v11 + 40) = *(v11 + 40) & 0xFFFFFDFFFFFFFFFFLL | ((((layer[6] & 0x400000) >> 22) & 1) << 41);
   }
 
-  v28 = CA::Context::current_colorspace(a3, v10);
+  v28 = CA::Context::current_colorspace(layer, v10);
   v322 = CAGetColorSpace(36);
-  v29 = [(CALayer *)self contents];
+  contents = [(CALayer *)self contents];
   if (v324 & 0x400 | layer[5] & 1)
   {
-    v31 = v29;
-    if (v29)
+    v31 = contents;
+    if (contents)
     {
-      v32 = CFGetTypeID(v29);
+      v32 = CFGetTypeID(contents);
       if (v32 == CGImageGetTypeID())
       {
-        v33 = [(CALayer *)self _renderImageCopyFlags];
-        *(layer + 13) = (*(layer + 13) & 0x9FFFFFFF | ((v33 & 1) << 29) & 0xBFFFFFFF | (((v33 >> 8) & 1) << 30)) ^ 0x40000000;
-        v34 = CA::Render::copy_image(v31, v28, v33, 0.0, 1.0);
+        _renderImageCopyFlags = [(CALayer *)self _renderImageCopyFlags];
+        *(layer + 13) = (*(layer + 13) & 0x9FFFFFFF | ((_renderImageCopyFlags & 1) << 29) & 0xBFFFFFFF | (((_renderImageCopyFlags >> 8) & 1) << 30)) ^ 0x40000000;
+        cA_copyRenderValue = CA::Render::copy_image(v31, v28, _renderImageCopyFlags, 0.0, 1.0);
       }
 
       else
       {
-        v34 = [(CA::Render *)v31 CA_copyRenderValue];
+        cA_copyRenderValue = [(CA::Render *)v31 CA_copyRenderValue];
       }
 
-      v35 = v34;
-      if (v34)
+      v35 = cA_copyRenderValue;
+      if (cA_copyRenderValue)
       {
         if ((*(layer + 58) & 4) != 0)
         {
@@ -8832,7 +8832,7 @@ LABEL_8:
   if ((v138 & 0x1000) != 0)
   {
     *buf = 0;
-    CA::Layer::render_timing(buf, self->_attr.layer, a3);
+    CA::Layer::render_timing(buf, self->_attr.layer, layer);
     v139 = *buf;
     CA::Render::Layer::set_timing(v11, *buf);
     if (v139 && atomic_fetch_add(v139 + 2, 0xFFFFFFFF) == 1)
@@ -8845,10 +8845,10 @@ LABEL_8:
 
   if ((v138 & 0x200) != 0)
   {
-    v140 = [(CALayer *)self filters];
-    if (v140)
+    filters = [(CALayer *)self filters];
+    if (filters)
     {
-      v141 = CA::Render::copy_render_array(v140, 17);
+      v141 = CA::Render::copy_render_array(filters, 17);
       CA::Render::Layer::set_filters(v11, v141);
       if (v141)
       {
@@ -8862,10 +8862,10 @@ LABEL_8:
 
   if ((*(layer + 41) & 4) != 0)
   {
-    v142 = [(CALayer *)self backgroundFilters];
-    if (v142)
+    backgroundFilters = [(CALayer *)self backgroundFilters];
+    if (backgroundFilters)
     {
-      v143 = CA::Render::copy_render_array(v142, 17);
+      v143 = CA::Render::copy_render_array(backgroundFilters, 17);
       CA::Render::Layer::set_background_filters(v11, v143);
       if (v143)
       {
@@ -8879,20 +8879,20 @@ LABEL_8:
 
   if ((*(layer + 41) & 8) != 0)
   {
-    v144 = [(CALayer *)self compositingFilter];
-    if (v144)
+    compositingFilter = [(CALayer *)self compositingFilter];
+    if (compositingFilter)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v145 = CAInternAtom(v144, 0);
+        v145 = CAInternAtom(compositingFilter, 0);
         v146 = CA::Render::Filter::shared_filter(v145);
         if (!v146)
         {
           goto LABEL_159;
         }
 
-        v147 = v146;
+        cA_copyRenderValue2 = v146;
         if (!atomic_fetch_add(v146 + 2, 1u))
         {
           atomic_fetch_add(v146 + 2, 0xFFFFFFFF);
@@ -8902,21 +8902,21 @@ LABEL_8:
 
       else
       {
-        v147 = [(__CFString *)v144 CA_copyRenderValue];
-        if (!v147)
+        cA_copyRenderValue2 = [(__CFString *)compositingFilter CA_copyRenderValue];
+        if (!cA_copyRenderValue2)
         {
           goto LABEL_159;
         }
       }
 
-      if (*(v147 + 12) == 17)
+      if (*(cA_copyRenderValue2 + 12) == 17)
       {
-        CA::Render::Layer::set_compositing_filter(v11, v147);
+        CA::Render::Layer::set_compositing_filter(v11, cA_copyRenderValue2);
       }
 
-      if (atomic_fetch_add((v147 + 8), 0xFFFFFFFF) == 1)
+      if (atomic_fetch_add((cA_copyRenderValue2 + 8), 0xFFFFFFFF) == 1)
       {
-        (*(*v147 + 16))(v147);
+        (*(*cA_copyRenderValue2 + 16))(cA_copyRenderValue2);
       }
     }
   }
@@ -8924,16 +8924,16 @@ LABEL_8:
 LABEL_159:
   if ((*(layer + 42) & 4) != 0)
   {
-    v148 = [(CALayer *)self meshTransform];
-    if (v148)
+    meshTransform = [(CALayer *)self meshTransform];
+    if (meshTransform)
     {
-      v149 = [(CAMeshTransform *)v148 CA_copyRenderValue];
-      v150 = v149;
-      if (v149)
+      cA_copyRenderValue3 = [(CAMeshTransform *)meshTransform CA_copyRenderValue];
+      v150 = cA_copyRenderValue3;
+      if (cA_copyRenderValue3)
       {
-        if (*(v149 + 12) == 35)
+        if (*(cA_copyRenderValue3 + 12) == 35)
         {
-          CA::Render::Layer::set_mesh_transform(v11, v149);
+          CA::Render::Layer::set_mesh_transform(v11, cA_copyRenderValue3);
         }
 
         if (atomic_fetch_add(v150 + 2, 0xFFFFFFFF) == 1)
@@ -8994,10 +8994,10 @@ LABEL_159:
       *(CA::Render::Layer::ensure_ext(v11) + 78) = v164;
     }
 
-    v165 = [(CALayer *)self name];
-    if (v165)
+    name = [(CALayer *)self name];
+    if (name)
     {
-      v167 = CA::Render::String::new_string(v165, v166);
+      v167 = CA::Render::String::new_string(name, v166);
       v168 = *(v11 + 128);
       if (v168 != v167)
       {
@@ -9030,8 +9030,8 @@ LABEL_159:
       }
     }
 
-    v170 = [(CALayer *)self backgroundColor];
-    if (!v170)
+    backgroundColor = [(CALayer *)self backgroundColor];
+    if (!backgroundColor)
     {
       goto LABEL_210;
     }
@@ -9039,7 +9039,7 @@ LABEL_159:
     memset(buf, 0, sizeof(buf));
     LODWORD(v334.f64[0]) = 0;
     *&v325 = 0;
-    CA::Render::convert_cgcolor(v170, v28, buf, &v325, v171);
+    CA::Render::convert_cgcolor(backgroundColor, v28, buf, &v325, v171);
     v172 = *buf;
     v173 = *&buf[8];
     if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vcgtq_f32(vdupq_n_s32(0x3A800000u), vabsq_f32(*buf))))) & 1) == 0)
@@ -9185,9 +9185,9 @@ LABEL_210:
         *(CA::Render::Layer::ensure_ext(v11) + 79) = v199;
       }
 
-      v200 = [(CALayer *)self allowsLimitedHeadroom];
+      allowsLimitedHeadroom = [(CALayer *)self allowsLimitedHeadroom];
       v201 = 0x4000000000000000;
-      if (!v200)
+      if (!allowsLimitedHeadroom)
       {
         v201 = 0;
       }
@@ -9248,13 +9248,13 @@ LABEL_210:
         }
       }
 
-      v216 = [(CALayer *)self borderColor];
-      if (v216 && (v216 != black || v28 != v322))
+      borderColor = [(CALayer *)self borderColor];
+      if (borderColor && (borderColor != black || v28 != v322))
       {
         memset(buf, 0, sizeof(buf));
         LODWORD(v334.f64[0]) = 0;
         *&v325 = 0;
-        CA::Render::convert_cgcolor(v216, v28, buf, &v325, v217);
+        CA::Render::convert_cgcolor(borderColor, v28, buf, &v325, v217);
         if ((fabsf(*buf) >= 0.00097656 || fabsf(*&buf[4]) >= 0.00097656 || fabsf(*&buf[8]) >= 0.00097656 || fabsf(*&buf[12] + -1.0) >= 0.00097656) && (*(v11 + 136) || (vaddvq_s32(vbicq_s8(xmmword_183E21260, vceqq_f32(*buf, xmmword_183E20E40))) & 0xF) != 0))
         {
           v218 = LODWORD(v334.f64[0]);
@@ -9294,12 +9294,12 @@ LABEL_210:
         }
       }
 
-      v225 = [(CALayer *)self contentsMultiplyColor];
-      if (v225 && (v225 != white || v28 != v322))
+      contentsMultiplyColor = [(CALayer *)self contentsMultiplyColor];
+      if (contentsMultiplyColor && (contentsMultiplyColor != white || v28 != v322))
       {
         memset(buf, 0, sizeof(buf));
         LODWORD(v334.f64[0]) = 0;
-        CA::Render::convert_cgcolor(v225, v28, buf, 0, v226);
+        CA::Render::convert_cgcolor(contentsMultiplyColor, v28, buf, 0, v226);
         if (fabsf(*buf + -1.0) >= 0.00097656)
         {
           goto LABEL_449;
@@ -9330,10 +9330,10 @@ LABEL_297:
         }
       }
 
-      v236 = [(CALayer *)self contentsSwizzle];
-      if (v236 != @"RGBA")
+      contentsSwizzle = [(CALayer *)self contentsSwizzle];
+      if (contentsSwizzle != @"RGBA")
       {
-        v237 = [(__CFString *)v236 isEqualToString:@"AAAA"];
+        v237 = [(__CFString *)contentsSwizzle isEqualToString:@"AAAA"];
         if (((*(v11 + 136) == 0) & ~v237) == 0)
         {
           v238 = CA::Render::Layer::ensure_ext(v11);
@@ -9341,66 +9341,66 @@ LABEL_297:
         }
       }
 
-      v239 = [(CALayer *)self isDoubleSided];
+      isDoubleSided = [(CALayer *)self isDoubleSided];
       v240 = (v11 + 40);
       v241 = 0x100000000000;
-      if (!v239)
+      if (!isDoubleSided)
       {
         v241 = 0;
       }
 
       *v240 = *(v11 + 40) & 0xFFFFEFFFFFFFFFFFLL | v241;
-      v242 = [(CALayer *)self shouldRasterize];
+      shouldRasterize = [(CALayer *)self shouldRasterize];
       v243 = 0x10000000000000;
-      if (!v242)
+      if (!shouldRasterize)
       {
         v243 = 0;
       }
 
       *v240 = *v240 & 0xFFEFFFFFFFFFFFFFLL | v243;
-      v244 = [(CALayer *)self shouldFlatten];
+      shouldFlatten = [(CALayer *)self shouldFlatten];
       v245 = 0x20000000000000;
-      if (!v244)
+      if (!shouldFlatten)
       {
         v245 = 0;
       }
 
       *v240 = *v240 & 0xFFDFFFFFFFFFFFFFLL | v245;
-      v246 = [(CALayer *)self shouldReflatten];
+      shouldReflatten = [(CALayer *)self shouldReflatten];
       v247 = 0x40000000000000;
-      if (!v246)
+      if (!shouldReflatten)
       {
         v247 = 0;
       }
 
       *v240 = *v240 & 0xFFBFFFFFFFFFFFFFLL | v247;
-      v248 = [(CALayer *)self rasterizeInParentSpace];
+      rasterizeInParentSpace = [(CALayer *)self rasterizeInParentSpace];
       v249 = 0x80000000000000;
-      if (!v248)
+      if (!rasterizeInParentSpace)
       {
         v249 = 0;
       }
 
       *v240 = *v240 & 0xFF7FFFFFFFFFFFFFLL | v249;
-      v250 = [(CALayer *)self rasterizationPrefersDisplayCompositing];
+      rasterizationPrefersDisplayCompositing = [(CALayer *)self rasterizationPrefersDisplayCompositing];
       v251 = 0x100000000000000;
-      if (!v250)
+      if (!rasterizationPrefersDisplayCompositing)
       {
         v251 = 0;
       }
 
       *v240 = *v240 & 0xFEFFFFFFFFFFFFFFLL | v251;
-      v252 = [(CALayer *)self rasterizationPrefersWindowServerAwareBackdrops];
+      rasterizationPrefersWindowServerAwareBackdrops = [(CALayer *)self rasterizationPrefersWindowServerAwareBackdrops];
       v253 = 0x200000000000000;
-      if (!v252)
+      if (!rasterizationPrefersWindowServerAwareBackdrops)
       {
         v253 = 0;
       }
 
       *v240 = *v240 & 0xFDFFFFFFFFFFFFFFLL | v253;
-      v254 = [(CALayer *)self preloadsCache];
+      preloadsCache = [(CALayer *)self preloadsCache];
       v255 = 0x400000000000000;
-      if (!v254)
+      if (!preloadsCache)
       {
         v255 = 0;
       }
@@ -9413,18 +9413,18 @@ LABEL_297:
         CA::Render::Layer::set_rasterization_scale(v11, v257);
       }
 
-      v258 = [(CALayer *)self createsCompositingGroup];
+      createsCompositingGroup = [(CALayer *)self createsCompositingGroup];
       v259 = (v11 + 40);
       v260 = 0x800000000000000;
-      if (!v258)
+      if (!createsCompositingGroup)
       {
         v260 = 0;
       }
 
       *v259 = *(v11 + 40) & 0xF7FFFFFFFFFFFFFFLL | v260;
-      v261 = [(CALayer *)self allowsEdgeAntialiasing];
+      allowsEdgeAntialiasing = [(CALayer *)self allowsEdgeAntialiasing];
       v262 = 0x2000000000000000;
-      if (!v261)
+      if (!allowsEdgeAntialiasing)
       {
         v262 = 0;
       }
@@ -9442,17 +9442,17 @@ LABEL_297:
       }
 
       *v263 = *(v11 + 48) & 0xFFFFFFFB | v264;
-      v265 = [(CALayer *)self allowsDisplayCompositing];
+      allowsDisplayCompositing = [(CALayer *)self allowsDisplayCompositing];
       v266 = 0x1000000000000000;
-      if (!v265)
+      if (!allowsDisplayCompositing)
       {
         v266 = 0;
       }
 
       *v259 = *v259 & 0xEFFFFFFFFFFFFFFFLL | v266;
-      v267 = [(CALayer *)self wantsExtendedDynamicRangeContent];
+      wantsExtendedDynamicRangeContent = [(CALayer *)self wantsExtendedDynamicRangeContent];
       v268 = 0x8000000000000000;
-      if (!v267)
+      if (!wantsExtendedDynamicRangeContent)
       {
         v268 = 0;
       }
@@ -9648,10 +9648,10 @@ LABEL_361:
       *(CA::Render::Layer::ensure_ext(v11) + 57) = v290;
     }
 
-    v291 = [(CALayer *)self shadowPath];
-    if (v291)
+    shadowPath = [(CALayer *)self shadowPath];
+    if (shadowPath)
     {
-      v293 = CA::Render::Path::new_path(v291, v292);
+      v293 = CA::Render::Path::new_path(shadowPath, v292);
       if (v293)
       {
         v294 = v293;
@@ -9712,12 +9712,12 @@ LABEL_399:
           *(CA::Render::Layer::ensure_ext(v11) + 86) = v300;
         }
 
-        v301 = [(CALayer *)self rimColor];
-        if (v301 && (v301 != black || v28 != v322))
+        rimColor = [(CALayer *)self rimColor];
+        if (rimColor && (rimColor != black || v28 != v322))
         {
           memset(buf, 0, sizeof(buf));
           LODWORD(v334.f64[0]) = 0;
-          CA::Render::convert_cgcolor(v301, v28, buf, 0, v302);
+          CA::Render::convert_cgcolor(rimColor, v28, buf, 0, v302);
           if ((fabsf(*buf) >= 0.00097656 || fabsf(*&buf[4]) >= 0.00097656 || fabsf(*&buf[8]) >= 0.00097656 || fabsf(*&buf[12] + -1.0) >= 0.00097656) && (*(v11 + 136) || (vaddvq_s32(vbicq_s8(xmmword_183E21260, vceqq_f32(*buf, xmmword_183E20E40))) & 0xF) != 0))
           {
             v303 = LODWORD(v334.f64[0]);
@@ -9797,7 +9797,7 @@ LABEL_399:
 
 LABEL_434:
   v311 = v153 & 0x1FFFFF;
-  *a5 = v311;
+  *commitFlags = v311;
   if ((v324 & 0x400) == 0)
   {
     goto LABEL_437;
@@ -9805,7 +9805,7 @@ LABEL_434:
 
   v14 = v311 | 1;
 LABEL_436:
-  *a5 = v14;
+  *commitFlags = v14;
 LABEL_437:
   if ((*(self->_attr.layer + 1) & 0x10000) != 0)
   {
@@ -9821,7 +9821,7 @@ LABEL_437:
     }
 
 LABEL_445:
-    *a5 |= 0x200000u;
+    *commitFlags |= 0x200000u;
     if ((v324 & 0x10) == 0)
     {
       return v11;
@@ -9830,7 +9830,7 @@ LABEL_445:
     goto LABEL_442;
   }
 
-  *a5 |= 0x400000u;
+  *commitFlags |= 0x400000u;
   if ((*(layer + 13) & 0x10000000) != 0)
   {
     goto LABEL_445;
@@ -9840,18 +9840,18 @@ LABEL_441:
   if ((v324 & 0x10) != 0)
   {
 LABEL_442:
-    *a5 |= 0x20000000u;
+    *commitFlags |= 0x20000000u;
   }
 
   return v11;
 }
 
-- (id)layerAtTime:(double)a3
+- (id)layerAtTime:(double)time
 {
   v5 = CA::Transaction::ensure_compat(self);
   layer = self->_attr.layer;
 
-  return CA::Layer::layer_at_time(layer, v5, a3, 0, 0);
+  return CA::Layer::layer_at_time(layer, v5, time, 0, 0);
 }
 
 - (id)layerBeingDrawn
@@ -9867,7 +9867,7 @@ LABEL_442:
   return CA::Layer::layer_being_drawn(layer, v3, 0x800000);
 }
 
-- (id)ancestorSharedWithLayer:(id)a3
+- (id)ancestorSharedWithLayer:(id)layer
 {
   p_isa = &self->super.isa;
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -9876,12 +9876,12 @@ LABEL_442:
     v5 = CA::Transaction::create(self);
   }
 
-  if (a3 == p_isa)
+  if (layer == p_isa)
   {
     return p_isa;
   }
 
-  if (!a3)
+  if (!layer)
   {
     return 0;
   }
@@ -9896,12 +9896,12 @@ LABEL_442:
     v6 = 0;
   }
 
-  if (v6 == a3)
+  if (v6 == layer)
   {
-    return a3;
+    return layer;
   }
 
-  v8 = CA::Layer::superlayer(*(a3 + 2), v5);
+  v8 = CA::Layer::superlayer(*(layer + 2), v5);
   v9 = v8 == p_isa;
   if (v8 == p_isa)
   {
@@ -9916,11 +9916,11 @@ LABEL_442:
   if (!v9 && p_isa)
   {
 LABEL_15:
-    v10 = a3;
-    while (p_isa != v10)
+    layerCopy = layer;
+    while (p_isa != layerCopy)
     {
-      v10 = CA::Layer::superlayer(v10[2], v5);
-      if (!v10)
+      layerCopy = CA::Layer::superlayer(layerCopy[2], v5);
+      if (!layerCopy)
       {
         p_isa = CA::Layer::superlayer(p_isa[2], v5);
         result = 0;
@@ -9939,9 +9939,9 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isDescendantOf:(id)a3
+- (BOOL)isDescendantOf:(id)of
 {
-  if (a3 == self)
+  if (of == self)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -9971,7 +9971,7 @@ LABEL_4:
   if (v6)
   {
 
-    LOBYTE(v6) = [(CALayer *)v6 isDescendantOf:a3];
+    LOBYTE(v6) = [(CALayer *)v6 isDescendantOf:of];
   }
 
   return v6;
@@ -10038,14 +10038,14 @@ LABEL_4:
       os_unfair_lock_lock(&CA::Transaction::transaction_lock);
     }
 
-    v5 = [layer[2] contents];
-    v6 = v5;
-    if (!v5)
+    contents = [layer[2] contents];
+    v6 = contents;
+    if (!contents)
     {
       goto LABEL_9;
     }
 
-    v7 = CFGetTypeID(v5);
+    v7 = CFGetTypeID(contents);
     if (CABackingStoreGetTypeID::once[0] != -1)
     {
       v12 = v7;
@@ -10084,19 +10084,19 @@ LABEL_9:
   }
 }
 
-- (void)setMeshTransform:(id)a3
+- (void)setMeshTransform:(id)transform
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  *&v4[0] = [a3 meshTransformForLayer:self];
+  *&v4[0] = [transform meshTransformForLayer:self];
   CA::Layer::setter(self->_attr.layer, 0x203, 3, v4);
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
-  v5 = [a3 rangeOfString:@"."];
+  v5 = [path rangeOfString:@"."];
   if (v6)
   {
-    v7 = CAInternAtom([a3 substringToIndex:v5], 0);
+    v7 = CAInternAtom([path substringToIndex:v5], 0);
     v8 = 0;
     while (v7 != [CALayer(CALayerPrivate) implicitAnimationForKeyPath:]::atoms[v8])
     {
@@ -10106,13 +10106,13 @@ LABEL_9:
       }
     }
 
-    v11 = self;
-    v12 = a3;
+    selfCopy2 = self;
+    pathCopy2 = path;
     v13 = 0;
     goto LABEL_14;
   }
 
-  v10 = CAInternAtom(a3, 0);
+  v10 = CAInternAtom(path, 0);
   if (v10 == 131)
   {
     if ((*(self->_attr.layer + 13) & 0x80000000) != 0)
@@ -10136,12 +10136,12 @@ LABEL_9:
     v14 = v10;
     if (CAAtomIndexInArray(25, [CALayer(CALayerPrivate) implicitAnimationForKeyPath:]::basic_atoms, v10) != -1)
     {
-      v11 = self;
-      v12 = a3;
+      selfCopy2 = self;
+      pathCopy2 = path;
       v13 = v14;
 LABEL_14:
 
-      return CALayerCreateImplicitAnimation(v11, v12, v13);
+      return CALayerCreateImplicitAnimation(selfCopy2, pathCopy2, v13);
     }
 
     for (i = 0; i != 9; ++i)
@@ -10182,9 +10182,9 @@ LABEL_14:
   }
 }
 
-- (void)reloadValueForKeyPath:(id)a3
+- (void)reloadValueForKeyPath:(id)path
 {
-  AtomInKeyPath = CAInternFirstAtomInKeyPath(a3);
+  AtomInKeyPath = CAInternFirstAtomInKeyPath(path);
   v5 = AtomInKeyPath;
   v6 = CA::Transaction::ensure_compat(AtomInKeyPath);
   v7 = *(v6 + 29);
@@ -10199,7 +10199,7 @@ LABEL_14:
   CA::Transaction::unlock(v6);
 }
 
-- (BOOL)getRendererInfo:(_CARenderRendererInfo *)a3 size:(unint64_t)a4
+- (BOOL)getRendererInfo:(_CARenderRendererInfo *)info size:(unint64_t)size
 {
   v28 = *MEMORY[0x1E69E9840];
   layer = self->_attr.layer;
@@ -10222,7 +10222,7 @@ LABEL_14:
       v9 = 0;
     }
 
-    if (a4 < 0xC)
+    if (size < 0xC)
     {
       goto LABEL_8;
     }
@@ -10245,10 +10245,10 @@ LABEL_14:
       v13 = v24[1];
       v15 = v23;
 LABEL_13:
-      a3->var0 = v13;
-      a3->var1 = v14;
+      info->var0 = v13;
+      info->var1 = v14;
       LOBYTE(layer_renderer_info) = 1;
-      a3->var2 = v15;
+      info->var2 = v15;
       goto LABEL_14;
     }
 
@@ -10386,54 +10386,54 @@ LABEL_41:
   return layer_renderer_info;
 }
 
-+ (CALayer)layerWithRenderLayer:(void *)a3 options:(id)a4
++ (CALayer)layerWithRenderLayer:(void *)layer options:(id)options
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!layer)
   {
     return 0;
   }
 
-  v5 = [a4 objectForKeyedSubscript:{@"contextColorspace", 0, v8}];
+  v5 = [options objectForKeyedSubscript:{@"contextColorspace", 0, v8}];
   if (v5)
   {
     v7 = v5;
   }
 
-  return calayer_from_render_layer(&v7, a3);
+  return calayer_from_render_layer(&v7, layer);
 }
 
-+ (void)CAMLParserEndElement:(id)a3
++ (void)CAMLParserEndElement:(id)element
 {
-  v3 = [a3 elementValue];
-  if ([v3 needsDisplayOnBoundsChange])
+  elementValue = [element elementValue];
+  if ([elementValue needsDisplayOnBoundsChange])
   {
-    v4 = [v3 contents];
-    if (v4)
+    contents = [elementValue contents];
+    if (contents)
     {
 
-      [v3 setContents:v4];
+      [elementValue setContents:contents];
     }
 
     else
     {
 
-      [v3 setNeedsDisplay];
+      [elementValue setNeedsDisplay];
     }
   }
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 CA_initialize_for_decoding];
-  [a3 setElementValue:v4];
+  [element setElementValue:v4];
 }
 
-- (id)optimizationOpportunities:(BOOL)a3
+- (id)optimizationOpportunities:(BOOL)opportunities
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  opportunitiesCopy = opportunities;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = &unk_1EF200988;
   v7 = 64;
   do
@@ -10441,7 +10441,7 @@ LABEL_41:
     v8 = *v6;
     if ((*(v6 - 1))(self))
     {
-      [v5 addObject:v8];
+      [array addObject:v8];
     }
 
     v6 += 2;
@@ -10449,7 +10449,7 @@ LABEL_41:
   }
 
   while (v7);
-  if (v3)
+  if (opportunitiesCopy)
   {
     v9 = &unk_1EF2009C8;
     v10 = 64;
@@ -10458,7 +10458,7 @@ LABEL_41:
       v11 = *v9;
       if ((*(v9 - 1))(self))
       {
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v9 += 2;
@@ -10468,7 +10468,7 @@ LABEL_41:
     while (v10);
   }
 
-  return v5;
+  return array;
 }
 
 @end

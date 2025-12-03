@@ -5,18 +5,18 @@
 - (void)_deferredUpdatePresenceDetectState;
 - (void)_updateMatchState;
 - (void)_updatePresenceDetectState;
-- (void)biometricMonitorDataSourceMatchingEnded:(id)a3;
-- (void)biometricMonitorDataSourceMatchingFailed:(id)a3;
-- (void)biometricMonitorDataSourceMatchingStarted:(id)a3;
-- (void)biometricMonitorDataSourceMatchingSucceeded:(id)a3;
-- (void)biometricMonitorDataSourcePoseUpdated:(id)a3;
-- (void)biometricMonitorDataSourcePresenceDetectionEnded:(id)a3;
-- (void)biometricMonitorDataSourcePresenceDetectionFailed:(id)a3;
-- (void)biometricMonitorDataSourcePresenceDetectionStarted:(id)a3;
-- (void)biometricMonitorDataSourcePresenceDetectionSucceeded:(id)a3;
+- (void)biometricMonitorDataSourceMatchingEnded:(id)ended;
+- (void)biometricMonitorDataSourceMatchingFailed:(id)failed;
+- (void)biometricMonitorDataSourceMatchingStarted:(id)started;
+- (void)biometricMonitorDataSourceMatchingSucceeded:(id)succeeded;
+- (void)biometricMonitorDataSourcePoseUpdated:(id)updated;
+- (void)biometricMonitorDataSourcePresenceDetectionEnded:(id)ended;
+- (void)biometricMonitorDataSourcePresenceDetectionFailed:(id)failed;
+- (void)biometricMonitorDataSourcePresenceDetectionStarted:(id)started;
+- (void)biometricMonitorDataSourcePresenceDetectionSucceeded:(id)succeeded;
 - (void)disable;
 - (void)enable;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation SBBiometricMonitorUI
@@ -35,16 +35,16 @@
   return v3;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
   p_dataSource = &self->_dataSource;
-  if (dataSource != v5)
+  if (dataSource != sourceCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_dataSource, a3);
-    v5 = v8;
+    v8 = sourceCopy;
+    objc_storeStrong(p_dataSource, source);
+    sourceCopy = v8;
   }
 }
 
@@ -60,8 +60,8 @@
     [(SBBiometricMonitorUI *)self _updateMatchState];
     [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
     v5 = [SBSecureWindow alloc];
-    v6 = [(SBBiometricMonitorUI *)self windowScene];
-    v7 = [(SBWindow *)v5 initWithWindowScene:v6 role:@"SBTraitsParticipantRoleBiometricMonitorUI" debugName:@"SBBiometricMonitorUI"];
+    windowScene = [(SBBiometricMonitorUI *)self windowScene];
+    v7 = [(SBWindow *)v5 initWithWindowScene:windowScene role:@"SBTraitsParticipantRoleBiometricMonitorUI" debugName:@"SBBiometricMonitorUI"];
     debugWindow = self->_debugWindow;
     self->_debugWindow = v7;
 
@@ -69,13 +69,13 @@
     [(UIWindow *)self->_debugWindow setAlpha:0.8];
     [(UIWindow *)self->_debugWindow setRootViewController:self->_debugViewController];
     [(UIWindow *)self->_debugWindow setHidden:0];
-    v9 = [(UIWindow *)self->_debugWindow layer];
-    [v9 setAllowsHitTesting:0];
+    layer = [(UIWindow *)self->_debugWindow layer];
+    [layer setAllowsHitTesting:0];
 
     [(UIWindow *)self->_debugWindow setUserInteractionEnabled:0];
     v10 = self->_debugWindow;
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UIWindow *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIWindow *)v10 setBackgroundColor:clearColor];
 
     self->_enabled = 1;
   }
@@ -99,14 +99,14 @@
 
 - (void)_updateMatchState
 {
-  v3 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v3 setMatchState:{-[SBBiometricMonitorDataSource matchRunning](self->_dataSource, "matchRunning")}];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setMatchState:{-[SBBiometricMonitorDataSource matchRunning](self->_dataSource, "matchRunning")}];
 }
 
 - (void)_updatePresenceDetectState
 {
-  v3 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v3 setPresenceDetectState:{-[SBBiometricMonitorDataSource presenceDetectRunning](self->_dataSource, "presenceDetectRunning")}];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setPresenceDetectState:{-[SBBiometricMonitorDataSource presenceDetectRunning](self->_dataSource, "presenceDetectRunning")}];
 }
 
 - (void)_deferredUpdateMatchState
@@ -125,38 +125,38 @@
   [(SBBiometricMonitorUI *)self performSelector:sel__doDeferredPresenceDetectUpdate withObject:0 afterDelay:1.0];
 }
 
-- (void)biometricMonitorDataSourceMatchingStarted:(id)a3
+- (void)biometricMonitorDataSourceMatchingStarted:(id)started
 {
   [(SBBiometricMonitorUI *)self _cancelDeferredUpdateMatchState];
-  v4 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v4 setMatchState:1];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setMatchState:1];
 
   [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
 }
 
-- (void)biometricMonitorDataSourceMatchingFailed:(id)a3
+- (void)biometricMonitorDataSourceMatchingFailed:(id)failed
 {
   [(SBBiometricMonitorUI *)self _cancelDeferredUpdateMatchState];
-  v4 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v4 setMatchState:3];
-
-  [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
-
-  [(SBBiometricMonitorUI *)self _deferredUpdateMatchState];
-}
-
-- (void)biometricMonitorDataSourceMatchingSucceeded:(id)a3
-{
-  [(SBBiometricMonitorUI *)self _cancelDeferredUpdateMatchState];
-  v4 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v4 setMatchState:2];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setMatchState:3];
 
   [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
 
   [(SBBiometricMonitorUI *)self _deferredUpdateMatchState];
 }
 
-- (void)biometricMonitorDataSourceMatchingEnded:(id)a3
+- (void)biometricMonitorDataSourceMatchingSucceeded:(id)succeeded
+{
+  [(SBBiometricMonitorUI *)self _cancelDeferredUpdateMatchState];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setMatchState:2];
+
+  [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
+
+  [(SBBiometricMonitorUI *)self _deferredUpdateMatchState];
+}
+
+- (void)biometricMonitorDataSourceMatchingEnded:(id)ended
 {
   if (![(SBBiometricMonitorUI *)self _isDeferredMatchStateUpdatePending])
   {
@@ -170,32 +170,32 @@
   }
 }
 
-- (void)biometricMonitorDataSourcePresenceDetectionStarted:(id)a3
+- (void)biometricMonitorDataSourcePresenceDetectionStarted:(id)started
 {
   [(SBBiometricMonitorUI *)self _cancelDeferredUpdatePresenceDetectState];
 
   [(SBBiometricMonitorUI *)self _updatePresenceDetectState];
 }
 
-- (void)biometricMonitorDataSourcePresenceDetectionFailed:(id)a3
+- (void)biometricMonitorDataSourcePresenceDetectionFailed:(id)failed
 {
   [(SBBiometricMonitorUI *)self _cancelDeferredUpdatePresenceDetectState];
-  v4 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v4 setPresenceDetectState:3];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setPresenceDetectState:3];
 
   [(SBBiometricMonitorUI *)self _deferredUpdatePresenceDetectState];
 }
 
-- (void)biometricMonitorDataSourcePresenceDetectionSucceeded:(id)a3
+- (void)biometricMonitorDataSourcePresenceDetectionSucceeded:(id)succeeded
 {
   [(SBBiometricMonitorUI *)self _cancelDeferredUpdatePresenceDetectState];
-  v4 = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
-  [v4 setPresenceDetectState:2];
+  monitorView = [(SBBiometricMonitorViewController *)self->_debugViewController monitorView];
+  [monitorView setPresenceDetectState:2];
 
   [(SBBiometricMonitorUI *)self _deferredUpdatePresenceDetectState];
 }
 
-- (void)biometricMonitorDataSourcePresenceDetectionEnded:(id)a3
+- (void)biometricMonitorDataSourcePresenceDetectionEnded:(id)ended
 {
   if (![(SBBiometricMonitorUI *)self _isDeferredPresenceDetectStateUpdatePending])
   {
@@ -204,14 +204,14 @@
   }
 }
 
-- (void)biometricMonitorDataSourcePoseUpdated:(id)a3
+- (void)biometricMonitorDataSourcePoseUpdated:(id)updated
 {
   debugViewController = self->_debugViewController;
-  v4 = a3;
-  v5 = [(SBBiometricMonitorViewController *)debugViewController monitorView];
-  LODWORD(debugViewController) = [v4 poseIsMarginal];
+  updatedCopy = updated;
+  monitorView = [(SBBiometricMonitorViewController *)debugViewController monitorView];
+  LODWORD(debugViewController) = [updatedCopy poseIsMarginal];
 
-  [v5 setPoseState:debugViewController];
+  [monitorView setPoseState:debugViewController];
 }
 
 - (SBWindowScene)windowScene

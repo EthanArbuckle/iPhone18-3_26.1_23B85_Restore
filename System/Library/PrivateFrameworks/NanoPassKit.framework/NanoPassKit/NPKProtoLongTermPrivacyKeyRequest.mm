@@ -1,12 +1,12 @@
 @interface NPKProtoLongTermPrivacyKeyRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoLongTermPrivacyKeyRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoLongTermPrivacyKeyRequest;
   v4 = [(NPKProtoLongTermPrivacyKeyRequest *)&v8 description];
-  v5 = [(NPKProtoLongTermPrivacyKeyRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoLongTermPrivacyKeyRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   credentialGroupIdentifier = self->_credentialGroupIdentifier;
   if (credentialGroupIdentifier)
   {
-    [v3 setObject:credentialGroupIdentifier forKey:@"credentialGroupIdentifier"];
+    [dictionary setObject:credentialGroupIdentifier forKey:@"credentialGroupIdentifier"];
   }
 
   if (*&self->_has)
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_credentialGroupIdentifier)
   {
     [NPKProtoLongTermPrivacyKeyRequest writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (*&self->_has)
   {
@@ -59,21 +59,21 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setCredentialGroupIdentifier:self->_credentialGroupIdentifier];
+  toCopy = to;
+  [toCopy setCredentialGroupIdentifier:self->_credentialGroupIdentifier];
   if (*&self->_has)
   {
-    v4[16] = self->_reuseExisting;
-    v4[20] |= 1u;
+    toCopy[16] = self->_reuseExisting;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_credentialGroupIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_credentialGroupIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   credentialGroupIdentifier = self->_credentialGroupIdentifier;
-  if (credentialGroupIdentifier | *(v4 + 1))
+  if (credentialGroupIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)credentialGroupIdentifier isEqual:?])
     {
@@ -103,10 +103,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -115,13 +115,13 @@ LABEL_6:
 
     if (self->_reuseExisting)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -150,19 +150,19 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NPKProtoLongTermPrivacyKeyRequest *)self setCredentialGroupIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[20])
+  if (fromCopy[20])
   {
-    self->_reuseExisting = v4[16];
+    self->_reuseExisting = fromCopy[16];
     *&self->_has |= 1u;
   }
 }

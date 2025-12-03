@@ -1,65 +1,65 @@
 @interface HKKeyValueDomain
-+ (id)emergencyDefaultsDomainWithHealthStore:(id)a3;
-+ (id)healthAppDefaultsDomainWithHealthStore:(id)a3;
-+ (id)healthArticlesDefaultsDomainWithHealthStore:(id)a3;
-+ (id)heartRhythmDefaultsDomainWithHealthStore:(id)a3;
-+ (id)safetyDefaultsDomainWithHealthStore:(id)a3;
-+ (id)safetyDefaultsLocalDomainWithHealthStore:(id)a3;
-- (BOOL)_synchronouslyRegisterToObserveKeyValueDomainChanges:(id *)a3;
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setDate:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setNumber:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (HKKeyValueDomain)initWithCategory:(int64_t)a3 domainName:(id)a4 healthStore:(id)a5;
-- (id)_dataWithErrorNoDataForKey:(id)a3 error:(id *)a4;
-- (id)_dateWithErrorNoDataForKey:(id)a3 error:(id *)a4;
-- (id)_numberWithErrorNoDataForKey:(id)a3 error:(id *)a4;
-- (id)_propertyListValueWithErrorNoDataForKey:(id)a3 error:(id *)a4;
-- (id)_stringWithErrorNoDataForKey:(id)a3 error:(id *)a4;
-- (id)allValuesWithError:(id *)a3;
-- (id)dataForKey:(id)a3 error:(id *)a4;
-- (id)dateForKey:(id)a3 error:(id *)a4;
++ (id)emergencyDefaultsDomainWithHealthStore:(id)store;
++ (id)healthAppDefaultsDomainWithHealthStore:(id)store;
++ (id)healthArticlesDefaultsDomainWithHealthStore:(id)store;
++ (id)heartRhythmDefaultsDomainWithHealthStore:(id)store;
++ (id)safetyDefaultsDomainWithHealthStore:(id)store;
++ (id)safetyDefaultsLocalDomainWithHealthStore:(id)store;
+- (BOOL)_synchronouslyRegisterToObserveKeyValueDomainChanges:(id *)changes;
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error;
+- (BOOL)setDate:(id)date forKey:(id)key error:(id *)error;
+- (BOOL)setNumber:(id)number forKey:(id)key error:(id *)error;
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key error:(id *)error;
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error;
+- (HKKeyValueDomain)initWithCategory:(int64_t)category domainName:(id)name healthStore:(id)store;
+- (id)_dataWithErrorNoDataForKey:(id)key error:(id *)error;
+- (id)_dateWithErrorNoDataForKey:(id)key error:(id *)error;
+- (id)_numberWithErrorNoDataForKey:(id)key error:(id *)error;
+- (id)_propertyListValueWithErrorNoDataForKey:(id)key error:(id *)error;
+- (id)_stringWithErrorNoDataForKey:(id)key error:(id *)error;
+- (id)allValuesWithError:(id *)error;
+- (id)dataForKey:(id)key error:(id *)error;
+- (id)dateForKey:(id)key error:(id *)error;
 - (id)exportedInterface;
-- (id)hkhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:(id *)a3;
-- (id)numberForKey:(id)a3 error:(id *)a4;
-- (id)propertyListValueForKey:(id)a3 error:(id *)a4;
+- (id)hkhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:(id *)error;
+- (id)numberForKey:(id)key error:(id *)error;
+- (id)propertyListValueForKey:(id)key error:(id *)error;
 - (id)remoteInterface;
-- (id)stringForKey:(id)a3 error:(id *)a4;
+- (id)stringForKey:(id)key error:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_observeKeyValueDomainChanges:(BOOL)a3 completion:(id)a4;
-- (void)_registerFirstObserverWithCompletion:(id)a3;
-- (void)_startObservation:(id)a3 withCompletion:(id)a4;
+- (void)_observeKeyValueDomainChanges:(BOOL)changes completion:(id)completion;
+- (void)_registerFirstObserverWithCompletion:(id)completion;
+- (void)_startObservation:(id)observation withCompletion:(id)completion;
 - (void)_unregisterLastObserver;
-- (void)allValuesWithCompletion:(id)a3;
+- (void)allValuesWithCompletion:(id)completion;
 - (void)clientRemote_didUpdate;
-- (void)dataForKey:(id)a3 completion:(id)a4;
-- (void)dateForKey:(id)a3 completion:(id)a4;
-- (void)numberForKey:(id)a3 completion:(id)a4;
-- (void)propertyListValueForKey:(id)a3 completion:(id)a4;
-- (void)removeValuesForKeys:(id)a3 completion:(id)a4;
-- (void)setData:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setDate:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setNumber:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setPropertyListValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setValueForAllKeys:(id)a3 completion:(id)a4;
-- (void)setValuesWithDictionary:(id)a3 completion:(id)a4;
-- (void)stopObservation:(id)a3;
-- (void)stringForKey:(id)a3 completion:(id)a4;
+- (void)dataForKey:(id)key completion:(id)completion;
+- (void)dateForKey:(id)key completion:(id)completion;
+- (void)numberForKey:(id)key completion:(id)completion;
+- (void)propertyListValueForKey:(id)key completion:(id)completion;
+- (void)removeValuesForKeys:(id)keys completion:(id)completion;
+- (void)setData:(id)data forKey:(id)key completion:(id)completion;
+- (void)setDate:(id)date forKey:(id)key completion:(id)completion;
+- (void)setNumber:(id)number forKey:(id)key completion:(id)completion;
+- (void)setPropertyListValue:(id)value forKey:(id)key completion:(id)completion;
+- (void)setString:(id)string forKey:(id)key completion:(id)completion;
+- (void)setValueForAllKeys:(id)keys completion:(id)completion;
+- (void)setValuesWithDictionary:(id)dictionary completion:(id)completion;
+- (void)stopObservation:(id)observation;
+- (void)stringForKey:(id)key completion:(id)completion;
 @end
 
 @implementation HKKeyValueDomain
 
-+ (id)heartRhythmDefaultsDomainWithHealthStore:(id)a3
++ (id)heartRhythmDefaultsDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:0 domainName:@"com.apple.private.health.heart-rhythm" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:0 domainName:@"com.apple.private.health.heart-rhythm" healthStore:storeCopy];
 
   return v4;
 }
 
-- (id)hkhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:(id *)a3
+- (id)hkhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -83,10 +83,10 @@
 
   else
   {
-    v10 = [v6 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v6 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v11 = HKLogHeartRhythm;
-    if (v10)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(HKLogHeartRhythm, OS_LOG_TYPE_DEFAULT))
       {
@@ -104,11 +104,11 @@
       [(HKKeyValueDomain(HKHeartRhythmAdditions) *)v11 hkhr_electrocardiogramRecordingFirstOnboardingCompletedDateWithError:v7];
     }
 
-    if (a3)
+    if (error)
     {
       v15 = v7;
       v9 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -123,81 +123,81 @@
   return v9;
 }
 
-- (id)_dataWithErrorNoDataForKey:(id)a3 error:(id *)a4
+- (id)_dataWithErrorNoDataForKey:(id)key error:(id *)error
 {
   v8 = 0;
-  v5 = [(HKKeyValueDomain *)self dataForKey:a3 error:&v8];
+  v5 = [(HKKeyValueDomain *)self dataForKey:key error:&v8];
   v6 = v8;
-  SetNoDataErrorIfNeeded(v5, v6, a4);
+  SetNoDataErrorIfNeeded(v5, v6, error);
   objc_claimAutoreleasedReturnValue();
 
   return v5;
 }
 
-- (id)_dateWithErrorNoDataForKey:(id)a3 error:(id *)a4
+- (id)_dateWithErrorNoDataForKey:(id)key error:(id *)error
 {
   v8 = 0;
-  v5 = [(HKKeyValueDomain *)self dateForKey:a3 error:&v8];
+  v5 = [(HKKeyValueDomain *)self dateForKey:key error:&v8];
   v6 = v8;
-  SetNoDataErrorIfNeeded(v5, v6, a4);
+  SetNoDataErrorIfNeeded(v5, v6, error);
   objc_claimAutoreleasedReturnValue();
 
   return v5;
 }
 
-- (id)_stringWithErrorNoDataForKey:(id)a3 error:(id *)a4
+- (id)_stringWithErrorNoDataForKey:(id)key error:(id *)error
 {
   v8 = 0;
-  v5 = [(HKKeyValueDomain *)self stringForKey:a3 error:&v8];
+  v5 = [(HKKeyValueDomain *)self stringForKey:key error:&v8];
   v6 = v8;
-  SetNoDataErrorIfNeeded(v5, v6, a4);
+  SetNoDataErrorIfNeeded(v5, v6, error);
   objc_claimAutoreleasedReturnValue();
 
   return v5;
 }
 
-- (id)_numberWithErrorNoDataForKey:(id)a3 error:(id *)a4
+- (id)_numberWithErrorNoDataForKey:(id)key error:(id *)error
 {
   v8 = 0;
-  v5 = [(HKKeyValueDomain *)self numberForKey:a3 error:&v8];
+  v5 = [(HKKeyValueDomain *)self numberForKey:key error:&v8];
   v6 = v8;
-  SetNoDataErrorIfNeeded(v5, v6, a4);
+  SetNoDataErrorIfNeeded(v5, v6, error);
   objc_claimAutoreleasedReturnValue();
 
   return v5;
 }
 
-- (id)_propertyListValueWithErrorNoDataForKey:(id)a3 error:(id *)a4
+- (id)_propertyListValueWithErrorNoDataForKey:(id)key error:(id *)error
 {
   v8 = 0;
-  v5 = [(HKKeyValueDomain *)self propertyListValueForKey:a3 error:&v8];
+  v5 = [(HKKeyValueDomain *)self propertyListValueForKey:key error:&v8];
   v6 = v8;
-  SetNoDataErrorIfNeeded(v5, v6, a4);
+  SetNoDataErrorIfNeeded(v5, v6, error);
   objc_claimAutoreleasedReturnValue();
 
   return v5;
 }
 
-- (HKKeyValueDomain)initWithCategory:(int64_t)a3 domainName:(id)a4 healthStore:(id)a5
+- (HKKeyValueDomain)initWithCategory:(int64_t)category domainName:(id)name healthStore:(id)store
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [[HKKeyValueDomainServerConfiguration alloc] initWithCategory:a3 domainName:v8];
+  nameCopy = name;
+  storeCopy = store;
+  v10 = [[HKKeyValueDomainServerConfiguration alloc] initWithCategory:category domainName:nameCopy];
   v30.receiver = self;
   v30.super_class = HKKeyValueDomain;
   v11 = [(HKKeyValueDomain *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    v11->_category = a3;
-    v13 = [v8 copy];
+    v11->_category = category;
+    v13 = [nameCopy copy];
     domainName = v12->_domainName;
     v12->_domainName = v13;
 
-    objc_storeStrong(&v12->_healthStore, a5);
-    v15 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v12->_healthStore, store);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v15;
+    v12->_identifier = uUID;
 
     v17 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v12->_healthStore taskIdentifier:@"HKKeyValueDomainServerIdentifier" exportedObject:v12 taskUUID:v12->_identifier];
     proxyProvider = v12->_proxyProvider;
@@ -231,11 +231,11 @@ void __60__HKKeyValueDomain_initWithCategory_domainName_healthStore___block_invo
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (BOOL)setNumber:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setNumber:(id)number forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  numberCopy = number;
+  keyCopy = key;
+  if (numberCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -259,9 +259,9 @@ void __60__HKKeyValueDomain_initWithCategory_domainName_healthStore___block_invo
   v19[1] = 3221225472;
   v19[2] = __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke;
   v19[3] = &unk_1E7380BD0;
-  v11 = v8;
+  v11 = numberCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = keyCopy;
   v21 = v12;
   v22 = &v30;
   v23 = &v24;
@@ -278,10 +278,10 @@ void __60__HKKeyValueDomain_initWithCategory_domainName_healthStore___block_invo
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -311,12 +311,12 @@ uint64_t __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke(uint64_t a
   return [a2 remote_setNumber:v2 forKey:v3 completion:v5];
 }
 
-- (void)setNumber:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setNumber:(id)number forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  numberCopy = number;
+  keyCopy = key;
+  completionCopy = completion;
+  if (numberCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -325,15 +325,15 @@ uint64_t __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke(uint64_t a
     }
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__HKKeyValueDomain_setNumber_forKey_completion___block_invoke;
   v18[3] = &unk_1E7380BF8;
-  v19 = v8;
-  v20 = v9;
+  v19 = numberCopy;
+  v20 = keyCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -341,16 +341,16 @@ uint64_t __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke(uint64_t a
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = keyCopy;
+  v15 = numberCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -374,9 +374,9 @@ uint64_t __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke(uint64_t a
   v19[1] = 3221225472;
   v19[2] = __41__HKKeyValueDomain_setData_forKey_error___block_invoke;
   v19[3] = &unk_1E7380BD0;
-  v11 = v8;
+  v11 = dataCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = keyCopy;
   v21 = v12;
   v22 = &v30;
   v23 = &v24;
@@ -393,10 +393,10 @@ uint64_t __43__HKKeyValueDomain_setNumber_forKey_error___block_invoke(uint64_t a
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -426,12 +426,12 @@ uint64_t __41__HKKeyValueDomain_setData_forKey_error___block_invoke(uint64_t a1,
   return [a2 remote_setData:v2 forKey:v3 completion:v5];
 }
 
-- (void)setData:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setData:(id)data forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dataCopy = data;
+  keyCopy = key;
+  completionCopy = completion;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -440,15 +440,15 @@ uint64_t __41__HKKeyValueDomain_setData_forKey_error___block_invoke(uint64_t a1,
     }
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __46__HKKeyValueDomain_setData_forKey_completion___block_invoke;
   v18[3] = &unk_1E7380BF8;
-  v19 = v8;
-  v20 = v9;
+  v19 = dataCopy;
+  v20 = keyCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -456,16 +456,16 @@ uint64_t __41__HKKeyValueDomain_setData_forKey_error___block_invoke(uint64_t a1,
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = keyCopy;
+  v15 = dataCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (BOOL)setDate:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setDate:(id)date forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dateCopy = date;
+  keyCopy = key;
+  if (dateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -489,9 +489,9 @@ uint64_t __41__HKKeyValueDomain_setData_forKey_error___block_invoke(uint64_t a1,
   v19[1] = 3221225472;
   v19[2] = __41__HKKeyValueDomain_setDate_forKey_error___block_invoke;
   v19[3] = &unk_1E7380BD0;
-  v11 = v8;
+  v11 = dateCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = keyCopy;
   v21 = v12;
   v22 = &v30;
   v23 = &v24;
@@ -508,10 +508,10 @@ uint64_t __41__HKKeyValueDomain_setData_forKey_error___block_invoke(uint64_t a1,
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -541,12 +541,12 @@ uint64_t __41__HKKeyValueDomain_setDate_forKey_error___block_invoke(uint64_t a1,
   return [a2 remote_setDate:v2 forKey:v3 completion:v5];
 }
 
-- (void)setDate:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setDate:(id)date forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dateCopy = date;
+  keyCopy = key;
+  completionCopy = completion;
+  if (dateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -555,15 +555,15 @@ uint64_t __41__HKKeyValueDomain_setDate_forKey_error___block_invoke(uint64_t a1,
     }
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __46__HKKeyValueDomain_setDate_forKey_completion___block_invoke;
   v18[3] = &unk_1E7380BF8;
-  v19 = v8;
-  v20 = v9;
+  v19 = dateCopy;
+  v20 = keyCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -571,16 +571,16 @@ uint64_t __41__HKKeyValueDomain_setDate_forKey_error___block_invoke(uint64_t a1,
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = keyCopy;
+  v15 = dateCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  stringCopy = string;
+  keyCopy = key;
+  if (stringCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -604,9 +604,9 @@ uint64_t __41__HKKeyValueDomain_setDate_forKey_error___block_invoke(uint64_t a1,
   v19[1] = 3221225472;
   v19[2] = __43__HKKeyValueDomain_setString_forKey_error___block_invoke;
   v19[3] = &unk_1E7380BD0;
-  v11 = v8;
+  v11 = stringCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = keyCopy;
   v21 = v12;
   v22 = &v30;
   v23 = &v24;
@@ -623,10 +623,10 @@ uint64_t __41__HKKeyValueDomain_setDate_forKey_error___block_invoke(uint64_t a1,
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -656,12 +656,12 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
   return [a2 remote_setString:v2 forKey:v3 completion:v5];
 }
 
-- (void)setString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setString:(id)string forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  stringCopy = string;
+  keyCopy = key;
+  completionCopy = completion;
+  if (stringCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -670,15 +670,15 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
     }
   }
 
-  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
+  v11 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__HKKeyValueDomain_setString_forKey_completion___block_invoke;
   v18[3] = &unk_1E7380BF8;
-  v19 = v8;
-  v20 = v9;
+  v19 = stringCopy;
+  v20 = keyCopy;
   v21 = v11;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -686,15 +686,15 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
   v16[3] = &unk_1E7376960;
   v17 = v21;
   v13 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = keyCopy;
+  v15 = stringCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v18 errorHandler:v16];
 }
 
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -705,9 +705,9 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
   v27 = __Block_byref_object_copy__36;
   v28 = __Block_byref_object_dispose__36;
   v29 = 0;
-  if (v8)
+  if (valueCopy)
   {
-    v10 = [(HKKeyValueDomain *)self _dataFromPropertyListValue:v8 error:a5];
+    v10 = [(HKKeyValueDomain *)self _dataFromPropertyListValue:valueCopy error:error];
     if (!v10)
     {
       v11 = 0;
@@ -727,7 +727,7 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
   v19[3] = &unk_1E7380BD0;
   v13 = v10;
   v20 = v13;
-  v21 = v9;
+  v21 = keyCopy;
   v22 = &v30;
   v23 = &v24;
   v18[0] = MEMORY[0x1E69E9820];
@@ -743,10 +743,10 @@ uint64_t __43__HKKeyValueDomain_setString_forKey_error___block_invoke(uint64_t a
     v15 = v14;
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -777,15 +777,15 @@ uint64_t __54__HKKeyValueDomain_setPropertyListValue_forKey_error___block_invoke
   return [a2 remote_setData:v2 forKey:v3 completion:v5];
 }
 
-- (void)setPropertyListValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setPropertyListValue:(id)value forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
-  if (v8)
+  valueCopy = value;
+  keyCopy = key;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
+  if (valueCopy)
   {
     v21 = 0;
-    v11 = [(HKKeyValueDomain *)self _dataFromPropertyListValue:v8 error:&v21];
+    v11 = [(HKKeyValueDomain *)self _dataFromPropertyListValue:valueCopy error:&v21];
     v12 = v21;
     v13 = v12;
     if (!v11)
@@ -806,7 +806,7 @@ uint64_t __54__HKKeyValueDomain_setPropertyListValue_forKey_error___block_invoke
   v17[2] = __59__HKKeyValueDomain_setPropertyListValue_forKey_completion___block_invoke;
   v17[3] = &unk_1E7380BF8;
   v18 = v11;
-  v19 = v9;
+  v19 = keyCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -819,16 +819,16 @@ uint64_t __54__HKKeyValueDomain_setPropertyListValue_forKey_error___block_invoke
 LABEL_7:
 }
 
-- (void)setValuesWithDictionary:(id)a3 completion:(id)a4
+- (void)setValuesWithDictionary:(id)dictionary completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__HKKeyValueDomain_setValuesWithDictionary_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = dictionaryCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -836,20 +836,20 @@ LABEL_7:
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dictionaryCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)removeValuesForKeys:(id)a3 completion:(id)a4
+- (void)removeValuesForKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  keysCopy = keys;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__HKKeyValueDomain_removeValuesForKeys_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keysCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -857,20 +857,20 @@ LABEL_7:
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keysCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)setValueForAllKeys:(id)a3 completion:(id)a4
+- (void)setValueForAllKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  keysCopy = keys;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__HKKeyValueDomain_setValueForAllKeys_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keysCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -878,13 +878,13 @@ LABEL_7:
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keysCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)numberForKey:(id)a3 error:(id *)a4
+- (id)numberForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -902,7 +902,7 @@ LABEL_7:
   v16[1] = 3221225472;
   v16[2] = __39__HKKeyValueDomain_numberForKey_error___block_invoke;
   v16[3] = &unk_1E7380C48;
-  v8 = v6;
+  v8 = keyCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -919,10 +919,10 @@ LABEL_7:
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -967,16 +967,16 @@ void __39__HKKeyValueDomain_numberForKey_error___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (void)numberForKey:(id)a3 completion:(id)a4
+- (void)numberForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__HKKeyValueDomain_numberForKey_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -984,13 +984,13 @@ void __39__HKKeyValueDomain_numberForKey_error___block_invoke_2(uint64_t a1, voi
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)dataForKey:(id)a3 error:(id *)a4
+- (id)dataForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1008,7 +1008,7 @@ void __39__HKKeyValueDomain_numberForKey_error___block_invoke_2(uint64_t a1, voi
   v16[1] = 3221225472;
   v16[2] = __37__HKKeyValueDomain_dataForKey_error___block_invoke;
   v16[3] = &unk_1E7380C48;
-  v8 = v6;
+  v8 = keyCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1025,10 +1025,10 @@ void __39__HKKeyValueDomain_numberForKey_error___block_invoke_2(uint64_t a1, voi
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -1073,16 +1073,16 @@ void __37__HKKeyValueDomain_dataForKey_error___block_invoke_2(uint64_t a1, void 
   *(v9 + 40) = v6;
 }
 
-- (void)dataForKey:(id)a3 completion:(id)a4
+- (void)dataForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__HKKeyValueDomain_dataForKey_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1090,13 +1090,13 @@ void __37__HKKeyValueDomain_dataForKey_error___block_invoke_2(uint64_t a1, void 
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)dateForKey:(id)a3 error:(id *)a4
+- (id)dateForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1114,7 +1114,7 @@ void __37__HKKeyValueDomain_dataForKey_error___block_invoke_2(uint64_t a1, void 
   v16[1] = 3221225472;
   v16[2] = __37__HKKeyValueDomain_dateForKey_error___block_invoke;
   v16[3] = &unk_1E7380C48;
-  v8 = v6;
+  v8 = keyCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1131,10 +1131,10 @@ void __37__HKKeyValueDomain_dataForKey_error___block_invoke_2(uint64_t a1, void 
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -1179,16 +1179,16 @@ void __37__HKKeyValueDomain_dateForKey_error___block_invoke_2(uint64_t a1, void 
   *(v9 + 40) = v6;
 }
 
-- (void)dateForKey:(id)a3 completion:(id)a4
+- (void)dateForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__HKKeyValueDomain_dateForKey_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1196,13 +1196,13 @@ void __37__HKKeyValueDomain_dateForKey_error___block_invoke_2(uint64_t a1, void 
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)stringForKey:(id)a3 error:(id *)a4
+- (id)stringForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1220,7 +1220,7 @@ void __37__HKKeyValueDomain_dateForKey_error___block_invoke_2(uint64_t a1, void 
   v16[1] = 3221225472;
   v16[2] = __39__HKKeyValueDomain_stringForKey_error___block_invoke;
   v16[3] = &unk_1E7380C48;
-  v8 = v6;
+  v8 = keyCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1237,10 +1237,10 @@ void __37__HKKeyValueDomain_dateForKey_error___block_invoke_2(uint64_t a1, void 
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -1285,16 +1285,16 @@ void __39__HKKeyValueDomain_stringForKey_error___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (void)stringForKey:(id)a3 completion:(id)a4
+- (void)stringForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__HKKeyValueDomain_stringForKey_completion___block_invoke;
   v13[3] = &unk_1E7380C20;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1302,13 +1302,13 @@ void __39__HKKeyValueDomain_stringForKey_error___block_invoke_2(uint64_t a1, voi
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (id)propertyListValueForKey:(id)a3 error:(id *)a4
+- (id)propertyListValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1326,7 +1326,7 @@ void __39__HKKeyValueDomain_stringForKey_error___block_invoke_2(uint64_t a1, voi
   v16[1] = 3221225472;
   v16[2] = __50__HKKeyValueDomain_propertyListValueForKey_error___block_invoke;
   v16[3] = &unk_1E7380C48;
-  v8 = v6;
+  v8 = keyCopy;
   v17 = v8;
   v18 = &v26;
   v19 = &v20;
@@ -1339,7 +1339,7 @@ void __39__HKKeyValueDomain_stringForKey_error___block_invoke_2(uint64_t a1, voi
   v9 = v27[5];
   if (v9)
   {
-    v10 = [(HKKeyValueDomain *)self _propertyListValueFromData:v9 error:a4];
+    v10 = [(HKKeyValueDomain *)self _propertyListValueFromData:v9 error:error];
   }
 
   else
@@ -1348,10 +1348,10 @@ void __39__HKKeyValueDomain_stringForKey_error___block_invoke_2(uint64_t a1, voi
     v12 = v11;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -1394,17 +1394,17 @@ void __50__HKKeyValueDomain_propertyListValueForKey_error___block_invoke_2(uint6
   *(v9 + 40) = v6;
 }
 
-- (void)propertyListValueForKey:(id)a3 completion:(id)a4
+- (void)propertyListValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  keyCopy = key;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__HKKeyValueDomain_propertyListValueForKey_completion___block_invoke;
   v13[3] = &unk_1E7380BF8;
-  v14 = v6;
-  v15 = self;
+  v14 = keyCopy;
+  selfCopy = self;
   v16 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1412,7 +1412,7 @@ void __50__HKKeyValueDomain_propertyListValueForKey_error___block_invoke_2(uint6
   v11[3] = &unk_1E7376960;
   v12 = v16;
   v9 = v16;
-  v10 = v6;
+  v10 = keyCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -1445,7 +1445,7 @@ void __55__HKKeyValueDomain_propertyListValueForKey_completion___block_invoke_2(
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)allValuesWithError:(id *)a3
+- (id)allValuesWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1479,10 +1479,10 @@ void __55__HKKeyValueDomain_propertyListValueForKey_completion___block_invoke_2(
     v7 = v6;
     if (v6)
     {
-      if (a3)
+      if (error)
       {
         v8 = v6;
-        *a3 = v7;
+        *error = v7;
       }
 
       else
@@ -1526,9 +1526,9 @@ void __39__HKKeyValueDomain_allValuesWithError___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (void)allValuesWithCompletion:(id)a3
+- (void)allValuesWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1544,25 +1544,25 @@ void __39__HKKeyValueDomain_allValuesWithError___block_invoke_2(uint64_t a1, voi
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)_startObservation:(id)a3 withCompletion:(id)a4
+- (void)_startObservation:(id)observation withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observationCopy = observation;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
   observers = self->_observers;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__HKKeyValueDomain__startObservation_withCompletion___block_invoke;
   v11[3] = &unk_1E7380D38;
   v13 = &v14;
   v11[4] = self;
-  v10 = v7;
+  v10 = completionCopy;
   v12 = v10;
-  [(HKKeyValueDomainObserver *)observers registerObserver:v6 queue:v9 runIfFirstObserver:v11];
+  [(HKKeyValueDomainObserver *)observers registerObserver:observationCopy queue:clientQueue runIfFirstObserver:v11];
 
   if ((v15[3] & 1) == 0)
   {
@@ -1572,7 +1572,7 @@ void __39__HKKeyValueDomain_allValuesWithError___block_invoke_2(uint64_t a1, voi
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)stopObservation:(id)a3
+- (void)stopObservation:(id)observation
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1580,19 +1580,19 @@ void __39__HKKeyValueDomain_allValuesWithError___block_invoke_2(uint64_t a1, voi
   v4[2] = __36__HKKeyValueDomain_stopObservation___block_invoke;
   v4[3] = &unk_1E7376780;
   v4[4] = self;
-  [(HKKeyValueDomainObserver *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKKeyValueDomainObserver *)observers unregisterObserver:observation runIfLastObserver:v4];
 }
 
-- (void)_registerFirstObserverWithCompletion:(id)a3
+- (void)_registerFirstObserverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__HKKeyValueDomain__registerFirstObserverWithCompletion___block_invoke;
   v6[3] = &unk_1E73766A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HKKeyValueDomain *)self _observeKeyValueDomainChanges:1 completion:v6];
 }
 
@@ -1644,15 +1644,15 @@ void __43__HKKeyValueDomain__unregisterLastObserver__block_invoke(uint64_t a1, c
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_observeKeyValueDomainChanges:(BOOL)a3 completion:(id)a4
+- (void)_observeKeyValueDomainChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__HKKeyValueDomain__observeKeyValueDomainChanges_completion___block_invoke;
   v11[3] = &unk_1E7380D60;
-  v13 = a3;
+  changesCopy = changes;
   v12 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1666,14 +1666,14 @@ void __43__HKKeyValueDomain__unregisterLastObserver__block_invoke(uint64_t a1, c
 - (void)_handleAutomaticProxyReconnection
 {
   *v4 = 138543618;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2114;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_1(&dword_19197B000, a2, a3, "[%{public}@] Failed to resume observation on server reconnection: %{public}@", *v4, *&v4[8], *&v4[16], *MEMORY[0x1E69E9840]);
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_synchronouslyRegisterToObserveKeyValueDomainChanges:(id *)a3
+- (BOOL)_synchronouslyRegisterToObserveKeyValueDomainChanges:(id *)changes
 {
   v18 = 0;
   v19 = &v18;
@@ -1702,10 +1702,10 @@ void __43__HKKeyValueDomain__unregisterLastObserver__block_invoke(uint64_t a1, c
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (changes)
     {
       v7 = v5;
-      *a3 = v6;
+      *changes = v6;
     }
 
     else
@@ -1756,42 +1756,42 @@ uint64_t __73__HKKeyValueDomain__synchronouslyRegisterToObserveKeyValueDomainCha
   return [v2 serverInterface];
 }
 
-+ (id)healthAppDefaultsDomainWithHealthStore:(id)a3
++ (id)healthAppDefaultsDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health" healthStore:storeCopy];
 
   return v4;
 }
 
-+ (id)healthArticlesDefaultsDomainWithHealthStore:(id)a3
++ (id)healthArticlesDefaultsDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health.Articles" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health.Articles" healthStore:storeCopy];
 
   return v4;
 }
 
-+ (id)safetyDefaultsDomainWithHealthStore:(id)a3
++ (id)safetyDefaultsDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Safety" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Safety" healthStore:storeCopy];
 
   return v4;
 }
 
-+ (id)safetyDefaultsLocalDomainWithHealthStore:(id)a3
++ (id)safetyDefaultsLocalDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:1 domainName:@"com.apple.Safety" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:1 domainName:@"com.apple.Safety" healthStore:storeCopy];
 
   return v4;
 }
 
-+ (id)emergencyDefaultsDomainWithHealthStore:(id)a3
++ (id)emergencyDefaultsDomainWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health.Emergency" healthStore:v3];
+  storeCopy = store;
+  v4 = [[HKKeyValueDomain alloc] initWithCategory:2 domainName:@"com.apple.Health.Emergency" healthStore:storeCopy];
 
   return v4;
 }

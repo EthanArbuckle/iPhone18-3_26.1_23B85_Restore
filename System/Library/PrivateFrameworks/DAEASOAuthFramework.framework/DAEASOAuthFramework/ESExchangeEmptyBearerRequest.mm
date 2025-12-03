@@ -1,16 +1,16 @@
 @interface ESExchangeEmptyBearerRequest
-+ (id)emptyBearerRequestForHost:(id)a3;
++ (id)emptyBearerRequestForHost:(id)host;
 @end
 
 @implementation ESExchangeEmptyBearerRequest
 
-+ (id)emptyBearerRequestForHost:(id)a3
++ (id)emptyBearerRequestForHost:(id)host
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
+  hostCopy = host;
   v5 = objc_alloc_init(v3);
   [v5 setScheme:@"https"];
-  [v5 setHost:v4];
+  [v5 setHost:hostCopy];
 
   [v5 setPath:@"/Microsoft-Server-ActiveSync"];
   v6 = MEMORY[0x277CCAB70];

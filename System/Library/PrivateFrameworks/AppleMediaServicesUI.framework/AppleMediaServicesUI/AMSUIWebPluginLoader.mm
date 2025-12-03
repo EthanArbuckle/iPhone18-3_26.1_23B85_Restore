@@ -1,26 +1,26 @@
 @interface AMSUIWebPluginLoader
 - (AMSUIWebClientContext)context;
-- (AMSUIWebPluginLoader)initWithContext:(id)a3;
+- (AMSUIWebPluginLoader)initWithContext:(id)context;
 - (NSArray)loadedPlugins;
 - (id)_loadInstalledPlugins;
-- (id)pluginForBundleIdentifier:(id)a3;
+- (id)pluginForBundleIdentifier:(id)identifier;
 @end
 
 @implementation AMSUIWebPluginLoader
 
-- (AMSUIWebPluginLoader)initWithContext:(id)a3
+- (AMSUIWebPluginLoader)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = AMSUIWebPluginLoader;
   v5 = [(AMSUIWebPluginLoader *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
-    v7 = [(AMSUIWebPluginLoader *)v6 _loadInstalledPlugins];
+    objc_storeWeak(&v5->_context, contextCopy);
+    _loadInstalledPlugins = [(AMSUIWebPluginLoader *)v6 _loadInstalledPlugins];
     installedPluginURLs = v6->_installedPluginURLs;
-    v6->_installedPluginURLs = v7;
+    v6->_installedPluginURLs = _loadInstalledPlugins;
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     loadedPluginsMap = v6->_loadedPluginsMap;
@@ -32,56 +32,56 @@
 
 - (NSArray)loadedPlugins
 {
-  v2 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
-  v3 = [v2 allValues];
+  loadedPluginsMap = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
+  allValues = [loadedPluginsMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)pluginForBundleIdentifier:(id)a3
+- (id)pluginForBundleIdentifier:(id)identifier
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  loadedPluginsMap = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
+  v6 = [loadedPluginsMap objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    loadedPluginsMap2 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
+    v8 = [loadedPluginsMap2 objectForKeyedSubscript:identifierCopy];
 
     goto LABEL_40;
   }
 
-  v9 = [(AMSUIWebPluginLoader *)self installedPluginURLs];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  installedPluginURLs = [(AMSUIWebPluginLoader *)self installedPluginURLs];
+  v10 = [installedPluginURLs objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:v10];
-    v12 = v11;
+    mEMORY[0x1E698C968]2 = v11;
     if (v11)
     {
       if ([v11 load])
       {
-        v13 = [v12 principalClass];
-        if (v13)
+        principalClass = [mEMORY[0x1E698C968]2 principalClass];
+        if (principalClass)
         {
-          v14 = v13;
-          if (([(objc_class *)v13 conformsToProtocol:&unk_1F39C5B68]& 1) != 0)
+          v14 = principalClass;
+          if (([(objc_class *)principalClass conformsToProtocol:&unk_1F39C5B68]& 1) != 0)
           {
             objc_initWeak(location, self);
             v15 = [v14 alloc];
-            v38 = [(AMSUIWebPluginLoader *)self context];
-            v37 = [v38 bag];
-            v16 = [(AMSUIWebPluginLoader *)self context];
-            v17 = [v16 account];
-            v18 = [(AMSUIWebPluginLoader *)self context];
-            v19 = [v18 clientInfo];
-            v20 = v19;
-            if (!v19)
+            context = [(AMSUIWebPluginLoader *)self context];
+            v37 = [context bag];
+            context2 = [(AMSUIWebPluginLoader *)self context];
+            account = [context2 account];
+            context3 = [(AMSUIWebPluginLoader *)self context];
+            clientInfo = [context3 clientInfo];
+            currentProcess = clientInfo;
+            if (!clientInfo)
             {
-              v20 = [MEMORY[0x1E698CAC8] currentProcess];
+              currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
             }
 
             v39[0] = MEMORY[0x1E69E9820];
@@ -89,27 +89,27 @@
             v39[2] = __50__AMSUIWebPluginLoader_pluginForBundleIdentifier___block_invoke;
             v39[3] = &unk_1E7F24968;
             objc_copyWeak(&v40, location);
-            v8 = [v15 initWithBag:v37 account:v17 clientInfo:v20 propertiesChangedHandler:v39];
-            if (!v19)
+            v8 = [v15 initWithBag:v37 account:account clientInfo:currentProcess propertiesChangedHandler:v39];
+            if (!clientInfo)
             {
             }
 
-            v21 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
-            [v21 setObject:v8 forKeyedSubscript:v4];
+            loadedPluginsMap3 = [(AMSUIWebPluginLoader *)self loadedPluginsMap];
+            [loadedPluginsMap3 setObject:v8 forKeyedSubscript:identifierCopy];
 
             objc_destroyWeak(&v40);
             objc_destroyWeak(location);
             goto LABEL_39;
           }
 
-          v25 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-          if (!v25)
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+          if (!mEMORY[0x1E698C968])
           {
-            v25 = [MEMORY[0x1E698C968] sharedConfig];
+            mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
           }
 
-          v26 = [v25 OSLogObject];
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v33 = objc_opt_class();
             v34 = AMSLogKey();
@@ -118,21 +118,21 @@
             v42 = 2114;
             v43 = v34;
             v44 = 2114;
-            v45 = v4;
-            _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Principal class doesn't conform to AMSUIWebPlugin. Bundle identifier: %{public}@", location, 0x20u);
+            v45 = identifierCopy;
+            _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Principal class doesn't conform to AMSUIWebPlugin. Bundle identifier: %{public}@", location, 0x20u);
           }
         }
 
         else
         {
-          v25 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-          if (!v25)
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+          if (!mEMORY[0x1E698C968])
           {
-            v25 = [MEMORY[0x1E698C968] sharedConfig];
+            mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
           }
 
-          v26 = [v25 OSLogObject];
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v31 = objc_opt_class();
             v32 = AMSLogKey();
@@ -141,22 +141,22 @@
             v42 = 2114;
             v43 = v32;
             v44 = 2114;
-            v45 = v4;
-            _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Principal class not found. Bundle identifier: %{public}@", location, 0x20u);
+            v45 = identifierCopy;
+            _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Principal class not found. Bundle identifier: %{public}@", location, 0x20u);
           }
         }
       }
 
       else
       {
-        v25 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v25)
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968])
         {
-          v25 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v26 = [v25 OSLogObject];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v29 = objc_opt_class();
           v30 = AMSLogKey();
@@ -165,22 +165,22 @@
           v42 = 2114;
           v43 = v30;
           v44 = 2114;
-          v45 = v4;
-          _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load plugin. Bundle identifier: %{public}@", location, 0x20u);
+          v45 = identifierCopy;
+          _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load plugin. Bundle identifier: %{public}@", location, 0x20u);
         }
       }
     }
 
     else
     {
-      v25 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v25)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v25 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v27 = objc_opt_class();
         v28 = AMSLogKey();
@@ -189,22 +189,22 @@
         v42 = 2114;
         v43 = v28;
         v44 = 2114;
-        v45 = v4;
-        _os_log_impl(&dword_1BB036000, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No plugin bundle found. Bundle identifier: %{public}@", location, 0x20u);
+        v45 = identifierCopy;
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No plugin bundle found. Bundle identifier: %{public}@", location, 0x20u);
       }
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v22 = [v12 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
@@ -213,8 +213,8 @@
       v42 = 2114;
       v43 = v24;
       v44 = 2114;
-      v45 = v4;
-      _os_log_impl(&dword_1BB036000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No plugin found. Bundle identifier: %{public}@", location, 0x20u);
+      v45 = identifierCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No plugin found. Bundle identifier: %{public}@", location, 0x20u);
     }
   }
 
@@ -263,12 +263,12 @@ void __50__AMSUIWebPluginLoader_pluginForBundleIdentifier___block_invoke(uint64_
           }
 
           v10 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithPath:*(*(&v21 + 1) + 8 * i)];
-          v11 = [v10 bundleIdentifier];
-          v12 = [v10 bundleURL];
-          v13 = v12;
-          if (v11)
+          bundleIdentifier = [v10 bundleIdentifier];
+          bundleURL = [v10 bundleURL];
+          v13 = bundleURL;
+          if (bundleIdentifier)
           {
-            v14 = v12 == 0;
+            v14 = bundleURL == 0;
           }
 
           else
@@ -278,7 +278,7 @@ void __50__AMSUIWebPluginLoader_pluginForBundleIdentifier___block_invoke(uint64_
 
           if (!v14)
           {
-            [v2 setObject:v12 forKeyedSubscript:v11];
+            [v2 setObject:bundleURL forKeyedSubscript:bundleIdentifier];
           }
         }
 
@@ -291,14 +291,14 @@ void __50__AMSUIWebPluginLoader_pluginForBundleIdentifier___block_invoke(uint64_
 
   else
   {
-    v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v15)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v15 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -306,7 +306,7 @@ void __50__AMSUIWebPluginLoader_pluginForBundleIdentifier___block_invoke(uint64_
       v27 = v17;
       v28 = 2114;
       v29 = v18;
-      _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to find plugins bundle", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to find plugins bundle", buf, 0x16u);
     }
   }
 

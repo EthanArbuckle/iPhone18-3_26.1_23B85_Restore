@@ -1,30 +1,30 @@
 @interface NTKCloudrakerFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_orderedComplicationSlots;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKCloudrakerFace
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceCategory] == &dword_0 + 1 || objc_msgSend(v3, "deviceCategory") == &dword_0 + 2;
-  v5 = v4 | ~[v3 supportsPDRCapability:3023545248];
+  deviceCopy = device;
+  v4 = [deviceCopy deviceCategory] == &dword_0 + 1 || objc_msgSend(deviceCopy, "deviceCategory") == &dword_0 + 2;
+  v5 = v4 | ~[deviceCopy supportsPDRCapability:3023545248];
 
   return v5 & 1;
 }
 
 - (id)_customEditModes
 {
-  v2 = [(NTKCloudrakerFace *)self device];
+  device = [(NTKCloudrakerFace *)self device];
   v3 = NTKShowIndicScriptNumerals();
 
   if (v3)
@@ -38,22 +38,22 @@
   }
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 19)
+  slotCopy = slot;
+  if (mode == 19)
   {
     CLKLocaleNumberSystemForFirstLanguage();
     v8 = NTKNumeralOptionFromCLKLocaleNumberSystem();
-    v9 = [(NTKCloudrakerFace *)self device];
-    v7 = [NTKNumeralEditOption optionWithNumeral:v8 forDevice:v9];
+    device = [(NTKCloudrakerFace *)self device];
+    v7 = [NTKNumeralEditOption optionWithNumeral:v8 forDevice:device];
   }
 
-  else if (a3 == 10)
+  else if (mode == 10)
   {
     v11.receiver = self;
     v11.super_class = NTKCloudrakerFace;
-    v7 = [(NTKCloudrakerFace *)&v11 _defaultOptionForCustomEditMode:10 slot:v6];
+    v7 = [(NTKCloudrakerFace *)&v11 _defaultOptionForCustomEditMode:10 slot:slotCopy];
   }
 
   else
@@ -64,14 +64,14 @@
   return v7;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 19)
+  if (mode == 19)
   {
     v3 = objc_opt_class();
   }
 
-  else if (a3 == 10)
+  else if (mode == 10)
   {
     v5.receiver = self;
     v5.super_class = NTKCloudrakerFace;
@@ -86,30 +86,30 @@
   return v3;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKCloudrakerFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKCloudrakerFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKCloudrakerFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKCloudrakerFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKCloudrakerFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKCloudrakerFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKCloudrakerFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
@@ -143,7 +143,7 @@
   return v2;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotCenter;

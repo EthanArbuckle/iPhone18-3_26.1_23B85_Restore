@@ -1,25 +1,25 @@
 @interface SFBLEAdvertiser
 - (NSString)description;
-- (SFBLEAdvertiser)initWithType:(int64_t)a3;
-- (id)_preparePayloadNearbyAction:(int *)a3;
-- (id)_preparePayloadNearbyInfo:(int *)a3;
-- (int)_preparePayload:(BOOL)a3;
-- (void)_activateWithCompletion:(id)a3;
+- (SFBLEAdvertiser)initWithType:(int64_t)type;
+- (id)_preparePayloadNearbyAction:(int *)action;
+- (id)_preparePayloadNearbyInfo:(int *)info;
+- (int)_preparePayload:(BOOL)payload;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)nearby:(id)a3 didConnectToPeer:(id)a4 transport:(int64_t)a5 error:(id)a6;
-- (void)nearby:(id)a3 didDeferAdvertisingType:(int64_t)a4;
-- (void)nearby:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)nearby:(id)a3 didStartAdvertisingType:(int64_t)a4;
-- (void)nearby:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5;
-- (void)nearbyDidUpdateState:(id)a3;
-- (void)setAdvertiseRate:(int64_t)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setLePipeDevices:(id)a3;
-- (void)setPayloadData:(id)a3;
-- (void)setPayloadFields:(id)a3;
+- (void)nearby:(id)nearby didConnectToPeer:(id)peer transport:(int64_t)transport error:(id)error;
+- (void)nearby:(id)nearby didDeferAdvertisingType:(int64_t)type;
+- (void)nearby:(id)nearby didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)nearby:(id)nearby didStartAdvertisingType:(int64_t)type;
+- (void)nearby:(id)nearby didStopAdvertisingType:(int64_t)type withError:(id)error;
+- (void)nearbyDidUpdateState:(id)state;
+- (void)setAdvertiseRate:(int64_t)rate;
+- (void)setDispatchQueue:(id)queue;
+- (void)setLePipeDevices:(id)devices;
+- (void)setPayloadData:(id)data;
+- (void)setPayloadFields:(id)fields;
 @end
 
 @implementation SFBLEAdvertiser
@@ -201,28 +201,28 @@ LABEL_28:
   return v13;
 }
 
-- (void)setAdvertiseRate:(int64_t)a3
+- (void)setAdvertiseRate:(int64_t)rate
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __36__SFBLEAdvertiser_setAdvertiseRate___block_invoke;
     v6[3] = &unk_1E788B260;
-    v6[4] = v4;
-    v6[5] = a3;
+    v6[4] = selfCopy;
+    v6[5] = rate;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_advertiseRate = a3;
+    selfCopy->_advertiseRate = rate;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __36__SFBLEAdvertiser_setAdvertiseRate___block_invoke(uint64_t result)
@@ -238,9 +238,9 @@ uint64_t __36__SFBLEAdvertiser_setAdvertiseRate___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -252,35 +252,35 @@ uint64_t __36__SFBLEAdvertiser_setAdvertiseRate___block_invoke(uint64_t result)
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)setLePipeDevices:(id)a3
+- (void)setLePipeDevices:(id)devices
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  v4 = [devices copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __36__SFBLEAdvertiser_setLePipeDevices___block_invoke;
     v7[3] = &unk_1E788A658;
-    v7[4] = v5;
+    v7[4] = selfCopy;
     v8 = v4;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    objc_storeStrong(&v5->_lePipeDevices, v4);
+    objc_storeStrong(&selfCopy->_lePipeDevices, v4);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __36__SFBLEAdvertiser_setLePipeDevices___block_invoke(uint64_t a1)
@@ -291,29 +291,29 @@ uint64_t __36__SFBLEAdvertiser_setLePipeDevices___block_invoke(uint64_t a1)
   return [v2 _restartIfNeeded:1];
 }
 
-- (void)setPayloadData:(id)a3
+- (void)setPayloadData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
+  dataCopy = data;
+  v5 = [dataCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __34__SFBLEAdvertiser_setPayloadData___block_invoke;
   aBlock[3] = &unk_1E788A658;
-  aBlock[4] = v6;
+  aBlock[4] = selfCopy;
   v7 = v5;
   v14 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v6->_activateCalled)
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v6->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __34__SFBLEAdvertiser_setPayloadData___block_invoke_2;
     v11[3] = &unk_1E788B318;
-    v11[4] = v6;
+    v11[4] = selfCopy;
     v12 = v8;
     dispatch_async(dispatchQueue, v11);
   }
@@ -323,7 +323,7 @@ uint64_t __36__SFBLEAdvertiser_setLePipeDevices___block_invoke(uint64_t a1)
     v8[2](v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 void __34__SFBLEAdvertiser_setPayloadData___block_invoke(uint64_t a1)
@@ -346,29 +346,29 @@ uint64_t __34__SFBLEAdvertiser_setPayloadData___block_invoke_2(uint64_t a1)
   return [v2 _restartIfNeeded:0];
 }
 
-- (void)setPayloadFields:(id)a3
+- (void)setPayloadFields:(id)fields
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
+  fieldsCopy = fields;
+  v5 = [fieldsCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __36__SFBLEAdvertiser_setPayloadFields___block_invoke;
   aBlock[3] = &unk_1E788A658;
-  aBlock[4] = v6;
+  aBlock[4] = selfCopy;
   v7 = v5;
   v14 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v6->_activateCalled)
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v6->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __36__SFBLEAdvertiser_setPayloadFields___block_invoke_2;
     v11[3] = &unk_1E788B318;
-    v11[4] = v6;
+    v11[4] = selfCopy;
     v12 = v8;
     dispatch_async(dispatchQueue, v11);
   }
@@ -378,7 +378,7 @@ uint64_t __34__SFBLEAdvertiser_setPayloadData___block_invoke_2(uint64_t a1)
     v8[2](v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 void __36__SFBLEAdvertiser_setPayloadFields___block_invoke(uint64_t a1)
@@ -401,29 +401,29 @@ uint64_t __36__SFBLEAdvertiser_setPayloadFields___block_invoke_2(uint64_t a1)
   return [v2 _restartIfNeeded:0];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__SFBLEAdvertiser_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_invalidateCalled)
   {
@@ -466,7 +466,7 @@ LABEL_14:
 LABEL_17:
     v16 = 4294960561;
 LABEL_18:
-    [(SFBLEAdvertiser *)v4 _activateWithCompletion:v16, &v18, v19, self];
+    [(SFBLEAdvertiser *)completionCopy _activateWithCompletion:v16, &v18, v19, self];
     goto LABEL_9;
   }
 
@@ -504,9 +504,9 @@ LABEL_19:
   v17[4] = self;
   [(CURetrier *)self->_startRetrier setActionHandler:v17];
   [(CURetrier *)self->_startRetrier startDirect];
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_9:
@@ -644,7 +644,7 @@ LABEL_21:
   self->_invalidationHandler = 0;
 }
 
-- (int)_preparePayload:(BOOL)a3
+- (int)_preparePayload:(BOOL)payload
 {
   v13 = 0;
   if (self->_payloadDataCurrent)
@@ -694,7 +694,7 @@ LABEL_14:
 LABEL_22:
   v13 = -6757;
 LABEL_2:
-  if (!a3 && self->_payloadDataPrevious && ([(NSData *)self->_payloadDataCurrent isEqual:?]& 1) != 0)
+  if (!payload && self->_payloadDataPrevious && ([(NSData *)self->_payloadDataCurrent isEqual:?]& 1) != 0)
   {
     v5 = self->_ucat->var0;
     if (v5 <= 9)
@@ -719,7 +719,7 @@ LABEL_2:
   return 0;
 }
 
-- (id)_preparePayloadNearbyAction:(int *)a3
+- (id)_preparePayloadNearbyAction:(int *)action
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -868,15 +868,15 @@ LABEL_2:
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 unsignedCharValue];
+      unsignedCharValue = [v31 unsignedCharValue];
     }
 
     else
     {
-      v33 = 0;
+      unsignedCharValue = 0;
     }
 
-    v40 = v33;
+    v40 = unsignedCharValue;
     var0 = self->_ucat->var0;
     if (var0 > 40)
     {
@@ -893,15 +893,15 @@ LABEL_2:
       ucat = self->_ucat;
     }
 
-    v39 = v33;
+    v39 = unsignedCharValue;
     LogPrintF();
 LABEL_54:
     [v5 appendBytes:&v40 length:{1, v39}];
   }
 
-  if (a3)
+  if (action)
   {
-    *a3 = 0;
+    *action = 0;
   }
 
   v35 = v5;
@@ -911,7 +911,7 @@ LABEL_54:
   return v35;
 }
 
-- (id)_preparePayloadNearbyInfo:(int *)a3
+- (id)_preparePayloadNearbyInfo:(int *)info
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
   payloadFields = self->_payloadFields;
@@ -1073,7 +1073,7 @@ LABEL_37:
   if ((v31 & 1) == 0)
   {
 LABEL_38:
-    if (!a3)
+    if (!info)
     {
       goto LABEL_40;
     }
@@ -1083,10 +1083,10 @@ LABEL_38:
 
 LABEL_45:
   [v5 appendBytes:&v30 length:1];
-  if (a3)
+  if (info)
   {
 LABEL_39:
-    *a3 = 0;
+    *info = 0;
   }
 
 LABEL_40:
@@ -1105,7 +1105,7 @@ _BYTE *__59__SFBLEAdvertiser_nearby_didStopAdvertisingType_withError___block_inv
   return result;
 }
 
-- (SFBLEAdvertiser)initWithType:(int64_t)a3
+- (SFBLEAdvertiser)initWithType:(int64_t)type
 {
   v13 = 0;
   v12 = 0;
@@ -1123,10 +1123,10 @@ _BYTE *__59__SFBLEAdvertiser_nearby_didStopAdvertisingType_withError___block_inv
   dispatchQueue = v5->_dispatchQueue;
   v5->_dispatchQueue = v6;
 
-  v5->_payloadType = a3;
-  if ((a3 + 1) <= 0x12)
+  v5->_payloadType = type;
+  if ((type + 1) <= 0x12)
   {
-    v8 = off_1E788DB38[a3 + 1];
+    v8 = off_1E788DB38[type + 1];
   }
 
   ASPrintF();
@@ -1144,14 +1144,14 @@ LABEL_6:
   return v9;
 }
 
-- (void)nearbyDidUpdateState:(id)a3
+- (void)nearbyDidUpdateState:(id)state
 {
-  v13 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   wpNearby = self->_wpNearby;
   if (wpNearby)
   {
-    v5 = wpNearby == v13;
+    v5 = wpNearby == stateCopy;
   }
 
   else
@@ -1164,16 +1164,16 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v6 = [(WPNearby *)v13 state];
+  state = [(WPNearby *)stateCopy state];
   OUTLINED_FUNCTION_0_11();
   if (v7 <= 40)
   {
     if (v7 != -1)
     {
 LABEL_8:
-      if (v6 <= 5)
+      if (state <= 5)
       {
-        v8 = off_1E788DBD0[v6];
+        v8 = off_1E788DBD0[state];
       }
 
       LogPrintF();
@@ -1188,7 +1188,7 @@ LABEL_8:
   }
 
 LABEL_13:
-  if (v6 == 3)
+  if (state == 3)
   {
     [(SFBLEAdvertiser *)self _restartIfNeeded:1];
   }
@@ -1197,22 +1197,22 @@ LABEL_13:
   if (bluetoothStateChangedHandler)
   {
     v11 = OUTLINED_FUNCTION_2_2(bluetoothStateChangedHandler);
-    v12(v11, v6);
+    v12(v11, state);
   }
 
 LABEL_17:
 }
 
-- (void)nearby:(id)a3 didStartAdvertisingType:(int64_t)a4
+- (void)nearby:(id)nearby didStartAdvertisingType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  nearbyCopy = nearby;
   dispatch_assert_queue_V2(dispatchQueue);
   wpNearby = self->_wpNearby;
 
   if (wpNearby)
   {
-    v9 = wpNearby == v7;
+    v9 = wpNearby == nearbyCopy;
   }
 
   else
@@ -1220,7 +1220,7 @@ LABEL_17:
     v9 = 0;
   }
 
-  if (!v9 || self->_wpNearbyType != a4)
+  if (!v9 || self->_wpNearbyType != type)
   {
     return;
   }
@@ -1275,17 +1275,17 @@ LABEL_17:
   }
 }
 
-- (void)nearby:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5
+- (void)nearby:(id)nearby didStopAdvertisingType:(int64_t)type withError:(id)error
 {
-  v8 = a5;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a3;
+  nearbyCopy = nearby;
   dispatch_assert_queue_V2(dispatchQueue);
   wpNearby = self->_wpNearby;
 
   if (wpNearby)
   {
-    v12 = wpNearby == v10;
+    v12 = wpNearby == nearbyCopy;
   }
 
   else
@@ -1293,7 +1293,7 @@ LABEL_17:
     v12 = 0;
   }
 
-  if (!v12 || self->_wpNearbyType != a4)
+  if (!v12 || self->_wpNearbyType != type)
   {
     goto LABEL_22;
   }
@@ -1311,7 +1311,7 @@ LABEL_17:
       ucat = self->_ucat;
     }
 
-    v25 = v8;
+    v25 = errorCopy;
     LogPrintF();
   }
 
@@ -1327,7 +1327,7 @@ LABEL_12:
     }
   }
 
-  if ([v8 code] == 28)
+  if ([errorCopy code] == 28)
   {
     v19 = arc4random() % 0x123 + 10;
     OUTLINED_FUNCTION_1_8();
@@ -1361,16 +1361,16 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)nearby:(id)a3 didDeferAdvertisingType:(int64_t)a4
+- (void)nearby:(id)nearby didDeferAdvertisingType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  nearbyCopy = nearby;
   dispatch_assert_queue_V2(dispatchQueue);
   wpNearby = self->_wpNearby;
 
   if (wpNearby)
   {
-    v9 = wpNearby == v7;
+    v9 = wpNearby == nearbyCopy;
   }
 
   else
@@ -1378,7 +1378,7 @@ LABEL_22:
     v9 = 0;
   }
 
-  if (!v9 || self->_wpNearbyType != a4 || self->_advertiseState == 2)
+  if (!v9 || self->_wpNearbyType != type || self->_advertiseState == 2)
   {
     return;
   }
@@ -1411,17 +1411,17 @@ LABEL_12:
   }
 }
 
-- (void)nearby:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)nearby:(id)nearby didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v18 = a5;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v9 = a3;
+  nearbyCopy = nearby;
   dispatch_assert_queue_V2(dispatchQueue);
   wpNearby = self->_wpNearby;
 
   if (wpNearby)
   {
-    v11 = wpNearby == v9;
+    v11 = wpNearby == nearbyCopy;
   }
 
   else
@@ -1429,7 +1429,7 @@ LABEL_12:
     v11 = 0;
   }
 
-  if (!v11 || self->_wpNearbyType != a4)
+  if (!v11 || self->_wpNearbyType != type)
   {
     goto LABEL_14;
   }
@@ -1447,7 +1447,7 @@ LABEL_12:
       ucat = self->_ucat;
     }
 
-    v17 = v18;
+    v17 = errorCopy;
     LogPrintF();
   }
 
@@ -1467,16 +1467,16 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)nearby:(id)a3 didConnectToPeer:(id)a4 transport:(int64_t)a5 error:(id)a6
+- (void)nearby:(id)nearby didConnectToPeer:(id)peer transport:(int64_t)transport error:(id)error
 {
-  v23 = a4;
-  v9 = a6;
+  peerCopy = peer;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
-  v11 = a3;
+  nearbyCopy = nearby;
   dispatch_assert_queue_V2(dispatchQueue);
   wpNearby = self->_wpNearby;
 
-  if (!wpNearby || wpNearby != v11 || !self->_connectionHandler)
+  if (!wpNearby || wpNearby != nearbyCopy || !self->_connectionHandler)
   {
     goto LABEL_10;
   }
@@ -1499,10 +1499,10 @@ LABEL_6:
   }
 
 LABEL_8:
-  if (!v9)
+  if (!errorCopy)
   {
     v14 = objc_alloc_init(SFBLEDevice);
-    [(SFBLEDevice *)v14 setIdentifier:v23];
+    [(SFBLEDevice *)v14 setIdentifier:peerCopy];
     v15 = OUTLINED_FUNCTION_2_2(self->_connectionHandler);
     v16(v15, v14);
 

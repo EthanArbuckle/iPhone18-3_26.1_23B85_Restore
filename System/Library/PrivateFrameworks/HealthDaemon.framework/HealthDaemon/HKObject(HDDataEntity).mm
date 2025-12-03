@@ -10,13 +10,13 @@
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [a1 metadata];
-  if (v16)
+  metadata = [self metadata];
+  if (metadata)
   {
-    v17 = [v14 metadataManager];
-    v18 = [v13 provenance];
-    v19 = [v18 sourceID];
-    v20 = [v17 insertMetadata:v16 forObjectID:v12 sourceID:v19 externalSyncObjectCode:objc_msgSend(a1 objectDeleted:"_externalSyncObjectCode") transaction:0 error:{v15, a7}];
+    metadataManager = [v14 metadataManager];
+    provenance = [v13 provenance];
+    sourceID = [provenance sourceID];
+    v20 = [metadataManager insertMetadata:metadata forObjectID:v12 sourceID:sourceID externalSyncObjectCode:objc_msgSend(self objectDeleted:"_externalSyncObjectCode") transaction:0 error:{v15, a7}];
   }
 
   else

@@ -1,10 +1,10 @@
 @interface EKUIAppReviewUtils
-+ (BOOL)_shouldDisplayReviewPromptWithCalendarModel:(id)a3;
-+ (BOOL)_upcomingEventCountMeetsThresholdInCalendarModel:(id)a3;
++ (BOOL)_shouldDisplayReviewPromptWithCalendarModel:(id)model;
++ (BOOL)_upcomingEventCountMeetsThresholdInCalendarModel:(id)model;
 + (id)_queue;
 + (id)_sharedStoreReview;
 + (void)applicationDidForeground;
-+ (void)displayReviewPromptIfNeededInScene:(id)a3 calendarModel:(id)a4;
++ (void)displayReviewPromptIfNeededInScene:(id)scene calendarModel:(id)model;
 @end
 
 @implementation EKUIAppReviewUtils
@@ -25,13 +25,13 @@
 {
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
   {
-    v3 = [a1 _queue];
+    _queue = [self _queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__EKUIAppReviewUtils_applicationDidForeground__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
-    dispatch_async(v3, block);
+    block[4] = self;
+    dispatch_async(_queue, block);
   }
 }
 
@@ -70,13 +70,13 @@ void __40__EKUIAppReviewUtils__sharedStoreReview__block_invoke()
   return v3;
 }
 
-+ (void)displayReviewPromptIfNeededInScene:(id)a3 calendarModel:(id)a4
++ (void)displayReviewPromptIfNeededInScene:(id)scene calendarModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  modelCopy = model;
   if (_os_feature_enabled_impl())
   {
-    if (!v7)
+    if (!modelCopy)
     {
       goto LABEL_7;
     }
@@ -85,18 +85,18 @@ void __40__EKUIAppReviewUtils__sharedStoreReview__block_invoke()
   }
 
   v8 = _os_feature_enabled_impl();
-  if (v7 && (v8 & 1) != 0)
+  if (modelCopy && (v8 & 1) != 0)
   {
 LABEL_6:
-    v9 = [a1 _queue];
+    _queue = [self _queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__EKUIAppReviewUtils_displayReviewPromptIfNeededInScene_calendarModel___block_invoke;
     block[3] = &unk_1E8441000;
-    v13 = a1;
-    v11 = v7;
-    v12 = v6;
-    dispatch_async(v9, block);
+    selfCopy = self;
+    v11 = modelCopy;
+    v12 = sceneCopy;
+    dispatch_async(_queue, block);
   }
 
 LABEL_7:
@@ -231,11 +231,11 @@ void __71__EKUIAppReviewUtils_displayReviewPromptIfNeededInScene_calendarModel__
   [v3 didAttemptPromptReview];
 }
 
-+ (BOOL)_shouldDisplayReviewPromptWithCalendarModel:(id)a3
++ (BOOL)_shouldDisplayReviewPromptWithCalendarModel:(id)model
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([a1 _upcomingEventCountMeetsThresholdInCalendarModel:v4] & 1) == 0)
+  modelCopy = model;
+  if (([self _upcomingEventCountMeetsThresholdInCalendarModel:modelCopy] & 1) == 0)
   {
     v14 = logHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -252,10 +252,10 @@ LABEL_19:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [v4 eventStore];
-  v6 = [v5 sources];
+  eventStore = [modelCopy eventStore];
+  sources = [eventStore sources];
 
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [sources countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v7)
   {
 LABEL_10:
@@ -278,13 +278,13 @@ LABEL_4:
   {
     if (*v30 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(sources);
     }
 
     v11 = *(*(&v29 + 1) + 8 * v10);
     v12 = MEMORY[0x1E6992EF8];
-    v13 = [v11 externalID];
-    LOBYTE(v12) = [v12 isiCloudAccount:v13];
+    externalID = [v11 externalID];
+    LOBYTE(v12) = [v12 isiCloudAccount:externalID];
 
     if (v12)
     {
@@ -293,7 +293,7 @@ LABEL_4:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [sources countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v8)
       {
         goto LABEL_4;
@@ -310,14 +310,14 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  v15 = [v14 allCalendars];
-  if ([v15 count] < 5)
+  allCalendars = [v14 allCalendars];
+  if ([allCalendars count] < 5)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = v15;
+    v16 = allCalendars;
     v19 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v19)
     {
@@ -385,19 +385,19 @@ LABEL_20:
   return v17;
 }
 
-+ (BOOL)_upcomingEventCountMeetsThresholdInCalendarModel:(id)a3
++ (BOOL)_upcomingEventCountMeetsThresholdInCalendarModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = CUIKTodayDate();
   v5 = CalCopyCalendar();
   v6 = [v5 dateByAddingUnit:16 value:7 toDate:v4 options:0];
 
   v7 = [v6 dateByAddingTimeInterval:-1.0];
 
-  v8 = [v3 sectionForCachedOccurrencesOnDate:v4];
-  v9 = [v3 sectionForCachedOccurrencesOnDate:v7];
-  v10 = [v3 dateForCachedOccurrencesInSection:v8];
-  v11 = [v3 dateForCachedOccurrencesInSection:v9];
+  v8 = [modelCopy sectionForCachedOccurrencesOnDate:v4];
+  v9 = [modelCopy sectionForCachedOccurrencesOnDate:v7];
+  v10 = [modelCopy dateForCachedOccurrencesInSection:v8];
+  v11 = [modelCopy dateForCachedOccurrencesInSection:v9];
   v12 = v8 + [v10 CalIsBeforeDate:v4];
   v13 = v9 - [v11 CalIsAfterDate:v7];
   if (v12 <= v13)
@@ -405,7 +405,7 @@ LABEL_20:
     v15 = 0;
     do
     {
-      v15 += [v3 numberOfCachedOccurrencesInSection:v12];
+      v15 += [modelCopy numberOfCachedOccurrencesInSection:v12];
       v14 = v15 > 0xD;
       ++v12;
     }

@@ -2,7 +2,7 @@
 - (CGPoint)point;
 - (CGVector)tangent;
 - (CLKUISlopedPoint)init;
-- (CLKUISlopedPoint)initWithPoint:(CGPoint)a3 tangent:(CGVector)a4;
+- (CLKUISlopedPoint)initWithPoint:(CGPoint)point tangent:(CGVector)tangent;
 @end
 
 @implementation CLKUISlopedPoint
@@ -23,12 +23,12 @@
   return result;
 }
 
-- (CLKUISlopedPoint)initWithPoint:(CGPoint)a3 tangent:(CGVector)a4
+- (CLKUISlopedPoint)initWithPoint:(CGPoint)point tangent:(CGVector)tangent
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  y = a3.y;
-  x = a3.x;
+  dy = tangent.dy;
+  dx = tangent.dx;
+  y = point.y;
+  x = point.x;
   ObjectType = swift_getObjectType();
   v10 = (self + OBJC_IVAR___CLKUISlopedPoint_point);
   *v10 = x;

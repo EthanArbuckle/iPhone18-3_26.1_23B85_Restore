@@ -1,11 +1,11 @@
 @interface UIKBRenderFactory_MonolithLinearSlim
-- (CGPoint)_textOffsetForKey:(id)a3;
+- (CGPoint)_textOffsetForKey:(id)key;
 - (CGSize)internationalControlKeySize;
-- (id)_enabledTraitsForControlKey:(id)a3;
-- (id)_highlightedTraitsForControlKey:(id)a3;
-- (id)_variantTraitsForControlKey:(id)a3 onKeyplane:(id)a4;
-- (void)configureGeometry:(id)a3 forControlKey:(id)a4;
-- (void)configureSymbolStyle:(id)a3 forControlKey:(id)a4;
+- (id)_enabledTraitsForControlKey:(id)key;
+- (id)_highlightedTraitsForControlKey:(id)key;
+- (id)_variantTraitsForControlKey:(id)key onKeyplane:(id)keyplane;
+- (void)configureGeometry:(id)geometry forControlKey:(id)key;
+- (void)configureSymbolStyle:(id)style forControlKey:(id)key;
 @end
 
 @implementation UIKBRenderFactory_MonolithLinearSlim
@@ -19,18 +19,18 @@
   return result;
 }
 
-- (CGPoint)_textOffsetForKey:(id)a3
+- (CGPoint)_textOffsetForKey:(id)key
 {
   v11.receiver = self;
   v11.super_class = UIKBRenderFactory_MonolithLinearSlim;
-  v3 = a3;
-  [(UIKBRenderFactory_Monolith *)&v11 _textOffsetForKey:v3];
+  keyCopy = key;
+  [(UIKBRenderFactory_Monolith *)&v11 _textOffsetForKey:keyCopy];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 interactionType];
+  interactionType = [keyCopy interactionType];
 
   v9 = 0.0;
-  if (v8 == 4)
+  if (interactionType == 4)
   {
     v10 = 0.0;
   }
@@ -40,7 +40,7 @@
     v10 = v5;
   }
 
-  if (v8 != 4)
+  if (interactionType != 4)
   {
     v9 = v7;
   }
@@ -50,97 +50,97 @@
   return result;
 }
 
-- (void)configureGeometry:(id)a3 forControlKey:(id)a4
+- (void)configureGeometry:(id)geometry forControlKey:(id)key
 {
-  v6 = a3;
+  geometryCopy = geometry;
   v26.receiver = self;
   v26.super_class = UIKBRenderFactory_MonolithLinearSlim;
-  v7 = a4;
-  [(UIKBRenderFactory_MonolithLinear *)&v26 configureGeometry:v6 forControlKey:v7];
-  v8 = [v7 interactionType];
+  keyCopy = key;
+  [(UIKBRenderFactory_MonolithLinear *)&v26 configureGeometry:geometryCopy forControlKey:keyCopy];
+  interactionType = [keyCopy interactionType];
 
-  if (v8 != 9)
+  if (interactionType != 9)
   {
-    if (v8 != 10)
+    if (interactionType != 10)
     {
       goto LABEL_7;
     }
 
-    v9 = [(UIKBRenderFactory *)self renderConfig];
-    v10 = [v9 colorAdaptiveBackground];
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-    if ((v10 & 1) == 0)
+    if ((colorAdaptiveBackground & 1) == 0)
     {
-      [v6 displayFrame];
+      [geometryCopy displayFrame];
       v12 = v11;
       [(UIKBRenderFactory_MonolithLinear *)self pillControlKeyHeight];
       v14 = (v12 - v13) * 0.5;
-      [v6 displayFrame];
-      [v6 setDisplayFrame:{v15 + 0.0, v16 + v14}];
+      [geometryCopy displayFrame];
+      [geometryCopy setDisplayFrame:{v15 + 0.0, v16 + v14}];
     }
   }
 
-  v17 = [(UIKBRenderFactory *)self renderConfig];
-  v18 = [v17 colorAdaptiveBackground];
+  renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground2 = [renderConfig2 colorAdaptiveBackground];
 
-  if (v18)
+  if (colorAdaptiveBackground2)
   {
-    [v6 displayFrame];
+    [geometryCopy displayFrame];
     [(UIKBRenderFactory_MonolithLinearSlim *)self internationalControlKeySize];
-    [v6 displayFrame];
+    [geometryCopy displayFrame];
     v20 = v19;
     [(UIKBRenderFactory_MonolithLinearSlim *)self internationalControlKeySize];
     v22 = (v20 - v21) * 0.5;
-    [v6 displayFrame];
-    [v6 setDisplayFrame:{v23 + v22, v25 + 0.0, v24 - (v22 + v22)}];
+    [geometryCopy displayFrame];
+    [geometryCopy setDisplayFrame:{v23 + v22, v25 + 0.0, v24 - (v22 + v22)}];
   }
 
 LABEL_7:
 }
 
-- (void)configureSymbolStyle:(id)a3 forControlKey:(id)a4
+- (void)configureSymbolStyle:(id)style forControlKey:(id)key
 {
-  v6 = a3;
+  styleCopy = style;
   v9.receiver = self;
   v9.super_class = UIKBRenderFactory_MonolithLinearSlim;
-  v7 = a4;
-  [(UIKBRenderFactory_MonolithLinear *)&v9 configureSymbolStyle:v6 forControlKey:v7];
-  v8 = [v7 interactionType];
+  keyCopy = key;
+  [(UIKBRenderFactory_MonolithLinear *)&v9 configureSymbolStyle:styleCopy forControlKey:keyCopy];
+  interactionType = [keyCopy interactionType];
 
-  if (v8 == 10)
+  if (interactionType == 10)
   {
     [(UIKBRenderFactory_MonolithLinear *)self pillControlKeyFontSize];
-    [v6 setFontSize:?];
+    [styleCopy setFontSize:?];
   }
 }
 
-- (id)_enabledTraitsForControlKey:(id)a3
+- (id)_enabledTraitsForControlKey:(id)key
 {
   v14.receiver = self;
   v14.super_class = UIKBRenderFactory_MonolithLinearSlim;
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_MonolithLinear *)&v14 _enabledTraitsForControlKey:v4];
-  v6 = [v4 interactionType];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_MonolithLinear *)&v14 _enabledTraitsForControlKey:keyCopy];
+  interactionType = [keyCopy interactionType];
 
-  if (v6 == 10)
+  if (interactionType == 10)
   {
     [(UIKBRenderFactory_Monolith *)self controlKeyRectCornerRadius];
     v8 = v7;
-    v9 = [v5 geometry];
-    [v9 setRoundRectRadius:v8];
+    geometry = [v5 geometry];
+    [geometry setRoundRectRadius:v8];
 
-    v10 = [(UIKBRenderFactory_MonolithLinear *)self pillControlKeyPillBackgroundColor];
-    v11 = [UIKBGradient gradientWithFlatColor:v10];
+    pillControlKeyPillBackgroundColor = [(UIKBRenderFactory_MonolithLinear *)self pillControlKeyPillBackgroundColor];
+    v11 = [UIKBGradient gradientWithFlatColor:pillControlKeyPillBackgroundColor];
     [v5 setBackgroundGradient:v11];
 
     [v5 setRenderFlags:&unk_1EFE2C640];
-    v12 = [v5 symbolStyle];
-    [v12 setTextColor:@"UIKBColorBlack"];
+    symbolStyle = [v5 symbolStyle];
+    [symbolStyle setTextColor:@"UIKBColorBlack"];
 
     [v5 setBlendForm:4];
   }
 
-  else if (v6 == 9)
+  else if (interactionType == 9)
   {
     [v5 setRenderFlags:&unk_1EFE2C628];
     [v5 setBackgroundGradient:0];
@@ -149,18 +149,18 @@ LABEL_7:
   return v5;
 }
 
-- (id)_highlightedTraitsForControlKey:(id)a3
+- (id)_highlightedTraitsForControlKey:(id)key
 {
   v18.receiver = self;
   v18.super_class = UIKBRenderFactory_MonolithLinearSlim;
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_MonolithLinear *)&v18 _highlightedTraitsForControlKey:v4];
-  v6 = [v4 interactionType];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_MonolithLinear *)&v18 _highlightedTraitsForControlKey:keyCopy];
+  interactionType = [keyCopy interactionType];
 
-  if (v6 == 9)
+  if (interactionType == 9)
   {
-    v14 = [v5 geometry];
-    [v14 displayFrame];
+    geometry = [v5 geometry];
+    [geometry displayFrame];
     [v5 setFloatingContentViewControlFocusedBaseSize:{v15, v16}];
 
     [(UIKBRenderFactory_Monolith *)self letterKeyFocusIncreaseSize];
@@ -169,26 +169,26 @@ LABEL_7:
     [v5 setFloatingContentViewCornerRadius:?];
   }
 
-  else if (v6 == 10)
+  else if (interactionType == 10)
   {
     [(UIKBRenderFactory_Monolith *)self controlKeyRectCornerRadius];
     v8 = v7;
-    v9 = [v5 geometry];
-    [v9 setRoundRectRadius:v8];
+    geometry2 = [v5 geometry];
+    [geometry2 setRoundRectRadius:v8];
 
-    v10 = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantPillBackgroundColor];
-    v11 = [UIKBGradient gradientWithFlatColor:v10];
+    highlightedVariantPillBackgroundColor = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantPillBackgroundColor];
+    v11 = [UIKBGradient gradientWithFlatColor:highlightedVariantPillBackgroundColor];
     [v5 setBackgroundGradient:v11];
 
     [v5 setRenderFlags:&unk_1EFE2C658];
-    v12 = [v5 symbolStyle];
-    [v12 setTextColor:@"UIKBColorBlack"];
+    symbolStyle = [v5 symbolStyle];
+    [symbolStyle setTextColor:@"UIKBColorBlack"];
 
     [v5 setBlendForm:4];
-    v13 = [(UIKBRenderFactory *)self renderConfig];
-    LOBYTE(v12) = [v13 colorAdaptiveBackground];
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    LOBYTE(symbolStyle) = [renderConfig colorAdaptiveBackground];
 
-    if ((v12 & 1) == 0)
+    if ((symbolStyle & 1) == 0)
     {
       [(UIKBRenderFactory_MonolithLinear *)self pillControlKeyFocusIncreaseSize];
       [v5 setFloatingContentViewControlFocusedIncreaseSize:?];
@@ -198,26 +198,26 @@ LABEL_7:
   return v5;
 }
 
-- (id)_variantTraitsForControlKey:(id)a3 onKeyplane:(id)a4
+- (id)_variantTraitsForControlKey:(id)key onKeyplane:(id)keyplane
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 interactionType] == 10)
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  if ([keyCopy interactionType] == 10)
   {
-    v83 = v7;
+    v83 = keyplaneCopy;
     [(UIKBRenderFactory_MonolithLinearSlim *)self variantKeyPaddingH];
     v9 = v8;
     v10 = -v8;
     [(UIKBRenderFactory_MonolithLinearSlim *)self variantKeyPaddingV];
     v12 = v11;
     v13 = -v11;
-    [v6 paddedFrame];
+    [keyCopy paddedFrame];
     v15 = v14 - v9;
     v17 = v16 - (v10 - v9);
     v19 = v18 - v12;
     v21 = v20 - (v13 - v12);
-    [v6 paddedFrame];
+    [keyCopy paddedFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -231,8 +231,8 @@ LABEL_7:
     v76 = v32;
     v78 = v33;
     v80 = v34;
-    v35 = [v6 subtrees];
-    [v30 setPaddedFrame:{v74 + 0.0, v78 + 0.0, v76 - (0.0 - v17 * (objc_msgSend(v35, "count") - 1)), v80}];
+    subtrees = [keyCopy subtrees];
+    [v30 setPaddedFrame:{v74 + 0.0, v78 + 0.0, v76 - (0.0 - v17 * (objc_msgSend(subtrees, "count") - 1)), v80}];
 
     [v30 paddedFrame];
     v75 = v37;
@@ -250,8 +250,8 @@ LABEL_7:
     [(UIKBRenderFactory_Monolith *)self shadowRadius];
     [v30 setDisplayFrame:{v77 - v44, v81 - v73, v75 - (-v44 - v72), v79 - (v71 - v73)}];
     v45 = [UIKBRenderTraits traitsWithGeometry:v30];
-    v46 = [(UIKBRenderFactory_Monolith *)self variantPlatterBackgroundColor];
-    v47 = [UIKBGradient gradientWithFlatColor:v46];
+    variantPlatterBackgroundColor = [(UIKBRenderFactory_Monolith *)self variantPlatterBackgroundColor];
+    v47 = [UIKBGradient gradientWithFlatColor:variantPlatterBackgroundColor];
     [v45 setBackgroundGradient:v47];
 
     [(UIKBRenderFactory_Monolith *)self shadowVerticalOffset];
@@ -261,13 +261,13 @@ LABEL_7:
     [v45 addRenderEffect:v50];
 
     [v45 setBlurBlending:1];
-    v51 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v52 = [v6 subtrees];
-    v53 = [v52 countByEnumeratingWithState:&v84 objects:v88 count:16];
+    subtrees2 = [keyCopy subtrees];
+    v53 = [subtrees2 countByEnumeratingWithState:&v84 objects:v88 count:16];
     if (v53)
     {
       v54 = v53;
@@ -276,7 +276,7 @@ LABEL_7:
       {
         if (*v85 != v55)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(subtrees2);
         }
 
         v56 = [UIKBRenderGeometry geometryWithFrame:v15 paddedFrame:v19, v17, v21, v23, v25, v27, v29];
@@ -290,13 +290,13 @@ LABEL_7:
         [v56 setLayeredForegroundPaddedFrame:{v23, v25, v27, v29}];
         [(UIKBRenderFactory_Monolith *)self controlKeyRectCornerRadius];
         [v56 setLayeredForegroundRoundRectRadius:?];
-        [v51 addObject:v56];
+        [array addObject:v56];
         v15 = v17 + v15;
         v23 = v17 + v23;
 
         if (!--v54)
         {
-          v54 = [v52 countByEnumeratingWithState:&v84 objects:v88 count:16];
+          v54 = [subtrees2 countByEnumeratingWithState:&v84 objects:v88 count:16];
           if (!v54)
           {
             break;
@@ -305,38 +305,38 @@ LABEL_7:
       }
     }
 
-    [v45 setVariantGeometries:v51];
-    v57 = [(UIKBRenderFactory_MonolithLinearSlim *)self _enabledTraitsForControlKey:v6];
+    [v45 setVariantGeometries:array];
+    v57 = [(UIKBRenderFactory_MonolithLinearSlim *)self _enabledTraitsForControlKey:keyCopy];
     [v57 setBackgroundGradient:0];
-    v58 = [(UIKBRenderFactory_MonolithLinearSlim *)self variantPillBackgroundColor];
-    v59 = [UIKBGradient gradientWithFlatColor:v58];
+    variantPillBackgroundColor = [(UIKBRenderFactory_MonolithLinearSlim *)self variantPillBackgroundColor];
+    v59 = [UIKBGradient gradientWithFlatColor:variantPillBackgroundColor];
     [v57 setLayeredForegroundGradient:v59];
 
-    v60 = [(UIKBRenderFactory_MonolithLinearSlim *)self variantTextColor];
-    v61 = [v57 symbolStyle];
-    [v61 setTextColor:v60];
+    variantTextColor = [(UIKBRenderFactory_MonolithLinearSlim *)self variantTextColor];
+    symbolStyle = [v57 symbolStyle];
+    [symbolStyle setTextColor:variantTextColor];
 
     [v45 setVariantTraits:v57];
-    v62 = [(UIKBRenderFactory_MonolithLinearSlim *)self _highlightedTraitsForControlKey:v6];
-    v63 = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantLayeredBackgroundColor];
-    v64 = [UIKBGradient gradientWithFlatColor:v63];
+    v62 = [(UIKBRenderFactory_MonolithLinearSlim *)self _highlightedTraitsForControlKey:keyCopy];
+    highlightedVariantLayeredBackgroundColor = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantLayeredBackgroundColor];
+    v64 = [UIKBGradient gradientWithFlatColor:highlightedVariantLayeredBackgroundColor];
     [v62 setBackgroundGradient:v64];
 
-    v65 = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantPillBackgroundColor];
-    v66 = [UIKBGradient gradientWithFlatColor:v65];
+    highlightedVariantPillBackgroundColor = [(UIKBRenderFactory_MonolithLinearSlim *)self highlightedVariantPillBackgroundColor];
+    v66 = [UIKBGradient gradientWithFlatColor:highlightedVariantPillBackgroundColor];
     [v62 setLayeredForegroundGradient:v66];
 
-    v67 = [(UIKBRenderFactory_MonolithLinearSlim *)self variantTextColor];
-    v68 = [v62 symbolStyle];
-    [v68 setTextColor:v67];
+    variantTextColor2 = [(UIKBRenderFactory_MonolithLinearSlim *)self variantTextColor];
+    symbolStyle2 = [v62 symbolStyle];
+    [symbolStyle2 setTextColor:variantTextColor2];
 
     [v45 setHighlightedVariantTraits:v62];
-    v7 = v83;
+    keyplaneCopy = v83;
   }
 
   else
   {
-    v45 = [(UIKBRenderFactory_Monolith *)self _variantTraitsForLetterKey:v6 onKeyplane:v7];
+    v45 = [(UIKBRenderFactory_Monolith *)self _variantTraitsForLetterKey:keyCopy onKeyplane:keyplaneCopy];
   }
 
   return v45;

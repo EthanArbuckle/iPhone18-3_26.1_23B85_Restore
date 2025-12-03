@@ -3,63 +3,63 @@
 - (CGRect)initialFrameOfHostView;
 - (UIViewController)stickerViewController;
 - (UIViewController)viewController;
-- (_MSMessageAppBundleContext)initWithViewController:(id)a3 wantsLiveView:(BOOL)a4;
+- (_MSMessageAppBundleContext)initWithViewController:(id)controller wantsLiveView:(BOOL)view;
 - (void)_hostDidBeginDeferredTeardown;
 - (void)_remoteViewDidBecomeReadyForDisplay;
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3;
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color;
 - (void)_remoteViewNeedsSizeMatchBeforeSnapshotSwap;
 - (void)_remoteViewProvidesExplicitSizeSnapshot;
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4;
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3;
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier;
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary;
 - (void)_sendWillBecomeActiveMessage;
-- (void)_setSendingEnabled:(BOOL)a3;
+- (void)_setSendingEnabled:(BOOL)enabled;
 - (void)balloonHostAuditToken;
 - (void)beginDisablingUserInteraction;
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4;
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion;
 - (void)contentDidLoad;
 - (void)dismiss;
 - (void)dismissAndPresentPhotosApp;
 - (void)dragMediaItemCanceled;
-- (void)dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7;
+- (void)dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler;
 - (void)endDisablingUserInteraction;
-- (void)presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5;
-- (void)presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
-- (void)presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6;
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)requestFullScreenModalPresentationWithSize:(CGSize)a3;
-- (void)requestHostSceneIdentifierWithCompletion:(id)a3;
-- (void)requestPresentationStyle:(unint64_t)a3;
+- (void)presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion;
+- (void)presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
+- (void)presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion;
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)requestFullScreenModalPresentationWithSize:(CGSize)size;
+- (void)requestHostSceneIdentifierWithCompletion:(id)completion;
+- (void)requestPresentationStyle:(unint64_t)style;
 - (void)requestResize;
-- (void)sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5;
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6;
-- (void)stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6;
-- (void)stickerDruidDragEndedWithPayload:(id)a3;
-- (void)stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4;
+- (void)sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler;
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler;
+- (void)stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler;
+- (void)stickerDruidDragEndedWithPayload:(id)payload;
+- (void)stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier;
 - (void)stickerDruidDragStarted;
 @end
 
 @implementation _MSMessageAppBundleContext
 
-- (_MSMessageAppBundleContext)initWithViewController:(id)a3 wantsLiveView:(BOOL)a4
+- (_MSMessageAppBundleContext)initWithViewController:(id)controller wantsLiveView:(BOOL)view
 {
-  v6 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = _MSMessageAppBundleContext;
   v7 = [(_MSMessageAppBundleContext *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_viewController, v6);
-    v8->_wantsLiveView = a4;
-    if (!a4)
+    objc_storeWeak(&v7->_viewController, controllerCopy);
+    v8->_wantsLiveView = view;
+    if (!view)
     {
       v9 = +[_MSExtensionGlobalState sharedInstance];
       [v9 setActiveExtensionContext:v8];
@@ -88,14 +88,14 @@
 
 - (void)_sendWillBecomeActiveMessage
 {
-  v3 = [(_MSMessageAppBundleContext *)self viewController];
+  viewController = [(_MSMessageAppBundleContext *)self viewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_MSMessageAppBundleContext *)self viewController];
+    viewController2 = [(_MSMessageAppBundleContext *)self viewController];
     [(_MSMessageAppBundleContext *)self initialFrameOfHostView];
-    [v5 setInitialFrameBeforeAppearance:?];
+    [viewController2 setInitialFrameBeforeAppearance:?];
   }
 }
 
@@ -114,47 +114,47 @@
 
 - (void)_remoteViewProvidesExplicitSizeSnapshot
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _remoteViewProvidesExplicitSizeSnapshot];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _remoteViewProvidesExplicitSizeSnapshot];
 }
 
 - (void)_remoteViewNeedsSizeMatchBeforeSnapshotSwap
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _remoteViewNeedsSizeMatchBeforeSnapshotSwap];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _remoteViewNeedsSizeMatchBeforeSnapshotSwap];
 }
 
 - (void)_remoteViewDidBecomeReadyForDisplay
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _remoteViewDidBecomeReadyForDisplay];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _remoteViewDidBecomeReadyForDisplay];
 }
 
-- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)a3
+- (void)_remoteViewDidInvalidateMessageTintColorWithUpdatedColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v5 _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:v4];
+  colorCopy = color;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:colorCopy];
 }
 
-- (void)_requestStickerExtensionMetadataDictionary:(id)a3
+- (void)_requestStickerExtensionMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppBundleContext *)self containingContext];
-  [v5 _requestStickerExtensionMetadataDictionary:v4];
+  dictionaryCopy = dictionary;
+  containingContext = [(_MSMessageAppBundleContext *)self containingContext];
+  [containingContext _requestStickerExtensionMetadataDictionary:dictionaryCopy];
 }
 
-- (void)_requestPresentationWithStickerType:(id)a3 identifier:(id)a4
+- (void)_requestPresentationWithStickerType:(id)type identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MSMessageAppBundleContext *)self containingContext];
-  [v8 _requestPresentationWithStickerType:v7 identifier:v6];
+  identifierCopy = identifier;
+  typeCopy = type;
+  containingContext = [(_MSMessageAppBundleContext *)self containingContext];
+  [containingContext _requestPresentationWithStickerType:typeCopy identifier:identifierCopy];
 }
 
 - (void)_hostDidBeginDeferredTeardown
 {
-  v3 = [(_MSMessageAppBundleContext *)self viewController];
+  viewController = [(_MSMessageAppBundleContext *)self viewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -188,268 +188,268 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)stageAppItem:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAppItem:(id)item skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v10 _stageAppItem:v9 skipShelf:v5 completionHandler:v8];
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  itemCopy = item;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stageAppItem:itemCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)stageMediaItem:(id)a3 skipShelf:(BOOL)a4 forceStage:(BOOL)a5 completionHandler:(id)a6
+- (void)stageMediaItem:(id)item skipShelf:(BOOL)shelf forceStage:(BOOL)stage completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v12 _stageMediaItem:v11 skipShelf:v7 forceStage:v6 completionHandler:v10];
+  stageCopy = stage;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  itemCopy = item;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stageMediaItem:itemCopy skipShelf:shelfCopy forceStage:stageCopy completionHandler:handlerCopy];
 }
 
-- (void)stageRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v10 _stageRichLink:v9 skipShelf:v5 completionHandler:v8];
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  linkCopy = link;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stageRichLink:linkCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)sendCustomAcknowledgement:(id)a3 selectedMessage:(id)a4 completionHandler:(id)a5
+- (void)sendCustomAcknowledgement:(id)acknowledgement selectedMessage:(id)message completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v11 _sendCustomAcknowledgement:v10 selectedMessage:v9 completionHandler:v8];
+  handlerCopy = handler;
+  messageCopy = message;
+  acknowledgementCopy = acknowledgement;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _sendCustomAcknowledgement:acknowledgementCopy selectedMessage:messageCopy completionHandler:handlerCopy];
 }
 
-- (void)requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v8 _requestConversationAvatarsWithSize:v7 completionHandler:{width, height}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _requestConversationAvatarsWithSize:handlerCopy completionHandler:{width, height}];
 }
 
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v10 _stageAssetArchive:v9 skipShelf:v5 completionHandler:v8];
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  archiveCopy = archive;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stageAssetArchive:archiveCopy skipShelf:shelfCopy completionHandler:handlerCopy];
 }
 
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v8 _removeAssetArchiveWithIdentifier:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _removeAssetArchiveWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)startDragMediaItem:(id)a3 frameInRemoteView:(CGRect)a4 fence:(id)a5 completionHandler:(id)a6
+- (void)startDragMediaItem:(id)item frameInRemoteView:(CGRect)view fence:(id)fence completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v16 _startDragMediaItem:v15 frameInRemoteView:v14 fence:v13 completionHandler:{x, y, width, height}];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  handlerCopy = handler;
+  fenceCopy = fence;
+  itemCopy = item;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _startDragMediaItem:itemCopy frameInRemoteView:fenceCopy fence:handlerCopy completionHandler:{x, y, width, height}];
 }
 
-- (void)dragMediaItemMoved:(id)a3 frameInRemoteView:(CGRect)a4 rotation:(double)a5 scale:(double)a6 completionHandler:(id)a7
+- (void)dragMediaItemMoved:(id)moved frameInRemoteView:(CGRect)view rotation:(double)rotation scale:(double)scale completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = a3;
-  v17 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v17 _dragMediaItemMoved:v16 frameInRemoteView:v15 rotation:x scale:y completionHandler:{width, height, a5, a6}];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  handlerCopy = handler;
+  movedCopy = moved;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _dragMediaItemMoved:movedCopy frameInRemoteView:handlerCopy rotation:x scale:y completionHandler:{width, height, rotation, scale}];
 }
 
 - (void)dragMediaItemCanceled
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _dragMediaItemCanceled];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _dragMediaItemCanceled];
 }
 
 - (void)stickerDruidDragStarted
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _stickerDruidDragStarted];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stickerDruidDragStarted];
 }
 
-- (void)stickerDruidDragEndedWithPayload:(id)a3
+- (void)stickerDruidDragEndedWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v5 _stickerDruidDragEndedWithPayload:v4];
+  payloadCopy = payload;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stickerDruidDragEndedWithPayload:payloadCopy];
 }
 
-- (void)stickerDruidDragEndedWithPayload:(id)a3 pluginIdentifier:(id)a4
+- (void)stickerDruidDragEndedWithPayload:(id)payload pluginIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v8 _stickerDruidDragEndedWithPayload:v7 pluginIdentifier:v6];
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _stickerDruidDragEndedWithPayload:payloadCopy pluginIdentifier:identifierCopy];
 }
 
-- (void)requestPresentationStyle:(unint64_t)a3
+- (void)requestPresentationStyle:(unint64_t)style
 {
-  if (a3 >= 2)
+  if (style >= 2)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
-      v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot request transition to transcript presentation style" userInfo:0];
-      [v4 raise];
+      hostContext = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot request transition to transcript presentation style" userInfo:0];
+      [hostContext raise];
       goto LABEL_6;
     }
 
-    if (a3 != 3)
+    if (style != 3)
     {
       return;
     }
   }
 
-  v4 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v4 _requestPresentationStyle:a3];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _requestPresentationStyle:style];
 LABEL_6:
 }
 
-- (void)requestFullScreenModalPresentationWithSize:(CGSize)a3
+- (void)requestFullScreenModalPresentationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v5 _requestFullScreenModalPresentationWithSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _requestFullScreenModalPresentationWithSize:{width, height}];
 }
 
 - (void)dismiss
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _dismiss];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _dismiss];
 }
 
 - (void)dismissAndPresentPhotosApp
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _dismissAndPresentPhotosApp];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _dismissAndPresentPhotosApp];
 }
 
-- (void)_setSendingEnabled:(BOOL)a3
+- (void)_setSendingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v4 _setSendingEnabled:v3];
+  enabledCopy = enabled;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _setSendingEnabled:enabledCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v14 _presentAlertWithTitle:v13 message:v12 buttonTitle:v11 completion:v10];
+  completionCopy = completion;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy completion:completionCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v17 _presentAlertWithTitle:v16 message:v15 buttonTitle:v14 image:v13 completion:v12];
+  completionCopy = completion;
+  imageCopy = image;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy image:imageCopy completion:completionCopy];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v17 _presentAlertWithTitle:v16 message:v15 buttonTitle:v14 destructiveButtonTitle:v13 completion:v12];
+  completionCopy = completion;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy destructiveButtonTitle:destructiveButtonTitleCopy completion:completionCopy];
 }
 
-- (void)presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5
+- (void)presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v11 _presentAlertSheetWith:v10 styles:v9 completion:v8];
+  completionCopy = completion;
+  stylesCopy = styles;
+  withCopy = with;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentAlertSheetWith:withCopy styles:stylesCopy completion:completionCopy];
 }
 
-- (void)presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6
+- (void)presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v16 _presentContextMenuWithButtonTitles:v15 imageNames:v14 buttonFrame:v13 completion:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  completionCopy = completion;
+  namesCopy = names;
+  titlesCopy = titles;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentContextMenuWithButtonTitles:titlesCopy imageNames:namesCopy buttonFrame:completionCopy completion:{x, y, width, height}];
 }
 
-- (void)presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v17 _presentAlertSheetWithTitle:v16 message:v15 buttonTitles:v14 styles:v13 completion:v12];
+  completionCopy = completion;
+  stylesCopy = styles;
+  titlesCopy = titles;
+  messageCopy = message;
+  titleCopy = title;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _presentAlertSheetWithTitle:titleCopy message:messageCopy buttonTitles:titlesCopy styles:stylesCopy completion:completionCopy];
 }
 
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v8 _canShowBrowserForPluginIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _canShowBrowserForPluginIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v10 _showBrowserForPluginIdentifier:v9 style:a4 completion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _showBrowserForPluginIdentifier:identifierCopy style:style completion:completionCopy];
 }
 
 - (void)requestResize
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _requestResize];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _requestResize];
 }
 
 - (void)contentDidLoad
 {
-  v2 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v2 _contentDidLoad];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _contentDidLoad];
 }
 
-- (void)requestHostSceneIdentifierWithCompletion:(id)a3
+- (void)requestHostSceneIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_MSMessageAppBundleContext *)self hostContext];
-  [v5 _requestHostSceneIdentifierWithCompletion:v4];
+  completionCopy = completion;
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
+  [hostContext _requestHostSceneIdentifierWithCompletion:completionCopy];
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)balloonHostAuditToken
@@ -458,17 +458,17 @@ LABEL_6:
   *(&v5 + 1) = -1;
   *retstr->var0 = v5;
   *&retstr->var0[4] = v5;
-  v6 = [(_MSMessageAppBundleContext *)self hostContext];
+  hostContext = [(_MSMessageAppBundleContext *)self hostContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(_MSMessageAppBundleContext *)self hostContext];
-    v9 = v8;
-    if (v8)
+    hostContext2 = [(_MSMessageAppBundleContext *)self hostContext];
+    v9 = hostContext2;
+    if (hostContext2)
     {
-      [v8 _extensionHostAuditToken];
+      [hostContext2 _extensionHostAuditToken];
     }
 
     else

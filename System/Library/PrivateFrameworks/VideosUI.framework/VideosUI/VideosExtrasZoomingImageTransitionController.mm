@@ -1,39 +1,39 @@
 @interface VideosExtrasZoomingImageTransitionController
 - (CGPoint)initialPinchCenter;
-- (VideosExtrasZoomingImageTransitionController)initWithItemIndex:(unint64_t)a3 forInteractiveTransition:(BOOL)a4;
+- (VideosExtrasZoomingImageTransitionController)initWithItemIndex:(unint64_t)index forInteractiveTransition:(BOOL)transition;
 - (double)_destinationScale;
-- (double)_maximumDistanceTravelledForPoints:(CGPoint *)a3 count:(unint64_t)a4 currentTransform:(CGAffineTransform *)a5 finalTransform:(CGAffineTransform *)a6;
-- (double)transitionDuration:(id)a3;
-- (float)_desiredSpeedForNonInteractiveAnimationWithDuration:(double)a3 deferredTransform:(CGAffineTransform *)a4 finalTransform:(CGAffineTransform *)a5;
-- (void)animateTransition:(id)a3;
-- (void)completeInteractiveTransitionWithPinchGestureRecognizer:(id)a3;
-- (void)prepareInteractiveTransitionWithPinchGestureRecognizer:(id)a3;
-- (void)updateInteractiveTransitionWithPinchGestureRecognizer:(id)a3;
+- (double)_maximumDistanceTravelledForPoints:(CGPoint *)points count:(unint64_t)count currentTransform:(CGAffineTransform *)transform finalTransform:(CGAffineTransform *)finalTransform;
+- (double)transitionDuration:(id)duration;
+- (float)_desiredSpeedForNonInteractiveAnimationWithDuration:(double)duration deferredTransform:(CGAffineTransform *)transform finalTransform:(CGAffineTransform *)finalTransform;
+- (void)animateTransition:(id)transition;
+- (void)completeInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer;
+- (void)prepareInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer;
+- (void)updateInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer;
 @end
 
 @implementation VideosExtrasZoomingImageTransitionController
 
-- (VideosExtrasZoomingImageTransitionController)initWithItemIndex:(unint64_t)a3 forInteractiveTransition:(BOOL)a4
+- (VideosExtrasZoomingImageTransitionController)initWithItemIndex:(unint64_t)index forInteractiveTransition:(BOOL)transition
 {
-  v4 = a4;
+  transitionCopy = transition;
   v9.receiver = self;
   v9.super_class = VideosExtrasZoomingImageTransitionController;
   v6 = [(UIPercentDrivenInteractiveTransition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(VideosExtrasZoomingImageTransitionController *)v6 setItemIndex:a3];
-    [(VideosExtrasZoomingImageTransitionController *)v7 setInteractive:v4];
+    [(VideosExtrasZoomingImageTransitionController *)v6 setItemIndex:index];
+    [(VideosExtrasZoomingImageTransitionController *)v7 setInteractive:transitionCopy];
   }
 
   return v7;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(VideosExtrasZoomingImageTransitionController *)self shouldUseSpringAnimation];
+  shouldUseSpringAnimation = [(VideosExtrasZoomingImageTransitionController *)self shouldUseSpringAnimation];
   result = 0.2;
-  if (v3)
+  if (shouldUseSpringAnimation)
   {
     return 0.4;
   }
@@ -41,25 +41,25 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v7 = [v6 view];
-  [v4 finalFrameForViewController:v6];
-  [v7 setFrame:?];
-  [v5 addSubview:v7];
-  [v7 layoutIfNeeded];
-  v8 = [(VideosExtrasZoomingImageTransitionController *)self itemIndex];
-  v9 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  view = [v6 view];
+  [transitionCopy finalFrameForViewController:v6];
+  [view setFrame:?];
+  [containerView addSubview:view];
+  [view layoutIfNeeded];
+  itemIndex = [(VideosExtrasZoomingImageTransitionController *)self itemIndex];
+  v9 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
   v10 = objc_alloc_init(VideosExtrasBorderedImageView);
-  v29 = v5;
-  [v5 addSubview:v10];
+  v29 = containerView;
+  [containerView addSubview:v10];
   [(VideosExtrasZoomingImageTransitionController *)self setZoomingImageView:v10];
-  v11 = [(VideosExtrasZoomingImageTransitionController *)self isInteractive];
-  v12 = [[VideosExtrasZoomingImageTransitionContext alloc] initWithZoomingImageView:v10 itemIndex:v8 appearState:1 isInteractive:v11];
-  v13 = [[VideosExtrasZoomingImageTransitionContext alloc] initWithZoomingImageView:v10 itemIndex:v8 appearState:0 isInteractive:v11];
+  isInteractive = [(VideosExtrasZoomingImageTransitionController *)self isInteractive];
+  v12 = [[VideosExtrasZoomingImageTransitionContext alloc] initWithZoomingImageView:v10 itemIndex:itemIndex appearState:1 isInteractive:isInteractive];
+  v13 = [[VideosExtrasZoomingImageTransitionContext alloc] initWithZoomingImageView:v10 itemIndex:itemIndex appearState:0 isInteractive:isInteractive];
   [(VideosExtrasBorderedImageView *)v10 setShouldSkipImageWhenReplicatingState:0];
   [(VideosExtrasBorderedImageView *)v10 setShouldUseTransformWhenReplicatingState:0];
   [v9 prepareZoomingImageTransitionWithContext:v12];
@@ -70,7 +70,7 @@
   aBlock[3] = &unk_1E872FB50;
   v14 = v10;
   v38 = v14;
-  v43 = v11;
+  v43 = isInteractive;
   v15 = v9;
   v39 = v15;
   v16 = v12;
@@ -84,7 +84,7 @@
   v30[1] = 3221225472;
   v30[2] = __66__VideosExtrasZoomingImageTransitionController_animateTransition___block_invoke_2;
   v30[3] = &unk_1E872FB78;
-  v20 = v4;
+  v20 = transitionCopy;
   v31 = v20;
   v21 = v15;
   v32 = v21;
@@ -144,15 +144,15 @@ uint64_t __66__VideosExtrasZoomingImageTransitionController_animateTransition___
   return [v3 completeTransition:v2 ^ 1u];
 }
 
-- (void)prepareInteractiveTransitionWithPinchGestureRecognizer:(id)a3
+- (void)prepareInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v5 superview];
-  [v4 locationInView:v6];
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  superview = [view superview];
+  [recognizerCopy locationInView:superview];
   [(VideosExtrasZoomingImageTransitionController *)self setInitialPinchCenter:?];
 
-  [v4 scale];
+  [recognizerCopy scale];
   v8 = v7;
 
   v9 = 1.0;
@@ -164,16 +164,16 @@ uint64_t __66__VideosExtrasZoomingImageTransitionController_animateTransition___
   [(VideosExtrasZoomingImageTransitionController *)self setInitialPinchScale:v9];
 }
 
-- (void)updateInteractiveTransitionWithPinchGestureRecognizer:(id)a3
+- (void)updateInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [v4 scale];
+  recognizerCopy = recognizer;
+  [recognizerCopy scale];
   v6 = v5;
   [(VideosExtrasZoomingImageTransitionController *)self initialPinchScale];
   v8 = v6 / v7;
-  v9 = [v4 view];
-  v10 = [v9 superview];
-  [v4 locationInView:v10];
+  view = [recognizerCopy view];
+  superview = [view superview];
+  [recognizerCopy locationInView:superview];
   v12 = v11;
   v14 = v13;
 
@@ -188,9 +188,9 @@ uint64_t __66__VideosExtrasZoomingImageTransitionController_animateTransition___
   memset(&v23, 0, sizeof(v23));
   v21 = v24;
   CGAffineTransformConcat(&v23, &t1, &v21);
-  v19 = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
+  zoomingImageView = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
   t1 = v23;
-  [v19 setTransform:&t1];
+  [zoomingImageView setTransform:&t1];
 
   [(VideosExtrasZoomingImageTransitionController *)self _destinationScale];
   MPULayoutLinearRelationMake();
@@ -203,14 +203,14 @@ uint64_t __66__VideosExtrasZoomingImageTransitionController_animateTransition___
   [(UIPercentDrivenInteractiveTransition *)self updateInteractiveTransition:fmin(v20, 0.99)];
 }
 
-- (void)completeInteractiveTransitionWithPinchGestureRecognizer:(id)a3
+- (void)completeInteractiveTransitionWithPinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  [v4 velocity];
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  [recognizerCopy velocity];
   v7 = v6;
 
-  if (v5 == 4)
+  if (state == 4)
   {
     [(UIPercentDrivenInteractiveTransition *)self percentComplete];
     v9 = v8;
@@ -233,18 +233,18 @@ LABEL_4:
 LABEL_6:
   [(UIPercentDrivenInteractiveTransition *)self duration];
   v15 = v9 * v14;
-  v16 = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
-  v17 = [v16 window];
-  v18 = [v17 layer];
+  zoomingImageView = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
+  window = [zoomingImageView window];
+  layer = [window layer];
 
-  [v18 speed];
+  [layer speed];
   v20 = v19;
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
-  if (v16)
+  if (zoomingImageView)
   {
-    [v16 deferredTransform];
+    [zoomingImageView deferredTransform];
   }
 
   v21 = MEMORY[0x1E695EFD0];
@@ -265,13 +265,13 @@ LABEL_6:
   v36[2] = v42;
   v37 = v43;
   [(VideosExtrasZoomingImageTransitionController *)self _desiredSpeedForNonInteractiveAnimationWithDuration:&v37 deferredTransform:v36 finalTransform:v15];
-  [v18 setSpeed:?];
+  [layer setSpeed:?];
   v24 = MEMORY[0x1E69DD250];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __104__VideosExtrasZoomingImageTransitionController_completeInteractiveTransitionWithPinchGestureRecognizer___block_invoke;
   v31[3] = &unk_1E872FBA0;
-  v25 = v16;
+  v25 = zoomingImageView;
   v33 = v40;
   v34 = v41;
   v32 = v25;
@@ -280,9 +280,9 @@ LABEL_6:
   v28[1] = 3221225472;
   v28[2] = __104__VideosExtrasZoomingImageTransitionController_completeInteractiveTransitionWithPinchGestureRecognizer___block_invoke_2;
   v28[3] = &unk_1E872FBC8;
-  v29 = v18;
+  v29 = layer;
   v30 = v20;
-  v26 = v18;
+  v26 = layer;
   [v24 animateWithDuration:0 delay:v31 options:v28 animations:v15 completion:0.0];
   v27 = v21[1];
   v37 = *v21;
@@ -310,11 +310,11 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
   return [v1 setTransform:v4];
 }
 
-- (float)_desiredSpeedForNonInteractiveAnimationWithDuration:(double)a3 deferredTransform:(CGAffineTransform *)a4 finalTransform:(CGAffineTransform *)a5
+- (float)_desiredSpeedForNonInteractiveAnimationWithDuration:(double)duration deferredTransform:(CGAffineTransform *)transform finalTransform:(CGAffineTransform *)finalTransform
 {
   v32[8] = *MEMORY[0x1E69E9840];
-  v9 = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
-  [v9 bounds];
+  zoomingImageView = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
+  [zoomingImageView bounds];
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
@@ -359,9 +359,9 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
   v40.size.height = height;
   *&v32[6] = v17;
   v32[7] = CGRectGetMaxY(v40);
-  if (v9)
+  if (zoomingImageView)
   {
-    [v9 transform];
+    [zoomingImageView transform];
   }
 
   else
@@ -371,19 +371,19 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
     v29 = 0u;
   }
 
-  v18 = *&a5->c;
-  v26 = *&a5->a;
+  v18 = *&finalTransform->c;
+  v26 = *&finalTransform->a;
   v27 = v18;
-  v28 = *&a5->tx;
+  v28 = *&finalTransform->tx;
   [(VideosExtrasZoomingImageTransitionController *)self _maximumDistanceTravelledForPoints:v32 count:4 currentTransform:&v29 finalTransform:&v26];
   v19 = *(MEMORY[0x1E695EFD0] + 16);
   v29 = *MEMORY[0x1E695EFD0];
   v30 = v19;
   v31 = *(MEMORY[0x1E695EFD0] + 32);
-  v20 = *&a4->c;
-  v26 = *&a4->a;
+  v20 = *&transform->c;
+  v26 = *&transform->a;
   v27 = v20;
-  v28 = *&a4->tx;
+  v28 = *&transform->tx;
   [(VideosExtrasZoomingImageTransitionController *)self _maximumDistanceTravelledForPoints:v32 count:4 currentTransform:&v29 finalTransform:&v26];
   MPULayoutLinearRelationMake();
   MPULayoutLinearRelationEvaluate();
@@ -391,16 +391,16 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
   [(UIPercentDrivenInteractiveTransition *)self duration];
   v24 = v23;
 
-  return a3 / (v24 * fmin(v22, 1.0));
+  return duration / (v24 * fmin(v22, 1.0));
 }
 
 - (double)_destinationScale
 {
-  v2 = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
-  v3 = v2;
-  if (v2)
+  zoomingImageView = [(VideosExtrasZoomingImageTransitionController *)self zoomingImageView];
+  v3 = zoomingImageView;
+  if (zoomingImageView)
   {
-    [v2 deferredTransform];
+    [zoomingImageView deferredTransform];
     v4 = (0.0 + 0.0) * 0.5;
   }
 
@@ -412,20 +412,20 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
   return v4;
 }
 
-- (double)_maximumDistanceTravelledForPoints:(CGPoint *)a3 count:(unint64_t)a4 currentTransform:(CGAffineTransform *)a5 finalTransform:(CGAffineTransform *)a6
+- (double)_maximumDistanceTravelledForPoints:(CGPoint *)points count:(unint64_t)count currentTransform:(CGAffineTransform *)transform finalTransform:(CGAffineTransform *)finalTransform
 {
-  if (!a4)
+  if (!count)
   {
     return 2.22507386e-308;
   }
 
-  p_y = &a3->y;
+  p_y = &points->y;
   result = 2.22507386e-308;
   do
   {
     v8 = *(p_y - 1);
-    v9 = a6->tx + *p_y * a6->c + a6->a * v8 - (a5->tx + *p_y * a5->c + a5->a * v8);
-    v10 = a6->ty + *p_y * a6->d + a6->b * v8 - (a5->ty + *p_y * a5->d + a5->b * v8);
+    v9 = finalTransform->tx + *p_y * finalTransform->c + finalTransform->a * v8 - (transform->tx + *p_y * transform->c + transform->a * v8);
+    v10 = finalTransform->ty + *p_y * finalTransform->d + finalTransform->b * v8 - (transform->ty + *p_y * transform->d + transform->b * v8);
     v11 = sqrt(v10 * v10 + v9 * v9);
     if (result < v11)
     {
@@ -433,10 +433,10 @@ uint64_t __104__VideosExtrasZoomingImageTransitionController_completeInteractive
     }
 
     p_y += 2;
-    --a4;
+    --count;
   }
 
-  while (a4);
+  while (count);
   return result;
 }
 

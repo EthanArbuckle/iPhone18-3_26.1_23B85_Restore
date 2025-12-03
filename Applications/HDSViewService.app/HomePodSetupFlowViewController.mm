@@ -1,21 +1,21 @@
 @interface HomePodSetupFlowViewController
-- (_TtC14HDSViewService30HomePodSetupFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
+- (_TtC14HDSViewService30HomePodSetupFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)presentationControllerTransitionDidEnd:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
+- (void)handleButtonActions:(id)actions;
+- (void)presentationControllerTransitionDidEnd:(id)end;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation HomePodSetupFlowViewController
 
-- (_TtC14HDSViewService30HomePodSetupFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14HDSViewService30HomePodSetupFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -27,41 +27,41 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000759D8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000759D8(v5, v7, bundle);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100077B74;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100075B48(v7, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100075B48(contextCopy, v6);
   sub_1000616F4(v6);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000761C8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000762F4(a3);
+  selfCopy = self;
+  sub_1000762F4(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100076554(a3);
+  selfCopy = self;
+  sub_100076554(disappear);
 }
 
 - (void)_willAppearInRemoteViewController
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_10003AE18(0, &qword_100103DB0, SBUIRemoteAlertButtonAction_ptr);
     sub_100077AEC(&qword_100103DB8, &qword_100103DB0, SBUIRemoteAlertButtonAction_ptr);
@@ -92,11 +92,11 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_100076818(v4);
 }
 
-- (void)presentationControllerTransitionDidEnd:(id)a3
+- (void)presentationControllerTransitionDidEnd:(id)end
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -104,23 +104,23 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1000754B8();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100077524(v8);
+  interactionCopy = interaction;
+  actionCopy = action;
+  selfCopy = self;
+  sub_100077524(actionCopy);
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000777D8();
 }
 

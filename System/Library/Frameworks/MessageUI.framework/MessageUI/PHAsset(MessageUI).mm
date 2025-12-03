@@ -6,8 +6,8 @@
 
 - (id)mf_localIdentifier
 {
-  v1 = [a1 localIdentifier];
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+  localIdentifier = [self localIdentifier];
+  v2 = [localIdentifier stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 
   return v2;
 }

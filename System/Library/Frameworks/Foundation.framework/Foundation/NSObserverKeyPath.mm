@@ -1,48 +1,48 @@
 @interface NSObserverKeyPath
-- (void)_receiveBox:(id)a3;
-- (void)setObservation:(id)a3;
+- (void)_receiveBox:(id)box;
+- (void)setObservation:(id)observation;
 @end
 
 @implementation NSObserverKeyPath
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 6) == 1)
+  if (*(box + 6) == 1)
   {
-    if ([a3 _isToManyChangeInformation])
+    if ([box _isToManyChangeInformation])
     {
-      v5 = [*(a3 + 1) _toManyPropertyType];
-      switch(v5)
+      _toManyPropertyType = [*(box + 1) _toManyPropertyType];
+      switch(_toManyPropertyType)
       {
         case 2:
-          [*(a3 + 1) applyChangesToOrderedSet:{-[NSBoundKeyPath mutableOrderedSetValue](self, "mutableOrderedSetValue")}];
+          [*(box + 1) applyChangesToOrderedSet:{-[NSBoundKeyPath mutableOrderedSetValue](self, "mutableOrderedSetValue")}];
           break;
         case 1:
-          [*(a3 + 1) applyChangesToArray:{-[NSBoundKeyPath mutableArrayValue](self, "mutableArrayValue")}];
+          [*(box + 1) applyChangesToArray:{-[NSBoundKeyPath mutableArrayValue](self, "mutableArrayValue")}];
           break;
         case 0:
-          [*(a3 + 1) applyChangesToSet:{-[NSBoundKeyPath mutableSetValue](self, "mutableSetValue")}];
+          [*(box + 1) applyChangesToSet:{-[NSBoundKeyPath mutableSetValue](self, "mutableSetValue")}];
           break;
       }
     }
 
     else
     {
-      [(NSBoundKeyPath *)self setValue:*(a3 + 1)];
+      [(NSBoundKeyPath *)self setValue:*(box + 1)];
     }
   }
 
   v6.receiver = self;
   v6.super_class = NSObserverKeyPath;
-  [(NSObserverKeyPath *)&v6 _receiveBox:a3];
+  [(NSObserverKeyPath *)&v6 _receiveBox:box];
 }
 
-- (void)setObservation:(id)a3
+- (void)setObservation:(id)observation
 {
-  v5 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
 
-  [v5 setObservation:a3 forObservingKeyPath:self];
+  [rootObject setObservation:observation forObservingKeyPath:self];
 }
 
 @end

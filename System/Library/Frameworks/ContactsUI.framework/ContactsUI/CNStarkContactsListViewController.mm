@@ -1,32 +1,32 @@
 @interface CNStarkContactsListViewController
-+ (id)collectionViewLayoutWithFloatingHeaderViews:(BOOL)a3 contactListStyleApplier:(id)a4 directionalLayoutMargins:(id)a5 hasNoContacts:(id)a6;
++ (id)collectionViewLayoutWithFloatingHeaderViews:(BOOL)views contactListStyleApplier:(id)applier directionalLayoutMargins:(id)margins hasNoContacts:(id)contacts;
 + (id)makeContactsDisplayedProperties;
 - (BOOL)deviceIsEnrolledInDirectActionExperiment;
 - (BOOL)isSiriDirectActionTextExperimentGroup;
 - (CNStarkContactsListViewController)init;
-- (CNStarkContactsListViewController)initWithCollectionViewLayout:(id)a3;
-- (CNStarkContactsListViewController)initWithDataSource:(id)a3 searchable:(BOOL)a4 environment:(id)a5 shouldUseLargeTitle:(BOOL)a6;
+- (CNStarkContactsListViewController)initWithCollectionViewLayout:(id)layout;
+- (CNStarkContactsListViewController)initWithDataSource:(id)source searchable:(BOOL)searchable environment:(id)environment shouldUseLargeTitle:(BOOL)title;
 - (NSDirectionalEdgeInsets)viewDirectionalLayoutMargins;
-- (double)headerViewWidthForSize:(CGSize)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (double)headerViewWidthForSize:(CGSize)size;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)createCollectionView;
-- (void)contactDataSourceDidChange:(id)a3;
-- (void)contactListViewController:(id)a3 didSelectContact:(id)a4 shouldScrollToContact:(BOOL)a5;
+- (void)contactDataSourceDidChange:(id)change;
+- (void)contactListViewController:(id)controller didSelectContact:(id)contact shouldScrollToContact:(BOOL)toContact;
 - (void)dealloc;
-- (void)handleSiriHeaderViewTap:(id)a3;
+- (void)handleSiriHeaderViewTap:(id)tap;
 - (void)postMessageOverlayIfNecessary;
-- (void)refreshTableViewHeaderWithSize:(CGSize)a3;
+- (void)refreshTableViewHeaderWithSize:(CGSize)size;
 - (void)sendSiriExperimentTriggerLoggingIfEligible;
-- (void)setLimitedUI:(BOOL)a3;
+- (void)setLimitedUI:(BOOL)i;
 - (void)setupDataSource;
 - (void)showContactListTableView;
 - (void)showOverlayView;
 - (void)updateLimitedUI;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNStarkContactsListViewController
@@ -38,8 +38,8 @@
   [(CNContactListViewController *)&v5 viewDidLayoutSubviews];
   if (![(CNStarkContactsListViewController *)self hadScrollAccessoryAtLastHeaderViewUpdate])
   {
-    v3 = [(CNStarkContactsListViewController *)self contactListTableView];
-    v4 = [v3 accessoryViewAtEdge:1];
+    contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
+    v4 = [contactListTableView accessoryViewAtEdge:1];
 
     if (v4)
     {
@@ -48,19 +48,19 @@
   }
 }
 
-- (void)contactListViewController:(id)a3 didSelectContact:(id)a4 shouldScrollToContact:(BOOL)a5
+- (void)contactListViewController:(id)controller didSelectContact:(id)contact shouldScrollToContact:(BOOL)toContact
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CNContactListViewController *)self dataSource];
-  v8 = [v7 store];
-  v9 = [v6 identifier];
+  contactCopy = contact;
+  dataSource = [(CNContactListViewController *)self dataSource];
+  store = [dataSource store];
+  identifier = [contactCopy identifier];
 
   v10 = +[CNStarkCardViewController descriptorForRequiredKeys];
   v21[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v18 = 0;
-  v12 = [v8 unifiedContactWithIdentifier:v9 keysToFetch:v11 error:&v18];
+  v12 = [store unifiedContactWithIdentifier:identifier keysToFetch:v11 error:&v18];
   v13 = v18;
 
   if (v13)
@@ -77,46 +77,46 @@
   else
   {
     v15 = [CNStarkCardViewController alloc];
-    v16 = [(CNStarkContactsListViewController *)self displayedContactProperties];
-    v14 = [(CNStarkCardViewController *)v15 initWithContact:v12 displayedContactProperties:v16];
+    displayedContactProperties = [(CNStarkContactsListViewController *)self displayedContactProperties];
+    v14 = [(CNStarkCardViewController *)v15 initWithContact:v12 displayedContactProperties:displayedContactProperties];
 
-    v17 = [(CNStarkContactsListViewController *)self navigationController];
-    [v17 pushViewController:v14 animated:1];
+    navigationController = [(CNStarkContactsListViewController *)self navigationController];
+    [navigationController pushViewController:v14 animated:1];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CNStarkContactsListViewController;
-  v4 = [(CNContactListViewController *)&v7 collectionView:a3 cellForItemAtIndexPath:a4];
-  v5 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
-  [v5 setCornerRadius:14.0];
-  [v4 setBackgroundConfiguration:v5];
+  v4 = [(CNContactListViewController *)&v7 collectionView:view cellForItemAtIndexPath:path];
+  listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+  [listCellConfiguration setCornerRadius:14.0];
+  [v4 setBackgroundConfiguration:listCellConfiguration];
 
   return v4;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:*MEMORY[0x1E69DDC08]])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69DDC08]])
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v12 forIndexPath:v10];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [v10 section];
+    section = [pathCopy section];
     v15 = 4.0;
-    if (!v14)
+    if (!section)
     {
       v15 = 16.0;
     }
 
     [v13 setTopPadding:v15];
-    v16 = -[CNContactListViewController titleForHeaderInSection:](self, "titleForHeaderInSection:", [v10 section]);
+    v16 = -[CNContactListViewController titleForHeaderInSection:](self, "titleForHeaderInSection:", [pathCopy section]);
     [v13 setText:v16];
   }
 
@@ -124,7 +124,7 @@
   {
     v18.receiver = self;
     v18.super_class = CNStarkContactsListViewController;
-    v13 = [(CNContactListViewController *)&v18 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    v13 = [(CNContactListViewController *)&v18 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   return v13;
@@ -132,39 +132,39 @@
 
 - (void)showContactListTableView
 {
-  v3 = [(CNStarkContactsListViewController *)self view];
-  v4 = [(CNStarkContactsListViewController *)self contactListTableView];
+  view = [(CNStarkContactsListViewController *)self view];
+  contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
 
-  if (v3 != v4)
+  if (view != contactListTableView)
   {
-    v5 = [(CNStarkContactsListViewController *)self contactListTableView];
-    [(CNStarkContactsListViewController *)self setCollectionView:v5];
+    contactListTableView2 = [(CNStarkContactsListViewController *)self contactListTableView];
+    [(CNStarkContactsListViewController *)self setCollectionView:contactListTableView2];
 
-    v6 = [(CNStarkContactsListViewController *)self contactListTableView];
-    [(CNStarkContactsListViewController *)self setView:v6];
+    contactListTableView3 = [(CNStarkContactsListViewController *)self contactListTableView];
+    [(CNStarkContactsListViewController *)self setView:contactListTableView3];
 
-    v7 = [(CNContactListViewController *)self dataSource];
-    v8 = [v7 contacts];
-    v9 = [v8 count];
+    dataSource = [(CNContactListViewController *)self dataSource];
+    contacts = [dataSource contacts];
+    v9 = [contacts count];
 
     if (v9)
     {
-      v11 = [(CNStarkContactsListViewController *)self collectionView];
+      collectionView = [(CNStarkContactsListViewController *)self collectionView];
       v10 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-      [v11 scrollToItemAtIndexPath:v10 atScrollPosition:2 animated:0];
+      [collectionView scrollToItemAtIndexPath:v10 atScrollPosition:2 animated:0];
     }
   }
 }
 
 - (void)showOverlayView
 {
-  v3 = [(CNStarkContactsListViewController *)self view];
-  v4 = [(CNStarkContactsListViewController *)self overlayView];
+  view = [(CNStarkContactsListViewController *)self view];
+  overlayView = [(CNStarkContactsListViewController *)self overlayView];
 
-  if (v3 != v4)
+  if (view != overlayView)
   {
-    v5 = [(CNStarkContactsListViewController *)self overlayView];
-    [(CNStarkContactsListViewController *)self setView:v5];
+    overlayView2 = [(CNStarkContactsListViewController *)self overlayView];
+    [(CNStarkContactsListViewController *)self setView:overlayView2];
   }
 }
 
@@ -172,40 +172,40 @@
 {
   if (-[CNStarkContactsListViewController limitedUI](self, "limitedUI") && (CNContactsUIBundle(), v3 = objc_claimAutoreleasedReturnValue(), [v3 localizedStringForKey:@"CONTACTS_ACCESS_LIMITED" value:&stru_1F0CE7398 table:@"Localized"], v13 = objc_claimAutoreleasedReturnValue(), v3, v13))
   {
-    v4 = [(CNStarkContactsListViewController *)self overlayView];
+    overlayView = [(CNStarkContactsListViewController *)self overlayView];
 
-    if (!v4)
+    if (!overlayView)
     {
       v5 = [CNStarkNoContentBannerView alloc];
       v6 = [(CNStarkNoContentBannerView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       [(CNStarkContactsListViewController *)self setOverlayView:v6];
     }
 
-    v7 = [(CNStarkContactsListViewController *)self overlayView];
-    [v7 setTitleString:v13];
+    overlayView2 = [(CNStarkContactsListViewController *)self overlayView];
+    [overlayView2 setTitleString:v13];
 
-    v8 = [(CNStarkContactsListViewController *)self overlayView];
-    [v8 setSiriButtonEnabled:1];
+    overlayView3 = [(CNStarkContactsListViewController *)self overlayView];
+    [overlayView3 setSiriButtonEnabled:1];
 
     [(CNStarkContactsListViewController *)self showOverlayView];
   }
 
   else
   {
-    v9 = [(CNContactListViewController *)self dataSource];
-    v10 = [v9 contacts];
-    v11 = [v10 count] == 0;
-    v12 = [(CNContactListViewController *)self listHeaderView];
-    [v12 setHidden:v11];
+    dataSource = [(CNContactListViewController *)self dataSource];
+    contacts = [dataSource contacts];
+    v11 = [contacts count] == 0;
+    listHeaderView = [(CNContactListViewController *)self listHeaderView];
+    [listHeaderView setHidden:v11];
 
     [(CNStarkContactsListViewController *)self showContactListTableView];
   }
 }
 
-- (void)handleSiriHeaderViewTap:(id)a3
+- (void)handleSiriHeaderViewTap:(id)tap
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tapCopy = tap;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -225,9 +225,9 @@
   _Block_object_dispose(&v21, 8);
   if (!v4)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkAssistantDirectActionEventKey(void)"];
-    [v14 handleFailureInFunction:v15 file:@"CNSiriSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"CNSiriSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -279,10 +279,10 @@
   [v13 activateWithContext:v10];
 }
 
-- (double)headerViewWidthForSize:(CGSize)a3
+- (double)headerViewWidthForSize:(CGSize)size
 {
-  width = a3.width;
-  [(CNStarkContactsListViewController *)self viewDirectionalLayoutMargins:a3.width];
+  width = size.width;
+  [(CNStarkContactsListViewController *)self viewDirectionalLayoutMargins:size.width];
   return width - v4 - v5;
 }
 
@@ -296,9 +296,9 @@
     v4 = CNUILogStarkSiriExperiment();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v3 BOOLeanValue];
+      bOOLeanValue = [v3 BOOLeanValue];
       v6 = @"FALSE";
-      if (v5)
+      if (bOOLeanValue)
       {
         v6 = @"TRUE";
       }
@@ -308,7 +308,7 @@
       _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_INFO, "#ABStarkExperiment The user is in the experimental group: %@", &v9, 0xCu);
     }
 
-    v7 = [v3 BOOLeanValue];
+    bOOLeanValue2 = [v3 BOOLeanValue];
   }
 
   else
@@ -320,46 +320,46 @@
       _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "#ABStarkExperiment This vehicle or device isn't eligible for the experiment", &v9, 2u);
     }
 
-    v7 = 0;
+    bOOLeanValue2 = 0;
   }
 
-  return v7;
+  return bOOLeanValue2;
 }
 
-- (void)refreshTableViewHeaderWithSize:(CGSize)a3
+- (void)refreshTableViewHeaderWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v84[1] = *MEMORY[0x1E69E9840];
-  v6 = [(CNStarkContactsListViewController *)self siriHeaderView];
+  siriHeaderView = [(CNStarkContactsListViewController *)self siriHeaderView];
 
-  if (v6)
+  if (siriHeaderView)
   {
-    v7 = [(CNStarkContactsListViewController *)self siriHeaderView];
-    [v7 frame];
+    siriHeaderView2 = [(CNStarkContactsListViewController *)self siriHeaderView];
+    [siriHeaderView2 frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
     [(CNStarkContactsListViewController *)self headerViewWidthForSize:width, height];
     v15 = v14;
-    v16 = [(CNStarkContactsListViewController *)self siriHeaderView];
-    [v16 setFrame:{v9, v11, v15, v13}];
+    siriHeaderView3 = [(CNStarkContactsListViewController *)self siriHeaderView];
+    [siriHeaderView3 setFrame:{v9, v11, v15, v13}];
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x1E69DD250]);
-    v16 = [v17 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    [v16 frame];
+    siriHeaderView3 = [v17 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    [siriHeaderView3 frame];
     v19 = v18;
     v21 = v20;
     [(CNStarkContactsListViewController *)self headerViewWidthForSize:width, height];
-    [v16 setFrame:{v19, v21, v22, 44.0}];
-    v23 = [(CNStarkContactsListViewController *)self isSiriDirectActionTextExperimentGroup];
+    [siriHeaderView3 setFrame:{v19, v21, v22, 44.0}];
+    isSiriDirectActionTextExperimentGroup = [(CNStarkContactsListViewController *)self isSiriDirectActionTextExperimentGroup];
     v24 = CNContactsUIBundle();
     v25 = v24;
-    if (v23)
+    if (isSiriDirectActionTextExperimentGroup)
     {
       v26 = @"HEY_SIRI_MAKE_A_CALL";
     }
@@ -379,49 +379,49 @@
     v81 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"siri" withConfiguration:v30];
     v31 = [[CNStarkHeaderPlatterView alloc] initWithLabelText:v27 accessoryImage:v81];
     [(CNStarkHeaderPlatterView *)v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v16 addSubview:v31];
-    [v16 setUserInteractionEnabled:1];
-    [v16 setIsAccessibilityElement:1];
-    [v16 setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
+    [siriHeaderView3 addSubview:v31];
+    [siriHeaderView3 setUserInteractionEnabled:1];
+    [siriHeaderView3 setIsAccessibilityElement:1];
+    [siriHeaderView3 setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
     if (v27)
     {
       v84[0] = v27;
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:1];
-      [v16 setAccessibilityUserInputLabels:v32];
+      [siriHeaderView3 setAccessibilityUserInputLabels:v32];
     }
 
     v80 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleSiriHeaderViewTap_];
-    [v16 addGestureRecognizer:v80];
+    [siriHeaderView3 addGestureRecognizer:v80];
     v79 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleSiriHeaderViewTap_];
     [v79 setAllowedPressTypes:&unk_1F0D4B8F8];
-    [v16 addGestureRecognizer:v79];
+    [siriHeaderView3 addGestureRecognizer:v79];
     v72 = MEMORY[0x1E696ACD8];
-    v78 = [(CNStarkHeaderPlatterView *)v31 leftAnchor];
-    v77 = [v16 leftAnchor];
-    v75 = [v78 constraintEqualToAnchor:v77];
+    leftAnchor = [(CNStarkHeaderPlatterView *)v31 leftAnchor];
+    leftAnchor2 = [siriHeaderView3 leftAnchor];
+    v75 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v83[0] = v75;
-    v74 = [(CNStarkHeaderPlatterView *)v31 rightAnchor];
-    v73 = [v16 rightAnchor];
-    v71 = [v74 constraintEqualToAnchor:v73];
+    rightAnchor = [(CNStarkHeaderPlatterView *)v31 rightAnchor];
+    rightAnchor2 = [siriHeaderView3 rightAnchor];
+    v71 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v83[1] = v71;
-    v33 = [(CNStarkHeaderPlatterView *)v31 topAnchor];
-    v34 = [v16 topAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    topAnchor = [(CNStarkHeaderPlatterView *)v31 topAnchor];
+    topAnchor2 = [siriHeaderView3 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v83[2] = v35;
-    v36 = [(CNStarkHeaderPlatterView *)v31 bottomAnchor];
-    [v16 bottomAnchor];
+    bottomAnchor = [(CNStarkHeaderPlatterView *)v31 bottomAnchor];
+    [siriHeaderView3 bottomAnchor];
     v37 = v76 = v27;
-    v38 = [v36 constraintEqualToAnchor:v37];
+    v38 = [bottomAnchor constraintEqualToAnchor:v37];
     v83[3] = v38;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
     [v72 activateConstraints:v39];
 
-    [v16 setAccessibilityIdentifier:@"CNStarkSiriCell"];
-    [(CNStarkContactsListViewController *)self setSiriHeaderView:v16];
+    [siriHeaderView3 setAccessibilityIdentifier:@"CNStarkSiriCell"];
+    [(CNStarkContactsListViewController *)self setSiriHeaderView:siriHeaderView3];
   }
 
-  v40 = [(CNStarkContactsListViewController *)self siriHeaderView];
-  [v40 frame];
+  siriHeaderView4 = [(CNStarkContactsListViewController *)self siriHeaderView];
+  [siriHeaderView4 frame];
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -429,14 +429,14 @@
   [(CNStarkContactsListViewController *)self viewDirectionalLayoutMargins];
   v48 = v47;
   v50 = v49;
-  v51 = [(CNStarkContactsListViewController *)self traitCollection];
-  v52 = [v51 layoutDirection];
+  traitCollection = [(CNStarkContactsListViewController *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v53 = [(CNStarkContactsListViewController *)self view];
-  [v53 safeAreaInsets];
+  view = [(CNStarkContactsListViewController *)self view];
+  [view safeAreaInsets];
   v55 = v54;
 
-  if (v52 == 1)
+  if (layoutDirection == 1)
   {
     v56 = v50;
   }
@@ -447,25 +447,25 @@
   }
 
   v57 = v56 - v55;
-  v58 = [(CNStarkContactsListViewController *)self siriHeaderView];
-  [v58 setFrame:{v57, v42, v44, v46}];
+  siriHeaderView5 = [(CNStarkContactsListViewController *)self siriHeaderView];
+  [siriHeaderView5 setFrame:{v57, v42, v44, v46}];
 
-  v59 = [(CNStarkContactsListViewController *)self contactListTableView];
-  v60 = [v59 accessoryViewAtEdge:1];
+  contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
+  v60 = [contactListTableView accessoryViewAtEdge:1];
 
   [(CNStarkContactsListViewController *)self setHadScrollAccessoryAtLastHeaderViewUpdate:v60 != 0];
-  v61 = [(CNContactListViewController *)self listHeaderView];
-  v62 = [v61 superview];
+  listHeaderView = [(CNContactListViewController *)self listHeaderView];
+  superview = [listHeaderView superview];
 
-  if (v62)
+  if (superview)
   {
     objc_opt_class();
-    v63 = [(CNContactListViewController *)self listHeaderView];
-    v64 = [v63 superview];
-    v65 = [v64 superview];
+    listHeaderView2 = [(CNContactListViewController *)self listHeaderView];
+    superview2 = [listHeaderView2 superview];
+    v64Superview = [superview2 superview];
     if (objc_opt_isKindOfClass())
     {
-      v66 = v65;
+      v66 = v64Superview;
     }
 
     else
@@ -473,43 +473,43 @@
       v66 = 0;
     }
 
-    v67 = v66;
+    siriHeaderView7 = v66;
 
-    if (v67)
+    if (siriHeaderView7)
     {
-      v68 = [(CNStarkContactsListViewController *)self siriHeaderView];
-      [v67 setHeaderView:v68];
+      siriHeaderView6 = [(CNStarkContactsListViewController *)self siriHeaderView];
+      [siriHeaderView7 setHeaderView:siriHeaderView6];
     }
 
-    v69 = [(CNStarkContactsListViewController *)self collectionView];
-    v70 = [v69 collectionViewLayout];
-    [v70 invalidateLayout];
+    collectionView = [(CNStarkContactsListViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 
   else
   {
-    v67 = [(CNStarkContactsListViewController *)self siriHeaderView];
-    [(CNContactListViewController *)self setListHeaderView:v67];
+    siriHeaderView7 = [(CNStarkContactsListViewController *)self siriHeaderView];
+    [(CNContactListViewController *)self setListHeaderView:siriHeaderView7];
   }
 }
 
-- (void)contactDataSourceDidChange:(id)a3
+- (void)contactDataSourceDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CNStarkContactsListViewController;
-  [(CNContactListViewController *)&v4 contactDataSourceDidChange:a3];
+  [(CNContactListViewController *)&v4 contactDataSourceDidChange:change];
   [(CNStarkContactsListViewController *)self postMessageOverlayIfNecessary];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__CNStarkContactsListViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_1E74E30E8;
   v4[4] = self;
-  v5 = a3;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  sizeCopy = size;
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 - (BOOL)deviceIsEnrolledInDirectActionExperiment
@@ -533,8 +533,8 @@
 
   if (v3)
   {
-    v6 = [v3 experimentId];
-    v7 = [v6 isEqualToString:@"65dfd24b12edf62098adc714"];
+    experimentId = [v3 experimentId];
+    v7 = [experimentId isEqualToString:@"65dfd24b12edf62098adc714"];
   }
 
   else
@@ -576,11 +576,11 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNStarkContactsListViewController;
-  [(CNContactListViewController *)&v4 viewWillAppear:a3];
+  [(CNContactListViewController *)&v4 viewWillAppear:appear];
   [(CNStarkContactsListViewController *)self updateLimitedUI];
   [(CNStarkContactsListViewController *)self sendSiriExperimentTriggerLoggingIfEligible];
   [(CNStarkContactsListViewController *)self postMessageOverlayIfNecessary];
@@ -592,36 +592,36 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
   v10.super_class = CNStarkContactsListViewController;
   [(CNContactListViewController *)&v10 viewDidLoad];
   v3 = +[CNUIColorRepository carPlayTableViewBackgroundColor];
-  v4 = [(CNStarkContactsListViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  collectionView = [(CNStarkContactsListViewController *)self collectionView];
+  [collectionView setBackgroundColor:v3];
 
-  v5 = [(CNStarkContactsListViewController *)self contactListTableView];
+  contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
   v6 = objc_opt_class();
   v7 = *MEMORY[0x1E69DDC08];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v5 registerClass:v6 forSupplementaryViewOfKind:v7 withReuseIdentifier:v9];
+  [contactListTableView registerClass:v6 forSupplementaryViewOfKind:v7 withReuseIdentifier:v9];
 }
 
-- (void)setLimitedUI:(BOOL)a3
+- (void)setLimitedUI:(BOOL)i
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__CNStarkContactsListViewController_setLimitedUI___block_invoke;
   v3[3] = &unk_1E74E4768;
   v3[4] = self;
-  v4 = a3;
+  iCopy = i;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
 - (void)updateLimitedUI
 {
-  v5 = [(CNStarkContactsListViewController *)self externalDevice];
-  if ([v5 limitedUI])
+  externalDevice = [(CNStarkContactsListViewController *)self externalDevice];
+  if ([externalDevice limitedUI])
   {
-    v3 = [(CNStarkContactsListViewController *)self externalDevice];
-    v4 = [v3 limitedUIElements];
-    -[CNStarkContactsListViewController setLimitedUI:](self, "setLimitedUI:", [v4 containsObject:*MEMORY[0x1E6987438]]);
+    externalDevice2 = [(CNStarkContactsListViewController *)self externalDevice];
+    limitedUIElements = [externalDevice2 limitedUIElements];
+    -[CNStarkContactsListViewController setLimitedUI:](self, "setLimitedUI:", [limitedUIElements containsObject:*MEMORY[0x1E6987438]]);
   }
 
   else
@@ -634,21 +634,21 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
 {
   if ([(CNStarkContactsListViewController *)self isViewLoaded])
   {
-    v3 = [(CNStarkContactsListViewController *)self view];
-    [v3 directionalLayoutMargins];
+    view = [(CNStarkContactsListViewController *)self view];
+    [view directionalLayoutMargins];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    v13 = [MEMORY[0x1E6987F90] currentCarPlayExternalDevice];
-    v14 = [v13 rightHandDrive];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    currentCarPlayExternalDevice = [MEMORY[0x1E6987F90] currentCarPlayExternalDevice];
+    rightHandDrive = [currentCarPlayExternalDevice rightHandDrive];
 
-    if (v14)
+    if (rightHandDrive)
     {
       v15 = v7 + 44.0;
-      if (v12 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v11 = v11 + 44.0;
       }
@@ -659,10 +659,10 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
       }
     }
 
-    else if (v12 == 1)
+    else if (userInterfaceLayoutDirection == 1)
     {
-      v18 = [(CNStarkContactsListViewController *)self contactListTableView];
-      v19 = [v18 accessoryViewAtEdge:1];
+      contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
+      v19 = [contactListTableView accessoryViewAtEdge:1];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v19 desiredAccessoryEdge] == 1)
@@ -682,14 +682,14 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
       v11 = v11 + 44.0;
     }
 
-    v20 = [(CNStarkContactsListViewController *)self view];
-    [v20 safeAreaInsets];
+    view2 = [(CNStarkContactsListViewController *)self view];
+    [view2 safeAreaInsets];
     v22 = v21;
     v24 = v23;
 
-    v25 = [(CNStarkContactsListViewController *)self view];
-    v26 = [v25 safeAreaLayoutGuide];
-    [v26 layoutFrame];
+    view3 = [(CNStarkContactsListViewController *)self view];
+    safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v28 = v27 - v7 - v11 - v22 - v24;
 
     v29 = round((v28 + -520.0) * 0.25);
@@ -737,7 +737,7 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
 {
   v3 = [CNContactListCollectionView alloc];
   v4 = objc_opt_class();
-  v5 = [(CNStarkContactsListViewController *)self contactListStyleApplier];
+  contactListStyleApplier = [(CNStarkContactsListViewController *)self contactListStyleApplier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__CNStarkContactsListViewController_createCollectionView__block_invoke;
@@ -748,33 +748,33 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
   v11[2] = __57__CNStarkContactsListViewController_createCollectionView__block_invoke_2;
   v11[3] = &unk_1E74E30C0;
   v11[4] = self;
-  v6 = [v4 collectionViewLayoutWithFloatingHeaderViews:1 contactListStyleApplier:v5 directionalLayoutMargins:v12 hasNoContacts:v11];
+  v6 = [v4 collectionViewLayoutWithFloatingHeaderViews:1 contactListStyleApplier:contactListStyleApplier directionalLayoutMargins:v12 hasNoContacts:v11];
   v7 = [(CNContactListCollectionView *)v3 initWithFrame:v6 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CNStarkContactsListViewController *)self setContactListTableView:v7];
 
-  v8 = [(CNStarkContactsListViewController *)self contactListTableView];
-  [v8 setAccessibilityIdentifier:@"CNContactListCollectionView"];
+  contactListTableView = [(CNStarkContactsListViewController *)self contactListTableView];
+  [contactListTableView setAccessibilityIdentifier:@"CNContactListCollectionView"];
 
-  v9 = [(CNStarkContactsListViewController *)self contactListTableView];
+  contactListTableView2 = [(CNStarkContactsListViewController *)self contactListTableView];
 
-  return v9;
+  return contactListTableView2;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987430] object:self->_externalDevice];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987430] object:self->_externalDevice];
 
   v4.receiver = self;
   v4.super_class = CNStarkContactsListViewController;
   [(CNContactListViewController *)&v4 dealloc];
 }
 
-- (CNStarkContactsListViewController)initWithDataSource:(id)a3 searchable:(BOOL)a4 environment:(id)a5 shouldUseLargeTitle:(BOOL)a6
+- (CNStarkContactsListViewController)initWithDataSource:(id)source searchable:(BOOL)searchable environment:(id)environment shouldUseLargeTitle:(BOOL)title
 {
   v8.receiver = self;
   v8.super_class = CNStarkContactsListViewController;
-  v6 = [(CNContactListViewController *)&v8 initWithDataSource:a3 searchable:0 environment:a5 shouldUseLargeTitle:a6];
+  v6 = [(CNContactListViewController *)&v8 initWithDataSource:source searchable:0 environment:environment shouldUseLargeTitle:title];
   [(CNContactListViewController *)v6 setIsHandlingSearch:0];
 
   return v6;
@@ -788,18 +788,18 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CNContactListViewController *)self contactFormatter];
-    [(CNContactStoreDataSource *)v6 setContactFormatter:v5];
+    contactFormatter = [(CNContactListViewController *)self contactFormatter];
+    [(CNContactStoreDataSource *)v6 setContactFormatter:contactFormatter];
   }
 
   [(CNContactListViewController *)self setDataSource:v6];
 }
 
-- (CNStarkContactsListViewController)initWithCollectionViewLayout:(id)a3
+- (CNStarkContactsListViewController)initWithCollectionViewLayout:(id)layout
 {
   v19.receiver = self;
   v19.super_class = CNStarkContactsListViewController;
-  v3 = [(CNContactListViewController *)&v19 initWithCollectionViewLayout:a3];
+  v3 = [(CNContactListViewController *)&v19 initWithCollectionViewLayout:layout];
   v4 = v3;
   if (v3)
   {
@@ -827,12 +827,12 @@ void __79__CNStarkContactsListViewController_sendSiriExperimentTriggerLoggingIfE
     [(CNContactListViewController *)v5 setDelegate:v5];
     [(CNContactListViewController *)v5 setShouldDisplayEmergencyContacts:0];
     [(CNStarkContactsListViewController *)v5 setupDataSource];
-    v9 = [MEMORY[0x1E6987F90] currentCarPlayExternalDevice];
+    currentCarPlayExternalDevice = [MEMORY[0x1E6987F90] currentCarPlayExternalDevice];
     externalDevice = v5->_externalDevice;
-    v5->_externalDevice = v9;
+    v5->_externalDevice = currentCarPlayExternalDevice;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v5 selector:sel_limitedUINotification_ name:*MEMORY[0x1E6987430] object:v5->_externalDevice];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_limitedUINotification_ name:*MEMORY[0x1E6987430] object:v5->_externalDevice];
 
     v12 = objc_alloc_init(MEMORY[0x1E6985FA0]);
     analyticsManager = v5->_analyticsManager;
@@ -863,25 +863,25 @@ uint64_t __66__CNStarkContactsListViewController_initWithCollectionViewLayout___
   return v4;
 }
 
-+ (id)collectionViewLayoutWithFloatingHeaderViews:(BOOL)a3 contactListStyleApplier:(id)a4 directionalLayoutMargins:(id)a5 hasNoContacts:(id)a6
++ (id)collectionViewLayoutWithFloatingHeaderViews:(BOOL)views contactListStyleApplier:(id)applier directionalLayoutMargins:(id)margins hasNoContacts:(id)contacts
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  marginsCopy = margins;
   v8 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:0];
   [v8 setHeaderMode:1];
   [v8 setHeaderTopPadding:0.0];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   v10 = objc_alloc(MEMORY[0x1E69DC808]);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __144__CNStarkContactsListViewController_collectionViewLayoutWithFloatingHeaderViews_contactListStyleApplier_directionalLayoutMargins_hasNoContacts___block_invoke;
   v22[3] = &unk_1E74E3070;
-  v25 = a3;
+  viewsCopy = views;
   v23 = v8;
-  v24 = v7;
-  v11 = v7;
+  v24 = marginsCopy;
+  v11 = marginsCopy;
   v12 = v8;
   v13 = [v10 initWithSectionProvider:v22];
   v14 = MEMORY[0x1E6995588];
@@ -890,12 +890,12 @@ uint64_t __66__CNStarkContactsListViewController_initWithCollectionViewLayout___
   v17 = [v14 sizeWithWidthDimension:v15 heightDimension:v16];
 
   v18 = [MEMORY[0x1E6995548] boundarySupplementaryItemWithLayoutSize:v17 elementKind:@"CNContactListLayoutHeaderIdentifier" alignment:2];
-  v19 = [v13 configuration];
+  configuration = [v13 configuration];
   v26[0] = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  [v19 setBoundarySupplementaryItems:v20];
+  [configuration setBoundarySupplementaryItems:v20];
 
-  [v13 setConfiguration:v19];
+  [v13 setConfiguration:configuration];
 
   return v13;
 }
@@ -932,10 +932,10 @@ id __144__CNStarkContactsListViewController_collectionViewLayoutWithFloatingHead
 + (id)makeContactsDisplayedProperties
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(objc_class *)getGEOCountryConfigurationClass() sharedConfiguration];
-  v3 = [v2 currentCountrySupportsCarIntegration];
+  sharedConfiguration = [(objc_class *)getGEOCountryConfigurationClass() sharedConfiguration];
+  currentCountrySupportsCarIntegration = [sharedConfiguration currentCountrySupportsCarIntegration];
 
-  if (v3)
+  if (currentCountrySupportsCarIntegration)
   {
     v4 = *MEMORY[0x1E695C360];
     v11 = *MEMORY[0x1E695C330];

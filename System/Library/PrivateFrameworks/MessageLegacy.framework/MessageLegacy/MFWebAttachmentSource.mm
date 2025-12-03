@@ -1,12 +1,12 @@
 @interface MFWebAttachmentSource
 + (id)_setOfAllSources;
 + (id)allSources;
-- (BOOL)setAttachment:(id)a3 forURL:(id)a4;
+- (BOOL)setAttachment:(id)attachment forURL:(id)l;
 - (MFWebAttachmentSource)init;
-- (id)attachmentForURL:(id)a3;
+- (id)attachmentForURL:(id)l;
 - (id)description;
 - (void)dealloc;
-- (void)removeAttachmentForURL:(id)a3;
+- (void)removeAttachmentForURL:(id)l;
 @end
 
 @implementation MFWebAttachmentSource
@@ -30,7 +30,7 @@ id __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
 
 + (id)allSources
 {
-  v2 = [objc_msgSend(a1 "_setOfAllSources")];
+  v2 = [objc_msgSend(self "_setOfAllSources")];
 
   return [v2 sortedArrayUsingFunction:_SortWebAttachmentSources context:0];
 }
@@ -66,31 +66,31 @@ id __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
   [(MFWebAttachmentSource *)&v3 dealloc];
 }
 
-- (id)attachmentForURL:(id)a3
+- (id)attachmentForURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
   [(MFLock *)self->_attachmentsLock lock];
-  v5 = [(NSMutableDictionary *)self->_attachmentsByURL objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_attachmentsByURL objectForKey:l];
   [(MFLock *)self->_attachmentsLock unlock];
   return v5;
 }
 
-- (BOOL)setAttachment:(id)a3 forURL:(id)a4
+- (BOOL)setAttachment:(id)attachment forURL:(id)l
 {
   [(MFLock *)self->_attachmentsLock lock];
-  [(NSMutableDictionary *)self->_attachmentsByURL setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_attachmentsByURL setObject:attachment forKey:l];
   [(MFLock *)self->_attachmentsLock unlock];
   return 1;
 }
 
-- (void)removeAttachmentForURL:(id)a3
+- (void)removeAttachmentForURL:(id)l
 {
   [(MFLock *)self->_attachmentsLock lock];
-  [(NSMutableDictionary *)self->_attachmentsByURL removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_attachmentsByURL removeObjectForKey:l];
   attachmentsLock = self->_attachmentsLock;
 
   [(MFLock *)attachmentsLock unlock];

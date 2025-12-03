@@ -1,24 +1,24 @@
 @interface DOCTabSidebarController
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithConfiguration:(id)a3 sourceObserver:(id)a4 dataSourceDelegate:(id)a5;
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithTabs:(id)a3;
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithConfiguration:(id)configuration sourceObserver:(id)observer dataSourceDelegate:(id)delegate;
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithTabs:(id)tabs;
 - (id)navigationOverflowMenu;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location;
 @end
 
 @implementation DOCTabSidebarController
 
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithConfiguration:(id)a3 sourceObserver:(id)a4 dataSourceDelegate:(id)a5
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithConfiguration:(id)configuration sourceObserver:(id)observer dataSourceDelegate:(id)delegate
 {
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCTabSidebarController_configuration) = a3;
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCTabSidebarController_sourceObserver) = a4;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCTabSidebarController_configuration) = configuration;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCTabSidebarController_sourceObserver) = observer;
   objc_allocWithZone(type metadata accessor for DOCTabSidebarDataSource());
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = v9;
+  configurationCopy = configuration;
+  observerCopy = observer;
+  v10 = configurationCopy;
+  v11 = observerCopy;
   swift_unknownObjectRetain_n();
   v12 = v10;
   v13 = v11;
@@ -31,7 +31,7 @@
   return v14;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -51,39 +51,39 @@
   v3 = _Block_copy(v7);
   v4 = objc_opt_self();
 
-  v5 = [v4 elementWithProvider_];
+  elementWithProvider_ = [v4 elementWithProvider_];
   _Block_release(v3);
 
-  return v5;
+  return elementWithProvider_;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithTabs:(id)a3
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a3;
-  v8 = a3;
-  v11 = self;
-  v9 = v8;
-  v10 = a4;
-  specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(v10, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v7);
+  *(v7 + 24) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = controllerCopy;
+  scanCopy = scan;
+  specialized DOCDocumentScannerWriter.convertToPDFAndWrite(document:completionHandler:)(scanCopy, closure #1 in UIViewController.doc_documentCameraViewController(_:didFinishWith:)partial apply, v7);
 }
 
-- (void)importScannedDocumentAt:(id)a3 presentingController:(id)a4 importToCurrentLocation:(BOOL)a5
+- (void)importScannedDocumentAt:(id)at presentingController:(id)controller importToCurrentLocation:(BOOL)location
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);

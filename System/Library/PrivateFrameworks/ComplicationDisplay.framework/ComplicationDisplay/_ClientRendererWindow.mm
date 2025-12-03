@@ -11,8 +11,8 @@
   v2 = [(_ClientRendererWindow *)&v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
-    [(_ClientRendererWindow *)v2 setBackgroundColor:v3];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(_ClientRendererWindow *)v2 setBackgroundColor:blackColor];
 
     [(_ClientRendererWindow *)v2 setOpaque:1];
   }

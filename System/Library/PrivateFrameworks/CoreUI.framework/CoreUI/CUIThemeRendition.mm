@@ -6,24 +6,24 @@
 - (CGSize)originalUncroppedSize;
 - (CGSize)physicalSizeInMeters;
 - (CGSize)unslicedSize;
-- (CUIThemeRendition)initWithCSIData:(id)a3 forKey:(const _renditionkeytoken *)a4 version:(unsigned int)a5;
+- (CUIThemeRendition)initWithCSIData:(id)data forKey:(const _renditionkeytoken *)key version:(unsigned int)version;
 - (const)key;
-- (id)_initWithCSIData:(id)a3 forKey:(const _renditionkeytoken *)a4 version:(unsigned int)a5;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIData:(id)data forKey:(const _renditionkeytoken *)key version:(unsigned int)version;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)description;
 - (id)properties;
 - (id)utiType;
 - (unsigned)subtype;
-- (unsigned)valueForTokenIdentifier:(unsigned __int16)a3;
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4;
-- (void)_initializeCompositingOptionsFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4;
-- (void)_initializePropertiesFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4;
-- (void)_initializeRenditionKey:(const _renditionkeytoken *)a3;
-- (void)_initializeTypeIdentifiersWithLayout:(unsigned __int16)a3;
-- (void)_setFlippable:(BOOL)a3;
+- (unsigned)valueForTokenIdentifier:(unsigned __int16)identifier;
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version;
+- (void)_initializeCompositingOptionsFromCSIData:(const _csiheader *)data version:(unsigned int)version;
+- (void)_initializePropertiesFromCSIData:(const _csiheader *)data version:(unsigned int)version;
+- (void)_initializeRenditionKey:(const _renditionkeytoken *)key;
+- (void)_initializeTypeIdentifiersWithLayout:(unsigned __int16)layout;
+- (void)_setFlippable:(BOOL)flippable;
 - (void)dealloc;
-- (void)setInternalName:(id)a3;
-- (void)setName:(id)a3;
+- (void)setInternalName:(id)name;
+- (void)setName:(id)name;
 @end
 
 @implementation CUIThemeRendition
@@ -110,11 +110,11 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CUIThemeRendition *)self unslicedImage];
+  unslicedImage = [(CUIThemeRendition *)self unslicedImage];
   if (v4 != CGSizeZero.width || v6 != CGSizeZero.height)
   {
     uncroppedImage = self->_uncroppedImage;
-    if (uncroppedImage || (BitsPerComponent = CGImageGetBitsPerComponent(v15), ColorSpace = CGImageGetColorSpace(v15), AlphaInfo = CGImageGetAlphaInfo(v15), v23 = CUICGBitmapContextCreate(v4, v6, BitsPerComponent, 0, ColorSpace, AlphaInfo, v21, v22), v25.origin.y = v6 - (v10 + v14), v25.origin.x = v8, v25.size.width = v12, v25.size.height = v14, CGContextDrawImage(v23, v25, v15), self->_uncroppedImage = CGBitmapContextCreateImage(v23), CGContextRelease(v23), (uncroppedImage = self->_uncroppedImage) != 0))
+    if (uncroppedImage || (BitsPerComponent = CGImageGetBitsPerComponent(unslicedImage), ColorSpace = CGImageGetColorSpace(unslicedImage), AlphaInfo = CGImageGetAlphaInfo(unslicedImage), v23 = CUICGBitmapContextCreate(v4, v6, BitsPerComponent, 0, ColorSpace, AlphaInfo, v21, v22), v25.origin.y = v6 - (v10 + v14), v25.origin.x = v8, v25.size.width = v12, v25.size.height = v14, CGContextDrawImage(v23, v25, unslicedImage), self->_uncroppedImage = CGBitmapContextCreateImage(v23), CGContextRelease(v23), (uncroppedImage = self->_uncroppedImage) != 0))
     {
       CFRetain(uncroppedImage);
       CFAutorelease(self->_uncroppedImage);
@@ -127,7 +127,7 @@
     }
   }
 
-  return v15;
+  return unslicedImage;
 }
 
 - (CGRect)alphaCroppedRect
@@ -156,23 +156,23 @@
   }
 }
 
-- (void)setInternalName:(id)a3
+- (void)setInternalName:(id)name
 {
   name = self->_name;
-  if (name != a3)
+  if (name != name)
   {
 
-    self->_name = a3;
+    self->_name = name;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   name = self->_name;
-  if (name != a3)
+  if (name != name)
   {
 
-    self->_name = a3;
+    self->_name = name;
   }
 }
 
@@ -198,17 +198,17 @@
   return result;
 }
 
-- (void)_initializeTypeIdentifiersWithLayout:(unsigned __int16)a3
+- (void)_initializeTypeIdentifiersWithLayout:(unsigned __int16)layout
 {
-  if ((a3 - 10) <= 2)
+  if ((layout - 10) <= 2)
   {
     self->_type = 0;
 LABEL_10:
-    self->_subtype = a3;
+    self->_subtype = layout;
     return;
   }
 
-  if ((a3 - 20) <= 2)
+  if ((layout - 20) <= 2)
   {
     v3 = 1;
 LABEL_9:
@@ -216,26 +216,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((a3 - 23) <= 2)
+  if ((layout - 23) <= 2)
   {
     v3 = 2;
     goto LABEL_9;
   }
 
-  if ((a3 - 30) < 5)
+  if ((layout - 30) < 5)
   {
     v3 = 3;
     goto LABEL_9;
   }
 
-  if (a3 == 40)
+  if (layout == 40)
   {
     self->_type = 5;
     v4 = 40;
     goto LABEL_15;
   }
 
-  if (a3 == 50)
+  if (layout == 50)
   {
     self->_type = 8;
     v4 = 50;
@@ -244,18 +244,18 @@ LABEL_15:
     return;
   }
 
-  self->_type = a3;
+  self->_type = layout;
 }
 
-- (void)_initializeCompositingOptionsFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4
+- (void)_initializeCompositingOptionsFromCSIData:(const _csiheader *)data version:(unsigned int)version
 {
   self->_opacity = 1.0;
   self->_blendMode = 0;
-  var10 = a3->var10;
+  var10 = data->var10;
   if (var10)
   {
-    v7 = (&a3->var11.var1[a3->var11.var0 + 1] + var10);
-    v8 = &a3->var11.var1[a3->var11.var0 + 1];
+    v7 = (&data->var11.var1[data->var11.var0 + 1] + var10);
+    v8 = &data->var11.var1[data->var11.var0 + 1];
     do
     {
       v9 = v8[1];
@@ -265,7 +265,7 @@ LABEL_15:
         [(CUIThemeRendition *)self setOpacity:*(v8 + 3)];
       }
 
-      if (a4 <= 0x34E && *v8 == 1019)
+      if (version <= 0x34E && *v8 == 1019)
       {
         v9 = 12;
       }
@@ -277,13 +277,13 @@ LABEL_15:
   }
 }
 
-- (void)_initalizeMetadataFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4
+- (void)_initalizeMetadataFromCSIData:(const _csiheader *)data version:(unsigned int)version
 {
-  var10 = a3->var10;
+  var10 = data->var10;
   if (var10)
   {
-    v7 = (&a3->var11.var1[a3->var11.var0 + 1] + var10);
-    v8 = &a3->var11.var1[a3->var11.var0 + 1];
+    v7 = (&data->var11.var1[data->var11.var0 + 1] + var10);
+    v8 = &data->var11.var1[data->var11.var0 + 1];
     do
     {
       v9 = v8[1];
@@ -301,7 +301,7 @@ LABEL_15:
         self->_utiType = [[NSString alloc] initWithUTF8String:v8 + 4];
       }
 
-      if (a4 <= 0x34E && *v8 == 1019)
+      if (version <= 0x34E && *v8 == 1019)
       {
         v9 = 12;
       }
@@ -313,17 +313,17 @@ LABEL_15:
   }
 }
 
-- (void)_initializePropertiesFromCSIData:(const _csiheader *)a3 version:(unsigned int)a4
+- (void)_initializePropertiesFromCSIData:(const _csiheader *)data version:(unsigned int)version
 {
-  var10 = a3->var10;
-  var0 = a3->var11.var0;
+  var10 = data->var10;
+  var0 = data->var11.var0;
   SRGB = _CUIColorSpaceGetSRGB();
   if (var10)
   {
     space = SRGB;
     v10 = 0;
-    v11 = (&a3->var11.var1[var0 + 1] + var10);
-    v12 = &a3->var11.var1[var0 + 1];
+    v11 = (&data->var11.var1[var0 + 1] + var10);
+    v12 = &data->var11.var1[var0 + 1];
     while (1)
     {
       v13 = v12[1];
@@ -386,7 +386,7 @@ LABEL_15:
       }
 
 LABEL_22:
-      if (a4 <= 0x34E && *v12 == 1019)
+      if (version <= 0x34E && *v12 == 1019)
       {
         v13 = 12;
       }
@@ -405,18 +405,18 @@ LABEL_28:
   self->_properties = v10;
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
-  v4 = *&a4;
+  v4 = *&version;
   v19.receiver = self;
   v19.super_class = CUIThemeRendition;
   v6 = [(CUIThemeRendition *)&v19 init];
-  v6->_colorSpaceID = *(a3 + 7) & 0xF;
-  [(CUIThemeRendition *)v6 _initializeTypeIdentifiersWithLayout:a3->var9.var1];
-  v6->_name = [[NSString alloc] initWithUTF8String:a3->var9.var3];
-  v7 = *&v6->_renditionFlags & 0xFFFFFFFE | (a3->var2 >> 2) & 1;
+  v6->_colorSpaceID = *(header + 7) & 0xF;
+  [(CUIThemeRendition *)v6 _initializeTypeIdentifiersWithLayout:header->var9.var1];
+  v6->_name = [[NSString alloc] initWithUTF8String:header->var9.var3];
+  v7 = *&v6->_renditionFlags & 0xFFFFFFFE | (header->var2 >> 2) & 1;
   v6->_renditionFlags = v7;
-  var2 = a3->var2;
+  var2 = header->var2;
   if ((var2 & 8) != 0)
   {
     v9 = 1;
@@ -442,7 +442,7 @@ LABEL_7:
 LABEL_8:
     v7 |= 0x40u;
     v6->_renditionFlags = v7;
-    var2 = a3->var2;
+    var2 = header->var2;
   }
 
 LABEL_9:
@@ -450,7 +450,7 @@ LABEL_9:
   {
     v7 |= 0x400u;
     v6->_renditionFlags = v7;
-    var2 = a3->var2;
+    var2 = header->var2;
     if ((var2 & 0x40) == 0)
     {
 LABEL_11:
@@ -470,7 +470,7 @@ LABEL_11:
 
   v7 |= 0x80u;
   v6->_renditionFlags = v7;
-  var2 = a3->var2;
+  var2 = header->var2;
   if ((var2 & 0x80) == 0)
   {
 LABEL_12:
@@ -485,14 +485,14 @@ LABEL_12:
 LABEL_22:
   v7 |= 0x100u;
   v6->_renditionFlags = v7;
-  if ((a3->var2 & 0x100) != 0)
+  if ((header->var2 & 0x100) != 0)
   {
 LABEL_13:
     v6->_renditionFlags = (v7 | 0x200);
   }
 
 LABEL_14:
-  var5 = a3->var5;
+  var5 = header->var5;
   if (var5)
   {
     v11 = (var5 / 100.0);
@@ -504,20 +504,20 @@ LABEL_14:
   }
 
   v6->_scale = v11;
-  [(CUIThemeRendition *)v6 _initializeCompositingOptionsFromCSIData:a3 version:v4];
-  [(CUIThemeRendition *)v6 _initalizeMetadataFromCSIData:a3 version:v4];
-  [(CUIThemeRendition *)v6 _initializePropertiesFromCSIData:a3 version:v4];
-  if (a3->var1 > 1)
+  [(CUIThemeRendition *)v6 _initializeCompositingOptionsFromCSIData:header version:v4];
+  [(CUIThemeRendition *)v6 _initalizeMetadataFromCSIData:header version:v4];
+  [(CUIThemeRendition *)v6 _initializePropertiesFromCSIData:header version:v4];
+  if (header->var1 > 1)
   {
-    _CUILog(4, "CoreUI: Error: CAR has a CSIVersion (%d) that is greater than the current version (%d)", v12, v13, v14, v15, v16, v17, a3->var1);
+    _CUILog(4, "CoreUI: Error: CAR has a CSIVersion (%d) that is greater than the current version (%d)", v12, v13, v14, v15, v16, v17, header->var1);
   }
 
   return v6;
 }
 
-- (void)_initializeRenditionKey:(const _renditionkeytoken *)a3
+- (void)_initializeRenditionKey:(const _renditionkeytoken *)key
 {
-  v5 = CUIRenditionKeyTokenCount(a3);
+  v5 = CUIRenditionKeyTokenCount(key);
   v6 = v5;
   if (v5 <= 0x15)
   {
@@ -535,17 +535,17 @@ LABEL_14:
     key = self->_stackKey;
   }
 
-  CUIRenditionKeyCopy(key, a3, (v6 + 1));
+  CUIRenditionKeyCopy(key, key, (v6 + 1));
 }
 
-- (CUIThemeRendition)initWithCSIData:(id)a3 forKey:(const _renditionkeytoken *)a4 version:(unsigned int)a5
+- (CUIThemeRendition)initWithCSIData:(id)data forKey:(const _renditionkeytoken *)key version:(unsigned int)version
 {
-  v5 = *&a5;
-  v9 = [a3 bytes];
-  v10 = [objc_opt_class() renditionClassForRenditionType:v9[18] andPixelFormat:*(v9 + 6)];
+  v5 = *&version;
+  bytes = [data bytes];
+  v10 = [objc_opt_class() renditionClassForRenditionType:bytes[18] andPixelFormat:*(bytes + 6)];
   if (v10)
   {
-    v11 = [[v10 alloc] _initWithCSIData:a3 forKey:a4 version:v5];
+    v11 = [[v10 alloc] _initWithCSIData:data forKey:key version:v5];
   }
 
   else
@@ -556,16 +556,16 @@ LABEL_14:
   return v11;
 }
 
-- (id)_initWithCSIData:(id)a3 forKey:(const _renditionkeytoken *)a4 version:(unsigned int)a5
+- (id)_initWithCSIData:(id)data forKey:(const _renditionkeytoken *)key version:(unsigned int)version
 {
-  v5 = *&a5;
+  v5 = *&version;
   v21.receiver = self;
   v21.super_class = CUIThemeRendition;
   result = [(CUIThemeRendition *)&v21 init];
   if (result)
   {
     v9 = result;
-    v10 = CUIRenditionKeyTokenCount(a4);
+    v10 = CUIRenditionKeyTokenCount(key);
     v11 = v10;
     if (v10 <= 0x15)
     {
@@ -583,17 +583,17 @@ LABEL_14:
       v12 = v9 + 1;
     }
 
-    CUIRenditionKeyCopy(v12, a4, (v11 + 1));
-    v13 = [a3 bytes];
-    v9[20] = a3;
-    if (*v13 == 1129599817)
+    CUIRenditionKeyCopy(v12, key, (v11 + 1));
+    bytes = [data bytes];
+    v9[20] = data;
+    if (*bytes == 1129599817)
     {
-      return [v9 _initWithCSIHeader:v13 version:v5];
+      return [v9 _initWithCSIHeader:bytes version:v5];
     }
 
     else
     {
-      v14 = [CUIRenditionKey renditionKeyWithKeyList:a4];
+      v14 = [CUIRenditionKey renditionKeyWithKeyList:key];
       _CUILog(4, "CoreUI: Error while decoding CSIData for key %@", v15, v16, v17, v18, v19, v20, v14);
 
       return 0;
@@ -619,9 +619,9 @@ LABEL_14:
   return result;
 }
 
-- (void)_setFlippable:(BOOL)a3
+- (void)_setFlippable:(BOOL)flippable
 {
-  if (a3)
+  if (flippable)
   {
     v3 = 128;
   }
@@ -661,9 +661,9 @@ LABEL_14:
   return result;
 }
 
-- (unsigned)valueForTokenIdentifier:(unsigned __int16)a3
+- (unsigned)valueForTokenIdentifier:(unsigned __int16)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [(CUIThemeRendition *)self key];
   identifier = v4->identifier;
   if (!v4->identifier)
@@ -672,7 +672,7 @@ LABEL_14:
   }
 
   v6 = v4 + 1;
-  while (identifier != v3)
+  while (identifier != identifierCopy)
   {
     v7 = v6->identifier;
     ++v6;

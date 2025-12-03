@@ -1,45 +1,45 @@
 @interface HPRFHeartRateSettingsController
 + (id)_cachedInstallStateByAppID;
 - (BOOL)_areIrregularRhythmNotificationsTurnedOn;
-- (BOOL)_isAppInstalled:(id)a3;
+- (BOOL)_isAppInstalled:(id)installed;
 - (HPRFHeartRateSettingsController)init;
-- (id)_aFibBurdenGroupSpecifierWithFooter:(id)a3;
+- (id)_aFibBurdenGroupSpecifierWithFooter:(id)footer;
 - (id)_aFibBurdenOnboardingSpecifier;
 - (id)_aFibBurdenSwitchSpecifier;
 - (id)_atrialFibrillationDetectionOnboardingSpecifier;
 - (id)_atrialFibrillationDetectionSwitchSpecifier;
 - (id)_bradycardiaSpecifier;
-- (id)_cardioFitnessGroupSpecifierWithFooter:(id)a3;
+- (id)_cardioFitnessGroupSpecifierWithFooter:(id)footer;
 - (id)_cardioFitnessNotificationsSwitchSpecifier;
 - (id)_cardioFitnessOnboardingSpecifier;
 - (id)_electrocardiogramAppInstallSpecifier;
-- (id)_electrocardiogramGroupSpecifierWithFooter:(id)a3;
+- (id)_electrocardiogramGroupSpecifierWithFooter:(id)footer;
 - (id)_electrocardiogramHealthRoomSpecifier;
 - (id)_electrocardiogramOnboardingSpecifier;
 - (id)_heartAgeGatingSpecifier;
-- (id)_hypertensionNotificationsGroupSpecifierWithFooter:(id)a3;
+- (id)_hypertensionNotificationsGroupSpecifierWithFooter:(id)footer;
 - (id)_hypertensionNotificationsOnboardingSpecifier;
 - (id)_hypertensionNotificationsSwitchSpecifier;
-- (id)_irregularRhythmNotificationsGroupSpecifierWithHeaderText:(id)a3 footer:(id)a4;
-- (id)_irregularRhythmNotificationsSpecifiersWithFeatureStatus:(id)a3;
+- (id)_irregularRhythmNotificationsGroupSpecifierWithHeaderText:(id)text footer:(id)footer;
+- (id)_irregularRhythmNotificationsSpecifiersWithFeatureStatus:(id)status;
 - (id)_setUpAFibBurdenFeatureStatusManager;
 - (id)_setUpCardioFitnessFeatureStatusManager;
 - (id)_setUpElectrocardiogramFeatureStatusManager;
 - (id)_setUpHeartRateNotificationsFeatureStatusManager;
 - (id)_setUpHeartRhythmAvailability;
-- (id)_setUpHeartRhythmAvailabilityWithProfileIdentifier:(id)a3;
+- (id)_setUpHeartRhythmAvailabilityWithProfileIdentifier:(id)identifier;
 - (id)_setUpHypertensionNotificationsFeatureStatusManager;
 - (id)_tachycardiaSpecifier;
-- (id)aFibBurdenEnabledValueWithSpecifier:(id)a3;
-- (id)atrialFibrillationDetectionEnabledValueWithSpecifier:(id)a3;
+- (id)aFibBurdenEnabledValueWithSpecifier:(id)specifier;
+- (id)atrialFibrillationDetectionEnabledValueWithSpecifier:(id)specifier;
 - (id)bundle;
-- (id)cardioFitnessNotificationsEnabledValueWithSpecifier:(id)a3;
-- (id)hypertensionNotificationsEnabledValueWithSpecifier:(id)a3;
+- (id)cardioFitnessNotificationsEnabledValueWithSpecifier:(id)specifier;
+- (id)hypertensionNotificationsEnabledValueWithSpecifier:(id)specifier;
 - (id)notificationCoalescingTitles;
-- (id)notificationCoalescingValue:(id)a3;
+- (id)notificationCoalescingValue:(id)value;
 - (id)specifiers;
 - (int64_t)_atrialFibrillationDetectionRescindedStatus;
-- (int64_t)appInstallStateForAppBundleID:(id)a3;
+- (int64_t)appInstallStateForAppBundleID:(id)d;
 - (void)_aFibBurdenFooterLinkTapped;
 - (void)_aFibBurdenOnboardingButtonTapped;
 - (void)_atrialFibrillationDetectionHealthRoomButtonTapped;
@@ -56,16 +56,16 @@
 - (void)_openFeatureRemoteDisabledURL;
 - (void)_privacySettingsLinkTapped;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 - (void)heartRhythmAvailabilityDidUpdate;
-- (void)setAFibBurdenEnabledValue:(id)a3 specifier:(id)a4;
-- (void)setAtrialFibrillationDetectionEnabledValue:(id)a3 specifier:(id)a4;
-- (void)setCardioFitnessNotificationsEnabledValue:(id)a3 specifier:(id)a4;
-- (void)setHypertensionNotificationsEnabledValue:(id)a3 specifier:(id)a4;
-- (void)setNotificationCoalescingValue:(id)a3 specifier:(id)a4;
-- (void)setUpWatchAppAvailabilityForAppBundleID:(id)a3 device:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)watchAppAvailability:(id)a3 appInstallStateDidChange:(int64_t)a4;
+- (void)setAFibBurdenEnabledValue:(id)value specifier:(id)specifier;
+- (void)setAtrialFibrillationDetectionEnabledValue:(id)value specifier:(id)specifier;
+- (void)setCardioFitnessNotificationsEnabledValue:(id)value specifier:(id)specifier;
+- (void)setHypertensionNotificationsEnabledValue:(id)value specifier:(id)specifier;
+- (void)setNotificationCoalescingValue:(id)value specifier:(id)specifier;
+- (void)setUpWatchAppAvailabilityForAppBundleID:(id)d device:(id)device;
+- (void)traitCollectionDidChange:(id)change;
+- (void)watchAppAvailability:(id)availability appInstallStateDidChange:(int64_t)change;
 @end
 
 @implementation HPRFHeartRateSettingsController
@@ -95,21 +95,21 @@
     if (v12)
     {
       availabilityManager = [[HKProfileStore alloc] initWithHealthStore:v3->_primaryHealthStore];
-      v14 = [v12 pairingID];
+      pairingID = [v12 pairingID];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_2F38;
       v38[3] = &unk_18710;
       v39 = v12;
       v40 = v3;
-      [(HKHeartRhythmAvailability *)availabilityManager fetchProfileIdentifierForNRDeviceUUID:v14 completion:v38];
+      [(HKHeartRhythmAvailability *)availabilityManager fetchProfileIdentifierForNRDeviceUUID:pairingID completion:v38];
     }
 
     else
     {
-      v15 = [(HPRFHeartRateSettingsController *)v3 _setUpHeartRhythmAvailability];
+      _setUpHeartRhythmAvailability = [(HPRFHeartRateSettingsController *)v3 _setUpHeartRhythmAvailability];
       availabilityManager = v3->_availabilityManager;
-      v3->_availabilityManager = v15;
+      v3->_availabilityManager = _setUpHeartRhythmAvailability;
     }
 
     v16 = +[NRPairedDeviceRegistry hprf_activeDevice];
@@ -138,37 +138,37 @@
     v3->_irregularRhythmNotificationsManager = v21;
 
     [(HKFeatureStatusManager *)v3->_irregularRhythmNotificationsManager registerObserver:v3 queue:&_dispatch_main_q];
-    v23 = [(HPRFHeartRateSettingsController *)v3 _setUpAFibBurdenFeatureStatusManager];
+    _setUpAFibBurdenFeatureStatusManager = [(HPRFHeartRateSettingsController *)v3 _setUpAFibBurdenFeatureStatusManager];
     aFibBurdenStatusManager = v3->_aFibBurdenStatusManager;
-    v3->_aFibBurdenStatusManager = v23;
+    v3->_aFibBurdenStatusManager = _setUpAFibBurdenFeatureStatusManager;
 
     aFibBurdenFooterURL = v3->_aFibBurdenFooterURL;
     v3->_aFibBurdenFooterURL = 0;
 
-    v26 = [(HPRFHeartRateSettingsController *)v3 _setUpCardioFitnessFeatureStatusManager];
+    _setUpCardioFitnessFeatureStatusManager = [(HPRFHeartRateSettingsController *)v3 _setUpCardioFitnessFeatureStatusManager];
     cardioFitnessStatusManager = v3->_cardioFitnessStatusManager;
-    v3->_cardioFitnessStatusManager = v26;
+    v3->_cardioFitnessStatusManager = _setUpCardioFitnessFeatureStatusManager;
 
     cardioFitnessFooterURL = v3->_cardioFitnessFooterURL;
     v3->_cardioFitnessFooterURL = 0;
 
-    v29 = [(HPRFHeartRateSettingsController *)v3 _setUpElectrocardiogramFeatureStatusManager];
+    _setUpElectrocardiogramFeatureStatusManager = [(HPRFHeartRateSettingsController *)v3 _setUpElectrocardiogramFeatureStatusManager];
     electrocardiogramStatusManager = v3->_electrocardiogramStatusManager;
-    v3->_electrocardiogramStatusManager = v29;
+    v3->_electrocardiogramStatusManager = _setUpElectrocardiogramFeatureStatusManager;
 
     electrocardiogramFooterURL = v3->_electrocardiogramFooterURL;
     v3->_electrocardiogramFooterURL = 0;
 
-    v32 = [(HPRFHeartRateSettingsController *)v3 _setUpHypertensionNotificationsFeatureStatusManager];
+    _setUpHypertensionNotificationsFeatureStatusManager = [(HPRFHeartRateSettingsController *)v3 _setUpHypertensionNotificationsFeatureStatusManager];
     hypertensionNotificationsStatusManager = v3->_hypertensionNotificationsStatusManager;
-    v3->_hypertensionNotificationsStatusManager = v32;
+    v3->_hypertensionNotificationsStatusManager = _setUpHypertensionNotificationsFeatureStatusManager;
 
     hypertensionNotificationsFooterURL = v3->_hypertensionNotificationsFooterURL;
     v3->_hypertensionNotificationsFooterURL = 0;
 
-    v35 = [(HPRFHeartRateSettingsController *)v3 _setUpHeartRateNotificationsFeatureStatusManager];
+    _setUpHeartRateNotificationsFeatureStatusManager = [(HPRFHeartRateSettingsController *)v3 _setUpHeartRateNotificationsFeatureStatusManager];
     heartRateNotificationsStatusManager = v3->_heartRateNotificationsStatusManager;
-    v3->_heartRateNotificationsStatusManager = v35;
+    v3->_heartRateNotificationsStatusManager = _setUpHeartRateNotificationsFeatureStatusManager;
   }
 
   return v3;
@@ -223,13 +223,13 @@
   [(HPRFHeartRateSettingsController *)&v10 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(HPRFHeartRateSettingsController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(HPRFHeartRateSettingsController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v4 != v6)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
     [(HPRFHeartRateSettingsController *)self reload];
@@ -301,11 +301,11 @@
   return v5;
 }
 
-- (id)_setUpHeartRhythmAvailabilityWithProfileIdentifier:(id)a3
+- (id)_setUpHeartRhythmAvailabilityWithProfileIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(HKHealthStore);
-  [v5 setProfileIdentifier:v4];
+  [v5 setProfileIdentifier:identifierCopy];
 
   [v5 resume];
   v6 = [[HKHeartRhythmAvailability alloc] initWithHealthStore:v5];
@@ -323,9 +323,9 @@
 
 - (int64_t)_atrialFibrillationDetectionRescindedStatus
 {
-  v2 = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsManager featureAvailabilityProviding];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsManager featureAvailabilityProviding];
   v7 = 0;
-  v3 = [v2 onboardedCountryCodeSupportedStateWithError:&v7];
+  v3 = [featureAvailabilityProviding onboardedCountryCodeSupportedStateWithError:&v7];
   v4 = v7;
 
   if (v3)
@@ -352,7 +352,7 @@
 {
   if (!self->_availabilityManager)
   {
-    v11 = &__NSArray0__struct;
+    v128 = &__NSArray0__struct;
     goto LABEL_104;
   }
 
@@ -363,8 +363,8 @@
   }
 
   v136 = OBJC_IVAR___PSListController__specifiers;
-  v4 = [(HPRFHeartRateSettingsController *)self localizedPaneTitle];
-  [(HPRFHeartRateSettingsController *)self setTitle:v4];
+  localizedPaneTitle = [(HPRFHeartRateSettingsController *)self localizedPaneTitle];
+  [(HPRFHeartRateSettingsController *)self setTitle:localizedPaneTitle];
 
   v5 = +[NSMutableArray array];
   electrocardiogramStatusManager = self->_electrocardiogramStatusManager;
@@ -452,9 +452,9 @@
   v33 = self->_availabilityManager;
   v34 = +[NRPairedDeviceRegistry hprf_activeDevice];
   v35 = +[NSDate date];
-  v11 = [(HKHeartRhythmAvailability *)v33 isHeartAgeGatingEnabledOnWatch:v34 currentDate:v35];
+  v128 = [(HKHeartRhythmAvailability *)v33 isHeartAgeGatingEnabledOnWatch:v34 currentDate:v35];
 
-  if (!v11)
+  if (!v128)
   {
     v40 = v17;
     if (v24)
@@ -464,7 +464,7 @@
       v42 = *&self->BPSNotificationAppController_opaque[v136];
       *&self->BPSNotificationAppController_opaque[v136] = v41;
 
-      v11 = *&self->BPSNotificationAppController_opaque[v136];
+      v128 = *&self->BPSNotificationAppController_opaque[v136];
       v39 = 0;
       goto LABEL_101;
     }
@@ -496,8 +496,8 @@ LABEL_43:
         if (!v62)
         {
           _HKInitializeLogging();
-          v63 = HKLogHeartRateCategory();
-          if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
+          bridgeSettings2 = HKLogHeartRateCategory();
+          if (os_log_type_enabled(bridgeSettings2, OS_LOG_TYPE_ERROR))
           {
             sub_BFB0();
           }
@@ -518,8 +518,8 @@ LABEL_59:
           else
           {
             _HKInitializeLogging();
-            v11 = HKLogHeartRateCategory();
-            if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+            v128 = HKLogHeartRateCategory();
+            if (os_log_type_enabled(v128, OS_LOG_TYPE_ERROR))
             {
               sub_C05C();
             }
@@ -548,10 +548,10 @@ LABEL_59:
               _os_log_impl(&dword_0, v80, OS_LOG_TYPE_DEFAULT, "[%@]: Loading notifications section with status %@", buf, 0x16u);
             }
 
-            v11 = [v78 objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsVisibility];
-            v83 = [v11 areAllRequirementsSatisfied];
+            v128 = [v78 objectForKeyedSubscript:HKFeatureAvailabilityContextSettingsVisibility];
+            areAllRequirementsSatisfied = [v128 areAllRequirementsSatisfied];
 
-            if ((v83 & 1) == 0)
+            if ((areAllRequirementsSatisfied & 1) == 0)
             {
               goto LABEL_81;
             }
@@ -583,30 +583,30 @@ LABEL_59:
               [v85 setObject:v87 forKeyedSubscript:PSHeaderDetailTextGroupKey];
             }
 
-            v88 = [objc_opt_class() footerText];
+            footerText = [objc_opt_class() footerText];
             v89 = PSFooterTextGroupKey;
-            [v85 setObject:v88 forKeyedSubscript:PSFooterTextGroupKey];
+            [v85 setObject:footerText forKeyedSubscript:PSFooterTextGroupKey];
 
             [v32 addObject:v85];
-            v90 = [(HPRFHeartRateSettingsController *)self _tachycardiaSpecifier];
+            _tachycardiaSpecifier = [(HPRFHeartRateSettingsController *)self _tachycardiaSpecifier];
             v91 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[_HKHeartSettingsUtilities isBackgroundHeartRateEnabled]);
-            v11 = PSEnabledKey;
-            [v90 setObject:v91 forKeyedSubscript:PSEnabledKey];
+            v128 = PSEnabledKey;
+            [_tachycardiaSpecifier setObject:v91 forKeyedSubscript:PSEnabledKey];
 
             v32 = v137;
-            [v137 addObject:v90];
+            [v137 addObject:_tachycardiaSpecifier];
             if (+[_HKHeartSettingsUtilities isBradycardiaDetectionSupportedOnActiveWatch])
             {
               v92 = [PSSpecifier groupSpecifierWithID:@"HEART_NOTIFICATION_BRADYCARDIA_GROUP_ID" name:0];
-              v93 = [objc_opt_class() footerText];
-              [v92 setObject:v93 forKeyedSubscript:v89];
+              footerText2 = [objc_opt_class() footerText];
+              [v92 setObject:footerText2 forKeyedSubscript:v89];
 
               [v137 addObject:v92];
-              v94 = [(HPRFHeartRateSettingsController *)self _bradycardiaSpecifier];
+              _bradycardiaSpecifier = [(HPRFHeartRateSettingsController *)self _bradycardiaSpecifier];
               v95 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[_HKHeartSettingsUtilities isBackgroundHeartRateEnabled]);
-              [v94 setObject:v95 forKeyedSubscript:v11];
+              [_bradycardiaSpecifier setObject:v95 forKeyedSubscript:v128];
 
-              [v137 addObject:v94];
+              [v137 addObject:_bradycardiaSpecifier];
               v32 = v137;
             }
 
@@ -625,7 +625,7 @@ LABEL_81:
           v98 = v139;
           _HKInitializeLogging();
           v99 = HKHRAFibBurdenLogForCategory();
-          v100 = v99;
+          bridgeSettings = v99;
           v123 = v98;
           if (v97)
           {
@@ -637,24 +637,24 @@ LABEL_81:
               v148 = 2112;
               v149[0] = v97;
               v102 = v101;
-              _os_log_impl(&dword_0, v100, OS_LOG_TYPE_DEFAULT, "[%@]: Loading AFibBurden section with status %@", buf, 0x16u);
+              _os_log_impl(&dword_0, bridgeSettings, OS_LOG_TYPE_DEFAULT, "[%@]: Loading AFibBurden section with status %@", buf, 0x16u);
             }
 
-            v11 = [[HKHRAFibBurdenNotificationSettingsFactory alloc] initWithFeatureStatus:v97];
-            v100 = [v11 bridgeSettings];
+            v128 = [[HKHRAFibBurdenNotificationSettingsFactory alloc] initWithFeatureStatus:v97];
+            bridgeSettings = [v128 bridgeSettings];
 
-            if ([v100 settingVisible])
+            if ([bridgeSettings settingVisible])
             {
               v103 = v40;
-              v104 = [v100 footer];
-              v105 = [(HPRFHeartRateSettingsController *)self _aFibBurdenGroupSpecifierWithFooter:v104];
+              footer = [bridgeSettings footer];
+              v105 = [(HPRFHeartRateSettingsController *)self _aFibBurdenGroupSpecifierWithFooter:footer];
 
               [v32 addObject:v105];
-              LODWORD(v104) = [v100 showOnboarding];
+              LODWORD(footer) = [bridgeSettings showOnboarding];
               _HKInitializeLogging();
               v106 = HKHRAFibBurdenLogForCategory();
               v107 = os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT);
-              if (v104)
+              if (footer)
               {
                 if (v107)
                 {
@@ -665,7 +665,7 @@ LABEL_81:
                   _os_log_impl(&dword_0, v106, OS_LOG_TYPE_DEFAULT, "[%@]: AFibBurden not onboarded. Showing onboarding specifier", buf, 0xCu);
                 }
 
-                v110 = [(HPRFHeartRateSettingsController *)self _aFibBurdenOnboardingSpecifier];
+                _aFibBurdenOnboardingSpecifier = [(HPRFHeartRateSettingsController *)self _aFibBurdenOnboardingSpecifier];
               }
 
               else
@@ -679,15 +679,15 @@ LABEL_81:
                   _os_log_impl(&dword_0, v106, OS_LOG_TYPE_DEFAULT, "[%@]: AFibBurden onboarded. Showing toggle", buf, 0xCu);
                 }
 
-                v110 = [(HPRFHeartRateSettingsController *)self _aFibBurdenSwitchSpecifier];
+                _aFibBurdenOnboardingSpecifier = [(HPRFHeartRateSettingsController *)self _aFibBurdenSwitchSpecifier];
               }
 
-              v11 = v110;
-              v114 = [NSNumber numberWithBool:[v100 settingEnabled]];
-              [v11 setObject:v114 forKeyedSubscript:PSEnabledKey];
+              v128 = _aFibBurdenOnboardingSpecifier;
+              v114 = [NSNumber numberWithBool:[bridgeSettings settingEnabled]];
+              [v128 setObject:v114 forKeyedSubscript:PSEnabledKey];
 
               v32 = v137;
-              [v137 addObject:v11];
+              [v137 addObject:v128];
 
               v40 = v103;
             }
@@ -701,7 +701,7 @@ LABEL_81:
                 v111 = objc_opt_class();
                 *buf = 138412290;
                 v147 = v111;
-                v11 = v111;
+                v128 = v111;
                 _os_log_impl(&dword_0, v105, OS_LOG_TYPE_DEFAULT, "[%@]: Omitting AFibBurden section. Feature unavailable", buf, 0xCu);
               }
             }
@@ -722,17 +722,17 @@ LABEL_81:
           {
             v138.receiver = self;
             v138.super_class = HPRFHeartRateSettingsController;
-            v115 = [(HPRFHeartRateSettingsController *)&v138 specifiers];
+            specifiers = [(HPRFHeartRateSettingsController *)&v138 specifiers];
             v116 = [PSSpecifier groupSpecifierWithID:@"NOTIFICATION_COALESCING_GROUP_ID"];
-            v11 = [PSSpecifier preferenceSpecifierNamed:@"HEART_NOTIFICATION_COALESCING_TITLE" target:self set:"setNotificationCoalescingValue:specifier:" get:"notificationCoalescingValue:" detail:objc_opt_class() cell:2 edit:0, v123, v124, v125, v126, v127, v128];
+            v128 = [PSSpecifier preferenceSpecifierNamed:@"HEART_NOTIFICATION_COALESCING_TITLE" target:self set:"setNotificationCoalescingValue:specifier:" get:"notificationCoalescingValue:" detail:objc_opt_class() cell:2 edit:0, v123, v124, v125, v126, v127, v128];
             v117 = HKHeartRateLocalizedString();
-            [v11 setName:v117];
+            [v128 setName:v117];
 
-            [v11 setIdentifier:@"NOTIFICATION_COALESCING_ID"];
-            [v11 setProperty:@"notificationCoalescingTitles" forKey:PSTitlesDataSourceKey];
-            [v11 setProperty:@"notificationCoalescingValues" forKey:PSValuesDataSourceKey];
+            [v128 setIdentifier:@"NOTIFICATION_COALESCING_ID"];
+            [v128 setProperty:@"notificationCoalescingTitles" forKey:PSTitlesDataSourceKey];
+            [v128 setProperty:@"notificationCoalescingValues" forKey:PSValuesDataSourceKey];
             v145[0] = v116;
-            v145[1] = v11;
+            v145[1] = v128;
             v118 = [NSArray arrayWithObjects:v145 count:2];
             [v137 addObjectsFromArray:v118];
 
@@ -748,20 +748,20 @@ LABEL_81:
           goto LABEL_101;
         }
 
-        v11 = [[HKHRCardioFitnessNotificationSettingsFactory alloc] initWithFeatureStatus:v62];
-        v63 = [v11 bridgeSettings];
+        v128 = [[HKHRCardioFitnessNotificationSettingsFactory alloc] initWithFeatureStatus:v62];
+        bridgeSettings2 = [v128 bridgeSettings];
 
-        if ([v63 settingVisible])
+        if ([bridgeSettings2 settingVisible])
         {
-          v64 = [v63 footer];
-          v65 = [(HPRFHeartRateSettingsController *)self _cardioFitnessGroupSpecifierWithFooter:v64];
+          footer2 = [bridgeSettings2 footer];
+          v65 = [(HPRFHeartRateSettingsController *)self _cardioFitnessGroupSpecifierWithFooter:footer2];
 
           [v32 addObject:v65];
-          LODWORD(v64) = [v63 showOnboarding];
+          LODWORD(footer2) = [bridgeSettings2 showOnboarding];
           _HKInitializeLogging();
           v66 = HKLogHeartRateCategory();
           v67 = os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT);
-          if (v64)
+          if (footer2)
           {
             if (v67)
             {
@@ -772,7 +772,7 @@ LABEL_81:
               _os_log_impl(&dword_0, v66, OS_LOG_TYPE_DEFAULT, "[%{public}@]: CardioFitness not onboarded. Showing onboarding specifier", buf, 0xCu);
             }
 
-            v70 = [(HPRFHeartRateSettingsController *)self _cardioFitnessOnboardingSpecifier];
+            _cardioFitnessOnboardingSpecifier = [(HPRFHeartRateSettingsController *)self _cardioFitnessOnboardingSpecifier];
           }
 
           else
@@ -786,15 +786,15 @@ LABEL_81:
               _os_log_impl(&dword_0, v66, OS_LOG_TYPE_DEFAULT, "[%{public}@]: CardioFitness onboarded. Showing notification toggle", buf, 0xCu);
             }
 
-            v70 = [(HPRFHeartRateSettingsController *)self _cardioFitnessNotificationsSwitchSpecifier];
+            _cardioFitnessOnboardingSpecifier = [(HPRFHeartRateSettingsController *)self _cardioFitnessNotificationsSwitchSpecifier];
           }
 
-          v11 = v70;
-          v74 = [NSNumber numberWithBool:[v63 settingEnabled]];
-          [v11 setObject:v74 forKeyedSubscript:PSEnabledKey];
+          v128 = _cardioFitnessOnboardingSpecifier;
+          v74 = [NSNumber numberWithBool:[bridgeSettings2 settingEnabled]];
+          [v128 setObject:v74 forKeyedSubscript:PSEnabledKey];
 
           v32 = v137;
-          [v137 addObject:v11];
+          [v137 addObject:v128];
         }
 
         else
@@ -811,7 +811,7 @@ LABEL_58:
           v71 = objc_opt_class();
           *buf = 138543362;
           v147 = v71;
-          v11 = v71;
+          v128 = v71;
           _os_log_impl(&dword_0, v65, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Omitting CardioFitness section. Notifications unavailable", buf, 0xCu);
         }
 
@@ -819,34 +819,34 @@ LABEL_58:
       }
 
       v51 = [[HKHRHypertensionNotificationsSettings alloc] initWithFeatureStatus:v50];
-      v52 = [v51 bridgeSettings];
+      bridgeSettings3 = [v51 bridgeSettings];
       _HKInitializeLogging();
-      v11 = HKLogHeartRateCategory();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      v128 = HKLogHeartRateCategory();
+      if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
       {
         v53 = objc_opt_class();
         v54 = v53;
-        v55 = [v52 settingVisible];
-        v56 = [v52 showOnboarding];
+        settingVisible = [bridgeSettings3 settingVisible];
+        showOnboarding = [bridgeSettings3 showOnboarding];
         *buf = 138543874;
         v147 = v53;
         v148 = 1026;
-        LODWORD(v149[0]) = v55;
+        LODWORD(v149[0]) = settingVisible;
         v32 = v137;
         WORD2(v149[0]) = 1026;
-        *(v149 + 6) = v56;
-        _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Loading Hypertension Notifications section with setting visible: %{public}i showOnboarding: %{public}i", buf, 0x18u);
+        *(v149 + 6) = showOnboarding;
+        _os_log_impl(&dword_0, v128, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Loading Hypertension Notifications section with setting visible: %{public}i showOnboarding: %{public}i", buf, 0x18u);
 
         v40 = v17;
       }
 
-      if ([v52 settingVisible])
+      if ([bridgeSettings3 settingVisible])
       {
-        v57 = [v52 footer];
-        v58 = [(HPRFHeartRateSettingsController *)self _hypertensionNotificationsGroupSpecifierWithFooter:v57];
+        footer3 = [bridgeSettings3 footer];
+        v58 = [(HPRFHeartRateSettingsController *)self _hypertensionNotificationsGroupSpecifierWithFooter:footer3];
 
         [v32 addObject:v58];
-        if ([v52 showOnboarding])
+        if ([bridgeSettings3 showOnboarding])
         {
           [(HPRFHeartRateSettingsController *)self _hypertensionNotificationsOnboardingSpecifier];
         }
@@ -855,12 +855,12 @@ LABEL_58:
         {
           [(HPRFHeartRateSettingsController *)self _hypertensionNotificationsSwitchSpecifier];
         }
-        v11 = ;
-        v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v52 userInteractionEnabled]);
-        [v11 setObject:v60 forKeyedSubscript:PSEnabledKey];
+        v128 = ;
+        v60 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bridgeSettings3 userInteractionEnabled]);
+        [v128 setObject:v60 forKeyedSubscript:PSEnabledKey];
 
         v32 = v137;
-        [v137 addObject:v11];
+        [v137 addObject:v128];
       }
 
       else
@@ -877,7 +877,7 @@ LABEL_42:
         v59 = objc_opt_class();
         *buf = 138543362;
         v147 = v59;
-        v11 = v59;
+        v128 = v59;
         _os_log_impl(&dword_0, v58, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Omitting Hypertension Notifications section. Feature is unavailable", buf, 0xCu);
       }
 
@@ -886,28 +886,28 @@ LABEL_42:
 
     if ([v17 settingVisible])
     {
-      v43 = [v17 footer];
-      v44 = [(HPRFHeartRateSettingsController *)self _electrocardiogramGroupSpecifierWithFooter:v43];
+      footer4 = [v17 footer];
+      v44 = [(HPRFHeartRateSettingsController *)self _electrocardiogramGroupSpecifierWithFooter:footer4];
 
       [v5 addObject:v44];
       if ([v17 showOnboarding])
       {
-        v11 = [(HPRFHeartRateSettingsController *)self _electrocardiogramOnboardingSpecifier];
+        v128 = [(HPRFHeartRateSettingsController *)self _electrocardiogramOnboardingSpecifier];
         v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v17 userInteractionEnabled]);
-        [v11 setObject:v45 forKeyedSubscript:PSEnabledKey];
+        [v128 setObject:v45 forKeyedSubscript:PSEnabledKey];
 
-        [v5 addObject:v11];
+        [v5 addObject:v128];
       }
 
       else
       {
-        v11 = [(HPRFHeartRateSettingsController *)self _electrocardiogramAppInstallSpecifier];
+        v128 = [(HPRFHeartRateSettingsController *)self _electrocardiogramAppInstallSpecifier];
         v47 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v17 userInteractionEnabled]);
-        [v11 setObject:v47 forKeyedSubscript:PSEnabledKey];
+        [v128 setObject:v47 forKeyedSubscript:PSEnabledKey];
 
-        [v5 addObject:v11];
-        v48 = [(HPRFHeartRateSettingsController *)self _electrocardiogramHealthRoomSpecifier];
-        [v5 addObject:v48];
+        [v5 addObject:v128];
+        _electrocardiogramHealthRoomSpecifier = [(HPRFHeartRateSettingsController *)self _electrocardiogramHealthRoomSpecifier];
+        [v5 addObject:_electrocardiogramHealthRoomSpecifier];
       }
     }
 
@@ -925,7 +925,7 @@ LABEL_28:
       v46 = objc_opt_class();
       *buf = 138543362;
       v147 = v46;
-      v11 = v46;
+      v128 = v46;
       _os_log_impl(&dword_0, v44, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Omitting Electrocardiogram section. Feature is unavailable", buf, 0xCu);
     }
 
@@ -937,7 +937,7 @@ LABEL_28:
   v38 = *&self->BPSNotificationAppController_opaque[v136];
   *&self->BPSNotificationAppController_opaque[v136] = v36;
 
-  v11 = *&self->BPSNotificationAppController_opaque[v136];
+  v128 = *&self->BPSNotificationAppController_opaque[v136];
   v39 = 0;
   v40 = v17;
 LABEL_101:
@@ -949,10 +949,10 @@ LABEL_101:
 
   v3 = *&self->BPSNotificationAppController_opaque[v37];
 LABEL_103:
-  v11 = v3;
+  v128 = v3;
 LABEL_104:
 
-  return v11;
+  return v128;
 }
 
 - (void)_privacySettingsLinkTapped
@@ -975,10 +975,10 @@ LABEL_104:
   return v5;
 }
 
-- (id)notificationCoalescingValue:(id)a3
+- (id)notificationCoalescingValue:(id)value
 {
-  v3 = [(HPRFHeartRateSettingsController *)self sectionInfo];
-  v4 = [v3 objectForKey:BPSNanoBulletinCoalescingBehavior];
+  sectionInfo = [(HPRFHeartRateSettingsController *)self sectionInfo];
+  v4 = [sectionInfo objectForKey:BPSNanoBulletinCoalescingBehavior];
 
   if (v4)
   {
@@ -995,11 +995,11 @@ LABEL_104:
   return v5;
 }
 
-- (void)setNotificationCoalescingValue:(id)a3 specifier:(id)a4
+- (void)setNotificationCoalescingValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(HPRFHeartRateSettingsController *)self sectionInfo];
-  [v6 setObject:v5 forKey:BPSNanoBulletinCoalescingBehavior];
+  valueCopy = value;
+  sectionInfo = [(HPRFHeartRateSettingsController *)self sectionInfo];
+  [sectionInfo setObject:valueCopy forKey:BPSNanoBulletinCoalescingBehavior];
 
   [(HPRFHeartRateSettingsController *)self writeSectionState];
 }
@@ -1019,27 +1019,27 @@ LABEL_104:
   [v3 openURL:v2 withCompletionHandler:0];
 }
 
-- (id)_electrocardiogramGroupSpecifierWithFooter:(id)a3
+- (id)_electrocardiogramGroupSpecifierWithFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v5 = HKHeartRateLocalizedString();
   v6 = [PSSpecifier groupSpecifierWithID:@"ELECTROCARDIOGRAM_GROUP_ID" name:v5];
 
-  v7 = [v4 linkURL];
-  [(HPRFHeartRateSettingsController *)self setElectrocardiogramFooterURL:v7];
+  linkURL = [footerCopy linkURL];
+  [(HPRFHeartRateSettingsController *)self setElectrocardiogramFooterURL:linkURL];
 
-  v8 = [v4 footerLink];
-  if (v8 && ([v4 linkURL], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  footerLink = [footerCopy footerLink];
+  if (footerLink && ([footerCopy linkURL], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [v4 footerText];
-    v11 = [NSString stringWithFormat:@"%@\n%@", v10, v8];
+    footerText = [footerCopy footerText];
+    footerText2 = [NSString stringWithFormat:@"%@\n%@", footerText, footerLink];
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     [v6 setObject:v13 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    [v6 setObject:v11 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-    v19.location = [v11 rangeOfString:v8];
+    [v6 setObject:footerText2 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+    v19.location = [footerText2 rangeOfString:footerLink];
     v14 = NSStringFromRange(v19);
     [v6 setObject:v14 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -1052,8 +1052,8 @@ LABEL_104:
 
   else
   {
-    v11 = [v4 footerText];
-    [v6 setObject:v11 forKeyedSubscript:PSFooterTextGroupKey];
+    footerText2 = [footerCopy footerText];
+    [v6 setObject:footerText2 forKeyedSubscript:PSFooterTextGroupKey];
   }
 
   return v6;
@@ -1061,13 +1061,13 @@ LABEL_104:
 
 - (void)_electrocardiogramFooterLinkTapped
 {
-  v3 = [(HPRFHeartRateSettingsController *)self electrocardiogramFooterURL];
+  electrocardiogramFooterURL = [(HPRFHeartRateSettingsController *)self electrocardiogramFooterURL];
 
-  if (v3)
+  if (electrocardiogramFooterURL)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v4 = [(HPRFHeartRateSettingsController *)self electrocardiogramFooterURL];
-    v5 = [NSURL URLWithString:v4];
+    electrocardiogramFooterURL2 = [(HPRFHeartRateSettingsController *)self electrocardiogramFooterURL];
+    v5 = [NSURL URLWithString:electrocardiogramFooterURL2];
     [v7 openSensitiveURL:v5 withOptions:0];
   }
 
@@ -1157,14 +1157,14 @@ LABEL_104:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "[%{public}s]: App install button tapped", &v6, 0xCu);
   }
 
-  v4 = [(HPRFHeartRateSettingsController *)self availabilityManager];
-  [v4 updateOnboardingCompletionVersionCache];
+  availabilityManager = [(HPRFHeartRateSettingsController *)self availabilityManager];
+  [availabilityManager updateOnboardingCompletionVersionCache];
 
-  v5 = [(HPRFHeartRateSettingsController *)self availabilityManager];
-  [v5 updateElectrocardiogramWatchAppInstallIsAllowed];
+  availabilityManager2 = [(HPRFHeartRateSettingsController *)self availabilityManager];
+  [availabilityManager2 updateElectrocardiogramWatchAppInstallIsAllowed];
 }
 
-- (id)_irregularRhythmNotificationsSpecifiersWithFeatureStatus:(id)a3
+- (id)_irregularRhythmNotificationsSpecifiersWithFeatureStatus:(id)status
 {
   v4 = HKHRIrregularRhythmNotificationsBridgeSettingsWithFeatureStatus();
   if ([v4 isSettingHidden])
@@ -1174,9 +1174,9 @@ LABEL_104:
 
   else
   {
-    v6 = [v4 headerText];
-    v7 = [v4 footer];
-    v8 = [(HPRFHeartRateSettingsController *)self _irregularRhythmNotificationsGroupSpecifierWithHeaderText:v6 footer:v7];
+    headerText = [v4 headerText];
+    footer = [v4 footer];
+    v8 = [(HPRFHeartRateSettingsController *)self _irregularRhythmNotificationsGroupSpecifierWithHeaderText:headerText footer:footer];
 
     if ([v4 shouldLinkToOnboarding])
     {
@@ -1199,42 +1199,42 @@ LABEL_104:
   return v5;
 }
 
-- (id)_irregularRhythmNotificationsGroupSpecifierWithHeaderText:(id)a3 footer:(id)a4
+- (id)_irregularRhythmNotificationsGroupSpecifierWithHeaderText:(id)text footer:(id)footer
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  footerCopy = footer;
   v8 = HKHeartRateLocalizedString();
   v9 = [PSSpecifier groupSpecifierWithID:@"ATRIAL_FIBRILLATION_GROUP_ID" name:v8];
 
-  if (v6)
+  if (textCopy)
   {
-    [v9 setObject:v6 forKeyedSubscript:PSHeaderDetailTextGroupKey];
+    [v9 setObject:textCopy forKeyedSubscript:PSHeaderDetailTextGroupKey];
   }
 
-  v10 = [v7 linkText];
-  if (v10 && (v11 = v10, [v7 linkURL], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+  linkText = [footerCopy linkText];
+  if (linkText && (v11 = linkText, [footerCopy linkURL], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
   {
-    v13 = [v7 linkURL];
+    linkURL = [footerCopy linkURL];
     irregularRhythmNotificationsFooterURL = self->_irregularRhythmNotificationsFooterURL;
-    self->_irregularRhythmNotificationsFooterURL = v13;
+    self->_irregularRhythmNotificationsFooterURL = linkURL;
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     [v9 setObject:v16 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    v17 = [v7 text];
-    [v9 setObject:v17 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+    text = [footerCopy text];
+    [v9 setObject:text forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
 
-    v18 = [v7 text];
-    v19 = [v7 linkText];
-    v27.location = [v18 rangeOfString:v19];
+    text2 = [footerCopy text];
+    linkText2 = [footerCopy linkText];
+    v27.location = [text2 rangeOfString:linkText2];
     v20 = NSStringFromRange(v27);
     [v9 setObject:v20 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
     v21 = [NSValue valueWithNonretainedObject:self];
     [v9 setObject:v21 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
 
-    v22 = NSStringFromSelector("_irregularRhythmNotificationsLinkTapped");
+    text3 = NSStringFromSelector("_irregularRhythmNotificationsLinkTapped");
     v23 = &PSFooterHyperlinkViewActionKey;
   }
 
@@ -1243,11 +1243,11 @@ LABEL_104:
     v24 = self->_irregularRhythmNotificationsFooterURL;
     self->_irregularRhythmNotificationsFooterURL = 0;
 
-    v22 = [v7 text];
+    text3 = [footerCopy text];
     v23 = &PSFooterTextGroupKey;
   }
 
-  [v9 setObject:v22 forKeyedSubscript:*v23];
+  [v9 setObject:text3 forKeyedSubscript:*v23];
 
   return v9;
 }
@@ -1302,25 +1302,25 @@ LABEL_104:
   [v3 openURL:v2 withCompletionHandler:0];
 }
 
-- (void)setAtrialFibrillationDetectionEnabledValue:(id)a3 specifier:(id)a4
+- (void)setAtrialFibrillationDetectionEnabledValue:(id)value specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
   v6 = objc_opt_class();
-  v7 = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsManager featureAvailabilityProviding];
-  v8 = [NSNumber numberWithBool:v5];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_irregularRhythmNotificationsManager featureAvailabilityProviding];
+  v8 = [NSNumber numberWithBool:bOOLValue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_61B0;
   v9[3] = &unk_18730;
   v9[4] = v6;
-  [v7 setFeatureSettingNumber:v8 forKey:HKFeatureSettingsKeyEnabled completion:v9];
+  [featureAvailabilityProviding setFeatureSettingNumber:v8 forKey:HKFeatureSettingsKeyEnabled completion:v9];
 }
 
-- (id)atrialFibrillationDetectionEnabledValueWithSpecifier:(id)a3
+- (id)atrialFibrillationDetectionEnabledValueWithSpecifier:(id)specifier
 {
-  v3 = [(HPRFHeartRateSettingsController *)self _areIrregularRhythmNotificationsTurnedOn];
+  _areIrregularRhythmNotificationsTurnedOn = [(HPRFHeartRateSettingsController *)self _areIrregularRhythmNotificationsTurnedOn];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_areIrregularRhythmNotificationsTurnedOn];
 }
 
 - (BOOL)_areIrregularRhythmNotificationsTurnedOn
@@ -1332,7 +1332,7 @@ LABEL_104:
   if (v3)
   {
     v5 = HKHRIrregularRhythmNotificationsBridgeSettingsWithFeatureStatus();
-    v6 = [v5 areNotificationsOn];
+    areNotificationsOn = [v5 areNotificationsOn];
   }
 
   else
@@ -1344,10 +1344,10 @@ LABEL_104:
       sub_C3DC();
     }
 
-    v6 = 0;
+    areNotificationsOn = 0;
   }
 
-  return v6;
+  return areNotificationsOn;
 }
 
 - (id)_tachycardiaSpecifier
@@ -1392,25 +1392,25 @@ LABEL_104:
   return v5;
 }
 
-- (id)_aFibBurdenGroupSpecifierWithFooter:(id)a3
+- (id)_aFibBurdenGroupSpecifierWithFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v5 = +[_HKHeartSettingsUtilities aFibBurdenSectionTitle];
   v6 = [PSSpecifier groupSpecifierWithID:@"AFIB_BURDEN_GROUP_ID" name:v5];
 
-  v7 = [v4 footerText];
-  v8 = [v4 footerLink];
-  v9 = [v4 linkURL];
-  [(HPRFHeartRateSettingsController *)self setAFibBurdenFooterURL:v9];
+  footerText = [footerCopy footerText];
+  footerLink = [footerCopy footerLink];
+  linkURL = [footerCopy linkURL];
+  [(HPRFHeartRateSettingsController *)self setAFibBurdenFooterURL:linkURL];
 
-  if (v8 && ([v4 linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (footerLink && ([footerCopy linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     [v6 setObject:v12 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    [v6 setObject:v7 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-    v18.location = [v7 rangeOfString:v8];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+    v18.location = [footerText rangeOfString:footerLink];
     v13 = NSStringFromRange(v18);
     [v6 setObject:v13 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -1423,7 +1423,7 @@ LABEL_104:
 
   else
   {
-    [v6 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterTextGroupKey];
   }
 
   return v6;
@@ -1464,13 +1464,13 @@ LABEL_104:
 
 - (void)_aFibBurdenFooterLinkTapped
 {
-  v3 = [(HPRFHeartRateSettingsController *)self aFibBurdenFooterURL];
+  aFibBurdenFooterURL = [(HPRFHeartRateSettingsController *)self aFibBurdenFooterURL];
 
-  if (v3)
+  if (aFibBurdenFooterURL)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v4 = [(HPRFHeartRateSettingsController *)self aFibBurdenFooterURL];
-    v5 = [NSURL URLWithString:v4];
+    aFibBurdenFooterURL2 = [(HPRFHeartRateSettingsController *)self aFibBurdenFooterURL];
+    v5 = [NSURL URLWithString:aFibBurdenFooterURL2];
     [v7 openSensitiveURL:v5 withOptions:0];
   }
 
@@ -1485,25 +1485,25 @@ LABEL_104:
   }
 }
 
-- (void)setAFibBurdenEnabledValue:(id)a3 specifier:(id)a4
+- (void)setAFibBurdenEnabledValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(HKFeatureStatusManager *)self->_aFibBurdenStatusManager featureAvailabilityProviding];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_aFibBurdenStatusManager featureAvailabilityProviding];
   v9 = HKFeatureSettingsKeyEnabled;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_6B00;
   v10[3] = &unk_18780;
   objc_copyWeak(&v11, &location);
-  [v8 setFeatureSettingNumber:v6 forKey:v9 completion:v10];
+  [featureAvailabilityProviding setFeatureSettingNumber:valueCopy forKey:v9 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)aFibBurdenEnabledValueWithSpecifier:(id)a3
+- (id)aFibBurdenEnabledValueWithSpecifier:(id)specifier
 {
   aFibBurdenStatusManager = self->_aFibBurdenStatusManager;
   v14 = 0;
@@ -1512,14 +1512,14 @@ LABEL_104:
   if (v4)
   {
     v6 = [[HKHRAFibBurdenNotificationSettingsFactory alloc] initWithFeatureStatus:v4];
-    v7 = [v6 bridgeSettings];
-    v8 = [v7 settingEnabled];
+    bridgeSettings = [v6 bridgeSettings];
+    settingEnabled = [bridgeSettings settingEnabled];
 
-    v9 = [v4 requirementsEvaluationByContext];
-    v10 = [v9 objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
+    requirementsEvaluationByContext = [v4 requirementsEvaluationByContext];
+    v10 = [requirementsEvaluationByContext objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
     v11 = [v10 isRequirementSatisfiedWithIdentifier:HKFeatureAvailabilityRequirementIdentifierFeatureIsOn];
 
-    v12 = [NSNumber numberWithInt:v8 & v11];
+    v12 = [NSNumber numberWithInt:settingEnabled & v11];
   }
 
   else
@@ -1537,25 +1537,25 @@ LABEL_104:
   return v12;
 }
 
-- (id)_cardioFitnessGroupSpecifierWithFooter:(id)a3
+- (id)_cardioFitnessGroupSpecifierWithFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v5 = +[_HKHeartSettingsUtilities cardioFitnessSectionTitle];
   v6 = [PSSpecifier groupSpecifierWithID:@"CARDIO_FITNESS_GROUP_ID" name:v5];
 
-  v7 = [v4 footerText];
-  v8 = [v4 footerLink];
-  v9 = [v4 linkURL];
-  [(HPRFHeartRateSettingsController *)self setCardioFitnessFooterURL:v9];
+  footerText = [footerCopy footerText];
+  footerLink = [footerCopy footerLink];
+  linkURL = [footerCopy linkURL];
+  [(HPRFHeartRateSettingsController *)self setCardioFitnessFooterURL:linkURL];
 
-  if (v8 && ([v4 linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (footerLink && ([footerCopy linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     [v6 setObject:v12 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    [v6 setObject:v7 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-    v18.location = [v7 rangeOfString:v8];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+    v18.location = [footerText rangeOfString:footerLink];
     v13 = NSStringFromRange(v18);
     [v6 setObject:v13 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -1568,7 +1568,7 @@ LABEL_104:
 
   else
   {
-    [v6 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterTextGroupKey];
   }
 
   return v6;
@@ -1609,13 +1609,13 @@ LABEL_104:
 
 - (void)_cardioFitnessAboutLinkTapped
 {
-  v3 = [(HPRFHeartRateSettingsController *)self cardioFitnessFooterURL];
+  cardioFitnessFooterURL = [(HPRFHeartRateSettingsController *)self cardioFitnessFooterURL];
 
-  if (v3)
+  if (cardioFitnessFooterURL)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v4 = [(HPRFHeartRateSettingsController *)self cardioFitnessFooterURL];
-    v5 = [NSURL URLWithString:v4];
+    cardioFitnessFooterURL2 = [(HPRFHeartRateSettingsController *)self cardioFitnessFooterURL];
+    v5 = [NSURL URLWithString:cardioFitnessFooterURL2];
     [v7 openSensitiveURL:v5 withOptions:0];
   }
 
@@ -1630,25 +1630,25 @@ LABEL_104:
   }
 }
 
-- (void)setCardioFitnessNotificationsEnabledValue:(id)a3 specifier:(id)a4
+- (void)setCardioFitnessNotificationsEnabledValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(HKFeatureStatusManager *)self->_cardioFitnessStatusManager featureAvailabilityProviding];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_cardioFitnessStatusManager featureAvailabilityProviding];
   v9 = HKFeatureSettingsKeyEnabled;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_739C;
   v10[3] = &unk_18780;
   objc_copyWeak(&v11, &location);
-  [v8 setFeatureSettingNumber:v6 forKey:v9 completion:v10];
+  [featureAvailabilityProviding setFeatureSettingNumber:valueCopy forKey:v9 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)cardioFitnessNotificationsEnabledValueWithSpecifier:(id)a3
+- (id)cardioFitnessNotificationsEnabledValueWithSpecifier:(id)specifier
 {
   cardioFitnessStatusManager = self->_cardioFitnessStatusManager;
   v14 = 0;
@@ -1657,14 +1657,14 @@ LABEL_104:
   if (v4)
   {
     v6 = [[HKHRCardioFitnessNotificationSettingsFactory alloc] initWithFeatureStatus:v4];
-    v7 = [v6 bridgeSettings];
-    v8 = [v7 settingEnabled];
+    bridgeSettings = [v6 bridgeSettings];
+    settingEnabled = [bridgeSettings settingEnabled];
 
-    v9 = [v4 requirementsEvaluationByContext];
-    v10 = [v9 objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
+    requirementsEvaluationByContext = [v4 requirementsEvaluationByContext];
+    v10 = [requirementsEvaluationByContext objectForKeyedSubscript:HKFeatureAvailabilityContextUsage];
     v11 = [v10 isRequirementSatisfiedWithIdentifier:HKFeatureAvailabilityRequirementIdentifierFeatureIsOn];
 
-    v12 = [NSNumber numberWithInt:v8 & v11];
+    v12 = [NSNumber numberWithInt:settingEnabled & v11];
   }
 
   else
@@ -1682,25 +1682,25 @@ LABEL_104:
   return v12;
 }
 
-- (id)_hypertensionNotificationsGroupSpecifierWithFooter:(id)a3
+- (id)_hypertensionNotificationsGroupSpecifierWithFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v5 = HKHRHypertensionNotificationsSettingsLocstr();
   v6 = [PSSpecifier groupSpecifierWithID:@"HYPERTENSION_NOTIFICATIONS_GROUP_ID" name:v5];
 
-  v7 = [v4 footerText];
-  v8 = [v4 footerLink];
-  v9 = [v4 linkURL];
-  [(HPRFHeartRateSettingsController *)self setHypertensionNotificationsFooterURL:v9];
+  footerText = [footerCopy footerText];
+  footerLink = [footerCopy footerLink];
+  linkURL = [footerCopy linkURL];
+  [(HPRFHeartRateSettingsController *)self setHypertensionNotificationsFooterURL:linkURL];
 
-  if (v8 && ([v4 linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (footerLink && ([footerCopy linkURL], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     [v6 setObject:v12 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    [v6 setObject:v7 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-    v18.location = [v7 rangeOfString:v8];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+    v18.location = [footerText rangeOfString:footerLink];
     v13 = NSStringFromRange(v18);
     [v6 setObject:v13 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -1713,7 +1713,7 @@ LABEL_104:
 
   else
   {
-    [v6 setObject:v7 forKeyedSubscript:PSFooterTextGroupKey];
+    [v6 setObject:footerText forKeyedSubscript:PSFooterTextGroupKey];
   }
 
   return v6;
@@ -1743,13 +1743,13 @@ LABEL_104:
 
 - (void)_hypertensionNotificationsAboutLinkTapped
 {
-  v3 = [(HPRFHeartRateSettingsController *)self hypertensionNotificationsFooterURL];
+  hypertensionNotificationsFooterURL = [(HPRFHeartRateSettingsController *)self hypertensionNotificationsFooterURL];
 
-  if (v3)
+  if (hypertensionNotificationsFooterURL)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v4 = [(HPRFHeartRateSettingsController *)self hypertensionNotificationsFooterURL];
-    v5 = [NSURL URLWithString:v4];
+    hypertensionNotificationsFooterURL2 = [(HPRFHeartRateSettingsController *)self hypertensionNotificationsFooterURL];
+    v5 = [NSURL URLWithString:hypertensionNotificationsFooterURL2];
     [v7 openSensitiveURL:v5 withOptions:0];
   }
 
@@ -1775,25 +1775,25 @@ LABEL_104:
   return v4;
 }
 
-- (void)setHypertensionNotificationsEnabledValue:(id)a3 specifier:(id)a4
+- (void)setHypertensionNotificationsEnabledValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(HKFeatureStatusManager *)self->_hypertensionNotificationsStatusManager featureAvailabilityProviding];
+  featureAvailabilityProviding = [(HKFeatureStatusManager *)self->_hypertensionNotificationsStatusManager featureAvailabilityProviding];
   v9 = HKFeatureSettingsKeyEnabled;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_7C30;
   v10[3] = &unk_18780;
   objc_copyWeak(&v11, &location);
-  [v8 setFeatureSettingNumber:v6 forKey:v9 completion:v10];
+  [featureAvailabilityProviding setFeatureSettingNumber:valueCopy forKey:v9 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)hypertensionNotificationsEnabledValueWithSpecifier:(id)a3
+- (id)hypertensionNotificationsEnabledValueWithSpecifier:(id)specifier
 {
   hypertensionNotificationsStatusManager = self->_hypertensionNotificationsStatusManager;
   v11 = 0;
@@ -1802,18 +1802,18 @@ LABEL_104:
   if (v4)
   {
     v6 = [[HKHRHypertensionNotificationsSettings alloc] initWithFeatureStatus:v4];
-    v7 = [v6 bridgeSettings];
-    if ([v7 userInteractionEnabled])
+    bridgeSettings = [v6 bridgeSettings];
+    if ([bridgeSettings userInteractionEnabled])
     {
-      v8 = [v7 settingEnabled];
+      settingEnabled = [bridgeSettings settingEnabled];
     }
 
     else
     {
-      v8 = 0;
+      settingEnabled = 0;
     }
 
-    v9 = [NSNumber numberWithInt:v8];
+    v9 = [NSNumber numberWithInt:settingEnabled];
   }
 
   else
@@ -1850,20 +1850,20 @@ LABEL_104:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v5 = a3;
+  providingCopy = providing;
   _HKInitializeLogging();
   v6 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v5 featureIdentifier];
+    featureIdentifier = [providingCopy featureIdentifier];
     v10 = 138543618;
     v11 = v7;
     v12 = 2114;
-    v13 = v9;
+    v13 = featureIdentifier;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}@ onboarding status updated.", &v10, 0x16u);
   }
 
@@ -1879,15 +1879,15 @@ LABEL_104:
   return v2;
 }
 
-- (void)setUpWatchAppAvailabilityForAppBundleID:(id)a3 device:(id)a4
+- (void)setUpWatchAppAvailabilityForAppBundleID:(id)d device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  deviceCopy = device;
   appAvailability = self->_appAvailability;
   if (appAvailability)
   {
-    v10 = [(HKWatchAppAvailability *)appAvailability bundleID];
-    v11 = [v10 isEqualToString:v7];
+    bundleID = [(HKWatchAppAvailability *)appAvailability bundleID];
+    v11 = [bundleID isEqualToString:dCopy];
 
     if (v11)
     {
@@ -1904,17 +1904,17 @@ LABEL_104:
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544130;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
     v25 = v14;
     v26 = 2112;
-    v27 = v7;
+    v27 = dCopy;
     v28 = 2112;
-    v29 = v8;
+    v29 = deviceCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> Setting up watch app availability for app bundle identifier(%@) on watch(%@)", buf, 0x2Au);
   }
 
-  v15 = [[HKWatchAppAvailability alloc] initWithBundleID:v7];
+  v15 = [[HKWatchAppAvailability alloc] initWithBundleID:dCopy];
   v16 = self->_appAvailability;
   self->_appAvailability = v15;
 
@@ -1926,9 +1926,9 @@ LABEL_104:
   v18[2] = sub_828C;
   v18[3] = &unk_187F8;
   objc_copyWeak(&v21, buf);
-  v19 = v7;
-  v20 = self;
-  [(HKWatchAppAvailability *)v17 appInstallStateOnWatch:v8 completion:v18];
+  v19 = dCopy;
+  selfCopy2 = self;
+  [(HKWatchAppAvailability *)v17 appInstallStateOnWatch:deviceCopy completion:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
@@ -1947,13 +1947,13 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)_isAppInstalled:(id)a3
+- (BOOL)_isAppInstalled:(id)installed
 {
-  v5 = a3;
-  if (v5 && (appAvailability = self->_appAvailability) != 0)
+  installedCopy = installed;
+  if (installedCopy && (appAvailability = self->_appAvailability) != 0)
   {
-    v7 = [(HKWatchAppAvailability *)appAvailability bundleID];
-    v8 = [(HPRFHeartRateSettingsController *)self appInstallStateForAppBundleID:v7];
+    bundleID = [(HKWatchAppAvailability *)appAvailability bundleID];
+    v8 = [(HPRFHeartRateSettingsController *)self appInstallStateForAppBundleID:bundleID];
 
     if ((v8 + 1) >= 5)
     {
@@ -1975,11 +1975,11 @@ LABEL_7:
       v12 = v10;
       v13 = NSStringFromSelector(a2);
       v14 = 138543874;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v13;
       v18 = 2112;
-      v19 = v5;
+      v19 = installedCopy;
       _os_log_error_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "[%{public}@ %{public}@] -> Failed to retrieve app install state for app bundle identifier(%@) ", &v14, 0x20u);
     }
 
@@ -1989,11 +1989,11 @@ LABEL_7:
   return v9 & 1;
 }
 
-- (int64_t)appInstallStateForAppBundleID:(id)a3
+- (int64_t)appInstallStateForAppBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _cachedInstallStateByAppID];
-  v5 = [v4 objectForKey:v3];
+  dCopy = d;
+  _cachedInstallStateByAppID = [objc_opt_class() _cachedInstallStateByAppID];
+  v5 = [_cachedInstallStateByAppID objectForKey:dCopy];
 
   if (v5)
   {
@@ -2005,37 +2005,37 @@ LABEL_7:
     v6 = &off_19480;
   }
 
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (void)watchAppAvailability:(id)a3 appInstallStateDidChange:(int64_t)a4
+- (void)watchAppAvailability:(id)availability appInstallStateDidChange:(int64_t)change
 {
-  v7 = a3;
+  availabilityCopy = availability;
   _HKInitializeLogging();
   v8 = HKLogDefault;
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v10 = NSStringFromSelector(a2);
-    v11 = [NSNumber numberWithInteger:a4];
-    v12 = [v7 bundleID];
+    v11 = [NSNumber numberWithInteger:change];
+    bundleID = [availabilityCopy bundleID];
     *buf = 138544130;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v10;
     v21 = 2112;
     v22 = v11;
     v23 = 2112;
-    v24 = v12;
+    v24 = bundleID;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> App install state did change(%@) for app with bundle identifier(%@)", buf, 0x2Au);
   }
 
-  v13 = [objc_opt_class() _cachedInstallStateByAppID];
-  v14 = [NSNumber numberWithInteger:a4];
-  v15 = [v7 bundleID];
-  [v13 setObject:v14 forKey:v15];
+  _cachedInstallStateByAppID = [objc_opt_class() _cachedInstallStateByAppID];
+  v14 = [NSNumber numberWithInteger:change];
+  bundleID2 = [availabilityCopy bundleID];
+  [_cachedInstallStateByAppID setObject:v14 forKey:bundleID2];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

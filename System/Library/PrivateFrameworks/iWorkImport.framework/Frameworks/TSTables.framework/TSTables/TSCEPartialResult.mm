@@ -1,49 +1,49 @@
 @interface TSCEPartialResult
-- (TSCEPartialResult)initWithValue:(id)a3 childArgs:(const void *)a4;
-- (TSCEPartialResult)initWithValue:(id)a3 numArgs:(unsigned int)a4 offset:(unsigned int)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCEPartialResult)initWithValue:(id)value childArgs:(const void *)args;
+- (TSCEPartialResult)initWithValue:(id)value numArgs:(unsigned int)args offset:(unsigned int)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCEPartialResult
 
-- (TSCEPartialResult)initWithValue:(id)a3 numArgs:(unsigned int)a4 offset:(unsigned int)a5
+- (TSCEPartialResult)initWithValue:(id)value numArgs:(unsigned int)args offset:(unsigned int)offset
 {
-  v9 = a3;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = TSCEPartialResult;
   v10 = [(TSCEPartialResult *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_value, a3);
-    v11->_numArgs = a4;
+    objc_storeStrong(&v10->_value, value);
+    v11->_numArgs = args;
     children = v11->_children;
     v11->_parent = 0;
     v11->_children = 0;
 
     v11->_wasModified = 0;
-    v11->_offset = a5;
+    v11->_offset = offset;
   }
 
   return v11;
 }
 
-- (TSCEPartialResult)initWithValue:(id)a3 childArgs:(const void *)a4
+- (TSCEPartialResult)initWithValue:(id)value childArgs:(const void *)args
 {
-  v6 = a3;
-  v9 = objc_msgSend_initWithValue_numArgs_(self, v7, v6, (*(a4 + 1) - *a4) >> 3, v8);
+  valueCopy = value;
+  v9 = objc_msgSend_initWithValue_numArgs_(self, v7, valueCopy, (*(args + 1) - *args) >> 3, v8);
   if (v9)
   {
-    v10 = *a4;
-    v11 = *(a4 + 1);
-    if (*a4 != v11)
+    v10 = *args;
+    v11 = *(args + 1);
+    if (*args != v11)
     {
       v12 = objc_opt_new();
       children = v9->_children;
       v9->_children = v12;
 
-      v10 = *a4;
-      v11 = *(a4 + 1);
+      v10 = *args;
+      v11 = *(args + 1);
     }
 
     for (; v10 != v11; ++v10)
@@ -64,7 +64,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = [TSCEPartialResult alloc];

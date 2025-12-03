@@ -1,21 +1,21 @@
 @interface UICollectionViewUpdateItem
 - (NSString)description;
-- (UICollectionViewUpdateItem)initWithAction:(int64_t)a3 forIndexPath:(id)a4;
-- (UICollectionViewUpdateItem)initWithInitialIndexPath:(id)a3 finalIndexPath:(id)a4 updateAction:(int64_t)a5;
+- (UICollectionViewUpdateItem)initWithAction:(int64_t)action forIndexPath:(id)path;
+- (UICollectionViewUpdateItem)initWithInitialIndexPath:(id)path finalIndexPath:(id)indexPath updateAction:(int64_t)action;
 - (UICollectionViewUpdateItem)revertedUpdate;
 - (id).cxx_construct;
 - (id)_newIndexPath;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareIndexPaths:(id)a3;
-- (int64_t)compareIndexPathsForMoves:(id)a3;
-- (int64_t)inverseCompareIndexPaths:(id)a3;
-- (uint64_t)_finalIndexPathEqualToUpdateItem:(uint64_t)a1;
-- (uint64_t)_initialIndexPathEqualToUpdateItem:(uint64_t)a1;
-- (uint64_t)isEqualToUpdate:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareIndexPaths:(id)paths;
+- (int64_t)compareIndexPathsForMoves:(id)moves;
+- (int64_t)inverseCompareIndexPaths:(id)paths;
+- (uint64_t)_finalIndexPathEqualToUpdateItem:(uint64_t)item;
+- (uint64_t)_initialIndexPathEqualToUpdateItem:(uint64_t)item;
+- (uint64_t)isEqualToUpdate:(void *)update;
 - (uint64_t)isNOOP;
 - (void)_indexPath;
-- (void)_setNewIndexPath:(uint64_t)a1;
-- (void)initWithOldIndexPath:(void *)a3 newIndexPath:;
+- (void)_setNewIndexPath:(uint64_t)path;
+- (void)initWithOldIndexPath:(void *)path newIndexPath:;
 @end
 
 @implementation UICollectionViewUpdateItem
@@ -33,36 +33,36 @@
 
 - (void)_indexPath
 {
-  if (a1)
+  if (self)
   {
     v2 = 8;
-    if (!a1[10])
+    if (!self[10])
     {
       v2 = 9;
     }
 
-    a1 = a1[v2];
+    self = self[v2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (UICollectionViewUpdateItem)initWithInitialIndexPath:(id)a3 finalIndexPath:(id)a4 updateAction:(int64_t)a5
+- (UICollectionViewUpdateItem)initWithInitialIndexPath:(id)path finalIndexPath:(id)indexPath updateAction:(int64_t)action
 {
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v21.receiver = self;
   v21.super_class = UICollectionViewUpdateItem;
   v11 = [(UICollectionViewUpdateItem *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_initialIndexPath, a3);
-    if (v9)
+    objc_storeStrong(&v11->_initialIndexPath, path);
+    if (pathCopy)
     {
-      v13 = [v9 indexAtPosition:0];
-      v14 = [v9 indexAtPosition:1];
+      v13 = [pathCopy indexAtPosition:0];
+      v14 = [pathCopy indexAtPosition:1];
     }
 
     else
@@ -73,11 +73,11 @@
 
     v12->_initialIndexPair.section = v13;
     v12->_initialIndexPair.item = v14;
-    objc_storeStrong(&v12->_finalIndexPath, a4);
-    if (v10)
+    objc_storeStrong(&v12->_finalIndexPath, indexPath);
+    if (indexPathCopy)
     {
-      v15 = [v10 indexAtPosition:0];
-      v16 = [v10 indexAtPosition:1];
+      v15 = [indexPathCopy indexAtPosition:0];
+      v16 = [indexPathCopy indexAtPosition:1];
     }
 
     else
@@ -88,8 +88,8 @@
 
     v12->_finalIndexPair.section = v15;
     v12->_finalIndexPair.item = v16;
-    v12->_updateAction = a5;
-    if (a5)
+    v12->_updateAction = action;
+    if (action)
     {
       p_initialIndexPair = &v12->_initialIndexPair;
     }
@@ -100,9 +100,9 @@
     }
 
     v12->_indexPairForAction = *p_initialIndexPair;
-    v18 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v18;
+    v12->_identifier = uUID;
 
     *&v12->_updateItemFlags &= ~1u;
   }
@@ -110,64 +110,64 @@
   return v12;
 }
 
-- (UICollectionViewUpdateItem)initWithAction:(int64_t)a3 forIndexPath:(id)a4
+- (UICollectionViewUpdateItem)initWithAction:(int64_t)action forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = v6;
-  if (!a3)
+  pathCopy = path;
+  v7 = pathCopy;
+  if (!action)
   {
     v9 = 0;
-    v8 = v6;
+    v8 = pathCopy;
     goto LABEL_5;
   }
 
-  v8 = v6;
-  v9 = v6;
-  if (a3 == 1)
+  v8 = pathCopy;
+  v9 = pathCopy;
+  if (action == 1)
   {
     v8 = 0;
-    v9 = v6;
+    v9 = pathCopy;
 LABEL_5:
   }
 
-  v10 = [(UICollectionViewUpdateItem *)self initWithInitialIndexPath:v9 finalIndexPath:v8 updateAction:a3];
+  v10 = [(UICollectionViewUpdateItem *)self initWithInitialIndexPath:v9 finalIndexPath:v8 updateAction:action];
 
   return v10;
 }
 
-- (void)initWithOldIndexPath:(void *)a3 newIndexPath:
+- (void)initWithOldIndexPath:(void *)path newIndexPath:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  pathCopy = path;
+  if (self)
   {
-    a1 = [a1 initWithInitialIndexPath:v5 finalIndexPath:v6 updateAction:3];
+    self = [self initWithInitialIndexPath:v5 finalIndexPath:pathCopy updateAction:3];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_newIndexPath
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[9];
+    self = self[9];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setNewIndexPath:(uint64_t)a1
+- (void)_setNewIndexPath:(uint64_t)path
 {
   v4 = a2;
-  if (a1)
+  if (path)
   {
-    v5 = (a1 + 72);
-    if (*(a1 + 72) != v4)
+    v5 = (path + 72);
+    if (*(path + 72) != v4)
     {
       v12 = v4;
-      objc_storeStrong((a1 + 72), a2);
+      objc_storeStrong((path + 72), a2);
       if (v12)
       {
         v6 = [v12 indexAtPosition:0];
@@ -182,10 +182,10 @@ LABEL_5:
         v6 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      *(a1 + 24) = v6;
-      *(a1 + 32) = v7;
+      *(path + 24) = v6;
+      *(path + 32) = v7;
       v4 = v8;
-      if (!*(a1 + 80))
+      if (!*(path + 80))
       {
         v9 = *v5;
         if (*v5)
@@ -200,8 +200,8 @@ LABEL_5:
           v10 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        *(a1 + 40) = v10;
-        *(a1 + 48) = v11;
+        *(path + 40) = v10;
+        *(path + 48) = v11;
         v4 = v12;
       }
     }
@@ -212,13 +212,13 @@ LABEL_5:
 {
   if (self && self->_indexPairForAction.item == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [MEMORY[0x1E696AD60] stringWithString:@"SEC:"];
+    string = [MEMORY[0x1E696AD60] stringWithString:@"SEC:"];
     v4 = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v4 = 0;
   }
 
@@ -237,17 +237,17 @@ LABEL_5:
         v8 = @"REL";
       }
 
-      v6 = v8;
+      _ui_shortDescription2 = v8;
       if (v4)
       {
-        v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
-        [v3 appendFormat:@"%@(%@)", v6, v7];
+        _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
+        [string appendFormat:@"%@(%@)", _ui_shortDescription2, _ui_shortDescription];
       }
 
       else
       {
-        v7 = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
-        [v3 appendFormat:@"%@%@", v6, v7];
+        _ui_shortDescription = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
+        [string appendFormat:@"%@%@", _ui_shortDescription2, _ui_shortDescription];
       }
     }
 
@@ -260,16 +260,16 @@ LABEL_5:
 
       if (v4)
       {
-        v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
-        v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_finalIndexPair.section];
-        [v3 appendFormat:@"MOV(%@)->(%@)", v6, v7];
+        _ui_shortDescription2 = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
+        _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:self->_finalIndexPair.section];
+        [string appendFormat:@"MOV(%@)->(%@)", _ui_shortDescription2, _ui_shortDescription];
       }
 
       else
       {
-        v6 = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
-        v7 = [(NSIndexPath *)self->_finalIndexPath _ui_shortDescription];
-        [v3 appendFormat:@"MOV%@->%@", v6, v7];
+        _ui_shortDescription2 = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
+        _ui_shortDescription = [(NSIndexPath *)self->_finalIndexPath _ui_shortDescription];
+        [string appendFormat:@"MOV%@->%@", _ui_shortDescription2, _ui_shortDescription];
       }
     }
   }
@@ -283,35 +283,35 @@ LABEL_5:
 
     if (v4)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
-      [v3 appendFormat:@"DEL(%@)", v6];
+      _ui_shortDescription2 = [MEMORY[0x1E696AD98] numberWithInteger:self->_initialIndexPair.section];
+      [string appendFormat:@"DEL(%@)", _ui_shortDescription2];
     }
 
     else
     {
-      v6 = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
-      [v3 appendFormat:@"DEL%@", v6];
+      _ui_shortDescription2 = [(NSIndexPath *)self->_initialIndexPath _ui_shortDescription];
+      [string appendFormat:@"DEL%@", _ui_shortDescription2];
     }
   }
 
   else if (v4)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_finalIndexPair.section];
-    [v3 appendFormat:@"INS(%@)", v6];
+    _ui_shortDescription2 = [MEMORY[0x1E696AD98] numberWithInteger:self->_finalIndexPair.section];
+    [string appendFormat:@"INS(%@)", _ui_shortDescription2];
   }
 
   else
   {
-    v6 = [(NSIndexPath *)self->_finalIndexPath _ui_shortDescription];
-    [v3 appendFormat:@"INS%@", v6];
+    _ui_shortDescription2 = [(NSIndexPath *)self->_finalIndexPath _ui_shortDescription];
+    [string appendFormat:@"INS%@", _ui_shortDescription2];
   }
 
 LABEL_27:
 
-  return v3;
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:self->_initialIndexPath finalIndexPath:self->_finalIndexPath updateAction:self->_updateAction];
   [(UIBackgroundConfiguration *)v4 _setStrokeColor:?];
@@ -323,9 +323,9 @@ LABEL_27:
   return v4;
 }
 
-- (int64_t)compareIndexPaths:(id)a3
+- (int64_t)compareIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   section = self->_indexPairForAction.section;
   if (*&self->_indexPairForAction == __PAIR128__(0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL))
   {
@@ -334,8 +334,8 @@ LABEL_27:
 
   else
   {
-    v7 = v4[5];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL && v4[6] == 0x7FFFFFFFFFFFFFFFLL)
+    v7 = pathsCopy[5];
+    if (v7 == 0x7FFFFFFFFFFFFFFFLL && pathsCopy[6] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 1;
     }
@@ -343,7 +343,7 @@ LABEL_27:
     else if (section == v7)
     {
       item = self->_indexPairForAction.item;
-      v9 = v4[6];
+      v9 = pathsCopy[6];
       v10 = item < v9;
       v11 = item > v9;
       if (v10)
@@ -371,9 +371,9 @@ LABEL_27:
   return v6;
 }
 
-- (int64_t)inverseCompareIndexPaths:(id)a3
+- (int64_t)inverseCompareIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   section = self->_indexPairForAction.section;
   if (*&self->_indexPairForAction == __PAIR128__(0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL))
   {
@@ -382,15 +382,15 @@ LABEL_27:
 
   else
   {
-    v7 = v4[5];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL && v4[6] == 0x7FFFFFFFFFFFFFFFLL)
+    v7 = pathsCopy[5];
+    if (v7 == 0x7FFFFFFFFFFFFFFFLL && pathsCopy[6] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 0;
     }
 
     else if (v7 == section)
     {
-      v8 = v4[6];
+      v8 = pathsCopy[6];
       item = self->_indexPairForAction.item;
       v10 = v8 < item;
       v11 = v8 > item;
@@ -419,12 +419,12 @@ LABEL_27:
   return v6;
 }
 
-- (int64_t)compareIndexPathsForMoves:(id)a3
+- (int64_t)compareIndexPathsForMoves:(id)moves
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  movesCopy = moves;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  if (v5)
+  if (movesCopy)
   {
     v7 = self->_updateAction == 3;
   }
@@ -437,7 +437,7 @@ LABEL_27:
   v8 = !v7;
   if (has_internal_diagnostics)
   {
-    if ((v8 & 1) == 0 && v5[10] == 3)
+    if ((v8 & 1) == 0 && movesCopy[10] == 3)
     {
       goto LABEL_10;
     }
@@ -454,7 +454,7 @@ LABEL_27:
 
   else
   {
-    if ((v8 & 1) == 0 && v5[10] == 3)
+    if ((v8 & 1) == 0 && movesCopy[10] == 3)
     {
 LABEL_10:
       v9 = self->_indexPairForAction.item == 0x7FFFFFFFFFFFFFFFLL;
@@ -472,7 +472,7 @@ LABEL_10:
   }
 
   v9 = self->_indexPairForAction.item == 0x7FFFFFFFFFFFFFFFLL;
-  if (!v5)
+  if (!movesCopy)
   {
     v10 = 0;
     if (self->_indexPairForAction.item != 0x7FFFFFFFFFFFFFFFLL)
@@ -484,7 +484,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  v10 = v5[6] == 0x7FFFFFFFFFFFFFFFLL;
+  v10 = movesCopy[6] == 0x7FFFFFFFFFFFFFFFLL;
   if (!v9)
   {
     goto LABEL_18;
@@ -500,7 +500,7 @@ LABEL_12:
 LABEL_18:
   if (v9 || !v10)
   {
-    v11 = [(UICollectionViewUpdateItem *)self compareIndexPaths:v5];
+    v11 = [(UICollectionViewUpdateItem *)self compareIndexPaths:movesCopy];
   }
 
   else
@@ -515,22 +515,22 @@ LABEL_21:
 
 - (UICollectionViewUpdateItem)revertedUpdate
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    updateAction = a1->_updateAction;
+    selfCopy = self;
+    updateAction = self->_updateAction;
     if (updateAction)
     {
       if (updateAction != 1)
       {
         if (updateAction == 3)
         {
-          a1 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:a1->_finalIndexPath finalIndexPath:a1->_initialIndexPath updateAction:3];
+          self = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:self->_finalIndexPath finalIndexPath:self->_initialIndexPath updateAction:3];
         }
 
         else
         {
-          a1 = 0;
+          self = 0;
         }
 
         goto LABEL_14;
@@ -538,12 +538,12 @@ LABEL_21:
 
       v4 = [UICollectionViewUpdateItem alloc];
       v5 = 64;
-      if (!v2->_updateAction)
+      if (!selfCopy->_updateAction)
       {
         v5 = 72;
       }
 
-      v6 = *(&v2->super.isa + v5);
+      v6 = *(&selfCopy->super.isa + v5);
       v7 = 0;
     }
 
@@ -551,29 +551,29 @@ LABEL_21:
     {
       v4 = [UICollectionViewUpdateItem alloc];
       v8 = 64;
-      if (!v2->_updateAction)
+      if (!selfCopy->_updateAction)
       {
         v8 = 72;
       }
 
-      v6 = *(&v2->super.isa + v8);
+      v6 = *(&selfCopy->super.isa + v8);
       v7 = 1;
     }
 
-    a1 = [(UICollectionViewUpdateItem *)v4 initWithAction:v7 forIndexPath:v6];
+    self = [(UICollectionViewUpdateItem *)v4 initWithAction:v7 forIndexPath:v6];
 LABEL_14:
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)isEqualToUpdate:(void *)a1
+- (uint64_t)isEqualToUpdate:(void *)update
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (update && v3)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -581,15 +581,15 @@ LABEL_14:
       goto LABEL_24;
     }
 
-    if (a1[8])
+    if (update[8])
     {
-      if (a1[2] != v4[2])
+      if (update[2] != v4[2])
       {
         v7 = 0;
         goto LABEL_12;
       }
 
-      v6 = a1[1] == v4[1];
+      v6 = update[1] == v4[1];
     }
 
     else
@@ -599,15 +599,15 @@ LABEL_14:
 
     v7 = v6;
 LABEL_12:
-    if (a1[9])
+    if (update[9])
     {
-      if (a1[4] != v4[4])
+      if (update[4] != v4[4])
       {
         v9 = 0;
         if (v7)
         {
 LABEL_20:
-          if (a1[10] == v4[10])
+          if (update[10] == v4[10])
           {
             v5 = v9;
           }
@@ -625,7 +625,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v8 = a1[3] == v4[3];
+      v8 = update[3] == v4[3];
     }
 
     else
@@ -665,26 +665,26 @@ LABEL_25:
   return result;
 }
 
-- (uint64_t)_initialIndexPathEqualToUpdateItem:(uint64_t)a1
+- (uint64_t)_initialIndexPathEqualToUpdateItem:(uint64_t)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    a1 = *(a1 + 16) == v3[2] && *(a1 + 8) == v3[1];
+    item = *(item + 16) == v3[2] && *(item + 8) == v3[1];
   }
 
-  return a1;
+  return item;
 }
 
-- (uint64_t)_finalIndexPathEqualToUpdateItem:(uint64_t)a1
+- (uint64_t)_finalIndexPathEqualToUpdateItem:(uint64_t)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    a1 = *(a1 + 32) == v3[4] && *(a1 + 24) == v3[3];
+    item = *(item + 32) == v3[4] && *(item + 24) == v3[3];
   }
 
-  return a1;
+  return item;
 }
 
 @end

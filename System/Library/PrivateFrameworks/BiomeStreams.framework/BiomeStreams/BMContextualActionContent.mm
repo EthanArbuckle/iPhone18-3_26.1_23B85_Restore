@@ -1,41 +1,41 @@
 @interface BMContextualActionContent
-- (BMContextualActionContent)initWithCoder:(id)a3;
-- (BMContextualActionContent)initWithType:(id)a3 metadata:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BMContextualActionContent)initWithCoder:(id)coder;
+- (BMContextualActionContent)initWithType:(id)type metadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMContextualActionContent
 
-- (BMContextualActionContent)initWithType:(id)a3 metadata:(id)a4
+- (BMContextualActionContent)initWithType:(id)type metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = BMContextualActionContent;
   v9 = [(BMContextualActionContent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentType, a3);
-    objc_storeStrong(&v10->_contentMetadata, a4);
+    objc_storeStrong(&v9->_contentType, type);
+    objc_storeStrong(&v10->_contentMetadata, metadata);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentType = self->_contentType;
-  v5 = a3;
-  [v5 encodeObject:contentType forKey:@"contentType"];
-  [v5 encodeObject:self->_contentMetadata forKey:@"contentMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contentType forKey:@"contentType"];
+  [coderCopy encodeObject:self->_contentMetadata forKey:@"contentMetadata"];
 }
 
-- (BMContextualActionContent)initWithCoder:(id)a3
+- (BMContextualActionContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -43,38 +43,38 @@
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"contentMetadata"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"contentMetadata"];
 
   v14 = [(BMContextualActionContent *)self initWithType:v5 metadata:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(BMContextualActionContent *)self contentType];
-    if (v7 || ([v6 contentType], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    contentType = [(BMContextualActionContent *)self contentType];
+    if (contentType || ([v6 contentType], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(BMContextualActionContent *)self contentType];
-      v9 = [v6 contentType];
-      v10 = [v8 isEqual:v9];
+      contentType2 = [(BMContextualActionContent *)self contentType];
+      contentType3 = [v6 contentType];
+      v10 = [contentType2 isEqual:contentType3];
 
-      if (v7)
+      if (contentType)
       {
 LABEL_9:
 
-        v12 = [(BMContextualActionContent *)self contentMetadata];
-        if (v12 || ([v6 contentMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        contentMetadata = [(BMContextualActionContent *)self contentMetadata];
+        if (contentMetadata || ([v6 contentMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v13 = [(BMContextualActionContent *)self contentMetadata];
-          v14 = [v6 contentMetadata];
-          v15 = [v13 isEqualToDictionary:v14];
+          contentMetadata2 = [(BMContextualActionContent *)self contentMetadata];
+          contentMetadata3 = [v6 contentMetadata];
+          v15 = [contentMetadata2 isEqualToDictionary:contentMetadata3];
 
-          if (v12)
+          if (contentMetadata)
           {
 LABEL_15:
 

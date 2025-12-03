@@ -1,40 +1,40 @@
 @interface ANMessenger
-+ (BOOL)_isAnnouncerAdminInAnnouncement:(id)a3 home:(id)a4;
-+ (id)_performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4;
-+ (id)_performPreflightChecksForSendingToRooms:(id)a3 zones:(id)a4;
-+ (id)announcementForDevice:(id)a3 inHome:(id)a4 fromAnnouncement:(id)a5;
-+ (id)announcementForUser:(id)a3 inHome:(id)a4 fromAnnouncement:(id)a5;
-+ (id)createAnnouncementWithRequest:(id)a3 forLocation:(id)a4 inHome:(id)a5 isReply:(BOOL)a6 error:(id *)a7;
-+ (id)locationForHome:(id)a3 rooms:(id)a4 zones:(id)a5 idsService:(id)a6;
-+ (id)locationForReplyToAnnouncement:(id)a3 home:(id)a4 idsService:(id)a5;
-+ (id)performBasicValidationForAnnouncement:(id)a3 type:(unint64_t)a4;
-+ (id)performIDSValidationForAnnouncement:(id)a3 withSenderContext:(id)a4;
-+ (id)performPreflightChecksForSendingAnnouncementToHome:(id)a3 rooms:(id)a4 zones:(id)a5;
-+ (id)performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4 rooms:(id)a5 zones:(id)a6;
-+ (id)validateAnnouncerInAnnouncement:(id)a3 home:(id)a4;
-+ (void)_setIdentifiersForIDSService:(id)a3 inLocation:(id)a4 home:(id)a5;
++ (BOOL)_isAnnouncerAdminInAnnouncement:(id)announcement home:(id)home;
++ (id)_performPreflightChecksForSendingContent:(id)content toHome:(id)home;
++ (id)_performPreflightChecksForSendingToRooms:(id)rooms zones:(id)zones;
++ (id)announcementForDevice:(id)device inHome:(id)home fromAnnouncement:(id)announcement;
++ (id)announcementForUser:(id)user inHome:(id)home fromAnnouncement:(id)announcement;
++ (id)createAnnouncementWithRequest:(id)request forLocation:(id)location inHome:(id)home isReply:(BOOL)reply error:(id *)error;
++ (id)locationForHome:(id)home rooms:(id)rooms zones:(id)zones idsService:(id)service;
++ (id)locationForReplyToAnnouncement:(id)announcement home:(id)home idsService:(id)service;
++ (id)performBasicValidationForAnnouncement:(id)announcement type:(unint64_t)type;
++ (id)performIDSValidationForAnnouncement:(id)announcement withSenderContext:(id)context;
++ (id)performPreflightChecksForSendingAnnouncementToHome:(id)home rooms:(id)rooms zones:(id)zones;
++ (id)performPreflightChecksForSendingContent:(id)content toHome:(id)home rooms:(id)rooms zones:(id)zones;
++ (id)validateAnnouncerInAnnouncement:(id)announcement home:(id)home;
++ (void)_setIdentifiersForIDSService:(id)service inLocation:(id)location home:(id)home;
 - (ANMessenger)init;
-- (ANMessenger)initWithIDSConnection:(id)a3 rapportConnection:(id)a4;
+- (ANMessenger)initWithIDSConnection:(id)connection rapportConnection:(id)rapportConnection;
 - (ANMessengerDelegate)delegate;
 - (ANParticipant)localParticipant;
-- (BOOL)_willTargetReachableDevicesForAnnouncement:(id)a3 inDestination:(id)a4;
-- (double)_calculateAnnouncementDeadline:(id)a3;
-- (id)connectionDidReceiveRequestForHomeLocationStatus:(id)a3;
+- (BOOL)_willTargetReachableDevicesForAnnouncement:(id)announcement inDestination:(id)destination;
+- (double)_calculateAnnouncementDeadline:(id)deadline;
+- (id)connectionDidReceiveRequestForHomeLocationStatus:(id)status;
 - (id)getScanningDeviceCandidates;
-- (void)_forwardRelayRequest:(id)a3 withSenderContext:(id)a4 sentHandler:(id)a5;
-- (void)_fulfillRelayRequest:(id)a3 withSenderContext:(id)a4 sentHandler:(id)a5;
-- (void)_logDebugInfoForHome:(id)a3;
-- (void)_relayAnnouncementThroughHomePod:(id)a3 inHome:(id)a4 rooms:(id)a5 sentHandler:(id)a6;
-- (void)_sendAnnouncement:(id)a3 toDestination:(id)a4 sentHandler:(id)a5;
-- (void)broadcastReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5;
+- (void)_forwardRelayRequest:(id)request withSenderContext:(id)context sentHandler:(id)handler;
+- (void)_fulfillRelayRequest:(id)request withSenderContext:(id)context sentHandler:(id)handler;
+- (void)_logDebugInfoForHome:(id)home;
+- (void)_relayAnnouncementThroughHomePod:(id)pod inHome:(id)home rooms:(id)rooms sentHandler:(id)handler;
+- (void)_sendAnnouncement:(id)announcement toDestination:(id)destination sentHandler:(id)handler;
+- (void)broadcastReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion;
 - (void)cleanForExit;
-- (void)connection:(id)a3 didReceiveMessage:(id)a4 fromSender:(id)a5 senderContext:(id)a6 handler:(id)a7;
-- (void)connection:(id)a3 failedDeliveryForMessage:(id)a4 withError:(id)a5;
-- (void)forwardAnnouncementToCompanion:(id)a3;
-- (void)mockAnnouncement:(id)a3 playbackDeadline:(id)a4 sentHandler:(id)a5;
-- (void)sendAnnouncement:(id)a3 isRetry:(BOOL)a4 sentHandler:(id)a5;
-- (void)sendReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5;
-- (void)sendRequest:(id)a3 sentHandler:(id)a4;
+- (void)connection:(id)connection didReceiveMessage:(id)message fromSender:(id)sender senderContext:(id)context handler:(id)handler;
+- (void)connection:(id)connection failedDeliveryForMessage:(id)message withError:(id)error;
+- (void)forwardAnnouncementToCompanion:(id)companion;
+- (void)mockAnnouncement:(id)announcement playbackDeadline:(id)deadline sentHandler:(id)handler;
+- (void)sendAnnouncement:(id)announcement isRetry:(BOOL)retry sentHandler:(id)handler;
+- (void)sendReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion;
+- (void)sendRequest:(id)request sentHandler:(id)handler;
 @end
 
 @implementation ANMessenger
@@ -48,10 +48,10 @@
   return v5;
 }
 
-- (ANMessenger)initWithIDSConnection:(id)a3 rapportConnection:(id)a4
+- (ANMessenger)initWithIDSConnection:(id)connection rapportConnection:(id)rapportConnection
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  rapportConnectionCopy = rapportConnection;
   v13.receiver = self;
   v13.super_class = ANMessenger;
   v9 = [(ANMessenger *)&v13 init];
@@ -61,9 +61,9 @@
     log = v9->_log;
     v9->_log = v10;
 
-    objc_storeStrong(&v9->_idsConnection, a3);
+    objc_storeStrong(&v9->_idsConnection, connection);
     [(ANIDSConnectionProvider *)v9->_idsConnection setDelegate:v9];
-    objc_storeStrong(&v9->_rapportConnection, a4);
+    objc_storeStrong(&v9->_rapportConnection, rapportConnection);
     [(ANRapportConnectionProvider *)v9->_rapportConnection setDelegate:v9];
     +[ANMessenger purgeTemporaryFiles];
   }
@@ -73,80 +73,80 @@
 
 - (void)cleanForExit
 {
-  v2 = [(ANMessenger *)self rapportConnection];
-  [v2 deactivateLinkWithOptions:1];
+  rapportConnection = [(ANMessenger *)self rapportConnection];
+  [rapportConnection deactivateLinkWithOptions:1];
 }
 
 - (ANParticipant)localParticipant
 {
   v3 = objc_opt_new();
-  v4 = [(ANMessenger *)self rapportConnection];
-  v5 = [v4 localDevice];
-  [v3 populateWithDevice:v5];
+  rapportConnection = [(ANMessenger *)self rapportConnection];
+  localDevice = [rapportConnection localDevice];
+  [v3 populateWithDevice:localDevice];
 
   return v3;
 }
 
-- (void)sendRequest:(id)a3 sentHandler:(id)a4
+- (void)sendRequest:(id)request sentHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 destination];
-  v8 = [v7 type];
+  requestCopy = request;
+  handlerCopy = handler;
+  destination = [requestCopy destination];
+  type = [destination type];
 
-  if (v8 >= 2)
+  if (type >= 2)
   {
-    if (v8 == 2)
+    if (type == 2)
     {
-      v9 = [v14 destination];
-      v10 = [v9 replyToSender];
+      destination2 = [requestCopy destination];
+      replyToSender = [destination2 replyToSender];
 
-      v11 = [v14 destination];
-      v12 = [v11 announcement];
-      if (v10)
+      destination3 = [requestCopy destination];
+      announcement = [destination3 announcement];
+      if (replyToSender)
       {
-        [(ANMessenger *)self sendReply:v14 forAnnouncement:v12 completion:v6];
+        [(ANMessenger *)self sendReply:requestCopy forAnnouncement:announcement completion:handlerCopy];
       }
 
       else
       {
-        [(ANMessenger *)self broadcastReply:v14 forAnnouncement:v12 completion:v6];
+        [(ANMessenger *)self broadcastReply:requestCopy forAnnouncement:announcement completion:handlerCopy];
       }
     }
 
     else
     {
       v13 = [MEMORY[0x277CCA9B8] an_errorWithCode:1045 component:*MEMORY[0x277CEA9B8]];
-      v6[2](v6, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
   }
 
   else
   {
-    [(ANMessenger *)self sendAnnouncement:v14 sentHandler:v6];
+    [(ANMessenger *)self sendAnnouncement:requestCopy sentHandler:handlerCopy];
   }
 }
 
-- (void)sendAnnouncement:(id)a3 isRetry:(BOOL)a4 sentHandler:(id)a5
+- (void)sendAnnouncement:(id)announcement isRetry:(BOOL)retry sentHandler:(id)handler
 {
-  v6 = a4;
+  retryCopy = retry;
   v69 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 destination];
-  v11 = [v10 home];
+  announcementCopy = announcement;
+  handlerCopy = handler;
+  destination = [announcementCopy destination];
+  home = [destination home];
 
-  if (v11)
+  if (home)
   {
-    v12 = [v8 destination];
-    v13 = [v12 rooms];
+    destination2 = [announcementCopy destination];
+    rooms = [destination2 rooms];
 
-    v14 = [v8 destination];
-    v15 = [v14 zones];
+    destination3 = [announcementCopy destination];
+    zones = [destination3 zones];
 
-    v16 = [v8 content];
-    v57 = v15;
-    v17 = [ANValidationHelper performPreflightChecksForSendingContent:v16 toHome:v11 rooms:v13 zones:v15];
+    content = [announcementCopy content];
+    v57 = zones;
+    v17 = [ANValidationHelper performPreflightChecksForSendingContent:content toHome:home rooms:rooms zones:zones];
     if (v17)
     {
       v18 = v17;
@@ -154,9 +154,9 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v62 = v11;
+        v62 = home;
         v63 = 2112;
-        v64 = v13;
+        v64 = rooms;
         v65 = 2112;
         v66 = v57;
         v67 = 2112;
@@ -164,46 +164,46 @@
         _os_log_error_impl(&dword_23F525000, v19, OS_LOG_TYPE_ERROR, "Failed preflight check. Home = %@, Rooms = %@, Zones = %@, Error = %@", buf, 0x2Au);
       }
 
-      v9[2](v9, 0, v18);
+      handlerCopy[2](handlerCopy, 0, v18);
       v20 = +[ANAnalytics shared];
-      v21 = [v18 code];
-      v22 = [v16 endpointIdentifier];
-      v23 = [ANAnalyticsContext contextWithEndpointID:v22];
-      [v20 error:v21 context:v23];
+      code = [v18 code];
+      endpointIdentifier = [content endpointIdentifier];
+      v23 = [ANAnalyticsContext contextWithEndpointID:endpointIdentifier];
+      [v20 error:code context:v23];
     }
 
     else
     {
-      v56 = v16;
-      v25 = [(ANMessenger *)self idsConnection];
-      v26 = [v25 service];
-      v20 = [ANMessenger locationForHome:v11 rooms:v13 zones:v57 idsService:v26];
+      v56 = content;
+      idsConnection = [(ANMessenger *)self idsConnection];
+      service = [idsConnection service];
+      v20 = [ANMessenger locationForHome:home rooms:rooms zones:v57 idsService:service];
 
       v58 = 0;
-      v22 = [ANMessenger createAnnouncementWithRequest:v8 forLocation:v20 inHome:v11 isReply:0 error:&v58];
+      endpointIdentifier = [ANMessenger createAnnouncementWithRequest:announcementCopy forLocation:v20 inHome:home isReply:0 error:&v58];
       v18 = v58;
-      if (v22)
+      if (endpointIdentifier)
       {
-        v27 = [v20 flags];
-        v23 = [MEMORY[0x277CD1F50] hmu_roomsInZones:v57 appendingRooms:v13];
+        flags = [v20 flags];
+        v23 = [MEMORY[0x277CD1F50] hmu_roomsInZones:v57 appendingRooms:rooms];
         if (+[ANDemoStateManager isStoreDemoModeEnabled])
         {
           v28 = [(ANMessenger *)self log];
-          v16 = v56;
+          content = v56;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
             _os_log_impl(&dword_23F525000, v28, OS_LOG_TYPE_DEFAULT, "Demo Mode is Enabled. Will succeed without actually sending message", buf, 2u);
           }
 
-          (v9)[2](v9, v22, 0);
+          (handlerCopy)[2](handlerCopy, endpointIdentifier, 0);
         }
 
         else
         {
-          v52 = v27;
-          v16 = v56;
-          if ([v22 isRelayRequest])
+          v52 = flags;
+          content = v56;
+          if ([endpointIdentifier isRelayRequest])
           {
             v50 = [(ANMessenger *)self log];
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -219,16 +219,16 @@
               _os_log_impl(&dword_23F525000, v50, OS_LOG_TYPE_DEFAULT, "Sending (Announce To %@) Relay Request", buf, 0xCu);
             }
 
-            [(ANMessenger *)self _relayAnnouncementThroughHomePod:v22 inHome:v11 rooms:v23 sentHandler:v9];
+            [(ANMessenger *)self _relayAnnouncementThroughHomePod:endpointIdentifier inHome:home rooms:v23 sentHandler:handlerCopy];
           }
 
           else
           {
             if (v52)
             {
-              v38 = [v56 homeKitUserIdentifier];
+              homeKitUserIdentifier = [v56 homeKitUserIdentifier];
 
-              if (v38 && ([v56 homeKitUserIdentifier], v39 = objc_claimAutoreleasedReturnValue(), -[__CFString hmu_userWithUniqueIdentifier:](v11, "hmu_userWithUniqueIdentifier:", v39), v49 = objc_claimAutoreleasedReturnValue(), v39, v49))
+              if (homeKitUserIdentifier && ([v56 homeKitUserIdentifier], v39 = objc_claimAutoreleasedReturnValue(), -[__CFString hmu_userWithUniqueIdentifier:](home, "hmu_userWithUniqueIdentifier:", v39), v49 = objc_claimAutoreleasedReturnValue(), v39, v49))
               {
                 v60 = v49;
                 v51 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
@@ -241,13 +241,13 @@
               }
 
               v48 = +[ANHomeManager shared];
-              v40 = [v48 currentAccessory];
-              v55 = v13;
-              if (v40)
+              currentAccessory = [v48 currentAccessory];
+              v55 = rooms;
+              if (currentAccessory)
               {
-                v46 = v40;
-                v41 = [v56 endpointIdentifier];
-                if (v41)
+                v46 = currentAccessory;
+                endpointIdentifier2 = [v56 endpointIdentifier];
+                if (endpointIdentifier2)
                 {
                   v42 = MEMORY[0x277CBEBF8];
                 }
@@ -255,16 +255,16 @@
                 else
                 {
                   v45 = +[ANHomeManager shared];
-                  v43 = [v45 currentAccessory];
-                  v59 = v43;
+                  currentAccessory2 = [v45 currentAccessory];
+                  v59 = currentAccessory2;
                   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
 
-                  v41 = 0;
+                  endpointIdentifier2 = 0;
                 }
 
                 v47 = v42;
 
-                v40 = v46;
+                currentAccessory = v46;
               }
 
               else
@@ -272,45 +272,45 @@
                 v47 = MEMORY[0x277CBEBF8];
               }
 
-              v44 = [(ANMessenger *)self rapportConnection];
-              v53 = [ANMessengerDestination destinationForHome:v11 excludingUsers:v51 excludingAccessories:v47 rapportConnection:v44];
+              rapportConnection = [(ANMessenger *)self rapportConnection];
+              v53 = [ANMessengerDestination destinationForHome:home excludingUsers:v51 excludingAccessories:v47 rapportConnection:rapportConnection];
 
-              v13 = v55;
-              v37 = v49;
+              rooms = v55;
+              rapportConnection2 = v49;
             }
 
             else
             {
-              v37 = [(ANMessenger *)self rapportConnection];
-              v53 = [ANMessengerDestination destinationForAccessoriesInHome:v11 rooms:v23 rapportConnection:v37];
+              rapportConnection2 = [(ANMessenger *)self rapportConnection];
+              v53 = [ANMessengerDestination destinationForAccessoriesInHome:home rooms:v23 rapportConnection:rapportConnection2];
             }
 
-            [(ANMessenger *)self _sendAnnouncement:v22 toDestination:v53 sentHandler:v9];
-            v16 = v56;
+            [(ANMessenger *)self _sendAnnouncement:endpointIdentifier toDestination:v53 sentHandler:handlerCopy];
+            content = v56;
           }
         }
       }
 
       else
       {
-        v9[2](v9, 0, v18);
+        handlerCopy[2](handlerCopy, 0, v18);
         v23 = +[ANAnalytics shared];
-        v33 = [v18 code];
-        [v16 endpointIdentifier];
-        v34 = v54 = v13;
+        code2 = [v18 code];
+        [content endpointIdentifier];
+        v34 = v54 = rooms;
         v35 = [ANAnalyticsContext contextWithEndpointID:v34];
-        [v23 error:v33 context:v35];
+        [v23 error:code2 context:v35];
 
-        v16 = v56;
-        v13 = v54;
+        content = v56;
+        rooms = v54;
       }
     }
   }
 
-  else if (v6)
+  else if (retryCopy)
   {
     v24 = [MEMORY[0x277CCA9B8] an_errorWithCode:1002 component:*MEMORY[0x277CEA9B8]];
-    v9[2](v9, 0, v24);
+    handlerCopy[2](handlerCopy, 0, v24);
   }
 
   else
@@ -323,47 +323,47 @@
     }
 
     v30 = +[ANHomeManager shared];
-    v31 = [v30 refreshHomeSynchronous];
+    refreshHomeSynchronous = [v30 refreshHomeSynchronous];
 
-    [(ANMessenger *)self sendAnnouncement:v8 isRetry:1 sentHandler:v9];
+    [(ANMessenger *)self sendAnnouncement:announcementCopy isRetry:1 sentHandler:handlerCopy];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5
+- (void)sendReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  announcementCopy = announcement;
+  completionCopy = completion;
   v11 = +[ANHomeManager shared];
-  v12 = [v9 location];
-  v13 = [v12 homeUUID];
-  v14 = [v11 homeForID:v13];
+  location = [announcementCopy location];
+  homeUUID = [location homeUUID];
+  v14 = [v11 homeForID:homeUUID];
 
-  v15 = [v9 location];
-  v16 = [v15 copy];
+  location2 = [announcementCopy location];
+  v16 = [location2 copy];
 
   [v16 setFlags:0];
   v37 = v16;
   v38 = 0;
-  v17 = [ANMessenger createAnnouncementWithRequest:v8 forLocation:v16 inHome:v14 isReply:1 error:&v38];
+  v17 = [ANMessenger createAnnouncementWithRequest:replyCopy forLocation:v16 inHome:v14 isReply:1 error:&v38];
   v18 = v38;
   v19 = v18;
   if (v17)
   {
     v33 = v18;
-    v34 = self;
-    v35 = v8;
+    selfCopy = self;
+    v35 = replyCopy;
     v20 = objc_opt_new();
-    v21 = [v9 announcer];
-    v22 = [v21 isAccessory];
+    announcer = [announcementCopy announcer];
+    isAccessory = [announcer isAccessory];
 
-    v23 = [v9 announcer];
-    v24 = [v23 homeKitID];
-    if (v22)
+    announcer2 = [announcementCopy announcer];
+    homeKitID = [announcer2 homeKitID];
+    if (isAccessory)
     {
-      v25 = [v14 hmu_accessoryWithUniqueIdentifierUUIDString:v24];
+      v25 = [v14 hmu_accessoryWithUniqueIdentifierUUIDString:homeKitID];
 
       if (v25)
       {
@@ -373,7 +373,7 @@
 
     else
     {
-      v25 = [v14 hmu_userWithUniqueIdentifierUUIDString:v24];
+      v25 = [v14 hmu_userWithUniqueIdentifierUUIDString:homeKitID];
 
       if (v25)
       {
@@ -383,68 +383,68 @@
 
     v29 = v35;
 
-    [(ANMessenger *)v34 _sendAnnouncement:v17 toDestination:v20 sentHandler:v10];
+    [(ANMessenger *)selfCopy _sendAnnouncement:v17 toDestination:v20 sentHandler:completionCopy];
     v19 = v33;
   }
 
   else
   {
-    v10[2](v10, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     v20 = +[ANAnalytics shared];
     v36 = v14;
-    v26 = v10;
-    v27 = [v19 code];
-    v28 = [v8 content];
-    [v28 endpointIdentifier];
-    v30 = v29 = v8;
+    v26 = completionCopy;
+    code = [v19 code];
+    content = [replyCopy content];
+    [content endpointIdentifier];
+    v30 = v29 = replyCopy;
     v31 = [ANAnalyticsContext contextWithEndpointID:v30];
-    v32 = v27;
-    v10 = v26;
+    v32 = code;
+    completionCopy = v26;
     v14 = v36;
     [v20 error:v32 context:v31];
   }
 }
 
-- (void)broadcastReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5
+- (void)broadcastReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion
 {
   v90 = *MEMORY[0x277D85DE8];
-  v84 = a3;
-  v8 = a4;
-  v82 = a5;
+  replyCopy = reply;
+  announcementCopy = announcement;
+  completionCopy = completion;
   v9 = [(ANMessenger *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 identifier];
+    identifier = [announcementCopy identifier];
     *buf = 138412290;
-    v89 = v10;
+    v89 = identifier;
     _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "Replying to Announcement: %@", buf, 0xCu);
   }
 
   v11 = +[ANHomeManager shared];
-  v12 = [v8 location];
-  v13 = [v12 homeUUID];
-  v14 = [v11 homeForID:v13];
+  location = [announcementCopy location];
+  homeUUID = [location homeUUID];
+  v14 = [v11 homeForID:homeUUID];
 
-  v15 = [(ANMessenger *)self idsConnection];
-  v16 = [v15 service];
-  v17 = [ANMessenger locationForReplyToAnnouncement:v8 home:v14 idsService:v16];
+  idsConnection = [(ANMessenger *)self idsConnection];
+  service = [idsConnection service];
+  v17 = [ANMessenger locationForReplyToAnnouncement:announcementCopy home:v14 idsService:service];
 
   v85 = 0;
-  v18 = [ANMessenger createAnnouncementWithRequest:v84 forLocation:v17 inHome:v14 isReply:1 error:&v85];
+  v18 = [ANMessenger createAnnouncementWithRequest:replyCopy forLocation:v17 inHome:v14 isReply:1 error:&v85];
   v19 = v85;
   v20 = v19;
   v83 = v17;
   if (!v18)
   {
-    v37 = v82;
-    (*(v82 + 2))(v82, 0, v19);
+    v37 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v19);
     v22 = +[ANAnalytics shared];
     v40 = v20;
-    v41 = [v20 code];
-    v39 = [v84 content];
-    v35 = [v39 endpointIdentifier];
-    v42 = [ANAnalyticsContext contextWithEndpointID:v35];
-    v43 = v41;
+    code = [v20 code];
+    content = [replyCopy content];
+    endpointIdentifier = [content endpointIdentifier];
+    v42 = [ANAnalyticsContext contextWithEndpointID:endpointIdentifier];
+    v43 = code;
     v38 = v40;
     [v22 error:v43 context:v42];
 
@@ -455,33 +455,33 @@
   v21 = [v17 allRoomsInHome:v14];
   v22 = [v21 mutableCopy];
 
-  v23 = [v18 announcer];
-  v24 = [v23 homeKitID];
+  announcer = [v18 announcer];
+  homeKitID = [announcer homeKitID];
 
-  v81 = v24;
-  if (v24)
+  v81 = homeKitID;
+  if (homeKitID)
   {
-    v25 = [v18 announcer];
-    v26 = [v25 isAccessory];
+    announcer2 = [v18 announcer];
+    isAccessory = [announcer2 isAccessory];
 
-    if (v26)
+    if (isAccessory)
     {
       v27 = [v14 hmu_accessoryWithUniqueIdentifierUUIDString:v81];
-      v28 = [v27 room];
+      room = [v27 room];
 
-      if (v28)
+      if (room)
       {
-        v29 = [v17 roomUUIDs];
+        roomUUIDs = [v17 roomUUIDs];
         v30 = v22;
-        v31 = [v29 mutableCopy];
+        v31 = [roomUUIDs mutableCopy];
 
-        v32 = [v28 uniqueIdentifier];
-        [v31 removeObject:v32];
+        uniqueIdentifier = [room uniqueIdentifier];
+        [v31 removeObject:uniqueIdentifier];
 
         v33 = [v31 copy];
         [v83 setRoomUUIDs:v33];
 
-        [v30 removeObject:v28];
+        [v30 removeObject:room];
         v22 = v30;
       }
     }
@@ -489,17 +489,17 @@
 
   if (![v18 isRelayRequest])
   {
-    v44 = [v84 content];
-    v45 = [v18 location];
-    v46 = [v45 flags];
+    content2 = [replyCopy content];
+    location2 = [v18 location];
+    flags = [location2 flags];
 
-    v78 = v44;
+    v78 = content2;
     v79 = v22;
-    if (v46)
+    if (flags)
     {
-      v54 = [v44 homeKitUserIdentifier];
+      homeKitUserIdentifier = [content2 homeKitUserIdentifier];
 
-      if (v54 && ([v44 homeKitUserIdentifier], v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "hmu_userWithUniqueIdentifier:", v55), v56 = objc_claimAutoreleasedReturnValue(), v55, v56))
+      if (homeKitUserIdentifier && ([content2 homeKitUserIdentifier], v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "hmu_userWithUniqueIdentifier:", v55), v56 = objc_claimAutoreleasedReturnValue(), v55, v56))
       {
         v76 = v56;
         v87 = v56;
@@ -513,11 +513,11 @@
       }
 
       v58 = +[ANHomeManager shared];
-      v59 = [v58 currentAccessory];
-      if (v59)
+      currentAccessory = [v58 currentAccessory];
+      if (currentAccessory)
       {
-        v60 = [v44 endpointIdentifier];
-        if (v60)
+        endpointIdentifier2 = [content2 endpointIdentifier];
+        if (endpointIdentifier2)
         {
           v61 = MEMORY[0x277CBEBF8];
         }
@@ -525,8 +525,8 @@
         else
         {
           v64 = +[ANHomeManager shared];
-          v75 = [v64 currentAccessory];
-          v86 = v75;
+          currentAccessory2 = [v64 currentAccessory];
+          v86 = currentAccessory2;
           v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
         }
       }
@@ -536,68 +536,68 @@
         v61 = MEMORY[0x277CBEBF8];
       }
 
-      v65 = [(ANMessenger *)self rapportConnection];
-      v66 = v57;
-      v35 = [ANMessengerDestination destinationForHome:v14 excludingUsers:v57 excludingAccessories:v61 rapportConnection:v65];
+      rapportConnection = [(ANMessenger *)self rapportConnection];
+      rapportConnection3 = v57;
+      endpointIdentifier = [ANMessengerDestination destinationForHome:v14 excludingUsers:v57 excludingAccessories:v61 rapportConnection:rapportConnection];
 
       v38 = v80;
-      v39 = v81;
+      content = v81;
       v63 = v76;
       goto LABEL_37;
     }
 
     v47 = [v22 copy];
-    v48 = [(ANMessenger *)self rapportConnection];
-    v35 = [ANMessengerDestination destinationForAccessoriesInHome:v14 rooms:v47 rapportConnection:v48];
+    rapportConnection2 = [(ANMessenger *)self rapportConnection];
+    endpointIdentifier = [ANMessengerDestination destinationForAccessoriesInHome:v14 rooms:v47 rapportConnection:rapportConnection2];
 
-    v49 = [v8 announcer];
-    v50 = [v49 homeKitUserID];
+    announcer3 = [announcementCopy announcer];
+    homeKitUserID = [announcer3 homeKitUserID];
 
-    v51 = [v8 announcer];
-    v52 = v51;
-    if (v50)
+    announcer4 = [announcementCopy announcer];
+    announcer5 = announcer4;
+    if (homeKitUserID)
     {
-      v53 = [v51 homeKitUserID];
+      homeKitUserID2 = [announcer4 homeKitUserID];
     }
 
     else
     {
-      v62 = [v51 isAccessory];
+      isAccessory2 = [announcer4 isAccessory];
 
-      if (v62)
+      if (isAccessory2)
       {
         v63 = 0;
         goto LABEL_32;
       }
 
-      v52 = [v8 announcer];
-      v53 = [v52 homeKitID];
+      announcer5 = [announcementCopy announcer];
+      homeKitUserID2 = [announcer5 homeKitID];
     }
 
-    v67 = v53;
-    v63 = [v14 hmu_userWithUniqueIdentifierUUIDString:v53];
+    v67 = homeKitUserID2;
+    v63 = [v14 hmu_userWithUniqueIdentifierUUIDString:homeKitUserID2];
 
 LABEL_32:
-    v68 = [v44 homeKitUserIdentifier];
-    if (v68)
+    homeKitUserIdentifier2 = [content2 homeKitUserIdentifier];
+    if (homeKitUserIdentifier2)
     {
-      v69 = v68;
-      v77 = [v44 homeKitUserIdentifier];
-      v70 = [v77 UUIDString];
-      v71 = [v8 announcer];
-      v72 = [v71 homeKitUserID];
-      LODWORD(v75) = [v70 isEqualToString:v72];
+      v69 = homeKitUserIdentifier2;
+      homeKitUserIdentifier3 = [content2 homeKitUserIdentifier];
+      uUIDString = [homeKitUserIdentifier3 UUIDString];
+      announcer6 = [announcementCopy announcer];
+      homeKitUserID3 = [announcer6 homeKitUserID];
+      LODWORD(currentAccessory2) = [uUIDString isEqualToString:homeKitUserID3];
 
-      if (v75)
+      if (currentAccessory2)
       {
         v38 = v80;
-        v39 = v81;
+        content = v81;
 LABEL_38:
 
 LABEL_39:
-        v73 = self;
-        v37 = v82;
-        [(ANMessenger *)v73 _sendAnnouncement:v18 toDestination:v35 sentHandler:v82, v75];
+        selfCopy = self;
+        v37 = completionCopy;
+        [(ANMessenger *)selfCopy _sendAnnouncement:v18 toDestination:endpointIdentifier sentHandler:completionCopy, currentAccessory2];
 
         v22 = v79;
         goto LABEL_40;
@@ -607,14 +607,14 @@ LABEL_39:
     if (!v63)
     {
       v38 = v80;
-      v39 = v81;
+      content = v81;
       goto LABEL_39;
     }
 
-    v66 = [(ANMessenger *)self rapportConnection];
-    [v35 addUser:v63 inHome:v14 rapportConnection:v66];
+    rapportConnection3 = [(ANMessenger *)self rapportConnection];
+    [endpointIdentifier addUser:v63 inHome:v14 rapportConnection:rapportConnection3];
     v38 = v80;
-    v39 = v81;
+    content = v81;
 LABEL_37:
 
     goto LABEL_38;
@@ -627,82 +627,82 @@ LABEL_37:
     _os_log_impl(&dword_23F525000, v34, OS_LOG_TYPE_DEFAULT, "Sending (Reply) Relay Request", buf, 2u);
   }
 
-  v35 = [v22 copy];
-  v36 = self;
-  v37 = v82;
-  [(ANMessenger *)v36 _relayAnnouncementThroughHomePod:v18 inHome:v14 rooms:v35 sentHandler:v82];
+  endpointIdentifier = [v22 copy];
+  selfCopy2 = self;
+  v37 = completionCopy;
+  [(ANMessenger *)selfCopy2 _relayAnnouncementThroughHomePod:v18 inHome:v14 rooms:endpointIdentifier sentHandler:completionCopy];
   v38 = v80;
-  v39 = v81;
+  content = v81;
 LABEL_40:
 
   v74 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forwardAnnouncementToCompanion:(id)a3
+- (void)forwardAnnouncementToCompanion:(id)companion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANMessenger *)self rapportConnection];
-  v6 = [v5 devices];
-  v7 = [v6 pairedCompanion];
+  companionCopy = companion;
+  rapportConnection = [(ANMessenger *)self rapportConnection];
+  devices = [rapportConnection devices];
+  pairedCompanion = [devices pairedCompanion];
 
-  if (v7 && [v7 supportsAnnounce])
+  if (pairedCompanion && [pairedCompanion supportsAnnounce])
   {
     v8 = [(ANMessenger *)self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 name];
+      name = [pairedCompanion name];
       *buf = 138412290;
-      v29 = v9;
+      v29 = name;
       _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "Forwarding announcement to companion %@", buf, 0xCu);
     }
 
     v10 = +[ANHomeManager shared];
-    v11 = [v4 location];
-    v12 = [v11 homeUUID];
-    v13 = [v10 homeForID:v12];
+    location = [companionCopy location];
+    homeUUID = [location homeUUID];
+    v13 = [v10 homeForID:homeUUID];
 
     if (v13)
     {
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "homeLocationStatus")}];
-      v15 = [v4 location];
-      [v15 setHomeLocationStatus:v14];
+      location2 = [companionCopy location];
+      [location2 setHomeLocationStatus:v14];
 
       v16 = [(ANMessenger *)self log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v13 homeLocationStatus];
+        homeLocationStatus = [v13 homeLocationStatus];
         *buf = 134217984;
-        v29 = v17;
+        v29 = homeLocationStatus;
         _os_log_impl(&dword_23F525000, v16, OS_LOG_TYPE_INFO, "Inserted Home Location Status: %ld", buf, 0xCu);
       }
 
-      v18 = [v4 announcerNameInHome:v13];
+      v18 = [companionCopy announcerNameInHome:v13];
       v19 = ANLocalizedString();
       v20 = [v18 isEqualToString:v19];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [v4 announcer];
-        [v21 setName:v18];
+        announcer = [companionCopy announcer];
+        [announcer setName:v18];
       }
     }
 
-    v22 = [(ANMessenger *)self rapportConnection];
-    v23 = [v4 messageForCompanion];
+    rapportConnection2 = [(ANMessenger *)self rapportConnection];
+    messageForCompanion = [companionCopy messageForCompanion];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke;
     v27[3] = &unk_278C862B8;
     v27[4] = self;
-    v24 = [v22 sendMessage:v23 device:v7 responseHandler:v27];
+    v24 = [rapportConnection2 sendMessage:messageForCompanion device:pairedCompanion responseHandler:v27];
 
     if (v24)
     {
       v25 = [(ANMessenger *)self log];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [(ANMessenger *)v7 forwardAnnouncementToCompanion:v24, v25];
+        [(ANMessenger *)pairedCompanion forwardAnnouncementToCompanion:v24, v25];
       }
     }
   }
@@ -725,37 +725,37 @@ void __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mockAnnouncement:(id)a3 playbackDeadline:(id)a4 sentHandler:(id)a5
+- (void)mockAnnouncement:(id)announcement playbackDeadline:(id)deadline sentHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 destination];
-  v12 = [v11 home];
+  announcementCopy = announcement;
+  deadlineCopy = deadline;
+  handlerCopy = handler;
+  destination = [announcementCopy destination];
+  home = [destination home];
 
-  if (v12)
+  if (home)
   {
     v13 = objc_alloc(MEMORY[0x277CEABA8]);
-    v14 = [v12 uniqueIdentifier];
-    v15 = [v13 initWithHomeID:v14];
+    uniqueIdentifier = [home uniqueIdentifier];
+    v15 = [v13 initWithHomeID:uniqueIdentifier];
 
     [v15 setFlags:1];
     v32 = 0;
-    v16 = [ANMessenger createAnnouncementWithRequest:v8 forLocation:v15 inHome:v12 isReply:1 error:&v32];
+    v16 = [ANMessenger createAnnouncementWithRequest:announcementCopy forLocation:v15 inHome:home isReply:1 error:&v32];
     v17 = v32;
     if (v16)
     {
-      [v16 setPlaybackDeadline:v9];
-      v18 = [v16 playbackDeadline];
+      [v16 setPlaybackDeadline:deadlineCopy];
+      playbackDeadline = [v16 playbackDeadline];
 
-      if (!v18)
+      if (!playbackDeadline)
       {
         v19 = MEMORY[0x277CBEAA8];
         [(ANMessenger *)self _calculateAnnouncementDeadline:v16];
         v21 = v20;
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [v19 dateWithTimeInterval:v22 sinceDate:v21];
+        date = [MEMORY[0x277CBEAA8] date];
+        v23 = [v19 dateWithTimeInterval:date sinceDate:v21];
         [v16 setPlaybackDeadline:v23];
       }
 
@@ -763,8 +763,8 @@ void __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke(uint64_t a1
       [v16 setSender:v24];
 
       v25 = objc_alloc(MEMORY[0x277CEAB48]);
-      v26 = [v16 message];
-      v27 = [v25 initWithMessage:v26];
+      message = [v16 message];
+      v27 = [v25 initWithMessage:message];
 
       v28 = [(ANMessenger *)self log];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -776,67 +776,67 @@ void __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke(uint64_t a1
         _os_log_impl(&dword_23F525000, v28, OS_LOG_TYPE_DEFAULT, "%s: Sending announcement: %@", buf, 0x16u);
       }
 
-      v29 = [(ANMessenger *)self delegate];
-      [v29 receivedAnnouncement:v27];
+      delegate = [(ANMessenger *)self delegate];
+      [delegate receivedAnnouncement:v27];
 
-      v10[2](v10, v27, 0);
+      handlerCopy[2](handlerCopy, v27, 0);
     }
 
     else
     {
-      (v10)[2](v10, 0, v17);
+      (handlerCopy)[2](handlerCopy, 0, v17);
     }
   }
 
   else
   {
     v30 = [MEMORY[0x277CCA9B8] an_errorWithCode:1002 component:*MEMORY[0x277CEA9B8]];
-    (v10)[2](v10, 0, v30);
+    (handlerCopy)[2](handlerCopy, 0, v30);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_relayAnnouncementThroughHomePod:(id)a3 inHome:(id)a4 rooms:(id)a5 sentHandler:(id)a6
+- (void)_relayAnnouncementThroughHomePod:(id)pod inHome:(id)home rooms:(id)rooms sentHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(ANMessenger *)self rapportConnection];
+  podCopy = pod;
+  handlerCopy = handler;
+  roomsCopy = rooms;
+  homeCopy = home;
+  rapportConnection = [(ANMessenger *)self rapportConnection];
   v17 = 0;
-  v15 = [ANMessengerDestination relayDestinationForHome:v13 rooms:v12 rapportConnection:v14 error:&v17];
+  v15 = [ANMessengerDestination relayDestinationForHome:homeCopy rooms:roomsCopy rapportConnection:rapportConnection error:&v17];
 
   v16 = v17;
   if (v15)
   {
-    [(ANMessenger *)self _sendAnnouncement:v10 toDestination:v15 sentHandler:v11];
+    [(ANMessenger *)self _sendAnnouncement:podCopy toDestination:v15 sentHandler:handlerCopy];
   }
 
   else
   {
-    v11[2](v11, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
-    v11 = +[ANAnalytics shared];
-    [v11 error:{objc_msgSend(v16, "code")}];
+    handlerCopy = +[ANAnalytics shared];
+    [handlerCopy error:{objc_msgSend(v16, "code")}];
   }
 }
 
-- (double)_calculateAnnouncementDeadline:(id)a3
+- (double)_calculateAnnouncementDeadline:(id)deadline
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CEAB80] sharedInstance];
-  v6 = [v5 numberForDefault:*MEMORY[0x277CEA830]];
+  deadlineCopy = deadline;
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v6 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA830]];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 fileData];
+  fileData = [deadlineCopy fileData];
 
-  if (v9)
+  if (fileData)
   {
-    v10 = [v4 fileData];
-    v11 = [v10 length];
+    fileData2 = [deadlineCopy fileData];
+    v11 = [fileData2 length];
 
     v12 = [(ANMessenger *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -877,20 +877,20 @@ void __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke(uint64_t a1
   return v8;
 }
 
-- (void)_fulfillRelayRequest:(id)a3 withSenderContext:(id)a4 sentHandler:(id)a5
+- (void)_fulfillRelayRequest:(id)request withSenderContext:(id)context sentHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 action];
-  if (v9 == 4)
+  requestCopy = request;
+  handlerCopy = handler;
+  action = [requestCopy action];
+  if (action == 4)
   {
     v10 = 2;
   }
 
   else
   {
-    if (v9 != 5)
+    if (action != 5)
     {
       goto LABEL_6;
     }
@@ -898,57 +898,57 @@ void __46__ANMessenger_forwardAnnouncementToCompanion___block_invoke(uint64_t a1
     v10 = 3;
   }
 
-  [v7 setAction:v10];
+  [requestCopy setAction:v10];
 LABEL_6:
   v11 = +[ANHomeManager shared];
-  v12 = [v7 location];
-  v13 = [v12 homeUUID];
-  v14 = [v11 homeForID:v13];
+  location = [requestCopy location];
+  homeUUID = [location homeUUID];
+  v14 = [v11 homeForID:homeUUID];
 
-  v15 = [v7 location];
-  if ([v15 flags])
+  location2 = [requestCopy location];
+  if ([location2 flags])
   {
-    v19 = [v7 announcer];
-    v20 = [v19 homeKitID];
-    v16 = [v14 hmu_userWithUniqueIdentifierUUIDString:v20];
+    announcer = [requestCopy announcer];
+    homeKitID = [announcer homeKitID];
+    v16 = [v14 hmu_userWithUniqueIdentifierUUIDString:homeKitID];
 
     if (v16)
     {
       v32[0] = v16;
-      v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
+      rapportConnection2 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     }
 
     else
     {
-      v17 = MEMORY[0x277CBEBF8];
+      rapportConnection2 = MEMORY[0x277CBEBF8];
     }
 
-    v21 = [(ANMessenger *)self rapportConnection];
+    rapportConnection = [(ANMessenger *)self rapportConnection];
     v22 = MEMORY[0x277CBEBF8];
-    v18 = [ANMessengerDestination destinationForHome:v14 excludingUsers:v17 excludingAccessories:MEMORY[0x277CBEBF8] rapportConnection:v21];
+    v18 = [ANMessengerDestination destinationForHome:v14 excludingUsers:rapportConnection2 excludingAccessories:MEMORY[0x277CBEBF8] rapportConnection:rapportConnection];
 
-    [v15 setFlags:{objc_msgSend(v15, "flags") & 0xFFFFFFFFFFFFFFFDLL}];
-    [v15 setFlags:{objc_msgSend(v15, "flags") & 0xFFFFFFFFFFFFFFFBLL}];
-    [v15 setUserUUIDs:v22];
-    [v15 setDeviceIDs:v22];
+    [location2 setFlags:{objc_msgSend(location2, "flags") & 0xFFFFFFFFFFFFFFFDLL}];
+    [location2 setFlags:{objc_msgSend(location2, "flags") & 0xFFFFFFFFFFFFFFFBLL}];
+    [location2 setUserUUIDs:v22];
+    [location2 setDeviceIDs:v22];
   }
 
   else
   {
-    v16 = [v15 allRoomsInHome:v14];
-    v17 = [(ANMessenger *)self rapportConnection];
-    v18 = [ANMessengerDestination destinationForAccessoriesInHome:v14 rooms:v16 rapportConnection:v17];
+    v16 = [location2 allRoomsInHome:v14];
+    rapportConnection2 = [(ANMessenger *)self rapportConnection];
+    v18 = [ANMessengerDestination destinationForAccessoriesInHome:v14 rooms:v16 rapportConnection:rapportConnection2];
   }
 
   v23 = MEMORY[0x277CBEAA8];
-  [(ANMessenger *)self _calculateAnnouncementDeadline:v7];
+  [(ANMessenger *)self _calculateAnnouncementDeadline:requestCopy];
   v25 = v24;
-  v26 = [MEMORY[0x277CBEAA8] date];
-  v27 = [v23 dateWithTimeInterval:v26 sinceDate:v25];
-  [v7 setPlaybackDeadline:v27];
+  date = [MEMORY[0x277CBEAA8] date];
+  v27 = [v23 dateWithTimeInterval:date sinceDate:v25];
+  [requestCopy setPlaybackDeadline:v27];
 
   v31 = 0;
-  [v7 processAudioWithEffects:objc_msgSend(MEMORY[0x277CEAB48] error:{"defaultAudioEffects"), &v31}];
+  [requestCopy processAudioWithEffects:objc_msgSend(MEMORY[0x277CEAB48] error:{"defaultAudioEffects"), &v31}];
   v28 = v31;
   if (v28)
   {
@@ -959,71 +959,71 @@ LABEL_6:
     }
   }
 
-  [(ANMessenger *)self _sendAnnouncement:v7 toDestination:v18 sentHandler:v8];
+  [(ANMessenger *)self _sendAnnouncement:requestCopy toDestination:v18 sentHandler:handlerCopy];
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forwardRelayRequest:(id)a3 withSenderContext:(id)a4 sentHandler:(id)a5
+- (void)_forwardRelayRequest:(id)request withSenderContext:(id)context sentHandler:(id)handler
 {
-  v26 = a3;
-  v7 = a5;
-  v8 = [(ANMessenger *)self rapportConnection];
-  v9 = [v8 devices];
-  v10 = [v9 pairedCompanion];
+  requestCopy = request;
+  handlerCopy = handler;
+  rapportConnection = [(ANMessenger *)self rapportConnection];
+  devices = [rapportConnection devices];
+  pairedCompanion = [devices pairedCompanion];
 
-  v11 = [v26 sender];
-  v12 = v11;
-  if (v10 && v11)
+  sender = [requestCopy sender];
+  v12 = sender;
+  if (pairedCompanion && sender)
   {
-    v13 = [v11 identifier];
-    v14 = [v10 idsDeviceIdentifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [sender identifier];
+    idsDeviceIdentifier = [pairedCompanion idsDeviceIdentifier];
+    v15 = [identifier isEqualToString:idsDeviceIdentifier];
 
     if (v15)
     {
       v16 = +[ANHomeManager shared];
-      v17 = [v26 location];
-      v18 = [v17 homeUUID];
-      v19 = [v16 homeForID:v18];
+      location = [requestCopy location];
+      homeUUID = [location homeUUID];
+      v19 = [v16 homeForID:homeUUID];
 
-      v20 = [v26 location];
-      v21 = [v20 allRoomsInHome:v19];
+      location2 = [requestCopy location];
+      v21 = [location2 allRoomsInHome:v19];
 
-      [(ANMessenger *)self _relayAnnouncementThroughHomePod:v26 inHome:v19 rooms:v21 sentHandler:v7];
+      [(ANMessenger *)self _relayAnnouncementThroughHomePod:requestCopy inHome:v19 rooms:v21 sentHandler:handlerCopy];
     }
 
     else
     {
       v22 = MEMORY[0x277CCACA8];
-      v23 = [v12 identifier];
-      v24 = [v10 identifier];
-      v19 = [v22 stringWithFormat:@"Sender is not companion: %@ != %@", v23, v24];
+      identifier2 = [v12 identifier];
+      identifier3 = [pairedCompanion identifier];
+      v19 = [v22 stringWithFormat:@"Sender is not companion: %@ != %@", identifier2, identifier3];
 
       v25 = [MEMORY[0x277CCA9B8] an_errorWithCode:1030 component:*MEMORY[0x277CEA9B8] description:v19];
-      v7[2](v7, v26, v25);
+      handlerCopy[2](handlerCopy, requestCopy, v25);
     }
   }
 
   else
   {
     v19 = [MEMORY[0x277CCA9B8] an_errorWithCode:1030 component:*MEMORY[0x277CEA9B8] description:@"Unable to validate sender"];
-    v7[2](v7, v26, v19);
+    handlerCopy[2](handlerCopy, requestCopy, v19);
   }
 }
 
-- (void)_sendAnnouncement:(id)a3 toDestination:(id)a4 sentHandler:(id)a5
+- (void)_sendAnnouncement:(id)announcement toDestination:(id)destination sentHandler:(id)handler
 {
   v176 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v146 = v9;
-  v11 = [v9 home];
-  [(ANMessenger *)self _logDebugInfoForHome:v11];
+  announcementCopy = announcement;
+  destinationCopy = destination;
+  handlerCopy = handler;
+  v146 = destinationCopy;
+  home = [destinationCopy home];
+  [(ANMessenger *)self _logDebugInfoForHome:home];
 
-  v12 = [MEMORY[0x277CEAB80] sharedInstance];
-  v13 = [v12 BOOLForDefault:*MEMORY[0x277CEA8E0]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v13 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA8E0]];
 
   if (v13)
   {
@@ -1034,43 +1034,43 @@ LABEL_6:
     }
 
     v15 = [MEMORY[0x277CCA9B8] an_errorWithCode:1036 component:*MEMORY[0x277CEA9B8] description:@"Force Send Failure Enabled in User Defaults"];
-    v10[2](v10, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
     goto LABEL_89;
   }
 
-  v16 = [v8 playbackDeadline];
+  playbackDeadline = [announcementCopy playbackDeadline];
 
-  if (!v16)
+  if (!playbackDeadline)
   {
     v17 = MEMORY[0x277CBEAA8];
-    [(ANMessenger *)self _calculateAnnouncementDeadline:v8];
+    [(ANMessenger *)self _calculateAnnouncementDeadline:announcementCopy];
     v19 = v18;
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v21 = [v17 dateWithTimeInterval:v20 sinceDate:v19];
-    [v8 setPlaybackDeadline:v21];
+    date = [MEMORY[0x277CBEAA8] date];
+    v21 = [v17 dateWithTimeInterval:date sinceDate:v19];
+    [announcementCopy setPlaybackDeadline:v21];
   }
 
-  v22 = [(ANMessenger *)self idsConnection];
-  v23 = [v22 service];
-  v24 = [v9 participantsWithService:v23];
-  [v8 setListeners:v24];
+  idsConnection = [(ANMessenger *)self idsConnection];
+  service = [idsConnection service];
+  v24 = [destinationCopy participantsWithService:service];
+  [announcementCopy setListeners:v24];
 
-  v25 = [v8 listeners];
-  v26 = [v25 count];
+  listeners = [announcementCopy listeners];
+  v26 = [listeners count];
 
   v27 = +[ANHomeManager shared];
-  v28 = [v27 currentAccessory];
+  currentAccessory = [v27 currentAccessory];
 
   if (!v26)
   {
-    if (v28)
+    if (currentAccessory)
     {
-      v32 = [v8 location];
-      if ([v32 flags])
+      location = [announcementCopy location];
+      if ([location flags])
       {
-        v124 = [v9 home];
-        v125 = [v124 usersIncludingCurrentUserWithAnnounceEnabled];
-        v126 = [v125 count];
+        home2 = [destinationCopy home];
+        usersIncludingCurrentUserWithAnnounceEnabled = [home2 usersIncludingCurrentUserWithAnnounceEnabled];
+        v126 = [usersIncludingCurrentUserWithAnnounceEnabled count];
 
         if (v126)
         {
@@ -1093,21 +1093,21 @@ LABEL_86:
     goto LABEL_87;
   }
 
-  if (v28)
+  if (currentAccessory)
   {
-    if (![(ANMessenger *)self _willTargetReachableDevicesForAnnouncement:v8 inDestination:v9])
+    if (![(ANMessenger *)self _willTargetReachableDevicesForAnnouncement:announcementCopy inDestination:destinationCopy])
     {
       v29 = MEMORY[0x277CCA9B8];
       v30 = *MEMORY[0x277CEA9B8];
       v31 = 1009;
 LABEL_87:
       v15 = [v29 an_errorWithCode:v31 component:v30];
-      v10[2](v10, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
       v127 = +[ANAnalytics shared];
-      v128 = [v15 code];
-      v129 = [v8 announcer];
-      v130 = [ANAnalyticsContext contextWithAnnouncer:v129];
-      [v127 error:v128 context:v130];
+      code = [v15 code];
+      announcer = [announcementCopy announcer];
+      v130 = [ANAnalyticsContext contextWithAnnouncer:announcer];
+      [v127 error:code context:v130];
 
 LABEL_88:
 LABEL_89:
@@ -1116,31 +1116,31 @@ LABEL_89:
     }
   }
 
-  else if ([v8 isRelayRequest])
+  else if ([announcementCopy isRelayRequest])
   {
-    v33 = [v9 accessories];
-    v34 = [v33 count];
+    accessories = [destinationCopy accessories];
+    v34 = [accessories count];
 
     if (v34)
     {
-      v35 = [v9 accessories];
+      accessories2 = [destinationCopy accessories];
       v169[0] = MEMORY[0x277D85DD0];
       v169[1] = 3221225472;
       v169[2] = __59__ANMessenger__sendAnnouncement_toDestination_sentHandler___block_invoke;
       v169[3] = &unk_278C862E0;
       v169[4] = self;
-      v15 = [v35 hmu_compactMap:v169];
+      v15 = [accessories2 hmu_compactMap:v169];
 
       if (![v15 count])
       {
         v132 = [(ANMessenger *)self log];
         if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
         {
-          [ANMessenger _sendAnnouncement:v9 toDestination:v132 sentHandler:?];
+          [ANMessenger _sendAnnouncement:destinationCopy toDestination:v132 sentHandler:?];
         }
 
         v127 = [MEMORY[0x277CCA9B8] an_errorWithCode:1009 component:*MEMORY[0x277CEA9B8]];
-        v10[2](v10, 0, v127);
+        handlerCopy[2](handlerCopy, 0, v127);
         v133 = +[ANAnalytics shared];
         [v133 error:{objc_msgSend(v127, "code")}];
 
@@ -1149,29 +1149,29 @@ LABEL_89:
     }
   }
 
-  v36 = [MEMORY[0x277CEAB80] sharedInstance];
-  v37 = [v36 numberForDefault:*MEMORY[0x277CEA958]];
+  mEMORY[0x277CEAB80]2 = [MEMORY[0x277CEAB80] sharedInstance];
+  v37 = [mEMORY[0x277CEAB80]2 numberForDefault:*MEMORY[0x277CEA958]];
   [v37 doubleValue];
   v39 = v38;
 
-  v40 = [MEMORY[0x277CEABF0] sharedManager];
-  [v40 transaction:*MEMORY[0x277CEAB18] setActiveForTimeInterval:v39];
+  mEMORY[0x277CEABF0] = [MEMORY[0x277CEABF0] sharedManager];
+  [mEMORY[0x277CEABF0] transaction:*MEMORY[0x277CEAB18] setActiveForTimeInterval:v39];
 
   v41 = [(ANMessenger *)self log];
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v173 = v8;
+    *v173 = announcementCopy;
     _os_log_impl(&dword_23F525000, v41, OS_LOG_TYPE_DEFAULT, "Sending Message: %@", buf, 0xCu);
   }
 
-  v134 = v10;
+  v134 = handlerCopy;
 
   v42 = [(ANMessenger *)self log];
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [v8 listeners];
-    v44 = [v43 count];
+    listeners2 = [announcementCopy listeners];
+    v44 = [listeners2 count];
     *buf = 134217984;
     *v173 = v44;
     _os_log_impl(&dword_23F525000, v42, OS_LOG_TYPE_DEFAULT, "Sending To %lu Participants", buf, 0xCu);
@@ -1181,8 +1181,8 @@ LABEL_89:
   v168 = 0u;
   v165 = 0u;
   v166 = 0u;
-  v45 = [v8 listeners];
-  v46 = [v45 countByEnumeratingWithState:&v165 objects:v175 count:16];
+  listeners3 = [announcementCopy listeners];
+  v46 = [listeners3 countByEnumeratingWithState:&v165 objects:v175 count:16];
   if (v46)
   {
     v47 = v46;
@@ -1194,7 +1194,7 @@ LABEL_89:
       {
         if (*v166 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(listeners3);
         }
 
         v51 = *(*(&v165 + 1) + 8 * i);
@@ -1211,17 +1211,17 @@ LABEL_89:
         ++v49;
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v165 objects:v175 count:16];
+      v47 = [listeners3 countByEnumeratingWithState:&v165 objects:v175 count:16];
     }
 
     while (v47);
   }
 
-  v53 = [v8 announcer];
-  v144 = [ANAnalyticsContext contextWithAnnouncer:v53];
+  announcer2 = [announcementCopy announcer];
+  v144 = [ANAnalyticsContext contextWithAnnouncer:announcer2];
 
-  v54 = [v146 devices];
-  v143 = [v54 count];
+  devices = [v146 devices];
+  v143 = [devices count];
 
   v163 = 0u;
   v164 = 0u;
@@ -1244,30 +1244,30 @@ LABEL_89:
         }
 
         v58 = *(*(&v161 + 1) + 8 * j);
-        v59 = [v146 home];
-        v60 = [ANMessenger announcementForDevice:v58 inHome:v59 fromAnnouncement:v8];
-        v61 = [v60 message];
+        home3 = [v146 home];
+        v60 = [ANMessenger announcementForDevice:v58 inHome:home3 fromAnnouncement:announcementCopy];
+        message = [v60 message];
 
-        v62 = [(ANMessenger *)self rapportConnection];
+        rapportConnection = [(ANMessenger *)self rapportConnection];
         v155[0] = MEMORY[0x277D85DD0];
         v155[1] = 3221225472;
         v155[2] = __59__ANMessenger__sendAnnouncement_toDestination_sentHandler___block_invoke_45;
         v155[3] = &unk_278C86308;
-        v156 = v8;
-        v157 = self;
+        v156 = announcementCopy;
+        selfCopy = self;
         v158 = v146;
         v160 = v143;
         v159 = v144;
-        v63 = [v62 sendMessage:v61 device:v58 responseHandler:v155];
+        v63 = [rapportConnection sendMessage:message device:v58 responseHandler:v155];
 
         if (v63)
         {
           v64 = [(ANMessenger *)self log];
           if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
           {
-            v65 = [v58 name];
+            name = [v58 name];
             *buf = 138412546;
-            *v173 = v65;
+            *v173 = name;
             *&v173[8] = 2112;
             *&v173[10] = v63;
             _os_log_error_impl(&dword_23F525000, v64, OS_LOG_TYPE_ERROR, "Failed to send Message for Device %@: %@", buf, 0x16u);
@@ -1288,15 +1288,15 @@ LABEL_89:
     v145 = 0;
   }
 
-  v66 = [v146 users];
-  obja = [v66 count];
+  users = [v146 users];
+  obja = [users count];
 
   v153 = 0u;
   v154 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v136 = [v146 users];
-  v67 = [v136 countByEnumeratingWithState:&v151 objects:v171 count:16];
+  users2 = [v146 users];
+  v67 = [users2 countByEnumeratingWithState:&v151 objects:v171 count:16];
   if (v67)
   {
     v68 = v67;
@@ -1307,24 +1307,24 @@ LABEL_89:
       {
         if (*v152 != v141)
         {
-          objc_enumerationMutation(v136);
+          objc_enumerationMutation(users2);
         }
 
         v70 = *(*(&v151 + 1) + 8 * k);
-        v71 = [v70 hmu_idsDestination];
-        if (v71)
+        hmu_idsDestination = [v70 hmu_idsDestination];
+        if (hmu_idsDestination)
         {
-          v72 = [v146 home];
-          v73 = [ANMessenger announcementForUser:v70 inHome:v72 fromAnnouncement:v8];
-          v74 = [v73 message];
+          home4 = [v146 home];
+          v73 = [ANMessenger announcementForUser:v70 inHome:home4 fromAnnouncement:announcementCopy];
+          message2 = [v73 message];
 
-          v75 = [(ANMessenger *)self idsConnection];
-          v76 = [v8 identifier];
-          v77 = [v75 sendMessage:v74 messageUUIDString:v76 destination:v71];
+          idsConnection2 = [(ANMessenger *)self idsConnection];
+          identifier = [announcementCopy identifier];
+          v77 = [idsConnection2 sendMessage:message2 messageUUIDString:identifier destination:hmu_idsDestination];
 
           v78 = [MEMORY[0x277CBEAA8] now];
-          v79 = [v8 creationTimestamp];
-          [v78 timeIntervalSinceDate:v79];
+          creationTimestamp = [announcementCopy creationTimestamp];
+          [v78 timeIntervalSinceDate:creationTimestamp];
           v81 = v80;
 
           v82 = [(ANMessenger *)self log];
@@ -1333,7 +1333,7 @@ LABEL_89:
             *buf = 134218242;
             *v173 = v81;
             *&v173[8] = 2112;
-            *&v173[10] = v71;
+            *&v173[10] = hmu_idsDestination;
             _os_log_impl(&dword_23F525000, v82, OS_LOG_TYPE_INFO, "Took %f sec to send over IDS to %@", buf, 0x16u);
           }
 
@@ -1342,9 +1342,9 @@ LABEL_89:
             v83 = [(ANMessenger *)self log];
             if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
             {
-              v87 = [v70 userID];
+              userID = [v70 userID];
               *buf = 138412546;
-              *v173 = v87;
+              *v173 = userID;
               *&v173[8] = 2112;
               *&v173[10] = v77;
               _os_log_error_impl(&dword_23F525000, v83, OS_LOG_TYPE_ERROR, "Failed to send Message for User %@: %@", buf, 0x16u);
@@ -1354,27 +1354,27 @@ LABEL_89:
           }
 
           v84 = +[ANAnalytics shared];
-          v85 = [v146 home];
-          v86 = [v85 uniqueIdentifier];
-          [v84 announcementSent:v8 inHome:v86 withError:objc_msgSend(v77 withTime:"code") sendType:2 ofGroupCount:obja context:{v144, v81}];
+          home5 = [v146 home];
+          uniqueIdentifier = [home5 uniqueIdentifier];
+          [v84 announcementSent:announcementCopy inHome:uniqueIdentifier withError:objc_msgSend(v77 withTime:"code") sendType:2 ofGroupCount:obja context:{v144, v81}];
         }
       }
 
-      v68 = [v136 countByEnumeratingWithState:&v151 objects:v171 count:16];
+      v68 = [users2 countByEnumeratingWithState:&v151 objects:v171 count:16];
     }
 
     while (v68);
   }
 
-  v88 = [v146 accessories];
-  v137 = [v88 count];
+  accessories3 = [v146 accessories];
+  v137 = [accessories3 count];
 
   v149 = 0u;
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v135 = [v146 accessories];
-  v89 = [v135 countByEnumeratingWithState:&v147 objects:v170 count:16];
+  accessories4 = [v146 accessories];
+  v89 = [accessories4 countByEnumeratingWithState:&v147 objects:v170 count:16];
   if (v89)
   {
     v90 = v89;
@@ -1385,30 +1385,30 @@ LABEL_89:
       {
         if (*v148 != v142)
         {
-          objc_enumerationMutation(v135);
+          objc_enumerationMutation(accessories4);
         }
 
         v92 = *(*(&v147 + 1) + 8 * m);
-        v93 = [(ANMessenger *)self idsConnection];
-        v94 = [v93 service];
-        v95 = [v92 hmu_destinationForService:v94];
+        idsConnection3 = [(ANMessenger *)self idsConnection];
+        service2 = [idsConnection3 service];
+        v95 = [v92 hmu_destinationForService:service2];
 
-        v96 = [v95 destinationURIs];
-        v97 = [v96 count];
+        destinationURIs = [v95 destinationURIs];
+        v97 = [destinationURIs count];
 
         if (v97)
         {
-          v98 = [v146 home];
-          v99 = [ANMessenger announcementForAccessory:v92 inHome:v98 fromAnnouncement:v8];
-          v100 = [v99 message];
+          home6 = [v146 home];
+          v99 = [ANMessenger announcementForAccessory:v92 inHome:home6 fromAnnouncement:announcementCopy];
+          message3 = [v99 message];
 
-          v101 = [(ANMessenger *)self idsConnection];
-          v102 = [v8 identifier];
-          v103 = [v101 sendMessage:v100 messageUUIDString:v102 destination:v95];
+          idsConnection4 = [(ANMessenger *)self idsConnection];
+          identifier2 = [announcementCopy identifier];
+          v103 = [idsConnection4 sendMessage:message3 messageUUIDString:identifier2 destination:v95];
 
           v104 = [MEMORY[0x277CBEAA8] now];
-          v105 = [v8 creationTimestamp];
-          [v104 timeIntervalSinceDate:v105];
+          creationTimestamp2 = [announcementCopy creationTimestamp];
+          [v104 timeIntervalSinceDate:creationTimestamp2];
           v107 = v106;
 
           v108 = [(ANMessenger *)self log];
@@ -1426,9 +1426,9 @@ LABEL_89:
             v109 = [(ANMessenger *)self log];
             if (os_log_type_enabled(v109, OS_LOG_TYPE_ERROR))
             {
-              v113 = [v92 name];
+              name2 = [v92 name];
               *buf = 138412546;
-              *v173 = v113;
+              *v173 = name2;
               *&v173[8] = 2112;
               *&v173[10] = v103;
               _os_log_error_impl(&dword_23F525000, v109, OS_LOG_TYPE_ERROR, "Failed to send Message for User %@: %@", buf, 0x16u);
@@ -1438,9 +1438,9 @@ LABEL_89:
           }
 
           v110 = +[ANAnalytics shared];
-          v111 = [v146 home];
-          v112 = [v111 uniqueIdentifier];
-          [v110 announcementSent:v8 inHome:v112 withError:objc_msgSend(v103 withTime:"code") sendType:3 ofGroupCount:v137 context:{v144, v107}];
+          home7 = [v146 home];
+          uniqueIdentifier2 = [home7 uniqueIdentifier];
+          [v110 announcementSent:announcementCopy inHome:uniqueIdentifier2 withError:objc_msgSend(v103 withTime:"code") sendType:3 ofGroupCount:v137 context:{v144, v107}];
         }
 
         else
@@ -1450,33 +1450,33 @@ LABEL_89:
             goto LABEL_77;
           }
 
-          v100 = [(ANMessenger *)self log];
-          if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
+          message3 = [(ANMessenger *)self log];
+          if (os_log_type_enabled(message3, OS_LOG_TYPE_ERROR))
           {
-            v114 = [v92 name];
-            v115 = [v92 uniqueIdentifier];
+            name3 = [v92 name];
+            uniqueIdentifier3 = [v92 uniqueIdentifier];
             *buf = 138412546;
-            *v173 = v114;
+            *v173 = name3;
             *&v173[8] = 2112;
-            *&v173[10] = v115;
-            _os_log_error_impl(&dword_23F525000, v100, OS_LOG_TYPE_ERROR, "No IDS URI for Accessory: %@, %@", buf, 0x16u);
+            *&v173[10] = uniqueIdentifier3;
+            _os_log_error_impl(&dword_23F525000, message3, OS_LOG_TYPE_ERROR, "No IDS URI for Accessory: %@, %@", buf, 0x16u);
           }
         }
 
 LABEL_77:
       }
 
-      v90 = [v135 countByEnumeratingWithState:&v147 objects:v170 count:16];
+      v90 = [accessories4 countByEnumeratingWithState:&v147 objects:v170 count:16];
     }
 
     while (v90);
   }
 
-  v10 = v134;
-  (v134)[2](v134, v8, 0);
+  handlerCopy = v134;
+  (v134)[2](v134, announcementCopy, 0);
   v116 = [MEMORY[0x277CBEAA8] now];
-  v117 = [v8 creationTimestamp];
-  [v116 timeIntervalSinceDate:v117];
+  creationTimestamp3 = [announcementCopy creationTimestamp];
+  [v116 timeIntervalSinceDate:creationTimestamp3];
   v119 = v118;
 
   if (v145 <= 0)
@@ -1490,9 +1490,9 @@ LABEL_77:
   }
 
   v121 = +[ANAnalytics shared];
-  v122 = [v146 home];
-  v123 = [v122 uniqueIdentifier];
-  [v121 announcementSent:v8 inHome:v123 withError:v120 withTime:0 sendType:&obja[v143 + v137] ofGroupCount:v144 context:v119];
+  home8 = [v146 home];
+  uniqueIdentifier4 = [home8 uniqueIdentifier];
+  [v121 announcementSent:announcementCopy inHome:uniqueIdentifier4 withError:v120 withTime:0 sendType:&obja[v143 + v137] ofGroupCount:v144 context:v119];
 
 LABEL_90:
   v131 = *MEMORY[0x277D85DE8];
@@ -1541,38 +1541,38 @@ void __59__ANMessenger__sendAnnouncement_toDestination_sentHandler___block_invok
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_willTargetReachableDevicesForAnnouncement:(id)a3 inDestination:(id)a4
+- (BOOL)_willTargetReachableDevicesForAnnouncement:(id)announcement inDestination:(id)destination
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 location];
-  if ([v7 flags] & 1) != 0 || (objc_msgSend(v5, "isRelayType"))
+  announcementCopy = announcement;
+  destinationCopy = destination;
+  location = [announcementCopy location];
+  if ([location flags] & 1) != 0 || (objc_msgSend(announcementCopy, "isRelayType"))
   {
   }
 
   else
   {
-    v10 = [v5 action];
+    action = [announcementCopy action];
 
-    if (v10 != 1)
+    if (action != 1)
     {
-      v11 = [v6 home];
-      v12 = [v5 location];
-      v13 = [v12 allRoomsInHome:v11];
+      home = [destinationCopy home];
+      location2 = [announcementCopy location];
+      v13 = [location2 allRoomsInHome:home];
 
       v14 = MEMORY[0x277CD1650];
       v15 = [MEMORY[0x277CD1D88] hmu_accessoriesInRooms:v13];
       v16 = [v14 announceAccessoriesWithAnnounceEnabledFromAccessories:v15];
 
       v17 = [v16 na_map:&__block_literal_global_0];
-      v18 = [v6 devices];
+      devices = [destinationCopy devices];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __72__ANMessenger__willTargetReachableDevicesForAnnouncement_inDestination___block_invoke_2;
       v21[3] = &unk_278C86350;
       v22 = v17;
       v19 = v17;
-      v20 = [v18 na_firstObjectPassingTest:v21];
+      v20 = [devices na_firstObjectPassingTest:v21];
 
       v8 = v20 != 0;
       goto LABEL_5;
@@ -1602,11 +1602,11 @@ uint64_t __72__ANMessenger__willTargetReachableDevicesForAnnouncement_inDestinat
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(ANMessenger *)self idsConnection];
-  v5 = [v4 service];
-  v6 = [v5 devices];
+  idsConnection = [(ANMessenger *)self idsConnection];
+  service = [idsConnection service];
+  devices = [service devices];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v7 = [devices countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1617,24 +1617,24 @@ uint64_t __72__ANMessenger__willTargetReachableDevicesForAnnouncement_inDestinat
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
         if (([v11 isHomePod] & 1) == 0)
         {
-          v12 = [v11 nsuuid];
+          nsuuid = [v11 nsuuid];
 
-          if (v12)
+          if (nsuuid)
           {
-            v13 = [v11 nsuuid];
-            v14 = [v13 UUIDString];
-            [v3 addObject:v14];
+            nsuuid2 = [v11 nsuuid];
+            uUIDString = [nsuuid2 UUIDString];
+            [v3 addObject:uUIDString];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v8 = [devices countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v8);
@@ -1654,17 +1654,17 @@ uint64_t __72__ANMessenger__willTargetReachableDevicesForAnnouncement_inDestinat
   return v16;
 }
 
-- (void)_logDebugInfoForHome:(id)a3
+- (void)_logDebugInfoForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ANMessenger__logDebugInfoForHome___block_invoke;
   v7[3] = &unk_278C86378;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = homeCopy;
+  selfCopy = self;
+  v6 = homeCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1927,42 +1927,42 @@ void __36__ANMessenger__logDebugInfoForHome___block_invoke(uint64_t a1)
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveMessage:(id)a4 fromSender:(id)a5 senderContext:(id)a6 handler:(id)a7
+- (void)connection:(id)connection didReceiveMessage:(id)message fromSender:(id)sender senderContext:(id)context handler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  connectionCopy = connection;
+  messageCopy = message;
+  senderCopy = sender;
+  contextCopy = context;
+  handlerCopy = handler;
   v17 = [(ANMessenger *)self log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v66 = *&v14;
+    v66 = *&senderCopy;
     v67 = 2112;
-    v68 = v13;
+    v68 = messageCopy;
     _os_log_impl(&dword_23F525000, v17, OS_LOG_TYPE_DEFAULT, "Received Message From (%@): %@", buf, 0x16u);
   }
 
-  v18 = [objc_alloc(MEMORY[0x277CEAB48]) initWithMessage:v13];
+  v18 = [objc_alloc(MEMORY[0x277CEAB48]) initWithMessage:messageCopy];
   if (v18)
   {
     v19 = [MEMORY[0x277CBEAA8] now];
-    v20 = [v18 creationTimestamp];
-    [v19 timeIntervalSinceDate:v20];
+    creationTimestamp = [v18 creationTimestamp];
+    [v19 timeIntervalSinceDate:creationTimestamp];
     v22 = v21;
 
-    [v18 setSender:v14];
+    [v18 setSender:senderCopy];
     v23 = [ANValidationHelper performBasicValidationForAnnouncement:v18 type:1];
-    v61 = v16;
+    v61 = handlerCopy;
     if (v23)
     {
-      v24 = v23;
-      v25 = v13;
-      v26 = v14;
-      v27 = v12;
-      v28 = v15;
+      currentAccessory = v23;
+      v25 = messageCopy;
+      v26 = senderCopy;
+      v27 = connectionCopy;
+      v28 = contextCopy;
       v29 = [(ANMessenger *)self log];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -1970,26 +1970,26 @@ void __36__ANMessenger__logDebugInfoForHome___block_invoke(uint64_t a1)
       }
 
       v30 = +[ANAnalytics shared];
-      v31 = [v24 code];
-      v32 = [v18 announcer];
-      v33 = [ANAnalyticsContext contextWithAnnouncer:v32];
-      [v30 error:v31 context:v33];
+      code = [currentAccessory code];
+      announcer = [v18 announcer];
+      v33 = [ANAnalyticsContext contextWithAnnouncer:announcer];
+      [v30 error:code context:v33];
 
       goto LABEL_8;
     }
 
-    v37 = [(ANMessenger *)self idsConnection];
+    idsConnection = [(ANMessenger *)self idsConnection];
 
-    if (v37 == v12)
+    if (idsConnection == connectionCopy)
     {
-      v44 = [ANMessenger performIDSValidationForAnnouncement:v18 withSenderContext:v15];
+      v44 = [ANMessenger performIDSValidationForAnnouncement:v18 withSenderContext:contextCopy];
       if (v44)
       {
-        v24 = v44;
-        v25 = v13;
-        v26 = v14;
-        v27 = v12;
-        v28 = v15;
+        currentAccessory = v44;
+        v25 = messageCopy;
+        v26 = senderCopy;
+        v27 = connectionCopy;
+        v28 = contextCopy;
         v45 = [(ANMessenger *)self log];
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -2002,12 +2002,12 @@ void __36__ANMessenger__logDebugInfoForHome___block_invoke(uint64_t a1)
 
     else
     {
-      v38 = [(ANMessenger *)self rapportConnection];
+      rapportConnection = [(ANMessenger *)self rapportConnection];
 
-      if (v38 != v12)
+      if (rapportConnection != connectionCopy)
       {
-        v60 = v15;
-        v24 = [MEMORY[0x277CCA9B8] an_errorWithCode:5018 component:*MEMORY[0x277CEA9B8]];
+        v60 = contextCopy;
+        currentAccessory = [MEMORY[0x277CCA9B8] an_errorWithCode:5018 component:*MEMORY[0x277CEA9B8]];
         v39 = [(ANMessenger *)self log];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -2015,25 +2015,25 @@ void __36__ANMessenger__logDebugInfoForHome___block_invoke(uint64_t a1)
         }
 
         v40 = +[ANAnalytics shared];
-        v41 = [v24 code];
-        v42 = [v18 announcer];
-        v43 = [ANAnalyticsContext contextWithAnnouncer:v42];
-        [v40 error:v41 context:v43];
+        code2 = [currentAccessory code];
+        announcer2 = [v18 announcer];
+        v43 = [ANAnalyticsContext contextWithAnnouncer:announcer2];
+        [v40 error:code2 context:v43];
 
-        v16 = v61;
-        (v61)[2](v61, v24);
-        v15 = v60;
+        handlerCopy = v61;
+        (v61)[2](v61, currentAccessory);
+        contextCopy = v60;
         goto LABEL_12;
       }
 
-      v46 = [ANMessenger performRapportValidationForAnnouncement:v18 withSenderContext:v15];
+      v46 = [ANMessenger performRapportValidationForAnnouncement:v18 withSenderContext:contextCopy];
       if (v46)
       {
-        v24 = v46;
-        v25 = v13;
-        v26 = v14;
-        v27 = v12;
-        v28 = v15;
+        currentAccessory = v46;
+        v25 = messageCopy;
+        v26 = senderCopy;
+        v27 = connectionCopy;
+        v28 = contextCopy;
         v45 = [(ANMessenger *)self log];
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -2043,18 +2043,18 @@ void __36__ANMessenger__logDebugInfoForHome___block_invoke(uint64_t a1)
 LABEL_24:
 
         v47 = +[ANAnalytics shared];
-        v48 = [v24 code];
-        v49 = [v18 announcer];
-        v50 = [ANAnalyticsContext contextWithAnnouncer:v49];
-        [v47 error:v48 context:v50];
+        code3 = [currentAccessory code];
+        announcer3 = [v18 announcer];
+        v50 = [ANAnalyticsContext contextWithAnnouncer:announcer3];
+        [v47 error:code3 context:v50];
 
 LABEL_8:
-        v16 = v61;
-        (v61)[2](v61, v24);
-        v15 = v28;
-        v12 = v27;
-        v14 = v26;
-        v13 = v25;
+        handlerCopy = v61;
+        (v61)[2](v61, currentAccessory);
+        contextCopy = v28;
+        connectionCopy = v27;
+        senderCopy = v26;
+        messageCopy = v25;
         goto LABEL_12;
       }
     }
@@ -2062,9 +2062,9 @@ LABEL_8:
     v51 = [(ANMessenger *)self log];
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
-      v52 = [(ANMessenger *)self rapportConnection];
+      rapportConnection2 = [(ANMessenger *)self rapportConnection];
       v53 = @"IDS";
-      if (v52 == v12)
+      if (rapportConnection2 == connectionCopy)
       {
         v53 = @"rapport";
       }
@@ -2078,21 +2078,21 @@ LABEL_8:
 
     if (![MEMORY[0x277CEAB88] isPhone] || (objc_msgSend(v18, "isRelayRequest") & 1) == 0)
     {
-      v54 = [v18 announcer];
-      v55 = [ANAnalyticsContext contextWithAnnouncer:v54];
+      announcer4 = [v18 announcer];
+      v55 = [ANAnalyticsContext contextWithAnnouncer:announcer4];
 
       v56 = +[ANAnalytics shared];
-      v57 = [(ANMessenger *)self rapportConnection];
-      [v56 announcementReceived:v18 withTime:v57 != v12 receiveTimeType:v55 context:v22];
+      rapportConnection3 = [(ANMessenger *)self rapportConnection];
+      [v56 announcementReceived:v18 withTime:rapportConnection3 != connectionCopy receiveTimeType:v55 context:v22];
     }
 
     v58 = +[ANHomeManager shared];
-    v24 = [v58 currentAccessory];
+    currentAccessory = [v58 currentAccessory];
 
     if (([v18 action] & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
-      v16 = v61;
-      if (!v24)
+      handlerCopy = v61;
+      if (!currentAccessory)
       {
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
@@ -2100,7 +2100,7 @@ LABEL_8:
         v63[3] = &unk_278C863A0;
         v63[4] = self;
         v64 = v61;
-        [(ANMessenger *)self _forwardRelayRequest:v18 withSenderContext:v15 sentHandler:v63];
+        [(ANMessenger *)self _forwardRelayRequest:v18 withSenderContext:contextCopy sentHandler:v63];
 
         goto LABEL_12;
       }
@@ -2110,19 +2110,19 @@ LABEL_8:
       v62[2] = __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_handler___block_invoke_59;
       v62[3] = &unk_278C863C8;
       v62[4] = self;
-      [(ANMessenger *)self _fulfillRelayRequest:v18 withSenderContext:v15 sentHandler:v62];
+      [(ANMessenger *)self _fulfillRelayRequest:v18 withSenderContext:contextCopy sentHandler:v62];
     }
 
-    v59 = [(ANMessenger *)self delegate];
-    [v59 receivedAnnouncement:v18];
+    delegate = [(ANMessenger *)self delegate];
+    [delegate receivedAnnouncement:v18];
 
-    v16 = v61;
+    handlerCopy = v61;
     v61[2](v61, 0);
   }
 
   else
   {
-    v24 = [MEMORY[0x277CCA9B8] an_errorWithCode:5017 component:*MEMORY[0x277CEA9B8]];
+    currentAccessory = [MEMORY[0x277CCA9B8] an_errorWithCode:5017 component:*MEMORY[0x277CEA9B8]];
     v34 = [(ANMessenger *)self log];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -2130,9 +2130,9 @@ LABEL_8:
     }
 
     v35 = +[ANAnalytics shared];
-    [v35 error:{objc_msgSend(v24, "code")}];
+    [v35 error:{objc_msgSend(currentAccessory, "code")}];
 
-    (*(v16 + 2))(v16, v24);
+    (*(handlerCopy + 2))(handlerCopy, currentAccessory);
   }
 
 LABEL_12:
@@ -2183,41 +2183,41 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 failedDeliveryForMessage:(id)a4 withError:(id)a5
+- (void)connection:(id)connection failedDeliveryForMessage:(id)message withError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CEAB48];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithMessage:v9];
+  messageCopy = message;
+  v10 = [[v8 alloc] initWithMessage:messageCopy];
 
   if (v10)
   {
-    v11 = [(ANMessenger *)self delegate];
-    [v11 failedToDeliverAnnouncement:v10 error:v7];
+    delegate = [(ANMessenger *)self delegate];
+    [delegate failedToDeliverAnnouncement:v10 error:errorCopy];
   }
 
   else
   {
-    v11 = [(ANMessenger *)self log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    delegate = [(ANMessenger *)self log];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       [ANMessenger connection:didReceiveMessage:fromSender:senderContext:handler:];
     }
   }
 }
 
-- (id)connectionDidReceiveRequestForHomeLocationStatus:(id)a3
+- (id)connectionDidReceiveRequestForHomeLocationStatus:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = +[ANHomeManager shared];
-  v5 = [v4 allHomes];
+  allHomes = [v4 allHomes];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = allHomes;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -2234,8 +2234,8 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "homeLocationStatus", v16)}];
-        v13 = [v11 uniqueIdentifier];
-        [v3 setObject:v12 forKeyedSubscript:v13];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        [v3 setObject:v12 forKeyedSubscript:uniqueIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -2256,17 +2256,17 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
   return WeakRetained;
 }
 
-+ (id)createAnnouncementWithRequest:(id)a3 forLocation:(id)a4 inHome:(id)a5 isReply:(BOOL)a6 error:(id *)a7
++ (id)createAnnouncementWithRequest:(id)request forLocation:(id)location inHome:(id)home isReply:(BOOL)reply error:(id *)error
 {
-  v8 = a6;
+  replyCopy = reply;
   v72 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 content];
-  v15 = [v14 audioFileURL];
+  requestCopy = request;
+  locationCopy = location;
+  homeCopy = home;
+  content = [requestCopy content];
+  audioFileURL = [content audioFileURL];
   v65 = 0;
-  v16 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v15 options:2 error:&v65];
+  v16 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:audioFileURL options:2 error:&v65];
   v17 = v65;
   v18 = ANLogHandleMessenger_Announcement();
   v19 = v18;
@@ -2277,17 +2277,17 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
       *buf = 138412802;
       v67 = &stru_2851BDB18;
       v68 = 2112;
-      v69 = v15;
+      v69 = audioFileURL;
       v70 = 2112;
       v71 = v17;
       _os_log_impl(&dword_23F525000, v19, OS_LOG_TYPE_ERROR, "%@Failed to load data from file: URL = %@, Error = %@", buf, 0x20u);
     }
 
-    if (a7)
+    if (error)
     {
       v20 = v17;
       v21 = 0;
-      *a7 = v17;
+      *error = v17;
     }
 
     else
@@ -2298,17 +2298,17 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
     goto LABEL_44;
   }
 
-  log = v8;
-  v63 = v11;
-  v54 = a7;
-  v61 = v13;
+  log = replyCopy;
+  v63 = requestCopy;
+  errorCopy = error;
+  v61 = homeCopy;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "length")}];
     *buf = 138412802;
     v67 = &stru_2851BDB18;
     v68 = 2112;
-    v69 = v15;
+    v69 = audioFileURL;
     v70 = 2112;
     v71 = v22;
     _os_log_impl(&dword_23F525000, v19, OS_LOG_TYPE_DEFAULT, "%@Loaded audio file data from URL (%@) of size %@", buf, 0x20u);
@@ -2319,11 +2319,11 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
   v24 = objc_opt_new();
   v59 = v23;
   [v24 addObject:v23];
-  v25 = [v14 transcription];
-  v26 = v25;
-  if (v25)
+  transcription = [content transcription];
+  v26 = transcription;
+  if (transcription)
   {
-    v27 = [v25 dataUsingEncoding:4];
+    v27 = [transcription dataUsingEncoding:4];
     v28 = [objc_alloc(MEMORY[0x277CEAB60]) initWithData:v27 type:2];
     [v24 addObject:v28];
   }
@@ -2351,22 +2351,22 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
   }
 
   v55 = v31;
-  v60 = v12;
-  [v29 setLocation:v12];
-  v33 = [MEMORY[0x277CBEAA8] date];
-  [v29 setCreationTimestamp:v33];
+  v60 = locationCopy;
+  [v29 setLocation:locationCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v29 setCreationTimestamp:date];
 
   v34 = MEMORY[0x277CEAB48];
-  v35 = [v63 clientID];
-  [v29 setSource:{objc_msgSend(v34, "sourceFromString:", v35)}];
+  clientID = [v63 clientID];
+  [v29 setSource:{objc_msgSend(v34, "sourceFromString:", clientID)}];
 
-  v36 = [MEMORY[0x277CEAB80] sharedInstance];
-  LODWORD(v35) = [v36 BOOLForDefault:*MEMORY[0x277CEA940]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  LODWORD(clientID) = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA940]];
 
   v37 = +[ANHomeManager shared];
-  v38 = [v37 currentAccessory];
+  currentAccessory = [v37 currentAccessory];
 
-  if (v35 && !v38)
+  if (clientID && !currentAccessory)
   {
     v39 = 0;
     if (log)
@@ -2381,7 +2381,7 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
 
     [v29 setAction:v40];
     v41 = ANLogHandleMessenger_Announcement();
-    v13 = v61;
+    homeCopy = v61;
     v42 = v62;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
@@ -2394,39 +2394,39 @@ void __77__ANMessenger_connection_didReceiveMessage_fromSender_senderContext_han
   }
 
   [v29 setAction:log];
-  v13 = v61;
+  homeCopy = v61;
   v42 = v62;
-  v39 = v38;
-  if (v38)
+  v39 = currentAccessory;
+  if (currentAccessory)
   {
-    v43 = [v14 homeKitUserIdentifier];
-    if (v43)
+    homeKitUserIdentifier = [content homeKitUserIdentifier];
+    if (homeKitUserIdentifier)
     {
-      v44 = [v61 hmu_userWithUniqueIdentifier:v43];
-      if (!v44)
+      currentUser = [v61 hmu_userWithUniqueIdentifier:homeKitUserIdentifier];
+      if (!currentUser)
       {
         v45 = 0;
 LABEL_34:
 
-        v47 = [v29 announcer];
-        [v47 populateWithUser:v44 andAccessory:v39];
+        announcer = [v29 announcer];
+        [announcer populateWithUser:currentUser andAccessory:v39];
 
-        v13 = v61;
+        homeCopy = v61;
         goto LABEL_35;
       }
 
-      if ([v61 announceAccessAllowedForUser:v44])
+      if ([v61 announceAccessAllowedForUser:currentUser])
       {
         v45 = ANLogHandleMessenger_Announcement();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [v44 name];
-          [v44 uniqueIdentifier];
+          name = [currentUser name];
+          [currentUser uniqueIdentifier];
           v46 = loga = v45;
           *buf = 138412802;
           v67 = &stru_2851BDB18;
           v68 = 2112;
-          v69 = v53;
+          v69 = name;
           v70 = 2112;
           v71 = v46;
           _os_log_impl(&dword_23F525000, loga, OS_LOG_TYPE_DEFAULT, "%@Recognized User with Announce access. Not sending to personal devices for user. %@, %@", buf, 0x20u);
@@ -2437,7 +2437,7 @@ LABEL_34:
         goto LABEL_34;
       }
 
-      v45 = v44;
+      v45 = currentUser;
     }
 
     else
@@ -2445,14 +2445,14 @@ LABEL_34:
       v45 = 0;
     }
 
-    v44 = 0;
+    currentUser = 0;
     goto LABEL_34;
   }
 
 LABEL_29:
-  v43 = [v29 announcer];
-  v44 = [v13 currentUser];
-  [v43 populateWithUser:v44];
+  homeKitUserIdentifier = [v29 announcer];
+  currentUser = [homeCopy currentUser];
+  [homeKitUserIdentifier populateWithUser:currentUser];
 LABEL_35:
 
   v48 = [ANValidationHelper performBasicValidationForAnnouncement:v29 type:0];
@@ -2468,11 +2468,11 @@ LABEL_35:
       _os_log_impl(&dword_23F525000, v49, OS_LOG_TYPE_ERROR, "%@Failed Send Basic Validation with Error: %@", buf, 0x16u);
     }
 
-    if (v54)
+    if (errorCopy)
     {
       v50 = v48;
       v21 = 0;
-      *v54 = v48;
+      *errorCopy = v48;
     }
 
     else
@@ -2488,8 +2488,8 @@ LABEL_35:
     v21 = v29;
   }
 
-  v12 = v60;
-  v11 = v63;
+  locationCopy = v60;
+  requestCopy = v63;
 LABEL_44:
 
   v51 = *MEMORY[0x277D85DE8];
@@ -2497,29 +2497,29 @@ LABEL_44:
   return v21;
 }
 
-+ (id)announcementForDevice:(id)a3 inHome:(id)a4 fromAnnouncement:(id)a5
++ (id)announcementForDevice:(id)device inHome:(id)home fromAnnouncement:(id)announcement
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v9 isRelayRequest] & 1) != 0 || +[ANMessenger _isAnnouncerAdminInAnnouncement:home:](ANMessenger, "_isAnnouncerAdminInAnnouncement:home:", v9, v8) || objc_msgSend(v7, "isOwnerDevice"))
+  deviceCopy = device;
+  homeCopy = home;
+  announcementCopy = announcement;
+  if (([announcementCopy isRelayRequest] & 1) != 0 || +[ANMessenger _isAnnouncerAdminInAnnouncement:home:](ANMessenger, "_isAnnouncerAdminInAnnouncement:home:", announcementCopy, homeCopy) || objc_msgSend(deviceCopy, "isOwnerDevice"))
   {
-    v10 = v9;
+    v10 = announcementCopy;
   }
 
   else
   {
-    v13 = [v7 homeKitUserIdentifiers];
-    v14 = v13;
-    if (v13)
+    homeKitUserIdentifiers = [deviceCopy homeKitUserIdentifiers];
+    v14 = homeKitUserIdentifiers;
+    if (homeKitUserIdentifiers)
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v15 = v13;
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      announcer = homeKitUserIdentifiers;
+      v16 = [announcer countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v16)
       {
         v17 = v16;
@@ -2530,20 +2530,20 @@ LABEL_44:
           {
             if (*v23 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(announcer);
             }
 
-            v20 = [v8 hmu_userWithUniqueIdentifier:{*(*(&v22 + 1) + 8 * i), v22}];
+            v20 = [homeCopy hmu_userWithUniqueIdentifier:{*(*(&v22 + 1) + 8 * i), v22}];
             if (v20)
             {
               v21 = v20;
-              v10 = [ANMessenger announcementForUser:v20 inHome:v8 fromAnnouncement:v9];
+              v10 = [ANMessenger announcementForUser:v20 inHome:homeCopy fromAnnouncement:announcementCopy];
 
               goto LABEL_20;
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v17 = [announcer countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v17)
           {
             continue;
@@ -2554,9 +2554,9 @@ LABEL_44:
       }
     }
 
-    v10 = [v9 copy];
-    v15 = [v10 announcer];
-    [v15 clearIdentifiers];
+    v10 = [announcementCopy copy];
+    announcer = [v10 announcer];
+    [announcer clearIdentifiers];
 LABEL_20:
   }
 
@@ -2565,47 +2565,47 @@ LABEL_20:
   return v10;
 }
 
-+ (id)announcementForUser:(id)a3 inHome:(id)a4 fromAnnouncement:(id)a5
++ (id)announcementForUser:(id)user inHome:(id)home fromAnnouncement:(id)announcement
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (+[ANMessenger _isAnnouncerAdminInAnnouncement:home:](ANMessenger, "_isAnnouncerAdminInAnnouncement:home:", v9, v8) || ([v8 hmu_isAdministrator:v7] & 1) != 0)
+  userCopy = user;
+  homeCopy = home;
+  announcementCopy = announcement;
+  if (+[ANMessenger _isAnnouncerAdminInAnnouncement:home:](ANMessenger, "_isAnnouncerAdminInAnnouncement:home:", announcementCopy, homeCopy) || ([homeCopy hmu_isAdministrator:userCopy] & 1) != 0)
   {
-    v10 = v9;
+    v10 = announcementCopy;
   }
 
   else
   {
-    v10 = [v9 copy];
-    v11 = [v10 announcer];
-    [v11 clearIdentifiers];
+    v10 = [announcementCopy copy];
+    announcer = [v10 announcer];
+    [announcer clearIdentifiers];
   }
 
   return v10;
 }
 
-+ (id)locationForHome:(id)a3 rooms:(id)a4 zones:(id)a5 idsService:(id)a6
++ (id)locationForHome:(id)home rooms:(id)rooms zones:(id)zones idsService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  homeCopy = home;
+  roomsCopy = rooms;
+  zonesCopy = zones;
   v12 = MEMORY[0x277CEABA8];
-  v13 = a6;
+  serviceCopy = service;
   v14 = [v12 alloc];
-  v15 = [v9 uniqueIdentifier];
-  v16 = [v14 initWithHomeID:v15];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v16 = [v14 initWithHomeID:uniqueIdentifier];
 
-  if ([v10 count] || objc_msgSend(v11, "count"))
+  if ([roomsCopy count] || objc_msgSend(zonesCopy, "count"))
   {
     [v16 setFlags:0];
     v17 = MEMORY[0x277CD1D88];
-    v18 = [MEMORY[0x277CD1D88] an_roomsWithAnnounceAccessoriesFromRooms:v10];
+    v18 = [MEMORY[0x277CD1D88] an_roomsWithAnnounceAccessoriesFromRooms:roomsCopy];
     v19 = [v17 hmu_uniqueIdentifiersFromRooms:v18];
     [v16 setRoomUUIDs:v19];
 
     v20 = MEMORY[0x277CD1F50];
-    v21 = [MEMORY[0x277CD1F50] an_zonesWithAnnounceAccessoriesFromZones:v11];
+    v21 = [MEMORY[0x277CD1F50] an_zonesWithAnnounceAccessoriesFromZones:zonesCopy];
     v22 = [v20 hmu_uniqueIdentifiersFromZones:v21];
     [v16 setZoneUUIDs:v22];
   }
@@ -2615,103 +2615,103 @@ LABEL_20:
     [v16 setFlags:1];
   }
 
-  [ANMessenger _setIdentifiersForIDSService:v13 inLocation:v16 home:v9];
+  [ANMessenger _setIdentifiersForIDSService:serviceCopy inLocation:v16 home:homeCopy];
 
   return v16;
 }
 
-+ (id)locationForReplyToAnnouncement:(id)a3 home:(id)a4 idsService:(id)a5
++ (id)locationForReplyToAnnouncement:(id)announcement home:(id)home idsService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 location];
-  if (([v10 flags] & 1) == 0)
+  announcementCopy = announcement;
+  homeCopy = home;
+  serviceCopy = service;
+  location = [announcementCopy location];
+  if (([location flags] & 1) == 0)
   {
     v11 = objc_alloc(MEMORY[0x277CEABA8]);
-    v12 = [v10 homeUUID];
-    v13 = [v11 initWithHomeID:v12];
+    homeUUID = [location homeUUID];
+    v13 = [v11 initWithHomeID:homeUUID];
 
     v14 = MEMORY[0x277CBEB58];
-    v15 = [v10 roomUUIDs];
-    v16 = [v8 hmu_roomsWithUniqueIdentifiers:v15];
+    roomUUIDs = [location roomUUIDs];
+    v16 = [homeCopy hmu_roomsWithUniqueIdentifiers:roomUUIDs];
     v34 = [v14 setWithArray:v16];
 
     v17 = MEMORY[0x277CBEB58];
-    v18 = [v10 zoneUUIDs];
-    v19 = [v8 hmu_zonesWithUniqueIdentifiers:v18];
+    zoneUUIDs = [location zoneUUIDs];
+    v19 = [homeCopy hmu_zonesWithUniqueIdentifiers:zoneUUIDs];
     v20 = [v17 setWithArray:v19];
 
-    v21 = [v7 announcer];
-    if ([v21 isAccessory])
+    announcer = [announcementCopy announcer];
+    if ([announcer isAccessory])
     {
-      v22 = [v7 announcer];
-      v23 = [v22 homeKitID];
+      announcer2 = [announcementCopy announcer];
+      homeKitID = [announcer2 homeKitID];
 
-      if (!v23)
+      if (!homeKitID)
       {
 LABEL_7:
         v27 = MEMORY[0x277CD1D88];
-        v28 = [v34 allObjects];
-        v29 = [v27 hmu_uniqueIdentifiersFromRooms:v28];
+        allObjects = [v34 allObjects];
+        v29 = [v27 hmu_uniqueIdentifiersFromRooms:allObjects];
         [v13 setRoomUUIDs:v29];
 
         v30 = MEMORY[0x277CD1F50];
-        v31 = [v20 allObjects];
-        v32 = [v30 hmu_uniqueIdentifiersFromZones:v31];
+        allObjects2 = [v20 allObjects];
+        v32 = [v30 hmu_uniqueIdentifiersFromZones:allObjects2];
         [v13 setZoneUUIDs:v32];
 
         goto LABEL_9;
       }
 
-      v24 = [v7 announcer];
-      v25 = [v24 homeKitID];
-      v26 = [v8 hmu_accessoryWithUniqueIdentifierUUIDString:v25];
-      v21 = [v26 room];
+      announcer3 = [announcementCopy announcer];
+      homeKitID2 = [announcer3 homeKitID];
+      v26 = [homeCopy hmu_accessoryWithUniqueIdentifierUUIDString:homeKitID2];
+      announcer = [v26 room];
 
-      if (v21)
+      if (announcer)
       {
-        [v34 addObject:v21];
+        [v34 addObject:announcer];
       }
     }
 
     goto LABEL_7;
   }
 
-  v13 = [v10 copy];
+  v13 = [location copy];
 LABEL_9:
-  [ANMessenger _setIdentifiersForIDSService:v9 inLocation:v13 home:v8];
+  [ANMessenger _setIdentifiersForIDSService:serviceCopy inLocation:v13 home:homeCopy];
 
   return v13;
 }
 
-+ (BOOL)_isAnnouncerAdminInAnnouncement:(id)a3 home:(id)a4
++ (BOOL)_isAnnouncerAdminInAnnouncement:(id)announcement home:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 announcer];
-  v8 = [v7 homeKitID];
+  announcementCopy = announcement;
+  homeCopy = home;
+  announcer = [announcementCopy announcer];
+  homeKitID = [announcer homeKitID];
 
-  if (v8)
+  if (homeKitID)
   {
-    v9 = [v5 announcer];
-    v10 = [v9 isAccessory];
+    announcer2 = [announcementCopy announcer];
+    isAccessory = [announcer2 isAccessory];
 
-    if (v10)
+    if (isAccessory)
     {
-      v11 = [v5 announcer];
-      v12 = [v11 homeKitUserID];
+      announcer3 = [announcementCopy announcer];
+      homeKitUserID = [announcer3 homeKitUserID];
 
-      if (!v12)
+      if (!homeKitUserID)
       {
-        v15 = [v6 hmu_accessoryWithUniqueIdentifierUUIDString:v8];
+        v15 = [homeCopy hmu_accessoryWithUniqueIdentifierUUIDString:homeKitID];
         v16 = v15 != 0;
         goto LABEL_10;
       }
 
-      v13 = [v5 announcer];
-      v14 = [v13 homeKitUserID];
-      v15 = [v6 hmu_userWithUniqueIdentifierUUIDString:v14];
+      announcer4 = [announcementCopy announcer];
+      homeKitUserID2 = [announcer4 homeKitUserID];
+      v15 = [homeCopy hmu_userWithUniqueIdentifierUUIDString:homeKitUserID2];
 
       if (!v15)
       {
@@ -2721,7 +2721,7 @@ LABEL_9:
 
     else
     {
-      v15 = [v6 hmu_userWithUniqueIdentifierUUIDString:v8];
+      v15 = [homeCopy hmu_userWithUniqueIdentifierUUIDString:homeKitID];
       if (!v15)
       {
 LABEL_5:
@@ -2732,7 +2732,7 @@ LABEL_10:
       }
     }
 
-    LOBYTE(v16) = [v6 hmu_isAdministrator:v15];
+    LOBYTE(v16) = [homeCopy hmu_isAdministrator:v15];
     goto LABEL_10;
   }
 
@@ -2742,64 +2742,64 @@ LABEL_11:
   return v16;
 }
 
-+ (void)_setIdentifiersForIDSService:(id)a3 inLocation:(id)a4 home:(id)a5
++ (void)_setIdentifiersForIDSService:(id)service inLocation:(id)location home:(id)home
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  locationCopy = location;
+  homeCopy = home;
   v10 = +[ANHomeManager shared];
-  v11 = [v10 currentAccessory];
+  currentAccessory = [v10 currentAccessory];
 
-  if (!v11)
+  if (!currentAccessory)
   {
-    if ([v8 flags])
+    if ([locationCopy flags])
     {
-      [v8 setFlags:{objc_msgSend(v8, "flags") | 6}];
+      [locationCopy setFlags:{objc_msgSend(locationCopy, "flags") | 6}];
     }
 
-    v12 = [v9 currentUser];
-    v13 = [v12 uniqueIdentifier];
-    v17[0] = v13;
+    currentUser = [homeCopy currentUser];
+    uniqueIdentifier = [currentUser uniqueIdentifier];
+    v17[0] = uniqueIdentifier;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v8 setUserUUIDs:v14];
+    [locationCopy setUserUUIDs:v14];
 
-    v15 = [v7 uniqueIdentifiersForDevicesExcludingAppleAccessories];
-    [v8 setDeviceIDs:v15];
+    uniqueIdentifiersForDevicesExcludingAppleAccessories = [serviceCopy uniqueIdentifiersForDevicesExcludingAppleAccessories];
+    [locationCopy setDeviceIDs:uniqueIdentifiersForDevicesExcludingAppleAccessories];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)performBasicValidationForAnnouncement:(id)a3 type:(unint64_t)a4
++ (id)performBasicValidationForAnnouncement:(id)announcement type:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [v5 location];
-  v7 = [v6 homeUUID];
+  announcementCopy = announcement;
+  location = [announcementCopy location];
+  homeUUID = [location homeUUID];
 
-  if (!v7)
+  if (!homeUUID)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v5 identifier];
-    v9 = [v15 stringWithFormat:@"Announcement (%@) missing Home ID", v16];
+    identifier = [announcementCopy identifier];
+    v9 = [v15 stringWithFormat:@"Announcement (%@) missing Home ID", identifier];
 
     v14 = [MEMORY[0x277CCA9B8] an_errorWithCode:1030 component:*MEMORY[0x277CEA9B8] description:v9];
     goto LABEL_27;
   }
 
   v8 = +[ANHomeManager shared];
-  v9 = [v8 homeForID:v7];
+  v9 = [v8 homeForID:homeUUID];
 
   if (!v9)
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v5 identifier];
-    v11 = [v17 stringWithFormat:@"Local device is not part of home: (%@) in Announcement (%@)", v7, v18];
+    identifier2 = [announcementCopy identifier];
+    currentAccessory = [v17 stringWithFormat:@"Local device is not part of home: (%@) in Announcement (%@)", homeUUID, identifier2];
 
     v19 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CEA9B8];
     v21 = 1016;
-    v22 = v11;
+    v22 = currentAccessory;
 LABEL_24:
     v31 = [v19 an_errorWithCode:v21 component:v20 description:v22];
 LABEL_25:
@@ -2808,13 +2808,13 @@ LABEL_25:
   }
 
   v10 = +[ANHomeManager shared];
-  v11 = [v10 currentAccessory];
+  currentAccessory = [v10 currentAccessory];
 
-  v12 = [MEMORY[0x277CEAB88] isAnnounceAccessory];
-  v13 = v12;
-  if (v11 || (v12 & 1) != 0)
+  isAnnounceAccessory = [MEMORY[0x277CEAB88] isAnnounceAccessory];
+  v13 = isAnnounceAccessory;
+  if (currentAccessory || (isAnnounceAccessory & 1) != 0)
   {
-    if (((v11 == 0) & v12) == 1)
+    if (((currentAccessory == 0) & isAnnounceAccessory) == 1)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CEA9B8];
@@ -2823,7 +2823,7 @@ LABEL_25:
       goto LABEL_24;
     }
 
-    if (([(__CFString *)v11 an_supportsAnnounce]& 1) == 0)
+    if (([(__CFString *)currentAccessory an_supportsAnnounce]& 1) == 0)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CEA9B8];
@@ -2832,8 +2832,8 @@ LABEL_25:
       goto LABEL_24;
     }
 
-    v23 = [v5 isRelayRequest];
-    if (!a4 && (v23 & 1) == 0 && ([(__CFString *)v11 an_isAnnounceEnabled]& 1) == 0)
+    isRelayRequest = [announcementCopy isRelayRequest];
+    if (!type && (isRelayRequest & 1) == 0 && ([(__CFString *)currentAccessory an_isAnnounceEnabled]& 1) == 0)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CEA9B8];
@@ -2842,37 +2842,37 @@ LABEL_25:
     }
 
     v14 = 0;
-    if (!v11 || ((v13 ^ 1) & 1) != 0)
+    if (!currentAccessory || ((v13 ^ 1) & 1) != 0)
     {
       goto LABEL_26;
     }
 
-    v24 = [MEMORY[0x277CEAB80] sharedInstance];
-    v25 = [v24 BOOLForDefault:*MEMORY[0x277CEA810]];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+    v25 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA810]];
 
     if (v25)
     {
       v26 = +[ANHomeManager shared];
-      v27 = [v26 currentHome];
+      currentHome = [v26 currentHome];
 
-      if (v27)
+      if (currentHome)
       {
-        v28 = [(__CFString *)v27 uniqueIdentifier];
-        v29 = [v9 uniqueIdentifier];
-        v30 = [v28 isEqual:v29];
+        uniqueIdentifier = [(__CFString *)currentHome uniqueIdentifier];
+        uniqueIdentifier2 = [v9 uniqueIdentifier];
+        v30 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         if (v30)
         {
 
 LABEL_32:
-          v31 = [ANMessenger validateAnnouncerInAnnouncement:v5 home:v9];
+          v31 = [ANMessenger validateAnnouncerInAnnouncement:announcementCopy home:v9];
           goto LABEL_25;
         }
 
         v39 = MEMORY[0x277CCACA8];
-        v40 = [v9 uniqueIdentifier];
-        v41 = [(__CFString *)v27 uniqueIdentifier];
-        v42 = [v39 stringWithFormat:@"Announcent Home ID (%@) does not match Current Home ID (%@)", v40, v41];
+        uniqueIdentifier3 = [v9 uniqueIdentifier];
+        uniqueIdentifier4 = [(__CFString *)currentHome uniqueIdentifier];
+        v42 = [v39 stringWithFormat:@"Announcent Home ID (%@) does not match Current Home ID (%@)", uniqueIdentifier3, uniqueIdentifier4];
 
         v14 = [MEMORY[0x277CCA9B8] an_errorWithCode:1016 component:*MEMORY[0x277CEA9B8] description:v42];
 
@@ -2888,19 +2888,19 @@ LABEL_37:
 
     else
     {
-      if (([(__CFString *)v11 hmu_isPartOfHome:v9]& 1) != 0)
+      if (([(__CFString *)currentAccessory hmu_isPartOfHome:v9]& 1) != 0)
       {
         goto LABEL_32;
       }
 
       v33 = MEMORY[0x277CCACA8];
-      v34 = [v9 uniqueIdentifier];
-      v27 = [v33 stringWithFormat:@"Accessory is not in the Announcement's home (%@)", v34];
+      uniqueIdentifier5 = [v9 uniqueIdentifier];
+      currentHome = [v33 stringWithFormat:@"Accessory is not in the Announcement's home (%@)", uniqueIdentifier5];
 
       v35 = MEMORY[0x277CCA9B8];
       v36 = *MEMORY[0x277CEA9B8];
       v37 = 1016;
-      v38 = v27;
+      v38 = currentHome;
     }
 
     v14 = [v35 an_errorWithCode:v37 component:v36 description:v38];
@@ -2925,19 +2925,19 @@ LABEL_27:
   return v14;
 }
 
-+ (id)validateAnnouncerInAnnouncement:(id)a3 home:(id)a4
++ (id)validateAnnouncerInAnnouncement:(id)announcement home:(id)home
 {
-  v5 = a4;
-  v6 = [a3 announcer];
-  v7 = [v6 homeKitUserID];
+  homeCopy = home;
+  announcer = [announcement announcer];
+  homeKitUserID = [announcer homeKitUserID];
 
-  if (!v7)
+  if (!homeKitUserID)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  v8 = [v5 hmu_userWithUniqueIdentifierUUIDString:v7];
+  v8 = [homeCopy hmu_userWithUniqueIdentifierUUIDString:homeKitUserID];
   if (!v8)
   {
     v10 = MEMORY[0x277CCA9B8];
@@ -2949,7 +2949,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (([v5 announceAccessAllowedForUser:v8] & 1) == 0)
+  if (([homeCopy announceAccessAllowedForUser:v8] & 1) == 0)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CEA9B8];
@@ -2966,20 +2966,20 @@ LABEL_10:
   return v9;
 }
 
-+ (id)performIDSValidationForAnnouncement:(id)a3 withSenderContext:(id)a4
++ (id)performIDSValidationForAnnouncement:(id)announcement withSenderContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  announcementCopy = announcement;
   v7 = +[ANHomeManager shared];
-  v8 = [v7 currentAccessory];
+  currentAccessory = [v7 currentAccessory];
 
   v9 = +[ANHomeManager shared];
-  v10 = [v6 location];
+  location = [announcementCopy location];
 
-  v11 = [v10 homeUUID];
-  v12 = [v9 homeForID:v11];
+  homeUUID = [location homeUUID];
+  v12 = [v9 homeForID:homeUUID];
 
-  if (!v8 && ([v12 hmu_isRemoteAccessAllowedForCurrentUser] & 1) == 0)
+  if (!currentAccessory && ([v12 hmu_isRemoteAccessAllowedForCurrentUser] & 1) == 0)
   {
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CEA9B8];
@@ -2987,9 +2987,9 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v13 = [v5 senderCorrelationIdentifier];
+  senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
 
-  if (!v13)
+  if (!senderCorrelationIdentifier)
   {
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CEA9B8];
@@ -2999,12 +2999,12 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if (![v5 isValidDevice])
+  if (![contextCopy isValidDevice])
   {
-    v23 = [v5 senderCorrelationIdentifier];
-    v19 = [v12 hmu_userWithSenderCorrelationIdentifier:v23];
+    senderCorrelationIdentifier2 = [contextCopy senderCorrelationIdentifier];
+    owner2 = [v12 hmu_userWithSenderCorrelationIdentifier:senderCorrelationIdentifier2];
 
-    if (v19)
+    if (owner2)
     {
       goto LABEL_9;
     }
@@ -3015,32 +3015,32 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = [v12 currentUser];
-  v15 = [v14 uniqueIdentifier];
-  v16 = [v12 owner];
-  v17 = [v16 uniqueIdentifier];
-  v18 = [v15 isEqual:v17];
+  currentUser = [v12 currentUser];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  owner = [v12 owner];
+  uniqueIdentifier2 = [owner uniqueIdentifier];
+  v18 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (!v18)
   {
-    v19 = 0;
+    owner2 = 0;
     v31 = @"Received message from a known device but current user is not owner.";
     goto LABEL_18;
   }
 
-  v19 = [v12 owner];
+  owner2 = [v12 owner];
 LABEL_9:
-  if (!v8)
+  if (!currentAccessory)
   {
-    v24 = [MEMORY[0x277CEAB80] sharedInstance];
-    v25 = [v24 BOOLForDefault:*MEMORY[0x277CEA940]];
+    mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+    v25 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA940]];
 
     if (v25)
     {
-      v26 = [v19 uniqueIdentifier];
-      v27 = [v12 owner];
-      v28 = [v27 uniqueIdentifier];
-      v29 = [v26 isEqual:v28];
+      uniqueIdentifier3 = [owner2 uniqueIdentifier];
+      owner3 = [v12 owner];
+      uniqueIdentifier4 = [owner3 uniqueIdentifier];
+      v29 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
       if ((v29 & 1) == 0)
       {
@@ -3058,20 +3058,20 @@ LABEL_20:
   return v30;
 }
 
-+ (id)performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4 rooms:(id)a5 zones:(id)a6
++ (id)performPreflightChecksForSendingContent:(id)content toHome:(id)home rooms:(id)rooms zones:(id)zones
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 count] || objc_msgSend(v12, "count"))
+  contentCopy = content;
+  homeCopy = home;
+  roomsCopy = rooms;
+  zonesCopy = zones;
+  if ([roomsCopy count] || objc_msgSend(zonesCopy, "count"))
   {
-    v13 = [ANMessenger _performPreflightChecksForSendingToRooms:v11 zones:v12];
+    v13 = [ANMessenger _performPreflightChecksForSendingToRooms:roomsCopy zones:zonesCopy];
   }
 
   else
   {
-    v13 = [ANMessenger _performPreflightChecksForSendingContent:v9 toHome:v10];
+    v13 = [ANMessenger _performPreflightChecksForSendingContent:contentCopy toHome:homeCopy];
   }
 
   v14 = v13;
@@ -3079,12 +3079,12 @@ LABEL_20:
   return v14;
 }
 
-+ (id)_performPreflightChecksForSendingContent:(id)a3 toHome:(id)a4
++ (id)_performPreflightChecksForSendingContent:(id)content toHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 appleAnnounceCapableAccessories];
-  v9 = [v8 count];
+  contentCopy = content;
+  homeCopy = home;
+  appleAnnounceCapableAccessories = [homeCopy appleAnnounceCapableAccessories];
+  v9 = [appleAnnounceCapableAccessories count];
 
   if (!v9)
   {
@@ -3096,8 +3096,8 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v10 = [v7 appleAnnounceAccessories];
-  v11 = [v10 count];
+  appleAnnounceAccessories = [homeCopy appleAnnounceAccessories];
+  v11 = [appleAnnounceAccessories count];
 
   if (!v11)
   {
@@ -3108,36 +3108,36 @@ LABEL_19:
   }
 
   v12 = +[ANHomeManager shared];
-  v13 = [v12 currentAccessory];
+  currentAccessory = [v12 currentAccessory];
 
-  if (v13)
+  if (currentAccessory)
   {
-    v14 = v13;
-    v15 = [v7 usersIncludingCurrentUserWithAnnounceEnabled];
+    v14 = currentAccessory;
+    usersIncludingCurrentUserWithAnnounceEnabled = [homeCopy usersIncludingCurrentUserWithAnnounceEnabled];
     v16 = MEMORY[0x277CD1650];
-    v17 = [v7 accessories];
-    v18 = [v16 announceAccessoriesWithAnnounceEnabledFromAccessories:v17];
+    accessories = [homeCopy accessories];
+    v18 = [v16 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories];
     v19 = [v18 mutableCopy];
 
-    v20 = [v14 room];
-    v21 = v20;
-    if (v20)
+    room = [v14 room];
+    v21 = room;
+    if (room)
     {
       v22 = MEMORY[0x277CD1650];
-      v23 = [v20 accessories];
-      v24 = [v22 announceAccessoriesWithAnnounceEnabledFromAccessories:v23];
+      accessories2 = [room accessories];
+      v24 = [v22 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories2];
 
       [v19 removeObjectsInArray:v24];
     }
 
-    v25 = [v6 homeKitUserIdentifier];
-    if (v25)
+    homeKitUserIdentifier = [contentCopy homeKitUserIdentifier];
+    if (homeKitUserIdentifier)
     {
       v37 = v14;
-      v26 = [v7 hmu_userWithUniqueIdentifier:v25];
+      v26 = [homeCopy hmu_userWithUniqueIdentifier:homeKitUserIdentifier];
       if (v26)
       {
-        v27 = [v15 mutableCopy];
+        v27 = [usersIncludingCurrentUserWithAnnounceEnabled mutableCopy];
         [v27 removeObject:v26];
         if (![v27 count] && !objc_msgSend(v19, "count"))
         {
@@ -3152,7 +3152,7 @@ LABEL_19:
       v14 = v37;
     }
 
-    if ([v15 count] || objc_msgSend(v19, "count"))
+    if ([usersIncludingCurrentUserWithAnnounceEnabled count] || objc_msgSend(v19, "count"))
     {
       v28 = 1;
     }
@@ -3174,8 +3174,8 @@ LABEL_15:
   }
 
   v32 = MEMORY[0x277CD1650];
-  v33 = [v7 accessories];
-  v34 = [v32 announceAccessoriesWithAnnounceEnabledFromAccessories:v33];
+  accessories3 = [homeCopy accessories];
+  v34 = [v32 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories3];
   v35 = [v34 count];
 
   if (!v35)
@@ -3193,18 +3193,18 @@ LABEL_24:
   return v4;
 }
 
-+ (id)_performPreflightChecksForSendingToRooms:(id)a3 zones:(id)a4
++ (id)_performPreflightChecksForSendingToRooms:(id)rooms zones:(id)zones
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CD1D88] an_roomsWithAnnounceAccessoriesFromRooms:v5];
+  roomsCopy = rooms;
+  zonesCopy = zones;
+  v7 = [MEMORY[0x277CD1D88] an_roomsWithAnnounceAccessoriesFromRooms:roomsCopy];
   if ([v7 count])
   {
   }
 
   else
   {
-    v8 = [MEMORY[0x277CD1F50] an_zonesWithAnnounceAccessoriesFromZones:v6];
+    v8 = [MEMORY[0x277CD1F50] an_zonesWithAnnounceAccessoriesFromZones:zonesCopy];
     v9 = [v8 count];
 
     if (!v9)
@@ -3217,7 +3217,7 @@ LABEL_24:
   }
 
   v10 = MEMORY[0x277CD1650];
-  v11 = [MEMORY[0x277CD1D88] hmu_accessoriesInRooms:v5];
+  v11 = [MEMORY[0x277CD1D88] hmu_accessoriesInRooms:roomsCopy];
   v12 = [v10 announceAccessoriesFromAccessories:v11];
   if ([v12 count])
   {
@@ -3226,7 +3226,7 @@ LABEL_24:
   else
   {
     v13 = MEMORY[0x277CD1650];
-    v14 = [MEMORY[0x277CD1F50] hmu_accessoriesInZones:v6];
+    v14 = [MEMORY[0x277CD1F50] hmu_accessoriesInZones:zonesCopy];
     v15 = [v13 announceAccessoriesFromAccessories:v14];
     v16 = [v15 count];
 
@@ -3240,7 +3240,7 @@ LABEL_24:
   }
 
   v17 = MEMORY[0x277CD1650];
-  v18 = [MEMORY[0x277CD1D88] hmu_accessoriesInRooms:v5];
+  v18 = [MEMORY[0x277CD1D88] hmu_accessoriesInRooms:roomsCopy];
   v19 = [v17 announceAccessoriesWithAnnounceEnabledFromAccessories:v18];
   if ([v19 count])
   {
@@ -3251,7 +3251,7 @@ LABEL_10:
   }
 
   v20 = MEMORY[0x277CD1650];
-  v21 = [MEMORY[0x277CD1F50] hmu_accessoriesInZones:v6];
+  v21 = [MEMORY[0x277CD1F50] hmu_accessoriesInZones:zonesCopy];
   v22 = [v20 announceAccessoriesWithAnnounceEnabledFromAccessories:v21];
   v23 = [v22 count];
 
@@ -3270,13 +3270,13 @@ LABEL_15:
   return v24;
 }
 
-+ (id)performPreflightChecksForSendingAnnouncementToHome:(id)a3 rooms:(id)a4 zones:(id)a5
++ (id)performPreflightChecksForSendingAnnouncementToHome:(id)home rooms:(id)rooms zones:(id)zones
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 appleAnnounceCapableAccessories];
-  v12 = [v11 count];
+  homeCopy = home;
+  roomsCopy = rooms;
+  zonesCopy = zones;
+  appleAnnounceCapableAccessories = [homeCopy appleAnnounceCapableAccessories];
+  v12 = [appleAnnounceCapableAccessories count];
 
   if (!v12)
   {
@@ -3288,8 +3288,8 @@ LABEL_11:
     goto LABEL_26;
   }
 
-  v13 = [v8 appleAnnounceAccessories];
-  v14 = [v13 count];
+  appleAnnounceAccessories = [homeCopy appleAnnounceAccessories];
+  v14 = [appleAnnounceAccessories count];
 
   if (!v14)
   {
@@ -3300,14 +3300,14 @@ LABEL_11:
   }
 
   v15 = +[ANHomeManager shared];
-  v16 = [v15 currentAccessory];
+  currentAccessory = [v15 currentAccessory];
 
-  v17 = [MEMORY[0x277CEAB88] isAnnounceAccessory];
-  if (v16 || (v17 & 1) != 0)
+  isAnnounceAccessory = [MEMORY[0x277CEAB88] isAnnounceAccessory];
+  if (currentAccessory || (isAnnounceAccessory & 1) != 0)
   {
-    if (v16 || ((v17 ^ 1) & 1) != 0)
+    if (currentAccessory || ((isAnnounceAccessory ^ 1) & 1) != 0)
     {
-      if (([v16 an_supportsAnnounce] & 1) == 0)
+      if (([currentAccessory an_supportsAnnounce] & 1) == 0)
       {
         v23 = MEMORY[0x277CCA9B8];
         v24 = *MEMORY[0x277CEA9B8];
@@ -3316,7 +3316,7 @@ LABEL_11:
         goto LABEL_23;
       }
 
-      if (([v16 an_isAnnounceEnabled] & 1) == 0)
+      if (([currentAccessory an_isAnnounceEnabled] & 1) == 0)
       {
         v23 = MEMORY[0x277CCA9B8];
         v24 = *MEMORY[0x277CEA9B8];
@@ -3324,16 +3324,16 @@ LABEL_11:
         goto LABEL_21;
       }
 
-      if ([v9 count] != 1)
+      if ([roomsCopy count] != 1)
       {
         goto LABEL_6;
       }
 
-      v27 = [v16 room];
-      v28 = [v27 uniqueIdentifier];
-      v29 = [v9 firstObject];
-      v30 = [v29 uniqueIdentifier];
-      v31 = [v28 isEqual:v30];
+      room = [currentAccessory room];
+      uniqueIdentifier = [room uniqueIdentifier];
+      firstObject = [roomsCopy firstObject];
+      uniqueIdentifier2 = [firstObject uniqueIdentifier];
+      v31 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
       if (!v31)
       {
@@ -3359,7 +3359,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (([v8 announceAccessAllowedForCurrentUser] & 1) == 0)
+  if (([homeCopy announceAccessAllowedForCurrentUser] & 1) == 0)
   {
     v23 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CEA9B8];
@@ -3370,13 +3370,13 @@ LABEL_21:
   }
 
 LABEL_6:
-  if (![v9 count] && !objc_msgSend(v10, "count"))
+  if (![roomsCopy count] && !objc_msgSend(zonesCopy, "count"))
   {
     v22 = 0;
     goto LABEL_25;
   }
 
-  v18 = [a1 _performPreflightChecksForSendingToRooms:v9 zones:v10];
+  v18 = [self _performPreflightChecksForSendingToRooms:roomsCopy zones:zonesCopy];
 LABEL_24:
   v22 = v18;
 LABEL_25:

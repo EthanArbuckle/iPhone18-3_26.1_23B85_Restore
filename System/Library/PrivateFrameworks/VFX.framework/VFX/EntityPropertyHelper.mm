@@ -1,5 +1,5 @@
 @interface EntityPropertyHelper
-- (BOOL)_setValue:(id)a3 forKeyPath:(id)a4;
+- (BOOL)_setValue:(id)value forKeyPath:(id)path;
 - (BOOL)areParticlesSimulatedInWorldSpace;
 - (BOOL)hasParticleColliderComponent;
 - (BOOL)hasParticleEmitterComponent;
@@ -17,26 +17,26 @@
 - (__n128)transform;
 - (double)orientation;
 - (float)opacity;
-- (id)_valueForKeyPath:(id)a3 world:(id)a4;
+- (id)_valueForKeyPath:(id)path world:(id)world;
 - (id)opaqueEntityManager;
 - (int64_t)bindingTimestamp;
 - (int64_t)objectID;
 - (int64_t)particleDataBufferOffset;
 - (int64_t)particleHeaderBufferOffset;
-- (void)setAbsolutePath:(id)a3;
+- (void)setAbsolutePath:(id)path;
 - (void)setBeamed;
-- (void)setClientCGImage:(CGImage *)a3;
-- (void)setClientTexture:(id)a3;
-- (void)setClientTextureIdentifier:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setOpacity:(float)a3;
-- (void)setOrientation:(char *)a1;
+- (void)setClientCGImage:(CGImage *)image;
+- (void)setClientTexture:(id)texture;
+- (void)setClientTextureIdentifier:(id)identifier;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setOpacity:(float)opacity;
+- (void)setOrientation:(char *)orientation;
 - (void)setPosition:(_TtC3VFX20EntityPropertyHelper *)self;
 - (void)setScale:(_TtC3VFX20EntityPropertyHelper *)self;
-- (void)setSimulationAnchor:(__CFXNode *)a3;
-- (void)setSimulationRate:(float)a3;
-- (void)setTransform:(simd_float4)a3;
-- (void)updateAssociatedEntityWithTag:(id)a3;
+- (void)setSimulationAnchor:(__CFXNode *)anchor;
+- (void)setSimulationRate:(float)rate;
+- (void)setTransform:(simd_float4)transform;
+- (void)updateAssociatedEntityWithTag:(id)tag;
 @end
 
 @implementation EntityPropertyHelper
@@ -74,7 +74,7 @@
   return Strong;
 }
 
-- (void)updateAssociatedEntityWithTag:(id)a3
+- (void)updateAssociatedEntityWithTag:(id)tag
 {
   v4 = sub_1AFDFCEF8();
   v6 = v5;
@@ -83,15 +83,15 @@
   if (Strong)
   {
     v8 = Strong;
-    v9 = self;
+    selfCopy = self;
 
-    sub_1AF66977C(v8, v9, v8, v4, v6);
+    sub_1AF66977C(v8, selfCopy, v8, v4, v6);
   }
 }
 
 - (NSString)clientTextureIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFCE70CC();
   v4 = v3;
 
@@ -108,9 +108,9 @@
   return v5;
 }
 
-- (void)setClientTextureIdentifier:(id)a3
+- (void)setClientTextureIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1AFDFCEF8();
     v6 = v5;
@@ -127,9 +127,9 @@
   {
     v8 = Strong;
 
-    v11 = self;
+    selfCopy = self;
 
-    sub_1AF669B24(v9, v8, v4, v6, v11, v10);
+    sub_1AF669B24(v9, v8, v4, v6, selfCopy, v10);
   }
 
   else
@@ -139,22 +139,22 @@
 
 - (MTLTexture)clientTexture
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCE7808();
 
   return v3;
 }
 
-- (void)setClientTexture:(id)a3
+- (void)setClientTexture:(id)texture
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     swift_unknownObjectRetain_n();
-    v8 = self;
+    selfCopy = self;
 
-    sub_1AF66A14C(v7, v6, a3, v8);
+    sub_1AF66A14C(v7, v6, texture, selfCopy);
     swift_unknownObjectRelease();
   }
 }
@@ -166,7 +166,7 @@
   {
     v4 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
     v5 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity + 4);
-    v6 = self;
+    selfCopy = self;
 
     if (v4 == -1 && v5 == 0)
     {
@@ -194,18 +194,18 @@
   return Strong;
 }
 
-- (void)setClientCGImage:(CGImage *)a3
+- (void)setClientCGImage:(CGImage *)image
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    v9 = v7;
-    v11 = v8;
+    imageCopy = image;
+    selfCopy = self;
+    v9 = imageCopy;
+    v11 = selfCopy;
 
-    sub_1AF66A71C(v10, v6, a3, v11);
+    sub_1AF66A71C(v10, v6, image, v11);
   }
 }
 
@@ -225,7 +225,7 @@
 
 - (MTLBuffer)particleHeaderBuffer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCE9380();
 
   return v3;
@@ -233,7 +233,7 @@
 
 - (int64_t)particleHeaderBufferOffset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCE93CC();
 
   return v3;
@@ -241,7 +241,7 @@
 
 - (MTLBuffer)particleDataBuffer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCE9428();
 
   return v3;
@@ -249,7 +249,7 @@
 
 - (int64_t)particleDataBufferOffset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCE9664();
 
   return v3;
@@ -257,25 +257,25 @@
 
 - (__n128)transform
 {
-  v1 = a1;
+  selfCopy = self;
   *&v2 = sub_1AFCE98B4();
   v4 = v2;
 
   return v4;
 }
 
-- (void)setTransform:(simd_float4)a3
+- (void)setTransform:(simd_float4)transform
 {
   v14.columns[2] = a4;
   v14.columns[3] = a5;
-  v14.columns[1] = a3;
+  v14.columns[1] = transform;
   v14.columns[0] = a2;
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = *&a1[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
-    v13 = a1;
+    v8 = *&self[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
+    selfCopy = self;
 
     v16 = j____invert_f4_1(v14);
     v11 = v16.columns[1];
@@ -289,24 +289,24 @@
 
 - (__CFXNode)simulationAnchor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCEA0C4();
 
   return v3;
 }
 
-- (void)setSimulationAnchor:(__CFXNode *)a3
+- (void)setSimulationAnchor:(__CFXNode *)anchor
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     v7 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-    v8 = a3;
-    v9 = self;
+    anchorCopy = anchor;
+    selfCopy = self;
 
     MEMORY[0x1EEE9AC00](v10, v11);
-    v12[2] = a3;
+    v12[2] = anchor;
     sub_1AFCDA150(sub_1AFCF41FC, v12, v7, v6);
   }
 }
@@ -317,8 +317,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    sub_1AF677EF0(v4, v5);
+    selfCopy = self;
+    sub_1AF677EF0(v4, selfCopy);
   }
 }
 
@@ -329,7 +329,7 @@
   {
     v4 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
     v5 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity + 4);
-    v6 = self;
+    selfCopy = self;
 
     if (v4 == -1 && v5 == 0)
     {
@@ -350,22 +350,22 @@
   return v3;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     v7 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-    v8 = self;
+    selfCopy = self;
 
-    sub_1AFC75200(v7, v6, a3);
+    sub_1AFC75200(v7, v6, opacity);
   }
 }
 
 - (__n128)position
 {
-  v1 = a1;
+  selfCopy = self;
   *&v2 = sub_1AFCEAC94();
   v4 = v2;
 
@@ -379,7 +379,7 @@
   {
     v4 = Strong;
     v5 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-    v7 = self;
+    selfCopy = self;
 
     sub_1AFC0DE28();
     sub_1AFC754F8(v5, v4, v6);
@@ -390,9 +390,9 @@
 {
   if (swift_weakLoadStrong())
   {
-    v2 = *&a1[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
-    v3 = *&a1[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity + 4];
-    v4 = a1;
+    v2 = *&self[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
+    v3 = *&self[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity + 4];
+    selfCopy = self;
 
     if (v2 != -1 || v3 != 0)
     {
@@ -410,20 +410,20 @@
 
   else
   {
-    v10 = a1;
+    selfCopy2 = self;
   }
 
   return 0.0;
 }
 
-- (void)setOrientation:(char *)a1
+- (void)setOrientation:(char *)orientation
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
     v4 = Strong;
-    v5 = *&a1[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
-    v6 = a1;
+    v5 = *&orientation[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
+    orientationCopy = orientation;
 
     sub_1AFC754E0(v5, v4, a2);
   }
@@ -433,8 +433,8 @@
 {
   if (swift_weakLoadStrong())
   {
-    v2 = *&a1[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
-    v3 = a1;
+    v2 = *&self[OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity];
+    selfCopy = self;
 
     v4 = sub_1AF5F28AC(v2);
     if ((v5 & 1) == 0)
@@ -448,7 +448,7 @@
 
   else
   {
-    v8 = a1;
+    selfCopy2 = self;
   }
 
   __asm { FMOV            V0.4S, #1.0 }
@@ -464,7 +464,7 @@
   {
     v5 = Strong;
     v6 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-    v7 = self;
+    selfCopy = self;
 
     sub_1AF5F29B4(v8, *(&v8 + 1), 0, v6, v5);
   }
@@ -490,14 +490,14 @@ LABEL_5:
 
   v6 = v5;
   v7 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-  v8 = self;
+  selfCopy = self;
 
   v9 = sub_1AF66D228(v4, v7, v6);
 
   return v9 & 1;
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
@@ -508,9 +508,9 @@ LABEL_5:
     {
       v8 = v7;
       v9 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-      v10 = self;
+      selfCopy = self;
 
-      sub_1AF66ACE0(v6, v9, v8, a3);
+      sub_1AF66ACE0(v6, v9, v8, enabled);
     }
 
     else
@@ -530,7 +530,7 @@ LABEL_5:
     {
       v6 = v5;
       v7 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-      v8 = self;
+      selfCopy = self;
 
       sub_1AF671300(v9, v4, v7, v6);
       v11 = v10;
@@ -556,9 +556,9 @@ LABEL_7:
   return Strong;
 }
 
-- (void)setAbsolutePath:(id)a3
+- (void)setAbsolutePath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = sub_1AFDFCEF8();
     v6 = v5;
@@ -570,7 +570,7 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1AFCEC678(v4, v6);
 }
 
@@ -581,8 +581,8 @@ LABEL_7:
   {
     v4 = Strong;
 
-    v5 = self;
-    v6 = sub_1AF6725C4(v4, v4, v5);
+    selfCopy = self;
+    v6 = sub_1AF6725C4(v4, v4, selfCopy);
   }
 
   else
@@ -593,7 +593,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setSimulationRate:(float)a3
+- (void)setSimulationRate:(float)rate
 {
   Strong = swift_weakLoadStrong();
   if (Strong)
@@ -604,9 +604,9 @@ LABEL_7:
     {
       v8 = v7;
       v9 = *(&self->super.isa + OBJC_IVAR____TtC3VFX20EntityPropertyHelper_entity);
-      v10 = self;
+      selfCopy = self;
 
-      sub_1AF66B4BC(v6, v9, v8, a3);
+      sub_1AF66B4BC(v6, v9, v8, rate);
     }
 
     else
@@ -617,7 +617,7 @@ LABEL_7:
 
 - (BOOL)hasParticleEmitterComponent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCED948();
 
   return v3;
@@ -625,30 +625,30 @@ LABEL_7:
 
 - (BOOL)hasParticleColliderComponent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCEDA18();
 
   return v3 & 1;
 }
 
-- (BOOL)_setValue:(id)a3 forKeyPath:(id)a4
+- (BOOL)_setValue:(id)value forKeyPath:(id)path
 {
   sub_1AFDFCEF8();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1AFCEDD8C(a3);
+  selfCopy = self;
+  v7 = sub_1AFCEDD8C(value);
   swift_unknownObjectRelease();
 
   return v7 & 1;
 }
 
-- (id)_valueForKeyPath:(id)a3 world:(id)a4
+- (id)_valueForKeyPath:(id)path world:(id)world
 {
   v6 = sub_1AFDFCEF8();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_1AFCEE474(v6, v8, v9);
+  worldCopy = world;
+  selfCopy = self;
+  v11 = sub_1AFCEE474(v6, v8, worldCopy);
 
   return v11;
 }

@@ -9,7 +9,7 @@
 
 + (void)initializeMonitor
 {
-  v2 = [getSpeakThisServicesClass() sharedInstance];
+  sharedInstance = [getSpeakThisServicesClass() sharedInstance];
   if (initializeMonitor_onceToken_9 != -1)
   {
     +[AXBSpeakThisManager initializeMonitor];
@@ -35,13 +35,13 @@ uint64_t __40__AXBSpeakThisManager_initializeMonitor__block_invoke()
     v2->_speakThisQueue = v3;
 
     objc_initWeak(&location, v2);
-    v5 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __27__AXBSpeakThisManager_init__block_invoke;
     v10[3] = &unk_29F2A4D08;
     objc_copyWeak(&v11, &location);
-    [v5 registerUpdateBlock:v10 forRetrieveSelector:sel_showSpeechController withListener:v2];
+    [mEMORY[0x29EDBDFA0] registerUpdateBlock:v10 forRetrieveSelector:sel_showSpeechController withListener:v2];
 
     objc_destroyWeak(&v11);
     v6 = AXLogSpeakScreen();
@@ -54,8 +54,8 @@ uint64_t __40__AXBSpeakThisManager_initializeMonitor__block_invoke()
     _AXSSpeakThisSetHighlightVisible();
     [(AXBSpeakThisManager *)v2 _notifySpeakThisOfSettingsChange];
     [(AXBSpeakThisManager *)v2 _startWatchingForDeathOfAccessibilityUIServerPID];
-    v7 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v7 addObserver:v2 selector:sel__startWatchingForDeathOfAccessibilityUIServerPID name:*MEMORY[0x29EDC8500] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__startWatchingForDeathOfAccessibilityUIServerPID name:*MEMORY[0x29EDC8500] object:0];
 
     objc_destroyWeak(&location);
   }
@@ -71,8 +71,8 @@ void __27__AXBSpeakThisManager_init__block_invoke(uint64_t a1)
 
 - (void)_notifySpeakThisOfSettingsChange
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  if ([v3 showSpeechController])
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  if ([mEMORY[0x29EDBDFA0] showSpeechController])
   {
     v4 = _AXSSpeakThisEnabled();
 

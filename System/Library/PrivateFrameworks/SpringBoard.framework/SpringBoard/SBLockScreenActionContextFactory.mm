@@ -1,8 +1,8 @@
 @interface SBLockScreenActionContextFactory
 + (id)sharedInstance;
-- (id)lockScreenActionContextForAction:(id)a3 fromPlugin:(id)a4;
-- (id)lockScreenActionContextForAlertItem:(id)a3;
-- (id)lockScreenActionContextForPlugin:(id)a3;
+- (id)lockScreenActionContextForAction:(id)action fromPlugin:(id)plugin;
+- (id)lockScreenActionContextForAlertItem:(id)item;
+- (id)lockScreenActionContextForPlugin:(id)plugin;
 @end
 
 @implementation SBLockScreenActionContextFactory
@@ -26,19 +26,19 @@ void __50__SBLockScreenActionContextFactory_sharedInstance__block_invoke()
   sharedInstance___instance_5 = v0;
 }
 
-- (id)lockScreenActionContextForAlertItem:(id)a3
+- (id)lockScreenActionContextForAlertItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__SBLockScreenActionContextFactory_lockScreenActionContextForAlertItem___block_invoke;
   v10[3] = &unk_2783A8C18;
-  v11 = v3;
-  v4 = v3;
+  v11 = itemCopy;
+  v4 = itemCopy;
   v5 = MEMORY[0x223D6F7F0](v10);
-  v6 = [v4 lockLabel];
-  v7 = [v4 shortLockLabel];
-  v8 = [objc_alloc(MEMORY[0x277D65EF8]) initWithLockLabel:v6 shortLockLabel:v7 action:v5 identifier:0];
+  lockLabel = [v4 lockLabel];
+  shortLockLabel = [v4 shortLockLabel];
+  v8 = [objc_alloc(MEMORY[0x277D65EF8]) initWithLockLabel:lockLabel shortLockLabel:shortLockLabel action:v5 identifier:0];
   [v8 setCanBypassPinLock:0];
   [v8 setRequiresUIUnlock:1];
   [v8 setDeactivateAwayController:1];
@@ -46,28 +46,28 @@ void __50__SBLockScreenActionContextFactory_sharedInstance__block_invoke()
   return v8;
 }
 
-- (id)lockScreenActionContextForPlugin:(id)a3
+- (id)lockScreenActionContextForPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [v4 unlockAction];
-  v6 = [(SBLockScreenActionContextFactory *)self lockScreenActionContextForAction:v5 fromPlugin:v4];
+  pluginCopy = plugin;
+  unlockAction = [pluginCopy unlockAction];
+  v6 = [(SBLockScreenActionContextFactory *)self lockScreenActionContextForAction:unlockAction fromPlugin:pluginCopy];
 
   return v6;
 }
 
-- (id)lockScreenActionContextForAction:(id)a3 fromPlugin:(id)a4
+- (id)lockScreenActionContextForAction:(id)action fromPlugin:(id)plugin
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  actionCopy = action;
+  pluginCopy = plugin;
+  v7 = pluginCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (actionCopy && pluginCopy)
   {
-    if ([v5 isApplicationAction])
+    if ([actionCopy isApplicationAction])
     {
       v9 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-      v10 = [v9 policyAggregator];
-      v11 = [v10 allowsCapability:3];
+      policyAggregator = [v9 policyAggregator];
+      v11 = [policyAggregator allowsCapability:3];
 
       if (!v11)
       {
@@ -79,17 +79,17 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v12 = v5;
-      v13 = [v7 name];
-      v14 = [v12 bundleID];
+      v12 = actionCopy;
+      name = [v7 name];
+      bundleID = [v12 bundleID];
       v15 = [v12 url];
-      v16 = [v12 transitionStyle];
-      if (v14 | v15)
+      transitionStyle = [v12 transitionStyle];
+      if (bundleID | v15)
       {
-        v17 = v16;
+        v17 = transitionStyle;
         v18 = objc_alloc_init(MEMORY[0x277D65EF8]);
-        v19 = [v12 label];
-        [v18 setLockLabel:v19];
+        label = [v12 label];
+        [v18 setLockLabel:label];
 
         [v18 setRequiresAuthentication:1];
         [v18 setCanBypassPinLock:0];
@@ -100,9 +100,9 @@ LABEL_17:
         v25[1] = 3221225472;
         v25[2] = __80__SBLockScreenActionContextFactory_lockScreenActionContextForAction_fromPlugin___block_invoke;
         v25[3] = &unk_2783AB280;
-        v26 = v14;
+        v26 = bundleID;
         v27 = v15;
-        v28 = v13;
+        v28 = name;
         v29 = v17;
         [v18 setAction:v25];
       }
@@ -112,13 +112,13 @@ LABEL_17:
         v18 = 0;
       }
 
-      if (!(v14 | v15))
+      if (!(bundleID | v15))
       {
         goto LABEL_14;
       }
     }
 
-    else if ([v5 isEmergencyDialerAction])
+    else if ([actionCopy isEmergencyDialerAction])
     {
       v18 = objc_alloc_init(MEMORY[0x277D65EF8]);
       [v18 setRequiresAuthentication:0];
@@ -127,9 +127,9 @@ LABEL_17:
       [v18 setAction:&__block_literal_global_11_3];
     }
 
-    else if ([v5 isCallAction])
+    else if ([actionCopy isCallAction])
     {
-      v20 = v5;
+      v20 = actionCopy;
       v18 = objc_alloc_init(MEMORY[0x277D65EF8]);
       [v18 setRequiresAuthentication:0];
       [v18 setRequiresUIUnlock:0];

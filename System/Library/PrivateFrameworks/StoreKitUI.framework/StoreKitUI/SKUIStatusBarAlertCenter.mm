@@ -7,9 +7,9 @@
 - (void)dismiss;
 - (void)init;
 - (void)scheduleDismiss;
-- (void)setVisible:(BOOL)a3;
-- (void)showMessage:(id)a3 withStyle:(int64_t)a4 forDuration:(double)a5 actionBlock:(id)a6;
-- (void)statusBarAlertViewControllerWasTapped:(id)a3;
+- (void)setVisible:(BOOL)visible;
+- (void)showMessage:(id)message withStyle:(int64_t)style forDuration:(double)duration actionBlock:(id)block;
+- (void)statusBarAlertViewControllerWasTapped:(id)tapped;
 @end
 
 @implementation SKUIStatusBarAlertCenter
@@ -58,8 +58,8 @@ uint64_t __40__SKUIStatusBarAlertCenter_sharedCenter__block_invoke()
 
     [(_SKUIStatusBarAlertViewController *)v3->_rootViewController setDelegate:v3];
     v6 = [_SKUIClickThroughWindow alloc];
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v8 = [(_SKUIClickThroughWindow *)v6 initWithFrame:?];
     window = v3->_window;
     v3->_window = v8;
@@ -73,44 +73,44 @@ uint64_t __40__SKUIStatusBarAlertCenter_sharedCenter__block_invoke()
   return v3;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(SKUIStatusBarAlertCenter *)self window];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  window = [(SKUIStatusBarAlertCenter *)self window];
+  [window setHidden:!visibleCopy];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(SKUIStatusBarAlertCenter *)self window];
-  v3 = [v2 isHidden];
+  window = [(SKUIStatusBarAlertCenter *)self window];
+  isHidden = [window isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (NSString)message
 {
-  v2 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-  v3 = [v2 message];
+  rootViewController = [(SKUIStatusBarAlertCenter *)self rootViewController];
+  message = [rootViewController message];
 
-  return v3;
+  return message;
 }
 
-- (void)showMessage:(id)a3 withStyle:(int64_t)a4 forDuration:(double)a5 actionBlock:(id)a6
+- (void)showMessage:(id)message withStyle:(int64_t)style forDuration:(double)duration actionBlock:(id)block
 {
-  v10 = a6;
-  if (a5 < 2.22044605e-16)
+  blockCopy = block;
+  if (duration < 2.22044605e-16)
   {
-    a5 = 3.0;
+    duration = 3.0;
   }
 
-  v11 = a3;
-  v12 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-  [v12 setMessage:v11];
+  messageCopy = message;
+  rootViewController = [(SKUIStatusBarAlertCenter *)self rootViewController];
+  [rootViewController setMessage:messageCopy];
 
-  [(SKUIStatusBarAlertCenter *)self setDuration:a5];
-  v13 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-  [v13 endAllAnimations];
+  [(SKUIStatusBarAlertCenter *)self setDuration:duration];
+  rootViewController2 = [(SKUIStatusBarAlertCenter *)self rootViewController];
+  [rootViewController2 endAllAnimations];
 
   if ([(SKUIStatusBarAlertCenter *)self isVisible])
   {
@@ -121,8 +121,8 @@ uint64_t __40__SKUIStatusBarAlertCenter_sharedCenter__block_invoke()
     v28[2] = __74__SKUIStatusBarAlertCenter_showMessage_withStyle_forDuration_actionBlock___block_invoke;
     v28[3] = &unk_2781FD878;
     v28[4] = self;
-    v30 = a4;
-    v29 = v10;
+    styleCopy = style;
+    v29 = blockCopy;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __74__SKUIStatusBarAlertCenter_showMessage_withStyle_forDuration_actionBlock___block_invoke_2;
@@ -133,32 +133,32 @@ uint64_t __40__SKUIStatusBarAlertCenter_sharedCenter__block_invoke()
 
   else
   {
-    v15 = [MEMORY[0x277D75DA0] keyWindow];
-    v16 = v15;
-    if (v15)
+    keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+    v16 = keyWindow;
+    if (keyWindow)
     {
-      v17 = [v15 rootViewController];
-      v18 = [v17 supportedInterfaceOrientations];
+      rootViewController3 = [keyWindow rootViewController];
+      supportedInterfaceOrientations = [rootViewController3 supportedInterfaceOrientations];
     }
 
     else
     {
-      v17 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-      v18 = [v17 defaultInterfaceOrientations];
+      rootViewController3 = [(SKUIStatusBarAlertCenter *)self rootViewController];
+      supportedInterfaceOrientations = [rootViewController3 defaultInterfaceOrientations];
     }
 
-    v19 = v18;
-    v20 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-    [v20 setSupportedInterfaceOrientations:v19];
+    v19 = supportedInterfaceOrientations;
+    rootViewController4 = [(SKUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController4 setSupportedInterfaceOrientations:v19];
 
-    v21 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-    [v21 setStyle:a4];
+    rootViewController5 = [(SKUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController5 setStyle:style];
 
-    [(SKUIStatusBarAlertCenter *)self setActionBlock:v10];
-    v22 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-    v23 = [v22 statusBarView];
-    v24 = [(SKUIStatusBarAlertCenter *)self window];
-    [v24 setInteractionView:v23];
+    [(SKUIStatusBarAlertCenter *)self setActionBlock:blockCopy];
+    rootViewController6 = [(SKUIStatusBarAlertCenter *)self rootViewController];
+    statusBarView = [rootViewController6 statusBarView];
+    window = [(SKUIStatusBarAlertCenter *)self window];
+    [window setInteractionView:statusBarView];
 
     [(SKUIStatusBarAlertCenter *)self setVisible:1];
     v26[0] = MEMORY[0x277D85DD0];
@@ -228,8 +228,8 @@ uint64_t __74__SKUIStatusBarAlertCenter_showMessage_withStyle_forDuration_action
   [(SKUIStatusBarAlertCenter *)self unscheduleDismiss];
   if ([(SKUIStatusBarAlertCenter *)self isVisible])
   {
-    v3 = [(SKUIStatusBarAlertCenter *)self rootViewController];
-    [v3 endAllAnimations];
+    rootViewController = [(SKUIStatusBarAlertCenter *)self rootViewController];
+    [rootViewController endAllAnimations];
 
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -268,15 +268,15 @@ uint64_t __35__SKUIStatusBarAlertCenter_dismiss__block_invoke_2(uint64_t result,
   return result;
 }
 
-- (void)statusBarAlertViewControllerWasTapped:(id)a3
+- (void)statusBarAlertViewControllerWasTapped:(id)tapped
 {
   [(SKUIStatusBarAlertCenter *)self dismiss];
-  v4 = [(SKUIStatusBarAlertCenter *)self actionBlock];
+  actionBlock = [(SKUIStatusBarAlertCenter *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(SKUIStatusBarAlertCenter *)self actionBlock];
-    v5[2]();
+    actionBlock2 = [(SKUIStatusBarAlertCenter *)self actionBlock];
+    actionBlock2[2]();
   }
 }
 

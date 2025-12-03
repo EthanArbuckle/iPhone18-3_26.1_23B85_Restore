@@ -1,18 +1,18 @@
 @interface IDSDaemonPriorityQueueController
 + (id)sharedInstance;
 - (IDSDaemonPriorityQueueController)init;
-- (id)_queueForImplicitPriority:(int64_t)a3;
-- (id)queueForPriority:(int64_t)a3;
+- (id)_queueForImplicitPriority:(int64_t)priority;
+- (id)queueForPriority:(int64_t)priority;
 - (void)assertRunningOnMain;
-- (void)assertRunningWithPriority:(int64_t)a3;
-- (void)performBlock:(id)a3 withImplicitPriority:(int64_t)a4;
-- (void)performBlockDefaultPriority:(id)a3;
-- (void)performBlockMainQueue:(id)a3;
-- (void)performBlockMainQueue:(id)a3 afterTimeMSec:(unsigned int)a4;
-- (void)performBlockSYNCHRONOUSLYWithPriority:(id)a3 priority:(int64_t)a4;
-- (void)performBlockSyncPriority:(id)a3;
-- (void)performBlockUrgentPriority:(id)a3;
-- (void)performBlockWithPriority:(id)a3 priority:(int64_t)a4;
+- (void)assertRunningWithPriority:(int64_t)priority;
+- (void)performBlock:(id)block withImplicitPriority:(int64_t)priority;
+- (void)performBlockDefaultPriority:(id)priority;
+- (void)performBlockMainQueue:(id)queue;
+- (void)performBlockMainQueue:(id)queue afterTimeMSec:(unsigned int)sec;
+- (void)performBlockSYNCHRONOUSLYWithPriority:(id)priority priority:(int64_t)a4;
+- (void)performBlockSyncPriority:(id)priority;
+- (void)performBlockUrgentPriority:(id)priority;
+- (void)performBlockWithPriority:(id)priority priority:(int64_t)a4;
 @end
 
 @implementation IDSDaemonPriorityQueueController
@@ -65,9 +65,9 @@
   return v2;
 }
 
-- (id)queueForPriority:(int64_t)a3
+- (id)queueForPriority:(int64_t)priority
 {
-  switch(a3)
+  switch(priority)
   {
     case 100:
       v4 = 8;
@@ -87,9 +87,9 @@
   return v5;
 }
 
-- (id)_queueForImplicitPriority:(int64_t)a3
+- (id)_queueForImplicitPriority:(int64_t)priority
 {
-  switch(a3)
+  switch(priority)
   {
     case 300:
       urgent_queue = self->_urgent_queue;
@@ -110,122 +110,122 @@ LABEL_9:
   return v4;
 }
 
-- (void)performBlock:(id)a3 withImplicitPriority:(int64_t)a4
+- (void)performBlock:(id)block withImplicitPriority:(int64_t)priority
 {
-  v6 = a3;
-  v7 = [(IDSDaemonPriorityQueueController *)self _queueForImplicitPriority:a4];
+  blockCopy = block;
+  v7 = [(IDSDaemonPriorityQueueController *)self _queueForImplicitPriority:priority];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A3A8C;
   block[3] = &unk_100BD7270;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(v7, block);
 }
 
-- (void)performBlockSyncPriority:(id)a3
+- (void)performBlockSyncPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   sync_queue = self->_sync_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A3B70;
   block[3] = &unk_100BD7270;
-  v8 = v4;
-  v6 = v4;
+  v8 = priorityCopy;
+  v6 = priorityCopy;
   dispatch_async(sync_queue, block);
 }
 
-- (void)performBlockDefaultPriority:(id)a3
+- (void)performBlockDefaultPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   default_queue = self->_default_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A3C54;
   block[3] = &unk_100BD7270;
-  v8 = v4;
-  v6 = v4;
+  v8 = priorityCopy;
+  v6 = priorityCopy;
   dispatch_async(default_queue, block);
 }
 
-- (void)performBlockUrgentPriority:(id)a3
+- (void)performBlockUrgentPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   urgent_queue = self->_urgent_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A3D38;
   block[3] = &unk_100BD7270;
-  v8 = v4;
-  v6 = v4;
+  v8 = priorityCopy;
+  v6 = priorityCopy;
   dispatch_async(urgent_queue, block);
 }
 
-- (void)performBlockMainQueue:(id)a3
+- (void)performBlockMainQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A3E28;
   block[3] = &unk_100BD7270;
-  v7 = v3;
-  v5 = v3;
+  v7 = queueCopy;
+  v5 = queueCopy;
   dispatch_async(v4, block);
 }
 
-- (void)performBlockMainQueue:(id)a3 afterTimeMSec:(unsigned int)a4
+- (void)performBlockMainQueue:(id)queue afterTimeMSec:(unsigned int)sec
 {
-  v6 = a3;
-  if (a4)
+  queueCopy = queue;
+  if (sec)
   {
-    v7 = dispatch_time(0, 1000000 * a4);
+    v7 = dispatch_time(0, 1000000 * sec);
     v8 = im_primary_queue();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1006A3F54;
     block[3] = &unk_100BD7270;
-    v10 = v6;
+    v10 = queueCopy;
     dispatch_after(v7, v8, block);
   }
 
   else
   {
-    [(IDSDaemonPriorityQueueController *)self performBlockMainQueue:v6];
+    [(IDSDaemonPriorityQueueController *)self performBlockMainQueue:queueCopy];
   }
 }
 
-- (void)performBlockWithPriority:(id)a3 priority:(int64_t)a4
+- (void)performBlockWithPriority:(id)priority priority:(int64_t)a4
 {
-  v6 = a3;
+  priorityCopy = priority;
   v7 = [(IDSDaemonPriorityQueueController *)self queueForPriority:a4];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A405C;
   block[3] = &unk_100BD7270;
-  v10 = v6;
-  v8 = v6;
+  v10 = priorityCopy;
+  v8 = priorityCopy;
   dispatch_async(v7, block);
 }
 
-- (void)performBlockSYNCHRONOUSLYWithPriority:(id)a3 priority:(int64_t)a4
+- (void)performBlockSYNCHRONOUSLYWithPriority:(id)priority priority:(int64_t)a4
 {
-  v6 = a3;
+  priorityCopy = priority;
   [(IDSDaemonPriorityQueueController *)self assertRunningOnMain];
   v7 = [(IDSDaemonPriorityQueueController *)self queueForPriority:a4];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006A416C;
   block[3] = &unk_100BD7270;
-  v10 = v6;
-  v8 = v6;
+  v10 = priorityCopy;
+  v8 = priorityCopy;
   dispatch_sync(v7, block);
 }
 
-- (void)assertRunningWithPriority:(int64_t)a3
+- (void)assertRunningWithPriority:(int64_t)priority
 {
-  v3 = [(IDSDaemonPriorityQueueController *)self queueForPriority:a3];
+  v3 = [(IDSDaemonPriorityQueueController *)self queueForPriority:priority];
   dispatch_assert_queue_V2(v3);
 }
 

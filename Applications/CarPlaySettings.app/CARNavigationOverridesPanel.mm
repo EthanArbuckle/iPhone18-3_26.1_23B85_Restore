@@ -1,15 +1,15 @@
 @interface CARNavigationOverridesPanel
-- (CARNavigationOverridesPanel)initWithPanelController:(id)a3;
+- (CARNavigationOverridesPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 @end
 
 @implementation CARNavigationOverridesPanel
 
-- (CARNavigationOverridesPanel)initWithPanelController:(id)a3
+- (CARNavigationOverridesPanel)initWithPanelController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = CARNavigationOverridesPanel;
-  v3 = [(CARSettingsPanel *)&v10 initWithPanelController:a3];
+  v3 = [(CARSettingsPanel *)&v10 initWithPanelController:controller];
   if (v3)
   {
     v4 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"maps:/car/instrumentcluster" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB1E8];

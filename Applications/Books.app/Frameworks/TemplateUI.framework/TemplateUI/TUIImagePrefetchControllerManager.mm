@@ -1,10 +1,10 @@
 @interface TUIImagePrefetchControllerManager
 + (id)sharedManager;
 - (TUIImagePrefetchControllerManager)init;
-- (id)_controllerWithID:(id)a3;
-- (void)prefetchResources:(id)a3 controllerID:(id)a4 loader:(id)a5;
-- (void)registerPrefetchController:(id)a3;
-- (void)unregisterPrefetchController:(id)a3;
+- (id)_controllerWithID:(id)d;
+- (void)prefetchResources:(id)resources controllerID:(id)d loader:(id)loader;
+- (void)registerPrefetchController:(id)controller;
+- (void)unregisterPrefetchController:(id)controller;
 @end
 
 @implementation TUIImagePrefetchControllerManager
@@ -49,25 +49,25 @@
   return v2;
 }
 
-- (void)registerPrefetchController:(id)a3
+- (void)registerPrefetchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   access = self->_access;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_39CC0;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   dispatch_sync(access, v7);
 }
 
-- (void)unregisterPrefetchController:(id)a3
+- (void)unregisterPrefetchController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 controllerID];
-  v6 = [v5 copy];
+  controllerCopy = controller;
+  controllerID = [controllerCopy controllerID];
+  v6 = [controllerID copy];
 
   access = self->_access;
   block[0] = _NSConcreteStackBlock;
@@ -75,8 +75,8 @@
   block[2] = sub_39DF4;
   block[3] = &unk_25DCA0;
   block[4] = self;
-  v14 = v4;
-  v8 = v4;
+  v14 = controllerCopy;
+  v8 = controllerCopy;
   dispatch_sync(access, block);
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
@@ -89,9 +89,9 @@
   dispatch_async(queue, v11);
 }
 
-- (id)_controllerWithID:(id)a3
+- (id)_controllerWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -104,9 +104,9 @@
   block[2] = sub_3A0EC;
   block[3] = &unk_25DC78;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(access, block);
   v7 = v13[5];
 
@@ -115,23 +115,23 @@
   return v7;
 }
 
-- (void)prefetchResources:(id)a3 controllerID:(id)a4 loader:(id)a5
+- (void)prefetchResources:(id)resources controllerID:(id)d loader:(id)loader
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourcesCopy = resources;
+  dCopy = d;
+  loaderCopy = loader;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_3A314;
   v15[3] = &unk_25EB18;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = dCopy;
+  v17 = resourcesCopy;
+  v18 = loaderCopy;
+  v12 = loaderCopy;
+  v13 = resourcesCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 

@@ -4,25 +4,25 @@
 - (PHAsset)lastRecoveredAsset;
 - (PHAssetCollection)recoveredAssetsSmartAlbum;
 - (PXAssetsRecoveryCountsManager)init;
-- (PXAssetsRecoveryCountsManager)initWithPhotoLibrary:(id)a3;
+- (PXAssetsRecoveryCountsManager)initWithPhotoLibrary:(id)library;
 - (void)_startFetchingRecoveredAssets;
 - (void)_updateShouldShowBanner;
 - (void)markAsRead;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
-- (void)photoLibraryLocalDefaults:(id)a3 didChangeValueForKey:(id)a4;
-- (void)setBannerDismissalDate:(id)a3;
-- (void)setRecoveredAssetsFetchResult:(id)a3;
-- (void)setShouldShowBanner:(BOOL)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
+- (void)photoLibraryLocalDefaults:(id)defaults didChangeValueForKey:(id)key;
+- (void)setBannerDismissalDate:(id)date;
+- (void)setRecoveredAssetsFetchResult:(id)result;
+- (void)setShouldShowBanner:(BOOL)banner;
 @end
 
 @implementation PXAssetsRecoveryCountsManager
 
-- (void)photoLibraryLocalDefaults:(id)a3 didChangeValueForKey:(id)a4
+- (void)photoLibraryLocalDefaults:(id)defaults didChangeValueForKey:(id)key
 {
-  v5 = a3;
-  if ([a4 isEqualToString:@"AssetsRecoveryBannerDismissalDate"])
+  defaultsCopy = defaults;
+  if ([key isEqualToString:@"AssetsRecoveryBannerDismissalDate"])
   {
-    v5;
+    defaultsCopy;
     px_dispatch_on_main_queue();
   }
 }
@@ -37,37 +37,37 @@ uint64_t __80__PXAssetsRecoveryCountsManager_photoLibraryLocalDefaults_didChange
   return [v3 _updateShouldShowBanner];
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
-  v10 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  infoCopy = info;
   if (self->_recoveredAssetsFetchResult)
   {
-    v7 = [v10 changeDetailsForFetchResult:?];
+    v7 = [queueCopy changeDetailsForFetchResult:?];
     if (v7)
     {
       v8 = v7;
-      v9 = [v7 fetchResultAfterChanges];
-      [(PXAssetsRecoveryCountsManager *)self setRecoveredAssetsFetchResult:v9];
+      fetchResultAfterChanges = [v7 fetchResultAfterChanges];
+      [(PXAssetsRecoveryCountsManager *)self setRecoveredAssetsFetchResult:fetchResultAfterChanges];
     }
   }
 }
 
 - (void)_updateShouldShowBanner
 {
-  v3 = [(PXAssetsRecoveryCountsManager *)self recoveredAssetsFetchResult];
-  v4 = [v3 firstObject];
+  recoveredAssetsFetchResult = [(PXAssetsRecoveryCountsManager *)self recoveredAssetsFetchResult];
+  firstObject = [recoveredAssetsFetchResult firstObject];
 
-  v5 = [v4 curationProperties];
-  v6 = [v5 addedDate];
+  curationProperties = [firstObject curationProperties];
+  addedDate = [curationProperties addedDate];
 
-  v7 = [(PXAssetsRecoveryCountsManager *)self bannerDismissalDate];
-  v8 = v7;
-  if (v6)
+  bannerDismissalDate = [(PXAssetsRecoveryCountsManager *)self bannerDismissalDate];
+  v8 = bannerDismissalDate;
+  if (addedDate)
   {
-    if (v7)
+    if (bannerDismissalDate)
     {
-      v9 = [v7 compare:v6] == -1;
+      v9 = [bannerDismissalDate compare:addedDate] == -1;
     }
 
     else
@@ -92,20 +92,20 @@ uint64_t __80__PXAssetsRecoveryCountsManager_photoLibraryLocalDefaults_didChange
 
 - (void)_startFetchingRecoveredAssets
 {
-  v3 = [(PXAssetsRecoveryCountsManager *)self photoLibrary];
-  v4 = [v3 px_localDefaults];
+  photoLibrary = [(PXAssetsRecoveryCountsManager *)self photoLibrary];
+  px_localDefaults = [photoLibrary px_localDefaults];
 
-  v5 = [v4 dateForKey:@"AssetsRecoveryBannerDismissalDate"];
+  v5 = [px_localDefaults dateForKey:@"AssetsRecoveryBannerDismissalDate"];
   [(PXAssetsRecoveryCountsManager *)self setBannerDismissalDate:v5];
 
-  [v4 registerChangeObserver:self context:PXPhotoLibraryLocalDefaultsObservationContext];
-  v6 = [(PXAssetsRecoveryCountsManager *)self queue];
+  [px_localDefaults registerChangeObserver:self context:PXPhotoLibraryLocalDefaultsObservationContext];
+  queue = [(PXAssetsRecoveryCountsManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PXAssetsRecoveryCountsManager__startFetchingRecoveredAssets__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 void __62__PXAssetsRecoveryCountsManager__startFetchingRecoveredAssets__block_invoke(uint64_t a1)
@@ -143,30 +143,30 @@ void __62__PXAssetsRecoveryCountsManager__startFetchingRecoveredAssets__block_in
   [(PXAssetsRecoveryCountsManager *)self setBannerDismissalDate:v3];
 }
 
-- (void)setShouldShowBanner:(BOOL)a3
+- (void)setShouldShowBanner:(BOOL)banner
 {
-  if (self->_shouldShowBanner != a3)
+  if (self->_shouldShowBanner != banner)
   {
-    self->_shouldShowBanner = a3;
+    self->_shouldShowBanner = banner;
     [(PXAssetsRecoveryCountsManager *)self signalChange:1];
   }
 }
 
-- (void)setBannerDismissalDate:(id)a3
+- (void)setBannerDismissalDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_bannerDismissalDate != v5 && ([(NSDate *)v5 isEqual:?]& 1) == 0)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (self->_bannerDismissalDate != dateCopy && ([(NSDate *)dateCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_bannerDismissalDate, a3);
-    v7 = [(PXAssetsRecoveryCountsManager *)self queue];
+    objc_storeStrong(&self->_bannerDismissalDate, date);
+    queue = [(PXAssetsRecoveryCountsManager *)self queue];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __56__PXAssetsRecoveryCountsManager_setBannerDismissalDate___block_invoke;
     v11 = &unk_1E774C620;
-    v12 = self;
+    selfCopy = self;
     v13 = v6;
-    dispatch_async(v7, &v8);
+    dispatch_async(queue, &v8);
 
     [(PXAssetsRecoveryCountsManager *)self _updateShouldShowBanner:v8];
   }
@@ -179,14 +179,14 @@ void __56__PXAssetsRecoveryCountsManager_setBannerDismissalDate___block_invoke(u
   [v2 setDate:*(a1 + 40) forKey:@"AssetsRecoveryBannerDismissalDate"];
 }
 
-- (void)setRecoveredAssetsFetchResult:(id)a3
+- (void)setRecoveredAssetsFetchResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_recoveredAssetsFetchResult != v5 && ([(PHFetchResult *)v5 isEqual:?]& 1) == 0)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_recoveredAssetsFetchResult != resultCopy && ([(PHFetchResult *)resultCopy isEqual:?]& 1) == 0)
   {
     v7 = [(PHFetchResult *)self->_recoveredAssetsFetchResult count];
-    objc_storeStrong(&self->_recoveredAssetsFetchResult, a3);
+    objc_storeStrong(&self->_recoveredAssetsFetchResult, result);
     if (v7 != [(PHFetchResult *)self->_recoveredAssetsFetchResult count])
     {
       v8[0] = MEMORY[0x1E69E9820];
@@ -206,13 +206,13 @@ void __56__PXAssetsRecoveryCountsManager_setBannerDismissalDate___block_invoke(u
   recoveredAssetsSmartAlbum = self->_recoveredAssetsSmartAlbum;
   if (!recoveredAssetsSmartAlbum)
   {
-    v4 = [(PXAssetsRecoveryCountsManager *)self photoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
+    photoLibrary = [(PXAssetsRecoveryCountsManager *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:-[PXAssetsRecoveryCountsManager assetCollectionSubtype](self options:{"assetCollectionSubtype"), v5}];
-    v7 = [v6 firstObject];
+    v6 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:-[PXAssetsRecoveryCountsManager assetCollectionSubtype](self options:{"assetCollectionSubtype"), librarySpecificFetchOptions}];
+    firstObject = [v6 firstObject];
     v8 = self->_recoveredAssetsSmartAlbum;
-    self->_recoveredAssetsSmartAlbum = v7;
+    self->_recoveredAssetsSmartAlbum = firstObject;
 
     recoveredAssetsSmartAlbum = self->_recoveredAssetsSmartAlbum;
   }
@@ -222,10 +222,10 @@ void __56__PXAssetsRecoveryCountsManager_setBannerDismissalDate___block_invoke(u
 
 - (PHAsset)lastRecoveredAsset
 {
-  v2 = [(PXAssetsRecoveryCountsManager *)self recoveredAssetsFetchResult];
-  v3 = [v2 firstObject];
+  recoveredAssetsFetchResult = [(PXAssetsRecoveryCountsManager *)self recoveredAssetsFetchResult];
+  firstObject = [recoveredAssetsFetchResult firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSString)bannerSubtitle
@@ -248,23 +248,23 @@ void __56__PXAssetsRecoveryCountsManager_setBannerDismissalDate___block_invoke(u
 
 - (PXAssetsRecoveryCountsManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetsRecoveryCountsManager.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXAssetsRecoveryCountsManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsRecoveryCountsManager.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXAssetsRecoveryCountsManager init]"}];
 
   abort();
 }
 
-- (PXAssetsRecoveryCountsManager)initWithPhotoLibrary:(id)a3
+- (PXAssetsRecoveryCountsManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PXAssetsRecoveryCountsManager;
   v6 = [(PXAssetsRecoveryCountsManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    [v5 px_registerChangeObserver:v7];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    [libraryCopy px_registerChangeObserver:v7];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.photos.assetsRecoveryCounts-fetch", v8);
     queue = v7->_queue;

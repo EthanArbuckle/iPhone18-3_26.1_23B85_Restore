@@ -1,7 +1,7 @@
 @interface MPSCNNPoolingL2Norm
 - (MPSCNNPoolingL2Norm)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNPoolingL2Norm)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 @end
 
 @implementation MPSCNNPoolingL2Norm
@@ -44,11 +44,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v22.receiver = self;
   v22.super_class = MPSCNNPoolingL2Norm;
-  v5 = [(MPSCNNPooling *)&v22 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNPooling *)&v22 copyWithZone:zone device:device];
   v13 = v5;
   if (v5)
   {

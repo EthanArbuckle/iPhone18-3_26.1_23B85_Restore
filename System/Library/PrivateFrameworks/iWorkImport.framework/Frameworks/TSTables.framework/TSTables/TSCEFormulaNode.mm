@@ -1,19 +1,19 @@
 @interface TSCEFormulaNode
-+ (id)BOOLeanNode:(BOOL)a3;
-+ (id)chartFunctionForArgs:(id)a3;
-+ (id)dateNode:(id)a3;
-+ (id)function:(unsigned __int16)a3 forArgs:(id)a4;
-+ (id)literalStringNode:(id)a3;
-+ (id)numberAsDoubleNode:(double)a3;
-+ (id)numberNode:(const TSUDecimal *)a3;
-- (TSCEFormulaNode)initWithNodeType:(unsigned __int8)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
++ (id)BOOLeanNode:(BOOL)node;
++ (id)chartFunctionForArgs:(id)args;
++ (id)dateNode:(id)node;
++ (id)function:(unsigned __int16)function forArgs:(id)args;
++ (id)literalStringNode:(id)node;
++ (id)numberAsDoubleNode:(double)node;
++ (id)numberNode:(const TSUDecimal *)node;
+- (TSCEFormulaNode)initWithNodeType:(unsigned __int8)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCEFormulaNode
 
-- (TSCEFormulaNode)initWithNodeType:(unsigned __int8)a3
+- (TSCEFormulaNode)initWithNodeType:(unsigned __int8)type
 {
   v8.receiver = self;
   v8.super_class = TSCEFormulaNode;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_nodeType = a3;
+    v4->_nodeType = type;
     children = v4->_children;
     v4->_children = 0;
   }
@@ -29,7 +29,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(objc_opt_class());
@@ -87,10 +87,10 @@
   return v12;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaNode appendToNodeArray:hostCellRef:symbolTable:calcEngine:]", a4, a5, a6);
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaNode appendToNodeArray:hostCellRef:symbolTable:calcEngine:]", ref, table, engine);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaNode.mm", v9, v10);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 139, 0, "Requires override for each derived type");
 
@@ -99,15 +99,15 @@
   objc_msgSend_logBacktraceThrottled(v17, v13, v14, v15, v16);
 }
 
-+ (id)numberNode:(const TSUDecimal *)a3
++ (id)numberNode:(const TSUDecimal *)node
 {
   v4 = [TSCENumberFormulaNode alloc];
-  v8 = objc_msgSend_initWithNumber_(v4, v5, a3, v6, v7);
+  v8 = objc_msgSend_initWithNumber_(v4, v5, node, v6, v7);
 
   return v8;
 }
 
-+ (id)numberAsDoubleNode:(double)a3
++ (id)numberAsDoubleNode:(double)node
 {
   TSUDecimal::operator=();
   v6 = objc_msgSend_numberNode_(TSCEFormulaNode, v3, &v8, v4, v5);
@@ -115,46 +115,46 @@
   return v6;
 }
 
-+ (id)literalStringNode:(id)a3
++ (id)literalStringNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = [TSCEStringFormulaNode alloc];
-  v8 = objc_msgSend_initWithString_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithString_(v4, v5, nodeCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)dateNode:(id)a3
++ (id)dateNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = [TSCEDateFormulaNode alloc];
-  v7 = objc_msgSend_initWithDate_dateTimeFormat_(v4, v5, v3, 0, v6);
+  v7 = objc_msgSend_initWithDate_dateTimeFormat_(v4, v5, nodeCopy, 0, v6);
 
   return v7;
 }
 
-+ (id)BOOLeanNode:(BOOL)a3
++ (id)BOOLeanNode:(BOOL)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = [TSCEBooleanFormulaNode alloc];
-  v8 = objc_msgSend_initWithBoolean_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithBoolean_(v4, v5, nodeCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)function:(unsigned __int16)a3 forArgs:(id)a4
++ (id)function:(unsigned __int16)function forArgs:(id)args
 {
-  v4 = a3;
-  v5 = a4;
+  functionCopy = function;
+  argsCopy = args;
   v6 = [TSCEFunctionFormulaNode alloc];
-  v9 = objc_msgSend_initWithFunctionIndex_children_(v6, v7, v4, v5, v8);
+  v9 = objc_msgSend_initWithFunctionIndex_children_(v6, v7, functionCopy, argsCopy, v8);
 
   return v9;
 }
 
-+ (id)chartFunctionForArgs:(id)a3
++ (id)chartFunctionForArgs:(id)args
 {
-  v4 = objc_msgSend_function_forArgs_(TSCEFormulaNode, a2, 175, a3, v3);
+  v4 = objc_msgSend_function_forArgs_(TSCEFormulaNode, a2, 175, args, v3);
 
   return v4;
 }

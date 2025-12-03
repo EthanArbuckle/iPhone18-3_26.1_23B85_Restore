@@ -4,8 +4,8 @@
 - (_TtP20ProductPageExtension20PageTraitEnvironment_)snapshotPageTraitEnvironment;
 - (double)pageMarginInsets;
 - (id)as_viewControllersForVisibilityCallbackForwarding;
-- (void)as_dismissalTransitionDidEnd:(id)a3;
-- (void)as_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)as_dismissalTransitionDidEnd:(id)end;
+- (void)as_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)as_viewDidBecomeFullyVisible;
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
@@ -20,18 +20,18 @@
   block[1] = 3221225472;
   block[2] = sub_100003E58;
   block[3] = &unk_100881748;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1009687F0 != -1)
   {
     dispatch_once(&qword_1009687F0, block);
   }
 }
 
-- (void)as_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)as_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -45,35 +45,35 @@
   v14[3] = &unk_100881770;
   v16 = (isKindOfClass & 1) == 0;
   v14[4] = self;
-  v15 = v9;
-  v11 = v9;
-  [(UIViewController *)self as_presentViewController:v8 animated:v6 completion:v14];
+  v15 = completionCopy;
+  v11 = completionCopy;
+  [(UIViewController *)self as_presentViewController:controllerCopy animated:animatedCopy completion:v14];
   v12 = +[NSNotificationCenter defaultCenter];
-  [v12 addObserver:self selector:"as_dismissalTransitionWillBegin:" name:UIPresentationControllerDismissalTransitionWillBeginNotification object:v8];
+  [v12 addObserver:self selector:"as_dismissalTransitionWillBegin:" name:UIPresentationControllerDismissalTransitionWillBeginNotification object:controllerCopy];
 
   v13 = +[NSNotificationCenter defaultCenter];
-  [v13 addObserver:self selector:"as_dismissalTransitionDidEnd:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:v8];
+  [v13 addObserver:self selector:"as_dismissalTransitionDidEnd:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:controllerCopy];
 }
 
-- (void)as_dismissalTransitionDidEnd:(id)a3
+- (void)as_dismissalTransitionDidEnd:(id)end
 {
-  v13 = a3;
-  v4 = [v13 userInfo];
-  v5 = [v4 objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
-  v6 = [v5 BOOLValue];
+  endCopy = end;
+  userInfo = [endCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     [(UIViewController *)self as_viewDidBecomeFullyVisible];
     v7 = +[NSNotificationCenter defaultCenter];
     v8 = UIPresentationControllerDismissalTransitionWillBeginNotification;
-    v9 = [v13 object];
-    [v7 removeObserver:self name:v8 object:v9];
+    object = [endCopy object];
+    [v7 removeObserver:self name:v8 object:object];
 
     v10 = +[NSNotificationCenter defaultCenter];
     v11 = UIPresentationControllerDismissalTransitionDidEndNotification;
-    v12 = [v13 object];
-    [v10 removeObserver:self name:v11 object:v12];
+    object2 = [endCopy object];
+    [v10 removeObserver:self name:v11 object:object2];
   }
 
   else
@@ -87,14 +87,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIViewController *)self selectedViewController];
-    if (v3)
+    selectedViewController = [(UIViewController *)self selectedViewController];
+    if (selectedViewController)
     {
-      v4 = [(UIViewController *)self selectedViewController];
-      v9 = v4;
+      selectedViewController2 = [(UIViewController *)self selectedViewController];
+      v9 = selectedViewController2;
       v5 = &v9;
 LABEL_7:
-      v6 = [NSArray arrayWithObjects:v5 count:1];
+      childViewControllers = [NSArray arrayWithObjects:v5 count:1];
 
 LABEL_9:
       goto LABEL_11;
@@ -106,24 +106,24 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIViewController *)self topViewController];
-    if (v3)
+    selectedViewController = [(UIViewController *)self topViewController];
+    if (selectedViewController)
     {
-      v4 = [(UIViewController *)self topViewController];
-      v8 = v4;
+      selectedViewController2 = [(UIViewController *)self topViewController];
+      v8 = selectedViewController2;
       v5 = &v8;
       goto LABEL_7;
     }
 
 LABEL_8:
-    v6 = &__NSArray0__struct;
+    childViewControllers = &__NSArray0__struct;
     goto LABEL_9;
   }
 
-  v6 = [(UIViewController *)self childViewControllers];
+  childViewControllers = [(UIViewController *)self childViewControllers];
 LABEL_11:
 
-  return v6;
+  return childViewControllers;
 }
 
 - (void)as_viewWillBecomeFullyVisible
@@ -132,8 +132,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  as_viewControllersForVisibilityCallbackForwarding = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
+  v3 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -145,7 +145,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(as_viewControllersForVisibilityCallbackForwarding);
         }
 
         [*(*(&v7 + 1) + 8 * v6) as_viewWillBecomeFullyVisible];
@@ -153,7 +153,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -166,8 +166,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  as_viewControllersForVisibilityCallbackForwarding = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
+  v3 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -179,7 +179,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(as_viewControllersForVisibilityCallbackForwarding);
         }
 
         [*(*(&v7 + 1) + 8 * v6) as_viewDidBecomeFullyVisible];
@@ -187,7 +187,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -200,8 +200,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  as_viewControllersForVisibilityCallbackForwarding = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
+  v3 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -213,7 +213,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(as_viewControllersForVisibilityCallbackForwarding);
         }
 
         [*(*(&v7 + 1) + 8 * v6) as_viewWillBecomePartiallyVisible];
@@ -221,7 +221,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -234,8 +234,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  as_viewControllersForVisibilityCallbackForwarding = [(UIViewController *)self as_viewControllersForVisibilityCallbackForwarding];
+  v3 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -247,7 +247,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(as_viewControllersForVisibilityCallbackForwarding);
         }
 
         [*(*(&v7 + 1) + 8 * v6) as_viewDidBecomePartiallyVisible];
@@ -255,7 +255,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [as_viewControllersForVisibilityCallbackForwarding countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -264,7 +264,7 @@ LABEL_11:
 
 - (double)pageMarginInsets
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1005A589C();
 
   return 0.0;
@@ -272,12 +272,12 @@ LABEL_11:
 
 - (CGSize)pageContainerSize
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(UIViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v3;
-    [(UIView *)v3 bounds];
+    v6 = view;
+    [(UIView *)view bounds];
     v8 = v7;
     v10 = v9;
 
@@ -297,20 +297,20 @@ LABEL_11:
 
 - (_TtP20ProductPageExtension20PageTraitEnvironment_)snapshotPageTraitEnvironment
 {
-  v2 = self;
-  [(UIViewController *)v2 pageContainerSize];
+  selfCopy = self;
+  [(UIViewController *)selfCopy pageContainerSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIViewController *)v2 traitCollection];
+  traitCollection = [(UIViewController *)selfCopy traitCollection];
   v8 = type metadata accessor for SnapshotPageTraitEnvironment();
   v9 = objc_allocWithZone(v8);
   v10 = &v9[OBJC_IVAR____TtC20ProductPageExtension28SnapshotPageTraitEnvironment_pageContainerSize];
   *v10 = v4;
   *(v10 + 1) = v6;
-  *&v9[OBJC_IVAR____TtC20ProductPageExtension28SnapshotPageTraitEnvironment_traitCollection] = v7;
+  *&v9[OBJC_IVAR____TtC20ProductPageExtension28SnapshotPageTraitEnvironment_traitCollection] = traitCollection;
   v14.receiver = v9;
   v14.super_class = v8;
-  v11 = v7;
+  v11 = traitCollection;
   v12 = [(UIViewController *)&v14 init];
 
   return v12;

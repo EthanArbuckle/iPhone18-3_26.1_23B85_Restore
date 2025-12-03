@@ -7,9 +7,9 @@
 - (BOOL)controllerNeedsToRun
 {
   v2 = [(BuddyEnrollmentFlowItem *)self enrollmentCoordinator:a2];
-  v3 = [(BuddyEnrollmentCoordinator *)v2 isMDMMigrationMode];
+  isMDMMigrationMode = [(BuddyEnrollmentCoordinator *)v2 isMDMMigrationMode];
 
-  return v3 & 1;
+  return isMDMMigrationMode & 1;
 }
 
 @end

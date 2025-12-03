@@ -1,20 +1,20 @@
 @interface ASDRingBuffer
-- (ASDRingBuffer)initWithFrameCapacity:(int64_t)a3 writeFormat:(id)a4 readFormat:(id)a5;
+- (ASDRingBuffer)initWithFrameCapacity:(int64_t)capacity writeFormat:(id)format readFormat:(id)readFormat;
 - (id)readBlock;
 - (id)readWithZerosBlock;
 - (id)writeBlock;
 - (void)allocate;
 - (void)deallocate;
-- (void)setReadFormat:(id)a3;
-- (void)setWriteFormat:(id)a3;
+- (void)setReadFormat:(id)format;
+- (void)setWriteFormat:(id)format;
 @end
 
 @implementation ASDRingBuffer
 
-- (ASDRingBuffer)initWithFrameCapacity:(int64_t)a3 writeFormat:(id)a4 readFormat:(id)a5
+- (ASDRingBuffer)initWithFrameCapacity:(int64_t)capacity writeFormat:(id)format readFormat:(id)readFormat
 {
-  v7 = a4;
-  v8 = a5;
+  formatCopy = format;
+  readFormatCopy = readFormat;
   v10.receiver = self;
   v10.super_class = ASDRingBuffer;
   if ([(ASDRingBuffer *)&v10 init])
@@ -28,11 +28,11 @@
 - (void)allocate
 {
   ptr = self->_ringBuffer.__ptr_;
-  v4 = [(ASDRingBuffer *)self readFormat];
-  v5 = v4;
-  if (v4)
+  readFormat = [(ASDRingBuffer *)self readFormat];
+  v5 = readFormat;
+  if (readFormat)
   {
-    [v4 audioStreamBasicDescription];
+    [readFormat audioStreamBasicDescription];
   }
 
   else
@@ -44,11 +44,11 @@
   AudioRingBuffer::Allocate(ptr, &inSourceFormat, [(ASDRingBuffer *)self frameCapacity]);
 
   v6 = self->_ringBuffer.__ptr_;
-  v7 = [(ASDRingBuffer *)self writeFormat];
-  v8 = v7;
-  if (v7)
+  writeFormat = [(ASDRingBuffer *)self writeFormat];
+  v8 = writeFormat;
+  if (writeFormat)
   {
-    [v7 audioStreamBasicDescription];
+    [writeFormat audioStreamBasicDescription];
   }
 
   else
@@ -156,9 +156,9 @@ uint64_t __35__ASDRingBuffer_readWithZerosBlock__block_invoke(uint64_t a1, Audio
   return AudioRingBuffer::FetchAllWithZeroes(v8, a2, a3, a4, a5, a6, a7);
 }
 
-- (void)setWriteFormat:(id)a3
+- (void)setWriteFormat:(id)format
 {
-  objc_storeStrong(&self->_writeFormat, a3);
+  objc_storeStrong(&self->_writeFormat, format);
   if ([(ASDRingBuffer *)self isAllocated])
   {
 
@@ -166,9 +166,9 @@ uint64_t __35__ASDRingBuffer_readWithZerosBlock__block_invoke(uint64_t a1, Audio
   }
 }
 
-- (void)setReadFormat:(id)a3
+- (void)setReadFormat:(id)format
 {
-  objc_storeStrong(&self->_readFormat, a3);
+  objc_storeStrong(&self->_readFormat, format);
   if ([(ASDRingBuffer *)self isAllocated])
   {
 

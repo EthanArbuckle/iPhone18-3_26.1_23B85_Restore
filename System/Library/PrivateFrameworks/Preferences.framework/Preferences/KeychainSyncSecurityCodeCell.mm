@@ -1,22 +1,22 @@
 @interface KeychainSyncSecurityCodeCell
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (void)layoutSubviews;
-- (void)setBulletText:(id)a3;
+- (void)setBulletText:(id)text;
 @end
 
 @implementation KeychainSyncSecurityCodeCell
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   securityCodeType = self->_securityCodeType;
   if (securityCodeType == 1)
   {
-    v14 = [v9 text];
-    v15 = [v14 stringByReplacingCharactersInRange:location withString:{length, v10}];
+    text = [fieldCopy text];
+    v15 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
     v16 = [v15 length];
     if (v16 > 0x20)
@@ -31,36 +31,36 @@ LABEL_29:
   {
     if (self->_firstPasscodeEntry || (self->_mode & 0xFFFFFFFE) == 2)
     {
-      v12 = [v9 text];
+      text2 = [fieldCopy text];
       if (self->_mode == 3)
       {
-        [v9 setText:&stru_1EFE45030];
-        v13 = [v9 text];
+        [fieldCopy setText:&stru_1EFE45030];
+        text3 = [fieldCopy text];
 
         location = 0;
         length = 0;
-        v12 = v13;
+        text2 = text3;
       }
 
-      if (length + location <= [v12 length])
+      if (length + location <= [text2 length])
       {
         v31 = [(NSString *)self->_firstPasscodeEntry length];
-        v18 = [v9 selectionRange];
-        v19 = v18 + [v10 length];
+        selectionRange = [fieldCopy selectionRange];
+        v19 = selectionRange + [stringCopy length];
         if (length == 1)
         {
-          v19 = (__PAIR128__(v19, [v10 length]) - 1) >> 64;
+          v19 = (__PAIR128__(v19, [stringCopy length]) - 1) >> 64;
         }
 
-        v20 = [v12 stringByReplacingCharactersInRange:location withString:{length, v10}];
+        v20 = [text2 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
-        v21 = [v20 uppercaseString];
+        uppercaseString = [v20 uppercaseString];
 
-        v22 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-        v23 = [v22 invertedSet];
+        alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+        invertedSet = [alphanumericCharacterSet invertedSet];
 
-        v32 = v21;
-        v24 = [v21 mutableCopy];
+        v32 = uppercaseString;
+        v24 = [uppercaseString mutableCopy];
         v25 = [v24 length];
         if (v25 - 1 < 1)
         {
@@ -73,7 +73,7 @@ LABEL_29:
           v27 = 0;
           do
           {
-            if ([v23 characterIsMember:{objc_msgSend(v24, "characterAtIndex:", --v26)}])
+            if ([invertedSet characterIsMember:{objc_msgSend(v24, "characterAtIndex:", --v26)}])
             {
               [v24 deleteCharactersInRange:{v26, 1}];
               v27 -= v26 < v19;
@@ -102,10 +102,10 @@ LABEL_29:
 
         if ([v24 length] <= v31 || (self->_mode & 0xFFFFFFFE) == 2)
         {
-          [v9 setText:v24];
-          [v9 setSelectionRange:{v19 + v27, 0}];
-          v29 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v29 postNotificationName:*MEMORY[0x1E69DE5C0] object:v9];
+          [fieldCopy setText:v24];
+          [fieldCopy setSelectionRange:{v19 + v27, 0}];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter postNotificationName:*MEMORY[0x1E69DE5C0] object:fieldCopy];
         }
       }
 
@@ -123,10 +123,10 @@ LABEL_30:
   return v17;
 }
 
-- (void)setBulletText:(id)a3
+- (void)setBulletText:(id)text
 {
-  v12 = a3;
-  if (!self->_bulletTextLabel && [v12 length])
+  textCopy = text;
+  if (!self->_bulletTextLabel && [textCopy length])
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -137,16 +137,16 @@ LABEL_30:
     v8 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:13.0];
     [(UILabel *)v7 setFont:v8];
 
-    v9 = [(KeychainSyncSecurityCodeCell *)self contentView];
-    [v9 addSubview:self->_bulletTextLabel];
+    contentView = [(KeychainSyncSecurityCodeCell *)self contentView];
+    [contentView addSubview:self->_bulletTextLabel];
   }
 
-  v10 = [(UILabel *)self->_bulletTextLabel text];
-  v11 = [v10 isEqualToString:v12];
+  text = [(UILabel *)self->_bulletTextLabel text];
+  v11 = [text isEqualToString:textCopy];
 
   if ((v11 & 1) == 0)
   {
-    [(UILabel *)self->_bulletTextLabel setText:v12];
+    [(UILabel *)self->_bulletTextLabel setText:textCopy];
     [(UILabel *)self->_bulletTextLabel sizeToFit];
     [(KeychainSyncSecurityCodeCell *)self setNeedsLayout];
   }
@@ -157,41 +157,41 @@ LABEL_30:
   v41.receiver = self;
   v41.super_class = KeychainSyncSecurityCodeCell;
   [(PSEditableTableCell *)&v41 layoutSubviews];
-  v3 = [(KeychainSyncSecurityCodeCell *)self contentView];
-  [v3 frame];
+  contentView = [(KeychainSyncSecurityCodeCell *)self contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(KeychainSyncSecurityCodeCell *)self contentView];
-  v11 = [v10 layer];
-  [v11 borderWidth];
+  contentView2 = [(KeychainSyncSecurityCodeCell *)self contentView];
+  layer = [contentView2 layer];
+  [layer borderWidth];
   v13 = v12;
 
   if (v13 > 0.0)
   {
     v7 = v7 + -30.0;
-    v14 = [(KeychainSyncSecurityCodeCell *)self contentView];
-    [v14 setFrame:{15.0, v5, v7, v9}];
+    contentView3 = [(KeychainSyncSecurityCodeCell *)self contentView];
+    [contentView3 setFrame:{15.0, v5, v7, v9}];
   }
 
-  v15 = [(UILabel *)self->_bulletTextLabel text];
-  v16 = [v15 length];
+  text = [(UILabel *)self->_bulletTextLabel text];
+  v16 = [text length];
 
   if (v16)
   {
     [(UILabel *)self->_bulletTextLabel frame];
     v18 = v17;
     v20 = v19;
-    v21 = [(PSEditableTableCell *)self textField];
-    [v21 frame];
+    textField = [(PSEditableTableCell *)self textField];
+    [textField frame];
     v23 = v22;
-    v24 = [(PSEditableTableCell *)self textField];
-    v25 = [v24 font];
-    [v25 ascender];
+    textField2 = [(PSEditableTableCell *)self textField];
+    font = [textField2 font];
+    [font ascender];
     v27 = v23 + v26;
-    v28 = [(UILabel *)self->_bulletTextLabel font];
-    [v28 ascender];
+    font2 = [(UILabel *)self->_bulletTextLabel font];
+    [font2 ascender];
     v30 = v27 - v29;
 
     if (PSLocaleLanguageDirection() == 1)
@@ -215,8 +215,8 @@ LABEL_30:
     v20 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  v32 = [(PSEditableTableCell *)self textField];
-  [v32 frame];
+  textField3 = [(PSEditableTableCell *)self textField];
+  [textField3 frame];
   v34 = v33;
   v36 = v35;
 
@@ -246,8 +246,8 @@ LABEL_30:
     v38 = v7 - v18 + -30.0 - v39;
   }
 
-  v40 = [(PSEditableTableCell *)self textField];
-  [v40 setFrame:{v37, v34, v38, v36}];
+  textField4 = [(PSEditableTableCell *)self textField];
+  [textField4 setFrame:{v37, v34, v38, v36}];
 }
 
 @end

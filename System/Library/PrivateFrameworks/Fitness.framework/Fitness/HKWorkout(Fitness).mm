@@ -10,30 +10,30 @@
 
 - (uint64_t)fi_hasNonZeroElevationGain
 {
-  v1 = [a1 fi_elevationGain];
-  v2 = v1;
-  if (v1)
+  fi_elevationGain = [self fi_elevationGain];
+  v2 = fi_elevationGain;
+  if (fi_elevationGain)
   {
-    v3 = [v1 fi_isNonzero];
+    fi_isNonzero = [fi_elevationGain fi_isNonzero];
   }
 
   else
   {
-    v3 = 0;
+    fi_isNonzero = 0;
   }
 
-  return v3;
+  return fi_isNonzero;
 }
 
 - (id)fi_elevationGain
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKey:*MEMORY[0x277CCC488]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKey:*MEMORY[0x277CCC488]];
 
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v4 = [a1 metadata];
-    v5 = [v4 objectForKey:*MEMORY[0x277CCE180]];
+    metadata2 = [self metadata];
+    v5 = [metadata2 objectForKey:*MEMORY[0x277CCE180]];
 
     v3 = v5;
   }
@@ -43,39 +43,39 @@
 
 - (uint64_t)fi_swimmingLocationType
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277CCC510]];
+  metadata = [self metadata];
+  v2 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC510]];
 
   if (v2)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)fi_isConnectedGymWorkout
 {
-  v1 = [a1 device];
-  v2 = [v1 _isConnectedGymDevice];
+  device = [self device];
+  _isConnectedGymDevice = [device _isConnectedGymDevice];
 
-  return v2;
+  return _isConnectedGymDevice;
 }
 
 - (uint64_t)supportsWorkoutMetricType:()Fitness
 {
-  v5 = [a1 fi_activityType];
-  v6 = [FIWorkoutDefaultMetricsProvider metricsVersionForWorkout:a1];
+  fi_activityType = [self fi_activityType];
+  v6 = [FIWorkoutDefaultMetricsProvider metricsVersionForWorkout:self];
   v7 = [FIWorkoutDefaultMetricsProvider alloc];
-  v8 = [a1 _activityMoveMode];
+  _activityMoveMode = [self _activityMoveMode];
   v9 = FIDeviceSupportsElevationGain();
-  v10 = [(FIWorkoutDefaultMetricsProvider *)v7 initWithMetricsVersion:v6 activityType:v5 activityMoveMode:v8 deviceSupportsElevationMetrics:v9 deviceSupportsGroundElevationMetrics:FIDeviceSupportsGroundElevation()];
-  v11 = -[FIWorkoutDefaultMetricsProvider isMetricTypeSupported:isMachineWorkout:activityType:](v10, "isMetricTypeSupported:isMachineWorkout:activityType:", a3, [a1 fi_isConnectedGymWorkout], v5);
+  v10 = [(FIWorkoutDefaultMetricsProvider *)v7 initWithMetricsVersion:v6 activityType:fi_activityType activityMoveMode:_activityMoveMode deviceSupportsElevationMetrics:v9 deviceSupportsGroundElevationMetrics:FIDeviceSupportsGroundElevation()];
+  v11 = -[FIWorkoutDefaultMetricsProvider isMetricTypeSupported:isMachineWorkout:activityType:](v10, "isMetricTypeSupported:isMachineWorkout:activityType:", a3, [self fi_isConnectedGymWorkout], fi_activityType);
 
   return v11;
 }

@@ -1,9 +1,9 @@
 @interface NRPBAddTermsEventResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBAddTermsEventResponse
@@ -13,8 +13,8 @@
   v7.receiver = self;
   v7.super_class = NRPBAddTermsEventResponse;
   v3 = [(NRPBAddTermsEventResponse *)&v7 description];
-  v4 = [(NRPBAddTermsEventResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBAddTermsEventResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -25,14 +25,14 @@
   error = self->_error;
   if (error)
   {
-    v5 = [(NRPBNSError *)error dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"error"];
+    dictionaryRepresentation = [(NRPBNSError *)error dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"error"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_error)
   {
@@ -40,23 +40,23 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NRPBNSError *)self->_error copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NRPBNSError *)self->_error copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     error = self->_error;
-    if (error | v4[1])
+    if (error | equalCopy[1])
     {
       v6 = [(NRPBNSError *)error isEqual:?];
     }

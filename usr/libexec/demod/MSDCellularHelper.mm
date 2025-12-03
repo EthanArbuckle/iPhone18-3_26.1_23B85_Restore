@@ -1,14 +1,14 @@
 @interface MSDCellularHelper
 + (id)sharedInstance;
 - (BOOL)embeddedSIMInstalled;
-- (BOOL)hasObserver:(id)a3;
+- (BOOL)hasObserver:(id)observer;
 - (MSDCellularHelper)init;
 - (NSDictionary)cellularInfo;
 - (id)getCellularSimInfo;
 - (void)_fetchCellularPlanItems;
-- (void)_handleCellularPlanInfoDidChange:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_handleCellularPlanInfoDidChange:(id)change;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MSDCellularHelper
@@ -65,14 +65,14 @@
   v12 = 0;
   if ([(MSDCellularHelper *)self cellularCapable])
   {
-    v3 = [(MSDCellularHelper *)self cellularQueue];
+    cellularQueue = [(MSDCellularHelper *)self cellularQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000445D8;
     v6[3] = &unk_10016A948;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(cellularQueue, v6);
 
     v4 = v8[5];
   }
@@ -89,8 +89,8 @@
 
 - (id)getCellularSimInfo
 {
-  v2 = [(MSDCellularHelper *)self cellularInfo];
-  v3 = [v2 objectForKey:@"Slots"];
+  cellularInfo = [(MSDCellularHelper *)self cellularInfo];
+  v3 = [cellularInfo objectForKey:@"Slots"];
 
   return v3;
 }
@@ -103,14 +103,14 @@
   v10 = 0;
   if ([(MSDCellularHelper *)self cellularCapable])
   {
-    v3 = [(MSDCellularHelper *)self cellularQueue];
+    cellularQueue = [(MSDCellularHelper *)self cellularQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000447A8;
     v6[3] = &unk_10016ACE8;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(cellularQueue, v6);
 
     v4 = *(v8 + 24);
   }
@@ -124,13 +124,13 @@
   return v4 & 1;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDCellularHelper *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MSDCellularHelper *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -138,24 +138,24 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = observerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding cellular oberver: %{public}@", &v10, 0xCu);
     }
 
-    v9 = [(MSDCellularHelper *)v5 observers];
-    [v9 addObject:v4];
+    observers2 = [(MSDCellularHelper *)selfCopy observers];
+    [observers2 addObject:observerCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDCellularHelper *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MSDCellularHelper *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
   if (v7)
   {
@@ -163,26 +163,26 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = observerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removing cellular oberver: %{public}@", &v10, 0xCu);
     }
 
-    v9 = [(MSDCellularHelper *)v5 observers];
-    [v9 removeObject:v4];
+    observers2 = [(MSDCellularHelper *)selfCopy observers];
+    [observers2 removeObject:observerCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)hasObserver:(id)a3
+- (BOOL)hasObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDCellularHelper *)v5 observers];
-  v7 = [v6 containsObject:v4];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MSDCellularHelper *)selfCopy observers];
+  v7 = [observers containsObject:observerCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
@@ -242,9 +242,9 @@
             }
 
             [v11 setObject:v12 forKey:@"SimType"];
-            v13 = [v9 carrierName];
-            v14 = v13;
-            if (v13 && [v13 length])
+            carrierName = [v9 carrierName];
+            v14 = carrierName;
+            if (carrierName && [carrierName length])
             {
               [v11 setObject:v14 forKey:@"Provider"];
             }
@@ -265,14 +265,14 @@
       while (v6);
     }
 
-    v16 = self;
-    objc_sync_enter(v16);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(MSDCellularHelper *)v16 observers];
-    v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    observers = [(MSDCellularHelper *)selfCopy observers];
+    v18 = [observers countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v18)
     {
       v19 = *v25;
@@ -282,28 +282,28 @@
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(observers);
           }
 
           [*(*(&v24 + 1) + 8 * j) cellularPlanDidChange:v2];
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v18 = [observers countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v18);
     }
 
-    objc_sync_exit(v16);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v16 = sub_100063A54();
-    if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = sub_100063A54();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, &v16->super, OS_LOG_TYPE_DEFAULT, "No cellular plan items found.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_DEFAULT, "No cellular plan items found.", buf, 2u);
     }
   }
 
@@ -311,7 +311,7 @@
   [(MSDCellularHelper *)self setCellularSlotsInfo:v21];
 }
 
-- (void)_handleCellularPlanInfoDidChange:(id)a3
+- (void)_handleCellularPlanInfoDidChange:(id)change
 {
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -320,13 +320,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Received notification for cellular plan info change!", buf, 2u);
   }
 
-  v5 = [(MSDCellularHelper *)self cellularQueue];
+  cellularQueue = [(MSDCellularHelper *)self cellularQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000450D4;
   block[3] = &unk_100169B70;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(cellularQueue, block);
 }
 
 @end

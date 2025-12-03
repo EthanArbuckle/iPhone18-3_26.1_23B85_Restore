@@ -1,11 +1,11 @@
 @interface BRCSharedDatabaseSyncOperation
 + (id)queue;
-- (BRCSharedDatabaseSyncOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 changeState:(id)a5;
+- (BRCSharedDatabaseSyncOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext changeState:(id)state;
 - (id)createActivity;
-- (void)_performAfterAddingOwnerKeysForZoneIDs:(id)a3 block:(id)a4;
-- (void)_performAfterRegisteringForPushes:(id)a3;
+- (void)_performAfterAddingOwnerKeysForZoneIDs:(id)ds block:(id)block;
+- (void)_performAfterRegisteringForPushes:(id)pushes;
 - (void)_performFetchChangedZones;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -33,17 +33,17 @@ void __39__BRCSharedDatabaseSyncOperation_queue__block_invoke()
   queue_queue = v1;
 }
 
-- (BRCSharedDatabaseSyncOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 changeState:(id)a5
+- (BRCSharedDatabaseSyncOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext changeState:(id)state
 {
-  v9 = a5;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = BRCSharedDatabaseSyncOperation;
-  v10 = [(_BRCOperation *)&v13 initWithName:@"sync/sharedb" syncContext:a3 sessionContext:a4];
+  v10 = [(_BRCOperation *)&v13 initWithName:@"sync/sharedb" syncContext:context sessionContext:sessionContext];
   v11 = v10;
   if (v10)
   {
     [(BRCSharedDatabaseSyncOperation *)v10 setQueuePriority:4];
-    objc_storeStrong(&v11->_changeState, a5);
+    objc_storeStrong(&v11->_changeState, state);
   }
 
   return v11;
@@ -56,41 +56,41 @@ void __39__BRCSharedDatabaseSyncOperation_queue__block_invoke()
   return v2;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(BRCSharedDatabaseSyncOperation *)self hash];
   kdebug_trace();
-  v8 = [(BRCSharedDatabaseSyncOperation *)self shareDBSyncCompletionBlock];
-  if (v8)
+  shareDBSyncCompletionBlock = [(BRCSharedDatabaseSyncOperation *)self shareDBSyncCompletionBlock];
+  if (shareDBSyncCompletionBlock)
   {
-    (v8)[2](v8, [v6 BOOLValue], v7);
+    (shareDBSyncCompletionBlock)[2](shareDBSyncCompletionBlock, [resultCopy BOOLValue], errorCopy);
     [(BRCSharedDatabaseSyncOperation *)self setShareDBSyncCompletionBlock:0];
   }
 
   v9.receiver = self;
   v9.super_class = BRCSharedDatabaseSyncOperation;
-  [(_BRCOperation *)&v9 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)_performAfterAddingOwnerKeysForZoneIDs:(id)a3 block:(id)a4
+- (void)_performAfterAddingOwnerKeysForZoneIDs:(id)ds block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
-  v9 = [v8 serialQueue];
+  dsCopy = ds;
+  blockCopy = block;
+  serverReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
+  serialQueue = [serverReadWriteDatabaseFacade serialQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__BRCSharedDatabaseSyncOperation__performAfterAddingOwnerKeysForZoneIDs_block___block_invoke;
   v13[3] = &unk_2784FF5B8;
-  v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = v8;
-  dispatch_async_with_logs_0(v9, v13);
+  v14 = serverReadWriteDatabaseFacade;
+  v15 = dsCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = dsCopy;
+  v12 = serverReadWriteDatabaseFacade;
+  dispatch_async_with_logs_0(serialQueue, v13);
 }
 
 void __79__BRCSharedDatabaseSyncOperation__performAfterAddingOwnerKeysForZoneIDs_block___block_invoke(id *a1)
@@ -148,10 +148,10 @@ uint64_t __79__BRCSharedDatabaseSyncOperation__performAfterAddingOwnerKeysForZon
   return 1;
 }
 
-- (void)_performAfterRegisteringForPushes:(id)a3
+- (void)_performAfterRegisteringForPushes:(id)pushes
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pushesCopy = pushes;
   v5 = [objc_alloc(MEMORY[0x277CBC2A0]) initWithSubscriptionID:@"sharedZoneSubscription"];
   v6 = objc_alloc_init(MEMORY[0x277CBC4D0]);
   [v6 setShouldSendContentAvailable:1];
@@ -165,10 +165,10 @@ uint64_t __79__BRCSharedDatabaseSyncOperation__performAfterAddingOwnerKeysForZon
   v13[1] = 3221225472;
   v13[2] = __68__BRCSharedDatabaseSyncOperation__performAfterRegisteringForPushes___block_invoke;
   v13[3] = &unk_2784FF5E0;
-  v15 = v4;
+  v15 = pushesCopy;
   v16 = v9;
   v14 = v5;
-  v10 = v4;
+  v10 = pushesCopy;
   v11 = v5;
   [v9 setModifySubscriptionsCompletionBlock:v13];
   [(_BRCOperation *)self addSubOperation:v9];
@@ -226,8 +226,8 @@ void __68__BRCSharedDatabaseSyncOperation__performAfterRegisteringForPushes___bl
 
 - (void)_performFetchChangedZones
 {
-  v3 = [(BRCServerChangeState *)self->_changeState changeToken];
-  v4 = [objc_alloc(MEMORY[0x277CBC388]) initWithPreviousServerChangeToken:v3];
+  changeToken = [(BRCServerChangeState *)self->_changeState changeToken];
+  v4 = [objc_alloc(MEMORY[0x277CBC388]) initWithPreviousServerChangeToken:changeToken];
   [v4 setFetchAllChanges:0];
   v5 = +[BRCSharedDatabaseSyncOperation queue];
   [v4 setCallbackQueue:v5];
@@ -241,13 +241,13 @@ void __68__BRCSharedDatabaseSyncOperation__performAfterRegisteringForPushes___bl
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__0;
   v15[4] = __Block_byref_object_dispose__0;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__0;
   v13[4] = __Block_byref_object_dispose__0;
-  v14 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__BRCSharedDatabaseSyncOperation__performFetchChangedZones__block_invoke;
@@ -549,7 +549,7 @@ void __59__BRCSharedDatabaseSyncOperation__performFetchChangedZones__block_invok
 - (void)main
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v5 = 134218242;
   v6 = v3;
   v7 = 2112;

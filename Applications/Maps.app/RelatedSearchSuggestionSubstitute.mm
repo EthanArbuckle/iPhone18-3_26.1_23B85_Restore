@@ -1,5 +1,5 @@
 @interface RelatedSearchSuggestionSubstitute
-- (RelatedSearchSuggestionSubstitute)initWithLocation:(unint64_t)a3 substitute:(id)a4;
+- (RelatedSearchSuggestionSubstitute)initWithLocation:(unint64_t)location substitute:(id)substitute;
 - (_NSRange)range;
 @end
 
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (RelatedSearchSuggestionSubstitute)initWithLocation:(unint64_t)a3 substitute:(id)a4
+- (RelatedSearchSuggestionSubstitute)initWithLocation:(unint64_t)location substitute:(id)substitute
 {
-  v7 = a4;
+  substituteCopy = substitute;
   v19.receiver = self;
   v19.super_class = RelatedSearchSuggestionSubstitute;
   v8 = [(RelatedSearchSuggestionSubstitute *)&v19 init];
@@ -27,28 +27,28 @@
     v8->_substituteText = &stru_1016631F0;
 
     v9->_isRelatedSearchSuggestion = 0;
-    v11 = [v7 substituteType];
-    if (v11 == 2)
+    substituteType = [substituteCopy substituteType];
+    if (substituteType == 2)
     {
-      v14 = [v7 relatedSearchSuggestion];
-      v15 = [v14 displayString];
+      relatedSearchSuggestion = [substituteCopy relatedSearchSuggestion];
+      displayString = [relatedSearchSuggestion displayString];
       v16 = v9->_substituteText;
-      v9->_substituteText = v15;
+      v9->_substituteText = displayString;
 
       v9->_isRelatedSearchSuggestion = 1;
     }
 
-    else if (v11 == 1)
+    else if (substituteType == 1)
     {
-      v12 = [v7 interpretedQuery];
+      interpretedQuery = [substituteCopy interpretedQuery];
       v13 = v9->_substituteText;
-      v9->_substituteText = v12;
+      v9->_substituteText = interpretedQuery;
     }
 
     v17 = [(NSString *)v9->_substituteText length];
-    v9->_range.location = a3;
+    v9->_range.location = location;
     v9->_range.length = v17;
-    objc_storeStrong(&v9->_pdSubstitute, a4);
+    objc_storeStrong(&v9->_pdSubstitute, substitute);
   }
 
   return v9;

@@ -1,41 +1,41 @@
 @interface AMSURLSession
 + (AKAppleIDSession)sharedAuthKitSession;
-+ (id)_taskFromSession:(id)a3 request:(id)a4 activity:(id)a5;
++ (id)_taskFromSession:(id)session request:(id)request activity:(id)activity;
 + (id)defaultSession;
 + (id)imageSession;
 + (id)loggingOnlySession;
-+ (id)loggingOnlySessionUsing:(id)a3;
++ (id)loggingOnlySessionUsing:(id)using;
 + (id)minimalSession;
-+ (id)minimalSessionUsing:(id)a3;
++ (id)minimalSessionUsing:(id)using;
 - (AMSRequestEncoding)requestEncoder;
 - (AMSResponseDecoding)responseDecoder;
 - (AMSURLHandling)protocolHandler;
-- (AMSURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (BOOL)_protocolHandler:(id)a3 canUseAlternateImplementationOfSelector:(SEL)a4;
+- (AMSURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
+- (BOOL)_protocolHandler:(id)handler canUseAlternateImplementationOfSelector:(SEL)selector;
 - (NSURLSessionDelegate)delegate;
-- (id)_createSharedDataForTask:(id)a3 properties:(id)a4 completionHandler:(id)a5;
-- (id)_formatError:(id)a3 task:(id)a4 decodedObject:(id)a5;
-- (id)_handleURLAction:(id)a3 task:(id)a4 contiguousActionIdentifier:(unint64_t)a5;
-- (id)_prepareRequest:(id)a3 logUUID:(id)a4;
-- (id)_reconfigureNewRequest:(id)a3 originalTask:(id)a4 protocolHandler:(id)a5 redirect:(BOOL)a6;
-- (id)_retryTask:(id)a3 action:(id)a4;
-- (id)dataTaskPromiseWithRequest:(id)a3 activity:(id)a4;
-- (id)dataTaskPromiseWithRequestPromise:(id)a3 activity:(id)a4;
-- (id)dataTaskWithRequest:(id)a3 signpostID:(unint64_t)a4 activity:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_completeTaskWithTaskInfo:(id)a3 result:(id)a4 decodedObject:(id)a5 error:(id)a6;
-- (void)createDataTaskWithRequest:(id)a3 signpostID:(unint64_t)a4 activity:(id)a5 dataTaskCreationCompletionHandler:(id)a6 requestCompletionHandler:(id)a7;
+- (id)_createSharedDataForTask:(id)task properties:(id)properties completionHandler:(id)handler;
+- (id)_formatError:(id)error task:(id)task decodedObject:(id)object;
+- (id)_handleURLAction:(id)action task:(id)task contiguousActionIdentifier:(unint64_t)identifier;
+- (id)_prepareRequest:(id)request logUUID:(id)d;
+- (id)_reconfigureNewRequest:(id)request originalTask:(id)task protocolHandler:(id)handler redirect:(BOOL)redirect;
+- (id)_retryTask:(id)task action:(id)action;
+- (id)dataTaskPromiseWithRequest:(id)request activity:(id)activity;
+- (id)dataTaskPromiseWithRequestPromise:(id)promise activity:(id)activity;
+- (id)dataTaskWithRequest:(id)request signpostID:(unint64_t)d activity:(id)activity completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_completeTaskWithTaskInfo:(id)info result:(id)result decodedObject:(id)object error:(id)error;
+- (void)createDataTaskWithRequest:(id)request signpostID:(unint64_t)d activity:(id)activity dataTaskCreationCompletionHandler:(id)handler requestCompletionHandler:(id)completionHandler;
 - (void)dealloc;
 - (void)invalidateAndCancel;
-- (void)setDelegate:(id)a3;
-- (void)setProtocolHandler:(id)a3;
-- (void)setRequestEncoder:(id)a3;
-- (void)setResponseDecoder:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setProtocolHandler:(id)handler;
+- (void)setRequestEncoder:(id)encoder;
+- (void)setResponseDecoder:(id)decoder;
 @end
 
 @implementation AMSURLSession
@@ -56,11 +56,11 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_INFO, "AMSURLSession: dealloc", buf, 2u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "AMSURLSession: dealloc", buf, 2u);
   }
 
   [(AMSURLDelegateProxy *)self->_delegateProxy invalidate];
@@ -107,21 +107,21 @@ uint64_t __37__AMSURLSession_sharedAuthKitSession__block_invoke()
   return v3;
 }
 
-+ (id)minimalSessionUsing:(id)a3
++ (id)minimalSessionUsing:(id)using
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AMSURLSession.minimalSession(using:)(v4);
+  usingCopy = using;
+  v5 = static AMSURLSession.minimalSession(using:)(usingCopy);
 
   return v5;
 }
 
 - (NSURLSessionDelegate)delegate
 {
-  v2 = [(AMSURLSession *)self delegateProxy];
-  v3 = [v2 delegate];
+  delegateProxy = [(AMSURLSession *)self delegateProxy];
+  delegate = [delegateProxy delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (AMSResponseDecoding)responseDecoder
@@ -160,52 +160,52 @@ uint64_t __31__AMSURLSession_defaultSession__block_invoke()
   return v2;
 }
 
-+ (id)loggingOnlySessionUsing:(id)a3
++ (id)loggingOnlySessionUsing:(id)using
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AMSURLSession.loggingOnlySession(using:)(v4);
+  usingCopy = using;
+  v5 = static AMSURLSession.loggingOnlySession(using:)(usingCopy);
 
   return v5;
 }
 
-- (AMSURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (AMSURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = AMSURLSession;
   v11 = [(AMSURLSession *)&v31 init];
   if (v11)
   {
-    if (!v8)
+    if (!configurationCopy)
     {
       v12 = MEMORY[0x1E695AC80];
       v13 = +[AMSProcessInfo currentProcess];
-      v8 = [v12 ams_configurationWithProcessInfo:v13 bag:0];
+      configurationCopy = [v12 ams_configurationWithProcessInfo:v13 bag:0];
 
-      [v8 set_systemClientOfPrivateAccessTokens:1];
+      [configurationCopy set_systemClientOfPrivateAccessTokens:1];
     }
 
-    objc_storeStrong(&v11->_configuration, v8);
+    objc_storeStrong(&v11->_configuration, configurationCopy);
     if (+[AMSUnitTests isRunningUnitTests](AMSUnitTests, "isRunningUnitTests") || +[AMSUnitTests isRunningPerformanceTests])
     {
       v14 = objc_alloc(MEMORY[0x1E695DF70]);
-      v15 = [(NSURLSessionConfiguration *)v11->_configuration protocolClasses];
-      v16 = [v14 initWithArray:v15];
+      protocolClasses = [(NSURLSessionConfiguration *)v11->_configuration protocolClasses];
+      v16 = [v14 initWithArray:protocolClasses];
 
       [v16 insertObject:objc_opt_class() atIndex:0];
       [(NSURLSessionConfiguration *)v11->_configuration setProtocolClasses:v16];
     }
 
-    v17 = [[AMSURLDelegateProxy alloc] initWithSession:v11 delegate:v9];
+    v17 = [[AMSURLDelegateProxy alloc] initWithSession:v11 delegate:delegateCopy];
     delegateProxy = v11->_delegateProxy;
     v11->_delegateProxy = v17;
 
-    if (v10)
+    if (queueCopy)
     {
-      v19 = v10;
+      v19 = queueCopy;
     }
 
     else
@@ -228,8 +228,8 @@ uint64_t __31__AMSURLSession_defaultSession__block_invoke()
 
     v25 = MEMORY[0x1E695AC78];
     v26 = v11->_delegateProxy;
-    v27 = [(AMSURLSession *)v11 delegateQueue];
-    v28 = [v25 sessionWithConfiguration:v8 delegate:v26 delegateQueue:v27];
+    delegateQueue = [(AMSURLSession *)v11 delegateQueue];
+    v28 = [v25 sessionWithConfiguration:configurationCopy delegate:v26 delegateQueue:delegateQueue];
     session = v11->_session;
     v11->_session = v28;
 
@@ -261,40 +261,40 @@ void __29__AMSURLSession_imageSession__block_invoke()
   qword_1ED6E3218 = v1;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AMSURLSession *)self delegateProxy];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  delegateProxy = [(AMSURLSession *)self delegateProxy];
+  [delegateProxy setDelegate:delegateCopy];
 }
 
-- (void)setProtocolHandler:(id)a3
+- (void)setProtocolHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
-  [v4 setSession:self];
+  [handlerCopy setSession:self];
   protocolHandler = self->_protocolHandler;
-  self->_protocolHandler = v4;
+  self->_protocolHandler = handlerCopy;
 
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
 
-- (void)setRequestEncoder:(id)a3
+- (void)setRequestEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   os_unfair_lock_lock_with_options();
   requestEncoder = self->_requestEncoder;
-  self->_requestEncoder = v4;
+  self->_requestEncoder = encoderCopy;
 
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
 
-- (void)setResponseDecoder:(id)a3
+- (void)setResponseDecoder:(id)decoder
 {
-  v4 = a3;
+  decoderCopy = decoder;
   os_unfair_lock_lock_with_options();
   responseDecoder = self->_responseDecoder;
-  self->_responseDecoder = v4;
+  self->_responseDecoder = decoderCopy;
 
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
@@ -302,8 +302,8 @@ void __29__AMSURLSession_imageSession__block_invoke()
 - (void)invalidateAndCancel
 {
   [(AMSURLSession *)self setInvalidated:1];
-  v3 = [(AMSURLSession *)self session];
-  [v3 getAllTasksWithCompletionHandler:&__block_literal_global_22_2];
+  session = [(AMSURLSession *)self session];
+  [session getAllTasksWithCompletionHandler:&__block_literal_global_22_2];
 }
 
 void __36__AMSURLSession_invalidateAndCancel__block_invoke(uint64_t a1, void *a2)
@@ -340,13 +340,13 @@ void __36__AMSURLSession_invalidateAndCancel__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [AMSURLTaskInfo taskInfoForTask:v12];
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  v15 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
   v16 = objc_alloc_init(AMSMutablePromise);
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -354,10 +354,10 @@ void __36__AMSURLSession_invalidateAndCancel__block_invoke(uint64_t a1, void *a2
   v42[3] = &unk_1E73BD528;
   v17 = v15;
   v43 = v17;
-  v18 = v13;
+  v18 = responseCopy;
   v44 = v18;
-  v45 = self;
-  v19 = v12;
+  selfCopy = self;
+  v19 = taskCopy;
   v47 = v16;
   v48 = a2;
   v46 = v19;
@@ -372,23 +372,23 @@ void __36__AMSURLSession_invalidateAndCancel__block_invoke(uint64_t a1, void *a2
   v40 = v21;
   v41 = a2;
   v36 = v22;
-  v37 = v11;
+  v37 = sessionCopy;
   v38 = v19;
   v39 = v18;
   v23 = v18;
   v24 = v19;
-  v25 = v11;
+  v25 = sessionCopy;
   v26 = [(AMSMutablePromise *)v20 thenWithBlock:v35];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __74__AMSURLSession_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke_144;
   v29[3] = &unk_1E73BD668;
   v30 = v22;
-  v31 = self;
+  selfCopy2 = self;
   v33 = v21;
   v34 = a2;
-  v32 = v14;
-  v27 = v14;
+  v32 = handlerCopy;
+  v27 = handlerCopy;
   v28 = v22;
   [v26 addFinishBlock:v29];
 }
@@ -1357,48 +1357,48 @@ uint64_t __74__AMSURLSession_URLSession_dataTask_didReceiveResponse_completionHa
   return [*(a1 + 56) finishContiguousAsyncActionWithIdentifier:*(a1 + 80)];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [AMSURLTaskInfo taskInfoForTask:v8];
-  [v10 appendData:v9];
-  v11 = [(AMSURLSession *)self delegate];
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
+  v10 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  [v10 appendData:dataCopy];
+  delegate = [(AMSURLSession *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSURLSession *)self delegate];
-    [v13 URLSession:v14 dataTask:v8 didReceiveData:v9];
+    delegate2 = [(AMSURLSession *)self delegate];
+    [delegate2 URLSession:sessionCopy dataTask:taskCopy didReceiveData:dataCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [AMSURLTaskInfo taskInfoForTask:v8];
-  [v10 setMetrics:v9];
-  v11 = [(AMSURLSession *)self delegate];
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
+  v10 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  [v10 setMetrics:metricsCopy];
+  delegate = [(AMSURLSession *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AMSURLSession *)self delegate];
-    [v13 URLSession:v14 task:v8 didFinishCollectingMetrics:v9];
+    delegate2 = [(AMSURLSession *)self delegate];
+    [delegate2 URLSession:sessionCopy task:taskCopy didFinishCollectingMetrics:metricsCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v31 = [AMSURLTaskInfo taskInfoForTask:v10];
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  v31 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -1409,9 +1409,9 @@ uint64_t __74__AMSURLSession_URLSession_dataTask_didReceiveResponse_completionHa
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 1;
-  v13 = [v11 protectionSpace];
-  v14 = [v13 authenticationMethod];
-  v15 = [v14 isEqualToString:*MEMORY[0x1E695AB80]];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v15 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]];
 
   if (v15 && os_variant_has_internal_content() && (+[AMSDefaults QAMode](AMSDefaults, "QAMode") || +[AMSDefaults ignoreServerTrustEvaluation](AMSDefaults, "ignoreServerTrustEvaluation") || +[AMSDefaults ss_ignoreServerTrustEvaluation]))
   {
@@ -1421,20 +1421,20 @@ uint64_t __74__AMSURLSession_URLSession_dataTask_didReceiveResponse_completionHa
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 = objc_opt_class();
-      v19 = [v31 properties];
-      v20 = [v19 logUUID];
+      properties = [v31 properties];
+      logUUID = [properties logUUID];
       *buf = 138543618;
       v50 = v18;
       v51 = 2114;
-      v52 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring server trust", buf, 0x16u);
+      v52 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ignoring server trust", buf, 0x16u);
     }
 
-    v21 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(v13, "serverTrust")}];
+    v21 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
     v22 = v44[5];
     v44[5] = v21;
 
@@ -1447,14 +1447,14 @@ uint64_t __74__AMSURLSession_URLSession_dataTask_didReceiveResponse_completionHa
     goto LABEL_15;
   }
 
-  v24 = [(AMSURLSession *)self delegate];
+  delegate = [(AMSURLSession *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
   if ((v25 & 1) == 0)
   {
     v23 = v40[3];
 LABEL_15:
-    v12[2](v12, v23, v44[5]);
+    handlerCopy[2](handlerCopy, v23, v44[5]);
     goto LABEL_16;
   }
 
@@ -1466,17 +1466,17 @@ LABEL_15:
   v38[4] = self;
   v38[5] = a2;
   v27 = [(AMSDeallocGuard *)v26 initWithDeallocGuardBlock:v38];
-  v28 = [(AMSURLSession *)self delegate];
+  delegate2 = [(AMSURLSession *)self delegate];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __71__AMSURLSession_URLSession_task_didReceiveChallenge_completionHandler___block_invoke_155;
   v33[3] = &unk_1E73BD690;
   v36 = &v43;
   v37 = &v39;
-  v35 = v12;
+  v35 = handlerCopy;
   v29 = v27;
   v34 = v29;
-  [v28 URLSession:v32 didReceiveChallenge:v11 completionHandler:v33];
+  [delegate2 URLSession:sessionCopy didReceiveChallenge:challengeCopy completionHandler:v33];
 
 LABEL_16:
   _Block_object_dispose(&v39, 8);
@@ -1577,32 +1577,32 @@ void __71__AMSURLSession_URLSession_task_didReceiveChallenge_completionHandler__
   [*(a1 + 32) invalidate];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [AMSURLTaskInfo taskInfoForTask:v14];
-  [v18 setOriginalResponse:v15];
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  v18 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  [v18 setOriginalResponse:redirectionCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __89__AMSURLSession_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke;
   v25[3] = &unk_1E73BD780;
   v26 = v18;
-  v27 = self;
-  v28 = v16;
-  v29 = v14;
-  v30 = v13;
-  v31 = v15;
-  v32 = v17;
+  selfCopy = self;
+  v28 = requestCopy;
+  v29 = taskCopy;
+  v30 = sessionCopy;
+  v31 = redirectionCopy;
+  v32 = handlerCopy;
   v33 = a2;
-  v19 = v17;
-  v20 = v15;
-  v21 = v13;
-  v22 = v14;
-  v23 = v16;
+  v19 = handlerCopy;
+  v20 = redirectionCopy;
+  v21 = sessionCopy;
+  v22 = taskCopy;
+  v23 = requestCopy;
   v24 = v18;
   [v24 startContiguousAsyncActionWithInitialBlock:v25];
 }
@@ -1922,13 +1922,13 @@ uint64_t __89__AMSURLSession_URLSession_task_willPerformHTTPRedirection_newReque
   return [*(a1 + 48) finishContiguousAsyncActionWithIdentifier:*(a1 + 72)];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [AMSURLTaskInfo taskInfoForTask:v8];
-  v11 = [(AMSURLSession *)self protocolHandler];
+  taskCopy = task;
+  errorCopy = error;
+  v10 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  protocolHandler = [(AMSURLSession *)self protocolHandler];
   if (!v10)
   {
     v15 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -1937,31 +1937,31 @@ uint64_t __89__AMSURLSession_URLSession_task_willPerformHTTPRedirection_newReque
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
-      v18 = [0 properties];
-      v19 = [v18 logUUID];
-      v20 = AMSLogableError(v9);
+      properties = [0 properties];
+      logUUID = [properties logUUID];
+      v20 = AMSLogableError(errorCopy);
       *buf = 138543874;
       v32 = v17;
       v33 = 2114;
-      v34 = v19;
+      v34 = logUUID;
       v35 = 2114;
       v36 = v20;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping completion - no task info. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping completion - no task info. error = %{public}@", buf, 0x20u);
     }
 
     goto LABEL_16;
   }
 
-  v12 = [v10 receivedAction];
-  v13 = [v12 actionType];
+  receivedAction = [v10 receivedAction];
+  actionType = [receivedAction actionType];
 
-  if (v13)
+  if (actionType)
   {
-    v14 = v13 == 3;
+    v14 = actionType == 3;
   }
 
   else
@@ -1978,17 +1978,17 @@ uint64_t __89__AMSURLSession_URLSession_task_willPerformHTTPRedirection_newReque
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
-      v23 = [v10 properties];
-      v24 = [v23 logUUID];
+      properties2 = [v10 properties];
+      logUUID2 = [properties2 logUUID];
       *buf = 138543618;
       v32 = v22;
       v33 = 2114;
-      v34 = v24;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping completion", buf, 0x16u);
+      v34 = logUUID2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping completion", buf, 0x16u);
     }
 
 LABEL_16:
@@ -2001,9 +2001,9 @@ LABEL_16:
   v25[2] = __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke;
   v25[3] = &unk_1E73BD8C0;
   v26 = v10;
-  v27 = self;
-  v28 = v8;
-  v29 = v9;
+  selfCopy = self;
+  v28 = taskCopy;
+  v29 = errorCopy;
   v30 = a2;
   [v26 startContiguousAsyncActionWithInitialDataBlock:v25];
 
@@ -2882,14 +2882,14 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
   return [*(a1 + 64) finishContiguousAsyncActionWithIdentifier:*(a1 + 72)];
 }
 
-- (void)createDataTaskWithRequest:(id)a3 signpostID:(unint64_t)a4 activity:(id)a5 dataTaskCreationCompletionHandler:(id)a6 requestCompletionHandler:(id)a7
+- (void)createDataTaskWithRequest:(id)request signpostID:(unint64_t)d activity:(id)activity dataTaskCreationCompletionHandler:(id)handler requestCompletionHandler:(id)completionHandler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v48 = a5;
-  v13 = a6;
-  v47 = a7;
-  v14 = [(AMSURLSession *)self protocolHandler];
+  requestCopy = request;
+  activityCopy = activity;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  protocolHandler = [(AMSURLSession *)self protocolHandler];
   v15 = +[AMSLogConfig sharedURLLoadingConfig];
   v16 = v15;
   if (!v15)
@@ -2897,9 +2897,9 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  v18 = os_signpost_enabled(v17);
-  if (a4)
+  oSLogObject = [v16 OSLogObject];
+  v18 = os_signpost_enabled(oSLogObject);
+  if (d)
   {
     v19 = 0;
   }
@@ -2922,8 +2922,8 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    a4 = os_signpost_id_make_with_pointer(v22, v12);
+    oSLogObject2 = [v21 OSLogObject];
+    d = os_signpost_id_make_with_pointer(oSLogObject2, requestCopy);
 
     if (!v20)
     {
@@ -2933,28 +2933,28 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
     v24 = v23;
     if (v23)
     {
-      v25 = [v23 OSLogObject];
+      oSLogObject3 = [v23 OSLogObject];
     }
 
     else
     {
       v26 = +[AMSLogConfig sharedConfig];
-      v25 = [v26 OSLogObject];
+      oSLogObject3 = [v26 OSLogObject];
     }
 
-    if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
+    if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(oSLogObject3))
     {
-      v27 = [v12 URL];
+      v27 = [requestCopy URL];
       *buf = 138543362;
       v57 = v27;
-      _os_signpost_emit_with_name_impl(&dword_192869000, v25, OS_SIGNPOST_INTERVAL_BEGIN, a4, "URL Data Task", "%{public}@", buf, 0xCu);
+      _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject3, OS_SIGNPOST_INTERVAL_BEGIN, d, "URL Data Task", "%{public}@", buf, 0xCu);
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v12 properties];
+    properties = [requestCopy properties];
   }
 
   else
@@ -2965,8 +2965,8 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
       v29 = +[AMSLogConfig sharedConfig];
     }
 
-    v30 = [v29 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v29 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v31 = objc_opt_class();
       v32 = AMSSetLogKeyIfNeeded();
@@ -2974,10 +2974,10 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
       v57 = v31;
       v58 = 2114;
       v59 = v32;
-      _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Falling back to default properties since we don't have an AMSURLRequest", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Falling back to default properties since we don't have an AMSURLRequest", buf, 0x16u);
     }
 
-    v28 = objc_alloc_init(AMSURLRequestProperties);
+    properties = objc_alloc_init(AMSURLRequestProperties);
     if ([(AMSURLSession *)self useFallbackBag])
     {
       v33 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -2986,43 +2986,43 @@ uint64_t __54__AMSURLSession_URLSession_task_didCompleteWithError___block_invoke
         v33 = +[AMSLogConfig sharedConfig];
       }
 
-      v34 = [v33 OSLogObject];
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [v33 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v35 = objc_opt_class();
-        v36 = [(AMSURLRequestProperties *)v28 logUUID];
+        logUUID = [(AMSURLRequestProperties *)properties logUUID];
         *buf = 138543618;
         v57 = v35;
         v58 = 2114;
-        v59 = v36;
-        _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Warning: falling back to default properties (this may cause an additional bag load)", buf, 0x16u);
+        v59 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Warning: falling back to default properties (this may cause an additional bag load)", buf, 0x16u);
       }
 
       v37 = +[AMSURLRequestEncoder bagSubProfile];
       v38 = +[AMSURLRequestEncoder bagSubProfileVersion];
       v39 = [AMSBag bagForProfile:v37 profileVersion:v38];
-      [(AMSURLRequestProperties *)v28 setBag:v39];
+      [(AMSURLRequestProperties *)properties setBag:v39];
     }
   }
 
-  v40 = [(AMSURLRequestProperties *)v28 logUUID];
-  v41 = [(AMSURLSession *)self _prepareRequest:v12 logUUID:v40];
+  logUUID2 = [(AMSURLRequestProperties *)properties logUUID];
+  v41 = [(AMSURLSession *)self _prepareRequest:requestCopy logUUID:logUUID2];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __122__AMSURLSession_createDataTaskWithRequest_signpostID_activity_dataTaskCreationCompletionHandler_requestCompletionHandler___block_invoke;
   v49[3] = &unk_1E73BD960;
   v49[4] = self;
-  v50 = v48;
-  v54 = v13;
-  v55 = a4;
-  v51 = v28;
-  v52 = v14;
-  v53 = v47;
-  v42 = v13;
-  v43 = v14;
-  v44 = v28;
-  v45 = v48;
-  v46 = v47;
+  v50 = activityCopy;
+  v54 = handlerCopy;
+  dCopy = d;
+  v51 = properties;
+  v52 = protocolHandler;
+  v53 = completionHandlerCopy;
+  v42 = handlerCopy;
+  v43 = protocolHandler;
+  v44 = properties;
+  v45 = activityCopy;
+  v46 = completionHandlerCopy;
   [v41 addFinishBlock:v49];
 }
 
@@ -3192,11 +3192,11 @@ uint64_t __122__AMSURLSession_createDataTaskWithRequest_signpostID_activity_data
   return [*(a1 + 32) finishContiguousAsyncActionWithIdentifier:*(a1 + 88)];
 }
 
-- (id)dataTaskWithRequest:(id)a3 signpostID:(unint64_t)a4 activity:(id)a5 completionHandler:(id)a6
+- (id)dataTaskWithRequest:(id)request signpostID:(unint64_t)d activity:(id)activity completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  handlerCopy = handler;
+  activityCopy = activity;
+  requestCopy = request;
   v13 = objc_alloc_init(AMSMutablePromise);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -3208,15 +3208,15 @@ uint64_t __122__AMSURLSession_createDataTaskWithRequest_signpostID_activity_data
   v19[2] = __75__AMSURLSession_dataTaskWithRequest_signpostID_activity_completionHandler___block_invoke_2;
   v19[3] = &unk_1E73BD988;
   v20 = v23;
-  v21 = v10;
-  v14 = v10;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v23;
-  [(AMSURLSession *)self createDataTaskWithRequest:v12 signpostID:a4 activity:v11 dataTaskCreationCompletionHandler:v22 requestCompletionHandler:v19];
+  [(AMSURLSession *)self createDataTaskWithRequest:requestCopy signpostID:d activity:activityCopy dataTaskCreationCompletionHandler:v22 requestCompletionHandler:v19];
 
   v16 = [(AMSPromise *)v15 resultWithError:0];
-  v17 = [v16 value];
+  value = [v16 value];
 
-  return v17;
+  return value;
 }
 
 void __75__AMSURLSession_dataTaskWithRequest_signpostID_activity_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -3244,23 +3244,23 @@ void __75__AMSURLSession_dataTaskWithRequest_signpostID_activity_completionHandl
   }
 }
 
-+ (id)_taskFromSession:(id)a3 request:(id)a4 activity:(id)a5
++ (id)_taskFromSession:(id)session request:(id)request activity:(id)activity
 {
-  v7 = a5;
-  v8 = [a3 dataTaskWithRequest:a4];
+  activityCopy = activity;
+  v8 = [session dataTaskWithRequest:request];
   v9 = v8;
-  if (v7)
+  if (activityCopy)
   {
-    [v8 set_nw_activity:v7];
+    [v8 set_nw_activity:activityCopy];
   }
 
   return v9;
 }
 
-- (id)dataTaskPromiseWithRequest:(id)a3 activity:(id)a4
+- (id)dataTaskPromiseWithRequest:(id)request activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  activityCopy = activity;
   objc_initWeak(&location, self);
   v8 = [AMSMutableLazyPromise alloc];
   v13[0] = MEMORY[0x1E69E9820];
@@ -3268,9 +3268,9 @@ void __75__AMSURLSession_dataTaskWithRequest_signpostID_activity_completionHandl
   v13[2] = __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke;
   v13[3] = &unk_1E73BD9B0;
   objc_copyWeak(&v16, &location);
-  v9 = v6;
+  v9 = requestCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = activityCopy;
   v15 = v10;
   v11 = [(AMSMutableLazyPromise *)v8 initWithBlock:v13];
 
@@ -3405,41 +3405,41 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
   }
 }
 
-- (id)dataTaskPromiseWithRequestPromise:(id)a3 activity:(id)a4
+- (id)dataTaskPromiseWithRequestPromise:(id)promise activity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__AMSURLSession_dataTaskPromiseWithRequestPromise_activity___block_invoke;
   v10[3] = &unk_1E73B45F0;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 thenWithBlock:v10];
+  v11 = activityCopy;
+  v7 = activityCopy;
+  v8 = [promise thenWithBlock:v10];
 
   return v8;
 }
 
-- (void)_completeTaskWithTaskInfo:(id)a3 result:(id)a4 decodedObject:(id)a5 error:(id)a6
+- (void)_completeTaskWithTaskInfo:(id)info result:(id)result decodedObject:(id)object error:(id)error
 {
   v108 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v86 = a5;
-  v12 = a6;
-  [v10 assertIsOnPrivateQueue];
-  v13 = [v10 task];
+  infoCopy = info;
+  resultCopy = result;
+  objectCopy = object;
+  errorCopy = error;
+  [infoCopy assertIsOnPrivateQueue];
+  task = [infoCopy task];
   v14 = +[AMSNetworkQualityInquiry sharedInstance];
-  v85 = v13;
-  [v14 updateLastConnectionReportWithTask:v13];
+  v85 = task;
+  [v14 updateLastConnectionReportWithTask:task];
 
-  v87 = self;
-  v15 = [(AMSURLSession *)self responseDecoder];
-  v16 = v15;
-  if (!v12 && v15)
+  selfCopy = self;
+  responseDecoder = [(AMSURLSession *)self responseDecoder];
+  v16 = responseDecoder;
+  if (!errorCopy && responseDecoder)
   {
     v99 = 0;
-    v17 = [v15 resultFromResult:v11 error:&v99];
+    v17 = [responseDecoder resultFromResult:resultCopy error:&v99];
     v18 = v99;
 
     if (v18 || !v17)
@@ -3450,43 +3450,43 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
-        v22 = [v10 properties];
-        v23 = [v22 logUUID];
+        properties = [infoCopy properties];
+        logUUID = [properties logUUID];
         v24 = AMSLogableError(v18);
         *buf = 138544130;
         v101 = v21;
         v102 = 2114;
-        v103 = v23;
+        v103 = logUUID;
         v104 = 2114;
         v105 = v17;
         v106 = 2114;
         v107 = v24;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Session decoder failed. Result = %{public}@; Error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Session decoder failed. Result = %{public}@; Error = %{public}@", buf, 0x2Au);
       }
 
-      v12 = v18;
+      errorCopy = v18;
       v17 = 0;
     }
 
     else
     {
-      v12 = 0;
+      errorCopy = 0;
     }
 
-    v11 = v17;
+    resultCopy = v17;
   }
 
-  v25 = [v10 properties];
-  v26 = [v25 responseDecoder];
+  properties2 = [infoCopy properties];
+  responseDecoder2 = [properties2 responseDecoder];
 
-  if (!v12 && v26)
+  if (!errorCopy && responseDecoder2)
   {
     v98 = 0;
-    v27 = [v26 resultFromResult:v11 error:&v98];
+    v27 = [responseDecoder2 resultFromResult:resultCopy error:&v98];
     v28 = v98;
 
     if (v28 || !v27)
@@ -3497,34 +3497,34 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
         v29 = +[AMSLogConfig sharedConfig];
       }
 
-      v30 = [v29 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v29 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v31 = objc_opt_class();
-        v32 = [v10 properties];
-        v33 = [v32 logUUID];
+        properties3 = [infoCopy properties];
+        logUUID2 = [properties3 logUUID];
         v34 = AMSLogableError(v28);
         *buf = 138544130;
         v101 = v31;
         v102 = 2114;
-        v103 = v33;
+        v103 = logUUID2;
         v104 = 2114;
         v105 = v27;
         v106 = 2114;
         v107 = v34;
-        _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Request decoder failed. Result = %{public}@; Error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Request decoder failed. Result = %{public}@; Error = %{public}@", buf, 0x2Au);
       }
 
-      v12 = v28;
+      errorCopy = v28;
       v27 = 0;
     }
 
     else
     {
-      v12 = 0;
+      errorCopy = 0;
     }
 
-    v11 = v27;
+    resultCopy = v27;
   }
 
   v35 = &unk_193016000;
@@ -3532,19 +3532,19 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
   {
     if (+[AMSProcessInfo hasAMSEntitlement])
     {
-      v36 = [v10 properties];
-      v37 = [v36 account];
-      v38 = [v37 ams_isEphemeralAccount];
+      properties4 = [infoCopy properties];
+      account = [properties4 account];
+      ams_isEphemeralAccount = [account ams_isEphemeralAccount];
 
-      if (v38)
+      if (ams_isEphemeralAccount)
       {
         v96[0] = MEMORY[0x1E69E9820];
         v35 = &unk_193016000;
         v96[1] = 3221225472;
         v96[2] = __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___block_invoke;
         v96[3] = &unk_1E73B3DE0;
-        v96[4] = v87;
-        v97 = v10;
+        v96[4] = selfCopy;
+        v97 = infoCopy;
         [v97 performAsyncBlock:v96];
         v39 = v97;
       }
@@ -3556,8 +3556,8 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
         v94[1] = 3221225472;
         v94[2] = __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___block_invoke_217;
         v94[3] = &unk_1E73B3DE0;
-        v94[4] = v87;
-        v95 = v10;
+        v94[4] = selfCopy;
+        v95 = infoCopy;
         [v95 performAsyncBlock:v94];
         v39 = v95;
       }
@@ -3571,17 +3571,17 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
         v40 = +[AMSLogConfig sharedConfig];
       }
 
-      v41 = [v40 OSLogObject];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v40 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v42 = objc_opt_class();
-        v43 = [v10 properties];
-        v44 = [v43 logUUID];
+        properties5 = [infoCopy properties];
+        logUUID3 = [properties5 logUUID];
         *buf = 138543618;
         v101 = v42;
         v102 = 2114;
-        v103 = v44;
-        _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Warning: missing AMS private entitlement, skipping HAR logging.", buf, 0x16u);
+        v103 = logUUID3;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Warning: missing AMS private entitlement, skipping HAR logging.", buf, 0x16u);
 
         v35 = &unk_193016000;
       }
@@ -3590,32 +3590,32 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
 
   v45 = +[AMSLogConfig sharedURLLoadingConfig];
   v46 = v45;
-  if (v12)
+  if (errorCopy)
   {
     if (!v45)
     {
       v46 = +[AMSLogConfig sharedConfig];
     }
 
-    v47 = [v46 OSLogObject];
-    if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [v46 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v48 = objc_opt_class();
-      [v10 properties];
-      v49 = v84 = v10;
+      [infoCopy properties];
+      v49 = v84 = infoCopy;
       [v49 logUUID];
       v51 = v50 = v35;
-      v52 = AMSLogableError(v12);
+      v52 = AMSLogableError(errorCopy);
       *buf = 138543874;
       v101 = v48;
       v102 = 2114;
       v103 = v51;
       v104 = 2114;
       v105 = v52;
-      _os_log_impl(&dword_192869000, v47, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Task completed with error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Task completed with error = %{public}@", buf, 0x20u);
 
       v35 = v50;
-      v10 = v84;
+      infoCopy = v84;
     }
 
     v53 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -3625,8 +3625,8 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
       v54 = +[AMSLogConfig sharedConfig];
     }
 
-    v55 = [v54 OSLogObject];
-    v56 = os_signpost_enabled(v55);
+    oSLogObject5 = [v54 OSLogObject];
+    v56 = os_signpost_enabled(oSLogObject5);
 
     if (!v53)
     {
@@ -3638,25 +3638,25 @@ uint64_t __53__AMSURLSession_dataTaskPromiseWithRequest_activity___block_invoke_
       v58 = v57;
       if (v57)
       {
-        v59 = [v57 OSLogObject];
+        oSLogObject6 = [v57 OSLogObject];
       }
 
       else
       {
         v71 = +[AMSLogConfig sharedConfig];
-        v59 = [v71 OSLogObject];
+        oSLogObject6 = [v71 OSLogObject];
       }
 
-      v72 = [v10 signpostID];
-      if ((v72 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostID = [infoCopy signpostID];
+      if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v73 = v72;
-        if (os_signpost_enabled(v59))
+        v73 = signpostID;
+        if (os_signpost_enabled(oSLogObject6))
         {
-          v74 = AMSLogableError(v12);
+          v74 = AMSLogableError(errorCopy);
           *buf = 138543362;
           v101 = v74;
-          _os_signpost_emit_with_name_impl(&dword_192869000, v59, OS_SIGNPOST_INTERVAL_END, v73, "URL Data Task", "Failed with error: %{public}@", buf, 0xCu);
+          _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject6, OS_SIGNPOST_INTERVAL_END, v73, "URL Data Task", "Failed with error: %{public}@", buf, 0xCu);
         }
       }
 
@@ -3671,21 +3671,21 @@ LABEL_65:
       v46 = +[AMSLogConfig sharedConfig];
     }
 
-    v60 = [v46 OSLogObject];
-    if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
+    oSLogObject7 = [v46 OSLogObject];
+    if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
     {
       v61 = objc_opt_class();
-      v62 = [v10 properties];
-      [v62 logUUID];
+      properties6 = [infoCopy properties];
+      [properties6 logUUID];
       v64 = v63 = v35;
       *buf = 138543618;
       v101 = v61;
       v102 = 2114;
       v103 = v64;
-      _os_log_impl(&dword_192869000, v60, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Task completed successfully", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Task completed successfully", buf, 0x16u);
 
       v35 = v63;
-      v12 = 0;
+      errorCopy = 0;
     }
 
     v65 = +[AMSLogConfig sharedURLLoadingConfig];
@@ -3695,8 +3695,8 @@ LABEL_65:
       v66 = +[AMSLogConfig sharedConfig];
     }
 
-    v67 = [v66 OSLogObject];
-    v68 = os_signpost_enabled(v67);
+    oSLogObject8 = [v66 OSLogObject];
+    v68 = os_signpost_enabled(oSLogObject8);
 
     if (!v65)
     {
@@ -3708,23 +3708,23 @@ LABEL_65:
       v70 = v69;
       if (v69)
       {
-        v59 = [v69 OSLogObject];
+        oSLogObject6 = [v69 OSLogObject];
       }
 
       else
       {
         v75 = +[AMSLogConfig sharedConfig];
-        v59 = [v75 OSLogObject];
+        oSLogObject6 = [v75 OSLogObject];
       }
 
-      v76 = [v10 signpostID];
-      if ((v76 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostID2 = [infoCopy signpostID];
+      if ((signpostID2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v77 = v76;
-        if (os_signpost_enabled(v59))
+        v77 = signpostID2;
+        if (os_signpost_enabled(oSLogObject6))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_192869000, v59, OS_SIGNPOST_INTERVAL_END, v77, "URL Data Task", "Succeeded", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_192869000, oSLogObject6, OS_SIGNPOST_INTERVAL_END, v77, "URL Data Task", "Succeeded", buf, 2u);
         }
       }
 
@@ -3732,23 +3732,23 @@ LABEL_65:
     }
   }
 
-  v78 = [(AMSURLSession *)v87 delegateQueue];
+  delegateQueue = [(AMSURLSession *)selfCopy delegateQueue];
   v88[0] = MEMORY[0x1E69E9820];
   v88[1] = v35[267];
   v88[2] = __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___block_invoke_219;
   v88[3] = &unk_1E73B7378;
-  v88[4] = v87;
+  v88[4] = selfCopy;
   v89 = v85;
-  v90 = v12;
-  v91 = v11;
-  v92 = v86;
-  v93 = v10;
-  v79 = v10;
-  v80 = v86;
-  v81 = v11;
-  v82 = v12;
+  v90 = errorCopy;
+  v91 = resultCopy;
+  v92 = objectCopy;
+  v93 = infoCopy;
+  v79 = infoCopy;
+  v80 = objectCopy;
+  v81 = resultCopy;
+  v82 = errorCopy;
   v83 = v85;
-  [v78 addOperationWithBlock:v88];
+  [delegateQueue addOperationWithBlock:v88];
 }
 
 void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___block_invoke(uint64_t a1)
@@ -3831,26 +3831,26 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
   (v8)[2](v8, *(a1 + 56), v9);
 }
 
-- (id)_createSharedDataForTask:(id)a3 properties:(id)a4 completionHandler:(id)a5
+- (id)_createSharedDataForTask:(id)task properties:(id)properties completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [AMSURLTaskInfo createTaskInfoForTask:a3];
-  [v10 setCompletionBlock:v8];
+  handlerCopy = handler;
+  propertiesCopy = properties;
+  v10 = [AMSURLTaskInfo createTaskInfoForTask:task];
+  [v10 setCompletionBlock:handlerCopy];
 
-  [v10 setProperties:v9];
+  [v10 setProperties:propertiesCopy];
   [v10 setSession:self];
 
   return v10;
 }
 
-- (id)_formatError:(id)a3 task:(id)a4 decodedObject:(id)a5
+- (id)_formatError:(id)error task:(id)task decodedObject:(id)object
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 userInfo];
-  v11 = [v10 mutableCopy];
+  taskCopy = task;
+  objectCopy = object;
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v11 = [userInfo mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -3868,10 +3868,10 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
 
   if (!v15)
   {
-    v16 = [v7 response];
-    v17 = [v16 URL];
-    v18 = [v17 absoluteString];
-    [v14 setObject:v18 forKeyedSubscript:@"AMSURL"];
+    response = [taskCopy response];
+    v17 = [response URL];
+    absoluteString = [v17 absoluteString];
+    [v14 setObject:absoluteString forKeyedSubscript:@"AMSURL"];
   }
 
   v19 = [v14 objectForKeyedSubscript:@"AMSStatusCode"];
@@ -3879,8 +3879,8 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
   if (!v19)
   {
     v20 = MEMORY[0x1E696AD98];
-    v21 = [v7 response];
-    v22 = [v20 numberWithInteger:{objc_msgSend(v21, "ams_statusCode")}];
+    response2 = [taskCopy response];
+    v22 = [v20 numberWithInteger:{objc_msgSend(response2, "ams_statusCode")}];
     [v14 setObject:v22 forKeyedSubscript:@"AMSStatusCode"];
   }
 
@@ -3888,23 +3888,23 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
 
   if (!v23)
   {
-    [v14 setObject:v8 forKeyedSubscript:@"AMSServerPayload"];
+    [v14 setObject:objectCopy forKeyedSubscript:@"AMSServerPayload"];
   }
 
   v24 = [v14 objectForKeyedSubscript:@"AMSServerCorrelationKey"];
 
   if (!v24)
   {
-    v25 = [v7 response];
-    v26 = [v25 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
+    response3 = [taskCopy response];
+    v26 = [response3 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
     [v14 setObject:v26 forKeyedSubscript:@"AMSServerCorrelationKey"];
   }
 
-  v27 = [v9 domain];
-  v28 = v27;
-  if (v27)
+  domain = [errorCopy domain];
+  v28 = domain;
+  if (domain)
   {
-    v29 = v27;
+    v29 = domain;
   }
 
   else
@@ -3912,33 +3912,33 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
     v29 = @"AMSErrorDomainWasNil";
   }
 
-  v30 = [v9 code];
-  v31 = [v9 ams_title];
-  v32 = [v9 ams_message];
-  v33 = [v9 ams_underlyingError];
+  code = [errorCopy code];
+  ams_title = [errorCopy ams_title];
+  ams_message = [errorCopy ams_message];
+  ams_underlyingError = [errorCopy ams_underlyingError];
 
-  v34 = AMSCustomCodableError(v29, v30, v31, v32, v14, v33);
+  v34 = AMSCustomCodableError(v29, code, ams_title, ams_message, v14, ams_underlyingError);
 
   return v34;
 }
 
-- (id)_handleURLAction:(id)a3 task:(id)a4 contiguousActionIdentifier:(unint64_t)a5
+- (id)_handleURLAction:(id)action task:(id)task contiguousActionIdentifier:(unint64_t)identifier
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [AMSURLTaskInfo taskInfoForTask:v9];
+  actionCopy = action;
+  taskCopy = task;
+  v10 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
   [v10 assertIsOnPrivateQueue];
-  v11 = [v8 actionType];
-  v12 = [v8 error];
-  if (v12)
+  actionType = [actionCopy actionType];
+  error = [actionCopy error];
+  if (error)
   {
     v13 = 3;
   }
 
   else
   {
-    v13 = v11;
+    v13 = actionType;
   }
 
   if (v13)
@@ -3949,23 +3949,23 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = self;
-      v16 = a5;
+      selfCopy = self;
+      identifierCopy = identifier;
       v17 = objc_opt_class();
-      v28 = [v10 properties];
-      v18 = [v28 logUUID];
+      properties = [v10 properties];
+      logUUID = [properties logUUID];
       *buf = 138543874;
       v38 = v17;
-      a5 = v16;
-      self = v29;
+      identifier = identifierCopy;
+      self = selfCopy;
       v39 = 2114;
-      v40 = v18;
+      v40 = logUUID;
       v41 = 2114;
-      v42 = v8;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling URL action: %{public}@", buf, 0x20u);
+      v42 = actionCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling URL action: %{public}@", buf, 0x20u);
     }
 
     v19 = +[AMSBinaryPromise promiseWithSuccess];
@@ -3973,13 +3973,13 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
     {
       if (v13 == 3)
       {
-        [v9 cancel];
+        [taskCopy cancel];
       }
     }
 
     else
     {
-      v20 = [(AMSURLSession *)self _retryTask:v9 action:v8];
+      v20 = [(AMSURLSession *)self _retryTask:taskCopy action:actionCopy];
 
       v19 = v20;
     }
@@ -3990,22 +3990,22 @@ void __70__AMSURLSession__completeTaskWithTaskInfo_result_decodedObject_error___
     v19 = +[AMSBinaryPromise promiseWithSuccess];
   }
 
-  v21 = [v19 promiseAdapter];
+  promiseAdapter = [v19 promiseAdapter];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __66__AMSURLSession__handleURLAction_task_contiguousActionIdentifier___block_invoke;
   v30[3] = &unk_1E73BD9D8;
   v31 = v10;
-  v32 = v12;
-  v35 = a5;
+  v32 = error;
+  identifierCopy2 = identifier;
   v36 = v13;
-  v33 = v8;
-  v34 = v9;
-  v22 = v9;
-  v23 = v8;
-  v24 = v12;
+  v33 = actionCopy;
+  v34 = taskCopy;
+  v22 = taskCopy;
+  v23 = actionCopy;
+  v24 = error;
   v25 = v10;
-  v26 = [v21 continueWithBlock:v30];
+  v26 = [promiseAdapter continueWithBlock:v30];
 
   return v26;
 }
@@ -4077,15 +4077,15 @@ LABEL_7:
   [v5 finishWithResult:v6];
 }
 
-- (BOOL)_protocolHandler:(id)a3 canUseAlternateImplementationOfSelector:(SEL)a4
+- (BOOL)_protocolHandler:(id)handler canUseAlternateImplementationOfSelector:(SEL)selector
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       v6 = objc_opt_class();
-      v7 = [AMSMethodImplementationCache implementationsOf:a4 areEqualIn:v6 and:objc_opt_class()];
+      v7 = [AMSMethodImplementationCache implementationsOf:selector areEqualIn:v6 and:objc_opt_class()];
     }
 
     else
@@ -4102,43 +4102,43 @@ LABEL_7:
   return v7;
 }
 
-- (id)_retryTask:(id)a3 action:(id)a4
+- (id)_retryTask:(id)task action:(id)action
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [AMSURLTaskInfo taskInfoForTask:v5];
-  v50 = [v7 properties];
+  taskCopy = task;
+  actionCopy = action;
+  v7 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
+  properties = [v7 properties];
   [v7 assertIsOnPrivateQueue];
-  [v5 cancel];
+  [taskCopy cancel];
   v8 = [AMSURLRequest alloc];
-  v9 = [v5 originalRequest];
-  v10 = [v9 copy];
-  v11 = [(AMSURLRequest *)v8 initWithRequest:v10 properties:v50];
+  originalRequest = [taskCopy originalRequest];
+  v10 = [originalRequest copy];
+  v11 = [(AMSURLRequest *)v8 initWithRequest:v10 properties:properties];
 
-  v12 = [v6 updatedHeaders];
-  [(NSMutableURLRequest *)v11 ams_addHeaders:v12];
+  updatedHeaders = [actionCopy updatedHeaders];
+  [(NSMutableURLRequest *)v11 ams_addHeaders:updatedHeaders];
 
-  v13 = [v6 updatedBody];
+  updatedBody = [actionCopy updatedBody];
 
-  if (v13)
+  if (updatedBody)
   {
-    v14 = [v6 updatedBody];
-    [(AMSURLRequest *)v11 setHTTPBody:v14];
+    updatedBody2 = [actionCopy updatedBody];
+    [(AMSURLRequest *)v11 setHTTPBody:updatedBody2];
   }
 
-  v15 = [v6 updatedMethod];
+  updatedMethod = [actionCopy updatedMethod];
 
-  if (v15)
+  if (updatedMethod)
   {
-    v16 = [v6 updatedMethod];
-    [(AMSURLRequest *)v11 setHTTPMethod:v16];
+    updatedMethod2 = [actionCopy updatedMethod];
+    [(AMSURLRequest *)v11 setHTTPMethod:updatedMethod2];
   }
 
-  if ([v6 actionType] == 1 && (objc_msgSend(v6, "redirectURL"), v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+  if ([actionCopy actionType] == 1 && (objc_msgSend(actionCopy, "redirectURL"), v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
   {
-    v18 = [v6 redirectURL];
-    [(AMSURLRequest *)v11 setURL:v18];
+    redirectURL = [actionCopy redirectURL];
+    [(AMSURLRequest *)v11 setURL:redirectURL];
 
     v19 = @"Redirecting";
     v20 = 1;
@@ -4156,35 +4156,35 @@ LABEL_7:
     v21 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v21 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v23 = objc_opt_class();
-    v24 = [v50 logUUID];
+    logUUID = [properties logUUID];
     *buf = 138543874;
     *&buf[4] = v23;
     *&buf[12] = 2114;
-    *&buf[14] = v24;
+    *&buf[14] = logUUID;
     *&buf[22] = 2114;
     v62 = v19;
-    _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@ the request...", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] %{public}@ the request...", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v25 = [(AMSURLRequest *)v11 properties];
-  v26 = [v25 bag];
-  v27 = [v5 response];
-  v28 = [AMSPSD2EventTask sendInitialPSD2EventWithAction:v6 bag:v26 originalResponse:v27];
+  properties2 = [(AMSURLRequest *)v11 properties];
+  v26 = [properties2 bag];
+  response = [taskCopy response];
+  v28 = [AMSPSD2EventTask sendInitialPSD2EventWithAction:actionCopy bag:v26 originalResponse:response];
 
   LOBYTE(v62) = v28;
-  v29 = [v6 retryIdentifier];
+  retryIdentifier = [actionCopy retryIdentifier];
 
-  if (v29 && ([v7 retryIdentifiers], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "retryIdentifier"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v30, "containsObject:", v31), v31, v30, (v32 & 1) == 0))
+  if (retryIdentifier && ([v7 retryIdentifiers], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(actionCopy, "retryIdentifier"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v30, "containsObject:", v31), v31, v30, (v32 & 1) == 0))
   {
-    v33 = [v6 retryIdentifier];
-    [v7 addRetryIdentifier:v33];
+    retryIdentifier2 = [actionCopy retryIdentifier];
+    [v7 addRetryIdentifier:retryIdentifier2];
   }
 
   else
@@ -4196,11 +4196,11 @@ LABEL_7:
     }
   }
 
-  v34 = [v7 retryCount];
-  if (v34 <= [v50 maxRetryCount])
+  retryCount = [v7 retryCount];
+  if (retryCount <= [properties maxRetryCount])
   {
-    v39 = [(AMSURLSession *)self protocolHandler];
-    if (v39)
+    protocolHandler = [(AMSURLSession *)self protocolHandler];
+    if (protocolHandler)
     {
       v42 = +[AMSLogConfig sharedURLLoadingConfig];
       if (!v42)
@@ -4208,8 +4208,8 @@ LABEL_7:
         v42 = +[AMSLogConfig sharedConfig];
       }
 
-      v43 = [v42 OSLogObject];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v42 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v44 = objc_opt_class();
         v45 = AMSLogKey();
@@ -4217,10 +4217,10 @@ LABEL_7:
         v58 = v44;
         v59 = 2114;
         v60 = v45;
-        _os_log_impl(&dword_192869000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Protocol handler reconfigure request", v57, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Protocol handler reconfigure request", v57, 0x16u);
       }
 
-      v46 = [(AMSURLSession *)self _reconfigureNewRequest:v11 originalTask:v5 protocolHandler:v39 redirect:0];
+      v46 = [(AMSURLSession *)self _reconfigureNewRequest:v11 originalTask:taskCopy protocolHandler:protocolHandler redirect:0];
     }
 
     else
@@ -4235,12 +4235,12 @@ LABEL_7:
     v51[3] = &unk_1E73BDA50;
     v51[4] = self;
     v52 = v7;
-    v53 = v5;
+    v53 = taskCopy;
     v56 = buf;
-    v54 = v6;
+    v54 = actionCopy;
     v55 = v11;
     v47 = [v40 thenWithBlock:v51];
-    v41 = [v47 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v47 binaryPromiseAdapter];
   }
 
   else
@@ -4251,26 +4251,26 @@ LABEL_7:
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v36 = [v35 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v37 = objc_opt_class();
-      v38 = [v50 logUUID];
+      logUUID2 = [properties logUUID];
       *v57 = 138543618;
       v58 = v37;
       v59 = 2114;
-      v60 = v38;
-      _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Exceeded max retry count", v57, 0x16u);
+      v60 = logUUID2;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Exceeded max retry count", v57, 0x16u);
     }
 
-    v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Task reached max retry count (%ld / %ld)", objc_msgSend(v7, "retryCount") - 1, objc_msgSend(v50, "maxRetryCount")];;
-    v40 = AMSError(306, @"Reached max retry count", v39, 0);
-    v41 = [AMSBinaryPromise promiseWithError:v40];
+    protocolHandler = [MEMORY[0x1E696AEC0] stringWithFormat:@"Task reached max retry count (%ld / %ld)", objc_msgSend(v7, "retryCount") - 1, objc_msgSend(properties, "maxRetryCount")];;
+    v40 = AMSError(306, @"Reached max retry count", protocolHandler, 0);
+    binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:v40];
   }
 
   _Block_object_dispose(buf, 8);
 
-  return v41;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__35__AMSURLSession__retryTask_action___block_invoke(uint64_t a1, void *a2)
@@ -4338,20 +4338,20 @@ void __35__AMSURLSession__retryTask_action___block_invoke_3(uint64_t a1, void *a
   (v11)[2](v11, v12, v5);
 }
 
-- (id)_prepareRequest:(id)a3 logUUID:(id)a4
+- (id)_prepareRequest:(id)request logUUID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  requestCopy = request;
+  dCopy = d;
+  v8 = requestCopy;
   v9 = +[AMSLogConfig sharedURLLoadingConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
@@ -4359,10 +4359,10 @@ void __35__AMSURLSession__retryTask_action___block_invoke_3(uint64_t a1, void *a
     *buf = 138543874;
     v31 = v11;
     v32 = 2114;
-    v33 = v7;
+    v33 = dCopy;
     v34 = 2114;
     v35 = v13;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing request: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preparing request: %{public}@", buf, 0x20u);
   }
 
   if ([(AMSURLSession *)self invalidated])
@@ -4410,9 +4410,9 @@ LABEL_9:
   }
 
 LABEL_14:
-  v19 = [(AMSURLSession *)self requestEncoder];
+  requestEncoder = [(AMSURLSession *)self requestEncoder];
 
-  if (v19)
+  if (requestEncoder)
   {
     v20 = +[AMSLogConfig sharedURLLoadingConfig];
     if (!v20)
@@ -4420,29 +4420,29 @@ LABEL_14:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       v23 = AMSLogableURLRequest(v8);
       *buf = 138543874;
       v31 = v22;
       v32 = 2114;
-      v33 = v7;
+      v33 = dCopy;
       v34 = 2114;
       v35 = v23;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request encoder will encode request %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Request encoder will encode request %{public}@", buf, 0x20u);
     }
 
-    v24 = [(AMSURLSession *)self requestEncoder];
-    v16 = [v24 requestByEncodingRequest:v8 parameters:0];
+    requestEncoder2 = [(AMSURLSession *)self requestEncoder];
+    v16 = [requestEncoder2 requestByEncodingRequest:v8 parameters:0];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __41__AMSURLSession__prepareRequest_logUUID___block_invoke;
     v28[3] = &unk_1E73B32F0;
     v28[4] = self;
-    v29 = v7;
+    v29 = dCopy;
     [v16 addErrorBlock:v28];
   }
 
@@ -4458,7 +4458,7 @@ LABEL_14:
     v26[2] = __41__AMSURLSession__prepareRequest_logUUID___block_invoke_265;
     v26[3] = &unk_1E73BD6B8;
     v26[4] = self;
-    v27 = v7;
+    v27 = dCopy;
     [v16 addSuccessBlock:v26];
   }
 
@@ -4521,20 +4521,20 @@ void __41__AMSURLSession__prepareRequest_logUUID___block_invoke_265(uint64_t a1,
   }
 }
 
-- (id)_reconfigureNewRequest:(id)a3 originalTask:(id)a4 protocolHandler:(id)a5 redirect:(BOOL)a6
+- (id)_reconfigureNewRequest:(id)request originalTask:(id)task protocolHandler:(id)handler redirect:(BOOL)redirect
 {
-  v6 = a6;
+  redirectCopy = redirect;
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [AMSURLTaskInfo taskInfoForTask:v11];
+  handlerCopy = handler;
+  taskCopy = task;
+  requestCopy = request;
+  v13 = [AMSURLTaskInfo taskInfoForTask:taskCopy];
   [v13 assertIsOnPrivateQueue];
   v14 = objc_alloc_init(AMSMutablePromise);
-  if ([(AMSURLSession *)self _protocolHandler:v10 canUseAlternateImplementationOfSelector:sel_reconfigureNewRequest_originalTask_redirect_error_])
+  if ([(AMSURLSession *)self _protocolHandler:handlerCopy canUseAlternateImplementationOfSelector:sel_reconfigureNewRequest_originalTask_redirect_error_])
   {
-    v15 = [(AMSPromise *)v14 completionHandlerAdapter];
-    [v10 reconfigureNewRequest:v12 originalTask:v11 redirect:v6 completionHandler:v15];
+    completionHandlerAdapter = [(AMSPromise *)v14 completionHandlerAdapter];
+    [handlerCopy reconfigureNewRequest:requestCopy originalTask:taskCopy redirect:redirectCopy completionHandler:completionHandlerAdapter];
   }
 
   else
@@ -4545,10 +4545,10 @@ void __41__AMSURLSession__prepareRequest_logUUID___block_invoke_265(uint64_t a1,
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = v6;
+      v28 = redirectCopy;
       v18 = AMSLogKey();
       v27 = MEMORY[0x1E696AEC0];
       v19 = objc_opt_class();
@@ -4573,22 +4573,22 @@ void __41__AMSURLSession__prepareRequest_logUUID___block_invoke_265(uint64_t a1,
       v34 = v22;
       v35 = 2114;
       v36 = v23;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@ is deprecated. %{public}@ should be used instead.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@%{public}@ is deprecated. %{public}@ should be used instead.", buf, 0x20u);
       if (v29)
       {
 
         v21 = v26;
       }
 
-      v6 = v28;
+      redirectCopy = v28;
     }
 
-    v15 = [v12 mutableCopy];
+    completionHandlerAdapter = [requestCopy mutableCopy];
     v30 = 0;
-    [v10 reconfigureNewRequest:v15 originalTask:v11 redirect:v6 error:&v30];
+    [handlerCopy reconfigureNewRequest:completionHandlerAdapter originalTask:taskCopy redirect:redirectCopy error:&v30];
 
     v24 = v30;
-    [(AMSMutablePromise *)v14 finishWithResult:v15 error:v24];
+    [(AMSMutablePromise *)v14 finishWithResult:completionHandlerAdapter error:v24];
   }
 
   return v14;

@@ -1,32 +1,32 @@
 @interface ASDTStream
-+ (id)streamForConfig:(id)a3 withDevice:(id)a4;
++ (id)streamForConfig:(id)config withDevice:(id)device;
 - (ASDTAudioDevice)device;
-- (ASDTStream)initWithConfig:(id)a3 withDevice:(id)a4;
-- (BOOL)setupPhysicalFormats:(id)a3;
+- (ASDTStream)initWithConfig:(id)config withDevice:(id)device;
+- (BOOL)setupPhysicalFormats:(id)formats;
 - (id)readInputBlock;
 - (id)readOrWriteBlock;
 - (id)writeMixBlock;
-- (int)pmIdleStream:(int)a3;
-- (int)pmStateTransition:(int)a3;
+- (int)pmIdleStream:(int)stream;
+- (int)pmStateTransition:(int)transition;
 - (void)clearBuffer;
-- (void)setLatencies:(id)a3;
-- (void)setPhysicalFormat:(id)a3;
-- (void)setUpdateClientPositionCopy:(id)a3;
+- (void)setLatencies:(id)latencies;
+- (void)setPhysicalFormat:(id)format;
+- (void)setUpdateClientPositionCopy:(id)copy;
 - (void)updateLatency;
-- (void)writeZerosToMixMilliseconds:(unsigned int)a3 atSampleTime:(unint64_t)a4;
+- (void)writeZerosToMixMilliseconds:(unsigned int)milliseconds atSampleTime:(unint64_t)time;
 @end
 
 @implementation ASDTStream
 
-+ (id)streamForConfig:(id)a3 withDevice:(id)a4
++ (id)streamForConfig:(id)config withDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 asdtSubclass];
-  if (([(objc_class *)v7 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  configCopy = config;
+  deviceCopy = device;
+  asdtSubclass = [configCopy asdtSubclass];
+  if (([(objc_class *)asdtSubclass isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
-    v8 = [[v7 alloc] initWithConfig:v5 withDevice:v6];
+    v8 = [[asdtSubclass alloc] initWithConfig:configCopy withDevice:deviceCopy];
   }
 
   else
@@ -34,7 +34,7 @@
     v9 = ASDTBaseLogType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v5 objectForKeyedSubscript:@"Subclass"];
+      v10 = [configCopy objectForKeyedSubscript:@"Subclass"];
       [(ASDTStream *)v10 streamForConfig:v13 withDevice:v9];
     }
 
@@ -46,39 +46,39 @@
   return v8;
 }
 
-- (ASDTStream)initWithConfig:(id)a3 withDevice:(id)a4
+- (ASDTStream)initWithConfig:(id)config withDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  deviceCopy = device;
   v18 = 0;
-  if (([v6 asdtDirection:&v18] & 1) == 0)
+  if (([configCopy asdtDirection:&v18] & 1) == 0)
   {
     goto LABEL_10;
   }
 
   v8 = v18;
-  v9 = [v7 plugin];
+  plugin = [deviceCopy plugin];
   v17.receiver = self;
   v17.super_class = ASDTStream;
-  self = [(ASDStream *)&v17 initWithDirection:v8 withPlugin:v9];
+  self = [(ASDStream *)&v17 initWithDirection:v8 withPlugin:plugin];
 
   if (!self)
   {
     goto LABEL_9;
   }
 
-  [(ASDTStream *)self setDevice:v7];
-  v10 = [v7 samplingRates];
-  v11 = [v6 asdtLatenciesForSamplingRates:v10];
+  [(ASDTStream *)self setDevice:deviceCopy];
+  samplingRates = [deviceCopy samplingRates];
+  v11 = [configCopy asdtLatenciesForSamplingRates:samplingRates];
   [(ASDTStream *)self setLatencies:v11];
 
-  -[ASDStream setStartingChannel:](self, "setStartingChannel:", [v6 asdtStartingChannel]);
-  v12 = [v6 asdtName];
-  [(ASDStream *)self setStreamName:v12];
+  -[ASDStream setStartingChannel:](self, "setStartingChannel:", [configCopy asdtStartingChannel]);
+  asdtName = [configCopy asdtName];
+  [(ASDStream *)self setStreamName:asdtName];
 
-  v13 = [(ASDStream *)self streamName];
+  streamName = [(ASDStream *)self streamName];
 
-  if (!v13)
+  if (!streamName)
   {
     if (v18 == 1768845428)
     {
@@ -93,34 +93,34 @@
     [(ASDStream *)self setStreamName:v14];
   }
 
-  -[ASDStream setTerminalType:](self, "setTerminalType:", [v6 asdtTerminalType]);
-  -[ASDTStream setIsolatedUseCaseID:](self, "setIsolatedUseCaseID:", [v6 asdtIsolatedUseCaseID]);
-  if ([(ASDTStream *)self setupPhysicalFormats:v6])
+  -[ASDStream setTerminalType:](self, "setTerminalType:", [configCopy asdtTerminalType]);
+  -[ASDTStream setIsolatedUseCaseID:](self, "setIsolatedUseCaseID:", [configCopy asdtIsolatedUseCaseID]);
+  if ([(ASDTStream *)self setupPhysicalFormats:configCopy])
   {
 LABEL_9:
     self = self;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_10:
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BOOL)setupPhysicalFormats:(id)a3
+- (BOOL)setupPhysicalFormats:(id)formats
 {
   v45 = *MEMORY[0x277D85DE8];
-  v30 = [a3 asdtFormats];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v30, "count")}];
+  asdtFormats = [formats asdtFormats];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(asdtFormats, "count")}];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v30;
+  v5 = asdtFormats;
   v6 = [v5 countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v6)
   {
@@ -135,9 +135,9 @@ LABEL_10:
         }
 
         v9 = *(*(&v35 + 1) + 8 * i);
-        v10 = [(ASDTStream *)self device];
-        v11 = [v10 samplingRates];
-        v12 = [v9 asdtFormatsWithSamplingRates:v11];
+        device = [(ASDTStream *)self device];
+        samplingRates = [device samplingRates];
+        v12 = [v9 asdtFormatsWithSamplingRates:samplingRates];
 
         if (v12)
         {
@@ -177,8 +177,8 @@ LABEL_10:
           v18 = *(*(&v31 + 1) + 8 * j);
           [v18 sampleRate];
           v20 = v19;
-          v21 = [(ASDTStream *)self device];
-          [v21 samplingRate];
+          device2 = [(ASDTStream *)self device];
+          [device2 samplingRate];
           v23 = v20 == v22;
 
           if (v23)
@@ -207,13 +207,13 @@ LABEL_10:
     v14 = ASDTBaseLogType();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(ASDTStream *)self device];
-      v27 = [v26 deviceUID];
-      v28 = [(ASDStream *)self streamName];
+      device3 = [(ASDTStream *)self device];
+      deviceUID = [device3 deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138412546;
-      v41 = v27;
+      v41 = deviceUID;
       v42 = 2112;
-      v43 = v28;
+      v43 = streamName;
       _os_log_error_impl(&dword_241659000, v14, OS_LOG_TYPE_ERROR, "%@: %@: Stream has no formats.", buf, 0x16u);
     }
   }
@@ -224,17 +224,17 @@ LABEL_23:
   return v13 != 0;
 }
 
-- (void)setUpdateClientPositionCopy:(id)a3
+- (void)setUpdateClientPositionCopy:(id)copy
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  copyCopy = copy;
+  v4 = [copyCopy copy];
   updateClientPositionCopy = self->_updateClientPositionCopy;
   self->_updateClientPositionCopy = v4;
 
   [(ASDTStream *)self setUpdateClientPositionUnretained:self->_updateClientPositionCopy];
 }
 
-- (int)pmIdleStream:(int)a3
+- (int)pmIdleStream:(int)stream
 {
   v20 = *MEMORY[0x277D85DE8];
   [(ASDTStream *)self setUpdateClientPositionCopy:0];
@@ -244,15 +244,15 @@ LABEL_23:
     v4 = ASDTBaseLogType();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(ASDTStream *)self device];
-      v6 = [v5 deviceUID];
-      v7 = [(ASDStream *)self streamName];
+      device = [(ASDTStream *)self device];
+      deviceUID = [device deviceUID];
+      streamName = [(ASDStream *)self streamName];
       ioBufferFramesSizeMax = self->_ioBufferFramesSizeMax;
       ioBufferFramesUnexpectedSizeCount = self->_ioBufferFramesUnexpectedSizeCount;
       v12 = 138413058;
-      v13 = v6;
+      v13 = deviceUID;
       v14 = 2112;
-      v15 = v7;
+      v15 = streamName;
       v16 = 1024;
       v17 = ioBufferFramesSizeMax;
       v18 = 1024;
@@ -268,17 +268,17 @@ LABEL_23:
   return 0;
 }
 
-- (int)pmStateTransition:(int)a3
+- (int)pmStateTransition:(int)transition
 {
-  if (a3 <= 1768843635)
+  if (transition <= 1768843635)
   {
-    if (a3 > 1685090417)
+    if (transition > 1685090417)
     {
-      if (a3 != 1685090418)
+      if (transition != 1685090418)
       {
-        if (a3 != 1685092205)
+        if (transition != 1685092205)
         {
-          if (a3 == 1685286000)
+          if (transition == 1685286000)
           {
             return [(ASDTStream *)self pmSleepStream];
           }
@@ -292,11 +292,11 @@ LABEL_23:
       return [(ASDTStream *)self pmPrepareStream:?];
     }
 
-    if (a3 != 1684627811)
+    if (transition != 1684627811)
     {
       v4 = 1684628588;
 LABEL_17:
-      if (a3 == v4)
+      if (transition == v4)
       {
         return [(ASDTStream *)self pmIdleStream:?];
       }
@@ -307,14 +307,14 @@ LABEL_17:
     return [(ASDTStream *)self pmInactiveStream:?];
   }
 
-  if (a3 > 1970435437)
+  if (transition > 1970435437)
   {
-    if (a3 == 1970435438)
+    if (transition == 1970435438)
     {
       return [(ASDTStream *)self pmOnStream];
     }
 
-    if (a3 != 1970563425)
+    if (transition != 1970563425)
     {
       v4 = 1970563428;
       goto LABEL_17;
@@ -323,7 +323,7 @@ LABEL_17:
     return [(ASDTStream *)self pmInactiveStream:?];
   }
 
-  switch(a3)
+  switch(transition)
   {
     case 1768843636:
       return [(ASDTStream *)self pmInactiveStream:?];
@@ -338,17 +338,17 @@ LABEL_17:
 
 - (void)clearBuffer
 {
-  v3 = [(ASDTStream *)self ioBufferRef];
-  if (v3)
+  ioBufferRef = [(ASDTStream *)self ioBufferRef];
+  if (ioBufferRef)
   {
-    v4 = *v3;
-    if (*v3)
+    v4 = *ioBufferRef;
+    if (*ioBufferRef)
     {
       if ([(ASDTStream *)self ioBufferSize])
       {
-        v5 = [(ASDTStream *)self ioBufferSize];
+        ioBufferSize = [(ASDTStream *)self ioBufferSize];
 
-        bzero(v4, v5);
+        bzero(v4, ioBufferSize);
       }
     }
   }
@@ -356,68 +356,68 @@ LABEL_17:
 
 - (void)updateLatency
 {
-  v3 = [(ASDTStream *)self latencies];
+  latencies = [(ASDTStream *)self latencies];
 
-  if (v3)
+  if (latencies)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(ASDStream *)self physicalFormat];
-    [v5 sampleRate];
+    physicalFormat = [(ASDStream *)self physicalFormat];
+    [physicalFormat sampleRate];
     v8 = [v4 numberWithDouble:?];
 
-    v6 = [(ASDTStream *)self latencies];
-    v7 = [v6 objectForKey:v8];
+    latencies2 = [(ASDTStream *)self latencies];
+    v7 = [latencies2 objectForKey:v8];
     -[ASDStream setLatency:](self, "setLatency:", [v7 unsignedIntValue]);
   }
 }
 
-- (void)setLatencies:(id)a3
+- (void)setLatencies:(id)latencies
 {
-  objc_storeStrong(&self->_latencies, a3);
+  objc_storeStrong(&self->_latencies, latencies);
 
   [(ASDTStream *)self updateLatency];
 }
 
-- (void)setPhysicalFormat:(id)a3
+- (void)setPhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5.receiver = self;
   v5.super_class = ASDTStream;
-  [(ASDStream *)&v5 setPhysicalFormat:v4];
+  [(ASDStream *)&v5 setPhysicalFormat:formatCopy];
   [(ASDTStream *)self updateLatency];
 }
 
 - (id)readOrWriteBlock
 {
-  v3 = [(ASDStream *)self physicalFormat];
-  v4 = [v3 bytesPerFrame];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  bytesPerFrame = [physicalFormat bytesPerFrame];
 
-  v5 = [(ASDTStream *)self ioBufferSize];
-  v6 = [(ASDStream *)self direction];
-  v7 = [(ASDTStream *)self updateClientPositionBlock];
-  [(ASDTStream *)self setUpdateClientPositionCopy:v7];
+  ioBufferSize = [(ASDTStream *)self ioBufferSize];
+  direction = [(ASDStream *)self direction];
+  updateClientPositionBlock = [(ASDTStream *)self updateClientPositionBlock];
+  [(ASDTStream *)self setUpdateClientPositionCopy:updateClientPositionBlock];
 
-  v8 = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
-  v9 = [(ASDTStream *)self ioBufferRef];
-  if (v9)
+  getUpdateClientPositionUnretainedAddress = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
+  ioBufferRef = [(ASDTStream *)self ioBufferRef];
+  if (ioBufferRef)
   {
-    v10 = v9;
-    v11 = [(ASDTStream *)self ioBufferFramesSizeMax];
+    v10 = ioBufferRef;
+    ioBufferFramesSizeMax = [(ASDTStream *)self ioBufferFramesSizeMax];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __30__ASDTStream_readOrWriteBlock__block_invoke;
     aBlock[3] = &__block_descriptor_72_e195_i40__0I8r__AudioServerPlugInIOCycleInfo_QI_AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II____dd_d_12_v20_v28I36l;
     aBlock[4] = v10;
-    aBlock[5] = v11;
-    v14 = v4;
-    v15 = v6;
-    v16 = v5 / v4;
-    v17 = v5;
-    aBlock[6] = v8;
-    v9 = _Block_copy(aBlock);
+    aBlock[5] = ioBufferFramesSizeMax;
+    v14 = bytesPerFrame;
+    v15 = direction;
+    v16 = ioBufferSize / bytesPerFrame;
+    v17 = ioBufferSize;
+    aBlock[6] = getUpdateClientPositionUnretainedAddress;
+    ioBufferRef = _Block_copy(aBlock);
   }
 
-  return v9;
+  return ioBufferRef;
 }
 
 uint64_t __30__ASDTStream_readOrWriteBlock__block_invoke(uint64_t a1, unsigned int a2, uint64_t a3, char *a4)
@@ -529,91 +529,91 @@ uint64_t __30__ASDTStream_readOrWriteBlock__block_invoke(uint64_t a1, unsigned i
 {
   if ([(ASDStream *)self direction]== 1869968496)
   {
-    v3 = [(ASDTStream *)self readOrWriteBlock];
+    readOrWriteBlock = [(ASDTStream *)self readOrWriteBlock];
   }
 
   else
   {
-    v3 = 0;
+    readOrWriteBlock = 0;
   }
 
-  return v3;
+  return readOrWriteBlock;
 }
 
 - (id)readInputBlock
 {
   if ([(ASDStream *)self direction]== 1768845428)
   {
-    v3 = [(ASDTStream *)self readOrWriteBlock];
+    readOrWriteBlock = [(ASDTStream *)self readOrWriteBlock];
   }
 
   else
   {
-    v3 = 0;
+    readOrWriteBlock = 0;
   }
 
-  return v3;
+  return readOrWriteBlock;
 }
 
-- (void)writeZerosToMixMilliseconds:(unsigned int)a3 atSampleTime:(unint64_t)a4
+- (void)writeZerosToMixMilliseconds:(unsigned int)milliseconds atSampleTime:(unint64_t)time
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = [(ASDStream *)self physicalFormat];
-  [v7 sampleRate];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  [physicalFormat sampleRate];
   v9 = v8;
 
-  v10 = [(ASDStream *)self physicalFormat];
-  v11 = [v10 bytesPerFrame];
+  physicalFormat2 = [(ASDStream *)self physicalFormat];
+  bytesPerFrame = [physicalFormat2 bytesPerFrame];
 
-  v12 = [(ASDTStream *)self ioBufferSize];
-  v13 = [(ASDTStream *)self ioBufferRef];
-  if (!v13 || (v14 = *v13) == 0 || !v12 || [(ASDStream *)self direction]== 1768845428)
+  ioBufferSize = [(ASDTStream *)self ioBufferSize];
+  ioBufferRef = [(ASDTStream *)self ioBufferRef];
+  if (!ioBufferRef || (v14 = *ioBufferRef) == 0 || !ioBufferSize || [(ASDStream *)self direction]== 1768845428)
   {
 LABEL_72:
     v40 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v15 = (v9 / 1000.0 * a3);
-  v16 = v11 * v15;
-  if (v16 < v12)
+  v15 = (v9 / 1000.0 * milliseconds);
+  v16 = bytesPerFrame * v15;
+  if (v16 < ioBufferSize)
   {
     v17 = ASDTBaseLogType();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       WeakRetained = objc_loadWeakRetained(&self->_device);
-      v43 = [WeakRetained deviceUID];
+      deviceUID = [WeakRetained deviceUID];
       *buf = 138412802;
-      v50 = v43;
+      v50 = deviceUID;
       v51 = 2048;
-      v52 = a4;
+      timeCopy = time;
       v53 = 1024;
       v54 = v15;
       _os_log_debug_impl(&dword_241659000, v17, OS_LOG_TYPE_DEBUG, "%@ Sample time: %llu, Zero frames: %u", buf, 0x1Cu);
     }
 
-    v48 = [(ASDTStream *)self updateClientPositionBlock];
-    v18 = a4 % (v12 / v11) * v11;
-    v19 = v12 - v18;
+    updateClientPositionBlock = [(ASDTStream *)self updateClientPositionBlock];
+    v18 = time % (ioBufferSize / bytesPerFrame) * bytesPerFrame;
+    v19 = ioBufferSize - v18;
     if (v19 >= v16)
     {
-      v20 = v11 * v15;
+      v20 = bytesPerFrame * v15;
     }
 
     else
     {
-      v20 = v12 - v18;
+      v20 = ioBufferSize - v18;
     }
 
     v21 = ASDTBaseLogType();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v46 = [(ASDTStream *)self device];
-      v44 = [v46 deviceUID];
+      device = [(ASDTStream *)self device];
+      deviceUID2 = [device deviceUID];
       *buf = 138412802;
-      v50 = v44;
+      v50 = deviceUID2;
       v51 = 2048;
-      v52 = v18;
+      timeCopy = v18;
       v53 = 1024;
       v54 = v20;
       _os_log_debug_impl(&dword_241659000, v21, OS_LOG_TYPE_DEBUG, "%@ First fill to offset %llu size %u", buf, 0x1Cu);
@@ -623,12 +623,12 @@ LABEL_72:
     v23 = v16 - v20;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v47 = [(ASDTStream *)self device];
-      v45 = [v47 deviceUID];
+      device2 = [(ASDTStream *)self device];
+      deviceUID3 = [device2 deviceUID];
       *buf = 138412546;
-      v50 = v45;
+      v50 = deviceUID3;
       v51 = 1024;
-      LODWORD(v52) = v16 - v20;
+      LODWORD(timeCopy) = v16 - v20;
       _os_log_debug_impl(&dword_241659000, v22, OS_LOG_TYPE_DEBUG, "%@ Second fill to offset 0 size %u", buf, 0x12u);
     }
 
@@ -797,9 +797,9 @@ LABEL_72:
       while (v34 - ((v23 + 15) & 0xFFFFFFFFFFFFFFF0) != 15);
     }
 
-    if (v48)
+    if (updateClientPositionBlock)
     {
-      v48[2](v48, a4 + v15);
+      updateClientPositionBlock[2](updateClientPositionBlock, time + v15);
     }
 
     goto LABEL_72;

@@ -1,25 +1,25 @@
 @interface _UIHDRUsageCoordinatorSceneDiffAction
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIHDRUsageCoordinatorSceneDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v13 || ([v13 containsProperty:sel_applicationOcclusionRects] & 1) != 0 || objc_msgSend(v13, "containsProperty:", sel_systemOcclusionRects))
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (!diffCopy || ([diffCopy containsProperty:sel_applicationOcclusionRects] & 1) != 0 || objc_msgSend(diffCopy, "containsProperty:", sel_systemOcclusionRects))
   {
-    v16 = [v12 settings];
-    v17 = [v20 _hdrUsageCoordinatorSceneComponent];
-    v18 = [v16 applicationOcclusionRects];
-    [v17 _setApplicationOcclusionRects:v18];
+    settings = [sSceneCopy settings];
+    _hdrUsageCoordinatorSceneComponent = [sceneCopy _hdrUsageCoordinatorSceneComponent];
+    applicationOcclusionRects = [settings applicationOcclusionRects];
+    [_hdrUsageCoordinatorSceneComponent _setApplicationOcclusionRects:applicationOcclusionRects];
 
-    v19 = [v16 systemOcclusionRects];
-    [v17 _setSystemOcclusionRects:v19];
+    systemOcclusionRects = [settings systemOcclusionRects];
+    [_hdrUsageCoordinatorSceneComponent _setSystemOcclusionRects:systemOcclusionRects];
   }
 }
 

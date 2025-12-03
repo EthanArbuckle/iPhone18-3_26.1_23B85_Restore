@@ -1,5 +1,5 @@
 @interface MFCollapsedMessageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -8,25 +8,25 @@
 
 @implementation MFCollapsedMessageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"verticalStatusIndicatorManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"horizontalStatusIndicatorManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"statusIndicatorImageViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"senderOrSubjectLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"timestampLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"summaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailActionViewHeader"];
-  [v3 validateClass:@"MailActionViewHeader" isKindOfClass:@"MFCollapsedMessageCell"];
-  [v3 validateClass:@"MFCollapsedMessageCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"verticalStatusIndicatorManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"horizontalStatusIndicatorManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageViewStatusIndicatorManager" hasInstanceMethod:@"statusIndicatorImageViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"senderOrSubjectLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"timestampLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" hasInstanceMethod:@"summaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailActionViewHeader"];
+  [validationsCopy validateClass:@"MailActionViewHeader" isKindOfClass:@"MFCollapsedMessageCell"];
+  [validationsCopy validateClass:@"MFCollapsedMessageCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = MFCollapsedMessageCellAccessibility;
-  v2 = [(MFCollapsedMessageCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(MFCollapsedMessageCellAccessibility *)&v6 accessibilityTraits];
   NSClassFromString(&cfstr_Mailactionview.isa);
   isKindOfClass = objc_opt_isKindOfClass();
   v4 = *MEMORY[0x29EDC7F80];
@@ -35,7 +35,7 @@
     v4 = 0;
   }
 
-  return v4 | v2;
+  return v4 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
@@ -44,12 +44,12 @@
   if (objc_opt_isKindOfClass())
   {
     v3 = [(MFCollapsedMessageCellAccessibility *)self safeValueForKey:@"senderOrSubjectLabel"];
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
     objc_opt_class();
     v5 = [(MFCollapsedMessageCellAccessibility *)self safeValueForKey:@"summaryLabel"];
-    v6 = __UIAccessibilityCastAsClass();
+    _accessibilityMessageIndexDescription = __UIAccessibilityCastAsClass();
 
-    v7 = accessibilityApproximateVisibleSummaryText(self, v6);
+    v7 = accessibilityApproximateVisibleSummaryText(self, _accessibilityMessageIndexDescription);
     v8 = __UIAXStringForVariables();
   }
 
@@ -71,8 +71,8 @@
     v3 = __UIAXStringForVariables();
 
     objc_opt_class();
-    v4 = __UIAccessibilityCastAsSafeCategory();
-    v6 = [v4 _accessibilityMessageIndexDescription];
+    accessibilityLabel = __UIAccessibilityCastAsSafeCategory();
+    _accessibilityMessageIndexDescription = [accessibilityLabel _accessibilityMessageIndexDescription];
     v7 = accessibilityLocalizedString(@"conversation.cell.collapsed");
     v16 = [(MFCollapsedMessageCellAccessibility *)self safeValueForKey:@"senderOrSubjectLabel"];
     v17 = [(MFCollapsedMessageCellAccessibility *)self safeValueForKey:@"timestampLabel"];
@@ -90,15 +90,15 @@
   {
     v5.receiver = self;
     v5.super_class = MFCollapsedMessageCellAccessibility;
-    v3 = [(MFCollapsedMessageCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(MFCollapsedMessageCellAccessibility *)&v5 accessibilityHint];
   }
 
   else
   {
-    v3 = accessibilityLocalizedString(@"conversation.cell.collapsed.hint");
+    accessibilityHint = accessibilityLocalizedString(@"conversation.cell.collapsed.hint");
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (void)prepareForReuse

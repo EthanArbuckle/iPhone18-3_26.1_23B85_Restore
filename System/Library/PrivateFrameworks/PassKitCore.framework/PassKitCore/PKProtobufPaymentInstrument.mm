@@ -1,63 +1,63 @@
 @interface PKProtobufPaymentInstrument
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAssociatedWebDomains:(id)a3;
-- (void)addPaymentApplications:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssociatedAccountFeatureIdentifier:(BOOL)a3;
-- (void)setHasCobranded:(BOOL)a3;
-- (void)setHasHasAssociatedPeerPaymentAccount:(BOOL)a3;
-- (void)setHasPeerPaymentAccountBalance:(BOOL)a3;
-- (void)setHasPeerPaymentAccountState:(BOOL)a3;
-- (void)setHasSupportsAutomaticSelection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssociatedWebDomains:(id)domains;
+- (void)addPaymentApplications:(id)applications;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssociatedAccountFeatureIdentifier:(BOOL)identifier;
+- (void)setHasCobranded:(BOOL)cobranded;
+- (void)setHasHasAssociatedPeerPaymentAccount:(BOOL)account;
+- (void)setHasPeerPaymentAccountBalance:(BOOL)balance;
+- (void)setHasPeerPaymentAccountState:(BOOL)state;
+- (void)setHasSupportsAutomaticSelection:(BOOL)selection;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentInstrument
 
-- (void)addPaymentApplications:(id)a3
+- (void)addPaymentApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   paymentApplications = self->_paymentApplications;
-  v8 = v4;
+  v8 = applicationsCopy;
   if (!paymentApplications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_paymentApplications;
     self->_paymentApplications = v6;
 
-    v4 = v8;
+    applicationsCopy = v8;
     paymentApplications = self->_paymentApplications;
   }
 
-  [(NSMutableArray *)paymentApplications addObject:v4];
+  [(NSMutableArray *)paymentApplications addObject:applicationsCopy];
 }
 
-- (void)addAssociatedWebDomains:(id)a3
+- (void)addAssociatedWebDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   associatedWebDomains = self->_associatedWebDomains;
-  v8 = v4;
+  v8 = domainsCopy;
   if (!associatedWebDomains)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_associatedWebDomains;
     self->_associatedWebDomains = v6;
 
-    v4 = v8;
+    domainsCopy = v8;
     associatedWebDomains = self->_associatedWebDomains;
   }
 
-  [(NSMutableArray *)associatedWebDomains addObject:v4];
+  [(NSMutableArray *)associatedWebDomains addObject:domainsCopy];
 }
 
-- (void)setHasSupportsAutomaticSelection:(BOOL)a3
+- (void)setHasSupportsAutomaticSelection:(BOOL)selection
 {
-  if (a3)
+  if (selection)
   {
     v3 = 64;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasHasAssociatedPeerPaymentAccount:(BOOL)a3
+- (void)setHasHasAssociatedPeerPaymentAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     v3 = 32;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPeerPaymentAccountBalance:(BOOL)a3
+- (void)setHasPeerPaymentAccountBalance:(BOOL)balance
 {
-  if (a3)
+  if (balance)
   {
     v3 = 2;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPeerPaymentAccountState:(BOOL)a3
+- (void)setHasPeerPaymentAccountState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAssociatedAccountFeatureIdentifier:(BOOL)a3
+- (void)setHasAssociatedAccountFeatureIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 4;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCobranded:(BOOL)a3
+- (void)setHasCobranded:(BOOL)cobranded
 {
-  if (a3)
+  if (cobranded)
   {
     v3 = 16;
   }
@@ -151,8 +151,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentInstrument;
   v4 = [(PKProtobufPaymentInstrument *)&v8 description];
-  v5 = [(PKProtobufPaymentInstrument *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentInstrument *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -160,12 +160,12 @@
 - (id)dictionaryRepresentation
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   passID = self->_passID;
@@ -196,8 +196,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -287,15 +287,15 @@
   customPrecisionPeerPaymentAccountBalance = self->_customPrecisionPeerPaymentAccountBalance;
   if (customPrecisionPeerPaymentAccountBalance)
   {
-    v28 = [(PKProtobufCustomPrecisionAmount *)customPrecisionPeerPaymentAccountBalance dictionaryRepresentation];
-    [v4 setObject:v28 forKey:@"customPrecisionPeerPaymentAccountBalance"];
+    dictionaryRepresentation2 = [(PKProtobufCustomPrecisionAmount *)customPrecisionPeerPaymentAccountBalance dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"customPrecisionPeerPaymentAccountBalance"];
   }
 
   decimalAccountBalance = self->_decimalAccountBalance;
   if (decimalAccountBalance)
   {
-    v30 = [(PKProtobufNSDecimalNumber *)decimalAccountBalance dictionaryRepresentation];
-    [v4 setObject:v30 forKey:@"decimal_account_balance"];
+    dictionaryRepresentation3 = [(PKProtobufNSDecimalNumber *)decimalAccountBalance dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"decimal_account_balance"];
   }
 
   v31 = self->_has;
@@ -322,10 +322,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
@@ -477,81 +477,81 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (self->_displayName)
   {
-    [v15 setDisplayName:?];
+    [toCopy setDisplayName:?];
   }
 
   if (self->_passID)
   {
-    [v15 setPassID:?];
+    [toCopy setPassID:?];
   }
 
   if ([(PKProtobufPaymentInstrument *)self paymentApplicationsCount])
   {
-    [v15 clearPaymentApplications];
-    v4 = [(PKProtobufPaymentInstrument *)self paymentApplicationsCount];
-    if (v4)
+    [toCopy clearPaymentApplications];
+    paymentApplicationsCount = [(PKProtobufPaymentInstrument *)self paymentApplicationsCount];
+    if (paymentApplicationsCount)
     {
-      v5 = v4;
+      v5 = paymentApplicationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PKProtobufPaymentInstrument *)self paymentApplicationsAtIndex:i];
-        [v15 addPaymentApplications:v7];
+        [toCopy addPaymentApplications:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v15 + 1) = *&self->_ingestedDate;
-    *(v15 + 148) |= 1u;
+    *(toCopy + 1) = *&self->_ingestedDate;
+    *(toCopy + 148) |= 1u;
   }
 
   if (self->_primaryAccountNumberSuffix)
   {
-    [v15 setPrimaryAccountNumberSuffix:?];
+    [toCopy setPrimaryAccountNumberSuffix:?];
   }
 
   if (self->_manifestHash)
   {
-    [v15 setManifestHash:?];
+    [toCopy setManifestHash:?];
   }
 
   if (self->_primaryAccountIdentifier)
   {
-    [v15 setPrimaryAccountIdentifier:?];
+    [toCopy setPrimaryAccountIdentifier:?];
   }
 
   if ([(PKProtobufPaymentInstrument *)self associatedWebDomainsCount])
   {
-    [v15 clearAssociatedWebDomains];
-    v8 = [(PKProtobufPaymentInstrument *)self associatedWebDomainsCount];
-    if (v8)
+    [toCopy clearAssociatedWebDomains];
+    associatedWebDomainsCount = [(PKProtobufPaymentInstrument *)self associatedWebDomainsCount];
+    if (associatedWebDomainsCount)
     {
-      v9 = v8;
+      v9 = associatedWebDomainsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PKProtobufPaymentInstrument *)self associatedWebDomainsAtIndex:j];
-        [v15 addAssociatedWebDomains:v11];
+        [toCopy addAssociatedWebDomains:v11];
       }
     }
   }
 
-  v12 = v15;
+  v12 = toCopy;
   if ((*&self->_has & 0x40) != 0)
   {
-    *(v15 + 146) = self->_supportsAutomaticSelection;
-    *(v15 + 148) |= 0x40u;
+    *(toCopy + 146) = self->_supportsAutomaticSelection;
+    *(toCopy + 148) |= 0x40u;
   }
 
   if (self->_issuerCountryCode)
   {
-    [v15 setIssuerCountryCode:?];
-    v12 = v15;
+    [toCopy setIssuerCountryCode:?];
+    v12 = toCopy;
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -562,8 +562,8 @@
 
   if (self->_peerPaymentAccountCurrency)
   {
-    [v15 setPeerPaymentAccountCurrency:?];
-    v12 = v15;
+    [toCopy setPeerPaymentAccountCurrency:?];
+    v12 = toCopy;
   }
 
   has = self->_has;
@@ -582,20 +582,20 @@
 
   if (self->_organizationName)
   {
-    [v15 setOrganizationName:?];
-    v12 = v15;
+    [toCopy setOrganizationName:?];
+    v12 = toCopy;
   }
 
   if (self->_customPrecisionPeerPaymentAccountBalance)
   {
-    [v15 setCustomPrecisionPeerPaymentAccountBalance:?];
-    v12 = v15;
+    [toCopy setCustomPrecisionPeerPaymentAccountBalance:?];
+    v12 = toCopy;
   }
 
   if (self->_decimalAccountBalance)
   {
-    [v15 setDecimalAccountBalance:?];
-    v12 = v15;
+    [toCopy setDecimalAccountBalance:?];
+    v12 = toCopy;
   }
 
   v14 = self->_has;
@@ -614,20 +614,20 @@
 
   if (self->_cobrandName)
   {
-    [v15 setCobrandName:?];
-    v12 = v15;
+    [toCopy setCobrandName:?];
+    v12 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_displayName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_displayName copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
-  v8 = [(NSString *)self->_passID copyWithZone:a3];
+  v8 = [(NSString *)self->_passID copyWithZone:zone];
   v9 = *(v5 + 96);
   *(v5 + 96) = v8;
 
@@ -650,7 +650,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPaymentApplications:v15];
       }
 
@@ -666,15 +666,15 @@
     *(v5 + 148) |= 1u;
   }
 
-  v16 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:a3];
+  v16 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:zone];
   v17 = *(v5 + 136);
   *(v5 + 136) = v16;
 
-  v18 = [(NSData *)self->_manifestHash copyWithZone:a3];
+  v18 = [(NSData *)self->_manifestHash copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
-  v20 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:zone];
   v21 = *(v5 + 128);
   *(v5 + 128) = v20;
 
@@ -697,7 +697,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{a3, v43}];
+        v27 = [*(*(&v43 + 1) + 8 * j) copyWithZone:{zone, v43}];
         [v5 addAssociatedWebDomains:v27];
       }
 
@@ -713,7 +713,7 @@
     *(v5 + 148) |= 0x40u;
   }
 
-  v28 = [(NSString *)self->_issuerCountryCode copyWithZone:a3, v43];
+  v28 = [(NSString *)self->_issuerCountryCode copyWithZone:zone, v43];
   v29 = *(v5 + 72);
   *(v5 + 72) = v28;
 
@@ -723,7 +723,7 @@
     *(v5 + 148) |= 0x20u;
   }
 
-  v30 = [(NSString *)self->_peerPaymentAccountCurrency copyWithZone:a3];
+  v30 = [(NSString *)self->_peerPaymentAccountCurrency copyWithZone:zone];
   v31 = *(v5 + 112);
   *(v5 + 112) = v30;
 
@@ -741,15 +741,15 @@
     *(v5 + 148) |= 8u;
   }
 
-  v33 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v33 = [(NSString *)self->_organizationName copyWithZone:zone];
   v34 = *(v5 + 88);
   *(v5 + 88) = v33;
 
-  v35 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionPeerPaymentAccountBalance copyWithZone:a3];
+  v35 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionPeerPaymentAccountBalance copyWithZone:zone];
   v36 = *(v5 + 48);
   *(v5 + 48) = v35;
 
-  v37 = [(PKProtobufNSDecimalNumber *)self->_decimalAccountBalance copyWithZone:a3];
+  v37 = [(PKProtobufNSDecimalNumber *)self->_decimalAccountBalance copyWithZone:zone];
   v38 = *(v5 + 56);
   *(v5 + 56) = v37;
 
@@ -767,23 +767,23 @@
     *(v5 + 148) |= 0x10u;
   }
 
-  v40 = [(NSString *)self->_cobrandName copyWithZone:a3];
+  v40 = [(NSString *)self->_cobrandName copyWithZone:zone];
   v41 = *(v5 + 40);
   *(v5 + 40) = v40;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_69;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 8))
+  if (displayName | *(equalCopy + 8))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -792,7 +792,7 @@
   }
 
   passID = self->_passID;
-  if (passID | *(v4 + 12))
+  if (passID | *(equalCopy + 12))
   {
     if (![(NSString *)passID isEqual:?])
     {
@@ -801,7 +801,7 @@
   }
 
   paymentApplications = self->_paymentApplications;
-  if (paymentApplications | *(v4 + 13))
+  if (paymentApplications | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)paymentApplications isEqual:?])
     {
@@ -811,25 +811,25 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 148) & 1) == 0 || self->_ingestedDate != *(v4 + 1))
+    if ((*(equalCopy + 148) & 1) == 0 || self->_ingestedDate != *(equalCopy + 1))
     {
       goto LABEL_69;
     }
   }
 
-  else if (*(v4 + 148))
+  else if (*(equalCopy + 148))
   {
     goto LABEL_69;
   }
 
   primaryAccountNumberSuffix = self->_primaryAccountNumberSuffix;
-  if (primaryAccountNumberSuffix | *(v4 + 17) && ![(NSString *)primaryAccountNumberSuffix isEqual:?])
+  if (primaryAccountNumberSuffix | *(equalCopy + 17) && ![(NSString *)primaryAccountNumberSuffix isEqual:?])
   {
     goto LABEL_69;
   }
 
   manifestHash = self->_manifestHash;
-  if (manifestHash | *(v4 + 10))
+  if (manifestHash | *(equalCopy + 10))
   {
     if (![(NSData *)manifestHash isEqual:?])
     {
@@ -838,7 +838,7 @@
   }
 
   primaryAccountIdentifier = self->_primaryAccountIdentifier;
-  if (primaryAccountIdentifier | *(v4 + 16))
+  if (primaryAccountIdentifier | *(equalCopy + 16))
   {
     if (![(NSString *)primaryAccountIdentifier isEqual:?])
     {
@@ -847,7 +847,7 @@
   }
 
   associatedWebDomains = self->_associatedWebDomains;
-  if (associatedWebDomains | *(v4 + 4))
+  if (associatedWebDomains | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)associatedWebDomains isEqual:?])
     {
@@ -856,35 +856,35 @@
   }
 
   has = self->_has;
-  v13 = *(v4 + 148);
+  v13 = *(equalCopy + 148);
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 148) & 0x40) == 0)
+    if ((*(equalCopy + 148) & 0x40) == 0)
     {
       goto LABEL_69;
     }
 
     if (self->_supportsAutomaticSelection)
     {
-      if ((*(v4 + 146) & 1) == 0)
+      if ((*(equalCopy + 146) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 146))
+    else if (*(equalCopy + 146))
     {
       goto LABEL_69;
     }
   }
 
-  else if ((*(v4 + 148) & 0x40) != 0)
+  else if ((*(equalCopy + 148) & 0x40) != 0)
   {
     goto LABEL_69;
   }
 
   issuerCountryCode = self->_issuerCountryCode;
-  if (issuerCountryCode | *(v4 + 9))
+  if (issuerCountryCode | *(equalCopy + 9))
   {
     if (![(NSString *)issuerCountryCode isEqual:?])
     {
@@ -892,7 +892,7 @@
     }
 
     has = self->_has;
-    v13 = *(v4 + 148);
+    v13 = *(equalCopy + 148);
   }
 
   if ((has & 0x20) != 0)
@@ -904,13 +904,13 @@
 
     if (self->_hasAssociatedPeerPaymentAccount)
     {
-      if ((*(v4 + 145) & 1) == 0)
+      if ((*(equalCopy + 145) & 1) == 0)
       {
         goto LABEL_69;
       }
     }
 
-    else if (*(v4 + 145))
+    else if (*(equalCopy + 145))
     {
       goto LABEL_69;
     }
@@ -922,7 +922,7 @@
   }
 
   peerPaymentAccountCurrency = self->_peerPaymentAccountCurrency;
-  if (peerPaymentAccountCurrency | *(v4 + 14))
+  if (peerPaymentAccountCurrency | *(equalCopy + 14))
   {
     if (![(NSString *)peerPaymentAccountCurrency isEqual:?])
     {
@@ -930,12 +930,12 @@
     }
 
     has = self->_has;
-    v13 = *(v4 + 148);
+    v13 = *(equalCopy + 148);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v13 & 2) == 0 || self->_peerPaymentAccountBalance != *(v4 + 2))
+    if ((v13 & 2) == 0 || self->_peerPaymentAccountBalance != *(equalCopy + 2))
     {
       goto LABEL_69;
     }
@@ -948,7 +948,7 @@
 
   if ((has & 8) != 0)
   {
-    if ((v13 & 8) == 0 || self->_peerPaymentAccountState != *(v4 + 30))
+    if ((v13 & 8) == 0 || self->_peerPaymentAccountState != *(equalCopy + 30))
     {
       goto LABEL_69;
     }
@@ -960,13 +960,13 @@
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 11) && ![(NSString *)organizationName isEqual:?])
+  if (organizationName | *(equalCopy + 11) && ![(NSString *)organizationName isEqual:?])
   {
     goto LABEL_69;
   }
 
   customPrecisionPeerPaymentAccountBalance = self->_customPrecisionPeerPaymentAccountBalance;
-  if (customPrecisionPeerPaymentAccountBalance | *(v4 + 6))
+  if (customPrecisionPeerPaymentAccountBalance | *(equalCopy + 6))
   {
     if (![(PKProtobufCustomPrecisionAmount *)customPrecisionPeerPaymentAccountBalance isEqual:?])
     {
@@ -975,7 +975,7 @@
   }
 
   decimalAccountBalance = self->_decimalAccountBalance;
-  if (decimalAccountBalance | *(v4 + 7))
+  if (decimalAccountBalance | *(equalCopy + 7))
   {
     if (![(PKProtobufNSDecimalNumber *)decimalAccountBalance isEqual:?])
     {
@@ -985,20 +985,20 @@
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 148) & 4) == 0 || self->_associatedAccountFeatureIdentifier != *(v4 + 6))
+    if ((*(equalCopy + 148) & 4) == 0 || self->_associatedAccountFeatureIdentifier != *(equalCopy + 6))
     {
       goto LABEL_69;
     }
   }
 
-  else if ((*(v4 + 148) & 4) != 0)
+  else if ((*(equalCopy + 148) & 4) != 0)
   {
     goto LABEL_69;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 148) & 0x10) == 0)
+    if ((*(equalCopy + 148) & 0x10) == 0)
     {
       goto LABEL_66;
     }
@@ -1008,27 +1008,27 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  if ((*(v4 + 148) & 0x10) == 0)
+  if ((*(equalCopy + 148) & 0x10) == 0)
   {
     goto LABEL_69;
   }
 
   if (self->_cobranded)
   {
-    if ((*(v4 + 144) & 1) == 0)
+    if ((*(equalCopy + 144) & 1) == 0)
     {
       goto LABEL_69;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
     goto LABEL_69;
   }
 
 LABEL_66:
   cobrandName = self->_cobrandName;
-  if (cobrandName | *(v4 + 5))
+  if (cobrandName | *(equalCopy + 5))
   {
     v20 = [(NSString *)cobrandName isEqual:?];
   }
@@ -1157,16 +1157,16 @@ LABEL_22:
   return v27 ^ v28 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ [(NSString *)self->_cobrandName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(PKProtobufPaymentInstrument *)self setDisplayName:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PKProtobufPaymentInstrument *)self setPassID:?];
   }
@@ -1175,7 +1175,7 @@ LABEL_22:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = *(v4 + 13);
+  v5 = *(fromCopy + 13);
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
@@ -1199,23 +1199,23 @@ LABEL_22:
     while (v7);
   }
 
-  if (*(v4 + 148))
+  if (*(fromCopy + 148))
   {
-    self->_ingestedDate = *(v4 + 1);
+    self->_ingestedDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PKProtobufPaymentInstrument *)self setPrimaryAccountNumberSuffix:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PKProtobufPaymentInstrument *)self setManifestHash:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PKProtobufPaymentInstrument *)self setPrimaryAccountIdentifier:?];
   }
@@ -1224,7 +1224,7 @@ LABEL_22:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v11)
   {
@@ -1248,49 +1248,49 @@ LABEL_22:
     while (v12);
   }
 
-  if ((*(v4 + 148) & 0x40) != 0)
+  if ((*(fromCopy + 148) & 0x40) != 0)
   {
-    self->_supportsAutomaticSelection = *(v4 + 146);
+    self->_supportsAutomaticSelection = *(fromCopy + 146);
     *&self->_has |= 0x40u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PKProtobufPaymentInstrument *)self setIssuerCountryCode:?];
   }
 
-  if ((*(v4 + 148) & 0x20) != 0)
+  if ((*(fromCopy + 148) & 0x20) != 0)
   {
-    self->_hasAssociatedPeerPaymentAccount = *(v4 + 145);
+    self->_hasAssociatedPeerPaymentAccount = *(fromCopy + 145);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(PKProtobufPaymentInstrument *)self setPeerPaymentAccountCurrency:?];
   }
 
-  v15 = *(v4 + 148);
+  v15 = *(fromCopy + 148);
   if ((v15 & 2) != 0)
   {
-    self->_peerPaymentAccountBalance = *(v4 + 2);
+    self->_peerPaymentAccountBalance = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v15 = *(v4 + 148);
+    v15 = *(fromCopy + 148);
   }
 
   if ((v15 & 8) != 0)
   {
-    self->_peerPaymentAccountState = *(v4 + 30);
+    self->_peerPaymentAccountState = *(fromCopy + 30);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PKProtobufPaymentInstrument *)self setOrganizationName:?];
   }
 
   customPrecisionPeerPaymentAccountBalance = self->_customPrecisionPeerPaymentAccountBalance;
-  v17 = *(v4 + 6);
+  v17 = *(fromCopy + 6);
   if (customPrecisionPeerPaymentAccountBalance)
   {
     if (v17)
@@ -1305,7 +1305,7 @@ LABEL_22:
   }
 
   decimalAccountBalance = self->_decimalAccountBalance;
-  v19 = *(v4 + 7);
+  v19 = *(fromCopy + 7);
   if (decimalAccountBalance)
   {
     if (v19)
@@ -1319,21 +1319,21 @@ LABEL_22:
     [(PKProtobufPaymentInstrument *)self setDecimalAccountBalance:?];
   }
 
-  v20 = *(v4 + 148);
+  v20 = *(fromCopy + 148);
   if ((v20 & 4) != 0)
   {
-    self->_associatedAccountFeatureIdentifier = *(v4 + 6);
+    self->_associatedAccountFeatureIdentifier = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v20 = *(v4 + 148);
+    v20 = *(fromCopy + 148);
   }
 
   if ((v20 & 0x10) != 0)
   {
-    self->_cobranded = *(v4 + 144);
+    self->_cobranded = *(fromCopy + 144);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PKProtobufPaymentInstrument *)self setCobrandName:?];
   }

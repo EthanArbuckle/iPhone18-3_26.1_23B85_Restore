@@ -1,47 +1,47 @@
 @interface FCReadingListEntry
 - (id)asCKRecord;
-- (id)initWithEntryID:(void *)a3 articleID:(void *)a4 dateAdded:(void *)a5 origin:;
-- (id)initWithEntryID:(void *)a3 dictionaryRepresentation:;
+- (id)initWithEntryID:(void *)d articleID:(void *)iD dateAdded:(void *)added origin:;
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:;
 @end
 
 @implementation FCReadingListEntry
 
-- (id)initWithEntryID:(void *)a3 dictionaryRepresentation:
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v5 = a3;
+    dCopy = d;
     v6 = a2;
-    v7 = [v5 objectForKeyedSubscript:@"articleID"];
-    v8 = [v5 objectForKeyedSubscript:@"dateAdded"];
-    v9 = [v5 objectForKeyedSubscript:@"origin"];
+    v7 = [dCopy objectForKeyedSubscript:@"articleID"];
+    v8 = [dCopy objectForKeyedSubscript:@"dateAdded"];
+    v9 = [dCopy objectForKeyedSubscript:@"origin"];
 
-    v10 = [v9 unsignedIntegerValue];
-    if ((v10 - 1) >= 3)
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    if ((unsignedIntegerValue - 1) >= 3)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v10;
+      v11 = unsignedIntegerValue;
     }
 
-    v12 = [(FCReadingListEntry *)v3 initWithEntryID:v6 articleID:v7 dateAdded:v8 origin:v11];
-    v3 = v12;
+    v12 = [(FCReadingListEntry *)selfCopy initWithEntryID:v6 articleID:v7 dateAdded:v8 origin:v11];
+    selfCopy = v12;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)initWithEntryID:(void *)a3 articleID:(void *)a4 dateAdded:(void *)a5 origin:
+- (id)initWithEntryID:(void *)d articleID:(void *)iD dateAdded:(void *)added origin:
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (!a1)
+  dCopy = d;
+  iDCopy = iD;
+  if (!self)
   {
     goto LABEL_12;
   }
@@ -59,7 +59,7 @@
     v29 = v19;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v10)
+    if (!dCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -78,47 +78,47 @@ LABEL_5:
     }
   }
 
-  else if (!v10)
+  else if (!dCopy)
   {
     goto LABEL_5;
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = FCReadingListEntry;
   v12 = objc_msgSendSuper2(&v21, sel_init);
-  a1 = v12;
+  self = v12;
   if (v12)
   {
-    if (v9 && v10)
+    if (v9 && dCopy)
     {
       v13 = [v9 copy];
-      v14 = a1[1];
-      a1[1] = v13;
+      v14 = self[1];
+      self[1] = v13;
 
-      v15 = [v10 copy];
-      v16 = a1[2];
-      a1[2] = v15;
+      v15 = [dCopy copy];
+      v16 = self[2];
+      self[2] = v15;
 
-      objc_storeStrong(a1 + 3, a4);
-      a1[4] = a5;
+      objc_storeStrong(self + 3, iD);
+      self[4] = added;
     }
 
     else
     {
 
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_12:
 
   v17 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (id)asCKRecord
 {
-  if (a1)
+  if (self)
   {
     if (qword_1EDB27800 != -1)
     {
@@ -126,18 +126,18 @@ LABEL_12:
     }
 
     v2 = objc_alloc(MEMORY[0x1E695BA70]);
-    v3 = [v2 initWithRecordName:a1[1] zoneID:_MergedGlobals_192];
+    v3 = [v2 initWithRecordName:self[1] zoneID:_MergedGlobals_192];
     v4 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"ReadingListEntry" recordID:v3];
-    [v4 setObject:a1[2] forKeyedSubscript:@"articleID"];
-    [v4 setObject:a1[3] forKeyedSubscript:@"dateAdded"];
-    if ((a1[4] - 1) >= 3)
+    [v4 setObject:self[2] forKeyedSubscript:@"articleID"];
+    [v4 setObject:self[3] forKeyedSubscript:@"dateAdded"];
+    if ((self[4] - 1) >= 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = a1[4];
+      v5 = self[4];
     }
 
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];

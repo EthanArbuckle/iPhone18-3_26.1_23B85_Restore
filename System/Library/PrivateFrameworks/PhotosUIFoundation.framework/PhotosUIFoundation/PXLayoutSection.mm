@@ -2,11 +2,11 @@
 - (CGRect)frame;
 - (CGSize)size;
 - (PXLayoutSection)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)geometriesWithKind:(int64_t)a3;
-- (void)enumerateGeometriesWithBlock:(id)a3;
-- (void)setGeometries:(id)a3 withKind:(int64_t)a4;
+- (id)geometriesWithKind:(int64_t)kind;
+- (void)enumerateGeometriesWithBlock:(id)block;
+- (void)setGeometries:(id)geometries withKind:(int64_t)kind;
 @end
 
 @implementation PXLayoutSection
@@ -33,16 +33,16 @@
   return result;
 }
 
-- (void)enumerateGeometriesWithBlock:(id)a3
+- (void)enumerateGeometriesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   geometriesByKind = self->_geometriesByKind;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PXLayoutSection_enumerateGeometriesWithBlock___block_invoke;
   v7[3] = &unk_1E7BB5D30;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)geometriesByKind enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -79,23 +79,23 @@ void __48__PXLayoutSection_enumerateGeometriesWithBlock___block_invoke(uint64_t 
   }
 }
 
-- (id)geometriesWithKind:(int64_t)a3
+- (id)geometriesWithKind:(int64_t)kind
 {
   geometriesByKind = self->_geometriesByKind;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
   v5 = [(NSMutableDictionary *)geometriesByKind objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setGeometries:(id)a3 withKind:(int64_t)a4
+- (void)setGeometries:(id)geometries withKind:(int64_t)kind
 {
-  v8 = a3;
+  geometriesCopy = geometries;
   geometriesByKind = self->_geometriesByKind;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  if (v8)
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
+  if (geometriesCopy)
   {
-    [(NSMutableDictionary *)geometriesByKind setObject:v8 forKey:v7];
+    [(NSMutableDictionary *)geometriesByKind setObject:geometriesCopy forKey:v7];
   }
 
   else
@@ -115,9 +115,9 @@ void __48__PXLayoutSection_enumerateGeometriesWithBlock___block_invoke(uint64_t 
   v5 = NSStringFromCGRect(self->_frame);
   v6 = [v4 stringByAppendingFormat:@" frame:%@", v5];
 
-  v7 = [(PXLayoutSection *)self isAccurate];
+  isAccurate = [(PXLayoutSection *)self isAccurate];
   v8 = @"NO";
-  if (v7)
+  if (isAccurate)
   {
     v8 = @"YES";
   }
@@ -216,7 +216,7 @@ void __48__PXLayoutSection_enumerateGeometriesWithBlock___block_invoke(uint64_t 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 3) = self->_identifier;

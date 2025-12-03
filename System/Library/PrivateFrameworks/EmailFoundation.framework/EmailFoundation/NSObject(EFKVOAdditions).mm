@@ -9,7 +9,7 @@
 {
   v10 = a3;
   v11 = a6;
-  v12 = [[_EFKeyValueObserverHandler alloc] initWithObject:a1 keyPath:v10 usingBlock:v11];
+  v12 = [[_EFKeyValueObserverHandler alloc] initWithObject:self keyPath:v10 usingBlock:v11];
   [(_EFKeyValueObserverHandler *)v12 startObservingWithOptions:a4];
   if (a5)
   {
@@ -40,7 +40,7 @@
 
 - (id)ef_observeKeyPath:()EFKVOAdditions options:usingBlock:
 {
-  v5 = [a1 ef_observeKeyPath:a3 options:a4 autoCancelToken:0 usingBlock:a5];
+  v5 = [self ef_observeKeyPath:a3 options:a4 autoCancelToken:0 usingBlock:a5];
 
   return v5;
 }

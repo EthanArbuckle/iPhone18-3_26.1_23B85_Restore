@@ -2,8 +2,8 @@
 + (CLKComplicationTemplateGraphicRectangularTextGauge)templateWithHeaderImageProvider:(CLKFullColorImageProvider *)headerImageProvider headerTextProvider:(CLKTextProvider *)headerTextProvider body1TextProvider:(CLKTextProvider *)body1TextProvider gaugeProvider:(CLKGaugeProvider *)gaugeProvider;
 + (CLKComplicationTemplateGraphicRectangularTextGauge)templateWithHeaderTextProvider:(CLKTextProvider *)headerTextProvider body1TextProvider:(CLKTextProvider *)body1TextProvider gaugeProvider:(CLKGaugeProvider *)gaugeProvider;
 - (CLKComplicationTemplateGraphicRectangularTextGauge)initWithHeaderImageProvider:(CLKFullColorImageProvider *)headerImageProvider headerTextProvider:(CLKTextProvider *)headerTextProvider body1TextProvider:(CLKTextProvider *)body1TextProvider gaugeProvider:(CLKGaugeProvider *)gaugeProvider;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularTextGauge
@@ -16,11 +16,11 @@
   v13 = gaugeProvider;
   v17.receiver = self;
   v17.super_class = CLKComplicationTemplateGraphicRectangularTextGauge;
-  v14 = [(CLKComplicationTemplate *)&v17 initPrivate];
-  v15 = v14;
-  if (v14)
+  initPrivate = [(CLKComplicationTemplate *)&v17 initPrivate];
+  v15 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicRectangularTextGauge *)v14 setHeaderImageProvider:v10];
+    [(CLKComplicationTemplateGraphicRectangularTextGauge *)initPrivate setHeaderImageProvider:v10];
     [(CLKComplicationTemplateGraphicRectangularTextGauge *)v15 setHeaderTextProvider:v11];
     [(CLKComplicationTemplateGraphicRectangularTextGauge *)v15 setBody1TextProvider:v12];
     [(CLKComplicationTemplateGraphicRectangularTextGauge *)v15 setGaugeProvider:v13];
@@ -34,7 +34,7 @@
   v8 = gaugeProvider;
   v9 = body1TextProvider;
   v10 = headerTextProvider;
-  v11 = [[a1 alloc] initWithHeaderTextProvider:v10 body1TextProvider:v9 gaugeProvider:v8];
+  v11 = [[self alloc] initWithHeaderTextProvider:v10 body1TextProvider:v9 gaugeProvider:v8];
 
   return v11;
 }
@@ -45,34 +45,34 @@
   v11 = body1TextProvider;
   v12 = headerTextProvider;
   v13 = headerImageProvider;
-  v14 = [[a1 alloc] initWithHeaderImageProvider:v13 headerTextProvider:v12 body1TextProvider:v11 gaugeProvider:v10];
+  v14 = [[self alloc] initWithHeaderImageProvider:v13 headerTextProvider:v12 body1TextProvider:v11 gaugeProvider:v10];
 
   return v14;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"headerTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"headerTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"body1TextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"body1TextProvider", 0, 1, &v4);
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __100__CLKComplicationTemplateGraphicRectangularTextGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __100__CLKComplicationTemplateGraphicRectangularTextGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91CB8;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1538[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1539];
-  v4[2](v4, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
+  blockCopy[2](blockCopy, @"headerImageProvider", 1, 1, v10, 6, &v11, v9, v9, v8, v8, 0.0);
 }
 
 uint64_t __100__CLKComplicationTemplateGraphicRectangularTextGauge__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

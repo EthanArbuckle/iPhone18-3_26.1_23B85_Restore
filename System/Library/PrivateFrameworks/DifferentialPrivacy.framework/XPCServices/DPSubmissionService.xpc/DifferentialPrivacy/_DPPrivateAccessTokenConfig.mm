@@ -1,8 +1,8 @@
 @interface _DPPrivateAccessTokenConfig
 + (id)createAndPersist;
-- (_DPPrivateAccessTokenConfig)initWithData:(id)a3;
+- (_DPPrivateAccessTokenConfig)initWithData:(id)data;
 - (id)description;
-- (id)getPreferredIssuerFromPlist:(id)a3;
+- (id)getPreferredIssuerFromPlist:(id)plist;
 - (void)persistTokenRefreshHours;
 @end
 
@@ -13,12 +13,12 @@
   v2 = [NSURL URLWithString:@"https://unlinkability.apple.com/config/global-dap-ppm-config.plist"];
   v3 = objc_autoreleasePoolPush();
   v4 = [[_DPDediscoBackgroundDownloaderService alloc] initWithURL:v2];
-  v5 = [(_DPDediscoBackgroundDownloaderService *)v4 downloadConfigSynchronously];
+  downloadConfigSynchronously = [(_DPDediscoBackgroundDownloaderService *)v4 downloadConfigSynchronously];
 
   objc_autoreleasePoolPop(v3);
-  if ([v5 length])
+  if ([downloadConfigSynchronously length])
   {
-    v6 = [[_DPPrivateAccessTokenConfig alloc] initWithData:v5];
+    v6 = [[_DPPrivateAccessTokenConfig alloc] initWithData:downloadConfigSynchronously];
     if (v6)
     {
       v7 = +[_DPLog service];
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (_DPPrivateAccessTokenConfig)initWithData:(id)a3
+- (_DPPrivateAccessTokenConfig)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = _DPPrivateAccessTokenConfig;
   v5 = [(_DPPrivateAccessTokenConfig *)&v17 init];
@@ -61,7 +61,7 @@
   }
 
   v16 = 0;
-  v6 = [NSPropertyListSerialization propertyListWithData:v4 options:0 format:0 error:&v16];
+  v6 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v16];
   v7 = v16;
   if (!v6)
   {
@@ -106,10 +106,10 @@ LABEL_12:
   return v13;
 }
 
-- (id)getPreferredIssuerFromPlist:(id)a3
+- (id)getPreferredIssuerFromPlist:(id)plist
 {
-  v25 = a3;
-  [v25 objectForKeyedSubscript:@"private-access-token-issuers"];
+  plistCopy = plist;
+  [plistCopy objectForKeyedSubscript:@"private-access-token-issuers"];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -149,13 +149,13 @@ LABEL_12:
               v19 = v5;
               v20 = v6;
               v21 = [v9 objectForKeyedSubscript:@"version"];
-              v22 = [v21 unsignedIntegerValue];
+              unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-              if (v22 > v28)
+              if (unsignedIntegerValue > v28)
               {
                 v23 = v9;
 
-                v28 = v22;
+                v28 = unsignedIntegerValue;
                 v26 = v23;
               }
 
@@ -191,8 +191,8 @@ LABEL_12:
   v4 = +[NSUserDefaults standardUserDefaults];
   if (v4)
   {
-    v5 = [(_DPPrivateAccessTokenConfig *)self tokenRefreshHours];
-    if (v5 == kSecondsIn4Hours)
+    tokenRefreshHours = [(_DPPrivateAccessTokenConfig *)self tokenRefreshHours];
+    if (tokenRefreshHours == kSecondsIn4Hours)
     {
       [v4 removeObjectForKey:v3];
     }
@@ -218,8 +218,8 @@ LABEL_12:
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"TokenConfig: {\n"];
-  v4 = [(_DPPrivateAccessTokenConfig *)self issuerURL];
-  [v3 appendFormat:@"  issuerURL: %@\n", v4];
+  issuerURL = [(_DPPrivateAccessTokenConfig *)self issuerURL];
+  [v3 appendFormat:@"  issuerURL: %@\n", issuerURL];
 
   [v3 appendFormat:@"  tokenRefreshHours: %ld\n", -[_DPPrivateAccessTokenConfig tokenRefreshHours](self, "tokenRefreshHours")];
   [v3 appendFormat:@"  tokensPerRefresh: %ld\n", -[_DPPrivateAccessTokenConfig tokensPerRefresh](self, "tokensPerRefresh")];

@@ -1,15 +1,15 @@
 @interface EMFSearchEngineBundleLoader
-+ (BOOL)isLocaleSupported:(id)a3;
-+ (id)assetBundleForLocale:(id)a3;
++ (BOOL)isLocaleSupported:(id)supported;
++ (id)assetBundleForLocale:(id)locale;
 @end
 
 @implementation EMFSearchEngineBundleLoader
 
-+ (BOOL)isLocaleSupported:(id)a3
++ (BOOL)isLocaleSupported:(id)supported
 {
-  if (a3)
+  if (supported)
   {
-    return MEMORY[0x1EEDF8F38](a3, a2);
+    return MEMORY[0x1EEDF8F38](supported, a2);
   }
 
   else
@@ -18,13 +18,13 @@
   }
 }
 
-+ (id)assetBundleForLocale:(id)a3
++ (id)assetBundleForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  localeCopy = locale;
+  v4 = localeCopy;
+  if (localeCopy)
   {
-    v5 = [v3 localeIdentifier];
+    localeIdentifier = [localeCopy localeIdentifier];
     BundleForLocaleIdentifier = CEMEMFSearchEngineCreateBundleForLocaleIdentifier();
 
     if (BundleForLocaleIdentifier)

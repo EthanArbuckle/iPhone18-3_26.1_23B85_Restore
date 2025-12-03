@@ -1,10 +1,10 @@
 @interface HUServiceDetailsExportDiagnosticsItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsExportDiagnosticsItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v38 = *MEMORY[0x277D13F60];
@@ -15,8 +15,8 @@
 
   v7 = HFPreferencesBooleanValueForKey();
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v10 = [v9 hf_isHomePod] ^ 1;
+  sourceAccessory = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  v10 = [sourceAccessory hf_isHomePod] ^ 1;
   if (v7 == 2)
   {
     v11 = v10;
@@ -31,11 +31,11 @@
   v13 = *MEMORY[0x277D13FB8];
   [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277D13FB8]];
 
-  v14 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
-  v15 = [v14 mediaProfile];
+  sourceAccessory2 = [(HUServiceDetailsAbstractItem *)self sourceAccessory];
+  mediaProfile = [sourceAccessory2 mediaProfile];
 
-  v16 = [v15 hf_settingsAdapterManager];
-  v17 = [v16 adapterForIdentifier:*MEMORY[0x277D13320]];
+  hf_settingsAdapterManager = [mediaProfile hf_settingsAdapterManager];
+  v17 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13320]];
   if ([v17 conformsToProtocol:&unk_2825BD7E0])
   {
     v18 = v17;

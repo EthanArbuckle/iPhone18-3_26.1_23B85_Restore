@@ -1,30 +1,30 @@
 @interface CFXAnimationDelegate
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation CFXAnimationDelegate
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v4 = [(CFXAnimationDelegate *)self start];
+  start = [(CFXAnimationDelegate *)self start];
 
-  if (v4)
+  if (start)
   {
-    v5 = [(CFXAnimationDelegate *)self start];
-    v5[2]();
+    start2 = [(CFXAnimationDelegate *)self start];
+    start2[2]();
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(CFXAnimationDelegate *)self completion];
+  finishedCopy = finished;
+  completion = [(CFXAnimationDelegate *)self completion];
 
-  if (v6)
+  if (completion)
   {
-    v7 = [(CFXAnimationDelegate *)self completion];
-    v7[2](v7, v4);
+    completion2 = [(CFXAnimationDelegate *)self completion];
+    completion2[2](completion2, finishedCopy);
   }
 }
 

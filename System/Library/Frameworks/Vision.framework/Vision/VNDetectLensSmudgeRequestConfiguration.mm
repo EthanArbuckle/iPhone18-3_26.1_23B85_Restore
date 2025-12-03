@@ -1,22 +1,22 @@
 @interface VNDetectLensSmudgeRequestConfiguration
-- (VNDetectLensSmudgeRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNDetectLensSmudgeRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectLensSmudgeRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = VNDetectLensSmudgeRequestConfiguration;
-  return [(VNImageBasedRequestConfiguration *)&v4 copyWithZone:a3];
+  return [(VNImageBasedRequestConfiguration *)&v4 copyWithZone:zone];
 }
 
-- (VNDetectLensSmudgeRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectLensSmudgeRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNDetectLensSmudgeRequestConfiguration;
-  return [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  return [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface CTCSXPCService
-- (BOOL)checkEntitlements:(id)a3 connection:(id)a4;
+- (BOOL)checkEntitlements:(id)entitlements connection:(id)connection;
 - (BOOL)checkFF;
 - (BOOL)checkPrivateEntitlement;
 - (BOOL)isThreadNetworkProfileInstalled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)takeUserPermission:(id)a3 userDescription:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)takeUserPermission:(id)permission userDescription:(id)description;
 - (CTCSXPCService)init;
-- (CTCSXPCService)initWithListener:(id)a3;
+- (CTCSXPCService)initWithListener:(id)listener;
 - (id)BackingStoreDS;
 - (id)BackingStoreDSInternally;
 - (id)getClientKeychainAccessGroup;
-- (id)getConnectionTeamId:(id)a3;
-- (void)awdPostStabilityMetrics:(unsigned __int8)a3;
-- (void)ctcsIsPreferredNetworkForActiveOperationalDataset:(id)a3 completion:(id)a4;
-- (void)ctcsServerAddPreferredNetworkWithCompletionInternally:(id)a3 extendedPANId:(id)a4 borderAgentID:(id)a5 ipV4NwSignature:(id)a6 ipv6NwSignature:(id)a7 wifiSSID:(id)a8 wifiPassword:(id)a9 completion:(id)a10;
-- (void)ctcsServerCleanKeychainThreadNetworksWithCompletion:(id)a3;
-- (void)ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion:(id)a3;
-- (void)ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent:(id)a3 completion:(id)a4;
-- (void)ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion:(id)a3 extendedPANId:(id)a4 ipV4NwSignature:(id)a5 ipv6NwSignature:(id)a6 wifiSSID:(id)a7 completion:(id)a8;
-- (void)ctcsServerDeletePreferredNetworkWithCompletion:(id)a3;
-- (void)ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent:(id)a3 completion:(id)a4;
-- (void)ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId:(id)a3 completion:(id)a4;
-- (void)ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)ctcsServerRetrieveActiveDataSetRecordWithXPANId:(id)a3 completion:(id)a4;
-- (void)ctcsServerRetrieveIsPreferredNetworkAvailable:(id)a3;
-- (void)ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion:(id)a3;
-- (void)ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion:(id)a3;
-- (void)ctcsServerRetrievePreferredNetworkInternallyWithCompletion:(id)a3;
-- (void)ctcsServerRetrievePreferredNetworkWithCompletion:(id)a3;
-- (void)ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion:(id)a3;
-- (void)ctcsServerStoreCachedAODasPreferredNetwork:(id)a3 completion:(id)a4;
-- (void)ctcsServerStoreThreadNetworkCredentialActiveDataSet:(id)a3 credentialsDataSet:(id)a4 completion:(id)a5;
-- (void)ctcsUpdatePreferredNetworkInternallyWithCompletion:(id)a3;
-- (void)ctcsValidateAODInternally:(id)a3 completion:(id)a4;
+- (id)getConnectionTeamId:(id)id;
+- (void)awdPostStabilityMetrics:(unsigned __int8)metrics;
+- (void)ctcsIsPreferredNetworkForActiveOperationalDataset:(id)dataset completion:(id)completion;
+- (void)ctcsServerAddPreferredNetworkWithCompletionInternally:(id)internally extendedPANId:(id)id borderAgentID:(id)d ipV4NwSignature:(id)signature ipv6NwSignature:(id)nwSignature wifiSSID:(id)iD wifiPassword:(id)password completion:(id)self0;
+- (void)ctcsServerCleanKeychainThreadNetworksWithCompletion:(id)completion;
+- (void)ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion:(id)completion;
+- (void)ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent:(id)agent completion:(id)completion;
+- (void)ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion:(id)completion extendedPANId:(id)id ipV4NwSignature:(id)signature ipv6NwSignature:(id)nwSignature wifiSSID:(id)d completion:(id)a8;
+- (void)ctcsServerDeletePreferredNetworkWithCompletion:(id)completion;
+- (void)ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent:(id)agent completion:(id)completion;
+- (void)ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId:(id)id completion:(id)completion;
+- (void)ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)ctcsServerRetrieveActiveDataSetRecordWithXPANId:(id)id completion:(id)completion;
+- (void)ctcsServerRetrieveIsPreferredNetworkAvailable:(id)available;
+- (void)ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion:(id)completion;
+- (void)ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion:(id)completion;
+- (void)ctcsServerRetrievePreferredNetworkInternallyWithCompletion:(id)completion;
+- (void)ctcsServerRetrievePreferredNetworkWithCompletion:(id)completion;
+- (void)ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion:(id)completion;
+- (void)ctcsServerStoreCachedAODasPreferredNetwork:(id)network completion:(id)completion;
+- (void)ctcsServerStoreThreadNetworkCredentialActiveDataSet:(id)set credentialsDataSet:(id)dataSet completion:(id)completion;
+- (void)ctcsUpdatePreferredNetworkInternallyWithCompletion:(id)completion;
+- (void)ctcsValidateAODInternally:(id)internally completion:(id)completion;
 - (void)invalidate;
-- (void)isConnectionValid:(id)a3;
-- (void)isConnectionValid:(id)a3 completion:(id)a4;
-- (void)ping:(id)a3;
+- (void)isConnectionValid:(id)valid;
+- (void)isConnectionValid:(id)valid completion:(id)completion;
+- (void)ping:(id)ping;
 - (void)run;
 @end
 
@@ -71,16 +71,16 @@
   return v5;
 }
 
-- (CTCSXPCService)initWithListener:(id)a3
+- (CTCSXPCService)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v16.receiver = self;
   v16.super_class = CTCSXPCService;
   v6 = [(CTCSXPCService *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
+    objc_storeStrong(&v6->_listener, listener);
     [(NSXPCListener *)v7->_listener setDelegate:v7];
     listener = v7->_listener;
     v9 = sub_100008E8C();
@@ -131,8 +131,8 @@
 
 - (void)invalidate
 {
-  v2 = [(CTCSXPCService *)self listener];
-  [v2 invalidate];
+  listener = [(CTCSXPCService *)self listener];
+  [listener invalidate];
 
   v3 = sub_100007454(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -143,17 +143,17 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTCSXPCService *)self listener];
-  if (v8 != v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  listener = [(CTCSXPCService *)self listener];
+  if (listener != listenerCopy)
   {
     __assert_rtn("[CTCSXPCService listener:shouldAcceptNewConnection:]", "CTCSXPCService.mm", 95, "listener == self.listener");
   }
 
-  if (!v7)
+  if (!connectionCopy)
   {
     __assert_rtn("[CTCSXPCService listener:shouldAcceptNewConnection:]", "CTCSXPCService.mm", 97, "newConnection != nil");
   }
@@ -180,7 +180,7 @@ LABEL_12:
   }
 
   v9 = [NSString stringWithUTF8String:"com.apple.developer.networking.manage-thread-network-credentials"];
-  v10 = [(CTCSXPCService *)self checkEntitlements:v9 connection:v7];
+  v10 = [(CTCSXPCService *)self checkEntitlements:v9 connection:connectionCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -202,15 +202,15 @@ LABEL_12:
   dispatch_assert_queue_V2(v11);
 
   v12 = sub_100008E8C();
-  [v7 _setQueue:v12];
+  [connectionCopy _setQueue:v12];
 
   v13 = +[XPCInterface CTCSCreateXPCTransportInterface];
-  [v7 setExportedInterface:v13];
+  [connectionCopy setExportedInterface:v13];
 
-  [v7 setExportedObject:self];
-  [v7 setInterruptionHandler:&stru_100078980];
-  [v7 setInvalidationHandler:&stru_1000789A0];
-  [v7 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&stru_100078980];
+  [connectionCopy setInvalidationHandler:&stru_1000789A0];
+  [connectionCopy resume];
   v14 = sub_100007454(1);
   v15 = 1;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -225,34 +225,34 @@ LABEL_13:
   return v15;
 }
 
-- (void)awdPostStabilityMetrics:(unsigned __int8)a3
+- (void)awdPostStabilityMetrics:(unsigned __int8)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc_init(AWDFlagstoneCTCSStabilityMetrics);
   if (v4)
   {
     v5 = objc_opt_new();
     [(AWDFlagstoneCTCSStabilityMetrics *)v4 setSCntrsStability:v5];
 
-    v6 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+    sCntrsStability = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
 
-    if (v6)
+    if (sCntrsStability)
     {
-      if (v3 > 3)
+      if (metricsCopy > 3)
       {
-        switch(v3)
+        switch(metricsCopy)
         {
           case 4:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:4];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:4];
             break;
           case 5:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:5];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:5];
             break;
           case 6:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:6];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:6];
             break;
           default:
             goto LABEL_19;
@@ -261,19 +261,19 @@ LABEL_13:
 
       else
       {
-        switch(v3)
+        switch(metricsCopy)
         {
           case 1:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:1];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:1];
             break;
           case 2:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:2];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:2];
             break;
           case 3:
-            v7 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
-            [v7 setCtcsReadWriteFailType:3];
+            sCntrsStability2 = [(AWDFlagstoneCTCSStabilityMetrics *)v4 sCntrsStability];
+            [sCntrsStability2 setCtcsReadWriteFailType:3];
             break;
           default:
             goto LABEL_19;
@@ -289,7 +289,7 @@ LABEL_13:
         v11 = 1024;
         v12 = 209;
         v13 = 1024;
-        v14 = v3;
+        v14 = metricsCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s:%d : Posted AWD Metric for awdPostStabilityMetrics for enum error : %d ", &v9, 0x18u);
       }
     }
@@ -298,10 +298,10 @@ LABEL_13:
 LABEL_19:
 }
 
-- (BOOL)takeUserPermission:(id)a3 userDescription:(id)a4
+- (BOOL)takeUserPermission:(id)permission userDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
+  permissionCopy = permission;
+  descriptionCopy = description;
   v7 = sub_100007454(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -310,12 +310,12 @@ LABEL_19:
     v15 = 1024;
     v16 = 259;
     v17 = 2112;
-    v18 = v5;
+    v18 = permissionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s:%d: appString  : %@", buf, 0x1Cu);
   }
 
   v12 = 0;
-  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, v5, v6, @"Allow", @"Don't Allow", 0, &v12);
+  CFUserNotificationDisplayAlert(0.0, 0, 0, 0, 0, permissionCopy, descriptionCopy, @"Allow", @"Don't Allow", 0, &v12);
   v8 = v12 & 3;
   if ((v12 & 3) != 0)
   {
@@ -358,8 +358,8 @@ LABEL_8:
   }
 
   v3 = v2;
-  v4 = [(CTCSUtils *)v2 ctcsUtilIsThreadCommissioningEnabled];
-  if (v4)
+  ctcsUtilIsThreadCommissioningEnabled = [(CTCSUtils *)v2 ctcsUtilIsThreadCommissioningEnabled];
+  if (ctcsUtilIsThreadCommissioningEnabled)
   {
     v5 = sub_100007454(1);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -382,17 +382,17 @@ LABEL_8:
     v5 = [NSError errorWithDomain:@"Feature Flags Error" code:2 userInfo:v7];
   }
 
-  return v4;
+  return ctcsUtilIsThreadCommissioningEnabled;
 }
 
 - (id)getClientKeychainAccessGroup
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSXPCConnection currentConnection];
   if (v3)
   {
-    v4 = [(CTCSXPCService *)v2 getConnectionTeamId:v3];
+    v4 = [(CTCSXPCService *)selfCopy getConnectionTeamId:v3];
     if (v4)
     {
       v5 = sub_100007454(1);
@@ -434,15 +434,15 @@ LABEL_8:
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)BackingStoreDSInternally
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSXPCConnection currentConnection];
   if (!v3)
   {
@@ -456,7 +456,7 @@ LABEL_8:
   }
 
   v4 = [NSString stringWithUTF8String:"com.apple.private.threadnetwork"];
-  v5 = [(CTCSXPCService *)v2 checkEntitlements:v4 connection:v3];
+  v5 = [(CTCSXPCService *)selfCopy checkEntitlements:v4 connection:v3];
 
   if ((v5 & 1) == 0)
   {
@@ -487,17 +487,17 @@ LABEL_10:
   v8 = [[THThreadNetworkCredentialsStoreLocalClient alloc] initWithKeychainAccessGroup:@"0000000000" backingStore:v7];
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (id)BackingStoreDS
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CTCSXPCService *)v2 getClientKeychainAccessGroup];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getClientKeychainAccessGroup = [(CTCSXPCService *)selfCopy getClientKeychainAccessGroup];
+  if (getClientKeychainAccessGroup)
   {
     v4 = sub_100007454(1);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -507,12 +507,12 @@ LABEL_11:
       v10 = 1024;
       v11 = 347;
       v12 = 2112;
-      v13 = v3;
+      v13 = getClientKeychainAccessGroup;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s: %d: keychainAccessGroup: %@ .\n", &v8, 0x1Cu);
     }
 
     v5 = +[THThreadNetworkCredentialsKeychainBackingStore defaultBackingStore];
-    v6 = [[THThreadNetworkCredentialsStoreLocalClient alloc] initWithKeychainAccessGroup:v3 backingStore:v5];
+    v6 = [[THThreadNetworkCredentialsStoreLocalClient alloc] initWithKeychainAccessGroup:getClientKeychainAccessGroup backingStore:v5];
   }
 
   else
@@ -526,20 +526,20 @@ LABEL_11:
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)getConnectionTeamId:(id)a3
+- (id)getConnectionTeamId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
+  idCopy = id;
+  v5 = idCopy;
   v20 = 0u;
   v21 = 0u;
-  if (v4)
+  if (idCopy)
   {
-    [v4 auditToken];
+    [idCopy auditToken];
   }
 
   v6 = xpc_copy_code_signing_identity_for_token();
@@ -566,11 +566,11 @@ LABEL_11:
     free(v6);
     if (v10)
     {
-      v12 = [v10 teamIdentifier];
-      v13 = v12;
-      if (v12)
+      teamIdentifier = [v10 teamIdentifier];
+      v13 = teamIdentifier;
+      if (teamIdentifier)
       {
-        v13 = v12;
+        v13 = teamIdentifier;
         v14 = v13;
       }
 
@@ -627,13 +627,13 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)checkEntitlements:(id)a3 connection:(id)a4
+- (BOOL)checkEntitlements:(id)entitlements connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v7 valueForEntitlement:v6];
+  entitlementsCopy = entitlements;
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [connectionCopy valueForEntitlement:entitlementsCopy];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v9 BOOLValue])
   {
     v10 = sub_100007454(1);
@@ -650,7 +650,7 @@ LABEL_11:
     v11 = 1;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (v11)
   {
     v12 = sub_100007454(1);
@@ -667,9 +667,9 @@ LABEL_11:
   return v11 ^ 1;
 }
 
-- (void)isConnectionValid:(id)a3 completion:(id)a4
+- (void)isConnectionValid:(id)valid completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -678,12 +678,12 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Server: %s - Connection is valid", &v6, 0xCu);
   }
 
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)isConnectionValid:(id)a3
+- (void)isConnectionValid:(id)valid
 {
-  v3 = a3;
+  validCopy = valid;
   v4 = sub_100007454(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -692,12 +692,12 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Server: %s - Connection is valid", &v5, 0xCu);
   }
 
-  v3[2](v3, 1, 0);
+  validCopy[2](validCopy, 1, 0);
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v3 = a3;
+  pingCopy = ping;
   v4 = sub_100007454(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -708,18 +708,18 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Server: %s:%d: - Ping", &v5, 0x12u);
   }
 
-  v3[2](v3, 1, 0);
+  pingCopy[2](pingCopy, 1, 0);
 }
 
 - (BOOL)checkPrivateEntitlement
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSXPCConnection currentConnection];
   if (v3)
   {
     v4 = [NSString stringWithUTF8String:"com.apple.private.threadnetwork"];
-    v5 = [(CTCSXPCService *)v2 checkEntitlements:v4 connection:v3];
+    v5 = [(CTCSXPCService *)selfCopy checkEntitlements:v4 connection:v3];
   }
 
   else
@@ -733,7 +733,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
@@ -768,10 +768,10 @@ LABEL_11:
   return !v4;
 }
 
-- (void)ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent:(id)a3 completion:(id)a4
+- (void)ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent:(id)agent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  agentCopy = agent;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -780,19 +780,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v9 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:v6];
+  v9 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:agentCopy];
   if (v9)
   {
-    v10 = [(CTCSXPCService *)self BackingStoreDS];
-    if (v10)
+    backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+    if (backingStoreDS)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_10000B2E0;
       v13[3] = &unk_100078A30;
       v13[4] = self;
-      v14 = v7;
-      [v10 deleteActiveDataSetRecordForThreadBorderAgentWithKeychainAccessGroup:v9 completion:v13];
+      v14 = completionCopy;
+      [backingStoreDS deleteActiveDataSetRecordForThreadBorderAgentWithKeychainAccessGroup:v9 completion:v13];
     }
 
     else
@@ -802,7 +802,7 @@ LABEL_11:
       v15[1] = 3221225472;
       v15[2] = sub_10000B25C;
       v15[3] = &unk_100078A08;
-      v16 = v7;
+      v16 = completionCopy;
       dispatch_async(v12, v15);
     }
   }
@@ -814,17 +814,17 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_10000B1D8;
     block[3] = &unk_100078A08;
-    v18 = v7;
+    v18 = completionCopy;
     dispatch_async(v11, block);
 
-    v10 = v18;
+    backingStoreDS = v18;
   }
 }
 
-- (void)ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent:(id)a3 completion:(id)a4
+- (void)ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent:(id)agent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  agentCopy = agent;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -833,16 +833,16 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v9 = [(CTCSXPCService *)self BackingStoreDS];
-  if (v9)
+  backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+  if (backingStoreDS)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000B974;
     v11[3] = &unk_100078A80;
     v11[4] = self;
-    v12 = v7;
-    [v9 retrieveActiveDataSetRecordForThreadBorderAgentWithKeychainAccessGroup:v6 completion:v11];
+    v12 = completionCopy;
+    [backingStoreDS retrieveActiveDataSetRecordForThreadBorderAgentWithKeychainAccessGroup:agentCopy completion:v11];
   }
 
   else
@@ -852,16 +852,16 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_10000B8EC;
     block[3] = &unk_100078A08;
-    v14 = v7;
+    v14 = completionCopy;
     dispatch_async(v10, block);
   }
 }
 
-- (void)ctcsServerStoreThreadNetworkCredentialActiveDataSet:(id)a3 credentialsDataSet:(id)a4 completion:(id)a5
+- (void)ctcsServerStoreThreadNetworkCredentialActiveDataSet:(id)set credentialsDataSet:(id)dataSet completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setCopy = set;
+  dataSetCopy = dataSet;
+  completionCopy = completion;
   v11 = sub_100007454(1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -870,25 +870,25 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v12 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:v8];
-  v13 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:v9 userInfo:0];
+  v12 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:setCopy];
+  v13 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:dataSetCopy userInfo:0];
   v14 = v13;
   if (v12 && v13)
   {
-    v15 = [(CTCSXPCService *)self BackingStoreDS];
-    if (v15)
+    backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+    if (backingStoreDS)
     {
-      v16 = [v14 dataSetArray];
+      dataSetArray = [v14 dataSetArray];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10000BE84;
       v20[3] = &unk_100078AF8;
-      v21 = v15;
+      v21 = backingStoreDS;
       v22 = v12;
       v23 = v14;
-      v24 = self;
-      v25 = v10;
-      [v21 validateRecordWithMdnsScanWithDataSet:v16 borderAgentID:v8 completion:v20];
+      selfCopy = self;
+      v25 = completionCopy;
+      [v21 validateRecordWithMdnsScanWithDataSet:dataSetArray borderAgentID:setCopy completion:v20];
 
       v17 = &v21;
       v18 = v22;
@@ -902,7 +902,7 @@ LABEL_11:
       v26[2] = sub_10000BDFC;
       v26[3] = &unk_100078A08;
       v17 = &v27;
-      v27 = v10;
+      v27 = completionCopy;
       dispatch_async(v18, v26);
     }
   }
@@ -914,22 +914,22 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_10000BD74;
     block[3] = &unk_100078A08;
-    v29 = v10;
+    v29 = completionCopy;
     dispatch_async(v19, block);
 
-    v15 = v29;
+    backingStoreDS = v29;
   }
 }
 
-- (void)ctcsServerRetrieveActiveDataSetRecordWithXPANId:(id)a3 completion:(id)a4
+- (void)ctcsServerRetrieveActiveDataSetRecordWithXPANId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = idCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: Retrieving Network with extended panid %@\n", &buf, 0xCu);
   }
 
@@ -942,8 +942,8 @@ LABEL_11:
   v9 = +[NSXPCConnection currentConnection];
   if (v9)
   {
-    v10 = [(CTCSXPCService *)self BackingStoreDS];
-    if (v10)
+    backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+    if (backingStoreDS)
     {
       v54 = 0u;
       v55 = 0u;
@@ -956,7 +956,7 @@ LABEL_11:
         v52[1] = 3221225472;
         v52[2] = sub_10000CD64;
         v52[3] = &unk_100078A08;
-        v53 = v7;
+        v53 = completionCopy;
         dispatch_async(v30, v52);
 
         v31 = v53;
@@ -986,21 +986,21 @@ LABEL_30:
       free(v11);
       if (v15)
       {
-        v16 = [v15 localizedName];
-        v17 = v16 == 0;
+        localizedName = [v15 localizedName];
+        v17 = localizedName == 0;
 
         if (!v17)
         {
           v18 = sub_100007454(1);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [v15 localizedName];
+            localizedName2 = [v15 localizedName];
             *v69 = 136315650;
             *&v69[4] = "[CTCSXPCService ctcsServerRetrieveActiveDataSetRecordWithXPANId:completion:]";
             *&v69[12] = 1024;
             *&v69[14] = 642;
             *&v69[18] = 2112;
-            *&v69[20] = v19;
+            *&v69[20] = localizedName2;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s:%d: Localized app name  : %@", v69, 0x1Cu);
           }
 
@@ -1012,8 +1012,8 @@ LABEL_30:
           *&v69[16] = 0x3032000000;
           *&v69[24] = sub_10000CC3C;
           v70 = sub_10000CC4C;
-          v22 = [v15 localizedName];
-          v71 = [NSString localizedStringWithFormat:v21, v22];
+          localizedName3 = [v15 localizedName];
+          v71 = [NSString localizedStringWithFormat:v21, localizedName3];
 
           if (*(*&v69[8] + 40))
           {
@@ -1062,8 +1062,8 @@ LABEL_30:
               p_buf = &buf;
               v43 = v69;
               v44 = v66;
-              v41 = v7;
-              [v10 retrieveActiveDataSetRecordWithExtendedPANId:v6 completion:v40];
+              v41 = completionCopy;
+              [backingStoreDS retrieveActiveDataSetRecordWithExtendedPANId:idCopy completion:v40];
             }
 
             else
@@ -1073,7 +1073,7 @@ LABEL_30:
               v45[1] = 3221225472;
               v45[2] = sub_10000CF94;
               v45[3] = &unk_100078A08;
-              v46 = v7;
+              v46 = completionCopy;
               dispatch_async(v37, v45);
             }
 
@@ -1089,7 +1089,7 @@ LABEL_30:
             v47[1] = 3221225472;
             v47[2] = sub_10000CF0C;
             v47[3] = &unk_100078A08;
-            v48 = v7;
+            v48 = completionCopy;
             dispatch_async(v35, v47);
 
             v36 = v48;
@@ -1105,7 +1105,7 @@ LABEL_30:
         v49[1] = 3221225472;
         v49[2] = sub_10000CE84;
         v49[3] = &unk_100078A08;
-        v49[4] = v7;
+        v49[4] = completionCopy;
         dispatch_async(v34, v49);
       }
 
@@ -1117,7 +1117,7 @@ LABEL_30:
         v50[1] = 3221225472;
         v50[2] = sub_10000CDEC;
         v50[3] = &unk_100078A08;
-        v50[4] = v7;
+        v50[4] = completionCopy;
         dispatch_async(v32, v50);
       }
 
@@ -1133,7 +1133,7 @@ LABEL_29:
     v56[1] = 3221225472;
     v56[2] = sub_10000CCDC;
     v56[3] = &unk_100078A08;
-    v57 = v7;
+    v57 = completionCopy;
     dispatch_async(v29, v56);
   }
 
@@ -1144,10 +1144,10 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = sub_10000CC54;
     block[3] = &unk_100078A08;
-    v59 = v7;
+    v59 = completionCopy;
     dispatch_async(v28, block);
 
-    v10 = v59;
+    backingStoreDS = v59;
   }
 
 LABEL_31:
@@ -1155,9 +1155,9 @@ LABEL_31:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)ctcsServerRetrievePreferredNetworkWithCompletion:(id)a3
+- (void)ctcsServerRetrievePreferredNetworkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1174,8 +1174,8 @@ LABEL_31:
   v6 = +[NSXPCConnection currentConnection];
   if (v6)
   {
-    v7 = [(CTCSXPCService *)self BackingStoreDS];
-    if (v7)
+    backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+    if (backingStoreDS)
     {
       v50 = 0u;
       v51 = 0u;
@@ -1188,7 +1188,7 @@ LABEL_31:
         v48[1] = 3221225472;
         v48[2] = sub_10000DD40;
         v48[3] = &unk_100078A08;
-        v49 = v4;
+        v49 = completionCopy;
         dispatch_async(v28, v48);
 
         v29 = v49;
@@ -1218,21 +1218,21 @@ LABEL_30:
       free(v8);
       if (v12)
       {
-        v13 = [v12 localizedName];
-        v14 = v13 == 0;
+        localizedName = [v12 localizedName];
+        v14 = localizedName == 0;
 
         if (!v14)
         {
           v15 = sub_100007454(1);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [v12 localizedName];
+            localizedName2 = [v12 localizedName];
             *v71 = 136315650;
             *&v71[4] = "[CTCSXPCService ctcsServerRetrievePreferredNetworkWithCompletion:]";
             *&v71[12] = 1024;
             *&v71[14] = 759;
             *&v71[18] = 2112;
-            *&v71[20] = v16;
+            *&v71[20] = localizedName2;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s:%d: Localized app name  : %@", v71, 0x1Cu);
           }
 
@@ -1244,8 +1244,8 @@ LABEL_30:
           *&v71[16] = 0x3032000000;
           *&v71[24] = sub_10000CC3C;
           v72 = sub_10000CC4C;
-          v19 = [v12 localizedName];
-          v73 = [NSString localizedStringWithFormat:v18, v19];
+          localizedName3 = [v12 localizedName];
+          v73 = [NSString localizedStringWithFormat:v18, localizedName3];
 
           if (*(*&v71[8] + 40))
           {
@@ -1294,8 +1294,8 @@ LABEL_30:
               v38 = buf;
               v39 = v71;
               v40 = v68;
-              v37 = v4;
-              [v7 retrievePreferredNetworkWithCompletion:v36];
+              v37 = completionCopy;
+              [backingStoreDS retrievePreferredNetworkWithCompletion:v36];
             }
 
             else
@@ -1305,7 +1305,7 @@ LABEL_30:
               v41[1] = 3221225472;
               v41[2] = sub_10000DF70;
               v41[3] = &unk_100078A08;
-              v42 = v4;
+              v42 = completionCopy;
               dispatch_async(v34, v41);
             }
 
@@ -1319,7 +1319,7 @@ LABEL_30:
             v43[1] = 3221225472;
             v43[2] = sub_10000DEE8;
             v43[3] = &unk_100078A08;
-            v44 = v4;
+            v44 = completionCopy;
             dispatch_async(v33, v43);
 
             v23 = v44;
@@ -1335,7 +1335,7 @@ LABEL_30:
         v45[1] = 3221225472;
         v45[2] = sub_10000DE60;
         v45[3] = &unk_100078A08;
-        v45[4] = v4;
+        v45[4] = completionCopy;
         dispatch_async(v32, v45);
       }
 
@@ -1347,7 +1347,7 @@ LABEL_30:
         v46[1] = 3221225472;
         v46[2] = sub_10000DDC8;
         v46[3] = &unk_100078A08;
-        v46[4] = v4;
+        v46[4] = completionCopy;
         dispatch_async(v30, v46);
       }
 
@@ -1363,7 +1363,7 @@ LABEL_29:
     v52[1] = 3221225472;
     v52[2] = sub_10000DCB8;
     v52[3] = &unk_100078A08;
-    v53 = v4;
+    v53 = completionCopy;
     dispatch_async(v27, v52);
   }
 
@@ -1374,10 +1374,10 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = sub_10000DC30;
     block[3] = &unk_100078A08;
-    v55 = v4;
+    v55 = completionCopy;
     dispatch_async(v26, block);
 
-    v7 = v55;
+    backingStoreDS = v55;
   }
 
 LABEL_31:
@@ -1385,10 +1385,10 @@ LABEL_31:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsIsPreferredNetworkForActiveOperationalDataset:(id)a3 completion:(id)a4
+- (void)ctcsIsPreferredNetworkForActiveOperationalDataset:(id)dataset completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  datasetCopy = dataset;
+  completionCopy = completion;
   v9 = sub_100007454(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1404,17 +1404,17 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Server: %s Checking whether dataset matches to preferred network... %@, %s, %s \n", buf, 0x2Au);
   }
 
-  if (v7)
+  if (datasetCopy)
   {
-    v11 = [(CTCSXPCService *)self BackingStoreDS];
-    if (v11)
+    backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+    if (backingStoreDS)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_10000E514;
       v15[3] = &unk_100078B48;
-      v16 = v8;
-      [v11 checkIsPreferredNetworkForActiveOperationalDataset:v7 completion:v15];
+      v16 = completionCopy;
+      [backingStoreDS checkIsPreferredNetworkForActiveOperationalDataset:datasetCopy completion:v15];
       v12 = &v16;
     }
 
@@ -1425,7 +1425,7 @@ LABEL_31:
       v17[1] = 3221225472;
       v17[2] = sub_10000E500;
       v17[3] = &unk_100078A08;
-      v18 = v8;
+      v18 = completionCopy;
       dispatch_async(v14, v17);
 
       v12 = &v18;
@@ -1439,16 +1439,16 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_10000E4A0;
     block[3] = &unk_100078A08;
-    v20 = v8;
+    v20 = completionCopy;
     dispatch_async(v13, block);
 
-    v11 = v20;
+    backingStoreDS = v20;
   }
 }
 
-- (void)ctcsServerRetrieveIsPreferredNetworkAvailable:(id)a3
+- (void)ctcsServerRetrieveIsPreferredNetworkAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1462,16 +1462,16 @@ LABEL_31:
   v16 = sub_10000CC3C;
   v17 = sub_10000CC4C;
   v18 = 0;
-  v6 = [(CTCSXPCService *)self BackingStoreDS];
-  if (v6)
+  backingStoreDS = [(CTCSXPCService *)self BackingStoreDS];
+  if (backingStoreDS)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000E820;
     v9[3] = &unk_100078B70;
     v10[1] = buf;
-    v10[0] = v4;
-    [v6 retrievePreferredNetworkWithCompletion:v9];
+    v10[0] = availableCopy;
+    [backingStoreDS retrievePreferredNetworkWithCompletion:v9];
     v7 = v10;
   }
 
@@ -1483,16 +1483,16 @@ LABEL_31:
     block[2] = sub_10000E80C;
     block[3] = &unk_100078A08;
     v7 = &v12;
-    v12 = v4;
+    v12 = availableCopy;
     dispatch_async(v8, block);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion:(id)a3
+- (void)ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1506,16 +1506,16 @@ LABEL_31:
   v16 = sub_10000CC3C;
   v17 = sub_10000CC4C;
   v18 = 0;
-  v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v6)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000EBDC;
     v9[3] = &unk_100078B70;
     v10[1] = buf;
-    v10[0] = v4;
-    [v6 retrievePreferredNetworkWithNoScanWithCompletion:v9];
+    v10[0] = completionCopy;
+    [backingStoreDSInternally retrievePreferredNetworkWithNoScanWithCompletion:v9];
     v7 = v10;
   }
 
@@ -1527,16 +1527,16 @@ LABEL_31:
     block[2] = sub_10000EB54;
     block[3] = &unk_100078A08;
     v7 = &v12;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(v8, block);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion:(id)a3
+- (void)ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1550,16 +1550,16 @@ LABEL_31:
   v16 = sub_10000CC3C;
   v17 = sub_10000CC4C;
   v18 = 0;
-  v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v6)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000EF64;
     v9[3] = &unk_100078B70;
     v10[1] = buf;
-    v10[0] = v4;
-    [v6 retrievePreferredNetworkWithCompletion:v9];
+    v10[0] = completionCopy;
+    [backingStoreDSInternally retrievePreferredNetworkWithCompletion:v9];
     v7 = v10;
   }
 
@@ -1571,16 +1571,16 @@ LABEL_31:
     block[2] = sub_10000EEDC;
     block[3] = &unk_100078A08;
     v7 = &v12;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(v8, block);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsServerRetrievePreferredNetworkInternallyWithCompletion:(id)a3
+- (void)ctcsServerRetrievePreferredNetworkInternallyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1594,16 +1594,16 @@ LABEL_31:
   v16 = sub_10000CC3C;
   v17 = sub_10000CC4C;
   v18 = 0;
-  v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v6)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000F2EC;
     v9[3] = &unk_100078B70;
     v10[1] = buf;
-    v10[0] = v4;
-    [v6 retrievePreferredNetworkInternallyWithCompletion:v9];
+    v10[0] = completionCopy;
+    [backingStoreDSInternally retrievePreferredNetworkInternallyWithCompletion:v9];
     v7 = v10;
   }
 
@@ -1615,16 +1615,16 @@ LABEL_31:
     block[2] = sub_10000F264;
     block[3] = &unk_100078A08;
     v7 = &v12;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(v8, block);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion:(id)a3
+- (void)ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1650,16 +1650,16 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, " %s:%d Thread is supported on this device !", v21, 0x12u);
     }
 
-    v7 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v7)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10000F7A8;
       v11[3] = &unk_100078B70;
       v12[1] = buf;
-      v12[0] = v4;
-      [v7 retrieveOrGeneratePreferredNetworkInternallyWithCompletion:v11];
+      v12[0] = completionCopy;
+      [backingStoreDSInternally retrieveOrGeneratePreferredNetworkInternallyWithCompletion:v11];
       v8 = v12;
     }
 
@@ -1670,7 +1670,7 @@ LABEL_31:
       block[1] = 3221225472;
       block[2] = sub_10000F720;
       block[3] = &unk_100078A08;
-      v14 = v4;
+      v14 = completionCopy;
       dispatch_async(v10, block);
 
       v8 = &v14;
@@ -1679,22 +1679,22 @@ LABEL_31:
 
   else
   {
-    v7 = [NSError storeError:3 description:@"Feature not supported"];
+    backingStoreDSInternally = [NSError storeError:3 description:@"Feature not supported"];
     v9 = sub_100007454(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       sub_1000564E4();
     }
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, backingStoreDSInternally);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)ctcsServerDeletePreferredNetworkWithCompletion:(id)a3
+- (void)ctcsServerDeletePreferredNetworkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1703,15 +1703,15 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v6)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000FB04;
     v9[3] = &unk_100078B98;
-    v10 = v4;
-    [v6 deletePreferredNetworkWithCompletion:v9];
+    v10 = completionCopy;
+    [backingStoreDSInternally deletePreferredNetworkWithCompletion:v9];
     v7 = &v10;
   }
 
@@ -1722,16 +1722,16 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_10000FA80;
     block[3] = &unk_100078A08;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(v8, block);
 
     v7 = &v12;
   }
 }
 
-- (void)ctcsUpdatePreferredNetworkInternallyWithCompletion:(id)a3
+- (void)ctcsUpdatePreferredNetworkInternallyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1740,32 +1740,32 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v6)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000FCA0;
     v7[3] = &unk_100078B48;
-    v8 = v4;
-    [v6 updatePreferredNetworkInternallyWithCompletion:v7];
+    v8 = completionCopy;
+    [backingStoreDSInternally updatePreferredNetworkInternallyWithCompletion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId:(id)a3 completion:(id)a4
+- (void)ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = idCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: Retrieving Network with extended panid Internally %@\n", &buf, 0xCu);
   }
 
@@ -1775,8 +1775,8 @@ LABEL_31:
   v18 = sub_10000CC3C;
   v19 = sub_10000CC4C;
   v20 = 0;
-  v9 = [(CTCSXPCService *)self BackingStoreDSInternally];
-  if (v9)
+  backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+  if (backingStoreDSInternally)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -1784,8 +1784,8 @@ LABEL_31:
     v11[3] = &unk_100078BC0;
     v11[4] = self;
     p_buf = &buf;
-    v12 = v7;
-    [v9 retrieveActiveDataSetRecordOnMdnsWithExtendedPANId:v6 completion:v11];
+    v12 = completionCopy;
+    [backingStoreDSInternally retrieveActiveDataSetRecordOnMdnsWithExtendedPANId:idCopy completion:v11];
   }
 
   else
@@ -1795,17 +1795,17 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_10000FF24;
     block[3] = &unk_100078A08;
-    v15 = v7;
+    v15 = completionCopy;
     dispatch_async(v10, block);
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)ctcsServerStoreCachedAODasPreferredNetwork:(id)a3 completion:(id)a4
+- (void)ctcsServerStoreCachedAODasPreferredNetwork:(id)network completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  networkCopy = network;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1814,18 +1814,18 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: %s", buf, 0xCu);
   }
 
-  v9 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:v6 userInfo:0];
+  v9 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:networkCopy userInfo:0];
   if (v9)
   {
-    v10 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v10)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10001046C;
       v14[3] = &unk_100078BE8;
-      v15 = v7;
-      [v10 storeCachedAODasPreferredNetwork:v9 completion:v14];
+      v15 = completionCopy;
+      [backingStoreDSInternally storeCachedAODasPreferredNetwork:v9 completion:v14];
       v11 = &v15;
     }
 
@@ -1836,7 +1836,7 @@ LABEL_31:
       v16[1] = 3221225472;
       v16[2] = sub_1000103E4;
       v16[3] = &unk_100078A08;
-      v17 = v7;
+      v17 = completionCopy;
       dispatch_async(v13, v16);
 
       v11 = &v17;
@@ -1850,29 +1850,29 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_10001035C;
     block[3] = &unk_100078A08;
-    v19 = v7;
+    v19 = completionCopy;
     dispatch_async(v12, block);
 
-    v10 = v19;
+    backingStoreDSInternally = v19;
   }
 }
 
-- (void)ctcsValidateAODInternally:(id)a3 completion:(id)a4
+- (void)ctcsValidateAODInternally:(id)internally completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:v6 userInfo:0];
+  internallyCopy = internally;
+  completionCopy = completion;
+  v8 = [[THThreadNetworkCredentialsDataSet alloc] initWithDataSetArray:internallyCopy userInfo:0];
   if (v8)
   {
-    v9 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v9)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1000107A8;
       v13[3] = &unk_100078C10;
-      v14 = v7;
-      [v9 validateAODInternally:v8 completion:v13];
+      v14 = completionCopy;
+      [backingStoreDSInternally validateAODInternally:v8 completion:v13];
       v10 = &v14;
     }
 
@@ -1884,7 +1884,7 @@ LABEL_31:
       v15[2] = sub_100010720;
       v15[3] = &unk_100078A08;
       v10 = &v16;
-      v16 = v7;
+      v16 = completionCopy;
       dispatch_async(v12, v15);
     }
   }
@@ -1896,22 +1896,22 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_100010698;
     block[3] = &unk_100078A08;
-    v18 = v7;
+    v18 = completionCopy;
     dispatch_async(v11, block);
 
-    v9 = v18;
+    backingStoreDSInternally = v18;
   }
 }
 
-- (void)ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Server: Retrieving DS credentials for UUID %@...\n", &buf, 0xCu);
   }
 
@@ -1923,16 +1923,16 @@ LABEL_31:
   v23 = 0;
   if (os_variant_has_internal_diagnostics())
   {
-    v9 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v9)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100010FAC;
       v13[3] = &unk_100078B70;
       v14[1] = &buf;
-      v14[0] = v7;
-      [v9 retrieveActiveDataSetRecordWithUniqueIdentifier:v6 completion:v13];
+      v14[0] = completionCopy;
+      [backingStoreDSInternally retrieveActiveDataSetRecordWithUniqueIdentifier:identifierCopy completion:v13];
       v10 = v14;
     }
 
@@ -1943,7 +1943,7 @@ LABEL_31:
       v15[1] = 3221225472;
       v15[2] = sub_100010F24;
       v15[3] = &unk_100078A08;
-      v16 = v7;
+      v16 = completionCopy;
       dispatch_async(v12, v15);
 
       v10 = &v16;
@@ -1957,19 +1957,19 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_100010E9C;
     block[3] = &unk_100078A08;
-    v18 = v7;
+    v18 = completionCopy;
     dispatch_async(v11, block);
 
-    v9 = v18;
+    backingStoreDSInternally = v18;
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = sub_100007454(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1980,15 +1980,15 @@ LABEL_31:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v9 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v9)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1000113E8;
       v13[3] = &unk_100078B98;
-      v14 = v7;
-      [v9 deleteActiveDataSetRecordWithUniqueIdentifierWithKeychainAccessGroup:v6 completion:v13];
+      v14 = completionCopy;
+      [backingStoreDSInternally deleteActiveDataSetRecordWithUniqueIdentifierWithKeychainAccessGroup:identifierCopy completion:v13];
       v10 = &v14;
     }
 
@@ -1999,7 +1999,7 @@ LABEL_31:
       v15[1] = 3221225472;
       v15[2] = sub_100011364;
       v15[3] = &unk_100078A08;
-      v16 = v7;
+      v16 = completionCopy;
       dispatch_async(v12, v15);
 
       v10 = &v16;
@@ -2013,16 +2013,16 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_1000112E0;
     block[3] = &unk_100078A08;
-    v18 = v7;
+    v18 = completionCopy;
     dispatch_async(v11, block);
 
-    v9 = v18;
+    backingStoreDSInternally = v18;
   }
 }
 
-- (void)ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion:(id)a3
+- (void)ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2033,15 +2033,15 @@ LABEL_31:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v6)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100011770;
       v10[3] = &unk_100078B98;
-      v11 = v4;
-      [v6 deletePreferredAndFrozenThreadNetworksWithCompletion:v10];
+      v11 = completionCopy;
+      [backingStoreDSInternally deletePreferredAndFrozenThreadNetworksWithCompletion:v10];
       v7 = &v11;
     }
 
@@ -2052,7 +2052,7 @@ LABEL_31:
       v12[1] = 3221225472;
       v12[2] = sub_1000116EC;
       v12[3] = &unk_100078A08;
-      v13 = v4;
+      v13 = completionCopy;
       dispatch_async(v9, v12);
 
       v7 = &v13;
@@ -2066,16 +2066,16 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_100011668;
     block[3] = &unk_100078A08;
-    v15 = v4;
+    v15 = completionCopy;
     dispatch_async(v8, block);
 
-    v6 = v15;
+    backingStoreDSInternally = v15;
   }
 }
 
-- (void)ctcsServerCleanKeychainThreadNetworksWithCompletion:(id)a3
+- (void)ctcsServerCleanKeychainThreadNetworksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100007454(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2086,15 +2086,15 @@ LABEL_31:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v6 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v6)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100011AF8;
       v10[3] = &unk_100078B98;
-      v11 = v4;
-      [v6 cleanThreadKeychainDatabase:v10];
+      v11 = completionCopy;
+      [backingStoreDSInternally cleanThreadKeychainDatabase:v10];
       v7 = &v11;
     }
 
@@ -2105,7 +2105,7 @@ LABEL_31:
       v12[1] = 3221225472;
       v12[2] = sub_100011A74;
       v12[3] = &unk_100078A08;
-      v13 = v4;
+      v13 = completionCopy;
       dispatch_async(v9, v12);
 
       v7 = &v13;
@@ -2119,23 +2119,23 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_1000119F0;
     block[3] = &unk_100078A08;
-    v15 = v4;
+    v15 = completionCopy;
     dispatch_async(v8, block);
 
-    v6 = v15;
+    backingStoreDSInternally = v15;
   }
 }
 
-- (void)ctcsServerAddPreferredNetworkWithCompletionInternally:(id)a3 extendedPANId:(id)a4 borderAgentID:(id)a5 ipV4NwSignature:(id)a6 ipv6NwSignature:(id)a7 wifiSSID:(id)a8 wifiPassword:(id)a9 completion:(id)a10
+- (void)ctcsServerAddPreferredNetworkWithCompletionInternally:(id)internally extendedPANId:(id)id borderAgentID:(id)d ipV4NwSignature:(id)signature ipv6NwSignature:(id)nwSignature wifiSSID:(id)iD wifiPassword:(id)password completion:(id)self0
 {
-  v29 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  internallyCopy = internally;
+  idCopy = id;
+  dCopy = d;
+  signatureCopy = signature;
+  nwSignatureCopy = nwSignature;
+  iDCopy = iD;
+  passwordCopy = password;
+  completionCopy = completion;
   v23 = sub_100007454(1);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -2146,17 +2146,17 @@ LABEL_31:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v24 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v24)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
-      v25 = [[THThreadNetwork alloc] initWithName:v29 extendedPANID:v16];
-      v26 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:v17];
+      v25 = [[THThreadNetwork alloc] initWithName:internallyCopy extendedPANID:idCopy];
+      v26 = [[THThreadNetworkBorderAgent alloc] initWithBaDiscrId:dCopy];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100011FA0;
       v30[3] = &unk_100078B98;
-      v31 = v22;
-      [v24 addPreferredNetworkWithCompletionInternally:v25 borderAgentID:v26 ipV4NwSignature:v18 ipv6NwSignature:v19 wifiSSID:v20 wifiPassword:v21 completion:v30];
+      v31 = completionCopy;
+      [backingStoreDSInternally addPreferredNetworkWithCompletionInternally:v25 borderAgentID:v26 ipV4NwSignature:signatureCopy ipv6NwSignature:nwSignatureCopy wifiSSID:iDCopy wifiPassword:passwordCopy completion:v30];
     }
 
     else
@@ -2166,7 +2166,7 @@ LABEL_31:
       v32[1] = 3221225472;
       v32[2] = sub_100011F1C;
       v32[3] = &unk_100078A08;
-      v33 = v22;
+      v33 = completionCopy;
       dispatch_async(v28, v32);
 
       v25 = v33;
@@ -2180,20 +2180,20 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = sub_100011E98;
     block[3] = &unk_100078A08;
-    v35 = v22;
+    v35 = completionCopy;
     dispatch_async(v27, block);
 
-    v24 = v35;
+    backingStoreDSInternally = v35;
   }
 }
 
-- (void)ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion:(id)a3 extendedPANId:(id)a4 ipV4NwSignature:(id)a5 ipv6NwSignature:(id)a6 wifiSSID:(id)a7 completion:(id)a8
+- (void)ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion:(id)completion extendedPANId:(id)id ipV4NwSignature:(id)signature ipv6NwSignature:(id)nwSignature wifiSSID:(id)d completion:(id)a8
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  completionCopy = completion;
+  idCopy = id;
+  signatureCopy = signature;
+  nwSignatureCopy = nwSignature;
+  dCopy = d;
   v19 = a8;
   v20 = sub_100007454(1);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -2205,16 +2205,16 @@ LABEL_31:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v21 = [(CTCSXPCService *)self BackingStoreDSInternally];
-    if (v21)
+    backingStoreDSInternally = [(CTCSXPCService *)self BackingStoreDSInternally];
+    if (backingStoreDSInternally)
     {
-      v22 = [[THThreadNetwork alloc] initWithName:v14 extendedPANID:v15];
+      v22 = [[THThreadNetwork alloc] initWithName:completionCopy extendedPANID:idCopy];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_1000123DC;
       v25[3] = &unk_100078B98;
       v26 = v19;
-      [v21 deletePreferredNetworkForNetworkSignatureInternallyWithCompletion:v22 ipv4NwSignature:v16 ipv6NwSignature:v17 wifiSSID:v18 completion:v25];
+      [backingStoreDSInternally deletePreferredNetworkForNetworkSignatureInternallyWithCompletion:v22 ipv4NwSignature:signatureCopy ipv6NwSignature:nwSignatureCopy wifiSSID:dCopy completion:v25];
     }
 
     else
@@ -2241,7 +2241,7 @@ LABEL_31:
     v30 = v19;
     dispatch_async(v23, block);
 
-    v21 = v30;
+    backingStoreDSInternally = v30;
   }
 }
 

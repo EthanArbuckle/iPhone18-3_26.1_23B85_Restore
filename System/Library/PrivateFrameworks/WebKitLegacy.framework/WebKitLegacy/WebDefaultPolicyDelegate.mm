@@ -1,7 +1,7 @@
 @interface WebDefaultPolicyDelegate
 + (id)sharedPolicyDelegate;
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
 @end
 
 @implementation WebDefaultPolicyDelegate
@@ -18,49 +18,49 @@
   return result;
 }
 
-- (void)webView:(id)a3 decidePolicyForMIMEType:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForMIMEType:(id)type request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  if ([objc_msgSend(a5 "URL")])
+  if ([objc_msgSend(request "URL")])
   {
     v11 = 0;
-    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && (v11 & 1) == 0 && objc_msgSend(a3, "_canShowMIMEType:", a4))
+    if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && (v11 & 1) == 0 && objc_msgSend(view, "_canShowMIMEType:", type))
     {
-      [a7 use];
+      [listener use];
     }
 
     else
     {
-      [a7 ignore];
+      [listener ignore];
     }
   }
 
-  else if ([a3 _canShowMIMEType:a4])
+  else if ([view _canShowMIMEType:type])
   {
 
-    [a7 use];
+    [listener use];
   }
 
   else
   {
 
-    [a7 ignore];
+    [listener ignore];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  v11 = [objc_msgSend(a4 objectForKey:{WebActionNavigationTypeKey), "intValue"}];
-  if (+[WebView _canHandleRequest:forMainFrame:](WebView, "_canHandleRequest:forMainFrame:", a5, [a3 mainFrame] == a6) || v11 == 6)
+  v11 = [objc_msgSend(action objectForKey:{WebActionNavigationTypeKey), "intValue"}];
+  if (+[WebView _canHandleRequest:forMainFrame:](WebView, "_canHandleRequest:forMainFrame:", request, [view mainFrame] == frame) || v11 == 6)
   {
 
-    [a7 use];
+    [listener use];
   }
 
   else
   {
-    [objc_msgSend(a5 "URL")];
+    [objc_msgSend(request "URL")];
 
-    [a7 ignore];
+    [listener ignore];
   }
 }
 

@@ -1,28 +1,28 @@
 @interface _PBUIWallpaperRemoteViewControllerSceneModeAssertion
-- (_PBUIWallpaperRemoteViewControllerSceneModeAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 sceneMode:(int64_t)a5 invalidationBlock:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (_PBUIWallpaperRemoteViewControllerSceneModeAssertion)initWithIdentifier:(id)identifier forReason:(id)reason sceneMode:(int64_t)mode invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation _PBUIWallpaperRemoteViewControllerSceneModeAssertion
 
-- (_PBUIWallpaperRemoteViewControllerSceneModeAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 sceneMode:(int64_t)a5 invalidationBlock:(id)a6
+- (_PBUIWallpaperRemoteViewControllerSceneModeAssertion)initWithIdentifier:(id)identifier forReason:(id)reason sceneMode:(int64_t)mode invalidationBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = _PBUIWallpaperRemoteViewControllerSceneModeAssertion;
-  result = [(BSSimpleAssertion *)&v8 initWithIdentifier:a3 forReason:a4 invalidationBlock:a6];
+  result = [(BSSimpleAssertion *)&v8 initWithIdentifier:identifier forReason:reason invalidationBlock:block];
   if (result)
   {
-    result->_sceneMode = a5;
+    result->_sceneMode = mode;
   }
 
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = _PBUIWallpaperRemoteViewControllerSceneModeAssertion;
-  v4 = [(BSSimpleAssertion *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BSSimpleAssertion *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   sceneMode = self->_sceneMode;
   if (sceneMode > 3)

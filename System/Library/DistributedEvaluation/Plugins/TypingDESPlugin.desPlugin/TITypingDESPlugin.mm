@@ -1,30 +1,30 @@
 @interface TITypingDESPlugin
-+ (id)stringForConfiderence:(int)a3;
-- (id)evaluateRecipe:(id)a3 recordInfo:(id)a4 recordData:(id)a5 attachments:(id)a6 error:(id *)a7;
-- (id)getAlignmentStats:(id)a3;
-- (id)getTopStatisticsFromResults:(double)a3[4];
-- (id)runExperimentCPEvalForSession:(id)a3 forRecipe:(id)a4;
-- (id)summaryStatisticsEvalResults:(const void *)a3 ofEntries:(id)a4;
++ (id)stringForConfiderence:(int)confiderence;
+- (id)evaluateRecipe:(id)recipe recordInfo:(id)info recordData:(id)data attachments:(id)attachments error:(id *)error;
+- (id)getAlignmentStats:(id)stats;
+- (id)getTopStatisticsFromResults:(double)results[4];
+- (id)runExperimentCPEvalForSession:(id)session forRecipe:(id)recipe;
+- (id)summaryStatisticsEvalResults:(const void *)results ofEntries:(id)entries;
 - (vector<TI::CP::ContinuousPathTestCase,)convertAlignedEntriesFromSession:(TITypingDESPlugin *)self;
-- (void)cpEvalResult:(void *)a3 fromAlignedSession:(id)a4 forRecipe:(id)a5;
+- (void)cpEvalResult:(void *)result fromAlignedSession:(id)session forRecipe:(id)recipe;
 @end
 
 @implementation TITypingDESPlugin
 
-- (id)evaluateRecipe:(id)a3 recordInfo:(id)a4 recordData:(id)a5 attachments:(id)a6 error:(id *)a7
+- (id)evaluateRecipe:(id)recipe recordInfo:(id)info recordData:(id)data attachments:(id)attachments error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  recipeCopy = recipe;
+  dataCopy = data;
+  infoCopy = info;
   v13 = +[NSMutableDictionary dictionary];
-  v14 = [v12 objectForKeyedSubscript:@"type"];
+  v14 = [infoCopy objectForKeyedSubscript:@"type"];
 
-  LODWORD(v12) = [v14 isEqualToString:@"typingSession"];
-  if (v12)
+  LODWORD(infoCopy) = [v14 isEqualToString:@"typingSession"];
+  if (infoCopy)
   {
-    v15 = [v10 objectForKeyedSubscript:@"expName"];
+    v15 = [recipeCopy objectForKeyedSubscript:@"expName"];
     v26 = 0;
-    v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v26];
+    v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v26];
     v17 = v26;
     if (v17)
     {
@@ -68,7 +68,7 @@
         goto LABEL_7;
       }
 
-      v25 = [(TITypingDESPlugin *)self runExperimentCPEvalForSession:v16 forRecipe:v10];
+      v25 = [(TITypingDESPlugin *)self runExperimentCPEvalForSession:v16 forRecipe:recipeCopy];
       v19 = v25;
       if (v25)
       {
@@ -92,17 +92,17 @@ LABEL_7:
   return v13;
 }
 
-- (id)getAlignmentStats:(id)a3
+- (id)getAlignmentStats:(id)stats
 {
-  v3 = a3;
+  statsCopy = stats;
   v4 = +[NSMutableDictionary dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v27 = v3;
-  v5 = [v3 alignedEntries];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v27 = statsCopy;
+  alignedEntries = [statsCopy alignedEntries];
+  v6 = [alignedEntries countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -113,7 +113,7 @@ LABEL_7:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(alignedEntries);
         }
 
         v10 = [objc_opt_class() stringForConfiderence:{objc_msgSend(*(*(&v28 + 1) + 8 * i), "inSessionAlignmentConfidence")}];
@@ -122,9 +122,9 @@ LABEL_7:
         if (v11)
         {
           v12 = [v4 objectForKeyedSubscript:v10];
-          v13 = [v12 integerValue];
+          integerValue = [v12 integerValue];
 
-          v14 = v13 + 1;
+          v14 = integerValue + 1;
         }
 
         else
@@ -136,22 +136,22 @@ LABEL_7:
         [v4 setObject:v15 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v7 = [alignedEntries countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v7);
   }
 
-  v16 = [v27 alignedEntries];
-  v17 = [v16 count];
+  alignedEntries2 = [v27 alignedEntries];
+  v17 = [alignedEntries2 count];
 
   if (v17)
   {
-    v18 = [v27 highConfAlignedSubSegment];
-    v19 = [v18 componentsSeparatedByString:@" "];
+    highConfAlignedSubSegment = [v27 highConfAlignedSubSegment];
+    v19 = [highConfAlignedSubSegment componentsSeparatedByString:@" "];
     v20 = [v19 count];
-    v21 = [v27 alignedEntries];
-    v22 = v20 / [v21 count];
+    alignedEntries3 = [v27 alignedEntries];
+    v22 = v20 / [alignedEntries3 count];
   }
 
   else
@@ -169,20 +169,20 @@ LABEL_7:
   return v4;
 }
 
-- (id)runExperimentCPEvalForSession:(id)a3 forRecipe:(id)a4
+- (id)runExperimentCPEvalForSession:(id)session forRecipe:(id)recipe
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:@"expName"];
+  recipeCopy = recipe;
+  sessionCopy = session;
+  v8 = [recipeCopy objectForKeyedSubscript:@"expName"];
   v14 = 0;
   v15 = 0;
   v16 = 0;
   v17 = -1;
-  [(TITypingDESPlugin *)self cpEvalResult:&v14 fromAlignedSession:v7 forRecipe:v6];
+  [(TITypingDESPlugin *)self cpEvalResult:&v14 fromAlignedSession:sessionCopy forRecipe:recipeCopy];
 
-  v9 = [v7 alignedEntries];
+  alignedEntries = [sessionCopy alignedEntries];
 
-  v10 = [(TITypingDESPlugin *)self summaryStatisticsEvalResults:&v14 ofEntries:v9];
+  v10 = [(TITypingDESPlugin *)self summaryStatisticsEvalResults:&v14 ofEntries:alignedEntries];
 
   v11 = [NSNumber numberWithInt:v17];
   [v10 setObject:v11 forKeyedSubscript:@"db_records_size"];
@@ -197,12 +197,12 @@ LABEL_7:
   return v10;
 }
 
-- (void)cpEvalResult:(void *)a3 fromAlignedSession:(id)a4 forRecipe:(id)a5
+- (void)cpEvalResult:(void *)result fromAlignedSession:(id)session forRecipe:(id)recipe
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:@"expName"];
-  v11 = [v9 objectForKeyedSubscript:@"sources"];
+  sessionCopy = session;
+  recipeCopy = recipe;
+  v10 = [recipeCopy objectForKeyedSubscript:@"expName"];
+  v11 = [recipeCopy objectForKeyedSubscript:@"sources"];
   v21 = 4;
   v23 = 0;
   v22 = xmmword_D530;
@@ -232,23 +232,23 @@ LABEL_7:
   v46 = 0x404B30CB295E9E1BLL;
   v47 = 0x4019D81D7DBF4880;
   sub_7654(v18);
-  [(TITypingDESPlugin *)self convertAlignedEntriesFromSession:v8];
+  [(TITypingDESPlugin *)self convertAlignedEntriesFromSession:sessionCopy];
   if (![v10 isEqualToString:@"shapeMatching"])
   {
-    [v8 locale];
-    v12 = [objc_claimAutoreleasedReturnValue() localeIdentifier];
-    TI::CP::CPEval::load_language_resources(&v18[0].__r_.__value_.__l.__data_, v12, 0, 0.4);
+    [sessionCopy locale];
+    localeIdentifier = [objc_claimAutoreleasedReturnValue() localeIdentifier];
+    TI::CP::CPEval::load_language_resources(&v18[0].__r_.__value_.__l.__data_, localeIdentifier, 0, 0.4);
   }
 
   v19 = 1;
   v13 = objc_autoreleasePoolPush();
   TI::CP::CPEval::evaluate_records(v18, v17, 2, &v21, &v14);
-  sub_77C4(a3);
-  *a3 = v14;
-  *(a3 + 2) = v15;
+  sub_77C4(result);
+  *result = v14;
+  *(result + 2) = v15;
   v15 = 0;
   v14 = 0uLL;
-  *(a3 + 6) = v16;
+  *(result + 6) = v16;
   v20 = &v14;
   sub_7558(&v20);
   objc_autoreleasePoolPop(v13);
@@ -275,14 +275,14 @@ LABEL_7:
   retstr->var0 = 0;
   v6 = objc_autoreleasePoolPush();
   [v5 locale];
-  v7 = [objc_claimAutoreleasedReturnValue() localeIdentifier];
-  TI::CP::TestCaseConverter::create_testcase_converter(v7, 0);
+  localeIdentifier = [objc_claimAutoreleasedReturnValue() localeIdentifier];
+  TI::CP::TestCaseConverter::create_testcase_converter(localeIdentifier, 0);
 }
 
-- (id)summaryStatisticsEvalResults:(const void *)a3 ofEntries:(id)a4
+- (id)summaryStatisticsEvalResults:(const void *)results ofEntries:(id)entries
 {
-  v24 = self;
-  v5 = a4;
+  selfCopy = self;
+  entriesCopy = entries;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -292,13 +292,13 @@ LABEL_7:
   v28 = 0u;
   v29 = 0u;
   v25 = +[NSMutableDictionary dictionary];
-  v6 = *a3;
-  v7 = *(a3 + 1);
-  if (*a3 != v7)
+  v6 = *results;
+  v7 = *(results + 1);
+  if (*results != v7)
   {
     while (1)
     {
-      v8 = [v5 objectAtIndexedSubscript:{*v6, v24}];
+      v8 = [entriesCopy objectAtIndexedSubscript:{*v6, selfCopy}];
       v9 = v8;
       v10 = v6[36];
       v27 = 0;
@@ -309,9 +309,9 @@ LABEL_7:
       }
 
 LABEL_10:
-      v11 = [v8 inSessionAlignmentConfidence];
+      inSessionAlignmentConfidence = [v8 inSessionAlignmentConfidence];
       v12 = *(v6 + 220);
-      if (v11 == 3)
+      if (inSessionAlignmentConfidence == 3)
       {
         for (i = 0; i != 3; ++i)
         {
@@ -395,9 +395,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  v18 = v24;
-  v19 = [(TITypingDESPlugin *)v24 getTopStatisticsFromResults:&v32, v24];
-  [v25 setObject:v19 forKeyedSubscript:@"entireSession"];
+  v18 = selfCopy;
+  selfCopy = [(TITypingDESPlugin *)selfCopy getTopStatisticsFromResults:&v32, selfCopy];
+  [v25 setObject:selfCopy forKeyedSubscript:@"entireSession"];
 
   v20 = [(TITypingDESPlugin *)v18 getTopStatisticsFromResults:&v34];
   [v25 setObject:v20 forKeyedSubscript:@"highConfSession"];
@@ -411,40 +411,40 @@ LABEL_24:
   return v25;
 }
 
-- (id)getTopStatisticsFromResults:(double)a3[4]
+- (id)getTopStatisticsFromResults:(double)results[4]
 {
-  if (a3[3] > 0.0)
+  if (results[3] > 0.0)
   {
     for (i = 0; i != 3; ++i)
     {
-      a3[i] = a3[i] * 100.0 / a3[3];
+      results[i] = results[i] * 100.0 / results[3];
     }
   }
 
   v10[0] = @"top1";
-  v5 = [NSNumber numberWithDouble:*a3];
+  v5 = [NSNumber numberWithDouble:*results];
   v11[0] = v5;
   v10[1] = @"top4";
-  v6 = [NSNumber numberWithDouble:a3[1]];
+  v6 = [NSNumber numberWithDouble:results[1]];
   v11[1] = v6;
   v10[2] = @"top40";
-  v7 = [NSNumber numberWithDouble:a3[2]];
+  v7 = [NSNumber numberWithDouble:results[2]];
   v11[2] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   return v8;
 }
 
-+ (id)stringForConfiderence:(int)a3
++ (id)stringForConfiderence:(int)confiderence
 {
-  if ((a3 - 1) > 2)
+  if ((confiderence - 1) > 2)
   {
     return @"AlignmentConfidenceUnknown";
   }
 
   else
   {
-    return off_10620[a3 - 1];
+    return off_10620[confiderence - 1];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface HDCodableUserDomainConceptNamedQuantity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasType:(BOOL)type;
+- (void)setHasValue:(BOOL)value;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableUserDomainConceptNamedQuantity
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 16;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableUserDomainConceptNamedQuantity;
   v4 = [(HDCodableUserDomainConceptNamedQuantity *)&v8 description];
-  v5 = [(HDCodableUserDomainConceptNamedQuantity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableUserDomainConceptNamedQuantity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -164,27 +164,27 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     value = self->_value;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_unit)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -192,7 +192,7 @@ LABEL_12:
   {
     type = self->_type;
     PBDataWriterWriteInt64Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -213,7 +213,7 @@ LABEL_9:
 
   version = self->_version;
   PBDataWriterWriteInt64Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -229,45 +229,45 @@ LABEL_10:
 LABEL_17:
   timestamp = self->_timestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
     deleted = self->_deleted;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v6;
+    [toCopy setName:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_value;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 3) = *&self->_value;
+    *(toCopy + 60) |= 4u;
   }
 
   if (self->_unit)
   {
     [v6 setUnit:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_type;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 2) = self->_type;
+    *(toCopy + 60) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -286,8 +286,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 4) = self->_version;
-  *(v4 + 60) |= 8u;
+  *(toCopy + 4) = self->_version;
+  *(toCopy + 60) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -301,22 +301,22 @@ LABEL_10:
   }
 
 LABEL_17:
-  *(v4 + 1) = *&self->_timestamp;
-  *(v4 + 60) |= 1u;
+  *(toCopy + 1) = *&self->_timestamp;
+  *(toCopy + 60) |= 1u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
-    *(v4 + 56) = self->_deleted;
-    *(v4 + 60) |= 0x10u;
+    *(toCopy + 56) = self->_deleted;
+    *(toCopy + 60) |= 0x10u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -326,7 +326,7 @@ LABEL_12:
     *(v5 + 60) |= 4u;
   }
 
-  v8 = [(NSString *)self->_unit copyWithZone:a3];
+  v8 = [(NSString *)self->_unit copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -380,16 +380,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   name = self->_name;
-  if (name | *(v4 + 5))
+  if (name | *(equalCopy + 5))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -398,22 +398,22 @@ LABEL_7:
   }
 
   has = self->_has;
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_value != *(v4 + 3))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_value != *(equalCopy + 3))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   unit = self->_unit;
-  if (unit | *(v4 + 6))
+  if (unit | *(equalCopy + 6))
   {
     if (![(NSString *)unit isEqual:?])
     {
@@ -421,12 +421,12 @@ LABEL_7:
     }
 
     has = self->_has;
-    v7 = *(v4 + 60);
+    v7 = *(equalCopy + 60);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_type != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_type != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
@@ -439,7 +439,7 @@ LABEL_7:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_version != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
@@ -452,7 +452,7 @@ LABEL_7:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
@@ -470,13 +470,13 @@ LABEL_7:
     {
       if (self->_deleted)
       {
-        if ((*(v4 + 56) & 1) == 0)
+        if ((*(equalCopy + 56) & 1) == 0)
         {
           goto LABEL_29;
         }
       }
 
-      else if (*(v4 + 56))
+      else if (*(equalCopy + 56))
       {
         goto LABEL_29;
       }
@@ -604,34 +604,34 @@ LABEL_19:
   return v6 ^ v3 ^ v10 ^ v13 ^ v14 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(HDCodableUserDomainConceptNamedQuantity *)self setName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 60) & 4) != 0)
+  if ((*(fromCopy + 60) & 4) != 0)
   {
-    self->_value = *(v4 + 3);
+    self->_value = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableUserDomainConceptNamedQuantity *)self setUnit:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) != 0)
   {
-    self->_type = *(v4 + 2);
+    self->_type = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 8) == 0)
     {
 LABEL_9:
@@ -644,14 +644,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 60) & 8) == 0)
+  else if ((*(fromCopy + 60) & 8) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_version = *(v4 + 4);
+  self->_version = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -664,12 +664,12 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_timestamp = *(v4 + 1);
+  self->_timestamp = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 60) & 0x10) != 0)
+  if ((*(fromCopy + 60) & 0x10) != 0)
   {
 LABEL_11:
-    self->_deleted = *(v4 + 56);
+    self->_deleted = *(fromCopy + 56);
     *&self->_has |= 0x10u;
   }
 

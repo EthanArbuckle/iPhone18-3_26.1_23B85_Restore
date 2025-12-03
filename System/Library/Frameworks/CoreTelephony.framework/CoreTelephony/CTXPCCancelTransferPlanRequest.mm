@@ -3,31 +3,31 @@
 - (BOOL)keepCache;
 - (id)deviceIdentifier;
 - (id)plan;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCCancelTransferPlanRequest
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCCancelTransferPlanRequest *)self plan];
-  v9 = [(CTXPCCancelTransferPlanRequest *)self deviceIdentifier];
-  v10 = [(CTXPCCancelTransferPlanRequest *)self keepCache];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  plan = [(CTXPCCancelTransferPlanRequest *)self plan];
+  deviceIdentifier = [(CTXPCCancelTransferPlanRequest *)self deviceIdentifier];
+  keepCache = [(CTXPCCancelTransferPlanRequest *)self keepCache];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__CTXPCCancelTransferPlanRequest_performRequestWithHandler_completionHandler___block_invoke;
   v12[3] = &unk_1E6A43CC8;
-  v11 = v7;
+  v11 = completionHandlerCopy;
   v13 = v11;
-  [v6 cancelCellularPlanTransfer:v8 fromDevice:v9 keepCache:v10 completionHandler:v12];
+  [handlerCopy cancelCellularPlanTransfer:plan fromDevice:deviceIdentifier keepCache:keepCache completionHandler:v12];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCCancelTransferPlanRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -43,8 +43,8 @@
 
 - (id)plan
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"plan"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"plan"];
   v4 = CTThrowingCastIfClass<CTPlan>(v3);
 
   return v4;
@@ -52,8 +52,8 @@
 
 - (id)deviceIdentifier
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"deviceID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"deviceID"];
   v4 = CTThrowingCastIfClass<CTDeviceIdentifier>(v3);
 
   return v4;
@@ -61,12 +61,12 @@
 
 - (BOOL)keepCache
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"keepCache"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"keepCache"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface SUUIButtonViewElement
 - (BOOL)isEnabled;
 - (IKViewElementStyle)buttonTitleStyle;
-- (SUUIButtonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIButtonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIBuyButtonDescriptor)buyButtonDescriptor;
 - (SUUIImageViewElement)additionalButtonImage;
 - (SUUIViewElementText)buttonText;
 - (id)_parseButtonText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)description;
 - (id)personalizationLibraryItems;
 - (unint64_t)elementType;
@@ -15,44 +15,44 @@
 
 @implementation SUUIButtonViewElement
 
-- (SUUIButtonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIButtonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v74.receiver = self;
   v74.super_class = SUUIButtonViewElement;
-  v12 = [(SUUIViewElement *)&v74 initWithDOMElement:v9 parent:v10 elementFactory:v11];
+  v12 = [(SUUIViewElement *)&v74 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (!v12)
   {
     goto LABEL_53;
   }
 
-  v62 = v11;
-  v63 = v10;
-  v13 = [v9 getAttribute:@"type"];
+  v62 = factoryCopy;
+  v63 = parentCopy;
+  v13 = [elementCopy getAttribute:@"type"];
   v12->_buttonViewType = SUUIButtonViewTypeForString(v13);
 
-  v14 = [v9 getAttribute:@"sub-type"];
+  v14 = [elementCopy getAttribute:@"sub-type"];
   v15 = [v14 isEqualToString:@"toggle"];
 
   v12->_buttonViewSubType = v15;
-  v16 = [v9 getAttribute:@"size-variant"];
+  v16 = [elementCopy getAttribute:@"size-variant"];
   sizeVariant = v12->_sizeVariant;
   v12->_sizeVariant = v16;
 
-  v18 = [v9 getAttribute:@"confirm-text"];
+  v18 = [elementCopy getAttribute:@"confirm-text"];
   confirmationText = v12->_confirmationText;
   v12->_confirmationText = v18;
 
-  v20 = [v9 getAttribute:@"data-content-id"];
+  v20 = [elementCopy getAttribute:@"data-content-id"];
   v12->_itemIdentifier = [v20 longLongValue];
 
   v21 = [[SUUIStoreIdentifier alloc] initWithLongLong:v12->_itemIdentifier];
   storeIdentifier = v12->_storeIdentifier;
   v12->_storeIdentifier = v21;
 
-  objc_storeStrong(&v12->_xml, a3);
+  objc_storeStrong(&v12->_xml, element);
   v70 = 0;
   v71 = &v70;
   v72 = 0x2020000000;
@@ -65,18 +65,18 @@
   [(SUUIViewElement *)v12 enumerateChildrenUsingBlock:v69];
   if ((v71[3] & 1) == 0)
   {
-    v23 = [(SUUIButtonViewElement *)v12 _parseButtonText];
+    _parseButtonText = [(SUUIButtonViewElement *)v12 _parseButtonText];
     buttonText = v12->_buttonText;
-    v12->_buttonText = v23;
+    v12->_buttonText = _parseButtonText;
   }
 
-  v66 = [v9 getAttribute:@"data-feed-url"];
+  v66 = [elementCopy getAttribute:@"data-feed-url"];
   if ([v66 length])
   {
     [(SUUIStoreIdentifier *)v12->_storeIdentifier setPodcastFeedURLIdentifier:v66];
   }
 
-  v25 = [v9 getAttribute:@"bundle-id"];
+  v25 = [elementCopy getAttribute:@"bundle-id"];
   bundleIdentifier = v12->_bundleIdentifier;
   v12->_bundleIdentifier = v25;
 
@@ -85,19 +85,19 @@
     [(SUUIStoreIdentifier *)v12->_storeIdentifier setBundleIdentifier:v12->_bundleIdentifier];
   }
 
-  v27 = [v9 getAttribute:@"selected"];
+  v27 = [elementCopy getAttribute:@"selected"];
   v12->_selected = [v27 BOOLValue];
 
-  v64 = [v9 getAttribute:@"badge"];
+  v64 = [elementCopy getAttribute:@"badge"];
   if (v64)
   {
     v28 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v64];
-    v29 = [v28 host];
+    host = [v28 host];
     badgeResourceName = v12->_badgeResourceName;
-    v12->_badgeResourceName = v29;
+    v12->_badgeResourceName = host;
   }
 
-  v31 = [v9 getAttribute:@"disabled"];
+  v31 = [elementCopy getAttribute:@"disabled"];
   v61 = v31;
   if ([v31 length])
   {
@@ -110,8 +110,8 @@
   }
 
   v12->_enabled = v32;
-  v33 = [v9 getAttribute:@"data-type"];
-  v67 = [v9 getAttribute:@"data-variant"];
+  v33 = [elementCopy getAttribute:@"data-type"];
+  v67 = [elementCopy getAttribute:@"data-variant"];
   if ([v33 length])
   {
     v68 = v33;
@@ -165,82 +165,82 @@ LABEL_30:
 
   if (v12->_buttonViewType == 12)
   {
-    v37 = [v9 getAttribute:@"data-content-id"];
+    v37 = [elementCopy getAttribute:@"data-content-id"];
     playItemIdentifier = v12->_playItemIdentifier;
     v12->_playItemIdentifier = v37;
   }
 
   if (v12->_buttonViewSubType == 1)
   {
-    v39 = [v9 getAttribute:@"toggled-text"];
+    v39 = [elementCopy getAttribute:@"toggled-text"];
     toggledText = v12->_toggledText;
     v12->_toggledText = v39;
 
-    v41 = [v9 getAttribute:@"non-toggled-text"];
+    v41 = [elementCopy getAttribute:@"non-toggled-text"];
     nonToggledText = v12->_nonToggledText;
     v12->_nonToggledText = v41;
   }
 
-  v65 = [v9 getAttribute:@"big-hit-size"];
+  v65 = [elementCopy getAttribute:@"big-hit-size"];
   if ([v65 length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v65 floatValue];
     v12->_bigHitSize = v43;
   }
 
-  v44 = [v9 getAttribute:@"big-hit"];
+  v44 = [elementCopy getAttribute:@"big-hit"];
   if ([v44 length])
   {
-    v45 = [v44 lowercaseString];
-    v12->_bigHitButton = [v45 isEqualToString:@"true"];
+    lowercaseString = [v44 lowercaseString];
+    v12->_bigHitButton = [lowercaseString isEqualToString:@"true"];
   }
 
-  v46 = [v9 getAttribute:@"show-on-demand"];
+  v46 = [elementCopy getAttribute:@"show-on-demand"];
   if ([v46 length])
   {
-    v47 = [v46 lowercaseString];
-    v12->_showOnDemand = [v47 isEqualToString:@"true"];
+    lowercaseString2 = [v46 lowercaseString];
+    v12->_showOnDemand = [lowercaseString2 isEqualToString:@"true"];
   }
 
-  v48 = [v9 getAttribute:@"toggled"];
+  v48 = [elementCopy getAttribute:@"toggled"];
   if ([v48 length])
   {
-    v49 = [v48 lowercaseString];
-    v12->_toggled = [v49 isEqualToString:@"true"];
+    lowercaseString3 = [v48 lowercaseString];
+    v12->_toggled = [lowercaseString3 isEqualToString:@"true"];
   }
 
-  v50 = [v9 getAttribute:@"toggle-id"];
+  v50 = [elementCopy getAttribute:@"toggle-id"];
   if ([v50 length])
   {
-    v51 = [v9 getAttribute:@"toggle-id"];
+    v51 = [elementCopy getAttribute:@"toggle-id"];
     toggleItemIdentifier = v12->_toggleItemIdentifier;
     v12->_toggleItemIdentifier = v51;
   }
 
-  v53 = [v9 getAttribute:@"auto-increment-count"];
+  v53 = [elementCopy getAttribute:@"auto-increment-count"];
   if ([v53 length])
   {
-    v54 = [v53 lowercaseString];
-    v12->_autoIncrementCount = [v54 isEqualToString:@"true"];
+    lowercaseString4 = [v53 lowercaseString];
+    v12->_autoIncrementCount = [lowercaseString4 isEqualToString:@"true"];
   }
 
-  v55 = [v9 getAttribute:@"disabled-but-selectable"];
+  v55 = [elementCopy getAttribute:@"disabled-but-selectable"];
   if ([v55 length])
   {
-    v56 = [v55 lowercaseString];
-    v12->_disabledButSelectable = [v56 isEqualToString:@"true"];
+    lowercaseString5 = [v55 lowercaseString];
+    v12->_disabledButSelectable = [lowercaseString5 isEqualToString:@"true"];
   }
 
-  v57 = [v9 getAttribute:@"suppress-cloud-restore"];
+  v57 = [elementCopy getAttribute:@"suppress-cloud-restore"];
   if ([v57 length])
   {
-    v58 = [v57 lowercaseString];
-    v12->_suppressCloudRestore = [v58 isEqualToString:@"true"];
+    lowercaseString6 = [v57 lowercaseString];
+    v12->_suppressCloudRestore = [lowercaseString6 isEqualToString:@"true"];
   }
 
   _Block_object_dispose(&v70, 8);
-  v11 = v62;
-  v10 = v63;
+  factoryCopy = v62;
+  parentCopy = v63;
 LABEL_53:
 
   return v12;
@@ -267,8 +267,8 @@ void __66__SUUIButtonViewElement_initWithDOMElement_parent_elementFactory___bloc
   xml = self->_xml;
   if (xml)
   {
-    v4 = [(SUUIButtonViewElement *)self appDocument];
-    SUUIViewElementTextDeadlockFix(xml, v4);
+    appDocument = [(SUUIButtonViewElement *)self appDocument];
+    SUUIViewElementTextDeadlockFix(xml, appDocument);
 
     v5 = self->_xml;
     self->_xml = 0;
@@ -329,9 +329,9 @@ void __46__SUUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   buttonText = self->_buttonText;
   if (!buttonText)
   {
-    v4 = [(SUUIButtonViewElement *)self _parseButtonText];
+    _parseButtonText = [(SUUIButtonViewElement *)self _parseButtonText];
     v5 = self->_buttonText;
-    self->_buttonText = v4;
+    self->_buttonText = _parseButtonText;
 
     buttonText = self->_buttonText;
   }
@@ -345,15 +345,15 @@ void __46__SUUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   v3 = v2;
   if (v2 && ([v2 elementName], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"span"), v4, (v5 & 1) == 0))
   {
-    v6 = [v3 style];
+    style = [v3 style];
   }
 
   else
   {
-    v6 = 0;
+    style = 0;
   }
 
-  return v6;
+  return style;
 }
 
 - (SUUIBuyButtonDescriptor)buyButtonDescriptor
@@ -374,23 +374,23 @@ void __46__SUUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
 
     [(SUUIBuyButtonDescriptor *)buyButtonDescriptor setButtonType:v4];
     v8 = self->_buyButtonDescriptor;
-    v9 = [(SUUIButtonViewElement *)self buttonText];
-    v10 = [v9 string];
-    [(SUUIBuyButtonDescriptor *)v8 setButtonText:v10];
+    buttonText = [(SUUIButtonViewElement *)self buttonText];
+    string = [buttonText string];
+    [(SUUIBuyButtonDescriptor *)v8 setButtonText:string];
 
     v11 = self->_buyButtonDescriptor;
-    v12 = [(SUUIButtonViewElement *)self confirmationText];
-    [(SUUIBuyButtonDescriptor *)v11 setConfirmationText:v12];
+    confirmationText = [(SUUIButtonViewElement *)self confirmationText];
+    [(SUUIBuyButtonDescriptor *)v11 setConfirmationText:confirmationText];
 
     [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor setElementType:[(SUUIButtonViewElement *)self elementType]];
     [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor setItemIdentifier:[(SUUIButtonViewElement *)self itemIdentifier]];
     v13 = self->_buyButtonDescriptor;
-    v14 = [(SUUIButtonViewElement *)self storeIdentifier];
-    [(SUUIBuyButtonDescriptor *)v13 setStoreIdentifier:v14];
+    storeIdentifier = [(SUUIButtonViewElement *)self storeIdentifier];
+    [(SUUIBuyButtonDescriptor *)v13 setStoreIdentifier:storeIdentifier];
 
     v15 = self->_buyButtonDescriptor;
-    v16 = [(SUUIButtonViewElement *)self variantIdentifier];
-    [(SUUIBuyButtonDescriptor *)v15 setVariantIdentifier:v16];
+    variantIdentifier = [(SUUIButtonViewElement *)self variantIdentifier];
+    [(SUUIBuyButtonDescriptor *)v15 setVariantIdentifier:variantIdentifier];
 
     [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor setShouldSuppressCloudRestore:[(SUUIButtonViewElement *)self suppressCloudRestore]];
     v17 = self->_buyButtonDescriptor;
@@ -404,14 +404,14 @@ void __46__SUUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
   return v17;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v26.receiver = self;
   v26.super_class = SUUIButtonViewElement;
-  v5 = [(SUUIViewElement *)&v26 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v26 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 == self || v5 != self)
+  if (elementCopy == self || v5 != self)
   {
     if (v5 == self)
     {
@@ -419,50 +419,50 @@ void __46__SUUIButtonViewElement_additionalButtonImage__block_invoke(uint64_t a1
     }
 
     bundleIdentifier = [(SUUIButtonViewElement *)self buyButtonDescriptor];
-    [(SUUIButtonViewElement *)v4 setBuyButtonDescriptor:bundleIdentifier];
+    [(SUUIButtonViewElement *)elementCopy setBuyButtonDescriptor:bundleIdentifier];
   }
 
   else
   {
-    v7 = [(SUUIButtonViewElement *)v4 badgeResourceName];
+    badgeResourceName = [(SUUIButtonViewElement *)elementCopy badgeResourceName];
     badgeResourceName = self->_badgeResourceName;
-    self->_badgeResourceName = v7;
+    self->_badgeResourceName = badgeResourceName;
 
-    v9 = [(SUUIButtonViewElement *)v4 buttonText];
+    buttonText = [(SUUIButtonViewElement *)elementCopy buttonText];
     buttonText = self->_buttonText;
-    self->_buttonText = v9;
+    self->_buttonText = buttonText;
 
-    self->_buttonViewType = [(SUUIButtonViewElement *)v4 buttonViewType];
-    v11 = [(SUUIButtonViewElement *)v4 buyButtonDescriptor];
+    self->_buttonViewType = [(SUUIButtonViewElement *)elementCopy buttonViewType];
+    buyButtonDescriptor = [(SUUIButtonViewElement *)elementCopy buyButtonDescriptor];
     buyButtonDescriptor = self->_buyButtonDescriptor;
-    self->_buyButtonDescriptor = v11;
+    self->_buyButtonDescriptor = buyButtonDescriptor;
 
-    v13 = [(SUUIButtonViewElement *)v4 confirmationText];
+    confirmationText = [(SUUIButtonViewElement *)elementCopy confirmationText];
     confirmationText = self->_confirmationText;
-    self->_confirmationText = v13;
+    self->_confirmationText = confirmationText;
 
-    self->_enabled = v4->_enabled;
-    self->_itemIdentifier = [(SUUIButtonViewElement *)v4 itemIdentifier];
-    v15 = [(SUUIButtonViewElement *)v4 nonToggledText];
+    self->_enabled = elementCopy->_enabled;
+    self->_itemIdentifier = [(SUUIButtonViewElement *)elementCopy itemIdentifier];
+    nonToggledText = [(SUUIButtonViewElement *)elementCopy nonToggledText];
     nonToggledText = self->_nonToggledText;
-    self->_nonToggledText = v15;
+    self->_nonToggledText = nonToggledText;
 
-    self->_selected = [(SUUIButtonViewElement *)v4 isSelected];
-    v17 = [(SUUIButtonViewElement *)v4 storeIdentifier];
+    self->_selected = [(SUUIButtonViewElement *)elementCopy isSelected];
+    storeIdentifier = [(SUUIButtonViewElement *)elementCopy storeIdentifier];
     storeIdentifier = self->_storeIdentifier;
-    self->_storeIdentifier = v17;
+    self->_storeIdentifier = storeIdentifier;
 
-    v19 = [(SUUIButtonViewElement *)v4 toggledText];
+    toggledText = [(SUUIButtonViewElement *)elementCopy toggledText];
     toggledText = self->_toggledText;
-    self->_toggledText = v19;
+    self->_toggledText = toggledText;
 
-    v21 = [(SUUIButtonViewElement *)v4 variantIdentifier];
+    variantIdentifier = [(SUUIButtonViewElement *)elementCopy variantIdentifier];
     variantIdentifier = self->_variantIdentifier;
-    self->_variantIdentifier = v21;
+    self->_variantIdentifier = variantIdentifier;
 
-    v23 = [(SUUIButtonViewElement *)v4 bundleIdentifier];
+    bundleIdentifier = [(SUUIButtonViewElement *)elementCopy bundleIdentifier];
     bundleIdentifier = self->_bundleIdentifier;
-    self->_bundleIdentifier = v23;
+    self->_bundleIdentifier = bundleIdentifier;
   }
 
 LABEL_7:

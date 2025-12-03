@@ -1,15 +1,15 @@
 @interface _SYMessageTimerTable
 - (_SYMessageTimerTable)init;
-- (_SYMessageTimerTable)initWithQueue:(id)a3 timerCallback:(id)a4;
+- (_SYMessageTimerTable)initWithQueue:(id)queue timerCallback:(id)callback;
 - (unint64_t)timerCount;
-- (void)_cleanupTimerForSeqno:(unint64_t)a3;
-- (void)_fireCallbackForSeqno:(unint64_t)a3;
-- (void)addTimerWithFireDate:(id)a3 forSequenceNumber:(unint64_t)a4;
+- (void)_cleanupTimerForSeqno:(unint64_t)seqno;
+- (void)_fireCallbackForSeqno:(unint64_t)seqno;
+- (void)addTimerWithFireDate:(id)date forSequenceNumber:(unint64_t)number;
 - (void)cancelAllTimers;
-- (void)cancelTimerForIdentifier:(id)a3;
-- (void)cancelTimerForSequenceNumber:(unint64_t)a3;
+- (void)cancelTimerForIdentifier:(id)identifier;
+- (void)cancelTimerForSequenceNumber:(unint64_t)number;
 - (void)dealloc;
-- (void)setIdentifier:(id)a3 forSequenceNumber:(unint64_t)a4;
+- (void)setIdentifier:(id)identifier forSequenceNumber:(unint64_t)number;
 @end
 
 @implementation _SYMessageTimerTable
@@ -26,18 +26,18 @@
   return 0;
 }
 
-- (_SYMessageTimerTable)initWithQueue:(id)a3 timerCallback:(id)a4
+- (_SYMessageTimerTable)initWithQueue:(id)queue timerCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  callbackCopy = callback;
   v22.receiver = self;
   v22.super_class = _SYMessageTimerTable;
   v9 = [(_SYMessageTimerTable *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [callbackCopy copy];
     callback = v10->_callback;
     v10->_callback = v11;
 
@@ -74,9 +74,9 @@
   [(_SYMessageTimerTable *)&v4 dealloc];
 }
 
-- (void)addTimerWithFireDate:(id)a3 forSequenceNumber:(unint64_t)a4
+- (void)addTimerWithFireDate:(id)date forSequenceNumber:(unint64_t)number
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v7 = dispatch_walltime(0, (v6 * 1000000000.0));
   v8 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
   objc_initWeak(&location, self);
@@ -85,14 +85,14 @@
   handler[2] = __63___SYMessageTimerTable_addTimerWithFireDate_forSequenceNumber___block_invoke;
   handler[3] = &unk_1E86CB868;
   objc_copyWeak(v17, &location);
-  v17[1] = a4;
+  v17[1] = number;
   dispatch_source_set_event_handler(v8, handler);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63___SYMessageTimerTable_addTimerWithFireDate_forSequenceNumber___block_invoke_2;
   v14[3] = &unk_1E86CB868;
   objc_copyWeak(v15, &location);
-  v15[1] = a4;
+  v15[1] = number;
   dispatch_source_set_cancel_handler(v8, v14);
   dispatch_source_set_timer(v8, v7, 0xFFFFFFFFFFFFFFFFLL, 0x37E11D600uLL);
   rwlock = self->_rwlock;
@@ -101,7 +101,7 @@
   v11[2] = __63___SYMessageTimerTable_addTimerWithFireDate_forSequenceNumber___block_invoke_3;
   v11[3] = &unk_1E86CB890;
   v12 = v8;
-  v13 = a4;
+  numberCopy = number;
   v11[4] = self;
   v10 = v8;
   dispatch_barrier_sync(rwlock, v11);
@@ -112,7 +112,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_fireCallbackForSeqno:(unint64_t)a3
+- (void)_fireCallbackForSeqno:(unint64_t)seqno
 {
   v16 = 0;
   v17 = &v16;
@@ -127,15 +127,15 @@
   block[3] = &unk_1E86CB8B8;
   block[4] = self;
   block[5] = &v16;
-  block[6] = a3;
+  block[6] = seqno;
   dispatch_sync(rwlock, block);
   v6 = v17[5];
   if (v6 && !dispatch_source_testcancel(v17[5]))
   {
     v7 = objc_getAssociatedObject(v6, kTimerContextKey);
     callback = self->_callback;
-    v9 = [v7 identifier];
-    callback[2](callback, a3, v9);
+    identifier = [v7 identifier];
+    callback[2](callback, seqno, identifier);
 
     v10 = self->_rwlock;
     v12[0] = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@
     v12[2] = __46___SYMessageTimerTable__fireCallbackForSeqno___block_invoke_2;
     v12[3] = &unk_1E86CB890;
     v13 = v7;
-    v14 = a3;
+    seqnoCopy = seqno;
     v12[4] = self;
     v11 = v7;
     dispatch_barrier_sync(v10, v12);
@@ -152,7 +152,7 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_cleanupTimerForSeqno:(unint64_t)a3
+- (void)_cleanupTimerForSeqno:(unint64_t)seqno
 {
   v10 = 0;
   v11 = &v10;
@@ -167,7 +167,7 @@
   block[3] = &unk_1E86CB8B8;
   block[4] = self;
   block[5] = &v10;
-  block[6] = a3;
+  block[6] = seqno;
   dispatch_sync(rwlock, block);
   v6 = v11[5];
   if (v6)
@@ -179,7 +179,7 @@
     v8[2] = __46___SYMessageTimerTable__cleanupTimerForSeqno___block_invoke_2;
     v8[3] = &unk_1E86CB8E0;
     v8[5] = &v10;
-    v8[6] = a3;
+    v8[6] = seqno;
     v8[4] = self;
     dispatch_barrier_sync(v7, v8);
   }
@@ -187,9 +187,9 @@
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)setIdentifier:(id)a3 forSequenceNumber:(unint64_t)a4
+- (void)setIdentifier:(id)identifier forSequenceNumber:(unint64_t)number
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -203,7 +203,7 @@
   block[3] = &unk_1E86CB8B8;
   block[4] = self;
   block[5] = &v20;
-  block[6] = a4;
+  block[6] = number;
   dispatch_sync(rwlock, block);
   if (v21[5])
   {
@@ -212,8 +212,8 @@
     v13 = 3221225472;
     v14 = __56___SYMessageTimerTable_setIdentifier_forSequenceNumber___block_invoke_2;
     v15 = &unk_1E86CB0E0;
-    v16 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = identifierCopy;
     v17 = v9;
     v18 = &v20;
     dispatch_barrier_sync(v8, &v12);
@@ -221,13 +221,13 @@
     v11 = v10;
     if (v10)
     {
-      [v10 setIdentifier:{v9, v12, v13, v14, v15, v16}];
+      [v10 setIdentifier:{v9, v12, v13, v14, v15, selfCopy}];
     }
 
     else
     {
       v11 = objc_opt_new();
-      [v11 setSeqno:{a4, v12, v13, v14, v15, v16}];
+      [v11 setSeqno:{number, v12, v13, v14, v15, selfCopy}];
       [v11 setIdentifier:v9];
       objc_setAssociatedObject(v21[5], kTimerContextKey, v11, 1);
     }
@@ -236,7 +236,7 @@
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)cancelTimerForSequenceNumber:(unint64_t)a3
+- (void)cancelTimerForSequenceNumber:(unint64_t)number
 {
   v6 = 0;
   v7 = &v6;
@@ -251,7 +251,7 @@
   block[3] = &unk_1E86CB8B8;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = number;
   dispatch_sync(rwlock, block);
   v4 = v7[5];
   if (v4)
@@ -262,9 +262,9 @@
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)cancelTimerForIdentifier:(id)a3
+- (void)cancelTimerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -278,7 +278,7 @@
   block[3] = &unk_1E86CB908;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
   dispatch_sync(rwlock, block);
   v7 = v12[5];
@@ -297,8 +297,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_bySeqno allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_bySeqno allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -310,14 +310,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         dispatch_source_cancel(*(*(&v8 + 1) + 8 * v6++));
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

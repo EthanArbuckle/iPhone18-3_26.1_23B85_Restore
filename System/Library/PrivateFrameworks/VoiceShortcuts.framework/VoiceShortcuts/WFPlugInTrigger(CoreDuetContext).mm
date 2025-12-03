@@ -8,13 +8,13 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  if ([a1 onEnable] && objc_msgSend(a1, "onDisable"))
+  if ([self onEnable] && objc_msgSend(self, "onDisable"))
   {
     [v2 addObject:MEMORY[0x277CBEC38]];
     goto LABEL_7;
   }
 
-  if ([a1 onEnable])
+  if ([self onEnable])
   {
     v3 = MEMORY[0x277CBEC38];
 LABEL_8:
@@ -22,7 +22,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([a1 onDisable])
+  if ([self onDisable])
   {
 LABEL_7:
     v3 = MEMORY[0x277CBEC28];
@@ -35,13 +35,13 @@ LABEL_7:
     *buf = 136315394;
     v10 = "[WFPlugInTrigger(CoreDuetContext) contextStorePredicate]";
     v11 = 2114;
-    v12 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
   }
 
 LABEL_9:
-  v4 = [a1 contextStoreKeyPathForCurrentState];
-  v5 = [MEMORY[0x277CFE360] predicateForKeyPath:v4 withFormat:@"SELF.%@.value IN %@", v4, v2];
+  contextStoreKeyPathForCurrentState = [self contextStoreKeyPathForCurrentState];
+  v5 = [MEMORY[0x277CFE360] predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"SELF.%@.value IN %@", contextStoreKeyPathForCurrentState, v2];
 
   v6 = *MEMORY[0x277D85DE8];
 

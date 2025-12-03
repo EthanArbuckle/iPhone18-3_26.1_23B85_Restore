@@ -1,11 +1,11 @@
 @interface TUSegmentedColorView
 - (UIColor)endColor;
 - (UIColor)startColor;
-- (void)drawRect:(CGRect)a3;
-- (void)setDirection:(int64_t)a3;
-- (void)setEndColor:(id)a3;
-- (void)setNumberOfSegments:(int64_t)a3;
-- (void)setStartColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setDirection:(int64_t)direction;
+- (void)setEndColor:(id)color;
+- (void)setNumberOfSegments:(int64_t)segments;
+- (void)setStartColor:(id)color;
 @end
 
 @implementation TUSegmentedColorView
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)setStartColor:(id)a3
+- (void)setStartColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  SegmentedColorView.startColor.setter(v4);
+  colorCopy = color;
+  selfCopy = self;
+  SegmentedColorView.startColor.setter(colorCopy);
 }
 
 - (UIColor)endColor
@@ -31,32 +31,32 @@
   return v2;
 }
 
-- (void)setEndColor:(id)a3
+- (void)setEndColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  SegmentedColorView.endColor.setter(v4);
+  colorCopy = color;
+  selfCopy = self;
+  SegmentedColorView.endColor.setter(colorCopy);
 }
 
-- (void)setNumberOfSegments:(int64_t)a3
+- (void)setNumberOfSegments:(int64_t)segments
 {
-  v4 = self;
-  SegmentedColorView.numberOfSegments.setter(a3);
+  selfCopy = self;
+  SegmentedColorView.numberOfSegments.setter(segments);
 }
 
-- (void)setDirection:(int64_t)a3
+- (void)setDirection:(int64_t)direction
 {
-  v4 = self;
-  SegmentedColorView.direction.setter(a3);
+  selfCopy = self;
+  SegmentedColorView.direction.setter(direction);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;

@@ -1,39 +1,39 @@
 @interface DYMTLPixelHistoryDrawStatsSupport
-- (BOOL)_prepareWithEncoder:(id)a3 parallelEncoder:(id)a4 pipelineState:(id)a5 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a6;
-- (BOOL)_updateTextureDescriptor:(id)a3 usingEncoder:(id)a4 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a5;
-- (BOOL)createNumFragmentPassesRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5;
-- (BOOL)createNumTotalRenderCommandEncoderInCommandBuffer:(id)a3 originalPipeline:(id)a4;
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockDepthStencilTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10;
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockDepthTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10;
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockStencilTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10;
-- (BOOL)prepareWithCommandEncoderId:(unint64_t)a3 parallelEncoderId:(unint64_t)a4 pipelineId:(unint64_t)a5 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a6;
-- (DYMTLPixelHistoryDrawStatsSupport)initWithDebugFunctionPlayer:(id)a3;
-- (id)getSingleUseMockColorTexture:(unint64_t)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6;
-- (id)getSingleUseMockDepthTextureWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (id)getSingleUseMockStencilTextureWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (void)collectPixelHistoryStencilDrawStatsAtX:(unint64_t)a3 y:(unint64_t)a4 completion:(id)a5;
-- (void)collectPixelHistoryVisibilityDrawStatsAtCompletion:(id)a3;
+- (BOOL)_prepareWithEncoder:(id)encoder parallelEncoder:(id)parallelEncoder pipelineState:(id)state renderPassDescriptor:(DYMTLRenderPassDescriptor *)descriptor;
+- (BOOL)_updateTextureDescriptor:(id)descriptor usingEncoder:(id)encoder renderPassDescriptor:(DYMTLRenderPassDescriptor *)passDescriptor;
+- (BOOL)createNumFragmentPassesRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline;
+- (BOOL)createNumTotalRenderCommandEncoderInCommandBuffer:(id)buffer originalPipeline:(id)pipeline;
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockDepthStencilTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0;
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockDepthTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0;
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockStencilTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0;
+- (BOOL)prepareWithCommandEncoderId:(unint64_t)id parallelEncoderId:(unint64_t)encoderId pipelineId:(unint64_t)pipelineId renderPassDescriptor:(DYMTLRenderPassDescriptor *)descriptor;
+- (DYMTLPixelHistoryDrawStatsSupport)initWithDebugFunctionPlayer:(id)player;
+- (id)getSingleUseMockColorTexture:(unint64_t)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height;
+- (id)getSingleUseMockDepthTextureWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height;
+- (id)getSingleUseMockStencilTextureWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height;
+- (void)collectPixelHistoryStencilDrawStatsAtX:(unint64_t)x y:(unint64_t)y completion:(id)completion;
+- (void)collectPixelHistoryVisibilityDrawStatsAtCompletion:(id)completion;
 @end
 
 @implementation DYMTLPixelHistoryDrawStatsSupport
 
-- (DYMTLPixelHistoryDrawStatsSupport)initWithDebugFunctionPlayer:(id)a3
+- (DYMTLPixelHistoryDrawStatsSupport)initWithDebugFunctionPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v48.receiver = self;
   v48.super_class = DYMTLPixelHistoryDrawStatsSupport;
   v6 = [(DYMTLPixelHistoryDrawStatsSupport *)&v48 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_player, a3), [(DYMTLFunctionPlayer *)v7->_player device], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  if (!v6 || (objc_storeStrong(&v6->_player, player), [(DYMTLFunctionPlayer *)v7->_player device], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
     v44 = 0;
     goto LABEL_9;
   }
 
-  v9 = [(DYMTLFunctionPlayer *)v7->_player device];
+  device = [(DYMTLFunctionPlayer *)v7->_player device];
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"\n        #include <metal_graphics>\n        #include <metal_texture>\n\n        using namespace metal\n\n        fragment vec<float, 4> solidCreationFragment()\n        {\n            return vec<float, 4>(1.0, 1.0, 1.0, 1.0);\n        }\n    "}];;
   v47 = 0;
-  v11 = [v9 newLibraryWithSource:v10 options:0 error:&v47];
+  v11 = [device newLibraryWithSource:v10 options:0 error:&v47];
   v12 = v47;
   solidLibrary = v7->_solidLibrary;
   v7->_solidLibrary = v11;
@@ -90,50 +90,50 @@ LABEL_12:
 
   [(MTLTextureDescriptor *)v7->_mockDepthTextureDescriptor setUsage:[(MTLTextureDescriptor *)v7->_mockDepthTextureDescriptor usage]| 4];
   [(MTLTextureDescriptor *)v7->_mockDepthTextureDescriptor setStorageMode:2];
-  v29 = [MEMORY[0x277CD6F48] renderPassDescriptor];
+  renderPassDescriptor = [MEMORY[0x277CD6F48] renderPassDescriptor];
   pixelHistoryRenderPassDescriptor = v7->_pixelHistoryRenderPassDescriptor;
-  v7->_pixelHistoryRenderPassDescriptor = v29;
+  v7->_pixelHistoryRenderPassDescriptor = renderPassDescriptor;
 
-  v31 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryRenderPassDescriptor colorAttachments];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)v7->_pixelHistoryRenderPassDescriptor colorAttachments];
+  v32 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v32 setLoadAction:0];
   [v32 setStoreAction:0];
-  v33 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryRenderPassDescriptor stencilAttachment];
-  [v33 setLoadAction:2];
-  [v33 setStoreAction:1];
-  [v33 setClearStencil:0];
+  stencilAttachment = [(MTLRenderPassDescriptor *)v7->_pixelHistoryRenderPassDescriptor stencilAttachment];
+  [stencilAttachment setLoadAction:2];
+  [stencilAttachment setStoreAction:1];
+  [stencilAttachment setClearStencil:0];
 
-  v34 = [MEMORY[0x277CD6F48] renderPassDescriptor];
+  renderPassDescriptor2 = [MEMORY[0x277CD6F48] renderPassDescriptor];
   pixelHistoryMockRenderPassDescriptor = v7->_pixelHistoryMockRenderPassDescriptor;
-  v7->_pixelHistoryMockRenderPassDescriptor = v34;
+  v7->_pixelHistoryMockRenderPassDescriptor = renderPassDescriptor2;
 
-  v36 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryMockRenderPassDescriptor depthAttachment];
-  [v36 setLoadAction:1];
-  [v36 setStoreAction:0];
-  v37 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryMockRenderPassDescriptor stencilAttachment];
-  [v37 setLoadAction:2];
-  [v37 setStoreAction:1];
-  [v37 setClearStencil:0];
+  depthAttachment = [(MTLRenderPassDescriptor *)v7->_pixelHistoryMockRenderPassDescriptor depthAttachment];
+  [depthAttachment setLoadAction:1];
+  [depthAttachment setStoreAction:0];
+  stencilAttachment2 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryMockRenderPassDescriptor stencilAttachment];
+  [stencilAttachment2 setLoadAction:2];
+  [stencilAttachment2 setStoreAction:1];
+  [stencilAttachment2 setClearStencil:0];
 
-  v38 = [MEMORY[0x277CD6F48] renderPassDescriptor];
+  renderPassDescriptor3 = [MEMORY[0x277CD6F48] renderPassDescriptor];
   pixelHistoryVisibilityMockRenderPassDescriptor = v7->_pixelHistoryVisibilityMockRenderPassDescriptor;
-  v7->_pixelHistoryVisibilityMockRenderPassDescriptor = v38;
+  v7->_pixelHistoryVisibilityMockRenderPassDescriptor = renderPassDescriptor3;
 
-  v40 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
-  [v40 setLoadAction:1];
-  [v40 setStoreAction:0];
-  v41 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
-  [v41 setLoadAction:1];
-  [v41 setStoreAction:0];
+  depthAttachment2 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
+  [depthAttachment2 setLoadAction:1];
+  [depthAttachment2 setStoreAction:0];
+  stencilAttachment3 = [(MTLRenderPassDescriptor *)v7->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
+  [stencilAttachment3 setLoadAction:1];
+  [stencilAttachment3 setStoreAction:0];
 
-  v42 = [v5 device];
-  v7->_supports_tessellation = [v42 supportsFeatureSet:7];
+  device2 = [playerCopy device];
+  v7->_supports_tessellation = [device2 supportsFeatureSet:7];
 
-  LOBYTE(v41) = v7->_supports_tessellation;
+  LOBYTE(stencilAttachment3) = v7->_supports_tessellation;
   v43 = objc_opt_new();
   NSSelectorFromString(&cfstr_Tessellationco.isa);
-  v7->_supports_tessellation = v41 & objc_opt_respondsToSelector();
+  v7->_supports_tessellation = stencilAttachment3 & objc_opt_respondsToSelector();
 
   v44 = v7;
 LABEL_9:
@@ -141,14 +141,14 @@ LABEL_9:
   return v44;
 }
 
-- (BOOL)_updateTextureDescriptor:(id)a3 usingEncoder:(id)a4 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a5
+- (BOOL)_updateTextureDescriptor:(id)descriptor usingEncoder:(id)encoder renderPassDescriptor:(DYMTLRenderPassDescriptor *)passDescriptor
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 width] && objc_msgSend(v7, "height") && ((v8 = objc_msgSend(v6, "width"), v8 != objc_msgSend(v7, "width")) || (v9 = objc_msgSend(v6, "height"), v9 != objc_msgSend(v7, "height"))))
+  descriptorCopy = descriptor;
+  encoderCopy = encoder;
+  if ([encoderCopy width] && objc_msgSend(encoderCopy, "height") && ((v8 = objc_msgSend(descriptorCopy, "width"), v8 != objc_msgSend(encoderCopy, "width")) || (v9 = objc_msgSend(descriptorCopy, "height"), v9 != objc_msgSend(encoderCopy, "height"))))
   {
-    [v6 setWidth:{objc_msgSend(v7, "width")}];
-    [v6 setHeight:{objc_msgSend(v7, "height")}];
+    [descriptorCopy setWidth:{objc_msgSend(encoderCopy, "width")}];
+    [descriptorCopy setHeight:{objc_msgSend(encoderCopy, "height")}];
     v10 = 1;
   }
 
@@ -160,57 +160,57 @@ LABEL_9:
   return v10;
 }
 
-- (id)getSingleUseMockColorTexture:(unint64_t)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6
+- (id)getSingleUseMockColorTexture:(unint64_t)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height
 {
   v11 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:?];
-  if ([v11 pixelFormat] != a4)
+  if ([v11 pixelFormat] != format)
   {
     goto LABEL_6;
   }
 
-  v12 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-  if ([v12 width] != a5)
+  v12 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+  if ([v12 width] != width)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-  v14 = [v13 height];
+  v13 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+  height = [v13 height];
 
-  if (v14 != a6)
+  if (height != height)
   {
 LABEL_7:
-    v15 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-    [v15 setPixelFormat:a4];
+    v15 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+    [v15 setPixelFormat:format];
 
-    v16 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-    [v16 setWidth:a5];
+    v16 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+    [v16 setWidth:width];
 
-    v17 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-    [v17 setHeight:a6];
+    v17 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+    [v17 setHeight:height];
 
-    v18 = [(DYMTLFunctionPlayer *)self->_player device];
-    v19 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:a3];
-    v20 = DYMTLNewTexture(v18, v19);
-    [(NSMutableArray *)self->_mockColorTextures setObject:v20 atIndexedSubscript:a3];
+    device = [(DYMTLFunctionPlayer *)self->_player device];
+    v19 = [(NSMutableArray *)self->_mockColorTextureDescriptors objectAtIndexedSubscript:texture];
+    v20 = DYMTLNewTexture(device, v19);
+    [(NSMutableArray *)self->_mockColorTextures setObject:v20 atIndexedSubscript:texture];
   }
 
   mockColorTextures = self->_mockColorTextures;
 
-  return [(NSMutableArray *)mockColorTextures objectAtIndexedSubscript:a3];
+  return [(NSMutableArray *)mockColorTextures objectAtIndexedSubscript:texture];
 }
 
-- (id)getSingleUseMockDepthTextureWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)getSingleUseMockDepthTextureWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height
 {
-  if ([(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor pixelFormat]!= a3 || [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor width]!= a4 || [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor height]!= a5)
+  if ([(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor pixelFormat]!= format || [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor width]!= width || [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor height]!= height)
   {
-    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setPixelFormat:a3];
-    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setWidth:a4];
-    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setHeight:a5];
-    v9 = [(DYMTLFunctionPlayer *)self->_player device];
-    v10 = DYMTLNewTexture(v9, self->_mockDepthTextureDescriptor);
+    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setPixelFormat:format];
+    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setWidth:width];
+    [(MTLTextureDescriptor *)self->_mockDepthTextureDescriptor setHeight:height];
+    device = [(DYMTLFunctionPlayer *)self->_player device];
+    v10 = DYMTLNewTexture(device, self->_mockDepthTextureDescriptor);
     mockDepthTexture = self->_mockDepthTexture;
     self->_mockDepthTexture = v10;
   }
@@ -220,15 +220,15 @@ LABEL_7:
   return v12;
 }
 
-- (id)getSingleUseMockStencilTextureWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)getSingleUseMockStencilTextureWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height
 {
-  if ([(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor pixelFormat]!= a3 || [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor width]!= a4 || [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor height]!= a5)
+  if ([(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor pixelFormat]!= format || [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor width]!= width || [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor height]!= height)
   {
-    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setPixelFormat:a3];
-    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setWidth:a4];
-    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setHeight:a5];
-    v9 = [(DYMTLFunctionPlayer *)self->_player device];
-    v10 = DYMTLNewTexture(v9, self->_mockStencilTextureDescriptor);
+    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setPixelFormat:format];
+    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setWidth:width];
+    [(MTLTextureDescriptor *)self->_mockStencilTextureDescriptor setHeight:height];
+    device = [(DYMTLFunctionPlayer *)self->_player device];
+    v10 = DYMTLNewTexture(device, self->_mockStencilTextureDescriptor);
     mockStencilTexture = self->_mockStencilTexture;
     self->_mockStencilTexture = v10;
   }
@@ -238,90 +238,90 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)prepareWithCommandEncoderId:(unint64_t)a3 parallelEncoderId:(unint64_t)a4 pipelineId:(unint64_t)a5 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a6
+- (BOOL)prepareWithCommandEncoderId:(unint64_t)id parallelEncoderId:(unint64_t)encoderId pipelineId:(unint64_t)pipelineId renderPassDescriptor:(DYMTLRenderPassDescriptor *)descriptor
 {
-  self->_originalCommandEncoderId = a3;
+  self->_originalCommandEncoderId = id;
   v10 = [(DYMTLFunctionPlayer *)self->_player objectForKey:?];
-  if (a4)
+  if (encoderId)
   {
-    a4 = [(DYMTLFunctionPlayer *)self->_player objectForKey:a4];
+    encoderId = [(DYMTLFunctionPlayer *)self->_player objectForKey:encoderId];
   }
 
-  v11 = [(DYMTLFunctionPlayer *)self->_player objectForKey:a5];
-  v12 = [(DYMTLPixelHistoryDrawStatsSupport *)self _prepareWithEncoder:v10 parallelEncoder:a4 pipelineState:v11 renderPassDescriptor:a6];
+  v11 = [(DYMTLFunctionPlayer *)self->_player objectForKey:pipelineId];
+  v12 = [(DYMTLPixelHistoryDrawStatsSupport *)self _prepareWithEncoder:v10 parallelEncoder:encoderId pipelineState:v11 renderPassDescriptor:descriptor];
 
   return v12;
 }
 
-- (BOOL)_prepareWithEncoder:(id)a3 parallelEncoder:(id)a4 pipelineState:(id)a5 renderPassDescriptor:(DYMTLRenderPassDescriptor *)a6
+- (BOOL)_prepareWithEncoder:(id)encoder parallelEncoder:(id)parallelEncoder pipelineState:(id)state renderPassDescriptor:(DYMTLRenderPassDescriptor *)descriptor
 {
-  v11 = a3;
-  v31 = a4;
-  v12 = DYMTLGetNullableAssociatedObject(a5, 0);
-  v13 = [v12 isRasterizationEnabled];
-  if (v13)
+  encoderCopy = encoder;
+  parallelEncoderCopy = parallelEncoder;
+  v12 = DYMTLGetNullableAssociatedObject(state, 0);
+  isRasterizationEnabled = [v12 isRasterizationEnabled];
+  if (isRasterizationEnabled)
   {
-    v30 = [v11 descriptor];
-    if ([(DYMTLPixelHistoryDrawStatsSupport *)self _updateTextureDescriptor:self->_stencilTextureDescriptor usingEncoder:v11 renderPassDescriptor:a6])
+    descriptor = [encoderCopy descriptor];
+    if ([(DYMTLPixelHistoryDrawStatsSupport *)self _updateTextureDescriptor:self->_stencilTextureDescriptor usingEncoder:encoderCopy renderPassDescriptor:descriptor])
     {
-      v14 = [(DYMTLFunctionPlayer *)self->_player device];
-      v15 = DYMTLNewTexture(v14, self->_stencilTextureDescriptor);
+      device = [(DYMTLFunctionPlayer *)self->_player device];
+      v15 = DYMTLNewTexture(device, self->_stencilTextureDescriptor);
       stencilTexture = self->_stencilTexture;
       self->_stencilTexture = v15;
     }
 
-    v17 = [v30 stencilAttachment];
-    v18 = [v17 texture];
-    v19 = v18;
-    if (v18)
+    stencilAttachment = [descriptor stencilAttachment];
+    texture = [stencilAttachment texture];
+    v19 = texture;
+    if (texture)
     {
-      v20 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockStencilTextureWithPixelFormat:width:height:](self, "getSingleUseMockStencilTextureWithPixelFormat:width:height:", [v18 pixelFormat], objc_msgSend(v18, "width"), objc_msgSend(v18, "height"));
+      v20 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockStencilTextureWithPixelFormat:width:height:](self, "getSingleUseMockStencilTextureWithPixelFormat:width:height:", [texture pixelFormat], objc_msgSend(texture, "width"), objc_msgSend(texture, "height"));
     }
 
-    v21 = [v30 depthAttachment];
-    v22 = [v21 texture];
-    v23 = v22;
-    if (v22)
+    depthAttachment = [descriptor depthAttachment];
+    texture2 = [depthAttachment texture];
+    v23 = texture2;
+    if (texture2)
     {
-      v24 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockDepthTextureWithPixelFormat:width:height:](self, "getSingleUseMockDepthTextureWithPixelFormat:width:height:", [v22 pixelFormat], objc_msgSend(v22, "width"), objc_msgSend(v22, "height"));
+      v24 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockDepthTextureWithPixelFormat:width:height:](self, "getSingleUseMockDepthTextureWithPixelFormat:width:height:", [texture2 pixelFormat], objc_msgSend(texture2, "width"), objc_msgSend(texture2, "height"));
     }
 
-    objc_storeStrong(&self->_originalEncoder, a3);
-    objc_storeStrong(&self->_originalParallelEncoder, a4);
-    v25 = [v11 device];
-    v26 = [v11 descriptor];
-    v27 = DYMTLNewStatefulRenderCommandEncoder(v25, v26);
+    objc_storeStrong(&self->_originalEncoder, encoder);
+    objc_storeStrong(&self->_originalParallelEncoder, parallelEncoder);
+    device2 = [encoderCopy device];
+    descriptor2 = [encoderCopy descriptor];
+    v27 = DYMTLNewStatefulRenderCommandEncoder(device2, descriptor2);
     savedVertexFragmentState = self->_savedVertexFragmentState;
     self->_savedVertexFragmentState = v27;
 
-    [v11 applyVertexFragmentStateToEncoder:self->_savedVertexFragmentState rawBytesBlock:&__block_literal_global_2];
+    [encoderCopy applyVertexFragmentStateToEncoder:self->_savedVertexFragmentState rawBytesBlock:&__block_literal_global_2];
   }
 
-  return v13;
+  return isRasterizationEnabled;
 }
 
-- (BOOL)createNumTotalRenderCommandEncoderInCommandBuffer:(id)a3 originalPipeline:(id)a4
+- (BOOL)createNumTotalRenderCommandEncoderInCommandBuffer:(id)buffer originalPipeline:(id)pipeline
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_originalCommandBuffer, a3);
-  v9 = DYMTLGetAssociatedObject(v8, 0);
+  bufferCopy = buffer;
+  pipelineCopy = pipeline;
+  objc_storeStrong(&self->_originalCommandBuffer, buffer);
+  v9 = DYMTLGetAssociatedObject(pipelineCopy, 0);
   v10 = [(DYMTLPixelHistoryDrawStatsSupport *)self getSingleUseMockColorTexture:0 pixelFormat:10 width:[(MTLTexture *)self->_stencilTexture width] height:[(MTLTexture *)self->_stencilTexture height]];
-  v11 = [(MTLRenderPassDescriptor *)self->_pixelHistoryRenderPassDescriptor colorAttachments];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_pixelHistoryRenderPassDescriptor colorAttachments];
+  v12 = [colorAttachments objectAtIndexedSubscript:0];
   [v12 setTexture:v10];
 
   stencilTexture = self->_stencilTexture;
-  v14 = [(MTLRenderPassDescriptor *)self->_pixelHistoryRenderPassDescriptor stencilAttachment];
-  [v14 setTexture:stencilTexture];
-  v42 = v8;
+  stencilAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryRenderPassDescriptor stencilAttachment];
+  [stencilAttachment setTexture:stencilTexture];
+  v42 = pipelineCopy;
 
   v15 = objc_opt_new();
   v16 = objc_opt_new();
   for (i = 0; i != 8; ++i)
   {
-    v18 = [v9 colorAttachments];
-    v19 = [v18 objectAtIndexedSubscript:i];
+    colorAttachments2 = [v9 colorAttachments];
+    v19 = [colorAttachments2 objectAtIndexedSubscript:i];
 
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "pixelFormat")}];
     [v15 addObject:v20];
@@ -333,28 +333,28 @@ LABEL_7:
     [v19 setBlendingEnabled:0];
   }
 
-  v22 = [v9 depthAttachmentPixelFormat];
-  v23 = [v9 stencilAttachmentPixelFormat];
-  v43 = [v9 fragmentFunction];
-  v24 = [v9 colorAttachments];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  depthAttachmentPixelFormat = [v9 depthAttachmentPixelFormat];
+  stencilAttachmentPixelFormat = [v9 stencilAttachmentPixelFormat];
+  fragmentFunction = [v9 fragmentFunction];
+  colorAttachments3 = [v9 colorAttachments];
+  v25 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v25 setPixelFormat:10];
 
   [v9 setDepthAttachmentPixelFormat:0];
   [v9 setStencilAttachmentPixelFormat:253];
   [v9 setFragmentFunction:self->_solidCreationFragmentFunction];
-  v26 = [(DYMTLFunctionPlayer *)self->_player device];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
   v46 = 0;
-  v27 = [v26 newRenderPipelineStateWithDescriptor:v9 error:&v46];
+  v27 = [device newRenderPipelineStateWithDescriptor:v9 error:&v46];
   v41 = v46;
 
   if (v27)
   {
-    v40 = v7;
+    v40 = bufferCopy;
     for (j = 0; j != 8; ++j)
     {
-      v29 = [v9 colorAttachments];
-      v30 = [v29 objectAtIndexedSubscript:j];
+      colorAttachments4 = [v9 colorAttachments];
+      v30 = [colorAttachments4 objectAtIndexedSubscript:j];
 
       v31 = [v15 objectAtIndexedSubscript:j];
       [v30 setPixelFormat:objc_msgSend(v31, "unsignedLongLongValue")];
@@ -363,9 +363,9 @@ LABEL_7:
       [v30 setBlendingEnabled:{objc_msgSend(v32, "unsignedLongLongValue") != 0}];
     }
 
-    [v9 setDepthAttachmentPixelFormat:v22];
-    [v9 setStencilAttachmentPixelFormat:v23];
-    [v9 setFragmentFunction:v43];
+    [v9 setDepthAttachmentPixelFormat:depthAttachmentPixelFormat];
+    [v9 setStencilAttachmentPixelFormat:stencilAttachmentPixelFormat];
+    [v9 setFragmentFunction:fragmentFunction];
     v33 = DYMTLNewStatefulRenderCommandEncoder(self->_originalCommandBuffer, self->_pixelHistoryRenderPassDescriptor);
     [v33 setRenderPipelineState:v27];
     [v33 setTriangleFillMode:0];
@@ -386,13 +386,13 @@ LABEL_7:
     v36 = objc_opt_new();
     [v36 setFrontFaceStencil:v35];
     [v36 setBackFaceStencil:v35];
-    v37 = [(DYMTLFunctionPlayer *)self->_player device];
-    v38 = [v37 newDepthStencilStateWithDescriptor:v36];
+    device2 = [(DYMTLFunctionPlayer *)self->_player device];
+    v38 = [device2 newDepthStencilStateWithDescriptor:v36];
 
     [v33 setDepthStencilState:v38];
     [(DYMTLFunctionPlayer *)self->_player setObject:v33 forKey:self->_originalCommandEncoderId];
 
-    v7 = v40;
+    bufferCopy = v40;
   }
 
   return v27 != 0;
@@ -406,29 +406,29 @@ uint64_t __104__DYMTLPixelHistoryDrawStatsSupport_createNumTotalRenderCommandEnc
   return [v4 vertexBytesForKey:v5];
 }
 
-- (BOOL)createNumFragmentPassesRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5
+- (BOOL)createNumFragmentPassesRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_originalCommandBuffer, a3);
-  v37 = v11;
-  v12 = DYMTLGetAssociatedObject(v11, 0);
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  pipelineCopy = pipeline;
+  objc_storeStrong(&self->_originalCommandBuffer, buffer);
+  v37 = pipelineCopy;
+  v12 = DYMTLGetAssociatedObject(pipelineCopy, 0);
   for (i = 0; i != 8; ++i)
   {
-    v14 = [v10 colorAttachments];
-    v15 = [v14 objectAtIndexedSubscript:i];
+    colorAttachments = [descriptorCopy colorAttachments];
+    v15 = [colorAttachments objectAtIndexedSubscript:i];
 
-    v16 = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor colorAttachments];
-    v17 = [v16 objectAtIndexedSubscript:i];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor colorAttachments];
+    v17 = [colorAttachments2 objectAtIndexedSubscript:i];
 
     [v17 setLoadAction:0];
     [v17 setStoreAction:0];
-    v18 = [v15 texture];
-    v19 = v18;
-    if (v18)
+    texture = [v15 texture];
+    v19 = texture;
+    if (texture)
     {
-      v20 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [v18 pixelFormat], objc_msgSend(v18, "width"), objc_msgSend(v18, "height"));
+      v20 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [texture pixelFormat], objc_msgSend(texture, "width"), objc_msgSend(texture, "height"));
       [v17 setTexture:v20];
     }
 
@@ -438,27 +438,27 @@ uint64_t __104__DYMTLPixelHistoryDrawStatsSupport_createNumTotalRenderCommandEnc
     }
   }
 
-  v21 = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor depthAttachment];
-  [v21 setTexture:0];
+  depthAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor depthAttachment];
+  [depthAttachment setTexture:0];
 
   stencilTexture = self->_stencilTexture;
-  v23 = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor stencilAttachment];
-  [v23 setTexture:stencilTexture];
+  stencilAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryMockRenderPassDescriptor stencilAttachment];
+  [stencilAttachment setTexture:stencilTexture];
 
-  v24 = [v12 depthAttachmentPixelFormat];
-  v25 = [v12 stencilAttachmentPixelFormat];
+  depthAttachmentPixelFormat = [v12 depthAttachmentPixelFormat];
+  stencilAttachmentPixelFormat = [v12 stencilAttachmentPixelFormat];
   [v12 setDepthAttachmentPixelFormat:0];
   [v12 setStencilAttachmentPixelFormat:253];
-  v26 = [(DYMTLFunctionPlayer *)self->_player device];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
   v39 = 0;
-  v27 = [v26 newRenderPipelineStateWithDescriptor:v12 error:&v39];
+  v27 = [device newRenderPipelineStateWithDescriptor:v12 error:&v39];
   v28 = v39;
 
   if (v27)
   {
-    v36 = v9;
-    [v12 setDepthAttachmentPixelFormat:v24];
-    [v12 setStencilAttachmentPixelFormat:v25];
+    v36 = bufferCopy;
+    [v12 setDepthAttachmentPixelFormat:depthAttachmentPixelFormat];
+    [v12 setStencilAttachmentPixelFormat:stencilAttachmentPixelFormat];
     v29 = DYMTLNewStatefulRenderCommandEncoder(self->_originalCommandBuffer, self->_pixelHistoryMockRenderPassDescriptor);
     [v29 setRenderPipelineState:v27];
     [v29 setTriangleFillMode:0];
@@ -474,13 +474,13 @@ uint64_t __104__DYMTLPixelHistoryDrawStatsSupport_createNumTotalRenderCommandEnc
     v32 = objc_opt_new();
     [v32 setFrontFaceStencil:v31];
     [v32 setBackFaceStencil:v31];
-    v33 = [(DYMTLFunctionPlayer *)self->_player device];
-    v34 = [v33 newDepthStencilStateWithDescriptor:v32];
+    device2 = [(DYMTLFunctionPlayer *)self->_player device];
+    v34 = [device2 newDepthStencilStateWithDescriptor:v32];
 
     [v29 setDepthStencilState:v34];
     [(DYMTLFunctionPlayer *)self->_player setObject:v29 forKey:self->_originalCommandEncoderId];
 
-    v9 = v36;
+    bufferCopy = v36;
   }
 
   return v27 != 0;
@@ -494,31 +494,31 @@ uint64_t __142__DYMTLPixelHistoryDrawStatsSupport_createNumFragmentPassesRenderC
   return [v4 vertexBytesForKey:v5];
 }
 
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockDepthTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockDepthTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0
 {
-  v49 = a10;
-  v48 = a9;
-  v51 = a3;
-  v16 = a4;
-  v52 = a5;
-  v17 = a6;
-  v18 = a7;
-  objc_storeStrong(&self->_originalCommandBuffer, a3);
+  yCopy = y;
+  xCopy = x;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  pipelineCopy = pipeline;
+  stencilDescriptorCopy = stencilDescriptor;
+  textureCopy = texture;
+  objc_storeStrong(&self->_originalCommandBuffer, buffer);
   for (i = 0; i != 8; ++i)
   {
-    v20 = [v16 colorAttachments];
-    v21 = [v20 objectAtIndexedSubscript:i];
+    colorAttachments = [descriptorCopy colorAttachments];
+    v21 = [colorAttachments objectAtIndexedSubscript:i];
 
-    v22 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:i];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
+    v23 = [colorAttachments2 objectAtIndexedSubscript:i];
 
     [v23 setLoadAction:0];
     [v23 setStoreAction:0];
-    v24 = [v21 texture];
-    v25 = v24;
-    if (v24)
+    texture = [v21 texture];
+    v25 = texture;
+    if (texture)
     {
-      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [v24 pixelFormat], objc_msgSend(v24, "width"), objc_msgSend(v24, "height"));
+      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [texture pixelFormat], objc_msgSend(texture, "width"), objc_msgSend(texture, "height"));
       [v23 setTexture:v26];
     }
 
@@ -528,30 +528,30 @@ uint64_t __142__DYMTLPixelHistoryDrawStatsSupport_createNumFragmentPassesRenderC
     }
   }
 
-  v27 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
-  [v27 setTexture:v18];
+  depthAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
+  [depthAttachment setTexture:textureCopy];
 
-  v28 = [v16 stencilAttachment];
-  v29 = [v28 texture];
-  v30 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
-  if (v29)
+  stencilAttachment = [descriptorCopy stencilAttachment];
+  texture2 = [stencilAttachment texture];
+  stencilAttachment2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
+  if (texture2)
   {
-    [v30 setTexture:v18];
+    [stencilAttachment2 setTexture:textureCopy];
   }
 
   else
   {
-    [v30 setTexture:0];
+    [stencilAttachment2 setTexture:0];
   }
 
-  v31 = [(DYMTLFunctionPlayer *)self->_player device];
-  v32 = [v31 newBufferWithLength:8 options:0];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
+  v32 = [device newBufferWithLength:8 options:0];
   visibilityResultBuffer = self->_visibilityResultBuffer;
   self->_visibilityResultBuffer = v32;
 
   [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor setVisibilityResultBuffer:self->_visibilityResultBuffer];
   v34 = DYMTLNewStatefulRenderCommandEncoder(self->_originalCommandBuffer, self->_pixelHistoryVisibilityMockRenderPassDescriptor);
-  [v34 setRenderPipelineState:v52];
+  [v34 setRenderPipelineState:pipelineCopy];
   [v34 setTriangleFillMode:0];
   savedVertexFragmentState = self->_savedVertexFragmentState;
   v55[0] = MEMORY[0x277D85DD0];
@@ -561,10 +561,10 @@ uint64_t __142__DYMTLPixelHistoryDrawStatsSupport_createNumFragmentPassesRenderC
   v55[4] = self;
   [(DYMTLStatefulRenderCommandEncoder *)savedVertexFragmentState applyVertexFragmentStateToEncoder:v34 rawBytesBlock:v55];
   v36 = objc_opt_new();
-  [v36 setDepthWriteEnabled:{objc_msgSend(v17, "isDepthWriteEnabled")}];
-  [v36 setDepthCompareFunction:{objc_msgSend(v17, "depthCompareFunction")}];
-  v37 = [(DYMTLFunctionPlayer *)self->_player device];
-  v38 = [v37 newDepthStencilStateWithDescriptor:v36];
+  [v36 setDepthWriteEnabled:{objc_msgSend(stencilDescriptorCopy, "isDepthWriteEnabled")}];
+  [v36 setDepthCompareFunction:{objc_msgSend(stencilDescriptorCopy, "depthCompareFunction")}];
+  device2 = [(DYMTLFunctionPlayer *)self->_player device];
+  v38 = [device2 newDepthStencilStateWithDescriptor:v36];
 
   [v34 setDepthStencilState:v38];
   [v34 setDepthClipMode:{-[DYMTLStatefulRenderCommandEncoder depthClipMode](self->_originalEncoder, "depthClipMode")}];
@@ -577,9 +577,9 @@ uint64_t __142__DYMTLPixelHistoryDrawStatsSupport_createNumFragmentPassesRenderC
   LODWORD(v45) = v40;
   LODWORD(v46) = v42;
   [v34 setDepthBias:v45 slopeScale:v46 clamp:v44];
-  [v34 setVisibilityResultMode:a8 offset:0];
-  v53[0] = v48;
-  v53[1] = v49;
+  [v34 setVisibilityResultMode:mode offset:0];
+  v53[0] = xCopy;
+  v53[1] = yCopy;
   v54 = vdupq_n_s64(1uLL);
   [v34 setScissorRect:v53];
   [(DYMTLFunctionPlayer *)self->_player setObject:v34 forKey:self->_originalCommandEncoderId];
@@ -595,31 +595,31 @@ uint64_t __202__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   return [v4 vertexBytesForKey:v5];
 }
 
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockStencilTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockStencilTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0
 {
-  v47 = a10;
-  v46 = a9;
-  v49 = a3;
-  v16 = a4;
-  v50 = a5;
-  v17 = a6;
-  v18 = a7;
-  objc_storeStrong(&self->_originalCommandBuffer, a3);
+  yCopy = y;
+  xCopy = x;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  pipelineCopy = pipeline;
+  stencilDescriptorCopy = stencilDescriptor;
+  textureCopy = texture;
+  objc_storeStrong(&self->_originalCommandBuffer, buffer);
   for (i = 0; i != 8; ++i)
   {
-    v20 = [v16 colorAttachments];
-    v21 = [v20 objectAtIndexedSubscript:i];
+    colorAttachments = [descriptorCopy colorAttachments];
+    v21 = [colorAttachments objectAtIndexedSubscript:i];
 
-    v22 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:i];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
+    v23 = [colorAttachments2 objectAtIndexedSubscript:i];
 
     [v23 setLoadAction:0];
     [v23 setStoreAction:0];
-    v24 = [v21 texture];
-    v25 = v24;
-    if (v24)
+    texture = [v21 texture];
+    v25 = texture;
+    if (texture)
     {
-      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [v24 pixelFormat], objc_msgSend(v24, "width"), objc_msgSend(v24, "height"));
+      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [texture pixelFormat], objc_msgSend(texture, "width"), objc_msgSend(texture, "height"));
       [v23 setTexture:v26];
     }
 
@@ -629,30 +629,30 @@ uint64_t __202__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
     }
   }
 
-  v27 = [v16 depthAttachment];
-  v28 = [v27 texture];
-  v29 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
-  if (v28)
+  depthAttachment = [descriptorCopy depthAttachment];
+  texture2 = [depthAttachment texture];
+  depthAttachment2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
+  if (texture2)
   {
-    [v29 setTexture:v18];
+    [depthAttachment2 setTexture:textureCopy];
   }
 
   else
   {
-    [v29 setTexture:0];
+    [depthAttachment2 setTexture:0];
   }
 
-  v30 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
-  [v30 setTexture:v18];
+  stencilAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
+  [stencilAttachment setTexture:textureCopy];
 
-  v31 = [(DYMTLFunctionPlayer *)self->_player device];
-  v32 = [v31 newBufferWithLength:8 options:0];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
+  v32 = [device newBufferWithLength:8 options:0];
   visibilityResultBuffer = self->_visibilityResultBuffer;
   self->_visibilityResultBuffer = v32;
 
   [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor setVisibilityResultBuffer:self->_visibilityResultBuffer];
   v34 = DYMTLNewStatefulRenderCommandEncoder(self->_originalCommandBuffer, self->_pixelHistoryVisibilityMockRenderPassDescriptor);
-  [v34 setRenderPipelineState:v50];
+  [v34 setRenderPipelineState:pipelineCopy];
   [v34 setTriangleFillMode:0];
   savedVertexFragmentState = self->_savedVertexFragmentState;
   v53[0] = MEMORY[0x277D85DD0];
@@ -662,30 +662,30 @@ uint64_t __202__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   v53[4] = self;
   [(DYMTLStatefulRenderCommandEncoder *)savedVertexFragmentState applyVertexFragmentStateToEncoder:v34 rawBytesBlock:v53];
   v36 = objc_opt_new();
-  v37 = [v17 frontFaceStencil];
-  [v36 setStencilCompareFunction:{objc_msgSend(v37, "stencilCompareFunction")}];
+  frontFaceStencil = [stencilDescriptorCopy frontFaceStencil];
+  [v36 setStencilCompareFunction:{objc_msgSend(frontFaceStencil, "stencilCompareFunction")}];
 
-  v38 = [v17 frontFaceStencil];
-  [v36 setStencilFailureOperation:{objc_msgSend(v38, "stencilFailureOperation")}];
+  frontFaceStencil2 = [stencilDescriptorCopy frontFaceStencil];
+  [v36 setStencilFailureOperation:{objc_msgSend(frontFaceStencil2, "stencilFailureOperation")}];
 
   v39 = objc_opt_new();
-  v40 = [v17 backFaceStencil];
-  [v39 setStencilCompareFunction:{objc_msgSend(v40, "stencilCompareFunction")}];
+  backFaceStencil = [stencilDescriptorCopy backFaceStencil];
+  [v39 setStencilCompareFunction:{objc_msgSend(backFaceStencil, "stencilCompareFunction")}];
 
-  v41 = [v17 backFaceStencil];
-  [v39 setStencilFailureOperation:{objc_msgSend(v41, "stencilFailureOperation")}];
+  backFaceStencil2 = [stencilDescriptorCopy backFaceStencil];
+  [v39 setStencilFailureOperation:{objc_msgSend(backFaceStencil2, "stencilFailureOperation")}];
 
   v42 = objc_opt_new();
   [v42 setFrontFaceStencil:v36];
   [v42 setBackFaceStencil:v39];
-  v43 = [(DYMTLFunctionPlayer *)self->_player device];
-  v44 = [v43 newDepthStencilStateWithDescriptor:v42];
+  device2 = [(DYMTLFunctionPlayer *)self->_player device];
+  v44 = [device2 newDepthStencilStateWithDescriptor:v42];
 
   [v34 setDepthStencilState:v44];
   [v34 setStencilFrontReferenceValue:-[DYMTLStatefulRenderCommandEncoder frontReferenceValue](self->_originalEncoder backReferenceValue:{"frontReferenceValue"), -[DYMTLStatefulRenderCommandEncoder backReferenceValue](self->_originalEncoder, "backReferenceValue")}];
-  [v34 setVisibilityResultMode:a8 offset:0];
-  v51[0] = v46;
-  v51[1] = v47;
+  [v34 setVisibilityResultMode:mode offset:0];
+  v51[0] = xCopy;
+  v51[1] = yCopy;
   v52 = vdupq_n_s64(1uLL);
   [v34 setScissorRect:v51];
   [(DYMTLFunctionPlayer *)self->_player setObject:v34 forKey:self->_originalCommandEncoderId];
@@ -701,31 +701,31 @@ uint64_t __204__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   return [v4 vertexBytesForKey:v5];
 }
 
-- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)a3 originalRenderPassDescriptor:(id)a4 originalPipeline:(id)a5 depthStencilDescriptor:(id)a6 mockDepthStencilTexture:(id)a7 visibilityResultMode:(unint64_t)a8 atX:(unint64_t)a9 y:(unint64_t)a10
+- (BOOL)createNumVisibleRenderCommandEncoderInCommandBuffer:(id)buffer originalRenderPassDescriptor:(id)descriptor originalPipeline:(id)pipeline depthStencilDescriptor:(id)stencilDescriptor mockDepthStencilTexture:(id)texture visibilityResultMode:(unint64_t)mode atX:(unint64_t)x y:(unint64_t)self0
 {
-  v46 = a10;
-  v45 = a9;
-  v48 = a3;
-  v16 = a4;
-  v49 = a5;
-  v17 = a6;
-  v18 = a7;
-  objc_storeStrong(&self->_originalCommandBuffer, a3);
+  yCopy = y;
+  xCopy = x;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  pipelineCopy = pipeline;
+  stencilDescriptorCopy = stencilDescriptor;
+  textureCopy = texture;
+  objc_storeStrong(&self->_originalCommandBuffer, buffer);
   for (i = 0; i != 8; ++i)
   {
-    v20 = [v16 colorAttachments];
-    v21 = [v20 objectAtIndexedSubscript:i];
+    colorAttachments = [descriptorCopy colorAttachments];
+    v21 = [colorAttachments objectAtIndexedSubscript:i];
 
-    v22 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:i];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor colorAttachments];
+    v23 = [colorAttachments2 objectAtIndexedSubscript:i];
 
     [v23 setLoadAction:0];
     [v23 setStoreAction:0];
-    v24 = [v21 texture];
-    v25 = v24;
-    if (v24)
+    texture = [v21 texture];
+    v25 = texture;
+    if (texture)
     {
-      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [v24 pixelFormat], objc_msgSend(v24, "width"), objc_msgSend(v24, "height"));
+      v26 = -[DYMTLPixelHistoryDrawStatsSupport getSingleUseMockColorTexture:pixelFormat:width:height:](self, "getSingleUseMockColorTexture:pixelFormat:width:height:", i, [texture pixelFormat], objc_msgSend(texture, "width"), objc_msgSend(texture, "height"));
       [v23 setTexture:v26];
     }
 
@@ -735,20 +735,20 @@ uint64_t __204__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
     }
   }
 
-  v27 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
-  [v27 setTexture:v18];
+  depthAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor depthAttachment];
+  [depthAttachment setTexture:textureCopy];
 
-  v28 = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
-  [v28 setTexture:v18];
+  stencilAttachment = [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor stencilAttachment];
+  [stencilAttachment setTexture:textureCopy];
 
-  v29 = [(DYMTLFunctionPlayer *)self->_player device];
-  v30 = [v29 newBufferWithLength:8 options:0];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
+  v30 = [device newBufferWithLength:8 options:0];
   visibilityResultBuffer = self->_visibilityResultBuffer;
   self->_visibilityResultBuffer = v30;
 
   [(MTLRenderPassDescriptor *)self->_pixelHistoryVisibilityMockRenderPassDescriptor setVisibilityResultBuffer:self->_visibilityResultBuffer];
   v32 = DYMTLNewStatefulRenderCommandEncoder(self->_originalCommandBuffer, self->_pixelHistoryVisibilityMockRenderPassDescriptor);
-  [v32 setRenderPipelineState:v49];
+  [v32 setRenderPipelineState:pipelineCopy];
   [v32 setTriangleFillMode:0];
   savedVertexFragmentState = self->_savedVertexFragmentState;
   v52[0] = MEMORY[0x277D85DD0];
@@ -757,8 +757,8 @@ uint64_t __204__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   v52[3] = &unk_27930F3E0;
   v52[4] = self;
   [(DYMTLStatefulRenderCommandEncoder *)savedVertexFragmentState applyVertexFragmentStateToEncoder:v32 rawBytesBlock:v52];
-  v34 = [(DYMTLFunctionPlayer *)self->_player device];
-  v35 = [v34 newDepthStencilStateWithDescriptor:v17];
+  device2 = [(DYMTLFunctionPlayer *)self->_player device];
+  v35 = [device2 newDepthStencilStateWithDescriptor:stencilDescriptorCopy];
 
   [v32 setDepthStencilState:v35];
   [v32 setStencilFrontReferenceValue:-[DYMTLStatefulRenderCommandEncoder frontReferenceValue](self->_originalEncoder backReferenceValue:{"frontReferenceValue"), -[DYMTLStatefulRenderCommandEncoder backReferenceValue](self->_originalEncoder, "backReferenceValue")}];
@@ -772,9 +772,9 @@ uint64_t __204__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   LODWORD(v42) = v37;
   LODWORD(v43) = v39;
   [v32 setDepthBias:v42 slopeScale:v43 clamp:v41];
-  [v32 setVisibilityResultMode:a8 offset:0];
-  v50[0] = v45;
-  v50[1] = v46;
+  [v32 setVisibilityResultMode:mode offset:0];
+  v50[0] = xCopy;
+  v50[1] = yCopy;
   v51 = vdupq_n_s64(1uLL);
   [v32 setScissorRect:v50];
   [(DYMTLFunctionPlayer *)self->_player setObject:v32 forKey:self->_originalCommandEncoderId];
@@ -790,9 +790,9 @@ uint64_t __209__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   return [v4 vertexBytesForKey:v5];
 }
 
-- (void)collectPixelHistoryStencilDrawStatsAtX:(unint64_t)a3 y:(unint64_t)a4 completion:(id)a5
+- (void)collectPixelHistoryStencilDrawStatsAtX:(unint64_t)x y:(unint64_t)y completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = [(DYMTLFunctionPlayer *)self->_player objectForKey:self->_originalCommandEncoderId];
   [v9 endEncoding];
 
@@ -804,10 +804,10 @@ uint64_t __209__DYMTLPixelHistoryDrawStatsSupport_createNumVisibleRenderCommandE
   v15[1] = 3221225472;
   v15[2] = __89__DYMTLPixelHistoryDrawStatsSupport_collectPixelHistoryStencilDrawStatsAtX_y_completion___block_invoke;
   v15[3] = &unk_27930F910;
-  v13 = v8;
+  v13 = completionCopy;
   v16 = v13;
   LOBYTE(v14) = 0;
-  [v10 pixelValueFromTexture:stencilTexture level:0 slice:0 depthPlane:0 atX:a3 y:a4 inCommandBuffer:originalCommandBuffer overHarvestForDepthStencil:v14 completion:v15];
+  [v10 pixelValueFromTexture:stencilTexture level:0 slice:0 depthPlane:0 atX:x y:y inCommandBuffer:originalCommandBuffer overHarvestForDepthStencil:v14 completion:v15];
 }
 
 void __89__DYMTLPixelHistoryDrawStatsSupport_collectPixelHistoryStencilDrawStatsAtX_y_completion___block_invoke(uint64_t a1, void *a2)
@@ -818,9 +818,9 @@ void __89__DYMTLPixelHistoryDrawStatsSupport_collectPixelHistoryStencilDrawStats
   (*(v4 + 16))(v4, *[v5 bytes]);
 }
 
-- (void)collectPixelHistoryVisibilityDrawStatsAtCompletion:(id)a3
+- (void)collectPixelHistoryVisibilityDrawStatsAtCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(DYMTLFunctionPlayer *)self->_player objectForKey:self->_originalCommandEncoderId];
   [v5 endEncoding];
 
@@ -831,7 +831,7 @@ void __89__DYMTLPixelHistoryDrawStatsSupport_collectPixelHistoryStencilDrawStats
   v10[1] = 3221225472;
   v10[2] = __88__DYMTLPixelHistoryDrawStatsSupport_collectPixelHistoryVisibilityDrawStatsAtCompletion___block_invoke;
   v10[3] = &unk_27930F938;
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v6;
   v12 = v8;
   v9 = v6;

@@ -1,25 +1,25 @@
 @interface MessageHeaderSubjectBlock
-- (MessageHeaderSubjectBlock)initWithFrame:(CGRect)a3;
+- (MessageHeaderSubjectBlock)initWithFrame:(CGRect)frame;
 - (id)_contextForDDDetectionController;
 - (id)_subjectFont;
 - (void)_updateFonts;
 - (void)_updateSubjectText;
 - (void)createPrimaryViews;
-- (void)displayMessageUsingViewModel:(id)a3;
+- (void)displayMessageUsingViewModel:(id)model;
 - (void)initializePrimaryLayoutConstraints;
 - (void)prepareForReuse;
-- (void)setBottomSeparatorIsHidden:(BOOL)a3;
-- (void)setDisplayMetrics:(id)a3;
-- (void)setInteractivelyResizing:(BOOL)a3;
+- (void)setBottomSeparatorIsHidden:(BOOL)hidden;
+- (void)setDisplayMetrics:(id)metrics;
+- (void)setInteractivelyResizing:(BOOL)resizing;
 @end
 
 @implementation MessageHeaderSubjectBlock
 
-- (MessageHeaderSubjectBlock)initWithFrame:(CGRect)a3
+- (MessageHeaderSubjectBlock)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MessageHeaderSubjectBlock;
-  v3 = [(MessageHeaderSubjectBlock *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MessageHeaderSubjectBlock *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -38,8 +38,8 @@
   v3 = +[UIStackView mf_baselineAlignedVerticalStackView];
   [(MessageHeaderSubjectBlock *)self setSubjectStackView:v3];
 
-  v4 = [(MessageHeaderSubjectBlock *)self subjectStackView];
-  [(MessageHeaderSubjectBlock *)self addSubview:v4];
+  subjectStackView = [(MessageHeaderSubjectBlock *)self subjectStackView];
+  [(MessageHeaderSubjectBlock *)self addSubview:subjectStackView];
 
   v5 = [UITextView alloc];
   y = CGRectZero.origin.y;
@@ -55,27 +55,27 @@
   [v9 setSelectable:1];
   [v9 setEditable:0];
   [v9 setDataDetectorTypes:-1];
-  v11 = [v9 textContainer];
-  [v11 setMaximumNumberOfLines:13];
+  textContainer = [v9 textContainer];
+  [textContainer setMaximumNumberOfLines:13];
 
-  v12 = [v9 textContainer];
-  [v12 setLineFragmentPadding:0.0];
+  textContainer2 = [v9 textContainer];
+  [textContainer2 setLineFragmentPadding:0.0];
 
-  v13 = [v9 textContainer];
-  [v13 setLineBreakMode:4];
+  textContainer3 = [v9 textContainer];
+  [textContainer3 setLineBreakMode:4];
 
   v14 = +[UIColor labelColor];
   [v9 setTextColor:v14];
 
   v15 = MSAccessibilityIdentifierMailMessageViewSubjectLabel;
   [v9 setAccessibilityIdentifier:MSAccessibilityIdentifierMailMessageViewSubjectLabel];
-  v16 = [v9 linkTextAttributes];
-  v17 = [v16 mutableCopy];
+  linkTextAttributes = [v9 linkTextAttributes];
+  v17 = [linkTextAttributes mutableCopy];
 
   [v17 setObject:&__kCFBooleanTrue forKey:NSUnderlineStyleAttributeName];
   [v9 setLinkTextAttributes:v17];
-  v18 = [(MessageHeaderSubjectBlock *)self subjectStackView];
-  [v18 addArrangedSubview:v9];
+  subjectStackView2 = [(MessageHeaderSubjectBlock *)self subjectStackView];
+  [subjectStackView2 addArrangedSubview:v9];
 
   [(MessageHeaderSubjectBlock *)self setSubjectTextView:v9];
   v19 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -99,73 +99,73 @@
   v23.receiver = self;
   v23.super_class = MessageHeaderSubjectBlock;
   [(MessageHeaderSubjectBlock *)&v23 initializePrimaryLayoutConstraints];
-  v3 = [(MessageHeaderSubjectBlock *)self subjectStackView];
+  subjectStackView = [(MessageHeaderSubjectBlock *)self subjectStackView];
   [(MessageHeaderSubjectBlock *)self _subjectMaxOffset];
   v5 = v4;
-  v6 = [v3 firstBaselineAnchor];
-  v7 = [(MessageHeaderSubjectBlock *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  firstBaselineAnchor = [subjectStackView firstBaselineAnchor];
+  topAnchor = [(MessageHeaderSubjectBlock *)self topAnchor];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   [(MessageHeaderSubjectBlock *)self setFirstBaselineConstraint:v8];
 
-  v9 = [(MessageHeaderSubjectBlock *)self bottomAnchor];
-  v10 = [v3 lastBaselineAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(MessageHeaderSubjectBlock *)self bottomAnchor];
+  lastBaselineAnchor = [subjectStackView lastBaselineAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
   [(MessageHeaderSubjectBlock *)self setLastBaselineConstraint:v11];
 
-  v22 = [v3 leadingAnchor];
-  v21 = [(MessageHeaderSubjectBlock *)self layoutMarginsGuide];
-  v12 = [v21 leadingAnchor];
-  v13 = [v22 constraintEqualToAnchor:v12 constant:-v5];
+  leadingAnchor = [subjectStackView leadingAnchor];
+  layoutMarginsGuide = [(MessageHeaderSubjectBlock *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-v5];
   v24[0] = v13;
-  v14 = [v3 trailingAnchor];
-  v15 = [(MessageHeaderSubjectBlock *)self layoutMarginsGuide];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:v5];
+  trailingAnchor = [subjectStackView trailingAnchor];
+  layoutMarginsGuide2 = [(MessageHeaderSubjectBlock *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v5];
   v24[1] = v17;
-  v18 = [(MessageHeaderSubjectBlock *)self firstBaselineConstraint];
-  v24[2] = v18;
-  v19 = [(MessageHeaderSubjectBlock *)self lastBaselineConstraint];
-  v24[3] = v19;
+  firstBaselineConstraint = [(MessageHeaderSubjectBlock *)self firstBaselineConstraint];
+  v24[2] = firstBaselineConstraint;
+  lastBaselineConstraint = [(MessageHeaderSubjectBlock *)self lastBaselineConstraint];
+  v24[3] = lastBaselineConstraint;
   v20 = [NSArray arrayWithObjects:v24 count:4];
 
   [NSLayoutConstraint activateConstraints:v20];
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(MessageHeaderSubjectBlock *)self displayMetrics];
+  metricsCopy = metrics;
+  displayMetrics = [(MessageHeaderSubjectBlock *)self displayMetrics];
   v22.receiver = self;
   v22.super_class = MessageHeaderSubjectBlock;
-  [(MessageHeaderSubjectBlock *)&v22 setDisplayMetrics:v4];
-  v6 = [(MessageHeaderSubjectBlock *)self displayMetrics];
-  if (v6)
+  [(MessageHeaderSubjectBlock *)&v22 setDisplayMetrics:metricsCopy];
+  displayMetrics2 = [(MessageHeaderSubjectBlock *)self displayMetrics];
+  if (displayMetrics2)
   {
-    [v4 firstSeparatorToSubjectBaseline];
+    [metricsCopy firstSeparatorToSubjectBaseline];
     v8 = v7;
-    [v5 firstSeparatorToSubjectBaseline];
+    [displayMetrics firstSeparatorToSubjectBaseline];
     if (v8 != v9)
     {
 
 LABEL_5:
-      v14 = [(MessageHeaderSubjectBlock *)self displayMetrics];
-      [v14 firstSeparatorToSubjectBaseline];
+      displayMetrics3 = [(MessageHeaderSubjectBlock *)self displayMetrics];
+      [displayMetrics3 firstSeparatorToSubjectBaseline];
       v16 = v15;
-      v17 = [(MessageHeaderSubjectBlock *)self firstBaselineConstraint];
-      [v17 setConstant:v16];
+      firstBaselineConstraint = [(MessageHeaderSubjectBlock *)self firstBaselineConstraint];
+      [firstBaselineConstraint setConstant:v16];
 
-      v18 = [(MessageHeaderSubjectBlock *)self displayMetrics];
-      [v18 headerBottomPadding];
+      displayMetrics4 = [(MessageHeaderSubjectBlock *)self displayMetrics];
+      [displayMetrics4 headerBottomPadding];
       v20 = v19;
-      v21 = [(MessageHeaderSubjectBlock *)self lastBaselineConstraint];
-      [v21 setConstant:v20];
+      lastBaselineConstraint = [(MessageHeaderSubjectBlock *)self lastBaselineConstraint];
+      [lastBaselineConstraint setConstant:v20];
 
       goto LABEL_6;
     }
 
-    [v4 headerBottomPadding];
+    [metricsCopy headerBottomPadding];
     v11 = v10;
-    [v5 headerBottomPadding];
+    [displayMetrics headerBottomPadding];
     v13 = v12;
 
     if (v11 != v13)
@@ -177,40 +177,40 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setBottomSeparatorIsHidden:(BOOL)a3
+- (void)setBottomSeparatorIsHidden:(BOOL)hidden
 {
   v3.receiver = self;
   v3.super_class = MessageHeaderSubjectBlock;
   [(MessageHeaderSubjectBlock *)&v3 setBottomSeparatorIsHidden:1];
 }
 
-- (void)setInteractivelyResizing:(BOOL)a3
+- (void)setInteractivelyResizing:(BOOL)resizing
 {
-  v3 = a3;
-  v5 = [(MessageHeaderSubjectBlock *)self interactivelyResizing];
+  resizingCopy = resizing;
+  interactivelyResizing = [(MessageHeaderSubjectBlock *)self interactivelyResizing];
   v10.receiver = self;
   v10.super_class = MessageHeaderSubjectBlock;
-  [(MessageHeaderSubjectBlock *)&v10 setInteractivelyResizing:v3];
-  if (v5 != v3)
+  [(MessageHeaderSubjectBlock *)&v10 setInteractivelyResizing:resizingCopy];
+  if (interactivelyResizing != resizingCopy)
   {
-    if (v3)
+    if (resizingCopy)
     {
-      v6 = [(MessageHeaderSubjectBlock *)self subjectTextView];
+      subjectTextView = [(MessageHeaderSubjectBlock *)self subjectTextView];
       [(MessageHeaderSubjectBlock *)self subjectLabel];
     }
 
     else
     {
-      v6 = [(MessageHeaderSubjectBlock *)self subjectLabel];
+      subjectTextView = [(MessageHeaderSubjectBlock *)self subjectLabel];
       [(MessageHeaderSubjectBlock *)self subjectTextView];
     }
     v7 = ;
-    v8 = [(MessageHeaderSubjectBlock *)self subjectStackView];
-    [v8 removeArrangedSubview:v6];
+    subjectStackView = [(MessageHeaderSubjectBlock *)self subjectStackView];
+    [subjectStackView removeArrangedSubview:subjectTextView];
 
-    [v6 removeFromSuperview];
-    v9 = [(MessageHeaderSubjectBlock *)self subjectStackView];
-    [v9 addArrangedSubview:v7];
+    [subjectTextView removeFromSuperview];
+    subjectStackView2 = [(MessageHeaderSubjectBlock *)self subjectStackView];
+    [subjectStackView2 addArrangedSubview:v7];
   }
 }
 
@@ -222,28 +222,28 @@ LABEL_6:
   [(MessageHeaderSubjectBlock *)self setHidden:0];
 }
 
-- (void)displayMessageUsingViewModel:(id)a3
+- (void)displayMessageUsingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5.receiver = self;
   v5.super_class = MessageHeaderSubjectBlock;
-  [(MessageHeaderSubjectBlock *)&v5 displayMessageUsingViewModel:v4];
+  [(MessageHeaderSubjectBlock *)&v5 displayMessageUsingViewModel:modelCopy];
   [(MessageHeaderSubjectBlock *)self _updateSubjectText];
 }
 
 - (void)_updateSubjectText
 {
-  v3 = [(MessageHeaderSubjectBlock *)self viewModel];
-  v11 = [v3 subject];
+  viewModel = [(MessageHeaderSubjectBlock *)self viewModel];
+  subject = [viewModel subject];
 
-  if ([v11 length])
+  if ([subject length])
   {
     v4 = +[DDDetectionController sharedController];
-    v5 = [(MessageHeaderSubjectBlock *)self _contextForDDDetectionController];
-    v6 = [(MessageHeaderSubjectBlock *)self subjectTextView];
-    [v4 setContext:v5 forContainer:v6];
+    _contextForDDDetectionController = [(MessageHeaderSubjectBlock *)self _contextForDDDetectionController];
+    subjectTextView = [(MessageHeaderSubjectBlock *)self subjectTextView];
+    [v4 setContext:_contextForDDDetectionController forContainer:subjectTextView];
 
-    v7 = [ECSubjectFormatter subjectStringForDisplayForSubject:v11];
+    v7 = [ECSubjectFormatter subjectStringForDisplayForSubject:subject];
   }
 
   else
@@ -252,31 +252,31 @@ LABEL_6:
     v7 = [v8 localizedStringForKey:@"NO_SUBJECT" value:&stru_100035108 table:@"Main"];
   }
 
-  v9 = [(MessageHeaderSubjectBlock *)self subjectTextView];
-  [v9 setText:v7];
+  subjectTextView2 = [(MessageHeaderSubjectBlock *)self subjectTextView];
+  [subjectTextView2 setText:v7];
 
-  v10 = [(MessageHeaderSubjectBlock *)self subjectLabel];
-  [v10 setText:v7];
+  subjectLabel = [(MessageHeaderSubjectBlock *)self subjectLabel];
+  [subjectLabel setText:v7];
 }
 
 - (id)_contextForDDDetectionController
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MessageHeaderSubjectBlock *)self viewModel];
-  v5 = [v4 subject];
-  v6 = [v5 subjectWithoutPrefix];
+  viewModel = [(MessageHeaderSubjectBlock *)self viewModel];
+  subject = [viewModel subject];
+  subjectWithoutPrefix = [subject subjectWithoutPrefix];
 
-  v7 = [(MessageHeaderSubjectBlock *)self viewModel];
-  v8 = [v7 dateSent];
+  viewModel2 = [(MessageHeaderSubjectBlock *)self viewModel];
+  dateSent = [viewModel2 dateSent];
 
-  if (v6)
+  if (subjectWithoutPrefix)
   {
-    [v3 setObject:v6 forKey:kDataDetectorsEventTitleKey];
+    [v3 setObject:subjectWithoutPrefix forKey:kDataDetectorsEventTitleKey];
   }
 
-  if (v8)
+  if (dateSent)
   {
-    [v3 setObject:v8 forKey:kDataDetectorsReferenceDateKey];
+    [v3 setObject:dateSent forKey:kDataDetectorsReferenceDateKey];
   }
 
   if (![v3 count])
@@ -290,21 +290,21 @@ LABEL_6:
 
 - (void)_updateFonts
 {
-  v5 = [(MessageHeaderSubjectBlock *)self _subjectFont];
-  v3 = [(MessageHeaderSubjectBlock *)self subjectTextView];
-  [v3 setFont:v5];
+  _subjectFont = [(MessageHeaderSubjectBlock *)self _subjectFont];
+  subjectTextView = [(MessageHeaderSubjectBlock *)self subjectTextView];
+  [subjectTextView setFont:_subjectFont];
 
-  v4 = [(MessageHeaderSubjectBlock *)self subjectLabel];
-  [v4 setFont:v5];
+  subjectLabel = [(MessageHeaderSubjectBlock *)self subjectLabel];
+  [subjectLabel setFont:_subjectFont];
 }
 
 - (id)_subjectFont
 {
   v3 = +[MFFontMetricCache sharedFontMetricCache];
-  v4 = [(MessageHeaderSubjectBlock *)self displayMetrics];
-  v5 = [v4 hasCompactLayout];
+  displayMetrics = [(MessageHeaderSubjectBlock *)self displayMetrics];
+  hasCompactLayout = [displayMetrics hasCompactLayout];
 
-  if (v5)
+  if (hasCompactLayout)
   {
     v6 = &stru_100034860;
   }
@@ -314,7 +314,7 @@ LABEL_6:
     v6 = &stru_100034880;
   }
 
-  if (v5)
+  if (hasCompactLayout)
   {
     v7 = @"MessageHeaderSubjectBlock.compactSubjectFont";
   }

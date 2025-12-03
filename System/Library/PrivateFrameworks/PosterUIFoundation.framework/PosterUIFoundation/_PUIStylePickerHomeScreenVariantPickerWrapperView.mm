@@ -19,8 +19,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)self subviews];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  subviews = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)self subviews];
+  v12 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -32,14 +32,14 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v16 + 1) + 8 * v15++) setFrame:{v4, v6, v8, v10}];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v13);

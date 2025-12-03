@@ -1,26 +1,26 @@
 @interface CircularProgressView
-- (_TtC9MomentsUI20CircularProgressView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC9MomentsUI20CircularProgressView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)touchPlayback:(id)a3;
+- (void)touchPlayback:(id)playback;
 @end
 
 @implementation CircularProgressView
 
-- (void)touchPlayback:(id)a3
+- (void)touchPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = self;
+  playbackCopy = playback;
+  selfCopy = self;
   specialized CircularProgressView.touchPlayback(_:)();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   CircularProgressView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 
@@ -29,11 +29,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CircularProgressView.layoutSubviews()();
 }
 
-- (_TtC9MomentsUI20CircularProgressView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI20CircularProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

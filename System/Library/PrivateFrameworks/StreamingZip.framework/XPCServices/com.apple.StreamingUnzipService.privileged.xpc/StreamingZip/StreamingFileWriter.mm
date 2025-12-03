@@ -1,11 +1,11 @@
 @interface StreamingFileWriter
-- (BOOL)closeOutputFDWithError:(id *)a3;
-- (BOOL)setCurrentOffset:(int64_t)a3 error:(id *)a4;
-- (BOOL)writeBuffer:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (BOOL)closeOutputFDWithError:(id *)error;
+- (BOOL)setCurrentOffset:(int64_t)offset error:(id *)error;
+- (BOOL)writeBuffer:(const void *)buffer length:(unint64_t)length error:(id *)error;
 - (NSString)path;
 - (id)description;
-- (id)suspendWithError:(id *)a3;
-- (int64_t)currentOffsetWithError:(id *)a3;
+- (id)suspendWithError:(id *)error;
+- (int64_t)currentOffsetWithError:(id *)error;
 - (int64_t)fileSize;
 - (void)setIncompleteExtractionAttribute;
 @end
@@ -16,50 +16,50 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(StreamingFileWriter *)self path];
-  v6 = [NSString stringWithFormat:@"<%@: path=%@>", v4, v5];
+  path = [(StreamingFileWriter *)self path];
+  v6 = [NSString stringWithFormat:@"<%@: path=%@>", v4, path];
 
   return v6;
 }
 
 - (NSString)path
 {
-  v2 = [(StreamingFileWriter *)self fileInterface];
-  v3 = [v2 path];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  path = [fileInterface path];
 
-  return v3;
+  return path;
 }
 
 - (int64_t)fileSize
 {
-  v2 = [(StreamingFileWriter *)self fileInterface];
-  v3 = [v2 fileSize];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  fileSize = [fileInterface fileSize];
 
-  return v3;
+  return fileSize;
 }
 
-- (BOOL)closeOutputFDWithError:(id *)a3
+- (BOOL)closeOutputFDWithError:(id *)error
 {
-  v4 = [(StreamingFileWriter *)self fileInterface];
-  LOBYTE(a3) = [v4 closeOutputFDWithError:a3];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  LOBYTE(error) = [fileInterface closeOutputFDWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (id)suspendWithError:(id *)a3
+- (id)suspendWithError:(id *)error
 {
-  v5 = [(StreamingFileWriter *)self fileInterface];
-  v6 = [(StreamingFileWriter *)self path];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  path = [(StreamingFileWriter *)self path];
   v7 = sub_10000126C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = path;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Suspending %@", buf, 0xCu);
   }
 
   v26 = 0;
-  v8 = [v5 suspendWithError:&v26];
+  v8 = [fileInterface suspendWithError:&v26];
   v9 = v26;
   if (v8)
   {
@@ -80,7 +80,7 @@
           v22 = objc_opt_class();
           v23 = NSStringFromClass(v22);
           *buf = 138412802;
-          v28 = v6;
+          v28 = path;
           v29 = 2112;
           v30 = v23;
           v31 = 2112;
@@ -90,7 +90,7 @@
 
         v19 = objc_opt_class();
         v24 = NSStringFromClass(v19);
-        v17 = sub_1000015F4("[StreamingFileWriter suspendWithError:]", 322, @"SZExtractorErrorDomain", 1, 0, 0, @"Unknown file interface class for path %@ : %@", v20, v6);
+        v17 = sub_1000015F4("[StreamingFileWriter suspendWithError:]", 322, @"SZExtractorErrorDomain", 1, 0, 0, @"Unknown file interface class for path %@ : %@", v20, path);
 
         v11 = 0;
         goto LABEL_18;
@@ -114,18 +114,18 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v28 = v6;
+      v28 = path;
       v29 = 2112;
       v30 = v14;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to archive StreamingFileWriterState for path %@ : %@", buf, 0x16u);
     }
 
-    v17 = sub_1000015F4("[StreamingFileWriter suspendWithError:]", 330, @"SZExtractorErrorDomain", 1, v14, 0, @"Failed to archive StreamingFileWriterState for path %@", v16, v6);
+    v17 = sub_1000015F4("[StreamingFileWriter suspendWithError:]", 330, @"SZExtractorErrorDomain", 1, v14, 0, @"Failed to archive StreamingFileWriterState for path %@", v16, path);
     v9 = v14;
 LABEL_18:
 
     v9 = v17;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -133,12 +133,12 @@ LABEL_18:
 LABEL_7:
     v12 = v9;
     v13 = 0;
-    *a3 = v9;
+    *error = v9;
     goto LABEL_20;
   }
 
   v11 = 0;
-  if (a3)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -150,32 +150,32 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)writeBuffer:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeBuffer:(const void *)buffer length:(unint64_t)length error:(id *)error
 {
-  v8 = [(StreamingFileWriter *)self fileInterface];
-  LOBYTE(a5) = [v8 writeBuffer:a3 length:a4 error:a5];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  LOBYTE(error) = [fileInterface writeBuffer:buffer length:length error:error];
 
-  return a5;
+  return error;
 }
 
 - (void)setIncompleteExtractionAttribute
 {
-  v2 = [(StreamingFileWriter *)self fileInterface];
-  [v2 setIncompleteExtractionAttribute];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  [fileInterface setIncompleteExtractionAttribute];
 }
 
-- (BOOL)setCurrentOffset:(int64_t)a3 error:(id *)a4
+- (BOOL)setCurrentOffset:(int64_t)offset error:(id *)error
 {
-  v6 = [(StreamingFileWriter *)self fileInterface];
-  LOBYTE(a4) = [v6 setCurrentOffset:a3 error:a4];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  LOBYTE(error) = [fileInterface setCurrentOffset:offset error:error];
 
-  return a4;
+  return error;
 }
 
-- (int64_t)currentOffsetWithError:(id *)a3
+- (int64_t)currentOffsetWithError:(id *)error
 {
-  v4 = [(StreamingFileWriter *)self fileInterface];
-  v5 = [v4 currentOffsetWithError:a3];
+  fileInterface = [(StreamingFileWriter *)self fileInterface];
+  v5 = [fileInterface currentOffsetWithError:error];
 
   return v5;
 }

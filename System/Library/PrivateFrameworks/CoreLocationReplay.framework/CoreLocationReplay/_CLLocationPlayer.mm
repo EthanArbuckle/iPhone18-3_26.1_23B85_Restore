@@ -1,18 +1,18 @@
 @interface _CLLocationPlayer
-- (BOOL)hasARSessionTimedOut:(double)a3;
+- (BOOL)hasARSessionTimedOut:(double)out;
 - (_CLLocationPlayer)init;
-- (id)_getFusedLocationFrom:(id)a3 machAbsTime:(double)a4;
-- (void)_updateARSessionState:(unint64_t)a3;
-- (void)_updateLocation:(CLDaemonLocation *)a3 locationPrivate:(void *)a4;
-- (void)_updateVIOEstimation:(id)a3;
-- (void)_updateVLLocalizationResult:(id)a3;
-- (void)closeARSessionWithState:(unint64_t)a3;
-- (void)convertCLLocation:(id)a3 machAbsTime:(double)a4 toDaemonLocation:(CLDaemonLocation *)a5 daemonLocationPrivate:(void *)a6;
+- (id)_getFusedLocationFrom:(id)from machAbsTime:(double)time;
+- (void)_updateARSessionState:(unint64_t)state;
+- (void)_updateLocation:(CLDaemonLocation *)location locationPrivate:(void *)private;
+- (void)_updateVIOEstimation:(id)estimation;
+- (void)_updateVLLocalizationResult:(id)result;
+- (void)closeARSessionWithState:(unint64_t)state;
+- (void)convertCLLocation:(id)location machAbsTime:(double)time toDaemonLocation:(CLDaemonLocation *)daemonLocation daemonLocationPrivate:(void *)private;
 - (void)dealloc;
-- (void)setEnableFusion:(BOOL)a3;
-- (void)setEnableSimulation:(BOOL)a3;
+- (void)setEnableFusion:(BOOL)fusion;
+- (void)setEnableSimulation:(BOOL)simulation;
 - (void)start;
-- (void)startARSessionWithState:(unint64_t)a3;
+- (void)startARSessionWithState:(unint64_t)state;
 - (void)stop;
 @end
 
@@ -49,7 +49,7 @@
   [(_CLLocationPlayer *)&v4 dealloc];
 }
 
-- (void)setEnableFusion:(BOOL)a3
+- (void)setEnableFusion:(BOOL)fusion
 {
   if ([(_CLLocationPlayer *)self isPlayerActive])
   {
@@ -68,11 +68,11 @@
 
   else
   {
-    self->_fusionEnabled = a3;
+    self->_fusionEnabled = fusion;
   }
 }
 
-- (void)setEnableSimulation:(BOOL)a3
+- (void)setEnableSimulation:(BOOL)simulation
 {
   if ([(_CLLocationPlayer *)self isPlayerActive])
   {
@@ -91,7 +91,7 @@
 
   else
   {
-    self->_simulationEnabled = a3;
+    self->_simulationEnabled = simulation;
   }
 }
 
@@ -148,12 +148,12 @@
   objc_sync_exit(self);
 }
 
-- (void)_updateARSessionState:(unint64_t)a3
+- (void)_updateARSessionState:(unint64_t)state
 {
   objc_sync_enter(self);
   if ([(_CLLocationPlayer *)self isPlayerActive])
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       if ([(_CLLocationPlayer *)self isNotifierActive])
       {
@@ -177,7 +177,7 @@
 
     else
     {
-      [(_CLLocationPlayer *)self closeARSessionWithState:a3];
+      [(_CLLocationPlayer *)self closeARSessionWithState:state];
     }
   }
 
@@ -199,15 +199,15 @@
   objc_sync_exit(self);
 }
 
-- (void)_updateVIOEstimation:(id)a3
+- (void)_updateVIOEstimation:(id)estimation
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   if ([(_CLLocationPlayer *)self isPlayerActive])
   {
-    if (a3)
+    if (estimation)
     {
-      [a3 timestamp];
+      [estimation timestamp];
       if ([(_CLLocationPlayer *)self hasARSessionTimedOut:?])
       {
         if (qword_27EE33DE8 != -1)
@@ -218,7 +218,7 @@
         v5 = qword_27EE33DF0;
         if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_ERROR))
         {
-          [a3 timestamp];
+          [estimation timestamp];
           v7 = v6;
           [(_CLLocationPlayer *)self notifierLastARKitUpdateTime];
           v13 = 134349312;
@@ -248,11 +248,11 @@
         [(_CLLocationPlayer *)self startARSessionWithState:1];
       }
 
-      [a3 timestamp];
+      [estimation timestamp];
       [(_CLLocationPlayer *)self setNotifierLastARKitUpdateTime:?];
       if ([(_CLLocationPlayer *)self isFusionEnabled])
       {
-        sub_245B4DD0C(&self->_locationFuser, a3);
+        sub_245B4DD0C(&self->_locationFuser, estimation);
       }
 
       goto LABEL_26;
@@ -294,15 +294,15 @@ LABEL_26:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateVLLocalizationResult:(id)a3
+- (void)_updateVLLocalizationResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   if ([(_CLLocationPlayer *)self isPlayerActive])
   {
-    if (a3)
+    if (result)
     {
-      [a3 timestamp];
+      [result timestamp];
       if ([(_CLLocationPlayer *)self hasARSessionTimedOut:?])
       {
         if (qword_27EE33DE8 != -1)
@@ -313,7 +313,7 @@ LABEL_26:
         v5 = qword_27EE33DF0;
         if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_ERROR))
         {
-          [a3 timestamp];
+          [result timestamp];
           v7 = v6;
           [(_CLLocationPlayer *)self notifierLastARKitUpdateTime];
           v13 = 134349312;
@@ -343,7 +343,7 @@ LABEL_26:
         [(_CLLocationPlayer *)self startARSessionWithState:1];
       }
 
-      [a3 timestamp];
+      [result timestamp];
       [(_CLLocationPlayer *)self setNotifierLastARKitUpdateTime:?];
       if ([(_CLLocationPlayer *)self isFusionEnabled])
       {
@@ -389,7 +389,7 @@ LABEL_26:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getFusedLocationFrom:(id)a3 machAbsTime:(double)a4
+- (id)_getFusedLocationFrom:(id)from machAbsTime:(double)time
 {
   objc_sync_enter(self);
   if (![(_CLLocationPlayer *)self isPlayerActive])
@@ -410,7 +410,7 @@ LABEL_26:
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!from)
   {
     if (qword_27EE33DE8 != -1)
     {
@@ -449,7 +449,7 @@ LABEL_19:
   HIDWORD(v36) = 0x7FFFFFFF;
   memset(v37, 0, 25);
   sub_245B46F34(buf);
-  [(_CLLocationPlayer *)self convertCLLocation:a3 machAbsTime:v34 toDaemonLocation:buf daemonLocationPrivate:a4];
+  [(_CLLocationPlayer *)self convertCLLocation:from machAbsTime:v34 toDaemonLocation:buf daemonLocationPrivate:time];
   [(_CLLocationPlayer *)self _updateLocation:v34 locationPrivate:buf];
   if ([(_CLLocationPlayer *)self isFusionEnabled])
   {
@@ -494,57 +494,57 @@ LABEL_20:
   return v14;
 }
 
-- (void)startARSessionWithState:(unint64_t)a3
+- (void)startARSessionWithState:(unint64_t)state
 {
   [(_CLLocationPlayer *)self setNotifierActive:1];
   [(_CLLocationPlayer *)self setNotifierLastARKitUpdateTime:-1.0];
-  [(_CLLocationPlayer *)self setArSessionActive:a3 == 1];
+  [(_CLLocationPlayer *)self setArSessionActive:state == 1];
   if ([(_CLLocationPlayer *)self isFusionEnabled])
   {
 
-    sub_245B4D8EC(&self->_locationFuser, a3);
+    sub_245B4D8EC(&self->_locationFuser, state);
   }
 }
 
-- (void)closeARSessionWithState:(unint64_t)a3
+- (void)closeARSessionWithState:(unint64_t)state
 {
   [(_CLLocationPlayer *)self setNotifierActive:0];
   [(_CLLocationPlayer *)self setNotifierLastARKitUpdateTime:-1.0];
-  [(_CLLocationPlayer *)self setArSessionActive:a3 == 1];
+  [(_CLLocationPlayer *)self setArSessionActive:state == 1];
   if ([(_CLLocationPlayer *)self isFusionEnabled])
   {
 
-    sub_245B4D8EC(&self->_locationFuser, a3);
+    sub_245B4D8EC(&self->_locationFuser, state);
   }
 }
 
-- (BOOL)hasARSessionTimedOut:(double)a3
+- (BOOL)hasARSessionTimedOut:(double)out
 {
-  v5 = [(_CLLocationPlayer *)self isNotifierActive];
-  if (v5)
+  isNotifierActive = [(_CLLocationPlayer *)self isNotifierActive];
+  if (isNotifierActive)
   {
     [(_CLLocationPlayer *)self notifierLastARKitUpdateTime];
     if (v6 <= 0.0)
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(isNotifierActive) = 0;
     }
 
     else
     {
       [(_CLLocationPlayer *)self notifierLastARKitUpdateTime];
-      LOBYTE(v5) = vabdd_f64(a3, v7) > 10.0;
+      LOBYTE(isNotifierActive) = vabdd_f64(out, v7) > 10.0;
     }
   }
 
-  return v5;
+  return isNotifierActive;
 }
 
-- (void)convertCLLocation:(id)a3 machAbsTime:(double)a4 toDaemonLocation:(CLDaemonLocation *)a5 daemonLocationPrivate:(void *)a6
+- (void)convertCLLocation:(id)location machAbsTime:(double)time toDaemonLocation:(CLDaemonLocation *)daemonLocation daemonLocationPrivate:(void *)private
 {
   v66 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (location)
   {
-    [a3 clientLocation];
+    [location clientLocation];
   }
 
   else
@@ -553,39 +553,39 @@ LABEL_20:
   }
 
   v10 = *&v58[112];
-  *&a5->var11 = *&v58[96];
-  a5->var13 = v10;
-  *&a5->var14 = *&v58[128];
-  *&a5->var16 = *&v58[140];
+  *&daemonLocation->var11 = *&v58[96];
+  daemonLocation->var13 = v10;
+  *&daemonLocation->var14 = *&v58[128];
+  *&daemonLocation->var16 = *&v58[140];
   v11 = *&v58[48];
-  *&a5->var3 = *&v58[32];
-  *&a5->var5 = v11;
+  *&daemonLocation->var3 = *&v58[32];
+  *&daemonLocation->var5 = v11;
   v12 = *&v58[80];
-  *&a5->var7 = *&v58[64];
-  *&a5->var9 = v12;
+  *&daemonLocation->var7 = *&v58[64];
+  *&daemonLocation->var9 = v12;
   v13 = *&v58[16];
-  *&a5->var0 = *v58;
-  *&a5->var1.var1 = v13;
+  *&daemonLocation->var0 = *v58;
+  *&daemonLocation->var1.var1 = v13;
   sub_245B46F34(v58);
-  memcpy(a6, v58, 0x201uLL);
+  memcpy(private, v58, 0x201uLL);
   v14 = v59;
   v59 = 0u;
-  v15 = *(a6 + 66);
-  *(a6 + 520) = v14;
+  v15 = *(private + 66);
+  *(private + 520) = v14;
   if (v15)
   {
     sub_245B4720C(v15);
     v16 = *(&v59 + 1);
     v17 = v65[0];
-    *(a6 + 600) = v64;
-    *(a6 + 616) = v17;
-    *(a6 + 625) = *(v65 + 9);
+    *(private + 600) = v64;
+    *(private + 616) = v17;
+    *(private + 625) = *(v65 + 9);
     v18 = v61;
-    *(a6 + 536) = v60;
-    *(a6 + 552) = v18;
+    *(private + 536) = v60;
+    *(private + 552) = v18;
     v19 = v63;
-    *(a6 + 568) = v62;
-    *(a6 + 584) = v19;
+    *(private + 568) = v62;
+    *(private + 584) = v19;
     if (v16)
     {
       sub_245B4720C(v16);
@@ -595,85 +595,85 @@ LABEL_20:
   else
   {
     v20 = v65[0];
-    *(a6 + 600) = v64;
-    *(a6 + 616) = v20;
-    *(a6 + 625) = *(v65 + 9);
+    *(private + 600) = v64;
+    *(private + 616) = v20;
+    *(private + 625) = *(v65 + 9);
     v21 = v61;
-    *(a6 + 536) = v60;
-    *(a6 + 552) = v21;
+    *(private + 536) = v60;
+    *(private + 552) = v21;
     v22 = v63;
-    *(a6 + 568) = v62;
-    *(a6 + 584) = v22;
+    *(private + 568) = v62;
+    *(private + 584) = v22;
   }
 
-  *(a6 + 4) = a4;
-  *(a6 + 43) = a4;
-  v23 = [a3 matchInfo];
-  if (v23)
+  *(private + 4) = time;
+  *(private + 43) = time;
+  matchInfo = [location matchInfo];
+  if (matchInfo)
   {
-    v24 = v23;
-    *(a6 + 14) = [v23 matchQuality];
+    v24 = matchInfo;
+    *(private + 14) = [matchInfo matchQuality];
     [v24 matchCoordinate];
-    *(a6 + 8) = v25;
+    *(private + 8) = v25;
     [v24 matchCoordinate];
-    *(a6 + 9) = v26;
+    *(private + 9) = v26;
     [v24 matchCourse];
-    *(a6 + 10) = v27;
-    *(a6 + 22) = [v24 matchFormOfWay];
-    *(a6 + 23) = [v24 matchRoadClass];
-    *(a6 + 96) = [v24 isMatchShifted];
+    *(private + 10) = v27;
+    *(private + 22) = [v24 matchFormOfWay];
+    *(private + 23) = [v24 matchRoadClass];
+    *(private + 96) = [v24 isMatchShifted];
     [objc_msgSend(v24 "matchDataArray")];
   }
 
-  v28 = [a3 _groundAltitude];
-  if (v28)
+  _groundAltitude = [location _groundAltitude];
+  if (_groundAltitude)
   {
-    v29 = v28;
-    [v28 estimate];
-    *(a6 + 47) = v30;
+    v29 = _groundAltitude;
+    [_groundAltitude estimate];
+    *(private + 47) = v30;
     [v29 uncertainty];
-    *(a6 + 48) = v31;
+    *(private + 48) = v31;
     [v29 undulation];
     *&v32 = v32;
-    *(a6 + 79) = LODWORD(v32);
-    v33 = [v29 undulationModel];
+    *(private + 79) = LODWORD(v32);
+    undulationModel = [v29 undulationModel];
   }
 
   else
   {
-    if (![a3 isAltitudeWgs84Available])
+    if (![location isAltitudeWgs84Available])
     {
       goto LABEL_15;
     }
 
-    *(a6 + 47) = 0;
-    *(a6 + 48) = 0xBFF0000000000000;
-    [a3 altitudeWgs84];
+    *(private + 47) = 0;
+    *(private + 48) = 0xBFF0000000000000;
+    [location altitudeWgs84];
     v35 = v34;
-    [a3 altitude];
+    [location altitude];
     *&v36 = v35 - v36;
-    *(a6 + 79) = LODWORD(v36);
-    v33 = 1;
+    *(private + 79) = LODWORD(v36);
+    undulationModel = 1;
   }
 
-  *(a6 + 78) = v33;
+  *(private + 78) = undulationModel;
 LABEL_15:
-  [a3 rawHorizontalAccuracy];
-  *(a6 + 49) = v37;
-  [a3 rawAltitude];
-  *(a6 + 50) = v38;
-  [a3 rawVerticalAccuracy];
-  *(a6 + 51) = v39;
-  [a3 rawCourseAccuracy];
-  *(a6 + 52) = v40;
-  [a3 trustedTimestamp];
-  *(a6 + 3) = v41;
-  [a3 rawHorizontalAccuracy];
-  [a3 rawHorizontalAccuracy];
+  [location rawHorizontalAccuracy];
+  *(private + 49) = v37;
+  [location rawAltitude];
+  *(private + 50) = v38;
+  [location rawVerticalAccuracy];
+  *(private + 51) = v39;
+  [location rawCourseAccuracy];
+  *(private + 52) = v40;
+  [location trustedTimestamp];
+  *(private + 3) = v41;
+  [location rawHorizontalAccuracy];
+  [location rawHorizontalAccuracy];
   if (v42 >= 0.0)
   {
-    *(&a5->var0 + 1) = *(&a5->var11 + 4);
-    *(&a5->var1.var1 + 4) = *(a6 + 49);
+    *(&daemonLocation->var0 + 1) = *(&daemonLocation->var11 + 4);
+    *(&daemonLocation->var1.var1 + 4) = *(private + 49);
     v46 = 132;
     v47 = 136;
   }
@@ -688,9 +688,9 @@ LABEL_15:
     v43 = qword_27EE33DF0;
     if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_DEBUG))
     {
-      [a3 rawHorizontalAccuracy];
+      [location rawHorizontalAccuracy];
       *v58 = 134349312;
-      *&v58[4] = a4;
+      *&v58[4] = time;
       *&v58[12] = 2050;
       *&v58[14] = v44;
       _os_log_impl(&dword_245B46000, v43, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Input does not have valid rawCoordinate,machAbsTime,%{public}.3f,rawHorzAcc,%{public}.3f", v58, 0x16u);
@@ -707,18 +707,18 @@ LABEL_15:
       _os_log_impl(&dword_245B46000, v45, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Will use coordinate instead of rawCoordinate", v58, 2u);
     }
 
-    *(&a5->var11 + 4) = *(&a5->var0 + 1);
-    *(a6 + 49) = *(&a5->var1.var1 + 4);
+    *(&daemonLocation->var11 + 4) = *(&daemonLocation->var0 + 1);
+    *(private + 49) = *(&daemonLocation->var1.var1 + 4);
     v46 = 136;
     v47 = 132;
   }
 
-  *(&a5->var0 + v46) = *(&a5->var0 + v47);
-  [a3 rawVerticalAccuracy];
-  [a3 rawVerticalAccuracy];
+  *(&daemonLocation->var0 + v46) = *(&daemonLocation->var0 + v47);
+  [location rawVerticalAccuracy];
+  [location rawVerticalAccuracy];
   if (v48 >= 0.0)
   {
-    *(&a5->var2 + 4) = *(a6 + 25);
+    *(&daemonLocation->var2 + 4) = *(private + 25);
   }
 
   else
@@ -731,9 +731,9 @@ LABEL_15:
     v49 = qword_27EE33DF0;
     if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_DEBUG))
     {
-      [a3 rawVerticalAccuracy];
+      [location rawVerticalAccuracy];
       *v58 = 134349312;
-      *&v58[4] = a4;
+      *&v58[4] = time;
       *&v58[12] = 2050;
       *&v58[14] = v50;
       _os_log_impl(&dword_245B46000, v49, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Input does not have valid rawAltitude,machAbsTime,%{public}.3f,rawVertAcc,%{public}.3f", v58, 0x16u);
@@ -750,15 +750,15 @@ LABEL_15:
       _os_log_impl(&dword_245B46000, v51, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Will use altitude instead of rawAltitude", v58, 2u);
     }
 
-    *(a6 + 25) = *(&a5->var2 + 4);
+    *(private + 25) = *(&daemonLocation->var2 + 4);
   }
 
-  [a3 rawCourseAccuracy];
-  [a3 rawCourseAccuracy];
-  if (v52 >= 0.0 && ([a3 rawCourse], objc_msgSend(a3, "rawCourse"), v53 >= 0.0))
+  [location rawCourseAccuracy];
+  [location rawCourseAccuracy];
+  if (v52 >= 0.0 && ([location rawCourse], objc_msgSend(location, "rawCourse"), v53 >= 0.0))
   {
-    *(&a5->var6 + 4) = *(&a5->var13.var0 + 4);
-    *(&a5->var7 + 4) = *(a6 + 52);
+    *(&daemonLocation->var6 + 4) = *(&daemonLocation->var13.var0 + 4);
+    *(&daemonLocation->var7 + 4) = *(private + 52);
   }
 
   else
@@ -771,9 +771,9 @@ LABEL_15:
     v54 = qword_27EE33DF0;
     if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_DEBUG))
     {
-      [a3 rawCourseAccuracy];
+      [location rawCourseAccuracy];
       *v58 = 134349312;
-      *&v58[4] = a4;
+      *&v58[4] = time;
       *&v58[12] = 2050;
       *&v58[14] = v55;
       _os_log_impl(&dword_245B46000, v54, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Input does not have valid rawCourse,machAbsTime,%{public}.3f,rawCourseAcc,%{public}.3f", v58, 0x16u);
@@ -790,30 +790,30 @@ LABEL_15:
       _os_log_impl(&dword_245B46000, v56, OS_LOG_TYPE_DEBUG, "CLLP,convertCLLocation:toDaemonLocation:daemonLocationPrivate:,Will use course instead of rawCourse", v58, 2u);
     }
 
-    *(&a5->var13.var0 + 4) = *(&a5->var6 + 4);
-    *(a6 + 52) = *(&a5->var7 + 4);
+    *(&daemonLocation->var13.var0 + 4) = *(&daemonLocation->var6 + 4);
+    *(private + 52) = *(&daemonLocation->var7 + 4);
   }
 
-  *(a6 + 212) = 0;
-  *(a6 + 27) = *(&a5->var0 + 1);
-  *(a6 + 56) = *(&a5->var1.var1 + 4);
-  *(a6 + 114) = HIDWORD(a5->var14);
-  *(a6 + 29) = *(&a5->var2 + 4);
-  *(a6 + 30) = *(&a5->var6 + 4);
+  *(private + 212) = 0;
+  *(private + 27) = *(&daemonLocation->var0 + 1);
+  *(private + 56) = *(&daemonLocation->var1.var1 + 4);
+  *(private + 114) = HIDWORD(daemonLocation->var14);
+  *(private + 29) = *(&daemonLocation->var2 + 4);
+  *(private + 30) = *(&daemonLocation->var6 + 4);
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateLocation:(CLDaemonLocation *)a3 locationPrivate:(void *)a4
+- (void)_updateLocation:(CLDaemonLocation *)location locationPrivate:(void *)private
 {
   v18 = *MEMORY[0x277D85DE8];
   if (![(_CLLocationPlayer *)self isARSessionActive])
   {
-    if (![(_CLLocationPlayer *)self isFusionEnabled]|| !self->_locationFuser.activated_ && ((v7 = self->_locationFuser.lastValidVlf_.t.mach_abs, v8 = vabdd_f64(*(a4 + 4), v7), v7 > 0.0) ? (v9 = v8 <= 24.0) : (v9 = 0), !v9))
+    if (![(_CLLocationPlayer *)self isFusionEnabled]|| !self->_locationFuser.activated_ && ((v7 = self->_locationFuser.lastValidVlf_.t.mach_abs, v8 = vabdd_f64(*(private + 4), v7), v7 > 0.0) ? (v9 = v8 <= 24.0) : (v9 = 0), !v9))
     {
       if ([(_CLLocationPlayer *)self isFusionEnabled]&& !self->_locationFuser.activated_)
       {
         mach_abs = self->_locationFuser.lastValidVlf_.t.mach_abs;
-        v12 = vabdd_f64(*(a4 + 4), mach_abs) > 24.0 || mach_abs <= 0.0;
+        v12 = vabdd_f64(*(private + 4), mach_abs) > 24.0 || mach_abs <= 0.0;
         if (v12 && mach_abs > 0.0)
         {
           sub_245B4C854(&self->_locationFuser);
@@ -825,7 +825,7 @@ LABEL_15:
           v13 = qword_27EE33DF0;
           if (os_log_type_enabled(qword_27EE33DF0, OS_LOG_TYPE_DEBUG))
           {
-            v14 = *(a4 + 4);
+            v14 = *(private + 4);
             v16 = 134349056;
             v17 = v14;
             _os_log_impl(&dword_245B46000, v13, OS_LOG_TYPE_DEBUG, "CLLP,_updateLocation:locationPrivate:,Manual location fuser reset,machAbsTime,%{public}.3lf", &v16, 0xCu);
@@ -846,7 +846,7 @@ LABEL_24:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  sub_245B5108C(&self->_locationFuser, a3, a4);
+  sub_245B5108C(&self->_locationFuser, location, private);
 }
 
 @end

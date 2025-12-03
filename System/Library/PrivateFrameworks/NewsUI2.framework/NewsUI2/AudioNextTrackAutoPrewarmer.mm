@@ -1,6 +1,6 @@
 @interface AudioNextTrackAutoPrewarmer
 - (_TtC7NewsUI227AudioNextTrackAutoPrewarmer)init;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation AudioNextTrackAutoPrewarmer
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v3 = self;
+  selfCopy = self;
   sub_21875E404();
 }
 

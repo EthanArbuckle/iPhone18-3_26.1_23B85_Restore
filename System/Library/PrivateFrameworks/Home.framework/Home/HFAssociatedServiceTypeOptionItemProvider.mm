@@ -1,63 +1,63 @@
 @interface HFAssociatedServiceTypeOptionItemProvider
-+ (id)_allItemsForService:(id)a3 serviceType:(id)a4;
-+ (id)_itemForService:(id)a3 associatedServiceType:(id)a4;
-- (HFAssociatedServiceTypeOptionItemProvider)initWithItems:(id)a3;
-- (HFAssociatedServiceTypeOptionItemProvider)initWithService:(id)a3 serviceType:(id)a4 home:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_allItemsForService:(id)service serviceType:(id)type;
++ (id)_itemForService:(id)service associatedServiceType:(id)type;
+- (HFAssociatedServiceTypeOptionItemProvider)initWithItems:(id)items;
+- (HFAssociatedServiceTypeOptionItemProvider)initWithService:(id)service serviceType:(id)type home:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFAssociatedServiceTypeOptionItemProvider
 
-- (HFAssociatedServiceTypeOptionItemProvider)initWithItems:(id)a3
+- (HFAssociatedServiceTypeOptionItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithServiceType_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFAssociatedServiceTypeOptionItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFAssociatedServiceTypeOptionItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAssociatedServiceTypeOptionItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HFAssociatedServiceTypeOptionItemProvider initWithItems:]", v6}];
 
   return 0;
 }
 
-- (HFAssociatedServiceTypeOptionItemProvider)initWithService:(id)a3 serviceType:(id)a4 home:(id)a5
+- (HFAssociatedServiceTypeOptionItemProvider)initWithService:(id)service serviceType:(id)type home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [objc_opt_class() _allItemsForService:v9 serviceType:v10];
+  serviceCopy = service;
+  typeCopy = type;
+  homeCopy = home;
+  v12 = [objc_opt_class() _allItemsForService:serviceCopy serviceType:typeCopy];
   v15.receiver = self;
   v15.super_class = HFAssociatedServiceTypeOptionItemProvider;
   v13 = [(HFStaticItemProvider *)&v15 initWithItems:v12];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_home, a5);
-    objc_storeStrong(&v13->_serviceType, a4);
-    objc_storeStrong(&v13->_service, a3);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v13->_serviceType, type);
+    objc_storeStrong(&v13->_service, service);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAssociatedServiceTypeOptionItemProvider *)self service];
-  v6 = [(HFAssociatedServiceTypeOptionItemProvider *)self serviceType];
-  v7 = [(HFAssociatedServiceTypeOptionItemProvider *)self home];
-  v8 = [v4 initWithService:v5 serviceType:v6 home:v7];
+  service = [(HFAssociatedServiceTypeOptionItemProvider *)self service];
+  serviceType = [(HFAssociatedServiceTypeOptionItemProvider *)self serviceType];
+  home = [(HFAssociatedServiceTypeOptionItemProvider *)self home];
+  v8 = [v4 initWithService:service serviceType:serviceType home:home];
 
   return v8;
 }
 
-+ (id)_allItemsForService:(id)a3 serviceType:(id)a4
++ (id)_allItemsForService:(id)service serviceType:(id)type
 {
-  v6 = a3;
-  v7 = [HFAssociatedServiceTypeFactory associatedServiceTypesSetFor:a4];
+  serviceCopy = service;
+  v7 = [HFAssociatedServiceTypeFactory associatedServiceTypesSetFor:type];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __77__HFAssociatedServiceTypeOptionItemProvider__allItemsForService_serviceType___block_invoke;
   v17 = &unk_277DFDF30;
-  v19 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = serviceCopy;
   v18 = v8;
   v9 = [v7 na_map:&v14];
   v10 = v9;
@@ -76,13 +76,13 @@
   return v12;
 }
 
-+ (id)_itemForService:(id)a3 associatedServiceType:(id)a4
++ (id)_itemForService:(id)service associatedServiceType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CD1D90] hf_userFriendlyLocalizedCapitalizedDescription:v6];
-  v8 = [v5 serviceSubtype];
-  v9 = [HFServiceIconFactory defaultIconDescriptorForServiceType:v6 serviceSubtype:v8];
+  serviceCopy = service;
+  typeCopy = type;
+  v7 = [MEMORY[0x277CD1D90] hf_userFriendlyLocalizedCapitalizedDescription:typeCopy];
+  serviceSubtype = [serviceCopy serviceSubtype];
+  v9 = [HFServiceIconFactory defaultIconDescriptorForServiceType:typeCopy serviceSubtype:serviceSubtype];
 
   if (v7)
   {
@@ -96,7 +96,7 @@
 
   if (v10)
   {
-    NSLog(&cfstr_MissingTitleOr.isa, v6);
+    NSLog(&cfstr_MissingTitleOr.isa, typeCopy);
     v12 = 0;
   }
 
@@ -109,8 +109,8 @@
     v14[3] = &unk_277DFDF58;
     v15 = v7;
     v16 = v9;
-    v17 = v6;
-    v18 = v5;
+    v17 = typeCopy;
+    v18 = serviceCopy;
     v12 = [(HFStaticItem *)v11 initWithResultsBlock:v14];
   }
 

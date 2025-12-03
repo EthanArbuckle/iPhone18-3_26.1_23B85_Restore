@@ -1,24 +1,24 @@
 @interface VolumeManagerDelegate
-- (id)childConnectionForDevice:(id)a3;
-- (void)LiveMountService:(id)a3 addDisk:(id)a4 fileSystemType:(id)a5 reply:(id)a6;
-- (void)LiveMountService:(id)a3 addVolume:(id)a4 atServer:(id)a5 credentialType:(int64_t)a6 credential:(id)a7 reply:(id)a8;
-- (void)LiveMountService:(id)a3 ejectDisk:(id)a4 usingFlags:(unsigned int)a5 reply:(id)a6;
-- (void)LiveMountService:(id)a3 ejectVolume:(id)a4 named:(id)a5 withFlags:(unsigned int)a6 reply:(id)a7;
-- (void)LiveMountService:(id)a3 ejectVolumeCluster:(id)a4 withFlags:(unsigned int)a5 reply:(id)a6;
-- (void)LiveMountService:(id)a3 sharesAtServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6 reply:(id)a7;
-- (void)handleInvalidation:(id)a3 fileSystemType:(id)a4 service:(id)a5;
+- (id)childConnectionForDevice:(id)device;
+- (void)LiveMountService:(id)service addDisk:(id)disk fileSystemType:(id)type reply:(id)reply;
+- (void)LiveMountService:(id)service addVolume:(id)volume atServer:(id)server credentialType:(int64_t)type credential:(id)credential reply:(id)reply;
+- (void)LiveMountService:(id)service ejectDisk:(id)disk usingFlags:(unsigned int)flags reply:(id)reply;
+- (void)LiveMountService:(id)service ejectVolume:(id)volume named:(id)named withFlags:(unsigned int)flags reply:(id)reply;
+- (void)LiveMountService:(id)service ejectVolumeCluster:(id)cluster withFlags:(unsigned int)flags reply:(id)reply;
+- (void)LiveMountService:(id)service sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential reply:(id)reply;
+- (void)handleInvalidation:(id)invalidation fileSystemType:(id)type service:(id)service;
 @end
 
 @implementation VolumeManagerDelegate
 
-- (void)handleInvalidation:(id)a3 fileSystemType:(id)a4 service:(id)a5
+- (void)handleInvalidation:(id)invalidation fileSystemType:(id)type service:(id)service
 {
-  v5 = a3;
+  invalidationCopy = invalidation;
   v6 = qword_10000D340;
   if (os_log_type_enabled(qword_10000D340, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = invalidationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Connection Interrupted for UVFSService UUID: %@", buf, 0xCu);
   }
 
@@ -27,17 +27,17 @@
   block[1] = 3221225472;
   block[2] = sub_100001F7C;
   block[3] = &unk_1000082C0;
-  v10 = v5;
-  v8 = v5;
+  v10 = invalidationCopy;
+  v8 = invalidationCopy;
   dispatch_async(v7, block);
 }
 
-- (void)LiveMountService:(id)a3 addDisk:(id)a4 fileSystemType:(id)a5 reply:(id)a6
+- (void)LiveMountService:(id)service addDisk:(id)disk fileSystemType:(id)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v38 = a6;
+  serviceCopy = service;
+  diskCopy = disk;
+  typeCopy = type;
+  replyCopy = reply;
   v13 = objc_opt_new();
   v67 = 0;
   v68 = &v67;
@@ -60,9 +60,9 @@
   if (os_log_type_enabled(qword_10000D340, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v72 = v11;
+    v72 = diskCopy;
     v73 = 2112;
-    v74 = v12;
+    v74 = typeCopy;
     v75 = 2112;
     v76 = v13;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "liveFSService:delegate:addDisk:%@:fileSystemType:%@:start:%@", buf, 0x20u);
@@ -87,16 +87,16 @@
   objc_copyWeak(&v56, &location);
   v20 = v13;
   v53 = v20;
-  v21 = v12;
+  v21 = typeCopy;
   v54 = v21;
-  v22 = v10;
+  v22 = serviceCopy;
   v55 = v22;
   [v16 setInterruptionHandler:v52];
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_100002BD8;
   v50[3] = &unk_1000082C0;
-  v23 = v11;
+  v23 = diskCopy;
   v51 = v23;
   [v16 setInvalidationHandler:v50];
   v24 = [[ChildProcess alloc] initForDevice:v23 withConnection:v16];
@@ -139,7 +139,7 @@
       sub_1000043D0(v65);
     }
 
-    (*(v38 + 2))(v38, *(v65[0] + 40), 0);
+    (*(replyCopy + 2))(replyCopy, *(v65[0] + 40), 0);
   }
 
   else
@@ -188,7 +188,7 @@
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "liveFSService:delegate:addDisk:%@:fileSystemType:%@:finish:%@,%@", buf, 0x2Au);
     }
 
-    (*(v38 + 2))(v38, *(v65[0] + 40), v59[5]);
+    (*(replyCopy + 2))(replyCopy, *(v65[0] + 40), v59[5]);
   }
 
   objc_destroyWeak(&v56);
@@ -199,9 +199,9 @@
   _Block_object_dispose(&v67, 8);
 }
 
-- (id)childConnectionForDevice:(id)a3
+- (id)childConnectionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (os_log_type_enabled(qword_10000D340, OS_LOG_TYPE_DEBUG))
   {
     sub_100004524();
@@ -209,7 +209,7 @@
 
   v4 = qword_10000D328;
   objc_sync_enter(v4);
-  v5 = [qword_10000D328 objectForKeyedSubscript:v3];
+  v5 = [qword_10000D328 objectForKeyedSubscript:deviceCopy];
   objc_sync_exit(v4);
 
   v6 = qword_10000D340;
@@ -221,12 +221,12 @@
   return v5;
 }
 
-- (void)LiveMountService:(id)a3 ejectDisk:(id)a4 usingFlags:(unsigned int)a5 reply:(id)a6
+- (void)LiveMountService:(id)service ejectDisk:(id)disk usingFlags:(unsigned int)flags reply:(id)reply
 {
-  v25 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = v9;
+  serviceCopy = service;
+  diskCopy = disk;
+  replyCopy = reply;
+  v11 = diskCopy;
   v35 = 0;
   v36[0] = &v35;
   v36[1] = 0x3032000000;
@@ -251,7 +251,7 @@
   if (v14)
   {
     v15 = dispatch_semaphore_create(0);
-    v16 = [v14 helper];
+    helper = [v14 helper];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10000333C;
@@ -259,9 +259,9 @@
     v34 = &v35;
     v17 = v15;
     v33 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v32];
+    v18 = [helper remoteObjectProxyWithErrorHandler:v32];
 
-    v19 = a5;
+    flagsCopy = flags;
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10000339C;
@@ -269,7 +269,7 @@
     v31 = &v35;
     v20 = v17;
     v30 = v20;
-    [v18 ejectVolumesForDevice:v11 how:v19 withReply:v29];
+    [v18 ejectVolumesForDevice:v11 how:flagsCopy withReply:v29];
     dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
     if ([*(v36[0] + 40) code] == 16)
     {
@@ -319,17 +319,17 @@
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s:%@:finish:%@", buf, 0x20u);
   }
 
-  v10[2](v10, *(v36[0] + 40));
+  replyCopy[2](replyCopy, *(v36[0] + 40));
 
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)LiveMountService:(id)a3 ejectVolume:(id)a4 named:(id)a5 withFlags:(unsigned int)a6 reply:(id)a7
+- (void)LiveMountService:(id)service ejectVolume:(id)volume named:(id)named withFlags:(unsigned int)flags reply:(id)reply
 {
-  v25 = a3;
-  v24 = a4;
-  v11 = a5;
-  v12 = a7;
+  serviceCopy = service;
+  volumeCopy = volume;
+  namedCopy = named;
+  replyCopy = reply;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -342,7 +342,7 @@
     *buf = 136315394;
     *&buf[4] = "[VolumeManagerDelegate LiveMountService:ejectVolume:named:withFlags:reply:]";
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = namedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s:%@:start", buf, 0x16u);
   }
 
@@ -351,8 +351,8 @@
   v31[2] = sub_1000038E0;
   v31[3] = &unk_100008388;
   v31[4] = &v32;
-  [v25 listVolumes:v31];
-  v14 = [v33[5] objectForKeyedSubscript:v11];
+  [serviceCopy listVolumes:v31];
+  v14 = [v33[5] objectForKeyedSubscript:namedCopy];
   if (v14)
   {
     v29 = 0u;
@@ -361,7 +361,7 @@
     v28 = 0u;
     v15 = v33[5];
     v16 = [v15 countByEnumeratingWithState:&v27 objects:v42 count:16];
-    v23 = a6;
+    flagsCopy = flags;
     v17 = 0;
     if (v16)
     {
@@ -405,7 +405,7 @@
       v26[2] = sub_100003934;
       v26[3] = &unk_1000083B0;
       v26[4] = buf;
-      [v25 ejectDisk:v14 usingFlags:v23 reply:v26];
+      [serviceCopy ejectDisk:v14 usingFlags:flagsCopy reply:v26];
       if (*(*&buf[8] + 40))
       {
         if (os_log_type_enabled(qword_10000D340, OS_LOG_TYPE_ERROR))
@@ -429,34 +429,34 @@
     *buf = 136315394;
     *&buf[4] = "[VolumeManagerDelegate LiveMountService:ejectVolume:named:withFlags:reply:]";
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = namedCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s:%@:finish", buf, 0x16u);
   }
 
-  v12[2](v12, 0);
+  replyCopy[2](replyCopy, 0);
 
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)LiveMountService:(id)a3 ejectVolumeCluster:(id)a4 withFlags:(unsigned int)a5 reply:(id)a6
+- (void)LiveMountService:(id)service ejectVolumeCluster:(id)cluster withFlags:(unsigned int)flags reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  (*(a6 + 2))(v7, v8);
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)LiveMountService:(id)a3 addVolume:(id)a4 atServer:(id)a5 credentialType:(int64_t)a6 credential:(id)a7 reply:(id)a8
+- (void)LiveMountService:(id)service addVolume:(id)volume atServer:(id)server credentialType:(int64_t)type credential:(id)credential reply:(id)reply
 {
-  v9 = a8;
+  replyCopy = reply;
   v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  (*(a8 + 2))(v9, v10);
+  (*(reply + 2))(replyCopy, v10);
 }
 
-- (void)LiveMountService:(id)a3 sharesAtServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6 reply:(id)a7
+- (void)LiveMountService:(id)service sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential reply:(id)reply
 {
-  v8 = a7;
+  replyCopy = reply;
   v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  (*(a7 + 2))(v8, 0, v9);
+  (*(reply + 2))(replyCopy, 0, v9);
 }
 
 @end

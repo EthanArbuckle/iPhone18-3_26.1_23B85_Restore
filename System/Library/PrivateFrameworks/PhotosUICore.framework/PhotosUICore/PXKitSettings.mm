@@ -203,8 +203,8 @@ void __31__PXKitSettings_sharedInstance__block_invoke()
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v109 count:3];
   v37 = [v41 sectionWithRows:v36 title:@"PPT"];
   v115[5] = v37;
-  v38 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v115[6] = v38;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v115[6] = px_restoreDefaultsSection;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:7];
   v73 = [v72 moduleWithTitle:@"Kit" contents:v39];
 

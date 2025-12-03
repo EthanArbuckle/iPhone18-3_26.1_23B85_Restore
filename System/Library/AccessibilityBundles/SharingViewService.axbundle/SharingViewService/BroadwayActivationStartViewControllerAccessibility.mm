@@ -1,16 +1,16 @@
 @interface BroadwayActivationStartViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation BroadwayActivationStartViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BroadwayActivationStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"BroadwayActivationStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
-  [v3 validateClass:@"BroadwayActivationStartViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BroadwayActivationStartViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"BroadwayActivationStartViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BroadwayActivationStartViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
 }
 
 void __69__BroadwayActivationStartViewControllerAccessibility_viewWillAppear___block_invoke(uint64_t a1)

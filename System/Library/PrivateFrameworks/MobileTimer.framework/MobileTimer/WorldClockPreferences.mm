@@ -54,17 +54,17 @@
 - (BOOL)cityDataNeedsUpdate
 {
   v2 = CFPreferencesCopyAppValue(LatestUpdateVersion, @"com.apple.mobiletimer");
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 operatingSystemVersionString];
-  v5 = [v2 isEqualToString:v4];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  v5 = [v2 isEqualToString:operatingSystemVersionString];
 
   return v5 ^ 1;
 }
 
 - (void)cityDataUpdated
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  value = [v2 operatingSystemVersionString];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  value = [processInfo operatingSystemVersionString];
 
   CFPreferencesSetAppValue(LatestUpdateVersion, value, @"com.apple.mobiletimer");
 }

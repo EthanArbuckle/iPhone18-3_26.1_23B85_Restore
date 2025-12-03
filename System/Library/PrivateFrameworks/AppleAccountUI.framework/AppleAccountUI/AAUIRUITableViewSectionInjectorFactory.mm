@@ -1,24 +1,24 @@
 @interface AAUIRUITableViewSectionInjectorFactory
-+ (id)tableViewSectionInjectorForGPPRWithPage:(id)a3;
++ (id)tableViewSectionInjectorForGPPRWithPage:(id)page;
 @end
 
 @implementation AAUIRUITableViewSectionInjectorFactory
 
-+ (id)tableViewSectionInjectorForGPPRWithPage:(id)a3
++ (id)tableViewSectionInjectorForGPPRWithPage:(id)page
 {
-  v3 = a3;
-  v4 = [v3 tableViewOM];
-  v5 = [v4 tableView];
+  pageCopy = page;
+  tableViewOM = [pageCopy tableViewOM];
+  tableView = [tableViewOM tableView];
 
   v6 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifier:@"com.apple.onboarding.appleid"];
   [v6 setDisplayIcon:0];
-  v7 = [v6 view];
-  [v3 addChildViewController:v6];
-  [v6 didMoveToParentViewController:v3];
+  view = [v6 view];
+  [pageCopy addChildViewController:v6];
+  [v6 didMoveToParentViewController:pageCopy];
   v8 = [AAUIRUITableViewSectionInjector alloc];
-  v9 = [v3 tableViewOM];
+  tableViewOM2 = [pageCopy tableViewOM];
 
-  v10 = [(AAUIRUITableViewSectionInjector *)v8 initWithTableView:v5 ruiTableView:v9 injectWith:v7];
+  v10 = [(AAUIRUITableViewSectionInjector *)v8 initWithTableView:tableView ruiTableView:tableViewOM2 injectWith:view];
   [(AAUIRUITableViewSectionInjector *)v10 setInjectionType:@"InjectOnboardingDisclosureView"];
 
   return v10;

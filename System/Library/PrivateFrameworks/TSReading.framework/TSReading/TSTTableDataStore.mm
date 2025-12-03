@@ -1,44 +1,44 @@
 @interface TSTTableDataStore
-- (TSTTableDataStore)initWithOwner:(id)a3;
+- (TSTTableDataStore)initWithOwner:(id)owner;
 - (void)dealloc;
 - (void)validate;
 @end
 
 @implementation TSTTableDataStore
 
-- (TSTTableDataStore)initWithOwner:(id)a3
+- (TSTTableDataStore)initWithOwner:(id)owner
 {
   v10.receiver = self;
   v10.super_class = TSTTableDataStore;
   v4 = [(TSPContainedObject *)&v10 initWithOwner:?];
   if (v4)
   {
-    v5 = [a3 context];
+    context = [owner context];
     v4->mStorageVersion = 3;
     v4->mNextRowStripID = 0;
     v4->mNextColumnStripID = 0;
     v4->mCellCount = 0;
     v4->mCellCountValid = 1;
-    v4->mTileStorage = [[TSTTileIDKeyDict alloc] initWithOwner:a3];
-    v4->mRowHeaderStorage = [[TSTTableHeaderStorage alloc] initWithOwner:a3];
-    v4->mColumnHeaderStorageReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableHeaderStorageBucket alloc] initWithContext:v5]];
+    v4->mTileStorage = [[TSTTileIDKeyDict alloc] initWithOwner:owner];
+    v4->mRowHeaderStorage = [[TSTTableHeaderStorage alloc] initWithOwner:owner];
+    v4->mColumnHeaderStorageReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableHeaderStorageBucket alloc] initWithContext:context]];
     v4->mRowTileIndex = 0;
     v4->mColumnTileIndex = 0;
-    v6 = [[TSTTableTile alloc] initWithContext:v5];
+    v6 = [[TSTTableTile alloc] initWithContext:context];
     mNextRowStripID = v4->mNextRowStripID;
     v4->mNextRowStripID = mNextRowStripID + 1;
     [(TSTTileIDKeyDict *)v4->mTileStorage setTile:v6 forID:mNextRowStripID];
     v8 = TSTTableRBTreeNewNode(0, mNextRowStripID);
     v4->mRowTileIndex = TSTTableRBTreeInsert(v4->mRowTileIndex, v8);
-    v4->mStringTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:1 context:v5]];
-    v4->mStyleTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:4 context:v5]];
-    v4->mConditionalStyleSetTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:9 context:v5]];
-    v4->mFormatTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:2 context:v5]];
-    v4->mFormulaTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:3 context:v5]];
-    v4->mFormulaErrorTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:5 context:v5]];
-    v4->mRichTextPayloadTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:8 context:v5]];
-    v4->mCommentStorageTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:10 context:v5]];
-    v4->mMultipleChoiceListFormatTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:7 context:v5]];
+    v4->mStringTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:1 context:context]];
+    v4->mStyleTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:4 context:context]];
+    v4->mConditionalStyleSetTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:9 context:context]];
+    v4->mFormatTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:2 context:context]];
+    v4->mFormulaTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:3 context:context]];
+    v4->mFormulaErrorTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:5 context:context]];
+    v4->mRichTextPayloadTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:8 context:context]];
+    v4->mCommentStorageTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:10 context:context]];
+    v4->mMultipleChoiceListFormatTableReference = [[TSPLazyReference alloc] initWithTSPObject:[[TSTTableDataList alloc] initWithType:7 context:context]];
     v4->mPasteboardCustomFormatList = 0;
     v4->mMergedCellRanges = 0;
     v4->mDrawableIsBeingCopied = 0;

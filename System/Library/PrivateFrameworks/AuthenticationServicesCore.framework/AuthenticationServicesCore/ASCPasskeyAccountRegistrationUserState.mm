@@ -2,11 +2,11 @@
 - (NSPersonNameComponents)name;
 - (_TtC26AuthenticationServicesCore14ASCPhoneNumber)phoneNumber;
 - (_TtC26AuthenticationServicesCore38ASCPasskeyAccountRegistrationUserState)init;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEmailAddress:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setSelectedCredentialProviderExtensionIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEmailAddress:(id)address;
+- (void)setName:(id)name;
+- (void)setPhoneNumber:(id)number;
+- (void)setSelectedCredentialProviderExtensionIdentifier:(id)identifier;
 @end
 
 @implementation ASCPasskeyAccountRegistrationUserState
@@ -34,13 +34,13 @@
   return v11;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23420, &unk_1C2176820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (name)
   {
     sub_1C216FEF4();
     v9 = sub_1C216FF04();
@@ -53,13 +53,13 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_1C210C1D0(v8);
 }
 
-- (void)setEmailAddress:(id)a3
+- (void)setEmailAddress:(id)address
 {
-  if (a3)
+  if (address)
   {
     v4 = sub_1C2170914();
     v6 = v5;
@@ -76,7 +76,7 @@
   v8 = v7[1];
   *v7 = v4;
   v7[1] = v6;
-  v9 = self;
+  selfCopy = self;
 
   sub_1C210CFEC();
 }
@@ -88,16 +88,16 @@
   return *(self + v3);
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C210D3C4(a3);
+  numberCopy = number;
+  selfCopy = self;
+  sub_1C210D3C4(number);
 }
 
-- (void)setSelectedCredentialProviderExtensionIdentifier:(id)a3
+- (void)setSelectedCredentialProviderExtensionIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1C2170914();
     v6 = v5;
@@ -109,15 +109,15 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1C210D748(v4, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2113480(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C2113480(coderCopy);
 }
 
 - (_TtC26AuthenticationServicesCore38ASCPasskeyAccountRegistrationUserState)init

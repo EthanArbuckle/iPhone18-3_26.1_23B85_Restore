@@ -1,24 +1,24 @@
 @interface FAMugshotMarqueeChoiceViewDecorator
-+ (BOOL)shouldProcessElement:(id)a3;
-+ (BOOL)shouldProcessObjectModel:(id)a3;
-- (FAMugshotMarqueeChoiceViewDecorator)initWithElement:(id)a3 pictureStore:(id)a4;
-- (FAMugshotMarqueeChoiceViewDecorator)initWithObjectModel:(id)a3 pictureStore:(id)a4;
-- (id)altDSIDsFromString:(id)a3;
-- (id)imageWithAltDSIDs:(id)a3 familyCircle:(id)a4;
++ (BOOL)shouldProcessElement:(id)element;
++ (BOOL)shouldProcessObjectModel:(id)model;
+- (FAMugshotMarqueeChoiceViewDecorator)initWithElement:(id)element pictureStore:(id)store;
+- (FAMugshotMarqueeChoiceViewDecorator)initWithObjectModel:(id)model pictureStore:(id)store;
+- (id)altDSIDsFromString:(id)string;
+- (id)imageWithAltDSIDs:(id)ds familyCircle:(id)circle;
 - (void)applyImage;
 @end
 
 @implementation FAMugshotMarqueeChoiceViewDecorator
 
-+ (BOOL)shouldProcessObjectModel:(id)a3
++ (BOOL)shouldProcessObjectModel:(id)model
 {
-  v4 = [a3 defaultPages];
-  v5 = [v4 firstObject];
+  defaultPages = [model defaultPages];
+  firstObject = [defaultPages firstObject];
 
-  if ([v5 hasChoiceView])
+  if ([firstObject hasChoiceView])
   {
-    v6 = [v5 primaryElement];
-    v7 = [a1 shouldProcessElement:v6];
+    primaryElement = [firstObject primaryElement];
+    v7 = [self shouldProcessElement:primaryElement];
   }
 
   else
@@ -29,15 +29,15 @@
   return v7;
 }
 
-+ (BOOL)shouldProcessElement:(id)a3
++ (BOOL)shouldProcessElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 objectForKeyedSubscript:@"familyAction"];
+  elementCopy = element;
+  attributes = [elementCopy attributes];
+  v5 = [attributes objectForKeyedSubscript:@"familyAction"];
   if ([v5 isEqual:@"InjectProfileImages"])
   {
-    v6 = [v3 attributes];
-    v7 = [v6 objectForKeyedSubscript:@"altDSIDs"];
+    attributes2 = [elementCopy attributes];
+    v7 = [attributes2 objectForKeyedSubscript:@"altDSIDs"];
     v8 = v7 != 0;
   }
 
@@ -49,38 +49,38 @@
   return v8;
 }
 
-- (FAMugshotMarqueeChoiceViewDecorator)initWithObjectModel:(id)a3 pictureStore:(id)a4
+- (FAMugshotMarqueeChoiceViewDecorator)initWithObjectModel:(id)model pictureStore:(id)store
 {
-  v6 = a4;
-  v7 = [a3 defaultPages];
-  v8 = [v7 firstObject];
+  storeCopy = store;
+  defaultPages = [model defaultPages];
+  firstObject = [defaultPages firstObject];
 
-  v9 = [v8 primaryElement];
-  v10 = [(FAMugshotMarqueeChoiceViewDecorator *)self initWithElement:v9 pictureStore:v6];
+  primaryElement = [firstObject primaryElement];
+  v10 = [(FAMugshotMarqueeChoiceViewDecorator *)self initWithElement:primaryElement pictureStore:storeCopy];
 
   return v10;
 }
 
-- (FAMugshotMarqueeChoiceViewDecorator)initWithElement:(id)a3 pictureStore:(id)a4
+- (FAMugshotMarqueeChoiceViewDecorator)initWithElement:(id)element pictureStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = FAMugshotMarqueeChoiceViewDecorator;
   v9 = [(FAMugshotMarqueeChoiceViewDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_element, a3);
-    objc_storeStrong(&v10->_pictureStore, a4);
+    objc_storeStrong(&v9->_element, element);
+    objc_storeStrong(&v10->_pictureStore, store);
   }
 
   return v10;
 }
 
-- (id)altDSIDsFromString:(id)a3
+- (id)altDSIDsFromString:(id)string
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_282D9AA68];
+  v3 = [string stringByReplacingOccurrencesOfString:@" " withString:&stru_282D9AA68];
   v4 = MEMORY[0x277CBEB98];
   v5 = [v3 componentsSeparatedByString:{@", "}];
   v6 = [v4 setWithArray:v5];
@@ -88,17 +88,17 @@
   return v6;
 }
 
-- (id)imageWithAltDSIDs:(id)a3 familyCircle:(id)a4
+- (id)imageWithAltDSIDs:(id)ds familyCircle:(id)circle
 {
-  v5 = a3;
+  dsCopy = ds;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__FAMugshotMarqueeChoiceViewDecorator_imageWithAltDSIDs_familyCircle___block_invoke;
   v10[3] = &unk_2782F3520;
-  v11 = v5;
-  v6 = v5;
-  v7 = [(FAMugshotMarqueeChoiceViewDecorator *)self pictureStore];
-  v8 = [FAMugshotMarqueeView imageWithMemberFilter:v10 profilePictureStore:v7];
+  v11 = dsCopy;
+  v6 = dsCopy;
+  pictureStore = [(FAMugshotMarqueeChoiceViewDecorator *)self pictureStore];
+  v8 = [FAMugshotMarqueeView imageWithMemberFilter:v10 profilePictureStore:pictureStore];
 
   return v8;
 }
@@ -114,23 +114,23 @@ uint64_t __70__FAMugshotMarqueeChoiceViewDecorator_imageWithAltDSIDs_familyCircl
 
 - (void)applyImage
 {
-  v3 = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
-  v4 = [v3 attributes];
-  v11 = [v4 objectForKeyedSubscript:@"altDSIDs"];
+  element = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
+  attributes = [element attributes];
+  v11 = [attributes objectForKeyedSubscript:@"altDSIDs"];
 
   v5 = [(FAMugshotMarqueeChoiceViewDecorator *)self altDSIDsFromString:v11];
   if ([v5 count])
   {
-    v6 = [(FAMugshotMarqueeChoiceViewDecorator *)self pictureStore];
-    v7 = [v6 familyCircle];
-    v8 = [(FAMugshotMarqueeChoiceViewDecorator *)self imageWithAltDSIDs:v5 familyCircle:v7];
+    pictureStore = [(FAMugshotMarqueeChoiceViewDecorator *)self pictureStore];
+    familyCircle = [pictureStore familyCircle];
+    v8 = [(FAMugshotMarqueeChoiceViewDecorator *)self imageWithAltDSIDs:v5 familyCircle:familyCircle];
 
-    v9 = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
+    element2 = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
     [v8 size];
-    [v9 setImageSize:?];
+    [element2 setImageSize:?];
 
-    v10 = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
-    [v10 setImage:v8];
+    element3 = [(FAMugshotMarqueeChoiceViewDecorator *)self element];
+    [element3 setImage:v8];
   }
 }
 

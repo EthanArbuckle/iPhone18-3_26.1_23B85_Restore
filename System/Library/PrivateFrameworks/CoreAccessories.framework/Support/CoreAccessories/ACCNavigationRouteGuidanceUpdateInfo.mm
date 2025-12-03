@@ -1,8 +1,8 @@
 @interface ACCNavigationRouteGuidanceUpdateInfo
-+ (id)keyForChargingStationInfoType:(unsigned __int16)a3;
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForChargingStationInfoType:(unsigned __int16)type;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationRouteGuidanceUpdateInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 @end
 
 @implementation ACCNavigationRouteGuidanceUpdateInfo
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 > 0x1A)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy > 0x1A)
   {
     if (gLogObjects)
     {
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109120;
-      v11[1] = v4;
+      v11[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RouteGuidnaceUpdate InfoType %d", v11, 8u);
     }
 
@@ -73,9 +73,9 @@
   return isKindOfClass & 1;
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1u:
       v3 = &ACCNav_RGUpdate_RouteGuidanceState;
@@ -158,7 +158,7 @@ LABEL_28:
       v4 = *v3;
       break;
     default:
-      v6 = a3;
+      typeCopy = type;
       if (gLogObjects)
       {
         v7 = gNumLogObjects < 1;
@@ -188,7 +188,7 @@ LABEL_28:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10[0] = 67109120;
-        v10[1] = v6;
+        v10[1] = typeCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RouteGuidnaceUpdate InfoType %d", v10, 8u);
       }
 
@@ -199,22 +199,22 @@ LABEL_28:
   return v4;
 }
 
-+ (id)keyForChargingStationInfoType:(unsigned __int16)a3
++ (id)keyForChargingStationInfoType:(unsigned __int16)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = &ACCNav_RGUpdate_ChargingStationInfo_Power;
     goto LABEL_7;
   }
 
-  v3 = a3;
-  if (a3 == 1)
+  typeCopy = type;
+  if (type == 1)
   {
     v4 = &ACCNav_RGUpdate_ChargingStationInfo_Voltage;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = &ACCNav_RGUpdate_ChargingStationInfo_ConnectorType;
 LABEL_7:
@@ -251,7 +251,7 @@ LABEL_7:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown RouteGuidnaceUpdate CharginStation InfoType %d", v10, 8u);
   }
 

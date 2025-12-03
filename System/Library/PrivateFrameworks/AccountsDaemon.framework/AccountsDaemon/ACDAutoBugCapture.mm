@@ -1,32 +1,32 @@
 @interface ACDAutoBugCapture
-+ (void)triggerAutoBugCaptureWithType:(id)a3 subType:(id)a4 subtypeContext:(id)a5 detectedProcess:(id)a6;
++ (void)triggerAutoBugCaptureWithType:(id)type subType:(id)subType subtypeContext:(id)context detectedProcess:(id)process;
 @end
 
 @implementation ACDAutoBugCapture
 
-+ (void)triggerAutoBugCaptureWithType:(id)a3 subType:(id)a4 subtypeContext:(id)a5 detectedProcess:(id)a6
++ (void)triggerAutoBugCaptureWithType:(id)type subType:(id)subType subtypeContext:(id)context detectedProcess:(id)process
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  processCopy = process;
   if (triggerAutoBugCaptureWithType_subType_subtypeContext_detectedProcess__onceToken != -1)
   {
     +[ACDAutoBugCapture triggerAutoBugCaptureWithType:subType:subtypeContext:detectedProcess:];
   }
 
   v13 = triggerAutoBugCaptureWithType_subType_subtypeContext_detectedProcess__diagnosticReporter;
-  if (v12)
+  if (processCopy)
   {
-    v14 = [triggerAutoBugCaptureWithType_subType_subtypeContext_detectedProcess__diagnosticReporter signatureWithDomain:@"Accounts" type:v9 subType:v10 subtypeContext:v11 detectedProcess:v12 triggerThresholdValues:0];
+    v14 = [triggerAutoBugCaptureWithType_subType_subtypeContext_detectedProcess__diagnosticReporter signatureWithDomain:@"Accounts" type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:processCopy triggerThresholdValues:0];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCAC38] processInfo];
-    v16 = [v15 processName];
-    v14 = [v13 signatureWithDomain:@"Accounts" type:v9 subType:v10 subtypeContext:v11 detectedProcess:v16 triggerThresholdValues:0];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v14 = [v13 signatureWithDomain:@"Accounts" type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:processName triggerThresholdValues:0];
   }
 
   v17 = [triggerAutoBugCaptureWithType_subType_subtypeContext_detectedProcess__diagnosticReporter snapshotWithSignature:v14 duration:0 event:0 payload:&__block_literal_global_20 reply:15.0];

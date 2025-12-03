@@ -15,14 +15,14 @@
   }
 
   *a3 = 4277006349;
-  [a1 getUUIDBytes:a3 + 1];
+  [self getUUIDBytes:a3 + 1];
   return 1;
 }
 
 - (void)addSelfToSerializationDictionary:()NSUUIDSASerializable
 {
-  v5 = [MEMORY[0x1E696AFB0] classDictionaryKey];
-  SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, a1, v5);
+  classDictionaryKey = [MEMORY[0x1E696AFB0] classDictionaryKey];
+  SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, classDictionaryKey);
 }
 
 + (uint64_t)newInstanceWithoutReferencesFromSerializedBuffer:()NSUUIDSASerializable bufferLength:

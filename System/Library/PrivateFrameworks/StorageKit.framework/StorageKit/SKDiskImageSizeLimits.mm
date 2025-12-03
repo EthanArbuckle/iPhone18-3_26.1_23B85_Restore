@@ -1,11 +1,11 @@
 @interface SKDiskImageSizeLimits
-+ (BOOL)isSupportedWholeDisk:(id)a3;
-- (unint64_t)physicalStoreMinimumSizeFromStore:(id)a3;
++ (BOOL)isSupportedWholeDisk:(id)disk;
+- (unint64_t)physicalStoreMinimumSizeFromStore:(id)store;
 @end
 
 @implementation SKDiskImageSizeLimits
 
-+ (BOOL)isSupportedWholeDisk:(id)a3
++ (BOOL)isSupportedWholeDisk:(id)disk
 {
   v8[4] = *MEMORY[0x277D85DE8];
   v8[0] = kSKDiskTypeGPTWholeDisk[0];
@@ -13,29 +13,29 @@
   v8[2] = kSKDiskTypeAPMWholeDisk[0];
   v8[3] = kSKDiskTypeUninitalized[0];
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  diskCopy = disk;
   v5 = [v3 arrayWithObjects:v8 count:4];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  LOBYTE(v3) = [v5 containsObject:diskCopy];
 
   v6 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (unint64_t)physicalStoreMinimumSizeFromStore:(id)a3
+- (unint64_t)physicalStoreMinimumSizeFromStore:(id)store
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 container];
-  v5 = v4;
-  if (v4)
+  storeCopy = store;
+  container = [storeCopy container];
+  v5 = container;
+  if (container)
   {
-    v6 = [v4 diskIdentifier];
-    [v6 UTF8String];
+    diskIdentifier = [container diskIdentifier];
+    [diskIdentifier UTF8String];
     MinimalSize = APFSContainerGetMinimalSize();
 
     if (!MinimalSize)
     {
-      v9 = 0;
+      totalSpace = 0;
       goto LABEL_8;
     }
 
@@ -45,18 +45,18 @@
       *buf = 136315650;
       v13 = "[SKDiskImageSizeLimits physicalStoreMinimumSizeFromStore:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = storeCopy;
       v16 = 1024;
       v17 = MinimalSize;
       _os_log_impl(&dword_26BBB8000, v8, OS_LOG_TYPE_ERROR, "%s: Failed to get size from %@, %d", buf, 0x1Cu);
     }
   }
 
-  v9 = [v3 totalSpace];
+  totalSpace = [storeCopy totalSpace];
 LABEL_8:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return totalSpace;
 }
 
 @end

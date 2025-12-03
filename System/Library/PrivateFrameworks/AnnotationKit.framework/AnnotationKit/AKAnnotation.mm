@@ -1,9 +1,9 @@
 @interface AKAnnotation
-+ (AKAnnotation)annotationWithData:(id)a3;
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (AKAnnotation)annotationWithData:(id)data;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 - (AKAnnotation)childAnnotation;
 - (AKAnnotation)init;
-- (AKAnnotation)initWithCoder:(id)a3;
+- (AKAnnotation)initWithCoder:(id)coder;
 - (AKAnnotation)parentAnnotation;
 - (BOOL)isUsingAppearanceOverride;
 - (CGRect)drawingBounds;
@@ -12,15 +12,15 @@
 - (CGRect)integralDrawingBounds;
 - (double)desiredHeadroom;
 - (id)appearanceOverride;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)keysForValuesToObserveForUndo;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAppearanceOverride:(id)a3;
-- (void)setShouldObserveEdits:(BOOL)a3;
-- (void)setShouldUseAppearanceOverride:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAppearanceOverride:(id)override;
+- (void)setShouldObserveEdits:(BOOL)edits;
+- (void)setShouldUseAppearanceOverride:(BOOL)override;
 @end
 
 @implementation AKAnnotation
@@ -32,10 +32,10 @@
   v2 = [(AKAnnotation *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     UUID = v2->_UUID;
-    v2->_UUID = v4;
+    v2->_UUID = uUIDString;
 
     v2->_shouldUsePlaceholderText = 1;
     v2->_editsDisableAppearanceOverride = 1;
@@ -70,12 +70,12 @@
   [(AKAnnotation *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(AKAnnotation *)self dataRepresentation];
-  if (v3)
+  dataRepresentation = [(AKAnnotation *)self dataRepresentation];
+  if (dataRepresentation)
   {
-    v4 = [AKAnnotation annotationWithData:v3];
+    v4 = [AKAnnotation annotationWithData:dataRepresentation];
   }
 
   else
@@ -86,10 +86,10 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"rotationAngle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rotationAngle"])
   {
     v4 = +[AKController akBundle];
     v5 = v4;
@@ -100,12 +100,12 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"isEdited"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"shouldObserveEdits") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"shouldUseAppearanceOverride"))
+  if ([keyCopy isEqualToString:@"isEdited"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"shouldObserveEdits") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"shouldUseAppearanceOverride"))
   {
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"childAnnotation"])
+  if ([keyCopy isEqualToString:@"childAnnotation"])
   {
     v4 = +[AKController akBundle];
     v5 = v4;
@@ -113,7 +113,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:@"author"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"modificationDate"))
+  if ([keyCopy isEqualToString:@"author"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"modificationDate"))
   {
 LABEL_7:
     v7 = &stru_28519E870;
@@ -121,7 +121,7 @@ LABEL_7:
 
   else
   {
-    objc_msgSend(MEMORY[0x277CBEAD8], "raise:format:", *MEMORY[0x277CBE658], @"%s must be overriden by a subclass (key: %@"), "+[AKAnnotation displayNameForUndoablePropertyChangeWithKey:]", v3;
+    objc_msgSend(MEMORY[0x277CBEAD8], "raise:format:", *MEMORY[0x277CBE658], @"%s must be overriden by a subclass (key: %@"), "+[AKAnnotation displayNameForUndoablePropertyChangeWithKey:]", keyCopy;
     v7 = 0;
   }
 
@@ -130,11 +130,11 @@ LABEL_8:
   return v7;
 }
 
-+ (AKAnnotation)annotationWithData:(id)a3
++ (AKAnnotation)annotationWithData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (!dataCopy)
   {
     v5 = os_log_create("com.apple.annotationkit", "Serialization");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (![v3 length])
+  if (![dataCopy length])
   {
     v5 = os_log_create("com.apple.annotationkit", "Serialization");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -288,22 +288,22 @@ LABEL_6:
   return result;
 }
 
-- (void)setShouldObserveEdits:(BOOL)a3
+- (void)setShouldObserveEdits:(BOOL)edits
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (self->_isObservingForIsEdited != a3)
+  if (self->_isObservingForIsEdited != edits)
   {
-    v3 = a3;
-    self->_isObservingForIsEdited = a3;
+    editsCopy = edits;
+    self->_isObservingForIsEdited = edits;
     isReallyObservingForIsEdited = self->_isReallyObservingForIsEdited;
-    v6 = !a3 & isReallyObservingForIsEdited;
-    v7 = [(AKAnnotation *)self keysForValuesToObserveForUndo];
+    v6 = !edits & isReallyObservingForIsEdited;
+    keysForValuesToObserveForUndo = [(AKAnnotation *)self keysForValuesToObserveForUndo];
     if (qword_27E39B798 != -1)
     {
       sub_23F4BD540();
     }
 
-    v8 = v3 & ~isReallyObservingForIsEdited;
+    v8 = editsCopy & ~isReallyObservingForIsEdited;
     if (v6)
     {
       self->_isReallyObservingForIsEdited = 0;
@@ -311,7 +311,7 @@ LABEL_6:
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = v7;
+      v9 = keysForValuesToObserveForUndo;
       v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
@@ -348,7 +348,7 @@ LABEL_6:
       block[2] = sub_23F47CD4C;
       block[3] = &unk_278C7B888;
       objc_copyWeak(&v17, &location);
-      v16 = v7;
+      v16 = keysForValuesToObserveForUndo;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
       objc_destroyWeak(&v17);
@@ -357,14 +357,14 @@ LABEL_6:
   }
 }
 
-- (void)setAppearanceOverride:(id)a3
+- (void)setAppearanceOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   appearanceOverride = self->_appearanceOverride;
-  if (v4)
+  if (overrideCopy)
   {
-    v6 = v4;
-    v11 = [v4 copy];
+    v6 = overrideCopy;
+    v11 = [overrideCopy copy];
 
     v7 = MEMORY[0x245CAF110](v11);
     v8 = self->_appearanceOverride;
@@ -408,28 +408,28 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(AKAnnotation *)self appearanceOverride];
-  v4 = v3 != 0;
+  appearanceOverride = [(AKAnnotation *)self appearanceOverride];
+  v4 = appearanceOverride != 0;
 
   return v4;
 }
 
-- (void)setShouldUseAppearanceOverride:(BOOL)a3
+- (void)setShouldUseAppearanceOverride:(BOOL)override
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (self->_shouldUseAppearanceOverride != a3)
+  if (self->_shouldUseAppearanceOverride != override)
   {
-    v3 = a3;
-    self->_shouldUseAppearanceOverride = a3;
+    overrideCopy = override;
+    self->_shouldUseAppearanceOverride = override;
     isObservingForAppearance = self->_isObservingForAppearance;
-    v6 = !a3 & isObservingForAppearance;
-    v7 = [(AKAnnotation *)self keysForValuesToObserveForUndo];
+    v6 = !override & isObservingForAppearance;
+    keysForValuesToObserveForUndo = [(AKAnnotation *)self keysForValuesToObserveForUndo];
     if (qword_27E39B7A8 != -1)
     {
       sub_23F4BD554();
     }
 
-    v8 = v3 & ~isObservingForAppearance;
+    v8 = overrideCopy & ~isObservingForAppearance;
     if (v6)
     {
       self->_isObservingForAppearance = 0;
@@ -437,7 +437,7 @@ LABEL_6:
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = v7;
+      v9 = keysForValuesToObserveForUndo;
       v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
@@ -474,7 +474,7 @@ LABEL_6:
       block[2] = sub_23F47D238;
       block[3] = &unk_278C7B888;
       objc_copyWeak(&v17, &location);
-      v16 = v7;
+      v16 = keysForValuesToObserveForUndo;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
       objc_destroyWeak(&v17);
@@ -483,15 +483,15 @@ LABEL_6:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == @"AKAnnotation.annotationPropertyObservationForIsEditedContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == @"AKAnnotation.annotationPropertyObservationForIsEditedContext")
   {
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     v15 = [v13 objectForKey:*MEMORY[0x277CCA300]];
     if (([v14 isEqual:v15] & 1) == 0)
     {
@@ -509,7 +509,7 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (a6 == @"AKAnnotation.annotationPropertyObservationForAppearanceContext")
+  if (context == @"AKAnnotation.annotationPropertyObservationForAppearanceContext")
   {
     if (![(AKAnnotation *)self editsDisableAppearanceOverride])
     {
@@ -520,7 +520,7 @@ LABEL_6:
     v14 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
     v15 = [v13 objectForKey:*MEMORY[0x277CCA300]];
     v16 = [v14 isEqual:v15];
-    if ([v10 isEqualToString:@"rectangle"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if ([pathCopy isEqualToString:@"rectangle"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [v15 akRectValue];
       v18 = v17;
@@ -551,82 +551,82 @@ LABEL_14:
 
   v24.receiver = self;
   v24.super_class = AKAnnotation;
-  [(AKAnnotation *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(AKAnnotation *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_15:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ((sub_23F4ABA3C() & 1) == 0)
   {
     [(AKAnnotation *)self setAkSerializationVersion:2];
     [(AKAnnotation *)self setAkSerializationPlatform:2];
   }
 
-  [v4 encodeInteger:-[AKAnnotation akSerializationVersion](self forKey:{"akSerializationVersion"), @"akVers"}];
-  [v4 encodeInteger:-[AKAnnotation akSerializationPlatform](self forKey:{"akSerializationPlatform"), @"akPlat"}];
-  v5 = [(AKAnnotation *)self UUID];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  [coderCopy encodeInteger:-[AKAnnotation akSerializationVersion](self forKey:{"akSerializationVersion"), @"akVers"}];
+  [coderCopy encodeInteger:-[AKAnnotation akSerializationPlatform](self forKey:{"akSerializationPlatform"), @"akPlat"}];
+  uUID = [(AKAnnotation *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
   [(AKAnnotation *)self originalModelBaseScaleFactor];
-  [v4 encodeDouble:@"originalModelBaseScaleFactor" forKey:?];
-  [v4 encodeInteger:-[AKAnnotation originalExifOrientation](self forKey:{"originalExifOrientation"), @"originalExifOrientation"}];
-  [v4 encodeBool:-[AKAnnotation textIsClipped](self forKey:{"textIsClipped"), @"textIsClipped"}];
-  [v4 encodeBool:-[AKAnnotation textIsFixedWidth](self forKey:{"textIsFixedWidth"), @"textIsFixedWidth"}];
-  [v4 encodeBool:-[AKAnnotation textIsFixedHeight](self forKey:{"textIsFixedHeight"), @"textIsFixedHeight"}];
-  [v4 encodeBool:-[AKAnnotation shouldUsePlaceholderText](self forKey:{"shouldUsePlaceholderText"), @"shouldUsePlaceholderText"}];
-  [v4 encodeInteger:-[AKAnnotation formContentType](self forKey:{"formContentType"), @"formContentType"}];
-  v6 = [(AKAnnotation *)self customPlaceholderText];
-  [v4 encodeObject:v6 forKey:@"customPlaceholderText"];
+  [coderCopy encodeDouble:@"originalModelBaseScaleFactor" forKey:?];
+  [coderCopy encodeInteger:-[AKAnnotation originalExifOrientation](self forKey:{"originalExifOrientation"), @"originalExifOrientation"}];
+  [coderCopy encodeBool:-[AKAnnotation textIsClipped](self forKey:{"textIsClipped"), @"textIsClipped"}];
+  [coderCopy encodeBool:-[AKAnnotation textIsFixedWidth](self forKey:{"textIsFixedWidth"), @"textIsFixedWidth"}];
+  [coderCopy encodeBool:-[AKAnnotation textIsFixedHeight](self forKey:{"textIsFixedHeight"), @"textIsFixedHeight"}];
+  [coderCopy encodeBool:-[AKAnnotation shouldUsePlaceholderText](self forKey:{"shouldUsePlaceholderText"), @"shouldUsePlaceholderText"}];
+  [coderCopy encodeInteger:-[AKAnnotation formContentType](self forKey:{"formContentType"), @"formContentType"}];
+  customPlaceholderText = [(AKAnnotation *)self customPlaceholderText];
+  [coderCopy encodeObject:customPlaceholderText forKey:@"customPlaceholderText"];
 
-  v7 = [(AKAnnotation *)self author];
+  author = [(AKAnnotation *)self author];
 
-  if (v7)
+  if (author)
   {
-    v8 = [(AKAnnotation *)self author];
-    [v4 encodeObject:v8 forKey:@"author"];
+    author2 = [(AKAnnotation *)self author];
+    [coderCopy encodeObject:author2 forKey:@"author"];
   }
 
-  v9 = [(AKAnnotation *)self modificationDate];
+  modificationDate = [(AKAnnotation *)self modificationDate];
 
-  if (v9)
+  if (modificationDate)
   {
-    v10 = [(AKAnnotation *)self modificationDate];
-    [v4 encodeObject:v10 forKey:@"modificationDate"];
+    modificationDate2 = [(AKAnnotation *)self modificationDate];
+    [coderCopy encodeObject:modificationDate2 forKey:@"modificationDate"];
   }
 
-  v11 = [(AKAnnotation *)self parentAnnotation];
-  v12 = v11;
-  if (v11)
+  parentAnnotation = [(AKAnnotation *)self parentAnnotation];
+  v12 = parentAnnotation;
+  if (parentAnnotation)
   {
-    v13 = [v11 UUID];
-    [v4 encodeObject:v13 forKey:@"parentAnnotation.UUID"];
+    uUID2 = [parentAnnotation UUID];
+    [coderCopy encodeObject:uUID2 forKey:@"parentAnnotation.UUID"];
   }
 
-  v14 = [(AKAnnotation *)self childAnnotation];
-  v15 = v14;
-  if (v14)
+  childAnnotation = [(AKAnnotation *)self childAnnotation];
+  v15 = childAnnotation;
+  if (childAnnotation)
   {
-    v16 = [v14 UUID];
-    [v4 encodeObject:v16 forKey:@"childAnnotation.UUID"];
+    uUID3 = [childAnnotation UUID];
+    [coderCopy encodeObject:uUID3 forKey:@"childAnnotation.UUID"];
   }
 
-  [v4 encodeBool:-[AKAnnotation editsDisableAppearanceOverride](self forKey:{"editsDisableAppearanceOverride"), @"editsDisableAppearanceOverride"}];
+  [coderCopy encodeBool:-[AKAnnotation editsDisableAppearanceOverride](self forKey:{"editsDisableAppearanceOverride"), @"editsDisableAppearanceOverride"}];
   if ([(AKAnnotation *)self isBeingCopied])
   {
-    v17 = [(AKAnnotation *)self appearanceOverride];
-    if (v17 && [(AKAnnotation *)self shouldUseAppearanceOverride])
+    appearanceOverride = [(AKAnnotation *)self appearanceOverride];
+    if (appearanceOverride && [(AKAnnotation *)self shouldUseAppearanceOverride])
     {
-      v18 = [(AKAnnotation *)self editsDisableAppearanceOverride];
+      editsDisableAppearanceOverride = [(AKAnnotation *)self editsDisableAppearanceOverride];
 
-      if (v18)
+      if (editsDisableAppearanceOverride)
       {
         goto LABEL_20;
       }
 
-      v17 = [MEMORY[0x277CBEB28] data];
-      v19 = CGDataConsumerCreateWithCFData(v17);
+      appearanceOverride = [MEMORY[0x277CBEB28] data];
+      v19 = CGDataConsumerCreateWithCFData(appearanceOverride);
       if (v19)
       {
         v20 = v19;
@@ -643,13 +643,13 @@ LABEL_15:
           v28 = v27;
           CGPDFContextBeginPage(v27, 0);
           CGContextTranslateCTM(v28, -v22, -v24);
-          v29 = [(AKAnnotation *)self appearanceOverride];
-          (v29)[2](v29, v28);
+          appearanceOverride2 = [(AKAnnotation *)self appearanceOverride];
+          (appearanceOverride2)[2](appearanceOverride2, v28);
 
           CGPDFContextEndPage(v28);
           CGContextFlush(v28);
           CGPDFContextClose(v28);
-          [v4 encodeObject:v17 forKey:@"appearanceOverridePDF"];
+          [coderCopy encodeObject:appearanceOverride forKey:@"appearanceOverridePDF"];
           CFRelease(v28);
         }
 
@@ -662,21 +662,21 @@ LABEL_20:
   if ([(AKAnnotation *)self conformsToAKRotatableAnnotationProtocol])
   {
     [(AKAnnotation *)self rotationAngle];
-    [v4 encodeDouble:@"rotationAngle" forKey:?];
+    [coderCopy encodeDouble:@"rotationAngle" forKey:?];
   }
 
-  [v4 encodeBool:-[AKAnnotation isFormField](self forKey:{"isFormField"), @"AKIsFormFieldKey"}];
+  [coderCopy encodeBool:-[AKAnnotation isFormField](self forKey:{"isFormField"), @"AKIsFormFieldKey"}];
 }
 
-- (AKAnnotation)initWithCoder:(id)a3
+- (AKAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AKAnnotation *)self init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"akVers"])
+    if ([coderCopy containsValueForKey:@"akVers"])
     {
-      v6 = [v4 decodeIntegerForKey:@"akVers"];
+      v6 = [coderCopy decodeIntegerForKey:@"akVers"];
     }
 
     else
@@ -685,9 +685,9 @@ LABEL_20:
     }
 
     [(AKAnnotation *)v5 setAkSerializationVersion:v6];
-    if ([v4 containsValueForKey:@"akPlat"])
+    if ([coderCopy containsValueForKey:@"akPlat"])
     {
-      v7 = [v4 decodeIntegerForKey:@"akPlat"];
+      v7 = [coderCopy decodeIntegerForKey:@"akPlat"];
     }
 
     else
@@ -696,24 +696,24 @@ LABEL_20:
     }
 
     [(AKAnnotation *)v5 setAkSerializationPlatform:v7];
-    if ([v4 containsValueForKey:@"UUID"])
+    if ([coderCopy containsValueForKey:@"UUID"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
       UUID = v5->_UUID;
       v5->_UUID = v8;
     }
 
-    v10 = [v4 containsValueForKey:@"originalModelBaseScaleFactor"];
+    v10 = [coderCopy containsValueForKey:@"originalModelBaseScaleFactor"];
     v11 = 1.0;
     if (v10)
     {
-      [v4 decodeDoubleForKey:{@"originalModelBaseScaleFactor", 1.0}];
+      [coderCopy decodeDoubleForKey:{@"originalModelBaseScaleFactor", 1.0}];
     }
 
     [(AKAnnotation *)v5 setOriginalModelBaseScaleFactor:v11];
-    if ([v4 containsValueForKey:@"originalExifOrientation"])
+    if ([coderCopy containsValueForKey:@"originalExifOrientation"])
     {
-      v12 = [v4 decodeIntegerForKey:@"originalExifOrientation"];
+      v12 = [coderCopy decodeIntegerForKey:@"originalExifOrientation"];
     }
 
     else
@@ -722,12 +722,12 @@ LABEL_20:
     }
 
     [(AKAnnotation *)v5 setOriginalExifOrientation:v12];
-    -[AKAnnotation setTextIsClipped:](v5, "setTextIsClipped:", [v4 decodeBoolForKey:@"textIsClipped"]);
-    -[AKAnnotation setTextIsFixedWidth:](v5, "setTextIsFixedWidth:", [v4 decodeBoolForKey:@"textIsFixedWidth"]);
-    -[AKAnnotation setTextIsFixedHeight:](v5, "setTextIsFixedHeight:", [v4 decodeBoolForKey:@"textIsFixedHeight"]);
-    if ([v4 containsValueForKey:@"shouldUsePlaceholderText"])
+    -[AKAnnotation setTextIsClipped:](v5, "setTextIsClipped:", [coderCopy decodeBoolForKey:@"textIsClipped"]);
+    -[AKAnnotation setTextIsFixedWidth:](v5, "setTextIsFixedWidth:", [coderCopy decodeBoolForKey:@"textIsFixedWidth"]);
+    -[AKAnnotation setTextIsFixedHeight:](v5, "setTextIsFixedHeight:", [coderCopy decodeBoolForKey:@"textIsFixedHeight"]);
+    if ([coderCopy containsValueForKey:@"shouldUsePlaceholderText"])
     {
-      v13 = [v4 decodeBoolForKey:@"shouldUsePlaceholderText"];
+      v13 = [coderCopy decodeBoolForKey:@"shouldUsePlaceholderText"];
     }
 
     else
@@ -736,14 +736,14 @@ LABEL_20:
     }
 
     [(AKAnnotation *)v5 setShouldUsePlaceholderText:v13];
-    if ([v4 containsValueForKey:@"formContentType"])
+    if ([coderCopy containsValueForKey:@"formContentType"])
     {
-      -[AKAnnotation setFormContentType:](v5, "setFormContentType:", [v4 decodeIntForKey:@"formContentType"]);
+      -[AKAnnotation setFormContentType:](v5, "setFormContentType:", [coderCopy decodeIntForKey:@"formContentType"]);
     }
 
-    if ([v4 containsValueForKey:@"customPlaceholderText"])
+    if ([coderCopy containsValueForKey:@"customPlaceholderText"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customPlaceholderText"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customPlaceholderText"];
       [(AKAnnotation *)v5 setCustomPlaceholderText:v14];
     }
 
@@ -752,41 +752,41 @@ LABEL_20:
       [(AKAnnotation *)v5 setCustomPlaceholderText:0];
     }
 
-    if ([v4 containsValueForKey:@"author"])
+    if ([coderCopy containsValueForKey:@"author"])
     {
       v15 = objc_opt_self();
-      v16 = [v4 decodeObjectOfClass:v15 forKey:@"author"];
+      v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"author"];
       [(AKAnnotation *)v5 setAuthor:v16];
     }
 
-    if ([v4 containsValueForKey:@"modificationDate"])
+    if ([coderCopy containsValueForKey:@"modificationDate"])
     {
       v17 = objc_opt_self();
-      v18 = [v4 decodeObjectOfClass:v17 forKey:@"modificationDate"];
+      v18 = [coderCopy decodeObjectOfClass:v17 forKey:@"modificationDate"];
       [(AKAnnotation *)v5 setModificationDate:v18];
     }
 
-    if ([v4 containsValueForKey:@"parentAnnotation.UUID"])
+    if ([coderCopy containsValueForKey:@"parentAnnotation.UUID"])
     {
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentAnnotation.UUID"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentAnnotation.UUID"];
       objc_setAssociatedObject(v5, @"AKAnnotation.parentAnnotationUUIDAssociatedObjectKey", v19, 0x301);
     }
 
-    if ([v4 containsValueForKey:@"childAnnotation.UUID"])
+    if ([coderCopy containsValueForKey:@"childAnnotation.UUID"])
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childAnnotation.UUID"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childAnnotation.UUID"];
       objc_setAssociatedObject(v5, @"AKAnnotation.childAnnotationUUIDAssociatedObjectKey", v20, 0x301);
     }
 
-    if ([v4 containsValueForKey:@"editsDisableAppearanceOverride"])
+    if ([coderCopy containsValueForKey:@"editsDisableAppearanceOverride"])
     {
-      -[AKAnnotation setEditsDisableAppearanceOverride:](v5, "setEditsDisableAppearanceOverride:", [v4 decodeBoolForKey:@"editsDisableAppearanceOverride"]);
+      -[AKAnnotation setEditsDisableAppearanceOverride:](v5, "setEditsDisableAppearanceOverride:", [coderCopy decodeBoolForKey:@"editsDisableAppearanceOverride"]);
     }
 
-    if ([v4 containsValueForKey:@"appearanceOverridePDF"])
+    if ([coderCopy containsValueForKey:@"appearanceOverridePDF"])
     {
       v21 = objc_opt_self();
-      v22 = [v4 decodeObjectOfClass:v21 forKey:@"appearanceOverridePDF"];
+      v22 = [coderCopy decodeObjectOfClass:v21 forKey:@"appearanceOverridePDF"];
 
       if (v22)
       {
@@ -821,15 +821,15 @@ LABEL_20:
       }
     }
 
-    if ([v4 containsValueForKey:@"rotationAngle"] && -[AKAnnotation conformsToAKRotatableAnnotationProtocol](v5, "conformsToAKRotatableAnnotationProtocol"))
+    if ([coderCopy containsValueForKey:@"rotationAngle"] && -[AKAnnotation conformsToAKRotatableAnnotationProtocol](v5, "conformsToAKRotatableAnnotationProtocol"))
     {
-      [v4 decodeDoubleForKey:@"rotationAngle"];
+      [coderCopy decodeDoubleForKey:@"rotationAngle"];
       [(AKAnnotation *)v5 setRotationAngle:?];
     }
 
-    if ([v4 containsValueForKey:@"AKIsFormFieldKey"])
+    if ([coderCopy containsValueForKey:@"AKIsFormFieldKey"])
     {
-      -[AKAnnotation setIsFormField:](v5, "setIsFormField:", [v4 decodeBoolForKey:@"AKIsFormFieldKey"]);
+      -[AKAnnotation setIsFormField:](v5, "setIsFormField:", [coderCopy decodeBoolForKey:@"AKIsFormFieldKey"]);
     }
   }
 

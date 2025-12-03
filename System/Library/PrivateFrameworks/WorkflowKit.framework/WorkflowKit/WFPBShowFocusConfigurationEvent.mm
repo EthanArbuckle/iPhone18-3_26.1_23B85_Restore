@@ -1,36 +1,36 @@
 @interface WFPBShowFocusConfigurationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBShowFocusConfigurationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(WFPBShowFocusConfigurationEvent *)self setKey:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(WFPBShowFocusConfigurationEvent *)self setAppBundleIdentifier:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(WFPBShowFocusConfigurationEvent *)self setIntentType:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(WFPBShowFocusConfigurationEvent *)self setSystemFilterType:?];
   }
@@ -44,13 +44,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_systemFilterType hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[3])) || -[NSString isEqual:](key, "isEqual:")) && ((appBundleIdentifier = self->_appBundleIdentifier, !(appBundleIdentifier | v4[1])) || -[NSString isEqual:](appBundleIdentifier, "isEqual:")) && ((intentType = self->_intentType, !(intentType | v4[2])) || -[NSString isEqual:](intentType, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[3])) || -[NSString isEqual:](key, "isEqual:")) && ((appBundleIdentifier = self->_appBundleIdentifier, !(appBundleIdentifier | equalCopy[1])) || -[NSString isEqual:](appBundleIdentifier, "isEqual:")) && ((intentType = self->_intentType, !(intentType | equalCopy[2])) || -[NSString isEqual:](intentType, "isEqual:")))
   {
     systemFilterType = self->_systemFilterType;
-    if (systemFilterType | v4[4])
+    if (systemFilterType | equalCopy[4])
     {
       v9 = [(NSString *)systemFilterType isEqual:?];
     }
@@ -69,94 +69,94 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_appBundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_appBundleIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_intentType copyWithZone:a3];
+  v10 = [(NSString *)self->_intentType copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_systemFilterType copyWithZone:a3];
+  v12 = [(NSString *)self->_systemFilterType copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_appBundleIdentifier)
   {
     [v5 setAppBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_intentType)
   {
     [v5 setIntentType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_systemFilterType)
   {
     [v5 setSystemFilterType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_intentType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_systemFilterType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   appBundleIdentifier = self->_appBundleIdentifier;
@@ -186,8 +186,8 @@
   v8.receiver = self;
   v8.super_class = WFPBShowFocusConfigurationEvent;
   v4 = [(WFPBShowFocusConfigurationEvent *)&v8 description];
-  v5 = [(WFPBShowFocusConfigurationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBShowFocusConfigurationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

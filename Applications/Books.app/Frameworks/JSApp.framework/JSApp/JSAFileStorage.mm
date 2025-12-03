@@ -1,9 +1,9 @@
 @interface JSAFileStorage
 + (_TtC5JSApp14JSAFileStorage)sharedInstance;
 - (_TtC5JSApp14JSAFileStorage)init;
-- (id)getItem:(id)a3;
-- (void)removeItem:(id)a3;
-- (void)setItem:(id)a3 :(id)a4;
+- (id)getItem:(id)item;
+- (void)removeItem:(id)item;
+- (void)setItem:(id)item :(id)a4;
 @end
 
 @implementation JSAFileStorage
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (id)getItem:(id)a3
+- (id)getItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_44DA8(v14);
 
   v6 = v15;
@@ -48,18 +48,18 @@
   return v12;
 }
 
-- (void)setItem:(id)a3 :(id)a4
+- (void)setItem:(id)item :(id)a4
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = a4;
-  v8 = self;
-  sub_450B8(v6, v7);
+  selfCopy = self;
+  sub_450B8(itemCopy, v7);
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_45374();
 }
 

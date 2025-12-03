@@ -1,14 +1,14 @@
 @interface BKExpandedImageContentViewController
-+ (BOOL)supportsResource:(id)a3;
-- (BKExpandedImageContentViewController)initWithResource:(id)a3;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldHandleShareWithRanges:(id)a4 boundingRect:(CGRect)a5 selectedText:(id)a6 selectedAttributedText:(id)a7;
-- (id)_prepareImageShowOriginal:(BOOL)a3;
++ (BOOL)supportsResource:(id)resource;
+- (BKExpandedImageContentViewController)initWithResource:(id)resource;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldHandleShareWithRanges:(id)ranges boundingRect:(CGRect)rect selectedText:(id)text selectedAttributedText:(id)attributedText;
+- (id)_prepareImageShowOriginal:(BOOL)original;
 - (id)contentView;
-- (id)currentImage:(id)a3 withFilter:(BOOL)a4;
-- (id)imageAnalysisInteraction:(id)a3 updateAttributedStringForCopy:(id)a4;
-- (id)imageAnalysisInteraction:(id)a3 updateStringForCopy:(id)a4;
+- (id)currentImage:(id)image withFilter:(BOOL)filter;
+- (id)imageAnalysisInteraction:(id)interaction updateAttributedStringForCopy:(id)copy;
+- (id)imageAnalysisInteraction:(id)interaction updateStringForCopy:(id)copy;
 - (id)leftToolbarItems;
-- (void)_invert:(id)a3;
+- (void)_invert:(id)_invert;
 - (void)dealloc;
 - (void)releaseViews;
 - (void)showInvertedImage;
@@ -16,25 +16,25 @@
 
 @implementation BKExpandedImageContentViewController
 
-+ (BOOL)supportsResource:(id)a3
++ (BOOL)supportsResource:(id)resource
 {
-  v3 = [a3 resource];
+  resource = [resource resource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BKExpandedImageContentViewController)initWithResource:(id)a3
+- (BKExpandedImageContentViewController)initWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v10.receiver = self;
   v10.super_class = BKExpandedImageContentViewController;
-  v5 = [(BKExpandedContentViewController *)&v10 initWithResource:v4];
+  v5 = [(BKExpandedContentViewController *)&v10 initWithResource:resourceCopy];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 resource];
+    resource = [resourceCopy resource];
     v7 = BUDynamicCast();
     image = v5->_image;
     v5->_image = v7;
@@ -58,13 +58,13 @@
   v5.receiver = self;
   v5.super_class = BKExpandedImageContentViewController;
   [(BKExpandedContentViewController *)&v5 releaseViews];
-  v3 = [(BKExpandedImageContentViewController *)self imageScroller];
-  [v3 setDelegate:0];
+  imageScroller = [(BKExpandedImageContentViewController *)self imageScroller];
+  [imageScroller setDelegate:0];
 
   [(BKExpandedImageContentViewController *)self setImageScroller:0];
   [(BKExpandedImageContentViewController *)self setImageView:0];
-  v4 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-  [v4 setDelegate:0];
+  analysisInteraction = [(BKExpandedImageContentViewController *)self analysisInteraction];
+  [analysisInteraction setDelegate:0];
 }
 
 - (id)leftToolbarItems
@@ -87,7 +87,7 @@
   return v6;
 }
 
-- (void)_invert:(id)a3
+- (void)_invert:(id)_invert
 {
   v4 = [(BKExpandedImageContentViewController *)self _prepareImageShowOriginal:!self->_showOriginal];
   [(UIImageView *)self->_imageView setImage:v4];
@@ -95,10 +95,10 @@
 
 - (void)showInvertedImage
 {
-  v3 = [(UIImage *)self->_image CGImage];
-  if (v3)
+  cGImage = [(UIImage *)self->_image CGImage];
+  if (cGImage)
   {
-    if ([BEImageFilter imageIsFilteringCandidate:v3])
+    if ([BEImageFilter imageIsFilteringCandidate:cGImage])
     {
       self->_showingFilteredImage = 1;
       self->_showOriginal = 0;
@@ -106,23 +106,23 @@
   }
 }
 
-- (id)_prepareImageShowOriginal:(BOOL)a3
+- (id)_prepareImageShowOriginal:(BOOL)original
 {
   if (!self->_showingFilteredImage)
   {
     goto LABEL_10;
   }
 
-  v4 = a3;
-  v5 = [(UIImageView *)self->_imageView image];
-  v6 = v5;
-  if (self->_showOriginal == v4 && v5 != 0)
+  originalCopy = original;
+  image = [(UIImageView *)self->_imageView image];
+  v6 = image;
+  if (self->_showOriginal == originalCopy && image != 0)
   {
     goto LABEL_11;
   }
 
-  self->_showOriginal = v4;
-  v8 = [(BKExpandedImageContentViewController *)self currentImage:self->_image withFilter:!v4];
+  self->_showOriginal = originalCopy;
+  v8 = [(BKExpandedImageContentViewController *)self currentImage:self->_image withFilter:!originalCopy];
   if (v8)
   {
     v9 = v8;
@@ -142,49 +142,49 @@ LABEL_11:
   return v6;
 }
 
-- (id)currentImage:(id)a3 withFilter:(BOOL)a4
+- (id)currentImage:(id)image withFilter:(BOOL)filter
 {
   image = self->_image;
-  if (a4)
+  if (filter)
   {
-    v5 = [(UIImage *)image CGImage];
-    if (v5)
+    cGImage = [(UIImage *)image CGImage];
+    if (cGImage)
     {
-      v6 = [BEImageFilter invertedImage:v5];
+      v6 = [BEImageFilter invertedImage:cGImage];
       if (v6)
       {
-        v7 = [[UIImage alloc] initWithCIImage:v6];
+        imageCopy = [[UIImage alloc] initWithCIImage:v6];
       }
 
       else
       {
-        v7 = 0;
+        imageCopy = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      imageCopy = 0;
     }
   }
 
   else
   {
-    v7 = image;
+    imageCopy = image;
   }
 
-  return v7;
+  return imageCopy;
 }
 
 - (id)contentView
 {
-  v3 = [(BKExpandedImageContentViewController *)self imageScroller];
+  imageScroller = [(BKExpandedImageContentViewController *)self imageScroller];
 
-  if (!v3)
+  if (!imageScroller)
   {
     v4 = [_BKExpandedImageContentCenteringScrollView alloc];
-    v5 = [(BKExpandedImageContentViewController *)self view];
-    [v5 bounds];
+    view = [(BKExpandedImageContentViewController *)self view];
+    [view bounds];
     v6 = [(_BKExpandedImageContentCenteringScrollView *)v4 initWithFrame:?];
     imageScroller = self->_imageScroller;
     self->_imageScroller = v6;
@@ -205,46 +205,46 @@ LABEL_11:
     v11 = objc_alloc_init(VKCImageAnalysisInteraction);
     [(BKExpandedImageContentViewController *)self setAnalysisInteraction:v11];
 
-    v12 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [v12 setActiveInteractionTypes:9];
+    analysisInteraction = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [analysisInteraction setActiveInteractionTypes:9];
 
-    v13 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [v13 setAutomaticallyShowVisualSearchResults:1];
+    analysisInteraction2 = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [analysisInteraction2 setAutomaticallyShowVisualSearchResults:1];
 
-    v14 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [v14 setActionInfoViewHidden:0];
+    analysisInteraction3 = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [analysisInteraction3 setActionInfoViewHidden:0];
 
-    v15 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [v15 setAnalysisButtonRequiresVisibleContentGating:0];
+    analysisInteraction4 = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [analysisInteraction4 setAnalysisButtonRequiresVisibleContentGating:0];
 
-    v16 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [v16 setDelegate:self];
+    analysisInteraction5 = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [analysisInteraction5 setDelegate:self];
 
     v17 = self->_imageView;
-    v18 = [(BKExpandedImageContentViewController *)self analysisInteraction];
-    [(UIImageView *)v17 addInteraction:v18];
+    analysisInteraction6 = [(BKExpandedImageContentViewController *)self analysisInteraction];
+    [(UIImageView *)v17 addInteraction:analysisInteraction6];
 
     v19 = objc_alloc_init(VKCImageAnalyzer);
     [(BKExpandedImageContentViewController *)self setImageAnalyzer:v19];
 
     v20 = [[VKCImageAnalyzerRequest alloc] initWithImage:self->_image requestType:-65];
     objc_initWeak(&location, self);
-    v21 = [(BKExpandedImageContentViewController *)self imageAnalyzer];
+    imageAnalyzer = [(BKExpandedImageContentViewController *)self imageAnalyzer];
     v30 = _NSConcreteStackBlock;
     v31 = 3221225472;
     v32 = sub_C6C88;
     v33 = &unk_1E5290;
     objc_copyWeak(&v34, &location);
-    [v21 processRequest:v20 progressHandler:0 completionHandler:&v30];
+    [imageAnalyzer processRequest:v20 progressHandler:0 completionHandler:&v30];
 
     [(UIScrollView *)self->_imageScroller addSubview:self->_imageView, v30, v31, v32, v33];
-    v22 = [(BKExpandedImageContentViewController *)self imageScroller];
-    [v22 minimumZoomScale];
+    imageScroller2 = [(BKExpandedImageContentViewController *)self imageScroller];
+    [imageScroller2 minimumZoomScale];
     v24 = v23;
 
     [(UIScrollView *)self->_imageScroller setMinimumZoomScale:fmin(v24, 1.0)];
-    v25 = [(BKExpandedImageContentViewController *)self imageScroller];
-    [v25 minimumZoomScale];
+    imageScroller3 = [(BKExpandedImageContentViewController *)self imageScroller];
+    [imageScroller3 minimumZoomScale];
     v27 = v26;
 
     [(UIScrollView *)self->_imageScroller setZoomScale:fmin(v27, 2.0)];
@@ -252,59 +252,59 @@ LABEL_11:
     objc_destroyWeak(&location);
   }
 
-  v28 = [(BKExpandedImageContentViewController *)self imageScroller];
+  imageScroller4 = [(BKExpandedImageContentViewController *)self imageScroller];
 
-  return v28;
+  return imageScroller4;
 }
 
-- (id)imageAnalysisInteraction:(id)a3 updateStringForCopy:(id)a4
+- (id)imageAnalysisInteraction:(id)interaction updateStringForCopy:(id)copy
 {
-  v5 = a4;
-  v6 = [(BKExpandedContentViewController *)self delegate];
-  v7 = v5;
+  copyCopy = copy;
+  delegate = [(BKExpandedContentViewController *)self delegate];
+  v7 = copyCopy;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 expandedContentViewController:self stringForCopyFromString:v5];
+    v7 = [delegate expandedContentViewController:self stringForCopyFromString:copyCopy];
   }
 
   return v7;
 }
 
-- (id)imageAnalysisInteraction:(id)a3 updateAttributedStringForCopy:(id)a4
+- (id)imageAnalysisInteraction:(id)interaction updateAttributedStringForCopy:(id)copy
 {
-  v5 = a4;
-  v6 = [(BKExpandedContentViewController *)self delegate];
-  v7 = v5;
+  copyCopy = copy;
+  delegate = [(BKExpandedContentViewController *)self delegate];
+  v7 = copyCopy;
   if (objc_opt_respondsToSelector())
   {
     v8 = [NSAttributedString alloc];
-    v9 = [v5 string];
-    v10 = [v6 expandedContentViewController:self stringForCopyFromString:v9];
+    string = [copyCopy string];
+    v10 = [delegate expandedContentViewController:self stringForCopyFromString:string];
     v7 = [v8 initWithString:v10];
   }
 
   return v7;
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldHandleShareWithRanges:(id)a4 boundingRect:(CGRect)a5 selectedText:(id)a6 selectedAttributedText:(id)a7
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldHandleShareWithRanges:(id)ranges boundingRect:(CGRect)rect selectedText:(id)text selectedAttributedText:(id)attributedText
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a6;
-  v13 = [(BKExpandedContentViewController *)self delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textCopy = text;
+  delegate = [(BKExpandedContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(BKExpandedImageContentViewController *)self imageView];
-    v15 = [(BKExpandedImageContentViewController *)self view];
-    [v14 convertRect:v15 toView:{x, y, width, height}];
+    imageView = [(BKExpandedImageContentViewController *)self imageView];
+    view = [(BKExpandedImageContentViewController *)self view];
+    [imageView convertRect:view toView:{x, y, width, height}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    [v13 expandedContentViewController:self shareText:v12 sourceRect:{v17, v19, v21, v23}];
+    [delegate expandedContentViewController:self shareText:textCopy sourceRect:{v17, v19, v21, v23}];
   }
 
   return 0;

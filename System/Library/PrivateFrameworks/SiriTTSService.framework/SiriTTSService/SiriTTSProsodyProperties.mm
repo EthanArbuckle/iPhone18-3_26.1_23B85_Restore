@@ -1,13 +1,13 @@
 @interface SiriTTSProsodyProperties
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriTTSProsodyProperties
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_1B1A99B0C();
 }
 

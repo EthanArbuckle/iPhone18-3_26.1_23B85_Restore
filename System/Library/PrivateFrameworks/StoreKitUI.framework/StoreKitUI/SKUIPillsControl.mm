@@ -1,22 +1,22 @@
 @interface SKUIPillsControl
 - (CGRect)selectedPillFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIPillsControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIPillsControl)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadPills;
-- (void)setColorScheme:(id)a3;
+- (void)setColorScheme:(id)scheme;
 @end
 
 @implementation SKUIPillsControl
 
-- (SKUIPillsControl)initWithFrame:(CGRect)a3
+- (SKUIPillsControl)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPillsControl initWithFrame:];
@@ -24,25 +24,25 @@
 
   v16.receiver = self;
   v16.super_class = SKUIPillsControl;
-  v8 = [(SKUIPillsControl *)&v16 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIPillsControl *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [SKUISegmentedControl alloc];
     v10 = [(SKUISegmentedControl *)v9 initWithItems:MEMORY[0x277CBEBF8]];
-    segmentedControl = v8->_segmentedControl;
-    v8->_segmentedControl = v10;
+    segmentedControl = height->_segmentedControl;
+    height->_segmentedControl = v10;
 
-    [(SKUISegmentedControl *)v8->_segmentedControl addTarget:v8 action:sel__segmentedControlAction_ forControlEvents:4096];
-    v12 = v8->_segmentedControl;
+    [(SKUISegmentedControl *)height->_segmentedControl addTarget:height action:sel__segmentedControlAction_ forControlEvents:4096];
+    v12 = height->_segmentedControl;
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.588235294 alpha:1.0];
     [(SKUISegmentedControl *)v12 setTintColor:v13];
 
-    [(SKUIPillsControl *)v8 addSubview:v8->_segmentedControl];
-    v14 = [MEMORY[0x277D75348] whiteColor];
-    [(SKUIPillsControl *)v8 setBackgroundColor:v14];
+    [(SKUIPillsControl *)height addSubview:height->_segmentedControl];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SKUIPillsControl *)height setBackgroundColor:whiteColor];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -102,9 +102,9 @@
 - (CGRect)selectedPillFrame
 {
   segmentedControl = self->_segmentedControl;
-  v3 = [(SKUIPillsControl *)self selectedIndex];
+  selectedIndex = [(SKUIPillsControl *)self selectedIndex];
 
-  [(SKUISegmentedControl *)segmentedControl frameForSegmentAtIndex:v3];
+  [(SKUISegmentedControl *)segmentedControl frameForSegmentAtIndex:selectedIndex];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -112,21 +112,21 @@
   return result;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v4 = a3;
-  if (self->_colorScheme != v4)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v11 = v4;
-    v5 = [(SKUIColorScheme *)v4 copy];
+    v11 = schemeCopy;
+    v5 = [(SKUIColorScheme *)schemeCopy copy];
     colorScheme = self->_colorScheme;
     self->_colorScheme = v5;
 
     segmentedControl = self->_segmentedControl;
     if (self->_colorScheme)
     {
-      v8 = [(SKUIColorScheme *)v11 secondaryTextColor];
-      [(SKUISegmentedControl *)segmentedControl setTintColor:v8];
+      secondaryTextColor = [(SKUIColorScheme *)v11 secondaryTextColor];
+      [(SKUISegmentedControl *)segmentedControl setTintColor:secondaryTextColor];
 
       [(SKUIColorScheme *)v11 backgroundColor];
     }
@@ -141,7 +141,7 @@
     v10 = ;
     [(SKUIPillsControl *)self setBackgroundColor:v10];
 
-    v4 = v11;
+    schemeCopy = v11;
   }
 }
 
@@ -161,9 +161,9 @@
   [(SKUISegmentedControl *)segmentedControl setFrame:left, top, v7, v9];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SKUISegmentedControl *)self->_segmentedControl sizeThatFits:a3.width, a3.height];
+  [(SKUISegmentedControl *)self->_segmentedControl sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

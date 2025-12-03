@@ -1,11 +1,11 @@
 @interface NDOCoverageCentralViewController
 - (NSString)authTokenHeaderKey;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setEmbeddedController:(id)a3;
-- (void)setPathObserver:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setEmbeddedController:(id)controller;
+- (void)setPathObserver:(id)observer;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NDOCoverageCentralViewController
@@ -20,46 +20,46 @@
   return v4;
 }
 
-- (void)setEmbeddedController:(id)a3
+- (void)setEmbeddedController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___NDOCoverageCentralViewController_embeddedController);
-  *(self + OBJC_IVAR___NDOCoverageCentralViewController_embeddedController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NDOCoverageCentralViewController_embeddedController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setPathObserver:(id)a3
+- (void)setPathObserver:(id)observer
 {
   v4 = *(self + OBJC_IVAR___NDOCoverageCentralViewController_pathObserver);
-  *(self + OBJC_IVAR___NDOCoverageCentralViewController_pathObserver) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NDOCoverageCentralViewController_pathObserver) = observer;
+  observerCopy = observer;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NDOCoverageCentralViewController;
-  v3 = self;
+  selfCopy = self;
   [(NDOCoverageCentralViewController *)&v4 viewDidAppear:1];
   sub_25BDA8954();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  NDOCoverageCentralViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  NDOCoverageCentralViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewDidLoad
 {
   v6.receiver = self;
   v6.super_class = NDOCoverageCentralViewController;
-  v2 = self;
+  selfCopy = self;
   [(NDOCoverageCentralViewController *)&v6 viewDidLoad];
-  v3 = [(NDOCoverageCentralViewController *)v2 view:v6.receiver];
+  v3 = [(NDOCoverageCentralViewController *)selfCopy view:v6.receiver];
   if (v3)
   {
     v4 = v3;
-    v5 = [objc_opt_self() systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [objc_opt_self() systemGroupedBackgroundColor];
     [v4 setBackgroundColor_];
   }
 
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
-    a3 = sub_25BDDFE08();
+    l = sub_25BDDFE08();
   }
 
   if (v6)
@@ -90,8 +90,8 @@
     v7 = 0;
   }
 
-  v9 = self;
-  NDOCoverageCentralViewController.handleURL(_:withCompletion:)(a3, v8, v7);
+  selfCopy = self;
+  NDOCoverageCentralViewController.handleURL(_:withCompletion:)(l, v8, v7);
   sub_25BDA8480(v8);
 }
 

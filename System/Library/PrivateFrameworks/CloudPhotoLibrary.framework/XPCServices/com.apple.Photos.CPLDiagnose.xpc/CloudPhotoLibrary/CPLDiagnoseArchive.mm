@@ -1,16 +1,16 @@
 @interface CPLDiagnoseArchive
-- (CPLDiagnoseArchive)initWithPath:(id)a3 shouldCompress:(BOOL)a4;
-- (int)addDirectoryToArchive:(id)a3 withDirName:(id)a4;
-- (int)addFileToArchive:(id)a3 withFileName:(id)a4;
+- (CPLDiagnoseArchive)initWithPath:(id)path shouldCompress:(BOOL)compress;
+- (int)addDirectoryToArchive:(id)archive withDirName:(id)name;
+- (int)addFileToArchive:(id)archive withFileName:(id)name;
 - (void)closeArchive;
 @end
 
 @implementation CPLDiagnoseArchive
 
-- (CPLDiagnoseArchive)initWithPath:(id)a3 shouldCompress:(BOOL)a4
+- (CPLDiagnoseArchive)initWithPath:(id)path shouldCompress:(BOOL)compress
 {
-  v4 = a4;
-  v6 = a3;
+  compressCopy = compress;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CPLDiagnoseArchive;
   v7 = [(CPLDiagnoseArchive *)&v13 init];
@@ -18,7 +18,7 @@
   {
     v7->_archive = archive_write_new();
     v7->_archiveFd = -1;
-    if (v4)
+    if (compressCopy)
     {
       archive_write_add_filter_gzip();
     }
@@ -30,17 +30,17 @@
 
     archive = v7->_archive;
     archive_write_set_format_pax();
-    v9 = open_dprotected_np([v6 UTF8String], 514, 3, 0, 416);
+    v9 = open_dprotected_np([pathCopy UTF8String], 514, 3, 0, 416);
     if (v9 < 0)
     {
-      v9 = open_dprotected_np([v6 UTF8String], 514, 2, 0, 416);
+      v9 = open_dprotected_np([pathCopy UTF8String], 514, 2, 0, 416);
     }
 
     v10 = v7->_archive;
     v11 = archive_write_open_fd();
     if (v11)
     {
-      NSLog(@"Error creating archive at path %@ %d", v6, v11);
+      NSLog(@"Error creating archive at path %@ %d", pathCopy, v11);
 
       v7 = 0;
     }
@@ -54,13 +54,13 @@
   return v7;
 }
 
-- (int)addFileToArchive:(id)a3 withFileName:(id)a4
+- (int)addFileToArchive:(id)archive withFileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  archiveCopy = archive;
+  nameCopy = name;
   memset(&v26, 0, sizeof(v26));
-  v8 = [v6 UTF8String];
-  if (!v8)
+  uTF8String = [archiveCopy UTF8String];
+  if (!uTF8String)
   {
     NSLog(@"No filename!");
 LABEL_7:
@@ -68,8 +68,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  stat(v8, &v26);
+  v9 = uTF8String;
+  stat(uTF8String, &v26);
   if (!archive_entry_new())
   {
     NSLog(@"archive_entry_new() failed!");
@@ -77,17 +77,17 @@ LABEL_7:
   }
 
   archive_entry_copy_stat();
-  [v7 UTF8String];
+  [nameCopy UTF8String];
   archive_entry_set_pathname();
   archive = self->_archive;
   if (archive_write_header())
   {
     v11 = self->_archive;
     v12 = archive_errno();
-    v13 = [v7 UTF8String];
+    uTF8String2 = [nameCopy UTF8String];
     v14 = self->_archive;
     v15 = archive_error_string();
-    NSLog(@"failed to write header for file, %s, status, %d, reason: %s", v13, v12, v15);
+    NSLog(@"failed to write header for file, %s, status, %d, reason: %s", uTF8String2, v12, v15);
     archive_entry_free();
     goto LABEL_8;
   }
@@ -98,7 +98,7 @@ LABEL_7:
     v22 = __error();
     v23 = strerror(*v22);
     v24 = __error();
-    NSLog(@"Error opening file %@:%s (%d)", v6, v23, *v24);
+    NSLog(@"Error opening file %@:%s (%d)", archiveCopy, v23, *v24);
     archive_entry_free();
     goto LABEL_7;
   }
@@ -130,7 +130,7 @@ LABEL_14:
       }
     }
 
-    NSLog(@"Error writing file %@: request to write %ld bytes but wrote %ld bytes", v6, v12, v21);
+    NSLog(@"Error writing file %@: request to write %ld bytes but wrote %ld bytes", archiveCopy, v12, v21);
     v25 = self->_archive;
     LODWORD(v12) = archive_errno();
   }
@@ -142,12 +142,12 @@ LABEL_8:
   return v12;
 }
 
-- (int)addDirectoryToArchive:(id)a3 withDirName:(id)a4
+- (int)addDirectoryToArchive:(id)archive withDirName:(id)name
 {
-  v5 = a3;
-  v26 = a4;
+  archiveCopy = archive;
+  nameCopy = name;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:0];
+  v7 = [v6 contentsOfDirectoryAtPath:archiveCopy error:0];
 
   if ([v7 count])
   {
@@ -174,14 +174,14 @@ LABEL_8:
           v13 = *(*(&v28 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
           v27 = 0;
-          v15 = [v5 stringByAppendingPathComponent:v13];
+          v15 = [archiveCopy stringByAppendingPathComponent:v13];
           v16 = +[NSFileManager defaultManager];
           v17 = [v16 fileExistsAtPath:v15 isDirectory:&v27];
 
           if (v17)
           {
-            v18 = [v13 lastPathComponent];
-            v19 = [v26 stringByAppendingPathComponent:v18];
+            lastPathComponent = [v13 lastPathComponent];
+            v19 = [nameCopy stringByAppendingPathComponent:lastPathComponent];
 
             v20 = v27 == 1 ? [(CPLDiagnoseArchive *)self addDirectoryToArchive:v15 withDirName:v19]: [(CPLDiagnoseArchive *)self addFileToArchive:v15 withFileName:v19];
             v21 = v20;

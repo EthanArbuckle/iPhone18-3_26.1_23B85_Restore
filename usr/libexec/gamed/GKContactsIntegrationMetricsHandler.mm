@@ -1,8 +1,8 @@
 @interface GKContactsIntegrationMetricsHandler
 - (GKContactsIntegrationMetricsHandler)init;
-- (GKContactsIntegrationMetricsHandler)initWithAMPController:(id)a3;
-- (void)recordContactInfoMatchCount:(unint64_t)a3;
-- (void)recordContactRelationshipsFromResults:(id)a3;
+- (GKContactsIntegrationMetricsHandler)initWithAMPController:(id)controller;
+- (void)recordContactInfoMatchCount:(unint64_t)count;
+- (void)recordContactRelationshipsFromResults:(id)results;
 @end
 
 @implementation GKContactsIntegrationMetricsHandler
@@ -15,38 +15,38 @@
   return v4;
 }
 
-- (GKContactsIntegrationMetricsHandler)initWithAMPController:(id)a3
+- (GKContactsIntegrationMetricsHandler)initWithAMPController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = GKContactsIntegrationMetricsHandler;
   v6 = [(GKContactsIntegrationMetricsHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ampController, a3);
+    objc_storeStrong(&v6->_ampController, controller);
   }
 
   return v7;
 }
 
-- (void)recordContactInfoMatchCount:(unint64_t)a3
+- (void)recordContactInfoMatchCount:(unint64_t)count
 {
   v7[0] = GKMetricsEventType;
   v7[1] = @"contactInfoMatchCount";
   v8[0] = @"contactsIntegration";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:count];
   v8[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [(GKContactsIntegrationMetricsHandler *)self ampController];
-  [v6 reportPerformanceEventWithHostAppBundleId:GKDaemonIdentifier metricsFields:v5];
+  ampController = [(GKContactsIntegrationMetricsHandler *)self ampController];
+  [ampController reportPerformanceEventWithHostAppBundleId:GKDaemonIdentifier metricsFields:v5];
 }
 
-- (void)recordContactRelationshipsFromResults:(id)a3
+- (void)recordContactRelationshipsFromResults:(id)results
 {
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
     v21[0] = GKMetricsEventType;
     v21[1] = @"contactContainsFriendHandle";
@@ -63,7 +63,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v4;
+    v7 = resultsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -79,10 +79,10 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v11) relationship];
-          if (v12 <= 2)
+          relationship = [*(*(&v16 + 1) + 8 * v11) relationship];
+          if (relationship <= 2)
           {
-            [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:off_100366FD8[v12]];
+            [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:off_100366FD8[relationship]];
           }
 
           v11 = v11 + 1;
@@ -95,10 +95,10 @@
       while (v9);
     }
 
-    v13 = [(GKContactsIntegrationMetricsHandler *)self ampController];
+    ampController = [(GKContactsIntegrationMetricsHandler *)self ampController];
     v14 = GKDaemonIdentifier;
     v15 = [v6 copy];
-    [v13 reportPerformanceEventWithHostAppBundleId:v14 metricsFields:v15];
+    [ampController reportPerformanceEventWithHostAppBundleId:v14 metricsFields:v15];
   }
 }
 

@@ -1,59 +1,59 @@
 @interface CAMSystemPressureMitigationCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMSystemPressureMitigationCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 currentCaptureSession];
-  v5 = [v3 currentVideoDevice];
+  contextCopy = context;
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  currentVideoDevice = [contextCopy currentVideoDevice];
   v6 = +[CAMCaptureCapabilities capabilities];
   if ([v6 isBackPortraitModeSupported])
   {
-    v7 = 1;
+    isFrontPortraitModeSupported = 1;
   }
 
   else
   {
-    v7 = [v6 isFrontPortraitModeSupported];
+    isFrontPortraitModeSupported = [v6 isFrontPortraitModeSupported];
   }
 
-  v8 = [v4 sessionPreset];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E6986B08]];
+  sessionPreset = [currentCaptureSession sessionPreset];
+  v9 = [sessionPreset isEqualToString:*MEMORY[0x1E6986B08]];
 
-  v10 = [v5 activeFormat];
-  v11 = [v10 isHighestPhotoQualitySupported];
+  activeFormat = [currentVideoDevice activeFormat];
+  isHighestPhotoQualitySupported = [activeFormat isHighestPhotoQualitySupported];
 
-  v12 = [v5 activeFormat];
-  v13 = [v12 cam_supportsPortraitFrontFacingZoomed];
+  activeFormat2 = [currentVideoDevice activeFormat];
+  cam_supportsPortraitFrontFacingZoomed = [activeFormat2 cam_supportsPortraitFrontFacingZoomed];
 
-  v14 = [v6 shouldAlwaysApplySystemPressureMitigationInPhotoMode];
-  if ((v7 | v14) & 1) != 0 && ((v9 | v11 | v13))
+  shouldAlwaysApplySystemPressureMitigationInPhotoMode = [v6 shouldAlwaysApplySystemPressureMitigationInPhotoMode];
+  if ((isFrontPortraitModeSupported | shouldAlwaysApplySystemPressureMitigationInPhotoMode) & 1) != 0 && ((v9 | isHighestPhotoQualitySupported | cam_supportsPortraitFrontFacingZoomed))
   {
-    v15 = v14;
+    v15 = shouldAlwaysApplySystemPressureMitigationInPhotoMode;
     *&v34.value = *MEMORY[0x1E6960C70];
     v16 = *(MEMORY[0x1E6960C70] + 16);
     v34.epoch = v16;
     v31 = *&v34.value;
     *&v33.value = *&v34.value;
     v33.epoch = v16;
-    v30 = [v3 currentStillImageOutput];
-    v17 = [v30 isDepthDataDeliveryEnabled];
-    v18 = [v3 currentVideoPreviewLayer];
-    v19 = [v18 videoPreviewFilters];
-    v20 = [CAMEffectFilterManager isDepthEffectInFilters:v19];
+    currentStillImageOutput = [contextCopy currentStillImageOutput];
+    isDepthDataDeliveryEnabled = [currentStillImageOutput isDepthDataDeliveryEnabled];
+    currentVideoPreviewLayer = [contextCopy currentVideoPreviewLayer];
+    videoPreviewFilters = [currentVideoPreviewLayer videoPreviewFilters];
+    v20 = [CAMEffectFilterManager isDepthEffectInFilters:videoPreviewFilters];
 
-    if ((v17 & v20 | v15))
+    if ((isDepthDataDeliveryEnabled & v20 | v15))
     {
-      v21 = [v5 systemPressureState];
-      v22 = [v21 recommendedFrameRateRangeForPortrait];
-      v23 = v22;
-      if (v22)
+      systemPressureState = [currentVideoDevice systemPressureState];
+      recommendedFrameRateRangeForPortrait = [systemPressureState recommendedFrameRateRangeForPortrait];
+      v23 = recommendedFrameRateRangeForPortrait;
+      if (recommendedFrameRateRangeForPortrait)
       {
-        [v22 maxFrameDuration];
+        [recommendedFrameRateRangeForPortrait maxFrameDuration];
         v34 = time2;
         [v23 minFrameDuration];
       }
@@ -67,9 +67,9 @@
       v33 = time2;
     }
 
-    if (v5)
+    if (currentVideoDevice)
     {
-      [v5 activeVideoMinFrameDuration];
+      [currentVideoDevice activeVideoMinFrameDuration];
     }
 
     else
@@ -83,9 +83,9 @@
       goto LABEL_19;
     }
 
-    if (v5)
+    if (currentVideoDevice)
     {
-      [v5 activeVideoMaxFrameDuration];
+      [currentVideoDevice activeVideoMaxFrameDuration];
     }
 
     else
@@ -120,11 +120,11 @@ LABEL_19:
 
       else
       {
-        if (v5)
+        if (currentVideoDevice)
         {
-          [v5 activeVideoMinFrameDuration];
+          [currentVideoDevice activeVideoMinFrameDuration];
           v27 = CMTimeCopyDescription(v24, &time2);
-          [v5 activeVideoMaxFrameDuration];
+          [currentVideoDevice activeVideoMaxFrameDuration];
         }
 
         else
@@ -148,9 +148,9 @@ LABEL_19:
     }
 
     time2 = v33;
-    [v5 setActiveVideoMinFrameDuration:&time2];
+    [currentVideoDevice setActiveVideoMinFrameDuration:&time2];
     time2 = v34;
-    [v5 setActiveVideoMaxFrameDuration:&time2];
+    [currentVideoDevice setActiveVideoMaxFrameDuration:&time2];
   }
 }
 

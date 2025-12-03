@@ -1,22 +1,22 @@
 @interface PHSOSAlertRestingView
-- (PHSOSAlertRestingView)initWithFrame:(CGRect)a3;
+- (PHSOSAlertRestingView)initWithFrame:(CGRect)frame;
 - (double)sliderDistanceFromBottom;
 - (double)titleDistanceFromTop;
 - (void)commonInit;
-- (void)didFinishSlideForSlidingButton:(id)a3;
-- (void)setHasMedicalIDSlider:(BOOL)a3;
+- (void)didFinishSlideForSlidingButton:(id)button;
+- (void)setHasMedicalIDSlider:(BOOL)slider;
 - (void)setUpConstraints;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 - (void)showMessagesButtonPressed;
 @end
 
 @implementation PHSOSAlertRestingView
 
-- (PHSOSAlertRestingView)initWithFrame:(CGRect)a3
+- (PHSOSAlertRestingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHSOSAlertRestingView;
-  v3 = [(PHSOSAlertRestingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHSOSAlertRestingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,37 +31,37 @@
   v3 = objc_alloc_init(UILabel);
   [(PHSOSAlertRestingView *)self setTitleLabel:v3];
 
-  v4 = [(PHSOSAlertRestingView *)self titleLabel];
-  [v4 setTextAlignment:1];
+  titleLabel = [(PHSOSAlertRestingView *)self titleLabel];
+  [titleLabel setTextAlignment:1];
 
-  v5 = [(PHSOSAlertRestingView *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel2 = [(PHSOSAlertRestingView *)self titleLabel];
+  [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v6 = [UIFont boldSystemFontOfSize:34.0];
-  v7 = [(PHSOSAlertRestingView *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel3 = [(PHSOSAlertRestingView *)self titleLabel];
+  [titleLabel3 setFont:v6];
 
   v8 = +[UIColor whiteColor];
-  v9 = [(PHSOSAlertRestingView *)self titleLabel];
-  [v9 setTextColor:v8];
+  titleLabel4 = [(PHSOSAlertRestingView *)self titleLabel];
+  [titleLabel4 setTextColor:v8];
 
-  v10 = [(PHSOSAlertRestingView *)self titleLabel];
-  [v10 setNumberOfLines:0];
+  titleLabel5 = [(PHSOSAlertRestingView *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v11 = [(PHSOSAlertRestingView *)self titleLabel];
-  [(PHSOSAlertRestingView *)self addSubview:v11];
+  titleLabel6 = [(PHSOSAlertRestingView *)self titleLabel];
+  [(PHSOSAlertRestingView *)self addSubview:titleLabel6];
 
   v12 = objc_alloc_init(UILabel);
   [(PHSOSAlertRestingView *)self setFirstSubtitleLabel:v12];
 
-  v13 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  [v13 setTextAlignment:1];
+  firstSubtitleLabel = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  [firstSubtitleLabel setTextAlignment:1];
 
-  v14 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  firstSubtitleLabel2 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  [firstSubtitleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  [v15 setNumberOfLines:0];
+  firstSubtitleLabel3 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  [firstSubtitleLabel3 setNumberOfLines:0];
 
   v16 = [[NSMutableAttributedString alloc] initWithString:&stru_100361FD0];
   v66 = objc_alloc_init(NSTextAttachment);
@@ -96,39 +96,39 @@
   v61 = [v24 initWithString:v26 attributes:v62];
 
   [v16 appendAttributedString:v61];
-  v27 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  [v27 setAttributedText:v16];
+  firstSubtitleLabel4 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  [firstSubtitleLabel4 setAttributedText:v16];
 
-  v28 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  [(PHSOSAlertRestingView *)self addSubview:v28];
+  firstSubtitleLabel5 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  [(PHSOSAlertRestingView *)self addSubview:firstSubtitleLabel5];
 
   v29 = objc_alloc_init(UILabel);
   [(PHSOSAlertRestingView *)self setSecondSubtitleLabel:v29];
 
-  v30 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v30 setTextAlignment:1];
+  secondSubtitleLabel = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel setTextAlignment:1];
 
-  v31 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+  secondSubtitleLabel2 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v32 = [UIFont systemFontOfSize:20.0];
-  v33 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v33 setFont:v32];
+  secondSubtitleLabel3 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel3 setFont:v32];
 
   v34 = +[UIColor whiteColor];
-  v35 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v35 setTextColor:v34];
+  secondSubtitleLabel4 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel4 setTextColor:v34];
 
-  v36 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v36 setNumberOfLines:0];
+  secondSubtitleLabel5 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel5 setNumberOfLines:0];
 
   v37 = +[NSBundle mainBundle];
   v38 = [v37 localizedStringForKey:@"SOS_ALERT_RESTING_VIEW_SECOND_SUBTITLE" value:&stru_100361FD0 table:@"Localizable-Stewie"];
-  v39 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [v39 setText:v38];
+  secondSubtitleLabel6 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [secondSubtitleLabel6 setText:v38];
 
-  v40 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  [(PHSOSAlertRestingView *)self addSubview:v40];
+  secondSubtitleLabel7 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  [(PHSOSAlertRestingView *)self addSubview:secondSubtitleLabel7];
 
   v41 = +[NSBundle mainBundle];
   v42 = [v41 localizedStringForKey:@"SOS_ALERT_RESTING_VIEW_BUTTON_LABEL" value:&stru_100361FD0 table:@"Localizable-Stewie"];
@@ -152,35 +152,35 @@
   v48 = [UIButton buttonWithType:0 primaryAction:v47];
   [(PHSOSAlertRestingView *)self setShowMessagesButton:v48];
 
-  v49 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  [v49 setTranslatesAutoresizingMaskIntoConstraints:0];
+  showMessagesButton = [(PHSOSAlertRestingView *)self showMessagesButton];
+  [showMessagesButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v50 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  v51 = [v50 layer];
-  [v51 setCornerRadius:36.0];
+  showMessagesButton2 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  layer = [showMessagesButton2 layer];
+  [layer setCornerRadius:36.0];
 
   v52 = +[UIColor systemGreenColor];
   v53 = [v52 colorWithAlphaComponent:0.150000006];
-  v54 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  [v54 setBackgroundColor:v53];
+  showMessagesButton3 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  [showMessagesButton3 setBackgroundColor:v53];
 
-  v55 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  [v55 setAttributedTitle:v46 forState:0];
+  showMessagesButton4 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  [showMessagesButton4 setAttributedTitle:v46 forState:0];
 
-  v56 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  [(PHSOSAlertRestingView *)self addSubview:v56];
+  showMessagesButton5 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  [(PHSOSAlertRestingView *)self addSubview:showMessagesButton5];
 
   v57 = [[PHSlidingButton alloc] initWithSlidingButtonType:9 appearanceType:0 callState:2];
   [(PHSOSAlertRestingView *)self setMedicalIDSlidingButton:v57];
 
-  v58 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
+  medicalIDSlidingButton = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  [medicalIDSlidingButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v59 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  [v59 setDelegate:self];
+  medicalIDSlidingButton2 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  [medicalIDSlidingButton2 setDelegate:self];
 
-  v60 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  [(PHSOSAlertRestingView *)self addSubview:v60];
+  medicalIDSlidingButton3 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  [(PHSOSAlertRestingView *)self addSubview:medicalIDSlidingButton3];
 
   [(PHSOSAlertRestingView *)self setUpConstraints];
   [(PHSOSAlertRestingView *)self setHasMedicalIDSlider:0];
@@ -192,114 +192,114 @@
 - (void)setUpConstraints
 {
   v76 = objc_alloc_init(NSMutableArray);
-  v3 = [(PHSOSAlertRestingView *)self titleLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHSOSAlertRestingView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  titleLabel = [(PHSOSAlertRestingView *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(PHSOSAlertRestingView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v76 addObject:v6];
 
-  v7 = [(PHSOSAlertRestingView *)self titleLabel];
-  v8 = [v7 trailingAnchor];
-  v9 = [(PHSOSAlertRestingView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  titleLabel2 = [(PHSOSAlertRestingView *)self titleLabel];
+  trailingAnchor = [titleLabel2 trailingAnchor];
+  trailingAnchor2 = [(PHSOSAlertRestingView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v76 addObject:v10];
 
-  v11 = [(PHSOSAlertRestingView *)self titleLabel];
-  v12 = [v11 topAnchor];
-  v13 = [(PHSOSAlertRestingView *)self safeAreaLayoutGuide];
-  v14 = [v13 topAnchor];
+  titleLabel3 = [(PHSOSAlertRestingView *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  safeAreaLayoutGuide = [(PHSOSAlertRestingView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
   [(PHSOSAlertRestingView *)self titleDistanceFromTop];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:?];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v76 addObject:v15];
 
-  v16 = [(PHSOSAlertRestingView *)self titleLabel];
-  v17 = [v16 centerXAnchor];
-  v18 = [(PHSOSAlertRestingView *)self centerXAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  titleLabel4 = [(PHSOSAlertRestingView *)self titleLabel];
+  centerXAnchor = [titleLabel4 centerXAnchor];
+  centerXAnchor2 = [(PHSOSAlertRestingView *)self centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v76 addObject:v19];
 
-  v20 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  v21 = [v20 leadingAnchor];
-  v22 = [(PHSOSAlertRestingView *)self leadingAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  firstSubtitleLabel = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  leadingAnchor3 = [firstSubtitleLabel leadingAnchor];
+  leadingAnchor4 = [(PHSOSAlertRestingView *)self leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v76 addObject:v23];
 
-  v24 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  v25 = [v24 trailingAnchor];
-  v26 = [(PHSOSAlertRestingView *)self trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  firstSubtitleLabel2 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  trailingAnchor3 = [firstSubtitleLabel2 trailingAnchor];
+  trailingAnchor4 = [(PHSOSAlertRestingView *)self trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v76 addObject:v27];
 
-  v28 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  v29 = [v28 bottomAnchor];
-  v30 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  v31 = [v30 topAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  firstSubtitleLabel3 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  bottomAnchor = [firstSubtitleLabel3 bottomAnchor];
+  secondSubtitleLabel = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  topAnchor3 = [secondSubtitleLabel topAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   [v76 addObject:v32];
 
-  v33 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
-  v34 = [v33 centerXAnchor];
-  v35 = [(PHSOSAlertRestingView *)self centerXAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  firstSubtitleLabel4 = [(PHSOSAlertRestingView *)self firstSubtitleLabel];
+  centerXAnchor3 = [firstSubtitleLabel4 centerXAnchor];
+  centerXAnchor4 = [(PHSOSAlertRestingView *)self centerXAnchor];
+  v36 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v76 addObject:v36];
 
-  v37 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  v38 = [v37 leadingAnchor];
-  v39 = [(PHSOSAlertRestingView *)self leadingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  secondSubtitleLabel2 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  leadingAnchor5 = [secondSubtitleLabel2 leadingAnchor];
+  leadingAnchor6 = [(PHSOSAlertRestingView *)self leadingAnchor];
+  v40 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v76 addObject:v40];
 
-  v41 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  v42 = [v41 trailingAnchor];
-  v43 = [(PHSOSAlertRestingView *)self trailingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  secondSubtitleLabel3 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  trailingAnchor5 = [secondSubtitleLabel3 trailingAnchor];
+  trailingAnchor6 = [(PHSOSAlertRestingView *)self trailingAnchor];
+  v44 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v76 addObject:v44];
 
-  v45 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  v46 = [v45 bottomAnchor];
-  v47 = [(PHSOSAlertRestingView *)self centerYAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:-8.0];
+  secondSubtitleLabel4 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  bottomAnchor2 = [secondSubtitleLabel4 bottomAnchor];
+  centerYAnchor = [(PHSOSAlertRestingView *)self centerYAnchor];
+  v48 = [bottomAnchor2 constraintEqualToAnchor:centerYAnchor constant:-8.0];
   [v76 addObject:v48];
 
-  v49 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
-  v50 = [v49 centerXAnchor];
-  v51 = [(PHSOSAlertRestingView *)self centerXAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  secondSubtitleLabel5 = [(PHSOSAlertRestingView *)self secondSubtitleLabel];
+  centerXAnchor5 = [secondSubtitleLabel5 centerXAnchor];
+  centerXAnchor6 = [(PHSOSAlertRestingView *)self centerXAnchor];
+  v52 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v76 addObject:v52];
 
-  v53 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  v54 = [v53 widthAnchor];
-  v55 = [v54 constraintEqualToConstant:300.0];
+  showMessagesButton = [(PHSOSAlertRestingView *)self showMessagesButton];
+  widthAnchor = [showMessagesButton widthAnchor];
+  v55 = [widthAnchor constraintEqualToConstant:300.0];
   [v76 addObject:v55];
 
-  v56 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  v57 = [v56 heightAnchor];
-  v58 = [v57 constraintEqualToConstant:72.0];
+  showMessagesButton2 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  heightAnchor = [showMessagesButton2 heightAnchor];
+  v58 = [heightAnchor constraintEqualToConstant:72.0];
   [v76 addObject:v58];
 
-  v59 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  v60 = [v59 centerXAnchor];
-  v61 = [(PHSOSAlertRestingView *)self centerXAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  showMessagesButton3 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  centerXAnchor7 = [showMessagesButton3 centerXAnchor];
+  centerXAnchor8 = [(PHSOSAlertRestingView *)self centerXAnchor];
+  v62 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v76 addObject:v62];
 
-  v63 = [(PHSOSAlertRestingView *)self showMessagesButton];
-  v64 = [v63 topAnchor];
-  v65 = [(PHSOSAlertRestingView *)self centerYAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65 constant:8.0];
+  showMessagesButton4 = [(PHSOSAlertRestingView *)self showMessagesButton];
+  topAnchor4 = [showMessagesButton4 topAnchor];
+  centerYAnchor2 = [(PHSOSAlertRestingView *)self centerYAnchor];
+  v66 = [topAnchor4 constraintEqualToAnchor:centerYAnchor2 constant:8.0];
   [v76 addObject:v66];
 
-  v67 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  v68 = [v67 centerXAnchor];
-  v69 = [(PHSOSAlertRestingView *)self centerXAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  medicalIDSlidingButton = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  centerXAnchor9 = [medicalIDSlidingButton centerXAnchor];
+  centerXAnchor10 = [(PHSOSAlertRestingView *)self centerXAnchor];
+  v70 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   [v76 addObject:v70];
 
-  v71 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  v72 = [v71 bottomAnchor];
-  v73 = [(PHSOSAlertRestingView *)self bottomAnchor];
+  medicalIDSlidingButton2 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  bottomAnchor3 = [medicalIDSlidingButton2 bottomAnchor];
+  bottomAnchor4 = [(PHSOSAlertRestingView *)self bottomAnchor];
   [(PHSOSAlertRestingView *)self sliderDistanceFromBottom];
-  v75 = [v72 constraintEqualToAnchor:v73 constant:-v74];
+  v75 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v74];
   [v76 addObject:v75];
 
   [NSLayoutConstraint activateConstraints:v76];
@@ -331,32 +331,32 @@
   return v2;
 }
 
-- (void)setHasMedicalIDSlider:(BOOL)a3
+- (void)setHasMedicalIDSlider:(BOOL)slider
 {
-  v3 = a3;
+  sliderCopy = slider;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = sliderCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHSOSAlertRestingView,showing medical ID slider,%d", v7, 8u);
   }
 
-  self->_hasMedicalIDSlider = v3;
-  v6 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
-  [v6 setAlpha:v3];
+  self->_hasMedicalIDSlider = sliderCopy;
+  medicalIDSlidingButton = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  [medicalIDSlidingButton setAlpha:sliderCopy];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v8 = a3;
-  objc_storeStrong(&self->_viewModel, a3);
+  modelCopy = model;
+  objc_storeStrong(&self->_viewModel, model);
   viewModel = self->_viewModel;
   if (viewModel)
   {
-    v6 = [(PHSOSAlertRestingViewModel *)viewModel titleString];
-    v7 = [(PHSOSAlertRestingView *)self titleLabel];
-    [v7 setText:v6];
+    titleString = [(PHSOSAlertRestingViewModel *)viewModel titleString];
+    titleLabel = [(PHSOSAlertRestingView *)self titleLabel];
+    [titleLabel setText:titleString];
   }
 }
 
@@ -369,21 +369,21 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PHSOSAlertRestingView,user pressed show messages button", v6, 2u);
   }
 
-  v4 = [(PHSOSAlertRestingView *)self completionHandler];
+  completionHandler = [(PHSOSAlertRestingView *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(PHSOSAlertRestingView *)self completionHandler];
-    v5[2](v5, 0);
+    completionHandler2 = [(PHSOSAlertRestingView *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0);
   }
 }
 
-- (void)didFinishSlideForSlidingButton:(id)a3
+- (void)didFinishSlideForSlidingButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
+  buttonCopy = button;
+  medicalIDSlidingButton = [(PHSOSAlertRestingView *)self medicalIDSlidingButton];
 
-  if (v5 == v4)
+  if (medicalIDSlidingButton == buttonCopy)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -392,12 +392,12 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHSOSAlertRestingView,user slid medical ID slider", v9, 2u);
     }
 
-    v7 = [(PHSOSAlertRestingView *)self completionHandler];
+    completionHandler = [(PHSOSAlertRestingView *)self completionHandler];
 
-    if (v7)
+    if (completionHandler)
     {
-      v8 = [(PHSOSAlertRestingView *)self completionHandler];
-      v8[2](v8, 1);
+      completionHandler2 = [(PHSOSAlertRestingView *)self completionHandler];
+      completionHandler2[2](completionHandler2, 1);
     }
   }
 }

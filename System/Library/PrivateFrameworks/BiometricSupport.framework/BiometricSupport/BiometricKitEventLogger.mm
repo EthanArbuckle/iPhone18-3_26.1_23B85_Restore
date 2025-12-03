@@ -1,11 +1,11 @@
 @interface BiometricKitEventLogger
 + (id)logger;
 - (BiometricKitEventLogger)init;
-- (void)appendEvent:(id)a3;
-- (void)appendEventValue:(unsigned int)a3 isMetadata:(BOOL)a4;
+- (void)appendEvent:(id)event;
+- (void)appendEventValue:(unsigned int)value isMetadata:(BOOL)metadata;
 - (void)flushEvents;
 - (void)logDeviceMetadata;
-- (void)logEventOrCode:(unint64_t)a3;
+- (void)logEventOrCode:(unint64_t)code;
 - (void)logSmartKeyboardStatus;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __33__BiometricKitEventLogger_logger__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (logger_once != -1)
   {
     dispatch_once(&logger_once, block);
@@ -52,9 +52,9 @@
 
     if (!v9)
     {
-      v10 = [v8 BOOLValue];
-      v11 = [CFProperty BOOLValue];
-      if (v11)
+      bOOLValue = [v8 BOOLValue];
+      bOOLValue2 = [CFProperty BOOLValue];
+      if (bOOLValue2)
       {
         v12 = 524290;
       }
@@ -65,12 +65,12 @@
       }
 
       v13 = 0x80000;
-      if (!v11)
+      if (!bOOLValue2)
       {
         v13 = 524289;
       }
 
-      if (v10)
+      if (bOOLValue)
       {
         v14 = v12;
       }
@@ -151,7 +151,7 @@ void __33__BiometricKitEventLogger_logger__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)appendEventValue:(unsigned int)a3 isMetadata:(BOOL)a4
+- (void)appendEventValue:(unsigned int)value isMetadata:(BOOL)metadata
 {
   dispatch_assert_queue_V2(self->_queue);
   eventListLength = self->_eventListLength;
@@ -174,7 +174,7 @@ void __33__BiometricKitEventLogger_logger__block_invoke(uint64_t a1)
     eventList[v11] = v9;
   }
 
-  if (!a4)
+  if (!metadata)
   {
     [(BiometricKitEventLogger *)self logDeviceMetadata];
   }
@@ -182,20 +182,20 @@ void __33__BiometricKitEventLogger_logger__block_invoke(uint64_t a1)
 LABEL_6:
   v12 = self->_eventListLength;
   self->_eventListLength = v12 + 1;
-  self->_eventList[v12] = a3;
+  self->_eventList[v12] = value;
 }
 
-- (void)appendEvent:(id)a3
+- (void)appendEvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   v7 = 0;
-  [v4 encodeEventValue:&v7 + 4 secondValue:&v7];
-  -[BiometricKitEventLogger appendEventValue:isMetadata:](self, "appendEventValue:isMetadata:", HIDWORD(v7), [v4 isMetadata]);
+  [eventCopy encodeEventValue:&v7 + 4 secondValue:&v7];
+  -[BiometricKitEventLogger appendEventValue:isMetadata:](self, "appendEventValue:isMetadata:", HIDWORD(v7), [eventCopy isMetadata]);
   if (v7)
   {
-    -[BiometricKitEventLogger appendEventValue:isMetadata:](self, "appendEventValue:isMetadata:", v7, [v4 isMetadata]);
+    -[BiometricKitEventLogger appendEventValue:isMetadata:](self, "appendEventValue:isMetadata:", v7, [eventCopy isMetadata]);
   }
 
   if (OSLogHandle)
@@ -211,14 +211,14 @@ LABEL_6:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = eventCopy;
     _os_log_impl(&dword_223E00000, v5, OS_LOG_TYPE_DEBUG, "BKLogEvent: %@\n", buf, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventOrCode:(unint64_t)a3
+- (void)logEventOrCode:(unint64_t)code
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -226,7 +226,7 @@ LABEL_6:
   v4[2] = __42__BiometricKitEventLogger_logEventOrCode___block_invoke;
   v4[3] = &unk_2784FA468;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = code;
   dispatch_async(queue, v4);
 }
 
@@ -343,8 +343,8 @@ LABEL_21:
   {
     AWDPostMetric();
     v14 = MEMORY[0x277CF1C18];
-    v15 = [v7 dictionaryRepresentation];
-    [v14 analyticsOSLogNSDictionary:v15 forEvent:@"biometricKitLogEvent"];
+    dictionaryRepresentation = [v7 dictionaryRepresentation];
+    [v14 analyticsOSLogNSDictionary:dictionaryRepresentation forEvent:@"biometricKitLogEvent"];
   }
 
 LABEL_22:

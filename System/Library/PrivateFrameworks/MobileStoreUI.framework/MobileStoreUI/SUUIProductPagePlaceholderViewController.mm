@@ -1,26 +1,26 @@
 @interface SUUIProductPagePlaceholderViewController
 - (SUUIProductPageChildViewControllerDelegate)delegate;
-- (SUUIProductPagePlaceholderViewController)initWithStyle:(int64_t)a3;
+- (SUUIProductPagePlaceholderViewController)initWithStyle:(int64_t)style;
 - (UIScrollView)scrollView;
 - (void)_addHeaderView;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SUUIProductPagePlaceholderViewController
 
-- (SUUIProductPagePlaceholderViewController)initWithStyle:(int64_t)a3
+- (SUUIProductPagePlaceholderViewController)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = SUUIProductPagePlaceholderViewController;
   result = [(SUUIProductPagePlaceholderViewController *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;
@@ -28,29 +28,29 @@
 
 - (void)loadView
 {
-  v3 = [(SUUIProductPagePlaceholderViewController *)self scrollView];
-  [(SUUIProductPagePlaceholderViewController *)self setView:v3];
+  scrollView = [(SUUIProductPagePlaceholderViewController *)self scrollView];
+  [(SUUIProductPagePlaceholderViewController *)self setView:scrollView];
 
   [(SUUIProductPagePlaceholderViewController *)self _addHeaderView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUUIProductPagePlaceholderViewController;
-  [(SUUIProductPagePlaceholderViewController *)&v4 viewDidAppear:a3];
+  [(SUUIProductPagePlaceholderViewController *)&v4 viewDidAppear:appear];
   [(UIActivityIndicatorView *)self->_indicator startAnimating];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUIProductPagePlaceholderViewController;
-  [(SUUIProductPagePlaceholderViewController *)&v4 viewDidDisappear:a3];
+  [(SUUIProductPagePlaceholderViewController *)&v4 viewDidDisappear:disappear];
   [(UIActivityIndicatorView *)self->_indicator stopAnimating];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained productPageChildViewControllerDidScroll:self];
@@ -86,13 +86,13 @@
       }
       v9 = ;
       v6 = [[SUUIProductPagePlaceholderView alloc] initWithPlaceholderString:v9 isPad:SUUIUserInterfaceIdiom(self->_clientContext) == 1];
-      v10 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-      [(UIActivityIndicatorView *)v6 setTextColor:v10];
+      secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+      [(UIActivityIndicatorView *)v6 setTextColor:secondaryTextColor];
 
-      v11 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-      if (v11)
+      backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+      if (backgroundColor)
       {
-        [(UIActivityIndicatorView *)v6 setBackgroundColor:v11];
+        [(UIActivityIndicatorView *)v6 setBackgroundColor:backgroundColor];
       }
 
       else
@@ -111,10 +111,10 @@
     [(SUUIProductPagePlaceholderScrollView *)self->_scrollView setIsPad:SUUIUserInterfaceIdiom(self->_clientContext) == 1];
     [(SUUIProductPagePlaceholderScrollView *)self->_scrollView setAlwaysBounceVertical:1];
     v15 = self->_scrollView;
-    v16 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    if (v16)
+    backgroundColor2 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    if (backgroundColor2)
     {
-      [(SUUIProductPagePlaceholderScrollView *)v15 setBackgroundColor:v16];
+      [(SUUIProductPagePlaceholderScrollView *)v15 setBackgroundColor:backgroundColor2];
     }
 
     else
@@ -135,9 +135,9 @@
   return scrollView;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -155,21 +155,21 @@
   }
 }
 
-- (void)setHeaderViewController:(id)a3
+- (void)setHeaderViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   headerViewController = self->_headerViewController;
-  v9 = v5;
-  if (headerViewController != v5)
+  v9 = controllerCopy;
+  if (headerViewController != controllerCopy)
   {
-    v7 = [(SUUIProductPageHeaderViewController *)headerViewController view];
-    [v7 removeFromSuperview];
+    view = [(SUUIProductPageHeaderViewController *)headerViewController view];
+    [view removeFromSuperview];
 
-    v8 = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-    [v8 removeFromSuperview];
+    floatingView = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+    [floatingView removeFromSuperview];
 
     [(SUUIProductPageHeaderViewController *)self->_headerViewController removeFromParentViewController];
-    objc_storeStrong(&self->_headerViewController, a3);
+    objc_storeStrong(&self->_headerViewController, controller);
     if (self->_headerViewController)
     {
       [(SUUIProductPagePlaceholderViewController *)self addChildViewController:?];
@@ -183,20 +183,20 @@
 
 - (void)_addHeaderView
 {
-  v8 = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v8 setAutoresizingMask:2];
-  [v8 frame];
+  view = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view setAutoresizingMask:2];
+  [view frame];
   v4 = v3;
   [(SUUIProductPagePlaceholderScrollView *)self->_scrollView bounds];
-  [v8 setFrame:{0.0, v4}];
-  [(SUUIProductPagePlaceholderScrollView *)self->_scrollView addSubview:v8];
-  v5 = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-  [v5 setAutoresizingMask:2];
-  [v5 frame];
+  [view setFrame:{0.0, v4}];
+  [(SUUIProductPagePlaceholderScrollView *)self->_scrollView addSubview:view];
+  floatingView = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+  [floatingView setAutoresizingMask:2];
+  [floatingView frame];
   v7 = v6;
   [(SUUIProductPagePlaceholderScrollView *)self->_scrollView bounds];
-  [v5 setFrame:{0.0, v7}];
-  [(SUUIProductPagePlaceholderScrollView *)self->_scrollView addSubview:v5];
+  [floatingView setFrame:{0.0, v7}];
+  [(SUUIProductPagePlaceholderScrollView *)self->_scrollView addSubview:floatingView];
 }
 
 - (SUUIProductPageChildViewControllerDelegate)delegate

@@ -1,57 +1,57 @@
 @interface WFHomeServicePickerParameterEditingController
-- (void)createViewControllerWithInitialState:(id)a3 completionHandler:(id)a4;
-- (void)servicePickerDidCancel:(id)a3;
-- (void)servicePickerDidFinish:(id)a3 selectedServices:(id)a4;
+- (void)createViewControllerWithInitialState:(id)state completionHandler:(id)handler;
+- (void)servicePickerDidCancel:(id)cancel;
+- (void)servicePickerDidFinish:(id)finish selectedServices:(id)services;
 @end
 
 @implementation WFHomeServicePickerParameterEditingController
 
-- (void)servicePickerDidCancel:(id)a3
+- (void)servicePickerDidCancel:(id)cancel
 {
-  v3 = [(WFUIKitParameterEditingController *)self delegate];
-  [v3 cancelEditing];
+  delegate = [(WFUIKitParameterEditingController *)self delegate];
+  [delegate cancelEditing];
 }
 
-- (void)servicePickerDidFinish:(id)a3 selectedServices:(id)a4
+- (void)servicePickerDidFinish:(id)finish selectedServices:(id)services
 {
-  v12 = a4;
-  v5 = [(WFHomeServicePickerParameterEditingController *)self home];
+  servicesCopy = services;
+  home = [(WFHomeServicePickerParameterEditingController *)self home];
 
-  if (v5)
+  if (home)
   {
     v6 = objc_alloc(MEMORY[0x277D7C4C0]);
-    v7 = [v12 anyObject];
-    v8 = [(WFHomeServicePickerParameterEditingController *)self home];
+    anyObject = [servicesCopy anyObject];
+    home2 = [(WFHomeServicePickerParameterEditingController *)self home];
     v9 = WFSerializableHomeIdentifier();
-    v10 = [v6 initWithService:v7 homeIdentifier:v9];
+    delegate2 = [v6 initWithService:anyObject homeIdentifier:v9];
 
-    v11 = [(WFUIKitParameterEditingController *)self delegate];
-    [v11 finishEditingWithParameterState:v10];
+    delegate = [(WFUIKitParameterEditingController *)self delegate];
+    [delegate finishEditingWithParameterState:delegate2];
   }
 
   else
   {
-    v10 = [(WFUIKitParameterEditingController *)self delegate];
-    [v10 cancelEditing];
+    delegate2 = [(WFUIKitParameterEditingController *)self delegate];
+    [delegate2 cancelEditing];
   }
 }
 
-- (void)createViewControllerWithInitialState:(id)a3 completionHandler:(id)a4
+- (void)createViewControllerWithInitialState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D7C4F0] sharedManager];
+  stateCopy = state;
+  handlerCopy = handler;
+  mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __104__WFHomeServicePickerParameterEditingController_createViewControllerWithInitialState_completionHandler___block_invoke;
   v12[3] = &unk_279EDBEF8;
-  v13 = v6;
-  v14 = v8;
-  v15 = self;
-  v16 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = v6;
+  v13 = stateCopy;
+  v14 = mEMORY[0x277D7C4F0];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = mEMORY[0x277D7C4F0];
+  v11 = stateCopy;
   [v10 ensureHomesAreLoadedWithCompletionHandler:v12];
 }
 

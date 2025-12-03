@@ -7,7 +7,7 @@
 
 - (NSArray)libraryMenuOrderedIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   NSUserDefaults.libraryMenuOrderedIdentifiers.getter();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -17,7 +17,7 @@
 
 - (NSSet)libraryMenuSelectedIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   NSUserDefaults.libraryMenuRevision.getter();
   v4 = v3;
 

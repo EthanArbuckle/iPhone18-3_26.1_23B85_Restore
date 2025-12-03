@@ -1,23 +1,23 @@
 @interface _MPCPlaybackEngineEventStreamInitializationParameters
-- (_MPCPlaybackEngineEventStreamInitializationParameters)initWithPlaybackEngineParameters:(id)a3 engineID:(id)a4;
+- (_MPCPlaybackEngineEventStreamInitializationParameters)initWithPlaybackEngineParameters:(id)parameters engineID:(id)d;
 @end
 
 @implementation _MPCPlaybackEngineEventStreamInitializationParameters
 
-- (_MPCPlaybackEngineEventStreamInitializationParameters)initWithPlaybackEngineParameters:(id)a3 engineID:(id)a4
+- (_MPCPlaybackEngineEventStreamInitializationParameters)initWithPlaybackEngineParameters:(id)parameters engineID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = _MPCPlaybackEngineEventStreamInitializationParameters;
   v8 = [(_MPCPlaybackEngineEventStreamInitializationParameters *)&v25 init];
   if (v8)
   {
-    v9 = [v6 remoteCommandCenter];
-    v10 = [v9 playerPath];
-    v11 = [v10 origin];
-    quot = [v11 identifier];
+    remoteCommandCenter = [parametersCopy remoteCommandCenter];
+    playerPath = [remoteCommandCenter playerPath];
+    origin = [playerPath origin];
+    quot = [origin identifier];
     if (quot)
     {
       v13 = quot;
@@ -54,12 +54,12 @@
     originID = v8->_originID;
     v8->_originID = &v17->isa;
 
-    v19 = [v6 playerID];
-    v20 = [v19 copy];
+    playerID = [parametersCopy playerID];
+    v20 = [playerID copy];
     playerID = v8->_playerID;
     v8->_playerID = v20;
 
-    v22 = [v7 copy];
+    v22 = [dCopy copy];
     engineID = v8->_engineID;
     v8->_engineID = v22;
   }

@@ -1,22 +1,22 @@
 @interface ML3UpdateSiriIndexOperation
-+ (BOOL)_addDonationLinkedItemWithSourceIdentifier:(id)a3 andType:(unsigned int)a4 toLinkedItemIdentifiers:(id)a5;
-+ (id)_createDonationItemOfType:(unsigned int)a3 withName:(id)a4 itemIdentifier:(id)a5 linkedItemIdentifiers:(id)a6;
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_performFullIndexToRevision:(int64_t)a3 withDonation:(id)a4;
-- (BOOL)_performIncrementalIndexToRevision:(int64_t)a3 withDonation:(id)a4;
++ (BOOL)_addDonationLinkedItemWithSourceIdentifier:(id)identifier andType:(unsigned int)type toLinkedItemIdentifiers:(id)identifiers;
++ (id)_createDonationItemOfType:(unsigned int)type withName:(id)name itemIdentifier:(id)identifier linkedItemIdentifiers:(id)identifiers;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_performFullIndexToRevision:(int64_t)revision withDonation:(id)donation;
+- (BOOL)_performIncrementalIndexToRevision:(int64_t)revision withDonation:(id)donation;
 - (BOOL)_platformSupportsSiriIndexing;
-- (void)_runAsPersonasForLibraryAccountWithBlock:(id)a3;
+- (void)_runAsPersonasForLibraryAccountWithBlock:(id)block;
 @end
 
 @implementation ML3UpdateSiriIndexOperation
 
-+ (BOOL)_addDonationLinkedItemWithSourceIdentifier:(id)a3 andType:(unsigned int)a4 toLinkedItemIdentifiers:(id)a5
++ (BOOL)_addDonationLinkedItemWithSourceIdentifier:(id)identifier andType:(unsigned int)type toLinkedItemIdentifiers:(id)identifiers
 {
-  v6 = *&a4;
+  v6 = *&type;
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  if (identifierCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -37,12 +37,12 @@
     v10 = v9;
     _Block_object_dispose(&v19, 8);
     v18 = 0;
-    v11 = [[v9 alloc] initWithSourceItemIdentifier:v7 type:v6 error:&v18];
+    v11 = [[v9 alloc] initWithSourceItemIdentifier:identifierCopy type:v6 error:&v18];
     v12 = v18;
     v13 = v11 != 0;
     if (v11)
     {
-      [v8 addObject:v11];
+      [identifiersCopy addObject:v11];
     }
 
     else
@@ -53,13 +53,13 @@
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v16 = [v12 msv_description];
+          msv_description = [v12 msv_description];
           *buf = 67109634;
           *&buf[4] = v6;
           *v24 = 2112;
-          *&v24[2] = v7;
+          *&v24[2] = identifierCopy;
           *&v24[10] = 2114;
-          *&v24[12] = v16;
+          *&v24[12] = msv_description;
           _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_ERROR, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCMediaLinkedIdentifier of type=%u with id=%@ error=%{public}@", buf, 0x1Cu);
         }
       }
@@ -69,7 +69,7 @@
         *buf = 67109378;
         *&buf[4] = v6;
         *v24 = 2112;
-        *&v24[2] = v7;
+        *&v24[2] = identifierCopy;
         _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCMediaLinkedIdentifier of type=%u with id=%@", buf, 0x12u);
       }
     }
@@ -83,13 +83,13 @@
   return v13;
 }
 
-+ (id)_createDonationItemOfType:(unsigned int)a3 withName:(id)a4 itemIdentifier:(id)a5 linkedItemIdentifiers:(id)a6
++ (id)_createDonationItemOfType:(unsigned int)type withName:(id)name itemIdentifier:(id)identifier linkedItemIdentifiers:(id)identifiers
 {
-  v8 = *&a3;
+  v8 = *&type;
   v85 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   if (v8 <= 5)
   {
     if (v8 <= 2)
@@ -115,7 +115,7 @@
         v23 = v22;
         _Block_object_dispose(&v78, 8);
         v76 = 0;
-        v14 = [[v22 alloc] initWithName:v9 error:&v76];
+        v14 = [[v22 alloc] initWithName:nameCopy error:&v76];
         v15 = &v76;
       }
 
@@ -145,7 +145,7 @@
         v21 = v20;
         _Block_object_dispose(&v78, 8);
         v68 = 0;
-        v14 = [[v20 alloc] initWithName:v9 error:&v68];
+        v14 = [[v20 alloc] initWithName:nameCopy error:&v68];
         v15 = &v68;
       }
     }
@@ -171,7 +171,7 @@
       v31 = v30;
       _Block_object_dispose(&v78, 8);
       v77 = 0;
-      v14 = [[v30 alloc] initWithName:v9 error:&v77];
+      v14 = [[v30 alloc] initWithName:nameCopy error:&v77];
       v15 = &v77;
     }
 
@@ -196,7 +196,7 @@
       v25 = v24;
       _Block_object_dispose(&v78, 8);
       v73 = 0;
-      v14 = [[v24 alloc] initWithName:v9 error:&v73];
+      v14 = [[v24 alloc] initWithName:nameCopy error:&v73];
       v15 = &v73;
     }
 
@@ -221,7 +221,7 @@
       v17 = v16;
       _Block_object_dispose(&v78, 8);
       v69 = 0;
-      v14 = [[v16 alloc] initWithName:v9 error:&v69];
+      v14 = [[v16 alloc] initWithName:nameCopy error:&v69];
       v15 = &v69;
     }
   }
@@ -250,7 +250,7 @@
         v35 = v34;
         _Block_object_dispose(&v78, 8);
         v72 = 0;
-        v14 = [[v34 alloc] initWithName:v9 error:&v72];
+        v14 = [[v34 alloc] initWithName:nameCopy error:&v72];
         v15 = &v72;
         break;
       case 0xB:
@@ -273,7 +273,7 @@
         v29 = v28;
         _Block_object_dispose(&v78, 8);
         v74 = 0;
-        v14 = [[v28 alloc] initWithName:v9 error:&v74];
+        v14 = [[v28 alloc] initWithName:nameCopy error:&v74];
         v15 = &v74;
         break;
       case 0xC:
@@ -296,7 +296,7 @@
         v19 = v18;
         _Block_object_dispose(&v78, 8);
         v75 = 0;
-        v14 = [[v18 alloc] initWithName:v9 error:&v75];
+        v14 = [[v18 alloc] initWithName:nameCopy error:&v75];
         v15 = &v75;
         break;
       default:
@@ -328,7 +328,7 @@
         v33 = v32;
         _Block_object_dispose(&v78, 8);
         v70 = 0;
-        v14 = [[v32 alloc] initWithName:v9 error:&v70];
+        v14 = [[v32 alloc] initWithName:nameCopy error:&v70];
         v15 = &v70;
         break;
       case 7:
@@ -351,7 +351,7 @@
         v27 = v26;
         _Block_object_dispose(&v78, 8);
         v71 = 0;
-        v14 = [[v26 alloc] initWithName:v9 error:&v71];
+        v14 = [[v26 alloc] initWithName:nameCopy error:&v71];
         v15 = &v71;
         break;
       case 9:
@@ -374,7 +374,7 @@
         v13 = v12;
         _Block_object_dispose(&v78, 8);
         v67 = 0;
-        v14 = [[v12 alloc] initWithName:v9 error:&v67];
+        v14 = [[v12 alloc] initWithName:nameCopy error:&v67];
         v15 = &v67;
         break;
       default:
@@ -400,11 +400,11 @@ LABEL_74:
       v53 = os_log_create("com.apple.amp.medialibrary", "Indexing");
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
-        v54 = [v37 msv_description];
+        msv_description = [v37 msv_description];
         *buf = 138412546;
-        *&buf[4] = v9;
+        *&buf[4] = nameCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v54;
+        *&buf[14] = msv_description;
         _os_log_impl(&dword_22D2FA000, v53, OS_LOG_TYPE_ERROR, "ML3UpdateSiriIndexOperation 2.0 - failed to create a media entity with name=%@ error=%{public}@", buf, 0x16u);
       }
 
@@ -418,7 +418,7 @@ LABEL_77:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = nameCopy;
       _os_log_impl(&dword_22D2FA000, v37, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 - failed to create a media entity with name=%@", buf, 0xCu);
     }
 
@@ -455,11 +455,11 @@ LABEL_77:
     {
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v56 = [v41 msv_description];
+        msv_description2 = [v41 msv_description];
         *buf = 138412546;
         *&buf[4] = v14;
         *&buf[12] = 2114;
-        *&buf[14] = v56;
+        *&buf[14] = msv_description2;
         _os_log_impl(&dword_22D2FA000, v44, OS_LOG_TYPE_ERROR, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCMediaContent with entity=%@ error=%{public}@", buf, 0x16u);
       }
     }
@@ -499,7 +499,7 @@ LABEL_77:
   v43 = v42;
   _Block_object_dispose(&v78, 8);
   v65 = v41;
-  v44 = [[v42 alloc] initWithSourceItemIdentifier:v10 linkedIdentifiers:v11 error:&v65];
+  v44 = [[v42 alloc] initWithSourceItemIdentifier:identifierCopy linkedIdentifiers:identifiersCopy error:&v65];
   v45 = v65;
 
   if (v44)
@@ -532,7 +532,7 @@ LABEL_77:
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v10;
+        *&buf[4] = identifierCopy;
         *&buf[12] = 1024;
         *&buf[14] = v8;
         _os_log_impl(&dword_22D2FA000, v50, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 - creating donation item with id=%@ and type=%u", buf, 0x12u);
@@ -550,13 +550,13 @@ LABEL_77:
     {
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
-        v61 = [v49 msv_description];
+        msv_description3 = [v49 msv_description];
         *buf = 138412802;
         *&buf[4] = v40;
         *&buf[12] = 2112;
         *&buf[14] = v44;
         *&buf[22] = 2114;
-        v83 = v61;
+        v83 = msv_description3;
         _os_log_impl(&dword_22D2FA000, v60, OS_LOG_TYPE_ERROR, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCItemInstance with content=%@ and metaContent=%@ error=%{public}@", buf, 0x20u);
       }
 
@@ -586,11 +586,11 @@ LABEL_77:
     {
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
-        v58 = [v45 msv_description];
+        msv_description4 = [v45 msv_description];
         *buf = 138412546;
-        *&buf[4] = v10;
+        *&buf[4] = identifierCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v58;
+        *&buf[14] = msv_description4;
         _os_log_impl(&dword_22D2FA000, v51, OS_LOG_TYPE_ERROR, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCMediaMetaContent with sourceItemIdentifier=%@ error=%{public}@", buf, 0x16u);
       }
 
@@ -600,7 +600,7 @@ LABEL_77:
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v10;
+      *&buf[4] = identifierCopy;
       _os_log_impl(&dword_22D2FA000, v51, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 - failed to create CCMediaMetaContent with sourceItemIdentifier=%@", buf, 0xCu);
     }
   }
@@ -619,43 +619,43 @@ LABEL_93:
   return v52;
 }
 
-- (BOOL)_performIncrementalIndexToRevision:(int64_t)a3 withDonation:(id)a4
+- (BOOL)_performIncrementalIndexToRevision:(int64_t)revision withDonation:(id)donation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  donationCopy = donation;
   v7 = os_log_create("com.apple.amp.medialibrary", "Indexing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = [v6 priorVersion];
+    *&buf[14] = [donationCopy priorVersion];
     *&buf[22] = 2048;
-    v24 = a3;
+    revisionCopy = revision;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - performing incremental index fromRevision=%llu toRevision=%lld", buf, 0x20u);
   }
 
-  v8 = [(ML3DatabaseOperation *)self library];
-  v9 = [v8 libraryUID];
+  library = [(ML3DatabaseOperation *)self library];
+  libraryUID = [library libraryUID];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  LOBYTE(v24) = 1;
-  v10 = [v6 priorVersion];
+  LOBYTE(revisionCopy) = 1;
+  priorVersion = [donationCopy priorVersion];
   v11 = +[ML3Entity revisionTrackingCode];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__ML3UpdateSiriIndexOperation__performIncrementalIndexToRevision_withDonation___block_invoke;
   v17[3] = &unk_278764DD0;
-  v12 = v8;
+  v12 = library;
   v18 = v12;
-  v13 = v9;
+  v13 = libraryUID;
   v19 = v13;
-  v20 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = donationCopy;
   v21 = v14;
   v22 = buf;
-  [v12 enumeratePersistentIDsAfterRevision:v10 revisionTrackingCode:v11 maximumRevisionType:0 forMediaTypes:0 inUsersLibrary:0 usingBlock:v17];
+  [v12 enumeratePersistentIDsAfterRevision:priorVersion revisionTrackingCode:v11 maximumRevisionType:0 forMediaTypes:0 inUsersLibrary:0 usingBlock:v17];
   v15 = *(*&buf[8] + 24);
 
   _Block_object_dispose(buf, 8);
@@ -772,21 +772,21 @@ LABEL_21:
   objc_autoreleasePoolPop(v12);
 }
 
-- (BOOL)_performFullIndexToRevision:(int64_t)a3 withDonation:(id)a4
+- (BOOL)_performFullIndexToRevision:(int64_t)revision withDonation:(id)donation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 errorCode];
+  donationCopy = donation;
+  errorCode = [donationCopy errorCode];
   v8 = os_log_create("com.apple.amp.medialibrary", "Indexing");
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 9)
+  if (errorCode == 9)
   {
     if (v9)
     {
       *buf = 134218240;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = revision;
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - skipping full index [same revision] revision=%lld", buf, 0x16u);
     }
 
@@ -800,12 +800,12 @@ LABEL_21:
       *buf = 134218240;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = revision;
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - performing full index toRevision=%lld", buf, 0x16u);
     }
 
-    v11 = [(ML3DatabaseOperation *)self library];
-    v12 = [v11 libraryUID];
+    library = [(ML3DatabaseOperation *)self library];
+    libraryUID = [library libraryUID];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -815,12 +815,12 @@ LABEL_21:
     v16[1] = 3221225472;
     v16[2] = __72__ML3UpdateSiriIndexOperation__performFullIndexToRevision_withDonation___block_invoke;
     v16[3] = &unk_278764DD0;
-    v8 = v11;
+    v8 = library;
     v17 = v8;
-    v14 = v12;
+    v14 = libraryUID;
     v18 = v14;
-    v19 = self;
-    v20 = v6;
+    selfCopy = self;
+    v20 = donationCopy;
     v21 = buf;
     [v8 enumeratePersistentIDsAfterRevision:0 revisionTrackingCode:v13 maximumRevisionType:0 forMediaTypes:0 inUsersLibrary:0 usingBlock:v16];
     v10 = *(*&buf[8] + 24);
@@ -880,19 +880,19 @@ void __72__ML3UpdateSiriIndexOperation__performFullIndexToRevision_withDonation_
   objc_autoreleasePoolPop(v12);
 }
 
-- (void)_runAsPersonasForLibraryAccountWithBlock:(id)a3
+- (void)_runAsPersonasForLibraryAccountWithBlock:(id)block
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = os_log_create("com.apple.amp.medialibrary", "Indexing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - invoking block for a single-user platform", &v6, 0xCu);
   }
 
-  v4[2](v4, 1);
+  blockCopy[2](blockCopy, 1);
 }
 
 - (BOOL)_platformSupportsSiriIndexing
@@ -952,9 +952,9 @@ LABEL_22:
   _Block_object_dispose(&v25, 8);
   if (!v9)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL soft_AFDeviceSupportsSiriUOD(void)"];
-    [v19 handleFailureInFunction:v20 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:438 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v20 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:438 description:{@"%s", dlerror()}];
 
     goto LABEL_27;
   }
@@ -986,9 +986,9 @@ LABEL_22:
   _Block_object_dispose(&v25, 8);
   if (!v12)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL soft_AFShouldRunAsrOnServerForUOD(void)"];
-    [v21 handleFailureInFunction:v22 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:439 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v22 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:439 description:{@"%s", dlerror()}];
 
     goto LABEL_27;
   }
@@ -1020,9 +1020,9 @@ LABEL_22:
   _Block_object_dispose(&v25, 8);
   if (!v15)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL soft_AFOfflineDictationCapable(void)"];
-    [v23 handleFailureInFunction:v24 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:440 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v24 file:@"ML3UpdateSiriIndexOperation.m" lineNumber:440 description:{@"%s", dlerror()}];
 
 LABEL_27:
     __break(1u);
@@ -1055,29 +1055,29 @@ void __60__ML3UpdateSiriIndexOperation__platformSupportsSiriIndexing__block_invo
   _platformSupportsSiriIndexing___unsupportedPlatforms = &unk_2840C8648;
 }
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v37 = *MEMORY[0x277D85DE8];
   if ([(ML3UpdateSiriIndexOperation *)self _platformSupportsSiriIndexing])
   {
-    v4 = [(ML3DatabaseOperation *)self library];
-    v5 = [v4 currentContentRevision];
-    v6 = [v4 libraryUID];
-    v7 = [v4 valueForDatabaseProperty:@"MLSiriIndexValidityRevision"];
-    v8 = [v7 longLongValue];
+    library = [(ML3DatabaseOperation *)self library];
+    currentContentRevision = [library currentContentRevision];
+    libraryUID = [library libraryUID];
+    v7 = [library valueForDatabaseProperty:@"MLSiriIndexValidityRevision"];
+    longLongValue = [v7 longLongValue];
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld-%lld", v6, 1, v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld-%lld", libraryUID, 1, longLongValue];
     v10 = os_log_create("com.apple.amp.medialibrary", "Indexing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ML3DatabaseOperation *)self library];
-      v12 = [v11 databasePath];
+      library2 = [(ML3DatabaseOperation *)self library];
+      databasePath = [library2 databasePath];
       *buf = 134218498;
       *&buf[4] = self;
       *&buf[12] = 2114;
       *&buf[14] = v9;
       *&buf[22] = 2114;
-      v36 = v12;
+      v36 = databasePath;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - starting index validity=%{public}@ databasePath=%{public}@", buf, 0x20u);
     }
 
@@ -1092,13 +1092,13 @@ void __60__ML3UpdateSiriIndexOperation__platformSupportsSiriIndexing__block_invo
     v23[3] = &unk_278764DA8;
     v14 = v13;
     v24 = v14;
-    v29 = v5;
+    v29 = currentContentRevision;
     v15 = v9;
     v25 = v15;
-    v26 = self;
+    selfCopy = self;
     v28 = buf;
-    v30 = v8;
-    v16 = v4;
+    v30 = longLongValue;
+    v16 = library;
     v27 = v16;
     [(ML3UpdateSiriIndexOperation *)self _runAsPersonasForLibraryAccountWithBlock:v23];
     v17 = dispatch_time(0, 60000000000);
@@ -1108,7 +1108,7 @@ void __60__ML3UpdateSiriIndexOperation__platformSupportsSiriIndexing__block_invo
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *v31 = 134217984;
-        v32 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - operation timed out", v31, 0xCu);
       }
 
@@ -1120,7 +1120,7 @@ void __60__ML3UpdateSiriIndexOperation__platformSupportsSiriIndexing__block_invo
     {
       v20 = *(*&buf[8] + 24);
       *v31 = 134218240;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 1024;
       v34 = v20;
       _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEFAULT, "ML3UpdateSiriIndexOperation 2.0 %p - operation complete [success = %{BOOL}u]", v31, 0x12u);

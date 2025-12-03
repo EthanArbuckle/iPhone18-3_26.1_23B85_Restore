@@ -1,8 +1,8 @@
 @interface AKClient
-+ (BOOL)isAppWithBundleIDForeground:(id)a3;
-- (AKClient)initWithAuditToken:(id *)a3;
-- (AKClient)initWithConnection:(id)a3;
-- (BOOL)_BOOLValueForEntitlement:(id)a3;
++ (BOOL)isAppWithBundleIDForeground:(id)foreground;
+- (AKClient)initWithAuditToken:(id *)token;
+- (AKClient)initWithConnection:(id)connection;
+- (BOOL)_BOOLValueForEntitlement:(id)entitlement;
 - (BOOL)_hasApprovedSigningIdentifier;
 - (BOOL)_isAppleBinary;
 - (BOOL)hasBirthdayAccess;
@@ -28,7 +28,7 @@
 - (id)_appIDForIOS;
 - (id)_appIDForMacOS;
 - (id)_approvedCodeSigningIdentifiers;
-- (id)_arrayValueForEntitlement:(id)a3;
+- (id)_arrayValueForEntitlement:(id)entitlement;
 - (id)_authorizationAccessLevels;
 - (id)_bundle;
 - (id)_bundleNonPluginKit;
@@ -37,37 +37,37 @@
 - (id)_permitedProcessNamesToProxyInitialAuthWhiteList;
 - (id)_permittedProcessNamesForInteractiveAuthOnLimitedContext;
 - (id)_permittedProcessNamesToProxyAllowlist;
-- (id)_stringValueForEntitlement:(id)a3;
+- (id)_stringValueForEntitlement:(id)entitlement;
 - (id)_unsafeBundleID;
 - (id)_unsafeDescription;
 - (id)_unsafeFullName;
 - (id)_unsafeName;
 - (id)description;
-- (id)proxyWithErrorHandler:(id)a3;
+- (id)proxyWithErrorHandler:(id)handler;
 @end
 
 @implementation AKClient
 
 - (BOOL)hasInternalPrivateAccess
 {
-  v3 = 1;
+  hasPrivateSignedAccess = 1;
   if (![(AKClient *)self hasInternalPrivateEntitlementAccess])
   {
-    v3 = [(AKClient *)self hasPrivateSignedAccess];
+    hasPrivateSignedAccess = [(AKClient *)self hasPrivateSignedAccess];
   }
 
-  return v3 & 1;
+  return hasPrivateSignedAccess & 1;
 }
 
 - (BOOL)hasInternalPrivateEntitlementAccess
 {
-  v3 = 1;
+  hasPrivateAccess = 1;
   if (![(AKClient *)self hasInternalAccess])
   {
-    v3 = [(AKClient *)self hasPrivateAccess];
+    hasPrivateAccess = [(AKClient *)self hasPrivateAccess];
   }
 
-  return v3 & 1;
+  return hasPrivateAccess & 1;
 }
 
 - (BOOL)hasInternalAccess
@@ -117,9 +117,9 @@
 
 - (BOOL)hasSiwaEntitlement
 {
-  v3 = [(AKClient *)self _authorizationAccessLevels];
-  v4 = [v3 count] != 0;
-  _objc_release(v3);
+  _authorizationAccessLevels = [(AKClient *)self _authorizationAccessLevels];
+  v4 = [_authorizationAccessLevels count] != 0;
+  _objc_release(_authorizationAccessLevels);
   return v4;
 }
 
@@ -146,18 +146,18 @@
 
 - (BOOL)hasPrivateSignedAccess
 {
-  v3 = 0;
+  _hasApprovedSigningIdentifier = 0;
   if ([(AKClient *)self _isAppleBinary])
   {
-    v3 = [(AKClient *)self _hasApprovedSigningIdentifier];
+    _hasApprovedSigningIdentifier = [(AKClient *)self _hasApprovedSigningIdentifier];
   }
 
-  return v3 & 1;
+  return _hasApprovedSigningIdentifier & 1;
 }
 
 - (BOOL)_isAppleBinary
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   connection = self->_connection;
@@ -177,13 +177,13 @@
     CodeSignStatus = SecTaskGetCodeSignStatus(v7);
     CFRelease(v7);
     v8 = (CodeSignStatus & 0xC000001) == 67108865;
-    v3 = 1;
+    _isOnInternalBuild = 1;
     if ((CodeSignStatus & 0xC000001) != 0x4000001)
     {
-      v3 = [(AKClient *)v10 _isOnInternalBuild];
+      _isOnInternalBuild = [(AKClient *)selfCopy _isOnInternalBuild];
     }
 
-    v8 = v3 & 1;
+    v8 = _isOnInternalBuild & 1;
   }
 
   return v8 & 1;
@@ -191,19 +191,19 @@
 
 - (BOOL)_hasApprovedSigningIdentifier
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v5[0] = [(AKClient *)self _codeSigningIdentifier];
-  v3 = [(AKClient *)v6 _approvedCodeSigningIdentifiers];
-  v4 = [v3 containsObject:v5[0]];
-  _objc_release(v3);
+  _approvedCodeSigningIdentifiers = [(AKClient *)selfCopy _approvedCodeSigningIdentifiers];
+  v4 = [_approvedCodeSigningIdentifiers containsObject:v5[0]];
+  _objc_release(_approvedCodeSigningIdentifiers);
   objc_storeStrong(v5, 0);
   return v4;
 }
 
 - (id)_codeSigningIdentifier
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   connection = self->_connection;
   if (connection)
@@ -238,7 +238,7 @@
 
 - (id)_approvedCodeSigningIdentifiers
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [NSSet setWithObjects:@"com.apple.dt.Xcode", @"com.apple.dt.xcodebuild", @"com.apple.dt.xcscontrol", 0];
 }
@@ -259,12 +259,12 @@
   return v4;
 }
 
-+ (BOOL)isAppWithBundleIDForeground:(id)a3
++ (BOOL)isAppWithBundleIDForeground:(id)foreground
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, foreground);
   v6 = objc_alloc_init(BKSApplicationStateMonitor);
   v5 = [v6 applicationStateForApplication:location[0]];
   [v6 invalidate];
@@ -282,34 +282,34 @@
   return v8;
 }
 
-- (AKClient)initWithConnection:(id)a3
+- (AKClient)initWithConnection:(id)connection
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, connection);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKClient;
-  v8 = [(AKClient *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKClient *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_connection, location[0]);
-    v8->_unfairLock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&selfCopy->_connection, location[0]);
+    selfCopy->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
-  v5 = _objc_retain(v8);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKClient)initWithAuditToken:(id *)a3
+- (AKClient)initWithAuditToken:(id *)token
 {
   v13 = a2;
-  v12 = a3;
+  tokenCopy = token;
   v14 = 0;
   v11.receiver = self;
   v11.super_class = AKClient;
@@ -319,8 +319,8 @@
   if (v9)
   {
     v3 = sub_1000243F0();
-    v10[0] = *a3->var0;
-    v10[1] = *&a3->var0[4];
+    v10[0] = *token->var0;
+    v10[1] = *&token->var0[4];
     v4 = [v3 tokenFromAuditToken:v10];
     auditToken = v14->_auditToken;
     v14->_auditToken = v4;
@@ -335,28 +335,28 @@
 
 - (BOOL)hasInternalEntitledAccess
 {
-  v3 = 1;
+  hasOwnerAccess = 1;
   if (![(AKClient *)self hasInternalPrivateEntitlementAccess])
   {
-    v3 = [(AKClient *)self hasOwnerAccess];
+    hasOwnerAccess = [(AKClient *)self hasOwnerAccess];
   }
 
-  return v3 & 1;
+  return hasOwnerAccess & 1;
 }
 
 - (BOOL)hasSiwaDefaultEntitlementAccess
 {
-  v3 = [(AKClient *)self _authorizationAccessLevels];
-  v4 = [v3 containsObject:@"Default"];
-  _objc_release(v3);
+  _authorizationAccessLevels = [(AKClient *)self _authorizationAccessLevels];
+  v4 = [_authorizationAccessLevels containsObject:@"Default"];
+  _objc_release(_authorizationAccessLevels);
   return v4;
 }
 
 - (BOOL)hasSiwaUnderageEntitlementAccess
 {
-  v3 = [(AKClient *)self _authorizationAccessLevels];
-  v4 = [v3 containsObject:@"underage-users"];
-  _objc_release(v3);
+  _authorizationAccessLevels = [(AKClient *)self _authorizationAccessLevels];
+  v4 = [_authorizationAccessLevels containsObject:@"underage-users"];
+  _objc_release(_authorizationAccessLevels);
   return v4;
 }
 
@@ -389,11 +389,11 @@
 
 - (BOOL)isPermittedToProxy
 {
-  v4 = [(AKClient *)self _permittedProcessNamesToProxyAllowlist];
-  v3 = [(AKClient *)self name];
-  v5 = [v4 containsObject:?];
-  _objc_release(v3);
-  _objc_release(v4);
+  _permittedProcessNamesToProxyAllowlist = [(AKClient *)self _permittedProcessNamesToProxyAllowlist];
+  name = [(AKClient *)self name];
+  v5 = [_permittedProcessNamesToProxyAllowlist containsObject:?];
+  _objc_release(name);
+  _objc_release(_permittedProcessNamesToProxyAllowlist);
   return v5;
 }
 
@@ -415,11 +415,11 @@
 
 - (BOOL)isPermittedToProxyInitialAuth
 {
-  v4 = [(AKClient *)self _permitedProcessNamesToProxyInitialAuthWhiteList];
-  v3 = [(AKClient *)self name];
-  v5 = [v4 containsObject:?];
-  _objc_release(v3);
-  _objc_release(v4);
+  _permitedProcessNamesToProxyInitialAuthWhiteList = [(AKClient *)self _permitedProcessNamesToProxyInitialAuthWhiteList];
+  name = [(AKClient *)self name];
+  v5 = [_permitedProcessNamesToProxyInitialAuthWhiteList containsObject:?];
+  _objc_release(name);
+  _objc_release(_permitedProcessNamesToProxyInitialAuthWhiteList);
   return v5;
 }
 
@@ -441,11 +441,11 @@
 
 - (BOOL)isPermittedForInteractiveAuthOnLimitedContext
 {
-  v4 = [(AKClient *)self _permittedProcessNamesForInteractiveAuthOnLimitedContext];
-  v3 = [(AKClient *)self name];
-  v5 = [v4 containsObject:?];
-  _objc_release(v3);
-  _objc_release(v4);
+  _permittedProcessNamesForInteractiveAuthOnLimitedContext = [(AKClient *)self _permittedProcessNamesForInteractiveAuthOnLimitedContext];
+  name = [(AKClient *)self name];
+  v5 = [_permittedProcessNamesForInteractiveAuthOnLimitedContext containsObject:?];
+  _objc_release(name);
+  _objc_release(_permittedProcessNamesForInteractiveAuthOnLimitedContext);
   return v5;
 }
 
@@ -467,23 +467,23 @@
 
 - (BOOL)isExemptedFromMandatoryUISecurityUpgrade
 {
-  v4 = [(AKClient *)self _exemptedBundleIDsFromMandatoryUISecurityUpgrade];
-  v3 = [(AKClient *)self bundleID];
-  v5 = [v4 containsObject:?];
-  _objc_release(v3);
-  _objc_release(v4);
+  _exemptedBundleIDsFromMandatoryUISecurityUpgrade = [(AKClient *)self _exemptedBundleIDsFromMandatoryUISecurityUpgrade];
+  bundleID = [(AKClient *)self bundleID];
+  v5 = [_exemptedBundleIDsFromMandatoryUISecurityUpgrade containsObject:?];
+  _objc_release(bundleID);
+  _objc_release(_exemptedBundleIDsFromMandatoryUISecurityUpgrade);
   return v5;
 }
 
 - (NSData)auditTokenData
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   if (self->_auditToken)
   {
     v9 = 0u;
     v10 = 0u;
-    auditToken = v12->_auditToken;
+    auditToken = selfCopy->_auditToken;
     if (auditToken)
     {
       [(BSAuditToken *)auditToken realToken];
@@ -498,9 +498,9 @@
     v13 = [[NSData alloc] initWithBytes:&v9 length:32];
   }
 
-  else if (v12->_connection)
+  else if (selfCopy->_connection)
   {
-    location = [sub_1000243F0() tokenFromNSXPCConnection:v12->_connection];
+    location = [sub_1000243F0() tokenFromNSXPCConnection:selfCopy->_connection];
     v6 = 0u;
     v7 = 0u;
     if (location)
@@ -523,7 +523,7 @@
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
     {
-      sub_1000194D4(v14, v12->_bundleID);
+      sub_1000194D4(v14, selfCopy->_bundleID);
       _os_log_fault_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_FAULT, "Unable to obtain auditToken data for %@", v14, 0xCu);
     }
 
@@ -538,11 +538,11 @@
 
 - (id)_unsafeName
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   if (!self->_name)
   {
-    pid = [(NSXPCConnection *)v12->_connection processIdentifier];
+    pid = [(NSXPCConnection *)selfCopy->_connection processIdentifier];
     v9 = proc_name(pid, buffer, 0x20u);
     if (v9 <= 0)
     {
@@ -555,33 +555,33 @@
       v14[0] = 0;
       if (sysctl(v15, 4u, v13, &v8, 0, 0))
       {
-        objc_storeStrong(&v12->_name, @"?");
+        objc_storeStrong(&selfCopy->_name, @"?");
       }
 
       else if (v14[0])
       {
         v4 = [NSString stringWithUTF8String:v14];
-        name = v12->_name;
-        v12->_name = v4;
+        name = selfCopy->_name;
+        selfCopy->_name = v4;
         _objc_release(name);
       }
 
       else
       {
-        objc_storeStrong(&v12->_name, @"exited?");
+        objc_storeStrong(&selfCopy->_name, @"exited?");
       }
     }
 
     else
     {
       v2 = [NSString stringWithUTF8String:buffer];
-      v3 = v12->_name;
-      v12->_name = v2;
+      v3 = selfCopy->_name;
+      selfCopy->_name = v2;
       _objc_release(v3);
     }
   }
 
-  v6 = v12->_name;
+  v6 = selfCopy->_name;
 
   return v6;
 }
@@ -606,17 +606,17 @@
 {
   if (!self->_fullName)
   {
-    v8 = [(AKClient *)self _bundle];
-    v2 = [v8 objectForInfoDictionaryKey:kCFBundleNameKey];
+    _bundle = [(AKClient *)self _bundle];
+    v2 = [_bundle objectForInfoDictionaryKey:kCFBundleNameKey];
     fullName = self->_fullName;
     self->_fullName = v2;
     _objc_release(fullName);
-    _objc_release(v8);
+    _objc_release(_bundle);
     if (!self->_fullName)
     {
-      v4 = [(AKClient *)self _unsafeName];
+      _unsafeName = [(AKClient *)self _unsafeName];
       v5 = self->_fullName;
-      self->_fullName = v4;
+      self->_fullName = _unsafeName;
       _objc_release(v5);
     }
   }
@@ -630,10 +630,10 @@
 {
   location[2] = self;
   location[1] = a2;
-  v5 = [(AKClient *)self bundleID];
+  bundleID = [(AKClient *)self bundleID];
   location[0] = [LSApplicationProxy applicationProxyForIdentifier:?];
   _objc_release(0);
-  _objc_release(v5);
+  _objc_release(bundleID);
   v6 = [location[0] localizedNameForContext:0];
   v7 = 0;
   if (v6)
@@ -643,15 +643,15 @@
 
   else
   {
-    v8 = [location[0] localizedName];
+    localizedName = [location[0] localizedName];
     v7 = 1;
-    v2 = _objc_retain(v8);
+    v2 = _objc_retain(localizedName);
   }
 
   v10 = v2;
   if (v7)
   {
-    _objc_release(v8);
+    _objc_release(localizedName);
   }
 
   _objc_release(v6);
@@ -663,7 +663,7 @@
 
 - (id)_bundleNonPluginKit
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7 = proc_pidpath([(NSXPCConnection *)self->_connection processIdentifier], buffer, 0x1000u);
   v4 = [[NSString alloc] initWithBytes:buffer length:v7 encoding:4];
@@ -689,15 +689,15 @@
 
 - (id)_bundle
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = 0;
   v14 = 0;
-  v13 = [(NSXPCConnection *)self->_connection processIdentifier];
-  if (v13)
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
+  if (processIdentifier)
   {
     v11 = +[PKManager defaultManager];
-    v2 = [v11 containingAppForPlugInWithPid:v13];
+    v2 = [v11 containingAppForPlugInWithPid:processIdentifier];
     v3 = v14;
     v14 = v2;
     _objc_release(v3);
@@ -707,20 +707,20 @@
   if (v14)
   {
     v12 = [LSApplicationProxy applicationProxyForIdentifier:v14];
-    v10 = [v12 bundleURL];
+    bundleURL = [v12 bundleURL];
     v4 = [NSBundle bundleWithURL:?];
     v5 = v15[0];
     v15[0] = v4;
     _objc_release(v5);
-    _objc_release(v10);
+    _objc_release(bundleURL);
     objc_storeStrong(&v12, 0);
   }
 
   if (!v15[0])
   {
-    v6 = [(AKClient *)v16 _bundleNonPluginKit];
+    _bundleNonPluginKit = [(AKClient *)selfCopy _bundleNonPluginKit];
     v7 = v15[0];
-    v15[0] = v6;
+    v15[0] = _bundleNonPluginKit;
     _objc_release(v7);
   }
 
@@ -735,14 +735,14 @@
 {
   if (!self->_description)
   {
-    v7 = [(AKClient *)self _unsafeName];
+    _unsafeName = [(AKClient *)self _unsafeName];
     v6 = [NSNumber numberWithInt:[(NSXPCConnection *)self->_connection processIdentifier]];
-    v2 = [NSString stringWithFormat:@"%@ (%@)", v7, v6];
+    v2 = [NSString stringWithFormat:@"%@ (%@)", _unsafeName, v6];
     description = self->_description;
     self->_description = v2;
     _objc_release(description);
     _objc_release(v6);
-    _objc_release(v7);
+    _objc_release(_unsafeName);
   }
 
   v4 = self->_description;
@@ -750,13 +750,13 @@
   return v4;
 }
 
-- (id)proxyWithErrorHandler:(id)a3
+- (id)proxyWithErrorHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v11->_connection)
+  objc_storeStrong(location, handler);
+  if (!selfCopy->_connection)
   {
     v9 = _AKLogSystem();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -771,7 +771,7 @@
     objc_storeStrong(&v9, 0);
   }
 
-  v4 = [(NSXPCConnection *)v11->_connection remoteObjectProxyWithErrorHandler:location[0]];
+  v4 = [(NSXPCConnection *)selfCopy->_connection remoteObjectProxyWithErrorHandler:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -779,19 +779,19 @@
 
 - (id)_unsafeBundleID
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   if (!self->_bundleID)
   {
     v14 = +[PKManager defaultManager];
-    v2 = [v14 containingAppForPlugInWithPid:{-[NSXPCConnection processIdentifier](v24->_connection, "processIdentifier")}];
-    bundleID = v24->_bundleID;
-    v24->_bundleID = v2;
+    v2 = [v14 containingAppForPlugInWithPid:{-[NSXPCConnection processIdentifier](selfCopy->_connection, "processIdentifier")}];
+    bundleID = selfCopy->_bundleID;
+    selfCopy->_bundleID = v2;
     _objc_release(bundleID);
     _objc_release(v14);
-    if (!v24->_bundleID)
+    if (!selfCopy->_bundleID)
     {
-      v22 = proc_pidpath([(NSXPCConnection *)v24->_connection processIdentifier], buffer, 0x1000u);
+      v22 = proc_pidpath([(NSXPCConnection *)selfCopy->_connection processIdentifier], buffer, 0x1000u);
       v13 = [[NSString alloc] initWithBytes:buffer length:v22 encoding:4];
       url = [NSURL fileURLWithPath:?];
       _objc_release(v13);
@@ -799,11 +799,11 @@
       {
         v20 = _CFBundleCopyBundleURLForExecutableURL();
         v19 = [NSBundle bundleWithURL:v20];
-        v4 = [v19 bundleIdentifier];
-        v5 = v24->_bundleID;
-        v24->_bundleID = v4;
+        bundleIdentifier = [v19 bundleIdentifier];
+        v5 = selfCopy->_bundleID;
+        selfCopy->_bundleID = bundleIdentifier;
         _objc_release(v5);
-        if (!v24->_bundleID)
+        if (!selfCopy->_bundleID)
         {
           oslog = _AKLogSystem();
           type = OS_LOG_TYPE_DEBUG;
@@ -811,19 +811,19 @@
           {
             log = oslog;
             v11 = type;
-            v12 = [(AKClient *)v24 _unsafeDescription];
-            v16 = _objc_retain(v12);
+            _unsafeDescription = [(AKClient *)selfCopy _unsafeDescription];
+            v16 = _objc_retain(_unsafeDescription);
             sub_1000194D4(v25, v16);
             _os_log_debug_impl(&_mh_execute_header, log, v11, "Unable to determine bundle ID of client %@ using NSBundle API. Falling back to CF.", v25, 0xCu);
-            _objc_release(v12);
+            _objc_release(_unsafeDescription);
             objc_storeStrong(&v16, 0);
           }
 
           objc_storeStrong(&oslog, 0);
           v15 = CFBundleCopyInfoDictionaryForURL(url);
           v6 = [(__CFDictionary *)v15 objectForKeyedSubscript:kCFBundleIdentifierKey];
-          v7 = v24->_bundleID;
-          v24->_bundleID = v6;
+          v7 = selfCopy->_bundleID;
+          selfCopy->_bundleID = v6;
           _objc_release(v7);
           objc_storeStrong(&v15, 0);
         }
@@ -836,21 +836,21 @@
     }
   }
 
-  v8 = v24->_bundleID;
+  v8 = selfCopy->_bundleID;
 
   return v8;
 }
 
 - (NSString)appID
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKClient *)self _appIDForIOS];
   if (![location[0] length])
   {
-    v2 = [(AKClient *)v7 _appIDForMacOS];
+    _appIDForMacOS = [(AKClient *)selfCopy _appIDForMacOS];
     v3 = location[0];
-    location[0] = v2;
+    location[0] = _appIDForMacOS;
     _objc_release(v3);
   }
 
@@ -924,13 +924,13 @@
   return v2;
 }
 
-- (id)_arrayValueForEntitlement:(id)a3
+- (id)_arrayValueForEntitlement:(id)entitlement
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSXPCConnection *)v8->_connection valueForEntitlement:location[0]];
+  objc_storeStrong(location, entitlement);
+  v6 = [(NSXPCConnection *)selfCopy->_connection valueForEntitlement:location[0]];
   v3 = objc_opt_class();
   v5 = sub_100026E80(v3, v6);
   objc_storeStrong(&v6, 0);
@@ -939,21 +939,21 @@
   return v5;
 }
 
-- (BOOL)_BOOLValueForEntitlement:(id)a3
+- (BOOL)_BOOLValueForEntitlement:(id)entitlement
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entitlement);
   v6 = 0;
-  if (v8->_auditToken)
+  if (selfCopy->_auditToken)
   {
-    v3 = [(BSAuditToken *)v8->_auditToken valueForEntitlement:location[0]];
+    v3 = [(BSAuditToken *)selfCopy->_auditToken valueForEntitlement:location[0]];
   }
 
   else
   {
-    v3 = [(NSXPCConnection *)v8->_connection valueForEntitlement:location[0]];
+    v3 = [(NSXPCConnection *)selfCopy->_connection valueForEntitlement:location[0]];
   }
 
   v4 = v6;
@@ -975,21 +975,21 @@
   return v9 & 1;
 }
 
-- (id)_stringValueForEntitlement:(id)a3
+- (id)_stringValueForEntitlement:(id)entitlement
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entitlement);
   v8 = 0;
-  if (v10->_auditToken)
+  if (selfCopy->_auditToken)
   {
-    v3 = [(BSAuditToken *)v10->_auditToken valueForEntitlement:location[0]];
+    v3 = [(BSAuditToken *)selfCopy->_auditToken valueForEntitlement:location[0]];
   }
 
   else
   {
-    v3 = [(NSXPCConnection *)v10->_connection valueForEntitlement:location[0]];
+    v3 = [(NSXPCConnection *)selfCopy->_connection valueForEntitlement:location[0]];
   }
 
   v4 = v8;

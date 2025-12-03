@@ -1,18 +1,18 @@
 @interface UIWebBrowserViewAccessibility
 - (int64_t)accessibilityContainerType;
-- (void)assistFormNode:(id)a3;
+- (void)assistFormNode:(id)node;
 @end
 
 @implementation UIWebBrowserViewAccessibility
 
-- (void)assistFormNode:(id)a3
+- (void)assistFormNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (!UIAccessibilityIsVoiceOverRunning() || (*MEMORY[0x29EDC7600] & 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = UIWebBrowserViewAccessibility;
-    [(UIWebBrowserViewAccessibility *)&v5 assistFormNode:v4];
+    [(UIWebBrowserViewAccessibility *)&v5 assistFormNode:nodeCopy];
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }

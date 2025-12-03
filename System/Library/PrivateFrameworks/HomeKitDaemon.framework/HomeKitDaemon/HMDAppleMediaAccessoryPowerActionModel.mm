@@ -1,23 +1,23 @@
 @interface HMDAppleMediaAccessoryPowerActionModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
-- (void)loadModelWithActionInformation:(id)a3;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDAppleMediaAccessoryPowerActionModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessory"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"accessory"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"accessoryUUID"])
     {
-      v11 = [(HMDAppleMediaAccessoryPowerActionModel *)self accessoryUUID];
-      v12 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v11 ofManagedObjectType:objc_opt_class() error:0];
+      accessoryUUID = [(HMDAppleMediaAccessoryPowerActionModel *)self accessoryUUID];
+      v12 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:accessoryUUID ofManagedObjectType:objc_opt_class() error:0];
     }
 
     else
@@ -30,44 +30,44 @@
   {
     v14.receiver = self;
     v14.super_class = HMDAppleMediaAccessoryPowerActionModel;
-    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v12;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"accessoryUUID"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"accessoryUUID"])
   {
-    v11 = [v10 accessory];
+    accessory = [objectCopy accessory];
 
-    v12 = [v11 modelID];
+    modelID = [accessory modelID];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = HMDAppleMediaAccessoryPowerActionModel;
-    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    modelID = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  return v12;
+  return modelID;
 }
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
   v7.receiver = self;
   v7.super_class = HMDAppleMediaAccessoryPowerActionModel;
-  v4 = a3;
-  [(HMDActionModel *)&v7 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_UUIDForKey:{*MEMORY[0x277CCF210], v7.receiver, v7.super_class}];
+  informationCopy = information;
+  [(HMDActionModel *)&v7 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_UUIDForKey:{*MEMORY[0x277CCF210], v7.receiver, v7.super_class}];
   [(HMDAppleMediaAccessoryPowerActionModel *)self setAccessoryUUID:v5];
 
-  v6 = [v4 hmf_numberForKey:*MEMORY[0x277CCF220]];
+  v6 = [informationCopy hmf_numberForKey:*MEMORY[0x277CCF220]];
 
   [(HMDAppleMediaAccessoryPowerActionModel *)self setTargetSleepWakeState:v6];
 }
@@ -78,7 +78,7 @@
   block[1] = 3221225472;
   block[2] = __52__HMDAppleMediaAccessoryPowerActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_247242 != -1)
   {
     dispatch_once(&properties_onceToken_247242, block);

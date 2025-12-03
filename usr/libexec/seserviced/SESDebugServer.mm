@@ -1,7 +1,7 @@
 @interface SESDebugServer
 - (SESDebugServer)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onEvent:(id)a3 eventPayload:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onEvent:(id)event eventPayload:(id)payload;
 @end
 
 @implementation SESDebugServer
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -44,21 +44,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)onEvent:(id)a3 eventPayload:(id)a4
+- (void)onEvent:(id)event eventPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100060F64;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = payloadCopy;
+  selfCopy = self;
+  v9 = payloadCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 

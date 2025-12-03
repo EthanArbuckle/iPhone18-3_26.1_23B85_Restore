@@ -1,29 +1,29 @@
 @interface CSUCaptioningProcUtils
 - (BeamSearchOptions)beamSearchOptions;
-- (CSUCaptioningProcUtils)initWithDecoderConfiguration:(id)a3 beamWidth:(int)a4 beamScorerType:(unint64_t)a5 error:(id *)a6;
+- (CSUCaptioningProcUtils)initWithDecoderConfiguration:(id)configuration beamWidth:(int)width beamScorerType:(unint64_t)type error:(id *)error;
 - (EspressoTensor)encodedFeaturesBuffer;
 - (id).cxx_construct;
 - (shared_ptr<csu::BeamSearch>)beamSearch;
 - (shared_ptr<csu::CustomVocabulary>)vocabulary;
-- (void)setBeamSearch:(shared_ptr<csu::BeamSearch>)a3;
-- (void)setBeamSearchOptions:(BeamSearchOptions *)a3;
-- (void)setEncodedFeaturesBuffer:(EspressoTensor *)a3;
-- (void)setVocabulary:(shared_ptr<csu::CustomVocabulary>)a3;
+- (void)setBeamSearch:(shared_ptr<csu::BeamSearch>)search;
+- (void)setBeamSearchOptions:(BeamSearchOptions *)options;
+- (void)setEncodedFeaturesBuffer:(EspressoTensor *)buffer;
+- (void)setVocabulary:(shared_ptr<csu::CustomVocabulary>)vocabulary;
 @end
 
 @implementation CSUCaptioningProcUtils
 
-- (CSUCaptioningProcUtils)initWithDecoderConfiguration:(id)a3 beamWidth:(int)a4 beamScorerType:(unint64_t)a5 error:(id *)a6
+- (CSUCaptioningProcUtils)initWithDecoderConfiguration:(id)configuration beamWidth:(int)width beamScorerType:(unint64_t)type error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v53 = a3;
+  configurationCopy = configuration;
   v66.receiver = self;
   v66.super_class = CSUCaptioningProcUtils;
   v54 = [(CSUCaptioningProcUtils *)&v66 init];
   if (v54)
   {
     v11 = MEMORY[0x1E695DEF0];
-    v12 = objc_msgSend_vocabularyModelPath(v53, v7, v8, v9, v10);
+    v12 = objc_msgSend_vocabularyModelPath(configurationCopy, v7, v8, v9, v10);
     v52 = objc_msgSend_dataWithContentsOfFile_(v11, v13, v12, v14, v15);
 
     if (v52)
@@ -106,16 +106,16 @@
         operator new();
       }
 
-      if (a6)
+      if (error)
       {
         v47 = v19;
-        *a6 = v50;
+        *error = v50;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v16, @"No vocabulary data could be read!", 0, v17);
+      *error = objc_msgSend_errorForInternalErrorWithLocalizedDescription_underlyingError_(CSUError, v16, @"No vocabulary data could be read!", 0, v17);
     }
   }
 
@@ -138,10 +138,10 @@
   return result;
 }
 
-- (void)setVocabulary:(shared_ptr<csu::CustomVocabulary>)a3
+- (void)setVocabulary:(shared_ptr<csu::CustomVocabulary>)vocabulary
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *vocabulary.__ptr_;
+  v3 = *(vocabulary.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -173,10 +173,10 @@
   return result;
 }
 
-- (void)setBeamSearch:(shared_ptr<csu::BeamSearch>)a3
+- (void)setBeamSearch:(shared_ptr<csu::BeamSearch>)search
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *search.__ptr_;
+  v3 = *(search.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -216,16 +216,16 @@
   return result;
 }
 
-- (void)setBeamSearchOptions:(BeamSearchOptions *)a3
+- (void)setBeamSearchOptions:(BeamSearchOptions *)options
 {
-  v5 = *&a3->maxSeqLen;
-  self->_beamSearchOptions.maxSteps.__engaged_ = a3->maxSteps.__engaged_;
+  v5 = *&options->maxSeqLen;
+  self->_beamSearchOptions.maxSteps.__engaged_ = options->maxSteps.__engaged_;
   *&self->_beamSearchOptions.maxSeqLen = v5;
-  sub_1AC079E40(&self->_beamSearchOptions.excludeTokens, &a3->excludeTokens);
-  objc_storeStrong(&self->_beamSearchOptions.denyListRules, a3->denyListRules);
-  *&self->_beamSearchOptions.lengthNormalizationAlpha = *&a3->lengthNormalizationAlpha;
-  v6 = *&a3->beamWidth;
-  self->_beamSearchOptions.lengthNormalizationAlpha_2 = a3->lengthNormalizationAlpha_2;
+  sub_1AC079E40(&self->_beamSearchOptions.excludeTokens, &options->excludeTokens);
+  objc_storeStrong(&self->_beamSearchOptions.denyListRules, options->denyListRules);
+  *&self->_beamSearchOptions.lengthNormalizationAlpha = *&options->lengthNormalizationAlpha;
+  v6 = *&options->beamWidth;
+  self->_beamSearchOptions.lengthNormalizationAlpha_2 = options->lengthNormalizationAlpha_2;
   *&self->_beamSearchOptions.beamWidth = v6;
 }
 
@@ -261,16 +261,16 @@
   return self;
 }
 
-- (void)setEncodedFeaturesBuffer:(EspressoTensor *)a3
+- (void)setEncodedFeaturesBuffer:(EspressoTensor *)buffer
 {
-  self->_encodedFeaturesBuffer.type_ = a3->type_;
-  if (&self->_encodedFeaturesBuffer != a3)
+  self->_encodedFeaturesBuffer.type_ = buffer->type_;
+  if (&self->_encodedFeaturesBuffer != buffer)
   {
-    sub_1AC06A3B8(&self->_encodedFeaturesBuffer.shape_, a3->shape_.sizes_.__begin_, a3->shape_.sizes_.__end_, a3->shape_.sizes_.__end_ - a3->shape_.sizes_.__begin_);
+    sub_1AC06A3B8(&self->_encodedFeaturesBuffer.shape_, buffer->shape_.sizes_.__begin_, buffer->shape_.sizes_.__end_, buffer->shape_.sizes_.__end_ - buffer->shape_.sizes_.__begin_);
   }
 
-  ptr = a3->storage_.__ptr_;
-  cntrl = a3->storage_.__cntrl_;
+  ptr = buffer->storage_.__ptr_;
+  cntrl = buffer->storage_.__cntrl_;
   if (cntrl)
   {
     atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);

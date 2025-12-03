@@ -1,34 +1,34 @@
 @interface ATXHomeScreenEvent
-+ (id)eventForPageShownWithIndex:(unint64_t)a3 widgetsByStack:(id)a4 blendingCacheIdentifier:(id)a5;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXHomeScreenEvent)initWithCoder:(id)a3;
-- (ATXHomeScreenEvent)initWithProto:(id)a3;
-- (ATXHomeScreenEvent)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXHomeScreenEvent:(id)a3;
++ (id)eventForPageShownWithIndex:(unint64_t)index widgetsByStack:(id)stack blendingCacheIdentifier:(id)identifier;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXHomeScreenEvent)initWithCoder:(id)coder;
+- (ATXHomeScreenEvent)initWithProto:(id)proto;
+- (ATXHomeScreenEvent)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXHomeScreenEvent:(id)event;
 - (NSDate)date;
-- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)a3;
+- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)type;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3;
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type;
 - (unsigned)feedbackConsumerSubType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)feedbackConsumerSubType;
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXHomeScreenEvent
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXHomeScreenEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXHomeScreenEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -53,8 +53,8 @@
   v7 = [(NSArray *)self->_suggestionIds copy];
   [(ATXPBHomeScreenEvent *)v3 setSuggestionIds:v7];
 
-  v8 = [(ATXHomeScreenEventMetadata *)self->_metadata proto];
-  [(ATXPBHomeScreenEvent *)v3 setMetadata:v8];
+  proto = [(ATXHomeScreenEventMetadata *)self->_metadata proto];
+  [(ATXPBHomeScreenEvent *)v3 setMetadata:proto];
 
   return v3;
 }
@@ -66,28 +66,28 @@
   return v2;
 }
 
-+ (id)eventForPageShownWithIndex:(unint64_t)a3 widgetsByStack:(id)a4 blendingCacheIdentifier:(id)a5
++ (id)eventForPageShownWithIndex:(unint64_t)index widgetsByStack:(id)stack blendingCacheIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
+  identifierCopy = identifier;
+  stackCopy = stack;
   v9 = objc_opt_new();
   v10 = [MEMORY[0x1E695DF00] now];
   [v9 setDate:v10];
 
   [v9 setEventTypeString:@"HomeScreenPageShown"];
-  [v9 setBlendingCacheId:v7];
+  [v9 setBlendingCacheId:identifierCopy];
 
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [v11 setPageIndex:v12];
 
-  [v11 setStacks:v8];
+  [v11 setStacks:stackCopy];
   [v9 setMetadata:v11];
 
   return v9;
 }
 
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type
 {
   v3 = self->_eventTypeString;
   if (![(NSString *)v3 isEqualToString:@"Unknown"])
@@ -128,7 +128,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)a3
+- (id)blendingUICacheUpdateUUIDForUICacheConsumerSubType:(unsigned __int8)type
 {
   v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_blendingCacheId];
 
@@ -172,9 +172,9 @@ LABEL_5:
   return 36;
 }
 
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type
 {
-  v13 = a3;
+  sessionCopy = session;
   v5 = self->_eventTypeString;
   if (![(NSString *)v5 isEqualToString:@"Unknown"])
   {
@@ -182,7 +182,7 @@ LABEL_5:
     {
 
       v5 = [(ATXHomeScreenEvent *)self _uuidArrayFromStringArray:self->_suggestionIds];
-      v6 = v13;
+      v6 = sessionCopy;
       v7 = v5;
       v8 = 0;
 LABEL_7:
@@ -196,7 +196,7 @@ LABEL_8:
     {
 
       v5 = [(ATXHomeScreenEvent *)self _uuidArrayFromStringArray:self->_suggestionIds];
-      v6 = v13;
+      v6 = sessionCopy;
       v7 = 0;
       v8 = v5;
       goto LABEL_7;
@@ -208,7 +208,7 @@ LABEL_8:
       {
 
         v5 = [(ATXHomeScreenEvent *)self _uuidArrayFromStringArray:self->_suggestionIds];
-        v6 = v13;
+        v6 = sessionCopy;
         v7 = 0;
         v8 = 0;
         v9 = v5;
@@ -224,25 +224,25 @@ LABEL_8:
 
 LABEL_9:
 
-  [v13 updateConsumerSubTypeIfUnset:{-[ATXHomeScreenEvent feedbackConsumerSubType](self, "feedbackConsumerSubType")}];
+  [sessionCopy updateConsumerSubTypeIfUnset:{-[ATXHomeScreenEvent feedbackConsumerSubType](self, "feedbackConsumerSubType")}];
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:self->_blendingCacheId];
-  [v13 updateBlendingUICacheUpdateUUIDIfUnset:v10];
+  [sessionCopy updateBlendingUICacheUpdateUUIDIfUnset:v10];
 
-  v11 = [v13 sessionMetadata];
+  sessionMetadata = [sessionCopy sessionMetadata];
 
-  if (!v11)
+  if (!sessionMetadata)
   {
     v12 = [[ATXHomeScreenSessionMetadata alloc] initWithWidgetUniqueId:self->_widgetUniqueId widgetBundleId:self->_widgetBundleId isWidgetInTodayView:ATXStackLocationIsTodayPage(self->_stackLocation)];
-    [v13 updateSessionMetadataIfUnset:v12];
+    [sessionCopy updateSessionMetadataIfUnset:v12];
   }
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -266,8 +266,8 @@ LABEL_9:
   v30[0] = @"blendingCacheId";
   v30[1] = @"date";
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(ATXHomeScreenEvent *)self date];
-  [v5 timeIntervalSinceReferenceDate];
+  date = [(ATXHomeScreenEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   v6 = [v4 numberWithDouble:?];
   v7 = v6;
   stackId = self->_stackId;
@@ -369,11 +369,11 @@ LABEL_9:
   v38 = v24;
   v30[13] = @"eventType";
   v30[14] = @"metadata";
-  v25 = [(ATXHomeScreenEventMetadata *)metadata dictionaryRepresentation];
-  v26 = v25;
-  if (v25)
+  dictionaryRepresentation = [(ATXHomeScreenEventMetadata *)metadata dictionaryRepresentation];
+  v26 = dictionaryRepresentation;
+  if (dictionaryRepresentation)
   {
-    v27 = v25;
+    v27 = dictionaryRepresentation;
   }
 
   else
@@ -390,38 +390,38 @@ LABEL_9:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXHomeScreenEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXHomeScreenEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (ATXHomeScreenEvent)initWithProtoData:(id)a3
+- (ATXHomeScreenEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBHomeScreenEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBHomeScreenEvent alloc] initWithData:dataCopy];
 
     self = [(ATXHomeScreenEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXHomeScreenEvent)initWithProto:(id)a3
+- (ATXHomeScreenEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v34 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -442,90 +442,90 @@ LABEL_9:
   v5 = [(ATXHomeScreenEvent *)&v37 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = protoCopy;
     v5->_absoluteDate = [(ATXPBHomeScreenEvent *)v6 date];
-    v7 = [(ATXPBHomeScreenEvent *)v6 eventTypeString];
+    eventTypeString = [(ATXPBHomeScreenEvent *)v6 eventTypeString];
     eventTypeString = v5->_eventTypeString;
-    v5->_eventTypeString = v7;
+    v5->_eventTypeString = eventTypeString;
 
-    v9 = [(ATXPBHomeScreenEvent *)v6 reason];
+    reason = [(ATXPBHomeScreenEvent *)v6 reason];
     reason = v5->_reason;
-    v5->_reason = v9;
+    v5->_reason = reason;
 
-    v11 = [(ATXPBHomeScreenEvent *)v6 blendingCacheId];
+    blendingCacheId = [(ATXPBHomeScreenEvent *)v6 blendingCacheId];
     blendingCacheId = v5->_blendingCacheId;
-    v5->_blendingCacheId = v11;
+    v5->_blendingCacheId = blendingCacheId;
 
-    v13 = [(ATXPBHomeScreenEvent *)v6 stackId];
+    stackId = [(ATXPBHomeScreenEvent *)v6 stackId];
     stackId = v5->_stackId;
-    v5->_stackId = v13;
+    v5->_stackId = stackId;
 
-    v15 = [(ATXPBHomeScreenEvent *)v6 stackKind];
-    v5->_stackKind = ATXStackKindForPBKind(v15);
-    v16 = [(ATXPBHomeScreenEvent *)v6 stackLocation];
-    v5->_stackLocation = ATXStackLocationForPBLocation(v16);
-    v17 = [(ATXPBHomeScreenEvent *)v6 widgetBundleId];
+    stackKind = [(ATXPBHomeScreenEvent *)v6 stackKind];
+    v5->_stackKind = ATXStackKindForPBKind(stackKind);
+    stackLocation = [(ATXPBHomeScreenEvent *)v6 stackLocation];
+    v5->_stackLocation = ATXStackLocationForPBLocation(stackLocation);
+    widgetBundleId = [(ATXPBHomeScreenEvent *)v6 widgetBundleId];
     widgetBundleId = v5->_widgetBundleId;
-    v5->_widgetBundleId = v17;
+    v5->_widgetBundleId = widgetBundleId;
 
-    v19 = [(ATXPBHomeScreenEvent *)v6 widgetKind];
+    widgetKind = [(ATXPBHomeScreenEvent *)v6 widgetKind];
     widgetKind = v5->_widgetKind;
-    v5->_widgetKind = v19;
+    v5->_widgetKind = widgetKind;
 
-    v21 = [(ATXPBHomeScreenEvent *)v6 widgetSize];
-    v5->_widgetSize = ATXStackLayoutSizeForPBLayoutSize(v21);
-    v22 = [(ATXPBHomeScreenEvent *)v6 intentDescription];
+    widgetSize = [(ATXPBHomeScreenEvent *)v6 widgetSize];
+    v5->_widgetSize = ATXStackLayoutSizeForPBLayoutSize(widgetSize);
+    intentDescription = [(ATXPBHomeScreenEvent *)v6 intentDescription];
     intentDescription = v5->_intentDescription;
-    v5->_intentDescription = v22;
+    v5->_intentDescription = intentDescription;
 
-    v24 = [(ATXPBHomeScreenEvent *)v6 widgetUniqueId];
+    widgetUniqueId = [(ATXPBHomeScreenEvent *)v6 widgetUniqueId];
     widgetUniqueId = v5->_widgetUniqueId;
-    v5->_widgetUniqueId = v24;
+    v5->_widgetUniqueId = widgetUniqueId;
 
-    v26 = [(ATXPBHomeScreenEvent *)v6 appBundleId];
+    appBundleId = [(ATXPBHomeScreenEvent *)v6 appBundleId];
     appBundleId = v5->_appBundleId;
-    v5->_appBundleId = v26;
+    v5->_appBundleId = appBundleId;
 
-    v28 = [(ATXPBHomeScreenEvent *)v6 suggestionIds];
+    suggestionIds = [(ATXPBHomeScreenEvent *)v6 suggestionIds];
     suggestionIds = v5->_suggestionIds;
-    v5->_suggestionIds = v28;
+    v5->_suggestionIds = suggestionIds;
 
     v30 = [ATXHomeScreenEventMetadata alloc];
-    v31 = [(ATXPBHomeScreenEvent *)v6 metadata];
+    metadata = [(ATXPBHomeScreenEvent *)v6 metadata];
 
-    v32 = [(ATXHomeScreenEventMetadata *)v30 initWithProto:v31];
+    v32 = [(ATXHomeScreenEventMetadata *)v30 initWithProto:metadata];
     metadata = v5->_metadata;
     v5->_metadata = v32;
   }
 
   self = v5;
-  v34 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v34;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenEvent *)self isEqualToATXHomeScreenEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenEvent *)self isEqualToATXHomeScreenEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXHomeScreenEvent:(id)a3
+- (BOOL)isEqualToATXHomeScreenEvent:(id)event
 {
-  v4 = a3;
-  v5 = self->_absoluteDate - v4[1];
+  eventCopy = event;
+  v5 = self->_absoluteDate - eventCopy[1];
   if (v5 < 0.0)
   {
     v5 = -v5;
@@ -538,7 +538,7 @@ LABEL_10:
 
   v6 = self->_eventTypeString;
   v7 = v6;
-  if (v6 == *(v4 + 3))
+  if (v6 == *(eventCopy + 3))
   {
   }
 
@@ -556,7 +556,7 @@ LABEL_51:
 
   v9 = self->_reason;
   v10 = v9;
-  if (v9 == *(v4 + 4))
+  if (v9 == *(eventCopy + 4))
   {
   }
 
@@ -572,7 +572,7 @@ LABEL_51:
 
   v12 = self->_blendingCacheId;
   v13 = v12;
-  if (v12 == *(v4 + 5))
+  if (v12 == *(eventCopy + 5))
   {
   }
 
@@ -588,7 +588,7 @@ LABEL_51:
 
   v15 = self->_stackId;
   v16 = v15;
-  if (v15 == *(v4 + 6))
+  if (v15 == *(eventCopy + 6))
   {
   }
 
@@ -604,7 +604,7 @@ LABEL_51:
 
   v18 = self->_widgetBundleId;
   v19 = v18;
-  if (v18 == *(v4 + 7))
+  if (v18 == *(eventCopy + 7))
   {
   }
 
@@ -620,7 +620,7 @@ LABEL_51:
 
   v21 = self->_widgetUniqueId;
   v22 = v21;
-  if (v21 == *(v4 + 14))
+  if (v21 == *(eventCopy + 14))
   {
   }
 
@@ -636,7 +636,7 @@ LABEL_51:
 
   v24 = self->_intentDescription;
   v25 = v24;
-  if (v24 == *(v4 + 13))
+  if (v24 == *(eventCopy + 13))
   {
   }
 
@@ -652,7 +652,7 @@ LABEL_51:
 
   v27 = self->_suggestionIds;
   v28 = v27;
-  if (v27 == *(v4 + 15))
+  if (v27 == *(eventCopy + 15))
   {
   }
 
@@ -668,7 +668,7 @@ LABEL_51:
 
   v30 = self->_metadata;
   v31 = v30;
-  if (v30 == *(v4 + 16))
+  if (v30 == *(eventCopy + 16))
   {
   }
 
@@ -684,7 +684,7 @@ LABEL_51:
 
   v33 = self->_widgetKind;
   v34 = v33;
-  if (v33 == *(v4 + 8))
+  if (v33 == *(eventCopy + 8))
   {
   }
 
@@ -700,7 +700,7 @@ LABEL_51:
 
   v36 = self->_appBundleId;
   v37 = v36;
-  if (v36 == *(v4 + 9))
+  if (v36 == *(eventCopy + 9))
   {
   }
 
@@ -714,44 +714,44 @@ LABEL_51:
     }
   }
 
-  if (self->_widgetSize != *(v4 + 10) || self->_stackKind != *(v4 + 11))
+  if (self->_widgetSize != *(eventCopy + 10) || self->_stackKind != *(eventCopy + 11))
   {
     goto LABEL_51;
   }
 
-  v39 = self->_stackLocation == *(v4 + 12);
+  v39 = self->_stackLocation == *(eventCopy + 12);
 LABEL_52:
 
   return v39;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -762,33 +762,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -799,17 +799,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXHomeScreenEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXHomeScreenEvent)initWithCoder:(id)a3
+- (ATXHomeScreenEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXHomeScreenEvent *)self initWithProtoData:v5];
   return v6;
@@ -827,7 +827,7 @@ id __48__ATXHomeScreenEvent__uuidArrayFromStringArray___block_invoke(uint64_t a1
 - (void)feedbackConsumerSubType
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Could not find consumerSubType for non-proactive widget bundle id: %@", &v3, 0xCu);

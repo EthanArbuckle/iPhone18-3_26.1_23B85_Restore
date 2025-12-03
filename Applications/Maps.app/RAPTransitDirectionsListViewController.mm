@@ -1,5 +1,5 @@
 @interface RAPTransitDirectionsListViewController
-- (BOOL)RAPTransitDirectionsStepsList:(id)a3 shouldShowFlagForStep:(id)a4 listItem:(id)a5;
+- (BOOL)RAPTransitDirectionsStepsList:(id)list shouldShowFlagForStep:(id)step listItem:(id)item;
 - (RAPDirectionsStepsTableViewControllerDelegate)instructionDelegate;
 - (RAPTransitDirectionsListViewController)init;
 - (void)_prepareForUpdatedRoute;
@@ -14,12 +14,12 @@
   return WeakRetained;
 }
 
-- (BOOL)RAPTransitDirectionsStepsList:(id)a3 shouldShowFlagForStep:(id)a4 listItem:(id)a5
+- (BOOL)RAPTransitDirectionsStepsList:(id)list shouldShowFlagForStep:(id)step listItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(RAPTransitDirectionsListViewController *)self instructionDelegate];
-  LOBYTE(self) = [v9 viewController:self shouldShowFlagForStep:v8 listItem:v7];
+  itemCopy = item;
+  stepCopy = step;
+  instructionDelegate = [(RAPTransitDirectionsListViewController *)self instructionDelegate];
+  LOBYTE(self) = [instructionDelegate viewController:self shouldShowFlagForStep:stepCopy listItem:itemCopy];
 
   return self;
 }
@@ -29,14 +29,14 @@
   v29.receiver = self;
   v29.super_class = RAPTransitDirectionsListViewController;
   [(TransitDirectionsListViewController *)&v29 _prepareForUpdatedRoute];
-  v3 = [(TransitDirectionsListViewController *)self dataSource];
-  v4 = [v3 _transitDirectionsListItems];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  _transitDirectionsListItems = [dataSource _transitDirectionsListItems];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = _transitDirectionsListItems;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v5)
   {
@@ -52,20 +52,20 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 footerItems];
-        v11 = [v10 count];
+        footerItems = [v9 footerItems];
+        v11 = [footerItems count];
 
         if (v11)
         {
-          v12 = [v9 footerItems];
-          v13 = [v12 mutableCopy];
+          footerItems2 = [v9 footerItems];
+          v13 = [footerItems2 mutableCopy];
 
           v23 = 0u;
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v14 = [v9 footerItems];
-          v15 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+          footerItems3 = [v9 footerItems];
+          v15 = [footerItems3 countByEnumeratingWithState:&v21 objects:v30 count:16];
           if (v15)
           {
             v16 = v15;
@@ -76,7 +76,7 @@
               {
                 if (*v22 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(footerItems3);
                 }
 
                 v19 = *(*(&v21 + 1) + 8 * j);
@@ -86,7 +86,7 @@
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v21 objects:v30 count:16];
+              v16 = [footerItems3 countByEnumeratingWithState:&v21 objects:v30 count:16];
             }
 
             while (v16);
@@ -111,9 +111,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(TransitDirectionsListViewController *)v2 dataSource];
-    [v4 setOptions:0];
-    [v4 setRapDelegate:v3];
+    dataSource = [(TransitDirectionsListViewController *)v2 dataSource];
+    [dataSource setOptions:0];
+    [dataSource setRapDelegate:v3];
   }
 
   return v3;

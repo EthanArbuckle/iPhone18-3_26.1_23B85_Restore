@@ -1,5 +1,5 @@
 @interface SKUILoadArtworkResourceOperation
-- (SKUILoadArtworkResourceOperation)initWithResourceRequest:(id)a3;
+- (SKUILoadArtworkResourceOperation)initWithResourceRequest:(id)request;
 - (SSVLoadURLOperation)underlyingOperation;
 - (void)cancel;
 - (void)main;
@@ -7,9 +7,9 @@
 
 @implementation SKUILoadArtworkResourceOperation
 
-- (SKUILoadArtworkResourceOperation)initWithResourceRequest:(id)a3
+- (SKUILoadArtworkResourceOperation)initWithResourceRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUILoadArtworkResourceOperation initWithResourceRequest:];
@@ -17,35 +17,35 @@
 
   v7.receiver = self;
   v7.super_class = SKUILoadArtworkResourceOperation;
-  v5 = [(SKUILoadResourceOperation *)&v7 initWithResourceRequest:v4];
+  v5 = [(SKUILoadResourceOperation *)&v7 initWithResourceRequest:requestCopy];
 
   return v5;
 }
 
 - (void)main
 {
-  v3 = [(SKUILoadResourceOperation *)self resourceRequest];
-  v4 = [v3 imageName];
-  v5 = [v3 URL];
+  resourceRequest = [(SKUILoadResourceOperation *)self resourceRequest];
+  imageName = [resourceRequest imageName];
+  v5 = [resourceRequest URL];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D69CD8]);
-    v7 = [v3 URL];
+    v7 = [resourceRequest URL];
     v8 = [v6 initWithURL:v7];
 
-    v9 = [v3 dataConsumer];
-    [v8 setDataConsumer:v9];
+    dataConsumer = [resourceRequest dataConsumer];
+    [v8 setDataConsumer:dataConsumer];
 
     [v8 setITunesStoreRequest:0];
     [v8 setRecordsMetrics:0];
-    v10 = [(SKUILoadResourceOperation *)self outputBlock];
-    [v8 setOutputBlock:v10];
+    outputBlock = [(SKUILoadResourceOperation *)self outputBlock];
+    [v8 setOutputBlock:outputBlock];
 
     [(SKUILoadArtworkResourceOperation *)self setUnderlyingOperation:v8];
     [v8 main];
   }
 
-  else if (v4)
+  else if (imageName)
   {
     v26 = 0;
     v27 = &v26;
@@ -57,7 +57,7 @@
     {
       v11 = MEMORY[0x277D755B8];
       v12 = SKUIBundle();
-      v13 = [v11 imageNamed:v4 inBundle:v12];
+      v13 = [v11 imageNamed:imageName inBundle:v12];
       v14 = v27[5];
       v27[5] = v13;
     }
@@ -69,18 +69,18 @@
       v22 = __40__SKUILoadArtworkResourceOperation_main__block_invoke;
       v23 = &unk_2781F8608;
       v25 = &v26;
-      v24 = v4;
+      v24 = imageName;
       dispatch_sync(MEMORY[0x277D85CD0], &v20);
       v12 = v24;
     }
 
     if (([(SKUILoadArtworkResourceOperation *)self isCancelled]& 1) == 0)
     {
-      v15 = [v3 dataConsumer];
-      v16 = v15;
-      if (v15)
+      dataConsumer2 = [resourceRequest dataConsumer];
+      v16 = dataConsumer2;
+      if (dataConsumer2)
       {
-        v17 = [v15 imageForImage:v27[5]];
+        v17 = [dataConsumer2 imageForImage:v27[5]];
         v18 = v27[5];
         v27[5] = v17;
       }
@@ -112,8 +112,8 @@ void __40__SKUILoadArtworkResourceOperation_main__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = SKUILoadArtworkResourceOperation;
   [(SKUILoadResourceOperation *)&v4 cancel];
-  v3 = [(SKUILoadArtworkResourceOperation *)self underlyingOperation];
-  [v3 cancel];
+  underlyingOperation = [(SKUILoadArtworkResourceOperation *)self underlyingOperation];
+  [underlyingOperation cancel];
 }
 
 - (SSVLoadURLOperation)underlyingOperation

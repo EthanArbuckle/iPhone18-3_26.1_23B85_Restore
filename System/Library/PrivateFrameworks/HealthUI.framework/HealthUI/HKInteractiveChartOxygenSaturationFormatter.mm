@@ -1,37 +1,37 @@
 @interface HKInteractiveChartOxygenSaturationFormatter
-- (HKInteractiveChartOxygenSaturationFormatter)initWithStatisticsType:(int64_t)a3;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (HKInteractiveChartOxygenSaturationFormatter)initWithStatisticsType:(int64_t)type;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartOxygenSaturationFormatter
 
-- (HKInteractiveChartOxygenSaturationFormatter)initWithStatisticsType:(int64_t)a3
+- (HKInteractiveChartOxygenSaturationFormatter)initWithStatisticsType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = HKInteractiveChartOxygenSaturationFormatter;
   result = [(HKInteractiveChartOxygenSaturationFormatter *)&v5 init];
   if (result)
   {
-    result->_airPressureStatisticsType = a3;
+    result->_airPressureStatisticsType = type;
   }
 
   return result;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v12.receiver = self;
     v12.super_class = HKInteractiveChartOxygenSaturationFormatter;
-    v8 = [(HKInteractiveChartGenericStatFormatter *)&v12 formattedSelectedRangeLabelDataWithChartData:v7 context:a4];
+    v8 = [(HKInteractiveChartGenericStatFormatter *)&v12 formattedSelectedRangeLabelDataWithChartData:v7 context:context];
     if ([(HKInteractiveChartOxygenSaturationFormatter *)self airPressureStatisticsType]== 21)
     {
-      v9 = [(HKInteractiveChartOxygenSaturationFormatter *)self airPressureStatisticsType];
-      v10 = [v8 firstObject];
-      [v10 setStatisticsType:v9];
+      airPressureStatisticsType = [(HKInteractiveChartOxygenSaturationFormatter *)self airPressureStatisticsType];
+      firstObject = [v8 firstObject];
+      [firstObject setStatisticsType:airPressureStatisticsType];
     }
   }
 

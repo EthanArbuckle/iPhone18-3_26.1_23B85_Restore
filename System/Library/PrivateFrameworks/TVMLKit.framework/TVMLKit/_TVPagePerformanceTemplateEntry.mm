@@ -1,14 +1,14 @@
 @interface _TVPagePerformanceTemplateEntry
 - (IKViewElement)templateElement;
 - (_TVPagePerformanceController)performanceController;
-- (_TVPagePerformanceTemplateEntry)initWithPagePerformanceController:(id)a3 forTemplateElement:(id)a4;
+- (_TVPagePerformanceTemplateEntry)initWithPagePerformanceController:(id)controller forTemplateElement:(id)element;
 - (unint64_t)templateRenderDuration;
 - (unint64_t)templateResourcesDuration;
 - (unint64_t)templateTransitionDuration;
 - (void)_beginListeningForInitialImageProxyLoadNotifications;
 - (void)_maybeStopListeningForInitialImageProxyLoadNotifications;
-- (void)_receivedImageProxyDidLoadNotification:(id)a3;
-- (void)_receivedImageProxyWillLoadNotification:(id)a3;
+- (void)_receivedImageProxyDidLoadNotification:(id)notification;
+- (void)_receivedImageProxyWillLoadNotification:(id)notification;
 - (void)_stopListeningForInitialImageProxyLoadNotifications;
 - (void)dealloc;
 - (void)markTemplateDidRender;
@@ -19,20 +19,20 @@
 
 @implementation _TVPagePerformanceTemplateEntry
 
-- (_TVPagePerformanceTemplateEntry)initWithPagePerformanceController:(id)a3 forTemplateElement:(id)a4
+- (_TVPagePerformanceTemplateEntry)initWithPagePerformanceController:(id)controller forTemplateElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = _TVPagePerformanceTemplateEntry;
   v8 = [(_TVPagePerformanceTemplateEntry *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(_TVPagePerformanceTemplateEntry *)v8 setPerformanceController:v6];
-    [(_TVPagePerformanceTemplateEntry *)v9 setTemplateElement:v7];
-    v10 = [v7 elementName];
-    [(_TVPagePerformanceTemplateEntry *)v9 setTemplateElementName:v10];
+    [(_TVPagePerformanceTemplateEntry *)v8 setPerformanceController:controllerCopy];
+    [(_TVPagePerformanceTemplateEntry *)v9 setTemplateElement:elementCopy];
+    elementName = [elementCopy elementName];
+    [(_TVPagePerformanceTemplateEntry *)v9 setTemplateElementName:elementName];
   }
 
   return v9;
@@ -55,9 +55,9 @@
     if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+      templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
       v6 = 138412290;
-      v7 = v5;
+      v7 = templateElementName;
       _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ markTemplateWillRender", &v6, 0xCu);
     }
   }
@@ -75,9 +75,9 @@
     if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+      templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
       v6 = 138412290;
-      v7 = v5;
+      v7 = templateElementName;
       _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ markTemplateDidRender", &v6, 0xCu);
     }
   }
@@ -96,9 +96,9 @@
       if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+        templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
         v6 = 138412290;
-        v7 = v5;
+        v7 = templateElementName;
         _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ markTemplateWillTransition", &v6, 0xCu);
       }
     }
@@ -118,9 +118,9 @@
       if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+        templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
         v6 = 138412290;
-        v7 = v5;
+        v7 = templateElementName;
         _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ markTemplateDidTransition", &v6, 0xCu);
       }
     }
@@ -133,26 +133,26 @@
 
 - (unint64_t)templateRenderDuration
 {
-  v3 = [(_TVPagePerformanceTemplateEntry *)self templateWillRender];
-  v4 = [(_TVPagePerformanceTemplateEntry *)self templateDidRender];
+  templateWillRender = [(_TVPagePerformanceTemplateEntry *)self templateWillRender];
+  templateDidRender = [(_TVPagePerformanceTemplateEntry *)self templateDidRender];
 
-  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(v3, v4);
+  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(templateWillRender, templateDidRender);
 }
 
 - (unint64_t)templateResourcesDuration
 {
-  v3 = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
-  v4 = [(_TVPagePerformanceTemplateEntry *)self templateDidLoadResources];
+  templateWillLoadResources = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
+  templateDidLoadResources = [(_TVPagePerformanceTemplateEntry *)self templateDidLoadResources];
 
-  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(v3, v4);
+  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(templateWillLoadResources, templateDidLoadResources);
 }
 
 - (unint64_t)templateTransitionDuration
 {
-  v3 = [(_TVPagePerformanceTemplateEntry *)self templateWillTransition];
-  v4 = [(_TVPagePerformanceTemplateEntry *)self templateDidTransition];
+  templateWillTransition = [(_TVPagePerformanceTemplateEntry *)self templateWillTransition];
+  templateDidTransition = [(_TVPagePerformanceTemplateEntry *)self templateDidTransition];
 
-  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(v3, v4);
+  return _TVPagePerformanceConvertMachAbsoluteTimeToMicroseconds(templateWillTransition, templateDidTransition);
 }
 
 - (void)_beginListeningForInitialImageProxyLoadNotifications
@@ -166,9 +166,9 @@
       if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+        templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
         v10 = 138412290;
-        v11 = v5;
+        v11 = templateElementName;
         _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ beginListeningForImageProxyLoadNotifications", &v10, 0xCu);
       }
     }
@@ -179,11 +179,11 @@
     self->_initialOnScreenImageProxies = v6;
 
     *&self->_listeningForImageProxyWillLoad = 257;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__receivedImageProxyWillLoadNotification_ name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__receivedImageProxyWillLoadNotification_ name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__receivedImageProxyDidLoadNotification_ name:@"_TVPagePerformanceImageProxyDidLoadNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__receivedImageProxyDidLoadNotification_ name:@"_TVPagePerformanceImageProxyDidLoadNotification" object:0];
   }
 }
 
@@ -198,18 +198,18 @@
       if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+        templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
         v8 = 138412290;
-        v9 = v5;
+        v9 = templateElementName;
         _os_log_impl(&dword_26CD9A000, v4, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ stopListeningForInitialImageProxyLoadNotifications", &v8, 0xCu);
       }
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:self name:@"_TVPagePerformanceImageProxyDidLoadNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"_TVPagePerformanceImageProxyDidLoadNotification" object:0];
 
     [(NSHashTable *)self->_initialOnScreenImageProxies removeAllObjects];
     *&self->_listeningForImageProxyWillLoad = 0;
@@ -219,12 +219,12 @@
 - (void)_maybeStopListeningForInitialImageProxyLoadNotifications
 {
   v15 = *MEMORY[0x277D85DE8];
-  v12 = [(_TVPagePerformanceTemplateEntry *)self performanceController];
-  if ([v12 viewDidAppear] && -[_TVPagePerformanceTemplateEntry templateDidTransition](self, "templateDidTransition"))
+  performanceController = [(_TVPagePerformanceTemplateEntry *)self performanceController];
+  if ([performanceController viewDidAppear] && -[_TVPagePerformanceTemplateEntry templateDidTransition](self, "templateDidTransition"))
   {
-    v3 = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
+    templateWillLoadResources = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
 
-    if (!v3)
+    if (!templateWillLoadResources)
     {
       return;
     }
@@ -237,9 +237,9 @@
         if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v5 = v4;
-          v6 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+          templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
           *buf = 138412290;
-          v14 = v6;
+          v14 = templateElementName;
           _os_log_impl(&dword_26CD9A000, v5, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ maybeStopListeningForInitialImageProxyLoadNotifications", buf, 0xCu);
         }
       }
@@ -256,8 +256,8 @@
           }
         }
 
-        v8 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v8 removeObserver:self name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter removeObserver:self name:@"_TVPagePerformanceImageProxyWillLoadNotification" object:0];
 
         self->_listeningForImageProxyWillLoad = 0;
       }
@@ -278,20 +278,20 @@
 
           if ([(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy])
           {
-            v10 = [(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy];
+            templateDidLoadLastImageProxy = [(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy];
           }
 
           else
           {
-            v10 = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
+            templateDidLoadLastImageProxy = [(_TVPagePerformanceTemplateEntry *)self templateWillLoadResources];
           }
 
-          [(_TVPagePerformanceTemplateEntry *)self setTemplateDidLoadResources:v10];
+          [(_TVPagePerformanceTemplateEntry *)self setTemplateDidLoadResources:templateDidLoadLastImageProxy];
           [(_TVPagePerformanceTemplateEntry *)self _stopListeningForInitialImageProxyLoadNotifications];
         }
 
-        v11 = [(_TVPagePerformanceTemplateEntry *)self performanceController];
-        [v11 _maybeDeliverMetrics];
+        performanceController2 = [(_TVPagePerformanceTemplateEntry *)self performanceController];
+        [performanceController2 _maybeDeliverMetrics];
       }
 
       return;
@@ -302,20 +302,20 @@
       return;
     }
 
-    v12 = [(_TVPagePerformanceTemplateEntry *)self performanceController];
-    [v12 _maybeDeliverMetrics];
+    performanceController = [(_TVPagePerformanceTemplateEntry *)self performanceController];
+    [performanceController _maybeDeliverMetrics];
   }
 }
 
-- (void)_receivedImageProxyWillLoadNotification:(id)a3
+- (void)_receivedImageProxyWillLoadNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"_TVPagePerformanceImageProxyNotificationTimestamp"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [userInfo objectForKey:@"_TVPagePerformanceImageProxyNotificationTimestamp"];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
   if (IsPerformanceLoggingEnabled())
   {
@@ -323,32 +323,32 @@
     if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+      templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
       v12 = 138412546;
-      v13 = v11;
+      v13 = templateElementName;
       v14 = 2112;
-      v15 = v5;
+      v15 = object;
       _os_log_impl(&dword_26CD9A000, v10, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ receivedImageProxyWillLoadNotification: %@", &v12, 0x16u);
     }
   }
 
-  if (![(_TVPagePerformanceTemplateEntry *)self templateWillLoadFirstImageProxy]|| v8 < [(_TVPagePerformanceTemplateEntry *)self templateWillLoadFirstImageProxy])
+  if (![(_TVPagePerformanceTemplateEntry *)self templateWillLoadFirstImageProxy]|| unsignedLongLongValue < [(_TVPagePerformanceTemplateEntry *)self templateWillLoadFirstImageProxy])
   {
-    [(_TVPagePerformanceTemplateEntry *)self setTemplateWillLoadFirstImageProxy:v8];
+    [(_TVPagePerformanceTemplateEntry *)self setTemplateWillLoadFirstImageProxy:unsignedLongLongValue];
   }
 
-  [(NSHashTable *)self->_initialOnScreenImageProxies addObject:v5];
+  [(NSHashTable *)self->_initialOnScreenImageProxies addObject:object];
 }
 
-- (void)_receivedImageProxyDidLoadNotification:(id)a3
+- (void)_receivedImageProxyDidLoadNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"_TVPagePerformanceImageProxyNotificationTimestamp"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [userInfo objectForKey:@"_TVPagePerformanceImageProxyNotificationTimestamp"];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
   if (IsPerformanceLoggingEnabled())
   {
@@ -356,23 +356,23 @@
     if (os_log_type_enabled(TVMLKitPerformanceLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
+      templateElementName = [(_TVPagePerformanceTemplateEntry *)self templateElementName];
       v14 = 138412546;
-      v15 = v11;
+      v15 = templateElementName;
       v16 = 2112;
-      v17 = v5;
+      v17 = object;
       _os_log_impl(&dword_26CD9A000, v10, OS_LOG_TYPE_DEFAULT, "[DEBUG] %@ receivedImageProxyDidLoadNotification %@", &v14, 0x16u);
     }
   }
 
-  if ([(NSHashTable *)self->_initialOnScreenImageProxies containsObject:v5])
+  if ([(NSHashTable *)self->_initialOnScreenImageProxies containsObject:object])
   {
-    if (![(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy]|| v8 > [(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy])
+    if (![(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy]|| unsignedLongLongValue > [(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy])
     {
-      [(_TVPagePerformanceTemplateEntry *)self setTemplateDidLoadLastImageProxy:v8];
+      [(_TVPagePerformanceTemplateEntry *)self setTemplateDidLoadLastImageProxy:unsignedLongLongValue];
     }
 
-    [(NSHashTable *)self->_initialOnScreenImageProxies removeObject:v5];
+    [(NSHashTable *)self->_initialOnScreenImageProxies removeObject:object];
     if (!self->_listeningForImageProxyWillLoad && ![(NSHashTable *)self->_initialOnScreenImageProxies count])
     {
       if (IsPerformanceLoggingEnabled())
@@ -387,8 +387,8 @@
 
       [(_TVPagePerformanceTemplateEntry *)self setTemplateDidLoadResources:[(_TVPagePerformanceTemplateEntry *)self templateDidLoadLastImageProxy]];
       [(_TVPagePerformanceTemplateEntry *)self _stopListeningForInitialImageProxyLoadNotifications];
-      v13 = [(_TVPagePerformanceTemplateEntry *)self performanceController];
-      [v13 _maybeDeliverMetrics];
+      performanceController = [(_TVPagePerformanceTemplateEntry *)self performanceController];
+      [performanceController _maybeDeliverMetrics];
     }
   }
 }

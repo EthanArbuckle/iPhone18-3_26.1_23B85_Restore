@@ -1,13 +1,13 @@
 @interface WFPopoverModel
-- (void)displayFileActivityWith:(id)a3;
+- (void)displayFileActivityWith:(id)with;
 @end
 
 @implementation WFPopoverModel
 
-- (void)displayFileActivityWith:(id)a3
+- (void)displayFileActivityWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_2747A82B8();
 }
 

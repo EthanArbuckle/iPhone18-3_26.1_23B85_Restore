@@ -63,7 +63,7 @@
   v5[2](v5, v6);
   if (![(PUISceneConfiguration *)v6 isValid])
   {
-    [(FBSceneWorkspace(PosterUIFoundation) *)a2 pui_createScene:a1];
+    [(FBSceneWorkspace(PosterUIFoundation) *)a2 pui_createScene:self];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -72,7 +72,7 @@
   v10[3] = &unk_1E78544D0;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 createScene:v10];
+  v8 = [self createScene:v10];
 
   return v8;
 }

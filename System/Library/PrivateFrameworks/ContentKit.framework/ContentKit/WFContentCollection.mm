@@ -1,103 +1,103 @@
 @interface WFContentCollection
-+ (id)collectionWithItems:(id)a3;
-+ (void)_generateCollectionFromPasteboard:(id)a3 completionHandler:(id)a4;
-+ (void)generateCollectionFromDragItems:(id)a3 allowedItemClasses:(id)a4 completionHandler:(id)a5;
-+ (void)generateCollectionFromPasteboard:(id)a3 completionHandler:(id)a4;
-- (BOOL)canPerformCoercion:(id)a3;
-- (BOOL)isCoercibleToItemClass:(Class)a3;
-- (BOOL)isCoercibleToItemClasses:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)collectionWithItems:(id)items;
++ (void)_generateCollectionFromPasteboard:(id)pasteboard completionHandler:(id)handler;
++ (void)generateCollectionFromDragItems:(id)items allowedItemClasses:(id)classes completionHandler:(id)handler;
++ (void)generateCollectionFromPasteboard:(id)pasteboard completionHandler:(id)handler;
+- (BOOL)canPerformCoercion:(id)coercion;
+- (BOOL)isCoercibleToItemClass:(Class)class;
+- (BOOL)isCoercibleToItemClasses:(id)classes;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)extensionItems;
 - (NSArray)minimalExtensionItems;
 - (NSMutableArray)mutableItems;
 - (WFCoercionOptions)defaultCoercionOptions;
 - (WFContentAttributionSet)attributionSet;
-- (WFContentCollection)initWithCoder:(id)a3;
-- (WFContentCollection)initWithItems:(id)a3 defaultCoercionOptions:(id)a4;
-- (id)collectionByFilteringItemsWithBlock:(id)a3 excludedItems:(id *)a4;
-- (id)collectionByFilteringToItemClass:(Class)a3 excludedItems:(id *)a4;
-- (id)collectionByMergingAttributionSet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFContentCollection)initWithCoder:(id)coder;
+- (WFContentCollection)initWithItems:(id)items defaultCoercionOptions:(id)options;
+- (id)collectionByFilteringItemsWithBlock:(id)block excludedItems:(id *)items;
+- (id)collectionByFilteringToItemClass:(Class)class excludedItems:(id *)items;
+- (id)collectionByMergingAttributionSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)effectiveCoercionOptionsForRequest:(id)a3;
+- (id)effectiveCoercionOptionsForRequest:(id)request;
 - (id)getListRepresentation;
 - (id)requiredResourcesForContent;
 - (int64_t)numberOfItems;
 - (unint64_t)hash;
-- (void)addFile:(id)a3;
-- (void)addFile:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5;
-- (void)addFileWithOriginAttribution:(id)a3;
-- (void)addItem:(id)a3;
-- (void)addItems:(id)a3;
-- (void)addObject:(id)a3;
-- (void)addObject:(id)a3 named:(id)a4;
-- (void)copyToPasteboard:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateFileRepresentations:(id)a3 forType:(id)a4 completionHandler:(id)a5;
-- (void)enumerateObjectRepresentations:(id)a3 forClass:(Class)a4 completionHandler:(id)a5;
-- (void)generateCollectionByCoercingToItemClass:(Class)a3 completionHandler:(id)a4;
-- (void)generateCollectionByCoercingToItemClass:(Class)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)generateCollectionByCoercingToItemClasses:(id)a3 completionHandler:(id)a4;
-- (void)generateCollectionByCoercingToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)generateCollectionByEvaluatingQuery:(id)a3 forContentItemClass:(Class)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (void)getBoolRepresentation:(id)a3;
-- (void)getFileRepresentation:(id)a3 forType:(id)a4;
-- (void)getFileRepresentationAndAttributionSet:(id)a3 forType:(id)a4;
-- (void)getFileRepresentations:(id)a3 forType:(id)a4;
-- (void)getFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)getObjectRepresentation:(id)a3 forClass:(Class)a4;
-- (void)getObjectRepresentationAndAttributionSet:(id)a3 forClass:(Class)a4;
-- (void)getObjectRepresentations:(id)a3 forClass:(Class)a4;
-- (void)getObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getRichTextRepresentation:(id)a3;
-- (void)getStringRepresentation:(id)a3;
-- (void)getStringRepresentations:(id)a3;
-- (void)performCoercion:(id)a3;
-- (void)removeItem:(id)a3;
-- (void)transformFileRepresentationsForType:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)transformFirstFileRepresentationForType:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)transformFirstObjectRepresentationForClass:(Class)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)transformItemsAndFlattenUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)transformItemsUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)transformObjectRepresentationsForClass:(Class)a3 usingBlock:(id)a4 completionHandler:(id)a5;
+- (void)addFile:(id)file;
+- (void)addFile:(id)file origin:(id)origin disclosureLevel:(unint64_t)level;
+- (void)addFileWithOriginAttribution:(id)attribution;
+- (void)addItem:(id)item;
+- (void)addItems:(id)items;
+- (void)addObject:(id)object;
+- (void)addObject:(id)object named:(id)named;
+- (void)copyToPasteboard:(id)pasteboard options:(id)options completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateFileRepresentations:(id)representations forType:(id)type completionHandler:(id)handler;
+- (void)enumerateObjectRepresentations:(id)representations forClass:(Class)class completionHandler:(id)handler;
+- (void)generateCollectionByCoercingToItemClass:(Class)class completionHandler:(id)handler;
+- (void)generateCollectionByCoercingToItemClass:(Class)class options:(id)options completionHandler:(id)handler;
+- (void)generateCollectionByCoercingToItemClasses:(id)classes completionHandler:(id)handler;
+- (void)generateCollectionByCoercingToItemClasses:(id)classes options:(id)options completionHandler:(id)handler;
+- (void)generateCollectionByEvaluatingQuery:(id)query forContentItemClass:(Class)class permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (void)getBoolRepresentation:(id)representation;
+- (void)getFileRepresentation:(id)representation forType:(id)type;
+- (void)getFileRepresentationAndAttributionSet:(id)set forType:(id)type;
+- (void)getFileRepresentations:(id)representations forType:(id)type;
+- (void)getFileRepresentations:(id)representations options:(id)options forType:(id)type;
+- (void)getObjectRepresentation:(id)representation forClass:(Class)class;
+- (void)getObjectRepresentationAndAttributionSet:(id)set forClass:(Class)class;
+- (void)getObjectRepresentations:(id)representations forClass:(Class)class;
+- (void)getObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)getRichTextRepresentation:(id)representation;
+- (void)getStringRepresentation:(id)representation;
+- (void)getStringRepresentations:(id)representations;
+- (void)performCoercion:(id)coercion;
+- (void)removeItem:(id)item;
+- (void)transformFileRepresentationsForType:(id)type usingBlock:(id)block completionHandler:(id)handler;
+- (void)transformFirstFileRepresentationForType:(id)type usingBlock:(id)block completionHandler:(id)handler;
+- (void)transformFirstObjectRepresentationForClass:(Class)class usingBlock:(id)block completionHandler:(id)handler;
+- (void)transformItemsAndFlattenUsingBlock:(id)block completionHandler:(id)handler;
+- (void)transformItemsUsingBlock:(id)block completionHandler:(id)handler;
+- (void)transformObjectRepresentationsForClass:(Class)class usingBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation WFContentCollection
 
 - (NSArray)minimalExtensionItems
 {
-  v2 = [(WFContentCollection *)self items];
-  v3 = [v2 if_map:&__block_literal_global_204];
+  items = [(WFContentCollection *)self items];
+  v3 = [items if_map:&__block_literal_global_204];
 
   return v3;
 }
 
 - (NSArray)extensionItems
 {
-  v2 = [(WFContentCollection *)self items];
-  v3 = [v2 if_map:&__block_literal_global_1287];
+  items = [(WFContentCollection *)self items];
+  v3 = [items if_map:&__block_literal_global_1287];
 
   return v3;
 }
 
-- (void)copyToPasteboard:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)copyToPasteboard:(id)pasteboard options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFContentCollection *)self items];
+  pasteboardCopy = pasteboard;
+  optionsCopy = options;
+  handlerCopy = handler;
+  items = [(WFContentCollection *)self items];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__WFContentCollection_WFPasteboard__copyToPasteboard_options_completionHandler___block_invoke_3;
   v15[3] = &unk_27834A098;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 if_mapAsynchronously:&__block_literal_global_215 completionHandler:v15];
+  v16 = pasteboardCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = pasteboardCopy;
+  [items if_mapAsynchronously:&__block_literal_global_215 completionHandler:v15];
 }
 
 void __80__WFContentCollection_WFPasteboard__copyToPasteboard_options_completionHandler___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -150,8 +150,8 @@ void __80__WFContentCollection_WFPasteboard__copyToPasteboard_options_completion
 
 - (id)requiredResourcesForContent
 {
-  v2 = [(WFContentCollection *)self items];
-  v3 = [v2 if_firstObjectPassingTest:&__block_literal_global_199_8034];
+  items = [(WFContentCollection *)self items];
+  v3 = [items if_firstObjectPassingTest:&__block_literal_global_199_8034];
 
   if (v3)
   {
@@ -175,11 +175,11 @@ uint64_t __64__WFContentCollection_WFPasteboard__requiredResourcesForContent__bl
   return isKindOfClass & 1;
 }
 
-+ (void)_generateCollectionFromPasteboard:(id)a3 completionHandler:(id)a4
++ (void)_generateCollectionFromPasteboard:(id)pasteboard completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  pasteboardCopy = pasteboard;
+  handlerCopy = handler;
+  v8 = pasteboardCopy;
   v9 = [v8 pasteboardTypesForItemSet:0];
   if (v9)
   {
@@ -196,17 +196,17 @@ uint64_t __64__WFContentCollection_WFPasteboard__requiredResourcesForContent__bl
     v10 = MEMORY[0x277CBEBF8];
   }
 
-  v13 = v7;
+  v13 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __89__WFContentCollection_WFPasteboard___generateCollectionFromPasteboard_completionHandler___block_invoke;
   v14[3] = &__block_descriptor_40_e58_v32__0__WFPasteboardItem_8Q16___v____NSArray___NSError__24l;
-  v14[4] = a1;
+  v14[4] = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__WFContentCollection_WFPasteboard___generateCollectionFromPasteboard_completionHandler___block_invoke_2;
   v12[3] = &unk_27834A430;
-  v11 = v7;
+  v11 = handlerCopy;
   [v10 if_flatMapAsynchronously:v14 completionHandler:v12];
 }
 
@@ -249,27 +249,27 @@ void __89__WFContentCollection_WFPasteboard___generateCollectionFromPasteboard_c
   }
 }
 
-+ (void)generateCollectionFromPasteboard:(id)a3 completionHandler:(id)a4
++ (void)generateCollectionFromPasteboard:(id)pasteboard completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = WFPasteboardRequiredAccessResources(v6);
+  pasteboardCopy = pasteboard;
+  handlerCopy = handler;
+  v8 = WFPasteboardRequiredAccessResources(pasteboardCopy);
   if ([v8 count])
   {
-    v9 = [MEMORY[0x277D7A0E0] sharedManager];
+    mEMORY[0x277D7A0E0] = [MEMORY[0x277D7A0E0] sharedManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __88__WFContentCollection_WFPasteboard__generateCollectionFromPasteboard_completionHandler___block_invoke;
     v10[3] = &unk_2783461E0;
-    v13 = a1;
-    v11 = v6;
-    v12 = v7;
-    [v9 requestSandboxExtensionForRunningActionWithAccessResources:v8 completion:v10];
+    selfCopy = self;
+    v11 = pasteboardCopy;
+    v12 = handlerCopy;
+    [mEMORY[0x277D7A0E0] requestSandboxExtensionForRunningActionWithAccessResources:v8 completion:v10];
   }
 
   else
   {
-    [a1 _generateCollectionFromPasteboard:v6 completionHandler:v7];
+    [self _generateCollectionFromPasteboard:pasteboardCopy completionHandler:handlerCopy];
   }
 }
 
@@ -285,49 +285,49 @@ void __83__WFContentCollection_WFPasteboard__getContentItemsForPasteboardItems_r
   [WFContentItem getContentItemFromSerializedItem:a2 sourceName:@"Clipboard" completionHandler:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self items];
+  coderCopy = coder;
+  items = [(WFContentCollection *)self items];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__WFContentCollection_encodeWithCoder___block_invoke;
   v8[3] = &unk_27834A5F0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 if_objectsPassingTest:v8];
+  v9 = coderCopy;
+  v6 = coderCopy;
+  v7 = [items if_objectsPassingTest:v8];
 
   [v6 encodeObject:v7 forKey:@"items"];
 }
 
-- (WFContentCollection)initWithCoder:(id)a3
+- (WFContentCollection)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"items"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
 
   if (v9)
   {
     self = [(WFContentCollection *)self initWithItems:v9 defaultCoercionOptions:0];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(WFContentCollection *)self mutableItems];
-  v6 = [v4 initWithItems:v5 defaultCoercionOptions:self->_defaultCoercionOptions];
+  mutableItems = [(WFContentCollection *)self mutableItems];
+  v6 = [v4 initWithItems:mutableItems defaultCoercionOptions:self->_defaultCoercionOptions];
 
   return v6;
 }
@@ -337,36 +337,36 @@ void __83__WFContentCollection_WFPasteboard__getContentItemsForPasteboardItems_r
   v7.receiver = self;
   v7.super_class = WFContentCollection;
   v3 = [(WFContentCollection *)&v7 description];
-  v4 = [(WFContentCollection *)self items];
-  v5 = [v3 stringByAppendingFormat:@": %@", v4];
+  items = [(WFContentCollection *)self items];
+  v5 = [v3 stringByAppendingFormat:@": %@", items];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFContentCollection *)self items];
-  v3 = [v2 hash];
+  items = [(WFContentCollection *)self items];
+  v3 = [items hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
 
     else
     {
-      v5 = [(WFContentCollection *)self items];
-      v6 = [(WFContentCollection *)v4 items];
-      v7 = [v5 isEqual:v6];
+      items = [(WFContentCollection *)self items];
+      items2 = [(WFContentCollection *)equalCopy items];
+      v7 = [items isEqual:items2];
     }
   }
 
@@ -378,61 +378,61 @@ void __83__WFContentCollection_WFPasteboard__getContentItemsForPasteboardItems_r
   return v7;
 }
 
-- (void)generateCollectionByCoercingToItemClasses:(id)a3 completionHandler:(id)a4
+- (void)generateCollectionByCoercingToItemClasses:(id)classes completionHandler:(id)handler
 {
-  v5 = [WFCoercionRequest requestForCoercingToContentClasses:a3 completionHandler:a4];
+  v5 = [WFCoercionRequest requestForCoercingToContentClasses:classes completionHandler:handler];
   [(WFContentCollection *)self performCoercion:v5];
 }
 
-- (void)generateCollectionByCoercingToItemClass:(Class)a3 options:(id)a4 completionHandler:(id)a5
+- (void)generateCollectionByCoercingToItemClass:(Class)class options:(id)options completionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  classCopy = class;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 arrayWithObjects:&v11 count:1];
-  [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:v10 options:v9 completionHandler:v8, v11, v12];
+  handlerCopy = handler;
+  optionsCopy = options;
+  v10 = [v7 arrayWithObjects:&classCopy count:1];
+  [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:v10 options:optionsCopy completionHandler:handlerCopy, classCopy, v12];
 }
 
-- (void)generateCollectionByCoercingToItemClass:(Class)a3 completionHandler:(id)a4
+- (void)generateCollectionByCoercingToItemClass:(Class)class completionHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  classCopy = class;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
-  [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:v7 completionHandler:v6, v8, v9];
+  handlerCopy = handler;
+  v7 = [v5 arrayWithObjects:&classCopy count:1];
+  [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:v7 completionHandler:handlerCopy, classCopy, v9];
 }
 
-- (BOOL)isCoercibleToItemClasses:(id)a3
+- (BOOL)isCoercibleToItemClasses:(id)classes
 {
-  v4 = [WFCoercionRequest requestForCoercingToContentClasses:a3 completionHandler:0];
+  v4 = [WFCoercionRequest requestForCoercingToContentClasses:classes completionHandler:0];
   LOBYTE(self) = [(WFContentCollection *)self canPerformCoercion:v4];
 
   return self;
 }
 
-- (BOOL)isCoercibleToItemClass:(Class)a3
+- (BOOL)isCoercibleToItemClass:(Class)class
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v6[0] = a3;
+  v6[0] = class;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   LOBYTE(self) = [(WFContentCollection *)self isCoercibleToItemClasses:v4];
 
   return self;
 }
 
-- (void)getBoolRepresentation:(id)a3
+- (void)getBoolRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__WFContentCollection_getBoolRepresentation___block_invoke;
   v8[3] = &unk_2783495A8;
-  v9 = v4;
+  v9 = representationCopy;
   v5 = MEMORY[0x277CCABB0];
-  v6 = v4;
+  v6 = representationCopy;
   v7 = [v5 numberWithBool:1];
   [(WFContentCollection *)self getObjectRepresentation:v8 forClass:objc_opt_class()];
 }
@@ -452,110 +452,110 @@ void __45__WFContentCollection_getBoolRepresentation___block_invoke(uint64_t a1,
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getFileRepresentations:(id)a3 forType:(id)a4
+- (void)getFileRepresentations:(id)representations forType:(id)type
 {
-  v5 = [WFCoercionRequest requestForCoercingToFileType:a4 completionHandler:a3];
+  v5 = [WFCoercionRequest requestForCoercingToFileType:type completionHandler:representations];
   [(WFContentCollection *)self performCoercion:v5];
 }
 
-- (void)getObjectRepresentations:(id)a3 forClass:(Class)a4
+- (void)getObjectRepresentations:(id)representations forClass:(Class)class
 {
-  v5 = [WFCoercionRequest requestForCoercingToObjectClass:a4 completionHandler:a3];
+  v5 = [WFCoercionRequest requestForCoercingToObjectClass:class completionHandler:representations];
   [(WFContentCollection *)self performCoercion:v5];
 }
 
-- (void)getStringRepresentations:(id)a3
+- (void)getStringRepresentations:(id)representations
 {
-  v4 = a3;
+  representationsCopy = representations;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__WFContentCollection_getStringRepresentations___block_invoke;
   v6[3] = &unk_27834A4C8;
-  v7 = v4;
-  v5 = v4;
+  v7 = representationsCopy;
+  v5 = representationsCopy;
   [(WFContentCollection *)self getObjectRepresentations:v6 forClass:objc_opt_class()];
 }
 
-- (void)getStringRepresentation:(id)a3
+- (void)getStringRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__WFContentCollection_getStringRepresentation___block_invoke;
   v6[3] = &unk_2783495A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = representationCopy;
+  v5 = representationCopy;
   [(WFContentCollection *)self getObjectRepresentation:v6 forClass:objc_opt_class()];
 }
 
-- (void)generateCollectionByEvaluatingQuery:(id)a3 forContentItemClass:(Class)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
+- (void)generateCollectionByEvaluatingQuery:(id)query forContentItemClass:(Class)class permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  queryCopy = query;
+  requestorCopy = requestor;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentItemClass_permissionRequestor_completionHandler___block_invoke;
   aBlock[3] = &unk_27834A200;
-  v13 = v12;
+  v13 = handlerCopy;
   aBlock[4] = self;
   v33 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(WFContentCollection *)self items];
-  v16 = [(WFContentCollection *)self collectionByFilteringToItemClass:a4 excludedItems:0];
-  v17 = [v16 numberOfItems];
-  v18 = [(WFContentCollection *)self numberOfItems];
+  items = [(WFContentCollection *)self items];
+  v16 = [(WFContentCollection *)self collectionByFilteringToItemClass:class excludedItems:0];
+  numberOfItems = [v16 numberOfItems];
+  numberOfItems2 = [(WFContentCollection *)self numberOfItems];
 
-  if (v17 == v18)
+  if (numberOfItems == numberOfItems2)
   {
-    v19 = a4;
-    v20 = v10;
-    v21 = v15;
+    classCopy3 = class;
+    v20 = queryCopy;
+    v21 = items;
   }
 
   else
   {
-    if ([v15 count])
+    if ([items count])
     {
       v22 = +[WFContentItem contentPropertySubstitutor];
-      v23 = [v10 canEvaluateObjects:v15 withPropertySubstitutor:v22];
+      v23 = [queryCopy canEvaluateObjects:items withPropertySubstitutor:v22];
 
       if (v23)
       {
         v24 = +[WFContentItem contentPropertySubstitutor];
-        [v10 runWithObjects:v15 propertySubstitutor:v24 completionHandler:v14];
+        [queryCopy runWithObjects:items propertySubstitutor:v24 completionHandler:v14];
 
         goto LABEL_10;
       }
     }
 
-    if (![(objc_class *)a4 hasLibrary]|| [(WFContentCollection *)self isCoercibleToItemClass:a4])
+    if (![(objc_class *)class hasLibrary]|| [(WFContentCollection *)self isCoercibleToItemClass:class])
     {
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentItemClass_permissionRequestor_completionHandler___block_invoke_2;
       v31[3] = &__block_descriptor_40_e55_v32__0__WFContentItem_8Q16___v____NSArray___NSError__24lu32l8;
-      v31[4] = a4;
+      v31[4] = class;
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentItemClass_permissionRequestor_completionHandler___block_invoke_4;
       v25[3] = &unk_2783467F0;
       v28 = v13;
-      v30 = a4;
-      v26 = v10;
-      v27 = v11;
+      classCopy2 = class;
+      v26 = queryCopy;
+      v27 = requestorCopy;
       v29 = v14;
-      [v15 if_mapAsynchronously:v31 completionHandler:v25];
+      [items if_mapAsynchronously:v31 completionHandler:v25];
 
       goto LABEL_10;
     }
 
-    v19 = a4;
-    v20 = v10;
+    classCopy3 = class;
+    v20 = queryCopy;
     v21 = 0;
   }
 
-  [(objc_class *)v19 runQuery:v20 withItems:v21 permissionRequestor:v11 completionHandler:v14];
+  [(objc_class *)classCopy3 runQuery:v20 withItems:v21 permissionRequestor:requestorCopy completionHandler:v14];
 LABEL_10:
 }
 
@@ -750,30 +750,30 @@ void __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentIt
   }
 }
 
-- (id)collectionByFilteringToItemClass:(Class)a3 excludedItems:(id *)a4
+- (id)collectionByFilteringToItemClass:(Class)class excludedItems:(id *)items
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__WFContentCollection_collectionByFilteringToItemClass_excludedItems___block_invoke;
   v6[3] = &__block_descriptor_40_e23_B16__0__WFContentItem_8lu32l8;
-  v6[4] = a3;
-  v4 = [(WFContentCollection *)self collectionByFilteringItemsWithBlock:v6 excludedItems:a4];
+  v6[4] = class;
+  v4 = [(WFContentCollection *)self collectionByFilteringItemsWithBlock:v6 excludedItems:items];
 
   return v4;
 }
 
-- (id)collectionByFilteringItemsWithBlock:(id)a3 excludedItems:(id *)a4
+- (id)collectionByFilteringItemsWithBlock:(id)block excludedItems:(id *)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  blockCopy = block;
   v7 = [[WFContentCollection alloc] initWithDefaultCoercionOptions:self->_defaultCoercionOptions];
   v8 = [[WFContentCollection alloc] initWithDefaultCoercionOptions:self->_defaultCoercionOptions];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(WFContentCollection *)self items];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  items = [(WFContentCollection *)self items];
+  v10 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -784,11 +784,11 @@ void __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentIt
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if (v6[2](v6, v14))
+        if (blockCopy[2](blockCopy, v14))
         {
           v15 = v7;
         }
@@ -801,26 +801,26 @@ void __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentIt
         [(WFContentCollection *)v15 addItem:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 
-  if (a4)
+  if (items)
   {
     v16 = v8;
-    *a4 = v8;
+    *items = v8;
   }
 
   return v7;
 }
 
-- (void)generateCollectionByCoercingToItemClasses:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)generateCollectionByCoercingToItemClasses:(id)classes options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  optionsCopy = options;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -831,10 +831,10 @@ void __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentIt
   v17[1] = 3221225472;
   v17[2] = __91__WFContentCollection_generateCollectionByCoercingToItemClasses_options_completionHandler___block_invoke;
   v17[3] = &unk_278346760;
-  v11 = v8;
+  v11 = classesCopy;
   v18 = v11;
   v20 = v21;
-  v12 = v9;
+  v12 = optionsCopy;
   v19 = v12;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -842,7 +842,7 @@ void __117__WFContentCollection_generateCollectionByEvaluatingQuery_forContentIt
   v14[3] = &unk_278346788;
   v14[4] = self;
   v16 = v21;
-  v13 = v10;
+  v13 = handlerCopy;
   v15 = v13;
   [(WFContentCollection *)self transformItemsAndFlattenUsingBlock:v17 completionHandler:v14];
 
@@ -907,8 +907,8 @@ void __91__WFContentCollection_generateCollectionByCoercingToItemClasses_options
 
 - (id)getListRepresentation
 {
-  v3 = [(WFContentCollection *)self items];
-  v4 = [v3 if_flatMap:&__block_literal_global_208];
+  items = [(WFContentCollection *)self items];
+  v4 = [items if_flatMap:&__block_literal_global_208];
 
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
   [(WFContentCollection *)self setMutableItems:v5];
@@ -959,21 +959,21 @@ LABEL_9:
   return v11;
 }
 
-- (void)getFileRepresentations:(id)a3 options:(id)a4 forType:(id)a5
+- (void)getFileRepresentations:(id)representations options:(id)options forType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(WFContentCollection *)self items];
+  optionsCopy = options;
+  typeCopy = type;
+  representationsCopy = representations;
+  items = [(WFContentCollection *)self items];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__WFContentCollection_getFileRepresentations_options_forType___block_invoke;
   v14[3] = &unk_27834A458;
-  v15 = v9;
-  v16 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v11 if_flatMapAsynchronously:v14 completionHandler:v10];
+  v15 = typeCopy;
+  v16 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = typeCopy;
+  [items if_flatMapAsynchronously:v14 completionHandler:representationsCopy];
 }
 
 void __62__WFContentCollection_getFileRepresentations_options_forType___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -992,25 +992,25 @@ void __62__WFContentCollection_getFileRepresentations_options_forType___block_in
   [v9 performCoercion:v10];
 }
 
-- (void)getObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)getObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WFContentCollection *)self items];
+  representationsCopy = representations;
+  optionsCopy = options;
+  items = [(WFContentCollection *)self items];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__WFContentCollection_getObjectRepresentations_options_forClass___block_invoke;
   v15[3] = &unk_2783466F0;
-  v16 = v9;
-  v17 = a5;
+  v16 = optionsCopy;
+  classCopy = class;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__WFContentCollection_getObjectRepresentations_options_forClass___block_invoke_3;
   v13[3] = &unk_27834A430;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
-  [v10 if_flatMapAsynchronously:v15 completionHandler:v13];
+  v14 = representationsCopy;
+  v11 = representationsCopy;
+  v12 = optionsCopy;
+  [items if_flatMapAsynchronously:v15 completionHandler:v13];
 }
 
 void __65__WFContentCollection_getObjectRepresentations_options_forClass___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1051,67 +1051,67 @@ void __65__WFContentCollection_getObjectRepresentations_options_forClass___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)effectiveCoercionOptionsForRequest:(id)a3
+- (id)effectiveCoercionOptionsForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self defaultCoercionOptions];
-  v6 = [v4 options];
+  requestCopy = request;
+  defaultCoercionOptions = [(WFContentCollection *)self defaultCoercionOptions];
+  options = [requestCopy options];
 
-  v7 = [v5 optionsByAddingContentsOfOptions:v6];
+  v7 = [defaultCoercionOptions optionsByAddingContentsOfOptions:options];
 
   return v7;
 }
 
-- (void)performCoercion:(id)a3
+- (void)performCoercion:(id)coercion
 {
-  v8 = a3;
-  v4 = [(WFContentCollection *)self effectiveCoercionOptionsForRequest:v8];
-  v5 = [v8 requestType];
-  if (v5)
+  coercionCopy = coercion;
+  v4 = [(WFContentCollection *)self effectiveCoercionOptionsForRequest:coercionCopy];
+  requestType = [coercionCopy requestType];
+  if (requestType)
   {
-    if (v5 == 1)
+    if (requestType == 1)
     {
-      v6 = [v8 fileRepresentationResultHandler];
-      v7 = [v8 fileType];
-      [(WFContentCollection *)self getFileRepresentations:v6 options:v4 forType:v7];
+      fileRepresentationResultHandler = [coercionCopy fileRepresentationResultHandler];
+      fileType = [coercionCopy fileType];
+      [(WFContentCollection *)self getFileRepresentations:fileRepresentationResultHandler options:v4 forType:fileType];
     }
 
     else
     {
-      if (v5 != 2)
+      if (requestType != 2)
       {
         goto LABEL_9;
       }
 
-      v6 = [v8 contentItemClasses];
-      v7 = [v8 contentCollectionResultHandler];
-      [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:v6 options:v4 completionHandler:v7];
+      fileRepresentationResultHandler = [coercionCopy contentItemClasses];
+      fileType = [coercionCopy contentCollectionResultHandler];
+      [(WFContentCollection *)self generateCollectionByCoercingToItemClasses:fileRepresentationResultHandler options:v4 completionHandler:fileType];
     }
   }
 
   else
   {
-    v6 = [v8 objectRepresentationResultHandler];
-    -[WFContentCollection getObjectRepresentations:options:forClass:](self, "getObjectRepresentations:options:forClass:", v6, v4, [v8 objectClass]);
+    fileRepresentationResultHandler = [coercionCopy objectRepresentationResultHandler];
+    -[WFContentCollection getObjectRepresentations:options:forClass:](self, "getObjectRepresentations:options:forClass:", fileRepresentationResultHandler, v4, [coercionCopy objectClass]);
   }
 
 LABEL_9:
 }
 
-- (BOOL)canPerformCoercion:(id)a3
+- (BOOL)canPerformCoercion:(id)coercion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = [(WFContentCollection *)self effectiveCoercionOptionsForRequest:v4];
+  coercionCopy = coercion;
+  v5 = [coercionCopy copy];
+  v6 = [(WFContentCollection *)self effectiveCoercionOptionsForRequest:coercionCopy];
   [v5 setOptions:v6];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(WFContentCollection *)self items];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [(WFContentCollection *)self items];
+  v8 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -1121,7 +1121,7 @@ LABEL_9:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(items);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) canPerformCoercion:v5])
@@ -1131,7 +1131,7 @@ LABEL_9:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;
@@ -1146,10 +1146,10 @@ LABEL_11:
   return v8;
 }
 
-- (void)getFileRepresentationAndAttributionSet:(id)a3 forType:(id)a4
+- (void)getFileRepresentationAndAttributionSet:(id)set forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  typeCopy = type;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v8 = MEMORY[0x277D85CD0];
@@ -1167,10 +1167,10 @@ LABEL_11:
   aBlock[3] = &unk_278346678;
   v10 = v8;
   v32 = v10;
-  v33 = v6;
+  v33 = setCopy;
   v11 = _Block_copy(aBlock);
-  v12 = [(WFContentCollection *)self items];
-  v13 = [v12 objectEnumerator];
+  items = [(WFContentCollection *)self items];
+  objectEnumerator = [items objectEnumerator];
 
   v25 = 0;
   v26 = &v25;
@@ -1182,14 +1182,14 @@ LABEL_11:
   v19[1] = 3221225472;
   v19[2] = __70__WFContentCollection_getFileRepresentationAndAttributionSet_forType___block_invoke_3;
   v19[3] = &unk_2783466C8;
-  v14 = v13;
+  v14 = objectEnumerator;
   v20 = v14;
   v15 = v11;
   v23 = v15;
   v24 = &v25;
-  v16 = v7;
+  v16 = typeCopy;
   v21 = v16;
-  v22 = self;
+  selfCopy = self;
   v17 = _Block_copy(v19);
   v18 = v26[5];
   v26[5] = v17;
@@ -1276,28 +1276,28 @@ void __70__WFContentCollection_getFileRepresentationAndAttributionSet_forType___
   }
 }
 
-- (void)getFileRepresentation:(id)a3 forType:(id)a4
+- (void)getFileRepresentation:(id)representation forType:(id)type
 {
-  v6 = a3;
+  representationCopy = representation;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__WFContentCollection_getFileRepresentation_forType___block_invoke;
   v8[3] = &unk_278346650;
-  v9 = v6;
-  v7 = v6;
-  [(WFContentCollection *)self getFileRepresentationAndAttributionSet:v8 forType:a4];
+  v9 = representationCopy;
+  v7 = representationCopy;
+  [(WFContentCollection *)self getFileRepresentationAndAttributionSet:v8 forType:type];
 }
 
-- (void)getObjectRepresentationAndAttributionSet:(id)a3 forClass:(Class)a4
+- (void)getObjectRepresentationAndAttributionSet:(id)set forClass:(Class)class
 {
-  v6 = a3;
-  if (objc_opt_class() == a4)
+  setCopy = set;
+  if (objc_opt_class() == class)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __73__WFContentCollection_getObjectRepresentationAndAttributionSet_forClass___block_invoke;
     v32[3] = &unk_2783465B0;
-    v9 = v6;
+    v9 = setCopy;
     v32[4] = self;
     v33 = v9;
     [(WFContentCollection *)self getObjectRepresentations:v32 forClass:objc_opt_class()];
@@ -1323,10 +1323,10 @@ void __70__WFContentCollection_getFileRepresentationAndAttributionSet_forType___
     aBlock[3] = &unk_2783465D8;
     v10 = v7;
     v30 = v10;
-    v31 = v6;
+    v31 = setCopy;
     v11 = _Block_copy(aBlock);
-    v12 = [(WFContentCollection *)self items];
-    v13 = [v12 objectEnumerator];
+    items = [(WFContentCollection *)self items];
+    objectEnumerator = [items objectEnumerator];
 
     v23 = 0;
     v24 = &v23;
@@ -1338,12 +1338,12 @@ void __70__WFContentCollection_getFileRepresentationAndAttributionSet_forType___
     v17[1] = 3221225472;
     v17[2] = __73__WFContentCollection_getObjectRepresentationAndAttributionSet_forClass___block_invoke_193;
     v17[3] = &unk_278346628;
-    v14 = v13;
+    v14 = objectEnumerator;
     v18 = v14;
     v9 = v11;
     v21 = &v23;
-    v22 = a4;
-    v19 = self;
+    classCopy = class;
+    selfCopy = self;
     v20 = v9;
     v15 = _Block_copy(v17);
     v16 = v24[5];
@@ -1478,46 +1478,46 @@ void __73__WFContentCollection_getObjectRepresentationAndAttributionSet_forClass
   }
 }
 
-- (void)getObjectRepresentation:(id)a3 forClass:(Class)a4
+- (void)getObjectRepresentation:(id)representation forClass:(Class)class
 {
-  v6 = a3;
+  representationCopy = representation;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__WFContentCollection_getObjectRepresentation_forClass___block_invoke;
   v8[3] = &unk_278346588;
-  v9 = v6;
-  v7 = v6;
-  [(WFContentCollection *)self getObjectRepresentationAndAttributionSet:v8 forClass:a4];
+  v9 = representationCopy;
+  v7 = representationCopy;
+  [(WFContentCollection *)self getObjectRepresentationAndAttributionSet:v8 forClass:class];
 }
 
-- (void)enumerateFileRepresentations:(id)a3 forType:(id)a4 completionHandler:(id)a5
+- (void)enumerateFileRepresentations:(id)representations forType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationsCopy = representations;
+  typeCopy = type;
+  handlerCopy = handler;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v23[3] = 0;
-  v11 = [(WFContentCollection *)self items];
+  items = [(WFContentCollection *)self items];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __78__WFContentCollection_enumerateFileRepresentations_forType_completionHandler___block_invoke;
   v18[3] = &unk_278346560;
-  v12 = v9;
+  v12 = typeCopy;
   v19 = v12;
   v22 = v23;
-  v13 = v8;
-  v20 = self;
+  v13 = representationsCopy;
+  selfCopy = self;
   v21 = v13;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__WFContentCollection_enumerateFileRepresentations_forType_completionHandler___block_invoke_5;
   v15[3] = &unk_278348348;
-  v14 = v10;
+  v14 = handlerCopy;
   v16 = v14;
   v17 = v23;
-  [v11 if_enumerateAsynchronouslyInSequence:v18 completionHandler:v15];
+  [items if_enumerateAsynchronouslyInSequence:v18 completionHandler:v15];
 
   _Block_object_dispose(v23, 8);
 }
@@ -1568,32 +1568,32 @@ void __78__WFContentCollection_enumerateFileRepresentations_forType_completionHa
   }
 }
 
-- (void)enumerateObjectRepresentations:(id)a3 forClass:(Class)a4 completionHandler:(id)a5
+- (void)enumerateObjectRepresentations:(id)representations forClass:(Class)class completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  representationsCopy = representations;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v20[3] = 0;
-  v10 = [(WFContentCollection *)self items];
+  items = [(WFContentCollection *)self items];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__WFContentCollection_enumerateObjectRepresentations_forClass_completionHandler___block_invoke;
   v16[3] = &unk_2783464E8;
   v18 = v20;
-  v19 = a4;
-  v11 = v8;
+  classCopy = class;
+  v11 = representationsCopy;
   v16[4] = self;
   v17 = v11;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__WFContentCollection_enumerateObjectRepresentations_forClass_completionHandler___block_invoke_5;
   v13[3] = &unk_278348348;
-  v12 = v9;
+  v12 = handlerCopy;
   v14 = v12;
   v15 = v20;
-  [v10 if_enumerateAsynchronouslyInSequence:v16 completionHandler:v13];
+  [items if_enumerateAsynchronouslyInSequence:v16 completionHandler:v13];
 
   _Block_object_dispose(v20, 8);
 }
@@ -1662,37 +1662,37 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)collectionByMergingAttributionSet:(id)a3
+- (id)collectionByMergingAttributionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self items];
+  setCopy = set;
+  items = [(WFContentCollection *)self items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__WFContentCollection_collectionByMergingAttributionSet___block_invoke;
   v10[3] = &unk_278346448;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 if_map:v10];
+  v11 = setCopy;
+  v6 = setCopy;
+  v7 = [items if_map:v10];
 
   v8 = [objc_alloc(objc_opt_class()) initWithItems:v7 defaultCoercionOptions:self->_defaultCoercionOptions];
 
   return v8;
 }
 
-- (void)addFile:(id)a3 origin:(id)a4 disclosureLevel:(unint64_t)a5
+- (void)addFile:(id)file origin:(id)origin disclosureLevel:(unint64_t)level
 {
-  v6 = [WFContentItem itemWithFile:a3 origin:a4 disclosureLevel:a5];
+  v6 = [WFContentItem itemWithFile:file origin:origin disclosureLevel:level];
   [(WFContentCollection *)self addItem:v6];
 }
 
-- (void)addFileWithOriginAttribution:(id)a3
+- (void)addFileWithOriginAttribution:(id)attribution
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [WFContentLocation contentLocationForFile:v4];
+  attributionCopy = attribution;
+  v5 = [WFContentLocation contentLocationForFile:attributionCopy];
   if (v5)
   {
-    v6 = [WFContentItem itemWithFile:v4 origin:v5 disclosureLevel:1];
+    v6 = [WFContentItem itemWithFile:attributionCopy origin:v5 disclosureLevel:1];
     [(WFContentCollection *)self addItem:v6];
   }
 
@@ -1708,21 +1708,21 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
   }
 }
 
-- (void)addFile:(id)a3
+- (void)addFile:(id)file
 {
-  v4 = [WFContentItem itemWithFile:a3];
+  v4 = [WFContentItem itemWithFile:file];
   [(WFContentCollection *)self addItem:v4];
 }
 
-- (void)addObject:(id)a3 named:(id)a4
+- (void)addObject:(id)object named:(id)named
 {
-  v5 = [WFContentItem itemWithObject:a3 named:a4];
+  v5 = [WFContentItem itemWithObject:object named:named];
   [(WFContentCollection *)self addItem:v5];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = [WFContentItem itemWithObject:a3 named:0];
+  v4 = [WFContentItem itemWithObject:object named:0];
   [(WFContentCollection *)self addItem:v4];
 }
 
@@ -1743,8 +1743,8 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
 
 - (WFContentAttributionSet)attributionSet
 {
-  v2 = [(WFContentCollection *)self items];
-  v3 = [v2 valueForKey:@"attributionSet"];
+  items = [(WFContentCollection *)self items];
+  v3 = [items valueForKey:@"attributionSet"];
   v4 = [WFContentAttributionSet attributionSetByMergingAttributionSets:v3];
 
   return v4;
@@ -1752,8 +1752,8 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
 
 - (int64_t)numberOfItems
 {
-  v2 = [(WFContentCollection *)self mutableItems];
-  v3 = [v2 count];
+  mutableItems = [(WFContentCollection *)self mutableItems];
+  v3 = [mutableItems count];
 
   return v3;
 }
@@ -1773,59 +1773,59 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
   return mutableItems;
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self itemWriteLock];
-  [v5 lock];
+  itemCopy = item;
+  itemWriteLock = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock lock];
 
-  v6 = [(WFContentCollection *)self mutableItems];
-  [v6 removeObject:v4];
+  mutableItems = [(WFContentCollection *)self mutableItems];
+  [mutableItems removeObject:itemCopy];
 
-  v7 = [(WFContentCollection *)self itemWriteLock];
-  [v7 unlock];
+  itemWriteLock2 = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock2 unlock];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self itemWriteLock];
-  [v5 lock];
+  itemsCopy = items;
+  itemWriteLock = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock lock];
 
-  v6 = [(WFContentCollection *)self mutableItems];
-  [v6 addObjectsFromArray:v4];
+  mutableItems = [(WFContentCollection *)self mutableItems];
+  [mutableItems addObjectsFromArray:itemsCopy];
 
-  v7 = [(WFContentCollection *)self itemWriteLock];
-  [v7 unlock];
+  itemWriteLock2 = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock2 unlock];
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  v5 = [(WFContentCollection *)self itemWriteLock];
-  [v5 lock];
+  itemCopy = item;
+  itemWriteLock = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock lock];
 
-  v6 = [(WFContentCollection *)self mutableItems];
-  [v6 addObject:v4];
+  mutableItems = [(WFContentCollection *)self mutableItems];
+  [mutableItems addObject:itemCopy];
 
-  v7 = [(WFContentCollection *)self itemWriteLock];
-  [v7 unlock];
+  itemWriteLock2 = [(WFContentCollection *)self itemWriteLock];
+  [itemWriteLock2 unlock];
 }
 
-- (WFContentCollection)initWithItems:(id)a3 defaultCoercionOptions:(id)a4
+- (WFContentCollection)initWithItems:(id)items defaultCoercionOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = WFContentCollection;
   v8 = [(WFContentCollection *)&v17 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [itemsCopy mutableCopy];
     mutableItems = v8->_mutableItems;
     v8->_mutableItems = v9;
 
-    v11 = [v7 copy];
+    v11 = [optionsCopy copy];
     defaultCoercionOptions = v8->_defaultCoercionOptions;
     v8->_defaultCoercionOptions = v11;
 
@@ -1841,8 +1841,8 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
 
 - (id)debugDescription
 {
-  v3 = [(WFContentCollection *)self items];
-  v4 = [v3 if_map:&__block_literal_global_8737];
+  items = [(WFContentCollection *)self items];
+  v4 = [items if_map:&__block_literal_global_8737];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -1852,22 +1852,22 @@ void __81__WFContentCollection_enumerateObjectRepresentations_forClass_completio
   return v8;
 }
 
-+ (id)collectionWithItems:(id)a3
++ (id)collectionWithItems:(id)items
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithItems:v4 defaultCoercionOptions:0];
+  itemsCopy = items;
+  v5 = [[self alloc] initWithItems:itemsCopy defaultCoercionOptions:0];
 
   return v5;
 }
 
-+ (void)generateCollectionFromDragItems:(id)a3 allowedItemClasses:(id)a4 completionHandler:(id)a5
++ (void)generateCollectionFromDragItems:(id)items allowedItemClasses:(id)classes completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 if_map:&__block_literal_global_9020];
+  handlerCopy = handler;
+  classesCopy = classes;
+  v9 = [items if_map:&__block_literal_global_9020];
   v10 = [WFContentCollection collectionWithItems:v9];
-  v11 = [WFCoercionRequest requestForCoercingToContentClasses:v8 completionHandler:v7];
+  v11 = [WFCoercionRequest requestForCoercingToContentClasses:classesCopy completionHandler:handlerCopy];
 
   v14 = @"WFCoercionOptionItemClassPrioritizationType";
   v15[0] = @"SupportedTypes";
@@ -1888,11 +1888,11 @@ id __104__WFContentCollection_UIDragItem__generateCollectionFromDragItems_allowe
   return v3;
 }
 
-- (void)getRichTextRepresentation:(id)a3
+- (void)getRichTextRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_opt_new();
-  v6 = [(WFContentCollection *)self items];
+  items = [(WFContentCollection *)self items];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__WFContentCollection_RichTextGeneration__getRichTextRepresentation___block_invoke;
@@ -1903,10 +1903,10 @@ id __104__WFContentCollection_UIDragItem__generateCollectionFromDragItems_allowe
   v9[2] = __69__WFContentCollection_RichTextGeneration__getRichTextRepresentation___block_invoke_174;
   v9[3] = &unk_278349348;
   v10 = v13;
-  v11 = v4;
+  v11 = representationCopy;
   v7 = v13;
-  v8 = v4;
-  [v6 if_enumerateAsynchronouslyInSequence:v12 completionHandler:v9];
+  v8 = representationCopy;
+  [items if_enumerateAsynchronouslyInSequence:v12 completionHandler:v9];
 }
 
 void __69__WFContentCollection_RichTextGeneration__getRichTextRepresentation___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2074,13 +2074,13 @@ void __69__WFContentCollection_RichTextGeneration__getRichTextRepresentation___b
   }
 }
 
-- (void)transformFirstFileRepresentationForType:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)transformFirstFileRepresentationForType:(id)type usingBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFContentCollection *)self items];
-  v12 = [v11 objectEnumerator];
+  typeCopy = type;
+  blockCopy = block;
+  handlerCopy = handler;
+  items = [(WFContentCollection *)self items];
+  objectEnumerator = [items objectEnumerator];
 
   v28 = 0;
   v29 = &v28;
@@ -2092,16 +2092,16 @@ void __69__WFContentCollection_RichTextGeneration__getRichTextRepresentation___b
   v21[1] = 3221225472;
   v21[2] = __103__WFContentCollection_Transform__transformFirstFileRepresentationForType_usingBlock_completionHandler___block_invoke;
   v21[3] = &unk_27834A3E0;
-  v13 = v12;
+  v13 = objectEnumerator;
   v22 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v25 = v14;
   v27 = &v28;
-  v15 = v8;
+  v15 = typeCopy;
   v23 = v15;
-  v16 = v9;
+  v16 = blockCopy;
   v26 = v16;
-  v24 = self;
+  selfCopy = self;
   v17 = _Block_copy(v21);
   v18 = v29[5];
   v29[5] = v17;
@@ -2225,12 +2225,12 @@ id __103__WFContentCollection_Transform__transformFirstFileRepresentationForType
   return v5;
 }
 
-- (void)transformFirstObjectRepresentationForClass:(Class)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)transformFirstObjectRepresentationForClass:(Class)class usingBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFContentCollection *)self items];
-  v11 = [v10 objectEnumerator];
+  blockCopy = block;
+  handlerCopy = handler;
+  items = [(WFContentCollection *)self items];
+  objectEnumerator = [items objectEnumerator];
 
   v26 = 0;
   v27 = &v26;
@@ -2242,15 +2242,15 @@ id __103__WFContentCollection_Transform__transformFirstFileRepresentationForType
   v19[1] = 3221225472;
   v19[2] = __106__WFContentCollection_Transform__transformFirstObjectRepresentationForClass_usingBlock_completionHandler___block_invoke;
   v19[3] = &unk_27834A390;
-  v12 = v11;
+  v12 = objectEnumerator;
   v20 = v12;
-  v13 = v9;
+  v13 = handlerCopy;
   v22 = v13;
   v24 = &v26;
-  v25 = a3;
-  v14 = v8;
+  classCopy = class;
+  v14 = blockCopy;
   v23 = v14;
-  v21 = self;
+  selfCopy = self;
   v15 = _Block_copy(v19);
   v16 = v27[5];
   v27[5] = v15;
@@ -2383,20 +2383,20 @@ id __106__WFContentCollection_Transform__transformFirstObjectRepresentationForCl
   return v5;
 }
 
-- (void)transformFileRepresentationsForType:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)transformFileRepresentationsForType:(id)type usingBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__WFContentCollection_Transform__transformFileRepresentationsForType_usingBlock_completionHandler___block_invoke;
   v12[3] = &unk_27834A340;
-  v14 = self;
-  v15 = v9;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
-  [(WFContentCollection *)self transformItemsAndFlattenUsingBlock:v12 completionHandler:a5];
+  selfCopy = self;
+  v15 = blockCopy;
+  v13 = typeCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
+  [(WFContentCollection *)self transformItemsAndFlattenUsingBlock:v12 completionHandler:handler];
 }
 
 void __99__WFContentCollection_Transform__transformFileRepresentationsForType_usingBlock_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2475,18 +2475,18 @@ void __99__WFContentCollection_Transform__transformFileRepresentationsForType_us
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)transformObjectRepresentationsForClass:(Class)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)transformObjectRepresentationsForClass:(Class)class usingBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __102__WFContentCollection_Transform__transformObjectRepresentationsForClass_usingBlock_completionHandler___block_invoke;
   v10[3] = &unk_27834A2F0;
-  v11 = v8;
-  v12 = a3;
+  v11 = blockCopy;
+  classCopy = class;
   v10[4] = self;
-  v9 = v8;
-  [(WFContentCollection *)self transformItemsAndFlattenUsingBlock:v10 completionHandler:a5];
+  v9 = blockCopy;
+  [(WFContentCollection *)self transformItemsAndFlattenUsingBlock:v10 completionHandler:handler];
 }
 
 void __102__WFContentCollection_Transform__transformObjectRepresentationsForClass_usingBlock_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2578,25 +2578,25 @@ void __102__WFContentCollection_Transform__transformObjectRepresentationsForClas
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)transformItemsAndFlattenUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)transformItemsAndFlattenUsingBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFContentCollection *)self items];
+  blockCopy = block;
+  handlerCopy = handler;
+  items = [(WFContentCollection *)self items];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __87__WFContentCollection_Transform__transformItemsAndFlattenUsingBlock_completionHandler___block_invoke;
   v13[3] = &unk_27834A250;
-  v14 = v6;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__WFContentCollection_Transform__transformItemsAndFlattenUsingBlock_completionHandler___block_invoke_4;
   v11[3] = &unk_27834A200;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 if_flatMapAsynchronously:v13 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
+  [items if_flatMapAsynchronously:v13 completionHandler:v11];
 }
 
 void __87__WFContentCollection_Transform__transformItemsAndFlattenUsingBlock_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2648,25 +2648,25 @@ id __87__WFContentCollection_Transform__transformItemsAndFlattenUsingBlock_compl
   return v5;
 }
 
-- (void)transformItemsUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)transformItemsUsingBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFContentCollection *)self items];
+  blockCopy = block;
+  handlerCopy = handler;
+  items = [(WFContentCollection *)self items];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__WFContentCollection_Transform__transformItemsUsingBlock_completionHandler___block_invoke;
   v13[3] = &unk_27834A1D8;
-  v14 = v6;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__WFContentCollection_Transform__transformItemsUsingBlock_completionHandler___block_invoke_3;
   v11[3] = &unk_27834A200;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 if_mapAsynchronously:v13 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
+  [items if_mapAsynchronously:v13 completionHandler:v11];
 }
 
 void __77__WFContentCollection_Transform__transformItemsUsingBlock_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

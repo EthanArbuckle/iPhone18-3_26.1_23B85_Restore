@@ -1,42 +1,42 @@
 @interface NSObject
-+ (BOOL)crl_object:(id)a3 isEqualToObject:(id)a4;
-- (BOOL)_crlaxRespondsToSelector:(SEL)a3 fromExtrasProtocol:(id)a4 skipAssertions:(BOOL)a5;
-- (BOOL)_crlaxValidateArgumentCountForSelector:(SEL)a3 expected:(unint64_t)a4;
-- (BOOL)crlaxBoolValueForKey:(id)a3;
-- (BOOL)crlaxIsDescendantOfElement:(id)a3;
-- (CGAffineTransform)crlaxCGAffineTransformValueForKey:(SEL)a3;
-- (CGPoint)crlaxCGPointValueForKey:(id)a3;
-- (CGRect)crlaxCGRectValueForKey:(id)a3;
-- (CGSize)crlaxCGSizeValueForKey:(id)a3;
++ (BOOL)crl_object:(id)crl_object isEqualToObject:(id)object;
+- (BOOL)_crlaxRespondsToSelector:(SEL)selector fromExtrasProtocol:(id)protocol skipAssertions:(BOOL)assertions;
+- (BOOL)_crlaxValidateArgumentCountForSelector:(SEL)selector expected:(unint64_t)expected;
+- (BOOL)crlaxBoolValueForKey:(id)key;
+- (BOOL)crlaxIsDescendantOfElement:(id)element;
+- (CGAffineTransform)crlaxCGAffineTransformValueForKey:(SEL)key;
+- (CGPoint)crlaxCGPointValueForKey:(id)key;
+- (CGRect)crlaxCGRectValueForKey:(id)key;
+- (CGSize)crlaxCGSizeValueForKey:(id)key;
 - (UIView)crlaxAncestorView;
-- (_NSRange)crlaxRangeValueForKey:(id)a3;
-- (double)crlaxDoubleValueForKey:(id)a3;
-- (float)crlaxFloatValueForKey:(id)a3;
+- (_NSRange)crlaxRangeValueForKey:(id)key;
+- (double)crlaxDoubleValueForKey:(id)key;
+- (float)crlaxFloatValueForKey:(id)key;
 - (id)_crlaxElementAccessibilityChildren;
-- (id)_crlaxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5;
-- (id)crl_addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
-- (id)crlaxAncestorOfType:(Class)a3;
+- (id)_crlaxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings;
+- (id)crl_addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
+- (id)crlaxAncestorOfType:(Class)type;
 - (id)crlaxChildren;
-- (id)crlaxFindDescendantPassingTest:(id)a3;
-- (id)crlaxPerformSelector:(SEL)a3;
-- (id)crlaxPerformSelector:(SEL)a3 withObject:(id)a4;
-- (id)crlaxPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (id)crlaxPerformSelectorFromString:(id)a3;
-- (id)crlaxPerformSelectorFromString:(id)a3 withObject:(id)a4;
-- (id)crlaxPerformSelectorFromString:(id)a3 withObject:(id)a4 withObject:(id)a5;
-- (id)crlaxViewAncestorOfType:(Class)a3;
-- (int)crlaxIntValueForKey:(id)a3;
-- (int64_t)crlaxIntegerValueForKey:(id)a3;
-- (unint64_t)crlaxUnsignedIntegerValueForKey:(id)a3;
-- (unsigned)crlaxUnsignedIntValueForKey:(id)a3;
-- (void)crl_performSelector:(SEL)a3 withValue:(id)a4;
-- (void)crl_removeObserverForToken:(id)a3;
+- (id)crlaxFindDescendantPassingTest:(id)test;
+- (id)crlaxPerformSelector:(SEL)selector;
+- (id)crlaxPerformSelector:(SEL)selector withObject:(id)object;
+- (id)crlaxPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
+- (id)crlaxPerformSelectorFromString:(id)string;
+- (id)crlaxPerformSelectorFromString:(id)string withObject:(id)object;
+- (id)crlaxPerformSelectorFromString:(id)string withObject:(id)object withObject:(id)withObject;
+- (id)crlaxViewAncestorOfType:(Class)type;
+- (int)crlaxIntValueForKey:(id)key;
+- (int64_t)crlaxIntegerValueForKey:(id)key;
+- (unint64_t)crlaxUnsignedIntegerValueForKey:(id)key;
+- (unsigned)crlaxUnsignedIntValueForKey:(id)key;
+- (void)crl_performSelector:(SEL)selector withValue:(id)value;
+- (void)crl_removeObserverForToken:(id)token;
 - (void)crl_runBlock;
 - (void)crlaxAccessibilityUnregister;
-- (void)crlaxHandleTextOperationAction:(id)a3 usingBlock:(id)a4;
+- (void)crlaxHandleTextOperationAction:(id)action usingBlock:(id)block;
 - (void)crlaxInvalidateChildren;
-- (void)crlaxSetIsSpeakThisElement:(BOOL)a3;
-- (void)crlaxStructValue:(void *)a3 forKey:(id)a4 ofExpectedType:(const char *)a5 fallbackValue:(const void *)a6;
+- (void)crlaxSetIsSpeakThisElement:(BOOL)element;
+- (void)crlaxStructValue:(void *)value forKey:(id)key ofExpectedType:(const char *)type fallbackValue:(const void *)fallbackValue;
 @end
 
 @implementation NSObject
@@ -47,7 +47,7 @@
   (v2[2].isa)();
 }
 
-- (id)_crlaxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5
+- (id)_crlaxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings
 {
   v8 = [self crlaxValueForKey:?];
   if (v8)
@@ -72,10 +72,10 @@
       v12 = byte_101A34820;
       v13 = objc_opt_class();
       NSStringFromClass(v13);
-      NSStringFromClass(a4);
+      NSStringFromClass(class);
       v14 = objc_opt_class();
       NSStringFromClass(v14);
-      if (!__CRLAccessibilityHandleValidationErrorWithDescription(v12, 0, @"Value for key %@ on object <%@: %p> is not an %@; class: %@; value: %@", v15, v16, v17, v18, v19, a3))
+      if (!__CRLAccessibilityHandleValidationErrorWithDescription(v12, 0, @"Value for key %@ on object <%@: %p> is not an %@; class: %@; value: %@", v15, v16, v17, v18, v19, key))
       {
         return 0;
       }
@@ -83,10 +83,10 @@
       goto LABEL_34;
     }
 
-    if (a5)
+    if (encodings)
     {
-      v9 = [v8 objCType];
-      if (strcmp(v9, a5))
+      objCType = [v8 objCType];
+      if (strcmp(objCType, encodings))
       {
         v10 = 0;
         v31 = &v33;
@@ -103,7 +103,7 @@
             v10 = 1;
           }
 
-          if (!strcmp(v9, *v11))
+          if (!strcmp(objCType, *v11))
           {
             return v8;
           }
@@ -121,15 +121,15 @@
 
         if (v10)
         {
-          v21 = [[NSMutableString alloc] initWithFormat:@"%s", a5];
+          encodings = [[NSMutableString alloc] initWithFormat:@"%s", encodings];
           v32 = &v34;
           for (i = v33; i; i = *v23)
           {
-            [v21 appendFormat:@", %s", i];
+            [encodings appendFormat:@", %s", i];
             v23 = v32++;
           }
 
-          [v21 UTF8String];
+          [encodings UTF8String];
           if (qword_101A34808 != -1)
           {
             sub_10132DE64();
@@ -138,7 +138,7 @@
 
         else
         {
-          v21 = 0;
+          encodings = 0;
         }
 
         if (byte_101A34800 != 1)
@@ -154,7 +154,7 @@
         v24 = byte_101A34820;
         v25 = objc_opt_class();
         NSStringFromClass(v25);
-        if (!__CRLAccessibilityHandleValidationErrorWithDescription(v24, 0, @"Value for key %@ on object <%@: %p> doesn't encapsulate the right type; value: %@; actual type encoding: %s; %s: %s.", v26, v27, v28, v29, v30, a3))
+        if (!__CRLAccessibilityHandleValidationErrorWithDescription(v24, 0, @"Value for key %@ on object <%@: %p> doesn't encapsulate the right type; value: %@; actual type encoding: %s; %s: %s.", v26, v27, v28, v29, v30, key))
         {
 LABEL_32:
 
@@ -170,70 +170,70 @@ LABEL_34:
   return v8;
 }
 
-- (BOOL)crlaxBoolValueForKey:(id)a3
+- (BOOL)crlaxBoolValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
 
   return [v3 BOOLValue];
 }
 
-- (int)crlaxIntValueForKey:(id)a3
+- (int)crlaxIntValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
 
   return [v3 intValue];
 }
 
-- (unsigned)crlaxUnsignedIntValueForKey:(id)a3
+- (unsigned)crlaxUnsignedIntValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
 
   return [v3 unsignedIntValue];
 }
 
-- (int64_t)crlaxIntegerValueForKey:(id)a3
+- (int64_t)crlaxIntegerValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
 
   return [v3 integerValue];
 }
 
-- (unint64_t)crlaxUnsignedIntegerValueForKey:(id)a3
+- (unint64_t)crlaxUnsignedIntegerValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
 
   return [v3 unsignedIntegerValue];
 }
 
-- (float)crlaxFloatValueForKey:(id)a3
+- (float)crlaxFloatValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
 
   [v3 floatValue];
   return result;
 }
 
-- (double)crlaxDoubleValueForKey:(id)a3
+- (double)crlaxDoubleValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
 
   [v3 doubleValue];
   return result;
 }
 
-- (_NSRange)crlaxRangeValueForKey:(id)a3
+- (_NSRange)crlaxRangeValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
 
-  v4 = [v3 rangeValue];
+  rangeValue = [v3 rangeValue];
   result.length = v5;
-  result.location = v4;
+  result.location = rangeValue;
   return result;
 }
 
-- (CGPoint)crlaxCGPointValueForKey:(id)a3
+- (CGPoint)crlaxCGPointValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
 
   [v3 CGPointValue];
   result.y = v5;
@@ -241,9 +241,9 @@ LABEL_34:
   return result;
 }
 
-- (CGSize)crlaxCGSizeValueForKey:(id)a3
+- (CGSize)crlaxCGSizeValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
 
   [v3 CGSizeValue];
   result.height = v5;
@@ -251,9 +251,9 @@ LABEL_34:
   return result;
 }
 
-- (CGRect)crlaxCGRectValueForKey:(id)a3
+- (CGRect)crlaxCGRectValueForKey:(id)key
 {
-  v3 = [self _crlaxValidatedValueForKey:a3 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  v3 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
 
   [v3 CGRectValue];
   result.size.height = v7;
@@ -263,7 +263,7 @@ LABEL_34:
   return result;
 }
 
-- (CGAffineTransform)crlaxCGAffineTransformValueForKey:(SEL)a3
+- (CGAffineTransform)crlaxCGAffineTransformValueForKey:(SEL)key
 {
   result = [self _crlaxValidatedValueForKey:a4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGAffineTransform=dddddd}"];
   if (result)
@@ -282,20 +282,20 @@ LABEL_34:
   return result;
 }
 
-- (void)crlaxStructValue:(void *)a3 forKey:(id)a4 ofExpectedType:(const char *)a5 fallbackValue:(const void *)a6
+- (void)crlaxStructValue:(void *)value forKey:(id)key ofExpectedType:(const char *)type fallbackValue:(const void *)fallbackValue
 {
-  v9 = [self _crlaxValidatedValueForKey:a4 expectedClass:objc_opt_class() expectedTypeEncoding:a5];
+  v9 = [self _crlaxValidatedValueForKey:key expectedClass:objc_opt_class() expectedTypeEncoding:type];
   if (v9)
   {
 
-    [v9 getValue:a3];
+    [v9 getValue:value];
   }
 
   else
   {
     sizep = 0;
-    NSGetSizeAndAlignment(a5, &sizep, 0);
-    memmove(a3, a6, sizep);
+    NSGetSizeAndAlignment(type, &sizep, 0);
+    memmove(value, fallbackValue, sizep);
   }
 }
 
@@ -317,18 +317,18 @@ LABEL_34:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [self crlaxAncestorOfType:objc_opt_class()];
+    selfCopy = [self crlaxAncestorOfType:objc_opt_class()];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)crlaxAncestorOfType:(Class)a3
+- (id)crlaxAncestorOfType:(Class)type
 {
   v3 = [self crlaxValueForKey:@"accessibilityContainer"];
   if (v3)
@@ -357,13 +357,13 @@ LABEL_5:
   return v6;
 }
 
-- (id)crlaxViewAncestorOfType:(Class)a3
+- (id)crlaxViewAncestorOfType:(Class)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [self superview];
-    if (v4)
+    superview = [self superview];
+    if (superview)
     {
       do
       {
@@ -372,32 +372,32 @@ LABEL_5:
           break;
         }
 
-        v5 = [v4 superview];
+        v4Superview = [superview superview];
 
-        v4 = v5;
+        superview = v4Superview;
       }
 
-      while (v5);
+      while (v4Superview);
     }
   }
 
   else
   {
-    v4 = 0;
+    superview = 0;
   }
 
-  return v4;
+  return superview;
 }
 
-- (BOOL)crlaxIsDescendantOfElement:(id)a3
+- (BOOL)crlaxIsDescendantOfElement:(id)element
 {
-  v4 = a3;
-  if (v4)
+  elementCopy = element;
+  if (elementCopy)
   {
-    v5 = self;
-    v6 = v5;
-    v7 = v5 != 0;
-    if (v5 != v4 && v5)
+    selfCopy = self;
+    v6 = selfCopy;
+    v7 = selfCopy != 0;
+    if (selfCopy != elementCopy && selfCopy)
     {
       do
       {
@@ -407,7 +407,7 @@ LABEL_5:
         v7 = v6 != 0;
       }
 
-      while (v6 != v4 && v6 != 0);
+      while (v6 != elementCopy && v6 != 0);
     }
   }
 
@@ -419,44 +419,44 @@ LABEL_5:
   return v7;
 }
 
-- (id)crlaxFindDescendantPassingTest:(id)a3
+- (id)crlaxFindDescendantPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = objc_opt_new();
   [v5 addObject:self];
   while ([v5 count])
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
-    if (v4[2](v4, v6))
+    if (testCopy[2](testCopy, lastObject))
     {
-      v7 = v6;
+      v7 = lastObject;
     }
 
     else
     {
-      v8 = [v6 accessibilityElementCount];
-      if ((v8 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+      accessibilityElementCount = [lastObject accessibilityElementCount];
+      if ((accessibilityElementCount - 1) > 0x7FFFFFFFFFFFFFFDLL)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v6 subviews];
+          subviews = [lastObject subviews];
           v13[0] = _NSConcreteStackBlock;
           v13[1] = 3221225472;
           v13[2] = sub_1002B493C;
           v13[3] = &unk_1018516B8;
           v14 = v5;
-          [v11 enumerateObjectsWithOptions:2 usingBlock:v13];
+          [subviews enumerateObjectsWithOptions:2 usingBlock:v13];
         }
       }
 
       else
       {
-        v9 = (v8 + 1);
+        v9 = (accessibilityElementCount + 1);
         do
         {
-          v10 = [v6 accessibilityElementAtIndex:v9 - 2];
+          v10 = [lastObject accessibilityElementAtIndex:v9 - 2];
           if (v10)
           {
             [v5 addObject:v10];
@@ -495,8 +495,8 @@ LABEL_17:
     [self _crlaxSetBuildingChildrenCache:1];
     if ([self conformsToProtocol:&OBJC_PROTOCOL___CRLAccessibilityContainer])
     {
-      v4 = [self _crlaxChildrenCache];
-      v5 = [v4 copy];
+      _crlaxChildrenCache = [self _crlaxChildrenCache];
+      v5 = [_crlaxChildrenCache copy];
 
       if (!v5)
       {
@@ -510,12 +510,12 @@ LABEL_17:
           v5 = objc_opt_new();
           if (objc_opt_respondsToSelector())
           {
-            v11 = [self crlaxShouldCacheChildren];
+            crlaxShouldCacheChildren = [self crlaxShouldCacheChildren];
           }
 
           else
           {
-            v11 = 1;
+            crlaxShouldCacheChildren = 1;
           }
 
           v12 = objc_autoreleasePoolPush();
@@ -526,7 +526,7 @@ LABEL_17:
           }
 
           objc_autoreleasePoolPop(v12);
-          if (v11)
+          if (crlaxShouldCacheChildren)
           {
             [self _crlaxSetChildrenCache:v5];
           }
@@ -580,29 +580,29 @@ LABEL_17:
   {
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([self crlaxShouldCacheChildren]& 1) == 0)
     {
-      v4 = [self crlaxChildren];
+      crlaxChildren = [self crlaxChildren];
     }
 
     else
     {
-      v4 = [self _crlaxChildrenCache];
+      crlaxChildren = [self _crlaxChildrenCache];
     }
   }
 
   else
   {
-    v4 = [self _crlaxElementAccessibilityChildren];
+    crlaxChildren = [self _crlaxElementAccessibilityChildren];
   }
 
-  v5 = v4;
-  v6 = [v4 copy];
+  v5 = crlaxChildren;
+  v6 = [crlaxChildren copy];
 
   if (v6)
   {
     v7 = objc_opt_respondsToSelector();
     v22 = 0;
-    v8 = self;
-    v9 = __CRLAccessibilityCastAsProtocol(&OBJC_PROTOCOL___CRLAccessibilityContainer, v8, 1, &v22);
+    selfCopy = self;
+    v9 = __CRLAccessibilityCastAsProtocol(&OBJC_PROTOCOL___CRLAccessibilityContainer, selfCopy, 1, &v22);
     if (v22 == 1)
     {
       abort();
@@ -647,7 +647,7 @@ LABEL_17:
 
     if (v3)
     {
-      [v8 _crlaxSetChildrenCache:0];
+      [selfCopy _crlaxSetChildrenCache:0];
       if (objc_opt_respondsToSelector())
       {
         [v10 crlaxDidInvalidateChildren];
@@ -701,31 +701,31 @@ LABEL_9:
   return v3;
 }
 
-- (void)crlaxHandleTextOperationAction:(id)a3 usingBlock:(id)a4
+- (void)crlaxHandleTextOperationAction:(id)action usingBlock:(id)block
 {
-  v19 = a3;
-  v6 = a4;
-  if (v6)
+  actionCopy = action;
+  blockCopy = block;
+  if (blockCopy)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     if (v7 <= *&qword_101A34A78 + 0.2)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     else
     {
       qword_101A34A78 = *&v7;
-      v6[2](v6);
+      blockCopy[2](blockCopy);
       v8 = +[UIPasteboard generalPasteboard];
-      v9 = [v8 string];
+      string = [v8 string];
 
-      if ([v9 length])
+      if ([string length])
       {
-        v10 = v9;
-        if ([v19 length])
+        v10 = string;
+        if ([actionCopy length])
         {
-          v11 = CRLAccessibilityGetUIKitLocalizedString(v19);
+          v11 = CRLAccessibilityGetUIKitLocalizedString(actionCopy);
           v18 = __CRLAccessibilityStringForVariables(1, v10, v12, v13, v14, v15, v16, v17, v11);
 
           v10 = v18;
@@ -737,31 +737,31 @@ LABEL_9:
   }
 }
 
-- (void)crlaxSetIsSpeakThisElement:(BOOL)a3
+- (void)crlaxSetIsSpeakThisElement:(BOOL)element
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1002B5080;
   v3[3] = &unk_10183C3C8;
   v3[4] = self;
-  v4 = a3;
+  elementCopy = element;
   if (__CRLAccessibilityPerformSafeBlock(v3))
   {
     abort();
   }
 }
 
-- (void)crl_performSelector:(SEL)a3 withValue:(id)a4
+- (void)crl_performSelector:(SEL)selector withValue:(id)value
 {
-  v6 = a4;
-  v7 = [self methodSignatureForSelector:a3];
+  valueCopy = value;
+  v7 = [self methodSignatureForSelector:selector];
   v8 = v7;
   if (v7)
   {
     if ([v7 numberOfArguments] != 3)
     {
       v15 = objc_opt_class();
-      v16 = NSStringFromSelector(a3);
+      v16 = NSStringFromSelector(selector);
       v17 = [NSString stringWithFormat:@"*** [%@ %@] does not take one argument.", v15, v16];
       v18 = [NSException exceptionWithName:NSInvalidArgumentException reason:v17 userInfo:0];
       v19 = v18;
@@ -807,16 +807,16 @@ LABEL_9:
         case 'p':
           goto LABEL_9;
         case 'B':
-          v14 = [v6 BOOLValue];
+          bOOLValue = [valueCopy BOOLValue];
           goto LABEL_27;
         case 'C':
-          v14 = [v6 unsignedCharValue];
+          bOOLValue = [valueCopy unsignedCharValue];
           goto LABEL_27;
         case 'I':
-          v14 = [v6 unsignedIntValue];
+          bOOLValue = [valueCopy unsignedIntValue];
           goto LABEL_27;
         case 'L':
-          v14 = [v6 unsignedLongValue];
+          bOOLValue = [valueCopy unsignedLongValue];
           goto LABEL_27;
         case 'N':
         case 'O':
@@ -828,56 +828,56 @@ LABEL_9:
           ++v9;
           continue;
         case 'Q':
-          v14 = [v6 unsignedLongLongValue];
+          bOOLValue = [valueCopy unsignedLongLongValue];
           goto LABEL_27;
         case 'S':
-          v14 = [v6 unsignedShortValue];
+          bOOLValue = [valueCopy unsignedShortValue];
           goto LABEL_27;
         case '^':
-          v14 = [v6 pointerValue];
+          bOOLValue = [valueCopy pointerValue];
           goto LABEL_27;
         case 'c':
-          v14 = [v6 charValue];
+          bOOLValue = [valueCopy charValue];
           goto LABEL_27;
         case 'd':
-          [v6 doubleValue];
-          [self a3];
+          [valueCopy doubleValue];
+          [self selector];
           goto LABEL_28;
         case 'f':
-          [v6 floatValue];
-          [self a3];
+          [valueCopy floatValue];
+          [self selector];
           goto LABEL_28;
         case 'i':
-          v14 = [v6 intValue];
+          bOOLValue = [valueCopy intValue];
           goto LABEL_27;
         case 'l':
-          v14 = [v6 longValue];
+          bOOLValue = [valueCopy longValue];
           goto LABEL_27;
         case 'q':
-          v14 = [v6 longLongValue];
+          bOOLValue = [valueCopy longLongValue];
           goto LABEL_27;
         case 's':
-          v14 = [v6 shortValue];
+          bOOLValue = [valueCopy shortValue];
 LABEL_27:
-          [self a3];
+          [self selector];
           break;
         default:
           if (*v9 == 35)
           {
 LABEL_8:
-            [self a3];
+            [self selector];
           }
 
           else
           {
 LABEL_9:
-            v10 = [v6 objCType];
-            if (!v10 || (v11 = v10, strcmp(v9, v10)))
+            objCType = [valueCopy objCType];
+            if (!objCType || (v11 = objCType, strcmp(v9, objCType)))
             {
               v20 = objc_opt_class();
-              v21 = NSStringFromSelector(a3);
-              v22 = [NSString stringWithFormat:@"*** [%@ %@] first argument type does not match type of %@.", v20, v21, v6];
-              v23 = [NSException exceptionWithName:NSInvalidArgumentException reason:v22 userInfo:0];
+              v21 = NSStringFromSelector(selector);
+              valueCopy = [NSString stringWithFormat:@"*** [%@ %@] first argument type does not match type of %@.", v20, v21, valueCopy];
+              v23 = [NSException exceptionWithName:NSInvalidArgumentException reason:valueCopy userInfo:0];
               v24 = v23;
 
               objc_exception_throw(v23);
@@ -885,11 +885,11 @@ LABEL_9:
 
             v12 = [NSInvocation invocationWithMethodSignature:v8];
             [v12 setTarget:self];
-            [v12 setSelector:a3];
+            [v12 setSelector:selector];
             sizep = 0;
             NSGetSizeAndAlignment(v11, &sizep, 0);
             v13 = malloc_type_malloc(sizep, 0xC7300880uLL);
-            [v6 getValue:v13];
+            [valueCopy getValue:v13];
             [v12 setArgument:v13 atIndex:2];
             [v12 invoke];
             free(v13);
@@ -904,33 +904,33 @@ LABEL_9:
 
   else
   {
-    [self doesNotRecognizeSelector:a3];
+    [self doesNotRecognizeSelector:selector];
   }
 
 LABEL_28:
 }
 
-+ (BOOL)crl_object:(id)a3 isEqualToObject:(id)a4
++ (BOOL)crl_object:(id)crl_object isEqualToObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  crl_objectCopy = crl_object;
+  objectCopy = object;
+  v7 = objectCopy;
+  if (crl_objectCopy == objectCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v5)
+    if (crl_objectCopy)
     {
-      v6 = v5;
+      objectCopy = crl_objectCopy;
       v8 = v7;
     }
 
     else
     {
-      if (!v6)
+      if (!objectCopy)
       {
         v9 = 0;
         goto LABEL_8;
@@ -939,7 +939,7 @@ LABEL_28:
       v8 = 0;
     }
 
-    v9 = [v6 isEqual:v8];
+    v9 = [objectCopy isEqual:v8];
   }
 
 LABEL_8:
@@ -947,18 +947,18 @@ LABEL_8:
   return v9;
 }
 
-- (id)crl_addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (id)crl_addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [[CRLKVOToken alloc] initWithObserver:v10 target:self keyPath:v11 context:a6];
+  observerCopy = observer;
+  pathCopy = path;
+  v12 = [[CRLKVOToken alloc] initWithObserver:observerCopy target:self keyPath:pathCopy context:context];
   v13 = objc_getAssociatedObject(self, off_1019EF210);
   if (!v13)
   {
     v14 = [NSMutableSet setWithObjects:v12, 0];
     objc_setAssociatedObject(self, off_1019EF210, v14, 1);
 LABEL_9:
-    [self addObserver:v10 forKeyPath:v11 options:a5 context:a6];
+    [self addObserver:observerCopy forKeyPath:pathCopy options:options context:context];
     goto LABEL_10;
   }
 
@@ -978,13 +978,13 @@ LABEL_9:
   if (os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_ERROR))
   {
     *buf = 138413058;
-    v18 = v10;
+    v18 = observerCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v11;
+    v22 = pathCopy;
     v23 = 2048;
-    v24 = a6;
+    contextCopy = context;
     _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@ is already observing %@ for key path %@ using context %p", buf, 0x2Au);
   }
 
@@ -993,17 +993,17 @@ LABEL_10:
   return v12;
 }
 
-- (void)crl_removeObserverForToken:(id)a3
+- (void)crl_removeObserverForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, tokenCopy);
 
   if (v6)
   {
-    v7 = [v6 target];
+    target = [v6 target];
 
-    if (v7 != self)
+    if (target != self)
     {
       v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1036,23 +1036,23 @@ LABEL_10:
     v13 = objc_getAssociatedObject(self, off_1019EF210);
     if ([v13 containsObject:v6])
     {
-      v14 = [v6 target];
-      v15 = [v6 observer];
-      v16 = [v6 keyPath];
-      [v14 removeObserver:v15 forKeyPath:v16 context:{objc_msgSend(v6, "context")}];
+      target2 = [v6 target];
+      observer = [v6 observer];
+      keyPath = [v6 keyPath];
+      [target2 removeObserver:observer forKeyPath:keyPath context:{objc_msgSend(v6, "context")}];
 
       [v13 removeObject:v6];
     }
   }
 }
 
-- (BOOL)_crlaxRespondsToSelector:(SEL)a3 fromExtrasProtocol:(id)a4 skipAssertions:(BOOL)a5
+- (BOOL)_crlaxRespondsToSelector:(SEL)selector fromExtrasProtocol:(id)protocol skipAssertions:(BOOL)assertions
 {
-  v8 = a4;
-  if (!a5)
+  protocolCopy = protocol;
+  if (!assertions)
   {
     ShouldPerformValidationChecks = CRLAccessibilityShouldPerformValidationChecks();
-    if (!a3)
+    if (!selector)
     {
       if (ShouldPerformValidationChecks)
       {
@@ -1065,7 +1065,7 @@ LABEL_10:
     }
 
     v19 = CRLAccessibilityShouldPerformValidationChecks();
-    if (!v8)
+    if (!protocolCopy)
     {
       if (v19)
       {
@@ -1081,17 +1081,17 @@ LABEL_10:
   }
 
   v9 = 0;
-  if (!a3 || !v8)
+  if (!selector || !protocolCopy)
   {
     goto LABEL_22;
   }
 
-  name = protocol_getMethodDescription(v8, a3, 1, 1).name;
-  v11 = [self conformsToProtocol:v8];
+  name = protocol_getMethodDescription(protocolCopy, selector, 1, 1).name;
+  v11 = [self conformsToProtocol:protocolCopy];
   v9 = v11;
-  if (!a5)
+  if (!assertions)
   {
-    if ((name == 0) | ((CRLAccessibilityShouldPerformValidationChecks() & 1) == 0) | v11 & 1 || (v26 = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch(), v27 = objc_opt_class(), NSStringFromClass(v27), v28 = objc_claimAutoreleasedReturnValue(), NSStringFromProtocol(v8), v46 = objc_claimAutoreleasedReturnValue(), v34 = __CRLAccessibilityHandleValidationErrorWithDescription(v26, 0, @"<%@: %p> doesn't conform to the protocol: %@", v29, v30, v31, v32, v33, v28), v46, v28, !v34))
+    if ((name == 0) | ((CRLAccessibilityShouldPerformValidationChecks() & 1) == 0) | v11 & 1 || (v26 = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch(), v27 = objc_opt_class(), NSStringFromClass(v27), v28 = objc_claimAutoreleasedReturnValue(), NSStringFromProtocol(protocolCopy), v46 = objc_claimAutoreleasedReturnValue(), v34 = __CRLAccessibilityHandleValidationErrorWithDescription(v26, 0, @"<%@: %p> doesn't conform to the protocol: %@", v29, v30, v31, v32, v33, v28), v46, v28, !v34))
     {
       if ((v9 & 1) == 0)
       {
@@ -1107,7 +1107,7 @@ LABEL_10:
       v35 = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
-      v47 = NSStringFromSelector(a3);
+      v47 = NSStringFromSelector(selector);
       v43 = __CRLAccessibilityHandleValidationErrorWithDescription(v35, 0, @"<%@: %p> doesn't respond to the following abstract method: %@", v38, v39, v40, v41, v42, v37);
 
       if (!v43)
@@ -1132,35 +1132,35 @@ LABEL_22:
   return v9 & 1;
 }
 
-- (id)crlaxPerformSelectorFromString:(id)a3
+- (id)crlaxPerformSelectorFromString:(id)string
 {
-  v4 = NSSelectorFromString(a3);
+  v4 = NSSelectorFromString(string);
 
   return [self crlaxPerformSelector:v4];
 }
 
-- (id)crlaxPerformSelectorFromString:(id)a3 withObject:(id)a4
+- (id)crlaxPerformSelectorFromString:(id)string withObject:(id)object
 {
-  v6 = a4;
-  v7 = [self crlaxPerformSelector:NSSelectorFromString(a3) withObject:v6];
+  objectCopy = object;
+  v7 = [self crlaxPerformSelector:NSSelectorFromString(string) withObject:objectCopy];
 
   return v7;
 }
 
-- (id)crlaxPerformSelectorFromString:(id)a3 withObject:(id)a4 withObject:(id)a5
+- (id)crlaxPerformSelectorFromString:(id)string withObject:(id)object withObject:(id)withObject
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [self crlaxPerformSelector:NSSelectorFromString(a3) withObject:v9 withObject:v8];
+  withObjectCopy = withObject;
+  objectCopy = object;
+  v10 = [self crlaxPerformSelector:NSSelectorFromString(string) withObject:objectCopy withObject:withObjectCopy];
 
   return v10;
 }
 
-- (id)crlaxPerformSelector:(SEL)a3
+- (id)crlaxPerformSelector:(SEL)selector
 {
-  if ([self _crlaxValidateResponseToSelector:?]&& [self _crlaxValidateArgumentCountForSelector:a3 expected:0])
+  if ([self _crlaxValidateResponseToSelector:?]&& [self _crlaxValidateArgumentCountForSelector:selector expected:0])
   {
-    v5 = ([self methodForSelector:a3])(self, a3);
+    v5 = ([self methodForSelector:selector])(self, selector);
   }
 
   else
@@ -1171,12 +1171,12 @@ LABEL_22:
   return v5;
 }
 
-- (id)crlaxPerformSelector:(SEL)a3 withObject:(id)a4
+- (id)crlaxPerformSelector:(SEL)selector withObject:(id)object
 {
-  v6 = a4;
-  if ([self _crlaxValidateResponseToSelector:a3]&& [self _crlaxValidateArgumentCountForSelector:a3 expected:1])
+  objectCopy = object;
+  if ([self _crlaxValidateResponseToSelector:selector]&& [self _crlaxValidateArgumentCountForSelector:selector expected:1])
   {
-    v7 = ([self methodForSelector:a3])(self, a3, v6);
+    v7 = ([self methodForSelector:selector])(self, selector, objectCopy);
   }
 
   else
@@ -1187,13 +1187,13 @@ LABEL_22:
   return v7;
 }
 
-- (id)crlaxPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (id)crlaxPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
-  v8 = a4;
-  v9 = a5;
-  if ([self _crlaxValidateResponseToSelector:a3]&& [self _crlaxValidateArgumentCountForSelector:a3 expected:2])
+  objectCopy = object;
+  withObjectCopy = withObject;
+  if ([self _crlaxValidateResponseToSelector:selector]&& [self _crlaxValidateArgumentCountForSelector:selector expected:2])
   {
-    v10 = ([self methodForSelector:a3])(self, a3, v8, v9);
+    v10 = ([self methodForSelector:selector])(self, selector, objectCopy, withObjectCopy);
   }
 
   else
@@ -1204,12 +1204,12 @@ LABEL_22:
   return v10;
 }
 
-- (BOOL)_crlaxValidateArgumentCountForSelector:(SEL)a3 expected:(unint64_t)a4
+- (BOOL)_crlaxValidateArgumentCountForSelector:(SEL)selector expected:(unint64_t)expected
 {
-  v5 = [self methodSignatureForSelector:a3];
-  LOBYTE(a4) = [v5 numberOfArguments] - 2 == a4;
+  v5 = [self methodSignatureForSelector:selector];
+  LOBYTE(expected) = [v5 numberOfArguments] - 2 == expected;
 
-  return a4;
+  return expected;
 }
 
 @end

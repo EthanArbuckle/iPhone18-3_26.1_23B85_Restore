@@ -1,20 +1,20 @@
 @interface AirDropSystemApertureViewController
-- (_TtC9AirDropUI35AirDropSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9AirDropUI35AirDropSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredLayoutMode;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setKeyColor:(id)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setKeyColor:(id)color;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AirDropSystemApertureViewController
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_100063F24(a3);
+  selfCopy = self;
+  sub_100063F24(mode);
 }
 
 - (int64_t)preferredLayoutMode
@@ -25,48 +25,48 @@
   }
 
   v2 = *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_airDropTransferSession);
-  v3 = self;
+  selfCopy = self;
 
   v5 = sub_100064084(v4);
 
   return v5;
 }
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_keyColor);
-  *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_keyColor) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC9AirDropUI35AirDropSystemApertureViewController_keyColor) = color;
+  colorCopy = color;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100065B78();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100066ED0(a3);
+  selfCopy = self;
+  sub_100066ED0(appear);
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000670D0(a3);
+  selfCopy = self;
+  sub_1000670D0(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (_TtC9AirDropUI35AirDropSystemApertureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9AirDropUI35AirDropSystemApertureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

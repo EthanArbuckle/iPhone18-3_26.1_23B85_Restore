@@ -1,157 +1,157 @@
 @interface DRFlockAnimator
-- (void)_runAnimatableWithBarelyBouncyAnimation:(id)a3;
-- (void)_runAnimatableWithBouncyAnimation:(id)a3;
-- (void)_runAnimatableWithBouncyAnimation:(id)a3 response:(double)a4;
-- (void)_runAnimatableWithOneToOneTracking:(id)a3;
-- (void)_runAnimatableWithOneToOneTracking:(id)a3 response:(double)a4;
-- (void)_runBadgeLayout:(id)a3 oneToOneTrack:(BOOL)a4 bouncy:(BOOL)a5 slowOffset:(BOOL)a6;
-- (void)_runWithoutRetargeting:(id)a3;
-- (void)animateFlockLayoutOutput:(id)a3;
+- (void)_runAnimatableWithBarelyBouncyAnimation:(id)animation;
+- (void)_runAnimatableWithBouncyAnimation:(id)animation;
+- (void)_runAnimatableWithBouncyAnimation:(id)animation response:(double)response;
+- (void)_runAnimatableWithOneToOneTracking:(id)tracking;
+- (void)_runAnimatableWithOneToOneTracking:(id)tracking response:(double)response;
+- (void)_runBadgeLayout:(id)layout oneToOneTrack:(BOOL)track bouncy:(BOOL)bouncy slowOffset:(BOOL)offset;
+- (void)_runWithoutRetargeting:(id)retargeting;
+- (void)animateFlockLayoutOutput:(id)output;
 @end
 
 @implementation DRFlockAnimator
 
-- (void)animateFlockLayoutOutput:(id)a3
+- (void)animateFlockLayoutOutput:(id)output
 {
-  v4 = a3;
-  v5 = [(DRFlockAnimator *)self lastLayout];
-  if (!v5)
+  outputCopy = output;
+  lastLayout = [(DRFlockAnimator *)self lastLayout];
+  if (!lastLayout)
   {
     v7 = 0;
     goto LABEL_5;
   }
 
-  v6 = [v4 touchesCount];
-  v7 = v6 != [v5 touchesCount];
-  v8 = [v4 badgeLayout];
-  v9 = [v8 justBecameVisible];
+  touchesCount = [outputCopy touchesCount];
+  v7 = touchesCount != [lastLayout touchesCount];
+  badgeLayout = [outputCopy badgeLayout];
+  justBecameVisible = [badgeLayout justBecameVisible];
 
-  if (v9)
+  if (justBecameVisible)
   {
 LABEL_5:
-    v10 = [v4 badgeLayout];
-    v11 = [v10 position];
-    [(DRFlockAnimator *)self _runWithoutRetargeting:v11];
+    badgeLayout2 = [outputCopy badgeLayout];
+    position = [badgeLayout2 position];
+    [(DRFlockAnimator *)self _runWithoutRetargeting:position];
 
-    v12 = [v4 badgeLayout];
-    v13 = [v12 offset];
-    [(DRFlockAnimator *)self _runWithoutRetargeting:v13];
+    badgeLayout3 = [outputCopy badgeLayout];
+    offset = [badgeLayout3 offset];
+    [(DRFlockAnimator *)self _runWithoutRetargeting:offset];
 
-    v14 = [v4 badgeLayout];
-    v15 = [v14 alpha];
-    [(DRFlockAnimator *)self _runWithoutRetargeting:v15];
+    badgeLayout4 = [outputCopy badgeLayout];
+    alpha = [badgeLayout4 alpha];
+    [(DRFlockAnimator *)self _runWithoutRetargeting:alpha];
   }
 
-  v16 = [v4 itemLayouts];
-  v17 = [v16 count] - 1;
+  itemLayouts = [outputCopy itemLayouts];
+  v17 = [itemLayouts count] - 1;
 
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-  v19 = [v4 itemLayouts];
+  itemLayouts2 = [outputCopy itemLayouts];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10001FCF4;
   v26[3] = &unk_100055AB8;
   v30 = v7;
   v26[4] = self;
-  v20 = v5;
+  v20 = lastLayout;
   v27 = v20;
   v29 = v17;
   v31 = IsReduceMotionEnabled;
-  v21 = v4;
+  v21 = outputCopy;
   v28 = v21;
-  [v19 enumerateObjectsUsingBlock:v26];
+  [itemLayouts2 enumerateObjectsUsingBlock:v26];
 
-  v22 = [v21 badgeLayout];
-  if (v22)
+  badgeLayout5 = [v21 badgeLayout];
+  if (badgeLayout5)
   {
-    if (v5)
+    if (lastLayout)
     {
-      v23 = [v21 itemLayouts];
-      v24 = [v23 count];
-      v25 = [v20 itemLayouts];
-      v5 = v24 > [v25 count];
+      itemLayouts3 = [v21 itemLayouts];
+      v24 = [itemLayouts3 count];
+      itemLayouts4 = [v20 itemLayouts];
+      lastLayout = v24 > [itemLayouts4 count];
     }
 
-    -[DRFlockAnimator _runBadgeLayout:oneToOneTrack:bouncy:slowOffset:](self, "_runBadgeLayout:oneToOneTrack:bouncy:slowOffset:", v22, [v21 reduceBadgeAnimationSpring], v7, v5);
+    -[DRFlockAnimator _runBadgeLayout:oneToOneTrack:bouncy:slowOffset:](self, "_runBadgeLayout:oneToOneTrack:bouncy:slowOffset:", badgeLayout5, [v21 reduceBadgeAnimationSpring], v7, lastLayout);
   }
 
   [(DRFlockAnimator *)self setLastLayout:v21];
 }
 
-- (void)_runBadgeLayout:(id)a3 oneToOneTrack:(BOOL)a4 bouncy:(BOOL)a5 slowOffset:(BOOL)a6
+- (void)_runBadgeLayout:(id)layout oneToOneTrack:(BOOL)track bouncy:(BOOL)bouncy slowOffset:(BOOL)offset
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v21 = v10;
-  if (v7)
+  offsetCopy = offset;
+  bouncyCopy = bouncy;
+  trackCopy = track;
+  layoutCopy = layout;
+  v21 = layoutCopy;
+  if (bouncyCopy)
   {
-    v11 = [v10 position];
-    [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v11];
+    position = [layoutCopy position];
+    [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:position];
   }
 
   else
   {
-    v12 = [v10 offsetAdjustment];
+    offsetAdjustment = [layoutCopy offsetAdjustment];
 
-    if (v12)
+    if (offsetAdjustment)
     {
-      v13 = [v21 offsetAdjustment];
-      [(DRFlockAnimator *)self _runWithoutRetargeting:v13];
+      offsetAdjustment2 = [v21 offsetAdjustment];
+      [(DRFlockAnimator *)self _runWithoutRetargeting:offsetAdjustment2];
     }
 
-    v14 = [(DRFlockAnimator *)self badgeAppeared];
-    v11 = [v21 position];
-    if (!v14)
+    badgeAppeared = [(DRFlockAnimator *)self badgeAppeared];
+    position = [v21 position];
+    if (!badgeAppeared)
     {
-      [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v11];
+      [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:position];
 
       v17 = [v21 size];
       [(DRFlockAnimator *)self _runWithoutRetargeting:v17];
 
       [(DRFlockAnimator *)self setBadgeAppeared:1];
-      if (v6)
+      if (offsetCopy)
       {
         goto LABEL_8;
       }
 
 LABEL_14:
-      if (v8)
+      if (trackCopy)
       {
-        v18 = [v21 offsetAdjustment];
+        offsetAdjustment3 = [v21 offsetAdjustment];
 
-        v15 = [v21 offset];
-        if (v18)
+        offset = [v21 offset];
+        if (offsetAdjustment3)
         {
-          [(DRFlockAnimator *)self _runAnimatableWithOneToOneTracking:v15];
+          [(DRFlockAnimator *)self _runAnimatableWithOneToOneTracking:offset];
         }
 
         else
         {
-          [(DRFlockAnimator *)self _runWithoutRetargeting:v15];
+          [(DRFlockAnimator *)self _runWithoutRetargeting:offset];
         }
       }
 
       else
       {
-        v15 = [v21 offset];
-        [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v15];
+        offset = [v21 offset];
+        [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:offset];
       }
 
       goto LABEL_19;
     }
 
-    [(DRFlockAnimator *)self _runAnimatableWithOneToOneTracking:v11];
+    [(DRFlockAnimator *)self _runAnimatableWithOneToOneTracking:position];
   }
 
-  if (!v6)
+  if (!offsetCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_8:
-  v15 = [v21 offset];
+  offset = [v21 offset];
   if (qword_100063678 != -1)
   {
     sub_100030F90();
@@ -167,23 +167,23 @@ LABEL_8:
     v16 = 0.35;
   }
 
-  [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v15 response:v16];
+  [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:offset response:v16];
 LABEL_19:
 
   v19 = [v21 size];
   [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v19];
 
-  v20 = [v21 alpha];
-  [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v20];
+  alpha = [v21 alpha];
+  [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:alpha];
 }
 
-- (void)_runAnimatableWithBouncyAnimation:(id)a3
+- (void)_runAnimatableWithBouncyAnimation:(id)animation
 {
-  v4 = a3;
-  v7 = v4;
+  animationCopy = animation;
+  v7 = animationCopy;
   if (qword_100063678 == -1)
   {
-    v5 = v4;
+    v5 = animationCopy;
   }
 
   else
@@ -206,9 +206,9 @@ LABEL_19:
   [(DRFlockAnimator *)self _runAnimatableWithBouncyAnimation:v5 response:v6];
 }
 
-- (void)_runAnimatableWithBouncyAnimation:(id)a3 response:(double)a4
+- (void)_runAnimatableWithBouncyAnimation:(id)animation response:(double)response
 {
-  v5 = a3;
+  animationCopy = animation;
   if (qword_100063678 != -1)
   {
     sub_100030FB8();
@@ -272,15 +272,15 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_100020394;
   v13[3] = &unk_100054B50;
-  v14 = v5;
-  v11 = v5;
-  v12 = [v11 completionBlock];
-  [UIView _animateUsingSpringWithDampingRatio:1 response:v13 tracking:v12 initialDampingRatio:v6 initialResponse:a4 dampingRatioSmoothing:v7 responseSmoothing:v8 targetSmoothing:v9 projectionDeceleration:v10 animations:0.0 completion:0.0];
+  v14 = animationCopy;
+  v11 = animationCopy;
+  completionBlock = [v11 completionBlock];
+  [UIView _animateUsingSpringWithDampingRatio:1 response:v13 tracking:completionBlock initialDampingRatio:v6 initialResponse:response dampingRatioSmoothing:v7 responseSmoothing:v8 targetSmoothing:v9 projectionDeceleration:v10 animations:0.0 completion:0.0];
 }
 
-- (void)_runAnimatableWithBarelyBouncyAnimation:(id)a3
+- (void)_runAnimatableWithBarelyBouncyAnimation:(id)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (qword_100063678 != -1)
   {
     sub_100030FCC();
@@ -334,19 +334,19 @@ LABEL_19:
   v10[1] = 3221225472;
   v10[2] = sub_100020614;
   v10[3] = &unk_100054B50;
-  v11 = v3;
-  v8 = v3;
-  v9 = [v8 completionBlock];
-  [UIView _animateUsingSpringWithDampingRatio:1 response:v10 tracking:v9 dampingRatioSmoothing:v4 responseSmoothing:v5 targetSmoothing:v6 projectionDeceleration:v7 animations:0.0 completion:0.0];
+  v11 = animationCopy;
+  v8 = animationCopy;
+  completionBlock = [v8 completionBlock];
+  [UIView _animateUsingSpringWithDampingRatio:1 response:v10 tracking:completionBlock dampingRatioSmoothing:v4 responseSmoothing:v5 targetSmoothing:v6 projectionDeceleration:v7 animations:0.0 completion:0.0];
 }
 
-- (void)_runAnimatableWithOneToOneTracking:(id)a3
+- (void)_runAnimatableWithOneToOneTracking:(id)tracking
 {
-  v4 = a3;
-  v7 = v4;
+  trackingCopy = tracking;
+  v7 = trackingCopy;
   if (qword_100063678 == -1)
   {
-    v5 = v4;
+    v5 = trackingCopy;
   }
 
   else
@@ -369,9 +369,9 @@ LABEL_19:
   [(DRFlockAnimator *)self _runAnimatableWithOneToOneTracking:v5 response:v6];
 }
 
-- (void)_runAnimatableWithOneToOneTracking:(id)a3 response:(double)a4
+- (void)_runAnimatableWithOneToOneTracking:(id)tracking response:(double)response
 {
-  v5 = a3;
+  trackingCopy = tracking;
   if (qword_100063678 != -1)
   {
     sub_100030FB8();
@@ -407,29 +407,29 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_1000208E8;
   v11[3] = &unk_100054B50;
-  v12 = v5;
-  v9 = v5;
-  v10 = [v9 completionBlock];
-  [UIView _animateUsingSpringWithDampingRatio:1 response:v11 tracking:v10 dampingRatioSmoothing:v6 responseSmoothing:a4 targetSmoothing:v7 projectionDeceleration:v8 animations:0.0 completion:0.0];
+  v12 = trackingCopy;
+  v9 = trackingCopy;
+  completionBlock = [v9 completionBlock];
+  [UIView _animateUsingSpringWithDampingRatio:1 response:v11 tracking:completionBlock dampingRatioSmoothing:v6 responseSmoothing:response targetSmoothing:v7 projectionDeceleration:v8 animations:0.0 completion:0.0];
 }
 
-- (void)_runWithoutRetargeting:(id)a3
+- (void)_runWithoutRetargeting:(id)retargeting
 {
-  v7 = a3;
-  v3 = [v7 animationBlock];
+  retargetingCopy = retargeting;
+  animationBlock = [retargetingCopy animationBlock];
 
-  if (v3)
+  if (animationBlock)
   {
-    v4 = [v7 animationBlock];
-    [UIView _performWithoutRetargetingAnimations:v4];
+    animationBlock2 = [retargetingCopy animationBlock];
+    [UIView _performWithoutRetargetingAnimations:animationBlock2];
   }
 
-  v5 = [v7 completionBlock];
+  completionBlock = [retargetingCopy completionBlock];
 
-  if (v5)
+  if (completionBlock)
   {
-    v6 = [v7 completionBlock];
-    v6[2](v6, 1, 0);
+    completionBlock2 = [retargetingCopy completionBlock];
+    completionBlock2[2](completionBlock2, 1, 0);
   }
 }
 

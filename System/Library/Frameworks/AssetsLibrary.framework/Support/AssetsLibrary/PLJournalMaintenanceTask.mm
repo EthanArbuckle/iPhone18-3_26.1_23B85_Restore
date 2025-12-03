@@ -1,5 +1,5 @@
 @interface PLJournalMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 - (void)coalesceRebuildJournals;
 - (void)snapshotComputeCacheJournals;
 @end
@@ -8,11 +8,11 @@
 
 - (void)snapshotComputeCacheJournals
 {
-  v2 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v3 = [v2 computeCacheManager];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  computeCacheManager = [libraryServicesManager computeCacheManager];
 
   v7 = 0;
-  v4 = [v3 snapshotComputeCacheAndBackupIfNeededWithError:&v7];
+  v4 = [computeCacheManager snapshotComputeCacheAndBackupIfNeededWithError:&v7];
   v5 = v7;
   if ((v4 & 1) == 0)
   {
@@ -28,20 +28,20 @@
 
 - (void)coalesceRebuildJournals
 {
-  v3 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v4 = [v3 pathManager];
-  v5 = [PLRebuildJournalManager isEnabledWithPathManager:v4 error:0];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
+  v5 = [PLRebuildJournalManager isEnabledWithPathManager:pathManager error:0];
 
   if (v5)
   {
-    v8 = [(PLMaintenanceTask *)self libraryServicesManager];
-    v6 = [v8 rebuildJournalManager];
+    libraryServicesManager2 = [(PLMaintenanceTask *)self libraryServicesManager];
+    rebuildJournalManager = [libraryServicesManager2 rebuildJournalManager];
     LODWORD(v7) = 0.5;
-    [v6 coalesceJournalsForPayloadClassIDs:0 withChangeJournalOverThreshold:0 error:v7];
+    [rebuildJournalManager coalesceJournalsForPayloadClassIDs:0 withChangeJournalOverThreshold:0 error:v7];
   }
 }
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
   [(PLJournalMaintenanceTask *)self coalesceRebuildJournals];
   [(PLJournalMaintenanceTask *)self snapshotComputeCacheJournals];

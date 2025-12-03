@@ -1,20 +1,20 @@
 @interface RTDailyTrainingSessionCounter
 - (BOOL)shouldSubmitMetrics;
-- (RTDailyTrainingSessionCounter)initWithDefaultsManager:(id)a3;
+- (RTDailyTrainingSessionCounter)initWithDefaultsManager:(id)manager;
 - (id)description;
-- (id)modeAndReasonFromCompoundKey:(id)a3;
+- (id)modeAndReasonFromCompoundKey:(id)key;
 - (void)createMetrics;
-- (void)increaseCountForMode:(unint64_t)a3 reason:(unint64_t)a4;
+- (void)increaseCountForMode:(unint64_t)mode reason:(unint64_t)reason;
 - (void)reset;
 - (void)submitMetrics;
 @end
 
 @implementation RTDailyTrainingSessionCounter
 
-- (RTDailyTrainingSessionCounter)initWithDefaultsManager:(id)a3
+- (RTDailyTrainingSessionCounter)initWithDefaultsManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = RTDailyTrainingSessionCounter;
@@ -22,14 +22,14 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_defaultsManager, a3);
+      objc_storeStrong(&v6->_defaultsManager, manager);
       v8 = objc_opt_new();
       metrics = v7->_metrics;
       v7->_metrics = v8;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,16 +41,16 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)reset
 {
-  v3 = [(RTDailyTrainingSessionCounter *)self metrics];
-  [v3 removeAllObjects];
+  metrics = [(RTDailyTrainingSessionCounter *)self metrics];
+  [metrics removeAllObjects];
 
   v9 = objc_opt_new();
   v4 = [(RTDailyTrainingSessionCounter *)self compoundKeyForMode:1 reason:1];
@@ -65,15 +65,15 @@
   v7 = [(RTDailyTrainingSessionCounter *)self compoundKeyForMode:2 reason:2];
   [v9 setObject:&unk_2845A0938 forKey:v7];
 
-  v8 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
-  [v8 setObject:v9 forKey:@"TrainDailyMetricsTrainingSessionCount"];
+  defaultsManager = [(RTDailyTrainingSessionCounter *)self defaultsManager];
+  [defaultsManager setObject:v9 forKey:@"TrainDailyMetricsTrainingSessionCount"];
 }
 
 - (void)createMetrics
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
-  v4 = [v3 objectForKey:@"TrainDailyMetricsTrainingSessionCount"];
+  defaultsManager = [(RTDailyTrainingSessionCounter *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"TrainDailyMetricsTrainingSessionCount"];
 
   v19 = 0u;
   v20 = 0u;
@@ -98,15 +98,15 @@
         v11 = [(RTDailyTrainingSessionCounter *)self modeAndReasonFromCompoundKey:v10, v17];
         v12 = [v5 objectForKey:v10];
         v13 = objc_opt_new();
-        v14 = [v11 firstObject];
-        [v13 setObject:v14 forKey:@"trainingMode"];
+        firstObject = [v11 firstObject];
+        [v13 setObject:firstObject forKey:@"trainingMode"];
 
-        v15 = [v11 secondObject];
-        [v13 setObject:v15 forKey:@"trainingReason"];
+        secondObject = [v11 secondObject];
+        [v13 setObject:secondObject forKey:@"trainingReason"];
 
         [v13 setObject:v12 forKey:@"traningSessionCount"];
-        v16 = [(RTDailyTrainingSessionCounter *)self metrics];
-        [v16 addObject:v13];
+        metrics = [(RTDailyTrainingSessionCounter *)self metrics];
+        [metrics addObject:v13];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -119,8 +119,8 @@
 - (BOOL)shouldSubmitMetrics
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
-  v4 = [v3 objectForKey:@"LearnedLocationEngineTrainDailyMetricsSubmissonAttemptDate"];
+  defaultsManager = [(RTDailyTrainingSessionCounter *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"LearnedLocationEngineTrainDailyMetricsSubmissonAttemptDate"];
 
   if (v4)
   {
@@ -152,8 +152,8 @@
       }
 
       v12 = objc_opt_new();
-      v13 = [v12 stringFromDate];
-      v14 = [v4 stringFromDate];
+      stringFromDate = [v12 stringFromDate];
+      stringFromDate2 = [v4 stringFromDate];
       v16 = 138413314;
       v17 = v9;
       v18 = 2112;
@@ -161,9 +161,9 @@
       v20 = 2112;
       v21 = v11;
       v22 = 2112;
-      v23 = v13;
+      v23 = stringFromDate;
       v24 = 2112;
-      v25 = v14;
+      v25 = stringFromDate2;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, shouldSubmit, %@, current date, %@, last attempt date, %@", &v16, 0x34u);
     }
   }
@@ -173,11 +173,11 @@
 
 - (void)submitMetrics
 {
-  v3 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x277D85DE8];
   if ([(RTDailyTrainingSessionCounter *)self shouldSubmitMetrics])
   {
-    [(RTDailyTrainingSessionCounter *)v3 createMetrics];
+    [(RTDailyTrainingSessionCounter *)selfCopy createMetrics];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v4 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -186,13 +186,13 @@
         v5 = objc_opt_class();
         v6 = NSStringFromClass(v5);
         v7 = NSStringFromSelector(a2);
-        v8 = [(RTDailyTrainingSessionCounter *)v3 metrics];
+        metrics = [(RTDailyTrainingSessionCounter *)selfCopy metrics];
         *buf = 138412802;
         v27 = v6;
         v28 = 2112;
         v29 = v7;
         v30 = 2112;
-        v31 = v8;
+        v31 = metrics;
         _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, %@, submitting metrics, %@", buf, 0x20u);
       }
     }
@@ -201,9 +201,9 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v20 = v3;
-    v9 = [(RTDailyTrainingSessionCounter *)v3 metrics];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v20 = selfCopy;
+    metrics2 = [(RTDailyTrainingSessionCounter *)selfCopy metrics];
+    v10 = [metrics2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -215,7 +215,7 @@
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(metrics2);
           }
 
           v14 = *(*(&v21 + 1) + 8 * v13);
@@ -229,28 +229,28 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [metrics2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
     }
 
-    v3 = v20;
+    selfCopy = v20;
   }
 
-  [(RTDailyTrainingSessionCounter *)v3 reset];
-  v18 = [(RTDailyTrainingSessionCounter *)v3 defaultsManager];
+  [(RTDailyTrainingSessionCounter *)selfCopy reset];
+  defaultsManager = [(RTDailyTrainingSessionCounter *)selfCopy defaultsManager];
   v19 = [MEMORY[0x277CBEAA8] now];
-  [v18 setObject:v19 forKey:@"LearnedLocationEngineTrainDailyMetricsSubmissonAttemptDate"];
+  [defaultsManager setObject:v19 forKey:@"LearnedLocationEngineTrainDailyMetricsSubmissonAttemptDate"];
 }
 
-- (void)increaseCountForMode:(unint64_t)a3 reason:(unint64_t)a4
+- (void)increaseCountForMode:(unint64_t)mode reason:(unint64_t)reason
 {
-  v7 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
-  v15 = [v7 objectForKey:@"TrainDailyMetricsTrainingSessionCount"];
+  defaultsManager = [(RTDailyTrainingSessionCounter *)self defaultsManager];
+  v15 = [defaultsManager objectForKey:@"TrainDailyMetricsTrainingSessionCount"];
 
   v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v15];
-  v9 = [(RTDailyTrainingSessionCounter *)self compoundKeyForMode:a3 reason:a4];
+  v9 = [(RTDailyTrainingSessionCounter *)self compoundKeyForMode:mode reason:reason];
   v10 = [v8 objectForKey:v9];
 
   if (!v10)
@@ -259,21 +259,21 @@
   }
 
   v11 = [v8 objectForKey:v9];
-  v12 = [v11 unsignedIntValue];
+  unsignedIntValue = [v11 unsignedIntValue];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + 1];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue + 1];
   [v8 setObject:v13 forKey:v9];
 
-  v14 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
-  [v14 setObject:v8 forKey:@"TrainDailyMetricsTrainingSessionCount"];
+  defaultsManager2 = [(RTDailyTrainingSessionCounter *)self defaultsManager];
+  [defaultsManager2 setObject:v8 forKey:@"TrainDailyMetricsTrainingSessionCount"];
 }
 
 - (id)description
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(RTDailyTrainingSessionCounter *)self metrics];
-  v5 = [v3 stringWithFormat:@"RTLearnedLocationEngineTrainDailyMetrics, %lu\n\n", objc_msgSend(v4, "count")];
+  metrics = [(RTDailyTrainingSessionCounter *)self metrics];
+  v5 = [v3 stringWithFormat:@"RTLearnedLocationEngineTrainDailyMetrics, %lu\n\n", objc_msgSend(metrics, "count")];
 
   v18 = 0u;
   v19 = 0u;
@@ -294,7 +294,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) allKeys];
+        allKeys = [*(*(&v16 + 1) + 8 * i) allKeys];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __44__RTDailyTrainingSessionCounter_description__block_invoke;
@@ -302,7 +302,7 @@
         v14[4] = self;
         v11 = v5;
         v15 = v11;
-        [v10 enumerateObjectsUsingBlock:v14];
+        [allKeys enumerateObjectsUsingBlock:v14];
 
         [v11 appendString:@"\n\n"];
       }
@@ -329,16 +329,16 @@ void __44__RTDailyTrainingSessionCounter_description__block_invoke(uint64_t a1, 
   [v6 appendString:v7];
 }
 
-- (id)modeAndReasonFromCompoundKey:(id)a3
+- (id)modeAndReasonFromCompoundKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"-"];
-  v6 = [v5 firstObject];
-  v7 = [v6 intValue];
+  keyCopy = key;
+  v5 = [keyCopy componentsSeparatedByString:@"-"];
+  firstObject = [v5 firstObject];
+  intValue = [firstObject intValue];
 
-  v8 = [v5 lastObject];
-  v9 = [v8 intValue];
+  lastObject = [v5 lastObject];
+  intValue2 = [lastObject intValue];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -349,18 +349,18 @@ void __44__RTDailyTrainingSessionCounter_description__block_invoke(uint64_t a1, 
       v17 = 138413058;
       v18 = v11;
       v19 = 2112;
-      v20 = v4;
+      v20 = keyCopy;
       v21 = 2048;
-      v22 = v7;
+      v22 = intValue;
       v23 = 2048;
-      v24 = v9;
+      v24 = intValue2;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, compound key, %@, mode, %lu, reason, %lu", &v17, 0x2Au);
     }
   }
 
   v12 = objc_alloc(MEMORY[0x277D011C0]);
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue2];
   v15 = [v12 initWithFirstObject:v13 secondObject:v14];
 
   return v15;

@@ -3,8 +3,8 @@
 - (AVPictureInPictureControllerContentSource)initWithActiveVideoCallSourceView:(UIView *)sourceView contentViewController:(AVPictureInPictureVideoCallViewController *)contentViewController;
 - (AVPictureInPictureControllerContentSource)initWithPlayerLayer:(AVPlayerLayer *)playerLayer;
 - (AVPictureInPictureControllerContentSource)initWithSampleBufferDisplayLayer:(AVSampleBufferDisplayLayer *)sampleBufferDisplayLayer playbackDelegate:(id)playbackDelegate;
-- (AVPictureInPictureControllerContentSource)initWithSampleBufferDisplayLayer:(id)a3 initialRenderSize:(CGSize)a4 playbackDelegate:(id)a5;
-- (AVPictureInPictureControllerContentSource)initWithSourceView:(id)a3 contentViewController:(id)a4 playerController:(id)a5;
+- (AVPictureInPictureControllerContentSource)initWithSampleBufferDisplayLayer:(id)layer initialRenderSize:(CGSize)size playbackDelegate:(id)delegate;
+- (AVPictureInPictureControllerContentSource)initWithSourceView:(id)view contentViewController:(id)controller playerController:(id)playerController;
 - (CGSize)initialRenderSize;
 - (UIView)activeSourceView;
 - (id)_activeVideoCallSourceView;
@@ -22,8 +22,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AVPictureInPictureControllerContentSource *)self sampleBufferDisplayLayer];
-  [v3 avkit_removePictureInPicturePlayerController];
+  sampleBufferDisplayLayer = [(AVPictureInPictureControllerContentSource *)self sampleBufferDisplayLayer];
+  [sampleBufferDisplayLayer avkit_removePictureInPicturePlayerController];
 
   v4.receiver = self;
   v4.super_class = AVPictureInPictureControllerContentSource;
@@ -32,37 +32,37 @@
 
 - (AVPictureInPictureContentSource)source
 {
-  v3 = [(AVPictureInPictureControllerContentSource *)self sampleBufferDisplayLayer];
-  v4 = v3;
-  if (v3)
+  sampleBufferDisplayLayer = [(AVPictureInPictureControllerContentSource *)self sampleBufferDisplayLayer];
+  v4 = sampleBufferDisplayLayer;
+  if (sampleBufferDisplayLayer)
   {
-    v5 = v3;
+    v5 = sampleBufferDisplayLayer;
   }
 
   else
   {
-    v6 = [(AVPictureInPictureControllerContentSource *)self playerLayer];
-    v7 = v6;
-    if (v6)
+    playerLayer = [(AVPictureInPictureControllerContentSource *)self playerLayer];
+    v7 = playerLayer;
+    if (playerLayer)
     {
-      v5 = v6;
+      v5 = playerLayer;
     }
 
     else
     {
-      v8 = [(AVPictureInPictureControllerContentSource *)self _activeVideoCallContentViewController];
-      v9 = v8;
-      if (v8)
+      _activeVideoCallContentViewController = [(AVPictureInPictureControllerContentSource *)self _activeVideoCallContentViewController];
+      v9 = _activeVideoCallContentViewController;
+      if (_activeVideoCallContentViewController)
       {
-        v10 = v8;
+        activeContentViewController = _activeVideoCallContentViewController;
       }
 
       else
       {
-        v10 = [(AVPictureInPictureControllerContentSource *)self activeContentViewController];
+        activeContentViewController = [(AVPictureInPictureControllerContentSource *)self activeContentViewController];
       }
 
-      v5 = v10;
+      v5 = activeContentViewController;
     }
   }
 
@@ -110,12 +110,12 @@
   return result;
 }
 
-- (AVPictureInPictureControllerContentSource)initWithSampleBufferDisplayLayer:(id)a3 initialRenderSize:(CGSize)a4 playbackDelegate:(id)a5
+- (AVPictureInPictureControllerContentSource)initWithSampleBufferDisplayLayer:(id)layer initialRenderSize:(CGSize)size playbackDelegate:(id)delegate
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  layerCopy = layer;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = AVPictureInPictureControllerContentSource;
   v12 = [(AVPictureInPictureControllerContentSource *)&v15 init];
@@ -124,8 +124,8 @@
   {
     v12->_initialRenderSize.width = width;
     v12->_initialRenderSize.height = height;
-    objc_storeStrong(&v12->_sampleBufferDisplayLayer, a3);
-    objc_storeStrong(&v13->_sampleBufferPlaybackDelegate, a5);
+    objc_storeStrong(&v12->_sampleBufferDisplayLayer, layer);
+    objc_storeStrong(&v13->_sampleBufferPlaybackDelegate, delegate);
     v13->_hasInitialRenderSize = 1;
   }
 
@@ -139,20 +139,20 @@
   return WeakRetained;
 }
 
-- (AVPictureInPictureControllerContentSource)initWithSourceView:(id)a3 contentViewController:(id)a4 playerController:(id)a5
+- (AVPictureInPictureControllerContentSource)initWithSourceView:(id)view contentViewController:(id)controller playerController:(id)playerController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  controllerCopy = controller;
+  playerControllerCopy = playerController;
   v14.receiver = self;
   v14.super_class = AVPictureInPictureControllerContentSource;
   v11 = [(AVPictureInPictureControllerContentSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_activeSourceView, v8);
-    objc_storeStrong(&v12->_activeContentViewController, a4);
-    [v9 setPlayerController:v10];
+    objc_storeWeak(&v11->_activeSourceView, viewCopy);
+    objc_storeStrong(&v12->_activeContentViewController, controller);
+    [controllerCopy setPlayerController:playerControllerCopy];
   }
 
   return v12;

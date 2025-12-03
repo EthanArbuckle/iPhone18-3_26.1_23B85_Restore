@@ -1,21 +1,21 @@
 @interface CNStarkHeaderPlatterView
-- (CNStarkHeaderPlatterView)initWithLabelText:(id)a3 accessoryImage:(id)a4;
-- (void)_updateForFocusedState:(BOOL)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (CNStarkHeaderPlatterView)initWithLabelText:(id)text accessoryImage:(id)image;
+- (void)_updateForFocusedState:(BOOL)state;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation CNStarkHeaderPlatterView
 
-- (void)_updateForFocusedState:(BOOL)a3
+- (void)_updateForFocusedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v4 = +[CNUIColorRepository carPlaySiriButtonBackgroundHighlightedColor];
     [(CNStarkHeaderPlatterView *)self setBackgroundColor:v4];
 
     v5 = +[CNUIColorRepository carPlaySiriButtonTextHighlightedColor];
-    v6 = [(CNStarkHeaderPlatterView *)self label];
-    [v6 setTextColor:v5];
+    label = [(CNStarkHeaderPlatterView *)self label];
+    [label setTextColor:v5];
 
     +[CNUIColorRepository carPlaySiriButtonTextHighlightedColor];
   }
@@ -26,37 +26,37 @@
     [(CNStarkHeaderPlatterView *)self setBackgroundColor:v7];
 
     v8 = +[CNUIColorRepository carPlaySiriButtonTextColor];
-    v9 = [(CNStarkHeaderPlatterView *)self label];
-    [v9 setTextColor:v8];
+    label2 = [(CNStarkHeaderPlatterView *)self label];
+    [label2 setTextColor:v8];
 
     +[CNUIColorRepository carPlaySiriButtonTextColor];
   }
   v11 = ;
-  v10 = [(CNStarkHeaderPlatterView *)self accessory];
-  [v10 setTintColor:v11];
+  accessory = [(CNStarkHeaderPlatterView *)self accessory];
+  [accessory setTintColor:v11];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CNStarkHeaderPlatterView;
-  [(CNStarkHeaderPlatterView *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  v8 = v7;
-  if (v7 == self)
+  [(CNStarkHeaderPlatterView *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  v8 = nextFocusedView;
+  if (nextFocusedView == self)
   {
 
 LABEL_5:
-    v10 = [v6 nextFocusedView];
-    [(CNStarkHeaderPlatterView *)self _updateForFocusedState:v10 == self];
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    [(CNStarkHeaderPlatterView *)self _updateForFocusedState:nextFocusedView2 == self];
 
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedView];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
 
-  if (v9 == self)
+  if (previouslyFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -64,11 +64,11 @@ LABEL_5:
 LABEL_6:
 }
 
-- (CNStarkHeaderPlatterView)initWithLabelText:(id)a3 accessoryImage:(id)a4
+- (CNStarkHeaderPlatterView)initWithLabelText:(id)text accessoryImage:(id)image
 {
   v55[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  imageCopy = image;
   v54.receiver = self;
   v54.super_class = CNStarkHeaderPlatterView;
   v8 = *MEMORY[0x1E695F058];
@@ -82,35 +82,35 @@ LABEL_6:
     [(CNStarkHeaderPlatterView *)v12 setBackgroundColor:v13];
 
     [(CNStarkHeaderPlatterView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v15 = [v14 featureFlags];
-    v16 = [v15 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v16 = [featureFlags isFeatureEnabled:29];
 
     if (v16)
     {
-      v17 = [(CNStarkHeaderPlatterView *)v12 layer];
-      [v17 setCornerRadius:22.0];
+      layer = [(CNStarkHeaderPlatterView *)v12 layer];
+      [layer setCornerRadius:22.0];
     }
 
     else
     {
-      v17 = [(CNStarkHeaderPlatterView *)v12 traitCollection];
+      layer = [(CNStarkHeaderPlatterView *)v12 traitCollection];
       _UITableViewDefaultSectionCornerRadiusForTraitCollection();
       v19 = v18;
-      v20 = [(CNStarkHeaderPlatterView *)v12 layer];
-      [v20 setCornerRadius:v19];
+      layer2 = [(CNStarkHeaderPlatterView *)v12 layer];
+      [layer2 setCornerRadius:v19];
     }
 
     v21 = *MEMORY[0x1E69796E8];
-    v22 = [(CNStarkHeaderPlatterView *)v12 layer];
-    [v22 setCornerCurve:v21];
+    layer3 = [(CNStarkHeaderPlatterView *)v12 layer];
+    [layer3 setCornerCurve:v21];
 
     v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     label = v12->_label;
     v12->_label = v23;
 
     [(UILabel *)v12->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [v6 copy];
+    v25 = [textCopy copy];
     [(UILabel *)v12->_label setText:v25];
 
     v26 = +[CNUIFontRepository carPlayNoContentViewSiriButtonFont];
@@ -122,8 +122,8 @@ LABEL_6:
     [(UILabel *)v12->_label setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v12->_label setMinimumScaleFactor:0.7];
     [(CNStarkHeaderPlatterView *)v12 addSubview:v12->_label];
-    v28 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
-    v52 = v7;
+    v28 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
+    v52 = imageCopy;
     accessory = v12->_accessory;
     v12->_accessory = v28;
 
@@ -139,32 +139,32 @@ LABEL_6:
 
     [(CNStarkHeaderPlatterView *)v12 addSubview:v12->_accessory];
     v45 = MEMORY[0x1E696ACD8];
-    v51 = [(UILabel *)v12->_label centerYAnchor];
-    v50 = [(CNStarkHeaderPlatterView *)v12 centerYAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    centerYAnchor = [(UILabel *)v12->_label centerYAnchor];
+    centerYAnchor2 = [(CNStarkHeaderPlatterView *)v12 centerYAnchor];
+    v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[0] = v49;
-    v48 = [(UILabel *)v12->_label leadingAnchor];
-    v47 = [(CNStarkHeaderPlatterView *)v12 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:12.0];
+    leadingAnchor = [(UILabel *)v12->_label leadingAnchor];
+    leadingAnchor2 = [(CNStarkHeaderPlatterView *)v12 leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v55[1] = v46;
-    v44 = [(UILabel *)v12->_label trailingAnchor];
-    v34 = [(UIImageView *)v12->_accessory leadingAnchor];
-    v35 = [v44 constraintEqualToAnchor:v34 constant:-12.0];
+    trailingAnchor = [(UILabel *)v12->_label trailingAnchor];
+    leadingAnchor3 = [(UIImageView *)v12->_accessory leadingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-12.0];
     v55[2] = v35;
-    v36 = [(UIImageView *)v12->_accessory centerYAnchor];
-    v37 = [(CNStarkHeaderPlatterView *)v12 centerYAnchor];
-    [v36 constraintEqualToAnchor:v37];
-    v38 = v53 = v6;
+    centerYAnchor3 = [(UIImageView *)v12->_accessory centerYAnchor];
+    centerYAnchor4 = [(CNStarkHeaderPlatterView *)v12 centerYAnchor];
+    [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    v38 = v53 = textCopy;
     v55[3] = v38;
-    v39 = [(UIImageView *)v12->_accessory trailingAnchor];
-    v40 = [(CNStarkHeaderPlatterView *)v12 trailingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:-17.0];
+    trailingAnchor2 = [(UIImageView *)v12->_accessory trailingAnchor];
+    trailingAnchor3 = [(CNStarkHeaderPlatterView *)v12 trailingAnchor];
+    v41 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-17.0];
     v55[4] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:5];
     [v45 activateConstraints:v42];
 
-    v7 = v52;
-    v6 = v53;
+    imageCopy = v52;
+    textCopy = v53;
   }
 
   return v12;

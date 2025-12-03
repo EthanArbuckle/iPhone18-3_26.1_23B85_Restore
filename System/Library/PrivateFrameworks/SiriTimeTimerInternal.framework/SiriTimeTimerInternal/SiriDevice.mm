@@ -1,16 +1,16 @@
 @interface SiriDevice
-- (BOOL)isEqual:(id)a3;
-- (SiriDevice)initWithCoder:(id)a3;
-- (SiriDevice)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SiriDevice)initWithCoder:(id)coder;
+- (SiriDevice)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation SiriDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2693B3AB0();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SiriDevice.isEqual(_:)(v8);
@@ -28,9 +28,9 @@
   return v6;
 }
 
-- (SiriDevice)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (SiriDevice)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_2693B3750();
     v8 = v7;
@@ -44,7 +44,7 @@
 
   v9 = sub_2693B3750();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_2693B3750();
     v14 = v13;
@@ -59,12 +59,12 @@
   return SiriDevice.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (SiriDevice)initWithCoder:(id)a3
+- (SiriDevice)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SiriDevice();
-  v4 = a3;
-  v5 = [(SiriDevice *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SiriDevice *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -3,8 +3,8 @@
 + (SKTileMapNode)tileMapNodeWithTileSet:(SKTileSet *)tileSet columns:(NSUInteger)columns rows:(NSUInteger)rows tileSize:(CGSize)tileSize fillWithTileGroup:(SKTileGroup *)tileGroup;
 + (SKTileMapNode)tileMapNodeWithTileSet:(SKTileSet *)tileSet columns:(NSUInteger)columns rows:(NSUInteger)rows tileSize:(CGSize)tileSize tileGroupLayout:(NSArray *)tileGroupLayout;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable;
+- (BOOL)isEqualToNode:(id)node;
 - (CGPoint)anchorPoint;
 - (CGPoint)centerOfTileAtColumn:(NSUInteger)column row:(NSUInteger)row;
 - (CGSize)mapSize;
@@ -15,48 +15,48 @@
 - (SKTileDefinition)tileDefinitionAtColumn:(NSUInteger)column row:(NSUInteger)row;
 - (SKTileGroup)tileGroupAtColumn:(NSUInteger)column row:(NSUInteger)row;
 - (SKTileMapNode)init;
-- (SKTileMapNode)initWithCoder:(id)a3;
+- (SKTileMapNode)initWithCoder:(id)coder;
 - (SKTileMapNode)initWithTileSet:(SKTileSet *)tileSet columns:(NSUInteger)columns rows:(NSUInteger)rows tileSize:(CGSize)tileSize;
 - (SKTileMapNode)initWithTileSet:(SKTileSet *)tileSet columns:(NSUInteger)columns rows:(NSUInteger)rows tileSize:(CGSize)tileSize fillWithTileGroup:(SKTileGroup *)tileGroup;
 - (SKTileMapNode)initWithTileSet:(SKTileSet *)tileSet columns:(NSUInteger)columns rows:(NSUInteger)rows tileSize:(CGSize)tileSize tileGroupLayout:(NSArray *)tileGroupLayout;
 - (UIColor)color;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createTileStampFromColumn:(unint64_t)a3 row:(unint64_t)a4 withWidth:(unint64_t)a5 height:(unint64_t)a6 addToTileSet:(BOOL)a7;
-- (id)tileDefinitionForTileID:(unsigned int)a3;
-- (unsigned)getTileIDWithTileGroup:(id)a3 andTileDefinition:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createTileStampFromColumn:(unint64_t)column row:(unint64_t)row withWidth:(unint64_t)width height:(unint64_t)height addToTileSet:(BOOL)set;
+- (id)tileDefinitionForTileID:(unsigned int)d;
+- (unsigned)getTileIDWithTileGroup:(id)group andTileDefinition:(id)definition;
 - (void)_didMakeBackingNode;
-- (void)applyTileStamp:(id)a3 inColumn:(int64_t)a4 row:(int64_t)a5;
+- (void)applyTileStamp:(id)stamp inColumn:(int64_t)column row:(int64_t)row;
 - (void)calculateSize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fillWithTileDefinition:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fillWithTileDefinition:(id)definition;
 - (void)fillWithTileGroup:(SKTileGroup *)tileGroup;
 - (void)forceRedraw;
-- (void)getTileModifiedData:(int64_t *)a3 outMinRowModified:(int64_t *)a4 outMaxColumnModified:(int64_t *)a5 outmaxRowModified:(int64_t *)a6;
+- (void)getTileModifiedData:(int64_t *)data outMinRowModified:(int64_t *)modified outMaxColumnModified:(int64_t *)columnModified outmaxRowModified:(int64_t *)rowModified;
 - (void)rebuildTileSprites;
 - (void)removeAllTiles;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
 - (void)setColor:(UIColor *)color;
 - (void)setColorBlendFactor:(CGFloat)colorBlendFactor;
-- (void)setColumns:(unint64_t)a3 andRows:(int64_t)a4;
+- (void)setColumns:(unint64_t)columns andRows:(int64_t)rows;
 - (void)setEnableAutomapping:(BOOL)enableAutomapping;
 - (void)setNumberOfColumns:(NSUInteger)numberOfColumns;
 - (void)setNumberOfRows:(NSUInteger)numberOfRows;
 - (void)setShader:(SKShader *)shader;
-- (void)setStartData:(unint64_t)a3 rows:(unint64_t)a4 tileSize:(CGSize)a5 tileSet:(id)a6;
+- (void)setStartData:(unint64_t)data rows:(unint64_t)rows tileSize:(CGSize)size tileSet:(id)set;
 - (void)setTileGroup:(SKTileGroup *)tileGroup andTileDefinition:(SKTileDefinition *)tileDefinition forColumn:(NSUInteger)column row:(NSUInteger)row;
 - (void)setTileGroup:(SKTileGroup *)tileGroup forColumn:(NSUInteger)column row:(NSUInteger)row;
-- (void)setTileGroup:(id)a3 andTileDefinition:(id)a4 forTileIndicies:(id)a5;
-- (void)setTileGroup:(id)a3 forTileIndicies:(id)a4;
-- (void)setTileGroupWithoutUpdate:(id)a3 forColumn:(unint64_t)a4 row:(unint64_t)a5;
-- (void)setTileGroupWithoutUpdate:(id)a3 tileDefinition:(id)a4 forColumn:(unint64_t)a5 row:(unint64_t)a6;
+- (void)setTileGroup:(id)group andTileDefinition:(id)definition forTileIndicies:(id)indicies;
+- (void)setTileGroup:(id)group forTileIndicies:(id)indicies;
+- (void)setTileGroupWithoutUpdate:(id)update forColumn:(unint64_t)column row:(unint64_t)row;
+- (void)setTileGroupWithoutUpdate:(id)update tileDefinition:(id)definition forColumn:(unint64_t)column row:(unint64_t)row;
 - (void)setTileSet:(SKTileSet *)tileSet;
 - (void)setTileSize:(CGSize)tileSize;
 - (void)setValue:(SKAttributeValue *)value forAttributeNamed:(NSString *)key;
-- (void)updateTileDefinitionWithoutAutomappingAtX:(unint64_t)a3 y:(unint64_t)a4;
-- (void)updateTileGroupsAtX:(unint64_t)a3 y:(unint64_t)a4;
+- (void)updateTileDefinitionWithoutAutomappingAtX:(unint64_t)x y:(unint64_t)y;
+- (void)updateTileGroupsAtX:(unint64_t)x y:(unint64_t)y;
 - (void)validateAllTiles;
 @end
 
@@ -64,16 +64,16 @@
 
 - (void)setNumberOfColumns:(NSUInteger)numberOfColumns
 {
-  v5 = [(SKTileMapNode *)self numberOfRows];
+  numberOfRows = [(SKTileMapNode *)self numberOfRows];
 
-  [(SKTileMapNode *)self setColumns:numberOfColumns andRows:v5];
+  [(SKTileMapNode *)self setColumns:numberOfColumns andRows:numberOfRows];
 }
 
 - (void)setNumberOfRows:(NSUInteger)numberOfRows
 {
-  v5 = [(SKTileMapNode *)self numberOfColumns];
+  numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
 
-  [(SKTileMapNode *)self setColumns:v5 andRows:numberOfRows];
+  [(SKTileMapNode *)self setColumns:numberOfColumns andRows:numberOfRows];
 }
 
 - (CGSize)tileSize
@@ -202,42 +202,42 @@
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   skcTileMapNode = self->_skcTileMapNode;
-  v5 = a3;
-  v6 = v5;
+  alphaCopy = alpha;
+  v6 = alphaCopy;
   SKCNode::setAlpha(skcTileMapNode, &v6);
   SKCTileMapNode::forceRedraw(self->_skcTileMapNode, 0);
 }
 
-- (SKTileMapNode)initWithCoder:(id)a3
+- (SKTileMapNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = SKTileMapNode;
-  v5 = [(SKNode *)&v41 initWithCoder:v4];
+  v5 = [(SKNode *)&v41 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(SKTileMapNode *)v5 commonInit];
-    v7 = [v4 decodeIntegerForKey:@"_currentColumns"];
-    v8 = [v4 decodeIntegerForKey:@"_currentRows"];
-    [v4 decodeDoubleForKey:@"_tileWidth"];
+    v7 = [coderCopy decodeIntegerForKey:@"_currentColumns"];
+    v8 = [coderCopy decodeIntegerForKey:@"_currentRows"];
+    [coderCopy decodeDoubleForKey:@"_tileWidth"];
     v6->_tileSize.width = v9;
-    [v4 decodeDoubleForKey:@"_tileHeight"];
+    [coderCopy decodeDoubleForKey:@"_tileHeight"];
     v6->_tileSize.height = v10;
     if ([(SKTileMapNode *)v6 shouldUnarchiveTileSet])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tileSetName"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tileSetName"];
       [(SKTileMapNode *)v6 setTileSetName:v11];
 
-      v12 = [(SKTileMapNode *)v6 tileSetName];
+      tileSetName = [(SKTileMapNode *)v6 tileSetName];
 
-      if (v12)
+      if (tileSetName)
       {
-        v13 = [(SKTileMapNode *)v6 tileSetName];
-        v14 = [SKTileSet tileSetNamed:v13];
+        tileSetName2 = [(SKTileMapNode *)v6 tileSetName];
+        v14 = [SKTileSet tileSetNamed:tileSetName2];
         tileSet = v6->_tileSet;
         v6->_tileSet = v14;
       }
@@ -245,7 +245,7 @@
       v16 = v6->_tileSet;
       if (!v16)
       {
-        v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tileSet"];
+        v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tileSet"];
         v18 = v6->_tileSet;
         v6->_tileSet = v17;
 
@@ -255,16 +255,16 @@
       SKCTileMapNode::setTileSetType(v6->_skcTileMapNode, [(SKTileSet *)v16 type]);
     }
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorR"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorR"];
     [v19 doubleValue];
     v21 = v20;
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorG"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorG"];
     [v22 doubleValue];
     v24 = v23;
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorB"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorB"];
     [v25 doubleValue];
     v27 = v26;
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorA"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_baseColorA"];
     [v28 doubleValue];
     v30 = v29;
 
@@ -278,18 +278,18 @@
     v35 = [MEMORY[0x277D75348] colorWithComponentRGBA:{v31, v32, v33, v34}];
     [(SKTileMapNode *)v6 setColor:v35];
 
-    [v4 decodeDoubleForKey:@"_colorBlendFactor"];
+    [coderCopy decodeDoubleForKey:@"_colorBlendFactor"];
     [(SKTileMapNode *)v6 setColorBlendFactor:?];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_blendMode"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_blendMode"];
     -[SKTileMapNode setBlendMode:](v6, "setBlendMode:", [v36 intValue]);
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
     [(SKTileMapNode *)v6 setShader:v37];
 
-    -[SKTileMapNode setLightingBitMask:](v6, "setLightingBitMask:", [v4 decodeInt32ForKey:@"_lightingBitMask"]);
-    v6->_enableAutomapping = [v4 decodeBoolForKey:@"_enableAutomapping"];
+    -[SKTileMapNode setLightingBitMask:](v6, "setLightingBitMask:", [coderCopy decodeInt32ForKey:@"_lightingBitMask"]);
+    v6->_enableAutomapping = [coderCopy decodeBoolForKey:@"_enableAutomapping"];
     v40 = 0;
-    v38 = [v4 decodeBytesForKey:@"_rawTiles" returnedLength:&v40];
+    v38 = [coderCopy decodeBytesForKey:@"_rawTiles" returnedLength:&v40];
     [(SKTileMapNode *)v6 calculateSize];
     [(SKTileMapNode *)v6 setColumns:v7 andRows:v8];
     if (v40 == 4 * v7 * v8)
@@ -301,65 +301,65 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SKTileMapNode;
-  [(SKNode *)&v20 encodeWithCoder:v4];
-  v5 = [(SKTileMapNode *)self numberOfColumns];
-  v6 = [(SKTileMapNode *)self numberOfRows];
-  [v4 encodeInteger:v5 forKey:@"_currentColumns"];
-  [v4 encodeInteger:v6 forKey:@"_currentRows"];
-  [v4 encodeDouble:@"_tileWidth" forKey:self->_tileSize.width];
-  [v4 encodeDouble:@"_tileHeight" forKey:self->_tileSize.height];
-  v7 = [(SKTileMapNode *)self tileSetName];
-  [v4 encodeObject:v7 forKey:@"_tileSetName"];
+  [(SKNode *)&v20 encodeWithCoder:coderCopy];
+  numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
+  numberOfRows = [(SKTileMapNode *)self numberOfRows];
+  [coderCopy encodeInteger:numberOfColumns forKey:@"_currentColumns"];
+  [coderCopy encodeInteger:numberOfRows forKey:@"_currentRows"];
+  [coderCopy encodeDouble:@"_tileWidth" forKey:self->_tileSize.width];
+  [coderCopy encodeDouble:@"_tileHeight" forKey:self->_tileSize.height];
+  tileSetName = [(SKTileMapNode *)self tileSetName];
+  [coderCopy encodeObject:tileSetName forKey:@"_tileSetName"];
 
-  [v4 encodeObject:self->_tileSet forKey:@"_tileSet"];
+  [coderCopy encodeObject:self->_tileSet forKey:@"_tileSet"];
   v19 = *(self->_skcTileMapNode + 19);
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:{*&v19, v19}];
-  [v4 encodeObject:v8 forKey:@"_baseColorR"];
+  [coderCopy encodeObject:v8 forKey:@"_baseColorR"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v19 + 1)];
-  [v4 encodeObject:v9 forKey:@"_baseColorG"];
+  [coderCopy encodeObject:v9 forKey:@"_baseColorG"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v19 + 2)];
-  [v4 encodeObject:v10 forKey:@"_baseColorB"];
+  [coderCopy encodeObject:v10 forKey:@"_baseColorB"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v19 + 3)];
-  [v4 encodeObject:v11 forKey:@"_baseColorA"];
+  [coderCopy encodeObject:v11 forKey:@"_baseColorA"];
 
   v12 = MEMORY[0x277CCABB0];
   [(SKTileMapNode *)self colorBlendFactor];
   v13 = [v12 numberWithDouble:?];
-  [v4 encodeObject:v13 forKey:@"_colorMix"];
+  [coderCopy encodeObject:v13 forKey:@"_colorMix"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithLong:{-[SKTileMapNode blendMode](self, "blendMode")}];
-  [v4 encodeObject:v14 forKey:@"_blendMode"];
+  [coderCopy encodeObject:v14 forKey:@"_blendMode"];
 
-  v15 = [(SKTileMapNode *)self shader];
-  [v4 encodeObject:v15 forKey:@"_shader"];
+  shader = [(SKTileMapNode *)self shader];
+  [coderCopy encodeObject:shader forKey:@"_shader"];
 
-  [v4 encodeInt32:-[SKTileMapNode lightingBitMask](self forKey:{"lightingBitMask"), @"_lightingBitMask"}];
-  [v4 encodeBool:self->_enableAutomapping forKey:@"_enableAutomapping"];
+  [coderCopy encodeInt32:-[SKTileMapNode lightingBitMask](self forKey:{"lightingBitMask"), @"_lightingBitMask"}];
+  [coderCopy encodeBool:self->_enableAutomapping forKey:@"_enableAutomapping"];
   v16 = MEMORY[0x277CCAE60];
   [(SKTileMapNode *)self anchorPoint];
   v17 = [v16 valueWithCGPoint:?];
-  [v4 encodeObject:v17 forKey:@"_anchorPoint"];
+  [coderCopy encodeObject:v17 forKey:@"_anchorPoint"];
 
   RawTilesCopy = SKCTileMapNode::getRawTilesCopy(self->_skcTileMapNode);
-  [v4 encodeBytes:RawTilesCopy length:4 * v5 * v6 forKey:@"_rawTiles"];
+  [coderCopy encodeBytes:RawTilesCopy length:4 * numberOfColumns * numberOfRows forKey:@"_rawTiles"];
   if (RawTilesCopy)
   {
     free(RawTilesCopy);
   }
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (v4 == self)
+  nodeCopy = node;
+  if (nodeCopy == self)
   {
     v31 = 1;
     goto LABEL_30;
@@ -372,7 +372,7 @@
     goto LABEL_30;
   }
 
-  v5 = v4;
+  v5 = nodeCopy;
   v36.receiver = self;
   v36.super_class = SKTileMapNode;
   if (![(SKNode *)&v36 isEqualToNode:v5])
@@ -380,14 +380,14 @@
     goto LABEL_26;
   }
 
-  v6 = [(SKTileMapNode *)self numberOfColumns];
-  if (v6 != [(SKTileMapNode *)v5 numberOfColumns])
+  numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
+  if (numberOfColumns != [(SKTileMapNode *)v5 numberOfColumns])
   {
     goto LABEL_26;
   }
 
-  v7 = [(SKTileMapNode *)self numberOfRows];
-  if (v7 != [(SKTileMapNode *)v5 numberOfRows])
+  numberOfRows = [(SKTileMapNode *)self numberOfRows];
+  if (numberOfRows != [(SKTileMapNode *)v5 numberOfRows])
   {
     goto LABEL_26;
   }
@@ -401,9 +401,9 @@
   tileSetName = self->_tileSetName;
   if (!tileSetName)
   {
-    v10 = [(SKTileMapNode *)v5 tileSetName];
+    tileSetName = [(SKTileMapNode *)v5 tileSetName];
 
-    if (!v10)
+    if (!tileSetName)
     {
       goto LABEL_12;
     }
@@ -411,8 +411,8 @@
     tileSetName = self->_tileSetName;
   }
 
-  v11 = [(SKTileMapNode *)v5 tileSetName];
-  v12 = [(NSString *)tileSetName isEqualToString:v11];
+  tileSetName2 = [(SKTileMapNode *)v5 tileSetName];
+  v12 = [(NSString *)tileSetName isEqualToString:tileSetName2];
 
   if (!v12)
   {
@@ -426,14 +426,14 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v14 = [(SKTileMapNode *)v5 tileSet];
+  tileSet = [(SKTileMapNode *)v5 tileSet];
 
-  if (v14)
+  if (tileSet)
   {
     tileSet = self->_tileSet;
 LABEL_15:
-    v15 = [(SKTileMapNode *)v5 tileSet];
-    v16 = [(SKTileSet *)tileSet isEqualToNode:v15];
+    tileSet2 = [(SKTileMapNode *)v5 tileSet];
+    v16 = [(SKTileSet *)tileSet isEqualToNode:tileSet2];
 
     if (!v16)
     {
@@ -451,14 +451,14 @@ LABEL_15:
     *&v21 = v21;
     if ((COERCE_UNSIGNED_INT(v20 - *&v21) & 0x60000000) != 0)
     {
-      v22 = [(SKTileMapNode *)self blendMode];
-      if (v22 == [(SKTileMapNode *)v5 blendMode])
+      blendMode = [(SKTileMapNode *)self blendMode];
+      if (blendMode == [(SKTileMapNode *)v5 blendMode])
       {
-        v23 = [(SKTileMapNode *)self enableAutomapping];
-        if (v23 == [(SKTileMapNode *)v5 enableAutomapping])
+        enableAutomapping = [(SKTileMapNode *)self enableAutomapping];
+        if (enableAutomapping == [(SKTileMapNode *)v5 enableAutomapping])
         {
-          v24 = [(SKTileMapNode *)self lightingBitMask];
-          if (v24 == [(SKTileMapNode *)v5 lightingBitMask])
+          lightingBitMask = [(SKTileMapNode *)self lightingBitMask];
+          if (lightingBitMask == [(SKTileMapNode *)v5 lightingBitMask])
           {
             [(SKTileMapNode *)self anchorPoint];
             v26 = v25;
@@ -466,9 +466,9 @@ LABEL_15:
             [(SKTileMapNode *)v5 anchorPoint];
             if (v26 != v30 || v28 != v29)
             {
-              v33 = [(SKTileMapNode *)self shader];
-              v34 = [(SKTileMapNode *)v5 shader];
-              v35 = [v33 isEqualToShader:v34];
+              shader = [(SKTileMapNode *)self shader];
+              shader2 = [(SKTileMapNode *)v5 shader];
+              v35 = [shader isEqualToShader:shader2];
 
               v31 = v35 ^ 1;
               goto LABEL_27;
@@ -494,11 +494,11 @@ LABEL_30:
   return [(SKTileMapNode *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKTileMapNode;
-  v4 = [(SKNode *)&v7 copyWithZone:a3];
+  v4 = [(SKNode *)&v7 copyWithZone:zone];
   RawTilesCopy = SKCTileMapNode::getRawTilesCopy(self->_skcTileMapNode);
   SKCTileMapNode::setRawTiles(v4[17], RawTilesCopy, [(SKTileMapNode *)self numberOfColumns], [(SKTileMapNode *)self numberOfRows]);
   if (RawTilesCopy)
@@ -509,20 +509,20 @@ LABEL_30:
   return v4;
 }
 
-- (void)setStartData:(unint64_t)a3 rows:(unint64_t)a4 tileSize:(CGSize)a5 tileSet:(id)a6
+- (void)setStartData:(unint64_t)data rows:(unint64_t)rows tileSize:(CGSize)size tileSet:(id)set
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a6;
-  objc_storeStrong(&self->_tileSet, a6);
-  SKCTileMapNode::setTileSetType(self->_skcTileMapNode, [v12 type]);
+  height = size.height;
+  width = size.width;
+  setCopy = set;
+  objc_storeStrong(&self->_tileSet, set);
+  SKCTileMapNode::setTileSetType(self->_skcTileMapNode, [setCopy type]);
   self->_tileSize.width = width;
   self->_tileSize.height = height;
   self->_enableAutomapping = 1;
   [(SKNode *)self setName:@"Default Tile Map"];
   [(SKTileMapNode *)self setLightingBitMask:0];
   [(SKTileMapNode *)self calculateSize];
-  [(SKTileMapNode *)self setColumns:a3 andRows:a4];
+  [(SKTileMapNode *)self setColumns:data andRows:rows];
 }
 
 - (SKTileMapNode)init
@@ -605,14 +605,14 @@ LABEL_30:
 
         else
         {
-          v19 = [(SKTileMapNode *)v16 tileSet];
-          v20 = [v19 tileGroups];
+          tileSet = [(SKTileMapNode *)v16 tileSet];
+          tileGroups = [tileSet tileGroups];
           v21 = [(NSArray *)v14 objectAtIndexedSubscript:i];
-          v22 = [v20 indexOfObject:v21];
+          v22 = [tileGroups indexOfObject:v21];
 
-          v23 = [(SKTileMapNode *)v16 tileSet];
-          v24 = [v23 tileGroups];
-          v25 = [v24 count];
+          tileSet2 = [(SKTileMapNode *)v16 tileSet];
+          tileGroups2 = [tileSet2 tileGroups];
+          v25 = [tileGroups2 count];
 
           if (v22 >= v25)
           {
@@ -676,10 +676,10 @@ LABEL_30:
   [(SKNode *)&v3 dealloc];
 }
 
-- (unsigned)getTileIDWithTileGroup:(id)a3 andTileDefinition:(id)a4
+- (unsigned)getTileIDWithTileGroup:(id)group andTileDefinition:(id)definition
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  definitionCopy = definition;
   tileSet = self->_tileSet;
   if (!tileSet)
   {
@@ -688,17 +688,17 @@ LABEL_30:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (groupCopy)
   {
-    v9 = [(SKTileSet *)tileSet tileGroups];
-    v10 = [v9 indexOfObject:v6];
+    tileGroups = [(SKTileSet *)tileSet tileGroups];
+    v10 = [tileGroups indexOfObject:groupCopy];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       LOWORD(v10) = 0x7FFF;
     }
 
-    if (v7)
+    if (definitionCopy)
     {
       goto LABEL_6;
     }
@@ -709,14 +709,14 @@ LABEL_9:
   }
 
   LOWORD(v10) = 0x7FFF;
-  if (!v7)
+  if (!definitionCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
-  v11 = [(SKTileSet *)self->_tileSet tileDefinitions];
-  LOWORD(v12) = [v11 indexOfObject:v7];
+  tileDefinitions = [(SKTileSet *)self->_tileSet tileDefinitions];
+  LOWORD(v12) = [tileDefinitions indexOfObject:definitionCopy];
 
   v12 = v12;
 LABEL_10:
@@ -724,16 +724,16 @@ LABEL_10:
   return v12 & 0x8000FFFF | ((v10 & 0x7FFF) << 16);
 }
 
-- (void)fillWithTileDefinition:(id)a3
+- (void)fillWithTileDefinition:(id)definition
 {
-  v13 = a3;
-  if (v13 && (tileSet = self->_tileSet) != 0 && ([(SKTileSet *)tileSet tileDefinitions], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  definitionCopy = definition;
+  if (definitionCopy && (tileSet = self->_tileSet) != 0 && ([(SKTileSet *)tileSet tileDefinitions], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(SKTileSet *)self->_tileSet tileDefinitions];
-    v7 = [v6 indexOfObject:v13];
+    tileDefinitions = [(SKTileSet *)self->_tileSet tileDefinitions];
+    v7 = [tileDefinitions indexOfObject:definitionCopy];
 
-    v8 = [(SKTileSet *)self->_tileSet tileDefinitions];
-    v9 = [v8 count];
+    tileDefinitions2 = [(SKTileSet *)self->_tileSet tileDefinitions];
+    v9 = [tileDefinitions2 count];
 
     if (v7 >= v9)
     {
@@ -768,12 +768,12 @@ LABEL_10:
   v19 = tileGroup;
   if (v19 && (-[SKTileMapNode tileSet](self, "tileSet"), (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SKTileMapNode tileSet](self, "tileSet"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tileGroups], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
-    v7 = [(SKTileMapNode *)self tileSet];
-    v8 = [v7 tileGroups];
-    v9 = [v8 indexOfObject:v19];
+    tileSet = [(SKTileMapNode *)self tileSet];
+    tileGroups = [tileSet tileGroups];
+    v9 = [tileGroups indexOfObject:v19];
 
-    v10 = [(SKTileSet *)self->_tileSet tileGroups];
-    v11 = [v10 count];
+    tileGroups2 = [(SKTileSet *)self->_tileSet tileGroups];
+    v11 = [tileGroups2 count];
 
     if (v9 >= v11)
     {
@@ -834,9 +834,9 @@ LABEL_10:
   v5 = column;
   if (-[SKTileMapNode numberOfColumns](self, "numberOfColumns") > column && -[SKTileMapNode numberOfRows](self, "numberOfRows") > row && (-[SKTileMapNode tileSet](self, "tileSet"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, -[SKTileMapNode tileSet](self, "tileSet"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tileDefinitions], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10) && (RawTile = SKCTileMapNode::getRawTile(self->_skcTileMapNode, v5 + *(self->_skcTileMapNode + 151) * row), -[SKTileMapNode tileSet](self, "tileSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "tileDefinitions"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, v14 > RawTile))
   {
-    v15 = [(SKTileMapNode *)self tileSet];
-    v16 = [v15 tileDefinitions];
-    v17 = [v16 objectAtIndex:RawTile];
+    tileSet = [(SKTileMapNode *)self tileSet];
+    tileDefinitions = [tileSet tileDefinitions];
+    v17 = [tileDefinitions objectAtIndex:RawTile];
   }
 
   else
@@ -852,9 +852,9 @@ LABEL_10:
   v5 = column;
   if (-[SKTileMapNode numberOfColumns](self, "numberOfColumns") > column && -[SKTileMapNode numberOfRows](self, "numberOfRows") > row && (-[SKTileMapNode tileSet](self, "tileSet"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, -[SKTileMapNode tileSet](self, "tileSet"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tileGroups], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10) && (RawTile = SKCTileMapNode::getRawTile(self->_skcTileMapNode, v5 + *(self->_skcTileMapNode + 151) * row), -[SKTileMapNode tileSet](self, "tileSet"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "tileGroups"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v15 = HIWORD(RawTile) & 0x7FFF, v13, v12, v14 > v15))
   {
-    v16 = [(SKTileMapNode *)self tileSet];
-    v17 = [v16 tileGroups];
-    v18 = [v17 objectAtIndex:v15];
+    tileSet = [(SKTileMapNode *)self tileSet];
+    tileGroups = [tileSet tileGroups];
+    v18 = [tileGroups objectAtIndex:v15];
   }
 
   else
@@ -872,14 +872,14 @@ LABEL_10:
   {
     if (v19 && (-[SKTileMapNode tileSet](self, "tileSet"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SKTileMapNode tileSet](self, "tileSet"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tileGroups], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
     {
-      v11 = [(SKTileMapNode *)self tileSet];
+      tileSet = [(SKTileMapNode *)self tileSet];
       v12 = v19;
-      v13 = v11;
-      v14 = [v13 tileGroups];
-      v15 = [v14 indexOfObject:v12];
+      v13 = tileSet;
+      tileGroups = [v13 tileGroups];
+      v15 = [tileGroups indexOfObject:v12];
 
-      v16 = [v13 tileGroups];
-      v17 = [v16 count];
+      tileGroups2 = [v13 tileGroups];
+      v17 = [tileGroups2 count];
 
       if (v15 >= v17)
       {
@@ -908,28 +908,28 @@ LABEL_10:
   v10 = tileDefinition;
   if ([(SKTileMapNode *)self numberOfColumns]> column && [(SKTileMapNode *)self numberOfRows]> row)
   {
-    v11 = [(SKTileMapNode *)self tileSet];
-    if (v11)
+    tileSet = [(SKTileMapNode *)self tileSet];
+    if (tileSet)
     {
-      v12 = [(SKTileMapNode *)self tileSet];
-      v13 = [v12 tileGroups];
-      if (v13)
+      tileSet2 = [(SKTileMapNode *)self tileSet];
+      tileGroups = [tileSet2 tileGroups];
+      if (tileGroups)
       {
-        v14 = [(SKTileMapNode *)self tileSet];
-        v15 = [v14 tileDefinitions];
+        tileSet3 = [(SKTileMapNode *)self tileSet];
+        tileDefinitions = [tileSet3 tileDefinitions];
 
-        if (v15)
+        if (tileDefinitions)
         {
           if (v32)
           {
-            v16 = [(SKTileMapNode *)self tileSet];
+            tileSet4 = [(SKTileMapNode *)self tileSet];
             v17 = v32;
-            v18 = v16;
-            v19 = [v18 tileGroups];
-            v20 = [v19 indexOfObject:v17];
+            v18 = tileSet4;
+            tileGroups2 = [v18 tileGroups];
+            v20 = [tileGroups2 indexOfObject:v17];
 
-            v21 = [v18 tileGroups];
-            v22 = [v21 count];
+            tileGroups3 = [v18 tileGroups];
+            v22 = [tileGroups3 count];
 
             if (v20 >= v22)
             {
@@ -947,14 +947,14 @@ LABEL_10:
             v23 = 2147418112;
           }
 
-          v24 = [(SKTileMapNode *)self tileSet];
+          tileSet5 = [(SKTileMapNode *)self tileSet];
           v25 = v10;
-          v26 = v24;
-          v27 = [v26 tileDefinitions];
-          v28 = [v27 indexOfObject:v25];
+          v26 = tileSet5;
+          tileDefinitions2 = [v26 tileDefinitions];
+          v28 = [tileDefinitions2 indexOfObject:v25];
 
-          v29 = [v26 tileDefinitions];
-          v30 = [v29 count];
+          tileDefinitions3 = [v26 tileDefinitions];
+          v30 = [tileDefinitions3 count];
 
           v31 = v28;
           if (v28 >= v30)
@@ -974,29 +974,29 @@ LABEL_10:
   }
 }
 
-- (void)setTileGroupWithoutUpdate:(id)a3 forColumn:(unint64_t)a4 row:(unint64_t)a5
+- (void)setTileGroupWithoutUpdate:(id)update forColumn:(unint64_t)column row:(unint64_t)row
 {
-  v20 = a3;
-  if ([(SKTileMapNode *)self numberOfColumns]> a4 && [(SKTileMapNode *)self numberOfRows]> a5)
+  updateCopy = update;
+  if ([(SKTileMapNode *)self numberOfColumns]> column && [(SKTileMapNode *)self numberOfRows]> row)
   {
-    v8 = [(SKTileMapNode *)self tileSet];
-    if (v8)
+    tileSet = [(SKTileMapNode *)self tileSet];
+    if (tileSet)
     {
-      v9 = [(SKTileMapNode *)self tileSet];
-      v10 = [v9 tileGroups];
+      tileSet2 = [(SKTileMapNode *)self tileSet];
+      tileGroups = [tileSet2 tileGroups];
 
-      if (v10)
+      if (tileGroups)
       {
-        v11 = [(SKTileMapNode *)self tileSet];
-        v12 = v20;
-        v13 = v11;
-        v14 = [v13 tileGroups];
-        v15 = [v14 indexOfObject:v12];
+        tileSet3 = [(SKTileMapNode *)self tileSet];
+        v12 = updateCopy;
+        v13 = tileSet3;
+        tileGroups2 = [v13 tileGroups];
+        v15 = [tileGroups2 indexOfObject:v12];
 
-        v16 = [v13 tileGroups];
-        v17 = [v16 count];
+        tileGroups3 = [v13 tileGroups];
+        v17 = [tileGroups3 count];
 
-        v18 = [(SKTileMapNode *)self numberOfColumns];
+        numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
         if (v15 >= v17)
         {
           v19 = 0x7FFFFFFF;
@@ -1007,49 +1007,49 @@ LABEL_10:
           v19 = ((v15 & 0x7FFF) << 16) | 0xFFFF;
         }
 
-        SKCTileMapNode::setTile(self->_skcTileMapNode, a4 + v18 * a5, v19);
+        SKCTileMapNode::setTile(self->_skcTileMapNode, column + numberOfColumns * row, v19);
       }
     }
   }
 }
 
-- (void)setTileGroupWithoutUpdate:(id)a3 tileDefinition:(id)a4 forColumn:(unint64_t)a5 row:(unint64_t)a6
+- (void)setTileGroupWithoutUpdate:(id)update tileDefinition:(id)definition forColumn:(unint64_t)column row:(unint64_t)row
 {
-  v33 = a3;
-  v10 = a4;
-  if ([(SKTileMapNode *)self numberOfColumns]> a5 && [(SKTileMapNode *)self numberOfRows]> a6)
+  updateCopy = update;
+  definitionCopy = definition;
+  if ([(SKTileMapNode *)self numberOfColumns]> column && [(SKTileMapNode *)self numberOfRows]> row)
   {
-    v11 = [(SKTileMapNode *)self tileSet];
-    if (v11)
+    tileSet = [(SKTileMapNode *)self tileSet];
+    if (tileSet)
     {
-      v12 = [(SKTileMapNode *)self tileSet];
-      v13 = [v12 tileGroups];
-      if (v13)
+      tileSet2 = [(SKTileMapNode *)self tileSet];
+      tileGroups = [tileSet2 tileGroups];
+      if (tileGroups)
       {
-        v14 = [(SKTileMapNode *)self tileSet];
-        v15 = [v14 tileDefinitions];
+        tileSet3 = [(SKTileMapNode *)self tileSet];
+        tileDefinitions = [tileSet3 tileDefinitions];
 
-        if (v15)
+        if (tileDefinitions)
         {
-          v16 = [(SKTileMapNode *)self tileSet];
-          v17 = v33;
-          v18 = v16;
-          v19 = [v18 tileGroups];
-          v20 = [v19 indexOfObject:v17];
+          tileSet4 = [(SKTileMapNode *)self tileSet];
+          v17 = updateCopy;
+          v18 = tileSet4;
+          tileGroups2 = [v18 tileGroups];
+          v20 = [tileGroups2 indexOfObject:v17];
 
-          v21 = [v18 tileGroups];
-          v32 = [v21 count];
+          tileGroups3 = [v18 tileGroups];
+          v32 = [tileGroups3 count];
 
-          v22 = [(SKTileMapNode *)self tileSet];
-          v23 = v10;
-          v24 = v22;
-          v25 = [v24 tileDefinitions];
-          v26 = [v25 indexOfObject:v23];
+          tileSet5 = [(SKTileMapNode *)self tileSet];
+          v23 = definitionCopy;
+          v24 = tileSet5;
+          tileDefinitions2 = [v24 tileDefinitions];
+          v26 = [tileDefinitions2 indexOfObject:v23];
 
-          v27 = [v24 tileDefinitions];
-          v28 = [v27 count];
+          tileDefinitions3 = [v24 tileDefinitions];
+          v28 = [tileDefinitions3 count];
 
-          v29 = [(SKTileMapNode *)self numberOfColumns];
+          numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
           v30 = (v20 & 0x7FFF) << 16;
           if (v20 >= v32)
           {
@@ -1062,7 +1062,7 @@ LABEL_10:
             v31 = 0xFFFF;
           }
 
-          SKCTileMapNode::setTile(self->_skcTileMapNode, a5 + v29 * a6, v31 | v30);
+          SKCTileMapNode::setTile(self->_skcTileMapNode, column + numberOfColumns * row, v31 | v30);
         }
       }
 
@@ -1073,21 +1073,21 @@ LABEL_10:
   }
 }
 
-- (void)setTileGroup:(id)a3 forTileIndicies:(id)a4
+- (void)setTileGroup:(id)group forTileIndicies:(id)indicies
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (-[SKTileMapNode tileSet](self, "tileSet"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SKTileMapNode tileSet](self, "tileSet"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tileGroups], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
+  groupCopy = group;
+  indiciesCopy = indicies;
+  if (groupCopy && (-[SKTileMapNode tileSet](self, "tileSet"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SKTileMapNode tileSet](self, "tileSet"), v9 = objc_claimAutoreleasedReturnValue(), [v9 tileGroups], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
   {
-    v11 = [(SKTileMapNode *)self tileSet];
-    v12 = v6;
-    v13 = v11;
-    v14 = [v13 tileGroups];
-    v15 = [v14 indexOfObject:v12];
+    tileSet = [(SKTileMapNode *)self tileSet];
+    v12 = groupCopy;
+    v13 = tileSet;
+    tileGroups = [v13 tileGroups];
+    v15 = [tileGroups indexOfObject:v12];
 
-    v16 = [v13 tileGroups];
-    v17 = [v16 count];
+    tileGroups2 = [v13 tileGroups];
+    v17 = [tileGroups2 count];
 
     if (v15 >= v17)
     {
@@ -1105,15 +1105,15 @@ LABEL_10:
     v18 = 0x7FFFFFFF;
   }
 
-  v19 = [(SKTileMapNode *)self numberOfColumns];
-  v20 = [(SKTileMapNode *)self numberOfRows];
+  numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
+  numberOfRows = [(SKTileMapNode *)self numberOfRows];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v21 = v7;
+  v21 = indiciesCopy;
   v22 = [v21 countByEnumeratingWithState:&v39 objects:v44 count:16];
-  v23 = v20 * v19;
+  v23 = numberOfRows * numberOfColumns;
   if (v22)
   {
     v24 = *v40;
@@ -1129,10 +1129,10 @@ LABEL_10:
         v26 = *(*(&v39 + 1) + 8 * i);
         if (v26)
         {
-          v27 = [v26 unsignedIntegerValue];
-          if (v27 < v23)
+          unsignedIntegerValue = [v26 unsignedIntegerValue];
+          if (unsignedIntegerValue < v23)
           {
-            SKCTileMapNode::setTile(self->_skcTileMapNode, v27, v18);
+            SKCTileMapNode::setTile(self->_skcTileMapNode, unsignedIntegerValue, v18);
           }
         }
       }
@@ -1164,11 +1164,11 @@ LABEL_10:
         v32 = *(*(&v35 + 1) + 8 * j);
         if (v32)
         {
-          v33 = [v32 unsignedIntegerValue];
-          if (v33 < v23)
+          unsignedIntegerValue2 = [v32 unsignedIntegerValue];
+          if (unsignedIntegerValue2 < v23)
           {
-            v34 = [(SKTileMapNode *)self numberOfColumns];
-            [(SKTileMapNode *)self updateTileGroupsAtX:v33 % v34 y:v33 / v34 * v34 / [(SKTileMapNode *)self numberOfRows]];
+            numberOfColumns2 = [(SKTileMapNode *)self numberOfColumns];
+            [(SKTileMapNode *)self updateTileGroupsAtX:unsignedIntegerValue2 % numberOfColumns2 y:unsignedIntegerValue2 / numberOfColumns2 * numberOfColumns2 / [(SKTileMapNode *)self numberOfRows]];
           }
         }
       }
@@ -1180,41 +1180,41 @@ LABEL_10:
   }
 }
 
-- (void)setTileGroup:(id)a3 andTileDefinition:(id)a4 forTileIndicies:(id)a5
+- (void)setTileGroup:(id)group andTileDefinition:(id)definition forTileIndicies:(id)indicies
 {
   v58 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v47 = a4;
-  v8 = a5;
-  v9 = [(SKTileMapNode *)self tileSet];
-  if (v9)
+  groupCopy = group;
+  definitionCopy = definition;
+  indiciesCopy = indicies;
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (tileSet)
   {
-    v10 = [(SKTileMapNode *)self tileSet];
-    v11 = [v10 tileGroups];
-    if (v11)
+    tileSet2 = [(SKTileMapNode *)self tileSet];
+    tileGroups = [tileSet2 tileGroups];
+    if (tileGroups)
     {
-      v12 = [(SKTileMapNode *)self tileSet];
-      v13 = [v12 tileDefinitions];
+      tileSet3 = [(SKTileMapNode *)self tileSet];
+      tileDefinitions = [tileSet3 tileDefinitions];
 
-      if (v13)
+      if (tileDefinitions)
       {
-        v14 = [(SKTileMapNode *)self tileSet];
-        v15 = v46;
-        v16 = v14;
-        v17 = [v16 tileGroups];
-        v18 = [v17 indexOfObject:v15];
+        tileSet4 = [(SKTileMapNode *)self tileSet];
+        v15 = groupCopy;
+        v16 = tileSet4;
+        tileGroups2 = [v16 tileGroups];
+        v18 = [tileGroups2 indexOfObject:v15];
 
-        v19 = [v16 tileGroups];
-        v20 = [v19 count];
+        tileGroups3 = [v16 tileGroups];
+        v20 = [tileGroups3 count];
 
-        v21 = [(SKTileMapNode *)self tileSet];
-        v22 = v47;
-        v23 = v21;
-        v24 = [v23 tileDefinitions];
-        v25 = [v24 indexOfObject:v22];
+        tileSet5 = [(SKTileMapNode *)self tileSet];
+        v22 = definitionCopy;
+        v23 = tileSet5;
+        tileDefinitions2 = [v23 tileDefinitions];
+        v25 = [tileDefinitions2 indexOfObject:v22];
 
-        v26 = [v23 tileDefinitions];
-        v27 = [v26 count];
+        tileDefinitions3 = [v23 tileDefinitions];
+        v27 = [tileDefinitions3 count];
 
         if (v25 >= v27)
         {
@@ -1236,15 +1236,15 @@ LABEL_10:
           v29 = (v18 & 0x7FFF) << 16;
         }
 
-        v30 = [(SKTileMapNode *)self numberOfColumns];
-        v31 = [(SKTileMapNode *)self numberOfRows];
+        numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
+        numberOfRows = [(SKTileMapNode *)self numberOfRows];
         v54 = 0u;
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v32 = v8;
+        v32 = indiciesCopy;
         v33 = [v32 countByEnumeratingWithState:&v52 objects:v57 count:16];
-        v34 = v31 * v30;
+        v34 = numberOfRows * numberOfColumns;
         if (v33)
         {
           v35 = *v53;
@@ -1260,10 +1260,10 @@ LABEL_10:
               v37 = *(*(&v52 + 1) + 8 * i);
               if (v37)
               {
-                v38 = [v37 unsignedIntegerValue];
-                if (v38 < v34)
+                unsignedIntegerValue = [v37 unsignedIntegerValue];
+                if (unsignedIntegerValue < v34)
                 {
-                  SKCTileMapNode::setTile(self->_skcTileMapNode, v38, v28 | v29);
+                  SKCTileMapNode::setTile(self->_skcTileMapNode, unsignedIntegerValue, v28 | v29);
                 }
               }
             }
@@ -1295,11 +1295,11 @@ LABEL_10:
               v43 = *(*(&v48 + 1) + 8 * j);
               if (v43)
               {
-                v44 = [v43 unsignedIntegerValue];
-                if (v44 < v34)
+                unsignedIntegerValue2 = [v43 unsignedIntegerValue];
+                if (unsignedIntegerValue2 < v34)
                 {
-                  v45 = [(SKTileMapNode *)self numberOfColumns];
-                  [(SKTileMapNode *)self updateTileGroupsAtX:v44 % v45 y:v44 / v45 * v45 / [(SKTileMapNode *)self numberOfRows]];
+                  numberOfColumns2 = [(SKTileMapNode *)self numberOfColumns];
+                  [(SKTileMapNode *)self updateTileGroupsAtX:unsignedIntegerValue2 % numberOfColumns2 y:unsignedIntegerValue2 / numberOfColumns2 * numberOfColumns2 / [(SKTileMapNode *)self numberOfRows]];
                 }
               }
             }
@@ -1343,13 +1343,13 @@ LABEL_10:
   }
 }
 
-- (void)getTileModifiedData:(int64_t *)a3 outMinRowModified:(int64_t *)a4 outMaxColumnModified:(int64_t *)a5 outmaxRowModified:(int64_t *)a6
+- (void)getTileModifiedData:(int64_t *)data outMinRowModified:(int64_t *)modified outMaxColumnModified:(int64_t *)columnModified outmaxRowModified:(int64_t *)rowModified
 {
   skcTileMapNode = self->_skcTileMapNode;
-  *a3 = skcTileMapNode[156];
-  *a4 = skcTileMapNode[157];
-  *a5 = skcTileMapNode[158];
-  *a6 = skcTileMapNode[159];
+  *data = skcTileMapNode[156];
+  *modified = skcTileMapNode[157];
+  *columnModified = skcTileMapNode[158];
+  *rowModified = skcTileMapNode[159];
 }
 
 - (void)removeAllTiles
@@ -1391,61 +1391,61 @@ LABEL_10:
   }
 }
 
-- (void)updateTileDefinitionWithoutAutomappingAtX:(unint64_t)a3 y:(unint64_t)a4
+- (void)updateTileDefinitionWithoutAutomappingAtX:(unint64_t)x y:(unint64_t)y
 {
   v47 = *MEMORY[0x277D85DE8];
   skcTileMapNode = self->_skcTileMapNode;
-  v6 = a3 + *(skcTileMapNode + 151) * a4;
+  v6 = x + *(skcTileMapNode + 151) * y;
   RawTile = SKCTileMapNode::getRawTile(skcTileMapNode, v6);
   v8 = HIWORD(RawTile) & 0x7FFF;
   if (v8 != 0x7FFF)
   {
     v9 = RawTile;
-    v10 = [(SKTileSet *)self->_tileSet tileGroups];
-    v11 = [v10 count];
+    tileGroups = [(SKTileSet *)self->_tileSet tileGroups];
+    v11 = [tileGroups count];
 
     if (v11 > v8)
     {
-      v12 = [(SKTileSet *)self->_tileSet tileDefinitions];
-      v13 = [v12 count];
+      tileDefinitions = [(SKTileSet *)self->_tileSet tileDefinitions];
+      v13 = [tileDefinitions count];
 
       if (v9 == 0xFFFF || v13 <= v9)
       {
-        v15 = [(SKTileSet *)self->_tileSet tileGroups];
-        v16 = [v15 objectAtIndexedSubscript:v8];
+        tileGroups2 = [(SKTileSet *)self->_tileSet tileGroups];
+        v16 = [tileGroups2 objectAtIndexedSubscript:v8];
 
         if (!v16)
         {
           goto LABEL_35;
         }
 
-        v17 = [v16 rules];
-        if (!v17)
+        rules = [v16 rules];
+        if (!rules)
         {
           goto LABEL_35;
         }
 
-        v18 = [v16 rules];
-        v19 = [v18 count];
+        rules2 = [v16 rules];
+        v19 = [rules2 count];
 
         if (!v19)
         {
           goto LABEL_35;
         }
 
-        v20 = [v16 rules];
-        v21 = [v20 firstObject];
+        rules3 = [v16 rules];
+        firstObject = [rules3 firstObject];
 
-        v35 = v21;
-        v36 = [v21 tileDefinitions];
-        if ([v36 count] == 1)
+        v35 = firstObject;
+        tileDefinitions2 = [firstObject tileDefinitions];
+        if ([tileDefinitions2 count] == 1)
         {
-          v22 = [v36 firstObject];
+          firstObject2 = [tileDefinitions2 firstObject];
         }
 
         else
         {
-          if (![v36 count])
+          if (![tileDefinitions2 count])
           {
             v30 = 0;
 LABEL_34:
@@ -1459,7 +1459,7 @@ LABEL_35:
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v23 = v36;
+          v23 = tileDefinitions2;
           v24 = [v23 countByEnumeratingWithState:&v41 objects:v46 count:16];
           if (v24)
           {
@@ -1534,17 +1534,17 @@ LABEL_38:
           {
           }
 
-          v22 = [v23 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v23, "count"))}];
+          firstObject2 = [v23 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v23, "count"))}];
         }
 
-        v30 = v22;
+        v30 = firstObject2;
         goto LABEL_34;
       }
     }
   }
 }
 
-- (void)updateTileGroupsAtX:(unint64_t)a3 y:(unint64_t)a4
+- (void)updateTileGroupsAtX:(unint64_t)x y:(unint64_t)y
 {
   v153 = *MEMORY[0x277D85DE8];
   if ([(SKTileMapNode *)self enableAutomapping])
@@ -1552,13 +1552,13 @@ LABEL_38:
     v144 = 0u;
     v145 = 0u;
     v143 = 0u;
-    v7 = a3 + *(self->_skcTileMapNode + 151) * a4;
+    v7 = x + *(self->_skcTileMapNode + 151) * y;
     LODWORD(v118) = v7;
     std::deque<unsigned int>::push_back(&v143, &v118);
     v111 = v7;
     RawTile = SKCTileMapNode::getRawTile(self->_skcTileMapNode, v7);
-    v9 = [(SKTileSet *)self->_tileSet tileDefinitions];
-    [v9 count];
+    tileDefinitions = [(SKTileSet *)self->_tileSet tileDefinitions];
+    [tileDefinitions count];
 
     v10 = *(&v145 + 1);
     if (!*(&v145 + 1))
@@ -1583,13 +1583,13 @@ LABEL_38:
       skcTileMapNode = self->_skcTileMapNode;
       v13 = skcTileMapNode[151];
       v114 = SKCTileMapNode::getRawTile(skcTileMapNode, v11);
-      v14 = [(SKTileSet *)self->_tileSet type];
+      type = [(SKTileSet *)self->_tileSet type];
       v116 = v11 % v13;
       v115 = (v11 - v116) / v13;
       *v110 = v11;
-      if (v14 >= SKTileSetTypeHexagonalFlat)
+      if (type >= SKTileSetTypeHexagonalFlat)
       {
-        if (v14 == SKTileSetTypeHexagonalPointy)
+        if (type == SKTileSetTypeHexagonalPointy)
         {
           v15 = (((v11 - v116) / v13) & 1) == 0;
           if (v115)
@@ -1607,7 +1607,7 @@ LABEL_38:
           goto LABEL_18;
         }
 
-        if (v14 == SKTileSetTypeHexagonalFlat)
+        if (type == SKTileSetTypeHexagonalFlat)
         {
           v15 = (v116 & 1) == 0;
           if (v116)
@@ -1648,8 +1648,8 @@ LABEL_22:
         goto LABEL_29;
       }
 
-      v21 = [(SKTileSet *)self->_tileSet tileGroups];
-      v22 = [v21 count] > v106;
+      tileGroups = [(SKTileSet *)self->_tileSet tileGroups];
+      v22 = [tileGroups count] > v106;
 
       if (!v22)
       {
@@ -1663,22 +1663,22 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v23 = [(SKTileSet *)self->_tileSet tileGroups];
-      v113 = [v23 objectAtIndexedSubscript:v106];
+      tileGroups2 = [(SKTileSet *)self->_tileSet tileGroups];
+      v113 = [tileGroups2 objectAtIndexedSubscript:v106];
 
       if ([v113 type] == 1 || (objc_msgSend(v113, "rules"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "count") == 1, v24, v25))
       {
-        v26 = [v113 rules];
-        v27 = [v26 firstObject];
-        v107 = [v27 tileDefinitions];
+        rules = [v113 rules];
+        firstObject = [rules firstObject];
+        tileDefinitions2 = [firstObject tileDefinitions];
 
-        if ([v107 count] == 1)
+        if ([tileDefinitions2 count] == 1)
         {
-          v28 = [v107 firstObject];
+          firstObject2 = [tileDefinitions2 firstObject];
           goto LABEL_100;
         }
 
-        if (![v107 count])
+        if (![tileDefinitions2 count])
         {
           v54 = 0;
           goto LABEL_133;
@@ -1688,7 +1688,7 @@ LABEL_29:
         v142 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v43 = v107;
+        v43 = tileDefinitions2;
         v44 = [v43 countByEnumeratingWithState:&v139 objects:v151 count:16];
         if (v44)
         {
@@ -1764,9 +1764,9 @@ LABEL_116:
         {
         }
 
-        v28 = [v43 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v43, "count"))}];
+        firstObject2 = [v43 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v43, "count"))}];
 LABEL_100:
-        v54 = v28;
+        v54 = firstObject2;
 LABEL_101:
         if (v54)
         {
@@ -1775,7 +1775,7 @@ LABEL_101:
           v134 = 0u;
           v131 = 0u;
           v132 = 0u;
-          obja = v107;
+          obja = tileDefinitions2;
           v78 = [obja countByEnumeratingWithState:&v131 objects:v149 count:16];
           if (v78)
           {
@@ -1812,7 +1812,7 @@ LABEL_101:
             goto LABEL_162;
           }
 
-          v107 = obja;
+          tileDefinitions2 = obja;
         }
 
         goto LABEL_133;
@@ -1886,7 +1886,7 @@ LABEL_76:
       obja = [(SKTileSet *)self->_tileSet findTileDefinitionsForGroup:v113 withGroupAdjacency:v152];
       if ([obja count] == 1)
       {
-        v65 = [obja firstObject];
+        firstObject3 = [obja firstObject];
         goto LABEL_119;
       }
 
@@ -1905,10 +1905,10 @@ LABEL_76:
       {
 
 LABEL_118:
-        v65 = [v66 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v66, "count"))}];
+        firstObject3 = [v66 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v66, "count"))}];
 LABEL_119:
-        v73 = v65;
-        if (v65)
+        v73 = firstObject3;
+        if (firstObject3)
         {
           goto LABEL_120;
         }
@@ -1983,7 +1983,7 @@ LABEL_138:
           }
 
           while (v86 < v20);
-          v107 = obja;
+          tileDefinitions2 = obja;
           v54 = v85;
           goto LABEL_133;
         }
@@ -1996,8 +1996,8 @@ LABEL_138:
         else
         {
           v101 = self->_skcTileMapNode;
-          v102 = [(SKTileSet *)self->_tileSet defaultTileGroup];
-          SKCTileMapNode::setTile(v101, v110[0], [(SKTileMapNode *)self getTileIDWithTileGroup:v102 andTileDefinition:0]);
+          defaultTileGroup = [(SKTileSet *)self->_tileSet defaultTileGroup];
+          SKCTileMapNode::setTile(v101, v110[0], [(SKTileMapNode *)self getTileIDWithTileGroup:defaultTileGroup andTileDefinition:0]);
         }
 
         v54 = 0;
@@ -2149,8 +2149,8 @@ LABEL_120:
       v122 = 0u;
       v119 = 0u;
       v120 = 0u;
-      v107 = obja;
-      v82 = [v107 countByEnumeratingWithState:&v119 objects:v146 count:16];
+      tileDefinitions2 = obja;
+      v82 = [tileDefinitions2 countByEnumeratingWithState:&v119 objects:v146 count:16];
       if (v82)
       {
         v83 = *v120;
@@ -2160,20 +2160,20 @@ LABEL_120:
           {
             if (*v120 != v83)
             {
-              objc_enumerationMutation(v107);
+              objc_enumerationMutation(tileDefinitions2);
             }
 
             if (*(*(&v119 + 1) + 8 * ii) && v114 == [(SKTileMapNode *)self getTileIDWithTileGroup:v113 andTileDefinition:?])
             {
-              v81 = v107;
+              v81 = tileDefinitions2;
 LABEL_132:
-              v107 = v81;
+              tileDefinitions2 = v81;
 
               goto LABEL_133;
             }
           }
 
-          v82 = [v107 countByEnumeratingWithState:&v119 objects:v146 count:16];
+          v82 = [tileDefinitions2 countByEnumeratingWithState:&v119 objects:v146 count:16];
           if (v82)
           {
             continue;
@@ -2202,18 +2202,18 @@ LABEL_166:
     }
   }
 
-  [(SKTileMapNode *)self updateTileDefinitionWithoutAutomappingAtX:a3 y:a4];
+  [(SKTileMapNode *)self updateTileDefinitionWithoutAutomappingAtX:x y:y];
 }
 
-- (void)setColumns:(unint64_t)a3 andRows:(int64_t)a4
+- (void)setColumns:(unint64_t)columns andRows:(int64_t)rows
 {
   RawTilesCopy = SKCTileMapNode::getRawTilesCopy(self->_skcTileMapNode);
   v8 = 0;
-  v9 = a4 > 0;
-  if (a3 && a4 >= 1)
+  v9 = rows > 0;
+  if (columns && rows >= 1)
   {
-    v8 = malloc_type_malloc(4 * a3 * a4, 0x100004052888210uLL);
-    memset(v8, 255, 4 * a3 * a4);
+    v8 = malloc_type_malloc(4 * columns * rows, 0x100004052888210uLL);
+    memset(v8, 255, 4 * columns * rows);
   }
 
   skcTileMapNode = self->_skcTileMapNode;
@@ -2235,12 +2235,12 @@ LABEL_166:
         v19 &= v15;
         v18 &= v9;
         v20 = v17 != 0;
-        if (v17 | a3)
+        if (v17 | columns)
         {
           v21 = 1;
           v22 = v16;
           v23 = RawTilesCopy;
-          v24 = a3 != 0;
+          v24 = columns != 0;
           v25 = 1;
           v26 = 1;
           while (1)
@@ -2254,7 +2254,7 @@ LABEL_166:
               v11 = skcTileMapNode[151];
             }
 
-            v24 = v21 < a3;
+            v24 = v21 < columns;
             ++v23;
             ++v22;
             ++v21;
@@ -2263,7 +2263,7 @@ LABEL_166:
             if (v27 >= v11)
             {
               v17 = v11;
-              if (v27 >= a3)
+              if (v27 >= columns)
               {
                 break;
               }
@@ -2279,17 +2279,17 @@ LABEL_166:
           v17 = 0;
         }
 
-        v9 = ++v14 < a4;
+        v9 = ++v14 < rows;
         v13 += 4;
-        v16 += a3;
+        v16 += columns;
         v15 = v14 < v12;
       }
 
-      while (v14 < v12 || v14 < a4);
+      while (v14 < v12 || v14 < rows);
     }
   }
 
-  SKCTileMapNode::setRawTiles(skcTileMapNode, v8, a3, a4);
+  SKCTileMapNode::setRawTiles(skcTileMapNode, v8, columns, rows);
   free(v8);
   if (RawTilesCopy)
   {
@@ -2301,17 +2301,17 @@ LABEL_166:
 
 - (void)calculateSize
 {
-  v3 = [(SKTileMapNode *)self tileSet];
-  if (!v3 || (v4 = v3, -[SKTileMapNode tileSet](self, "tileSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v4, !v6))
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (!tileSet || (v4 = tileSet, -[SKTileMapNode tileSet](self, "tileSet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v4, !v6))
   {
     skcTileMapNode = self->_skcTileMapNode;
-    v27 = [(SKTileMapNode *)self numberOfColumns];
+    numberOfColumns = [(SKTileMapNode *)self numberOfColumns];
     [(SKTileMapNode *)self tileSize];
-    *&v28 = v28 * v27;
+    *&v28 = v28 * numberOfColumns;
     v52 = LODWORD(v28);
-    v29 = [(SKTileMapNode *)self numberOfRows];
+    numberOfRows = [(SKTileMapNode *)self numberOfRows];
     [(SKTileMapNode *)self tileSize];
-    *&v31 = v30 * v29;
+    *&v31 = v30 * numberOfRows;
     v55 = __PAIR64__(v31, v52);
     v32 = skcTileMapNode;
 LABEL_6:
@@ -2319,18 +2319,18 @@ LABEL_6:
     return;
   }
 
-  v7 = [(SKTileMapNode *)self tileSet];
-  v8 = [v7 type];
+  tileSet2 = [(SKTileMapNode *)self tileSet];
+  type = [tileSet2 type];
 
-  if (v8 == 1)
+  if (type == 1)
   {
-    v9 = [(SKTileMapNode *)self numberOfColumns];
-    v10 = ([(SKTileMapNode *)self numberOfRows]+ v9);
+    numberOfColumns2 = [(SKTileMapNode *)self numberOfColumns];
+    v10 = ([(SKTileMapNode *)self numberOfRows]+ numberOfColumns2);
     [(SKTileMapNode *)self tileSize];
     *&v11 = v11 * v10 * 0.5;
     v51 = LODWORD(v11);
-    v12 = [(SKTileMapNode *)self numberOfColumns];
-    v13 = ([(SKTileMapNode *)self numberOfRows]+ v12);
+    numberOfColumns3 = [(SKTileMapNode *)self numberOfColumns];
+    v13 = ([(SKTileMapNode *)self numberOfRows]+ numberOfColumns3);
     [(SKTileMapNode *)self tileSize];
     *&v15 = v14 * v13 * 0.5;
     v55 = __PAIR64__(v15, v51);
@@ -2340,9 +2340,9 @@ LABEL_6:
     [(SKTileMapNode *)self tileSize];
     *&v13 = v17;
     self->_isoHeightScalar = *&v10 / *&v13;
-    v18 = [(SKTileMapNode *)self numberOfColumns];
+    numberOfColumns4 = [(SKTileMapNode *)self numberOfColumns];
     LODWORD(v19) = 0;
-    *(&v19 + 1) = self->_isoHeightScalar * ((*&v13 * 0.5) * v18);
+    *(&v19 + 1) = self->_isoHeightScalar * ((*&v13 * 0.5) * numberOfColumns4);
     *self->_isoOrigin = v19;
     *&v20 = *&v10 * 0.5;
     *&v21 = *&v10 * 0.5;
@@ -2361,10 +2361,10 @@ LABEL_6:
     return;
   }
 
-  v33 = [(SKTileMapNode *)self tileSet];
-  v34 = [v33 type];
+  tileSet3 = [(SKTileMapNode *)self tileSet];
+  type2 = [tileSet3 type];
 
-  if (v34 == 2)
+  if (type2 == 2)
   {
     width = self->_tileSize.width;
     v36 = width * 0.5;
@@ -2379,19 +2379,19 @@ LABEL_6:
     }
 
     height = self->_tileSize.height;
-    v40 = [(SKTileMapNode *)self numberOfRows];
+    numberOfRows2 = [(SKTileMapNode *)self numberOfRows];
     *&v41 = v53;
-    *(&v41 + 1) = (v40 + 0.5) * height;
+    *(&v41 + 1) = (numberOfRows2 + 0.5) * height;
     v55 = v41;
 LABEL_17:
     v32 = self->_skcTileMapNode;
     goto LABEL_6;
   }
 
-  v42 = [(SKTileMapNode *)self tileSet];
-  v43 = [v42 type];
+  tileSet4 = [(SKTileMapNode *)self tileSet];
+  type3 = [tileSet4 type];
 
-  if (v43 == 3)
+  if (type3 == 3)
   {
     v44 = self->_tileSize.height;
     v45 = v44 * 0.5;
@@ -2422,8 +2422,8 @@ LABEL_17:
   y = position.y;
   x = position.x;
   v42 = *(self->_skcTileMapNode + 21);
-  v4 = [(SKTileMapNode *)self tileSet];
-  if (!v4 || (v5 = v4, -[SKTileMapNode tileSet](self, "tileSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 type], v6, v5, !v7))
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (!tileSet || (v5 = tileSet, -[SKTileMapNode tileSet](self, "tileSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 type], v6, v5, !v7))
   {
     [(SKTileMapNode *)self anchorPoint];
     v17 = x + v16 * *&v42;
@@ -2431,10 +2431,10 @@ LABEL_17:
     return vcvtmd_u64_f64(v17 / v18);
   }
 
-  v8 = [(SKTileMapNode *)self tileSet];
-  v9 = [v8 type];
+  tileSet2 = [(SKTileMapNode *)self tileSet];
+  type = [tileSet2 type];
 
-  if (v9 == 1)
+  if (type == 1)
   {
     v10 = x;
     [(SKTileMapNode *)self anchorPoint];
@@ -2448,10 +2448,10 @@ LABEL_17:
     return vcvtms_u32_f32(vaddv_f32(vmul_f32(*self->_isoColumnVector, vsub_f32(*&v13, *self->_isoOrigin))) / self->_isoColumnWidth);
   }
 
-  v19 = [(SKTileMapNode *)self tileSet];
-  v20 = [v19 type];
+  tileSet3 = [(SKTileMapNode *)self tileSet];
+  type2 = [tileSet3 type];
 
-  if (v20 == 2)
+  if (type2 == 2)
   {
     v21.f64[0] = x;
     v21.f64[1] = y;
@@ -2472,10 +2472,10 @@ LABEL_10:
     return v44;
   }
 
-  v30 = [(SKTileMapNode *)self tileSet];
-  v31 = [v30 type];
+  tileSet4 = [(SKTileMapNode *)self tileSet];
+  type3 = [tileSet4 type];
 
-  if (v31 == 3)
+  if (type3 == 3)
   {
     v32.f64[0] = y;
     v32.f64[1] = x;
@@ -2502,8 +2502,8 @@ LABEL_10:
   x = position.x;
   y = position.y;
   v42 = *(self->_skcTileMapNode + 21);
-  v4 = [(SKTileMapNode *)self tileSet];
-  if (!v4 || (v5 = v4, -[SKTileMapNode tileSet](self, "tileSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 type], v6, v5, !v7))
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (!tileSet || (v5 = tileSet, -[SKTileMapNode tileSet](self, "tileSet"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 type], v6, v5, !v7))
   {
     [(SKTileMapNode *)self anchorPoint];
     v17 = y + v16 * *(&v42 + 1);
@@ -2511,10 +2511,10 @@ LABEL_10:
     return vcvtmd_u64_f64(v17 / v18);
   }
 
-  v8 = [(SKTileMapNode *)self tileSet];
-  v9 = [v8 type];
+  tileSet2 = [(SKTileMapNode *)self tileSet];
+  type = [tileSet2 type];
 
-  if (v9 == 1)
+  if (type == 1)
   {
     v10 = x;
     [(SKTileMapNode *)self anchorPoint];
@@ -2528,10 +2528,10 @@ LABEL_10:
     return vcvtms_u32_f32(vaddv_f32(vmul_f32(*self->_isoRowVector, vsub_f32(*&v13, *self->_isoOrigin))) / self->_isoRowHeight);
   }
 
-  v19 = [(SKTileMapNode *)self tileSet];
-  v20 = [v19 type];
+  tileSet3 = [(SKTileMapNode *)self tileSet];
+  type2 = [tileSet3 type];
 
-  if (v20 == 2)
+  if (type2 == 2)
   {
     v21.f64[0] = x;
     v21.f64[1] = y;
@@ -2552,10 +2552,10 @@ LABEL_10:
     return v43;
   }
 
-  v30 = [(SKTileMapNode *)self tileSet];
-  v31 = [v30 type];
+  tileSet4 = [(SKTileMapNode *)self tileSet];
+  type3 = [tileSet4 type];
 
-  if (v31 == 3)
+  if (type3 == 3)
   {
     v32.f64[0] = y;
     v32.f64[1] = x;
@@ -2582,13 +2582,13 @@ LABEL_10:
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
   v35 = *(self->_skcTileMapNode + 21);
-  v9 = [(SKTileMapNode *)self tileSet];
-  if (v9 && (v10 = v9, -[SKTileMapNode tileSet](self, "tileSet"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 type], v11, v10, v12))
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (tileSet && (v10 = tileSet, -[SKTileMapNode tileSet](self, "tileSet"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 type], v11, v10, v12))
   {
-    v13 = [(SKTileMapNode *)self tileSet];
-    v14 = [v13 type];
+    tileSet2 = [(SKTileMapNode *)self tileSet];
+    type = [tileSet2 type];
 
-    if (v14 == 1)
+    if (type == 1)
     {
       v15 = vmla_n_f32(vmla_n_f32(*self->_isoOrigin, vmul_n_f32(*self->_isoColumnVector, self->_isoColumnWidth), column + 0.5), vmul_n_f32(*self->_isoRowVector, self->_isoRowHeight), row + 0.5);
       v7 = v15.f32[0];
@@ -2597,10 +2597,10 @@ LABEL_10:
 
     else
     {
-      v23 = [(SKTileMapNode *)self tileSet];
-      v24 = [v23 type];
+      tileSet3 = [(SKTileMapNode *)self tileSet];
+      type2 = [tileSet3 type];
 
-      if (v24 == 2)
+      if (type2 == 2)
       {
         v25 = column * self->_hexRadius;
         [(SKTileMapNode *)self tileSize];
@@ -2616,10 +2616,10 @@ LABEL_10:
 
       else
       {
-        v29 = [(SKTileMapNode *)self tileSet];
-        v30 = [v29 type];
+        tileSet4 = [(SKTileMapNode *)self tileSet];
+        type3 = [tileSet4 type];
 
-        if (v30 == 3)
+        if (type3 == 3)
         {
           [(SKTileMapNode *)self tileSize];
           v7 = (column + 0.5) * v31;
@@ -2654,120 +2654,120 @@ LABEL_10:
   return result;
 }
 
-- (id)createTileStampFromColumn:(unint64_t)a3 row:(unint64_t)a4 withWidth:(unint64_t)a5 height:(unint64_t)a6 addToTileSet:(BOOL)a7
+- (id)createTileStampFromColumn:(unint64_t)column row:(unint64_t)row withWidth:(unint64_t)width height:(unint64_t)height addToTileSet:(BOOL)set
 {
-  v12 = [(SKTileMapNode *)self tileSet];
-  if (!v12 || !self->_skcTileMapNode || [(SKTileMapNode *)self numberOfColumns]<= a3)
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (!tileSet || !self->_skcTileMapNode || [(SKTileMapNode *)self numberOfColumns]<= column)
   {
 
     goto LABEL_18;
   }
 
-  v13 = [(SKTileMapNode *)self numberOfRows];
+  numberOfRows = [(SKTileMapNode *)self numberOfRows];
 
-  if (v13 <= a4)
+  if (numberOfRows <= row)
   {
 LABEL_18:
-    v19 = 0;
+    heightCopy = 0;
     goto LABEL_19;
   }
 
-  v27 = a7;
-  if (a5 + a3 >= [(SKTileMapNode *)self numberOfColumns])
+  setCopy = set;
+  if (width + column >= [(SKTileMapNode *)self numberOfColumns])
   {
-    a5 = [(SKTileMapNode *)self numberOfColumns]- a3;
+    width = [(SKTileMapNode *)self numberOfColumns]- column;
   }
 
-  v14 = a6 + a4;
-  if (a6 + a4 >= [(SKTileMapNode *)self numberOfRows])
+  numberOfRows2 = height + row;
+  if (height + row >= [(SKTileMapNode *)self numberOfRows])
   {
-    v14 = [(SKTileMapNode *)self numberOfRows];
-    a6 = v14 - a4;
+    numberOfRows2 = [(SKTileMapNode *)self numberOfRows];
+    height = numberOfRows2 - row;
   }
 
-  v26 = a6;
-  v28 = malloc_type_malloc(4 * a5 * a6, 0x100004052888210uLL);
-  bzero(v28, 4 * a5 * a6);
-  if (v14 > a4)
+  heightCopy = height;
+  v28 = malloc_type_malloc(4 * width * height, 0x100004052888210uLL);
+  bzero(v28, 4 * width * height);
+  if (numberOfRows2 > row)
   {
     v15 = v28;
     do
     {
       v16 = v15;
-      v17 = a3;
-      v18 = a5;
-      if (a5 + a3 > a3)
+      columnCopy = column;
+      widthCopy = width;
+      if (width + column > column)
       {
         do
         {
-          *v16++ = SKCTileMapNode::getRawTile(self->_skcTileMapNode, v17 + a4 * [(SKTileMapNode *)self numberOfColumns]);
-          ++v17;
-          --v18;
+          *v16++ = SKCTileMapNode::getRawTile(self->_skcTileMapNode, columnCopy + row * [(SKTileMapNode *)self numberOfColumns]);
+          ++columnCopy;
+          --widthCopy;
         }
 
-        while (v18);
+        while (widthCopy);
       }
 
-      ++a4;
-      v15 += a5;
+      ++row;
+      v15 += width;
     }
 
-    while (a4 != v14);
+    while (row != numberOfRows2);
   }
 
-  v19 = [SKTileStamp tileStampWithWidth:a5 height:v26 tileData:v28, v26];
-  if (v27)
+  heightCopy = [SKTileStamp tileStampWithWidth:width height:heightCopy tileData:v28, heightCopy];
+  if (setCopy)
   {
     v20 = MEMORY[0x277CBEB18];
-    v21 = [(SKTileMapNode *)self tileSet];
-    v22 = [v21 stamps];
-    v23 = [v20 arrayWithArray:v22];
+    tileSet2 = [(SKTileMapNode *)self tileSet];
+    stamps = [tileSet2 stamps];
+    v23 = [v20 arrayWithArray:stamps];
 
-    [v23 addObject:v19];
-    v24 = [(SKTileMapNode *)self tileSet];
-    [v24 setStamps:v23];
+    [v23 addObject:heightCopy];
+    tileSet3 = [(SKTileMapNode *)self tileSet];
+    [tileSet3 setStamps:v23];
   }
 
   free(v28);
 LABEL_19:
 
-  return v19;
+  return heightCopy;
 }
 
-- (void)applyTileStamp:(id)a3 inColumn:(int64_t)a4 row:(int64_t)a5
+- (void)applyTileStamp:(id)stamp inColumn:(int64_t)column row:(int64_t)row
 {
-  v31 = a3;
-  v7 = [(SKTileMapNode *)self tileSet];
-  if (v7 && self->_skcTileMapNode && -[SKTileMapNode numberOfColumns](self, "numberOfColumns") > a4 && -[SKTileMapNode numberOfRows](self, "numberOfRows") > a5 && [v31 numberOfColumns] + a4 >= 1)
+  stampCopy = stamp;
+  tileSet = [(SKTileMapNode *)self tileSet];
+  if (tileSet && self->_skcTileMapNode && -[SKTileMapNode numberOfColumns](self, "numberOfColumns") > column && -[SKTileMapNode numberOfRows](self, "numberOfRows") > row && [stampCopy numberOfColumns] + column >= 1)
   {
-    v27 = self;
-    v8 = [v31 numberOfRows] + a5;
+    selfCopy = self;
+    v8 = [stampCopy numberOfRows] + row;
 
     v9 = v8 < 1;
-    v10 = v27;
+    v10 = selfCopy;
     if (!v9)
     {
-      v25 = [v31 tileData];
+      tileData = [stampCopy tileData];
       v28 = 0;
-      for (i = a5; i < -[SKTileMapNode numberOfRows](v10, "numberOfRows", v25) && i < [v31 numberOfRows] + a5; ++i)
+      for (i = row; i < -[SKTileMapNode numberOfRows](v10, "numberOfRows", tileData) && i < [stampCopy numberOfRows] + row; ++i)
       {
         if ((i & 0x8000000000000000) == 0)
         {
-          v30 = v25;
-          for (j = a4; j < -[SKTileMapNode numberOfColumns](v10, "numberOfColumns") && j < [v31 numberOfColumns] + a4; ++j)
+          v30 = tileData;
+          for (j = column; j < -[SKTileMapNode numberOfColumns](v10, "numberOfColumns") && j < [stampCopy numberOfColumns] + column; ++j)
           {
             if ((j & 0x8000000000000000) == 0)
             {
-              v12 = [v31 numberOfColumns];
-              v13 = [(SKTileMapNode *)v10 numberOfColumns];
-              v14 = *(v30 + v28 * v12);
-              v15 = [(SKTileMapNode *)v10 tileSet];
-              v16 = [v15 tileGroups];
-              v17 = [v16 count];
+              numberOfColumns = [stampCopy numberOfColumns];
+              numberOfColumns2 = [(SKTileMapNode *)v10 numberOfColumns];
+              v14 = *(v30 + v28 * numberOfColumns);
+              tileSet2 = [(SKTileMapNode *)v10 tileSet];
+              tileGroups = [tileSet2 tileGroups];
+              v17 = [tileGroups count];
 
-              v18 = [(SKTileMapNode *)v10 tileSet];
-              v19 = [v18 tileDefinitions];
-              v20 = [v19 count];
+              tileSet3 = [(SKTileMapNode *)v10 tileSet];
+              tileDefinitions = [tileSet3 tileDefinitions];
+              v20 = [tileDefinitions count];
 
               v21 = v14 & 0x7FFF0000;
               if (v17 <= ((v14 >> 16) & 0x7FFF))
@@ -2785,8 +2785,8 @@ LABEL_19:
                 v22 = v14;
               }
 
-              v10 = v27;
-              SKCTileMapNode::setTile(v27->_skcTileMapNode, j + i * v13, v22 | v21);
+              v10 = selfCopy;
+              SKCTileMapNode::setTile(selfCopy->_skcTileMapNode, j + i * numberOfColumns2, v22 | v21);
             }
 
             v30 += 4;
@@ -2798,11 +2798,11 @@ LABEL_19:
 
       if ([(SKTileMapNode *)v10 enableAutomapping])
       {
-        for (k = a5; k < -[SKTileMapNode numberOfRows](v10, "numberOfRows") && k < [v31 numberOfRows] + a5; ++k)
+        for (k = row; k < -[SKTileMapNode numberOfRows](v10, "numberOfRows") && k < [stampCopy numberOfRows] + row; ++k)
         {
           if ((k & 0x8000000000000000) == 0)
           {
-            for (m = a4; m < -[SKTileMapNode numberOfColumns](v10, "numberOfColumns") && m < [v31 numberOfColumns] + a4; ++m)
+            for (m = column; m < -[SKTileMapNode numberOfColumns](v10, "numberOfColumns") && m < [stampCopy numberOfColumns] + column; ++m)
             {
               if ((m & 0x8000000000000000) == 0)
               {
@@ -2820,13 +2820,13 @@ LABEL_19:
   }
 }
 
-- (id)tileDefinitionForTileID:(unsigned int)a3
+- (id)tileDefinitionForTileID:(unsigned int)d
 {
   tileSet = self->_tileSet;
-  if (tileSet && (v5 = a3, -[SKTileSet tileDefinitions](tileSet, "tileDefinitions"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 > v5))
+  if (tileSet && (v5 = d, -[SKTileSet tileDefinitions](tileSet, "tileDefinitions"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 > v5))
   {
-    v8 = [(SKTileSet *)self->_tileSet tileDefinitions];
-    v9 = [v8 objectAtIndexedSubscript:v5];
+    tileDefinitions = [(SKTileSet *)self->_tileSet tileDefinitions];
+    v9 = [tileDefinitions objectAtIndexedSubscript:v5];
   }
 
   else
@@ -2960,26 +2960,26 @@ LABEL_19:
   return v19;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable
 {
   v50[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v46 = a4;
-  if ([v9 isEqualToString:@"visualRepresentation"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"visualRepresentation"])
   {
-    Mutable = [v46 createDebugHierarchyVisualRepresentation];
+    Mutable = [objectCopy createDebugHierarchyVisualRepresentation];
     v47 = @"propertyFormat";
-    v10 = [*MEMORY[0x277CE1E10] identifier];
-    v48 = v10;
-    *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
+    identifier = [*MEMORY[0x277CE1E10] identifier];
+    v48 = identifier;
+    *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
     goto LABEL_61;
   }
 
-  if (![v9 isEqualToString:@"color"])
+  if (![nameCopy isEqualToString:@"color"])
   {
-    v19 = v46;
-    v20 = v9;
+    v19 = objectCopy;
+    v20 = nameCopy;
     if ([(NSString *)v20 length])
     {
       NSSelectorFromString(v20);
@@ -3000,18 +3000,18 @@ LABEL_60:
       {
         if ([(NSString *)v20 length]< 2)
         {
-          v25 = [(NSString *)v20 uppercaseString];
+          uppercaseString = [(NSString *)v20 uppercaseString];
         }
 
         else
         {
           v22 = [(NSString *)v20 substringToIndex:1];
-          v23 = [v22 uppercaseString];
+          uppercaseString2 = [v22 uppercaseString];
           v24 = [(NSString *)v20 substringFromIndex:1];
-          v25 = [v23 stringByAppendingString:v24];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v24];
         }
 
-        v34 = [@"is" stringByAppendingString:v25];
+        v34 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v34);
         if (objc_opt_respondsToSelector())
         {
@@ -3079,14 +3079,14 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v45 = [v46 color];
-  v11 = [v45 CGColor];
-  if (v11)
+  color = [objectCopy color];
+  cGColor = [color CGColor];
+  if (cGColor)
   {
     Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-    space = CGColorGetColorSpace(v11);
+    space = CGColorGetColorSpace(cGColor);
     v12 = CGColorSpaceCopyName(space);
-    NumberOfComponents = CGColorGetNumberOfComponents(v11);
+    NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
     v14 = NumberOfComponents << 32;
     v15 = NumberOfComponents;
     if (NumberOfComponents << 32)
@@ -3123,7 +3123,7 @@ LABEL_60:
       v16 = &stru_282E190D8;
     }
 
-    Components = CGColorGetComponents(v11);
+    Components = CGColorGetComponents(cGColor);
     v27 = malloc_type_malloc(v14 >> 29, 0x6004044C4A2DFuLL);
     v28 = v27;
     if (v14)

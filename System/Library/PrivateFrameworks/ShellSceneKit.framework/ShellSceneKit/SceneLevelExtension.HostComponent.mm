@@ -1,16 +1,16 @@
 @interface SceneLevelExtension.HostComponent
 - (_TtCC13ShellSceneKit19SceneLevelExtension13HostComponent)init;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SceneLevelExtension.HostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_265FEADFC();
   swift_unknownObjectRelease();
 }
@@ -32,12 +32,12 @@
   return [(SceneLevelExtension.HostComponent *)&v5 init];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_265FEB138(v6, v7);
+  sceneCopy = scene;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_265FEB138(sceneCopy, settingsCopy);
 }
 
 @end

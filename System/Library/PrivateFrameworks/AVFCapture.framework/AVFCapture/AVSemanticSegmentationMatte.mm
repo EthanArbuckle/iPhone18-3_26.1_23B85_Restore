@@ -1,8 +1,8 @@
 @interface AVSemanticSegmentationMatte
 + (AVSemanticSegmentationMatte)semanticSegmentationMatteFromImageSourceAuxiliaryDataType:(CFStringRef)imageSourceAuxiliaryDataType dictionaryRepresentation:(NSDictionary *)imageSourceAuxiliaryDataInfoDictionary error:(NSError *)outError;
 + (id)_allSupportedSemanticSegmentationMatteTypes;
-- (AVSemanticSegmentationMatte)initWithType:(id)a3 pixelBuffer:(__CVBuffer *)a4 auxiliaryMetadata:(CGImageMetadata *)a5;
-- (AVSemanticSegmentationMatte)initWithType:(id)a3 pixelBuffer:(__CVBuffer *)a4 semanticSegmentationMatteMetadataDictionary:(id)a5;
+- (AVSemanticSegmentationMatte)initWithType:(id)type pixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata;
+- (AVSemanticSegmentationMatte)initWithType:(id)type pixelBuffer:(__CVBuffer *)buffer semanticSegmentationMatteMetadataDictionary:(id)dictionary;
 - (AVSemanticSegmentationMatte)semanticSegmentationMatteByApplyingExifOrientation:(CGImagePropertyOrientation)exifOrientation;
 - (AVSemanticSegmentationMatte)semanticSegmentationMatteByReplacingSemanticSegmentationMatteWithPixelBuffer:(CVPixelBufferRef)pixelBuffer error:(NSError *)outError;
 - (AVSemanticSegmentationMatteType)matteType;
@@ -199,7 +199,7 @@ LABEL_45:
       v24 = 0;
 LABEL_37:
       v25 = [AVSemanticSegmentationMatte alloc];
-      v26 = [(AVSemanticSegmentationMatte *)self matteType];
+      matteType = [(AVSemanticSegmentationMatte *)self matteType];
       if (v24)
       {
         v27 = 0;
@@ -210,7 +210,7 @@ LABEL_37:
         v27 = pixelBufferOut;
       }
 
-      v28 = [(AVSemanticSegmentationMatte *)v25 initWithType:v26 pixelBuffer:v27 semanticSegmentationMatteMetadataDictionary:0];
+      v28 = [(AVSemanticSegmentationMatte *)v25 initWithType:matteType pixelBuffer:v27 semanticSegmentationMatteMetadataDictionary:0];
       v28->_version = self->_version;
       CVPixelBufferRelease(pixelBufferOut);
       if (pixelRotationSessionOut)
@@ -327,20 +327,20 @@ LABEL_6:
   return pixelBuffer;
 }
 
-- (AVSemanticSegmentationMatte)initWithType:(id)a3 pixelBuffer:(__CVBuffer *)a4 semanticSegmentationMatteMetadataDictionary:(id)a5
+- (AVSemanticSegmentationMatte)initWithType:(id)type pixelBuffer:(__CVBuffer *)buffer semanticSegmentationMatteMetadataDictionary:(id)dictionary
 {
   v13.receiver = self;
   v13.super_class = AVSemanticSegmentationMatte;
   v8 = [(AVSemanticSegmentationMatte *)&v13 init];
   if (v8)
   {
-    v9 = [objc_opt_class() _allSupportedSemanticSegmentationMatteTypes];
-    if ([v9 containsObject:a3])
+    _allSupportedSemanticSegmentationMatteTypes = [objc_opt_class() _allSupportedSemanticSegmentationMatteTypes];
+    if ([_allSupportedSemanticSegmentationMatteTypes containsObject:type])
     {
-      v8->_matteType = a3;
-      if (a4)
+      v8->_matteType = type;
+      if (buffer)
       {
-        v10 = CFRetain(a4);
+        v10 = CFRetain(buffer);
       }
 
       else
@@ -349,15 +349,15 @@ LABEL_6:
       }
 
       v8->_pixelBuffer = v10;
-      if (a5)
+      if (dictionary)
       {
-        v8->_version = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E6991520]), "intValue"}];
+        v8->_version = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E6991520]), "intValue"}];
       }
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, v9}];
+      v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, _allSupportedSemanticSegmentationMatteTypes}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -372,13 +372,13 @@ LABEL_6:
   return v8;
 }
 
-- (AVSemanticSegmentationMatte)initWithType:(id)a3 pixelBuffer:(__CVBuffer *)a4 auxiliaryMetadata:(CGImageMetadata *)a5
+- (AVSemanticSegmentationMatte)initWithType:(id)type pixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata
 {
-  v6 = [(AVSemanticSegmentationMatte *)self initWithType:a3 pixelBuffer:a4 semanticSegmentationMatteMetadataDictionary:0];
+  v6 = [(AVSemanticSegmentationMatte *)self initWithType:type pixelBuffer:buffer semanticSegmentationMatteMetadataDictionary:0];
   v7 = v6;
-  if (a5 && v6)
+  if (metadata && v6)
   {
-    v6->_version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a5 *MEMORY[0x1E6991510]];
+    v6->_version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata *MEMORY[0x1E6991510]];
   }
 
   return v7;
@@ -548,8 +548,8 @@ LABEL_49:
   }
 
   v45 = v15;
-  v22 = [a1 _allSupportedSemanticSegmentationMattePixelFormatTypes];
-  if ([v22 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v17)}])
+  _allSupportedSemanticSegmentationMattePixelFormatTypes = [self _allSupportedSemanticSegmentationMattePixelFormatTypes];
+  if ([_allSupportedSemanticSegmentationMattePixelFormatTypes containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v17)}])
   {
     v23 = v19;
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v21];
@@ -572,18 +572,18 @@ LABEL_49:
         v29 = BytesPerRow;
       }
 
-      v30 = [v9 bytes];
+      bytes = [v9 bytes];
       BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
       v32 = [v9 length];
       if (v29 <= v32)
       {
-        v33 = &v30[v32];
+        v33 = &bytes[v32];
         v34 = 1;
         do
         {
-          memcpy(BaseAddress, v30, v29);
-          v35 = &v30[v29 + v21];
-          v30 += v21;
+          memcpy(BaseAddress, bytes, v29);
+          v35 = &bytes[v29 + v21];
+          bytes += v21;
           BaseAddress += v28;
         }
 
@@ -635,11 +635,11 @@ LABEL_39:
 
 - (NSDictionary)dictionaryRepresentationForAuxiliaryDataType:(NSString *)outAuxDataType
 {
-  v5 = [(AVSemanticSegmentationMatte *)self pixelFormatType];
+  pixelFormatType = [(AVSemanticSegmentationMatte *)self pixelFormatType];
   Width = CVPixelBufferGetWidth([(AVSemanticSegmentationMatte *)self mattingImage]);
   Height = CVPixelBufferGetHeight([(AVSemanticSegmentationMatte *)self mattingImage]);
   BytesPerRow = CVPixelBufferGetBytesPerRow([(AVSemanticSegmentationMatte *)self mattingImage]);
-  if (!v5 || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
+  if (!pixelFormatType || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_1();
@@ -648,19 +648,19 @@ LABEL_39:
   }
 
   v11 = v10;
-  v12 = [(AVSemanticSegmentationMatte *)self mattingImage];
-  if (CVPixelBufferLockBaseAddress(v12, 1uLL))
+  mattingImage = [(AVSemanticSegmentationMatte *)self mattingImage];
+  if (CVPixelBufferLockBaseAddress(mattingImage, 1uLL))
   {
     return 0;
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(v12);
+  BaseAddress = CVPixelBufferGetBaseAddress(mattingImage);
   memcpy([v11 mutableBytes], BaseAddress, v9 * Height);
-  CVPixelBufferUnlockBaseAddress(v12, 1uLL);
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [(NSDictionary *)v14 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
+  CVPixelBufferUnlockBaseAddress(mattingImage, 1uLL);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(NSDictionary *)dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
   v19[0] = *MEMORY[0x1E696DEC0];
-  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
+  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:pixelFormatType];
   v19[1] = *MEMORY[0x1E696DFB8];
   v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:Width];
   v19[2] = *MEMORY[0x1E696DD58];
@@ -668,12 +668,12 @@ LABEL_39:
   v19[3] = *MEMORY[0x1E696D430];
   v20[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v9];
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-  [(NSDictionary *)v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
-  v16 = [(AVSemanticSegmentationMatte *)self copyAuxiliaryMetadata];
-  if (v16)
+  [(NSDictionary *)dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
+  copyAuxiliaryMetadata = [(AVSemanticSegmentationMatte *)self copyAuxiliaryMetadata];
+  if (copyAuxiliaryMetadata)
   {
-    v17 = v16;
-    [(NSDictionary *)v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696D228]];
+    v17 = copyAuxiliaryMetadata;
+    [(NSDictionary *)dictionary setObject:copyAuxiliaryMetadata forKeyedSubscript:*MEMORY[0x1E696D228]];
     CFRelease(v17);
   }
 
@@ -682,7 +682,7 @@ LABEL_39:
     *outAuxDataType = [(AVSemanticSegmentationMatte *)self auxiliaryImageType];
   }
 
-  return v14;
+  return dictionary;
 }
 
 - (uint64_t)semanticSegmentationMatteByReplacingSemanticSegmentationMatteWithPixelBuffer:error:.cold.1()

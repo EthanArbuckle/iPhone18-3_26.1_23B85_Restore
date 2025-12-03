@@ -1,10 +1,10 @@
 @interface _AppLoggingInfo
-- (_AppLoggingInfo)initWithPid:(int)a3;
+- (_AppLoggingInfo)initWithPid:(int)pid;
 @end
 
 @implementation _AppLoggingInfo
 
-- (_AppLoggingInfo)initWithPid:(int)a3
+- (_AppLoggingInfo)initWithPid:(int)pid
 {
   v9.receiver = self;
   v9.super_class = _AppLoggingInfo;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pid = a3;
+    v4->_pid = pid;
     v6 = +[NSDate date];
     startDate = v5->_startDate;
     v5->_startDate = v6;

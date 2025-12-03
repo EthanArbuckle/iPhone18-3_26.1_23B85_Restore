@@ -1,14 +1,14 @@
 @interface DSFilesystemMetadataSnapshotArchiver
-+ (BOOL)compressSnapshotWithName:(id)a3 atPath:(id)a4 withLogFile:(__sFILE *)a5 archiveName:(id *)a6;
++ (BOOL)compressSnapshotWithName:(id)name atPath:(id)path withLogFile:(__sFILE *)file archiveName:(id *)archiveName;
 @end
 
 @implementation DSFilesystemMetadataSnapshotArchiver
 
-+ (BOOL)compressSnapshotWithName:(id)a3 atPath:(id)a4 withLogFile:(__sFILE *)a5 archiveName:(id *)a6
++ (BOOL)compressSnapshotWithName:(id)name atPath:(id)path withLogFile:(__sFILE *)file archiveName:(id *)archiveName
 {
-  v9 = a3;
-  v10 = a4;
-  if (fprintf(a5, "Compressing %s at %s\n", [v9 UTF8String], objc_msgSend(v10, "UTF8String")) == -1)
+  nameCopy = name;
+  pathCopy = path;
+  if (fprintf(file, "Compressing %s at %s\n", [nameCopy UTF8String], objc_msgSend(pathCopy, "UTF8String")) == -1)
   {
     v11 = __error();
     if ((byte_10006E538 & 1) == 0)
@@ -26,26 +26,26 @@
   v14 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = v9;
-    v16 = [v9 UTF8String];
-    v17 = v10;
+    v15 = nameCopy;
+    uTF8String = [nameCopy UTF8String];
+    v17 = pathCopy;
     *buf = 136315394;
-    *&buf[4] = v16;
+    *&buf[4] = uTF8String;
     *&buf[12] = 2080;
-    *&buf[14] = [v10 UTF8String];
+    *&buf[14] = [pathCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Compressing %s at %s", buf, 0x16u);
   }
 
-  v18 = v10;
-  chdir([v10 UTF8String]);
-  fflush(a5);
+  v18 = pathCopy;
+  chdir([pathCopy UTF8String]);
+  fflush(file);
   *&v61 = 0;
-  v19 = [NSString stringWithFormat:@"%@.tgz", v9];
-  v20 = v19;
-  if (a6)
+  nameCopy = [NSString stringWithFormat:@"%@.tgz", nameCopy];
+  v20 = nameCopy;
+  if (archiveName)
   {
-    v21 = v19;
-    *a6 = v20;
+    v21 = nameCopy;
+    *archiveName = v20;
   }
 
   v61 = 0u;
@@ -53,16 +53,16 @@
   memset(buf, 0, sizeof(buf));
   v22 = v20;
   *&buf[8] = [v20 UTF8String];
-  v23 = v9;
-  v24 = [v9 UTF8String];
-  v25 = __stderrp;
-  if (a5)
+  v23 = nameCopy;
+  uTF8String2 = [nameCopy UTF8String];
+  fileCopy = __stderrp;
+  if (file)
   {
-    v25 = a5;
+    fileCopy = file;
   }
 
-  *&buf[16] = v24;
-  *&buf[24] = v25;
+  *&buf[16] = uTF8String2;
+  *&buf[24] = fileCopy;
   v26 = shared_filesystem_metadata_snapshot_service_log_handle();
   v27 = v61;
   *&v61 = v26;
@@ -70,7 +70,7 @@
   archive_snapshot_directory(buf);
   if (*buf)
   {
-    if (fprintf(a5, "Failed to compress %s\n", *&buf[16]) == -1)
+    if (fprintf(file, "Failed to compress %s\n", *&buf[16]) == -1)
     {
       v28 = __error();
       if ((byte_10006E539 & 1) == 0)
@@ -92,10 +92,10 @@
     }
 
     v32 = +[NSFileManager defaultManager];
-    v33 = [NSString stringWithFormat:@"%@/%@", v10, v20];
+    v33 = [NSString stringWithFormat:@"%@/%@", pathCopy, v20];
     if ([v32 fileExistsAtPath:v33])
     {
-      if (fprintf(a5, "Deleting failed compressed archive %s\n", *&buf[8]) == -1)
+      if (fprintf(file, "Deleting failed compressed archive %s\n", *&buf[8]) == -1)
       {
         v34 = __error();
         if ((byte_10006E53A & 1) == 0)
@@ -125,9 +125,9 @@
       if ((v38 & 1) == 0)
       {
         v41 = *&buf[8];
-        v42 = [v39 localizedDescription];
-        v43 = v42;
-        v44 = fprintf(a5, "Failed to delete compressed archive %s: %s\n", v41, [v42 UTF8String]) == -1;
+        localizedDescription = [v39 localizedDescription];
+        v43 = localizedDescription;
+        v44 = fprintf(file, "Failed to delete compressed archive %s: %s\n", v41, [localizedDescription UTF8String]) == -1;
 
         if (v44)
         {
@@ -148,13 +148,13 @@
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
           v51 = *&buf[8];
-          v52 = [v40 localizedDescription];
-          v53 = v52;
-          v54 = [v52 UTF8String];
+          localizedDescription2 = [v40 localizedDescription];
+          v53 = localizedDescription2;
+          uTF8String3 = [localizedDescription2 UTF8String];
           *v56 = 136315394;
           v57 = v51;
           v58 = 2080;
-          v59 = v54;
+          v59 = uTF8String3;
           _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Failed to delete compressed archive %s: %s", v56, 0x16u);
         }
       }

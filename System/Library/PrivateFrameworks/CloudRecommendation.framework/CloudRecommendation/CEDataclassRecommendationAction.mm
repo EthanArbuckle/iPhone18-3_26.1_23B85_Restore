@@ -1,38 +1,38 @@
 @interface CEDataclassRecommendationAction
-- (CEDataclassRecommendationAction)initWithCoder:(id)a3;
-- (CEDataclassRecommendationAction)initWithDictionary:(id)a3;
-- (CEDataclassRecommendationAction)initWithIdentifier:(id)a3 title:(id)a4 dataclasses:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CEDataclassRecommendationAction)initWithCoder:(id)coder;
+- (CEDataclassRecommendationAction)initWithDictionary:(id)dictionary;
+- (CEDataclassRecommendationAction)initWithIdentifier:(id)identifier title:(id)title dataclasses:(id)dataclasses;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CEDataclassRecommendationAction
 
-- (CEDataclassRecommendationAction)initWithIdentifier:(id)a3 title:(id)a4 dataclasses:(id)a5
+- (CEDataclassRecommendationAction)initWithIdentifier:(id)identifier title:(id)title dataclasses:(id)dataclasses
 {
-  v9 = a5;
+  dataclassesCopy = dataclasses;
   v13.receiver = self;
   v13.super_class = CEDataclassRecommendationAction;
-  v10 = [(CERecommendationAction *)&v13 initWithIdentifier:a3 actionTitle:a4 actionType:@"EnableDataclass"];
+  v10 = [(CERecommendationAction *)&v13 initWithIdentifier:identifier actionTitle:title actionType:@"EnableDataclass"];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dataclasses, a5);
+    objc_storeStrong(&v10->_dataclasses, dataclasses);
   }
 
   return v11;
 }
 
-- (CEDataclassRecommendationAction)initWithDictionary:(id)a3
+- (CEDataclassRecommendationAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CEDataclassRecommendationAction;
-  v5 = [(CERecommendationAction *)&v14 initWithDictionary:v4];
+  v5 = [(CERecommendationAction *)&v14 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dataclassesToEnable"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dataclassesToEnable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,22 +62,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CEDataclassRecommendationAction;
-  v4 = a3;
-  [(CERecommendationAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_dataclasses forKey:{@"dataclasses", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CERecommendationAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_dataclasses forKey:{@"dataclasses", v5.receiver, v5.super_class}];
 }
 
-- (CEDataclassRecommendationAction)initWithCoder:(id)a3
+- (CEDataclassRecommendationAction)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CEDataclassRecommendationAction;
-  v5 = [(CERecommendationAction *)&v13 initWithCoder:v4];
+  v5 = [(CERecommendationAction *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -86,7 +86,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"dataclasses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"dataclasses"];
     dataclasses = v5->_dataclasses;
     v5->_dataclasses = v9;
   }
@@ -95,11 +95,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CEDataclassRecommendationAction;
-  v4 = [(CERecommendationAction *)&v7 copyWithZone:a3];
+  v4 = [(CERecommendationAction *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

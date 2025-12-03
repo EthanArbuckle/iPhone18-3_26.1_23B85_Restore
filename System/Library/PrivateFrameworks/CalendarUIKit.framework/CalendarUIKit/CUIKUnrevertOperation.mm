@@ -1,10 +1,10 @@
 @interface CUIKUnrevertOperation
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
 @end
 
 @implementation CUIKUnrevertOperation
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

@@ -1,10 +1,10 @@
 @interface NoRecentlySearchCollectionViewCell
 + (id)identifier;
-- (NoRecentlySearchCollectionViewCell)initWithFrame:(CGRect)a3;
+- (NoRecentlySearchCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_contentSizeCategoryDidChange;
 - (void)clearHeightConstraint;
 - (void)layoutSubviews;
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4;
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority;
 @end
 
 @implementation NoRecentlySearchCollectionViewCell
@@ -14,100 +14,100 @@
   v4.receiver = self;
   v4.super_class = NoRecentlySearchCollectionViewCell;
   [(NoRecentlySearchCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(NoRecentlySearchCollectionViewCell *)self keyboardAvoidingView];
-  [v3 updateForKeyboardFrame];
+  keyboardAvoidingView = [(NoRecentlySearchCollectionViewCell *)self keyboardAvoidingView];
+  [keyboardAvoidingView updateForKeyboardFrame];
 }
 
-- (void)setHeightConstraint:(double)a3 withPriority:(float)a4
+- (void)setHeightConstraint:(double)constraint withPriority:(float)priority
 {
-  v7 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-  if (v7)
+  heightConstraint = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+  if (heightConstraint)
   {
-    v8 = v7;
-    v9 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    [v9 priority];
-    if (v10 == a4)
+    v8 = heightConstraint;
+    heightConstraint2 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    [heightConstraint2 priority];
+    if (v10 == priority)
     {
     }
 
     else
     {
-      v11 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-      [v11 priority];
+      heightConstraint3 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+      [heightConstraint3 priority];
       v13 = v12;
 
-      if (v13 == 1000.0 || a4 == 1000.0)
+      if (v13 == 1000.0 || priority == 1000.0)
       {
         [(NoRecentlySearchCollectionViewCell *)self clearHeightConstraint];
       }
     }
   }
 
-  v14 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+  heightConstraint4 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
 
-  if (v14)
+  if (heightConstraint4)
   {
-    v15 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    [v15 setConstant:a3];
+    heightConstraint5 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    [heightConstraint5 setConstant:constraint];
 
-    v16 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    [v16 priority];
+    heightConstraint6 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    [heightConstraint6 priority];
     v18 = v17;
 
-    if (v18 == a4)
+    if (v18 == priority)
     {
       return;
     }
 
-    v25 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    *&v19 = a4;
-    [v25 setPriority:v19];
+    heightConstraint7 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    *&v19 = priority;
+    [heightConstraint7 setPriority:v19];
   }
 
   else
   {
-    v20 = [(NoRecentlySearchCollectionViewCell *)self contentView];
-    v21 = [v20 heightAnchor];
-    v22 = [v21 constraintEqualToConstant:a3];
+    contentView = [(NoRecentlySearchCollectionViewCell *)self contentView];
+    heightAnchor = [contentView heightAnchor];
+    v22 = [heightAnchor constraintEqualToConstant:constraint];
     [(NoRecentlySearchCollectionViewCell *)self setHeightConstraint:v22];
 
-    v23 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    *&v24 = a4;
-    [v23 setPriority:v24];
+    heightConstraint8 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    *&v24 = priority;
+    [heightConstraint8 setPriority:v24];
 
-    v25 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-    [v25 setActive:1];
+    heightConstraint7 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+    [heightConstraint7 setActive:1];
   }
 }
 
 - (void)_contentSizeCategoryDidChange
 {
-  v3 = [(NoRecentlySearchCollectionViewCell *)self contentLabel];
-  v4 = [v3 font];
-  [v4 _mapkit_scaledValueForValue:20.0];
+  contentLabel = [(NoRecentlySearchCollectionViewCell *)self contentLabel];
+  font = [contentLabel font];
+  [font _mapkit_scaledValueForValue:20.0];
   v6 = v5;
-  v7 = [(NoRecentlySearchCollectionViewCell *)self contentLabelTopConstraint];
-  [v7 setConstant:v6];
+  contentLabelTopConstraint = [(NoRecentlySearchCollectionViewCell *)self contentLabelTopConstraint];
+  [contentLabelTopConstraint setConstant:v6];
 
-  v12 = [(NoRecentlySearchCollectionViewCell *)self titleLabel];
-  v8 = [v12 font];
-  [v8 _mapkit_scaledValueForValue:56.0];
+  titleLabel = [(NoRecentlySearchCollectionViewCell *)self titleLabel];
+  font2 = [titleLabel font];
+  [font2 _mapkit_scaledValueForValue:56.0];
   v10 = v9;
-  v11 = [(NoRecentlySearchCollectionViewCell *)self titleLabelTopConstraint];
-  [v11 setConstant:v10];
+  titleLabelTopConstraint = [(NoRecentlySearchCollectionViewCell *)self titleLabelTopConstraint];
+  [titleLabelTopConstraint setConstant:v10];
 }
 
 - (void)clearHeightConstraint
 {
-  v2 = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
-  [v2 setActive:0];
+  heightConstraint = [(NoRecentlySearchCollectionViewCell *)self heightConstraint];
+  [heightConstraint setActive:0];
 }
 
-- (NoRecentlySearchCollectionViewCell)initWithFrame:(CGRect)a3
+- (NoRecentlySearchCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v64.receiver = self;
   v64.super_class = NoRecentlySearchCollectionViewCell;
-  v3 = [(NoRecentlySearchCollectionViewCell *)&v64 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NoRecentlySearchCollectionViewCell *)&v64 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -156,67 +156,67 @@
     v16 = [[KeyboardAvoidingView alloc] initWithContentView:v5];
     [(NoRecentlySearchCollectionViewCell *)v3 setKeyboardAvoidingView:v16];
 
-    v17 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    keyboardAvoidingView = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    [keyboardAvoidingView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
-    v19 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    [v18 addSubview:v19];
+    contentView = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
+    keyboardAvoidingView2 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    [contentView addSubview:keyboardAvoidingView2];
 
-    v20 = [(MapsThemeLabel *)v3->_titleLabel firstBaselineAnchor];
-    v21 = [v5 topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:56.0];
+    firstBaselineAnchor = [(MapsThemeLabel *)v3->_titleLabel firstBaselineAnchor];
+    topAnchor = [v5 topAnchor];
+    v22 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:56.0];
     [(NoRecentlySearchCollectionViewCell *)v3 setTitleLabelTopConstraint:v22];
 
-    v23 = [(MapsThemeLabel *)v3->_contentLabel firstBaselineAnchor];
-    v24 = [(MapsThemeLabel *)v3->_titleLabel bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:20.0];
+    firstBaselineAnchor2 = [(MapsThemeLabel *)v3->_contentLabel firstBaselineAnchor];
+    bottomAnchor = [(MapsThemeLabel *)v3->_titleLabel bottomAnchor];
+    v25 = [firstBaselineAnchor2 constraintEqualToAnchor:bottomAnchor constant:20.0];
     [(NoRecentlySearchCollectionViewCell *)v3 setContentLabelTopConstraint:v25];
 
-    v62 = [(MapsThemeLabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor = [(MapsThemeLabel *)v3->_titleLabel leadingAnchor];
     v63 = v5;
-    v61 = [v5 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:16.0];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v65[0] = v60;
-    v59 = [(MapsThemeLabel *)v3->_titleLabel trailingAnchor];
-    v58 = [v5 trailingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:-16.0];
+    trailingAnchor = [(MapsThemeLabel *)v3->_titleLabel trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v65[1] = v57;
-    v56 = [(NoRecentlySearchCollectionViewCell *)v3 titleLabelTopConstraint];
-    v65[2] = v56;
-    v55 = [(MapsThemeLabel *)v3->_contentLabel leadingAnchor];
-    v54 = [(MapsThemeLabel *)v3->_titleLabel leadingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    titleLabelTopConstraint = [(NoRecentlySearchCollectionViewCell *)v3 titleLabelTopConstraint];
+    v65[2] = titleLabelTopConstraint;
+    leadingAnchor3 = [(MapsThemeLabel *)v3->_contentLabel leadingAnchor];
+    leadingAnchor4 = [(MapsThemeLabel *)v3->_titleLabel leadingAnchor];
+    v53 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v65[3] = v53;
-    v52 = [(MapsThemeLabel *)v3->_contentLabel trailingAnchor];
-    v51 = [(MapsThemeLabel *)v3->_titleLabel trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    trailingAnchor3 = [(MapsThemeLabel *)v3->_contentLabel trailingAnchor];
+    trailingAnchor4 = [(MapsThemeLabel *)v3->_titleLabel trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v65[4] = v50;
-    v49 = [(NoRecentlySearchCollectionViewCell *)v3 contentLabelTopConstraint];
-    v65[5] = v49;
-    v48 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    v46 = [v48 leadingAnchor];
-    v47 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
-    v45 = [v47 leadingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    contentLabelTopConstraint = [(NoRecentlySearchCollectionViewCell *)v3 contentLabelTopConstraint];
+    v65[5] = contentLabelTopConstraint;
+    keyboardAvoidingView3 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    leadingAnchor5 = [keyboardAvoidingView3 leadingAnchor];
+    contentView2 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
+    leadingAnchor6 = [contentView2 leadingAnchor];
+    v44 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v65[6] = v44;
-    v43 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    v41 = [v43 trailingAnchor];
-    v42 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
-    v40 = [v42 trailingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    keyboardAvoidingView4 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    trailingAnchor5 = [keyboardAvoidingView4 trailingAnchor];
+    contentView3 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
+    trailingAnchor6 = [contentView3 trailingAnchor];
+    v39 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v65[7] = v39;
-    v38 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    v37 = [v38 topAnchor];
-    v26 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
-    v27 = [v26 topAnchor];
-    v28 = [v37 constraintEqualToAnchor:v27];
+    keyboardAvoidingView5 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    topAnchor2 = [keyboardAvoidingView5 topAnchor];
+    contentView4 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
+    topAnchor3 = [contentView4 topAnchor];
+    v28 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v65[8] = v28;
-    v29 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
-    v30 = [v29 bottomAnchor];
-    v31 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
-    v32 = [v31 bottomAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
+    keyboardAvoidingView6 = [(NoRecentlySearchCollectionViewCell *)v3 keyboardAvoidingView];
+    bottomAnchor2 = [keyboardAvoidingView6 bottomAnchor];
+    contentView5 = [(NoRecentlySearchCollectionViewCell *)v3 contentView];
+    bottomAnchor3 = [contentView5 bottomAnchor];
+    v33 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v65[9] = v33;
     v34 = [NSArray arrayWithObjects:v65 count:10];
     [NSLayoutConstraint activateConstraints:v34];

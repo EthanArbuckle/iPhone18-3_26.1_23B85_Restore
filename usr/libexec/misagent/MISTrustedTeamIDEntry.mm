@@ -1,57 +1,57 @@
 @interface MISTrustedTeamIDEntry
-- (BOOL)isEqual:(id)a3;
-- (MISTrustedTeamIDEntry)initWithTeamID:(id)a3 signature:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MISTrustedTeamIDEntry)initWithTeamID:(id)d signature:(id)signature;
 - (unint64_t)hash;
 @end
 
 @implementation MISTrustedTeamIDEntry
 
-- (MISTrustedTeamIDEntry)initWithTeamID:(id)a3 signature:(id)a4
+- (MISTrustedTeamIDEntry)initWithTeamID:(id)d signature:(id)signature
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  signatureCopy = signature;
   v12.receiver = self;
   v12.super_class = MISTrustedTeamIDEntry;
   v9 = [(MISTrustedTeamIDEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_teamID, a3);
-    objc_storeStrong(&v10->_signature, a4);
+    objc_storeStrong(&v9->_teamID, d);
+    objc_storeStrong(&v10->_signature, signature);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MISTrustedTeamIDEntry *)self teamID];
-    v7 = [v5 teamID];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    teamID = [(MISTrustedTeamIDEntry *)self teamID];
+    teamID2 = [v5 teamID];
+    if ([teamID isEqual:teamID2])
     {
-      v8 = [(MISTrustedTeamIDEntry *)self signature];
-      v9 = [v5 signature];
-      if ([v8 isEqual:v9])
+      signature = [(MISTrustedTeamIDEntry *)self signature];
+      signature2 = [v5 signature];
+      if ([signature isEqual:signature2])
       {
         v10 = 1;
       }
 
       else
       {
-        v11 = [(MISTrustedTeamIDEntry *)self signature];
-        if (v11)
+        signature3 = [(MISTrustedTeamIDEntry *)self signature];
+        if (signature3)
         {
           v10 = 0;
         }
 
         else
         {
-          v12 = [v5 signature];
-          v10 = v12 == 0;
+          signature4 = [v5 signature];
+          v10 = signature4 == 0;
         }
       }
     }
@@ -72,10 +72,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MISTrustedTeamIDEntry *)self teamID];
-  v4 = [v3 hash];
-  v5 = [(MISTrustedTeamIDEntry *)self signature];
-  v6 = [v5 hash];
+  teamID = [(MISTrustedTeamIDEntry *)self teamID];
+  v4 = [teamID hash];
+  signature = [(MISTrustedTeamIDEntry *)self signature];
+  v6 = [signature hash];
 
   return v6 ^ v4;
 }

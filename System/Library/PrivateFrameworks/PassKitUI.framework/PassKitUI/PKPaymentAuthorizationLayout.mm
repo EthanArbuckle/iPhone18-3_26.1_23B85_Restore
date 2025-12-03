@@ -1,19 +1,19 @@
 @interface PKPaymentAuthorizationLayout
-- (PKPaymentAuthorizationLayout)initWithStyle:(int64_t)a3 paymentRequest:(id)a4;
+- (PKPaymentAuthorizationLayout)initWithStyle:(int64_t)style paymentRequest:(id)request;
 @end
 
 @implementation PKPaymentAuthorizationLayout
 
-- (PKPaymentAuthorizationLayout)initWithStyle:(int64_t)a3 paymentRequest:(id)a4
+- (PKPaymentAuthorizationLayout)initWithStyle:(int64_t)style paymentRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = PKPaymentAuthorizationLayout;
   v7 = [(PKPaymentAuthorizationLayout *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    v7->_style = a3;
+    v7->_style = style;
     v7->_contentHorizontalMargin = 16.0;
     if (PKUserInterfaceIdiomSupportsLargeLayouts())
     {
@@ -27,23 +27,23 @@
 
     *&v8->_valueLeftMargin = v9;
     v10 = 62.0;
-    if (a3 == 1)
+    if (style == 1)
     {
       v10 = 36.0;
     }
 
     v8->_glyphDimension = v10;
-    v8->_requestType = [v6 requestType];
-    v8->_requestor = [v6 requestor];
-    v11 = [v6 localizedNavigationTitle];
+    v8->_requestType = [requestCopy requestType];
+    v8->_requestor = [requestCopy requestor];
+    localizedNavigationTitle = [requestCopy localizedNavigationTitle];
     localizedNavigationTitle = v8->_localizedNavigationTitle;
-    v8->_localizedNavigationTitle = v11;
+    v8->_localizedNavigationTitle = localizedNavigationTitle;
 
-    v8->_isAMPPayment = [v6 _isAMPPayment];
-    v8->_isInstallment = [v6 requestType] == 5;
+    v8->_isAMPPayment = [requestCopy _isAMPPayment];
+    v8->_isInstallment = [requestCopy requestType] == 5;
     if (v8->_requestType || v8->_isAMPPayment)
     {
-      v8->_isPaymentSummaryPinned = [v6 isPaymentSummaryPinned];
+      v8->_isPaymentSummaryPinned = [requestCopy isPaymentSummaryPinned];
       requestType = v8->_requestType;
       if (requestType <= 0xD)
       {
@@ -66,7 +66,7 @@ LABEL_16:
       }
 
 LABEL_13:
-      if (![v6 suppressTotal])
+      if (![requestCopy suppressTotal])
       {
         goto LABEL_17;
       }

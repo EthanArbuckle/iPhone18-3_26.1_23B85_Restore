@@ -1,43 +1,43 @@
 @interface AXARDescriptionFormatting
-+ (double)_valueForPercentageFromRawValue:(double)a3;
-+ (id)_descriptionForDistance:(float)a3;
-+ (id)_visibilityDescriptionForObjectFrame:(CGRect)a3 viewBounds:(CGRect)a4;
-+ (id)descriptionForDistance:(float)a3 objectFrame:(CGRect)a4 viewBounds:(CGRect)a5;
++ (double)_valueForPercentageFromRawValue:(double)value;
++ (id)_descriptionForDistance:(float)distance;
++ (id)_visibilityDescriptionForObjectFrame:(CGRect)frame viewBounds:(CGRect)bounds;
++ (id)descriptionForDistance:(float)distance objectFrame:(CGRect)frame viewBounds:(CGRect)bounds;
 @end
 
 @implementation AXARDescriptionFormatting
 
-+ (id)descriptionForDistance:(float)a3 objectFrame:(CGRect)a4 viewBounds:(CGRect)a5
++ (id)descriptionForDistance:(float)distance objectFrame:(CGRect)frame viewBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [a1 _descriptionForDistance:?];
-  v13 = [a1 _visibilityDescriptionForObjectFrame:x viewBounds:{y, width, height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = [self _descriptionForDistance:?];
+  v13 = [self _visibilityDescriptionForObjectFrame:x viewBounds:{y, width, height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   v11 = __AXStringForVariables();
 
   return v11;
 }
 
-+ (id)_descriptionForDistance:(float)a3
++ (id)_descriptionForDistance:(float)distance
 {
-  if (a3 == 0.0)
+  if (distance == 0.0)
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = a3;
+    distanceCopy = distance;
     if (_descriptionForDistance__onceToken != -1)
     {
       +[AXARDescriptionFormatting _descriptionForDistance:];
     }
 
     v5 = objc_alloc(MEMORY[0x1E696AD28]);
-    v6 = [MEMORY[0x1E696B058] meters];
-    v7 = [v5 initWithDoubleValue:v6 unit:v4];
+    meters = [MEMORY[0x1E696B058] meters];
+    v7 = [v5 initWithDoubleValue:meters unit:distanceCopy];
 
     v8 = [_descriptionForDistance__formatter stringFromMeasurement:v7];
     v9 = MEMORY[0x1E696AEC0];
@@ -61,10 +61,10 @@ void __53__AXARDescriptionFormatting__descriptionForDistance___block_invoke()
   [v2 setMaximumFractionDigits:0];
 }
 
-+ (double)_valueForPercentageFromRawValue:(double)a3
++ (double)_valueForPercentageFromRawValue:(double)value
 {
-  v4 = round(a3 * 10.0) / 10.0;
-  if (fabs(v4 + -1.0) < 2.22044605e-16 && fabs(a3 + -1.0) > 2.22044605e-16)
+  v4 = round(value * 10.0) / 10.0;
+  if (fabs(v4 + -1.0) < 2.22044605e-16 && fabs(value + -1.0) > 2.22044605e-16)
   {
     return 0.9;
   }
@@ -72,12 +72,12 @@ void __53__AXARDescriptionFormatting__descriptionForDistance___block_invoke()
   if (fabs(v4) < 2.22044605e-16)
   {
     v4 = 0.1;
-    if (fabs(a3) <= 2.22044605e-16)
+    if (fabs(value) <= 2.22044605e-16)
     {
       v5 = AXLogCommon();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
-        [(AXARDescriptionFormatting *)v5 _valueForPercentageFromRawValue:a3];
+        [(AXARDescriptionFormatting *)v5 _valueForPercentageFromRawValue:value];
       }
     }
   }
@@ -85,17 +85,17 @@ void __53__AXARDescriptionFormatting__descriptionForDistance___block_invoke()
   return v4;
 }
 
-+ (id)_visibilityDescriptionForObjectFrame:(CGRect)a3 viewBounds:(CGRect)a4
++ (id)_visibilityDescriptionForObjectFrame:(CGRect)frame viewBounds:(CGRect)bounds
 {
-  x = a4.origin.x;
-  height = a4.size.height;
-  v37 = a3.origin.x;
-  y = a3.origin.y;
-  width = a3.size.width;
-  v34 = a3.size.height;
-  v35 = a4.size.width;
-  v8 = a4.origin.y;
-  v39 = CGRectIntersection(a3, a4);
+  x = bounds.origin.x;
+  height = bounds.size.height;
+  v37 = frame.origin.x;
+  y = frame.origin.y;
+  width = frame.size.width;
+  v34 = frame.size.height;
+  v35 = bounds.size.width;
+  v8 = bounds.origin.y;
+  v39 = CGRectIntersection(frame, bounds);
   v9 = v39.origin.x;
   v10 = v39.origin.y;
   v11 = v39.size.width;
@@ -141,13 +141,13 @@ void __53__AXARDescriptionFormatting__descriptionForDistance___block_invoke()
         v18 = MEMORY[0x1E696AEC0];
         v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v20 = [v19 localizedStringForKey:@"VISIBILITY_PERCENTAGE" value:&stru_1EFE6D570 table:@"ARDescriptionFormatting"];
-        [a1 _valueForPercentageFromRawValue:v17];
+        [self _valueForPercentageFromRawValue:v17];
         v21 = AXFormatFloatWithPercentage();
         v22 = [v18 localizedStringWithFormat:v20, v21];
         v23 = MEMORY[0x1E696AEC0];
         v24 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v25 = [v24 localizedStringForKey:@"COVERAGE_PERCENTAGE" value:&stru_1EFE6D570 table:@"ARDescriptionFormatting"];
-        [a1 _valueForPercentageFromRawValue:v32 * v31 / v14];
+        [self _valueForPercentageFromRawValue:v32 * v31 / v14];
         v26 = AXFormatFloatWithPercentage();
         v30 = [v23 localizedStringWithFormat:v25, v26];
         v27 = __AXStringForVariables();

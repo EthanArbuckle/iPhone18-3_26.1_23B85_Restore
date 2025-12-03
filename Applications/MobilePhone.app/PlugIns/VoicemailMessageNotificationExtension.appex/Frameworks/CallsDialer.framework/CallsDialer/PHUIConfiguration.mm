@@ -3,7 +3,7 @@
 + (double)dialerLCDLabelFontSize;
 + (double)dialerLCDSourceLabelFontSize;
 + (double)yOffsetForSmartDialerLCDView;
-+ (double)yOffsetForSmartDialerLCDViewForOrientation:(int64_t)a3;
++ (double)yOffsetForSmartDialerLCDViewForOrientation:(int64_t)orientation;
 @end
 
 @implementation PHUIConfiguration
@@ -110,7 +110,7 @@ void __61__PHUIConfiguration_DialerView__dialerLCDSourceLabelFontSize__block_inv
   }
 }
 
-+ (double)yOffsetForSmartDialerLCDViewForOrientation:(int64_t)a3
++ (double)yOffsetForSmartDialerLCDViewForOrientation:(int64_t)orientation
 {
   v3 = objc_opt_new();
   v4 = +[PHUIConfiguration screenSize];
@@ -127,9 +127,9 @@ void __61__PHUIConfiguration_DialerView__dialerLCDSourceLabelFontSize__block_inv
       if ([v3 phoneLargeFormatUIEnabled])
       {
         v6 = +[UIDevice currentDevice];
-        v7 = [v6 userInterfaceIdiom];
+        userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-        if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
           v5 = -120.0;
           goto LABEL_10;

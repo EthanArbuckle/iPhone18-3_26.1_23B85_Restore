@@ -1,5 +1,5 @@
 @interface UIColorWellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilityColorWellStyle;
 - (id)accessibilityValue;
@@ -8,12 +8,12 @@
 
 @implementation UIColorWellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIColorWell" hasInstanceVariable:@"_style" withType:"_UIColorWellVisualStyle"];
   [location[0] validateClass:@"_UIColorWelliOSVisualStyle" hasInstanceVariable:@"_button" withType:"UIButton"];
   objc_storeStrong(location, 0);
@@ -21,18 +21,18 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   v41.receiver = self;
   v41.super_class = UIColorWellAccessibility;
   [(UIColorWellAccessibility *)&v41 _accessibilityLoadAccessibilityInformation];
-  v7 = [(UIColorWellAccessibility *)v43 _accessibilityColorWellStyle];
-  v8 = [v7 safeIvarForKey:@"_button"];
-  MEMORY[0x29EDC9740](v7);
+  _accessibilityColorWellStyle = [(UIColorWellAccessibility *)selfCopy _accessibilityColorWellStyle];
+  v8 = [_accessibilityColorWellStyle safeIvarForKey:@"_button"];
+  MEMORY[0x29EDC9740](_accessibilityColorWellStyle);
   v40 = v8;
   if (v8)
   {
-    objc_initWeak(&location, v43);
+    objc_initWeak(&location, selfCopy);
     v6 = *v40;
     v33 = MEMORY[0x29EDCA5F8];
     v34 = -1073741824;
@@ -155,36 +155,36 @@ id __70__UIColorWellAccessibility__accessibilityLoadAccessibilityInformation__bl
 
 - (id)accessibilityValue
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   v5.receiver = self;
   v5.super_class = UIColorWellAccessibility;
   location[0] = [(UIColorWellAccessibility *)&v5 accessibilityValue];
   if ([location[0] length])
   {
-    v8 = MEMORY[0x29EDC9748](location[0]);
+    _accessibilityColorDescription = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v4 = [(UIColorWellAccessibility *)v7 selectedColor];
-    v8 = [v4 _accessibilityColorDescription];
-    MEMORY[0x29EDC9740](v4);
+    selectedColor = [(UIColorWellAccessibility *)selfCopy selectedColor];
+    _accessibilityColorDescription = [selectedColor _accessibilityColorDescription];
+    MEMORY[0x29EDC9740](selectedColor);
   }
 
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = _accessibilityColorDescription;
 
   return v2;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
-  v11 = [(UIColorWellAccessibility *)self _accessibilityColorWellStyle];
-  location[0] = [v11 safeValueForKey:@"_button"];
-  *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
+  _accessibilityColorWellStyle = [(UIColorWellAccessibility *)self _accessibilityColorWellStyle];
+  location[0] = [_accessibilityColorWellStyle safeValueForKey:@"_button"];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityColorWellStyle).n128_u64[0];
   if (location[0])
   {
     [location[0] accessibilityActivationPoint];
@@ -207,7 +207,7 @@ id __70__UIColorWellAccessibility__accessibilityLoadAccessibilityInformation__bl
 
   else
   {
-    v12.receiver = v17;
+    v12.receiver = selfCopy;
     v12.super_class = UIColorWellAccessibility;
     [(UIColorWellAccessibility *)&v12 accessibilityActivationPoint];
     *&v18 = v7;

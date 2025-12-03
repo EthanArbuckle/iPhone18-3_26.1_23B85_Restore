@@ -1,19 +1,19 @@
 @interface TSPLargeArraySegmentWrapper
-- (TSPLargeArraySegmentWrapper)initWithLargeArraySegment:(id)a3;
+- (TSPLargeArraySegmentWrapper)initWithLargeArraySegment:(id)segment;
 @end
 
 @implementation TSPLargeArraySegmentWrapper
 
-- (TSPLargeArraySegmentWrapper)initWithLargeArraySegment:(id)a3
+- (TSPLargeArraySegmentWrapper)initWithLargeArraySegment:(id)segment
 {
-  v5 = a3;
+  segmentCopy = segment;
   v9.receiver = self;
   v9.super_class = TSPLargeArraySegmentWrapper;
   v6 = [(TSPLargeArraySegmentWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingStore, a3);
+    objc_storeStrong(&v6->_backingStore, segment);
   }
 
   return v7;

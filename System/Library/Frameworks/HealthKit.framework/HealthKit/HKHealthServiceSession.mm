@@ -1,12 +1,12 @@
 @interface HKHealthServiceSession
-- (HKHealthServiceSession)initWithService:(id)a3;
+- (HKHealthServiceSession)initWithService:(id)service;
 @end
 
 @implementation HKHealthServiceSession
 
-- (HKHealthServiceSession)initWithService:(id)a3
+- (HKHealthServiceSession)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = HKHealthServiceSession;
   v6 = [(HKHealthServiceSession *)&v11 init];
@@ -15,7 +15,7 @@
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!serviceCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"*** HKHealthService required."];
 LABEL_5:
@@ -27,7 +27,7 @@ LABEL_5:
   propertyLock = v6->_propertyLock;
   v6->_propertyLock = v7;
 
-  objc_storeStrong(&v6->_service, a3);
+  objc_storeStrong(&v6->_service, service);
   v6->_sessionIdentifier = 0;
   v9 = v6;
 LABEL_6:

@@ -2,21 +2,21 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)borderSize;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileCounts;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)tileSize;
-- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)a3;
-- ($41299696D20B6C925B74A5D5E4D5CC87)frameRectForTileAtIndex:(SEL)a3;
-- (BOOL)isEqualToLayout:(id)a3;
-- (_NUFixedTileSizeImageLayout)initWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5;
-- (id)tileInfoAtIndex:(int64_t)a3;
+- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)index;
+- ($41299696D20B6C925B74A5D5E4D5CC87)frameRectForTileAtIndex:(SEL)index;
+- (BOOL)isEqualToLayout:(id)layout;
+- (_NUFixedTileSizeImageLayout)initWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize;
+- (id)tileInfoAtIndex:(int64_t)index;
 @end
 
 @implementation _NUFixedTileSizeImageLayout
 
-- (BOOL)isEqualToLayout:(id)a3
+- (BOOL)isEqualToLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = _NUFixedTileSizeImageLayout;
-  v7 = [(NUImageLayout *)&v10 isEqualToLayout:v4]&& (self->_tileSize.width == v4[3] ? (v5 = self->_tileSize.height == v4[4]) : (v5 = 0), v5 && (self->_borderSize.width == v4[5] ? (v6 = self->_borderSize.height == v4[6]) : (v6 = 0), v6)) && self->_tileCounts.width == v4[7] && self->_tileCounts.height == v4[8];
+  v7 = [(NUImageLayout *)&v10 isEqualToLayout:layoutCopy]&& (self->_tileSize.width == layoutCopy[3] ? (v5 = self->_tileSize.height == layoutCopy[4]) : (v5 = 0), v5 && (self->_borderSize.width == layoutCopy[5] ? (v6 = self->_borderSize.height == layoutCopy[6]) : (v6 = 0), v6)) && self->_tileCounts.width == layoutCopy[7] && self->_tileCounts.height == layoutCopy[8];
 
   return v7;
 }
@@ -51,10 +51,10 @@
   return result;
 }
 
-- (id)tileInfoAtIndex:(int64_t)a3
+- (id)tileInfoAtIndex:(int64_t)index
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 < 0 || [(_NUFixedTileSizeImageLayout *)self tileCount]<= a3)
+  if (index < 0 || [(_NUFixedTileSizeImageLayout *)self tileCount]<= index)
   {
     v8 = NUAssertLogger();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
       if (v12)
       {
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v15;
         *&buf[12] = 2114;
@@ -85,8 +85,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -96,17 +96,17 @@
   }
 
   memset(buf, 0, 32);
-  [(_NUFixedTileSizeImageLayout *)self frameRectForTileAtIndex:a3];
+  [(_NUFixedTileSizeImageLayout *)self frameRectForTileAtIndex:index];
   v5 = *&buf[16];
   v23[0] = *buf;
   v23[1] = *&buf[16];
-  [(_NUFixedTileSizeImageLayout *)self contentRectForTileAtIndex:a3];
-  v6 = [NUTileInfo tileInfoWithIndex:a3 size:v5 frameRect:v23 contentRect:v22];
+  [(_NUFixedTileSizeImageLayout *)self contentRectForTileAtIndex:index];
+  v6 = [NUTileInfo tileInfoWithIndex:index size:v5 frameRect:v23 contentRect:v22];
 
   return v6;
 }
 
-- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)a3
+- ($41299696D20B6C925B74A5D5E4D5CC87)contentRectForTileAtIndex:(SEL)index
 {
   v44 = *MEMORY[0x1E69E9840];
   if (a4 < 0 || [(_NUFixedTileSizeImageLayout *)self tileCount]<= a4)
@@ -128,8 +128,8 @@
       if (v27)
       {
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v30;
         v42 = 2114;
@@ -140,8 +140,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -176,9 +176,9 @@
   if (v14 == self->_tileCounts.height)
   {
     v17 = result;
-    v18 = self;
+    selfCopy = self;
     v19 = v11;
-    [(NUImageLayout *)v18 imageSize];
+    [(NUImageLayout *)selfCopy imageSize];
     result = v17;
     v11 = v19;
     v15 = v20;
@@ -203,7 +203,7 @@
   return result;
 }
 
-- ($41299696D20B6C925B74A5D5E4D5CC87)frameRectForTileAtIndex:(SEL)a3
+- ($41299696D20B6C925B74A5D5E4D5CC87)frameRectForTileAtIndex:(SEL)index
 {
   v39 = *MEMORY[0x1E69E9840];
   if (a4 < 0 || [(_NUFixedTileSizeImageLayout *)self tileCount]<= a4)
@@ -225,8 +225,8 @@
       if (v25)
       {
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v28;
         v37 = 2114;
@@ -237,8 +237,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -253,10 +253,10 @@
   v10 = (v9 - 2 * self->_borderSize.width) * (a4 % width);
   v11 = v10 & ~(v10 >> 63);
   v12 = v11 + v9;
-  v13 = [(NUImageLayout *)self imageSize];
-  if (v13 < v12)
+  imageSize = [(NUImageLayout *)self imageSize];
+  if (imageSize < v12)
   {
-    v12 = v13;
+    v12 = imageSize;
   }
 
   height = self->_tileSize.height;
@@ -281,10 +281,10 @@
   return result;
 }
 
-- (_NUFixedTileSizeImageLayout)initWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5
+- (_NUFixedTileSizeImageLayout)initWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (!a4.var0 || (var1 = a4.var1) == 0)
+  if (!tileSize.var0 || (var1 = tileSize.var1) == 0)
   {
     v20 = NUAssertLogger();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -303,8 +303,8 @@
       if (v24)
       {
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v33;
         v49 = 2114;
@@ -315,8 +315,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -329,9 +329,9 @@ LABEL_24:
     _NUAssertFailHandler("[_NUFixedTileSizeImageLayout initWithImageSize:tileSize:borderSize:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageLayout.mm", v37, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, v36);
   }
 
-  var0 = a5.var0;
-  v7 = a4.var0;
-  if (a4.var0 <= 2 * a5.var0 || (v8 = a5.var1, v9 = a5.var1, v9 + v9 >= a4.var1))
+  var0 = borderSize.var0;
+  v7 = tileSize.var0;
+  if (tileSize.var0 <= 2 * borderSize.var0 || (v8 = borderSize.var1, v9 = borderSize.var1, v9 + v9 >= tileSize.var1))
   {
     v27 = NUAssertLogger();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -350,8 +350,8 @@ LABEL_24:
       if (v30)
       {
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v38;
         v49 = 2114;
@@ -362,8 +362,8 @@ LABEL_24:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v32;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -374,12 +374,12 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v10 = a3.var1;
-  v11 = a3.var0;
-  v45 = a5.var1;
+  v10 = size.var1;
+  v11 = size.var0;
+  v45 = borderSize.var1;
   v46.receiver = self;
   v46.super_class = _NUFixedTileSizeImageLayout;
-  result = [(NUImageLayout *)&v46 initWithImageSize:a4.var1, v9 + v9];
+  result = [(NUImageLayout *)&v46 initWithImageSize:tileSize.var1, v9 + v9];
   if (result)
   {
     result->_tileSize.width = v7;

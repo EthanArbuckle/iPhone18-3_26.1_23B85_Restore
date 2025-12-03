@@ -1,57 +1,57 @@
 @interface SBInsertionSwitcherModifier
 - (CGPoint)scrollViewContentOffset;
-- (SBInsertionSwitcherModifier)initWithAppLayout:(id)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleInsertionEvent:(id)a3;
+- (SBInsertionSwitcherModifier)initWithAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleInsertionEvent:(id)event;
 - (id)visibleAppLayouts;
-- (void)_performBlockBySimulatingPreInsertionState:(id)a3;
+- (void)_performBlockBySimulatingPreInsertionState:(id)state;
 @end
 
 @implementation SBInsertionSwitcherModifier
 
-- (SBInsertionSwitcherModifier)initWithAppLayout:(id)a3
+- (SBInsertionSwitcherModifier)initWithAppLayout:(id)layout
 {
-  v6 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBInsertionSwitcherModifier;
   v7 = [(SBSwitcherModifier *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!layoutCopy)
     {
       [(SBInsertionSwitcherModifier *)a2 initWithAppLayout:v7];
     }
 
-    objc_storeStrong(&v7->_appLayout, a3);
+    objc_storeStrong(&v7->_appLayout, layout);
     v7->_phase = 0;
   }
 
   return v7;
 }
 
-- (id)handleInsertionEvent:(id)a3
+- (id)handleInsertionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = SBInsertionSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v25 handleInsertionEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v25 handleInsertionEvent:eventCopy];
   appLayout = self->_appLayout;
-  v7 = [v4 appLayout];
-  LODWORD(appLayout) = [(SBAppLayout *)appLayout isEqual:v7];
+  appLayout = [eventCopy appLayout];
+  LODWORD(appLayout) = [(SBAppLayout *)appLayout isEqual:appLayout];
 
   if (appLayout)
   {
-    v8 = [v4 phase];
-    self->_phase = v8;
-    switch(v8)
+    phase = [eventCopy phase];
+    self->_phase = phase;
+    switch(phase)
     {
       case 4uLL:
         [(SBChainableModifier *)self setState:1];
         break;
       case 2uLL:
-        v11 = [(SBInsertionSwitcherModifier *)self appLayouts];
-        if ([v11 count])
+        appLayouts = [(SBInsertionSwitcherModifier *)self appLayouts];
+        if ([appLayouts count])
         {
           v21 = 0;
           v22 = &v21;
@@ -63,9 +63,9 @@
           v18[3] = &unk_2783AB258;
           v20 = &v21;
           v18[4] = self;
-          v19 = v4;
+          v19 = eventCopy;
           [(SBInsertionSwitcherModifier *)self _performBlockBySimulatingPreInsertionState:v18];
-          v12 = [v11 count] - 1;
+          v12 = [appLayouts count] - 1;
           if (v12 >= v22[3])
           {
             v12 = v22[3];
@@ -74,8 +74,8 @@
           v22[3] = v12;
           if (v12 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v13 = [(SBInsertionSwitcherModifier *)self appLayouts];
-            v14 = [v13 objectAtIndex:v22[3]];
+            appLayouts2 = [(SBInsertionSwitcherModifier *)self appLayouts];
+            v14 = [appLayouts2 objectAtIndex:v22[3]];
 
             v15 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v14 alignment:0 animated:0];
             v16 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v15 toResponse:v5];
@@ -131,8 +131,8 @@ uint64_t __52__SBInsertionSwitcherModifier_handleInsertionEvent___block_invoke(u
 {
   v14.receiver = self;
   v14.super_class = SBInsertionSwitcherModifier;
-  v3 = [(SBInsertionSwitcherModifier *)&v14 visibleAppLayouts];
-  v4 = v3;
+  visibleAppLayouts = [(SBInsertionSwitcherModifier *)&v14 visibleAppLayouts];
+  v4 = visibleAppLayouts;
   if (self->_phase > 1)
   {
     v8 = 0;
@@ -154,7 +154,7 @@ uint64_t __52__SBInsertionSwitcherModifier_handleInsertionEvent___block_invoke(u
 
   else
   {
-    v5 = v3;
+    v5 = visibleAppLayouts;
   }
 
   return v5;
@@ -170,44 +170,44 @@ void __48__SBInsertionSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBInsertionSwitcherModifier;
-  v4 = [(SBInsertionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBInsertionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
   [v5 setUpdateMode:3];
-  v6 = [(SBInsertionSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 opacitySettings];
-  [v5 setOpacitySettings:v8];
+  switcherSettings = [(SBInsertionSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  opacitySettings = [animationSettings opacitySettings];
+  [v5 setOpacitySettings:opacitySettings];
 
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (self->_phase != 2 || (-[SBInsertionSwitcherModifier appLayouts](self, "appLayouts"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 indexOfObject:self->_appLayout], v9, v11 = 0.0, v10 != a5))
+  layoutCopy = layout;
+  if (self->_phase != 2 || (-[SBInsertionSwitcherModifier appLayouts](self, "appLayouts"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 indexOfObject:self->_appLayout], v9, v11 = 0.0, v10 != index))
   {
     v14.receiver = self;
     v14.super_class = SBInsertionSwitcherModifier;
-    [(SBInsertionSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBInsertionSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (void)_performBlockBySimulatingPreInsertionState:(id)a3
+- (void)_performBlockBySimulatingPreInsertionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   isSimulatingPreInsertionState = self->_isSimulatingPreInsertionState;
   self->_isSimulatingPreInsertionState = 1;
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
-  v7 = [(SBInsertionSwitcherModifier *)self appLayouts];
-  v8 = [v6 initWithArray:v7];
+  appLayouts = [(SBInsertionSwitcherModifier *)self appLayouts];
+  v8 = [v6 initWithArray:appLayouts];
 
   [v8 removeObject:self->_appLayout];
   v9 = [[SBOverrideAppLayoutsSwitcherModifier alloc] initWithAppLayouts:v8];
@@ -215,8 +215,8 @@ void __48__SBInsertionSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t 
   v11[1] = 3221225472;
   v11[2] = __74__SBInsertionSwitcherModifier__performBlockBySimulatingPreInsertionState___block_invoke;
   v11[3] = &unk_2783A9348;
-  v12 = v4;
-  v10 = v4;
+  v12 = stateCopy;
+  v10 = stateCopy;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v9 usingBlock:v11];
   self->_isSimulatingPreInsertionState = isSimulatingPreInsertionState;
 }

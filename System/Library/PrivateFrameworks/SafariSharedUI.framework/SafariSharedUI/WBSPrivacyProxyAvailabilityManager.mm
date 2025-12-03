@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __51__WBSPrivacyProxyAvailabilityManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -53,26 +53,26 @@ void __51__WBSPrivacyProxyAvailabilityManager_sharedManager__block_invoke(uint64
     notificationQueue = v3->_notificationQueue;
     v3->_notificationQueue = v8;
 
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3->_isPrivacyProxyOnInICloudSettings = [v10 BOOLForKey:*MEMORY[0x1E69C9508]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3->_isPrivacyProxyOnInICloudSettings = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69C9508]];
 
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3->_isPrivacyProxyPaidTierUnavailableInUserCountry = [v11 BOOLForKey:*MEMORY[0x1E69C9510]];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3->_isPrivacyProxyPaidTierUnavailableInUserCountry = [standardUserDefaults2 BOOLForKey:*MEMORY[0x1E69C9510]];
 
-    v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v13 = [v12 safari_numberForKey:*MEMORY[0x1E69C9518]];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v13 = [standardUserDefaults3 safari_numberForKey:*MEMORY[0x1E69C9518]];
     v3->_privacyProxyTrafficBitfield = [v13 unsignedLongLongValue];
 
-    v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v15 = [v14 safari_numberForKey:*MEMORY[0x1E69C94F0]];
+    standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v15 = [standardUserDefaults4 safari_numberForKey:*MEMORY[0x1E69C94F0]];
     v3->_privacyProxyAccountType = [v15 unsignedLongLongValue];
 
-    v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v17 = [v16 safari_numberForKey:*MEMORY[0x1E69C9500]];
+    standardUserDefaults5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v17 = [standardUserDefaults5 safari_numberForKey:*MEMORY[0x1E69C9500]];
     v3->_privacyProxyServiceStatus = [v17 unsignedLongLongValue];
 
-    v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3->_isPrivacyProxyActiveOnDefaultNetwork = [v18 BOOLForKey:*MEMORY[0x1E69C94F8]];
+    standardUserDefaults6 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3->_isPrivacyProxyActiveOnDefaultNetwork = [standardUserDefaults6 BOOLForKey:*MEMORY[0x1E69C94F8]];
 
     v19 = v3->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -123,14 +123,14 @@ uint64_t __42__WBSPrivacyProxyAvailabilityManager_init__block_invoke_2(uint64_t 
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1C6968000, a2, OS_LOG_TYPE_ERROR, "Failed to listen to privacy proxy service status change notification: %i", v2, 8u);
 }
 
 - (void)_registerForDefaultNetworkInterfaceChangeNotifications
 {
-  v3 = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
-  [v3 addObserver:self forKeyPath:@"path" options:7 context:0];
+  mEMORY[0x1E6977E50] = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
+  [mEMORY[0x1E6977E50] addObserver:self forKeyPath:@"path" options:7 context:0];
 }
 
 - (BOOL)isPrivacyProxyActive

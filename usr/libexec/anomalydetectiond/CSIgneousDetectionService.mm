@@ -1,9 +1,9 @@
 @interface CSIgneousDetectionService
-+ (void)updateNumIgneousCollection:(int)a3;
-+ (void)updateNumIgneousUpload:(id)a3;
++ (void)updateNumIgneousCollection:(int)collection;
++ (void)updateNumIgneousUpload:(id)upload;
 - (CSIgneousDetectionService)init;
 - (id)userInfoUploader;
-- (void)uploadCoreAnalyticsWithHandler:(id)a3;
+- (void)uploadCoreAnalyticsWithHandler:(id)handler;
 @end
 
 @implementation CSIgneousDetectionService
@@ -60,9 +60,9 @@
   return v3;
 }
 
-- (void)uploadCoreAnalyticsWithHandler:(id)a3
+- (void)uploadCoreAnalyticsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   Current = CFAbsoluteTimeGetCurrent();
   if (qword_1004568A8 != -1)
   {
@@ -148,17 +148,17 @@
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Sent Igneous data harvest metrics to CA,timestmap,%f,%@", buf, 0x16u);
     }
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 1, v24);
+      handlerCopy[2](handlerCopy, 1, v24);
     }
   }
 
   else
   {
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
     if (qword_1004568A8 != -1)
@@ -176,11 +176,11 @@
   }
 }
 
-+ (void)updateNumIgneousCollection:(int)a3
++ (void)updateNumIgneousCollection:(int)collection
 {
   v4 = +[CSPersistentConfiguration sharedConfiguration];
   v5 = v4;
-  if (a3 == 4)
+  if (collection == 4)
   {
     v8 = [v4 integerForKey:@"CSIgneousNumAlertHarvestCollection"];
     v7 = v8;
@@ -195,9 +195,9 @@ LABEL_5:
     if (os_log_type_enabled(qword_1004568B0, OS_LOG_TYPE_INFO))
     {
       v14 = 67109376;
-      v15 = v7 + 1;
+      collectionCopy2 = v7 + 1;
       v16 = 1024;
-      v17 = a3;
+      collectionCopy = collection;
       v10 = "Updated number of Igneous collection in defaults config,%d,igneousPath,%d";
       v11 = v9;
       v12 = 14;
@@ -209,7 +209,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (collection == 1)
   {
     v6 = [v4 integerForKey:@"CSIgneousNumMotionHarvestCollection"];
     v7 = v6;
@@ -226,7 +226,7 @@ LABEL_13:
   if (os_log_type_enabled(qword_1004568B0, OS_LOG_TYPE_INFO))
   {
     v14 = 67109120;
-    v15 = a3;
+    collectionCopy2 = collection;
     v10 = "Do not update number of Igneous collection in defaults config,igneousPath,%d";
     v11 = v13;
     v12 = 8;
@@ -236,21 +236,21 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (void)updateNumIgneousUpload:(id)a3
++ (void)updateNumIgneousUpload:(id)upload
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  uploadCopy = upload;
+  v4 = uploadCopy;
+  if (uploadCopy)
   {
-    v5 = [v3 objectForKey:@"igneousPath"];
+    v5 = [uploadCopy objectForKey:@"igneousPath"];
 
     if (v5)
     {
       v6 = +[CSPersistentConfiguration sharedConfiguration];
       v7 = [v4 objectForKey:@"igneousPath"];
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
 
-      if (v8 == 4)
+      if (intValue == 4)
       {
         v11 = [v6 integerForKey:@"CSIgneousNumAlertHarvestUpload"];
         v10 = v11;
@@ -259,7 +259,7 @@ LABEL_14:
 
       else
       {
-        if (v8 != 1)
+        if (intValue != 1)
         {
           if (qword_1004568A8 != -1)
           {
@@ -273,7 +273,7 @@ LABEL_14:
           }
 
           v17 = 67109120;
-          v18 = v8;
+          v18 = intValue;
           v13 = "Do not update number of Igneous upload in defaults config,igneousPath,%d";
           v14 = v16;
           v15 = 8;
@@ -299,7 +299,7 @@ LABEL_14:
       v17 = 67109376;
       v18 = v10 + 1;
       v19 = 1024;
-      v20 = v8;
+      v20 = intValue;
       v13 = "Updated number of Igneous upload in defaults config,%d,igneousPath,%d";
       v14 = v12;
       v15 = 14;

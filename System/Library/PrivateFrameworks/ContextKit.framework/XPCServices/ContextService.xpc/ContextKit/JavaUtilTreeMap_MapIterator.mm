@@ -1,5 +1,5 @@
 @interface JavaUtilTreeMap_MapIterator
-- (JavaUtilTreeMap_MapIterator)initWithJavaUtilTreeMap:(id)a3 withJavaUtilTreeMap_Node:(id)a4;
+- (JavaUtilTreeMap_MapIterator)initWithJavaUtilTreeMap:(id)map withJavaUtilTreeMap_Node:(id)node;
 - (id)stepBackward;
 - (id)stepForward;
 - (void)dealloc;
@@ -8,11 +8,11 @@
 
 @implementation JavaUtilTreeMap_MapIterator
 
-- (JavaUtilTreeMap_MapIterator)initWithJavaUtilTreeMap:(id)a3 withJavaUtilTreeMap_Node:(id)a4
+- (JavaUtilTreeMap_MapIterator)initWithJavaUtilTreeMap:(id)map withJavaUtilTreeMap_Node:(id)node
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->expectedModCount_ = *(a3 + 11);
-  JreStrongAssign(&self->next_, a4);
+  JreStrongAssign(&self->this$0_, map);
+  self->expectedModCount_ = *(map + 11);
+  JreStrongAssign(&self->next_, node);
   return self;
 }
 

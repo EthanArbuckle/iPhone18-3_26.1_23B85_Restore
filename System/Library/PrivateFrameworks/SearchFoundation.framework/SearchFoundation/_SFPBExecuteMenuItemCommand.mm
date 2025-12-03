@@ -1,37 +1,37 @@
 @interface _SFPBExecuteMenuItemCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBExecuteMenuItemCommand)initWithDictionary:(id)a3;
-- (_SFPBExecuteMenuItemCommand)initWithFacade:(id)a3;
-- (_SFPBExecuteMenuItemCommand)initWithJSON:(id)a3;
+- (_SFPBExecuteMenuItemCommand)initWithDictionary:(id)dictionary;
+- (_SFPBExecuteMenuItemCommand)initWithFacade:(id)facade;
+- (_SFPBExecuteMenuItemCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setMenuItemIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setMenuItemIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBExecuteMenuItemCommand
 
-- (_SFPBExecuteMenuItemCommand)initWithFacade:(id)a3
+- (_SFPBExecuteMenuItemCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBExecuteMenuItemCommand *)self init];
   if (v5)
   {
-    v6 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v6)
+    if (applicationBundleIdentifier)
     {
-      v7 = [v4 applicationBundleIdentifier];
-      [(_SFPBExecuteMenuItemCommand *)v5 setApplicationBundleIdentifier:v7];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBExecuteMenuItemCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    v8 = [v4 menuItemIdentifier];
+    menuItemIdentifier = [facadeCopy menuItemIdentifier];
 
-    if (v8)
+    if (menuItemIdentifier)
     {
-      v9 = [v4 menuItemIdentifier];
-      [(_SFPBExecuteMenuItemCommand *)v5 setMenuItemIdentifier:v9];
+      menuItemIdentifier2 = [facadeCopy menuItemIdentifier];
+      [(_SFPBExecuteMenuItemCommand *)v5 setMenuItemIdentifier:menuItemIdentifier2];
     }
 
     v10 = v5;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (_SFPBExecuteMenuItemCommand)initWithDictionary:(id)a3
+- (_SFPBExecuteMenuItemCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBExecuteMenuItemCommand;
   v5 = [(_SFPBExecuteMenuItemCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(_SFPBExecuteMenuItemCommand *)v5 setApplicationBundleIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"menuItemIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"menuItemIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (_SFPBExecuteMenuItemCommand)initWithJSON:(id)a3
+- (_SFPBExecuteMenuItemCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBExecuteMenuItemCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBExecuteMenuItemCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBExecuteMenuItemCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,46 +106,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_menuItemIdentifier)
   {
-    v6 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"menuItemIdentifier"];
+    menuItemIdentifier = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
+    v7 = [menuItemIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"menuItemIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  applicationBundleIdentifier = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
+  applicationBundleIdentifier2 = [equalCopy applicationBundleIdentifier];
+  if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
-  if (v7)
+  applicationBundleIdentifier3 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
-    v10 = [v4 applicationBundleIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = applicationBundleIdentifier3;
+    applicationBundleIdentifier4 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier5 = [equalCopy applicationBundleIdentifier];
+    v11 = [applicationBundleIdentifier4 isEqual:applicationBundleIdentifier5];
 
     if (!v11)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
-  v6 = [v4 menuItemIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  applicationBundleIdentifier = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
+  applicationBundleIdentifier2 = [equalCopy menuItemIdentifier];
+  if ((applicationBundleIdentifier != 0) != (applicationBundleIdentifier2 == 0))
   {
-    v12 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
-    if (!v12)
+    menuItemIdentifier = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
+    if (!menuItemIdentifier)
     {
 
 LABEL_15:
@@ -170,10 +170,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
-    v15 = [v4 menuItemIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = menuItemIdentifier;
+    menuItemIdentifier2 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
+    menuItemIdentifier3 = [equalCopy menuItemIdentifier];
+    v16 = [menuItemIdentifier2 isEqual:menuItemIdentifier3];
 
     if (v16)
     {
@@ -193,34 +193,34 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
-  if (v4)
+  toCopy = to;
+  applicationBundleIdentifier = [(_SFPBExecuteMenuItemCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
-  if (v5)
+  menuItemIdentifier = [(_SFPBExecuteMenuItemCommand *)self menuItemIdentifier];
+  if (menuItemIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setMenuItemIdentifier:(id)a3
+- (void)setMenuItemIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   menuItemIdentifier = self->_menuItemIdentifier;
   self->_menuItemIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 

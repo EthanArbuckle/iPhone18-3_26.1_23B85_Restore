@@ -1,52 +1,52 @@
 @interface MTRPluginMetric
-+ (id)numberValueFromDataValueDictionary:(id)a3;
++ (id)numberValueFromDataValueDictionary:(id)dictionary;
 - (MTRDevice)device;
 - (NSDictionary)coreAnalyticsEventDictionary;
-- (id)initMetricWithName:(id)a3 device:(id)a4 homeID:(id)a5 remoteMessageID:(id)a6;
-- (id)initMetricWithName:(id)a3 sourceMetric:(id)a4;
+- (id)initMetricWithName:(id)name device:(id)device homeID:(id)d remoteMessageID:(id)iD;
+- (id)initMetricWithName:(id)name sourceMetric:(id)metric;
 @end
 
 @implementation MTRPluginMetric
 
-- (id)initMetricWithName:(id)a3 device:(id)a4 homeID:(id)a5 remoteMessageID:(id)a6
+- (id)initMetricWithName:(id)name device:(id)device homeID:(id)d remoteMessageID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  deviceCopy = device;
+  iDCopy = iD;
   v17.receiver = self;
   v17.super_class = MTRPluginMetric;
-  v13 = [(HMMHomeLogEvent *)&v17 initWithHomeUUID:a5];
+  v13 = [(HMMHomeLogEvent *)&v17 initWithHomeUUID:d];
   v14 = v13;
   if (v13)
   {
-    [(MTRPluginMetric *)v13 setName:v10];
-    [(MTRPluginMetric *)v14 setDevice:v11];
-    [(MTRPluginMetric *)v14 setRemoteMessageID:v12];
+    [(MTRPluginMetric *)v13 setName:nameCopy];
+    [(MTRPluginMetric *)v14 setDevice:deviceCopy];
+    [(MTRPluginMetric *)v14 setRemoteMessageID:iDCopy];
     v15 = v14;
   }
 
   return v14;
 }
 
-- (id)initMetricWithName:(id)a3 sourceMetric:(id)a4
+- (id)initMetricWithName:(id)name sourceMetric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 startTime];
+  nameCopy = name;
+  metricCopy = metric;
+  [metricCopy startTime];
   v9 = v8;
-  v10 = [v7 homeUUID];
+  homeUUID = [metricCopy homeUUID];
   v16.receiver = self;
   v16.super_class = MTRPluginMetric;
-  v11 = [(HMMHomeLogEvent *)&v16 initWithStartTime:v10 homeUUID:v9];
+  v11 = [(HMMHomeLogEvent *)&v16 initWithStartTime:homeUUID homeUUID:v9];
 
   if (v11)
   {
-    [(MTRPluginMetric *)v11 setName:v6];
-    v12 = [v7 device];
-    [(MTRPluginMetric *)v11 setDevice:v12];
+    [(MTRPluginMetric *)v11 setName:nameCopy];
+    device = [metricCopy device];
+    [(MTRPluginMetric *)v11 setDevice:device];
 
-    v13 = [v7 remoteMessageID];
-    [(MTRPluginMetric *)v11 setRemoteMessageID:v13];
+    remoteMessageID = [metricCopy remoteMessageID];
+    [(MTRPluginMetric *)v11 setRemoteMessageID:remoteMessageID];
 
     [(HMMLogEvent *)v11 markEndTime];
     v14 = v11;
@@ -55,14 +55,14 @@
   return v11;
 }
 
-+ (id)numberValueFromDataValueDictionary:(id)a3
++ (id)numberValueFromDataValueDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v5 = *MEMORY[0x277CD5188];
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277CD5188]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD5188]];
     if ([v6 isEqual:*MEMORY[0x277CD5178]])
     {
 LABEL_9:
@@ -124,28 +124,28 @@ LABEL_16:
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(MTRPluginMetric *)self device];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  device = [(MTRPluginMetric *)self device];
 
-  if (v4)
+  if (device)
   {
-    v5 = [(MTRPluginMetric *)self device];
-    v6 = [v5 vendorID];
-    [v3 setObject:v6 forKeyedSubscript:@"vendorID"];
+    device2 = [(MTRPluginMetric *)self device];
+    vendorID = [device2 vendorID];
+    [dictionary setObject:vendorID forKeyedSubscript:@"vendorID"];
 
-    v7 = [(MTRPluginMetric *)self device];
-    v8 = [v7 productID];
-    [v3 setObject:v8 forKeyedSubscript:@"productID"];
+    device3 = [(MTRPluginMetric *)self device];
+    productID = [device3 productID];
+    [dictionary setObject:productID forKeyedSubscript:@"productID"];
 
-    v9 = [(MTRPluginMetric *)self device];
-    v10 = [v9 nodeID];
-    [v3 setObject:v10 forKeyedSubscript:@"nodeID"];
+    device4 = [(MTRPluginMetric *)self device];
+    nodeID = [device4 nodeID];
+    [dictionary setObject:nodeID forKeyedSubscript:@"nodeID"];
 
-    v11 = [(MTRPluginMetric *)self device];
-    v12 = [v11 networkCommissioningFeatures];
+    device5 = [(MTRPluginMetric *)self device];
+    networkCommissioningFeatures = [device5 networkCommissioningFeatures];
     v13 = MEMORY[0x277CBEC38];
     v14 = MEMORY[0x277CBEC28];
-    if ((v12 & 2) != 0)
+    if ((networkCommissioningFeatures & 2) != 0)
     {
       v15 = MEMORY[0x277CBEC38];
     }
@@ -155,10 +155,10 @@ LABEL_16:
       v15 = MEMORY[0x277CBEC28];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"supportsThread"];
+    [dictionary setObject:v15 forKeyedSubscript:@"supportsThread"];
 
-    v16 = [(MTRPluginMetric *)self device];
-    if ([v16 networkCommissioningFeatures])
+    device6 = [(MTRPluginMetric *)self device];
+    if ([device6 networkCommissioningFeatures])
     {
       v17 = v13;
     }
@@ -168,10 +168,10 @@ LABEL_16:
       v17 = v14;
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"supportsWiFi"];
+    [dictionary setObject:v17 forKeyedSubscript:@"supportsWiFi"];
 
-    v18 = [(MTRPluginMetric *)self device];
-    if (([v18 networkCommissioningFeatures] & 4) != 0)
+    device7 = [(MTRPluginMetric *)self device];
+    if (([device7 networkCommissioningFeatures] & 4) != 0)
     {
       v19 = v13;
     }
@@ -181,34 +181,34 @@ LABEL_16:
       v19 = v14;
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"supportsEthernet"];
+    [dictionary setObject:v19 forKeyedSubscript:@"supportsEthernet"];
   }
 
-  v20 = [(MTRPluginMetric *)self remoteMessageID];
+  remoteMessageID = [(MTRPluginMetric *)self remoteMessageID];
 
-  if (v20)
+  if (remoteMessageID)
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteMode"];
-    v21 = [(MTRPluginMetric *)self remoteMessageID];
-    v22 = [v21 UUIDString];
-    [v3 setObject:v22 forKeyedSubscript:@"remoteMessageID"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteMode"];
+    remoteMessageID2 = [(MTRPluginMetric *)self remoteMessageID];
+    uUIDString = [remoteMessageID2 UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:@"remoteMessageID"];
   }
 
   else
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"remoteMode"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"remoteMode"];
   }
 
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v23 forKeyedSubscript:@"durationMs"];
+  [dictionary setObject:v23 forKeyedSubscript:@"durationMs"];
 
-  v24 = [(MTRPluginMetric *)self additionalCoreAnalyticsEventDictionary];
-  if (v24)
+  additionalCoreAnalyticsEventDictionary = [(MTRPluginMetric *)self additionalCoreAnalyticsEventDictionary];
+  if (additionalCoreAnalyticsEventDictionary)
   {
-    [v3 addEntriesFromDictionary:v24];
+    [dictionary addEntriesFromDictionary:additionalCoreAnalyticsEventDictionary];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (MTRDevice)device

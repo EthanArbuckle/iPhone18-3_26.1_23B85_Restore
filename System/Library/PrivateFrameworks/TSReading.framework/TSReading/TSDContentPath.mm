@@ -1,15 +1,15 @@
 @interface TSDContentPath
-+ (TSDContentPath)contentPathWithLocations:(id)a3;
-- (id)contentLocationAtTime:(double)a3 withTimingFunction:(id)a4;
++ (TSDContentPath)contentPathWithLocations:(id)locations;
+- (id)contentLocationAtTime:(double)time withTimingFunction:(id)function;
 - (void)dealloc;
 @end
 
 @implementation TSDContentPath
 
-+ (TSDContentPath)contentPathWithLocations:(id)a3
++ (TSDContentPath)contentPathWithLocations:(id)locations
 {
   v4 = objc_alloc_init(TSDContentPath);
-  [(TSDContentPath *)v4 setContentLocations:a3];
+  [(TSDContentPath *)v4 setContentLocations:locations];
 
   return v4;
 }
@@ -21,20 +21,20 @@
   [(TSDContentPath *)&v3 dealloc];
 }
 
-- (id)contentLocationAtTime:(double)a3 withTimingFunction:(id)a4
+- (id)contentLocationAtTime:(double)time withTimingFunction:(id)function
 {
-  v7 = [(NSArray *)self->_contentLocations lastObject];
+  lastObject = [(NSArray *)self->_contentLocations lastObject];
   if ([(NSArray *)self->_contentLocations count]< 2)
   {
-    return v7;
+    return lastObject;
   }
 
-  if (!a4)
+  if (!function)
   {
-    a4 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
+    function = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C8]];
   }
 
-  [a4 solveForTime:a3];
+  [function solveForTime:time];
   v9 = v8;
   v10 = v8 * [(NSArray *)self->_contentLocations count];
   v11 = floorf(v10);

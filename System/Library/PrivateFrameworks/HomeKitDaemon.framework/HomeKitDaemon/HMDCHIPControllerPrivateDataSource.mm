@@ -1,14 +1,14 @@
 @interface HMDCHIPControllerPrivateDataSource
 + (id)logCategory;
-- (BOOL)removeValueForKey:(id)a3 completion:(id)a4;
-- (BOOL)setKeyValuePairs:(id)a3 completion:(id)a4;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (HMDCHIPControllerPrivateDataSource)initWithHome:(id)a3 nodeID:(id)a4;
+- (BOOL)removeValueForKey:(id)key completion:(id)completion;
+- (BOOL)setKeyValuePairs:(id)pairs completion:(id)completion;
+- (BOOL)setValue:(id)value forKey:(id)key completion:(id)completion;
+- (HMDCHIPControllerPrivateDataSource)initWithHome:(id)home nodeID:(id)d;
 - (HMDHome)home;
 - (NSNumber)controllerNodeID;
 - (id)allKeyValuePairs;
 - (id)logIdentifier;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation HMDCHIPControllerPrivateDataSource
@@ -29,26 +29,26 @@
 
 - (id)logIdentifier
 {
-  v3 = [(HMDCHIPControllerPrivateDataSource *)self home];
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 logIdentifier];
-  v6 = [v3 fabric];
-  v7 = [v6 fabricID];
-  v8 = [(HMDCHIPControllerPrivateDataSource *)self controllerNodeID];
-  v9 = [v4 stringWithFormat:@"%@/%@/%@", v5, v7, v8];
+  logIdentifier = [home logIdentifier];
+  fabric = [home fabric];
+  fabricID = [fabric fabricID];
+  controllerNodeID = [(HMDCHIPControllerPrivateDataSource *)self controllerNodeID];
+  v9 = [v4 stringWithFormat:@"%@/%@/%@", logIdentifier, fabricID, controllerNodeID];
 
   return v9;
 }
 
-- (BOOL)setKeyValuePairs:(id)a3 completion:(id)a4
+- (BOOL)setKeyValuePairs:(id)pairs completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCHIPControllerPrivateDataSource *)self home];
-  v9 = [v8 controllerPrivateStorage];
-  [v9 setSDKKeyValuePairs:v7];
+  completionCopy = completion;
+  pairsCopy = pairs;
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
+  controllerPrivateStorage = [home controllerPrivateStorage];
+  [controllerPrivateStorage setSDKKeyValuePairs:pairsCopy];
 
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(completionCopy);
   if (v10)
   {
     v10[2](v10, 0);
@@ -59,22 +59,22 @@
 
 - (id)allKeyValuePairs
 {
-  v2 = [(HMDCHIPControllerPrivateDataSource *)self home];
-  v3 = [v2 controllerPrivateStorage];
-  v4 = [v3 allSDKKeyValuePairs];
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
+  controllerPrivateStorage = [home controllerPrivateStorage];
+  allSDKKeyValuePairs = [controllerPrivateStorage allSDKKeyValuePairs];
 
-  return v4;
+  return allSDKKeyValuePairs;
 }
 
-- (BOOL)removeValueForKey:(id)a3 completion:(id)a4
+- (BOOL)removeValueForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCHIPControllerPrivateDataSource *)self home];
-  v9 = [v8 controllerPrivateStorage];
-  [v9 removeValueForSDKKey:v7];
+  completionCopy = completion;
+  keyCopy = key;
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
+  controllerPrivateStorage = [home controllerPrivateStorage];
+  [controllerPrivateStorage removeValueForSDKKey:keyCopy];
 
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(completionCopy);
   if (v10)
   {
     v10[2](v10, 0);
@@ -83,16 +83,16 @@
   return 1;
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (BOOL)setValue:(id)value forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMDCHIPControllerPrivateDataSource *)self home];
-  v12 = [v11 controllerPrivateStorage];
-  [v12 setValue:v10 forSDKKey:v9];
+  completionCopy = completion;
+  keyCopy = key;
+  valueCopy = value;
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
+  controllerPrivateStorage = [home controllerPrivateStorage];
+  [controllerPrivateStorage setValue:valueCopy forSDKKey:keyCopy];
 
-  v13 = _Block_copy(v8);
+  v13 = _Block_copy(completionCopy);
   if (v13)
   {
     v13[2](v13, 0);
@@ -101,30 +101,30 @@
   return 1;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMDCHIPControllerPrivateDataSource *)self home];
-  v6 = [v5 controllerPrivateStorage];
-  v7 = [v6 valueForSDKKey:v4];
+  keyCopy = key;
+  home = [(HMDCHIPControllerPrivateDataSource *)self home];
+  controllerPrivateStorage = [home controllerPrivateStorage];
+  v7 = [controllerPrivateStorage valueForSDKKey:keyCopy];
 
   return v7;
 }
 
-- (HMDCHIPControllerPrivateDataSource)initWithHome:(id)a3 nodeID:(id)a4
+- (HMDCHIPControllerPrivateDataSource)initWithHome:(id)home nodeID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  homeCopy = home;
+  dCopy = d;
+  if (homeCopy)
   {
-    v8 = v7;
+    v8 = dCopy;
     v14.receiver = self;
     v14.super_class = HMDCHIPControllerPrivateDataSource;
     v9 = [(HMDCHIPControllerPrivateDataSource *)&v14 init];
     v10 = v9;
     if (v9)
     {
-      objc_storeWeak(&v9->_home, v6);
+      objc_storeWeak(&v9->_home, homeCopy);
       objc_storeWeak(&v10->_controllerNodeID, v8);
     }
 

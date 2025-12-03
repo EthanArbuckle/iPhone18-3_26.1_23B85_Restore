@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __31__NSBundle_VG__vg_resourcePath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[NSBundle(VG) vg_resourcePath]::onceToken != -1)
   {
     dispatch_once(&+[NSBundle(VG) vg_resourcePath]::onceToken, block);
@@ -76,8 +76,8 @@
 + (id)vg_packageBundle:()VG
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] vg_bundle];
-  v5 = [v4 pathForResource:v3 ofType:@"bundle"];
+  vg_bundle = [MEMORY[0x277CCA8D8] vg_bundle];
+  v5 = [vg_bundle pathForResource:v3 ofType:@"bundle"];
 
   v6 = [MEMORY[0x277CCA8D8] bundleWithPath:v5];
   v7 = v6;
@@ -88,12 +88,12 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] vg_bundle];
-    v10 = [v9 bundlePath];
-    v11 = [v10 stringByDeletingLastPathComponent];
+    vg_bundle2 = [MEMORY[0x277CCA8D8] vg_bundle];
+    bundlePath = [vg_bundle2 bundlePath];
+    stringByDeletingLastPathComponent = [bundlePath stringByDeletingLastPathComponent];
 
     v12 = [v3 stringByAppendingPathExtension:@"bundle"];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    v13 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v12];
 
     v8 = [MEMORY[0x277CCA8D8] bundleWithPath:v13];
   }

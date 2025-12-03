@@ -1,32 +1,32 @@
 @interface SYDictionaryObject
-- (SYDictionaryObject)initWithCoder:(id)a3;
-- (SYDictionaryObject)initWithProperties:(id)a3;
+- (SYDictionaryObject)initWithCoder:(id)coder;
+- (SYDictionaryObject)initWithProperties:(id)properties;
 - (id)syncId;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProperties:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProperties:(id)properties;
 @end
 
 @implementation SYDictionaryObject
 
-- (SYDictionaryObject)initWithProperties:(id)a3
+- (SYDictionaryObject)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = SYDictionaryObject;
   v5 = [(SYDictionaryObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SYDictionaryObject *)v5 setProperties:v4];
+    [(SYDictionaryObject *)v5 setProperties:propertiesCopy];
   }
 
   return v6;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v4 = a3;
-  v6 = [(NSDictionary *)v4 objectForKeyedSubscript:@"kSYDictionaryObjectSyncIDKey"];
+  propertiesCopy = properties;
+  v6 = [(NSDictionary *)propertiesCopy objectForKeyedSubscript:@"kSYDictionaryObjectSyncIDKey"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -34,25 +34,25 @@
   }
 
   properties = self->_properties;
-  self->_properties = v4;
+  self->_properties = propertiesCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SYDictionaryObject *)self properties];
-  [v4 encodeObject:v5 forKey:@"SYDictProperties"];
+  coderCopy = coder;
+  properties = [(SYDictionaryObject *)self properties];
+  [coderCopy encodeObject:properties forKey:@"SYDictProperties"];
 }
 
-- (SYDictionaryObject)initWithCoder:(id)a3
+- (SYDictionaryObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SYDictionaryObject;
   v5 = [(SYDictionaryObject *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SYDictProperties"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SYDictProperties"];
     [(SYDictionaryObject *)v5 setProperties:v6];
   }
 
@@ -61,8 +61,8 @@
 
 - (id)syncId
 {
-  v2 = [(SYDictionaryObject *)self properties];
-  v3 = [v2 objectForKeyedSubscript:@"kSYDictionaryObjectSyncIDKey"];
+  properties = [(SYDictionaryObject *)self properties];
+  v3 = [properties objectForKeyedSubscript:@"kSYDictionaryObjectSyncIDKey"];
 
   return v3;
 }

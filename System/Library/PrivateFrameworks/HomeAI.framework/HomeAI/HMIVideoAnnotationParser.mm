@@ -1,29 +1,29 @@
 @interface HMIVideoAnnotationParser
-+ (id)eventForClass:(Class)a3 boundingBox:(CGRect)a4 UUID:(id)a5;
++ (id)eventForClass:(Class)class boundingBox:(CGRect)box UUID:(id)d;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lastKnownTimeStamp;
-- (HMIVideoAnnotationParser)initWithArray:(id)a3;
+- (HMIVideoAnnotationParser)initWithArray:(id)array;
 - (id)eventsForFragment;
-- (id)eventsForTimeStamp:(id *)a3;
+- (id)eventsForTimeStamp:(id *)stamp;
 @end
 
 @implementation HMIVideoAnnotationParser
 
-- (HMIVideoAnnotationParser)initWithArray:(id)a3
+- (HMIVideoAnnotationParser)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v13.receiver = self;
   v13.super_class = HMIVideoAnnotationParser;
   v5 = [(HMIVideoAnnotationParser *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__HMIVideoAnnotationParser_initWithArray___block_invoke;
     v11[3] = &unk_278753298;
-    v12 = v6;
-    v7 = v6;
-    v8 = [v4 na_map:v11];
+    v12 = dictionary;
+    v7 = dictionary;
+    v8 = [arrayCopy na_map:v11];
     tracks = v5->_tracks;
     v5->_tracks = v8;
   }
@@ -140,13 +140,13 @@ void __42__HMIVideoAnnotationParser_initWithArray___block_invoke_2(uint64_t a1, 
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(HMIVideoAnnotationParser *)self tracks];
+  tracks = [(HMIVideoAnnotationParser *)self tracks];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__HMIVideoAnnotationParser_lastKnownTimeStamp__block_invoke;
   v6[3] = &unk_2787532C0;
   v6[4] = &v7;
-  [v4 na_each:v6];
+  [tracks na_each:v6];
 
   CMTimeMakeWithSeconds(retstr, fmax(v8[3] + -0.05, 0.0), 1000);
   _Block_object_dispose(&v7, 8);
@@ -174,11 +174,11 @@ void __46__HMIVideoAnnotationParser_lastKnownTimeStamp__block_invoke(uint64_t a1
   *(*(*(a1 + 32) + 8) + 24) = v8;
 }
 
-- (id)eventsForTimeStamp:(id *)a3
+- (id)eventsForTimeStamp:(id *)stamp
 {
-  time = *a3;
+  time = *stamp;
   Seconds = CMTimeGetSeconds(&time);
-  v5 = [(HMIVideoAnnotationParser *)self tracks];
+  tracks = [(HMIVideoAnnotationParser *)self tracks];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__HMIVideoAnnotationParser_eventsForTimeStamp___block_invoke_2;
@@ -186,7 +186,7 @@ void __46__HMIVideoAnnotationParser_lastKnownTimeStamp__block_invoke(uint64_t a1
   v11 = Seconds;
   v12 = 0x3F9999DCB5781C72;
   v10 = &__block_literal_global_9;
-  v6 = [v5 na_map:v9];
+  v6 = [tracks na_map:v9];
 
   v7 = [MEMORY[0x277CBEB98] setWithArray:v6];
 
@@ -355,14 +355,14 @@ LABEL_13:
 - (id)eventsForFragment
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMIVideoAnnotationParser *)self tracks];
+  tracks = [(HMIVideoAnnotationParser *)self tracks];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HMIVideoAnnotationParser_eventsForFragment__block_invoke;
   v8[3] = &unk_278753330;
   v9 = v3;
   v5 = v3;
-  [v4 na_each:v8];
+  [tracks na_each:v8];
 
   v6 = [v5 na_map:&__block_literal_global_67];
 
@@ -453,51 +453,51 @@ id __45__HMIVideoAnnotationParser_eventsForFragment__block_invoke_2(uint64_t a1,
   return v4;
 }
 
-+ (id)eventForClass:(Class)a3 boundingBox:(CGRect)a4 UUID:(id)a5
++ (id)eventForClass:(Class)class boundingBox:(CGRect)box UUID:(id)d
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  dCopy = d;
   v11 = [[HMIConfidence alloc] initWithValue:&unk_2840754F8 levelThresholds:1.0];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v13 = [HMIFaceCrop alloc];
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [MEMORY[0x277CBEA90] data];
-    v16 = [MEMORY[0x277CBEAA8] date];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    data = [MEMORY[0x277CBEA90] data];
+    date = [MEMORY[0x277CBEAA8] date];
     v17 = *MEMORY[0x277CBF3A0];
     v18 = *(MEMORY[0x277CBF3A0] + 8);
     v19 = *(MEMORY[0x277CBF3A0] + 16);
     v20 = *(MEMORY[0x277CBF3A0] + 24);
-    v21 = [(HMIFaceCrop *)v13 initWithUUID:v14 dataRepresentation:v15 dateCreated:v16 faceBoundingBox:*MEMORY[0x277CBF3A0], v18, v19, v20];
+    v21 = [(HMIFaceCrop *)v13 initWithUUID:uUID dataRepresentation:data dateCreated:date faceBoundingBox:*MEMORY[0x277CBF3A0], v18, v19, v20];
 
     v22 = [HMIFaceprint alloc];
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [MEMORY[0x277CBEA90] data];
-    v25 = [MEMORY[0x277CCAD78] UUID];
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [(HMIFaceprint *)v22 initWithUUID:v23 data:v24 modelUUID:v25 faceCropUUID:v26];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    data2 = [MEMORY[0x277CBEA90] data];
+    uUID3 = [MEMORY[0x277CCAD78] UUID];
+    uUID4 = [MEMORY[0x277CCAD78] UUID];
+    v27 = [(HMIFaceprint *)v22 initWithUUID:uUID2 data:data2 modelUUID:uUID3 faceCropUUID:uUID4];
 
     v28 = [HMIFaceClassification alloc];
-    v29 = [MEMORY[0x277CCAD78] UUID];
-    v30 = [(HMIFaceClassification *)v28 initWithPersonUUID:0 sourceUUID:v29 sessionEntityUUID:v10 confidence:2 familiarity:1.0];
+    uUID5 = [MEMORY[0x277CCAD78] UUID];
+    v30 = [(HMIFaceClassification *)v28 initWithPersonUUID:0 sourceUUID:uUID5 sessionEntityUUID:dCopy confidence:2 familiarity:1.0];
 
     v31 = [HMIFaceRecognition alloc];
     v32 = [MEMORY[0x277CBEB98] setWithObject:v30];
-    v33 = [(HMIFaceRecognition *)v31 initWithFaceCrop:v21 faceprint:v27 classifications:v32 predictedLinkedEntityUUIDs:0 faceQualityScore:1 sessionEntityAssignment:v10 sessionEntityUUID:-1.0];
+    v33 = [(HMIFaceRecognition *)v31 initWithFaceCrop:v21 faceprint:v27 classifications:v32 predictedLinkedEntityUUIDs:0 faceQualityScore:1 sessionEntityAssignment:dCopy sessionEntityUUID:-1.0];
 
     v34 = [[HMIVideoAnalyzerEventFace alloc] initWithConfidence:v11 boundingBox:v33 faceRecognition:v17, v18, v19, v20];
-    v12 = [[HMIVideoAnalyzerEventPerson alloc] initWithConfidence:v11 boundingBox:v34 face:x, y, width, height];
+    height = [[HMIVideoAnalyzerEventPerson alloc] initWithConfidence:v11 boundingBox:v34 face:x, y, width, height];
   }
 
   else
   {
-    v12 = [[a3 alloc] initWithConfidence:v11 boundingBox:{x, y, width, height}];
+    height = [[class alloc] initWithConfidence:v11 boundingBox:{x, y, width, height}];
   }
 
-  return v12;
+  return height;
 }
 
 @end

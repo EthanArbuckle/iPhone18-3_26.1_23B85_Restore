@@ -1,23 +1,23 @@
 @interface VCPEspressoV2IOPort
-- (int)prepareInput:(void *)a3;
-- (int)retainAndBindToPort:(e5rt_execution_stream_operation *)a3 name:(id)a4 isInput:(BOOL)a5;
-- (int64_t)getTensorType:(e5rt_tensor_desc *)a3;
-- (unint64_t)getOutput:(void *)a3;
+- (int)prepareInput:(void *)input;
+- (int)retainAndBindToPort:(e5rt_execution_stream_operation *)port name:(id)name isInput:(BOOL)input;
+- (int64_t)getTensorType:(e5rt_tensor_desc *)type;
+- (unint64_t)getOutput:(void *)output;
 - (unint64_t)getTensorShape;
 - (void)dealloc;
 @end
 
 @implementation VCPEspressoV2IOPort
 
-- (int)retainAndBindToPort:(e5rt_execution_stream_operation *)a3 name:(id)a4 isInput:(BOOL)a5
+- (int)retainAndBindToPort:(e5rt_execution_stream_operation *)port name:(id)name isInput:(BOOL)input
 {
-  v5 = a5;
+  inputCopy = input;
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (v5)
+  nameCopy = name;
+  v8 = nameCopy;
+  if (inputCopy)
   {
-    [v7 UTF8String];
+    [nameCopy UTF8String];
     if (e5rt_execution_stream_operation_retain_input_port())
     {
       if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@
 
   else
   {
-    [v7 UTF8String];
+    [nameCopy UTF8String];
     if (e5rt_execution_stream_operation_retain_output_port())
     {
       if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@ LABEL_20:
   return v12;
 }
 
-- (int64_t)getTensorType:(e5rt_tensor_desc *)a3
+- (int64_t)getTensorType:(e5rt_tensor_desc *)type
 {
   v6 = *MEMORY[0x1E69E9840];
   e5rt_tensor_desc_retain_dtype();
@@ -155,11 +155,11 @@ LABEL_12:
   return 3;
 }
 
-- (int)prepareInput:(void *)a3
+- (int)prepareInput:(void *)input
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(VCPEspressoV2IOPort *)self getTensorShape];
-  if (!v5)
+  getTensorShape = [(VCPEspressoV2IOPort *)self getTensorShape];
+  if (!getTensorShape)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -173,7 +173,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v6 = v5;
+  v6 = getTensorShape;
   if (e5rt_buffer_object_get_data_ptr())
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -203,18 +203,18 @@ LABEL_9:
 LABEL_14:
       v12 = 4 * v6;
 LABEL_16:
-      memcpy(0, a3, v12);
+      memcpy(0, input, v12);
       break;
   }
 
   return 0;
 }
 
-- (unint64_t)getOutput:(void *)a3
+- (unint64_t)getOutput:(void *)output
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(VCPEspressoV2IOPort *)self getTensorShape];
-  if (!v3)
+  getTensorShape = [(VCPEspressoV2IOPort *)self getTensorShape];
+  if (!getTensorShape)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -228,7 +228,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v4 = v3;
+  v4 = getTensorShape;
   if (e5rt_buffer_object_get_data_ptr())
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

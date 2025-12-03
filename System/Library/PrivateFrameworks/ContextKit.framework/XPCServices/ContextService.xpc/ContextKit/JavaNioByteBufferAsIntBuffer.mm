@@ -7,7 +7,7 @@
 - (id)order;
 - (id)slice;
 - (int)get;
-- (int)getWithInt:(int)a3;
+- (int)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -21,9 +21,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
+  asReadOnlyBuffer = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
   v5 = [JavaNioByteBufferAsIntBuffer alloc];
-  sub_1001479D0(v5, v4);
+  sub_1001479D0(v5, asReadOnlyBuffer);
   v6 = v5;
   v6->super.super.limit_ = self->super.super.limit_;
   v6->super.super.position_ = self->super.super.position_;
@@ -94,7 +94,7 @@
   return [(JavaNioByteBuffer *)byteBuffer getIntWithInt:(4 * position)];
 }
 
-- (int)getWithInt:(int)a3
+- (int)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -103,7 +103,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaNioByteBuffer *)byteBuffer getIntWithInt:(4 * a3)];
+  return [(JavaNioByteBuffer *)byteBuffer getIntWithInt:(4 * int)];
 }
 
 - (BOOL)isDirect

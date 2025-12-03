@@ -7,7 +7,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCGetInfoErrorPresentingViewController.viewDidLoad()();
 }
 

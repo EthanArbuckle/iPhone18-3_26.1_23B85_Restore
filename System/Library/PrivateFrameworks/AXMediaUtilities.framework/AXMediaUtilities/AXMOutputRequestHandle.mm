@@ -12,9 +12,9 @@
   v2 = [(AXMOutputRequestHandle *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     actionHandles = v2->_actionHandles;
-    v2->_actionHandles = v3;
+    v2->_actionHandles = array;
   }
 
   return v2;

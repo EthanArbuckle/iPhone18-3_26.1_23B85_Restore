@@ -1,20 +1,20 @@
 @interface FKACommandListView
-- (FKACommandListView)initWithCommandList:(id)a3 blurEffect:(id)a4;
+- (FKACommandListView)initWithCommandList:(id)list blurEffect:(id)effect;
 @end
 
 @implementation FKACommandListView
 
-- (FKACommandListView)initWithCommandList:(id)a3 blurEffect:(id)a4
+- (FKACommandListView)initWithCommandList:(id)list blurEffect:(id)effect
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  effectCopy = effect;
   v133.receiver = self;
   v133.super_class = FKACommandListView;
   v8 = [(FKACommandListView *)&v133 init];
   if (v8)
   {
     v9 = [UIVisualEffectView alloc];
-    v10 = [UIVibrancyEffect effectForBlurEffect:v7 style:0];
+    v10 = [UIVibrancyEffect effectForBlurEffect:effectCopy style:0];
     v11 = [v9 initWithEffect:v10];
 
     if (_UISolariumEnabled())
@@ -24,8 +24,8 @@
 
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = [UIVisualEffectView alloc];
-    v114 = v7;
-    v13 = [UIVibrancyEffect effectForBlurEffect:v7 style:1];
+    v114 = effectCopy;
+    v13 = [UIVibrancyEffect effectForBlurEffect:effectCopy style:1];
     v14 = [v12 initWithEffect:v13];
 
     if (_UISolariumEnabled())
@@ -43,15 +43,15 @@
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     v119 = v15;
     [v16 setFont:v15];
-    v17 = [v6 title];
-    [v16 setText:v17];
+    title = [listCopy title];
+    [v16 setText:title];
 
     [v16 setTextAlignment:1];
     [v16 setNumberOfLines:0];
     v120 = v11;
-    v18 = [v11 contentView];
+    contentView = [v11 contentView];
     v118 = v16;
-    [v18 addSubview:v16];
+    [contentView addSubview:v16];
 
     v117 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleHeadline];
     v19 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleSubheadline];
@@ -61,8 +61,8 @@
     v130 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v116 = v6;
-    obj = [v6 items];
+    v116 = listCopy;
+    obj = [listCopy items];
     v20 = [obj countByEnumeratingWithState:&v129 objects:v137 count:16];
     if (v20)
     {
@@ -80,14 +80,14 @@
           v23 = *(*(&v129 + 1) + 8 * i);
           v24 = objc_opt_new();
           [v24 setFont:v127];
-          v25 = [v23 name];
-          [v24 setText:v25];
+          name = [v23 name];
+          [v24 setText:name];
 
           [v24 setTextAlignment:4];
           [v24 setNumberOfLines:0];
           v26 = objc_opt_new();
-          v27 = [v23 keyDescription];
-          [v26 setText:v27];
+          keyDescription = [v23 keyDescription];
+          [v26 setText:keyDescription];
 
           v28 = [UIFont systemFontOfSize:15.0 weight:UIFontWeightSemibold];
           v29 = v19;
@@ -114,8 +114,8 @@
           v37 = [(FKACommandListItemView *)v35 initWithArrangedSubviews:v36];
 
           v38 = +[UIApplication sharedApplication];
-          v39 = [v38 preferredContentSizeCategory];
-          IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v39);
+          preferredContentSizeCategory = [v38 preferredContentSizeCategory];
+          IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
           if (IsAccessibilityCategory)
           {
@@ -151,18 +151,18 @@
     v44 = v43;
     [v127 capHeight];
     [v42 setSpacing:v44 + v45];
-    v46 = [v121 contentView];
-    [v46 addSubview:v42];
+    contentView2 = [v121 contentView];
+    [contentView2 addSubview:v42];
 
     v47 = +[NSMutableArray array];
-    v48 = [v120 contentView];
+    contentView3 = [v120 contentView];
     v8 = v113;
-    v49 = [NSLayoutConstraint ax_constraintsToMakeView:v113 sameDimensionsAsView:v48];
+    v49 = [NSLayoutConstraint ax_constraintsToMakeView:v113 sameDimensionsAsView:contentView3];
     v126 = v47;
     [v47 addObjectsFromArray:v49];
 
-    v50 = [v121 contentView];
-    v51 = [NSLayoutConstraint ax_constraintsToMakeView:v113 sameDimensionsAsView:v50];
+    contentView4 = [v121 contentView];
+    v51 = [NSLayoutConstraint ax_constraintsToMakeView:v113 sameDimensionsAsView:contentView4];
     [v47 addObjectsFromArray:v51];
 
     [v117 scaledValueForValue:27.0];
@@ -174,94 +174,94 @@
     [v127 capHeight];
     v59 = v57 + v58;
     obja = [v118 firstBaselineAnchor];
-    v111 = [(FKACommandListView *)v113 topAnchor];
-    v109 = [obja constraintEqualToAnchor:v111 constant:v55];
+    topAnchor = [(FKACommandListView *)v113 topAnchor];
+    v109 = [obja constraintEqualToAnchor:topAnchor constant:v55];
     v135[0] = v109;
-    v107 = [v118 leadingAnchor];
-    v105 = [(FKACommandListView *)v113 leadingAnchor];
-    v103 = [v107 constraintEqualToAnchor:v105];
+    leadingAnchor = [v118 leadingAnchor];
+    leadingAnchor2 = [(FKACommandListView *)v113 leadingAnchor];
+    v103 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v135[1] = v103;
-    v101 = [v118 trailingAnchor];
-    v100 = [(FKACommandListView *)v113 trailingAnchor];
-    v99 = [v101 constraintEqualToAnchor:v100];
+    trailingAnchor = [v118 trailingAnchor];
+    trailingAnchor2 = [(FKACommandListView *)v113 trailingAnchor];
+    v99 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v135[2] = v99;
-    v98 = [v42 firstBaselineAnchor];
-    v97 = [v118 lastBaselineAnchor];
-    v60 = [v98 constraintEqualToAnchor:v97 constant:v59];
+    firstBaselineAnchor = [v42 firstBaselineAnchor];
+    lastBaselineAnchor = [v118 lastBaselineAnchor];
+    v60 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v59];
     v135[3] = v60;
-    v61 = [v42 leadingAnchor];
-    v62 = [(FKACommandListView *)v113 leadingAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:40.0];
+    leadingAnchor3 = [v42 leadingAnchor];
+    leadingAnchor4 = [(FKACommandListView *)v113 leadingAnchor];
+    v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:40.0];
     v135[4] = v63;
-    v64 = [v42 trailingAnchor];
-    v65 = [(FKACommandListView *)v113 trailingAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65 constant:-40.0];
+    trailingAnchor3 = [v42 trailingAnchor];
+    trailingAnchor4 = [(FKACommandListView *)v113 trailingAnchor];
+    v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-40.0];
     v135[5] = v66;
     v67 = [NSArray arrayWithObjects:v135 count:6];
     [v126 addObjectsFromArray:v67];
 
-    v6 = v116;
-    v68 = [v116 footerText];
-    v69 = [v68 length];
+    listCopy = v116;
+    footerText = [v116 footerText];
+    v69 = [footerText length];
 
     if (v69)
     {
-      v70 = objc_opt_new();
-      [v70 setTranslatesAutoresizingMaskIntoConstraints:0];
+      lastBaselineAnchor4 = objc_opt_new();
+      [lastBaselineAnchor4 setTranslatesAutoresizingMaskIntoConstraints:0];
       v71 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-      [v70 setFont:v71];
+      [lastBaselineAnchor4 setFont:v71];
 
-      [v70 setTextAlignment:1];
-      v72 = [v116 footerText];
-      [v70 setText:v72];
+      [lastBaselineAnchor4 setTextAlignment:1];
+      footerText2 = [v116 footerText];
+      [lastBaselineAnchor4 setText:footerText2];
 
-      [v70 setNumberOfLines:0];
+      [lastBaselineAnchor4 setNumberOfLines:0];
       if (_UISolariumEnabled())
       {
         v73 = +[UIColor secondaryLabelColor];
-        [v70 setTextColor:v73];
+        [lastBaselineAnchor4 setTextColor:v73];
       }
 
-      v74 = [v121 contentView];
-      [v74 addSubview:v70];
+      contentView5 = [v121 contentView];
+      [contentView5 addSubview:lastBaselineAnchor4];
 
       [v115 scaledValueForValue:27.0];
       v76 = v75;
-      v77 = [v70 font];
-      [v77 capHeight];
+      font = [lastBaselineAnchor4 font];
+      [font capHeight];
       v79 = v76 + v78;
 
       v80 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleFootnote];
       [v80 scaledValueForValue:27.0];
       v82 = v81;
 
-      v112 = [v70 leadingAnchor];
-      v108 = [(FKACommandListView *)v113 leadingAnchor];
-      objb = [v112 constraintEqualToAnchor:v108];
+      leadingAnchor5 = [lastBaselineAnchor4 leadingAnchor];
+      leadingAnchor6 = [(FKACommandListView *)v113 leadingAnchor];
+      objb = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v134[0] = objb;
-      v110 = [v70 trailingAnchor];
-      v106 = [(FKACommandListView *)v113 trailingAnchor];
-      v104 = [v110 constraintEqualToAnchor:v106];
+      trailingAnchor5 = [lastBaselineAnchor4 trailingAnchor];
+      trailingAnchor6 = [(FKACommandListView *)v113 trailingAnchor];
+      v104 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v134[1] = v104;
-      v102 = [v70 firstBaselineAnchor];
-      v83 = [v42 lastBaselineAnchor];
-      v84 = [v102 constraintEqualToAnchor:v83 constant:v79];
+      firstBaselineAnchor2 = [lastBaselineAnchor4 firstBaselineAnchor];
+      lastBaselineAnchor2 = [v42 lastBaselineAnchor];
+      v84 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:v79];
       v134[2] = v84;
-      v85 = [(FKACommandListView *)v113 bottomAnchor];
-      v86 = [v70 lastBaselineAnchor];
-      v87 = [v85 constraintEqualToAnchor:v86 constant:v82];
+      bottomAnchor = [(FKACommandListView *)v113 bottomAnchor];
+      lastBaselineAnchor3 = [lastBaselineAnchor4 lastBaselineAnchor];
+      v87 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor3 constant:v82];
       v134[3] = v87;
       v88 = [NSArray arrayWithObjects:v134 count:4];
       v89 = v126;
       [v126 addObjectsFromArray:v88];
 
       v90 = v121;
-      v91 = v108;
+      v91 = leadingAnchor6;
 
-      v92 = v112;
+      bottomAnchor2 = leadingAnchor5;
       v93 = v115;
 
-      v6 = v116;
+      listCopy = v116;
     }
 
     else
@@ -269,16 +269,16 @@
       v93 = v115;
       [v115 scaledValueForValue:27.0];
       v95 = v94;
-      v70 = [v42 lastBaselineAnchor];
-      v92 = [(FKACommandListView *)v113 bottomAnchor];
-      v91 = [v70 constraintEqualToAnchor:v92 constant:-v95];
+      lastBaselineAnchor4 = [v42 lastBaselineAnchor];
+      bottomAnchor2 = [(FKACommandListView *)v113 bottomAnchor];
+      v91 = [lastBaselineAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:-v95];
       v89 = v126;
       [v126 addObject:v91];
       v90 = v121;
     }
 
     [NSLayoutConstraint activateConstraints:v89];
-    v7 = v114;
+    effectCopy = v114;
   }
 
   return v8;

@@ -1,44 +1,44 @@
 @interface UMTestPrint
-+ (BOOL)printInfoForUMLUser:(id)a3 outError:(id *)a4;
-+ (BOOL)printInfoForUser:(id)a3 outError:(id *)a4;
-+ (BOOL)printInfoForUsers:(id)a3 outError:(id *)a4;
-+ (BOOL)printPersonaAttributesInfo:(id)a3 outError:(id *)a4;
-+ (BOOL)printPersonaInfo:(id)a3 outError:(id *)a4;
-+ (BOOL)printSyncBubbleInfoForUser:(id)a3 outError:(id *)a4;
-+ (BOOL)printSyncBubbleInfoForUsers:(id)a3 outError:(id *)a4;
-+ (id)_dataSizeStringFromBytes:(unint64_t)a3;
-+ (void)_printInfoForUser:(id)a3;
-+ (void)_printSyncBubbleInfoForUser:(id)a3;
-+ (void)printTable:(id)a3 withColumns:(id)a4 rows:(id)a5;
-+ (void)println:(id)a3;
++ (BOOL)printInfoForUMLUser:(id)user outError:(id *)error;
++ (BOOL)printInfoForUser:(id)user outError:(id *)error;
++ (BOOL)printInfoForUsers:(id)users outError:(id *)error;
++ (BOOL)printPersonaAttributesInfo:(id)info outError:(id *)error;
++ (BOOL)printPersonaInfo:(id)info outError:(id *)error;
++ (BOOL)printSyncBubbleInfoForUser:(id)user outError:(id *)error;
++ (BOOL)printSyncBubbleInfoForUsers:(id)users outError:(id *)error;
++ (id)_dataSizeStringFromBytes:(unint64_t)bytes;
++ (void)_printInfoForUser:(id)user;
++ (void)_printSyncBubbleInfoForUser:(id)user;
++ (void)printTable:(id)table withColumns:(id)columns rows:(id)rows;
++ (void)println:(id)println;
 @end
 
 @implementation UMTestPrint
 
-+ (void)println:(id)a3
++ (void)println:(id)println
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithFormat:v3 arguments:&v5];
+  printlnCopy = println;
+  v4 = [[NSString alloc] initWithFormat:printlnCopy arguments:&v5];
 
   puts([v4 UTF8String]);
 }
 
-+ (void)printTable:(id)a3 withColumns:(id)a4 rows:(id)a5
++ (void)printTable:(id)table withColumns:(id)columns rows:(id)rows
 {
-  v7 = a4;
-  v8 = a5;
-  printf("%s:\n\n", [a3 UTF8String]);
-  if ([v8 count])
+  columnsCopy = columns;
+  rowsCopy = rows;
+  printf("%s:\n\n", [table UTF8String]);
+  if ([rowsCopy count])
   {
-    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [columnsCopy count]);
     v75[0] = _NSConcreteStackBlock;
     v75[1] = 3221225472;
     v75[2] = sub_1000040B4;
     v75[3] = &unk_100020418;
-    v45 = v7;
-    v10 = v7;
+    v45 = columnsCopy;
+    v10 = columnsCopy;
     v76 = v10;
-    v52 = [v8 sortedArrayUsingComparator:v75];
+    v52 = [rowsCopy sortedArrayUsingComparator:v75];
 
     v73 = 0u;
     v74 = 0u;
@@ -131,9 +131,9 @@
 
           v28 = *(*(&v63 + 1) + 8 * k);
           v29 = [v9 objectForKeyedSubscript:v28];
-          v30 = [v29 intValue];
+          intValue = [v29 intValue];
 
-          if (v30 >= 1)
+          if (intValue >= 1)
           {
             v31 = 0;
             do
@@ -141,10 +141,10 @@
               putchar(45);
               ++v31;
               v32 = [v9 objectForKeyedSubscript:v28];
-              v33 = [v32 intValue];
+              intValue2 = [v32 intValue];
             }
 
-            while (v31 < v33);
+            while (v31 < intValue2);
           }
 
           putchar(32);
@@ -230,10 +230,10 @@
       while (obja);
     }
 
-    v8 = v46;
+    rowsCopy = v46;
 
     puts("\n");
-    v7 = v45;
+    columnsCopy = v45;
   }
 
   else
@@ -242,83 +242,83 @@
   }
 }
 
-+ (void)_printInfoForUser:(id)a3
++ (void)_printInfoForUser:(id)user
 {
-  v4 = a3;
-  [a1 println:{@"UID                        : %d", objc_msgSend(v4, "uid")}];
-  [a1 println:{@"GID                        : %d", objc_msgSend(v4, "gid")}];
-  v5 = [v4 alternateDSID];
-  [a1 println:{@"Alternate DSID             : %@", v5}];
+  userCopy = user;
+  [self println:{@"UID                        : %d", objc_msgSend(userCopy, "uid")}];
+  [self println:{@"GID                        : %d", objc_msgSend(userCopy, "gid")}];
+  alternateDSID = [userCopy alternateDSID];
+  [self println:{@"Alternate DSID             : %@", alternateDSID}];
 
-  v6 = [v4 homeDirectoryURL];
-  [a1 println:{@"Home Directory URL         : %@", v6}];
+  homeDirectoryURL = [userCopy homeDirectoryURL];
+  [self println:{@"Home Directory URL         : %@", homeDirectoryURL}];
 
-  [a1 println];
-  v7 = [v4 username];
-  [a1 println:{@"Username                   : %@", v7}];
+  [self println];
+  username = [userCopy username];
+  [self println:{@"Username                   : %@", username}];
 
-  v8 = [v4 givenName];
-  [a1 println:{@"Given Name                 : %@", v8}];
+  givenName = [userCopy givenName];
+  [self println:{@"Given Name                 : %@", givenName}];
 
-  v9 = [v4 familyName];
-  [a1 println:{@"Family Name                : %@", v9}];
+  familyName = [userCopy familyName];
+  [self println:{@"Family Name                : %@", familyName}];
 
-  v10 = [v4 displayName];
-  [a1 println:{@"Display Name               : %@", v10}];
+  displayName = [userCopy displayName];
+  [self println:{@"Display Name               : %@", displayName}];
 
-  v11 = [v4 photoURL];
-  [a1 println:{@"Photo URL                  : %@", v11}];
+  photoURL = [userCopy photoURL];
+  [self println:{@"Photo URL                  : %@", photoURL}];
 
-  v12 = [v4 userAuxiliaryString];
-  [a1 println:{@"User AuxString             : %@", v12}];
+  userAuxiliaryString = [userCopy userAuxiliaryString];
+  [self println:{@"User AuxString             : %@", userAuxiliaryString}];
 
-  [a1 println];
-  v13 = [v4 creationDate];
-  [a1 println:{@"Creation Date              : %@", v13}];
+  [self println];
+  creationDate = [userCopy creationDate];
+  [self println:{@"Creation Date              : %@", creationDate}];
 
-  v14 = [v4 lastLoginDate];
-  [a1 println:{@"Last Login Date            : %@", v14}];
+  lastLoginDate = [userCopy lastLoginDate];
+  [self println:{@"Last Login Date            : %@", lastLoginDate}];
 
-  v15 = [v4 lastRemoteAuthDate];
-  [a1 println:{@"Last Remote Auth Date      : %@", v15}];
+  lastRemoteAuthDate = [userCopy lastRemoteAuthDate];
+  [self println:{@"Last Remote Auth Date      : %@", lastRemoteAuthDate}];
 
-  [a1 println];
-  v16 = [v4 firstLoginStartDate];
-  [a1 println:{@"FirstLogin Start Date       : %@", v16}];
+  [self println];
+  firstLoginStartDate = [userCopy firstLoginStartDate];
+  [self println:{@"FirstLogin Start Date       : %@", firstLoginStartDate}];
 
-  v17 = [v4 firstLoginEndDate];
-  [a1 println:{@"FirstLogin End Date         : %@", v17}];
+  firstLoginEndDate = [userCopy firstLoginEndDate];
+  [self println:{@"FirstLogin End Date         : %@", firstLoginEndDate}];
 
-  v18 = [v4 lastCachedLoginStartDate];
-  [a1 println:{@"CachedLogin Start Date      : %@", v18}];
+  lastCachedLoginStartDate = [userCopy lastCachedLoginStartDate];
+  [self println:{@"CachedLogin Start Date      : %@", lastCachedLoginStartDate}];
 
-  v19 = [v4 lastCachedLoginEndDate];
-  [a1 println:{@"CachedLogin End Date        : %@", v19}];
+  lastCachedLoginEndDate = [userCopy lastCachedLoginEndDate];
+  [self println:{@"CachedLogin End Date        : %@", lastCachedLoginEndDate}];
 
-  [a1 println];
-  v20 = [v4 userType];
+  [self println];
+  userType = [userCopy userType];
   v21 = @"Permanent";
-  if (v20)
+  if (userType)
   {
     v21 = 0;
   }
 
-  if (v20 == 1)
+  if (userType == 1)
   {
     v21 = @"Ephemeral";
   }
 
-  [a1 println:{@"User Type                  : %@", v21}];
-  v22 = [v4 passcodeType];
+  [self println:{@"User Type                  : %@", v21}];
+  passcodeType = [userCopy passcodeType];
   v23 = 0;
-  if (v22 <= 3)
+  if (passcodeType <= 3)
   {
-    v23 = *(&off_100020438 + v22);
+    v23 = *(&off_100020438 + passcodeType);
   }
 
-  [a1 println:{@"Passcode Type              : %@", v23}];
-  [a1 println];
-  if ([v4 isLoginUser])
+  [self println:{@"Passcode Type              : %@", v23}];
+  [self println];
+  if ([userCopy isLoginUser])
   {
     v24 = @"true";
   }
@@ -328,8 +328,8 @@
     v24 = @"false";
   }
 
-  [a1 println:{@"Is Login User              : %@", v24}];
-  if ([v4 isAuditor])
+  [self println:{@"Is Login User              : %@", v24}];
+  if ([userCopy isAuditor])
   {
     v25 = @"true";
   }
@@ -339,8 +339,8 @@
     v25 = @"false";
   }
 
-  [a1 println:{@"Is Auditor                 : %@", v25}];
-  if ([v4 isDisabled])
+  [self println:{@"Is Auditor                 : %@", v25}];
+  if ([userCopy isDisabled])
   {
     v26 = @"true";
   }
@@ -350,8 +350,8 @@
     v26 = @"false";
   }
 
-  [a1 println:{@"Is Disabled                : %@", v26}];
-  if ([v4 isTransientUser])
+  [self println:{@"Is Disabled                : %@", v26}];
+  if ([userCopy isTransientUser])
   {
     v27 = @"true";
   }
@@ -361,8 +361,8 @@
     v27 = @"false";
   }
 
-  [a1 println:{@"Is TransientUser           : %@", v27}];
-  if ([v4 isPrimaryUser])
+  [self println:{@"Is TransientUser           : %@", v27}];
+  if ([userCopy isPrimaryUser])
   {
     v28 = @"true";
   }
@@ -372,8 +372,8 @@
     v28 = @"false";
   }
 
-  [a1 println:{@"Is PrimaryUser              : %@", v28}];
-  if ([v4 isAdminUser])
+  [self println:{@"Is PrimaryUser              : %@", v28}];
+  if ([userCopy isAdminUser])
   {
     v29 = @"true";
   }
@@ -383,16 +383,16 @@
     v29 = @"false";
   }
 
-  [a1 println:{@"Is AdminUser               : %@", v29}];
-  [a1 println];
-  [a1 println:{@"Passcode Lock Grace Period : %lu", objc_msgSend(v4, "passcodeLockGracePeriod")}];
+  [self println:{@"Is AdminUser               : %@", v29}];
+  [self println];
+  [self println:{@"Passcode Lock Grace Period : %lu", objc_msgSend(userCopy, "passcodeLockGracePeriod")}];
   v30 = objc_opt_new();
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v31 = [v4 languages];
-  v32 = [v31 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  languages = [userCopy languages];
+  v32 = [languages countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v32)
   {
     v33 = v32;
@@ -405,7 +405,7 @@
       {
         if (*v43 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(languages);
         }
 
         [v30 appendFormat:@"%@%@", v35, *(*(&v42 + 1) + 8 * v36)];
@@ -414,59 +414,59 @@
       }
 
       while (v33 != v36);
-      v33 = [v31 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v33 = [languages countByEnumeratingWithState:&v42 objects:v46 count:16];
       v35 = @", ";
     }
 
     while (v33);
   }
 
-  [a1 println:{@"Languages                  : [%@]", v30}];
-  [a1 println];
-  v37 = [a1 _dataSizeStringFromBytes:{objc_msgSend(v4, "dataQuota")}];
-  [a1 println:{@"Data Quota                 : %@", v37}];
+  [self println:{@"Languages                  : [%@]", v30}];
+  [self println];
+  v37 = [self _dataSizeStringFromBytes:{objc_msgSend(userCopy, "dataQuota")}];
+  [self println:{@"Data Quota                 : %@", v37}];
 
-  v38 = [a1 _dataSizeStringFromBytes:{objc_msgSend(v4, "dataUsed")}];
-  [a1 println:{@"Data Used                  : %@", v38}];
+  v38 = [self _dataSizeStringFromBytes:{objc_msgSend(userCopy, "dataUsed")}];
+  [self println:{@"Data Used                  : %@", v38}];
 
-  [a1 println];
-  v39 = [v4 hasDataToSync];
+  [self println];
+  hasDataToSync = [userCopy hasDataToSync];
   v40 = @"false";
-  if (v39)
+  if (hasDataToSync)
   {
     v40 = @"true";
   }
 
-  [a1 println:{@"Has Data to Sync           : %@", v40}];
-  [a1 println];
-  v41 = [v4 debugErrorCausingLogout];
-  [a1 println:{@"Error Causing Logout       : %@", v41}];
+  [self println:{@"Has Data to Sync           : %@", v40}];
+  [self println];
+  debugErrorCausingLogout = [userCopy debugErrorCausingLogout];
+  [self println:{@"Error Causing Logout       : %@", debugErrorCausingLogout}];
 }
 
-+ (BOOL)printInfoForUser:(id)a3 outError:(id *)a4
++ (BOOL)printInfoForUser:(id)user outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  userCopy = user;
+  v7 = userCopy;
+  if (userCopy)
   {
-    v11 = v6;
+    v11 = userCopy;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    v9 = [a1 printInfoForUsers:v8 outError:a4];
+    v9 = [self printInfoForUsers:v8 outError:error];
   }
 
   else
   {
-    v9 = [a1 printInfoForUsers:&__NSArray0__struct outError:a4];
+    v9 = [self printInfoForUsers:&__NSArray0__struct outError:error];
   }
 
   return v9;
 }
 
-+ (BOOL)printInfoForUsers:(id)a3 outError:(id *)a4
++ (BOOL)printInfoForUsers:(id)users outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  usersCopy = users;
+  v7 = usersCopy;
+  if (usersCopy && [usersCopy count])
   {
     v18 = 0u;
     v19 = 0u;
@@ -488,10 +488,10 @@
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          [a1 _printDivider];
-          [a1 println];
-          [a1 _printInfoForUser:v13];
-          [a1 println];
+          [self _printDivider];
+          [self println];
+          [self _printInfoForUser:v13];
+          [self println];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -500,14 +500,14 @@
       while (v10);
     }
 
-    [a1 _printDivider];
+    [self _printDivider];
     v14 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [UMTestError errorWithMessage:@"Nothing to print"];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -518,79 +518,79 @@
   return v14;
 }
 
-+ (BOOL)printInfoForUMLUser:(id)a3 outError:(id *)a4
++ (BOOL)printInfoForUMLUser:(id)user outError:(id *)error
 {
-  v5 = a3;
-  +[UMTestPrint println:](UMTestPrint, "println:", @"UID                        : %d", [v5 uid]);
-  +[UMTestPrint println:](UMTestPrint, "println:", @"GID                        : %d", [v5 gid]);
-  v6 = [v5 userUUID];
-  [UMTestPrint println:@"User UUID                  : %@", v6];
+  userCopy = user;
+  +[UMTestPrint println:](UMTestPrint, "println:", @"UID                        : %d", [userCopy uid]);
+  +[UMTestPrint println:](UMTestPrint, "println:", @"GID                        : %d", [userCopy gid]);
+  userUUID = [userCopy userUUID];
+  [UMTestPrint println:@"User UUID                  : %@", userUUID];
 
-  v7 = [v5 alternateDSID];
+  alternateDSID = [userCopy alternateDSID];
 
-  if (v7)
+  if (alternateDSID)
   {
-    v8 = [v5 alternateDSID];
-    [UMTestPrint println:@"Alternate DSID                 : %@", v8];
+    alternateDSID2 = [userCopy alternateDSID];
+    [UMTestPrint println:@"Alternate DSID                 : %@", alternateDSID2];
   }
 
   +[UMTestPrint println];
-  v9 = [v5 userType];
-  [UMTestPrint println:@"UserType                   : %@", v9];
+  userType = [userCopy userType];
+  [UMTestPrint println:@"UserType                   : %@", userType];
 
-  v10 = [v5 username];
-  [UMTestPrint println:@"Username                   : %@", v10];
+  username = [userCopy username];
+  [UMTestPrint println:@"Username                   : %@", username];
 
-  v11 = [v5 firstName];
-  [UMTestPrint println:@"First Name                 : %@", v11];
+  firstName = [userCopy firstName];
+  [UMTestPrint println:@"First Name                 : %@", firstName];
 
-  v12 = [v5 lastName];
-  [UMTestPrint println:@"Last Name                  : %@", v12];
+  lastName = [userCopy lastName];
+  [UMTestPrint println:@"Last Name                  : %@", lastName];
 
-  v13 = [v5 displayName];
-  [UMTestPrint println:@"Display Name               : %@", v13];
+  displayName = [userCopy displayName];
+  [UMTestPrint println:@"Display Name               : %@", displayName];
 
-  v14 = [v5 fileInfoPath];
+  fileInfoPath = [userCopy fileInfoPath];
 
-  if (v14)
+  if (fileInfoPath)
   {
-    v15 = [v5 fileInfoPath];
-    [UMTestPrint println:@"FileInfo Path               : %@", v15];
+    fileInfoPath2 = [userCopy fileInfoPath];
+    [UMTestPrint println:@"FileInfo Path               : %@", fileInfoPath2];
   }
 
-  v16 = [v5 libInfoPath];
+  libInfoPath = [userCopy libInfoPath];
 
-  if (v16)
+  if (libInfoPath)
   {
-    v17 = [v5 libInfoPath];
-    [UMTestPrint println:@"Libinfo Path               : %@", v17];
+    libInfoPath2 = [userCopy libInfoPath];
+    [UMTestPrint println:@"Libinfo Path               : %@", libInfoPath2];
   }
 
-  v18 = [v5 homeDirPath];
+  homeDirPath = [userCopy homeDirPath];
 
-  if (v18)
+  if (homeDirPath)
   {
-    v19 = [v5 homeDirPath];
-    [UMTestPrint println:@"HomeDir Path               : %@", v19];
+    homeDirPath2 = [userCopy homeDirPath];
+    [UMTestPrint println:@"HomeDir Path               : %@", homeDirPath2];
   }
 
-  v20 = [v5 diskNode];
+  diskNode = [userCopy diskNode];
 
-  if (v20)
+  if (diskNode)
   {
-    v21 = [v5 diskNode];
-    [UMTestPrint println:@"Disk Node               : %@", v21];
+    diskNode2 = [userCopy diskNode];
+    [UMTestPrint println:@"Disk Node               : %@", diskNode2];
 
-    v22 = [v5 volumeUUID];
-    [UMTestPrint println:@"Disk Vol UUID               : %@", v22];
+    volumeUUID = [userCopy volumeUUID];
+    [UMTestPrint println:@"Disk Vol UUID               : %@", volumeUUID];
   }
 
-  [a1 println];
-  v23 = [v5 creationDate];
-  [UMTestPrint println:@"Creation Date              : %@", v23];
+  [self println];
+  creationDate = [userCopy creationDate];
+  [UMTestPrint println:@"Creation Date              : %@", creationDate];
 
   +[UMTestPrint println];
-  if ([v5 isLoginUser])
+  if ([userCopy isLoginUser])
   {
     v24 = @"true";
   }
@@ -600,8 +600,8 @@
     v24 = @"false";
   }
 
-  [a1 println:{@"Is Login User              : %@", v24}];
-  if ([v5 isAuditor])
+  [self println:{@"Is Login User              : %@", v24}];
+  if ([userCopy isAuditor])
   {
     v25 = @"true";
   }
@@ -611,8 +611,8 @@
     v25 = @"false";
   }
 
-  [a1 println:{@"Is Auditor                 : %@", v25}];
-  if ([v5 isPrimaryUser])
+  [self println:{@"Is Auditor                 : %@", v25}];
+  if ([userCopy isPrimaryUser])
   {
     v26 = @"true";
   }
@@ -622,8 +622,8 @@
     v26 = @"false";
   }
 
-  [a1 println:{@"Is PrimaryUser             : %@", v26}];
-  if ([v5 isAdminUser])
+  [self println:{@"Is PrimaryUser             : %@", v26}];
+  if ([userCopy isAdminUser])
   {
     v27 = @"true";
   }
@@ -633,41 +633,41 @@
     v27 = @"false";
   }
 
-  [a1 println:{@"Is AdminUser               : %@", v27}];
-  [a1 println];
-  if ([v5 gracePeriod])
+  [self println:{@"Is AdminUser               : %@", v27}];
+  [self println];
+  if ([userCopy gracePeriod])
   {
-    [a1 println:{@"Passcode Lock Grace Period : %lu", objc_msgSend(v5, "gracePeriod")}];
+    [self println:{@"Passcode Lock Grace Period : %lu", objc_msgSend(userCopy, "gracePeriod")}];
   }
 
   return 1;
 }
 
-+ (BOOL)printPersonaInfo:(id)a3 outError:(id *)a4
++ (BOOL)printPersonaInfo:(id)info outError:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 userPersonaUniqueString];
+  infoCopy = info;
+  userPersonaUniqueString = [infoCopy userPersonaUniqueString];
 
-  if (v5)
+  if (userPersonaUniqueString)
   {
-    v6 = [v4 userPersonaUniqueString];
-    [UMTestPrint println:@"Persona identifier: %@", v6];
+    userPersonaUniqueString2 = [infoCopy userPersonaUniqueString];
+    [UMTestPrint println:@"Persona identifier: %@", userPersonaUniqueString2];
   }
 
-  v7 = [v4 userPersonaNickName];
+  userPersonaNickName = [infoCopy userPersonaNickName];
 
-  if (v7)
+  if (userPersonaNickName)
   {
-    v8 = [v4 userPersonaNickName];
-    [UMTestPrint println:@"Persona NickName: %@", v8];
+    userPersonaNickName2 = [infoCopy userPersonaNickName];
+    [UMTestPrint println:@"Persona NickName: %@", userPersonaNickName2];
   }
 
-  v9 = [v4 userPersonaType];
-  if (v9 > 3)
+  userPersonaType = [infoCopy userPersonaType];
+  if (userPersonaType > 3)
   {
-    if (v9 <= 5)
+    if (userPersonaType <= 5)
     {
-      if (v9 == 4)
+      if (userPersonaType == 4)
       {
         v10 = @"Persona Type: Universal";
       }
@@ -680,13 +680,13 @@
       goto LABEL_22;
     }
 
-    if (v9 == 6)
+    if (userPersonaType == 6)
     {
       v10 = @"Persona Type: Guest";
       goto LABEL_22;
     }
 
-    if (v9 == 1000)
+    if (userPersonaType == 1000)
     {
       v10 = @"Persona Type: Invalid";
       goto LABEL_22;
@@ -695,9 +695,9 @@
 
   else
   {
-    if (v9 > 1)
+    if (userPersonaType > 1)
     {
-      if (v9 == 2)
+      if (userPersonaType == 2)
       {
         v10 = @"Persona Type: Enterprise";
       }
@@ -710,13 +710,13 @@
       goto LABEL_22;
     }
 
-    if (!v9)
+    if (!userPersonaType)
     {
       v10 = @"Persona Type: Personal";
       goto LABEL_22;
     }
 
-    if (v9 == 1)
+    if (userPersonaType == 1)
     {
       v10 = @"Persona Type: Managed";
 LABEL_22:
@@ -727,16 +727,16 @@ LABEL_22:
   return 1;
 }
 
-+ (BOOL)printPersonaAttributesInfo:(id)a3 outError:(id *)a4
++ (BOOL)printPersonaAttributesInfo:(id)info outError:(id *)error
 {
-  v4 = a3;
+  infoCopy = info;
   [UMTestPrint println:@"************************************************************"];
-  v5 = [v4 userPersonaUniqueString];
+  userPersonaUniqueString = [infoCopy userPersonaUniqueString];
 
-  if (v5)
+  if (userPersonaUniqueString)
   {
-    v6 = [v4 userPersonaUniqueString];
-    [UMTestPrint println:@"Persona identifier: %@", v6];
+    userPersonaUniqueString2 = [infoCopy userPersonaUniqueString];
+    [UMTestPrint println:@"Persona identifier: %@", userPersonaUniqueString2];
   }
 
   else
@@ -744,19 +744,19 @@ LABEL_22:
     [UMTestPrint println:@"Persona identifier: NONE"];
   }
 
-  v7 = [v4 userPersonaType];
-  if (v7 <= 2)
+  userPersonaType = [infoCopy userPersonaType];
+  if (userPersonaType <= 2)
   {
-    if (v7)
+    if (userPersonaType)
     {
-      if (v7 == 1)
+      if (userPersonaType == 1)
       {
         v8 = @"Persona Type: Managed";
       }
 
       else
       {
-        if (v7 != 2)
+        if (userPersonaType != 2)
         {
           goto LABEL_20;
         }
@@ -771,16 +771,16 @@ LABEL_22:
     }
   }
 
-  else if (v7 > 4)
+  else if (userPersonaType > 4)
   {
-    if (v7 == 5)
+    if (userPersonaType == 5)
     {
       v8 = @"Persona Type: Default";
     }
 
     else
     {
-      if (v7 != 1000)
+      if (userPersonaType != 1000)
       {
         goto LABEL_20;
       }
@@ -789,7 +789,7 @@ LABEL_22:
     }
   }
 
-  else if (v7 == 3)
+  else if (userPersonaType == 3)
   {
     v8 = @"Persona Type: System";
   }
@@ -801,68 +801,68 @@ LABEL_22:
 
   [UMTestPrint println:v8];
 LABEL_20:
-  if ([v4 userPersona_id])
+  if ([infoCopy userPersona_id])
   {
-    +[UMTestPrint println:](UMTestPrint, "println:", @"Kernel Persona ID is: %d", [v4 userPersona_id]);
+    +[UMTestPrint println:](UMTestPrint, "println:", @"Kernel Persona ID is: %d", [infoCopy userPersona_id]);
   }
 
-  v9 = [v4 personaLayoutPathURL];
+  personaLayoutPathURL = [infoCopy personaLayoutPathURL];
 
-  if (v9)
+  if (personaLayoutPathURL)
   {
-    v10 = [v4 personaLayoutPathURL];
-    [UMTestPrint println:@"Persona Volume Path is: %@", v10];
+    personaLayoutPathURL2 = [infoCopy personaLayoutPathURL];
+    [UMTestPrint println:@"Persona Volume Path is: %@", personaLayoutPathURL2];
   }
 
-  if ([v4 isEnterprisePersona])
+  if ([infoCopy isEnterprisePersona])
   {
     [UMTestPrint println:@"isEnterprisePersona:true"];
   }
 
-  if ([v4 isDataSeparatedPersona])
+  if ([infoCopy isDataSeparatedPersona])
   {
     [UMTestPrint println:@"isDataSeparatedPersona:true"];
   }
 
-  if ([v4 isPersonalPersona])
+  if ([infoCopy isPersonalPersona])
   {
     [UMTestPrint println:@"isPersonalPersona:true"];
   }
 
-  if ([v4 isUniversalPersona])
+  if ([infoCopy isUniversalPersona])
   {
     [UMTestPrint println:@"isUniversalPersona:true"];
   }
 
-  if ([v4 isSystemPersona])
+  if ([infoCopy isSystemPersona])
   {
     [UMTestPrint println:@"isSystemPersona:true"];
   }
 
-  if ([v4 isDefaultPersona])
+  if ([infoCopy isDefaultPersona])
   {
     [UMTestPrint println:@"isDefaultPersona:true"];
   }
 
-  if ([v4 isDisabled])
+  if ([infoCopy isDisabled])
   {
     [UMTestPrint println:@"isDisabled:true"];
   }
 
-  v11 = [v4 userPersonaDisplayName];
+  userPersonaDisplayName = [infoCopy userPersonaDisplayName];
 
-  if (v11)
+  if (userPersonaDisplayName)
   {
-    v12 = [v4 userPersonaDisplayName];
-    [UMTestPrint println:@"Persona Display String: %@", v12];
+    userPersonaDisplayName2 = [infoCopy userPersonaDisplayName];
+    [UMTestPrint println:@"Persona Display String: %@", userPersonaDisplayName2];
   }
 
-  v13 = [v4 userPersonaBundleIDList];
+  userPersonaBundleIDList = [infoCopy userPersonaBundleIDList];
 
-  if (v13)
+  if (userPersonaBundleIDList)
   {
-    v14 = [v4 userPersonaBundleIDList];
-    [UMTestPrint println:@"Persona Associated BundleIDs are: %@", v14];
+    userPersonaBundleIDList2 = [infoCopy userPersonaBundleIDList];
+    [UMTestPrint println:@"Persona Associated BundleIDs are: %@", userPersonaBundleIDList2];
   }
 
   [UMTestPrint println:@"************************************************************"];
@@ -870,17 +870,17 @@ LABEL_20:
   return 1;
 }
 
-+ (void)_printSyncBubbleInfoForUser:(id)a3
++ (void)_printSyncBubbleInfoForUser:(id)user
 {
-  v4 = a3;
-  [a1 println:{@"UID           : %d", objc_msgSend(v4, "uid")}];
-  v5 = [v4 username];
-  [a1 println:{@"Username      : %@", v5}];
+  userCopy = user;
+  [self println:{@"UID           : %d", objc_msgSend(userCopy, "uid")}];
+  username = [userCopy username];
+  [self println:{@"Username      : %@", username}];
 
-  [a1 println];
-  [a1 println:@"Mach Services :"];
-  [a1 println];
-  v6 = [UMMobileKeyBag syncBubbleMachServiceNamesForUser:v4];
+  [self println];
+  [self println:@"Mach Services :"];
+  [self println];
+  v6 = [UMMobileKeyBag syncBubbleMachServiceNamesForUser:userCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -900,7 +900,7 @@ LABEL_20:
           objc_enumerationMutation(v6);
         }
 
-        [a1 println:{@"\t%@", *(*(&v11 + 1) + 8 * v10)}];
+        [self println:{@"\t%@", *(*(&v11 + 1) + 8 * v10)}];
         v10 = v10 + 1;
       }
 
@@ -912,30 +912,30 @@ LABEL_20:
   }
 }
 
-+ (BOOL)printSyncBubbleInfoForUser:(id)a3 outError:(id *)a4
++ (BOOL)printSyncBubbleInfoForUser:(id)user outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  userCopy = user;
+  v7 = userCopy;
+  if (userCopy)
   {
-    v11 = v6;
+    v11 = userCopy;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    v9 = [a1 printSyncBubbleInfoForUsers:v8 outError:a4];
+    v9 = [self printSyncBubbleInfoForUsers:v8 outError:error];
   }
 
   else
   {
-    v9 = [a1 printSyncBubbleInfoForUsers:&__NSArray0__struct outError:a4];
+    v9 = [self printSyncBubbleInfoForUsers:&__NSArray0__struct outError:error];
   }
 
   return v9;
 }
 
-+ (BOOL)printSyncBubbleInfoForUsers:(id)a3 outError:(id *)a4
++ (BOOL)printSyncBubbleInfoForUsers:(id)users outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  usersCopy = users;
+  v7 = usersCopy;
+  if (usersCopy && [usersCopy count])
   {
     v18 = 0u;
     v19 = 0u;
@@ -957,10 +957,10 @@ LABEL_20:
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          [a1 _printDivider];
-          [a1 println];
-          [a1 _printSyncBubbleInfoForUser:v13];
-          [a1 println];
+          [self _printDivider];
+          [self println];
+          [self _printSyncBubbleInfoForUser:v13];
+          [self println];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -969,14 +969,14 @@ LABEL_20:
       while (v10);
     }
 
-    [a1 _printDivider];
+    [self _printDivider];
     v14 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [UMTestError errorWithMessage:@"Nothing to print"];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -987,40 +987,40 @@ LABEL_20:
   return v14;
 }
 
-+ (id)_dataSizeStringFromBytes:(unint64_t)a3
++ (id)_dataSizeStringFromBytes:(unint64_t)bytes
 {
-  v5 = vcvtd_n_f64_u64(a3, 0xAuLL);
-  if (v5 <= 1.0)
+  bytesCopy = vcvtd_n_f64_u64(bytes, 0xAuLL);
+  if (bytesCopy <= 1.0)
   {
-    v5 = a3;
+    bytesCopy = bytes;
     v7 = @"bytes";
   }
 
   else
   {
-    v6 = v5 * 0.0009765625;
-    if (v5 * 0.0009765625 <= 1.0)
+    v6 = bytesCopy * 0.0009765625;
+    if (bytesCopy * 0.0009765625 <= 1.0)
     {
       v7 = @"KB";
     }
 
     else
     {
-      v5 = v6 * 0.0009765625;
+      bytesCopy = v6 * 0.0009765625;
       v7 = @"MB";
       if (v6 * 0.0009765625 > 1.0)
       {
         v7 = @"GB";
       }
 
-      if (v5 <= 1.0)
+      if (bytesCopy <= 1.0)
       {
-        v5 = v6;
+        bytesCopy = v6;
       }
     }
   }
 
-  return [NSString stringWithFormat:@"%f %@", *&v5, v7, v3, v4];
+  return [NSString stringWithFormat:@"%f %@", *&bytesCopy, v7, v3, v4];
 }
 
 @end

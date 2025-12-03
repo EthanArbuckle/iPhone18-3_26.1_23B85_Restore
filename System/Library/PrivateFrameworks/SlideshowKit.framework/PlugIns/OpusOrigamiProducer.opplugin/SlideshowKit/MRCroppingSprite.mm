@@ -1,10 +1,10 @@
 @interface MRCroppingSprite
-+ (void)renderDumbImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-+ (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 withReferenceAspectRatio:(float)a7 andJustifications:(CGPoint)a8;
-+ (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-+ (void)renderImage:(id)a3 withMask:(id)a4 inContext:(id)a5 atPosition:(CGPoint)a6 andSize:(CGSize)a7 zRotation:(float)a8;
++ (void)renderDumbImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
++ (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size withReferenceAspectRatio:(float)ratio andJustifications:(CGPoint)justifications;
++ (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
++ (void)renderImage:(id)image withMask:(id)mask inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
 - (BOOL)getVerticesCoordinates:(CGPoint *)(a3 withMatrix:;
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5;
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint;
 - (CGPoint)position;
 - (CGPoint)spriteCoordinatesOffset;
 - (CGRect)innerRect;
@@ -12,24 +12,24 @@
 - (CGSize)halfSize;
 - (CGSize)spriteCoordinatesFactor;
 - (MRCroppingSprite)init;
-- (MRCroppingSprite)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 context:(id)a6;
-- (MRCroppingSprite)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 innerRect:(CGRect)a6 context:(id)a7;
-- (void)fakeRenderInContext:(id)a3 atPosition:(CGPoint)a4 andSize:(CGSize)a5 zRotation:(float)a6;
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4;
-- (void)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(uint64_t)a8;
-- (void)renderDumbImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-- (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 withReferenceAspectRatio:(float)a7 andJustifications:(CGPoint)a8;
-- (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-- (void)renderImage:(id)a3 withMask:(id)a4 inContext:(id)a5 atPosition:(CGPoint)a6 andSize:(CGSize)a7 zRotation:(float)a8;
-- (void)renderImageInner:(id)a3 inContext:(id)a4;
-- (void)renderImageInner:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4;
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
-- (void)renderImageOuter:(id)a3 inContext:(id)a4;
-- (void)renderImageOuter:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7;
+- (MRCroppingSprite)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation context:(id)context;
+- (MRCroppingSprite)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation innerRect:(CGRect)rect context:(id)context;
+- (void)fakeRenderInContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size;
+- (void)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(uint64_t)context;
+- (void)renderDumbImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size withReferenceAspectRatio:(float)ratio andJustifications:(CGPoint)justifications;
+- (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)renderImage:(id)image withMask:(id)mask inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)renderImageInner:(id)inner inContext:(id)context;
+- (void)renderImageInner:(id)inner inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)renderImageMiddle:(id)middle inContext:(id)context;
+- (void)renderImageMiddle:(id)middle inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)renderImageOuter:(id)outer inContext:(id)context;
+- (void)renderImageOuter:(id)outer inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
 - (void)reset;
-- (void)setInnerRect:(CGRect)a3;
-- (void)setOuterRect:(CGRect)a3;
+- (void)setInnerRect:(CGRect)rect;
+- (void)setOuterRect:(CGRect)rect;
 @end
 
 @implementation MRCroppingSprite
@@ -56,49 +56,49 @@
   return result;
 }
 
-- (MRCroppingSprite)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 context:(id)a6
+- (MRCroppingSprite)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v12 = [(MRCroppingSprite *)self init];
   v14 = v12;
   if (v12)
   {
-    *&v13 = a5;
-    [(MRCroppingSprite *)v12 fakeRenderInContext:a6 atPosition:x andSize:y zRotation:width, height, v13];
+    *&v13 = rotation;
+    [(MRCroppingSprite *)v12 fakeRenderInContext:context atPosition:x andSize:y zRotation:width, height, v13];
   }
 
   return v14;
 }
 
-- (MRCroppingSprite)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 innerRect:(CGRect)a6 context:(id)a7
+- (MRCroppingSprite)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation innerRect:(CGRect)rect context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v13 = [(MRCroppingSprite *)self init];
   v15 = v13;
   if (v13)
   {
-    *&v14 = a5;
-    [(MRCroppingSprite *)v13 fakeRenderInContext:a7 atPosition:x andSize:y zRotation:width, height, v14];
-    [(MRCroppingSprite *)v15 setInnerRect:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+    *&v14 = rotation;
+    [(MRCroppingSprite *)v13 fakeRenderInContext:context atPosition:x andSize:y zRotation:width, height, v14];
+    [(MRCroppingSprite *)v15 setInnerRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 
   return v15;
 }
 
-- (void)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(uint64_t)a8
+- (void)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(uint64_t)context
 {
-  v27 = [a1 init];
+  v27 = [self init];
   v29 = v27;
   if (v27)
   {
-    *&v28 = a6;
-    [v27 fakeRenderInContext:a8 atPosition:a2 andSize:a3 zRotation:{a4, a5, v28}];
+    *&v28 = rect;
+    [v27 fakeRenderInContext:context atPosition:a2 andSize:position zRotation:{size, rotation, v28}];
     [v29 setInnerRect:{a12, a13, a14, a15}];
     [v29 setOuterRect:{a16, a17, a18, a19}];
   }
@@ -113,37 +113,37 @@
   self->mRotation = 0.0;
 }
 
-- (void)fakeRenderInContext:(id)a3 atPosition:(CGPoint)a4 andSize:(CGSize)a5 zRotation:(float)a6
+- (void)fakeRenderInContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  [a3 localAspectRatio];
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [context localAspectRatio];
   v17 = y / v12;
-  [a3 localAspectRatio];
+  [context localAspectRatio];
   v14.f64[0] = x;
   v14.f64[1] = v17;
   self->mPosition = vcvtq_f64_f32(vcvt_f32_f64(v14));
   v14.f64[0] = width * 0.5;
   v14.f64[1] = height * 0.5 / v13;
   self->mHalfSize = vcvtq_f64_f32(vcvt_f32_f64(v14));
-  self->mRotation = a6;
+  self->mRotation = rotation;
   if (self->_usesOwnMatrixForHitTest)
   {
-    v15 = [a3 modelViewMatrix];
-    v16 = [a3 projectionMatrix];
+    modelViewMatrix = [context modelViewMatrix];
+    projectionMatrix = [context projectionMatrix];
 
-    MRMatrix_MultiplyWithMatrix(v15, v16, self->mModelViewProjectionMatrix);
+    MRMatrix_MultiplyWithMatrix(modelViewMatrix, projectionMatrix, self->mModelViewProjectionMatrix);
   }
 }
 
-- (void)setInnerRect:(CGRect)a3
+- (void)setInnerRect:(CGRect)rect
 {
   y = 0.0;
-  if (a3.origin.x >= 0.0)
+  if (rect.origin.x >= 0.0)
   {
-    x = a3.origin.x;
+    x = rect.origin.x;
   }
 
   else
@@ -151,23 +151,23 @@
     x = 0.0;
   }
 
-  if (a3.origin.y >= 0.0)
+  if (rect.origin.y >= 0.0)
   {
-    y = a3.origin.y;
+    y = rect.origin.y;
   }
 
   self->mInnerRect.origin.x = x;
   self->mInnerRect.origin.y = y;
-  self->mInnerRect.size.width = fmin(a3.origin.x + a3.size.width, 1.0) - x;
-  self->mInnerRect.size.height = fmin(a3.origin.y + a3.size.height, 1.0) - y;
+  self->mInnerRect.size.width = fmin(rect.origin.x + rect.size.width, 1.0) - x;
+  self->mInnerRect.size.height = fmin(rect.origin.y + rect.size.height, 1.0) - y;
 }
 
-- (void)setOuterRect:(CGRect)a3
+- (void)setOuterRect:(CGRect)rect
 {
   y = 0.0;
-  if (a3.origin.x >= 0.0)
+  if (rect.origin.x >= 0.0)
   {
-    x = a3.origin.x;
+    x = rect.origin.x;
   }
 
   else
@@ -175,18 +175,18 @@
     x = 0.0;
   }
 
-  if (a3.origin.y >= 0.0)
+  if (rect.origin.y >= 0.0)
   {
-    y = a3.origin.y;
+    y = rect.origin.y;
   }
 
   self->mOuterRect.origin.x = x;
   self->mOuterRect.origin.y = y;
-  self->mOuterRect.size.width = fmin(a3.origin.x + a3.size.width, 1.0) - x;
-  self->mOuterRect.size.height = fmin(a3.origin.y + a3.size.height, 1.0) - y;
+  self->mOuterRect.size.width = fmin(rect.origin.x + rect.size.width, 1.0) - x;
+  self->mOuterRect.size.height = fmin(rect.origin.y + rect.size.height, 1.0) - y;
 }
 
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size
 {
   x = self->mOuterRect.origin.x;
   y = self->mOuterRect.origin.y;
@@ -199,66 +199,66 @@
   v15 = self->mPosition.x;
   mRotation = self->mRotation;
   v17 = __sincosf_stret(mRotation);
-  a3->x = v15 + ((v11 + v12) * v17.__cosval - (v13 + v14) * v17.__sinval) * 0.5;
+  position->x = v15 + ((v11 + v12) * v17.__cosval - (v13 + v14) * v17.__sinval) * 0.5;
   v18 = self->mPosition.y;
   v19 = self->mRotation;
   v20 = __sincosf_stret(v19);
-  a3->y = v18 + ((v11 + v12) * v20.__sinval + (v13 + v14) * v20.__cosval) * 0.5;
-  a4->width = (v12 - v11) * 0.5;
-  a4->height = (v14 - v13) * 0.5;
+  position->y = v18 + ((v11 + v12) * v20.__sinval + (v13 + v14) * v20.__cosval) * 0.5;
+  size->width = (v12 - v11) * 0.5;
+  size->height = (v14 - v13) * 0.5;
 }
 
-- (void)renderDumbImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
+- (void)renderDumbImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:a4 andSize:? zRotation:?];
-  *&v14 = a7;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:context andSize:? zRotation:?];
+  *&v14 = rotation;
 
-  [MRCroppingSprite renderDumbImage:a3 inContext:a4 atPosition:x andSize:y zRotation:width, height, v14];
+  [MRCroppingSprite renderDumbImage:image inContext:context atPosition:x andSize:y zRotation:width, height, v14];
 }
 
-- (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
+- (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:a4 andSize:? zRotation:?];
-  *&v14 = a7;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:context andSize:? zRotation:?];
+  *&v14 = rotation;
 
-  [MRCroppingSprite renderImage:a3 inContext:a4 atPosition:x andSize:y zRotation:width, height, v14];
+  [MRCroppingSprite renderImage:image inContext:context atPosition:x andSize:y zRotation:width, height, v14];
 }
 
-- (void)renderImage:(id)a3 withMask:(id)a4 inContext:(id)a5 atPosition:(CGPoint)a6 andSize:(CGSize)a7 zRotation:(float)a8
+- (void)renderImage:(id)image withMask:(id)mask inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
-  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:a5 andSize:? zRotation:?];
-  *&v16 = a8;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [MRCroppingSprite fakeRenderInContext:"fakeRenderInContext:atPosition:andSize:zRotation:" atPosition:context andSize:? zRotation:?];
+  *&v16 = rotation;
 
-  [MRCroppingSprite renderImage:a3 withMask:a4 inContext:a5 atPosition:x andSize:y zRotation:width, height, v16];
+  [MRCroppingSprite renderImage:image withMask:mask inContext:context atPosition:x andSize:y zRotation:width, height, v16];
 }
 
-- (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 withReferenceAspectRatio:(float)a7 andJustifications:(CGPoint)a8
+- (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size withReferenceAspectRatio:(float)ratio andJustifications:(CGPoint)justifications
 {
-  y = a8.y;
-  x = a8.x;
-  height = a6.height;
-  width = a6.width;
-  v13 = a5.y;
-  v14 = a5.x;
-  [(MRCroppingSprite *)self fakeRenderInContext:a4 atPosition:a5.x andSize:a5.y zRotation:a6.width, a6.height, 0.0];
-  *&v17 = a7;
+  y = justifications.y;
+  x = justifications.x;
+  height = size.height;
+  width = size.width;
+  v13 = position.y;
+  v14 = position.x;
+  [(MRCroppingSprite *)self fakeRenderInContext:context atPosition:position.x andSize:position.y zRotation:size.width, size.height, 0.0];
+  *&v17 = ratio;
 
-  [MRCroppingSprite renderImage:a3 inContext:a4 atPosition:v14 andSize:v13 withReferenceAspectRatio:width andJustifications:height, v17, x, y];
+  [MRCroppingSprite renderImage:image inContext:context atPosition:v14 andSize:v13 withReferenceAspectRatio:width andJustifications:height, v17, x, y];
 }
 
-- (void)renderImageInner:(id)a3 inContext:(id)a4
+- (void)renderImageInner:(id)inner inContext:(id)context
 {
   y = self->mPosition.y;
   width = self->mHalfSize.width;
@@ -288,7 +288,7 @@
   v62[6] = LODWORD(v20);
   v62[7] = LODWORD(v11);
   v58 = 0;
-  if (a3)
+  if (inner)
   {
     if (self->mPreservesImageAspectRatio)
     {
@@ -297,12 +297,12 @@
 
     else
     {
-      [a3 aspectRatio];
+      [inner aspectRatio];
       *&v20 = v20;
     }
 
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v58 state:v20];
-    [a4 setTextureCoordinatesPointer:v62 onTextureUnit:0];
+    [inner setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v58 state:v20];
+    [context setTextureCoordinatesPointer:v62 onTextureUnit:0];
   }
 
   v21 = 0;
@@ -322,7 +322,7 @@
   v57 = _Q1;
   do
   {
-    v35 = [a4 imageSetOnTextureUnit:{v33, v53}];
+    v35 = [context imageSetOnTextureUnit:{v33, v53}];
     if (v35)
     {
       if ([v35 preservesAspectRatio])
@@ -340,7 +340,7 @@
       }
 
       v21 |= 1 << v33;
-      [a4 setTextureCoordinatesPointer:v36 onTextureUnit:v33];
+      [context setTextureCoordinatesPointer:v36 onTextureUnit:v33];
     }
 
     ++v33;
@@ -376,7 +376,7 @@
       v60[j] = v42;
     }
 
-    [a4 setInSpriteCoordinatesPointer:{v60, 1.0, 0.5}];
+    [context setInSpriteCoordinatesPointer:{v60, 1.0, 0.5}];
   }
 
   v43 = *&v53 + v24 * v10.__cosval;
@@ -399,12 +399,12 @@
   v51 = v49 + v27 * v10.__cosval;
   v59[6] = LODWORD(v48);
   *&v59[7] = v51;
-  [a4 setVertex2DPointer:v59];
-  [a4 drawTriangleStripFromOffset:0 count:4];
-  [a4 unsetVertexPointer];
+  [context setVertex2DPointer:v59];
+  [context drawTriangleStripFromOffset:0 count:4];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   v52 = -3;
@@ -412,19 +412,19 @@
   {
     if ((v21 & (1 << (v52 + 4))) != 0)
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:1];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:1];
     }
   }
 
   while (!__CFADD__(v52++, 1));
-  if (a3)
+  if (inner)
   {
-    [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v58];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+    [inner unsetOnContext:context onTextureUnit:0 state:&v58];
   }
 }
 
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4
+- (void)renderImageMiddle:(id)middle inContext:(id)context
 {
   x = self->mInnerRect.origin.x;
   v8 = self->mOuterRect.origin.x;
@@ -554,7 +554,7 @@
   v143[18] = v44;
   v143[19] = v45;
   v139 = 0;
-  if (a3)
+  if (middle)
   {
     *&v16 = height;
     *&v15 = width;
@@ -573,12 +573,12 @@
 
     else
     {
-      [a3 aspectRatio];
+      [middle aspectRatio];
       *&v15 = v15;
     }
 
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v139 state:v15];
-    [a4 setTextureCoordinatesPointer:v143 onTextureUnit:0];
+    [middle setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v139 state:v15];
+    [context setTextureCoordinatesPointer:v143 onTextureUnit:0];
     v18 = v53;
     v19 = v52;
     v20 = v51;
@@ -611,7 +611,7 @@
   v138 = _Q1;
   do
   {
-    v71 = [a4 imageSetOnTextureUnit:{v67, *&v130}];
+    v71 = [context imageSetOnTextureUnit:{v67, *&v130}];
     if (v71)
     {
       if ([v71 preservesAspectRatio])
@@ -629,7 +629,7 @@
       }
 
       v54 |= 1 << v67;
-      [a4 setTextureCoordinatesPointer:v72 onTextureUnit:v67];
+      [context setTextureCoordinatesPointer:v72 onTextureUnit:v67];
     }
 
     ++v67;
@@ -665,7 +665,7 @@
       v141[j] = v78;
     }
 
-    [a4 setInSpriteCoordinatesPointer:{v141, 1.0, 0.5}];
+    [context setInSpriteCoordinatesPointer:{v141, 1.0, 0.5}];
   }
 
   v79 = self->mMeshType;
@@ -788,12 +788,12 @@ LABEL_41:
   *&v140[17] = v101;
   *&v140[18] = v102;
   *&v140[19] = v112;
-  [a4 setVertex2DPointer:v140];
-  [a4 drawTriangleStripFromOffset:0 count:10];
-  [a4 unsetVertexPointer];
+  [context setVertex2DPointer:v140];
+  [context drawTriangleStripFromOffset:0 count:10];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   v129 = -3;
@@ -801,19 +801,19 @@ LABEL_41:
   {
     if ((v54 & (1 << (v129 + 4))) != 0)
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:1];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:1];
     }
   }
 
   while (!__CFADD__(v129++, 1));
-  if (a3)
+  if (middle)
   {
-    [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v139];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+    [middle unsetOnContext:context onTextureUnit:0 state:&v139];
   }
 }
 
-- (void)renderImageOuter:(id)a3 inContext:(id)a4
+- (void)renderImageOuter:(id)outer inContext:(id)context
 {
   if (self->mInnerRect.origin.x == 0.0 && self->mInnerRect.origin.y == 0.0 && self->mInnerRect.size.width == 1.0 && self->mInnerRect.size.height == 1.0)
   {
@@ -1043,7 +1043,7 @@ LABEL_41:
   v54 = height;
   *&v26[v39] = LODWORD(v20.f64[0]);
   v193 = 0;
-  if (a3)
+  if (outer)
   {
     v55 = v12 * 2.0 + -1.0;
     if (self->mPreservesImageAspectRatio)
@@ -1053,16 +1053,16 @@ LABEL_41:
 
     else
     {
-      [a3 aspectRatio];
+      [outer aspectRatio];
       *v20.f64 = v20.f64[0];
     }
 
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v193 state:{v20.f64[0], *&v179}];
-    [a4 setTextureCoordinatesPointer:&v179 - (4 * v25) onTextureUnit:0];
+    [outer setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v193 state:{v20.f64[0], *&v179}];
+    [context setTextureCoordinatesPointer:&v179 - (4 * v25) onTextureUnit:0];
     v23 = v55;
   }
 
-  v188 = a3;
+  outerCopy = outer;
   v56 = 0;
   v57 = v191.f64[0];
   v58 = v192.f64[0];
@@ -1084,12 +1084,12 @@ LABEL_41:
   v192 = _Q1;
   do
   {
-    v67 = [a4 imageSetOnTextureUnit:{v63, *&v179}];
+    v67 = [context imageSetOnTextureUnit:{v63, *&v179}];
     if (v67)
     {
-      v68 = [v67 preservesAspectRatio];
+      preservesAspectRatio = [v67 preservesAspectRatio];
       v69 = &v179 - (4 * v25);
-      if ((v68 & 1) == 0)
+      if ((preservesAspectRatio & 1) == 0)
       {
         v70 = 0;
         v72 = v191;
@@ -1105,7 +1105,7 @@ LABEL_41:
       }
 
       v56 |= 1 << v63;
-      [a4 setTextureCoordinatesPointer:v69 onTextureUnit:v63];
+      [context setTextureCoordinatesPointer:v69 onTextureUnit:v63];
     }
 
     ++v63;
@@ -1141,7 +1141,7 @@ LABEL_41:
       *&v194[i] = v77;
     }
 
-    [a4 setInSpriteCoordinatesPointer:{v194, 1.0, 0.5}];
+    [context setInSpriteCoordinatesPointer:{v194, 1.0, 0.5}];
   }
 
   v78 = (&v179 - ((4 * v25 + 15) & 0x1F0));
@@ -1450,12 +1450,12 @@ LABEL_65:
   v78[v134] = v131;
   v78[v133] = v80;
   v78[v132] = v81;
-  [a4 setVertex2DPointer:?];
-  [a4 drawTriangleStripFromOffset:0 count:v25 >> 1];
-  [a4 unsetVertexPointer];
+  [context setVertex2DPointer:?];
+  [context drawTriangleStripFromOffset:0 count:v25 >> 1];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   v177 = -3;
@@ -1463,57 +1463,57 @@ LABEL_65:
   {
     if ((v56 & (1 << (v177 + 4))) != 0)
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:1];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:1];
     }
   }
 
   while (!__CFADD__(v177++, 1));
-  v178 = v188;
-  if (v188)
+  v178 = outerCopy;
+  if (outerCopy)
   {
-    [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-    [v178 unsetOnContext:a4 onTextureUnit:0 state:&v193];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+    [v178 unsetOnContext:context onTextureUnit:0 state:&v193];
   }
 }
 
-- (void)renderImageInner:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
+- (void)renderImageInner:(id)inner inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  [(MRCroppingSprite *)self fakeRenderInContext:a4 atPosition:a5.x andSize:a5.y zRotation:a6.width, a6.height];
+  [(MRCroppingSprite *)self fakeRenderInContext:context atPosition:position.x andSize:position.y zRotation:size.width, size.height];
 
-  [(MRCroppingSprite *)self renderImageInner:a3 inContext:a4];
+  [(MRCroppingSprite *)self renderImageInner:inner inContext:context];
 }
 
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
+- (void)renderImageMiddle:(id)middle inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  [(MRCroppingSprite *)self fakeRenderInContext:a4 atPosition:a5.x andSize:a5.y zRotation:a6.width, a6.height];
+  [(MRCroppingSprite *)self fakeRenderInContext:context atPosition:position.x andSize:position.y zRotation:size.width, size.height];
 
-  [(MRCroppingSprite *)self renderImageMiddle:a3 inContext:a4];
+  [(MRCroppingSprite *)self renderImageMiddle:middle inContext:context];
 }
 
-- (void)renderImageOuter:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
+- (void)renderImageOuter:(id)outer inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  [(MRCroppingSprite *)self fakeRenderInContext:a4 atPosition:a5.x andSize:a5.y zRotation:a6.width, a6.height];
+  [(MRCroppingSprite *)self fakeRenderInContext:context atPosition:position.x andSize:position.y zRotation:size.width, size.height];
 
-  [(MRCroppingSprite *)self renderImageOuter:a3 inContext:a4];
+  [(MRCroppingSprite *)self renderImageOuter:outer inContext:context];
 }
 
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint
 {
   if (self->mHitIsActive)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     memset(v30, 0, sizeof(v30));
     if (self->_usesOwnMatrixForHitTest)
     {
       MRMatrix_Invert(self->mModelViewProjectionMatrix, v30);
       if (self->_usesOwnMatrixForHitTest)
       {
-        a4 = v30;
+        matrix = v30;
       }
     }
 
-    v28 = MRMatrix_UnprojectPoint(a4, x, y) - self->mPosition.x;
+    v28 = MRMatrix_UnprojectPoint(matrix, x, y) - self->mPosition.x;
     v29 = v10 - self->mPosition.y;
     mRotation = self->mRotation;
     v12 = __sincosf_stret(mRotation);
@@ -1529,9 +1529,9 @@ LABEL_65:
     }
 
     v23 = vmulq_f64(vaddq_f64(v16, _Q1), _Q2);
-    if (a5)
+    if (localPoint)
     {
-      *a5 = v23;
+      *localPoint = v23;
     }
 
     v24.i32[0] = vuzp1_s16(vmovn_s64(vcgeq_f64(_Q1, v23)), *&v23.x).u32[0];
@@ -1613,21 +1613,21 @@ LABEL_65:
   return 1;
 }
 
-+ (void)renderDumbImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
++ (void)renderDumbImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  if (a3 || [a4 shaderIsSet])
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  if (image || [context shaderIsSet])
   {
     v14 = x;
-    [a4 localAspectRatio];
+    [context localAspectRatio];
     v16 = y / v15;
     v17 = width * 0.5;
-    [a4 localAspectRatio];
+    [context localAspectRatio];
     v19 = height * 0.5 / v18;
-    v20 = __sincosf_stret(a7);
+    v20 = __sincosf_stret(rotation);
     v21 = v20.__cosval * v17;
     v22 = v20.__sinval * v17;
     v23 = v20.__cosval * v19;
@@ -1635,10 +1635,10 @@ LABEL_65:
     v27[0] = xmmword_164020;
     v27[1] = unk_164030;
     v25 = 0;
-    if (a3)
+    if (image)
     {
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v25 state:0.0];
-      [a4 setTextureCoordinatesPointer:v27 onTextureUnit:0];
+      [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v25 state:0.0];
+      [context setTextureCoordinatesPointer:v27 onTextureUnit:0];
     }
 
     v26[0] = (v14 - v21) + v24;
@@ -1649,32 +1649,32 @@ LABEL_65:
     v26[5] = v22 + (v16 - v23);
     v26[6] = (v21 + v14) - v24;
     v26[7] = v22 + (v23 + v16);
-    [a4 setVertex2DPointer:v26];
-    [a4 drawTriangleStripFromOffset:0 count:4];
-    [a4 unsetVertexPointer];
-    if (a3)
+    [context setVertex2DPointer:v26];
+    [context drawTriangleStripFromOffset:0 count:4];
+    [context unsetVertexPointer];
+    if (image)
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v25];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+      [image unsetOnContext:context onTextureUnit:0 state:&v25];
     }
   }
 }
 
-+ (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 zRotation:(float)a7
++ (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  if (a3 || [a4 shaderIsSet])
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  if (image || [context shaderIsSet])
   {
     v14 = x;
-    [a4 localAspectRatio];
+    [context localAspectRatio];
     v16 = y / v15;
     v17 = width * 0.5;
-    [a4 localAspectRatio];
+    [context localAspectRatio];
     v19 = height * 0.5 / v18;
-    v21 = __sincosf_stret(a7);
+    v21 = __sincosf_stret(rotation);
     v22 = v21.__cosval * v17;
     v23 = v21.__sinval * v17;
     v24 = v21.__cosval * v19;
@@ -1682,11 +1682,11 @@ LABEL_65:
     v28[0] = xmmword_164000;
     v28[1] = unk_164010;
     v26 = 0;
-    if (a3)
+    if (image)
     {
       *&v20 = v17 / v19;
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v26 state:v20];
-      [a4 setTextureCoordinatesPointer:v28 onTextureUnit:0];
+      [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v26 state:v20];
+      [context setTextureCoordinatesPointer:v28 onTextureUnit:0];
     }
 
     v27[0] = (v14 - v22) + v25;
@@ -1697,39 +1697,39 @@ LABEL_65:
     v27[5] = v23 + (v16 - v24);
     v27[6] = (v22 + v14) - v25;
     v27[7] = v23 + (v24 + v16);
-    [a4 setVertex2DPointer:v27];
-    [a4 drawTriangleStripFromOffset:0 count:4];
-    [a4 unsetVertexPointer];
-    if (a3)
+    [context setVertex2DPointer:v27];
+    [context drawTriangleStripFromOffset:0 count:4];
+    [context unsetVertexPointer];
+    if (image)
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v26];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+      [image unsetOnContext:context onTextureUnit:0 state:&v26];
     }
   }
 }
 
-+ (void)renderImage:(id)a3 withMask:(id)a4 inContext:(id)a5 atPosition:(CGPoint)a6 andSize:(CGSize)a7 zRotation:(float)a8
++ (void)renderImage:(id)image withMask:(id)mask inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
-  [a5 localAspectRatio];
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [context localAspectRatio];
   v17 = width * 0.5;
   v18 = y / v16;
-  [a5 localAspectRatio];
+  [context localAspectRatio];
   v20 = height * 0.5 / v19;
-  v21 = __sincosf_stret(a8);
-  [a5 setShader:@"Mask"];
+  v21 = __sincosf_stret(rotation);
+  [context setShader:@"Mask"];
   HIDWORD(v22) = -1082130432;
   v32[0] = xmmword_164000;
   v32[1] = unk_164010;
   v29 = 0;
-  if (a3)
+  if (image)
   {
     *&v22 = v17 / v20;
-    [a3 setOnContext:a5 onTextureUnit:0 withReferenceAspectRatio:&v29 + 1 state:v22];
-    [a5 setTextureCoordinatesPointer:v32 onTextureUnit:0];
+    [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v29 + 1 state:v22];
+    [context setTextureCoordinatesPointer:v32 onTextureUnit:0];
   }
 
   v23 = x;
@@ -1740,10 +1740,10 @@ LABEL_65:
   v28 = v21.__sinval * v20;
   v31[0] = xmmword_164020;
   v31[1] = unk_164030;
-  if (a4)
+  if (mask)
   {
-    [a4 setOnContext:a5 onTextureUnit:1 withReferenceAspectRatio:&v29 state:0.0];
-    [a5 setTextureCoordinatesPointer:v31 onTextureUnit:1];
+    [mask setOnContext:context onTextureUnit:1 withReferenceAspectRatio:&v29 state:0.0];
+    [context setTextureCoordinatesPointer:v31 onTextureUnit:1];
   }
 
   v30[0] = (v23 - v25) + v28;
@@ -1754,41 +1754,41 @@ LABEL_65:
   v30[5] = v26 + (v24 - v27);
   v30[6] = (v25 + v23) - v28;
   v30[7] = v26 + (v27 + v24);
-  [a5 setVertex2DPointer:v30];
-  [a5 drawTriangleStripFromOffset:0 count:4];
-  [a5 unsetVertexPointer];
-  if (a4)
+  [context setVertex2DPointer:v30];
+  [context drawTriangleStripFromOffset:0 count:4];
+  [context unsetVertexPointer];
+  if (mask)
   {
-    [a5 unsetTextureCoordinatesPointerOnTextureUnit:1];
-    [a4 unsetOnContext:a5 onTextureUnit:1 state:&v29];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:1];
+    [mask unsetOnContext:context onTextureUnit:1 state:&v29];
   }
 
-  if (a3)
+  if (image)
   {
-    [a5 unsetTextureCoordinatesPointerOnTextureUnit:0];
-    [a3 unsetOnContext:a5 onTextureUnit:0 state:&v29 + 1];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+    [image unsetOnContext:context onTextureUnit:0 state:&v29 + 1];
   }
 
-  [a5 unsetShader];
+  [context unsetShader];
 }
 
-+ (void)renderImage:(id)a3 inContext:(id)a4 atPosition:(CGPoint)a5 andSize:(CGSize)a6 withReferenceAspectRatio:(float)a7 andJustifications:(CGPoint)a8
++ (void)renderImage:(id)image inContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size withReferenceAspectRatio:(float)ratio andJustifications:(CGPoint)justifications
 {
-  y = a8.y;
-  x = a8.x;
-  height = a6.height;
-  width = a6.width;
-  v13 = a5.y;
-  v14 = a5.x;
-  [a4 localAspectRatio];
+  y = justifications.y;
+  x = justifications.x;
+  height = size.height;
+  width = size.width;
+  v13 = position.y;
+  v14 = position.x;
+  [context localAspectRatio];
   v18 = width * 0.5;
   v19 = v13 / v17;
-  [a4 localAspectRatio];
+  [context localAspectRatio];
   v21 = height * 0.5 / v20;
-  v22 = v18 / v21;
-  if (a7 > 0.0)
+  ratioCopy = v18 / v21;
+  if (ratio > 0.0)
   {
-    v22 = a7;
+    ratioCopy = ratio;
   }
 
   v23 = 0.0;
@@ -1809,7 +1809,7 @@ LABEL_65:
       {
         if (v25 == 1)
         {
-          v29 = 1.0 - (v21 + v21) * v22 / v18;
+          v29 = 1.0 - (v21 + v21) * ratioCopy / v18;
 LABEL_18:
           v27 = 1.0;
           v26 = 1.0;
@@ -1832,12 +1832,12 @@ LABEL_24:
         goto LABEL_30;
       }
 
-      v27 = (v21 + v21) * v22 / v18 + -1.0;
+      v27 = (v21 + v21) * ratioCopy / v18 + -1.0;
       goto LABEL_23;
     }
 
-    v27 = (v22 * v21) / v18;
-    v29 = -(v21 * v22) / v18;
+    v27 = (ratioCopy * v21) / v18;
+    v29 = -(v21 * ratioCopy) / v18;
   }
 
   else
@@ -1846,7 +1846,7 @@ LABEL_24:
     v27 = 1.0;
     if (v30 < 2)
     {
-      v26 = (v18 + v18) / (v22 * v21) + -1.0;
+      v26 = (v18 + v18) / (ratioCopy * v21) + -1.0;
 LABEL_23:
       v28 = -1.0;
 LABEL_26:
@@ -1857,8 +1857,8 @@ LABEL_26:
     v29 = -1.0;
     if (v30 == 2)
     {
-      v28 = -v18 / (v22 * v21);
-      v26 = v18 / (v22 * v21);
+      v28 = -v18 / (ratioCopy * v21);
+      v26 = v18 / (ratioCopy * v21);
     }
 
     else
@@ -1866,7 +1866,7 @@ LABEL_26:
       v28 = 0.0;
       if (v30 == 3)
       {
-        v28 = 1.0 - (v18 + v18) / (v22 * v21);
+        v28 = 1.0 - (v18 + v18) / (ratioCopy * v21);
         goto LABEL_18;
       }
 
@@ -1886,10 +1886,10 @@ LABEL_30:
   *&v35[6] = v26;
   *&v35[7] = v27;
   v33 = 0;
-  if (a3)
+  if (image)
   {
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v33 state:?];
-    [a4 setTextureCoordinatesPointer:v35 onTextureUnit:0];
+    [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v33 state:?];
+    [context setTextureCoordinatesPointer:v35 onTextureUnit:0];
   }
 
   v34[0] = v31 - v18;
@@ -1900,13 +1900,13 @@ LABEL_30:
   v34[5] = v32 - v21;
   v34[6] = v31 + v18;
   v34[7] = v32 + v21;
-  [a4 setVertex2DPointer:v34];
-  [a4 drawTriangleStripFromOffset:0 count:4];
-  [a4 unsetVertexPointer];
-  if (a3)
+  [context setVertex2DPointer:v34];
+  [context drawTriangleStripFromOffset:0 count:4];
+  [context unsetVertexPointer];
+  if (image)
   {
-    [a4 unsetTextureCoordinatesPointerOnTextureUnit:0];
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v33];
+    [context unsetTextureCoordinatesPointerOnTextureUnit:0];
+    [image unsetOnContext:context onTextureUnit:0 state:&v33];
   }
 }
 

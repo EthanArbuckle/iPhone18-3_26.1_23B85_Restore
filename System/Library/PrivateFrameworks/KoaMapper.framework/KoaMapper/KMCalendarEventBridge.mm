@@ -1,26 +1,26 @@
 @interface KMCalendarEventBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMCalendarEventBridge)init;
 @end
 
 @implementation KMCalendarEventBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
+  blockCopy = block;
+  v6 = blockCopy;
   if (self->_eventStore)
   {
-    v19 = v5;
-    v7 = [MEMORY[0x277CBEAA8] date];
+    v19 = blockCopy;
+    date = [MEMORY[0x277CBEAA8] date];
     v8 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
     v9 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v9 setWeekOfYear:-2];
-    v10 = [v8 dateByAddingComponents:v9 toDate:v7 options:0];
+    v10 = [v8 dateByAddingComponents:v9 toDate:date options:0];
     [v9 setWeekOfYear:0];
     [v9 setMonth:3];
-    v11 = [v8 dateByAddingComponents:v9 toDate:v7 options:0];
+    v11 = [v8 dateByAddingComponents:v9 toDate:date options:0];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;

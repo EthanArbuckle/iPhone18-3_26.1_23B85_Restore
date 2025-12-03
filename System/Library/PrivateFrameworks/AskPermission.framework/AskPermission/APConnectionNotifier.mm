@@ -26,13 +26,13 @@
 - (ConnectionProtocol)remoteObjectProxy
 {
   objc_initWeak(&location, self);
-  v3 = [(APConnectionNotifier *)self _remoteConnection];
+  _remoteConnection = [(APConnectionNotifier *)self _remoteConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__APConnectionNotifier_remoteObjectProxy__block_invoke;
   v6[3] = &unk_278CC1568;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [_remoteConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -86,22 +86,22 @@ uint64_t __38__APConnectionNotifier_sharedNotifier__block_invoke()
 
 - (id)_remoteConnection
 {
-  v3 = [(APConnectionNotifier *)self underlyingRemoteConnection];
+  underlyingRemoteConnection = [(APConnectionNotifier *)self underlyingRemoteConnection];
 
-  if (!v3)
+  if (!underlyingRemoteConnection)
   {
-    v4 = [(APConnectionNotifier *)self connectionQueue];
+    connectionQueue = [(APConnectionNotifier *)self connectionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__APConnectionNotifier__remoteConnection__block_invoke;
     block[3] = &unk_278CC15B0;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(connectionQueue, block);
   }
 
-  v5 = [(APConnectionNotifier *)self underlyingRemoteConnection];
+  underlyingRemoteConnection2 = [(APConnectionNotifier *)self underlyingRemoteConnection];
 
-  return v5;
+  return underlyingRemoteConnection2;
 }
 
 void __41__APConnectionNotifier__remoteConnection__block_invoke(uint64_t a1)
@@ -118,8 +118,8 @@ void __41__APConnectionNotifier__remoteConnection__block_invoke(uint64_t a1)
 - (id)_newRemoteConnection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(APConnectionNotifier *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(APConnectionNotifier *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = +[APLogConfig sharedFrameworkConfig];
   if (!v4)
@@ -127,13 +127,13 @@ void __41__APConnectionNotifier__remoteConnection__block_invoke(uint64_t a1)
     v4 = +[APLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v21 = objc_opt_class();
     v6 = v21;
-    _os_log_impl(&dword_241063000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating a remote connection", buf, 0xCu);
+    _os_log_impl(&dword_241063000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating a remote connection", buf, 0xCu);
   }
 
   v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.askpermissiond" options:0];
@@ -158,14 +158,14 @@ void __41__APConnectionNotifier__remoteConnection__block_invoke(uint64_t a1)
     v9 = +[APLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     *buf = 138543362;
     v21 = v11;
     v12 = v11;
-    _os_log_impl(&dword_241063000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Resuming remote connection", buf, 0xCu);
+    _os_log_impl(&dword_241063000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Resuming remote connection", buf, 0xCu);
   }
 
   [v7 resume];

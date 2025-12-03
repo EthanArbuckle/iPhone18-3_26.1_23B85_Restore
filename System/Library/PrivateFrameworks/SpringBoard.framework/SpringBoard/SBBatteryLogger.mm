@@ -1,14 +1,14 @@
 @interface SBBatteryLogger
-+ (void)saveLowBatteryLogWithCapacity:(int)a3 voltage:(int)a4 completion:(id)a5;
++ (void)saveLowBatteryLogWithCapacity:(int)capacity voltage:(int)voltage completion:(id)completion;
 @end
 
 @implementation SBBatteryLogger
 
-+ (void)saveLowBatteryLogWithCapacity:(int)a3 voltage:(int)a4 completion:(id)a5
++ (void)saveLowBatteryLogWithCapacity:(int)capacity voltage:(int)voltage completion:(id)completion
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v7 = a5;
+  v5 = *&voltage;
+  v6 = *&capacity;
+  completionCopy = completion;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -16,8 +16,8 @@
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Begin saving battery level log...", buf, 2u);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  if (v7)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (completionCopy)
   {
     BSPthreadCurrentEffectiveQualityOfService();
   }
@@ -25,9 +25,9 @@
   v10 = objc_alloc_init(_SBBatteryLogContext);
   [(_SBBatteryLogContext *)v10 setCapacity:v6];
   [(_SBBatteryLogContext *)v10 setVoltage:v5];
-  v14 = v7;
-  v11 = v7;
-  v12 = v9;
+  v14 = completionCopy;
+  v11 = completionCopy;
+  v12 = date;
   v13 = v10;
   BSDispatchMain();
 }

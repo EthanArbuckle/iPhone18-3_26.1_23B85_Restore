@@ -1,10 +1,10 @@
 @interface IDSTransportScoreCard
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IDSTransportScoreCard
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(IDSTransportScoreCard);
   *(result + 8) = *&self->score;

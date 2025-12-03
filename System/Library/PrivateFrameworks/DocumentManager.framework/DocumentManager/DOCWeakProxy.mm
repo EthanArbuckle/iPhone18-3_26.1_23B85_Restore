@@ -1,32 +1,32 @@
 @interface DOCWeakProxy
-- (DOCWeakProxy)initWithTarget:(id)a3;
+- (DOCWeakProxy)initWithTarget:(id)target;
 - (NSObject)target;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation DOCWeakProxy
 
-- (DOCWeakProxy)initWithTarget:(id)a3
+- (DOCWeakProxy)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v8.receiver = self;
   v8.super_class = DOCWeakProxy;
   v5 = [(DOCWeakProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DOCWeakProxy *)v5 setTarget:v4];
+    [(DOCWeakProxy *)v5 setTarget:targetCopy];
   }
 
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v5 = [(DOCWeakProxy *)self target];
+  target = [(DOCWeakProxy *)self target];
 
-  if (!v5)
+  if (!target)
   {
     v6 = MEMORY[0x1E699A450];
     v7 = *MEMORY[0x1E699A450];
@@ -38,23 +38,23 @@
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(DOCWeakProxy *)v7 forwardingTargetForSelector:a3];
+      [(DOCWeakProxy *)v7 forwardingTargetForSelector:selector];
     }
   }
 
-  v8 = [(DOCWeakProxy *)self target];
+  target2 = [(DOCWeakProxy *)self target];
 
-  return v8;
+  return target2;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(DOCWeakProxy *)self target];
+  target = [(DOCWeakProxy *)self target];
 
-  if (v5)
+  if (target)
   {
-    v6 = [(DOCWeakProxy *)self target];
-    v7 = [v6 methodSignatureForSelector:a3];
+    target2 = [(DOCWeakProxy *)self target];
+    v7 = [target2 methodSignatureForSelector:selector];
   }
 
   else
@@ -69,7 +69,7 @@
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(DOCWeakProxy *)v9 methodSignatureForSelector:a3];
+      [(DOCWeakProxy *)v9 methodSignatureForSelector:selector];
     }
 
     v7 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:"v@:"];

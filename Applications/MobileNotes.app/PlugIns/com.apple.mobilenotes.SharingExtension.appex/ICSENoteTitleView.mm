@@ -15,11 +15,11 @@
 - (UILabel)noteLabel;
 - (id)accessibilityLabel;
 - (void)awakeFromNib;
-- (void)contentSizeCategoryChanged:(id)a3;
+- (void)contentSizeCategoryChanged:(id)changed;
 - (void)dealloc;
-- (void)setFolderLabelVisible:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setNote:(id)a3 folder:(id)a4 hasMultipleAccounts:(BOOL)a5;
+- (void)setFolderLabelVisible:(BOOL)visible;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setNote:(id)note folder:(id)folder hasMultipleAccounts:(BOOL)accounts;
 - (void)setupLabelsAndIcons;
 - (void)updateConstraints;
 - (void)updateFonts;
@@ -32,26 +32,26 @@
   v17.receiver = self;
   v17.super_class = ICSENoteTitleView;
   [(ICSENoteTitleView *)&v17 awakeFromNib];
-  v3 = [(ICSENoteTitleView *)self note];
-  v4 = [(ICSENoteTitleView *)self folder];
-  [(ICSENoteTitleView *)self setNote:v3 folder:v4 hasMultipleAccounts:0];
+  note = [(ICSENoteTitleView *)self note];
+  folder = [(ICSENoteTitleView *)self folder];
+  [(ICSENoteTitleView *)self setNote:note folder:folder hasMultipleAccounts:0];
 
   [(ICSENoteTitleView *)self updateFonts];
   v5 = +[UIColor secondaryLabelColor];
-  v6 = [(ICSENoteTitleView *)self accountLabel];
-  [v6 setTextColor:v5];
+  accountLabel = [(ICSENoteTitleView *)self accountLabel];
+  [accountLabel setTextColor:v5];
 
   v7 = +[UIColor labelColor];
-  v8 = [(ICSENoteTitleView *)self noteLabel];
-  [v8 setTextColor:v7];
+  noteLabel = [(ICSENoteTitleView *)self noteLabel];
+  [noteLabel setTextColor:v7];
 
   v9 = +[UIColor labelColor];
-  v10 = [(ICSENoteTitleView *)self folderLabel];
-  [v10 setTextColor:v9];
+  folderLabel = [(ICSENoteTitleView *)self folderLabel];
+  [folderLabel setTextColor:v9];
 
   v11 = +[UIColor tertiaryLabelColor];
-  v12 = [(ICSENoteTitleView *)self arrowImageView];
-  [v12 setTintColor:v11];
+  arrowImageView = [(ICSENoteTitleView *)self arrowImageView];
+  [arrowImageView setTintColor:v11];
 
   if (+[UIDevice ic_isVision])
   {
@@ -73,8 +73,8 @@
   }
 
   v14 = v13;
-  v15 = [(ICSENoteTitleView *)self folderIcon];
-  [v15 setTintColor:v14];
+  folderIcon = [(ICSENoteTitleView *)self folderIcon];
+  [folderIcon setTintColor:v14];
 
   v16 = +[NSNotificationCenter defaultCenter];
   [v16 addObserver:self selector:"contentSizeCategoryChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -90,56 +90,56 @@
   [(ICSENoteTitleView *)&v4 dealloc];
 }
 
-- (void)setNote:(id)a3 folder:(id)a4 hasMultipleAccounts:(BOOL)a5
+- (void)setNote:(id)note folder:(id)folder hasMultipleAccounts:(BOOL)accounts
 {
-  v8 = a3;
-  v9 = a4;
+  noteCopy = note;
+  folderCopy = folder;
   note = self->_note;
-  self->_note = v8;
-  v11 = v8;
+  self->_note = noteCopy;
+  v11 = noteCopy;
 
   folder = self->_folder;
-  self->_folder = v9;
+  self->_folder = folderCopy;
 
-  self->_hasMultipleAccounts = a5;
+  self->_hasMultipleAccounts = accounts;
 
   [(ICSENoteTitleView *)self setupLabelsAndIcons];
 }
 
 - (void)setupLabelsAndIcons
 {
-  v3 = [(ICSENoteTitleView *)self note];
+  note = [(ICSENoteTitleView *)self note];
 
-  if (v3)
+  if (note)
   {
-    v4 = [(ICSENoteTitleView *)self note];
-    v31 = [v4 title];
+    note2 = [(ICSENoteTitleView *)self note];
+    title = [note2 title];
 
-    v5 = [(ICSENoteTitleView *)self note];
+    note3 = [(ICSENoteTitleView *)self note];
     v6 = 0;
-    v7 = 0;
+    folder = 0;
     v8 = 1144766464;
     goto LABEL_11;
   }
 
-  v31 = +[ICNote defaultTitleForEmptyNote];
-  v7 = [(ICSENoteTitleView *)self folder];
-  if (!v7)
+  title = +[ICNote defaultTitleForEmptyNote];
+  folder = [(ICSENoteTitleView *)self folder];
+  if (!folder)
   {
     goto LABEL_8;
   }
 
-  v9 = [(ICSENoteTitleView *)self folder];
-  v10 = [v9 isDefaultFolderForAccount];
+  folder2 = [(ICSENoteTitleView *)self folder];
+  isDefaultFolderForAccount = [folder2 isDefaultFolderForAccount];
 
-  if ((v10 & 1) == 0)
+  if ((isDefaultFolderForAccount & 1) == 0)
   {
-    v11 = [(ICSENoteTitleView *)self folder];
-    v7 = [v11 localizedTitle];
+    folder3 = [(ICSENoteTitleView *)self folder];
+    folder = [folder3 localizedTitle];
 
-    if (v7)
+    if (folder)
     {
-      v6 = [v7 length] != 0;
+      v6 = [folder length] != 0;
       goto LABEL_9;
     }
 
@@ -149,73 +149,73 @@ LABEL_8:
   }
 
   v6 = 0;
-  v7 = 0;
+  folder = 0;
 LABEL_9:
-  v12 = [(ICSENoteTitleView *)self folder];
+  folder4 = [(ICSENoteTitleView *)self folder];
 
-  if (!v12)
+  if (!folder4)
   {
     v8 = 1148043264;
 LABEL_14:
     v15 = +[ICNoteContext sharedContext];
-    v16 = [v15 managedObjectContext];
-    v17 = [ICAccount defaultAccountInContext:v16];
+    managedObjectContext = [v15 managedObjectContext];
+    v17 = [ICAccount defaultAccountInContext:managedObjectContext];
 
-    v14 = [v17 localizedName];
+    localizedName = [v17 localizedName];
 
     goto LABEL_15;
   }
 
-  v5 = [(ICSENoteTitleView *)self folder];
+  note3 = [(ICSENoteTitleView *)self folder];
   v8 = 1148043264;
 LABEL_11:
-  v13 = [v5 account];
-  v14 = [v13 localizedName];
+  account = [note3 account];
+  localizedName = [account localizedName];
 
-  if (!v14)
+  if (!localizedName)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
-  if (![(ICSENoteTitleView *)self hasMultipleAccounts]|| !v14)
+  if (![(ICSENoteTitleView *)self hasMultipleAccounts]|| !localizedName)
   {
 
-    v14 = &stru_1000F6F48;
+    localizedName = &stru_1000F6F48;
   }
 
-  v18 = [(ICSENoteTitleView *)self folder];
-  v19 = [v18 systemImageName];
-  v20 = [UIImage ic_systemImageNamed:v19];
-  v21 = [(ICSENoteTitleView *)self folderIcon];
-  [v21 setImage:v20];
+  folder5 = [(ICSENoteTitleView *)self folder];
+  systemImageName = [folder5 systemImageName];
+  v20 = [UIImage ic_systemImageNamed:systemImageName];
+  folderIcon = [(ICSENoteTitleView *)self folderIcon];
+  [folderIcon setImage:v20];
 
   [(ICSENoteTitleView *)self setFolderLabelVisible:v6];
-  v22 = [(ICSENoteTitleView *)self noteLabel];
-  [v22 setText:v31];
+  noteLabel = [(ICSENoteTitleView *)self noteLabel];
+  [noteLabel setText:title];
 
-  v23 = [(ICSENoteTitleView *)self noteLabel];
+  noteLabel2 = [(ICSENoteTitleView *)self noteLabel];
   LODWORD(v24) = v8;
-  [v23 setContentCompressionResistancePriority:0 forAxis:v24];
+  [noteLabel2 setContentCompressionResistancePriority:0 forAxis:v24];
 
-  v25 = [(ICSENoteTitleView *)self accountLabel];
-  [v25 setText:v14];
+  accountLabel = [(ICSENoteTitleView *)self accountLabel];
+  [accountLabel setText:localizedName];
 
-  v26 = [(ICSENoteTitleView *)self folderLabel];
-  [v26 setText:v7];
+  folderLabel = [(ICSENoteTitleView *)self folderLabel];
+  [folderLabel setText:folder];
 
-  v27 = [(ICSENoteTitleView *)self arrowImageView];
-  v28 = [v27 image];
-  v29 = [v28 imageFlippedForRightToLeftLayoutDirection];
-  v30 = [(ICSENoteTitleView *)self arrowImageView];
-  [v30 setImage:v29];
+  arrowImageView = [(ICSENoteTitleView *)self arrowImageView];
+  image = [arrowImageView image];
+  imageFlippedForRightToLeftLayoutDirection = [image imageFlippedForRightToLeftLayoutDirection];
+  arrowImageView2 = [(ICSENoteTitleView *)self arrowImageView];
+  [arrowImageView2 setImage:imageFlippedForRightToLeftLayoutDirection];
 }
 
-- (void)setFolderLabelVisible:(BOOL)a3
+- (void)setFolderLabelVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5 = 1.0;
-  if (a3)
+  if (visible)
   {
     v6 = 1.0;
   }
@@ -225,23 +225,23 @@ LABEL_15:
     v6 = 999.0;
   }
 
-  v7 = [(ICSENoteTitleView *)self folderLabelZeroWidthConstraint];
+  folderLabelZeroWidthConstraint = [(ICSENoteTitleView *)self folderLabelZeroWidthConstraint];
   *&v8 = v6;
-  [v7 setPriority:v8];
+  [folderLabelZeroWidthConstraint setPriority:v8];
 
-  v9 = [(ICSENoteTitleView *)self dashLabelZeroWidthConstraint];
+  dashLabelZeroWidthConstraint = [(ICSENoteTitleView *)self dashLabelZeroWidthConstraint];
   *&v10 = v6;
-  [v9 setPriority:v10];
+  [dashLabelZeroWidthConstraint setPriority:v10];
 
-  v11 = [(ICSENoteTitleView *)self folderIconZeroWidthConstraint];
+  folderIconZeroWidthConstraint = [(ICSENoteTitleView *)self folderIconZeroWidthConstraint];
   *&v12 = v6;
-  [v11 setPriority:v12];
+  [folderIconZeroWidthConstraint setPriority:v12];
 
-  v13 = [(ICSENoteTitleView *)self folderIconSpacingZeroWidthConstraint];
+  folderIconSpacingZeroWidthConstraint = [(ICSENoteTitleView *)self folderIconSpacingZeroWidthConstraint];
   *&v14 = v6;
-  [v13 setPriority:v14];
+  [folderIconSpacingZeroWidthConstraint setPriority:v14];
 
-  if (!v3)
+  if (!visibleCopy)
   {
     if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
     {
@@ -254,16 +254,16 @@ LABEL_15:
     }
   }
 
-  v15 = [(ICSENoteTitleView *)self folderIconZeroHeightConstraint];
+  folderIconZeroHeightConstraint = [(ICSENoteTitleView *)self folderIconZeroHeightConstraint];
   *&v16 = v5;
-  [v15 setPriority:v16];
+  [folderIconZeroHeightConstraint setPriority:v16];
 
-  v17 = [(ICSENoteTitleView *)self folderLabelZeroHeightConstraint];
+  folderLabelZeroHeightConstraint = [(ICSENoteTitleView *)self folderLabelZeroHeightConstraint];
   *&v18 = v5;
-  [v17 setPriority:v18];
+  [folderLabelZeroHeightConstraint setPriority:v18];
 
-  v19 = [(ICSENoteTitleView *)self folderIcon];
-  [v19 setHidden:!v3];
+  folderIcon = [(ICSENoteTitleView *)self folderIcon];
+  [folderIcon setHidden:!visibleCopy];
 }
 
 - (NSDictionary)itemTitleAttributes
@@ -284,9 +284,9 @@ LABEL_15:
   return itemTitleAttributes;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = ICSENoteTitleView;
   [(ICSENoteTitleView *)&v7 setHighlighted:?];
@@ -295,7 +295,7 @@ LABEL_15:
   v6[0] = _NSConcreteStackBlock;
   v6[2] = sub_100012090;
   v6[3] = &unk_1000F27E0;
-  if (!v3)
+  if (!highlightedCopy)
   {
     v5 = 1.0;
   }
@@ -308,8 +308,8 @@ LABEL_15:
 + (id)newNoteTitleView
 {
   v3 = +[NSBundle mainBundle];
-  v4 = NSStringFromClass(a1);
-  v5 = [v3 loadNibNamed:v4 owner:a1 options:0];
+  v4 = NSStringFromClass(self);
+  v5 = [v3 loadNibNamed:v4 owner:self options:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -370,7 +370,7 @@ LABEL_12:
   return v12;
 }
 
-- (void)contentSizeCategoryChanged:(id)a3
+- (void)contentSizeCategoryChanged:(id)changed
 {
   [(ICSENoteTitleView *)self updateFonts];
   [(ICSENoteTitleView *)self setNeedsUpdateConstraints];
@@ -385,44 +385,44 @@ LABEL_12:
   v5 = floor(v4);
 
   v6 = [UIFont systemFontOfSize:v5 weight:UIFontWeightRegular];
-  v7 = [v6 ic_fontWithSingleLineA];
-  v8 = [(ICSENoteTitleView *)self noteLabel];
-  [v8 setFont:v7];
+  ic_fontWithSingleLineA = [v6 ic_fontWithSingleLineA];
+  noteLabel = [(ICSENoteTitleView *)self noteLabel];
+  [noteLabel setFont:ic_fontWithSingleLineA];
 
   v9 = [UIFont systemFontOfSize:v5 weight:UIFontWeightRegular];
-  v10 = [v9 ic_fontWithSingleLineA];
-  v11 = [(ICSENoteTitleView *)self folderLabel];
-  [v11 setFont:v10];
+  ic_fontWithSingleLineA2 = [v9 ic_fontWithSingleLineA];
+  folderLabel = [(ICSENoteTitleView *)self folderLabel];
+  [folderLabel setFont:ic_fontWithSingleLineA2];
 
   v12 = [UIFont systemFontOfSize:v5 weight:UIFontWeightRegular];
-  v13 = [v12 ic_fontWithSingleLineA];
-  v14 = [(ICSENoteTitleView *)self dashLabel];
-  [v14 setFont:v13];
+  ic_fontWithSingleLineA3 = [v12 ic_fontWithSingleLineA];
+  dashLabel = [(ICSENoteTitleView *)self dashLabel];
+  [dashLabel setFont:ic_fontWithSingleLineA3];
 
   v15 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v16 = [v15 ic_fontWithSingleLineA];
-  v17 = [(ICSENoteTitleView *)self accountLabel];
-  [v17 setFont:v16];
+  ic_fontWithSingleLineA4 = [v15 ic_fontWithSingleLineA];
+  accountLabel = [(ICSENoteTitleView *)self accountLabel];
+  [accountLabel setFont:ic_fontWithSingleLineA4];
 
   v19 = +[UIColor secondaryLabelColor];
-  v18 = [(ICSENoteTitleView *)self accountLabel];
-  [v18 setTextColor:v19];
+  accountLabel2 = [(ICSENoteTitleView *)self accountLabel];
+  [accountLabel2 setTextColor:v19];
 }
 
 - (void)updateConstraints
 {
   if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
   {
-    v3 = [(ICSENoteTitleView *)self defaultConstraints];
-    [NSLayoutConstraint deactivateConstraints:v3];
+    defaultConstraints = [(ICSENoteTitleView *)self defaultConstraints];
+    [NSLayoutConstraint deactivateConstraints:defaultConstraints];
 
     [(ICSENoteTitleView *)self alternateConstraintsForAXLargerTextSizes];
   }
 
   else
   {
-    v4 = [(ICSENoteTitleView *)self alternateConstraintsForAXLargerTextSizes];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    alternateConstraintsForAXLargerTextSizes = [(ICSENoteTitleView *)self alternateConstraintsForAXLargerTextSizes];
+    [NSLayoutConstraint deactivateConstraints:alternateConstraintsForAXLargerTextSizes];
 
     [(ICSENoteTitleView *)self defaultConstraints];
   }
@@ -436,10 +436,10 @@ LABEL_12:
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICSENoteTitleView *)self noteLabel];
-  v4 = [v3 text];
-  v5 = [(ICSENoteTitleView *)self accountLabel];
-  v8 = [v5 text];
+  noteLabel = [(ICSENoteTitleView *)self noteLabel];
+  text = [noteLabel text];
+  accountLabel = [(ICSENoteTitleView *)self accountLabel];
+  text2 = [accountLabel text];
   v6 = __ICAccessibilityStringForVariables();
 
   return v6;

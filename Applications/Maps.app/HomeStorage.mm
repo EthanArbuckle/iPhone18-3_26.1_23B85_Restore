@@ -1,28 +1,28 @@
 @interface HomeStorage
 - (HomeStorage)init;
-- (id)_storageNodeForExpandedIdentifierPaths:(id)a3;
-- (id)expandedIdentifierPathsInSection:(id)a3 defaultExpandedIdentifierPaths:(id)a4;
+- (id)_storageNodeForExpandedIdentifierPaths:(id)paths;
+- (id)expandedIdentifierPathsInSection:(id)section defaultExpandedIdentifierPaths:(id)paths;
 - (void)_loadFromUserDefaults;
-- (void)_visitAllNodesWithBlock:(id)a3;
-- (void)_visitNode:(id)a3 identifierPath:(id)a4 block:(id)a5;
+- (void)_visitAllNodesWithBlock:(id)block;
+- (void)_visitNode:(id)node identifierPath:(id)path block:(id)block;
 - (void)_writeToUserDefaults;
-- (void)storeExpandedIdentifierPaths:(id)a3 forSection:(id)a4;
+- (void)storeExpandedIdentifierPaths:(id)paths forSection:(id)section;
 @end
 
 @implementation HomeStorage
 
-- (id)_storageNodeForExpandedIdentifierPaths:(id)a3
+- (id)_storageNodeForExpandedIdentifierPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = +[IdentifierPath identifierPath];
-  v21 = [v4 containsObject:v5];
+  v21 = [pathsCopy containsObject:v5];
 
   v6 = +[NSMutableDictionary dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v4;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -38,18 +38,18 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 firstIdentifier];
-        if (v13)
+        firstIdentifier = [v12 firstIdentifier];
+        if (firstIdentifier)
         {
-          v14 = [v6 objectForKeyedSubscript:v13];
+          v14 = [v6 objectForKeyedSubscript:firstIdentifier];
           if (!v14)
           {
             v14 = +[NSMutableSet set];
-            [v6 setObject:v14 forKeyedSubscript:v13];
+            [v6 setObject:v14 forKeyedSubscript:firstIdentifier];
           }
 
-          v15 = [v12 identifierPathByRemovingFirstIdentifier];
-          [v14 addObject:v15];
+          identifierPathByRemovingFirstIdentifier = [v12 identifierPathByRemovingFirstIdentifier];
+          [v14 addObject:identifierPathByRemovingFirstIdentifier];
         }
       }
 
@@ -83,17 +83,17 @@
   return v19;
 }
 
-- (void)storeExpandedIdentifierPaths:(id)a3 forSection:(id)a4
+- (void)storeExpandedIdentifierPaths:(id)paths forSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [IdentifierPath identifierPathWithIdentifier:v7];
+  pathsCopy = paths;
+  sectionCopy = section;
+  v8 = [IdentifierPath identifierPathWithIdentifier:sectionCopy];
   v9 = +[NSMutableSet set];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v6;
+  v10 = pathsCopy;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v11)
   {
@@ -111,8 +111,8 @@
         v15 = *(*(&v27 + 1) + 8 * i);
         if ([v15 hasPrefix:{v8, v27}])
         {
-          v16 = [v15 identifierPathByRemovingFirstIdentifier];
-          [v9 addObject:v16];
+          identifierPathByRemovingFirstIdentifier = [v15 identifierPathByRemovingFirstIdentifier];
+          [v9 addObject:identifierPathByRemovingFirstIdentifier];
         }
       }
 
@@ -126,13 +126,13 @@
   rootNode = self->_rootNode;
   if (rootNode)
   {
-    v19 = [(HomeStorageOutlineNode *)rootNode children];
-    v20 = [NSMutableDictionary dictionaryWithDictionary:v19];
+    children = [(HomeStorageOutlineNode *)rootNode children];
+    v20 = [NSMutableDictionary dictionaryWithDictionary:children];
 
-    [v20 setObject:v17 forKeyedSubscript:v7];
+    [v20 setObject:v17 forKeyedSubscript:sectionCopy];
     v21 = [HomeStorageOutlineNode alloc];
-    v22 = [(HomeStorageOutlineNode *)self->_rootNode expandedValue];
-    v23 = [(HomeStorageOutlineNode *)v21 initWithExpandedValue:v22 children:v20];
+    expandedValue = [(HomeStorageOutlineNode *)self->_rootNode expandedValue];
+    v23 = [(HomeStorageOutlineNode *)v21 initWithExpandedValue:expandedValue children:v20];
     v24 = self->_rootNode;
     self->_rootNode = v23;
   }
@@ -140,24 +140,24 @@
   else
   {
     v25 = [HomeStorageOutlineNode alloc];
-    v31 = v7;
+    v31 = sectionCopy;
     v32 = v17;
     v20 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v26 = [(HomeStorageOutlineNode *)v25 initWithExpandedValue:0 children:v20];
-    v22 = self->_rootNode;
+    expandedValue = self->_rootNode;
     self->_rootNode = v26;
   }
 
   [(HomeStorage *)self _writeToUserDefaults];
 }
 
-- (id)expandedIdentifierPathsInSection:(id)a3 defaultExpandedIdentifierPaths:(id)a4
+- (id)expandedIdentifierPathsInSection:(id)section defaultExpandedIdentifierPaths:(id)paths
 {
-  v6 = a4;
-  v7 = v6;
+  pathsCopy = paths;
+  v7 = pathsCopy;
   if (self->_rootNode)
   {
-    v8 = [IdentifierPath identifierPathWithIdentifier:a3];
+    v8 = [IdentifierPath identifierPathWithIdentifier:section];
     [NSMutableSet setWithSet:v7];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
@@ -172,41 +172,41 @@
 
   else
   {
-    v11 = v6;
+    v11 = pathsCopy;
   }
 
   return v11;
 }
 
-- (void)_visitNode:(id)a3 identifierPath:(id)a4 block:(id)a5
+- (void)_visitNode:(id)node identifierPath:(id)path block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9[2];
-  v11 = a3;
-  v10(v9, v11, v8);
-  v12 = [v11 children];
+  pathCopy = path;
+  blockCopy = block;
+  v10 = blockCopy[2];
+  nodeCopy = node;
+  v10(blockCopy, nodeCopy, pathCopy);
+  children = [nodeCopy children];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100C6EF9C;
   v15[3] = &unk_10164F458;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v12 enumerateKeysAndObjectsUsingBlock:v15];
+  v16 = pathCopy;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = pathCopy;
+  [children enumerateKeysAndObjectsUsingBlock:v15];
 }
 
-- (void)_visitAllNodesWithBlock:(id)a3
+- (void)_visitAllNodesWithBlock:(id)block
 {
   rootNode = self->_rootNode;
   if (rootNode)
   {
-    v5 = a3;
+    blockCopy = block;
     v6 = +[IdentifierPath identifierPath];
-    [(HomeStorage *)self _visitNode:rootNode identifierPath:v6 block:v5];
+    [(HomeStorage *)self _visitNode:rootNode identifierPath:v6 block:blockCopy];
   }
 }
 
@@ -215,9 +215,9 @@
   rootNode = self->_rootNode;
   if (rootNode)
   {
-    v4 = [(HomeStorageOutlineNode *)rootNode dictionaryRepresentation];
+    dictionaryRepresentation = [(HomeStorageOutlineNode *)rootNode dictionaryRepresentation];
     v3 = +[NSUserDefaults standardUserDefaults];
-    [v3 setObject:v4 forKey:@"SidebarOutlineState"];
+    [v3 setObject:dictionaryRepresentation forKey:@"SidebarOutlineState"];
   }
 }
 

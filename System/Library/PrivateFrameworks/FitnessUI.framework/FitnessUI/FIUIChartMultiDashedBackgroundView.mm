@@ -1,18 +1,18 @@
 @interface FIUIChartMultiDashedBackgroundView
-+ (id)calculateRoundedLinePositionsForTotalWidth:(double)a3 lineWidth:(double)a4 numberOfLines:(unint64_t)a5 roundedInView:(id)a6;
-- (FIUIChartMultiDashedBackgroundView)initWithFrame:(CGRect)a3;
++ (id)calculateRoundedLinePositionsForTotalWidth:(double)width lineWidth:(double)lineWidth numberOfLines:(unint64_t)lines roundedInView:(id)view;
+- (FIUIChartMultiDashedBackgroundView)initWithFrame:(CGRect)frame;
 - (id)_stretchableLinesPatternImage;
 - (void)layoutSubviews;
-- (void)setBackgroundIsTransparent:(BOOL)a3;
+- (void)setBackgroundIsTransparent:(BOOL)transparent;
 @end
 
 @implementation FIUIChartMultiDashedBackgroundView
 
-- (FIUIChartMultiDashedBackgroundView)initWithFrame:(CGRect)a3
+- (FIUIChartMultiDashedBackgroundView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = FIUIChartMultiDashedBackgroundView;
-  v3 = [(FIUIChartBackgroundView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIChartBackgroundView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.15];
@@ -43,8 +43,8 @@
   {
     [(FIUIChartMultiDashedBackgroundView *)self frame];
     self->_previousWidth = v4;
-    v5 = [(FIUIChartMultiDashedBackgroundView *)self _stretchableLinesPatternImage];
-    [(UIImageView *)self->_imageView setImage:v5];
+    _stretchableLinesPatternImage = [(FIUIChartMultiDashedBackgroundView *)self _stretchableLinesPatternImage];
+    [(UIImageView *)self->_imageView setImage:_stretchableLinesPatternImage];
   }
 
   [(FIUIChartMultiDashedBackgroundView *)self bounds];
@@ -56,10 +56,10 @@
   [(UIImageView *)self->_imageView setFrame:v7 + v17, v9 + v14, v11 - (v17 + v15), v13 - (v14 + v16)];
 }
 
-- (void)setBackgroundIsTransparent:(BOOL)a3
+- (void)setBackgroundIsTransparent:(BOOL)transparent
 {
-  self->_backgroundIsTransparent = a3;
-  [(UIImageView *)self->_imageView setOpaque:!a3];
+  self->_backgroundIsTransparent = transparent;
+  [(UIImageView *)self->_imageView setOpaque:!transparent];
 
   [(FIUIChartMultiDashedBackgroundView *)self _setNeedsRegenerateBackgroundImage];
 }
@@ -156,26 +156,26 @@
   return v9;
 }
 
-+ (id)calculateRoundedLinePositionsForTotalWidth:(double)a3 lineWidth:(double)a4 numberOfLines:(unint64_t)a5 roundedInView:(id)a6
++ (id)calculateRoundedLinePositionsForTotalWidth:(double)width lineWidth:(double)lineWidth numberOfLines:(unint64_t)lines roundedInView:(id)view
 {
-  v7 = a6;
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (a5)
+  viewCopy = view;
+  array = [MEMORY[0x1E695DF70] array];
+  if (lines)
   {
     v9 = 0;
     do
     {
       UIRoundToViewScale();
       v10 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-      [v8 addObject:v10];
+      [array addObject:v10];
 
       ++v9;
     }
 
-    while (a5 != v9);
+    while (lines != v9);
   }
 
-  return v8;
+  return array;
 }
 
 @end

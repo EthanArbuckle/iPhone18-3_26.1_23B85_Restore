@@ -1,16 +1,16 @@
 @interface INDateRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (INDateRelevanceProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INDateRelevanceProvider)initWithCoder:(id)coder;
 - (INDateRelevanceProvider)initWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INDateRelevanceProvider
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       startDate = self->_startDate;
       v8 = 0;
       if (startDate == v5->_startDate || [(NSDate *)startDate isEqual:?])
@@ -42,32 +42,32 @@
   return v8;
 }
 
-- (INDateRelevanceProvider)initWithCoder:(id)a3
+- (INDateRelevanceProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
 
   if (v5)
   {
     self = [(INDateRelevanceProvider *)self initWithStartDate:v5 endDate:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
 }
 
 - (INDateRelevanceProvider)initWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate
@@ -76,11 +76,11 @@
   v8 = endDate;
   v13.receiver = self;
   v13.super_class = INDateRelevanceProvider;
-  v9 = [(INRelevanceProvider *)&v13 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(INRelevanceProvider *)&v13 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, startDate);
+    objc_storeStrong(_init + 1, startDate);
     objc_storeStrong(&v10->_endDate, endDate);
     v11 = v10;
   }

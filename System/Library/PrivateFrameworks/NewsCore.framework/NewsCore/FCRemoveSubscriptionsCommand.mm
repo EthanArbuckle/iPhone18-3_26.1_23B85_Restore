@@ -1,14 +1,14 @@
 @interface FCRemoveSubscriptionsCommand
-- (FCRemoveSubscriptionsCommand)initWithSubscription:(id)a3;
-- (FCRemoveSubscriptionsCommand)initWithSubscriptions:(id)a3;
+- (FCRemoveSubscriptionsCommand)initWithSubscription:(id)subscription;
+- (FCRemoveSubscriptionsCommand)initWithSubscriptions:(id)subscriptions;
 @end
 
 @implementation FCRemoveSubscriptionsCommand
 
-- (FCRemoveSubscriptionsCommand)initWithSubscriptions:(id)a3
+- (FCRemoveSubscriptionsCommand)initWithSubscriptions:(id)subscriptions
 {
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  subscriptionsCopy = subscriptions;
   v6 = [v4 alloc];
   v7 = *MEMORY[0x1E695B728];
   v8 = [v6 initWithZoneName:@"Subscriptions" ownerName:*MEMORY[0x1E695B728]];
@@ -21,7 +21,7 @@
   v18 = v8;
   v10 = v8;
   v11 = v9;
-  v12 = [v5 fc_arrayByTransformingWithBlock:v16];
+  v12 = [subscriptionsCopy fc_arrayByTransformingWithBlock:v16];
 
   v15.receiver = self;
   v15.super_class = FCRemoveSubscriptionsCommand;
@@ -51,14 +51,14 @@ id __54__FCRemoveSubscriptionsCommand_initWithSubscriptions___block_invoke(uint6
   return v11;
 }
 
-- (FCRemoveSubscriptionsCommand)initWithSubscription:(id)a3
+- (FCRemoveSubscriptionsCommand)initWithSubscription:(id)subscription
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriptionCopy = subscription;
+  v5 = subscriptionCopy;
+  if (subscriptionCopy)
   {
-    v10[0] = v4;
+    v10[0] = subscriptionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v7 = [(FCRemoveSubscriptionsCommand *)self initWithSubscriptions:v6];
   }

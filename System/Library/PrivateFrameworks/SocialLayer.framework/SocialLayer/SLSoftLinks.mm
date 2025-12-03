@@ -1,8 +1,8 @@
 @interface SLSoftLinks
 + (BOOL)canSendText;
-+ (id)newComposeViewControllerDelegateInstance:(id)a3;
++ (id)newComposeViewControllerDelegateInstance:(id)instance;
 + (id)newComposeViewControllerInstance;
-+ (id)newComposeViewControllerInstanceWithDelegate:(id)a3 itemProvider:(id)a4 collaborationOptions:(id)a5 collaborationMetadata:(id)a6;
++ (id)newComposeViewControllerInstanceWithDelegate:(id)delegate itemProvider:(id)provider collaborationOptions:(id)options collaborationMetadata:(id)metadata;
 @end
 
 @implementation SLSoftLinks
@@ -14,24 +14,24 @@
   return [v2 init];
 }
 
-+ (id)newComposeViewControllerDelegateInstance:(id)a3
++ (id)newComposeViewControllerDelegateInstance:(id)instance
 {
-  v3 = a3;
-  v4 = [[SLComposeViewControllerDelegate alloc] initWithCallback:v3];
+  instanceCopy = instance;
+  v4 = [[SLComposeViewControllerDelegate alloc] initWithCallback:instanceCopy];
 
   return v4;
 }
 
-+ (id)newComposeViewControllerInstanceWithDelegate:(id)a3 itemProvider:(id)a4 collaborationOptions:(id)a5 collaborationMetadata:(id)a6
++ (id)newComposeViewControllerInstanceWithDelegate:(id)delegate itemProvider:(id)provider collaborationOptions:(id)options collaborationMetadata:(id)metadata
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v13 = [objc_alloc(getMFMessageComposeViewControllerClass()) init];
-  [v13 setMessageComposeDelegate:v12];
+  [v13 setMessageComposeDelegate:delegateCopy];
 
-  [v13 insertCollaborationItemProvider:v11 collaborationShareOptions:v10 collaborationMetadata:v9 isCollaboration:1];
+  [v13 insertCollaborationItemProvider:providerCopy collaborationShareOptions:optionsCopy collaborationMetadata:metadataCopy isCollaboration:1];
   return v13;
 }
 

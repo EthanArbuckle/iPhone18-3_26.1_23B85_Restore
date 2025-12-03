@@ -1,23 +1,23 @@
 @interface NGMReplayManager
 + (id)sharedManager;
 - (BOOL)deleteExpiredSendingDestinations;
-- (BOOL)deleteReceivingCountersForKey:(id)a3;
-- (BOOL)duplicateTagForPrekey:(id)a3;
+- (BOOL)deleteReceivingCountersForKey:(id)key;
+- (BOOL)duplicateTagForPrekey:(id)prekey;
 - (BOOL)isBATS;
 - (BOOL)isRunningTests;
 - (BOOL)isXCTest;
-- (BOOL)processFetchRequestAndValidate:(id)a3 counter:(unsigned int)a4 commit:(BOOL)a5 theirIdentity:(id)a6 prekey:(id)a7 error:(id *)a8;
-- (id)computeDestinationHashForIncomingMessageFrom:(id)a3 toLocalKey:(id)a4;
-- (id)computeDestinationHashForOutgoingMessageTo:(id)a3 withLocalKey:(id)a4;
+- (BOOL)processFetchRequestAndValidate:(id)validate counter:(unsigned int)counter commit:(BOOL)commit theirIdentity:(id)identity prekey:(id)prekey error:(id *)error;
+- (id)computeDestinationHashForIncomingMessageFrom:(id)from toLocalKey:(id)key;
+- (id)computeDestinationHashForOutgoingMessageTo:(id)to withLocalKey:(id)key;
 - (id)dbNameFromProcess;
-- (id)objectContextWithError:(id *)a3;
-- (id)persistentContainerWithError:(id *)a3;
+- (id)objectContextWithError:(id *)error;
+- (id)persistentContainerWithError:(id *)error;
 - (id)persistentStoreDescription;
-- (id)pruneDuplicates:(id)a3 tag:(id)a4 moc:(id)a5;
-- (id)registeredPrekeyForNGMPrekey:(id)a3 objectContext:(id)a4;
-- (unsigned)counterForDestinationWithIdentityKey:(id)a3 sendingIdentity:(id)a4 error:(id *)a5 success:(BOOL *)a6;
+- (id)pruneDuplicates:(id)duplicates tag:(id)tag moc:(id)moc;
+- (id)registeredPrekeyForNGMPrekey:(id)prekey objectContext:(id)context;
+- (unsigned)counterForDestinationWithIdentityKey:(id)key sendingIdentity:(id)identity error:(id *)error success:(BOOL *)success;
 - (void)deleteExpiredSendingDestinations;
-- (void)logDatabaseCreationDate:(id)a3;
+- (void)logDatabaseCreationDate:(id)date;
 @end
 
 @implementation NGMReplayManager
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __33__NGMReplayManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -55,23 +55,23 @@ void __33__NGMReplayManager_sharedManager__block_invoke(uint64_t a1)
 
 - (id)dbNameFromProcess
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"/NGMTrustStore-%@.db", v3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"/NGMTrustStore-%@.db", processName];
 
   return v4;
 }
 
 - (BOOL)isBATS
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 environment];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
 
-  v4 = [v3 objectForKeyedSubscript:@"BATS"];
+  v4 = [environment objectForKeyedSubscript:@"BATS"];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PWD"];
+    v5 = [environment objectForKeyedSubscript:@"PWD"];
     v6 = [v5 isEqualToString:@"/AppleInternal/XCTests/com.apple.messageprotection"];
   }
 
@@ -85,12 +85,12 @@ void __33__NGMReplayManager_sharedManager__block_invoke(uint64_t a1)
 
 - (BOOL)isXCTest
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 environment];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
 
-  v4 = [v3 objectForKeyedSubscript:@"XCTestBundlePath"];
-  v5 = [v4 pathExtension];
-  v6 = [v5 isEqualToString:@"xctest"];
+  v4 = [environment objectForKeyedSubscript:@"XCTestBundlePath"];
+  pathExtension = [v4 pathExtension];
+  v6 = [pathExtension isEqualToString:@"xctest"];
 
   return v6;
 }
@@ -107,12 +107,12 @@ void __33__NGMReplayManager_sharedManager__block_invoke(uint64_t a1)
 
 - (id)persistentStoreDescription
 {
-  v3 = [(NGMReplayManager *)self dbNameFromProcess];
+  dbNameFromProcess = [(NGMReplayManager *)self dbNameFromProcess];
   if ([(NGMReplayManager *)self isRunningTests])
   {
     v4 = NSTemporaryDirectory();
 LABEL_5:
-    v9 = [v4 stringByAppendingString:v3];
+    v9 = [v4 stringByAppendingString:dbNameFromProcess];
 
     v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v9];
     v11 = [objc_alloc(MEMORY[0x277CBE4E0]) initWithURL:v10];
@@ -145,14 +145,14 @@ LABEL_6:
   return v11;
 }
 
-- (id)objectContextWithError:(id *)a3
+- (id)objectContextWithError:(id *)error
 {
   v4 = [(NGMReplayManager *)self persistentContainerWithError:?];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-    v6 = [v4 persistentStoreCoordinator];
-    [v5 setPersistentStoreCoordinator:v6];
+    persistentStoreCoordinator = [v4 persistentStoreCoordinator];
+    [v5 setPersistentStoreCoordinator:persistentStoreCoordinator];
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_6:
     v7 = MessageProtectionLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [NGMReplayManager objectContextWithError:a3];
+      [NGMReplayManager objectContextWithError:error];
     }
 
     v5 = 0;
@@ -169,12 +169,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)persistentContainerWithError:(id *)a3
+- (id)persistentContainerWithError:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  persistentContainer = v4->_persistentContainer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  persistentContainer = selfCopy->_persistentContainer;
   if (persistentContainer)
   {
     goto LABEL_2;
@@ -198,11 +198,11 @@ LABEL_6:
       if (v11)
       {
         v12 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"NGMTrustStore" managedObjectModel:v11];
-        v13 = [(NGMReplayManager *)v4 persistentStoreDescription];
-        v14 = v13;
-        if (v13)
+        persistentStoreDescription = [(NGMReplayManager *)selfCopy persistentStoreDescription];
+        v14 = persistentStoreDescription;
+        if (persistentStoreDescription)
         {
-          v32[0] = v13;
+          v32[0] = persistentStoreDescription;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
           [v12 setPersistentStoreDescriptions:v15];
 
@@ -216,7 +216,7 @@ LABEL_6:
           v25[1] = 3221225472;
           v25[2] = __49__NGMReplayManager_persistentContainerWithError___block_invoke;
           v25[3] = &unk_2786FDDD0;
-          v25[4] = v4;
+          v25[4] = selfCopy;
           v25[5] = buf;
           [v12 loadPersistentStoresWithCompletionHandler:v25];
           v16 = *(v27 + 5);
@@ -228,9 +228,9 @@ LABEL_6:
               [NGMReplayManager persistentContainerWithError:v17];
             }
 
-            if (a3)
+            if (error)
             {
-              *a3 = *(v27 + 5);
+              *error = *(v27 + 5);
             }
           }
 
@@ -243,14 +243,14 @@ LABEL_6:
               _os_log_impl(&dword_22B404000, v21, OS_LOG_TYPE_INFO, "Loading the persistent container worked, setting it to shared instance", v24, 2u);
             }
 
-            objc_storeStrong(&v4->_persistentContainer, v12);
+            objc_storeStrong(&selfCopy->_persistentContainer, v12);
           }
 
           _Block_object_dispose(buf, 8);
 
           if (!v16)
           {
-            persistentContainer = v4->_persistentContainer;
+            persistentContainer = selfCopy->_persistentContainer;
 LABEL_2:
             v6 = persistentContainer;
             goto LABEL_29;
@@ -259,7 +259,7 @@ LABEL_2:
 
         else
         {
-          MPLogAndAssignError(6, a3, @"Failed to get the persistentStoreDescription.");
+          MPLogAndAssignError(6, error, @"Failed to get the persistentStoreDescription.");
         }
       }
 
@@ -283,7 +283,7 @@ LABEL_2:
         [NGMReplayManager persistentContainerWithError:v19];
       }
 
-      MPLogAndAssignError(9, a3, @"Failed to lookup replay database model in bundle.");
+      MPLogAndAssignError(9, error, @"Failed to lookup replay database model in bundle.");
     }
   }
 
@@ -295,12 +295,12 @@ LABEL_2:
       [NGMReplayManager persistentContainerWithError:v18];
     }
 
-    MPLogAndAssignError(8, a3, @"Failed to lookup MessageProtection bundle.");
+    MPLogAndAssignError(8, error, @"Failed to lookup MessageProtection bundle.");
   }
 
   v6 = 0;
 LABEL_29:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -345,15 +345,15 @@ void __49__NGMReplayManager_persistentContainerWithError___block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDatabaseCreationDate:(id)a3
+- (void)logDatabaseCreationDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 absoluteString];
+  dateCopy = date;
+  defaultManager = [v3 defaultManager];
+  absoluteString = [dateCopy absoluteString];
 
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
+  v7 = [defaultManager attributesOfItemAtPath:absoluteString error:0];
 
   if (v7)
   {
@@ -371,75 +371,75 @@ void __49__NGMReplayManager_persistentContainerWithError___block_invoke(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)computeDestinationHashForOutgoingMessageTo:(id)a3 withLocalKey:(id)a4
+- (id)computeDestinationHashForOutgoingMessageTo:(id)to withLocalKey:(id)key
 {
   v5 = MEMORY[0x277CBEB28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 data];
-  v9 = [v7 signingKey];
-  v10 = [v9 dataRepresentation];
-  [v8 appendData:v10];
+  keyCopy = key;
+  toCopy = to;
+  data = [v5 data];
+  signingKey = [toCopy signingKey];
+  dataRepresentation = [signingKey dataRepresentation];
+  [data appendData:dataRepresentation];
 
-  v11 = [v7 echnidaRegistration];
+  echnidaRegistration = [toCopy echnidaRegistration];
 
-  v12 = [v11 dhKey];
-  v13 = [v12 dataRepresentation];
-  [v8 appendData:v13];
+  dhKey = [echnidaRegistration dhKey];
+  dataRepresentation2 = [dhKey dataRepresentation];
+  [data appendData:dataRepresentation2];
 
-  v14 = [v6 dataUsingEncoding:4];
+  v14 = [keyCopy dataUsingEncoding:4];
 
-  [v8 appendData:v14];
+  [data appendData:v14];
   v15 = [@"Outgoing" dataUsingEncoding:4];
-  [v8 appendData:v15];
+  [data appendData:v15];
 
   v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
-  CC_SHA256([v8 bytes], objc_msgSend(v8, "length"), objc_msgSend(v16, "bytes"));
+  CC_SHA256([data bytes], objc_msgSend(data, "length"), objc_msgSend(v16, "bytes"));
   v17 = [v16 base64EncodedStringWithOptions:0];
 
   return v17;
 }
 
-- (id)computeDestinationHashForIncomingMessageFrom:(id)a3 toLocalKey:(id)a4
+- (id)computeDestinationHashForIncomingMessageFrom:(id)from toLocalKey:(id)key
 {
   v5 = MEMORY[0x277CBEB28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 data];
-  v9 = [v7 signingKey];
-  v10 = [v9 dataRepresentation];
-  [v8 appendData:v10];
+  keyCopy = key;
+  fromCopy = from;
+  data = [v5 data];
+  signingKey = [fromCopy signingKey];
+  dataRepresentation = [signingKey dataRepresentation];
+  [data appendData:dataRepresentation];
 
-  v11 = [v7 echnidaRegistration];
+  echnidaRegistration = [fromCopy echnidaRegistration];
 
-  v12 = [v11 dhKey];
-  v13 = [v12 dataRepresentation];
-  [v8 appendData:v13];
+  dhKey = [echnidaRegistration dhKey];
+  dataRepresentation2 = [dhKey dataRepresentation];
+  [data appendData:dataRepresentation2];
 
-  v14 = [v6 dataUsingEncoding:4];
+  v14 = [keyCopy dataUsingEncoding:4];
 
-  [v8 appendData:v14];
+  [data appendData:v14];
   v15 = [@"Incoming" dataUsingEncoding:4];
-  [v8 appendData:v15];
+  [data appendData:v15];
 
   v16 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
-  CC_SHA256([v8 bytes], objc_msgSend(v8, "length"), objc_msgSend(v16, "bytes"));
+  CC_SHA256([data bytes], objc_msgSend(data, "length"), objc_msgSend(v16, "bytes"));
   v17 = [v16 base64EncodedStringWithOptions:0];
 
   return v17;
 }
 
-- (unsigned)counterForDestinationWithIdentityKey:(id)a3 sendingIdentity:(id)a4 error:(id *)a5 success:(BOOL *)a6
+- (unsigned)counterForDestinationWithIdentityKey:(id)key sendingIdentity:(id)identity error:(id *)error success:(BOOL *)success
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  *a6 = 0;
+  keyCopy = key;
+  identityCopy = identity;
+  *success = 0;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = -1;
-  v12 = [(NGMReplayManager *)self objectContextWithError:a5];
+  v12 = [(NGMReplayManager *)self objectContextWithError:error];
   if (v12)
   {
     v13 = +[SendingDestination fetchRequest];
@@ -448,9 +448,9 @@ void __49__NGMReplayManager_persistentContainerWithError___block_invoke(uint64_t
     v43 = 0x3032000000;
     v44 = __Block_byref_object_copy__0;
     v45 = __Block_byref_object_dispose__0;
-    v14 = [v11 deviceSigningKey];
-    v15 = [v14 keyIdentifier];
-    v46 = [(NGMReplayManager *)self computeDestinationHashForOutgoingMessageTo:v10 withLocalKey:v15];
+    deviceSigningKey = [identityCopy deviceSigningKey];
+    keyIdentifier = [deviceSigningKey keyIdentifier];
+    v46 = [(NGMReplayManager *)self computeDestinationHashForOutgoingMessageTo:keyCopy withLocalKey:keyIdentifier];
 
     v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"destinationHash == %@", v42[5]];
     [v13 setPredicate:v16];
@@ -471,15 +471,15 @@ void __49__NGMReplayManager_persistentContainerWithError___block_invoke(uint64_t
     v27 = &v31;
     v28 = &v37;
     v29 = &v41;
-    v30 = a6;
-    v26 = v10;
+    successCopy = success;
+    v26 = keyCopy;
     [v24 performBlockAndWait:v23];
-    if (a5)
+    if (error)
     {
       v18 = v32[5];
       if (v18)
       {
-        *a5 = v18;
+        *error = v18;
       }
     }
 
@@ -494,7 +494,7 @@ void __49__NGMReplayManager_persistentContainerWithError___block_invoke(uint64_t
     v20 = MessageProtectionLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [*a5 description];
+      [*error description];
       objc_claimAutoreleasedReturnValue();
       [NGMReplayManager counterForDestinationWithIdentityKey:sendingIdentity:error:success:];
     }
@@ -607,18 +607,18 @@ LABEL_12:
 LABEL_16:
 }
 
-- (BOOL)processFetchRequestAndValidate:(id)a3 counter:(unsigned int)a4 commit:(BOOL)a5 theirIdentity:(id)a6 prekey:(id)a7 error:(id *)a8
+- (BOOL)processFetchRequestAndValidate:(id)validate counter:(unsigned int)counter commit:(BOOL)commit theirIdentity:(id)identity prekey:(id)prekey error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(NGMReplayManager *)self objectContextWithError:a8];
+  validateCopy = validate;
+  identityCopy = identity;
+  prekeyCopy = prekey;
+  v16 = [(NGMReplayManager *)self objectContextWithError:error];
   if (v16)
   {
     v17 = +[SenderPublicIdentity fetchRequest];
-    v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"destinationHash == %@", v13];
-    [v17 setPredicate:v18];
+    validateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"destinationHash == %@", validateCopy];
+    [v17 setPredicate:validateCopy];
 
     v41 = 0;
     v42 = &v41;
@@ -638,13 +638,13 @@ LABEL_16:
     v19 = v17;
     v28 = v19;
     v33 = &v41;
-    v29 = v14;
-    v30 = v13;
-    v31 = self;
-    v32 = v15;
+    v29 = identityCopy;
+    v30 = validateCopy;
+    selfCopy = self;
+    v32 = prekeyCopy;
     v34 = &v37;
-    v35 = a4;
-    v36 = a5;
+    counterCopy = counter;
+    commitCopy = commit;
     [v27 performBlockAndWait:v26];
     if (v42[5])
     {
@@ -652,13 +652,13 @@ LABEL_16:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
         v21 = [v42[5] description];
-        [NGMReplayManager processFetchRequestAndValidate:a5 counter:v21 commit:buf theirIdentity:v20 prekey:? error:?];
+        [NGMReplayManager processFetchRequestAndValidate:commit counter:v21 commit:buf theirIdentity:v20 prekey:? error:?];
       }
 
       v22 = 0;
-      if (a8)
+      if (error)
       {
-        *a8 = v42[5];
+        *error = v42[5];
       }
     }
 
@@ -676,7 +676,7 @@ LABEL_16:
     v19 = MessageProtectionLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [NGMReplayManager processFetchRequestAndValidate:a8 counter:? commit:? theirIdentity:? prekey:? error:?];
+      [NGMReplayManager processFetchRequestAndValidate:error counter:? commit:? theirIdentity:? prekey:? error:?];
     }
 
     v22 = 0;
@@ -809,17 +809,17 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pruneDuplicates:(id)a3 tag:(id)a4 moc:(id)a5
+- (id)pruneDuplicates:(id)duplicates tag:(id)tag moc:(id)moc
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  duplicatesCopy = duplicates;
+  tagCopy = tag;
+  mocCopy = moc;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [duplicatesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -830,39 +830,39 @@ LABEL_6:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(duplicatesCopy);
         }
 
-        [v9 deleteObject:*(*(&v17 + 1) + 8 * i)];
+        [mocCopy deleteObject:*(*(&v17 + 1) + 8 * i)];
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [duplicatesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [[RegisteredPreKey alloc] initWithContext:v9];
-  [(RegisteredPreKey *)v14 setTag:v8];
+  v14 = [[RegisteredPreKey alloc] initWithContext:mocCopy];
+  [(RegisteredPreKey *)v14 setTag:tagCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)registeredPrekeyForNGMPrekey:(id)a3 objectContext:(id)a4
+- (id)registeredPrekeyForNGMPrekey:(id)prekey objectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  prekeyCopy = prekey;
+  contextCopy = context;
   v8 = +[RegisteredPreKey fetchRequest];
-  v9 = [v6 dhKey];
-  v10 = [v9 keyIdentifier];
+  dhKey = [prekeyCopy dhKey];
+  keyIdentifier = [dhKey keyIdentifier];
 
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"tag = %@", v10];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"tag = %@", keyIdentifier];
   [v8 setPredicate:v11];
 
   v23 = 0;
-  v12 = [v7 executeFetchRequest:v8 error:&v23];
+  v12 = [contextCopy executeFetchRequest:v8 error:&v23];
   v13 = v23;
   if (!v13)
   {
@@ -875,13 +875,13 @@ LABEL_6:
     {
       if (![v12 count])
       {
-        v16 = [[RegisteredPreKey alloc] initWithContext:v7];
-        v20 = [v6 dhKey];
-        v21 = [v20 keyIdentifier];
-        [(RegisteredPreKey *)v16 setTag:v21];
+        v16 = [[RegisteredPreKey alloc] initWithContext:contextCopy];
+        dhKey2 = [prekeyCopy dhKey];
+        keyIdentifier2 = [dhKey2 keyIdentifier];
+        [(RegisteredPreKey *)v16 setTag:keyIdentifier2];
 
         v22 = 0;
-        [v7 save:&v22];
+        [contextCopy save:&v22];
         v14 = v22;
         goto LABEL_12;
       }
@@ -892,7 +892,7 @@ LABEL_6:
         [NGMReplayManager registeredPrekeyForNGMPrekey:objectContext:];
       }
 
-      v17 = [(NGMReplayManager *)self pruneDuplicates:v12 tag:v10 moc:v7];
+      v17 = [(NGMReplayManager *)self pruneDuplicates:v12 tag:keyIdentifier moc:contextCopy];
     }
 
     v16 = v17;
@@ -913,10 +913,10 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)deleteReceivingCountersForKey:(id)a3
+- (BOOL)deleteReceivingCountersForKey:(id)key
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v46 = 0;
   v5 = [(NGMReplayManager *)self objectContextWithError:&v46];
   v6 = v46;
@@ -924,9 +924,9 @@ LABEL_12:
   {
     v7 = +[RegisteredPreKey fetchRequest];
     v8 = MEMORY[0x277CCAC30];
-    v9 = [v4 dhKey];
-    v10 = [v9 keyIdentifier];
-    v11 = [v8 predicateWithFormat:@"tag = %@", v10];
+    dhKey = [keyCopy dhKey];
+    keyIdentifier = [dhKey keyIdentifier];
+    v11 = [v8 predicateWithFormat:@"tag = %@", keyIdentifier];
     [v7 setPredicate:v11];
 
     v40 = 0;
@@ -982,8 +982,8 @@ LABEL_12:
         v17 = MessageProtectionLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
         {
-          v22 = [v4 dhKey];
-          v23 = [v22 description];
+          dhKey2 = [keyCopy dhKey];
+          v23 = [dhKey2 description];
           v24 = [v41[5] description];
           *buf = 138412546;
           v48 = v23;
@@ -1008,8 +1008,8 @@ LABEL_12:
       v15 = 1;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v20 = [v4 dhKey];
-        v21 = [v20 description];
+        dhKey3 = [keyCopy dhKey];
+        v21 = [dhKey3 description];
         *buf = 138412290;
         v48 = v21;
         _os_log_impl(&dword_22B404000, v14, OS_LOG_TYPE_INFO, "No counters to delete for %@, probably never received any messages to that prekey.", buf, 0xCu);
@@ -1202,10 +1202,10 @@ void __52__NGMReplayManager_deleteExpiredSendingDestinations__block_invoke_97(ui
   objc_storeStrong((v4 + 40), obj);
 }
 
-- (BOOL)duplicateTagForPrekey:(id)a3
+- (BOOL)duplicateTagForPrekey:(id)prekey
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prekeyCopy = prekey;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1222,7 +1222,7 @@ void __52__NGMReplayManager_deleteExpiredSendingDestinations__block_invoke_97(ui
     v14 = __42__NGMReplayManager_duplicateTagForPrekey___block_invoke;
     v15 = &unk_2786FDF10;
     v16 = v5;
-    v17 = v4;
+    v17 = prekeyCopy;
     v18 = &v20;
     [v16 performBlockAndWait:&v12];
     v6 = v21[5];

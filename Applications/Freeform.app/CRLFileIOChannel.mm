@@ -1,34 +1,34 @@
 @interface CRLFileIOChannel
 - (BOOL)isValid;
-- (CRLFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6 error:(id *)a7 cleanupHandler:(id)a8;
-- (CRLFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5;
-- (void)addBarrier:(id)a3;
+- (CRLFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode error:(id *)error cleanupHandler:(id)handler;
+- (CRLFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler;
+- (void)addBarrier:(id)barrier;
 - (void)close;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setLowWater:(unint64_t)a3;
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4;
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5;
+- (void)flushWithCompletion:(id)completion;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setLowWater:(unint64_t)water;
+- (void)truncateToLength:(int64_t)length completion:(id)completion;
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler;
 @end
 
 @implementation CRLFileIOChannel
 
-- (CRLFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6 error:(id *)a7 cleanupHandler:(id)a8
+- (CRLFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode error:(id *)error cleanupHandler:(id)handler
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a8;
-  if (!v14 || ([v14 isFileURL] & 1) == 0)
+  modeCopy = mode;
+  lCopy = l;
+  handlerCopy = handler;
+  if (!lCopy || ([lCopy isFileURL] & 1) == 0)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [NSError crl_fileReadPOSIXErrorWithNumber:2 userInfo:0];
+      *error = [NSError crl_fileReadPOSIXErrorWithNumber:2 userInfo:0];
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 2);
+      handlerCopy[2](handlerCopy, 2);
     }
 
     goto LABEL_19;
@@ -39,19 +39,19 @@
   v16 = [(CRLFileIOChannel *)&v46 init];
   if (!v16)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [NSError crl_fileReadPOSIXErrorWithNumber:12 userInfo:0];
+      *error = [NSError crl_fileReadPOSIXErrorWithNumber:12 userInfo:0];
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 12);
+      handlerCopy[2](handlerCopy, 12);
     }
 
     self = 0;
 LABEL_19:
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -64,22 +64,22 @@ LABEL_19:
   v41[2] = sub_10015BB30;
   v41[3] = &unk_101840848;
   v43 = v44;
-  v17 = v15;
+  v17 = handlerCopy;
   v42 = v17;
   v37 = objc_retainBlock(v41);
-  v16->_oflag = a5;
-  v18 = [v14 path];
-  v19 = v18;
-  v20 = [v18 fileSystemRepresentation];
+  v16->_oflag = oflag;
+  path = [lCopy path];
+  v19 = path;
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (v20)
+  if (fileSystemRepresentation)
   {
-    if ((a5 & 0x400) != 0)
+    if ((oflag & 0x400) != 0)
     {
-      unlink(v20);
+      unlink(fileSystemRepresentation);
     }
 
-    v21 = open(v20, a5, v10);
+    v21 = open(fileSystemRepresentation, oflag, modeCopy);
     if (v21 < 0)
     {
       v28 = [NSError crl_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
@@ -93,7 +93,7 @@ LABEL_19:
       {
         v32 = __error();
         v33 = strerror(*v32);
-        sub_10131EDA4(v33, buf, v20, v31);
+        sub_10131EDA4(v33, buf, fileSystemRepresentation, v31);
       }
 
       v34 = __error();
@@ -113,7 +113,7 @@ LABEL_19:
     cleanup_handler[3] = &unk_101840890;
     v40 = v21;
     v39 = v17;
-    v26 = dispatch_io_create(a3, v21, v25, cleanup_handler);
+    v26 = dispatch_io_create(type, v21, v25, cleanup_handler);
     channel = v16->_channel;
     v16->_channel = v26;
   }
@@ -122,18 +122,18 @@ LABEL_19:
 LABEL_26:
   if (!v16->_channel)
   {
-    if (a7)
+    if (error)
     {
       if (v28)
       {
         v35 = v28;
-        *a7 = v28;
+        *error = v28;
       }
 
       else
       {
         v36 = [NSError crl_fileReadPOSIXErrorWithNumber:2 userInfo:0];
-        *a7 = v36;
+        *error = v36;
       }
     }
 
@@ -145,15 +145,15 @@ LABEL_26:
   self = v16;
 
   _Block_object_dispose(v44, 8);
-  v29 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v29;
+  return selfCopy;
 }
 
-- (CRLFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5
+- (CRLFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = CRLFileIOChannel;
   v9 = [(CRLFileIOChannel *)&v21 init];
@@ -170,8 +170,8 @@ LABEL_20:
     cleanup_handler[1] = 3221225472;
     cleanup_handler[2] = sub_10015BEA4;
     cleanup_handler[3] = &unk_1018408F8;
-    v20 = v8;
-    v15 = dispatch_io_create(a3, a4, v14, cleanup_handler);
+    v20 = handlerCopy;
+    v15 = dispatch_io_create(type, descriptor, v14, cleanup_handler);
     channel = v10->_channel;
     v10->_channel = v15;
 
@@ -186,9 +186,9 @@ LABEL_20:
 
   else
   {
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 12);
+      (*(handlerCopy + 2))(handlerCopy, 12);
     }
 
     v17 = 0;
@@ -214,9 +214,9 @@ LABEL_20:
   [(CRLFileIOChannel *)&v5 dealloc];
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = atomic_load(&self->_isClosed);
   if (v9)
   {
@@ -254,15 +254,15 @@ LABEL_20:
   io_handler[1] = 3221225472;
   io_handler[2] = sub_10015C250;
   io_handler[3] = &unk_101840960;
-  v18 = v8;
-  v16 = v8;
-  dispatch_io_read(v14, a3, a4, ioQueue, io_handler);
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  dispatch_io_read(v14, offset, length, ioQueue, io_handler);
 }
 
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = atomic_load(&self->_isClosed);
   if (v10)
   {
@@ -293,13 +293,13 @@ LABEL_20:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:236 isFatal:0 description:"Channel is closed"];
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
-    v8 = &_dispatch_data_empty;
+    dataCopy = &_dispatch_data_empty;
     v14 = &_dispatch_data_empty;
   }
 
-  size = dispatch_data_get_size(v8);
+  size = dispatch_data_get_size(dataCopy);
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
@@ -313,9 +313,9 @@ LABEL_20:
   io_handler[3] = &unk_1018409C8;
   v22 = v24;
   v23 = size;
-  v21 = v9;
-  v19 = v9;
-  dispatch_io_write(v17, a4, v8, ioQueue, io_handler);
+  v21 = handlerCopy;
+  v19 = handlerCopy;
+  dispatch_io_write(v17, offset, dataCopy, ioQueue, io_handler);
 
   _Block_object_dispose(v24, 8);
 }
@@ -381,7 +381,7 @@ LABEL_18:
   }
 }
 
-- (void)setLowWater:(unint64_t)a3
+- (void)setLowWater:(unint64_t)water
 {
   v5 = atomic_load(&self->_isClosed);
   if (v5)
@@ -413,12 +413,12 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:292 isFatal:0 description:"Channel is closed"];
   }
 
-  dispatch_io_set_low_water(self->_channel, a3);
+  dispatch_io_set_low_water(self->_channel, water);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  v4 = a3;
+  barrierCopy = barrier;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -449,12 +449,12 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:298 isFatal:0 description:"Channel is closed"];
   }
 
-  dispatch_io_barrier(self->_channel, v4);
+  dispatch_io_barrier(self->_channel, barrierCopy);
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -491,14 +491,14 @@ LABEL_18:
   v11[2] = sub_10015D1AC;
   v11[3] = &unk_10183FC10;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_io_barrier(channel, v11);
 }
 
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4
+- (void)truncateToLength:(int64_t)length completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = atomic_load(&self->_isClosed);
   if (v7)
   {
@@ -534,10 +534,10 @@ LABEL_18:
   barrier[1] = 3221225472;
   barrier[2] = sub_10015D5FC;
   barrier[3] = &unk_10183F0D0;
-  v14 = v6;
-  v15 = a3;
+  v14 = completionCopy;
+  lengthCopy = length;
   barrier[4] = self;
-  v12 = v6;
+  v12 = completionCopy;
   dispatch_io_barrier(channel, barrier);
 }
 

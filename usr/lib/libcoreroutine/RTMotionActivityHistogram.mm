@@ -1,9 +1,9 @@
 @interface RTMotionActivityHistogram
 - (RTMotionActivityHistogram)init;
-- (RTMotionActivityHistogram)initWithActivites:(id)a3 betweenDate:(id)a4 andDate:(id)a5;
-- (id)binForType:(unint64_t)a3;
+- (RTMotionActivityHistogram)initWithActivites:(id)activites betweenDate:(id)date andDate:(id)andDate;
+- (id)binForType:(unint64_t)type;
 - (id)binsSortedByInterval;
-- (void)addInterval:(double)a3 ofType:(unint64_t)a4 withConfidence:(unint64_t)a5;
+- (void)addInterval:(double)interval ofType:(unint64_t)type withConfidence:(unint64_t)confidence;
 @end
 
 @implementation RTMotionActivityHistogram
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (RTMotionActivityHistogram)initWithActivites:(id)a3 betweenDate:(id)a4 andDate:(id)a5
+- (RTMotionActivityHistogram)initWithActivites:(id)activites betweenDate:(id)date andDate:(id)andDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activitesCopy = activites;
+  dateCopy = date;
+  andDateCopy = andDate;
   v21.receiver = self;
   v21.super_class = RTMotionActivityHistogram;
   v11 = [(RTMotionActivityHistogram *)&v21 init];
@@ -45,15 +45,15 @@
     v19[2] = 0x3032000000;
     v19[3] = __Block_byref_object_copy__91;
     v19[4] = __Block_byref_object_dispose__91;
-    v20 = v10;
+    v20 = andDateCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __67__RTMotionActivityHistogram_initWithActivites_betweenDate_andDate___block_invoke;
     v15[3] = &unk_2788CC690;
     v18 = v19;
-    v16 = v9;
+    v16 = dateCopy;
     v17 = v11;
-    [v8 enumerateObjectsWithOptions:2 usingBlock:v15];
+    [activitesCopy enumerateObjectsWithOptions:2 usingBlock:v15];
 
     _Block_object_dispose(v19, 8);
   }
@@ -95,45 +95,45 @@ void __67__RTMotionActivityHistogram_initWithActivites_betweenDate_andDate___blo
   }
 }
 
-- (id)binForType:(unint64_t)a3
+- (id)binForType:(unint64_t)type
 {
-  v4 = [(RTMotionActivityHistogram *)self bins];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  bins = [(RTMotionActivityHistogram *)self bins];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v6 = [bins objectForKey:v5];
   v7 = [v6 copy];
 
   return v7;
 }
 
-- (void)addInterval:(double)a3 ofType:(unint64_t)a4 withConfidence:(unint64_t)a5
+- (void)addInterval:(double)interval ofType:(unint64_t)type withConfidence:(unint64_t)confidence
 {
-  v9 = [(RTMotionActivityHistogram *)self bins];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v14 = [v9 objectForKey:v10];
+  bins = [(RTMotionActivityHistogram *)self bins];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v14 = [bins objectForKey:v10];
 
   if (v14)
   {
-    [(RTMotionActivityHistogramBin *)v14 addInterval:a3];
-    [(RTMotionActivityHistogramBin *)v14 updateConfidence:a5];
+    [(RTMotionActivityHistogramBin *)v14 addInterval:interval];
+    [(RTMotionActivityHistogramBin *)v14 updateConfidence:confidence];
   }
 
   else
   {
-    v14 = [[RTMotionActivityHistogramBin alloc] initWithType:a4 confidence:a5 interval:a3];
-    v11 = [(RTMotionActivityHistogram *)self bins];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [v11 setObject:v14 forKey:v12];
+    v14 = [[RTMotionActivityHistogramBin alloc] initWithType:type confidence:confidence interval:interval];
+    bins2 = [(RTMotionActivityHistogram *)self bins];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    [bins2 setObject:v14 forKey:v12];
   }
 
   [(RTMotionActivityHistogram *)self totalInterval];
-  [(RTMotionActivityHistogram *)self setTotalInterval:v13 + a3];
+  [(RTMotionActivityHistogram *)self setTotalInterval:v13 + interval];
 }
 
 - (id)binsSortedByInterval
 {
-  v2 = [(RTMotionActivityHistogram *)self bins];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_76];
+  bins = [(RTMotionActivityHistogram *)self bins];
+  allValues = [bins allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_76];
 
   return v4;
 }

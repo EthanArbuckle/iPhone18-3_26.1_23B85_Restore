@@ -1,11 +1,11 @@
 @interface EMMessageIDRandomizer
 + (OS_os_log)log;
-+ (id)_createRandomizedStringForMessageID:(int64_t)a3;
-+ (id)_findExistingStringError:(id *)a3 messageID:(int64_t)a4;
-+ (id)_findOrCreateRandomizedStringForMessageID:(int64_t)a3;
-+ (id)_queryKeychainError:(id *)a3 messageID:(int64_t)a4;
-+ (id)randomizedStringForGlobalMessageID:(int64_t)a3;
-+ (void)_deleteExpiredStringForMessageID:(int64_t)a3;
++ (id)_createRandomizedStringForMessageID:(int64_t)d;
++ (id)_findExistingStringError:(id *)error messageID:(int64_t)d;
++ (id)_findOrCreateRandomizedStringForMessageID:(int64_t)d;
++ (id)_queryKeychainError:(id *)error messageID:(int64_t)d;
++ (id)randomizedStringForGlobalMessageID:(int64_t)d;
++ (void)_deleteExpiredStringForMessageID:(int64_t)d;
 - (EMMessageIDRandomizer)init;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __28__EMMessageIDRandomizer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_22 != -1)
   {
     dispatch_once(&log_onceToken_22, block);
@@ -43,12 +43,12 @@ void __28__EMMessageIDRandomizer_log__block_invoke(uint64_t a1)
   return [(EMMessageIDRandomizer *)&v3 init];
 }
 
-+ (id)randomizedStringForGlobalMessageID:(int64_t)a3
++ (id)randomizedStringForGlobalMessageID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   lock._os_unfair_lock_opaque = 0;
   os_unfair_lock_lock(&lock);
-  v5 = [a1 _findOrCreateRandomizedStringForMessageID:a3];
+  v5 = [self _findOrCreateRandomizedStringForMessageID:d];
   os_unfair_lock_unlock(&lock);
   if (!v5)
   {
@@ -65,10 +65,10 @@ void __28__EMMessageIDRandomizer_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)_findOrCreateRandomizedStringForMessageID:(int64_t)a3
++ (id)_findOrCreateRandomizedStringForMessageID:(int64_t)d
 {
   v10 = 0;
-  v5 = [a1 _findExistingStringError:&v10 messageID:a3];
+  v5 = [self _findExistingStringError:&v10 messageID:d];
   v6 = v10;
   if (v5)
   {
@@ -77,7 +77,7 @@ void __28__EMMessageIDRandomizer_log__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [a1 _createRandomizedStringForMessageID:a3];
+    v7 = [self _createRandomizedStringForMessageID:d];
   }
 
   v8 = v7;
@@ -85,14 +85,14 @@ void __28__EMMessageIDRandomizer_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (id)_queryKeychainError:(id *)a3 messageID:(int64_t)a4
++ (id)_queryKeychainError:(id *)error messageID:(int64_t)d
 {
   v25[5] = *MEMORY[0x1E69E9840];
   v25[0] = *MEMORY[0x1E697B008];
   v5 = *MEMORY[0x1E697AE88];
   v24[0] = *MEMORY[0x1E697AFF8];
   v24[1] = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v25[1] = v6;
   v7 = *MEMORY[0x1E697B310];
   v24[2] = *MEMORY[0x1E697B318];
@@ -126,10 +126,10 @@ void __28__EMMessageIDRandomizer_log__block_invoke(uint64_t a1)
         [(EMMessageIDRandomizer *)v10 _queryKeychainError:v13 messageID:v14, v15, v16, v17, v18, v19];
       }
 
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
-        *a3 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_13;
       }
     }
@@ -150,25 +150,25 @@ LABEL_13:
   return v12;
 }
 
-+ (id)_findExistingStringError:(id *)a3 messageID:(int64_t)a4
++ (id)_findExistingStringError:(id *)error messageID:(int64_t)d
 {
-  v6 = [a1 _queryKeychainError:a3 messageID:?];
+  v6 = [self _queryKeychainError:error messageID:?];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E697ACD0]];
+    firstObject = [v6 firstObject];
+    v9 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E697ACD0]];
 
     if ([v9 ef_isMoreThanTimeIntervalAgo:86400.0])
     {
-      [a1 _deleteExpiredStringForMessageID:a4];
+      [self _deleteExpiredStringForMessageID:d];
       v10 = 0;
     }
 
     else
     {
-      v11 = [v7 firstObject];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+      firstObject2 = [v7 firstObject];
+      v12 = [firstObject2 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
       v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v12 encoding:4];
     }
@@ -182,19 +182,19 @@ LABEL_13:
   return v10;
 }
 
-+ (id)_createRandomizedStringForMessageID:(int64_t)a3
++ (id)_createRandomizedStringForMessageID:(int64_t)d
 {
   v30 = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1C6655000, v4, OS_LOG_TYPE_DEFAULT, "Will create new randomized string for messageID %lld", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AEC0] ef_UUID];
-  v6 = [v5 dataUsingEncoding:4];
+  ef_UUID = [MEMORY[0x1E696AEC0] ef_UUID];
+  v6 = [ef_UUID dataUsingEncoding:4];
   v7 = *MEMORY[0x1E697AFF8];
   v26[0] = *MEMORY[0x1E697B3C0];
   v26[1] = v7;
@@ -202,12 +202,12 @@ LABEL_13:
   v27[0] = v6;
   v27[1] = v8;
   v27[2] = @"com.apple.mail.categories";
-  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{a3, v26[0], v7, *MEMORY[0x1E697ABD0], *MEMORY[0x1E697AE88]}];
+  v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{d, v26[0], v7, *MEMORY[0x1E697ABD0], *MEMORY[0x1E697AE88]}];
   v27[3] = v9;
   v26[4] = *MEMORY[0x1E697AD00];
   v10 = MEMORY[0x1E696AD98];
-  v11 = [MEMORY[0x1E699B7B0] currentDevice];
-  v12 = [v10 numberWithInt:{objc_msgSend(v11, "isInternal") ^ 1}];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  v12 = [v10 numberWithInt:{objc_msgSend(currentDevice, "isInternal") ^ 1}];
   v26[5] = *MEMORY[0x1E697ABD8];
   v13 = *MEMORY[0x1E697ABE0];
   v27[4] = v12;
@@ -228,7 +228,7 @@ LABEL_13:
 
   else
   {
-    v23 = v5;
+    v23 = ef_UUID;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -236,7 +236,7 @@ LABEL_13:
   return v23;
 }
 
-+ (void)_deleteExpiredStringForMessageID:(int64_t)a3
++ (void)_deleteExpiredStringForMessageID:(int64_t)d
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() log];
@@ -253,7 +253,7 @@ LABEL_13:
   v20[0] = v5;
   v20[1] = @"com.apple.mail.categories";
   v19[2] = *MEMORY[0x1E697AE88];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v20[2] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 

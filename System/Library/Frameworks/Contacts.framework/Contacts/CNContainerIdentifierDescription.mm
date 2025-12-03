@@ -1,14 +1,14 @@
 @interface CNContainerIdentifierDescription
-- (id)CNValueFromABValue:(void *)a3;
+- (id)CNValueFromABValue:(void *)value;
 @end
 
 @implementation CNContainerIdentifierDescription
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  valueCopy = value;
+  v5 = [[v3 alloc] initWithString:valueCopy];
 
   return v5;
 }

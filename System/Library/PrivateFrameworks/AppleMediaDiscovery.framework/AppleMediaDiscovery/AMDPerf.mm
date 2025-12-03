@@ -1,39 +1,39 @@
 @interface AMDPerf
 + (id)generatePerformanceDict;
 + (id)getContainer;
-+ (void)enable:(BOOL)a3;
-+ (void)endMonitoringEvent:(id)a3;
-+ (void)log:(id)a3 atLevel:(int)a4;
++ (void)enable:(BOOL)enable;
++ (void)endMonitoringEvent:(id)event;
++ (void)log:(id)log atLevel:(int)level;
 + (void)provision;
-+ (void)sampleForKey:(id)a3;
-+ (void)setVerbosity:(char)a3;
-+ (void)startMonitoringEvent:(id)a3;
++ (void)sampleForKey:(id)key;
++ (void)setVerbosity:(char)verbosity;
++ (void)startMonitoringEvent:(id)event;
 @end
 
 @implementation AMDPerf
 
 + (void)provision
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = [[AMDPerfContainer alloc] initWithSwitch:1 atLevel:0];
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v2 = [v3 threadDictionary];
-  [v2 setObject:v4[0] forKey:@"__AMDPerfContainer"];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:v4[0] forKey:@"__AMDPerfContainer"];
+  MEMORY[0x277D82BD8](threadDictionary);
+  MEMORY[0x277D82BD8](currentThread);
   objc_storeStrong(v4, 0);
 }
 
 + (id)getContainer
 {
-  v11[2] = a1;
+  v11[2] = self;
   v11[1] = a2;
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v7 threadDictionary];
-  v11[0] = [v6 objectForKey:@"__AMDPerfContainer"];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v11[0] = [threadDictionary objectForKey:@"__AMDPerfContainer"];
+  MEMORY[0x277D82BD8](threadDictionary);
+  MEMORY[0x277D82BD8](currentThread);
   if (v11[0])
   {
     if ([v11[0] isEnabled])
@@ -69,40 +69,40 @@
   return v2;
 }
 
-+ (void)enable:(BOOL)a3
++ (void)enable:(BOOL)enable
 {
-  v6 = a1;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  enableCopy = enable;
   location = +[AMDPerf getContainer];
   if (location)
   {
-    [location setIsEnabled:v4];
+    [location setIsEnabled:enableCopy];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-+ (void)setVerbosity:(char)a3
++ (void)setVerbosity:(char)verbosity
 {
-  v6 = a1;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  verbosityCopy = verbosity;
   location = +[AMDPerf getContainer];
   if (location)
   {
-    [location setLevel:v4];
+    [location setLevel:verbosityCopy];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-+ (void)startMonitoringEvent:(id)a3
++ (void)startMonitoringEvent:(id)event
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v17 = +[AMDPerf getContainer];
   if (v17)
   {
@@ -121,12 +121,12 @@
     v9 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
     [v8 setObject:? forKey:?];
     MEMORY[0x277D82BD8](v9);
-    v10 = [v17 timeUsage];
-    [v10 setObject:v15 forKey:location[0]];
-    MEMORY[0x277D82BD8](v10);
-    v11 = [v17 memoryUsage];
-    [v11 setObject:v14 forKey:location[0]];
-    MEMORY[0x277D82BD8](v11);
+    timeUsage = [v17 timeUsage];
+    [timeUsage setObject:v15 forKey:location[0]];
+    MEMORY[0x277D82BD8](timeUsage);
+    memoryUsage = [v17 memoryUsage];
+    [memoryUsage setObject:v14 forKey:location[0]];
+    MEMORY[0x277D82BD8](memoryUsage);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v15, 0);
     v16 = 0;
@@ -141,22 +141,22 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)endMonitoringEvent:(id)a3
++ (void)endMonitoringEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v22 = +[AMDPerf getContainer];
   if (v22)
   {
-    v14 = [v22 timeUsage];
-    v20 = [v14 objectForKey:location[0]];
-    MEMORY[0x277D82BD8](v14);
-    v15 = [v22 memoryUsage];
-    v19 = [v15 objectForKey:location[0]];
-    MEMORY[0x277D82BD8](v15);
+    timeUsage = [v22 timeUsage];
+    v20 = [timeUsage objectForKey:location[0]];
+    MEMORY[0x277D82BD8](timeUsage);
+    memoryUsage = [v22 memoryUsage];
+    v19 = [memoryUsage objectForKey:location[0]];
+    MEMORY[0x277D82BD8](memoryUsage);
     if (v20 && v19)
     {
       [v22 getTime];
@@ -175,12 +175,12 @@
       v11 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
       [v19 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v11);
-      v12 = [v22 timeUsage];
-      [v12 setObject:v20 forKey:location[0]];
-      MEMORY[0x277D82BD8](v12);
-      v13 = [v22 memoryUsage];
-      [v13 setObject:v19 forKey:location[0]];
-      MEMORY[0x277D82BD8](v13);
+      timeUsage2 = [v22 timeUsage];
+      [timeUsage2 setObject:v20 forKey:location[0]];
+      MEMORY[0x277D82BD8](timeUsage2);
+      memoryUsage2 = [v22 memoryUsage];
+      [memoryUsage2 setObject:v19 forKey:location[0]];
+      MEMORY[0x277D82BD8](memoryUsage2);
       v21 = 0;
     }
 
@@ -214,15 +214,15 @@
 + (id)generatePerformanceDict
 {
   v42 = *MEMORY[0x277D85DE8];
-  v39[2] = a1;
+  v39[2] = self;
   v39[1] = a2;
   v39[0] = +[AMDPerf getContainer];
   if (v39[0])
   {
     v23 = objc_alloc(MEMORY[0x277CBEB38]);
-    v24 = [v39[0] timeUsage];
-    v37 = [v23 initWithCapacity:{objc_msgSend(v24, "count")}];
-    MEMORY[0x277D82BD8](v24);
+    timeUsage = [v39[0] timeUsage];
+    v37 = [v23 initWithCapacity:{objc_msgSend(timeUsage, "count")}];
+    MEMORY[0x277D82BD8](timeUsage);
     memset(__b, 0, sizeof(__b));
     obj = [v39[0] timeUsage];
     v26 = [obj countByEnumeratingWithState:__b objects:v41 count:16];
@@ -240,12 +240,12 @@
         }
 
         v36 = *(__b[1] + 8 * v21);
-        v17 = [v39[0] memoryUsage];
-        v34 = [v17 objectForKey:v36];
-        MEMORY[0x277D82BD8](v17);
-        v18 = [v39[0] timeUsage];
-        v33 = [v18 objectForKey:v36];
-        MEMORY[0x277D82BD8](v18);
+        memoryUsage = [v39[0] memoryUsage];
+        v34 = [memoryUsage objectForKey:v36];
+        MEMORY[0x277D82BD8](memoryUsage);
+        timeUsage2 = [v39[0] timeUsage];
+        v33 = [timeUsage2 objectForKey:v36];
+        MEMORY[0x277D82BD8](timeUsage2);
         v32 = [v33 objectForKey:@"end"];
         v31 = [v33 objectForKey:@"start"];
         v30 = -1.0;
@@ -307,9 +307,9 @@
 
     MEMORY[0x277D82BD8](obj);
     v6 = v37;
-    v7 = [v39[0] samples];
+    samples = [v39[0] samples];
     [v6 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](samples);
     v40 = MEMORY[0x277D82BE0](v37);
     v38 = 1;
     objc_storeStrong(&v37, 0);
@@ -328,19 +328,19 @@
   return v4;
 }
 
-+ (void)sampleForKey:(id)a3
++ (void)sampleForKey:(id)key
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v13 = +[AMDPerf getContainer];
   if (v13)
   {
-    v10 = [v13 samples];
-    v11 = [v10 objectForKey:location[0]];
-    MEMORY[0x277D82BD8](v10);
+    samples = [v13 samples];
+    v11 = [samples objectForKey:location[0]];
+    MEMORY[0x277D82BD8](samples);
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -361,9 +361,9 @@
     MEMORY[0x277D82BD8](v6);
     MEMORY[0x277D82BD8](v7);
     MEMORY[0x277D82BD8](v8);
-    v9 = [v13 samples];
-    [v9 setObject:v11 forKey:location[0]];
-    MEMORY[0x277D82BD8](v9);
+    samples2 = [v13 samples];
+    [samples2 setObject:v11 forKey:location[0]];
+    MEMORY[0x277D82BD8](samples2);
     objc_storeStrong(&v11, 0);
     v12 = 0;
   }
@@ -378,18 +378,18 @@
   *MEMORY[0x277D85DE8];
 }
 
-+ (void)log:(id)a3 atLevel:(int)a4
++ (void)log:(id)log atLevel:(int)level
 {
   v11 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, log);
+  levelCopy = level;
   v7 = +[AMDPerf getContainer];
   if (v7)
   {
-    if ([v7 level] < v8)
+    if ([v7 level] < levelCopy)
     {
       v6 = 1;
     }

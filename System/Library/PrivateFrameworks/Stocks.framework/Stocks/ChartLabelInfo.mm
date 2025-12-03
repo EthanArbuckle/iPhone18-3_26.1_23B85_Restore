@@ -1,43 +1,43 @@
 @interface ChartLabelInfo
 - (CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)retainStringAndSizeFromLabelInfo:(id)a3;
-- (void)setPosition:(double)a3;
-- (void)setString:(id)a3;
-- (void)setStringToMonthAndDayWithDate:(id)a3 timeZone:(id)a4;
-- (void)setStringToYearWithDate:(id)a3 timeZone:(id)a4;
+- (void)retainStringAndSizeFromLabelInfo:(id)info;
+- (void)setPosition:(double)position;
+- (void)setString:(id)string;
+- (void)setStringToMonthAndDayWithDate:(id)date timeZone:(id)zone;
+- (void)setStringToYearWithDate:(id)date timeZone:(id)zone;
 @end
 
 @implementation ChartLabelInfo
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   p_string = &self->_string;
-  if (self->_string != v5 && !self->_immutable)
+  if (self->_string != stringCopy && !self->_immutable)
   {
-    v7 = v5;
-    objc_storeStrong(p_string, a3);
-    v5 = v7;
+    v7 = stringCopy;
+    objc_storeStrong(p_string, string);
+    stringCopy = v7;
     self->_size = *MEMORY[0x277CBF3A8];
   }
 
-  MEMORY[0x2821F96F8](p_string, v5);
+  MEMORY[0x2821F96F8](p_string, stringCopy);
 }
 
-- (void)setPosition:(double)a3
+- (void)setPosition:(double)position
 {
   if (!self->_immutable)
   {
-    self->_position = a3;
+    self->_position = position;
   }
 }
 
-- (void)setStringToMonthAndDayWithDate:(id)a3 timeZone:(id)a4
+- (void)setStringToMonthAndDayWithDate:(id)date timeZone:(id)zone
 {
-  v15 = a3;
-  v6 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v7 = monthDayFormatter;
   if (!monthDayFormatter)
   {
@@ -46,8 +46,8 @@
     monthDayFormatter = v8;
 
     v10 = monthDayFormatter;
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v10 setLocale:v11];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v10 setLocale:currentLocale];
 
     [monthDayFormatter setDateStyle:1];
     [monthDayFormatter setTimeStyle:1];
@@ -58,15 +58,15 @@
     v7 = monthDayFormatter;
   }
 
-  [v7 setTimeZone:v6];
-  v14 = [monthDayFormatter stringFromDate:v15];
+  [v7 setTimeZone:zoneCopy];
+  v14 = [monthDayFormatter stringFromDate:dateCopy];
   [(ChartLabelInfo *)self setString:v14];
 }
 
-- (void)setStringToYearWithDate:(id)a3 timeZone:(id)a4
+- (void)setStringToYearWithDate:(id)date timeZone:(id)zone
 {
-  v15 = a3;
-  v6 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v7 = yearFormatter;
   if (!yearFormatter)
   {
@@ -75,8 +75,8 @@
     yearFormatter = v8;
 
     v10 = yearFormatter;
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v10 setLocale:v11];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v10 setLocale:currentLocale];
 
     [yearFormatter setDateStyle:1];
     [yearFormatter setTimeStyle:1];
@@ -87,8 +87,8 @@
     v7 = yearFormatter;
   }
 
-  [v7 setTimeZone:v6];
-  v14 = [yearFormatter stringFromDate:v15];
+  [v7 setTimeZone:zoneCopy];
+  v14 = [yearFormatter stringFromDate:dateCopy];
   [(ChartLabelInfo *)self setString:v14];
 }
 
@@ -117,27 +117,27 @@
   return result;
 }
 
-- (void)retainStringAndSizeFromLabelInfo:(id)a3
+- (void)retainStringAndSizeFromLabelInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 string];
-  [(ChartLabelInfo *)self setString:v5];
+  infoCopy = info;
+  string = [infoCopy string];
+  [(ChartLabelInfo *)self setString:string];
 
-  [v4 size];
+  [infoCopy size];
   [(ChartLabelInfo *)self setSize:?];
-  v6 = [v4 accessibilityLabel];
+  accessibilityLabel = [infoCopy accessibilityLabel];
 
-  [(ChartLabelInfo *)self setAccessibilityLabel:v6];
+  [(ChartLabelInfo *)self setAccessibilityLabel:accessibilityLabel];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ChartLabelInfo);
   [(ChartLabelInfo *)v4 setString:self->_string];
   [(ChartLabelInfo *)v4 setSize:self->_size.width, self->_size.height];
   [(ChartLabelInfo *)v4 setPosition:self->_position];
-  v5 = [(ChartLabelInfo *)self accessibilityLabel];
-  [(ChartLabelInfo *)v4 setAccessibilityLabel:v5];
+  accessibilityLabel = [(ChartLabelInfo *)self accessibilityLabel];
+  [(ChartLabelInfo *)v4 setAccessibilityLabel:accessibilityLabel];
 
   return v4;
 }

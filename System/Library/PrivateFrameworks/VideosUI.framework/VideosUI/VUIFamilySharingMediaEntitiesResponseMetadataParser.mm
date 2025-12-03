@@ -2,7 +2,7 @@
 - (VUIFamilySharingMediaEntitiesResponseMetadataParser)init;
 - (id)_parseOffsetFromMetaBag;
 - (id)_parseTotalFromMetaBag;
-- (id)parseAMSURLResult:(id)a3;
+- (id)parseAMSURLResult:(id)result;
 @end
 
 @implementation VUIFamilySharingMediaEntitiesResponseMetadataParser
@@ -22,23 +22,23 @@
   return v2;
 }
 
-- (id)parseAMSURLResult:(id)a3
+- (id)parseAMSURLResult:(id)result
 {
-  v4 = a3;
-  [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self setResult:v4];
+  resultCopy = result;
+  [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self setResult:resultCopy];
   v5 = objc_alloc_init(VUIMediaAPIResponseMetadata);
-  v6 = [v4 object];
+  object = [resultCopy object];
 
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(resultCopy) = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (resultCopy)
   {
-    v7 = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self _parseTotalFromMetaBag];
-    [(VUIMediaAPIResponseMetadata *)v5 setTotal:v7];
+    _parseTotalFromMetaBag = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self _parseTotalFromMetaBag];
+    [(VUIMediaAPIResponseMetadata *)v5 setTotal:_parseTotalFromMetaBag];
 
-    v8 = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self _parseOffsetFromMetaBag];
-    [(VUIMediaAPIResponseMetadata *)v5 setOffset:v8];
+    _parseOffsetFromMetaBag = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self _parseOffsetFromMetaBag];
+    [(VUIMediaAPIResponseMetadata *)v5 setOffset:_parseOffsetFromMetaBag];
   }
 
   else
@@ -56,9 +56,9 @@
 
 - (id)_parseTotalFromMetaBag
 {
-  v2 = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self result];
-  v3 = [v2 object];
-  v4 = [v3 vui_dictionaryForKey:@"meta"];
+  result = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self result];
+  object = [result object];
+  v4 = [object vui_dictionaryForKey:@"meta"];
 
   if (!v4)
   {
@@ -78,9 +78,9 @@
 - (id)_parseOffsetFromMetaBag
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self result];
-  v3 = [v2 object];
-  v4 = [v3 vui_stringForKey:@"next"];
+  result = [(VUIFamilySharingMediaEntitiesResponseMetadataParser *)self result];
+  object = [result object];
+  v4 = [object vui_stringForKey:@"next"];
 
   if (v4)
   {
@@ -105,12 +105,12 @@
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 name];
-          v13 = [v12 isEqualToString:@"offset"];
+          name = [v11 name];
+          v13 = [name isEqualToString:@"offset"];
 
           if (v13)
           {
-            v14 = [v11 value];
+            value = [v11 value];
             goto LABEL_12;
           }
         }
@@ -125,7 +125,7 @@
       }
     }
 
-    v14 = 0;
+    value = 0;
 LABEL_12:
   }
 
@@ -138,10 +138,10 @@ LABEL_12:
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Parsing AMS Meta with no offset bag", buf, 2u);
     }
 
-    v14 = 0;
+    value = 0;
   }
 
-  return v14;
+  return value;
 }
 
 @end

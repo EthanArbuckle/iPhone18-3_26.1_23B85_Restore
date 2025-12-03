@@ -1,8 +1,8 @@
 @interface NSData
-- (NSData)initWithHexString:(id)a3;
+- (NSData)initWithHexString:(id)string;
 - (id)hexDescription;
 - (id)hexString;
-- (id)hmacSha1WithKey:(id)a3;
+- (id)hmacSha1WithKey:(id)key;
 - (id)md5;
 - (id)sha256Hash;
 @end
@@ -11,7 +11,7 @@
 
 - (id)hexDescription
 {
-  v3 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   v4 = [NSMutableString stringWithCapacity:2 * [(NSData *)self length]+ 2];
   [v4 appendFormat:@"0x"];
   if ([(NSData *)self length])
@@ -19,7 +19,7 @@
     v5 = 0;
     do
     {
-      [v4 appendFormat:@"%02x", v3[v5++]];
+      [v4 appendFormat:@"%02x", bytes[v5++]];
     }
 
     while ([(NSData *)self length]> v5);
@@ -32,14 +32,14 @@
 
 - (id)hexString
 {
-  v3 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   v4 = [NSMutableString stringWithCapacity:2 * [(NSData *)self length]];
   if ([(NSData *)self length])
   {
     v5 = 0;
     do
     {
-      [v4 appendFormat:@"%02x", v3[v5++]];
+      [v4 appendFormat:@"%02x", bytes[v5++]];
     }
 
     while ([(NSData *)self length]> v5);
@@ -58,16 +58,16 @@
   return v2;
 }
 
-- (id)hmacSha1WithKey:(id)a3
+- (id)hmacSha1WithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v5 = a3;
-    v6 = a3;
-    v7 = [v6 bytes];
-    v8 = [v6 length];
+    keyCopy = key;
+    keyCopy2 = key;
+    bytes = [keyCopy2 bytes];
+    v8 = [keyCopy2 length];
 
-    CCHmac(0, v7, v8, [(NSData *)self bytes], [(NSData *)self length], macOut);
+    CCHmac(0, bytes, v8, [(NSData *)self bytes], [(NSData *)self length], macOut);
     v9 = [NSData dataWithBytes:macOut length:20];
   }
 
@@ -87,9 +87,9 @@
   return v2;
 }
 
-- (NSData)initWithHexString:(id)a3
+- (NSData)initWithHexString:(id)string
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_1000A9F10];
+  v4 = [string stringByReplacingOccurrencesOfString:@" " withString:&stru_1000A9F10];
   v5 = objc_opt_new();
   v10 = 0;
   if ([v4 length] >= 2)

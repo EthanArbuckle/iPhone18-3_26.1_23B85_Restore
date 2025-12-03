@@ -1,26 +1,26 @@
 @interface CNFInternalListController
 - (CNFInternalListController)init;
-- (id)allowAllLiveVoicemailLocales:(id)a3;
-- (id)allowAnyNetworkCalls:(id)a3;
-- (id)allowFaceTimeAudioFromDialer:(id)a3;
-- (id)allowNonWifiCalls:(id)a3;
-- (id)autoAnswerInvites:(id)a3;
-- (id)notifySMS:(id)a3;
+- (id)allowAllLiveVoicemailLocales:(id)locales;
+- (id)allowAnyNetworkCalls:(id)calls;
+- (id)allowFaceTimeAudioFromDialer:(id)dialer;
+- (id)allowNonWifiCalls:(id)calls;
+- (id)autoAnswerInvites:(id)invites;
+- (id)notifySMS:(id)s;
 - (id)specifiers;
-- (id)useBlurStyle:(id)a3;
-- (void)daemonConnectionChanged:(id)a3;
+- (id)useBlurStyle:(id)style;
+- (void)daemonConnectionChanged:(id)changed;
 - (void)dealloc;
-- (void)registrationStatusChanged:(id)a3;
-- (void)resetSMSCounter:(id)a3;
-- (void)setAllowAllLiveVoicemailLocales:(id)a3 specifier:(id)a4;
-- (void)setAllowAnyNetworkCalls:(id)a3 specifier:(id)a4;
-- (void)setAllowFaceTimeAudioFromDialer:(id)a3 specifier:(id)a4;
-- (void)setAllowNonWifiCalls:(id)a3 specifier:(id)a4;
-- (void)setAutoAnswerInvites:(id)a3 specifier:(id)a4;
-- (void)setEnvironment:(id)a3 specifier:(id)a4;
-- (void)setNotifySMS:(id)a3 specifier:(id)a4;
-- (void)setUseBlurStyle:(id)a3 specifier:(id)a4;
-- (void)viewAccountsTapped:(id)a3;
+- (void)registrationStatusChanged:(id)changed;
+- (void)resetSMSCounter:(id)counter;
+- (void)setAllowAllLiveVoicemailLocales:(id)locales specifier:(id)specifier;
+- (void)setAllowAnyNetworkCalls:(id)calls specifier:(id)specifier;
+- (void)setAllowFaceTimeAudioFromDialer:(id)dialer specifier:(id)specifier;
+- (void)setAllowNonWifiCalls:(id)calls specifier:(id)specifier;
+- (void)setAutoAnswerInvites:(id)invites specifier:(id)specifier;
+- (void)setEnvironment:(id)environment specifier:(id)specifier;
+- (void)setNotifySMS:(id)s specifier:(id)specifier;
+- (void)setUseBlurStyle:(id)style specifier:(id)specifier;
+- (void)viewAccountsTapped:(id)tapped;
 @end
 
 @implementation CNFInternalListController
@@ -88,16 +88,16 @@
   [(CNFInternalListController *)&v4 dealloc];
 }
 
-- (id)allowNonWifiCalls:(id)a3
+- (id)allowNonWifiCalls:(id)calls
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAllowNonWifiCalls:(id)a3 specifier:(id)a4
+- (void)setAllowNonWifiCalls:(id)calls specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([calls BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -112,16 +112,16 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)allowAnyNetworkCalls:(id)a3
+- (id)allowAnyNetworkCalls:(id)calls
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAllowAnyNetworkCalls:(id)a3 specifier:(id)a4
+- (void)setAllowAnyNetworkCalls:(id)calls specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([calls BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -136,16 +136,16 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)allowAllLiveVoicemailLocales:(id)a3
+- (id)allowAllLiveVoicemailLocales:(id)locales
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAllowAllLiveVoicemailLocales:(id)a3 specifier:(id)a4
+- (void)setAllowAllLiveVoicemailLocales:(id)locales specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([locales BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -161,16 +161,16 @@
   +[CNFInternalSettingsUtilities killCallservicesd];
 }
 
-- (id)useBlurStyle:(id)a3
+- (id)useBlurStyle:(id)style
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setUseBlurStyle:(id)a3 specifier:(id)a4
+- (void)setUseBlurStyle:(id)style specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([style BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -186,16 +186,16 @@
   +[CNFInternalSettingsUtilities killFaceTime];
 }
 
-- (id)allowFaceTimeAudioFromDialer:(id)a3
+- (id)allowFaceTimeAudioFromDialer:(id)dialer
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAllowFaceTimeAudioFromDialer:(id)a3 specifier:(id)a4
+- (void)setAllowFaceTimeAudioFromDialer:(id)dialer specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([dialer BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -211,9 +211,9 @@
   +[CNFInternalSettingsUtilities killMobilePhone];
 }
 
-- (void)setNotifySMS:(id)a3 specifier:(id)a4
+- (void)setNotifySMS:(id)s specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([s BOOLValue])
   {
     v4 = [NSNumber numberWithInt:1];
   }
@@ -228,7 +228,7 @@
   CFPreferencesAppSynchronize(@"com.apple.conference");
 }
 
-- (id)notifySMS:(id)a3
+- (id)notifySMS:(id)s
 {
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"NotifySMS", @"com.apple.conference", &keyExistsAndHasValidFormat);
@@ -248,7 +248,7 @@
   return v6;
 }
 
-- (void)resetSMSCounter:(id)a3
+- (void)resetSMSCounter:(id)counter
 {
   CFPreferencesAppSynchronize(@"com.apple.conference");
   CFPreferencesSetAppValue(@"TotalSMSAttempts", 0, @"com.apple.conference");
@@ -257,7 +257,7 @@
   [(CNFInternalListController *)self reloadSpecifiers];
 }
 
-- (void)registrationStatusChanged:(id)a3
+- (void)registrationStatusChanged:(id)changed
 {
   [(CNFInternalListController *)self reloadSpecifierID:@"Status"];
   [(CNFInternalListController *)self reloadSpecifierID:@"Number"];
@@ -269,23 +269,23 @@
   [(CNFInternalListController *)self reloadSpecifierID:@"Push Token"];
 }
 
-- (void)daemonConnectionChanged:(id)a3
+- (void)daemonConnectionChanged:(id)changed
 {
-  v4 = a3;
-  [(CNFInternalListController *)self registrationStatusChanged:v4];
-  [(CNFInternalListController *)self loginStatusChanged:v4];
+  changedCopy = changed;
+  [(CNFInternalListController *)self registrationStatusChanged:changedCopy];
+  [(CNFInternalListController *)self loginStatusChanged:changedCopy];
 }
 
-- (void)setEnvironment:(id)a3 specifier:(id)a4
+- (void)setEnvironment:(id)environment specifier:(id)specifier
 {
-  v6 = a4;
-  [CNFInternalSettingsUtilities setIDSEnvironment:a3];
-  v7 = [(CNFInternalListController *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  specifierCopy = specifier;
+  [CNFInternalSettingsUtilities setIDSEnvironment:environment];
+  navigationController = [(CNFInternalListController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 
   +[CNFInternalSettingsUtilities signOutAllAccounts];
-  [v6 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-  v11 = [v6 propertyForKey:PSTableCellKey];
+  [specifierCopy setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+  v11 = [specifierCopy propertyForKey:PSTableCellKey];
 
   [v11 setCellEnabled:0];
   v9 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:2];
@@ -296,28 +296,28 @@
   dispatch_after(v10, &_dispatch_main_q, &stru_41B8);
 }
 
-- (void)viewAccountsTapped:(id)a3
+- (void)viewAccountsTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v6 = [[CNFInternalAccountListViewController alloc] initWithServiceType:0];
-  [v6 setSpecifier:v4];
+  [v6 setSpecifier:tappedCopy];
 
-  v5 = [(CNFInternalListController *)self rootController];
-  [v6 setRootController:v5];
+  rootController = [(CNFInternalListController *)self rootController];
+  [v6 setRootController:rootController];
 
   [(CNFInternalListController *)self showController:v6 animate:1];
 }
 
-- (id)autoAnswerInvites:(id)a3
+- (id)autoAnswerInvites:(id)invites
 {
   v3 = CNFGetDomainBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setAutoAnswerInvites:(id)a3 specifier:(id)a4
+- (void)setAutoAnswerInvites:(id)invites specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([invites BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }

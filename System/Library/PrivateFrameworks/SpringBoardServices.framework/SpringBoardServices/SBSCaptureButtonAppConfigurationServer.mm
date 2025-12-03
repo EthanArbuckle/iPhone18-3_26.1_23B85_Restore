@@ -1,45 +1,45 @@
 @interface SBSCaptureButtonAppConfigurationServer
 - (NSSet)eligibleApps;
 - (NSString)associatedAppBundleIdentifier;
-- (SBSCaptureButtonAppConfigurationServer)initWithAssociatedAppBundleIdentifier:(id)a3 eligibleApps:(id)a4 delegate:(id)a5;
+- (SBSCaptureButtonAppConfigurationServer)initWithAssociatedAppBundleIdentifier:(id)identifier eligibleApps:(id)apps delegate:(id)delegate;
 - (SBSCaptureButtonAppConfigurationServerDelegate)delegate;
 - (id)_currentConnections;
-- (void)_notifyExistingConnectionsDidUpdateAssociatedAppBundleIdentifier:(id)a3;
-- (void)_notifyExistingConnectionsDidUpdateEligibleApps:(id)a3;
-- (void)_sendInitialStateForNewConnection:(id)a3 associatedAppsBundleIdentifier:(id)a4 eligibleApps:(id)a5;
+- (void)_notifyExistingConnectionsDidUpdateAssociatedAppBundleIdentifier:(id)identifier;
+- (void)_notifyExistingConnectionsDidUpdateEligibleApps:(id)apps;
+- (void)_sendInitialStateForNewConnection:(id)connection associatedAppsBundleIdentifier:(id)identifier eligibleApps:(id)apps;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)a3;
-- (void)setEligibleApps:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier;
+- (void)setEligibleApps:(id)apps;
 - (void)startServer;
 @end
 
 @implementation SBSCaptureButtonAppConfigurationServer
 
-- (SBSCaptureButtonAppConfigurationServer)initWithAssociatedAppBundleIdentifier:(id)a3 eligibleApps:(id)a4 delegate:(id)a5
+- (SBSCaptureButtonAppConfigurationServer)initWithAssociatedAppBundleIdentifier:(id)identifier eligibleApps:(id)apps delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  appsCopy = apps;
+  delegateCopy = delegate;
   v11 = [(SBSCaptureButtonAppConfigurationServer *)self init];
   v12 = v11;
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_connections = v12->_lock_connections;
-    v12->_lock_connections = v13;
+    v12->_lock_connections = array;
 
-    v15 = [v8 copy];
+    v15 = [identifierCopy copy];
     lock_associatedAppBundleIdentifier = v12->_lock_associatedAppBundleIdentifier;
     v12->_lock_associatedAppBundleIdentifier = v15;
 
-    v17 = [v9 copy];
+    v17 = [appsCopy copy];
     lock_eligibleApps = v12->_lock_eligibleApps;
     v12->_lock_eligibleApps = v17;
 
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;
@@ -78,16 +78,16 @@ void __53__SBSCaptureButtonAppConfigurationServer_startServer__block_invoke(uint
   [(SBSCaptureButtonAppConfigurationServer *)&v3 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v11 = [v9 remoteProcess];
-  v12 = [v11 auditToken];
-  if ([v12 hasEntitlement:@"com.apple.springboard.private.capture-button-app-configuration-service"])
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  if ([auditToken hasEntitlement:@"com.apple.springboard.private.capture-button-app-configuration-service"])
   {
 
 LABEL_4:
@@ -97,18 +97,18 @@ LABEL_4:
     v17[3] = &unk_1E735F0A8;
     v17[4] = self;
     objc_copyWeak(&v18, &location);
-    [v9 configureConnection:v17];
+    [connectionCopy configureConnection:v17];
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_lock_connections addObject:v9];
+    [(NSMutableArray *)self->_lock_connections addObject:connectionCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [v9 activate];
+    [connectionCopy activate];
     objc_destroyWeak(&v18);
     goto LABEL_8;
   }
 
-  v13 = [v9 remoteProcess];
-  v14 = [v13 auditToken];
-  v15 = [v14 hasEntitlement:@"com.apple.springboard.private.EA0E3FBF-D56E-4897-B807-A3CA8090EE38"];
+  remoteProcess2 = [connectionCopy remoteProcess];
+  auditToken2 = [remoteProcess2 auditToken];
+  v15 = [auditToken2 hasEntitlement:@"com.apple.springboard.private.EA0E3FBF-D56E-4897-B807-A3CA8090EE38"];
 
   if (v15)
   {
@@ -119,11 +119,11 @@ LABEL_4:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_impl(&dword_19169D000, v16, OS_LOG_TYPE_DEFAULT, "SBSCaptureButtonAppConfigurationServer invalidating connection because client process is missing required entitlement %@.", buf, 0xCu);
   }
 
-  [v9 invalidate];
+  [connectionCopy invalidate];
 LABEL_8:
   objc_destroyWeak(&location);
 }
@@ -219,15 +219,15 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   return v3;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v4 = [(SBSCaptureButtonAppConfigurationServer *)self associatedAppBundleIdentifier];
+  identifierCopy = identifier;
+  associatedAppBundleIdentifier = [(SBSCaptureButtonAppConfigurationServer *)self associatedAppBundleIdentifier];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v9 copy];
+    v6 = [identifierCopy copy];
     os_unfair_lock_lock(&self->_lock);
     lock_associatedAppBundleIdentifier = self->_lock_associatedAppBundleIdentifier;
     self->_lock_associatedAppBundleIdentifier = v6;
@@ -247,15 +247,15 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   return v3;
 }
 
-- (void)setEligibleApps:(id)a3
+- (void)setEligibleApps:(id)apps
 {
-  v9 = a3;
-  v4 = [(SBSCaptureButtonAppConfigurationServer *)self eligibleApps];
+  appsCopy = apps;
+  eligibleApps = [(SBSCaptureButtonAppConfigurationServer *)self eligibleApps];
   v5 = BSEqualSets();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v9 copy];
+    v6 = [appsCopy copy];
     os_unfair_lock_lock(&self->_lock);
     lock_eligibleApps = self->_lock_eligibleApps;
     self->_lock_eligibleApps = v6;
@@ -266,17 +266,17 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   }
 }
 
-- (void)_sendInitialStateForNewConnection:(id)a3 associatedAppsBundleIdentifier:(id)a4 eligibleApps:(id)a5
+- (void)_sendInitialStateForNewConnection:(id)connection associatedAppsBundleIdentifier:(id)identifier eligibleApps:(id)apps
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 remoteTarget];
-  [v10 receiveInitialOrUpdatedAssociatedAppBundleIdentifier:v8];
+  appsCopy = apps;
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  remoteTarget = [connectionCopy remoteTarget];
+  [remoteTarget receiveInitialOrUpdatedAssociatedAppBundleIdentifier:identifierCopy];
 
-  v11 = [v9 remoteTarget];
+  remoteTarget2 = [connectionCopy remoteTarget];
 
-  [v11 receiveInitialOrUpdatedEligibleApps:v7];
+  [remoteTarget2 receiveInitialOrUpdatedEligibleApps:appsCopy];
 }
 
 - (id)_currentConnections
@@ -288,12 +288,12 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   return v3;
 }
 
-- (void)_notifyExistingConnectionsDidUpdateAssociatedAppBundleIdentifier:(id)a3
+- (void)_notifyExistingConnectionsDidUpdateAssociatedAppBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBSCaptureButtonAppConfigurationServer *)self _currentConnections];
-  v6 = [v5 copy];
+  identifierCopy = identifier;
+  _currentConnections = [(SBSCaptureButtonAppConfigurationServer *)self _currentConnections];
+  v6 = [_currentConnections copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -315,8 +315,8 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) remoteTarget];
-        [v12 receiveInitialOrUpdatedAssociatedAppBundleIdentifier:v4];
+        remoteTarget = [*(*(&v13 + 1) + 8 * v11) remoteTarget];
+        [remoteTarget receiveInitialOrUpdatedAssociatedAppBundleIdentifier:identifierCopy];
 
         ++v11;
       }
@@ -329,12 +329,12 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   }
 }
 
-- (void)_notifyExistingConnectionsDidUpdateEligibleApps:(id)a3
+- (void)_notifyExistingConnectionsDidUpdateEligibleApps:(id)apps
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBSCaptureButtonAppConfigurationServer *)self _currentConnections];
-  v6 = [v5 copy];
+  appsCopy = apps;
+  _currentConnections = [(SBSCaptureButtonAppConfigurationServer *)self _currentConnections];
+  v6 = [_currentConnections copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -356,8 +356,8 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) remoteTarget];
-        [v12 receiveInitialOrUpdatedEligibleApps:v4];
+        remoteTarget = [*(*(&v13 + 1) + 8 * v11) remoteTarget];
+        [remoteTarget receiveInitialOrUpdatedEligibleApps:appsCopy];
 
         ++v11;
       }
@@ -370,25 +370,25 @@ void __84__SBSCaptureButtonAppConfigurationServer_listener_didReceiveConnection_
   }
 }
 
-- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)a3
+- (void)setCurrentAssociatedAppUsingBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E698F490] currentContext];
-  v5 = [v4 remoteProcess];
-  v6 = [v5 bundleIdentifier];
+  identifierCopy = identifier;
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
 
   v7 = SBLogCameraCaptureAppConfiguration();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = v3;
+    v10 = identifierCopy;
     v11 = 2114;
-    v12 = v6;
+    v12 = bundleIdentifier;
     _os_log_impl(&dword_19169D000, v7, OS_LOG_TYPE_DEFAULT, "SBSCaptureButtonAppConfigurationServer received request to set current active app bundle identifier to %{public}@ from %{public}@", buf, 0x16u);
   }
 
-  v8 = v3;
+  v8 = identifierCopy;
   BSDispatchMain();
 }
 

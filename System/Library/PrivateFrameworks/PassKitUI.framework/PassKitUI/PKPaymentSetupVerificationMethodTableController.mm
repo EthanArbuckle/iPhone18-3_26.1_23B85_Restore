@@ -1,26 +1,26 @@
 @interface PKPaymentSetupVerificationMethodTableController
-- (PKPaymentSetupVerificationMethodTableController)initWithVerificationController:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (PKPaymentSetupVerificationMethodTableController)initWithVerificationController:(id)controller;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)newVerificationRequest;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation PKPaymentSetupVerificationMethodTableController
 
-- (PKPaymentSetupVerificationMethodTableController)initWithVerificationController:(id)a3
+- (PKPaymentSetupVerificationMethodTableController)initWithVerificationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKPaymentSetupVerificationMethodTableController;
   v6 = [(PKPaymentSetupVerificationMethodTableController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_verificationController, a3);
+    objc_storeStrong(&v6->_verificationController, controller);
   }
 
   return v7;
@@ -28,10 +28,10 @@
 
 - (id)defaultHeaderViewTitle
 {
-  v2 = [(PKPaymentVerificationController *)self->_verificationController pass];
-  v3 = [v2 supportsBarcodePayment];
+  pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+  supportsBarcodePayment = [pass supportsBarcodePayment];
 
-  if (v3)
+  if (supportsBarcodePayment)
   {
     PKLocalizedAquamanString(&cfstr_AccountVerific.isa);
   }
@@ -47,11 +47,11 @@
 
 - (id)defaultHeaderViewSubTitle
 {
-  v2 = [(PKPaymentVerificationController *)self->_verificationController pass];
-  if ([v2 supportsBarcodePayment])
+  pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+  if ([pass supportsBarcodePayment])
   {
-    v3 = [v2 organizationName];
-    v4 = PKLocalizedAquamanString(&cfstr_ChooseAccountV.isa, &stru_1F3BD5BF0.isa, v3);
+    organizationName = [pass organizationName];
+    v4 = PKLocalizedAquamanString(&cfstr_ChooseAccountV.isa, &stru_1F3BD5BF0.isa, organizationName);
   }
 
   else
@@ -62,9 +62,9 @@
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a3;
+  viewCopy = view;
   sizingCell = self->_sizingCell;
   if (!sizingCell)
   {
@@ -75,17 +75,17 @@
     sizingCell = self->_sizingCell;
   }
 
-  [v5 bounds];
+  [viewCopy bounds];
   [(PKActivationMethodTableViewCell *)sizingCell sizeThatFits:v9, 1.79769313e308];
   v11 = v10;
 
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKActivationMethodTableViewCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKActivationMethodTableViewCellIdentifier"];
   if (!v7)
   {
     v7 = [[PKActivationMethodTableViewCell alloc] initWithStyle:1 reuseIdentifier:@"PKActivationMethodTableViewCellIdentifier"];
@@ -93,17 +93,17 @@
     [(PKActivationMethodTableViewCell *)v7 setBackgroundColor:v8];
   }
 
-  v9 = -[NSArray objectAtIndex:](self->_verificationMethodGroups, "objectAtIndex:", [v6 row]);
-  v10 = [(PKActivationMethodTableViewCell *)v7 textLabel];
-  v11 = [v9 localizedTitle];
-  [v10 setText:v11];
+  v9 = -[NSArray objectAtIndex:](self->_verificationMethodGroups, "objectAtIndex:", [pathCopy row]);
+  textLabel = [(PKActivationMethodTableViewCell *)v7 textLabel];
+  localizedTitle = [v9 localizedTitle];
+  [textLabel setText:localizedTitle];
 
-  v12 = [(PKActivationMethodTableViewCell *)v7 detailTextLabel];
-  v13 = [(PKPaymentVerificationController *)self->_verificationController pass];
-  v14 = [v9 localizedShortDescriptionWithPass:v13];
-  [v12 setText:v14];
+  detailTextLabel = [(PKActivationMethodTableViewCell *)v7 detailTextLabel];
+  pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+  v14 = [v9 localizedShortDescriptionWithPass:pass];
+  [detailTextLabel setText:v14];
 
-  v15 = [v6 row];
+  v15 = [pathCopy row];
   if (v15 == self->_selectedIndex)
   {
     v16 = 3;
@@ -119,36 +119,36 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v8 = [MEMORY[0x1E696AC88] indexPathForRow:self->_selectedIndex inSection:{objc_msgSend(v6, "section")}];
-  v11 = [v7 cellForRowAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [MEMORY[0x1E696AC88] indexPathForRow:self->_selectedIndex inSection:{objc_msgSend(pathCopy, "section")}];
+  v11 = [viewCopy cellForRowAtIndexPath:v8];
 
   [v11 setAccessoryType:0];
-  v9 = [v7 cellForRowAtIndexPath:v6];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   self->_selectedIndex = v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   verificationController = self->_verificationController;
-  v6 = a4;
-  PKPaymentSetupApplyContextAppearance([(PKPaymentVerificationController *)verificationController context], v6);
+  cellCopy = cell;
+  PKPaymentSetupApplyContextAppearance([(PKPaymentVerificationController *)verificationController context], cellCopy);
 }
 
 - (id)newVerificationRequest
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69B8EF0]);
-  v4 = [(PKPaymentVerificationController *)self->_verificationController pass];
-  [v3 setPass:v4];
+  pass = [(PKPaymentVerificationController *)self->_verificationController pass];
+  [v3 setPass:pass];
 
   v5 = [(NSArray *)self->_verificationMethodGroups objectAtIndex:self->_selectedIndex];
   if (v5)

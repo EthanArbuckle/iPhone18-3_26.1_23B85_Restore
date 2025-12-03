@@ -1,11 +1,11 @@
 @interface HDDatabaseDiagnosticOperation
-- (BOOL)_captureUnprotectedDatabaseAtURL:(id)a3 protectedDatabaseAtURL:(id)a4 reason:(id)a5;
-- (BOOL)_reportStatisticsForUnprotectedDatabaseAtURL:(id)a3 protectedDatabaseAtURL:(id)a4;
-- (void)_reportJournalStatisticsInSubdirectory:(id)a3 profileDirectory:(id)a4;
+- (BOOL)_captureUnprotectedDatabaseAtURL:(id)l protectedDatabaseAtURL:(id)rL reason:(id)reason;
+- (BOOL)_reportStatisticsForUnprotectedDatabaseAtURL:(id)l protectedDatabaseAtURL:(id)rL;
+- (void)_reportJournalStatisticsInSubdirectory:(id)subdirectory profileDirectory:(id)directory;
 - (void)_reportMedicalIDStatistics;
-- (void)_reportMissingSourceOrderEntriesWithUnprotectedDatabase:(id)a3 protectedDatabase:(id)a4;
-- (void)_reportSamplePruningStateDescriptionWithHealthStore:(id)a3;
-- (void)_reportSizeForHFDAtURL:(id)a3;
+- (void)_reportMissingSourceOrderEntriesWithUnprotectedDatabase:(id)database protectedDatabase:(id)protectedDatabase;
+- (void)_reportSamplePruningStateDescriptionWithHealthStore:(id)store;
+- (void)_reportSizeForHFDAtURL:(id)l;
 - (void)run;
 @end
 
@@ -14,18 +14,18 @@
 - (void)run
 {
   [(HDDiagnosticOperation *)self log:@"Analyzing health database...\n"];
-  v7 = [(HDDiagnosticOperation *)self healthDirectoryURL];
-  v3 = [v7 URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
-  v4 = [v7 URLByAppendingPathComponent:@"healthdb_secure.sqlite" isDirectory:0];
-  v5 = [v7 URLByAppendingPathComponent:@"healthdb_secure.hfd" isDirectory:0];
+  healthDirectoryURL = [(HDDiagnosticOperation *)self healthDirectoryURL];
+  v3 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
+  v4 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb_secure.sqlite" isDirectory:0];
+  v5 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb_secure.hfd" isDirectory:0];
   [(HDDiagnosticOperation *)self reportStatsForDatabaseAtURL:v3];
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self reportStatsForDatabaseAtURL:v4];
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDatabaseDiagnosticOperation *)self _reportSizeForHFDAtURL:v5];
   [(HDDiagnosticOperation *)self appendNewline];
-  [(HDDatabaseDiagnosticOperation *)self _reportJournalStatisticsInSubdirectory:@"Journals" profileDirectory:v7];
-  [(HDDatabaseDiagnosticOperation *)self _reportJournalStatisticsInSubdirectory:@"CloudSyncJournals" profileDirectory:v7];
+  [(HDDatabaseDiagnosticOperation *)self _reportJournalStatisticsInSubdirectory:@"Journals" profileDirectory:healthDirectoryURL];
+  [(HDDatabaseDiagnosticOperation *)self _reportJournalStatisticsInSubdirectory:@"CloudSyncJournals" profileDirectory:healthDirectoryURL];
   [(HDDatabaseDiagnosticOperation *)self _reportMedicalIDStatistics];
   if ([(HDDatabaseDiagnosticOperation *)self _reportStatisticsForUnprotectedDatabaseAtURL:v3 protectedDatabaseAtURL:v4]&& ![(HDDatabaseDiagnosticOperation *)self _captureUnprotectedDatabaseAtURL:v3 protectedDatabaseAtURL:v4 reason:@"analysis result"])
   {
@@ -36,29 +36,29 @@
   [(HDDatabaseDiagnosticOperation *)self _reportSamplePruningStateDescriptionWithHealthStore:v6];
 }
 
-- (BOOL)_captureUnprotectedDatabaseAtURL:(id)a3 protectedDatabaseAtURL:(id)a4 reason:(id)a5
+- (BOOL)_captureUnprotectedDatabaseAtURL:(id)l protectedDatabaseAtURL:(id)rL reason:(id)reason
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  reasonCopy = reason;
   if ([(HDDatabaseDiagnosticOperation *)self allowsSensitiveAttachments])
   {
-    [(HDDiagnosticOperation *)self log:@"Capturing Health database for reason: %@", v10];
+    [(HDDiagnosticOperation *)self log:@"Capturing Health database for reason: %@", reasonCopy];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v32[0] = v8;
-    v32[1] = v9;
+    v32[0] = lCopy;
+    v32[1] = rLCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v12 = [v11 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v12)
     {
       v13 = v12;
-      v25 = v10;
-      v26 = v9;
-      v27 = v8;
+      v25 = reasonCopy;
+      v26 = rLCopy;
+      v27 = lCopy;
       v14 = 0;
       v15 = *v29;
       do
@@ -71,9 +71,9 @@
           }
 
           v17 = *(*(&v28 + 1) + 8 * i);
-          v18 = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
-          v19 = [v17 lastPathComponent];
-          v20 = [v18 URLByAppendingPathComponent:v19 isDirectory:0];
+          attachmentDirectoryURL = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
+          lastPathComponent = [v17 lastPathComponent];
+          v20 = [attachmentDirectoryURL URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
           if ([(HDDiagnosticOperation *)self copyDatabaseFromURL:v17 toURL:v20])
           {
@@ -82,8 +82,8 @@
 
           else
           {
-            v21 = [v17 path];
-            [(HDDiagnosticOperation *)self log:@"Failed to collect database at path %@", v21];
+            path = [v17 path];
+            [(HDDiagnosticOperation *)self log:@"Failed to collect database at path %@", path];
           }
         }
 
@@ -92,9 +92,9 @@
 
       while (v13);
       v22 = v14 > 0;
-      v9 = v26;
-      v8 = v27;
-      v10 = v25;
+      rLCopy = v26;
+      lCopy = v27;
+      reasonCopy = v25;
     }
 
     else
@@ -105,7 +105,7 @@
 
   else
   {
-    [(HDDiagnosticOperation *)self log:@"Sensitive attachments disabled. Skipping database capture for: %@", v10];
+    [(HDDiagnosticOperation *)self log:@"Sensitive attachments disabled. Skipping database capture for: %@", reasonCopy];
     v22 = 0;
   }
 
@@ -120,8 +120,8 @@
   v4 = [v3 URLByAppendingPathComponent:@"MedicalID"];
   v5 = [v4 URLByAppendingPathComponent:@"MedicalIDData.archive" isDirectory:0];
 
-  v6 = [v5 path];
-  v7 = [v9 fileExistsAtPath:v6];
+  path = [v5 path];
+  v7 = [v9 fileExistsAtPath:path];
 
   if (v7)
   {
@@ -135,18 +135,18 @@
   }
 }
 
-- (BOOL)_reportStatisticsForUnprotectedDatabaseAtURL:(id)a3 protectedDatabaseAtURL:(id)a4
+- (BOOL)_reportStatisticsForUnprotectedDatabaseAtURL:(id)l protectedDatabaseAtURL:(id)rL
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  rLCopy = rL;
+  lCopy = l;
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendStrongSeparator];
-  v8 = [v7 path];
-  [(HDDiagnosticOperation *)self appendFormat:@"Unprotected Database (%@):\n", v8];
+  path = [lCopy path];
+  [(HDDiagnosticOperation *)self appendFormat:@"Unprotected Database (%@):\n", path];
 
-  [(HDDiagnosticOperation *)self verifyPermissionsForFileAtURL:v7];
-  v9 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v7];
+  [(HDDiagnosticOperation *)self verifyPermissionsForFileAtURL:lCopy];
+  v9 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:lCopy];
 
   if (v9)
   {
@@ -163,18 +163,18 @@
 
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendStrongSeparator];
-  v11 = [v6 path];
-  [(HDDiagnosticOperation *)self appendFormat:@"Protected Database (%@):\n", v11];
+  path2 = [rLCopy path];
+  [(HDDiagnosticOperation *)self appendFormat:@"Protected Database (%@):\n", path2];
 
-  [(HDDiagnosticOperation *)self verifyPermissionsForFileAtURL:v6];
-  v12 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v6];
+  [(HDDiagnosticOperation *)self verifyPermissionsForFileAtURL:rLCopy];
+  v12 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:rLCopy];
 
   if (v12)
   {
     [(HDDiagnosticOperation *)self log:@"Analyzing protected database..."];
-    v13 = [v12 fileURL];
-    v14 = [v13 path];
-    [(HDDiagnosticOperation *)self log:@"Skip integrity check for %@", v14];
+    fileURL = [v12 fileURL];
+    path3 = [fileURL path];
+    [(HDDiagnosticOperation *)self log:@"Skip integrity check for %@", path3];
 
     [(HDDiagnosticOperation *)self checkSchemaVersionForDatabase:v12 currentSchema:19102 futureSchema:100030];
     v18[0] = objc_opt_class();
@@ -202,33 +202,33 @@
   return 0;
 }
 
-- (void)_reportSizeForHFDAtURL:(id)a3
+- (void)_reportSizeForHFDAtURL:(id)l
 {
-  v16 = a3;
-  v4 = [v16 path];
-  [(HDDiagnosticOperation *)self appendFormat:@"HFD database %@:", v4];
+  lCopy = l;
+  path = [lCopy path];
+  [(HDDiagnosticOperation *)self appendFormat:@"HFD database %@:", path];
 
   v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v6 = [v16 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path2 = [lCopy path];
+  v7 = [v5 fileExistsAtPath:path2];
 
   if (v7)
   {
-    v8 = [(HDDiagnosticOperation *)self fileSizeForURL:v16];
+    v8 = [(HDDiagnosticOperation *)self fileSizeForURL:lCopy];
     if ((v8 & 0x8000000000000000) == 0)
     {
       v9 = v8;
-      v10 = [v16 lastPathComponent];
-      [(HDDiagnosticOperation *)self appendFormat:@"\t%@:", v10];
+      lastPathComponent = [lCopy lastPathComponent];
+      [(HDDiagnosticOperation *)self appendFormat:@"\t%@:", lastPathComponent];
 
       v11 = [(HDDiagnosticOperation *)self prettyPrintFileSize:v9];
       [(HDDiagnosticOperation *)self appendFormat:@"\t\tSize:\t\t%@", v11];
 
-      v12 = [(HDDiagnosticOperation *)self fileCreationDateForURL:v16];
+      v12 = [(HDDiagnosticOperation *)self fileCreationDateForURL:lCopy];
       v13 = [(HDDiagnosticOperation *)self stringFromDate:v12];
       [(HDDiagnosticOperation *)self appendFormat:@"\t\tCreated:\t%@", v13];
 
-      v14 = [(HDDiagnosticOperation *)self fileModificationDateForURL:v16];
+      v14 = [(HDDiagnosticOperation *)self fileModificationDateForURL:lCopy];
       v15 = [(HDDiagnosticOperation *)self stringFromDate:v14];
       [(HDDiagnosticOperation *)self appendFormat:@"\t\tModified:\t%@", v15];
     }
@@ -240,10 +240,10 @@
   }
 }
 
-- (void)_reportJournalStatisticsInSubdirectory:(id)a3 profileDirectory:(id)a4
+- (void)_reportJournalStatisticsInSubdirectory:(id)subdirectory profileDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = [a4 URLByAppendingPathComponent:v6 isDirectory:1];
+  subdirectoryCopy = subdirectory;
+  v7 = [directory URLByAppendingPathComponent:subdirectoryCopy isDirectory:1];
   v15 = 0;
   v16 = 0.0;
   v14 = 0;
@@ -255,27 +255,27 @@
     v11 = v14 * 0.0009765625;
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v16];
     v13 = [(HDDiagnosticOperation *)self stringFromDate:v12];
-    [(HDDiagnosticOperation *)self appendFormat:@"%@: Found %ld unprocessed journal chapters (total %0.2lfkb, max %0.2lfkb). The oldest file was last modified %@", v6, v9, *&v10, *&v11, v13];
+    [(HDDiagnosticOperation *)self appendFormat:@"%@: Found %ld unprocessed journal chapters (total %0.2lfkb, max %0.2lfkb). The oldest file was last modified %@", subdirectoryCopy, v9, *&v10, *&v11, v13];
   }
 
   else
   {
-    [(HDDiagnosticOperation *)self appendFormat:@"%@: No outstanding unprocessed journal chapters.", v6];
+    [(HDDiagnosticOperation *)self appendFormat:@"%@: No outstanding unprocessed journal chapters.", subdirectoryCopy];
   }
 }
 
-- (void)_reportMissingSourceOrderEntriesWithUnprotectedDatabase:(id)a3 protectedDatabase:(id)a4
+- (void)_reportMissingSourceOrderEntriesWithUnprotectedDatabase:(id)database protectedDatabase:(id)protectedDatabase
 {
-  v6 = a4;
-  v7 = a3;
+  protectedDatabaseCopy = protectedDatabase;
+  databaseCopy = database;
   [(HDDiagnosticOperation *)self log:@"Checking for missing source order entries..."];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = MEMORY[0x277CCACA8];
   v10 = *MEMORY[0x277D10468];
   v11 = *MEMORY[0x277D10470];
-  v12 = [MEMORY[0x277D10740] databaseTable];
+  databaseTable = [MEMORY[0x277D10740] databaseTable];
   v13 = *MEMORY[0x277D10A40];
-  v14 = [v9 stringWithFormat:@"SELECT %@, %@ FROM %@ ORDER BY %@ ASC, %@ ASC", v10, v11, v12, v10, *MEMORY[0x277D10A40]];
+  v14 = [v9 stringWithFormat:@"SELECT %@, %@ FROM %@ ORDER BY %@ ASC, %@ ASC", v10, v11, databaseTable, v10, *MEMORY[0x277D10A40]];
 
   v38[0] = 0;
   v36[0] = MEMORY[0x277D85DD0];
@@ -284,25 +284,25 @@
   v36[3] = &unk_2796C0D00;
   v15 = v8;
   v37 = v15;
-  LOBYTE(v12) = [v7 executeSQL:v14 error:v38 bindingHandler:0 enumerationHandler:v36];
+  LOBYTE(databaseTable) = [databaseCopy executeSQL:v14 error:v38 bindingHandler:0 enumerationHandler:v36];
 
   v16 = v38[0];
   v17 = v16;
-  if (v12)
+  if (databaseTable)
   {
     v29 = MEMORY[0x277CCACA8];
     v28 = *MEMORY[0x277D104A0];
     v18 = *MEMORY[0x277D10428];
-    v27 = [MEMORY[0x277D10848] databaseTable];
-    v26 = [MEMORY[0x277D10690] databaseTable];
+    databaseTable2 = [MEMORY[0x277D10848] databaseTable];
+    databaseTable3 = [MEMORY[0x277D10690] databaseTable];
     v25 = *MEMORY[0x277D10410];
     [MEMORY[0x277D106A0] databaseTable];
     v19 = v31 = self;
-    v20 = [MEMORY[0x277D10690] databaseTable];
-    v30 = v6;
+    databaseTable4 = [MEMORY[0x277D10690] databaseTable];
+    v30 = protectedDatabaseCopy;
     v21 = *MEMORY[0x277D10418];
-    v22 = [MEMORY[0x277D106A0] databaseTable];
-    v23 = [v29 stringWithFormat:@"SELECT %@, %@ FROM %@ INNER JOIN %@ USING (%@) INNER JOIN %@ ON %@.%@=%@.%@ GROUP BY %@, %@", v28, v18, v27, v26, v25, v19, v20, v21, v22, v13, v28, v18];
+    databaseTable5 = [MEMORY[0x277D106A0] databaseTable];
+    v23 = [v29 stringWithFormat:@"SELECT %@, %@ FROM %@ INNER JOIN %@ USING (%@) INNER JOIN %@ ON %@.%@=%@.%@ GROUP BY %@, %@", v28, v18, databaseTable2, databaseTable3, v25, v19, databaseTable4, v21, databaseTable5, v13, v28, v18];
 
     v35 = 0;
     v32[0] = MEMORY[0x277D85DD0];
@@ -311,11 +311,11 @@
     v32[3] = &unk_2796C0D28;
     v33 = v15;
     v34 = v31;
-    v6 = v30;
-    LOBYTE(v22) = [v30 executeSQL:v23 error:&v35 bindingHandler:0 enumerationHandler:v32];
+    protectedDatabaseCopy = v30;
+    LOBYTE(databaseTable5) = [v30 executeSQL:v23 error:&v35 bindingHandler:0 enumerationHandler:v32];
     v24 = v35;
     v17 = v24;
-    if ((v22 & 1) == 0)
+    if ((databaseTable5 & 1) == 0)
     {
       [(HDDiagnosticOperation *)v31 log:@"Failed to enumerate data_type/source_id combinations: %@", v24];
     }
@@ -359,26 +359,26 @@ uint64_t __107__HDDatabaseDiagnosticOperation__reportMissingSourceOrderEntriesWi
   return 1;
 }
 
-- (void)_reportSamplePruningStateDescriptionWithHealthStore:(id)a3
+- (void)_reportSamplePruningStateDescriptionWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = dispatch_semaphore_create(0);
-  v6 = [objc_alloc(MEMORY[0x277CCD2C0]) initWithHealthStore:v4];
+  v6 = [objc_alloc(MEMORY[0x277CCD2C0]) initWithHealthStore:storeCopy];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __85__HDDatabaseDiagnosticOperation__reportSamplePruningStateDescriptionWithHealthStore___block_invoke;
   v13 = &unk_2796C0CD8;
-  v14 = self;
+  selfCopy = self;
   v8 = v5;
   v15 = v8;
-  [v6 showAndDeletedSampleInfoWithReferenceDate:v7 completion:&v10];
+  [v6 showAndDeletedSampleInfoWithReferenceDate:date completion:&v10];
 
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
-    [(HDDiagnosticOperation *)self log:@"ERROR: Timed out attempting collect pruning state description", v10, v11, v12, v13, v14];
+    [(HDDiagnosticOperation *)self log:@"ERROR: Timed out attempting collect pruning state description", v10, v11, v12, v13, selfCopy];
   }
 }
 

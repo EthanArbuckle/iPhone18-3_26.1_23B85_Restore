@@ -1,24 +1,24 @@
 @interface BNBannerClientContainerViewController
 - (BNBannerClientContainerDelegate)delegate;
-- (BNBannerClientContainerViewController)initWithScene:(id)a3 presentable:(id)a4 context:(id)a5;
+- (BNBannerClientContainerViewController)initWithScene:(id)scene presentable:(id)presentable context:(id)context;
 - (NSString)description;
 - (UIScene)scene;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)keyWindowForScreen:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)keyWindowForScreen:(id)screen;
 - (void)_acquireDeferringRuleIfNecessary;
-- (void)_handlePanGestureProxyAction:(id)a3;
-- (void)_handleRejectionAction:(id)a3;
+- (void)_handlePanGestureProxyAction:(id)action;
+- (void)_handleRejectionAction:(id)action;
 - (void)_invalidateDeferringRule;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_setPreferredContentSize:(CGSize)a3 shouldFence:(BOOL)a4;
-- (void)_setPresentableBannerAppearState:(int)a3 reason:(id)a4;
-- (void)_setPresentableUserInteractionInProgress:(BOOL)a3;
-- (void)_setPresentableViewControllerAppearState:(int)a3;
-- (void)bs_traitCollectionDidChange:(id)a3 forManagedTraitEnvironment:(id)a4;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_setPreferredContentSize:(CGSize)size shouldFence:(BOOL)fence;
+- (void)_setPresentableBannerAppearState:(int)state reason:(id)reason;
+- (void)_setPresentableUserInteractionInProgress:(BOOL)progress;
+- (void)_setPresentableViewControllerAppearState:(int)state;
+- (void)bs_traitCollectionDidChange:(id)change forManagedTraitEnvironment:(id)environment;
 - (void)dealloc;
-- (void)performCoordinatedUpdate:(id)a3 updateResponseHandler:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)performCoordinatedUpdate:(id)update updateResponseHandler:(id)handler;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 - (void)setHostNeedsUpdate;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -53,14 +53,14 @@
   [(BNBannerClientContainerViewController *)&v5 dealloc];
 }
 
-- (BNBannerClientContainerViewController)initWithScene:(id)a3 presentable:(id)a4 context:(id)a5
+- (BNBannerClientContainerViewController)initWithScene:(id)scene presentable:(id)presentable context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  sceneCopy = scene;
+  presentableCopy = presentable;
+  contextCopy = context;
+  if (sceneCopy)
   {
-    if (v10)
+    if (presentableCopy)
     {
       goto LABEL_3;
     }
@@ -69,7 +69,7 @@
   else
   {
     [BNBannerClientContainerViewController initWithScene:presentable:context:];
-    if (v10)
+    if (presentableCopy)
     {
       goto LABEL_3;
     }
@@ -83,28 +83,28 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    v14 = objc_storeWeak(&v12->_scene, v9);
-    v15 = [v9 _FBSScene];
-    [v15 addObserver:v13];
+    v14 = objc_storeWeak(&v12->_scene, sceneCopy);
+    _FBSScene = [sceneCopy _FBSScene];
+    [_FBSScene addObserver:v13];
 
-    objc_storeStrong(&v13->_presentable, a4);
-    objc_storeStrong(&v13->_presentableContext, a5);
-    v16 = [(BNPresentable *)v13->_presentable viewController];
-    if (!v16)
+    objc_storeStrong(&v13->_presentable, presentable);
+    objc_storeStrong(&v13->_presentableContext, context);
+    viewController = [(BNPresentable *)v13->_presentable viewController];
+    if (!viewController)
     {
-      [BNBannerClientContainerViewController initWithScene:a2 presentable:v13 context:v10];
+      [BNBannerClientContainerViewController initWithScene:a2 presentable:v13 context:presentableCopy];
     }
 
-    [(BNBannerClientContainerViewController *)v13 addChildViewController:v16];
-    [v16 didMoveToParentViewController:v13];
+    [(BNBannerClientContainerViewController *)v13 addChildViewController:viewController];
+    [viewController didMoveToParentViewController:v13];
     WeakRetained = objc_loadWeakRetained(&v13->_scene);
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __75__BNBannerClientContainerViewController_initWithScene_presentable_context___block_invoke;
     v23 = &unk_1E81E4B08;
-    v18 = v16;
+    v18 = viewController;
     v24 = v18;
-    v25 = v10;
+    v25 = presentableCopy;
     [WeakRetained _updateUIClientSettingsWithBlock:&v20];
 
     if (objc_opt_respondsToSelector())
@@ -187,37 +187,37 @@ void __75__BNBannerClientContainerViewController_initWithScene_presentable_conte
   }
 }
 
-- (id)keyWindowForScreen:(id)a3
+- (id)keyWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if ([(BNBannerClientContainerViewController *)self isDeferringFocus])
   {
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v6 = [WeakRetained _FBSScene];
+    _FBSScene = [WeakRetained _FBSScene];
 
-    v7 = [v6 settings];
-    v8 = [v7 displayIdentity];
-    v9 = [v4 displayIdentity];
-    v10 = [v8 isEqual:v9];
+    settings = [_FBSScene settings];
+    displayIdentity = [settings displayIdentity];
+    displayIdentity2 = [screenCopy displayIdentity];
+    v10 = [displayIdentity isEqual:displayIdentity2];
 
     if (v10)
     {
-      v11 = [(BNBannerClientContainerViewController *)self view];
-      v12 = [v11 window];
+      view = [(BNBannerClientContainerViewController *)self view];
+      window = [view window];
     }
 
     else
     {
-      v12 = 0;
+      window = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    window = 0;
   }
 
-  return v12;
+  return window;
 }
 
 - (void)setHostNeedsUpdate
@@ -332,38 +332,38 @@ uint64_t __59__BNBannerClientContainerViewController_setHostNeedsUpdate__block_i
   v22.receiver = self;
   v22.super_class = BNBannerClientContainerViewController;
   [(BNBannerClientContainerViewController *)&v22 viewDidLoad];
-  v3 = [(BNBannerClientContainerViewController *)self view];
-  [v3 setAutoresizesSubviews:1];
-  [v3 bounds];
+  view = [(BNBannerClientContainerViewController *)self view];
+  [view setAutoresizesSubviews:1];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BNPresentable *)self->_presentable viewController];
-  [v12 bannerContentOutsets];
+  viewController = [(BNPresentable *)self->_presentable viewController];
+  [viewController bannerContentOutsets];
   v14 = v5 + v13;
   v16 = v7 + v15;
   v18 = v9 - (v13 + v17);
   v20 = v11 - (v15 + v19);
-  v21 = [v12 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
-  [v3 addSubview:v21];
+  view2 = [viewController view];
+  [view2 setFrame:{v14, v16, v18, v20}];
+  [view addSubview:view2];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(BNBannerClientContainerViewController *)self view];
-  [v3 bounds];
+  view = [(BNBannerClientContainerViewController *)self view];
+  [view bounds];
 
-  v13 = [(BNPresentable *)self->_presentable viewController];
-  [v13 bannerContentOutsets];
+  viewController = [(BNPresentable *)self->_presentable viewController];
+  [viewController bannerContentOutsets];
   UIRectInset();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v13 view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [viewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (NSString)description
@@ -377,11 +377,11 @@ uint64_t __59__BNBannerClientContainerViewController_setHostNeedsUpdate__block_i
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v7 = [WeakRetained _sceneIdentifier];
+  _sceneIdentifier = [WeakRetained _sceneIdentifier];
 
-  if ([v7 length])
+  if ([_sceneIdentifier length])
   {
-    [v3 appendFormat:@"; sceneID: %@", v7];
+    [v3 appendFormat:@"; sceneID: %@", _sceneIdentifier];
   }
 
   [v3 appendString:@">"];
@@ -389,10 +389,10 @@ uint64_t __59__BNBannerClientContainerViewController_setHostNeedsUpdate__block_i
   return v3;
 }
 
-- (void)_setPreferredContentSize:(CGSize)a3 shouldFence:(BOOL)a4
+- (void)_setPreferredContentSize:(CGSize)size shouldFence:(BOOL)fence
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(BNBannerClientContainerViewController *)self preferredContentSize];
   v9 = v8;
   v11 = v10;
@@ -409,7 +409,7 @@ uint64_t __59__BNBannerClientContainerViewController_setHostNeedsUpdate__block_i
     v14[4] = self;
     *&v14[5] = width;
     *&v14[6] = height;
-    v15 = a4;
+    fenceCopy = fence;
     [WeakRetained _updateUIClientSettingsWithUITransitionBlock:v14];
   }
 }
@@ -451,17 +451,17 @@ uint64_t __78__BNBannerClientContainerViewController__setPreferredContentSize_sh
   return v14;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v28.receiver = self;
   v28.super_class = BNBannerClientContainerViewController;
-  [(BNBannerClientContainerViewController *)&v28 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(BNBannerClientContainerViewController *)&v28 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [WeakRetained _FBSScene];
-  v7 = [v6 settings];
+  _FBSScene = [WeakRetained _FBSScene];
+  settings = [_FBSScene settings];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = settings;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -490,7 +490,7 @@ uint64_t __78__BNBannerClientContainerViewController__setPreferredContentSize_sh
   v19 = v18;
 
   v20 = objc_opt_class();
-  v21 = v4;
+  v21 = containerCopy;
   if (v20)
   {
     if (objc_opt_isKindOfClass())
@@ -527,32 +527,32 @@ uint64_t __78__BNBannerClientContainerViewController__setPreferredContentSize_sh
   [(BNBannerClientContainerViewController *)self setPreferredContentSize:v26, v27];
 }
 
-- (void)bs_traitCollectionDidChange:(id)a3 forManagedTraitEnvironment:(id)a4
+- (void)bs_traitCollectionDidChange:(id)change forManagedTraitEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  environmentCopy = environment;
   v46.receiver = self;
   v46.super_class = BNBannerClientContainerViewController;
-  [(BNBannerClientContainerViewController *)&v46 bs_traitCollectionDidChange:v6 forManagedTraitEnvironment:v7];
-  [v6 displayScale];
+  [(BNBannerClientContainerViewController *)&v46 bs_traitCollectionDidChange:changeCopy forManagedTraitEnvironment:environmentCopy];
+  [changeCopy displayScale];
   v9 = v8;
-  v10 = [(BNBannerClientContainerViewController *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(BNBannerClientContainerViewController *)self traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
 
   if (v9 != v12)
   {
-    v13 = [(BNPresentable *)self->_presentable viewController];
-    [v13 bannerContentOutsets];
+    viewController = [(BNPresentable *)self->_presentable viewController];
+    [viewController bannerContentOutsets];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v23 = [WeakRetained _effectiveUIClientSettings];
+    _effectiveUIClientSettings = [WeakRetained _effectiveUIClientSettings];
     v24 = objc_opt_class();
-    v25 = v23;
+    v25 = _effectiveUIClientSettings;
     if (v24)
     {
       if (objc_opt_isKindOfClass())
@@ -594,22 +594,22 @@ uint64_t __78__BNBannerClientContainerViewController__setPreferredContentSize_sh
     }
   }
 
-  v40 = [v6 preferredContentSizeCategory];
-  v41 = [(BNBannerClientContainerViewController *)self traitCollection];
-  v42 = [v41 preferredContentSizeCategory];
-  if (([v40 isEqualToString:v42] & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  traitCollection2 = [(BNBannerClientContainerViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  if (([preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2] & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v43 = [(BNBannerClientContainerViewController *)self view];
-  v44 = [v7 isDescendantOfView:v43];
+  view = [(BNBannerClientContainerViewController *)self view];
+  v44 = [environmentCopy isDescendantOfView:view];
 
   if (v44)
   {
-    v40 = [(BNPresentable *)self->_presentable viewController];
-    [(BNBannerClientContainerViewController *)self preferredContentSizeDidChangeForChildContentContainer:v40];
+    preferredContentSizeCategory = [(BNPresentable *)self->_presentable viewController];
+    [(BNBannerClientContainerViewController *)self preferredContentSizeDidChangeForChildContentContainer:preferredContentSizeCategory];
 LABEL_23:
   }
 }
@@ -642,24 +642,24 @@ void __96__BNBannerClientContainerViewController_bs_traitCollectionDidChange_for
   [v6 setBannerContentOutsets:{a1[4], a1[5], a1[6], a1[7]}];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   sceneUpdateAction = self->_sceneUpdateAction;
   if (sceneUpdateAction)
   {
-    sceneUpdateAction[2](sceneUpdateAction, a2, a3, a4);
+    sceneUpdateAction[2](sceneUpdateAction, a2, scene, settings);
     v6 = self->_sceneUpdateAction;
     self->_sceneUpdateAction = 0;
   }
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = [a4 settings];
+  settingsCopy = settings;
+  contextCopy = context;
+  settings = [sScene settings];
   v14 = objc_opt_class();
-  v15 = v13;
+  v15 = settings;
   if (v14)
   {
     if (objc_opt_isKindOfClass())
@@ -683,7 +683,7 @@ void __96__BNBannerClientContainerViewController_bs_traitCollectionDidChange_for
   if (v17)
   {
     v18 = objc_opt_class();
-    v19 = v11;
+    v19 = settingsCopy;
     if (v18)
     {
       if (objc_opt_isKindOfClass())
@@ -704,11 +704,11 @@ void __96__BNBannerClientContainerViewController_bs_traitCollectionDidChange_for
 
     v21 = v20;
 
-    v22 = [v21 userInterfaceStyle];
-    if (v22 != [v17 userInterfaceStyle])
+    userInterfaceStyle = [v21 userInterfaceStyle];
+    if (userInterfaceStyle != [v17 userInterfaceStyle])
     {
       v23 = objc_opt_class();
-      v24 = v12;
+      v24 = contextCopy;
       if (v23)
       {
         if (objc_opt_isKindOfClass())
@@ -731,36 +731,36 @@ void __96__BNBannerClientContainerViewController_bs_traitCollectionDidChange_for
 
       if (v26)
       {
-        v27 = [v26 animationFence];
-        if (v27)
+        animationFence = [v26 animationFence];
+        if (animationFence)
         {
-          [MEMORY[0x1E69DCE70] _synchronizeDrawingWithFence:v27];
+          [MEMORY[0x1E69DCE70] _synchronizeDrawingWithFence:animationFence];
         }
 
-        v28 = [v26 bannerAnimationSettings];
-        if (v28)
+        bannerAnimationSettings = [v26 bannerAnimationSettings];
+        if (bannerAnimationSettings)
         {
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
           v33[2] = __151__BNBannerClientContainerViewController__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke;
           v33[3] = &unk_1E81E4BC8;
           v33[4] = self;
-          [MEMORY[0x1E698E7D0] animateWithSettings:v28 actions:v33];
+          [MEMORY[0x1E698E7D0] animateWithSettings:bannerAnimationSettings actions:v33];
         }
       }
     }
 
     -[BNBannerClientContainerViewController _setPresentableViewControllerAppearState:](self, "_setPresentableViewControllerAppearState:", [v17 viewControllerAppearState]);
-    v29 = [v21 bannerAppearState];
-    if (v29 != [v17 bannerAppearState])
+    bannerAppearState = [v21 bannerAppearState];
+    if (bannerAppearState != [v17 bannerAppearState])
     {
-      v30 = [v17 bannerAppearState];
-      v31 = [v17 revocationReason];
-      [(BNBannerClientContainerViewController *)self _setPresentableBannerAppearState:v30 reason:v31];
+      bannerAppearState2 = [v17 bannerAppearState];
+      revocationReason = [v17 revocationReason];
+      [(BNBannerClientContainerViewController *)self _setPresentableBannerAppearState:bannerAppearState2 reason:revocationReason];
     }
 
-    v32 = [v21 isUserInteractionInProgress];
-    if (v32 != [v17 isUserInteractionInProgress])
+    isUserInteractionInProgress = [v21 isUserInteractionInProgress];
+    if (isUserInteractionInProgress != [v17 isUserInteractionInProgress])
     {
       -[BNBannerClientContainerViewController _setPresentableUserInteractionInProgress:](self, "_setPresentableUserInteractionInProgress:", [v17 isUserInteractionInProgress]);
     }
@@ -773,10 +773,10 @@ void __151__BNBannerClientContainerViewController__performActionsForUIScene_with
   [v1 layoutIfNeeded];
 }
 
-- (void)_handlePanGestureProxyAction:(id)a3
+- (void)_handlePanGestureProxyAction:(id)action
 {
-  v8 = a3;
-  if (!v8)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [BNBannerClientContainerViewController _handlePanGestureProxyAction:];
   }
@@ -790,24 +790,24 @@ void __151__BNBannerClientContainerViewController__performActionsForUIScene_with
     [(BNPresentable *)self->_presentable draggingDidBeginWithGestureProxy:self->_panGestureProxy];
   }
 
-  v6 = [(BNBannerClientContainerViewController *)self view];
-  v7 = [v6 window];
-  [v8 setServiceSideWindow:v7];
+  view = [(BNBannerClientContainerViewController *)self view];
+  window = [view window];
+  [actionCopy setServiceSideWindow:window];
 
-  [(_BNPanGestureServiceProxy *)self->_panGestureProxy _setActivePanGestureProxyAction:v8];
+  [(_BNPanGestureServiceProxy *)self->_panGestureProxy _setActivePanGestureProxyAction:actionCopy];
   [(_BNPanGestureServiceProxy *)self->_panGestureProxy sendAction];
 }
 
-- (void)_handleRejectionAction:(id)a3
+- (void)_handleRejectionAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [BNBannerClientContainerViewController _handleRejectionAction:];
   }
 
-  v5 = [v4 rejectionReason];
+  rejectionReason = [actionCopy rejectionReason];
   v6 = BNLogHostingService;
   if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
   {
@@ -817,26 +817,26 @@ void __151__BNBannerClientContainerViewController__performActionsForUIScene_with
     v10 = 138543618;
     v11 = v9;
     v12 = 2114;
-    v13 = v5;
+    v13 = rejectionReason;
     _os_log_impl(&dword_1C42DC000, v8, OS_LOG_TYPE_DEFAULT, "Service presentable will NOT appear as banner: %{public}@ (%{public}@)", &v10, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(BNPresentable *)self->_presentable presentableWillNotAppearAsBanner:self->_presentable withReason:v5];
+    [(BNPresentable *)self->_presentable presentableWillNotAppearAsBanner:self->_presentable withReason:rejectionReason];
   }
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 mutableCopy];
+  actionsCopy = actions;
+  v8 = [actionsCopy mutableCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v7;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
@@ -950,10 +950,10 @@ LABEL_28:
   return v8;
 }
 
-- (void)performCoordinatedUpdate:(id)a3 updateResponseHandler:(id)a4
+- (void)performCoordinatedUpdate:(id)update updateResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  handlerCopy = handler;
   if (self->_sceneUpdateAction)
   {
     v8 = BNLogHostingService;
@@ -966,73 +966,73 @@ LABEL_28:
     self->_sceneUpdateAction = 0;
   }
 
-  v10 = MEMORY[0x1C6936EC0](v7);
+  v10 = MEMORY[0x1C6936EC0](handlerCopy);
   v11 = self->_sceneUpdateAction;
   self->_sceneUpdateAction = v10;
 
-  if (v6)
+  if (updateCopy)
   {
-    v6[2](v6);
+    updateCopy[2](updateCopy);
   }
 }
 
-- (void)_setPresentableViewControllerAppearState:(int)a3
+- (void)_setPresentableViewControllerAppearState:(int)state
 {
-  v11 = [(BNPresentable *)self->_presentable viewController];
-  v4 = [v11 _appearState] == a3;
-  v5 = v11;
+  viewController = [(BNPresentable *)self->_presentable viewController];
+  v4 = [viewController _appearState] == state;
+  v5 = viewController;
   if (!v4)
   {
-    v6 = [v11 _appearState];
-    if (v6 > 1)
+    _appearState = [viewController _appearState];
+    if (_appearState > 1)
     {
-      if (v6 == 3)
+      if (_appearState == 3)
       {
-        if (!a3)
+        if (!state)
         {
 LABEL_34:
-          [v11 endAppearanceTransition];
+          [viewController endAppearanceTransition];
           goto LABEL_35;
         }
 
-        v5 = v11;
-        if (a3 != 1)
+        v5 = viewController;
+        if (state != 1)
         {
-          if (a3 != 2)
+          if (state != 2)
           {
             goto LABEL_36;
           }
 
-          [v11 endAppearanceTransition];
+          [viewController endAppearanceTransition];
           goto LABEL_25;
         }
 
-        [v11 endAppearanceTransition];
+        [viewController endAppearanceTransition];
       }
 
       else
       {
-        v4 = v6 == 2;
-        v5 = v11;
+        v4 = _appearState == 2;
+        v5 = viewController;
         if (!v4)
         {
           goto LABEL_36;
         }
 
-        if (!a3)
+        if (!state)
         {
 LABEL_32:
-          v7 = v11;
+          v7 = viewController;
           v8 = 0;
           goto LABEL_33;
         }
 
-        if (a3 == 3)
+        if (state == 3)
         {
           goto LABEL_27;
         }
 
-        if (a3 != 1)
+        if (state != 1)
         {
           goto LABEL_36;
         }
@@ -1041,20 +1041,20 @@ LABEL_32:
 
     else
     {
-      if (v6)
+      if (_appearState)
       {
-        v4 = v6 == 1;
-        v5 = v11;
+        v4 = _appearState == 1;
+        v5 = viewController;
         if (!v4)
         {
           goto LABEL_36;
         }
 
-        if (a3)
+        if (state)
         {
-          if (a3 != 3)
+          if (state != 3)
           {
-            if (a3 != 2)
+            if (state != 2)
             {
               goto LABEL_36;
             }
@@ -1062,26 +1062,26 @@ LABEL_32:
             goto LABEL_34;
           }
 
-          [v11 endAppearanceTransition];
+          [viewController endAppearanceTransition];
           goto LABEL_27;
         }
 
-        [v11 endAppearanceTransition];
+        [viewController endAppearanceTransition];
         goto LABEL_32;
       }
 
-      if (a3 != 1)
+      if (state != 1)
       {
-        v5 = v11;
-        if (a3 != 3)
+        v5 = viewController;
+        if (state != 3)
         {
-          if (a3 != 2)
+          if (state != 2)
           {
             goto LABEL_36;
           }
 
 LABEL_25:
-          v7 = v11;
+          v7 = viewController;
           v8 = 1;
 LABEL_33:
           [v7 beginAppearanceTransition:v8 animated:0];
@@ -1089,17 +1089,17 @@ LABEL_33:
         }
 
 LABEL_27:
-        v9 = v11;
+        v9 = viewController;
         v10 = 0;
 LABEL_30:
         [v9 beginAppearanceTransition:v10 animated:1];
 LABEL_35:
-        v5 = v11;
+        v5 = viewController;
         goto LABEL_36;
       }
     }
 
-    v9 = v11;
+    v9 = viewController;
     v10 = 1;
     goto LABEL_30;
   }
@@ -1109,12 +1109,12 @@ LABEL_36:
 
 - (void)_acquireDeferringRuleIfNecessary
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [*a1 reason];
+    reason = [*self reason];
     OUTLINED_FUNCTION_0_0();
-    [v3 handleFailureInMethod:v2 object:? file:? lineNumber:? description:?];
+    [v3 handleFailureInMethod:reason object:? file:? lineNumber:? description:?];
   }
 
   else
@@ -1124,13 +1124,13 @@ LABEL_36:
   }
 }
 
-- (void)_setPresentableBannerAppearState:(int)a3 reason:(id)a4
+- (void)_setPresentableBannerAppearState:(int)state reason:(id)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 > 1)
+  reasonCopy = reason;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       v19 = BNLogHostingService;
       if (os_log_type_enabled(BNLogHostingService, OS_LOG_TYPE_DEFAULT))
@@ -1149,7 +1149,7 @@ LABEL_36:
       }
     }
 
-    else if (a3 == 3)
+    else if (state == 3)
     {
       [(BNBannerClientContainerViewController *)self _invalidateDeferringRule];
       v11 = BNLogHostingService;
@@ -1161,20 +1161,20 @@ LABEL_36:
         v23 = 138543618;
         v24 = v14;
         v25 = 2114;
-        v26 = v6;
+        v26 = reasonCopy;
         _os_log_impl(&dword_1C42DC000, v13, OS_LOG_TYPE_DEFAULT, "Service presentable will disappear as banner: %{public}@ (%{public}@)", &v23, 0x16u);
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [(BNPresentable *)self->_presentable presentableWillDisappearAsBanner:self->_presentable withReason:v6];
+        [(BNPresentable *)self->_presentable presentableWillDisappearAsBanner:self->_presentable withReason:reasonCopy];
       }
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       [(BNBannerClientContainerViewController *)self _acquireDeferringRuleIfNecessary];
       v7 = BNLogHostingService;
@@ -1206,20 +1206,20 @@ LABEL_36:
       v23 = 138543618;
       v24 = v18;
       v25 = 2114;
-      v26 = v6;
+      v26 = reasonCopy;
       _os_log_impl(&dword_1C42DC000, v17, OS_LOG_TYPE_DEFAULT, "Service presentable did disappear as banner: %{public}@ (%{public}@)", &v23, 0x16u);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(BNPresentable *)self->_presentable presentableDidDisappearAsBanner:self->_presentable withReason:v6];
+      [(BNPresentable *)self->_presentable presentableDidDisappearAsBanner:self->_presentable withReason:reasonCopy];
     }
   }
 }
 
-- (void)_setPresentableUserInteractionInProgress:(BOOL)a3
+- (void)_setPresentableUserInteractionInProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     if (objc_opt_respondsToSelector())
     {

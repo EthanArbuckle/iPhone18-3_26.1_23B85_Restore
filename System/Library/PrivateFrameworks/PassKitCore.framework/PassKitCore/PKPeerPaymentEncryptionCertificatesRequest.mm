@@ -1,30 +1,30 @@
 @interface PKPeerPaymentEncryptionCertificatesRequest
-- (PKPeerPaymentEncryptionCertificatesRequest)initWithEncryptionCertificateDestination:(unint64_t)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentEncryptionCertificatesRequest)initWithEncryptionCertificateDestination:(unint64_t)destination;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentEncryptionCertificatesRequest
 
-- (PKPeerPaymentEncryptionCertificatesRequest)initWithEncryptionCertificateDestination:(unint64_t)a3
+- (PKPeerPaymentEncryptionCertificatesRequest)initWithEncryptionCertificateDestination:(unint64_t)destination
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentEncryptionCertificatesRequest;
   result = [(PKOverlayableWebServiceRequest *)&v5 init];
   if (result)
   {
-    result->_destination = a3;
+    result->_destination = destination;
   }
 
   return result;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -44,7 +44,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -86,7 +86,7 @@ LABEL_12:
     v20 = @"destination";
     v21 = v10;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v13 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B4868 queryParameters:v12 appleAccountInformation:v8];
+    v13 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4868 queryParameters:v12 appleAccountInformation:v8];
     [v13 setHTTPMethod:@"GET"];
     [v13 setCachePolicy:1];
     v14 = [v13 copy];

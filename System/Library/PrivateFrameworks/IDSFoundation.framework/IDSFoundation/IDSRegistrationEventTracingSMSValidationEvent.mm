@@ -1,11 +1,11 @@
 @interface IDSRegistrationEventTracingSMSValidationEvent
 - (IDSRegistrationEventTracingSMSValidationEvent)init;
-- (IDSRegistrationEventTracingSMSValidationEvent)initWithMechanismType:(int64_t)a3;
+- (IDSRegistrationEventTracingSMSValidationEvent)initWithMechanismType:(int64_t)type;
 @end
 
 @implementation IDSRegistrationEventTracingSMSValidationEvent
 
-- (IDSRegistrationEventTracingSMSValidationEvent)initWithMechanismType:(int64_t)a3
+- (IDSRegistrationEventTracingSMSValidationEvent)initWithMechanismType:(int64_t)type
 {
   v5 = self + OBJC_IVAR___IDSRegistrationEventTracingSMSValidationEvent_name;
   strcpy(self + OBJC_IVAR___IDSRegistrationEventTracingSMSValidationEvent_name, "SMS Validation");
@@ -13,7 +13,7 @@
   v6 = OBJC_IVAR___IDSRegistrationEventTracingSMSValidationEvent_mechanismType;
   *(self + OBJC_IVAR___IDSRegistrationEventTracingSMSValidationEvent_mechanismType) = 0;
   swift_beginAccess();
-  *(self + v6) = a3;
+  *(self + v6) = type;
   v8.receiver = self;
   v8.super_class = type metadata accessor for IDSRegistrationEventTracingSMSValidationEvent();
   return [(IDSRegistrationEventTracingSMSValidationEvent *)&v8 init];

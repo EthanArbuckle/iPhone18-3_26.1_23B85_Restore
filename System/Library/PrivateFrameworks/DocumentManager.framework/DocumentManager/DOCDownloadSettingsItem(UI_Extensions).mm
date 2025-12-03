@@ -11,12 +11,12 @@
 
 - (id)providerIcon
 {
-  v2 = [a1 providerDomain];
+  providerDomain = [self providerDomain];
 
-  if (v2)
+  if (providerDomain)
   {
-    v3 = [a1 providerDomain];
-    v4 = [DOCDocumentSource iconForFileProvider:v3 size:0];
+    providerDomain2 = [self providerDomain];
+    v4 = [DOCDocumentSource iconForFileProvider:providerDomain2 size:0];
   }
 
   else
@@ -29,25 +29,25 @@
 
 - (uint64_t)isiCloudDriveDomain
 {
-  v1 = [a1 providerDomain];
-  v2 = [v1 isiCloudDriveProvider];
+  providerDomain = [self providerDomain];
+  isiCloudDriveProvider = [providerDomain isiCloudDriveProvider];
 
-  return v2;
+  return isiCloudDriveProvider;
 }
 
 - (uint64_t)isLocalStorageDomain
 {
   v1 = *MEMORY[0x1E699A390];
-  v2 = [a1 providerDomain];
-  v3 = [v2 identifier];
-  v4 = [v1 isEqualToString:v3];
+  providerDomain = [self providerDomain];
+  identifier = [providerDomain identifier];
+  v4 = [v1 isEqualToString:identifier];
 
   return v4;
 }
 
 - (id)localizedTitle
 {
-  v1 = [a1 providerDomain];
+  providerDomain = [self providerDomain];
   v2 = DOCLocalizedDisplayName();
 
   return v2;
@@ -55,16 +55,16 @@
 
 - (id)localizedSubtitle
 {
-  v1 = [a1 fpItem];
-  v2 = [v1 displayName];
+  fpItem = [self fpItem];
+  displayName = [fpItem displayName];
 
-  return v2;
+  return displayName;
 }
 
 - (BOOL)isDefaultFolder
 {
-  v1 = [a1 fpItem];
-  v2 = [v1 folderType] == 4;
+  fpItem = [self fpItem];
+  v2 = [fpItem folderType] == 4;
 
   return v2;
 }

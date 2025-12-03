@@ -1,35 +1,35 @@
 @interface AKAttributeController
 + (id)defaultTextAttributes;
 + (void)initialize;
-- (AKAttributeController)initWithController:(id)a3;
+- (AKAttributeController)initWithController:(id)controller;
 - (AKController)controller;
-- (BOOL)_isEnabledForSender:(id)a3 segment:(int64_t)a4 withSelectedAnnotations:(id)a5;
-- (BOOL)_updateStateOnSender:(id)a3 segment:(int64_t)a4 fromSelectedAnnotations:(id)a5;
-- (BOOL)isAttributeSenderEnabled:(id)a3 segment:(int64_t)a4;
-- (BOOL)strokeColorIsEqualTo:(id)a3;
-- (void)_allAnnotations:(id)a3 all:(BOOL *)a4 atLeastOneShare:(BOOL *)a5 attributeFromTag:(int64_t)a6;
+- (BOOL)_isEnabledForSender:(id)sender segment:(int64_t)segment withSelectedAnnotations:(id)annotations;
+- (BOOL)_updateStateOnSender:(id)sender segment:(int64_t)segment fromSelectedAnnotations:(id)annotations;
+- (BOOL)isAttributeSenderEnabled:(id)enabled segment:(int64_t)segment;
+- (BOOL)strokeColorIsEqualTo:(id)to;
+- (void)_allAnnotations:(id)annotations all:(BOOL *)all atLeastOneShare:(BOOL *)share attributeFromTag:(int64_t)tag;
 - (void)_persistCurrentAttributes;
 - (void)_restorePersistedAttributes;
 - (void)_syncAttributesFromSelectedAnnotationsToUI;
-- (void)_syncAttributesFromSenderToSelfAndSelectedAnnotations:(id)a3 segment:(int64_t)a4;
+- (void)_syncAttributesFromSenderToSelfAndSelectedAnnotations:(id)annotations segment:(int64_t)segment;
 - (void)_updateInk;
-- (void)_updateStateOnSender:(id)a3 segment:(int64_t)a4;
-- (void)_updateStateOnSenderFromSelf:(id)a3 segment:(int64_t)a4;
-- (void)annotationEditingDidEndWithCompletion:(id)a3;
+- (void)_updateStateOnSender:(id)sender segment:(int64_t)segment;
+- (void)_updateStateOnSenderFromSelf:(id)self segment:(int64_t)segment;
+- (void)annotationEditingDidEndWithCompletion:(id)completion;
 - (void)forceHideRuler;
 - (void)forceShowRuler;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetToLastDrawingInk;
 - (void)restoreStrokeColorToSystemDefault;
 - (void)setDefaultInk;
-- (void)setInk:(id)a3;
-- (void)setModelControllerToObserveForSelections:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setInk:(id)ink;
+- (void)setModelControllerToObserveForSelections:(id)selections;
+- (void)setStrokeColor:(id)color;
 - (void)syncFillColorOnSelectionToUI;
 - (void)syncStrokeColorOnSelectionToUI;
 - (void)toggleRuler;
-- (void)updateAttributeSenderState:(id)a3 segment:(int64_t)a4 enabled:(BOOL)a5;
-- (void)updateInkIfNeeded:(id)a3;
+- (void)updateAttributeSenderState:(id)state segment:(int64_t)segment enabled:(BOOL)enabled;
+- (void)updateInkIfNeeded:(id)needed;
 @end
 
 @implementation AKAttributeController
@@ -37,23 +37,23 @@
 + (id)defaultTextAttributes
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   [v4 setAlignment:1];
   [v4 setDefaultTabInterval:0.0];
   [v4 setAllowsDefaultTighteningForTruncation:1];
   v5 = [v4 copy];
   v12[0] = *MEMORY[0x277D740A8];
-  v6 = [a1 defaultFont];
+  defaultFont = [self defaultFont];
   v7 = *MEMORY[0x277D74118];
-  v13[0] = v6;
+  v13[0] = defaultFont;
   v13[1] = v5;
   v8 = *MEMORY[0x277D740C0];
   v12[1] = v7;
   v12[2] = v8;
-  v9 = [MEMORY[0x277D75348] blackColor];
-  v13[2] = v9;
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v13[2] = blackColor;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   return v10;
@@ -64,22 +64,22 @@
   v18[11] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
-    v16 = [a1 defaultFont];
-    v4 = [a1 defaultTextAttributes];
+    defaultFont = [self defaultFont];
+    defaultTextAttributes = [self defaultTextAttributes];
     v17[0] = @"com.apple.AnnotationKit.userDefaultsVersion";
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     v18[0] = v5;
     v17[1] = @"com.apple.AnnotationKit.strokeColor";
     v6 = MEMORY[0x277CBEBD0];
-    v7 = [MEMORY[0x277D75348] blackColor];
-    v8 = [v6 akDataForColor:v7];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v8 = [v6 akDataForColor:blackColor];
     v18[1] = v8;
     v17[2] = @"com.apple.AnnotationKit.fillColor";
     v9 = MEMORY[0x277CBEBD0];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    v11 = [v9 akDataForColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v11 = [v9 akDataForColor:clearColor];
     v18[2] = v11;
     v18[3] = &unk_2851BB928;
     v17[3] = @"com.apple.AnnotationKit.strokeWidth";
@@ -92,42 +92,42 @@
     v18[7] = &unk_2851BB268;
     v17[7] = @"com.apple.AnnotationKit.arrowHeadStyle";
     v17[8] = @"com.apple.AnnotationKit.font";
-    v12 = [MEMORY[0x277CBEBD0] akDataForFont:v16];
+    v12 = [MEMORY[0x277CBEBD0] akDataForFont:defaultFont];
     v18[8] = v12;
     v17[9] = @"com.apple.AnnotationKit.textAttributes";
-    v13 = [MEMORY[0x277CBEBD0] akDataForTextAttributes:v4];
+    v13 = [MEMORY[0x277CBEBD0] akDataForTextAttributes:defaultTextAttributes];
     v17[10] = @"com.apple.AnnotationKit.highlightStyle";
     v18[9] = v13;
     v18[10] = &unk_2851BB280;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:11];
 
-    v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v15 registerDefaults:v14];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:v14];
   }
 }
 
-- (AKAttributeController)initWithController:(id)a3
+- (AKAttributeController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKAttributeController;
   v5 = [(AKAttributeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKAttributeController *)v5 setController:v4];
+    [(AKAttributeController *)v5 setController:controllerCopy];
     [(AKAttributeController *)v6 _restorePersistedAttributes];
   }
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"AKAttributeController.selectedAnnotationsObservationContext")
+  if (context == @"AKAttributeController.selectedAnnotationsObservationContext")
   {
 
-    [(AKAttributeController *)self _syncAttributesFromSelectedAnnotationsToUI:a3];
+    [(AKAttributeController *)self _syncAttributesFromSelectedAnnotationsToUI:path];
   }
 
   else
@@ -136,156 +136,156 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = AKAttributeController;
-    [(AKAttributeController *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AKAttributeController *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   strokeColor = self->_strokeColor;
   p_strokeColor = &self->_strokeColor;
-  v8 = v5;
+  v8 = colorCopy;
   if (![(UIColor *)strokeColor akIsEqualToColor:?])
   {
-    objc_storeStrong(p_strokeColor, a3);
+    objc_storeStrong(p_strokeColor, color);
   }
 }
 
 - (void)forceHideRuler
 {
-  v6 = [(AKAttributeController *)self controller];
-  v2 = [v6 currentPageController];
-  v3 = [v2 inkPageOverlayController];
-  v4 = [v3 inkOverlayView];
-  v5 = [v4 canvasView];
-  [v5 setRulerActive:0];
+  controller = [(AKAttributeController *)self controller];
+  currentPageController = [controller currentPageController];
+  inkPageOverlayController = [currentPageController inkPageOverlayController];
+  inkOverlayView = [inkPageOverlayController inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  [canvasView setRulerActive:0];
 }
 
 - (void)forceShowRuler
 {
-  v6 = [(AKAttributeController *)self controller];
-  v2 = [v6 currentPageController];
-  v3 = [v2 inkPageOverlayController];
-  v4 = [v3 inkOverlayView];
-  v5 = [v4 canvasView];
-  [v5 setRulerActive:1];
+  controller = [(AKAttributeController *)self controller];
+  currentPageController = [controller currentPageController];
+  inkPageOverlayController = [currentPageController inkPageOverlayController];
+  inkOverlayView = [inkPageOverlayController inkOverlayView];
+  canvasView = [inkOverlayView canvasView];
+  [canvasView setRulerActive:1];
 }
 
 - (void)toggleRuler
 {
-  v9 = [(AKAttributeController *)self controller];
-  v2 = [v9 toolController];
-  v3 = [v2 toolMode];
+  controller = [(AKAttributeController *)self controller];
+  toolController = [controller toolController];
+  toolMode = [toolController toolMode];
 
-  if (v3 == 4)
+  if (toolMode == 4)
   {
-    v4 = [v9 modelController];
-    [v4 deselectAllAnnotations];
+    modelController = [controller modelController];
+    [modelController deselectAllAnnotations];
   }
 
-  v5 = [v9 currentPageController];
-  v6 = [v5 inkPageOverlayController];
-  [v6 didToggleRuler];
+  currentPageController = [controller currentPageController];
+  inkPageOverlayController = [currentPageController inkPageOverlayController];
+  [inkPageOverlayController didToggleRuler];
 
-  v7 = [v9 toolbarViewController];
-  [v7 revalidateItems];
+  toolbarViewController = [controller toolbarViewController];
+  [toolbarViewController revalidateItems];
 
-  v8 = [v9 modernToolbarView];
-  [v8 revalidateItems];
+  modernToolbarView = [controller modernToolbarView];
+  [modernToolbarView revalidateItems];
 }
 
-- (void)annotationEditingDidEndWithCompletion:(id)a3
+- (void)annotationEditingDidEndWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(AKAttributeController *)self controller];
-  v5 = [v4 currentPageController];
+  completionCopy = completion;
+  controller = [(AKAttributeController *)self controller];
+  currentPageController = [controller currentPageController];
 
-  v6 = [v5 inkPageOverlayController];
+  inkPageOverlayController = [currentPageController inkPageOverlayController];
 
-  if (v6)
+  if (inkPageOverlayController)
   {
-    v7 = [v5 inkPageOverlayController];
-    [v7 annotationEditingDidEndWithCompletion:v8];
+    inkPageOverlayController2 = [currentPageController inkPageOverlayController];
+    [inkPageOverlayController2 annotationEditingDidEndWithCompletion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
-  v9 = a3;
+  inkCopy = ink;
   if (([(PKInk *)self->_ink isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_ink, a3);
+    objc_storeStrong(&self->_ink, ink);
   }
 
-  v5 = [(AKAttributeController *)self controller];
-  v6 = [v5 toolController];
-  v7 = [v6 toolMode];
+  controller = [(AKAttributeController *)self controller];
+  toolController = [controller toolController];
+  toolMode = [toolController toolMode];
 
-  if (v7 == 4)
+  if (toolMode == 4)
   {
-    v8 = [v5 modelController];
-    [v8 deselectAllAnnotations];
+    modelController = [controller modelController];
+    [modelController deselectAllAnnotations];
   }
 
   [(AKAttributeController *)self _updateInk];
 }
 
-- (BOOL)isAttributeSenderEnabled:(id)a3 segment:(int64_t)a4
+- (BOOL)isAttributeSenderEnabled:(id)enabled segment:(int64_t)segment
 {
-  v6 = a3;
-  v7 = [(AKAttributeController *)self modelControllerToObserveForSelections];
-  v8 = [v7 selectedAnnotations];
+  enabledCopy = enabled;
+  modelControllerToObserveForSelections = [(AKAttributeController *)self modelControllerToObserveForSelections];
+  selectedAnnotations = [modelControllerToObserveForSelections selectedAnnotations];
 
-  LOBYTE(a4) = [(AKAttributeController *)self _isEnabledForSender:v6 segment:a4 withSelectedAnnotations:v8];
-  return a4;
+  LOBYTE(segment) = [(AKAttributeController *)self _isEnabledForSender:enabledCopy segment:segment withSelectedAnnotations:selectedAnnotations];
+  return segment;
 }
 
-- (void)updateAttributeSenderState:(id)a3 segment:(int64_t)a4 enabled:(BOOL)a5
+- (void)updateAttributeSenderState:(id)state segment:(int64_t)segment enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
+  enabledCopy = enabled;
+  stateCopy = state;
   if (objc_opt_respondsToSelector())
   {
-    [v8 setEnabled:v5];
+    [stateCopy setEnabled:enabledCopy];
   }
 
-  [(AKAttributeController *)self _updateStateOnSender:v8 segment:a4];
+  [(AKAttributeController *)self _updateStateOnSender:stateCopy segment:segment];
 }
 
-- (BOOL)strokeColorIsEqualTo:(id)a3
+- (BOOL)strokeColorIsEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(AKAttributeController *)self strokeColor];
-  v6 = [v5 akIsEqualToColor:v4];
+  toCopy = to;
+  strokeColor = [(AKAttributeController *)self strokeColor];
+  v6 = [strokeColor akIsEqualToColor:toCopy];
 
   return v6;
 }
 
 - (void)restoreStrokeColorToSystemDefault
 {
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(AKAttributeController *)self setStrokeColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKAttributeController *)self setStrokeColor:blackColor];
 }
 
-- (void)setModelControllerToObserveForSelections:(id)a3
+- (void)setModelControllerToObserveForSelections:(id)selections
 {
-  v5 = a3;
+  selectionsCopy = selections;
   modelControllerToObserveForSelections = self->modelControllerToObserveForSelections;
-  v7 = v5;
-  if (modelControllerToObserveForSelections != v5)
+  v7 = selectionsCopy;
+  if (modelControllerToObserveForSelections != selectionsCopy)
   {
     if (modelControllerToObserveForSelections)
     {
       [(AKPageModelController *)modelControllerToObserveForSelections removeObserver:self forKeyPath:@"selectedAnnotations"];
     }
 
-    objc_storeStrong(&self->modelControllerToObserveForSelections, a3);
+    objc_storeStrong(&self->modelControllerToObserveForSelections, selections);
     if (self->modelControllerToObserveForSelections)
     {
       [(AKAttributeController *)self _syncAttributesFromSelectedAnnotationsToUI];
@@ -297,20 +297,20 @@
 - (void)setDefaultInk
 {
   v3 = MEMORY[0x277CD9638];
-  v4 = [(AKAttributeController *)self controller];
-  v5 = [v3 akDefaultInkWithHighVisibility:{objc_msgSend(v4, "useHighVisibilityDefaultInks")}];
+  controller = [(AKAttributeController *)self controller];
+  v5 = [v3 akDefaultInkWithHighVisibility:{objc_msgSend(controller, "useHighVisibilityDefaultInks")}];
 
   [(AKAttributeController *)self setInk:v5];
 }
 
 - (void)resetToLastDrawingInk
 {
-  v3 = [(AKAttributeController *)self controller];
-  v9 = [v3 modernToolbarView];
+  controller = [(AKAttributeController *)self controller];
+  modernToolbarView = [controller modernToolbarView];
 
-  if (v9)
+  if (modernToolbarView)
   {
-    [v9 resetToLastDrawingTool];
+    [modernToolbarView resetToLastDrawingTool];
   }
 
   else
@@ -321,9 +321,9 @@
     {
       v5 = MEMORY[0x277CD9638];
       v6 = [(AKAttributeController *)self ink];
-      v7 = [(AKAttributeController *)self strokeColor];
+      strokeColor = [(AKAttributeController *)self strokeColor];
       [(AKAttributeController *)self strokeWidth];
-      v8 = [v5 akInkFromInk:v6 color:v7 strokeWidth:?];
+      v8 = [v5 akInkFromInk:v6 color:strokeColor strokeWidth:?];
 
       [(AKAttributeController *)self setInk:v8];
     }
@@ -335,83 +335,83 @@
   }
 }
 
-- (void)updateInkIfNeeded:(id)a3
+- (void)updateInkIfNeeded:(id)needed
 {
-  v8 = a3;
-  if ([v8 conformsToProtocol:&unk_2851CEC70] && objc_msgSend(v8, "wantsInkUpdate"))
+  neededCopy = needed;
+  if ([neededCopy conformsToProtocol:&unk_2851CEC70] && objc_msgSend(neededCopy, "wantsInkUpdate"))
   {
     v4 = MEMORY[0x277CD9638];
     v5 = [(AKAttributeController *)self ink];
-    v6 = [(AKAttributeController *)self strokeColor];
+    strokeColor = [(AKAttributeController *)self strokeColor];
     [(AKAttributeController *)self strokeWidth];
-    v7 = [v4 akInkFromInk:v5 color:v6 strokeWidth:?];
+    v7 = [v4 akInkFromInk:v5 color:strokeColor strokeWidth:?];
     [(AKAttributeController *)self setInk:v7];
   }
 }
 
 - (void)_updateInk
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"AKAttributeController.inkDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AKAttributeController.inkDidChange" object:self];
 
-  v6 = [(AKAttributeController *)self controller];
-  v4 = [v6 toolbarViewController];
-  [v4 revalidateItems];
+  controller = [(AKAttributeController *)self controller];
+  toolbarViewController = [controller toolbarViewController];
+  [toolbarViewController revalidateItems];
 
-  v5 = [v6 modernToolbarView];
-  [v5 revalidateItems];
+  modernToolbarView = [controller modernToolbarView];
+  [modernToolbarView revalidateItems];
 }
 
 - (void)_persistCurrentAttributes
 {
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setInteger:1 forKey:@"com.apple.AnnotationKit.userDefaultsVersion"];
-  v3 = [(AKAttributeController *)self strokeColor];
-  [v7 akSetColor:v3 forKey:@"com.apple.AnnotationKit.strokeColor"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setInteger:1 forKey:@"com.apple.AnnotationKit.userDefaultsVersion"];
+  strokeColor = [(AKAttributeController *)self strokeColor];
+  [standardUserDefaults akSetColor:strokeColor forKey:@"com.apple.AnnotationKit.strokeColor"];
 
-  v4 = [(AKAttributeController *)self fillColor];
-  [v7 akSetColor:v4 forKey:@"com.apple.AnnotationKit.fillColor"];
+  fillColor = [(AKAttributeController *)self fillColor];
+  [standardUserDefaults akSetColor:fillColor forKey:@"com.apple.AnnotationKit.fillColor"];
 
   [(AKAttributeController *)self strokeWidth];
-  [v7 setDouble:@"com.apple.AnnotationKit.strokeWidth" forKey:?];
-  [v7 setBool:-[AKAttributeController strokeIsDashed](self forKey:{"strokeIsDashed"), @"com.apple.AnnotationKit.strokeIsDashed"}];
-  [v7 setBool:-[AKAttributeController hasShadow](self forKey:{"hasShadow"), @"com.apple.AnnotationKit.hasShadow"}];
-  [v7 setInteger:-[AKAttributeController brushStyle](self forKey:{"brushStyle"), @"com.apple.AnnotationKit.brushStyle"}];
-  [v7 setInteger:-[AKAttributeController arrowHeadStyle](self forKey:{"arrowHeadStyle"), @"com.apple.AnnotationKit.arrowHeadStyle"}];
-  v5 = [(AKAttributeController *)self font];
-  [v7 akSetFont:v5 forKey:@"com.apple.AnnotationKit.font"];
+  [standardUserDefaults setDouble:@"com.apple.AnnotationKit.strokeWidth" forKey:?];
+  [standardUserDefaults setBool:-[AKAttributeController strokeIsDashed](self forKey:{"strokeIsDashed"), @"com.apple.AnnotationKit.strokeIsDashed"}];
+  [standardUserDefaults setBool:-[AKAttributeController hasShadow](self forKey:{"hasShadow"), @"com.apple.AnnotationKit.hasShadow"}];
+  [standardUserDefaults setInteger:-[AKAttributeController brushStyle](self forKey:{"brushStyle"), @"com.apple.AnnotationKit.brushStyle"}];
+  [standardUserDefaults setInteger:-[AKAttributeController arrowHeadStyle](self forKey:{"arrowHeadStyle"), @"com.apple.AnnotationKit.arrowHeadStyle"}];
+  font = [(AKAttributeController *)self font];
+  [standardUserDefaults akSetFont:font forKey:@"com.apple.AnnotationKit.font"];
 
-  v6 = [(AKAttributeController *)self textAttributes];
-  [v7 akSetTextAttributes:v6 forKey:@"com.apple.AnnotationKit.textAttributes"];
+  textAttributes = [(AKAttributeController *)self textAttributes];
+  [standardUserDefaults akSetTextAttributes:textAttributes forKey:@"com.apple.AnnotationKit.textAttributes"];
 
-  [v7 setInteger:-[AKAttributeController highlightStyle](self forKey:{"highlightStyle"), @"com.apple.AnnotationKit.highlightStyle"}];
+  [standardUserDefaults setInteger:-[AKAttributeController highlightStyle](self forKey:{"highlightStyle"), @"com.apple.AnnotationKit.highlightStyle"}];
 }
 
 - (void)_restorePersistedAttributes
 {
-  v21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.strokeColor"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.fillColor"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.strokeWidth"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.strokeIsDashed"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.hasShadow"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.brushStyle"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.arrowHeadStyle"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.font"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.textAttributes"];
-  [v21 removeObjectForKey:@"com.apple.AnnotationKit.highlightStyle"];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(AKAttributeController *)self setStrokeColor:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.strokeColor"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.fillColor"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.strokeWidth"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.strokeIsDashed"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.hasShadow"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.brushStyle"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.arrowHeadStyle"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.font"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.textAttributes"];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AnnotationKit.highlightStyle"];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKAttributeController *)self setStrokeColor:blackColor];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [(AKAttributeController *)self setFillColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(AKAttributeController *)self setFillColor:clearColor];
 
-  [v21 doubleForKey:@"com.apple.AnnotationKit.strokeWidth"];
+  [standardUserDefaults doubleForKey:@"com.apple.AnnotationKit.strokeWidth"];
   [(AKAttributeController *)self setStrokeWidth:?];
-  -[AKAttributeController setStrokeIsDashed:](self, "setStrokeIsDashed:", [v21 BOOLForKey:@"com.apple.AnnotationKit.strokeIsDashed"]);
-  -[AKAttributeController setHasShadow:](self, "setHasShadow:", [v21 BOOLForKey:@"com.apple.AnnotationKit.hasShadow"]);
-  -[AKAttributeController setBrushStyle:](self, "setBrushStyle:", [v21 integerForKey:@"com.apple.AnnotationKit.brushStyle"]);
-  v5 = [v21 integerForKey:@"com.apple.AnnotationKit.arrowHeadStyle"];
+  -[AKAttributeController setStrokeIsDashed:](self, "setStrokeIsDashed:", [standardUserDefaults BOOLForKey:@"com.apple.AnnotationKit.strokeIsDashed"]);
+  -[AKAttributeController setHasShadow:](self, "setHasShadow:", [standardUserDefaults BOOLForKey:@"com.apple.AnnotationKit.hasShadow"]);
+  -[AKAttributeController setBrushStyle:](self, "setBrushStyle:", [standardUserDefaults integerForKey:@"com.apple.AnnotationKit.brushStyle"]);
+  v5 = [standardUserDefaults integerForKey:@"com.apple.AnnotationKit.arrowHeadStyle"];
   if (v5 >= 3)
   {
     v6 = 3;
@@ -423,66 +423,66 @@
   }
 
   [(AKAttributeController *)self setArrowHeadStyle:v6];
-  v7 = [v21 akFontForKey:@"com.apple.AnnotationKit.font"];
+  v7 = [standardUserDefaults akFontForKey:@"com.apple.AnnotationKit.font"];
   [(AKAttributeController *)self setFont:v7];
 
-  v8 = [(AKAttributeController *)self font];
+  font = [(AKAttributeController *)self font];
 
-  v9 = [objc_opt_class() defaultFont];
-  v10 = v9;
-  if (v8)
+  defaultFont = [objc_opt_class() defaultFont];
+  font2 = defaultFont;
+  if (font)
   {
-    [v9 pointSize];
+    [defaultFont pointSize];
     v12 = v11;
 
-    v10 = [(AKAttributeController *)self font];
-    v13 = [v10 fontWithSize:v12];
+    font2 = [(AKAttributeController *)self font];
+    v13 = [font2 fontWithSize:v12];
     [(AKAttributeController *)self setFont:v13];
   }
 
   else
   {
-    [(AKAttributeController *)self setFont:v9];
+    [(AKAttributeController *)self setFont:defaultFont];
   }
 
-  v14 = [v21 akTextAttributesForKey:@"com.apple.AnnotationKit.textAttributes"];
+  v14 = [standardUserDefaults akTextAttributesForKey:@"com.apple.AnnotationKit.textAttributes"];
   [(AKAttributeController *)self setTextAttributes:v14];
 
-  v15 = [(AKAttributeController *)self textAttributes];
+  textAttributes = [(AKAttributeController *)self textAttributes];
 
-  if (!v15)
+  if (!textAttributes)
   {
-    v16 = [objc_opt_class() defaultTextAttributes];
-    [(AKAttributeController *)self setTextAttributes:v16];
+    defaultTextAttributes = [objc_opt_class() defaultTextAttributes];
+    [(AKAttributeController *)self setTextAttributes:defaultTextAttributes];
   }
 
-  v17 = [(AKAttributeController *)self textAttributes];
-  v18 = [v17 mutableCopy];
+  textAttributes2 = [(AKAttributeController *)self textAttributes];
+  v18 = [textAttributes2 mutableCopy];
 
-  v19 = [(AKAttributeController *)self font];
-  [v18 setObject:v19 forKeyedSubscript:*MEMORY[0x277D740A8]];
+  font3 = [(AKAttributeController *)self font];
+  [v18 setObject:font3 forKeyedSubscript:*MEMORY[0x277D740A8]];
 
   v20 = [v18 copy];
   [(AKAttributeController *)self setTextAttributes:v20];
 
-  -[AKAttributeController setHighlightStyle:](self, "setHighlightStyle:", [v21 integerForKey:@"com.apple.AnnotationKit.highlightStyle"]);
+  -[AKAttributeController setHighlightStyle:](self, "setHighlightStyle:", [standardUserDefaults integerForKey:@"com.apple.AnnotationKit.highlightStyle"]);
 }
 
-- (void)_syncAttributesFromSenderToSelfAndSelectedAnnotations:(id)a3 segment:(int64_t)a4
+- (void)_syncAttributesFromSenderToSelfAndSelectedAnnotations:(id)annotations segment:(int64_t)segment
 {
   v183 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 tag];
+  annotationsCopy = annotations;
+  v7 = [annotationsCopy tag];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 tagForSegment:a4];
+    v7 = [annotationsCopy tagForSegment:segment];
   }
 
-  v155 = [(AKAttributeController *)self controller];
-  v8 = [(AKAttributeController *)self modelControllerToObserveForSelections];
-  v9 = [v8 selectedAnnotations];
+  controller = [(AKAttributeController *)self controller];
+  modelControllerToObserveForSelections = [(AKAttributeController *)self modelControllerToObserveForSelections];
+  selectedAnnotations = [modelControllerToObserveForSelections selectedAnnotations];
 
-  v153 = self;
+  selfCopy = self;
   if (v7 > 765101)
   {
     if (v7 <= 765109)
@@ -502,40 +502,40 @@
             goto LABEL_19;
           }
 
-          v129 = [(AKAttributeController *)self font];
-          v130 = [v6 convertFont:v129];
+          font = [(AKAttributeController *)self font];
+          v130 = [annotationsCopy convertFont:font];
           [(AKAttributeController *)self setFont:v130];
 
-          v131 = [(AKAttributeController *)self font];
+          font2 = [(AKAttributeController *)self font];
 
-          if (!v131)
+          if (!font2)
           {
-            v132 = [objc_opt_class() defaultFont];
-            [(AKAttributeController *)self setFont:v132];
+            defaultFont = [objc_opt_class() defaultFont];
+            [(AKAttributeController *)self setFont:defaultFont];
           }
 
-          v133 = [(AKAttributeController *)self textAttributes];
-          v121 = [v133 mutableCopy];
+          textAttributes = [(AKAttributeController *)self textAttributes];
+          color = [textAttributes mutableCopy];
 
           v134 = *MEMORY[0x277D740A8];
-          v135 = [v121 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+          v135 = [color objectForKeyedSubscript:*MEMORY[0x277D740A8]];
 
           if (v135)
           {
-            v136 = [v121 objectForKeyedSubscript:v134];
-            v137 = [v6 convertFont:v136];
+            v136 = [color objectForKeyedSubscript:v134];
+            font3 = [annotationsCopy convertFont:v136];
 
-            self = v153;
+            self = selfCopy;
           }
 
           else
           {
-            v137 = [(AKAttributeController *)self font];
+            font3 = [(AKAttributeController *)self font];
           }
 
-          [v121 setObject:v137 forKeyedSubscript:v134];
+          [color setObject:font3 forKeyedSubscript:v134];
 
-          v141 = [v121 copy];
+          v141 = [color copy];
           [(AKAttributeController *)self setTextAttributes:v141];
         }
 
@@ -552,8 +552,8 @@
             goto LABEL_19;
           }
 
-          v121 = [v6 color];
-          [(AKAttributeController *)self setFillColor:v121];
+          color = [annotationsCopy color];
+          [(AKAttributeController *)self setFillColor:color];
         }
 
         goto LABEL_176;
@@ -561,7 +561,7 @@
 
       if (v7 > 765107)
       {
-        v118 = self;
+        selfCopy4 = self;
         if (v7 == 765108)
         {
           v119 = 1;
@@ -577,23 +577,23 @@
       {
         if (v7 == 765106)
         {
-          v138 = [(AKAttributeController *)self textAttributes];
-          v139 = [v6 convertTextAttributes:v138];
+          textAttributes2 = [(AKAttributeController *)self textAttributes];
+          v139 = [annotationsCopy convertTextAttributes:textAttributes2];
           [(AKAttributeController *)self setTextAttributes:v139];
 
-          v140 = [(AKAttributeController *)self textAttributes];
+          textAttributes3 = [(AKAttributeController *)self textAttributes];
 
-          if (v140)
+          if (textAttributes3)
           {
             goto LABEL_19;
           }
 
-          v121 = [objc_opt_class() defaultTextAttributes];
-          [(AKAttributeController *)self setTextAttributes:v121];
+          color = [objc_opt_class() defaultTextAttributes];
+          [(AKAttributeController *)self setTextAttributes:color];
           goto LABEL_176;
         }
 
-        v118 = self;
+        selfCopy4 = self;
         v119 = 0;
       }
     }
@@ -602,7 +602,7 @@
     {
       if ((v7 - 765200) < 7)
       {
-        -[AKAttributeController setHighlightStyle:](self, "setHighlightStyle:", [v6 tag]);
+        -[AKAttributeController setHighlightStyle:](self, "setHighlightStyle:", [annotationsCopy tag]);
         goto LABEL_19;
       }
 
@@ -613,31 +613,31 @@
           goto LABEL_19;
         }
 
-        v121 = [v6 ink];
-        [(AKAttributeController *)self setInk:v121];
+        color = [annotationsCopy ink];
+        [(AKAttributeController *)self setInk:color];
 LABEL_176:
 
         goto LABEL_19;
       }
 
-      v118 = self;
+      selfCopy4 = self;
       v119 = 3;
     }
 
-    [(AKAttributeController *)v118 setArrowHeadStyle:v119];
+    [(AKAttributeController *)selfCopy4 setArrowHeadStyle:v119];
     goto LABEL_19;
   }
 
   if ((v7 - 765001) < 0xF)
   {
-    if ([v6 conformsToProtocol:&unk_2851CEBF8])
+    if ([annotationsCopy conformsToProtocol:&unk_2851CEBF8])
     {
-      [v6 lineWidth];
+      [annotationsCopy lineWidth];
     }
 
     else
     {
-      v10 = ([v6 tag] - 765000);
+      v10 = ([annotationsCopy tag] - 765000);
     }
 
     [(AKAttributeController *)self setStrokeWidth:v10];
@@ -652,11 +652,11 @@ LABEL_176:
 
   if (v7 == 765101)
   {
-    v120 = [v6 color];
-    [(AKAttributeController *)self setStrokeColor:v120];
+    color2 = [annotationsCopy color];
+    [(AKAttributeController *)self setStrokeColor:color2];
 
 LABEL_18:
-    [(AKAttributeController *)self updateInkIfNeeded:v6];
+    [(AKAttributeController *)self updateInkIfNeeded:annotationsCopy];
   }
 
 LABEL_19:
@@ -664,10 +664,10 @@ LABEL_19:
   v177 = 0u;
   v174 = 0u;
   v175 = 0u;
-  obj = v9;
+  obj = selectedAnnotations;
   v11 = [obj countByEnumeratingWithState:&v174 objects:v182 count:16];
-  v152 = v6;
-  v12 = v155;
+  v152 = annotationsCopy;
+  v12 = controller;
   if (!v11)
   {
     goto LABEL_129;
@@ -702,15 +702,15 @@ LABEL_19:
       }
 
       v18 = *(*(&v174 + 1) + 8 * v17);
-      v19 = [v12 currentPageController];
+      currentPageController = [v12 currentPageController];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v18 pathIsPrestroked];
+        pathIsPrestroked = [v18 pathIsPrestroked];
       }
 
       else
       {
-        v20 = 0;
+        pathIsPrestroked = 0;
       }
 
       if (v7 > 765101)
@@ -727,25 +727,25 @@ LABEL_19:
 
           if (isKindOfClass)
           {
-            v25 = v18;
-            [v25 setStyle:v154];
+            color3 = v18;
+            [color3 setStyle:v154];
             v26 = [AKHighlightAppearanceHelper colorForHighlightAttributeWithTag:v7];
-            [v25 setColor:v26];
+            [color3 setColor:v26];
 
-            if ([v25 conformsToAKParentAnnotationProtocol])
+            if ([color3 conformsToAKParentAnnotationProtocol])
             {
-              v27 = [v25 childAnnotation];
+              childAnnotation = [color3 childAnnotation];
               v28 = objc_opt_self();
               v29 = objc_opt_isKindOfClass();
 
               if (v29)
               {
                 v30 = [AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:v7];
-                [v27 setFillColor:v30];
+                [childAnnotation setFillColor:v30];
               }
 
-              v6 = v152;
-              self = v153;
+              annotationsCopy = v152;
+              self = selfCopy;
             }
 
             goto LABEL_91;
@@ -754,12 +754,12 @@ LABEL_19:
           v31 = objc_opt_self();
           v32 = objc_opt_isKindOfClass();
 
-          v12 = v155;
+          v12 = controller;
           if ((v32 & 1) != 0 && (v7 - 765200) <= 4)
           {
             v33 = v18;
-            v25 = [AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:v7];
-            [v33 setFillColor:v25];
+            color3 = [AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:v7];
+            [v33 setFillColor:color3];
 
             goto LABEL_91;
           }
@@ -774,12 +774,12 @@ LABEL_19:
               if ([v18 conformsToAKTextAnnotationProtocol])
               {
                 v61 = v18;
-                v62 = v6;
-                v63 = [v61 annotationText];
-                v64 = [v63 mutableCopy];
+                v62 = annotationsCopy;
+                annotationText = [v61 annotationText];
+                v64 = [annotationText mutableCopy];
 
                 [v64 removeAttribute:v145 range:{0, objc_msgSend(v64, "length")}];
-                v65 = [v61 annotationText];
+                annotationText2 = [v61 annotationText];
                 v171[0] = MEMORY[0x277D85DD0];
                 v171[1] = 3221225472;
                 v171[2] = sub_23F41FB74;
@@ -788,33 +788,33 @@ LABEL_19:
                 v172 = v151;
                 v66 = v64;
                 v173 = v66;
-                [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:v65 usingBlock:v171];
+                [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:annotationText2 usingBlock:v171];
 
                 v148 = v66;
                 v67 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithAttributedString:v66];
                 [v61 setAnnotationText:v67];
 
-                v68 = [v61 typingAttributes];
-                v69 = [v68 mutableCopy];
+                typingAttributes = [v61 typingAttributes];
+                v69 = [typingAttributes mutableCopy];
 
-                v70 = [v61 typingAttributes];
-                v71 = [v70 objectForKeyedSubscript:v15];
+                typingAttributes2 = [v61 typingAttributes];
+                v71 = [typingAttributes2 objectForKeyedSubscript:v15];
 
                 if (v71)
                 {
                   v72 = [v69 objectForKeyedSubscript:v15];
-                  v73 = [v151 convertFont:v72];
+                  font4 = [v151 convertFont:v72];
                 }
 
                 else
                 {
-                  v73 = [(AKAttributeController *)v153 font];
+                  font4 = [(AKAttributeController *)selfCopy font];
                 }
 
-                [v69 setObject:v73 forKeyedSubscript:v15];
+                [v69 setObject:font4 forKeyedSubscript:v15];
 
                 [v61 setTypingAttributes:v69];
-                [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v61 toFitOptionalText:0 onPageController:v19];
+                [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v61 toFitOptionalText:0 onPageController:currentPageController];
 
                 goto LABEL_109;
               }
@@ -823,7 +823,7 @@ LABEL_19:
             else if (v7 == 765106 && [v18 conformsToAKTextAnnotationProtocol])
             {
               v46 = v18;
-              v47 = v6;
+              v47 = annotationsCopy;
               v48 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v46];
               v49 = [v48 mutableCopy];
 
@@ -842,9 +842,9 @@ LABEL_19:
               v54 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithAttributedString:v52];
               [v53 setAnnotationText:v54];
 
-              v55 = [v53 typingAttributes];
+              typingAttributes3 = [v53 typingAttributes];
               v150 = v51;
-              v56 = [v51 convertTextAttributes:v55];
+              v56 = [v51 convertTextAttributes:typingAttributes3];
 
               [v53 setTypingAttributes:v56];
               v57 = [v56 objectForKeyedSubscript:v146];
@@ -860,13 +860,13 @@ LABEL_19:
                 }
               }
 
-              [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v53 toFitOptionalText:0 onPageController:v19];
+              [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v53 toFitOptionalText:0 onPageController:currentPageController];
 
 LABEL_109:
-              v6 = v152;
-              self = v153;
+              annotationsCopy = v152;
+              self = selfCopy;
 LABEL_92:
-              v12 = v155;
+              v12 = controller;
             }
           }
 
@@ -885,8 +885,8 @@ LABEL_92:
               goto LABEL_93;
             }
 
-            v25 = [v6 color];
-            [v18 setFillColor:v25];
+            color3 = [annotationsCopy color];
+            [v18 setFillColor:color3];
 LABEL_91:
 
             goto LABEL_92;
@@ -894,7 +894,7 @@ LABEL_91:
 
           if (v7 == 765103)
           {
-            if (v20 & 1) == 0 && (objc_opt_respondsToSelector())
+            if (pathIsPrestroked & 1) == 0 && (objc_opt_respondsToSelector())
             {
               if (objc_opt_respondsToSelector())
               {
@@ -905,7 +905,7 @@ LABEL_91:
             }
           }
 
-          else if (v20 & 1) == 0 && (objc_opt_respondsToSelector())
+          else if (pathIsPrestroked & 1) == 0 && (objc_opt_respondsToSelector())
           {
             if (objc_opt_respondsToSelector())
             {
@@ -919,7 +919,7 @@ LABEL_91:
 
       else if (v16 <= 0x31 && ((1 << v16) & 0x2000000007FFFLL) != 0)
       {
-        if (v20 & 1) == 0 && (objc_opt_respondsToSelector())
+        if (pathIsPrestroked & 1) == 0 && (objc_opt_respondsToSelector())
         {
           v21 = 1.0;
           if (v7 == 765050)
@@ -929,27 +929,27 @@ LABEL_91:
 
           else
           {
-            v22 = ([v6 tag] - 765000);
+            v22 = ([annotationsCopy tag] - 765000);
             if (v7 != 765001)
             {
-              [v19 modelBaseScaleFactor];
+              [currentPageController modelBaseScaleFactor];
               v21 = v43;
             }
           }
 
           [v18 setStrokeWidth:v22 * v21];
-          v44 = [v18 strokeColor];
+          strokeColor = [v18 strokeColor];
 
-          if (!v44)
+          if (!strokeColor)
           {
-            v45 = [(AKAttributeController *)self strokeColor];
-            [v18 setStrokeColor:v45];
+            strokeColor2 = [(AKAttributeController *)self strokeColor];
+            [v18 setStrokeColor:strokeColor2];
           }
 
-          v12 = v155;
+          v12 = controller;
           if ([v18 conformsToAKTextAnnotationProtocol])
           {
-            [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v18 toFitOptionalText:0 onPageController:v19];
+            [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v18 toFitOptionalText:0 onPageController:currentPageController];
           }
         }
       }
@@ -964,8 +964,8 @@ LABEL_91:
 
       else if (v7 == 765101 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v147 = [v18 strokeColor];
-        v149 = [v6 color];
+        strokeColor3 = [v18 strokeColor];
+        color4 = [annotationsCopy color];
         [v18 setStrokeColor:?];
         if (objc_opt_respondsToSelector())
         {
@@ -983,33 +983,33 @@ LABEL_91:
 
         if ([v18 conformsToAKFilledAnnotationProtocol])
         {
-          v35 = [v18 fillColor];
-          v36 = v35;
-          if (v35 && CGColorGetAlpha([v35 CGColor]) != 0.0)
+          fillColor = [v18 fillColor];
+          v36 = fillColor;
+          if (fillColor && CGColorGetAlpha([fillColor CGColor]) != 0.0)
           {
-            [v18 setFillColor:v149];
+            [v18 setFillColor:color4];
           }
 
-          v12 = v155;
+          v12 = controller;
         }
 
         if ([v18 conformsToAKTextAnnotationProtocol])
         {
           v37 = v18;
-          [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v37 toFitOptionalText:0 onPageController:v19];
+          [AKTextAnnotationAttributeHelper adjustBoundsOfAnnotation:v37 toFitOptionalText:0 onPageController:currentPageController];
           if ([v37 conformsToAKFilledAnnotationProtocol])
           {
-            v38 = [v37 annotationText];
-            v39 = [v37 strokeColor];
-            v142 = v39;
-            v144 = v38;
+            annotationText3 = [v37 annotationText];
+            strokeColor4 = [v37 strokeColor];
+            v142 = strokeColor4;
+            v144 = annotationText3;
             if (objc_opt_respondsToSelector())
             {
-              v40 = [v37 fillColor];
-              if (v40 && [v39 akIsEqualToColor:v40])
+              fillColor2 = [v37 fillColor];
+              if (fillColor2 && [strokeColor4 akIsEqualToColor:fillColor2])
               {
-                v41 = [MEMORY[0x277D75348] whiteColor];
-                v42 = [v142 akIsEqualToColor:v41];
+                whiteColor = [MEMORY[0x277D75348] whiteColor];
+                v42 = [v142 akIsEqualToColor:whiteColor];
 
                 if (v42)
                 {
@@ -1020,42 +1020,42 @@ LABEL_91:
                 {
                   [MEMORY[0x277D75348] whiteColor];
                 }
-                v39 = ;
+                strokeColor4 = ;
               }
             }
 
-            if (v38 && [v38 length])
+            if (annotationText3 && [annotationText3 length])
             {
-              v87 = [v38 mutableCopy];
+              v87 = [annotationText3 mutableCopy];
               v180 = v146;
-              v181 = v39;
+              v181 = strokeColor4;
               v88 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v181 forKeys:&v180 count:1];
-              [v87 addAttributes:v88 range:{0, objc_msgSend(v38, "length")}];
+              [v87 addAttributes:v88 range:{0, objc_msgSend(annotationText3, "length")}];
 
               v89 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithAttributedString:v87];
               [v37 setAnnotationText:v89];
             }
 
-            v90 = [v37 typingAttributes];
-            v91 = [v90 mutableCopy];
+            typingAttributes4 = [v37 typingAttributes];
+            v91 = [typingAttributes4 mutableCopy];
 
-            [v91 setObject:v39 forKeyedSubscript:v146];
+            [v91 setObject:strokeColor4 forKeyedSubscript:v146];
             [v37 setTypingAttributes:v91];
 
-            v6 = v152;
-            self = v153;
+            annotationsCopy = v152;
+            self = selfCopy;
             v85 = v142;
             goto LABEL_125;
           }
 
           if (([v37 isMemberOfClass:objc_opt_class()] & 1) == 0)
           {
-            v74 = [v37 annotationText];
-            v144 = v74;
-            if (v74)
+            annotationText4 = [v37 annotationText];
+            v144 = annotationText4;
+            if (annotationText4)
             {
-              v75 = v74;
-              if ([v74 length])
+              v75 = annotationText4;
+              if ([annotationText4 length])
               {
                 v76 = [v75 mutableCopy];
                 v77 = v75;
@@ -1063,34 +1063,34 @@ LABEL_91:
                 v79 = [v77 attributesAtIndex:0 effectiveRange:0];
                 v80 = [v79 objectForKeyedSubscript:v146];
                 v81 = v80;
-                if (!v80 || [v80 akIsEqualToColor:v147])
+                if (!v80 || [v80 akIsEqualToColor:strokeColor3])
                 {
-                  v143 = [v37 strokeColor];
+                  strokeColor5 = [v37 strokeColor];
                   v178 = v146;
-                  v179 = v143;
+                  v179 = strokeColor5;
                   v82 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v179 forKeys:&v178 count:1];
                   [v78 addAttributes:v82 range:{0, objc_msgSend(v144, "length")}];
 
                   v83 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithAttributedString:v78];
                   [v37 setAnnotationText:v83];
 
-                  self = v153;
+                  self = selfCopy;
                 }
 
-                v6 = v152;
+                annotationsCopy = v152;
               }
             }
 
-            v84 = [v37 typingAttributes];
-            v85 = [v84 mutableCopy];
+            typingAttributes5 = [v37 typingAttributes];
+            v85 = [typingAttributes5 mutableCopy];
 
-            v86 = [v6 color];
-            [v85 setObject:v86 forKeyedSubscript:v146];
+            color5 = [annotationsCopy color];
+            [v85 setObject:color5 forKeyedSubscript:v146];
 
             [v37 setTypingAttributes:v85];
 LABEL_125:
 
-            v12 = v155;
+            v12 = controller;
           }
         }
       }
@@ -1109,43 +1109,43 @@ LABEL_93:
   while (v92);
 LABEL_129:
 
-  v93 = [v12 textEditorController];
-  v94 = [v93 isEditing];
+  textEditorController = [v12 textEditorController];
+  isEditing = [textEditorController isEditing];
 
-  if (v94)
+  if (isEditing)
   {
-    v95 = [v155 textEditorController];
-    v96 = [v95 annotation];
-    v97 = [v95 textView];
-    v98 = [v97 textStorage];
+    textEditorController2 = [controller textEditorController];
+    annotation = [textEditorController2 annotation];
+    textView = [textEditorController2 textView];
+    textStorage = [textView textStorage];
     if (v7 == 765106)
     {
-      v113 = v6;
-      v114 = [v98 length];
+      v113 = annotationsCopy;
+      v114 = [textStorage length];
       v159[0] = MEMORY[0x277D85DD0];
       v159[1] = 3221225472;
       v159[2] = sub_23F41FD74;
       v159[3] = &unk_278C7B9A8;
       v160 = v113;
-      v161 = v98;
+      v161 = textStorage;
       v115 = v113;
       [v161 enumerateAttributesInRange:0 options:v114 usingBlock:{0, v159}];
-      v116 = [v97 typingAttributes];
-      v117 = [v115 convertTextAttributes:v116];
-      [v97 setTypingAttributes:v117];
+      typingAttributes6 = [textView typingAttributes];
+      v117 = [v115 convertTextAttributes:typingAttributes6];
+      [textView setTypingAttributes:v117];
 
-      [v95 updateForTextAttributeChange];
+      [textEditorController2 updateForTextAttributeChange];
       v104 = v160;
       goto LABEL_146;
     }
 
     if (v7 == 765105)
     {
-      v99 = v6;
-      v158 = v96;
-      [v96 originalModelBaseScaleFactor];
+      v99 = annotationsCopy;
+      v158 = annotation;
+      [annotation originalModelBaseScaleFactor];
       v101 = v100;
-      v102 = [v98 mutableCopy];
+      v102 = [textStorage mutableCopy];
       v162[0] = MEMORY[0x277D85DD0];
       v162[1] = 3221225472;
       v162[2] = sub_23F41FCB0;
@@ -1156,68 +1156,68 @@ LABEL_129:
       v166 = v101;
       v104 = v102;
       v164 = v104;
-      [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:v98 usingBlock:v162];
-      [v98 setAttributedString:v104];
-      v105 = [v97 typingAttributes];
-      v106 = [AKTextAnnotationAttributeHelper typingAttributes:v105 byApplyingScaleFactor:1.0 / v101];
+      [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:textStorage usingBlock:v162];
+      [textStorage setAttributedString:v104];
+      typingAttributes7 = [textView typingAttributes];
+      v101 = [AKTextAnnotationAttributeHelper typingAttributes:typingAttributes7 byApplyingScaleFactor:1.0 / v101];
 
-      v107 = v106;
-      v108 = [v106 mutableCopy];
+      v107 = v101;
+      v108 = [v101 mutableCopy];
       v109 = *MEMORY[0x277D740A8];
       v110 = [v108 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
 
       if (v110)
       {
         v111 = [v108 objectForKeyedSubscript:v109];
-        v112 = [v103 convertFont:v111];
+        font5 = [v103 convertFont:v111];
       }
 
       else
       {
-        v112 = [(AKAttributeController *)v153 font];
+        font5 = [(AKAttributeController *)selfCopy font];
       }
 
-      [v108 setObject:v112 forKeyedSubscript:v109];
+      [v108 setObject:font5 forKeyedSubscript:v109];
 
       v122 = [AKTextAnnotationAttributeHelper typingAttributes:v108 byApplyingScaleFactor:v101];
 
-      [v97 setTypingAttributes:v122];
-      [v95 updateForTextAttributeChange];
+      [textView setTypingAttributes:v122];
+      [textEditorController2 updateForTextAttributeChange];
 
-      v6 = v152;
-      v96 = v158;
+      annotationsCopy = v152;
+      annotation = v158;
 LABEL_146:
     }
 
-    self = v153;
+    self = selfCopy;
   }
 
   if ((v7 - 765105) <= 1)
   {
-    v123 = [v155 toolbarViewController];
-    [v123 revalidateItems];
+    toolbarViewController = [controller toolbarViewController];
+    [toolbarViewController revalidateItems];
   }
 
-  v124 = v155;
+  v124 = controller;
   if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 0xBACAC || (v7 - 765001) <= 0xE)
   {
-    v125 = [v155 toolController];
-    if ([v125 toolMode] == 1)
+    toolController = [controller toolController];
+    if ([toolController toolMode] == 1)
     {
 
       goto LABEL_155;
     }
 
-    v126 = [v155 toolController];
-    v127 = [v126 toolMode];
+    toolController2 = [controller toolController];
+    toolMode = [toolController2 toolMode];
 
-    if (v127 == 2)
+    if (toolMode == 2)
     {
 LABEL_155:
-      v128 = [v155 legacyDoodleController];
-      [v128 updateStrokeAttributes];
+      legacyDoodleController = [controller legacyDoodleController];
+      [legacyDoodleController updateStrokeAttributes];
 
-      v124 = v155;
+      v124 = controller;
     }
   }
 
@@ -1226,9 +1226,9 @@ LABEL_155:
 
 - (void)_syncAttributesFromSelectedAnnotationsToUI
 {
-  v4 = [(AKAttributeController *)self controller];
-  v3 = [v4 toolbarViewController];
-  [v3 revalidateItems];
+  controller = [(AKAttributeController *)self controller];
+  toolbarViewController = [controller toolbarViewController];
+  [toolbarViewController revalidateItems];
 
   [(AKAttributeController *)self syncFillColorOnSelectionToUI];
   [(AKAttributeController *)self syncStrokeColorOnSelectionToUI];
@@ -1237,25 +1237,25 @@ LABEL_155:
 - (void)syncFillColorOnSelectionToUI
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(AKAttributeController *)self controller];
+  controller = [(AKAttributeController *)self controller];
   v4 = objc_opt_new();
-  [v3 maxHDRGain];
+  [controller maxHDRGain];
   [v4 setAllowHDR:v5 > 1.0];
-  [v3 availableHeadroom];
+  [controller availableHeadroom];
   [v4 setAvailableHeadroom:?];
-  v6 = [v3 modelController];
-  [v6 annotationHeadroom];
+  modelController = [controller modelController];
+  [modelController annotationHeadroom];
   [v4 setDesiredHeadroom:?];
 
-  v21 = self;
-  v7 = [(AKAttributeController *)self modelControllerToObserveForSelections];
-  v8 = [v7 selectedAnnotations];
+  selfCopy = self;
+  modelControllerToObserveForSelections = [(AKAttributeController *)self modelControllerToObserveForSelections];
+  selectedAnnotations = [modelControllerToObserveForSelections selectedAnnotations];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v8;
+  v9 = selectedAnnotations;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v10)
   {
@@ -1268,7 +1268,7 @@ LABEL_21:
 
     else
     {
-      [(AKAttributeController *)v21 fillColor];
+      [(AKAttributeController *)selfCopy fillColor];
     }
     v12 = ;
     goto LABEL_25;
@@ -1296,9 +1296,9 @@ LABEL_21:
         {
           if (v12 && v16 && ([v12 akIsEqualToColor:v16] & 1) == 0)
           {
-            v19 = [MEMORY[0x277D75348] whiteColor];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
 
-            v12 = v19;
+            v12 = whiteColor;
             goto LABEL_18;
           }
         }
@@ -1332,31 +1332,31 @@ LABEL_18:
   }
 
 LABEL_25:
-  v20 = [v3 toolbarViewController];
-  [v20 setFillColorUIDisplayToColor:v12];
+  toolbarViewController = [controller toolbarViewController];
+  [toolbarViewController setFillColorUIDisplayToColor:v12];
 }
 
 - (void)syncStrokeColorOnSelectionToUI
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(AKAttributeController *)self controller];
+  controller = [(AKAttributeController *)self controller];
   v4 = objc_opt_new();
-  [v3 maxHDRGain];
+  [controller maxHDRGain];
   [v4 setAllowHDR:v5 > 1.0];
-  [v3 availableHeadroom];
+  [controller availableHeadroom];
   [v4 setAvailableHeadroom:?];
-  v6 = [v3 modelController];
-  [v6 annotationHeadroom];
+  modelController = [controller modelController];
+  [modelController annotationHeadroom];
   [v4 setDesiredHeadroom:?];
 
-  v7 = [(AKAttributeController *)self modelControllerToObserveForSelections];
-  v8 = [v7 selectedAnnotations];
+  modelControllerToObserveForSelections = [(AKAttributeController *)self modelControllerToObserveForSelections];
+  selectedAnnotations = [modelControllerToObserveForSelections selectedAnnotations];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v8;
+  v9 = selectedAnnotations;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v10)
   {
@@ -1397,9 +1397,9 @@ LABEL_21:
         {
           if (v12 && v16 && ([v12 akIsEqualToColor:v16] & 1) == 0)
           {
-            v19 = [MEMORY[0x277D75348] whiteColor];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
 
-            v12 = v19;
+            v12 = whiteColor;
             goto LABEL_18;
           }
         }
@@ -1433,19 +1433,19 @@ LABEL_18:
   }
 
 LABEL_25:
-  v20 = [v3 toolbarViewController];
-  [v20 setStrokeColorUIDisplayToColor:v12];
+  toolbarViewController = [controller toolbarViewController];
+  [toolbarViewController setStrokeColorUIDisplayToColor:v12];
 }
 
-- (BOOL)_isEnabledForSender:(id)a3 segment:(int64_t)a4 withSelectedAnnotations:(id)a5
+- (BOOL)_isEnabledForSender:(id)sender segment:(int64_t)segment withSelectedAnnotations:(id)annotations
 {
   v133 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  senderCopy = sender;
+  annotationsCopy = annotations;
+  v10 = annotationsCopy;
+  if (annotationsCopy)
   {
-    v11 = [v9 count] != 0;
+    v11 = [annotationsCopy count] != 0;
   }
 
   else
@@ -1453,10 +1453,10 @@ LABEL_25:
     v11 = 0;
   }
 
-  v12 = [v8 tag];
+  v12 = [senderCopy tag];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v8 tagForSegment:a4];
+    v12 = [senderCopy tagForSegment:segment];
   }
 
   if (v12 <= 765101)
@@ -1467,8 +1467,8 @@ LABEL_25:
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v13 = v10;
-      v15 = [v13 countByEnumeratingWithState:&v111 objects:v130 count:16];
+      controller2 = v10;
+      v15 = [controller2 countByEnumeratingWithState:&v111 objects:v130 count:16];
       if (v15)
       {
         v16 = v15;
@@ -1479,7 +1479,7 @@ LABEL_25:
           {
             if (*v112 != v17)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(controller2);
             }
 
             v19 = *(*(&v111 + 1) + 8 * i);
@@ -1499,7 +1499,7 @@ LABEL_25:
             }
           }
 
-          v16 = [v13 countByEnumeratingWithState:&v111 objects:v130 count:16];
+          v16 = [controller2 countByEnumeratingWithState:&v111 objects:v130 count:16];
           if (v16)
           {
             continue;
@@ -1518,8 +1518,8 @@ LABEL_25:
       v102 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v13 = v10;
-      v57 = [v13 countByEnumeratingWithState:&v99 objects:v127 count:16];
+      controller2 = v10;
+      v57 = [controller2 countByEnumeratingWithState:&v99 objects:v127 count:16];
       if (v57)
       {
         v58 = v57;
@@ -1530,7 +1530,7 @@ LABEL_101:
         {
           if (*v100 != v59)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(controller2);
           }
 
           if (objc_opt_respondsToSelector())
@@ -1540,7 +1540,7 @@ LABEL_101:
 
           if (v58 == ++v60)
           {
-            v58 = [v13 countByEnumeratingWithState:&v99 objects:v127 count:16];
+            v58 = [controller2 countByEnumeratingWithState:&v99 objects:v127 count:16];
             if (v58)
             {
               goto LABEL_101;
@@ -1560,8 +1560,8 @@ LABEL_101:
       v118 = 0u;
       v115 = 0u;
       v116 = 0u;
-      v13 = v10;
-      v38 = [v13 countByEnumeratingWithState:&v115 objects:v131 count:16];
+      controller2 = v10;
+      v38 = [controller2 countByEnumeratingWithState:&v115 objects:v131 count:16];
       if (v38)
       {
         v39 = v38;
@@ -1572,7 +1572,7 @@ LABEL_66:
         {
           if (*v116 != v40)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(controller2);
           }
 
           if (objc_opt_respondsToSelector())
@@ -1582,7 +1582,7 @@ LABEL_66:
 
           if (v39 == ++v41)
           {
-            v39 = [v13 countByEnumeratingWithState:&v115 objects:v131 count:16];
+            v39 = [controller2 countByEnumeratingWithState:&v115 objects:v131 count:16];
             if (v39)
             {
               goto LABEL_66;
@@ -1609,12 +1609,12 @@ LABEL_137:
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v13 = v10;
-      v21 = [v13 countByEnumeratingWithState:&v87 objects:v124 count:16];
+      controller2 = v10;
+      v21 = [controller2 countByEnumeratingWithState:&v87 objects:v124 count:16];
       if (v21)
       {
         v22 = v21;
-        v82 = v8;
+        v82 = senderCopy;
         v23 = *v88;
         while (2)
         {
@@ -1622,7 +1622,7 @@ LABEL_137:
           {
             if (*v88 != v23)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(controller2);
             }
 
             v25 = objc_opt_self();
@@ -1641,7 +1641,7 @@ LABEL_137:
             }
           }
 
-          v22 = [v13 countByEnumeratingWithState:&v87 objects:v124 count:16];
+          v22 = [controller2 countByEnumeratingWithState:&v87 objects:v124 count:16];
           if (v22)
           {
             continue;
@@ -1661,11 +1661,11 @@ LABEL_137:
         goto LABEL_137;
       }
 
-      v49 = [(AKAttributeController *)self controller];
-      v50 = [v49 toolController];
-      v51 = [v50 toolMode];
+      controller = [(AKAttributeController *)self controller];
+      toolController = [controller toolController];
+      toolMode = [toolController toolMode];
 
-      if (v51 != 4)
+      if (toolMode != 4)
       {
         goto LABEL_137;
       }
@@ -1679,8 +1679,8 @@ LABEL_110:
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v13 = v10;
-    v32 = [v13 countByEnumeratingWithState:&v83 objects:v123 count:16];
+    controller2 = v10;
+    v32 = [controller2 countByEnumeratingWithState:&v83 objects:v123 count:16];
     if (v32)
     {
       v33 = v32;
@@ -1691,7 +1691,7 @@ LABEL_55:
       {
         if (*v84 != v34)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(controller2);
         }
 
         v36 = objc_opt_self();
@@ -1704,7 +1704,7 @@ LABEL_55:
 
         if (v33 == ++v35)
         {
-          v33 = [v13 countByEnumeratingWithState:&v83 objects:v123 count:16];
+          v33 = [controller2 countByEnumeratingWithState:&v83 objects:v123 count:16];
           if (v33)
           {
             goto LABEL_55;
@@ -1735,8 +1735,8 @@ LABEL_139:
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v13 = v10;
-      v28 = [v13 countByEnumeratingWithState:&v91 objects:v125 count:16];
+      controller2 = v10;
+      v28 = [controller2 countByEnumeratingWithState:&v91 objects:v125 count:16];
       if (!v28)
       {
         goto LABEL_136;
@@ -1750,7 +1750,7 @@ LABEL_45:
       {
         if (*v92 != v30)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(controller2);
         }
 
         if (objc_opt_respondsToSelector())
@@ -1760,7 +1760,7 @@ LABEL_45:
 
         if (v29 == ++v31)
         {
-          v29 = [v13 countByEnumeratingWithState:&v91 objects:v125 count:16];
+          v29 = [controller2 countByEnumeratingWithState:&v91 objects:v125 count:16];
           if (v29)
           {
             goto LABEL_45;
@@ -1776,11 +1776,11 @@ LABEL_45:
 
   if (v12 > 765104)
   {
-    v13 = [(AKAttributeController *)self controller];
-    v42 = [v13 textEditorController];
-    v43 = [v42 isEditing];
+    controller2 = [(AKAttributeController *)self controller];
+    textEditorController = [controller2 textEditorController];
+    isEditing = [textEditorController isEditing];
 
-    if ((v43 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       v97 = 0u;
       v98 = 0u;
@@ -1830,8 +1830,8 @@ LABEL_45:
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v13 = v10;
-    v53 = [v13 countByEnumeratingWithState:&v119 objects:v132 count:16];
+    controller2 = v10;
+    v53 = [controller2 countByEnumeratingWithState:&v119 objects:v132 count:16];
     if (v53)
     {
       v54 = v53;
@@ -1842,7 +1842,7 @@ LABEL_92:
       {
         if (*v120 != v55)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(controller2);
         }
 
         if (objc_opt_respondsToSelector())
@@ -1852,7 +1852,7 @@ LABEL_92:
 
         if (v54 == ++v56)
         {
-          v54 = [v13 countByEnumeratingWithState:&v119 objects:v132 count:16];
+          v54 = [controller2 countByEnumeratingWithState:&v119 objects:v132 count:16];
           if (v54)
           {
             goto LABEL_92;
@@ -1872,9 +1872,9 @@ LABEL_109:
 
   if (v12 != 765103)
   {
-    v13 = [(AKAttributeController *)self controller];
-    v14 = [v13 toolController];
-    if ([v14 toolMode] == 2)
+    controller2 = [(AKAttributeController *)self controller];
+    toolController2 = [controller2 toolController];
+    if ([toolController2 toolMode] == 2)
     {
 
       if (!v11)
@@ -1893,7 +1893,7 @@ LABEL_124:
       {
         v74 = v73;
         v81 = v11;
-        v82 = v8;
+        v82 = senderCopy;
         v75 = *v104;
         v76 = &selRef_intValue;
 LABEL_126:
@@ -1929,8 +1929,8 @@ LABEL_126:
       goto LABEL_135;
     }
 
-    v71 = [v13 toolController];
-    v72 = [v71 toolMode] != 4;
+    toolController3 = [controller2 toolController];
+    v72 = [toolController3 toolMode] != 4;
 
     if (v72 || v11)
     {
@@ -1942,9 +1942,9 @@ LABEL_138:
     goto LABEL_139;
   }
 
-  v13 = [(AKAttributeController *)self controller];
-  v52 = [v13 toolController];
-  if ([v52 toolMode] == 2)
+  controller2 = [(AKAttributeController *)self controller];
+  toolController4 = [controller2 toolController];
+  if ([toolController4 toolMode] == 2)
   {
 
     if (!v11)
@@ -1955,8 +1955,8 @@ LABEL_138:
 
   else
   {
-    v61 = [v13 toolController];
-    v62 = [v61 toolMode] != 4;
+    toolController5 = [controller2 toolController];
+    v62 = [toolController5 toolMode] != 4;
 
     if (!v62 && !v11)
     {
@@ -1979,7 +1979,7 @@ LABEL_135:
 
   v65 = v64;
   v81 = v11;
-  v82 = v8;
+  v82 = senderCopy;
   v66 = *v108;
   v67 = &selRef_intValue;
 LABEL_114:
@@ -2008,7 +2008,7 @@ LABEL_114:
       }
 
 LABEL_134:
-      v8 = v82;
+      senderCopy = v82;
       LOBYTE(v11) = v81;
       goto LABEL_135;
     }
@@ -2018,33 +2018,33 @@ LABEL_140:
 
 LABEL_141:
   LOBYTE(v20) = 1;
-  v8 = v82;
+  senderCopy = v82;
 LABEL_142:
 
   return v20;
 }
 
-- (void)_updateStateOnSender:(id)a3 segment:(int64_t)a4
+- (void)_updateStateOnSender:(id)sender segment:(int64_t)segment
 {
-  v8 = a3;
-  v6 = [(AKAttributeController *)self modelControllerToObserveForSelections];
-  v7 = [v6 selectedAnnotations];
+  senderCopy = sender;
+  modelControllerToObserveForSelections = [(AKAttributeController *)self modelControllerToObserveForSelections];
+  selectedAnnotations = [modelControllerToObserveForSelections selectedAnnotations];
 
-  if (![(AKAttributeController *)self _updateStateOnSender:v8 segment:a4 fromSelectedAnnotations:v7])
+  if (![(AKAttributeController *)self _updateStateOnSender:senderCopy segment:segment fromSelectedAnnotations:selectedAnnotations])
   {
-    [(AKAttributeController *)self _updateStateOnSenderFromSelf:v8 segment:a4];
+    [(AKAttributeController *)self _updateStateOnSenderFromSelf:senderCopy segment:segment];
   }
 }
 
-- (void)_allAnnotations:(id)a3 all:(BOOL *)a4 atLeastOneShare:(BOOL *)a5 attributeFromTag:(int64_t)a6
+- (void)_allAnnotations:(id)annotations all:(BOOL *)all atLeastOneShare:(BOOL *)share attributeFromTag:(int64_t)tag
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  annotationsCopy = annotations;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [annotationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2055,23 +2055,23 @@ LABEL_142:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (a6 <= 765106)
+        if (tag <= 765106)
         {
-          if (a6 == 765100)
+          if (tag == 765100)
           {
             if (objc_opt_respondsToSelector() & 1) != 0 && ([v13 hasShadow])
             {
 LABEL_34:
-              *a5 = 1;
+              *share = 1;
               continue;
             }
           }
 
-          else if (a6 == 765103)
+          else if (tag == 765103)
           {
             if (objc_opt_respondsToSelector() & 1) != 0 && ([v13 isDashed])
             {
@@ -2079,15 +2079,15 @@ LABEL_34:
             }
           }
 
-          else if (a6 == 765104 && (objc_opt_respondsToSelector() & 1) != 0 && [v13 brushStyle])
+          else if (tag == 765104 && (objc_opt_respondsToSelector() & 1) != 0 && [v13 brushStyle])
           {
             goto LABEL_34;
           }
         }
 
-        else if (a6 > 765108)
+        else if (tag > 765108)
         {
-          if (a6 == 765109)
+          if (tag == 765109)
           {
             if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 arrowHeadStyle] == 2)
             {
@@ -2095,13 +2095,13 @@ LABEL_34:
             }
           }
 
-          else if (a6 == 765110 && (objc_opt_respondsToSelector() & 1) != 0 && [v13 arrowHeadStyle] == 3)
+          else if (tag == 765110 && (objc_opt_respondsToSelector() & 1) != 0 && [v13 arrowHeadStyle] == 3)
           {
             goto LABEL_34;
           }
         }
 
-        else if (a6 == 765107)
+        else if (tag == 765107)
         {
           if ((objc_opt_respondsToSelector() & 1) != 0 && ![v13 arrowHeadStyle])
           {
@@ -2114,38 +2114,38 @@ LABEL_34:
           goto LABEL_34;
         }
 
-        *a4 = 0;
+        *all = 0;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [annotationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)_updateStateOnSender:(id)a3 segment:(int64_t)a4 fromSelectedAnnotations:(id)a5
+- (BOOL)_updateStateOnSender:(id)sender segment:(int64_t)segment fromSelectedAnnotations:(id)annotations
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (!v8 || ![v8 count])
+  senderCopy = sender;
+  annotationsCopy = annotations;
+  v9 = annotationsCopy;
+  if (!annotationsCopy || ![annotationsCopy count])
   {
     goto LABEL_34;
   }
 
-  if ([v7 conformsToProtocol:&unk_2851E7310])
+  if ([senderCopy conformsToProtocol:&unk_2851E7310])
   {
-    v10 = v7;
+    v10 = senderCopy;
     v11 = [v10 tag];
     v12 = v11 == 765105;
     if (v11 == 765105)
     {
       v13 = [AKTextAnnotationAttributeHelper fontsOfAnnotations:v9];
-      v14 = [(AKAttributeController *)self controller];
-      v15 = [v14 textEditorController];
-      v16 = [AKTextAnnotationAttributeHelper fontsOfEditor:v15];
+      controller = [(AKAttributeController *)self controller];
+      textEditorController = [controller textEditorController];
+      v16 = [AKTextAnnotationAttributeHelper fontsOfEditor:textEditorController];
       if ([v16 count])
       {
         v17 = [v13 setByAddingObjectsFromSet:v16];
@@ -2162,12 +2162,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![v7 conformsToProtocol:&unk_2851D1F48])
+  if (![senderCopy conformsToProtocol:&unk_2851D1F48])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v7 tag] > 765000 && objc_msgSend(v7, "tag") < 765016 || objc_msgSend(v7, "tag") > 765106 && objc_msgSend(v7, "tag") < 765111))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([senderCopy tag] > 765000 && objc_msgSend(senderCopy, "tag") < 765016 || objc_msgSend(senderCopy, "tag") > 765106 && objc_msgSend(senderCopy, "tag") < 765111))
     {
-      v10 = v7;
+      v10 = senderCopy;
       v20 = [v10 tag];
       if ((v20 - 765001) >= 0xF)
       {
@@ -2184,9 +2184,9 @@ LABEL_13:
 
       else
       {
-        v21 = [(AKAttributeController *)self controller];
-        v22 = [v21 currentPageController];
-        [v22 modelBaseScaleFactor];
+        controller2 = [(AKAttributeController *)self controller];
+        currentPageController = [controller2 currentPageController];
+        [currentPageController modelBaseScaleFactor];
         v24 = v23;
 
         v25 = [v10 tag];
@@ -2199,9 +2199,9 @@ LABEL_13:
         if (v27)
         {
           v28 = v27;
-          v41 = v21;
+          v41 = controller2;
           v42 = v9;
-          v43 = v7;
+          v43 = senderCopy;
           v29 = 0;
           v30 = *v46;
           v31 = 1;
@@ -2243,8 +2243,8 @@ LABEL_13:
           while (v28);
           v39 = v31 | v29;
           v9 = v42;
-          v7 = v43;
-          v21 = v41;
+          senderCopy = v43;
+          controller2 = v41;
         }
 
         else
@@ -2264,15 +2264,15 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v10 = v7;
+  v10 = senderCopy;
   v18 = [v10 tag];
   v12 = v18 == 765106;
   if (v18 == 765106)
   {
     v13 = [AKTextAnnotationAttributeHelper textAttributesOfAnnotations:v9];
-    v14 = [(AKAttributeController *)self controller];
-    v15 = [v14 textEditorController];
-    v16 = [AKTextAnnotationAttributeHelper textAttributesOfEditor:v15];
+    controller = [(AKAttributeController *)self controller];
+    textEditorController = [controller textEditorController];
+    v16 = [AKTextAnnotationAttributeHelper textAttributesOfEditor:textEditorController];
     if ([v16 count])
     {
       v19 = [v13 setByAddingObjectsFromSet:v16];
@@ -2290,21 +2290,21 @@ LABEL_35:
   return v12;
 }
 
-- (void)_updateStateOnSenderFromSelf:(id)a3 segment:(int64_t)a4
+- (void)_updateStateOnSenderFromSelf:(id)self segment:(int64_t)segment
 {
-  v17 = a3;
-  if ([v17 conformsToProtocol:&unk_2851E7310])
+  selfCopy = self;
+  if ([selfCopy conformsToProtocol:&unk_2851E7310])
   {
-    v5 = v17;
+    v5 = selfCopy;
     if ([v5 tag] == 765105)
     {
       v6 = MEMORY[0x277CBEB98];
-      v7 = [(AKAttributeController *)self font];
-      v8 = [v6 setWithObject:v7];
+      font = [(AKAttributeController *)self font];
+      v8 = [v6 setWithObject:font];
 
-      v9 = [(AKAttributeController *)self controller];
-      v10 = [v9 textEditorController];
-      v11 = [AKTextAnnotationAttributeHelper fontsOfEditor:v10];
+      controller = [(AKAttributeController *)self controller];
+      textEditorController = [controller textEditorController];
+      v11 = [AKTextAnnotationAttributeHelper fontsOfEditor:textEditorController];
       if ([v11 count])
       {
         v12 = [v8 setByAddingObjectsFromSet:v11];
@@ -2319,21 +2319,21 @@ LABEL_11:
 
   else
   {
-    if (![v17 conformsToProtocol:&unk_2851D1F48])
+    if (![selfCopy conformsToProtocol:&unk_2851D1F48])
     {
       goto LABEL_13;
     }
 
-    v13 = v17;
+    v13 = selfCopy;
     if ([v13 tag] == 765106)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [(AKAttributeController *)self textAttributes];
-      v8 = [v14 setWithObject:v15];
+      textAttributes = [(AKAttributeController *)self textAttributes];
+      v8 = [v14 setWithObject:textAttributes];
 
-      v9 = [(AKAttributeController *)self controller];
-      v10 = [v9 textEditorController];
-      v11 = [AKTextAnnotationAttributeHelper textAttributesOfEditor:v10];
+      controller = [(AKAttributeController *)self controller];
+      textEditorController = [controller textEditorController];
+      v11 = [AKTextAnnotationAttributeHelper textAttributesOfEditor:textEditorController];
       if ([v11 count])
       {
         v16 = [v8 setByAddingObjectsFromSet:v11];

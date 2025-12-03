@@ -1,33 +1,33 @@
 @interface CHRemoteRecognitionRequestHandler
-+ (id)_maxStrokeLimitErrorWithInputDrawingStrokeCount:(int64_t)a3;
-- (BOOL)isValidRemoteRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (CHRemoteRecognitionRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5;
-- (id)_buildMultiLingualResultForRequest:(id)a3 recognitionLocales:(id)a4 recognizersByLocale:(id)a5 statisticsByLocale:(id)a6 outPrincipalLineResult:(id *)a7;
-- (id)_computeTextRecognitionResultsForRequest:(id)a3 recognizer:(id)a4 recognizerCachingKey:(id)a5 isTopLocale:(BOOL)a6 writingStatistics:(id)a7 outPrincipalPoints:(id *)a8;
-- (id)_queueForRequest:(id)a3;
-- (id)generateRecognitionOptionsFromRequest:(id)a3 isTopLocale:(BOOL)a4 cachedPrefixResult:(id)a5 cachedPrefixColumnRangeToKeep:(_NSRange)a6;
-- (id)retrievePartialResultsForDrawing:(id)a3 recognitionEngineCachingKey:(id)a4 matchingColumnRangeToKeep:(_NSRange *)a5 strokesToRecognize:(id *)a6;
-- (void)_handleValidRecognitionMathRequest:(id)a3 withReply:(id)a4;
-- (void)_handleValidRecognitionRequest:(id)a3 withReply:(id)a4;
-- (void)_handleValidRecognitionTextRequest:(id)a3 withReply:(id)a4;
-- (void)_handleValidSketchRecognitionRequest:(id)a3 withReply:(id)a4;
++ (id)_maxStrokeLimitErrorWithInputDrawingStrokeCount:(int64_t)count;
+- (BOOL)isValidRemoteRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error;
+- (CHRemoteRecognitionRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue;
+- (id)_buildMultiLingualResultForRequest:(id)request recognitionLocales:(id)locales recognizersByLocale:(id)locale statisticsByLocale:(id)byLocale outPrincipalLineResult:(id *)result;
+- (id)_computeTextRecognitionResultsForRequest:(id)request recognizer:(id)recognizer recognizerCachingKey:(id)key isTopLocale:(BOOL)locale writingStatistics:(id)statistics outPrincipalPoints:(id *)points;
+- (id)_queueForRequest:(id)request;
+- (id)generateRecognitionOptionsFromRequest:(id)request isTopLocale:(BOOL)locale cachedPrefixResult:(id)result cachedPrefixColumnRangeToKeep:(_NSRange)keep;
+- (id)retrievePartialResultsForDrawing:(id)drawing recognitionEngineCachingKey:(id)key matchingColumnRangeToKeep:(_NSRange *)keep strokesToRecognize:(id *)recognize;
+- (void)_handleValidRecognitionMathRequest:(id)request withReply:(id)reply;
+- (void)_handleValidRecognitionRequest:(id)request withReply:(id)reply;
+- (void)_handleValidRecognitionTextRequest:(id)request withReply:(id)reply;
+- (void)_handleValidSketchRecognitionRequest:(id)request withReply:(id)reply;
 - (void)dealloc;
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
-- (void)handleSketchRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleSketchRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
 - (void)optimizeResourceUsage;
-- (void)transcriptionPathsForTokenizedTextResult:(id)a3 recognitionRequest:(id)a4 withReply:(id)a5 bundleIdentifier:(id)a6;
+- (void)transcriptionPathsForTokenizedTextResult:(id)result recognitionRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
 @end
 
 @implementation CHRemoteRecognitionRequestHandler
 
-- (CHRemoteRecognitionRequestHandler)initWithServerQueue:(id)a3 lowPriorityQueue:(id)a4 highPriorityQueue:(id)a5
+- (CHRemoteRecognitionRequestHandler)initWithServerQueue:(id)queue lowPriorityQueue:(id)priorityQueue highPriorityQueue:(id)highPriorityQueue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  priorityQueueCopy = priorityQueue;
+  highPriorityQueueCopy = highPriorityQueue;
   v19.receiver = self;
   v19.super_class = CHRemoteRecognitionRequestHandler;
-  v11 = [(CHRemoteProcessingRequestHandler *)&v19 initWithServerQueue:v8 lowPriorityQueue:v9 highPriorityQueue:v10];
+  v11 = [(CHRemoteProcessingRequestHandler *)&v19 initWithServerQueue:queueCopy lowPriorityQueue:priorityQueueCopy highPriorityQueue:highPriorityQueueCopy];
   if (v11)
   {
     v12 = objc_opt_new();
@@ -64,27 +64,27 @@
   [(CHRemoteRecognitionRequestHandler *)&v6 dealloc];
 }
 
-- (id)_queueForRequest:(id)a3
+- (id)_queueForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 priority];
-  if (!v5)
+  requestCopy = request;
+  priority = [requestCopy priority];
+  if (!priority)
   {
     goto LABEL_4;
   }
 
-  if (v5 == 1)
+  if (priority == 1)
   {
-    v6 = [(CHRemoteProcessingRequestHandler *)self highPriorityQueue];
+    highPriorityQueue = [(CHRemoteProcessingRequestHandler *)self highPriorityQueue];
     goto LABEL_6;
   }
 
-  if (v5 == 2)
+  if (priority == 2)
   {
 LABEL_4:
-    v6 = [(CHRemoteProcessingRequestHandler *)self lowPriorityQueue];
+    highPriorityQueue = [(CHRemoteProcessingRequestHandler *)self lowPriorityQueue];
 LABEL_6:
-    v7 = v6;
+    v7 = highPriorityQueue;
     goto LABEL_12;
   }
 
@@ -106,27 +106,27 @@ LABEL_12:
   return v7;
 }
 
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000C084;
   v15[3] = &unk_100024BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = requestCopy;
+  v17 = identifierCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = identifierCopy;
+  v14 = requestCopy;
+  dispatch_sync(serverQueue, v15);
 }
 
-+ (id)_maxStrokeLimitErrorWithInputDrawingStrokeCount:(int64_t)a3
++ (id)_maxStrokeLimitErrorWithInputDrawingStrokeCount:(int64_t)count
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"The number of strokes in the input drawing exceeds the maximum number permitted for remote recognition (%ld strokes)" value:&stru_100025778 table:0];
@@ -140,7 +140,7 @@ LABEL_12:
   v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v5, [objc_opt_class() absoluteMaxStrokeCountPerRequest], NSLocalizedDescriptionKey);
   v16[0] = v10;
   v15[1] = NSLocalizedFailureReasonErrorKey;
-  v11 = [NSString stringWithFormat:v7, a3];
+  v11 = [NSString stringWithFormat:v7, count];
   v15[2] = NSLocalizedRecoverySuggestionErrorKey;
   v16[1] = v11;
   v16[2] = v9;
@@ -151,28 +151,28 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)isValidRemoteRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)isValidRemoteRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 lowercaseString];
-  v9 = [v8 isEqualToString:@"com.apple.compose"];
+  requestCopy = request;
+  lowercaseString = [identifier lowercaseString];
+  v9 = [lowercaseString isEqualToString:@"com.apple.compose"];
 
-  if (v7)
+  if (requestCopy)
   {
-    v10 = [v7 drawing];
+    drawing = [requestCopy drawing];
 
-    if (v10)
+    if (drawing)
     {
-      v11 = [v7 drawing];
-      v12 = [v11 strokeCount];
+      drawing2 = [requestCopy drawing];
+      strokeCount = [drawing2 strokeCount];
 
-      if (v12)
+      if (strokeCount)
       {
-        if ((v9 & 1) != 0 || ([v7 drawing], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "strokeCount"), v15 = objc_msgSend(objc_opt_class(), "absoluteMaxStrokeCountPerRequest"), v13, v14 <= v15))
+        if ((v9 & 1) != 0 || ([requestCopy drawing], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "strokeCount"), v15 = objc_msgSend(objc_opt_class(), "absoluteMaxStrokeCountPerRequest"), v13, v14 <= v15))
         {
           v18 = 0;
           v19 = 1;
-          if (!a5)
+          if (!error)
           {
             goto LABEL_15;
           }
@@ -181,11 +181,11 @@ LABEL_12:
         else
         {
           v16 = objc_opt_class();
-          v17 = [v7 drawing];
-          v18 = [v16 _maxStrokeLimitErrorWithInputDrawingStrokeCount:{objc_msgSend(v17, "strokeCount")}];
+          drawing3 = [requestCopy drawing];
+          v18 = [v16 _maxStrokeLimitErrorWithInputDrawingStrokeCount:{objc_msgSend(drawing3, "strokeCount")}];
 
           v19 = 0;
-          if (!a5)
+          if (!error)
           {
             goto LABEL_15;
           }
@@ -238,11 +238,11 @@ LABEL_12:
   v18 = v26;
 
   v19 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_14:
     v33 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
 LABEL_15:
@@ -250,12 +250,12 @@ LABEL_15:
   return v19;
 }
 
-- (id)_buildMultiLingualResultForRequest:(id)a3 recognitionLocales:(id)a4 recognizersByLocale:(id)a5 statisticsByLocale:(id)a6 outPrincipalLineResult:(id *)a7
+- (id)_buildMultiLingualResultForRequest:(id)request recognitionLocales:(id)locales recognizersByLocale:(id)locale statisticsByLocale:(id)byLocale outPrincipalLineResult:(id *)result
 {
-  v85 = a3;
-  v72 = a4;
-  v82 = a5;
-  v81 = a6;
+  requestCopy = request;
+  localesCopy = locales;
+  localeCopy = locale;
+  byLocaleCopy = byLocale;
   if (qword_10002AD20 != -1)
   {
     dispatch_once(&qword_10002AD20, &stru_1000249F0);
@@ -290,19 +290,19 @@ LABEL_15:
   }
 
   v75 = +[NSMutableArray array];
-  v14 = [v85 options];
-  v83 = [CHRecognizer inputLocalesFromRecognitionOptions:v14];
+  options = [requestCopy options];
+  v83 = [CHRecognizer inputLocalesFromRecognitionOptions:options];
 
   lexiconManager = self->_lexiconManager;
-  v16 = [v85 customLexiconEntries];
-  v77 = [(CHInputContextLexiconManager *)lexiconManager transientLexiconWithCustomEntries:v16];
+  customLexiconEntries = [requestCopy customLexiconEntries];
+  v77 = [(CHInputContextLexiconManager *)lexiconManager transientLexiconWithCustomEntries:customLexiconEntries];
 
   v74 = +[NSMutableArray array];
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  obj = v72;
+  obj = localesCopy;
   v17 = [obj countByEnumeratingWithState:&v98 objects:v108 count:16];
   if (v17)
   {
@@ -321,42 +321,42 @@ LABEL_15:
         }
 
         v20 = *(*(&v98 + 1) + 8 * i);
-        v21 = [v82 objectForKeyedSubscript:v20];
-        v22 = [v81 objectForKeyedSubscript:v20];
+        v21 = [localeCopy objectForKeyedSubscript:v20];
+        v22 = [byLocaleCopy objectForKeyedSubscript:v20];
         if (v18)
         {
-          v23 = [v21 recognitionEngineCachingKey];
+          recognitionEngineCachingKey = [v21 recognitionEngineCachingKey];
           v24 = [CHRecognizerConfiguration cachingKeyFromRelevantLocales:v83 forLocale:v20];
-          v25 = [NSString stringWithFormat:@"%@_%@", v23, v24];
+          v25 = [NSString stringWithFormat:@"%@_%@", recognitionEngineCachingKey, v24];
 
           v84 = v25;
         }
 
-        if (v18 & 1 | ((+[CHRecognizerConfiguration isSupportedLatinScriptLocale:withMode:](CHRecognizerConfiguration, "isSupportedLatinScriptLocale:withMode:", v20, [v85 recognitionMode]) & 1) == 0))
+        if (v18 & 1 | ((+[CHRecognizerConfiguration isSupportedLatinScriptLocale:withMode:](CHRecognizerConfiguration, "isSupportedLatinScriptLocale:withMode:", v20, [requestCopy recognitionMode]) & 1) == 0))
         {
           goto LABEL_21;
         }
 
         recognizerInferenceCache = self->_recognizerInferenceCache;
-        v27 = [v85 drawing];
-        v28 = [(CHRecognizerInferenceCache *)recognizerInferenceCache retrieveActivationMatrixForDrawing:v27 recognitionEngineCachingKey:v84 outStrokeIndexMapping:0 outStrokeEndings:0 outPrincipalPoints:0];
+        drawing = [requestCopy drawing];
+        v28 = [(CHRecognizerInferenceCache *)recognizerInferenceCache retrieveActivationMatrixForDrawing:drawing recognitionEngineCachingKey:v84 outStrokeIndexMapping:0 outStrokeEndings:0 outPrincipalPoints:0];
 
-        v29 = [v28 unlikelyHasLatinContents];
-        if ((v29 & 1) == 0)
+        unlikelyHasLatinContents = [v28 unlikelyHasLatinContents];
+        if ((unlikelyHasLatinContents & 1) == 0)
         {
 LABEL_21:
-          v30 = [(CHInputContextLexiconManager *)self->_lexiconManager transientPhraseLexicon];
-          v31 = [(CHInputContextLexiconManager *)self->_lexiconManager vocabulary];
-          v32 = [(CHInputContextLexiconManager *)self->_lexiconManager textReplacements];
-          v33 = [(CHInputContextLexiconManager *)self->_lexiconManager addressBookLexicon];
-          [CHCachedRecognizerManager configureRecognizer:v21 forRequest:v85 locale:v20 transientLexicon:v77 transientPhraseLexicon:v30 vocabulary:v31 textReplacements:v32 addressBookLexicon:v33];
+          transientPhraseLexicon = [(CHInputContextLexiconManager *)self->_lexiconManager transientPhraseLexicon];
+          vocabulary = [(CHInputContextLexiconManager *)self->_lexiconManager vocabulary];
+          textReplacements = [(CHInputContextLexiconManager *)self->_lexiconManager textReplacements];
+          addressBookLexicon = [(CHInputContextLexiconManager *)self->_lexiconManager addressBookLexicon];
+          [CHCachedRecognizerManager configureRecognizer:v21 forRequest:requestCopy locale:v20 transientLexicon:v77 transientPhraseLexicon:transientPhraseLexicon vocabulary:vocabulary textReplacements:textReplacements addressBookLexicon:addressBookLexicon];
 
-          v34 = [v85 recognizerConfigurationKeyWithLocale:v20];
+          v34 = [requestCopy recognizerConfigurationKeyWithLocale:v20];
           v35 = [CHRecognizerConfiguration cachingKeyFromRelevantLocales:v83 forLocale:v20];
           v36 = [NSString stringWithFormat:@"%@_%@", v34, v35];
 
           v97 = 0;
-          v37 = [(CHRemoteRecognitionRequestHandler *)self _computeTextRecognitionResultsForRequest:v85 recognizer:v21 recognizerCachingKey:v36 isTopLocale:v18 & 1 writingStatistics:v22 outPrincipalPoints:&v97];
+          v37 = [(CHRemoteRecognitionRequestHandler *)self _computeTextRecognitionResultsForRequest:requestCopy recognizer:v21 recognizerCachingKey:v36 isTopLocale:v18 & 1 writingStatistics:v22 outPrincipalPoints:&v97];
           v38 = v97;
           v39 = [CHTokenizedTextResult resultRestoringRawPathInResult:v37];
 
@@ -432,12 +432,12 @@ LABEL_33:
 
     if (v40)
     {
-      v44 = [v75 firstObject];
+      firstObject = [v75 firstObject];
 LABEL_94:
-      if (a7 && v78)
+      if (result && v78)
       {
         v69 = v78;
-        *a7 = v78;
+        *result = v78;
       }
 
       goto LABEL_97;
@@ -481,11 +481,11 @@ LABEL_94:
     v92[1] = 3221225472;
     v92[2] = sub_10000D9B4;
     v92[3] = &unk_100024B60;
-    v55 = v82;
+    v55 = localeCopy;
     v93 = v55;
-    v56 = v85;
+    v56 = requestCopy;
     v94 = v56;
-    v95 = self;
+    selfCopy = self;
     v96 = v77;
     v57 = objc_retainBlock(v92);
     if (qword_10002AD20 == -1)
@@ -533,7 +533,7 @@ LABEL_70:
     v87[3] = &unk_100024B60;
     v88 = v55;
     v89 = v56;
-    v90 = self;
+    selfCopy2 = self;
     v91 = v77;
     v60 = objc_retainBlock(v87);
     if (qword_10002AD20 != -1)
@@ -570,7 +570,7 @@ LABEL_70:
       _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "BEGIN CHRemoteRecognitionServerMergingBlock", buf, 2u);
     }
 
-    v44 = [CHMultiLocaleResultProcessor combineMultiLocaleResults:v75 locales:v74 topLocaleIndex:0 mergedResultPostprocessingBlock:v57 changeableColumnCountBlock:v60];
+    firstObject = [CHMultiLocaleResultProcessor combineMultiLocaleResults:v75 locales:v74 topLocaleIndex:0 mergedResultPostprocessingBlock:v57 changeableColumnCountBlock:v60];
     if (qword_10002AD20 == -1)
     {
       v67 = qword_10002ACE0;
@@ -646,23 +646,23 @@ LABEL_87:
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_FAULT, "Unexpected empty array with original Recognition Locales = %@, recognitionLocalesWithResults = %@, resultsByLocaleCount = %ld", buf, 0x20u);
   }
 
-  v44 = 0;
+  firstObject = 0;
 LABEL_97:
 
-  return v44;
+  return firstObject;
 }
 
-- (void)_handleValidRecognitionRequest:(id)a3 withReply:(id)a4
+- (void)_handleValidRecognitionRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CHRemoteRecognitionRequestHandler *)self _handleValidRecognitionMathRequest:v6 withReply:v7];
+      [(CHRemoteRecognitionRequestHandler *)self _handleValidRecognitionMathRequest:requestCopy withReply:replyCopy];
       goto LABEL_15;
     }
 
@@ -711,17 +711,17 @@ LABEL_14:
     self->_lexiconManager = v8;
   }
 
-  [(CHRemoteRecognitionRequestHandler *)self _handleValidRecognitionTextRequest:v6 withReply:v7];
+  [(CHRemoteRecognitionRequestHandler *)self _handleValidRecognitionTextRequest:requestCopy withReply:replyCopy];
 LABEL_15:
 }
 
-- (void)_handleValidRecognitionTextRequest:(id)a3 withReply:(id)a4
+- (void)_handleValidRecognitionTextRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v24 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v7 = objc_opt_class();
-  v8 = [v6 locales];
-  v25 = [v7 effectiveRecognitionLocales:v8 recognitionMode:{objc_msgSend(v6, "recognitionMode")}];
+  locales = [requestCopy locales];
+  v25 = [v7 effectiveRecognitionLocales:locales recognitionMode:{objc_msgSend(requestCopy, "recognitionMode")}];
 
   v27 = +[NSMutableDictionary dictionary];
   v9 = +[NSMutableDictionary dictionary];
@@ -744,9 +744,9 @@ LABEL_15:
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
-        v14 = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForTextRequest:v6 locale:v13, v24];
-        [v27 setObject:v14 forKeyedSubscript:v13];
-        v15 = [(CHCachedRecognizerManager *)self->_recognizerManager writingStatsForRequest:v6 locale:v13];
+        replyCopy = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForTextRequest:requestCopy locale:v13, replyCopy];
+        [v27 setObject:replyCopy forKeyedSubscript:v13];
+        v15 = [(CHCachedRecognizerManager *)self->_recognizerManager writingStatsForRequest:requestCopy locale:v13];
         [v9 setObject:v15 forKeyedSubscript:v13];
       }
 
@@ -758,7 +758,7 @@ LABEL_15:
 
   [(CHRemoteBasicRequestHandler *)self setDirty];
   ++self->_openRequestCount;
-  v16 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:v6];
+  v16 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:requestCopy];
   if (!v16)
   {
     if (qword_10002AD20 != -1)
@@ -805,27 +805,27 @@ LABEL_17:
   block[2] = sub_10000E390;
   block[3] = &unk_100024B88;
   block[4] = self;
-  v29 = v6;
+  v29 = requestCopy;
   v30 = obj;
   v31 = v27;
   v32 = v9;
-  v33 = v24;
-  v19 = v24;
+  v33 = replyCopy;
+  v19 = replyCopy;
   v20 = v9;
   v21 = v27;
   v22 = obj;
-  v23 = v6;
+  v23 = requestCopy;
   dispatch_async(v16, block);
 }
 
-- (void)_handleValidRecognitionMathRequest:(id)a3 withReply:(id)a4
+- (void)_handleValidRecognitionMathRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForMathRequest:v6];
+  requestCopy = request;
+  replyCopy = reply;
+  v8 = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForMathRequest:requestCopy];
   [(CHRemoteBasicRequestHandler *)self setDirty];
   ++self->_openRequestCount;
-  v9 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:v6];
+  v9 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:requestCopy];
   if (!v9)
   {
     if (qword_10002AD20 != -1)
@@ -872,31 +872,31 @@ LABEL_10:
   v15[2] = sub_10000E948;
   v15[3] = &unk_100024BB0;
   v16 = v8;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
+  v17 = requestCopy;
+  selfCopy = self;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = requestCopy;
   v14 = v8;
   dispatch_async(v9, v15);
 }
 
-- (id)retrievePartialResultsForDrawing:(id)a3 recognitionEngineCachingKey:(id)a4 matchingColumnRangeToKeep:(_NSRange *)a5 strokesToRecognize:(id *)a6
+- (id)retrievePartialResultsForDrawing:(id)drawing recognitionEngineCachingKey:(id)key matchingColumnRangeToKeep:(_NSRange *)keep strokesToRecognize:(id *)recognize
 {
-  v32 = a6;
-  v9 = a3;
-  v34 = a4;
-  v10 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [v9 strokeCount]);
+  recognizeCopy = recognize;
+  drawingCopy = drawing;
+  keyCopy = key;
+  v10 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [drawingCopy strokeCount]);
   v35 = xmmword_100019880;
-  v11 = [(CHRecognizerResultCache *)self->_recognizerResultsCache retrievePartialResultsForDrawing:v9 recognitionEngineCachingKey:v34 matchingColumnRange:&v35];
+  v11 = [(CHRecognizerResultCache *)self->_recognizerResultsCache retrievePartialResultsForDrawing:drawingCopy recognitionEngineCachingKey:keyCopy matchingColumnRange:&v35];
   v12 = *(&v35 + 1);
   if (v12 <= [v11 tokenColumnCount])
   {
-    v13 = [v11 strokeIndexes];
-    v14 = [v13 count];
-    v15 = [v9 strokeCount];
+    strokeIndexes = [v11 strokeIndexes];
+    v14 = [strokeIndexes count];
+    strokeCount = [drawingCopy strokeCount];
 
-    if (v14 < v15)
+    if (v14 < strokeCount)
     {
       v16 = fmin([v11 tokenColumnCount], 2.0);
       if (v16 < 1)
@@ -911,11 +911,11 @@ LABEL_10:
         v19 = 1;
         while (1)
         {
-          v20 = [v11 tokenColumns];
-          v21 = [v20 objectAtIndexedSubscript:{objc_msgSend(v11, "tokenColumnCount") - v19}];
+          tokenColumns = [v11 tokenColumns];
+          v21 = [tokenColumns objectAtIndexedSubscript:{objc_msgSend(v11, "tokenColumnCount") - v19}];
 
-          v22 = [v21 strokeIndexes];
-          v18 += [v22 count];
+          strokeIndexes2 = [v21 strokeIndexes];
+          v18 += [strokeIndexes2 count];
 
           if (v18 >= 21)
           {
@@ -940,20 +940,20 @@ LABEL_10:
   {
     for (i = 0; i != v12; ++i)
     {
-      v24 = [v11 tokenColumns];
-      v25 = [v24 objectAtIndexedSubscript:i];
-      v26 = [v25 strokeIndexes];
-      [v10 removeIndexes:v26];
+      tokenColumns2 = [v11 tokenColumns];
+      v25 = [tokenColumns2 objectAtIndexedSubscript:i];
+      strokeIndexes3 = [v25 strokeIndexes];
+      [v10 removeIndexes:strokeIndexes3];
     }
   }
 
   if ([v10 count])
   {
     v27 = [v10 count];
-    v28 = [v10 lastIndex];
-    if (v27 != (v28 - [v10 firstIndex] + 1))
+    lastIndex = [v10 lastIndex];
+    if (v27 != (lastIndex - [v10 firstIndex] + 1))
     {
-      v29 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [v9 strokeCount]);
+      v29 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [drawingCopy strokeCount]);
 
       v11 = 0;
       v10 = v29;
@@ -966,35 +966,35 @@ LABEL_10:
     *v33 = v10;
   }
 
-  if (a5)
+  if (keep)
   {
-    a5->location = 0;
-    a5->length = v12;
+    keep->location = 0;
+    keep->length = v12;
   }
 
   return v11;
 }
 
-- (id)_computeTextRecognitionResultsForRequest:(id)a3 recognizer:(id)a4 recognizerCachingKey:(id)a5 isTopLocale:(BOOL)a6 writingStatistics:(id)a7 outPrincipalPoints:(id *)a8
+- (id)_computeTextRecognitionResultsForRequest:(id)request recognizer:(id)recognizer recognizerCachingKey:(id)key isTopLocale:(BOOL)locale writingStatistics:(id)statistics outPrincipalPoints:(id *)points
 {
-  v9 = a6;
-  v12 = a3;
-  v38 = a4;
-  v39 = a5;
-  v37 = a7;
-  v13 = [v12 drawing];
-  v32 = v9;
-  v14 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [v13 strokeCount]);
+  localeCopy = locale;
+  requestCopy = request;
+  recognizerCopy = recognizer;
+  keyCopy = key;
+  statisticsCopy = statistics;
+  drawing = [requestCopy drawing];
+  v32 = localeCopy;
+  v14 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [drawing strokeCount]);
 
   v42 = xmmword_100019880;
-  v15 = [v12 drawing];
-  if ([v12 enableStrokeReordering])
+  drawing2 = [requestCopy drawing];
+  if ([requestCopy enableStrokeReordering])
   {
     v41 = 0;
-    v16 = [v15 sortedDrawingUsingStrokeMidPoint:&v41];
+    v16 = [drawing2 sortedDrawingUsingStrokeMidPoint:&v41];
     v17 = v41;
 
-    v15 = v16;
+    drawing2 = v16;
   }
 
   else
@@ -1002,20 +1002,20 @@ LABEL_10:
     v17 = 0;
   }
 
-  if ([v12 enableCachingIfAvailable])
+  if ([requestCopy enableCachingIfAvailable])
   {
     v40 = v14;
-    v18 = [(CHRemoteRecognitionRequestHandler *)self retrievePartialResultsForDrawing:v15 recognitionEngineCachingKey:v39 matchingColumnRangeToKeep:&v42 strokesToRecognize:&v40];
+    v18 = [(CHRemoteRecognitionRequestHandler *)self retrievePartialResultsForDrawing:drawing2 recognitionEngineCachingKey:keyCopy matchingColumnRangeToKeep:&v42 strokesToRecognize:&v40];
     v19 = v40;
 
     if ([v19 firstIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = 0;
+      firstIndex = 0;
     }
 
     else
     {
-      v20 = [v19 firstIndex];
+      firstIndex = [v19 firstIndex];
     }
 
     v21 = v18;
@@ -1025,38 +1025,38 @@ LABEL_10:
   else
   {
     v21 = 0;
-    v20 = 0;
+    firstIndex = 0;
   }
 
   if ([v14 count])
   {
-    v34 = [v15 drawingWithStrokesFromIndexSet:v14];
-    v33 = [(CHRemoteRecognitionRequestHandler *)self generateRecognitionOptionsFromRequest:v12 isTopLocale:v32 cachedPrefixResult:v21 cachedPrefixColumnRangeToKeep:v42];
-    v22 = [v38 textRecognitionResultForDrawing:v34 options:? writingStatistics:? principalPoints:? shouldCancel:?];
+    v34 = [drawing2 drawingWithStrokesFromIndexSet:v14];
+    v33 = [(CHRemoteRecognitionRequestHandler *)self generateRecognitionOptionsFromRequest:requestCopy isTopLocale:v32 cachedPrefixResult:v21 cachedPrefixColumnRangeToKeep:v42];
+    v22 = [recognizerCopy textRecognitionResultForDrawing:v34 options:? writingStatistics:? principalPoints:? shouldCancel:?];
     v23 = 0;
     v24 = [v22 mutableCopy];
 
-    if (v20 >= 1)
+    if (firstIndex >= 1)
     {
-      [v24 offsetAllStrokeIndexesBy:v20];
+      [v24 offsetAllStrokeIndexesBy:firstIndex];
     }
 
-    if ([v12 enableCachingIfAvailable])
+    if ([requestCopy enableCachingIfAvailable])
     {
       [v24 adjustColumns];
     }
 
     if (v21)
     {
-      v25 = [v21 tokenColumns];
-      v26 = [v25 subarrayWithRange:v42];
+      tokenColumns = [v21 tokenColumns];
+      v26 = [tokenColumns subarrayWithRange:v42];
 
-      v27 = [v21 transcriptionPaths];
-      v28 = [v27 objectAtIndexedSubscript:0];
+      transcriptionPaths = [v21 transcriptionPaths];
+      v28 = [transcriptionPaths objectAtIndexedSubscript:0];
       [v24 prependTokenColumns:v26 prefixTopPath:v28];
 
-      v29 = [v24 tokenColumnCount];
-      [v24 setChangeableTokenColumnCount:&v29[-*(&v42 + 1)]];
+      tokenColumnCount = [v24 tokenColumnCount];
+      [v24 setChangeableTokenColumnCount:&tokenColumnCount[-*(&v42 + 1)]];
     }
   }
 
@@ -1066,9 +1066,9 @@ LABEL_10:
     v24 = [v21 subResultWithColumnRange:v42];
   }
 
-  if ([v12 enableCachingIfAvailable])
+  if ([requestCopy enableCachingIfAvailable])
   {
-    [(CHRecognizerResultCache *)self->_recognizerResultsCache cacheTextResult:v24 drawing:v15 recognitionEngineCachingKey:v39];
+    [(CHRecognizerResultCache *)self->_recognizerResultsCache cacheTextResult:v24 drawing:drawing2 recognitionEngineCachingKey:keyCopy];
   }
 
   if (v17)
@@ -1076,29 +1076,29 @@ LABEL_10:
     [v24 remapAllStrokeIndexesWithArray:v17];
   }
 
-  if (a8 && v23)
+  if (points && v23)
   {
     v30 = v23;
-    *a8 = v23;
+    *points = v23;
   }
 
   return v24;
 }
 
-- (id)generateRecognitionOptionsFromRequest:(id)a3 isTopLocale:(BOOL)a4 cachedPrefixResult:(id)a5 cachedPrefixColumnRangeToKeep:(_NSRange)a6
+- (id)generateRecognitionOptionsFromRequest:(id)request isTopLocale:(BOOL)locale cachedPrefixResult:(id)result cachedPrefixColumnRangeToKeep:(_NSRange)keep
 {
-  length = a6.length;
-  location = a6.location;
-  v8 = a4;
-  v11 = a5;
-  v12 = [a3 options];
-  v13 = [NSMutableDictionary dictionaryWithDictionary:v12];
+  length = keep.length;
+  location = keep.location;
+  localeCopy = locale;
+  resultCopy = result;
+  options = [request options];
+  v13 = [NSMutableDictionary dictionaryWithDictionary:options];
 
   [v13 setObject:self->_recognizerInferenceCache forKeyedSubscript:CHRecognitionOptionInferenceCache];
-  v14 = [NSNumber numberWithBool:!v8];
+  v14 = [NSNumber numberWithBool:!localeCopy];
   [v13 setObject:v14 forKeyedSubscript:CHRecognitionOptionIsRunningSecondaryLocale];
 
-  if (v11 && length)
+  if (resultCopy && length)
   {
     v15 = [v13 objectForKeyedSubscript:CHRecognitionOptionTextBefore];
     if (v15)
@@ -1111,17 +1111,17 @@ LABEL_10:
       v16 = &stru_100025778;
     }
 
-    v17 = [v11 transcriptionPaths];
-    v18 = [v17 objectAtIndexedSubscript:0];
-    v19 = [v11 transcriptionWithPath:v18 columnRange:location filterLowConfidence:{length, 0}];
+    transcriptionPaths = [resultCopy transcriptionPaths];
+    v18 = [transcriptionPaths objectAtIndexedSubscript:0];
+    v19 = [resultCopy transcriptionWithPath:v18 columnRange:location filterLowConfidence:{length, 0}];
 
-    v20 = [v11 precedingSeparatorForTopTranscriptionPath];
-    v21 = [(__CFString *)v16 stringByAppendingFormat:@"%@%@", v20, v19];
+    precedingSeparatorForTopTranscriptionPath = [resultCopy precedingSeparatorForTopTranscriptionPath];
+    v21 = [(__CFString *)v16 stringByAppendingFormat:@"%@%@", precedingSeparatorForTopTranscriptionPath, v19];
     [v13 setObject:v21 forKeyedSubscript:CHRecognitionOptionTextBefore];
   }
 
-  v22 = [v13 allKeys];
-  v23 = [v22 containsObject:CHRecognitionOptionPrecedingSpaceBehavior];
+  allKeys = [v13 allKeys];
+  v23 = [allKeys containsObject:CHRecognitionOptionPrecedingSpaceBehavior];
 
   if ((v23 & 1) == 0)
   {
@@ -1131,13 +1131,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)transcriptionPathsForTokenizedTextResult:(id)a3 recognitionRequest:(id)a4 withReply:(id)a5 bundleIdentifier:(id)a6
+- (void)transcriptionPathsForTokenizedTextResult:(id)result recognitionRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:v11];
+  resultCopy = result;
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
+  v14 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:requestCopy];
   if (!v14)
   {
     if (qword_10002AD20 != -1)
@@ -1179,52 +1179,52 @@ LABEL_9:
   }
 
 LABEL_10:
-  v17 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000FB94;
   v23[3] = &unk_100024B88;
   v23[4] = self;
-  v24 = v11;
-  v25 = v13;
+  v24 = requestCopy;
+  v25 = identifierCopy;
   v26 = v14;
-  v27 = v10;
-  v28 = v12;
-  v18 = v12;
-  v19 = v10;
+  v27 = resultCopy;
+  v28 = replyCopy;
+  v18 = replyCopy;
+  v19 = resultCopy;
   v20 = v14;
-  v21 = v13;
-  v22 = v11;
-  dispatch_sync(v17, v23);
+  v21 = identifierCopy;
+  v22 = requestCopy;
+  dispatch_sync(serverQueue, v23);
 }
 
-- (void)handleSketchRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleSketchRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000101C8;
   v15[3] = &unk_100024BB0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = requestCopy;
+  v17 = identifierCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = identifierCopy;
+  v14 = requestCopy;
+  dispatch_sync(serverQueue, v15);
 }
 
-- (void)_handleValidSketchRecognitionRequest:(id)a3 withReply:(id)a4
+- (void)_handleValidSketchRecognitionRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForSketchRequest:v6];
+  requestCopy = request;
+  replyCopy = reply;
+  v8 = [(CHCachedRecognizerManager *)self->_recognizerManager checkOutRecognizerForSketchRequest:requestCopy];
   [(CHRemoteBasicRequestHandler *)self setDirty];
-  v9 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:v6];
+  v9 = [(CHRemoteRecognitionRequestHandler *)self _queueForRequest:requestCopy];
   if (!v9)
   {
     if (qword_10002AD20 != -1)
@@ -1271,24 +1271,24 @@ LABEL_10:
   v15[2] = sub_1000104A8;
   v15[3] = &unk_100024BB0;
   v16 = v8;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
+  v17 = requestCopy;
+  selfCopy = self;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = requestCopy;
   v14 = v8;
   dispatch_async(v9, v15);
 }
 
 - (void)optimizeResourceUsage
 {
-  v3 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000108A4;
   block[3] = &unk_100024AA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serverQueue, block);
 }
 
 @end

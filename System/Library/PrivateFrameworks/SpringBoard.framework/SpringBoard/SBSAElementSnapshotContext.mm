@@ -1,34 +1,34 @@
 @interface SBSAElementSnapshotContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBSAElementSnapshotContext)initWithSnapshotIdentity:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (SBSAElementSnapshotContext)initWithSnapshotIdentity:(id)identity;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAElementSnapshotContext
 
-- (SBSAElementSnapshotContext)initWithSnapshotIdentity:(id)a3
+- (SBSAElementSnapshotContext)initWithSnapshotIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v16.receiver = self;
   v16.super_class = SBSAElementSnapshotContext;
   v5 = [(SBSAElementSnapshotContext *)&v16 init];
   if (v5)
   {
-    v6 = [v4 clientIdentifier];
-    v7 = [v6 copy];
+    clientIdentifier = [identityCopy clientIdentifier];
+    v7 = [clientIdentifier copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v9 = [v4 elementIdentifier];
-    v10 = [v9 copy];
+    elementIdentifier = [identityCopy elementIdentifier];
+    v10 = [elementIdentifier copy];
     elementIdentifier = v5->_elementIdentifier;
     v5->_elementIdentifier = v10;
 
-    v12 = [v4 snapshotReason];
-    v13 = [v12 copy];
+    snapshotReason = [identityCopy snapshotReason];
+    v13 = [snapshotReason copy];
     snapshotReason = v5->_snapshotReason;
     v5->_snapshotReason = v13;
   }
@@ -36,16 +36,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   clientIdentifier = self->_clientIdentifier;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __38__SBSAElementSnapshotContext_isEqual___block_invoke;
   v21[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v22 = v7;
   v8 = [v5 appendObject:clientIdentifier counterpart:v21];
   elementIdentifier = self->_elementIdentifier;
@@ -71,8 +71,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_clientIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_clientIdentifier];
   v5 = [v4 appendObject:self->_elementIdentifier];
   v6 = [v5 appendObject:self->_snapshotReason];
   v7 = [v6 hash];
@@ -80,7 +80,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_clientIdentifier copy];
@@ -98,23 +98,23 @@
   return v4;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAElementSnapshotContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

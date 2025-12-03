@@ -1,8 +1,8 @@
 @interface MetalHUDElementListPreferences
 + (id)allElementCandidates;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)_updatePreferences;
-- (void)setElementEnabled:(id)a3 enabled:(BOOL)a4;
+- (void)setElementEnabled:(id)enabled enabled:(BOOL)a4;
 - (void)setToDefault;
 @end
 
@@ -20,9 +20,9 @@
   return v3;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v15.receiver = self;
   v15.super_class = MetalHUDElementListPreferences;
   v6 = [(MetalHUDElementListPreferences *)&v15 init];
@@ -32,18 +32,18 @@
     elements = v6->_elements;
     v6->_elements = v7;
 
-    objc_storeStrong(&v6->_preferences, a3);
-    v9 = [v5 preferences];
-    v10 = [v9 objectForKeyedSubscript:@"MTL_HUD_ELEMENTS"];
+    objc_storeStrong(&v6->_preferences, init);
+    preferences = [initCopy preferences];
+    v10 = [preferences objectForKeyedSubscript:@"MTL_HUD_ELEMENTS"];
 
     if (v10)
     {
       v11 = v6->_elements;
-      v12 = [v10 lowercaseString];
-      v13 = [v12 componentsSeparatedByString:{@", "}];
+      lowercaseString = [v10 lowercaseString];
+      v13 = [lowercaseString componentsSeparatedByString:{@", "}];
       [(NSMutableSet *)v11 addObjectsFromArray:v13];
 
-      if (![v5 version])
+      if (![initCopy version])
       {
         [(NSMutableSet *)v6->_elements addObject:@"gamemode"];
         [(NSMutableSet *)v6->_elements addObject:@"metalfx"];
@@ -62,8 +62,8 @@
 - (void)setToDefault
 {
   v3 = [NSMutableSet alloc];
-  v4 = [CFSTR(""device layer];
-  v5 = [v3 initWithArray:v4];
+  layer = [CFSTR(""device layer];
+  v5 = [v3 initWithArray:layer];
   elements = self->_elements;
   self->_elements = v5;
 
@@ -72,29 +72,29 @@
 
 - (void)_updatePreferences
 {
-  v3 = [(NSMutableSet *)self->_elements allObjects];
-  v5 = [v3 componentsJoinedByString:{@", "}];
+  allObjects = [(NSMutableSet *)self->_elements allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
 
   if (v5)
   {
-    v4 = [(MetalHUDPreferences *)self->_preferences preferences];
-    [v4 setObject:v5 forKeyedSubscript:@"MTL_HUD_ELEMENTS"];
+    preferences = [(MetalHUDPreferences *)self->_preferences preferences];
+    [preferences setObject:v5 forKeyedSubscript:@"MTL_HUD_ELEMENTS"];
 
     [(MetalHUDPreferences *)self->_preferences writePreferences];
   }
 }
 
-- (void)setElementEnabled:(id)a3 enabled:(BOOL)a4
+- (void)setElementEnabled:(id)enabled enabled:(BOOL)a4
 {
   elements = self->_elements;
   if (a4)
   {
-    [(NSMutableSet *)elements addObject:a3];
+    [(NSMutableSet *)elements addObject:enabled];
   }
 
   else
   {
-    [(NSMutableSet *)elements removeObject:a3];
+    [(NSMutableSet *)elements removeObject:enabled];
   }
 
   [(MetalHUDElementListPreferences *)self _updatePreferences];

@@ -1,15 +1,15 @@
 @interface IndexManagerStateChangeListener
 - (_TtC15HealthRecordsUI31IndexManagerStateChangeListener)init;
-- (void)conceptStore:(id)a3 indexManagerDidChangeState:(unint64_t)a4;
+- (void)conceptStore:(id)store indexManagerDidChangeState:(unint64_t)state;
 @end
 
 @implementation IndexManagerStateChangeListener
 
-- (void)conceptStore:(id)a3 indexManagerDidChangeState:(unint64_t)a4
+- (void)conceptStore:(id)store indexManagerDidChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D13740DC(v6, a4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1D13740DC(storeCopy, state);
 }
 
 - (_TtC15HealthRecordsUI31IndexManagerStateChangeListener)init

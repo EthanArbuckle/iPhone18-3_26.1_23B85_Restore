@@ -1,14 +1,14 @@
 @interface _GCNintendoSuperFamicomControllerProfile
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
 @end
 
 @implementation _GCNintendoSuperFamicomControllerProfile
 
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
   v20[9] = *MEMORY[0x1E69E9840];
-  v18 = a5;
+  bindingsCopy = bindings;
   v19 = [[GCDeviceButtonInputDescription alloc] initWithName:@"Button A" additionalAliases:0 attributes:2 nameLocalizationKey:@"BUTTON_A" symbolName:@"a.circle" sourceAttributes:1 sourceExtendedEventField:4];
   v5 = [[GCDeviceButtonInputDescription alloc] initWithName:@"Button B" additionalAliases:0 attributes:2 nameLocalizationKey:@"BUTTON_B" symbolName:@"b.circle" sourceAttributes:1 sourceExtendedEventField:5];
   v6 = [[GCDeviceButtonInputDescription alloc] initWithName:@"Button X" additionalAliases:0 attributes:2 nameLocalizationKey:@"BUTTON_X" symbolName:@"x.circle" sourceAttributes:1 sourceExtendedEventField:6];
@@ -29,19 +29,19 @@
   v20[7] = v10;
   v20[8] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:9];
-  v14 = [(_GCDevicePhysicalInputComponentDescription *)v12 initWithIdentifier:@"PhysicalInput" elements:v13 bindings:v18];
+  v14 = [(_GCDevicePhysicalInputComponentDescription *)v12 initWithIdentifier:@"PhysicalInput" elements:v13 bindings:bindingsCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
   v41[9] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69A0690];
-  v39 = a5;
-  v38 = a4;
+  bindingsCopy = bindings;
+  identifierCopy = identifier;
   v40 = [v6 descriptionWithIdentifier:@"button.a"];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:@"Button A"];
   [v40 setAliases:v7];
@@ -140,7 +140,7 @@
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:9];
   [v32 setElements:v33];
 
-  v34 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v38 controllerInputs:v32 bindings:v39];
+  v34 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:identifierCopy controllerInputs:v32 bindings:bindingsCopy];
   v35 = *MEMORY[0x1E69E9840];
 
   return v34;

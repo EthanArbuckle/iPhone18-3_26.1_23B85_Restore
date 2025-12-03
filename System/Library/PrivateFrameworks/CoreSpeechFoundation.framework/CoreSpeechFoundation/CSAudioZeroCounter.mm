@@ -1,16 +1,16 @@
 @interface CSAudioZeroCounter
-- (CSAudioZeroCounter)initWithToken:(id)a3 sampleRate:(float)a4 numChannels:(unsigned int)a5;
-- (void)getZeroStatisticsFromBuffer:(id)a3 entireSamples:(unsigned int)a4;
-- (void)resetWithSampleRate:(float)a3;
-- (void)stopCountingZeroStatisticsWithReporter:(id)a3;
+- (CSAudioZeroCounter)initWithToken:(id)token sampleRate:(float)rate numChannels:(unsigned int)channels;
+- (void)getZeroStatisticsFromBuffer:(id)buffer entireSamples:(unsigned int)samples;
+- (void)resetWithSampleRate:(float)rate;
+- (void)stopCountingZeroStatisticsWithReporter:(id)reporter;
 @end
 
 @implementation CSAudioZeroCounter
 
-- (void)stopCountingZeroStatisticsWithReporter:(id)a3
+- (void)stopCountingZeroStatisticsWithReporter:(id)reporter
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reporterCopy = reporter;
   continuousZeroCounter = self->_continuousZeroCounter;
   if (continuousZeroCounter > self->_zeroCounterWinSzForCSLogging)
   {
@@ -32,7 +32,7 @@
   if (maxContinuousZeroCount > self->_zeroCounterWinSzForReport)
   {
     *&v5 = maxContinuousZeroCount;
-    [v4 reportDigitalZerosWithAudioZeroRun:v5];
+    [reporterCopy reportDigitalZerosWithAudioZeroRun:v5];
   }
 
   self->_continuousZeroCounter = 0;
@@ -41,20 +41,20 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getZeroStatisticsFromBuffer:(id)a3 entireSamples:(unsigned int)a4
+- (void)getZeroStatisticsFromBuffer:(id)buffer entireSamples:(unsigned int)samples
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 bytes];
+  bufferCopy = buffer;
+  bytes = [bufferCopy bytes];
   if (!self->_shouldDeinterleaveAudio)
   {
-    a4 /= self->_numChannels;
+    samples /= self->_numChannels;
   }
 
-  if (a4)
+  if (samples)
   {
     v8 = 0;
-    while (!*(v7 + 2 * v8))
+    while (!*(bytes + 2 * v8))
     {
       zeroCounterWinSzForCSLogging = self->_zeroCounterWinSzForCSLogging;
       v16 = self->_continuousZeroCounter + 1;
@@ -85,7 +85,7 @@
 
 LABEL_19:
       v8 += self->_analyzeStep;
-      if (v8 >= a4)
+      if (v8 >= samples)
       {
         goto LABEL_20;
       }
@@ -142,19 +142,19 @@ LABEL_20:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetWithSampleRate:(float)a3
+- (void)resetWithSampleRate:(float)rate
 {
-  self->_sampleRate = a3;
-  self->_zeroCounterWinSzForCSLogging = ((+[CSConfig zeroFilterWindowSizeInMsForCSLogging]/ 1000.0) * a3);
-  self->_zeroCounterWinSzForReport = ((+[CSConfig zeroFilterWindowSizeInMsForReport]/ 1000.0) * a3);
+  self->_sampleRate = rate;
+  self->_zeroCounterWinSzForCSLogging = ((+[CSConfig zeroFilterWindowSizeInMsForCSLogging]/ 1000.0) * rate);
+  self->_zeroCounterWinSzForReport = ((+[CSConfig zeroFilterWindowSizeInMsForReport]/ 1000.0) * rate);
   v5 = +[CSConfig zeroFilterCSLoggingHeartBeatThresholdInMS];
   self->_maxContinuousZeroCount = 0;
-  *&self->_zeroCounterHeartBeatThreshold = ((v5 / 1000.0) * a3);
+  *&self->_zeroCounterHeartBeatThreshold = ((v5 / 1000.0) * rate);
 }
 
-- (CSAudioZeroCounter)initWithToken:(id)a3 sampleRate:(float)a4 numChannels:(unsigned int)a5
+- (CSAudioZeroCounter)initWithToken:(id)token sampleRate:(float)rate numChannels:(unsigned int)channels
 {
-  v9 = a3;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = CSAudioZeroCounter;
   v10 = [(CSAudioZeroCounter *)&v15 init];
@@ -162,12 +162,12 @@ LABEL_20:
   if (v10)
   {
     v10->_continuousZeroCounter = 0;
-    objc_storeStrong(&v10->_methodToken, a3);
-    v11->_sampleRate = a4;
-    v11->_numChannels = a5;
-    v11->_zeroCounterWinSzForCSLogging = ((+[CSConfig zeroFilterWindowSizeInMsForCSLogging]/ 1000.0) * a4);
-    v11->_zeroCounterHeartBeatThreshold = ((+[CSConfig zeroFilterCSLoggingHeartBeatThresholdInMS]/ 1000.0) * a4);
-    v11->_zeroCounterWinSzForReport = ((+[CSConfig zeroFilterWindowSizeInMsForReport]/ 1000.0) * a4);
+    objc_storeStrong(&v10->_methodToken, token);
+    v11->_sampleRate = rate;
+    v11->_numChannels = channels;
+    v11->_zeroCounterWinSzForCSLogging = ((+[CSConfig zeroFilterWindowSizeInMsForCSLogging]/ 1000.0) * rate);
+    v11->_zeroCounterHeartBeatThreshold = ((+[CSConfig zeroFilterCSLoggingHeartBeatThresholdInMS]/ 1000.0) * rate);
+    v11->_zeroCounterWinSzForReport = ((+[CSConfig zeroFilterWindowSizeInMsForReport]/ 1000.0) * rate);
     v12 = +[CSUtils shouldDeinterleaveAudioOnCS];
     v11->_shouldDeinterleaveAudio = v12;
     if (v12)

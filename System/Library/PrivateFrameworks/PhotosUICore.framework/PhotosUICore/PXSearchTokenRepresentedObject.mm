@@ -1,10 +1,10 @@
 @interface PXSearchTokenRepresentedObject
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXSearchTokenRepresentedObject)init;
-- (PXSearchTokenRepresentedObject)initWithCoder:(id)a3;
-- (PXSearchTokenRepresentedObject)initWithDictionary:(id)a3;
-- (PXSearchTokenRepresentedObject)initWithTitle:(id)a3 queryToken:(id)a4 priorityAssetUUID:(id)a5;
+- (PXSearchTokenRepresentedObject)initWithCoder:(id)coder;
+- (PXSearchTokenRepresentedObject)initWithDictionary:(id)dictionary;
+- (PXSearchTokenRepresentedObject)initWithTitle:(id)title queryToken:(id)token priorityAssetUUID:(id)d;
 - (id)description;
 - (id)dictionaryForArchiving;
 - (unint64_t)hash;
@@ -14,15 +14,15 @@
 
 - (PXSearchTokenRepresentedObject)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSearchTokenRepresentedObject.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXSearchTokenRepresentedObject init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchTokenRepresentedObject.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXSearchTokenRepresentedObject init]"}];
 
   abort();
 }
 
-- (PXSearchTokenRepresentedObject)initWithCoder:(id)a3
+- (PXSearchTokenRepresentedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PXSearchTokenRepresentedObject;
   v5 = [(PXSearchTokenRepresentedObject *)&v16 init];
@@ -33,11 +33,11 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"queryRepresentedObject"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"queryRepresentedObject"];
     queryToken = v5->_queryToken;
     v5->_queryToken = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v13;
   }
@@ -61,35 +61,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXSearchTokenRepresentedObject *)self title];
-  v4 = [v3 hash];
-  v5 = [(PXSearchTokenRepresentedObject *)self queryToken];
-  v6 = [v5 hash];
+  title = [(PXSearchTokenRepresentedObject *)self title];
+  v4 = [title hash];
+  queryToken = [(PXSearchTokenRepresentedObject *)self queryToken];
+  v6 = [queryToken hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXSearchTokenRepresentedObject *)self title];
-    v7 = [v5 title];
-    if (v6 == v7 || [v6 isEqualToString:v7])
+    v5 = equalCopy;
+    title = [(PXSearchTokenRepresentedObject *)self title];
+    title2 = [v5 title];
+    if (title == title2 || [title isEqualToString:title2])
     {
-      v8 = [(PXSearchTokenRepresentedObject *)self queryToken];
-      v9 = [v5 queryToken];
-      if (v8 == v9)
+      queryToken = [(PXSearchTokenRepresentedObject *)self queryToken];
+      queryToken2 = [v5 queryToken];
+      if (queryToken == queryToken2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [queryToken isEqual:queryToken2];
       }
     }
 
@@ -111,13 +111,13 @@
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(PXSearchTokenRepresentedObject *)self title];
-  [v3 setObject:v4 forKeyedSubscript:@"title"];
+  title = [(PXSearchTokenRepresentedObject *)self title];
+  [v3 setObject:title forKeyedSubscript:@"title"];
 
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [(PXSearchTokenRepresentedObject *)self queryToken];
+  queryToken = [(PXSearchTokenRepresentedObject *)self queryToken];
   v12 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v12];
+  v7 = [v5 archivedDataWithRootObject:queryToken requiringSecureCoding:1 error:&v12];
   v8 = v12;
 
   if (v7)
@@ -142,12 +142,12 @@
   return v9;
 }
 
-- (PXSearchTokenRepresentedObject)initWithDictionary:(id)a3
+- (PXSearchTokenRepresentedObject)initWithDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"title"];
-  v6 = [v4 objectForKeyedSubscript:@"queryRepresentedObject"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"queryRepresentedObject"];
 
   v12 = 0;
   v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v12];
@@ -155,7 +155,7 @@
   if (v7)
   {
     self = [(PXSearchTokenRepresentedObject *)self initWithTitle:v5 queryToken:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -168,28 +168,28 @@
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Failed to unarchive Query Token. Unable to initalize PXSearchTokenRepresentedObject, error: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PXSearchTokenRepresentedObject)initWithTitle:(id)a3 queryToken:(id)a4 priorityAssetUUID:(id)a5
+- (PXSearchTokenRepresentedObject)initWithTitle:(id)title queryToken:(id)token priorityAssetUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  tokenCopy = token;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = PXSearchTokenRepresentedObject;
   v11 = [(PXSearchTokenRepresentedObject *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    objc_storeStrong(&v11->_queryToken, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_queryToken, token);
+    v14 = [dCopy copy];
     priorityAssetUUID = v11->_priorityAssetUUID;
     v11->_priorityAssetUUID = v14;
   }
@@ -199,8 +199,8 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXSearchTokenRepresentedObject.m" lineNumber:120 description:{@"%s is not available as initializer", "+[PXSearchTokenRepresentedObject new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSearchTokenRepresentedObject.m" lineNumber:120 description:{@"%s is not available as initializer", "+[PXSearchTokenRepresentedObject new]"}];
 
   abort();
 }

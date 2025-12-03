@@ -1,19 +1,19 @@
 @interface RMMigrationSupervised
-- (BOOL)_changeDeviceEnrollmentTypeReturningError:(id *)a3;
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)_changeDeviceEnrollmentTypeReturningError:(id *)error;
+- (BOOL)executeReturningError:(id *)error;
 - (id)_context;
 @end
 
 @implementation RMMigrationSupervised
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   v5 = +[RMManagedDevice currentManagedDevice];
-  v6 = [v5 isSupervised];
+  isSupervised = [v5 isSupervised];
 
   v7 = +[RMLog migrationSupervised];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isSupervised)
   {
     if (v8)
     {
@@ -21,7 +21,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Checking migration - is supervised", buf, 2u);
     }
 
-    return [(RMMigrationSupervised *)self _changeDeviceEnrollmentTypeReturningError:a3];
+    return [(RMMigrationSupervised *)self _changeDeviceEnrollmentTypeReturningError:error];
   }
 
   else
@@ -36,7 +36,7 @@
   }
 }
 
-- (BOOL)_changeDeviceEnrollmentTypeReturningError:(id *)a3
+- (BOOL)_changeDeviceEnrollmentTypeReturningError:(id *)error
 {
   [(RMMigrationSupervised *)self _context];
   v11 = 0;
@@ -52,12 +52,12 @@
   v4 = v10 = &v11;
   v9 = v4;
   [v4 performBlockAndWait:v8];
-  if (a3)
+  if (error)
   {
     v5 = v12[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -70,11 +70,11 @@
 - (id)_context
 {
   v2 = +[RMPersistentController sharedController];
-  v3 = [v2 persistentContainer];
+  persistentContainer = [v2 persistentContainer];
 
-  v4 = [v3 newBackgroundContext];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  return v4;
+  return newBackgroundContext;
 }
 
 @end

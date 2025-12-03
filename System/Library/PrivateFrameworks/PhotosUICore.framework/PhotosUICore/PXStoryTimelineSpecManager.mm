@@ -1,7 +1,7 @@
 @interface PXStoryTimelineSpecManager
 - (PXStoryTimelineSpec)timelineSpec;
-- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)a3 configuration:(id)a4;
-- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)collection configuration:(id)configuration;
+- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (unint64_t)defaultChangesToUpdateFor;
 @end
 
@@ -16,38 +16,38 @@
 
 - (PXStoryTimelineSpec)timelineSpec
 {
-  v4 = [(PXFeatureSpecManager *)self spec];
-  if (!v4)
+  spec = [(PXFeatureSpecManager *)self spec];
+  if (!spec)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineSpecManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"timelineSpec != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineSpecManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"timelineSpec != nil"}];
   }
 
   [(PXStoryTimelineSpecManager *)self fixedSegmentDuration];
   v8 = v10;
   v9 = v11;
-  [v4 setFixedSegmentDuration:&v8];
-  [v4 setAllowedInlineTitles:{-[PXStoryTimelineSpecManager allowedInlineTitles](self, "allowedInlineTitles")}];
-  v5 = [(PXStoryTimelineSpecManager *)self allowedTransitionKinds];
-  [v4 setAllowedTransitionKinds:v5];
+  [spec setFixedSegmentDuration:&v8];
+  [spec setAllowedInlineTitles:{-[PXStoryTimelineSpecManager allowedInlineTitles](self, "allowedInlineTitles")}];
+  allowedTransitionKinds = [(PXStoryTimelineSpecManager *)self allowedTransitionKinds];
+  [spec setAllowedTransitionKinds:allowedTransitionKinds];
 
-  [v4 setFallbackTransitionKind:{-[PXStoryTimelineSpecManager fallbackTransitionKind](self, "fallbackTransitionKind")}];
-  [v4 setStoryTransitionCurveType:{-[PXStoryTimelineSpecManager storyTransitionCurveType](self, "storyTransitionCurveType")}];
+  [spec setFallbackTransitionKind:{-[PXStoryTimelineSpecManager fallbackTransitionKind](self, "fallbackTransitionKind")}];
+  [spec setStoryTransitionCurveType:{-[PXStoryTimelineSpecManager storyTransitionCurveType](self, "storyTransitionCurveType")}];
 
-  return v4;
+  return spec;
 }
 
-- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)a3 configuration:(id)a4
+- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)collection configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = PXStoryTimelineSpecManager;
-  v7 = [(PXFeatureSpecManager *)&v16 initWithExtendedTraitCollection:a3 options:0];
+  v7 = [(PXFeatureSpecManager *)&v16 initWithExtendedTraitCollection:collection options:0];
   if (v7)
   {
-    if (v6)
+    if (configurationCopy)
     {
-      [v6 fixedSegmentDuration];
+      [configurationCopy fixedSegmentDuration];
     }
 
     else
@@ -58,13 +58,13 @@
 
     *(v7 + 21) = v15;
     *(v7 + 152) = v14;
-    *(v7 + 16) = [v6 allowedInlineTitles];
-    v8 = [v6 allowedTransitionKinds];
+    *(v7 + 16) = [configurationCopy allowedInlineTitles];
+    allowedTransitionKinds = [configurationCopy allowedTransitionKinds];
     v9 = *(v7 + 17);
-    *(v7 + 17) = v8;
+    *(v7 + 17) = allowedTransitionKinds;
 
-    v10 = [v6 launchType];
-    v11 = [v10 isEqualToString:@"TVMemoriesScreenSaver"];
+    launchType = [configurationCopy launchType];
+    v11 = [launchType isEqualToString:@"TVMemoriesScreenSaver"];
 
     if (v11)
     {
@@ -83,11 +83,11 @@
   return v7;
 }
 
-- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXStoryTimelineSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineSpecManager.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryTimelineSpecManager initWithExtendedTraitCollection:options:]"}];
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineSpecManager.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXStoryTimelineSpecManager initWithExtendedTraitCollection:options:]"}];
 
   abort();
 }

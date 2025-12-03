@@ -1,28 +1,28 @@
 @interface RTLocationOfInterest
-- (void)_maps_hydrateGeoMapItem:(id)a3;
+- (void)_maps_hydrateGeoMapItem:(id)item;
 @end
 
 @implementation RTLocationOfInterest
 
-- (void)_maps_hydrateGeoMapItem:(id)a3
+- (void)_maps_hydrateGeoMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RTLocationOfInterest *)self mapItem];
-  v6 = [v5 geoMapItemHandle];
+  itemCopy = item;
+  mapItem = [(RTLocationOfInterest *)self mapItem];
+  geoMapItemHandle = [mapItem geoMapItemHandle];
 
-  if (v6)
+  if (geoMapItemHandle)
   {
     v7 = ![(RTLocationOfInterest *)self type]|| [(RTLocationOfInterest *)self type]== 1 || [(RTLocationOfInterest *)self type]== 2;
     v9 = +[HydrateGeoMapItemCache sharedCache];
-    v8 = [(RTLocationOfInterest *)self mapItem];
-    [v9 resolveRTMapItem:v8 shouldUpdateAttributes:v7 completionHandler:v4];
+    mapItem2 = [(RTLocationOfInterest *)self mapItem];
+    [v9 resolveRTMapItem:mapItem2 shouldUpdateAttributes:v7 completionHandler:itemCopy];
   }
 
   else
   {
     v9 = GEOErrorDomain();
-    v8 = [NSError errorWithDomain:"errorWithDomain:code:userInfo:" code:? userInfo:?];
-    v4[2](v4, 0, v8);
+    mapItem2 = [NSError errorWithDomain:"errorWithDomain:code:userInfo:" code:? userInfo:?];
+    itemCopy[2](itemCopy, 0, mapItem2);
   }
 }
 

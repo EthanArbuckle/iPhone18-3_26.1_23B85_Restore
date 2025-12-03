@@ -3,31 +3,31 @@
 - (BOOL)_isCHRNotifcationsEnabled;
 - (BOOL)_queue_shouldScheduleIngestion;
 - (BOOL)_shouldFireNotifications;
-- (HDClinicalIngestionManager)initWithProfileExtension:(id)a3;
+- (HDClinicalIngestionManager)initWithProfileExtension:(id)extension;
 - (HDProfile)profile;
-- (id)_initWithProfileExtension:(id)a3;
+- (id)_initWithProfileExtension:(id)extension;
 - (int64_t)currentIngestionState;
-- (void)_addIngestionTask:(id)a3;
-- (void)_notifyForNewHealthLabRecordsFromTask:(id)a3 countOfAllLabs:(unint64_t)a4 countOfPinnedLabs:(unint64_t)a5;
-- (void)_notifyForNewHealthRecordsFromTask:(id)a3;
-- (void)_performExtractionWithReason:(id)a3 completion:(id)a4;
-- (void)_performMaintenanceIngestionWithReason:(id)a3 completion:(id)a4;
+- (void)_addIngestionTask:(id)task;
+- (void)_notifyForNewHealthLabRecordsFromTask:(id)task countOfAllLabs:(unint64_t)labs countOfPinnedLabs:(unint64_t)pinnedLabs;
+- (void)_notifyForNewHealthRecordsFromTask:(id)task;
+- (void)_performExtractionWithReason:(id)reason completion:(id)completion;
+- (void)_performMaintenanceIngestionWithReason:(id)reason completion:(id)completion;
 - (void)_queue_didReceiveFHIRResourceSyncEntities;
 - (void)_queue_performProtectedDataAvailableChecks;
-- (void)_queue_setIngestionState:(int64_t)a3;
+- (void)_queue_setIngestionState:(int64_t)state;
 - (void)_registerForProfileDidBecomeReady;
 - (void)_resetIngestionScheduleBlock;
-- (void)_scheduleExtractionWithReason:(id)a3;
-- (void)_taskDidFinish:(id)a3;
+- (void)_scheduleExtractionWithReason:(id)reason;
+- (void)_taskDidFinish:(id)finish;
 - (void)_taskWillReallyBegin;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
 - (void)didReceiveFHIRResourceSyncEntities;
-- (void)didRecieveHealthRecordsQueryNotification:(id)a3;
-- (void)performIngestionWithContext:(id)a3 accountIdentifiers:(id)a4 completion:(id)a5;
-- (void)performPeriodicIngestionWithCompletion:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)scheduleIngestionWithReason:(id)a3;
+- (void)didRecieveHealthRecordsQueryNotification:(id)notification;
+- (void)performIngestionWithContext:(id)context accountIdentifiers:(id)identifiers completion:(id)completion;
+- (void)performPeriodicIngestionWithCompletion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)scheduleIngestionWithReason:(id)reason;
 @end
 
 @implementation HDClinicalIngestionManager
@@ -88,26 +88,26 @@
   [v3 removeObserver:self name:HDQueryServerDidReceiveQueryForHealthRecordsNotification object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDClinicalIngestionManager;
   [(HDClinicalIngestionManager *)&v6 dealloc];
 }
 
-- (id)_initWithProfileExtension:(id)a3
+- (id)_initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v23.receiver = self;
   v23.super_class = HDClinicalIngestionManager;
   v5 = [(HDClinicalIngestionManager *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    objc_storeWeak(&v6->_profile, v7);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v6->_profile, profile);
 
     v8 = [HDKeyValueDomain alloc];
     v9 = HDHRSNotificationKeyValueDomainIdentifier;
@@ -146,9 +146,9 @@
   [WeakRetained registerProfileReadyObserver:self queue:0];
 }
 
-- (HDClinicalIngestionManager)initWithProfileExtension:(id)a3
+- (HDClinicalIngestionManager)initWithProfileExtension:(id)extension
 {
-  v3 = [(HDClinicalIngestionManager *)self _initWithProfileExtension:a3];
+  v3 = [(HDClinicalIngestionManager *)self _initWithProfileExtension:extension];
   v4 = v3;
   if (v3)
   {
@@ -158,17 +158,17 @@
   return v4;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 addProtectedDataObserver:self queue:self->_queue];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self queue:self->_queue];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 database];
-  v8 = [v7 isProtectedDataAvailable];
+  database2 = [v6 database];
+  isProtectedDataAvailable = [database2 isProtectedDataAvailable];
 
-  if (v8)
+  if (isProtectedDataAvailable)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -180,20 +180,20 @@
   }
 }
 
-- (void)performIngestionWithContext:(id)a3 accountIdentifiers:(id)a4 completion:(id)a5
+- (void)performIngestionWithContext:(id)context accountIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 copy];
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  v10 = [context copy];
   v11 = [HDClinicalIngestionTask alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_781F4;
   v15[3] = &unk_108568;
-  v16 = v8;
-  v13 = v8;
-  v14 = [(HDClinicalIngestionTask *)v11 initWithContext:v10 extension:WeakRetained accountIdentifiers:v9 completion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  v14 = [(HDClinicalIngestionTask *)v11 initWithContext:v10 extension:WeakRetained accountIdentifiers:identifiersCopy completion:v15];
 
   [(HDClinicalIngestionManager *)self _addIngestionTask:v14];
 }
@@ -216,21 +216,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)_addIngestionTask:(id)a3
+- (void)_addIngestionTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_784A8;
   v12[3] = &unk_108590;
   v12[4] = self;
-  [v4 setWillBeginFetchingAndExtracting:v12];
+  [taskCopy setWillBeginFetchingAndExtracting:v12];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_784B0;
   v11[3] = &unk_108590;
   v11[4] = self;
-  [v4 setDidFinishFetchingAndExtracting:v11];
+  [taskCopy setDidFinishFetchingAndExtracting:v11];
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
@@ -241,11 +241,11 @@
     *buf = 138543618;
     v14 = v8;
     v15 = 2114;
-    v16 = v4;
+    v16 = taskCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding ingestion task %{public}@", buf, 0x16u);
   }
 
-  [(NSOperationQueue *)self->_ingestionOperationQueue addOperation:v4];
+  [(NSOperationQueue *)self->_ingestionOperationQueue addOperation:taskCopy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -266,14 +266,14 @@
   dispatch_async(queue, block);
 }
 
-- (void)_taskDidFinish:(id)a3
+- (void)_taskDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 hasNewRecords];
-  v6 = [v4 countOfAllRecords];
-  v7 = [v4 countOfAllLabs];
-  v8 = [v4 countOfPinnedLabs];
-  v9 = [v4 description];
+  finishCopy = finish;
+  hasNewRecords = [finishCopy hasNewRecords];
+  countOfAllRecords = [finishCopy countOfAllRecords];
+  countOfAllLabs = [finishCopy countOfAllLabs];
+  countOfPinnedLabs = [finishCopy countOfPinnedLabs];
+  v9 = [finishCopy description];
   v10 = v9;
   v11 = @"<no task>";
   if (v9)
@@ -284,12 +284,12 @@
   v12 = v11;
 
   v13 = +[_HKBehavior sharedBehavior];
-  v14 = [v13 showSensitiveLogItems];
+  showSensitiveLogItems = [v13 showSensitiveLogItems];
 
   _HKInitializeLogging();
   v15 = HKLogHealthRecords;
   v16 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (showSensitiveLogItems)
   {
     if (v16)
     {
@@ -299,15 +299,15 @@
       *buf = 138544642;
       v36 = v19;
       v37 = 2114;
-      v38 = v4;
+      v38 = finishCopy;
       v39 = 2048;
-      v40 = v6;
+      v40 = countOfAllRecords;
       v41 = 2048;
-      v42 = v7;
+      v42 = countOfAllLabs;
       v43 = 2048;
-      v44 = v8;
+      v44 = countOfPinnedLabs;
       v45 = 1024;
-      v46 = v5;
+      v46 = hasNewRecords;
       v20 = "%{public}@ Finished ingestion task %{public}@, count of records: %lu, labs: %lu, pinned labs: %lu, should notify: %d";
       v21 = v17;
       v22 = 58;
@@ -324,37 +324,37 @@ LABEL_8:
     *buf = 138543874;
     v36 = v19;
     v37 = 2114;
-    v38 = v4;
+    v38 = finishCopy;
     v39 = 1024;
-    LODWORD(v40) = v5;
+    LODWORD(v40) = hasNewRecords;
     v20 = "%{public}@ Finished ingestion task %{public}@, should notify: %d";
     v21 = v17;
     v22 = 28;
     goto LABEL_8;
   }
 
-  v24 = [HDDaemonTransaction transactionWithOwner:v4 activityName:@"Cleanup"];
+  v24 = [HDDaemonTransaction transactionWithOwner:finishCopy activityName:@"Cleanup"];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_78840;
   block[3] = &unk_1085B8;
-  v34 = v5;
+  v34 = hasNewRecords;
   block[4] = self;
   v29 = v12;
-  v32 = v6;
-  v33 = v7;
+  v32 = countOfAllRecords;
+  v33 = countOfAllLabs;
   v30 = v24;
-  v31 = v8;
+  v31 = countOfPinnedLabs;
   v26 = v24;
   v27 = v12;
   dispatch_async(queue, block);
 }
 
-- (void)_queue_setIngestionState:(int64_t)a3
+- (void)_queue_setIngestionState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_ingestionState != a3)
+  if (self->_ingestionState != state)
   {
     ingestionStateObserverSet = self->_ingestionStateObserverSet;
     v6[0] = _NSConcreteStackBlock;
@@ -362,49 +362,49 @@ LABEL_8:
     v6[2] = sub_78980;
     v6[3] = &unk_1085E0;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = state;
     [(HKObserverSet *)ingestionStateObserverSet notifyObservers:v6];
-    self->_ingestionState = a3;
+    self->_ingestionState = state;
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
 
     [(HDClinicalIngestionManager *)self _queue_performProtectedDataAvailableChecks];
   }
 }
 
-- (void)scheduleIngestionWithReason:(id)a3
+- (void)scheduleIngestionWithReason:(id)reason
 {
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_78B54;
   v13 = &unk_108608;
-  v14 = self;
-  v4 = a3;
-  v15 = v4;
-  v5 = [HDMaintenanceOperation maintenanceOperationWithName:v4 asynchronousBlock:&v10];
+  selfCopy = self;
+  reasonCopy = reason;
+  v15 = reasonCopy;
+  v5 = [HDMaintenanceOperation maintenanceOperationWithName:reasonCopy asynchronousBlock:&v10];
   _HKInitializeLogging();
   v6 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = reasonCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Scheduling ingestion on maintenance coordinator with reason: %@", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained daemon];
-  v9 = [v8 maintenanceWorkCoordinator];
-  [v9 enqueueMaintenanceOperation:v5];
+  daemon = [WeakRetained daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v5];
 }
 
-- (void)didRecieveHealthRecordsQueryNotification:(id)a3
+- (void)didRecieveHealthRecordsQueryNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -437,63 +437,63 @@ LABEL_8:
   dispatch_sync(queue, block);
 }
 
-- (void)performPeriodicIngestionWithCompletion:(id)a3
+- (void)performPeriodicIngestionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:1 reason:@"periodic ingestion"];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_78E40;
   v7[3] = &unk_106960;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HDClinicalIngestionManager *)self performIngestionWithContext:v5 accountIdentifiers:0 completion:v7];
 }
 
-- (void)_performMaintenanceIngestionWithReason:(id)a3 completion:(id)a4
+- (void)_performMaintenanceIngestionWithReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:0 reason:v6];
+  reasonCopy = reason;
+  completionCopy = completion;
+  v8 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:0 reason:reasonCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_78FA8;
   v11[3] = &unk_108630;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reasonCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = reasonCopy;
   [(HDClinicalIngestionManager *)self performIngestionWithContext:v8 accountIdentifiers:0 completion:v11];
 }
 
-- (void)_performExtractionWithReason:(id)a3 completion:(id)a4
+- (void)_performExtractionWithReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:6 reason:v6];
+  reasonCopy = reason;
+  completionCopy = completion;
+  v8 = [[HDClinicalIngestionTaskContext alloc] initWithOptions:6 reason:reasonCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_79110;
   v11[3] = &unk_108630;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = reasonCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = reasonCopy;
   [(HDClinicalIngestionManager *)self performIngestionWithContext:v8 accountIdentifiers:0 completion:v11];
 }
 
-- (void)_scheduleExtractionWithReason:(id)a3
+- (void)_scheduleExtractionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
+  reasonCopy = reason;
+  v5 = reasonCopy;
   if (!self->_unitTesting_preventExtractionScheduling)
   {
     v10 = _NSConcreteStackBlock;
     v11 = 3221225472;
     v12 = sub_792E4;
     v13 = &unk_108608;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = reasonCopy;
     v6 = [HDMaintenanceOperation maintenanceOperationWithName:v15 asynchronousBlock:&v10];
     _HKInitializeLogging();
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -502,9 +502,9 @@ LABEL_8:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained daemon];
-    v9 = [v8 maintenanceWorkCoordinator];
-    [v9 enqueueMaintenanceOperation:v6];
+    daemon = [WeakRetained daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v6];
   }
 }
 
@@ -512,11 +512,11 @@ LABEL_8:
 {
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 contentProtectionManager];
-  v6 = [v5 isProtectedDataAvailable];
+  daemon = [WeakRetained daemon];
+  contentProtectionManager = [daemon contentProtectionManager];
+  isProtectedDataAvailable = [contentProtectionManager isProtectedDataAvailable];
 
-  if (v6)
+  if (isProtectedDataAvailable)
   {
 
     [(HDClinicalIngestionManager *)self _scheduleExtractionWithReason:@"sync entities inserted"];
@@ -581,19 +581,19 @@ LABEL_8:
     }
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)_shouldFireNotifications
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 primaryProfile];
-  v6 = [v5 notificationManager];
+  daemon = [WeakRetained daemon];
+  primaryProfile = [daemon primaryProfile];
+  notificationManager = [primaryProfile notificationManager];
 
-  if (!v6)
+  if (!notificationManager)
   {
     _HKInitializeLogging();
     v17 = HKLogHealthRecords;
@@ -606,20 +606,20 @@ LABEL_8:
   }
 
   v7 = objc_loadWeakRetained(&self->_profile);
-  v8 = [v7 daemon];
-  v9 = [v8 behavior];
-  v10 = [v9 healthAppHiddenOrNotInstalled];
+  daemon2 = [v7 daemon];
+  behavior = [daemon2 behavior];
+  healthAppHiddenOrNotInstalled = [behavior healthAppHiddenOrNotInstalled];
 
-  if (v10)
+  if (healthAppHiddenOrNotInstalled)
   {
     _HKInitializeLogging();
     v11 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [(HDClinicalIngestionManager *)self logDescription];
+      logDescription = [(HDClinicalIngestionManager *)self logDescription];
       v21 = 138543362;
-      v22 = v13;
+      v22 = logDescription;
       v14 = "%{public}@: not posting notification for new health records, app is hidden or deleted";
       v15 = v12;
       v16 = 12;
@@ -639,9 +639,9 @@ LABEL_11:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO))
     {
       v12 = v19;
-      v13 = [(HDClinicalIngestionManager *)self logDescription];
+      logDescription = [(HDClinicalIngestionManager *)self logDescription];
       v21 = 138543618;
-      v22 = v13;
+      v22 = logDescription;
       v23 = 2114;
       v24 = HDHRSNotificationKeyValueDomainKey;
       v14 = "%{public}@: not posting notification for new health records, %{public}@ is OFF";
@@ -661,15 +661,15 @@ LABEL_13:
   return v18;
 }
 
-- (void)_notifyForNewHealthRecordsFromTask:(id)a3
+- (void)_notifyForNewHealthRecordsFromTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if ([(HDClinicalIngestionManager *)self _shouldFireNotifications])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained daemon];
-    v7 = [v6 primaryProfile];
-    v8 = [v7 notificationManager];
+    daemon = [WeakRetained daemon];
+    primaryProfile = [daemon primaryProfile];
+    notificationManager = [primaryProfile notificationManager];
 
     v9 = [NSString localizedUserNotificationStringForKey:@"HEALTH_RECORDS_NOTIF_TITLE" arguments:0];
     v10 = [NSString localizedUserNotificationStringForKey:@"HEALTH_RECORDS_NOTIF_BODY_NEW_DATA" arguments:0];
@@ -678,11 +678,11 @@ LABEL_13:
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(HDClinicalIngestionManager *)self logDescription];
+      logDescription = [(HDClinicalIngestionManager *)self logDescription];
       *buf = 138543618;
-      v18 = v13;
+      v18 = logDescription;
       v19 = 2114;
-      v20 = v4;
+      v20 = taskCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: posting new health records notification for task %{public}@", buf, 0x16u);
     }
 
@@ -692,33 +692,33 @@ LABEL_13:
     v15[2] = sub_79AEC;
     v15[3] = &unk_107078;
     v15[4] = self;
-    v16 = v4;
-    [v8 postNotificationWithTitle:v9 body:v10 categoryIdentifier:v14 subtitle:0 domain:3 accessoryImageName:0 header:0 completion:v15];
+    v16 = taskCopy;
+    [notificationManager postNotificationWithTitle:v9 body:v10 categoryIdentifier:v14 subtitle:0 domain:3 accessoryImageName:0 header:0 completion:v15];
   }
 }
 
-- (void)_notifyForNewHealthLabRecordsFromTask:(id)a3 countOfAllLabs:(unint64_t)a4 countOfPinnedLabs:(unint64_t)a5
+- (void)_notifyForNewHealthLabRecordsFromTask:(id)task countOfAllLabs:(unint64_t)labs countOfPinnedLabs:(unint64_t)pinnedLabs
 {
-  v7 = a3;
-  v8 = [(HDClinicalIngestionManager *)self _shouldFireNotifications];
-  if (a5 && v8)
+  taskCopy = task;
+  _shouldFireNotifications = [(HDClinicalIngestionManager *)self _shouldFireNotifications];
+  if (pinnedLabs && _shouldFireNotifications)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v10 = [WeakRetained daemon];
-    v11 = [v10 primaryProfile];
-    v12 = [v11 notificationManager];
+    daemon = [WeakRetained daemon];
+    primaryProfile = [daemon primaryProfile];
+    notificationManager = [primaryProfile notificationManager];
 
     v13 = [NSString localizedUserNotificationStringForKey:@"HEALTH_RECORDS_NOTIF_LABS_TITLE" arguments:0];
     v14 = HKHealthKitFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"HEALTH_RECORDS_NOTIF_LABS_BODY_NEW_DATA_PINNED" value:&stru_1090E8 table:@"Localizable-Clinical-Health-Records"];
-    v16 = [NSString localizedStringWithFormat:v15, a5];
+    pinnedLabs = [NSString localizedStringWithFormat:v15, pinnedLabs];
 
     _HKInitializeLogging();
     v17 = HKLogHealthRecords;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = v7;
+      v23 = taskCopy;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Posting new health lab records notification for task %{public}@", buf, 0xCu);
     }
 
@@ -728,8 +728,8 @@ LABEL_13:
     v20[1] = 3221225472;
     v20[2] = sub_79DA0;
     v20[3] = &unk_1078C8;
-    v21 = v7;
-    [v12 postNotificationWithTitle:v13 body:v16 categoryIdentifier:v18 subtitle:0 domain:3 url:v19 accessoryImageName:0 header:0 completion:v20];
+    v21 = taskCopy;
+    [notificationManager postNotificationWithTitle:v13 body:pinnedLabs categoryIdentifier:v18 subtitle:0 domain:3 url:v19 accessoryImageName:0 header:0 completion:v20];
   }
 }
 

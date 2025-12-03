@@ -1,15 +1,15 @@
 @interface TIAutofillDataHandler
-- (void)reportSelectedAutofillCredential:(id)a3 completionHandler:(id)a4;
+- (void)reportSelectedAutofillCredential:(id)credential completionHandler:(id)handler;
 @end
 
 @implementation TIAutofillDataHandler
 
-- (void)reportSelectedAutofillCredential:(id)a3 completionHandler:(id)a4
+- (void)reportSelectedAutofillCredential:(id)credential completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  credentialCopy = credential;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v6 = credentialCopy;
   TIDispatchAsync();
 }
 

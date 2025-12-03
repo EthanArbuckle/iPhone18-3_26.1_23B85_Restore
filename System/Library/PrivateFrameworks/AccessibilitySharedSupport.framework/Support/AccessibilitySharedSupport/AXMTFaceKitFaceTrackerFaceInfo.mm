@@ -1,37 +1,37 @@
 @interface AXMTFaceKitFaceTrackerFaceInfo
-- (AXMTFaceKitFaceTrackerFaceInfo)initWithFaceMetadata:(id)a3;
+- (AXMTFaceKitFaceTrackerFaceInfo)initWithFaceMetadata:(id)metadata;
 - (CGRect)boundingBoxInNormalizedCoordinates;
 @end
 
 @implementation AXMTFaceKitFaceTrackerFaceInfo
 
-- (AXMTFaceKitFaceTrackerFaceInfo)initWithFaceMetadata:(id)a3
+- (AXMTFaceKitFaceTrackerFaceInfo)initWithFaceMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v8.receiver = self;
     v8.super_class = AXMTFaceKitFaceTrackerFaceInfo;
     v5 = [(AXMTFaceKitFaceTrackerFaceInfo *)&v8 init];
     if (v5)
     {
-      -[AXMTFaceKitFaceTrackerFaceInfo setIdentifier:](v5, "setIdentifier:", [v4 faceID]);
-      [v4 bounds];
+      -[AXMTFaceKitFaceTrackerFaceInfo setIdentifier:](v5, "setIdentifier:", [metadataCopy faceID]);
+      [metadataCopy bounds];
       [(AXMTFaceKitFaceTrackerFaceInfo *)v5 setBoundingBoxInNormalizedCoordinates:?];
-      [v4 rollAngle];
+      [metadataCopy rollAngle];
       [(AXMTFaceKitFaceTrackerFaceInfo *)v5 setRoll:?];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (CGRect)boundingBoxInNormalizedCoordinates

@@ -6,13 +6,13 @@
 
 - (id)formattedKeywords
 {
-  v3 = [(AAFTapToRadarRequest *)self keywords];
-  v4 = [v3 count];
+  keywords = [(AAFTapToRadarRequest *)self keywords];
+  v4 = [keywords count];
 
   if (v4)
   {
-    v5 = [(AAFTapToRadarRequest *)self keywords];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    keywords2 = [(AAFTapToRadarRequest *)self keywords];
+    v6 = [keywords2 componentsJoinedByString:{@", "}];
   }
 
   else

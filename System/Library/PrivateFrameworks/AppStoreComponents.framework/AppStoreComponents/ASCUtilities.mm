@@ -1,10 +1,10 @@
 @interface ASCUtilities
 + (ASCUtilities)shared;
-+ (void)withSharedUtilities:(id)a3 perform:(id)a4;
-- (ASCUtilities)initWithConnection:(id)a3;
-- (id)openURL:(id)a3;
++ (void)withSharedUtilities:(id)utilities perform:(id)perform;
+- (ASCUtilities)initWithConnection:(id)connection;
+- (id)openURL:(id)l;
 - (id)restoreAppStore;
-- (void)daemonConnectionWasLost:(id)a3;
+- (void)daemonConnectionWasLost:(id)lost;
 - (void)dealloc;
 @end
 
@@ -37,25 +37,25 @@ void __22__ASCUtilities_shared__block_invoke()
   shared_sharedUtilities = v1;
 }
 
-- (ASCUtilities)initWithConnection:(id)a3
+- (ASCUtilities)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = ASCUtilities;
   v6 = [(ASCUtilities *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_alloc_init(ASCPendingPromises);
     pendingPromises = v7->_pendingPromises;
     v7->_pendingPromises = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:connectionCopy];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:connectionCopy];
   }
 
   return v7;
@@ -63,26 +63,26 @@ void __22__ASCUtilities_shared__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCUtilities;
   [(ASCUtilities *)&v4 dealloc];
 }
 
-+ (void)withSharedUtilities:(id)a3 perform:(id)a4
++ (void)withSharedUtilities:(id)utilities perform:(id)perform
 {
-  v9 = a3;
-  v6 = a4;
+  utilitiesCopy = utilities;
+  performCopy = perform;
   v7 = ASCUtilities_testingUtilities;
-  objc_storeStrong(&ASCUtilities_testingUtilities, a3);
-  v6[2](v6);
+  objc_storeStrong(&ASCUtilities_testingUtilities, utilities);
+  performCopy[2](performCopy);
   v8 = ASCUtilities_testingUtilities;
   ASCUtilities_testingUtilities = v7;
 }
 
-- (void)daemonConnectionWasLost:(id)a3
+- (void)daemonConnectionWasLost:(id)lost
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -91,19 +91,19 @@ void __22__ASCUtilities_shared__block_invoke()
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 initWithDomain:@"ASCUtilitiesErrorDomain" code:0 userInfo:v5];
 
-  v7 = [(ASCUtilities *)self pendingPromises];
-  [v7 finishAllWithError:v6];
+  pendingPromises = [(ASCUtilities *)self pendingPromises];
+  [pendingPromises finishAllWithError:v6];
 }
 
-- (id)openURL:(id)a3
+- (id)openURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ASCUtilities *)self pendingPromises];
-  objc_initWeak(&location, v5);
+  lCopy = l;
+  pendingPromises = [(ASCUtilities *)self pendingPromises];
+  objc_initWeak(&location, pendingPromises);
 
   v6 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v7 = [(ASCUtilities *)self connection];
-  v8 = [v7 utilityService];
+  connection = [(ASCUtilities *)self connection];
+  utilityService = [connection utilityService];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -112,16 +112,16 @@ void __22__ASCUtilities_shared__block_invoke()
   objc_copyWeak(&v20, &location);
   v9 = v6;
   v18 = v9;
-  v10 = v4;
+  v10 = lCopy;
   v19 = v10;
-  [v8 addSuccessBlock:v17];
+  [utilityService addSuccessBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __24__ASCUtilities_openURL___block_invoke_3;
   v15[3] = &unk_2781CBB80;
   v11 = v9;
   v16 = v11;
-  [v8 addErrorBlock:v15];
+  [utilityService addErrorBlock:v15];
   v12 = v16;
   v13 = v11;
 
@@ -162,12 +162,12 @@ uint64_t __24__ASCUtilities_openURL___block_invoke_2(uint64_t a1, uint64_t a2)
 
 - (id)restoreAppStore
 {
-  v3 = [(ASCUtilities *)self pendingPromises];
-  objc_initWeak(&location, v3);
+  pendingPromises = [(ASCUtilities *)self pendingPromises];
+  objc_initWeak(&location, pendingPromises);
 
   v4 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v5 = [(ASCUtilities *)self connection];
-  v6 = [v5 utilityService];
+  connection = [(ASCUtilities *)self connection];
+  utilityService = [connection utilityService];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -176,14 +176,14 @@ uint64_t __24__ASCUtilities_openURL___block_invoke_2(uint64_t a1, uint64_t a2)
   objc_copyWeak(&v16, &location);
   v7 = v4;
   v15 = v7;
-  [v6 addSuccessBlock:v14];
+  [utilityService addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __31__ASCUtilities_restoreAppStore__block_invoke_3;
   v12[3] = &unk_2781CBB80;
   v8 = v7;
   v13 = v8;
-  [v6 addErrorBlock:v12];
+  [utilityService addErrorBlock:v12];
   v9 = v13;
   v10 = v8;
 

@@ -1,50 +1,50 @@
 @interface SUUILabelViewElement
-- (SUUILabelViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUILabelViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUILinkHandler)linkDelegate;
-- (id)_stringFromDateElement:(id)a3;
-- (id)_stringFromDurationElement:(id)a3;
-- (id)_stringFromNumberElement:(id)a3;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)_stringFromDateElement:(id)element;
+- (id)_stringFromDurationElement:(id)element;
+- (id)_stringFromNumberElement:(id)element;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)uniquingMapKey;
-- (void)_createText:(id)a3;
-- (void)_walkDOM:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (void)_createText:(id)text;
+- (void)_walkDOM:(id)m parent:(id)parent elementFactory:(id)factory;
 - (void)dealloc;
-- (void)linkTapped:(id)a3 range:(_NSRange)a4;
+- (void)linkTapped:(id)tapped range:(_NSRange)range;
 @end
 
 @implementation SUUILabelViewElement
 
-- (SUUILabelViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUILabelViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v24.receiver = self;
   v24.super_class = SUUILabelViewElement;
-  v12 = [(SUUIViewElement *)&v24 initWithDOMElement:v9 parent:v10 elementFactory:v11];
+  v12 = [(SUUIViewElement *)&v24 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v12)
   {
-    v13 = [v9 tagName];
-    v12->_labelViewStyle = SUUILabelViewStyleForString(v13);
+    tagName = [elementCopy tagName];
+    v12->_labelViewStyle = SUUILabelViewStyleForString(tagName);
 
-    v14 = [v9 getAttribute:@"moreLabel"];
+    v14 = [elementCopy getAttribute:@"moreLabel"];
     moreButtonTitle = v12->_moreButtonTitle;
     v12->_moreButtonTitle = v14;
 
-    v16 = [v9 getAttribute:@"maxLines"];
+    v16 = [elementCopy getAttribute:@"maxLines"];
     if ([v16 length])
     {
-      v17 = [v16 integerValue];
+      integerValue = [v16 integerValue];
     }
 
     else
     {
-      v17 = 1;
+      integerValue = 1;
     }
 
-    v12->_numberOfLines = v17;
+    v12->_numberOfLines = integerValue;
     v12->_badgePlacement = 0;
-    v18 = [v9 getAttribute:@"badgePlacement"];
+    v18 = [elementCopy getAttribute:@"badgePlacement"];
     v19 = [v18 isEqualToString:@"firstBaseline"];
     v20 = 0;
     if ((v19 & 1) == 0)
@@ -56,8 +56,8 @@ LABEL_9:
         domObjectsToViewElements = v12->_domObjectsToViewElements;
         v12->_domObjectsToViewElements = v21;
 
-        [(SUUILabelViewElement *)v12 _walkDOM:v9 parent:v10 elementFactory:v11];
-        objc_storeStrong(&v12->_xml, a3);
+        [(SUUILabelViewElement *)v12 _walkDOM:elementCopy parent:parentCopy elementFactory:factoryCopy];
+        objc_storeStrong(&v12->_xml, element);
         [(SUUILabelViewElement *)v12 _createText:v12->_xml];
 
         goto LABEL_10;
@@ -80,8 +80,8 @@ LABEL_10:
   xml = self->_xml;
   if (xml)
   {
-    v4 = [(SUUILabelViewElement *)self appDocument];
-    SUUIViewElementTextDeadlockFix(xml, v4);
+    appDocument = [(SUUILabelViewElement *)self appDocument];
+    SUUIViewElementTextDeadlockFix(xml, appDocument);
 
     v5 = self->_xml;
     self->_xml = 0;
@@ -92,23 +92,23 @@ LABEL_10:
   [(SUUIViewElement *)&v6 dealloc];
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUILabelViewElement;
-  v5 = [(SUUIViewElement *)&v13 applyUpdatesWithElement:v4];
-  if (v5 == self && v4 != self && v4 != 0)
+  v5 = [(SUUIViewElement *)&v13 applyUpdatesWithElement:elementCopy];
+  if (v5 == self && elementCopy != self && elementCopy != 0)
   {
-    self->_labelViewStyle = [(SUUILabelViewElement *)v4 labelViewStyle];
-    v9 = [(SUUILabelViewElement *)v4 moreButtonTitle];
+    self->_labelViewStyle = [(SUUILabelViewElement *)elementCopy labelViewStyle];
+    moreButtonTitle = [(SUUILabelViewElement *)elementCopy moreButtonTitle];
     moreButtonTitle = self->_moreButtonTitle;
-    self->_moreButtonTitle = v9;
+    self->_moreButtonTitle = moreButtonTitle;
 
-    self->_numberOfLines = [(SUUILabelViewElement *)v4 numberOfLines];
-    v11 = [(SUUILabelViewElement *)v4 text];
+    self->_numberOfLines = [(SUUILabelViewElement *)elementCopy numberOfLines];
+    text = [(SUUILabelViewElement *)elementCopy text];
     text = self->_text;
-    self->_text = v11;
+    self->_text = text;
   }
 
   return v5;
@@ -119,23 +119,23 @@ LABEL_10:
   text = self->_text;
   if (text)
   {
-    v3 = text;
+    uniquingMapKey = text;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUILabelViewElement;
-    v3 = [(SUUIViewElement *)&v5 uniquingMapKey];
+    uniquingMapKey = [(SUUIViewElement *)&v5 uniquingMapKey];
   }
 
-  return v3;
+  return uniquingMapKey;
 }
 
-- (void)linkTapped:(id)a3 range:(_NSRange)a4
+- (void)linkTapped:(id)tapped range:(_NSRange)range
 {
-  location = a4.location;
-  v6 = [(IKTextParser *)self->_text attributedString:a3];
+  location = range.location;
+  v6 = [(IKTextParser *)self->_text attributedString:tapped];
   v7 = [v6 attribute:0x286AEE4E0 atIndex:location effectiveRange:&v9];
 
   if (v7)
@@ -152,12 +152,12 @@ LABEL_10:
   }
 }
 
-- (void)_createText:(id)a3
+- (void)_createText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   dispatch_assert_queue_not_V2(MEMORY[0x277D85CD0]);
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -168,24 +168,24 @@ LABEL_10:
   v12 = 3221225472;
   v13 = __36__SUUILabelViewElement__createText___block_invoke;
   v14 = &unk_2798FBD20;
-  v15 = self;
-  v7 = v5;
+  selfCopy = self;
+  v7 = array;
   v16 = v7;
-  v8 = v6;
+  v8 = array2;
   v17 = v8;
   v18 = v19;
-  v9 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:v4 usingParseBlock:&v11];
+  v9 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:textCopy usingParseBlock:&v11];
   text = self->_text;
   self->_text = v9;
 
   if ([v8 count])
   {
-    objc_storeStrong(&self->_trailingBadges, v6);
+    objc_storeStrong(&self->_trailingBadges, array2);
   }
 
   if ([v7 count])
   {
-    objc_storeStrong(&self->_badges, v5);
+    objc_storeStrong(&self->_badges, array);
   }
 
   _Block_object_dispose(v19, 8);
@@ -403,9 +403,9 @@ LABEL_19:
   return v17;
 }
 
-- (id)_stringFromDateElement:(id)a3
+- (id)_stringFromDateElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (!_stringFromDateElement__sOutputFormatter)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -416,8 +416,8 @@ LABEL_19:
     [_stringFromDateElement__sOutputFormatter setTimeStyle:0];
   }
 
-  v6 = [v3 textContent];
-  v7 = SUUIViewElementDateWithString(v6);
+  textContent = [elementCopy textContent];
+  v7 = SUUIViewElementDateWithString(textContent);
   if (v7)
   {
     v8 = [_stringFromDateElement__sOutputFormatter stringFromDate:v7];
@@ -435,7 +435,7 @@ LABEL_19:
 
   else
   {
-    v9 = v6;
+    v9 = textContent;
   }
 
   v10 = v9;
@@ -443,9 +443,9 @@ LABEL_19:
   return v9;
 }
 
-- (id)_stringFromDurationElement:(id)a3
+- (id)_stringFromDurationElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (!_stringFromDurationElement__sInputFormatter)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -453,8 +453,8 @@ LABEL_19:
     _stringFromDurationElement__sInputFormatter = v4;
   }
 
-  v6 = [v3 textContent];
-  v7 = [_stringFromDurationElement__sInputFormatter numberFromString:v6];
+  textContent = [elementCopy textContent];
+  v7 = [_stringFromDurationElement__sInputFormatter numberFromString:textContent];
   v8 = v7;
   if (!v7)
   {
@@ -462,11 +462,11 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  v9 = [v7 integerValue];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v10 dateByAddingTimeInterval:v9];
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [v12 components:224 fromDate:v10 toDate:v11 options:0];
+  integerValue = [v7 integerValue];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [date dateByAddingTimeInterval:integerValue];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v13 = [currentCalendar components:224 fromDate:date toDate:v11 options:0];
   if ([v13 hour] < 1)
   {
     v14 = &_stringFromDurationElement__sOutputFormatter;
@@ -509,7 +509,7 @@ LABEL_12:
 
   else
   {
-    v21 = v6;
+    v21 = textContent;
   }
 
   v22 = v21;
@@ -517,9 +517,9 @@ LABEL_12:
   return v21;
 }
 
-- (id)_stringFromNumberElement:(id)a3
+- (id)_stringFromNumberElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (!_stringFromNumberElement__sInputFormatter)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -536,8 +536,8 @@ LABEL_12:
     [_stringFromNumberElement__sOutputFormatter setNumberStyle:1];
   }
 
-  v8 = [v3 textContent];
-  v9 = [_stringFromNumberElement__sInputFormatter numberFromString:v8];
+  textContent = [elementCopy textContent];
+  v9 = [_stringFromNumberElement__sInputFormatter numberFromString:textContent];
   if (v9)
   {
     v10 = [_stringFromNumberElement__sOutputFormatter stringFromNumber:v9];
@@ -555,7 +555,7 @@ LABEL_12:
 
   else
   {
-    v11 = v8;
+    v11 = textContent;
   }
 
   v12 = v11;
@@ -563,17 +563,17 @@ LABEL_12:
   return v11;
 }
 
-- (void)_walkDOM:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (void)_walkDOM:(id)m parent:(id)parent elementFactory:(id)factory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 nodeName];
-  if ([v11 isEqualToString:@"span"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_msgSend(v11, "isEqualToString:", @"badge") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"button"))
+  mCopy = m;
+  parentCopy = parent;
+  factoryCopy = factory;
+  nodeName = [mCopy nodeName];
+  if ([nodeName isEqualToString:@"span"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_msgSend(nodeName, "isEqualToString:", @"badge") & 1) != 0 || objc_msgSend(nodeName, "isEqualToString:", @"button"))
   {
-    v12 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v8];
-    v13 = [v10 elementForDOMElement:v8 parent:v9];
+    v12 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:mCopy];
+    v13 = [factoryCopy elementForDOMElement:mCopy parent:parentCopy];
     [(NSMutableDictionary *)self->_domObjectsToViewElements setObject:v13 forKey:v12];
   }
 
@@ -581,8 +581,8 @@ LABEL_12:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = [v8 childNodesAsArray];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  childNodesAsArray = [mCopy childNodesAsArray];
+  v15 = [childNodesAsArray countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -594,14 +594,14 @@ LABEL_12:
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(childNodesAsArray);
         }
 
-        [(SUUILabelViewElement *)self _walkDOM:*(*(&v19 + 1) + 8 * v18++) parent:v9 elementFactory:v10];
+        [(SUUILabelViewElement *)self _walkDOM:*(*(&v19 + 1) + 8 * v18++) parent:parentCopy elementFactory:factoryCopy];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [childNodesAsArray countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);

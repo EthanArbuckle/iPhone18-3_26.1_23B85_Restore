@@ -1,26 +1,26 @@
 @interface CKUploadMergeableDeltasOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKUploadMergeableDeltasOperation)initWithDeltas:(id)a3 replacementRequests:(id)a4;
+- (CKUploadMergeableDeltasOperation)initWithDeltas:(id)deltas replacementRequests:(id)requests;
 - (id)activityCreate;
 - (id)perDeltaCompletionBlock;
 - (id)perReplacementCompletionBlock;
 - (id)uploadDeltasCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleReplacementRequest:(id)a3 error:(id)a4;
-- (void)handleUploadForDeltaIdentifier:(id)a3 error:(id)a4;
-- (void)setPerDeltaCompletionBlock:(id)a3;
-- (void)setPerReplacementCompletionBlock:(id)a3;
-- (void)setUploadDeltasCompletionBlock:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleReplacementRequest:(id)request error:(id)error;
+- (void)handleUploadForDeltaIdentifier:(id)identifier error:(id)error;
+- (void)setPerDeltaCompletionBlock:(id)block;
+- (void)setPerReplacementCompletionBlock:(id)block;
+- (void)setUploadDeltasCompletionBlock:(id)block;
 @end
 
 @implementation CKUploadMergeableDeltasOperation
 
-- (void)setPerDeltaCompletionBlock:(id)a3
+- (void)setPerDeltaCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -34,16 +34,16 @@
     v12[2] = sub_1885B6004;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perDeltaCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perDeltaCompletionBlock != v6)
+  if (self->_perDeltaCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perDeltaCompletionBlock = self->_perDeltaCompletionBlock;
     self->_perDeltaCompletionBlock = v9;
 LABEL_9:
@@ -86,9 +86,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setPerReplacementCompletionBlock:(id)a3
+- (void)setPerReplacementCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -102,16 +102,16 @@ LABEL_9:
     v12[2] = sub_1885B6390;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perReplacementCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perReplacementCompletionBlock != v6)
+  if (self->_perReplacementCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perReplacementCompletionBlock = self->_perReplacementCompletionBlock;
     self->_perReplacementCompletionBlock = v9;
 LABEL_9:
@@ -154,9 +154,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setUploadDeltasCompletionBlock:(id)a3
+- (void)setUploadDeltasCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -170,16 +170,16 @@ LABEL_9:
     v12[2] = sub_1885B671C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     uploadDeltasCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_uploadDeltasCompletionBlock != v6)
+  if (self->_uploadDeltasCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     uploadDeltasCompletionBlock = self->_uploadDeltasCompletionBlock;
     self->_uploadDeltasCompletionBlock = v9;
 LABEL_9:
@@ -222,20 +222,20 @@ LABEL_9:
   return v6;
 }
 
-- (CKUploadMergeableDeltasOperation)initWithDeltas:(id)a3 replacementRequests:(id)a4
+- (CKUploadMergeableDeltasOperation)initWithDeltas:(id)deltas replacementRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
+  deltasCopy = deltas;
+  requestsCopy = requests;
   v22.receiver = self;
   v22.super_class = CKUploadMergeableDeltasOperation;
   v10 = [(CKOperation *)&v22 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(deltasCopy, v8, v9);
     deltas = v10->_deltas;
     v10->_deltas = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(requestsCopy, v13, v14);
     replacementRequests = v10->_replacementRequests;
     v10->_replacementRequests = v15;
 
@@ -247,7 +247,7 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v19.receiver = self;
   v19.super_class = CKUploadMergeableDeltasOperation;
@@ -287,11 +287,11 @@ LABEL_9:
   v14 = v13;
   v15 = v13 != 0;
 
-  if (a3 && !v14)
+  if (run && !v14)
   {
     v16 = objc_opt_class();
     v6 = NSStringFromClass(v16);
-    *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v17, @"CKErrorDomain", 12, @"%@ must have at least one delta or replacement", v6);
+    *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v17, @"CKErrorDomain", 12, @"%@ must have at least one delta or replacement", v6);
 LABEL_10:
 
     return v12;
@@ -300,41 +300,41 @@ LABEL_10:
   return v15;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
   if (self)
   {
     deltas = self->_deltas;
-    v6 = a3;
-    objc_msgSend_setDeltas_(v6, v7, deltas);
-    objc_msgSend_setReplacementRequests_(a3, v8, self->_replacementRequests);
+    infoCopy = info;
+    objc_msgSend_setDeltas_(infoCopy, v7, deltas);
+    objc_msgSend_setReplacementRequests_(info, v8, self->_replacementRequests);
   }
 
   else
   {
-    v9 = a3;
-    objc_msgSend_setDeltas_(v9, v10, 0);
-    objc_msgSend_setReplacementRequests_(a3, v11, 0);
+    infoCopy2 = info;
+    objc_msgSend_setDeltas_(infoCopy2, v10, 0);
+    objc_msgSend_setReplacementRequests_(info, v11, 0);
   }
 
   v12.receiver = self;
   v12.super_class = CKUploadMergeableDeltasOperation;
-  [(CKDatabaseOperation *)&v12 fillOutOperationInfo:a3];
+  [(CKDatabaseOperation *)&v12 fillOutOperationInfo:info];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKUploadMergeableDeltasOperation;
-  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:v4];
-  v8 = objc_msgSend_deltas(v4, v5, v6);
+  [(CKDatabaseOperation *)&v13 fillFromOperationInfo:infoCopy];
+  v8 = objc_msgSend_deltas(infoCopy, v5, v6);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v7, v8, 528);
   }
 
-  v12 = objc_msgSend_replacementRequests(v4, v9, v10);
+  v12 = objc_msgSend_replacementRequests(infoCopy, v9, v10);
   if (self)
   {
     objc_setProperty_nonatomic_copy(self, v11, v12, 536);
@@ -374,11 +374,11 @@ LABEL_10:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     if (self)
     {
@@ -408,16 +408,16 @@ LABEL_10:
       v10 = perItemErrors;
       v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(v9, v11, v38, &v37, 1);
 
-      v6 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v13, @"CKInternalErrorDomain", 1011, v12, @"Failed to upload some deltas");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v13, @"CKInternalErrorDomain", 1011, v12, @"Failed to upload some deltas");
     }
 
     else
     {
-      v6 = 0;
+      errorCopy = 0;
     }
   }
 
-  v14 = objc_msgSend_CKClientSuitableError(v6, v4, v5);
+  v14 = objc_msgSend_CKClientSuitableError(errorCopy, v4, v5);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -474,11 +474,11 @@ LABEL_10:
   return v2;
 }
 
-- (void)handleUploadForDeltaIdentifier:(id)a3 error:(id)a4
+- (void)handleUploadForDeltaIdentifier:(id)identifier error:(id)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  identifierCopy = identifier;
+  v9 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (self)
   {
     deltas = self->_deltas;
@@ -493,7 +493,7 @@ LABEL_10:
   v35[1] = 3221225472;
   v35[2] = sub_1885B7428;
   v35[3] = &unk_1E70BEB88;
-  v11 = v6;
+  v11 = identifierCopy;
   v36 = v11;
   v14 = objc_msgSend_CKFirstObjectPassingTest_(deltas, v12, v35);
   if (v14)
@@ -580,11 +580,11 @@ LABEL_21:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleReplacementRequest:(id)a3 error:(id)a4
+- (void)handleReplacementRequest:(id)request error:(id)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  requestCopy = request;
+  v9 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (self)
   {
     perItemErrors = self->_perItemErrors;
@@ -596,7 +596,7 @@ LABEL_21:
   }
 
   v11 = perItemErrors;
-  v14 = objc_msgSend_valueID(v6, v12, v13);
+  v14 = objc_msgSend_valueID(requestCopy, v12, v13);
   objc_msgSend_setObject_forKeyedSubscript_(v11, v15, v9, v14);
 
   if (ck_log_initialization_predicate != -1)
@@ -612,7 +612,7 @@ LABEL_21:
     v33 = 138543874;
     v34 = v28;
     v35 = 2112;
-    v36 = v6;
+    v36 = requestCopy;
     v37 = 2112;
     v38 = v9;
     _os_log_debug_impl(&dword_1883EA000, v25, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received replacement callback for request %@ with error: %@", &v33, 0x20u);
@@ -623,7 +623,7 @@ LABEL_21:
   if (v19)
   {
     v22 = objc_msgSend_perReplacementCompletionBlock(self, v20, v21);
-    (v22)[2](v22, v6, v9);
+    (v22)[2](v22, requestCopy, v9);
   }
 
   if (ck_log_initialization_predicate != -1)

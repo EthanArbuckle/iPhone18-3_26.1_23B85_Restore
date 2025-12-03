@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009C064();
 }
 
@@ -32,13 +32,13 @@
   if (isa)
   {
     sub_1007532A4();
-    v6 = self;
+    selfCopy = self;
     isa = sub_100753294().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

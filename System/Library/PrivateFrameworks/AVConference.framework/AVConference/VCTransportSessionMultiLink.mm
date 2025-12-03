@@ -1,44 +1,44 @@
 @interface VCTransportSessionMultiLink
 - (BOOL)initializeIsIPv6;
 - (BOOL)initializeNetworkMTU;
-- (VCTransportSessionMultiLink)initWithLocalEndpoint:(id)a3 clientAuditToken:(id)a4 handlerQueue:(id)a5 context:(void *)a6 eventHandler:(void *)a7 options:(id)a8 error:(id *)a9;
-- (id)connectionInfoWithRemoteAddress:(id)a3;
-- (int)addRemoteEndpoint:(id)a3 error:(id *)a4;
-- (int)canAddConnectionWithRemoteEndpoint:(id)a3;
-- (int)canRemoveConnectionWithRemoteEndpoint:(id)a3;
-- (int)createAndStartNWListener:(id)a3 useBackingSocket:(BOOL)a4 error:(id *)a5;
-- (int)createNWConnectionWithConnectionInfo:(id)a3 remoteEndpoint:(id)a4;
-- (int)createNWParametersAndListener:(BOOL)a3;
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4;
-- (int)dispatchedAddRemoteEndpoint:(id)a3 error:(id *)a4;
-- (int)dispatchedRemoveRemoteEndpoint:(id)a3 error:(id *)a4;
-- (int)dispatchedSetRemoteEndpoints:(id)a3 error:(id *)a4;
-- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)a3;
-- (int)invalidateNWConnectionWithConnectionInfo:(id)a3;
-- (int)removeRemoteEndpoint:(id)a3 error:(id *)a4;
+- (VCTransportSessionMultiLink)initWithLocalEndpoint:(id)endpoint clientAuditToken:(id)token handlerQueue:(id)queue context:(void *)context eventHandler:(void *)handler options:(id)options error:(id *)error;
+- (id)connectionInfoWithRemoteAddress:(id)address;
+- (int)addRemoteEndpoint:(id)endpoint error:(id *)error;
+- (int)canAddConnectionWithRemoteEndpoint:(id)endpoint;
+- (int)canRemoveConnectionWithRemoteEndpoint:(id)endpoint;
+- (int)createAndStartNWListener:(id)listener useBackingSocket:(BOOL)socket error:(id *)error;
+- (int)createNWConnectionWithConnectionInfo:(id)info remoteEndpoint:(id)endpoint;
+- (int)createNWParametersAndListener:(BOOL)listener;
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type;
+- (int)dispatchedAddRemoteEndpoint:(id)endpoint error:(id *)error;
+- (int)dispatchedRemoveRemoteEndpoint:(id)endpoint error:(id *)error;
+- (int)dispatchedSetRemoteEndpoints:(id)endpoints error:(id *)error;
+- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)connection;
+- (int)invalidateNWConnectionWithConnectionInfo:(id)info;
+- (int)removeRemoteEndpoint:(id)endpoint error:(id *)error;
 - (int)reserveLocalPortWithListener;
-- (int)setRemoteEndpoints:(id)a3 error:(id *)a4;
-- (int)setStateChangeHandlerForConnectionWithConnectionInfo:(id)a3;
+- (int)setRemoteEndpoints:(id)endpoints error:(id *)error;
+- (int)setStateChangeHandlerForConnectionWithConnectionInfo:(id)info;
 - (int)setupDatagramChannel;
-- (int)setupNWConnectionWithConnectionInfo:(id)a3;
-- (int)startNWConnectionWithConnectionInfo:(id)a3;
+- (int)setupNWConnectionWithConnectionInfo:(id)info;
+- (int)startNWConnectionWithConnectionInfo:(id)info;
 - (int)startNWConnections;
 - (int)updateLocalEndpoint;
-- (int)updateTransportStream:(OpaqueVCTransportStream *)a3;
-- (int)updateTransportStreamRemoteSSRCList:(OpaqueVCTransportStream *)a3 shouldAddRemoteSSRC:(BOOL)a4 remoteEndpointSSRC:(int)a5;
-- (int)updateTransportStreamsRemoteSSRCList:(unsigned int)a3 shouldAddRemoteSSRC:(BOOL)a4;
+- (int)updateTransportStream:(OpaqueVCTransportStream *)stream;
+- (int)updateTransportStreamRemoteSSRCList:(OpaqueVCTransportStream *)list shouldAddRemoteSSRC:(BOOL)c remoteEndpointSSRC:(int)rC;
+- (int)updateTransportStreamsRemoteSSRCList:(unsigned int)list shouldAddRemoteSSRC:(BOOL)c;
 - (tagVCNWConnectionMonitor)createNWMonitor;
 - (void)addNetworkAssertion;
 - (void)cleanupDatagramChannel;
 - (void)createNWMonitor;
 - (void)dealloc;
 - (void)getTransportLargeBufferIndicationWithStreamProperty;
-- (void)handleStateChanges:(int)a3 error:(id)a4 connectionInfo:(id)a5;
+- (void)handleStateChanges:(int)changes error:(id)error connectionInfo:(id)info;
 - (void)initializeInterfaceType;
 - (void)initializeIsIPv6;
 - (void)removeNetworkAssertion;
 - (void)reserveLocalPortWithListener;
-- (void)setReceiveBufferSize:(id)a3;
+- (void)setReceiveBufferSize:(id)size;
 - (void)setupDatagramChannel;
 - (void)start;
 - (void)stop;
@@ -47,46 +47,46 @@
 
 @implementation VCTransportSessionMultiLink
 
-- (VCTransportSessionMultiLink)initWithLocalEndpoint:(id)a3 clientAuditToken:(id)a4 handlerQueue:(id)a5 context:(void *)a6 eventHandler:(void *)a7 options:(id)a8 error:(id *)a9
+- (VCTransportSessionMultiLink)initWithLocalEndpoint:(id)endpoint clientAuditToken:(id)token handlerQueue:(id)queue context:(void *)context eventHandler:(void *)handler options:(id)options error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VCTransportSessionMultiLink;
-  v12 = [(VCTransportSession *)&v17 initWithNotificationQueue:0 reportingAgent:0 notificationHandler:0 eventHandler:a7 handlerQueue:a5 context:a6];
+  v12 = [(VCTransportSession *)&v17 initWithNotificationQueue:0 reportingAgent:0 notificationHandler:0 eventHandler:handler handlerQueue:queue context:context];
   v13 = v12;
   if (!v12)
   {
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!endpoint)
   {
     [VCTransportSessionMultiLink initWithLocalEndpoint:v12 clientAuditToken:? handlerQueue:? context:? eventHandler:? options:? error:?];
     goto LABEL_6;
   }
 
   v12->_localPort = 0;
-  v14 = [objc_msgSend(a8 objectForKeyedSubscript:{@"vcTransportSessionMultilinkOptionUseBackingSocket", "BOOLValue"}];
-  v13->_receiveBufferSize = [objc_msgSend(a8 objectForKeyedSubscript:{@"vcTransportSessionMultiLinkOptionBackingSocketReceiveBufferSize", "intValue"}];
-  v15 = [(VCTransportSessionMultiLink *)v13 createAndStartNWListener:a3 useBackingSocket:v14 error:a9];
+  v14 = [objc_msgSend(options objectForKeyedSubscript:{@"vcTransportSessionMultilinkOptionUseBackingSocket", "BOOLValue"}];
+  v13->_receiveBufferSize = [objc_msgSend(options objectForKeyedSubscript:{@"vcTransportSessionMultiLinkOptionBackingSocketReceiveBufferSize", "intValue"}];
+  v15 = [(VCTransportSessionMultiLink *)v13 createAndStartNWListener:endpoint useBackingSocket:v14 error:error];
   v13->_startWaitSemaphore = dispatch_semaphore_create(0);
   v13->_cancelWaitSemaphore = dispatch_semaphore_create(0);
   v13->_nwConnectionInfoList = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13->_clientAuditToken = a4;
+  v13->_clientAuditToken = token;
   if (v15 < 0)
   {
 LABEL_6:
-    [VCTransportSessionMultiLink initWithLocalEndpoint:v13 clientAuditToken:a3 handlerQueue:a9 context:? eventHandler:? options:? error:?];
+    [VCTransportSessionMultiLink initWithLocalEndpoint:v13 clientAuditToken:endpoint handlerQueue:error context:? eventHandler:? options:? error:?];
     return 0;
   }
 
   return v13;
 }
 
-- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)a3
+- (int)dupRTPNWConnectionBackingSocketForNWConnection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!connection)
   {
     [VCTransportSessionMultiLink dupRTPNWConnectionBackingSocketForNWConnection:?];
     return v13;
@@ -116,7 +116,7 @@ LABEL_6:
         v17 = 1024;
         v18 = 98;
         v19 = 2048;
-        v20 = a3;
+        connectionCopy2 = connection;
         v21 = 1024;
         v22 = v5;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d nw_connection %p is backed by socket %d. Failed to dup", &v13, 0x2Cu);
@@ -139,7 +139,7 @@ LABEL_6:
       v17 = 1024;
       v18 = 96;
       v19 = 2048;
-      v20 = a3;
+      connectionCopy2 = connection;
       v21 = 1024;
       v22 = v5;
       v23 = 1024;
@@ -631,7 +631,7 @@ LABEL_14:
           v37 = 2112;
           v38 = v22;
           v39 = 2048;
-          v40 = self;
+          selfCopy = self;
           v41 = 2112;
           v42 = v13;
           _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to update transport stream '%@'", buf, 0x3Au);
@@ -645,12 +645,12 @@ LABEL_25:
   return v20;
 }
 
-- (int)updateTransportStreamRemoteSSRCList:(OpaqueVCTransportStream *)a3 shouldAddRemoteSSRC:(BOOL)a4 remoteEndpointSSRC:(int)a5
+- (int)updateTransportStreamRemoteSSRCList:(OpaqueVCTransportStream *)list shouldAddRemoteSSRC:(BOOL)c remoteEndpointSSRC:(int)rC
 {
-  v6 = a4;
+  cCopy = c;
   v39 = *MEMORY[0x1E69E9840];
   v24 = 0;
-  CMBaseObject = VCPacketFilterGetCMBaseObject(a3, a2);
+  CMBaseObject = VCPacketFilterGetCMBaseObject(list, a2);
   v10 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (!v10)
   {
@@ -679,7 +679,7 @@ LABEL_9:
       v31 = 2112;
       v32 = @"UnderlyingVFD";
       v33 = 2112;
-      v34 = a3;
+      selfCopy2 = list;
       v16 = " [%s] %s:%d Could not get property '%@' for transport stream '%@'";
       v17 = v15;
       v18 = 48;
@@ -718,11 +718,11 @@ LABEL_9:
       v31 = 2112;
       v32 = v13;
       v33 = 2048;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2112;
       v36 = @"UnderlyingVFD";
       v37 = 2112;
-      v38 = a3;
+      listCopy2 = list;
       v16 = " [%s] %s:%d %@(%p) Could not get property '%@' for transport stream '%@'";
       v17 = v20;
       v18 = 68;
@@ -746,7 +746,7 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  if (!VTP_UpdateRemoteSSRCList([v24 intValue], a5, v6))
+  if (!VTP_UpdateRemoteSSRCList([v24 intValue], rC, cCopy))
   {
     v11 = *__error() | 0xC02B0000;
     if (objc_opt_class() == self)
@@ -788,7 +788,7 @@ LABEL_20:
           v31 = 2112;
           v32 = v12;
           v33 = 2048;
-          v34 = self;
+          selfCopy2 = self;
           v35 = 1024;
           LODWORD(v36) = v11;
           v16 = " [%s] %s:%d %@(%p) VTP_UpdateRemoteSSRCList failed %x";
@@ -805,12 +805,12 @@ LABEL_18:
   return v11;
 }
 
-- (int)updateTransportStream:(OpaqueVCTransportStream *)a3
+- (int)updateTransportStream:(OpaqueVCTransportStream *)stream
 {
   v38 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._stateQueue);
   v23 = 0;
-  CMBaseObject = VCPacketFilterGetCMBaseObject(a3, v5);
+  CMBaseObject = VCPacketFilterGetCMBaseObject(stream, v5);
   v7 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (!v7)
   {
@@ -839,7 +839,7 @@ LABEL_7:
       v30 = 2112;
       v31 = @"UnderlyingVFD";
       v32 = 2112;
-      v33 = a3;
+      selfCopy2 = stream;
       v14 = " [%s] %s:%d Could not get property '%@' for transport stream '%@'";
       v15 = v13;
       v16 = 48;
@@ -878,11 +878,11 @@ LABEL_7:
       v30 = 2112;
       v31 = v11;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = @"UnderlyingVFD";
       v36 = 2112;
-      v37 = a3;
+      streamCopy2 = stream;
       v14 = " [%s] %s:%d %@(%p) Could not get property '%@' for transport stream '%@'";
       v15 = v18;
       v16 = 68;
@@ -906,9 +906,9 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  v9 = [v23 intValue];
+  intValue = [v23 intValue];
   v10 = VCDatagramChannelMultiLink_Token(self->_datagramChannel);
-  if (VTP_SetSourceDestinationWithToken(v9, v10) != -1)
+  if (VTP_SetSourceDestinationWithToken(intValue, v10) != -1)
   {
     [(VCTransportSessionMultiLink *)self getTransportLargeBufferIndicationWithStreamProperty];
     goto LABEL_16;
@@ -954,7 +954,7 @@ LABEL_18:
         v30 = 2112;
         v31 = v20;
         v32 = 2048;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 1024;
         LODWORD(v35) = v8;
         v14 = " [%s] %s:%d %@(%p) VTP_SetSourceDestinationWithToken failed %x";
@@ -1008,7 +1008,7 @@ LABEL_16:
   self->_datagramChannel = 0;
 }
 
-- (int)setRemoteEndpoints:(id)a3 error:(id *)a4
+- (int)setRemoteEndpoints:(id)endpoints error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1021,9 +1021,9 @@ LABEL_16:
   block[2] = __56__VCTransportSessionMultiLink_setRemoteEndpoints_error___block_invoke;
   block[3] = &unk_1E85F61F8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = endpoints;
   block[6] = &v8;
-  block[7] = a4;
+  block[7] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -1037,25 +1037,25 @@ uint64_t __56__VCTransportSessionMultiLink_setRemoteEndpoints_error___block_invo
   return result;
 }
 
-- (int)dispatchedSetRemoteEndpoints:(id)a3 error:(id *)a4
+- (int)dispatchedSetRemoteEndpoints:(id)endpoints error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._stateQueue);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3)
+  if (endpoints)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v50 objects:v49 count:16];
+    v7 = [endpoints countByEnumeratingWithState:&v50 objects:v49 count:16];
     if (v7)
     {
       v8 = v7;
       v33 = v6;
       v9 = 0;
       v35 = *v51;
-      obj = a3;
+      obj = endpoints;
       while (1)
       {
         v10 = 0;
@@ -1067,7 +1067,7 @@ uint64_t __56__VCTransportSessionMultiLink_setRemoteEndpoints_error___block_invo
           }
 
           v11 = *(*(&v50 + 1) + 8 * v10);
-          v12 = [(VCTransportSessionMultiLink *)self dispatchedAddRemoteEndpoint:v11 error:a4];
+          v12 = [(VCTransportSessionMultiLink *)self dispatchedAddRemoteEndpoint:v11 error:error];
           v13 = objc_opt_class();
           if ((v12 & 0x80000000) == 0)
           {
@@ -1119,7 +1119,7 @@ LABEL_23:
                   v43 = 2112;
                   v44 = v14;
                   v45 = 2048;
-                  v46 = self;
+                  selfCopy2 = self;
                   v47 = 2112;
                   v48 = v11;
                   v17 = v16;
@@ -1181,7 +1181,7 @@ LABEL_23:
                 v43 = 2112;
                 v44 = v20;
                 v45 = 2048;
-                v46 = self;
+                selfCopy2 = self;
                 v47 = 2112;
                 v48 = v11;
                 v23 = v22;
@@ -1198,7 +1198,7 @@ LABEL_25:
         }
 
         while (v8 != v10);
-        a3 = obj;
+        endpoints = obj;
         v30 = [obj countByEnumeratingWithState:&v50 objects:v49 count:16];
         v8 = v30;
         if (!v30)
@@ -1213,9 +1213,9 @@ LABEL_25:
     v31 = 0;
     v9 = 0;
 LABEL_34:
-    if ([a3 count] != v9)
+    if ([endpoints count] != v9)
     {
-      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32002, v31, 0, @"Failed to add remote endpoints", [MEMORY[0x1E696AEC0] stringWithFormat:@"Connections to add=%lu but connections added=%d", objc_msgSend(a3, "count"), v9]);
+      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32002, v31, 0, @"Failed to add remote endpoints", [MEMORY[0x1E696AEC0] stringWithFormat:@"Connections to add=%lu but connections added=%d", objc_msgSend(endpoints, "count"), v9]);
     }
 
     if (v9)
@@ -1232,7 +1232,7 @@ LABEL_34:
   return -2144665536;
 }
 
-- (int)addRemoteEndpoint:(id)a3 error:(id *)a4
+- (int)addRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1245,9 +1245,9 @@ LABEL_34:
   block[2] = __55__VCTransportSessionMultiLink_addRemoteEndpoint_error___block_invoke;
   block[3] = &unk_1E85F61F8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = endpoint;
   block[6] = &v8;
-  block[7] = a4;
+  block[7] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -1381,9 +1381,9 @@ LABEL_15:
   }
 }
 
-- (int)updateTransportStreamsRemoteSSRCList:(unsigned int)a3 shouldAddRemoteSSRC:(BOOL)a4
+- (int)updateTransportStreamsRemoteSSRCList:(unsigned int)list shouldAddRemoteSSRC:(BOOL)c
 {
-  v4 = a4;
+  cCopy = c;
   v40 = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableArray *)self->super._streams count];
   if (v7 < 1)
@@ -1411,7 +1411,7 @@ LABEL_15:
       return 0;
     }
 
-    v15 = -[VCTransportSessionMultiLink updateTransportStreamRemoteSSRCList:shouldAddRemoteSSRC:remoteEndpointSSRC:](self, "updateTransportStreamRemoteSSRCList:shouldAddRemoteSSRC:remoteEndpointSSRC:", v11, v4, [v25 intValue] + a3);
+    v15 = -[VCTransportSessionMultiLink updateTransportStreamRemoteSSRCList:shouldAddRemoteSSRC:remoteEndpointSSRC:](self, "updateTransportStreamRemoteSSRCList:shouldAddRemoteSSRC:remoteEndpointSSRC:", v11, cCopy, [v25 intValue] + list);
 
     if (v15 < 0)
     {
@@ -1448,7 +1448,7 @@ LABEL_15:
     v32 = 2112;
     v33 = @"TransportStreamIndex";
     v34 = 2112;
-    v35 = v11;
+    selfCopy = v11;
     v19 = " [%s] %s:%d Could not get property '%@' for transport stream '%@'";
     v20 = v18;
     v21 = 48;
@@ -1482,7 +1482,7 @@ LABEL_20:
       v32 = 2112;
       v33 = v16;
       v34 = 2048;
-      v35 = self;
+      selfCopy = self;
       v36 = 2112;
       v37 = @"TransportStreamIndex";
       v38 = 2112;
@@ -1497,12 +1497,12 @@ LABEL_20:
   return 0;
 }
 
-- (int)dispatchedAddRemoteEndpoint:(id)a3 error:(id *)a4
+- (int)dispatchedAddRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._stateQueue);
   v7 = objc_alloc_init(VCNWConnectionInfo);
-  v8 = -[VCTransportSessionMultiLink canAddConnectionWithRemoteEndpoint:](self, "canAddConnectionWithRemoteEndpoint:", [a3 endpoint]);
+  v8 = -[VCTransportSessionMultiLink canAddConnectionWithRemoteEndpoint:](self, "canAddConnectionWithRemoteEndpoint:", [endpoint endpoint]);
   if (v8 < 0)
   {
     v10 = v8;
@@ -1551,14 +1551,14 @@ LABEL_20:
     WORD2(v33) = 2112;
     *(&v33 + 6) = v21;
     HIWORD(v33) = 2048;
-    v34 = self;
+    selfCopy4 = self;
     LOWORD(v35) = 2048;
-    *(&v35 + 2) = a3;
+    *(&v35 + 2) = endpoint;
     v26 = " [%s] %s:%d %@(%p) Cannot add remote endpoint=%p";
     goto LABEL_52;
   }
 
-  v9 = -[VCTransportSessionMultiLink createNWConnectionWithConnectionInfo:remoteEndpoint:](self, "createNWConnectionWithConnectionInfo:remoteEndpoint:", v7, [a3 endpoint]);
+  v9 = -[VCTransportSessionMultiLink createNWConnectionWithConnectionInfo:remoteEndpoint:](self, "createNWConnectionWithConnectionInfo:remoteEndpoint:", v7, [endpoint endpoint]);
   if (v9 < 0)
   {
     v10 = v9;
@@ -1607,9 +1607,9 @@ LABEL_20:
     WORD2(v33) = 2112;
     *(&v33 + 6) = v22;
     HIWORD(v33) = 2048;
-    v34 = self;
+    selfCopy4 = self;
     LOWORD(v35) = 2048;
-    *(&v35 + 2) = a3;
+    *(&v35 + 2) = endpoint;
     v26 = " [%s] %s:%d %@(%p) Failed to create NWConnection with remote endpoint=%p";
 LABEL_52:
     v28 = v25;
@@ -1619,7 +1619,7 @@ LABEL_57:
     goto LABEL_34;
   }
 
-  -[VCNWConnectionInfo setRemoteSSRC:](v7, "setRemoteSSRC:", [a3 rtpSSRC]);
+  -[VCNWConnectionInfo setRemoteSSRC:](v7, "setRemoteSSRC:", [endpoint rtpSSRC]);
   [(NSMutableArray *)self->_nwConnectionInfoList addObject:v7];
   if ([(VCTransportSessionMultiLink *)self setupNWConnectionWithConnectionInfo:v7]< 0)
   {
@@ -1646,7 +1646,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v10 = -[VCTransportSessionMultiLink updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:](self, "updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:", [a3 rtpSSRC], 1);
+  v10 = -[VCTransportSessionMultiLink updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:](self, "updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:", [endpoint rtpSSRC], 1);
   v11 = objc_opt_class();
   if (v10 < 0)
   {
@@ -1689,7 +1689,7 @@ LABEL_33:
         WORD2(v33) = 2112;
         *(&v33 + 6) = v23;
         HIWORD(v33) = 2048;
-        v34 = self;
+        selfCopy4 = self;
         v26 = " [%s] %s:%d %@(%p) Failed to update the transport streams with the remote endpoint info";
         v28 = v31;
         v29 = 48;
@@ -1698,7 +1698,7 @@ LABEL_33:
     }
 
 LABEL_34:
-    [GKVoiceChatError getNSError:a4 code:32002 detailedCode:v10 filePath:0 description:@"Add remote endpoint failed" reason:@"Failed to schedule receives for NWConnection", *v32, *&v32[16], v33, v34, v35];
+    [GKVoiceChatError getNSError:error code:32002 detailedCode:v10 filePath:0 description:@"Add remote endpoint failed" reason:@"Failed to schedule receives for NWConnection", *v32, *&v32[16], v33, selfCopy4, v35];
     goto LABEL_20;
   }
 
@@ -1710,7 +1710,7 @@ LABEL_34:
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 endpoint];
+        [endpoint endpoint];
         *v32 = 136315906;
         *&v32[4] = v13;
         *&v32[12] = 2080;
@@ -1746,7 +1746,7 @@ LABEL_19:
       v19 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 endpoint];
+        [endpoint endpoint];
         *v32 = 136316418;
         *&v32[4] = v18;
         *&v32[12] = 2080;
@@ -1756,7 +1756,7 @@ LABEL_19:
         WORD2(v33) = 2112;
         *(&v33 + 6) = v12;
         HIWORD(v33) = 2048;
-        v34 = self;
+        selfCopy4 = self;
         LOWORD(v35) = 2080;
         *(&v35 + 2) = nw_endpoint_get_description();
         v15 = " [%s] %s:%d %@(%p) Added remote NW endpoint=%s";
@@ -1772,7 +1772,7 @@ LABEL_20:
   return v10;
 }
 
-- (int)removeRemoteEndpoint:(id)a3 error:(id *)a4
+- (int)removeRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1785,9 +1785,9 @@ LABEL_20:
   block[2] = __58__VCTransportSessionMultiLink_removeRemoteEndpoint_error___block_invoke;
   block[3] = &unk_1E85F61F8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = endpoint;
   block[6] = &v8;
-  block[7] = a4;
+  block[7] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
@@ -1801,21 +1801,21 @@ uint64_t __58__VCTransportSessionMultiLink_removeRemoteEndpoint_error___block_in
   return result;
 }
 
-- (int)dispatchedRemoveRemoteEndpoint:(id)a3 error:(id *)a4
+- (int)dispatchedRemoveRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->super._stateQueue);
-  if (!a3)
+  if (!endpoint)
   {
     [VCTransportSessionMultiLink dispatchedRemoveRemoteEndpoint:error:];
 LABEL_24:
     v10 = v24;
 LABEL_25:
-    [GKVoiceChatError getNSError:a4 code:32016 detailedCode:v10 filePath:0 description:@"Remove remote endpoint failed" reason:@"Invalid remote NWEndpoint"];
+    [GKVoiceChatError getNSError:error code:32016 detailedCode:v10 filePath:0 description:@"Remove remote endpoint failed" reason:@"Invalid remote NWEndpoint"];
     return v10;
   }
 
-  v7 = +[NetworkUtils networkAddressFromEndpoint:](NetworkUtils, "networkAddressFromEndpoint:", [a3 endpoint]);
+  v7 = +[NetworkUtils networkAddressFromEndpoint:](NetworkUtils, "networkAddressFromEndpoint:", [endpoint endpoint]);
   if (!v7)
   {
     [VCTransportSessionMultiLink dispatchedRemoveRemoteEndpoint:error:];
@@ -1843,7 +1843,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v10 = -[VCTransportSessionMultiLink updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:](self, "updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:", [a3 rtpSSRC], 0);
+  v10 = -[VCTransportSessionMultiLink updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:](self, "updateTransportStreamsRemoteSSRCList:shouldAddRemoteSSRC:", [endpoint rtpSSRC], 0);
   v11 = objc_opt_class();
   if (v10 < 0)
   {
@@ -1886,7 +1886,7 @@ LABEL_25:
           v30 = 2112;
           description = v21;
           v32 = 2048;
-          v33 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to update the transport streams with the remote endpoint info", &v24, 0x30u);
         }
       }
@@ -1903,7 +1903,7 @@ LABEL_25:
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 endpoint];
+        [endpoint endpoint];
         v24 = 136315906;
         v25 = v13;
         v26 = 2080;
@@ -1939,7 +1939,7 @@ LABEL_17:
       v19 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 endpoint];
+        [endpoint endpoint];
         v24 = 136316418;
         v25 = v18;
         v26 = 2080;
@@ -1949,7 +1949,7 @@ LABEL_17:
         v30 = 2112;
         description = v12;
         v32 = 2048;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2080;
         v35 = nw_endpoint_get_description();
         v15 = " [%s] %s:%d %@(%p) Removed remote NW endpoint=%s";
@@ -1972,13 +1972,13 @@ LABEL_17:
   {
     name = nw_interface_get_name(v3);
     isIPv6 = self->_isIPv6;
-    v7 = [(VCTransportSession *)self nwMonitorEventHandlerQueue];
+    nwMonitorEventHandlerQueue = [(VCTransportSession *)self nwMonitorEventHandlerQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__VCTransportSessionMultiLink_createNWMonitor__block_invoke;
     v10[3] = &unk_1E85F3778;
     v10[4] = self;
-    v8 = VCNWConnectionMonitor_CreateWithInterfaceName(name, 8, isIPv6, v7, v10);
+    v8 = VCNWConnectionMonitor_CreateWithInterfaceName(name, 8, isIPv6, nwMonitorEventHandlerQueue, v10);
   }
 
   else
@@ -1991,9 +1991,9 @@ LABEL_17:
   return v8;
 }
 
-- (int)createNWParametersAndListener:(BOOL)a3
+- (int)createNWParametersAndListener:(BOOL)listener
 {
-  v3 = a3;
+  listenerCopy = listener;
   v57 = *MEMORY[0x1E69E9840];
   v41 = 0;
   v42 = &v41;
@@ -2044,7 +2044,7 @@ LABEL_17:
         v51 = 2112;
         v52 = v14;
         v53 = 2048;
-        v54 = self;
+        selfCopy6 = self;
         v55 = 2080;
         v56 = v26;
         v27 = " [%s] %s:%d %@(%p) Failed to retrieve interface for NW Endpoint=%s";
@@ -2059,7 +2059,7 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if (!v3)
+  if (!listenerCopy)
   {
     secure_udp = nw_parameters_create_secure_udp(*MEMORY[0x1E6977EC0], *MEMORY[0x1E6977EB8]);
     if (secure_udp)
@@ -2109,7 +2109,7 @@ LABEL_66:
         v51 = 2112;
         v52 = v17;
         v53 = 2048;
-        v54 = self;
+        selfCopy6 = self;
         v27 = " [%s] %s:%d %@(%p) Failed to create NW Parameters";
         goto LABEL_65;
       }
@@ -2165,7 +2165,7 @@ LABEL_67:
         v51 = 2112;
         v52 = v16;
         v53 = 2048;
-        v54 = self;
+        selfCopy6 = self;
         v27 = " [%s] %s:%d %@(%p) Failed to create NW Parameters";
 LABEL_65:
         v28 = v34;
@@ -2219,7 +2219,7 @@ LABEL_65:
           v51 = 2112;
           v52 = v18;
           v53 = 2048;
-          v54 = self;
+          selfCopy6 = self;
           _os_log_error_impl(&dword_1DB56E000, v37, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create protocol stack", buf, 0x30u);
         }
       }
@@ -2273,7 +2273,7 @@ LABEL_65:
           v51 = 2112;
           v52 = v19;
           v53 = 2048;
-          v54 = self;
+          selfCopy6 = self;
           _os_log_error_impl(&dword_1DB56E000, v39, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create protocol options", buf, 0x30u);
         }
       }
@@ -2351,7 +2351,7 @@ LABEL_11:
         v51 = 2112;
         v52 = v15;
         v53 = 2048;
-        v54 = self;
+        selfCopy6 = self;
         v55 = 2080;
         v56 = v32;
         _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the NW Listener for NW Endpoint=%s", buf, 0x3Au);
@@ -2476,7 +2476,7 @@ void __61__VCTransportSessionMultiLink_createNWParametersAndListener___block_inv
     v29 = 2112;
     v30 = v11;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2080;
     description = nw_endpoint_get_description();
     v16 = " [%s] %s:%d %@(%p) Endpoint=%s is not of type of nw_endpoint_type_address";
@@ -2531,7 +2531,7 @@ LABEL_31:
     v29 = 2112;
     v30 = v12;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v16 = " [%s] %s:%d %@(%p) Failed to retrieve interface";
     v17 = v20;
     v18 = 48;
@@ -2594,7 +2594,7 @@ LABEL_37:
         v29 = 2112;
         v30 = v13;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Could not create updated local endpoint", &v23, 0x30u);
       }
     }
@@ -2606,10 +2606,10 @@ LABEL_5:
   return v9;
 }
 
-- (int)createAndStartNWListener:(id)a3 useBackingSocket:(BOOL)a4 error:(id *)a5
+- (int)createAndStartNWListener:(id)listener useBackingSocket:(BOOL)socket error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!listener)
   {
     if (objc_opt_class() == self)
     {
@@ -2658,7 +2658,7 @@ LABEL_5:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v18;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     v27 = " [%s] %s:%d %@(%p) Local NW Endpoint is nil";
 LABEL_84:
     v30 = v26;
@@ -2666,8 +2666,8 @@ LABEL_84:
     goto LABEL_85;
   }
 
-  v7 = a4;
-  address = nw_endpoint_get_address(a3);
+  socketCopy = socket;
+  address = nw_endpoint_get_address(listener);
   if (!address)
   {
     if (objc_opt_class() == self)
@@ -2717,7 +2717,7 @@ LABEL_84:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v19;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     LOWORD(v42) = 2080;
     *(&v42 + 2) = nw_endpoint_get_description();
     v27 = " [%s] %s:%d %@(%p) Client-provided endpoint=%s is not of type of nw_endpoint_type_address";
@@ -2729,7 +2729,7 @@ LABEL_85:
   }
 
   v10 = address;
-  port = nw_endpoint_get_port(a3);
+  port = nw_endpoint_get_port(listener);
   v12 = nw_endpoint_copy_interface();
   if (!v12)
   {
@@ -2775,7 +2775,7 @@ LABEL_61:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v20;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     v27 = " [%s] %s:%d %@(%p) Failed to retrieve client-provided interface";
     goto LABEL_84;
   }
@@ -2832,13 +2832,13 @@ LABEL_61:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v21;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     v35 = " [%s] %s:%d %@(%p) Could not create local endpoint";
     goto LABEL_82;
   }
 
   nw_endpoint_set_interface();
-  if ([(VCTransportSessionMultiLink *)self createNWParametersAndListener:v7]< 0)
+  if ([(VCTransportSessionMultiLink *)self createNWParametersAndListener:socketCopy]< 0)
   {
     v16 = -2144665596;
     if (objc_opt_class() == self)
@@ -2886,13 +2886,13 @@ LABEL_61:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v22;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     v35 = " [%s] %s:%d %@(%p) Failed to create the NW Parameters and Listener";
     goto LABEL_82;
   }
 
-  v15 = [(VCTransportSessionMultiLink *)self reserveLocalPortWithListener];
-  if (v15 < 0)
+  reserveLocalPortWithListener = [(VCTransportSessionMultiLink *)self reserveLocalPortWithListener];
+  if (reserveLocalPortWithListener < 0)
   {
     v16 = -2144665596;
     if (objc_opt_class() == self)
@@ -2940,7 +2940,7 @@ LABEL_61:
     WORD2(v40) = 2112;
     *(&v40 + 6) = v23;
     HIWORD(v40) = 2048;
-    v41 = self;
+    selfCopy7 = self;
     v35 = " [%s] %s:%d %@(%p) Failed to resolve the local port";
 LABEL_82:
     _os_log_error_impl(&dword_1DB56E000, v34, OS_LOG_TYPE_ERROR, v35, buf, 0x30u);
@@ -2949,8 +2949,8 @@ LABEL_82:
 
   if (port != self->_localPort)
   {
-    v15 = [(VCTransportSessionMultiLink *)self updateLocalEndpoint];
-    if (v15 < 0)
+    reserveLocalPortWithListener = [(VCTransportSessionMultiLink *)self updateLocalEndpoint];
+    if (reserveLocalPortWithListener < 0)
     {
       v16 = -2144665596;
       if (objc_opt_class() == self)
@@ -2992,19 +2992,19 @@ LABEL_82:
           WORD2(v40) = 2112;
           *(&v40 + 6) = v24;
           HIWORD(v40) = 2048;
-          v41 = self;
+          selfCopy7 = self;
           v35 = " [%s] %s:%d %@(%p) Failed to update local endpoint";
           goto LABEL_82;
         }
       }
 
 LABEL_62:
-      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a5, 32016, 120, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionMultiLink.m", 624, *buf, *&buf[16], v40, v41, v42], @"Internal error", @"Internal error while creating NW Listener and reserving local port");
+      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 120, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionMultiLink.m", 624, *buf, *&buf[16], v40, selfCopy7, v42], @"Internal error", @"Internal error while creating NW Listener and reserving local port");
       goto LABEL_10;
     }
   }
 
-  v16 = v15;
+  v16 = reserveLocalPortWithListener;
   nw_endpoint_set_interface();
   [(VCTransportSessionMultiLink *)self initializeIsIPv6];
   [(VCTransportSessionMultiLink *)self initializeInterfaceType];
@@ -3073,7 +3073,7 @@ LABEL_10:
           v22 = 2112;
           v23 = v8;
           v24 = 2048;
-          v25 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Timeout ocurred waiting for NW Listener to reserve a local port", buf, 0x30u);
         }
       }
@@ -3253,7 +3253,7 @@ id __53__VCTransportSessionMultiLink_removeNetworkAssertion__block_invoke(uint64
   return objc_msgSendSuper2(&v2, sel_removeNetworkAssertion);
 }
 
-- (int)createNWConnectionWithConnectionInfo:(id)a3 remoteEndpoint:(id)a4
+- (int)createNWConnectionWithConnectionInfo:(id)info remoteEndpoint:(id)endpoint
 {
   v28 = *MEMORY[0x1E69E9840];
   nw_parameters_allow_sharing_port_with_listener();
@@ -3295,7 +3295,7 @@ id __53__VCTransportSessionMultiLink_removeNetworkAssertion__block_invoke(uint64
     *&v23[28] = 2112;
     *&v23[30] = v7;
     v24 = 2048;
-    v25 = self;
+    selfCopy2 = self;
     v10 = " [%s] %s:%d %@(%p) Setting clientAuditToken on nw_connection";
     v11 = v14;
     v12 = 48;
@@ -3336,15 +3336,15 @@ LABEL_13:
 
   nw_parameters_set_source_application();
 LABEL_17:
-  v16 = nw_connection_create(a4, self->_localParameters);
+  v16 = nw_connection_create(endpoint, self->_localParameters);
   if (v16)
   {
     v17 = v16;
-    [a3 setConnection:v16];
+    [info setConnection:v16];
     nw_release(v17);
-    if ([a3 remoteAddress])
+    if ([info remoteAddress])
     {
-      if ([a3 parameters])
+      if ([info parameters])
       {
         return 0;
       }
@@ -3400,9 +3400,9 @@ LABEL_17:
         *&v23[28] = 2112;
         *&v23[30] = v20;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2048;
-        v27 = a4;
+        endpointCopy = endpoint;
         _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create NWConnection for remoteEndpoint with remoteEndpoint=%p", v23, 0x3Au);
       }
     }
@@ -3411,11 +3411,11 @@ LABEL_17:
   return v18;
 }
 
-- (int)setupNWConnectionWithConnectionInfo:(id)a3
+- (int)setupNWConnectionWithConnectionInfo:(id)info
 {
-  [a3 setIsStarted:0];
-  nw_connection_set_queue([a3 connection], +[VCVTPWrapper targetQueue](VCVTPWrapper, "targetQueue"));
-  v5 = [(VCTransportSessionMultiLink *)self setStateChangeHandlerForConnectionWithConnectionInfo:a3];
+  [info setIsStarted:0];
+  nw_connection_set_queue([info connection], +[VCVTPWrapper targetQueue](VCVTPWrapper, "targetQueue"));
+  v5 = [(VCTransportSessionMultiLink *)self setStateChangeHandlerForConnectionWithConnectionInfo:info];
   if (v5 < 0)
   {
     [VCTransportSessionMultiLink setupNWConnectionWithConnectionInfo:];
@@ -3424,21 +3424,21 @@ LABEL_17:
   return v5;
 }
 
-- (int)setStateChangeHandlerForConnectionWithConnectionInfo:(id)a3
+- (int)setStateChangeHandlerForConnectionWithConnectionInfo:(id)info
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (info)
   {
     v5 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
-    v6 = [a3 connection];
+    connection = [info connection];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __84__VCTransportSessionMultiLink_setStateChangeHandlerForConnectionWithConnectionInfo___block_invoke;
     handler[3] = &unk_1E85FA1A0;
     handler[4] = self;
     handler[5] = v5;
-    handler[6] = a3;
-    nw_connection_set_state_changed_handler(v6, handler);
+    handler[6] = info;
+    nw_connection_set_state_changed_handler(connection, handler);
     return 0;
   }
 
@@ -3527,10 +3527,10 @@ LABEL_12:
   }
 }
 
-- (void)handleStateChanges:(int)a3 error:(id)a4 connectionInfo:(id)a5
+- (void)handleStateChanges:(int)changes error:(id)error connectionInfo:(id)info
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -3556,9 +3556,9 @@ LABEL_12:
     v22 = 1024;
     v23 = 724;
     v24 = 2112;
-    v25 = a4;
+    errorCopy = error;
     v26 = 1024;
-    LODWORD(v27) = a3;
+    LODWORD(selfCopy) = changes;
     v12 = " [%s] %s:%d Get error %@ from NWConnection with state: %d!";
     v13 = v11;
     v14 = 44;
@@ -3590,13 +3590,13 @@ LABEL_20:
       v22 = 1024;
       v23 = 724;
       v24 = 2112;
-      v25 = v9;
+      errorCopy = v9;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = a4;
+      errorCopy2 = error;
       v30 = 1024;
-      v31 = a3;
+      changesCopy = changes;
       v12 = " [%s] %s:%d %@(%p) Get error %@ from NWConnection with state: %d!";
       v13 = v16;
       v14 = 64;
@@ -3605,21 +3605,21 @@ LABEL_20:
   }
 
 LABEL_11:
-  if (a3 == 5)
+  if (changes == 5)
   {
     v17 = &OBJC_IVAR___VCTransportSessionMultiLink__cancelWaitSemaphore;
   }
 
   else
   {
-    if (a3 != 4)
+    if (changes != 4)
     {
-      if (a3 != 3)
+      if (changes != 3)
       {
         return;
       }
 
-      [a5 setIsStarted:1];
+      [info setIsStarted:1];
     }
 
     v17 = &OBJC_IVAR___VCTransportSessionMultiLink__startWaitSemaphore;
@@ -3668,9 +3668,9 @@ LABEL_11:
   return v6;
 }
 
-- (int)startNWConnectionWithConnectionInfo:(id)a3
+- (int)startNWConnectionWithConnectionInfo:(id)info
 {
-  nw_connection_start([a3 connection]);
+  nw_connection_start([info connection]);
   startWaitSemaphore = self->_startWaitSemaphore;
   v6 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(startWaitSemaphore, v6))
@@ -3679,19 +3679,19 @@ LABEL_11:
     return v8;
   }
 
-  if (([a3 isStarted] & 1) == 0)
+  if (([info isStarted] & 1) == 0)
   {
     [VCTransportSessionMultiLink startNWConnectionWithConnectionInfo:];
     return v8;
   }
 
-  [(VCTransportSessionMultiLink *)self setReceiveBufferSize:a3];
+  [(VCTransportSessionMultiLink *)self setReceiveBufferSize:info];
   return 0;
 }
 
 - (void)initializeInterfaceType
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -3714,7 +3714,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -3816,9 +3816,9 @@ LABEL_11:
   }
 }
 
-- (int)canAddConnectionWithRemoteEndpoint:(id)a3
+- (int)canAddConnectionWithRemoteEndpoint:(id)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
     v4 = [NetworkUtils networkAddressFromEndpoint:?];
     if (v4)
@@ -3847,9 +3847,9 @@ LABEL_11:
   return v5;
 }
 
-- (int)canRemoveConnectionWithRemoteEndpoint:(id)a3
+- (int)canRemoveConnectionWithRemoteEndpoint:(id)endpoint
 {
-  if (!a3)
+  if (!endpoint)
   {
     [VCTransportSessionMultiLink canRemoveConnectionWithRemoteEndpoint:];
     return v6;
@@ -3871,7 +3871,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)connectionInfoWithRemoteAddress:(id)a3
+- (id)connectionInfoWithRemoteAddress:(id)address
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -3895,7 +3895,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        if ([v9 isSameRemoteAddress:a3])
+        if ([v9 isSameRemoteAddress:address])
         {
           return v9;
         }
@@ -3918,19 +3918,19 @@ LABEL_11:
   return result;
 }
 
-- (void)setReceiveBufferSize:(id)a3
+- (void)setReceiveBufferSize:(id)size
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (![a3 isStarted] || !self->_requiresLargeReceiveBuffer)
+  if (![size isStarted] || !self->_requiresLargeReceiveBuffer)
   {
     v5 = 0xFFFFFFFFLL;
     goto LABEL_26;
   }
 
-  v5 = -[VCTransportSessionMultiLink dupRTPNWConnectionBackingSocketForNWConnection:](self, "dupRTPNWConnectionBackingSocketForNWConnection:", [a3 connection]);
+  v5 = -[VCTransportSessionMultiLink dupRTPNWConnectionBackingSocketForNWConnection:](self, "dupRTPNWConnectionBackingSocketForNWConnection:", [size connection]);
   if (v5 != -1)
   {
-    v6 = nw_connection_copy_description([a3 connection]);
+    v6 = nw_connection_copy_description([size connection]);
     v7 = setsockopt(v5, 0xFFFF, 4098, &self->_receiveBufferSize, 4u);
     v8 = objc_opt_class();
     if (v7)
@@ -4059,7 +4059,7 @@ LABEL_26:
   VCCloseSocketIfValid(v5);
 }
 
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type
 {
   OUTLINED_FUNCTION_40_0();
   v41 = v4;
@@ -4338,7 +4338,7 @@ LABEL_9:
   return result;
 }
 
-- (int)invalidateNWConnectionWithConnectionInfo:(id)a3
+- (int)invalidateNWConnectionWithConnectionInfo:(id)info
 {
   OUTLINED_FUNCTION_40_0();
   v5 = v4;

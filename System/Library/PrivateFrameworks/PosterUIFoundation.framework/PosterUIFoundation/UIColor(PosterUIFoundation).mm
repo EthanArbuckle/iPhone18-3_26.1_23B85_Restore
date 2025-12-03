@@ -14,10 +14,10 @@
 
 - (id)pui_hslValues
 {
-  v1 = [[PUIColorValues alloc] initWithColor:a1];
-  v2 = [(PUIColorValues *)v1 hslValues];
+  v1 = [[PUIColorValues alloc] initWithColor:self];
+  hslValues = [(PUIColorValues *)v1 hslValues];
 
-  return v2;
+  return hslValues;
 }
 
 + (uint64_t)pui_randomColor
@@ -50,7 +50,7 @@
 + (double)pui_determineVarianceAndLuminanceForColor:()PosterUIFoundation amongstColors:minLuminance:maxLuminance:outVariance:outLuminance:outSaturation:
 {
   v11 = 0.0;
-  [a1 pui_determineVarianceAndLuminanceForColor:a3 amongstColors:a4 minLuminance:a5 maxLuminance:a6 outHue:&v11 outSaturation:a9 outLuminance:a8];
+  [self pui_determineVarianceAndLuminanceForColor:a3 amongstColors:a4 minLuminance:a5 maxLuminance:a6 outHue:&v11 outSaturation:a9 outLuminance:a8];
   if (a7)
   {
     result = v11 * 4.0 / 0.1 + -2.0;
@@ -90,12 +90,12 @@
   v19 = v18;
 
   v26 = [[PUIColorValues alloc] initWithColor:v14];
-  v20 = [(PUIColorValues *)v26 hslValues];
-  [v20 saturation];
+  hslValues = [(PUIColorValues *)v26 hslValues];
+  [hslValues saturation];
   v22 = v21;
-  [v20 hue];
+  [hslValues hue];
   v24 = v23;
-  [v20 luminance];
+  [hslValues luminance];
   if (a7)
   {
     *a7 = v24;
@@ -129,16 +129,16 @@
       v12 = [v5 objectAtIndexedSubscript:v9 + 1];
       v13 = [[PUIColorValues alloc] initWithColor:v11];
       v14 = [[PUIColorValues alloc] initWithColor:v12];
-      v15 = [(PUIColorValues *)v13 hslValues];
-      [v15 hue];
+      hslValues = [(PUIColorValues *)v13 hslValues];
+      [hslValues hue];
       v17 = v16;
 
-      v18 = [(PUIColorValues *)v14 hslValues];
-      [v18 hue];
+      hslValues2 = [(PUIColorValues *)v14 hslValues];
+      [hslValues2 hue];
       v20 = v19;
 
-      v21 = v20 <= a1;
-      if (v17 <= a1)
+      v21 = v20 <= self;
+      if (v17 <= self)
       {
         v22 = 1;
       }
@@ -149,7 +149,7 @@
         v22 = 0;
       }
 
-      if (v20 < a1)
+      if (v20 < self)
       {
         v22 = 0;
       }
@@ -183,14 +183,14 @@
 
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v24 = (a1 - v17) / (v20 - v17);
-      v25 = a1 + 1.0;
-      if (v17 <= a1)
+      v24 = (self - v17) / (v20 - v17);
+      selfCopy = self + 1.0;
+      if (v17 <= self)
       {
-        v25 = a1;
+        selfCopy = self;
       }
 
-      v26 = (v25 - v17) / (v20 + 1.0 - v17);
+      v26 = (selfCopy - v17) / (v20 + 1.0 - v17);
       if (v8)
       {
         v24 = v26;
@@ -209,24 +209,24 @@ LABEL_22:
 
 - (id)pui_hsbValues
 {
-  v1 = [[PUIColorValues alloc] initWithColor:a1];
-  v2 = [(PUIColorValues *)v1 hsbValues];
+  v1 = [[PUIColorValues alloc] initWithColor:self];
+  hsbValues = [(PUIColorValues *)v1 hsbValues];
 
-  return v2;
+  return hsbValues;
 }
 
 - (void)pui_minLuminance
 {
-  v1 = [a1 pui_hslValues];
-  [v1 luminance];
+  pui_hslValues = [self pui_hslValues];
+  [pui_hslValues luminance];
 }
 
 - (id)pui_invertColor
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 CGColor];
-  NumberOfComponents = CGColorGetNumberOfComponents(v1);
-  Components = CGColorGetComponents(v1);
+  cGColor = [self CGColor];
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
+  Components = CGColorGetComponents(cGColor);
   v4 = (v9 - ((8 * NumberOfComponents + 15) & 0xFFFFFFFFFFFFFFF0));
   if ((NumberOfComponents - 1) >= 0)
   {
@@ -239,7 +239,7 @@ LABEL_22:
     while (NumberOfComponents);
   }
 
-  ColorSpace = CGColorGetColorSpace(v1);
+  ColorSpace = CGColorGetColorSpace(cGColor);
   v6 = CGColorCreate(ColorSpace, v4);
   v7 = [MEMORY[0x1E69DC888] colorWithCGColor:v6];
   CGColorRelease(v6);

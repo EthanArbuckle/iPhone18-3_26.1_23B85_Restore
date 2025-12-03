@@ -1,32 +1,32 @@
 @interface KNBuildUtility
-+ (BOOL)animationInfo:(id)a3 onInfo:(id)a4 canRunSimultaneouslyWithAnimationInfo:(id)a5 onInfo:(id)a6;
-+ (id)UUIDToTSPObjectMapForTSPObjects:(id)a3;
-+ (id)buildUUIDToChunkIdentifiersMapForChunkIdentifiers:(id)a3;
-+ (id)buildsForChunks:(id)a3;
-+ (id)buildsToChunksMapForBuilds:(id)a3 chunks:(id)a4;
-+ (id)buildsToChunksMapForChunks:(id)a3;
-+ (id)chunksForInfos:(id)a3;
-+ (id)chunksInBuilds:(id)a3;
-+ (id)nonNilChunkIdentifierFromPossiblyNilChunk:(id)a3;
-+ (id)orderedBuildsFromUnorderedBuilds:(id)a3;
-+ (id)uniqueBuildsOrderedByChunks:(id)a3;
-+ (id)validIdentifierForChunkToInsertAfterFromPossiblyInvalidIdentifier:(id)a3 build:(id)a4;
-+ (int64_t)sharedAnimationTypeForBuildChunks:(id)a3;
-+ (int64_t)sharedAnimationTypeForBuilds:(id)a3;
-+ (unint64_t)countOfInfosThatSupportContentBuilds:(id)a3;
++ (BOOL)animationInfo:(id)info onInfo:(id)onInfo canRunSimultaneouslyWithAnimationInfo:(id)animationInfo onInfo:(id)a6;
++ (id)UUIDToTSPObjectMapForTSPObjects:(id)objects;
++ (id)buildUUIDToChunkIdentifiersMapForChunkIdentifiers:(id)identifiers;
++ (id)buildsForChunks:(id)chunks;
++ (id)buildsToChunksMapForBuilds:(id)builds chunks:(id)chunks;
++ (id)buildsToChunksMapForChunks:(id)chunks;
++ (id)chunksForInfos:(id)infos;
++ (id)chunksInBuilds:(id)builds;
++ (id)nonNilChunkIdentifierFromPossiblyNilChunk:(id)chunk;
++ (id)orderedBuildsFromUnorderedBuilds:(id)builds;
++ (id)uniqueBuildsOrderedByChunks:(id)chunks;
++ (id)validIdentifierForChunkToInsertAfterFromPossiblyInvalidIdentifier:(id)identifier build:(id)build;
++ (int64_t)sharedAnimationTypeForBuildChunks:(id)chunks;
++ (int64_t)sharedAnimationTypeForBuilds:(id)builds;
++ (unint64_t)countOfInfosThatSupportContentBuilds:(id)builds;
 @end
 
 @implementation KNBuildUtility
 
-+ (int64_t)sharedAnimationTypeForBuildChunks:(id)a3
++ (int64_t)sharedAnimationTypeForBuildChunks:(id)chunks
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v17, v21, 16);
+  chunksCopy = chunks;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v4, &v17, v21, 16);
   if (v5)
   {
     v8 = v5;
@@ -38,7 +38,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(chunksCopy);
         }
 
         v12 = objc_msgSend_build(*(*(&v17 + 1) + 8 * i), v6, v7, v17);
@@ -58,7 +58,7 @@
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v17, v21, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(chunksCopy, v6, &v17, v21, 16);
     }
 
     while (v8);
@@ -73,15 +73,15 @@ LABEL_13:
   return v9;
 }
 
-+ (int64_t)sharedAnimationTypeForBuilds:(id)a3
++ (int64_t)sharedAnimationTypeForBuilds:(id)builds
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v14, v18, 16);
+  buildsCopy = builds;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(buildsCopy, v4, &v14, v18, 16);
   if (v5)
   {
     v8 = v5;
@@ -93,7 +93,7 @@ LABEL_13:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buildsCopy);
         }
 
         v12 = objc_msgSend_animationType(*(*(&v14 + 1) + 8 * i), v6, v7, v14);
@@ -111,7 +111,7 @@ LABEL_13:
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v14, v18, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(buildsCopy, v6, &v14, v18, 16);
     }
 
     while (v8);
@@ -126,22 +126,22 @@ LABEL_13:
   return v9;
 }
 
-+ (BOOL)animationInfo:(id)a3 onInfo:(id)a4 canRunSimultaneouslyWithAnimationInfo:(id)a5 onInfo:(id)a6
++ (BOOL)animationInfo:(id)info onInfo:(id)onInfo canRunSimultaneouslyWithAnimationInfo:(id)animationInfo onInfo:(id)a6
 {
-  v9 = a3;
-  v10 = a5;
+  infoCopy = info;
+  animationInfoCopy = animationInfo;
   v11 = a6;
-  v12 = a4;
-  v15 = objc_msgSend_effectIdentifier(v9, v13, v14);
+  onInfoCopy = onInfo;
+  v15 = objc_msgSend_effectIdentifier(infoCopy, v13, v14);
   IsEmphasisEffect = KNEffectIsEmphasisEffect();
 
-  v19 = objc_msgSend_effectIdentifier(v10, v17, v18);
+  v19 = objc_msgSend_effectIdentifier(animationInfoCopy, v17, v18);
   v20 = KNEffectIsEmphasisEffect();
 
-  LODWORD(v19) = objc_msgSend_isEqual_(v12, v21, v11);
+  LODWORD(v19) = objc_msgSend_isEqual_(onInfoCopy, v21, v11);
   if (v19)
   {
-    if ((IsEmphasisEffect | v20) & 1) != 0 || (v24 = objc_msgSend_animationClass(v9, v22, v23), v27 = objc_msgSend_animationClass(v10, v25, v26), (objc_msgSend_isSubclassOfClass_(v24, v28, v27)))
+    if ((IsEmphasisEffect | v20) & 1) != 0 || (v24 = objc_msgSend_animationClass(infoCopy, v22, v23), v27 = objc_msgSend_animationClass(animationInfoCopy, v25, v26), (objc_msgSend_isSubclassOfClass_(v24, v28, v27)))
     {
       LOBYTE(v30) = 0;
     }
@@ -160,12 +160,12 @@ LABEL_13:
   return v30;
 }
 
-+ (id)chunksInBuilds:(id)a3
++ (id)chunksInBuilds:(id)builds
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  buildsCopy = builds;
+  if (objc_msgSend_count(buildsCopy, v4, v5))
   {
-    v7 = objc_msgSend_setWithSet_(MEMORY[0x277CBEB98], v6, v3);
+    v7 = objc_msgSend_setWithSet_(MEMORY[0x277CBEB98], v6, buildsCopy);
     v10 = objc_msgSend_anyObject(v7, v8, v9);
     v13 = objc_msgSend_slide(v10, v11, v12);
 
@@ -187,16 +187,16 @@ LABEL_13:
   return v19;
 }
 
-+ (id)buildsForChunks:(id)a3
++ (id)buildsForChunks:(id)chunks
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  chunksCopy = chunks;
   v6 = objc_msgSend_set(MEMORY[0x277CBEB58], v4, v5);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v3;
+  v7 = chunksCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v18, v22, 16);
   if (v9)
   {
@@ -224,16 +224,16 @@ LABEL_13:
   return v6;
 }
 
-+ (id)uniqueBuildsOrderedByChunks:(id)a3
++ (id)uniqueBuildsOrderedByChunks:(id)chunks
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  chunksCopy = chunks;
   v6 = objc_msgSend_orderedSet(MEMORY[0x277CBEB40], v4, v5);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v3;
+  v7 = chunksCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v21, v25, 16);
   if (v9)
   {
@@ -263,16 +263,16 @@ LABEL_13:
   return v19;
 }
 
-+ (id)chunksForInfos:(id)a3
++ (id)chunksForInfos:(id)infos
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infosCopy = infos;
   v6 = objc_msgSend_set(MEMORY[0x277CBEB58], v4, v5);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v3;
+  v7 = infosCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v20, v24, 16);
   if (v9)
   {
@@ -302,10 +302,10 @@ LABEL_13:
   return v6;
 }
 
-+ (id)orderedBuildsFromUnorderedBuilds:(id)a3
++ (id)orderedBuildsFromUnorderedBuilds:(id)builds
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = objc_msgSend_allObjects(a3, a2, a3);
+  v4 = objc_msgSend_allObjects(builds, a2, builds);
   v6 = objc_msgSend_arrayWithArray_(v3, v5, v4);
 
   objc_msgSend_sortUsingFunction_context_(v6, v7, sub_275E521FC, 0);
@@ -313,16 +313,16 @@ LABEL_13:
   return v6;
 }
 
-+ (id)buildsToChunksMapForChunks:(id)a3
++ (id)buildsToChunksMapForChunks:(id)chunks
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  chunksCopy = chunks;
   v4 = objc_alloc_init(MEMORY[0x277D812B8]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = chunksCopy;
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v28, v32, 16);
   if (v6)
   {
@@ -368,23 +368,23 @@ LABEL_13:
   return v4;
 }
 
-+ (id)buildsToChunksMapForBuilds:(id)a3 chunks:(id)a4
++ (id)buildsToChunksMapForBuilds:(id)builds chunks:(id)chunks
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  buildsCopy = builds;
+  chunksCopy = chunks;
   v7 = objc_alloc_init(MEMORY[0x277D812B8]);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v6;
+  obj = chunksCopy;
   v60 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v65, v70, 16);
   if (v60)
   {
     v59 = *v66;
     v55 = v7;
-    v56 = v5;
+    v56 = buildsCopy;
     do
     {
       for (i = 0; i != v60; ++i)
@@ -415,7 +415,7 @@ LABEL_13:
           v64 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v28 = v5;
+          v28 = buildsCopy;
           v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v61, v69, 16);
           if (v32)
           {
@@ -452,7 +452,7 @@ LABEL_13:
 
 LABEL_19:
             v7 = v55;
-            v5 = v56;
+            buildsCopy = v56;
             v15 = v58;
           }
         }
@@ -460,7 +460,7 @@ LABEL_19:
         else
         {
           v19 = objc_msgSend_build(v12, v13, v14);
-          if (v19 && objc_msgSend_containsObject_(v5, v39, v19))
+          if (v19 && objc_msgSend_containsObject_(buildsCopy, v39, v19))
           {
             v19 = v19;
             v32 = v19;
@@ -507,18 +507,18 @@ LABEL_19:
   return v7;
 }
 
-+ (id)buildUUIDToChunkIdentifiersMapForChunkIdentifiers:(id)a3
++ (id)buildUUIDToChunkIdentifiersMapForChunkIdentifiers:(id)identifiers
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = MEMORY[0x277CBEB38];
-  v7 = objc_msgSend_count(v3, v5, v6);
+  v7 = objc_msgSend_count(identifiersCopy, v5, v6);
   v9 = objc_msgSend_dictionaryWithCapacity_(v4, v8, v7);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = identifiersCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v33, v37, 16);
   if (v11)
   {
@@ -564,11 +564,11 @@ LABEL_19:
   return v9;
 }
 
-+ (id)UUIDToTSPObjectMapForTSPObjects:(id)a3
++ (id)UUIDToTSPObjectMapForTSPObjects:(id)objects
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  objectsCopy = objects;
+  if (!objectsCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "+[KNBuildUtility UUIDToTSPObjectMapForTSPObjects:]");
@@ -583,7 +583,7 @@ LABEL_19:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = objectsCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, &v33, v37, 16);
   if (v15)
   {
@@ -622,9 +622,9 @@ LABEL_19:
   return v13;
 }
 
-+ (id)nonNilChunkIdentifierFromPossiblyNilChunk:(id)a3
++ (id)nonNilChunkIdentifierFromPossiblyNilChunk:(id)chunk
 {
-  v3 = objc_msgSend_chunkIdentifier(a3, a2, a3);
+  v3 = objc_msgSend_chunkIdentifier(chunk, a2, chunk);
   if (!v3)
   {
     v3 = objc_msgSend_emptyIdentifier(KNBuildChunkIdentifier, v4, v5);
@@ -633,12 +633,12 @@ LABEL_19:
   return v3;
 }
 
-+ (id)validIdentifierForChunkToInsertAfterFromPossiblyInvalidIdentifier:(id)a3 build:(id)a4
++ (id)validIdentifierForChunkToInsertAfterFromPossiblyInvalidIdentifier:(id)identifier build:(id)build
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  buildCopy = build;
+  if (!buildCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[KNBuildUtility validIdentifierForChunkToInsertAfterFromPossiblyInvalidIdentifier:build:]");
@@ -648,12 +648,12 @@ LABEL_19:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = objc_msgSend_slide(v8, v6, v7);
-  v18 = objc_msgSend_resolveToChunkOnSlide_(v5, v17, v16);
+  v16 = objc_msgSend_slide(buildCopy, v6, v7);
+  v18 = objc_msgSend_resolveToChunkOnSlide_(identifierCopy, v17, v16);
 
   if (v18)
   {
-    if (v5)
+    if (identifierCopy)
     {
       goto LABEL_5;
     }
@@ -661,10 +661,10 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v24 = objc_msgSend_chunks(v8, v19, v20);
-  if (v5 && (objc_msgSend_buildUUID(v5, v22, v23), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectUUID(v8, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v25, v29, v28), v28, v25, !isEqual))
+  v24 = objc_msgSend_chunks(buildCopy, v19, v20);
+  if (identifierCopy && (objc_msgSend_buildUUID(identifierCopy, v22, v23), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectUUID(buildCopy, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v25, v29, v28), v28, v25, !isEqual))
   {
-    v34 = objc_msgSend_chunkID(v5, v22, v23);
+    v34 = objc_msgSend_chunkID(identifierCopy, v22, v23);
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -678,7 +678,7 @@ LABEL_19:
       while (2)
       {
         v42 = 0;
-        v43 = v5;
+        v43 = identifierCopy;
         do
         {
           if (*v54 != v41)
@@ -686,16 +686,16 @@ LABEL_19:
             objc_enumerationMutation(v35);
           }
 
-          v5 = objc_msgSend_chunkIdentifier(*(*(&v53 + 1) + 8 * v42), v38, v39);
-          if (v34 < objc_msgSend_chunkID(v5, v44, v45))
+          identifierCopy = objc_msgSend_chunkIdentifier(*(*(&v53 + 1) + 8 * v42), v38, v39);
+          if (v34 < objc_msgSend_chunkID(identifierCopy, v44, v45))
           {
 
-            v5 = v43;
+            identifierCopy = v43;
             goto LABEL_21;
           }
 
           ++v42;
-          v43 = v5;
+          v43 = identifierCopy;
         }
 
         while (v40 != v42);
@@ -717,10 +717,10 @@ LABEL_21:
     v31 = objc_msgSend_lastObject(v24, v22, v23);
     v33 = objc_msgSend_nonNilChunkIdentifierFromPossiblyNilChunk_(KNBuildUtility, v32, v31);
 
-    v5 = v33;
+    identifierCopy = v33;
   }
 
-  if (!v5)
+  if (!identifierCopy)
   {
 LABEL_23:
     v46 = MEMORY[0x277D81150];
@@ -733,18 +733,18 @@ LABEL_23:
 
 LABEL_5:
 
-  return v5;
+  return identifierCopy;
 }
 
-+ (unint64_t)countOfInfosThatSupportContentBuilds:(id)a3
++ (unint64_t)countOfInfosThatSupportContentBuilds:(id)builds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  buildsCopy = builds;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v16, v20, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(buildsCopy, v4, &v16, v20, 16);
   if (v5)
   {
     v7 = v5;
@@ -756,7 +756,7 @@ LABEL_5:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buildsCopy);
         }
 
         v11 = objc_msgSend_supportedAnimationInfosForDrawableInfo_animationType_(KNBuild, v6, *(*(&v16 + 1) + 8 * i), 5);
@@ -768,7 +768,7 @@ LABEL_5:
         }
       }
 
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v16, v20, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(buildsCopy, v6, &v16, v20, 16);
     }
 
     while (v7);

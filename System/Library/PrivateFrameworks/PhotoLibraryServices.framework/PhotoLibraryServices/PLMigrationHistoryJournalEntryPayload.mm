@@ -2,34 +2,34 @@
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
-- (id)insertMigrationHistoryFromDataInManagedObjectContext:(id)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
+- (id)insertMigrationHistoryFromDataInManagedObjectContext:(id)context;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update;
 @end
 
 @implementation PLMigrationHistoryJournalEntryPayload
 
-- (id)insertMigrationHistoryFromDataInManagedObjectContext:(id)a3
+- (id)insertMigrationHistoryFromDataInManagedObjectContext:(id)context
 {
-  v4 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:a3];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v4 setIndex:{objc_msgSend(v6, "longLongValue")}];
+  v4 = [(PLManagedObject *)PLMigrationHistory insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v4 setIndex:{objc_msgSend(payloadIDString, "longLongValue")}];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v4 payloadAttributesToUpdate:0];
 
   return v4;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToKey:@"globalKeyValues"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"globalKeyValues"])
   {
     v11 = 1;
   }
@@ -38,30 +38,30 @@
   {
     v13.receiver = self;
     v13.super_class = PLMigrationHistoryJournalEntryPayload;
-    v11 = [(PLManagedObjectJournalEntryPayload *)&v13 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)&v13 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   return v11;
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 requiresConversion])
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  if ([propertyCopy requiresConversion])
   {
-    v14 = [v10 key];
+    v14 = [propertyCopy key];
     v15 = [v14 isEqualToString:@"globalKeyValues"];
 
     if (v15)
     {
       v16 = MEMORY[0x1E696B0A0];
-      v17 = v11;
+      v17 = objectCopy;
       v18 = [v16 valueTransformerForName:@"PLGlobalKeyValueAnyTransformer"];
       payloadAttributes = self->super._payloadAttributes;
-      v20 = [v10 key];
+      v20 = [propertyCopy key];
       v21 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v20];
       v22 = [v18 transformedValue:v21];
       [v17 setGlobalKeyValues:v22];
@@ -72,19 +72,19 @@
   {
     v23.receiver = self;
     v23.super_class = PLMigrationHistoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v23 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+    [(PLManagedObjectJournalEntryPayload *)&v23 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
   }
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"globalKeyValues"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"globalKeyValues"])
   {
     v8 = [MEMORY[0x1E696B0A0] valueTransformerForName:@"PLGlobalKeyValueAnyTransformer"];
-    v9 = [v7 key];
-    v10 = [v6 objectForKeyedSubscript:v9];
+    v9 = [propertyCopy key];
+    v10 = [attributesCopy objectForKeyedSubscript:v9];
     v11 = [v8 transformedValue:v10];
   }
 
@@ -92,47 +92,47 @@
   {
     v13.receiver = self;
     v13.super_class = PLMigrationHistoryJournalEntryPayload;
-    v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v11 = [(PLManagedObjectJournalEntryPayload *)&v13 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v11;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"globalKeyValues"])
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  if ([keyCopy isEqualToString:@"globalKeyValues"])
   {
     v11 = [MEMORY[0x1E696B0A0] valueTransformerForName:@"PLGlobalKeyValueAnyTransformer"];
-    v12 = [v11 transformedValue:v9];
+    v12 = [v11 transformedValue:valueCopy];
     v14.receiver = self;
     v14.super_class = PLMigrationHistoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:v8 value:v12 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v14 appendAttributeKey:keyCopy value:v12 toDescriptionBuilder:builderCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = PLMigrationHistoryJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v10 isEqualToKey:@"globalKeyValues"];
+  attributesCopy = attributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v11 = [propertyCopy isEqualToKey:@"globalKeyValues"];
   if (v11)
   {
     v12 = [MEMORY[0x1E696B0A0] valueTransformerForName:@"PLGlobalKeyValueAnyTransformer"];
-    v13 = [v9 globalKeyValues];
-    v14 = [v12 reverseTransformedValue:v13];
-    v15 = [v10 key];
-    [v8 setObject:v14 forKeyedSubscript:v15];
+    globalKeyValues = [objectCopy globalKeyValues];
+    v14 = [v12 reverseTransformedValue:globalKeyValues];
+    v15 = [propertyCopy key];
+    [attributesCopy setObject:v14 forKeyedSubscript:v15];
   }
 
   return v11;
@@ -144,7 +144,7 @@
   block[1] = 3221225472;
   block[2] = __77__PLMigrationHistoryJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_100288 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_100288, block);
@@ -168,7 +168,7 @@ void __77__PLMigrationHistoryJournalEntryPayload_persistedPropertyNamesForEntity
   block[1] = 3221225472;
   block[2] = __56__PLMigrationHistoryJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_100290 != -1)
   {
     dispatch_once(&modelProperties_onceToken_100290, block);

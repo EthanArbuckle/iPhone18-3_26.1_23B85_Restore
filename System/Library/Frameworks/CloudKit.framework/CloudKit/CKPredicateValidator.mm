@@ -1,7 +1,7 @@
 @interface CKPredicateValidator
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedValidator;
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 @end
 
 @implementation CKPredicateValidator
@@ -18,23 +18,23 @@
   return v3;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = [CKException alloc];
     v8 = objc_msgSend_initWithCode_format_(v6, v7, 12, @"This is an abstract class. Use +sharedValidator instead");
     objc_exception_throw(v8);
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___CKPredicateValidator;
-  return objc_msgSendSuper2(&v9, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v9, sel_allocWithZone_, zone);
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v4 = a3;
+  validateCopy = validate;
   v5 = [CKException alloc];
   v7 = objc_msgSend_initWithCode_format_(v5, v6, 12, @"This method must be overridden");
   objc_exception_throw(v7);

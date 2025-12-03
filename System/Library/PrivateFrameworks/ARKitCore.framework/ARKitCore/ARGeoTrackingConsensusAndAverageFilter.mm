@@ -1,14 +1,14 @@
 @interface ARGeoTrackingConsensusAndAverageFilter
-- (BOOL)getCurrentENUFromVIO:(double)a3 ENUFromVIO:(id *)a4;
-- (uint64_t)initWithENUFromECEF:(void *)a1 maxHistory:minInlierScore:;
+- (BOOL)getCurrentENUFromVIO:(double)o ENUFromVIO:(id *)iO;
+- (uint64_t)initWithENUFromECEF:(void *)f maxHistory:minInlierScore:;
 - (void)dealloc;
 @end
 
 @implementation ARGeoTrackingConsensusAndAverageFilter
 
-- (uint64_t)initWithENUFromECEF:(void *)a1 maxHistory:minInlierScore:
+- (uint64_t)initWithENUFromECEF:(void *)f maxHistory:minInlierScore:
 {
-  v2.receiver = a1;
+  v2.receiver = f;
   v2.super_class = ARGeoTrackingConsensusAndAverageFilter;
   if ([(ARGeoTrackingConsensusAndAverageFilter *)&v2 init])
   {
@@ -39,13 +39,13 @@
   [(ARGeoTrackingConsensusAndAverageFilter *)&v5 dealloc];
 }
 
-- (BOOL)getCurrentENUFromVIO:(double)a3 ENUFromVIO:(id *)a4
+- (BOOL)getCurrentENUFromVIO:(double)o ENUFromVIO:(id *)iO
 {
   impl = self->_impl;
   v5 = impl[128];
   if (v5 == 1)
   {
-    memmove(a4, impl, 0x80uLL);
+    memmove(iO, impl, 0x80uLL);
   }
 
   return v5;

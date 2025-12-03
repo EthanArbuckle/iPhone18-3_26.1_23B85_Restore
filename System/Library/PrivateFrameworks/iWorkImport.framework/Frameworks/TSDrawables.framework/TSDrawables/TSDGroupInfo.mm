@@ -1,14 +1,14 @@
 @interface TSDGroupInfo
-+ (Class)classForUnarchiver:(id)a3;
-+ (id)groupGeometryFromChildrenInfos:(id)a3;
-+ (id)groupGeometryFromChildrenInfos:(id)a3 currentlyLaidOutWithLayoutController:(id)a4;
-+ (id)p_drawablesToInsertForGroup:(id)a3 outDidUngroup:(BOOL *)a4 filteredWithBlock:(id)a5;
++ (Class)classForUnarchiver:(id)unarchiver;
++ (id)groupGeometryFromChildrenInfos:(id)infos;
++ (id)groupGeometryFromChildrenInfos:(id)infos currentlyLaidOutWithLayoutController:(id)controller;
++ (id)p_drawablesToInsertForGroup:(id)group outDidUngroup:(BOOL *)ungroup filteredWithBlock:(id)block;
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock;
 - (BOOL)canAnchor;
 - (BOOL)canAspectRatioLockBeChangedByUser;
 - (BOOL)canCopyData;
 - (BOOL)isEffectivelyEmpty;
-- (BOOL)isNonGroupedChild:(id)a3;
+- (BOOL)isNonGroupedChild:(id)child;
 - (BOOL)needsDownload;
 - (BOOL)shouldBeIgnoredWhenCopying;
 - (BOOL)supportsParentRotation;
@@ -16,63 +16,63 @@
 - (NSArray)allNestedChildrenInfosIncludingGroups;
 - (NSArray)containedModels;
 - (NSSet)infosToObserveForAttachedInfo;
-- (TSDGroupInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (TSDGroupInfo)initWithContext:(id)context geometry:(id)geometry;
 - (id)childEnumerator;
 - (id)childEnumeratorForUserSearch;
-- (id)groupedGeometryForChildInfo:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)p_ungroupedGeometryForInfo:(id)a3;
+- (id)groupedGeometryForChildInfo:(id)info;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)p_ungroupedGeometryForInfo:(id)info;
 - (id)typeName;
-- (id)ungroupedGeometryForChildInfo:(id)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)addChildInfo:(id)a3;
+- (id)ungroupedGeometryForChildInfo:(id)info;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)addChildInfo:(id)info;
 - (void)adjustModelInPreparationForBecomingInline;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)dealloc;
 - (void)didCopy;
 - (void)ensureGeometryFitsChildren;
-- (void)insertChildInfo:(id)a3 above:(id)a4;
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildInfo:(id)a3 below:(id)a4;
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 upgradeDOLC:(BOOL)a5;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)insertChildInfo:(id)info above:(id)above;
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index;
+- (void)insertChildInfo:(id)info below:(id)below;
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver upgradeDOLC:(BOOL)c;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometry;
-- (void)moveChildren:(id)a3 toIndexes:(id)a4;
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4;
-- (void)removeAllChildrenInDocument:(BOOL)a3;
-- (void)removeContainedModel:(id)a3;
-- (void)replaceChildInfo:(id)a3 with:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setChildInfos:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
-- (void)willCopyWithOtherDrawables:(id)a3;
+- (void)moveChildren:(id)children toIndexes:(id)indexes;
+- (void)moveModel:(id)model toIndex:(unint64_t)index;
+- (void)removeAllChildrenInDocument:(BOOL)document;
+- (void)removeContainedModel:(id)model;
+- (void)replaceChildInfo:(id)info with:(id)with;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setChildInfos:(id)infos;
+- (void)setGeometry:(id)geometry;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
+- (void)willCopyWithOtherDrawables:(id)drawables;
 @end
 
 @implementation TSDGroupInfo
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v12 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v12, v4, off_2812F5188[74]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[74]);
 
-  self->mIsInDocument = objc_msgSend_isFromCopy(v12, v6, v7) ^ 1;
-  v10 = objc_msgSend_preUFFVersion(v12, v8, v9) < 0x2CBDB2375;
-  objc_msgSend_loadFromArchive_unarchiver_upgradeDOLC_(self, v11, v5, v12, v10);
+  self->mIsInDocument = objc_msgSend_isFromCopy(unarchiverCopy, v6, v7) ^ 1;
+  v10 = objc_msgSend_preUFFVersion(unarchiverCopy, v8, v9) < 0x2CBDB2375;
+  objc_msgSend_loadFromArchive_unarchiver_upgradeDOLC_(self, v11, v5, unarchiverCopy, v10);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 upgradeDOLC:(BOOL)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver upgradeDOLC:(BOOL)c
 {
-  v8 = a4;
-  if (*(a3 + 9))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 9))
   {
-    v9 = *(a3 + 9);
+    v9 = *(archive + 9);
   }
 
   else
@@ -82,9 +82,9 @@
 
   v62.receiver = self;
   v62.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v62 loadFromArchive:v9 unarchiver:v8];
+  [(TSDDrawableInfo *)&v62 loadFromArchive:v9 unarchiver:unarchiverCopy];
   v12 = objc_msgSend_unarchivingContext(MEMORY[0x277D805F0], v10, v11);
-  v15 = objc_msgSend_sourceType(v8, v13, v14) == 1;
+  v15 = objc_msgSend_sourceType(unarchiverCopy, v13, v14) == 1;
   v18 = objc_msgSend_geometry(self, v16, v17);
   if (objc_msgSend_widthValid(v18, v19, v20))
   {
@@ -142,7 +142,7 @@
   objc_msgSend_setGeometry_(self, v53, v34);
 
 LABEL_19:
-  if (*(a3 + 14) < 1)
+  if (*(archive + 14) < 1)
   {
     v57 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mChildInfos = self->mChildInfos;
@@ -155,28 +155,28 @@ LABEL_19:
     v59[1] = 3221225472;
     v59[2] = sub_276655FAC;
     v59[3] = &unk_27A6CC4F8;
-    v60 = a5;
+    cCopy = c;
     v59[4] = self;
     v59[5] = v12;
     v61 = v15;
-    v54 = v8;
+    v54 = unarchiverCopy;
     v55 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v54, v56, a3 + 48, v55, 0, v59);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v54, v56, archive + 48, v55, 0, v59);
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = sub_276656550;
   v45[3] = &unk_27A6CC520;
-  v48 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v46 = v7;
-  v47 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v45);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v45);
   v11 = objc_msgSend_geometry(self, v9, v10);
   if ((objc_msgSend_widthValid(v11, v12, v13) & 1) == 0)
   {
@@ -210,40 +210,40 @@ LABEL_5:
   if (v40)
   {
     v43 = objc_msgSend_childInfos(self, v41, v42);
-    objc_msgSend_setStrongReferenceArray_message_(v7, v44, v43, a3 + 48);
+    objc_msgSend_setStrongReferenceArray_message_(v7, v44, v43, archive + 48);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276656694, off_2812F5188[74]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276656694, off_2812F5188[74]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812F5188[74]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812F5188[74]);
 
   if (google::protobuf::internal::ExtensionSet::Has((v6 + 16)))
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  v7 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
-- (TSDGroupInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDGroupInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v13.receiver = self;
   v13.super_class = TSDGroupInfo;
-  v4 = [(TSDDrawableInfo *)&v13 initWithContext:a3 geometry:a4];
+  v4 = [(TSDDrawableInfo *)&v13 initWithContext:context geometry:geometry];
   v7 = v4;
   if (v4)
   {
@@ -301,9 +301,9 @@ LABEL_5:
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = TSDGroupInfo;
-  v3 = [(TSDDrawableInfo *)&v20 canAspectRatioLockBeChangedByUser];
+  canAspectRatioLockBeChangedByUser = [(TSDDrawableInfo *)&v20 canAspectRatioLockBeChangedByUser];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && v3)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && canAspectRatioLockBeChangedByUser)
   {
     v18 = 0u;
     v19 = 0u;
@@ -327,7 +327,7 @@ LABEL_5:
           v14 = *(*(&v16 + 1) + 8 * i);
           if (v14 != self && !objc_msgSend_allowsParentGroupToBeResizedWithoutAspectRatioLock(v14, v9, v10))
           {
-            LOBYTE(v3) = 0;
+            LOBYTE(canAspectRatioLockBeChangedByUser) = 0;
             goto LABEL_14;
           }
         }
@@ -342,11 +342,11 @@ LABEL_5:
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(canAspectRatioLockBeChangedByUser) = 1;
 LABEL_14:
   }
 
-  return v3;
+  return canAspectRatioLockBeChangedByUser;
 }
 
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
@@ -354,7 +354,7 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = TSDGroupInfo;
-  v3 = [(TSDDrawableInfo *)&v19 allowsParentGroupToBeResizedWithoutAspectRatioLock];
+  allowsParentGroupToBeResizedWithoutAspectRatioLock = [(TSDDrawableInfo *)&v19 allowsParentGroupToBeResizedWithoutAspectRatioLock];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -379,7 +379,7 @@ LABEL_14:
 
           if (!objc_msgSend_allowsParentGroupToBeResizedWithoutAspectRatioLock(*(*(&v15 + 1) + 8 * i), v9, v10))
           {
-            v3 = 0;
+            allowsParentGroupToBeResizedWithoutAspectRatioLock = 0;
             goto LABEL_12;
           }
         }
@@ -397,7 +397,7 @@ LABEL_14:
 LABEL_12:
   }
 
-  return v3;
+  return allowsParentGroupToBeResizedWithoutAspectRatioLock;
 }
 
 - (BOOL)supportsParentRotation
@@ -528,11 +528,11 @@ LABEL_15:
   }
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = a3;
-  v18 = v5;
-  if (!v5)
+  geometryCopy = geometry;
+  v18 = geometryCopy;
+  if (!geometryCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDGroupInfo setGeometry:]");
@@ -540,10 +540,10 @@ LABEL_15:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 220, 0, "invalid nil value for '%{public}s'", "newGeometry");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-    v5 = 0;
+    geometryCopy = 0;
   }
 
-  if ((objc_msgSend_isEqual_(v5, v6, self->super.mGeometry) & 1) == 0)
+  if ((objc_msgSend_isEqual_(geometryCopy, v6, self->super.mGeometry) & 1) == 0)
   {
     objc_msgSend_willModify(self, v14, v15);
     if (objc_msgSend_isEqualExceptForPosition_(v18, v16, self->super.mGeometry))
@@ -556,7 +556,7 @@ LABEL_15:
       objc_msgSend_willChangeProperty_(self, v17, 512);
     }
 
-    objc_storeStrong(&self->super.mGeometry, a3);
+    objc_storeStrong(&self->super.mGeometry, geometry);
   }
 }
 
@@ -702,10 +702,10 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isNonGroupedChild:(id)a3
+- (BOOL)isNonGroupedChild:(id)child
 {
-  v6 = a3;
-  if (!v6)
+  childCopy = child;
+  if (!childCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDGroupInfo isNonGroupedChild:]");
@@ -717,7 +717,7 @@ LABEL_13:
 
   v14 = objc_msgSend_caption(self, v4, v5);
 
-  if (v14 == v6)
+  if (v14 == childCopy)
   {
     v18 = 1;
   }
@@ -725,7 +725,7 @@ LABEL_13:
   else
   {
     v17 = objc_msgSend_title(self, v15, v16);
-    v18 = v17 == v6;
+    v18 = v17 == childCopy;
   }
 
   return v18;
@@ -748,13 +748,13 @@ LABEL_13:
   return v6;
 }
 
-- (void)insertContainedModel:(id)a3 atIndex:(unint64_t)a4
+- (void)insertContainedModel:(id)model atIndex:(unint64_t)index
 {
   v6 = TSUProtocolCast();
   v15 = v6;
   if (v6)
   {
-    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, a4, &unk_2885A16B8);
+    objc_msgSend_insertChildInfo_atIndex_(self, v6, v6, index, &unk_2885A16B8);
   }
 
   else
@@ -768,7 +768,7 @@ LABEL_13:
   }
 }
 
-- (void)removeContainedModel:(id)a3
+- (void)removeContainedModel:(id)model
 {
   v4 = TSUProtocolCast();
   v13 = v4;
@@ -788,7 +788,7 @@ LABEL_13:
   }
 }
 
-- (void)moveModel:(id)a3 toIndex:(unint64_t)a4
+- (void)moveModel:(id)model toIndex:(unint64_t)index
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v6 = TSUProtocolCast();
@@ -797,7 +797,7 @@ LABEL_13:
   {
     v20[0] = v6;
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v20, 1, &unk_2885A16B8);
-    v11 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v10, a4);
+    v11 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v10, index);
     objc_msgSend_moveChildren_toIndexes_(self, v12, v9, v11);
   }
 
@@ -812,19 +812,19 @@ LABEL_13:
   }
 }
 
-- (void)setChildInfos:(id)a3
+- (void)setChildInfos:(id)infos
 {
   v99 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infosCopy = infos;
   mChildInfos = self->mChildInfos;
-  if (mChildInfos != v5 && (objc_msgSend_isEqual_(mChildInfos, v4, v5) & 1) == 0)
+  if (mChildInfos != infosCopy && (objc_msgSend_isEqual_(mChildInfos, v4, infosCopy) & 1) == 0)
   {
     objc_msgSend_willModify(self, v7, v8);
     objc_msgSend_willChangeProperty_(self, v9, 514);
-    if (v5)
+    if (infosCopy)
     {
       v10 = objc_alloc(MEMORY[0x277CBEB98]);
-      v12 = objc_msgSend_initWithArray_(v10, v11, v5);
+      v12 = objc_msgSend_initWithArray_(v10, v11, infosCopy);
     }
 
     else
@@ -902,8 +902,8 @@ LABEL_13:
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v73 = v5;
-    obj = v5;
+    v73 = infosCopy;
+    obj = infosCopy;
     v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v30, &v87, v97, 16);
     v77 = v29;
     if (v31)
@@ -1020,32 +1020,32 @@ LABEL_13:
       }
     }
 
-    v5 = v73;
+    infosCopy = v73;
   }
 }
 
-- (void)addChildInfo:(id)a3
+- (void)addChildInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
     v7 = objc_msgSend_count(mChildInfos, v4, v5);
-    objc_msgSend_insertChildInfo_atIndex_(self, v8, v9, v7);
+    objc_msgSend_insertChildInfo_atIndex_(self, v8, infoCopy, v7);
   }
 
   else
   {
-    objc_msgSend_insertChildInfo_atIndex_(self, v4, v9, 0);
+    objc_msgSend_insertChildInfo_atIndex_(self, v4, infoCopy, 0);
   }
 }
 
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v39 = v6;
+    v39 = infoCopy;
     objc_opt_class();
     v7 = TSUDynamicCast();
 
@@ -1085,7 +1085,7 @@ LABEL_13:
       objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v39, v31, v30, v29);
     }
 
-    objc_msgSend_insertObject_atIndex_(self->mChildInfos, v27, v39, a4);
+    objc_msgSend_insertObject_atIndex_(self->mChildInfos, v27, v39, index);
     objc_msgSend_p_didUpdateChildInfos(self, v32, v33);
     if (self->mIsInDocument)
     {
@@ -1093,47 +1093,47 @@ LABEL_13:
       objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v39, v37, v36, v29);
     }
 
-    v6 = v39;
+    infoCopy = v39;
   }
 }
 
-- (void)insertChildInfo:(id)a3 below:(id)a4
+- (void)insertChildInfo:(id)info below:(id)below
 {
-  v11 = a3;
-  v7 = a4;
+  infoCopy = info;
+  belowCopy = below;
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, belowCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9);
+      objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9);
     }
   }
 }
 
-- (void)insertChildInfo:(id)a3 above:(id)a4
+- (void)insertChildInfo:(id)info above:(id)above
 {
-  v11 = a3;
-  v7 = a4;
+  infoCopy = info;
+  aboveCopy = above;
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, aboveCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChildInfo_atIndex_(self, v10, v11, v9 + 1);
+      objc_msgSend_insertChildInfo_atIndex_(self, v10, infoCopy, v9 + 1);
     }
   }
 }
 
-- (void)moveChildren:(id)a3 toIndexes:(id)a4
+- (void)moveChildren:(id)children toIndexes:(id)indexes
 {
-  v52 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_count(v52, v7, v8);
-  v12 = objc_msgSend_count(v6, v10, v11);
-  Index = objc_msgSend_lastIndex(v6, v13, v14);
+  childrenCopy = children;
+  indexesCopy = indexes;
+  v9 = objc_msgSend_count(childrenCopy, v7, v8);
+  v12 = objc_msgSend_count(indexesCopy, v10, v11);
+  Index = objc_msgSend_lastIndex(indexesCopy, v13, v14);
   v18 = objc_msgSend_count(self->mChildInfos, v16, v17);
   v21 = v18;
   if (v9 != v12)
@@ -1165,7 +1165,7 @@ LABEL_9:
   }
 
   v22 = objc_msgSend_mutableCopy(self->mChildInfos, v19, v20);
-  objc_msgSend_removeObjectsInArray_(v22, v23, v52);
+  objc_msgSend_removeObjectsInArray_(v22, v23, childrenCopy);
   v28 = v21 - v9;
   if (objc_msgSend_count(v22, v24, v25) != v21 - v9)
   {
@@ -1179,18 +1179,18 @@ LABEL_9:
 
   if (objc_msgSend_count(v22, v26, v27) == v28)
   {
-    objc_msgSend_insertObjects_atIndexes_(v22, v36, v52, v6);
+    objc_msgSend_insertObjects_atIndexes_(v22, v36, childrenCopy, indexesCopy);
     objc_msgSend_setChildInfos_(self, v37, v22);
   }
 
 LABEL_10:
 }
 
-- (void)removeAllChildrenInDocument:(BOOL)a3
+- (void)removeAllChildrenInDocument:(BOOL)document
 {
-  v3 = a3;
+  documentCopy = document;
   v40 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3);
+  objc_msgSend_willModify(self, a2, document);
   v5 = self->mChildInfos;
   v34 = 0u;
   v35 = 0u;
@@ -1212,7 +1212,7 @@ LABEL_10:
         }
 
         v13 = *(*(&v34 + 1) + 8 * v12);
-        if (v3)
+        if (documentCopy)
         {
           v14 = objc_msgSend_documentRoot(self, v8, v9);
           objc_msgSend_willBeRemovedFromDocumentRoot_(v13, v15, v14);
@@ -1233,7 +1233,7 @@ LABEL_10:
   self->mChildInfos = 0;
 
   objc_msgSend_p_didUpdateChildInfos(self, v17, v18);
-  if (v3)
+  if (documentCopy)
   {
     v32 = 0u;
     v33 = 0u;
@@ -1271,19 +1271,19 @@ LABEL_10:
   }
 }
 
-- (id)groupedGeometryForChildInfo:(id)a3
+- (id)groupedGeometryForChildInfo:(id)info
 {
-  v4 = objc_msgSend_geometry(a3, a2, a3);
+  v4 = objc_msgSend_geometry(info, a2, info);
   v7 = objc_msgSend_geometry(self, v5, v6);
   v9 = objc_msgSend_geometryRelativeToGeometry_(v4, v8, v7);
 
   return v9;
 }
 
-- (id)ungroupedGeometryForChildInfo:(id)a3
+- (id)ungroupedGeometryForChildInfo:(id)info
 {
-  v4 = a3;
-  if ((objc_msgSend_containsObject_(self->mChildInfos, v5, v4) & 1) == 0)
+  infoCopy = info;
+  if ((objc_msgSend_containsObject_(self->mChildInfos, v5, infoCopy) & 1) == 0)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDGroupInfo ungroupedGeometryForChildInfo:]");
@@ -1293,15 +1293,15 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v14 = objc_msgSend_p_ungroupedGeometryForInfo_(self, v6, v4);
+  v14 = objc_msgSend_p_ungroupedGeometryForInfo_(self, v6, infoCopy);
 
   return v14;
 }
 
-- (id)p_ungroupedGeometryForInfo:(id)a3
+- (id)p_ungroupedGeometryForInfo:(id)info
 {
-  v4 = a3;
-  v7 = objc_msgSend_geometry(v4, v5, v6);
+  infoCopy = info;
+  v7 = objc_msgSend_geometry(infoCopy, v5, v6);
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -1378,9 +1378,9 @@ LABEL_10:
   return v14;
 }
 
-+ (id)groupGeometryFromChildrenInfos:(id)a3
++ (id)groupGeometryFromChildrenInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1392,8 +1392,8 @@ LABEL_10:
   v9[2] = sub_2766F1918;
   v9[3] = &unk_27A6CD0D8;
   v11 = &v13;
-  v12 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = infosCopy;
   v10 = v5;
   objc_msgSend_temporaryLayoutControllerForInfos_useInBlock_(TSDLayoutController, v6, v5, v9);
   v7 = v14[5];
@@ -1403,12 +1403,12 @@ LABEL_10:
   return v7;
 }
 
-+ (id)groupGeometryFromChildrenInfos:(id)a3 currentlyLaidOutWithLayoutController:(id)a4
++ (id)groupGeometryFromChildrenInfos:(id)infos currentlyLaidOutWithLayoutController:(id)controller
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v7 = a4;
-  if (!v7)
+  infosCopy = infos;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[TSDGroupInfo groupGeometryFromChildrenInfos:currentlyLaidOutWithLayoutController:]");
@@ -1429,7 +1429,7 @@ LABEL_10:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v16 = v5;
+  v16 = infosCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v46, v56, 16);
   if (v19)
   {
@@ -1444,7 +1444,7 @@ LABEL_10:
         }
 
         v22 = *(*(&v46 + 1) + 8 * i);
-        v23 = objc_msgSend_layoutForInfo_(v7, v18, v22);
+        v23 = objc_msgSend_layoutForInfo_(controllerCopy, v18, v22);
         v26 = v23;
         if (v23)
         {
@@ -1536,14 +1536,14 @@ LABEL_10:
   }
 }
 
-- (void)replaceChildInfo:(id)a3 with:(id)a4
+- (void)replaceChildInfo:(id)info with:(id)with
 {
-  v25 = a3;
-  v7 = a4;
+  infoCopy = info;
+  withCopy = with;
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, v25);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(mChildInfos, v6, infoCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = v9;
@@ -1552,19 +1552,19 @@ LABEL_10:
       if (self->mIsInDocument)
       {
         v16 = objc_msgSend_documentRoot(self, v14, v15);
-        objc_msgSend_willBeRemovedFromDocumentRoot_(v25, v17, v16);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(infoCopy, v17, v16);
       }
 
       objc_msgSend_removeObjectAtIndex_(self->mChildInfos, v14, v12);
       objc_msgSend_p_didUpdateChildInfos(self, v18, v19);
-      objc_msgSend_setParentInfo_(v25, v20, 0);
+      objc_msgSend_setParentInfo_(infoCopy, v20, 0);
       if (self->mIsInDocument)
       {
         v23 = objc_msgSend_documentRoot(self, v21, v22);
-        objc_msgSend_wasRemovedFromDocumentRoot_(v25, v24, v23);
+        objc_msgSend_wasRemovedFromDocumentRoot_(infoCopy, v24, v23);
       }
 
-      objc_msgSend_insertChildInfo_atIndex_(self, v21, v7, v12);
+      objc_msgSend_insertChildInfo_atIndex_(self, v21, withCopy, v12);
     }
   }
 }
@@ -1701,11 +1701,11 @@ LABEL_10:
   }
 }
 
-- (void)willCopyWithOtherDrawables:(id)a3
+- (void)willCopyWithOtherDrawables:(id)drawables
 {
-  v5 = a3;
+  drawablesCopy = drawables;
   v9 = objc_msgSend_childInfos(self, v6, v7);
-  objc_msgSend_makeObjectsPerformSelector_withObject_(v9, v8, a2, v5);
+  objc_msgSend_makeObjectsPerformSelector_withObject_(v9, v8, a2, drawablesCopy);
 }
 
 - (void)didCopy
@@ -1771,9 +1771,9 @@ LABEL_13:
   v3 = MEMORY[0x277D81148];
   v11.receiver = self;
   v11.super_class = TSDGroupInfo;
-  v4 = [(TSDDrawableInfo *)&v11 childEnumeratorForUserSearch];
+  childEnumeratorForUserSearch = [(TSDDrawableInfo *)&v11 childEnumeratorForUserSearch];
   v7 = objc_msgSend_objectEnumerator(self->mChildInfos, v5, v6);
-  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, v4, v7, 0);
+  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, childEnumeratorForUserSearch, v7, 0);
 
   return v9;
 }
@@ -1783,9 +1783,9 @@ LABEL_13:
   v3 = MEMORY[0x277D81148];
   v11.receiver = self;
   v11.super_class = TSDGroupInfo;
-  v4 = [(TSDDrawableInfo *)&v11 childEnumerator];
+  childEnumerator = [(TSDDrawableInfo *)&v11 childEnumerator];
   v7 = objc_msgSend_objectEnumerator(self->mChildInfos, v5, v6);
-  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, v4, v7, 0);
+  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, childEnumerator, v7, 0);
 
   return v9;
 }
@@ -1798,15 +1798,15 @@ LABEL_13:
   return v5;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v21 willBeAddedToDocumentRoot:v6 dolcContext:v7];
-  if ((objc_msgSend_wasUnarchived(v7, v8, v9) & 1) == 0)
+  [(TSDDrawableInfo *)&v21 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  if ((objc_msgSend_wasUnarchived(contextCopy, v8, v9) & 1) == 0)
   {
     v19 = 0u;
     v20 = 0u;
@@ -1828,7 +1828,7 @@ LABEL_13:
             objc_enumerationMutation(v10);
           }
 
-          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, v6, v7, v17);
+          objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, rootCopy, contextCopy, v17);
         }
 
         while (v14 != v16);
@@ -1840,16 +1840,16 @@ LABEL_13:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v21 wasAddedToDocumentRoot:v6 dolcContext:v7];
+  [(TSDDrawableInfo *)&v21 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
   self->mIsInDocument = 1;
-  if ((objc_msgSend_wasUnarchived(v7, v8, v9) & 1) == 0)
+  if ((objc_msgSend_wasUnarchived(contextCopy, v8, v9) & 1) == 0)
   {
     v19 = 0u;
     v20 = 0u;
@@ -1871,7 +1871,7 @@ LABEL_13:
             objc_enumerationMutation(v10);
           }
 
-          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, v6, v7, v17);
+          objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v17 + 1) + 8 * v16++), v13, rootCopy, contextCopy, v17);
         }
 
         while (v14 != v16);
@@ -1883,13 +1883,13 @@ LABEL_13:
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v16.receiver = self;
   v16.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v16 willBeRemovedFromDocumentRoot:v4];
+  [(TSDDrawableInfo *)&v16 willBeRemovedFromDocumentRoot:rootCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -1910,7 +1910,7 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, v4, v12);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, rootCopy, v12);
       }
 
       while (v9 != v11);
@@ -1923,13 +1923,13 @@ LABEL_13:
   self->mIsInDocument = 0;
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v16.receiver = self;
   v16.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v16 wasRemovedFromDocumentRoot:v4];
+  [(TSDDrawableInfo *)&v16 wasRemovedFromDocumentRoot:rootCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -1950,7 +1950,7 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, v4, v12);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v12 + 1) + 8 * v11++), v8, rootCopy, v12);
       }
 
       while (v9 != v11);
@@ -2049,14 +2049,14 @@ LABEL_11:
   return v11;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
   v19.receiver = self;
   v19.super_class = TSDGroupInfo;
-  [(TSDDrawableInfo *)&v19 adoptStylesheet:v6 withMapper:v7];
+  [(TSDDrawableInfo *)&v19 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -2077,7 +2077,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_adoptStylesheet_withMapper_(*(*(&v15 + 1) + 8 * v14++), v11, v6, v7, v15);
+        objc_msgSend_adoptStylesheet_withMapper_(*(*(&v15 + 1) + 8 * v14++), v11, stylesheetCopy, mapperCopy, v15);
       }
 
       while (v12 != v14);
@@ -2088,11 +2088,11 @@ LABEL_11:
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
-  v53 = v5;
+  v53 = objectCopy;
   v8 = TSUDynamicCast();
   if (!v8)
   {
@@ -2161,10 +2161,10 @@ LABEL_9:
   return v35;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGroupInfo mixedObjectWithFraction:ofObject:]", a3);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDGroupInfo mixedObjectWithFraction:ofObject:]", fraction);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGroupInfo.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 929, 0, "TSDGroupInfo does not implement TSDMixing!");
 
@@ -2172,25 +2172,25 @@ LABEL_9:
   return 0;
 }
 
-+ (id)p_drawablesToInsertForGroup:(id)a3 outDidUngroup:(BOOL *)a4 filteredWithBlock:(id)a5
++ (id)p_drawablesToInsertForGroup:(id)group outDidUngroup:(BOOL *)ungroup filteredWithBlock:(id)block
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v66 = a5;
-  v64 = a4;
-  if (objc_msgSend_isFreehandDrawing(v8, v9, v10))
+  groupCopy = group;
+  blockCopy = block;
+  ungroupCopy = ungroup;
+  if (objc_msgSend_isFreehandDrawing(groupCopy, v9, v10))
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = objc_msgSend_childInfos(v8, v11, v12);
+    v14 = objc_msgSend_childInfos(groupCopy, v11, v12);
     v13 = objc_msgSend_count(v14, v15, v16) < 2;
   }
 
   v17 = objc_alloc(MEMORY[0x277CBEB18]);
-  v20 = objc_msgSend_childInfos(v8, v18, v19);
+  v20 = objc_msgSend_childInfos(groupCopy, v18, v19);
   v23 = objc_msgSend_count(v20, v21, v22);
   v25 = objc_msgSend_initWithCapacity_(v17, v24, v23);
 
@@ -2198,8 +2198,8 @@ LABEL_9:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v65 = v8;
-  v28 = objc_msgSend_childInfos(v8, v26, v27);
+  v65 = groupCopy;
+  v28 = objc_msgSend_childInfos(groupCopy, v26, v27);
   v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v76, v83, 16);
   if (v30)
   {
@@ -2219,7 +2219,7 @@ LABEL_9:
         if (v35)
         {
           v75 = 0;
-          v36 = objc_msgSend_p_drawablesToInsertForGroup_outDidUngroup_filteredWithBlock_(a1, v34, v35, &v75, v66);
+          v36 = objc_msgSend_p_drawablesToInsertForGroup_outDidUngroup_filteredWithBlock_(self, v34, v35, &v75, blockCopy);
           objc_msgSend_addObjectsFromArray_(v25, v37, v36);
 
           v13 |= v75;
@@ -2300,7 +2300,7 @@ LABEL_25:
 
           objc_opt_class();
           v47 = TSUDynamicCast();
-          v48 = v66[2](v66, v47);
+          v48 = blockCopy[2](blockCopy, v47);
 
           if (!v48)
           {
@@ -2325,9 +2325,9 @@ LABEL_25:
     v53 = 0;
   }
 
-  if (v64)
+  if (ungroupCopy)
   {
-    *v64 = v53;
+    *ungroupCopy = v53;
   }
 
   return v52;

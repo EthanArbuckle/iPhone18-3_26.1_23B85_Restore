@@ -1,8 +1,8 @@
 @interface SBAdditionalEnvironmentDeferralsPolicyEnforcer
 - (SBAdditionalEnvironmentDeferralsPolicyEnforcer)init;
-- (SBAdditionalEnvironmentDeferralsPolicyEnforcer)initWithDebugName:(id)a3 deliveryManager:(id)a4;
+- (SBAdditionalEnvironmentDeferralsPolicyEnforcer)initWithDebugName:(id)name deliveryManager:(id)manager;
 - (SBAdditionalEnvironmentDeferralsPolicyEnforcerDelegate)delegate;
-- (void)enforce:(id)a3;
+- (void)enforce:(id)enforce;
 - (void)stopEnforcing;
 @end
 
@@ -47,24 +47,24 @@
 
 - (SBAdditionalEnvironmentDeferralsPolicyEnforcer)init
 {
-  v3 = [MEMORY[0x277CF0668] sharedInstance];
-  v4 = [(SBAdditionalEnvironmentDeferralsPolicyEnforcer *)self initWithDebugName:@"SBAdditionalEnvironmentDeferralsPolicyEnforcer" deliveryManager:v3];
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
+  v4 = [(SBAdditionalEnvironmentDeferralsPolicyEnforcer *)self initWithDebugName:@"SBAdditionalEnvironmentDeferralsPolicyEnforcer" deliveryManager:mEMORY[0x277CF0668]];
 
   return v4;
 }
 
-- (SBAdditionalEnvironmentDeferralsPolicyEnforcer)initWithDebugName:(id)a3 deliveryManager:(id)a4
+- (SBAdditionalEnvironmentDeferralsPolicyEnforcer)initWithDebugName:(id)name deliveryManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = SBAdditionalEnvironmentDeferralsPolicyEnforcer;
   v8 = [(SBAdditionalEnvironmentDeferralsPolicyEnforcer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_deliveryManager, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(&v8->_deliveryManager, manager);
+    v10 = [nameCopy copy];
     debugName = v9->_debugName;
     v9->_debugName = v10;
   }
@@ -72,16 +72,16 @@
   return v9;
 }
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enforceCopy = enforce;
   [(SBAdditionalEnvironmentDeferralsPolicyEnforcer *)self stopEnforcing];
-  v23 = v4;
-  v5 = [v4 keyboardFocusTarget];
-  v26 = self;
+  v23 = enforceCopy;
+  keyboardFocusTarget = [enforceCopy keyboardFocusTarget];
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained additionalEnvironmentDeferralsForFocusTarget:v5];
+  v7 = [WeakRetained additionalEnvironmentDeferralsForFocusTarget:keyboardFocusTarget];
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = v7;
@@ -105,8 +105,8 @@
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
-        v14 = [v12 isEqual:v13];
+        systemKeyCommandOverlayEnvironment = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
+        v14 = [v12 isEqual:systemKeyCommandOverlayEnvironment];
 
         if (v14)
         {
@@ -116,10 +116,10 @@
           v17 = [v25 objectForKeyedSubscript:v12];
           [v16 setToken:v17];
 
-          [v16 setPid:{objc_msgSend(v5, "pid")}];
-          deliveryManager = v26->_deliveryManager;
-          v19 = [(SBKeyboardFocusTarget *)v5 deferringTarget];
-          v20 = [(BKSHIDEventDeliveryManager *)deliveryManager deferEventsMatchingPredicate:v15 toTarget:v19 withReason:@"SpringBoard: outbound to service-requested target"];
+          [v16 setPid:{objc_msgSend(keyboardFocusTarget, "pid")}];
+          deliveryManager = selfCopy->_deliveryManager;
+          deferringTarget = [(SBKeyboardFocusTarget *)keyboardFocusTarget deferringTarget];
+          v20 = [(BKSHIDEventDeliveryManager *)deliveryManager deferEventsMatchingPredicate:v15 toTarget:deferringTarget withReason:@"SpringBoard: outbound to service-requested target"];
           [(NSMutableArray *)v24 addObject:v20];
 
           v21 = SBLogKeyboardFocus();
@@ -128,7 +128,7 @@
             *buf = 138543618;
             v33 = v12;
             v34 = 2114;
-            v35 = v5;
+            v35 = keyboardFocusTarget;
             _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "rules: (additionalEnvironments) by service request, deferring (%{public}@) -> %{public}@", buf, 0x16u);
           }
         }
@@ -140,8 +140,8 @@
     while (v9);
   }
 
-  rules = v26->_rules;
-  v26->_rules = v24;
+  rules = selfCopy->_rules;
+  selfCopy->_rules = v24;
 }
 
 - (SBAdditionalEnvironmentDeferralsPolicyEnforcerDelegate)delegate

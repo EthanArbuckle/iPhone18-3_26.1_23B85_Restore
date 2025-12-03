@@ -1,37 +1,37 @@
 @interface ATXFaceSuggestionGenerator
 - (ATXFaceGalleryConfiguration)faceGalleryConfiguration;
-- (ATXFaceSuggestionGenerator)initWithDescriptorCache:(id)a3 configurationCache:(id)a4 complicationProvider:(id)a5 complicationDescriptorProvider:(id)a6 parameters:(id)a7;
+- (ATXFaceSuggestionGenerator)initWithDescriptorCache:(id)cache configurationCache:(id)configurationCache complicationProvider:(id)provider complicationDescriptorProvider:(id)descriptorProvider parameters:(id)parameters;
 - (ATXFaceSuggestionGeneratorDelegate)delegate;
 - (BOOL)shouldUseDayZeroCuration;
-- (void)_generateFaceGalleryConfigurationNotifyingWithGuardedData:(id)a3;
-- (void)configurationCacheDidUpdateWithNewConfigurations:(id)a3 oldConfigurations:(id)a4;
-- (void)regenerateFaceGalleryConfigurationCoalescedWithReason:(id)a3;
-- (void)regenerateFaceGalleryConfigurationImmediatelyWithReason:(id)a3;
-- (void)regenerateFaceSuggestionsForFocusModesWithReason:(id)a3;
+- (void)_generateFaceGalleryConfigurationNotifyingWithGuardedData:(id)data;
+- (void)configurationCacheDidUpdateWithNewConfigurations:(id)configurations oldConfigurations:(id)oldConfigurations;
+- (void)regenerateFaceGalleryConfigurationCoalescedWithReason:(id)reason;
+- (void)regenerateFaceGalleryConfigurationImmediatelyWithReason:(id)reason;
+- (void)regenerateFaceSuggestionsForFocusModesWithReason:(id)reason;
 @end
 
 @implementation ATXFaceSuggestionGenerator
 
-- (ATXFaceSuggestionGenerator)initWithDescriptorCache:(id)a3 configurationCache:(id)a4 complicationProvider:(id)a5 complicationDescriptorProvider:(id)a6 parameters:(id)a7
+- (ATXFaceSuggestionGenerator)initWithDescriptorCache:(id)cache configurationCache:(id)configurationCache complicationProvider:(id)provider complicationDescriptorProvider:(id)descriptorProvider parameters:(id)parameters
 {
-  v32 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cacheCopy = cache;
+  configurationCacheCopy = configurationCache;
+  providerCopy = provider;
+  descriptorProviderCopy = descriptorProvider;
+  parametersCopy = parameters;
   v36.receiver = self;
   v36.super_class = ATXFaceSuggestionGenerator;
   v17 = [(ATXFaceSuggestionGenerator *)&v36 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_descriptorCache, a3);
+    objc_storeStrong(&v17->_descriptorCache, cache);
     [(ATXPosterDescriptorCache *)v18->_descriptorCache registerObserver:v18];
-    objc_storeStrong(&v18->_configurationCache, a4);
+    objc_storeStrong(&v18->_configurationCache, configurationCache);
     [(ATXPosterConfigurationCache *)v18->_configurationCache registerObserver:v18];
-    objc_storeStrong(&v18->_complicationProvider, a5);
-    objc_storeStrong(&v18->_complicationDescriptorProvider, a6);
-    objc_storeStrong(&v18->_parameters, a7);
+    objc_storeStrong(&v18->_complicationProvider, provider);
+    objc_storeStrong(&v18->_complicationDescriptorProvider, descriptorProvider);
+    objc_storeStrong(&v18->_parameters, parameters);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_create("com.apple.proactive.ATXFaceSuggestionGenerator", v19);
 
@@ -161,17 +161,17 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)regenerateFaceGalleryConfigurationCoalescedWithReason:(id)a3
+- (void)regenerateFaceGalleryConfigurationCoalescedWithReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[ATXFaceSuggestionGenerator regenerateFaceGalleryConfigurationCoalescedWithReason:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%s: requesting coalesced face gallery regeneration for reason: %@", &v7, 0x16u);
   }
 
@@ -179,17 +179,17 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)regenerateFaceGalleryConfigurationImmediatelyWithReason:(id)a3
+- (void)regenerateFaceGalleryConfigurationImmediatelyWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v10 = "[ATXFaceSuggestionGenerator regenerateFaceGalleryConfigurationImmediatelyWithReason:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = reasonCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%s: requesting immediate face gallery regeneration for reason: %@", buf, 0x16u);
   }
 
@@ -204,51 +204,51 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)regenerateFaceSuggestionsForFocusModesWithReason:(id)a3
+- (void)regenerateFaceSuggestionsForFocusModesWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  reasonCopy = reason;
   v4 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[ATXFaceSuggestionGenerator regenerateFaceSuggestionsForFocusModesWithReason:]";
     v11 = 2112;
-    v12 = v3;
+    v12 = reasonCopy;
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "%s: requesting immediate face suggestions regeneration for Focus Modes with reason: %@", &v9, 0x16u);
   }
 
   v5 = objc_alloc_init(ATXModeFaceSuggestionGenerator);
   v6 = +[ATXPosterDescriptorCache sharedInstance];
-  v7 = [v6 allDescriptors];
-  [(ATXModeFaceSuggestionGenerator *)v5 generateAndCacheFacesFromDescriptors:v7];
+  allDescriptors = [v6 allDescriptors];
+  [(ATXModeFaceSuggestionGenerator *)v5 generateAndCacheFacesFromDescriptors:allDescriptors];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateFaceGalleryConfigurationNotifyingWithGuardedData:(id)a3
+- (void)_generateFaceGalleryConfigurationNotifyingWithGuardedData:(id)data
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   sel_getName(a2);
   v45 = os_transaction_create();
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = __atxlog_handle_lock_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v51 = "[ATXFaceSuggestionGenerator _generateFaceGalleryConfigurationNotifyingWithGuardedData:]";
     v52 = 2112;
-    v53 = v6;
+    v53 = currentLocale;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%s: using locale: %@", buf, 0x16u);
   }
 
   v8 = objc_alloc(MEMORY[0x277CBEBD0]);
   v44 = [v8 initWithSuiteName:*MEMORY[0x277CEBD00]];
   v9 = [v44 integerForKey:*MEMORY[0x277CEBDB8]];
-  v10 = [MEMORY[0x277CEB998] sharedInstance];
+  mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
   v49 = 0;
-  v11 = [v10 fetchAccessoryWidgetDescriptorMetadataWithError:&v49];
+  v11 = [mEMORY[0x277CEB998] fetchAccessoryWidgetDescriptorMetadataWithError:&v49];
   v12 = v49;
 
   if (!v11)
@@ -264,17 +264,17 @@ LABEL_11:
 
   v43 = v12;
   v14 = objc_alloc_init(MEMORY[0x277CEB388]);
-  v15 = [v14 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+  rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps = [v14 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
-  v16 = [v15 allKeys];
-  v17 = [_TtC21AppPredictionInternal26ATXCompanionBundleIdMapper generateMappingForAppBundleIds:v16];
+  allKeys = [rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps allKeys];
+  v17 = [_TtC21AppPredictionInternal26ATXCompanionBundleIdMapper generateMappingForAppBundleIds:allKeys];
 
   if (!v9)
   {
-    v23 = [(ATXFaceSuggestionGenerator *)self shouldUseDayZeroCuration];
+    shouldUseDayZeroCuration = [(ATXFaceSuggestionGenerator *)self shouldUseDayZeroCuration];
     v24 = __atxlog_handle_lock_screen();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-    if (v23)
+    if (shouldUseDayZeroCuration)
     {
       if (v25)
       {
@@ -294,8 +294,8 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v27 = self;
-    v28 = v23;
+    selfCopy3 = self;
+    v28 = shouldUseDayZeroCuration;
     goto LABEL_25;
   }
 
@@ -312,18 +312,18 @@ LABEL_21:
   switch(v9)
   {
     case 1:
-      v27 = self;
+      selfCopy3 = self;
       v28 = 0;
       break;
     case 2:
-      v27 = self;
+      selfCopy3 = self;
       v28 = 1;
       break;
     case 3:
-      v19 = [(ATXFaceSuggestionGenerator *)self shouldUseDayZeroCuration];
+      shouldUseDayZeroCuration2 = [(ATXFaceSuggestionGenerator *)self shouldUseDayZeroCuration];
       v20 = __atxlog_handle_lock_screen();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v19)
+      if (shouldUseDayZeroCuration2)
       {
         if (v21)
         {
@@ -343,13 +343,13 @@ LABEL_34:
         goto LABEL_34;
       }
 
-      v29 = [(ATXFaceSuggestionGenerator *)self _createLayoutGeneratorWithDayZero:v19 locale:v6];
+      v29 = [(ATXFaceSuggestionGenerator *)self _createLayoutGeneratorWithDayZero:shouldUseDayZeroCuration2 locale:currentLocale];
       v31 = [[ATXFaceGalleryFileReader alloc] initWithSource:0];
-      v39 = [v29 generatedConfigurationWithWidgetDescriptorsAdditionalData:v11 aggregatedAppLaunchData:v15 bundleIdToCompanionBundleId:v17];
-      v40 = [(ATXFaceGalleryFileReader *)v31 configuration];
-      v41 = [v39 configurationByApplyingConfiguration:v40];
-      v42 = v5[1];
-      v5[1] = v41;
+      v39 = [v29 generatedConfigurationWithWidgetDescriptorsAdditionalData:v11 aggregatedAppLaunchData:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps bundleIdToCompanionBundleId:v17];
+      configuration = [(ATXFaceGalleryFileReader *)v31 configuration];
+      v41 = [v39 configurationByApplyingConfiguration:configuration];
+      v42 = dataCopy[1];
+      dataCopy[1] = v41;
 
       goto LABEL_26;
     default:
@@ -357,14 +357,14 @@ LABEL_34:
   }
 
 LABEL_25:
-  v29 = [(ATXFaceSuggestionGenerator *)v27 _createLayoutGeneratorWithDayZero:v28 locale:v6];
-  v30 = [v29 generatedConfigurationWithWidgetDescriptorsAdditionalData:v11 aggregatedAppLaunchData:v15 bundleIdToCompanionBundleId:v17];
-  v31 = v5[1];
-  v5[1] = v30;
+  v29 = [(ATXFaceSuggestionGenerator *)selfCopy3 _createLayoutGeneratorWithDayZero:v28 locale:currentLocale];
+  v30 = [v29 generatedConfigurationWithWidgetDescriptorsAdditionalData:v11 aggregatedAppLaunchData:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps bundleIdToCompanionBundleId:v17];
+  v31 = dataCopy[1];
+  dataCopy[1] = v30;
 LABEL_26:
 
 LABEL_27:
-  v32 = [v5[1] copy];
+  v32 = [dataCopy[1] copy];
   if (!v32)
   {
     v33 = __atxlog_handle_lock_screen();
@@ -376,7 +376,7 @@ LABEL_27:
     }
 
     v34 = objc_alloc(MEMORY[0x277CEB518]);
-    v32 = [v34 initWithSections:MEMORY[0x277CBEBF8] source:1 locale:v6 dayZero:0];
+    v32 = [v34 initWithSections:MEMORY[0x277CBEBF8] source:1 locale:currentLocale dayZero:0];
   }
 
   outputQueue = self->_outputQueue;
@@ -406,8 +406,8 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
 - (BOOL)shouldUseDayZeroCuration
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(ATXPosterConfigurationCache *)self->_configurationCache configurations];
-  if ([v2 count] == 1)
+  configurations = [(ATXPosterConfigurationCache *)self->_configurationCache configurations];
+  if ([configurations count] == 1)
   {
     v3 = [MEMORY[0x277CEB448] isDayZeroByFirstAppLaunchDateWithThresholdDateFromDaysAgo:7];
   }
@@ -429,18 +429,18 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
   return v3;
 }
 
-- (void)configurationCacheDidUpdateWithNewConfigurations:(id)a3 oldConfigurations:(id)a4
+- (void)configurationCacheDidUpdateWithNewConfigurations:(id)configurations oldConfigurations:(id)oldConfigurations
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  configurationsCopy = configurations;
+  oldConfigurationsCopy = oldConfigurations;
+  if (!oldConfigurationsCopy)
   {
     goto LABEL_25;
   }
 
-  v38 = self;
-  v40 = v6;
+  selfCopy = self;
+  v40 = configurationsCopy;
   v8 = objc_opt_new();
   v42 = objc_opt_new();
   v9 = objc_opt_new();
@@ -449,8 +449,8 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v39 = v7;
-  v10 = v7;
+  v39 = oldConfigurationsCopy;
+  v10 = oldConfigurationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (v11)
   {
@@ -466,19 +466,19 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
         }
 
         v15 = *(*(&v47 + 1) + 8 * i);
-        v16 = [v15 extensionBundleIdentifier];
-        [v42 addObject:v16];
+        extensionBundleIdentifier = [v15 extensionBundleIdentifier];
+        [v42 addObject:extensionBundleIdentifier];
 
-        v17 = [v15 complications];
-        v18 = [v17 _pas_mappedArrayWithTransform:&__block_literal_global_118];
+        complications = [v15 complications];
+        v18 = [complications _pas_mappedArrayWithTransform:&__block_literal_global_118];
         [v8 addObjectsFromArray:v18];
 
-        v19 = [v15 inlineComplication];
+        inlineComplication = [v15 inlineComplication];
 
-        if (v19)
+        if (inlineComplication)
         {
-          v20 = [v15 inlineComplication];
-          v21 = personalityStringFromComplication(v20);
+          inlineComplication2 = [v15 inlineComplication];
+          v21 = personalityStringFromComplication(inlineComplication2);
           [v8 addObject:v21];
         }
       }
@@ -509,19 +509,19 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
         }
 
         v27 = *(*(&v43 + 1) + 8 * j);
-        v28 = [v27 extensionBundleIdentifier];
-        [v41 addObject:v28];
+        extensionBundleIdentifier2 = [v27 extensionBundleIdentifier];
+        [v41 addObject:extensionBundleIdentifier2];
 
-        v29 = [v27 complications];
-        v30 = [v29 _pas_mappedArrayWithTransform:&__block_literal_global_47_0];
+        complications2 = [v27 complications];
+        v30 = [complications2 _pas_mappedArrayWithTransform:&__block_literal_global_47_0];
         [v9 addObjectsFromArray:v30];
 
-        v31 = [v27 inlineComplication];
+        inlineComplication3 = [v27 inlineComplication];
 
-        if (v31)
+        if (inlineComplication3)
         {
-          v32 = [v27 inlineComplication];
-          v33 = personalityStringFromComplication(v32);
+          inlineComplication4 = [v27 inlineComplication];
+          v33 = personalityStringFromComplication(inlineComplication4);
           [v9 addObject:v33];
         }
       }
@@ -535,9 +535,9 @@ id __88__ATXFaceSuggestionGenerator__generateFaceGalleryConfigurationNotifyingWi
   v34 = [v8 isEqualToSet:v9];
   v35 = [v42 isEqualToSet:v41];
 
-  v7 = v39;
-  v6 = v40;
-  self = v38;
+  oldConfigurationsCopy = v39;
+  configurationsCopy = v40;
+  self = selfCopy;
   if (!v35)
   {
     goto LABEL_25;

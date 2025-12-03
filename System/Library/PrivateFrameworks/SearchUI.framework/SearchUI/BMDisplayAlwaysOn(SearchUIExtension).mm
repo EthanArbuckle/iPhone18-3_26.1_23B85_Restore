@@ -7,7 +7,7 @@
 - (void)getEnabledStatusWithCompletion:()SearchUIExtension
 {
   v5 = a3;
-  (a3)[2](v5, [a1 userSetState] == 1);
+  (a3)[2](v5, [self userSetState] == 1);
 }
 
 @end

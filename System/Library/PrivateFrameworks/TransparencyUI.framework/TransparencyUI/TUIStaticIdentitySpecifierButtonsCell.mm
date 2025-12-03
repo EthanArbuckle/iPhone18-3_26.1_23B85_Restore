@@ -1,23 +1,23 @@
 @interface TUIStaticIdentitySpecifierButtonsCell
-- (void)markAsVerifiedTapped:(id)a3;
-- (void)noMatchTapped:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)markAsVerifiedTapped:(id)tapped;
+- (void)noMatchTapped:(id)tapped;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TUIStaticIdentitySpecifierButtonsCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v93[1] = *MEMORY[0x277D85DE8];
   v78.receiver = self;
   v78.super_class = TUIStaticIdentitySpecifierButtonsCell;
-  v4 = a3;
-  [(PSTableCell *)&v78 refreshCellContentsWithSpecifier:v4];
-  v5 = [(PSTableCell *)self titleLabel];
-  [v5 setText:&stru_287F92480];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v78 refreshCellContentsWithSpecifier:specifierCopy];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setText:&stru_287F92480];
 
-  v6 = [v4 propertyForKey:*MEMORY[0x277D3FF38]];
-  v7 = [v4 propertyForKey:*MEMORY[0x277D401A8]];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277D3FF38]];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"NO_MATCH" value:&stru_287F92480 table:@"Localizable"];
@@ -29,32 +29,32 @@
   v77 = [v11 localizedStringForKey:@"MARK_AS_VERIFIED_NO_DOTS" value:&stru_287F92480 table:@"Localizable"];
 
   v12 = [MEMORY[0x277D75220] buttonWithType:1];
-  v13 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v14 = [v13 preferredContentSizeCategory];
-  LODWORD(v5) = UIContentSizeCategoryIsAccessibilityCategory(v14);
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
+  LODWORD(titleLabel) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v76 = v9;
-  if (v5)
+  if (titleLabel)
   {
     goto LABEL_7;
   }
 
   v15 = *MEMORY[0x277D740A8];
   v92 = *MEMORY[0x277D740A8];
-  v16 = [v12 titleLabel];
-  v17 = [v16 font];
-  v93[0] = v17;
+  titleLabel2 = [v12 titleLabel];
+  font = [titleLabel2 font];
+  v93[0] = font;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v93 forKeys:&v92 count:1];
   [v9 sizeWithAttributes:v18];
   UICeilToViewScale();
   v20 = v19;
 
-  v21 = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
-  [v21 frame];
-  v22 = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
-  [v22 layoutMargins];
-  v23 = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
-  [v23 layoutMargins];
+  _tableView = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
+  [_tableView frame];
+  _tableView2 = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
+  [_tableView2 layoutMargins];
+  _tableView3 = [(TUIStaticIdentitySpecifierButtonsCell *)self _tableView];
+  [_tableView3 layoutMargins];
   [(UIStackView *)self->_buttonsStackView spacing];
   UICeilToViewScale();
   v25 = v24;
@@ -76,7 +76,7 @@
     v88 = 2048;
     v89 = v20;
     v90 = 2114;
-    v91 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_26F50B000, v26, OS_LOG_TYPE_DEBUG, "%s verticalLayout = %d (cellHalfWidth = %f, stringWidth = %f) on %{public}@", buf, 0x30u);
   }
 
@@ -99,9 +99,9 @@ LABEL_7:
     }
 
     v80 = v15;
-    v29 = [v12 titleLabel];
-    v30 = [v29 font];
-    v81 = v30;
+    titleLabel3 = [v12 titleLabel];
+    font2 = [titleLabel3 font];
+    v81 = font2;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
     [v28 sizeWithAttributes:v31];
     UICeilToViewScale();
@@ -126,44 +126,44 @@ LABEL_7:
   [(UIStackView *)self->_buttonsStackView setAlignment:0];
   [(UIStackView *)self->_buttonsStackView setDistribution:1];
   [v12 setTitle:v9 forState:0];
-  v37 = [MEMORY[0x277D75230] grayButtonConfiguration];
-  [v37 setContentInsets:{10.0, 0.0, 10.0, 0.0}];
-  v38 = [MEMORY[0x277D75348] systemRedColor];
-  [v37 setBaseForegroundColor:v38];
+  grayButtonConfiguration = [MEMORY[0x277D75230] grayButtonConfiguration];
+  [grayButtonConfiguration setContentInsets:{10.0, 0.0, 10.0, 0.0}];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [grayButtonConfiguration setBaseForegroundColor:systemRedColor];
 
-  [v12 setConfiguration:v37];
-  v39 = [v12 titleLabel];
-  [v39 setTextAlignment:1];
+  [v12 setConfiguration:grayButtonConfiguration];
+  titleLabel4 = [v12 titleLabel];
+  [titleLabel4 setTextAlignment:1];
 
   [v12 setEnabled:{objc_msgSend(v6, "BOOLValue")}];
   [v12 addTarget:self action:sel_noMatchTapped_ forControlEvents:64];
   [(UIStackView *)self->_buttonsStackView addArrangedSubview:v12];
   v40 = [MEMORY[0x277D75220] buttonWithType:1];
 
-  [v37 setBaseForegroundColor:0];
-  v41 = [v7 BOOLValue];
+  [grayButtonConfiguration setBaseForegroundColor:0];
+  bOOLValue = [v7 BOOLValue];
   v42 = v77;
-  if (v41)
+  if (bOOLValue)
   {
     v43 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill"];
-    [v37 setImage:v43];
+    [grayButtonConfiguration setImage:v43];
 
-    [v37 setImagePadding:5.0];
+    [grayButtonConfiguration setImagePadding:5.0];
     v44 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76988] scale:-1];
-    [v37 setPreferredSymbolConfigurationForImage:v44];
+    [grayButtonConfiguration setPreferredSymbolConfigurationForImage:v44];
 
-    v45 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v37 setBaseForegroundColor:v45];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [grayButtonConfiguration setBaseForegroundColor:secondaryLabelColor];
 
     v42 = v75;
   }
 
   [v40 setTitle:v42 forState:0];
-  [v40 setConfiguration:v37];
-  v46 = [v40 titleLabel];
-  [v46 setTextAlignment:1];
+  [v40 setConfiguration:grayButtonConfiguration];
+  titleLabel5 = [v40 titleLabel];
+  [titleLabel5 setTextAlignment:1];
 
-  v73 = v37;
+  v73 = grayButtonConfiguration;
   v74 = v6;
   v72 = v7;
   if ([v6 BOOLValue])
@@ -179,32 +179,32 @@ LABEL_7:
   [v40 setEnabled:v47];
   [v40 addTarget:self action:sel_markAsVerifiedTapped_ forControlEvents:64];
   [(UIStackView *)self->_buttonsStackView addArrangedSubview:v40];
-  v48 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
-  [v48 addSubview:self->_buttonsStackView];
+  contentView = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
+  [contentView addSubview:self->_buttonsStackView];
 
   v63 = MEMORY[0x277CCAAD0];
-  v70 = [(UIStackView *)self->_buttonsStackView topAnchor];
-  v71 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
-  v69 = [v71 topAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  topAnchor = [(UIStackView *)self->_buttonsStackView topAnchor];
+  contentView2 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v68 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v79[0] = v68;
-  v66 = [(UIStackView *)self->_buttonsStackView leadingAnchor];
-  v67 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
-  v65 = [v67 layoutMarginsGuide];
-  v64 = [v65 leadingAnchor];
-  v62 = [v66 constraintEqualToAnchor:v64];
+  leadingAnchor = [(UIStackView *)self->_buttonsStackView leadingAnchor];
+  contentView3 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v62 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v79[1] = v62;
-  v59 = [(UIStackView *)self->_buttonsStackView trailingAnchor];
-  v60 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
-  v49 = [v60 layoutMarginsGuide];
-  v50 = [v49 trailingAnchor];
-  v51 = [v59 constraintEqualToAnchor:v50];
+  trailingAnchor = [(UIStackView *)self->_buttonsStackView trailingAnchor];
+  contentView4 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
+  layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v51 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v79[2] = v51;
-  v52 = [(UIStackView *)self->_buttonsStackView bottomAnchor];
-  v53 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
-  v54 = [v53 layoutMarginsGuide];
-  v55 = [v54 bottomAnchor];
-  [v52 constraintEqualToAnchor:v55 constant:-5.0];
+  bottomAnchor = [(UIStackView *)self->_buttonsStackView bottomAnchor];
+  contentView5 = [(TUIStaticIdentitySpecifierButtonsCell *)self contentView];
+  layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+  [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v56 = v61 = v40;
   v79[3] = v56;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:4];
@@ -221,16 +221,16 @@ uint64_t __74__TUIStaticIdentitySpecifierButtonsCell_refreshCellContentsWithSpec
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)noMatchTapped:(id)a3
+- (void)noMatchTapped:(id)tapped
 {
-  v3 = [(PSTableCell *)self specifier];
-  [v3 performConfirmationAlternateAction];
+  specifier = [(PSTableCell *)self specifier];
+  [specifier performConfirmationAlternateAction];
 }
 
-- (void)markAsVerifiedTapped:(id)a3
+- (void)markAsVerifiedTapped:(id)tapped
 {
-  v3 = [(PSTableCell *)self specifier];
-  [v3 performConfirmationAction];
+  specifier = [(PSTableCell *)self specifier];
+  [specifier performConfirmationAction];
 }
 
 @end

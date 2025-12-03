@@ -1,17 +1,17 @@
 @interface NTKAnalogTimeGraphicCircularView
-+ (id)_newWorldClockViewForDevice:(id)a3;
++ (id)_newWorldClockViewForDevice:(id)device;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (double)tintedFraction;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)tintedPlatterColor;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 - (void)pauseLiveFullColorImageView;
 - (void)resumeLiveFullColorImageView;
-- (void)setFilterProvider:(id)a3;
-- (void)setTintedFraction:(double)a3;
-- (void)setTintedPlatterColor:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFilterProvider:(id)provider;
+- (void)setTintedFraction:(double)fraction;
+- (void)setTintedPlatterColor:(id)color;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -22,7 +22,7 @@
   v9.receiver = self;
   v9.super_class = NTKAnalogTimeGraphicCircularView;
   [(NTKAnalogTimeGraphicCircularView *)&v9 layoutSubviews];
-  v3 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
   [(NTKAnalogTimeGraphicCircularView *)self bounds];
   x = v10.origin.x;
   y = v10.origin.y;
@@ -40,12 +40,12 @@
   if (CGRectIsEmpty(v11) || (v12.origin.x = x, v12.origin.y = y, v12.size.width = width, v12.size.height = height, CGRectIsInfinite(v12)))
   {
 LABEL_4:
-    [v3 setBounds:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    [worldClockCircularView setBounds:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   }
 
   else
   {
-    [v3 setBounds:{x, y, width, height}];
+    [worldClockCircularView setBounds:{x, y, width, height}];
     v13.origin.x = x;
     v13.origin.y = y;
     v13.size.width = width;
@@ -55,19 +55,19 @@ LABEL_4:
     v14.origin.y = y;
     v14.size.width = width;
     v14.size.height = height;
-    [v3 setCenter:{MidX, CGRectGetMidY(v14)}];
+    [worldClockCircularView setCenter:{MidX, CGRectGetMidY(v14)}];
   }
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKAnalogTimeGraphicCircularView;
   v5 = [(NTKAnalogTimeGraphicCircularView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [objc_opt_class() _newWorldClockViewForDevice:v4];
+    v6 = [objc_opt_class() _newWorldClockViewForDevice:deviceCopy];
     worldClockCircularView = v5->_worldClockCircularView;
     v5->_worldClockCircularView = v6;
 
@@ -79,76 +79,76 @@ LABEL_4:
 
 - (void)pauseLiveFullColorImageView
 {
-  v2 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v2 pauseLiveFullColorImageView];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView pauseLiveFullColorImageView];
 }
 
 - (void)resumeLiveFullColorImageView
 {
-  v2 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v2 resumeLiveFullColorImageView];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView resumeLiveFullColorImageView];
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v7 configureWithImageProvider:v6 reason:a4];
+  providerCopy = provider;
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView configureWithImageProvider:providerCopy reason:reason];
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v5 setFilterProvider:v4];
+  providerCopy = provider;
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView setFilterProvider:providerCopy];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v4 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v4 transitionToMonochromeWithFraction:a3];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
 {
-  v2 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v2 updateMonochromeColor];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView updateMonochromeColor];
 }
 
 - (double)tintedFraction
 {
-  v2 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v2 tintedFraction];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView tintedFraction];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTintedFraction:(double)a3
+- (void)setTintedFraction:(double)fraction
 {
-  v4 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v4 setTintedFraction:a3];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView setTintedFraction:fraction];
 }
 
 - (id)tintedPlatterColor
 {
-  v2 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  v3 = [v2 tintedPlatterColor];
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  tintedPlatterColor = [worldClockCircularView tintedPlatterColor];
 
-  return v3;
+  return tintedPlatterColor;
 }
 
-- (void)setTintedPlatterColor:(id)a3
+- (void)setTintedPlatterColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
-  [v5 setTintedPlatterColor:v4];
+  colorCopy = color;
+  worldClockCircularView = [(NTKAnalogTimeGraphicCircularView *)self worldClockCircularView];
+  [worldClockCircularView setTintedPlatterColor:colorCopy];
 }
 
-+ (id)_newWorldClockViewForDevice:(id)a3
++ (id)_newWorldClockViewForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKWorldClockGraphicCircularViewSeconds alloc] initWithDevice:v3 smallTickCount:5];
+  deviceCopy = device;
+  v4 = [[NTKWorldClockGraphicCircularViewSeconds alloc] initWithDevice:deviceCopy smallTickCount:5];
 
   return v4;
 }

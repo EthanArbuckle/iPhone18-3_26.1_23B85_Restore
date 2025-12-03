@@ -1,18 +1,18 @@
 @interface ICSharedListeningService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation ICSharedListeningService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -24,8 +24,8 @@
   v9 = [v8 length];
   if (v9)
   {
-    v10 = [(ICSharedListeningService *)self controllers];
-    v11 = v10 == 0;
+    controllers = [(ICSharedListeningService *)self controllers];
+    v11 = controllers == 0;
 
     if (v11)
     {
@@ -44,8 +44,8 @@
     }
 
     v14 = [[ICHostedSharedListeningConnectionController alloc] initWithConnection:v7 bundleID:v8];
-    v15 = [(ICSharedListeningService *)self controllers];
-    [v15 addObject:v14];
+    controllers2 = [(ICSharedListeningService *)self controllers];
+    [controllers2 addObject:v14];
 
     v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ICSharedListeningConnectionServiceProtocol];
     [v7 setExportedObject:v14];
@@ -99,12 +99,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "ICSharedListeningService: %p: deallocating.", buf, 0xCu);
   }
 
-  v4 = [(ICSharedListeningService *)self controllers];
-  [v4 removeAllObjects];
+  controllers = [(ICSharedListeningService *)self controllers];
+  [controllers removeAllObjects];
 
   v5.receiver = self;
   v5.super_class = ICSharedListeningService;

@@ -1,11 +1,11 @@
 @interface SBDeviceApplicationRemoteTransientOverlayViewProvider
-- (BOOL)isPresentingOnBehalfOfApplication:(id)a3;
-- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)a3;
-- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)a3;
-- (BOOL)isPresentingTransientOverlay:(id)a3;
+- (BOOL)isPresentingOnBehalfOfApplication:(id)application;
+- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)string;
+- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)identifier;
+- (BOOL)isPresentingTransientOverlay:(id)overlay;
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)wantsResignActiveAssertion;
-- (SBDeviceApplicationRemoteTransientOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4 handlesSceneBackedRemoteTransientOverlaysOnly:(BOOL)a5;
+- (SBDeviceApplicationRemoteTransientOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate handlesSceneBackedRemoteTransientOverlaysOnly:(BOOL)only;
 - (SBWindowScene)windowScene;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (int64_t)preferredStatusBarStyle;
@@ -14,21 +14,21 @@
 - (void)_activateIfPossible;
 - (void)_deactivateIfPossible;
 - (void)_dismissPresentedTransientOverlaysForDeviceLock;
-- (void)_dismissRemoteOverlayVC:(id)a3;
-- (void)_handleAppSwitcherWillPresent:(id)a3;
-- (void)_preventKeyboardFocusForPresentedRemoteViewControllerIfNeeded:(id)a3;
-- (void)_redirectKeyboardFocusToPresentedRemoteViewController:(id)a3;
-- (void)_stopPreventingKeyboardFocusForRemoteViewController:(id)a3;
-- (void)_stopRedirectingKeyboardFocusToRemoteViewController:(id)a3;
-- (void)configureForSecureDisplay:(BOOL)a3;
+- (void)_dismissRemoteOverlayVC:(id)c;
+- (void)_handleAppSwitcherWillPresent:(id)present;
+- (void)_preventKeyboardFocusForPresentedRemoteViewControllerIfNeeded:(id)needed;
+- (void)_redirectKeyboardFocusToPresentedRemoteViewController:(id)controller;
+- (void)_stopPreventingKeyboardFocusForRemoteViewController:(id)controller;
+- (void)_stopRedirectingKeyboardFocusToRemoteViewController:(id)controller;
+- (void)configureForSecureDisplay:(BOOL)display;
 - (void)dealloc;
-- (void)dismissRemoteTransientOverlayViewController:(id)a3;
-- (void)noteDisplayModeChange:(int64_t)a3;
-- (void)presentRemoteTransientOverlayViewController:(id)a3 presentationRequest:(id)a4;
-- (void)transientOverlayViewControllerDidUpdateHIDEventDeferringDisabled:(id)a3;
-- (void)transientOverlayViewControllerNeedsSceneDeactivationUpdate:(id)a3;
-- (void)transientOverlayViewControllerNeedsStatusBarAppearanceUpdate:(id)a3;
-- (void)willDoBoundsPreservingRotationFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4;
+- (void)dismissRemoteTransientOverlayViewController:(id)controller;
+- (void)noteDisplayModeChange:(int64_t)change;
+- (void)presentRemoteTransientOverlayViewController:(id)controller presentationRequest:(id)request;
+- (void)transientOverlayViewControllerDidUpdateHIDEventDeferringDisabled:(id)disabled;
+- (void)transientOverlayViewControllerNeedsSceneDeactivationUpdate:(id)update;
+- (void)transientOverlayViewControllerNeedsStatusBarAppearanceUpdate:(id)update;
+- (void)willDoBoundsPreservingRotationFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
 @end
 
 @implementation SBDeviceApplicationRemoteTransientOverlayViewProvider
@@ -47,20 +47,20 @@
   }
 }
 
-- (SBDeviceApplicationRemoteTransientOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4 handlesSceneBackedRemoteTransientOverlaysOnly:(BOOL)a5
+- (SBDeviceApplicationRemoteTransientOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate handlesSceneBackedRemoteTransientOverlaysOnly:(BOOL)only
 {
   v11.receiver = self;
   v11.super_class = SBDeviceApplicationRemoteTransientOverlayViewProvider;
-  v6 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v11 initWithSceneHandle:a3 delegate:a4];
+  v6 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v11 initWithSceneHandle:handle delegate:delegate];
   v7 = v6;
   if (v6)
   {
-    v6->_handlesSceneBackedRemoteTransientOverlaysOnly = a5;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handleCoverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
+    v6->_handlesSceneBackedRemoteTransientOverlaysOnly = only;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleCoverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v7 selector:sel__handleAppSwitcherWillPresent_ name:@"SBUIAppSwitcherWillRevealNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleAppSwitcherWillPresent_ name:@"SBUIAppSwitcherWillRevealNotification" object:0];
   }
 
   return v7;
@@ -71,11 +71,11 @@
   v3 = +[_SBActiveRemoteTransientOverlayViewProviderRegistry sharedInstance];
   [v3 unregisterViewProvider:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"SBCoverSheetDidPresentNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBCoverSheetDidPresentNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"SBUIAppSwitcherWillRevealNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"SBUIAppSwitcherWillRevealNotification" object:0];
 
   v6.receiver = self;
   v6.super_class = SBDeviceApplicationRemoteTransientOverlayViewProvider;
@@ -84,35 +84,35 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(NSMutableArray *)self->_activePresentationContexts lastObject];
-  v3 = [v2 remoteViewController];
-  v4 = [v3 prefersStatusBarHidden];
+  lastObject = [(NSMutableArray *)self->_activePresentationContexts lastObject];
+  remoteViewController = [lastObject remoteViewController];
+  prefersStatusBarHidden = [remoteViewController prefersStatusBarHidden];
 
-  return v4;
+  return prefersStatusBarHidden;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(NSMutableArray *)self->_activePresentationContexts lastObject];
-  v3 = [v2 remoteViewController];
-  v4 = [v3 preferredStatusBarStyle];
+  lastObject = [(NSMutableArray *)self->_activePresentationContexts lastObject];
+  remoteViewController = [lastObject remoteViewController];
+  preferredStatusBarStyle = [remoteViewController preferredStatusBarStyle];
 
-  return v4;
+  return preferredStatusBarStyle;
 }
 
-- (void)configureForSecureDisplay:(BOOL)a3
+- (void)configureForSecureDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _dismissPresentedTransientOverlaysForDeviceLock];
   }
 }
 
-- (void)noteDisplayModeChange:(int64_t)a3
+- (void)noteDisplayModeChange:(int64_t)change
 {
   v5 = +[_SBActiveRemoteTransientOverlayViewProviderRegistry sharedInstance];
   v6 = v5;
-  if (a3 == 4)
+  if (change == 4)
   {
     [v5 registerViewProvider:self];
   }
@@ -125,12 +125,12 @@
 
 - (int64_t)priority
 {
-  v3 = [SBApp privacyPreflightController];
-  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v5 = [v4 application];
-  v6 = [v5 info];
-  v7 = [v6 applicationIdentity];
-  v8 = [v3 requiresPreflightForApplication:v7];
+  privacyPreflightController = [SBApp privacyPreflightController];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  info = [application info];
+  applicationIdentity = [info applicationIdentity];
+  v8 = [privacyPreflightController requiresPreflightForApplication:applicationIdentity];
 
   if (v8)
   {
@@ -166,15 +166,15 @@
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 remoteViewController];
-        v9 = [v8 isPresentedByBundleIdentifier:@"com.apple.PDUIApp"];
+        remoteViewController = [v7 remoteViewController];
+        v9 = [remoteViewController isPresentedByBundleIdentifier:@"com.apple.PDUIApp"];
 
         if ((v9 & 1) == 0)
         {
-          v10 = [v7 remoteViewController];
-          v11 = [v10 preferredSceneDeactivationReasonValue];
+          remoteViewController2 = [v7 remoteViewController];
+          preferredSceneDeactivationReasonValue = [remoteViewController2 preferredSceneDeactivationReasonValue];
 
-          if (v11)
+          if (preferredSceneDeactivationReasonValue)
           {
             continue;
           }
@@ -205,7 +205,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)willDoBoundsPreservingRotationFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4
+- (void)willDoBoundsPreservingRotationFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self handlesSceneBackedRemoteTransientOverlaysOnly])
@@ -230,8 +230,8 @@ LABEL_13:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v13 + 1) + 8 * v11) remoteViewController];
-          [v12 _doBoundsPreservingRotationFromInterfaceOrientation:a3 toInterfaceOrientation:a4];
+          remoteViewController = [*(*(&v13 + 1) + 8 * v11) remoteViewController];
+          [remoteViewController _doBoundsPreservingRotationFromInterfaceOrientation:orientation toInterfaceOrientation:interfaceOrientation];
 
           ++v11;
         }
@@ -245,10 +245,10 @@ LABEL_13:
   }
 }
 
-- (void)presentRemoteTransientOverlayViewController:(id)a3 presentationRequest:(id)a4
+- (void)presentRemoteTransientOverlayViewController:(id)controller presentationRequest:(id)request
 {
-  v23 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  requestCopy = request;
   if (!self->_activePresentationContexts)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -256,66 +256,66 @@ LABEL_13:
     self->_activePresentationContexts = v7;
   }
 
-  if (![(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self isPresentingTransientOverlay:v23])
+  if (![(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self isPresentingTransientOverlay:controllerCopy])
   {
-    v9 = [v6 presentationTarget];
+    presentationTarget = [requestCopy presentationTarget];
     v10 = objc_alloc_init(SBDeviceApplicationRemoteTransientOverlayPresentationContext);
-    [(SBDeviceApplicationRemoteTransientOverlayPresentationContext *)v10 setRemoteViewController:v23];
-    [(SBDeviceApplicationRemoteTransientOverlayPresentationContext *)v10 setPresentationTarget:v9];
-    if ([v6 shouldStashPictureInPictureIfNeeded])
+    [(SBDeviceApplicationRemoteTransientOverlayPresentationContext *)v10 setRemoteViewController:controllerCopy];
+    [(SBDeviceApplicationRemoteTransientOverlayPresentationContext *)v10 setPresentationTarget:presentationTarget];
+    if ([requestCopy shouldStashPictureInPictureIfNeeded])
     {
-      v11 = [SBApp windowSceneManager];
-      v12 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-      v13 = [v11 windowSceneForSceneHandle:v12];
+      windowSceneManager = [SBApp windowSceneManager];
+      sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+      v13 = [windowSceneManager windowSceneForSceneHandle:sceneHandle];
 
-      v14 = [v13 pictureInPictureManager];
-      v15 = [v14 acquireStashAssertionForReason:6 identifier:@"EmbeddedRemoteTransientOverlayPresentation"];
+      pictureInPictureManager = [v13 pictureInPictureManager];
+      v15 = [pictureInPictureManager acquireStashAssertionForReason:6 identifier:@"EmbeddedRemoteTransientOverlayPresentation"];
 
       [(SBDeviceApplicationRemoteTransientOverlayPresentationContext *)v10 setPIPStashAssertion:v15];
     }
 
     [(NSMutableArray *)self->_activePresentationContexts addObject:v10];
     [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _activateIfPossible];
-    [v23 setPresentationPrefersStatusBarHidden:1 initialStatusBarSettings:0];
-    [v23 setPresentationEmbeddedInTargetScene:1];
-    [v23 setTransientOverlayDelegate:self];
-    v16 = [v9 targetPredicate];
-    v17 = [v16 process];
-    v18 = v17;
-    if (v17)
+    [controllerCopy setPresentationPrefersStatusBarHidden:1 initialStatusBarSettings:0];
+    [controllerCopy setPresentationEmbeddedInTargetScene:1];
+    [controllerCopy setTransientOverlayDelegate:self];
+    targetPredicate = [presentationTarget targetPredicate];
+    process = [targetPredicate process];
+    v18 = process;
+    if (process)
     {
-      [v23 _setMediaOverridePID:{objc_msgSend(v17, "pid")}];
+      [controllerCopy _setMediaOverridePID:{objc_msgSend(process, "pid")}];
     }
 
-    [v23 beginAppearanceTransition:1 animated:0];
-    [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC addChildViewController:v23];
-    v19 = [v23 view];
-    v20 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC view];
-    [v20 bounds];
-    [v19 setFrame:?];
+    [controllerCopy beginAppearanceTransition:1 animated:0];
+    [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC addChildViewController:controllerCopy];
+    view = [controllerCopy view];
+    view2 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    v21 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC view];
-    v22 = [v23 view];
-    [v21 addSubview:v22];
+    view3 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self->_containerVC view];
+    view4 = [controllerCopy view];
+    [view3 addSubview:view4];
 
-    [v23 didMoveToParentViewController:self->_containerVC];
-    [v23 endAppearanceTransition];
-    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _redirectKeyboardFocusToPresentedRemoteViewController:v23];
+    [controllerCopy didMoveToParentViewController:self->_containerVC];
+    [controllerCopy endAppearanceTransition];
+    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _redirectKeyboardFocusToPresentedRemoteViewController:controllerCopy];
   }
 }
 
-- (void)dismissRemoteTransientOverlayViewController:(id)a3
+- (void)dismissRemoteTransientOverlayViewController:(id)controller
 {
-  v4 = a3;
-  if ([(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self isPresentingTransientOverlay:v4])
+  controllerCopy = controller;
+  if ([(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self isPresentingTransientOverlay:controllerCopy])
   {
-    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _dismissRemoteOverlayVC:v4];
+    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _dismissRemoteOverlayVC:controllerCopy];
     activePresentationContexts = self->_activePresentationContexts;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __101__SBDeviceApplicationRemoteTransientOverlayViewProvider_dismissRemoteTransientOverlayViewController___block_invoke;
     v6[3] = &unk_2783C10B0;
-    v7 = v4;
+    v7 = controllerCopy;
     [(NSMutableArray *)activePresentationContexts removeObjectAtIndex:[(NSMutableArray *)activePresentationContexts indexOfObjectPassingTest:v6]];
     if (![(NSMutableArray *)self->_activePresentationContexts count])
     {
@@ -334,10 +334,10 @@ BOOL __101__SBDeviceApplicationRemoteTransientOverlayViewProvider_dismissRemoteT
   return v4;
 }
 
-- (BOOL)isPresentingTransientOverlay:(id)a3
+- (BOOL)isPresentingTransientOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = v4;
+  overlayCopy = overlay;
+  v5 = overlayCopy;
   activePresentationContexts = self->_activePresentationContexts;
   if (activePresentationContexts)
   {
@@ -345,7 +345,7 @@ BOOL __101__SBDeviceApplicationRemoteTransientOverlayViewProvider_dismissRemoteT
     v8[1] = 3221225472;
     v8[2] = __86__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentingTransientOverlay___block_invoke;
     v8[3] = &unk_2783C10B0;
-    v9 = v4;
+    v9 = overlayCopy;
     LOBYTE(activePresentationContexts) = [(NSMutableArray *)activePresentationContexts indexOfObjectPassingTest:v8]!= 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -362,18 +362,18 @@ BOOL __86__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentingTra
 
 - (SBWindowScene)windowScene
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  v4 = [v3 windowSceneForOverlayViewProvider:self];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  v4 = [delegate windowSceneForOverlayViewProvider:self];
 
   return v4;
 }
 
-- (BOOL)isPresentingOnBehalfOfApplication:(id)a3
+- (BOOL)isPresentingOnBehalfOfApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = [v5 application];
-  if ([v6 isSameExecutableAsApplication:v4])
+  applicationCopy = application;
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  if ([application isSameExecutableAsApplication:applicationCopy])
   {
     v7 = 1;
   }
@@ -385,7 +385,7 @@ BOOL __86__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentingTra
     v10[1] = 3221225472;
     v10[2] = __91__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentingOnBehalfOfApplication___block_invoke;
     v10[3] = &unk_2783C10D8;
-    v11 = v4;
+    v11 = applicationCopy;
     v7 = [(NSMutableArray *)activePresentationContexts bs_containsObjectPassingTest:v10];
   }
 
@@ -401,64 +401,64 @@ uint64_t __91__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentin
   return v5;
 }
 
-- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)a3
+- (BOOL)isPresentingOnBehalfOfSceneIdentityTokenString:(id)string
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = [v5 sceneIfExists];
-  v7 = [v6 identityToken];
-  v8 = [v7 stringRepresentation];
-  v9 = [v8 isEqualToString:v4];
+  stringCopy = string;
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  identityToken = [sceneIfExists identityToken];
+  stringRepresentation = [identityToken stringRepresentation];
+  v9 = [stringRepresentation isEqualToString:stringCopy];
 
   return v9;
 }
 
-- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)a3
+- (BOOL)isPresentingOnBehalfOfScenePersistentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = [v5 persistenceIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  identifierCopy = identifier;
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  persistenceIdentifier = [sceneHandle persistenceIdentifier];
+  v7 = [persistenceIdentifier isEqualToString:identifierCopy];
 
   return v7;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v2 = [(NSMutableArray *)self->_activePresentationContexts lastObject];
-  v3 = [v2 remoteViewController];
-  v4 = [v3 preferredInterfaceOrientationForPresentation];
+  lastObject = [(NSMutableArray *)self->_activePresentationContexts lastObject];
+  remoteViewController = [lastObject remoteViewController];
+  preferredInterfaceOrientationForPresentation = [remoteViewController preferredInterfaceOrientationForPresentation];
 
-  return v4;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(NSMutableArray *)self->_activePresentationContexts lastObject];
-  v3 = [v2 remoteViewController];
-  v4 = [v3 supportedInterfaceOrientations];
+  lastObject = [(NSMutableArray *)self->_activePresentationContexts lastObject];
+  remoteViewController = [lastObject remoteViewController];
+  supportedInterfaceOrientations = [remoteViewController supportedInterfaceOrientations];
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
-- (void)transientOverlayViewControllerNeedsSceneDeactivationUpdate:(id)a3
+- (void)transientOverlayViewControllerNeedsSceneDeactivationUpdate:(id)update
 {
-  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  [v4 overlayViewProviderNeedsUpdateResignActiveAssertions:self];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  [delegate overlayViewProviderNeedsUpdateResignActiveAssertions:self];
 }
 
-- (void)transientOverlayViewControllerNeedsStatusBarAppearanceUpdate:(id)a3
+- (void)transientOverlayViewControllerNeedsStatusBarAppearanceUpdate:(id)update
 {
-  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  [v4 overlayViewProviderNeedsStatusBarAppearanceUpdate:self];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  [delegate overlayViewProviderNeedsStatusBarAppearanceUpdate:self];
 }
 
-- (void)transientOverlayViewControllerDidUpdateHIDEventDeferringDisabled:(id)a3
+- (void)transientOverlayViewControllerDidUpdateHIDEventDeferringDisabled:(id)disabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disabledCopy = disabled;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = disabledCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -538,8 +538,8 @@ uint64_t __91__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentin
               objc_enumerationMutation(v3);
             }
 
-            v8 = [*(*(&v12 + 1) + 8 * v7) remoteViewController];
-            [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _dismissRemoteOverlayVC:v8];
+            remoteViewController = [*(*(&v12 + 1) + 8 * v7) remoteViewController];
+            [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _dismissRemoteOverlayVC:remoteViewController];
 
             ++v7;
           }
@@ -565,112 +565,112 @@ uint64_t __91__SBDeviceApplicationRemoteTransientOverlayViewProvider_isPresentin
   }
 }
 
-- (void)_dismissRemoteOverlayVC:(id)a3
+- (void)_dismissRemoteOverlayVC:(id)c
 {
-  v5 = a3;
-  [v5 beginAppearanceTransition:0 animated:0];
-  [v5 willMoveToParentViewController:0];
-  v4 = [v5 view];
-  [v4 removeFromSuperview];
+  cCopy = c;
+  [cCopy beginAppearanceTransition:0 animated:0];
+  [cCopy willMoveToParentViewController:0];
+  view = [cCopy view];
+  [view removeFromSuperview];
 
-  [v5 removeFromParentViewController];
-  [v5 endAppearanceTransition];
-  [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _stopRedirectingKeyboardFocusToRemoteViewController:v5];
-  [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _stopPreventingKeyboardFocusForRemoteViewController:v5];
-  [v5 setTransientOverlayDelegate:0];
+  [cCopy removeFromParentViewController];
+  [cCopy endAppearanceTransition];
+  [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _stopRedirectingKeyboardFocusToRemoteViewController:cCopy];
+  [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self _stopPreventingKeyboardFocusForRemoteViewController:cCopy];
+  [cCopy setTransientOverlayDelegate:0];
 }
 
-- (void)_redirectKeyboardFocusToPresentedRemoteViewController:(id)a3
+- (void)_redirectKeyboardFocusToPresentedRemoteViewController:(id)controller
 {
-  v27 = a3;
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = [v5 application];
-  v7 = [v6 processState];
-  v8 = [v7 pid];
-  v9 = [v5 sceneIfExists];
-  v10 = [v9 identityToken];
-  v11 = v10;
-  if (v9 && !v10)
+  controllerCopy = controller;
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  processState = [application processState];
+  v8 = [processState pid];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  identityToken = [sceneIfExists identityToken];
+  v11 = identityToken;
+  if (sceneIfExists && !identityToken)
   {
-    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)a2 _redirectKeyboardFocusToPresentedRemoteViewController:v5, &v28];
+    [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)a2 _redirectKeyboardFocusToPresentedRemoteViewController:sceneHandle, &v28];
     v22 = v28;
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (v10 && [v27 serviceProcessIdentifier] >= 1)
+  if (identityToken && [controllerCopy serviceProcessIdentifier] >= 1)
   {
-    v26 = v6;
-    v24 = [v27 serviceProcessIdentifier];
-    [v27 clientSceneIdentityToken];
+    v26 = application;
+    serviceProcessIdentifier = [controllerCopy serviceProcessIdentifier];
+    [controllerCopy clientSceneIdentityToken];
     v12 = v23 = v8;
     v13 = +[SBWorkspace mainWorkspace];
-    v14 = [v13 keyboardFocusController];
-    v15 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-    v16 = [v15 hostWindowForOverlayViewProvider:self];
-    v17 = v24;
+    keyboardFocusController = [v13 keyboardFocusController];
+    delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+    v16 = [delegate hostWindowForOverlayViewProvider:self];
+    v17 = serviceProcessIdentifier;
     v25 = v12;
-    v18 = [v14 redirectFocusForReason:@"remoteTransientOverlay-identityToken" fromProcessIdentifier:v23 fromSceneIdentityToken:v11 toProcessIdentifier:v17 toSceneIdentityToken:v12 inContainingWindow:v16];
+    v18 = [keyboardFocusController redirectFocusForReason:@"remoteTransientOverlay-identityToken" fromProcessIdentifier:v23 fromSceneIdentityToken:v11 toProcessIdentifier:v17 toSceneIdentityToken:v12 inContainingWindow:v16];
 
     keyboardFocusRedirectionsByRemoteVC = self->_keyboardFocusRedirectionsByRemoteVC;
     if (!keyboardFocusRedirectionsByRemoteVC)
     {
-      v20 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       v21 = self->_keyboardFocusRedirectionsByRemoteVC;
-      self->_keyboardFocusRedirectionsByRemoteVC = v20;
+      self->_keyboardFocusRedirectionsByRemoteVC = weakToStrongObjectsMapTable;
 
       keyboardFocusRedirectionsByRemoteVC = self->_keyboardFocusRedirectionsByRemoteVC;
     }
 
-    [(NSMapTable *)keyboardFocusRedirectionsByRemoteVC setObject:v18 forKey:v27];
+    [(NSMapTable *)keyboardFocusRedirectionsByRemoteVC setObject:v18 forKey:controllerCopy];
 
     v22 = v25;
-    v6 = v26;
+    application = v26;
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_stopRedirectingKeyboardFocusToRemoteViewController:(id)a3
+- (void)_stopRedirectingKeyboardFocusToRemoteViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   v4 = [(NSMapTable *)self->_keyboardFocusRedirectionsByRemoteVC objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMapTable *)self->_keyboardFocusRedirectionsByRemoteVC removeObjectForKey:v6];
+    [(NSMapTable *)self->_keyboardFocusRedirectionsByRemoteVC removeObjectForKey:controllerCopy];
   }
 }
 
-- (void)_preventKeyboardFocusForPresentedRemoteViewControllerIfNeeded:(id)a3
+- (void)_preventKeyboardFocusForPresentedRemoteViewControllerIfNeeded:(id)needed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientSceneIdentityToken];
-  if (v5)
+  neededCopy = needed;
+  clientSceneIdentityToken = [neededCopy clientSceneIdentityToken];
+  if (clientSceneIdentityToken)
   {
     keyboardFocusPreventionAssertionsByRemoteVC = self->_keyboardFocusPreventionAssertionsByRemoteVC;
     if (!keyboardFocusPreventionAssertionsByRemoteVC)
     {
-      v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       v8 = self->_keyboardFocusPreventionAssertionsByRemoteVC;
-      self->_keyboardFocusPreventionAssertionsByRemoteVC = v7;
+      self->_keyboardFocusPreventionAssertionsByRemoteVC = weakToStrongObjectsMapTable;
 
       keyboardFocusPreventionAssertionsByRemoteVC = self->_keyboardFocusPreventionAssertionsByRemoteVC;
     }
 
-    v9 = [(NSMapTable *)keyboardFocusPreventionAssertionsByRemoteVC objectForKey:v4];
+    v9 = [(NSMapTable *)keyboardFocusPreventionAssertionsByRemoteVC objectForKey:neededCopy];
 
     if (!v9)
     {
       v12 = +[SBWorkspace mainWorkspace];
-      v13 = [v12 keyboardFocusController];
-      v14 = [v13 preventFocusForSceneWithIdentityToken:v5 reason:@"embedded remote transient overlay disabling event deferral"];
+      keyboardFocusController = [v12 keyboardFocusController];
+      v14 = [keyboardFocusController preventFocusForSceneWithIdentityToken:clientSceneIdentityToken reason:@"embedded remote transient overlay disabling event deferral"];
 
-      [(NSMapTable *)self->_keyboardFocusPreventionAssertionsByRemoteVC setObject:v14 forKey:v4];
+      [(NSMapTable *)self->_keyboardFocusPreventionAssertionsByRemoteVC setObject:v14 forKey:neededCopy];
       goto LABEL_12;
     }
 
@@ -678,7 +678,7 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v4;
+      v16 = neededCopy;
       v11 = "Not taking new key focus prevention assertion for embedded remote alert %{public}@ because it already has one.";
 LABEL_9:
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, v11, &v15, 0xCu);
@@ -691,7 +691,7 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v4;
+      v16 = neededCopy;
       v11 = "Not taking key focus prevention assertion for embedded remote alert %{public}@ because it doesn't have a scene identity.";
       goto LABEL_9;
     }
@@ -700,15 +700,15 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)_stopPreventingKeyboardFocusForRemoteViewController:(id)a3
+- (void)_stopPreventingKeyboardFocusForRemoteViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   v4 = [(NSMapTable *)self->_keyboardFocusPreventionAssertionsByRemoteVC objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMapTable *)self->_keyboardFocusPreventionAssertionsByRemoteVC removeObjectForKey:v6];
+    [(NSMapTable *)self->_keyboardFocusPreventionAssertionsByRemoteVC removeObjectForKey:controllerCopy];
   }
 }
 
@@ -735,13 +735,13 @@ LABEL_12:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 presentationTarget];
-        v10 = [v9 shouldDismissOnUILock];
+        presentationTarget = [v8 presentationTarget];
+        shouldDismissOnUILock = [presentationTarget shouldDismissOnUILock];
 
-        if (v10)
+        if (shouldDismissOnUILock)
         {
-          v11 = [v8 remoteViewController];
-          [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self dismissRemoteTransientOverlayViewController:v11];
+          remoteViewController = [v8 remoteViewController];
+          [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self dismissRemoteTransientOverlayViewController:remoteViewController];
         }
       }
 
@@ -752,14 +752,14 @@ LABEL_12:
   }
 }
 
-- (void)_handleAppSwitcherWillPresent:(id)a3
+- (void)_handleAppSwitcherWillPresent:(id)present
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableArray *)self->_activePresentationContexts copy:a3];
+  v4 = [(NSMutableArray *)self->_activePresentationContexts copy:present];
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -775,13 +775,13 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 presentationTarget];
-        v11 = [v10 shouldDismissInSwitcher];
+        presentationTarget = [v9 presentationTarget];
+        shouldDismissInSwitcher = [presentationTarget shouldDismissInSwitcher];
 
-        if (v11)
+        if (shouldDismissInSwitcher)
         {
-          v12 = [v9 remoteViewController];
-          [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self dismissRemoteTransientOverlayViewController:v12];
+          remoteViewController = [v9 remoteViewController];
+          [(SBDeviceApplicationRemoteTransientOverlayViewProvider *)self dismissRemoteTransientOverlayViewController:remoteViewController];
         }
       }
 

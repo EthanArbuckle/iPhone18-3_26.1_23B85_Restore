@@ -12,35 +12,35 @@
 - (MTLDevice)device;
 - (MTLRenderPipelineReflection)reflection;
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsRenderPipelineState)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsRenderPipelineState)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
-- (id)fragmentFunctionHandleWithFunction:(id)a3;
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)meshFunctionHandleWithFunction:(id)a3;
+- (id)fragmentFunctionHandleWithFunction:(id)function;
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)meshFunctionHandleWithFunction:(id)function;
 - (id)newFragmentShaderDebugInfo;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 selector:(SEL)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor selector:(SEL)selector;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
 - (id)newRenderPipelineDescriptorForSpecialization;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error;
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
 - (id)newVertexShaderDebugInfo;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 selector:(SEL)a4;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)objectFunctionHandleWithFunction:(id)a3;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor selector:(SEL)selector;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)objectFunctionHandleWithFunction:(id)function;
 - (id)pipelineBinaries;
-- (id)reflectionForFunctionDescriptor:(id)a3;
-- (id)tileFunctionHandleWithFunction:(id)a3;
-- (id)vertexFunctionHandleWithFunction:(id)a3;
+- (id)reflectionForFunctionDescriptor:(id)descriptor;
+- (id)tileFunctionHandleWithFunction:(id)function;
+- (id)vertexFunctionHandleWithFunction:(id)function;
 - (int64_t)textureWriteRoundingMode;
 - (unint64_t)allocatedSize;
 - (unint64_t)gpuAddress;
 - (unint64_t)gpuHandle;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)imageblockSampleLength;
 - (unint64_t)maxTotalThreadgroupsPerMeshGrid;
 - (unint64_t)maxTotalThreadsPerMeshThreadgroup;
@@ -58,11 +58,11 @@
 
 @implementation MTLToolsRenderPipelineState
 
-- (MTLToolsRenderPipelineState)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsRenderPipelineState)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLToolsRenderPipelineState;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (void)dealloc
@@ -74,9 +74,9 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (MTLDevice)device
@@ -113,177 +113,177 @@
 
 - (unint64_t)maxTotalThreadsPerThreadgroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxTotalThreadsPerThreadgroup];
+  return [baseObject maxTotalThreadsPerThreadgroup];
 }
 
 - (BOOL)threadgroupSizeMatchesTileSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 threadgroupSizeMatchesTileSize];
+  return [baseObject threadgroupSizeMatchesTileSize];
 }
 
 - (BOOL)supportIndirectCommandBuffers
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 supportIndirectCommandBuffers];
+  return [baseObject supportIndirectCommandBuffers];
 }
 
 - (int64_t)textureWriteRoundingMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 textureWriteRoundingMode];
+  return [baseObject textureWriteRoundingMode];
 }
 
 - (id)newVertexShaderDebugInfo
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newVertexShaderDebugInfo];
+  return [baseObject newVertexShaderDebugInfo];
 }
 
 - (id)newFragmentShaderDebugInfo
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newFragmentShaderDebugInfo];
+  return [baseObject newFragmentShaderDebugInfo];
 }
 
 - (unsigned)getVertexShaderTelemetryID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getVertexShaderTelemetryID];
+  return [baseObject getVertexShaderTelemetryID];
 }
 
 - (unsigned)getFragmentShaderTelemetryID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getFragmentShaderTelemetryID];
+  return [baseObject getFragmentShaderTelemetryID];
 }
 
 - (unint64_t)imageblockSampleLength
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 imageblockSampleLength];
+  return [baseObject imageblockSampleLength];
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v6 = *a3;
-  return [v4 imageblockMemoryLengthForDimensions:&v6];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = *dimensions;
+  return [baseObject imageblockMemoryLengthForDimensions:&v6];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unsigned)explicitVisibilityGroupID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 explicitVisibilityGroupID];
+  return [baseObject explicitVisibilityGroupID];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 - (MTLDebugInstrumentationData)vertexDebugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 vertexDebugInstrumentationData];
+  return [baseObject vertexDebugInstrumentationData];
 }
 
 - (MTLDebugInstrumentationData)fragmentDebugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 fragmentDebugInstrumentationData];
+  return [baseObject fragmentDebugInstrumentationData];
 }
 
 - (MTLDebugInstrumentationData)tileDebugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 tileDebugInstrumentationData];
+  return [baseObject tileDebugInstrumentationData];
 }
 
 - (MTLDebugInstrumentationData)objectDebugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 objectDebugInstrumentationData];
+  return [baseObject objectDebugInstrumentationData];
 }
 
 - (MTLDebugInstrumentationData)meshDebugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 meshDebugInstrumentationData];
+  return [baseObject meshDebugInstrumentationData];
 }
 
 - (unint64_t)maxTotalThreadsPerObjectThreadgroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxTotalThreadsPerObjectThreadgroup];
+  return [baseObject maxTotalThreadsPerObjectThreadgroup];
 }
 
 - (unint64_t)maxTotalThreadsPerMeshThreadgroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxTotalThreadsPerMeshThreadgroup];
+  return [baseObject maxTotalThreadsPerMeshThreadgroup];
 }
 
 - (unint64_t)objectThreadExecutionWidth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 objectThreadExecutionWidth];
+  return [baseObject objectThreadExecutionWidth];
 }
 
 - (unint64_t)meshThreadExecutionWidth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 meshThreadExecutionWidth];
+  return [baseObject meshThreadExecutionWidth];
 }
 
 - (unint64_t)maxTotalThreadgroupsPerMeshGrid
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxTotalThreadgroupsPerMeshGrid];
+  return [baseObject maxTotalThreadgroupsPerMeshGrid];
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerTileThreadgroup
@@ -343,49 +343,49 @@
   return result;
 }
 
-- (id)vertexFunctionHandleWithFunction:(id)a3
+- (id)vertexFunctionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)fragmentFunctionHandleWithFunction:(id)a3
+- (id)fragmentFunctionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)tileFunctionHandleWithFunction:(id)a3
+- (id)tileFunctionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)objectFunctionHandleWithFunction:(id)a3
+- (id)objectFunctionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)meshFunctionHandleWithFunction:(id)a3
+- (id)meshFunctionHandleWithFunction:(id)function
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v5, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v5, function, self);
 }
 
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage
 {
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return MTLFunctionHandleToToolsFunctionHandle(v6, a3, self);
+  return MTLFunctionHandleToToolsFunctionHandle(v6, function, self);
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 selector:(SEL)a4
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor selector:(SEL)selector
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -399,7 +399,7 @@
   return result;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -413,9 +413,9 @@
   return result;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error
 {
-  v8 = unwrapArray(a3);
+  v8 = unwrapArray(functions);
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
@@ -428,7 +428,7 @@
   return result;
 }
 
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -442,19 +442,19 @@
   return result;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   v7 = objc_alloc_init(MEMORY[0x277CD6F80]);
-  [v7 setVertexAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(a3, "vertexAdditionalBinaryFunctions"))}];
-  [v7 setFragmentAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(a3, "fragmentAdditionalBinaryFunctions"))}];
-  [v7 setTileAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(a3, "tileAdditionalBinaryFunctions"))}];
-  [v7 setObjectAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(a3, "objectAdditionalBinaryFunctions"))}];
-  [v7 setMeshAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(a3, "meshAdditionalBinaryFunctions"))}];
-  [v7 setVertexAdditionalBinaryFunctionResourceIndices:{objc_msgSend(a3, "vertexAdditionalBinaryFunctionResourceIndices")}];
-  [v7 setFragmentAdditionalBinaryFunctionResourceIndices:{objc_msgSend(a3, "fragmentAdditionalBinaryFunctionResourceIndices")}];
-  [v7 setTileAdditionalBinaryFunctionResourceIndices:{objc_msgSend(a3, "tileAdditionalBinaryFunctionResourceIndices")}];
-  [v7 setObjectAdditionalBinaryFunctionResourceIndices:{objc_msgSend(a3, "objectAdditionalBinaryFunctionResourceIndices")}];
-  [v7 setMeshAdditionalBinaryFunctionResourceIndices:{objc_msgSend(a3, "meshAdditionalBinaryFunctionResourceIndices")}];
+  [v7 setVertexAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(functions, "vertexAdditionalBinaryFunctions"))}];
+  [v7 setFragmentAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(functions, "fragmentAdditionalBinaryFunctions"))}];
+  [v7 setTileAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(functions, "tileAdditionalBinaryFunctions"))}];
+  [v7 setObjectAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(functions, "objectAdditionalBinaryFunctions"))}];
+  [v7 setMeshAdditionalBinaryFunctions:{unwrapArray(objc_msgSend(functions, "meshAdditionalBinaryFunctions"))}];
+  [v7 setVertexAdditionalBinaryFunctionResourceIndices:{objc_msgSend(functions, "vertexAdditionalBinaryFunctionResourceIndices")}];
+  [v7 setFragmentAdditionalBinaryFunctionResourceIndices:{objc_msgSend(functions, "fragmentAdditionalBinaryFunctionResourceIndices")}];
+  [v7 setTileAdditionalBinaryFunctionResourceIndices:{objc_msgSend(functions, "tileAdditionalBinaryFunctionResourceIndices")}];
+  [v7 setObjectAdditionalBinaryFunctionResourceIndices:{objc_msgSend(functions, "objectAdditionalBinaryFunctionResourceIndices")}];
+  [v7 setMeshAdditionalBinaryFunctionResourceIndices:{objc_msgSend(functions, "meshAdditionalBinaryFunctionResourceIndices")}];
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   if (!v8)
@@ -467,7 +467,7 @@
   return v9;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 selector:(SEL)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor selector:(SEL)selector
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -481,7 +481,7 @@
   return result;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -497,33 +497,33 @@
 
 - (id)pipelineBinaries
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pipelineBinaries];
+  return [baseObject pipelineBinaries];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (MTLRenderPipelineReflection)reflection
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 reflection];
+  return [baseObject reflection];
 }
 
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -542,13 +542,13 @@
   return v9;
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v8)
   {
-    v9 = MTLFunctionHandleToToolsFunctionHandleWithBinaryFunction(v8, a3, self);
+    v9 = MTLFunctionHandleToToolsFunctionHandleWithBinaryFunction(v8, function, self);
   }
 
   else
@@ -561,12 +561,12 @@
   return v9;
 }
 
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTLToolsRenderPipelineState;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4RenderPipelineBinaryFunctionsDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4RenderPipelineBinaryFunctionsDescriptor:functions];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -584,29 +584,29 @@
 
 - (id)newRenderPipelineDescriptorForSpecialization
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newRenderPipelineDescriptorForSpecialization];
+  return [baseObject newRenderPipelineDescriptorForSpecialization];
 }
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor stage:(unint64_t)stage
 {
   v7 = objc_autoreleasePoolPush();
   v11.receiver = self;
   v11.super_class = MTLToolsRenderPipelineState;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v11 device] newUnwrappedMTL4FunctionDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v11 device] newUnwrappedMTL4FunctionDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   objc_autoreleasePoolPop(v7);
   return v9;
 }
 
-- (id)reflectionForFunctionDescriptor:(id)a3
+- (id)reflectionForFunctionDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v9.receiver = self;
   v9.super_class = MTLToolsRenderPipelineState;
-  v6 = [(MTLDevice *)[(MTLToolsObject *)&v9 device] newUnwrappedMTL4FunctionDescriptor:a3];
+  v6 = [(MTLDevice *)[(MTLToolsObject *)&v9 device] newUnwrappedMTL4FunctionDescriptor:descriptor];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   objc_autoreleasePoolPop(v5);

@@ -1,10 +1,10 @@
 @interface NUVisionSegmentationRequest
 + (void)warmUp;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)newRenderJob;
 - (void)_commonInit;
-- (void)takePropertiesFromRequest:(id)a3;
+- (void)takePropertiesFromRequest:(id)request;
 @end
 
 @implementation NUVisionSegmentationRequest
@@ -43,17 +43,17 @@
     v7 = off_1E810AF10[v6];
   }
 
-  v8 = [(NUVisionSegmentationRequest *)self scalePolicy];
-  v9 = [v3 stringByAppendingFormat:@"Segmentation Type: %@, Vision Segmentation Policy: %@, Scale Policy: %@", v5, v7, v8];
+  scalePolicy = [(NUVisionSegmentationRequest *)self scalePolicy];
+  v9 = [v3 stringByAppendingFormat:@"Segmentation Type: %@, Vision Segmentation Policy: %@, Scale Policy: %@", v5, v7, scalePolicy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUVisionSegmentationRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -66,15 +66,15 @@
   return v5;
 }
 
-- (void)takePropertiesFromRequest:(id)a3
+- (void)takePropertiesFromRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NURenderRequest *)self sampleMode];
+  requestCopy = request;
+  sampleMode = [(NURenderRequest *)self sampleMode];
   v6.receiver = self;
   v6.super_class = NUVisionSegmentationRequest;
-  [(NURenderRequest *)&v6 takePropertiesFromRequest:v4];
+  [(NURenderRequest *)&v6 takePropertiesFromRequest:requestCopy];
 
-  [(NURenderRequest *)self setSampleMode:v5];
+  [(NURenderRequest *)self setSampleMode:sampleMode];
 }
 
 - (void)_commonInit
@@ -105,9 +105,9 @@
   [v2 addObject:v5];
 
   v6 = +[NUFactory sharedFactory];
-  v7 = [v6 visionSession];
+  visionSession = [v6 visionSession];
   v11 = 0;
-  v8 = [v7 prepareForPerformingRequests:v2 error:&v11];
+  v8 = [visionSession prepareForPerformingRequests:v2 error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0)

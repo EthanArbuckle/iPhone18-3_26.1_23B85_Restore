@@ -1,14 +1,14 @@
 @interface RideBookingOutlineController
 + (id)cellClasses;
 + (id)headerFooterViewClasses;
-- (RideBookingOutlineController)initWithCollectionView:(id)a3;
+- (RideBookingOutlineController)initWithCollectionView:(id)view;
 - (RideBookingRoutePlanningTableViewDataSourceDelegate)delegate;
-- (void)_configureRideOptionsSources:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)configureWithRideBookingRideOptionState:(id)a3;
+- (void)_configureRideOptionsSources:(id)sources;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)configureWithRideBookingRideOptionState:(id)state;
 - (void)dealloc;
-- (void)didExpandSection:(id)a3;
+- (void)didExpandSection:(id)section;
 - (void)prepareOutlineSections;
 - (void)tableViewDismissed;
 @end
@@ -22,22 +22,22 @@
   return WeakRetained;
 }
 
-- (void)didExpandSection:(id)a3
+- (void)didExpandSection:(id)section
 {
-  v4 = a3;
-  v5 = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
-  [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:v4];
+  sectionCopy = section;
+  applicationSectionIsExpanded = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
+  [applicationSectionIsExpanded setObject:&__kCFBooleanTrue forKeyedSubscript:sectionCopy];
 
   [(RideBookingOutlineController *)self prepareOutlineSections];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v4 = sub_100FB2D54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Applications did uninstall; reloading", buf, 0xCu);
   }
 
@@ -52,13 +52,13 @@
   objc_destroyWeak(buf);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v4 = sub_100FB2D54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Applications did install; reloading", buf, 0xCu);
   }
 
@@ -79,7 +79,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Table view dismissed", &v5, 0xCu);
   }
 
@@ -87,18 +87,18 @@
   [(RideBookingOutlineController *)self setApplicationSectionIsExpanded:v4];
 }
 
-- (void)_configureRideOptionsSources:(id)a3
+- (void)_configureRideOptionsSources:(id)sources
 {
-  v45 = a3;
+  sourcesCopy = sources;
   v46 = objc_alloc_init(NSMutableArray);
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v4 = [v45 rideOptionStatusMap];
-  v5 = [v4 allValues];
+  rideOptionStatusMap = [sourcesCopy rideOptionStatusMap];
+  allValues = [rideOptionStatusMap allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v58 objects:v63 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
   if (v6)
   {
     v7 = v6;
@@ -109,15 +109,15 @@
       {
         if (*v59 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v58 + 1) + 8 * i);
-        v11 = [v10 application];
-        if ([v11 enabled])
+        application = [v10 application];
+        if ([application enabled])
         {
-          v12 = [v10 rideOptions];
-          v13 = [v12 count];
+          rideOptions = [v10 rideOptions];
+          v13 = [rideOptions count];
 
           if (v13)
           {
@@ -130,14 +130,14 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v58 objects:v63 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [v45 installedSuggestions];
-  v15 = [RidesharingAppPreferenceManager sortedRideOptionStatuses:v46 withStoreOrdering:v14];
+  installedSuggestions = [sourcesCopy installedSuggestions];
+  v15 = [RidesharingAppPreferenceManager sortedRideOptionStatuses:v46 withStoreOrdering:installedSuggestions];
   [(RideBookingOutlineController *)self setRideOptionsStatuses:v15];
 
   v16 = objc_alloc_init(NSMutableDictionary);
@@ -168,23 +168,23 @@
 
         v52 = v21;
         v22 = *(*(&v54 + 1) + 8 * v21);
-        v23 = [v22 application];
-        v24 = [v23 identifier];
+        application2 = [v22 application];
+        identifier = [application2 identifier];
 
-        v25 = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
-        v26 = [v25 objectForKey:v24];
+        applicationSectionIsExpanded = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
+        v26 = [applicationSectionIsExpanded objectForKey:identifier];
 
         v50 = v26;
         if (!v26)
         {
-          v27 = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
-          [v27 setObject:&__kCFBooleanFalse forKeyedSubscript:v24];
+          applicationSectionIsExpanded2 = [(RideBookingOutlineController *)self applicationSectionIsExpanded];
+          [applicationSectionIsExpanded2 setObject:&__kCFBooleanFalse forKeyedSubscript:identifier];
         }
 
-        v51 = v24;
+        v51 = identifier;
         v28 = objc_alloc_init(NSMutableArray);
-        v29 = [v22 rideOptions];
-        v30 = [v29 count];
+        rideOptions2 = [v22 rideOptions];
+        v30 = [rideOptions2 count];
 
         if (v30)
         {
@@ -192,26 +192,26 @@
           v53 = v28;
           do
           {
-            v32 = [v22 rideOptions];
-            v33 = [v32 objectAtIndex:v31];
+            rideOptions3 = [v22 rideOptions];
+            v33 = [rideOptions3 objectAtIndex:v31];
 
             v34 = objc_alloc((p_info + 86));
             [(RoutePlanningOutlineController *)self collectionView];
             v36 = v35 = p_info;
             [v19[459] stringWithFormat:v20, v33];
-            v37 = self;
+            selfCopy = self;
             v38 = v20;
             v40 = v39 = v19;
             v41 = [v34 initWithCollectionView:v36 sectionIdentifier:v40];
 
             v19 = v39;
             v20 = v38;
-            self = v37;
+            self = selfCopy;
 
-            [v41 setParentDataSource:v37];
-            [v41 setDelegate:v37];
-            v42 = [v22 rideOptions];
-            [v41 setRideBookingRideOptions:v42];
+            [v41 setParentDataSource:selfCopy];
+            [v41 setDelegate:selfCopy];
+            rideOptions4 = [v22 rideOptions];
+            [v41 setRideBookingRideOptions:rideOptions4];
 
             p_info = v35;
             v28 = v53;
@@ -220,8 +220,8 @@
             [v53 addObject:v41];
 
             ++v31;
-            v43 = [v22 rideOptions];
-            v44 = [v43 count];
+            rideOptions5 = [v22 rideOptions];
+            v44 = [rideOptions5 count];
           }
 
           while (v31 < v44);
@@ -240,65 +240,65 @@
   }
 }
 
-- (void)configureWithRideBookingRideOptionState:(id)a3
+- (void)configureWithRideBookingRideOptionState:(id)state
 {
-  v4 = a3;
-  [(RideBookingOutlineController *)self _configureRideOptionsSources:v4];
-  v5 = [(RideBookingOutlineController *)self enabledApplicationsSource];
-  [v5 configureWithRideBookingRideOptionState:v4];
+  stateCopy = state;
+  [(RideBookingOutlineController *)self _configureRideOptionsSources:stateCopy];
+  enabledApplicationsSource = [(RideBookingOutlineController *)self enabledApplicationsSource];
+  [enabledApplicationsSource configureWithRideBookingRideOptionState:stateCopy];
 
-  v6 = [(RideBookingOutlineController *)self disabledApplicationsSource];
-  [v6 configureWithRideBookingRideOptionState:v4];
+  disabledApplicationsSource = [(RideBookingOutlineController *)self disabledApplicationsSource];
+  [disabledApplicationsSource configureWithRideBookingRideOptionState:stateCopy];
 
-  v7 = [(RideBookingOutlineController *)self appStoreApplicationsSource];
-  [v7 configureWithRideBookingRideOptionState:v4];
+  appStoreApplicationsSource = [(RideBookingOutlineController *)self appStoreApplicationsSource];
+  [appStoreApplicationsSource configureWithRideBookingRideOptionState:stateCopy];
 
   [(RideBookingOutlineController *)self prepareOutlineSections];
-  v8 = [(RideBookingOutlineController *)self delegate];
-  [v8 dataSourceRequiresReload:self];
+  delegate = [(RideBookingOutlineController *)self delegate];
+  [delegate dataSourceRequiresReload:self];
 }
 
 - (void)prepareOutlineSections
 {
-  v2 = self;
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
+  selfCopy = self;
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
-    if (!v2->_enabledApplicationsSource)
+    if (!selfCopy->_enabledApplicationsSource)
     {
       v4 = [RideBookingEnabledApplicationsOutlineSection alloc];
-      v5 = [(RoutePlanningOutlineController *)v2 collectionView];
-      v6 = [(RideBookingEnabledApplicationsOutlineSection *)v4 initWithCollectionView:v5 sectionIdentifier:@"EnabledApplications"];
-      enabledApplicationsSource = v2->_enabledApplicationsSource;
-      v2->_enabledApplicationsSource = v6;
+      collectionView2 = [(RoutePlanningOutlineController *)selfCopy collectionView];
+      v6 = [(RideBookingEnabledApplicationsOutlineSection *)v4 initWithCollectionView:collectionView2 sectionIdentifier:@"EnabledApplications"];
+      enabledApplicationsSource = selfCopy->_enabledApplicationsSource;
+      selfCopy->_enabledApplicationsSource = v6;
 
-      [(RideBookingEnabledApplicationsOutlineSection *)v2->_enabledApplicationsSource setParentDataSource:v2];
+      [(RideBookingEnabledApplicationsOutlineSection *)selfCopy->_enabledApplicationsSource setParentDataSource:selfCopy];
       v8 = [RideBookingDisabledApplicationsOutlineSection alloc];
-      v9 = [(RoutePlanningOutlineController *)v2 collectionView];
-      v10 = [(RoutePlanningOutlineSection *)v8 initWithCollectionView:v9 sectionIdentifier:@"DisabledApps"];
-      disabledApplicationsSource = v2->_disabledApplicationsSource;
-      v2->_disabledApplicationsSource = v10;
+      collectionView3 = [(RoutePlanningOutlineController *)selfCopy collectionView];
+      v10 = [(RoutePlanningOutlineSection *)v8 initWithCollectionView:collectionView3 sectionIdentifier:@"DisabledApps"];
+      disabledApplicationsSource = selfCopy->_disabledApplicationsSource;
+      selfCopy->_disabledApplicationsSource = v10;
 
-      [(RideBookingDisabledApplicationsOutlineSection *)v2->_disabledApplicationsSource setParentDataSource:v2];
+      [(RideBookingDisabledApplicationsOutlineSection *)selfCopy->_disabledApplicationsSource setParentDataSource:selfCopy];
       v12 = [RideBookingAppStoreApplicationsOutlineSection alloc];
-      v13 = [(RoutePlanningOutlineController *)v2 collectionView];
-      v14 = [(RoutePlanningOutlineSection *)v12 initWithCollectionView:v13 sectionIdentifier:@"AppStoreApps"];
-      appStoreApplicationsSource = v2->_appStoreApplicationsSource;
-      v2->_appStoreApplicationsSource = v14;
+      collectionView4 = [(RoutePlanningOutlineController *)selfCopy collectionView];
+      v14 = [(RoutePlanningOutlineSection *)v12 initWithCollectionView:collectionView4 sectionIdentifier:@"AppStoreApps"];
+      appStoreApplicationsSource = selfCopy->_appStoreApplicationsSource;
+      selfCopy->_appStoreApplicationsSource = v14;
 
-      [(RideBookingAppStoreApplicationsOutlineSection *)v2->_appStoreApplicationsSource setParentDataSource:v2];
+      [(RideBookingAppStoreApplicationsOutlineSection *)selfCopy->_appStoreApplicationsSource setParentDataSource:selfCopy];
     }
 
     v39 = objc_alloc_init(NSMutableArray);
-    [v39 addObject:v2->_enabledApplicationsSource];
-    if ([(NSMutableDictionary *)v2->_rideOptionsSourcesDictionary count])
+    [v39 addObject:selfCopy->_enabledApplicationsSource];
+    if ([(NSMutableDictionary *)selfCopy->_rideOptionsSourcesDictionary count])
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      obj = v2->_rideOptionsSourcesDictionary;
+      obj = selfCopy->_rideOptionsSourcesDictionary;
       v40 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v40)
       {
@@ -313,11 +313,11 @@
             }
 
             v17 = *(*(&v46 + 1) + 8 * i);
-            v18 = [(NSMutableDictionary *)v2->_rideOptionsSourcesDictionary objectForKey:v17];
-            v19 = v2;
-            v20 = [(RideBookingOutlineController *)v2 applicationSectionIsExpanded];
-            v21 = [v20 objectForKeyedSubscript:v17];
-            v22 = [v21 BOOLValue];
+            v18 = [(NSMutableDictionary *)selfCopy->_rideOptionsSourcesDictionary objectForKey:v17];
+            v19 = selfCopy;
+            applicationSectionIsExpanded = [(RideBookingOutlineController *)selfCopy applicationSectionIsExpanded];
+            v21 = [applicationSectionIsExpanded objectForKeyedSubscript:v17];
+            bOOLValue = [v21 BOOLValue];
 
             v44 = 0u;
             v45 = 0u;
@@ -342,7 +342,7 @@
                   }
 
                   v30 = *(*(&v42 + 1) + 8 * v28);
-                  [v30 setApplicationSectionIsExpanded:v22];
+                  [v30 setApplicationSectionIsExpanded:bOOLValue];
                   v26 = v29 + 1;
                   [v30 setAdjustedSectionOffset:v29];
                   v28 = v28 + 1;
@@ -356,10 +356,10 @@
               while (v25);
             }
 
-            if (v22)
+            if (bOOLValue)
             {
               [v39 addObjectsFromArray:v23];
-              v2 = v19;
+              selfCopy = v19;
             }
 
             else
@@ -374,7 +374,7 @@
                 v31 = 3;
               }
 
-              v2 = v19;
+              selfCopy = v19;
               v32 = [v23 subarrayWithRange:{0, v31}];
               v33 = [v32 mutableCopy];
               [v39 addObjectsFromArray:v33];
@@ -388,23 +388,23 @@
       }
     }
 
-    [v39 addObject:v2->_disabledApplicationsSource];
-    [v39 addObject:v2->_appStoreApplicationsSource];
+    [v39 addObject:selfCopy->_disabledApplicationsSource];
+    [v39 addObject:selfCopy->_appStoreApplicationsSource];
     v34 = [v39 copy];
-    outlineSections = v2->super._outlineSections;
-    v2->super._outlineSections = v34;
+    outlineSections = selfCopy->super._outlineSections;
+    selfCopy->super._outlineSections = v34;
 
-    v41.receiver = v2;
+    v41.receiver = selfCopy;
     v41.super_class = RideBookingOutlineController;
     [(RoutePlanningOutlineController *)&v41 prepareOutlineSections];
   }
 
   else
   {
-    v36 = v2->super._outlineSections;
-    v2->super._outlineSections = &__NSArray0__struct;
+    v36 = selfCopy->super._outlineSections;
+    selfCopy->super._outlineSections = &__NSArray0__struct;
 
-    v50.receiver = v2;
+    v50.receiver = selfCopy;
     v50.super_class = RideBookingOutlineController;
     [(RoutePlanningOutlineController *)&v50 prepareOutlineSections];
   }
@@ -416,7 +416,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -428,12 +428,12 @@
   [(RoutePlanningOutlineController *)&v5 dealloc];
 }
 
-- (RideBookingOutlineController)initWithCollectionView:(id)a3
+- (RideBookingOutlineController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v25.receiver = self;
   v25.super_class = RideBookingOutlineController;
-  v5 = [(RoutePlanningOutlineController *)&v25 initWithCollectionView:v4];
+  v5 = [(RoutePlanningOutlineController *)&v25 initWithCollectionView:viewCopy];
   if (v5)
   {
     v6 = sub_100FB2D54();
@@ -444,21 +444,21 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v7 = [objc_opt_class() cellClasses];
+    cellClasses = [objc_opt_class() cellClasses];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100FB3DD4;
     v23[3] = &unk_10165FF20;
-    v8 = v4;
+    v8 = viewCopy;
     v24 = v8;
-    [v7 enumerateKeysAndObjectsUsingBlock:v23];
+    [cellClasses enumerateKeysAndObjectsUsingBlock:v23];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [objc_opt_class() headerFooterViewClasses];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v26 count:16];
+    headerFooterViewClasses = [objc_opt_class() headerFooterViewClasses];
+    v10 = [headerFooterViewClasses countByEnumeratingWithState:&v19 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -469,7 +469,7 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(headerFooterViewClasses);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
@@ -477,7 +477,7 @@
           [v8 registerClass:v14 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v15];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v26 count:16];
+        v11 = [headerFooterViewClasses countByEnumeratingWithState:&v19 objects:v26 count:16];
       }
 
       while (v11);

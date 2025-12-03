@@ -1,24 +1,24 @@
 @interface CRLAngleGradientFillAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (NSString)crlaxStyleInfoDescription;
 - (double)crlaxGradientAngleInDegrees;
 @end
 
 @implementation CRLAngleGradientFillAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (double)crlaxGradientAngleInDegrees
 {
-  v2 = [(CRLAngleGradientFillAccessibility *)self crlaxTarget];
-  [v2 gradientAngleInDegrees];
+  crlaxTarget = [(CRLAngleGradientFillAccessibility *)self crlaxTarget];
+  [crlaxTarget gradientAngleInDegrees];
   v4 = v3;
 
   return v4;
@@ -31,7 +31,7 @@
   {
     v11.receiver = self;
     v11.super_class = CRLAngleGradientFillAccessibility;
-    v8 = [(CRLGradientFillAccessibility *)&v11 crlaxStyleInfoDescription];
+    crlaxStyleInfoDescription = [(CRLGradientFillAccessibility *)&v11 crlaxStyleInfoDescription];
   }
 
   else
@@ -42,13 +42,13 @@
 
     v12.receiver = self;
     v12.super_class = CRLAngleGradientFillAccessibility;
-    v7 = [(CRLGradientFillAccessibility *)&v12 crlaxStyleInfoDescription];
-    v8 = [NSString stringWithFormat:v6, v7, *&v4];
+    crlaxStyleInfoDescription2 = [(CRLGradientFillAccessibility *)&v12 crlaxStyleInfoDescription];
+    crlaxStyleInfoDescription = [NSString stringWithFormat:v6, crlaxStyleInfoDescription2, *&v4];
   }
 
-  v9 = [v8 capitalizedString];
+  capitalizedString = [crlaxStyleInfoDescription capitalizedString];
 
-  return v9;
+  return capitalizedString;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface FCShortcutCategory
 - (CKRecord)asCKRecord;
-- (FCShortcutCategory)initWithType:(unint64_t)a3 identifier:(id)a4 dateAdded:(id)a5 status:(unint64_t)a6;
-- (id)initWithIdentifier:(void *)a3 dictionaryRepresentation:;
+- (FCShortcutCategory)initWithType:(unint64_t)type identifier:(id)identifier dateAdded:(id)added status:(unint64_t)status;
+- (id)initWithIdentifier:(void *)identifier dictionaryRepresentation:;
 @end
 
 @implementation FCShortcutCategory
 
-- (FCShortcutCategory)initWithType:(unint64_t)a3 identifier:(id)a4 dateAdded:(id)a5 status:(unint64_t)a6
+- (FCShortcutCategory)initWithType:(unint64_t)type identifier:(id)identifier dateAdded:(id)added status:(unint64_t)status
 {
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  addedCopy = added;
   v16.receiver = self;
   v16.super_class = FCShortcutCategory;
   v12 = [(FCShortcutCategory *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v12->_type = a3;
-    objc_storeStrong(&v12->_dateAdded, a5);
-    v12->_status = a6;
+    v12->_type = type;
+    objc_storeStrong(&v12->_dateAdded, added);
+    v12->_status = status;
   }
 
   return v12;
@@ -35,18 +35,18 @@
   }
 
   v3 = objc_alloc(MEMORY[0x1E695BA70]);
-  v4 = [(FCShortcutCategory *)self identifier];
-  v5 = [v3 initWithRecordName:v4 zoneID:_MergedGlobals_133];
+  identifier = [(FCShortcutCategory *)self identifier];
+  v5 = [v3 initWithRecordName:identifier zoneID:_MergedGlobals_133];
 
   v6 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"ShortcutCategory" recordID:v5];
   v7 = NSStringFromShortcutCategoryType([(FCShortcutCategory *)self type]);
   [v6 setObject:v7 forKeyedSubscript:@"type"];
 
-  v8 = [(FCShortcutCategory *)self identifier];
-  [v6 setObject:v8 forKeyedSubscript:@"categoryID"];
+  identifier2 = [(FCShortcutCategory *)self identifier];
+  [v6 setObject:identifier2 forKeyedSubscript:@"categoryID"];
 
-  v9 = [(FCShortcutCategory *)self dateAdded];
-  [v6 setObject:v9 forKeyedSubscript:@"dateAdded"];
+  dateAdded = [(FCShortcutCategory *)self dateAdded];
+  [v6 setObject:dateAdded forKeyedSubscript:@"dateAdded"];
 
   v10 = NSStringFromShortcutCategoryStatus([(FCShortcutCategory *)self status]);
   [v6 setObject:v10 forKeyedSubscript:@"status"];
@@ -64,26 +64,26 @@ uint64_t __32__FCShortcutCategory_asCKRecord__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)initWithIdentifier:(void *)a3 dictionaryRepresentation:
+- (id)initWithIdentifier:(void *)identifier dictionaryRepresentation:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v5 = a3;
+    identifierCopy = identifier;
     v6 = a2;
-    v7 = [v5 objectForKeyedSubscript:@"type"];
+    v7 = [identifierCopy objectForKeyedSubscript:@"type"];
     v8 = FCShortcutCategoryTypeFromString(v7);
 
-    v9 = [v5 objectForKeyedSubscript:@"dateAdded"];
-    v10 = [v5 objectForKeyedSubscript:@"status"];
+    v9 = [identifierCopy objectForKeyedSubscript:@"dateAdded"];
+    v10 = [identifierCopy objectForKeyedSubscript:@"status"];
 
     v11 = FCShortcutCategoryStatusFromString(v10);
-    v12 = [v3 initWithType:v8 identifier:v6 dateAdded:v9 status:v11];
+    v12 = [selfCopy initWithType:v8 identifier:v6 dateAdded:v9 status:v11];
 
-    v3 = v12;
+    selfCopy = v12;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

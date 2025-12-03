@@ -1,21 +1,21 @@
 @interface MCAsset
-- (MCAsset)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCAsset)initWithImprint:(id)imprint andMontage:(id)montage;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCAsset
 
-- (MCAsset)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCAsset)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v7.receiver = self;
   v7.super_class = MCAsset;
-  v5 = [(MCObject *)&v7 initWithImprint:a3 andMontage:a4];
+  v5 = [(MCObject *)&v7 initWithImprint:imprint andMontage:montage];
   if (v5)
   {
-    v5->mPath = [a3 objectForKey:@"path"];
+    v5->mPath = [imprint objectForKey:@"path"];
   }
 
   return v5;
@@ -33,24 +33,24 @@
 {
   v7.receiver = self;
   v7.super_class = MCAsset;
-  v3 = [(MCObject *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCObject *)&v7 imprint];
+  v4 = imprint;
   mPath = self->mPath;
   if (mPath)
   {
-    [v3 setObject:mPath forKey:@"path"];
+    [imprint setObject:mPath forKey:@"path"];
   }
 
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
-  *(a3 + 1) = self->super.mMontage;
+  *(snapshot + 1) = self->super.mMontage;
   mPath = self->mPath;
   if (mPath)
   {
-    *(a3 + 3) = [(NSString *)mPath copy];
+    *(snapshot + 3) = [(NSString *)mPath copy];
   }
 }
 

@@ -1,77 +1,77 @@
 @interface SAMonitoringSession
-- (BOOL)isEqual:(id)a3;
-- (SAMonitoringSession)initWithCoder:(id)a3;
-- (SAMonitoringSession)initWithDeviceUUID:(id)a3 state:(unint64_t)a4 geofence:(id)a5 scenario:(unint64_t)a6 trackedTravelingStartDate:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SAMonitoringSession)initWithCoder:(id)coder;
+- (SAMonitoringSession)initWithDeviceUUID:(id)d state:(unint64_t)state geofence:(id)geofence scenario:(unint64_t)scenario trackedTravelingStartDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SAMonitoringSession
 
-- (SAMonitoringSession)initWithCoder:(id)a3
+- (SAMonitoringSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"SAMonitoringSessionState"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionGeofence"];
-  v8 = [v4 decodeIntegerForKey:@"SAMonitoringSessionScenario"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionTrackedTravelingStartDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"SAMonitoringSessionState"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionGeofence"];
+  v8 = [coderCopy decodeIntegerForKey:@"SAMonitoringSessionScenario"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SAMonitoringSessionTrackedTravelingStartDate"];
 
   v10 = [(SAMonitoringSession *)self initWithDeviceUUID:v5 state:v6 geofence:v7 scenario:v8 trackedTravelingStartDate:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSession *)self deviceUUID];
-  [v4 encodeObject:v5 forKey:@"SAMonitoringSessionIdentifier"];
+  coderCopy = coder;
+  deviceUUID = [(SAMonitoringSession *)self deviceUUID];
+  [coderCopy encodeObject:deviceUUID forKey:@"SAMonitoringSessionIdentifier"];
 
-  [v4 encodeInteger:-[SAMonitoringSession state](self forKey:{"state"), @"SAMonitoringSessionState"}];
-  v6 = [(SAMonitoringSession *)self geofence];
-  [v4 encodeObject:v6 forKey:@"SAMonitoringSessionGeofence"];
+  [coderCopy encodeInteger:-[SAMonitoringSession state](self forKey:{"state"), @"SAMonitoringSessionState"}];
+  geofence = [(SAMonitoringSession *)self geofence];
+  [coderCopy encodeObject:geofence forKey:@"SAMonitoringSessionGeofence"];
 
-  [v4 encodeInteger:-[SAMonitoringSession scenario](self forKey:{"scenario"), @"SAMonitoringSessionScenario"}];
-  v7 = [(SAMonitoringSession *)self trackedTravelingStartDate];
-  [v4 encodeObject:v7 forKey:@"SAMonitoringSessionTrackedTravelingStartDate"];
+  [coderCopy encodeInteger:-[SAMonitoringSession scenario](self forKey:{"scenario"), @"SAMonitoringSessionScenario"}];
+  trackedTravelingStartDate = [(SAMonitoringSession *)self trackedTravelingStartDate];
+  [coderCopy encodeObject:trackedTravelingStartDate forKey:@"SAMonitoringSessionTrackedTravelingStartDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SAMonitoringSession allocWithZone:a3];
-  v5 = [(SAMonitoringSession *)self deviceUUID];
-  v6 = [(SAMonitoringSession *)self state];
-  v7 = [(SAMonitoringSession *)self geofence];
-  v8 = [(SAMonitoringSession *)self scenario];
-  v9 = [(SAMonitoringSession *)self trackedTravelingStartDate];
-  v10 = [(SAMonitoringSession *)v4 initWithDeviceUUID:v5 state:v6 geofence:v7 scenario:v8 trackedTravelingStartDate:v9];
+  v4 = [SAMonitoringSession allocWithZone:zone];
+  deviceUUID = [(SAMonitoringSession *)self deviceUUID];
+  state = [(SAMonitoringSession *)self state];
+  geofence = [(SAMonitoringSession *)self geofence];
+  scenario = [(SAMonitoringSession *)self scenario];
+  trackedTravelingStartDate = [(SAMonitoringSession *)self trackedTravelingStartDate];
+  v10 = [(SAMonitoringSession *)v4 initWithDeviceUUID:deviceUUID state:state geofence:geofence scenario:scenario trackedTravelingStartDate:trackedTravelingStartDate];
 
   return v10;
 }
 
-- (SAMonitoringSession)initWithDeviceUUID:(id)a3 state:(unint64_t)a4 geofence:(id)a5 scenario:(unint64_t)a6 trackedTravelingStartDate:(id)a7
+- (SAMonitoringSession)initWithDeviceUUID:(id)d state:(unint64_t)state geofence:(id)geofence scenario:(unint64_t)scenario trackedTravelingStartDate:(id)date
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  dCopy = d;
+  geofenceCopy = geofence;
+  dateCopy = date;
   v30.receiver = self;
   v30.super_class = SAMonitoringSession;
   v15 = [(SAMonitoringSession *)&v30 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     deviceUUID = v15->_deviceUUID;
     v15->_deviceUUID = v16;
 
-    v15->_state = a4;
-    v18 = [v13 copy];
+    v15->_state = state;
+    v18 = [geofenceCopy copy];
     geofence = v15->_geofence;
     v15->_geofence = v18;
 
-    v15->_scenario = a6;
-    v20 = [v14 copy];
+    v15->_scenario = scenario;
+    v20 = [dateCopy copy];
     trackedTravelingStartDate = v15->_trackedTravelingStartDate;
     v15->_trackedTravelingStartDate = v20;
 
@@ -87,7 +87,7 @@
     earlyVehicularStateChangeDate = v15->_earlyVehicularStateChangeDate;
     v15->_earlyVehicularStateChangeDate = 0;
 
-    v26 = [[SAScenarioClassifier alloc] initWithDeviceUuid:v15->_deviceUUID scenarioClass:a6 unsafeLocation:0];
+    v26 = [[SAScenarioClassifier alloc] initWithDeviceUuid:v15->_deviceUUID scenarioClass:scenario unsafeLocation:0];
     scenarioClassifier = v15->_scenarioClassifier;
     v15->_scenarioClassifier = v26;
 
@@ -99,10 +99,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -112,48 +112,48 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SAMonitoringSession *)self deviceUUID];
-      v9 = [(SAMonitoringSession *)v7 deviceUUID];
-      if (v8 != v9)
+      v7 = equalCopy;
+      deviceUUID = [(SAMonitoringSession *)self deviceUUID];
+      deviceUUID2 = [(SAMonitoringSession *)v7 deviceUUID];
+      if (deviceUUID != deviceUUID2)
       {
-        v3 = [(SAMonitoringSession *)self deviceUUID];
-        v4 = [(SAMonitoringSession *)v7 deviceUUID];
-        if (![v3 isEqual:v4])
+        deviceUUID3 = [(SAMonitoringSession *)self deviceUUID];
+        deviceUUID4 = [(SAMonitoringSession *)v7 deviceUUID];
+        if (![deviceUUID3 isEqual:deviceUUID4])
         {
           v10 = 0;
           goto LABEL_30;
         }
       }
 
-      v11 = [(SAMonitoringSession *)self state];
-      if (v11 != [(SAMonitoringSession *)v7 state])
+      state = [(SAMonitoringSession *)self state];
+      if (state != [(SAMonitoringSession *)v7 state])
       {
         v10 = 0;
         goto LABEL_29;
       }
 
-      v12 = [(SAMonitoringSession *)self geofence];
-      v13 = [(SAMonitoringSession *)v7 geofence];
-      if (v12 != v13)
+      geofence = [(SAMonitoringSession *)self geofence];
+      geofence2 = [(SAMonitoringSession *)v7 geofence];
+      if (geofence != geofence2)
       {
-        v14 = [(SAMonitoringSession *)self geofence];
-        v35 = [(SAMonitoringSession *)v7 geofence];
-        if (![v14 isEqual:?])
+        geofence3 = [(SAMonitoringSession *)self geofence];
+        geofence4 = [(SAMonitoringSession *)v7 geofence];
+        if (![geofence3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_27;
         }
 
-        v34 = v14;
+        v34 = geofence3;
       }
 
-      v15 = [(SAMonitoringSession *)self scenario];
-      if (v15 != [(SAMonitoringSession *)v7 scenario])
+      scenario = [(SAMonitoringSession *)self scenario];
+      if (scenario != [(SAMonitoringSession *)v7 scenario])
       {
         v10 = 0;
-        v14 = v34;
-        if (v12 == v13)
+        geofence3 = v34;
+        if (geofence == geofence2)
         {
           goto LABEL_28;
         }
@@ -161,35 +161,35 @@
         goto LABEL_27;
       }
 
-      v16 = [(SAMonitoringSession *)self trackedTravelingStartDate];
+      trackedTravelingStartDate = [(SAMonitoringSession *)self trackedTravelingStartDate];
       [(SAMonitoringSession *)v7 trackedTravelingStartDate];
-      v32 = v12;
-      v33 = v16;
-      v31 = v30 = v13;
-      v17 = v16 == v31;
-      v14 = v34;
+      v32 = geofence;
+      v33 = trackedTravelingStartDate;
+      v31 = v30 = geofence2;
+      v17 = trackedTravelingStartDate == v31;
+      geofence3 = v34;
       if (!v17)
       {
-        v26 = v3;
-        v18 = [(SAMonitoringSession *)self trackedTravelingStartDate];
-        v28 = [(SAMonitoringSession *)v7 trackedTravelingStartDate];
-        v29 = v18;
-        if (![v18 isEqual:?])
+        v26 = deviceUUID3;
+        trackedTravelingStartDate2 = [(SAMonitoringSession *)self trackedTravelingStartDate];
+        trackedTravelingStartDate3 = [(SAMonitoringSession *)v7 trackedTravelingStartDate];
+        v29 = trackedTravelingStartDate2;
+        if (![trackedTravelingStartDate2 isEqual:?])
         {
           v10 = 0;
           v23 = v33;
           v24 = v31;
-          v3 = v26;
+          deviceUUID3 = v26;
           goto LABEL_25;
         }
 
-        v3 = v26;
+        deviceUUID3 = v26;
       }
 
-      v19 = [(SAMonitoringSession *)self trackedTravelingStartLocation];
-      v20 = [(SAMonitoringSession *)v7 trackedTravelingStartLocation];
-      v21 = v20;
-      if (v19 == v20)
+      trackedTravelingStartLocation = [(SAMonitoringSession *)self trackedTravelingStartLocation];
+      trackedTravelingStartLocation2 = [(SAMonitoringSession *)v7 trackedTravelingStartLocation];
+      v21 = trackedTravelingStartLocation2;
+      if (trackedTravelingStartLocation == trackedTravelingStartLocation2)
       {
 
         v10 = 1;
@@ -197,11 +197,11 @@
 
       else
       {
-        v27 = [(SAMonitoringSession *)self trackedTravelingStartLocation];
-        v22 = [(SAMonitoringSession *)v7 trackedTravelingStartLocation];
-        v10 = [v27 isEqual:v22];
+        trackedTravelingStartLocation3 = [(SAMonitoringSession *)self trackedTravelingStartLocation];
+        trackedTravelingStartLocation4 = [(SAMonitoringSession *)v7 trackedTravelingStartLocation];
+        v10 = [trackedTravelingStartLocation3 isEqual:trackedTravelingStartLocation4];
 
-        v14 = v34;
+        geofence3 = v34;
       }
 
       v23 = v33;
@@ -210,14 +210,14 @@
       {
 LABEL_26:
 
-        v12 = v32;
-        v13 = v30;
+        geofence = v32;
+        geofence2 = v30;
         if (v32 == v30)
         {
 LABEL_28:
 
 LABEL_29:
-          if (v8 == v9)
+          if (deviceUUID == deviceUUID2)
           {
 LABEL_31:
 
@@ -255,26 +255,26 @@ LABEL_32:
   v17 = NSStringFromClass(v3);
   v19[0] = v17;
   v18[1] = @"SAMonitoringSessionIdentifier";
-  v16 = [(SAMonitoringSession *)self deviceUUID];
-  v4 = [v16 description];
+  deviceUUID = [(SAMonitoringSession *)self deviceUUID];
+  v4 = [deviceUUID description];
   v19[1] = v4;
   v18[2] = @"SAMonitoringSessionState";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAMonitoringSession state](self, "state")}];
   v19[2] = v5;
   v18[3] = @"SAMonitoringSessionGeofence";
-  v6 = [(SAMonitoringSession *)self geofence];
-  v7 = [v6 description];
+  geofence = [(SAMonitoringSession *)self geofence];
+  v7 = [geofence description];
   v19[3] = v7;
   v18[4] = @"SAMonitoringSessionScenario";
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAMonitoringSession scenario](self, "scenario")}];
   v19[4] = v8;
   v18[5] = @"SAMonitoringSessionTrackedTravelingStartDate";
-  v9 = [(SAMonitoringSession *)self trackedTravelingStartDate];
-  v10 = [v9 description];
+  trackedTravelingStartDate = [(SAMonitoringSession *)self trackedTravelingStartDate];
+  v10 = [trackedTravelingStartDate description];
   v19[5] = v10;
   v18[6] = @"SAMonitoringSessionTrackedTravelingStartLocation";
-  v11 = [(SAMonitoringSession *)self trackedTravelingStartLocation];
-  v12 = [v11 description];
+  trackedTravelingStartLocation = [(SAMonitoringSession *)self trackedTravelingStartLocation];
+  v12 = [trackedTravelingStartLocation description];
   v19[6] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:7];
 
@@ -285,9 +285,9 @@ LABEL_32:
 
 - (id)description
 {
-  v3 = [(SAMonitoringSession *)self descriptionDictionary];
+  descriptionDictionary = [(SAMonitoringSession *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -297,15 +297,15 @@ LABEL_32:
       [(SAConnectionEvent *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }

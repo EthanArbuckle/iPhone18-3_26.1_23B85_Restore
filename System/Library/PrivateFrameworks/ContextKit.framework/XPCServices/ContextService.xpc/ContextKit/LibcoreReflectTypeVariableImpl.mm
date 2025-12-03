@@ -1,6 +1,6 @@
 @interface LibcoreReflectTypeVariableImpl
-- (BOOL)isEqual:(id)a3;
-- (LibcoreReflectTypeVariableImpl)initWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LibcoreReflectTypeVariableImpl)initWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string;
 - (id)getBounds;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -9,53 +9,53 @@
 
 @implementation LibcoreReflectTypeVariableImpl
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![JavaLangReflectTypeVariable_class_() isInstance:a3])
+  if (![JavaLangReflectTypeVariable_class_() isInstance:equal])
   {
     return 0;
   }
 
   v5 = JavaLangReflectTypeVariable_class_();
-  if (!a3)
+  if (!equal)
   {
     [(LibcoreReflectTypeVariableImpl *)self getName];
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  v6 = [(LibcoreReflectTypeVariableImpl *)self getName];
-  if (!v6)
+  getName = [(LibcoreReflectTypeVariableImpl *)self getName];
+  if (!getName)
   {
 LABEL_11:
     JreThrowNullPointerException();
   }
 
-  if (![v6 isEqual:{objc_msgSend(a3, "getName")}])
+  if (![getName isEqual:{objc_msgSend(equal, "getName")}])
   {
     return 0;
   }
 
-  v7 = [(LibcoreReflectTypeVariableImpl *)self getGenericDeclaration];
-  if (!v7)
+  getGenericDeclaration = [(LibcoreReflectTypeVariableImpl *)self getGenericDeclaration];
+  if (!getGenericDeclaration)
   {
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [a3 getGenericDeclaration];
+  v8 = getGenericDeclaration;
+  getGenericDeclaration2 = [equal getGenericDeclaration];
 
-  return [v8 isEqual:v9];
+  return [v8 isEqual:getGenericDeclaration2];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LibcoreReflectTypeVariableImpl *)self getName];
-  if (!v3 || (v4 = [v3 hash], (v5 = -[LibcoreReflectTypeVariableImpl getGenericDeclaration](self, "getGenericDeclaration")) == 0))
+  getName = [(LibcoreReflectTypeVariableImpl *)self getName];
+  if (!getName || (v4 = [getName hash], (v5 = -[LibcoreReflectTypeVariableImpl getGenericDeclaration](self, "getGenericDeclaration")) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -63,10 +63,10 @@ LABEL_11:
   return ([v5 hash] - v4 + 32 * v4);
 }
 
-- (LibcoreReflectTypeVariableImpl)initWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4
+- (LibcoreReflectTypeVariableImpl)initWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string
 {
-  JreStrongAssign(&self->name_, a4);
-  JreStrongAssign(&self->declOfVarUser_, a3);
+  JreStrongAssign(&self->name_, string);
+  JreStrongAssign(&self->declOfVarUser_, declaration);
   return self;
 }
 

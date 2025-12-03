@@ -1,28 +1,28 @@
 @interface PXPPTNavigationHelper
 + (UIViewController)applicationRootViewController;
-+ (id)_unwrapNavigationController:(id)a3;
-+ (id)caseNameStringForPXProgrammaticNavigationResult:(int64_t)a3;
-+ (id)topmostChildFromViewController:(id)a3;
-+ (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
++ (id)_unwrapNavigationController:(id)controller;
++ (id)caseNameStringForPXProgrammaticNavigationResult:(int64_t)result;
++ (id)topmostChildFromViewController:(id)controller;
++ (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation PXPPTNavigationHelper
 
-+ (id)_unwrapNavigationController:(id)a3
++ (id)_unwrapNavigationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v3;
+  v5 = controllerCopy;
   v6 = v5;
   v7 = v5;
   if (isKindOfClass)
   {
-    v8 = [v5 topViewController];
-    v9 = v8;
-    if (v8)
+    topViewController = [v5 topViewController];
+    v9 = topViewController;
+    if (topViewController)
     {
-      v10 = v8;
+      v10 = topViewController;
     }
 
     else
@@ -38,77 +38,77 @@
 
 + (UIViewController)applicationRootViewController
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 px_firstKeyWindow];
-  v6 = [v5 rootViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+  rootViewController = [px_firstKeyWindow rootViewController];
 
-  if (!v6)
+  if (!rootViewController)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PXPPTNavigationHelper.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"rootViewController != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPPTNavigationHelper.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"rootViewController != nil"}];
   }
 
-  return v6;
+  return rootViewController;
 }
 
-+ (id)caseNameStringForPXProgrammaticNavigationResult:(int64_t)a3
++ (id)caseNameStringForPXProgrammaticNavigationResult:(int64_t)result
 {
-  if ((a3 - 1) > 5)
+  if ((result - 1) > 5)
   {
     return @"PXProgrammaticNavigationResultUndefined";
   }
 
   else
   {
-    return off_1E774C550[a3 - 1];
+    return off_1E774C550[result - 1];
   }
 }
 
-+ (id)topmostChildFromViewController:(id)a3
++ (id)topmostChildFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
 
-  v6 = v4;
-  if (v5)
+  presentedViewController2 = controllerCopy;
+  if (presentedViewController)
   {
-    v6 = v4;
+    presentedViewController2 = controllerCopy;
     do
     {
-      v7 = [a1 _unwrapNavigationController:v6];
+      v7 = [self _unwrapNavigationController:presentedViewController2];
 
-      v6 = [v7 presentedViewController];
+      presentedViewController2 = [v7 presentedViewController];
 
-      v8 = [v6 presentedViewController];
+      v6PresentedViewController = [presentedViewController2 presentedViewController];
     }
 
-    while (v8);
+    while (v6PresentedViewController);
   }
 
-  v9 = [a1 _unwrapNavigationController:v6];
+  v9 = [self _unwrapNavigationController:presentedViewController2];
 
   return v9;
 }
 
-+ (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
++ (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a1 applicationRootViewController];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  applicationRootViewController = [self applicationRootViewController];
   v12 = [PXProgrammaticNavigationRequest alloc];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __73__PXPPTNavigationHelper_navigateToDestination_options_completionHandler___block_invoke;
   v21[3] = &unk_1E774C530;
-  v22 = v9;
-  v23 = v11;
-  v24 = v10;
+  v22 = destinationCopy;
+  v23 = applicationRootViewController;
+  v24 = handlerCopy;
   v25 = a2;
-  v26 = a1;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = [(PXProgrammaticNavigationRequest *)v12 initWithDestination:v15 options:a4 completionHandler:v21];
+  selfCopy = self;
+  v13 = applicationRootViewController;
+  v14 = handlerCopy;
+  v15 = destinationCopy;
+  v16 = [(PXProgrammaticNavigationRequest *)v12 initWithDestination:v15 options:options completionHandler:v21];
   v17 = [v13 px_forwardingNavigationParticipantForDestination:v15];
   v18 = v17;
   if (v17)

@@ -1,22 +1,22 @@
 @interface FMDBLEBeaconIdentifier
-+ (id)identifierBLEDevice:(id)a3 other:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)identifierBLEDevice:(id)device other:(BOOL)other;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (FMDBLEBeaconIdentifier)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FMDBLEBeaconIdentifier)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDBLEBeaconIdentifier
 
 - (BOOL)isValid
 {
-  v3 = [(FMDBLEBeaconIdentifier *)self string];
-  if (v3)
+  string = [(FMDBLEBeaconIdentifier *)self string];
+  if (string)
   {
-    v4 = [(FMDBLEBeaconIdentifier *)self string];
-    v5 = [v4 length] != 0;
+    string2 = [(FMDBLEBeaconIdentifier *)self string];
+    v5 = [string2 length] != 0;
   }
 
   else
@@ -29,16 +29,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDBLEBeaconIdentifier *)self string];
-  v3 = [v2 hash];
+  string = [(FMDBLEBeaconIdentifier *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -48,9 +48,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FMDBLEBeaconIdentifier *)v4 string];
-      v6 = [(FMDBLEBeaconIdentifier *)self string];
-      v7 = [v5 isEqualToString:v6];
+      string = [(FMDBLEBeaconIdentifier *)equalCopy string];
+      string2 = [(FMDBLEBeaconIdentifier *)self string];
+      v7 = [string isEqualToString:string2];
     }
 
     else
@@ -62,38 +62,38 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FMDBLEBeaconIdentifier allocWithZone:?]];
-  v5 = [(FMDBLEBeaconIdentifier *)self string];
-  [(FMDBLEBeaconIdentifier *)v4 setString:v5];
+  string = [(FMDBLEBeaconIdentifier *)self string];
+  [(FMDBLEBeaconIdentifier *)v4 setString:string];
 
   return v4;
 }
 
-+ (id)identifierBLEDevice:(id)a3 other:(BOOL)a4
++ (id)identifierBLEDevice:(id)device other:(BOOL)other
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 bluetoothAddress];
-  if (v6)
+  otherCopy = other;
+  deviceCopy = device;
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  if (bluetoothAddress)
   {
-    v7 = [v5 bluetoothAddress];
-    v8 = [v7 fm_MACAddressString];
+    bluetoothAddress2 = [deviceCopy bluetoothAddress];
+    fm_MACAddressString = [bluetoothAddress2 fm_MACAddressString];
   }
 
   else
   {
-    v8 = 0;
+    fm_MACAddressString = 0;
   }
 
-  v9 = [v5 advertisementFields];
-  v10 = [v9 objectForKeyedSubscript:@"hsStatus"];
+  advertisementFields = [deviceCopy advertisementFields];
+  v10 = [advertisementFields objectForKeyedSubscript:@"hsStatus"];
 
   if (v10)
   {
-    v11 = [v10 unsignedIntValue];
-    if ((dword_100012D94 & v11) != 0)
+    unsignedIntValue = [v10 unsignedIntValue];
+    if ((dword_100012D94 & unsignedIntValue) != 0)
     {
       v12 = @"_l";
     }
@@ -104,9 +104,9 @@
     }
 
     v13 = v12;
-    if (v4)
+    if (otherCopy)
     {
-      if ((dword_100012D94 & v11) != 0)
+      if ((dword_100012D94 & unsignedIntValue) != 0)
       {
         v14 = @"_r";
       }
@@ -121,17 +121,17 @@
       v13 = v15;
     }
 
-    v16 = [v8 stringByAppendingString:v13];
+    v16 = [fm_MACAddressString stringByAppendingString:v13];
 
-    v8 = v16;
+    fm_MACAddressString = v16;
   }
 
-  return v8;
+  return fm_MACAddressString;
 }
 
-- (FMDBLEBeaconIdentifier)initWithCoder:(id)a3
+- (FMDBLEBeaconIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDBLEBeaconIdentifier;
   v5 = [(FMDBLEBeaconIdentifier *)&v10 init];
@@ -139,19 +139,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("string");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(FMDBLEBeaconIdentifier *)v5 setString:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(FMDBLEBeaconIdentifier *)self string];
+  coderCopy = coder;
+  string = [(FMDBLEBeaconIdentifier *)self string];
   v5 = NSStringFromSelector("string");
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:string forKey:v5];
 }
 
 @end

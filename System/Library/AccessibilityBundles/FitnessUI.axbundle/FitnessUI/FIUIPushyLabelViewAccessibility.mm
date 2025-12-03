@@ -1,17 +1,17 @@
 @interface FIUIPushyLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation FIUIPushyLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FIUIPushyLabelView"];
-  [v3 validateClass:@"FIUIPushyLabelView" hasInstanceMethod:@"currentAttributedText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FIUIPushyLabelView" hasInstanceMethod:@"pushToAttributedText: direction: perCharacter:" withFullSignature:{"v", "@", "Q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FIUIPushyLabelView"];
+  [validationsCopy validateClass:@"FIUIPushyLabelView" hasInstanceMethod:@"currentAttributedText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FIUIPushyLabelView" hasInstanceMethod:@"pushToAttributedText: direction: perCharacter:" withFullSignature:{"v", "@", "Q", "B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -19,13 +19,13 @@
   v3 = [(FIUIPushyLabelViewAccessibility *)self safeValueForKey:@"currentAttributedText"];
   if (v3)
   {
-    v4 = v3;
+    accessibilityLabel = v3;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 string];
+      string = [accessibilityLabel string];
 
-      v4 = v5;
+      accessibilityLabel = string;
     }
   }
 
@@ -33,10 +33,10 @@
   {
     v7.receiver = self;
     v7.super_class = FIUIPushyLabelViewAccessibility;
-    v4 = [(FIUIPushyLabelViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(FIUIPushyLabelViewAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (BOOL)isAccessibilityElement
@@ -55,9 +55,9 @@
     v5 = 0;
   }
 
-  v6 = [(FIUIPushyLabelViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(FIUIPushyLabelViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (v6)
+  if (isAccessibilityUserDefinedElement)
   {
     v8.receiver = self;
     v8.super_class = FIUIPushyLabelViewAccessibility;

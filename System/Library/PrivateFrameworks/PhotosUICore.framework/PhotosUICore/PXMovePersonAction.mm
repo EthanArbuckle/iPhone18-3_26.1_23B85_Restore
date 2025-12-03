@@ -1,23 +1,23 @@
 @interface PXMovePersonAction
-- (PXMovePersonAction)initWithSourcePeople:(id)a3 sourceType:(int64_t)a4 destinationPeople:(id)a5 destinationManualOrder:(int64_t)a6 destinationType:(int64_t)a7 targetLocalIdentifier:(id)a8 otherPeople:(id)a9;
+- (PXMovePersonAction)initWithSourcePeople:(id)people sourceType:(int64_t)type destinationPeople:(id)destinationPeople destinationManualOrder:(int64_t)order destinationType:(int64_t)destinationType targetLocalIdentifier:(id)identifier otherPeople:(id)otherPeople;
 - (id)localizedActionName;
-- (void)changeRequestForUndo:(id)a3 updateType:(BOOL)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)changeRequestForUndo:(id)undo updateType:(BOOL)type;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXMovePersonAction
 
-- (void)changeRequestForUndo:(id)a3 updateType:(BOOL)a4
+- (void)changeRequestForUndo:(id)undo updateType:(BOOL)type
 {
-  v4 = a4;
+  typeCopy = type;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  undoCopy = undo;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [undoCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,33 +28,33 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(undoCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [MEMORY[0x1E6978990] changeRequestForPerson:v10];
         [v11 setManualOrder:{objc_msgSend(v10, "manualOrder")}];
-        if (v4)
+        if (typeCopy)
         {
           [v11 setType:{objc_msgSend(v10, "type")}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [undoCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__PXMovePersonAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 void __34__PXMovePersonAction_performUndo___block_invoke(uint64_t a1)
@@ -77,23 +77,23 @@ void __34__PXMovePersonAction_performUndo___block_invoke(uint64_t a1)
   [v9 setNumber:v10 forKey:@"PXPeopleHomeSortingType"];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXMovePersonAction *)self sourcePeople];
-  v6 = [(PXMovePersonAction *)self destinationType];
+  actionCopy = action;
+  sourcePeople = [(PXMovePersonAction *)self sourcePeople];
+  destinationType = [(PXMovePersonAction *)self destinationType];
   v7 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__PXMovePersonAction_performAction___block_invoke;
   v10[3] = &unk_1E774A768;
   v10[4] = self;
-  v11 = v5;
+  v11 = sourcePeople;
   v12 = v7;
-  v13 = v6;
+  v13 = destinationType;
   v8 = v7;
-  v9 = v5;
-  [(PXPhotosAction *)self performChanges:v10 completionHandler:v4];
+  v9 = sourcePeople;
+  [(PXPhotosAction *)self performChanges:v10 completionHandler:actionCopy];
 }
 
 void __36__PXMovePersonAction_performAction___block_invoke(uint64_t a1)
@@ -252,17 +252,17 @@ void __36__PXMovePersonAction_performAction___block_invoke(uint64_t a1)
 
 - (id)localizedActionName
 {
-  v2 = self;
-  v3 = [(PXMovePersonAction *)self sourcePeople];
-  v4 = [(PXMovePersonAction *)v2 sourceType];
-  if (v4 == [(PXMovePersonAction *)v2 destinationType])
+  selfCopy = self;
+  sourcePeople = [(PXMovePersonAction *)self sourcePeople];
+  sourceType = [(PXMovePersonAction *)selfCopy sourceType];
+  if (sourceType == [(PXMovePersonAction *)selfCopy destinationType])
   {
-    if ([v3 count] < 2)
+    if ([sourcePeople count] < 2)
     {
-      v8 = [v3 firstObject];
-      v9 = [v8 px_isPet];
+      firstObject = [sourcePeople firstObject];
+      px_isPet = [firstObject px_isPet];
 
-      if (v9)
+      if (px_isPet)
       {
         v5 = @"PXMovePersonsActionKey_Pet";
       }
@@ -283,23 +283,23 @@ void __36__PXMovePersonAction_performAction___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(PXMovePersonAction *)v2 destinationType];
-    if (v6 == -1)
+    destinationType = [(PXMovePersonAction *)selfCopy destinationType];
+    if (destinationType == -1)
     {
-      v11 = [(PXPhotosAction *)v2 photoLibrary];
-      v12 = [v11 px_peoplePetsHomeVisibility];
+      photoLibrary = [(PXPhotosAction *)selfCopy photoLibrary];
+      px_peoplePetsHomeVisibility = [photoLibrary px_peoplePetsHomeVisibility];
 
-      v13 = [v3 firstObject];
-      PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleHomeRemovePersonButton");
+      firstObject2 = [sourcePeople firstObject];
+      PXLocalizedStringForPersonOrPetAndVisibility(firstObject2, 0, @"PXPeopleHomeRemovePersonButton");
       objc_claimAutoreleasedReturnValue();
-      PXLocalizedStringForPeoplePetsHomeTitle(v12);
+      PXLocalizedStringForPeoplePetsHomeTitle(px_peoplePetsHomeVisibility);
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
 
-    if (v6)
+    if (destinationType)
     {
-      if (v6 != 1)
+      if (destinationType != 1)
       {
         goto LABEL_16;
       }
@@ -312,49 +312,49 @@ void __36__PXMovePersonAction_performAction___block_invoke(uint64_t a1)
       v7 = @"PXPeopleUnfavoriteThisPerson";
     }
 
-    v10 = PXLocalizedStringForPeople(v3, v7);
+    v10 = PXLocalizedStringForPeople(sourcePeople, v7);
   }
 
-  v2 = v10;
+  selfCopy = v10;
 LABEL_16:
 
-  return v2;
+  return selfCopy;
 }
 
-- (PXMovePersonAction)initWithSourcePeople:(id)a3 sourceType:(int64_t)a4 destinationPeople:(id)a5 destinationManualOrder:(int64_t)a6 destinationType:(int64_t)a7 targetLocalIdentifier:(id)a8 otherPeople:(id)a9
+- (PXMovePersonAction)initWithSourcePeople:(id)people sourceType:(int64_t)type destinationPeople:(id)destinationPeople destinationManualOrder:(int64_t)order destinationType:(int64_t)destinationType targetLocalIdentifier:(id)identifier otherPeople:(id)otherPeople
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
-  v19 = [v15 firstObject];
-  v20 = [v19 photoLibrary];
+  peopleCopy = people;
+  destinationPeopleCopy = destinationPeople;
+  identifierCopy = identifier;
+  otherPeopleCopy = otherPeople;
+  firstObject = [peopleCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
   v33.receiver = self;
   v33.super_class = PXMovePersonAction;
-  v21 = [(PXPhotosAction *)&v33 initWithPhotoLibrary:v20];
+  v21 = [(PXPhotosAction *)&v33 initWithPhotoLibrary:photoLibrary];
 
   if (v21)
   {
-    objc_storeStrong(&v21->_sourcePeople, a3);
-    v21->_sourceType = a4;
-    v22 = [v16 copy];
+    objc_storeStrong(&v21->_sourcePeople, people);
+    v21->_sourceType = type;
+    v22 = [destinationPeopleCopy copy];
     destinationPeople = v21->_destinationPeople;
     v21->_destinationPeople = v22;
 
-    v21->_destinationManualOrder = a6;
-    v21->_destinationType = a7;
-    v24 = [v17 copy];
+    v21->_destinationManualOrder = order;
+    v21->_destinationType = destinationType;
+    v24 = [identifierCopy copy];
     targetLocalIdentifier = v21->_targetLocalIdentifier;
     v21->_targetLocalIdentifier = v24;
 
-    v26 = [v18 copy];
+    v26 = [otherPeopleCopy copy];
     otherPeople = v21->_otherPeople;
     v21->_otherPeople = v26;
 
-    v28 = [(PXPhotosAction *)v21 photoLibrary];
-    v29 = [v28 px_localDefaults];
+    photoLibrary2 = [(PXPhotosAction *)v21 photoLibrary];
+    px_localDefaults = [photoLibrary2 px_localDefaults];
     localDefaults = v21->_localDefaults;
-    v21->_localDefaults = v29;
+    v21->_localDefaults = px_localDefaults;
   }
 
   return v21;

@@ -7,31 +7,31 @@
 
 - (id)sb_bundleIdentifierWithFallback
 {
-  v2 = [a1 bundleIdentifier];
-  v3 = v2;
-  if (v2)
+  bundleIdentifier = [self bundleIdentifier];
+  v3 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v4 = v2;
+    bundleIdentifier2 = bundleIdentifier;
   }
 
   else
   {
-    v5 = [a1 handle];
-    v4 = [v5 bundleIdentifier];
+    handle = [self handle];
+    bundleIdentifier2 = [handle bundleIdentifier];
   }
 
-  return v4;
+  return bundleIdentifier2;
 }
 
 - (uint64_t)sb_isProbablyUIApplication
 {
-  if ([a1 isApplicationProcess])
+  if ([self isApplicationProcess])
   {
     return 1;
   }
 
-  v3 = [a1 sb_bundleIdentifierWithFallback];
-  v4 = _SBApp(v3);
+  sb_bundleIdentifierWithFallback = [self sb_bundleIdentifierWithFallback];
+  v4 = _SBApp(sb_bundleIdentifierWithFallback);
   v2 = v4 != 0;
 
   return v2;

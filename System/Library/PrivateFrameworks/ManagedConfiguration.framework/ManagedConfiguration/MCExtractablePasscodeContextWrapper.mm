@@ -1,8 +1,8 @@
 @interface MCExtractablePasscodeContextWrapper
-+ (id)contextWrapperForExtractablePasscode:(id)a3 outError:(id *)a4;
-+ (id)contextWrapperFromExternalizedContext:(id)a3 outError:(id *)a4;
++ (id)contextWrapperForExtractablePasscode:(id)passcode outError:(id *)error;
++ (id)contextWrapperFromExternalizedContext:(id)context outError:(id *)error;
 - (BOOL)passcodeExists;
-- (BOOL)passcodeIsEqualToString:(id)a3;
+- (BOOL)passcodeIsEqualToString:(id)string;
 - (NSString)passcode;
 - (unint64_t)passcodeLength;
 @end
@@ -20,13 +20,13 @@
   v15 = 0;
   v9.receiver = self;
   v9.super_class = MCExtractablePasscodeContextWrapper;
-  v2 = [(MCACMContextWrapper *)&v9 contextRef];
+  contextRef = [(MCACMContextWrapper *)&v9 contextRef];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__MCExtractablePasscodeContextWrapper_passcode__block_invoke;
   v8[3] = &unk_1E77D2500;
   v8[4] = &v10;
-  Data = ACMContextGetData(v2, 7, v8);
+  Data = ACMContextGetData(contextRef, 7, v8);
   if (Data)
   {
     v4 = _MCLogObjects;
@@ -61,27 +61,27 @@ void __47__MCExtractablePasscodeContextWrapper_passcode__block_invoke(uint64_t a
 
 - (unint64_t)passcodeLength
 {
-  v2 = [(MCExtractablePasscodeContextWrapper *)self passcode];
-  v3 = [v2 length];
+  passcode = [(MCExtractablePasscodeContextWrapper *)self passcode];
+  v3 = [passcode length];
 
   return v3;
 }
 
 - (BOOL)passcodeExists
 {
-  v2 = [(MCExtractablePasscodeContextWrapper *)self passcode];
-  v3 = v2 != 0;
+  passcode = [(MCExtractablePasscodeContextWrapper *)self passcode];
+  v3 = passcode != 0;
 
   return v3;
 }
 
-- (BOOL)passcodeIsEqualToString:(id)a3
+- (BOOL)passcodeIsEqualToString:(id)string
 {
-  v4 = a3;
-  v5 = [(MCExtractablePasscodeContextWrapper *)self passcode];
-  if (v5)
+  stringCopy = string;
+  passcode = [(MCExtractablePasscodeContextWrapper *)self passcode];
+  if (passcode)
   {
-    v6 = [v4 isEqualToString:v4];
+    v6 = [stringCopy isEqualToString:stringCopy];
   }
 
   else
@@ -92,13 +92,13 @@ void __47__MCExtractablePasscodeContextWrapper_passcode__block_invoke(uint64_t a
   return v6;
 }
 
-+ (id)contextWrapperForExtractablePasscode:(id)a3 outError:(id *)a4
++ (id)contextWrapperForExtractablePasscode:(id)passcode outError:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  passcodeCopy = passcode;
+  if ([passcodeCopy length])
   {
-    v7 = [v6 dataUsingEncoding:4];
-    v8 = [a1 contextWrapperForData:v7 ofType:7 outError:a4];
+    v7 = [passcodeCopy dataUsingEncoding:4];
+    v8 = [self contextWrapperForData:v7 ofType:7 outError:error];
   }
 
   else
@@ -109,19 +109,19 @@ void __47__MCExtractablePasscodeContextWrapper_passcode__block_invoke(uint64_t a
   return v8;
 }
 
-+ (id)contextWrapperFromExternalizedContext:(id)a3 outError:(id *)a4
++ (id)contextWrapperFromExternalizedContext:(id)context outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!contextCopy)
   {
     goto LABEL_8;
   }
 
-  v8 = ACMContextCreateWithExternalForm([v6 bytes], objc_msgSend(v6, "length"));
+  v8 = ACMContextCreateWithExternalForm([contextCopy bytes], objc_msgSend(contextCopy, "length"));
   if (v8)
   {
-    a4 = [[a1 alloc] initWithExternalizedContext:v7 contextRef:v8 shouldDestroyContentsOnDealloc:0];
+    error = [[self alloc] initWithExternalizedContext:v7 contextRef:v8 shouldDestroyContentsOnDealloc:0];
     goto LABEL_9;
   }
 
@@ -132,22 +132,22 @@ void __47__MCExtractablePasscodeContextWrapper_passcode__block_invoke(uint64_t a
     _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_ERROR, "Couldn't create wrapper context for externalized context", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v17 = MEMORY[0x1E696ABC0];
     v18 = MCErrorArray(@"PASSCODE_ERROR_CANNOT_CREATE_PASSCODE_CONTEXT_WRAPPER", v10, v11, v12, v13, v14, v15, v16, 0);
     v19 = [v17 MCErrorWithDomain:@"MCPasscodeErrorDomain" code:5024 descriptionArray:v18 errorType:@"MCFatalError"];
 
     v20 = v19;
-    *a4 = v19;
+    *error = v19;
 
 LABEL_8:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_9:
 
-  return a4;
+  return error;
 }
 
 @end

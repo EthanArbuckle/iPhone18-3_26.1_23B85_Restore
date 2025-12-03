@@ -1,5 +1,5 @@
 @interface AVCoordinatedPlaybackSuspension
-- (AVCoordinatedPlaybackSuspension)initWithCoordinator:(id)a3 reason:(id)a4;
+- (AVCoordinatedPlaybackSuspension)initWithCoordinator:(id)coordinator reason:(id)reason;
 - (OpaqueFigTimelineCoordinatorSuspension)_figSuspension;
 - (void)_removeSuspension;
 - (void)dealloc;
@@ -9,23 +9,23 @@
 
 @implementation AVCoordinatedPlaybackSuspension
 
-- (AVCoordinatedPlaybackSuspension)initWithCoordinator:(id)a3 reason:(id)a4
+- (AVCoordinatedPlaybackSuspension)initWithCoordinator:(id)coordinator reason:(id)reason
 {
   v8.receiver = self;
   v8.super_class = AVCoordinatedPlaybackSuspension;
   v6 = [(AVCoordinatedPlaybackSuspension *)&v8 init];
   if (v6)
   {
-    if (!a4)
+    if (!reason)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot initialize AVCoordinatedPlaybackSuspension with nil reason." userInfo:0]);
     }
 
-    v6->_reason = [a4 copy];
-    v6->_coordinator = a3;
+    v6->_reason = [reason copy];
+    v6->_coordinator = coordinator;
     v6->_beginDate = objc_alloc_init(MEMORY[0x1E695DF00]);
     v6->_interstitialSuspension = 0;
-    AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(a4);
+    AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(reason);
     if (FigTimelineCoordinatorSuspensionCreate() || !v6->_figSuspension)
     {
 

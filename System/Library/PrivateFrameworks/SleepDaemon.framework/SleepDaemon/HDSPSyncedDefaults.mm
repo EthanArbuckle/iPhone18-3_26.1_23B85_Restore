@@ -1,47 +1,47 @@
 @interface HDSPSyncedDefaults
-- (BOOL)hksp_BOOLForKey:(id)a3;
+- (BOOL)hksp_BOOLForKey:(id)key;
 - (BOOL)syncDisabled;
-- (HDSPSyncedDefaults)initWithEnvironment:(id)a3 configuration:(id)a4;
-- (HDSPSyncedDefaults)initWithEnvironment:(id)a3 configuration:(id)a4 nanoDefaultsProvider:(id)a5 cloudDefaultsProvider:(id)a6 throttleInterval:(double)a7;
+- (HDSPSyncedDefaults)initWithEnvironment:(id)environment configuration:(id)configuration;
+- (HDSPSyncedDefaults)initWithEnvironment:(id)environment configuration:(id)configuration nanoDefaultsProvider:(id)provider cloudDefaultsProvider:(id)defaultsProvider throttleInterval:(double)interval;
 - (HDSPSyncedUserDefaultsExternalChangeDelegate)delegate;
-- (float)hksp_floatForKey:(id)a3;
+- (float)hksp_floatForKey:(id)key;
 - (id)_cloudDefaultsProvider;
-- (id)_defaultsForKey:(id)a3;
+- (id)_defaultsForKey:(id)key;
 - (id)_nanoDefaultsProvider;
-- (id)hksp_dataForKey:(id)a3;
+- (id)hksp_dataForKey:(id)key;
 - (id)hksp_dictionaryRepresentation;
-- (id)hksp_dictionaryRepresentationForKeys:(id)a3;
-- (id)hksp_objectForKey:(id)a3;
-- (int64_t)hksp_integerForKey:(id)a3;
+- (id)hksp_dictionaryRepresentationForKeys:(id)keys;
+- (id)hksp_objectForKey:(id)key;
+- (int64_t)hksp_integerForKey:(id)key;
 - (void)_cloudDefaultsDidReceiveExternalChange;
-- (void)_cloudDefaultsDidReceiveExternalChangeForKeys:(id)a3;
+- (void)_cloudDefaultsDidReceiveExternalChangeForKeys:(id)keys;
 - (void)_differentialCloudKitSync;
-- (void)_differentialCloudKitSyncForKeySet:(id)a3;
-- (void)_hksp_synchronizeKeys:(id)a3;
+- (void)_differentialCloudKitSyncForKeySet:(id)set;
+- (void)_hksp_synchronizeKeys:(id)keys;
 - (void)_initialCloudKitSync;
 - (void)_nanoDefaultsDidReceiveExternalChange;
-- (void)_nanoDefaultsDidReceiveExternalChangeForKeys:(id)a3;
-- (void)_setDefaultForKey:(id)a3 setBlock:(id)a4 syncToCloudKit:(BOOL)a5;
+- (void)_nanoDefaultsDidReceiveExternalChangeForKeys:(id)keys;
+- (void)_setDefaultForKey:(id)key setBlock:(id)block syncToCloudKit:(BOOL)kit;
 - (void)_syncCloudKitToLocal;
-- (void)_syncKeysFromCloudKit:(id)a3;
-- (void)_syncKeysToCloudKit:(id)a3;
+- (void)_syncKeysFromCloudKit:(id)kit;
+- (void)_syncKeysToCloudKit:(id)kit;
 - (void)_syncLocalToCloudKit;
-- (void)_throttled_synchronizeKeys:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)hdsp_forceSynchronizeWithCompletion:(id)a3;
-- (void)hdsp_setExternalChangeDelegate:(id)a3;
-- (void)hksp_removeObjectForKey:(id)a3;
-- (void)hksp_removeObjectsForKeys:(id)a3 syncToCloudKit:(BOOL)a4;
-- (void)hksp_setBool:(BOOL)a3 forKey:(id)a4;
-- (void)hksp_setFloat:(float)a3 forKey:(id)a4;
-- (void)hksp_setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)hksp_setObject:(id)a3 forKey:(id)a4;
+- (void)_throttled_synchronizeKeys:(id)keys;
+- (void)_withLock:(id)lock;
+- (void)hdsp_forceSynchronizeWithCompletion:(id)completion;
+- (void)hdsp_setExternalChangeDelegate:(id)delegate;
+- (void)hksp_removeObjectForKey:(id)key;
+- (void)hksp_removeObjectsForKeys:(id)keys syncToCloudKit:(BOOL)kit;
+- (void)hksp_setBool:(BOOL)bool forKey:(id)key;
+- (void)hksp_setFloat:(float)float forKey:(id)key;
+- (void)hksp_setInteger:(int64_t)integer forKey:(id)key;
+- (void)hksp_setObject:(id)object forKey:(id)key;
 - (void)hksp_synchronize;
 - (void)resetCloudData;
 - (void)saveCloudDataVersion;
 - (void)saveDataVersion;
-- (void)syncedUserDefaults:(id)a3 didChangeExternallyForKeys:(id)a4;
-- (void)syncedUserDefaultsDidChangeExternally:(id)a3;
+- (void)syncedUserDefaults:(id)defaults didChangeExternallyForKeys:(id)keys;
+- (void)syncedUserDefaultsDidChangeExternally:(id)externally;
 @end
 
 @implementation HDSPSyncedDefaults
@@ -114,40 +114,40 @@ HDSPCloudDefaults *__44__HDSPSyncedDefaults__cloudDefaultsProvider__block_invoke
   return v8;
 }
 
-- (HDSPSyncedDefaults)initWithEnvironment:(id)a3 configuration:(id)a4
+- (HDSPSyncedDefaults)initWithEnvironment:(id)environment configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDSPSyncedDefaults *)self _nanoDefaultsProvider];
-  v9 = [(HDSPSyncedDefaults *)self _cloudDefaultsProvider];
-  v10 = [(HDSPSyncedDefaults *)self initWithEnvironment:v7 configuration:v6 nanoDefaultsProvider:v8 cloudDefaultsProvider:v9 throttleInterval:0.25];
+  configurationCopy = configuration;
+  environmentCopy = environment;
+  _nanoDefaultsProvider = [(HDSPSyncedDefaults *)self _nanoDefaultsProvider];
+  _cloudDefaultsProvider = [(HDSPSyncedDefaults *)self _cloudDefaultsProvider];
+  v10 = [(HDSPSyncedDefaults *)self initWithEnvironment:environmentCopy configuration:configurationCopy nanoDefaultsProvider:_nanoDefaultsProvider cloudDefaultsProvider:_cloudDefaultsProvider throttleInterval:0.25];
 
   return v10;
 }
 
-- (HDSPSyncedDefaults)initWithEnvironment:(id)a3 configuration:(id)a4 nanoDefaultsProvider:(id)a5 cloudDefaultsProvider:(id)a6 throttleInterval:(double)a7
+- (HDSPSyncedDefaults)initWithEnvironment:(id)environment configuration:(id)configuration nanoDefaultsProvider:(id)provider cloudDefaultsProvider:(id)defaultsProvider throttleInterval:(double)interval
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  environmentCopy = environment;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  defaultsProviderCopy = defaultsProvider;
   v36.receiver = self;
   v36.super_class = HDSPSyncedDefaults;
   v16 = [(HDSPSyncedDefaults *)&v36 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_environment, v12);
-    objc_storeStrong(&v17->_configuration, a4);
-    v18 = [v12 userDefaults];
+    objc_storeWeak(&v16->_environment, environmentCopy);
+    objc_storeStrong(&v17->_configuration, configuration);
+    userDefaults = [environmentCopy userDefaults];
     localDefaults = v17->_localDefaults;
-    v17->_localDefaults = v18;
+    v17->_localDefaults = userDefaults;
 
-    v20 = v14[2](v14);
+    v20 = providerCopy[2](providerCopy);
     nanoDefaults = v17->_nanoDefaults;
     v17->_nanoDefaults = v20;
 
-    v22 = v15[2](v15);
+    v22 = defaultsProviderCopy[2](defaultsProviderCopy);
     cloudDefaults = v17->_cloudDefaults;
     v17->_cloudDefaults = v22;
 
@@ -159,9 +159,9 @@ HDSPCloudDefaults *__44__HDSPSyncedDefaults__cloudDefaultsProvider__block_invoke
     v26 = objc_alloc(MEMORY[0x277D623F8]);
     v33 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v34, &location);
-    v27 = [v12 defaultCallbackScheduler];
-    v28 = [v12 mutexGenerator];
-    v29 = [v26 initWithInterval:&v33 updateBlock:v27 scheduler:v28 mutexGenerator:a7];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v29 = [v26 initWithInterval:&v33 updateBlock:defaultCallbackScheduler scheduler:mutexGenerator mutexGenerator:interval];
     syncAccumulator = v17->_syncAccumulator;
     v17->_syncAccumulator = v29;
 
@@ -181,42 +181,42 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
   [WeakRetained _throttled_synchronizeKeys:v3];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (BOOL)syncDisabled
 {
-  v2 = self;
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v4 = [v3 cloudSyncEnabledKey];
-  LOBYTE(v2) = [(HDSPSyncedDefaults *)v2 hksp_BOOLForKey:v4];
+  selfCopy = self;
+  info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  cloudSyncEnabledKey = [info cloudSyncEnabledKey];
+  LOBYTE(selfCopy) = [(HDSPSyncedDefaults *)selfCopy hksp_BOOLForKey:cloudSyncEnabledKey];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (id)hksp_dictionaryRepresentation
 {
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToPersist];
-  v4 = [(HDSPSyncedDefaults *)self hksp_dictionaryRepresentationForKeys:v3];
+  allKeysToPersist = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToPersist];
+  v4 = [(HDSPSyncedDefaults *)self hksp_dictionaryRepresentationForKeys:allKeysToPersist];
 
   return v4;
 }
 
-- (id)hksp_dictionaryRepresentationForKeys:(id)a3
+- (id)hksp_dictionaryRepresentationForKeys:(id)keys
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v45 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allDefaultValues];
-  v41 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allPerGizmoKeys];
-  v42 = v4;
-  v6 = [v4 na_setByRemovingObjectsFromSet:v41];
+  allDefaultValues = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allDefaultValues];
+  allPerGizmoKeys = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allPerGizmoKeys];
+  v42 = keysCopy;
+  v6 = [keysCopy na_setByRemovingObjectsFromSet:allPerGizmoKeys];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -245,7 +245,7 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
 
         else
         {
-          v13 = [v45 objectForKeyedSubscript:v11];
+          v13 = [allDefaultValues objectForKeyedSubscript:v11];
           if (v13)
           {
             v14 = HKSPLogForCategory();
@@ -275,7 +275,7 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
     while (v8);
   }
 
-  [v42 na_setByIntersectingWithSet:v41];
+  [v42 na_setByIntersectingWithSet:allPerGizmoKeys];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -341,7 +341,7 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
             _os_log_impl(&dword_269B11000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] found nil value for per-gizmo key: %{public}@", buf, 0x16u);
           }
 
-          v31 = [v45 objectForKeyedSubscript:v20];
+          v31 = [allDefaultValues objectForKeyedSubscript:v20];
           v32 = HKSPLogForCategory();
           v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
           if (v31)
@@ -391,15 +391,15 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
   return v38;
 }
 
-- (void)hksp_removeObjectsForKeys:(id)a3 syncToCloudKit:(BOOL)a4
+- (void)hksp_removeObjectsForKeys:(id)keys syncToCloudKit:(BOOL)kit
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keysCopy = keys;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -410,14 +410,14 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keysCopy);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
         [HDSPSyncedDefaults _setDefaultForKey:"_setDefaultForKey:setBlock:syncToCloudKit:" setBlock:? syncToCloudKit:?];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [keysCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -426,22 +426,22 @@ void __116__HDSPSyncedDefaults_initWithEnvironment_configuration_nanoDefaultsPro
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setDefaultForKey:(id)a3 setBlock:(id)a4 syncToCloudKit:(BOOL)a5
+- (void)_setDefaultForKey:(id)key setBlock:(id)block syncToCloudKit:(BOOL)kit
 {
-  v5 = a5;
+  kitCopy = kit;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([(HDSPSyncedDefaultsConfiguration *)self->_configuration shouldPersistKey:v8])
+  keyCopy = key;
+  blockCopy = block;
+  if ([(HDSPSyncedDefaultsConfiguration *)self->_configuration shouldPersistKey:keyCopy])
   {
-    v10 = [(HDSPSyncedDefaults *)self _defaultsForKey:v8];
-    v9[2](v9, v10);
+    v10 = [(HDSPSyncedDefaults *)self _defaultsForKey:keyCopy];
+    blockCopy[2](blockCopy, v10);
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v12 = [WeakRetained behavior];
-    v13 = [v12 features];
-    v14 = [v13 sleepCloudKitSync];
+    behavior = [WeakRetained behavior];
+    features = [behavior features];
+    sleepCloudKitSync = [features sleepCloudKitSync];
 
-    if (!v14)
+    if (!sleepCloudKitSync)
     {
 LABEL_11:
       v26[0] = MEMORY[0x277D85DD0];
@@ -449,7 +449,7 @@ LABEL_11:
       v26[2] = __64__HDSPSyncedDefaults__setDefaultForKey_setBlock_syncToCloudKit___block_invoke;
       v26[3] = &unk_279C7B2D0;
       v26[4] = self;
-      v27 = v8;
+      v27 = keyCopy;
       [(HDSPSyncedDefaults *)self _withLock:v26];
 
       goto LABEL_12;
@@ -475,9 +475,9 @@ LABEL_10:
     {
       if (![(HDSPSyncedDefaults *)self needsInitialSync])
       {
-        v19 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-        v20 = [v19 cloudSyncEnabledKey];
-        v21 = [v8 isEqualToString:v20];
+        info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+        cloudSyncEnabledKey = [info cloudSyncEnabledKey];
+        v21 = [keyCopy isEqualToString:cloudSyncEnabledKey];
 
         if (v21)
         {
@@ -493,7 +493,7 @@ LABEL_10:
           [(HDSPSyncedDefaults *)self setNeedsSyncFromCloud:1];
         }
 
-        else if (v5 && [(HDSPSyncedDefaultsConfiguration *)self->_configuration shouldSyncKey:v8])
+        else if (kitCopy && [(HDSPSyncedDefaultsConfiguration *)self->_configuration shouldSyncKey:keyCopy])
         {
           v24 = HKSPLogForCategory();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -501,12 +501,12 @@ LABEL_10:
             *buf = 138543618;
             v29 = objc_opt_class();
             v30 = 2112;
-            v31 = v8;
+            v31 = keyCopy;
             v25 = v29;
             _os_log_impl(&dword_269B11000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] syncing key to CloudKit: %@", buf, 0x16u);
           }
 
-          v9[2](v9, self->_cloudDefaults);
+          blockCopy[2](blockCopy, self->_cloudDefaults);
         }
 
         goto LABEL_11;
@@ -534,10 +534,10 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hdsp_forceSynchronizeWithCompletion:(id)a3
+- (void)hdsp_forceSynchronizeWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -553,8 +553,8 @@ LABEL_12:
   v10[2] = __58__HDSPSyncedDefaults_hdsp_forceSynchronizeWithCompletion___block_invoke;
   v10[3] = &unk_279C7C3B0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(HDSPSyncedUserDefaults *)cloudDefaults hdsp_forceSynchronizeWithCompletion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -601,34 +601,34 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hdsp_setExternalChangeDelegate:(id)a3
+- (void)hdsp_setExternalChangeDelegate:(id)delegate
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v4;
+    v11 = delegateCopy;
     v6 = v9;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] hdsp_setExternalChangeDelegate %{public}@", &v8, 0x16u);
   }
 
-  [(HDSPSyncedDefaults *)self setDelegate:v4];
+  [(HDSPSyncedDefaults *)self setDelegate:delegateCopy];
   [(HDSPSyncedUserDefaults *)self->_nanoDefaults hdsp_setExternalChangeDelegate:self];
   [(HDSPSyncedUserDefaults *)self->_cloudDefaults hdsp_setExternalChangeDelegate:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_defaultsForKey:(id)a3
+- (id)_defaultsForKey:(id)key
 {
   configuration = self->_configuration;
-  v5 = a3;
-  v6 = [(HDSPSyncedDefaultsConfiguration *)configuration allPerGizmoKeys];
-  v7 = [v6 containsObject:v5];
+  keyCopy = key;
+  allPerGizmoKeys = [(HDSPSyncedDefaultsConfiguration *)configuration allPerGizmoKeys];
+  v7 = [allPerGizmoKeys containsObject:keyCopy];
 
   v8 = 24;
   if (v7)
@@ -642,11 +642,11 @@ LABEL_6:
   return v9;
 }
 
-- (id)hksp_objectForKey:(id)a3
+- (id)hksp_objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPSyncedDefaults *)self _defaultsForKey:v4];
-  v6 = [v5 hksp_objectForKey:v4];
+  keyCopy = key;
+  v5 = [(HDSPSyncedDefaults *)self _defaultsForKey:keyCopy];
+  v6 = [v5 hksp_objectForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -655,109 +655,109 @@ LABEL_6:
 
   else
   {
-    v9 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allDefaultValues];
-    v8 = [v9 objectForKeyedSubscript:v4];
+    allDefaultValues = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allDefaultValues];
+    v8 = [allDefaultValues objectForKeyedSubscript:keyCopy];
   }
 
   return v8;
 }
 
-- (void)hksp_setObject:(id)a3 forKey:(id)a4
+- (void)hksp_setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__HDSPSyncedDefaults_hksp_setObject_forKey___block_invoke;
   v10[3] = &unk_279C7C360;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = objectCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = objectCopy;
   [(HDSPSyncedDefaults *)self _setDefaultForKey:v8 setBlock:v10];
 }
 
-- (void)hksp_removeObjectForKey:(id)a3
+- (void)hksp_removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__HDSPSyncedDefaults_hksp_removeObjectForKey___block_invoke;
   v6[3] = &unk_279C7C388;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(HDSPSyncedDefaults *)self _setDefaultForKey:v5 setBlock:v6];
 }
 
-- (BOOL)hksp_BOOLForKey:(id)a3
+- (BOOL)hksp_BOOLForKey:(id)key
 {
-  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)hksp_setBool:(BOOL)a3 forKey:(id)a4
+- (void)hksp_setBool:(BOOL)bool forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HDSPSyncedDefaults_hksp_setBool_forKey___block_invoke;
   v8[3] = &unk_279C7C3D8;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  boolCopy = bool;
+  v9 = keyCopy;
+  v7 = keyCopy;
   [(HDSPSyncedDefaults *)self _setDefaultForKey:v7 setBlock:v8];
 }
 
-- (float)hksp_floatForKey:(id)a3
+- (float)hksp_floatForKey:(id)key
 {
-  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:a3];
+  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:key];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)hksp_setFloat:(float)a3 forKey:(id)a4
+- (void)hksp_setFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__HDSPSyncedDefaults_hksp_setFloat_forKey___block_invoke;
   v8[3] = &unk_279C7C400;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  floatCopy = float;
+  v9 = keyCopy;
+  v7 = keyCopy;
   [(HDSPSyncedDefaults *)self _setDefaultForKey:v7 setBlock:v8];
 }
 
-- (int64_t)hksp_integerForKey:(id)a3
+- (int64_t)hksp_integerForKey:(id)key
 {
-  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(HDSPSyncedDefaults *)self hksp_objectForKey:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)hksp_setInteger:(int64_t)a3 forKey:(id)a4
+- (void)hksp_setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HDSPSyncedDefaults_hksp_setInteger_forKey___block_invoke;
   v8[3] = &unk_279C7C428;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = keyCopy;
+  integerCopy = integer;
+  v7 = keyCopy;
   [(HDSPSyncedDefaults *)self _setDefaultForKey:v7 setBlock:v8];
 }
 
-- (id)hksp_dataForKey:(id)a3
+- (id)hksp_dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPSyncedDefaults *)self _defaultsForKey:v4];
-  v6 = [v5 hksp_dataForKey:v4];
+  keyCopy = key;
+  v5 = [(HDSPSyncedDefaults *)self _defaultsForKey:keyCopy];
+  v6 = [v5 hksp_dataForKey:keyCopy];
 
   return v6;
 }
@@ -791,65 +791,65 @@ uint64_t __38__HDSPSyncedDefaults_hksp_synchronize__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_hksp_synchronizeKeys:(id)a3
+- (void)_hksp_synchronizeKeys:(id)keys
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   [(HDSPSyncedDefaults *)self saveDataVersion];
   [(HDSPSyncedDefaults *)self saveCloudDataVersion];
-  v5 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v6 = [v5 dataVersionKey];
-  v14[0] = v6;
-  v7 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v8 = [v7 cloudDataVersionKey];
-  v14[1] = v8;
+  info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  dataVersionKey = [info dataVersionKey];
+  v14[0] = dataVersionKey;
+  info2 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  cloudDataVersionKey = [info2 cloudDataVersionKey];
+  v14[1] = cloudDataVersionKey;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v10 = [v4 setByAddingObjectsFromArray:v9];
+  v10 = [keysCopy setByAddingObjectsFromArray:v9];
 
   syncAccumulator = self->_syncAccumulator;
-  v12 = [v10 allObjects];
-  [(HKSPAccumulator *)syncAccumulator accumulateValues:v12];
+  allObjects = [v10 allObjects];
+  [(HKSPAccumulator *)syncAccumulator accumulateValues:allObjects];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_throttled_synchronizeKeys:(id)a3
+- (void)_throttled_synchronizeKeys:(id)keys
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v20 = objc_opt_class();
     v21 = 2114;
-    v22 = v4;
+    v22 = keysCopy;
     v6 = v20;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] synchronizing keys: %{public}@", buf, 0x16u);
   }
 
-  [(HKSPUserDefaults *)self->_localDefaults hksp_synchronizeKeys:v4];
+  [(HKSPUserDefaults *)self->_localDefaults hksp_synchronizeKeys:keysCopy];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v8 = [WeakRetained behavior];
-  v9 = [v8 supportsNanoSync];
+  behavior = [WeakRetained behavior];
+  supportsNanoSync = [behavior supportsNanoSync];
 
-  if (v9)
+  if (supportsNanoSync)
   {
-    [(HDSPSyncedUserDefaults *)self->_nanoDefaults hksp_synchronizeKeys:v4];
+    [(HDSPSyncedUserDefaults *)self->_nanoDefaults hksp_synchronizeKeys:keysCopy];
   }
 
-  v10 = objc_loadWeakRetained(&self->_environment);
-  v11 = [v10 behavior];
-  v12 = [v11 features];
-  if (![v12 sleepCloudKitSync])
+  delegate = objc_loadWeakRetained(&self->_environment);
+  behavior2 = [delegate behavior];
+  features = [behavior2 features];
+  if (![features sleepCloudKitSync])
   {
 
     goto LABEL_10;
   }
 
-  v13 = [(HDSPSyncedDefaults *)self syncDisabled];
+  syncDisabled = [(HDSPSyncedDefaults *)self syncDisabled];
 
-  if (!v13)
+  if (!syncDisabled)
   {
     if ([(HDSPSyncedDefaults *)self needsInitialSync])
     {
@@ -864,14 +864,14 @@ uint64_t __38__HDSPSyncedDefaults_hksp_synchronize__block_invoke(uint64_t a1)
 
     if (![(HDSPSyncedDefaults *)self needsSyncFromCloud])
     {
-      [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_synchronizeKeys:v4];
+      [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_synchronizeKeys:keysCopy];
       goto LABEL_11;
     }
 
     [(HDSPSyncedDefaults *)self setNeedsSyncFromCloud:0];
     [(HDSPSyncedDefaults *)self _syncCloudKitToLocal];
-    v10 = [(HDSPSyncedDefaults *)self delegate];
-    [v10 syncedUserDefaultsDidChangeExternally:self];
+    delegate = [(HDSPSyncedDefaults *)self delegate];
+    [delegate syncedUserDefaultsDidChangeExternally:self];
 LABEL_10:
   }
 
@@ -881,8 +881,8 @@ LABEL_11:
   v16[2] = __49__HDSPSyncedDefaults__throttled_synchronizeKeys___block_invoke_2;
   v16[3] = &unk_279C7B2D0;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
+  v17 = keysCopy;
+  v14 = keysCopy;
   [(HDSPSyncedDefaults *)self _withLock:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -897,14 +897,14 @@ void __49__HDSPSyncedDefaults__throttled_synchronizeKeys___block_invoke(uint64_t
 - (void)saveDataVersion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v4 = [v3 dataVersionKey];
-  v5 = [(HDSPSyncedDefaults *)self hksp_integerForKey:v4];
+  info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  dataVersionKey = [info dataVersionKey];
+  v5 = [(HDSPSyncedDefaults *)self hksp_integerForKey:dataVersionKey];
 
-  v6 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v7 = [v6 currentDataVersion];
+  info2 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  currentDataVersion = [info2 currentDataVersion];
 
-  if (v5 < v7)
+  if (v5 < currentDataVersion)
   {
     v8 = HKSPLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -914,32 +914,32 @@ void __49__HDSPSyncedDefaults__throttled_synchronizeKeys___block_invoke(uint64_t
       *&v26[12] = 2048;
       *&v26[14] = v5;
       *&v26[22] = 2048;
-      v27 = v7;
+      v27 = currentDataVersion;
       v9 = *&v26[4];
       _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating stored data version from %lu to %lu", v26, 0x20u);
     }
 
-    v10 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v11 = [v10 dataVersionKey];
-    [(HDSPSyncedDefaults *)self hksp_setInteger:v7 forKey:v11];
+    info3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    dataVersionKey2 = [info3 dataVersionKey];
+    [(HDSPSyncedDefaults *)self hksp_setInteger:currentDataVersion forKey:dataVersionKey2];
 
 LABEL_5:
     goto LABEL_9;
   }
 
-  if (v5 > v7)
+  if (v5 > currentDataVersion)
   {
-    v10 = HKSPLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    info3 = HKSPLogForCategory();
+    if (os_log_type_enabled(info3, OS_LOG_TYPE_DEFAULT))
     {
       *v26 = 138543874;
       *&v26[4] = objc_opt_class();
       *&v26[12] = 2048;
       *&v26[14] = v5;
       *&v26[22] = 2048;
-      v27 = v7;
+      v27 = currentDataVersion;
       v12 = *&v26[4];
-      _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored data version from %lu to %lu", v26, 0x20u);
+      _os_log_impl(&dword_269B11000, info3, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored data version from %lu to %lu", v26, 0x20u);
     }
 
     goto LABEL_5;
@@ -947,21 +947,21 @@ LABEL_5:
 
 LABEL_9:
   v13 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info:*v26];
-  v14 = [v13 localDataVersionKey];
-  v15 = [(HDSPSyncedDefaults *)self hksp_integerForKey:v14];
+  localDataVersionKey = [v13 localDataVersionKey];
+  v15 = [(HDSPSyncedDefaults *)self hksp_integerForKey:localDataVersionKey];
 
-  v16 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-  v17 = [v16 currentLocalDataVersion];
+  info4 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+  currentLocalDataVersion = [info4 currentLocalDataVersion];
 
-  if (v15 >= v17)
+  if (v15 >= currentLocalDataVersion)
   {
-    if (v15 <= v17)
+    if (v15 <= currentLocalDataVersion)
     {
       goto LABEL_17;
     }
 
-    v21 = HKSPLogForCategory();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    info5 = HKSPLogForCategory();
+    if (os_log_type_enabled(info5, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       *v26 = 138543874;
@@ -969,9 +969,9 @@ LABEL_9:
       *&v26[12] = 2048;
       *&v26[14] = v15;
       *&v26[22] = 2048;
-      v27 = v17;
+      v27 = currentLocalDataVersion;
       v24 = v23;
-      _os_log_impl(&dword_269B11000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored local data version from %lu to %lu", v26, 0x20u);
+      _os_log_impl(&dword_269B11000, info5, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored local data version from %lu to %lu", v26, 0x20u);
     }
   }
 
@@ -986,14 +986,14 @@ LABEL_9:
       *&v26[12] = 2048;
       *&v26[14] = v15;
       *&v26[22] = 2048;
-      v27 = v17;
+      v27 = currentLocalDataVersion;
       v20 = v19;
       _os_log_impl(&dword_269B11000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating stored local data version from %lu to %lu", v26, 0x20u);
     }
 
-    v21 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v22 = [v21 localDataVersionKey];
-    [(HDSPSyncedDefaults *)self hksp_setInteger:v17 forKey:v22];
+    info5 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    localDataVersionKey2 = [info5 localDataVersionKey];
+    [(HDSPSyncedDefaults *)self hksp_setInteger:currentLocalDataVersion forKey:localDataVersionKey2];
   }
 
 LABEL_17:
@@ -1004,37 +1004,37 @@ LABEL_17:
 {
   v24 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
-  if (v6 && ![(HDSPSyncedDefaults *)self syncDisabled]&& ![(HDSPSyncedDefaults *)self needsInitialSync])
+  if (sleepCloudKitSync && ![(HDSPSyncedDefaults *)self syncDisabled]&& ![(HDSPSyncedDefaults *)self needsInitialSync])
   {
-    v7 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v8 = [v7 cloudDataVersionKey];
-    v9 = [(HDSPSyncedDefaults *)self hksp_integerForKey:v8];
+    info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    cloudDataVersionKey = [info cloudDataVersionKey];
+    v9 = [(HDSPSyncedDefaults *)self hksp_integerForKey:cloudDataVersionKey];
 
-    v10 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v11 = [v10 currentCloudDataVersion];
+    info2 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    currentCloudDataVersion = [info2 currentCloudDataVersion];
 
-    if (v9 >= v11)
+    if (v9 >= currentCloudDataVersion)
     {
-      if (v9 <= v11)
+      if (v9 <= currentCloudDataVersion)
       {
         goto LABEL_12;
       }
 
-      v14 = HKSPLogForCategory();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      info3 = HKSPLogForCategory();
+      if (os_log_type_enabled(info3, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138543874;
         v19 = objc_opt_class();
         v20 = 2048;
         v21 = v9;
         v22 = 2048;
-        v23 = v11;
+        v23 = currentCloudDataVersion;
         v16 = v19;
-        _os_log_impl(&dword_269B11000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored cloud data version from %lu to %lu", &v18, 0x20u);
+        _os_log_impl(&dword_269B11000, info3, OS_LOG_TYPE_DEFAULT, "[%{public}@] not updating newer stored cloud data version from %lu to %lu", &v18, 0x20u);
       }
     }
 
@@ -1048,14 +1048,14 @@ LABEL_17:
         v20 = 2048;
         v21 = v9;
         v22 = 2048;
-        v23 = v11;
+        v23 = currentCloudDataVersion;
         v13 = v19;
         _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating stored cloud data version from %lu to %lu", &v18, 0x20u);
       }
 
-      v14 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-      v15 = [v14 cloudDataVersionKey];
-      [(HDSPSyncedDefaults *)self hksp_setInteger:v11 forKey:v15];
+      info3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+      cloudDataVersionKey2 = [info3 cloudDataVersionKey];
+      [(HDSPSyncedDefaults *)self hksp_setInteger:currentCloudDataVersion forKey:cloudDataVersionKey2];
     }
   }
 
@@ -1063,51 +1063,51 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncedUserDefaultsDidChangeExternally:(id)a3
+- (void)syncedUserDefaultsDidChangeExternally:(id)externally
 {
-  v4 = a3;
-  v6 = v4;
-  if (self->_nanoDefaults == v4)
+  externallyCopy = externally;
+  v6 = externallyCopy;
+  if (self->_nanoDefaults == externallyCopy)
   {
     [(HDSPSyncedDefaults *)self _nanoDefaultsDidReceiveExternalChange];
   }
 
-  else if (self->_cloudDefaults == v4)
+  else if (self->_cloudDefaults == externallyCopy)
   {
     [(HDSPSyncedDefaults *)self _cloudDefaultsDidReceiveExternalChange];
   }
 
-  v5 = [(HDSPSyncedDefaults *)self delegate];
-  [v5 syncedUserDefaultsDidChangeExternally:self];
+  delegate = [(HDSPSyncedDefaults *)self delegate];
+  [delegate syncedUserDefaultsDidChangeExternally:self];
 }
 
-- (void)syncedUserDefaults:(id)a3 didChangeExternallyForKeys:(id)a4
+- (void)syncedUserDefaults:(id)defaults didChangeExternallyForKeys:(id)keys
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_nanoDefaults == v11)
+  defaultsCopy = defaults;
+  keysCopy = keys;
+  if (self->_nanoDefaults == defaultsCopy)
   {
-    [(HDSPSyncedDefaults *)self _nanoDefaultsDidReceiveExternalChangeForKeys:v6];
+    [(HDSPSyncedDefaults *)self _nanoDefaultsDidReceiveExternalChangeForKeys:keysCopy];
   }
 
-  else if (self->_cloudDefaults == v11)
+  else if (self->_cloudDefaults == defaultsCopy)
   {
-    [(HDSPSyncedDefaults *)self _cloudDefaultsDidReceiveExternalChangeForKeys:v6];
+    [(HDSPSyncedDefaults *)self _cloudDefaultsDidReceiveExternalChangeForKeys:keysCopy];
   }
 
-  v7 = [(HDSPSyncedDefaults *)self delegate];
+  delegate = [(HDSPSyncedDefaults *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  v9 = [(HDSPSyncedDefaults *)self delegate];
-  v10 = v9;
+  delegate2 = [(HDSPSyncedDefaults *)self delegate];
+  v10 = delegate2;
   if (v8)
   {
-    [v9 syncedUserDefaults:self didChangeExternallyForKeys:v6];
+    [delegate2 syncedUserDefaults:self didChangeExternallyForKeys:keysCopy];
   }
 
   else
   {
-    [v9 syncedUserDefaultsDidChangeExternally:self];
+    [delegate2 syncedUserDefaultsDidChangeExternally:self];
   }
 }
 
@@ -1125,10 +1125,10 @@ LABEL_12:
 
   [(HKSPUserDefaults *)self->_localDefaults hksp_synchronize];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained behavior];
-  v7 = [v6 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v7 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
     [(HDSPSyncedDefaults *)self _differentialCloudKitSync];
   }
@@ -1136,29 +1136,29 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_nanoDefaultsDidReceiveExternalChangeForKeys:(id)a3
+- (void)_nanoDefaultsDidReceiveExternalChangeForKeys:(id)keys
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v4;
+    v14 = keysCopy;
     v6 = v12;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _nanoDefaultsDidReceiveExternalChangeForKeys: %{public}@", &v11, 0x16u);
   }
 
-  [(HKSPUserDefaults *)self->_localDefaults hksp_synchronizeKeys:v4];
+  [(HKSPUserDefaults *)self->_localDefaults hksp_synchronizeKeys:keysCopy];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v8 = [WeakRetained behavior];
-  v9 = [v8 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v9 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
-    [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:v4];
+    [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:keysCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1180,22 +1180,22 @@ LABEL_12:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cloudDefaultsDidReceiveExternalChangeForKeys:(id)a3
+- (void)_cloudDefaultsDidReceiveExternalChangeForKeys:(id)keys
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v4;
+    v11 = keysCopy;
     v6 = v9;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _cloudDefaultsDidReceiveExternalChangeForKeys: %{public}@", &v8, 0x16u);
   }
 
-  [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:v4];
+  [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:keysCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1203,11 +1203,11 @@ LABEL_12:
 {
   v28 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
-  if (v6 && ![(HDSPSyncedDefaults *)self syncDisabled])
+  if (sleepCloudKitSync && ![(HDSPSyncedDefaults *)self syncDisabled])
   {
     [(HDSPSyncedDefaults *)self setNeedsInitialSync:0];
     v7 = HKSPLogForCategory();
@@ -1220,14 +1220,14 @@ LABEL_12:
     }
 
     cloudDefaults = self->_cloudDefaults;
-    v10 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v11 = [v10 cloudDataVersionKey];
-    v12 = [(HDSPSyncedUserDefaults *)cloudDefaults hksp_integerForKey:v11];
+    info = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    cloudDataVersionKey = [info cloudDataVersionKey];
+    v12 = [(HDSPSyncedUserDefaults *)cloudDefaults hksp_integerForKey:cloudDataVersionKey];
 
     localDefaults = self->_localDefaults;
-    v14 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
-    v15 = [v14 cloudDataVersionKey];
-    v16 = [(HKSPUserDefaults *)localDefaults hksp_integerForKey:v15];
+    info2 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration info];
+    cloudDataVersionKey2 = [info2 cloudDataVersionKey];
+    v16 = [(HKSPUserDefaults *)localDefaults hksp_integerForKey:cloudDataVersionKey2];
 
     v17 = HKSPLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1272,20 +1272,20 @@ LABEL_12:
 
 - (void)_syncLocalToCloudKit
 {
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
-  [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:v3];
+  allKeysToSync = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
+  [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:allKeysToSync];
 }
 
-- (void)_syncKeysToCloudKit:(id)a3
+- (void)_syncKeysToCloudKit:(id)kit
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  kitCopy = kit;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained behavior];
-  v7 = [v6 features];
-  v8 = [v7 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
-  if (v8 && ![(HDSPSyncedDefaults *)self syncDisabled])
+  if (sleepCloudKitSync && ![(HDSPSyncedDefaults *)self syncDisabled])
   {
     v9 = HKSPLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1293,20 +1293,20 @@ LABEL_12:
       v23 = 138543618;
       v24 = objc_opt_class();
       v25 = 2114;
-      v26 = v4;
+      v26 = kitCopy;
       v10 = v24;
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] syncing to CloudKit: %{public}@", &v23, 0x16u);
     }
 
-    v11 = [(HDSPSyncedDefaults *)self hksp_dictionaryRepresentationForKeys:v4];
+    v11 = [(HDSPSyncedDefaults *)self hksp_dictionaryRepresentationForKeys:kitCopy];
     v12 = MEMORY[0x277CBEB98];
-    v13 = [v11 allKeys];
-    v14 = [v12 setWithArray:v13];
-    v15 = [v4 na_setByRemovingObjectsFromSet:v14];
+    allKeys = [v11 allKeys];
+    v14 = [v12 setWithArray:allKeys];
+    v15 = [kitCopy na_setByRemovingObjectsFromSet:v14];
 
     [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_saveDictionary:v11];
     [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_removeObjectsForKeys:v15];
-    [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_synchronizeKeys:v4];
+    [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_synchronizeKeys:kitCopy];
     [(HDSPSyncedDefaults *)self saveCloudDataVersion];
     v16 = HKSPLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1338,20 +1338,20 @@ LABEL_12:
 
 - (void)_syncCloudKitToLocal
 {
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
-  [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:v3];
+  allKeysToSync = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
+  [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:allKeysToSync];
 }
 
-- (void)_syncKeysFromCloudKit:(id)a3
+- (void)_syncKeysFromCloudKit:(id)kit
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  kitCopy = kit;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained behavior];
-  v7 = [v6 features];
-  v8 = [v7 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
-  if (v8 && ![(HDSPSyncedDefaults *)self syncDisabled])
+  if (sleepCloudKitSync && ![(HDSPSyncedDefaults *)self syncDisabled])
   {
     v9 = HKSPLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1359,20 +1359,20 @@ LABEL_12:
       v23 = 138543618;
       v24 = objc_opt_class();
       v25 = 2114;
-      v26 = v4;
+      v26 = kitCopy;
       v10 = v24;
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] syncing from CloudKit: %{public}@", &v23, 0x16u);
     }
 
-    v11 = [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_dictionaryRepresentationForKeys:v4];
+    v11 = [(HDSPSyncedUserDefaults *)self->_cloudDefaults hksp_dictionaryRepresentationForKeys:kitCopy];
     v12 = MEMORY[0x277CBEB98];
-    v13 = [v11 allKeys];
-    v14 = [v12 setWithArray:v13];
-    v15 = [v4 na_setByRemovingObjectsFromSet:v14];
+    allKeys = [v11 allKeys];
+    v14 = [v12 setWithArray:allKeys];
+    v15 = [kitCopy na_setByRemovingObjectsFromSet:v14];
 
     [(HDSPSyncedDefaults *)self hksp_saveDictionary:v11 syncToCloudKit:0];
     [(HDSPSyncedDefaults *)self hksp_removeObjectsForKeys:v15 syncToCloudKit:0];
-    [(HDSPSyncedDefaults *)self hksp_synchronizeKeys:v4];
+    [(HDSPSyncedDefaults *)self hksp_synchronizeKeys:kitCopy];
     v16 = HKSPLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -1405,11 +1405,11 @@ LABEL_12:
 {
   v14 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
-  if (v6 && ![(HDSPSyncedDefaults *)self syncDisabled])
+  if (sleepCloudKitSync && ![(HDSPSyncedDefaults *)self syncDisabled])
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1420,42 +1420,42 @@ LABEL_12:
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] performing differential sync", buf, 0xCu);
     }
 
-    v9 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration keySets];
+    keySets = [(HDSPSyncedDefaultsConfiguration *)self->_configuration keySets];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__HDSPSyncedDefaults__differentialCloudKitSync__block_invoke;
     v11[3] = &unk_279C7C450;
     v11[4] = self;
-    [v9 na_each:v11];
+    [keySets na_each:v11];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_differentialCloudKitSyncForKeySet:(id)a3
+- (void)_differentialCloudKitSyncForKeySet:(id)set
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [setCopy identifier];
     v29 = 138543618;
     v30 = v6;
     v31 = 2114;
-    v32 = v8;
+    v32 = identifier;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] looking at keySet: %{public}@", &v29, 0x16u);
   }
 
   cloudDefaults = self->_cloudDefaults;
-  v10 = [v4 modificationDateKey];
-  v11 = [(HDSPSyncedUserDefaults *)cloudDefaults hksp_objectForKey:v10];
+  modificationDateKey = [setCopy modificationDateKey];
+  v11 = [(HDSPSyncedUserDefaults *)cloudDefaults hksp_objectForKey:modificationDateKey];
 
   localDefaults = self->_localDefaults;
-  v13 = [v4 modificationDateKey];
-  v14 = [(HKSPUserDefaults *)localDefaults hksp_objectForKey:v13];
+  modificationDateKey2 = [setCopy modificationDateKey];
+  v14 = [(HKSPUserDefaults *)localDefaults hksp_objectForKey:modificationDateKey2];
 
   v15 = HKSPLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1495,8 +1495,8 @@ LABEL_12:
         _os_log_impl(&dword_269B11000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] server modified later, syncing from CloudKit", &v29, 0xCu);
       }
 
-      v24 = [v4 keysToSync];
-      [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:v24];
+      keysToSync = [setCopy keysToSync];
+      [(HDSPSyncedDefaults *)self _syncKeysFromCloudKit:keysToSync];
     }
 
     else
@@ -1511,8 +1511,8 @@ LABEL_12:
         _os_log_impl(&dword_269B11000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] local modified later, syncing to CloudKit", &v29, 0xCu);
       }
 
-      v24 = [v4 keysToSync];
-      [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:v24];
+      keysToSync = [setCopy keysToSync];
+      [(HDSPSyncedDefaults *)self _syncKeysToCloudKit:keysToSync];
     }
   }
 

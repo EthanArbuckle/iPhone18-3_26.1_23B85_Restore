@@ -1,6 +1,6 @@
 @interface ASDTPMActionNumericPropertyAnalyticsEvent
 - (ASDTNumericProperty)numericProperty;
-- (ASDTPMActionNumericPropertyAnalyticsEvent)initWithConfig:(id)a3 forSequencer:(id)a4;
+- (ASDTPMActionNumericPropertyAnalyticsEvent)initWithConfig:(id)config forSequencer:(id)sequencer;
 - (id)eventData;
 - (void)eventData;
 - (void)numericProperty;
@@ -8,44 +8,44 @@
 
 @implementation ASDTPMActionNumericPropertyAnalyticsEvent
 
-- (ASDTPMActionNumericPropertyAnalyticsEvent)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMActionNumericPropertyAnalyticsEvent)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v7 = a3;
+  configCopy = config;
   v46.receiver = self;
   v46.super_class = ASDTPMActionNumericPropertyAnalyticsEvent;
-  v8 = [(ASDTPMActionAnalyticsEvent *)&v46 initWithConfig:v7 forSequencer:a4];
+  v8 = [(ASDTPMActionAnalyticsEvent *)&v46 initWithConfig:configCopy forSequencer:sequencer];
   if (!v8)
   {
 LABEL_46:
-    v10 = v8;
+    propertyAddress = v8;
     goto LABEL_47;
   }
 
-  v9 = [v7 asdtPropertyAddress];
-  [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 setPropertyAddress:v9];
+  asdtPropertyAddress = [configCopy asdtPropertyAddress];
+  [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 setPropertyAddress:asdtPropertyAddress];
 
-  v10 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+  propertyAddress = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
 
-  if (v10)
+  if (propertyAddress)
   {
-    v11 = [v7 asdtPMActionAnalyticsEventField];
-    [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 setFieldName:v11];
+    asdtPMActionAnalyticsEventField = [configCopy asdtPMActionAnalyticsEventField];
+    [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 setFieldName:asdtPMActionAnalyticsEventField];
 
-    v12 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 fieldName];
+    fieldName = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 fieldName];
 
-    if (v12)
+    if (fieldName)
     {
-      v13 = [v7 asdtName];
+      asdtName = [configCopy asdtName];
 
-      if (!v13)
+      if (!asdtName)
       {
         v41 = MEMORY[0x277CCACA8];
-        v45 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v44 = [v45 selector] >> 29;
+        propertyAddress2 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        v44 = [propertyAddress2 selector] >> 29;
         if (v44)
         {
-          v30 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-          if ([v30 selector] >> 24 > 0x7E)
+          propertyAddress3 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+          if ([propertyAddress3 selector] >> 24 > 0x7E)
           {
             v43 = 0;
             v39 = 32;
@@ -53,8 +53,8 @@ LABEL_46:
 
           else
           {
-            v26 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-            v39 = [v26 selector] >> 24;
+            propertyAddress4 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+            v39 = [propertyAddress4 selector] >> 24;
             v43 = 1;
           }
         }
@@ -65,12 +65,12 @@ LABEL_46:
           v39 = 32;
         }
 
-        v42 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v40 = [v42 selector] & 0xE00000;
+        propertyAddress5 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        v40 = [propertyAddress5 selector] & 0xE00000;
         if (v40)
         {
-          v32 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-          if (([v32 selector] >> 16) > 0x7Eu)
+          propertyAddress6 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+          if (([propertyAddress6 selector] >> 16) > 0x7Eu)
           {
             v38 = 0;
             v35 = 32;
@@ -78,8 +78,8 @@ LABEL_46:
 
           else
           {
-            v29 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-            v35 = ([v29 selector] >> 16);
+            propertyAddress7 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+            v35 = ([propertyAddress7 selector] >> 16);
             v38 = 1;
           }
         }
@@ -90,12 +90,12 @@ LABEL_46:
           v35 = 32;
         }
 
-        v37 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v36 = [v37 selector] & 0xE000;
+        propertyAddress8 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        v36 = [propertyAddress8 selector] & 0xE000;
         if (v36)
         {
-          v31 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-          if (([v31 selector] >> 8) > 0x7Eu)
+          propertyAddress9 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+          if (([propertyAddress9 selector] >> 8) > 0x7Eu)
           {
             v34 = 0;
             v33 = 32;
@@ -103,8 +103,8 @@ LABEL_46:
 
           else
           {
-            v28 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-            v33 = ([v28 selector] >> 8);
+            propertyAddress10 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+            v33 = ([propertyAddress10 selector] >> 8);
             v34 = 1;
           }
         }
@@ -115,21 +115,21 @@ LABEL_46:
           v33 = 32;
         }
 
-        v15 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v16 = [v15 selector] & 0xE0;
+        propertyAddress11 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        v16 = [propertyAddress11 selector] & 0xE0;
         if (v16)
         {
-          v4 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-          if ([v4 selector] > 0x7Eu)
+          propertyAddress12 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+          if ([propertyAddress12 selector] > 0x7Eu)
           {
             v18 = 0;
-            v17 = 32;
+            selector = 32;
           }
 
           else
           {
-            v27 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-            v17 = [v27 selector];
+            propertyAddress13 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+            selector = [propertyAddress13 selector];
             v18 = 1;
           }
         }
@@ -137,13 +137,13 @@ LABEL_46:
         else
         {
           v18 = 0;
-          v17 = 32;
+          selector = 32;
         }
 
-        v19 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v20 = [v19 element];
-        v21 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
-        v22 = [v41 stringWithFormat:@"NumericPropertyAnalyticsEvent: S:%c%c%c%c E:%u S:%x", v39, v35, v33, v17, v20, objc_msgSend(v21, "scope")];
+        propertyAddress14 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        element = [propertyAddress14 element];
+        propertyAddress15 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 propertyAddress];
+        v22 = [v41 stringWithFormat:@"NumericPropertyAnalyticsEvent: S:%c%c%c%c E:%u S:%x", v39, v35, v33, selector, element, objc_msgSend(propertyAddress15, "scope")];
         [(ASDTPMAction *)v8 setName:v22];
 
         if (v18)
@@ -179,8 +179,8 @@ LABEL_46:
         }
       }
 
-      v23 = [(ASDTPMDevice *)v8 name];
-      v24 = [ASDTCondition conditionWithName:v23];
+      name = [(ASDTPMDevice *)v8 name];
+      v24 = [ASDTCondition conditionWithName:name];
       [(ASDTPMActionNumericPropertyAnalyticsEvent *)v8 setLock:v24];
 
       goto LABEL_46;
@@ -192,18 +192,18 @@ LABEL_46:
       [ASDTPMActionNumericPropertyAnalyticsEvent initWithConfig:v8 forSequencer:?];
     }
 
-    v10 = 0;
+    propertyAddress = 0;
   }
 
 LABEL_47:
 
-  return v10;
+  return propertyAddress;
 }
 
 - (ASDTNumericProperty)numericProperty
 {
-  v3 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self lock];
-  [v3 lock];
+  lock = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self lock];
+  [lock lock];
 
   WeakRetained = objc_loadWeakRetained(&self->_numericProperty);
   if (WeakRetained)
@@ -213,10 +213,10 @@ LABEL_47:
 
   else
   {
-    v6 = [(ASDTPMDevice *)self parentSequencer];
-    v7 = [v6 parentDevice];
-    v8 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self propertyAddress];
-    v9 = [v7 customPropertyForAddress:v8];
+    parentSequencer = [(ASDTPMDevice *)self parentSequencer];
+    parentDevice = [parentSequencer parentDevice];
+    propertyAddress = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self propertyAddress];
+    v9 = [parentDevice customPropertyForAddress:propertyAddress];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 conformsToProtocol:&unk_285364BA8])
@@ -236,8 +236,8 @@ LABEL_47:
     v5 = objc_loadWeakRetained(&self->_numericProperty);
   }
 
-  v11 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self lock];
-  [v11 unlock];
+  lock2 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self lock];
+  [lock2 unlock];
 
   v12 = v5;
 
@@ -247,18 +247,18 @@ LABEL_47:
 - (id)eventData
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
-  v4 = [v3 propertyValue];
+  numericProperty = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
+  propertyValue = [numericProperty propertyValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
-    v6 = [v5 numericType];
+    numericProperty2 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
+    numericType = [numericProperty2 numericType];
 
-    v7 = v4;
-    v8 = [v7 length];
-    if (v8 < [MEMORY[0x277CCABB0] asdtDataSizeForNumericType:v6])
+    fieldName = propertyValue;
+    v8 = [fieldName length];
+    if (v8 < [MEMORY[0x277CCABB0] asdtDataSizeForNumericType:numericType])
     {
       v9 = ASDTBaseLogType();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -267,21 +267,21 @@ LABEL_47:
       }
 
       v10 = 0;
-      v4 = v7;
+      propertyValue = fieldName;
       goto LABEL_9;
     }
 
     v11 = MEMORY[0x277CCABB0];
-    v12 = [v7 bytes];
-    v13 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
-    v4 = [v11 asdtNumberFromData:v12 withNumericType:{objc_msgSend(v13, "numericType")}];
+    bytes = [fieldName bytes];
+    numericProperty3 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self numericProperty];
+    propertyValue = [v11 asdtNumberFromData:bytes withNumericType:{objc_msgSend(numericProperty3, "numericType")}];
   }
 
-  if (v4)
+  if (propertyValue)
   {
-    v7 = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self fieldName];
-    v16 = v7;
-    v17[0] = v4;
+    fieldName = [(ASDTPMActionNumericPropertyAnalyticsEvent *)self fieldName];
+    v16 = fieldName;
+    v17[0] = propertyValue;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 LABEL_9:
 
@@ -308,8 +308,8 @@ LABEL_11:
 - (void)numericProperty
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [a1 name];
-  v9 = [a1 propertyAddress];
+  name = [self name];
+  propertyAddress = [self propertyAddress];
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x16u);
 
@@ -319,7 +319,7 @@ LABEL_11:
 - (void)eventData
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = [a1 name];
+  name = [self name];
   [a2 length];
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x12u);

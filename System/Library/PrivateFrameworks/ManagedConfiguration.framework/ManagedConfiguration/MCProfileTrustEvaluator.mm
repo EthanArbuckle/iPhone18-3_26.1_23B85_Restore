@@ -1,15 +1,15 @@
 @interface MCProfileTrustEvaluator
-- (BOOL)_verifyCerts:(id)a3 policy:(__SecPolicy *)a4;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)a3;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)a3;
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)a3;
+- (BOOL)_verifyCerts:(id)certs policy:(__SecPolicy *)policy;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)devices;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)payload;
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)defaults;
 @end
 
 @implementation MCProfileTrustEvaluator
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   if (os_variant_has_internal_ui())
   {
     v5 = _MCLogObjects;
@@ -28,7 +28,7 @@
     if (ConfigurationProfileSigner)
     {
       v8 = ConfigurationProfileSigner;
-      v6 = [(MCProfileTrustEvaluator *)self _verifyCerts:v4 policy:ConfigurationProfileSigner];
+      v6 = [(MCProfileTrustEvaluator *)self _verifyCerts:defaultsCopy policy:ConfigurationProfileSigner];
       CFRelease(v8);
     }
 
@@ -48,7 +48,7 @@
     if (v10)
     {
       v11 = v10;
-      v6 |= [(MCProfileTrustEvaluator *)self _verifyCerts:v4 policy:v10];
+      v6 |= [(MCProfileTrustEvaluator *)self _verifyCerts:defaultsCopy policy:v10];
       CFRelease(v11);
     }
 
@@ -66,11 +66,11 @@
   return v6;
 }
 
-- (BOOL)_verifyCerts:(id)a3 policy:(__SecPolicy *)a4
+- (BOOL)_verifyCerts:(id)certs policy:(__SecPolicy *)policy
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 count])
+  certsCopy = certs;
+  if (![certsCopy count])
   {
 LABEL_5:
     LOBYTE(v7) = 0;
@@ -78,7 +78,7 @@ LABEL_5:
   }
 
   trust = 0;
-  if (SecTrustCreateWithCertificates(v5, a4, &trust))
+  if (SecTrustCreateWithCertificates(certsCopy, policy, &trust))
   {
     v6 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
@@ -124,10 +124,10 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallUnsupportedPayload:(id)payload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  payloadCopy = payload;
   if (os_variant_has_internal_ui())
   {
     v4 = _MCLogObjects;
@@ -145,10 +145,10 @@ LABEL_13:
   if (AppleATVVPNProfileSigning)
   {
     v7 = AppleATVVPNProfileSigning;
-    if ([v3 count])
+    if ([payloadCopy count])
     {
       trust = 0;
-      if (!SecTrustCreateWithCertificates(v3, v7, &trust))
+      if (!SecTrustCreateWithCertificates(payloadCopy, v7, &trust))
       {
         err = 0;
         v5 = SecTrustEvaluateWithError(trust, &err);
@@ -209,18 +209,18 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)a3
+- (BOOL)sanitizedProfileSignerCertificateChainIsAllowedToInstallSupervisedRestrictionsOnUnsupervisedDevices:(id)devices
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   ConfigurationProfileSigner = SecPolicyCreateConfigurationProfileSigner();
   if (ConfigurationProfileSigner)
   {
     v5 = ConfigurationProfileSigner;
-    if ([v3 count])
+    if ([devicesCopy count])
     {
       trust = 0;
-      if (!SecTrustCreateWithCertificates(v3, v5, &trust))
+      if (!SecTrustCreateWithCertificates(devicesCopy, v5, &trust))
       {
         err = 0;
         v7 = SecTrustEvaluateWithError(trust, &err);

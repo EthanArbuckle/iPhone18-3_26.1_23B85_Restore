@@ -1,24 +1,24 @@
 @interface DESRecordStore
-- (DESRecordStore)initWithBundleIdentifier:(id)a3;
-- (void)deleteAllSavedRecordsWithCompletion:(id)a3;
-- (void)deleteSavedRecordWithIdentfier:(id)a3 completion:(id)a4;
-- (void)fetchNativeRecordDataForRecordUUID:(id)a3 completion:(id)a4;
-- (void)fetchSavedRecordInfoWithCompletion:(id)a3;
-- (void)saveCoreDuetEvent:(id)a3 completion:(id)a4;
-- (void)saveRecordWithData:(id)a3 recordInfo:(id)a4 completion:(id)a5;
+- (DESRecordStore)initWithBundleIdentifier:(id)identifier;
+- (void)deleteAllSavedRecordsWithCompletion:(id)completion;
+- (void)deleteSavedRecordWithIdentfier:(id)identfier completion:(id)completion;
+- (void)fetchNativeRecordDataForRecordUUID:(id)d completion:(id)completion;
+- (void)fetchSavedRecordInfoWithCompletion:(id)completion;
+- (void)saveCoreDuetEvent:(id)event completion:(id)completion;
+- (void)saveRecordWithData:(id)data recordInfo:(id)info completion:(id)completion;
 @end
 
 @implementation DESRecordStore
 
-- (DESRecordStore)initWithBundleIdentifier:(id)a3
+- (DESRecordStore)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DESRecordStore;
   v5 = [(DESRecordStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleId = v5->_bundleId;
     v5->_bundleId = v6;
   }
@@ -26,63 +26,63 @@
   return v5;
 }
 
-- (void)saveRecordWithData:(id)a3 recordInfo:(id)a4 completion:(id)a5
+- (void)saveRecordWithData:(id)data recordInfo:(id)info completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v6 = a5;
+    completionCopy = completion;
     v7 = DESLogAndReturnSunsetError();
-    (*(a5 + 2))(v6, 0, v7);
+    (*(completion + 2))(completionCopy, 0, v7);
   }
 }
 
-- (void)fetchSavedRecordInfoWithCompletion:(id)a3
+- (void)fetchSavedRecordInfoWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
+    completionCopy = completion;
     v5 = DESLogAndReturnSunsetError();
-    (*(a3 + 2))(v4, 0, v5);
+    (*(completion + 2))(completionCopy, 0, v5);
   }
 }
 
-- (void)deleteAllSavedRecordsWithCompletion:(id)a3
+- (void)deleteAllSavedRecordsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
+    completionCopy = completion;
     v5 = DESLogAndReturnSunsetError();
-    (*(a3 + 2))(v4, v5);
+    (*(completion + 2))(completionCopy, v5);
   }
 }
 
-- (void)deleteSavedRecordWithIdentfier:(id)a3 completion:(id)a4
+- (void)deleteSavedRecordWithIdentfier:(id)identfier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = DESLogAndReturnSunsetError();
-    (*(a4 + 2))(v5, v6);
+    (*(completion + 2))(completionCopy, v6);
   }
 }
 
-- (void)saveCoreDuetEvent:(id)a3 completion:(id)a4
+- (void)saveCoreDuetEvent:(id)event completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = DESLogAndReturnSunsetError();
-    (*(a4 + 2))(v5, 0, v6);
+    (*(completion + 2))(completionCopy, 0, v6);
   }
 }
 
-- (void)fetchNativeRecordDataForRecordUUID:(id)a3 completion:(id)a4
+- (void)fetchNativeRecordDataForRecordUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = DESLogAndReturnSunsetError();
-    (*(a4 + 2))(v5, 0, v6);
+    (*(completion + 2))(completionCopy, 0, v6);
   }
 }
 

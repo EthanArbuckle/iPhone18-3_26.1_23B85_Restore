@@ -1,48 +1,48 @@
 @interface CUIKCompositeEditor
-- (BOOL)calendarUsesEditor:(id)a3;
-- (BOOL)commitEventForOOPModificationRecording:(id)a3 error:(id *)a4;
-- (BOOL)deleteEvent:(id)a3 span:(int64_t)a4 error:(id *)a5;
-- (BOOL)eventUsesEditor:(id)a3;
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4;
-- (BOOL)saveEvent:(id)a3 span:(int64_t)a4 error:(id *)a5;
-- (BOOL)saveEventForOOPModificationRecording:(id)a3 span:(int64_t)a4 error:(id *)a5;
-- (BOOL)saveNewEvents:(id)a3 commit:(BOOL)a4 error:(id *)a5;
-- (BOOL)sourceUsesEditor:(id)a3;
-- (CUIKCompositeEditor)initWithEditors:(id)a3;
-- (void)deleteCalendar:(id)a3 forEntityType:(unint64_t)a4;
-- (void)deleteEvents:(id)a3 span:(int64_t)a4;
-- (void)deleteEvents:(id)a3 span:(int64_t)a4 result:(id)a5;
-- (void)dispatchCalendar:(id)a3 block:(id)a4;
-- (void)dispatchCalendars:(id)a3 block:(id)a4;
-- (void)dispatchEvent:(id)a3 block:(id)a4;
-- (void)dispatchEvents:(id)a3 block:(id)a4;
-- (void)dispatchSources:(id)a3 block:(id)a4;
-- (void)performWithOptions:(id)a3 block:(id)a4;
-- (void)saveChangesToEvents:(id)a3 impliedCommitDecision:(BOOL)a4;
-- (void)saveChangesToEvents:(id)a3 span:(int64_t)a4;
-- (void)saveNewSources:(id)a3 commit:(BOOL)a4;
+- (BOOL)calendarUsesEditor:(id)editor;
+- (BOOL)commitEventForOOPModificationRecording:(id)recording error:(id *)error;
+- (BOOL)deleteEvent:(id)event span:(int64_t)span error:(id *)error;
+- (BOOL)eventUsesEditor:(id)editor;
+- (BOOL)saveCalendar:(id)calendar error:(id *)error;
+- (BOOL)saveEvent:(id)event span:(int64_t)span error:(id *)error;
+- (BOOL)saveEventForOOPModificationRecording:(id)recording span:(int64_t)span error:(id *)error;
+- (BOOL)saveNewEvents:(id)events commit:(BOOL)commit error:(id *)error;
+- (BOOL)sourceUsesEditor:(id)editor;
+- (CUIKCompositeEditor)initWithEditors:(id)editors;
+- (void)deleteCalendar:(id)calendar forEntityType:(unint64_t)type;
+- (void)deleteEvents:(id)events span:(int64_t)span;
+- (void)deleteEvents:(id)events span:(int64_t)span result:(id)result;
+- (void)dispatchCalendar:(id)calendar block:(id)block;
+- (void)dispatchCalendars:(id)calendars block:(id)block;
+- (void)dispatchEvent:(id)event block:(id)block;
+- (void)dispatchEvents:(id)events block:(id)block;
+- (void)dispatchSources:(id)sources block:(id)block;
+- (void)performWithOptions:(id)options block:(id)block;
+- (void)saveChangesToEvents:(id)events impliedCommitDecision:(BOOL)decision;
+- (void)saveChangesToEvents:(id)events span:(int64_t)span;
+- (void)saveNewSources:(id)sources commit:(BOOL)commit;
 @end
 
 @implementation CUIKCompositeEditor
 
-- (CUIKCompositeEditor)initWithEditors:(id)a3
+- (CUIKCompositeEditor)initWithEditors:(id)editors
 {
-  v5 = a3;
+  editorsCopy = editors;
   v9.receiver = self;
   v9.super_class = CUIKCompositeEditor;
   v6 = [(CUIKCompositeEditor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_editors, a3);
+    objc_storeStrong(&v6->_editors, editors);
   }
 
   return v7;
 }
 
-- (BOOL)saveNewEvents:(id)a3 commit:(BOOL)a4 error:(id *)a5
+- (BOOL)saveNewEvents:(id)events commit:(BOOL)commit error:(id *)error
 {
-  v8 = a3;
+  eventsCopy = events;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -57,13 +57,13 @@
   v11[1] = 3221225472;
   v11[2] = __50__CUIKCompositeEditor_saveNewEvents_commit_error___block_invoke;
   v11[3] = &unk_1E839A050;
-  v12 = a4;
+  commitCopy = commit;
   v11[4] = &v17;
   v11[5] = &v13;
-  [(CUIKCompositeEditor *)self dispatchEvents:v8 block:v11];
-  if (a5)
+  [(CUIKCompositeEditor *)self dispatchEvents:eventsCopy block:v11];
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v9 = *(v14 + 24);
@@ -87,19 +87,19 @@ void __50__CUIKCompositeEditor_saveNewEvents_commit_error___block_invoke(uint64_
   }
 }
 
-- (void)saveChangesToEvents:(id)a3 span:(int64_t)a4
+- (void)saveChangesToEvents:(id)events span:(int64_t)span
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__CUIKCompositeEditor_saveChangesToEvents_span___block_invoke;
   v4[3] = &__block_descriptor_40_e44_v32__0___CUIKEditorExtended__8__NSSet_16_B24l;
-  v4[4] = a4;
-  [(CUIKCompositeEditor *)self dispatchEvents:a3 block:v4];
+  v4[4] = span;
+  [(CUIKCompositeEditor *)self dispatchEvents:events block:v4];
 }
 
-- (BOOL)saveEvent:(id)a3 span:(int64_t)a4 error:(id *)a5
+- (BOOL)saveEvent:(id)event span:(int64_t)span error:(id *)error
 {
-  v8 = a3;
+  eventCopy = event;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -115,14 +115,14 @@ void __50__CUIKCompositeEditor_saveNewEvents_commit_error___block_invoke(uint64_
   v12[2] = __44__CUIKCompositeEditor_saveEvent_span_error___block_invoke;
   v12[3] = &unk_1E839A098;
   v14 = &v17;
-  v9 = v8;
+  v9 = eventCopy;
   v15 = &v21;
-  v16 = a4;
+  spanCopy = span;
   v13 = v9;
   [(CUIKCompositeEditor *)self dispatchEvent:v9 block:v12];
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v10 = *(v18 + 24);
@@ -144,9 +144,9 @@ void __44__CUIKCompositeEditor_saveEvent_span_error___block_invoke(void *a1, voi
   *(*(a1[5] + 8) + 24) = v6;
 }
 
-- (BOOL)commitEventForOOPModificationRecording:(id)a3 error:(id *)a4
+- (BOOL)commitEventForOOPModificationRecording:(id)recording error:(id *)error
 {
-  v6 = a3;
+  recordingCopy = recording;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -162,13 +162,13 @@ void __44__CUIKCompositeEditor_saveEvent_span_error___block_invoke(void *a1, voi
   v10[2] = __68__CUIKCompositeEditor_commitEventForOOPModificationRecording_error___block_invoke;
   v10[3] = &unk_1E839A0C0;
   v12 = &v14;
-  v7 = v6;
+  v7 = recordingCopy;
   v11 = v7;
   v13 = &v18;
   [(CUIKCompositeEditor *)self dispatchEvent:v7 block:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = *(v15 + 24);
@@ -189,9 +189,9 @@ void __68__CUIKCompositeEditor_commitEventForOOPModificationRecording_error___bl
   *(*(a1[5] + 8) + 24) = v5;
 }
 
-- (BOOL)saveEventForOOPModificationRecording:(id)a3 span:(int64_t)a4 error:(id *)a5
+- (BOOL)saveEventForOOPModificationRecording:(id)recording span:(int64_t)span error:(id *)error
 {
-  v8 = a3;
+  recordingCopy = recording;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -207,14 +207,14 @@ void __68__CUIKCompositeEditor_commitEventForOOPModificationRecording_error___bl
   v12[2] = __71__CUIKCompositeEditor_saveEventForOOPModificationRecording_span_error___block_invoke;
   v12[3] = &unk_1E839A098;
   v14 = &v17;
-  v9 = v8;
+  v9 = recordingCopy;
   v15 = &v21;
-  v16 = a4;
+  spanCopy = span;
   v13 = v9;
   [(CUIKCompositeEditor *)self dispatchEvent:v9 block:v12];
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v10 = *(v18 + 24);
@@ -236,19 +236,19 @@ void __71__CUIKCompositeEditor_saveEventForOOPModificationRecording_span_error__
   *(*(a1[5] + 8) + 24) = v6;
 }
 
-- (void)saveChangesToEvents:(id)a3 impliedCommitDecision:(BOOL)a4
+- (void)saveChangesToEvents:(id)events impliedCommitDecision:(BOOL)decision
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __65__CUIKCompositeEditor_saveChangesToEvents_impliedCommitDecision___block_invoke;
   v4[3] = &__block_descriptor_33_e44_v32__0___CUIKEditorExtended__8__NSSet_16_B24l;
-  v5 = a4;
-  [(CUIKCompositeEditor *)self dispatchEvents:a3 block:v4];
+  decisionCopy = decision;
+  [(CUIKCompositeEditor *)self dispatchEvents:events block:v4];
 }
 
-- (BOOL)deleteEvent:(id)a3 span:(int64_t)a4 error:(id *)a5
+- (BOOL)deleteEvent:(id)event span:(int64_t)span error:(id *)error
 {
-  v8 = a3;
+  eventCopy = event;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -264,14 +264,14 @@ void __71__CUIKCompositeEditor_saveEventForOOPModificationRecording_span_error__
   v12[2] = __46__CUIKCompositeEditor_deleteEvent_span_error___block_invoke;
   v12[3] = &unk_1E839A098;
   v14 = &v17;
-  v9 = v8;
+  v9 = eventCopy;
   v15 = &v21;
-  v16 = a4;
+  spanCopy = span;
   v13 = v9;
   [(CUIKCompositeEditor *)self dispatchEvent:v9 block:v12];
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v10 = *(v18 + 24);
@@ -293,10 +293,10 @@ void __46__CUIKCompositeEditor_deleteEvent_span_error___block_invoke(void *a1, v
   *(*(a1[5] + 8) + 24) = v6;
 }
 
-- (void)deleteEvents:(id)a3 span:(int64_t)a4 result:(id)a5
+- (void)deleteEvents:(id)events span:(int64_t)span result:(id)result
 {
-  v8 = a3;
-  v9 = a5;
+  eventsCopy = events;
+  resultCopy = result;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -319,7 +319,7 @@ void __46__CUIKCompositeEditor_deleteEvent_span_error___block_invoke(void *a1, v
   aBlock[1] = 3221225472;
   aBlock[2] = __48__CUIKCompositeEditor_deleteEvents_span_result___block_invoke;
   aBlock[3] = &unk_1E839A128;
-  v10 = v9;
+  v10 = resultCopy;
   v22 = v10;
   v23 = v27;
   v24 = v25;
@@ -329,13 +329,13 @@ void __46__CUIKCompositeEditor_deleteEvent_span_error___block_invoke(void *a1, v
   v14[2] = __48__CUIKCompositeEditor_deleteEvents_span_result___block_invoke_2;
   v14[3] = &unk_1E839A178;
   v19 = v25;
-  v20 = a4;
+  spanCopy = span;
   v16 = &v33;
   v17 = &v29;
   v18 = v27;
   v12 = v11;
   v15 = v12;
-  [(CUIKCompositeEditor *)self dispatchEvents:v8 block:v14];
+  [(CUIKCompositeEditor *)self dispatchEvents:eventsCopy block:v14];
   v13 = *(v34 + 6) - 1;
   *(v34 + 6) = v13;
   if (*(v30 + 6) == v13)
@@ -393,32 +393,32 @@ void __48__CUIKCompositeEditor_deleteEvents_span_result___block_invoke_3(void *a
   }
 }
 
-- (void)deleteEvents:(id)a3 span:(int64_t)a4
+- (void)deleteEvents:(id)events span:(int64_t)span
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __41__CUIKCompositeEditor_deleteEvents_span___block_invoke;
   v4[3] = &__block_descriptor_40_e44_v32__0___CUIKEditorExtended__8__NSSet_16_B24l;
-  v4[4] = a4;
-  [(CUIKCompositeEditor *)self dispatchEvents:a3 block:v4];
+  v4[4] = span;
+  [(CUIKCompositeEditor *)self dispatchEvents:events block:v4];
 }
 
-- (void)deleteCalendar:(id)a3 forEntityType:(unint64_t)a4
+- (void)deleteCalendar:(id)calendar forEntityType:(unint64_t)type
 {
-  v6 = a3;
+  calendarCopy = calendar;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__CUIKCompositeEditor_deleteCalendar_forEntityType___block_invoke;
   v8[3] = &unk_1E839A1A0;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = calendarCopy;
+  typeCopy = type;
+  v7 = calendarCopy;
   [(CUIKCompositeEditor *)self dispatchCalendar:v7 block:v8];
 }
 
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4
+- (BOOL)saveCalendar:(id)calendar error:(id *)error
 {
-  v6 = a3;
+  calendarCopy = calendar;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -434,13 +434,13 @@ void __48__CUIKCompositeEditor_deleteEvents_span_result___block_invoke_3(void *a
   v10[2] = __42__CUIKCompositeEditor_saveCalendar_error___block_invoke;
   v10[3] = &unk_1E839A0C0;
   v12 = &v14;
-  v7 = v6;
+  v7 = calendarCopy;
   v11 = v7;
   v13 = &v18;
   [(CUIKCompositeEditor *)self dispatchCalendar:v7 block:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = *(v15 + 24);
@@ -461,20 +461,20 @@ void __42__CUIKCompositeEditor_saveCalendar_error___block_invoke(void *a1, void 
   *(*(a1[5] + 8) + 24) = v5;
 }
 
-- (void)saveNewSources:(id)a3 commit:(BOOL)a4
+- (void)saveNewSources:(id)sources commit:(BOOL)commit
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__CUIKCompositeEditor_saveNewSources_commit___block_invoke;
   v4[3] = &__block_descriptor_33_e44_v32__0___CUIKEditorExtended__8__NSSet_16_B24l;
-  v5 = a4;
-  [(CUIKCompositeEditor *)self dispatchSources:a3 block:v4];
+  commitCopy = commit;
+  [(CUIKCompositeEditor *)self dispatchSources:sources block:v4];
 }
 
-- (BOOL)eventUsesEditor:(id)a3
+- (BOOL)eventUsesEditor:(id)editor
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  editorCopy = editor;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -493,7 +493,7 @@ void __42__CUIKCompositeEditor_saveCalendar_error___block_invoke(void *a1, void 
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) eventUsesEditor:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) eventUsesEditor:{editorCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -515,10 +515,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)calendarUsesEditor:(id)a3
+- (BOOL)calendarUsesEditor:(id)editor
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  editorCopy = editor;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -537,7 +537,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) calendarUsesEditor:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) calendarUsesEditor:{editorCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -559,10 +559,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)sourceUsesEditor:(id)a3
+- (BOOL)sourceUsesEditor:(id)editor
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  editorCopy = editor;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -581,7 +581,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) sourceUsesEditor:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) sourceUsesEditor:{editorCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -603,17 +603,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)dispatchEvents:(id)a3 block:(id)a4
+- (void)dispatchEvents:(id)events block:(id)block
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v6)
   {
@@ -633,8 +633,8 @@ LABEL_11:
         v48 = 0u;
         v49 = 0u;
         v9 = self->_editors;
-        v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, v28];
-        if (v10)
+        blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, blockCopy];
+        if (blockCopy)
         {
           v11 = 0;
           v12 = *v47;
@@ -642,7 +642,7 @@ LABEL_11:
           {
             v13 = 0;
             v14 = v11;
-            v11 += v10;
+            v11 += blockCopy;
             do
             {
               if (*v47 != v12)
@@ -671,9 +671,9 @@ LABEL_11:
               ++v13;
             }
 
-            while (v10 != v13);
-            v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
-            if (v10)
+            while (blockCopy != v13);
+            blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            if (blockCopy)
             {
               continue;
             }
@@ -714,17 +714,17 @@ LABEL_22:
       }
 
       v22 = *(*(&v38 + 1) + 8 * v21);
-      v23 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
       v24 = [v18 objectForKeyedSubscript:v22];
-      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:v23];
+      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:unsignedIntegerValue];
       options = self->_options;
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __44__CUIKCompositeEditor_dispatchEvents_block___block_invoke;
       v33[3] = &unk_1E839A1C8;
-      v35 = v28;
+      v35 = blockCopy;
       v33[4] = self;
-      v37 = v23;
+      v37 = unsignedIntegerValue;
       v27 = v24;
       v34 = v27;
       v36 = &v42;
@@ -759,11 +759,11 @@ void __44__CUIKCompositeEditor_dispatchEvents_block___block_invoke(void *a1)
   (*(v2 + 16))(v2, v3, a1[5], *(a1[7] + 8) + 24);
 }
 
-- (void)dispatchEvent:(id)a3 block:(id)a4
+- (void)dispatchEvent:(id)event block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -784,7 +784,7 @@ void __44__CUIKCompositeEditor_dispatchEvents_block___block_invoke(void *a1)
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 eventUsesEditor:v6])
+        if ([v13 eventUsesEditor:eventCopy])
         {
           options = self->_options;
           v15[0] = MEMORY[0x1E69E9820];
@@ -792,7 +792,7 @@ void __44__CUIKCompositeEditor_dispatchEvents_block___block_invoke(void *a1)
           v15[2] = __43__CUIKCompositeEditor_dispatchEvent_block___block_invoke;
           v15[3] = &unk_1E839A1F0;
           v15[4] = v13;
-          v16 = v7;
+          v16 = blockCopy;
           [v13 performWithOptions:options block:v15];
 
           goto LABEL_11;
@@ -812,17 +812,17 @@ void __44__CUIKCompositeEditor_dispatchEvents_block___block_invoke(void *a1)
 LABEL_11:
 }
 
-- (void)dispatchCalendars:(id)a3 block:(id)a4
+- (void)dispatchCalendars:(id)calendars block:(id)block
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = a4;
+  calendarsCopy = calendars;
+  blockCopy = block;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v5;
+  obj = calendarsCopy;
   v6 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v6)
   {
@@ -842,8 +842,8 @@ LABEL_11:
         v48 = 0u;
         v49 = 0u;
         v9 = self->_editors;
-        v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, v28];
-        if (v10)
+        blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, blockCopy];
+        if (blockCopy)
         {
           v11 = 0;
           v12 = *v47;
@@ -851,7 +851,7 @@ LABEL_11:
           {
             v13 = 0;
             v14 = v11;
-            v11 += v10;
+            v11 += blockCopy;
             do
             {
               if (*v47 != v12)
@@ -880,9 +880,9 @@ LABEL_11:
               ++v13;
             }
 
-            while (v10 != v13);
-            v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
-            if (v10)
+            while (blockCopy != v13);
+            blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            if (blockCopy)
             {
               continue;
             }
@@ -923,17 +923,17 @@ LABEL_22:
       }
 
       v22 = *(*(&v38 + 1) + 8 * v21);
-      v23 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
       v24 = [v18 objectForKeyedSubscript:v22];
-      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:v23];
+      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:unsignedIntegerValue];
       options = self->_options;
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __47__CUIKCompositeEditor_dispatchCalendars_block___block_invoke;
       v33[3] = &unk_1E839A1C8;
-      v35 = v28;
+      v35 = blockCopy;
       v33[4] = self;
-      v37 = v23;
+      v37 = unsignedIntegerValue;
       v27 = v24;
       v34 = v27;
       v36 = &v42;
@@ -968,11 +968,11 @@ void __47__CUIKCompositeEditor_dispatchCalendars_block___block_invoke(void *a1)
   (*(v2 + 16))(v2, v3, a1[5], *(a1[7] + 8) + 24);
 }
 
-- (void)dispatchCalendar:(id)a3 block:(id)a4
+- (void)dispatchCalendar:(id)calendar block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -993,7 +993,7 @@ void __47__CUIKCompositeEditor_dispatchCalendars_block___block_invoke(void *a1)
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 calendarUsesEditor:v6])
+        if ([v13 calendarUsesEditor:calendarCopy])
         {
           options = self->_options;
           v15[0] = MEMORY[0x1E69E9820];
@@ -1001,7 +1001,7 @@ void __47__CUIKCompositeEditor_dispatchCalendars_block___block_invoke(void *a1)
           v15[2] = __46__CUIKCompositeEditor_dispatchCalendar_block___block_invoke;
           v15[3] = &unk_1E839A1F0;
           v15[4] = v13;
-          v16 = v7;
+          v16 = blockCopy;
           [v13 performWithOptions:options block:v15];
 
           goto LABEL_11;
@@ -1021,17 +1021,17 @@ void __47__CUIKCompositeEditor_dispatchCalendars_block___block_invoke(void *a1)
 LABEL_11:
 }
 
-- (void)dispatchSources:(id)a3 block:(id)a4
+- (void)dispatchSources:(id)sources block:(id)block
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = a4;
+  sourcesCopy = sources;
+  blockCopy = block;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v5;
+  obj = sourcesCopy;
   v6 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v6)
   {
@@ -1051,8 +1051,8 @@ LABEL_11:
         v48 = 0u;
         v49 = 0u;
         v9 = self->_editors;
-        v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, v28];
-        if (v10)
+        blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16, blockCopy];
+        if (blockCopy)
         {
           v11 = 0;
           v12 = *v47;
@@ -1060,7 +1060,7 @@ LABEL_11:
           {
             v13 = 0;
             v14 = v11;
-            v11 += v10;
+            v11 += blockCopy;
             do
             {
               if (*v47 != v12)
@@ -1089,9 +1089,9 @@ LABEL_11:
               ++v13;
             }
 
-            while (v10 != v13);
-            v10 = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
-            if (v10)
+            while (blockCopy != v13);
+            blockCopy = [(NSArray *)v9 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            if (blockCopy)
             {
               continue;
             }
@@ -1132,17 +1132,17 @@ LABEL_22:
       }
 
       v22 = *(*(&v38 + 1) + 8 * v21);
-      v23 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
       v24 = [v18 objectForKeyedSubscript:v22];
-      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:v23];
+      v25 = [(NSArray *)self->_editors objectAtIndexedSubscript:unsignedIntegerValue];
       options = self->_options;
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __45__CUIKCompositeEditor_dispatchSources_block___block_invoke;
       v33[3] = &unk_1E839A1C8;
-      v35 = v28;
+      v35 = blockCopy;
       v33[4] = self;
-      v37 = v23;
+      v37 = unsignedIntegerValue;
       v27 = v24;
       v34 = v27;
       v36 = &v42;
@@ -1177,16 +1177,16 @@ void __45__CUIKCompositeEditor_dispatchSources_block___block_invoke(void *a1)
   (*(v2 + 16))(v2, v3, a1[5], *(a1[7] + 8) + 24);
 }
 
-- (void)performWithOptions:(id)a3 block:(id)a4
+- (void)performWithOptions:(id)options block:(id)block
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = self->_options;
   options = self->_options;
-  self->_options = v6;
-  v11 = v6;
-  v9 = a4;
+  self->_options = optionsCopy;
+  v11 = optionsCopy;
+  blockCopy = block;
 
-  v9[2](v9);
+  blockCopy[2](blockCopy);
   v10 = self->_options;
   self->_options = v7;
 }

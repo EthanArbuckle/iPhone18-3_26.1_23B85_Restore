@@ -7,8 +7,8 @@
 
 - (void)handleVolumeIncrease
 {
-  v2 = [SBApp systemApertureControllerForMainDisplay];
-  [v2 initiatePrototypeFlipBookElementRecording];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  [systemApertureControllerForMainDisplay initiatePrototypeFlipBookElementRecording];
 }
 
 - (void)handleVolumeDecrease
@@ -26,12 +26,12 @@
     v10 = self->_prototypeElement;
     self->_prototypeElement = v9;
 
-    v13 = [SBApp systemApertureControllerForMainDisplay];
-    v11 = [v13 registerElement:self->_prototypeElement];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v11 = [systemApertureControllerForMainDisplay registerElement:self->_prototypeElement];
     v12 = self->_elementAssertion;
     self->_elementAssertion = v11;
 
-    v8 = v13;
+    v8 = systemApertureControllerForMainDisplay;
     goto LABEL_14;
   }
 
@@ -40,9 +40,9 @@
     return;
   }
 
-  v5 = [(SBPrototypeFlipBookElementViewProvider *)prototypeElement isOnLastState];
+  isOnLastState = [(SBPrototypeFlipBookElementViewProvider *)prototypeElement isOnLastState];
   v6 = self->_prototypeElement;
-  if (v5)
+  if (isOnLastState)
   {
     if (v6)
     {

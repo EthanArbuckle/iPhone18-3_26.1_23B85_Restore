@@ -4,7 +4,7 @@
 - (id)getMLABModelPath;
 - (unint64_t)aabUpdateStrategyType;
 - (void)dealloc;
-- (void)registerAutoBrightnessSettingsUpdateHandler:(id)a3;
+- (void)registerAutoBrightnessSettingsUpdateHandler:(id)handler;
 - (void)unregisterAutoBrightnessSettingsUpdateHandler;
 @end
 
@@ -12,48 +12,48 @@
 
 - (CBTrialSettingsProvider)init
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = CBTrialSettingsProvider;
-  v9 = [(CBTrialSettingsProvider *)&v7 init];
-  if (!v9)
+  selfCopy = [(CBTrialSettingsProvider *)&v7 init];
+  if (!selfCopy)
   {
     return 0;
   }
 
   v2 = [MEMORY[0x1E69DB518] clientWithIdentifier:226];
   v3 = MEMORY[0x1E69E5928](v2);
-  v9->_client = v3;
-  v4 = [(TRIClient *)v9->_client experimentIdentifiersWithNamespaceName:@"COREOS_BRIGHTNESS_AUTO_BRIGHTNESS"];
+  selfCopy->_client = v3;
+  v4 = [(TRIClient *)selfCopy->_client experimentIdentifiersWithNamespaceName:@"COREOS_BRIGHTNESS_AUTO_BRIGHTNESS"];
   v5 = MEMORY[0x1E69E5928](v4);
-  v9->_experimentIdentifiers = v5;
-  v9->_notificationToken = 0;
-  return v9;
+  selfCopy->_experimentIdentifiers = v5;
+  selfCopy->_notificationToken = 0;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_notificationToken);
-  MEMORY[0x1E69E5920](v5->_experimentIdentifiers);
-  *&v2 = MEMORY[0x1E69E5920](v5->_client).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_experimentIdentifiers);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_client).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBTrialSettingsProvider;
   [(CBTrialSettingsProvider *)&v3 dealloc];
 }
 
 + (CBTrialSettingsProvider)sharedInstance
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (sharedInstance_onceToken_7 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_7, &__block_literal_global_15);
   }
 
   v3 = sharedInstance__sharedObject_6;
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v3;
 }
 
@@ -78,23 +78,23 @@ CBTrialSettingsProvider *__41__CBTrialSettingsProvider_sharedInstance__block_inv
   }
 }
 
-- (void)registerAutoBrightnessSettingsUpdateHandler:(id)a3
+- (void)registerAutoBrightnessSettingsUpdateHandler:(id)handler
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  handlerCopy = handler;
   [(CBTrialSettingsProvider *)self unregisterAutoBrightnessSettingsUpdateHandler];
-  client = v15->_client;
+  client = selfCopy->_client;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __71__CBTrialSettingsProvider_registerAutoBrightnessSettingsUpdateHandler___block_invoke;
   v10 = &unk_1E867D138;
-  v11 = v15;
-  v12 = v13;
+  v11 = selfCopy;
+  v12 = handlerCopy;
   v4 = [(TRIClient *)client addUpdateHandlerForNamespaceName:@"COREOS_BRIGHTNESS_AUTO_BRIGHTNESS" usingBlock:?];
   v5 = MEMORY[0x1E69E5928](v4);
-  v15->_notificationToken = v5;
+  selfCopy->_notificationToken = v5;
 }
 
 uint64_t __71__CBTrialSettingsProvider_registerAutoBrightnessSettingsUpdateHandler___block_invoke(uint64_t a1)
@@ -142,7 +142,7 @@ uint64_t __71__CBTrialSettingsProvider_registerAutoBrightnessSettingsUpdateHandl
       _os_log_impl(&dword_1DE8E5000, inited, OS_LOG_TYPE_DEFAULT, "Trial settings: %@", v10, 0xCu);
     }
 
-    v8 = [v7 longValue];
+    longValue = [v7 longValue];
   }
 
   else
@@ -164,11 +164,11 @@ uint64_t __71__CBTrialSettingsProvider_registerAutoBrightnessSettingsUpdateHandl
       _os_log_impl(&dword_1DE8E5000, v5, OS_LOG_TYPE_DEFAULT, "Trial is not set => use default: %@", v9, 0xCu);
     }
 
-    v8 = 2;
+    longValue = 2;
   }
 
   *MEMORY[0x1E69E9840];
-  return v8;
+  return longValue;
 }
 
 @end

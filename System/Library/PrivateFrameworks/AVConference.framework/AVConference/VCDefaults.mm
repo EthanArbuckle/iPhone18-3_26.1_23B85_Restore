@@ -1,6 +1,6 @@
 @interface VCDefaults
-+ (BOOL)BOOLeanValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4;
-+ (id)copyStringValueForKey:(__CFString *)a3;
++ (BOOL)BOOLeanValueForKey:(__CFString *)key defaultValue:(BOOL)value;
++ (id)copyStringValueForKey:(__CFString *)key;
 + (id)screenVirtualDisplayLabelName;
 + (id)sharedInstance;
 - (BOOL)audioRecordingEnabled;
@@ -17,7 +17,7 @@
 - (BOOL)mediaQueueDumpEnabled;
 - (BOOL)rateControlDumpEnabled;
 - (BOOL)shouldDisplayVideoInfoLayer;
-- (BOOL)shouldOverrideEffectsFramerate:(unsigned int *)a3;
+- (BOOL)shouldOverrideEffectsFramerate:(unsigned int *)framerate;
 - (BOOL)supportsOneToOneMode;
 - (BOOL)useVirtualCapture;
 - (NSString)virtualHardware;
@@ -33,7 +33,7 @@
 - (unsigned)forceAudioPriorityValue;
 - (unsigned)prominenceActiveProbabilityThreshold;
 - (void)forceMultiwayHWI;
-- (void)separateString:(id)a3;
+- (void)separateString:(id)string;
 @end
 
 @implementation VCDefaults
@@ -45,7 +45,7 @@
   v3[1] = 3221225472;
   v3[2] = __28__VCDefaults_sharedInstance__block_invoke;
   v3[3] = &unk_1E85F3778;
-  v3[4] = a1;
+  v3[4] = self;
   if (sharedInstance_onceToken_19 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_19, v3);
@@ -73,22 +73,22 @@ Class *__28__VCDefaults_sharedInstance__block_invoke(Class *result)
   return result;
 }
 
-+ (BOOL)BOOLeanValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4
++ (BOOL)BOOLeanValueForKey:(__CFString *)key defaultValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   if (!VRTraceIsInternalOSInstalled())
   {
-    return v4;
+    return valueCopy;
   }
 
-  return _VCDefaults_GetBoolValueForKey(a3, v4, 1);
+  return _VCDefaults_GetBoolValueForKey(key, valueCopy, 1);
 }
 
-+ (id)copyStringValueForKey:(__CFString *)a3
++ (id)copyStringValueForKey:(__CFString *)key
 {
   TypeID = CFStringGetTypeID();
 
-  return VCDefaults_CopyValueForKey(a3, TypeID);
+  return VCDefaults_CopyValueForKey(key, TypeID);
 }
 
 - (VCDefaults)init
@@ -270,9 +270,9 @@ Class *__28__VCDefaults_sharedInstance__block_invoke(Class *result)
   return v3 != 0;
 }
 
-- (void)separateString:(id)a3
+- (void)separateString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@":"];
+  v4 = [string componentsSeparatedByString:@":"];
   if (v4)
   {
     v5 = v4;
@@ -624,7 +624,7 @@ LABEL_10:
       v21 = 2112;
       *v22 = v5;
       *&v22[8] = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 1024;
       v25 = AppBooleanValue;
       v26 = 1024;
@@ -799,13 +799,13 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)shouldOverrideEffectsFramerate:(unsigned int *)a3
+- (BOOL)shouldOverrideEffectsFramerate:(unsigned int *)framerate
 {
   v21 = *MEMORY[0x1E69E9840];
   keyExistsAndHasValidFormat = -86;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"effectsFrameRate", @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
   v5 = keyExistsAndHasValidFormat;
-  if (a3 && keyExistsAndHasValidFormat)
+  if (framerate && keyExistsAndHasValidFormat)
   {
     v6 = AppIntegerValue;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -828,7 +828,7 @@ LABEL_15:
       }
     }
 
-    *a3 = v6;
+    *framerate = v6;
     v5 = keyExistsAndHasValidFormat;
   }
 
@@ -939,14 +939,14 @@ LABEL_15:
   v11 = 0;
   *v9 = 0u;
   v10 = 0u;
-  if (a1[9] != 128)
+  if (self[9] != 128)
   {
-    __sprintf_chk(v9, 0, 0x28uLL, "payload: %d", a1[9]);
+    __sprintf_chk(v9, 0, 0x28uLL, "payload: %d", self[9]);
   }
 
-  if (a1[10] != 128)
+  if (self[10] != 128)
   {
-    __sprintf_chk(v9, 0, 0x28uLL, "receive payload: %d", a1[9]);
+    __sprintf_chk(v9, 0, 0x28uLL, "receive payload: %d", self[9]);
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -955,11 +955,11 @@ LABEL_15:
     v3 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v4 = a1[4];
-      v5 = a1[5];
-      v6 = a1[7];
-      v7 = a1[8];
-      v8 = a1[11];
+      v4 = self[4];
+      v5 = self[5];
+      v6 = self[7];
+      v7 = self[8];
+      v8 = self[11];
       *buf = 136317186;
       v13 = v2;
       v14 = 2080;

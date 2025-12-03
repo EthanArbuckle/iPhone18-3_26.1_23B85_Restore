@@ -1,16 +1,16 @@
 @interface NavTrafficIncidentDetailsView
-- (NavTrafficIncidentDetailsView)initWithFrame:(CGRect)a3;
+- (NavTrafficIncidentDetailsView)initWithFrame:(CGRect)frame;
 - (id)_initialConstraints;
 - (void)_setupViews;
-- (void)setPrimaryLabelText:(id)a3;
+- (void)setPrimaryLabelText:(id)text;
 @end
 
 @implementation NavTrafficIncidentDetailsView
 
-- (void)setPrimaryLabelText:(id)a3
+- (void)setPrimaryLabelText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v5 = objc_alloc_init(NSMutableParagraphStyle);
     v6 = [UIFont _maps_systemFontWithFixedSize:20.0];
@@ -21,7 +21,7 @@
     v11 = NSParagraphStyleAttributeName;
     v12 = v5;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v10 = [v8 initWithString:v4 attributes:v9];
+    v10 = [v8 initWithString:textCopy attributes:v9];
     [(UILabel *)self->_primaryLabel setAttributedText:v10];
   }
 
@@ -33,33 +33,33 @@
 
 - (id)_initialConstraints
 {
-  v25 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v24 = [(NavTrafficIncidentDetailsView *)self leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:21.0];
+  leadingAnchor = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor2 = [(NavTrafficIncidentDetailsView *)self leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:21.0];
   v26[0] = v23;
-  v22 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v21 = [(NavTrafficIncidentDetailsView *)self trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-16.0];
+  trailingAnchor = [(UILabel *)self->_primaryLabel trailingAnchor];
+  trailingAnchor2 = [(NavTrafficIncidentDetailsView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v26[1] = v20;
-  v19 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-  v18 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor3 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor4 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  v17 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v26[2] = v17;
-  v16 = [(UILabel *)self->_secondaryLabel trailingAnchor];
-  v15 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  trailingAnchor3 = [(UILabel *)self->_secondaryLabel trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  v14 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v26[3] = v14;
-  v3 = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
-  v4 = [(NavTrafficIncidentDetailsView *)self topAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:40.0];
+  firstBaselineAnchor = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
+  topAnchor = [(NavTrafficIncidentDetailsView *)self topAnchor];
+  v5 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:40.0];
   v26[4] = v5;
-  v6 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
-  v7 = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:44.0];
+  firstBaselineAnchor2 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
+  v8 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:44.0];
   v26[5] = v8;
-  v9 = [(NavTrafficIncidentDetailsView *)self bottomAnchor];
-  v10 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:35.0];
+  bottomAnchor = [(NavTrafficIncidentDetailsView *)self bottomAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:35.0];
   v26[6] = v11;
   v12 = [NSArray arrayWithObjects:v26 count:7];
 
@@ -106,18 +106,18 @@
   [(NavTrafficIncidentDetailsView *)self addSubview:v15];
 }
 
-- (NavTrafficIncidentDetailsView)initWithFrame:(CGRect)a3
+- (NavTrafficIncidentDetailsView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NavTrafficIncidentDetailsView;
-  v3 = [(NavTrafficIncidentDetailsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavTrafficIncidentDetailsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NavTrafficIncidentDetailsView *)v3 _setupViews];
     [(NavTrafficIncidentDetailsView *)v4 setAccessibilityIdentifier:@"NavTrafficIncidentDetailsView"];
-    v5 = [(NavTrafficIncidentDetailsView *)v4 _initialConstraints];
-    [NSLayoutConstraint activateConstraints:v5];
+    _initialConstraints = [(NavTrafficIncidentDetailsView *)v4 _initialConstraints];
+    [NSLayoutConstraint activateConstraints:_initialConstraints];
   }
 
   return v4;

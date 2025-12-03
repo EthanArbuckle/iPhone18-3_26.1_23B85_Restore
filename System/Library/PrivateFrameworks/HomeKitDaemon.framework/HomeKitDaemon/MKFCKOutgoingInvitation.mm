@@ -1,38 +1,38 @@
 @interface MKFCKOutgoingInvitation
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
 @end
 
 @implementation MKFCKOutgoingInvitation
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (![(MKFCKModel *)self copyPropertiesFromLocalModel:v7 context:v8])
+  modelCopy = model;
+  contextCopy = context;
+  if (![(MKFCKModel *)self copyPropertiesFromLocalModel:modelCopy context:contextCopy])
   {
     goto LABEL_19;
   }
 
-  v9 = v7;
-  v10 = v8;
+  v9 = modelCopy;
+  v10 = contextCopy;
   v11 = v10;
   v12 = self != 0;
   if (self)
   {
-    v13 = [v9 pendingUser];
-    if (v13)
+    pendingUser = [v9 pendingUser];
+    if (pendingUser)
     {
-      v14 = [(MKFCKModel *)MKFCKUser fetchWithLocalModel:v13 context:v11];
+      v14 = [(MKFCKModel *)MKFCKUser fetchWithLocalModel:pendingUser context:v11];
       if (v14)
       {
-        v15 = [(MKFCKOutgoingInvitation *)self pendingUser];
+        pendingUser2 = [(MKFCKOutgoingInvitation *)self pendingUser];
 
-        if (v15 != v14)
+        if (pendingUser2 != v14)
         {
           context = objc_autoreleasePoolPush();
-          v16 = self;
+          selfCopy = self;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
@@ -42,19 +42,19 @@
             v35 = 2112;
             v36 = v14;
             v37 = 2112;
-            v38 = v16;
+            v38 = selfCopy;
             _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Linking user [%@] to invitation : [%@]", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(context);
-          [(MKFCKOutgoingInvitation *)v16 setPendingUser:v14];
+          [(MKFCKOutgoingInvitation *)selfCopy setPendingUser:v14];
         }
       }
 
       else
       {
         contexta = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy2 = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -64,7 +64,7 @@
           v35 = 2112;
           v36 = v9;
           v37 = 2112;
-          v38 = v13;
+          v38 = pendingUser;
           _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Cannot fulfill relationship between outgoing invitation and pending user yet: %@.pendingUser = %@", buf, 0x20u);
         }
 
@@ -74,26 +74,26 @@
 
     if ([(MKFCKHomeObject *)self _exportSiblingRelationshipsFromLocalModel:v9 localRelationship:@"allowedAccessories_" context:v11])
     {
-      v20 = [v9 weekDayScheduleRules];
-      v21 = [(MKFCKOutgoingInvitation *)self guestWeekDayScheduleRules];
-      v22 = [MKFCKGuest _dictionaryRepresentationFromWeekDayScheduleRules:v20 cloudWeekDayScheduleRulesDictionary:v21];
+      weekDayScheduleRules = [v9 weekDayScheduleRules];
+      guestWeekDayScheduleRules = [(MKFCKOutgoingInvitation *)self guestWeekDayScheduleRules];
+      v22 = [MKFCKGuest _dictionaryRepresentationFromWeekDayScheduleRules:weekDayScheduleRules cloudWeekDayScheduleRulesDictionary:guestWeekDayScheduleRules];
 
-      v23 = [(MKFCKOutgoingInvitation *)self guestWeekDayScheduleRules];
-      LOBYTE(v21) = HMFEqualObjects();
+      guestWeekDayScheduleRules2 = [(MKFCKOutgoingInvitation *)self guestWeekDayScheduleRules];
+      LOBYTE(guestWeekDayScheduleRules) = HMFEqualObjects();
 
-      if ((v21 & 1) == 0)
+      if ((guestWeekDayScheduleRules & 1) == 0)
       {
         [(MKFCKOutgoingInvitation *)self setGuestWeekDayScheduleRules:v22];
       }
 
-      v24 = [v9 yearDayScheduleRules];
-      v25 = [(MKFCKOutgoingInvitation *)self guestYearDayScheduleRules];
-      v9 = [MKFCKGuest _dictionaryRepresentationFromYearDayScheduleRules:v24 cloudYearDayScheduleRulesDictionary:v25];
+      yearDayScheduleRules = [v9 yearDayScheduleRules];
+      guestYearDayScheduleRules = [(MKFCKOutgoingInvitation *)self guestYearDayScheduleRules];
+      v9 = [MKFCKGuest _dictionaryRepresentationFromYearDayScheduleRules:yearDayScheduleRules cloudYearDayScheduleRulesDictionary:guestYearDayScheduleRules];
 
-      v26 = [(MKFCKOutgoingInvitation *)self guestYearDayScheduleRules];
-      LOBYTE(v24) = HMFEqualObjects();
+      guestYearDayScheduleRules2 = [(MKFCKOutgoingInvitation *)self guestYearDayScheduleRules];
+      LOBYTE(yearDayScheduleRules) = HMFEqualObjects();
 
-      if ((v24 & 1) == 0)
+      if ((yearDayScheduleRules & 1) == 0)
       {
         [(MKFCKOutgoingInvitation *)self setGuestYearDayScheduleRules:v9];
       }
@@ -113,25 +113,25 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (![(MKFCKModel *)self copyPropertiesIntoLocalModel:v7 context:v8])
+  modelCopy = model;
+  contextCopy = context;
+  if (![(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:contextCopy])
   {
     goto LABEL_18;
   }
 
-  v9 = v7;
-  v10 = v8;
+  entity2 = modelCopy;
+  relationshipsByName2 = contextCopy;
   if (self)
   {
-    v11 = [(MKFCKOutgoingInvitation *)self pendingUser];
-    if (v11)
+    pendingUser = [(MKFCKOutgoingInvitation *)self pendingUser];
+    if (pendingUser)
     {
-      v12 = [(MKFCKOutgoingInvitation *)self pendingUser];
-      v13 = [v12 fetchLocalModelWithContext:v10];
+      pendingUser2 = [(MKFCKOutgoingInvitation *)self pendingUser];
+      v13 = [pendingUser2 fetchLocalModelWithContext:relationshipsByName2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -148,18 +148,18 @@ LABEL_20:
 
       if (v15)
       {
-        v16 = [v9 pendingUser];
+        pendingUser3 = [entity2 pendingUser];
 
-        if (v16 != v15)
+        if (pendingUser3 != v15)
         {
-          [v9 setPendingUser:v15];
+          [entity2 setPendingUser:v15];
         }
       }
 
       else
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -168,7 +168,7 @@ LABEL_20:
           *buf = 138543874;
           v34 = v20;
           v35 = 2112;
-          v36 = v18;
+          v36 = selfCopy;
           v37 = 2112;
           v38 = 0;
           _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Cannot fulfill relationship between outgoing invitation and pending user yet: %@.pendingUser = %@", buf, 0x20u);
@@ -180,22 +180,22 @@ LABEL_20:
       }
     }
 
-    if ([(MKFCKHomeObject *)self _importSiblingRelationshipsIntoLocalModel:v9 localRelationship:@"allowedAccessories_" context:v10])
+    if ([(MKFCKHomeObject *)self _importSiblingRelationshipsIntoLocalModel:entity2 localRelationship:@"allowedAccessories_" context:relationshipsByName2])
     {
-      v21 = v10;
-      v22 = v9;
-      v23 = [v22 entity];
-      v24 = [v23 relationshipsByName];
-      v25 = [v24 objectForKeyedSubscript:@"weekDayScheduleRules_"];
+      v21 = relationshipsByName2;
+      v22 = entity2;
+      entity = [v22 entity];
+      relationshipsByName = [entity relationshipsByName];
+      v25 = [relationshipsByName objectForKeyedSubscript:@"weekDayScheduleRules_"];
       v26 = [MKFCKGuest _importWeekDayScheduleRulesIntoLocalModel:v22 fromCloudModel:self localRelationship:v25 cloudAttributeName:@"guestWeekDayScheduleRules" parentRelationshipName:@"invitation" context:v21];
 
       if (v26)
       {
         v27 = v21;
         v28 = v22;
-        v9 = [v28 entity];
-        v10 = [v9 relationshipsByName];
-        v29 = [v10 objectForKeyedSubscript:@"yearDayScheduleRules_"];
+        entity2 = [v28 entity];
+        relationshipsByName2 = [entity2 relationshipsByName];
+        v29 = [relationshipsByName2 objectForKeyedSubscript:@"yearDayScheduleRules_"];
         LOBYTE(self) = [MKFCKGuest _importYearDayScheduleRulesIntoLocalModel:v28 fromCloudModel:self localRelationship:v29 cloudAttributeName:@"guestYearDayScheduleRules" parentRelationshipName:@"invitation" context:v27];
 
         goto LABEL_17;

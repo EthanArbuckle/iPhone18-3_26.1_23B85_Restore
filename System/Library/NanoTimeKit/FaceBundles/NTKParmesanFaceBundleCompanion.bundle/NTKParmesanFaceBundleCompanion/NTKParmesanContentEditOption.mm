@@ -1,21 +1,21 @@
 @interface NTKParmesanContentEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(int64_t)a3 forDevice:(id)a4;
-+ (id)optionWithContent:(int64_t)a3 device:(id)a4;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(int64_t)value forDevice:(id)device;
++ (id)optionWithContent:(int64_t)content device:(id)device;
 - (NSString)description;
 - (NTKParmesanContentEditOption)init;
-- (NTKParmesanContentEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
+- (NTKParmesanContentEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (int64_t)content;
 @end
 
 @implementation NTKParmesanContentEditOption
 
-+ (id)optionWithContent:(int64_t)a3 device:(id)a4
++ (id)optionWithContent:(int64_t)content device:(id)device
 {
   swift_getObjCClassMetadata();
-  v6 = a4;
-  v7 = sub_23BF72A98(a3, v6);
+  deviceCopy = device;
+  v7 = sub_23BF72A98(content, deviceCopy);
 
   return v7;
 }
@@ -31,7 +31,7 @@
   return result;
 }
 
-+ (id)_snapshotKeyForValue:(int64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(int64_t)value forDevice:(id)device
 {
   v4 = sub_23BFFA2C0();
 
@@ -46,9 +46,9 @@
   return v2;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  v3 = sub_23BFC533C(a1, a2, a3);
+  v3 = sub_23BFC533C(self, a2, device);
   sub_23BFEAE08(v3);
 
   v4 = sub_23BFFA450();
@@ -58,8 +58,8 @@
 
 - (NSString)description
 {
-  v2 = self;
-  result = [(NTKParmesanContentEditOption *)v2 localizedName];
+  selfCopy = self;
+  result = [(NTKParmesanContentEditOption *)selfCopy localizedName];
   if (result)
   {
     v4 = result;
@@ -75,11 +75,11 @@
   return result;
 }
 
-- (NTKParmesanContentEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKParmesanContentEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  if (a3)
+  if (representation)
   {
-    v5 = a4;
+    deviceCopy = device;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -88,10 +88,10 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v6 = a4;
+    deviceCopy2 = device;
   }
 
-  return sub_23BF73518(v8, a4);
+  return sub_23BF73518(v8, device);
 }
 
 - (NTKParmesanContentEditOption)init

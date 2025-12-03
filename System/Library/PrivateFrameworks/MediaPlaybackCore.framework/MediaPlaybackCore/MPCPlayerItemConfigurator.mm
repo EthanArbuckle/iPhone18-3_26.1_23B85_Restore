@@ -1,38 +1,38 @@
 @interface MPCPlayerItemConfigurator
-- (BOOL)_setupQueueItemForEnhancedAudioHLSPlayback:(id)a3 playerItem:(id)a4 metadataWaitTime:(double *)a5 error:(id *)a6;
+- (BOOL)_setupQueueItemForEnhancedAudioHLSPlayback:(id)playback playerItem:(id)item metadataWaitTime:(double *)time error:(id *)error;
 - (BOOL)_shouldReloadEntireQueue;
-- (BOOL)configureQueueItem:(id)a3 playerItem:(id)a4 error:(id *)a5;
-- (BOOL)updateCurrentAudioRouteWithPickedRouteIfNeeded:(id)a3;
+- (BOOL)configureQueueItem:(id)item playerItem:(id)playerItem error:(id *)error;
+- (BOOL)updateCurrentAudioRouteWithPickedRouteIfNeeded:(id)needed;
 - (MFPlaybackStackController)stackController;
 - (MFQueueItemTranslator)translator;
 - (MPCModelGenericAVItem)currentItem;
 - (MPCPlaybackEngine)playbackEngine;
 - (MPCPlayerAudioRoute)currentAudioRoute;
-- (MPCPlayerItemConfigurator)initWithPlaybackEngine:(id)a3 stackController:(id)a4 translator:(id)a5;
-- (id)_HLSMetadataForAsset:(id)a3 error:(id *)a4;
-- (id)_audioFormatsDictionaryWithHLSMetadata:(id)a3;
-- (id)_audioFormatsDictionaryWithHLSMetadataFromAsset:(id)a3 metadataWaitTime:(double *)a4 error:(id *)a5;
-- (id)_modeObjectForPlayerItem:(id)a3;
+- (MPCPlayerItemConfigurator)initWithPlaybackEngine:(id)engine stackController:(id)controller translator:(id)translator;
+- (id)_HLSMetadataForAsset:(id)asset error:(id *)error;
+- (id)_audioFormatsDictionaryWithHLSMetadata:(id)metadata;
+- (id)_audioFormatsDictionaryWithHLSMetadataFromAsset:(id)asset metadataWaitTime:(double *)time error:(id *)error;
+- (id)_modeObjectForPlayerItem:(id)item;
 - (id)queuedItems;
-- (void)_emitAudioFormatSelection:(id)a3 item:(id)a4;
+- (void)_emitAudioFormatSelection:(id)selection item:(id)item;
 - (void)_musicQualityPreferencesDidChange;
-- (void)_playbackUserDefaultsEQPresetDidChangeNotification:(id)a3;
+- (void)_playbackUserDefaultsEQPresetDidChangeNotification:(id)notification;
 - (void)_resetBufferedAudio;
 - (void)_setupNotifications;
 - (void)_setupPlayer;
-- (void)_setupQueueItemForHLSPlayback:(id)a3 playerItem:(id)a4;
-- (void)_setupQueueItemForLossyAudioPlayback:(id)a3 playerItem:(id)a4;
+- (void)_setupQueueItemForHLSPlayback:(id)playback playerItem:(id)item;
+- (void)_setupQueueItemForLossyAudioPlayback:(id)playback playerItem:(id)item;
 - (void)_setupRoutingController;
-- (void)_soundCheckEnabledChangedNotification:(id)a3;
-- (void)_updatePreferredAudioFormatIfRequiredForItem:(id)a3 route:(id)a4;
+- (void)_soundCheckEnabledChangedNotification:(id)notification;
+- (void)_updatePreferredAudioFormatIfRequiredForItem:(id)item route:(id)route;
 - (void)_updateQueueItemsAndPlayerForFormatChangeIfRequired;
-- (void)configurePlayerItemForHEAACWorkaround:(id)a3;
-- (void)configurePlayerItemForSmartTransitions:(id)a3;
+- (void)configurePlayerItemForHEAACWorkaround:(id)workaround;
+- (void)configurePlayerItemForSmartTransitions:(id)transitions;
 - (void)dealloc;
-- (void)engineDidChangeVocalAttenuationLevel:(id)a3;
-- (void)engineDidChangeVocalAttenuationState:(id)a3;
+- (void)engineDidChangeVocalAttenuationLevel:(id)level;
+- (void)engineDidChangeVocalAttenuationState:(id)state;
 - (void)processAudioQualityChanges;
-- (void)routingController:(id)a3 pickedRoutesDidChange:(id)a4;
+- (void)routingController:(id)controller pickedRoutesDidChange:(id)change;
 - (void)setupDefaultsDebouncer;
 - (void)tearDownDefaultsDebouncer;
 @end
@@ -42,12 +42,12 @@
 - (void)_setupPlayer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerItemConfigurator *)self currentItem];
-  v4 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-  v5 = [v4 spatialIsOff];
+  currentItem = [(MPCPlayerItemConfigurator *)self currentItem];
+  audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+  spatialIsOff = [audioAssetTypeSelector spatialIsOff];
 
   v6 = @"Forced stereo";
-  if (v5)
+  if (spatialIsOff)
   {
     v7 = 0;
   }
@@ -63,31 +63,31 @@
     v7 = 1;
   }
 
-  v8 = [(MPCPlayerItemConfigurator *)self stackController];
-  [v8 setSpatializationFormat:v7];
+  stackController = [(MPCPlayerItemConfigurator *)self stackController];
+  [stackController setSpatializationFormat:v7];
 
-  v9 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 engineID];
+    engineID = [playbackEngine engineID];
     v12 = 138544130;
-    v13 = v11;
+    v13 = engineID;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v6;
     v18 = 2114;
-    v19 = v3;
+    v19 = currentItem;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - AVPlayer setup: %{public}@ - currentItem: %{public}@", &v12, 0x2Au);
   }
 }
 
 - (MPCModelGenericAVItem)currentItem
 {
-  v3 = [(MPCPlayerItemConfigurator *)self stackController];
-  v4 = [v3 currentItem];
-  v5 = [(MPCPlayerItemConfigurator *)self _modeObjectForPlayerItem:v4];
+  stackController = [(MPCPlayerItemConfigurator *)self stackController];
+  currentItem = [stackController currentItem];
+  v5 = [(MPCPlayerItemConfigurator *)self _modeObjectForPlayerItem:currentItem];
 
   return v5;
 }
@@ -106,18 +106,18 @@
   return WeakRetained;
 }
 
-- (void)configurePlayerItemForSmartTransitions:(id)a3
+- (void)configurePlayerItemForSmartTransitions:(id)transitions
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5D3BAF8(v4);
+  transitionsCopy = transitions;
+  selfCopy = self;
+  sub_1C5D3BAF8(transitionsCopy);
 }
 
-- (void)configurePlayerItemForHEAACWorkaround:(id)a3
+- (void)configurePlayerItemForHEAACWorkaround:(id)workaround
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5D3BDFC(v4);
+  workaroundCopy = workaround;
+  selfCopy = self;
+  sub_1C5D3BDFC(workaroundCopy);
 }
 
 - (MFQueueItemTranslator)translator
@@ -130,119 +130,119 @@
 - (void)_resetBufferedAudio
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerItemConfigurator *)self currentItem];
-  if ([v3 isAssetLoaded])
+  currentItem = [(MPCPlayerItemConfigurator *)self currentItem];
+  if ([currentItem isAssetLoaded])
   {
-    v4 = [v3 playerItem];
-    v5 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+    playerItem = [currentItem playerItem];
+    playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
     v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 engineID];
+      engineID = [playbackEngine engineID];
       v8 = 138543874;
-      v9 = v7;
+      v9 = engineID;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v4;
+      v13 = playerItem;
       _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AP] - resetAudioBufferedAhead for: %{public}@", &v8, 0x20u);
     }
 
-    [v4 resetAudioBufferedAhead];
+    [playerItem resetAudioBufferedAhead];
   }
 }
 
-- (void)engineDidChangeVocalAttenuationState:(id)a3
+- (void)engineDidChangeVocalAttenuationState:(id)state
 {
-  v4 = [a3 vocalAttenuationController];
-  if (v4 && (v4[9] - 5) <= 2)
+  vocalAttenuationController = [state vocalAttenuationController];
+  if (vocalAttenuationController && (vocalAttenuationController[9] - 5) <= 2)
   {
-    v5 = v4;
+    v5 = vocalAttenuationController;
     [(MPCPlayerItemConfigurator *)self _resetBufferedAudio];
-    v4 = v5;
+    vocalAttenuationController = v5;
   }
 }
 
-- (void)engineDidChangeVocalAttenuationLevel:(id)a3
+- (void)engineDidChangeVocalAttenuationLevel:(id)level
 {
-  if ([a3 isVocalAttenuationEnabled])
+  if ([level isVocalAttenuationEnabled])
   {
 
     [(MPCPlayerItemConfigurator *)self _resetBufferedAudio];
   }
 }
 
-- (void)_updatePreferredAudioFormatIfRequiredForItem:(id)a3 route:(id)a4
+- (void)_updatePreferredAudioFormatIfRequiredForItem:(id)item route:(id)route
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  itemCopy = item;
+  routeCopy = route;
+  if (itemCopy)
   {
-    v8 = [v6 preferredFormat];
+    preferredFormat = [itemCopy preferredFormat];
 
-    if (v8)
+    if (preferredFormat)
     {
-      v9 = [v6 preferredFormat];
-      v10 = [v6 isDownloadedAsset];
-      v11 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-      v12 = v11;
-      if (v10)
+      preferredFormat2 = [itemCopy preferredFormat];
+      isDownloadedAsset = [itemCopy isDownloadedAsset];
+      audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+      v12 = audioAssetTypeSelector;
+      if (isDownloadedAsset)
       {
-        v13 = [v6 loadedAudioAssetType];
-        v14 = [v6 availableSortedFormats];
-        v15 = [v12 audioFormatMatchingAudioAssetType:v13 formats:v14 route:v7];
+        loadedAudioAssetType = [itemCopy loadedAudioAssetType];
+        availableSortedFormats = [itemCopy availableSortedFormats];
+        playbackEngine3 = [v12 audioFormatMatchingAudioAssetType:loadedAudioAssetType formats:availableSortedFormats route:routeCopy];
       }
 
       else
       {
-        v15 = [v11 preferredPlayerAudioFormatForItem:v6 route:v7];
+        playbackEngine3 = [audioAssetTypeSelector preferredPlayerAudioFormatForItem:itemCopy route:routeCopy];
       }
 
-      [v6 setAudioRoute:v7];
-      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v15 item:v6];
-      v16 = [v15 format];
-      if ([v6 updatePreferredFormat:v16] && objc_msgSend(v6, "isAssetLoaded"))
+      [itemCopy setAudioRoute:routeCopy];
+      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:playbackEngine3 item:itemCopy];
+      format = [playbackEngine3 format];
+      if ([itemCopy updatePreferredFormat:format] && objc_msgSend(itemCopy, "isAssetLoaded"))
       {
-        v20 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+        playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
         v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v20 engineID];
+          engineID = [playbackEngine engineID];
           v30 = 138544642;
-          v31 = v22;
+          v31 = engineID;
           v32 = 2048;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 2114;
-          v35 = v6;
+          v35 = itemCopy;
           v36 = 1024;
-          *v37 = [v6 isDownloadedAsset];
+          *v37 = [itemCopy isDownloadedAsset];
           *&v37[4] = 2112;
-          *&v37[6] = v9;
+          *&v37[6] = preferredFormat2;
           v38 = 2112;
-          v39 = v16;
+          v39 = format;
           _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - Preferred audio format changed [configuring player item] - item:%{public}@ - downloaded:%{BOOL}u - audio format: %@ -> %@", &v30, 0x3Au);
         }
 
-        v23 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-        [v6 configureAVPlayerItemWithAudioFormat:v16 forceSpatial:objc_msgSend(v23, "spatialIsAlwaysOn")];
+        audioAssetTypeSelector2 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+        [itemCopy configureAVPlayerItemWithAudioFormat:format forceSpatial:objc_msgSend(audioAssetTypeSelector2, "spatialIsAlwaysOn")];
 
-        v24 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+        playbackEngine2 = [(MPCPlayerItemConfigurator *)self playbackEngine];
         v25 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v24 engineID];
-          v27 = [v6 playerItem];
-          v28 = [v27 mpc_setupDescription];
+          engineID2 = [playbackEngine2 engineID];
+          playerItem = [itemCopy playerItem];
+          mpc_setupDescription = [playerItem mpc_setupDescription];
           v30 = 138544130;
-          v31 = v26;
+          v31 = engineID2;
           v32 = 2048;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 2114;
-          v35 = v28;
-          v29 = v28;
+          v35 = mpc_setupDescription;
+          v29 = mpc_setupDescription;
           v36 = 2114;
-          *v37 = v6;
+          *v37 = itemCopy;
           _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - AVPlayerItem setup: %{public}@ - item:%{public}@", &v30, 0x2Au);
         }
       }
@@ -250,19 +250,19 @@
       goto LABEL_18;
     }
 
-    v15 = [(MPCPlayerItemConfigurator *)self playbackEngine];
-    v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    playbackEngine3 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+    preferredFormat2 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(preferredFormat2, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v15 engineID];
+      format = [playbackEngine3 engineID];
       v30 = 138543874;
-      v31 = v16;
+      v31 = format;
       v32 = 2048;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2114;
-      v35 = v6;
+      v35 = itemCopy;
       v17 = "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - No configuration possible [no preferred format on item] - item: %{public}@";
-      v18 = v9;
+      v18 = preferredFormat2;
       v19 = 32;
       goto LABEL_9;
     }
@@ -270,17 +270,17 @@
 
   else
   {
-    v15 = [(MPCPlayerItemConfigurator *)self playbackEngine];
-    v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    playbackEngine3 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+    preferredFormat2 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(preferredFormat2, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v15 engineID];
+      format = [playbackEngine3 engineID];
       v30 = 138543618;
-      v31 = v16;
+      v31 = format;
       v32 = 2048;
-      v33 = self;
+      selfCopy4 = self;
       v17 = "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - No configuration possible [no player item]";
-      v18 = v9;
+      v18 = preferredFormat2;
       v19 = 22;
 LABEL_9:
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, v17, &v30, v19);
@@ -292,13 +292,13 @@ LABEL_18:
 - (void)_updateQueueItemsAndPlayerForFormatChangeIfRequired
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
+  currentAudioRoute = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MPCPlayerItemConfigurator *)self queuedItems];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  queuedItems = [(MPCPlayerItemConfigurator *)self queuedItems];
+  v5 = [queuedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -310,14 +310,14 @@ LABEL_18:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queuedItems);
         }
 
-        [(MPCPlayerItemConfigurator *)self _updatePreferredAudioFormatIfRequiredForItem:*(*(&v9 + 1) + 8 * v8++) route:v3];
+        [(MPCPlayerItemConfigurator *)self _updatePreferredAudioFormatIfRequiredForItem:*(*(&v9 + 1) + 8 * v8++) route:currentAudioRoute];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [queuedItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -333,8 +333,8 @@ LABEL_18:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(MPCPlayerItemConfigurator *)self queuedItems];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  queuedItems = [(MPCPlayerItemConfigurator *)self queuedItems];
+  v4 = [queuedItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -345,7 +345,7 @@ LABEL_18:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(queuedItems);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -353,11 +353,11 @@ LABEL_18:
         {
           if (([v8 isHLSAsset] & 1) == 0)
           {
-            v9 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-            v10 = [v9 preferredAudioAssetTypeForItem:v8];
-            v11 = [v10 type];
+            audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+            v10 = [audioAssetTypeSelector preferredAudioAssetTypeForItem:v8];
+            type = [v10 type];
 
-            if (v11 >= 3)
+            if (type >= 3)
             {
               if ([v8 playerItemType] || (objc_msgSend(v8, "asset"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "URL"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isFileURL"), v13, v12, !v14))
               {
@@ -369,7 +369,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [queuedItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -385,13 +385,13 @@ LABEL_15:
   return v15;
 }
 
-- (id)_modeObjectForPlayerItem:(id)a3
+- (id)_modeObjectForPlayerItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isAssetLoaded])
+  itemCopy = item;
+  if ([itemCopy isAssetLoaded])
   {
-    v5 = [(MPCPlayerItemConfigurator *)self translator];
-    v6 = [v5 MPAVItemForMFPlayerItem:v4];
+    translator = [(MPCPlayerItemConfigurator *)self translator];
+    v6 = [translator MPAVItemForMFPlayerItem:itemCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -416,21 +416,21 @@ LABEL_15:
 - (id)queuedItems
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerItemConfigurator *)self stackController];
-  v4 = [v3 nextItems];
+  stackController = [(MPCPlayerItemConfigurator *)self stackController];
+  nextItems = [stackController nextItems];
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count") + 1}];
-  v6 = [(MPCPlayerItemConfigurator *)self currentItem];
-  if (v6)
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(nextItems, "count") + 1}];
+  currentItem = [(MPCPlayerItemConfigurator *)self currentItem];
+  if (currentItem)
   {
-    [v5 addObject:v6];
+    [v5 addObject:currentItem];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = nextItems;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -463,35 +463,35 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)updateCurrentAudioRouteWithPickedRouteIfNeeded:(id)a3
+- (BOOL)updateCurrentAudioRouteWithPickedRouteIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  currentAudioRoute = v5->_currentAudioRoute;
+  neededCopy = needed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentAudioRoute = selfCopy->_currentAudioRoute;
   if (!currentAudioRoute)
   {
     goto LABEL_5;
   }
 
-  v7 = [(MPCPlayerAudioRoute *)currentAudioRoute pickedRoute];
-  if (v7 == v4)
+  pickedRoute = [(MPCPlayerAudioRoute *)currentAudioRoute pickedRoute];
+  if (pickedRoute == neededCopy)
   {
     v10 = 0;
     goto LABEL_7;
   }
 
-  v8 = [(MPCPlayerAudioRoute *)v5->_currentAudioRoute pickedRoute];
-  v9 = [v4 isEqual:v8];
+  pickedRoute2 = [(MPCPlayerAudioRoute *)selfCopy->_currentAudioRoute pickedRoute];
+  v9 = [neededCopy isEqual:pickedRoute2];
 
   if ((v9 & 1) == 0)
   {
 LABEL_5:
     v11 = [MPCPlayerAudioRoute alloc];
-    v7 = [(MPCPlayerItemConfigurator *)v5 audioAssetTypeSelector];
-    v12 = -[MPCPlayerAudioRoute initWithRoute:spatialIsAlwaysOn:](v11, "initWithRoute:spatialIsAlwaysOn:", v4, [v7 spatialIsAlwaysOn]);
-    v13 = v5->_currentAudioRoute;
-    v5->_currentAudioRoute = v12;
+    pickedRoute = [(MPCPlayerItemConfigurator *)selfCopy audioAssetTypeSelector];
+    v12 = -[MPCPlayerAudioRoute initWithRoute:spatialIsAlwaysOn:](v11, "initWithRoute:spatialIsAlwaysOn:", neededCopy, [pickedRoute spatialIsAlwaysOn]);
+    v13 = selfCopy->_currentAudioRoute;
+    selfCopy->_currentAudioRoute = v12;
 
     v10 = 1;
 LABEL_7:
@@ -501,53 +501,53 @@ LABEL_7:
 
   v10 = 0;
 LABEL_8:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 - (MPCPlayerAudioRoute)currentAudioRoute
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_currentAudioRoute)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_currentAudioRoute)
   {
     v3 = [MPCPlayerAudioRoute alloc];
-    v4 = [(MPAVRoutingController *)v2->_routingController pickedRoutes];
-    v5 = [v4 firstObject];
-    v6 = [(MPCPlayerItemConfigurator *)v2 audioAssetTypeSelector];
-    v7 = -[MPCPlayerAudioRoute initWithRoute:spatialIsAlwaysOn:](v3, "initWithRoute:spatialIsAlwaysOn:", v5, [v6 spatialIsAlwaysOn]);
-    currentAudioRoute = v2->_currentAudioRoute;
-    v2->_currentAudioRoute = v7;
+    pickedRoutes = [(MPAVRoutingController *)selfCopy->_routingController pickedRoutes];
+    firstObject = [pickedRoutes firstObject];
+    audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)selfCopy audioAssetTypeSelector];
+    v7 = -[MPCPlayerAudioRoute initWithRoute:spatialIsAlwaysOn:](v3, "initWithRoute:spatialIsAlwaysOn:", firstObject, [audioAssetTypeSelector spatialIsAlwaysOn]);
+    currentAudioRoute = selfCopy->_currentAudioRoute;
+    selfCopy->_currentAudioRoute = v7;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v9 = v2->_currentAudioRoute;
+  v9 = selfCopy->_currentAudioRoute;
 
   return v9;
 }
 
-- (void)routingController:(id)a3 pickedRoutesDidChange:(id)a4
+- (void)routingController:(id)controller pickedRoutesDidChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  changeCopy = change;
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 engineID];
+    engineID = [playbackEngine engineID];
     v11 = 138543874;
-    v12 = v8;
+    v12 = engineID;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v5;
+    v16 = changeCopy;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - Route changed to %{public}@", &v11, 0x20u);
   }
 
-  v9 = [v5 firstObject];
-  v10 = [(MPCPlayerItemConfigurator *)self updateCurrentAudioRouteWithPickedRouteIfNeeded:v9];
+  firstObject = [changeCopy firstObject];
+  v10 = [(MPCPlayerItemConfigurator *)self updateCurrentAudioRouteWithPickedRouteIfNeeded:firstObject];
 
   if (v10)
   {
@@ -555,28 +555,28 @@ LABEL_8:
   }
 }
 
-- (id)_audioFormatsDictionaryWithHLSMetadata:(id)a3
+- (id)_audioFormatsDictionaryWithHLSMetadata:(id)metadata
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (metadata)
   {
     v4 = MEMORY[0x1E695DF20];
-    v5 = [a3 value];
+    value = [metadata value];
     v19 = 0;
-    v6 = [v4 msv_dictionaryWithContentsOfBase64EncodedJSONString:v5 error:&v19];
+    v6 = [v4 msv_dictionaryWithContentsOfBase64EncodedJSONString:value error:&v19];
     v7 = v19;
 
     if (v7)
     {
-      v8 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+      playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
       v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v8 engineID];
+        engineID = [playbackEngine engineID];
         *buf = 138543874;
-        v21 = v10;
+        v21 = engineID;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = v7;
         _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - Error decoding HLS metadata [Clearing audioFormatsDictionary] - Error:%{public}@", buf, 0x20u);
@@ -587,15 +587,15 @@ LABEL_8:
 
     else
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v14 = MEMORY[0x1E69E9820];
       v15 = 3221225472;
       v16 = __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___block_invoke;
       v17 = &unk_1E82351A0;
-      v18 = v12;
-      v8 = v12;
+      v18 = dictionary;
+      playbackEngine = dictionary;
       [v6 enumerateKeysAndObjectsUsingBlock:&v14];
-      v11 = [v8 copy:v14];
+      v11 = [playbackEngine copy:v14];
       v9 = v18;
     }
   }
@@ -617,33 +617,33 @@ void __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___bl
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_HLSMetadataForAsset:(id)a3 error:(id *)a4
+- (id)_HLSMetadataForAsset:(id)asset error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v6 = [a3 mpc_synchronousHLSSessionDataWithTimeout:5 error:&v16];
+  v6 = [asset mpc_synchronousHLSSessionDataWithTimeout:5 error:&v16];
   v7 = v16;
   if (v7 || ([v6 value], v8 = objc_claimAutoreleasedReturnValue(), v9 = _NSIsNSString(), v8, (v9 & 1) == 0))
   {
-    v11 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+    playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
     v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 engineID];
+      engineID = [playbackEngine engineID];
       *buf = 138543874;
-      v18 = v13;
+      v18 = engineID;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v7;
       _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - Error retrieving HLS metadata - Error:%{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v7;
       v10 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -660,18 +660,18 @@ void __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___bl
   return v10;
 }
 
-- (id)_audioFormatsDictionaryWithHLSMetadataFromAsset:(id)a3 metadataWaitTime:(double *)a4 error:(id *)a5
+- (id)_audioFormatsDictionaryWithHLSMetadataFromAsset:(id)asset metadataWaitTime:(double *)time error:(id *)error
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a3;
+  assetCopy = asset;
   [v8 timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [(MPCPlayerItemConfigurator *)self _HLSMetadataForAsset:v9 error:a5];
+  v12 = [(MPCPlayerItemConfigurator *)self _HLSMetadataForAsset:assetCopy error:error];
 
-  if (a4)
+  if (time)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    *a4 = v13 - v11;
+    *time = v13 - v11;
   }
 
   v14 = [(MPCPlayerItemConfigurator *)self _audioFormatsDictionaryWithHLSMetadata:v12];
@@ -679,63 +679,63 @@ void __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___bl
   return v14;
 }
 
-- (void)_emitAudioFormatSelection:(id)a3 item:(id)a4
+- (void)_emitAudioFormatSelection:(id)selection item:(id)item
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 queueSectionID];
-  v9 = [v7 queueItemID];
+  selectionCopy = selection;
+  itemCopy = item;
+  queueSectionID = [itemCopy queueSectionID];
+  queueItemID = [itemCopy queueItemID];
 
-  v10 = [(MPCPlayerItemConfigurator *)self playbackEngine];
-  v11 = [v10 eventStream];
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  eventStream = [playbackEngine eventStream];
   v23[0] = @"queue-section-id";
   v23[1] = @"queue-item-id";
-  v19 = v9;
-  v20 = v8;
-  v24[0] = v8;
-  v24[1] = v9;
+  v19 = queueItemID;
+  v20 = queueSectionID;
+  v24[0] = queueSectionID;
+  v24[1] = queueItemID;
   v23[2] = @"item-audio-format-selection-metadata";
   v21[0] = @"audio-format-selection-format";
-  v12 = [v6 format];
-  v13 = v12;
-  if (!v12)
+  format = [selectionCopy format];
+  null = format;
+  if (!format)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[0] = v13;
+  v22[0] = null;
   v21[1] = @"audio-format-selection-explanation";
-  v14 = [v6 explanation];
-  v22[1] = v14;
+  explanation = [selectionCopy explanation];
+  v22[1] = explanation;
   v21[2] = @"audio-format-selection-justification";
-  v15 = [v6 justification];
-  v16 = v15;
-  if (!v15)
+  justification = [selectionCopy justification];
+  null2 = justification;
+  if (!justification)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[2] = v16;
+  v22[2] = null2;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
   v24[2] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
-  [v11 emitEventType:@"audio-format-selection" payload:v18];
+  [eventStream emitEventType:@"audio-format-selection" payload:v18];
 
-  if (!v15)
+  if (!justification)
   {
   }
 
-  if (!v12)
+  if (!format)
   {
   }
 }
 
-- (void)_setupQueueItemForLossyAudioPlayback:(id)a3 playerItem:(id)a4
+- (void)_setupQueueItemForLossyAudioPlayback:(id)playback playerItem:(id)item
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  playbackCopy = playback;
+  itemCopy = item;
   v32[0] = @"LQ";
   v8 = +[MPCPlayerAudioFormat lossyLowQualityStereoFormat];
   v33[0] = v8;
@@ -744,17 +744,17 @@ void __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___bl
   v33[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
-  [v6 updateAudioFormatsDictionary:v10];
-  v11 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-  v12 = [v6 availableSortedFormats];
-  v13 = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
-  v14 = [v11 preferredAudioFormatForAudioFormats:v12 route:v13];
+  [playbackCopy updateAudioFormatsDictionary:v10];
+  audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+  availableSortedFormats = [playbackCopy availableSortedFormats];
+  currentAudioRoute = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
+  v14 = [audioAssetTypeSelector preferredAudioFormatForAudioFormats:availableSortedFormats route:currentAudioRoute];
 
-  v15 = [v14 format];
-  [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v14 item:v6];
-  v16 = v6;
-  v23 = v15;
-  v17 = v15;
+  format = [v14 format];
+  [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v14 item:playbackCopy];
+  v16 = playbackCopy;
+  v23 = format;
+  v17 = format;
   msv_dispatch_sync_on_main_queue();
   if ([v16 mediaType] == 1024)
   {
@@ -771,22 +771,22 @@ void __68__MPCPlayerItemConfigurator__audioFormatsDictionaryWithHLSMetadata___bl
     v18 = 4;
   }
 
-  [v7 setAllowedAudioSpatializationFormats:v18];
+  [itemCopy setAllowedAudioSpatializationFormats:v18];
 LABEL_6:
-  v19 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
   v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v19 engineID];
-    v22 = [v16 preferredFormat];
+    engineID = [playbackEngine engineID];
+    preferredFormat = [v16 preferredFormat];
     *buf = 138544130;
-    v25 = v21;
+    v25 = engineID;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
     v29 = v16;
     v30 = 2114;
-    v31 = v22;
+    v31 = preferredFormat;
     _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - No enhanced audio format [Using pre-defined lossy formats] - item:%{public}@ - Preferred/active format:%{public}@", buf, 0x2Au);
   }
 }
@@ -803,39 +803,39 @@ uint64_t __77__MPCPlayerItemConfigurator__setupQueueItemForLossyAudioPlayback_pl
   return [v3 updateActiveFormat:v4 justification:100];
 }
 
-- (void)_setupQueueItemForHLSPlayback:(id)a3 playerItem:(id)a4
+- (void)_setupQueueItemForHLSPlayback:(id)playback playerItem:(id)item
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 asset];
+  playbackCopy = playback;
+  itemCopy = item;
+  asset = [itemCopy asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-    v11 = [v10 spatialPreference];
-    v12 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-    v13 = [v12 spatialIsAlwaysOn];
-    v14 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-    [v7 mpc_setupForHLSPlaybackWithPreferredFormat:0 spatialPreference:v11 forceSpatial:v13 maxResolution:objc_msgSend(v14 isDownloadedAsset:"maxResolution"), objc_msgSend(v6, "isDownloadedAsset")];
+    audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+    spatialPreference = [audioAssetTypeSelector spatialPreference];
+    audioAssetTypeSelector2 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+    spatialIsAlwaysOn = [audioAssetTypeSelector2 spatialIsAlwaysOn];
+    audioAssetTypeSelector3 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+    [itemCopy mpc_setupForHLSPlaybackWithPreferredFormat:0 spatialPreference:spatialPreference forceSpatial:spatialIsAlwaysOn maxResolution:objc_msgSend(audioAssetTypeSelector3 isDownloadedAsset:"maxResolution"), objc_msgSend(playbackCopy, "isDownloadedAsset")];
 
     v20 = MEMORY[0x1E69E9820];
-    v15 = v6;
+    v15 = playbackCopy;
     msv_dispatch_sync_on_main_queue();
     v16 = [(MPCPlayerItemConfigurator *)self playbackEngine:v20];
     v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v16 engineID];
-      v19 = [v7 mpc_setupDescription];
+      engineID = [v16 engineID];
+      mpc_setupDescription = [itemCopy mpc_setupDescription];
       *buf = 138544130;
-      v22 = v18;
+      v22 = engineID;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
-      v26 = v19;
+      v26 = mpc_setupDescription;
       v27 = 2114;
       v28 = v15;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - AVPlayerItem setup:%{public}@ - item:%{public}@", buf, 0x2Au);
@@ -849,18 +849,18 @@ void __70__MPCPlayerItemConfigurator__setupQueueItemForHLSPlayback_playerItem___
   [*(a1 + 32) setAudioRoute:v2];
 }
 
-- (BOOL)_setupQueueItemForEnhancedAudioHLSPlayback:(id)a3 playerItem:(id)a4 metadataWaitTime:(double *)a5 error:(id *)a6
+- (BOOL)_setupQueueItemForEnhancedAudioHLSPlayback:(id)playback playerItem:(id)item metadataWaitTime:(double *)time error:(id *)error
 {
   v79 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 asset];
+  playbackCopy = playback;
+  itemCopy = item;
+  asset = [itemCopy asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v65 = [v10 asset];
+    asset2 = [itemCopy asset];
     v13 = [MPCPlayerItemConfigurator _audioFormatsDictionaryWithHLSMetadataFromAsset:"_audioFormatsDictionaryWithHLSMetadataFromAsset:metadataWaitTime:error:" metadataWaitTime:? error:?];
     v14 = 0;
     v15 = v14 == 0;
@@ -868,17 +868,17 @@ void __70__MPCPlayerItemConfigurator__setupQueueItemForHLSPlayback_playerItem___
     if (v14)
     {
       v16 = v14;
-      v17 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+      playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
       v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v17 engineID];
+        engineID = [playbackEngine engineID];
         *buf = 138544130;
-        v72 = v19;
+        v72 = engineID;
         v73 = 2048;
-        v74 = self;
+        selfCopy4 = self;
         v75 = 2114;
-        v76 = v9;
+        v76 = playbackCopy;
         v77 = 2114;
         v78 = v66;
         _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - Error retrieving audio formats - item:%{public}@ - error:%{public}@", buf, 0x2Au);
@@ -891,13 +891,13 @@ void __70__MPCPlayerItemConfigurator__setupQueueItemForHLSPlayback_playerItem___
       v21 = [MPCPlayerAudioFormatSelection alloc];
       v69 = @"Error";
       v22 = [v16 debugDescription];
-      v23 = v22;
+      null = v22;
       if (!v22)
       {
-        v23 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v70 = v23;
+      v70 = null;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v25 = [(MPCPlayerAudioFormatSelection *)v21 initWithExplanation:@" Error retrieving audio formats" justification:v24];
 
@@ -905,12 +905,12 @@ void __70__MPCPlayerItemConfigurator__setupQueueItemForHLSPlayback_playerItem___
       {
       }
 
-      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v25 item:v9];
-      if (a6)
+      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v25 item:playbackCopy];
+      if (error)
       {
         v26 = v66;
         v27 = v66;
-        *a6 = v66;
+        *error = v66;
 LABEL_25:
 
         goto LABEL_26;
@@ -919,76 +919,76 @@ LABEL_25:
 
     else
     {
-      v28 = [v9 isDownloadedAsset];
+      isDownloadedAsset = [playbackCopy isDownloadedAsset];
       v64 = v13;
       if (v13)
       {
-        [v9 updateAudioFormatsDictionary:v13];
-        v29 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-        v61 = v28;
-        if (v28)
+        [playbackCopy updateAudioFormatsDictionary:v13];
+        audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+        v61 = isDownloadedAsset;
+        if (isDownloadedAsset)
         {
-          v30 = [v9 loadedAudioAssetType];
-          v31 = [v9 availableSortedFormats];
-          v32 = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
-          [v29 audioFormatMatchingAudioAssetType:v30 formats:v31 route:v32];
+          loadedAudioAssetType = [playbackCopy loadedAudioAssetType];
+          availableSortedFormats = [playbackCopy availableSortedFormats];
+          currentAudioRoute = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
+          [audioAssetTypeSelector audioFormatMatchingAudioAssetType:loadedAudioAssetType formats:availableSortedFormats route:currentAudioRoute];
         }
 
         else
         {
-          v31 = [v9 availableSortedFormats];
-          v32 = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
-          [v29 preferredAudioFormatForAudioFormats:v31 route:v32];
+          availableSortedFormats = [playbackCopy availableSortedFormats];
+          currentAudioRoute = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
+          [audioAssetTypeSelector preferredAudioFormatForAudioFormats:availableSortedFormats route:currentAudioRoute];
         }
         v41 = ;
         v63 = v15;
 
-        v42 = [(MPCPlayerAudioFormatSelection *)v41 format];
+        format = [(MPCPlayerAudioFormatSelection *)v41 format];
         v62 = v41;
-        [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v41 item:v9];
-        v43 = v9;
+        [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v41 item:playbackCopy];
+        v43 = playbackCopy;
         v67 = v43;
-        v68 = v42;
-        v60 = v42;
+        v68 = format;
+        v60 = format;
         msv_dispatch_sync_on_main_queue();
-        v44 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+        playbackEngine2 = [(MPCPlayerItemConfigurator *)self playbackEngine];
         v45 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v44 engineID];
-          v47 = [v43 preferredFormat];
+          engineID2 = [playbackEngine2 engineID];
+          preferredFormat = [v43 preferredFormat];
           *buf = 138544130;
-          v72 = v46;
+          v72 = engineID2;
           v73 = 2048;
-          v74 = self;
+          selfCopy4 = self;
           v75 = 2114;
           v76 = v43;
           v77 = 2114;
-          v78 = v47;
+          v78 = preferredFormat;
           _os_log_impl(&dword_1C5C61000, v45, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - Audio formats available in HLS session data [Setting up player item] - item:%{public}@ - Preferred format:%{public}@", buf, 0x2Au);
         }
 
         v48 = v43;
-        v49 = [v43 preferredFormat];
-        v50 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-        v51 = [v50 spatialPreference];
-        v52 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-        v53 = [v52 spatialIsAlwaysOn];
-        v54 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-        [v10 mpc_setupForHLSPlaybackWithPreferredFormat:v49 spatialPreference:v51 forceSpatial:v53 maxResolution:objc_msgSend(v54 isDownloadedAsset:"maxResolution"), v61];
+        preferredFormat2 = [v43 preferredFormat];
+        audioAssetTypeSelector2 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+        spatialPreference = [audioAssetTypeSelector2 spatialPreference];
+        audioAssetTypeSelector3 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+        spatialIsAlwaysOn = [audioAssetTypeSelector3 spatialIsAlwaysOn];
+        audioAssetTypeSelector4 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+        [itemCopy mpc_setupForHLSPlaybackWithPreferredFormat:preferredFormat2 spatialPreference:spatialPreference forceSpatial:spatialIsAlwaysOn maxResolution:objc_msgSend(audioAssetTypeSelector4 isDownloadedAsset:"maxResolution"), v61];
 
-        v55 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+        playbackEngine3 = [(MPCPlayerItemConfigurator *)self playbackEngine];
         v56 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
         {
-          v57 = [v55 engineID];
-          v58 = [v10 mpc_setupDescription];
+          engineID3 = [playbackEngine3 engineID];
+          mpc_setupDescription = [itemCopy mpc_setupDescription];
           *buf = 138544130;
-          v72 = v57;
+          v72 = engineID3;
           v73 = 2048;
-          v74 = self;
+          selfCopy4 = self;
           v75 = 2114;
-          v76 = v58;
+          v76 = mpc_setupDescription;
           v77 = 2114;
           v78 = v48;
           _os_log_impl(&dword_1C5C61000, v56, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - AVPlayerItem setup:%{public}@ - item:%{public}@", buf, 0x2Au);
@@ -1001,28 +1001,28 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      v33 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+      playbackEngine4 = [(MPCPlayerItemConfigurator *)self playbackEngine];
       v34 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v33 engineID];
+        engineID4 = [playbackEngine4 engineID];
         *buf = 138543874;
-        v72 = v35;
+        v72 = engineID4;
         v73 = 2048;
-        v74 = self;
+        selfCopy4 = self;
         v75 = 2114;
-        v76 = v9;
+        v76 = playbackCopy;
         _os_log_impl(&dword_1C5C61000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AL] - No audio formats in HLS session data [Setting up player item using preferred audio asset type] - item:%{public}@", buf, 0x20u);
       }
 
       v25 = [[MPCPlayerAudioFormatSelection alloc] initWithExplanation:@"No audio formats in HLS session data [Attempting setup with preferred type]" justification:0];
-      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v25 item:v9];
-      v36 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-      v37 = [v36 spatialPreference];
-      v38 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-      v39 = [v38 spatialIsAlwaysOn];
-      v40 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
-      [v10 mpc_setupForHLSPlaybackWithPreferredFormat:0 spatialPreference:v37 forceSpatial:v39 maxResolution:objc_msgSend(v40 isDownloadedAsset:"maxResolution"), v28];
+      [(MPCPlayerItemConfigurator *)self _emitAudioFormatSelection:v25 item:playbackCopy];
+      audioAssetTypeSelector5 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+      spatialPreference2 = [audioAssetTypeSelector5 spatialPreference];
+      audioAssetTypeSelector6 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+      spatialIsAlwaysOn2 = [audioAssetTypeSelector6 spatialIsAlwaysOn];
+      audioAssetTypeSelector7 = [(MPCPlayerItemConfigurator *)self audioAssetTypeSelector];
+      [itemCopy mpc_setupForHLSPlaybackWithPreferredFormat:0 spatialPreference:spatialPreference2 forceSpatial:spatialIsAlwaysOn2 maxResolution:objc_msgSend(audioAssetTypeSelector7 isDownloadedAsset:"maxResolution"), isDownloadedAsset];
 
       v20 = 0;
     }
@@ -1051,30 +1051,30 @@ uint64_t __106__MPCPlayerItemConfigurator__setupQueueItemForEnhancedAudioHLSPlay
 - (void)processAudioQualityChanges
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerItemConfigurator *)self playbackEngine];
-  if (v3)
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  if (playbackEngine)
   {
-    v4 = [(MPCPlayerItemConfigurator *)self currentItem];
-    if (([v3 isVocalAttenuationEnabled] & 1) == 0)
+    currentItem = [(MPCPlayerItemConfigurator *)self currentItem];
+    if (([playbackEngine isVocalAttenuationEnabled] & 1) == 0)
     {
-      if (v4)
+      if (currentItem)
       {
-        v5 = [(MPCPlayerItemConfigurator *)self _shouldReloadEntireQueue];
-        v6 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+        _shouldReloadEntireQueue = [(MPCPlayerItemConfigurator *)self _shouldReloadEntireQueue];
+        playbackEngine2 = [(MPCPlayerItemConfigurator *)self playbackEngine];
         v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-        if (v5)
+        if (_shouldReloadEntireQueue)
         {
           if (v8)
           {
-            v9 = [v6 engineID];
-            v10 = [(MPCPlayerItemConfigurator *)self queuedItems];
+            engineID = [playbackEngine2 engineID];
+            queuedItems = [(MPCPlayerItemConfigurator *)self queuedItems];
             *buf = 138543874;
-            v15 = v9;
+            v15 = engineID;
             v16 = 2048;
-            v17 = self;
+            selfCopy2 = self;
             v18 = 2114;
-            v19 = v10;
+            v19 = queuedItems;
             _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - Preferred asset type changed [reloading all queued items] - items:%{public}@", buf, 0x20u);
           }
 
@@ -1083,21 +1083,21 @@ uint64_t __106__MPCPlayerItemConfigurator__setupQueueItemForEnhancedAudioHLSPlay
           v13[2] = __55__MPCPlayerItemConfigurator_processAudioQualityChanges__block_invoke;
           v13[3] = &unk_1E8238800;
           v13[4] = self;
-          [v3 reloadQueueForReason:0 completion:v13];
+          [playbackEngine reloadQueueForReason:0 completion:v13];
         }
 
         else
         {
           if (v8)
           {
-            v11 = [v6 engineID];
-            v12 = [(MPCPlayerItemConfigurator *)self queuedItems];
+            engineID2 = [playbackEngine2 engineID];
+            queuedItems2 = [(MPCPlayerItemConfigurator *)self queuedItems];
             *buf = 138543874;
-            v15 = v11;
+            v15 = engineID2;
             v16 = 2048;
-            v17 = self;
+            selfCopy2 = self;
             v18 = 2114;
-            v19 = v12;
+            v19 = queuedItems2;
             _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AF] - Preferred asset type changed [reconfiguring all queued items & player] - items:%{public}@", buf, 0x20u);
           }
 
@@ -1138,12 +1138,12 @@ void __55__MPCPlayerItemConfigurator_processAudioQualityChanges__block_invoke(ui
 
 - (void)tearDownDefaultsDebouncer
 {
-  v3 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+  userDefaultsDebouncer = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
 
-  if (v3)
+  if (userDefaultsDebouncer)
   {
-    v4 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
-    dispatch_source_cancel(v4);
+    userDefaultsDebouncer2 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+    dispatch_source_cancel(userDefaultsDebouncer2);
 
     [(MPCPlayerItemConfigurator *)self setUserDefaultsDebouncer:0];
   }
@@ -1152,29 +1152,29 @@ void __55__MPCPlayerItemConfigurator_processAudioQualityChanges__block_invoke(ui
 - (void)setupDefaultsDebouncer
 {
   [(MPCPlayerItemConfigurator *)self tearDownDefaultsDebouncer];
-  v3 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+  userDefaultsDebouncer = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
 
-  if (!v3)
+  if (!userDefaultsDebouncer)
   {
     v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     [(MPCPlayerItemConfigurator *)self setUserDefaultsDebouncer:v4];
 
     v5 = dispatch_time(0, 300000000);
-    v6 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
-    dispatch_source_set_timer(v6, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
+    userDefaultsDebouncer2 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+    dispatch_source_set_timer(userDefaultsDebouncer2, v5, 0xFFFFFFFFFFFFFFFFLL, 0);
 
     objc_initWeak(&location, self);
-    v7 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+    userDefaultsDebouncer3 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __51__MPCPlayerItemConfigurator_setupDefaultsDebouncer__block_invoke;
     handler[3] = &unk_1E8235150;
     objc_copyWeak(&v10, &location);
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(userDefaultsDebouncer3, handler);
 
-    v8 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
-    dispatch_resume(v8);
+    userDefaultsDebouncer4 = [(MPCPlayerItemConfigurator *)self userDefaultsDebouncer];
+    dispatch_resume(userDefaultsDebouncer4);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1205,21 +1205,21 @@ void __51__MPCPlayerItemConfigurator_setupDefaultsDebouncer__block_invoke(uint64
   }
 }
 
-- (void)_soundCheckEnabledChangedNotification:(id)a3
+- (void)_soundCheckEnabledChangedNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 engineID];
-    v7 = [MEMORY[0x1E69708A8] standardUserDefaults];
+    engineID = [playbackEngine engineID];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
     *buf = 138543874;
-    v10 = v6;
+    v10 = engineID;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
-    v14 = [v7 soundCheckEnabled];
+    soundCheckEnabled = [standardUserDefaults soundCheckEnabled];
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p: _soundCheckEnabledChangedNotification soundCheckEnabled=%{BOOL}u", buf, 0x1Cu);
   }
 
@@ -1265,7 +1265,7 @@ void __67__MPCPlayerItemConfigurator__soundCheckEnabledChangedNotification___blo
   }
 }
 
-- (void)_playbackUserDefaultsEQPresetDidChangeNotification:(id)a3
+- (void)_playbackUserDefaultsEQPresetDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1399,18 +1399,18 @@ void __62__MPCPlayerItemConfigurator__musicQualityPreferencesDidChange__block_in
   [(MPCPlayerItemConfigurator *)self setAudioQualityPreferenceObserver:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(MPCPlayerItemConfigurator *)self audioQualityPreferenceObserver];
+  audioQualityPreferenceObserver = [(MPCPlayerItemConfigurator *)self audioQualityPreferenceObserver];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __48__MPCPlayerItemConfigurator__setupNotifications__block_invoke;
   v10 = &unk_1E8239500;
   objc_copyWeak(&v11, &location);
-  [v4 beginObservationWithPreferenceChangeClosure:&v7];
+  [audioQualityPreferenceObserver beginObservationWithPreferenceChangeClosure:&v7];
 
-  v5 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__playbackUserDefaultsEQPresetDidChangeNotification_ name:*MEMORY[0x1E6970360] object:v5];
-  [v6 addObserver:self selector:sel__soundCheckEnabledChangedNotification_ name:*MEMORY[0x1E6970378] object:v5];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__playbackUserDefaultsEQPresetDidChangeNotification_ name:*MEMORY[0x1E6970360] object:standardUserDefaults];
+  [defaultCenter addObserver:self selector:sel__soundCheckEnabledChangedNotification_ name:*MEMORY[0x1E6970378] object:standardUserDefaults];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1442,34 +1442,34 @@ void __48__MPCPlayerItemConfigurator__setupNotifications__block_invoke(uint64_t 
   [(MPAVRoutingController *)v8 setDelegate:self];
 }
 
-- (BOOL)configureQueueItem:(id)a3 playerItem:(id)a4 error:(id *)a5
+- (BOOL)configureQueueItem:(id)item playerItem:(id)playerItem error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  itemCopy = item;
+  playerItemCopy = playerItem;
+  playbackEngine = [(MPCPlayerItemConfigurator *)self playbackEngine];
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 engineID];
+    engineID = [playbackEngine engineID];
     *buf = 138544130;
-    *&buf[4] = v12;
+    *&buf[4] = engineID;
     v72 = 2048;
-    v73 = self;
+    selfCopy3 = self;
     v74 = 2114;
-    v75 = v8;
+    v75 = itemCopy;
     v76 = 2114;
-    v77 = v9;
+    v77 = playerItemCopy;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - Configuring queue item:%{public}@ player item:%{public}@", buf, 0x2Au);
   }
 
-  v13 = [v8 queueSectionID];
-  v14 = [v8 queueItemID];
-  v15 = [(MPCPlayerItemConfigurator *)self playbackEngine];
-  v16 = v15;
-  if (v13)
+  queueSectionID = [itemCopy queueSectionID];
+  queueItemID = [itemCopy queueItemID];
+  playbackEngine2 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+  v16 = playbackEngine2;
+  if (queueSectionID)
   {
-    v17 = v14 == 0;
+    v17 = queueItemID == 0;
   }
 
   else
@@ -1481,26 +1481,26 @@ void __48__MPCPlayerItemConfigurator__setupNotifications__block_invoke(uint64_t 
   v65 = v18;
   if (!v17)
   {
-    v19 = [v15 eventStream];
+    eventStream = [playbackEngine2 eventStream];
     v69[0] = @"queue-section-id";
     v69[1] = @"queue-item-id";
-    v70[0] = v13;
-    v70[1] = v14;
+    v70[0] = queueSectionID;
+    v70[1] = queueItemID;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:v69 count:2];
-    [v19 emitEventType:@"item-configuration-begin" payload:v20];
+    [eventStream emitEventType:@"item-configuration-begin" payload:v20];
   }
 
-  v21 = [v8 contentItemID];
-  [v9 setContentItemID:v21];
+  contentItemID = [itemCopy contentItemID];
+  [playerItemCopy setContentItemID:contentItemID];
 
-  v22 = [v8 description];
-  [v9 setTitle:v22];
+  v22 = [itemCopy description];
+  [playerItemCopy setTitle:v22];
 
-  [v9 setPrefersSeekOverSkip:{objc_msgSend(v8, "prefersSeekOverSkip")}];
+  [playerItemCopy setPrefersSeekOverSkip:{objc_msgSend(itemCopy, "prefersSeekOverSkip")}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v8;
+    v23 = itemCopy;
     if ([v23 isRadioStreamPlayback])
     {
       v24 = @"radio-stream";
@@ -1518,55 +1518,55 @@ LABEL_17:
       v24 = @"radio";
     }
 
-    [v9 setModelTypeName:v24];
-    v25 = [v23 stationStringID];
-    [v9 setModelStringID:v25];
+    [playerItemCopy setModelTypeName:v24];
+    stationStringID = [v23 stationStringID];
+    [playerItemCopy setModelStringID:stationStringID];
 
     goto LABEL_17;
   }
 
 LABEL_18:
-  v26 = [v8 preferredAudioTimePitchAlgorithm];
-  [v9 setAudioTimePitchAlgorithm:v26];
+  preferredAudioTimePitchAlgorithm = [itemCopy preferredAudioTimePitchAlgorithm];
+  [playerItemCopy setAudioTimePitchAlgorithm:preferredAudioTimePitchAlgorithm];
 
-  [v8 setupWithPlaybackInfo];
-  v27 = [(MPCPlayerItemConfigurator *)self eqSetting];
-  v28 = [v27 avPreset];
+  [itemCopy setupWithPlaybackInfo];
+  eqSetting = [(MPCPlayerItemConfigurator *)self eqSetting];
+  avPreset = [eqSetting avPreset];
 
-  [v8 setupEQPresetWithDefaultPreset:v28];
-  [v8 _applyLoudnessInfo];
-  v29 = [v8 feeder];
-  [v29 applyVolumeNormalizationForItem:v8];
+  [itemCopy setupEQPresetWithDefaultPreset:avPreset];
+  [itemCopy _applyLoudnessInfo];
+  feeder = [itemCopy feeder];
+  [feeder applyVolumeNormalizationForItem:itemCopy];
 
-  [v9 _setTimeJumpedNotificationIncludesExtendedDiagnosticPayload:1];
-  [(MPCPlayerItemConfigurator *)self configurePlayerItemForHEAACWorkaround:v9];
+  [playerItemCopy _setTimeJumpedNotificationIncludesExtendedDiagnosticPayload:1];
+  [(MPCPlayerItemConfigurator *)self configurePlayerItemForHEAACWorkaround:playerItemCopy];
   if ([v16 isVocalAttenuationEnabled])
   {
-    v30 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+    playbackEngine3 = [(MPCPlayerItemConfigurator *)self playbackEngine];
     v31 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      [v30 engineID];
-      v32 = a5;
+      [playbackEngine3 engineID];
+      errorCopy = error;
       v33 = v16;
-      v34 = v14;
-      v36 = v35 = v13;
+      v34 = queueItemID;
+      v36 = v35 = queueSectionID;
       *buf = 138543874;
       *&buf[4] = v36;
       v72 = 2048;
-      v73 = self;
+      selfCopy3 = self;
       v74 = 2114;
-      v75 = v8;
+      v75 = itemCopy;
       _os_log_impl(&dword_1C5C61000, v31, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AP] - Configuring item for Suntory: %{public}@", buf, 0x20u);
 
-      v13 = v35;
-      v14 = v34;
+      queueSectionID = v35;
+      queueItemID = v34;
       v16 = v33;
-      a5 = v32;
+      error = errorCopy;
     }
 
-    v37 = [v16 vocalAttenuationController];
-    [v8 setConfiguredForVocalAttenuation:{objc_msgSend(v37, "configureQueueItem:", v8)}];
+    vocalAttenuationController = [v16 vocalAttenuationController];
+    [itemCopy setConfiguredForVocalAttenuation:{objc_msgSend(vocalAttenuationController, "configureQueueItem:", itemCopy)}];
 LABEL_22:
 
     goto LABEL_33;
@@ -1574,34 +1574,34 @@ LABEL_22:
 
   if ([v16 isAudioAnalyzerEnabled])
   {
-    v38 = [v16 audioAnalyzer];
-    [v38 configurePlayerItem:v9];
+    audioAnalyzer = [v16 audioAnalyzer];
+    [audioAnalyzer configurePlayerItem:playerItemCopy];
   }
 
   if (_os_feature_enabled_impl() && ICCurrentApplicationIsSystemApp() && +[MPCPlaybackEngine deviceSupportsSmartTransitions])
   {
-    v39 = [v16 queueController];
-    v37 = [v39 transitionTogglable];
+    queueController = [v16 queueController];
+    vocalAttenuationController = [queueController transitionTogglable];
 
-    if (v37 && [v37 transitionStyle] == 1)
+    if (vocalAttenuationController && [vocalAttenuationController transitionStyle] == 1)
     {
-      v61 = v13;
-      v40 = [(MPCPlayerItemConfigurator *)self playbackEngine];
+      v61 = queueSectionID;
+      playbackEngine4 = [(MPCPlayerItemConfigurator *)self playbackEngine];
       v41 = _MPCLogCategoryPlayback();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v40 engineID];
+        engineID2 = [playbackEngine4 engineID];
         *buf = 138543874;
-        *&buf[4] = v63;
+        *&buf[4] = engineID2;
         v72 = 2048;
-        v73 = self;
+        selfCopy3 = self;
         v74 = 2114;
-        v75 = v8;
+        v75 = itemCopy;
         _os_log_impl(&dword_1C5C61000, v41, OS_LOG_TYPE_DEFAULT, "[%{public}@]-MPCPlayerItemConfigurator %p - [AP] - Configuring item for Alchemy: %{public}@", buf, 0x20u);
       }
 
-      [(MPCPlayerItemConfigurator *)self configurePlayerItemForSmartTransitions:v9];
-      v13 = v61;
+      [(MPCPlayerItemConfigurator *)self configurePlayerItemForSmartTransitions:playerItemCopy];
+      queueSectionID = v61;
     }
 
     goto LABEL_22;
@@ -1615,7 +1615,7 @@ LABEL_33:
     goto LABEL_42;
   }
 
-  v42 = v8;
+  v42 = itemCopy;
   if (![v42 isHLSAsset])
   {
     goto LABEL_40;
@@ -1625,48 +1625,48 @@ LABEL_33:
   {
     if (([v42 hasVideo] & 1) != 0 || objc_msgSend(v42, "isRadioStreamPlayback"))
     {
-      [(MPCPlayerItemConfigurator *)self _setupQueueItemForHLSPlayback:v42 playerItem:v9];
+      [(MPCPlayerItemConfigurator *)self _setupQueueItemForHLSPlayback:v42 playerItem:playerItemCopy];
       goto LABEL_41;
     }
 
 LABEL_40:
-    [(MPCPlayerItemConfigurator *)self _setupQueueItemForLossyAudioPlayback:v42 playerItem:v9];
+    [(MPCPlayerItemConfigurator *)self _setupQueueItemForLossyAudioPlayback:v42 playerItem:playerItemCopy];
     goto LABEL_41;
   }
 
-  [(MPCPlayerItemConfigurator *)self _setupQueueItemForEnhancedAudioHLSPlayback:v42 playerItem:v9 metadataWaitTime:buf error:a5];
+  [(MPCPlayerItemConfigurator *)self _setupQueueItemForEnhancedAudioHLSPlayback:v42 playerItem:playerItemCopy metadataWaitTime:buf error:error];
 LABEL_41:
 
 LABEL_42:
   if (v65)
   {
-    v64 = [v16 eventStream];
+    eventStream2 = [v16 eventStream];
     v67[0] = @"queue-section-id";
     v67[1] = @"queue-item-id";
-    v68[0] = v13;
-    v68[1] = v14;
+    v68[0] = queueSectionID;
+    v68[1] = queueItemID;
     v67[2] = @"item-configured-eq";
     v43 = MEMORY[0x1E696AD98];
-    v59 = [(MPCPlayerItemConfigurator *)self eqSetting];
-    v58 = [v43 numberWithInteger:{objc_msgSend(v59, "preset")}];
+    eqSetting2 = [(MPCPlayerItemConfigurator *)self eqSetting];
+    v58 = [v43 numberWithInteger:{objc_msgSend(eqSetting2, "preset")}];
     v68[2] = v58;
     v67[3] = @"item-configured-sc-vol-normalization";
     v44 = MEMORY[0x1E696AD98];
-    [v8 soundCheckVolumeNormalization];
+    [itemCopy soundCheckVolumeNormalization];
     v57 = [v44 numberWithFloat:?];
     v68[3] = v57;
     v67[4] = @"item-configured-loudness";
-    v45 = [v9 loudnessInfo];
-    v46 = v45;
-    if (!v45)
+    loudnessInfo = [playerItemCopy loudnessInfo];
+    v46 = loudnessInfo;
+    if (!loudnessInfo)
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
+      loudnessInfo = [MEMORY[0x1E695DFB0] null];
     }
 
-    v55 = v45;
-    v68[4] = v45;
+    v55 = loudnessInfo;
+    v68[4] = loudnessInfo;
     v67[5] = @"hls-metadata-wait-time";
-    v62 = v13;
+    v62 = queueSectionID;
     if (*buf > 0.0)
     {
       [MEMORY[0x1E696AD98] numberWithDouble:*buf];
@@ -1678,22 +1678,22 @@ LABEL_42:
     }
 
     v66 = v16;
-    v56 = v60 = v14;
+    v56 = v60 = queueItemID;
     v68[5] = v56;
     v67[6] = @"audio-route";
-    v47 = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
-    v48 = v47;
-    if (!v47)
+    currentAudioRoute = [(MPCPlayerItemConfigurator *)self currentAudioRoute];
+    null = currentAudioRoute;
+    if (!currentAudioRoute)
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v68[6] = v48;
+    v68[6] = null;
     v67[7] = @"supports-vocal-attenuation";
-    v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsVocalAttenuation")}];
+    v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "supportsVocalAttenuation")}];
     v68[7] = v49;
     v67[8] = @"vocal-attenuation-configured";
-    v50 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isConfiguredForVocalAttenuation")}];
+    v50 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isConfiguredForVocalAttenuation")}];
     v68[8] = v50;
     v67[9] = @"vocal-attenuation-available";
     v51 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v66, "isVocalAttenuationAvailable")}];
@@ -1702,18 +1702,18 @@ LABEL_42:
     v52 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v66, "isVocalAttenuationEnabled")}];
     v68[10] = v52;
     v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:v67 count:11];
-    [v64 emitEventType:@"item-configuration-end" payload:v53];
+    [eventStream2 emitEventType:@"item-configuration-end" payload:v53];
 
-    if (!v47)
+    if (!currentAudioRoute)
     {
     }
 
-    v14 = v60;
+    queueItemID = v60;
     if (!v46)
     {
     }
 
-    v13 = v62;
+    queueSectionID = v62;
     v16 = v66;
   }
 
@@ -1722,38 +1722,38 @@ LABEL_42:
 
 - (void)dealloc
 {
-  v3 = [(MPCPlayerItemConfigurator *)self audioQualityPreferenceObserver];
-  [v3 suspendObservation];
+  audioQualityPreferenceObserver = [(MPCPlayerItemConfigurator *)self audioQualityPreferenceObserver];
+  [audioQualityPreferenceObserver suspendObservation];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = MPCPlayerItemConfigurator;
   [(MPCPlayerItemConfigurator *)&v5 dealloc];
 }
 
-- (MPCPlayerItemConfigurator)initWithPlaybackEngine:(id)a3 stackController:(id)a4 translator:(id)a5
+- (MPCPlayerItemConfigurator)initWithPlaybackEngine:(id)engine stackController:(id)controller translator:(id)translator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  controllerCopy = controller;
+  translatorCopy = translator;
   v19.receiver = self;
   v19.super_class = MPCPlayerItemConfigurator;
   v11 = [(MPCPlayerItemConfigurator *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_playbackEngine, v8);
-    [v8 addEngineObserver:v12];
-    objc_storeWeak(&v12->_stackController, v9);
-    objc_storeWeak(&v12->_translator, v10);
-    v13 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v14 = [v13 musicEQSetting];
+    objc_storeWeak(&v11->_playbackEngine, engineCopy);
+    [engineCopy addEngineObserver:v12];
+    objc_storeWeak(&v12->_stackController, controllerCopy);
+    objc_storeWeak(&v12->_translator, translatorCopy);
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    musicEQSetting = [standardUserDefaults musicEQSetting];
     eqSetting = v12->_eqSetting;
-    v12->_eqSetting = v14;
+    v12->_eqSetting = musicEQSetting;
 
-    v16 = [[MPCAudioAssetTypeSelector alloc] initWithPlaybackEngine:v8];
+    v16 = [[MPCAudioAssetTypeSelector alloc] initWithPlaybackEngine:engineCopy];
     audioAssetTypeSelector = v12->_audioAssetTypeSelector;
     v12->_audioAssetTypeSelector = v16;
 

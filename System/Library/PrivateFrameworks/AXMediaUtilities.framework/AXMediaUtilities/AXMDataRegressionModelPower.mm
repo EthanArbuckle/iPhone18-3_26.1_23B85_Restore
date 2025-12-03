@@ -1,8 +1,8 @@
 @interface AXMDataRegressionModelPower
 - (id)modelDescription;
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4;
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures;
 - (id)partialDerivatives;
-- (void)getInitialParams:(double *)a3;
+- (void)getInitialParams:(double *)params;
 @end
 
 @implementation AXMDataRegressionModelPower
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (void)getInitialParams:(double *)a3
+- (void)getInitialParams:(double *)params
 {
   v5 = [(AXMDataRegressionModel *)self x];
   v6 = [(AXMDataRegressionModel *)self y];
@@ -55,8 +55,8 @@
   v19 = mean(v9, v8);
   v20 = mean(v10, v8);
   v21 = sqrt(v18) * (v16 / sqrt(v17 * v18)) / sqrt(v17);
-  *a3 = exp(v20 - v21 * v19);
-  a3[1] = v21;
+  *params = exp(v20 - v21 * v19);
+  params[1] = v21;
   free(v9);
 
   free(v10);
@@ -64,10 +64,10 @@
 
 - (id)partialDerivatives
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  [v2 addObject:&__block_literal_global_40_0];
-  [v2 addObject:&__block_literal_global_42_0];
-  v3 = [v2 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:&__block_literal_global_40_0];
+  [array addObject:&__block_literal_global_42_0];
+  v3 = [array copy];
 
   return v3;
 }
@@ -79,15 +79,15 @@ long double __49__AXMDataRegressionModelPower_partialDerivatives__block_invoke_2
   return log(a1) * v5;
 }
 
-- (id)modelFunctionStringForParameters:(double *)a3 significantFigures:(int)a4
+- (id)modelFunctionStringForParameters:(double *)parameters significantFigures:(int)figures
 {
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v6 setUsesSignificantDigits:1];
-  [v6 setMaximumSignificantDigits:a4];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*a3];
+  [v6 setMaximumSignificantDigits:figures];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:*parameters];
   v8 = [v6 stringFromNumber:v7];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3[1]];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:parameters[1]];
   v10 = [v6 stringFromNumber:v9];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"y = %@ * x^%@", v8, v10];

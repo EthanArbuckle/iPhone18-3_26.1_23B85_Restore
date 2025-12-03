@@ -1,25 +1,25 @@
 @interface StickerImageConfirmationController
-- (_TtC22StickersUltraExtension34StickerImageConfirmationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapImageView:(id)a3;
-- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)a3;
+- (_TtC22StickersUltraExtension34StickerImageConfirmationController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapImageView:(id)view;
+- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)analysis;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation StickerImageConfirmationController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007DDC();
 }
 
-- (void)didTapImageView:(id)a3
+- (void)didTapImageView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_100008800(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100008800(viewCopy);
 }
 
 - (void)viewDidLoad
@@ -30,12 +30,12 @@
   v5 = type metadata accessor for StickerImageConfirmationController();
   v11.receiver = self;
   v11.super_class = v5;
-  v6 = self;
+  selfCopy = self;
   [(StickerImageConfirmationController *)&v11 viewDidLoad];
   v7 = sub_10007D990();
   (*(*(v7 - 8) + 56))(v4, 1, 1, v7);
   sub_10007D960();
-  v8 = v6;
+  v8 = selfCopy;
   v9 = sub_10007D950();
   v10 = swift_allocObject();
   v10[2] = v9;
@@ -44,22 +44,22 @@
   sub_100009514(0, 0, v4, &unk_10008C4C8, v10);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for StickerImageConfirmationController();
   v4 = v7.receiver;
-  [(StickerImageConfirmationController *)&v7 viewWillDisappear:v3];
-  v5 = [v4 presentedViewController];
-  if (v5)
+  [(StickerImageConfirmationController *)&v7 viewWillDisappear:disappearCopy];
+  presentedViewController = [v4 presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     sub_10007C850();
     if (swift_dynamicCastClass())
     {
 
-      [v4 dismissViewControllerAnimated:v3 completion:0];
+      [v4 dismissViewControllerAnimated:disappearCopy completion:0];
       swift_unknownObjectWeakAssign();
     }
 
@@ -71,18 +71,18 @@
   }
 }
 
-- (_TtC22StickersUltraExtension34StickerImageConfirmationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22StickersUltraExtension34StickerImageConfirmationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)a3
+- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = self;
-  sub_100009D20(v4);
+  analysisCopy = analysis;
+  selfCopy = self;
+  sub_100009D20(analysisCopy);
 }
 
 @end

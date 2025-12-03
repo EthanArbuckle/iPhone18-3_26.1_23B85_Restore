@@ -2,24 +2,24 @@
 - (NTKGladiusSecondHandLightingDelegate)lightingDelegate;
 - (id)createSecondHandView;
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
-- (void)_applyInstantaneousSecondHandTransformForDate:(id)a3;
+- (void)_applyInstantaneousSecondHandTransformForDate:(id)date;
 - (void)_startNewTimeAnimation;
 - (void)_stopTimeAnimation;
-- (void)applyInstantaneousSecondHandTransformForAngle:(double)a3;
+- (void)applyInstantaneousSecondHandTransformForAngle:(double)angle;
 - (void)dealloc;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKGladiusHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKGladiusHandsView;
-  v3 = [(NTKGladiusHandsView *)&v6 initForDevice:a3];
+  v3 = [(NTKGladiusHandsView *)&v6 initForDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -46,69 +46,69 @@
 {
   v9.receiver = self;
   v9.super_class = NTKGladiusHandsView;
-  v3 = [(NTKGladiusHandsView *)&v9 secondHandConfiguration];
-  v4 = [(NTKGladiusHandsView *)self device];
-  [v4 screenBounds];
+  secondHandConfiguration = [(NTKGladiusHandsView *)&v9 secondHandConfiguration];
+  device = [(NTKGladiusHandsView *)self device];
+  [device screenBounds];
   v6 = v5 * 0.5;
-  [NTKGladiusDialView outerEdgeInsetForDevice:v4];
-  [v3 setHandLength:v6 - v7];
-  [v3 setHandWidth:2.0];
-  [v3 setDropShadowOpacity:0.0];
-  [v3 setRadialShadowOpacity:0.0];
+  [NTKGladiusDialView outerEdgeInsetForDevice:device];
+  [secondHandConfiguration setHandLength:v6 - v7];
+  [secondHandConfiguration setHandWidth:2.0];
+  [secondHandConfiguration setDropShadowOpacity:0.0];
+  [secondHandConfiguration setRadialShadowOpacity:0.0];
 
-  return v3;
+  return secondHandConfiguration;
 }
 
 - (id)hourHandConfiguration
 {
   v8.receiver = self;
   v8.super_class = NTKGladiusHandsView;
-  v3 = [(NTKGladiusHandsView *)&v8 hourHandConfiguration];
-  v4 = [(NTKGladiusHandsView *)self device];
-  sub_9838(v4, v4);
-  [v3 setHandLength:v5];
+  hourHandConfiguration = [(NTKGladiusHandsView *)&v8 hourHandConfiguration];
+  device = [(NTKGladiusHandsView *)self device];
+  sub_9838(device, device);
+  [hourHandConfiguration setHandLength:v5];
 
-  v6 = [(NTKGladiusHandsView *)self device];
-  [v3 setArmLength:{sub_9838(v6, v6)}];
+  device2 = [(NTKGladiusHandsView *)self device];
+  [hourHandConfiguration setArmLength:{sub_9838(device2, device2)}];
 
-  [v3 setDropShadowOpacity:0.0];
-  [v3 setRadialShadowOpacity:0.0];
+  [hourHandConfiguration setDropShadowOpacity:0.0];
+  [hourHandConfiguration setRadialShadowOpacity:0.0];
 
-  return v3;
+  return hourHandConfiguration;
 }
 
 - (id)minuteHandConfiguration
 {
   v8.receiver = self;
   v8.super_class = NTKGladiusHandsView;
-  v3 = [(NTKGladiusHandsView *)&v8 minuteHandConfiguration];
-  v4 = [(NTKGladiusHandsView *)self device];
-  sub_9838(v4, v4);
-  [v3 setHandLength:v5];
+  minuteHandConfiguration = [(NTKGladiusHandsView *)&v8 minuteHandConfiguration];
+  device = [(NTKGladiusHandsView *)self device];
+  sub_9838(device, device);
+  [minuteHandConfiguration setHandLength:v5];
 
-  v6 = [(NTKGladiusHandsView *)self device];
-  [v3 setArmLength:{sub_9838(v6, v6)}];
+  device2 = [(NTKGladiusHandsView *)self device];
+  [minuteHandConfiguration setArmLength:{sub_9838(device2, device2)}];
 
-  [v3 setDropShadowOpacity:0.0];
-  [v3 setRadialShadowOpacity:0.0];
+  [minuteHandConfiguration setDropShadowOpacity:0.0];
+  [minuteHandConfiguration setRadialShadowOpacity:0.0];
 
-  return v3;
+  return minuteHandConfiguration;
 }
 
 - (id)createSecondHandView
 {
-  v3 = [(NTKGladiusHandsView *)self device];
-  v4 = [(NTKGladiusHandsView *)self secondHandConfiguration];
-  v5 = [[NTKHandView alloc] initWithConfiguration:v4 forDevice:v3 maskedShadow:0];
-  [v4 anchorPoint];
+  device = [(NTKGladiusHandsView *)self device];
+  secondHandConfiguration = [(NTKGladiusHandsView *)self secondHandConfiguration];
+  v5 = [[NTKHandView alloc] initWithConfiguration:secondHandConfiguration forDevice:device maskedShadow:0];
+  [secondHandConfiguration anchorPoint];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 layer];
-  [v10 setAnchorPoint:{v7, v9}];
-  v11 = [v5 handImageView];
-  v12 = [v11 layer];
+  layer = [v5 layer];
+  [layer setAnchorPoint:{v7, v9}];
+  handImageView = [v5 handImageView];
+  layer2 = [handImageView layer];
 
-  [v12 setContentsCenter:{0.0, 0.5, 1.0, 0.0}];
+  [layer2 setContentsCenter:{0.0, 0.5, 1.0, 0.0}];
   v17[0] = @"bounds";
   v13 = +[NSNull null];
   v17[1] = @"transform";
@@ -116,7 +116,7 @@
   v14 = +[NSNull null];
   v18[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
-  [v12 setActions:v15];
+  [layer2 setActions:v15];
 
   return v5;
 }
@@ -131,19 +131,19 @@
     v40 = 0;
     v41 = 0;
     v39 = 0.0;
-    v3 = [(NTKGladiusHandsView *)self displayTime];
-    v4 = [(NTKGladiusHandsView *)self secondHandConfiguration];
-    [v4 handLength];
+    displayTime = [(NTKGladiusHandsView *)self displayTime];
+    secondHandConfiguration = [(NTKGladiusHandsView *)self secondHandConfiguration];
+    [secondHandConfiguration handLength];
     v6 = v5;
-    v35 = v4;
-    [v4 tailLength];
+    v35 = secondHandConfiguration;
+    [secondHandConfiguration tailLength];
     v8 = v6 + v7;
-    v9 = [(NTKGladiusHandsView *)self secondHandView];
-    v10 = [v9 handImageView];
-    v11 = [v10 layer];
+    secondHandView = [(NTKGladiusHandsView *)self secondHandView];
+    handImageView = [secondHandView handImageView];
+    layer = [handImageView layer];
 
-    [v11 bounds];
-    [v11 setBounds:?];
+    [layer bounds];
+    [layer setBounds:?];
     v12 = [NSMutableArray arrayWithCapacity:240];
     v13 = [NSMutableArray arrayWithCapacity:240];
     v14 = [NSMutableArray arrayWithCapacity:240];
@@ -153,8 +153,8 @@
     v18 = 0.0;
     do
     {
-      v19 = [v3 dateByAddingTimeInterval:v17 * v18];
-      v20 = [(NTKGladiusHandsView *)self calendar];
+      v19 = [displayTime dateByAddingTimeInterval:v17 * v18];
+      calendar = [(NTKGladiusHandsView *)self calendar];
       NTKHourMinuteSecondAnglesForTime();
 
       [(NTKGladiusStretchySecondHandData *)self->_stretchySecondHandData sampleAtAngle:0 includeBaseRadius:v39];
@@ -176,13 +176,13 @@
     while (v15 != 241);
     v26 = [CAKeyframeAnimation animationWithKeyPath:@"bounds.size.height"];
     [v26 setDuration:v16];
-    v27 = [(NTKGladiusHandsView *)self device];
-    [(NTKGladiusHandsView *)self _timeAnimationFramesPerSecondForDevice:v27];
+    device = [(NTKGladiusHandsView *)self device];
+    [(NTKGladiusHandsView *)self _timeAnimationFramesPerSecondForDevice:device];
     [v26 setFrameInterval:1.0 / v28];
 
     [v26 setValues:v12];
     [v26 setKeyTimes:v14];
-    [v11 addAnimation:v26 forKey:@"length"];
+    [layer addAnimation:v26 forKey:@"length"];
     v29 = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.y"];
     [v26 duration];
     [v29 setDuration:?];
@@ -190,9 +190,9 @@
     [v29 setFrameInterval:?];
     [v29 setValues:v13];
     [v29 setKeyTimes:v14];
-    [v11 addAnimation:v29 forKey:@"offset"];
+    [layer addAnimation:v29 forKey:@"offset"];
     WeakRetained = objc_loadWeakRetained(&self->_lightingDelegate);
-    [WeakRetained startSecondHandLightingAnimationAtDate:v3];
+    [WeakRetained startSecondHandLightingAnimationAtDate:displayTime];
 
     if (self->_timerToken)
     {
@@ -221,18 +221,18 @@
   v12.receiver = self;
   v12.super_class = NTKGladiusHandsView;
   [(NTKGladiusHandsView *)&v12 _stopTimeAnimation];
-  v3 = [(NTKGladiusHandsView *)self secondHandView];
-  v4 = [v3 handImageView];
-  v5 = [v4 layer];
+  secondHandView = [(NTKGladiusHandsView *)self secondHandView];
+  handImageView = [secondHandView handImageView];
+  layer = [handImageView layer];
 
-  v6 = [v5 animationKeys];
-  v7 = [v6 count];
+  animationKeys = [layer animationKeys];
+  v7 = [animationKeys count];
 
   if (v7)
   {
-    [v5 removeAllAnimations];
-    v8 = [(NTKGladiusHandsView *)self displayTime];
-    [(NTKGladiusHandsView *)self _applyInstantaneousSecondHandTransformForDate:v8];
+    [layer removeAllAnimations];
+    displayTime = [(NTKGladiusHandsView *)self displayTime];
+    [(NTKGladiusHandsView *)self _applyInstantaneousSecondHandTransformForDate:displayTime];
     WeakRetained = objc_loadWeakRetained(&self->_lightingDelegate);
     [WeakRetained stopSecondHandLightingAnimation];
 
@@ -247,42 +247,42 @@
   }
 }
 
-- (void)_applyInstantaneousSecondHandTransformForDate:(id)a3
+- (void)_applyInstantaneousSecondHandTransformForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NTKGladiusHandsView *)self calendar];
+  dateCopy = date;
+  calendar = [(NTKGladiusHandsView *)self calendar];
   NTKHourMinuteSecondAnglesForTime();
 
   [(NTKGladiusHandsView *)self applyInstantaneousSecondHandTransformForAngle:0.0];
 }
 
-- (void)applyInstantaneousSecondHandTransformForAngle:(double)a3
+- (void)applyInstantaneousSecondHandTransformForAngle:(double)angle
 {
-  [(NTKGladiusStretchySecondHandData *)self->_stretchySecondHandData sampleAtAngle:0 includeBaseRadius:a3];
+  [(NTKGladiusStretchySecondHandData *)self->_stretchySecondHandData sampleAtAngle:0 includeBaseRadius:angle];
   v5 = v4;
-  v6 = [(NTKGladiusHandsView *)self secondHandConfiguration];
-  [v6 handLength];
-  [v6 tailLength];
-  v7 = [(NTKGladiusHandsView *)self secondHandView];
-  v8 = [v7 handImageView];
-  v9 = [v8 layer];
+  secondHandConfiguration = [(NTKGladiusHandsView *)self secondHandConfiguration];
+  [secondHandConfiguration handLength];
+  [secondHandConfiguration tailLength];
+  secondHandView = [(NTKGladiusHandsView *)self secondHandView];
+  handImageView = [secondHandView handImageView];
+  layer = [handImageView layer];
 
-  [v9 bounds];
-  [v9 setBounds:?];
+  [layer bounds];
+  [layer setBounds:?];
   CATransform3DMakeTranslation(&v11, 0.0, v5 * -0.5, 0.0);
   v10 = v11;
-  [v9 setTransform:&v10];
+  [layer setTransform:&v10];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v7.receiver = self;
   v7.super_class = NTKGladiusHandsView;
-  [(NTKGladiusHandsView *)&v7 setOverrideDate:v6 duration:a4];
-  if (a4 == 0.0)
+  [(NTKGladiusHandsView *)&v7 setOverrideDate:dateCopy duration:duration];
+  if (duration == 0.0)
   {
-    [(NTKGladiusHandsView *)self _applyInstantaneousSecondHandTransformForDate:v6];
+    [(NTKGladiusHandsView *)self _applyInstantaneousSecondHandTransformForDate:dateCopy];
   }
 }
 

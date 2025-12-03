@@ -1,6 +1,6 @@
 @interface HMDAppleAccountSettingsMessageFilter
 + (id)logCategory;
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMDAppleAccountSettingsMessageFilter
@@ -25,16 +25,16 @@ void __51__HMDAppleAccountSettingsMessageFilter_logCategory__block_invoke()
   logCategory__hmf_once_v5_173160 = v1;
 }
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() appleAccountSettingsOverride];
-  v11 = v10;
-  if (v10)
+  messageCopy = message;
+  policiesCopy = policies;
+  appleAccountSettingsOverride = [objc_opt_class() appleAccountSettingsOverride];
+  v11 = appleAccountSettingsOverride;
+  if (appleAccountSettingsOverride)
   {
-    v12 = v10;
+    v12 = appleAccountSettingsOverride;
   }
 
   else
@@ -53,7 +53,7 @@ void __51__HMDAppleAccountSettingsMessageFilter_logCategory__block_invoke()
   if ([v13 isManaged])
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -75,7 +75,7 @@ LABEL_10:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -88,10 +88,10 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v17);
-  if (a5)
+  if (error)
   {
     v22 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   v23 = -1;

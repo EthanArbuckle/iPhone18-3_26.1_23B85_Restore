@@ -1,40 +1,40 @@
 @interface SKUINavigationBarController
 - (NSArray)existingSearchBarControllers;
-- (SKUINavigationBarController)initWithNavigationBarViewElement:(id)a3;
+- (SKUINavigationBarController)initWithNavigationBarViewElement:(id)element;
 - (SKUINavigationBarControllerDelegate)delegate;
 - (UIView)navigationPaletteView;
 - (UIViewController)parentViewController;
 - (double)_availableWidth;
-- (id)_addSearchBarControllerWithViewElement:(id)a3;
-- (id)_attributedStringForButton:(id)a3;
-- (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5;
-- (id)_barButtonItemWithButtonViewElement:(id)a3;
-- (id)_barButtonItemWithSearchBarViewElement:(id)a3;
-- (id)_barButtonItemWithViewElement:(id)a3;
-- (id)_buttonWithElement:(id)a3 width:(double)a4;
+- (id)_addSearchBarControllerWithViewElement:(id)element;
+- (id)_attributedStringForButton:(id)button;
+- (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style;
+- (id)_barButtonItemWithButtonViewElement:(id)element;
+- (id)_barButtonItemWithSearchBarViewElement:(id)element;
+- (id)_barButtonItemWithViewElement:(id)element;
+- (id)_buttonWithElement:(id)element width:(double)width;
 - (id)_navigationBarContext;
-- (id)_resourceImageForImageElement:(id)a3;
-- (id)barButtonItemForElementIdentifier:(id)a3;
-- (id)titleViewWithViewElement:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_fullyReloadSections:(id)a3 withNavigationItem:(id)a4;
-- (void)_titleButtonAction:(id)a3;
-- (void)_viewElementEventNotification:(id)a3;
-- (void)attachToNavigationItem:(id)a3;
+- (id)_resourceImageForImageElement:(id)element;
+- (id)barButtonItemForElementIdentifier:(id)identifier;
+- (id)titleViewWithViewElement:(id)element;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_fullyReloadSections:(id)sections withNavigationItem:(id)item;
+- (void)_titleButtonAction:(id)action;
+- (void)_viewElementEventNotification:(id)notification;
+- (void)attachToNavigationItem:(id)item;
 - (void)dealloc;
-- (void)detachFromNavigationItem:(id)a3;
+- (void)detachFromNavigationItem:(id)item;
 - (void)detachNavigationItemControllers;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
-- (void)layoutCacheDidFinishBatch:(id)a3;
-- (void)setReusableSearchBarControllers:(id)a3;
-- (void)updateNavigationItem:(id)a3;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
+- (void)layoutCacheDidFinishBatch:(id)batch;
+- (void)setReusableSearchBarControllers:(id)controllers;
+- (void)updateNavigationItem:(id)item;
 @end
 
 @implementation SKUINavigationBarController
 
-- (SKUINavigationBarController)initWithNavigationBarViewElement:(id)a3
+- (SKUINavigationBarController)initWithNavigationBarViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUINavigationBarController initWithNavigationBarViewElement:];
@@ -49,9 +49,9 @@
     sections = v6->_sections;
     v6->_sections = v7;
 
-    objc_storeStrong(&v6->_viewElement, a3);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__viewElementEventNotification_ name:0x282804928 object:0];
+    objc_storeStrong(&v6->_viewElement, element);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__viewElementEventNotification_ name:0x282804928 object:0];
   }
 
   return v6;
@@ -59,21 +59,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:0x282804928 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:0x282804928 object:0];
   [(SKUINavigationBarButtonsController *)self->_buttonsController disconnectAllButtons];
-  v4 = [(SKUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
-  [v4 setDelegate:0];
+  textLayoutCache = [(SKUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
+  [textLayoutCache setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = SKUINavigationBarController;
   [(SKUINavigationBarController *)&v5 dealloc];
 }
 
-- (void)attachToNavigationItem:(id)a3
+- (void)attachToNavigationItem:(id)item
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -120,9 +120,9 @@
   [(SKUIViewElement *)viewElement enumerateChildrenUsingBlock:v46];
   if (!v55[5])
   {
-    v11 = [(SKUINavigationBarController *)self fallbackTitleView];
+    fallbackTitleView = [(SKUINavigationBarController *)self fallbackTitleView];
     v12 = v55[5];
-    v55[5] = v11;
+    v55[5] = fallbackTitleView;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -144,26 +144,26 @@
     }
   }
 
-  v16 = [(SKUINavigationBarController *)self _navigationBarContext];
+  _navigationBarContext = [(SKUINavigationBarController *)self _navigationBarContext];
   if (v67[5])
   {
     v17 = [SKUINavigationBarSegmentsController alloc];
     v18 = [(SKUINavigationBarSegmentsController *)v17 initWithViewElement:v67[5]];
-    [(SKUINavigationBarSectionController *)v18 setContext:v16];
+    [(SKUINavigationBarSectionController *)v18 setContext:_navigationBarContext];
     [(NSMutableArray *)self->_sections addObject:v18];
-    v19 = [(SKUINavigationBarSegmentsController *)v18 view];
+    view = [(SKUINavigationBarSegmentsController *)v18 view];
     v20 = v55[5];
-    v55[5] = v19;
+    v55[5] = view;
   }
 
   if (!v55[5] && [v37 count])
   {
     v21 = [[SKUINavigationBarMenusController alloc] initWithMenuViewElements:v37];
-    [(SKUINavigationBarSectionController *)v21 setContext:v16];
+    [(SKUINavigationBarSectionController *)v21 setContext:_navigationBarContext];
     [(NSMutableArray *)self->_sections addObject:v21];
-    v22 = [(SKUINavigationBarMenusController *)v21 view];
+    view2 = [(SKUINavigationBarMenusController *)v21 view];
     v23 = v55[5];
-    v55[5] = v22;
+    v55[5] = view2;
   }
 
   if (self->_buttonsController)
@@ -203,25 +203,25 @@
   if (![v61[5] length])
   {
     v28 = objc_loadWeakRetained(&self->_parentViewController);
-    v29 = [v28 title];
+    title = [v28 title];
     v30 = v61[5];
-    v61[5] = v29;
+    v61[5] = title;
   }
 
-  SKUINavigationBarController_SetTitleView(v4, v55[5]);
+  SKUINavigationBarController_SetTitleView(itemCopy, v55[5]);
   v31 = v73[5];
   if (!v31)
   {
     v31 = v61[5];
   }
 
-  [v4 setBackButtonTitle:v31];
-  [v4 setLeftItemsSupplementBackButton:1];
-  [v4 setLeftBarButtonItems:v9 animated:0];
-  [v4 setRightBarButtonItems:v10 animated:0];
-  [v4 setTitle:v61[5]];
-  v32 = [v16 textLayoutCache];
-  [v32 commitLayoutRequests];
+  [itemCopy setBackButtonTitle:v31];
+  [itemCopy setLeftItemsSupplementBackButton:1];
+  [itemCopy setLeftBarButtonItems:v9 animated:0];
+  [itemCopy setRightBarButtonItems:v10 animated:0];
+  [itemCopy setTitle:v61[5]];
+  textLayoutCache = [_navigationBarContext textLayoutCache];
+  [textLayoutCache commitLayoutRequests];
 
   v40 = 0u;
   v41 = 0u;
@@ -368,10 +368,10 @@ LABEL_15:
 LABEL_19:
 }
 
-- (id)barButtonItemForElementIdentifier:(id)a3
+- (id)barButtonItemForElementIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -391,7 +391,7 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) barButtonItemForElementIdentifier:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) barButtonItemForElementIdentifier:{identifierCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -415,14 +415,14 @@ LABEL_11:
   return v11;
 }
 
-- (void)detachFromNavigationItem:(id)a3
+- (void)detachFromNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(SKUINavigationBarController *)self detachNavigationItemControllers];
-  [v4 setLeftBarButtonItems:0 animated:0];
-  [v4 setRightBarButtonItems:0 animated:0];
-  [v4 setTitle:0];
-  SKUINavigationBarController_SetTitleView(v4, 0);
+  [itemCopy setLeftBarButtonItems:0 animated:0];
+  [itemCopy setRightBarButtonItems:0 animated:0];
+  [itemCopy setTitle:0];
+  SKUINavigationBarController_SetTitleView(itemCopy, 0);
 }
 
 - (void)detachNavigationItemControllers
@@ -475,7 +475,7 @@ LABEL_11:
 - (NSArray)existingSearchBarControllers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -496,7 +496,7 @@ LABEL_11:
         }
 
         v9 = [(NSMapTable *)self->_searchBarControllers objectForKey:*(*(&v20 + 1) + 8 * i)];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
       v6 = [(NSMapTable *)v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -524,7 +524,7 @@ LABEL_11:
           objc_enumerationMutation(v10);
         }
 
-        [v3 addObject:{*(*(&v16 + 1) + 8 * j), v16}];
+        [array addObject:{*(*(&v16 + 1) + 8 * j), v16}];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
@@ -533,7 +533,7 @@ LABEL_11:
     while (v12);
   }
 
-  return v3;
+  return array;
 }
 
 - (UIView)navigationPaletteView
@@ -541,25 +541,25 @@ LABEL_11:
   paletteController = self->_paletteController;
   if (!paletteController)
   {
-    v4 = [(SKUINavigationBarViewElement *)self->_viewElement navigationPalettes];
-    v5 = [v4 firstObject];
+    navigationPalettes = [(SKUINavigationBarViewElement *)self->_viewElement navigationPalettes];
+    firstObject = [navigationPalettes firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v6 = [v5 flattenedChildren];
-      v7 = [v6 count];
+      flattenedChildren = [firstObject flattenedChildren];
+      v7 = [flattenedChildren count];
 
       if (v7)
       {
-        v8 = [(SKUINavigationBarController *)self _navigationBarContext];
-        v9 = [[SKUINavigationPaletteController alloc] initWithPaletteViewElement:v5];
+        _navigationBarContext = [(SKUINavigationBarController *)self _navigationBarContext];
+        v9 = [[SKUINavigationPaletteController alloc] initWithPaletteViewElement:firstObject];
         v10 = self->_paletteController;
         self->_paletteController = v9;
 
-        [(SKUINavigationBarSectionController *)self->_paletteController setContext:v8];
+        [(SKUINavigationBarSectionController *)self->_paletteController setContext:_navigationBarContext];
         [(SKUINavigationPaletteController *)self->_paletteController willAppearInNavigationBar];
-        v11 = [v8 textLayoutCache];
-        [v11 commitLayoutRequests];
+        textLayoutCache = [_navigationBarContext textLayoutCache];
+        [textLayoutCache commitLayoutRequests];
       }
     }
 
@@ -569,11 +569,11 @@ LABEL_11:
   return [(SKUINavigationPaletteController *)paletteController view];
 }
 
-- (void)setReusableSearchBarControllers:(id)a3
+- (void)setReusableSearchBarControllers:(id)controllers
 {
-  if (self->_reusableSearchBarControllers != a3)
+  if (self->_reusableSearchBarControllers != controllers)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [controllers mutableCopy];
     reusableSearchBarControllers = self->_reusableSearchBarControllers;
     self->_reusableSearchBarControllers = v5;
 
@@ -581,16 +581,16 @@ LABEL_11:
   }
 }
 
-- (id)titleViewWithViewElement:(id)a3
+- (id)titleViewWithViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   [(SKUINavigationBarController *)self _availableWidth];
   v7 = v6;
   if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v9 = [v8 keyWindow];
-    [v9 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     v11 = v10;
     v12 = SKUICompactThreshold();
 
@@ -600,46 +600,46 @@ LABEL_11:
     }
   }
 
-  if ([v5 elementType] == 106)
+  if ([elementCopy elementType] == 106)
   {
-    v14 = [(SKUINavigationBarController *)self _addSearchBarControllerWithViewElement:v5];
-    v15 = [v14 searchBar];
-    v16 = [v15 searchField];
-    if (([v16 isDescendantOfView:v15] & 1) == 0)
+    v14 = [(SKUINavigationBarController *)self _addSearchBarControllerWithViewElement:elementCopy];
+    searchBar = [v14 searchBar];
+    searchField = [searchBar searchField];
+    if (([searchField isDescendantOfView:searchBar] & 1) == 0)
     {
-      [v15 addSubview:v16];
+      [searchBar addSubview:searchField];
     }
 
-    [v15 setPretendsIsInBar:1];
-    v17 = [v5 style];
-    v18 = [v17 itemWidth];
+    [searchBar setPretendsIsInBar:1];
+    style = [elementCopy style];
+    itemWidth = [style itemWidth];
 
-    if (v18)
+    if (itemWidth)
     {
-      v19 = [v5 style];
-      v20 = [v19 itemWidth];
-      [v20 floatValue];
+      style2 = [elementCopy style];
+      itemWidth2 = [style2 itemWidth];
+      [itemWidth2 floatValue];
       v22 = v21;
 
       v23 = *MEMORY[0x277CBF3A0];
       v24 = *(MEMORY[0x277CBF3A0] + 8);
-      [v15 sizeThatFits:{v22, 1.79769313e308}];
+      [searchBar sizeThatFits:{v22, 1.79769313e308}];
       v26 = v25;
-      [v15 setFrame:{v23, v24, v22, v25}];
-      [v15 setAutoresizingMask:2];
+      [searchBar setFrame:{v23, v24, v22, v25}];
+      [searchBar setAutoresizingMask:2];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v15 setIntrinsicWidth:v22];
+        [searchBar setIntrinsicWidth:v22];
       }
 
       v27 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v23, v24, v22, v26}];
-      [v27 addSubview:v15];
+      [v27 addSubview:searchBar];
     }
 
     else
     {
-      v27 = v15;
+      v27 = searchBar;
       v36 = *MEMORY[0x277CBF3A0];
       v37 = *(MEMORY[0x277CBF3A0] + 8);
       [v27 sizeThatFits:{v7, 1.79769313e308}];
@@ -649,17 +649,17 @@ LABEL_11:
 
   else
   {
-    if ([v5 elementType] != 12)
+    if ([elementCopy elementType] != 12)
     {
       v27 = 0;
       goto LABEL_20;
     }
 
-    objc_storeStrong(&self->_titleButtonViewElement, a3);
+    objc_storeStrong(&self->_titleButtonViewElement, element);
     v28 = [(SKUINavigationBarController *)self _buttonWithElement:self->_titleButtonViewElement width:v7];
     [v28 addTarget:self action:sel__titleButtonAction_ forControlEvents:64];
-    v29 = [MEMORY[0x277D75348] clearColor];
-    [v28 setBackgroundColor:v29];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v28 setBackgroundColor:clearColor];
 
     v30 = *MEMORY[0x277CBF3A0];
     v31 = *(MEMORY[0x277CBF3A0] + 8);
@@ -676,12 +676,12 @@ LABEL_20:
   return v27;
 }
 
-- (void)updateNavigationItem:(id)a3
+- (void)updateNavigationItem:(id)item
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUINavigationBarViewElement *)self->_viewElement updateType];
-  switch(v5)
+  itemCopy = item;
+  updateType = [(SKUINavigationBarViewElement *)self->_viewElement updateType];
+  switch(updateType)
   {
     case 1:
       v54 = 0u;
@@ -720,16 +720,16 @@ LABEL_20:
         [v22 addObject:?];
       }
 
-      [(SKUINavigationBarController *)self _fullyReloadSections:v6 withNavigationItem:v4];
+      [(SKUINavigationBarController *)self _fullyReloadSections:v6 withNavigationItem:itemCopy];
       if (self->_titleButtonViewElement)
       {
         [(SKUINavigationBarController *)self _availableWidth];
         v24 = v23;
         if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
         {
-          v25 = [MEMORY[0x277D75128] sharedApplication];
-          v26 = [v25 keyWindow];
-          [v26 bounds];
+          mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+          keyWindow = [mEMORY[0x277D75128] keyWindow];
+          [keyWindow bounds];
           v28 = v27;
           v29 = SKUICompactThreshold();
 
@@ -741,8 +741,8 @@ LABEL_20:
 
         v31 = [(SKUINavigationBarController *)self _buttonWithElement:self->_titleButtonViewElement width:v24];
         [v31 addTarget:self action:sel__titleButtonAction_ forControlEvents:64];
-        v32 = [MEMORY[0x277D75348] clearColor];
-        [v31 setBackgroundColor:v32];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v31 setBackgroundColor:clearColor];
 
         v33 = *MEMORY[0x277CBF3A0];
         v34 = *(MEMORY[0x277CBF3A0] + 8);
@@ -751,30 +751,30 @@ LABEL_20:
         v37 = v31;
         [v37 sizeThatFits:{v35, v36}];
         [v37 setFrame:{v33, v34, v38, v39}];
-        SKUINavigationBarController_SetTitleView(v4, v37);
+        SKUINavigationBarController_SetTitleView(itemCopy, v37);
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-      v41 = [WeakRetained navigationController];
-      v42 = [v41 navigationBar];
-      [v42 setNeedsLayout];
+      navigationController = [WeakRetained navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setNeedsLayout];
 
       goto LABEL_47;
     case 4:
-      [(SKUINavigationBarController *)self detachFromNavigationItem:v4];
-      v11 = [(SKUINavigationBarController *)self parentViewController];
-      v12 = [v11 presentedViewController];
+      [(SKUINavigationBarController *)self detachFromNavigationItem:itemCopy];
+      parentViewController = [(SKUINavigationBarController *)self parentViewController];
+      presentedViewController = [parentViewController presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v14 = [(SKUINavigationBarController *)self parentViewController];
-        v15 = [v14 presentedViewController];
-        [v15 dismissViewControllerAnimated:0 completion:0];
+        parentViewController2 = [(SKUINavigationBarController *)self parentViewController];
+        presentedViewController2 = [parentViewController2 presentedViewController];
+        [presentedViewController2 dismissViewControllerAnimated:0 completion:0];
       }
 
-      [(SKUINavigationBarController *)self attachToNavigationItem:v4];
+      [(SKUINavigationBarController *)self attachToNavigationItem:itemCopy];
       break;
     case 3:
       v6 = [(SKUIViewElement *)self->_viewElement firstChildForElementType:106];
@@ -783,16 +783,16 @@ LABEL_20:
       if ([(NSMapTable *)self->_searchBarControllers count]!= 1)
       {
 LABEL_45:
-        [(SKUINavigationBarController *)self detachFromNavigationItem:v4];
-        [(SKUINavigationBarController *)self attachToNavigationItem:v4];
+        [(SKUINavigationBarController *)self detachFromNavigationItem:itemCopy];
+        [(SKUINavigationBarController *)self attachToNavigationItem:itemCopy];
 LABEL_46:
 
 LABEL_47:
         break;
       }
 
-      v9 = [(SKUIViewElement *)self->_viewElement flattenedChildren];
-      v10 = [v9 count];
+      flattenedChildren = [(SKUIViewElement *)self->_viewElement flattenedChildren];
+      v10 = [flattenedChildren count];
 
       if (v10 == 3)
       {
@@ -871,7 +871,7 @@ LABEL_55:
         }
 
         paletteController = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{self->_paletteController, 0}];
-        [(SKUINavigationBarController *)self _fullyReloadSections:paletteController withNavigationItem:v4];
+        [(SKUINavigationBarController *)self _fullyReloadSections:paletteController withNavigationItem:itemCopy];
       }
 
       else
@@ -884,12 +884,12 @@ LABEL_55:
   }
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   paletteController = self->_paletteController;
-  if (!paletteController || ([(SKUINavigationPaletteController *)paletteController viewForElementIdentifier:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!paletteController || ([(SKUINavigationPaletteController *)paletteController viewForElementIdentifier:identifierCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v16 = 0u;
     v17 = 0u;
@@ -910,7 +910,7 @@ LABEL_55:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) viewForElementIdentifier:{v4, v14}];
+          v12 = [*(*(&v14 + 1) + 8 * i) viewForElementIdentifier:{identifierCopy, v14}];
           if (v12)
           {
             v6 = v12;
@@ -935,13 +935,13 @@ LABEL_13:
   return v6;
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
-  v6 = a3;
-  v3 = [v6 superview];
-  if (v3)
+  transitionCopy = transition;
+  superview = [transitionCopy superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     while (1)
     {
       objc_opt_class();
@@ -950,23 +950,23 @@ LABEL_13:
         break;
       }
 
-      v5 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview2;
+      if (!superview2)
       {
         goto LABEL_7;
       }
     }
 
-    [v6 sizeToFit];
+    [transitionCopy sizeToFit];
     [v4 layoutSubviews];
   }
 
 LABEL_7:
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -1002,14 +1002,14 @@ LABEL_7:
   [(SKUINavigationPaletteController *)self->_paletteController reloadSectionViews];
 }
 
-- (void)_viewElementEventNotification:(id)a3
+- (void)_viewElementEventNotification:(id)notification
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUINavigationBarController *)self navigationPaletteView];
-  v6 = [v4 object];
+  notificationCopy = notification;
+  navigationPaletteView = [(SKUINavigationBarController *)self navigationPaletteView];
+  object = [notificationCopy object];
 
-  if (v5 && [v6 isDescendantOfView:v5])
+  if (navigationPaletteView && [object isDescendantOfView:navigationPaletteView])
   {
     memset(v9, 0, sizeof(v9));
     v7 = self->_searchBarControllers;
@@ -1021,12 +1021,12 @@ LABEL_7:
   }
 }
 
-- (id)_addSearchBarControllerWithViewElement:(id)a3
+- (id)_addSearchBarControllerWithViewElement:(id)element
 {
-  v4 = a3;
-  if (![(NSMutableArray *)self->_reusableSearchBarControllers count]|| ([(NSMutableArray *)self->_reusableSearchBarControllers firstObject], v5 = objc_claimAutoreleasedReturnValue(), [(SKUISearchBarController *)v5 setSearchBarViewElement:v4], [(NSMutableArray *)self->_reusableSearchBarControllers removeObjectAtIndex:0], !v5))
+  elementCopy = element;
+  if (![(NSMutableArray *)self->_reusableSearchBarControllers count]|| ([(NSMutableArray *)self->_reusableSearchBarControllers firstObject], v5 = objc_claimAutoreleasedReturnValue(), [(SKUISearchBarController *)v5 setSearchBarViewElement:elementCopy], [(NSMutableArray *)self->_reusableSearchBarControllers removeObjectAtIndex:0], !v5))
   {
-    v5 = [[SKUISearchBarController alloc] initWithSearchBarViewElement:v4];
+    v5 = [[SKUISearchBarController alloc] initWithSearchBarViewElement:elementCopy];
   }
 
   [(SKUISearchBarController *)v5 setClientContext:self->_clientContext];
@@ -1035,18 +1035,18 @@ LABEL_7:
 
   if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v7 keyWindow];
-    [v8 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     if (v9 <= SKUICompactThreshold())
     {
     }
 
     else
     {
-      v10 = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
+      shouldForceTransientSearchControllerBahavior = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
 
-      if (!v10)
+      if (!shouldForceTransientSearchControllerBahavior)
       {
         [(SKUISearchBarController *)v5 setShowsResultsForEmptyField:1];
         goto LABEL_10;
@@ -1066,39 +1066,39 @@ LABEL_10:
     searchBarControllers = self->_searchBarControllers;
   }
 
-  [(NSMapTable *)searchBarControllers setObject:v5 forKey:v4];
+  [(NSMapTable *)searchBarControllers setObject:v5 forKey:elementCopy];
 
   return v5;
 }
 
-- (id)_attributedStringForButton:(id)a3
+- (id)_attributedStringForButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 buttonText];
-  v6 = [v4 buttonViewType];
-  v7 = [v4 buttonTitleStyle];
-  if (v7)
+  buttonCopy = button;
+  buttonText = [buttonCopy buttonText];
+  buttonViewType = [buttonCopy buttonViewType];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v8 = [(SKUINavigationBarController *)self _attributedStringForButtonText:v5 type:v6 style:v7];
+    v8 = [(SKUINavigationBarController *)self _attributedStringForButtonText:buttonText type:buttonViewType style:buttonTitleStyle];
   }
 
   else
   {
-    v9 = [v4 style];
-    v8 = [(SKUINavigationBarController *)self _attributedStringForButtonText:v5 type:v6 style:v9];
+    style = [buttonCopy style];
+    v8 = [(SKUINavigationBarController *)self _attributedStringForButtonText:buttonText type:buttonViewType style:style];
   }
 
   return v8;
 }
 
-- (id)_attributedStringForButtonText:(id)a3 type:(int64_t)a4 style:(id)a5
+- (id)_attributedStringForButtonText:(id)text type:(int64_t)type style:(id)style
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = SKUIViewElementFontWithStyle(v8);
+  styleCopy = style;
+  textCopy = text;
+  v10 = SKUIViewElementFontWithStyle(styleCopy);
   if (!v10)
   {
-    if (a4)
+    if (type)
     {
       v11 = 5;
     }
@@ -1111,10 +1111,10 @@ LABEL_10:
     v10 = SKUIFontPreferredFontForTextStyle(v11);
   }
 
-  v12 = [(SKUINavigationBarViewElement *)self->_viewElement tintColor];
-  v13 = SKUIViewElementPlainColorWithStyle(v8, v12);
+  tintColor = [(SKUINavigationBarViewElement *)self->_viewElement tintColor];
+  v13 = SKUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
-  v14 = [v9 attributedStringWithDefaultFont:v10 foregroundColor:v13 style:v8];
+  v14 = [textCopy attributedStringWithDefaultFont:v10 foregroundColor:v13 style:styleCopy];
 
   return v14;
 }
@@ -1122,29 +1122,29 @@ LABEL_10:
 - (double)_availableWidth
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  v4 = [WeakRetained isViewLoaded];
+  isViewLoaded = [WeakRetained isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = objc_loadWeakRetained(&self->_parentViewController);
-    v6 = [v5 view];
-    [v6 bounds];
+    mainScreen = objc_loadWeakRetained(&self->_parentViewController);
+    view = [mainScreen view];
+    [view bounds];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (id)_barButtonItemWithButtonViewElement:(id)a3
+- (id)_barButtonItemWithButtonViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   buttonsController = self->_buttonsController;
   if (!buttonsController)
   {
@@ -1153,23 +1153,23 @@ LABEL_10:
     self->_buttonsController = v6;
 
     v8 = self->_buttonsController;
-    v9 = [(SKUINavigationBarController *)self _navigationBarContext];
-    [(SKUINavigationBarSectionController *)v8 setContext:v9];
+    _navigationBarContext = [(SKUINavigationBarController *)self _navigationBarContext];
+    [(SKUINavigationBarSectionController *)v8 setContext:_navigationBarContext];
 
     buttonsController = self->_buttonsController;
   }
 
-  v10 = [(SKUINavigationBarButtonsController *)buttonsController addButtonItemWithButtonViewElement:v4];
+  v10 = [(SKUINavigationBarButtonsController *)buttonsController addButtonItemWithButtonViewElement:elementCopy];
 
   return v10;
 }
 
-- (id)_barButtonItemWithSearchBarViewElement:(id)a3
+- (id)_barButtonItemWithSearchBarViewElement:(id)element
 {
   v4 = MEMORY[0x277D751E0];
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(v4);
-  v7 = [(SKUINavigationBarController *)self _addSearchBarControllerWithViewElement:v5];
+  v7 = [(SKUINavigationBarController *)self _addSearchBarControllerWithViewElement:elementCopy];
 
   [(SKUINavigationBarController *)self _availableWidth];
   if (v8 <= 1000.0)
@@ -1182,32 +1182,32 @@ LABEL_10:
     v9 = 200.0;
   }
 
-  v10 = [v7 searchBar];
-  [v10 setPretendsIsInBar:1];
+  searchBar = [v7 searchBar];
+  [searchBar setPretendsIsInBar:1];
   v11 = *MEMORY[0x277CBF3A0];
   v12 = *(MEMORY[0x277CBF3A0] + 8);
-  [v10 sizeThatFits:{v9, 1.79769313e308}];
-  [v10 setFrame:{v11, v12, v9, v13}];
-  [v6 setCustomView:v10];
+  [searchBar sizeThatFits:{v9, 1.79769313e308}];
+  [searchBar setFrame:{v11, v12, v9, v13}];
+  [v6 setCustomView:searchBar];
 
   return v6;
 }
 
-- (id)_barButtonItemWithViewElement:(id)a3
+- (id)_barButtonItemWithViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
-  if (SKUIIKViewElementTypeIsButton(v5))
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (SKUIIKViewElementTypeIsButton(elementType))
   {
-    v6 = [(SKUINavigationBarController *)self _barButtonItemWithButtonViewElement:v4];
+    v6 = [(SKUINavigationBarController *)self _barButtonItemWithButtonViewElement:elementCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
   }
 
-  if (v5 == 106)
+  if (elementType == 106)
   {
-    v6 = [(SKUINavigationBarController *)self _barButtonItemWithSearchBarViewElement:v4];
+    v6 = [(SKUINavigationBarController *)self _barButtonItemWithSearchBarViewElement:elementCopy];
     goto LABEL_5;
   }
 
@@ -1217,74 +1217,74 @@ LABEL_7:
   return v7;
 }
 
-- (id)_buttonWithElement:(id)a3 width:(double)a4
+- (id)_buttonWithElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 buttonViewType];
-  if (v7 == 9)
+  elementCopy = element;
+  buttonViewType = [elementCopy buttonViewType];
+  if (buttonViewType == 9)
   {
     v9 = objc_alloc_init(SKUIStyledButton);
     [(SKUIStyledButton *)v9 setAlpha:1.0];
     [(SKUIStyledButton *)v9 setBorderStyle:0];
-    v37 = 1;
+    isEnabled = 1;
     [(SKUIStyledButton *)v9 setButtonType:1];
-    v38 = [(SKUINavigationBarController *)self _attributedStringForButton:v6];
+    v38 = [(SKUINavigationBarController *)self _attributedStringForButton:elementCopy];
     v39 = [[SKUIAttributedStringLayoutRequest alloc] initWithAttributedString:v38];
-    [(SKUIAttributedStringLayoutRequest *)v39 setWidth:a4];
+    [(SKUIAttributedStringLayoutRequest *)v39 setWidth:width];
     v40 = [[SKUIAttributedStringLayout alloc] initWithLayoutRequest:v39];
     [(SKUIStyledButton *)v9 setTitleLayout:v40];
     if (![(SKUIStyledButton *)v9 isUsingItemOfferAppearance])
     {
-      v37 = [v6 isEnabled];
+      isEnabled = [elementCopy isEnabled];
     }
 
-    [(SKUIStyledButton *)v9 setEnabled:v37];
-    v41 = [v6 style];
-    v42 = SKUIViewElementPlainColorWithStyle(v41, 0);
+    [(SKUIStyledButton *)v9 setEnabled:isEnabled];
+    style = [elementCopy style];
+    v42 = SKUIViewElementPlainColorWithStyle(style, 0);
 
     [(SKUIStyledButton *)v9 setTintColor:v42];
     goto LABEL_29;
   }
 
-  v8 = v7;
-  if (v7 != 6)
+  v8 = buttonViewType;
+  if (buttonViewType != 6)
   {
-    if (v7 == 5)
+    if (buttonViewType == 5)
     {
       v9 = objc_alloc_init(SKUIStyledImageButton);
-      v10 = [(SKUIStyledButton *)v9 imageView];
-      v11 = [v6 buttonImage];
-      v12 = [(SKUINavigationBarController *)self _resourceImageForImageElement:v11];
-      [v10 setImage:v12];
+      imageView = [(SKUIStyledButton *)v9 imageView];
+      buttonImage = [elementCopy buttonImage];
+      v12 = [(SKUINavigationBarController *)self _resourceImageForImageElement:buttonImage];
+      [imageView setImage:v12];
       [v12 size];
-      [v10 setImageSize:?];
-      v13 = [v11 accessibilityText];
-      if (!v13)
+      [imageView setImageSize:?];
+      accessibilityText = [buttonImage accessibilityText];
+      if (!accessibilityText)
       {
-        v13 = [v6 accessibilityText];
+        accessibilityText = [elementCopy accessibilityText];
       }
 
-      [(SKUIStyledButton *)v9 setAccessibilityLabel:v13];
-      v14 = [v6 isEnabled];
+      [(SKUIStyledButton *)v9 setAccessibilityLabel:accessibilityText];
+      isEnabled2 = [elementCopy isEnabled];
       v15 = 0.4;
-      if (v14)
+      if (isEnabled2)
       {
         v15 = 1.0;
       }
 
       [(SKUIStyledButton *)v9 setAlpha:v15];
-      [(SKUIStyledButton *)v9 setEnabled:v14];
-      v16 = [v6 style];
-      v17 = SKUIViewElementPlainColorWithStyle(v16, 0);
+      [(SKUIStyledButton *)v9 setEnabled:isEnabled2];
+      style2 = [elementCopy style];
+      v17 = SKUIViewElementPlainColorWithStyle(style2, 0);
       [(SKUIStyledButton *)v9 setTintColor:v17];
 
       goto LABEL_30;
     }
 
     v9 = objc_alloc_init(SKUIStyledButton);
-    v38 = [(SKUINavigationBarController *)self _attributedStringForButton:v6];
+    v38 = [(SKUINavigationBarController *)self _attributedStringForButton:elementCopy];
     v39 = [[SKUIAttributedStringLayoutRequest alloc] initWithAttributedString:v38];
-    [(SKUIAttributedStringLayoutRequest *)v39 setWidth:a4];
+    [(SKUIAttributedStringLayoutRequest *)v39 setWidth:width];
     v43 = [[SKUIAttributedStringLayout alloc] initWithLayoutRequest:v39];
     [(SKUIStyledButton *)v9 setTitleLayout:v43];
     if (v8 == 13)
@@ -1299,14 +1299,14 @@ LABEL_7:
 
     [(SKUIStyledButton *)v9 setButtonType:v44];
     v45 = [SKUIButtonBorderStyle alloc];
-    v46 = [v6 style];
-    v47 = [(SKUIButtonBorderStyle *)v45 initWithElementStyle:v46];
+    style3 = [elementCopy style];
+    v47 = [(SKUIButtonBorderStyle *)v45 initWithElementStyle:style3];
 
     [(SKUIStyledButton *)v9 setBorderStyle:v47];
-    v48 = [v6 isEnabled];
-    [(SKUIStyledButton *)v9 setEnabled:v48];
+    isEnabled3 = [elementCopy isEnabled];
+    [(SKUIStyledButton *)v9 setEnabled:isEnabled3];
     v49 = 0.4;
-    if (v48)
+    if (isEnabled3)
     {
       v49 = 1.0;
     }
@@ -1319,12 +1319,12 @@ LABEL_29:
 
   v9 = objc_alloc_init(SKUIStyledButton);
   [(SKUIStyledButton *)v9 setBorderStyle:0];
-  v18 = [v6 children];
-  v19 = [v18 firstObject];
+  children = [elementCopy children];
+  firstObject = [children firstObject];
 
-  v55 = v19;
-  v20 = [v19 elementType];
-  if (v20 == 138)
+  v55 = firstObject;
+  elementType = [firstObject elementType];
+  if (elementType == 138)
   {
     v21 = 5;
   }
@@ -1335,35 +1335,35 @@ LABEL_29:
   }
 
   [(SKUIStyledButton *)v9 setButtonType:v21];
-  v22 = [(SKUINavigationBarController *)self _attributedStringForButton:v6];
+  v22 = [(SKUINavigationBarController *)self _attributedStringForButton:elementCopy];
   v23 = [[SKUIAttributedStringLayoutRequest alloc] initWithAttributedString:v22];
-  [(SKUIAttributedStringLayoutRequest *)v23 setWidth:a4];
+  [(SKUIAttributedStringLayoutRequest *)v23 setWidth:width];
   v24 = [[SKUIAttributedStringLayout alloc] initWithLayoutRequest:v23];
   [(SKUIStyledButton *)v9 setTitleLayout:v24];
-  v25 = [v6 isEnabled];
-  [(SKUIStyledButton *)v9 setEnabled:v25];
+  isEnabled4 = [elementCopy isEnabled];
+  [(SKUIStyledButton *)v9 setEnabled:isEnabled4];
   v26 = 0.4;
-  if (v25)
+  if (isEnabled4)
   {
     v26 = 1.0;
   }
 
   [(SKUIStyledButton *)v9 setAlpha:v26];
-  v27 = [(SKUIStyledButton *)v9 imageView];
-  v28 = [v6 buttonImage];
-  v29 = [(SKUINavigationBarController *)self _resourceImageForImageElement:v28];
-  [v27 setImage:v29];
+  imageView2 = [(SKUIStyledButton *)v9 imageView];
+  buttonImage2 = [elementCopy buttonImage];
+  v29 = [(SKUINavigationBarController *)self _resourceImageForImageElement:buttonImage2];
+  [imageView2 setImage:v29];
   [v29 size];
-  [v27 setImageSize:?];
+  [imageView2 setImageSize:?];
   v56 = 0;
-  v30 = [v28 style];
-  v31 = SKUIViewElementMarginForStyle(v30, &v56);
+  style4 = [buttonImage2 style];
+  v31 = SKUIViewElementMarginForStyle(style4, &v56);
   v33 = v32;
   v35 = v34;
 
   if (v56 == 1)
   {
-    if (v20 == 138)
+    if (elementType == 138)
     {
       v36 = v33;
     }
@@ -1382,17 +1382,17 @@ LABEL_30:
   if (objc_opt_isKindOfClass())
   {
     v50 = v9;
-    v51 = [v6 buttonTitleStyle];
-    v52 = v51;
-    if (!v51)
+    buttonTitleStyle = [elementCopy buttonTitleStyle];
+    style5 = buttonTitleStyle;
+    if (!buttonTitleStyle)
     {
-      v52 = [v6 style];
+      style5 = [elementCopy style];
     }
 
-    v53 = [v52 ikColor];
-    -[SKUIStyledButton setUsesTintColor:](v50, "setUsesTintColor:", [v53 colorType] == 1);
+    ikColor = [style5 ikColor];
+    -[SKUIStyledButton setUsesTintColor:](v50, "setUsesTintColor:", [ikColor colorType] == 1);
 
-    if (!v51)
+    if (!buttonTitleStyle)
     {
     }
   }
@@ -1400,16 +1400,16 @@ LABEL_30:
   return v9;
 }
 
-- (void)_fullyReloadSections:(id)a3 withNavigationItem:(id)a4
+- (void)_fullyReloadSections:(id)sections withNavigationItem:(id)item
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sectionsCopy = sections;
+  itemCopy = item;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v8 = [sectionsCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1420,29 +1420,29 @@ LABEL_30:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sectionsCopy);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        [v12 reloadAfterDocumentUpdateWithNavigationItem:v7];
+        [v12 reloadAfterDocumentUpdateWithNavigationItem:itemCopy];
         [v12 willAppearInNavigationBar];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v9 = [sectionsCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(SKUINavigationBarController *)self _navigationBarContext];
-  v14 = [v13 textLayoutCache];
-  [v14 commitLayoutRequests];
+  _navigationBarContext = [(SKUINavigationBarController *)self _navigationBarContext];
+  textLayoutCache = [_navigationBarContext textLayoutCache];
+  [textLayoutCache commitLayoutRequests];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = v6;
+  v15 = sectionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v16)
   {
@@ -1478,8 +1478,8 @@ LABEL_30:
 
     [(SKUINavigationBarContext *)self->_navigationBarContext setClientContext:self->_clientContext];
     v6 = self->_navigationBarContext;
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     [(SKUINavigationBarContext *)v6 setMaximumNavigationBarWidth:v8];
 
     v9 = self->_navigationBarContext;
@@ -1500,25 +1500,25 @@ LABEL_30:
   return navigationBarContext;
 }
 
-- (id)_resourceImageForImageElement:(id)a3
+- (id)_resourceImageForImageElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 resourceName];
-  v5 = v4;
-  if (v4)
+  elementCopy = element;
+  resourceName = [elementCopy resourceName];
+  v5 = resourceName;
+  if (resourceName)
   {
-    v6 = SKUIImageWithResourceName(v4);
-    v7 = [v3 style];
-    v8 = [v7 imageMaskColor];
+    v6 = SKUIImageWithResourceName(resourceName);
+    style = [elementCopy style];
+    imageMaskColor = [style imageMaskColor];
 
-    if (v8)
+    if (imageMaskColor)
     {
-      v9 = [v8 color];
+      color = [imageMaskColor color];
 
-      if (v9)
+      if (color)
       {
-        v10 = [v8 color];
-        v11 = [v6 _flatImageWithColor:v10];
+        color2 = [imageMaskColor color];
+        v11 = [v6 _flatImageWithColor:color2];
 
         v6 = v11;
       }
@@ -1533,10 +1533,10 @@ LABEL_30:
   return v6;
 }
 
-- (void)_titleButtonAction:(id)a3
+- (void)_titleButtonAction:(id)action
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:0x282804928 object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:0x282804928 object:self];
   [(SKUIButtonViewElement *)self->_titleButtonViewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 

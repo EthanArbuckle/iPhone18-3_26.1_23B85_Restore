@@ -1,22 +1,22 @@
 @interface ATXSharedDigestEngagementTrackingMetrics
-- (ATXSharedDigestEngagementTrackingMetrics)initWithCoder:(id)a3;
-- (ATXSharedDigestEngagementTrackingMetrics)initWithProto:(id)a3;
-- (ATXSharedDigestEngagementTrackingMetrics)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSharedDigestEngagementTrackingMetrics:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXSharedDigestEngagementTrackingMetrics)initWithCoder:(id)coder;
+- (ATXSharedDigestEngagementTrackingMetrics)initWithProto:(id)proto;
+- (ATXSharedDigestEngagementTrackingMetrics)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSharedDigestEngagementTrackingMetrics:(id)metrics;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)json;
 - (id)jsonRepresentation;
 - (id)proto;
-- (void)addMetricsFromOtherTracker:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addMetricsFromOtherTracker:(id)tracker;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSharedDigestEngagementTrackingMetrics
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ATXSharedDigestEngagementTrackingMetrics allocWithZone:?]];
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setNumEngagementsInUpcoming:[(ATXSharedDigestEngagementTrackingMetrics *)self numEngagementsInUpcoming]];
@@ -24,40 +24,40 @@
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setNumEngagementsAfterExpiration:[(ATXSharedDigestEngagementTrackingMetrics *)self numEngagementsAfterExpiration]];
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setNumExpansions:[(ATXSharedDigestEngagementTrackingMetrics *)self numExpansions]];
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setNumDigestExpansions:[(ATXSharedDigestEngagementTrackingMetrics *)self numDigestExpansions]];
-  v5 = [(ATXSharedDigestEngagementTrackingMetrics *)self sectionIdentifier];
-  [(ATXSharedDigestEngagementTrackingMetrics *)v4 setSectionIdentifier:v5];
+  sectionIdentifier = [(ATXSharedDigestEngagementTrackingMetrics *)self sectionIdentifier];
+  [(ATXSharedDigestEngagementTrackingMetrics *)v4 setSectionIdentifier:sectionIdentifier];
 
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setSectionPosition:[(ATXSharedDigestEngagementTrackingMetrics *)self sectionPosition]];
   [(ATXSharedDigestEngagementTrackingMetrics *)v4 setSectionSize:[(ATXSharedDigestEngagementTrackingMetrics *)self sectionSize]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSharedDigestEngagementTrackingMetrics *)self isEqualToATXSharedDigestEngagementTrackingMetrics:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSharedDigestEngagementTrackingMetrics *)self isEqualToATXSharedDigestEngagementTrackingMetrics:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSharedDigestEngagementTrackingMetrics:(id)a3
+- (BOOL)isEqualToATXSharedDigestEngagementTrackingMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(ATXSharedDigestEngagementTrackingMetrics *)self numEngagementsInUpcoming];
-  if (v5 == [v4 numEngagementsInUpcoming] && (v6 = -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInScheduled](self, "numEngagementsInScheduled"), v6 == objc_msgSend(v4, "numEngagementsInScheduled")) && (v7 = -[ATXSharedDigestEngagementTrackingMetrics numEngagementsAfterExpiration](self, "numEngagementsAfterExpiration"), v7 == objc_msgSend(v4, "numEngagementsAfterExpiration")) && (v8 = -[ATXSharedDigestEngagementTrackingMetrics numExpansions](self, "numExpansions"), v8 == objc_msgSend(v4, "numExpansions")) && (v9 = -[ATXSharedDigestEngagementTrackingMetrics numDigestExpansions](self, "numDigestExpansions"), v9 == objc_msgSend(v4, "numDigestExpansions")) && (v10 = -[ATXSharedDigestEngagementTrackingMetrics sectionPosition](self, "sectionPosition"), v10 == objc_msgSend(v4, "sectionPosition")) && (v11 = -[ATXSharedDigestEngagementTrackingMetrics sectionSize](self, "sectionSize"), v11 == objc_msgSend(v4, "sectionSize")))
+  metricsCopy = metrics;
+  numEngagementsInUpcoming = [(ATXSharedDigestEngagementTrackingMetrics *)self numEngagementsInUpcoming];
+  if (numEngagementsInUpcoming == [metricsCopy numEngagementsInUpcoming] && (v6 = -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInScheduled](self, "numEngagementsInScheduled"), v6 == objc_msgSend(metricsCopy, "numEngagementsInScheduled")) && (v7 = -[ATXSharedDigestEngagementTrackingMetrics numEngagementsAfterExpiration](self, "numEngagementsAfterExpiration"), v7 == objc_msgSend(metricsCopy, "numEngagementsAfterExpiration")) && (v8 = -[ATXSharedDigestEngagementTrackingMetrics numExpansions](self, "numExpansions"), v8 == objc_msgSend(metricsCopy, "numExpansions")) && (v9 = -[ATXSharedDigestEngagementTrackingMetrics numDigestExpansions](self, "numDigestExpansions"), v9 == objc_msgSend(metricsCopy, "numDigestExpansions")) && (v10 = -[ATXSharedDigestEngagementTrackingMetrics sectionPosition](self, "sectionPosition"), v10 == objc_msgSend(metricsCopy, "sectionPosition")) && (v11 = -[ATXSharedDigestEngagementTrackingMetrics sectionSize](self, "sectionSize"), v11 == objc_msgSend(metricsCopy, "sectionSize")))
   {
     v12 = self->_sectionIdentifier;
     v13 = v12;
-    if (v12 == v4[6])
+    if (v12 == metricsCopy[6])
     {
       v14 = 1;
     }
@@ -76,56 +76,56 @@
   return v14;
 }
 
-- (void)addMetricsFromOtherTracker:(id)a3
+- (void)addMetricsFromOtherTracker:(id)tracker
 {
-  v4 = a3;
-  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsAfterExpiration](self, "numEngagementsAfterExpiration") + [v4 numEngagementsAfterExpiration]);
-  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInScheduled](self, "numEngagementsInScheduled") + [v4 numEngagementsInScheduled]);
-  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInUpcoming](self, "numEngagementsInUpcoming") + [v4 numEngagementsInUpcoming]);
-  v5 = [v4 numExpansions];
+  trackerCopy = tracker;
+  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsAfterExpiration](self, "numEngagementsAfterExpiration") + [trackerCopy numEngagementsAfterExpiration]);
+  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInScheduled](self, "numEngagementsInScheduled") + [trackerCopy numEngagementsInScheduled]);
+  -[ATXSharedDigestEngagementTrackingMetrics setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", -[ATXSharedDigestEngagementTrackingMetrics numEngagementsInUpcoming](self, "numEngagementsInUpcoming") + [trackerCopy numEngagementsInUpcoming]);
+  numExpansions = [trackerCopy numExpansions];
 
-  v6 = [(ATXSharedDigestEngagementTrackingMetrics *)self numExpansions]+ v5;
+  v6 = [(ATXSharedDigestEngagementTrackingMetrics *)self numExpansions]+ numExpansions;
 
   [(ATXSharedDigestEngagementTrackingMetrics *)self setNumExpansions:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSharedDigestEngagementTrackingMetrics *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSharedDigestEngagementTrackingMetrics *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSharedDigestEngagementTrackingMetrics)initWithCoder:(id)a3
+- (ATXSharedDigestEngagementTrackingMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXSharedDigestEngagementTrackingMetrics *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSharedDigestEngagementTrackingMetrics *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSharedDigestEngagementTrackingMetrics *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXSharedDigestEngagementTrackingMetrics)initWithProto:(id)a3
+- (ATXSharedDigestEngagementTrackingMetrics)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   v13.receiver = self;
   v13.super_class = ATXSharedDigestEngagementTrackingMetrics;
   v5 = [(ATXSharedDigestEngagementTrackingMetrics *)&v13 init];
@@ -134,7 +134,7 @@
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!protoCopy)
   {
 LABEL_9:
     v10 = 0;
@@ -153,20 +153,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = v4;
+  v6 = protoCopy;
   v5->_numEngagementsInUpcoming = [v6 numEngagementsInUpcoming];
   v5->_numEngagementsInScheduled = [v6 numEngagementsInScheduled];
   v5->_numEngagementsAfterExpiration = [v6 numEngagementsAfterExpiration];
   v5->_numExpansions = [v6 numExpansions];
-  v7 = [v6 sectionIdentifier];
+  sectionIdentifier = [v6 sectionIdentifier];
   sectionIdentifier = v5->_sectionIdentifier;
-  v5->_sectionIdentifier = v7;
+  v5->_sectionIdentifier = sectionIdentifier;
 
   v5->_sectionPosition = [v6 sectionPosition];
   v5->_sectionSize = [v6 sectionSize];
-  v9 = [v6 numDigestExpansions];
+  numDigestExpansions = [v6 numDigestExpansions];
 
-  v5->_numDigestExpansions = v9;
+  v5->_numDigestExpansions = numDigestExpansions;
 LABEL_5:
   v10 = v5;
 LABEL_10:
@@ -174,23 +174,23 @@ LABEL_10:
   return v10;
 }
 
-- (ATXSharedDigestEngagementTrackingMetrics)initWithProtoData:(id)a3
+- (ATXSharedDigestEngagementTrackingMetrics)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSharedDigestEngagementTrackingMetrics alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSharedDigestEngagementTrackingMetrics alloc] initWithData:dataCopy];
 
     self = [(ATXSharedDigestEngagementTrackingMetrics *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -208,10 +208,10 @@ LABEL_10:
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBSharedDigestEngagementTrackingMetrics alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBSharedDigestEngagementTrackingMetrics alloc] initFromJSON:nCopy];
 
   v6 = [(ATXSharedDigestEngagementTrackingMetrics *)self initWithProto:v5];
   return v6;
@@ -219,17 +219,17 @@ LABEL_10:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXSharedDigestEngagementTrackingMetrics *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXSharedDigestEngagementTrackingMetrics *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXSharedDigestEngagementTrackingMetrics *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXSharedDigestEngagementTrackingMetrics *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }

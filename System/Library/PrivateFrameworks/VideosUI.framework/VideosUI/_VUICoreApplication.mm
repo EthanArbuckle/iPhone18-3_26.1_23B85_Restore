@@ -2,7 +2,7 @@
 - (UITraitEnvironment)keyTraitEnvironment;
 - (UIWindow)keyWindow;
 - (VUITVApplicationControllerContext)launchContext;
-- (_VUICoreApplication)initWithLaunchContext:(id)a3;
+- (_VUICoreApplication)initWithLaunchContext:(id)context;
 - (id)appIdentifier;
 - (id)appJSURL;
 - (id)appLaunchParams;
@@ -14,21 +14,21 @@
 - (id)appJSURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_launchContext);
-  v3 = [WeakRetained javaScriptApplicationURL];
+  javaScriptApplicationURL = [WeakRetained javaScriptApplicationURL];
 
-  return v3;
+  return javaScriptApplicationURL;
 }
 
-- (_VUICoreApplication)initWithLaunchContext:(id)a3
+- (_VUICoreApplication)initWithLaunchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = _VUICoreApplication;
   v5 = [(_VUICoreApplication *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_launchContext, v4);
+    objc_storeWeak(&v5->_launchContext, contextCopy);
   }
 
   return v6;
@@ -36,30 +36,30 @@
 
 - (id)appIdentifier
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)appLaunchParams
 {
   v3 = objc_opt_new();
-  v4 = [(_VUICoreApplication *)self appJSURL];
-  v5 = [v4 absoluteString];
+  appJSURL = [(_VUICoreApplication *)self appJSURL];
+  absoluteString = [appJSURL absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
-    [v3 setObject:v5 forKey:@"location"];
+    [v3 setObject:absoluteString forKey:@"location"];
   }
 
-  v6 = [(_VUICoreApplication *)self javaScriptLaunchOptions];
-  v7 = [v6 count];
+  javaScriptLaunchOptions = [(_VUICoreApplication *)self javaScriptLaunchOptions];
+  v7 = [javaScriptLaunchOptions count];
 
   if (v7)
   {
-    v8 = [(_VUICoreApplication *)self javaScriptLaunchOptions];
-    [v3 addEntriesFromDictionary:v8];
+    javaScriptLaunchOptions2 = [(_VUICoreApplication *)self javaScriptLaunchOptions];
+    [v3 addEntriesFromDictionary:javaScriptLaunchOptions2];
   }
 
   v9 = [v3 copy];
@@ -70,67 +70,67 @@
 - (id)appTraitCollection
 {
   v57[12] = *MEMORY[0x1E69E9840];
-  v3 = [(_VUICoreApplication *)self keyWindow];
-  if (v3)
+  keyWindow = [(_VUICoreApplication *)self keyWindow];
+  if (keyWindow)
   {
     goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 connectedScenes];
-  v6 = [v5 allObjects];
-  v7 = [v6 firstObject];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
+  allObjects = [connectedScenes allObjects];
+  firstObject = [allObjects firstObject];
 
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v7 keyWindow];
+    keyWindow = [firstObject keyWindow];
   }
 
   else
   {
     v8 = MEMORY[0x1E69DDA98];
-    v9 = [*MEMORY[0x1E69DDA98] delegate];
+    delegate = [*MEMORY[0x1E69DDA98] delegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [*v8 delegate];
-      v3 = [v10 window];
+      delegate2 = [*v8 delegate];
+      keyWindow = [delegate2 window];
     }
 
     else
     {
-      v3 = 0;
+      keyWindow = 0;
     }
   }
 
-  if (v3)
+  if (keyWindow)
   {
 LABEL_10:
-    v11 = [v3 traitCollection];
+    traitCollection = [keyWindow traitCollection];
   }
 
   else
   {
-    v11 = 0;
+    traitCollection = 0;
   }
 
-  v12 = [(_VUICoreApplication *)self keyTraitEnvironment];
-  v13 = v12;
-  if (!v11 && v12)
+  keyTraitEnvironment = [(_VUICoreApplication *)self keyTraitEnvironment];
+  v13 = keyTraitEnvironment;
+  if (!traitCollection && keyTraitEnvironment)
   {
-    v11 = [v12 traitCollection];
+    traitCollection = [keyTraitEnvironment traitCollection];
   }
 
-  if (v11)
+  if (traitCollection)
   {
     v56[0] = @"userInterfaceIdiom";
-    v14 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
     if (UserInterfaceString_onceToken != -1)
     {
       [_VUICoreApplication appTraitCollection];
     }
 
     v15 = UserInterfaceString_userInterfaceStrings;
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:userInterfaceIdiom];
     v17 = [v15 objectForKeyedSubscript:v16];
     v18 = v17;
     if (v17)
@@ -149,27 +149,27 @@ LABEL_10:
     v57[0] = v20;
     v56[1] = @"screenWidth";
     v21 = MEMORY[0x1E696AD98];
-    v54 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v54 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v53 = [v21 numberWithDouble:v22];
     v57[1] = v53;
     v56[2] = @"screenHeight";
     v23 = MEMORY[0x1E696AD98];
-    v52 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v52 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v51 = [v23 numberWithDouble:v24];
     v57[2] = v51;
     v56[3] = @"displayScale";
     v25 = MEMORY[0x1E696AD98];
-    [v11 displayScale];
+    [traitCollection displayScale];
     v50 = [v25 numberWithDouble:?];
     v57[3] = v50;
     v56[4] = @"layoutDirection";
-    v26 = [MEMORY[0x1E69DC668] sharedApplication];
-    v27 = [v26 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
     v28 = @"ltr";
-    if (v27 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v28 = @"rtl";
     }
@@ -177,70 +177,70 @@ LABEL_10:
     v57[4] = v28;
     v56[5] = @"horizontalSizeClass";
     v48 = v28;
-    v49 = SizeClassString([v11 horizontalSizeClass]);
+    v49 = SizeClassString([traitCollection horizontalSizeClass]);
     v57[5] = v49;
     v56[6] = @"verticalSizeClass";
-    v29 = SizeClassString([v11 verticalSizeClass]);
+    v29 = SizeClassString([traitCollection verticalSizeClass]);
     v57[6] = v29;
     v56[7] = @"preferredContentSizeCategory";
-    v30 = [v11 preferredContentSizeCategory];
-    v31 = v30;
-    if (*MEMORY[0x1E69DDC68] == v30)
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v31 = preferredContentSizeCategory;
+    if (*MEMORY[0x1E69DDC68] == preferredContentSizeCategory)
     {
       v32 = @"extraSmall";
     }
 
-    else if (*MEMORY[0x1E69DDC88] == v30)
+    else if (*MEMORY[0x1E69DDC88] == preferredContentSizeCategory)
     {
       v32 = @"small";
     }
 
-    else if (*MEMORY[0x1E69DDC78] == v30)
+    else if (*MEMORY[0x1E69DDC78] == preferredContentSizeCategory)
     {
       v32 = @"medium";
     }
 
-    else if (*MEMORY[0x1E69DDC70] == v30)
+    else if (*MEMORY[0x1E69DDC70] == preferredContentSizeCategory)
     {
       v32 = @"large";
     }
 
-    else if (*MEMORY[0x1E69DDC60] == v30)
+    else if (*MEMORY[0x1E69DDC60] == preferredContentSizeCategory)
     {
       v32 = @"extraLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC58] == v30)
+    else if (*MEMORY[0x1E69DDC58] == preferredContentSizeCategory)
     {
       v32 = @"extraExtraLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC50] == v30)
+    else if (*MEMORY[0x1E69DDC50] == preferredContentSizeCategory)
     {
       v32 = @"extraExtraExtraLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC40] == v30)
+    else if (*MEMORY[0x1E69DDC40] == preferredContentSizeCategory)
     {
       v32 = @"accessibilityMedium";
     }
 
-    else if (*MEMORY[0x1E69DDC38] == v30)
+    else if (*MEMORY[0x1E69DDC38] == preferredContentSizeCategory)
     {
       v32 = @"accessibilityLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC30] == v30)
+    else if (*MEMORY[0x1E69DDC30] == preferredContentSizeCategory)
     {
       v32 = @"accessibilityExtraLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC28] == v30)
+    else if (*MEMORY[0x1E69DDC28] == preferredContentSizeCategory)
     {
       v32 = @"accessibilityExtraExtraLarge";
     }
 
-    else if (*MEMORY[0x1E69DDC20] == v30)
+    else if (*MEMORY[0x1E69DDC20] == preferredContentSizeCategory)
     {
       v32 = @"accessibilityExtraExtraExtraLarge";
     }
@@ -254,17 +254,17 @@ LABEL_10:
     v56[8] = @"windowWidth";
     v34 = MEMORY[0x1E696AD98];
     v35 = v32;
-    [v3 bounds];
+    [keyWindow bounds];
     v37 = [v34 numberWithDouble:v36];
     v57[8] = v37;
     v56[9] = @"windowHeight";
     v38 = MEMORY[0x1E696AD98];
-    [v3 bounds];
+    [keyWindow bounds];
     v40 = [v38 numberWithDouble:v39];
     v57[9] = v40;
     v56[10] = @"orientation";
-    v41 = [*MEMORY[0x1E69DDA98] statusBarOrientation];
-    if ((v41 - 3) >= 2)
+    statusBarOrientation = [*MEMORY[0x1E69DDA98] statusBarOrientation];
+    if ((statusBarOrientation - 3) >= 2)
     {
       v42 = @"unspecified";
     }
@@ -274,7 +274,7 @@ LABEL_10:
       v42 = @"landscape";
     }
 
-    if ((v41 - 1) >= 2)
+    if ((statusBarOrientation - 1) >= 2)
     {
       v43 = v42;
     }
@@ -287,9 +287,9 @@ LABEL_10:
     v57[10] = v43;
     v56[11] = @"forceTouchCapable";
     v44 = v43;
-    v45 = [v11 forceTouchCapability];
+    forceTouchCapability = [traitCollection forceTouchCapability];
     v46 = @"false";
-    if (v45 == 2)
+    if (forceTouchCapability == 2)
     {
       v46 = @"true";
     }

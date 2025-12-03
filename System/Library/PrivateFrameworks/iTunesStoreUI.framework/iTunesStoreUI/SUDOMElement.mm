@@ -1,24 +1,24 @@
 @interface SUDOMElement
-+ (CGRect)frameForDOMElement:(id)a3;
++ (CGRect)frameForDOMElement:(id)element;
 - (CGRect)_frame;
 - (CGRect)frame;
 - (NSString)innerText;
-- (SUDOMElement)initWithDOMElement:(id)a3;
+- (SUDOMElement)initWithDOMElement:(id)element;
 - (UIImage)imageRepresentation;
 - (id)newImageView;
-- (id)newLabelForElementWithText:(id)a3;
+- (id)newLabelForElementWithText:(id)text;
 - (void)dealloc;
-- (void)setProperty:(id)a3 value:(id)a4;
+- (void)setProperty:(id)property value:(id)value;
 @end
 
 @implementation SUDOMElement
 
-- (SUDOMElement)initWithDOMElement:(id)a3
+- (SUDOMElement)initWithDOMElement:(id)element
 {
   v4 = [(SUDOMElement *)self init];
   if (v4)
   {
-    v4->_element = a3;
+    v4->_element = element;
   }
 
   return v4;
@@ -31,12 +31,12 @@
   [(SUDOMElement *)&v3 dealloc];
 }
 
-+ (CGRect)frameForDOMElement:(id)a3
++ (CGRect)frameForDOMElement:(id)element
 {
   WebThreadLock();
-  if (a3)
+  if (element)
   {
-    [a3 innerFrameQuad];
+    [element innerFrameQuad];
   }
 
   v4 = 0.0;
@@ -115,26 +115,26 @@
     return 0;
   }
 
-  v3 = [(DOMElement *)self->_element innerText];
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  innerText = [(DOMElement *)self->_element innerText];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
 
-  return [(NSString *)v3 stringByTrimmingCharactersInSet:v4];
+  return [(NSString *)innerText stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 }
 
 - (id)newImageView
 {
-  v3 = [(SUDOMElement *)self imageRepresentation];
-  if (v3)
+  imageRepresentation = [(SUDOMElement *)self imageRepresentation];
+  if (imageRepresentation)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v3];
+    imageRepresentation = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageRepresentation];
     [(SUDOMElement *)self frame];
-    [(UIImage *)v3 setFrame:?];
+    [(UIImage *)imageRepresentation setFrame:?];
   }
 
-  return v3;
+  return imageRepresentation;
 }
 
-- (id)newLabelForElementWithText:(id)a3
+- (id)newLabelForElementWithText:(id)text
 {
   v5 = [-[DOMElement ownerDocument](self->_element "ownerDocument")];
   v6 = [v5 getPropertyValue:@"font-family"];
@@ -149,12 +149,12 @@
   v10 = [v5 getPropertyCSSValue:@"color"];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 getRGBColorValue];
+    getRGBColorValue = [v10 getRGBColorValue];
   }
 
   else
   {
-    v11 = 0;
+    getRGBColorValue = 0;
   }
 
   v12 = 0;
@@ -167,11 +167,11 @@
       v12 = [v13 initWithFrame:?];
       [v12 setBackgroundColor:{objc_msgSend(MEMORY[0x1E69DC888], "clearColor")}];
       [v12 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "fontWithFamilyName:traits:size:", v6, 2, v8)}];
-      [v12 setText:a3];
-      v14 = [v11 color];
-      if (v14)
+      [v12 setText:text];
+      color = [getRGBColorValue color];
+      if (color)
       {
-        [v12 setTextColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithCGColor:", v14)}];
+        [v12 setTextColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithCGColor:", color)}];
       }
     }
   }
@@ -179,13 +179,13 @@
   return v12;
 }
 
-- (void)setProperty:(id)a3 value:(id)a4
+- (void)setProperty:(id)property value:(id)value
 {
   WebThreadLock();
-  [(DOMCSSStyleDeclaration *)[(DOMElement *)self->_element style] setProperty:a3 value:a4 priority:@"important"];
-  v7 = [(UIWebView *)self->_webView _browserView];
+  [(DOMCSSStyleDeclaration *)[(DOMElement *)self->_element style] setProperty:property value:value priority:@"important"];
+  _browserView = [(UIWebView *)self->_webView _browserView];
 
-  [v7 forceLayout];
+  [_browserView forceLayout];
 }
 
 - (CGRect)_frame

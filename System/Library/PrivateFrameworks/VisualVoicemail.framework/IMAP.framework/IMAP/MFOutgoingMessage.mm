@@ -1,12 +1,12 @@
 @interface MFOutgoingMessage
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
 - (id)messageData;
 - (id)messageDataHolder;
 - (id)mutableHeaders;
 - (unint64_t)messageSize;
 - (void)dealloc;
-- (void)setMessageBody:(id)a3;
+- (void)setMessageBody:(id)body;
 @end
 
 @implementation MFOutgoingMessage
@@ -18,30 +18,30 @@
   [(MFMailMessage *)&v2 dealloc];
 }
 
-- (void)setMessageBody:(id)a3
+- (void)setMessageBody:(id)body
 {
-  v5 = a3;
-  if (self->_messageBody != v5)
+  bodyCopy = body;
+  if (self->_messageBody != bodyCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_messageBody, a3);
-    v5 = v6;
+    v6 = bodyCopy;
+    objc_storeStrong(&self->_messageBody, body);
+    bodyCopy = v6;
   }
 }
 
 - (id)messageData
 {
-  v3 = [(MFOutgoingMessage *)self headers];
-  v4 = [v3 encodedHeaders];
+  headers = [(MFOutgoingMessage *)self headers];
+  encodedHeaders = [headers encodedHeaders];
 
-  if (v4)
+  if (encodedHeaders)
   {
-    v5 = [(MFMessageBody *)self->_messageBody rawData];
-    v6 = [MEMORY[0x277D24F70] dataWithCapacity:{objc_msgSend(v5, "length") + objc_msgSend(v4, "length")}];
-    [v6 appendData:v4];
-    if (v5)
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
+    v6 = [MEMORY[0x277D24F70] dataWithCapacity:{objc_msgSend(rawData, "length") + objc_msgSend(encodedHeaders, "length")}];
+    [v6 appendData:encodedHeaders];
+    if (rawData)
     {
-      [v6 appendData:v5];
+      [v6 appendData:rawData];
     }
   }
 
@@ -53,67 +53,67 @@
   return v6;
 }
 
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a5)
+  if (complete)
   {
-    *a5 = 1;
+    *complete = 1;
   }
 
-  if (a3)
+  if (data)
   {
-    *a3 = 0;
+    *data = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
-  v9 = [(MFOutgoingMessage *)self headers];
-  v10 = [v9 encodedHeaders];
+  headers = [(MFOutgoingMessage *)self headers];
+  encodedHeaders = [headers encodedHeaders];
 
-  if (v10)
+  if (encodedHeaders)
   {
-    v11 = [(MFMessageBody *)self->_messageBody rawData];
-    v12 = [v10 length];
-    v13 = [v11 length] + v12;
-    if (a4)
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
+    v12 = [encodedHeaders length];
+    v13 = [rawData length] + v12;
+    if (size)
     {
-      *a4 = v13;
+      *size = v13;
     }
 
-    if (a3)
+    if (data)
     {
       v14 = [MEMORY[0x277D24F70] dataWithCapacity:v13];
-      [v14 appendData:v10];
-      if (v11)
+      [v14 appendData:encodedHeaders];
+      if (rawData)
       {
-        [v14 appendData:v11];
+        [v14 appendData:rawData];
       }
 
       [v14 mf_makeImmutable];
       v15 = v14;
-      *a3 = v14;
+      *data = v14;
     }
   }
 
-  return v10 != 0;
+  return encodedHeaders != 0;
 }
 
 - (id)messageDataHolder
 {
-  v3 = [(MFOutgoingMessage *)self headers];
-  v4 = [v3 encodedHeaders];
+  headers = [(MFOutgoingMessage *)self headers];
+  encodedHeaders = [headers encodedHeaders];
 
-  if (v4)
+  if (encodedHeaders)
   {
-    v5 = [(MFMessageBody *)self->_messageBody rawData];
-    v6 = [MEMORY[0x277D24F08] dataHolderWithData:v4];
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
+    v6 = [MEMORY[0x277D24F08] dataHolderWithData:encodedHeaders];
     v7 = v6;
-    if (v5)
+    if (rawData)
     {
-      [v6 addData:v5];
+      [v6 addData:rawData];
     }
   }
 
@@ -125,51 +125,51 @@
   return v7;
 }
 
-- (BOOL)messageDataHolder:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageDataHolder:(id *)holder messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a5)
+  if (complete)
   {
-    *a5 = 1;
+    *complete = 1;
   }
 
-  if (a3)
+  if (holder)
   {
-    *a3 = 0;
+    *holder = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
-  v9 = [(MFOutgoingMessage *)self headers];
-  v10 = [v9 encodedHeaders];
+  headers = [(MFOutgoingMessage *)self headers];
+  encodedHeaders = [headers encodedHeaders];
 
-  if (v10)
+  if (encodedHeaders)
   {
-    v11 = [(MFMessageBody *)self->_messageBody rawData];
-    v12 = [v10 length];
-    v13 = [v11 length];
-    if (a4)
+    rawData = [(MFMessageBody *)self->_messageBody rawData];
+    v12 = [encodedHeaders length];
+    v13 = [rawData length];
+    if (size)
     {
-      *a4 = v13 + v12;
+      *size = v13 + v12;
     }
 
-    if (a3)
+    if (holder)
     {
-      v14 = [MEMORY[0x277D24F08] dataHolderWithData:v10];
+      v14 = [MEMORY[0x277D24F08] dataHolderWithData:encodedHeaders];
       v15 = v14;
-      if (v11)
+      if (rawData)
       {
-        [v14 addData:v11];
+        [v14 addData:rawData];
       }
 
       v16 = v15;
-      *a3 = v15;
+      *holder = v15;
     }
   }
 
-  return v10 != 0;
+  return encodedHeaders != 0;
 }
 
 - (id)mutableHeaders
@@ -189,11 +189,11 @@
 
 - (unint64_t)messageSize
 {
-  v3 = [(MFOutgoingMessage *)self headers];
-  v4 = [v3 encodedHeaders];
-  v5 = [v4 length];
-  v6 = [(MFMessageBody *)self->_messageBody rawData];
-  v7 = [v6 length];
+  headers = [(MFOutgoingMessage *)self headers];
+  encodedHeaders = [headers encodedHeaders];
+  v5 = [encodedHeaders length];
+  rawData = [(MFMessageBody *)self->_messageBody rawData];
+  v7 = [rawData length];
 
   return v7 + v5;
 }

@@ -1,15 +1,15 @@
 @interface JSSocialOnboardingWelcomeViewController
-- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation JSSocialOnboardingWelcomeViewController
 
-- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication39JSSocialOnboardingWelcomeViewController_textDrawingCache;
   type metadata accessor for TextDrawing.Cache();
@@ -26,31 +26,31 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   JSSocialOnboardingWelcomeViewController.loadView()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(JSSocialOnboardingWelcomeViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(JSSocialOnboardingWelcomeViewController *)&v8 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 navigationBar];
+    v6 = navigationController;
+    navigationBar = [navigationController navigationBar];
 
-    [v7 setPrefersLargeTitles:0];
-    v4 = v7;
+    [navigationBar setPrefersLargeTitles:0];
+    v4 = navigationBar;
   }
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSSocialOnboardingWelcomeViewController.viewDidLoad()();
 }
 
@@ -60,11 +60,11 @@
   v14.super_class = swift_getObjectType();
   v2 = v14.receiver;
   [(JSSocialOnboardingWelcomeViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = view;
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -80,7 +80,7 @@
   }
 }
 
-- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication39JSSocialOnboardingWelcomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

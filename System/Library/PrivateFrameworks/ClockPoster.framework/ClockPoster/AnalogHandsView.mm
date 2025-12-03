@@ -1,41 +1,41 @@
 @interface AnalogHandsView
-- (AnalogHandsView)initWithFixedSize:(CGSize)a3;
+- (AnalogHandsView)initWithFixedSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)hourHandConfiguration;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
 - (void)_startNewSecondHandAnimation;
 - (void)_stopHandAnimation;
-- (void)setOverrideDate:(id)a3;
+- (void)setOverrideDate:(id)date;
 @end
 
 @implementation AnalogHandsView
 
-- (AnalogHandsView)initWithFixedSize:(CGSize)a3
+- (AnalogHandsView)initWithFixedSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRoundToScale();
   self->_scaleFactor = v7;
 
   self->_size.width = width;
   self->_size.height = height;
-  v8 = [MEMORY[0x1E695B4F8] currentDevice];
+  currentDevice = [MEMORY[0x1E695B4F8] currentDevice];
   v11.receiver = self;
   v11.super_class = AnalogHandsView;
-  v9 = [(CLKUIAnalogHandsView *)&v11 initForDevice:v8];
+  v9 = [(CLKUIAnalogHandsView *)&v11 initForDevice:currentDevice];
 
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v9.receiver = self;
   v9.super_class = AnalogHandsView;
-  [(CLKUIAnalogHandsView *)&v9 sizeThatFits:a3.width, a3.height];
+  [(CLKUIAnalogHandsView *)&v9 sizeThatFits:fits.width, fits.height];
   scaleFactor = self->_scaleFactor;
   v6 = v5 * scaleFactor;
   v8 = v7 * scaleFactor;
@@ -52,24 +52,24 @@
   return result;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
     [(CLKUIAnalogHandsView *)self setFrozen:1];
     [(AnalogHandsView *)self _stopHandAnimation];
-    v5 = [(CLKUIAnalogHandsView *)self calendar];
+    calendar = [(CLKUIAnalogHandsView *)self calendar];
     CLKHourMinuteSecondAnglesForTime();
 
-    v6 = [(CLKUIAnalogHandsView *)self hourHandView];
-    [v6 setZRotation:0.0];
+    hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+    [hourHandView setZRotation:0.0];
 
-    v7 = [(CLKUIAnalogHandsView *)self minuteHandView];
-    [v7 setZRotation:0.0];
+    minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+    [minuteHandView setZRotation:0.0];
 
-    v8 = [(CLKUIAnalogHandsView *)self secondHandView];
-    [v8 setZRotation:0.0];
+    secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+    [secondHandView setZRotation:0.0];
   }
 
   else
@@ -89,36 +89,36 @@
 
   [v9 setByValue:&unk_1F5E8CC18];
   [v9 setDuration:*MEMORY[0x1E6994698]];
-  v5 = [(CLKUIAnalogHandsView *)self device];
-  [(AnalogHandsView *)self _timeAnimationFramesPerSecondForDevice:v5];
+  device = [(CLKUIAnalogHandsView *)self device];
+  [(AnalogHandsView *)self _timeAnimationFramesPerSecondForDevice:device];
   [v9 setFrameInterval:1.0 / v6];
 
   [v9 setDiscretizesTime:1];
-  v7 = [(CLKUIAnalogHandsView *)self secondHandView];
-  v8 = [v7 layer];
-  [v8 addAnimation:v9 forKey:@"time"];
+  secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+  layer = [secondHandView layer];
+  [layer addAnimation:v9 forKey:@"time"];
 }
 
 - (void)_stopHandAnimation
 {
-  v3 = [(CLKUIAnalogHandsView *)self hourHandView];
-  v4 = [v3 layer];
-  [v4 removeAnimationForKey:@"time"];
+  hourHandView = [(CLKUIAnalogHandsView *)self hourHandView];
+  layer = [hourHandView layer];
+  [layer removeAnimationForKey:@"time"];
 
-  v5 = [(CLKUIAnalogHandsView *)self minuteHandView];
-  v6 = [v5 layer];
-  [v6 removeAnimationForKey:@"time"];
+  minuteHandView = [(CLKUIAnalogHandsView *)self minuteHandView];
+  layer2 = [minuteHandView layer];
+  [layer2 removeAnimationForKey:@"time"];
 
-  v8 = [(CLKUIAnalogHandsView *)self secondHandView];
-  v7 = [v8 layer];
-  [v7 removeAnimationForKey:@"time"];
+  secondHandView = [(CLKUIAnalogHandsView *)self secondHandView];
+  layer3 = [secondHandView layer];
+  [layer3 removeAnimationForKey:@"time"];
 }
 
 - (id)hourHandConfiguration
 {
   v3 = MEMORY[0x1E69946A0];
-  v4 = [MEMORY[0x1E695B4F8] currentDevice];
-  v5 = [v3 defaultHourConfigurationForDevice:v4];
+  currentDevice = [MEMORY[0x1E695B4F8] currentDevice];
+  v5 = [v3 defaultHourConfigurationForDevice:currentDevice];
 
   scaleFactor = self->_scaleFactor;
   [v5 handWidth];
@@ -139,8 +139,8 @@
   v15 = scaleFactor * v14;
   [v5 directionalShadowOffset];
   [v5 setDirectionalShadowOffset:{v15, scaleFactor * v16}];
-  v17 = [(AnalogHandsView *)self secondHandConfiguration];
-  [v17 handLength];
+  secondHandConfiguration = [(AnalogHandsView *)self secondHandConfiguration];
+  [secondHandConfiguration handLength];
   v19 = v18;
   [v5 armLength];
   v21 = -(v20 - v19 * 0.54);
@@ -157,8 +157,8 @@
 - (id)minuteHandConfiguration
 {
   v3 = MEMORY[0x1E69946A0];
-  v4 = [MEMORY[0x1E695B4F8] currentDevice];
-  v5 = [v3 defaultMinuteConfigurationForDevice:v4];
+  currentDevice = [MEMORY[0x1E695B4F8] currentDevice];
+  v5 = [v3 defaultMinuteConfigurationForDevice:currentDevice];
 
   scaleFactor = self->_scaleFactor;
   [v5 handWidth];
@@ -179,8 +179,8 @@
   v15 = scaleFactor * v14;
   [v5 directionalShadowOffset];
   [v5 setDirectionalShadowOffset:{v15, scaleFactor * v16}];
-  v17 = [(AnalogHandsView *)self secondHandConfiguration];
-  [v17 handLength];
+  secondHandConfiguration = [(AnalogHandsView *)self secondHandConfiguration];
+  [secondHandConfiguration handLength];
   v19 = v18;
   [v5 armLength];
   v21 = -(v20 - v19 * 0.92);
@@ -197,15 +197,15 @@
 - (id)secondHandConfiguration
 {
   v3 = MEMORY[0x1E69946A0];
-  v4 = [MEMORY[0x1E695B4F8] currentDevice];
-  v5 = [v3 defaultSecondConfigurationForDevice:v4];
+  currentDevice = [MEMORY[0x1E695B4F8] currentDevice];
+  v5 = [v3 defaultSecondConfigurationForDevice:currentDevice];
 
   scaleFactor = self->_scaleFactor;
   [v5 handWidth];
   [v5 setHandWidth:scaleFactor * v7];
   height = self->_size.height;
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRoundToScale();
   [v5 setHandLength:?];
 

@@ -1,6 +1,6 @@
 @interface MTRTLSCertificateManagementClusterTLSCertStruct
 - (MTRTLSCertificateManagementClusterTLSCertStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSCertificateManagementClusterTLSCertStruct);
-  v5 = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self caid];
-  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setCaid:v5];
+  caid = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self caid];
+  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setCaid:caid];
 
-  v6 = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self certificate];
-  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setCertificate:v6];
+  certificate = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self certificate];
+  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setCertificate:certificate];
 
-  v7 = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self fabricIndex];
-  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setFabricIndex:v7];
+  fabricIndex = [(MTRTLSCertificateManagementClusterTLSCertStruct *)self fabricIndex];
+  [(MTRTLSCertificateManagementClusterTLSCertStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

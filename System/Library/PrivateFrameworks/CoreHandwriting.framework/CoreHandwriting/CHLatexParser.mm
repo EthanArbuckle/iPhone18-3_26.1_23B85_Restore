@@ -1,36 +1,36 @@
 @interface CHLatexParser
-- (CHLatexParser)initWithGrammar:(id)a3 parseNormalizedLatex:(BOOL)a4;
-- (id)_initializeParseTableForNormalizedLatex:(id)a3;
-- (id)_initializeParseTableForPlainText:(id)a3;
-- (id)_joinNumbers:(id)a3;
-- (id)parseLatex:(id)a3;
-- (id)parseLatex:(id)a3 outCorrectedLatex:(id *)a4;
+- (CHLatexParser)initWithGrammar:(id)grammar parseNormalizedLatex:(BOOL)latex;
+- (id)_initializeParseTableForNormalizedLatex:(id)latex;
+- (id)_initializeParseTableForPlainText:(id)text;
+- (id)_joinNumbers:(id)numbers;
+- (id)parseLatex:(id)latex;
+- (id)parseLatex:(id)latex outCorrectedLatex:(id *)correctedLatex;
 @end
 
 @implementation CHLatexParser
 
-- (CHLatexParser)initWithGrammar:(id)a3 parseNormalizedLatex:(BOOL)a4
+- (CHLatexParser)initWithGrammar:(id)grammar parseNormalizedLatex:(BOOL)latex
 {
-  v7 = a3;
+  grammarCopy = grammar;
   v11.receiver = self;
   v11.super_class = CHLatexParser;
   v8 = [(CHLatexParser *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_grammar, a3);
-    v9->_parseNormalizedLatex = a4;
+    objc_storeStrong(&v8->_grammar, grammar);
+    v9->_parseNormalizedLatex = latex;
   }
 
   return v9;
 }
 
-- (id)_initializeParseTableForNormalizedLatex:(id)a3
+- (id)_initializeParseTableForNormalizedLatex:(id)latex
 {
   v235 = *MEMORY[0x1E69E9840];
-  v224 = a3;
+  latexCopy = latex;
   v3 = [CHParseTable alloc];
-  v9 = objc_msgSend_count(v224, v4, v5, v6, v7, v8);
+  v9 = objc_msgSend_count(latexCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_grammar(self, v10, v11, v12, v13, v14);
   v21 = objc_msgSend_nonTerminals(v15, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_count(v21, v22, v23, v24, v25, v26);
@@ -40,9 +40,9 @@
   objc_msgSend_setMaximumFractionDigits_(v221, v31, 9, v32, v33, v34);
   objc_msgSend_setRoundingMode_(v221, v35, 6, v36, v37, v38);
   v228 = 0;
-  for (i = 0; i < objc_msgSend_count(v224, v39, v40, v41, v42, v43); ++i)
+  for (i = 0; i < objc_msgSend_count(latexCopy, v39, v40, v41, v42, v43); ++i)
   {
-    v48 = objc_msgSend_objectAtIndexedSubscript_(v224, v44, i, v45, v46, v47);
+    v48 = objc_msgSend_objectAtIndexedSubscript_(latexCopy, v44, i, v45, v46, v47);
     v227 = objc_msgSend_length(v48, v49, v50, v51, v52, v53);
     v222 = objc_msgSend_length(v48, v54, v55, v56, v57, v58);
     v223 = objc_msgSend_numberFromString_(v221, v59, v48, v60, v61, v62);
@@ -142,17 +142,17 @@
   return v225;
 }
 
-- (id)_initializeParseTableForPlainText:(id)a3
+- (id)_initializeParseTableForPlainText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [CHParseTable alloc];
-  v11 = objc_msgSend_length(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_length(textCopy, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_grammar(self, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_nonTerminals(v17, v18, v19, v20, v21, v22);
   v29 = objc_msgSend_count(v23, v24, v25, v26, v27, v28);
   v33 = objc_msgSend_initWithInputLength_grammarSize_(v5, v30, v11, v29, v31, v32);
 
-  v39 = objc_msgSend_length(v4, v34, v35, v36, v37, v38);
+  v39 = objc_msgSend_length(textCopy, v34, v35, v36, v37, v38);
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = sub_18386D288;
@@ -160,18 +160,18 @@
   v45[4] = self;
   v40 = v33;
   v46 = v40;
-  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v4, v41, 0, v39, 2, v45);
+  objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(textCopy, v41, 0, v39, 2, v45);
   v42 = v46;
   v43 = v40;
 
   return v40;
 }
 
-- (id)_joinNumbers:(id)a3
+- (id)_joinNumbers:(id)numbers
 {
-  v3 = a3;
+  numbersCopy = numbers;
   v9 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v4, v5, v6, v7, v8);
-  v14 = objc_msgSend_componentsSeparatedByCharactersInSet_(v3, v10, v9, v11, v12, v13);
+  v14 = objc_msgSend_componentsSeparatedByCharactersInSet_(numbersCopy, v10, v9, v11, v12, v13);
 
   v20 = objc_msgSend_string(MEMORY[0x1E696AD60], v15, v16, v17, v18, v19);
   if (objc_msgSend_count(v14, v21, v22, v23, v24, v25))
@@ -215,23 +215,23 @@ LABEL_10:
   return v20;
 }
 
-- (id)parseLatex:(id)a3
+- (id)parseLatex:(id)latex
 {
-  v5 = objc_msgSend_parseLatex_outCorrectedLatex_(self, a2, a3, 0, v3, v4);
+  v5 = objc_msgSend_parseLatex_outCorrectedLatex_(self, a2, latex, 0, v3, v4);
 
   return v5;
 }
 
-- (id)parseLatex:(id)a3 outCorrectedLatex:(id *)a4
+- (id)parseLatex:(id)latex outCorrectedLatex:(id *)correctedLatex
 {
   v515 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v471 = self;
-  v455 = objc_msgSend__joinNumbers_(self, v7, v6, v8, v9, v10);
+  latexCopy = latex;
+  selfCopy = self;
+  v455 = objc_msgSend__joinNumbers_(self, v7, latexCopy, v8, v9, v10);
 
-  if (a4)
+  if (correctedLatex)
   {
-    *a4 = v455;
+    *correctedLatex = v455;
   }
 
   v452 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12, v13, v14, v15);
@@ -273,17 +273,17 @@ LABEL_10:
     while (v34);
   }
 
-  if (objc_msgSend_parseNormalizedLatex(v471, v38, v39, v40, v41, v42))
+  if (objc_msgSend_parseNormalizedLatex(selfCopy, v38, v39, v40, v41, v42))
   {
     v454 = objc_msgSend_count(obj, v43, v44, v45, v46, v47);
-    v56 = objc_msgSend__initializeParseTableForNormalizedLatex_(v471, v48, obj, v49, v50, v51);
+    v56 = objc_msgSend__initializeParseTableForNormalizedLatex_(selfCopy, v48, obj, v49, v50, v51);
   }
 
   else
   {
     v57 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v455, v43, @" ", &stru_1EF1C0318, v46, v47);
     v454 = objc_msgSend_length(v57, v58, v59, v60, v61, v62);
-    v56 = objc_msgSend__initializeParseTableForPlainText_(v471, v63, v57, v64, v65, v66);
+    v56 = objc_msgSend__initializeParseTableForPlainText_(selfCopy, v63, v57, v64, v65, v66);
   }
 
   v463 = v56;
@@ -401,7 +401,7 @@ LABEL_10:
                               v484 = 0u;
                               v485 = 0u;
                               v486 = 0u;
-                              v261 = objc_msgSend_grammar(v471, v256, v257, v258, v259, v260);
+                              v261 = objc_msgSend_grammar(selfCopy, v256, v257, v258, v259, v260);
                               v464 = objc_msgSend_nonTerminalProductions(v261, v262, v263, v264, v265, v266);
 
                               v269 = objc_msgSend_countByEnumeratingWithState_objects_count_(v464, v267, &v483, v509, 16, v268);
@@ -470,7 +470,7 @@ LABEL_10:
                                         objc_msgSend_setCombinations_(inited, v393, v334 + 1, v394, v395, v396);
                                         objc_msgSend_setProbability_(inited, v397, v398, v399, v400, v401, v363);
                                         v402 = [CHParseTree alloc];
-                                        v408 = objc_msgSend_grammar(v471, v403, v404, v405, v406, v407);
+                                        v408 = objc_msgSend_grammar(selfCopy, v403, v404, v405, v406, v407);
                                         v413 = objc_msgSend_initWithGrammar_(v402, v409, v408, v410, v411, v412);
                                         objc_msgSend_setParseTree_(inited, v414, v413, v415, v416, v417);
 
@@ -594,7 +594,7 @@ LABEL_132:
             }
 
             v102 = *(*(&v476 + 1) + 8 * kk);
-            if (objc_msgSend_parseNormalizedLatex(v471, v94, v95, v96, v97, v98))
+            if (objc_msgSend_parseNormalizedLatex(selfCopy, v94, v95, v96, v97, v98))
             {
               objc_msgSend_terminalsRange(v102, v103, v104, v105, v106, v107);
             }
@@ -668,7 +668,7 @@ LABEL_50:
       goto LABEL_50;
     }
 
-    if (objc_msgSend_parseNormalizedLatex(v471, v136, v137, v138, v139, v140))
+    if (objc_msgSend_parseNormalizedLatex(selfCopy, v136, v137, v138, v139, v140))
     {
       v146 = [CHLatexParseTree alloc];
     }
@@ -678,7 +678,7 @@ LABEL_50:
       v146 = [CHParseTree alloc];
     }
 
-    v147 = objc_msgSend_grammar(v471, v141, v142, v143, v144, v145);
+    v147 = objc_msgSend_grammar(selfCopy, v141, v142, v143, v144, v145);
     v152 = objc_msgSend_initWithGrammar_(v146, v148, v147, v149, v150, v151);
 
     v158 = objc_msgSend_nonTerminal(v123, v153, v154, v155, v156, v157);

@@ -1,14 +1,14 @@
 @interface RETapGesture
-- (void)onUITap:(id)a3;
+- (void)onUITap:(id)tap;
 @end
 
 @implementation RETapGesture
 
-- (void)onUITap:(id)a3
+- (void)onUITap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  RETapGesture.onUITap(_:)(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  RETapGesture.onUITap(_:)(tapCopy);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MNNavigationServiceDirectionsRequestTicket
-- (MNNavigationServiceDirectionsRequestTicket)initWithProxy:(id)a3 request:(id)a4;
+- (MNNavigationServiceDirectionsRequestTicket)initWithProxy:(id)proxy request:(id)request;
 - (void)cancel;
-- (void)submitWithHandler:(id)a3;
+- (void)submitWithHandler:(id)handler;
 @end
 
 @implementation MNNavigationServiceDirectionsRequestTicket
@@ -22,10 +22,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitWithHandler:(id)a3
+- (void)submitWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MNGetMNNavigationServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -44,7 +44,7 @@
   v12[2] = __64__MNNavigationServiceDirectionsRequestTicket_submitWithHandler___block_invoke;
   v12[3] = &unk_1E842AC48;
   objc_copyWeak(&v14, buf);
-  v10 = v4;
+  v10 = handlerCopy;
   v13 = v10;
   [(MNNavigationClientProxy *)proxy requestDirections:request withIdentifier:v9 handler:v12];
 
@@ -120,21 +120,21 @@ void __64__MNNavigationServiceDirectionsRequestTicket_submitWithHandler___block_
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (MNNavigationServiceDirectionsRequestTicket)initWithProxy:(id)a3 request:(id)a4
+- (MNNavigationServiceDirectionsRequestTicket)initWithProxy:(id)proxy request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = MNNavigationServiceDirectionsRequestTicket;
   v9 = [(MNNavigationServiceDirectionsRequestTicket *)&v14 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     requestIdentifier = v9->_requestIdentifier;
-    v9->_requestIdentifier = v10;
+    v9->_requestIdentifier = uUID;
 
-    objc_storeStrong(&v9->_proxy, a3);
-    objc_storeStrong(&v9->_request, a4);
+    objc_storeStrong(&v9->_proxy, proxy);
+    objc_storeStrong(&v9->_request, request);
     v12 = v9;
   }
 

@@ -1,19 +1,19 @@
 @interface LNFeatureFlagUtilities
-+ (BOOL)featureEnabledWithDomain:(id)a3 feature:(id)a4;
-+ (BOOL)featureEnabledWithDomainFeaturePair:(id)a3;
++ (BOOL)featureEnabledWithDomain:(id)domain feature:(id)feature;
++ (BOOL)featureEnabledWithDomainFeaturePair:(id)pair;
 @end
 
 @implementation LNFeatureFlagUtilities
 
-+ (BOOL)featureEnabledWithDomainFeaturePair:(id)a3
++ (BOOL)featureEnabledWithDomainFeaturePair:(id)pair
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
-  v4 = [v3 firstObject];
-  v5 = [v3 lastObject];
-  v6 = v5;
-  if (v4)
+  v3 = [pair componentsSeparatedByString:@"/"];
+  firstObject = [v3 firstObject];
+  lastObject = [v3 lastObject];
+  v6 = lastObject;
+  if (firstObject)
   {
-    v7 = v5 == 0;
+    v7 = lastObject == 0;
   }
 
   else
@@ -28,20 +28,20 @@
 
   else
   {
-    v8 = [LNFeatureFlagUtilities featureEnabledWithDomain:v4 feature:v5];
+    v8 = [LNFeatureFlagUtilities featureEnabledWithDomain:firstObject feature:lastObject];
   }
 
   return v8;
 }
 
-+ (BOOL)featureEnabledWithDomain:(id)a3 feature:(id)a4
++ (BOOL)featureEnabledWithDomain:(id)domain feature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a3 UTF8String];
-  v9 = [v7 UTF8String];
+  domainCopy = domain;
+  featureCopy = feature;
+  uTF8String = [domain UTF8String];
+  uTF8String2 = [featureCopy UTF8String];
 
-  return __os_feature_enabled_impl(v8, v9);
+  return __os_feature_enabled_impl(uTF8String, uTF8String2);
 }
 
 @end

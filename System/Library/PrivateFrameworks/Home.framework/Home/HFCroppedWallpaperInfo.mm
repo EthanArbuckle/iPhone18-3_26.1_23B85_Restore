@@ -1,37 +1,37 @@
 @interface HFCroppedWallpaperInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)center;
-- (HFCroppedWallpaperInfo)initWithDictionary:(id)a3;
-- (HFCroppedWallpaperInfo)initWithSource:(int64_t)a3 center:(CGPoint)a4 scale:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFCroppedWallpaperInfo)initWithDictionary:(id)dictionary;
+- (HFCroppedWallpaperInfo)initWithSource:(int64_t)source center:(CGPoint)center scale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation HFCroppedWallpaperInfo
 
-- (HFCroppedWallpaperInfo)initWithSource:(int64_t)a3 center:(CGPoint)a4 scale:(double)a5
+- (HFCroppedWallpaperInfo)initWithSource:(int64_t)source center:(CGPoint)center scale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v10.receiver = self;
   v10.super_class = HFCroppedWallpaperInfo;
   result = [(HFCroppedWallpaperInfo *)&v10 init];
   if (result)
   {
-    result->_source = a3;
+    result->_source = source;
     result->_center.x = x;
     result->_center.y = y;
-    result->_scale = a5;
+    result->_scale = scale;
   }
 
   return result;
 }
 
-- (HFCroppedWallpaperInfo)initWithDictionary:(id)a3
+- (HFCroppedWallpaperInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Source"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Source"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,8 +43,8 @@
     goto LABEL_10;
   }
 
-  v6 = [v5 integerValue];
-  if (v6 >= 2)
+  integerValue = [v5 integerValue];
+  if (integerValue >= 2)
   {
     if (v5)
     {
@@ -52,23 +52,23 @@
     }
 
 LABEL_10:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
-  v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"Center"];
+  v7 = integerValue;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"Center"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 objectForKeyedSubscript:@"Scale"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Scale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = CGPointFromString(v8);
       [v9 doubleValue];
       self = [(HFCroppedWallpaperInfo *)self initWithSource:v7 center:v10.x scale:v10.y, v11];
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -78,7 +78,7 @@ LABEL_10:
         NSLog(&cfstr_CropScaleMissi.isa, v9);
       }
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -89,32 +89,32 @@ LABEL_10:
       NSLog(&cfstr_CropCenterMiss.isa, v8);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
 LABEL_19:
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFCroppedWallpaperInfo *)self source];
+  source = [(HFCroppedWallpaperInfo *)self source];
   [(HFCroppedWallpaperInfo *)self center];
   v7 = v6;
   v9 = v8;
   [(HFCroppedWallpaperInfo *)self scale];
 
-  return [v4 initWithSource:v5 center:v7 scale:{v9, v10}];
+  return [v4 initWithSource:source center:v7 scale:{v9, v10}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     [v7 center];
     v9 = v8;
     v11 = v10;

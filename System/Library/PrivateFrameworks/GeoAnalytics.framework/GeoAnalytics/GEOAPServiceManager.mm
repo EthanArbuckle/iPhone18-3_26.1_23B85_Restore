@@ -1,6 +1,6 @@
 @interface GEOAPServiceManager
 + (id)sharedManager;
-+ (void)useProxyClass:(Class)a3;
++ (void)useProxyClass:(Class)class;
 - (BOOL)AppleInternal;
 - (BOOL)evDirectionsFeedbackAllowed;
 - (BOOL)evDirectionsFeedbackAuth;
@@ -10,11 +10,11 @@
 - (BOOL)usageCountCollectionIsDisabledForCurrentProcess;
 - (GEOAPServiceManager)init;
 - (void)dealloc;
-- (void)logToDiagAndUsageUnderBugId:(id)a3 filePrefix:(id)a4 logData:(id)a5;
-- (void)reportCuratedCollectionWasViewedWithId:(unint64_t)a3 completion:(id)a4 completionQueue:(id)a5;
-- (void)reportDailySettings:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)updateSharedStateType:(int)a3 state:(id)a4 completion:(id)a5 completionQueue:(id)a6;
+- (void)logToDiagAndUsageUnderBugId:(id)id filePrefix:(id)prefix logData:(id)data;
+- (void)reportCuratedCollectionWasViewedWithId:(unint64_t)id completion:(id)completion completionQueue:(id)queue;
+- (void)reportDailySettings:(id)settings completionQueue:(id)queue completion:(id)completion;
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completionQueue:(id)queue completion:(id)completion;
+- (void)updateSharedStateType:(int)type state:(id)state completion:(id)completion completionQueue:(id)queue;
 @end
 
 @implementation GEOAPServiceManager
@@ -358,19 +358,19 @@ uint64_t __50__GEOAPServiceManager_evDirectionsFeedbackAllowed__block_invoke(uin
   return v3;
 }
 
-- (void)logToDiagAndUsageUnderBugId:(id)a3 filePrefix:(id)a4 logData:(id)a5
+- (void)logToDiagAndUsageUnderBugId:(id)id filePrefix:(id)prefix logData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  prefixCopy = prefix;
+  dataCopy = data;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__GEOAPServiceManager_logToDiagAndUsageUnderBugId_filePrefix_logData___block_invoke;
   v18[3] = &unk_1E79539C0;
-  v10 = v9;
+  v10 = dataCopy;
   v19 = v10;
-  v11 = v7;
-  v12 = v8;
+  v11 = idCopy;
+  v12 = prefixCopy;
   v13 = v18;
   v25 = 0;
   v26 = &v25;
@@ -415,26 +415,26 @@ uint64_t __50__GEOAPServiceManager_evDirectionsFeedbackAllowed__block_invoke(uin
 
 - (BOOL)AppleInternal
 {
-  v2 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  isInternalInstall = [mEMORY[0x1E69A2398] isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
-- (void)reportDailySettings:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)reportDailySettings:(id)settings completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   proxy = self->_proxy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__GEOAPServiceManager_reportDailySettings_completionQueue_completion___block_invoke;
   v13[3] = &unk_1E7953998;
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
-  [(GEOAPServiceProxy *)proxy reportDailySettings:a3 completion:v13];
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  [(GEOAPServiceProxy *)proxy reportDailySettings:settings completion:v13];
 }
 
 void __70__GEOAPServiceManager_reportDailySettings_completionQueue_completion___block_invoke(uint64_t a1, void *a2)
@@ -483,21 +483,21 @@ void __94__GEOAPServiceManager_reportDailyUsageCountType_usageString_usageBool_a
   }
 }
 
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  msgCopy = msg;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v11 = dispatch_get_global_queue(21, 0);
+    queueCopy = dispatch_get_global_queue(21, 0);
   }
 
   if (GEOConfigGetBOOL())
   {
-    if (v12)
+    if (completionCopy)
     {
-      dispatch_async(v11, v12);
+      dispatch_async(queueCopy, completionCopy);
     }
   }
 
@@ -508,9 +508,9 @@ void __94__GEOAPServiceManager_reportDailyUsageCountType_usageString_usageBool_a
     v14[1] = 3221225472;
     v14[2] = __77__GEOAPServiceManager_reportLogMsg_uploadBatchId_completionQueue_completion___block_invoke;
     v14[3] = &unk_1E7959478;
-    v16 = v12;
-    v15 = v11;
-    [(GEOAPServiceProxy *)proxy reportLogMsg:v10 uploadBatchId:a4 completion:v14];
+    v16 = completionCopy;
+    v15 = queueCopy;
+    [(GEOAPServiceProxy *)proxy reportLogMsg:msgCopy uploadBatchId:id completion:v14];
   }
 }
 
@@ -572,7 +572,7 @@ uint64_t __27__GEOAPServiceManager_init__block_invoke_2(uint64_t a1)
   return result;
 }
 
-+ (void)useProxyClass:(Class)a3
++ (void)useProxyClass:(Class)class
 {
   v4 = &unk_1F2057D08;
   if (_sharedManager)
@@ -593,7 +593,7 @@ LABEL_11:
   }
 
   v8 = v4;
-  if (([(objc_class *)a3 conformsToProtocol:v4]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:v4]& 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -607,18 +607,18 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  _proxyClass = a3;
+  _proxyClass = class;
 }
 
-- (void)reportCuratedCollectionWasViewedWithId:(unint64_t)a3 completion:(id)a4 completionQueue:(id)a5
+- (void)reportCuratedCollectionWasViewedWithId:(unint64_t)id completion:(id)completion completionQueue:(id)queue
 {
-  block = a4;
-  v6 = a5;
+  block = completion;
+  queueCopy = queue;
   v7 = block;
-  v8 = v6;
+  v8 = queueCopy;
   if (block)
   {
-    if (!v6)
+    if (!queueCopy)
     {
       global_queue = geo_get_global_queue();
       v7 = block;
@@ -629,20 +629,20 @@ LABEL_11:
   }
 }
 
-- (void)updateSharedStateType:(int)a3 state:(id)a4 completion:(id)a5 completionQueue:(id)a6
+- (void)updateSharedStateType:(int)type state:(id)state completion:(id)completion completionQueue:(id)queue
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = a6;
-  global_queue = v9;
-  if (v8)
+  stateCopy = state;
+  completionCopy = completion;
+  queueCopy = queue;
+  global_queue = queueCopy;
+  if (completionCopy)
   {
-    if (!v9)
+    if (!queueCopy)
     {
       global_queue = geo_get_global_queue();
     }
 
-    dispatch_async(global_queue, v8);
+    dispatch_async(global_queue, completionCopy);
   }
 }
 

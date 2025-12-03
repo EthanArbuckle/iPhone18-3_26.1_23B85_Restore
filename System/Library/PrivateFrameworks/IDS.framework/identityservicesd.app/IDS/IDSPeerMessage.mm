@@ -1,7 +1,7 @@
 @interface IDSPeerMessage
 - (IDSPeerMessage)init;
-- (IDSPeerMessage)initWithHighPriority:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSPeerMessage)initWithHighPriority:(BOOL)priority;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
@@ -22,15 +22,15 @@
   return v3;
 }
 
-- (IDSPeerMessage)initWithHighPriority:(BOOL)a3
+- (IDSPeerMessage)initWithHighPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v4 = [(IDSPeerMessage *)self init];
   v5 = v4;
   if (v4)
   {
-    [(IDSPeerMessage *)v4 setHighPriority:v3];
-    if (!v3)
+    [(IDSPeerMessage *)v4 setHighPriority:priorityCopy];
+    if (!priorityCopy)
     {
       [(IDSPeerMessage *)v5 setTimeout:1200.0];
     }
@@ -39,63 +39,63 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24.receiver = self;
   v24.super_class = IDSPeerMessage;
-  v4 = [(IDSPeerMessage *)&v24 copyWithZone:a3];
-  v5 = [(IDSPeerMessage *)self priority];
-  [v4 setPriority:v5];
+  v4 = [(IDSPeerMessage *)&v24 copyWithZone:zone];
+  priority = [(IDSPeerMessage *)self priority];
+  [v4 setPriority:priority];
 
-  v6 = [(IDSPeerMessage *)self encryptionType];
-  [v4 setEncryptionType:v6];
+  encryptionType = [(IDSPeerMessage *)self encryptionType];
+  [v4 setEncryptionType:encryptionType];
 
-  v7 = [(IDSPeerMessage *)self encryptedData];
-  [v4 setEncryptedData:v7];
+  encryptedData = [(IDSPeerMessage *)self encryptedData];
+  [v4 setEncryptedData:encryptedData];
 
-  v8 = [(IDSPeerMessage *)self targetPeerID];
-  [v4 setTargetPeerID:v8];
+  targetPeerID = [(IDSPeerMessage *)self targetPeerID];
+  [v4 setTargetPeerID:targetPeerID];
 
-  v9 = [(IDSPeerMessage *)self targetShortHandle];
-  [v4 setTargetShortHandle:v9];
+  targetShortHandle = [(IDSPeerMessage *)self targetShortHandle];
+  [v4 setTargetShortHandle:targetShortHandle];
 
-  v10 = [(IDSPeerMessage *)self sourcePeerID];
-  [v4 setSourcePeerID:v10];
+  sourcePeerID = [(IDSPeerMessage *)self sourcePeerID];
+  [v4 setSourcePeerID:sourcePeerID];
 
-  v11 = [(IDSPeerMessage *)self sourceShortHandle];
-  [v4 setSourceShortHandle:v11];
+  sourceShortHandle = [(IDSPeerMessage *)self sourceShortHandle];
+  [v4 setSourceShortHandle:sourceShortHandle];
 
-  v12 = [(IDSPeerMessage *)self targetToken];
-  [v4 setTargetToken:v12];
+  targetToken = [(IDSPeerMessage *)self targetToken];
+  [v4 setTargetToken:targetToken];
 
-  v13 = [(IDSPeerMessage *)self targetSessionToken];
-  [v4 setTargetSessionToken:v13];
+  targetSessionToken = [(IDSPeerMessage *)self targetSessionToken];
+  [v4 setTargetSessionToken:targetSessionToken];
 
-  v14 = [(IDSPeerMessage *)self expirationDate];
-  [v4 setExpirationDate:v14];
+  expirationDate = [(IDSPeerMessage *)self expirationDate];
+  [v4 setExpirationDate:expirationDate];
 
   [v4 setFireAndForget:{-[IDSPeerMessage fireAndForget](self, "fireAndForget")}];
-  v15 = [(IDSPeerMessage *)self additionalDictionary];
-  [v4 setAdditionalDictionary:v15];
+  additionalDictionary = [(IDSPeerMessage *)self additionalDictionary];
+  [v4 setAdditionalDictionary:additionalDictionary];
 
-  v16 = [(IDSPeerMessage *)self messageID];
-  [v4 setMessageID:v16];
+  messageID = [(IDSPeerMessage *)self messageID];
+  [v4 setMessageID:messageID];
 
-  v17 = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
-  [v4 setDeliveryMinimumTimeDelay:v17];
+  deliveryMinimumTimeDelay = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
+  [v4 setDeliveryMinimumTimeDelay:deliveryMinimumTimeDelay];
 
-  v18 = [(IDSPeerMessage *)self deliveryMinimumTime];
-  [v4 setDeliveryMinimumTime:v18];
+  deliveryMinimumTime = [(IDSPeerMessage *)self deliveryMinimumTime];
+  [v4 setDeliveryMinimumTime:deliveryMinimumTime];
 
-  v19 = [(IDSPeerMessage *)self sendMode];
-  [v4 setSendMode:v19];
+  sendMode = [(IDSPeerMessage *)self sendMode];
+  [v4 setSendMode:sendMode];
 
-  v20 = [(IDSPeerMessage *)self sendReasonContainer];
-  [v4 setSendReasonContainer:v20];
+  sendReasonContainer = [(IDSPeerMessage *)self sendReasonContainer];
+  [v4 setSendReasonContainer:sendReasonContainer];
 
   [v4 setLastBeforeRateLimit:{-[IDSPeerMessage lastBeforeRateLimit](self, "lastBeforeRateLimit")}];
-  v21 = [(IDSPeerMessage *)self sendMetric];
-  v22 = [v21 copy];
+  sendMetric = [(IDSPeerMessage *)self sendMetric];
+  v22 = [sendMetric copy];
   [v4 setSendMetric:v22];
 
   return v4;
@@ -105,8 +105,8 @@
 {
   v5.receiver = self;
   v5.super_class = IDSPeerMessage;
-  v2 = [(IDSPeerMessage *)&v5 requiredKeys];
-  v3 = [v2 mutableCopy];
+  requiredKeys = [(IDSPeerMessage *)&v5 requiredKeys];
+  v3 = [requiredKeys mutableCopy];
 
   if (!v3)
   {
@@ -124,23 +124,23 @@
 {
   v43.receiver = self;
   v43.super_class = IDSPeerMessage;
-  v3 = [(IDSPeerMessage *)&v43 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSPeerMessage *)&v43 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSPeerMessage *)self messageID];
-  v6 = v5;
-  if (v5)
+  messageID = [(IDSPeerMessage *)self messageID];
+  v6 = messageID;
+  if (messageID)
   {
-    v7 = [v5 UTF8String];
-    if (v7)
+    uTF8String = [messageID UTF8String];
+    if (uTF8String)
     {
       memset(uu, 170, sizeof(uu));
-      uuid_parse(v7, uu);
+      uuid_parse(uTF8String, uu);
       v42 = 0;
       jw_uuid_to_data();
       v8 = 0;
@@ -159,10 +159,10 @@
   v10 = Mutable;
   v41 = v10;
   [(NSDictionary *)additionalDictionary enumerateKeysAndObjectsUsingBlock:v40];
-  v11 = [(IDSPeerMessage *)self sourcePeerID];
-  if (v11)
+  sourcePeerID = [(IDSPeerMessage *)self sourcePeerID];
+  if (sourcePeerID)
   {
-    CFDictionarySetValue(v10, @"sP", v11);
+    CFDictionarySetValue(v10, @"sP", sourcePeerID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -170,40 +170,40 @@
     sub_1009184F8();
   }
 
-  v12 = [(IDSPeerMessage *)self sourceShortHandle];
-  if (v12)
+  sourceShortHandle = [(IDSPeerMessage *)self sourceShortHandle];
+  if (sourceShortHandle)
   {
-    CFDictionarySetValue(v10, @"sPs", v12);
+    CFDictionarySetValue(v10, @"sPs", sourceShortHandle);
   }
 
-  v13 = [(IDSPeerMessage *)self targetPeerID];
-  if (v13)
+  targetPeerID = [(IDSPeerMessage *)self targetPeerID];
+  if (targetPeerID)
   {
-    CFDictionarySetValue(v10, @"tP", v13);
+    CFDictionarySetValue(v10, @"tP", targetPeerID);
   }
 
-  v14 = [(IDSPeerMessage *)self targetShortHandle];
-  if (v14)
+  targetShortHandle = [(IDSPeerMessage *)self targetShortHandle];
+  if (targetShortHandle)
   {
-    CFDictionarySetValue(v10, @"tPs", v14);
+    CFDictionarySetValue(v10, @"tPs", targetShortHandle);
   }
 
-  v15 = [(IDSPeerMessage *)self targetSessionToken];
-  if (v15)
+  targetSessionToken = [(IDSPeerMessage *)self targetSessionToken];
+  if (targetSessionToken)
   {
-    CFDictionarySetValue(v10, @"sT", v15);
+    CFDictionarySetValue(v10, @"sT", targetSessionToken);
   }
 
-  v16 = [(IDSPeerMessage *)self targetToken];
-  if (v16)
+  targetToken = [(IDSPeerMessage *)self targetToken];
+  if (targetToken)
   {
-    CFDictionarySetValue(v10, @"t", v16);
+    CFDictionarySetValue(v10, @"t", targetToken);
   }
 
-  v17 = [(IDSPeerMessage *)self encryptedData];
-  if (v17)
+  encryptedData = [(IDSPeerMessage *)self encryptedData];
+  if (encryptedData)
   {
-    CFDictionarySetValue(v10, @"P", v17);
+    CFDictionarySetValue(v10, @"P", encryptedData);
   }
 
   if ([(IDSPeerMessage *)self fireAndForget])
@@ -213,12 +213,12 @@
 
   else
   {
-    v18 = [(IDSPeerMessage *)self expirationDate];
+    expirationDate = [(IDSPeerMessage *)self expirationDate];
 
-    if (v18)
+    if (expirationDate)
     {
-      v19 = [(IDSPeerMessage *)self expirationDate];
-      [v19 timeIntervalSince1970];
+      expirationDate2 = [(IDSPeerMessage *)self expirationDate];
+      [expirationDate2 timeIntervalSince1970];
       v21 = [NSNumber numberWithUnsignedLong:v20];
 
       if (v21)
@@ -228,71 +228,71 @@
     }
   }
 
-  v22 = [(IDSPeerMessage *)self encryptionType];
-  if (v22)
+  encryptionType = [(IDSPeerMessage *)self encryptionType];
+  if (encryptionType)
   {
-    v23 = v22;
-    v24 = [(IDSPeerMessage *)self encryptionType];
+    v23 = encryptionType;
+    encryptionType2 = [(IDSPeerMessage *)self encryptionType];
     v25 = IDSEncryptionTypeStringFromEncryptionType();
-    v26 = [v24 isEqualToIgnoringCase:v25];
+    v26 = [encryptionType2 isEqualToIgnoringCase:v25];
 
     if ((v26 & 1) == 0)
     {
-      v27 = [(IDSPeerMessage *)self encryptionType];
-      if (v27)
+      encryptionType3 = [(IDSPeerMessage *)self encryptionType];
+      if (encryptionType3)
       {
-        CFDictionarySetValue(v10, @"E", v27);
+        CFDictionarySetValue(v10, @"E", encryptionType3);
       }
     }
   }
 
-  v28 = [(IDSPeerMessage *)self priority];
-  if (v28)
+  priority = [(IDSPeerMessage *)self priority];
+  if (priority)
   {
-    v29 = v28;
-    v30 = [(IDSPeerMessage *)self priority];
-    v31 = [v30 intValue];
+    v29 = priority;
+    priority2 = [(IDSPeerMessage *)self priority];
+    intValue = [priority2 intValue];
 
-    if (v31 != 10)
+    if (intValue != 10)
     {
-      v32 = [(IDSPeerMessage *)self priority];
-      if (v32)
+      priority3 = [(IDSPeerMessage *)self priority];
+      if (priority3)
       {
-        CFDictionarySetValue(v10, @"pri", v32);
+        CFDictionarySetValue(v10, @"pri", priority3);
       }
     }
   }
 
-  v33 = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
+  deliveryMinimumTimeDelay = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
 
-  if (v33)
+  if (deliveryMinimumTimeDelay)
   {
-    v34 = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
-    if (v34)
+    deliveryMinimumTimeDelay2 = [(IDSPeerMessage *)self deliveryMinimumTimeDelay];
+    if (deliveryMinimumTimeDelay2)
     {
-      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeDelayKey, v34);
+      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeDelayKey, deliveryMinimumTimeDelay2);
     }
   }
 
-  v35 = [(IDSPeerMessage *)self deliveryMinimumTime];
+  deliveryMinimumTime = [(IDSPeerMessage *)self deliveryMinimumTime];
 
-  if (v35)
+  if (deliveryMinimumTime)
   {
-    v36 = [(IDSPeerMessage *)self deliveryMinimumTime];
-    if (v36)
+    deliveryMinimumTime2 = [(IDSPeerMessage *)self deliveryMinimumTime];
+    if (deliveryMinimumTime2)
     {
-      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeKey, v36);
+      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeKey, deliveryMinimumTime2);
     }
   }
 
-  v37 = [(IDSPeerMessage *)self sendMode];
+  sendMode = [(IDSPeerMessage *)self sendMode];
 
-  if (v37)
+  if (sendMode)
   {
-    v38 = [(IDSPeerMessage *)self sendMode];
-    if (v38)
+    sendMode2 = [(IDSPeerMessage *)self sendMode];
+    if (sendMode2)
     {
-      CFDictionarySetValue(v10, IDSDeliverySendModeKey, v38);
+      CFDictionarySetValue(v10, IDSDeliverySendModeKey, sendMode2);
     }
   }
 

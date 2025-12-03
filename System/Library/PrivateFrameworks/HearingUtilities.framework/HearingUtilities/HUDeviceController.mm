@@ -1,10 +1,10 @@
 @interface HUDeviceController
 - (HUDeviceController)init;
-- (void)device:(id)a3 didUpdateProperty:(unint64_t)a4;
-- (void)registerForPropertyUpdates:(id)a3;
+- (void)device:(id)device didUpdateProperty:(unint64_t)property;
+- (void)registerForPropertyUpdates:(id)updates;
 - (void)stopPropertyUpdates;
-- (void)updateProperty:(unint64_t)a3 forDeviceID:(id)a4;
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5;
+- (void)updateProperty:(unint64_t)property forDeviceID:(id)d;
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d;
 @end
 
 @implementation HUDeviceController
@@ -21,8 +21,8 @@
     v5 = dispatch_queue_create("hu_device_updates_queue", v4);
     [(HUDeviceController *)v2 setDeviceUpdatesQueue:v5];
 
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(HUDeviceController *)v2 setUpdateDeviceBlocks:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HUDeviceController *)v2 setUpdateDeviceBlocks:array];
 
     v7 = [objc_alloc(MEMORY[0x1E6988780]) initWithTargetSerialQueue:v2->_deviceUpdatesQueue];
     sendPropertyUpdatesTimer = v2->_sendPropertyUpdatesTimer;
@@ -34,24 +34,24 @@
   return v2;
 }
 
-- (void)device:(id)a3 didUpdateProperty:(unint64_t)a4
+- (void)device:(id)device didUpdateProperty:(unint64_t)property
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   v7 = HCLogHearingAids();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(HUDeviceController *)self updateDeviceBlocks];
+    updateDeviceBlocks = [(HUDeviceController *)self updateDeviceBlocks];
     *buf = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v8;
+    v20 = updateDeviceBlocks;
     _os_log_impl(&dword_1DA5E2000, v7, OS_LOG_TYPE_DEFAULT, "HUDeviceController: didUpdateProperty, UPDATING %@ - %@", buf, 0x16u);
   }
 
-  v9 = [v6 deviceUUID];
+  deviceUUID = [deviceCopy deviceUUID];
 
-  v10 = [v9 copy];
+  v10 = [deviceUUID copy];
   deviceUpdatesQueue = self->_deviceUpdatesQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -59,7 +59,7 @@
   block[3] = &unk_1E85C9F88;
   block[4] = self;
   v15 = v10;
-  v16 = a4;
+  propertyCopy = property;
   v12 = v10;
   dispatch_async(deviceUpdatesQueue, block);
 
@@ -200,14 +200,14 @@ uint64_t __47__HUDeviceController_device_didUpdateProperty___block_invoke_14(uin
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerForPropertyUpdates:(id)a3
+- (void)registerForPropertyUpdates:(id)updates
 {
-  if (a3)
+  if (updates)
   {
-    aBlock = [a3 copy];
-    v4 = [(HUDeviceController *)self updateDeviceBlocks];
+    aBlock = [updates copy];
+    updateDeviceBlocks = [(HUDeviceController *)self updateDeviceBlocks];
     v5 = _Block_copy(aBlock);
-    [v4 addObject:v5];
+    [updateDeviceBlocks addObject:v5];
   }
 }
 
@@ -227,8 +227,8 @@ uint64_t __47__HUDeviceController_device_didUpdateProperty___block_invoke_14(uin
   block[3] = &unk_1E85C9F60;
   block[4] = self;
   dispatch_async(deviceUpdatesQueue, block);
-  v5 = [(HUDeviceController *)self updateDeviceBlocks];
-  [v5 removeAllObjects];
+  updateDeviceBlocks = [(HUDeviceController *)self updateDeviceBlocks];
+  [updateDeviceBlocks removeAllObjects];
 }
 
 void __41__HUDeviceController_stopPropertyUpdates__block_invoke(uint64_t a1)
@@ -246,25 +246,25 @@ void __41__HUDeviceController_stopPropertyUpdates__block_invoke(uint64_t a1)
   [*(a1 + 32) setDeviceUpdatesDescription:v4];
 }
 
-- (void)updateProperty:(unint64_t)a3 forDeviceID:(id)a4
+- (void)updateProperty:(unint64_t)property forDeviceID:(id)d
 {
-  v6 = [(HUDeviceController *)self hearingAidForDeviceID:a4];
+  v6 = [(HUDeviceController *)self hearingAidForDeviceID:d];
   if (v6)
   {
-    [(HUDeviceController *)self device:v6 didUpdateProperty:a3];
+    [(HUDeviceController *)self device:v6 didUpdateProperty:property];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d
 {
-  v10 = a3;
-  v8 = [(HUDeviceController *)self hearingAidForDeviceID:a5];
+  valueCopy = value;
+  v8 = [(HUDeviceController *)self hearingAidForDeviceID:d];
   v9 = v8;
   if (v8)
   {
-    [v8 setValue:v10 forProperty:a4];
+    [v8 setValue:valueCopy forProperty:property];
   }
 }
 

@@ -32,7 +32,7 @@
   {
     v4 = MEMORY[0x1E69DDD70];
 LABEL_10:
-    v3 = [a1 preferredFontForTextStyle:*v4];
+    v3 = [self preferredFontForTextStyle:*v4];
     goto LABEL_11;
   }
 
@@ -56,20 +56,20 @@ LABEL_11:
   [v4 getCharacters:v9 - v6 range:{0, v5, MEMORY[0x1EEE9AC00](v5)}];
 
   MEMORY[0x1EEE9AC00](v7);
-  if (!CTFontGetGlyphsForCharacters(a1, (v9 - v6), (v9 - v6), v5))
+  if (!CTFontGetGlyphsForCharacters(self, (v9 - v6), (v9 - v6), v5))
   {
     return *MEMORY[0x1E695F058];
   }
 
-  *&result = CTFontGetBoundingRectsForGlyphs(a1, kCTFontOrientationDefault, (v9 - v6), 0, v5);
+  *&result = CTFontGetBoundingRectsForGlyphs(self, kCTFontOrientationDefault, (v9 - v6), 0, v5);
   return result;
 }
 
 - (uint64_t)ts_tightenedLineSpacingForString:()Bridge minimumLineSpacingMultiple:
 {
-  [a1 ts_boundingBoxForString:?];
-  [a1 lineHeight];
-  return [a1 lineHeight];
+  [self ts_boundingBoxForString:?];
+  [self lineHeight];
+  return [self lineHeight];
 }
 
 @end

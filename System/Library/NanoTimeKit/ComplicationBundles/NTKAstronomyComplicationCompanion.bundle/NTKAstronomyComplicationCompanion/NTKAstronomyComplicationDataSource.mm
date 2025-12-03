@@ -3,39 +3,39 @@
 + (id)legacyNTKComplicationType;
 + (unint64_t)vista;
 - (BOOL)supportsTapAction;
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3;
-- (NTKAstronomyComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_currentTimelineEntryWithIdealizedDate:(BOOL)a3;
+- (Class)richComplicationDisplayViewClassForDevice:(id)device;
+- (NTKAstronomyComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_currentTimelineEntryWithIdealizedDate:(BOOL)date;
 - (id)currentSwitcherTemplate;
-- (void)_handleLocationUpdate:(id)a3 anyLocation:(id)a4;
+- (void)_handleLocationUpdate:(id)update anyLocation:(id)location;
 - (void)_invalidate;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)becomeActive;
 - (void)becomeInactive;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 - (void)resume;
 @end
 
 @implementation NTKAstronomyComplicationDataSource
 
-- (NTKAstronomyComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKAstronomyComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v12.receiver = self;
   v12.super_class = NTKAstronomyComplicationDataSource;
-  v5 = [(NTKAstronomyComplicationDataSource *)&v12 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(NTKAstronomyComplicationDataSource *)&v12 initWithComplication:complication family:family forDevice:device];
   if (v5)
   {
     v6 = +[NTKLocationManager sharedLocationManager];
-    v7 = [v6 currentLocation];
+    currentLocation = [v6 currentLocation];
     currentLocation = v5->_currentLocation;
-    v5->_currentLocation = v7;
+    v5->_currentLocation = currentLocation;
 
-    v9 = [v6 anyLocation];
+    anyLocation = [v6 anyLocation];
     anyLocation = v5->_anyLocation;
-    v5->_anyLocation = v9;
+    v5->_anyLocation = anyLocation;
 
     [(NTKAstronomyComplicationDataSource *)v5 _startObserving];
   }
@@ -72,20 +72,20 @@
   [v3 removeObserver:self name:NSCurrentLocaleDidChangeNotification object:0];
 }
 
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3
+- (Class)richComplicationDisplayViewClassForDevice:(id)device
 {
-  v3 = [(NTKAstronomyComplicationDataSource *)self family];
+  family = [(NTKAstronomyComplicationDataSource *)self family];
   v4 = 0;
-  if (v3 > 9)
+  if (family > 9)
   {
-    if (v3 == &dword_C)
+    if (family == &dword_C)
     {
       v5 = &off_C228;
     }
 
     else
     {
-      if (v3 != (&dword_8 + 2))
+      if (family != (&dword_8 + 2))
       {
         goto LABEL_12;
       }
@@ -96,9 +96,9 @@
     goto LABEL_11;
   }
 
-  if (v3 != &dword_8)
+  if (family != &dword_8)
   {
-    if (v3 != (&dword_8 + 1))
+    if (family != (&dword_8 + 1))
     {
       goto LABEL_12;
     }
@@ -133,9 +133,9 @@ LABEL_12:
   return v2;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl() && ![objc_opt_class() vista])
   {
     v6 = [NSURL nwcCurrentLocationURLForLocation:self->_currentLocation];
@@ -146,26 +146,26 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7[2](v7, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
 + (id)legacyNTKComplicationType
 {
-  v2 = [a1 vista];
-  if (v2 > 2)
+  vista = [self vista];
+  if (vista > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_C448[v2];
+    return off_C448[vista];
   }
 }
 
 + (id)appIdentifier
 {
-  if (_os_feature_enabled_impl() && ![a1 vista])
+  if (_os_feature_enabled_impl() && ![self vista])
   {
     v3 = NTKWorldClockApplicationBundleIdentifier;
   }
@@ -178,16 +178,16 @@ LABEL_12:
   return v3;
 }
 
-- (void)_handleLocationUpdate:(id)a3 anyLocation:(id)a4
+- (void)_handleLocationUpdate:(id)update anyLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  locationCopy = location;
   currentLocation = self->_currentLocation;
-  self->_currentLocation = v6;
-  v9 = v6;
+  self->_currentLocation = updateCopy;
+  v9 = updateCopy;
 
   anyLocation = self->_anyLocation;
-  self->_anyLocation = v7;
+  self->_anyLocation = locationCopy;
 
   [(NTKAstronomyComplicationDataSource *)self _invalidate];
 }
@@ -221,11 +221,11 @@ LABEL_12:
   }
 }
 
-- (id)_currentTimelineEntryWithIdealizedDate:(BOOL)a3
+- (id)_currentTimelineEntryWithIdealizedDate:(BOOL)date
 {
   v5 = +[NTKDate complicationDate];
   v6 = v5;
-  if (a3)
+  if (date)
   {
     v7 = NTKIdealizedDate();
   }
@@ -245,16 +245,16 @@ LABEL_12:
 - (id)currentSwitcherTemplate
 {
   v2 = [(NTKAstronomyComplicationDataSource *)self _currentTimelineEntryWithIdealizedDate:1];
-  v3 = [v2 complicationTemplate];
+  complicationTemplate = [v2 complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(NTKAstronomyComplicationDataSource *)self _currentTimelineEntryWithIdealizedDate:0];
-  (*(a3 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
 - (void)resume
@@ -266,8 +266,8 @@ LABEL_12:
 
 - (void)_invalidate
 {
-  v2 = [(NTKAstronomyComplicationDataSource *)self delegate];
-  [v2 invalidateEntries];
+  delegate = [(NTKAstronomyComplicationDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
 + (unint64_t)vista

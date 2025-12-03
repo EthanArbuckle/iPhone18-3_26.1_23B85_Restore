@@ -1,7 +1,7 @@
 @interface DisableDragView.DisableDragUIView
 - (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)init;
-- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithCoder:(id)a3;
-- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithFrame:(CGRect)a3;
+- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithCoder:(id)coder;
+- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DisableDragView.DisableDragUIView
@@ -15,14 +15,14 @@
   return v2;
 }
 
-- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithCoder:(id)a3
+- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithCoder:(id)coder
 {
   result = sub_1C5BCBBC4();
   __break(1u);
   return result;
 }
 
-- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithFrame:(CGRect)a3
+- (_TtCV11MediaCoreUIP33_616BCB0E7B20D844FFEBF0D3ED4FB1B815DisableDragView17DisableDragUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

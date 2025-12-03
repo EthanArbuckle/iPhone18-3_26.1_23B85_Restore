@@ -1,9 +1,9 @@
 @interface SFSpeechRecognitionRequest
-- (SFRequestParameters)_requestParametersWithTaskHint:(void *)a3 requestIdentifier:(void *)a4 taskIdentifier:(uint64_t)a5 narrowband:(void *)a6 language:;
+- (SFRequestParameters)_requestParametersWithTaskHint:(void *)hint requestIdentifier:(void *)identifier taskIdentifier:(uint64_t)taskIdentifier narrowband:(void *)narrowband language:;
 - (SFSpeechRecognitionRequest)init;
-- (id)_dictationOptionsWithTaskHint:(void *)a3 requestIdentifier:;
-- (id)_sandboxExtensionsWithError:(uint64_t)a1;
-- (void)_setAFDictationRequestParams:(uint64_t)a1;
+- (id)_dictationOptionsWithTaskHint:(void *)hint requestIdentifier:;
+- (id)_sandboxExtensionsWithError:(uint64_t)error;
+- (void)_setAFDictationRequestParams:(uint64_t)params;
 @end
 
 @implementation SFSpeechRecognitionRequest
@@ -13,7 +13,7 @@
   v3 = objc_opt_class();
   if (v3 == objc_opt_class())
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -33,26 +33,26 @@
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (SFRequestParameters)_requestParametersWithTaskHint:(void *)a3 requestIdentifier:(void *)a4 taskIdentifier:(uint64_t)a5 narrowband:(void *)a6 language:
+- (SFRequestParameters)_requestParametersWithTaskHint:(void *)hint requestIdentifier:(void *)identifier taskIdentifier:(uint64_t)taskIdentifier narrowband:(void *)narrowband language:
 {
-  v11 = a6;
-  if (a1)
+  narrowbandCopy = narrowband;
+  if (self)
   {
-    v12 = a4;
-    v13 = a3;
+    identifierCopy = identifier;
+    hintCopy = hint;
     v14 = objc_alloc_init(SFRequestParameters);
-    v15 = [MEMORY[0x1E696AAE8] mainBundle];
-    v16 = [v15 bundleIdentifier];
-    [(SFRequestParameters *)v14 setApplicationName:v16];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(SFRequestParameters *)v14 setApplicationName:bundleIdentifier];
 
-    v17 = [v15 infoDictionary];
-    v18 = [v17 objectForKey:*MEMORY[0x1E695E500]];
+    infoDictionary = [mainBundle infoDictionary];
+    v18 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -60,34 +60,34 @@
       [(SFRequestParameters *)v14 setApplicationVersion:v18];
     }
 
-    [(SFRequestParameters *)v14 setInlineItemList:*(a1 + 72)];
-    [(SFRequestParameters *)v14 setRequestIdentifier:v13];
+    [(SFRequestParameters *)v14 setInlineItemList:*(self + 72)];
+    [(SFRequestParameters *)v14 setRequestIdentifier:hintCopy];
 
-    [(SFRequestParameters *)v14 setTaskIdentifier:v12];
-    if (![(__CFString *)v11 caseInsensitiveCompare:@"hi-IN-translit"])
+    [(SFRequestParameters *)v14 setTaskIdentifier:identifierCopy];
+    if (![(__CFString *)narrowbandCopy caseInsensitiveCompare:@"hi-IN-translit"])
     {
       v19 = @"hi-IN";
 
-      v11 = @"hi-IN";
+      narrowbandCopy = @"hi-IN";
     }
 
-    [(SFRequestParameters *)v14 setLanguage:v11];
+    [(SFRequestParameters *)v14 setLanguage:narrowbandCopy];
     v20 = [SFUtilities taskNameFromTaskHint:a2];
     [(SFRequestParameters *)v14 setTask:v20];
 
-    [(SFRequestParameters *)v14 setNarrowband:a5];
-    [(SFRequestParameters *)v14 setRecognitionOverrides:*(a1 + 40)];
-    [(SFRequestParameters *)v14 setModelOverrideURL:*(a1 + 48)];
+    [(SFRequestParameters *)v14 setNarrowband:taskIdentifier];
+    [(SFRequestParameters *)v14 setRecognitionOverrides:*(self + 40)];
+    [(SFRequestParameters *)v14 setModelOverrideURL:*(self + 48)];
     [(SFRequestParameters *)v14 setMaximumRecognitionDuration:3600.0];
-    v21 = [*(a1 + 88) languageModel];
-    [(SFRequestParameters *)v14 setDynamicLanguageModel:v21];
+    languageModel = [*(self + 88) languageModel];
+    [(SFRequestParameters *)v14 setDynamicLanguageModel:languageModel];
 
-    v22 = [*(a1 + 88) vocabulary];
-    [(SFRequestParameters *)v14 setDynamicVocabulary:v22];
+    vocabulary = [*(self + 88) vocabulary];
+    [(SFRequestParameters *)v14 setDynamicVocabulary:vocabulary];
 
-    [(SFRequestParameters *)v14 setDetectMultipleUtterances:*(a1 + 12)];
-    -[SFRequestParameters setOnDeviceOnly:](v14, "setOnDeviceOnly:", [a1 requiresOnDeviceRecognition]);
-    -[SFRequestParameters setEnableAutoPunctuation:](v14, "setEnableAutoPunctuation:", [a1 addsPunctuation]);
+    [(SFRequestParameters *)v14 setDetectMultipleUtterances:*(self + 12)];
+    -[SFRequestParameters setOnDeviceOnly:](v14, "setOnDeviceOnly:", [self requiresOnDeviceRecognition]);
+    -[SFRequestParameters setEnableAutoPunctuation:](v14, "setEnableAutoPunctuation:", [self addsPunctuation]);
   }
 
   else
@@ -98,30 +98,30 @@
   return v14;
 }
 
-- (id)_sandboxExtensionsWithError:(uint64_t)a1
+- (id)_sandboxExtensionsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v3 = +[SFUtilities sandboxExtensionsForUsingANEAndAssets];
     if (v3)
     {
-      [v2 addObjectsFromArray:v3];
+      [array addObjectsFromArray:v3];
     }
 
-    v4 = *(a1 + 88);
+    v4 = *(error + 88);
     if (v4)
     {
-      v5 = [v4 languageModel];
-      v6 = [v5 path];
-      v7 = [SFUtilities issueReadSandboxExtensionForFilePath:v6 error:0];
+      languageModel = [v4 languageModel];
+      path = [languageModel path];
+      v7 = [SFUtilities issueReadSandboxExtensionForFilePath:path error:0];
 
-      v8 = [*(a1 + 88) vocabulary];
-      if (v8)
+      vocabulary = [*(error + 88) vocabulary];
+      if (vocabulary)
       {
-        v9 = [*(a1 + 88) vocabulary];
-        v10 = [v9 path];
-        v11 = [SFUtilities issueReadSandboxExtensionForFilePath:v10 error:0];
+        vocabulary2 = [*(error + 88) vocabulary];
+        path2 = [vocabulary2 path];
+        v11 = [SFUtilities issueReadSandboxExtensionForFilePath:path2 error:0];
       }
 
       else
@@ -131,16 +131,16 @@
 
       if (v7)
       {
-        [v2 addObject:v7];
+        [array addObject:v7];
       }
 
       if (v11)
       {
-        [v2 addObject:v11];
+        [array addObject:v11];
       }
     }
 
-    v12 = [v2 copy];
+    v12 = [array copy];
   }
 
   else
@@ -151,19 +151,19 @@
   return v12;
 }
 
-- (id)_dictationOptionsWithTaskHint:(void *)a3 requestIdentifier:
+- (id)_dictationOptionsWithTaskHint:(void *)hint requestIdentifier:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E698D128];
-    v6 = a3;
+    hintCopy = hint;
     v7 = objc_alloc_init(v5);
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
-    [v7 setApplicationName:v9];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v7 setApplicationName:bundleIdentifier];
 
-    v10 = [v8 infoDictionary];
-    v11 = [v10 objectForKey:*MEMORY[0x1E695E500]];
+    infoDictionary = [mainBundle infoDictionary];
+    v11 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -171,22 +171,22 @@
       [v7 setApplicationVersion:v11];
     }
 
-    [v7 setInlineItemList:*(a1 + 72)];
-    [v7 setRequestIdentifier:v6];
+    [v7 setInlineItemList:*(self + 72)];
+    [v7 setRequestIdentifier:hintCopy];
 
-    [v7 setVoiceTriggerEventInfo:*(a1 + 32)];
-    [v7 setMaximumRecognitionDuration:*(a1 + 16)];
-    [v7 setDetectUtterances:*(a1 + 12)];
-    v12 = *(a1 + 24);
+    [v7 setVoiceTriggerEventInfo:*(self + 32)];
+    [v7 setMaximumRecognitionDuration:*(self + 16)];
+    [v7 setDetectUtterances:*(self + 12)];
+    v12 = *(self + 24);
     v13 = v12;
     if (v12)
     {
       [v7 setVoiceSearchTypeOptions:{objc_msgSend(v12, "searchTypes") & 3}];
-      v14 = [v13 queryParameters];
-      [v7 setVoiceSearchQueryParameters:v14];
+      queryParameters = [v13 queryParameters];
+      [v7 setVoiceSearchQueryParameters:queryParameters];
 
-      v15 = [v13 headerFields];
-      [v7 setVoiceSearchHeaderFields:v15];
+      headerFields = [v13 headerFields];
+      [v7 setVoiceSearchHeaderFields:headerFields];
 
       [v7 setKeyboardType:12];
     }
@@ -229,17 +229,17 @@
       }
 
       [v7 setKeyboardType:v16];
-      [v7 setAutoPunctuation:*(a1 + 11)];
+      [v7 setAutoPunctuation:*(self + 11)];
     }
 
-    [v7 setForceOfflineRecognition:*(a1 + 8)];
-    if (*(a1 + 8) == 1)
+    [v7 setForceOfflineRecognition:*(self + 8)];
+    if (*(self + 8) == 1)
     {
       [v7 setMaximumRecognitionDuration:3600.0];
     }
 
-    [v7 setRecognitionOverrides:*(a1 + 40)];
-    [v7 setModelOverrideURL:*(a1 + 48)];
+    [v7 setRecognitionOverrides:*(self + 40)];
+    [v7 setModelOverrideURL:*(self + 48)];
   }
 
   else
@@ -250,11 +250,11 @@
   return v7;
 }
 
-- (void)_setAFDictationRequestParams:(uint64_t)a1
+- (void)_setAFDictationRequestParams:(uint64_t)params
 {
-  if (a1)
+  if (params)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((params + 56), a2);
   }
 }
 

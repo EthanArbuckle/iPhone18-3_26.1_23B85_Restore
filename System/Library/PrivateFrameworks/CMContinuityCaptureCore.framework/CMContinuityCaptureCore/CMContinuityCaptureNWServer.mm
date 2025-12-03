@@ -1,16 +1,16 @@
 @interface CMContinuityCaptureNWServer
-- (CMContinuityCaptureNWServer)initWithQueue:(id)a3;
+- (CMContinuityCaptureNWServer)initWithQueue:(id)queue;
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock;
 - (NSString)description;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setupTCPConnection;
 @end
 
 @implementation CMContinuityCaptureNWServer
 
-- (CMContinuityCaptureNWServer)initWithQueue:(id)a3
+- (CMContinuityCaptureNWServer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = objc_opt_new();
   v7 = [CMContinuityCaptureTransportNWDevice alloc];
   v8 = +[CMContinuityCaptureCapabilities capabilitiesForCurrentDevice];
@@ -24,7 +24,7 @@
   {
     objc_storeStrong(&v10->_identifier, v6);
     objc_storeStrong(&v11->_device, v9);
-    objc_storeStrong(&v11->_queue, a3);
+    objc_storeStrong(&v11->_queue, queue);
     v12 = [[CMContinuityCaptureRemoteCompositeDevice alloc] initWithTransportServer:v11 videoPreviewLayer:0];
     compositeDevice = v11->_compositeDevice;
     v11->_compositeDevice = v12;
@@ -71,10 +71,10 @@ void __45__CMContinuityCaptureNWServer_initWithQueue___block_invoke(uint64_t a1,
 
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timeSyncClock;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timeSyncClock;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -90,7 +90,7 @@ void __45__CMContinuityCaptureNWServer_initWithQueue___block_invoke(uint64_t a1,
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%@ Failed to get tcp endpoint", buf, 0xCu);
     }
 
@@ -110,7 +110,7 @@ void __45__CMContinuityCaptureNWServer_initWithQueue___block_invoke(uint64_t a1,
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%@ Failed to get tcp connection", buf, 0xCu);
     }
 
@@ -119,8 +119,8 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  v8 = [(CMContinuityCaptureNWServer *)self queue];
-  nw_connection_set_queue(v7, v8);
+  queue = [(CMContinuityCaptureNWServer *)self queue];
+  nw_connection_set_queue(v7, queue);
 
   v9 = self->_connection;
   handler[0] = MEMORY[0x277D85DD0];
@@ -161,12 +161,12 @@ void __49__CMContinuityCaptureNWServer_setupTCPConnection__block_invoke(uint64_t
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  [(CMContinuityCaptureNWTransportBase *)self setTaskDelegate:v4];
+  delegateCopy = delegate;
+  [(CMContinuityCaptureNWTransportBase *)self setTaskDelegate:delegateCopy];
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
 - (NSString)description
@@ -174,8 +174,8 @@ void __49__CMContinuityCaptureNWServer_setupTCPConnection__block_invoke(uint64_t
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CMContinuityCaptureNWServer *)self localDevice];
-  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, v6, self];
+  localDevice = [(CMContinuityCaptureNWServer *)self localDevice];
+  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, localDevice, self];
 
   return v7;
 }

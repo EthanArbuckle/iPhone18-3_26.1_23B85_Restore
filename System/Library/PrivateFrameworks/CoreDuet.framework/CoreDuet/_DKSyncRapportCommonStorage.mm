@@ -1,30 +1,30 @@
 @interface _DKSyncRapportCommonStorage
 + (_DKSyncRapportCommonStorage)sharedInstance;
-- (BOOL)isTransportActiveForPeer:(id)a3;
+- (BOOL)isTransportActiveForPeer:(id)peer;
 - (_DKSyncRapportCommonStorage)init;
 - (id)deviceForPeer:;
 - (id)myDeviceID;
-- (id)transformCaughtObject:(id)a3 existingError:(id)a4;
-- (id)transformResponseError:(id)a3;
+- (id)transformCaughtObject:(id)object existingError:(id)error;
+- (id)transformResponseError:(id)error;
 - (uint64_t)_additionalFlagsForInternal;
 - (void)cancelOutstandingOperations;
 - (void)dealloc;
-- (void)handleActivateCompanionLinkClient:(void *)a3 forPeer:(void *)a4 error:;
-- (void)handleActivateWithError:(uint64_t)a1;
-- (void)handleAvailabilityFailureWithPeer:(id)a3 completion:(id)a4;
-- (void)handleBeaconWithRequest:(void *)a3 options:(void *)a4 responseHandler:;
-- (void)handleDeviceChanged:(int)a3 changes:;
-- (void)handleDeviceFound:(void *)a1;
-- (void)handleDeviceLost:(void *)a1;
-- (void)handleFetchSourceDeviceIDWithRequest:(void *)a3 options:(void *)a4 responseHandler:;
-- (void)handleFetchSourceDeviceIDWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:;
+- (void)handleActivateCompanionLinkClient:(void *)client forPeer:(void *)peer error:;
+- (void)handleActivateWithError:(uint64_t)error;
+- (void)handleAvailabilityFailureWithPeer:(id)peer completion:(id)completion;
+- (void)handleBeaconWithRequest:(void *)request options:(void *)options responseHandler:;
+- (void)handleDeviceChanged:(int)changed changes:;
+- (void)handleDeviceFound:(void *)found;
+- (void)handleDeviceLost:(void *)lost;
+- (void)handleFetchSourceDeviceIDWithRequest:(void *)request options:(void *)options responseHandler:;
+- (void)handleFetchSourceDeviceIDWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:;
 - (void)handleInvalidation;
-- (void)handshakeWithDuetSyncPeer:(id)a3 orError:(id)a4;
+- (void)handshakeWithDuetSyncPeer:(id)peer orError:(id)error;
 - (void)myDeviceID;
-- (void)registerRequestIDsWithClient:(uint64_t)a1;
-- (void)removeClient:(uint64_t)a3 forPeer:(uint64_t)a4 retiring:(uint64_t)a5;
-- (void)sendRequestID:(id)a3 request:(id)a4 peer:(id)a5 highPriority:(BOOL)a6 options:(id)a7 responseHandler:(id)a8;
-- (void)sendRequestID:(void *)a3 request:(void *)a4 peer:(void *)a5 client:(void *)a6 options:(void *)a7 responseHandler:;
+- (void)registerRequestIDsWithClient:(uint64_t)client;
+- (void)removeClient:(uint64_t)client forPeer:(uint64_t)peer retiring:(uint64_t)retiring;
+- (void)sendRequestID:(id)d request:(id)request peer:(id)peer highPriority:(BOOL)priority options:(id)options responseHandler:(id)handler;
+- (void)sendRequestID:(void *)d request:(void *)request peer:(void *)peer client:(void *)client options:(void *)options responseHandler:;
 - (void)start;
 - (void)startRapport;
 @end
@@ -156,31 +156,31 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeviceFound:(void *)a1
+- (void)handleDeviceFound:(void *)found
 {
   v62 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (found)
   {
     v6 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v6);
 
-    v7 = [(__CFString *)v5 idsDeviceIdentifier];
+    idsDeviceIdentifier = [(__CFString *)v5 idsDeviceIdentifier];
 
-    if (v7)
+    if (idsDeviceIdentifier)
     {
       v8 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v21 = [objc_opt_class() description];
-        v22 = [(__CFString *)v5 idsDeviceIdentifier];
-        v2 = [(__CFString *)v5 identifier];
+        idsDeviceIdentifier2 = [(__CFString *)v5 idsDeviceIdentifier];
+        identifier = [(__CFString *)v5 identifier];
         *buf = 138543874;
         v51 = v21;
         v52 = 2114;
-        v53 = v22;
+        v53 = idsDeviceIdentifier2;
         v54 = 2114;
-        v55 = v2;
+        v55 = identifier;
         _os_log_debug_impl(&dword_191750000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: Found device %{public}@ with companion link identifier %{public}@", buf, 0x20u);
       }
 
@@ -188,32 +188,32 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v23 = [objc_opt_class() description];
-        v24 = [(__CFString *)v5 idsDeviceIdentifier];
+        idsDeviceIdentifier3 = [(__CFString *)v5 idsDeviceIdentifier];
         *buf = 138543874;
         v51 = v23;
         v52 = 2114;
-        v53 = v24;
+        v53 = idsDeviceIdentifier3;
         v54 = 2112;
         v55 = v5;
         _os_log_debug_impl(&dword_191750000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: Device %{public}@ is %@", buf, 0x20u);
       }
 
       v10 = +[_DKSyncPeerStatusTracker sharedInstance];
-      v11 = [(__CFString *)v5 idsDeviceIdentifier];
-      v12 = [v10 peerWithIDSDeviceIdentifier:v11];
+      idsDeviceIdentifier4 = [(__CFString *)v5 idsDeviceIdentifier];
+      v12 = [v10 peerWithIDSDeviceIdentifier:idsDeviceIdentifier4];
 
-      v13 = [(__CFString *)v5 name];
-      [v12 setName:v13];
+      name = [(__CFString *)v5 name];
+      [v12 setName:name];
 
-      v14 = [(__CFString *)v5 model];
-      [v12 setModel:v14];
+      model = [(__CFString *)v5 model];
+      [v12 setModel:model];
 
       [v12 setCompanion:{(-[__CFString statusFlags](v5, "statusFlags") >> 6) & 1}];
       v15 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v47 = [objc_opt_class() description];
-        v44 = [(__CFString *)v5 idsDeviceIdentifier];
+        idsDeviceIdentifier5 = [(__CFString *)v5 idsDeviceIdentifier];
         v25 = [v12 me];
         v26 = &stru_1F05B9908;
         if (v25)
@@ -222,32 +222,32 @@
         }
 
         v42 = v26;
-        v27 = [v12 identifier];
-        v28 = [v12 model];
-        if (v28)
+        identifier2 = [v12 identifier];
+        model2 = [v12 model];
+        if (model2)
         {
           v35 = MEMORY[0x1E696AEC0];
-          v3 = [v12 model];
-          v2 = [v35 stringWithFormat:@" (%@)", v3];
+          model3 = [v12 model];
+          identifier = [v35 stringWithFormat:@" (%@)", model3];
         }
 
         else
         {
-          v2 = &stru_1F05B9908;
+          identifier = &stru_1F05B9908;
         }
 
         *buf = 138544386;
         v51 = v47;
         v52 = 2114;
-        v53 = v44;
+        v53 = idsDeviceIdentifier5;
         v54 = 2114;
         v55 = v42;
         v56 = 2114;
-        v57 = v27;
+        v57 = identifier2;
         v58 = 2114;
-        v59 = v2;
+        v59 = identifier;
         _os_log_debug_impl(&dword_191750000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: Device %{public}@ is %{public}@peer %{public}@%{public}@", buf, 0x34u);
-        if (v28)
+        if (model2)
         {
         }
       }
@@ -268,13 +268,13 @@
             v32 = &stru_1F05B9908;
           }
 
-          v46 = [v12 identifier];
-          v33 = [v12 model];
-          if (v33)
+          identifier3 = [v12 identifier];
+          model4 = [v12 model];
+          if (model4)
           {
             v39 = MEMORY[0x1E696AEC0];
-            v2 = [v12 model];
-            v34 = [v39 stringWithFormat:@" (%@)", v2];
+            identifier = [v12 model];
+            v34 = [v39 stringWithFormat:@" (%@)", identifier];
           }
 
           else
@@ -287,16 +287,16 @@
           v52 = 2114;
           v53 = v32;
           v54 = 2114;
-          v55 = v46;
+          v55 = identifier3;
           v56 = 2114;
           v57 = v34;
           _os_log_debug_impl(&dword_191750000, v18, OS_LOG_TYPE_DEBUG, "%{public}@: Activating %{public}@peer %{public}@%{public}@ recognizes sync protocol", buf, 0x2Au);
-          if (v33)
+          if (model4)
           {
           }
         }
 
-        [a1 handshakeWithDuetSyncPeer:v12 orError:0];
+        [found handshakeWithDuetSyncPeer:v12 orError:0];
       }
 
       else
@@ -313,13 +313,13 @@
           }
 
           v41 = v30;
-          v45 = [v12 identifier];
-          v31 = [v12 model];
-          if (v31)
+          identifier4 = [v12 identifier];
+          model5 = [v12 model];
+          if (model5)
           {
             v36 = MEMORY[0x1E696AEC0];
-            v40 = [v12 model];
-            v43 = [v36 stringWithFormat:@" (%@)", v40];
+            model6 = [v12 model];
+            v43 = [v36 stringWithFormat:@" (%@)", model6];
           }
 
           else
@@ -327,28 +327,28 @@
             v43 = &stru_1F05B9908;
           }
 
-          v37 = [(__CFString *)v5 model];
-          v38 = [(__CFString *)v5 name];
+          model7 = [(__CFString *)v5 model];
+          name2 = [(__CFString *)v5 name];
           *buf = 138544642;
           v51 = v48;
           v52 = 2114;
           v53 = v41;
           v54 = 2114;
-          v55 = v45;
+          v55 = identifier4;
           v56 = 2114;
           v57 = v43;
           v58 = 2114;
-          v59 = v37;
+          v59 = model7;
           v60 = 2112;
-          v61 = v38;
+          v61 = name2;
           _os_log_debug_impl(&dword_191750000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: Unsupported %{public}@peer %{public}@%{public}@ does not currently recognize sync protocol: %{public}@ (%@)", buf, 0x3Eu);
 
-          if (v31)
+          if (model5)
           {
           }
         }
 
-        [v10 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v12}];
+        [v10 removeActiveTransports:objc_msgSend(found fromPeer:{"transportType"), v12}];
       }
 
       v19 = +[_CDLogging syncChannel];
@@ -377,33 +377,33 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeviceChanged:(int)a3 changes:
+- (void)handleDeviceChanged:(int)changed changes:
 {
   v66 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  if (a1)
+  if (self)
   {
     v9 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v9);
 
-    v10 = [v8 idsDeviceIdentifier];
+    idsDeviceIdentifier = [v8 idsDeviceIdentifier];
 
-    if (v10)
+    if (idsDeviceIdentifier)
     {
       v11 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v34 = [objc_opt_class() description];
-        v35 = [v8 idsDeviceIdentifier];
-        v3 = [v8 identifier];
+        idsDeviceIdentifier2 = [v8 idsDeviceIdentifier];
+        identifier = [v8 identifier];
         *buf = 138544130;
         *&buf[4] = v34;
         *&buf[12] = 2114;
-        *&buf[14] = v35;
+        *&buf[14] = idsDeviceIdentifier2;
         *&buf[22] = 2112;
-        v63 = v3;
+        v63 = identifier;
         *v64 = 1024;
-        *&v64[2] = a3;
+        *&v64[2] = changed;
         _os_log_debug_impl(&dword_191750000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Changed device %{public}@ with companion link identifier %@ and changes %x", buf, 0x26u);
       }
 
@@ -411,25 +411,25 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v36 = [objc_opt_class() description];
-        v37 = [v8 idsDeviceIdentifier];
+        idsDeviceIdentifier3 = [v8 idsDeviceIdentifier];
         *buf = 138543874;
         *&buf[4] = v36;
         *&buf[12] = 2114;
-        *&buf[14] = v37;
+        *&buf[14] = idsDeviceIdentifier3;
         *&buf[22] = 2112;
         v63 = v8;
         _os_log_debug_impl(&dword_191750000, v12, OS_LOG_TYPE_DEBUG, "%{public}@: Changed device %{public}@ is %@", buf, 0x20u);
       }
 
       v13 = +[_DKSyncPeerStatusTracker sharedInstance];
-      v14 = [v8 idsDeviceIdentifier];
-      v15 = [v13 peerWithIDSDeviceIdentifier:v14];
+      idsDeviceIdentifier4 = [v8 idsDeviceIdentifier];
+      v15 = [v13 peerWithIDSDeviceIdentifier:idsDeviceIdentifier4];
 
       v16 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v55 = [objc_opt_class() description];
-        v54 = [v8 idsDeviceIdentifier];
+        model3 = [objc_opt_class() description];
+        idsDeviceIdentifier5 = [v8 idsDeviceIdentifier];
         v38 = [v15 me];
         v39 = &stru_1F05B9908;
         if (v38)
@@ -438,33 +438,33 @@
         }
 
         v52 = v39;
-        v53 = [v15 identifier];
-        v5 = [v15 model];
-        if (v5)
+        identifier2 = [v15 identifier];
+        model = [v15 model];
+        if (model)
         {
           v43 = MEMORY[0x1E696AEC0];
-          v4 = [v15 model];
-          v50 = v4;
-          v3 = [v43 stringWithFormat:@" (%@)"];
+          model2 = [v15 model];
+          v50 = model2;
+          identifier = [v43 stringWithFormat:@" (%@)"];
         }
 
         else
         {
-          v3 = &stru_1F05B9908;
+          identifier = &stru_1F05B9908;
         }
 
         *buf = 138544386;
-        *&buf[4] = v55;
+        *&buf[4] = model3;
         *&buf[12] = 2114;
-        *&buf[14] = v54;
+        *&buf[14] = idsDeviceIdentifier5;
         *&buf[22] = 2114;
         v63 = v52;
         *v64 = 2114;
-        *&v64[2] = v53;
+        *&v64[2] = identifier2;
         *&v64[10] = 2114;
-        *&v64[12] = v3;
+        *&v64[12] = identifier;
         _os_log_debug_impl(&dword_191750000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: Changed device %{public}@ is %{public}@peer %{public}@%{public}@", buf, 0x34u);
-        if (v5)
+        if (model)
         {
         }
       }
@@ -475,7 +475,7 @@
         v20 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v54 = [objc_opt_class() description];
+          idsDeviceIdentifier5 = [objc_opt_class() description];
           v40 = [v15 me];
           v41 = &stru_1F05B9908;
           if (v40)
@@ -484,13 +484,13 @@
           }
 
           v52 = v41;
-          v53 = [v15 identifier];
-          v55 = [v15 model];
-          if (v55)
+          identifier2 = [v15 identifier];
+          model3 = [v15 model];
+          if (model3)
           {
             v48 = MEMORY[0x1E696AEC0];
-            v5 = [v15 model];
-            v50 = v5;
+            model = [v15 model];
+            v50 = model;
             v42 = [v48 stringWithFormat:@" (%@)"];
           }
 
@@ -500,32 +500,32 @@
           }
 
           *buf = 138544130;
-          *&buf[4] = v54;
+          *&buf[4] = idsDeviceIdentifier5;
           *&buf[12] = 2114;
           *&buf[14] = v52;
           *&buf[22] = 2114;
-          v63 = v53;
+          v63 = identifier2;
           *v64 = 2114;
           *&v64[2] = v42;
           _os_log_debug_impl(&dword_191750000, v20, OS_LOG_TYPE_DEBUG, "%{public}@: Activating %{public}@peer %{public}@%{public}@ now recognizes sync protocol", buf, 0x2Au);
-          if (v55)
+          if (model3)
           {
           }
         }
 
-        if (([a1 transportType] & v17) == 0)
+        if (([self transportType] & v17) == 0)
         {
-          [a1 handshakeWithDuetSyncPeer:v15 orError:0];
+          [self handshakeWithDuetSyncPeer:v15 orError:0];
         }
       }
 
-      else if (([a1 transportType] & v17) != 0)
+      else if (([self transportType] & v17) != 0)
       {
-        [v13 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v15}];
+        [v13 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), v15}];
         v18 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v55 = [objc_opt_class() description];
+          model3 = [objc_opt_class() description];
           v44 = [v15 me];
           v45 = &stru_1F05B9908;
           if (v44)
@@ -533,14 +533,14 @@
             v45 = @"pseudo ";
           }
 
-          v53 = v45;
-          v54 = [v15 identifier];
-          v46 = [v15 model];
-          if (v46)
+          identifier2 = v45;
+          idsDeviceIdentifier5 = [v15 identifier];
+          model4 = [v15 model];
+          if (model4)
           {
             v49 = MEMORY[0x1E696AEC0];
-            v3 = [v15 model];
-            v50 = v3;
+            identifier = [v15 model];
+            v50 = identifier;
             v47 = [v49 stringWithFormat:@" (%@)"];
           }
 
@@ -550,15 +550,15 @@
           }
 
           *buf = 138544130;
-          *&buf[4] = v55;
+          *&buf[4] = model3;
           *&buf[12] = 2114;
-          *&buf[14] = v53;
+          *&buf[14] = identifier2;
           *&buf[22] = 2114;
-          v63 = v54;
+          v63 = idsDeviceIdentifier5;
           *v64 = 2114;
           *&v64[2] = v47;
           _os_log_debug_impl(&dword_191750000, v18, OS_LOG_TYPE_DEBUG, "%{public}@: Unsupported %{public}@peer %{public}@%{public}@ no longer recognizes sync protocol", buf, 0x2Au);
-          if (v46)
+          if (model4)
           {
           }
         }
@@ -569,16 +569,16 @@
 
       if (v22)
       {
-        v27 = [(_DKSyncRapportCommonStorage *)a1 clientForPeer:v15];
+        v27 = [(_DKSyncRapportCommonStorage *)self clientForPeer:v15];
         if (v27)
         {
-          [(_DKSyncRapportCommonStorage *)a1 removeClient:v27 forPeer:v15 retiring:0, v23, v24, v25, v26, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, *buf, *&buf[8], *&buf[16], v63, *v64, *&v64[8], *&v64[16], v65, v66, v67];
+          [(_DKSyncRapportCommonStorage *)self removeClient:v27 forPeer:v15 retiring:0, v23, v24, v25, v26, v50, v51, v52, identifier2, idsDeviceIdentifier5, model3, v56, v57, v58, v59, v60, v61, *buf, *&buf[8], *&buf[16], v63, *v64, *&v64[8], *&v64[16], v65, v66, v67];
         }
 
-        [v13 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v15}];
+        [v13 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), v15}];
       }
 
-      if ((a3 & 2) != 0)
+      if ((changed & 2) != 0)
       {
         v28 = [v8 statusFlags] & 0x40;
         if ([v15 isCompanion] != v28 >> 6)
@@ -610,16 +610,16 @@
           }
 
           v30 = [v13 activeTransportsForPeer:v15];
-          v31 = [a1 transportType] & v30;
+          v31 = [self transportType] & v30;
           if (v31)
           {
-            [v13 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v15}];
+            [v13 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), v15}];
           }
 
           [v15 setCompanion:v28 != 0];
           if (v31)
           {
-            [v13 addActiveTransports:objc_msgSend(a1 toPeer:{"transportType"), v15}];
+            [v13 addActiveTransports:objc_msgSend(self toPeer:{"transportType"), v15}];
           }
         }
       }
@@ -650,31 +650,31 @@
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDeviceLost:(void *)a1
+- (void)handleDeviceLost:(void *)lost
 {
   v48 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (lost)
   {
     v5 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v5);
 
-    v6 = [v4 idsDeviceIdentifier];
+    idsDeviceIdentifier = [v4 idsDeviceIdentifier];
 
-    if (v6)
+    if (idsDeviceIdentifier)
     {
       v7 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v23 = [objc_opt_class() description];
-        v24 = [v4 idsDeviceIdentifier];
-        v25 = [v4 identifier];
+        idsDeviceIdentifier2 = [v4 idsDeviceIdentifier];
+        identifier = [v4 identifier];
         *buf = 138543874;
         *&buf[4] = v23;
         *&buf[12] = 2114;
-        *&buf[14] = v24;
+        *&buf[14] = idsDeviceIdentifier2;
         *&buf[22] = 2112;
-        v46 = v25;
+        v46 = identifier;
         _os_log_debug_impl(&dword_191750000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: Lost device %{public}@ with companion link identifier %@", buf, 0x20u);
       }
 
@@ -682,31 +682,31 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v26 = [objc_opt_class() description];
-        v27 = [v4 idsDeviceIdentifier];
+        idsDeviceIdentifier3 = [v4 idsDeviceIdentifier];
         *buf = 138543874;
         *&buf[4] = v26;
         *&buf[12] = 2114;
-        *&buf[14] = v27;
+        *&buf[14] = idsDeviceIdentifier3;
         *&buf[22] = 2112;
         v46 = v4;
         _os_log_debug_impl(&dword_191750000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: Lost device %{public}@ is %@", buf, 0x20u);
       }
 
       v9 = +[_DKSyncPeerStatusTracker sharedInstance];
-      v10 = [v4 idsDeviceIdentifier];
-      v11 = [v9 peerWithIDSDeviceIdentifier:v10];
+      idsDeviceIdentifier4 = [v4 idsDeviceIdentifier];
+      v11 = [v9 peerWithIDSDeviceIdentifier:idsDeviceIdentifier4];
 
-      v16 = [(_DKSyncRapportCommonStorage *)a1 clientForPeer:v11];
+      v16 = [(_DKSyncRapportCommonStorage *)lost clientForPeer:v11];
       if (v16)
       {
-        [(_DKSyncRapportCommonStorage *)a1 removeClient:v16 forPeer:v11 retiring:0, v12, v13, v14, v15, v33, v34, v35, v37, v39, v41, v43, v44, *buf, *&buf[8], *&buf[16], v46, *v47, *&v47[8], *&v47[16], v48, v49, v50, v51, v52, v53, v54];
+        [(_DKSyncRapportCommonStorage *)lost removeClient:v16 forPeer:v11 retiring:0, v12, v13, v14, v15, v33, v34, v35, v37, v39, v41, v43, v44, *buf, *&buf[8], *&buf[16], v46, *v47, *&v47[8], *&v47[16], v48, v49, v50, v51, v52, v53, v54];
       }
 
       v17 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v42 = [objc_opt_class() description];
-        v40 = [v4 idsDeviceIdentifier];
+        idsDeviceIdentifier5 = [v4 idsDeviceIdentifier];
         v28 = [v11 me];
         v29 = &stru_1F05B9908;
         if (v28)
@@ -715,13 +715,13 @@
         }
 
         v36 = v29;
-        v38 = [v11 identifier];
-        v30 = [v11 model];
-        if (v30)
+        identifier2 = [v11 identifier];
+        model = [v11 model];
+        if (model)
         {
           v32 = MEMORY[0x1E696AEC0];
-          v2 = [v11 model];
-          v31 = [v32 stringWithFormat:@" (%@)", v2];
+          model2 = [v11 model];
+          v31 = [v32 stringWithFormat:@" (%@)", model2];
         }
 
         else
@@ -732,15 +732,15 @@
         *buf = 138544386;
         *&buf[4] = v42;
         *&buf[12] = 2114;
-        *&buf[14] = v40;
+        *&buf[14] = idsDeviceIdentifier5;
         *&buf[22] = 2114;
         v46 = v36;
         *v47 = 2114;
-        *&v47[2] = v38;
+        *&v47[2] = identifier2;
         *&v47[10] = 2114;
         *&v47[12] = v31;
         _os_log_debug_impl(&dword_191750000, v17, OS_LOG_TYPE_DEBUG, "%{public}@: Lost device %{public}@ is %{public}@peer %{public}@%{public}@", buf, 0x34u);
-        if (v30)
+        if (model)
         {
         }
       }
@@ -750,7 +750,7 @@
 
       if (v19)
       {
-        [v9 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v11}];
+        [v9 removeActiveTransports:objc_msgSend(lost fromPeer:{"transportType"), v11}];
         v20 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
@@ -778,11 +778,11 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActivateWithError:(uint64_t)a1
+- (void)handleActivateWithError:(uint64_t)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
@@ -801,26 +801,26 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v14 = [objc_opt_class() description];
-        v15 = [v3 domain];
+        domain = [v3 domain];
         *buf = 138544130;
         v18 = v14;
         v19 = 2114;
-        v20 = v15;
+        v20 = domain;
         v21 = 2048;
-        v22 = [v3 code];
+        code = [v3 code];
         v23 = 2112;
         v24 = v3;
         _os_log_error_impl(&dword_191750000, v6, OS_LOG_TYPE_ERROR, "%{public}@: Failed to start Rapport: %{public}@:%lld (%@)", buf, 0x2Au);
       }
 
-      *(a1 + 8) = 0;
-      [*(a1 + 40) invalidate];
-      v7 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      *(error + 8) = 0;
+      [*(error + 40) invalidate];
+      v7 = *(error + 40);
+      *(error + 40) = 0;
 
-      [a1 setIsAvailable:0];
+      [error setIsAvailable:0];
       v8 = +[_CDObservationCenter sharedInstance];
-      [v8 postNotificationName:@"_DKRapportTransportAvailablityChangedNotification" userInfo:0 sender:a1];
+      [v8 postNotificationName:@"_DKRapportTransportAvailablityChangedNotification" userInfo:0 sender:error];
     }
 
     else
@@ -833,32 +833,32 @@
         [_DKSyncRapportCommonStorage handleActivateWithError:];
       }
 
-      v10 = *(a1 + 40);
+      v10 = *(error + 40);
       v11 = *MEMORY[0x1E69C6C08];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __55___DKSyncRapportCommonStorage_handleActivateWithError___block_invoke;
       v16[3] = &unk_1E73675F8;
-      v16[4] = a1;
+      v16[4] = error;
       [v10 registerProfileID:v11 completion:v16];
-      *(a1 + 8) = 1;
-      [a1 setIsAvailable:1];
+      *(error + 8) = 1;
+      [error setIsAvailable:1];
       v12 = +[_CDObservationCenter sharedInstance];
-      [v12 postNotificationName:@"_DKRapportTransportAvailablityChangedNotification" userInfo:0 sender:a1];
-      *(a1 + 72) = 0x4020000000000000;
+      [v12 postNotificationName:@"_DKRapportTransportAvailablityChangedNotification" userInfo:0 sender:error];
+      *(error + 72) = 0x4020000000000000;
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleBeaconWithRequest:(void *)a3 options:(void *)a4 responseHandler:
+- (void)handleBeaconWithRequest:(void *)request options:(void *)options responseHandler:
 {
   v48 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v37 = a3;
-  v8 = a4;
-  if (a1)
+  requestCopy = request;
+  optionsCopy = options;
+  if (self)
   {
     v9 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v9);
@@ -880,8 +880,8 @@
     }
 
     v12 = objc_opt_new();
-    v13 = [a1 myDeviceID];
-    if (v13)
+    myDeviceID = [self myDeviceID];
+    if (myDeviceID)
     {
       v14 = [v7 objectForKeyedSubscript:@"peer"];
       if (v14)
@@ -900,15 +900,15 @@
           }
 
           v32 = v25;
-          v34 = [v16 identifier];
-          v36 = [v16 model];
-          if (v36)
+          identifier = [v16 identifier];
+          model = [v16 model];
+          if (model)
           {
             v31 = MEMORY[0x1E696AEC0];
-            v29 = [v16 model];
+            model2 = [v16 model];
             v27 = v31;
-            v30 = v29;
-            v26 = [v27 stringWithFormat:@" (%@)", v29];
+            v30 = model2;
+            v26 = [v27 stringWithFormat:@" (%@)", model2];
           }
 
           else
@@ -923,18 +923,18 @@
           v42 = 2114;
           v43 = v28;
           v44 = 2114;
-          v45 = v34;
+          v45 = identifier;
           v46 = 2114;
           v47 = v26;
           _os_log_debug_impl(&dword_191750000, v17, OS_LOG_TYPE_DEBUG, "%{public}@: Received beacon request from %{public}@peer %{public}@%{public}@", buf, 0x2Au);
-          if (v36)
+          if (model)
           {
           }
         }
 
         if (v16)
         {
-          [a1 handshakeWithDuetSyncPeer:v16 orError:0];
+          [self handshakeWithDuetSyncPeer:v16 orError:0];
           v18 = 0;
         }
 
@@ -969,12 +969,12 @@
       }
 
       +[_DKSyncErrors internalFailure];
-      v18 = v13 = &stru_1F05B9908;
+      v18 = myDeviceID = &stru_1F05B9908;
     }
 
     v38[0] = @"server";
     v38[1] = @"results";
-    v39[0] = v13;
+    v39[0] = myDeviceID;
     v39[1] = v12;
     v38[2] = @"version";
     v39[2] = @"3.0";
@@ -987,24 +987,24 @@
       [_DKSyncRapportCommonStorage handleBeaconWithRequest:options:responseHandler:];
     }
 
-    v8[2](v8, v21, 0, v18);
+    optionsCopy[2](optionsCopy, v21, 0, v18);
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFetchSourceDeviceIDWithRequest:(void *)a3 options:(void *)a4 responseHandler:
+- (void)handleFetchSourceDeviceIDWithRequest:(void *)request options:(void *)options responseHandler:
 {
   v29[7] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v25 = a3;
-  v8 = a4;
-  if (a1)
+  requestCopy = request;
+  optionsCopy = options;
+  if (self)
   {
     v9 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v9);
 
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v11 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -1021,13 +1021,13 @@
       [_DKSyncRapportCommonStorage handleFetchSourceDeviceIDWithRequest:options:responseHandler:];
     }
 
-    v13 = [a1 myDeviceID];
-    v14 = v13;
-    if (v13)
+    myDeviceID = [self myDeviceID];
+    v14 = myDeviceID;
+    if (myDeviceID)
     {
       v15 = 0;
       v28 = @"deviceID";
-      v29[0] = v13;
+      v29[0] = myDeviceID;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       v17 = v14;
     }
@@ -1073,42 +1073,42 @@
       [_DKSyncRapportCommonStorage handleFetchSourceDeviceIDWithRequest:options:responseHandler:];
     }
 
-    v8[2](v8, v21, 0, v15);
-    if (v10)
+    optionsCopy[2](optionsCopy, v21, 0, v15);
+    if (date)
     {
-      v23 = [MEMORY[0x1E695DF00] date];
-      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", 0, [a1 transportType], v10, v23, 0);
+      date2 = [MEMORY[0x1E695DF00] date];
+      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", 0, [self transportType], date, date2, 0);
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handshakeWithDuetSyncPeer:(id)a3 orError:(id)a4
+- (void)handshakeWithDuetSyncPeer:(id)peer orError:(id)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  errorCopy = error;
   v8 = +[_DKSyncPeerStatusTracker sharedInstance];
-  if (!v7)
+  if (!errorCopy)
   {
-    v24 = [v6 sourceDeviceID];
-    if (v24)
+    sourceDeviceID = [peerCopy sourceDeviceID];
+    if (sourceDeviceID)
     {
-      v25 = v24;
-      v26 = [v6 version];
-      if (v26)
+      v25 = sourceDeviceID;
+      version = [peerCopy version];
+      if (version)
       {
-        v27 = v26;
+        v27 = version;
         peerSourceDeviceIDsWithCompletedHandshakes = self->_peerSourceDeviceIDsWithCompletedHandshakes;
-        v29 = [v6 sourceDeviceID];
-        LODWORD(peerSourceDeviceIDsWithCompletedHandshakes) = [(NSMutableSet *)peerSourceDeviceIDsWithCompletedHandshakes containsObject:v29];
+        sourceDeviceID2 = [peerCopy sourceDeviceID];
+        LODWORD(peerSourceDeviceIDsWithCompletedHandshakes) = [(NSMutableSet *)peerSourceDeviceIDsWithCompletedHandshakes containsObject:sourceDeviceID2];
 
         if (peerSourceDeviceIDsWithCompletedHandshakes)
         {
-          [v8 addActiveTransports:-[_DKSyncRapportCommonStorage transportType](self toPeer:{"transportType"), v6}];
-          v30 = [MEMORY[0x1E695DF00] date];
-          [v8 setLastSeenDate:v30 onPeer:v6];
+          [v8 addActiveTransports:-[_DKSyncRapportCommonStorage transportType](self toPeer:{"transportType"), peerCopy}];
+          date = [MEMORY[0x1E695DF00] date];
+          [v8 setLastSeenDate:date onPeer:peerCopy];
 
           goto LABEL_22;
         }
@@ -1119,10 +1119,10 @@
       }
     }
 
-    v31 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     v32 = MEMORY[0x1E696AEC0];
-    v33 = [v6 identifier];
-    v18 = [v32 stringWithFormat:@"handshake:%@", v33];
+    identifier = [peerCopy identifier];
+    v18 = [v32 stringWithFormat:@"handshake:%@", identifier];
 
     v34 = +[_DKThrottledActivity standardInstance];
     v47[0] = MEMORY[0x1E69E9820];
@@ -1130,8 +1130,8 @@
     v47[2] = __65___DKSyncRapportCommonStorage_handshakeWithDuetSyncPeer_orError___block_invoke;
     v47[3] = &unk_1E736A018;
     v47[4] = self;
-    v48 = v6;
-    v49 = v31;
+    v48 = peerCopy;
+    v49 = date2;
     v50 = v8;
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
@@ -1139,21 +1139,21 @@
     v45[3] = &unk_1E736ACD8;
     v45[4] = self;
     v46 = v48;
-    v35 = v31;
+    v35 = date2;
     [v34 performNoMoreOftenInMinutesThan:v18 name:v47 activityBlock:v45 throttleBlock:1.0];
 
 LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v7 code] != -6714 || (objc_msgSend(v7, "domain"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C6BC8]), v9, !v10))
+  if ([errorCopy code] != -6714 || (objc_msgSend(errorCopy, "domain"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C6BC8]), v9, !v10))
   {
     v18 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = [objc_opt_class() description];
       v20 = &stru_1F05B9908;
-      if ([v6 me])
+      if ([peerCopy me])
       {
         v21 = @"pseudo ";
       }
@@ -1163,33 +1163,33 @@ LABEL_21:
         v21 = &stru_1F05B9908;
       }
 
-      v22 = [v6 identifier];
-      v23 = [v6 model];
-      if (v23)
+      identifier2 = [peerCopy identifier];
+      model = [peerCopy model];
+      if (model)
       {
         v39 = MEMORY[0x1E696AEC0];
-        v43 = [v6 model];
-        v20 = [v39 stringWithFormat:@" (%@)", v43];
+        model2 = [peerCopy model];
+        v20 = [v39 stringWithFormat:@" (%@)", model2];
       }
 
-      v40 = [v7 domain];
+      domain = [errorCopy domain];
       *buf = 138544898;
       v52 = v19;
       v53 = 2114;
       v54 = v21;
       v55 = 2114;
-      v56 = v22;
+      v56 = identifier2;
       v57 = 2114;
       v58 = v20;
       v59 = 2114;
-      v60 = v40;
+      v60 = domain;
       v61 = 2048;
-      v62 = [v7 code];
+      code = [errorCopy code];
       v63 = 2112;
-      v64 = v7;
+      v64 = errorCopy;
       _os_log_error_impl(&dword_191750000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed while handshaking with %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", buf, 0x48u);
 
-      if (v23)
+      if (model)
       {
       }
     }
@@ -1201,7 +1201,7 @@ LABEL_21:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v44 = [objc_opt_class() description];
-    v12 = [v6 me];
+    v12 = [peerCopy me];
     v13 = &stru_1F05B9908;
     v14 = @"pseudo ";
     if (!v12)
@@ -1210,49 +1210,49 @@ LABEL_21:
     }
 
     v42 = v14;
-    v15 = [v6 identifier];
-    v16 = [v6 model];
-    if (v16)
+    identifier3 = [peerCopy identifier];
+    model3 = [peerCopy model];
+    if (model3)
     {
       v17 = MEMORY[0x1E696AEC0];
-      v41 = [v6 model];
-      v13 = [v17 stringWithFormat:@" (%@)", v41];
+      model4 = [peerCopy model];
+      v13 = [v17 stringWithFormat:@" (%@)", model4];
     }
 
-    v37 = [v6 model];
-    v38 = [v6 name];
+    model5 = [peerCopy model];
+    name = [peerCopy name];
     *buf = 138544642;
     v52 = v44;
     v53 = 2114;
     v54 = v42;
     v55 = 2114;
-    v56 = v15;
+    v56 = identifier3;
     v57 = 2114;
     v58 = v13;
     v59 = 2114;
-    v60 = v37;
+    v60 = model5;
     v61 = 2112;
-    v62 = v38;
+    code = name;
     _os_log_impl(&dword_191750000, v11, OS_LOG_TYPE_INFO, "%{public}@: Unsupported %{public}@peer %{public}@%{public}@ failed to recognize sync protocol beacon: %{public}@ (%@)", buf, 0x3Eu);
 
-    if (v16)
+    if (model3)
     {
     }
   }
 
-  [v8 removeActiveTransports:-[_DKSyncRapportCommonStorage transportType](self fromPeer:{"transportType"), v6}];
+  [v8 removeActiveTransports:-[_DKSyncRapportCommonStorage transportType](self fromPeer:{"transportType"), peerCopy}];
 LABEL_22:
 
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActivateCompanionLinkClient:(void *)a3 forPeer:(void *)a4 error:
+- (void)handleActivateCompanionLinkClient:(void *)client forPeer:(void *)peer error:
 {
   v42 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  clientCopy = client;
+  peerCopy = peer;
+  if (self)
   {
     v12 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v12);
@@ -1261,21 +1261,21 @@ LABEL_22:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v37 = [objc_opt_class() description];
-      v20 = [v10 me];
+      v20 = [clientCopy me];
       v21 = &stru_1F05B9908;
       if (v20)
       {
         v21 = @"pseudo ";
       }
 
-      v36 = v21;
-      v4 = [v10 identifier];
-      v22 = [v10 model];
-      if (v22)
+      identifier2 = v21;
+      identifier = [clientCopy identifier];
+      model = [clientCopy model];
+      if (model)
       {
         v28 = MEMORY[0x1E696AEC0];
-        v5 = [v10 model];
-        v32 = v5;
+        model2 = [clientCopy model];
+        v32 = model2;
         v23 = [v28 stringWithFormat:@" (%@)"];
       }
 
@@ -1287,24 +1287,24 @@ LABEL_22:
       *buf = 138544130;
       *&buf[4] = v37;
       *&buf[12] = 2114;
-      *&buf[14] = v36;
+      *&buf[14] = identifier2;
       *&buf[22] = 2114;
-      v39 = v4;
+      v39 = identifier;
       *v40 = 2114;
       *&v40[2] = v23;
       _os_log_debug_impl(&dword_191750000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: Handling client activate of %{public}@peer %{public}@%{public}@", buf, 0x2Au);
-      if (v22)
+      if (model)
       {
       }
     }
 
-    if (v11)
+    if (peerCopy)
     {
       v14 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v37 = [objc_opt_class() description];
-        v24 = [v10 me];
+        v24 = [clientCopy me];
         v25 = &stru_1F05B9908;
         if (v24)
         {
@@ -1312,13 +1312,13 @@ LABEL_22:
         }
 
         v35 = v25;
-        v36 = [v10 identifier];
-        v26 = [v10 model];
-        if (v26)
+        identifier2 = [clientCopy identifier];
+        model3 = [clientCopy model];
+        if (model3)
         {
           v29 = MEMORY[0x1E696AEC0];
-          v4 = [v10 model];
-          v32 = v4;
+          identifier = [clientCopy model];
+          v32 = identifier;
           v27 = [v29 stringWithFormat:@" (%@)"];
         }
 
@@ -1327,47 +1327,47 @@ LABEL_22:
           v27 = &stru_1F05B9908;
         }
 
-        v30 = [v11 domain];
-        v31 = [v11 code];
-        v34 = v4;
+        domain = [peerCopy domain];
+        code = [peerCopy code];
+        v34 = identifier;
         *buf = 138544898;
         *&buf[4] = v37;
         *&buf[12] = 2114;
         *&buf[14] = v35;
         *&buf[22] = 2114;
-        v39 = v36;
+        v39 = identifier2;
         *v40 = 2114;
         *&v40[2] = v27;
         *&v40[10] = 2114;
-        *&v40[12] = v30;
+        *&v40[12] = domain;
         *&v40[20] = 2048;
-        *&v40[22] = v31;
+        *&v40[22] = code;
         *&v40[30] = 2112;
-        v41 = v11;
+        v41 = peerCopy;
         _os_log_error_impl(&dword_191750000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed client activate of %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)", buf, 0x48u);
 
-        if (v26)
+        if (model3)
         {
         }
       }
 
-      [(_DKSyncRapportCommonStorage *)a1 removeClient:v9 forPeer:v10 retiring:0, v15, v16, v17, v18, v32, v33, v34, v35, v36, v37, *buf, *&buf[8], *&buf[16], v39, *v40, *&v40[8], *&v40[16], *&v40[24], v41, v42, v43, v44, v45, v46, v47, v48];
+      [(_DKSyncRapportCommonStorage *)self removeClient:v9 forPeer:clientCopy retiring:0, v15, v16, v17, v18, v32, v33, v34, v35, identifier2, v37, *buf, *&buf[8], *&buf[16], v39, *v40, *&v40[8], *&v40[16], *&v40[24], v41, v42, v43, v44, v45, v46, v47, v48];
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)transformResponseError:(id)a3
+- (id)transformResponseError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = *MEMORY[0x1E69C6BC8];
-  if ([v4 isEqualToString:*MEMORY[0x1E69C6BC8]])
+  if ([domain isEqualToString:*MEMORY[0x1E69C6BC8]])
   {
-    v6 = [v3 code];
+    code = [errorCopy code];
 
-    if (v6 == -71156)
+    if (code == -71156)
     {
       v7 = +[_DKSyncErrors temporaryFailure];
 
@@ -1379,13 +1379,13 @@ LABEL_22:
   {
   }
 
-  v8 = [v3 domain];
-  if ([v8 isEqualToString:v5])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v5])
   {
-    v9 = [v3 code];
+    code2 = [errorCopy code];
 
-    v7 = v3;
-    if (v9 != -6722)
+    v7 = errorCopy;
+    if (code2 != -6722)
     {
       goto LABEL_12;
     }
@@ -1401,21 +1401,21 @@ LABEL_22:
   {
   }
 
-  v7 = v3;
+  v7 = errorCopy;
 LABEL_12:
 
   return v7;
 }
 
-- (id)transformCaughtObject:(id)a3 existingError:(id)a4
+- (id)transformCaughtObject:(id)object existingError:(id)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  objectCopy = object;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v8 = v6;
+    v8 = errorCopy;
 LABEL_5:
     v9 = v8;
     goto LABEL_6;
@@ -1424,7 +1424,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
+    v8 = objectCopy;
     goto LABEL_5;
   }
 
@@ -1433,21 +1433,21 @@ LABEL_5:
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = +[_DKSyncErrors internalFailure];
-    v14 = [v13 domain];
+    domain = [v13 domain];
     v15 = +[_DKSyncErrors internalFailure];
-    v16 = [v15 code];
+    code = [v15 code];
     v34 = *MEMORY[0x1E696A578];
-    v17 = [v5 reason];
-    v18 = v17;
+    reason = [objectCopy reason];
+    v18 = reason;
     v19 = @"Exception Caught";
-    if (v17)
+    if (reason)
     {
-      v19 = v17;
+      v19 = reason;
     }
 
     v35[0] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-    v9 = [v12 errorWithDomain:v14 code:v16 userInfo:v20];
+    v9 = [v12 errorWithDomain:domain code:code userInfo:v20];
   }
 
   else
@@ -1455,14 +1455,14 @@ LABEL_5:
     v21 = objc_opt_respondsToSelector();
     v22 = MEMORY[0x1E696ABC0];
     v13 = +[_DKSyncErrors internalFailure];
-    v14 = [v13 domain];
+    domain = [v13 domain];
     v23 = +[_DKSyncErrors internalFailure];
-    v24 = [v23 code];
+    code2 = [v23 code];
     v25 = *MEMORY[0x1E696A578];
     if (v21)
     {
       v32 = *MEMORY[0x1E696A578];
-      v26 = [v5 description];
+      v26 = [objectCopy description];
       v27 = v26;
       v28 = @"Object Caught";
       if (v26)
@@ -1472,7 +1472,7 @@ LABEL_5:
 
       v33 = v28;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      v9 = [v22 errorWithDomain:v14 code:v24 userInfo:v29];
+      v9 = [v22 errorWithDomain:domain code:code2 userInfo:v29];
     }
 
     else
@@ -1480,7 +1480,7 @@ LABEL_5:
       v30 = *MEMORY[0x1E696A578];
       v31 = @"Object Caught";
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      v9 = [v22 errorWithDomain:v14 code:v24 userInfo:v27];
+      v9 = [v22 errorWithDomain:domain code:code2 userInfo:v27];
     }
   }
 
@@ -1490,16 +1490,16 @@ LABEL_6:
   return v9;
 }
 
-- (void)handleFetchSourceDeviceIDWithResponse:(void *)a3 options:(void *)a4 error:(void *)a5 peer:(void *)a6 plStartDate:(void *)a7 completion:
+- (void)handleFetchSourceDeviceIDWithResponse:(void *)response options:(void *)options error:(void *)error peer:(void *)peer plStartDate:(void *)date completion:
 {
   v61 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v49 = a3;
-  v14 = a4;
-  v50 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (a1)
+  responseCopy = response;
+  optionsCopy = options;
+  errorCopy = error;
+  peerCopy = peer;
+  dateCopy = date;
+  if (self)
   {
     v17 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v17);
@@ -1512,22 +1512,22 @@ LABEL_6:
       [_DKSyncRapportCommonStorage handleFetchSourceDeviceIDWithResponse:options:error:peer:plStartDate:completion:];
     }
 
-    if (v14)
+    if (optionsCopy)
     {
-      if ([v14 code] == -6714 && (objc_msgSend(v14, "domain"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", *MEMORY[0x1E69C6BC8]), v19, v20))
+      if ([optionsCopy code] == -6714 && (objc_msgSend(optionsCopy, "domain"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", *MEMORY[0x1E69C6BC8]), v19, v20))
       {
         v21 = +[_DKSyncPeerStatusTracker sharedInstance];
-        [v21 removeActiveTransports:objc_msgSend(a1 fromPeer:{"transportType"), v50}];
+        [v21 removeActiveTransports:objc_msgSend(self fromPeer:{"transportType"), errorCopy}];
         v22 = 0;
         v23 = 0;
       }
 
       else
       {
-        [a1 transformResponseError:v14];
+        [self transformResponseError:optionsCopy];
         v22 = 0;
         v23 = 0;
-        v14 = v21 = v14;
+        optionsCopy = v21 = optionsCopy;
       }
     }
 
@@ -1537,7 +1537,7 @@ LABEL_6:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
         v47 = [objc_opt_class() description];
-        if ([v50 me])
+        if ([errorCopy me])
         {
           v31 = @"pseudo ";
         }
@@ -1547,18 +1547,18 @@ LABEL_6:
           v31 = &stru_1F05B9908;
         }
 
-        v32 = [v50 identifier];
-        v33 = [v50 model];
-        if (v33)
+        identifier = [errorCopy identifier];
+        model = [errorCopy model];
+        if (model)
         {
           v35 = MEMORY[0x1E696AEC0];
-          a5 = [v50 model];
-          v34 = [v35 stringWithFormat:@" (%@)", a5];
+          error = [errorCopy model];
+          error = [v35 stringWithFormat:@" (%@)", error];
         }
 
         else
         {
-          v34 = &stru_1F05B9908;
+          error = &stru_1F05B9908;
         }
 
         *buf = 138544386;
@@ -1566,13 +1566,13 @@ LABEL_6:
         v53 = 2114;
         v54 = v31;
         v55 = 2114;
-        v56 = v32;
+        v56 = identifier;
         v57 = 2114;
-        v58 = v34;
+        v58 = error;
         v59 = 2112;
         v60 = v13;
         _os_log_debug_impl(&dword_191750000, v24, OS_LOG_TYPE_DEBUG, "%{public}@: Received fetch source device id response from %{public}@peer %{public}@%{public}@: %@", buf, 0x34u);
-        if (v33)
+        if (model)
         {
         }
       }
@@ -1596,8 +1596,8 @@ LABEL_6:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           v46 = [objc_opt_class() description];
-          v45 = [v23 UUIDString];
-          v36 = [v50 me];
+          uUIDString = [v23 UUIDString];
+          v36 = [errorCopy me];
           v37 = &stru_1F05B9908;
           if (v36)
           {
@@ -1605,14 +1605,14 @@ LABEL_6:
           }
 
           v43 = v37;
-          v44 = [v50 identifier];
-          v48 = [v50 model];
-          if (v48)
+          identifier2 = [errorCopy identifier];
+          model2 = [errorCopy model];
+          if (model2)
           {
             v42 = MEMORY[0x1E696AEC0];
-            v39 = [v50 model];
-            v38 = [v42 stringWithFormat:@" (%@)", v39];
-            v41 = v39;
+            model3 = [errorCopy model];
+            v38 = [v42 stringWithFormat:@" (%@)", model3];
+            v41 = model3;
           }
 
           else
@@ -1623,47 +1623,47 @@ LABEL_6:
           *buf = 138544386;
           v52 = v46;
           v53 = 2114;
-          v54 = v45;
+          v54 = uUIDString;
           v55 = 2114;
           v56 = v43;
           v57 = 2114;
-          v58 = v44;
+          v58 = identifier2;
           v59 = 2114;
           v60 = v38;
           v40 = v38;
           _os_log_debug_impl(&dword_191750000, v27, OS_LOG_TYPE_DEBUG, "%{public}@: Fetched source device id %{public}@ from %{public}@peer %{public}@%{public}@", buf, 0x34u);
-          if (v48)
+          if (model2)
           {
           }
         }
 
-        v14 = 0;
+        optionsCopy = 0;
       }
 
       else
       {
-        v14 = +[_DKSyncErrors invalidResponse];
+        optionsCopy = +[_DKSyncErrors invalidResponse];
         v23 = 0;
       }
     }
 
-    if (v15)
+    if (peerCopy)
     {
-      v28 = [MEMORY[0x1E695DF00] date];
-      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", 0, [a1 transportType], v15, v28, 0);
+      date = [MEMORY[0x1E695DF00] date];
+      +[_DKSyncPowerlog recordWithSyncType:transportType:startDate:endDate:isEmpty:](_DKSyncPowerlog, "recordWithSyncType:transportType:startDate:endDate:isEmpty:", 0, [self transportType], peerCopy, date, 0);
     }
 
-    if (v16)
+    if (dateCopy)
     {
-      v29 = v16[2];
-      if (v14)
+      v29 = dateCopy[2];
+      if (optionsCopy)
       {
-        v29(v16, 0, 0, v14);
+        v29(dateCopy, 0, 0, optionsCopy);
       }
 
       else
       {
-        v29(v16, v23, v22, 0);
+        v29(dateCopy, v23, v22, 0);
       }
     }
   }
@@ -1671,11 +1671,11 @@ LABEL_6:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isTransportActiveForPeer:(id)a3
+- (BOOL)isTransportActiveForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = +[_DKSyncPeerStatusTracker sharedInstance];
-  v6 = [v5 activeTransportsForPeer:v4];
+  v6 = [v5 activeTransportsForPeer:peerCopy];
 
   LOBYTE(self) = ([(_DKSyncRapportCommonStorage *)self transportType]& v6) != 0;
   return self;
@@ -1684,7 +1684,7 @@ LABEL_6:
 - (void)startRapport
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -1699,7 +1699,7 @@ LABEL_6:
     v4 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v4);
 
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
       v5 = objc_alloc_init(MEMORY[0x1E69C6B70]);
       if (v5)
@@ -1715,33 +1715,33 @@ LABEL_6:
         v23[1] = 3221225472;
         v23[2] = __43___DKSyncRapportCommonStorage_startRapport__block_invoke;
         v23[3] = &unk_1E7367440;
-        v23[4] = a1;
+        v23[4] = self;
         [v5 setInvalidationHandler:v23];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __43___DKSyncRapportCommonStorage_startRapport__block_invoke_2;
         v22[3] = &unk_1E736AC38;
-        v22[4] = a1;
+        v22[4] = self;
         [v5 setDeviceFoundHandler:v22];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __43___DKSyncRapportCommonStorage_startRapport__block_invoke_3;
         v21[3] = &unk_1E736AC60;
-        v21[4] = a1;
+        v21[4] = self;
         [v5 setDeviceChangedHandler:v21];
         OUTLINED_FUNCTION_2_4();
         v17 = 3221225472;
         v18 = __43___DKSyncRapportCommonStorage_startRapport__block_invoke_4;
         v19 = &unk_1E736AC38;
-        v20 = a1;
+        selfCopy = self;
         [v5 setDeviceLostHandler:v16];
-        [(_DKSyncRapportCommonStorage *)a1 registerRequestIDsWithClient:v5];
-        objc_storeStrong((a1 + 40), v5);
+        [(_DKSyncRapportCommonStorage *)self registerRequestIDsWithClient:v5];
+        objc_storeStrong((self + 40), v5);
         OUTLINED_FUNCTION_0_1();
         v12 = 3221225472;
         v13 = __43___DKSyncRapportCommonStorage_startRapport__block_invoke_5;
         v14 = &unk_1E73675F8;
-        v15 = a1;
+        selfCopy2 = self;
         [v5 activateWithCompletion:v11];
         goto LABEL_9;
       }
@@ -1752,9 +1752,9 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v10 = [objc_opt_class() description];
+      name = [objc_opt_class() description];
       *buf = 138543362;
-      v25 = v10;
+      v25 = name;
       _os_log_error_impl(&dword_191750000, v3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to start Rapport, could not instantiate client", buf, 0xCu);
     }
 
@@ -1768,11 +1768,11 @@ LABEL_6:
 
       [objc_opt_class() description];
       objc_claimAutoreleasedReturnValue();
-      v10 = [OUTLINED_FUNCTION_29_3() name];
+      name = [OUTLINED_FUNCTION_29_3() name];
       *buf = 138543618;
       v25 = 0x1E7366000uLL;
       v26 = 2114;
-      v27 = v10;
+      v27 = name;
       _os_log_fault_impl(&dword_191750000, v5, OS_LOG_TYPE_FAULT, "%{public}@: Warning, attempting to start transport %{public}@ with no device ID", buf, 0x16u);
     }
 
@@ -1783,22 +1783,22 @@ LABEL_9:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerRequestIDsWithClient:(uint64_t)a1
+- (void)registerRequestIDsWithClient:(uint64_t)client
 {
-  if (a1)
+  if (client)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __60___DKSyncRapportCommonStorage_registerRequestIDsWithClient___block_invoke;
     v5[3] = &unk_1E736AC88;
-    v5[4] = a1;
+    v5[4] = client;
     v3 = a2;
     [v3 registerRequestID:@"com.apple.coreduet.beacon" options:0 handler:v5];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __60___DKSyncRapportCommonStorage_registerRequestIDsWithClient___block_invoke_2;
     v4[3] = &unk_1E736AC88;
-    v4[4] = a1;
+    v4[4] = client;
     [v3 registerRequestID:@"com.apple.coreduet.fetch-source-device-id" options:0 handler:v4];
   }
 }
@@ -1811,7 +1811,7 @@ LABEL_9:
   v3 = v2;
   if (v1)
   {
-    v4 = [*(v1 + 40) activeDevices];
+    activeDevices = [*(v1 + 40) activeDevices];
     OUTLINED_FUNCTION_36();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)
@@ -1823,13 +1823,13 @@ LABEL_9:
         {
           if (MEMORY[0] != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeDevices);
           }
 
           v9 = *(8 * i);
-          v10 = [v3 idsDeviceIdentifier];
-          v11 = [v9 idsDeviceIdentifier];
-          v12 = [v10 isEqualToString:v11];
+          idsDeviceIdentifier = [v3 idsDeviceIdentifier];
+          idsDeviceIdentifier2 = [v9 idsDeviceIdentifier];
+          v12 = [idsDeviceIdentifier isEqualToString:idsDeviceIdentifier2];
 
           if (v12)
           {
@@ -1839,7 +1839,7 @@ LABEL_9:
         }
 
         OUTLINED_FUNCTION_36();
-        v6 = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v6 = [activeDevices countByEnumeratingWithState:? objects:? count:?];
         if (v6)
         {
           continue;
@@ -1858,7 +1858,7 @@ LABEL_12:
   return v14;
 }
 
-- (void)removeClient:(uint64_t)a3 forPeer:(uint64_t)a4 retiring:(uint64_t)a5
+- (void)removeClient:(uint64_t)client forPeer:(uint64_t)peer retiring:(uint64_t)retiring
 {
   OUTLINED_FUNCTION_70_0();
   a29 = v32;
@@ -1884,8 +1884,8 @@ LABEL_12:
         OUTLINED_FUNCTION_22_7();
         [v42 identifier];
         objc_claimAutoreleasedReturnValue();
-        v46 = [OUTLINED_FUNCTION_34_0() model];
-        if (v46)
+        model = [OUTLINED_FUNCTION_34_0() model];
+        if (model)
         {
           v49 = MEMORY[0x1E696AEC0];
           [v42 model];
@@ -1898,7 +1898,7 @@ LABEL_12:
         v51 = "%{public}@: Retiring client for %{public}@peer %{public}@%{public}@";
 LABEL_15:
         OUTLINED_FUNCTION_31_1(&dword_191750000, v43, v50, v51, &a11);
-        if (v46)
+        if (model)
         {
         }
       }
@@ -1913,8 +1913,8 @@ LABEL_15:
       OUTLINED_FUNCTION_22_7();
       [v42 identifier];
       objc_claimAutoreleasedReturnValue();
-      v46 = [OUTLINED_FUNCTION_34_0() model];
-      if (v46)
+      model = [OUTLINED_FUNCTION_34_0() model];
+      if (model)
       {
         v52 = MEMORY[0x1E696AEC0];
         [v42 model];
@@ -1928,8 +1928,8 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v47 = [v42 idsDeviceIdentifier];
-    [*(v39 + 48) setObject:0 forKeyedSubscript:v47];
+    idsDeviceIdentifier = [v42 idsDeviceIdentifier];
+    [*(v39 + 48) setObject:0 forKeyedSubscript:idsDeviceIdentifier];
     [v41 invalidate];
   }
 
@@ -1937,29 +1937,29 @@ LABEL_15:
   OUTLINED_FUNCTION_72_0();
 }
 
-- (void)sendRequestID:(id)a3 request:(id)a4 peer:(id)a5 highPriority:(BOOL)a6 options:(id)a7 responseHandler:(id)a8
+- (void)sendRequestID:(id)d request:(id)request peer:(id)peer highPriority:(BOOL)priority options:(id)options responseHandler:(id)handler
 {
   v87 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  requestCopy = request;
+  peerCopy = peer;
+  optionsCopy = options;
+  handlerCopy = handler;
   v19 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v19);
 
-  v20 = [(_DKSyncRapportCommonStorage *)self clientForPeer:v16];
+  v20 = [(_DKSyncRapportCommonStorage *)self clientForPeer:peerCopy];
   if (v20)
   {
     v26 = v20;
     v28 = [_DKSyncRapportCommonStorage deviceForPeer:];
     [v26 setDestinationDevice:v28];
 
-    v29 = [v26 destinationDevice];
+    destinationDevice = [v26 destinationDevice];
 
-    if (v29)
+    if (destinationDevice)
     {
-      [(_DKSyncRapportCommonStorage *)self sendRequestID:v14 request:v15 peer:v16 client:v26 options:v17 responseHandler:v18];
+      [(_DKSyncRapportCommonStorage *)self sendRequestID:dCopy request:requestCopy peer:peerCopy client:v26 options:optionsCopy responseHandler:handlerCopy];
       goto LABEL_7;
     }
 
@@ -1967,7 +1967,7 @@ LABEL_15:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
     {
       v67 = [objc_opt_class() description];
-      v31 = [v16 me];
+      v31 = [peerCopy me];
       v32 = &stru_1F05B9908;
       v33 = @"pseudo ";
       if (!v31)
@@ -1975,32 +1975,32 @@ LABEL_15:
         v33 = &stru_1F05B9908;
       }
 
-      v65 = v33;
-      v66 = [v16 identifier];
-      v34 = [v16 model];
-      if (v34)
+      model5 = v33;
+      identifier = [peerCopy identifier];
+      model = [peerCopy model];
+      if (model)
       {
         v46 = MEMORY[0x1E696AEC0];
-        v64 = [v16 model];
-        v62 = v64;
+        model2 = [peerCopy model];
+        v62 = model2;
         v32 = [v46 stringWithFormat:@" (%@)"];
       }
 
       LODWORD(buf) = 138544130;
       OUTLINED_FUNCTION_10_11();
-      *(&v83 + 6) = v65;
+      *(&v83 + 6) = model5;
       HIWORD(v83) = v47;
-      v84 = v66;
+      v84 = identifier;
       v85 = v47;
       v86 = v32;
       _os_log_fault_impl(&dword_191750000, v30, OS_LOG_TYPE_FAULT, "%{public}@: Device disappeared for %{public}@peer %{public}@%{public}@", &buf, 0x2Au);
-      if (v34)
+      if (model)
       {
       }
     }
 
-    [(_DKSyncRapportCommonStorage *)self removeClient:v26 forPeer:v16 retiring:0, v48, v49, v50, v51, v62, v63, v64, v65, v66, v67, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, buf, v83, *(&v83 + 1), v84];
-    if (v18)
+    [(_DKSyncRapportCommonStorage *)self removeClient:v26 forPeer:peerCopy retiring:0, v48, v49, v50, v51, v62, v63, model2, model5, identifier, v67, v70, v71, v72, v73, selfCopy, v75, v76, v77, v78, v79, v80, v81, buf, v83, *(&v83 + 1), v84];
+    if (handlerCopy)
     {
       v45 = +[_DKSyncErrors internalFailure];
       goto LABEL_35;
@@ -2017,7 +2017,7 @@ LABEL_15:
       {
         v68 = [objc_opt_class() description];
         v38 = &stru_1F05B9908;
-        if ([v16 me])
+        if ([peerCopy me])
         {
           v39 = @"pseudo ";
         }
@@ -2027,29 +2027,29 @@ LABEL_15:
           v39 = &stru_1F05B9908;
         }
 
-        v40 = [v16 identifier];
-        v41 = [v16 model];
-        if (v41)
+        identifier2 = [peerCopy identifier];
+        model3 = [peerCopy model];
+        if (model3)
         {
           v42 = MEMORY[0x1E696AEC0];
-          v66 = [v16 model];
-          v38 = [v42 stringWithFormat:@" (%@)", v66];
+          identifier = [peerCopy model];
+          v38 = [v42 stringWithFormat:@" (%@)", identifier];
         }
 
         LODWORD(buf) = 138544130;
         OUTLINED_FUNCTION_10_11();
         *(&v83 + 6) = v39;
         HIWORD(v83) = v43;
-        v84 = v40;
+        v84 = identifier2;
         v85 = v43;
         v86 = v38;
         _os_log_error_impl(&dword_191750000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create client for %{public}@peer %{public}@%{public}@", &buf, 0x2Au);
-        if (v41)
+        if (model3)
         {
         }
       }
 
-      if (v18)
+      if (handlerCopy)
       {
         v23 = +[_DKSyncErrors internalFailure];
         v24 = OUTLINED_FUNCTION_30_2();
@@ -2068,23 +2068,23 @@ LABEL_15:
     v36 = [_DKSyncRapportCommonStorage deviceForPeer:];
     [v26 setDestinationDevice:v36];
 
-    v37 = [v26 destinationDevice];
+    destinationDevice2 = [v26 destinationDevice];
 
-    if (v37)
+    if (destinationDevice2)
     {
       OUTLINED_FUNCTION_2_4();
       v71 = 3221225472;
       v72 = __95___DKSyncRapportCommonStorage_sendRequestID_request_peer_highPriority_options_responseHandler___block_invoke;
       v73 = &unk_1E736AD28;
-      v74 = self;
+      selfCopy = self;
       v26 = v26;
       v75 = v26;
-      v76 = v16;
-      v77 = v17;
-      LOBYTE(v81) = a6;
-      v78 = v14;
-      v79 = v15;
-      v80 = v18;
+      v76 = peerCopy;
+      v77 = optionsCopy;
+      LOBYTE(v81) = priority;
+      v78 = dCopy;
+      v79 = requestCopy;
+      v80 = handlerCopy;
       [v26 activateWithCompletion:&v70];
 
       goto LABEL_7;
@@ -2095,31 +2095,31 @@ LABEL_15:
     {
       v69 = [objc_opt_class() description];
       v55 = &stru_1F05B9908;
-      [v16 me];
-      v56 = [v16 identifier];
-      v57 = [v16 model];
-      if (v57)
+      [peerCopy me];
+      identifier3 = [peerCopy identifier];
+      model4 = [peerCopy model];
+      if (model4)
       {
         v58 = MEMORY[0x1E696AEC0];
-        v65 = [v16 model];
-        v55 = [v58 stringWithFormat:@" (%@)", v65];
+        model5 = [peerCopy model];
+        v55 = [v58 stringWithFormat:@" (%@)", model5];
       }
 
       LODWORD(buf) = 138544130;
       OUTLINED_FUNCTION_10_11();
       *(&v83 + 6) = v59;
       HIWORD(v83) = v60;
-      v84 = v56;
+      v84 = identifier3;
       v85 = v60;
       v86 = v55;
       OUTLINED_FUNCTION_31_1(&dword_191750000, v44, v61, "%{public}@: Unable to determine device for %{public}@peer %{public}@%{public}@", &buf);
-      if (v57)
+      if (model4)
       {
       }
     }
 
     [v26 invalidate];
-    if (v18)
+    if (handlerCopy)
     {
       v45 = +[_DKSyncErrors temporaryFailure];
 LABEL_35:
@@ -2134,22 +2134,22 @@ LABEL_7:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendRequestID:(void *)a3 request:(void *)a4 peer:(void *)a5 client:(void *)a6 options:(void *)a7 responseHandler:
+- (void)sendRequestID:(void *)d request:(void *)request peer:(void *)peer client:(void *)client options:(void *)options responseHandler:
 {
   v66 = *MEMORY[0x1E69E9840];
   v51 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (a1)
+  dCopy = d;
+  requestCopy = request;
+  peerCopy = peer;
+  clientCopy = client;
+  optionsCopy = options;
+  if (self)
   {
-    v50 = v14;
+    v50 = requestCopy;
     v18 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v18);
 
-    v19 = [v16 objectForKey:*MEMORY[0x1E69C6BD0]];
+    v19 = [clientCopy objectForKey:*MEMORY[0x1E69C6BD0]];
 
     v20 = @"enabled";
     if (!v19)
@@ -2159,9 +2159,9 @@ LABEL_7:
 
     v21 = v20;
     v22 = *MEMORY[0x1E69C6BB0];
-    if (v16)
+    if (clientCopy)
     {
-      v23 = [v16 mutableCopy];
+      v23 = [clientCopy mutableCopy];
     }
 
     else
@@ -2174,9 +2174,9 @@ LABEL_7:
     v25 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v40 = v13;
+      v40 = dCopy;
       v48 = [objc_opt_class() description];
-      v29 = [v14 me];
+      v29 = [requestCopy me];
       v30 = @"pseudo ";
       if (!v29)
       {
@@ -2184,13 +2184,13 @@ LABEL_7:
       }
 
       v43 = v30;
-      v46 = [v14 identifier];
-      v44 = [v14 model];
-      if (v44)
+      identifier = [requestCopy identifier];
+      model = [requestCopy model];
+      if (model)
       {
         v35 = MEMORY[0x1E696AEC0];
-        v39 = [v14 model];
-        [v35 stringWithFormat:@" (%@)", v39];
+        model2 = [requestCopy model];
+        [v35 stringWithFormat:@" (%@)", model2];
         objc_claimAutoreleasedReturnValue();
       }
 
@@ -2198,37 +2198,37 @@ LABEL_7:
       OUTLINED_FUNCTION_10_11();
       v57 = v51;
       v58 = v36;
-      v13 = v40;
+      dCopy = v40;
       v59 = v43;
       v60 = v36;
-      v61 = v46;
+      v61 = identifier;
       v62 = v36;
-      v42 = v37;
+      model4 = v37;
       v63 = v37;
       v64 = 2112;
       v65 = v40;
       _os_log_debug_impl(&dword_191750000, v25, OS_LOG_TYPE_DEBUG, "%{public}@: Starting to send request %{public}@ to %{public}@peer %{public}@%{public}@: %@", buf, 0x3Eu);
-      if (v44)
+      if (model)
       {
       }
     }
 
-    ++*(a1 + 56);
+    ++*(self + 56);
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __89___DKSyncRapportCommonStorage_sendRequestID_request_peer_client_options_responseHandler___block_invoke;
     v52[3] = &unk_1E736AD50;
-    v52[4] = a1;
+    v52[4] = self;
     v26 = v21;
     v53 = v26;
-    v55 = v17;
-    v54 = v15;
-    [v54 sendRequestID:v51 request:v13 destinationID:v22 options:v24 responseHandler:v52];
+    v55 = optionsCopy;
+    v54 = peerCopy;
+    [v54 sendRequestID:v51 request:dCopy destinationID:v22 options:v24 responseHandler:v52];
     v27 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       v49 = [objc_opt_class() description];
-      v31 = [v14 me];
+      v31 = [requestCopy me];
       v32 = &stru_1F05B9908;
       if (v31)
       {
@@ -2236,13 +2236,13 @@ LABEL_7:
       }
 
       v45 = v32;
-      v47 = [v14 identifier];
-      v33 = [v14 model];
-      if (v33)
+      identifier2 = [requestCopy identifier];
+      model3 = [requestCopy model];
+      if (model3)
       {
         v41 = MEMORY[0x1E696AEC0];
-        v42 = [v14 model];
-        v34 = [v41 stringWithFormat:@" (%@)", v42];
+        model4 = [requestCopy model];
+        v34 = [v41 stringWithFormat:@" (%@)", model4];
       }
 
       else
@@ -2256,26 +2256,26 @@ LABEL_7:
       v58 = v38;
       v59 = v45;
       v60 = v38;
-      v61 = v47;
+      v61 = identifier2;
       v62 = v38;
       v63 = v34;
       _os_log_debug_impl(&dword_191750000, v27, OS_LOG_TYPE_DEBUG, "%{public}@: Done sending request %{public}@ to %{public}@peer %{public}@%{public}@", buf, 0x34u);
-      if (v33)
+      if (model3)
       {
       }
     }
 
-    v14 = v50;
+    requestCopy = v50;
   }
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAvailabilityFailureWithPeer:(id)a3 completion:(id)a4
+- (void)handleAvailabilityFailureWithPeer:(id)peer completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  completionCopy = completion;
   v8 = +[_DKSyncErrors internalFailure];
   if (![(_DKSyncRapportCommonStorage *)self isAvailable])
   {
@@ -2284,33 +2284,33 @@ LABEL_7:
     v8 = v9;
   }
 
-  v10 = [v6 idsDeviceIdentifier];
+  idsDeviceIdentifier = [peerCopy idsDeviceIdentifier];
 
   v11 = 0x1E7366000uLL;
   v12 = "[_DKSyncRapportContextStorage handleFetchContextValuesWithRequest:options:responseHandler:]" + 52;
-  if (!v10)
+  if (!idsDeviceIdentifier)
   {
-    v49 = +[_DKSyncErrors temporaryFailure];
+    model4 = +[_DKSyncErrors temporaryFailure];
 
     v13 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v14 = [objc_opt_class() description];
       v15 = &stru_1F05B9908;
-      [v6 me];
-      v16 = [v6 identifier];
-      v17 = [v6 model];
-      if (v17)
+      [peerCopy me];
+      identifier = [peerCopy identifier];
+      model = [peerCopy model];
+      if (model)
       {
         v18 = MEMORY[0x1E696AEC0];
-        v48 = [v6 model];
-        v15 = [v18 stringWithFormat:@" (%@)", v48];
+        model2 = [peerCopy model];
+        v15 = [v18 stringWithFormat:@" (%@)", model2];
       }
 
       OUTLINED_FUNCTION_16_7();
       OUTLINED_FUNCTION_23_5();
       _os_log_debug_impl(v19, v20, v21, v22, v23, 0x2Au);
-      if (v17)
+      if (model)
       {
       }
 
@@ -2322,16 +2322,16 @@ LABEL_7:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       v25 = [objc_opt_class() description];
-      v26 = [v6 debugDescription];
+      v26 = [peerCopy debugDescription];
       *buf = *(v12 + 346);
-      v51 = v25;
+      selfCopy = v25;
       v52 = 2112;
       v53 = v26;
       OUTLINED_FUNCTION_23_5();
       _os_log_debug_impl(v27, v28, v29, v30, v31, 0x16u);
     }
 
-    v8 = v49;
+    v8 = model4;
   }
 
   v32 = [_DKSyncRapportCommonStorage deviceForPeer:];
@@ -2345,20 +2345,20 @@ LABEL_7:
     {
       v37 = [objc_opt_class() description];
       v38 = &stru_1F05B9908;
-      [v6 me];
-      v39 = [v6 identifier];
-      v40 = [v6 model];
-      if (v40)
+      [peerCopy me];
+      identifier2 = [peerCopy identifier];
+      model3 = [peerCopy model];
+      if (model3)
       {
         v42 = MEMORY[0x1E696AEC0];
-        v49 = [v6 model];
-        v38 = [v42 stringWithFormat:@" (%@)", v49];
+        model4 = [peerCopy model];
+        v38 = [v42 stringWithFormat:@" (%@)", model4];
       }
 
       OUTLINED_FUNCTION_16_7();
       OUTLINED_FUNCTION_23_5();
       _os_log_debug_impl(v43, v44, v45, v46, v47, 0x2Au);
-      if (v40)
+      if (model3)
       {
       }
 
@@ -2366,25 +2366,25 @@ LABEL_7:
       v11 = 0x1E7366000;
     }
 
-    v35 = [*(v11 + 648) syncChannel];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+    syncChannel = [*(v11 + 648) syncChannel];
+    if (os_log_type_enabled(syncChannel, OS_LOG_TYPE_DEBUG))
     {
       [objc_opt_class() description];
       objc_claimAutoreleasedReturnValue();
       v41 = [OUTLINED_FUNCTION_29_3() debugDescription];
       *buf = *(v12 + 346);
-      v51 = self;
+      selfCopy = self;
       v52 = 2112;
       v53 = v41;
-      _os_log_debug_impl(&dword_191750000, v35, OS_LOG_TYPE_DEBUG, "%{public}@: Peer: %@", buf, 0x16u);
+      _os_log_debug_impl(&dword_191750000, syncChannel, OS_LOG_TYPE_DEBUG, "%{public}@: Peer: %@", buf, 0x16u);
     }
 
     v8 = v33;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   v36 = *MEMORY[0x1E69E9840];
@@ -2524,8 +2524,8 @@ LABEL_7:
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = [objc_opt_class() description];
-  v5 = [a1 name];
-  v6 = [a1 name];
+  name = [self name];
+  name2 = [self name];
   OUTLINED_FUNCTION_27_4();
   v11 = v7;
   v12 = v8;

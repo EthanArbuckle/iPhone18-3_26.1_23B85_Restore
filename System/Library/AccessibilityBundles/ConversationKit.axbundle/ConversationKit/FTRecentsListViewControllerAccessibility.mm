@@ -1,22 +1,22 @@
 @interface FTRecentsListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)accessibilityCustomActionsForIndexPath:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)accessibilityCustomActionsForIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axPrepareHeaderView:(id)a3;
-- (void)accessibilityPrepareHeaderView:(id)a3;
+- (void)_axPrepareHeaderView:(id)view;
+- (void)accessibilityPrepareHeaderView:(id)view;
 @end
 
 @implementation FTRecentsListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"accessibilityPrepareHeaderView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"FTRecentsListViewController" hasSwiftField:@"collectionView" withSwiftType:"UICollectionView"];
-  [v3 validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"collectionView:contextMenuConfigurationForItemAtIndexPath:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"accessibilityCustomActionsForIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"UIContextMenuConfiguration" hasProperty:@"actionProvider" withType:"@?"];
-  [v3 validateClass:@"UIAction" hasProperty:@"handler" withType:"@?"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"accessibilityPrepareHeaderView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"FTRecentsListViewController" hasSwiftField:@"collectionView" withSwiftType:"UICollectionView"];
+  [validationsCopy validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"collectionView:contextMenuConfigurationForItemAtIndexPath:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"FTRecentsListViewController" hasInstanceMethod:@"accessibilityCustomActionsForIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"UIContextMenuConfiguration" hasProperty:@"actionProvider" withType:"@?"];
+  [validationsCopy validateClass:@"UIAction" hasProperty:@"handler" withType:"@?"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,10 +31,10 @@
   v5 = accessibilityLocalizedString(@"recentList.label");
   [v4 setAccessibilityLabel:v5];
 
-  v6 = [v4 numberOfSections];
-  if (v6 >= 1)
+  numberOfSections = [v4 numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v7 = v6;
+    v7 = numberOfSections;
     v8 = 0;
     v9 = *MEMORY[0x29EDC8048];
     do
@@ -52,37 +52,37 @@
   }
 }
 
-- (void)accessibilityPrepareHeaderView:(id)a3
+- (void)accessibilityPrepareHeaderView:(id)view
 {
   v5.receiver = self;
   v5.super_class = FTRecentsListViewControllerAccessibility;
-  v4 = a3;
-  [(FTRecentsListViewControllerAccessibility *)&v5 accessibilityPrepareHeaderView:v4];
-  [(FTRecentsListViewControllerAccessibility *)self _axPrepareHeaderView:v4, v5.receiver, v5.super_class];
+  viewCopy = view;
+  [(FTRecentsListViewControllerAccessibility *)&v5 accessibilityPrepareHeaderView:viewCopy];
+  [(FTRecentsListViewControllerAccessibility *)self _axPrepareHeaderView:viewCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_axPrepareHeaderView:(id)a3
+- (void)_axPrepareHeaderView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v4 = [v3 contentConfiguration];
+  contentConfiguration = [viewCopy contentConfiguration];
   v5 = __UIAccessibilityCastAsClass();
 
-  [v3 setIsAccessibilityElement:1];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
-  v6 = [v5 text];
-  [v3 setAccessibilityLabel:v6];
+  [viewCopy setIsAccessibilityElement:1];
+  [viewCopy setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
+  text = [v5 text];
+  [viewCopy setAccessibilityLabel:text];
 }
 
-- (id)accessibilityCustomActionsForIndexPath:(id)a3
+- (id)accessibilityCustomActionsForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
-  v27 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   objc_opt_class();
   v5 = [(FTRecentsListViewControllerAccessibility *)self safeSwiftValueForKey:@"collectionView"];
   v6 = __UIAccessibilityCastAsClass();
@@ -101,7 +101,7 @@
   v15[9] = self;
   v7 = v6;
   v15[10] = v7;
-  v8 = v4;
+  v8 = pathCopy;
   v15[11] = v8;
   AXPerformSafeBlock();
   v9 = v17[5];
@@ -114,13 +114,13 @@
     if (objc_opt_isKindOfClass())
     {
       v11 = v10[2](v10, MEMORY[0x29EDB8E90]);
-      v12 = [v11 children];
+      children = [v11 children];
       v15[0] = MEMORY[0x29EDCA5F8];
       v15[1] = 3221225472;
       v15[2] = __83__FTRecentsListViewControllerAccessibility_accessibilityCustomActionsForIndexPath___block_invoke_2;
       v15[3] = &unk_29F2B7C90;
       v15[4] = &v22;
-      [v12 enumerateObjectsUsingBlock:v15];
+      [children enumerateObjectsUsingBlock:v15];
     }
   }
 

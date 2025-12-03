@@ -1,7 +1,7 @@
 @interface CDPController
 - (CDPController)init;
-- (CDPController)initWithContext:(id)a3;
-- (CDPController)initWithXpcEndpoint:(id)a3 context:(id)a4;
+- (CDPController)initWithContext:(id)context;
+- (CDPController)initWithXpcEndpoint:(id)endpoint context:(id)context;
 - (CDPStateUIProviderProxy)uiProviderProxy;
 - (void)dealloc;
 - (void)invalidate;
@@ -43,28 +43,28 @@
   [(CDPController *)&v7 dealloc];
 }
 
-- (CDPController)initWithXpcEndpoint:(id)a3 context:(id)a4
+- (CDPController)initWithXpcEndpoint:(id)endpoint context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  contextCopy = context;
   v8 = [(CDPController *)self init];
   v9 = v8;
   if (v8)
   {
-    [(CDPDaemonConnection *)v8->_daemonConn setDaemonXPCEndpoint:v6];
-    objc_storeStrong(&v9->_context, a4);
+    [(CDPDaemonConnection *)v8->_daemonConn setDaemonXPCEndpoint:endpointCopy];
+    objc_storeStrong(&v9->_context, context);
   }
 
   return v9;
 }
 
-- (CDPController)initWithContext:(id)a3
+- (CDPController)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(CDPController *)self init];
   if (v5)
   {
-    v6 = [CDPContext preflightContext:v4];
+    v6 = [CDPContext preflightContext:contextCopy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -76,7 +76,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DED99000, a2, OS_LOG_TYPE_DEBUG, "Invalidating connection for controller %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,60 +1,60 @@
 @interface VCConnectionManagerIDS
-- (BOOL)addConnectionToConnectionArray:(id)a3;
-- (BOOL)canOptOutAllStreamsForConnection:(id)a3;
+- (BOOL)addConnectionToConnectionArray:(id)array;
+- (BOOL)canOptOutAllStreamsForConnection:(id)connection;
 - (BOOL)isEndToEndLinkAvailable;
-- (BOOL)isEndToEndLinkWithCellAvailable:(BOOL)a3;
-- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3;
-- (BOOL)shouldDropCurrentPrimaryConnectionWithConnectionStats:(id *)a3;
-- (BOOL)shouldReplaceConnection:(id)a3 withConnection:(id)a4;
-- (BOOL)shouldUpdateServerBasedConnection:(id)a3;
-- (VCConnectionManagerIDS)initWithMultiwayEnabled:(BOOL)a3;
+- (BOOL)isEndToEndLinkWithCellAvailable:(BOOL)available;
+- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)info;
+- (BOOL)shouldDropCurrentPrimaryConnectionWithConnectionStats:(id *)stats;
+- (BOOL)shouldReplaceConnection:(id)connection withConnection:(id)withConnection;
+- (BOOL)shouldUpdateServerBasedConnection:(id)connection;
+- (VCConnectionManagerIDS)initWithMultiwayEnabled:(BOOL)enabled;
 - (id)connectionForDuplication;
 - (id)getPrimaryConnectionToBeCompared;
-- (int)addConnection:(id)a3;
-- (int)removeConnection:(id)a3;
-- (unsigned)downlinkBitrateCapForConnection:(id)a3;
-- (unsigned)getByteCountWithIndex:(unsigned __int8)a3 isOutgoing:(BOOL)a4;
-- (unsigned)getPacketCountWithIndex:(unsigned __int8)a3 isOutgoing:(BOOL)a4;
-- (unsigned)oneToOneBitrateCapForConnectionWithType:(unsigned int)a3;
-- (unsigned)uplinkAudioOnlyBitrateCapOneToOne:(id)a3;
-- (unsigned)uplinkBitrateCapForConnection:(id)a3;
-- (unsigned)uplinkBitrateCapOneToOne:(id)a3;
-- (void)addDuplicationConnectionUpdateTelemetryWithSuggestedLinkTypeCombo:(id)a3 payload:(id)a4;
-- (void)applyConstrainWithThreshold:(id)a3 inBandwidth:(unsigned int *)a4 thredshold:(unsigned int)a5;
+- (int)addConnection:(id)connection;
+- (int)removeConnection:(id)connection;
+- (unsigned)downlinkBitrateCapForConnection:(id)connection;
+- (unsigned)getByteCountWithIndex:(unsigned __int8)index isOutgoing:(BOOL)outgoing;
+- (unsigned)getPacketCountWithIndex:(unsigned __int8)index isOutgoing:(BOOL)outgoing;
+- (unsigned)oneToOneBitrateCapForConnectionWithType:(unsigned int)type;
+- (unsigned)uplinkAudioOnlyBitrateCapOneToOne:(id)one;
+- (unsigned)uplinkBitrateCapForConnection:(id)connection;
+- (unsigned)uplinkBitrateCapOneToOne:(id)one;
+- (void)addDuplicationConnectionUpdateTelemetryWithSuggestedLinkTypeCombo:(id)combo payload:(id)payload;
+- (void)applyConstrainWithThreshold:(id)threshold inBandwidth:(unsigned int *)bandwidth thredshold:(unsigned int)thredshold;
 - (void)dealloc;
 - (void)didLinkProbingLockdownEnd;
-- (void)didReceiveStatsResponse:(BOOL)a3;
-- (void)didUpdateLinkPreferenceOrder:(id)a3;
-- (void)flushLinkProbingStatusWithOptions:(id)a3;
+- (void)didReceiveStatsResponse:(BOOL)response;
+- (void)didUpdateLinkPreferenceOrder:(id)order;
+- (void)flushLinkProbingStatusWithOptions:(id)options;
 - (void)handleSecondaryConnectionRemoved;
-- (void)internalUpdateOneToOneBitrateCapsForConnection:(id)a3;
+- (void)internalUpdateOneToOneBitrateCapsForConnection:(id)connection;
 - (void)optOutAllStreamsForNonPrimaryConnections;
-- (void)queryProbingResultsWithOptions:(id)a3;
-- (void)removeFromConnectionArray:(id)a3;
-- (void)reportActiveConnectionOneToOne:(id)a3 isAudioOnly:(BOOL)a4;
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4;
+- (void)queryProbingResultsWithOptions:(id)options;
+- (void)removeFromConnectionArray:(id)array;
+- (void)reportActiveConnectionOneToOne:(id)one isAudioOnly:(BOOL)only;
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection;
 - (void)reportCurrentPrimaryConnection;
-- (void)reportFirstActiveConnectionOneToOne:(id)a3 remoteOSVersion:(id)a4 redState:(BOOL)a5 isAudioOnly:(BOOL)a6;
-- (void)reportPathMTU:(id)a3;
-- (void)requestStatsWithOptions:(id)a3;
+- (void)reportFirstActiveConnectionOneToOne:(id)one remoteOSVersion:(id)version redState:(BOOL)state isAudioOnly:(BOOL)only;
+- (void)reportPathMTU:(id)u;
+- (void)requestStatsWithOptions:(id)options;
 - (void)reselectPrimaryConnection;
-- (void)resetPacketCountAndByteCountWithConnection:(id)a3;
+- (void)resetPacketCountAndByteCountWithConnection:(id)connection;
 - (void)resetParticipantGenerationCounter;
-- (void)setOptIntoExistingSubscribedStreams:(BOOL)a3;
-- (void)setPreferredLocalInterfaceForDuplication:(unsigned __int8)a3;
+- (void)setOptIntoExistingSubscribedStreams:(BOOL)streams;
+- (void)setPreferredLocalInterfaceForDuplication:(unsigned __int8)duplication;
 - (void)setUpVTable;
-- (void)startActiveProbingWithOptions:(id)a3;
-- (void)stopActiveProbingWithOptions:(id)a3;
-- (void)updateAllBitrateCapsForConnection:(id)a3;
-- (void)updateAllBitrateCapsForConnectionInternal:(id)a3;
-- (void)updateCellularMTU:(int)a3;
-- (void)updateCellularTech:(int)a3 forLocalInterface:(BOOL)a4;
-- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)a3;
-- (void)updateDuplicationStateWithConnectionOperation:(int)a3 isLocalOnWiFi:(BOOL)a4 isRemoteOnWiFi:(BOOL)a5;
-- (void)updateEncryptionConfig:(id)a3;
-- (void)updateOneToOneBitrateCapsForConnection:(id)a3;
-- (void)updatePathMTU:(unsigned __int16)a3 linkID:(unsigned __int8)a4;
-- (void)updateSessionStats:(unsigned __int16)a3;
+- (void)startActiveProbingWithOptions:(id)options;
+- (void)stopActiveProbingWithOptions:(id)options;
+- (void)updateAllBitrateCapsForConnection:(id)connection;
+- (void)updateAllBitrateCapsForConnectionInternal:(id)internal;
+- (void)updateCellularMTU:(int)u;
+- (void)updateCellularTech:(int)tech forLocalInterface:(BOOL)interface;
+- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)e;
+- (void)updateDuplicationStateWithConnectionOperation:(int)operation isLocalOnWiFi:(BOOL)fi isRemoteOnWiFi:(BOOL)wiFi;
+- (void)updateEncryptionConfig:(id)config;
+- (void)updateOneToOneBitrateCapsForConnection:(id)connection;
+- (void)updatePathMTU:(unsigned __int16)u linkID:(unsigned __int8)d;
+- (void)updateSessionStats:(unsigned __int16)stats;
 @end
 
 @implementation VCConnectionManagerIDS
@@ -72,7 +72,7 @@
   self->super._vTable.addLinkProbingTelemetry = _VCConnectionManagerIDS_AddLinkProbingTelemetry_0;
 }
 
-- (VCConnectionManagerIDS)initWithMultiwayEnabled:(BOOL)a3
+- (VCConnectionManagerIDS)initWithMultiwayEnabled:(BOOL)enabled
 {
   v22 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -83,7 +83,7 @@
     v4->super._statsRecorder = objc_alloc_init(VCStatsRecorder);
     v4->_multiwayBitrateArbiter = objc_alloc_init(VCSessionBitrateArbiter);
     v4->_oneToOneBitrateArbiter = [[VCBitrateArbiter alloc] initWithDeviceRole:0 callLogFile:0];
-    v4->_isMultiwaySession = a3;
+    v4->_isMultiwaySession = enabled;
     v4->super._connectionSelector = [[VCConnectionSelector alloc] initWithMultiwayEnabled:v4->_isMultiwaySession];
     v5 = [GKSConnectivitySettings isFeatureEnabledForStorebagKey:@"vc-core-motion-detection-enabled" userDefaultKey:@"coreMotionDetectionEnabled" featureFlagDomain:"AVConference" featureFlagName:"UseCoreMotionDetection"];
     v4->_enableCoreMotionDetection = v5;
@@ -130,19 +130,19 @@
   [(VCConnectionManager *)&v3 dealloc];
 }
 
-- (void)reportActiveConnectionOneToOne:(id)a3 isAudioOnly:(BOOL)a4
+- (void)reportActiveConnectionOneToOne:(id)one isAudioOnly:(BOOL)only
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (only)
   {
-    v6 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 localConnectionType]);
-    v7 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 remoteConnectionType]);
+    v6 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one localConnectionType]);
+    v7 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one remoteConnectionType]);
   }
 
   else
   {
-    v6 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:1];
-    v7 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:0];
+    v6 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:1];
+    v7 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:0];
   }
 
   v8 = v7;
@@ -152,41 +152,41 @@
   v11[1] = @"remoteBitrateCap";
   v12[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1000 * v8];
   v11[2] = @"connectionDataMode";
-  v12[2] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_GetDataMode(a3)];
+  v12[2] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_GetDataMode(one)];
   v10 = [v9 initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, v11, 3)}];
-  VCConnectionIDS_ReportingSatelliteNetwork(a3, v10);
+  VCConnectionIDS_ReportingSatelliteNetwork(one, v10);
   reportingGenericEvent();
 }
 
-- (void)reportFirstActiveConnectionOneToOne:(id)a3 remoteOSVersion:(id)a4 redState:(BOOL)a5 isAudioOnly:(BOOL)a6
+- (void)reportFirstActiveConnectionOneToOne:(id)one remoteOSVersion:(id)version redState:(BOOL)state isAudioOnly:(BOOL)only
 {
-  v6 = a5;
+  stateCopy = state;
   v16[5] = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (only)
   {
-    v10 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 localConnectionType]);
-    v11 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 remoteConnectionType]);
+    v10 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one localConnectionType]);
+    v11 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one remoteConnectionType]);
   }
 
   else
   {
-    v10 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:1];
-    v11 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:0];
+    v10 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:1];
+    v11 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:0];
   }
 
   v12 = v11;
   v15[0] = @"RedState";
-  v16[0] = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v16[0] = [MEMORY[0x1E696AD98] numberWithBool:stateCopy];
   v15[1] = @"WAState";
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[VCWifiAssistManager wifiAssistState](+[VCWifiAssistManager sharedInstance](VCWifiAssistManager, "sharedInstance"), "wifiAssistState")}];
-  v14 = @"unknown";
-  if (a4)
+  versionCopy = @"unknown";
+  if (version)
   {
-    v14 = a4;
+    versionCopy = version;
   }
 
   v16[1] = v13;
-  v16[2] = v14;
+  v16[2] = versionCopy;
   v15[2] = @"REMBUILD";
   v15[3] = @"localBitrateCap";
   v16[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1000 * v10];
@@ -196,10 +196,10 @@
   reportingGenericEvent();
 }
 
-- (unsigned)uplinkAudioOnlyBitrateCapOneToOne:(id)a3
+- (unsigned)uplinkAudioOnlyBitrateCapOneToOne:(id)one
 {
-  v5 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 localConnectionType]);
-  v6 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [a3 remoteConnectionType]);
+  v5 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one localConnectionType]);
+  v6 = -[VCBitrateArbiter maxAllowedAudioOnlyBitrateForConnection:](self->_oneToOneBitrateArbiter, "maxAllowedAudioOnlyBitrateForConnection:", [one remoteConnectionType]);
   if (v6)
   {
     v7 = v6;
@@ -218,10 +218,10 @@
   return 1000 * v7;
 }
 
-- (unsigned)uplinkBitrateCapOneToOne:(id)a3
+- (unsigned)uplinkBitrateCapOneToOne:(id)one
 {
-  v5 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:1];
-  v6 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:a3 forLocalInterface:0];
+  v5 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:1];
+  v6 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateForVCConnection:one forLocalInterface:0];
   if (v6)
   {
     v7 = v6;
@@ -238,7 +238,7 @@
   }
 
   v8 = 1000 * v7;
-  v9 = 1000 * -[VCConnectionManagerIDS oneToOneBitrateCapForConnectionWithType:](self, "oneToOneBitrateCapForConnectionWithType:", [a3 type]);
+  v9 = 1000 * -[VCConnectionManagerIDS oneToOneBitrateCapForConnectionWithType:](self, "oneToOneBitrateCapForConnectionWithType:", [one type]);
   if (v8 >= v9)
   {
     v10 = v9;
@@ -260,18 +260,18 @@
   }
 }
 
-- (unsigned)oneToOneBitrateCapForConnectionWithType:(unsigned int)a3
+- (unsigned)oneToOneBitrateCapForConnectionWithType:(unsigned int)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 - 3 > 1)
+  if (type - 3 > 1)
   {
     return 0;
   }
 
-  v4 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateTCPRelay];
-  if (v4)
+  maxAllowedBitrateTCPRelay = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateTCPRelay];
+  if (maxAllowedBitrateTCPRelay)
   {
-    v5 = v4;
+    maxAllowedBitrateWifi = maxAllowedBitrateTCPRelay;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
@@ -285,7 +285,7 @@
         v15 = 1024;
         v16 = 151;
         v17 = 1024;
-        v18 = v5;
+        v18 = maxAllowedBitrateWifi;
         v8 = " [%s] %s:%d TCP connectionLimitedBitrate=%u";
 LABEL_11:
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, v8, &v11, 0x22u);
@@ -295,7 +295,7 @@ LABEL_11:
 
   else
   {
-    v5 = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateWifi];
+    maxAllowedBitrateWifi = [(VCBitrateArbiter *)self->_oneToOneBitrateArbiter maxAllowedBitrateWifi];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
@@ -309,22 +309,22 @@ LABEL_11:
         v15 = 1024;
         v16 = 154;
         v17 = 1024;
-        v18 = v5;
+        v18 = maxAllowedBitrateWifi;
         v8 = " [%s] %s:%d Use general wifi relay connectionLimitedBitrate=%u for TCP";
         goto LABEL_11;
       }
     }
   }
 
-  return v5;
+  return maxAllowedBitrateWifi;
 }
 
-- (void)applyConstrainWithThreshold:(id)a3 inBandwidth:(unsigned int *)a4 thredshold:(unsigned int)a5
+- (void)applyConstrainWithThreshold:(id)threshold inBandwidth:(unsigned int *)bandwidth thredshold:(unsigned int)thredshold
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (bandwidth)
   {
-    if ([(VCConnectionManager *)self shouldLimitMultiwayBandwidthWhenConstrained]&& *a4 > a5)
+    if ([(VCConnectionManager *)self shouldLimitMultiwayBandwidthWhenConstrained]&& *bandwidth > thredshold)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -332,7 +332,7 @@ LABEL_11:
         v8 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v9 = *a4;
+          v9 = *bandwidth;
           v10 = 136316162;
           v11 = v7;
           v12 = 2080;
@@ -342,12 +342,12 @@ LABEL_11:
           v16 = 1024;
           v17 = v9;
           v18 = 1024;
-          v19 = a5;
+          thredsholdCopy = thredshold;
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d isConstrained, limit from inBandwidth=%u to threshold=%u", &v10, 0x28u);
         }
       }
 
-      *a4 = a5;
+      *bandwidth = thredshold;
     }
   }
 
@@ -357,133 +357,133 @@ LABEL_11:
   }
 }
 
-- (unsigned)uplinkBitrateCapForConnection:(id)a3
+- (unsigned)uplinkBitrateCapForConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v5 = [a3 localConnectionType];
-  if (v5 <= 7)
+  localConnectionType = [connection localConnectionType];
+  if (localConnectionType <= 7)
   {
-    if (((1 << v5) & 0xB8) != 0)
+    if (((1 << localConnectionType) & 0xB8) != 0)
     {
 LABEL_3:
-      v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateWiFiUplink];
+      maxBitrateWiFiUplink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateWiFiUplink];
 LABEL_4:
-      v7 = v6;
-      v11 = v6;
+      v7 = maxBitrateWiFiUplink;
+      v11 = maxBitrateWiFiUplink;
       goto LABEL_5;
     }
 
-    if (((1 << v5) & 0x44) != 0)
+    if (((1 << localConnectionType) & 0x44) != 0)
     {
-      IsLocalExpensive = VCConnection_IsLocalExpensive(a3);
+      IsLocalExpensive = VCConnection_IsLocalExpensive(connection);
       multiwayBitrateArbiter = self->_multiwayBitrateArbiter;
       if (IsLocalExpensive)
       {
-        v6 = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateExpensiveUplink];
+        maxBitrateWiFiUplink = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateExpensiveUplink];
       }
 
       else
       {
-        v6 = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateNonExpensiveUplink];
+        maxBitrateWiFiUplink = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateNonExpensiveUplink];
       }
 
       goto LABEL_4;
     }
 
-    if (v5 == 1)
+    if (localConnectionType == 1)
     {
-      v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate3GUplink];
+      maxBitrateWiFiUplink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate3GUplink];
       goto LABEL_4;
     }
   }
 
-  if (v5 == -1)
+  if (localConnectionType == -1)
   {
     goto LABEL_3;
   }
 
   v7 = 0;
-  if (!v5)
+  if (!localConnectionType)
   {
-    v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate2GUplink];
+    maxBitrateWiFiUplink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate2GUplink];
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (VCConnection_IsLocalConstrained(a3))
+  if (VCConnection_IsLocalConstrained(connection))
   {
-    [(VCConnectionManagerIDS *)self applyConstrainWithThreshold:a3 inBandwidth:&v11 thredshold:[(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateExpensiveUplink]];
+    [(VCConnectionManagerIDS *)self applyConstrainWithThreshold:connection inBandwidth:&v11 thredshold:[(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateExpensiveUplink]];
     return v11;
   }
 
   return v7;
 }
 
-- (unsigned)downlinkBitrateCapForConnection:(id)a3
+- (unsigned)downlinkBitrateCapForConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v5 = [a3 localConnectionType];
-  if (v5 <= 7)
+  localConnectionType = [connection localConnectionType];
+  if (localConnectionType <= 7)
   {
-    if (((1 << v5) & 0xB8) != 0)
+    if (((1 << localConnectionType) & 0xB8) != 0)
     {
 LABEL_3:
-      v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateWiFiDownlink];
+      maxBitrateWiFiDownlink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateWiFiDownlink];
 LABEL_4:
-      v7 = v6;
-      v11 = v6;
+      v7 = maxBitrateWiFiDownlink;
+      v11 = maxBitrateWiFiDownlink;
       goto LABEL_5;
     }
 
-    if (((1 << v5) & 0x44) != 0)
+    if (((1 << localConnectionType) & 0x44) != 0)
     {
-      IsLocalExpensive = VCConnection_IsLocalExpensive(a3);
+      IsLocalExpensive = VCConnection_IsLocalExpensive(connection);
       multiwayBitrateArbiter = self->_multiwayBitrateArbiter;
       if (IsLocalExpensive)
       {
-        v6 = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateExpensiveDownlink];
+        maxBitrateWiFiDownlink = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateExpensiveDownlink];
       }
 
       else
       {
-        v6 = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateNonExpensiveDownlink];
+        maxBitrateWiFiDownlink = [(VCSessionBitrateArbiter *)multiwayBitrateArbiter maxBitrateNonExpensiveDownlink];
       }
 
       goto LABEL_4;
     }
 
-    if (v5 == 1)
+    if (localConnectionType == 1)
     {
-      v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate3GDownlink];
+      maxBitrateWiFiDownlink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate3GDownlink];
       goto LABEL_4;
     }
   }
 
-  if (v5 == -1)
+  if (localConnectionType == -1)
   {
     goto LABEL_3;
   }
 
   v7 = 0;
-  if (!v5)
+  if (!localConnectionType)
   {
-    v6 = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate2GDownlink];
+    maxBitrateWiFiDownlink = [(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrate2GDownlink];
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (VCConnection_IsLocalConstrained(a3))
+  if (VCConnection_IsLocalConstrained(connection))
   {
-    [(VCConnectionManagerIDS *)self applyConstrainWithThreshold:a3 inBandwidth:&v11 thredshold:[(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateExpensiveDownlink]];
+    [(VCConnectionManagerIDS *)self applyConstrainWithThreshold:connection inBandwidth:&v11 thredshold:[(VCSessionBitrateArbiter *)self->_multiwayBitrateArbiter maxBitrateExpensiveDownlink]];
     return v11;
   }
 
   return v7;
 }
 
-- (int)addConnection:(id)a3
+- (int)addConnection:(id)connection
 {
   v63 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCConnectionManagerIDS-addConnection");
@@ -500,28 +500,28 @@ LABEL_5:
       v53 = 1024;
       v54 = 229;
       v55 = 2048;
-      v56 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCConnectionManagerIDS-addConnection (%p)", buf, 0x26u);
     }
   }
 
-  if (a3)
+  if (connection)
   {
     pthread_rwlock_wrlock(&self->super._stateRWlock);
-    if ([(VCConnectionManagerIDS *)self addConnectionToConnectionArray:a3])
+    if ([(VCConnectionManagerIDS *)self addConnectionToConnectionArray:connection])
     {
-      [(VCConnectionManagerIDS *)self updateAllBitrateCapsForConnectionInternal:a3];
-      [a3 setP2pEncryptionExperimentEnabled:self->super._p2pEncryptionExperimentEnabled];
-      v7 = [(VCConnectionManagerIDS *)self lastPrimaryConnectionInUse];
+      [(VCConnectionManagerIDS *)self updateAllBitrateCapsForConnectionInternal:connection];
+      [connection setP2pEncryptionExperimentEnabled:self->super._p2pEncryptionExperimentEnabled];
+      lastPrimaryConnectionInUse = [(VCConnectionManagerIDS *)self lastPrimaryConnectionInUse];
       v8 = !self->_isMultiwaySession || [(VCConnectionManager *)self isOneToOneModeEnabled];
-      v10 = [(VCConnectionSelector *)self->super._connectionSelector selectPrimaryAndSecondaryWithConnection:a3 isEndToEnd:v8];
+      v10 = [(VCConnectionSelector *)self->super._connectionSelector selectPrimaryAndSecondaryWithConnection:connection isEndToEnd:v8];
       VCConnectionManager_UpdateConnectionForDuplication(self);
-      if ([(VCConnectionManagerIDS *)self shouldUpdateServerBasedConnection:a3])
+      if ([(VCConnectionManagerIDS *)self shouldUpdateServerBasedConnection:connection])
       {
-        [(VCConnectionSelector *)self->super._connectionSelector updateSelectedConnectionsForGroupType:0 connectionAdded:a3];
+        [(VCConnectionSelector *)self->super._connectionSelector updateSelectedConnectionsForGroupType:0 connectionAdded:connection];
         if (self->_optIntoExistingSubscribedStreams)
         {
-          [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] optIntoExistingSubscribedStreamsForConnection:a3];
+          [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] optIntoExistingSubscribedStreamsForConnection:connection];
         }
 
         v11 = [(VCConnectionSelector *)self->super._connectionSelector connectionForGroupType:0 isPrimary:1];
@@ -546,7 +546,7 @@ LABEL_5:
         }
 
         v14 = VCConnectionManager_CopyPrimaryConnection(self);
-        v15 = VCConnection_Priority(a3);
+        v15 = VCConnection_Priority(connection);
         if (VRTraceGetErrorLogLevelForModule() >= 6)
         {
           v16 = VRTraceErrorLogLevelToCSTR();
@@ -560,7 +560,7 @@ LABEL_5:
             }
 
             v42 = v18;
-            v41 = [objc_msgSend(a3 "description")];
+            v41 = [objc_msgSend(connection "description")];
             if (v14)
             {
               v40 = [objc_msgSend(v14 "description")];
@@ -588,7 +588,7 @@ LABEL_5:
             v53 = 1024;
             v54 = 292;
             v55 = 2080;
-            v56 = v42;
+            selfCopy = v42;
             v57 = 2080;
             v58 = v41;
             v59 = 2080;
@@ -604,18 +604,18 @@ LABEL_5:
           CFRelease(v14);
         }
 
-        [(VCConnectionManager *)self checkpointPrimaryConnection:a3];
+        [(VCConnectionManager *)self checkpointPrimaryConnection:connection];
         if (v15 == 2)
         {
-          if (v7)
+          if (lastPrimaryConnectionInUse)
           {
-            [(VCConnectionManager *)self primaryConnectionChanged:a3 oldPrimaryConnection:v7];
+            [(VCConnectionManager *)self primaryConnectionChanged:connection oldPrimaryConnection:lastPrimaryConnectionInUse];
           }
 
           else
           {
-            [(VCConnectionManager *)self configureNWConnectionMonitor:a3];
-            IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
+            [(VCConnectionManager *)self configureNWConnectionMonitor:connection];
+            IsLocalOnCellular = VCConnection_IsLocalOnCellular(connection);
             self->super._isPrimaryLocalUsingCell = IsLocalOnCellular;
             VCConnectionManager_UseCellPrimaryInterface(self, IsLocalOnCellular);
           }
@@ -627,7 +627,7 @@ LABEL_5:
         v43[2] = __40__VCConnectionManagerIDS_addConnection___block_invoke_51;
         v43[3] = &unk_1E85F37C8;
         v43[4] = self;
-        v43[5] = a3;
+        v43[5] = connection;
         v44 = !isInitialConnectionEstablished;
         dispatch_async(v32, v43);
         if (!self->super._isInitialConnectionEstablished)
@@ -640,7 +640,7 @@ LABEL_5:
           VCConnectionManager_SetDuplicationEnabledInternal(self, 1);
         }
 
-        [(VCConnectionManagerIDS *)self reportConnection:a3 isInitialConnection:!isInitialConnectionEstablished];
+        [(VCConnectionManagerIDS *)self reportConnection:connection isInitialConnection:!isInitialConnectionEstablished];
         [(VCConnectionManager *)self reportConnectionUpdateWithRespCode:0];
         if (VRTraceGetErrorLogLevelForModule() >= 6)
         {
@@ -678,7 +678,7 @@ LABEL_5:
                   v53 = 1024;
                   v54 = 326;
                   v55 = 2080;
-                  v56 = "";
+                  selfCopy = "";
                   v57 = 2080;
                   v58 = v35;
                   _os_log_impl(&dword_1DB56E000, v38, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
@@ -697,7 +697,7 @@ LABEL_5:
         goto LABEL_74;
       }
 
-      VCConnection_SetPriority(a3, -1);
+      VCConnection_SetPriority(connection, -1);
 
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -705,7 +705,7 @@ LABEL_5:
         v20 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [objc_msgSend(a3 "description")];
+          v21 = [objc_msgSend(connection "description")];
           *buf = 136315906;
           v50 = v19;
           v51 = 2080;
@@ -713,7 +713,7 @@ LABEL_5:
           v53 = 1024;
           v54 = 267;
           v55 = 2080;
-          v56 = v21;
+          selfCopy = v21;
           _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: add result backup IDS connection %s", buf, 0x26u);
         }
       }
@@ -754,7 +754,7 @@ LABEL_5:
                 v53 = 1024;
                 v54 = 268;
                 v55 = 2080;
-                v56 = "";
+                selfCopy = "";
                 v57 = 2080;
                 v58 = v24;
                 _os_log_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
@@ -769,7 +769,7 @@ LABEL_5:
         }
       }
 
-      if ([(VCConnectionManagerIDS *)self canOptOutAllStreamsForConnection:a3])
+      if ([(VCConnectionManagerIDS *)self canOptOutAllStreamsForConnection:connection])
       {
         v28 = self->super._delegateQueue;
         v46[0] = MEMORY[0x1E69E9820];
@@ -777,7 +777,7 @@ LABEL_5:
         v46[2] = __40__VCConnectionManagerIDS_addConnection___block_invoke;
         v46[3] = &unk_1E85F37F0;
         v46[4] = self;
-        v46[5] = a3;
+        v46[5] = connection;
         dispatch_async(v28, v46);
       }
 
@@ -845,12 +845,12 @@ uint64_t __40__VCConnectionManagerIDS_addConnection___block_invoke_51(uint64_t a
   _os_log_debug_impl(&dword_1DB56E000, v0, OS_LOG_TYPE_DEBUG, " [%s] %s:%d HandoverReport: no secondary connection available after link is removed!", v1, 0x1Cu);
 }
 
-- (int)removeConnection:(id)a3
+- (int)removeConnection:(id)connection
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
-    v5 = a3;
+    connectionCopy = connection;
     pthread_rwlock_wrlock(&self->super._stateRWlock);
     v36 = 0u;
     v37 = 0u;
@@ -872,7 +872,7 @@ uint64_t __40__VCConnectionManagerIDS_addConnection___block_invoke_51(uint64_t a
           }
 
           v11 = *(*(&v36 + 1) + 8 * i);
-          if (VCConnection_Equal(v11, a3))
+          if (VCConnection_Equal(v11, connection))
           {
             v12 = v11;
             [(VCConnectionManagerIDS *)self removeFromConnectionArray:v11];
@@ -902,12 +902,12 @@ uint64_t __40__VCConnectionManagerIDS_addConnection___block_invoke_51(uint64_t a
     }
 
 LABEL_19:
-    if ([(VCConnectionManagerIDS *)self shouldUpdateServerBasedConnection:a3])
+    if ([(VCConnectionManagerIDS *)self shouldUpdateServerBasedConnection:connection])
     {
-      [(VCConnectionSelector *)self->super._connectionSelector updateSelectedConnectionsForGroupType:0 connectionRemoved:a3 connectionArray:self->super._connectionArray];
+      [(VCConnectionSelector *)self->super._connectionSelector updateSelectedConnectionsForGroupType:0 connectionRemoved:connection connectionArray:self->super._connectionArray];
       if (self->_optIntoExistingSubscribedStreams)
       {
-        [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] optOutAllStreamsForConnection:a3];
+        [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] optOutAllStreamsForConnection:connection];
       }
 
       v15 = [(VCConnectionSelector *)self->super._connectionSelector connectionForGroupType:0 isPrimary:1];
@@ -918,7 +918,7 @@ LABEL_19:
     }
 
     VCConnectionManager_UpdateConnectionForDuplication(self);
-    [(VCConnectionManagerIDS *)self resetPacketCountAndByteCountWithConnection:a3];
+    [(VCConnectionManagerIDS *)self resetPacketCountAndByteCountWithConnection:connection];
     [(VCConnectionManager *)self reportConnectionUpdateWithResponseCode:1 delay:2.0];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -1081,34 +1081,34 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   return [v2 optOutAllStreamsForConnection:v3];
 }
 
-- (unsigned)getPacketCountWithIndex:(unsigned __int8)a3 isOutgoing:(BOOL)a4
+- (unsigned)getPacketCountWithIndex:(unsigned __int8)index isOutgoing:(BOOL)outgoing
 {
-  v4 = a4;
-  v5 = a3;
+  outgoingCopy = outgoing;
+  indexCopy = index;
   pthread_rwlock_rdlock(&self->super._stateRWlock);
   v7 = &OBJC_IVAR___VCConnectionManagerIDS__receivedPacketCount;
-  if (v4)
+  if (outgoingCopy)
   {
     v7 = &OBJC_IVAR___VCConnectionManagerIDS__sentPacketCount;
   }
 
-  v8 = *(&self->super.super.isa + 4 * v5 + *v7);
+  v8 = *(&self->super.super.isa + 4 * indexCopy + *v7);
   pthread_rwlock_unlock(&self->super._stateRWlock);
   return v8;
 }
 
-- (unsigned)getByteCountWithIndex:(unsigned __int8)a3 isOutgoing:(BOOL)a4
+- (unsigned)getByteCountWithIndex:(unsigned __int8)index isOutgoing:(BOOL)outgoing
 {
-  v4 = a4;
-  v5 = a3;
+  outgoingCopy = outgoing;
+  indexCopy = index;
   pthread_rwlock_rdlock(&self->super._stateRWlock);
   v7 = &OBJC_IVAR___VCConnectionManagerIDS__receivedByteCount;
-  if (v4)
+  if (outgoingCopy)
   {
     v7 = &OBJC_IVAR___VCConnectionManagerIDS__sentByteCount;
   }
 
-  v8 = *(&self->super.super.isa + 4 * v5 + *v7);
+  v8 = *(&self->super.super.isa + 4 * indexCopy + *v7);
   pthread_rwlock_unlock(&self->super._stateRWlock);
   return v8;
 }
@@ -1120,9 +1120,9 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   return v2;
 }
 
-- (void)updateCellularMTU:(int)a3
+- (void)updateCellularMTU:(int)u
 {
-  v3 = *&a3;
+  v3 = *&u;
   v15 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->super._stateRWlock);
   v11 = 0u;
@@ -1156,27 +1156,27 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (void)updateAllBitrateCapsForConnection:(id)a3
+- (void)updateAllBitrateCapsForConnection:(id)connection
 {
   pthread_rwlock_wrlock(&self->super._stateRWlock);
-  [(VCConnectionManagerIDS *)self updateAllBitrateCapsForConnectionInternal:a3];
+  [(VCConnectionManagerIDS *)self updateAllBitrateCapsForConnectionInternal:connection];
 
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (void)updateAllBitrateCapsForConnectionInternal:(id)a3
+- (void)updateAllBitrateCapsForConnectionInternal:(id)internal
 {
-  [a3 setUplinkBitrateCap:{-[VCConnectionManagerIDS uplinkBitrateCapForConnection:](self, "uplinkBitrateCapForConnection:")}];
-  [a3 setDownlinkBitrateCap:{-[VCConnectionManagerIDS downlinkBitrateCapForConnection:](self, "downlinkBitrateCapForConnection:", a3)}];
-  [a3 setUplinkAudioBitrateCapOneToOne:{-[VCConnectionManagerIDS uplinkAudioOnlyBitrateCapOneToOne:](self, "uplinkAudioOnlyBitrateCapOneToOne:", a3)}];
-  v5 = [(VCConnectionManagerIDS *)self uplinkBitrateCapOneToOne:a3];
+  [internal setUplinkBitrateCap:{-[VCConnectionManagerIDS uplinkBitrateCapForConnection:](self, "uplinkBitrateCapForConnection:")}];
+  [internal setDownlinkBitrateCap:{-[VCConnectionManagerIDS downlinkBitrateCapForConnection:](self, "downlinkBitrateCapForConnection:", internal)}];
+  [internal setUplinkAudioBitrateCapOneToOne:{-[VCConnectionManagerIDS uplinkAudioOnlyBitrateCapOneToOne:](self, "uplinkAudioOnlyBitrateCapOneToOne:", internal)}];
+  v5 = [(VCConnectionManagerIDS *)self uplinkBitrateCapOneToOne:internal];
 
-  [a3 setUplinkBitrateCapOneToOne:v5];
+  [internal setUplinkBitrateCapOneToOne:v5];
 }
 
-- (void)updateCellularTech:(int)a3 forLocalInterface:(BOOL)a4
+- (void)updateCellularTech:(int)tech forLocalInterface:(BOOL)interface
 {
-  v4 = a4;
+  interfaceCopy = interface;
   v17 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->super._stateRWlock);
   v13 = 0u;
@@ -1199,7 +1199,7 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (v4)
+        if (interfaceCopy)
         {
           VCConnection_SetLocalCellTech(v11);
           [(VCConnectionManagerIDS *)self updateAllBitrateCapsForConnectionInternal:v11];
@@ -1221,28 +1221,28 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (void)updateOneToOneBitrateCapsForConnection:(id)a3
+- (void)updateOneToOneBitrateCapsForConnection:(id)connection
 {
   pthread_rwlock_wrlock(&self->super._stateRWlock);
-  [(VCConnectionManagerIDS *)self internalUpdateOneToOneBitrateCapsForConnection:a3];
+  [(VCConnectionManagerIDS *)self internalUpdateOneToOneBitrateCapsForConnection:connection];
 
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (void)internalUpdateOneToOneBitrateCapsForConnection:(id)a3
+- (void)internalUpdateOneToOneBitrateCapsForConnection:(id)connection
 {
-  [a3 setUplinkAudioBitrateCapOneToOne:{-[VCConnectionManagerIDS uplinkAudioOnlyBitrateCapOneToOne:](self, "uplinkAudioOnlyBitrateCapOneToOne:")}];
-  v5 = [(VCConnectionManagerIDS *)self uplinkBitrateCapOneToOne:a3];
+  [connection setUplinkAudioBitrateCapOneToOne:{-[VCConnectionManagerIDS uplinkAudioOnlyBitrateCapOneToOne:](self, "uplinkAudioOnlyBitrateCapOneToOne:")}];
+  v5 = [(VCConnectionManagerIDS *)self uplinkBitrateCapOneToOne:connection];
 
-  [a3 setUplinkBitrateCapOneToOne:v5];
+  [connection setUplinkBitrateCapOneToOne:v5];
 }
 
-- (void)setPreferredLocalInterfaceForDuplication:(unsigned __int8)a3
+- (void)setPreferredLocalInterfaceForDuplication:(unsigned __int8)duplication
 {
-  v3 = a3;
+  duplicationCopy = duplication;
   v16 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->super._stateRWlock);
-  if (self->super._preferredLocalInterfaceForDuplication == v3)
+  if (self->super._preferredLocalInterfaceForDuplication == duplicationCopy)
   {
 
     pthread_rwlock_unlock(&self->super._stateRWlock);
@@ -1261,7 +1261,7 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
         v8 = 136315906;
         v11 = "[VCConnectionManagerIDS setPreferredLocalInterfaceForDuplication:]";
         v10 = 2080;
-        if (!v3)
+        if (!duplicationCopy)
         {
           v7 = "WiFi";
         }
@@ -1274,21 +1274,21 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
       }
     }
 
-    self->super._preferredLocalInterfaceForDuplication = v3;
+    self->super._preferredLocalInterfaceForDuplication = duplicationCopy;
     VCConnectionManager_UpdateConnectionForDuplication(self);
     pthread_rwlock_unlock(&self->super._stateRWlock);
   }
 }
 
-- (void)updateSessionStats:(unsigned __int16)a3
+- (void)updateSessionStats:(unsigned __int16)stats
 {
-  v3 = a3;
+  statsCopy = stats;
   v5 = VCConnectionManager_CopyConnectionForQuality(self, 1);
   if (v5)
   {
     v6 = v5;
     v7 = VCConnectionIDS_LinkID(v5);
-    [(VCStatsRecorder *)self->super._statsRecorder updateSessionStats:v3 connection:v6 totalPacketSent:[(VCConnectionManagerIDS *)self getPacketCountWithIndex:v7 isOutgoing:1] totalPacketReceived:[(VCConnectionManagerIDS *)self getPacketCountWithIndex:v7 isOutgoing:0]];
+    [(VCStatsRecorder *)self->super._statsRecorder updateSessionStats:statsCopy connection:v6 totalPacketSent:[(VCConnectionManagerIDS *)self getPacketCountWithIndex:v7 isOutgoing:1] totalPacketReceived:[(VCConnectionManagerIDS *)self getPacketCountWithIndex:v7 isOutgoing:0]];
 
     CFRelease(v6);
   }
@@ -1303,10 +1303,10 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   }
 }
 
-- (void)updateEncryptionConfig:(id)a3
+- (void)updateEncryptionConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
-  -[VCConnectionManager setGecoVersion:](self, "setGecoVersion:", [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4FF0]]);
+  -[VCConnectionManager setGecoVersion:](self, "setGecoVersion:", [config objectForKeyedSubscript:*MEMORY[0x1E69A4FF0]]);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -1327,21 +1327,21 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
   }
 }
 
-- (void)reportPathMTU:(id)a3
+- (void)reportPathMTU:(id)u
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->super._enableDuplication)
   {
-    v4 = [(VCConnectionManagerIDS *)self connectionForDuplication];
+    connectionForDuplication = [(VCConnectionManagerIDS *)self connectionForDuplication];
   }
 
   else
   {
-    v4 = VCConnectionManager_CopyPrimaryConnection(self);
+    connectionForDuplication = VCConnectionManager_CopyPrimaryConnection(self);
   }
 
-  v5 = [v4 pathMTU];
-  [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", v5), @"PMTU"}];
+  pathMTU = [connectionForDuplication pathMTU];
+  [u setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", pathMTU), @"PMTU"}];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -1355,35 +1355,35 @@ uint64_t __66__VCConnectionManagerIDS_optOutAllStreamsForNonPrimaryConnections__
       v12 = 1024;
       v13 = 738;
       v14 = 1024;
-      v15 = v5;
+      v15 = pathMTU;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Reported path MTU=%u", &v8, 0x22u);
     }
   }
 }
 
-- (void)addDuplicationConnectionUpdateTelemetryWithSuggestedLinkTypeCombo:(id)a3 payload:(id)a4
+- (void)addDuplicationConnectionUpdateTelemetryWithSuggestedLinkTypeCombo:(id)combo payload:(id)payload
 {
   if ([(VCConnectionManagerIDS *)self connectionForDuplication])
   {
-    v7 = [(VCConnectionManagerIDS *)self connectionForDuplication];
+    connectionForDuplication = [(VCConnectionManagerIDS *)self connectionForDuplication];
 
-    VCConnectionManager_AddDuplicationSelectionLogicTelemetryForConnection(self, v7, a3, a4);
+    VCConnectionManager_AddDuplicationSelectionLogicTelemetryForConnection(self, connectionForDuplication, combo, payload);
   }
 }
 
-- (void)resetPacketCountAndByteCountWithConnection:(id)a3
+- (void)resetPacketCountAndByteCountWithConnection:(id)connection
 {
-  v4 = VCConnectionIDS_LinkID(a3);
+  v4 = VCConnectionIDS_LinkID(connection);
   self->_sentPacketCount[v4] = 0;
   self->_sentByteCount[v4] = 0;
   self->_receivedPacketCount[v4] = 0;
   self->_receivedByteCount[v4] = 0;
 }
 
-- (BOOL)shouldReplaceConnection:(id)a3 withConnection:(id)a4
+- (BOOL)shouldReplaceConnection:(id)connection withConnection:(id)withConnection
 {
-  IsRelay = VCConnection_IsRelay(a4);
-  if (IsRelay != VCConnection_IsRelay(a3) || (IsRelay = VCConnection_IsIPv6(a4), IsRelay != VCConnection_IsIPv6(a3)))
+  IsRelay = VCConnection_IsRelay(withConnection);
+  if (IsRelay != VCConnection_IsRelay(connection) || (IsRelay = VCConnection_IsIPv6(withConnection), IsRelay != VCConnection_IsIPv6(connection)))
   {
     LOBYTE(v8) = IsRelay ^ 1;
     return v8;
@@ -1414,14 +1414,14 @@ LABEL_11:
     return v8;
   }
 
-  LOBYTE(v8) = [objc_msgSend(objc_msgSend(a3 "connectionUUID")] == 1;
+  LOBYTE(v8) = [objc_msgSend(objc_msgSend(connection "connectionUUID")] == 1;
   return v8;
 }
 
-- (void)updatePathMTU:(unsigned __int16)a3 linkID:(unsigned __int8)a4
+- (void)updatePathMTU:(unsigned __int16)u linkID:(unsigned __int8)d
 {
-  v4 = a4;
-  v5 = a3;
+  dCopy = d;
+  uCopy = u;
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
@@ -1443,9 +1443,9 @@ LABEL_11:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (VCConnectionIDS_LinkID(v11) == v4)
+        if (VCConnectionIDS_LinkID(v11) == dCopy)
         {
-          [v11 setPathMTU:v5];
+          [v11 setPathMTU:uCopy];
           return;
         }
       }
@@ -1461,7 +1461,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)addConnectionToConnectionArray:(id)a3
+- (BOOL)addConnectionToConnectionArray:(id)array
 {
   v54 = *MEMORY[0x1E69E9840];
   v50 = 0u;
@@ -1543,7 +1543,7 @@ LABEL_19:
     }
 
     v18 = *(*(&v45 + 1) + 8 * v17);
-    if (VCConnection_Equal(a3, v18))
+    if (VCConnection_Equal(array, v18))
     {
       return 0;
     }
@@ -1553,7 +1553,7 @@ LABEL_19:
       goto LABEL_31;
     }
 
-    v19 = self->super._duplicationEnhancementEnabled ? [a3 isOnSameInterfacesAndQRSessionWithConnection:v18] : VCConnection_IsOnSameInterfacesWithConnection(a3);
+    v19 = self->super._duplicationEnhancementEnabled ? [array isOnSameInterfacesAndQRSessionWithConnection:v18] : VCConnection_IsOnSameInterfacesWithConnection(array);
     v20 = v19;
     if (![(VCConnectionManagerIDS *)self shouldKeepAllConnections])
     {
@@ -1563,7 +1563,7 @@ LABEL_19:
       }
     }
 
-    if ([a3 compare:v18 isPrimary:1 selectionPolicy:{-[VCConnectionManagerIDS getConnectionSelectionPolicy](self, "getConnectionSelectionPolicy")}] != 1)
+    if ([array compare:v18 isPrimary:1 selectionPolicy:{-[VCConnectionManagerIDS getConnectionSelectionPolicy](self, "getConnectionSelectionPolicy")}] != 1)
     {
       ++v15;
     }
@@ -1581,7 +1581,7 @@ LABEL_31:
     }
   }
 
-  v21 = [(VCConnectionManagerIDS *)self shouldReplaceConnection:v18 withConnection:a3];
+  v21 = [(VCConnectionManagerIDS *)self shouldReplaceConnection:v18 withConnection:array];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (!v21)
   {
@@ -1591,9 +1591,9 @@ LABEL_31:
       v27 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (array)
         {
-          v28 = [objc_msgSend(a3 "description")];
+          v28 = [objc_msgSend(array "description")];
         }
 
         else
@@ -1616,7 +1616,7 @@ LABEL_31:
     [(VCConnectionManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] discardConnection:a3];
+      [(VCConnectionManagerDelegate *)[(VCConnectionManager *)self delegate] discardConnection:array];
     }
 
     return 0;
@@ -1658,17 +1658,17 @@ LABEL_31:
 
   [(VCConnectionManagerIDS *)self removeFromConnectionArray:v18];
 LABEL_49:
-  v29 = VCConnectionIDS_LinkID(a3);
-  v30 = [objc_msgSend(a3 "connectionUUID")];
+  v29 = VCConnectionIDS_LinkID(array);
+  v30 = [objc_msgSend(array "connectionUUID")];
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->super._mapLinkIDToLinkUUID, "setObject:forKeyedSubscript:", v30, [MEMORY[0x1E696AD98] numberWithUnsignedChar:v29]);
 
-  [*(&self->super.super.isa + v34) insertObject:a3 atIndex:v15];
-  if (VCConnectionManager_IsDuplicationConnectionCandidate(self, a3))
+  [*(&self->super.super.isa + v34) insertObject:array atIndex:v15];
+  if (VCConnectionManager_IsDuplicationConnectionCandidate(self, array))
   {
     if ([(VCLinkProbingHandler *)self->super._linkProbingHandler isLinkProbingActive])
     {
       linkProbingHandler = self->super._linkProbingHandler;
-      v35 = [MEMORY[0x1E696AD98] numberWithInt:VCConnection_ConnectionID(a3)];
+      v35 = [MEMORY[0x1E696AD98] numberWithInt:VCConnection_ConnectionID(array)];
       -[VCLinkProbingHandler startActiveProbingOnLinks:](linkProbingHandler, "startActiveProbingOnLinks:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1]);
     }
 
@@ -1678,61 +1678,61 @@ LABEL_49:
     }
   }
 
-  IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(a3);
-  [(VCConnectionManagerIDS *)self updateDuplicationStateWithConnectionOperation:0 isLocalOnWiFi:IsLocalOnWiFi isRemoteOnWiFi:VCConnection_IsRemoteOnWiFi(a3)];
+  IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(array);
+  [(VCConnectionManagerIDS *)self updateDuplicationStateWithConnectionOperation:0 isLocalOnWiFi:IsLocalOnWiFi isRemoteOnWiFi:VCConnection_IsRemoteOnWiFi(array)];
   return 1;
 }
 
-- (void)removeFromConnectionArray:(id)a3
+- (void)removeFromConnectionArray:(id)array
 {
   v7[1] = *MEMORY[0x1E69E9840];
   if ([(VCLinkProbingHandler *)self->super._linkProbingHandler isLinkProbingActive])
   {
     linkProbingHandler = self->super._linkProbingHandler;
-    v7[0] = [MEMORY[0x1E696AD98] numberWithInt:VCConnection_ConnectionID(a3)];
+    v7[0] = [MEMORY[0x1E696AD98] numberWithInt:VCConnection_ConnectionID(array)];
     -[VCLinkProbingHandler stopActiveProbingOnLinks:resetStats:](linkProbingHandler, "stopActiveProbingOnLinks:resetStats:", [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1], 1);
   }
 
-  IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(a3);
-  [(VCConnectionManagerIDS *)self updateDuplicationStateWithConnectionOperation:1 isLocalOnWiFi:IsLocalOnWiFi isRemoteOnWiFi:VCConnection_IsRemoteOnWiFi(a3)];
-  [(NSMutableArray *)self->super._connectionArray removeObject:a3];
+  IsLocalOnWiFi = VCConnection_IsLocalOnWiFi(array);
+  [(VCConnectionManagerIDS *)self updateDuplicationStateWithConnectionOperation:1 isLocalOnWiFi:IsLocalOnWiFi isRemoteOnWiFi:VCConnection_IsRemoteOnWiFi(array)];
+  [(NSMutableArray *)self->super._connectionArray removeObject:array];
 }
 
-- (void)updateDuplicationStateWithConnectionOperation:(int)a3 isLocalOnWiFi:(BOOL)a4 isRemoteOnWiFi:(BOOL)a5
+- (void)updateDuplicationStateWithConnectionOperation:(int)operation isLocalOnWiFi:(BOOL)fi isRemoteOnWiFi:(BOOL)wiFi
 {
   v6 = 0x100000000;
-  if (!a4)
+  if (!fi)
   {
     v6 = 0;
   }
 
-  v7 = v6 | a3;
+  v7 = v6 | operation;
   v8 = 0x10000000000;
-  if (!a5)
+  if (!wiFi)
   {
     v8 = 0;
   }
 
   if (VCDuplicationHandler_HandleDuplicationStateUpdateEvent(self->super._duplicationHandler, 13, v7 | v8))
   {
-    v9 = [(VCConnectionManager *)self isDuplicationEnabled];
+    isDuplicationEnabled = [(VCConnectionManager *)self isDuplicationEnabled];
 
-    VCConnectionManager_SetDuplicationEnabledInternal(self, v9);
+    VCConnectionManager_SetDuplicationEnabledInternal(self, isDuplicationEnabled);
   }
 }
 
-- (void)reportConnection:(id)a3 isInitialConnection:(BOOL)a4
+- (void)reportConnection:(id)connection isInitialConnection:(BOOL)initialConnection
 {
-  v4 = a4;
+  initialConnectionCopy = initialConnection;
   v37 = *MEMORY[0x1E69E9840];
-  IsEndToEndLink = VCConnection_IsEndToEndLink(a3);
+  IsEndToEndLink = VCConnection_IsEndToEndLink(connection);
   if (![(VCConnectionManager *)self isOneToOneModeEnabled]|| IsEndToEndLink)
   {
-    v8 = VCConnection_Priority(a3);
+    v8 = VCConnection_Priority(connection);
     if (self->super._reportingAgent)
     {
       v27 = v8 & 0xFFFFFFFE;
-      if (VCConnection_IsRelay(a3))
+      if (VCConnection_IsRelay(connection))
       {
         v9 = "relay";
       }
@@ -1742,9 +1742,9 @@ LABEL_49:
         v9 = "p2p";
       }
 
-      v10 = VCConnectionManager_ConnectionInterfaceType(a3, 1);
-      v11 = VCConnectionManager_ConnectionInterfaceType(a3, 0);
-      if (v4)
+      v10 = VCConnectionManager_ConnectionInterfaceType(connection, 1);
+      v11 = VCConnectionManager_ConnectionInterfaceType(connection, 0);
+      if (initialConnectionCopy)
       {
         relayServerProvider = self->super._relayServerProvider;
         v13 = "QRSUN";
@@ -1769,9 +1769,9 @@ LABEL_49:
         v14 = "";
       }
 
-      [a3 sharedDigestKey];
+      [connection sharedDigestKey];
       reportingSetDigestKey();
-      v17 = [a3 relaySessionToken];
+      relaySessionToken = [connection relaySessionToken];
       EyeContactEnabledBoolValue = VCDefaults_Prod_GetEyeContactEnabledBoolValue(1);
       v29[0] = @"ConnectionType";
       v30[0] = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -1786,19 +1786,19 @@ LABEL_49:
       v29[5] = @"relayServer";
       v30[5] = [MEMORY[0x1E696AEC0] stringWithUTF8String:v14];
       v29[6] = @"relayType";
-      v30[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "type")}];
+      v30[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(connection, "type")}];
       v29[7] = @"VPN";
-      v19 = [a3 isVPN];
+      isVPN = [connection isVPN];
       v20 = &unk_1F579A980;
-      if (v19)
+      if (isVPN)
       {
         v20 = &unk_1F579A968;
       }
 
       v21 = @"Unknown";
-      if (v17)
+      if (relaySessionToken)
       {
-        v21 = v17;
+        v21 = relaySessionToken;
       }
 
       v30[7] = v20;
@@ -1819,19 +1819,19 @@ LABEL_49:
 
       v30[10] = [MEMORY[0x1E696AEC0] stringWithUTF8String:v22];
       v29[11] = @"QuicPod";
-      v30[11] = [MEMORY[0x1E696AD98] numberWithBool:VCConnectionIDS_IsQUICPod(a3)];
+      v30[11] = [MEMORY[0x1E696AD98] numberWithBool:VCConnectionIDS_IsQUICPod(connection)];
       v29[12] = @"Rpsd";
-      v30[12] = [VCConnectionIDS VCConnectionIDS_RPS:a3];
+      v30[12] = [VCConnectionIDS VCConnectionIDS_RPS:connection];
       v29[13] = @"Cpsd";
-      v30[13] = [VCConnectionIDS VCConnectionIDS_CDBPS:a3];
+      v30[13] = [VCConnectionIDS VCConnectionIDS_CDBPS:connection];
       v29[14] = @"ConnProtocolType";
-      v30[14] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "linkConnectionType")}];
+      v30[14] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(connection, "linkConnectionType")}];
       v29[15] = @"MaxMTU";
-      v30[15] = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "maxConnectionMTU")}];
+      v30[15] = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(connection, "maxConnectionMTU")}];
       v29[16] = @"sliceStatus";
-      v30[16] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(a3)];
+      v30[16] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(connection)];
       v29[17] = @"RemoteSliceStatus";
-      v30[17] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(a3)];
+      v30[17] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(connection)];
       v23 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:{18), "mutableCopy"}];
       v24 = VCConnectionManager_CopySuggestedLinkTypeCombo(self);
       if (v24)
@@ -1844,20 +1844,20 @@ LABEL_49:
       if (v27 == 2)
       {
         VCConnectionManager_AddTelemetryForPacketHistoryInternal(self, v23);
-        [v23 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", VCConnectionIDS_IsP2PEncryptionSupported(a3)), @"p2pTLE"}];
+        [v23 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", VCConnectionIDS_IsP2PEncryptionSupported(connection)), @"p2pTLE"}];
       }
 
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_ABT", @"QuicPod"];
       [v23 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->super._gftTLEEnabled), v26}];
       [v23 setObject:self->super._gecoVersion forKeyedSubscript:@"GECO_ABT"];
-      VCConnectionManager_AddTelemetryForConnection(self, a3, v23);
-      VCConnection_ReportingQRServerConfig(a3);
-      VCConnectionIDS_ReportingSatelliteNetwork(a3, v23);
+      VCConnectionManager_AddTelemetryForConnection(self, connection, v23);
+      VCConnection_ReportingQRServerConfig(connection);
+      VCConnectionIDS_ReportingSatelliteNetwork(connection, v23);
       reportingGenericEvent();
 
       v28.receiver = self;
       v28.super_class = VCConnectionManagerIDS;
-      [(VCConnectionManager *)&v28 reportConnection:a3 isInitialConnection:v4];
+      [(VCConnectionManager *)&v28 reportConnection:connection isInitialConnection:initialConnectionCopy];
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1886,7 +1886,7 @@ LABEL_49:
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
 
-- (BOOL)shouldDropCurrentPrimaryConnectionWithConnectionStats:(id *)a3
+- (BOOL)shouldDropCurrentPrimaryConnectionWithConnectionStats:(id *)stats
 {
   if ((self->super._connectionSelectionVersion - 1) < 2)
   {
@@ -1932,7 +1932,7 @@ LABEL_49:
       }
     }
 
-    if (a3->var4 > 5.0)
+    if (stats->var4 > 5.0)
     {
       return !self->super._enableDuplication;
     }
@@ -1946,11 +1946,11 @@ LABEL_49:
   return 0;
 }
 
-- (BOOL)shouldUpdateServerBasedConnection:(id)a3
+- (BOOL)shouldUpdateServerBasedConnection:(id)connection
 {
   if (self->_isMultiwaySession)
   {
-    return VCConnection_IsEndToEndLink(a3) ^ 1;
+    return VCConnection_IsEndToEndLink(connection) ^ 1;
   }
 
   else
@@ -1959,11 +1959,11 @@ LABEL_49:
   }
 }
 
-- (BOOL)canOptOutAllStreamsForConnection:(id)a3
+- (BOOL)canOptOutAllStreamsForConnection:(id)connection
 {
   if (self->_isMultiwaySession && !self->_optIntoExistingSubscribedStreams)
   {
-    return VCConnection_IsEndToEndLink(a3) ^ 1;
+    return VCConnection_IsEndToEndLink(connection) ^ 1;
   }
 
   else
@@ -1972,7 +1972,7 @@ LABEL_49:
   }
 }
 
-- (void)startActiveProbingWithOptions:(id)a3
+- (void)startActiveProbingWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   if ([(VCConnectionManager *)self delegate])
@@ -1983,7 +1983,7 @@ LABEL_49:
     block[2] = __56__VCConnectionManagerIDS_startActiveProbingWithOptions___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = options;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -1996,7 +1996,7 @@ uint64_t __56__VCConnectionManagerIDS_startActiveProbingWithOptions___block_invo
   return [v2 startActiveProbingWithOptions:v3];
 }
 
-- (void)stopActiveProbingWithOptions:(id)a3
+- (void)stopActiveProbingWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   if ([(VCConnectionManager *)self delegate])
@@ -2007,7 +2007,7 @@ uint64_t __56__VCConnectionManagerIDS_startActiveProbingWithOptions___block_invo
     block[2] = __55__VCConnectionManagerIDS_stopActiveProbingWithOptions___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = options;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -2020,7 +2020,7 @@ uint64_t __55__VCConnectionManagerIDS_stopActiveProbingWithOptions___block_invok
   return [v2 stopActiveProbingWithOptions:v3];
 }
 
-- (void)queryProbingResultsWithOptions:(id)a3
+- (void)queryProbingResultsWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   if ([(VCConnectionManager *)self delegate])
@@ -2031,7 +2031,7 @@ uint64_t __55__VCConnectionManagerIDS_stopActiveProbingWithOptions___block_invok
     block[2] = __57__VCConnectionManagerIDS_queryProbingResultsWithOptions___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = options;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -2044,7 +2044,7 @@ uint64_t __57__VCConnectionManagerIDS_queryProbingResultsWithOptions___block_inv
   return [v2 queryProbingResultsWithOptions:v3];
 }
 
-- (void)flushLinkProbingStatusWithOptions:(id)a3
+- (void)flushLinkProbingStatusWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   if ([(VCConnectionManager *)self delegate])
@@ -2055,7 +2055,7 @@ uint64_t __57__VCConnectionManagerIDS_queryProbingResultsWithOptions___block_inv
     block[2] = __60__VCConnectionManagerIDS_flushLinkProbingStatusWithOptions___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = options;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -2068,7 +2068,7 @@ uint64_t __60__VCConnectionManagerIDS_flushLinkProbingStatusWithOptions___block_
   return [v2 flushLinkProbingStatusWithOptions:v3];
 }
 
-- (void)didUpdateLinkPreferenceOrder:(id)a3
+- (void)didUpdateLinkPreferenceOrder:(id)order
 {
   v15 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->super._stateRWlock);
@@ -2085,12 +2085,12 @@ uint64_t __60__VCConnectionManagerIDS_flushLinkProbingStatusWithOptions___block_
       v11 = 1024;
       v12 = 1199;
       v13 = 2112;
-      v14 = [objc_msgSend(a3 valueForKey:{@"description", "componentsJoinedByString:", @", "}];
+      v14 = [objc_msgSend(order valueForKey:{@"description", "componentsJoinedByString:", @", "}];
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: Updated link preference order: %@", &v7, 0x26u);
     }
   }
 
-  [(VCConnectionSelector *)self->super._connectionSelector setLinkPreferenceOrder:a3];
+  [(VCConnectionSelector *)self->super._connectionSelector setLinkPreferenceOrder:order];
   VCConnectionManager_UpdateConnectionForDuplication(self);
   pthread_rwlock_unlock(&self->super._stateRWlock);
 }
@@ -2104,7 +2104,7 @@ uint64_t __60__VCConnectionManagerIDS_flushLinkProbingStatusWithOptions___block_
   }
 }
 
-- (void)requestStatsWithOptions:(id)a3
+- (void)requestStatsWithOptions:(id)options
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->super._delegateQueue;
@@ -2113,7 +2113,7 @@ uint64_t __60__VCConnectionManagerIDS_flushLinkProbingStatusWithOptions___block_
   block[2] = __50__VCConnectionManagerIDS_requestStatsWithOptions___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = options;
   dispatch_async(delegateQueue, block);
 }
 
@@ -2125,7 +2125,7 @@ uint64_t __50__VCConnectionManagerIDS_requestStatsWithOptions___block_invoke(uin
   return [v2 requestStatsWithOptions:v3];
 }
 
-- (void)didReceiveStatsResponse:(BOOL)a3
+- (void)didReceiveStatsResponse:(BOOL)response
 {
   v6 = *MEMORY[0x1E69E9840];
   callbackQueue = self->super._callbackQueue;
@@ -2133,7 +2133,7 @@ uint64_t __50__VCConnectionManagerIDS_requestStatsWithOptions___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __50__VCConnectionManagerIDS_didReceiveStatsResponse___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  responseCopy = response;
   block[4] = self;
   dispatch_async(callbackQueue, block);
 }
@@ -2155,7 +2155,7 @@ void __50__VCConnectionManagerIDS_didReceiveStatsResponse___block_invoke(uint64_
   VCConnectionManager_UpdateNetworkOutageStatus(v2, v3);
 }
 
-- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)a3
+- (void)updateConnectionSelectionPolicyWithPreferE2E:(BOOL)e
 {
   v6 = *MEMORY[0x1E69E9840];
   pthread_rwlock_wrlock(&self->super._stateRWlock);
@@ -2163,7 +2163,7 @@ void __50__VCConnectionManagerIDS_didReceiveStatsResponse___block_invoke(uint64_
   v5[1] = 0;
   v5[2] = [(VCConnectionManagerIDS *)self shouldKeepAllConnections];
   v5[3] = self->_isMultiwaySession;
-  v5[4] = a3;
+  v5[4] = e;
   v5[5] = [(VCConnectionManagerIDS *)self shouldPreferWiredConnections];
   [(VCConnectionSelector *)self->super._connectionSelector updateConnectionSelectionPolicy:v5];
   pthread_rwlock_unlock(&self->super._stateRWlock);
@@ -2176,11 +2176,11 @@ void __50__VCConnectionManagerIDS_didReceiveStatsResponse___block_invoke(uint64_
   return v2;
 }
 
-- (void)setOptIntoExistingSubscribedStreams:(BOOL)a3
+- (void)setOptIntoExistingSubscribedStreams:(BOOL)streams
 {
   v19 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->super._stateRWlock);
-  self->_optIntoExistingSubscribedStreams = a3;
+  self->_optIntoExistingSubscribedStreams = streams;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2300,9 +2300,9 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEndToEndLinkWithCellAvailable:(BOOL)a3
+- (BOOL)isEndToEndLinkWithCellAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v18 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->super._stateRWlock);
   v14 = 0u;
@@ -2325,7 +2325,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (VCConnection_IsEndToEndLink(v10) && (v3 && (VCConnection_IsLocalOnCellular(v10) & 1) != 0 || (VCConnection_IsRemoteOnCellular(v10) & 1) != 0))
+        if (VCConnection_IsEndToEndLink(v10) && (availableCopy && (VCConnection_IsLocalOnCellular(v10) & 1) != 0 || (VCConnection_IsRemoteOnCellular(v10) & 1) != 0))
         {
           v11 = 1;
           goto LABEL_14;
@@ -2374,14 +2374,14 @@ void ___VCConnectionManagerIDS_UpdateConnectionForDuplication_block_invoke(uint6
   }
 }
 
-- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)a3
+- (BOOL)shouldAcceptDataFromSourceDestinationInfo:(tagVCSourceDestinationInfo *)info
 {
   pthread_rwlock_rdlock(&self->super._stateRWlock);
   v5 = VCConnectionManager_CopyPrimaryConnection(self);
   if (v5)
   {
     v6 = v5;
-    v7 = VCConnectionIDS_MatchesChannelTokenWithSourceDestinationInfo(v5, a3);
+    v7 = VCConnectionIDS_MatchesChannelTokenWithSourceDestinationInfo(v5, info);
     CFRelease(v6);
   }
 

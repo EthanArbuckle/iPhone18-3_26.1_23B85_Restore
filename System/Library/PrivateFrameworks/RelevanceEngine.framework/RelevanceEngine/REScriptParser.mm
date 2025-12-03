@@ -1,21 +1,21 @@
 @interface REScriptParser
-- (REScriptParser)initWithBacktrackingBuffer:(id)a3;
+- (REScriptParser)initWithBacktrackingBuffer:(id)buffer;
 - (REScriptParserDelegate)delegate;
 - (id)parse;
 @end
 
 @implementation REScriptParser
 
-- (REScriptParser)initWithBacktrackingBuffer:(id)a3
+- (REScriptParser)initWithBacktrackingBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v9.receiver = self;
   v9.super_class = REScriptParser;
   v6 = [(REScriptParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_buffer, a3);
+    objc_storeStrong(&v6->_buffer, buffer);
   }
 
   return v7;
@@ -23,20 +23,20 @@
 
 - (id)parse
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (([(REBacktrackingTokenBuffer *)self->_buffer isEmpty]& 1) == 0)
   {
     while (1)
     {
-      v4 = [(REBacktrackingTokenBuffer *)self->_buffer currentToken];
-      v5 = [v4 type];
+      currentToken = [(REBacktrackingTokenBuffer *)self->_buffer currentToken];
+      type = [currentToken type];
 
-      if ((v5 - 13) < 3)
+      if ((type - 13) < 3)
       {
         break;
       }
 
-      if (v5 == 12)
+      if (type == 12)
       {
         buffer = self->_buffer;
         v19 = 0;
@@ -67,15 +67,15 @@ LABEL_6:
         if (!v7)
         {
 LABEL_11:
-          v14 = [(REScriptParser *)self delegate];
-          [v14 parser:self didEncouterParserError:v10];
+          delegate = [(REScriptParser *)self delegate];
+          [delegate parser:self didEncouterParserError:v10];
 
           goto LABEL_12;
         }
       }
 
 LABEL_7:
-      [v3 addObject:v7];
+      [array addObject:v7];
 
       if ([(REBacktrackingTokenBuffer *)self->_buffer isEmpty])
       {
@@ -91,7 +91,7 @@ LABEL_7:
   }
 
 LABEL_12:
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   return v15;
 }

@@ -73,7 +73,7 @@
     goto LABEL_8;
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC18 != -1)
   {
     dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -84,10 +84,10 @@
 LABEL_8:
     if (_foundation_swift_nsurl_feature_enabled())
     {
-      return *&a1[*MEMORY[0x1E695E028]];
+      return *&self[*MEMORY[0x1E695E028]];
     }
 
-    v3 = object_getClass(a1);
+    v3 = object_getClass(self);
     if (qword_1ED43FC08 != -1)
     {
       dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -95,18 +95,18 @@ LABEL_8:
 
     if (v3 != qword_1ED43FC00)
     {
-      return *&a1[*MEMORY[0x1E695E028]];
+      return *&self[*MEMORY[0x1E695E028]];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)retain
 {
-  v1 = a1;
+  selfCopy = self;
   v6 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -114,7 +114,7 @@ LABEL_8:
 
   if (Class != qword_1ED43FC00)
   {
-    v5.receiver = v1;
+    v5.receiver = selfCopy;
     v5.super_class = NSURL_0;
     return objc_msgSendSuper2(&v5, sel_retain);
   }
@@ -124,44 +124,44 @@ LABEL_8:
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (qword_1ED43FBF0 == v1)
+  if (qword_1ED43FBF0 == selfCopy)
   {
-    return v1;
+    return selfCopy;
   }
 
-  return MEMORY[0x1EEDB8360](v1, v2);
+  return MEMORY[0x1EEDB8360](selfCopy, v2);
 }
 
 - (uint64_t)isFileURL
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v5);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 isFileURL];
+    return [(objc_class *)_trueSelf isFileURL];
   }
 
   else
   {
-    return v3 && _CFURLIsFileURL() != 0;
+    return _trueSelf && _CFURLIsFileURL() != 0;
   }
 }
 
 - (void)release
 {
   v4 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -174,7 +174,7 @@ LABEL_8:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 != a1)
+    if (qword_1ED43FBF0 != self)
     {
 
       JUMPOUT(0x1865CF530);
@@ -183,7 +183,7 @@ LABEL_8:
 
   else
   {
-    v3.receiver = a1;
+    v3.receiver = self;
     v3.super_class = NSURL_0;
     objc_msgSendSuper2(&v3, sel_release);
   }
@@ -191,19 +191,19 @@ LABEL_8:
 
 - (uint64_t)hash
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0;
   }
@@ -211,37 +211,37 @@ LABEL_8:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 hash];
+    return [(objc_class *)_trueSelf hash];
   }
 
   else
   {
 
-    return MEMORY[0x1EEDB8350](v3, v4);
+    return MEMORY[0x1EEDB8350](_trueSelf, v4);
   }
 }
 
 - (__CFString)path
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v8);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 path];
+    return [(objc_class *)_trueSelf path];
   }
 
-  else if (v3 && (v5 = CFURLCopyAbsoluteURL(v3)) != 0)
+  else if (_trueSelf && (v5 = CFURLCopyAbsoluteURL(_trueSelf)) != 0)
   {
     v6 = v5;
     v7 = CFURLCopyFileSystemPath(v5, kCFURLPOSIXPathStyle);
@@ -258,19 +258,19 @@ LABEL_8:
 
 - (const)baseURL
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0;
   }
@@ -278,12 +278,12 @@ LABEL_8:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 baseURL];
+    return [(objc_class *)_trueSelf baseURL];
   }
 
   else
   {
-    v5 = CFURLGetBaseURL(v3);
+    v5 = CFURLGetBaseURL(_trueSelf);
 
     return v5;
   }
@@ -291,37 +291,37 @@ LABEL_8:
 
 - (NSString)description
 {
-  if ([objc_msgSend(a1 "scheme")])
+  if ([objc_msgSend(self "scheme")])
   {
-    if ([a1 baseURL])
+    if ([self baseURL])
     {
-      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ -- %@", [a1 relativeString], objc_msgSend(a1, "baseURL"));
+      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ -- %@", [self relativeString], objc_msgSend(self, "baseURL"));
     }
 
     else
     {
 
-      return [a1 relativeString];
+      return [self relativeString];
     }
   }
 
   else
   {
-    v3 = [objc_msgSend(a1 "relativeString")];
+    v3 = [objc_msgSend(self "relativeString")];
     if (v3 > 0x80)
     {
-      v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ... %@", [objc_msgSend(a1 "relativeString")], objc_msgSend(objc_msgSend(a1, "relativeString"), "substringFromIndex:", v3 - 8));
+      relativeString = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ... %@", [objc_msgSend(self "relativeString")], objc_msgSend(objc_msgSend(self, "relativeString"), "substringFromIndex:", v3 - 8));
     }
 
     else
     {
-      v4 = [a1 relativeString];
+      relativeString = [self relativeString];
     }
 
-    v5 = v4;
-    if ([a1 baseURL])
+    v5 = relativeString;
+    if ([self baseURL])
     {
-      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ -- %@", v5, [a1 baseURL]);
+      return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ -- %@", v5, [self baseURL]);
     }
 
     else
@@ -333,19 +333,19 @@ LABEL_8:
 
 - (__CFString)scheme
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0;
   }
@@ -353,12 +353,12 @@ LABEL_8:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 scheme];
+    return [(objc_class *)_trueSelf scheme];
   }
 
   else
   {
-    v5 = CFURLCopyScheme(v3);
+    v5 = CFURLCopyScheme(_trueSelf);
 
     return v5;
   }
@@ -366,23 +366,23 @@ LABEL_8:
 
 - (__CFString)relativeString
 {
-  v4 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v4 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v7 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)];
+    v7 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)];
     v8 = MEMORY[0x1E695DF30];
     v9 = MEMORY[0x1E695D920];
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!_trueSelf)
   {
-    v7 = [NSString stringWithFormat:@"%@: URL was not initialized", _NSMethodExceptionProem(a1, a2)];
+    v7 = [NSString stringWithFormat:@"%@: URL was not initialized", _NSMethodExceptionProem(self, a2)];
     v8 = MEMORY[0x1E695DF30];
     v9 = MEMORY[0x1E695D940];
 LABEL_14:
@@ -392,12 +392,12 @@ LABEL_14:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v4 relativeString];
+    return [(objc_class *)_trueSelf relativeString];
   }
 
   else
   {
-    v6 = CFURLGetString(v4);
+    v6 = CFURLGetString(_trueSelf);
 
     return v6;
   }
@@ -405,23 +405,23 @@ LABEL_14:
 
 - (uint64_t)fileSystemRepresentation
 {
-  v4 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v4 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v16 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)];
+    v16 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)];
     v17 = MEMORY[0x1E695DF30];
     v18 = MEMORY[0x1E695D920];
     goto LABEL_25;
   }
 
-  if (!v4)
+  if (!_trueSelf)
   {
-    v15 = [NSString stringWithFormat:@"%@: %@ was not initialized", _NSMethodExceptionProem(a1, a2), a1];
+    v15 = [NSString stringWithFormat:@"%@: %@ was not initialized", _NSMethodExceptionProem(self, a2), self];
     goto LABEL_22;
   }
 
@@ -430,17 +430,17 @@ LABEL_14:
     v7 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
     if (!v7)
     {
-      v19 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(a1, a2), 1024];
+      1024 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(self, a2), 1024];
       goto LABEL_24;
     }
 
     v8 = [objc_msgSend(MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v7 length:{1024), "bytes"}];
-    if (CFURLGetFileSystemRepresentation(v4, 1u, v8, 1024))
+    if (CFURLGetFileSystemRepresentation(_trueSelf, 1u, v8, 1024))
     {
       return v8;
     }
 
-    v9 = CFURLCopyAbsoluteURL(v4);
+    v9 = CFURLCopyAbsoluteURL(_trueSelf);
     if (v9)
     {
       v10 = v9;
@@ -471,20 +471,20 @@ LABEL_14:
           return v8;
         }
 
-        v15 = [NSString stringWithFormat:@"%@: conversion failed for %@", _NSMethodExceptionProem(a1, a2), a1];
+        v15 = [NSString stringWithFormat:@"%@: conversion failed for %@", _NSMethodExceptionProem(self, a2), self];
         goto LABEL_22;
       }
 
-      v19 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(a1, a2), MaximumSizeOfFileSystemRepresentation];
+      1024 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(self, a2), MaximumSizeOfFileSystemRepresentation];
 LABEL_24:
-      v16 = v19;
+      v16 = 1024;
       v17 = MEMORY[0x1E695DF30];
       v18 = MEMORY[0x1E695DA18];
 LABEL_25:
       objc_exception_throw([v17 exceptionWithName:*v18 reason:v16 userInfo:0]);
     }
 
-    v15 = [NSString stringWithFormat:@"%@: unable to copy absolute URL for %@", _NSMethodExceptionProem(a1, a2), a1];
+    v15 = [NSString stringWithFormat:@"%@: unable to copy absolute URL for %@", _NSMethodExceptionProem(self, a2), self];
 LABEL_22:
     v16 = v15;
     v17 = MEMORY[0x1E695DF30];
@@ -492,33 +492,33 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v5 = [(objc_class *)v4 path];
+  path = [(objc_class *)_trueSelf path];
 
-  return [v5 fileSystemRepresentation];
+  return [path fileSystemRepresentation];
 }
 
 - (uint64_t)absoluteString
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v8);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0;
   }
 
   if (!_foundation_swift_nsurl_feature_enabled())
   {
-    v5 = CFURLCopyAbsoluteURL(v3);
+    v5 = CFURLCopyAbsoluteURL(_trueSelf);
     if (v5)
     {
       v6 = v5;
@@ -530,36 +530,36 @@ LABEL_22:
     return 0;
   }
 
-  return [(objc_class *)v3 absoluteString];
+  return [(objc_class *)_trueSelf absoluteString];
 }
 
 - (uint64_t)_securePath
 {
-  v1 = a1;
-  if ([a1 isFileReferenceURL] && (objc_msgSend(v1, "_resolveFlags") & 1) == 0)
+  selfCopy = self;
+  if ([self isFileReferenceURL] && (objc_msgSend(selfCopy, "_resolveFlags") & 1) == 0)
   {
-    v1 = [v1 _URLByInsertingResolveFlags:1];
+    selfCopy = [selfCopy _URLByInsertingResolveFlags:1];
   }
 
-  return [v1 path];
+  return [selfCopy path];
 }
 
 - (id)standardizedURL
 {
-  v3 = a1;
-  v4 = [a1 _trueSelf];
+  selfCopy = self;
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v4 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  if (!v4)
+  if (!_trueSelf)
   {
     return 0;
   }
@@ -571,27 +571,27 @@ LABEL_22:
       return _CFURLCreateFromComponents();
     }
 
-    return v3;
+    return selfCopy;
   }
 
-  return [(objc_class *)v4 standardizedURL];
+  return [(objc_class *)_trueSelf standardizedURL];
 }
 
 - (CFURLRef)absoluteURL
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0;
   }
@@ -599,12 +599,12 @@ LABEL_22:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 absoluteURL];
+    return [(objc_class *)_trueSelf absoluteURL];
   }
 
   else
   {
-    v5 = CFURLCopyAbsoluteURL(v3);
+    v5 = CFURLCopyAbsoluteURL(_trueSelf);
 
     return v5;
   }
@@ -612,27 +612,27 @@ LABEL_22:
 
 - (__CFString)query
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 query];
+    return [(objc_class *)_trueSelf query];
   }
 
-  else if (v3)
+  else if (_trueSelf)
   {
-    String = CFURLCopyQueryString(v3, 0);
+    String = CFURLCopyQueryString(_trueSelf, 0);
 
     return String;
   }
@@ -645,53 +645,53 @@ LABEL_22:
 
 - (uint64_t)hasDirectoryPath
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v5);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 hasDirectoryPath];
+    return [(objc_class *)_trueSelf hasDirectoryPath];
   }
 
   else
   {
-    return v3 && CFURLHasDirectoryPath(v3) != 0;
+    return _trueSelf && CFURLHasDirectoryPath(_trueSelf) != 0;
   }
 }
 
 - (__CFString)host
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 host];
+    return [(objc_class *)_trueSelf host];
   }
 
-  else if (v3)
+  else if (_trueSelf)
   {
-    v5 = CFURLCopyHostName(v3);
+    v5 = CFURLCopyHostName(_trueSelf);
 
     return v5;
   }
@@ -704,27 +704,27 @@ LABEL_22:
 
 - (__CFString)relativePath
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 relativePath];
+    return [(objc_class *)_trueSelf relativePath];
   }
 
-  else if (v3)
+  else if (_trueSelf)
   {
-    v5 = CFURLCopyFileSystemPath(v3, kCFURLPOSIXPathStyle);
+    v5 = CFURLCopyFileSystemPath(_trueSelf, kCFURLPOSIXPathStyle);
 
     return v5;
   }
@@ -737,27 +737,27 @@ LABEL_22:
 
 - (__CFString)fragment
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 fragment];
+    return [(objc_class *)_trueSelf fragment];
   }
 
-  else if (v3)
+  else if (_trueSelf)
   {
-    v5 = CFURLCopyFragment(v3, 0);
+    v5 = CFURLCopyFragment(_trueSelf, 0);
 
     return v5;
   }
@@ -770,32 +770,32 @@ LABEL_22:
 
 - (NSNumber)port
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 port];
+    return [(objc_class *)_trueSelf port];
   }
 
   else
   {
-    if (!v3)
+    if (!_trueSelf)
     {
       return 0;
     }
 
-    v5 = CFURLGetPortNumber(v3);
+    v5 = CFURLGetPortNumber(_trueSelf);
     if (v5 == -1)
     {
       return 0;
@@ -811,21 +811,21 @@ LABEL_22:
 
 - (NSString)resourceSpecifier
 {
-  if ([a1 _isAbsolute])
+  if ([self _isAbsolute])
   {
-    v4 = [a1 _trueSelf];
+    _trueSelf = [self _trueSelf];
     if (qword_1ED43FBF8 != -1)
     {
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (v4 == qword_1ED43FBF0)
+    if (_trueSelf == qword_1ED43FBF0)
     {
-      v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)), 0}];
+      v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
       objc_exception_throw(v9);
     }
 
-    if (!v4)
+    if (!_trueSelf)
     {
       return 0;
     }
@@ -833,26 +833,26 @@ LABEL_22:
     if (_foundation_swift_nsurl_feature_enabled())
     {
 
-      return [(objc_class *)v4 resourceSpecifier];
+      return [(objc_class *)_trueSelf resourceSpecifier];
     }
 
-    if (!CFURLCanBeDecomposed(v4))
+    if (!CFURLCanBeDecomposed(_trueSelf))
     {
-      v6 = CFURLCopyResourceSpecifier(v4);
+      v6 = CFURLCopyResourceSpecifier(_trueSelf);
       goto LABEL_19;
     }
 
-    if (CFURLGetBaseURL(v4))
+    if (CFURLGetBaseURL(_trueSelf))
     {
-      v6 = CFURLGetString(v4);
+      v6 = CFURLGetString(_trueSelf);
 LABEL_19:
 
       return v6;
     }
 
-    v7 = CFURLCopyNetLocation(v4);
-    v8 = CFURLCopyPath(v4);
-    result = CFURLCopyResourceSpecifier(v4);
+    v7 = CFURLCopyNetLocation(_trueSelf);
+    v8 = CFURLCopyPath(_trueSelf);
+    result = CFURLCopyResourceSpecifier(_trueSelf);
     if (v7)
     {
       if (v8)
@@ -895,7 +895,7 @@ LABEL_19:
   else
   {
 
-    return [a1 relativeString];
+    return [self relativeString];
   }
 
   return result;
@@ -904,7 +904,7 @@ LABEL_19:
 - (unint64_t)_isDeallocating
 {
   v5 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -917,12 +917,12 @@ LABEL_19:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    return qword_1ED43FBF0 == a1 || _CFIsDeallocating() != 0;
+    return qword_1ED43FBF0 == self || _CFIsDeallocating() != 0;
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = NSURL_0;
     return objc_msgSendSuper2(&v4, sel__isDeallocating);
   }
@@ -931,10 +931,10 @@ LABEL_19:
 - (id)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  [a1 _freeClients];
+  [self _freeClients];
   if ((_foundation_swift_nsurl_feature_enabled() & 1) == 0)
   {
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     if (qword_1ED43FC08 != -1)
     {
       dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -948,7 +948,7 @@ LABEL_19:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v3 = object_getClass(a1);
+    v3 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -960,7 +960,7 @@ LABEL_9:
     }
   }
 
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = NSURL_0;
   return objc_msgSendSuper2(&v5, sel_dealloc);
 }
@@ -969,19 +969,19 @@ LABEL_9:
 {
   if ((_foundation_swift_nsurl_feature_enabled() & 1) == 0)
   {
-    v4 = [a1 _cfurl];
+    _cfurl = [self _cfurl];
     if (qword_1ED43FBF8 != -1)
     {
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (v4 == qword_1ED43FBF0)
+    if (_cfurl == qword_1ED43FBF0)
     {
-      v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)), 0}];
+      v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_cfurl, a2)), 0}];
       objc_exception_throw(v6);
     }
 
-    if (v4)
+    if (_cfurl)
     {
       v5 = __CFURLReservedPtr();
       if (v5)
@@ -996,7 +996,7 @@ LABEL_9:
 - (id)_tryRetain
 {
   v5 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1009,7 +1009,7 @@ LABEL_9:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 == a1)
+    if (qword_1ED43FBF0 == self)
     {
       return 0;
     }
@@ -1022,7 +1022,7 @@ LABEL_9:
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = NSURL_0;
     return objc_msgSendSuper2(&v4, sel__tryRetain);
   }
@@ -1030,27 +1030,27 @@ LABEL_9:
 
 - (__CFString)user
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 user];
+    return [(objc_class *)_trueSelf user];
   }
 
-  else if (v3)
+  else if (_trueSelf)
   {
-    v5 = CFURLCopyUserName(v3);
+    v5 = CFURLCopyUserName(_trueSelf);
 
     return v5;
   }
@@ -1069,7 +1069,7 @@ LABEL_9:
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
   }
 
-  if (qword_1ED43FC00 == a1)
+  if (qword_1ED43FC00 == self)
   {
     if (qword_1ED43FBF8 != -1)
     {
@@ -1081,7 +1081,7 @@ LABEL_9:
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NSURL_0;
     return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
   }
@@ -1090,7 +1090,7 @@ LABEL_9:
 - (CFIndex)retainCount
 {
   v5 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1103,7 +1103,7 @@ LABEL_9:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 == a1)
+    if (qword_1ED43FBF0 == self)
     {
       return -1;
     }
@@ -1111,13 +1111,13 @@ LABEL_9:
     else
     {
 
-      return CFGetRetainCount(a1);
+      return CFGetRetainCount(self);
     }
   }
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = NSURL_0;
     return objc_msgSendSuper2(&v4, sel_retainCount);
   }
@@ -1126,7 +1126,7 @@ LABEL_9:
 - (uint64_t)isKindOfClass:()NSURL
 {
   v9 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1139,7 +1139,7 @@ LABEL_9:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v6 = object_getClass(a1);
+    v6 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1151,7 +1151,7 @@ LABEL_9:
     }
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = NSURL_0;
   return objc_msgSendSuper2(&v8, sel_isKindOfClass_, a3);
 }
@@ -1159,7 +1159,7 @@ LABEL_9:
 - (uint64_t)isMemberOfClass:()NSURL
 {
   v9 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1172,7 +1172,7 @@ LABEL_9:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v6 = object_getClass(a1);
+    v6 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1197,7 +1197,7 @@ LABEL_9:
     }
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = NSURL_0;
   return objc_msgSendSuper2(&v8, sel_isMemberOfClass_, a3);
 }
@@ -1207,14 +1207,14 @@ LABEL_9:
   v21 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v17 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)];
+    v17 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)];
 
     v18 = MEMORY[0x1E695DF30];
     v19 = MEMORY[0x1E695D940];
     goto LABEL_27;
   }
 
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1227,7 +1227,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v11 = object_getClass(a1);
+    v11 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1236,7 +1236,7 @@ LABEL_9:
     if (v11 != qword_1ED43FC10)
     {
 LABEL_9:
-      v20.receiver = a1;
+      v20.receiver = self;
       v20.super_class = NSURL_0;
       v12 = [(objc_class *)&v20 init];
       if (!v12)
@@ -1273,9 +1273,9 @@ LABEL_12:
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (qword_1ED43FBF0 != a1)
+  if (qword_1ED43FBF0 != self)
   {
-    v17 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+    v17 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
     v18 = MEMORY[0x1E695DF30];
     v19 = MEMORY[0x1E695D920];
@@ -1305,19 +1305,19 @@ LABEL_27:
     return 0;
   }
 
-  v6 = [a1 _cfurl];
+  _cfurl = [self _cfurl];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v6 == qword_1ED43FBF0)
+  if (_cfurl == qword_1ED43FBF0)
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v6, a2)), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_cfurl, a2)), 0}];
     objc_exception_throw(v9);
   }
 
-  if (!v6)
+  if (!_cfurl)
   {
     return 0;
   }
@@ -1334,24 +1334,24 @@ LABEL_27:
 
 - (uint64_t)_encoding
 {
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v5);
   }
 
-  if (!v3)
+  if (!_trueSelf)
   {
     return 0xFFFFFFFFLL;
   }
 
-  return [(objc_class *)v3 _encoding];
+  return [(objc_class *)_trueSelf _encoding];
 }
 
 - (uint64_t)init
@@ -1359,7 +1359,7 @@ LABEL_27:
   v5[5] = *MEMORY[0x1E69E9840];
   if (dyld_program_sdk_at_least())
   {
-    v2 = [a1 initWithString:&stru_1EEEFDF90];
+    v2 = [self initWithString:&stru_1EEEFDF90];
     v3 = @"this results in an NSURL instance with an empty URL string.";
   }
 
@@ -1390,7 +1390,7 @@ LABEL_27:
     return 0;
   }
 
-  v4 = [objc_allocWithZone(a1) initWithString:a3 relativeToURL:a4];
+  v4 = [objc_allocWithZone(self) initWithString:a3 relativeToURL:a4];
 
   return v4;
 }
@@ -1402,7 +1402,7 @@ LABEL_27:
     return 0;
   }
 
-  v4 = [objc_allocWithZone(a1) initWithString:a3 relativeToURL:0 encodingInvalidCharacters:a4];
+  v4 = [objc_allocWithZone(self) initWithString:a3 relativeToURL:0 encodingInvalidCharacters:a4];
 
   return v4;
 }
@@ -1411,28 +1411,28 @@ LABEL_27:
 {
   if (([a5 isAbsolutePath] & 1) == 0)
   {
-    v21 = [NSString stringWithFormat:@"%@: path %@ is not absolute.", _NSMethodExceptionProem(a1, a2), a5];
+    v21 = [NSString stringWithFormat:@"%@: path %@ is not absolute.", _NSMethodExceptionProem(self, a2), a5];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v21 userInfo:0]);
   }
 
   if (a4)
   {
-    v10 = [a4 stringByAddingPercentEscapes];
+    stringByAddingPercentEscapes = [a4 stringByAddingPercentEscapes];
   }
 
   else
   {
-    v10 = &stru_1EEEFDF90;
+    stringByAddingPercentEscapes = &stru_1EEEFDF90;
   }
 
-  v11 = [a5 standardizedURLPath];
+  standardizedURLPath = [a5 standardizedURLPath];
   if (!a3)
   {
     goto LABEL_22;
   }
 
-  v12 = v11;
+  v12 = standardizedURLPath;
   v13 = [a3 length];
   if (v13 >= 1)
   {
@@ -1468,11 +1468,11 @@ LABEL_16:
     while (v16 + 1 > 1);
   }
 
-  if (v10 && v12)
+  if (stringByAddingPercentEscapes && v12)
   {
-    v19 = [NSString stringWithFormat:@"%@://%@%@", a3, v10, v12];
+    v19 = [NSString stringWithFormat:@"%@://%@%@", a3, stringByAddingPercentEscapes, v12];
 
-    return [(objc_class *)a1 initWithString:v19];
+    return [(objc_class *)self initWithString:v19];
   }
 
   else
@@ -1485,9 +1485,9 @@ LABEL_22:
 
 - (CFURLRef)initWithDataRepresentation:()NSURL relativeToURL:
 {
-  v7 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1503,7 +1503,7 @@ LABEL_22:
     goto LABEL_8;
   }
 
-  v9 = object_getClass(v7);
+  v9 = object_getClass(selfCopy);
   if (qword_1ED43FC18 != -1)
   {
     dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1517,9 +1517,9 @@ LABEL_11:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 != v7)
+    if (qword_1ED43FBF0 != selfCopy)
     {
-      v15 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(v7, a2)];
+      v15 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(selfCopy, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v15 userInfo:0]);
     }
@@ -1540,10 +1540,10 @@ LABEL_11:
   else
   {
 LABEL_8:
-    v16.receiver = v7;
+    v16.receiver = selfCopy;
     v16.super_class = NSURL_0;
-    v7 = objc_msgSendSuper2(&v16, sel_init);
-    if (v7)
+    selfCopy = objc_msgSendSuper2(&v16, sel_init);
+    if (selfCopy)
     {
       if (_foundation_swift_nsurl_feature_enabled())
       {
@@ -1560,12 +1560,12 @@ LABEL_8:
         }
       }
 
-      *&v7[*MEMORY[0x1E695E030]] = 0;
-      *&v7[*MEMORY[0x1E695E018]] = 0;
-      *&v7[*MEMORY[0x1E695E020]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E030]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E018]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E020]] = 0;
       if (v10)
       {
-        *&v7[*MEMORY[0x1E695E028]] = v10;
+        *&selfCopy[*MEMORY[0x1E695E028]] = v10;
       }
 
       else
@@ -1576,21 +1576,21 @@ LABEL_8:
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 + (id)URLWithDataRepresentation:()NSURL relativeToURL:
 {
-  v4 = [objc_allocWithZone(a1) initWithDataRepresentation:a3 relativeToURL:a4];
+  v4 = [objc_allocWithZone(self) initWithDataRepresentation:a3 relativeToURL:a4];
 
   return v4;
 }
 
 - (CFURLRef)initAbsoluteURLWithDataRepresentation:()NSURL relativeToURL:
 {
-  v7 = a1;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1606,7 +1606,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = object_getClass(v7);
+  v9 = object_getClass(selfCopy);
   if (qword_1ED43FC18 != -1)
   {
     dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1620,9 +1620,9 @@ LABEL_11:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 != v7)
+    if (qword_1ED43FBF0 != selfCopy)
     {
-      v15 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(v7, a2)];
+      v15 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(selfCopy, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v15 userInfo:0]);
     }
@@ -1643,10 +1643,10 @@ LABEL_11:
   else
   {
 LABEL_8:
-    v16.receiver = v7;
+    v16.receiver = selfCopy;
     v16.super_class = NSURL_0;
-    v7 = objc_msgSendSuper2(&v16, sel_init);
-    if (v7)
+    selfCopy = objc_msgSendSuper2(&v16, sel_init);
+    if (selfCopy)
     {
       if (_foundation_swift_nsurl_feature_enabled())
       {
@@ -1663,12 +1663,12 @@ LABEL_8:
         }
       }
 
-      *&v7[*MEMORY[0x1E695E030]] = 0;
-      *&v7[*MEMORY[0x1E695E018]] = 0;
-      *&v7[*MEMORY[0x1E695E020]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E030]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E018]] = 0;
+      *&selfCopy[*MEMORY[0x1E695E020]] = 0;
       if (v10)
       {
-        *&v7[*MEMORY[0x1E695E028]] = v10;
+        *&selfCopy[*MEMORY[0x1E695E028]] = v10;
       }
 
       else
@@ -1679,35 +1679,35 @@ LABEL_8:
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 + (id)absoluteURLWithDataRepresentation:()NSURL relativeToURL:
 {
-  v4 = [objc_allocWithZone(a1) initAbsoluteURLWithDataRepresentation:a3 relativeToURL:a4];
+  v4 = [objc_allocWithZone(self) initAbsoluteURLWithDataRepresentation:a3 relativeToURL:a4];
 
   return v4;
 }
 
 - (uint64_t)dataRepresentation
 {
-  v4 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v4 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v11 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v4, a2)];
+    v11 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)];
     v12 = MEMORY[0x1E695DF30];
     v13 = MEMORY[0x1E695D920];
     goto LABEL_21;
   }
 
-  if (!v4)
+  if (!_trueSelf)
   {
-    v14 = [NSString stringWithFormat:@"%@: URL was not initialized", _NSMethodExceptionProem(a1, a2), v15];
+    v14 = [NSString stringWithFormat:@"%@: URL was not initialized", _NSMethodExceptionProem(self, a2), v15];
 LABEL_20:
     v11 = v14;
     v12 = MEMORY[0x1E695DF30];
@@ -1719,13 +1719,13 @@ LABEL_21:
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v4 dataRepresentation];
+    return [(objc_class *)_trueSelf dataRepresentation];
   }
 
-  v6 = CFURLGetBytes(v4, 0, 0);
+  v6 = CFURLGetBytes(_trueSelf, 0, 0);
   if (v6 == -1)
   {
-    v14 = [NSString stringWithFormat:@"%@: unable to calculate bytes needed from %@", _NSMethodExceptionProem(a1, a2), a1];
+    v14 = [NSString stringWithFormat:@"%@: unable to calculate bytes needed from %@", _NSMethodExceptionProem(self, a2), self];
     goto LABEL_20;
   }
 
@@ -1733,17 +1733,17 @@ LABEL_21:
   v8 = malloc_type_malloc(v6, 0x361B7AA0uLL);
   if (!v8)
   {
-    v11 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(a1, a2), v7];
+    v11 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%ld)", _NSMethodExceptionProem(self, a2), v7];
     v12 = MEMORY[0x1E695DF30];
     v13 = MEMORY[0x1E695DA18];
     goto LABEL_21;
   }
 
   v9 = v8;
-  if (CFURLGetBytes(v4, v8, v7) != v7)
+  if (CFURLGetBytes(_trueSelf, v8, v7) != v7)
   {
     free(v9);
-    v14 = [NSString stringWithFormat:@"%@: unable to get bytes from %@", _NSMethodExceptionProem(a1, a2), a1];
+    v14 = [NSString stringWithFormat:@"%@: unable to get bytes from %@", _NSMethodExceptionProem(self, a2), self];
     goto LABEL_20;
   }
 
@@ -1754,40 +1754,40 @@ LABEL_21:
 
 - (CFURLRef)initFileURLWithPath:()NSURL
 {
-  v4 = a1;
+  selfCopy = self;
   v15 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v10 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)];
+    v10 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)];
 
     v11 = MEMORY[0x1E695DF30];
     v12 = MEMORY[0x1E695D940];
     goto LABEL_29;
   }
 
-  v5 = a3;
+  stringByStandardizingPath = a3;
   if (![(__CFString *)a3 length])
   {
     goto LABEL_25;
   }
 
-  if (([(__CFString *)v5 isAbsolutePath]& 1) == 0)
+  if (([(__CFString *)stringByStandardizingPath isAbsolutePath]& 1) == 0)
   {
-    v5 = [(__CFString *)v5 stringByStandardizingPath];
+    stringByStandardizingPath = [(__CFString *)stringByStandardizingPath stringByStandardizingPath];
   }
 
   isDirectory = 0;
-  if ([(__CFString *)v5 characterAtIndex:[(__CFString *)v5 length]- 1]== 47)
+  if ([(__CFString *)stringByStandardizingPath characterAtIndex:[(__CFString *)stringByStandardizingPath length]- 1]== 47)
   {
     isDirectory = 1;
   }
 
-  else if ((_NSFileExists(v5, &isDirectory) & 1) == 0)
+  else if ((_NSFileExists(stringByStandardizingPath, &isDirectory) & 1) == 0)
   {
     isDirectory = 0;
   }
 
-  Class = object_getClass(v4);
+  Class = object_getClass(selfCopy);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1800,7 +1800,7 @@ LABEL_21:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v7 = object_getClass(v4);
+    v7 = object_getClass(selfCopy);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1814,13 +1814,13 @@ LABEL_20:
         dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
       }
 
-      if (qword_1ED43FBF0 == v4)
+      if (qword_1ED43FBF0 == selfCopy)
       {
 
-        return CFURLCreateWithFileSystemPath(0, v5, kCFURLPOSIXPathStyle, isDirectory);
+        return CFURLCreateWithFileSystemPath(0, stringByStandardizingPath, kCFURLPOSIXPathStyle, isDirectory);
       }
 
-      v10 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(v4, a2)];
+      v10 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(selfCopy, a2)];
 
       v11 = MEMORY[0x1E695DF30];
       v12 = MEMORY[0x1E695D920];
@@ -1829,25 +1829,25 @@ LABEL_29:
     }
   }
 
-  v13.receiver = v4;
+  v13.receiver = selfCopy;
   v13.super_class = NSURL_0;
-  v4 = [(objc_class *)&v13 init];
-  if (v4)
+  selfCopy = [(objc_class *)&v13 init];
+  if (selfCopy)
   {
     if (_foundation_swift_nsurl_feature_enabled())
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v5];
+      v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:stringByStandardizingPath];
       if (v8)
       {
 LABEL_19:
-        *&v4[*MEMORY[0x1E695E028]] = v8;
-        return v4;
+        *&selfCopy[*MEMORY[0x1E695E028]] = v8;
+        return selfCopy;
       }
     }
 
     else
     {
-      v8 = CFURLCreateWithFileSystemPath(0, v5, kCFURLPOSIXPathStyle, isDirectory);
+      v8 = CFURLCreateWithFileSystemPath(0, stringByStandardizingPath, kCFURLPOSIXPathStyle, isDirectory);
       if (v8)
       {
         goto LABEL_19;
@@ -1859,34 +1859,34 @@ LABEL_25:
     return 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (CFURLRef)initFileURLWithPath:()NSURL isDirectory:
 {
-  v5 = a1;
+  selfCopy = self;
   v16 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v12 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)];
+    v12 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)];
 
     v13 = MEMORY[0x1E695DF30];
     v14 = MEMORY[0x1E695D940];
     goto LABEL_27;
   }
 
-  v7 = a3;
+  stringByStandardizingPath = a3;
   if (![(__CFString *)a3 length])
   {
     goto LABEL_23;
   }
 
-  if (([(__CFString *)v7 isAbsolutePath]& 1) == 0)
+  if (([(__CFString *)stringByStandardizingPath isAbsolutePath]& 1) == 0)
   {
-    v7 = [(__CFString *)v7 stringByStandardizingPath];
+    stringByStandardizingPath = [(__CFString *)stringByStandardizingPath stringByStandardizingPath];
   }
 
-  Class = object_getClass(v5);
+  Class = object_getClass(selfCopy);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1899,7 +1899,7 @@ LABEL_25:
       goto LABEL_12;
     }
 
-    v9 = object_getClass(v5);
+    v9 = object_getClass(selfCopy);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -1908,28 +1908,28 @@ LABEL_25:
     if (v9 != qword_1ED43FC10)
     {
 LABEL_12:
-      v15.receiver = v5;
+      v15.receiver = selfCopy;
       v15.super_class = NSURL_0;
-      v5 = [(objc_class *)&v15 init];
-      if (!v5)
+      selfCopy = [(objc_class *)&v15 init];
+      if (!selfCopy)
       {
-        return v5;
+        return selfCopy;
       }
 
       if (_foundation_swift_nsurl_feature_enabled())
       {
-        v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v7 isDirectory:a4];
+        v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:stringByStandardizingPath isDirectory:a4];
         if (v10)
         {
 LABEL_15:
-          *&v5[*MEMORY[0x1E695E028]] = v10;
-          return v5;
+          *&selfCopy[*MEMORY[0x1E695E028]] = v10;
+          return selfCopy;
         }
       }
 
       else
       {
-        v10 = CFURLCreateWithFileSystemPath(0, v7, kCFURLPOSIXPathStyle, a4);
+        v10 = CFURLCreateWithFileSystemPath(0, stringByStandardizingPath, kCFURLPOSIXPathStyle, a4);
         if (v10)
         {
           goto LABEL_15;
@@ -1947,9 +1947,9 @@ LABEL_23:
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (qword_1ED43FBF0 != v5)
+  if (qword_1ED43FBF0 != selfCopy)
   {
-    v12 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(v5, a2)];
+    v12 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(selfCopy, a2)];
 
     v13 = MEMORY[0x1E695DF30];
     v14 = MEMORY[0x1E695D920];
@@ -1957,34 +1957,34 @@ LABEL_27:
     objc_exception_throw([v13 exceptionWithName:*v14 reason:v12 userInfo:0]);
   }
 
-  return CFURLCreateWithFileSystemPath(0, v7, kCFURLPOSIXPathStyle, a4);
+  return CFURLCreateWithFileSystemPath(0, stringByStandardizingPath, kCFURLPOSIXPathStyle, a4);
 }
 
 - (char)initFileURLWithPath:()NSURL isDirectory:relativeToURL:
 {
-  v6 = a1;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v14 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)];
+    v14 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)];
 
     v15 = MEMORY[0x1E695DF30];
     v16 = MEMORY[0x1E695D940];
     goto LABEL_27;
   }
 
-  v9 = a3;
+  stringByStandardizingPath = a3;
   if (![a3 length])
   {
     goto LABEL_23;
   }
 
-  if (([v9 isAbsolutePath] & 1) == 0)
+  if (([stringByStandardizingPath isAbsolutePath] & 1) == 0)
   {
-    v9 = [v9 stringByStandardizingPath];
+    stringByStandardizingPath = [stringByStandardizingPath stringByStandardizingPath];
   }
 
-  Class = object_getClass(v6);
+  Class = object_getClass(selfCopy);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -1997,7 +1997,7 @@ LABEL_27:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v11 = object_getClass(v6);
+    v11 = object_getClass(selfCopy);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -2011,13 +2011,13 @@ LABEL_16:
         dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
       }
 
-      if (qword_1ED43FBF0 == v6)
+      if (qword_1ED43FBF0 == selfCopy)
       {
 
         JUMPOUT(0x1865CEC70);
       }
 
-      v14 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(v6, a2)];
+      v14 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(selfCopy, a2)];
 
       v15 = MEMORY[0x1E695DF30];
       v16 = MEMORY[0x1E695D920];
@@ -2026,25 +2026,25 @@ LABEL_27:
     }
   }
 
-  v17.receiver = v6;
+  v17.receiver = selfCopy;
   v17.super_class = NSURL_0;
-  v6 = [(objc_class *)&v17 init];
-  if (v6)
+  selfCopy = [(objc_class *)&v17 init];
+  if (selfCopy)
   {
     if (_foundation_swift_nsurl_feature_enabled())
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v9 isDirectory:a4 relativeToURL:a5];
+      v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:stringByStandardizingPath isDirectory:a4 relativeToURL:a5];
       if (v12)
       {
 LABEL_15:
-        *&v6[*MEMORY[0x1E695E028]] = v12;
-        return v6;
+        *&selfCopy[*MEMORY[0x1E695E028]] = v12;
+        return selfCopy;
       }
     }
 
     else
     {
-      v12 = MEMORY[0x1865CEC70](0, v9, 0, a4, a5);
+      v12 = MEMORY[0x1865CEC70](0, stringByStandardizingPath, 0, a4, a5);
       if (v12)
       {
         goto LABEL_15;
@@ -2056,7 +2056,7 @@ LABEL_23:
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (char)initFileURLWithPath:()NSURL relativeToURL:
@@ -2068,12 +2068,12 @@ LABEL_23:
   v25 = 0;
   if (!a3)
   {
-    v18 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(a1, a2)];
+    v18 = [NSString stringWithFormat:@"%@: nil string parameter", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v18 userInfo:0]);
   }
 
-  v7 = a3;
+  stringByStandardizingPath = a3;
   if (![a3 length])
   {
     goto LABEL_19;
@@ -2081,7 +2081,7 @@ LABEL_23:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -2089,22 +2089,22 @@ LABEL_23:
 
     if (Class == qword_1ED43FC10)
     {
-      v19 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+      v19 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v19 userInfo:0]);
     }
   }
 
-  if (([v7 isAbsolutePath] & 1) == 0)
+  if (([stringByStandardizingPath isAbsolutePath] & 1) == 0)
   {
-    v7 = [v7 stringByStandardizingPath];
+    stringByStandardizingPath = [stringByStandardizingPath stringByStandardizingPath];
   }
 
-  v9 = [v7 characterAtIndex:{objc_msgSend(v7, "length") - 1}];
+  v9 = [stringByStandardizingPath characterAtIndex:{objc_msgSend(stringByStandardizingPath, "length") - 1}];
   v10 = *MEMORY[0x1E695E480];
   if (v9 == 47)
   {
-    v11 = MEMORY[0x1865CEC70](v10, v7, 0, 1, a4);
+    v11 = MEMORY[0x1865CEC70](v10, stringByStandardizingPath, 0, 1, a4);
     v23[3] = v11;
     if (!v11)
     {
@@ -2118,7 +2118,7 @@ LABEL_20:
 
   else
   {
-    v12 = MEMORY[0x1865CEC70](v10, v7, 0, 0, a4);
+    v12 = MEMORY[0x1865CEC70](v10, stringByStandardizingPath, 0, 0, a4);
     v23[3] = v12;
     if (!v12)
     {
@@ -2131,7 +2131,7 @@ LABEL_20:
     v21[3] = &unk_1E69F64B0;
     v21[5] = a4;
     v21[6] = &v22;
-    v21[4] = v7;
+    v21[4] = stringByStandardizingPath;
     [NSURL setIOPolicy:v21 type:? scope:? forBlock:?];
     if (!v23[3])
     {
@@ -2139,7 +2139,7 @@ LABEL_20:
     }
   }
 
-  v13 = object_getClass(a1);
+  v13 = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -2153,10 +2153,10 @@ LABEL_20:
     }
 
     v14 = v23[3];
-    if (qword_1ED43FBF0 != a1)
+    if (qword_1ED43FBF0 != self)
     {
       CFRelease(v23[3]);
-      v17 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+      v17 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v17 userInfo:0]);
     }
@@ -2164,7 +2164,7 @@ LABEL_20:
 
   else
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = NSURL_0;
     v14 = [(objc_class *)&v20 init];
     v15 = v23[3];
@@ -2184,28 +2184,28 @@ LABEL_21:
 
 + (id)fileURLWithPath:()NSURL
 {
-  v3 = [objc_allocWithZone(a1) initFileURLWithPath:a3];
+  v3 = [objc_allocWithZone(self) initFileURLWithPath:a3];
 
   return v3;
 }
 
 + (id)fileURLWithPath:()NSURL isDirectory:
 {
-  v4 = [objc_allocWithZone(a1) initFileURLWithPath:a3 isDirectory:a4];
+  v4 = [objc_allocWithZone(self) initFileURLWithPath:a3 isDirectory:a4];
 
   return v4;
 }
 
 + (id)fileURLWithPath:()NSURL isDirectory:relativeToURL:
 {
-  v5 = [objc_allocWithZone(a1) initFileURLWithPath:a3 isDirectory:a4 relativeToURL:a5];
+  v5 = [objc_allocWithZone(self) initFileURLWithPath:a3 isDirectory:a4 relativeToURL:a5];
 
   return v5;
 }
 
 + (id)fileURLWithPath:()NSURL relativeToURL:
 {
-  v4 = [objc_allocWithZone(a1) initFileURLWithPath:a3 relativeToURL:a4];
+  v4 = [objc_allocWithZone(self) initFileURLWithPath:a3 relativeToURL:a4];
 
   return v4;
 }
@@ -2213,7 +2213,7 @@ LABEL_21:
 - (char)initFileURLWithFileSystemRepresentation:()NSURL isDirectory:relativeToURL:
 {
   v18 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -2226,7 +2226,7 @@ LABEL_21:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v11 = object_getClass(a1);
+    v11 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -2240,20 +2240,20 @@ LABEL_11:
         dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
       }
 
-      if (qword_1ED43FBF0 == a1)
+      if (qword_1ED43FBF0 == self)
       {
         strlen(a3);
 
         JUMPOUT(0x1865CEC10);
       }
 
-      v16 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+      v16 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v16 userInfo:0]);
     }
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = NSURL_0;
   v12 = objc_msgSendSuper2(&v17, sel_init);
   if (v12)
@@ -2289,37 +2289,37 @@ LABEL_11:
 
 + (id)fileURLWithFileSystemRepresentation:()NSURL isDirectory:relativeToURL:
 {
-  v5 = [objc_allocWithZone(a1) initFileURLWithFileSystemRepresentation:a3 isDirectory:a4 relativeToURL:a5];
+  v5 = [objc_allocWithZone(self) initFileURLWithFileSystemRepresentation:a3 isDirectory:a4 relativeToURL:a5];
 
   return v5;
 }
 
 - (uint64_t)getFileSystemRepresentation:()NSURL maxLength:
 {
-  v7 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v7 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v7, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  if (v7)
+  if (_trueSelf)
   {
     if (_foundation_swift_nsurl_feature_enabled())
     {
-      v8 = [(objc_class *)v7 path];
+      path = [(objc_class *)_trueSelf path];
 
-      return [v8 getFileSystemRepresentation:a3 maxLength:a4];
+      return [path getFileSystemRepresentation:a3 maxLength:a4];
     }
 
     else
     {
-      return CFURLGetFileSystemRepresentation(v7, 1u, a3, a4) != 0;
+      return CFURLGetFileSystemRepresentation(_trueSelf, 1u, a3, a4) != 0;
     }
   }
 
@@ -2335,7 +2335,7 @@ LABEL_11:
 - (char)initByResolvingBookmarkData:()NSURL options:relativeToURL:bookmarkDataIsStale:error:
 {
   v26 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -2348,7 +2348,7 @@ LABEL_11:
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
-    v15 = object_getClass(a1);
+    v15 = object_getClass(self);
     if (qword_1ED43FC18 != -1)
     {
       dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -2362,9 +2362,9 @@ LABEL_14:
         dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
       }
 
-      if (qword_1ED43FBF0 != a1)
+      if (qword_1ED43FBF0 != self)
       {
-        v24 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+        v24 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
         v22 = MEMORY[0x1E695DF30];
         v23 = *MEMORY[0x1E695D920];
@@ -2373,15 +2373,15 @@ LABEL_32:
         objc_exception_throw([v22 exceptionWithName:v23 reason:v21 userInfo:0]);
       }
 
-      v17 = [a5 _cfurl];
+      _cfurl = [a5 _cfurl];
       if (qword_1ED43FBF8 != -1)
       {
         dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
       }
 
-      if (v17 != qword_1ED43FBF0)
+      if (_cfurl != qword_1ED43FBF0)
       {
-        v16 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], a3, a4, v17, 0, a6, a7);
+        v16 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], a3, a4, _cfurl, 0, a6, a7);
         if (v16)
         {
           return v16;
@@ -2398,27 +2398,27 @@ LABEL_32:
       }
 
 LABEL_30:
-      v21 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v17, a2)];
+      v21 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_cfurl, a2)];
       v22 = MEMORY[0x1E695DF30];
       v23 = *MEMORY[0x1E695D920];
       goto LABEL_32;
     }
   }
 
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = NSURL_0;
   v16 = objc_msgSendSuper2(&v25, sel_init);
   if (v16)
   {
-    v17 = [a5 _cfurl];
+    _cfurl = [a5 _cfurl];
     if (qword_1ED43FBF8 != -1)
     {
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (v17 != qword_1ED43FBF0)
+    if (_cfurl != qword_1ED43FBF0)
     {
-      v18 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], a3, a4, v17, 0, a6, a7);
+      v18 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], a3, a4, _cfurl, 0, a6, a7);
       *&v16[*MEMORY[0x1E695E030]] = 0;
       *&v16[*MEMORY[0x1E695E018]] = 0;
       *&v16[*MEMORY[0x1E695E020]] = 0;
@@ -2446,7 +2446,7 @@ LABEL_30:
 
 + (id)URLByResolvingBookmarkData:()NSURL options:relativeToURL:bookmarkDataIsStale:error:
 {
-  v7 = [objc_allocWithZone(a1) initByResolvingBookmarkData:a3 options:a4 relativeToURL:a5 bookmarkDataIsStale:a6 error:a7];
+  v7 = [objc_allocWithZone(self) initByResolvingBookmarkData:a3 options:a4 relativeToURL:a5 bookmarkDataIsStale:a6 error:a7];
 
   return v7;
 }
@@ -2454,7 +2454,7 @@ LABEL_30:
 - (char)initByResolvingAliasFileAtURL:()NSURL options:error:
 {
   v18 = *MEMORY[0x1E69E9840];
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   if (qword_1ED43FC08 != -1)
   {
     dispatch_once(&qword_1ED43FC08, &__block_literal_global_498);
@@ -2470,7 +2470,7 @@ LABEL_30:
     goto LABEL_8;
   }
 
-  v11 = object_getClass(a1);
+  v11 = object_getClass(self);
   if (qword_1ED43FC18 != -1)
   {
     dispatch_once(&qword_1ED43FC18, &__block_literal_global_500);
@@ -2484,9 +2484,9 @@ LABEL_11:
       dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
     }
 
-    if (qword_1ED43FBF0 != a1)
+    if (qword_1ED43FBF0 != self)
     {
-      v16 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(a1, a2)];
+      v16 = [NSString stringWithFormat:@"%@: object already initialized", _NSMethodExceptionProem(self, a2)];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v16 userInfo:0]);
     }
@@ -2508,7 +2508,7 @@ LABEL_11:
   else
   {
 LABEL_8:
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = NSURL_0;
     v12 = objc_msgSendSuper2(&v17, sel_init);
     if (v12)
@@ -2539,7 +2539,7 @@ LABEL_8:
 
 + (id)URLByResolvingAliasFileAtURL:()NSURL options:error:
 {
-  v5 = [objc_allocWithZone(a1) initByResolvingAliasFileAtURL:a3 options:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initByResolvingAliasFileAtURL:a3 options:a4 error:a5];
 
   return v5;
 }
@@ -2552,27 +2552,27 @@ LABEL_8:
     return 0;
   }
 
-  v6 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v6 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v9 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v6, a2)];
+    v9 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)];
     goto LABEL_16;
   }
 
-  v7 = [a3 _trueSelf];
+  _trueSelf2 = [a3 _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v7 == qword_1ED43FBF0)
+  if (_trueSelf2 == qword_1ED43FBF0)
   {
-    v9 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(v7, a2)];
+    v9 = [NSString stringWithFormat:@"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf2, a2)];
 LABEL_16:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v9 userInfo:0]);
   }
@@ -2582,30 +2582,30 @@ LABEL_16:
     return _CFNonObjCEqual() != 0;
   }
 
-  return [(objc_class *)v6 isEqual:v7];
+  return [(objc_class *)_trueSelf isEqual:_trueSelf2];
 }
 
 - (uint64_t)encodeWithCoder:()NSURL
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [a3 allowsKeyedCoding];
-  v6 = [a1 isFileReferenceURL];
-  if (v5)
+  allowsKeyedCoding = [a3 allowsKeyedCoding];
+  isFileReferenceURL = [self isFileReferenceURL];
+  if (allowsKeyedCoding)
   {
-    if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!isFileReferenceURL || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [a3 encodeObject:objc_msgSend(a1 forKey:{"baseURL"), @"NS.base"}];
-      v7 = [a1 relativeString];
+      [a3 encodeObject:objc_msgSend(self forKey:{"baseURL"), @"NS.base"}];
+      relativeString = [self relativeString];
       v8 = @"NS.relative";
       v9 = a3;
 LABEL_5:
 
-      return [v9 encodeObject:v7 forKey:v8];
+      return [v9 encodeObject:relativeString forKey:v8];
     }
 
-    v12 = [a1 filePathURL];
-    v13 = [a1 bookmarkDataWithOptions:512 includingResourceValuesForKeys:0 relativeToURL:0 error:0];
-    if (!v12)
+    filePathURL = [self filePathURL];
+    v13 = [self bookmarkDataWithOptions:512 includingResourceValuesForKeys:0 relativeToURL:0 error:0];
+    if (!filePathURL)
     {
       result = [MEMORY[0x1E695DFF8] URLWithString:@"com-apple-unresolvable-file-reference-url:"];
       if (!result)
@@ -2618,36 +2618,36 @@ LABEL_19:
 
         v8 = @"NS.minimalBookmarkData";
         v9 = a3;
-        v7 = v13;
+        relativeString = v13;
         goto LABEL_5;
       }
 
-      v12 = result;
+      filePathURL = result;
     }
 
-    [a3 encodeObject:objc_msgSend(v12 forKey:{"baseURL"), @"NS.base"}];
-    result = [a3 encodeObject:objc_msgSend(v12 forKey:{"relativeString"), @"NS.relative"}];
+    [a3 encodeObject:objc_msgSend(filePathURL forKey:{"baseURL"), @"NS.base"}];
+    result = [a3 encodeObject:objc_msgSend(filePathURL forKey:{"relativeString"), @"NS.relative"}];
     goto LABEL_19;
   }
 
-  if (v6)
+  if (isFileReferenceURL)
   {
-    a1 = [a1 filePathURL];
-    if (!a1)
+    self = [self filePathURL];
+    if (!self)
     {
-      a1 = [MEMORY[0x1E695DFF8] URLWithString:@"com-apple-unresolvable-file-reference-url:"];
+      self = [MEMORY[0x1E695DFF8] URLWithString:@"com-apple-unresolvable-file-reference-url:"];
     }
   }
 
-  v11 = [a1 baseURL];
-  v14 = v11 != 0;
+  baseURL = [self baseURL];
+  v14 = baseURL != 0;
   [a3 encodeValueOfObjCType:"c" at:&v14];
-  if (v11)
+  if (baseURL)
   {
-    [a3 encodeObject:v11];
+    [a3 encodeObject:baseURL];
   }
 
-  return [a3 encodeObject:{objc_msgSend(a1, "relativeString")}];
+  return [a3 encodeObject:{objc_msgSend(self, "relativeString")}];
 }
 
 - (CFURLRef)initWithCoder:()NSURL
@@ -2659,13 +2659,13 @@ LABEL_19:
     [a3 decodeValueOfObjCType:"c" at:buf size:1];
     if (buf[0] == 1)
     {
-      v7 = [a3 decodeObject];
-      if (!v7)
+      decodeObject = [a3 decodeObject];
+      if (!decodeObject)
       {
         goto LABEL_30;
       }
 
-      v8 = v7;
+      v8 = decodeObject;
       objc_opt_self();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2678,13 +2678,13 @@ LABEL_19:
       v8 = 0;
     }
 
-    v20 = [a3 decodeObject];
-    if (v20)
+    decodeObject2 = [a3 decodeObject];
+    if (decodeObject2)
     {
-      v21 = v20;
+      v21 = decodeObject2;
       if (_NSIsNSString())
       {
-        result = [a1 initWithString:v21 relativeToURL:v8];
+        result = [self initWithString:v21 relativeToURL:v8];
         if (!result)
         {
           result = CFURLCreateWithString(0, v21, v8);
@@ -2700,7 +2700,7 @@ LABEL_19:
 
 LABEL_30:
 
-    LODWORD(a1) = 0;
+    LODWORD(self) = 0;
     goto LABEL_37;
   }
 
@@ -2710,7 +2710,7 @@ LABEL_30:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v27 = _NSMethodExceptionProem(a1, sel_initWithCoder_);
+      v27 = _NSMethodExceptionProem(self, sel_initWithCoder_);
       _os_log_fault_impl(&dword_18075C000, v6, OS_LOG_TYPE_FAULT, "%@: Skipped decoding bookmark data due to NSKeyedUnarchiver mode.", buf, 0xCu);
     }
 
@@ -2722,7 +2722,7 @@ LABEL_18:
       if (_NSIsNSString())
       {
         v19 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.base"];
-        result = [a1 initWithString:v18 relativeToURL:v19];
+        result = [self initWithString:v18 relativeToURL:v19];
         if (result)
         {
           return result;
@@ -2736,12 +2736,12 @@ LABEL_22:
         {
 LABEL_23:
           CFRelease(result);
-          LODWORD(a1) = 1;
+          LODWORD(self) = 1;
           goto LABEL_37;
         }
 
 LABEL_36:
-        LODWORD(a1) = 0;
+        LODWORD(self) = 0;
         goto LABEL_37;
       }
     }
@@ -2761,7 +2761,7 @@ LABEL_36:
     goto LABEL_18;
   }
 
-  if (a1)
+  if (self)
   {
     v11 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:v10 options:768 relativeToURL:0 bookmarkDataIsStale:0 error:0];
     if (v11)
@@ -2770,7 +2770,7 @@ LABEL_36:
       if (v12)
       {
         v13 = v12;
-        result = [a1 initWithString:v12];
+        result = [self initWithString:v12];
         if (result)
         {
           return result;
@@ -2795,9 +2795,9 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    result = [a1 initFileURLWithPath:v25 isDirectory:{objc_msgSend(objc_msgSend(v24, "objectForKey:", v23), "BOOLValue")}];
+    result = [self initFileURLWithPath:v25 isDirectory:{objc_msgSend(objc_msgSend(v24, "objectForKey:", v23), "BOOLValue")}];
 LABEL_33:
-    LODWORD(a1) = 0;
+    LODWORD(self) = 0;
     if (result)
     {
       return result;
@@ -2805,7 +2805,7 @@ LABEL_33:
   }
 
 LABEL_37:
-  if (dyld_program_sdk_at_least() && (a1 & _os_feature_enabled_impl()) == 1)
+  if (dyld_program_sdk_at_least() && (self & _os_feature_enabled_impl()) == 1)
   {
     return [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:&stru_1EEEFDF90];
   }
@@ -2817,32 +2817,32 @@ LABEL_37:
 - (uint64_t)password
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v10);
   }
 
   if (_foundation_swift_nsurl_feature_enabled())
   {
 
-    return [(objc_class *)v3 password];
+    return [(objc_class *)_trueSelf password];
   }
 
   else
   {
-    if (!v3)
+    if (!_trueSelf)
     {
       return 0;
     }
 
-    v5 = CFURLCopyNetLocation(v3);
+    v5 = CFURLCopyNetLocation(_trueSelf);
     if (!v5)
     {
       return 0;
@@ -2870,15 +2870,15 @@ LABEL_37:
 - (CFStringRef)parameterString
 {
   block[5] = *MEMORY[0x1E69E9840];
-  v3 = [a1 _trueSelf];
+  _trueSelf = [self _trueSelf];
   if (qword_1ED43FBF8 != -1)
   {
     dispatch_once(&qword_1ED43FBF8, &__block_literal_global_52);
   }
 
-  if (v3 == qword_1ED43FBF0)
+  if (_trueSelf == qword_1ED43FBF0)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(v3, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(_trueSelf, a2)), 0}];
     objc_exception_throw(v6);
   }
 
@@ -2886,7 +2886,7 @@ LABEL_37:
   block[1] = 3221225472;
   block[2] = __31__NSURL_NSURL__parameterString__block_invoke;
   block[3] = &unk_1E69F2C00;
-  block[4] = v3;
+  block[4] = _trueSelf;
   if (_MergedGlobals_123 != -1)
   {
     dispatch_once(&_MergedGlobals_123, block);
@@ -2896,9 +2896,9 @@ LABEL_37:
   result = 0;
   if ((v4 & 1) == 0)
   {
-    if (v3)
+    if (_trueSelf)
     {
-      return CFURLCopyParameterString(v3, 0);
+      return CFURLCopyParameterString(_trueSelf, 0);
     }
   }
 

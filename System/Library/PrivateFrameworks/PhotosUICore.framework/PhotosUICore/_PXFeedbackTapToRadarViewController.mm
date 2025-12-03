@@ -14,29 +14,29 @@
 
 - (void)_didSelectFileRadarButton
 {
-  v3 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-  if ([v3 shouldRequestScreenshotPermission])
+  delegate = [(_PXFeedbackTapToRadarViewController *)self delegate];
+  if ([delegate shouldRequestScreenshotPermission])
   {
-    v4 = [(_PXFeedbackTapToRadarViewController *)self screenshotSwitch];
-    v5 = [v4 isOn];
+    screenshotSwitch = [(_PXFeedbackTapToRadarViewController *)self screenshotSwitch];
+    isOn = [screenshotSwitch isOn];
   }
 
   else
   {
-    v5 = 0;
+    isOn = 0;
   }
 
-  v6 = [(_PXFeedbackTapToRadarViewController *)self diagnoseSwitch];
-  v7 = [v6 isOn];
+  diagnoseSwitch = [(_PXFeedbackTapToRadarViewController *)self diagnoseSwitch];
+  isOn2 = [diagnoseSwitch isOn];
 
-  v8 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-  v9 = [v8 availableRoutes];
-  if ([v9 count])
+  delegate2 = [(_PXFeedbackTapToRadarViewController *)self delegate];
+  availableRoutes = [delegate2 availableRoutes];
+  if ([availableRoutes count])
   {
-    v10 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-    v11 = [v10 availableRoutes];
-    v12 = [(_PXFeedbackTapToRadarViewController *)self routesSegmentedControl];
-    v14 = [v11 objectAtIndexedSubscript:{objc_msgSend(v12, "selectedSegmentIndex")}];
+    delegate3 = [(_PXFeedbackTapToRadarViewController *)self delegate];
+    availableRoutes2 = [delegate3 availableRoutes];
+    routesSegmentedControl = [(_PXFeedbackTapToRadarViewController *)self routesSegmentedControl];
+    v14 = [availableRoutes2 objectAtIndexedSubscript:{objc_msgSend(routesSegmentedControl, "selectedSegmentIndex")}];
   }
 
   else
@@ -44,8 +44,8 @@
     v14 = 0;
   }
 
-  v13 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-  [v13 didSelectFileRadarButtonWithScreenshotAllowed:v5 attachDiagnose:v7 selectedRoute:v14];
+  delegate4 = [(_PXFeedbackTapToRadarViewController *)self delegate];
+  [delegate4 didSelectFileRadarButtonWithScreenshotAllowed:isOn attachDiagnose:isOn2 selectedRoute:v14];
 
   [(_PXFeedbackTapToRadarViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -56,17 +56,17 @@
   v81.receiver = self;
   v81.super_class = _PXFeedbackTapToRadarViewController;
   [(_PXFeedbackTapToRadarViewController *)&v81 viewDidLoad];
-  v3 = [(_PXFeedbackTapToRadarViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(_PXFeedbackTapToRadarViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__didSelectCancelButton_];
   v6 = +[_PXFeedbackTapToRadarViewController _buttonTintColor];
   [v5 setTintColor:v6];
 
-  v7 = [(_PXFeedbackTapToRadarViewController *)self navigationItem];
+  navigationItem = [(_PXFeedbackTapToRadarViewController *)self navigationItem];
   v78 = v5;
-  [v7 setLeftBarButtonItem:v5];
+  [navigationItem setLeftBarButtonItem:v5];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DCF90]);
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -77,7 +77,7 @@
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 addSubview:v8];
   v80 = v9;
-  [v3 addSubview:v9];
+  [view addSubview:v9];
   v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDC0]];
@@ -100,99 +100,99 @@
   [v12 setText:{@"This will take a snapshot of the details of your Photo Library (such as filenames and locations, but not actual assets).\n\nBy submitting this feedback you agree to share the details of this snapshot with Apple."}];
   v76 = v12;
   [v8 addArrangedSubview:v12];
-  v15 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-  v16 = [v15 shouldRequestScreenshotPermission];
+  delegate = [(_PXFeedbackTapToRadarViewController *)self delegate];
+  shouldRequestScreenshotPermission = [delegate shouldRequestScreenshotPermission];
 
-  if (v16)
+  if (shouldRequestScreenshotPermission)
   {
-    v17 = [(_PXFeedbackTapToRadarViewController *)self screenshotControlStackView];
-    [v8 addArrangedSubview:v17];
+    screenshotControlStackView = [(_PXFeedbackTapToRadarViewController *)self screenshotControlStackView];
+    [v8 addArrangedSubview:screenshotControlStackView];
   }
 
-  v75 = [(_PXFeedbackTapToRadarViewController *)self diagnosticStackView];
+  diagnosticStackView = [(_PXFeedbackTapToRadarViewController *)self diagnosticStackView];
   [v8 addArrangedSubview:?];
-  v18 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-  v19 = [v18 availableRoutes];
-  v20 = [v19 count];
+  delegate2 = [(_PXFeedbackTapToRadarViewController *)self delegate];
+  availableRoutes = [delegate2 availableRoutes];
+  v20 = [availableRoutes count];
 
   v73 = v20;
   if (v20)
   {
-    v21 = [(_PXFeedbackTapToRadarViewController *)self routesSegmentedControl];
-    [v8 addArrangedSubview:v21];
+    routesSegmentedControl = [(_PXFeedbackTapToRadarViewController *)self routesSegmentedControl];
+    [v8 addArrangedSubview:routesSegmentedControl];
 
-    v22 = [(_PXFeedbackTapToRadarViewController *)self routesDescriptionLabel];
-    [v8 addArrangedSubview:v22];
+    routesDescriptionLabel = [(_PXFeedbackTapToRadarViewController *)self routesDescriptionLabel];
+    [v8 addArrangedSubview:routesDescriptionLabel];
   }
 
-  v23 = [(_PXFeedbackTapToRadarViewController *)self fileRadarButton];
-  [v8 addArrangedSubview:v23];
+  fileRadarButton = [(_PXFeedbackTapToRadarViewController *)self fileRadarButton];
+  [v8 addArrangedSubview:fileRadarButton];
 
-  v72 = [v10 leadingAnchor];
-  v71 = [v3 leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  leadingAnchor = [v10 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v83[0] = v70;
-  v69 = [v10 trailingAnchor];
-  v68 = [v3 trailingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  trailingAnchor = [v10 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v83[1] = v67;
-  v66 = [v10 leadingAnchor];
-  v65 = [v3 leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  leadingAnchor3 = [v10 leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v83[2] = v64;
   v77 = v10;
-  v62 = [v10 trailingAnchor];
-  v61 = [v3 trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  trailingAnchor3 = [v10 trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v60 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v83[3] = v60;
-  v59 = [v80 topAnchor];
-  v58 = [v3 topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  topAnchor = [v80 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v57 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v83[4] = v57;
-  v55 = [v80 bottomAnchor];
-  v54 = [v3 bottomAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  bottomAnchor = [v80 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v83[5] = v53;
-  v52 = [v80 leadingAnchor];
-  v51 = [v3 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:10.0];
+  leadingAnchor5 = [v80 leadingAnchor];
+  leadingAnchor6 = [view leadingAnchor];
+  v50 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
   v83[6] = v50;
-  v49 = [v80 trailingAnchor];
-  v79 = v3;
-  v48 = [v3 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:-10.0];
+  trailingAnchor5 = [v80 trailingAnchor];
+  v79 = view;
+  trailingAnchor6 = [view trailingAnchor];
+  v47 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
   v83[7] = v47;
-  v46 = [v8 topAnchor];
-  v45 = [v80 topAnchor];
-  v24 = [v46 constraintEqualToAnchor:v45];
+  topAnchor3 = [v8 topAnchor];
+  topAnchor4 = [v80 topAnchor];
+  v24 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v83[8] = v24;
-  v25 = [v8 bottomAnchor];
-  v26 = [v80 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor3 = [v8 bottomAnchor];
+  bottomAnchor4 = [v80 bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v83[9] = v27;
-  v28 = [v8 leadingAnchor];
+  leadingAnchor7 = [v8 leadingAnchor];
   [v80 leadingAnchor];
   v30 = v29 = v8;
-  v31 = [v28 constraintEqualToAnchor:v30];
+  v31 = [leadingAnchor7 constraintEqualToAnchor:v30];
   v83[10] = v31;
   v63 = v29;
-  v32 = [v29 trailingAnchor];
-  v33 = [v80 trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor7 = [v29 trailingAnchor];
+  trailingAnchor8 = [v80 trailingAnchor];
+  v34 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v83[11] = v34;
   v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:12];
 
   if (v73)
   {
-    v35 = [v44 routesDescriptionLabel];
-    v74 = [v35 leadingAnchor];
+    routesDescriptionLabel2 = [v44 routesDescriptionLabel];
+    leadingAnchor8 = [routesDescriptionLabel2 leadingAnchor];
     v36 = v63;
-    v37 = [v63 leadingAnchor];
-    v38 = [v74 constraintEqualToAnchor:v37];
+    leadingAnchor9 = [v63 leadingAnchor];
+    v38 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v82[0] = v38;
-    v39 = [v35 trailingAnchor];
-    v40 = [v63 trailingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    trailingAnchor9 = [routesDescriptionLabel2 trailingAnchor];
+    trailingAnchor10 = [v63 trailingAnchor];
+    v41 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v82[1] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
     v43 = [v56 arrayByAddingObjectsFromArray:v42];
@@ -214,7 +214,7 @@
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E69DC738];
-    v5 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
     v6 = MEMORY[0x1E69DC628];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
@@ -222,7 +222,7 @@
     v16 = &unk_1E774BB08;
     objc_copyWeak(&v17, &location);
     v7 = [v6 actionWithHandler:&v13];
-    v8 = [v4 buttonWithConfiguration:v5 primaryAction:{v7, v13, v14, v15, v16}];
+    v8 = [v4 buttonWithConfiguration:filledButtonConfiguration primaryAction:{v7, v13, v14, v15, v16}];
     v9 = self->_fileRadarButton;
     self->_fileRadarButton = v8;
 
@@ -230,8 +230,8 @@
     v10 = +[_PXFeedbackTapToRadarViewController _buttonTintColor];
     [(UIButton *)self->_fileRadarButton setTintColor:v10];
 
-    v11 = [(UIButton *)self->_fileRadarButton layer];
-    [v11 setCornerRadius:5.0];
+    layer = [(UIButton *)self->_fileRadarButton layer];
+    [layer setCornerRadius:5.0];
 
     [(UIButton *)self->_fileRadarButton setTitle:@"File Radar" forState:0];
     objc_destroyWeak(&v17);
@@ -298,9 +298,9 @@
     v7 = +[_PXFeedbackTapToRadarViewController _textColor];
     [(UILabel *)self->_routesDescriptionLabel setTextColor:v7];
 
-    v8 = [(_PXFeedbackTapToRadarViewController *)self delegate];
-    v9 = [v8 availableRoutesDescription];
-    [(UILabel *)self->_routesDescriptionLabel setText:v9];
+    delegate = [(_PXFeedbackTapToRadarViewController *)self delegate];
+    availableRoutesDescription = [delegate availableRoutesDescription];
+    [(UILabel *)self->_routesDescriptionLabel setText:availableRoutesDescription];
 
     [(UILabel *)self->_routesDescriptionLabel setTextAlignment:1];
     [(UILabel *)self->_routesDescriptionLabel setNumberOfLines:0];
@@ -316,8 +316,8 @@
   if (!routesSegmentedControl)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF38]);
-    v5 = [(_PXFeedbackTapToRadarViewControllerDelegate *)self->_delegate availableRoutes];
-    v6 = [v4 initWithItems:v5];
+    availableRoutes = [(_PXFeedbackTapToRadarViewControllerDelegate *)self->_delegate availableRoutes];
+    v6 = [v4 initWithItems:availableRoutes];
     v7 = self->_routesSegmentedControl;
     self->_routesSegmentedControl = v6;
 
@@ -359,8 +359,8 @@
     [v6 setContentHuggingPriority:0 forAxis:v9];
     [(UIStackView *)self->_diagnosticStackView addArrangedSubview:v6];
     v10 = self->_diagnosticStackView;
-    v11 = [(_PXFeedbackTapToRadarViewController *)self diagnoseSwitch];
-    [(UIStackView *)v10 addArrangedSubview:v11];
+    diagnoseSwitch = [(_PXFeedbackTapToRadarViewController *)self diagnoseSwitch];
+    [(UIStackView *)v10 addArrangedSubview:diagnoseSwitch];
 
     diagnosticStackView = self->_diagnosticStackView;
   }
@@ -395,8 +395,8 @@
     [v6 setContentHuggingPriority:0 forAxis:v9];
     [(UIStackView *)self->_screenshotControlStackView addArrangedSubview:v6];
     v10 = self->_screenshotControlStackView;
-    v11 = [(_PXFeedbackTapToRadarViewController *)self screenshotSwitch];
-    [(UIStackView *)v10 addArrangedSubview:v11];
+    screenshotSwitch = [(_PXFeedbackTapToRadarViewController *)self screenshotSwitch];
+    [(UIStackView *)v10 addArrangedSubview:screenshotSwitch];
 
     screenshotControlStackView = self->_screenshotControlStackView;
   }

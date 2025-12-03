@@ -1,13 +1,13 @@
 @interface CLKComplicationTemplateGraphicCircularStackViewTextBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
 @end
 
 @implementation CLKComplicationTemplateGraphicCircularStackViewTextBridge
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"content"])
+  if ([key isEqualToString:@"content"])
   {
     return @"contentData";
   }
@@ -18,14 +18,14 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicCircularStackImage alloc];
-  v6 = [v4 objectForKeyedSubscript:@"contentData"];
+  v6 = [providersCopy objectForKeyedSubscript:@"contentData"];
 
-  v7 = [(CLKComplicationTemplateGraphicCircularStackViewTextBridge *)self textProvider];
-  v8 = [(CLKComplicationTemplateGraphicCircularStackImage *)v5 initWithLine1ImageProvider:v6 line2TextProvider:v7];
+  textProvider = [(CLKComplicationTemplateGraphicCircularStackViewTextBridge *)self textProvider];
+  v8 = [(CLKComplicationTemplateGraphicCircularStackImage *)v5 initWithLine1ImageProvider:v6 line2TextProvider:textProvider];
 
   [(CLKComplicationTemplate *)v8 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 

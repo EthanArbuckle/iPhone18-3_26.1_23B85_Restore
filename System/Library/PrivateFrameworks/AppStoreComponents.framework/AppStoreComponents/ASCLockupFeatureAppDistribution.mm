@@ -1,28 +1,28 @@
 @interface ASCLockupFeatureAppDistribution
-- (ASCLockupFeatureAppDistribution)initWithCoder:(id)a3;
-- (ASCLockupFeatureAppDistribution)initWithDistributorBundleId:(id)a3 appVersionId:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureAppDistribution)initWithCoder:(id)coder;
+- (ASCLockupFeatureAppDistribution)initWithDistributorBundleId:(id)id appVersionId:(id)versionId;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureAppDistribution
 
-- (ASCLockupFeatureAppDistribution)initWithDistributorBundleId:(id)a3 appVersionId:(id)a4
+- (ASCLockupFeatureAppDistribution)initWithDistributorBundleId:(id)id appVersionId:(id)versionId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  versionIdCopy = versionId;
   v14.receiver = self;
   v14.super_class = ASCLockupFeatureAppDistribution;
   v8 = [(ASCLockupFeatureAppDistribution *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [idCopy copy];
     distributorBundleId = v8->_distributorBundleId;
     v8->_distributorBundleId = v9;
 
-    v11 = [v7 copy];
+    v11 = [versionIdCopy copy];
     appVersionId = v8->_appVersionId;
     v8->_appVersionId = v11;
   }
@@ -30,46 +30,46 @@
   return v8;
 }
 
-- (ASCLockupFeatureAppDistribution)initWithCoder:(id)a3
+- (ASCLockupFeatureAppDistribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distributorBundleId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distributorBundleId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
 
   v7 = [(ASCLockupFeatureAppDistribution *)self initWithDistributorBundleId:v5 appVersionId:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
-  [v4 encodeObject:v5 forKey:@"distributorBundleId"];
+  coderCopy = coder;
+  distributorBundleId = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
+  [coderCopy encodeObject:distributorBundleId forKey:@"distributorBundleId"];
 
-  v6 = [(ASCLockupFeatureAppDistribution *)self appVersionId];
-  [v4 encodeObject:v6 forKey:@"appVersionId"];
+  appVersionId = [(ASCLockupFeatureAppDistribution *)self appVersionId];
+  [coderCopy encodeObject:appVersionId forKey:@"appVersionId"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
-  [(ASCHasher *)v3 combineObject:v4];
+  distributorBundleId = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
+  [(ASCHasher *)v3 combineObject:distributorBundleId];
 
-  v5 = [(ASCLockupFeatureAppDistribution *)self appVersionId];
-  [(ASCHasher *)v3 combineObject:v5];
+  appVersionId = [(ASCLockupFeatureAppDistribution *)self appVersionId];
+  [(ASCHasher *)v3 combineObject:appVersionId];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -98,31 +98,31 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
-    v10 = [(ASCLockupFeatureAppDistribution *)v8 distributorBundleId];
-    v11 = v10;
-    if (v9 && v10)
+    distributorBundleId = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
+    distributorBundleId2 = [(ASCLockupFeatureAppDistribution *)v8 distributorBundleId];
+    v11 = distributorBundleId2;
+    if (distributorBundleId && distributorBundleId2)
     {
-      if ([v9 isEqual:v10])
+      if ([distributorBundleId isEqual:distributorBundleId2])
       {
         goto LABEL_12;
       }
     }
 
-    else if (v9 == v10)
+    else if (distributorBundleId == distributorBundleId2)
     {
 LABEL_12:
-      v12 = [(ASCLockupFeatureAppDistribution *)self appVersionId];
-      v13 = [(ASCLockupFeatureAppDistribution *)v8 appVersionId];
-      v14 = v13;
-      if (v12 && v13)
+      appVersionId = [(ASCLockupFeatureAppDistribution *)self appVersionId];
+      appVersionId2 = [(ASCLockupFeatureAppDistribution *)v8 appVersionId];
+      v14 = appVersionId2;
+      if (appVersionId && appVersionId2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [appVersionId isEqual:appVersionId2];
       }
 
       else
       {
-        v7 = v12 == v13;
+        v7 = appVersionId == appVersionId2;
       }
 
       goto LABEL_20;
@@ -143,15 +143,15 @@ LABEL_22:
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"distributorBundleId"];
+  distributorBundleId = [(ASCLockupFeatureAppDistribution *)self distributorBundleId];
+  [(ASCDescriber *)v3 addObject:distributorBundleId withName:@"distributorBundleId"];
 
-  v5 = [(ASCLockupFeatureAppDistribution *)self appVersionId];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"appVersionId"];
+  appVersionId = [(ASCLockupFeatureAppDistribution *)self appVersionId];
+  [(ASCDescriber *)v3 addObject:appVersionId withName:@"appVersionId"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface BLSHInvalidOnSystemSleepAttributeEntry
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6;
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler;
 - (BLSAssertionServiceResponding)assertion;
 - (BLSAttribute)attribute;
 - (BLSHAssertionAttributeHandlerService)service;
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5;
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service;
 - (void)cancelAssertionForSleep;
 - (void)invalidate;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result;
 @end
 
 @implementation BLSHInvalidOnSystemSleepAttributeEntry
@@ -28,27 +28,27 @@
   if (!lock_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_service);
-    v4 = [WeakRetained osInterfaceProvider];
-    v5 = [v4 systemSleepMonitor];
-    [v5 removeObserver:self];
+    osInterfaceProvider = [WeakRetained osInterfaceProvider];
+    systemSleepMonitor = [osInterfaceProvider systemSleepMonitor];
+    [systemSleepMonitor removeObserver:self];
   }
 }
 
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BLSHInvalidOnSystemSleepAttributeEntry alloc] initForAttribute:v10 fromAssertion:v9 forService:v8];
+  serviceCopy = service;
+  assertionCopy = assertion;
+  attributeCopy = attribute;
+  v11 = [[BLSHInvalidOnSystemSleepAttributeEntry alloc] initForAttribute:attributeCopy fromAssertion:assertionCopy forService:serviceCopy];
 
   return v11;
 }
 
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributeCopy = attribute;
+  assertionCopy = assertion;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = BLSHInvalidOnSystemSleepAttributeEntry;
   v11 = [(BLSHInvalidOnSystemSleepAttributeEntry *)&v19 init];
@@ -56,19 +56,19 @@
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v11->_attribute, v8);
-    objc_storeWeak(p_isa + 3, v9);
-    objc_storeWeak(p_isa + 4, v10);
-    v13 = [v10 osInterfaceProvider];
-    v14 = [v13 systemSleepMonitor];
+    objc_storeWeak(&v11->_attribute, attributeCopy);
+    objc_storeWeak(p_isa + 3, assertionCopy);
+    objc_storeWeak(p_isa + 4, serviceCopy);
+    osInterfaceProvider = [serviceCopy osInterfaceProvider];
+    systemSleepMonitor = [osInterfaceProvider systemSleepMonitor];
 
-    [v14 addObserver:p_isa];
-    if (([v14 isAwakeOrAbortingSleep] & 1) == 0)
+    [systemSleepMonitor addObserver:p_isa];
+    if (([systemSleepMonitor isAwakeOrAbortingSleep] & 1) == 0)
     {
       v15 = bls_assertions_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [BLSHInvalidOnSystemSleepAttributeEntry initForAttribute:v9 fromAssertion:v15 forService:?];
+        [BLSHInvalidOnSystemSleepAttributeEntry initForAttribute:assertionCopy fromAssertion:v15 forService:?];
       }
 
       block[0] = MEMORY[0x277D85DD0];
@@ -100,42 +100,42 @@
 - (void)cancelAssertionForSleep
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 12);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 12);
+    os_unfair_lock_unlock((self + 8));
     if ((v2 & 1) == 0)
     {
-      v3 = [a1 service];
-      v4 = [a1 assertion];
+      service = [self service];
+      assertion = [self assertion];
       v5 = MEMORY[0x277CCA9B8];
       v6 = *MEMORY[0x277CF0828];
       v10 = *MEMORY[0x277CCA450];
       v11[0] = @"canceled due to system sleep";
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
       v8 = [v5 errorWithDomain:v6 code:13 userInfo:v7];
-      [v3 cancelAssertion:v4 withError:v8];
+      [service cancelAssertion:assertion withError:v8];
 
-      [a1 invalidate];
+      [self invalidate];
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepMonitor:(id)a3 sleepRequestedWithResult:(id)a4
+- (void)systemSleepMonitor:(id)monitor sleepRequestedWithResult:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   [(BLSHInvalidOnSystemSleepAttributeEntry *)self cancelAssertionForSleep];
-  v5 = v6[2](v6, 1, 0);
+  v5 = resultCopy[2](resultCopy, 1, 0);
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(BLSHInvalidOnSystemSleepAttributeEntry *)self cancelAssertionForSleep];
-  v5[2]();
+  completionCopy[2]();
 }
 
 - (void)initForAttribute:(uint64_t)a1 fromAssertion:(NSObject *)a2 forService:.cold.1(uint64_t a1, NSObject *a2)

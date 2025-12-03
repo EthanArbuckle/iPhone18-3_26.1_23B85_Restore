@@ -1,9 +1,9 @@
 @interface PTAssetReader
 + (void)initialize;
-- (BOOL)startReadingFrames:(unint64_t)a3 atTime:(id *)a4 error:(id *)a5;
-- (BOOL)startReadingFrames:(unint64_t)a3 error:(id *)a4;
-- (BOOL)updateFormatPropertiesFromAsset:(id)a3;
-- (PTAssetReader)initWithAsset:(id)a3;
+- (BOOL)startReadingFrames:(unint64_t)frames atTime:(id *)time error:(id *)error;
+- (BOOL)startReadingFrames:(unint64_t)frames error:(id *)error;
+- (BOOL)updateFormatPropertiesFromAsset:(id)asset;
+- (PTAssetReader)initWithAsset:(id)asset;
 - (PTGlobalCinematographyMetadata)globalCinematographyMetadata;
 - (PTGlobalRenderingMetadata)globalRenderingMetadata;
 - (PTGlobalStabilizationMetadata)globalStabilizationMetadata;
@@ -13,9 +13,9 @@
 - (unint64_t)estimatedFrameCount;
 - (unint64_t)frameCount;
 - (void)_decodeGlobalMetadata;
-- (void)_decodeMetadata:(id)a3;
+- (void)_decodeMetadata:(id)metadata;
 - (void)nextFrame;
-- (void)pushComposedFrame:(id)a3;
+- (void)pushComposedFrame:(id)frame;
 - (void)stopReadingFrames;
 @end
 
@@ -28,12 +28,12 @@
   [PTSerialization registerSerializationClass:v2];
 }
 
-- (void)pushComposedFrame:(id)a3
+- (void)pushComposedFrame:(id)frame
 {
-  v5 = a3;
+  frameCopy = frame;
   v4 = self->composedFrames;
   objc_sync_enter(v4);
-  [(NSMutableArray *)self->composedFrames addObject:v5];
+  [(NSMutableArray *)self->composedFrames addObject:frameCopy];
   objc_sync_exit(v4);
 }
 
@@ -57,17 +57,17 @@
   return v4;
 }
 
-- (BOOL)updateFormatPropertiesFromAsset:(id)a3
+- (BOOL)updateFormatPropertiesFromAsset:(id)asset
 {
-  v4 = loadTracksWithMediaType(a3, *MEMORY[0x277CE5EA8]);
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (!v5)
+  v4 = loadTracksWithMediaType(asset, *MEMORY[0x277CE5EA8]);
+  firstObject = [v4 firstObject];
+  v6 = firstObject;
+  if (!firstObject)
   {
     goto LABEL_9;
   }
 
-  [v5 estimatedDataRate];
+  [firstObject estimatedDataRate];
   self->_estimatedDataRate = v7;
   [v6 nominalFrameRate];
   if (v8 == 0.0)
@@ -82,13 +82,13 @@
   }
 
   self->_frameDuration = v23;
-  v10 = [v6 formatDescriptions];
-  v11 = [v10 firstObject];
+  formatDescriptions = [v6 formatDescriptions];
+  firstObject2 = [formatDescriptions firstObject];
 
-  if (v11)
+  if (firstObject2)
   {
-    self->_formatDescription = v11;
-    v12 = CMFormatDescriptionGetExtensions(v11);
+    self->_formatDescription = firstObject2;
+    v12 = CMFormatDescriptionGetExtensions(firstObject2);
     v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CC4D10]];
     YCbCrMatrix = self->_YCbCrMatrix;
     self->_YCbCrMatrix = v13;
@@ -120,17 +120,17 @@ LABEL_9:
   return v21;
 }
 
-- (PTAssetReader)initWithAsset:(id)a3
+- (PTAssetReader)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PTAssetReader;
   v6 = [(PTAssetReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
-    if ([(PTAssetReader *)v7 updateFormatPropertiesFromAsset:v5])
+    objc_storeStrong(&v6->_asset, asset);
+    if ([(PTAssetReader *)v7 updateFormatPropertiesFromAsset:assetCopy])
     {
       [(PTAssetReader *)v7 stopReadingFrames];
     }
@@ -145,38 +145,38 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)startReadingFrames:(unint64_t)a3 error:(id *)a4
+- (BOOL)startReadingFrames:(unint64_t)frames error:(id *)error
 {
   v5 = *MEMORY[0x277CC0898];
   v6 = *(MEMORY[0x277CC0898] + 16);
-  return [(PTAssetReader *)self startReadingFrames:a3 atTime:&v5 error:a4];
+  return [(PTAssetReader *)self startReadingFrames:frames atTime:&v5 error:error];
 }
 
-- (BOOL)startReadingFrames:(unint64_t)a3 atTime:(id *)a4 error:(id *)a5
+- (BOOL)startReadingFrames:(unint64_t)frames atTime:(id *)time error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
+  framesCopy = frames;
+  selfCopy = self;
   v89 = *MEMORY[0x277D85DE8];
   [(PTAssetReader *)self stopReadingFrames];
   v9 = MEMORY[0x277CE6410];
-  v10 = [(PTAssetReader *)v8 asset];
-  v11 = [v9 assetReaderWithAsset:v10 error:a5];
-  assetReader = v8->assetReader;
-  v8->assetReader = v11;
+  asset = [(PTAssetReader *)selfCopy asset];
+  v11 = [v9 assetReaderWithAsset:asset error:error];
+  assetReader = selfCopy->assetReader;
+  selfCopy->assetReader = v11;
 
-  v13 = v8->assetReader;
+  v13 = selfCopy->assetReader;
   if (v13)
   {
-    v14 = [(AVAssetReader *)v13 asset];
-    v15 = loadTracksWithMediaType(v14, *MEMORY[0x277CE5EA8]);
+    asset2 = [(AVAssetReader *)v13 asset];
+    v15 = loadTracksWithMediaType(asset2, *MEMORY[0x277CE5EA8]);
     memset(&range2, 0, sizeof(range2));
     v85 = 0u;
     v16 = [v15 countByEnumeratingWithState:&range2 objects:&range1 count:16];
     if (v16)
     {
       v17 = v16;
-      v18 = a5;
-      v19 = v7;
+      errorCopy = error;
+      v19 = framesCopy;
       v20 = *range2.start.epoch;
       while (2)
       {
@@ -190,8 +190,8 @@ LABEL_9:
           v22 = *(*&range2.start.timescale + 8 * i);
           if ([v22 isEnabled])
           {
-            v7 = v19;
-            a5 = v18;
+            framesCopy = v19;
+            error = errorCopy;
             v23 = v22;
             goto LABEL_13;
           }
@@ -206,8 +206,8 @@ LABEL_9:
         break;
       }
 
-      v7 = v19;
-      a5 = v18;
+      framesCopy = v19;
+      error = errorCopy;
     }
 
     v23 = 0;
@@ -215,21 +215,21 @@ LABEL_13:
 
     if (v23)
     {
-      if (v7)
+      if (framesCopy)
       {
-        v79 = a4;
-        v80 = v8;
+        timeCopy = time;
+        v80 = selfCopy;
         v81 = v23;
-        v24 = [(AVAssetReader *)v8->assetReader asset];
-        v25 = loadTracksWithMediaType(v24, *MEMORY[0x277CE5E70]);
+        asset3 = [(AVAssetReader *)selfCopy->assetReader asset];
+        v25 = loadTracksWithMediaType(asset3, *MEMORY[0x277CE5E70]);
         memset(&range2, 0, sizeof(range2));
         v85 = 0u;
         v26 = [v25 countByEnumeratingWithState:&range2 objects:&range1 count:16];
         if (v26)
         {
           v27 = v26;
-          v77 = v24;
-          v78 = v7;
+          v77 = asset3;
+          v78 = framesCopy;
           v28 = *range2.start.epoch;
           while (2)
           {
@@ -243,12 +243,12 @@ LABEL_13:
               v30 = *(*&range2.start.timescale + 8 * j);
               if ([v30 isEnabled])
               {
-                v31 = [v30 formatDescriptions];
-                v32 = [v31 firstObject];
+                formatDescriptions = [v30 formatDescriptions];
+                firstObject = [formatDescriptions firstObject];
 
-                if (v32)
+                if (firstObject)
                 {
-                  v33 = CMMetadataFormatDescriptionGetIdentifiers(v32);
+                  v33 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
                   v34 = [@"mdta/" stringByAppendingString:@"com.apple.quicktime.cinematic-video.cinematography"];
                   v35 = [@"mdta/" stringByAppendingString:@"com.apple.quicktime.cinematography-dictionary"];
                   if ([v33 containsObject:v34] & 1) != 0 || (objc_msgSend(v33, "containsObject:", v35))
@@ -272,8 +272,8 @@ LABEL_13:
 
           v36 = 0;
 LABEL_31:
-          v7 = v78;
-          v24 = v77;
+          framesCopy = v78;
+          asset3 = v77;
         }
 
         else
@@ -281,13 +281,13 @@ LABEL_31:
           v36 = 0;
         }
 
-        v8 = v80;
+        selfCopy = v80;
         if (!v36)
         {
           v74 = MEMORY[0x277CCACA8];
-          v75 = [(AVAssetReader *)v80->assetReader asset];
-          v76 = [v74 stringWithFormat:@"Couldn't find metadata track in asset: %@", v75];
-          *a5 = AssetReaderError(v76);
+          asset4 = [(AVAssetReader *)v80->assetReader asset];
+          v76 = [v74 stringWithFormat:@"Couldn't find metadata track in asset: %@", asset4];
+          *error = AssetReaderError(v76);
 
           v37 = 0;
           v23 = v81;
@@ -323,44 +323,44 @@ LABEL_31:
         v80->metadataAdaptor = v45;
 
         [(AVAssetReader *)v80->assetReader addOutput:v44];
-        a4 = v79;
+        time = timeCopy;
       }
 
-      if ((v7 & 6) == 0)
+      if ((framesCopy & 6) == 0)
       {
 LABEL_57:
-        if (a4->var2)
+        if (time->var2)
         {
-          *&range1.start.value = *&a4->var0;
-          range1.start.epoch = a4->var3;
+          *&range1.start.value = *&time->var0;
+          range1.start.epoch = time->var3;
           *&range2.start.value = *MEMORY[0x277CC08B0];
           range2.start.epoch = *(MEMORY[0x277CC08B0] + 16);
           CMTimeRangeMake(&v82, &range1.start, &range2.start);
-          v70 = v8->assetReader;
+          v70 = selfCopy->assetReader;
           range1 = v82;
           [(AVAssetReader *)v70 setTimeRange:&range1];
         }
 
-        if ([(AVAssetReader *)v8->assetReader startReading])
+        if ([(AVAssetReader *)selfCopy->assetReader startReading])
         {
           v37 = 1;
         }
 
         else
         {
-          [(AVAssetReader *)v8->assetReader error];
-          *a5 = v37 = 0;
+          [(AVAssetReader *)selfCopy->assetReader error];
+          *error = v37 = 0;
         }
 
         goto LABEL_65;
       }
 
       v47 = objc_opt_new();
-      composedFrames = v8->composedFrames;
-      v8->composedFrames = v47;
+      composedFrames = selfCopy->composedFrames;
+      selfCopy->composedFrames = v47;
 
-      v49 = [(AVAssetReader *)v8->assetReader asset];
-      v50 = loadTracksWithMediaType(v49, *MEMORY[0x277CE5E50]);
+      asset5 = [(AVAssetReader *)selfCopy->assetReader asset];
+      v50 = loadTracksWithMediaType(asset5, *MEMORY[0x277CE5E50]);
       memset(&range2, 0, sizeof(range2));
       v85 = 0u;
       v51 = [v50 countByEnumeratingWithState:&range2 objects:&range1 count:16];
@@ -400,9 +400,9 @@ LABEL_50:
 
       if (v56)
       {
-        v57 = a4;
-        v58 = [v23 trackID];
-        v59 = [v56 trackID];
+        timeCopy2 = time;
+        trackID = [v23 trackID];
+        trackID2 = [v56 trackID];
         v60 = objc_alloc_init(PTAssetReaderCompositionInstruction);
         *&range1.start.value = *MEMORY[0x277CC08F0];
         range1.start.epoch = *(MEMORY[0x277CC08F0] + 16);
@@ -411,9 +411,9 @@ LABEL_50:
         CMTimeRangeMake(&v83, &range1.start, &range2.start);
         range1 = v83;
         [(PTAssetReaderCompositionInstruction *)v60 setTimeRange:&range1];
-        [(PTAssetReaderCompositionInstruction *)v60 setVideTrackID:v58];
-        [(PTAssetReaderCompositionInstruction *)v60 setAuxvTrackID:v59];
-        [(PTAssetReaderCompositionInstruction *)v60 setAssetReader:v8];
+        [(PTAssetReaderCompositionInstruction *)v60 setVideTrackID:trackID];
+        [(PTAssetReaderCompositionInstruction *)v60 setAuxvTrackID:trackID2];
+        [(PTAssetReaderCompositionInstruction *)v60 setAssetReader:selfCopy];
         [v23 timeRange];
         [v56 timeRange];
         if (!CMTimeRangeEqual(&range1, &range2))
@@ -433,56 +433,56 @@ LABEL_50:
           }
         }
 
-        v64 = [MEMORY[0x277CE6568] videoComposition];
-        videoComposition = v8->videoComposition;
-        v8->videoComposition = v64;
+        videoComposition = [MEMORY[0x277CE6568] videoComposition];
+        videoComposition = selfCopy->videoComposition;
+        selfCopy->videoComposition = videoComposition;
 
-        [(AVMutableVideoComposition *)v8->videoComposition setCustomVideoCompositorClass:objc_opt_class()];
-        [(AVMutableVideoComposition *)v8->videoComposition setSourceTrackIDForFrameTiming:v58];
+        [(AVMutableVideoComposition *)selfCopy->videoComposition setCustomVideoCompositorClass:objc_opt_class()];
+        [(AVMutableVideoComposition *)selfCopy->videoComposition setSourceTrackIDForFrameTiming:trackID];
         [v23 naturalSize];
-        [(AVMutableVideoComposition *)v8->videoComposition setRenderSize:?];
-        *&range1.start.value = *&v8->_frameDuration.value;
-        range1.start.epoch = v8->_frameDuration.epoch;
-        [(AVMutableVideoComposition *)v8->videoComposition setFrameDuration:&range1];
+        [(AVMutableVideoComposition *)selfCopy->videoComposition setRenderSize:?];
+        *&range1.start.value = *&selfCopy->_frameDuration.value;
+        range1.start.epoch = selfCopy->_frameDuration.epoch;
+        [(AVMutableVideoComposition *)selfCopy->videoComposition setFrameDuration:&range1];
         v87 = v60;
         v66 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
-        [(AVMutableVideoComposition *)v8->videoComposition setInstructions:v66];
+        [(AVMutableVideoComposition *)selfCopy->videoComposition setInstructions:v66];
 
         v86[0] = v23;
         v86[1] = v56;
         v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:2];
         v68 = [objc_alloc(MEMORY[0x277CE6438]) initWithVideoTracks:v67 videoSettings:0];
-        videoCompositionOutput = v8->videoCompositionOutput;
-        v8->videoCompositionOutput = v68;
+        videoCompositionOutput = selfCopy->videoCompositionOutput;
+        selfCopy->videoCompositionOutput = v68;
 
-        [(AVAssetReaderVideoCompositionOutput *)v8->videoCompositionOutput setVideoComposition:v8->videoComposition];
-        [(AVAssetReaderVideoCompositionOutput *)v8->videoCompositionOutput setAlwaysCopiesSampleData:0];
-        if ([(AVAssetReader *)v8->assetReader canAddOutput:v8->videoCompositionOutput])
+        [(AVAssetReaderVideoCompositionOutput *)selfCopy->videoCompositionOutput setVideoComposition:selfCopy->videoComposition];
+        [(AVAssetReaderVideoCompositionOutput *)selfCopy->videoCompositionOutput setAlwaysCopiesSampleData:0];
+        if ([(AVAssetReader *)selfCopy->assetReader canAddOutput:selfCopy->videoCompositionOutput])
         {
-          [(AVAssetReader *)v8->assetReader addOutput:v8->videoCompositionOutput];
+          [(AVAssetReader *)selfCopy->assetReader addOutput:selfCopy->videoCompositionOutput];
 
-          a4 = v57;
+          time = timeCopy2;
           goto LABEL_57;
         }
 
-        *a5 = AssetReaderError(@"Cannot add videoCompositionOutput to assetReader");
+        *error = AssetReaderError(@"Cannot add videoCompositionOutput to assetReader");
 
         goto LABEL_64;
       }
 
       v71 = MEMORY[0x277CCACA8];
-      v39 = [(AVAssetReader *)v8->assetReader asset];
-      [v71 stringWithFormat:@"Couldn't find disparity track in asset: %@", v39];
+      asset6 = [(AVAssetReader *)selfCopy->assetReader asset];
+      [v71 stringWithFormat:@"Couldn't find disparity track in asset: %@", asset6];
     }
 
     else
     {
       v38 = MEMORY[0x277CCACA8];
-      v39 = [(AVAssetReader *)v8->assetReader asset];
-      [v38 stringWithFormat:@"Couldn't find video track in asset: %@", v39];
+      asset6 = [(AVAssetReader *)selfCopy->assetReader asset];
+      [v38 stringWithFormat:@"Couldn't find video track in asset: %@", asset6];
     }
     v72 = ;
-    *a5 = AssetReaderError(v72);
+    *error = AssetReaderError(v72);
 
 LABEL_64:
     v37 = 0;
@@ -521,20 +521,20 @@ LABEL_65:
 
 - (unint64_t)estimatedFrameCount
 {
-  v3 = [(PTAssetReader *)self asset];
-  v4 = loadTracksWithMediaType(v3, *MEMORY[0x277CE5EA8]);
+  asset = [(PTAssetReader *)self asset];
+  v4 = loadTracksWithMediaType(asset, *MEMORY[0x277CE5EA8]);
 
-  v5 = [v4 firstObject];
-  if (!v5)
+  firstObject = [v4 firstObject];
+  if (!firstObject)
   {
     goto LABEL_6;
   }
 
-  v6 = [(PTAssetReader *)self asset];
-  v7 = v6;
-  if (v6)
+  asset2 = [(PTAssetReader *)self asset];
+  v7 = asset2;
+  if (asset2)
   {
-    [v6 duration];
+    [asset2 duration];
   }
 
   else
@@ -543,7 +543,7 @@ LABEL_65:
   }
 
   Seconds = CMTimeGetSeconds(&time);
-  [v5 nominalFrameRate];
+  [firstObject nominalFrameRate];
   v10 = Seconds * v9;
 
   v11 = vcvtad_u64_f64(v10);
@@ -570,9 +570,9 @@ LABEL_6:
     [(PTAssetReader *)self startReadingFrames:4];
     while (1)
     {
-      v4 = [(PTAssetReader *)self nextFrame];
+      nextFrame = [(PTAssetReader *)self nextFrame];
 
-      if (!v4)
+      if (!nextFrame)
       {
         break;
       }
@@ -638,7 +638,7 @@ LABEL_6:
 - (void)_decodeGlobalMetadata
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(PTAssetReader *)self asset];
+  asset = [(PTAssetReader *)self asset];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -654,7 +654,7 @@ LABEL_6:
   v43 = &v44;
   v5 = v4;
   v42 = v5;
-  [v3 loadMetadataForFormat:@"com.apple.quicktime.mdta" completionHandler:v40];
+  [asset loadMetadataForFormat:@"com.apple.quicktime.mdta" completionHandler:v40];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v45[5];
 
@@ -683,9 +683,9 @@ LABEL_6:
 
         if (v13)
         {
-          v15 = [v11 value];
+          value = [v11 value];
           v35 = 0;
-          v16 = [PTGlobalVideoMetadata deserializeMetadataWithType:2 fromGlobalMetadata:v15 error:&v35];
+          v16 = [PTGlobalVideoMetadata deserializeMetadataWithType:2 fromGlobalMetadata:value error:&v35];
           v17 = v35;
           globalRenderingMetadata = self->_globalRenderingMetadata;
           self->_globalRenderingMetadata = v16;
@@ -700,7 +700,7 @@ LABEL_6:
           }
 
           v34 = v17;
-          v20 = [PTGlobalVideoMetadata deserializeMetadataWithType:3 fromGlobalMetadata:v15 error:&v34];
+          v20 = [PTGlobalVideoMetadata deserializeMetadataWithType:3 fromGlobalMetadata:value error:&v34];
           v21 = v34;
 
           globalStabilizationMetadata = self->_globalStabilizationMetadata;
@@ -716,7 +716,7 @@ LABEL_6:
           }
 
           v33 = v21;
-          v24 = [PTGlobalVideoMetadata deserializeMetadataWithType:4 fromGlobalMetadata:v15 error:&v33];
+          v24 = [PTGlobalVideoMetadata deserializeMetadataWithType:4 fromGlobalMetadata:value error:&v33];
           v25 = v33;
 
           globalCinematographyMetadata = self->_globalCinematographyMetadata;
@@ -732,7 +732,7 @@ LABEL_6:
           }
 
           v32 = v25;
-          v28 = [PTGlobalVideoMetadata deserializeMetadataWithType:1 fromGlobalMetadata:v15 error:&v32];
+          v28 = [PTGlobalVideoMetadata deserializeMetadataWithType:1 fromGlobalMetadata:value error:&v32];
           v29 = v32;
 
           globalVideoHeaderMetadata = self->_globalVideoHeaderMetadata;
@@ -771,10 +771,10 @@ LABEL_6:
 LABEL_28:
 }
 
-- (void)_decodeMetadata:(id)a3
+- (void)_decodeMetadata:(id)metadata
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  metadataCopy = metadata;
   v54[0] = @"com.apple.quicktime.camera-dictionary";
   v54[1] = @"com.apple.quicktime.cinematography-dictionary";
   [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
@@ -798,23 +798,23 @@ LABEL_28:
         }
 
         v9 = *(*(&v44 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [metadataCopy objectForKeyedSubscript:v9];
         if (v10)
         {
           v11 = v10;
-          v12 = [v3 objectForKeyedSubscript:v9];
+          v12 = [metadataCopy objectForKeyedSubscript:v9];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if ((isKindOfClass & 1) == 0)
           {
-            v14 = [v3 objectForKeyedSubscript:v9];
+            v14 = [metadataCopy objectForKeyedSubscript:v9];
             objc_opt_class();
             v15 = objc_opt_isKindOfClass();
 
             if (v15)
             {
-              v16 = [v3 objectForKeyedSubscript:v9];
+              v16 = [metadataCopy objectForKeyedSubscript:v9];
               v52[0] = objc_opt_class();
               v52[1] = objc_opt_class();
               v52[2] = objc_opt_class();
@@ -842,7 +842,7 @@ LABEL_28:
 
               else
               {
-                [v3 setObject:v20 forKeyedSubscript:v9];
+                [metadataCopy setObject:v20 forKeyedSubscript:v9];
               }
 
               v4 = v42;
@@ -868,19 +868,19 @@ LABEL_28:
     while (v6);
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
+  v23 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
 
   if (v23)
   {
-    v24 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
-    v25 = [(PTAssetReader *)self globalRenderingMetadata];
-    v26 = [v25 majorVersion];
-    v27 = [(PTAssetReader *)self globalRenderingMetadata];
-    v28 = +[PTTimedRenderingMetadata objectFromData:withMajorVersion:minorVersion:](PTTimedRenderingMetadata, "objectFromData:withMajorVersion:minorVersion:", v24, v26, [v27 minorVersion]);
+    v24 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
+    globalRenderingMetadata = [(PTAssetReader *)self globalRenderingMetadata];
+    majorVersion = [globalRenderingMetadata majorVersion];
+    globalRenderingMetadata2 = [(PTAssetReader *)self globalRenderingMetadata];
+    v28 = +[PTTimedRenderingMetadata objectFromData:withMajorVersion:minorVersion:](PTTimedRenderingMetadata, "objectFromData:withMajorVersion:minorVersion:", v24, majorVersion, [globalRenderingMetadata2 minorVersion]);
 
     if (v28)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
+      [metadataCopy setObject:v28 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.rendering"];
     }
 
     else
@@ -888,24 +888,24 @@ LABEL_28:
       v29 = _PTLogSystem();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        [(PTAssetReader *)v3 _decodeMetadata:?];
+        [(PTAssetReader *)metadataCopy _decodeMetadata:?];
       }
     }
   }
 
-  v30 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
+  v30 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
 
   if (v30)
   {
-    v31 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
-    v32 = [(PTAssetReader *)self globalStabilizationMetadata];
-    v33 = [v32 majorVersion];
-    v34 = [(PTAssetReader *)self globalStabilizationMetadata];
-    v35 = +[PTTimedStabilizationMetadata objectFromData:withMajorVersion:minorVersion:](PTTimedStabilizationMetadata, "objectFromData:withMajorVersion:minorVersion:", v31, v33, [v34 minorVersion]);
+    v31 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
+    globalStabilizationMetadata = [(PTAssetReader *)self globalStabilizationMetadata];
+    majorVersion2 = [globalStabilizationMetadata majorVersion];
+    globalStabilizationMetadata2 = [(PTAssetReader *)self globalStabilizationMetadata];
+    v35 = +[PTTimedStabilizationMetadata objectFromData:withMajorVersion:minorVersion:](PTTimedStabilizationMetadata, "objectFromData:withMajorVersion:minorVersion:", v31, majorVersion2, [globalStabilizationMetadata2 minorVersion]);
 
     if (v35)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
+      [metadataCopy setObject:v35 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.stabilization"];
     }
 
     else
@@ -913,21 +913,21 @@ LABEL_28:
       v36 = _PTLogSystem();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        [(PTAssetReader *)v3 _decodeMetadata:?];
+        [(PTAssetReader *)metadataCopy _decodeMetadata:?];
       }
     }
   }
 
-  v37 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
+  v37 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
 
   if (v37)
   {
-    v38 = [v3 objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
+    v38 = [metadataCopy objectForKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
     v39 = [PTSerialization objectFromData:v38 error:0];
 
     if (v39)
     {
-      [v3 setObject:v39 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
+      [metadataCopy setObject:v39 forKeyedSubscript:@"com.apple.quicktime.cinematic-video.cinematography"];
     }
 
     else
@@ -935,7 +935,7 @@ LABEL_28:
       v40 = _PTLogSystem();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
-        [(PTAssetReader *)v3 _decodeMetadata:?];
+        [(PTAssetReader *)metadataCopy _decodeMetadata:?];
       }
     }
   }
@@ -951,13 +951,13 @@ LABEL_28:
   metadataAdaptor = self->metadataAdaptor;
   if (metadataAdaptor)
   {
-    v6 = [(AVAssetReaderOutputMetadataAdaptor *)metadataAdaptor nextTimedMetadataGroup];
-    if (v6)
+    nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)metadataAdaptor nextTimedMetadataGroup];
+    if (nextTimedMetadataGroup)
     {
-      v32 = self;
+      selfCopy = self;
       v33 = v4;
       v34 = v3;
-      v7 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v55 = *MEMORY[0x277CC0898];
       v8 = *(MEMORY[0x277CC0898] + 12);
       v56 = *(MEMORY[0x277CC0898] + 8);
@@ -966,9 +966,9 @@ LABEL_28:
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v31 = v6;
-      v10 = [v6 items];
-      v11 = [v10 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v31 = nextTimedMetadataGroup;
+      items = [nextTimedMetadataGroup items];
+      v11 = [items countByEnumeratingWithState:&v50 objects:v54 count:16];
       if (v11)
       {
         v12 = v11;
@@ -979,7 +979,7 @@ LABEL_28:
           {
             if (*v51 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(items);
             }
 
             v15 = *(*(&v50 + 1) + 8 * i);
@@ -1025,21 +1025,21 @@ LABEL_28:
               v56 = *&time1[8];
             }
 
-            v16 = [v15 value];
+            value = [v15 value];
             v17 = [v15 key];
-            [v7 setObject:v16 forKeyedSubscript:v17];
+            [dictionary setObject:value forKeyedSubscript:v17];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v50 objects:v54 count:16];
+          v12 = [items countByEnumeratingWithState:&v50 objects:v54 count:16];
         }
 
         while (v12);
       }
 
-      self = v32;
-      [(PTAssetReader *)v32 _decodeMetadata:v7];
+      self = selfCopy;
+      [(PTAssetReader *)selfCopy _decodeMetadata:dictionary];
       v4 = v33;
-      [v33 setMetadata:v7];
+      [v33 setMetadata:dictionary];
       *time1 = v55;
       *&time1[8] = __PAIR64__(v8, v56);
       *&time1[16] = v9;
@@ -1050,7 +1050,7 @@ LABEL_28:
       }
 
       v3 = v34;
-      v6 = v31;
+      nextTimedMetadataGroup = v31;
     }
 
     else if (!self->videoCompositionOutput)
@@ -1066,8 +1066,8 @@ LABEL_28:
     goto LABEL_46;
   }
 
-  v19 = [(AVAssetReaderVideoCompositionOutput *)videoCompositionOutput copyNextSampleBuffer];
-  if (!v19)
+  copyNextSampleBuffer = [(AVAssetReaderVideoCompositionOutput *)videoCompositionOutput copyNextSampleBuffer];
+  if (!copyNextSampleBuffer)
   {
     v21 = v4;
     v4 = 0;
@@ -1079,12 +1079,12 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  CFRelease(v19);
-  v20 = [(PTAssetReader *)self popComposedFrame];
-  if (v20)
+  CFRelease(copyNextSampleBuffer);
+  popComposedFrame = [(PTAssetReader *)self popComposedFrame];
+  if (popComposedFrame)
   {
-    v21 = v20;
-    [v20 time];
+    v21 = popComposedFrame;
+    [popComposedFrame time];
     *time1 = v47;
     *&time1[16] = v48;
     [v4 setTime:time1];
@@ -1093,8 +1093,8 @@ LABEL_46:
     *time1 = v45;
     *&time1[16] = v46;
     [v4 setColorBufferTime:time1];
-    v22 = [(AVAssetReaderVideoCompositionOutput *)self->videoCompositionOutput videoTracks];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    videoTracks = [(AVAssetReaderVideoCompositionOutput *)self->videoCompositionOutput videoTracks];
+    v23 = [videoTracks objectAtIndexedSubscript:0];
     v24 = v23;
     if (v23)
     {
@@ -1122,8 +1122,8 @@ LABEL_46:
         *time1 = v38;
         *&time1[16] = v39;
         [v4 setDisparityBufferTime:time1];
-        v27 = [(AVAssetReaderVideoCompositionOutput *)self->videoCompositionOutput videoTracks];
-        v28 = [v27 objectAtIndexedSubscript:1];
+        videoTracks2 = [(AVAssetReaderVideoCompositionOutput *)self->videoCompositionOutput videoTracks];
+        v28 = [videoTracks2 objectAtIndexedSubscript:1];
         v29 = v28;
         if (v28)
         {
@@ -1145,8 +1145,8 @@ LABEL_46:
 
       else
       {
-        v27 = _PTLogSystem();
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        videoTracks2 = _PTLogSystem();
+        if (os_log_type_enabled(videoTracks2, OS_LOG_TYPE_ERROR))
         {
           [(PTAssetReader *)v4 nextFrame];
         }
@@ -1192,7 +1192,7 @@ LABEL_47:
 
 - (void)nextFrame
 {
-  [a1 index];
+  [self index];
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_0_4(&dword_2243FB000, v1, v2, "Failed to get composed frame %lu from custom compositor", v3, v4, v5, v6, v7);
 }

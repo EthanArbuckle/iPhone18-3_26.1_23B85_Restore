@@ -1,13 +1,13 @@
 @interface TTRIQuickReminderViewController
 - (BOOL)accessibilityPerformEscape;
-- (_TtC15RemindersUICore31TTRIQuickReminderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15RemindersUICore31TTRIQuickReminderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TTRIQuickReminderViewController
@@ -16,43 +16,43 @@
 {
   type metadata accessor for TTRIQuickReminderView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(TTRIQuickReminderViewController *)v5 setView:v4];
+  [(TTRIQuickReminderViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D83F118();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21D842B20(a3);
+  selfCopy = self;
+  sub_21D842B20(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIQuickReminderViewController *)&v5 viewIsAppearing:v3];
+  [(TTRIQuickReminderViewController *)&v5 viewIsAppearing:appearingCopy];
   sub_21D842D74();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_21D844818();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_21D842F48(a3);
+  selfCopy = self;
+  sub_21D842F48(disappear);
 }
 
 - (void)viewLayoutMarginsDidChange
@@ -66,13 +66,13 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D8430B8();
 
   return 1;
 }
 
-- (_TtC15RemindersUICore31TTRIQuickReminderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore31TTRIQuickReminderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface _UIStatusBarDisplayItemPlacementIndicatorsGroup
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 bluetoothPaddingInset:(double)a5;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority bluetoothPaddingInset:(double)inset;
 @end
 
 @implementation _UIStatusBarDisplayItemPlacementIndicatorsGroup
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 bluetoothPaddingInset:(double)a5
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority bluetoothPaddingInset:(double)inset
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v7 = a3 - a4;
-  if (a3 <= a4)
+  v7 = priority - lowPriority;
+  if (priority <= lowPriority)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarDisplayItemPlacementIndicatorsGroup.m" lineNumber:31 description:@"The lowPriority should be smaller than the highPriority"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacementIndicatorsGroup.m" lineNumber:31 description:@"The lowPriority should be smaller than the highPriority"];
   }
 
-  v49 = a1;
+  selfCopy = self;
   v8 = +[(_UIStatusBarItem *)_UIStatusBarBluetoothItem];
   v9 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v8 priority:3];
 
@@ -25,7 +25,7 @@
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
   v52 = [v11 requiringAllPlacements:v12];
 
-  v13 = [_UIStatusBarDisplayItemPlacement spacerPlacementWithSize:1 priority:-a5, 0.0];
+  v13 = [_UIStatusBarDisplayItemPlacement spacerPlacementWithSize:1 priority:-inset, 0.0];
   v56[0] = v9;
   v56[1] = v52;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
@@ -66,13 +66,13 @@
   v55[12] = v52;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:13];
 
-  v25 = [objc_opt_class() activityItemDisplayIdentifier];
-  v26 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v25 priority:11];
+  activityItemDisplayIdentifier = [objc_opt_class() activityItemDisplayIdentifier];
+  v26 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:activityItemDisplayIdentifier priority:11];
   v54 = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
 
   v28 = [v27 arrayByAddingObjectsFromArray:v24];
-  v29 = [v49 groupWithPriority:a4 placements:v28];
+  v29 = [selfCopy groupWithPriority:lowPriority placements:v28];
   v30 = v29[4];
   v29[4] = v24;
   v31 = v24;

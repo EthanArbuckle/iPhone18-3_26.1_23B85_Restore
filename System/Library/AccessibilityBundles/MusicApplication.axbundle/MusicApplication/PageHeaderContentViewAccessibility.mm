@@ -1,20 +1,20 @@
 @interface PageHeaderContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PageHeaderContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"supertitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.JSListenNowTabViewController"];
-  [v3 validateClass:@"MusicApplication.PageHeaderPlayButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"supertitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PageHeaderContentView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSListenNowTabViewController"];
+  [validationsCopy validateClass:@"MusicApplication.PageHeaderPlayButton"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,7 +26,7 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(PageHeaderContentViewAccessibility *)self safeUIViewForKey:@"accessoryView"];
   [v4 setIsAccessibilityElement:1];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
@@ -40,7 +40,7 @@
     }
 
 LABEL_7:
-    [v3 addObject:v4];
+    [array addObject:v4];
     goto LABEL_8;
   }
 
@@ -64,7 +64,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v3;
+  return array;
 }
 
 double __76__PageHeaderContentViewAccessibility__accessibilitySupplementaryFooterViews__block_invoke_3(uint64_t a1)

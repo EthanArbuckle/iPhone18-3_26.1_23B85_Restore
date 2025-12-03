@@ -1,7 +1,7 @@
 @interface FigCaptureGameModeMonitor
 + (void)initialize;
 - (BOOL)isGameModeEnabled;
-- (FigCaptureGameModeMonitor)initWithStateChangeHandler:(id)a3;
+- (FigCaptureGameModeMonitor)initWithStateChangeHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -18,26 +18,26 @@
   }
 }
 
-- (FigCaptureGameModeMonitor)initWithStateChangeHandler:(id)a3
+- (FigCaptureGameModeMonitor)initWithStateChangeHandler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = FigCaptureGameModeMonitor;
   v4 = [(FigCaptureGameModeMonitor *)&v11 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    if ([v5 isDeviceCertifiedFor:*MEMORY[0x1E6973FB0]])
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    if ([processInfo isDeviceCertifiedFor:*MEMORY[0x1E6973FB0]])
     {
       v4->_gameModeNotifyToken = 0;
-      v4->_gameModeStateChangeHandler = [a3 copy];
-      v6 = [@"com.apple.system.console_mode_changed_camera_jettison_s2r" UTF8String];
+      v4->_gameModeStateChangeHandler = [handler copy];
+      uTF8String = [@"com.apple.system.console_mode_changed_camera_jettison_s2r" UTF8String];
       global_queue = dispatch_get_global_queue(0, 0);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __56__FigCaptureGameModeMonitor_initWithStateChangeHandler___block_invoke;
       handler[3] = &unk_1E7991270;
       handler[4] = v4;
-      if (!notify_register_dispatch(v6, &v4->_gameModeNotifyToken, global_queue, handler))
+      if (!notify_register_dispatch(uTF8String, &v4->_gameModeNotifyToken, global_queue, handler))
       {
         return v4;
       }

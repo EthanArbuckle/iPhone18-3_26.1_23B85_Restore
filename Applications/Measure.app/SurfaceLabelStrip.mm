@@ -1,9 +1,9 @@
 @interface SurfaceLabelStrip
 - (CGSize)intrinsicContentSize;
-- (_TtC7Measure17SurfaceLabelStrip)initWithFrame:(CGRect)a3;
+- (_TtC7Measure17SurfaceLabelStrip)initWithFrame:(CGRect)frame;
 - (_TtC7Measure27SurfaceSideMeasurementStack)lengthLabels;
 - (_TtC7Measure27SurfaceSideMeasurementStack)widthLabels;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SurfaceLabelStrip
@@ -22,29 +22,29 @@
   return Strong;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC7Measure17SurfaceLabelStrip_contentView);
-  *(self + OBJC_IVAR____TtC7Measure17SurfaceLabelStrip_contentView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC7Measure17SurfaceLabelStrip_contentView) = view;
+  viewCopy = view;
 }
 
-- (_TtC7Measure17SurfaceLabelStrip)initWithFrame:(CGRect)a3
+- (_TtC7Measure17SurfaceLabelStrip)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC7Measure17SurfaceLabelStrip_contentView) = 0;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(SurfaceLabelStrip *)&v11 initWithFrame:x, y, width, height];
+  height = [(SurfaceLabelStrip *)&v11 initWithFrame:x, y, width, height];
   sub_1000263C0();
 
-  return v9;
+  return height;
 }
 
 - (CGSize)intrinsicContentSize

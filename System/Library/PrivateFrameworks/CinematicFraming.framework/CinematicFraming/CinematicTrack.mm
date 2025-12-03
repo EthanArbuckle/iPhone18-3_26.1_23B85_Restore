@@ -1,20 +1,20 @@
 @interface CinematicTrack
-- (CGRect)afterImageBoundingBoxAtTime:(id *)a3;
+- (CGRect)afterImageBoundingBoxAtTime:(id *)time;
 - (CGRect)boundingBoxForFraming;
-- (CGRect)faceBoundingBoxForFramingAtTime:(id *)a3;
-- (CinematicTrack)initWithObservation:(id)a3 identifier:(int64_t)a4 options:(id)a5 atTime:(id *)a6;
-- (void)setAfterImage:(CGRect)a3 forDuration:(float)a4 atTime:(id *)a5;
-- (void)updatePropertiesWithTimestamp:(id *)a3 inView:(CGRect)a4;
+- (CGRect)faceBoundingBoxForFramingAtTime:(id *)time;
+- (CinematicTrack)initWithObservation:(id)observation identifier:(int64_t)identifier options:(id)options atTime:(id *)time;
+- (void)setAfterImage:(CGRect)image forDuration:(float)duration atTime:(id *)time;
+- (void)updatePropertiesWithTimestamp:(id *)timestamp inView:(CGRect)view;
 @end
 
 @implementation CinematicTrack
 
-- (CinematicTrack)initWithObservation:(id)a3 identifier:(int64_t)a4 options:(id)a5 atTime:(id *)a6
+- (CinematicTrack)initWithObservation:(id)observation identifier:(int64_t)identifier options:(id)options atTime:(id *)time
 {
   v12.receiver = self;
   v12.super_class = CinematicTrack;
-  v11 = *a6;
-  v6 = [(BaseTrack *)&v12 initWithObservation:a3 identifier:a4 type:0 atTime:&v11];
+  v11 = *time;
+  v6 = [(BaseTrack *)&v12 initWithObservation:observation identifier:identifier type:0 atTime:&v11];
   v7 = v6;
   if (v6)
   {
@@ -27,31 +27,31 @@
   return v7;
 }
 
-- (void)updatePropertiesWithTimestamp:(id *)a3 inView:(CGRect)a4
+- (void)updatePropertiesWithTimestamp:(id *)timestamp inView:(CGRect)view
 {
-  [(BaseTrack *)self lastObservationBounds:a3];
+  [(BaseTrack *)self lastObservationBounds:timestamp];
   self->_boundingBoxForFraming.origin.x = v5;
   self->_boundingBoxForFraming.origin.y = v6;
   self->_boundingBoxForFraming.size.width = v7;
   self->_boundingBoxForFraming.size.height = v8;
 }
 
-- (void)setAfterImage:(CGRect)a3 forDuration:(float)a4 atTime:(id *)a5
+- (void)setAfterImage:(CGRect)image forDuration:(float)duration atTime:(id *)time
 {
-  self->_afterImageBoundingBox = a3;
+  self->_afterImageBoundingBox = image;
   p_afterImageExpirationTimestamp = &self->_afterImageExpirationTimestamp;
-  CMTimeMake(&rhs, (a4 * 1000000.0), 1000000);
-  v7 = *a5;
+  CMTimeMake(&rhs, (duration * 1000000.0), 1000000);
+  v7 = *time;
   CMTimeAdd(&v9, &v7, &rhs);
   *p_afterImageExpirationTimestamp = v9;
 }
 
-- (CGRect)afterImageBoundingBoxAtTime:(id *)a3
+- (CGRect)afterImageBoundingBoxAtTime:(id *)time
 {
   p_afterImageExpirationTimestamp = &self->_afterImageExpirationTimestamp;
   time1 = self->_afterImageExpirationTimestamp;
   v11 = **&MEMORY[0x277CC0898];
-  if (CMTimeCompare(&time1, &v11) && (time1 = *a3, v11 = *p_afterImageExpirationTimestamp, CMTimeCompare(&time1, &v11) < 0))
+  if (CMTimeCompare(&time1, &v11) && (time1 = *time, v11 = *p_afterImageExpirationTimestamp, CMTimeCompare(&time1, &v11) < 0))
   {
     p_afterImageBoundingBox = &self->_afterImageBoundingBox;
   }
@@ -72,14 +72,14 @@
   return result;
 }
 
-- (CGRect)faceBoundingBoxForFramingAtTime:(id *)a3
+- (CGRect)faceBoundingBoxForFramingAtTime:(id *)time
 {
-  v4 = [(BaseTrack *)self pairTrack];
+  pairTrack = [(BaseTrack *)self pairTrack];
 
-  if (v4)
+  if (pairTrack)
   {
-    v5 = [(BaseTrack *)self pairTrack];
-    [v5 lastObservationBounds];
+    pairTrack2 = [(BaseTrack *)self pairTrack];
+    [pairTrack2 lastObservationBounds];
     v7 = v6;
     rect = v6;
     rect_8 = v8;

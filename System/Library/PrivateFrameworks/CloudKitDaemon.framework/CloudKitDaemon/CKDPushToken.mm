@@ -1,25 +1,25 @@
 @interface CKDPushToken
-- (BOOL)isEqual:(id)a3;
-- (CKDPushToken)initWithAPSEnvironmentString:(id)a3 apsToken:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKDPushToken)initWithAPSEnvironmentString:(id)string apsToken:(id)token;
 - (unint64_t)hash;
 @end
 
 @implementation CKDPushToken
 
-- (CKDPushToken)initWithAPSEnvironmentString:(id)a3 apsToken:(id)a4
+- (CKDPushToken)initWithAPSEnvironmentString:(id)string apsToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  tokenCopy = token;
   v18.receiver = self;
   v18.super_class = CKDPushToken;
   v10 = [(CKDPushToken *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(stringCopy, v8, v9);
     apsEnvironmentString = v10->_apsEnvironmentString;
     v10->_apsEnvironmentString = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(tokenCopy, v13, v14);
     apsToken = v10->_apsToken;
     v10->_apsToken = v15;
   }
@@ -27,10 +27,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_apsToken(self, v6, v7);
       v11 = objc_msgSend_apsToken(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual();

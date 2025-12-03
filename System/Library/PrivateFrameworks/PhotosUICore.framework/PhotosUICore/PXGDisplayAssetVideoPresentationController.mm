@@ -1,9 +1,9 @@
 @interface PXGDisplayAssetVideoPresentationController
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeConvertedFromVideoSessionTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_videoSessionTimeConvertedFromTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeConvertedFromVideoSessionTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_videoSessionTimeConvertedFromTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)beginningTime;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_timeRangeConvertedFromVideoSessionTimeRange:(SEL)a3;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoSessionTimeRangeConvertedFromTimeRange:(SEL)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_timeRangeConvertedFromVideoSessionTimeRange:(SEL)range;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoSessionTimeRangeConvertedFromTimeRange:(SEL)range;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRange;
 - (BOOL)_timeConversionNeeded;
 - (BOOL)isCrossfadingFromStillToVideoEnabled;
@@ -12,64 +12,64 @@
 - (NSString)description;
 - (NSString)diagnosticDescription;
 - (PXGDisplayAssetVideoPresentationController)init;
-- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)a3 accessQueue:(id)a4;
-- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)a3 accessQueue:(id)a4 videoSessionManager:(id)a5 options:(id)a6 loadingPriority:(int64_t)a7;
+- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)asset accessQueue:(id)queue;
+- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)asset accessQueue:(id)queue videoSessionManager:(id)manager options:(id)options loadingPriority:(int64_t)priority;
 - (PXGDisplayAssetVideoPresentationControllerDelegate)delegate;
-- (id)pixelBufferSourceWithMediaProvider:(id)a3;
-- (id)placeholderImageWithMediaProvider:(id)a3;
-- (id)videoSessionWithMediaProvider:(id)a3;
+- (id)pixelBufferSourceWithMediaProvider:(id)provider;
+- (id)placeholderImageWithMediaProvider:(id)provider;
+- (id)videoSessionWithMediaProvider:(id)provider;
 - (int64_t)actualPlayState;
 - (int64_t)desiredPlayState;
 - (void)_accessQueue_recyclePixelBufferSource;
-- (void)_notifyReachedTime:(id *)a3;
+- (void)_notifyReachedTime:(id *)time;
 - (void)_performPendingPrerollIfNeeded;
 - (void)_performPendingSeekIfNeeded;
-- (void)_performPrerollAtRate:(float)a3;
-- (void)_performSeekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5;
-- (void)_prerollCompletedSuccessfully:(BOOL)a3;
-- (void)_setupPixelBufferSourceIfNeededWithMediaProvider:(id)a3;
-- (void)_setupVideoSessionIfNeededWithMediaProvider:(id)a3;
+- (void)_performPrerollAtRate:(float)rate;
+- (void)_performSeekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after;
+- (void)_prerollCompletedSuccessfully:(BOOL)successfully;
+- (void)_setupPixelBufferSourceIfNeededWithMediaProvider:(id)provider;
+- (void)_setupVideoSessionIfNeededWithMediaProvider:(id)provider;
 - (void)_updatePresentationControllerState;
 - (void)_updateVideoSession;
-- (void)becomeVisible:(BOOL)a3;
+- (void)becomeVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)fetchShouldDisplayPreviousNonnullPixelBuffer:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)prerollForImmediatePlaybackAtRate:(float)a3 withMediaProvider:(id)a4;
+- (void)fetchShouldDisplayPreviousNonnullPixelBuffer:(id)buffer;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)prerollForImmediatePlaybackAtRate:(float)rate withMediaProvider:(id)provider;
 - (void)recyclePixelBufferSource;
-- (void)requestPixelBufferSourceForMediaProvider:(id)a3 isVisible:(BOOL)a4 stillActive:(id)a5 completion:(id)a6;
-- (void)requestPlayerViewForMediaProvider:(id)a3 isVisible:(BOOL)a4 stillActive:(id)a5 completion:(id)a6;
+- (void)requestPixelBufferSourceForMediaProvider:(id)provider isVisible:(BOOL)visible stillActive:(id)active completion:(id)completion;
+- (void)requestPlayerViewForMediaProvider:(id)provider isVisible:(BOOL)visible stillActive:(id)active completion:(id)completion;
 - (void)seekToBeginning;
-- (void)setActualPlayState:(int64_t)a3;
-- (void)setActualTime:(id *)a3;
-- (void)setAudioSessionCategory:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setDesiredPlaybackRate:(double)a3;
-- (void)setDesiredTime:(id *)a3;
-- (void)setDesiredTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5;
-- (void)setIsAtEnd:(BOOL)a3;
-- (void)setIsCleanApertureCompensationEnabled:(BOOL)a3;
-- (void)setIsCrossfadingFromStillToVideoEnabled:(BOOL)a3;
-- (void)setIsDuckingOtherAudioEnabled:(BOOL)a3;
-- (void)setIsLoopingEnabled:(BOOL)a3;
-- (void)setIsMixingAudioWithOthersEnabled:(BOOL)a3;
-- (void)setIsReadyForImmediatePlayback:(BOOL)a3;
-- (void)setIsVisible:(BOOL)a3;
-- (void)setPendingSeekTime:(id *)a3;
-- (void)setPendingSeekToleranceAfter:(id *)a3;
-- (void)setPendingSeekToleranceBefore:(id *)a3;
-- (void)setPlaybackStartTime:(id *)a3;
-- (void)setPlaybackTimeRange:(id *)a3;
-- (void)setResetsDesiredPlayStateOnHide:(BOOL)a3;
-- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)a3;
-- (void)setShouldDisplayPreviousNonNullPixelBuffer:(BOOL)a3;
-- (void)setVideoDuration:(id *)a3;
-- (void)setVolume:(float)a3 withFade:(BOOL)a4;
-- (void)startObservingBoundaryTime:(id *)a3;
-- (void)stopObservingBoundaryTime:(id *)a3;
-- (void)synchronouslySeekToDesiredTime:(id *)a3 updatePixelBufferSource:(BOOL)a4;
+- (void)setActualPlayState:(int64_t)state;
+- (void)setActualTime:(id *)time;
+- (void)setAudioSessionCategory:(id)category;
+- (void)setDelegate:(id)delegate;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setDesiredPlaybackRate:(double)rate;
+- (void)setDesiredTime:(id *)time;
+- (void)setDesiredTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after;
+- (void)setIsAtEnd:(BOOL)end;
+- (void)setIsCleanApertureCompensationEnabled:(BOOL)enabled;
+- (void)setIsCrossfadingFromStillToVideoEnabled:(BOOL)enabled;
+- (void)setIsDuckingOtherAudioEnabled:(BOOL)enabled;
+- (void)setIsLoopingEnabled:(BOOL)enabled;
+- (void)setIsMixingAudioWithOthersEnabled:(BOOL)enabled;
+- (void)setIsReadyForImmediatePlayback:(BOOL)playback;
+- (void)setIsVisible:(BOOL)visible;
+- (void)setPendingSeekTime:(id *)time;
+- (void)setPendingSeekToleranceAfter:(id *)after;
+- (void)setPendingSeekToleranceBefore:(id *)before;
+- (void)setPlaybackStartTime:(id *)time;
+- (void)setPlaybackTimeRange:(id *)range;
+- (void)setResetsDesiredPlayStateOnHide:(BOOL)hide;
+- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)updates;
+- (void)setShouldDisplayPreviousNonNullPixelBuffer:(BOOL)buffer;
+- (void)setVideoDuration:(id *)duration;
+- (void)setVolume:(float)volume withFade:(BOOL)fade;
+- (void)startObservingBoundaryTime:(id *)time;
+- (void)stopObservingBoundaryTime:(id *)time;
+- (void)synchronouslySeekToDesiredTime:(id *)time updatePixelBufferSource:(BOOL)source;
 @end
 
 @implementation PXGDisplayAssetVideoPresentationController
@@ -130,24 +130,24 @@ LABEL_6:
   return v8;
 }
 
-- (void)setPendingSeekToleranceAfter:(id *)a3
+- (void)setPendingSeekToleranceAfter:(id *)after
 {
-  var3 = a3->var3;
-  *&self->_pendingSeekToleranceAfter.value = *&a3->var0;
+  var3 = after->var3;
+  *&self->_pendingSeekToleranceAfter.value = *&after->var0;
   self->_pendingSeekToleranceAfter.epoch = var3;
 }
 
-- (void)setPendingSeekToleranceBefore:(id *)a3
+- (void)setPendingSeekToleranceBefore:(id *)before
 {
-  var3 = a3->var3;
-  *&self->_pendingSeekToleranceBefore.value = *&a3->var0;
+  var3 = before->var3;
+  *&self->_pendingSeekToleranceBefore.value = *&before->var0;
   self->_pendingSeekToleranceBefore.epoch = var3;
 }
 
-- (void)setPendingSeekTime:(id *)a3
+- (void)setPendingSeekTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_pendingSeekTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_pendingSeekTime.value = *&time->var0;
   self->_pendingSeekTime.epoch = var3;
 }
 
@@ -176,44 +176,44 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)setPlaybackStartTime:(id *)a3
+- (void)setPlaybackStartTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_playbackStartTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_playbackStartTime.value = *&time->var0;
   self->_playbackStartTime.epoch = var3;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (VideoSessionObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (VideoSessionObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v9 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+      accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__PXGDisplayAssetVideoPresentationController_observable_didChange_context___block_invoke;
       block[3] = &unk_1E774C648;
       block[4] = self;
-      dispatch_async(v9, block);
+      dispatch_async(accessQueue, block);
     }
 
-    if ((v6 & 0x2C4) != 0)
+    if ((changeCopy & 0x2C4) != 0)
     {
       [(PXGDisplayAssetVideoPresentationController *)self _invalidatePresentationControllerState];
     }
 
-    if ((v6 & 0x2000) != 0)
+    if ((changeCopy & 0x2000) != 0)
     {
-      v10 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+      accessQueue2 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __75__PXGDisplayAssetVideoPresentationController_observable_didChange_context___block_invoke_2;
       v11[3] = &unk_1E774C648;
       v11[4] = self;
-      dispatch_async(v10, v11);
+      dispatch_async(accessQueue2, v11);
     }
   }
 }
@@ -234,25 +234,25 @@ uint64_t __75__PXGDisplayAssetVideoPresentationController_observable_didChange_c
   PXDisplayAssetPlaybackStyleDescription();
 }
 
-- (void)requestPixelBufferSourceForMediaProvider:(id)a3 isVisible:(BOOL)a4 stillActive:(id)a5 completion:(id)a6
+- (void)requestPixelBufferSourceForMediaProvider:(id)provider isVisible:(BOOL)visible stillActive:(id)active completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  providerCopy = provider;
+  activeCopy = active;
+  completionCopy = completion;
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __120__PXGDisplayAssetVideoPresentationController_requestPixelBufferSourceForMediaProvider_isVisible_stillActive_completion___block_invoke;
   block[3] = &unk_1E7747F20;
-  v21 = a4;
+  visibleCopy = visible;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = providerCopy;
+  v19 = activeCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = providerCopy;
+  v16 = activeCopy;
+  dispatch_async(accessQueue, block);
 }
 
 void __120__PXGDisplayAssetVideoPresentationController_requestPixelBufferSourceForMediaProvider_isVisible_stillActive_completion___block_invoke(uint64_t a1)
@@ -265,25 +265,25 @@ void __120__PXGDisplayAssetVideoPresentationController_requestPixelBufferSourceF
   }
 }
 
-- (void)requestPlayerViewForMediaProvider:(id)a3 isVisible:(BOOL)a4 stillActive:(id)a5 completion:(id)a6
+- (void)requestPlayerViewForMediaProvider:(id)provider isVisible:(BOOL)visible stillActive:(id)active completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  providerCopy = provider;
+  activeCopy = active;
+  completionCopy = completion;
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __113__PXGDisplayAssetVideoPresentationController_requestPlayerViewForMediaProvider_isVisible_stillActive_completion___block_invoke;
   block[3] = &unk_1E7747F20;
-  v21 = a4;
+  visibleCopy = visible;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = providerCopy;
+  v19 = activeCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = providerCopy;
+  v16 = activeCopy;
+  dispatch_async(accessQueue, block);
 }
 
 void __113__PXGDisplayAssetVideoPresentationController_requestPlayerViewForMediaProvider_isVisible_stillActive_completion___block_invoke(uint64_t a1)
@@ -301,18 +301,18 @@ void __113__PXGDisplayAssetVideoPresentationController_requestPlayerViewForMedia
   }
 }
 
-- (void)fetchShouldDisplayPreviousNonnullPixelBuffer:(id)a3
+- (void)fetchShouldDisplayPreviousNonnullPixelBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  bufferCopy = buffer;
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__PXGDisplayAssetVideoPresentationController_fetchShouldDisplayPreviousNonnullPixelBuffer___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = bufferCopy;
+  v6 = bufferCopy;
+  dispatch_async(accessQueue, v7);
 }
 
 uint64_t __91__PXGDisplayAssetVideoPresentationController_fetchShouldDisplayPreviousNonnullPixelBuffer___block_invoke(uint64_t a1)
@@ -324,16 +324,16 @@ uint64_t __91__PXGDisplayAssetVideoPresentationController_fetchShouldDisplayPrev
   return v3(v1, v2);
 }
 
-- (void)becomeVisible:(BOOL)a3
+- (void)becomeVisible:(BOOL)visible
 {
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__PXGDisplayAssetVideoPresentationController_becomeVisible___block_invoke;
   v6[3] = &unk_1E7749428;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  visibleCopy = visible;
+  dispatch_async(accessQueue, v6);
 }
 
 uint64_t __60__PXGDisplayAssetVideoPresentationController_becomeVisible___block_invoke(uint64_t a1)
@@ -347,84 +347,84 @@ uint64_t __60__PXGDisplayAssetVideoPresentationController_becomeVisible___block_
   return [v1 performChanges:v3];
 }
 
-- (void)_notifyReachedTime:(id *)a3
+- (void)_notifyReachedTime:(id *)time
 {
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
+  delegate = [(PXGDisplayAssetVideoPresentationController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
-    v8 = *&a3->var0;
-    var3 = a3->var3;
+    delegate2 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
+    v8 = *&time->var0;
+    var3 = time->var3;
     [(PXGDisplayAssetVideoPresentationController *)self _timeConvertedFromVideoSessionTime:&v8];
-    [v7 assetVideoPresentationController:self didReachTime:v10];
+    [delegate2 assetVideoPresentationController:self didReachTime:v10];
   }
 }
 
-- (void)stopObservingBoundaryTime:(id *)a3
+- (void)stopObservingBoundaryTime:(id *)time
 {
   v4 = MEMORY[0x1E696B098];
-  v13 = *a3;
+  v13 = *time;
   [(PXGDisplayAssetVideoPresentationController *)self _videoSessionTimeConvertedFromTime:&v13];
   v5 = [v4 valueWithCMTime:v14];
-  v6 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  timeObserversByTime = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+  v7 = [timeObserversByTime objectForKeyedSubscript:v5];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v9 = [v7 isEqual:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    v9 = [v7 isEqual:null];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-      v11 = [v10 videoPlayer];
-      [v11 removeTimeObserver:v7];
+      videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+      videoPlayer = [videoSession videoPlayer];
+      [videoPlayer removeTimeObserver:v7];
     }
   }
 
-  v12 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-  [v12 removeObjectForKey:v5];
+  timeObserversByTime2 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+  [timeObserversByTime2 removeObjectForKey:v5];
 }
 
-- (void)startObservingBoundaryTime:(id *)a3
+- (void)startObservingBoundaryTime:(id *)time
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696B098];
-  v25 = *a3;
+  v25 = *time;
   [(PXGDisplayAssetVideoPresentationController *)self _videoSessionTimeConvertedFromTime:&v25];
   v6 = [v5 valueWithCMTime:location];
-  v7 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  timeObserversByTime = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+  v8 = [timeObserversByTime objectForKeyedSubscript:v6];
 
   if (!v8 || ([MEMORY[0x1E695DFB0] null], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v10))
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
-    v12 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-    if (v12)
+    null = [MEMORY[0x1E695DFB0] null];
+    videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+    if (videoSession)
     {
       objc_initWeak(location, self);
-      v13 = [v12 videoPlayer];
+      videoPlayer = [videoSession videoPlayer];
       v27[0] = v6;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      v15 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+      accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime___block_invoke;
       v21 = &unk_1E7747EF8;
       objc_copyWeak(&v22, location);
-      v23 = *&a3->var0;
-      var3 = a3->var3;
-      v16 = [v13 addBoundaryTimeObserverForTimes:v14 queue:v15 usingBlock:&v18];
+      v23 = *&time->var0;
+      var3 = time->var3;
+      v16 = [videoPlayer addBoundaryTimeObserverForTimes:v14 queue:accessQueue usingBlock:&v18];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(location);
-      v11 = v16;
+      null = v16;
     }
 
     v17 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime:v18];
-    [v17 setObject:v11 forKeyedSubscript:v6];
+    [v17 setObject:null forKeyedSubscript:v6];
   }
 }
 
@@ -447,35 +447,35 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   }
 }
 
-- (void)synchronouslySeekToDesiredTime:(id *)a3 updatePixelBufferSource:(BOOL)a4
+- (void)synchronouslySeekToDesiredTime:(id *)time updatePixelBufferSource:(BOOL)source
 {
-  v4 = a4;
+  sourceCopy = source;
   memset(&v7[1], 0, sizeof($3CC8671D27C23BF42ADDB32F2B5E48AE));
-  v7[0] = *a3;
+  v7[0] = *time;
   [(PXGDisplayAssetVideoPresentationController *)self _videoSessionTimeConvertedFromTime:v7];
-  v6 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
   v7[0] = v7[1];
-  [v6 seekToExactTime:v7 updatePixelBuffer:v4 waitUntilComplete:1];
+  [videoSession seekToExactTime:v7 updatePixelBuffer:sourceCopy waitUntilComplete:1];
 }
 
-- (void)_performSeekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5
+- (void)_performSeekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after
 {
-  v9 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-  if ([v9 isReadyForSeeking])
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  if ([videoSession isReadyForSeeking])
   {
-    v15 = *&a3->var0;
-    var3 = a3->var3;
+    v15 = *&time->var0;
+    var3 = time->var3;
     [(PXGDisplayAssetVideoPresentationController *)self _videoSessionTimeConvertedFromTime:&v15];
-    *&a3->var0 = v17;
+    *&time->var0 = v17;
     v10 = v18;
-    a3->var3 = v18;
-    v17 = *&a3->var0;
+    time->var3 = v18;
+    v17 = *&time->var0;
     v18 = v10;
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    v13 = *&a5->var0;
-    v14 = a5->var3;
-    [v9 seekToTime:&v17 toleranceBefore:&v15 toleranceAfter:&v13 completionHandler:0];
+    v15 = *&before->var0;
+    var3 = before->var3;
+    v13 = *&after->var0;
+    v14 = after->var3;
+    [videoSession seekToTime:&v17 toleranceBefore:&v15 toleranceAfter:&v13 completionHandler:0];
     v17 = *MEMORY[0x1E6960C70];
     v12 = v17;
     v18 = *(MEMORY[0x1E6960C70] + 16);
@@ -493,33 +493,33 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
 
   else
   {
-    v17 = *&a3->var0;
-    v18 = a3->var3;
+    v17 = *&time->var0;
+    v18 = time->var3;
     [(PXGDisplayAssetVideoPresentationController *)self setPendingSeekTime:&v17];
-    v17 = *&a4->var0;
-    v18 = a4->var3;
+    v17 = *&before->var0;
+    v18 = before->var3;
     [(PXGDisplayAssetVideoPresentationController *)self setPendingSeekToleranceBefore:&v17];
-    v17 = *&a5->var0;
-    v18 = a5->var3;
+    v17 = *&after->var0;
+    v18 = after->var3;
     [(PXGDisplayAssetVideoPresentationController *)self setPendingSeekToleranceAfter:&v17];
   }
 }
 
-- (void)setDesiredTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5
+- (void)setDesiredTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after
 {
-  var3 = a3->var3;
-  *&self->_desiredTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_desiredTime.value = *&time->var0;
   self->_desiredTime.epoch = var3;
   [(PXGDisplayAssetVideoPresentationController *)self signalChange:16];
-  v12 = *a3;
-  v11 = *a4;
-  v10 = *a5;
+  v12 = *time;
+  v11 = *before;
+  v10 = *after;
   [(PXGDisplayAssetVideoPresentationController *)self _performSeekToTime:&v12 toleranceBefore:&v11 toleranceAfter:&v10];
 }
 
-- (void)setDesiredTime:(id *)a3
+- (void)setDesiredTime:(id *)time
 {
-  v7 = *a3;
+  v7 = *time;
   v5 = *MEMORY[0x1E6960C88];
   v6 = *(MEMORY[0x1E6960C88] + 16);
   v3 = v5;
@@ -567,64 +567,64 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   return result;
 }
 
-- (void)setVolume:(float)a3 withFade:(BOOL)a4
+- (void)setVolume:(float)volume withFade:(BOOL)fade
 {
-  v4 = a4;
+  fadeCopy = fade;
   [(PXGDisplayAssetVideoPresentationController *)self volume];
-  if (*&v7 != a3)
+  if (*&v7 != volume)
   {
-    *&v7 = a3;
+    *&v7 = volume;
     [(PXGDisplayAssetVideoPresentationController *)self setVolume:v7];
-    [(PXGDisplayAssetVideoPresentationController *)self setShouldFadeVolumeChange:v4];
+    [(PXGDisplayAssetVideoPresentationController *)self setShouldFadeVolumeChange:fadeCopy];
 
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setIsMixingAudioWithOthersEnabled:(BOOL)a3
+- (void)setIsMixingAudioWithOthersEnabled:(BOOL)enabled
 {
-  if (self->_isMixingAudioWithOthersEnabled != a3)
+  if (self->_isMixingAudioWithOthersEnabled != enabled)
   {
-    self->_isMixingAudioWithOthersEnabled = a3;
+    self->_isMixingAudioWithOthersEnabled = enabled;
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setIsDuckingOtherAudioEnabled:(BOOL)a3
+- (void)setIsDuckingOtherAudioEnabled:(BOOL)enabled
 {
-  if (self->_isDuckingOtherAudioEnabled != a3)
+  if (self->_isDuckingOtherAudioEnabled != enabled)
   {
-    self->_isDuckingOtherAudioEnabled = a3;
+    self->_isDuckingOtherAudioEnabled = enabled;
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setAudioSessionCategory:(id)a3
+- (void)setAudioSessionCategory:(id)category
 {
-  v5 = a3;
-  if (self->_audioSessionCategory != v5)
+  categoryCopy = category;
+  if (self->_audioSessionCategory != categoryCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_audioSessionCategory, a3);
+    v6 = categoryCopy;
+    objc_storeStrong(&self->_audioSessionCategory, category);
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
-    v5 = v6;
+    categoryCopy = v6;
   }
 }
 
-- (void)setDesiredPlaybackRate:(double)a3
+- (void)setDesiredPlaybackRate:(double)rate
 {
-  if (self->_desiredPlaybackRate != a3)
+  if (self->_desiredPlaybackRate != rate)
   {
-    self->_desiredPlaybackRate = a3;
+    self->_desiredPlaybackRate = rate;
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setIsCleanApertureCompensationEnabled:(BOOL)a3
+- (void)setIsCleanApertureCompensationEnabled:(BOOL)enabled
 {
-  if (self->_isCleanApertureCompensationEnabled != a3)
+  if (self->_isCleanApertureCompensationEnabled != enabled)
   {
-    self->_isCleanApertureCompensationEnabled = a3;
+    self->_isCleanApertureCompensationEnabled = enabled;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:2048];
   }
 }
@@ -637,11 +637,11 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   return isCrossfadingFromStillToVideoEnabled;
 }
 
-- (void)setIsCrossfadingFromStillToVideoEnabled:(BOOL)a3
+- (void)setIsCrossfadingFromStillToVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_videoPresentationStateLock);
-  if (self->_isCrossfadingFromStillToVideoEnabled == v3)
+  if (self->_isCrossfadingFromStillToVideoEnabled == enabledCopy)
   {
 
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
@@ -649,40 +649,40 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
 
   else
   {
-    self->_isCrossfadingFromStillToVideoEnabled = v3;
+    self->_isCrossfadingFromStillToVideoEnabled = enabledCopy;
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
 
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:256];
   }
 }
 
-- (void)setIsLoopingEnabled:(BOOL)a3
+- (void)setIsLoopingEnabled:(BOOL)enabled
 {
-  if (self->_isLoopingEnabled != a3)
+  if (self->_isLoopingEnabled != enabled)
   {
-    self->_isLoopingEnabled = a3;
+    self->_isLoopingEnabled = enabled;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:128];
 
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setPlaybackTimeRange:(id *)a3
+- (void)setPlaybackTimeRange:(id *)range
 {
   p_playbackTimeRange = &self->_playbackTimeRange;
-  v6 = *&a3->var0.var3;
-  *&range1.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&range1.start.value = *&range->var0.var0;
   *&range1.start.epoch = v6;
-  *&range1.duration.timescale = *&a3->var1.var1;
+  *&range1.duration.timescale = *&range->var1.var1;
   v7 = *&self->_playbackTimeRange.start.epoch;
   *&v10.start.value = *&self->_playbackTimeRange.start.value;
   *&v10.start.epoch = v7;
   *&v10.duration.timescale = *&self->_playbackTimeRange.duration.timescale;
   if (!CMTimeRangeEqual(&range1, &v10))
   {
-    v8 = *&a3->var0.var0;
-    v9 = *&a3->var1.var1;
-    *&p_playbackTimeRange->start.epoch = *&a3->var0.var3;
+    v8 = *&range->var0.var0;
+    v9 = *&range->var1.var1;
+    *&p_playbackTimeRange->start.epoch = *&range->var0.var3;
     *&p_playbackTimeRange->duration.timescale = v9;
     *&p_playbackTimeRange->start.value = v8;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:64];
@@ -690,20 +690,20 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   }
 }
 
-- (void)setResetsDesiredPlayStateOnHide:(BOOL)a3
+- (void)setResetsDesiredPlayStateOnHide:(BOOL)hide
 {
-  if (self->_resetsDesiredPlayStateOnHide != a3)
+  if (self->_resetsDesiredPlayStateOnHide != hide)
   {
-    self->_resetsDesiredPlayStateOnHide = a3;
+    self->_resetsDesiredPlayStateOnHide = hide;
   }
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
-    if (!a3 && [(PXGDisplayAssetVideoPresentationController *)self resetsDesiredPlayStateOnHide])
+    self->_isVisible = visible;
+    if (!visible && [(PXGDisplayAssetVideoPresentationController *)self resetsDesiredPlayStateOnHide])
     {
       [(PXGDisplayAssetVideoPresentationController *)self setDesiredPlayState:0];
     }
@@ -720,11 +720,11 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   return desiredPlayState;
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_videoPresentationStateLock);
-  if (self->_desiredPlayState == a3)
+  if (self->_desiredPlayState == state)
   {
 
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
@@ -732,7 +732,7 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
 
   else
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:2];
     v5 = [(PXGDisplayAssetVideoPresentationController *)self log];
@@ -743,7 +743,7 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
       if (os_signpost_enabled(v5))
       {
         v18 = 134217984;
-        v19 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXGDisplayAssetPresentationControllerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu ", &v18, 0xCu);
       }
     }
@@ -755,10 +755,10 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext2 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         desiredPlayState = self->_desiredPlayState;
         v18 = 134218240;
-        v19 = v11;
+        logContext = logContext2;
         v20 = 2048;
         v21 = desiredPlayState;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXGDisplayAssetPresentationControllerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v18, 0x16u);
@@ -772,10 +772,10 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext3 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         v17 = self->_desiredPlayState;
         v18 = 134218240;
-        v19 = v16;
+        logContext = logContext3;
         v20 = 2048;
         v21 = v17;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PXGDisplayAssetPresentationControllerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v18, 0x16u);
@@ -786,34 +786,34 @@ void __73__PXGDisplayAssetVideoPresentationController_startObservingBoundaryTime
   }
 }
 
-- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)a3
+- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)updates
 {
-  if (self->_shouldDisableAutomaticPixelBufferUpdates != a3)
+  if (self->_shouldDisableAutomaticPixelBufferUpdates != updates)
   {
-    self->_shouldDisableAutomaticPixelBufferUpdates = a3;
+    self->_shouldDisableAutomaticPixelBufferUpdates = updates;
     [(PXGDisplayAssetVideoPresentationController *)self _invalidateVideoSession];
   }
 }
 
-- (void)setShouldDisplayPreviousNonNullPixelBuffer:(BOOL)a3
+- (void)setShouldDisplayPreviousNonNullPixelBuffer:(BOOL)buffer
 {
-  if (self->_shouldDisplayPreviousNonNullPixelBuffer != a3)
+  if (self->_shouldDisplayPreviousNonNullPixelBuffer != buffer)
   {
-    self->_shouldDisplayPreviousNonNullPixelBuffer = a3;
+    self->_shouldDisplayPreviousNonNullPixelBuffer = buffer;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:8];
   }
 }
 
-- (void)_prerollCompletedSuccessfully:(BOOL)a3
+- (void)_prerollCompletedSuccessfully:(BOOL)successfully
 {
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__PXGDisplayAssetVideoPresentationController__prerollCompletedSuccessfully___block_invoke;
   v6[3] = &unk_1E7749428;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  successfullyCopy = successfully;
+  dispatch_async(accessQueue, v6);
 }
 
 uint64_t __76__PXGDisplayAssetVideoPresentationController__prerollCompletedSuccessfully___block_invoke(uint64_t a1)
@@ -837,13 +837,13 @@ uint64_t __76__PXGDisplayAssetVideoPresentationController__prerollCompletedSucce
   }
 }
 
-- (void)_performPrerollAtRate:(float)a3
+- (void)_performPrerollAtRate:(float)rate
 {
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-  v6 = [v5 videoPlayer];
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  videoPlayer = [videoSession videoPlayer];
 
-  [v6 rate];
-  if (*&v7 == 0.0 && [v6 status] == 1 && !-[PXGDisplayAssetVideoPresentationController isPendingSeekScheduled](self, "isPendingSeekScheduled"))
+  [videoPlayer rate];
+  if (*&v7 == 0.0 && [videoPlayer status] == 1 && !-[PXGDisplayAssetVideoPresentationController isPendingSeekScheduled](self, "isPendingSeekScheduled"))
   {
     objc_initWeak(&location, self);
     v9 = MEMORY[0x1E69E9820];
@@ -851,8 +851,8 @@ uint64_t __76__PXGDisplayAssetVideoPresentationController__prerollCompletedSucce
     v11 = __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___block_invoke;
     v12 = &unk_1E7747EB0;
     objc_copyWeak(&v13, &location);
-    *&v8 = a3;
-    [v6 prerollAtRate:&v9 completionHandler:v8];
+    *&v8 = rate;
+    [videoPlayer prerollAtRate:&v9 completionHandler:v8];
     [(PXGDisplayAssetVideoPresentationController *)self setPendingPrerollRate:0.0, v9, v10, v11, v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -860,7 +860,7 @@ uint64_t __76__PXGDisplayAssetVideoPresentationController__prerollCompletedSucce
 
   else
   {
-    *&v7 = a3;
+    *&v7 = rate;
     [(PXGDisplayAssetVideoPresentationController *)self setPendingPrerollRate:v7];
   }
 }
@@ -871,34 +871,34 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   [WeakRetained _prerollCompletedSuccessfully:a2];
 }
 
-- (void)prerollForImmediatePlaybackAtRate:(float)a3 withMediaProvider:(id)a4
+- (void)prerollForImmediatePlaybackAtRate:(float)rate withMediaProvider:(id)provider
 {
-  [(PXGDisplayAssetVideoPresentationController *)self _setupPixelBufferSourceIfNeededWithMediaProvider:a4];
-  *&v6 = a3;
+  [(PXGDisplayAssetVideoPresentationController *)self _setupPixelBufferSourceIfNeededWithMediaProvider:provider];
+  *&v6 = rate;
 
   [(PXGDisplayAssetVideoPresentationController *)self _performPrerollAtRate:v6];
 }
 
-- (void)setVideoDuration:(id *)a3
+- (void)setVideoDuration:(id *)duration
 {
   p_videoDuration = &self->_videoDuration;
-  time1 = *a3;
+  time1 = *duration;
   videoDuration = self->_videoDuration;
   if (CMTimeCompare(&time1, &videoDuration))
   {
-    v6 = *&a3->var0;
-    p_videoDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_videoDuration->epoch = duration->var3;
     *&p_videoDuration->value = v6;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:1024];
   }
 }
 
-- (void)setIsAtEnd:(BOOL)a3
+- (void)setIsAtEnd:(BOOL)end
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_isAtEnd != a3)
+  if (self->_isAtEnd != end)
   {
-    self->_isAtEnd = a3;
+    self->_isAtEnd = end;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:512];
     v4 = [(PXGDisplayAssetVideoPresentationController *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
@@ -908,7 +908,7 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXGDisplayAssetPresentationControllerChangedIsAtEnd", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -920,10 +920,10 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext2 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         isAtEnd = self->_isAtEnd;
         v17 = 134218240;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2048;
         v20 = isAtEnd;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXGDisplayAssetPresentationControllerChangedIsAtEnd", "Context=%{signpost.telemetry:string2}lu %ld", &v17, 0x16u);
@@ -937,10 +937,10 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext3 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         v16 = self->_isAtEnd;
         v17 = 134218240;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2048;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXGDisplayAssetPresentationControllerChangedIsAtEnd", "Context=%{signpost.telemetry:string2}lu %ld", &v17, 0x16u);
@@ -949,11 +949,11 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   }
 }
 
-- (void)setIsReadyForImmediatePlayback:(BOOL)a3
+- (void)setIsReadyForImmediatePlayback:(BOOL)playback
 {
-  if (self->_isReadyForImmediatePlayback != a3)
+  if (self->_isReadyForImmediatePlayback != playback)
   {
-    self->_isReadyForImmediatePlayback = a3;
+    self->_isReadyForImmediatePlayback = playback;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:1];
   }
 }
@@ -966,11 +966,11 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   return actualPlayState;
 }
 
-- (void)setActualPlayState:(int64_t)a3
+- (void)setActualPlayState:(int64_t)state
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_videoPresentationStateLock);
-  if (self->_actualPlayState == a3)
+  if (self->_actualPlayState == state)
   {
 
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
@@ -978,7 +978,7 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
 
   else
   {
-    self->_actualPlayState = a3;
+    self->_actualPlayState = state;
     os_unfair_lock_unlock(&self->_videoPresentationStateLock);
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:4];
     v5 = [(PXGDisplayAssetVideoPresentationController *)self log];
@@ -989,7 +989,7 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       if (os_signpost_enabled(v5))
       {
         v18 = 134217984;
-        v19 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXGDisplayAssetPresentationControllerChangedActualPlayState", "Context=%{signpost.telemetry:string2}lu ", &v18, 0xCu);
       }
     }
@@ -1001,10 +1001,10 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext2 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         actualPlayState = self->_actualPlayState;
         v18 = 134218240;
-        v19 = v11;
+        logContext = logContext2;
         v20 = 2048;
         v21 = actualPlayState;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXGDisplayAssetPresentationControllerChangedActualPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v18, 0x16u);
@@ -1018,10 +1018,10 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext3 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
         v17 = self->_actualPlayState;
         v18 = 134218240;
-        v19 = v16;
+        logContext = logContext3;
         v20 = 2048;
         v21 = v17;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PXGDisplayAssetPresentationControllerChangedActualPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v18, 0x16u);
@@ -1030,15 +1030,15 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   }
 }
 
-- (void)setActualTime:(id *)a3
+- (void)setActualTime:(id *)time
 {
   p_actualTime = &self->_actualTime;
-  time1 = *a3;
+  time1 = *time;
   actualTime = self->_actualTime;
   if (CMTimeCompare(&time1, &actualTime))
   {
-    v6 = *&a3->var0;
-    p_actualTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_actualTime->epoch = time->var3;
     *&p_actualTime->value = v6;
     [(PXGDisplayAssetVideoPresentationController *)self signalChange:32];
   }
@@ -1046,23 +1046,23 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
 
 - (void)_updatePresentationControllerState
 {
-  v3 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-  v4 = [v3 playState];
-  if ((v4 - 1) > 4)
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  playState = [videoSession playState];
+  if ((playState - 1) > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1A5383420[v4 - 1];
+    v5 = qword_1A5383420[playState - 1];
   }
 
   v18 = 0uLL;
   v19 = 0;
-  if (v3)
+  if (videoSession)
   {
-    [v3 currentTime];
+    [videoSession currentTime];
   }
 
   v14 = v18;
@@ -1070,15 +1070,15 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   [(PXGDisplayAssetVideoPresentationController *)self _timeConvertedFromVideoSessionTime:&v14];
   v18 = v16;
   v19 = v17;
-  v6 = [v3 isAtEnd];
+  isAtEnd = [videoSession isAtEnd];
   v16 = 0uLL;
   v17 = 0;
-  if (v3)
+  if (videoSession)
   {
-    [v3 videoDuration];
+    [videoSession videoDuration];
   }
 
-  v7 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__PXGDisplayAssetVideoPresentationController__updatePresentationControllerState__block_invoke;
@@ -1087,10 +1087,10 @@ void __68__PXGDisplayAssetVideoPresentationController__performPrerollAtRate___bl
   block[5] = v5;
   v9 = v18;
   v10 = v19;
-  v13 = v6;
+  v13 = isAtEnd;
   v11 = v16;
   v12 = v17;
-  dispatch_async(v7, block);
+  dispatch_async(accessQueue, block);
 }
 
 uint64_t __80__PXGDisplayAssetVideoPresentationController__updatePresentationControllerState__block_invoke(uint64_t a1)
@@ -1125,15 +1125,15 @@ void __80__PXGDisplayAssetVideoPresentationController__updatePresentationControl
 
 - (void)_updateVideoSession
 {
-  v3 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
 
-  if (v3)
+  if (videoSession)
   {
     desiredPlayState = self->_desiredPlayState;
-    v5 = [(PXGDisplayAssetVideoPresentationController *)self isVisible];
+    isVisible = [(PXGDisplayAssetVideoPresentationController *)self isVisible];
     v18 = 0u;
     v19 = 0u;
-    v6 = desiredPlayState == 1 && v5;
+    v6 = desiredPlayState == 1 && isVisible;
     v17 = 0uLL;
     [(PXGDisplayAssetVideoPresentationController *)self playbackTimeRange];
     v16[0] = v17;
@@ -1143,7 +1143,7 @@ void __80__PXGDisplayAssetVideoPresentationController__updatePresentationControl
     v17 = v16[3];
     v18 = v16[4];
     v19 = v16[5];
-    v7 = [(PXGDisplayAssetVideoPresentationController *)self isLoopingEnabled];
+    isLoopingEnabled = [(PXGDisplayAssetVideoPresentationController *)self isLoopingEnabled];
     if (BYTE12(v17))
     {
       v8 = 0;
@@ -1158,7 +1158,7 @@ void __80__PXGDisplayAssetVideoPresentationController__updatePresentationControl
       v8 = 0;
     }
 
-    v9 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+    videoSession2 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__PXGDisplayAssetVideoPresentationController__updateVideoSession__block_invoke;
@@ -1168,9 +1168,9 @@ void __80__PXGDisplayAssetVideoPresentationController__updatePresentationControl
     v11 = v17;
     v12 = v18;
     v13 = v19;
-    v14 = v7;
+    v14 = isLoopingEnabled;
     v15 = v8;
-    [v9 performChanges:v10 withPresentationContext:0 presenter:self->_videoSessionPresenter];
+    [videoSession2 performChanges:v10 withPresentationContext:0 presenter:self->_videoSessionPresenter];
   }
 }
 
@@ -1220,18 +1220,18 @@ LABEL_6:
   [v3 setAudioSessionCategory:v12 mode:*MEMORY[0x1E6958130] routeSharingPolicy:0 options:v11];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6.receiver = self;
   v6.super_class = PXGDisplayAssetVideoPresentationController;
-  [(PXGDisplayAssetVideoPresentationController *)&v6 performChanges:v4];
+  [(PXGDisplayAssetVideoPresentationController *)&v6 performChanges:changesCopy];
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoSessionTimeRangeConvertedFromTimeRange:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_videoSessionTimeRangeConvertedFromTimeRange:(SEL)range
 {
   result = [(PXGDisplayAssetVideoPresentationController *)self _timeConversionNeeded];
   if (result && (a4->var0.var2 & 1) != 0 && (a4->var1.var2 & 1) != 0 && !a4->var1.var3 && (a4->var1.var0 & 0x8000000000000000) == 0)
@@ -1255,7 +1255,7 @@ LABEL_6:
   return result;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_timeRangeConvertedFromVideoSessionTimeRange:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_timeRangeConvertedFromVideoSessionTimeRange:(SEL)range
 {
   result = [(PXGDisplayAssetVideoPresentationController *)self _timeConversionNeeded];
   if (result && (a4->var0.var2 & 1) != 0 && (a4->var1.var2 & 1) != 0 && !a4->var1.var3 && (a4->var1.var0 & 0x8000000000000000) == 0)
@@ -1279,16 +1279,16 @@ LABEL_6:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_videoSessionTimeConvertedFromTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_videoSessionTimeConvertedFromTime:(SEL)time
 {
   result = [(PXGDisplayAssetVideoPresentationController *)self _timeConversionNeeded];
   if (result)
   {
-    v8 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-    v9 = v8;
-    if (v8)
+    videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+    v9 = videoSession;
+    if (videoSession)
     {
-      [v8 segmentTimeRangeOfOriginalVideo];
+      [videoSession segmentTimeRangeOfOriginalVideo];
     }
 
     else
@@ -1301,11 +1301,11 @@ LABEL_6:
 
     if (v10)
     {
-      v11 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-      v12 = v11;
-      if (v11)
+      videoSession2 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+      v12 = videoSession2;
+      if (videoSession2)
       {
-        [v11 segmentTimeRangeOfOriginalVideo];
+        [videoSession2 segmentTimeRangeOfOriginalVideo];
       }
 
       else
@@ -1322,11 +1322,11 @@ LABEL_6:
 
     else
     {
-      v13 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-      v14 = v13;
-      if (v13)
+      videoSession3 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+      v14 = videoSession3;
+      if (videoSession3)
       {
-        [v13 segmentTimeRangeOfOriginalVideo];
+        [videoSession3 segmentTimeRangeOfOriginalVideo];
       }
 
       else
@@ -1349,16 +1349,16 @@ LABEL_6:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeConvertedFromVideoSessionTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_timeConvertedFromVideoSessionTime:(SEL)time
 {
   result = [(PXGDisplayAssetVideoPresentationController *)self _timeConversionNeeded];
   if (result)
   {
-    v8 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-    v9 = v8;
-    if (v8)
+    videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+    v9 = videoSession;
+    if (videoSession)
     {
-      [v8 segmentTimeRangeOfOriginalVideo];
+      [videoSession segmentTimeRangeOfOriginalVideo];
     }
 
     else
@@ -1385,51 +1385,51 @@ LABEL_6:
 
 - (BOOL)_timeConversionNeeded
 {
-  v2 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-  v3 = [v2 isSegmentOfOriginalVideo];
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  isSegmentOfOriginalVideo = [videoSession isSegmentOfOriginalVideo];
 
-  return v3;
+  return isSegmentOfOriginalVideo;
 }
 
-- (void)_setupPixelBufferSourceIfNeededWithMediaProvider:(id)a3
+- (void)_setupPixelBufferSourceIfNeededWithMediaProvider:(id)provider
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self pixelBufferSource];
+  providerCopy = provider;
+  pixelBufferSource = [(PXGDisplayAssetVideoPresentationController *)self pixelBufferSource];
 
-  if (!v5)
+  if (!pixelBufferSource)
   {
-    [(PXGDisplayAssetVideoPresentationController *)self _setupVideoSessionIfNeededWithMediaProvider:v4];
+    [(PXGDisplayAssetVideoPresentationController *)self _setupVideoSessionIfNeededWithMediaProvider:providerCopy];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(PXGDisplayAssetVideoPresentationController *)self options];
-    v7 = [v6 strategies];
+    options = [(PXGDisplayAssetVideoPresentationController *)self options];
+    strategies = [options strategies];
 
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [strategies countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v15;
-      v11 = 4;
+      quality = 4;
       do
       {
         for (i = 0; i != v9; ++i)
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(strategies);
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
-          if ([v13 quality] < v11)
+          if ([v13 quality] < quality)
           {
-            v11 = [v13 quality];
+            quality = [v13 quality];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [strategies countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -1440,20 +1440,20 @@ LABEL_6:
   }
 }
 
-- (void)_setupVideoSessionIfNeededWithMediaProvider:(id)a3
+- (void)_setupVideoSessionIfNeededWithMediaProvider:(id)provider
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-  v6 = [v5 contentProvider];
+  providerCopy = provider;
+  videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+  contentProvider = [videoSession contentProvider];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 mediaProvider];
-    v8 = v7 == v4;
+    mediaProvider = [contentProvider mediaProvider];
+    v8 = mediaProvider == providerCopy;
 
-    if (!v4)
+    if (!providerCopy)
     {
       goto LABEL_20;
     }
@@ -1462,7 +1462,7 @@ LABEL_6:
   else
   {
     v8 = 0;
-    if (!v4)
+    if (!providerCopy)
     {
       goto LABEL_20;
     }
@@ -1470,10 +1470,10 @@ LABEL_6:
 
   if (!v8)
   {
-    v9 = [(PXGDisplayAssetVideoPresentationController *)self videoSessionManager];
-    v10 = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
-    v11 = [(PXGDisplayAssetVideoPresentationController *)self options];
-    v12 = [v9 videoSessionForAsset:v10 withOptions:v11 mediaProvider:v4];
+    videoSessionManager = [(PXGDisplayAssetVideoPresentationController *)self videoSessionManager];
+    displayAsset = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
+    options = [(PXGDisplayAssetVideoPresentationController *)self options];
+    v12 = [videoSessionManager videoSessionForAsset:displayAsset withOptions:options mediaProvider:providerCopy];
 
     v13 = [(PXGDisplayAssetVideoPresentationController *)self log];
     v14 = os_signpost_id_make_with_pointer(v13, self);
@@ -1482,16 +1482,16 @@ LABEL_6:
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXGDisplayAssetVideoPresentationController *)self logContext];
-        v17 = [v12 logContext];
-        v18 = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
-        v19 = [v18 uuid];
+        logContext = [(PXGDisplayAssetVideoPresentationController *)self logContext];
+        logContext2 = [v12 logContext];
+        displayAsset2 = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
+        uuid = [displayAsset2 uuid];
         *buf = 134218498;
-        *&buf[4] = v16;
+        *&buf[4] = logContext;
         *&buf[12] = 2050;
-        *&buf[14] = v17;
+        *&buf[14] = logContext2;
         *&buf[22] = 2114;
-        v33 = v19;
+        v33 = uuid;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_EVENT, v15, "PXGDisplayAssetVideoPresentationControllerCreatedVideoSession", "Context=%{signpost.telemetry:string2}lu videoSession=%{public}llu, asset.uuid=%{public}@", buf, 0x20u);
       }
     }
@@ -1502,8 +1502,8 @@ LABEL_6:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-    v21 = [v20 copy];
+    timeObserversByTime = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+    v21 = [timeObserversByTime copy];
 
     v22 = [v21 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v22)
@@ -1553,14 +1553,14 @@ LABEL_20:
   [(PXGDisplayAssetVideoPresentationController *)self setPixelBufferSourceCounter:[(PXGDisplayAssetVideoPresentationController *)self pixelBufferSourceCounter]- 1];
   if ([(PXGDisplayAssetVideoPresentationController *)self pixelBufferSourceCounter]<= 0)
   {
-    v19 = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
-    [v19 unregisterChangeObserver:self context:VideoSessionObservationContext];
+    videoSession = [(PXGDisplayAssetVideoPresentationController *)self videoSession];
+    [videoSession unregisterChangeObserver:self context:VideoSessionObservationContext];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v3 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-    v4 = [v3 copy];
+    timeObserversByTime = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+    v4 = [timeObserversByTime copy];
 
     v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
@@ -1577,20 +1577,20 @@ LABEL_20:
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          timeObserversByTime2 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+          v11 = [timeObserversByTime2 objectForKeyedSubscript:v9];
 
-          v12 = [MEMORY[0x1E695DFB0] null];
-          v13 = [v11 isEqual:v12];
+          null = [MEMORY[0x1E695DFB0] null];
+          v13 = [v11 isEqual:null];
 
           if ((v13 & 1) == 0)
           {
-            v14 = [v19 videoPlayer];
-            [v14 removeTimeObserver:v11];
+            videoPlayer = [videoSession videoPlayer];
+            [videoPlayer removeTimeObserver:v11];
 
-            v15 = [MEMORY[0x1E695DFB0] null];
-            v16 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
-            [v16 setObject:v15 forKeyedSubscript:v9];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            timeObserversByTime3 = [(PXGDisplayAssetVideoPresentationController *)self timeObserversByTime];
+            [timeObserversByTime3 setObject:null2 forKeyedSubscript:v9];
           }
         }
 
@@ -1600,13 +1600,13 @@ LABEL_20:
       while (v6);
     }
 
-    v17 = [v19 videoPlayer];
-    [v17 cancelPendingPrerolls];
+    videoPlayer2 = [videoSession videoPlayer];
+    [videoPlayer2 cancelPendingPrerolls];
 
-    if (v19)
+    if (videoSession)
     {
-      v18 = [(PXGDisplayAssetVideoPresentationController *)self videoSessionManager];
-      [v18 checkInVideoSession:v19];
+      videoSessionManager = [(PXGDisplayAssetVideoPresentationController *)self videoSessionManager];
+      [videoSessionManager checkInVideoSession:videoSession];
 
       [(PXGDisplayAssetVideoPresentationController *)self setVideoSession:0];
     }
@@ -1615,32 +1615,32 @@ LABEL_20:
 
 - (void)recyclePixelBufferSource
 {
-  v3 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PXGDisplayAssetVideoPresentationController_recyclePixelBufferSource__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(accessQueue, block);
 }
 
-- (id)pixelBufferSourceWithMediaProvider:(id)a3
+- (id)pixelBufferSourceWithMediaProvider:(id)provider
 {
-  [(PXGDisplayAssetVideoPresentationController *)self _setupPixelBufferSourceIfNeededWithMediaProvider:a3];
+  [(PXGDisplayAssetVideoPresentationController *)self _setupPixelBufferSourceIfNeededWithMediaProvider:provider];
   [(PXGDisplayAssetVideoPresentationController *)self setPixelBufferSourceCounter:[(PXGDisplayAssetVideoPresentationController *)self pixelBufferSourceCounter]+ 1];
 
   return [(PXGDisplayAssetVideoPresentationController *)self pixelBufferSource];
 }
 
-- (id)placeholderImageWithMediaProvider:(id)a3
+- (id)placeholderImageWithMediaProvider:(id)provider
 {
-  v4 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
+  delegate = [(PXGDisplayAssetVideoPresentationController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
-    v7 = [v6 placeholderImageForForPresentationController:self];
+    delegate2 = [(PXGDisplayAssetVideoPresentationController *)self delegate];
+    v7 = [delegate2 placeholderImageForForPresentationController:self];
   }
 
   else
@@ -1651,25 +1651,25 @@ LABEL_20:
   return v7;
 }
 
-- (id)videoSessionWithMediaProvider:(id)a3
+- (id)videoSessionWithMediaProvider:(id)provider
 {
-  [(PXGDisplayAssetVideoPresentationController *)self _setupVideoSessionIfNeededWithMediaProvider:a3];
+  [(PXGDisplayAssetVideoPresentationController *)self _setupVideoSessionIfNeededWithMediaProvider:provider];
 
   return [(PXGDisplayAssetVideoPresentationController *)self videoSession];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
+  delegateCopy = delegate;
+  accessQueue = [(PXGDisplayAssetVideoPresentationController *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
+  dispatch_async(accessQueue, v7);
 }
 
 void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke(uint64_t a1)
@@ -1691,9 +1691,9 @@ void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
-  v7 = [v6 uuid];
-  v8 = [v3 stringWithFormat:@"<%@: %p asset:%@>", v5, self, v7];
+  displayAsset = [(PXGDisplayAssetVideoPresentationController *)self displayAsset];
+  uuid = [displayAsset uuid];
+  v8 = [v3 stringWithFormat:@"<%@: %p asset:%@>", v5, self, uuid];
 
   return v8;
 }
@@ -1706,33 +1706,33 @@ void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke
   [(PXGDisplayAssetVideoPresentationController *)&v3 dealloc];
 }
 
-- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)a3 accessQueue:(id)a4
+- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)asset accessQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  assetCopy = asset;
   v8 = objc_alloc_init(PXVideoSessionManagerDisplayAssetOptions);
   v9 = +[PXVideoSessionManager sharedInstance];
-  v10 = [(PXGDisplayAssetVideoPresentationController *)self initWithDisplayAsset:v7 accessQueue:v6 videoSessionManager:v9 options:v8 loadingPriority:0];
+  v10 = [(PXGDisplayAssetVideoPresentationController *)self initWithDisplayAsset:assetCopy accessQueue:queueCopy videoSessionManager:v9 options:v8 loadingPriority:0];
 
   return v10;
 }
 
-- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)a3 accessQueue:(id)a4 videoSessionManager:(id)a5 options:(id)a6 loadingPriority:(int64_t)a7
+- (PXGDisplayAssetVideoPresentationController)initWithDisplayAsset:(id)asset accessQueue:(id)queue videoSessionManager:(id)manager options:(id)options loadingPriority:(int64_t)priority
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  assetCopy = asset;
+  queueCopy = queue;
+  managerCopy = manager;
+  optionsCopy = options;
   v33.receiver = self;
   v33.super_class = PXGDisplayAssetVideoPresentationController;
   v17 = [(PXGDisplayAssetVideoPresentationController *)&v33 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_displayAsset, a3);
-    if (v14)
+    objc_storeStrong(&v17->_displayAsset, asset);
+    if (queueCopy)
     {
-      v19 = v14;
+      v19 = queueCopy;
       accessQueue = v18->_accessQueue;
       v18->_accessQueue = v19;
     }
@@ -1745,8 +1745,8 @@ void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke
       v18->_accessQueue = v21;
     }
 
-    objc_storeStrong(&v18->_videoSessionManager, a5);
-    objc_storeStrong(&v18->_options, a6);
+    objc_storeStrong(&v18->_videoSessionManager, manager);
+    objc_storeStrong(&v18->_options, options);
     v18->_videoSessionPresenter = &v18->_videoSessionPresenter;
     v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
     timeObserversByTime = v18->_timeObserversByTime;
@@ -1765,7 +1765,7 @@ void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke
     *&v18->_playbackTimeRange.duration.timescale = *(v27 + 32);
     *&v18->_playbackStartTime.value = v32;
     v18->_playbackStartTime.epoch = v26;
-    v18->_loadingPriority = a7;
+    v18->_loadingPriority = priority;
     v18->_isVisible = 1;
     v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p", v18];
     identifier = v18->_identifier;
@@ -1780,8 +1780,8 @@ void __58__PXGDisplayAssetVideoPresentationController_setDelegate___block_invoke
 
 - (PXGDisplayAssetVideoPresentationController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetVideoPresentationController.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXGDisplayAssetVideoPresentationController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDisplayAssetVideoPresentationController.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXGDisplayAssetVideoPresentationController init]"}];
 
   abort();
 }

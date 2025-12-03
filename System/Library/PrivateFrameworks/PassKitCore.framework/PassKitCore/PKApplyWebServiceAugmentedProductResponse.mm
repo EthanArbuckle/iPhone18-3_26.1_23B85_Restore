@@ -1,20 +1,20 @@
 @interface PKApplyWebServiceAugmentedProductResponse
-- (PKApplyWebServiceAugmentedProductResponse)initWithData:(id)a3;
+- (PKApplyWebServiceAugmentedProductResponse)initWithData:(id)data;
 - (PKPaymentSetupProduct)product;
 - (id)_generateProduct;
 @end
 
 @implementation PKApplyWebServiceAugmentedProductResponse
 
-- (PKApplyWebServiceAugmentedProductResponse)initWithData:(id)a3
+- (PKApplyWebServiceAugmentedProductResponse)initWithData:(id)data
 {
   v7.receiver = self;
   v7.super_class = PKApplyWebServiceAugmentedProductResponse;
-  v3 = [(PKWebServiceResponse *)&v7 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v7 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKApplyWebServiceAugmentedProductResponse *)v3 _generateProduct];
+    _generateProduct = [(PKApplyWebServiceAugmentedProductResponse *)v3 _generateProduct];
   }
 
   return v4;
@@ -25,9 +25,9 @@
   product = self->_product;
   if (!product)
   {
-    v4 = [(PKApplyWebServiceAugmentedProductResponse *)self _generateProduct];
+    _generateProduct = [(PKApplyWebServiceAugmentedProductResponse *)self _generateProduct];
     v5 = self->_product;
-    self->_product = v4;
+    self->_product = _generateProduct;
 
     product = self->_product;
   }
@@ -38,11 +38,11 @@
 - (id)_generateProduct
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(PKWebServiceResponse *)self JSONObject];
+  jSONObject = [(PKWebServiceResponse *)self JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 objectForKeyedSubscript:@"product"];
+    v3 = [jSONObject objectForKeyedSubscript:@"product"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

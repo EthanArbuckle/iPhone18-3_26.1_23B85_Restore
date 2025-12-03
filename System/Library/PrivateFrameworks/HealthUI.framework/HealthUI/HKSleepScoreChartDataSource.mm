@@ -1,8 +1,8 @@
 @interface HKSleepScoreChartDataSource
 - (HKSleepScoreChartDataSource)init;
-- (HKSleepScoreChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4;
-- (id)mappingFunctionForContext:(id)a3;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (HKSleepScoreChartDataSource)initWithDataType:(id)type healthStore:(id)store;
+- (id)mappingFunctionForContext:(id)context;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryCalendar;
 - (id)queryDescription;
 @end
@@ -12,10 +12,10 @@
 - (id)queryDescription
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   sub_1C3D20CD4();
   MEMORY[0x1C692F800](58, 0xE100000000000000);
-  MEMORY[0x1C692F800](*(&v3->super.super.isa + OBJC_IVAR___HKSleepScoreChartDataSource_debugIdentifier), *(&v3->super._healthStore + OBJC_IVAR___HKSleepScoreChartDataSource_debugIdentifier));
+  MEMORY[0x1C692F800](*(&selfCopy->super.super.isa + OBJC_IVAR___HKSleepScoreChartDataSource_debugIdentifier), *(&selfCopy->super._healthStore + OBJC_IVAR___HKSleepScoreChartDataSource_debugIdentifier));
 
   v4 = sub_1C3D200C4();
 
@@ -35,14 +35,14 @@
   return v8;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1C3CB1404(v8, sub_1C3CB46F8, v7);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1C3CB1404(requestCopy, sub_1C3CB46F8, v7);
 
   sub_1C3C27CB4(0, &qword_1EC080DD8);
   v10 = sub_1C3D202A4();
@@ -50,16 +50,16 @@
   return v10;
 }
 
-- (id)mappingFunctionForContext:(id)a3
+- (id)mappingFunctionForContext:(id)context
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C3D20774();
   swift_unknownObjectRelease();
   sub_1C3C233B8(&v8, v13);
   v5 = swift_allocObject();
   sub_1C3C233B8(v13, (v5 + 16));
-  *(v5 + 48) = v4;
+  *(v5 + 48) = selfCopy;
   v11 = sub_1C3CB489C;
   v12 = v5;
   *&v8 = MEMORY[0x1E69E9820];
@@ -71,7 +71,7 @@
   return v6;
 }
 
-- (HKSleepScoreChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4
+- (HKSleepScoreChartDataSource)initWithDataType:(id)type healthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

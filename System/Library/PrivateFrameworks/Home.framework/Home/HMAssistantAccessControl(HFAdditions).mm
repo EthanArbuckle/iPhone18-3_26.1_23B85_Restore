@@ -19,10 +19,10 @@
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "%@ Is Current User the Owner?: %{BOOL}d", buf, 0x12u);
   }
 
-  if ([a1 isEnabled])
+  if ([self isEnabled])
   {
-    v10 = [a1 accessories];
-    v11 = [v10 count] != 0;
+    accessories = [self accessories];
+    isEnabled4 = [accessories count] != 0;
 
     if (!a4)
     {
@@ -37,32 +37,32 @@ LABEL_11:
     }
 
     v20 = NSStringFromSelector(a2);
-    v21 = [a1 accessories];
-    v22 = [v21 count];
-    v23 = [a1 isEnabled];
+    accessories2 = [self accessories];
+    v22 = [accessories2 count];
+    isEnabled = [self isEnabled];
     *buf = 138413058;
     v44 = v20;
     v45 = 1024;
-    *v46 = v11;
+    *v46 = isEnabled4;
     *&v46[4] = 2048;
     *&v46[6] = v22;
     *&v46[14] = 1024;
-    *&v46[16] = v23;
+    *&v46[16] = isEnabled;
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d because (owner case) Owner has Siri (Assistant) accessories count = %lu, self.enabled = %{BOOL}d", buf, 0x22u);
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v11 = 0;
+  isEnabled4 = 0;
   if (a4)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  v12 = [a1 accessories];
-  v13 = [v12 count];
+  accessories3 = [self accessories];
+  v13 = [accessories3 count];
 
   if (!v13)
   {
@@ -79,13 +79,13 @@ LABEL_5:
     goto LABEL_23;
   }
 
-  v14 = [a1 accessories];
-  v15 = [v14 na_filter:&__block_literal_global_130];
+  accessories4 = [self accessories];
+  v15 = [accessories4 na_filter:&__block_literal_global_130];
 
   if (![v15 count])
   {
-    v26 = [a1 accessories];
-    v27 = [v26 na_filter:&__block_literal_global_3_19];
+    accessories5 = [self accessories];
+    v27 = [accessories5 na_filter:&__block_literal_global_3_19];
 
     v28 = HFLogForCategory(0);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -93,8 +93,8 @@ LABEL_5:
       v29 = NSStringFromSelector(a2);
       v30 = [v15 count];
       v31 = [v27 count];
-      v32 = [a1 accessories];
-      v33 = [v32 count];
+      accessories6 = [self accessories];
+      v33 = [accessories6 count];
       *buf = 138413570;
       v44 = v29;
       v45 = 2048;
@@ -117,8 +117,8 @@ LABEL_5:
 
     v34 = [v27 count];
     v35 = [v15 count]+ v34;
-    v36 = [a1 accessories];
-    v37 = [v36 count];
+    accessories7 = [self accessories];
+    v37 = [accessories7 count];
 
     if (v35 != v37)
     {
@@ -133,7 +133,7 @@ LABEL_5:
     v25 = [v27 na_any:v41];
 
 LABEL_23:
-    v11 = [a1 isEnabled] & v25;
+    isEnabled4 = [self isEnabled] & v25;
     v15 = HFLogForCategory(0);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -141,15 +141,15 @@ LABEL_23:
     }
 
     v20 = NSStringFromSelector(a2);
-    v38 = [a1 isEnabled];
+    isEnabled2 = [self isEnabled];
     *buf = 138413058;
     v44 = v20;
     v45 = 1024;
-    *v46 = v11;
+    *v46 = isEnabled4;
     *&v46[4] = 1024;
     *&v46[6] = v25;
     *&v46[10] = 1024;
-    *&v46[12] = v38;
+    *&v46[12] = isEnabled2;
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d (non-owner case) At least one Siri accessory is on a supported Voice Recognition language = %{BOOL}d, & self.enabled = %{BOOL}d", buf, 0x1Eu);
     goto LABEL_25;
   }
@@ -158,22 +158,22 @@ LABEL_23:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NSStringFromSelector(a2);
-    v18 = [a1 isEnabled];
+    isEnabled3 = [self isEnabled];
     v19 = [v15 count];
     *buf = 138412802;
     v44 = v17;
     v45 = 1024;
-    *v46 = v18;
+    *v46 = isEnabled3;
     *&v46[4] = 2048;
     *&v46[6] = v19;
     _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d (non-owner case) Some Siri accessories don't support Voice Recognition (%lu), so we'll rely on self.enabled", buf, 0x1Cu);
   }
 
-  v11 = [a1 isEnabled];
+  isEnabled4 = [self isEnabled];
 LABEL_26:
 
   v39 = *MEMORY[0x277D85DE8];
-  return v11;
+  return isEnabled4;
 }
 
 @end

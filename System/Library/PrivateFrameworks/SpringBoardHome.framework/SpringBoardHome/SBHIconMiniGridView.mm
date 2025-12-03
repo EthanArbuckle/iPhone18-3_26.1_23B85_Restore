@@ -1,20 +1,20 @@
 @interface SBHIconMiniGridView
-- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)a3;
-- (SBHIconMiniGridView)initWithFrame:(CGRect)a3;
-- (void)enumerateIconsAndViewsUsingBlock:(id)a3;
-- (void)replaceViewForIcon:(id)a3 withView:(id)a4;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setIconTintColor:(id)a3;
-- (void)setView:(id)a3 forIcon:(id)a4;
+- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)appearance;
+- (SBHIconMiniGridView)initWithFrame:(CGRect)frame;
+- (void)enumerateIconsAndViewsUsingBlock:(id)block;
+- (void)replaceViewForIcon:(id)icon withView:(id)view;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setIconTintColor:(id)color;
+- (void)setView:(id)view forIcon:(id)icon;
 @end
 
 @implementation SBHIconMiniGridView
 
-- (SBHIconMiniGridView)initWithFrame:(CGRect)a3
+- (SBHIconMiniGridView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SBHIconMiniGridView;
-  result = [(SBHIconMiniGridView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SBHIconMiniGridView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_contentVisibility = 0;
@@ -23,47 +23,47 @@
   return result;
 }
 
-- (void)setView:(id)a3 forIcon:(id)a4
+- (void)setView:(id)view forIcon:(id)icon
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  iconCopy = icon;
   iconViews = self->_iconViews;
   if (!iconViews)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_iconViews;
-    self->_iconViews = v8;
+    self->_iconViews = weakToStrongObjectsMapTable;
 
     iconViews = self->_iconViews;
   }
 
-  [(NSMapTable *)iconViews setObject:v10 forKey:v6];
+  [(NSMapTable *)iconViews setObject:viewCopy forKey:iconCopy];
 }
 
-- (void)replaceViewForIcon:(id)a3 withView:(id)a4
+- (void)replaceViewForIcon:(id)icon withView:(id)view
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconMiniGridView *)self viewForIcon:v8];
+  iconCopy = icon;
+  viewCopy = view;
+  v7 = [(SBHIconMiniGridView *)self viewForIcon:iconCopy];
   if (v7)
   {
-    [v8 applyTreatmentsToMiniGridCellView:v6];
+    [iconCopy applyTreatmentsToMiniGridCellView:viewCopy];
     [v7 center];
     [v7 setCenter:?];
     [v7 bounds];
-    [v6 setBounds:?];
+    [viewCopy setBounds:?];
     [v7 removeFromSuperview];
-    [(SBHIconMiniGridView *)self addSubview:v6];
-    [(SBHIconMiniGridView *)self setView:v6 forIcon:v8];
+    [(SBHIconMiniGridView *)self addSubview:viewCopy];
+    [(SBHIconMiniGridView *)self setView:viewCopy forIcon:iconCopy];
   }
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconMiniGridView *)self imageAppearance];
-  v6 = [v5 appearanceWithTintColor:v4];
+  colorCopy = color;
+  imageAppearance = [(SBHIconMiniGridView *)self imageAppearance];
+  v6 = [imageAppearance appearanceWithTintColor:colorCopy];
   v7 = v6;
   if (v6)
   {
@@ -94,7 +94,7 @@
 
           if (isKindOfClass)
           {
-            [v13 setIconTintColor:v4];
+            [v13 setIconTintColor:colorCopy];
           }
         }
 
@@ -108,30 +108,30 @@
   }
 }
 
-- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)a3
+- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [(SBHIconMiniGridView *)self imageAppearance];
-  v6 = [v5 appearanceType];
-  v7 = [v4 appearanceType];
+  appearanceCopy = appearance;
+  imageAppearance = [(SBHIconMiniGridView *)self imageAppearance];
+  appearanceType = [imageAppearance appearanceType];
+  appearanceType2 = [appearanceCopy appearanceType];
 
-  if (v6 == v7)
+  if (appearanceType == appearanceType2)
   {
-    v8 = [v5 hasTintColor];
+    hasTintColor = [imageAppearance hasTintColor];
   }
 
   else
   {
-    v8 = 0;
+    hasTintColor = 0;
   }
 
-  return v8;
+  return hasTintColor;
 }
 
-- (void)enumerateIconsAndViewsUsingBlock:(id)a3
+- (void)enumerateIconsAndViewsUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMapTable *)self->_iconViews copy];
   v14 = 0u;
   v15 = 0u;
@@ -155,7 +155,7 @@ LABEL_3:
       v11 = *(*(&v14 + 1) + 8 * v10);
       v12 = [v6 objectForKey:v11];
       v13 = 0;
-      v4[2](v4, v11, v12, &v13);
+      blockCopy[2](blockCopy, v11, v12, &v13);
       LOBYTE(v11) = v13;
 
       if (v11)
@@ -177,18 +177,18 @@ LABEL_3:
   }
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_contentVisibility = a3;
+    self->_contentVisibility = visibility;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __44__SBHIconMiniGridView_setContentVisibility___block_invoke;
     v5[3] = &__block_descriptor_40_e31_v32__0__SBIcon_8__UIView_16_B24l;
-    v5[4] = a3;
+    v5[4] = visibility;
     [(SBHIconMiniGridView *)self enumerateIconsAndViewsUsingBlock:v5];
   }
 }

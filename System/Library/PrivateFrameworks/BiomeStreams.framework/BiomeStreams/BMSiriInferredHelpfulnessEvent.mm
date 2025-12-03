@@ -1,40 +1,40 @@
 @interface BMSiriInferredHelpfulnessEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriInferredHelpfulnessEvent)initWithAbsoluteTimestamp:(double)a3 inferredHelpfulnessScore:(double)a4 restatementScore:(double)a5 turnID:(id)a6 modelID:(id)a7;
-- (BMSiriInferredHelpfulnessEvent)initWithCoder:(id)a3;
-- (BMSiriInferredHelpfulnessEvent)initWithProto:(id)a3;
-- (BMSiriInferredHelpfulnessEvent)initWithProtoData:(id)a3;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSiriInferredHelpfulnessEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriInferredHelpfulnessEvent)initWithAbsoluteTimestamp:(double)timestamp inferredHelpfulnessScore:(double)score restatementScore:(double)restatementScore turnID:(id)d modelID:(id)iD;
+- (BMSiriInferredHelpfulnessEvent)initWithCoder:(id)coder;
+- (BMSiriInferredHelpfulnessEvent)initWithProto:(id)proto;
+- (BMSiriInferredHelpfulnessEvent)initWithProtoData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSiriInferredHelpfulnessEvent:(id)event;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMSiriInferredHelpfulnessEvent
 
-- (BMSiriInferredHelpfulnessEvent)initWithAbsoluteTimestamp:(double)a3 inferredHelpfulnessScore:(double)a4 restatementScore:(double)a5 turnID:(id)a6 modelID:(id)a7
+- (BMSiriInferredHelpfulnessEvent)initWithAbsoluteTimestamp:(double)timestamp inferredHelpfulnessScore:(double)score restatementScore:(double)restatementScore turnID:(id)d modelID:(id)iD
 {
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  iDCopy = iD;
   v21.receiver = self;
   v21.super_class = BMSiriInferredHelpfulnessEvent;
   v14 = [(BMSiriInferredHelpfulnessEvent *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_absoluteTimestamp = a3;
-    v14->_inferredHelpfulnessScore = a4;
-    v14->_restatementScore = a5;
-    v16 = [v12 copy];
+    v14->_absoluteTimestamp = timestamp;
+    v14->_inferredHelpfulnessScore = score;
+    v14->_restatementScore = restatementScore;
+    v16 = [dCopy copy];
     turnID = v15->_turnID;
     v15->_turnID = v16;
 
-    v18 = [v13 copy];
+    v18 = [iDCopy copy];
     modelID = v15->_modelID;
     v15->_modelID = v18;
   }
@@ -42,12 +42,12 @@
   return v15;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -55,7 +55,7 @@
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMSiriInferredHelpfulnessEvent eventWithData:a4 dataVersion:v8];
+      [BMSiriInferredHelpfulnessEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -78,22 +78,22 @@
   v14[2] = v5;
   v13[3] = @"turnID";
   turnID = self->_turnID;
-  v7 = turnID;
+  null = turnID;
   if (!turnID)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[3] = v7;
+  v14[3] = null;
   v13[4] = @"modelID";
   modelID = self->_modelID;
-  v9 = modelID;
+  null2 = modelID;
   if (!modelID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[4] = v9;
+  v14[4] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:5];
   if (modelID)
   {
@@ -121,9 +121,9 @@ LABEL_7:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMSiriInferredHelpfulnessEvent *)self jsonDict];
+  jsonDict = [(BMSiriInferredHelpfulnessEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -138,48 +138,48 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMSiriInferredHelpfulnessEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  encodeAsProto = [(BMSiriInferredHelpfulnessEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"data"];
 }
 
-- (BMSiriInferredHelpfulnessEvent)initWithCoder:(id)a3
+- (BMSiriInferredHelpfulnessEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"data" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"data" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMSiriInferredHelpfulnessEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriInferredHelpfulnessEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriInferredHelpfulnessEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriInferredHelpfulnessEvent)initWithProto:(id)a3
+- (BMSiriInferredHelpfulnessEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -195,40 +195,40 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 absoluteTimestamp];
   v7 = v6;
   [v5 inferredHelpfulnessScore];
   v9 = v8;
   [v5 restatementScore];
   v11 = v10;
-  v12 = [v5 turnID];
-  v13 = [v5 modelID];
+  turnID = [v5 turnID];
+  modelID = [v5 modelID];
 
-  self = [(BMSiriInferredHelpfulnessEvent *)self initWithAbsoluteTimestamp:v12 inferredHelpfulnessScore:v13 restatementScore:v7 turnID:v9 modelID:v11];
-  v14 = self;
+  self = [(BMSiriInferredHelpfulnessEvent *)self initWithAbsoluteTimestamp:turnID inferredHelpfulnessScore:modelID restatementScore:v7 turnID:v9 modelID:v11];
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BMSiriInferredHelpfulnessEvent)initWithProtoData:(id)a3
+- (BMSiriInferredHelpfulnessEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriInferredHelpfulnessEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriInferredHelpfulnessEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriInferredHelpfulnessEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -253,50 +253,50 @@ LABEL_8:
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BMSiriInferredHelpfulnessEvent *)self isEqualToSiriInferredHelpfulnessEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BMSiriInferredHelpfulnessEvent *)self isEqualToSiriInferredHelpfulnessEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSiriInferredHelpfulnessEvent:(id)a3
+- (BOOL)isEqualToSiriInferredHelpfulnessEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   absoluteTimestamp = self->_absoluteTimestamp;
-  [v6 absoluteTimestamp];
-  if (absoluteTimestamp != v8 || (inferredHelpfulnessScore = self->_inferredHelpfulnessScore, [v6 inferredHelpfulnessScore], inferredHelpfulnessScore != v10) || (restatementScore = self->_restatementScore, objc_msgSend(v6, "restatementScore"), restatementScore != v12))
+  [eventCopy absoluteTimestamp];
+  if (absoluteTimestamp != v8 || (inferredHelpfulnessScore = self->_inferredHelpfulnessScore, [eventCopy inferredHelpfulnessScore], inferredHelpfulnessScore != v10) || (restatementScore = self->_restatementScore, objc_msgSend(eventCopy, "restatementScore"), restatementScore != v12))
   {
     v16 = 0;
     goto LABEL_10;
   }
 
   turnID = self->_turnID;
-  v14 = turnID;
+  modelID = turnID;
   if (!turnID)
   {
-    v3 = [v6 turnID];
-    if (!v3)
+    turnID = [eventCopy turnID];
+    if (!turnID)
     {
       v15 = 0;
       goto LABEL_13;
     }
 
-    v14 = self->_turnID;
+    modelID = self->_turnID;
   }
 
-  v4 = [v6 turnID];
-  if (![v14 isEqualToString:v4])
+  turnID2 = [eventCopy turnID];
+  if (![modelID isEqualToString:turnID2])
   {
     v16 = 0;
 LABEL_18:
@@ -310,8 +310,8 @@ LABEL_13:
   v19 = modelID;
   if (!modelID)
   {
-    v14 = [v6 modelID];
-    if (!v14)
+    modelID = [eventCopy modelID];
+    if (!modelID)
     {
       v16 = 1;
       goto LABEL_22;
@@ -320,8 +320,8 @@ LABEL_13:
     v19 = self->_modelID;
   }
 
-  v20 = [v6 modelID];
-  v16 = [(NSString *)v19 isEqualToString:v20];
+  modelID2 = [eventCopy modelID];
+  v16 = [(NSString *)v19 isEqualToString:modelID2];
 
   if (modelID)
   {
@@ -350,15 +350,15 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_inferredHelpfulnessScore == -1.0 || !self->_turnID)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else

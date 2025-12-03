@@ -1,19 +1,19 @@
 @interface APPBThirdPartySegmentUpdateRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)runStateAsString:(int)a3;
-- (int)StringAsRunState:(id)a3;
+- (id)runStateAsString:(int)string;
+- (int)StringAsRunState:(id)state;
 - (int)runState;
 - (unint64_t)hash;
-- (void)addSegmentIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPrivateSegment:(BOOL)a3;
-- (void)setHasResetSegmentMembership:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSegmentIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPrivateSegment:(BOOL)segment;
+- (void)setHasResetSegmentMembership:(BOOL)membership;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBThirdPartySegmentUpdateRequest
@@ -43,35 +43,35 @@
   }
 }
 
-- (id)runStateAsString:(int)a3
+- (id)runStateAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DE68 + a3);
+    v4 = *(&off_10047DE68 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsRunState:(id)a3
+- (int)StringAsRunState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Simulator"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Simulator"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DevelopmentDevice"])
+  else if ([stateCopy isEqualToString:@"DevelopmentDevice"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConsumerDevice"])
+  else if ([stateCopy isEqualToString:@"ConsumerDevice"])
   {
     v4 = 2;
   }
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (void)setHasResetSegmentMembership:(BOOL)a3
+- (void)setHasResetSegmentMembership:(BOOL)membership
 {
-  if (a3)
+  if (membership)
   {
     v3 = 4;
   }
@@ -99,27 +99,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addSegmentIdentifiers:(id)a3
+- (void)addSegmentIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   segmentIdentifiers = self->_segmentIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!segmentIdentifiers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_segmentIdentifiers;
     self->_segmentIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     segmentIdentifiers = self->_segmentIdentifiers;
   }
 
-  [(NSMutableArray *)segmentIdentifiers addObject:v4];
+  [(NSMutableArray *)segmentIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasPrivateSegment:(BOOL)a3
+- (void)setHasPrivateSegment:(BOOL)segment
 {
-  if (a3)
+  if (segment)
   {
     v3 = 2;
   }
@@ -137,8 +137,8 @@
   v7.receiver = self;
   v7.super_class = APPBThirdPartySegmentUpdateRequest;
   v3 = [(APPBThirdPartySegmentUpdateRequest *)&v7 description];
-  v4 = [(APPBThirdPartySegmentUpdateRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBThirdPartySegmentUpdateRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -217,9 +217,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
@@ -291,49 +291,49 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_iAdID)
   {
-    [v4 setIAdID:?];
-    v4 = v11;
+    [toCopy setIAdID:?];
+    toCopy = v11;
   }
 
   if (self->_appID)
   {
     [v11 setAppID:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_appVersion)
   {
     [v11 setAppVersion:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 10) = self->_runState;
-    v4[68] |= 1u;
+    *(toCopy + 10) = self->_runState;
+    toCopy[68] |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[65] = self->_resetSegmentMembership;
-    v4[68] |= 4u;
+    toCopy[65] = self->_resetSegmentMembership;
+    toCopy[68] |= 4u;
   }
 
   if ([(APPBThirdPartySegmentUpdateRequest *)self segmentIdentifiersCount])
   {
     [v11 clearSegmentIdentifiers];
-    v6 = [(APPBThirdPartySegmentUpdateRequest *)self segmentIdentifiersCount];
-    if (v6)
+    segmentIdentifiersCount = [(APPBThirdPartySegmentUpdateRequest *)self segmentIdentifiersCount];
+    if (segmentIdentifiersCount)
     {
-      v7 = v6;
+      v7 = segmentIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(APPBThirdPartySegmentUpdateRequest *)self segmentIdentifiersAtIndex:i];
@@ -362,18 +362,18 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_appID copyWithZone:a3];
+  v8 = [(NSString *)self->_appID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_appVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_appVersion copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -410,7 +410,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{a3, v24}];
+        v18 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{zone, v24}];
         [v5 addSegmentIdentifiers:v18];
       }
 
@@ -426,27 +426,27 @@
     *(v5 + 68) |= 2u;
   }
 
-  v19 = [(NSData *)self->_toroID copyWithZone:a3, v24];
+  v19 = [(NSData *)self->_toroID copyWithZone:zone, v24];
   v20 = v5[7];
   v5[7] = v19;
 
-  v21 = [(NSData *)self->_dPID copyWithZone:a3];
+  v21 = [(NSData *)self->_dPID copyWithZone:zone];
   v22 = v5[3];
   v5[3] = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 4))
+  if (iAdID | *(equalCopy + 4))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -455,7 +455,7 @@
   }
 
   appID = self->_appID;
-  if (appID | *(v4 + 1))
+  if (appID | *(equalCopy + 1))
   {
     if (![(NSString *)appID isEqual:?])
     {
@@ -464,7 +464,7 @@
   }
 
   appVersion = self->_appVersion;
-  if (appVersion | *(v4 + 2))
+  if (appVersion | *(equalCopy + 2))
   {
     if (![(NSString *)appVersion isEqual:?])
     {
@@ -475,45 +475,45 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_runState != *(v4 + 10))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_runState != *(equalCopy + 10))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0)
+    if ((*(equalCopy + 68) & 4) == 0)
     {
       goto LABEL_36;
     }
 
     if (self->_resetSegmentMembership)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   segmentIdentifiers = self->_segmentIdentifiers;
-  if (segmentIdentifiers | *(v4 + 6))
+  if (segmentIdentifiers | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)segmentIdentifiers isEqual:?])
     {
@@ -525,7 +525,7 @@
 
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 68) & 2) == 0)
+    if ((*(equalCopy + 68) & 2) == 0)
     {
       goto LABEL_20;
     }
@@ -535,14 +535,14 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 68) & 2) == 0)
+  if ((*(equalCopy + 68) & 2) == 0)
   {
     goto LABEL_36;
   }
 
   if (!self->_privateSegment)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_20;
     }
@@ -550,20 +550,20 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if ((*(v4 + 64) & 1) == 0)
+  if ((*(equalCopy + 64) & 1) == 0)
   {
     goto LABEL_36;
   }
 
 LABEL_20:
   toroID = self->_toroID;
-  if (toroID | *(v4 + 7) && ![(NSData *)toroID isEqual:?])
+  if (toroID | *(equalCopy + 7) && ![(NSData *)toroID isEqual:?])
   {
     goto LABEL_36;
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 3))
+  if (dPID | *(equalCopy + 3))
   {
     v12 = [(NSData *)dPID isEqual:?];
   }
@@ -621,35 +621,35 @@ LABEL_6:
   return v10 ^ v11 ^ [(NSData *)self->_dPID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(APPBThirdPartySegmentUpdateRequest *)self setIAdID:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBThirdPartySegmentUpdateRequest *)self setAppID:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBThirdPartySegmentUpdateRequest *)self setAppVersion:?];
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_runState = *(v4 + 10);
+    self->_runState = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_resetSegmentMembership = *(v4 + 65);
+    self->_resetSegmentMembership = *(fromCopy + 65);
     *&self->_has |= 4u;
   }
 
@@ -657,7 +657,7 @@ LABEL_6:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -681,18 +681,18 @@ LABEL_6:
     while (v8);
   }
 
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
-    self->_privateSegment = *(v4 + 64);
+    self->_privateSegment = *(fromCopy + 64);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBThirdPartySegmentUpdateRequest *)self setToroID:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBThirdPartySegmentUpdateRequest *)self setDPID:?];
   }

@@ -1,42 +1,42 @@
 @interface ComAppleProactiveLuceneTopDocsFilter
-- (id)getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:(id)a3 withOrgApacheLuceneUtilBits:(id)a4;
-- (id)toStringWithNSString:(id)a3;
+- (id)getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:(id)context withOrgApacheLuceneUtilBits:(id)bits;
+- (id)toStringWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation ComAppleProactiveLuceneTopDocsFilter
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v4.receiver = self;
   v4.super_class = ComAppleProactiveLuceneTopDocsFilter;
   return [(OrgApacheLuceneSearchQuery *)&v4 description];
 }
 
-- (id)getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:(id)a3 withOrgApacheLuceneUtilBits:(id)a4
+- (id)getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:(id)context withOrgApacheLuceneUtilBits:(id)bits
 {
   v7 = new_ComAppleProactiveOrgApacheLuceneUtilOpenBitSet_init();
-  if (!a3)
+  if (!context)
   {
     goto LABEL_21;
   }
 
   v8 = v7;
-  v9 = *(a3 + 8);
-  if (a4)
+  v9 = *(context + 8);
+  if (bits)
   {
-    v10 = [a4 length];
+    maxDoc = [bits length];
   }
 
   else
   {
-    v11 = [a3 reader];
-    if (!v11)
+    reader = [context reader];
+    if (!reader)
     {
       goto LABEL_21;
     }
 
-    v10 = [v11 maxDoc];
+    maxDoc = [reader maxDoc];
   }
 
   v12 = *(&self->super.super.boost_ + 1);
@@ -54,7 +54,7 @@ LABEL_21:
   }
 
   v15 = 0;
-  v16 = v10 + v9;
+  v16 = maxDoc + v9;
   do
   {
     v18 = *v13++;

@@ -1,9 +1,9 @@
 @interface EmbeddedPicker
-- (EmbeddedPicker)initWithCoder:(id)a3;
-- (EmbeddedPicker)initWithNibName:(id)a3 bundle:(id)a4;
+- (EmbeddedPicker)initWithCoder:(id)coder;
+- (EmbeddedPicker)initWithNibName:(id)name bundle:(id)bundle;
 - (void)clientIsReady;
-- (void)setupSceneHostingWithConnectionUUID:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setupSceneHostingWithConnectionUUID:(id)d;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -11,17 +11,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   EmbeddedPicker.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  EmbeddedPicker.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  EmbeddedPicker.viewDidAppear(_:)(appear);
 }
 
-- (EmbeddedPicker)initWithCoder:(id)a3
+- (EmbeddedPicker)initWithCoder:(id)coder
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s7Combine9PublishedVySbGMd);
   v5 = *(v4 - 8);
@@ -37,19 +37,19 @@
   return result;
 }
 
-- (EmbeddedPicker)initWithNibName:(id)a3 bundle:(id)a4
+- (EmbeddedPicker)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)setupSceneHostingWithConnectionUUID:(id)a3
+- (void)setupSceneHostingWithConnectionUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for UUID();
@@ -62,7 +62,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   EmbeddedPicker.setupSceneHosting(connectionUUID:)(v7);
 
   outlined destroy of UTType?(v7, &_s10Foundation4UUIDVSgMd);
@@ -78,7 +78,7 @@
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
 
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();

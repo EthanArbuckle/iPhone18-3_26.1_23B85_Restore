@@ -27,16 +27,16 @@ uint64_t __37__AAUIFamilyDetailsCache_sharedCache__block_invoke()
 
 - (void)invalidate
 {
-  v2 = [getFAFamilyDetailsCacheClass() sharedCache];
-  [v2 invalidate];
+  sharedCache = [getFAFamilyDetailsCacheClass() sharedCache];
+  [sharedCache invalidate];
 }
 
 - (unint64_t)pendingInviteCount
 {
-  v2 = [getFAFamilyDetailsCacheClass() sharedCache];
-  v3 = [v2 pendingInviteCount];
+  sharedCache = [getFAFamilyDetailsCacheClass() sharedCache];
+  pendingInviteCount = [sharedCache pendingInviteCount];
 
-  return v3;
+  return pendingInviteCount;
 }
 
 @end

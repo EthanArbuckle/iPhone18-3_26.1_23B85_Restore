@@ -1,37 +1,37 @@
 @interface SPSampledProcess
-+ (BOOL)receivedHidEventForPid:(int)a3 eventTimeMachAbs:(unint64_t)a4 startTime:(id)a5 endTime:(id)a6;
++ (BOOL)receivedHidEventForPid:(int)pid eventTimeMachAbs:(unint64_t)abs startTime:(id)time endTime:(id)endTime;
 - (BOOL)startSampling;
-- (SPSampledProcess)initWithPid:(int)a3 isWSBased:(BOOL)a4;
-- (void)_performSamplePrinterWork:(id)a3;
-- (void)_samplingHasCompletedWithEndSnapshot:(id)a3 withReason:(unsigned __int8)a4;
-- (void)_saveReportToStream:(__sFILE *)a3;
+- (SPSampledProcess)initWithPid:(int)pid isWSBased:(BOOL)based;
+- (void)_performSamplePrinterWork:(id)work;
+- (void)_samplingHasCompletedWithEndSnapshot:(id)snapshot withReason:(unsigned __int8)reason;
+- (void)_saveReportToStream:(__sFILE *)stream;
 - (void)createHIDExitSource;
 - (void)deleteHIDExitSource;
 - (void)removeSelfFromPidCache;
-- (void)requireHIDEvent:(BOOL)a3;
-- (void)setCancelOnMemoryPressure:(BOOL)a3;
-- (void)setSamplingCompletionHandlerQueue:(id)a3 andBlock:(id)a4;
-- (void)setSamplingMode:(unsigned __int8)a3 withAdditionalSampledProcesses:(id)a4;
-- (void)setSamplingTimeoutAtTime:(double)a3;
-- (void)setStopWhenProcessExits:(BOOL)a3;
+- (void)requireHIDEvent:(BOOL)event;
+- (void)setCancelOnMemoryPressure:(BOOL)pressure;
+- (void)setSamplingCompletionHandlerQueue:(id)queue andBlock:(id)block;
+- (void)setSamplingMode:(unsigned __int8)mode withAdditionalSampledProcesses:(id)processes;
+- (void)setSamplingTimeoutAtTime:(double)time;
+- (void)setStopWhenProcessExits:(BOOL)exits;
 @end
 
 @implementation SPSampledProcess
 
-- (SPSampledProcess)initWithPid:(int)a3 isWSBased:(BOOL)a4
+- (SPSampledProcess)initWithPid:(int)pid isWSBased:(BOOL)based
 {
   v12.receiver = self;
   v12.super_class = SPSampledProcess;
   v6 = [(SPMonitoredProcess *)&v12 initWithPid:?];
   if (v6)
   {
-    snprintf(__str, 0x40uLL, "com.apple.spindump.sampled_process_%d", a3);
+    snprintf(__str, 0x40uLL, "com.apple.spindump.sampled_process_%d", pid);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create(__str, v7);
     processingQueue = v6->super.super._processingQueue;
     v6->super.super._processingQueue = v8;
 
-    v6->super.super._isWSBased = a4;
+    v6->super.super._isWSBased = based;
     v6->_samplingMode = 3;
     sampledProcesses = v6->_sampledProcesses;
     v6->_sampledProcesses = 0;
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (void)setCancelOnMemoryPressure:(BOOL)a3
+- (void)setCancelOnMemoryPressure:(BOOL)pressure
 {
-  self->_cancelOnMemoryPressure = a3;
-  if (a3)
+  self->_cancelOnMemoryPressure = pressure;
+  if (pressure)
   {
     +[SPSampledProcess startMemoryPressureTimer];
   }
@@ -252,7 +252,7 @@ LABEL_42:
   }
 }
 
-- (void)requireHIDEvent:(BOOL)a3
+- (void)requireHIDEvent:(BOOL)event
 {
   processingQueue = self->super.super._processingQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -260,13 +260,13 @@ LABEL_42:
   v4[2] = sub_10007CAA0;
   v4[3] = &unk_100109B38;
   v4[4] = self;
-  v5 = a3;
+  eventCopy = event;
   dispatch_async(processingQueue, v4);
 }
 
-+ (BOOL)receivedHidEventForPid:(int)a3 eventTimeMachAbs:(unint64_t)a4 startTime:(id)a5 endTime:(id)a6
++ (BOOL)receivedHidEventForPid:(int)pid eventTimeMachAbs:(unint64_t)abs startTime:(id)time endTime:(id)endTime
 {
-  v9 = a5;
+  timeCopy = time;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -275,26 +275,26 @@ LABEL_42:
   v13[1] = 3221225472;
   v13[2] = sub_10007E574;
   v13[3] = &unk_100109B60;
-  v18 = a3;
-  v14 = a6;
-  v15 = v9;
+  pidCopy = pid;
+  endTimeCopy = endTime;
+  v15 = timeCopy;
   v16 = &v19;
-  v17 = a4;
-  v10 = v9;
-  v11 = v14;
+  absCopy = abs;
+  v10 = timeCopy;
+  v11 = endTimeCopy;
   sub_10007C31C(v13);
-  LOBYTE(a3) = *(v20 + 24);
+  LOBYTE(pid) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return a3;
+  return pid;
 }
 
-- (void)setSamplingMode:(unsigned __int8)a3 withAdditionalSampledProcesses:(id)a4
+- (void)setSamplingMode:(unsigned __int8)mode withAdditionalSampledProcesses:(id)processes
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4 == 3 && v6)
+  modeCopy = mode;
+  processesCopy = processes;
+  v7 = processesCopy;
+  if (modeCopy == 3 && processesCopy)
   {
     p_targetProcessId = &self->super.super._targetProcessId;
     if (self->super.super._targetProcessId < 0)
@@ -452,11 +452,11 @@ LABEL_54:
 LABEL_55:
   if (!self->super.super._hasSampled || self->super.super._isSampling)
   {
-    if (self->_samplingMode != v4 || v7 && (!self->_sampledProcesses || ([v7 isSubsetOfSet:?] & 1) == 0))
+    if (self->_samplingMode != modeCopy || v7 && (!self->_sampledProcesses || ([v7 isSubsetOfSet:?] & 1) == 0))
     {
-      self->_samplingMode = v4;
+      self->_samplingMode = modeCopy;
       sampledProcesses = self->_sampledProcesses;
-      if (v4 == 3)
+      if (modeCopy == 3)
       {
         self->_sampledProcesses = 0;
       }
@@ -643,25 +643,25 @@ LABEL_108:
 LABEL_121:
 }
 
-- (void)setSamplingTimeoutAtTime:(double)a3
+- (void)setSamplingTimeoutAtTime:(double)time
 {
-  if (self->super.super._timeoutTime <= a3)
+  if (self->super.super._timeoutTime <= time)
   {
     SAMachAbsTimeSecondsGetCurrent();
     v17 = v16;
-    if (v16 < a3)
+    if (v16 < time)
     {
-      v18 = a3;
+      timeCopy = time;
     }
 
     else
     {
-      v18 = v16;
+      timeCopy = v16;
     }
 
     p_targetProcessId = &self->super.super._targetProcessId;
     targetProcessId = self->super.super._targetProcessId;
-    self->super.super._timeoutTime = v18;
+    self->super.super._timeoutTime = timeCopy;
     if (targetProcessId < 0)
     {
       if (byte_100117E80)
@@ -671,7 +671,7 @@ LABEL_121:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134217984;
-          v64 = v18 - v17;
+          v64 = timeCopy - v17;
           _os_log_debug_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "Setting sampling timeout for %.2f seconds from now", buf, 0xCu);
         }
 
@@ -684,7 +684,7 @@ LABEL_121:
       }
 
       v24 = *__error();
-      v42 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Setting sampling timeout for %.2f seconds from now", v18 - v17);
+      v42 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Setting sampling timeout for %.2f seconds from now", timeCopy - v17);
       if (v42)
       {
         v43 = v42;
@@ -744,7 +744,7 @@ LABEL_121:
           v65 = 1024;
           v66 = v61;
           v67 = 2048;
-          v68 = v18 - v17;
+          v68 = timeCopy - v17;
           _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%{public}s [%d]: Setting sampling timeout for %.2f seconds from now", buf, 0x1Cu);
         }
 
@@ -758,7 +758,7 @@ LABEL_121:
 
       v24 = *__error();
       v25 = sub_100035B20(*p_targetProcessId);
-      v26 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s [%d]: Setting sampling timeout for %.2f seconds from now", v25, *p_targetProcessId, v18 - v17);
+      v26 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s [%d]: Setting sampling timeout for %.2f seconds from now", v25, *p_targetProcessId, timeCopy - v17);
       if (v26)
       {
         v27 = v26;
@@ -804,7 +804,7 @@ LABEL_107:
         block[2] = sub_10008071C;
         block[3] = &unk_1001091B0;
         block[4] = self;
-        *&block[5] = v18;
+        *&block[5] = timeCopy;
         *&block[6] = v17;
         dispatch_async(processingQueue, block);
         return;
@@ -979,11 +979,11 @@ LABEL_78:
   }
 }
 
-- (void)setSamplingCompletionHandlerQueue:(id)a3 andBlock:(id)a4
+- (void)setSamplingCompletionHandlerQueue:(id)queue andBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || !v7)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy || !blockCopy)
   {
     targetProcessId = self->super.super._targetProcessId;
     p_targetProcessId = &self->super.super._targetProcessId;
@@ -1161,21 +1161,21 @@ LABEL_78:
   block[2] = sub_1000815D4;
   block[3] = &unk_100109B88;
   block[4] = self;
-  v49 = v6;
-  v50 = v7;
-  v13 = v7;
-  v14 = v6;
+  v49 = queueCopy;
+  v50 = blockCopy;
+  v13 = blockCopy;
+  v14 = queueCopy;
   dispatch_async(processingQueue, block);
 }
 
-- (void)setStopWhenProcessExits:(BOOL)a3
+- (void)setStopWhenProcessExits:(BOOL)exits
 {
   processingQueue = self->super.super._processingQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008169C;
   v4[3] = &unk_100109B38;
-  v5 = a3;
+  exitsCopy = exits;
   v4[4] = self;
   dispatch_async(processingQueue, v4);
 }
@@ -1195,13 +1195,13 @@ LABEL_78:
   {
     self->super.super._numSamplesAvoidedDueToAudioAtStart = [v3 numSamplesAvoidedDueToAudio];
     self->super.super._numSamplesAtStart = [v4 numSamples];
-    v6 = [v4 timestamp];
+    timestamp = [v4 timestamp];
     startedMonitoringTimestamp = self->_startedMonitoringTimestamp;
-    self->_startedMonitoringTimestamp = v6;
+    self->_startedMonitoringTimestamp = timestamp;
 
-    v8 = [v4 stackshotProvider];
+    stackshotProvider = [v4 stackshotProvider];
     sampleProvider = self->super.super._sampleProvider;
-    self->super.super._sampleProvider = v8;
+    self->super.super._sampleProvider = stackshotProvider;
 
     *&self->super.super._isSampling = 257;
   }
@@ -1214,17 +1214,17 @@ LABEL_78:
   return v5;
 }
 
-- (void)_samplingHasCompletedWithEndSnapshot:(id)a3 withReason:(unsigned __int8)a4
+- (void)_samplingHasCompletedWithEndSnapshot:(id)snapshot withReason:(unsigned __int8)reason
 {
-  v4 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  snapshotCopy = snapshot;
   if (!self->super.super._isUrgent)
   {
     [(SPStackshotProvider *)self->super.super._sampleProvider waitForSamplingToComplete];
   }
 
-  v7 = v4 - 6;
-  if (!v6 || v7 < 0xFFFFFFFC || !self->_hidEventSem)
+  v7 = reasonCopy - 6;
+  if (!snapshotCopy || v7 < 0xFFFFFFFC || !self->_hidEventSem)
   {
     p_targetProcessId = &self->super.super._targetProcessId;
     if (self->super.super._targetProcessId < 0)
@@ -1256,8 +1256,8 @@ LABEL_91:
         v129[2] = sub_100083DD4;
         v129[3] = &unk_100109C00;
         v129[4] = self;
-        v131 = v4;
-        v130 = v6;
+        v131 = reasonCopy;
+        v130 = snapshotCopy;
         [(SPStackshotProvider *)sampleProvider performSampleStoreWork:v129];
         v53 = v130;
 LABEL_216:
@@ -1421,7 +1421,7 @@ LABEL_89:
       goto LABEL_99;
     }
 
-    v14 = v6;
+    v14 = snapshotCopy;
     v15 = *__error();
     v16 = sub_100035B20(*v8);
     v17 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s [%d]: Waiting for HID event...", v16, *v8);
@@ -1448,7 +1448,7 @@ LABEL_94:
       fwrite("UNABLE TO FORMAT STRING\n", 0x18uLL, 1uLL, v54);
 LABEL_98:
       *__error() = v15;
-      v6 = v14;
+      snapshotCopy = v14;
       goto LABEL_99;
     }
 
@@ -1470,7 +1470,7 @@ LABEL_98:
 
   if (byte_100117E81 == 1 && dword_100117510 <= 1)
   {
-    v14 = v6;
+    v14 = snapshotCopy;
     v15 = *__error();
     v17 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"Waiting for HID event...");
     if (!v17)
@@ -1618,7 +1618,7 @@ LABEL_185:
         v134[4] = self;
         sub_10007C31C(v134);
 LABEL_212:
-        LOBYTE(v4) = 8;
+        LOBYTE(reasonCopy) = 8;
         goto LABEL_213;
       }
     }
@@ -1658,9 +1658,9 @@ LABEL_212:
     goto LABEL_184;
   }
 
-  v65 = [(SPProcessEvent *)self eventTimeRange];
+  eventTimeRange = [(SPProcessEvent *)self eventTimeRange];
 
-  if (!v65)
+  if (!eventTimeRange)
   {
     if ((*v8 & 0x80000000) != 0)
     {
@@ -1677,7 +1677,7 @@ LABEL_212:
         *__error() = v107;
       }
 
-      LOBYTE(v4) = 8;
+      LOBYTE(reasonCopy) = 8;
       if (byte_100117E81 != 1 || dword_100117510 > 2)
       {
         goto LABEL_213;
@@ -1717,7 +1717,7 @@ LABEL_212:
         *__error() = v75;
       }
 
-      LOBYTE(v4) = 8;
+      LOBYTE(reasonCopy) = 8;
       if (byte_100117E81 != 1 || dword_100117510 > 2)
       {
         goto LABEL_213;
@@ -1770,21 +1770,21 @@ LABEL_197:
     goto LABEL_211;
   }
 
-  v66 = [(SPProcessEvent *)self eventTimeRange];
-  v67 = [v66 startTime];
-  v68 = [v6 timestamp];
-  if ([v67 compare:v68] != -1)
+  eventTimeRange2 = [(SPProcessEvent *)self eventTimeRange];
+  startTime = [eventTimeRange2 startTime];
+  timestamp = [snapshotCopy timestamp];
+  if ([startTime compare:timestamp] != -1)
   {
 
     goto LABEL_143;
   }
 
-  v83 = [(SPProcessEvent *)self eventTimeRange];
-  [v83 endTime];
-  v85 = v84 = v6;
+  eventTimeRange3 = [(SPProcessEvent *)self eventTimeRange];
+  [eventTimeRange3 endTime];
+  v85 = v84 = snapshotCopy;
   v128 = [v85 compare:self->_startedMonitoringTimestamp];
 
-  v6 = v84;
+  snapshotCopy = v84;
   if (v128 == 1)
   {
     if ((*v8 & 0x80000000) != 0)
@@ -1913,9 +1913,9 @@ LABEL_242:
 LABEL_243:
         *__error() = v88;
 LABEL_244:
-        if (v4 == 3)
+        if (reasonCopy == 3)
         {
-          LOBYTE(v4) = 4;
+          LOBYTE(reasonCopy) = 4;
         }
 
         goto LABEL_91;
@@ -1958,7 +1958,7 @@ LABEL_143:
       *__error() = v102;
     }
 
-    LOBYTE(v4) = 8;
+    LOBYTE(reasonCopy) = 8;
     if (byte_100117E81 == 1 && dword_100117510 <= 2)
     {
       v79 = *__error();
@@ -2011,7 +2011,7 @@ LABEL_196:
       *__error() = v95;
     }
 
-    LOBYTE(v4) = 8;
+    LOBYTE(reasonCopy) = 8;
     if (byte_100117E81 == 1 && dword_100117510 <= 2)
     {
       v79 = *__error();
@@ -2056,7 +2056,7 @@ LABEL_213:
     block[2] = sub_100083D80;
     block[3] = &unk_100109B38;
     block[4] = self;
-    v133 = v4;
+    v133 = reasonCopy;
     dispatch_async(completionCallbackQueue, block);
     v53 = self->super.super._completionCallbackQueue;
     self->super.super._completionCallbackQueue = 0;
@@ -2066,9 +2066,9 @@ LABEL_213:
 LABEL_217:
 }
 
-- (void)_saveReportToStream:(__sFILE *)a3
+- (void)_saveReportToStream:(__sFILE *)stream
 {
-  if (!a3 || self->super.super._isSampling || !self->super.super._hasSampled)
+  if (!stream || self->super.super._isSampling || !self->super.super._hasSampled)
   {
     if (self->super.super._targetProcessId < 0)
     {
@@ -2078,7 +2078,7 @@ LABEL_217:
         v45 = sub_100035B80();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          sub_1000B9858(a3 != 0, self);
+          sub_1000B9858(stream != 0, self);
         }
 
         *__error() = v44;
@@ -2086,9 +2086,9 @@ LABEL_217:
 
       if (byte_100117E81 == 1 && dword_100117510 < 4)
       {
-        v57 = a3 != 0;
+        v57 = stream != 0;
         v58 = *__error();
-        v59 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: save report fail %d %d %d", "stream && !_isSampling && _hasSampled", a3 != 0, self->super.super._isSampling, self->super.super._hasSampled);
+        v59 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: save report fail %d %d %d", "stream && !_isSampling && _hasSampled", stream != 0, self->super.super._isSampling, self->super.super._hasSampled);
         if (v59)
         {
           v68 = v59;
@@ -2185,7 +2185,7 @@ LABEL_217:
           v90 = 2080;
           *v91 = "stream && !_isSampling && _hasSampled";
           *&v91[8] = 1024;
-          v92 = a3 != 0;
+          v92 = stream != 0;
           v93 = 1024;
           v94 = v41;
           v95 = 1024;
@@ -2198,7 +2198,7 @@ LABEL_217:
 
       if (byte_100117E81 == 1 && dword_100117510 < 4)
       {
-        v47 = a3 != 0;
+        v47 = stream != 0;
         v48 = *__error();
         v49 = sub_100035B20(self->super.super._targetProcessId);
         v50 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s [%d]: %s: save report fail %d %d %d", v49, self->super.super._targetProcessId, "stream && !_isSampling && _hasSampled", v47, self->super.super._isSampling, self->super.super._hasSampled);
@@ -2456,14 +2456,14 @@ LABEL_57:
   v85[2] = sub_1000851E8;
   v85[3] = &unk_100109C28;
   v85[4] = self;
-  v85[5] = a3;
+  v85[5] = stream;
   [(SPStackshotProvider *)sampleProvider performSampleStoreWork:v85];
 }
 
-- (void)_performSamplePrinterWork:(id)a3
+- (void)_performSamplePrinterWork:(id)work
 {
-  v8 = a3;
-  if (!v8 || self->super.super._isSampling || !self->super.super._hasSampled)
+  workCopy = work;
+  if (!workCopy || self->super.super._isSampling || !self->super.super._hasSampled)
   {
     if (self->super.super._targetProcessId < 0)
     {
@@ -2473,7 +2473,7 @@ LABEL_57:
         v46 = sub_100035B80();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
-          sub_1000B98D4(v8 != 0, self);
+          sub_1000B98D4(workCopy != 0, self);
         }
 
         *__error() = v45;
@@ -2481,9 +2481,9 @@ LABEL_57:
 
       if (byte_100117E81 == 1 && dword_100117510 < 4)
       {
-        v58 = v8 != 0;
+        v58 = workCopy != 0;
         v59 = *__error();
-        v60 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: save report fail %d %d %d", "callback && !_isSampling && _hasSampled", v8 != 0, self->super.super._isSampling, self->super.super._hasSampled);
+        v60 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s: save report fail %d %d %d", "callback && !_isSampling && _hasSampled", workCopy != 0, self->super.super._isSampling, self->super.super._hasSampled);
         if (v60)
         {
           v69 = v60;
@@ -2580,7 +2580,7 @@ LABEL_57:
           v92 = 2080;
           *v93 = "callback && !_isSampling && _hasSampled";
           *&v93[8] = 1024;
-          v94 = v8 != 0;
+          v94 = workCopy != 0;
           v95 = 1024;
           v96 = v42;
           v97 = 1024;
@@ -2593,7 +2593,7 @@ LABEL_57:
 
       if (byte_100117E81 == 1 && dword_100117510 < 4)
       {
-        v48 = v8 != 0;
+        v48 = workCopy != 0;
         v49 = *__error();
         v50 = sub_100035B20(self->super.super._targetProcessId);
         v51 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%s [%d]: %s: save report fail %d %d %d", v50, self->super.super._targetProcessId, "callback && !_isSampling && _hasSampled", v48, self->super.super._isSampling, self->super.super._hasSampled);
@@ -2851,8 +2851,8 @@ LABEL_57:
   v86[2] = sub_100085C20;
   v86[3] = &unk_100109C50;
   v86[4] = self;
-  v87 = v8;
-  v37 = v8;
+  v87 = workCopy;
+  v37 = workCopy;
   [(SPStackshotProvider *)sampleProvider performSampleStoreWork:v86];
 }
 

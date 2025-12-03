@@ -1,21 +1,21 @@
 @interface GQHPagesFloatingDrawable
-+ (int)beginDrawables:(id)a3;
-+ (int)endDrawables:(id)a3;
++ (int)beginDrawables:(id)drawables;
++ (int)endDrawables:(id)drawables;
 @end
 
 @implementation GQHPagesFloatingDrawable
 
-+ (int)beginDrawables:(id)a3
++ (int)beginDrawables:(id)drawables
 {
-  [objc_msgSend(a3 "generatorState")];
-  [a3 setDoExternalTextWrap:1];
+  [objc_msgSend(drawables "generatorState")];
+  [drawables setDoExternalTextWrap:1];
   return 1;
 }
 
-+ (int)endDrawables:(id)a3
++ (int)endDrawables:(id)drawables
 {
-  [objc_msgSend(a3 "generatorState")];
-  [a3 setDoExternalTextWrap:0];
+  [objc_msgSend(drawables "generatorState")];
+  [drawables setDoExternalTextWrap:0];
   return 1;
 }
 

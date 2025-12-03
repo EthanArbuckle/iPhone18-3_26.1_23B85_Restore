@@ -1,21 +1,21 @@
 @interface CKAppInteractionsContext
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateDiscardedDonations:(double)a3 forIntentType:(id)a4 andBundleId:(id)a5;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateDiscardedDonations:(double)donations forIntentType:(id)type andBundleId:(id)id;
 @end
 
 @implementation CKAppInteractionsContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C868805C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C868805C(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C868868C(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -24,14 +24,14 @@
   return v4;
 }
 
-- (void)updateDiscardedDonations:(double)a3 forIntentType:(id)a4 andBundleId:(id)a5
+- (void)updateDiscardedDonations:(double)donations forIntentType:(id)type andBundleId:(id)id
 {
   v7 = sub_1C86F8EFC();
   v9 = v8;
   v10 = sub_1C86F8EFC();
   v12 = v11;
-  v13 = self;
-  sub_1C8688C54(v7, v9, v10, v12, a3);
+  selfCopy = self;
+  sub_1C8688C54(v7, v9, v10, v12, donations);
 }
 
 @end

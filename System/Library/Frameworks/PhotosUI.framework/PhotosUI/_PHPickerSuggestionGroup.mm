@@ -12,14 +12,14 @@
 + (_PHPickerSuggestionGroup)wallpaperLikeSuggestionGroup;
 + (_PHPickerSuggestionGroup)wallpaperSuggestionGroup;
 + (_PHPickerSuggestionGroup)watchWallpaperSuggestionGroup;
-+ (id)_wallpaperSuggestionGroupWithDefaultSuggestionIndex:(int64_t)a3 allowSettlingEffectSuggestions:(BOOL)a4 allowGyroEffectSuggestions:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (_PHPickerSuggestionGroup)initWithCoder:(id)a3;
-- (id)_initWithSuggestions:(id)a3 defaultSuggestionIndex:(int64_t)a4 isForWallpaper:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_wallpaperSuggestionGroupWithDefaultSuggestionIndex:(int64_t)index allowSettlingEffectSuggestions:(BOOL)suggestions allowGyroEffectSuggestions:(BOOL)effectSuggestions;
+- (BOOL)isEqual:(id)equal;
+- (_PHPickerSuggestionGroup)initWithCoder:(id)coder;
+- (id)_initWithSuggestions:(id)suggestions defaultSuggestionIndex:(int64_t)index isForWallpaper:(BOOL)wallpaper;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultSuggestion;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PHPickerSuggestionGroup
@@ -40,12 +40,12 @@
   return v4;
 }
 
-- (id)_initWithSuggestions:(id)a3 defaultSuggestionIndex:(int64_t)a4 isForWallpaper:(BOOL)a5
+- (id)_initWithSuggestions:(id)suggestions defaultSuggestionIndex:(int64_t)index isForWallpaper:(BOOL)wallpaper
 {
-  v8 = a3;
-  if (v8)
+  suggestionsCopy = suggestions;
+  if (suggestionsCopy)
   {
-    v9 = v8;
+    v9 = suggestionsCopy;
     v17.receiver = self;
     v17.super_class = _PHPickerSuggestionGroup;
     v10 = [(_PHPickerSuggestionGroup *)&v17 init];
@@ -55,8 +55,8 @@
       suggestions = v10->_suggestions;
       v10->_suggestions = v11;
 
-      v10->_defaultSuggestionIndex = a4;
-      v10->_isForWallpaper = a5;
+      v10->_defaultSuggestionIndex = index;
+      v10->_isForWallpaper = wallpaper;
     }
 
     return v10;
@@ -71,23 +71,23 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suggestions = self->_suggestions;
-  v5 = a3;
-  [v5 encodeObject:suggestions forKey:@"PHPickerSuggestionGroupCoderSuggestionsKey"];
-  [v5 encodeInteger:self->_defaultSuggestionIndex forKey:@"PHPickerSuggestionGroupCoderDefaultSuggestionIndexKey"];
-  [v5 encodeBool:self->_isForWallpaper forKey:@"PHPickerSuggestionGroupCoderIsForWallpaperKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:suggestions forKey:@"PHPickerSuggestionGroupCoderSuggestionsKey"];
+  [coderCopy encodeInteger:self->_defaultSuggestionIndex forKey:@"PHPickerSuggestionGroupCoderDefaultSuggestionIndexKey"];
+  [coderCopy encodeBool:self->_isForWallpaper forKey:@"PHPickerSuggestionGroupCoderIsForWallpaperKey"];
 }
 
-- (_PHPickerSuggestionGroup)initWithCoder:(id)a3
+- (_PHPickerSuggestionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[PUPickerSuggestionAvailableClasses all];
-  v6 = [v4 decodeArrayOfObjectsOfClasses:v5 forKey:@"PHPickerSuggestionGroupCoderSuggestionsKey"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClasses:v5 forKey:@"PHPickerSuggestionGroupCoderSuggestionsKey"];
 
-  v7 = [v4 decodeIntegerForKey:@"PHPickerSuggestionGroupCoderDefaultSuggestionIndexKey"];
-  v8 = [v4 decodeBoolForKey:@"PHPickerSuggestionGroupCoderIsForWallpaperKey"];
+  v7 = [coderCopy decodeIntegerForKey:@"PHPickerSuggestionGroupCoderDefaultSuggestionIndexKey"];
+  v8 = [coderCopy decodeBoolForKey:@"PHPickerSuggestionGroupCoderIsForWallpaperKey"];
 
   if (v6)
   {
@@ -97,7 +97,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_PHPickerSuggestionGroup alloc];
   suggestions = self->_suggestions;
@@ -114,10 +114,10 @@
   return self->_isForWallpaper - v4 + 32 * v4 + 29791;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
 LABEL_15:
@@ -132,7 +132,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
@@ -186,42 +186,42 @@ LABEL_13:
   return [(_PHPickerSuggestionGroup *)v15 init];
 }
 
-+ (id)_wallpaperSuggestionGroupWithDefaultSuggestionIndex:(int64_t)a3 allowSettlingEffectSuggestions:(BOOL)a4 allowGyroEffectSuggestions:(BOOL)a5
++ (id)_wallpaperSuggestionGroupWithDefaultSuggestionIndex:(int64_t)index allowSettlingEffectSuggestions:(BOOL)suggestions allowGyroEffectSuggestions:(BOOL)effectSuggestions
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  effectSuggestionsCopy = effectSuggestions;
+  suggestionsCopy = suggestions;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = objc_alloc_init(PUPickerSuggestionAll);
-  [v8 addObject:v9];
+  [array addObject:v9];
 
   v10 = [[PUPickerWallpaperSuggestion alloc] initWithMode:0];
-  [v8 addObject:v10];
+  [array addObject:v10];
 
-  if (PFPosterEnableSettlingEffect() && v6)
+  if (PFPosterEnableSettlingEffect() && suggestionsCopy)
   {
     v11 = objc_alloc_init(PUPickerLivePhotoWithPossibleMotionEffectSuggestion);
-    [v8 addObject:v11];
+    [array addObject:v11];
   }
 
   v12 = [[PUPickerWallpaperSuggestion alloc] initWithMode:1];
-  [v8 addObject:v12];
+  [array addObject:v12];
 
   v13 = [[PUPickerWallpaperSuggestion alloc] initWithMode:2];
-  [v8 addObject:v13];
+  [array addObject:v13];
 
   v14 = [[PUPickerWallpaperSuggestion alloc] initWithMode:3];
-  [v8 addObject:v14];
+  [array addObject:v14];
 
   v15 = [[PUPickerWallpaperSuggestion alloc] initWithMode:4];
-  [v8 addObject:v15];
+  [array addObject:v15];
 
-  if (PFPosterIsSpatialPhotoEnabled() && PFPosterDeviceSupportsSpatialPhoto() && v5)
+  if (PFPosterIsSpatialPhotoEnabled() && PFPosterDeviceSupportsSpatialPhoto() && effectSuggestionsCopy)
   {
     v16 = objc_alloc_init(PUPickerPhotoWithGyroPosterSuggestion);
-    [v8 addObject:v16];
+    [array addObject:v16];
   }
 
-  v17 = [[_PHPickerSuggestionGroup alloc] _initWithSuggestions:v8 defaultSuggestionIndex:a3 isForWallpaper:1];
+  v17 = [[_PHPickerSuggestionGroup alloc] _initWithSuggestions:array defaultSuggestionIndex:index isForWallpaper:1];
 
   return v17;
 }
@@ -323,8 +323,8 @@ LABEL_13:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v6 = [v2 initWithArray:v5];
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"UseSearchBasedPeopleSuggestionForStickersSuggestionGroup"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults BOOLForKey:@"UseSearchBasedPeopleSuggestionForStickersSuggestionGroup"];
 
   if (v8)
   {
@@ -349,8 +349,8 @@ LABEL_13:
   v11 = [objc_alloc(*v10) initWithMode:v9];
   [v6 addObject:v11];
 
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v12 BOOLForKey:@"UseWallpaperSuggestionBasedAnimalsSuggestionForStickersSuggestionGroup"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults2 BOOLForKey:@"UseWallpaperSuggestionBasedAnimalsSuggestionForStickersSuggestionGroup"];
 
   if (v13)
   {
@@ -382,8 +382,8 @@ LABEL_13:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   [v6 addObjectsFromArray:v19];
 
-  v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-  LODWORD(v18) = [v20 BOOLForKey:@"ShowProductsForStickersSuggestionGroup"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  LODWORD(v18) = [standardUserDefaults3 BOOLForKey:@"ShowProductsForStickersSuggestionGroup"];
 
   if (v18)
   {

@@ -1,14 +1,14 @@
 @interface SXDataTableSortReference
-- (unint64_t)directionWithValue:(id)a3 withType:(int)a4;
+- (unint64_t)directionWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXDataTableSortReference
 
-- (unint64_t)directionWithValue:(id)a3 withType:(int)a4
+- (unint64_t)directionWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [a3 isEqualToString:{@"descending", v4, v5}];
+    return [value isEqualToString:{@"descending", v4, v5}];
   }
 
   else

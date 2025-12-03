@@ -1,6 +1,6 @@
 @interface ReadingListMetadataProvider
 - (ReadingListMetadataProvider)init;
-- (void)fetchMetadataForBookmark:(id)a3 completion:(id)a4;
+- (void)fetchMetadataForBookmark:(id)bookmark completion:(id)completion;
 @end
 
 @implementation ReadingListMetadataProvider
@@ -19,29 +19,29 @@
   return v3;
 }
 
-- (void)fetchMetadataForBookmark:(id)a3 completion:(id)a4
+- (void)fetchMetadataForBookmark:(id)bookmark completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  bookmarkCopy = bookmark;
+  completionCopy = completion;
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __67__ReadingListMetadataProvider_fetchMetadataForBookmark_completion___block_invoke;
   v20 = &unk_2781D7C98;
-  v7 = v5;
+  v7 = bookmarkCopy;
   v21 = v7;
-  v8 = v6;
+  v8 = completionCopy;
   v22 = v8;
   v9 = _Block_copy(&v17);
   if ([MEMORY[0x277D28F58] hasSharedSiteMetadataManager])
   {
     v10 = objc_alloc(MEMORY[0x277D4A790]);
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v7 address];
-    v13 = [v11 URLWithString:v12];
+    address = [v7 address];
+    v13 = [v11 URLWithString:address];
     v14 = [v10 initWithURL:v13];
 
-    v15 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-    v16 = [v15 registerOneTimeRequest:v14 priority:2 responseHandler:v9];
+    mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    v16 = [mEMORY[0x277D28F58] registerOneTimeRequest:v14 priority:2 responseHandler:v9];
   }
 
   else

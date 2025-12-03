@@ -1,6 +1,6 @@
 @interface AmbientAvatarView
 - (CNContact)contact;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 @end
 
 @implementation AmbientAvatarView
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  AmbientAvatarView.contact.setter(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  AmbientAvatarView.contact.setter(contactCopy);
 }
 
 @end

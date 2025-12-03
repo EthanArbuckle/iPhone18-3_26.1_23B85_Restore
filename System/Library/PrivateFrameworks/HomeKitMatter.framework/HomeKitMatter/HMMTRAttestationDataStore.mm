@@ -1,29 +1,29 @@
 @interface HMMTRAttestationDataStore
 + (id)logCategory;
-- (HMMTRAttestationDataStore)initWithFileURL:(id)a3;
-- (HMMTRAttestationDataStore)initWithFileURL:(id)a3 uarpController:(id)a4 fileManager:(id)a5;
+- (HMMTRAttestationDataStore)initWithFileURL:(id)l;
+- (HMMTRAttestationDataStore)initWithFileURL:(id)l uarpController:(id)controller fileManager:(id)manager;
 - (NSArray)cdCertificates;
 - (NSArray)paaCertificates;
-- (id)convertPEMtoDERforCertificate:(id)a3;
+- (id)convertPEMtoDERforCertificate:(id)certificate;
 - (id)staticAttestationData;
 - (id)staticAttestationDataFileURL;
-- (void)attestationCertificates:(id)a3 forSubjectKeyIdentifier:(id)a4;
+- (void)attestationCertificates:(id)certificates forSubjectKeyIdentifier:(id)identifier;
 - (void)fetchCloudAttestationData;
-- (void)saveWithPaaCertificates:(id)a3 cdCertificates:(id)a4;
+- (void)saveWithPaaCertificates:(id)certificates cdCertificates:(id)cdCertificates;
 @end
 
 @implementation HMMTRAttestationDataStore
 
-- (void)attestationCertificates:(id)a3 forSubjectKeyIdentifier:(id)a4
+- (void)attestationCertificates:(id)certificates forSubjectKeyIdentifier:(id)identifier
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  certificatesCopy = certificates;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v6)
+  if (certificatesCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -31,22 +31,22 @@
       *buf = 138543618;
       v50 = v12;
       v51 = 2048;
-      v52 = [v6 count];
+      v52 = [certificatesCopy count];
       _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@Received %tu PAA certificates from UARP controller", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    if ([v6 count])
+    if ([certificatesCopy count])
     {
-      v29 = v7;
+      v29 = identifierCopy;
       v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v30 = v6;
-      obj = v6;
+      v30 = certificatesCopy;
+      obj = certificatesCopy;
       v32 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (!v32)
       {
@@ -88,7 +88,7 @@
                   objc_enumerationMutation(v15);
                 }
 
-                v21 = [(HMMTRAttestationDataStore *)v9 convertPEMtoDERforCertificate:*(*(&v39 + 1) + 8 * i)];
+                v21 = [(HMMTRAttestationDataStore *)selfCopy convertPEMtoDERforCertificate:*(*(&v39 + 1) + 8 * i)];
                 if (v21)
                 {
                   if (v19)
@@ -112,7 +112,7 @@
                 else
                 {
                   v23 = objc_autoreleasePoolPush();
-                  v24 = v9;
+                  v24 = selfCopy;
                   v25 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                   {
@@ -148,9 +148,9 @@ LABEL_24:
         {
 LABEL_28:
 
-          [(HMMTRAttestationDataStore *)v9 saveWithPaaCertificates:v36 cdCertificates:v38];
-          v7 = v29;
-          v6 = v30;
+          [(HMMTRAttestationDataStore *)selfCopy saveWithPaaCertificates:v36 cdCertificates:v38];
+          identifierCopy = v29;
+          certificatesCopy = v30;
           break;
         }
       }
@@ -177,7 +177,7 @@ LABEL_28:
 {
   v47 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -188,16 +188,16 @@ LABEL_28:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRAttestationDataStore *)v4 fileManager];
-  v8 = [(HMMTRAttestationDataStore *)v4 fileURL];
+  fileManager = [(HMMTRAttestationDataStore *)selfCopy fileManager];
+  fileURL = [(HMMTRAttestationDataStore *)selfCopy fileURL];
   v42 = 0;
-  v9 = [v7 dictionaryWithContentsOfURL:v8 error:&v42];
+  staticAttestationData = [fileManager dictionaryWithContentsOfURL:fileURL error:&v42];
   v10 = v42;
 
-  if (!v9)
+  if (!staticAttestationData)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v4;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -208,16 +208,16 @@ LABEL_28:
     }
 
     objc_autoreleasePoolPop(v11);
-    v9 = [(HMMTRAttestationDataStore *)v12 staticAttestationData];
+    staticAttestationData = [(HMMTRAttestationDataStore *)v12 staticAttestationData];
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v4;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v9 objectForKeyedSubscript:@"Version"];
+    v19 = [staticAttestationData objectForKeyedSubscript:@"Version"];
     *buf = 138543618;
     v44 = v18;
     v45 = 2112;
@@ -232,7 +232,7 @@ LABEL_28:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v9 objectForKeyedSubscript:@"SchemaVersion"];
+    v24 = [staticAttestationData objectForKeyedSubscript:@"SchemaVersion"];
     *buf = 138543618;
     v44 = v23;
     v45 = 2112;
@@ -241,7 +241,7 @@ LABEL_28:
   }
 
   objc_autoreleasePoolPop(v20);
-  v25 = [v9 objectForKeyedSubscript:@"CDCertificates"];
+  v25 = [staticAttestationData objectForKeyedSubscript:@"CDCertificates"];
   v26 = v25;
   if (!v25)
   {
@@ -254,7 +254,7 @@ LABEL_28:
       *buf = 138543618;
       v44 = v35;
       v45 = 2112;
-      v46 = v9;
+      v46 = staticAttestationData;
       v36 = "%{public}@Could not find Certificate Declarations(CDs) in attestation data dictionary: %@";
       v37 = v30;
       v38 = OS_LOG_TYPE_ERROR;
@@ -316,7 +316,7 @@ LABEL_22:
 {
   v47 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -327,16 +327,16 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRAttestationDataStore *)v4 fileManager];
-  v8 = [(HMMTRAttestationDataStore *)v4 fileURL];
+  fileManager = [(HMMTRAttestationDataStore *)selfCopy fileManager];
+  fileURL = [(HMMTRAttestationDataStore *)selfCopy fileURL];
   v42 = 0;
-  v9 = [v7 dictionaryWithContentsOfURL:v8 error:&v42];
+  staticAttestationData = [fileManager dictionaryWithContentsOfURL:fileURL error:&v42];
   v10 = v42;
 
-  if (!v9)
+  if (!staticAttestationData)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v4;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -347,16 +347,16 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v11);
-    v9 = [(HMMTRAttestationDataStore *)v12 staticAttestationData];
+    staticAttestationData = [(HMMTRAttestationDataStore *)v12 staticAttestationData];
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v4;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v9 objectForKeyedSubscript:@"Version"];
+    v19 = [staticAttestationData objectForKeyedSubscript:@"Version"];
     *buf = 138543618;
     v44 = v18;
     v45 = 2112;
@@ -371,7 +371,7 @@ LABEL_22:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v9 objectForKeyedSubscript:@"SchemaVersion"];
+    v24 = [staticAttestationData objectForKeyedSubscript:@"SchemaVersion"];
     *buf = 138543618;
     v44 = v23;
     v45 = 2112;
@@ -380,7 +380,7 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v20);
-  v25 = [v9 objectForKeyedSubscript:@"PAACertificates"];
+  v25 = [staticAttestationData objectForKeyedSubscript:@"PAACertificates"];
   v26 = v25;
   if (!v25)
   {
@@ -393,7 +393,7 @@ LABEL_22:
       *buf = 138543618;
       v44 = v35;
       v45 = 2112;
-      v46 = v9;
+      v46 = staticAttestationData;
       v36 = "%{public}@Could not find PAAs in attestation data dictionary: %@";
       v37 = v30;
       v38 = OS_LOG_TYPE_ERROR;
@@ -455,7 +455,7 @@ LABEL_22:
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -466,13 +466,13 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRAttestationDataStore *)v4 uarpController];
-  v8 = [v7 getAttestationCertificates:0 assetLocationType:15];
+  uarpController = [(HMMTRAttestationDataStore *)selfCopy uarpController];
+  v8 = [uarpController getAttestationCertificates:0 assetLocationType:15];
 
   if ((v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -488,12 +488,12 @@ LABEL_22:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)convertPEMtoDERforCertificate:(id)a3
+- (id)convertPEMtoDERforCertificate:(id)certificate
 {
-  v3 = a3;
-  if ([v3 length])
+  certificateCopy = certificate;
+  if ([certificateCopy length])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"-----BEGIN CERTIFICATE-----" withString:&stru_283ED2308];
+    v4 = [certificateCopy stringByReplacingOccurrencesOfString:@"-----BEGIN CERTIFICATE-----" withString:&stru_283ED2308];
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"-----END CERTIFICATE-----" withString:&stru_283ED2308];
 
@@ -501,10 +501,10 @@ LABEL_22:
 
     v7 = [v6 stringByReplacingOccurrencesOfString:@"\r" withString:&stru_283ED2308];
 
-    v8 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v3 = [v7 stringByTrimmingCharactersInSet:v8];
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    certificateCopy = [v7 stringByTrimmingCharactersInSet:newlineCharacterSet];
 
-    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
+    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:certificateCopy options:0];
   }
 
   else
@@ -515,13 +515,13 @@ LABEL_22:
   return v9;
 }
 
-- (void)saveWithPaaCertificates:(id)a3 cdCertificates:(id)a4
+- (void)saveWithPaaCertificates:(id)certificates cdCertificates:(id)cdCertificates
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  certificatesCopy = certificates;
+  cdCertificatesCopy = cdCertificates;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -538,17 +538,17 @@ LABEL_22:
   v36[1] = &unk_283EE9060;
   v35[2] = @"PAACertificates";
   v35[3] = @"CDCertificates";
-  v36[2] = v6;
-  v36[3] = v7;
+  v36[2] = certificatesCopy;
+  v36[3] = cdCertificatesCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:4];
-  v13 = [(HMMTRAttestationDataStore *)v9 fileManager];
-  v14 = [(HMMTRAttestationDataStore *)v9 fileURL];
+  fileManager = [(HMMTRAttestationDataStore *)selfCopy fileManager];
+  fileURL = [(HMMTRAttestationDataStore *)selfCopy fileURL];
   v28 = 0;
-  v15 = [v13 writeDictionary:v12 toURL:v14 error:&v28];
+  v15 = [fileManager writeDictionary:v12 toURL:fileURL error:&v28];
   v16 = v28;
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v9;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   v20 = v19;
   if (v15)
@@ -556,11 +556,11 @@ LABEL_22:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [(HMMTRAttestationDataStore *)v18 fileURL];
+      fileURL2 = [(HMMTRAttestationDataStore *)v18 fileURL];
       *buf = 138543618;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = fileURL2;
       v23 = "%{public}@Successfully saved attestation data to %@";
       v24 = v20;
       v25 = OS_LOG_TYPE_INFO;
@@ -573,11 +573,11 @@ LABEL_8:
   else if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [(HMMTRAttestationDataStore *)v18 fileURL];
+    fileURL2 = [(HMMTRAttestationDataStore *)v18 fileURL];
     *buf = 138543874;
     v30 = v21;
     v31 = 2112;
-    v32 = v22;
+    v32 = fileURL2;
     v33 = 2112;
     v34 = v16;
     v23 = "%{public}@Failed to write attestation data to %@: %@";
@@ -594,10 +594,10 @@ LABEL_8:
 - (id)staticAttestationData
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRAttestationDataStore *)self fileManager];
-  v4 = [(HMMTRAttestationDataStore *)self staticAttestationDataFileURL];
+  fileManager = [(HMMTRAttestationDataStore *)self fileManager];
+  staticAttestationDataFileURL = [(HMMTRAttestationDataStore *)self staticAttestationDataFileURL];
   v15 = 0;
-  v5 = [v3 dictionaryWithContentsOfURL:v4 error:&v15];
+  v5 = [fileManager dictionaryWithContentsOfURL:staticAttestationDataFileURL error:&v15];
   v6 = v15;
 
   if (v5)
@@ -608,16 +608,16 @@ LABEL_8:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMMTRAttestationDataStore *)v9 staticAttestationDataFileURL];
+      staticAttestationDataFileURL2 = [(HMMTRAttestationDataStore *)selfCopy staticAttestationDataFileURL];
       *buf = 138543874;
       v17 = v11;
       v18 = 2112;
-      v19 = v12;
+      v19 = staticAttestationDataFileURL2;
       v20 = 2112;
       v21 = v6;
       _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to load local attestation data at file URL %@: %@", buf, 0x20u);
@@ -650,26 +650,26 @@ LABEL_8:
   }
 }
 
-- (HMMTRAttestationDataStore)initWithFileURL:(id)a3 uarpController:(id)a4 fileManager:(id)a5
+- (HMMTRAttestationDataStore)initWithFileURL:(id)l uarpController:(id)controller fileManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  lCopy = l;
+  controllerCopy = controller;
+  managerCopy = manager;
+  if (!lCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!controllerCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = managerCopy;
+  if (!managerCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -682,22 +682,22 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_fileURL, a3);
-    objc_storeStrong(&v14->_uarpController, a4);
+    objc_storeStrong(&v13->_fileURL, l);
+    objc_storeStrong(&v14->_uarpController, controller);
     [(UARPController *)v14->_uarpController setDelegate:v14];
-    objc_storeStrong(&v14->_fileManager, a5);
+    objc_storeStrong(&v14->_fileManager, manager);
   }
 
   return v14;
 }
 
-- (HMMTRAttestationDataStore)initWithFileURL:(id)a3
+- (HMMTRAttestationDataStore)initWithFileURL:(id)l
 {
   v4 = MEMORY[0x277D02620];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(HMMTRFileManager);
-  v8 = [(HMMTRAttestationDataStore *)self initWithFileURL:v5 uarpController:v6 fileManager:v7];
+  v8 = [(HMMTRAttestationDataStore *)self initWithFileURL:lCopy uarpController:v6 fileManager:v7];
 
   return v8;
 }

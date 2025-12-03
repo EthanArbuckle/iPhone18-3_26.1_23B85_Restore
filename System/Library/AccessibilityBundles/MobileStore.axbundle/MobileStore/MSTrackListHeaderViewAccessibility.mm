@@ -1,10 +1,10 @@
 @interface MSTrackListHeaderViewAccessibility
 - (id)_accessibilityChildren;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)accessibilityLabel;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 @end
 
 @implementation MSTrackListHeaderViewAccessibility
@@ -12,31 +12,31 @@
 - (id)accessibilityLabel
 {
   v3 = [(MSTrackListHeaderViewAccessibility *)self safeValueForKey:@"_albumLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MSTrackListHeaderViewAccessibility *)self safeValueForKey:@"_artistLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(MSTrackListHeaderViewAccessibility *)self safeValueForKey:@"_releaseDateLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
-  v9 = [MEMORY[0x29EDBA050] string];
-  if ([v6 length])
+  string = [MEMORY[0x29EDBA050] string];
+  if ([accessibilityLabel2 length])
   {
-    [v9 appendFormat:@"%@, ", v6];
+    [string appendFormat:@"%@, ", accessibilityLabel2];
   }
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    [v9 appendFormat:@"%@, ", v4];
+    [string appendFormat:@"%@, ", accessibilityLabel];
   }
 
-  if ([v8 length])
+  if ([accessibilityLabel3 length])
   {
-    [v9 appendFormat:@"%@, ", v8];
+    [string appendFormat:@"%@, ", accessibilityLabel3];
   }
 
-  return v9;
+  return string;
 }
 
 - (id)_accessibilityChildren
@@ -53,11 +53,11 @@
     v6 = [objc_allocWithZone(MEMORY[0x29EDB8DE8]) init];
     [(MSTrackListHeaderViewAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:*v3];
     v7 = [objc_allocWithZone(MSTrackAccessibilityElement) initWithAccessibilityContainer:self];
-    v8 = [(MSTrackListHeaderViewAccessibility *)self accessibilityLabel];
-    [v7 setAccessibilityLabel:v8];
+    accessibilityLabel = [(MSTrackListHeaderViewAccessibility *)self accessibilityLabel];
+    [v7 setAccessibilityLabel:accessibilityLabel];
 
-    v9 = [(MSTrackListHeaderViewAccessibility *)self accessibilityLanguage];
-    [v7 setAccessibilityLanguage:v9];
+    accessibilityLanguage = [(MSTrackListHeaderViewAccessibility *)self accessibilityLanguage];
+    [v7 setAccessibilityLanguage:accessibilityLanguage];
 
     [(MSTrackListHeaderViewAccessibility *)self accessibilityFrame];
     [v7 setAccessibilityFrame:?];
@@ -74,10 +74,10 @@
   return v5;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v23 = *MEMORY[0x29EDCA608];
-  if ([a4 _gsEvent])
+  if ([event _gsEvent])
   {
     GSEventGetLocationInWindow();
     v6 = v5;
@@ -94,11 +94,11 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
-  v10 = [v9 reverseObjectEnumerator];
-  v11 = [v10 allObjects];
+  _accessibilityChildren = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
+  reverseObjectEnumerator = [_accessibilityChildren reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = *v19;
@@ -108,7 +108,7 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
@@ -122,7 +122,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         continue;
@@ -141,25 +141,25 @@ LABEL_14:
 
 - (int64_t)accessibilityElementCount
 {
-  v2 = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
-  v3 = [v2 count];
+  _accessibilityChildren = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
+  v3 = [_accessibilityChildren count];
 
   return v3;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
-  v5 = [v4 objectAtIndex:a3];
+  _accessibilityChildren = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
+  v5 = [_accessibilityChildren objectAtIndex:index];
 
   return v5;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
-  v6 = [v5 indexOfObject:v4];
+  elementCopy = element;
+  _accessibilityChildren = [(MSTrackListHeaderViewAccessibility *)self _accessibilityChildren];
+  v6 = [_accessibilityChildren indexOfObject:elementCopy];
 
   return v6;
 }

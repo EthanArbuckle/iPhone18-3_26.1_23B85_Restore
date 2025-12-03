@@ -1,6 +1,6 @@
 @interface SleepApneaNotificationTipViewController
-- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -16,12 +16,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   v3 = sub_29E642588();
-  [(SleepApneaNotificationTipViewController *)v4 setView:v3];
+  [(SleepApneaNotificationTipViewController *)selfCopy setView:v3];
 }
 
-- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -31,10 +31,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_29E7541D8();
-    a3 = v7;
+    name = v7;
   }
 
   v8 = self + OBJC_IVAR____TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController_context;
@@ -45,8 +45,8 @@
   v10 = sub_29E74FFA8();
   (*(*(v10 - 8) + 56))(self + v9, 1, 1, v10);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController____lazy_storage___tileView) = 0;
-  v11 = a4;
-  if (a3)
+  bundleCopy = bundle;
+  if (name)
   {
     v12 = sub_29E754198();
   }
@@ -58,12 +58,12 @@
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for SleepApneaNotificationTipViewController();
-  v13 = [(SleepApneaNotificationTipViewController *)&v15 initWithNibName:v12 bundle:a4];
+  v13 = [(SleepApneaNotificationTipViewController *)&v15 initWithNibName:v12 bundle:bundle];
 
   return v13;
 }
 
-- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -83,8 +83,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20SleepHealthAppPlugin39SleepApneaNotificationTipViewController____lazy_storage___tileView) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SleepApneaNotificationTipViewController();
-  v8 = a3;
-  v9 = [(SleepApneaNotificationTipViewController *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(SleepApneaNotificationTipViewController *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

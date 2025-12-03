@@ -1,18 +1,18 @@
 @interface CKBackdropMaterialVibrantOuterStrokeLayer
 - (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)init;
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithCoder:(id)a3;
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithLayer:(id)a3;
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithUserInterfaceStyle:(int64_t)a3;
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithCoder:(id)coder;
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithLayer:(id)layer;
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithUserInterfaceStyle:(int64_t)style;
 - (int64_t)userInterfaceStyle;
 - (void)layoutSublayers;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation CKBackdropMaterialVibrantOuterStrokeLayer
 
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithUserInterfaceStyle:(int64_t)a3
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithUserInterfaceStyle:(int64_t)style
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer_userInterfaceStyle) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer_userInterfaceStyle) = style;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CKBackdropMaterialVibrantOuterStrokeLayer();
   v3 = [(CKBackdropMaterialVibrantOuterStrokeLayer *)&v6 init];
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithLayer:(id)a3
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_190D58140();
@@ -31,7 +31,7 @@
   return sub_190A3FF20(&v4);
 }
 
-- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);
@@ -45,17 +45,17 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
   v5 = OBJC_IVAR____TtC7ChatKit41CKBackdropMaterialVibrantOuterStrokeLayer_userInterfaceStyle;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = style;
   [(CKBackdropMaterialVibrantOuterStrokeLayer *)self setNeedsLayout];
 }
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A402BC();
 }
 

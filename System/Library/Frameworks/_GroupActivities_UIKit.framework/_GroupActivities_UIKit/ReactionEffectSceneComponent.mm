@@ -1,7 +1,7 @@
 @interface ReactionEffectSceneComponent
 - (UIScene)_scene;
 - (_TtC22_GroupActivities_UIKitP33_61045C1AF14ACF7709647F197782129928ReactionEffectSceneComponent)init;
-- (_TtC22_GroupActivities_UIKitP33_61045C1AF14ACF7709647F197782129928ReactionEffectSceneComponent)initWithScene:(id)a3;
+- (_TtC22_GroupActivities_UIKitP33_61045C1AF14ACF7709647F197782129928ReactionEffectSceneComponent)initWithScene:(id)scene;
 @end
 
 @implementation ReactionEffectSceneComponent
@@ -13,7 +13,7 @@
   return Strong;
 }
 
-- (_TtC22_GroupActivities_UIKitP33_61045C1AF14ACF7709647F197782129928ReactionEffectSceneComponent)initWithScene:(id)a3
+- (_TtC22_GroupActivities_UIKitP33_61045C1AF14ACF7709647F197782129928ReactionEffectSceneComponent)initWithScene:(id)scene
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();

@@ -1,55 +1,55 @@
 @interface CKVocabularySandbox
-+ (id)loadWithSandboxId:(id)a3 error:(id *)a4;
-+ (id)sandboxWithProfile:(id)a3 locale:(id)a4 error:(id *)a5;
-+ (id)sandboxWithRawSpeechProfile:(id)a3 error:(id *)a4;
-+ (id)sandboxWithRawSpeechProfile:(id)a3 rawSpeechProfileMetadata:(id)a4 error:(id *)a5;
++ (id)loadWithSandboxId:(id)id error:(id *)error;
++ (id)sandboxWithProfile:(id)profile locale:(id)locale error:(id *)error;
++ (id)sandboxWithRawSpeechProfile:(id)profile error:(id *)error;
++ (id)sandboxWithRawSpeechProfile:(id)profile rawSpeechProfileMetadata:(id)metadata error:(id *)error;
 - (CKVocabularySandbox)init;
-- (CKVocabularySandbox)initWithSandbox:(id)a3;
+- (CKVocabularySandbox)initWithSandbox:(id)sandbox;
 - (id)searcher;
-- (id)searcherForUserId:(id)a3;
+- (id)searcherForUserId:(id)id;
 @end
 
 @implementation CKVocabularySandbox
 
-+ (id)sandboxWithProfile:(id)a3 locale:(id)a4 error:(id *)a5
++ (id)sandboxWithProfile:(id)profile locale:(id)locale error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [getSEMSandboxClass() sandboxWithKVProfile:v8 locale:v7 error:a5];
+  localeCopy = locale;
+  profileCopy = profile;
+  v9 = [getSEMSandboxClass() sandboxWithKVProfile:profileCopy locale:localeCopy error:error];
 
   v10 = [objc_alloc(objc_opt_class()) initWithSandbox:v9];
 
   return v10;
 }
 
-+ (id)sandboxWithRawSpeechProfile:(id)a3 rawSpeechProfileMetadata:(id)a4 error:(id *)a5
++ (id)sandboxWithRawSpeechProfile:(id)profile rawSpeechProfileMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = [getSEMSandboxClass() sandboxWithRawSpeechProfile:v6 error:a5];
+  profileCopy = profile;
+  v7 = [getSEMSandboxClass() sandboxWithRawSpeechProfile:profileCopy error:error];
 
   v8 = [objc_alloc(objc_opt_class()) initWithSandbox:v7];
 
   return v8;
 }
 
-+ (id)sandboxWithRawSpeechProfile:(id)a3 error:(id *)a4
++ (id)sandboxWithRawSpeechProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
-  v6 = [getSEMSandboxClass() sandboxWithRawSpeechProfile:v5 error:a4];
+  profileCopy = profile;
+  v6 = [getSEMSandboxClass() sandboxWithRawSpeechProfile:profileCopy error:error];
 
   v7 = [objc_alloc(objc_opt_class()) initWithSandbox:v6];
 
   return v7;
 }
 
-- (CKVocabularySandbox)initWithSandbox:(id)a3
+- (CKVocabularySandbox)initWithSandbox:(id)sandbox
 {
-  v5 = a3;
+  sandboxCopy = sandbox;
   v10.receiver = self;
   v10.super_class = CKVocabularySandbox;
   v6 = [(CKVocabularySandbox *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_sandbox, a3), !v7->_sandbox))
+  if (v6 && (objc_storeStrong(&v6->_sandbox, sandbox), !v7->_sandbox))
   {
     v8 = 0;
   }
@@ -70,22 +70,22 @@
   return v4;
 }
 
-+ (id)loadWithSandboxId:(id)a3 error:(id *)a4
++ (id)loadWithSandboxId:(id)id error:(id *)error
 {
-  v5 = a3;
-  v6 = [getSEMSandboxClass_1249() loadWithSandboxId:v5 error:a4];
+  idCopy = id;
+  v6 = [getSEMSandboxClass_1249() loadWithSandboxId:idCopy error:error];
 
   v7 = [objc_alloc(objc_opt_class()) initWithSandbox:v6];
 
   return v7;
 }
 
-- (id)searcherForUserId:(id)a3
+- (id)searcherForUserId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = [CKVocabularySandboxSearcher alloc];
-  v6 = [(CKVocabularySandbox *)self sandbox];
-  v7 = [(CKVocabularySandboxSearcher *)v5 initWithSandbox:v6 userId:v4 prewarm:1];
+  sandbox = [(CKVocabularySandbox *)self sandbox];
+  v7 = [(CKVocabularySandboxSearcher *)v5 initWithSandbox:sandbox userId:idCopy prewarm:1];
 
   return v7;
 }
@@ -93,8 +93,8 @@
 - (id)searcher
 {
   v3 = [CKVocabularySandboxSearcher alloc];
-  v4 = [(CKVocabularySandbox *)self sandbox];
-  v5 = [(CKVocabularySandboxSearcher *)v3 initWithSandbox:v4 userId:0 prewarm:0];
+  sandbox = [(CKVocabularySandbox *)self sandbox];
+  v5 = [(CKVocabularySandboxSearcher *)v3 initWithSandbox:sandbox userId:0 prewarm:0];
 
   return v5;
 }

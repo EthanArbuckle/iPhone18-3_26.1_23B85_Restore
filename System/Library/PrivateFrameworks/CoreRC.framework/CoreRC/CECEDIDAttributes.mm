@@ -1,30 +1,30 @@
 @interface CECEDIDAttributes
-- (CECEDIDAttributes)initWithAttributes:(id)a3;
-- (CECEDIDAttributes)initWithCoder:(id)a3;
-- (CECEDIDAttributes)initWithModelName:(id)a3;
-- (CECEDIDAttributes)initWithVendorID:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CECEDIDAttributes)initWithAttributes:(id)attributes;
+- (CECEDIDAttributes)initWithCoder:(id)coder;
+- (CECEDIDAttributes)initWithModelName:(id)name;
+- (CECEDIDAttributes)initWithVendorID:(int64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CECEDIDAttributes
 
-- (CECEDIDAttributes)initWithVendorID:(int64_t)a3
+- (CECEDIDAttributes)initWithVendorID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = CECEDIDAttributes;
   result = [(CECEDIDAttributes *)&v5 init];
   if (result)
   {
-    result->_vendorID = a3;
+    result->_vendorID = d;
   }
 
   return result;
 }
 
-- (CECEDIDAttributes)initWithModelName:(id)a3
+- (CECEDIDAttributes)initWithModelName:(id)name
 {
   v7.receiver = self;
   v7.super_class = CECEDIDAttributes;
@@ -32,25 +32,25 @@
   v5 = v4;
   if (v4)
   {
-    [(CECEDIDAttributes *)v4 setModelName:a3];
+    [(CECEDIDAttributes *)v4 setModelName:name];
   }
 
   return v5;
 }
 
-- (CECEDIDAttributes)initWithCoder:(id)a3
+- (CECEDIDAttributes)initWithCoder:(id)coder
 {
   if (self)
   {
-    self->_address = [a3 decodeIntegerForKey:@"address"];
-    self->_vendorID = [a3 decodeIntegerForKey:@"vendorID"];
-    self->_productID = [a3 decodeIntegerForKey:@"productID"];
-    self->_week = [a3 decodeIntegerForKey:@"week"];
-    self->_year = [a3 decodeIntegerForKey:@"year"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    self->_address = [coder decodeIntegerForKey:@"address"];
+    self->_vendorID = [coder decodeIntegerForKey:@"vendorID"];
+    self->_productID = [coder decodeIntegerForKey:@"productID"];
+    self->_week = [coder decodeIntegerForKey:@"week"];
+    self->_year = [coder decodeIntegerForKey:@"year"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     self->_modelName = v5;
     v6 = v5;
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     self->_uuid = v7;
     v8 = v7;
   }
@@ -58,17 +58,17 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_address forKey:@"address"];
-  [a3 encodeInteger:self->_vendorID forKey:@"vendorID"];
-  [a3 encodeInteger:self->_productID forKey:@"productID"];
-  [a3 encodeInteger:self->_week forKey:@"week"];
-  [a3 encodeInteger:self->_year forKey:@"year"];
-  [a3 encodeObject:self->_modelName forKey:@"name"];
+  [coder encodeInteger:self->_address forKey:@"address"];
+  [coder encodeInteger:self->_vendorID forKey:@"vendorID"];
+  [coder encodeInteger:self->_productID forKey:@"productID"];
+  [coder encodeInteger:self->_week forKey:@"week"];
+  [coder encodeInteger:self->_year forKey:@"year"];
+  [coder encodeObject:self->_modelName forKey:@"name"];
   uuid = self->_uuid;
 
-  [a3 encodeObject:uuid forKey:@"uuid"];
+  [coder encodeObject:uuid forKey:@"uuid"];
 }
 
 - (id)description
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithAttributes:self];
 }
@@ -115,9 +115,9 @@
   [(CECEDIDAttributes *)&v5 dealloc];
 }
 
-- (CECEDIDAttributes)initWithAttributes:(id)a3
+- (CECEDIDAttributes)initWithAttributes:(id)attributes
 {
-  if (!a3)
+  if (!attributes)
   {
     return 0;
   }
@@ -127,13 +127,13 @@
   v4 = [(CECEDIDAttributes *)&v6 init];
   if (v4)
   {
-    v4->_address = [a3 address];
-    v4->_vendorID = [a3 vendorID];
-    v4->_productID = [a3 productID];
-    v4->_week = [a3 week];
-    v4->_year = [a3 year];
-    v4->_modelName = [objc_msgSend(a3 "modelName")];
-    v4->_uuid = [objc_msgSend(a3 "uuid")];
+    v4->_address = [attributes address];
+    v4->_vendorID = [attributes vendorID];
+    v4->_productID = [attributes productID];
+    v4->_week = [attributes week];
+    v4->_year = [attributes year];
+    v4->_modelName = [objc_msgSend(attributes "modelName")];
+    v4->_uuid = [objc_msgSend(attributes "uuid")];
   }
 
   return v4;

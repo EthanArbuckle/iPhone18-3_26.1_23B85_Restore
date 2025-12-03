@@ -1,14 +1,14 @@
 @interface IAPEAUnregisteredClient
-- (IAPEAUnregisteredClient)initWithBundleId:(id)a3;
+- (IAPEAUnregisteredClient)initWithBundleId:(id)id;
 - (int)_getProcessIdForUnregisteredClient;
 - (void)dealloc;
 - (void)releaseProcessAssertion;
-- (void)takeProcessAssertion:(id)a3;
+- (void)takeProcessAssertion:(id)assertion;
 @end
 
 @implementation IAPEAUnregisteredClient
 
-- (IAPEAUnregisteredClient)initWithBundleId:(id)a3
+- (IAPEAUnregisteredClient)initWithBundleId:(id)id
 {
   v6.receiver = self;
   v6.super_class = IAPEAUnregisteredClient;
@@ -22,7 +22,7 @@
   if (((result + 8) & 3) == 0)
   {
     result->_processId = -1;
-    result = [a3 copy];
+    result = [id copy];
     if (((v5 + 16) & 7) == 0)
     {
       v5->_bundleId = &result->super.isa;
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)takeProcessAssertion:(id)a3
+- (void)takeProcessAssertion:(id)assertion
 {
   p_processAssertion = &self->_processAssertion;
   if ((&self->_processAssertion & 7) != 0)

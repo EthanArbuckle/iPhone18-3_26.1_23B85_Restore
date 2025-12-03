@@ -1,28 +1,28 @@
 @interface MonthWeekViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation MonthWeekViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKCalendarWeekView" hasInstanceMethod:@"monthTitleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MonthWeekView" isKindOfClass:@"HKCalendarWeekView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKCalendarWeekView" hasInstanceMethod:@"monthTitleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MonthWeekView" isKindOfClass:@"HKCalendarWeekView"];
 }
 
 - (id)accessibilityElements
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MonthWeekViewAccessibility *)self layer];
-  v5 = [v4 sublayers];
+  layer = [(MonthWeekViewAccessibility *)self layer];
+  sublayers = [layer sublayers];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = sublayers;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {

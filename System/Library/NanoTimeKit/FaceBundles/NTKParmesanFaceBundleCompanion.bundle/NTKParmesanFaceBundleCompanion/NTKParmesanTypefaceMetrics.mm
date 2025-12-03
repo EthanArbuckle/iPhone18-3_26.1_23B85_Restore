@@ -1,14 +1,14 @@
 @interface NTKParmesanTypefaceMetrics
 - (NTKParmesanTypefaceMetrics)init;
-- (NTKParmesanTypefaceMetrics)initWithDevice:(id)a3;
+- (NTKParmesanTypefaceMetrics)initWithDevice:(id)device;
 @end
 
 @implementation NTKParmesanTypefaceMetrics
 
-- (NTKParmesanTypefaceMetrics)initWithDevice:(id)a3
+- (NTKParmesanTypefaceMetrics)initWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = sub_23BFEA418(v3);
+  deviceCopy = device;
+  v4 = sub_23BFEA418(deviceCopy);
 
   return v4;
 }

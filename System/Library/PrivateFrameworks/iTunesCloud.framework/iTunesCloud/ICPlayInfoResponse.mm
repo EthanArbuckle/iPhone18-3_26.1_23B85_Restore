@@ -1,18 +1,18 @@
 @interface ICPlayInfoResponse
-- (ICPlayInfoResponse)initWithResponseDictionary:(id)a3;
+- (ICPlayInfoResponse)initWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation ICPlayInfoResponse
 
-- (ICPlayInfoResponse)initWithResponseDictionary:(id)a3
+- (ICPlayInfoResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICPlayInfoResponse;
   v5 = [(ICPlayInfoResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

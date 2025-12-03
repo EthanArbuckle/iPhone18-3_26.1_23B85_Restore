@@ -1,27 +1,27 @@
 @interface LACCompanionAuthenticationProviderSharing
 - (LACCompanionAuthenticationProviderDelegate)delegate;
-- (id)_domainStateDictionaryForJoinedIDs:(id)a3;
-- (id)authenticateWithRequest:(id)a3;
-- (id)initForCompanion:(int64_t)a3 replyQueue:(id)a4;
-- (void)domainStateForRequest:(id)a3 completion:(id)a4;
-- (void)manager:(id)a3 didCompleteSessionWithID:(id)a4;
-- (void)manager:(id)a3 didFailSessionWithID:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didStartSessionWithID:(id)a4;
+- (id)_domainStateDictionaryForJoinedIDs:(id)ds;
+- (id)authenticateWithRequest:(id)request;
+- (id)initForCompanion:(int64_t)companion replyQueue:(id)queue;
+- (void)domainStateForRequest:(id)request completion:(id)completion;
+- (void)manager:(id)manager didCompleteSessionWithID:(id)d;
+- (void)manager:(id)manager didFailSessionWithID:(id)d error:(id)error;
+- (void)manager:(id)manager didStartSessionWithID:(id)d;
 @end
 
 @implementation LACCompanionAuthenticationProviderSharing
 
-- (id)initForCompanion:(int64_t)a3 replyQueue:(id)a4
+- (id)initForCompanion:(int64_t)companion replyQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACCompanionAuthenticationProviderSharing;
   v7 = [(LACCompanionAuthenticationProviderSharing *)&v12 init];
   p_isa = &v7->super.isa;
   if (v7)
   {
-    v7->_companion = a3;
-    v9 = [[LACSharingManager alloc] initWithReplyQueue:v6];
+    v7->_companion = companion;
+    v9 = [[LACSharingManager alloc] initWithReplyQueue:queueCopy];
     v10 = p_isa[2];
     p_isa[2] = v9;
 
@@ -31,13 +31,13 @@
   return p_isa;
 }
 
-- (id)authenticateWithRequest:(id)a3
+- (id)authenticateWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[LACCompanionAuthenticationSignpostEvent authenticationRequestWillStart];
   [v5 send];
 
-  v6 = [(LACSharingManaging *)self->_sharingManager authenticateWithRequest:v4];
+  v6 = [(LACSharingManaging *)self->_sharingManager authenticateWithRequest:requestCopy];
 
   v7 = +[LACCompanionAuthenticationSignpostEvent authenticationRequestDidFinish];
   [v7 send];
@@ -45,10 +45,10 @@
   return v6;
 }
 
-- (void)domainStateForRequest:(id)a3 completion:(id)a4
+- (void)domainStateForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = +[LACCompanionAuthenticationSignpostEvent eligibleDevicesRequestWillStart];
   [v8 send];
 
@@ -61,7 +61,7 @@
   v13[2] = __78__LACCompanionAuthenticationProviderSharing_domainStateForRequest_completion___block_invoke;
   v13[3] = &unk_1E7A95C40;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v14 = v12;
   [v10 pairedDevicesForCompanion:companion completion:v13];
 
@@ -95,32 +95,32 @@ void __78__LACCompanionAuthenticationProviderSharing_domainStateForRequest_compl
   }
 }
 
-- (void)manager:(id)a3 didStartSessionWithID:(id)a4
+- (void)manager:(id)manager didStartSessionWithID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
-  [WeakRetained authenticationProvider:self didStartAuthenticationWithID:v5];
+  [WeakRetained authenticationProvider:self didStartAuthenticationWithID:dCopy];
 }
 
-- (void)manager:(id)a3 didCompleteSessionWithID:(id)a4
+- (void)manager:(id)manager didCompleteSessionWithID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
-  [WeakRetained authenticationProvider:self didCompleteAuthenticationWithID:v5];
+  [WeakRetained authenticationProvider:self didCompleteAuthenticationWithID:dCopy];
 }
 
-- (void)manager:(id)a3 didFailSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailSessionWithID:(id)d error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  errorCopy = error;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
-  [WeakRetained authenticationProvider:self didFailAuthenticationWithID:v8 error:v7];
+  [WeakRetained authenticationProvider:self didFailAuthenticationWithID:dCopy error:errorCopy];
 }
 
-- (id)_domainStateDictionaryForJoinedIDs:(id)a3
+- (id)_domainStateDictionaryForJoinedIDs:(id)ds
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [ds dataUsingEncoding:4];
   v5 = [LACDomainStateDecorator createHashForDomainState:v4];
   v18 = @"kLACDomainStateResultKeyAvailableCompanionTypes";
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_companion];

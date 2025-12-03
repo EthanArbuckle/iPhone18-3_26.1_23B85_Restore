@@ -1,29 +1,29 @@
 @interface HUStatusBannerItem
-+ (id)_networkNameForHomeKitObjects:(id)a3;
-+ (id)_sortedRoomNamesForHomeKitObjects:(id)a3;
-- (HUStatusBannerItem)initWithSourceItem:(id)a3;
-- (id)_descriptionForLocalizedStringKey:(id)a3 representedHomeKitObjects:(id)a4 options:(unint64_t)a5;
-- (id)_sortedObjectDisplayNamesForHomeKitObjects:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
++ (id)_networkNameForHomeKitObjects:(id)objects;
++ (id)_sortedRoomNamesForHomeKitObjects:(id)objects;
+- (HUStatusBannerItem)initWithSourceItem:(id)item;
+- (id)_descriptionForLocalizedStringKey:(id)key representedHomeKitObjects:(id)objects options:(unint64_t)options;
+- (id)_sortedObjectDisplayNamesForHomeKitObjects:(id)objects;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUStatusBannerItem
 
-- (HUStatusBannerItem)initWithSourceItem:(id)a3
+- (HUStatusBannerItem)initWithSourceItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = HUStatusBannerItem;
-  return [(HFTransformItem *)&v4 initWithSourceItem:a3 resultKeyExclusionFilter:MEMORY[0x277CBEBF8]];
+  return [(HFTransformItem *)&v4 initWithSourceItem:item resultKeyExclusionFilter:MEMORY[0x277CBEBF8]];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = MEMORY[0x277D2C900];
     v8 = MEMORY[0x277D14780];
@@ -38,7 +38,7 @@
   {
     v13.receiver = self;
     v13.super_class = HUStatusBannerItem;
-    v9 = [(HFTransformItem *)&v13 _subclass_updateWithOptions:v4];
+    v9 = [(HFTransformItem *)&v13 _subclass_updateWithOptions:optionsCopy];
     v11 = [v9 flatMap:&__block_literal_global_45];
   }
 
@@ -67,21 +67,21 @@ id __50__HUStatusBannerItem__subclass_updateWithOptions___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)_descriptionForLocalizedStringKey:(id)a3 representedHomeKitObjects:(id)a4 options:(unint64_t)a5
+- (id)_descriptionForLocalizedStringKey:(id)key representedHomeKitObjects:(id)objects options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v35[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  objectsCopy = objects;
   v10 = objc_opt_new();
-  if (v5)
+  if (optionsCopy)
   {
-    [objc_opt_class() _sortedRoomNamesForHomeKitObjects:v9];
+    [objc_opt_class() _sortedRoomNamesForHomeKitObjects:objectsCopy];
   }
 
   else
   {
-    [(HUStatusBannerItem *)self _sortedObjectDisplayNamesForHomeKitObjects:v9];
+    [(HUStatusBannerItem *)self _sortedObjectDisplayNamesForHomeKitObjects:objectsCopy];
   }
   v11 = ;
   v12 = [v11 count];
@@ -97,7 +97,7 @@ id __50__HUStatusBannerItem__subclass_updateWithOptions___block_invoke(uint64_t 
 
     if (v12 == 3)
     {
-      if (v5)
+      if (optionsCopy)
       {
         v16 = @"%@_ThreeRooms";
       }
@@ -107,7 +107,7 @@ id __50__HUStatusBannerItem__subclass_updateWithOptions___block_invoke(uint64_t 
         v16 = @"%@_ThreeObjects";
       }
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:v16, v8];
+      keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:v16, keyCopy];
 
       v18 = [v11 subarrayWithRange:{0, 2}];
       goto LABEL_27;
@@ -123,7 +123,7 @@ id __50__HUStatusBannerItem__subclass_updateWithOptions___block_invoke(uint64_t 
       v14 = @"%@_OneRoom";
       v15 = @"%@_OneObject";
 LABEL_23:
-      if (v5)
+      if (optionsCopy)
       {
         v25 = v14;
       }
@@ -133,7 +133,7 @@ LABEL_23:
         v25 = v15;
       }
 
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:v25, v8];
+      keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:v25, keyCopy];
 
       v18 = v11;
 LABEL_27:
@@ -144,7 +144,7 @@ LABEL_27:
     }
 
 LABEL_14:
-    if (v5)
+    if (optionsCopy)
     {
       v19 = @"%@_MoreThanThreeRooms";
     }
@@ -154,7 +154,7 @@ LABEL_14:
       v19 = @"%@_MoreThanThreeObjects";
     }
 
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:v19, v8];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:v19, keyCopy];
 
     v20 = [v11 objectAtIndexedSubscript:0];
     v35[0] = v20;
@@ -169,7 +169,7 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  if (v5)
+  if (optionsCopy)
   {
     v24 = @"%@_ZeroRooms";
   }
@@ -179,15 +179,15 @@ LABEL_14:
     v24 = @"%@_ZeroObjects";
   }
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:v24, v8];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:v24, keyCopy];
 
 LABEL_28:
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    v27 = [v17 stringByAppendingString:@"_NetworkName"];
+    v27 = [keyCopy stringByAppendingString:@"_NetworkName"];
     if (v27)
     {
-      v28 = [objc_opt_class() _networkNameForHomeKitObjects:v9];
+      v28 = [objc_opt_class() _networkNameForHomeKitObjects:objectsCopy];
       if ([v28 length])
       {
         v29 = v27;
@@ -195,32 +195,32 @@ LABEL_28:
         v30 = [v10 arrayByAddingObject:v28];
 
         v10 = v30;
-        v17 = v29;
+        keyCopy = v29;
       }
     }
   }
 
   v31 = *(v13 + 3240);
-  v32 = _HULocalizedStringWithDefaultValue(v17, v17, 1);
+  v32 = _HULocalizedStringWithDefaultValue(keyCopy, keyCopy, 1);
   v33 = [v31 hf_stringWithFormat:v32 arguments:v10];
 
   return v33;
 }
 
-+ (id)_networkNameForHomeKitObjects:(id)a3
++ (id)_networkNameForHomeKitObjects:(id)objects
 {
-  v3 = [a3 na_map:&__block_literal_global_122];
+  v3 = [objects na_map:&__block_literal_global_122];
   if ([v3 count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [v3 anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
 id __52__HUStatusBannerItem__networkNameForHomeKitObjects___block_invoke(uint64_t a1, void *a2)
@@ -246,11 +246,11 @@ id __52__HUStatusBannerItem__networkNameForHomeKitObjects___block_invoke(uint64_
   return v7;
 }
 
-+ (id)_sortedRoomNamesForHomeKitObjects:(id)a3
++ (id)_sortedRoomNamesForHomeKitObjects:(id)objects
 {
-  v3 = [a3 na_map:&__block_literal_global_126];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_251];
+  v3 = [objects na_map:&__block_literal_global_126];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_251];
 
   return v5;
 }
@@ -294,16 +294,16 @@ LABEL_8:
   return v12;
 }
 
-- (id)_sortedObjectDisplayNamesForHomeKitObjects:(id)a3
+- (id)_sortedObjectDisplayNamesForHomeKitObjects:(id)objects
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HUStatusBannerItem__sortedObjectDisplayNamesForHomeKitObjects___block_invoke;
   v7[3] = &unk_277DB9ED8;
   v7[4] = self;
-  v3 = [a3 na_map:v7];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_253_0];
+  v3 = [objects na_map:v7];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_253_0];
 
   return v5;
 }

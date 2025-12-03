@@ -6,7 +6,7 @@
 + (NSString)model;
 + (NSString)platform;
 + (NSString)userAgent;
-+ (void)diskUsageAsync:(id)a3;
++ (void)diskUsageAsync:(id)async;
 @end
 
 @implementation JSADevice
@@ -47,17 +47,17 @@
   return v7;
 }
 
-+ (void)diskUsageAsync:(id)a3
++ (void)diskUsageAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_A224;
   v7[3] = &unk_B26D8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = asyncCopy;
+  selfCopy = self;
+  v6 = asyncCopy;
   dispatch_async(v5, v7);
 }
 
@@ -72,40 +72,40 @@
 + (NSString)model
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 model];
+  model = [v2 model];
 
-  return v3;
+  return model;
 }
 
 + (NSString)platform
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 lowercaseString];
+  model = [v2 model];
+  lowercaseString = [model lowercaseString];
 
-  if (([(__CFString *)v4 isEqualToString:@"ipad"]& 1) == 0 && ([(__CFString *)v4 isEqualToString:@"iphone"]& 1) == 0)
+  if (([(__CFString *)lowercaseString isEqualToString:@"ipad"]& 1) == 0 && ([(__CFString *)lowercaseString isEqualToString:@"iphone"]& 1) == 0)
   {
 
-    v4 = @"iphone";
+    lowercaseString = @"iphone";
   }
 
-  return v4;
+  return lowercaseString;
 }
 
 + (NSArray)preferredLocalizations
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 preferredLocalizations];
+  preferredLocalizations = [v2 preferredLocalizations];
 
-  return v3;
+  return preferredLocalizations;
 }
 
 + (NSString)localeIdentifier
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 localeIdentifier];
+  localeIdentifier = [v2 localeIdentifier];
 
-  return v3;
+  return localeIdentifier;
 }
 
 @end

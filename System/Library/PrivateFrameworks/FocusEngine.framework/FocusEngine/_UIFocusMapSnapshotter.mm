@@ -3,42 +3,42 @@
 - (UICoordinateSpace)coordinateSpace;
 - (UIFocusSystem)focusSystem;
 - (_UIFocusMapSnapshotter)init;
-- (_UIFocusMapSnapshotter)initWithFocusSystem:(id)a3 rootContainer:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7;
+- (_UIFocusMapSnapshotter)initWithFocusSystem:(id)system rootContainer:(id)container coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect;
 - (_UIFocusRegionContainer)regionsContainer;
 - (_UIFocusRegionContainer)rootContainer;
-- (id)_searchAreaForContainerSearchRect:(CGRect)a3;
+- (id)_searchAreaForContainerSearchRect:(CGRect)rect;
 - (id)captureSnapshot;
-- (void)setSnapshotFrame:(CGRect)a3;
+- (void)setSnapshotFrame:(CGRect)frame;
 @end
 
 @implementation _UIFocusMapSnapshotter
 
 - (_UIFocusMapSnapshotter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:33 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:33 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (_UIFocusMapSnapshotter)initWithFocusSystem:(id)a3 rootContainer:(id)a4 coordinateSpace:(id)a5 searchInfo:(id)a6 ignoresRootContainerClippingRect:(BOOL)a7
+- (_UIFocusMapSnapshotter)initWithFocusSystem:(id)system rootContainer:(id)container coordinateSpace:(id)space searchInfo:(id)info ignoresRootContainerClippingRect:(BOOL)rect
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v13)
+  systemCopy = system;
+  containerCopy = container;
+  spaceCopy = space;
+  infoCopy = info;
+  if (systemCopy)
   {
-    if (v14)
+    if (containerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"rootContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"rootContainer"}];
 
-    if (v15)
+    if (spaceCopy)
     {
       goto LABEL_4;
     }
@@ -46,23 +46,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
 
-  if (!v14)
+  if (!containerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v15)
+  if (spaceCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusMapSnapshotter.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
 
 LABEL_4:
   v24.receiver = self;
@@ -71,28 +71,28 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_focusSystem, v13);
-    objc_storeWeak(&v18->_rootContainer, v14);
-    objc_storeWeak(&v18->_coordinateSpace, v15);
+    objc_storeWeak(&v17->_focusSystem, systemCopy);
+    objc_storeWeak(&v18->_rootContainer, containerCopy);
+    objc_storeWeak(&v18->_coordinateSpace, spaceCopy);
     v19 = *(MEMORY[0x277CBF398] + 16);
     v18->_snapshotFrame.origin = *MEMORY[0x277CBF398];
     v18->_snapshotFrame.size = v19;
     v18->_snapshotFrameIsEmpty = 1;
-    v18->_ignoresRootContainerClippingRect = a7;
+    v18->_ignoresRootContainerClippingRect = rect;
     v18->_clipToSnapshotRect = 1;
-    objc_storeStrong(&v18->_searchInfo, a6);
+    objc_storeStrong(&v18->_searchInfo, info);
   }
 
   return v18;
 }
 
-- (void)setSnapshotFrame:(CGRect)a3
+- (void)setSnapshotFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_snapshotFrame, a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(self->_snapshotFrame, frame))
   {
     self->_snapshotFrame.origin.x = x;
     self->_snapshotFrame.origin.y = y;
@@ -106,12 +106,12 @@ LABEL_4:
   }
 }
 
-- (id)_searchAreaForContainerSearchRect:(CGRect)a3
+- (id)_searchAreaForContainerSearchRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
   [WeakRetained bounds];
   v10 = v9;
@@ -162,9 +162,9 @@ LABEL_4:
     height = v43;
   }
 
-  v44 = [[_UIFocusMapRect alloc] initWithFrame:WeakRetained coordinateSpace:x, y, width, height];
+  height = [[_UIFocusMapRect alloc] initWithFrame:WeakRetained coordinateSpace:x, y, width, height];
 
-  return v44;
+  return height;
 }
 
 - (id)captureSnapshot
@@ -188,9 +188,9 @@ LABEL_4:
     height = self->_snapshotFrame.size.height;
   }
 
-  v13 = [[_UIFocusMapRect alloc] initWithFrame:v4 coordinateSpace:x, y, width, height];
-  v14 = [(_UIFocusMapSnapshotter *)self _searchAreaForContainerSearchRect:x, y, width, height];
-  v15 = [[_UIFocusMapSnapshot alloc] _initWithSnapshotter:self mapArea:v13 searchArea:v14];
+  height = [[_UIFocusMapRect alloc] initWithFrame:v4 coordinateSpace:x, y, width, height];
+  height2 = [(_UIFocusMapSnapshotter *)self _searchAreaForContainerSearchRect:x, y, width, height];
+  v15 = [[_UIFocusMapSnapshot alloc] _initWithSnapshotter:self mapArea:height searchArea:height2];
 
   return v15;
 }

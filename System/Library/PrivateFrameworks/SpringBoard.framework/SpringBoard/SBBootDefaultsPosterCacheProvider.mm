@@ -12,9 +12,9 @@
   if (v2)
   {
     v3 = +[SBDefaults localDefaults];
-    v4 = [v3 bootDefaults];
+    bootDefaults = [v3 bootDefaults];
     bootDefaults = v2->_bootDefaults;
-    v2->_bootDefaults = v4;
+    v2->_bootDefaults = bootDefaults;
   }
 
   return v2;

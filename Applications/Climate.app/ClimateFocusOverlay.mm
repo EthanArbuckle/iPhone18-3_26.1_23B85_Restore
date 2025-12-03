@@ -1,8 +1,8 @@
 @interface ClimateFocusOverlay
 - (_TtC7Climate19ClimateFocusOverlay)init;
-- (_TtC7Climate19ClimateFocusOverlay)initWithCoder:(id)a3;
-- (_TtC7Climate19ClimateFocusOverlay)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7Climate19ClimateFocusOverlay)initWithCoder:(id)coder;
+- (_TtC7Climate19ClimateFocusOverlay)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ClimateFocusOverlay
@@ -14,28 +14,28 @@
   v2 = [(ClimateTransparentFocusView *)&v5 initWithFrame:0.0, 0.0, 0.0, 0.0];
   [(ClimateFocusOverlay *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ClimateFocusOverlay *)v2 setHidden:1];
-  v3 = [objc_opt_self() _carSystemFocusColor];
-  [(ClimateFocusOverlay *)v2 setBackgroundColor:v3];
+  _carSystemFocusColor = [objc_opt_self() _carSystemFocusColor];
+  [(ClimateFocusOverlay *)v2 setBackgroundColor:_carSystemFocusColor];
 
   return v2;
 }
 
-- (_TtC7Climate19ClimateFocusOverlay)initWithCoder:(id)a3
+- (_TtC7Climate19ClimateFocusOverlay)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ClimateFocusOverlay();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ClimateFocusOverlay *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ClimateFocusOverlay *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -58,7 +58,7 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC7Climate19ClimateFocusOverlay)initWithFrame:(CGRect)a3
+- (_TtC7Climate19ClimateFocusOverlay)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

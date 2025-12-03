@@ -1,19 +1,19 @@
 @interface MTFullFeedResponse
-- (id)itemInSection:(int64_t)a3 row:(int64_t)a4;
-- (id)itemsFor:(int64_t)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)itemInSection:(int64_t)section row:(int64_t)row;
+- (id)itemsFor:(int64_t)for;
+- (id)sectionAtIndex:(unint64_t)index;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 @end
 
 @implementation MTFullFeedResponse
 
-- (id)itemsFor:(int64_t)a3
+- (id)itemsFor:(int64_t)for
 {
   v4 = OBJC_IVAR____TtC18PodcastsFoundation16BaseFeedResponse_parsedCache;
   swift_beginAccess();
   v5 = *(&self->super.super.isa + v4);
-  v6 = self;
+  selfCopy = self;
 
   sub_1D8F61420(v7);
 
@@ -22,18 +22,18 @@
   return v8;
 }
 
-- (id)itemInSection:(int64_t)a3 row:(int64_t)a4
+- (id)itemInSection:(int64_t)section row:(int64_t)row
 {
-  v6 = self;
-  v7 = sub_1D901619C(a3, a4);
+  selfCopy = self;
+  v7 = sub_1D901619C(section, row);
 
   return v7;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  v4 = self;
-  v5 = sub_1D90163A0(a3);
+  selfCopy = self;
+  v5 = sub_1D90163A0(section);
 
   return v5;
 }
@@ -50,10 +50,10 @@
   return *(*(v2 + 2) + 16);
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = sub_1D90167AC(a3);
+  selfCopy = self;
+  v5 = sub_1D90167AC(index);
   v7 = v6;
   v8 = type metadata accessor for GenericDataSourceSection();
   v9 = objc_allocWithZone(v8);

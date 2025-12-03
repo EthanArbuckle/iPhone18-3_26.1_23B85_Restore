@@ -3,88 +3,88 @@
 - (BOOL)isManuallyChanging;
 - (BOOL)isScrubbing;
 - (PXScrollViewSpeedometer)init;
-- (PXScrollViewSpeedometer)initWithScrollController:(id)a3;
+- (PXScrollViewSpeedometer)initWithScrollController:(id)controller;
 - (id)scrollview;
-- (void)scrollViewControllerDidEndScrolling:(id)a3;
-- (void)scrollViewControllerDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling;
+- (void)scrollViewControllerDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewControllerDidScroll:(id)scroll;
 @end
 
 @implementation PXScrollViewSpeedometer
 
 - (BOOL)isManuallyChanging
 {
-  v2 = [(PXScrollViewSpeedometer *)self scrollViewController];
-  v3 = [v2 isManuallyChanging];
+  scrollViewController = [(PXScrollViewSpeedometer *)self scrollViewController];
+  isManuallyChanging = [scrollViewController isManuallyChanging];
 
-  return v3;
+  return isManuallyChanging;
 }
 
 - (BOOL)isScrubbing
 {
-  v2 = [(PXScrollViewSpeedometer *)self scrollViewController];
-  v3 = [v2 isScrubbing];
+  scrollViewController = [(PXScrollViewSpeedometer *)self scrollViewController];
+  isScrubbing = [scrollViewController isScrubbing];
 
-  return v3;
+  return isScrubbing;
 }
 
-- (void)scrollViewControllerDidEndScrollingAnimation:(id)a3
+- (void)scrollViewControllerDidEndScrollingAnimation:(id)animation
 {
-  [a3 visibleRect];
+  [animation visibleRect];
 
   [(PXScrollSpeedometer *)self handleScrollEventVisibleRect:1 didEnd:?];
 }
 
-- (void)scrollViewControllerDidEndScrolling:(id)a3
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling
 {
-  [a3 visibleRect];
+  [scrolling visibleRect];
 
   [(PXScrollSpeedometer *)self handleScrollEventVisibleRect:1 didEnd:?];
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  [a3 visibleRect];
+  [scroll visibleRect];
 
   [(PXScrollSpeedometer *)self handleScrollEventVisibleRect:0 didEnd:?];
 }
 
 - (BOOL)isAnimatingScroll
 {
-  v2 = [(PXScrollViewSpeedometer *)self scrollViewController];
-  v3 = [v2 isAnimatingScrollTowardsEdge];
+  scrollViewController = [(PXScrollViewSpeedometer *)self scrollViewController];
+  isAnimatingScrollTowardsEdge = [scrollViewController isAnimatingScrollTowardsEdge];
 
-  return v3;
+  return isAnimatingScrollTowardsEdge;
 }
 
 - (id)scrollview
 {
-  v2 = [(PXScrollViewSpeedometer *)self scrollViewController];
-  v3 = [v2 scrollView];
+  scrollViewController = [(PXScrollViewSpeedometer *)self scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (PXScrollViewSpeedometer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXScrollViewSpeedometer.m" lineNumber:31 description:{@"%@ not supported", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXScrollViewSpeedometer.m" lineNumber:31 description:{@"%@ not supported", v5}];
 
   abort();
 }
 
-- (PXScrollViewSpeedometer)initWithScrollController:(id)a3
+- (PXScrollViewSpeedometer)initWithScrollController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PXScrollViewSpeedometer;
   v6 = [(PXScrollSpeedometer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollViewController, a3);
-    [v5 registerObserver:v7];
+    objc_storeStrong(&v6->_scrollViewController, controller);
+    [controllerCopy registerObserver:v7];
   }
 
   return v7;

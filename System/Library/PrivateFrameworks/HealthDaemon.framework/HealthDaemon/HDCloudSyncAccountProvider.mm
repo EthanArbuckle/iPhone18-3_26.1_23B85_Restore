@@ -1,28 +1,28 @@
 @interface HDCloudSyncAccountProvider
-- (BOOL)computeCanPerformCloudSyncForPrimaryAccount:(id *)a3;
+- (BOOL)computeCanPerformCloudSyncForPrimaryAccount:(id *)account;
 - (BOOL)isAccountInManateeUnavailableCFUState;
 - (BOOL)primaryAccountIsProhibitedFromCloudSync;
-- (HDCloudSyncAccountProvider)initWithCoordinator:(id)a3 behavior:(id)a4 accountStore:(id)a5;
-- (id)_disableAndDeleteAllSyncDataForProfile:(id)a3 completion:(id)a4;
-- (id)disableAndDeleteAllSyncDataWithCompletion:(id)a3;
+- (HDCloudSyncAccountProvider)initWithCoordinator:(id)coordinator behavior:(id)behavior accountStore:(id)store;
+- (id)_disableAndDeleteAllSyncDataForProfile:(id)profile completion:(id)completion;
+- (id)disableAndDeleteAllSyncDataWithCompletion:(id)completion;
 - (id)getPersistedAccountInfo;
-- (void)_performSyncForAccountChangeWithCompletion:(id)a3;
+- (void)_performSyncForAccountChangeWithCompletion:(id)completion;
 - (void)_resetCachedOwnerIdentifiers;
-- (void)_rollOwnerDifferentiatorAfterCloudSyncDisableForAllProfiles:(id)a3;
+- (void)_rollOwnerDifferentiatorAfterCloudSyncDisableForAllProfiles:(id)profiles;
 - (void)_triggerSyncForAccountChange;
-- (void)accountConfigurationDidChangeWithCompletion:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)unitTest_setAccountStore:(id)a3;
+- (void)accountConfigurationDidChangeWithCompletion:(id)completion;
+- (void)daemonReady:(id)ready;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)unitTest_setAccountStore:(id)store;
 @end
 
 @implementation HDCloudSyncAccountProvider
 
-- (HDCloudSyncAccountProvider)initWithCoordinator:(id)a3 behavior:(id)a4 accountStore:(id)a5
+- (HDCloudSyncAccountProvider)initWithCoordinator:(id)coordinator behavior:(id)behavior accountStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  coordinatorCopy = coordinator;
+  behaviorCopy = behavior;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = HDCloudSyncAccountProvider;
   v11 = [(HDCloudSyncAccountProvider *)&v19 init];
@@ -32,11 +32,11 @@
     queue = v11->_queue;
     v11->_queue = v12;
 
-    objc_storeWeak(&v11->_coordinator, v8);
+    objc_storeWeak(&v11->_coordinator, coordinatorCopy);
     v11->_lock._os_unfair_lock_opaque = 0;
-    if (v10)
+    if (storeCopy)
     {
-      v14 = v10;
+      v14 = storeCopy;
     }
 
     else
@@ -47,26 +47,26 @@
     lock_accountStore = v11->_lock_accountStore;
     v11->_lock_accountStore = v14;
 
-    objc_storeStrong(&v11->_behavior, a4);
+    objc_storeStrong(&v11->_behavior, behavior);
     WeakRetained = objc_loadWeakRetained(&v11->_coordinator);
-    v17 = [WeakRetained daemon];
-    [v17 registerDaemonReadyObserver:v11 queue:v11->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v11 queue:v11->_queue];
   }
 
   return v11;
 }
 
-- (void)accountConfigurationDidChangeWithCompletion:(id)a3
+- (void)accountConfigurationDidChangeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HDCloudSyncAccountProvider_accountConfigurationDidChangeWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -85,33 +85,33 @@ uint64_t __74__HDCloudSyncAccountProvider_accountConfigurationDidChangeWithCompl
 
 - (BOOL)isAccountInManateeUnavailableCFUState
 {
-  v2 = [(HDCloudSyncAccountProvider *)self getPersistedAccountInfo];
-  v3 = ([v2 supportsDeviceToDeviceEncryption] & 1) == 0 && (objc_msgSend(v2, "deviceToDeviceEncryptionAvailability") & 1) != 0;
+  getPersistedAccountInfo = [(HDCloudSyncAccountProvider *)self getPersistedAccountInfo];
+  v3 = ([getPersistedAccountInfo supportsDeviceToDeviceEncryption] & 1) == 0 && (objc_msgSend(getPersistedAccountInfo, "deviceToDeviceEncryptionAvailability") & 1) != 0;
 
   return v3;
 }
 
 - (BOOL)primaryAccountIsProhibitedFromCloudSync
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ACAccountStore *)v2->_lock_accountStore aa_primaryAppleAccount];
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = [(HDCloudSyncAccountProvider *)v2 accountIsProhibitedFromCloudSync:v3];
+  aa_primaryAppleAccount = [(ACAccountStore *)selfCopy->_lock_accountStore aa_primaryAppleAccount];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = [(HDCloudSyncAccountProvider *)selfCopy accountIsProhibitedFromCloudSync:aa_primaryAppleAccount];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)disableAndDeleteAllSyncDataWithCompletion:(id)a3
+- (id)disableAndDeleteAllSyncDataWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning disable-and-delete operation for cloud sync.", buf, 0xCu);
   }
 
@@ -121,7 +121,7 @@ uint64_t __74__HDCloudSyncAccountProvider_accountConfigurationDidChangeWithCompl
   v36[2] = __72__HDCloudSyncAccountProvider_disableAndDeleteAllSyncDataWithCompletion___block_invoke;
   v36[3] = &unk_278619568;
   v36[4] = self;
-  v25 = v4;
+  v25 = completionCopy;
   v37 = v25;
   [v6 setDidFinish:v36];
   [v6 beginTask];
@@ -134,17 +134,17 @@ uint64_t __74__HDCloudSyncAccountProvider_accountConfigurationDidChangeWithCompl
   v35 = v7;
   [(HDCloudSyncAccountProvider *)self disableSyncLocallyWithCompletion:v34];
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v9 = [WeakRetained daemon];
-  v10 = [v9 profileManager];
+  daemon = [WeakRetained daemon];
+  profileManager = [daemon profileManager];
 
-  v24 = v10;
-  v11 = [v10 allProfileIdentifiers];
-  v27 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:{objc_msgSend(v11, "count")}];
+  v24 = profileManager;
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
+  v27 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:{objc_msgSend(allProfileIdentifiers, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v11;
+  obj = allProfileIdentifiers;
   v12 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v12)
   {
@@ -161,9 +161,9 @@ uint64_t __74__HDCloudSyncAccountProvider_accountConfigurationDidChangeWithCompl
 
         v16 = *(*(&v30 + 1) + 8 * i);
         v17 = objc_loadWeakRetained(&self->_coordinator);
-        v18 = [v17 daemon];
-        v19 = [v18 profileManager];
-        v20 = [v19 profileForIdentifier:v16];
+        daemon2 = [v17 daemon];
+        profileManager2 = [daemon2 profileManager];
+        v20 = [profileManager2 profileForIdentifier:v16];
 
         [v7 beginTask];
         v28[0] = MEMORY[0x277D85DD0];
@@ -318,17 +318,17 @@ uint64_t __72__HDCloudSyncAccountProvider_disableAndDeleteAllSyncDataWithComplet
   }
 }
 
-- (BOOL)computeCanPerformCloudSyncForPrimaryAccount:(id *)a3
+- (BOOL)computeCanPerformCloudSyncForPrimaryAccount:(id *)account
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ACAccountStore *)self->_lock_accountStore aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [(ACAccountStore *)self->_lock_accountStore aa_primaryAppleAccount];
   os_unfair_lock_unlock(&self->_lock);
-  if (![(HDCloudSyncAccountProvider *)self accountIsProhibitedFromCloudSync:v5])
+  if (![(HDCloudSyncAccountProvider *)self accountIsProhibitedFromCloudSync:aa_primaryAppleAccount])
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v8 = [v7 objectForKey:*MEMORY[0x277CCE468]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v8 = [standardUserDefaults objectForKey:*MEMORY[0x277CCE468]];
 
-    if ([v5 isEnabledForDataclass:*MEMORY[0x277CB9130]])
+    if ([aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x277CB9130]])
     {
       if ([MEMORY[0x277CCDD68] usingDemoDataDatabase])
       {
@@ -340,8 +340,8 @@ uint64_t __72__HDCloudSyncAccountProvider_disableAndDeleteAllSyncDataWithComplet
         v9 = [(_HKBehavior *)self->_behavior isRunningStoreDemoMode]^ 1;
       }
 
-      v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v13 = [v12 BOOLForKey:@"HealthCloudSyncForDemoDataKey"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v13 = [standardUserDefaults2 BOOLForKey:@"HealthCloudSyncForDemoDataKey"];
 
       if (v9 & 1) != 0 || (v13)
       {
@@ -363,7 +363,7 @@ uint64_t __72__HDCloudSyncAccountProvider_disableAndDeleteAllSyncDataWithComplet
           v16 = @"Cloud sync not supported on this device.";
         }
 
-        [v15 hk_assignError:a3 code:701 description:v16];
+        [v15 hk_assignError:account code:701 description:v16];
 LABEL_12:
         v6 = 0;
 LABEL_13:
@@ -382,11 +382,11 @@ LABEL_13:
       v11 = @"Health cloud sync is disabled for this Apple ID.";
     }
 
-    [v10 hk_assignError:a3 code:701 format:{v11, v17}];
+    [v10 hk_assignError:account code:701 format:{v11, v17}];
     goto LABEL_12;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:701 format:@"Managed Apple IDs are not permitted to participate in cloud sync."];
+  [MEMORY[0x277CCA9B8] hk_assignError:account code:701 format:@"Managed Apple IDs are not permitted to participate in cloud sync."];
   v6 = 0;
 LABEL_14:
 
@@ -396,8 +396,8 @@ LABEL_14:
 - (id)getPersistedAccountInfo
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"HDCloudSyncAccountInfo"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"HDCloudSyncAccountInfo"];
 
   if (v3)
   {
@@ -431,33 +431,33 @@ LABEL_14:
 {
   v3 = [HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask alloc];
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v5 = [WeakRetained daemon];
-  v7 = [(HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask *)v3 initWithDaemon:v5];
+  daemon = [WeakRetained daemon];
+  v7 = [(HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask *)v3 initWithDaemon:daemon];
 
   [(HDCloudSyncManagerTask *)v7 setPriority:1000];
   v6 = objc_loadWeakRetained(&self->_coordinator);
   [v6 addManagerTask:v7];
 }
 
-- (id)_disableAndDeleteAllSyncDataForProfile:(id)a3 completion:(id)a4
+- (id)_disableAndDeleteAllSyncDataForProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v9 = [WeakRetained shouldSyncProfile:v6];
+  v9 = [WeakRetained shouldSyncProfile:profileCopy];
 
-  if ((v9 & 1) != 0 && v6)
+  if ((v9 & 1) != 0 && profileCopy)
   {
-    v10 = [v6 cloudSyncManager];
-    v11 = v10;
-    if (v10)
+    cloudSyncManager = [profileCopy cloudSyncManager];
+    v11 = cloudSyncManager;
+    if (cloudSyncManager)
     {
-      [v10 disableAndDeleteAllSyncDataWithCompletion:v7];
+      [cloudSyncManager disableAndDeleteAllSyncDataWithCompletion:completionCopy];
     }
 
     else
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
       [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
     }
     v12 = ;
@@ -465,7 +465,7 @@ LABEL_14:
 
   else
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     v12 = [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
   }
 
@@ -535,22 +535,22 @@ void __75__HDCloudSyncAccountProvider__setHealthAccountDataclassEnabled_completi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rollOwnerDifferentiatorAfterCloudSyncDisableForAllProfiles:(id)a3
+- (void)_rollOwnerDifferentiatorAfterCloudSyncDisableForAllProfiles:(id)profiles
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 beginTask];
+  profilesCopy = profiles;
+  [profilesCopy beginTask];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v6 = [WeakRetained daemon];
-  v7 = [v6 profileManager];
-  v8 = [v7 allProfileIdentifiers];
+  daemon = [WeakRetained daemon];
+  profileManager = [daemon profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = allProfileIdentifiers;
+  v9 = [allProfileIdentifiers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -567,22 +567,22 @@ void __75__HDCloudSyncAccountProvider__setHealthAccountDataclassEnabled_completi
 
         v13 = *(*(&v25 + 1) + 8 * v12);
         v14 = objc_loadWeakRetained(&self->_coordinator);
-        v15 = [v14 daemon];
-        v16 = [v15 profileManager];
-        v17 = [v16 profileForIdentifier:v13];
+        daemon2 = [v14 daemon];
+        profileManager2 = [daemon2 profileManager];
+        v17 = [profileManager2 profileForIdentifier:v13];
 
         if (v17)
         {
-          [v4 beginTask];
-          v18 = [v17 cloudSyncManager];
-          v19 = [v18 ownerIdentifierManager];
+          [profilesCopy beginTask];
+          cloudSyncManager = [v17 cloudSyncManager];
+          ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __90__HDCloudSyncAccountProvider__rollOwnerDifferentiatorAfterCloudSyncDisableForAllProfiles___block_invoke;
           v22[3] = &unk_278616020;
           v23 = v17;
-          v24 = v4;
-          [v19 rollOwnerDifferentiatorAfterCloudSyncDisableWithCompletion:v22];
+          v24 = profilesCopy;
+          [ownerIdentifierManager rollOwnerDifferentiatorAfterCloudSyncDisableWithCompletion:v22];
         }
 
         ++v12;
@@ -595,7 +595,7 @@ void __75__HDCloudSyncAccountProvider__setHealthAccountDataclassEnabled_completi
     while (v10);
   }
 
-  [v4 finishTask];
+  [profilesCopy finishTask];
   v20 = *MEMORY[0x277D85DE8];
 }
 
@@ -646,7 +646,7 @@ void __90__HDCloudSyncAccountProvider__rollOwnerDifferentiatorAfterCloudSyncDisa
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2048;
     v13 = 0x404E000000000000;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling post-account-change sync with grace period %lf", buf, 0x16u);
@@ -663,7 +663,7 @@ void __90__HDCloudSyncAccountProvider__rollOwnerDifferentiatorAfterCloudSyncDisa
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2114;
       v13 = v6;
       _os_log_error_impl(&dword_228986000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Failed to submit a request for account change sync: %{public}@.", buf, 0x16u);
@@ -673,9 +673,9 @@ void __90__HDCloudSyncAccountProvider__rollOwnerDifferentiatorAfterCloudSyncDisa
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performSyncForAccountChangeWithCompletion:(id)a3
+- (void)_performSyncForAccountChangeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(HDCloudSyncAccountProvider *)self _shouldPerformFullSyncOnAccountChange])
   {
     queue = self->_queue;
@@ -684,13 +684,13 @@ void __90__HDCloudSyncAccountProvider__rollOwnerDifferentiatorAfterCloudSyncDisa
     v6[2] = __73__HDCloudSyncAccountProvider__performSyncForAccountChangeWithCompletion___block_invoke;
     v6[3] = &unk_278614E28;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_sync(queue, v6);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -774,19 +774,19 @@ LABEL_12:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unitTest_setAccountStore:(id)a3
+- (void)unitTest_setAccountStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
   lock_accountStore = self->_lock_accountStore;
-  self->_lock_accountStore = v4;
+  self->_lock_accountStore = storeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   v5 = [objc_alloc(MEMORY[0x277CF07C8]) initWithIdentifier:@"com.apple.healthd.sync.accountChange"];
   [v5 setRequiresProtectionClass:4];
   [v5 setRequiresNetworkConnectivity:1];
@@ -799,14 +799,14 @@ LABEL_12:
   v6 = objc_alloc(MEMORY[0x277D10B08]);
   v7 = *MEMORY[0x277CCC328];
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v9 = [WeakRetained daemon];
-  v10 = [v9 systemScheduler];
+  daemon = [WeakRetained daemon];
+  systemScheduler = [daemon systemScheduler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__HDCloudSyncAccountProvider_profileDidBecomeReady___block_invoke;
   v13[3] = &unk_2786194C8;
   objc_copyWeak(&v14, &location);
-  v11 = [v6 initWithDefaultRequest:v5 loggingCategory:v7 scheduler:v10 handler:v13];
+  v11 = [v6 initWithDefaultRequest:v5 loggingCategory:v7 scheduler:systemScheduler handler:v13];
   accountChangeBackgroundTask = self->_accountChangeBackgroundTask;
   self->_accountChangeBackgroundTask = v11;
 
@@ -821,13 +821,13 @@ void __52__HDCloudSyncAccountProvider_profileDidBecomeReady___block_invoke(uint6
   [WeakRetained _performSyncForAccountChangeWithCompletion:v4];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 primaryProfile];
-  [v5 registerProfileReadyObserver:self queue:self->_queue];
+  daemon = [WeakRetained daemon];
+  primaryProfile = [daemon primaryProfile];
+  [primaryProfile registerProfileReadyObserver:self queue:self->_queue];
 }
 
 @end

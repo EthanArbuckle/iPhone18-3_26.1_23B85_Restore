@@ -1,9 +1,9 @@
 @interface ISOperationQueue
 + (id)mainQueue;
 - (ISOperationQueue)init;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ISOperationQueue
@@ -44,19 +44,19 @@
   [(ISOperationQueue *)&v3 dealloc];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v4 = +[ISUniqueOperationManager sharedInstance];
-  [v4 checkInOperation:v5];
+  [v4 checkInOperation:operationCopy];
 
-  [(NSOperationQueue *)self->_queue addOperation:v5];
+  [(NSOperationQueue *)self->_queue addOperation:operationCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"ISOperationQueueOperationCountChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ISOperationQueueOperationCountChangedNotification" object:self];
 }
 
 @end

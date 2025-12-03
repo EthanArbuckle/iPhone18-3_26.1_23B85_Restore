@@ -1,6 +1,6 @@
 @interface _WKAutomationSessionConfiguration
 - (_WKAutomationSessionConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _WKAutomationSessionConfiguration
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAcceptInsecureCertificates:{-[_WKAutomationSessionConfiguration acceptInsecureCertificates](self, "acceptInsecureCertificates")}];
   [v4 setAllowsInsecureMediaCapture:{-[_WKAutomationSessionConfiguration allowsInsecureMediaCapture](self, "allowsInsecureMediaCapture")}];
   [v4 setSuppressesICECandidateFiltering:{-[_WKAutomationSessionConfiguration suppressesICECandidateFiltering](self, "suppressesICECandidateFiltering")}];

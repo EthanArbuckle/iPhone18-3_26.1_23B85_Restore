@@ -1,17 +1,17 @@
 @interface PHVoicemailManagerFactory
-+ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)a3;
++ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)changed;
 - (PHVoicemailManagerFactory)init;
 @end
 
 @implementation PHVoicemailManagerFactory
 
-+ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)a3
++ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)changed
 {
   v4 = type metadata accessor for Logger();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(changed);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   if (one-time initialization token for mobilePhone != -1)

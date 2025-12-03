@@ -1,14 +1,14 @@
 @interface PDDPActivityReportItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPActivityReportItem
@@ -26,25 +26,25 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BINARY"])
+  else if ([typeCopy isEqualToString:@"BINARY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"QUANTITY"])
+  else if ([typeCopy isEqualToString:@"QUANTITY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SCORE"])
+  else if ([typeCopy isEqualToString:@"SCORE"])
   {
     v4 = 3;
   }
@@ -62,8 +62,8 @@
   v7.receiver = self;
   v7.super_class = PDDPActivityReportItem;
   v3 = [(PDDPActivityReportItem *)&v7 description];
-  v4 = [(PDDPActivityReportItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPActivityReportItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -103,118 +103,118 @@
   binaryValue = self->_binaryValue;
   if (binaryValue)
   {
-    v10 = [(PDDPBinaryValue *)binaryValue dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"binary_value"];
+    dictionaryRepresentation = [(PDDPBinaryValue *)binaryValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"binary_value"];
   }
 
   quantityValue = self->_quantityValue;
   if (quantityValue)
   {
-    v12 = [(PDDPQuantityValue *)quantityValue dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"quantity_value"];
+    dictionaryRepresentation2 = [(PDDPQuantityValue *)quantityValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"quantity_value"];
   }
 
   scoreValue = self->_scoreValue;
   if (scoreValue)
   {
-    v14 = [(PDDPScoreValue *)scoreValue dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"score_value"];
+    dictionaryRepresentation3 = [(PDDPScoreValue *)scoreValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"score_value"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_binaryValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_quantityValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scoreValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v5;
+    [toCopy setTitle:?];
+    toCopy = v5;
   }
 
   if (self->_identifier)
   {
     [v5 setIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 12) = self->_type;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 12) = self->_type;
+    *(toCopy + 52) |= 1u;
   }
 
   if (self->_binaryValue)
   {
     [v5 setBinaryValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_quantityValue)
   {
     [v5 setQuantityValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_scoreValue)
   {
     [v5 setScoreValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -224,31 +224,31 @@
     *(v5 + 52) |= 1u;
   }
 
-  v10 = [(PDDPBinaryValue *)self->_binaryValue copyWithZone:a3];
+  v10 = [(PDDPBinaryValue *)self->_binaryValue copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(PDDPQuantityValue *)self->_quantityValue copyWithZone:a3];
+  v12 = [(PDDPQuantityValue *)self->_quantityValue copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(PDDPScoreValue *)self->_scoreValue copyWithZone:a3];
+  v14 = [(PDDPScoreValue *)self->_scoreValue copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   title = self->_title;
-  if (title | *(v4 + 5))
+  if (title | *(equalCopy + 5))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -257,7 +257,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 2))
+  if (identifier | *(equalCopy + 2))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -265,16 +265,16 @@
     }
   }
 
-  v7 = *(v4 + 52);
+  v7 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     v11 = 0;
@@ -282,13 +282,13 @@ LABEL_17:
   }
 
   binaryValue = self->_binaryValue;
-  if (binaryValue | *(v4 + 1) && ![(PDDPBinaryValue *)binaryValue isEqual:?])
+  if (binaryValue | *(equalCopy + 1) && ![(PDDPBinaryValue *)binaryValue isEqual:?])
   {
     goto LABEL_17;
   }
 
   quantityValue = self->_quantityValue;
-  if (quantityValue | *(v4 + 3))
+  if (quantityValue | *(equalCopy + 3))
   {
     if (![(PDDPQuantityValue *)quantityValue isEqual:?])
     {
@@ -297,7 +297,7 @@ LABEL_17:
   }
 
   scoreValue = self->_scoreValue;
-  if (scoreValue | *(v4 + 4))
+  if (scoreValue | *(equalCopy + 4))
   {
     v11 = [(PDDPScoreValue *)scoreValue isEqual:?];
   }
@@ -331,30 +331,30 @@ LABEL_18:
   return v6 ^ v7 ^ [(PDDPScoreValue *)self->_scoreValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PDDPActivityReportItem *)self setTitle:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPActivityReportItem *)self setIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (v4[13])
+  if (fromCopy[13])
   {
-    self->_type = v4[12];
+    self->_type = fromCopy[12];
     *&self->_has |= 1u;
   }
 
   binaryValue = self->_binaryValue;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (binaryValue)
   {
     if (!v6)
@@ -375,10 +375,10 @@ LABEL_18:
     [(PDDPActivityReportItem *)self setBinaryValue:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   quantityValue = self->_quantityValue;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (quantityValue)
   {
     if (!v8)
@@ -399,10 +399,10 @@ LABEL_13:
     [(PDDPActivityReportItem *)self setQuantityValue:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
   scoreValue = self->_scoreValue;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   if (scoreValue)
   {
     if (v10)

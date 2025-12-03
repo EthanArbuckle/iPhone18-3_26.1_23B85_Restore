@@ -1,33 +1,33 @@
 @interface AXSBVOTItemChooserRootViewController
 - (void)_dismiss;
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)removeFromParentViewController;
 - (void)viewDidLoad;
 @end
 
 @implementation AXSBVOTItemChooserRootViewController
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v6 = [a3 userInfo];
-  [(AXSBVOTItemChooserRootViewController *)self setItems:v6];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  [(AXSBVOTItemChooserRootViewController *)self setItems:userInfo];
 
-  v7 = v8;
-  if (v8)
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy);
+    v7 = completionCopy;
   }
 }
 
@@ -42,32 +42,32 @@
   [v3 setBackgroundColor:v4];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(AXSBVOTItemChooserRootViewController *)self view];
-  [v5 addSubview:v3];
+  view = [(AXSBVOTItemChooserRootViewController *)self view];
+  [view addSubview:v3];
 
-  v6 = [(AXSBVOTItemChooserRootViewController *)self view];
-  v7 = [v3 ax_pinConstraintsInAllDimensionsToView:v6];
+  view2 = [(AXSBVOTItemChooserRootViewController *)self view];
+  v7 = [v3 ax_pinConstraintsInAllDimensionsToView:view2];
 
   v8 = objc_alloc_init(VOTUIItemChooserController);
   [(AXSBVOTItemChooserRootViewController *)self setItemChooserController:v8];
 
-  v9 = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
-  [v9 setDelegate:self];
+  itemChooserController = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
+  [itemChooserController setDelegate:self];
 
   [(AXSBVOTItemChooserRootViewController *)self setItemChooserSelectedIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
 - (void)_dismiss
 {
-  v3 = [(AXSBVOTItemChooserRootViewController *)self itemChooserSelectedIndex];
-  v4 = [(AXSBVOTItemChooserRootViewController *)self itemChooserActivate];
-  v5 = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
-  v6 = [v5 lastSearchTerm];
-  v7 = v6;
+  itemChooserSelectedIndex = [(AXSBVOTItemChooserRootViewController *)self itemChooserSelectedIndex];
+  itemChooserActivate = [(AXSBVOTItemChooserRootViewController *)self itemChooserActivate];
+  itemChooserController = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
+  lastSearchTerm = [itemChooserController lastSearchTerm];
+  v7 = lastSearchTerm;
   v8 = &stru_100028F48;
-  if (v6)
+  if (lastSearchTerm)
   {
-    v8 = v6;
+    v8 = lastSearchTerm;
   }
 
   v9 = v8;
@@ -77,8 +77,8 @@
   v11[2] = sub_100012694;
   v11[3] = &unk_100028EC8;
   v12 = v9;
-  v13 = v3;
-  v14 = v4;
+  v13 = itemChooserSelectedIndex;
+  v14 = itemChooserActivate;
   v11[4] = self;
   v10 = v9;
   [(AXSBVOTItemChooserRootViewController *)self dismissViewControllerAnimated:0 completion:v11];
@@ -86,12 +86,12 @@
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(AXSBVOTItemChooserRootViewController *)self _remoteViewControllerProxy];
-  [v2 setOrientationChangedEventsEnabled:0];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setWallpaperTunnelActive:1];
-  [v2 setWallpaperStyle:4 withDuration:0.3];
-  [v2 setStatusBarHidden:1 withDuration:0.3];
+  _remoteViewControllerProxy = [(AXSBVOTItemChooserRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+  [_remoteViewControllerProxy setWallpaperStyle:4 withDuration:0.3];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.3];
 }
 
 - (void)removeFromParentViewController
@@ -101,13 +101,13 @@
   v10[0] = &off_100029FE0;
   v10[1] = &__kCFBooleanFalse;
   v9[2] = @"searchTerm";
-  v3 = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
-  v4 = [v3 lastSearchTerm];
-  v5 = v4;
+  itemChooserController = [(AXSBVOTItemChooserRootViewController *)self itemChooserController];
+  lastSearchTerm = [itemChooserController lastSearchTerm];
+  v5 = lastSearchTerm;
   v6 = &stru_100028F48;
-  if (v4)
+  if (lastSearchTerm)
   {
-    v6 = v4;
+    v6 = lastSearchTerm;
   }
 
   v10[2] = v6;

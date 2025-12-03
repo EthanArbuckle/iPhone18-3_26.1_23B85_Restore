@@ -1,28 +1,28 @@
 @interface ICDeleteAlert
-+ (BOOL)shouldShowAsAlertWithSender:(id)a3 canCancel:(BOOL)a4;
-+ (id)confirmationForAlertType:(unint64_t)a3 count:(unint64_t)a4 sender:(id)a5;
-+ (id)messageForAlertType:(unint64_t)a3 count:(unint64_t)a4;
-+ (id)titleForAlertType:(unint64_t)a3 count:(unint64_t)a4;
++ (BOOL)shouldShowAsAlertWithSender:(id)sender canCancel:(BOOL)cancel;
++ (id)confirmationForAlertType:(unint64_t)type count:(unint64_t)count sender:(id)sender;
++ (id)messageForAlertType:(unint64_t)type count:(unint64_t)count;
++ (id)titleForAlertType:(unint64_t)type count:(unint64_t)count;
 - (BOOL)canCancel;
-- (BOOL)shouldShowAsAlertForSender:(id)a3;
-- (ICDeleteAlert)initWithAlertType:(unint64_t)a3 count:(unint64_t)a4;
+- (BOOL)shouldShowAsAlertForSender:(id)sender;
+- (ICDeleteAlert)initWithAlertType:(unint64_t)type count:(unint64_t)count;
 - (NSString)message;
 - (NSString)title;
-- (id)confirmationStringForSender:(id)a3;
+- (id)confirmationStringForSender:(id)sender;
 - (id)description;
 @end
 
 @implementation ICDeleteAlert
 
-- (ICDeleteAlert)initWithAlertType:(unint64_t)a3 count:(unint64_t)a4
+- (ICDeleteAlert)initWithAlertType:(unint64_t)type count:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = ICDeleteAlert;
   result = [(ICDeleteAlert *)&v7 init];
   if (result)
   {
-    result->_alertType = a3;
-    result->_countOfObjects = a4;
+    result->_alertType = type;
+    result->_countOfObjects = count;
   }
 
   return result;
@@ -55,10 +55,10 @@
   return [v3 messageForAlertType:alertType count:countOfObjects];
 }
 
-- (id)confirmationStringForSender:(id)a3
+- (id)confirmationStringForSender:(id)sender
 {
-  v4 = a3;
-  v5 = [objc_opt_class() confirmationForAlertType:self->_alertType count:self->_countOfObjects sender:v4];
+  senderCopy = sender;
+  v5 = [objc_opt_class() confirmationForAlertType:self->_alertType count:self->_countOfObjects sender:senderCopy];
 
   return v5;
 }
@@ -71,18 +71,18 @@
   return [v3 canCancelAlertType:alertType];
 }
 
-- (BOOL)shouldShowAsAlertForSender:(id)a3
+- (BOOL)shouldShowAsAlertForSender:(id)sender
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() shouldShowAsAlertWithSender:v4 canCancel:{-[ICDeleteAlert canCancel](self, "canCancel")}];
+  senderCopy = sender;
+  LOBYTE(self) = [objc_opt_class() shouldShowAsAlertWithSender:senderCopy canCancel:{-[ICDeleteAlert canCancel](self, "canCancel")}];
 
   return self;
 }
 
-+ (id)titleForAlertType:(unint64_t)a3 count:(unint64_t)a4
++ (id)titleForAlertType:(unint64_t)type count:(unint64_t)count
 {
   v4 = &stru_100661CF0;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
     case 4uLL:
@@ -193,7 +193,7 @@ LABEL_27:
       }
 
       v18 = [v12 localizedStringForKey:v13 value:&stru_100661CF0 table:0];
-      v4 = [NSString localizedStringWithFormat:v18, a4];
+      v4 = [NSString localizedStringWithFormat:v18, count];
 
       goto LABEL_29;
     case 0xFuLL:
@@ -217,10 +217,10 @@ LABEL_29:
   return v4;
 }
 
-+ (id)messageForAlertType:(unint64_t)a3 count:(unint64_t)a4
++ (id)messageForAlertType:(unint64_t)type count:(unint64_t)count
 {
   v4 = 0;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
     case 8uLL:
@@ -284,7 +284,7 @@ LABEL_15:
       {
         v6 = +[NSBundle mainBundle];
         v10 = [v6 localizedStringForKey:@"These %lu notes will be deleted. This action cannot be undone." value:&stru_100661CF0 table:0];
-        v4 = [NSString localizedStringWithFormat:v10, a4];
+        v4 = [NSString localizedStringWithFormat:v10, count];
       }
 
 LABEL_17:
@@ -305,10 +305,10 @@ LABEL_17:
   }
 }
 
-+ (id)confirmationForAlertType:(unint64_t)a3 count:(unint64_t)a4 sender:(id)a5
++ (id)confirmationForAlertType:(unint64_t)type count:(unint64_t)count sender:(id)sender
 {
-  v8 = a5;
-  v9 = [a1 canCancelAlertType:a3];
+  senderCopy = sender;
+  v9 = [self canCancelAlertType:type];
   v10 = +[NSBundle mainBundle];
   v11 = v10;
   if (v9)
@@ -323,15 +323,15 @@ LABEL_17:
 
   v13 = [v10 localizedStringForKey:v12 value:&stru_100661CF0 table:0];
 
-  v14 = [a1 shouldShowAsAlertWithSender:v8 canCancel:v9];
+  v14 = [self shouldShowAsAlertWithSender:senderCopy canCancel:v9];
   if (v14 && (+[UIDevice ic_isVision]& 1) == 0)
   {
-    a4 = v13;
+    count = v13;
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
       case 4uLL:
@@ -374,7 +374,7 @@ LABEL_17:
       case 0xEuLL:
         v18 = +[NSBundle mainBundle];
         v19 = [v18 localizedStringForKey:@"Delete %lu Notes" value:&stru_100661CF0 table:0];
-        a4 = [NSString localizedStringWithFormat:v19, a4];
+        count = [NSString localizedStringWithFormat:v19, count];
 
         break;
       case 0xFuLL:
@@ -392,7 +392,7 @@ LABEL_17:
         v16 = v15;
         v17 = @"Delete Smart Folder";
 LABEL_18:
-        a4 = [v15 localizedStringForKey:v17 value:&stru_100661CF0 table:0];
+        count = [v15 localizedStringForKey:v17 value:&stru_100661CF0 table:0];
 
         break;
       default:
@@ -400,17 +400,17 @@ LABEL_18:
     }
   }
 
-  return a4;
+  return count;
 }
 
-+ (BOOL)shouldShowAsAlertWithSender:(id)a3 canCancel:(BOOL)a4
++ (BOOL)shouldShowAsAlertWithSender:(id)sender canCancel:(BOOL)cancel
 {
-  v4 = a4;
-  v5 = a3;
+  cancelCopy = cancel;
+  senderCopy = sender;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    if (!v4)
+    if (!cancelCopy)
     {
       v6 = 1;
       goto LABEL_8;
@@ -422,7 +422,7 @@ LABEL_7:
   }
 
   v6 = 1;
-  if ((+[UIDevice ic_isiPad]& 1) == 0 && v4)
+  if ((+[UIDevice ic_isiPad]& 1) == 0 && cancelCopy)
   {
     goto LABEL_7;
   }

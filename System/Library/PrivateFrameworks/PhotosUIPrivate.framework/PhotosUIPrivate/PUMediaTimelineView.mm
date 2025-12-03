@@ -1,24 +1,24 @@
 @interface PUMediaTimelineView
-+ (id)_stringFromTimeInterval:(double)a3;
++ (id)_stringFromTimeInterval:(double)interval;
 - (CGSize)intrinsicContentSize;
-- (PUMediaTimelineView)initWithFrame:(CGRect)a3;
+- (PUMediaTimelineView)initWithFrame:(CGRect)frame;
 - (PUMediaTimelineViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillEnd:(id)a3;
-- (void)_sliderValueChanged:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillEnd:(id)end;
+- (void)_sliderValueChanged:(id)changed;
 - (void)_updateCurrentTimeText;
 - (void)_updateDurationText;
 - (void)_updateSliderConfiguration;
 - (void)layoutSubviews;
-- (void)outputEventSignaledForCoalescer:(id)a3;
-- (void)setCurrentValue:(float)a3;
-- (void)setLabelColor:(id)a3;
-- (void)setLabelFont:(id)a3;
-- (void)setMaxValue:(float)a3;
-- (void)setMinValue:(float)a3;
-- (void)setShowsTimeLabels:(BOOL)a3;
-- (void)setWhiteValue:(double)a3;
+- (void)outputEventSignaledForCoalescer:(id)coalescer;
+- (void)setCurrentValue:(float)value;
+- (void)setLabelColor:(id)color;
+- (void)setLabelFont:(id)font;
+- (void)setMaxValue:(float)value;
+- (void)setMinValue:(float)value;
+- (void)setShowsTimeLabels:(BOOL)labels;
+- (void)setWhiteValue:(double)value;
 @end
 
 @implementation PUMediaTimelineView
@@ -30,9 +30,9 @@
   return WeakRetained;
 }
 
-- (void)_sliderFluidInteractionWillEnd:(id)a3
+- (void)_sliderFluidInteractionWillEnd:(id)end
 {
-  v4 = [MEMORY[0x1E69C44E8] delayedCoalescerWithDelay:{a3, 0.1}];
+  v4 = [MEMORY[0x1E69C44E8] delayedCoalescerWithDelay:{end, 0.1}];
   eventCoalescer = self->_eventCoalescer;
   self->_eventCoalescer = v4;
 
@@ -42,9 +42,9 @@
   [(PXEventCoalescer *)v6 inputEvent];
 }
 
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location
 {
-  v5 = [(PUMediaTimelineView *)self delegate:a3];
+  v5 = [(PUMediaTimelineView *)self delegate:begin];
   [v5 mediaTimelineControlViewWillBeginChanging:self];
 }
 
@@ -65,12 +65,12 @@
   [(UISlider *)self->_slider _setSliderConfiguration:v8];
 }
 
-- (void)outputEventSignaledForCoalescer:(id)a3
+- (void)outputEventSignaledForCoalescer:(id)coalescer
 {
-  if (self->_eventCoalescer == a3)
+  if (self->_eventCoalescer == coalescer)
   {
-    v4 = [(PUMediaTimelineView *)self delegate];
-    [v4 mediaTimelineControlViewDidEndChanging:self];
+    delegate = [(PUMediaTimelineView *)self delegate];
+    [delegate mediaTimelineControlViewDidEndChanging:self];
 
     eventCoalescer = self->_eventCoalescer;
     self->_eventCoalescer = 0;
@@ -93,43 +93,43 @@
   [(UILabel *)self->_currentTimeLabel setText:v5];
 }
 
-- (void)_sliderValueChanged:(id)a3
+- (void)_sliderValueChanged:(id)changed
 {
   [(PXEventCoalescer *)self->_eventCoalescer inputEvent];
-  v4 = [(PUMediaTimelineView *)self delegate];
-  [v4 mediaTimelineControlViewDidChangeValue:self];
+  delegate = [(PUMediaTimelineView *)self delegate];
+  [delegate mediaTimelineControlViewDidChangeValue:self];
 }
 
-- (void)setCurrentValue:(float)a3
+- (void)setCurrentValue:(float)value
 {
   [(UISlider *)self->_slider value];
-  if (*&v5 != a3)
+  if (*&v5 != value)
   {
-    *&v5 = a3;
+    *&v5 = value;
     [(UISlider *)self->_slider setValue:v5];
 
     [(PUMediaTimelineView *)self _updateCurrentTimeText];
   }
 }
 
-- (void)setMinValue:(float)a3
+- (void)setMinValue:(float)value
 {
   [(UISlider *)self->_slider minimumValue];
-  if (*&v5 != a3)
+  if (*&v5 != value)
   {
     slider = self->_slider;
-    *&v5 = a3;
+    *&v5 = value;
 
     [(UISlider *)slider setMinimumValue:v5];
   }
 }
 
-- (void)setMaxValue:(float)a3
+- (void)setMaxValue:(float)value
 {
   [(UISlider *)self->_slider maximumValue];
-  if (*&v5 != a3)
+  if (*&v5 != value)
   {
-    *&v5 = a3;
+    *&v5 = value;
     [(UISlider *)self->_slider setMaximumValue:v5];
 
     [(PUMediaTimelineView *)self _updateDurationText];
@@ -145,36 +145,36 @@
   return result;
 }
 
-- (void)setShowsTimeLabels:(BOOL)a3
+- (void)setShowsTimeLabels:(BOOL)labels
 {
-  if (self->_showsTimeLabels != a3)
+  if (self->_showsTimeLabels != labels)
   {
-    self->_showsTimeLabels = a3;
+    self->_showsTimeLabels = labels;
     [(PUMediaTimelineView *)self setNeedsLayout];
   }
 }
 
-- (void)setLabelColor:(id)a3
+- (void)setLabelColor:(id)color
 {
-  objc_storeStrong(&self->_labelColor, a3);
-  v5 = a3;
-  [(UILabel *)self->_currentTimeLabel setTextColor:v5];
-  [(UILabel *)self->_durationLabel setTextColor:v5];
+  objc_storeStrong(&self->_labelColor, color);
+  colorCopy = color;
+  [(UILabel *)self->_currentTimeLabel setTextColor:colorCopy];
+  [(UILabel *)self->_durationLabel setTextColor:colorCopy];
 }
 
-- (void)setLabelFont:(id)a3
+- (void)setLabelFont:(id)font
 {
-  objc_storeStrong(&self->_labelFont, a3);
-  v5 = a3;
-  [(UILabel *)self->_currentTimeLabel setFont:v5];
-  [(UILabel *)self->_durationLabel setFont:v5];
+  objc_storeStrong(&self->_labelFont, font);
+  fontCopy = font;
+  [(UILabel *)self->_currentTimeLabel setFont:fontCopy];
+  [(UILabel *)self->_durationLabel setFont:fontCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = PUMediaTimelineView;
-  v5 = [(PUMediaTimelineView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PUMediaTimelineView *)&v9 hitTest:event withEvent:test.x, test.y];
   slider = v5;
   if (v5 == self)
   {
@@ -186,11 +186,11 @@
   return slider;
 }
 
-- (void)setWhiteValue:(double)a3
+- (void)setWhiteValue:(double)value
 {
-  if (self->_whiteValue != a3)
+  if (self->_whiteValue != value)
   {
-    self->_whiteValue = a3;
+    self->_whiteValue = value;
     [(PUMediaTimelineView *)self _updateSliderConfiguration];
   }
 }
@@ -221,8 +221,8 @@
   v22.size.width = v8;
   v22.size.height = v10;
   Width = CGRectGetWidth(v22);
-  v13 = [(PUMediaTimelineView *)self labelFont];
-  [v13 lineHeight];
+  labelFont = [(PUMediaTimelineView *)self labelFont];
+  [labelFont lineHeight];
   [(UILabel *)self->_currentTimeLabel setFrame:0.0, MaxY, Width, v14];
 
   [(UISlider *)self->_slider frame];
@@ -232,19 +232,19 @@
   v24.size.width = v8;
   v24.size.height = v10;
   v16 = CGRectGetWidth(v24);
-  v17 = [(PUMediaTimelineView *)self labelFont];
-  [v17 lineHeight];
+  labelFont2 = [(PUMediaTimelineView *)self labelFont];
+  [labelFont2 lineHeight];
   [(UILabel *)self->_durationLabel setFrame:0.0, v15, v16, v18];
 
   [(UILabel *)self->_durationLabel setHidden:[(PUMediaTimelineView *)self showsTimeLabels]^ 1];
   [(UILabel *)self->_currentTimeLabel setHidden:[(PUMediaTimelineView *)self showsTimeLabels]^ 1];
 }
 
-- (PUMediaTimelineView)initWithFrame:(CGRect)a3
+- (PUMediaTimelineView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = PUMediaTimelineView;
-  v3 = [(PUMediaTimelineView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUMediaTimelineView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF60]);
@@ -256,27 +256,27 @@
     [(UISlider *)v3->_slider addTarget:v3 action:sel__sliderValueChanged_ forControlEvents:4096];
     [(UISlider *)v3->_slider _setSliderStyle:110];
     v3->_whiteValue = 1.0;
-    v7 = [MEMORY[0x1E69DC888] blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(UISlider *)v3->_slider layer];
-    [v9 setShadowColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(UISlider *)v3->_slider layer];
+    [layer setShadowColor:cGColor];
 
     v10 = *MEMORY[0x1E695F060];
     v11 = *(MEMORY[0x1E695F060] + 8);
-    v12 = [(UISlider *)v3->_slider layer];
-    [v12 setShadowOffset:{v10, v11}];
+    layer2 = [(UISlider *)v3->_slider layer];
+    [layer2 setShadowOffset:{v10, v11}];
 
-    v13 = [(UISlider *)v3->_slider layer];
+    layer3 = [(UISlider *)v3->_slider layer];
     LODWORD(v14) = 1050253722;
-    [v13 setShadowOpacity:v14];
+    [layer3 setShadowOpacity:v14];
 
-    v15 = [(UISlider *)v3->_slider layer];
-    [v15 setShadowRadius:5.0];
+    layer4 = [(UISlider *)v3->_slider layer];
+    [layer4 setShadowRadius:5.0];
 
     [(PUMediaTimelineView *)v3 addSubview:v3->_slider];
-    v16 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     labelColor = v3->_labelColor;
-    v3->_labelColor = v16;
+    v3->_labelColor = labelColor;
 
     v18 = PXFontWithTextStyleAndWeight();
     labelFont = v3->_labelFont;
@@ -305,7 +305,7 @@
   return v3;
 }
 
-+ (id)_stringFromTimeInterval:(double)a3
++ (id)_stringFromTimeInterval:(double)interval
 {
   if (_stringFromTimeInterval__onceToken_80870 != -1)
   {
@@ -313,14 +313,14 @@
   }
 
   v4 = &_stringFromTimeInterval__hourMinuteSecondFormatter_80872;
-  if (a3 < 3600.0)
+  if (interval < 3600.0)
   {
     v4 = &_stringFromTimeInterval__minuteSecondFormatter_80873;
   }
 
   v5 = *v4;
 
-  return [v5 stringFromTimeInterval:a3];
+  return [v5 stringFromTimeInterval:interval];
 }
 
 uint64_t __47__PUMediaTimelineView__stringFromTimeInterval___block_invoke()

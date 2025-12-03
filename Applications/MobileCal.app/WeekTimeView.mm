@@ -1,7 +1,7 @@
 @interface WeekTimeView
 - (BOOL)allDayHighlighted;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WeekTimeView)initWithFrame:(CGRect)a3 targetSizeClass:(int64_t)a4 orientation:(int64_t)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WeekTimeView)initWithFrame:(CGRect)frame targetSizeClass:(int64_t)class orientation:(int64_t)orientation;
 - (double)_yLocationForMonthLabel;
 - (double)allDayBackgroundColorOriginY;
 - (double)allDayLabelOriginY;
@@ -15,42 +15,42 @@
 - (void)contentSizeCategoryChanged;
 - (void)layoutSubviews;
 - (void)reAdjustAllDayLabelLayout;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAllDayAlpha:(double)a3;
-- (void)setAllDayHighlighted:(BOOL)a3;
-- (void)setDayTimeViewDelegate:(id)a3;
-- (void)setHeaderHeight:(double)a3;
-- (void)setHourHeightScale:(double)a3;
-- (void)setMonthText:(id)a3 isCurrentMonth:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverlayMonthText:(id)a3;
-- (void)setUseMultiDayStyle:(BOOL)a3;
-- (void)setWeekNumberText:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAllDayAlpha:(double)alpha;
+- (void)setAllDayHighlighted:(BOOL)highlighted;
+- (void)setDayTimeViewDelegate:(id)delegate;
+- (void)setHeaderHeight:(double)height;
+- (void)setHourHeightScale:(double)scale;
+- (void)setMonthText:(id)text isCurrentMonth:(BOOL)month;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverlayMonthText:(id)text;
+- (void)setUseMultiDayStyle:(BOOL)style;
+- (void)setWeekNumberText:(id)text;
 - (void)updateMonthLabel;
 @end
 
 @implementation WeekTimeView
 
-- (WeekTimeView)initWithFrame:(CGRect)a3 targetSizeClass:(int64_t)a4 orientation:(int64_t)a5
+- (WeekTimeView)initWithFrame:(CGRect)frame targetSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
   v44.receiver = self;
   v44.super_class = WeekTimeView;
-  v7 = [(WeekTimeView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(WeekTimeView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
     v7->_preferredMonthLabelBaselineOffsetFromTop = -1.0;
-    [(WeekTimeView *)v7 setOrientation:a5];
+    [(WeekTimeView *)v7 setOrientation:orientation];
     v9 = [EKDayTimeView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v13 = [v9 initWithFrame:a4 sizeClass:{CGRectZero.origin.x, y, width, height}];
+    v13 = [v9 initWithFrame:class sizeClass:{CGRectZero.origin.x, y, width, height}];
     timeView = v8->_timeView;
     v8->_timeView = v13;
 
     [(EKDayTimeView *)v8->_timeView setOpaque:0];
-    [(EKDayTimeView *)v8->_timeView setOrientation:a5];
+    [(EKDayTimeView *)v8->_timeView setOrientation:orientation];
     [(EKDayTimeView *)v8->_timeView setShowsTimeMarkerExtension:1];
     v15 = [[UIScrollView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     timeScroller = v8->_timeScroller;
@@ -151,7 +151,7 @@
   return v8;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (CalCanvasPocketEnabled())
   {
@@ -184,11 +184,11 @@
   [(UILabel *)allDayLabel sizeToFit];
 }
 
-- (void)setUseMultiDayStyle:(BOOL)a3
+- (void)setUseMultiDayStyle:(BOOL)style
 {
-  if (self->_useMultiDayStyle != a3)
+  if (self->_useMultiDayStyle != style)
   {
-    self->_useMultiDayStyle = a3;
+    self->_useMultiDayStyle = style;
     [(WeekTimeView *)self _updateHeaderBackground];
 
     [(WeekTimeView *)self _updateTrailingBorder];
@@ -263,7 +263,7 @@
   {
     [(EKDayTimeView *)self->_timeView setShowsLeftBorder:0];
     timeView = self->_timeView;
-    v4 = [(WeekTimeView *)self _showTrailingBorder];
+    _showTrailingBorder = [(WeekTimeView *)self _showTrailingBorder];
     v5 = timeView;
   }
 
@@ -271,45 +271,45 @@
   {
     [(EKDayTimeView *)self->_timeView setShowsLeftBorder:[(WeekTimeView *)self _showTrailingBorder]];
     v5 = self->_timeView;
-    v4 = 0;
+    _showTrailingBorder = 0;
   }
 
-  [(EKDayTimeView *)v5 setShowsRightBorder:v4];
+  [(EKDayTimeView *)v5 setShowsRightBorder:_showTrailingBorder];
   v6 = [(WeekTimeView *)self _showTrailingBorder]^ 1;
   trailingBorderView = self->_trailingBorderView;
 
   [(UIView *)trailingBorderView setHidden:v6];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  self->_orientation = a3;
+  self->_orientation = orientation;
   [(EKDayTimeView *)self->_timeView setOrientation:?];
 
   [(WeekTimeView *)self setNeedsLayout];
 }
 
-- (void)setHeaderHeight:(double)a3
+- (void)setHeaderHeight:(double)height
 {
-  if (self->_headerHeight != a3)
+  if (self->_headerHeight != height)
   {
     v8 = v3;
-    if (a3 <= 0.0)
+    if (height <= 0.0)
     {
-      a3 = 0.0;
+      height = 0.0;
     }
 
-    self->_headerHeight = a3;
+    self->_headerHeight = height;
     [(WeekTimeView *)self setNeedsLayout:v4];
 
     [(WeekTimeView *)self setNeedsDisplay];
   }
 }
 
-- (void)setAllDayHighlighted:(BOOL)a3
+- (void)setAllDayHighlighted:(BOOL)highlighted
 {
   allDayLabel = self->_allDayLabel;
-  if (a3)
+  if (highlighted)
   {
     +[UIColor labelColor];
   }
@@ -325,26 +325,26 @@
 - (BOOL)allDayHighlighted
 {
   v3 = +[UIColor labelColor];
-  v4 = [(UILabel *)self->_allDayLabel textColor];
-  LOBYTE(self) = v3 == v4;
+  textColor = [(UILabel *)self->_allDayLabel textColor];
+  LOBYTE(self) = v3 == textColor;
 
   return self;
 }
 
-- (void)setDayTimeViewDelegate:(id)a3
+- (void)setDayTimeViewDelegate:(id)delegate
 {
-  [(EKDayTimeView *)self->_timeView setDelegate:a3];
+  [(EKDayTimeView *)self->_timeView setDelegate:delegate];
   timeView = self->_timeView;
 
   [(EKDayTimeView *)timeView setNeedsDisplay];
 }
 
-- (void)setHourHeightScale:(double)a3
+- (void)setHourHeightScale:(double)scale
 {
   [(EKDayTimeView *)self->_timeView setHourHeightScale:?];
   [(UIScrollView *)self->_timeScroller contentSize];
   v6 = v5;
-  [EKDayTimeView defaultHeightForSizeClass:EKUIWidthSizeClassForViewHierarchy() orientation:self->_orientation withHourScale:a3];
+  [EKDayTimeView defaultHeightForSizeClass:EKUIWidthSizeClassForViewHierarchy() orientation:self->_orientation withHourScale:scale];
   [(UIScrollView *)self->_timeScroller setContentSize:v6, v7];
   [(WeekTimeView *)self setNeedsLayout];
 
@@ -361,18 +361,18 @@
   [(WeekTimeView *)self _updateMonthFont];
   [(WeekTimeView *)self _updateWeekNumberFont];
   [(WeekTimeView *)self _updateOverlayMonthFont];
-  v5 = [(EKDayTimeView *)self->_timeView timeMarker];
-  [v5 invalidateFonts];
+  timeMarker = [(EKDayTimeView *)self->_timeView timeMarker];
+  [timeMarker invalidateFonts];
 
   [(WeekTimeView *)self setNeedsLayout];
 }
 
-- (void)setAllDayAlpha:(double)a3
+- (void)setAllDayAlpha:(double)alpha
 {
   [(UIView *)self->_topAllDaySeparatorView setAlpha:?];
   allDayLabel = self->_allDayLabel;
 
-  [(UILabel *)allDayLabel setAlpha:a3];
+  [(UILabel *)allDayLabel setAlpha:alpha];
 }
 
 - (void)_updateMonthFont
@@ -395,8 +395,8 @@
   v6 = [UIFont fontWithDescriptor:v5 size:0.0];
   [(UILabel *)self->_monthLabel setFont:v6];
 
-  v7 = [(UILabel *)self->_monthLabel font];
-  [v7 pointSize];
+  font = [(UILabel *)self->_monthLabel font];
+  [font pointSize];
   v9 = v8;
 
   if (v9 > 25.0)
@@ -408,7 +408,7 @@
 
 - (void)_updateWeekNumberFont
 {
-  v3 = [(WeekTimeView *)self traitCollection];
+  traitCollection = [(WeekTimeView *)self traitCollection];
   v4 = EKUIUsesRoundedRectsInsteadOfCircles();
 
   v5 = 14.0;
@@ -423,7 +423,7 @@
 
 - (void)_updateOverlayMonthFont
 {
-  v3 = [(WeekTimeView *)self traitCollection];
+  traitCollection = [(WeekTimeView *)self traitCollection];
   v4 = EKUIUsesRoundedRectsInsteadOfCircles();
 
   v5 = 10.0;
@@ -436,12 +436,12 @@
   [(UILabel *)self->_overlayMonthLabel setFont:v6];
 }
 
-- (void)setMonthText:(id)a3 isCurrentMonth:(BOOL)a4
+- (void)setMonthText:(id)text isCurrentMonth:(BOOL)month
 {
-  v4 = a4;
-  v6 = a3;
+  monthCopy = month;
+  textCopy = text;
   monthLabel = self->_monthLabel;
-  v11 = v6;
+  v11 = textCopy;
   if (!monthLabel)
   {
     v8 = objc_alloc_init(UILabel);
@@ -452,12 +452,12 @@
     [(WeekTimeView *)self _updateMonthFont];
     [(WeekTimeView *)self addSubview:self->_monthLabel];
     [(WeekTimeView *)self bringSubviewToFront:self->_monthLabel];
-    v6 = v11;
+    textCopy = v11;
     monthLabel = self->_monthLabel;
   }
 
-  [(UILabel *)monthLabel setText:v6];
-  if (v4)
+  [(UILabel *)monthLabel setText:textCopy];
+  if (monthCopy)
   {
     CalendarAppTintColor();
   }
@@ -472,13 +472,13 @@
   [(WeekTimeView *)self setNeedsLayout];
 }
 
-- (void)setWeekNumberText:(id)a3
+- (void)setWeekNumberText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   weekNumberLabel = self->_weekNumberLabel;
-  if (v4)
+  if (textCopy)
   {
-    v10 = v4;
+    v10 = textCopy;
     if (!weekNumberLabel)
     {
       v6 = objc_opt_new();
@@ -509,12 +509,12 @@
   _objc_release_x1();
 }
 
-- (void)setOverlayMonthText:(id)a3
+- (void)setOverlayMonthText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   overlayMonthLabel = self->_overlayMonthLabel;
-  v10 = v4;
-  if (v4)
+  v10 = textCopy;
+  if (textCopy)
   {
     if (!overlayMonthLabel)
     {
@@ -527,11 +527,11 @@
       [(UILabel *)self->_overlayMonthLabel setTextColor:v8];
 
       [(WeekTimeView *)self addSubview:self->_overlayMonthLabel];
-      v4 = v10;
+      textCopy = v10;
       overlayMonthLabel = self->_overlayMonthLabel;
     }
 
-    [(UILabel *)overlayMonthLabel setText:v4];
+    [(UILabel *)overlayMonthLabel setText:textCopy];
     [(WeekTimeView *)self setNeedsLayout];
   }
 
@@ -548,9 +548,9 @@
 - (double)allDayBackgroundColorOriginY
 {
   v3 = EKUIWidthSizeClassForViewHierarchy();
-  v4 = [(WeekTimeView *)self useMultiDayStyle];
+  useMultiDayStyle = [(WeekTimeView *)self useMultiDayStyle];
 
-  [WeekAllDayView dayLabelHeightWithSizeClass:v3 usesMultiDay:v4];
+  [WeekAllDayView dayLabelHeightWithSizeClass:v3 usesMultiDay:useMultiDayStyle];
   return result;
 }
 
@@ -578,8 +578,8 @@
   if (monthLabel)
   {
     [(UILabel *)monthLabel sizeToFit];
-    v4 = [(UILabel *)self->_monthLabel font];
-    [v4 pointSize];
+    font = [(UILabel *)self->_monthLabel font];
+    [font pointSize];
     v6 = v5;
 
     while (v6 > 8.0)
@@ -593,9 +593,9 @@
       }
 
       v6 = v6 + -1.0;
-      v8 = [(UILabel *)self->_monthLabel font];
-      v9 = [v8 fontDescriptor];
-      v10 = [UIFont fontWithDescriptor:v9 size:v6];
+      font2 = [(UILabel *)self->_monthLabel font];
+      fontDescriptor = [font2 fontDescriptor];
+      v10 = [UIFont fontWithDescriptor:fontDescriptor size:v6];
       [(UILabel *)self->_monthLabel setFont:v10];
 
       [(UILabel *)self->_monthLabel sizeToFit];
@@ -719,7 +719,7 @@
     [(WeekTimeView *)self safeAreaInsets];
     if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy())
     {
-      v31 = [(WeekTimeView *)self traitCollection];
+      traitCollection = [(WeekTimeView *)self traitCollection];
       EKUIUsesRoundedRectsInsteadOfCircles();
     }
 
@@ -909,10 +909,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   CalRoundToScreenScale();
   v7 = v6;
   EKUISeparatorLineThickness();

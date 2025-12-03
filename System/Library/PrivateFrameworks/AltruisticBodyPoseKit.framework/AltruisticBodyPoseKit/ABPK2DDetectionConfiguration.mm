@@ -1,11 +1,11 @@
 @interface ABPK2DDetectionConfiguration
-- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)a3;
-- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)a3 abpkDeviceOrientation:(int64_t)a4;
+- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)mode;
+- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)mode abpkDeviceOrientation:(int64_t)orientation;
 @end
 
 @implementation ABPK2DDetectionConfiguration
 
-- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)a3
+- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)mode
 {
   self->_abpkDeviceOrientation = 3;
   v13.receiver = self;
@@ -17,7 +17,7 @@
     goto LABEL_10;
   }
 
-  v4->_algMode = a3;
+  v4->_algMode = mode;
   v6 = determineDeviceANEVersionPriorOrEqualToH12();
   v5->_deviceANEVersionPriorOrEqualToH12 = v6;
   algMode = v5->_algMode;
@@ -59,12 +59,12 @@ LABEL_11:
   return v10;
 }
 
-- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)a3 abpkDeviceOrientation:(int64_t)a4
+- (ABPK2DDetectionConfiguration)initWithAlgorithmMode:(int64_t)mode abpkDeviceOrientation:(int64_t)orientation
 {
-  result = [(ABPK2DDetectionConfiguration *)self initWithAlgorithmMode:a3];
+  result = [(ABPK2DDetectionConfiguration *)self initWithAlgorithmMode:mode];
   if (result)
   {
-    result->_abpkDeviceOrientation = a4;
+    result->_abpkDeviceOrientation = orientation;
   }
 
   return result;

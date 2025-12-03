@@ -1,13 +1,13 @@
 @interface _MLServer
-- (_MLServer)initWithOptions:(id)a3;
-- (void)doReceive:(id)a3 context:(id)a4 isComplete:(BOOL)a5 error:(id)a6;
+- (_MLServer)initWithOptions:(id)options;
+- (void)doReceive:(id)receive context:(id)context isComplete:(BOOL)complete error:(id)error;
 @end
 
 @implementation _MLServer
 
-- (_MLServer)initWithOptions:(id)a3
+- (_MLServer)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = _MLServer;
   v6 = [(_MLServer *)&v20 init];
@@ -21,7 +21,7 @@
     q = v6->_q;
     v6->_q = v9;
 
-    v11 = [[_MLNetworkOptions alloc] initWithOptions:v5];
+    v11 = [[_MLNetworkOptions alloc] initWithOptions:optionsCopy];
     nwOptions = v6->_nwOptions;
     v6->_nwOptions = v11;
 
@@ -45,7 +45,7 @@
   return v6;
 }
 
-- (void)doReceive:(id)a3 context:(id)a4 isComplete:(BOOL)a5 error:(id)a6
+- (void)doReceive:(id)receive context:(id)context isComplete:(BOOL)complete error:(id)error
 {
   v64 = *MEMORY[0x277D85DE8];
   applier[0] = MEMORY[0x277D85DD0];
@@ -54,23 +54,23 @@
   applier[3] = &unk_279AFCAB0;
   applier[4] = self;
   applier[5] = a2;
-  dispatch_data_apply(a3, applier);
-  v8 = [(_MLServer *)self packet];
-  v9 = [v8 sizeOfPacket];
+  dispatch_data_apply(receive, applier);
+  packet = [(_MLServer *)self packet];
+  sizeOfPacket = [packet sizeOfPacket];
 
-  if (!v9)
+  if (!sizeOfPacket)
   {
-    v10 = [(_MLServer *)self packet];
-    v11 = [v10 buffer];
-    v12 = [_MLNetworkHeaderEncoding getHeaderEncoding:v11];
-    v13 = [(_MLServer *)self packet];
-    [v13 setCommand:v12];
+    packet2 = [(_MLServer *)self packet];
+    buffer = [packet2 buffer];
+    v12 = [_MLNetworkHeaderEncoding getHeaderEncoding:buffer];
+    packet3 = [(_MLServer *)self packet];
+    [packet3 setCommand:v12];
 
-    v14 = [(_MLServer *)self packet];
-    v15 = [v14 buffer];
-    v16 = [_MLNetworkHeaderEncoding getHeaderDataSize:v15];
-    v17 = [(_MLServer *)self packet];
-    [v17 setSizeOfPacket:v16];
+    packet4 = [(_MLServer *)self packet];
+    buffer2 = [packet4 buffer];
+    v16 = [_MLNetworkHeaderEncoding getHeaderDataSize:buffer2];
+    packet5 = [(_MLServer *)self packet];
+    [packet5 setSizeOfPacket:v16];
 
     v18 = +[_MLLog serverFramework];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -79,8 +79,8 @@
     }
   }
 
-  v19 = [(_MLServer *)self packet];
-  v20 = +[_MLNetworkHeaderEncoding isHeaderError:](_MLNetworkHeaderEncoding, "isHeaderError:", [v19 command]);
+  packet6 = [(_MLServer *)self packet];
+  v20 = +[_MLNetworkHeaderEncoding isHeaderError:](_MLNetworkHeaderEncoding, "isHeaderError:", [packet6 command]);
 
   if (v20)
   {
@@ -91,48 +91,48 @@
     }
 
     v22 = +[_MLNetworkHeaderEncoding acknowledgeFailData];
-    v23 = [(_MLServer *)self nwObj];
-    [v23 sendData:v22];
+    nwObj = [(_MLServer *)self nwObj];
+    [nwObj sendData:v22];
 
-    v24 = [(_MLServer *)self packet];
-    [v24 cleanupDoubleBuffer];
+    packet7 = [(_MLServer *)self packet];
+    [packet7 cleanupDoubleBuffer];
   }
 
   else
   {
-    v25 = [(_MLServer *)self packet];
-    v26 = [v25 buffer];
-    v27 = [v26 length];
+    packet8 = [(_MLServer *)self packet];
+    buffer3 = [packet8 buffer];
+    v27 = [buffer3 length];
     v28 = v27 - +[_MLNetworkHeaderEncoding getHeaderSize];
 
-    v29 = [(_MLServer *)self packet];
-    v30 = [v29 sizeOfPacket];
+    packet9 = [(_MLServer *)self packet];
+    sizeOfPacket2 = [packet9 sizeOfPacket];
 
-    if (v30 <= v28)
+    if (sizeOfPacket2 <= v28)
     {
-      v32 = [(_MLServer *)self packet];
-      v33 = v28 - [v32 sizeOfPacket];
+      packet10 = [(_MLServer *)self packet];
+      v33 = v28 - [packet10 sizeOfPacket];
 
       if (v33 >= 1)
       {
-        v34 = [(_MLServer *)self packet];
-        v35 = [v34 buffer];
-        v36 = [_MLNetworkHeaderEncoding getHeaderEnd:v35];
+        packet11 = [(_MLServer *)self packet];
+        buffer4 = [packet11 buffer];
+        v36 = [_MLNetworkHeaderEncoding getHeaderEnd:buffer4];
 
         v37 = [MEMORY[0x277CBEB28] dataWithBytes:v36 length:v33];
-        v38 = [(_MLServer *)self packet];
-        [v38 setDoubleBuffer:v37];
+        packet12 = [(_MLServer *)self packet];
+        [packet12 setDoubleBuffer:v37];
       }
 
-      v39 = [(_MLServer *)self packet];
-      v40 = [v39 buffer];
-      v41 = [_MLNetworkHeaderEncoding getHeaderDataStart:v40];
+      packet13 = [(_MLServer *)self packet];
+      buffer5 = [packet13 buffer];
+      v41 = [_MLNetworkHeaderEncoding getHeaderDataStart:buffer5];
 
       v42 = MEMORY[0x277CBEB28];
-      v43 = [(_MLServer *)self packet];
-      v44 = [v42 dataWithBytes:v41 length:{objc_msgSend(v43, "sizeOfPacket")}];
-      v45 = [(_MLServer *)self packet];
-      [v45 setBuffer:v44];
+      packet14 = [(_MLServer *)self packet];
+      v44 = [v42 dataWithBytes:v41 length:{objc_msgSend(packet14, "sizeOfPacket")}];
+      packet15 = [(_MLServer *)self packet];
+      [packet15 setBuffer:v44];
 
       q = self->_q;
       v54[0] = MEMORY[0x277D85DD0];
@@ -150,15 +150,15 @@
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         v48 = NSStringFromSelector(a2);
-        v49 = [(_MLServer *)self packet];
-        v50 = [v49 sizeOfPacket];
-        v51 = [(_MLServer *)self packet];
-        v52 = [v51 buffer];
-        v53 = [v52 length];
+        packet16 = [(_MLServer *)self packet];
+        sizeOfPacket3 = [packet16 sizeOfPacket];
+        packet17 = [(_MLServer *)self packet];
+        buffer6 = [packet17 buffer];
+        v53 = [buffer6 length];
         *buf = 138413058;
         v57 = v48;
         v58 = 2048;
-        v59 = v50;
+        v59 = sizeOfPacket3;
         v60 = 2048;
         v61 = v53;
         v62 = 2048;

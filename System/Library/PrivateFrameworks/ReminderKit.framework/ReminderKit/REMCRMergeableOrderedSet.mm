@@ -1,38 +1,38 @@
 @interface REMCRMergeableOrderedSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSOrderedSet)orderedSet;
-- (REMCRMergeableOrderedSet)initWithCoder:(id)a3;
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 document:(id)a4 undos:(id)a5;
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 orderedSet:(id)a4;
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 serializedData:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REMCRMergeableOrderedSet)initWithCoder:(id)coder;
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source document:(id)document undos:(id)undos;
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source orderedSet:(id)set;
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source serializedData:(id)data error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mergedOrderedSetWithOrderedSet:(id)a3 error:(id *)a4;
+- (id)mergedOrderedSetWithOrderedSet:(id)set error:(id *)error;
 - (id)mutableOrderedSet;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)serializedData;
 - (unint64_t)count;
-- (unint64_t)indexOfEqualObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (unint64_t)indexOfEqualObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation REMCRMergeableOrderedSet
 
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 document:(id)a4 undos:(id)a5
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source document:(id)document undos:(id)undos
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  documentCopy = document;
+  undosCopy = undos;
   v17.receiver = self;
   v17.super_class = REMCRMergeableOrderedSet;
   v12 = [(REMCRMergeableOrderedSet *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_replicaIDSource, a3);
-    objc_storeStrong(&v13->_document, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_replicaIDSource, source);
+    objc_storeStrong(&v13->_document, document);
+    v14 = [undosCopy copy];
     undos = v13->_undos;
     v13->_undos = v14;
   }
@@ -40,10 +40,10 @@
   return v13;
 }
 
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 orderedSet:(id)a4
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source orderedSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
+  setCopy = set;
+  sourceCopy = source;
   v8 = [CRTTCompatibleDocument alloc];
   v9 = +[REMReplicaIDHelper replicaUUIDForCreation];
   v10 = [(CRDocument *)v8 initWithReplica:v9];
@@ -55,23 +55,23 @@
   v15[3] = &unk_1E75083F8;
   v16 = v11;
   v12 = v11;
-  [v6 enumerateObjectsUsingBlock:v15];
+  [setCopy enumerateObjectsUsingBlock:v15];
 
   [(CRDocument *)v10 setRootObject:v12];
   [(CRTTCompatibleDocument *)v10 realizeLocalChanges];
-  v13 = [(REMCRMergeableOrderedSet *)self initWithReplicaIDSource:v7 document:v10];
+  v13 = [(REMCRMergeableOrderedSet *)self initWithReplicaIDSource:sourceCopy document:v10];
 
   return v13;
 }
 
-- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 serializedData:(id)a4 error:(id *)a5
+- (REMCRMergeableOrderedSet)initWithReplicaIDSource:(id)source serializedData:(id)data error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  dataCopy = data;
+  sourceCopy = source;
   v9 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v10 = [(CRDocument *)CRTTCompatibleDocument unarchiveFromData:v7 replica:v9];
+  v10 = [(CRDocument *)CRTTCompatibleDocument unarchiveFromData:dataCopy replica:v9];
 
-  v11 = [(REMCRMergeableOrderedSet *)self initWithReplicaIDSource:v8 document:v10];
+  v11 = [(REMCRMergeableOrderedSet *)self initWithReplicaIDSource:sourceCopy document:v10];
   return v11;
 }
 
@@ -79,34 +79,34 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMCRMergeableOrderedSet *)self document];
-  v6 = [v3 stringWithFormat:@"<%@: %p document: %@>", v4, self, v5];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  v6 = [v3 stringWithFormat:@"<%@: %p document: %@>", v4, self, document];
 
   return v6;
 }
 
 - (NSOrderedSet)orderedSet
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = [(REMCRMergeableOrderedSet *)self document];
-  v5 = [v4 rootObject];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  rootObject = [document rootObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__REMCRMergeableOrderedSet_orderedSet__block_invoke;
   v9[3] = &unk_1E75083F8;
-  v10 = v3;
-  v6 = v3;
-  [v5 enumerateObjectsUsingBlock:v9];
+  v10 = orderedSet;
+  v6 = orderedSet;
+  [rootObject enumerateObjectsUsingBlock:v9];
 
   v7 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -116,9 +116,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMCRMergeableOrderedSet *)self orderedSet];
-      v6 = [(REMCRMergeableOrderedSet *)v4 orderedSet];
-      v7 = [v5 isEqualToOrderedSet:v6];
+      orderedSet = [(REMCRMergeableOrderedSet *)self orderedSet];
+      orderedSet2 = [(REMCRMergeableOrderedSet *)equalCopy orderedSet];
+      v7 = [orderedSet isEqualToOrderedSet:orderedSet2];
     }
 
     else
@@ -132,132 +132,132 @@
 
 - (unint64_t)count
 {
-  v2 = [(REMCRMergeableOrderedSet *)self document];
-  v3 = [v2 rootObject];
-  v4 = [v3 count];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  rootObject = [document rootObject];
+  v4 = [rootObject count];
 
   return v4;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(REMCRMergeableOrderedSet *)self document];
-  v5 = [v4 rootObject];
-  v6 = [v5 objectAtIndex:a3];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  rootObject = [document rootObject];
+  v6 = [rootObject objectAtIndex:index];
 
   return v6;
 }
 
-- (unint64_t)indexOfEqualObject:(id)a3
+- (unint64_t)indexOfEqualObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCRMergeableOrderedSet *)self document];
-  v6 = [v5 rootObject];
-  v7 = [v6 indexOfEqualObject:v4];
+  objectCopy = object;
+  document = [(REMCRMergeableOrderedSet *)self document];
+  rootObject = [document rootObject];
+  v7 = [rootObject indexOfEqualObject:objectCopy];
 
   return v7;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(REMCRMergeableOrderedSet *)self document];
-  v5 = [v6 rootObject];
-  [v5 enumerateObjectsUsingBlock:v4];
+  blockCopy = block;
+  document = [(REMCRMergeableOrderedSet *)self document];
+  rootObject = [document rootObject];
+  [rootObject enumerateObjectsUsingBlock:blockCopy];
 }
 
 - (id)mutableOrderedSet
 {
   v3 = [REMMutableCRMergeableOrderedSet alloc];
-  v4 = [(REMCRMergeableOrderedSet *)self replicaIDSource];
-  v5 = [(REMCRMergeableOrderedSet *)self document];
-  v6 = [(REMCRMergeableOrderedSet *)self undos];
-  v7 = [(REMMutableCRMergeableOrderedSet *)v3 initWithReplicaIDSource:v4 immutableDocumentToEdit:v5 undos:v6];
+  replicaIDSource = [(REMCRMergeableOrderedSet *)self replicaIDSource];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  undos = [(REMCRMergeableOrderedSet *)self undos];
+  v7 = [(REMMutableCRMergeableOrderedSet *)v3 initWithReplicaIDSource:replicaIDSource immutableDocumentToEdit:document undos:undos];
 
   return v7;
 }
 
 - (id)serializedData
 {
-  v2 = [(REMCRMergeableOrderedSet *)self document];
-  v3 = [v2 archivedData];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  archivedData = [document archivedData];
 
-  return v3;
+  return archivedData;
 }
 
-- (id)mergedOrderedSetWithOrderedSet:(id)a3 error:(id *)a4
+- (id)mergedOrderedSetWithOrderedSet:(id)set error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(REMCRMergeableOrderedSet *)self document];
+  setCopy = set;
+  document = [(REMCRMergeableOrderedSet *)self document];
   v8 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v9 = [v7 copyForReplica:v8];
+  v9 = [document copyForReplica:v8];
 
-  v10 = [v6 document];
+  document2 = [setCopy document];
 
-  v11 = [v9 mergeWithDocument:v10];
+  v11 = [v9 mergeWithDocument:document2];
   if (v11 == 1)
   {
-    a4 = self;
+    error = self;
   }
 
   else if (v11)
   {
     v14 = [REMCRMergeableOrderedSet alloc];
-    v15 = [(REMCRMergeableOrderedSet *)self replicaIDSource];
-    v16 = [(REMCRMergeableOrderedSet *)self undos];
-    a4 = [(REMCRMergeableOrderedSet *)v14 initWithReplicaIDSource:v15 document:v9 undos:v16];
+    replicaIDSource = [(REMCRMergeableOrderedSet *)self replicaIDSource];
+    undos = [(REMCRMergeableOrderedSet *)self undos];
+    error = [(REMCRMergeableOrderedSet *)v14 initWithReplicaIDSource:replicaIDSource document:v9 undos:undos];
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = objc_alloc(MEMORY[0x1E696ABC0]);
     v19 = *MEMORY[0x1E696A588];
     v20[0] = @"Failed to merge CR documents.";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    *a4 = [v12 initWithDomain:@"REMCRMergeableOrderedSet" code:-1 userInfo:v13];
+    *error = [v12 initWithDomain:@"REMCRMergeableOrderedSet" code:-1 userInfo:v13];
 
-    a4 = 0;
+    error = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(REMCRMergeableOrderedSet *)self document];
-  v6 = [(REMCRMergeableOrderedSet *)self document];
-  v7 = [v6 replica];
-  v8 = [v5 copyForReplica:v7];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  document2 = [(REMCRMergeableOrderedSet *)self document];
+  replica = [document2 replica];
+  v8 = [document copyForReplica:replica];
 
   v9 = [REMCRMergeableOrderedSet alloc];
-  v10 = [(REMCRMergeableOrderedSet *)self replicaIDSource];
-  v11 = [v10 copy];
-  v12 = [(REMCRMergeableOrderedSet *)self undos];
-  v13 = [(REMCRMergeableOrderedSet *)v9 initWithReplicaIDSource:v11 document:v8 undos:v12];
+  replicaIDSource = [(REMCRMergeableOrderedSet *)self replicaIDSource];
+  v11 = [replicaIDSource copy];
+  undos = [(REMCRMergeableOrderedSet *)self undos];
+  v13 = [(REMCRMergeableOrderedSet *)v9 initWithReplicaIDSource:v11 document:v8 undos:undos];
 
   objc_autoreleasePoolPop(v4);
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMCRMergeableOrderedSet *)self replicaIDSource];
-  [v4 encodeObject:v5 forKey:@"replicaIDSource"];
+  coderCopy = coder;
+  replicaIDSource = [(REMCRMergeableOrderedSet *)self replicaIDSource];
+  [coderCopy encodeObject:replicaIDSource forKey:@"replicaIDSource"];
 
-  v6 = [(REMCRMergeableOrderedSet *)self document];
-  v7 = [v6 archivedData];
+  document = [(REMCRMergeableOrderedSet *)self document];
+  archivedData = [document archivedData];
 
-  [v4 encodeObject:v7 forKey:@"document"];
+  [coderCopy encodeObject:archivedData forKey:@"document"];
 }
 
-- (REMCRMergeableOrderedSet)initWithCoder:(id)a3
+- (REMCRMergeableOrderedSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = REMCRMergeableOrderedSet;
   v5 = [(REMCRMergeableOrderedSet *)&v10 init];
@@ -269,10 +269,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replicaIDSource"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replicaIDSource"];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"document"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"document"];
     if (!v7)
     {
 

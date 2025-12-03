@@ -15,7 +15,7 @@
 + (id)safari_monospacedDigitFontForTextStyle:()MobileSafariFrameworkExtras
 {
   v2 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:?];
-  v3 = [a1 safari_fontDescriptorWithMonospacedDigitAttributes:v2];
+  v3 = [self safari_fontDescriptorWithMonospacedDigitAttributes:v2];
 
   v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:0.0];
 
@@ -25,7 +25,7 @@
 + (id)safari_monospacedDigitFontForTextStyle:()MobileSafariFrameworkExtras weight:
 {
   v2 = [MEMORY[0x1E69DB880] _preferredFontDescriptorWithTextStyle:? weight:?];
-  v3 = [a1 safari_fontDescriptorWithMonospacedDigitAttributes:v2];
+  v3 = [self safari_fontDescriptorWithMonospacedDigitAttributes:v2];
 
   v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:0.0];
 
@@ -94,9 +94,9 @@
 + (id)_sf_roundedSystemFontOfSize:()MobileSafariFrameworkExtras weight:
 {
   v4 = a4;
-  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:a4 weight:a1];
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
+  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:a4 weight:self];
+  fontDescriptor = [v5 fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x1E69DB8D8]];
 
   v8 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:v4];
 
@@ -113,14 +113,14 @@
   v18[0] = &unk_1EFF742D0;
   v18[1] = &unk_1EFF742E8;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v6 = [v3 fontDescriptor];
+  fontDescriptor = [v3 fontDescriptor];
   v7 = *MEMORY[0x1E69DB8B0];
   v14 = v5;
   v15 = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
   v16 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v10 = [v6 fontDescriptorByAddingAttributes:v9];
+  v10 = [fontDescriptor fontDescriptorByAddingAttributes:v9];
 
   if (v10)
   {
@@ -140,8 +140,8 @@
 - (id)_sf_fontByAddingAttributes:()MobileSafariFrameworkExtras
 {
   v4 = a3;
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v4];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v4];
 
   v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
 

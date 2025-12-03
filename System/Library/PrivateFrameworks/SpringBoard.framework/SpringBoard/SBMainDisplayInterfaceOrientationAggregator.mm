@@ -1,16 +1,16 @@
 @interface SBMainDisplayInterfaceOrientationAggregator
 - (NSArray)interfaceOrientationSources;
 - (SBMainDisplayInterfaceOrientationAggregator)init;
-- (id)_highestSourceAtOrBelow:(double)a3 amongSources:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)highestActiveInterfaceOrientationSourceBelow:(double)a3;
-- (id)highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:(double)a3;
+- (id)_highestSourceAtOrBelow:(double)below amongSources:(id)sources;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)highestActiveInterfaceOrientationSourceBelow:(double)below;
+- (id)highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:(double)above;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_layoutOrientation;
-- (int64_t)activeInterfaceOrientationAtOrBelow:(double)a3;
-- (int64_t)activeInterfaceOrientationBelow:(double)a3;
+- (int64_t)activeInterfaceOrientationAtOrBelow:(double)below;
+- (int64_t)activeInterfaceOrientationBelow:(double)below;
 - (void)dealloc;
 @end
 
@@ -64,48 +64,48 @@ id __51__SBMainDisplayInterfaceOrientationAggregator_init__block_invoke(uint64_t
   return v5;
 }
 
-- (int64_t)activeInterfaceOrientationBelow:(double)a3
+- (int64_t)activeInterfaceOrientationBelow:(double)below
 {
-  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self highestActiveInterfaceOrientationSourceBelow:a3];
-  v4 = [v3 activeInterfaceOrientation];
+  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self highestActiveInterfaceOrientationSourceBelow:below];
+  activeInterfaceOrientation = [v3 activeInterfaceOrientation];
 
-  return v4;
+  return activeInterfaceOrientation;
 }
 
-- (int64_t)activeInterfaceOrientationAtOrBelow:(double)a3
+- (int64_t)activeInterfaceOrientationAtOrBelow:(double)below
 {
-  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:a3];
-  v4 = [v3 activeInterfaceOrientation];
+  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:below];
+  activeInterfaceOrientation = [v3 activeInterfaceOrientation];
 
-  return v4;
+  return activeInterfaceOrientation;
 }
 
-- (id)highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:(double)a3
+- (id)highestActiveInterfaceOrientationSourceIgnoringSourcesAbove:(double)above
 {
-  v5 = [(SBMainDisplayInterfaceOrientationAggregator *)self interfaceOrientationSources];
-  v6 = [(SBMainDisplayInterfaceOrientationAggregator *)self _highestSourceAtOrBelow:v5 amongSources:a3];
+  interfaceOrientationSources = [(SBMainDisplayInterfaceOrientationAggregator *)self interfaceOrientationSources];
+  v6 = [(SBMainDisplayInterfaceOrientationAggregator *)self _highestSourceAtOrBelow:interfaceOrientationSources amongSources:above];
 
   return v6;
 }
 
-- (id)highestActiveInterfaceOrientationSourceBelow:(double)a3
+- (id)highestActiveInterfaceOrientationSourceBelow:(double)below
 {
-  v4 = a3 + -0.01;
-  v5 = [(SBMainDisplayInterfaceOrientationAggregator *)self interfaceOrientationSources];
-  v6 = [(SBMainDisplayInterfaceOrientationAggregator *)self _highestSourceAtOrBelow:v5 amongSources:v4];
+  v4 = below + -0.01;
+  interfaceOrientationSources = [(SBMainDisplayInterfaceOrientationAggregator *)self interfaceOrientationSources];
+  v6 = [(SBMainDisplayInterfaceOrientationAggregator *)self _highestSourceAtOrBelow:interfaceOrientationSources amongSources:v4];
 
   return v6;
 }
 
 - (int64_t)_layoutOrientation
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 activeDisplayWindowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 layoutState];
-  v6 = [v5 interfaceOrientation];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  switcherController = [activeDisplayWindowScene switcherController];
+  layoutState = [switcherController layoutState];
+  interfaceOrientation = [layoutState interfaceOrientation];
 
-  return v6;
+  return interfaceOrientation;
 }
 
 uint64_t __60__SBMainDisplayInterfaceOrientationAggregator__sortSources___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -133,20 +133,20 @@ uint64_t __60__SBMainDisplayInterfaceOrientationAggregator__sortSources___block_
   }
 }
 
-- (id)_highestSourceAtOrBelow:(double)a3 amongSources:(id)a4
+- (id)_highestSourceAtOrBelow:(double)below amongSources:(id)sources
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
-    v6 = [v5 firstObject];
-    [v6 orientationSourceLevel];
+    firstObject = [sourcesCopy firstObject];
+    [firstObject orientationSourceLevel];
     v8 = v7;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v5;
+    v9 = sourcesCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -174,11 +174,11 @@ uint64_t __60__SBMainDisplayInterfaceOrientationAggregator__sortSources___block_
             v17 = 1;
           }
 
-          if (!v17 && v16 <= a3)
+          if (!v17 && v16 <= below)
           {
             v19 = v14;
 
-            v6 = v19;
+            firstObject = v19;
             v8 = v16;
           }
         }
@@ -192,18 +192,18 @@ uint64_t __60__SBMainDisplayInterfaceOrientationAggregator__sortSources___block_
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBMainDisplayInterfaceOrientationAggregator *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBMainDisplayInterfaceOrientationAggregator *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -216,26 +216,26 @@ uint64_t __60__SBMainDisplayInterfaceOrientationAggregator__sortSources___block_
   return v2;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBMainDisplayInterfaceOrientationAggregator *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBMainDisplayInterfaceOrientationAggregator *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBMainDisplayInterfaceOrientationAggregator *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __85__SBMainDisplayInterfaceOrientationAggregator_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

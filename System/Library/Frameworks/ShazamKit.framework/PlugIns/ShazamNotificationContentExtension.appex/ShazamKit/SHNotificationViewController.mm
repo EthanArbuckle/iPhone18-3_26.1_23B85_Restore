@@ -1,7 +1,7 @@
 @interface SHNotificationViewController
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
-- (void)sendAnalyticsEvent:(id)a3 forBundleIdentifier:(id)a4 actionName:(id)a5;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
+- (void)sendAnalyticsEvent:(id)event forBundleIdentifier:(id)identifier actionName:(id)name;
 - (void)setupView;
 - (void)viewDidLoad;
 @end
@@ -16,24 +16,24 @@
   [(SHNotificationViewController *)self setupView];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [SHLocalization localizedStringForKey:@"SHAZAM_MODULE_NOTIFICATION_ACTION_TITLE"];
   v6 = [NSString stringWithFormat:@"%@.%@", @"com.apple.ShazamNotifications", @"apple-music-action"];
   v7 = [UNNotificationActionIcon iconWithSystemImageName:@"music.square.fill"];
   v8 = [UNNotificationAction actionWithIdentifier:v6 title:v5 options:0 icon:v7];
   v46 = v8;
   v9 = [NSArray arrayWithObjects:&v46 count:1];
-  v10 = [(SHNotificationViewController *)self extensionContext];
-  [v10 setNotificationActions:v9];
+  extensionContext = [(SHNotificationViewController *)self extensionContext];
+  [extensionContext setNotificationActions:v9];
 
-  v11 = [v4 request];
-  v12 = [v11 content];
-  v13 = [v12 attachments];
-  v14 = [v13 firstObject];
+  request = [notificationCopy request];
+  content = [request content];
+  attachments = [content attachments];
+  firstObject = [attachments firstObject];
 
-  v15 = [v14 URL];
+  v15 = [firstObject URL];
 
   if (v15)
   {
@@ -41,64 +41,64 @@
     v41 = v7;
     v42 = v6;
     v43 = v5;
-    v16 = [v14 URL];
+    v16 = [firstObject URL];
     [v16 startAccessingSecurityScopedResource];
 
-    v17 = [v14 URL];
+    v17 = [firstObject URL];
     v18 = [NSData dataWithContentsOfURL:v17];
 
     v19 = [UIImage imageWithData:v18];
-    v20 = [v14 URL];
+    v20 = [firstObject URL];
     [v20 stopAccessingSecurityScopedResource];
 
-    v21 = [(SHNotificationViewController *)self attachmentImageView];
-    [v21 setImage:v19];
+    attachmentImageView = [(SHNotificationViewController *)self attachmentImageView];
+    [attachmentImageView setImage:v19];
 
-    v22 = [v4 request];
-    v23 = [v22 content];
-    v24 = [v23 userInfo];
-    v25 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:v24];
+    request2 = [notificationCopy request];
+    content2 = [request2 content];
+    userInfo = [content2 userInfo];
+    v25 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:userInfo];
 
-    v26 = [v25 mediaItem];
-    v27 = [v26 title];
+    mediaItem = [v25 mediaItem];
+    title = [mediaItem title];
 
-    if (v27)
+    if (title)
     {
-      v28 = [v25 mediaItem];
-      v29 = [v28 title];
-      v30 = [(SHNotificationViewController *)self titleLabel];
-      [v30 setText:v29];
+      mediaItem2 = [v25 mediaItem];
+      title2 = [mediaItem2 title];
+      titleLabel = [(SHNotificationViewController *)self titleLabel];
+      [titleLabel setText:title2];
     }
 
     else
     {
-      v28 = [(SHNotificationViewController *)self titleLabel];
-      [v28 setHidden:1];
+      mediaItem2 = [(SHNotificationViewController *)self titleLabel];
+      [mediaItem2 setHidden:1];
     }
 
-    v33 = [v25 mediaItem];
-    v34 = [v33 subtitle];
+    mediaItem3 = [v25 mediaItem];
+    subtitle = [mediaItem3 subtitle];
 
     v7 = v41;
-    if (v34)
+    if (subtitle)
     {
-      v35 = [v25 mediaItem];
-      v36 = [v35 subtitle];
-      v37 = [(SHNotificationViewController *)self subtitleLabel];
-      [v37 setText:v36];
+      mediaItem4 = [v25 mediaItem];
+      subtitle2 = [mediaItem4 subtitle];
+      subtitleLabel = [(SHNotificationViewController *)self subtitleLabel];
+      [subtitleLabel setText:subtitle2];
     }
 
     else
     {
-      v35 = [(SHNotificationViewController *)self subtitleLabel];
-      [v35 setHidden:1];
+      mediaItem4 = [(SHNotificationViewController *)self subtitleLabel];
+      [mediaItem4 setHidden:1];
     }
 
     v6 = v42;
 
     v38 = SHAnalyticsEventMusicRecognitionResultExpanded;
-    v39 = [v25 bundleIdentifier];
-    [(SHNotificationViewController *)self sendAnalyticsEvent:v38 forBundleIdentifier:v39 actionName:0];
+    bundleIdentifier = [v25 bundleIdentifier];
+    [(SHNotificationViewController *)self sendAnalyticsEvent:v38 forBundleIdentifier:bundleIdentifier actionName:0];
 
     v5 = v43;
     v8 = v40;
@@ -109,47 +109,47 @@
     v18 = shcore_log_object();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v4 request];
-      v32 = [v31 identifier];
+      request3 = [notificationCopy request];
+      identifier = [request3 identifier];
       *buf = 138412290;
-      v45 = v32;
+      v45 = identifier;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Missing attachment from notification with identifier %@", buf, 0xCu);
     }
   }
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = [NSString stringWithFormat:@"%@.%@", @"com.apple.ShazamNotifications", @"apple-music-action"];
-  v9 = [v6 actionIdentifier];
-  v10 = [v9 isEqualToString:v8];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier isEqualToString:v8];
 
   if (v10)
   {
-    v11 = [v6 notification];
-    v12 = [v11 request];
-    v13 = [v12 content];
-    v14 = [v13 userInfo];
-    v15 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:v14];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    userInfo = [content userInfo];
+    v15 = [SHMatchResultUserNotificationPayload payloadFromNotificationContentUserInfo:userInfo];
 
-    v16 = [v15 mediaItem];
-    v17 = [v16 appleMusicURL];
+    mediaItem = [v15 mediaItem];
+    appleMusicURL = [mediaItem appleMusicURL];
 
-    if (v17)
+    if (appleMusicURL)
     {
-      v18 = [(SHNotificationViewController *)self extensionContext];
-      v19 = [v15 mediaItem];
-      v20 = [v19 appleMusicURL];
-      [v18 openURL:v20 completionHandler:0];
+      extensionContext = [(SHNotificationViewController *)self extensionContext];
+      mediaItem2 = [v15 mediaItem];
+      appleMusicURL2 = [mediaItem2 appleMusicURL];
+      [extensionContext openURL:appleMusicURL2 completionHandler:0];
     }
 
     v21 = SHAnalyticsEventMusicRecognitionResultAction;
-    v22 = [v15 bundleIdentifier];
-    [(SHNotificationViewController *)self sendAnalyticsEvent:v21 forBundleIdentifier:v22 actionName:@"apple-music-action"];
+    bundleIdentifier = [v15 bundleIdentifier];
+    [(SHNotificationViewController *)self sendAnalyticsEvent:v21 forBundleIdentifier:bundleIdentifier actionName:@"apple-music-action"];
 
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -157,57 +157,57 @@
     v23 = shcore_log_object();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v6 actionIdentifier];
+      actionIdentifier2 = [responseCopy actionIdentifier];
       *buf = 138412290;
-      v26 = v24;
+      v26 = actionIdentifier2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Notification action %@ is not supported", buf, 0xCu);
     }
 
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)sendAnalyticsEvent:(id)a3 forBundleIdentifier:(id)a4 actionName:(id)a5
+- (void)sendAnalyticsEvent:(id)event forBundleIdentifier:(id)identifier actionName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  identifierCopy = identifier;
+  eventCopy = event;
   v11 = +[NSMutableDictionary dictionary];
-  [v11 setValue:v8 forKey:SHAnalyticsPayloadSourceKey];
+  [v11 setValue:identifierCopy forKey:SHAnalyticsPayloadSourceKey];
 
-  [v11 setValue:v7 forKey:SHAnalyticsPayloadActionKey];
+  [v11 setValue:nameCopy forKey:SHAnalyticsPayloadActionKey];
   v10 = [v11 copy];
-  [SHAnalytics sendEvent:v9 withPayload:v10];
+  [SHAnalytics sendEvent:eventCopy withPayload:v10];
 }
 
 - (void)setupView
 {
   v3 = +[UIColor blackColor];
-  v4 = [(SHNotificationViewController *)self attachmentImageView];
-  [v4 setShadowColor:v3];
+  attachmentImageView = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView setShadowColor:v3];
 
-  v5 = [(SHNotificationViewController *)self attachmentImageView];
-  [v5 setShadowOpacity:0.100000001];
+  attachmentImageView2 = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView2 setShadowOpacity:0.100000001];
 
-  v6 = [(SHNotificationViewController *)self attachmentImageView];
-  [v6 setShadowRadius:8.0];
+  attachmentImageView3 = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView3 setShadowRadius:8.0];
 
-  v7 = [(SHNotificationViewController *)self attachmentImageView];
-  [v7 setShadowOffset:{0.0, 10.0}];
+  attachmentImageView4 = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView4 setShadowOffset:{0.0, 10.0}];
 
-  v8 = [(SHNotificationViewController *)self attachmentImageView];
-  [v8 setCornerRadius:8.0];
+  attachmentImageView5 = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView5 setCornerRadius:8.0];
 
-  v9 = [(SHNotificationViewController *)self attachmentImageView];
-  [v9 layoutIfNeeded];
+  attachmentImageView6 = [(SHNotificationViewController *)self attachmentImageView];
+  [attachmentImageView6 layoutIfNeeded];
 
   v14 = [[UIFontMetrics alloc] initForTextStyle:UIFontTextStyleBody];
   v10 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
   [v10 pointSize];
   v11 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
   v12 = [v14 scaledFontForFont:v11];
-  v13 = [(SHNotificationViewController *)self titleLabel];
-  [v13 setFont:v12];
+  titleLabel = [(SHNotificationViewController *)self titleLabel];
+  [titleLabel setFont:v12];
 }
 
 @end

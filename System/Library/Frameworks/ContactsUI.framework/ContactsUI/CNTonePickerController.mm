@@ -1,42 +1,42 @@
 @interface CNTonePickerController
-- (CNTonePickerController)initWithAlertType:(int64_t)a3 activityAlert:(id)a4;
-- (void)cancelButton:(id)a3;
-- (void)doneButton:(id)a3;
+- (CNTonePickerController)initWithAlertType:(int64_t)type activityAlert:(id)alert;
+- (void)cancelButton:(id)button;
+- (void)doneButton:(id)button;
 @end
 
 @implementation CNTonePickerController
 
-- (void)cancelButton:(id)a3
+- (void)cancelButton:(id)button
 {
-  v4 = [(CNTonePickerController *)self delegate];
-  [v4 pickerDidCancel:self];
+  delegate = [(CNTonePickerController *)self delegate];
+  [delegate pickerDidCancel:self];
 
   [(CNTonePickerController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)doneButton:(id)a3
+- (void)doneButton:(id)button
 {
   v4 = objc_alloc(MEMORY[0x1E695CD18]);
-  v5 = [(CNTonePickerController *)self tonePicker];
-  v6 = [v5 selectedToneIdentifier];
-  v7 = [(CNTonePickerController *)self tonePicker];
-  v8 = [v7 selectedVibrationIdentifier];
-  v9 = [(CNTonePickerController *)self tonePicker];
-  v11 = [v4 initWithSound:v6 vibration:v8 ignoreMute:{objc_msgSend(v9, "ignoreMute")}];
+  tonePicker = [(CNTonePickerController *)self tonePicker];
+  selectedToneIdentifier = [tonePicker selectedToneIdentifier];
+  tonePicker2 = [(CNTonePickerController *)self tonePicker];
+  selectedVibrationIdentifier = [tonePicker2 selectedVibrationIdentifier];
+  tonePicker3 = [(CNTonePickerController *)self tonePicker];
+  v11 = [v4 initWithSound:selectedToneIdentifier vibration:selectedVibrationIdentifier ignoreMute:{objc_msgSend(tonePicker3, "ignoreMute")}];
 
-  v10 = [(CNTonePickerController *)self delegate];
-  [v10 picker:self didPickItem:v11];
+  delegate = [(CNTonePickerController *)self delegate];
+  [delegate picker:self didPickItem:v11];
 
   [(CNTonePickerController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (CNTonePickerController)initWithAlertType:(int64_t)a3 activityAlert:(id)a4
+- (CNTonePickerController)initWithAlertType:(int64_t)type activityAlert:(id)alert
 {
-  v7 = a4;
-  if ((a3 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  alertCopy = alert;
+  if ((type - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"CNTonePickerController.m" lineNumber:29 description:@"Only call and text alerts are allowed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNTonePickerController.m" lineNumber:29 description:@"Only call and text alerts are allowed"];
   }
 
   v31.receiver = self;
@@ -62,17 +62,17 @@
 
     v10 = v9;
     _Block_object_dispose(&v33, 8);
-    v11 = [[v9 alloc] initWithAlertType:a3];
+    v11 = [[v9 alloc] initWithAlertType:type];
     tonePicker = v8->_tonePicker;
     v8->_tonePicker = v11;
 
     v13 = CNContactsUIBundle();
     v14 = v13;
-    if (a3 == 1)
+    if (type == 1)
     {
       v15 = [v13 localizedStringForKey:@"EDIT_RINGTONE" value:&stru_1F0CE7398 table:@"Localized"];
-      v16 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
-      [v16 setTitle:v15];
+      navigationItem = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
+      [navigationItem setTitle:v15];
 
       [(TKTonePickerViewController *)v8->_tonePicker setShowsNone:0];
     }
@@ -80,41 +80,41 @@
     else
     {
       v17 = [v13 localizedStringForKey:@"EDIT_TEXTTONE" value:&stru_1F0CE7398 table:@"Localized"];
-      v18 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
-      [v18 setTitle:v17];
+      navigationItem2 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
+      [navigationItem2 setTitle:v17];
 
       [(TKTonePickerViewController *)v8->_tonePicker setShowsNone:1];
       [(TKTonePickerViewController *)v8->_tonePicker setNoneAtTop:1];
     }
 
     [(TKTonePickerViewController *)v8->_tonePicker setShowsIgnoreMute:1];
-    -[TKTonePickerViewController setIgnoreMute:](v8->_tonePicker, "setIgnoreMute:", [v7 ignoreMute]);
+    -[TKTonePickerViewController setIgnoreMute:](v8->_tonePicker, "setIgnoreMute:", [alertCopy ignoreMute]);
     v19 = +[CNCapabilitiesManager defaultCapabilitiesManager];
     -[TKTonePickerViewController setShowsVibrations:](v8->_tonePicker, "setShowsVibrations:", [v19 hasVibratorCapability]);
 
     [(TKTonePickerViewController *)v8->_tonePicker setShowsDefault:1];
-    v20 = [v7 sound];
-    [(TKTonePickerViewController *)v8->_tonePicker setSelectedToneIdentifier:v20];
+    sound = [alertCopy sound];
+    [(TKTonePickerViewController *)v8->_tonePicker setSelectedToneIdentifier:sound];
 
-    v21 = [v7 vibration];
-    [(TKTonePickerViewController *)v8->_tonePicker setSelectedVibrationIdentifier:v21];
+    vibration = [alertCopy vibration];
+    [(TKTonePickerViewController *)v8->_tonePicker setSelectedVibrationIdentifier:vibration];
 
     v22 = objc_alloc_init(CNToneKitPickerStyleProvider);
     [(TKTonePickerViewController *)v8->_tonePicker setStyleProvider:v22];
 
-    v23 = [(CNTonePickerController *)v8 navigationBar];
-    [v23 _cnui_applyContactStyle];
+    navigationBar = [(CNTonePickerController *)v8 navigationBar];
+    [navigationBar _cnui_applyContactStyle];
 
-    v24 = [(TKTonePickerViewController *)v8->_tonePicker tableView];
-    [v24 _cnui_applyContactStyle];
+    tableView = [(TKTonePickerViewController *)v8->_tonePicker tableView];
+    [tableView _cnui_applyContactStyle];
 
     v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v8 action:sel_doneButton_];
-    v26 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
-    [v26 setRightBarButtonItem:v25];
+    navigationItem3 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
+    [navigationItem3 setRightBarButtonItem:v25];
 
     v27 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v8 action:sel_cancelButton_];
-    v28 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
-    [v28 setLeftBarButtonItem:v27];
+    navigationItem4 = [(TKTonePickerViewController *)v8->_tonePicker navigationItem];
+    [navigationItem4 setLeftBarButtonItem:v27];
 
     [(CNTonePickerController *)v8 pushViewController:v8->_tonePicker animated:0];
   }

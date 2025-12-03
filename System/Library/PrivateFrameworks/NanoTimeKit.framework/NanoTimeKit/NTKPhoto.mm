@@ -1,43 +1,43 @@
 @interface NTKPhoto
-+ (id)decodeFromDictionary:(id)a3 forResourceDirectory:(id)a4;
-- (BOOL)isEqualToAsset:(id)a3;
-- (BOOL)isEqualToPhoto:(id)a3;
++ (id)decodeFromDictionary:(id)dictionary forResourceDirectory:(id)directory;
+- (BOOL)isEqualToAsset:(id)asset;
+- (BOOL)isEqualToPhoto:(id)photo;
 - (BOOL)isMissingAnalysis;
 - (CGRect)crop;
 - (CGRect)originalCrop;
 - (NSString)uuidFromLocalIdentifierAndModificationDate;
-- (NTKPhoto)initWithLegacySidecar:(id)a3;
-- (id)analysisForAlignment:(unint64_t)a3 deviceSizeClass:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NTKPhoto)initWithLegacySidecar:(id)sidecar;
+- (id)analysisForAlignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsDictionary;
-- (void)setAnalysis:(id)a3 alignment:(unint64_t)a4 deviceSizeClass:(unint64_t)a5;
+- (void)setAnalysis:(id)analysis alignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class;
 @end
 
 @implementation NTKPhoto
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_localIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_localIdentifier copyWithZone:zone];
   [v5 setLocalIdentifier:v6];
 
-  v7 = [(NSDate *)self->_modificationDate copyWithZone:a3];
+  v7 = [(NSDate *)self->_modificationDate copyWithZone:zone];
   [v5 setModificationDate:v7];
 
   [v5 setOriginalCrop:{self->_originalCrop.origin.x, self->_originalCrop.origin.y, self->_originalCrop.size.width, self->_originalCrop.size.height}];
-  v8 = [(NSURL *)self->_imageURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_imageURL copyWithZone:zone];
   [v5 setImageURL:v8];
 
   [v5 setCrop:{self->_crop.origin.x, self->_crop.origin.y, self->_crop.size.width, self->_crop.size.height}];
   for (i = 8; i != 104; i += 8)
   {
-    v10 = [*(&self->super.isa + i) copyWithZone:a3];
+    v10 = [*(&self->super.isa + i) copyWithZone:zone];
     v11 = *&v5[i];
     *&v5[i] = v10;
   }
 
   [v5 setIsIris:self->_isIris];
-  v12 = [(NSURL *)self->_irisVideoURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_irisVideoURL copyWithZone:zone];
   [v5 setIrisVideoURL:v12];
 
   [v5 setIrisDuration:self->_irisDuration];
@@ -45,217 +45,217 @@
   return v5;
 }
 
-+ (id)decodeFromDictionary:(id)a3 forResourceDirectory:(id)a4
++ (id)decodeFromDictionary:(id)dictionary forResourceDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+  dictionaryCopy = dictionary;
+  directoryCopy = directory;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
   if (v7)
   {
     v8 = v7;
-    v9 = [v5 objectForKeyedSubscript:@"imageURL"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"imageURL"];
     if (v9)
     {
       v10 = v9;
-      v11 = [v5 objectForKeyedSubscript:@"isIris"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"isIris"];
 
       if (v11)
       {
         v12 = objc_opt_new();
-        v13 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
         [v12 setLocalIdentifier:v13];
 
-        v14 = [v5 objectForKeyedSubscript:@"modificationDate"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
         [v12 setModificationDate:v14];
 
-        v15 = [v5 objectForKeyedSubscript:@"originalCropX"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"originalCropX"];
         [v15 doubleValue];
         v17 = v16;
 
-        v18 = [v5 objectForKeyedSubscript:@"originalCropY"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"originalCropY"];
         [v18 doubleValue];
         v20 = v19;
 
-        v21 = [v5 objectForKeyedSubscript:@"originalCropW"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"originalCropW"];
         [v21 doubleValue];
         v23 = v22;
 
-        v24 = [v5 objectForKeyedSubscript:@"originalCropH"];
+        v24 = [dictionaryCopy objectForKeyedSubscript:@"originalCropH"];
         [v24 doubleValue];
         v26 = v25;
 
         [v12 setOriginalCrop:{v17, v20, v23, v26}];
-        v27 = [v5 objectForKeyedSubscript:@"imageURL"];
-        v28 = [v6 stringByAppendingPathComponent:v27];
+        v27 = [dictionaryCopy objectForKeyedSubscript:@"imageURL"];
+        v28 = [directoryCopy stringByAppendingPathComponent:v27];
 
         v29 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v28 isDirectory:0];
         [v12 setImageURL:v29];
 
-        v30 = [v5 objectForKeyedSubscript:@"cropX"];
+        v30 = [dictionaryCopy objectForKeyedSubscript:@"cropX"];
         [v30 doubleValue];
         v32 = v31;
 
-        v33 = [v5 objectForKeyedSubscript:@"cropY"];
+        v33 = [dictionaryCopy objectForKeyedSubscript:@"cropY"];
         [v33 doubleValue];
         v35 = v34;
 
-        v36 = [v5 objectForKeyedSubscript:@"cropW"];
+        v36 = [dictionaryCopy objectForKeyedSubscript:@"cropW"];
         [v36 doubleValue];
         v38 = v37;
 
-        v39 = [v5 objectForKeyedSubscript:@"cropH"];
+        v39 = [dictionaryCopy objectForKeyedSubscript:@"cropH"];
         [v39 doubleValue];
         v41 = v40;
 
         [v12 setCrop:{v32, v35, v38, v41}];
-        v42 = [v5 objectForKeyedSubscript:@"topAnalysis"];
+        v42 = [dictionaryCopy objectForKeyedSubscript:@"topAnalysis"];
 
         if (v42)
         {
           v43 = [NTKPhotoAnalysis alloc];
-          v44 = [v5 objectForKeyedSubscript:@"topAnalysis"];
+          v44 = [dictionaryCopy objectForKeyedSubscript:@"topAnalysis"];
           v45 = [(NTKPhotoAnalysis *)v43 initFromDictionary:v44];
           v46 = v12[1];
           v12[1] = v45;
         }
 
-        v47 = [v5 objectForKeyedSubscript:@"bottomAnalysis"];
+        v47 = [dictionaryCopy objectForKeyedSubscript:@"bottomAnalysis"];
 
         if (v47)
         {
           v48 = [NTKPhotoAnalysis alloc];
-          v49 = [v5 objectForKeyedSubscript:@"bottomAnalysis"];
+          v49 = [dictionaryCopy objectForKeyedSubscript:@"bottomAnalysis"];
           v50 = [(NTKPhotoAnalysis *)v48 initFromDictionary:v49];
           v51 = v12[2];
           v12[2] = v50;
         }
 
-        v52 = [v5 objectForKeyedSubscript:@"leftAnalysis"];
+        v52 = [dictionaryCopy objectForKeyedSubscript:@"leftAnalysis"];
 
         if (v52)
         {
           v53 = [NTKPhotoAnalysis alloc];
-          v54 = [v5 objectForKeyedSubscript:@"leftAnalysis"];
+          v54 = [dictionaryCopy objectForKeyedSubscript:@"leftAnalysis"];
           v55 = [(NTKPhotoAnalysis *)v53 initFromDictionary:v54];
           v56 = v12[3];
           v12[3] = v55;
         }
 
-        v57 = [v5 objectForKeyedSubscript:@"rightAnalysis"];
+        v57 = [dictionaryCopy objectForKeyedSubscript:@"rightAnalysis"];
 
         if (v57)
         {
           v58 = [NTKPhotoAnalysis alloc];
-          v59 = [v5 objectForKeyedSubscript:@"rightAnalysis"];
+          v59 = [dictionaryCopy objectForKeyedSubscript:@"rightAnalysis"];
           v60 = [(NTKPhotoAnalysis *)v58 initFromDictionary:v59];
           v61 = v12[4];
           v12[4] = v60;
         }
 
-        v62 = [v5 objectForKeyedSubscript:@"fastAnalysis"];
+        v62 = [dictionaryCopy objectForKeyedSubscript:@"fastAnalysis"];
 
         if (v62)
         {
           v63 = [NTKPhotoAnalysis alloc];
-          v64 = [v5 objectForKeyedSubscript:@"fastAnalysis"];
+          v64 = [dictionaryCopy objectForKeyedSubscript:@"fastAnalysis"];
           v65 = [(NTKPhotoAnalysis *)v63 initFromDictionary:v64];
           v66 = v12[5];
           v12[5] = v65;
         }
 
-        v67 = [v5 objectForKeyedSubscript:@"slowAnalysis"];
+        v67 = [dictionaryCopy objectForKeyedSubscript:@"slowAnalysis"];
 
         if (v67)
         {
           v68 = [NTKPhotoAnalysis alloc];
-          v69 = [v5 objectForKeyedSubscript:@"slowAnalysis"];
+          v69 = [dictionaryCopy objectForKeyedSubscript:@"slowAnalysis"];
           v70 = [(NTKPhotoAnalysis *)v68 initFromDictionary:v69];
           v71 = v12[6];
           v12[6] = v70;
         }
 
-        v72 = [v5 objectForKeyedSubscript:@"insideAnalysis"];
+        v72 = [dictionaryCopy objectForKeyedSubscript:@"insideAnalysis"];
 
         if (v72)
         {
           v73 = [NTKPhotoAnalysis alloc];
-          v74 = [v5 objectForKeyedSubscript:@"insideAnalysis"];
+          v74 = [dictionaryCopy objectForKeyedSubscript:@"insideAnalysis"];
           v75 = [(NTKPhotoAnalysis *)v73 initFromDictionary:v74];
           v76 = v12[7];
           v12[7] = v75;
         }
 
-        v77 = [v5 objectForKeyedSubscript:@"outsideAnalysis"];
+        v77 = [dictionaryCopy objectForKeyedSubscript:@"outsideAnalysis"];
 
         if (v77)
         {
           v78 = [NTKPhotoAnalysis alloc];
-          v79 = [v5 objectForKeyedSubscript:@"outsideAnalysis"];
+          v79 = [dictionaryCopy objectForKeyedSubscript:@"outsideAnalysis"];
           v80 = [(NTKPhotoAnalysis *)v78 initFromDictionary:v79];
           v81 = v12[8];
           v12[8] = v80;
         }
 
-        v82 = [v5 objectForKeyedSubscript:@"upAnalysis"];
+        v82 = [dictionaryCopy objectForKeyedSubscript:@"upAnalysis"];
 
         if (v82)
         {
           v83 = [NTKPhotoAnalysis alloc];
-          v84 = [v5 objectForKeyedSubscript:@"upAnalysis"];
+          v84 = [dictionaryCopy objectForKeyedSubscript:@"upAnalysis"];
           v85 = [(NTKPhotoAnalysis *)v83 initFromDictionary:v84];
           v86 = v12[9];
           v12[9] = v85;
         }
 
-        v87 = [v5 objectForKeyedSubscript:@"downAnalysis"];
+        v87 = [dictionaryCopy objectForKeyedSubscript:@"downAnalysis"];
 
         if (v87)
         {
           v88 = [NTKPhotoAnalysis alloc];
-          v89 = [v5 objectForKeyedSubscript:@"downAnalysis"];
+          v89 = [dictionaryCopy objectForKeyedSubscript:@"downAnalysis"];
           v90 = [(NTKPhotoAnalysis *)v88 initFromDictionary:v89];
           v91 = v12[10];
           v12[10] = v90;
         }
 
-        v92 = [v5 objectForKeyedSubscript:@"northAnalysis"];
+        v92 = [dictionaryCopy objectForKeyedSubscript:@"northAnalysis"];
 
         if (v92)
         {
           v93 = [NTKPhotoAnalysis alloc];
-          v94 = [v5 objectForKeyedSubscript:@"northAnalysis"];
+          v94 = [dictionaryCopy objectForKeyedSubscript:@"northAnalysis"];
           v95 = [(NTKPhotoAnalysis *)v93 initFromDictionary:v94];
           v96 = v12[11];
           v12[11] = v95;
         }
 
-        v97 = [v5 objectForKeyedSubscript:@"southAnalysis"];
+        v97 = [dictionaryCopy objectForKeyedSubscript:@"southAnalysis"];
 
         if (v97)
         {
           v98 = [NTKPhotoAnalysis alloc];
-          v99 = [v5 objectForKeyedSubscript:@"southAnalysis"];
+          v99 = [dictionaryCopy objectForKeyedSubscript:@"southAnalysis"];
           v100 = [(NTKPhotoAnalysis *)v98 initFromDictionary:v99];
           v101 = v12[12];
           v12[12] = v100;
         }
 
-        v102 = [v5 objectForKeyedSubscript:@"isIris"];
+        v102 = [dictionaryCopy objectForKeyedSubscript:@"isIris"];
         [v12 setIsIris:{objc_msgSend(v102, "BOOLValue")}];
 
         if ([v12 isIris])
         {
-          v103 = [v5 objectForKeyedSubscript:@"irisVideoURL"];
-          v104 = [v6 stringByAppendingPathComponent:v103];
+          v103 = [dictionaryCopy objectForKeyedSubscript:@"irisVideoURL"];
+          v104 = [directoryCopy stringByAppendingPathComponent:v103];
 
           v105 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v104 isDirectory:0];
           [v12 setIrisVideoURL:v105];
 
-          v106 = [v5 objectForKeyedSubscript:@"irisDuration"];
+          v106 = [dictionaryCopy objectForKeyedSubscript:@"irisDuration"];
           [v106 doubleValue];
           [v12 setIrisDuration:?];
 
-          v107 = [v5 objectForKeyedSubscript:@"irisStillDisplayTime"];
+          v107 = [dictionaryCopy objectForKeyedSubscript:@"irisStillDisplayTime"];
           [v107 doubleValue];
           [v12 setIrisStillDisplayTime:?];
         }
@@ -306,8 +306,8 @@ LABEL_36:
   [v3 setObject:v7 forKeyedSubscript:@"originalCropH"];
 
   v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{-[NSURL fileSystemRepresentation](self->_imageURL, "fileSystemRepresentation")}];
-  v9 = [v8 lastPathComponent];
-  [v3 setObject:v9 forKeyedSubscript:@"imageURL"];
+  lastPathComponent = [v8 lastPathComponent];
+  [v3 setObject:lastPathComponent forKeyedSubscript:@"imageURL"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_crop.origin.x];
   [v3 setObject:v10 forKeyedSubscript:@"cropX"];
@@ -324,85 +324,85 @@ LABEL_36:
   v14 = self->_analyses[0];
   if (v14)
   {
-    v15 = [(NTKPhotoAnalysis *)v14 encodeAsDictionary];
-    [v3 setObject:v15 forKeyedSubscript:@"topAnalysis"];
+    encodeAsDictionary = [(NTKPhotoAnalysis *)v14 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary forKeyedSubscript:@"topAnalysis"];
   }
 
   v16 = self->_analyses[1];
   if (v16)
   {
-    v17 = [(NTKPhotoAnalysis *)v16 encodeAsDictionary];
-    [v3 setObject:v17 forKeyedSubscript:@"bottomAnalysis"];
+    encodeAsDictionary2 = [(NTKPhotoAnalysis *)v16 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary2 forKeyedSubscript:@"bottomAnalysis"];
   }
 
   v18 = self->_analyses[2];
   if (v18)
   {
-    v19 = [(NTKPhotoAnalysis *)v18 encodeAsDictionary];
-    [v3 setObject:v19 forKeyedSubscript:@"leftAnalysis"];
+    encodeAsDictionary3 = [(NTKPhotoAnalysis *)v18 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary3 forKeyedSubscript:@"leftAnalysis"];
   }
 
   v20 = self->_analyses[3];
   if (v20)
   {
-    v21 = [(NTKPhotoAnalysis *)v20 encodeAsDictionary];
-    [v3 setObject:v21 forKeyedSubscript:@"rightAnalysis"];
+    encodeAsDictionary4 = [(NTKPhotoAnalysis *)v20 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary4 forKeyedSubscript:@"rightAnalysis"];
   }
 
   v22 = self->_analyses[4];
   if (v22)
   {
-    v23 = [(NTKPhotoAnalysis *)v22 encodeAsDictionary];
-    [v3 setObject:v23 forKeyedSubscript:@"fastAnalysis"];
+    encodeAsDictionary5 = [(NTKPhotoAnalysis *)v22 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary5 forKeyedSubscript:@"fastAnalysis"];
   }
 
   v24 = self->_analyses[5];
   if (v24)
   {
-    v25 = [(NTKPhotoAnalysis *)v24 encodeAsDictionary];
-    [v3 setObject:v25 forKeyedSubscript:@"slowAnalysis"];
+    encodeAsDictionary6 = [(NTKPhotoAnalysis *)v24 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary6 forKeyedSubscript:@"slowAnalysis"];
   }
 
   v26 = self->_analyses[6];
   if (v26)
   {
-    v27 = [(NTKPhotoAnalysis *)v26 encodeAsDictionary];
-    [v3 setObject:v27 forKeyedSubscript:@"insideAnalysis"];
+    encodeAsDictionary7 = [(NTKPhotoAnalysis *)v26 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary7 forKeyedSubscript:@"insideAnalysis"];
   }
 
   v28 = self->_analyses[7];
   if (v28)
   {
-    v29 = [(NTKPhotoAnalysis *)v28 encodeAsDictionary];
-    [v3 setObject:v29 forKeyedSubscript:@"outsideAnalysis"];
+    encodeAsDictionary8 = [(NTKPhotoAnalysis *)v28 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary8 forKeyedSubscript:@"outsideAnalysis"];
   }
 
   v30 = self->_analyses[8];
   if (v30)
   {
-    v31 = [(NTKPhotoAnalysis *)v30 encodeAsDictionary];
-    [v3 setObject:v31 forKeyedSubscript:@"upAnalysis"];
+    encodeAsDictionary9 = [(NTKPhotoAnalysis *)v30 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary9 forKeyedSubscript:@"upAnalysis"];
   }
 
   v32 = self->_analyses[9];
   if (v32)
   {
-    v33 = [(NTKPhotoAnalysis *)v32 encodeAsDictionary];
-    [v3 setObject:v33 forKeyedSubscript:@"downAnalysis"];
+    encodeAsDictionary10 = [(NTKPhotoAnalysis *)v32 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary10 forKeyedSubscript:@"downAnalysis"];
   }
 
   v34 = self->_analyses[10];
   if (v34)
   {
-    v35 = [(NTKPhotoAnalysis *)v34 encodeAsDictionary];
-    [v3 setObject:v35 forKeyedSubscript:@"northAnalysis"];
+    encodeAsDictionary11 = [(NTKPhotoAnalysis *)v34 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary11 forKeyedSubscript:@"northAnalysis"];
   }
 
   v36 = self->_analyses[11];
   if (v36)
   {
-    v37 = [(NTKPhotoAnalysis *)v36 encodeAsDictionary];
-    [v3 setObject:v37 forKeyedSubscript:@"southAnalysis"];
+    encodeAsDictionary12 = [(NTKPhotoAnalysis *)v36 encodeAsDictionary];
+    [v3 setObject:encodeAsDictionary12 forKeyedSubscript:@"southAnalysis"];
   }
 
   v38 = [MEMORY[0x277CCABB0] numberWithBool:self->_isIris];
@@ -411,8 +411,8 @@ LABEL_36:
   if (self->_isIris)
   {
     v39 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{-[NSURL fileSystemRepresentation](self->_irisVideoURL, "fileSystemRepresentation")}];
-    v40 = [v39 lastPathComponent];
-    [v3 setObject:v40 forKeyedSubscript:@"irisVideoURL"];
+    lastPathComponent2 = [v39 lastPathComponent];
+    [v3 setObject:lastPathComponent2 forKeyedSubscript:@"irisVideoURL"];
 
     v41 = [MEMORY[0x277CCABB0] numberWithDouble:self->_irisDuration];
     [v3 setObject:v41 forKeyedSubscript:@"irisDuration"];
@@ -431,24 +431,24 @@ LABEL_36:
   return v3;
 }
 
-- (BOOL)isEqualToPhoto:(id)a3
+- (BOOL)isEqualToPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  photoCopy = photo;
+  v5 = photoCopy;
+  if (self == photoCopy)
   {
     v22 = 1;
   }
 
-  else if (v4)
+  else if (photoCopy)
   {
-    v6 = [(NTKPhoto *)self localIdentifier];
-    v7 = [(NTKPhoto *)v5 localIdentifier];
-    if ([v6 isEqualToString:v7])
+    localIdentifier = [(NTKPhoto *)self localIdentifier];
+    localIdentifier2 = [(NTKPhoto *)v5 localIdentifier];
+    if ([localIdentifier isEqualToString:localIdentifier2])
     {
-      v8 = [(NTKPhoto *)self modificationDate];
-      v9 = [(NTKPhoto *)v5 modificationDate];
-      if ([v8 isEqualToDate:v9])
+      modificationDate = [(NTKPhoto *)self modificationDate];
+      modificationDate2 = [(NTKPhoto *)v5 modificationDate];
+      if ([modificationDate isEqualToDate:modificationDate2])
       {
         [(NTKPhoto *)self crop];
         v11 = v10;
@@ -487,43 +487,43 @@ LABEL_36:
   return v22;
 }
 
-- (BOOL)isEqualToAsset:(id)a3
+- (BOOL)isEqualToAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NTKPhoto *)self localIdentifier];
-  if (!v5)
+  assetCopy = asset;
+  localIdentifier = [(NTKPhoto *)self localIdentifier];
+  if (!localIdentifier)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [v4 localIdentifier];
-  v8 = [(NTKPhoto *)self localIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  v6 = localIdentifier;
+  localIdentifier2 = [assetCopy localIdentifier];
+  localIdentifier3 = [(NTKPhoto *)self localIdentifier];
+  v9 = [localIdentifier2 isEqualToString:localIdentifier3];
 
   if (!v9)
   {
     goto LABEL_8;
   }
 
-  v10 = [(NTKPhoto *)self modificationDate];
-  if (!v10)
+  modificationDate = [(NTKPhoto *)self modificationDate];
+  if (!modificationDate)
   {
     goto LABEL_8;
   }
 
-  v11 = v10;
-  v12 = [v4 modificationDate];
-  if (!v12)
+  v11 = modificationDate;
+  modificationDate2 = [assetCopy modificationDate];
+  if (!modificationDate2)
   {
 
     goto LABEL_8;
   }
 
-  v13 = v12;
-  v14 = [v4 modificationDate];
-  v15 = [(NTKPhoto *)self modificationDate];
-  [v14 timeIntervalSinceDate:v15];
+  v13 = modificationDate2;
+  modificationDate3 = [assetCopy modificationDate];
+  modificationDate4 = [(NTKPhoto *)self modificationDate];
+  [modificationDate3 timeIntervalSinceDate:modificationDate4];
   v17 = v16;
 
   if (v17 > 1.0)
@@ -533,8 +533,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [(NTKPhoto *)self isIris];
-  v19 = v18 ^ [v4 isPhotoIris] ^ 1;
+  isIris = [(NTKPhoto *)self isIris];
+  v19 = isIris ^ [assetCopy isPhotoIris] ^ 1;
 LABEL_9:
 
   return v19;
@@ -543,10 +543,10 @@ LABEL_9:
 - (NSString)uuidFromLocalIdentifierAndModificationDate
 {
   v3 = MEMORY[0x277CD9918];
-  v4 = [(NTKPhoto *)self localIdentifier];
-  v5 = [v3 uuidFromLocalIdentifier:v4];
-  v6 = [(NTKPhoto *)self modificationDate];
-  [v6 timeIntervalSince1970];
+  localIdentifier = [(NTKPhoto *)self localIdentifier];
+  v5 = [v3 uuidFromLocalIdentifier:localIdentifier];
+  modificationDate = [(NTKPhoto *)self modificationDate];
+  [modificationDate timeIntervalSince1970];
   v8 = [v5 stringByAppendingFormat:@"~%ld", v7];
 
   return v8;
@@ -573,9 +573,9 @@ LABEL_9:
   return v3 < 0xB;
 }
 
-- (id)analysisForAlignment:(unint64_t)a3 deviceSizeClass:(unint64_t)a4
+- (id)analysisForAlignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class
 {
-  v5 = _NTKPhotoAnalysisIndex(a3);
+  v5 = _NTKPhotoAnalysisIndex(alignment);
   if (v5 > 0xB)
   {
     v6 = 0;
@@ -589,13 +589,13 @@ LABEL_9:
   return v6;
 }
 
-- (void)setAnalysis:(id)a3 alignment:(unint64_t)a4 deviceSizeClass:(unint64_t)a5
+- (void)setAnalysis:(id)analysis alignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class
 {
-  v9 = a3;
-  v8 = _NTKPhotoAnalysisIndex(a4);
+  analysisCopy = analysis;
+  v8 = _NTKPhotoAnalysisIndex(alignment);
   if (v8 <= 0xB)
   {
-    objc_storeStrong(&self->_analyses[v8], a3);
+    objc_storeStrong(&self->_analyses[v8], analysis);
   }
 }
 
@@ -625,16 +625,16 @@ LABEL_9:
   return result;
 }
 
-- (NTKPhoto)initWithLegacySidecar:(id)a3
+- (NTKPhoto)initWithLegacySidecar:(id)sidecar
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sidecarCopy = sidecar;
   v86.receiver = self;
   v86.super_class = NTKPhoto;
   v5 = [(NTKPhoto *)&v86 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"Info.plist"];
+    v6 = [sidecarCopy stringByAppendingPathComponent:@"Info.plist"];
     v7 = 0x277CBE000uLL;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
     v9 = v8;
@@ -661,13 +661,13 @@ LABEL_9:
     v5->_originalCrop.origin = *MEMORY[0x277CBF398];
     v5->_originalCrop.size = v14;
     v15 = MEMORY[0x277CBEBC0];
-    v16 = [v4 stringByAppendingPathComponent:@"Image.jpg"];
+    v16 = [sidecarCopy stringByAppendingPathComponent:@"Image.jpg"];
     v17 = [v15 fileURLWithPath:v16 isDirectory:0];
     imageURL = v5->_imageURL;
     v5->_imageURL = v17;
 
-    v19 = [MEMORY[0x277CBBAE8] currentDevice];
-    [v19 screenScale];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    [currentDevice screenScale];
     v21 = v20;
 
     v22 = v5->_imageURL;
@@ -726,13 +726,13 @@ LABEL_23:
         v40 = [v9 objectForKeyedSubscript:@"zoomScale"];
         [v40 floatValue];
         v42 = v41;
-        v43 = [MEMORY[0x277CBBAE8] currentDevice];
-        [v43 screenBounds];
+        currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+        [currentDevice2 screenBounds];
         v45 = v44;
         v47 = v46;
 
-        v48 = [MEMORY[0x277CBBAE8] currentDevice];
-        [v48 screenScale];
+        currentDevice3 = [MEMORY[0x277CBBAE8] currentDevice];
+        [currentDevice3 screenScale];
         v50 = v49;
 
         CGAffineTransformMakeScale(v88, v50, v50);
@@ -792,7 +792,7 @@ LABEL_23:
         v5->_crop.size.width = v56;
         v5->_crop.size.height = v57;
 
-        v30 = [v4 stringByAppendingPathComponent:@"Supplement.plist"];
+        v30 = [sidecarCopy stringByAppendingPathComponent:@"Supplement.plist"];
         v63 = [*(v7 + 2752) dictionaryWithContentsOfFile:v30];
         if (v63)
         {
@@ -813,13 +813,13 @@ LABEL_23:
         if ([v72 BOOLValue])
         {
           v73 = [v9 objectForKeyedSubscript:@"irisVideoHidden"];
-          v74 = [v73 BOOLValue];
+          bOOLValue = [v73 BOOLValue];
 
-          if ((v74 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v5->_isIris = 1;
             v75 = MEMORY[0x277CBEBC0];
-            v76 = [v4 stringByAppendingPathComponent:@"Iris.mov"];
+            v76 = [sidecarCopy stringByAppendingPathComponent:@"Iris.mov"];
             v77 = [v75 fileURLWithPath:v76 isDirectory:0];
             irisVideoURL = v5->_irisVideoURL;
             v5->_irisVideoURL = v77;

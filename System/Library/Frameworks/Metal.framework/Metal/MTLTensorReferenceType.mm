@@ -1,13 +1,13 @@
 @interface MTLTensorReferenceType
-- (BOOL)isEqual:(id)a3;
-- (MTLTensorReferenceType)initWithTensorDataType:(int64_t)a3 indexType:(unint64_t)a4 dimensions:(id)a5 access:(unint64_t)a6;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTLTensorReferenceType)initWithTensorDataType:(int64_t)type indexType:(unint64_t)indexType dimensions:(id)dimensions access:(unint64_t)access;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
 @implementation MTLTensorReferenceType
 
-- (MTLTensorReferenceType)initWithTensorDataType:(int64_t)a3 indexType:(unint64_t)a4 dimensions:(id)a5 access:(unint64_t)a6
+- (MTLTensorReferenceType)initWithTensorDataType:(int64_t)type indexType:(unint64_t)indexType dimensions:(id)dimensions access:(unint64_t)access
 {
   v13.receiver = self;
   v13.super_class = MTLTensorReferenceType;
@@ -16,10 +16,10 @@
   if (v10)
   {
     v10->_dataType = 140;
-    v10->_tensorDataType = a3;
-    v10->_indexType = a4;
-    v10->_dimensions = [a5 copy];
-    v11->_access = a6;
+    v10->_tensorDataType = type;
+    v10->_indexType = indexType;
+    v10->_dimensions = [dimensions copy];
+    v11->_access = access;
   }
 
   return v11;
@@ -37,10 +37,10 @@
   [(MTLTensorReferenceType *)&v4 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v11[15] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x1E696AEC0];
   v11[0] = v5;
   v11[1] = @"DataType =";
@@ -73,9 +73,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -86,14 +86,14 @@
     return 0;
   }
 
-  v5 = [(MTLTensorReferenceType *)self dataType];
-  if (v5 != [a3 dataType] || self->_tensorDataType != *(a3 + 2) || self->_indexType != *(a3 + 3))
+  dataType = [(MTLTensorReferenceType *)self dataType];
+  if (dataType != [equal dataType] || self->_tensorDataType != *(equal + 2) || self->_indexType != *(equal + 3))
   {
     return 0;
   }
 
   dimensions = self->_dimensions;
-  v7 = *(a3 + 4);
+  v7 = *(equal + 4);
   if (dimensions)
   {
     if (!v7)
@@ -112,7 +112,7 @@
     return 0;
   }
 
-  return self->_access == *(a3 + 5);
+  return self->_access == *(equal + 5);
 }
 
 @end

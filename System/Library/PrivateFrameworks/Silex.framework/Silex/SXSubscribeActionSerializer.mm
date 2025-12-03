@@ -1,12 +1,12 @@
 @interface SXSubscribeActionSerializer
-- (id)URLForAction:(id)a3 type:(int64_t)a4;
+- (id)URLForAction:(id)action type:(int64_t)type;
 @end
 
 @implementation SXSubscribeActionSerializer
 
-- (id)URLForAction:(id)a3 type:(int64_t)a4
+- (id)URLForAction:(id)action type:(int64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
     v4 = 0;
   }

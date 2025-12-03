@@ -1,27 +1,27 @@
 @interface W5DiagnosticsModePeer
-- (W5DiagnosticsModePeer)initWithCoder:(id)a3;
-- (W5DiagnosticsModePeer)initWithRole:(int64_t)a3 peer:(id)a4 info:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (W5DiagnosticsModePeer)initWithCoder:(id)coder;
+- (W5DiagnosticsModePeer)initWithRole:(int64_t)role peer:(id)peer info:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5DiagnosticsModePeer
 
-- (W5DiagnosticsModePeer)initWithRole:(int64_t)a3 peer:(id)a4 info:(id)a5
+- (W5DiagnosticsModePeer)initWithRole:(int64_t)role peer:(id)peer info:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  peerCopy = peer;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = W5DiagnosticsModePeer;
   v11 = [(W5DiagnosticsModePeer *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_role = a3;
-    objc_storeStrong(&v11->_peer, a4);
-    v13 = v10;
+    v11->_role = role;
+    objc_storeStrong(&v11->_peer, peer);
+    v13 = infoCopy;
     p_super = &v12->_info->super.super;
     v12->_info = v13;
   }
@@ -45,39 +45,39 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5DiagnosticsModePeer allocWithZone:?]];
   [(W5DiagnosticsModePeer *)v4 setRole:[(W5DiagnosticsModePeer *)self role]];
-  v5 = [(W5DiagnosticsModePeer *)self peer];
-  [(W5DiagnosticsModePeer *)v4 setPeer:v5];
+  peer = [(W5DiagnosticsModePeer *)self peer];
+  [(W5DiagnosticsModePeer *)v4 setPeer:peer];
 
-  v6 = [(W5DiagnosticsModePeer *)self info];
-  [(W5DiagnosticsModePeer *)v4 setInfo:v6];
+  info = [(W5DiagnosticsModePeer *)self info];
+  [(W5DiagnosticsModePeer *)v4 setInfo:info];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   role = self->_role;
-  v5 = a3;
-  [v5 encodeInteger:role forKey:@"_role"];
-  [v5 encodeObject:self->_peer forKey:@"_peer"];
-  [v5 encodeObject:self->_info forKey:@"_info"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:role forKey:@"_role"];
+  [coderCopy encodeObject:self->_peer forKey:@"_peer"];
+  [coderCopy encodeObject:self->_info forKey:@"_info"];
 }
 
-- (W5DiagnosticsModePeer)initWithCoder:(id)a3
+- (W5DiagnosticsModePeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = W5DiagnosticsModePeer;
   v5 = [(W5DiagnosticsModePeer *)&v22 init];
   if (v5)
   {
-    v5->_role = [v4 decodeIntegerForKey:@"_role"];
+    v5->_role = [coderCopy decodeIntegerForKey:@"_role"];
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_peer"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_peer"];
     peer = v5->_peer;
     v5->_peer = v7;
 
@@ -91,7 +91,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v21 setWithObjects:{v9, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_info"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_info"];
     info = v5->_info;
     v5->_info = v18;
   }

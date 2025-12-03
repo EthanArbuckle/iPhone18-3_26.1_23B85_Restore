@@ -1,41 +1,41 @@
 @interface _WGCAPackageView
-+ (void)loadPackageViewWithContentsOfURL:(id)a3 publishedObjectViewClassMap:(id)a4 completion:(id)a5;
-- (BOOL)_supportsPushingBottomCornerRadiusToSubviews:(double)a3;
++ (void)loadPackageViewWithContentsOfURL:(id)l publishedObjectViewClassMap:(id)map completion:(id)completion;
+- (BOOL)_supportsPushingBottomCornerRadiusToSubviews:(double)subviews;
 - (NSString)snapshotIdentifier;
 - (id)description;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 @end
 
 @implementation _WGCAPackageView
 
-+ (void)loadPackageViewWithContentsOfURL:(id)a3 publishedObjectViewClassMap:(id)a4 completion:(id)a5
++ (void)loadPackageViewWithContentsOfURL:(id)l publishedObjectViewClassMap:(id)map completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92___WGCAPackageView_loadPackageViewWithContentsOfURL_publishedObjectViewClassMap_completion___block_invoke;
   v13[3] = &unk_279ED16A0;
-  v14 = v8;
-  v15 = v9;
-  v12.receiver = a1;
+  v14 = lCopy;
+  v15 = completionCopy;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS____WGCAPackageView;
-  v10 = v9;
-  v11 = v8;
-  objc_msgSendSuper2(&v12, sel_loadPackageViewWithContentsOfURL_publishedObjectViewClassMap_completion_, v11, a4, v13);
+  v10 = completionCopy;
+  v11 = lCopy;
+  objc_msgSendSuper2(&v12, sel_loadPackageViewWithContentsOfURL_publishedObjectViewClassMap_completion_, v11, map, v13);
 }
 
 - (NSString)snapshotIdentifier
 {
-  v2 = [(NSURL *)self->_archiveURL lastPathComponent];
-  v3 = [v2 stringByDeletingPathExtension];
+  lastPathComponent = [(NSURL *)self->_archiveURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  return v3;
+  return stringByDeletingPathExtension;
 }
 
-- (BOOL)_supportsPushingBottomCornerRadiusToSubviews:(double)a3
+- (BOOL)_supportsPushingBottomCornerRadiusToSubviews:(double)subviews
 {
-  v4 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v8 = 0;
   v9 = &v8;
@@ -47,22 +47,22 @@
   v6[3] = &unk_279ED16C8;
   v6[4] = &v8;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
-  [(UIView *)v4 wg_walkSubviewTreeWithBlock:v6];
-  LOBYTE(v4) = *(v9 + 24);
+  v7[1] = *&subviews;
+  [(UIView *)selfCopy wg_walkSubviewTreeWithBlock:v6];
+  LOBYTE(selfCopy) = *(v9 + 24);
   objc_destroyWeak(v7);
   _Block_object_dispose(&v8, 8);
   objc_destroyWeak(&location);
-  return v4;
+  return selfCopy;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  if ((_WGSupportsMetal() & 1) != 0 || ![(_WGCAPackageView *)self _supportsPushingBottomCornerRadiusToSubviews:a3])
+  if ((_WGSupportsMetal() & 1) != 0 || ![(_WGCAPackageView *)self _supportsPushingBottomCornerRadiusToSubviews:radius])
   {
     v5.receiver = self;
     v5.super_class = _WGCAPackageView;
-    [(_WGCAPackageView *)&v5 _setContinuousCornerRadius:a3];
+    [(_WGCAPackageView *)&v5 _setContinuousCornerRadius:radius];
   }
 
   else
@@ -73,7 +73,7 @@
     v6[2] = __47___WGCAPackageView__setContinuousCornerRadius___block_invoke;
     v6[3] = &unk_279ED16F0;
     objc_copyWeak(v7, &location);
-    v7[1] = *&a3;
+    v7[1] = *&radius;
     [(UIView *)self wg_walkSubviewTreeWithBlock:v6];
     objc_destroyWeak(v7);
     objc_destroyWeak(&location);
@@ -84,8 +84,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_WGCAPackageView *)self archiveURL];
-  v6 = [v3 stringWithFormat:@"<%@: %p archiveURL = %@>", v4, self, v5];;
+  archiveURL = [(_WGCAPackageView *)self archiveURL];
+  v6 = [v3 stringWithFormat:@"<%@: %p archiveURL = %@>", v4, self, archiveURL];;
 
   return v6;
 }

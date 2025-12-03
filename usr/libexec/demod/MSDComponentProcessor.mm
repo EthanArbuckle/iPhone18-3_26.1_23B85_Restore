@@ -1,16 +1,16 @@
 @interface MSDComponentProcessor
-- (MSDComponentProcessor)initWithQoS:(int64_t)a3;
-- (id)_queueForOperation:(id)a3;
-- (void)_dispatchOperationForExecution:(id)a3;
+- (MSDComponentProcessor)initWithQoS:(int64_t)s;
+- (id)_queueForOperation:(id)operation;
+- (void)_dispatchOperationForExecution:(id)execution;
 - (void)cancel;
-- (void)process:(id)a3;
+- (void)process:(id)process;
 - (void)resume;
 - (void)suspend;
 @end
 
 @implementation MSDComponentProcessor
 
-- (MSDComponentProcessor)initWithQoS:(int64_t)a3
+- (MSDComponentProcessor)initWithQoS:(int64_t)s
 {
   v39.receiver = self;
   v39.super_class = MSDComponentProcessor;
@@ -36,103 +36,103 @@
     v8 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setDefaultQueue:v8];
 
-    v9 = [(MSDComponentProcessor *)v4 defaultQueue];
-    [v9 setMaxConcurrentOperationCount:1];
+    defaultQueue = [(MSDComponentProcessor *)v4 defaultQueue];
+    [defaultQueue setMaxConcurrentOperationCount:1];
 
-    v10 = [(MSDComponentProcessor *)v4 defaultQueue];
-    [v10 setQualityOfService:a3];
+    defaultQueue2 = [(MSDComponentProcessor *)v4 defaultQueue];
+    [defaultQueue2 setQualityOfService:s];
 
-    v11 = [(MSDComponentProcessor *)v4 defaultQueue];
-    [v11 setSuspended:1];
+    defaultQueue3 = [(MSDComponentProcessor *)v4 defaultQueue];
+    [defaultQueue3 setSuspended:1];
 
-    v12 = [(MSDComponentProcessor *)v4 defaultQueue];
-    [v12 setName:@"com.apple.msd.default_queue"];
+    defaultQueue4 = [(MSDComponentProcessor *)v4 defaultQueue];
+    [defaultQueue4 setName:@"com.apple.msd.default_queue"];
 
     v13 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setPrepareQueue:v13];
 
-    v14 = [(MSDComponentProcessor *)v4 prepareQueue];
-    [v14 setMaxConcurrentOperationCount:1];
+    prepareQueue = [(MSDComponentProcessor *)v4 prepareQueue];
+    [prepareQueue setMaxConcurrentOperationCount:1];
 
-    v15 = [(MSDComponentProcessor *)v4 prepareQueue];
-    [v15 setQualityOfService:a3];
+    prepareQueue2 = [(MSDComponentProcessor *)v4 prepareQueue];
+    [prepareQueue2 setQualityOfService:s];
 
-    v16 = [(MSDComponentProcessor *)v4 prepareQueue];
-    [v16 setSuspended:1];
+    prepareQueue3 = [(MSDComponentProcessor *)v4 prepareQueue];
+    [prepareQueue3 setSuspended:1];
 
-    v17 = [(MSDComponentProcessor *)v4 prepareQueue];
-    [v17 setName:@"com.apple.msd.prepare_queue"];
+    prepareQueue4 = [(MSDComponentProcessor *)v4 prepareQueue];
+    [prepareQueue4 setName:@"com.apple.msd.prepare_queue"];
 
     v18 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setDownloadQueue:v18];
 
-    v19 = [(MSDComponentProcessor *)v4 downloadQueue];
-    [v19 setMaxConcurrentOperationCount:v6];
+    downloadQueue = [(MSDComponentProcessor *)v4 downloadQueue];
+    [downloadQueue setMaxConcurrentOperationCount:v6];
 
-    v20 = [(MSDComponentProcessor *)v4 downloadQueue];
-    [v20 setQualityOfService:a3];
+    downloadQueue2 = [(MSDComponentProcessor *)v4 downloadQueue];
+    [downloadQueue2 setQualityOfService:s];
 
-    v21 = [(MSDComponentProcessor *)v4 downloadQueue];
-    [v21 setSuspended:1];
+    downloadQueue3 = [(MSDComponentProcessor *)v4 downloadQueue];
+    [downloadQueue3 setSuspended:1];
 
-    v22 = [(MSDComponentProcessor *)v4 downloadQueue];
-    [v22 setName:@"com.apple.msd.download_queue"];
+    downloadQueue4 = [(MSDComponentProcessor *)v4 downloadQueue];
+    [downloadQueue4 setName:@"com.apple.msd.download_queue"];
 
     v23 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setInstallQueue:v23];
 
-    v24 = [(MSDComponentProcessor *)v4 installQueue];
-    [v24 setMaxConcurrentOperationCount:1];
+    installQueue = [(MSDComponentProcessor *)v4 installQueue];
+    [installQueue setMaxConcurrentOperationCount:1];
 
-    v25 = [(MSDComponentProcessor *)v4 installQueue];
-    [v25 setQualityOfService:a3];
+    installQueue2 = [(MSDComponentProcessor *)v4 installQueue];
+    [installQueue2 setQualityOfService:s];
 
-    v26 = [(MSDComponentProcessor *)v4 installQueue];
-    [v26 setSuspended:1];
+    installQueue3 = [(MSDComponentProcessor *)v4 installQueue];
+    [installQueue3 setSuspended:1];
 
-    v27 = [(MSDComponentProcessor *)v4 installQueue];
-    [v27 setName:@"com.apple.msd.install_queue"];
+    installQueue4 = [(MSDComponentProcessor *)v4 installQueue];
+    [installQueue4 setName:@"com.apple.msd.install_queue"];
 
     v28 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setParallelInstallQueue:v28];
 
-    v29 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
-    [v29 setMaxConcurrentOperationCount:5];
+    parallelInstallQueue = [(MSDComponentProcessor *)v4 parallelInstallQueue];
+    [parallelInstallQueue setMaxConcurrentOperationCount:5];
 
-    v30 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
-    [v30 setQualityOfService:a3];
+    parallelInstallQueue2 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
+    [parallelInstallQueue2 setQualityOfService:s];
 
-    v31 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
-    [v31 setSuspended:1];
+    parallelInstallQueue3 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
+    [parallelInstallQueue3 setSuspended:1];
 
-    v32 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
-    [v32 setName:@"com.apple.msd.parallel_install_queue"];
+    parallelInstallQueue4 = [(MSDComponentProcessor *)v4 parallelInstallQueue];
+    [parallelInstallQueue4 setName:@"com.apple.msd.parallel_install_queue"];
 
     v33 = objc_alloc_init(MSDOperationQueue);
     [(MSDComponentProcessor *)v4 setUninstallQueue:v33];
 
-    v34 = [(MSDComponentProcessor *)v4 uninstallQueue];
-    [v34 setMaxConcurrentOperationCount:1];
+    uninstallQueue = [(MSDComponentProcessor *)v4 uninstallQueue];
+    [uninstallQueue setMaxConcurrentOperationCount:1];
 
-    v35 = [(MSDComponentProcessor *)v4 uninstallQueue];
-    [v35 setQualityOfService:a3];
+    uninstallQueue2 = [(MSDComponentProcessor *)v4 uninstallQueue];
+    [uninstallQueue2 setQualityOfService:s];
 
-    v36 = [(MSDComponentProcessor *)v4 uninstallQueue];
-    [v36 setSuspended:1];
+    uninstallQueue3 = [(MSDComponentProcessor *)v4 uninstallQueue];
+    [uninstallQueue3 setSuspended:1];
 
-    v37 = [(MSDComponentProcessor *)v4 uninstallQueue];
-    [v37 setName:@"com.apple.msd.uninstall_queue"];
+    uninstallQueue4 = [(MSDComponentProcessor *)v4 uninstallQueue];
+    [uninstallQueue4 setName:@"com.apple.msd.uninstall_queue"];
   }
 
   return v4;
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 activateStagedOperations];
+  processCopy = process;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [processCopy activateStagedOperations];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -151,7 +151,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [(MSDComponentProcessor *)v5 _dispatchOperationForExecution:*(*(&v10 + 1) + 8 * v9), v10];
+        [(MSDComponentProcessor *)selfCopy _dispatchOperationForExecution:*(*(&v10 + 1) + 8 * v9), v10];
         v9 = v9 + 1;
       }
 
@@ -162,30 +162,30 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)resume
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDComponentProcessor *)obj defaultQueue];
-  [v2 setSuspended:0];
+  defaultQueue = [(MSDComponentProcessor *)obj defaultQueue];
+  [defaultQueue setSuspended:0];
 
-  v3 = [(MSDComponentProcessor *)obj prepareQueue];
-  [v3 setSuspended:0];
+  prepareQueue = [(MSDComponentProcessor *)obj prepareQueue];
+  [prepareQueue setSuspended:0];
 
-  v4 = [(MSDComponentProcessor *)obj downloadQueue];
-  [v4 setSuspended:0];
+  downloadQueue = [(MSDComponentProcessor *)obj downloadQueue];
+  [downloadQueue setSuspended:0];
 
-  v5 = [(MSDComponentProcessor *)obj installQueue];
-  [v5 setSuspended:0];
+  installQueue = [(MSDComponentProcessor *)obj installQueue];
+  [installQueue setSuspended:0];
 
-  v6 = [(MSDComponentProcessor *)obj parallelInstallQueue];
-  [v6 setSuspended:0];
+  parallelInstallQueue = [(MSDComponentProcessor *)obj parallelInstallQueue];
+  [parallelInstallQueue setSuspended:0];
 
-  v7 = [(MSDComponentProcessor *)obj uninstallQueue];
-  [v7 setSuspended:0];
+  uninstallQueue = [(MSDComponentProcessor *)obj uninstallQueue];
+  [uninstallQueue setSuspended:0];
 
   objc_sync_exit(obj);
 }
@@ -194,23 +194,23 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDComponentProcessor *)obj defaultQueue];
-  [v2 setSuspended:1];
+  defaultQueue = [(MSDComponentProcessor *)obj defaultQueue];
+  [defaultQueue setSuspended:1];
 
-  v3 = [(MSDComponentProcessor *)obj prepareQueue];
-  [v3 setSuspended:1];
+  prepareQueue = [(MSDComponentProcessor *)obj prepareQueue];
+  [prepareQueue setSuspended:1];
 
-  v4 = [(MSDComponentProcessor *)obj downloadQueue];
-  [v4 setSuspended:1];
+  downloadQueue = [(MSDComponentProcessor *)obj downloadQueue];
+  [downloadQueue setSuspended:1];
 
-  v5 = [(MSDComponentProcessor *)obj installQueue];
-  [v5 setSuspended:1];
+  installQueue = [(MSDComponentProcessor *)obj installQueue];
+  [installQueue setSuspended:1];
 
-  v6 = [(MSDComponentProcessor *)obj parallelInstallQueue];
-  [v6 setSuspended:1];
+  parallelInstallQueue = [(MSDComponentProcessor *)obj parallelInstallQueue];
+  [parallelInstallQueue setSuspended:1];
 
-  v7 = [(MSDComponentProcessor *)obj uninstallQueue];
-  [v7 setSuspended:1];
+  uninstallQueue = [(MSDComponentProcessor *)obj uninstallQueue];
+  [uninstallQueue setSuspended:1];
 
   objc_sync_exit(obj);
 }
@@ -219,49 +219,49 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDComponentProcessor *)obj defaultQueue];
-  [v2 cancelAllOperations];
+  defaultQueue = [(MSDComponentProcessor *)obj defaultQueue];
+  [defaultQueue cancelAllOperations];
 
-  v3 = [(MSDComponentProcessor *)obj prepareQueue];
-  [v3 cancelAllOperations];
+  prepareQueue = [(MSDComponentProcessor *)obj prepareQueue];
+  [prepareQueue cancelAllOperations];
 
-  v4 = [(MSDComponentProcessor *)obj downloadQueue];
-  [v4 cancelAllOperations];
+  downloadQueue = [(MSDComponentProcessor *)obj downloadQueue];
+  [downloadQueue cancelAllOperations];
 
-  v5 = [(MSDComponentProcessor *)obj installQueue];
-  [v5 cancelAllOperations];
+  installQueue = [(MSDComponentProcessor *)obj installQueue];
+  [installQueue cancelAllOperations];
 
-  v6 = [(MSDComponentProcessor *)obj parallelInstallQueue];
-  [v6 cancelAllOperations];
+  parallelInstallQueue = [(MSDComponentProcessor *)obj parallelInstallQueue];
+  [parallelInstallQueue cancelAllOperations];
 
-  v7 = [(MSDComponentProcessor *)obj uninstallQueue];
-  [v7 cancelAllOperations];
+  uninstallQueue = [(MSDComponentProcessor *)obj uninstallQueue];
+  [uninstallQueue cancelAllOperations];
 
   objc_sync_exit(obj);
 }
 
-- (void)_dispatchOperationForExecution:(id)a3
+- (void)_dispatchOperationForExecution:(id)execution
 {
-  v4 = a3;
-  v5 = [(MSDComponentProcessor *)self _queueForOperation:v4];
+  executionCopy = execution;
+  v5 = [(MSDComponentProcessor *)self _queueForOperation:executionCopy];
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000DB424(v4, v5, v6);
+    sub_1000DB424(executionCopy, v5, v6);
   }
 
-  [v5 addOperation:v4];
+  [v5 addOperation:executionCopy];
 }
 
-- (id)_queueForOperation:(id)a3
+- (id)_queueForOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 > 2)
+  operationCopy = operation;
+  type = [operationCopy type];
+  if (type > 2)
   {
-    if (v5 == 3)
+    if (type == 3)
     {
-      if ([v4 runInstallInParallel])
+      if ([operationCopy runInstallInParallel])
       {
         [(MSDComponentProcessor *)self parallelInstallQueue];
       }
@@ -270,35 +270,35 @@
       {
         [(MSDComponentProcessor *)self installQueue];
       }
-      v6 = ;
+      uninstallQueue = ;
       goto LABEL_14;
     }
 
-    if (v5 == 4)
+    if (type == 4)
     {
-      v6 = [(MSDComponentProcessor *)self uninstallQueue];
+      uninstallQueue = [(MSDComponentProcessor *)self uninstallQueue];
       goto LABEL_14;
     }
 
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (type != 1)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
-      v6 = [(MSDComponentProcessor *)self downloadQueue];
+      uninstallQueue = [(MSDComponentProcessor *)self downloadQueue];
       goto LABEL_14;
     }
 
 LABEL_8:
-    v6 = [(MSDComponentProcessor *)self defaultQueue];
+    uninstallQueue = [(MSDComponentProcessor *)self defaultQueue];
     goto LABEL_14;
   }
 
-  v6 = [(MSDComponentProcessor *)self prepareQueue];
+  uninstallQueue = [(MSDComponentProcessor *)self prepareQueue];
 LABEL_14:
-  v7 = v6;
+  v7 = uninstallQueue;
 
   return v7;
 }

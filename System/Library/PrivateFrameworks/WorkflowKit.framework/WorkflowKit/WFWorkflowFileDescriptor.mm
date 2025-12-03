@@ -1,27 +1,27 @@
 @interface WFWorkflowFileDescriptor
-- (WFWorkflowFileDescriptor)initWithCoder:(id)a3;
-- (WFWorkflowFileDescriptor)initWithFile:(id)a3 name:(id)a4 sourceAppIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFWorkflowFileDescriptor)initWithCoder:(id)coder;
+- (WFWorkflowFileDescriptor)initWithFile:(id)file name:(id)name sourceAppIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowFileDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWorkflowFileDescriptor *)self file];
-  [v4 encodeObject:v5 forKey:@"file"];
+  coderCopy = coder;
+  file = [(WFWorkflowFileDescriptor *)self file];
+  [coderCopy encodeObject:file forKey:@"file"];
 
-  v6 = [(WFWorkflowFileDescriptor *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(WFWorkflowFileDescriptor *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(WFWorkflowFileDescriptor *)self sourceAppIdentifier];
-  [v4 encodeObject:v7 forKey:@"sourceAppIdentifier"];
+  sourceAppIdentifier = [(WFWorkflowFileDescriptor *)self sourceAppIdentifier];
+  [coderCopy encodeObject:sourceAppIdentifier forKey:@"sourceAppIdentifier"];
 }
 
-- (WFWorkflowFileDescriptor)initWithCoder:(id)a3
+- (WFWorkflowFileDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFWorkflowFileDescriptor;
   v5 = [(WFWorkflowFileDescriptor *)&v14 init];
@@ -30,15 +30,15 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
   file = v5->_file;
   v5->_file = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = v5->_name;
   v5->_name = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppIdentifier"];
   sourceAppIdentifier = v5->_sourceAppIdentifier;
   v5->_sourceAppIdentifier = v10;
 
@@ -61,14 +61,14 @@ LABEL_5:
   return v12;
 }
 
-- (WFWorkflowFileDescriptor)initWithFile:(id)a3 name:(id)a4 sourceAppIdentifier:(id)a5
+- (WFWorkflowFileDescriptor)initWithFile:(id)file name:(id)name sourceAppIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  fileCopy = file;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (fileCopy)
   {
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -76,17 +76,17 @@ LABEL_5:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFWorkflowFile.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"file"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowFile.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"file"}];
 
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFWorkflowFile.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowFile.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v23.receiver = self;
@@ -95,12 +95,12 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_file, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_file, file);
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     sourceAppIdentifier = v14->_sourceAppIdentifier;
     v14->_sourceAppIdentifier = v17;
 

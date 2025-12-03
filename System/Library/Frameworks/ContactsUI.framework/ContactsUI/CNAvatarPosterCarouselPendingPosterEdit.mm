@@ -1,7 +1,7 @@
 @interface CNAvatarPosterCarouselPendingPosterEdit
-+ (id)pendingEditFromContactPoster:(id)a3;
-+ (id)pendingEditFromPosterConfiguration:(id)a3;
-- (CNAvatarPosterCarouselPendingPosterEdit)initWithContactPoster:(id)a3 posterConfiguration:(id)a4;
++ (id)pendingEditFromContactPoster:(id)poster;
++ (id)pendingEditFromPosterConfiguration:(id)configuration;
+- (CNAvatarPosterCarouselPendingPosterEdit)initWithContactPoster:(id)poster posterConfiguration:(id)configuration;
 - (CNFuture)pendingWallpaper;
 - (id)pendingWallpaperFromContactPoster;
 - (id)pendingWallpaperFromPosterConfiguration;
@@ -11,9 +11,9 @@
 
 - (id)pendingWallpaperFromPosterConfiguration
 {
-  v3 = [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration];
+  posterConfiguration = [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration];
 
-  if (v3)
+  if (posterConfiguration)
   {
     objc_initWeak(location, self);
     v4 = MEMORY[0x1E6996720];
@@ -22,9 +22,9 @@
     v10[2] = __82__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromPosterConfiguration__block_invoke;
     v10[3] = &unk_1E74E1C60;
     objc_copyWeak(&v11, location);
-    v5 = [MEMORY[0x1E6996820] defaultProvider];
-    v6 = [v5 backgroundScheduler];
-    v7 = [v4 futureWithBlock:v10 scheduler:v6];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    backgroundScheduler = [defaultProvider backgroundScheduler];
+    v7 = [v4 futureWithBlock:v10 scheduler:backgroundScheduler];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(location);
@@ -114,9 +114,9 @@ id __82__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromPosterConfi
 
 - (id)pendingWallpaperFromContactPoster
 {
-  v3 = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
+  contactPoster = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
 
-  if (v3)
+  if (contactPoster)
   {
     objc_initWeak(location, self);
     v4 = MEMORY[0x1E6996720];
@@ -125,9 +125,9 @@ id __82__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromPosterConfi
     v10[2] = __76__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromContactPoster__block_invoke;
     v10[3] = &unk_1E74E1C60;
     objc_copyWeak(&v11, location);
-    v5 = [MEMORY[0x1E6996820] defaultProvider];
-    v6 = [v5 backgroundScheduler];
-    v7 = [v4 futureWithBlock:v10 scheduler:v6];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
+    backgroundScheduler = [defaultProvider backgroundScheduler];
+    v7 = [v4 futureWithBlock:v10 scheduler:backgroundScheduler];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(location);
@@ -194,21 +194,21 @@ id __76__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromContactPost
     goto LABEL_14;
   }
 
-  v6 = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
-  if (!v6 || (v7 = v6, [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  contactPoster = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
+  if (!contactPoster || (v7 = contactPoster, [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    v10 = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
+    contactPoster2 = [(CNAvatarPosterCarouselPendingPosterEdit *)self contactPoster];
 
-    if (v10)
+    if (contactPoster2)
     {
-      v11 = [(CNAvatarPosterCarouselPendingPosterEdit *)self pendingWallpaperFromContactPoster];
+      pendingWallpaperFromContactPoster = [(CNAvatarPosterCarouselPendingPosterEdit *)self pendingWallpaperFromContactPoster];
     }
 
     else
     {
-      v12 = [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration];
+      posterConfiguration = [(CNAvatarPosterCarouselPendingPosterEdit *)self posterConfiguration];
 
-      if (!v12)
+      if (!posterConfiguration)
       {
         v14 = CNUILogPosters();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -221,10 +221,10 @@ id __76__CNAvatarPosterCarouselPendingPosterEdit_pendingWallpaperFromContactPost
         goto LABEL_13;
       }
 
-      v11 = [(CNAvatarPosterCarouselPendingPosterEdit *)self pendingWallpaperFromPosterConfiguration];
+      pendingWallpaperFromContactPoster = [(CNAvatarPosterCarouselPendingPosterEdit *)self pendingWallpaperFromPosterConfiguration];
     }
 
-    v4 = v11;
+    v4 = pendingWallpaperFromContactPoster;
 LABEL_13:
     objc_storeStrong(p_pendingWallpaper, v4);
     goto LABEL_14;
@@ -243,20 +243,20 @@ LABEL_14:
   return v4;
 }
 
-- (CNAvatarPosterCarouselPendingPosterEdit)initWithContactPoster:(id)a3 posterConfiguration:(id)a4
+- (CNAvatarPosterCarouselPendingPosterEdit)initWithContactPoster:(id)poster posterConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  posterCopy = poster;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = CNAvatarPosterCarouselPendingPosterEdit;
   v9 = [(CNAvatarPosterCarouselPendingPosterEdit *)&v15 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    if (!v7 || !v8)
+    if (!posterCopy || !configurationCopy)
     {
-      objc_storeStrong(&v9->_contactPoster, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v9->_contactPoster, poster);
+      objc_storeStrong(p_isa + 2, configuration);
       v12 = p_isa;
       goto LABEL_9;
     }
@@ -275,18 +275,18 @@ LABEL_9:
   return v12;
 }
 
-+ (id)pendingEditFromPosterConfiguration:(id)a3
++ (id)pendingEditFromPosterConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[CNAvatarPosterCarouselPendingPosterEdit alloc] initWithContactPoster:0 posterConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[CNAvatarPosterCarouselPendingPosterEdit alloc] initWithContactPoster:0 posterConfiguration:configurationCopy];
 
   return v4;
 }
 
-+ (id)pendingEditFromContactPoster:(id)a3
++ (id)pendingEditFromContactPoster:(id)poster
 {
-  v3 = a3;
-  v4 = [[CNAvatarPosterCarouselPendingPosterEdit alloc] initWithContactPoster:v3 posterConfiguration:0];
+  posterCopy = poster;
+  v4 = [[CNAvatarPosterCarouselPendingPosterEdit alloc] initWithContactPoster:posterCopy posterConfiguration:0];
 
   return v4;
 }

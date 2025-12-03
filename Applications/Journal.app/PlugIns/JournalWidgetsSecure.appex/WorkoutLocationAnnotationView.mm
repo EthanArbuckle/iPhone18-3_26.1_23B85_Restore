@@ -1,29 +1,29 @@
 @interface WorkoutLocationAnnotationView
-- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation WorkoutLocationAnnotationView
 
-- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithCoder:(id)a3
+- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithCoder:(id)coder
 {
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_10004BCC4(x, y, width, height);
 }
 
-- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC20JournalWidgetsSecure29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

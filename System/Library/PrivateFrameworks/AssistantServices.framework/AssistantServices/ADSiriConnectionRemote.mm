@@ -2,46 +2,46 @@
 - (ADSiriConnectionRemote)init;
 - (BOOL)_hasOrIsEstablishingNetworkConnection;
 - (id)_networkConnectionProvider;
-- (id)_prependHeader:(__CFHTTPMessage *)a3 toOutputBuffer:(id)a4;
-- (id)_tryToReadHTTPHeaderIntoMessage:(__CFHTTPMessage *)a3 fromData:(id)a4 isComplete:(BOOL *)a5;
-- (id)_tryToReadPeerStreamHeaderFromData:(id)a3 needsReconnect:(BOOL *)a4;
+- (id)_prependHeader:(__CFHTTPMessage *)header toOutputBuffer:(id)buffer;
+- (id)_tryToReadHTTPHeaderIntoMessage:(__CFHTTPMessage *)message fromData:(id)data isComplete:(BOOL *)complete;
+- (id)_tryToReadPeerStreamHeaderFromData:(id)data needsReconnect:(BOOL *)reconnect;
 - (void)_cancelStaleNetworkTimer;
 - (void)_closeNetworkConnection;
 - (void)_closePeerConnection;
-- (void)_connectionMetricsWithCompletion:(id)a3;
-- (void)_didEstablishNetworkConnectionForProvider:(id)a3 initialPayload:(id)a4 ofLength:(unint64_t)a5 error:(id)a6;
+- (void)_connectionMetricsWithCompletion:(id)completion;
+- (void)_didEstablishNetworkConnectionForProvider:(id)provider initialPayload:(id)payload ofLength:(unint64_t)length error:(id)error;
 - (void)_doMetricsBookkeepingForNetworkStreamStart;
 - (void)_doMetricsBookkeepingForPeerStreamsStart;
-- (void)_establishNetworkConnectionToURL:(id)a3 connectionId:(id)a4 withPOP:(BOOL)a5 countAgainstFallbacksAllowed:(BOOL)a6;
+- (void)_establishNetworkConnectionToURL:(id)l connectionId:(id)id withPOP:(BOOL)p countAgainstFallbacksAllowed:(BOOL)allowed;
 - (void)_establishPeerConnection;
 - (void)_fallbackWithSafetyNet;
-- (void)_insertCompanionSpecificDataIntoHeader:(__CFHTTPMessage *)a3;
+- (void)_insertCompanionSpecificDataIntoHeader:(__CFHTTPMessage *)header;
 - (void)_networkConnectionDidEnd;
 - (void)_networkConnectionDidOpen;
-- (void)_networkConnectionErrorOccurred:(id)a3;
+- (void)_networkConnectionErrorOccurred:(id)occurred;
 - (void)_networkConnectionFailure;
-- (void)_networkConnectionReceivedData:(id)a3;
+- (void)_networkConnectionReceivedData:(id)data;
 - (void)_peerConnectionDidEnd;
 - (void)_peerConnectionFailure;
-- (void)_peerConnectionReceivedData:(id)a3;
-- (void)_peerReadStreamErrorOccurred:(id)a3;
-- (void)_powerChangedMessageType:(unsigned int)a3 notificationID:(int64_t)a4;
+- (void)_peerConnectionReceivedData:(id)data;
+- (void)_peerReadStreamErrorOccurred:(id)occurred;
+- (void)_powerChangedMessageType:(unsigned int)type notificationID:(int64_t)d;
 - (void)_preheat;
 - (void)_prepareForSleep;
 - (void)_registerForSleepNotification;
 - (void)_restartConnectionProviders;
-- (void)_setupStaleNetworkTimerForProvider:(id)a3;
+- (void)_setupStaleNetworkTimerForProvider:(id)provider;
 - (void)_tryToWriteToNetworkConnection;
 - (void)_unregisterForSleepNotification;
 - (void)_waitForNetworkData;
 - (void)_waitForPeerData;
-- (void)_writeDataToNetwork:(id)a3;
-- (void)_writeDataToPeer:(id)a3;
-- (void)connectionProvider:(id)a3 receivedError:(id)a4;
+- (void)_writeDataToNetwork:(id)network;
+- (void)_writeDataToPeer:(id)peer;
+- (void)connectionProvider:(id)provider receivedError:(id)error;
 - (void)dealloc;
-- (void)peerStreamConnection:(id)a3 failedWithError:(id)a4;
-- (void)peerStreamConnection:(id)a3 requestMetrics:(id)a4;
-- (void)peerStreamConnectionHasIncomingPeer:(id)a3;
+- (void)peerStreamConnection:(id)connection failedWithError:(id)error;
+- (void)peerStreamConnection:(id)connection requestMetrics:(id)metrics;
+- (void)peerStreamConnectionHasIncomingPeer:(id)peer;
 @end
 
 @implementation ADSiriConnectionRemote
@@ -68,10 +68,10 @@
   self->_firstStartTime = -1.0;
 }
 
-- (void)_connectionMetricsWithCompletion:(id)a3
+- (void)_connectionMetricsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = objc_alloc_init(SiriCoreConnectionMetrics);
     ++self->_metricsCount;
@@ -79,8 +79,8 @@
     firstStartTime = self->_firstStartTime;
     if (currentOpenTime > firstStartTime)
     {
-      v8 = [NSNumber numberWithDouble:currentOpenTime - firstStartTime];
-      [v5 setTimeUntilOpen:v8];
+      firstStartTime = [NSNumber numberWithDouble:currentOpenTime - firstStartTime];
+      [v5 setTimeUntilOpen:firstStartTime];
 
       firstStartTime = self->_firstStartTime;
     }
@@ -88,8 +88,8 @@
     firstByteReadTime = self->_firstByteReadTime;
     if (firstByteReadTime > firstStartTime)
     {
-      v10 = [NSNumber numberWithDouble:firstByteReadTime - firstStartTime];
-      [v5 setTimeUntilFirstByteRead:v10];
+      firstStartTime2 = [NSNumber numberWithDouble:firstByteReadTime - firstStartTime];
+      [v5 setTimeUntilFirstByteRead:firstStartTime2];
     }
 
     v11 = [NSNumber numberWithUnsignedInteger:self->_startCount];
@@ -105,14 +105,14 @@
       v14[1] = 3221225472;
       v14[2] = sub_100309EB4;
       v14[3] = &unk_10051E038;
-      v16 = v4;
+      v16 = completionCopy;
       v15 = v5;
       [(SiriCoreConnectionProvider *)networkConnectionProvider updateConnectionMetrics:v15 completion:v14];
     }
 
     else
     {
-      (*(v4 + 2))(v4, v5);
+      (*(completionCopy + 2))(completionCopy, v5);
     }
   }
 }
@@ -168,10 +168,10 @@
   }
 }
 
-- (void)_powerChangedMessageType:(unsigned int)a3 notificationID:(int64_t)a4
+- (void)_powerChangedMessageType:(unsigned int)type notificationID:(int64_t)d
 {
-  HIDWORD(v7) = a3 + 536870288;
-  LODWORD(v7) = a3 + 536870288;
+  HIDWORD(v7) = type + 536870288;
+  LODWORD(v7) = type + 536870288;
   v6 = v7 >> 4;
   if (v6 != 1)
   {
@@ -185,7 +185,7 @@
 
   ioConnect = self->_ioConnect;
 
-  IOAllowPowerChange(ioConnect, a4);
+  IOAllowPowerChange(ioConnect, d);
 }
 
 - (void)_prepareForSleep
@@ -199,13 +199,13 @@
   dispatch_async(queue, block);
 }
 
-- (void)_writeDataToNetwork:(id)a3
+- (void)_writeDataToNetwork:(id)network
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  networkCopy = network;
+  v5 = networkCopy;
+  if (networkCopy)
   {
-    size = dispatch_data_get_size(v4);
+    size = dispatch_data_get_size(networkCopy);
     networkConnectionProvider = self->_networkConnectionProvider;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -244,16 +244,16 @@
   }
 }
 
-- (void)_networkConnectionErrorOccurred:(id)a3
+- (void)_networkConnectionErrorOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v5 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315394;
     v7 = "[ADSiriConnectionRemote _networkConnectionErrorOccurred:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = occurredCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s %{public}@", &v6, 0x16u);
   }
 
@@ -277,13 +277,13 @@
   [(ADSiriConnectionRemote *)self _tryToWriteToNetworkConnection];
 }
 
-- (void)_networkConnectionReceivedData:(id)a3
+- (void)_networkConnectionReceivedData:(id)data
 {
-  v4 = a3;
-  size = dispatch_data_get_size(v4);
-  if (v4 && (v6 = size) != 0)
+  dataCopy = data;
+  size = dispatch_data_get_size(dataCopy);
+  if (dataCopy && (v6 = size) != 0)
   {
-    [(ADSiriConnectionRemote *)self _writeDataToPeer:v4];
+    [(ADSiriConnectionRemote *)self _writeDataToPeer:dataCopy];
     safetyNetBuffer = self->_safetyNetBuffer;
     self->_safetyNetBuffer = 0;
 
@@ -332,54 +332,54 @@ LABEL_9:
   v5[2] = sub_10030A770;
   v5[3] = &unk_10051B998;
   v6 = v3;
-  v7 = self;
+  selfCopy = self;
   v4 = v3;
   [(SiriCoreConnectionProvider *)v4 readData:v5];
 }
 
-- (void)_writeDataToPeer:(id)a3
+- (void)_writeDataToPeer:(id)peer
 {
-  if (a3)
+  if (peer)
   {
-    size = dispatch_data_get_size(a3);
+    size = dispatch_data_get_size(peer);
     peerProvider = self->_peerProvider;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10030A910;
     v7[3] = &unk_10051B9B8;
     v7[4] = size;
-    [(ADPeerConnectionProvider *)peerProvider writeData:a3 completion:v7];
+    [(ADPeerConnectionProvider *)peerProvider writeData:peer completion:v7];
   }
 }
 
-- (void)_peerReadStreamErrorOccurred:(id)a3
+- (void)_peerReadStreamErrorOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v5 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315394;
     v7 = "[ADSiriConnectionRemote _peerReadStreamErrorOccurred:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = occurredCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s %{public}@", &v6, 0x16u);
   }
 
   [(ADSiriConnectionRemote *)self _peerConnectionFailure];
 }
 
-- (void)_peerConnectionReceivedData:(id)a3
+- (void)_peerConnectionReceivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   networkOutputBuffer = self->_networkOutputBuffer;
   if (networkOutputBuffer)
   {
-    concat = dispatch_data_create_concat(networkOutputBuffer, v4);
+    concat = dispatch_data_create_concat(networkOutputBuffer, dataCopy);
   }
 
   else
   {
-    concat = v4;
+    concat = dataCopy;
   }
 
   v7 = self->_networkOutputBuffer;
@@ -480,10 +480,10 @@ LABEL_20:
 
   else
   {
-    v23 = [(SiriCoreConnectionProvider *)self->_networkConnectionProvider isEstablishing];
+    isEstablishing = [(SiriCoreConnectionProvider *)self->_networkConnectionProvider isEstablishing];
     v24 = AFSiriLogContextProxy;
     v25 = os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO);
-    if (v23)
+    if (isEstablishing)
     {
       if (v25)
       {
@@ -534,17 +534,17 @@ LABEL_20:
   [(ADPeerConnectionProvider *)v4 readData:v5];
 }
 
-- (void)connectionProvider:(id)a3 receivedError:(id)a4
+- (void)connectionProvider:(id)provider receivedError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  errorCopy = error;
   v8 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v14 = "[ADSiriConnectionRemote connectionProvider:receivedError:]";
     v15 = 2114;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
   }
 
@@ -554,8 +554,8 @@ LABEL_20:
   v11[2] = sub_10030B1FC;
   v11[3] = &unk_10051E010;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = providerCopy;
+  v10 = providerCopy;
   dispatch_async(queue, v11);
 }
 
@@ -570,9 +570,9 @@ LABEL_20:
   }
 }
 
-- (void)_setupStaleNetworkTimerForProvider:(id)a3
+- (void)_setupStaleNetworkTimerForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_queue);
   v6 = dispatch_time(0, 180000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -582,9 +582,9 @@ LABEL_20:
   handler[3] = &unk_10051DB68;
   v7 = v5;
   v12 = v7;
-  v13 = self;
-  v14 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v14 = providerCopy;
+  v8 = providerCopy;
   dispatch_source_set_event_handler(v7, handler);
   dispatch_resume(v7);
   staleNetworkTimerSource = self->_staleNetworkTimerSource;
@@ -662,11 +662,11 @@ LABEL_20:
   }
 }
 
-- (void)_didEstablishNetworkConnectionForProvider:(id)a3 initialPayload:(id)a4 ofLength:(unint64_t)a5 error:(id)a6
+- (void)_didEstablishNetworkConnectionForProvider:(id)provider initialPayload:(id)payload ofLength:(unint64_t)length error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  providerCopy = provider;
+  payloadCopy = payload;
+  errorCopy = error;
   v13 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
   {
@@ -675,11 +675,11 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s ", &v29, 0xCu);
   }
 
-  if (self->_networkConnectionProvider == v10)
+  if (self->_networkConnectionProvider == providerCopy)
   {
-    if (!v12)
+    if (!errorCopy)
     {
-      if (v11)
+      if (payloadCopy)
       {
         networkOutputBuffer = self->_networkOutputBuffer;
         if (networkOutputBuffer)
@@ -698,15 +698,15 @@ LABEL_20:
           v29 = 136315650;
           v30 = "[ADSiriConnectionRemote _didEstablishNetworkConnectionForProvider:initialPayload:ofLength:error:]";
           v31 = 2048;
-          v32 = a5;
+          lengthCopy = length;
           v33 = 2048;
           v34 = size;
           _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%s Stream opened with initial payload length %lu, networkOutputBuffer length %lu", &v29, 0x20u);
         }
 
-        v20 = size >= a5;
-        v21 = size - a5;
-        if (!v20 || self->_networkOutputBuffer != v11)
+        v20 = size >= length;
+        v21 = size - length;
+        if (!v20 || self->_networkOutputBuffer != payloadCopy)
         {
           v22 = AFSiriLogContextProxy;
           if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
@@ -739,7 +739,7 @@ LABEL_20:
         safetyNetBuffer = self->_safetyNetBuffer;
         if (safetyNetBuffer)
         {
-          safetyNetBuffer = dispatch_data_create_concat(safetyNetBuffer, v11);
+          safetyNetBuffer = dispatch_data_create_concat(safetyNetBuffer, payloadCopy);
           v25 = self->_safetyNetBuffer;
         }
 
@@ -753,14 +753,14 @@ LABEL_20:
         v26 = self->_networkOutputBuffer;
         if (v26)
         {
-          subrange = dispatch_data_create_subrange(v26, a5, v21);
+          subrange = dispatch_data_create_subrange(v26, length, v21);
           v28 = self->_networkOutputBuffer;
           self->_networkOutputBuffer = subrange;
         }
       }
 
       self->_dataHasBeenWrittenToNetwork = 0;
-      [(ADSiriConnectionRemote *)self _setupStaleNetworkTimerForProvider:v10];
+      [(ADSiriConnectionRemote *)self _setupStaleNetworkTimerForProvider:providerCopy];
       [(ADSiriConnectionRemote *)self _networkConnectionDidOpen];
       [(ADSiriConnectionRemote *)self _waitForNetworkData];
       [(ADSiriConnectionRemote *)self _tryToWriteToNetworkConnection];
@@ -773,7 +773,7 @@ LABEL_20:
       v29 = 136315394;
       v30 = "[ADSiriConnectionRemote _didEstablishNetworkConnectionForProvider:initialPayload:ofLength:error:]";
       v31 = 2114;
-      v32 = v12;
+      lengthCopy = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s %{public}@", &v29, 0x16u);
     }
 
@@ -796,29 +796,29 @@ LABEL_6:
 LABEL_32:
 }
 
-- (void)_establishNetworkConnectionToURL:(id)a3 connectionId:(id)a4 withPOP:(BOOL)a5 countAgainstFallbacksAllowed:(BOOL)a6
+- (void)_establishNetworkConnectionToURL:(id)l connectionId:(id)id withPOP:(BOOL)p countAgainstFallbacksAllowed:(BOOL)allowed
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
+  allowedCopy = allowed;
+  pCopy = p;
+  lCopy = l;
+  idCopy = id;
   v13 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
   {
     *buf = 136316162;
     v41 = "[ADSiriConnectionRemote _establishNetworkConnectionToURL:connectionId:withPOP:countAgainstFallbacksAllowed:]";
     v42 = 2112;
-    v43 = v11;
+    v43 = lCopy;
     v44 = 2112;
-    v45 = v12;
+    v45 = idCopy;
     v46 = 1024;
-    v47 = v7;
+    v47 = pCopy;
     v48 = 1024;
-    v49 = v6;
+    v49 = allowedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %@ %@ %d %d", buf, 0x2Cu);
   }
 
-  objc_storeStrong(&self->_networkURL, a3);
+  objc_storeStrong(&self->_networkURL, l);
   safetyNetBuffer = self->_safetyNetBuffer;
   if (!safetyNetBuffer)
   {
@@ -837,7 +837,7 @@ LABEL_32:
   objc_storeStrong(&self->_networkOutputBuffer, safetyNetBuffer);
   v17 = AFSiriLogContextProxy;
   v18 = os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO);
-  if (!v6)
+  if (!allowedCopy)
   {
     if (v18)
     {
@@ -864,21 +864,21 @@ LABEL_13:
   v21 = self->_safetyNetBuffer;
   self->_safetyNetBuffer = v19;
 
-  v22 = [(ADSiriConnectionRemote *)self _networkConnectionProvider];
-  [v22 setConnectByPOPMethod:v7];
-  [v22 setRetransmitConnectionDropTime:8.0];
-  [v22 setStaleInterval:100.0];
+  _networkConnectionProvider = [(ADSiriConnectionRemote *)self _networkConnectionProvider];
+  [_networkConnectionProvider setConnectByPOPMethod:pCopy];
+  [_networkConnectionProvider setRetransmitConnectionDropTime:8.0];
+  [_networkConnectionProvider setStaleInterval:100.0];
   v23 = +[ADAccount activeAccount];
   if (![v23 connectionPolicyStatus])
   {
-    v24 = [v23 saConnectionPolicy];
-    [v22 setProviderConnectionPolicy:v24];
+    saConnectionPolicy = [v23 saConnectionPolicy];
+    [_networkConnectionProvider setProviderConnectionPolicy:saConnectionPolicy];
   }
 
   [(ADSiriConnectionRemote *)self _doMetricsBookkeepingForNetworkStreamStart];
   v25 = self->_networkConnectionSequenceNumber + 1;
   self->_networkConnectionSequenceNumber = v25;
-  if (v7)
+  if (pCopy)
   {
     v26 = self->_networkOutputBuffer;
     v27 = v26;
@@ -909,12 +909,12 @@ LABEL_13:
     v27 = 0;
   }
 
-  if ([v22 supportsInitialPayload])
+  if ([_networkConnectionProvider supportsInitialPayload])
   {
-    if (v11)
+    if (lCopy)
     {
 LABEL_24:
-      v30 = v11;
+      v30 = lCopy;
       goto LABEL_27;
     }
   }
@@ -924,7 +924,7 @@ LABEL_24:
     v31 = +[NSAssertionHandler currentHandler];
     [v31 handleFailureInMethod:v34 object:self file:@"ADSiriConnectionRemote.m" lineNumber:416 description:@"Programming error: network stream provider should support initial payload."];
 
-    if (v11)
+    if (lCopy)
     {
       goto LABEL_24;
     }
@@ -934,7 +934,7 @@ LABEL_24:
   if (!v30)
   {
     v30 = [NSError errorWithDomain:@"ADSiriConnectionRemoteErrorDomain" code:2 userInfo:0];
-    [(ADSiriConnectionRemote *)self _didEstablishNetworkConnectionForProvider:v22 initialPayload:0 ofLength:0 error:v30];
+    [(ADSiriConnectionRemote *)self _didEstablishNetworkConnectionForProvider:_networkConnectionProvider initialPayload:0 ofLength:0 error:v30];
     goto LABEL_30;
   }
 
@@ -955,10 +955,10 @@ LABEL_27:
   v35[3] = &unk_10051B970;
   v38 = v25;
   v35[4] = self;
-  v36 = v22;
+  v36 = _networkConnectionProvider;
   v37 = v27;
   v39 = size;
-  [v36 openConnectionForURL:v30 withConnectionId:v12 initialPayload:v37 completion:v35];
+  [v36 openConnectionForURL:v30 withConnectionId:idCopy initialPayload:v37 completion:v35];
 
 LABEL_30:
 }
@@ -991,21 +991,21 @@ LABEL_30:
   return networkConnectionProvider;
 }
 
-- (void)peerStreamConnection:(id)a3 requestMetrics:(id)a4
+- (void)peerStreamConnection:(id)connection requestMetrics:(id)metrics
 {
-  v5 = a4;
+  metricsCopy = metrics;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10030C5D0;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = metricsCopy;
+  v7 = metricsCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)peerStreamConnectionHasIncomingPeer:(id)a3
+- (void)peerStreamConnectionHasIncomingPeer:(id)peer
 {
   v4 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
@@ -1024,16 +1024,16 @@ LABEL_30:
   dispatch_async(queue, block);
 }
 
-- (void)peerStreamConnection:(id)a3 failedWithError:(id)a4
+- (void)peerStreamConnection:(id)connection failedWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = AFSiriLogContextProxy;
   if (os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[ADSiriConnectionRemote peerStreamConnection:failedWithError:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -1043,8 +1043,8 @@ LABEL_30:
   v9[2] = sub_10030CAE4;
   v9[3] = &unk_10051E010;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(queue, v9);
 }
 
@@ -1117,10 +1117,10 @@ LABEL_30:
   [(ADSiriConnectionRemote *)self _establishNetworkConnectionToURL:networkURLFromPeer connectionId:connectionId withPOP:connectByPOP];
 }
 
-- (id)_prependHeader:(__CFHTTPMessage *)a3 toOutputBuffer:(id)a4
+- (id)_prependHeader:(__CFHTTPMessage *)header toOutputBuffer:(id)buffer
 {
-  v5 = a4;
-  v6 = CFHTTPMessageCopySerializedMessage(a3);
+  bufferCopy = buffer;
+  v6 = CFHTTPMessageCopySerializedMessage(header);
   if (v6)
   {
     v7 = v6;
@@ -1141,25 +1141,25 @@ LABEL_30:
     v10 = 0;
   }
 
-  concat = dispatch_data_create_concat(v10, v5);
+  concat = dispatch_data_create_concat(v10, bufferCopy);
 
   return concat;
 }
 
-- (void)_insertCompanionSpecificDataIntoHeader:(__CFHTTPMessage *)a3
+- (void)_insertCompanionSpecificDataIntoHeader:(__CFHTTPMessage *)header
 {
   v4 = AFProductType();
-  CFHTTPMessageSetHeaderFieldValue(a3, @"X-Companion-Type", v4);
+  CFHTTPMessageSetHeaderFieldValue(header, @"X-Companion-Type", v4);
   v5 = AFBuildVersion();
 
-  CFHTTPMessageSetHeaderFieldValue(a3, @"X-Companion-Build", v5);
+  CFHTTPMessageSetHeaderFieldValue(header, @"X-Companion-Build", v5);
 }
 
-- (id)_tryToReadHTTPHeaderIntoMessage:(__CFHTTPMessage *)a3 fromData:(id)a4 isComplete:(BOOL *)a5
+- (id)_tryToReadHTTPHeaderIntoMessage:(__CFHTTPMessage *)message fromData:(id)data isComplete:(BOOL *)complete
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7 && dispatch_data_get_size(v7))
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy && dispatch_data_get_size(dataCopy))
   {
     v16 = 0;
     v17 = &v16;
@@ -1170,7 +1170,7 @@ LABEL_30:
     v15[2] = sub_10030D0C8;
     v15[3] = &unk_10051B8F8;
     v15[4] = &v16;
-    v15[5] = a3;
+    v15[5] = message;
     dispatch_data_apply(v8, v15);
     v9 = v17[3];
     if (v9)
@@ -1190,9 +1190,9 @@ LABEL_30:
       v8 = subrange;
     }
 
-    if (a5)
+    if (complete)
     {
-      *a5 = CFHTTPMessageIsHeaderComplete(a3) != 0;
+      *complete = CFHTTPMessageIsHeaderComplete(message) != 0;
     }
 
     v12 = v8;
@@ -1201,9 +1201,9 @@ LABEL_30:
 
   else
   {
-    if (a5)
+    if (complete)
     {
-      *a5 = 0;
+      *complete = 0;
     }
 
     v12 = v8;
@@ -1212,18 +1212,18 @@ LABEL_30:
   return v12;
 }
 
-- (id)_tryToReadPeerStreamHeaderFromData:(id)a3 needsReconnect:(BOOL *)a4
+- (id)_tryToReadPeerStreamHeaderFromData:(id)data needsReconnect:(BOOL *)reconnect
 {
-  v5 = a3;
-  size = dispatch_data_get_size(v5);
-  subrange = v5;
-  v8 = [subrange bytes];
+  dataCopy = data;
+  size = dispatch_data_get_size(dataCopy);
+  subrange = dataCopy;
+  bytes = [subrange bytes];
   if (!subrange)
   {
     goto LABEL_11;
   }
 
-  v9 = v8;
+  v9 = bytes;
   v10 = dispatch_data_get_size(subrange);
   if (v10 < 2)
   {
@@ -1386,9 +1386,9 @@ LABEL_13:
     v26 = 0;
   }
 
-  if (a4)
+  if (reconnect)
   {
-    *a4 = (v26 | v12) & 1;
+    *reconnect = (v26 | v12) & 1;
   }
 
   return subrange;
@@ -1446,8 +1446,8 @@ LABEL_13:
     v5 = [[ADPeerConnectionProvider alloc] initWithQueue:self->_queue];
     [(ADPeerConnectionProvider *)self->_peerProvider close];
     objc_storeStrong(&self->_peerProvider, v5);
-    v6 = [(ADSiriConnectionRemote *)self _peerConnection];
-    [(ADPeerConnectionProvider *)v5 setPeerStreamConnection:v6];
+    _peerConnection = [(ADSiriConnectionRemote *)self _peerConnection];
+    [(ADPeerConnectionProvider *)v5 setPeerStreamConnection:_peerConnection];
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -1503,12 +1503,12 @@ LABEL_13:
     v2->_queue = v5;
 
     v7 = +[ADAccount activeAccount];
-    v8 = [v7 saConnectionPolicy];
-    v9 = [v8 routes];
-    v10 = [v9 firstObject];
+    saConnectionPolicy = [v7 saConnectionPolicy];
+    routes = [saConnectionPolicy routes];
+    firstObject = [routes firstObject];
 
-    v11 = [v7 hostname];
-    v12 = [v11 stringByAppendingString:@"/ace"];
+    hostname = [v7 hostname];
+    v12 = [hostname stringByAppendingString:@"/ace"];
     if (v12)
     {
       v13 = [[NSURL alloc] initWithString:v12];
@@ -1526,21 +1526,21 @@ LABEL_13:
 
     if (v2->_networkURL || (v14 = AFSiriLogContextProxy, os_log_type_enabled(AFSiriLogContextProxy, OS_LOG_TYPE_INFO)) && (*buf = 136315138, v34 = "[ADSiriConnectionRemote init]", _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s _networkURL is set to nil", buf, 0xCu), v2->_networkURL))
     {
-      if (v10 && ![v7 connectionPolicyStatus])
+      if (firstObject && ![v7 connectionPolicyStatus])
       {
-        v15 = [v10 cname];
-        v16 = v15;
-        if (v15)
+        cname = [firstObject cname];
+        v16 = cname;
+        if (cname)
         {
-          v17 = v15;
+          host = cname;
         }
 
         else
         {
-          v17 = [v10 host];
+          host = [firstObject host];
         }
 
-        v18 = v17;
+        v18 = host;
 
         v19 = [NSURLComponents componentsWithURL:v2->_networkURL resolvingAgainstBaseURL:0];
         [v19 setHost:v18];
@@ -1548,15 +1548,15 @@ LABEL_13:
         networkURL = v2->_networkURL;
         v2->_networkURL = v20;
 
-        v11 = v18;
+        hostname = v18;
       }
     }
 
-    v22 = [v10 type];
-    v2->_connectByPOP = [v22 isEqualToString:SAConnectionPolicyTypePOPValue];
+    type = [firstObject type];
+    v2->_connectByPOP = [type isEqualToString:SAConnectionPolicyTypePOPValue];
 
-    v23 = [v10 connectionId];
-    v24 = [v23 copy];
+    connectionId = [firstObject connectionId];
+    v24 = [connectionId copy];
     connectionId = v2->_connectionId;
     v2->_connectionId = v24;
 

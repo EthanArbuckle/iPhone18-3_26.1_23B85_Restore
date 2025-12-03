@@ -1,11 +1,11 @@
 @interface VGExternalAccessoryModelFilter
-- (BOOL)allowsVehicleWithModelId:(id)a3 firmwareId:(id)a4 year:(id)a5 model:(id)a6;
+- (BOOL)allowsVehicleWithModelId:(id)id firmwareId:(id)firmwareId year:(id)year model:(id)model;
 - (NSArray)denylist;
 - (NSArray)modelIdAllowlist;
 - (VGExternalAccessoryModelFilter)init;
 - (void)_initializeAllowAndDenylists;
 - (void)dealloc;
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5;
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup;
 @end
 
 @implementation VGExternalAccessoryModelFilter
@@ -17,8 +17,8 @@
   v2 = [(VGExternalAccessoryModelFilter *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0ECD0] modernManager];
-    [v3 addTileGroupObserver:v2 queue:MEMORY[0x277D85CD0]];
+    modernManager = [MEMORY[0x277D0ECD0] modernManager];
+    [modernManager addTileGroupObserver:v2 queue:MEMORY[0x277D85CD0]];
 
     [(VGExternalAccessoryModelFilter *)v2 _initializeAllowAndDenylists];
   }
@@ -40,7 +40,7 @@
     v8 = 0x277CBE000uLL;
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v60 = self;
+      selfCopy = self;
       v62 = v4;
       v9 = objc_opt_new();
       v71 = 0u;
@@ -88,7 +88,7 @@
       }
 
       v17 = [v9 copy];
-      self = v60;
+      self = selfCopy;
       v4 = v62;
       v8 = 0x277CBE000;
     }
@@ -120,7 +120,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v61 = self;
+        selfCopy2 = self;
         v63 = v4;
         v64 = objc_opt_new();
         v71 = 0u;
@@ -281,7 +281,7 @@ LABEL_54:
 
             v54 = v64;
             v55 = [v64 copy];
-            self = v61;
+            self = selfCopy2;
             v4 = v63;
             v21 = v59;
             goto LABEL_58;
@@ -318,18 +318,18 @@ LABEL_58:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  groupCopy = group;
+  tileGroupCopy = tileGroup;
   v9 = VGGetExternalAccessoryModelFilterLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v8;
+    v12 = tileGroupCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = groupCopy;
     _os_log_impl(&dword_270EC1000, v9, OS_LOG_TYPE_INFO, "Geo active tile group changed from %@ to %@; rebuilding allow and deny lists", &v11, 0x16u);
   }
 
@@ -337,33 +337,33 @@ LABEL_58:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)allowsVehicleWithModelId:(id)a3 firmwareId:(id)a4 year:(id)a5 model:(id)a6
+- (BOOL)allowsVehicleWithModelId:(id)id firmwareId:(id)firmwareId year:(id)year model:(id)model
 {
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v40 = a4;
-  v41 = a5;
-  v42 = a6;
+  idCopy = id;
+  firmwareIdCopy = firmwareId;
+  yearCopy = year;
+  modelCopy = model;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0;
-  v11 = [(VGExternalAccessoryModelFilter *)self modelIdAllowlist];
+  modelIdAllowlist = [(VGExternalAccessoryModelFilter *)self modelIdAllowlist];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __81__VGExternalAccessoryModelFilter_allowsVehicleWithModelId_firmwareId_year_model___block_invoke;
   v46[3] = &unk_279E269C0;
-  v39 = v10;
+  v39 = idCopy;
   v47 = v39;
   v48 = &v49;
-  [v11 enumerateObjectsUsingBlock:v46];
+  [modelIdAllowlist enumerateObjectsUsingBlock:v46];
 
   if (v50[3])
   {
     v12 = [VGDenylistEntry alloc];
-    if (v40)
+    if (firmwareIdCopy)
     {
-      v59 = v40;
+      v59 = firmwareIdCopy;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
     }
 
@@ -372,9 +372,9 @@ LABEL_58:
       v13 = MEMORY[0x277CBEBF8];
     }
 
-    if (v41)
+    if (yearCopy)
     {
-      v58 = v41;
+      v58 = yearCopy;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
     }
 
@@ -383,9 +383,9 @@ LABEL_58:
       v27 = MEMORY[0x277CBEBF8];
     }
 
-    if (v42)
+    if (modelCopy)
     {
-      v57 = v42;
+      v57 = modelCopy;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
     }
 
@@ -395,15 +395,15 @@ LABEL_58:
     }
 
     v29 = [(VGDenylistEntry *)v12 initWithModelId:v39 firmwareIds:v13 years:v27 models:v28];
-    if (v42)
+    if (modelCopy)
     {
     }
 
-    if (v41)
+    if (yearCopy)
     {
     }
 
-    if (v40)
+    if (firmwareIdCopy)
     {
     }
 
@@ -411,7 +411,7 @@ LABEL_58:
     v65 = &v64;
     v66 = 0x2020000000;
     v67 = 0;
-    v30 = [(VGExternalAccessoryModelFilter *)self denylist];
+    denylist = [(VGExternalAccessoryModelFilter *)self denylist];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __81__VGExternalAccessoryModelFilter_allowsVehicleWithModelId_firmwareId_year_model___block_invoke_41;
@@ -419,7 +419,7 @@ LABEL_58:
     v38 = v29;
     v44 = v38;
     v45 = &v64;
-    [v30 enumerateObjectsUsingBlock:v43];
+    [denylist enumerateObjectsUsingBlock:v43];
 
     v31 = *(v65 + 24);
     v32 = v31 ^ 1;
@@ -671,8 +671,8 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D0ECD0] modernManager];
-  [v3 removeTileGroupObserver:self];
+  modernManager = [MEMORY[0x277D0ECD0] modernManager];
+  [modernManager removeTileGroupObserver:self];
 
   v4.receiver = self;
   v4.super_class = VGExternalAccessoryModelFilter;

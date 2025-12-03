@@ -1,53 +1,53 @@
 @interface DebugHierarchyRuntimeType
-+ (id)typeWithDictionaryRepresentation:(id)a3;
-+ (id)typeWithName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfTypeWithName:(id)a3;
-- (DebugHierarchyRuntimeType)initWithDictionaryRepresentation:(id)a3;
-- (DebugHierarchyRuntimeType)initWithName:(id)a3;
++ (id)typeWithDictionaryRepresentation:(id)representation;
++ (id)typeWithName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfTypeWithName:(id)name;
+- (DebugHierarchyRuntimeType)initWithDictionaryRepresentation:(id)representation;
+- (DebugHierarchyRuntimeType)initWithName:(id)name;
 - (DebugHierarchyRuntimeType)parentType;
 - (NSMutableDictionary)instanceProperties;
 - (id)closestTypeVendingAChildGroupingID;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
 - (id)namesOfInheritanceChain;
-- (id)propertyWithName:(id)a3;
+- (id)propertyWithName:(id)name;
 - (int64_t)sourceLanguage;
-- (void)addInstanceProperty:(id)a3;
-- (void)addSubtype:(id)a3;
+- (void)addInstanceProperty:(id)property;
+- (void)addSubtype:(id)subtype;
 @end
 
 @implementation DebugHierarchyRuntimeType
 
-+ (id)typeWithDictionaryRepresentation:(id)a3
++ (id)typeWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionaryRepresentation:v4];
+  representationCopy = representation;
+  v5 = [[self alloc] initWithDictionaryRepresentation:representationCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRuntimeType)initWithDictionaryRepresentation:(id)a3
+- (DebugHierarchyRuntimeType)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v33.receiver = self;
   v33.super_class = DebugHierarchyRuntimeType;
   v5 = [(DebugHierarchyRuntimeType *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"className"];
+    v6 = [representationCopy objectForKeyedSubscript:@"className"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"typeAndModuleName"];
+    v8 = [representationCopy objectForKeyedSubscript:@"typeAndModuleName"];
     nameIncludingModules = v5->_nameIncludingModules;
     v5->_nameIncludingModules = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"moduleName"];
+    v10 = [representationCopy objectForKeyedSubscript:@"moduleName"];
     moduleName = v5->_moduleName;
     v5->_moduleName = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"subclasses"];
+    v12 = [representationCopy objectForKeyedSubscript:@"subclasses"];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -80,7 +80,7 @@
       while (v14);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"instanceProperties"];
+    v18 = [representationCopy objectForKeyedSubscript:@"instanceProperties"];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -117,37 +117,37 @@
   return v5;
 }
 
-+ (id)typeWithName:(id)a3
++ (id)typeWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRuntimeType)initWithName:(id)a3
+- (DebugHierarchyRuntimeType)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = DebugHierarchyRuntimeType;
   v6 = [(DebugHierarchyRuntimeType *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (void)addSubtype:(id)a3
+- (void)addSubtype:(id)subtype
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyRuntimeType *)self subtypes];
-  v6 = v5;
-  if (v5)
+  subtypeCopy = subtype;
+  subtypes = [(DebugHierarchyRuntimeType *)self subtypes];
+  v6 = subtypes;
+  if (subtypes)
   {
-    v7 = v5;
+    v7 = subtypes;
   }
 
   else
@@ -157,35 +157,35 @@
 
   v9 = v7;
 
-  v8 = [v9 setByAddingObject:v4];
+  v8 = [v9 setByAddingObject:subtypeCopy];
   [(DebugHierarchyRuntimeType *)self setSubtypes:v8];
 
-  [v4 setParentType:self];
+  [subtypeCopy setParentType:self];
 }
 
-- (BOOL)isKindOfTypeWithName:(id)a3
+- (BOOL)isKindOfTypeWithName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  if (v5)
+  nameCopy = name;
+  selfCopy = self;
+  if (selfCopy)
   {
-    v6 = v5;
+    v6 = selfCopy;
     do
     {
-      v7 = [v6 name];
-      v8 = [v7 isEqualToString:v4];
+      name = [v6 name];
+      v8 = [name isEqualToString:nameCopy];
 
       if (v8)
       {
         break;
       }
 
-      v9 = [v6 parentType];
+      parentType = [v6 parentType];
 
-      v6 = v9;
+      v6 = parentType;
     }
 
-    while (v9);
+    while (parentType);
   }
 
   else
@@ -196,22 +196,22 @@
   return v8;
 }
 
-- (id)propertyWithName:(id)a3
+- (id)propertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  if (v5)
+  nameCopy = name;
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      v6 = v5;
-      v7 = [(DebugHierarchyRuntimeType *)v5 instanceProperties];
-      v8 = [v7 objectForKeyedSubscript:v4];
+      v6 = selfCopy;
+      instanceProperties = [(DebugHierarchyRuntimeType *)selfCopy instanceProperties];
+      v8 = [instanceProperties objectForKeyedSubscript:nameCopy];
 
-      v5 = [(DebugHierarchyRuntimeType *)v6 parentType];
+      selfCopy = [(DebugHierarchyRuntimeType *)v6 parentType];
     }
 
-    while (!v8 && v5);
+    while (!v8 && selfCopy);
   }
 
   else
@@ -224,21 +224,21 @@
 
 - (id)namesOfInheritanceChain
 {
-  v2 = self;
+  selfCopy = self;
   v3 = +[NSMutableArray array];
-  if (v2)
+  if (selfCopy)
   {
     do
     {
-      v4 = [(DebugHierarchyRuntimeType *)v2 name];
-      [v3 addObject:v4];
+      name = [(DebugHierarchyRuntimeType *)selfCopy name];
+      [v3 addObject:name];
 
-      v5 = [(DebugHierarchyRuntimeType *)v2 parentType];
+      parentType = [(DebugHierarchyRuntimeType *)selfCopy parentType];
 
-      v2 = v5;
+      selfCopy = parentType;
     }
 
-    while (v5);
+    while (parentType);
   }
 
   v6 = [v3 copy];
@@ -248,23 +248,23 @@
 
 - (id)closestTypeVendingAChildGroupingID
 {
-  v2 = self;
-  v3 = [(DebugHierarchyRuntimeType *)v2 childGroupingID];
+  selfCopy = self;
+  childGroupingID = [(DebugHierarchyRuntimeType *)selfCopy childGroupingID];
 
-  if (v2 && !v3)
+  if (selfCopy && !childGroupingID)
   {
     do
     {
-      v4 = v2;
-      v2 = [(DebugHierarchyRuntimeType *)v2 parentType];
+      v4 = selfCopy;
+      selfCopy = [(DebugHierarchyRuntimeType *)selfCopy parentType];
 
-      v5 = [(DebugHierarchyRuntimeType *)v2 childGroupingID];
+      childGroupingID2 = [(DebugHierarchyRuntimeType *)selfCopy childGroupingID];
     }
 
-    while (v2 && !v5);
+    while (selfCopy && !childGroupingID2);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSMutableDictionary)instanceProperties
@@ -282,26 +282,26 @@
   return instanceProperties;
 }
 
-- (void)addInstanceProperty:(id)a3
+- (void)addInstanceProperty:(id)property
 {
-  v4 = a3;
-  v6 = [(DebugHierarchyRuntimeType *)self instanceProperties];
-  v5 = [v4 name];
-  [v6 setObject:v4 forKeyedSubscript:v5];
+  propertyCopy = property;
+  instanceProperties = [(DebugHierarchyRuntimeType *)self instanceProperties];
+  name = [propertyCopy name];
+  [instanceProperties setObject:propertyCopy forKeyedSubscript:name];
 }
 
 - (int64_t)sourceLanguage
 {
-  v3 = [(DebugHierarchyRuntimeType *)self moduleName];
-  if ([v3 length])
+  moduleName = [(DebugHierarchyRuntimeType *)self moduleName];
+  if ([moduleName length])
   {
     v4 = 2;
   }
 
   else
   {
-    v5 = [(DebugHierarchyRuntimeType *)self name];
-    if ([v5 containsString:@"."])
+    name = [(DebugHierarchyRuntimeType *)self name];
+    if ([name containsString:@"."])
     {
       v4 = 2;
     }
@@ -317,20 +317,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(DebugHierarchyRuntimeType *)self subtypes];
-  v4 = [v3 count];
+  subtypes = [(DebugHierarchyRuntimeType *)self subtypes];
+  v4 = [subtypes count];
 
   if (v4)
   {
-    v5 = [(DebugHierarchyRuntimeType *)self subtypes];
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    subtypes2 = [(DebugHierarchyRuntimeType *)self subtypes];
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [subtypes2 count]);
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v7 = [(DebugHierarchyRuntimeType *)self subtypes];
-    v8 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    subtypes3 = [(DebugHierarchyRuntimeType *)self subtypes];
+    v8 = [subtypes3 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v8)
     {
       v9 = v8;
@@ -341,14 +341,14 @@
         {
           if (*v37 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subtypes3);
           }
 
-          v12 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v9 = [subtypes3 countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v9);
@@ -361,23 +361,23 @@
   }
 
   v13 = [NSMutableDictionary dictionaryWithCapacity:4];
-  v14 = [(DebugHierarchyRuntimeType *)self name];
-  [v13 setObject:v14 forKeyedSubscript:@"className"];
+  name = [(DebugHierarchyRuntimeType *)self name];
+  [v13 setObject:name forKeyedSubscript:@"className"];
 
-  v15 = [(DebugHierarchyRuntimeType *)self nameIncludingModules];
+  nameIncludingModules = [(DebugHierarchyRuntimeType *)self nameIncludingModules];
 
-  if (v15)
+  if (nameIncludingModules)
   {
-    v16 = [(DebugHierarchyRuntimeType *)self nameIncludingModules];
-    [v13 setObject:v16 forKeyedSubscript:@"typeAndModuleName"];
+    nameIncludingModules2 = [(DebugHierarchyRuntimeType *)self nameIncludingModules];
+    [v13 setObject:nameIncludingModules2 forKeyedSubscript:@"typeAndModuleName"];
   }
 
-  v17 = [(DebugHierarchyRuntimeType *)self moduleName];
+  moduleName = [(DebugHierarchyRuntimeType *)self moduleName];
 
-  if (v17)
+  if (moduleName)
   {
-    v18 = [(DebugHierarchyRuntimeType *)self moduleName];
-    [v13 setObject:v18 forKeyedSubscript:@"moduleName"];
+    moduleName2 = [(DebugHierarchyRuntimeType *)self moduleName];
+    [v13 setObject:moduleName2 forKeyedSubscript:@"moduleName"];
   }
 
   if (v6)
@@ -386,8 +386,8 @@
     [v13 setObject:v19 forKeyedSubscript:@"subclasses"];
   }
 
-  v20 = [(DebugHierarchyRuntimeType *)self instanceProperties];
-  v21 = [v20 count];
+  instanceProperties = [(DebugHierarchyRuntimeType *)self instanceProperties];
+  v21 = [instanceProperties count];
 
   if (v21)
   {
@@ -396,10 +396,10 @@
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = [(DebugHierarchyRuntimeType *)self instanceProperties];
-    v24 = [v23 objectEnumerator];
+    instanceProperties2 = [(DebugHierarchyRuntimeType *)self instanceProperties];
+    objectEnumerator = [instanceProperties2 objectEnumerator];
 
-    v25 = [v24 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v25 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v25)
     {
       v26 = v25;
@@ -410,17 +410,17 @@
         {
           if (*v33 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v29 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          if (v29)
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v22 addObject:v29];
+            [v22 addObject:dictionaryRepresentation2];
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v26 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v26);
@@ -433,28 +433,28 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = equalCopy;
   if (isKindOfClass)
   {
-    v7 = [(DebugHierarchyRuntimeType *)self name];
-    v8 = [v6 name];
-    v9 = [v7 isEqualToString:v8];
+    name = [(DebugHierarchyRuntimeType *)self name];
+    name2 = [v6 name];
+    v9 = [name isEqualToString:name2];
 
     if (v9)
     {
-      v10 = [(DebugHierarchyRuntimeType *)self moduleName];
-      if (v10 || ([v6 moduleName], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+      moduleName = [(DebugHierarchyRuntimeType *)self moduleName];
+      if (moduleName || ([v6 moduleName], (name2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v11 = [(DebugHierarchyRuntimeType *)self moduleName];
-        v12 = [v6 moduleName];
-        v13 = [v11 isEqualToString:v12];
+        moduleName2 = [(DebugHierarchyRuntimeType *)self moduleName];
+        moduleName3 = [v6 moduleName];
+        v13 = [moduleName2 isEqualToString:moduleName3];
 
-        if (v10)
+        if (moduleName)
         {
 LABEL_10:
 
@@ -481,9 +481,9 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DebugHierarchyRuntimeType *)self name];
-  v6 = [(DebugHierarchyRuntimeType *)self instanceProperties];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p, represents: %@, properties: %lu>", v4, self, v5, [v6 count]);
+  name = [(DebugHierarchyRuntimeType *)self name];
+  instanceProperties = [(DebugHierarchyRuntimeType *)self instanceProperties];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p, represents: %@, properties: %lu>", v4, self, name, [instanceProperties count]);
 
   return v7;
 }

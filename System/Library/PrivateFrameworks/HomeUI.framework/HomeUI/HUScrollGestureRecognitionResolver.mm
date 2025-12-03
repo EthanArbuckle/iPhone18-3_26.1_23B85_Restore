@@ -1,18 +1,18 @@
 @interface HUScrollGestureRecognitionResolver
 - (HUScrollGestureRecognitionResolver)init;
 - (NSSet)conflictingGestureRecognizers;
-- (id)_stateForConflictingGestureRecognizer:(id)a3;
-- (void)_activeTimerDidFireForOtherGesture:(id)a3;
+- (id)_stateForConflictingGestureRecognizer:(id)recognizer;
+- (void)_activeTimerDidFireForOtherGesture:(id)gesture;
 - (void)_cancelConflictingGestures;
 - (void)_clearSimultaenouslyRecognizedGestures;
-- (void)_handleConflictingGesture:(id)a3;
-- (void)_handlePanGesture:(id)a3;
-- (void)_removeConflictingGestureState:(id)a3;
-- (void)addConflictingGestureRecognizer:(id)a3;
-- (void)addPanGestureRecognizer:(id)a3;
+- (void)_handleConflictingGesture:(id)gesture;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_removeConflictingGestureState:(id)state;
+- (void)addConflictingGestureRecognizer:(id)recognizer;
+- (void)addPanGestureRecognizer:(id)recognizer;
 - (void)dealloc;
-- (void)removeConflictingGestureRecognizer:(id)a3;
-- (void)removePanGestureRecognizer:(id)a3;
+- (void)removeConflictingGestureRecognizer:(id)recognizer;
+- (void)removePanGestureRecognizer:(id)recognizer;
 @end
 
 @implementation HUScrollGestureRecognitionResolver
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-  v4 = [v3 copy];
+  mutablePanGestureReocgnizers = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+  v4 = [mutablePanGestureReocgnizers copy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HUScrollGestureRecognitionResolver_dealloc__block_invoke;
@@ -49,8 +49,8 @@
   v9[4] = self;
   [v4 na_each:v9];
 
-  v5 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-  v6 = [v5 copy];
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  v6 = [conflictingGestureStates copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HUScrollGestureRecognitionResolver_dealloc__block_invoke_2;
@@ -65,59 +65,59 @@
 
 - (NSSet)conflictingGestureRecognizers
 {
-  v2 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-  v3 = [v2 na_map:&__block_literal_global_58];
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  v3 = [conflictingGestureStates na_map:&__block_literal_global_58];
 
   return v3;
 }
 
-- (void)addPanGestureRecognizer:(id)a3
+- (void)addPanGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-  v5 = [v4 containsObject:v7];
+  recognizerCopy = recognizer;
+  mutablePanGestureReocgnizers = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+  v5 = [mutablePanGestureReocgnizers containsObject:recognizerCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-    [v6 addObject:v7];
+    mutablePanGestureReocgnizers2 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+    [mutablePanGestureReocgnizers2 addObject:recognizerCopy];
 
-    [v7 addTarget:self action:sel__handlePanGesture_];
+    [recognizerCopy addTarget:self action:sel__handlePanGesture_];
   }
 }
 
-- (void)removePanGestureRecognizer:(id)a3
+- (void)removePanGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-  v5 = [v4 containsObject:v7];
+  recognizerCopy = recognizer;
+  mutablePanGestureReocgnizers = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+  v5 = [mutablePanGestureReocgnizers containsObject:recognizerCopy];
 
   if (v5)
   {
-    v6 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-    [v6 removeObject:v7];
+    mutablePanGestureReocgnizers2 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+    [mutablePanGestureReocgnizers2 removeObject:recognizerCopy];
 
-    [v7 removeTarget:self action:sel__handlePanGesture_];
+    [recognizerCopy removeTarget:self action:sel__handlePanGesture_];
   }
 }
 
-- (void)addConflictingGestureRecognizer:(id)a3
+- (void)addConflictingGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   v4 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:?];
   if (!v4)
   {
-    v4 = [[_HUScrollGestureRecognitionState alloc] initWithGestureRecognizer:v6];
-    v5 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-    [v5 addObject:v4];
+    v4 = [[_HUScrollGestureRecognitionState alloc] initWithGestureRecognizer:recognizerCopy];
+    conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+    [conflictingGestureStates addObject:v4];
 
-    [v6 addTarget:self action:sel__handleConflictingGesture_];
+    [recognizerCopy addTarget:self action:sel__handleConflictingGesture_];
   }
 }
 
-- (void)removeConflictingGestureRecognizer:(id)a3
+- (void)removeConflictingGestureRecognizer:(id)recognizer
 {
-  v4 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:a3];
+  v4 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:recognizer];
   if (v4)
   {
     v5 = v4;
@@ -126,30 +126,30 @@
   }
 }
 
-- (void)_removeConflictingGestureState:(id)a3
+- (void)_removeConflictingGestureState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 activationTimer];
-  [v5 cancel];
+  stateCopy = state;
+  activationTimer = [stateCopy activationTimer];
+  [activationTimer cancel];
 
-  v6 = [v4 gestureRecognizer];
-  [v6 removeTarget:self action:sel__handleConflictingGesture_];
+  gestureRecognizer = [stateCopy gestureRecognizer];
+  [gestureRecognizer removeTarget:self action:sel__handleConflictingGesture_];
 
-  v7 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-  [v7 removeObject:v4];
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  [conflictingGestureStates removeObject:stateCopy];
 }
 
-- (id)_stateForConflictingGestureRecognizer:(id)a3
+- (id)_stateForConflictingGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  recognizerCopy = recognizer;
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__HUScrollGestureRecognitionResolver__stateForConflictingGestureRecognizer___block_invoke;
   v9[3] = &unk_277DBA818;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = recognizerCopy;
+  v6 = recognizerCopy;
+  v7 = [conflictingGestureStates na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -162,12 +162,12 @@ BOOL __76__HUScrollGestureRecognitionResolver__stateForConflictingGestureRecogni
   return v4;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 3)
+  state = [gesture state];
+  if ((state - 3) >= 3)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
 
       [(HUScrollGestureRecognitionResolver *)self _cancelConflictingGestures];
@@ -181,15 +181,15 @@ BOOL __76__HUScrollGestureRecognitionResolver__stateForConflictingGestureRecogni
   }
 }
 
-- (void)_activeTimerDidFireForOtherGesture:(id)a3
+- (void)_activeTimerDidFireForOtherGesture:(id)gesture
 {
-  v4 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:a3];
+  v4 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:gesture];
   if (v4)
   {
     v6 = v4;
     [v4 setActivationTimer:0];
-    v5 = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
-    [v5 na_each:&__block_literal_global_30];
+    mutablePanGestureReocgnizers = [(HUScrollGestureRecognitionResolver *)self mutablePanGestureReocgnizers];
+    [mutablePanGestureReocgnizers na_each:&__block_literal_global_30];
 
     v4 = v6;
   }
@@ -202,25 +202,25 @@ void __73__HUScrollGestureRecognitionResolver__activeTimerDidFireForOtherGesture
   [v2 setEnabled:1];
 }
 
-- (void)_handleConflictingGesture:(id)a3
+- (void)_handleConflictingGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:v4];
+  gestureCopy = gesture;
+  v5 = [(HUScrollGestureRecognitionResolver *)self _stateForConflictingGestureRecognizer:gestureCopy];
   if (!v5)
   {
-    NSLog(&cfstr_UnexpectedEven.isa, v4);
+    NSLog(&cfstr_UnexpectedEven.isa, gestureCopy);
   }
 
-  v6 = [v4 state];
-  if ((v6 - 3) >= 3)
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v6 == 1)
+    if (state == 1)
     {
-      v8 = [v5 activationTimer];
-      [v8 cancel];
+      activationTimer = [v5 activationTimer];
+      [activationTimer cancel];
 
       objc_initWeak(&location, self);
-      v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
       [(HUScrollGestureRecognitionResolver *)self conflictingGestureActivationDelay];
       v11 = v10;
       v13[0] = MEMORY[0x277D85DD0];
@@ -228,8 +228,8 @@ void __73__HUScrollGestureRecognitionResolver__activeTimerDidFireForOtherGesture
       v13[2] = __64__HUScrollGestureRecognitionResolver__handleConflictingGesture___block_invoke;
       v13[3] = &unk_277DBA860;
       objc_copyWeak(&v15, &location);
-      v14 = v4;
-      v12 = [v9 afterDelay:v13 performBlock:v11];
+      v14 = gestureCopy;
+      v12 = [mainThreadScheduler afterDelay:v13 performBlock:v11];
       [v5 setActivationTimer:v12];
 
       objc_destroyWeak(&v15);
@@ -239,8 +239,8 @@ void __73__HUScrollGestureRecognitionResolver__activeTimerDidFireForOtherGesture
 
   else
   {
-    v7 = [v5 activationTimer];
-    [v7 cancel];
+    activationTimer2 = [v5 activationTimer];
+    [activationTimer2 cancel];
 
     [v5 setActivationTimer:0];
   }
@@ -259,8 +259,8 @@ void __64__HUScrollGestureRecognitionResolver__handleConflictingGesture___block_
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  v4 = [conflictingGestureStates countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -272,19 +272,19 @@ void __64__HUScrollGestureRecognitionResolver__handleConflictingGesture___block_
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conflictingGestureStates);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) gestureRecognizer];
-        v9 = [v8 isEnabled];
-        [v8 setEnabled:0];
-        [v8 setEnabled:v9];
+        gestureRecognizer = [*(*(&v10 + 1) + 8 * v7) gestureRecognizer];
+        isEnabled = [gestureRecognizer isEnabled];
+        [gestureRecognizer setEnabled:0];
+        [gestureRecognizer setEnabled:isEnabled];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [conflictingGestureStates countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -300,8 +300,8 @@ void __64__HUScrollGestureRecognitionResolver__handleConflictingGesture___block_
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  conflictingGestureStates = [(HUScrollGestureRecognitionResolver *)self conflictingGestureStates];
+  v3 = [conflictingGestureStates countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -313,17 +313,17 @@ void __64__HUScrollGestureRecognitionResolver__handleConflictingGesture___block_
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(conflictingGestureStates);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) activationTimer];
-        [v7 cancel];
+        activationTimer = [*(*(&v8 + 1) + 8 * v6) activationTimer];
+        [activationTimer cancel];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [conflictingGestureStates countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

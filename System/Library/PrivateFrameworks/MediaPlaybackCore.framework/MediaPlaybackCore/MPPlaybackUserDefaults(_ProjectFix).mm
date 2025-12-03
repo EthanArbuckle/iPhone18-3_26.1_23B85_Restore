@@ -9,13 +9,13 @@
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 areTransitionEnabledForUserWithCatalogPlaybackCapability:a3];
+    return [self areTransitionEnabledForUserWithCatalogPlaybackCapability:a3];
   }
 
   else if (objc_opt_respondsToSelector())
   {
 
-    return [a1 areTransitionsEnabledForUserWithCatalogPlaybackCapability:a3];
+    return [self areTransitionsEnabledForUserWithCatalogPlaybackCapability:a3];
   }
 
   else

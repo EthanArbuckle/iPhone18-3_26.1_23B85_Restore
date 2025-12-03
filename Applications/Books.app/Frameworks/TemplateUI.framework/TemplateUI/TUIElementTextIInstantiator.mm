@@ -1,17 +1,17 @@
 @interface TUIElementTextIInstantiator
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementTextIInstantiator
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TUIElementTextIInstantiator;
-  var0 = a4.var0;
-  v9 = a3;
-  objc_msgSendSuper2(&v10, "configureObject:withNode:attributes:context:", v9, var0, a5, a6);
-  [v9 setStyle:{2, v10.receiver, v10.super_class}];
+  var0 = node.var0;
+  objectCopy = object;
+  objc_msgSendSuper2(&v10, "configureObject:withNode:attributes:context:", objectCopy, var0, attributes, context);
+  [objectCopy setStyle:{2, v10.receiver, v10.super_class}];
 }
 
 @end

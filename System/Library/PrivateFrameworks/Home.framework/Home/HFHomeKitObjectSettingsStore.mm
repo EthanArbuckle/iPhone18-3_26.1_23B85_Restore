@@ -1,11 +1,11 @@
 @interface HFHomeKitObjectSettingsStore
-+ (id)setTileSize:(id)a3 forObject:(id)a4;
-+ (id)setValue:(id)a3 forSetting:(int64_t)a4 onObject:(id)a5;
-+ (id)setValue:(id)a3 forSetting:(int64_t)a4 onObject:(id)a5 inLocation:(int64_t)a6;
-+ (id)stringValueForSetting:(int64_t)a3 onObject:(id)a4;
-+ (id)tileSizeForObject:(id)a3;
-+ (id)valueForSetting:(int64_t)a3 onObject:(id)a4;
-+ (id)valueForSetting:(int64_t)a3 onObject:(id)a4 inLocation:(int64_t)a5;
++ (id)setTileSize:(id)size forObject:(id)object;
++ (id)setValue:(id)value forSetting:(int64_t)setting onObject:(id)object;
++ (id)setValue:(id)value forSetting:(int64_t)setting onObject:(id)object inLocation:(int64_t)location;
++ (id)stringValueForSetting:(int64_t)setting onObject:(id)object;
++ (id)tileSizeForObject:(id)object;
++ (id)valueForSetting:(int64_t)setting onObject:(id)object;
++ (id)valueForSetting:(int64_t)setting onObject:(id)object inLocation:(int64_t)location;
 - (HFHomeKitObjectSettingsStore)init;
 @end
 
@@ -18,7 +18,7 @@
   return [(HFHomeKitObjectSettingsStore *)&v3 init];
 }
 
-+ (id)tileSizeForObject:(id)a3
++ (id)tileSizeForObject:(id)object
 {
   swift_unknownObjectRetain();
   v3 = _s4Home0A22KitObjectSettingsStoreC8tileSize3forSo015HFTileResizableG0aSgSo06HFHomebC0_p_tFZ_0();
@@ -27,39 +27,39 @@
   return v3;
 }
 
-+ (id)setTileSize:(id)a3 forObject:(id)a4
++ (id)setTileSize:(id)size forObject:(id)object
 {
-  v5 = a3;
+  sizeCopy = size;
   swift_unknownObjectRetain();
-  v6 = _s4Home0A22KitObjectSettingsStoreC3set8tileSize3forSo8NAFutureCySo6NSNullCGSo015HFTileResizableH0aSg_So06HFHomebC0_ptFZ_0(a3);
+  v6 = _s4Home0A22KitObjectSettingsStoreC3set8tileSize3forSo8NAFutureCySo6NSNullCGSo015HFTileResizableH0aSg_So06HFHomebC0_ptFZ_0(size);
 
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-+ (id)valueForSetting:(int64_t)a3 onObject:(id)a4
++ (id)valueForSetting:(int64_t)setting onObject:(id)object
 {
   swift_unknownObjectRetain();
-  v5 = sub_20DA783A0(a3);
+  v5 = sub_20DA783A0(setting);
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-+ (id)valueForSetting:(int64_t)a3 onObject:(id)a4 inLocation:(int64_t)a5
++ (id)valueForSetting:(int64_t)setting onObject:(id)object inLocation:(int64_t)location
 {
   swift_unknownObjectRetain();
-  v6 = sub_20DA783A0(a3);
+  v6 = sub_20DA783A0(setting);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-+ (id)stringValueForSetting:(int64_t)a3 onObject:(id)a4
++ (id)stringValueForSetting:(int64_t)setting onObject:(id)object
 {
   swift_unknownObjectRetain();
-  v5 = sub_20DA783A0(a3);
+  v5 = sub_20DA783A0(setting);
   swift_unknownObjectRelease();
   if (v5 && (swift_dynamicCast() & 1) != 0)
   {
@@ -76,22 +76,22 @@
   return v7;
 }
 
-+ (id)setValue:(id)a3 forSetting:(int64_t)a4 onObject:(id)a5
++ (id)setValue:(id)value forSetting:(int64_t)setting onObject:(id)object
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = sub_20DA784DC(a3, a4);
+  v7 = sub_20DA784DC(value, setting);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-+ (id)setValue:(id)a3 forSetting:(int64_t)a4 onObject:(id)a5 inLocation:(int64_t)a6
++ (id)setValue:(id)value forSetting:(int64_t)setting onObject:(id)object inLocation:(int64_t)location
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = sub_20DA784DC(a3, a4);
+  v8 = sub_20DA784DC(value, setting);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 

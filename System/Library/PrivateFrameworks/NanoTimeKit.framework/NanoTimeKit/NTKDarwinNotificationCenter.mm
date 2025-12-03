@@ -1,14 +1,14 @@
 @interface NTKDarwinNotificationCenter
 + (id)defaultCenter;
-+ (void)postNotification:(id)a3;
++ (void)postNotification:(id)notification;
 - (NTKDarwinNotificationCenter)init;
-- (void)_addObserver:(id)a3;
-- (void)_registerForNotificationName:(id)a3;
-- (void)_unregisterForNotificationNameIfNeeded:(id)a3;
-- (void)addObserver:(id)a3 notificationName:(id)a4 selector:(SEL)a5;
-- (void)addObserver:(id)a3 notificationName:(id)a4 usingBlock:(id)a5;
-- (void)handleDarwinNotification:(id)a3;
-- (void)removeObserver:(id)a3 notificationName:(id)a4;
+- (void)_addObserver:(id)observer;
+- (void)_registerForNotificationName:(id)name;
+- (void)_unregisterForNotificationNameIfNeeded:(id)needed;
+- (void)addObserver:(id)observer notificationName:(id)name selector:(SEL)selector;
+- (void)addObserver:(id)observer notificationName:(id)name usingBlock:(id)block;
+- (void)handleDarwinNotification:(id)notification;
+- (void)removeObserver:(id)observer notificationName:(id)name;
 @end
 
 @implementation NTKDarwinNotificationCenter
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __44__NTKDarwinNotificationCenter_defaultCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultCenter_onceToken != -1)
   {
     dispatch_once(&defaultCenter_onceToken, block);
@@ -50,62 +50,62 @@ void __44__NTKDarwinNotificationCenter_defaultCenter__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)postNotification:(id)a3
++ (void)postNotification:(id)notification
 {
-  name = a3;
+  name = notification;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
 
-- (void)addObserver:(id)a3 notificationName:(id)a4 usingBlock:(id)a5
+- (void)addObserver:(id)observer notificationName:(id)name usingBlock:(id)block
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  observerCopy = observer;
+  nameCopy = name;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  if (v11 && v8)
+  if (observerCopy && nameCopy)
   {
-    [(NTKDarwinNotificationCenter *)self _registerForNotificationName:v8];
+    [(NTKDarwinNotificationCenter *)self _registerForNotificationName:nameCopy];
     v10 = objc_opt_new();
-    [v10 setNotificationName:v8];
-    [v10 setObserverObject:v11];
-    [v10 setBlock:v9];
+    [v10 setNotificationName:nameCopy];
+    [v10 setObserverObject:observerCopy];
+    [v10 setBlock:blockCopy];
     [(NTKDarwinNotificationCenter *)self _addObserver:v10];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3 notificationName:(id)a4 selector:(SEL)a5
+- (void)addObserver:(id)observer notificationName:(id)name selector:(SEL)selector
 {
-  v10 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  if (v10 && v8 && a5)
+  if (observerCopy && nameCopy && selector)
   {
-    [(NTKDarwinNotificationCenter *)self _registerForNotificationName:v8];
+    [(NTKDarwinNotificationCenter *)self _registerForNotificationName:nameCopy];
     v9 = objc_opt_new();
-    [v9 setNotificationName:v8];
-    [v9 setObserverObject:v10];
-    [v9 setSelector:a5];
+    [v9 setNotificationName:nameCopy];
+    [v9 setObserverObject:observerCopy];
+    [v9 setSelector:selector];
     [(NTKDarwinNotificationCenter *)self _addObserver:v9];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3 notificationName:(id)a4
+- (void)removeObserver:(id)observer notificationName:(id)name
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (observerCopy)
   {
-    if (v7)
+    if (nameCopy)
     {
-      v8 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      observersByNotificationName = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+      v9 = [observersByNotificationName objectForKeyedSubscript:nameCopy];
 
       v43 = 0u;
       v44 = 0u;
@@ -128,9 +128,9 @@ LABEL_5:
           }
 
           v15 = *(*(&v41 + 1) + 8 * v14);
-          v16 = [v15 observerObject];
+          observerObject = [v15 observerObject];
 
-          if (v16 == v6)
+          if (observerObject == observerCopy)
           {
             break;
           }
@@ -161,7 +161,7 @@ LABEL_5:
 LABEL_14:
 
 LABEL_15:
-      [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:v7];
+      [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:nameCopy];
     }
 
     else
@@ -170,11 +170,11 @@ LABEL_15:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v17 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-      v18 = [v17 allValues];
+      observersByNotificationName2 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+      allValues = [observersByNotificationName2 allValues];
 
-      obj = v18;
-      v32 = [v18 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      obj = allValues;
+      v32 = [allValues countByEnumeratingWithState:&v37 objects:v46 count:16];
       if (v32)
       {
         v29 = 0;
@@ -209,13 +209,13 @@ LABEL_15:
                   }
 
                   v26 = *(*(&v33 + 1) + 8 * j);
-                  v27 = [v26 observerObject];
+                  observerObject2 = [v26 observerObject];
 
-                  if (v27 == v6)
+                  if (observerObject2 == observerCopy)
                   {
                     [v20 removeObject:v26];
-                    v28 = [v26 notificationName];
-                    [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:v28];
+                    notificationName = [v26 notificationName];
+                    [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:notificationName];
                   }
                 }
 
@@ -230,7 +230,7 @@ LABEL_15:
         }
 
         while (v32);
-        v7 = v29;
+        nameCopy = v29;
       }
     }
   }
@@ -238,13 +238,13 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)handleDarwinNotification:(id)a3
+- (void)handleDarwinNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  observersByNotificationName = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+  v6 = [observersByNotificationName objectForKeyedSubscript:notificationCopy];
 
   v7 = [v6 copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -269,29 +269,29 @@ LABEL_15:
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [v13 observerObject];
+        observerObject = [v13 observerObject];
 
-        if (v14)
+        if (observerObject)
         {
-          v15 = [v13 block];
+          block = [v13 block];
 
-          if (v15)
+          if (block)
           {
-            v16 = [v13 block];
-            v16[2]();
+            block2 = [v13 block];
+            block2[2]();
 LABEL_9:
 
             goto LABEL_11;
           }
 
-          v17 = [v13 selector];
-          if (v17)
+          selector = [v13 selector];
+          if (selector)
           {
-            v18 = v17;
-            v16 = [v13 observerObject];
+            v18 = selector;
+            block2 = [v13 observerObject];
             if (objc_opt_respondsToSelector())
             {
-              ([v16 methodForSelector:v18])(v16, v18);
+              ([block2 methodForSelector:v18])(block2, v18);
             }
 
             goto LABEL_9;
@@ -302,7 +302,7 @@ LABEL_9:
         {
           os_unfair_lock_lock(&self->_lock);
           [v6 removeObject:v13];
-          [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:v4];
+          [(NTKDarwinNotificationCenter *)self _unregisterForNotificationNameIfNeeded:notificationCopy];
           os_unfair_lock_unlock(&self->_lock);
         }
 
@@ -319,38 +319,38 @@ LABEL_11:
   }
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v11 = a3;
-  v4 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+  observerCopy = observer;
+  observersByNotificationName = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
 
-  if (!v4)
+  if (!observersByNotificationName)
   {
     v5 = objc_opt_new();
     [(NTKDarwinNotificationCenter *)self setObserversByNotificationName:v5];
   }
 
-  v6 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-  v7 = [v11 notificationName];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  observersByNotificationName2 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+  notificationName = [observerCopy notificationName];
+  v8 = [observersByNotificationName2 objectForKeyedSubscript:notificationName];
 
   if (!v8)
   {
     v8 = objc_opt_new();
-    v9 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-    v10 = [v11 notificationName];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    observersByNotificationName3 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+    notificationName2 = [observerCopy notificationName];
+    [observersByNotificationName3 setObject:v8 forKeyedSubscript:notificationName2];
   }
 
-  [v8 removeObject:v11];
-  [v8 addObject:v11];
+  [v8 removeObject:observerCopy];
+  [v8 addObject:observerCopy];
 }
 
-- (void)_registerForNotificationName:(id)a3
+- (void)_registerForNotificationName:(id)name
 {
-  name = a3;
-  v4 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-  v5 = [v4 objectForKeyedSubscript:name];
+  name = name;
+  observersByNotificationName = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+  v5 = [observersByNotificationName objectForKeyedSubscript:name];
 
   if (!v5)
   {
@@ -359,11 +359,11 @@ LABEL_11:
   }
 }
 
-- (void)_unregisterForNotificationNameIfNeeded:(id)a3
+- (void)_unregisterForNotificationNameIfNeeded:(id)needed
 {
-  name = a3;
-  v4 = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
-  v5 = [v4 objectForKeyedSubscript:name];
+  name = needed;
+  observersByNotificationName = [(NTKDarwinNotificationCenter *)self observersByNotificationName];
+  v5 = [observersByNotificationName objectForKeyedSubscript:name];
   v6 = [v5 count];
 
   if (!v6)

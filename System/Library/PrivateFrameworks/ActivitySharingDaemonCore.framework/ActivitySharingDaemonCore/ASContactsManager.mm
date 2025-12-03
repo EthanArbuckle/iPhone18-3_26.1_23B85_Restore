@@ -1,41 +1,41 @@
 @interface ASContactsManager
-- (ASContactsManager)initWithIsWatch:(BOOL)a3 contactStorage:(id)a4;
+- (ASContactsManager)initWithIsWatch:(BOOL)watch contactStorage:(id)storage;
 - (NSSet)contacts;
 - (NSSet)legacyContacts;
 - (NSSet)placeholderContacts;
 - (NSSet)secureCloudContacts;
-- (id)_contactStoreContactWithIdentifier:(id)a3;
-- (id)_contactsToBeRemovedFromOldContacts:(id)a3 newContacts:(id)a4;
-- (id)_findMatchingContactStoreContactForDestinations:(id)a3;
+- (id)_contactStoreContactWithIdentifier:(id)identifier;
+- (id)_contactsToBeRemovedFromOldContacts:(id)contacts newContacts:(id)newContacts;
+- (id)_findMatchingContactStoreContactForDestinations:(id)destinations;
 - (id)_queue_allContacts;
-- (id)_queue_contactsForCloudType:(unint64_t)a3;
-- (id)contactMatchingCriteriaBlock:(id)a3;
-- (id)contactWithDestinations:(id)a3;
-- (id)contactWithUUID:(id)a3;
-- (id)createContactWithDestinations:(id)a3;
-- (id)createContactWithDestinations:(id)a3 relationshipIdentifier:(id)a4;
-- (id)placeholderContactWithUUID:(id)a3;
-- (id)savePlaceholderContact:(id)a3;
+- (id)_queue_contactsForCloudType:(unint64_t)type;
+- (id)contactMatchingCriteriaBlock:(id)block;
+- (id)contactWithDestinations:(id)destinations;
+- (id)contactWithUUID:(id)d;
+- (id)createContactWithDestinations:(id)destinations;
+- (id)createContactWithDestinations:(id)destinations relationshipIdentifier:(id)identifier;
+- (id)placeholderContactWithUUID:(id)d;
+- (id)savePlaceholderContact:(id)contact;
 - (void)_beginTransaction;
 - (void)_endTransaction;
-- (void)_persistContacts:(id)a3;
+- (void)_persistContacts:(id)contacts;
 - (void)_queue_notifyObservers;
-- (void)_setContacts:(id)a3 waitForTransaction:(BOOL)a4;
+- (void)_setContacts:(id)contacts waitForTransaction:(BOOL)transaction;
 - (void)_waitForTransaction;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)loadCachedContacts;
 - (void)removeAllPlaceholderContacts;
-- (void)removeObserver:(id)a3;
-- (void)removePlaceholderContactWithToken:(id)a3;
-- (void)saveContact:(id)a3;
-- (void)setContactsUsingTransaction:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)removePlaceholderContactWithToken:(id)token;
+- (void)saveContact:(id)contact;
+- (void)setContactsUsingTransaction:(id)transaction;
 @end
 
 @implementation ASContactsManager
 
-- (ASContactsManager)initWithIsWatch:(BOOL)a3 contactStorage:(id)a4
+- (ASContactsManager)initWithIsWatch:(BOOL)watch contactStorage:(id)storage
 {
-  v6 = a4;
+  storageCopy = storage;
   v27.receiver = self;
   v27.super_class = ASContactsManager;
   v7 = [(ASContactsManager *)&v27 init];
@@ -49,18 +49,18 @@
     contactStore = v7->_contactStore;
     v7->_contactStore = v10;
 
-    objc_storeStrong(&v7->_contactStorage, a4);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v7->_contactStorage, storage);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contactsByUUID = v7->_contactsByUUID;
-    v7->_contactsByUUID = v12;
+    v7->_contactsByUUID = dictionary;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     placeholderContactsByUUID = v7->_placeholderContactsByUUID;
-    v7->_placeholderContactsByUUID = v14;
+    v7->_placeholderContactsByUUID = dictionary2;
 
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v16;
+    v7->_observers = weakObjectsHashTable;
 
     v18 = HKCreateConcurrentDispatchQueue();
     contactsQueue = v7->_contactsQueue;
@@ -235,31 +235,31 @@ uint64_t __39__ASContactsManager_loadCachedContacts__block_invoke_326(uint64_t a
   return v4 ^ 1u;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ASContactsManager_addObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ASContactsManager_removeObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -370,15 +370,15 @@ uint64_t __40__ASContactsManager_secureCloudContacts__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_queue_contactsForCloudType:(unint64_t)a3
+- (id)_queue_contactsForCloudType:(unint64_t)type
 {
-  v4 = [(ASContactsManager *)self _queue_allContacts];
+  _queue_allContacts = [(ASContactsManager *)self _queue_allContacts];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__ASContactsManager__queue_contactsForCloudType___block_invoke;
   v8[3] = &__block_descriptor_40_e19_B16__0__ASContact_8l;
-  v8[4] = a3;
-  v5 = [v4 hk_filter:v8];
+  v8[4] = type;
+  v5 = [_queue_allContacts hk_filter:v8];
   v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:v5 copyItems:1];
 
   return v6;
@@ -451,9 +451,9 @@ void __40__ASContactsManager_placeholderContacts__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactWithUUID:(id)a3
+- (id)contactWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -465,10 +465,10 @@ void __40__ASContactsManager_placeholderContacts__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__ASContactsManager_contactWithUUID___block_invoke;
   block[3] = &unk_278C4BAD0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(contactsQueue, block);
   v7 = v13[5];
 
@@ -486,9 +486,9 @@ void __37__ASContactsManager_contactWithUUID___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)placeholderContactWithUUID:(id)a3
+- (id)placeholderContactWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -500,10 +500,10 @@ void __37__ASContactsManager_contactWithUUID___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __48__ASContactsManager_placeholderContactWithUUID___block_invoke;
   block[3] = &unk_278C4BAD0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(contactsQueue, block);
   v7 = v13[5];
 
@@ -521,9 +521,9 @@ void __48__ASContactsManager_placeholderContactWithUUID___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)contactMatchingCriteriaBlock:(id)a3
+- (id)contactMatchingCriteriaBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -536,7 +536,7 @@ void __48__ASContactsManager_placeholderContactWithUUID___block_invoke(void *a1)
   block[2] = __50__ASContactsManager_contactMatchingCriteriaBlock___block_invoke;
   block[3] = &unk_278C4BFF8;
   block[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v10 = v6;
   v11 = &v12;
   dispatch_sync(contactsQueue, block);
@@ -592,18 +592,18 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactWithDestinations:(id)a3
+- (id)contactWithDestinations:(id)destinations
 {
-  v4 = a3;
-  v5 = [(ASContactsManager *)self contacts];
-  v6 = ASFindContactWithDestinationsInContacts(v4, v5);
+  destinationsCopy = destinations;
+  contacts = [(ASContactsManager *)self contacts];
+  v6 = ASFindContactWithDestinationsInContacts(destinationsCopy, contacts);
 
   return v6;
 }
 
-- (id)createContactWithDestinations:(id)a3
+- (id)createContactWithDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   ASLoggingInitialize();
   v5 = MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEBUG))
@@ -611,14 +611,14 @@ LABEL_11:
     [ASContactsManager createContactWithDestinations:];
   }
 
-  v6 = [(ASContactsManager *)self _findMatchingContactStoreContactForDestinations:v4];
+  v6 = [(ASContactsManager *)self _findMatchingContactStoreContactForDestinations:destinationsCopy];
   v7 = _DestinationsForContactStoreContact(v6);
   v8 = ASSanitizedContactDestinations();
   v9 = [v8 setByAddingObjectsFromSet:v7];
 
   v10 = objc_alloc_init(MEMORY[0x277CE90E8]);
-  v11 = [v6 identifier];
-  [v10 setLinkedContactStoreIdentifier:v11];
+  identifier = [v6 identifier];
+  [v10 setLinkedContactStoreIdentifier:identifier];
 
   [v10 setDestinations:v9];
   v12 = ASFullNameForContactStoreContact();
@@ -636,13 +636,13 @@ LABEL_11:
   return v10;
 }
 
-- (void)saveContact:(id)a3
+- (void)saveContact:(id)contact
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 UUID];
+  contactCopy = contact;
+  uUID = [contactCopy UUID];
 
-  if (v5)
+  if (uUID)
   {
     [(ASContactsManager *)self _waitForTransaction];
     ASLoggingInitialize();
@@ -651,11 +651,11 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v4 UUID];
+      uUID2 = [contactCopy UUID];
       *buf = 138543618;
-      v18 = v9;
+      v18 = uUID2;
       v19 = 2112;
-      v20 = v4;
+      v20 = contactCopy;
       _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "ContactsManager saving contact: %{public}@ - %@", buf, 0x16u);
     }
 
@@ -664,9 +664,9 @@ LABEL_11:
     if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v4 relationshipStorage];
+      relationshipStorage = [contactCopy relationshipStorage];
       *buf = 138412290;
-      v18 = v12;
+      v18 = relationshipStorage;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "ContactsManager saving contact with storage %@", buf, 0xCu);
     }
 
@@ -676,7 +676,7 @@ LABEL_11:
     v15[2] = __33__ASContactsManager_saveContact___block_invoke;
     v15[3] = &unk_278C4B250;
     v15[4] = self;
-    v16 = v4;
+    v16 = contactCopy;
     dispatch_barrier_sync(contactsQueue, v15);
   }
 
@@ -704,35 +704,35 @@ void __33__ASContactsManager_saveContact___block_invoke(uint64_t a1)
   [*(a1 + 32) _persistContacts:v5];
 }
 
-- (void)setContactsUsingTransaction:(id)a3
+- (void)setContactsUsingTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [(ASContactsManager *)self _beginTransaction];
-  v5 = v4[2](v4);
+  v5 = transactionCopy[2](transactionCopy);
 
   [(ASContactsManager *)self _setContacts:v5 waitForTransaction:0];
   [(ASContactsManager *)self _endTransaction];
 }
 
-- (id)savePlaceholderContact:(id)a3
+- (id)savePlaceholderContact:(id)contact
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [MEMORY[0x277CCAD78] UUID];
+  contactCopy = contact;
+  uUID = [contactCopy UUID];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE9008];
   v8 = *MEMORY[0x277CE9008];
-  if (v5)
+  if (uUID)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v21 = v6;
+      v21 = uUID2;
       v22 = 2114;
-      v23 = v5;
+      v23 = uUID;
       v24 = 2112;
-      v25 = v4;
+      v25 = contactCopy;
       _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "ContactsManager saving placeholder contact (token=%{public}@): %{public}@ - %@", buf, 0x20u);
     }
 
@@ -741,11 +741,11 @@ void __33__ASContactsManager_saveContact___block_invoke(uint64_t a1)
     v15[1] = 3221225472;
     v15[2] = __44__ASContactsManager_savePlaceholderContact___block_invoke;
     v15[3] = &unk_278C4BB48;
-    v10 = v6;
+    v10 = uUID2;
     v16 = v10;
-    v17 = v4;
-    v18 = self;
-    v19 = v5;
+    v17 = contactCopy;
+    selfCopy = self;
+    v19 = uUID;
     dispatch_barrier_sync(contactsQueue, v15);
     v11 = v19;
     v12 = v10;
@@ -758,7 +758,7 @@ void __33__ASContactsManager_saveContact___block_invoke(uint64_t a1)
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return uUID2;
 }
 
 void __44__ASContactsManager_savePlaceholderContact___block_invoke(uint64_t a1)
@@ -784,16 +784,16 @@ void __44__ASContactsManager_savePlaceholderContact___block_invoke(uint64_t a1)
   [*(a1 + 48) _queue_notifyObservers];
 }
 
-- (void)removePlaceholderContactWithToken:(id)a3
+- (void)removePlaceholderContactWithToken:(id)token
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = tokenCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "ContactsManager removing placeholder contact with token %{public}@", buf, 0xCu);
   }
 
@@ -803,8 +803,8 @@ void __44__ASContactsManager_savePlaceholderContact___block_invoke(uint64_t a1)
   v9[2] = __55__ASContactsManager_removePlaceholderContactWithToken___block_invoke;
   v9[3] = &unk_278C4B250;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = tokenCopy;
+  v7 = tokenCopy;
   dispatch_barrier_sync(contactsQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -985,17 +985,17 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
   return [v2 _queue_notifyObservers];
 }
 
-- (void)_setContacts:(id)a3 waitForTransaction:(BOOL)a4
+- (void)_setContacts:(id)contacts waitForTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  contactsCopy = contacts;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = contactsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
@@ -1011,9 +1011,9 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 UUID];
+        uUID = [v13 UUID];
 
-        if (!v14)
+        if (!uUID)
         {
           ASLoggingInitialize();
           if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_ERROR))
@@ -1025,8 +1025,8 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
         }
 
         v15 = [v13 copy];
-        v16 = [v13 UUID];
-        [v7 setObject:v15 forKeyedSubscript:v16];
+        uUID2 = [v13 UUID];
+        [dictionary setObject:v15 forKeyedSubscript:uUID2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
@@ -1039,7 +1039,7 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
     }
   }
 
-  if (v4)
+  if (transactionCopy)
   {
     [(ASContactsManager *)self _waitForTransaction];
   }
@@ -1049,7 +1049,7 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v7 count];
+    v19 = [dictionary count];
     *buf = 134217984;
     v30 = v19;
     _os_log_impl(&dword_23E5E3000, v18, OS_LOG_TYPE_DEFAULT, "ContactsManager saving %lu contacts", buf, 0xCu);
@@ -1061,7 +1061,7 @@ uint64_t __49__ASContactsManager_removeAllPlaceholderContacts__block_invoke(uint
   block[2] = __53__ASContactsManager__setContacts_waitForTransaction___block_invoke;
   block[3] = &unk_278C4BB98;
   block[4] = self;
-  v23 = v7;
+  v23 = dictionary;
   v24 = v8;
   dispatch_barrier_sync(contactsQueue, block);
 
@@ -1104,17 +1104,17 @@ void __53__ASContactsManager__setContacts_waitForTransaction___block_invoke(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_contactsToBeRemovedFromOldContacts:(id)a3 newContacts:(id)a4
+- (id)_contactsToBeRemovedFromOldContacts:(id)contacts newContacts:(id)newContacts
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contactsCopy = contacts;
+  newContactsCopy = newContacts;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = contactsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1130,8 +1130,8 @@ void __53__ASContactsManager__setContacts_waitForTransaction___block_invoke(uint
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v6 allKeys];
-        v15 = [v14 containsObject:v13];
+        allKeys = [newContactsCopy allKeys];
+        v15 = [allKeys containsObject:v13];
 
         if ((v15 & 1) == 0)
         {
@@ -1198,24 +1198,24 @@ void __53__ASContactsManager__setContacts_waitForTransaction___block_invoke(uint
 {
   dispatch_assert_queue_V2(self->_contactsQueue);
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NSMutableDictionary *)self->_contactsByUUID allValues];
-  v5 = [v3 setWithArray:v4];
+  allValues = [(NSMutableDictionary *)self->_contactsByUUID allValues];
+  v5 = [v3 setWithArray:allValues];
 
   return v5;
 }
 
-- (void)_persistContacts:(id)a3
+- (void)_persistContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   dispatch_assert_queue_not_V2(self->_persistQueue);
   persistQueue = self->_persistQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ASContactsManager__persistContacts___block_invoke;
   v7[3] = &unk_278C4B250;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contactsCopy;
+  selfCopy = self;
+  v6 = contactsCopy;
   dispatch_sync(persistQueue, v7);
 }
 
@@ -1307,14 +1307,14 @@ void __43__ASContactsManager__queue_notifyObservers__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_findMatchingContactStoreContactForDestinations:(id)a3
+- (id)_findMatchingContactStoreContactForDestinations:(id)destinations
 {
   v33 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
+  obj = destinations;
   v3 = [obj countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v3)
   {
@@ -1369,7 +1369,7 @@ void __43__ASContactsManager__queue_notifyObservers__block_invoke(uint64_t a1)
             }
           }
 
-          v17 = [v14 firstObject];
+          firstObject = [v14 firstObject];
 
           goto LABEL_17;
         }
@@ -1388,26 +1388,26 @@ void __43__ASContactsManager__queue_notifyObservers__block_invoke(uint64_t a1)
     }
   }
 
-  v17 = 0;
+  firstObject = 0;
 LABEL_17:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return firstObject;
 }
 
-- (id)_contactStoreContactWithIdentifier:(id)a3
+- (id)_contactStoreContactWithIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     contactStore = self->_contactStore;
     v4 = MEMORY[0x277CBDA78];
-    v5 = a3;
+    identifierCopy = identifier;
     v6 = [v4 descriptorForRequiredKeysForStyle:0];
     v11[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v8 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v5 keysToFetch:v7 error:0];
+    v8 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:identifierCopy keysToFetch:v7 error:0];
   }
 
   else
@@ -1420,36 +1420,36 @@ LABEL_17:
   return v8;
 }
 
-- (id)createContactWithDestinations:(id)a3 relationshipIdentifier:(id)a4
+- (id)createContactWithDestinations:(id)destinations relationshipIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE9008];
   v9 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412546;
-    v26 = v6;
+    v26 = destinationsCopy;
     v27 = 2112;
-    v28 = v7;
+    v28 = identifierCopy;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "ContactsManager creating new contact with destinations: %@, identifier %@", &v25, 0x16u);
   }
 
-  v10 = [(ASContactsManager *)self _findMatchingContactStoreContactForDestinations:v6];
+  v10 = [(ASContactsManager *)self _findMatchingContactStoreContactForDestinations:destinationsCopy];
   v11 = _DestinationsForContactStoreContact(v10);
   v12 = ASSanitizedContactDestinations();
   v13 = [v12 setByAddingObjectsFromSet:v11];
 
-  v14 = [objc_alloc(MEMORY[0x277CE9118]) initWithIdentifier:v7 cloudType:0];
+  v14 = [objc_alloc(MEMORY[0x277CE9118]) initWithIdentifier:identifierCopy cloudType:0];
   v15 = objc_alloc(MEMORY[0x277CE9118]);
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [v15 initWithIdentifier:v16 cloudType:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v17 = [v15 initWithIdentifier:uUID cloudType:0];
 
   v18 = [objc_alloc(MEMORY[0x277CE90E8]) initWithRelationship:v14 remoteRelationship:v17];
-  v19 = [v10 identifier];
-  [v18 setLinkedContactStoreIdentifier:v19];
+  identifier = [v10 identifier];
+  [v18 setLinkedContactStoreIdentifier:identifier];
 
   [v18 setDestinations:v13];
   v20 = ASFullNameForContactStoreContact();

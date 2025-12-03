@@ -1,15 +1,15 @@
 @interface DYFunctionStream
-- (void)enumerateFunctionsUsingBlock:(id)a3;
+- (void)enumerateFunctionsUsingBlock:(id)block;
 @end
 
 @implementation DYFunctionStream
 
-- (void)enumerateFunctionsUsingBlock:(id)a3
+- (void)enumerateFunctionsUsingBlock:(id)block
 {
-  for (i = 0; i != 1; (*(a3 + 2))(a3, v5, &i))
+  for (i = 0; i != 1; (*(block + 2))(block, readFunction, &i))
   {
-    v5 = [(DYFunctionStream *)self readFunction];
-    if (!v5)
+    readFunction = [(DYFunctionStream *)self readFunction];
+    if (!readFunction)
     {
       break;
     }

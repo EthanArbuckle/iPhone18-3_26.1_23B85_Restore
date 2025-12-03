@@ -1,13 +1,13 @@
 @interface PGPublicEventSummarizedFeature
-- (PGPublicEventSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 publicEventLabel:(id)a5;
+- (PGPublicEventSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset publicEventLabel:(id)label;
 @end
 
 @implementation PGPublicEventSummarizedFeature
 
-- (PGPublicEventSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 publicEventLabel:(id)a5
+- (PGPublicEventSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset publicEventLabel:(id)label
 {
-  v8 = a3;
-  v9 = a5;
+  presentCopy = present;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = PGPublicEventSummarizedFeature;
   v10 = [(PGPublicEventSummarizedFeature *)&v15 init];
@@ -15,12 +15,12 @@
   if (v10)
   {
     v10->_type = 4;
-    v12 = PGSummarizedFeatureConsolidatedDateIntervals(v8);
+    v12 = PGSummarizedFeatureConsolidatedDateIntervals(presentCopy);
     intervalsPresent = v11->_intervalsPresent;
     v11->_intervalsPresent = v12;
 
-    v11->_isMandatoryForKeyAsset = a4;
-    objc_storeStrong(&v11->_publicEventLabel, a5);
+    v11->_isMandatoryForKeyAsset = asset;
+    objc_storeStrong(&v11->_publicEventLabel, label);
   }
 
   return v11;

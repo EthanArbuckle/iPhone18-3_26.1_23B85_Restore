@@ -1,19 +1,19 @@
 @interface ServiceAllowList
-- (BOOL)allowsService:(id)a3;
-- (ServiceAllowList)initWithAllowList:(id)a3;
+- (BOOL)allowsService:(id)service;
+- (ServiceAllowList)initWithAllowList:(id)list;
 @end
 
 @implementation ServiceAllowList
 
-- (ServiceAllowList)initWithAllowList:(id)a3
+- (ServiceAllowList)initWithAllowList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v24.receiver = self;
   v24.super_class = ServiceAllowList;
   v5 = [(ServiceAllowList *)&v24 init];
   if (v5)
   {
-    v6 = [v4 containsObject:@"*"];
+    v6 = [listCopy containsObject:@"*"];
     v5->_allowsAllServices = v6;
     if ((v6 & 1) == 0)
     {
@@ -24,8 +24,8 @@
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v19 = v4;
-      v10 = v4;
+      v19 = listCopy;
+      v10 = listCopy;
       v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v11)
       {
@@ -69,7 +69,7 @@
         objc_storeStrong(&v5->_exactStrings, v7);
       }
 
-      v4 = v19;
+      listCopy = v19;
       if ([v8 count])
       {
         objc_storeStrong(&v5->_wildcardPatterns, v8);
@@ -82,10 +82,10 @@
   return v5;
 }
 
-- (BOOL)allowsService:(id)a3
+- (BOOL)allowsService:(id)service
 {
-  v4 = a3;
-  if (self->_allowsAllServices || [(NSSet *)self->_exactStrings containsObject:v4])
+  serviceCopy = service;
+  if (self->_allowsAllServices || [(NSSet *)self->_exactStrings containsObject:serviceCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -111,7 +111,7 @@
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if (!fnmatch([v9 UTF8String], objc_msgSend(v4, "UTF8String"), 0))
+          if (!fnmatch([v9 UTF8String], objc_msgSend(serviceCopy, "UTF8String"), 0))
           {
             LOBYTE(v5) = 1;
             goto LABEL_14;

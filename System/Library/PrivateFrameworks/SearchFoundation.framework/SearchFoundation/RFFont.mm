@@ -1,44 +1,44 @@
 @interface RFFont
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFFont)initWithCoder:(id)a3;
-- (RFFont)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFFont)initWithCoder:(id)coder;
+- (RFFont)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(int)a3;
-- (void)setSystem:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(int)name;
+- (void)setSystem:(id)system;
 @end
 
 @implementation RFFont
 
-- (RFFont)initWithProtobuf:(id)a3
+- (RFFont)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = RFFont;
   v5 = [(RFFont *)&v12 init];
   if (v5)
   {
-    if ([v4 name])
+    if ([protobufCopy name])
     {
-      -[RFFont setName:](v5, "setName:", [v4 name]);
+      -[RFFont setName:](v5, "setName:", [protobufCopy name]);
     }
 
-    v6 = [v4 system];
+    system = [protobufCopy system];
 
-    if (v6)
+    if (system)
     {
       v7 = [RFSystemFont alloc];
-      v8 = [v4 system];
-      v9 = [(RFSystemFont *)v7 initWithProtobuf:v8];
+      system2 = [protobufCopy system];
+      v9 = [(RFSystemFont *)v7 initWithProtobuf:system2];
       [(RFFont *)v5 setSystem:v9];
     }
 
-    if ([v4 applySmallCaps])
+    if ([protobufCopy applySmallCaps])
     {
-      -[RFFont setApplySmallCaps:](v5, "setApplySmallCaps:", [v4 applySmallCaps]);
+      -[RFFont setApplySmallCaps:](v5, "setApplySmallCaps:", [protobufCopy applySmallCaps]);
     }
 
     v10 = v5;
@@ -49,29 +49,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFFont *)self name];
-  v4 = [(RFFont *)self system];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(RFFont *)self applySmallCaps];
+  name = [(RFFont *)self name];
+  system = [(RFFont *)self system];
+  v5 = [system hash] ^ name;
+  applySmallCaps = [(RFFont *)self applySmallCaps];
 
-  return v5 ^ v6;
+  return v5 ^ applySmallCaps;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if ([(RFFont *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(RFFont *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v7 = v6;
-      v8 = [(RFFont *)self name];
-      if (v8 != [(RFFont *)v7 name])
+      v7 = equalCopy;
+      name = [(RFFont *)self name];
+      if (name != [(RFFont *)v7 name])
       {
         LOBYTE(v12) = 0;
 LABEL_16:
@@ -79,9 +79,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v9 = [(RFFont *)self system];
-      v10 = [(RFFont *)v7 system];
-      if ((v9 != 0) == (v10 == 0))
+      system = [(RFFont *)self system];
+      system2 = [(RFFont *)v7 system];
+      if ((system != 0) == (system2 == 0))
       {
         LOBYTE(v12) = 0;
 LABEL_15:
@@ -89,12 +89,12 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [(RFFont *)self system];
-      if (!v11 || (-[RFFont system](self, "system"), v3 = objc_claimAutoreleasedReturnValue(), -[RFFont system](v7, "system"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      system3 = [(RFFont *)self system];
+      if (!system3 || (-[RFFont system](self, "system"), v3 = objc_claimAutoreleasedReturnValue(), -[RFFont system](v7, "system"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v13 = [(RFFont *)self applySmallCaps];
-        v12 = v13 ^ [(RFFont *)v7 applySmallCaps]^ 1;
-        if (!v11)
+        applySmallCaps = [(RFFont *)self applySmallCaps];
+        v12 = applySmallCaps ^ [(RFFont *)v7 applySmallCaps]^ 1;
+        if (!system3)
         {
 LABEL_14:
 
@@ -118,9 +118,9 @@ LABEL_17:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFFont *)self hasName])
   {
     [v4 setName:{-[RFFont name](self, "name")}];
@@ -128,8 +128,8 @@ LABEL_17:
 
   if ([(RFFont *)self hasSystem])
   {
-    v5 = [(RFFont *)self system];
-    v6 = [v5 copy];
+    system = [(RFFont *)self system];
+    v6 = [system copy];
     [v4 setSystem:v6];
   }
 
@@ -140,31 +140,31 @@ LABEL_17:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFFont alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFont *)v2 jsonData];
+  jsonData = [(_SFPBRFFont *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFFont alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFont *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFFont *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFFont alloc] initWithFacade:self];
-  v5 = [(_SFPBRFFont *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFFont *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFFont)initWithCoder:(id)a3
+- (RFFont)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFFont alloc] initWithData:v5];
   v7 = [(RFFont *)self initWithProtobuf:v6];
@@ -172,18 +172,18 @@ LABEL_17:
   return v7;
 }
 
-- (void)setSystem:(id)a3
+- (void)setSystem:(id)system
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_system, a3);
+  objc_storeStrong(&self->_system, system);
   *&self->_has &= ~1u;
   self->_name = 0;
 }
 
-- (void)setName:(int)a3
+- (void)setName:(int)name
 {
   has = self->_has;
-  self->_name = a3;
+  self->_name = name;
   *&self->_has = has & 0xFC | 1;
   system = self->_system;
   self->_system = 0;

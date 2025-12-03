@@ -1,6 +1,6 @@
 @interface ISLanguageDetailController
 - (id)specifiers;
-- (void)changeLanguage:(id)a3;
+- (void)changeLanguage:(id)language;
 - (void)viewDidLoad;
 @end
 
@@ -11,41 +11,41 @@
   v9.receiver = self;
   v9.super_class = ISLanguageDetailController;
   [(ISLanguageDetailController *)&v9 viewDidLoad];
-  v3 = [(ISLanguageDetailController *)self specifier];
-  v4 = [v3 name];
-  v5 = [NSLocale componentsFromLocaleIdentifier:v4];
+  specifier = [(ISLanguageDetailController *)self specifier];
+  name = [specifier name];
+  v5 = [NSLocale componentsFromLocaleIdentifier:name];
   v6 = [v5 objectForKeyedSubscript:NSLocaleLanguageCode];
 
   v7 = [IPLanguage languageWithIdentifier:v6];
-  v8 = [v7 localizedStringForName];
-  [(ISLanguageDetailController *)self setTitle:v8];
+  localizedStringForName = [v7 localizedStringForName];
+  [(ISLanguageDetailController *)self setTitle:localizedStringForName];
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
     v26 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(ISLanguageDetailController *)v2 specifier];
-    v6 = [v5 name];
+    specifier = [(ISLanguageDetailController *)selfCopy specifier];
+    name = [specifier name];
 
-    v25 = v6;
-    v7 = [NSLocale localeWithLocaleIdentifier:v6];
-    v43 = [v7 selectedScript];
-    v8 = [v7 optionNameForSelectableScripts];
-    v9 = [PSSpecifier groupSpecifierWithID:@"SCRIPT" name:v8];
+    v25 = name;
+    v7 = [NSLocale localeWithLocaleIdentifier:name];
+    selectedScript = [v7 selectedScript];
+    optionNameForSelectableScripts = [v7 optionNameForSelectableScripts];
+    v9 = [PSSpecifier groupSpecifierWithID:@"SCRIPT" name:optionNameForSelectableScripts];
 
     v37 = v9;
     [v9 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
-    v10 = [v7 explanationTextForSelectableScripts];
+    explanationTextForSelectableScripts = [v7 explanationTextForSelectableScripts];
 
-    if (v10)
+    if (explanationTextForSelectableScripts)
     {
-      v11 = [v7 explanationTextForSelectableScripts];
-      [v37 setProperty:v11 forKey:PSFooterTextGroupKey];
+      explanationTextForSelectableScripts2 = [v7 explanationTextForSelectableScripts];
+      [v37 setProperty:explanationTextForSelectableScripts2 forKey:PSFooterTextGroupKey];
     }
 
     [v4 addObject:v37];
@@ -67,7 +67,7 @@
       v28 = PSConfirmationDestructiveKey;
       v27 = PSRadioGroupCheckedSpecifierKey;
       v35 = v4;
-      v36 = v2;
+      v36 = selfCopy;
       v34 = *v46;
       do
       {
@@ -80,9 +80,9 @@
 
           v14 = *(*(&v45 + 1) + 8 * i);
           v15 = [NSLocale displayNameForSelectableScriptCode:v14];
-          if ([v14 isEqualToString:v43])
+          if ([v14 isEqualToString:selectedScript])
           {
-            v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+            v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
             [v16 setIdentifier:v14];
             [v4 addObject:v16];
             [v37 setProperty:v16 forKey:v27];
@@ -90,7 +90,7 @@
 
           else
           {
-            v16 = [PSConfirmationSpecifier preferenceSpecifierNamed:v15 target:v2 set:0 get:0 detail:0 cell:13 edit:0];
+            v16 = [PSConfirmationSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
             [v16 setIdentifier:v14];
             [v16 setProperty:objc_opt_class() forKey:v33];
             v41 = +[ISInternationalViewController localizedRestartStringForCurrentDevice];
@@ -116,7 +116,7 @@
             v12 = v34;
 
             v4 = v35;
-            v2 = v36;
+            selfCopy = v36;
 
             [v16 setProperty:&__kCFBooleanTrue forKey:v28];
             [v16 setConfirmationAction:"changeLanguage:"];
@@ -130,27 +130,27 @@
       while (v44);
     }
 
-    v22 = *&v2->PSListController_opaque[v26];
-    *&v2->PSListController_opaque[v26] = v4;
+    v22 = *&selfCopy->PSListController_opaque[v26];
+    *&selfCopy->PSListController_opaque[v26] = v4;
 
-    v3 = *&v2->PSListController_opaque[v26];
+    v3 = *&selfCopy->PSListController_opaque[v26];
   }
 
   return v3;
 }
 
-- (void)changeLanguage:(id)a3
+- (void)changeLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(ISLanguageDetailController *)self specifier];
-  v7 = [v6 name];
-  v8 = [NSLocale localeWithLocaleIdentifier:v7];
+  languageCopy = language;
+  identifier = [languageCopy identifier];
+  specifier = [(ISLanguageDetailController *)self specifier];
+  name = [specifier name];
+  v8 = [NSLocale localeWithLocaleIdentifier:name];
 
-  v9 = [(ISLanguageDetailController *)self specifiers];
-  v10 = [v9 specifierForID:@"SCRIPT"];
+  specifiers = [(ISLanguageDetailController *)self specifiers];
+  v10 = [specifiers specifierForID:@"SCRIPT"];
 
-  [v10 setProperty:v4 forKey:PSRadioGroupCheckedSpecifierKey];
+  [v10 setProperty:languageCopy forKey:PSRadioGroupCheckedSpecifierKey];
   [(ISLanguageDetailController *)self reloadSpecifier:v10];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"CHANGE_UI_LANGUAGE_TEXT" value:&stru_35798 table:@"InternationalSettings"];
@@ -160,8 +160,8 @@
   v16[2] = sub_14850;
   v16[3] = &unk_34EA0;
   v17 = v8;
-  v18 = v5;
-  v14 = v5;
+  v18 = identifier;
+  v14 = identifier;
   v15 = v8;
   [(ISLanguageDetailController *)self showUpdatingLanguageViewWithLabel:v12 languageIdentifier:v13 completionBlock:v16];
 }

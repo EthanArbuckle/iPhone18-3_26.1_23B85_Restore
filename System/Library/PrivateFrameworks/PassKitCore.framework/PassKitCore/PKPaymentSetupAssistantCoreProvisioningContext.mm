@@ -1,9 +1,9 @@
 @interface PKPaymentSetupAssistantCoreProvisioningContext
-- (BOOL)canSelectIndex:(unint64_t)a3;
-- (BOOL)selectIndex:(unint64_t)a3;
+- (BOOL)canSelectIndex:(unint64_t)index;
+- (BOOL)selectIndex:(unint64_t)index;
 - (NSIndexSet)selectedIndices;
 - (NSString)description;
-- (PKPaymentSetupAssistantCoreProvisioningContext)initWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5;
+- (PKPaymentSetupAssistantCoreProvisioningContext)initWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable;
 - (id)availablePaymentCredentials;
 - (id)selectedCredentials;
 - (void)dealloc;
@@ -11,90 +11,90 @@
 
 @implementation PKPaymentSetupAssistantCoreProvisioningContext
 
-- (PKPaymentSetupAssistantCoreProvisioningContext)initWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5
+- (PKPaymentSetupAssistantCoreProvisioningContext)initWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  credentialsCopy = credentials;
   v44.receiver = self;
   v44.super_class = PKPaymentSetupAssistantCoreProvisioningContext;
   v11 = [(PKPaymentSetupAssistantCoreProvisioningContext *)&v44 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_provisioningController, a3);
-    objc_storeStrong(&v12->_setupAssistantCoreCredentials, a4);
-    if ([v10 count] <= a5)
+    objc_storeStrong(&v11->_provisioningController, controller);
+    objc_storeStrong(&v12->_setupAssistantCoreCredentials, credentials);
+    if ([credentialsCopy count] <= selectable)
     {
-      a5 = [v10 count];
+      selectable = [credentialsCopy count];
     }
 
-    v12->_maximumSelectable = a5;
+    v12->_maximumSelectable = selectable;
     v13 = objc_alloc_init(MEMORY[0x1E696AD50]);
     mutableSelectedIndices = v12->_mutableSelectedIndices;
     v12->_mutableSelectedIndices = v13;
 
     if (PKDisableDynamicSEAllocation())
     {
-      v15 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, v12->_maximumSelectable}];
-      v16 = [v15 mutableCopy];
-      v17 = v12->_mutableSelectedIndices;
+      storageSnapshot = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, v12->_maximumSelectable}];
+      v16 = [storageSnapshot mutableCopy];
+      deviceClass = v12->_mutableSelectedIndices;
       v12->_mutableSelectedIndices = v16;
       goto LABEL_31;
     }
 
     v18 = [(NSArray *)v12->_setupAssistantCoreCredentials count];
-    v15 = [(PKPaymentProvisioningController *)v12->_provisioningController storageSnapshot];
-    v19 = [(PKPaymentProvisioningController *)v12->_provisioningController webService];
-    v20 = [v19 targetDevice];
-    v17 = [v20 deviceClass];
+    storageSnapshot = [(PKPaymentProvisioningController *)v12->_provisioningController storageSnapshot];
+    webService = [(PKPaymentProvisioningController *)v12->_provisioningController webService];
+    targetDevice = [webService targetDevice];
+    deviceClass = [targetDevice deviceClass];
 
     if (v18)
     {
-      v40 = v10;
-      v41 = v9;
+      v40 = credentialsCopy;
+      v41 = controllerCopy;
       v21 = 0;
-      v42 = v17;
-      v43 = v15;
+      v42 = deviceClass;
+      v43 = storageSnapshot;
       while (1)
       {
         v22 = [(NSArray *)v12->_setupAssistantCoreCredentials objectAtIndexedSubscript:v21, v40, v41];
-        v23 = [v22 credential];
+        credential = [v22 credential];
 
-        v24 = [v23 remoteCredential];
-        v25 = v24;
-        if (!v24 || [v24 status] != 5 || objc_msgSend(v25, "transferType") != 1)
+        remoteCredential = [credential remoteCredential];
+        v25 = remoteCredential;
+        if (!remoteCredential || [remoteCredential status] != 5 || objc_msgSend(v25, "transferType") != 1)
         {
           goto LABEL_17;
         }
 
-        v26 = [v25 transferableFromDevices];
-        v27 = [v26 firstObject];
+        transferableFromDevices = [v25 transferableFromDevices];
+        firstObject = [transferableFromDevices firstObject];
 
-        v28 = [v27 deviceClass];
-        v29 = v28;
-        if (v28)
+        deviceClass2 = [firstObject deviceClass];
+        v29 = deviceClass2;
+        if (deviceClass2)
         {
-          v30 = v28;
-          v31 = v17;
-          v32 = v17;
+          v30 = deviceClass2;
+          v31 = deviceClass;
+          v32 = deviceClass;
           v33 = v31;
           if (v30 == v31)
           {
 
-            v17 = v32;
-            v15 = v43;
+            deviceClass = v32;
+            storageSnapshot = v43;
 LABEL_17:
-            v35 = [v23 appletTypes];
-            v27 = v35;
-            if (v35 && [v35 count])
+            appletTypes = [credential appletTypes];
+            firstObject = appletTypes;
+            if (appletTypes && [appletTypes count])
             {
-              if (![v15 addAppletTypesToSnapshot:v27])
+              if (![storageSnapshot addAppletTypesToSnapshot:firstObject])
               {
 
 LABEL_30:
-                v10 = v40;
-                v9 = v41;
+                credentialsCopy = v40;
+                controllerCopy = v41;
                 break;
               }
             }
@@ -117,8 +117,8 @@ LABEL_30:
           {
             v34 = [v30 isEqualToString:v31];
 
-            v17 = v42;
-            v15 = v43;
+            deviceClass = v42;
+            storageSnapshot = v43;
             if ((v34 & 1) == 0)
             {
               goto LABEL_26;
@@ -127,8 +127,8 @@ LABEL_30:
             goto LABEL_17;
           }
 
-          v17 = v42;
-          v15 = v43;
+          deviceClass = v42;
+          storageSnapshot = v43;
         }
 
 LABEL_25:
@@ -166,34 +166,34 @@ LABEL_31:
   [(PKPaymentSetupAssistantCoreProvisioningContext *)&v3 dealloc];
 }
 
-- (BOOL)canSelectIndex:(unint64_t)a3
+- (BOOL)canSelectIndex:(unint64_t)index
 {
   v5 = [(NSArray *)self->_setupAssistantCoreCredentials count];
-  v6 = [(NSMutableIndexSet *)self->_mutableSelectedIndices containsIndex:a3];
+  v6 = [(NSMutableIndexSet *)self->_mutableSelectedIndices containsIndex:index];
   if (PKDynamicSEAllocationFakeFullSE())
   {
-    v7 = [(NSArray *)self->_setupAssistantCoreCredentials objectAtIndexedSubscript:a3];
-    v8 = [v7 credential];
-    v9 = [v8 appletTypes];
+    v7 = [(NSArray *)self->_setupAssistantCoreCredentials objectAtIndexedSubscript:index];
+    credential = [v7 credential];
+    appletTypes = [credential appletTypes];
 
-    v10 = [(PKPaymentProvisioningController *)self->_provisioningController storageSnapshot];
-    v11 = v10;
+    storageSnapshot = [(PKPaymentProvisioningController *)self->_provisioningController storageSnapshot];
+    v11 = storageSnapshot;
     if (v6)
     {
-      [v10 removeAppletTypesFromSnapshot:v9];
+      [storageSnapshot removeAppletTypesFromSnapshot:appletTypes];
       LOBYTE(v6) = 1;
     }
 
     else
     {
-      v6 = [v10 addAppletTypesToSnapshot:v9];
+      v6 = [storageSnapshot addAppletTypesToSnapshot:appletTypes];
     }
   }
 
   else
   {
     v12 = [(NSMutableIndexSet *)self->_mutableSelectedIndices count];
-    if (v5 <= a3)
+    if (v5 <= index)
     {
       LOBYTE(v6) = 0;
     }
@@ -207,22 +207,22 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)selectIndex:(unint64_t)a3
+- (BOOL)selectIndex:(unint64_t)index
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = [(PKPaymentSetupAssistantCoreProvisioningContext *)self canSelectIndex:?];
   if (v5)
   {
-    v6 = [(NSMutableIndexSet *)self->_mutableSelectedIndices containsIndex:a3];
+    v6 = [(NSMutableIndexSet *)self->_mutableSelectedIndices containsIndex:index];
     mutableSelectedIndices = self->_mutableSelectedIndices;
     if (v6)
     {
-      [(NSMutableIndexSet *)mutableSelectedIndices removeIndex:a3];
+      [(NSMutableIndexSet *)mutableSelectedIndices removeIndex:index];
     }
 
     else
     {
-      [(NSMutableIndexSet *)mutableSelectedIndices addIndex:a3];
+      [(NSMutableIndexSet *)mutableSelectedIndices addIndex:index];
     }
 
     v8 = PKLogFacilityTypeGetObject(0x2AuLL);
@@ -230,7 +230,7 @@ LABEL_31:
     {
       v14 = self->_mutableSelectedIndices;
       v16 = 138412290;
-      v17 = v14;
+      indexCopy = v14;
       v11 = "[PKPaymentSetupAssistantCoreProvisioningContext selectIndex:] - selected: %@";
       v12 = v8;
       v13 = 12;
@@ -246,7 +246,7 @@ LABEL_31:
       v9 = [(NSArray *)self->_setupAssistantCoreCredentials count];
       v10 = [(NSMutableIndexSet *)self->_mutableSelectedIndices count];
       v16 = 134218496;
-      v17 = a3;
+      indexCopy = index;
       v18 = 2048;
       v19 = v9;
       v20 = 2048;
@@ -264,15 +264,15 @@ LABEL_9:
 
 - (id)availablePaymentCredentials
 {
-  v3 = [(PKPaymentSetupAssistantCoreProvisioningContext *)self selectedCredentials];
-  v4 = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
+  selectedCredentials = [(PKPaymentSetupAssistantCoreProvisioningContext *)self selectedCredentials];
+  associatedCredentials = [(PKPaymentProvisioningController *)self->_provisioningController associatedCredentials];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__PKPaymentSetupAssistantCoreProvisioningContext_availablePaymentCredentials__block_invoke;
   v8[3] = &unk_1E79C8588;
-  v9 = v4;
-  v5 = v4;
-  v6 = [v3 pk_objectsPassingTest:v8];
+  v9 = associatedCredentials;
+  v5 = associatedCredentials;
+  v6 = [selectedCredentials pk_objectsPassingTest:v8];
 
   return v6;
 }
@@ -293,7 +293,7 @@ LABEL_9:
   v10 = __69__PKPaymentSetupAssistantCoreProvisioningContext_selectedCredentials__block_invoke;
   v11 = &unk_1E79C85B0;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [(NSMutableIndexSet *)mutableSelectedIndices enumerateIndexesUsingBlock:&v8];
   v6 = [v5 copy];

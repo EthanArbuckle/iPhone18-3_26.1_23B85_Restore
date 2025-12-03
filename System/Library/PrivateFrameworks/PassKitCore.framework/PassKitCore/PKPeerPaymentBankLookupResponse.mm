@@ -1,23 +1,23 @@
 @interface PKPeerPaymentBankLookupResponse
-- (PKPeerPaymentBankLookupResponse)initWithData:(id)a3;
+- (PKPeerPaymentBankLookupResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentBankLookupResponse
 
-- (PKPeerPaymentBankLookupResponse)initWithData:(id)a3
+- (PKPeerPaymentBankLookupResponse)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PKPeerPaymentBankLookupResponse;
-  v3 = [(PKWebServiceResponse *)&v14 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v14 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v4->_success = [v6 PKBoolForKey:@"success"];
       v7 = [v6 PKStringForKey:@"displayName"];
 

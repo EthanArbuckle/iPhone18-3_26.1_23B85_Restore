@@ -1,18 +1,18 @@
 @interface CRLiOSAllTouchesDoneGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (CRLiOSAllTouchesDoneGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)p_touchesEndedOrCancelled:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (CRLiOSAllTouchesDoneGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)p_touchesEndedOrCancelled:(id)cancelled;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CRLiOSAllTouchesDoneGestureRecognizer
 
-- (CRLiOSAllTouchesDoneGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CRLiOSAllTouchesDoneGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = CRLiOSAllTouchesDoneGestureRecognizer;
-  v4 = [(CRLiOSAllTouchesDoneGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(CRLiOSAllTouchesDoneGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableSet);
@@ -34,18 +34,18 @@
   [(NSMutableSet *)self->_touches removeAllObjects];
   if (self->_currentlyCountingTouches)
   {
-    v3 = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
-    [v3 didStopCountingTouches:self];
+    delegate = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
+    [delegate didStopCountingTouches:self];
 
     self->_currentlyCountingTouches = 0;
   }
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 view], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_opt_isKindOfClass(), v4, (v5))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy view], v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v5 = objc_opt_isKindOfClass(), v4, (v5))
   {
     isKindOfClass = 1;
   }
@@ -59,33 +59,33 @@
   return isKindOfClass & 1;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(NSMutableSet *)self->_touches unionSet:a3, a4];
+  [(NSMutableSet *)self->_touches unionSet:began, event];
   if ([(NSMutableSet *)self->_touches count]&& !self->_currentlyCountingTouches)
   {
-    v12 = [(NSMutableSet *)self->_touches anyObject];
-    v5 = [v12 type];
-    v6 = [(CRLiOSAllTouchesDoneGestureRecognizer *)self view];
-    [v12 locationInView:v6];
+    anyObject = [(NSMutableSet *)self->_touches anyObject];
+    type = [anyObject type];
+    view = [(CRLiOSAllTouchesDoneGestureRecognizer *)self view];
+    [anyObject locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
-    [v11 didStartCountingTouches:self touchType:v5 atSomeTouchPoint:{v8, v10}];
+    delegate = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
+    [delegate didStartCountingTouches:self touchType:type atSomeTouchPoint:{v8, v10}];
 
     self->_currentlyCountingTouches = 1;
   }
 }
 
-- (void)p_touchesEndedOrCancelled:(id)a3
+- (void)p_touchesEndedOrCancelled:(id)cancelled
 {
-  [(NSMutableSet *)self->_touches minusSet:a3];
+  [(NSMutableSet *)self->_touches minusSet:cancelled];
   if (![(NSMutableSet *)self->_touches count]&& ![(CRLiOSAllTouchesDoneGestureRecognizer *)self state])
   {
     [(CRLiOSAllTouchesDoneGestureRecognizer *)self setState:3];
-    v4 = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
-    [v4 didStopCountingTouches:self];
+    delegate = [(CRLiOSAllTouchesDoneGestureRecognizer *)self delegate];
+    [delegate didStopCountingTouches:self];
 
     self->_currentlyCountingTouches = 0;
   }

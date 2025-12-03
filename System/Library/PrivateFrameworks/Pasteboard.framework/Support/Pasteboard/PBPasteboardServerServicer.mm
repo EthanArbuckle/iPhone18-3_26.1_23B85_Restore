@@ -1,28 +1,28 @@
 @interface PBPasteboardServerServicer
-+ (id)newServicerForConnection:(id)a3 detectiveAgency:(id)a4 pasteButtonSlotMachine:(id)a5 pasteAuthority:(id)a6 pasteNotifier:(id)a7;
++ (id)newServicerForConnection:(id)connection detectiveAgency:(id)agency pasteButtonSlotMachine:(id)machine pasteAuthority:(id)authority pasteNotifier:(id)notifier;
 - (NSXPCConnection)clientToServerConnection;
-- (PBPasteboardServerServicer)initWithConnection:(id)a3 detectiveAgency:(id)a4 pasteButtonSlotMachine:(id)a5 pasteAuthority:(id)a6 pasteNotifier:(id)a7;
-- (id)hangAssertionForAuditTokenInfo:(id)a3;
-- (id)pasteAnnoucementForPasteboard:(id)a3 auditTokenInfo:(id)a4 loadContext:(id)a5 timeout:(double)a6;
-- (id)sanitizedDoNothingCopyOfPasteboard:(id)a3 destinationAuditTokenInfo:(id)a4;
-- (void)_pasteboardWithName:(id)a3 localOnly:(BOOL)a4 createIfNeeded:(BOOL)a5 deviceIsLocked:(BOOL)a6 completionBlock:(id)a7;
-- (void)announcePasteForPasteboard:(id)a3 auditTokenInfo:(id)a4;
-- (void)deletePersistentPasteboardWithName:(id)a3 completionBlock:(id)a4;
-- (void)didInvalidateItemCollectionWithUUID:(id)a3;
-- (void)didPasteContentsFromPasteboardWithName:(id)a3 UUID:(id)a4 completionBlock:(id)a5;
-- (void)getAllPasteboardsCompletionBlock:(id)a3;
-- (void)getRemoteContentForLayerContextWithId:(unint64_t)a3 slotStyle:(id)a4 pasteButtonTag:(id)a5 completionBlock:(id)a6;
-- (void)localGeneralPasteboardCompletionBlock:(id)a3;
-- (void)pasteboardWithName:(id)a3 createIfNeeded:(BOOL)a4 completionBlock:(id)a5;
-- (void)performJanitorialTasksCompletionBlock:(id)a3;
-- (void)removeActiveAuthorizationAnnouncer:(id)a3 collection:(id)a4;
-- (void)requestFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 needData:(BOOL)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 errorBlock:(id)a10 pasteboardItemBlock:(id)a11;
-- (void)requestItemFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 typeIdentifier:(id)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 completionBlock:(id)a10;
-- (void)requestPatternDetectionsFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 patterns:(id)a7 needValues:(BOOL)a8 dataOwner:(int64_t)a9 completionBlock:(id)a10;
-- (void)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 completionBlock:(id)a5;
-- (void)requestUserAuthorizationForPasteboard:(id)a3 auditTokenInfo:(id)a4 loadContext:(id)a5 completionHandler:(id)a6;
-- (void)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 completionBlock:(id)a5;
-- (void)setActiveAuthorizationAnnouncer:(id)a3 collection:(id)a4;
+- (PBPasteboardServerServicer)initWithConnection:(id)connection detectiveAgency:(id)agency pasteButtonSlotMachine:(id)machine pasteAuthority:(id)authority pasteNotifier:(id)notifier;
+- (id)hangAssertionForAuditTokenInfo:(id)info;
+- (id)pasteAnnoucementForPasteboard:(id)pasteboard auditTokenInfo:(id)info loadContext:(id)context timeout:(double)timeout;
+- (id)sanitizedDoNothingCopyOfPasteboard:(id)pasteboard destinationAuditTokenInfo:(id)info;
+- (void)_pasteboardWithName:(id)name localOnly:(BOOL)only createIfNeeded:(BOOL)needed deviceIsLocked:(BOOL)locked completionBlock:(id)block;
+- (void)announcePasteForPasteboard:(id)pasteboard auditTokenInfo:(id)info;
+- (void)deletePersistentPasteboardWithName:(id)name completionBlock:(id)block;
+- (void)didInvalidateItemCollectionWithUUID:(id)d;
+- (void)didPasteContentsFromPasteboardWithName:(id)name UUID:(id)d completionBlock:(id)block;
+- (void)getAllPasteboardsCompletionBlock:(id)block;
+- (void)getRemoteContentForLayerContextWithId:(unint64_t)id slotStyle:(id)style pasteButtonTag:(id)tag completionBlock:(id)block;
+- (void)localGeneralPasteboardCompletionBlock:(id)block;
+- (void)pasteboardWithName:(id)name createIfNeeded:(BOOL)needed completionBlock:(id)block;
+- (void)performJanitorialTasksCompletionBlock:(id)block;
+- (void)removeActiveAuthorizationAnnouncer:(id)announcer collection:(id)collection;
+- (void)requestFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index needData:(BOOL)data dataOwner:(int64_t)owner loadContext:(id)context errorBlock:(id)self0 pasteboardItemBlock:(id)self1;
+- (void)requestItemFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index typeIdentifier:(id)identifier dataOwner:(int64_t)owner loadContext:(id)context completionBlock:(id)self0;
+- (void)requestPatternDetectionsFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index patterns:(id)patterns needValues:(BOOL)values dataOwner:(int64_t)owner completionBlock:(id)self0;
+- (void)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d completionBlock:(id)block;
+- (void)requestUserAuthorizationForPasteboard:(id)pasteboard auditTokenInfo:(id)info loadContext:(id)context completionHandler:(id)handler;
+- (void)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint completionBlock:(id)block;
+- (void)setActiveAuthorizationAnnouncer:(id)announcer collection:(id)collection;
 @end
 
 @implementation PBPasteboardServerServicer
@@ -34,35 +34,35 @@
   return WeakRetained;
 }
 
-+ (id)newServicerForConnection:(id)a3 detectiveAgency:(id)a4 pasteButtonSlotMachine:(id)a5 pasteAuthority:(id)a6 pasteNotifier:(id)a7
++ (id)newServicerForConnection:(id)connection detectiveAgency:(id)agency pasteButtonSlotMachine:(id)machine pasteAuthority:(id)authority pasteNotifier:(id)notifier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[PBPasteboardServerServicer alloc] initWithConnection:v15 detectiveAgency:v14 pasteButtonSlotMachine:v13 pasteAuthority:v12 pasteNotifier:v11];
+  notifierCopy = notifier;
+  authorityCopy = authority;
+  machineCopy = machine;
+  agencyCopy = agency;
+  connectionCopy = connection;
+  v16 = [[PBPasteboardServerServicer alloc] initWithConnection:connectionCopy detectiveAgency:agencyCopy pasteButtonSlotMachine:machineCopy pasteAuthority:authorityCopy pasteNotifier:notifierCopy];
 
   return v16;
 }
 
-- (PBPasteboardServerServicer)initWithConnection:(id)a3 detectiveAgency:(id)a4 pasteButtonSlotMachine:(id)a5 pasteAuthority:(id)a6 pasteNotifier:(id)a7
+- (PBPasteboardServerServicer)initWithConnection:(id)connection detectiveAgency:(id)agency pasteButtonSlotMachine:(id)machine pasteAuthority:(id)authority pasteNotifier:(id)notifier
 {
-  v12 = a3;
-  v27 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  connectionCopy = connection;
+  agencyCopy = agency;
+  machineCopy = machine;
+  authorityCopy = authority;
+  notifierCopy = notifier;
   v31.receiver = self;
   v31.super_class = PBPasteboardServerServicer;
   v16 = [(PBPasteboardServerServicer *)&v31 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_clientToServerConnection, v12);
-    [v12 setExportedObject:v17];
+    objc_storeWeak(&v16->_clientToServerConnection, connectionCopy);
+    [connectionCopy setExportedObject:v17];
     v18 = PBNewClientToServerXPCInterface();
-    [v12 setExportedInterface:v18];
+    [connectionCopy setExportedInterface:v18];
 
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
@@ -70,10 +70,10 @@
     v29[3] = &unk_100030D98;
     v19 = v17;
     v30 = v19;
-    [v12 setInvalidationHandler:v29];
-    if (v12)
+    [connectionCopy setInvalidationHandler:v29];
+    if (connectionCopy)
     {
-      [v12 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -85,10 +85,10 @@
     clientAuditTokenInfo = v19->_clientAuditTokenInfo;
     v19->_clientAuditTokenInfo = v20;
 
-    objc_storeStrong(&v19->_detectiveAgency, a4);
-    objc_storeStrong(&v19->_pasteButtonSlotMachine, a5);
-    objc_storeStrong(&v19->_pasteAuthority, a6);
-    objc_storeStrong(&v19->_pasteNotifier, a7);
+    objc_storeStrong(&v19->_detectiveAgency, agency);
+    objc_storeStrong(&v19->_pasteButtonSlotMachine, machine);
+    objc_storeStrong(&v19->_pasteAuthority, authority);
+    objc_storeStrong(&v19->_pasteNotifier, notifier);
     v22 = +[NSMutableDictionary dictionary];
     activeAnnouncers = v19->_activeAnnouncers;
     v19->_activeAnnouncers = v22;
@@ -101,13 +101,13 @@
   return v17;
 }
 
-- (void)_pasteboardWithName:(id)a3 localOnly:(BOOL)a4 createIfNeeded:(BOOL)a5 deviceIsLocked:(BOOL)a6 completionBlock:(id)a7
+- (void)_pasteboardWithName:(id)name localOnly:(BOOL)only createIfNeeded:(BOOL)needed deviceIsLocked:(BOOL)locked completionBlock:(id)block
 {
-  v8 = a6;
-  v40 = a5;
-  v9 = a4;
-  v11 = a3;
-  v12 = a7;
+  lockedCopy = locked;
+  neededCopy = needed;
+  onlyCopy = only;
+  nameCopy = name;
+  blockCopy = block;
   v13 = _PBLog();
   v14 = os_signpost_id_generate(v13);
 
@@ -122,11 +122,11 @@
 
   v59 = 0u;
   v60 = 0u;
-  v17 = [(PBPasteboardServerServicer *)self clientToServerConnection];
-  v18 = v17;
-  if (v17)
+  clientToServerConnection = [(PBPasteboardServerServicer *)self clientToServerConnection];
+  v18 = clientToServerConnection;
+  if (clientToServerConnection)
   {
-    [v17 auditToken];
+    [clientToServerConnection auditToken];
   }
 
   else
@@ -141,33 +141,33 @@
   v20 = _PBLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v19 bundleID];
+    bundleID = [v19 bundleID];
     [v19 teamID];
-    v22 = v8;
-    v24 = v23 = v9;
+    v22 = lockedCopy;
+    v24 = v23 = onlyCopy;
     v25 = [v19 pid];
     *buf = 138413058;
-    *&buf[4] = v21;
+    *&buf[4] = bundleID;
     *&buf[12] = 2112;
     *&buf[14] = v24;
     *&buf[22] = 1024;
     *&buf[24] = v25;
     *&buf[28] = 2112;
-    *&buf[30] = v11;
+    *&buf[30] = nameCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "BundleID %@ from team %@ (pid %d) is requesting pasteboard %@", buf, 0x26u);
 
-    v9 = v23;
-    v8 = v22;
+    onlyCopy = v23;
+    lockedCopy = v22;
   }
 
-  if (v9)
+  if (onlyCopy)
   {
     v26 = _PBLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [v19 bundleID];
+      bundleID2 = [v19 bundleID];
       *buf = 138412290;
-      *&buf[4] = v27;
+      *&buf[4] = bundleID2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Requesting local only pasteboard for %@", buf, 0xCu);
     }
   }
@@ -177,26 +177,26 @@
   v29 = 0;
   if (v28)
   {
-    if (v8)
+    if (lockedCopy)
     {
-      if (([v11 isEqualToString:PBGeneralPasteboardName] & 1) == 0)
+      if (([nameCopy isEqualToString:PBGeneralPasteboardName] & 1) == 0)
       {
         v37 = _PBLog();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v11;
+          *&buf[4] = nameCopy;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Access to pasteboard named %@ is not allowed while the device is locked.", buf, 0xCu);
         }
 
-        if (v12)
+        if (blockCopy)
         {
           v51 = _NSConcreteStackBlock;
           v52 = 3221225472;
           v53 = sub_100009A0C;
           v54 = &unk_100031230;
-          v56 = v12;
-          v55 = v11;
+          v56 = blockCopy;
+          v55 = nameCopy;
           v57 = spid;
           PBDispatchAsyncCallback();
 
@@ -207,7 +207,7 @@
         goto LABEL_35;
       }
 
-      if (sub_100002298(v11, v19, 0))
+      if (sub_100002298(nameCopy, v19, 0))
       {
         v30 = _PBLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -220,24 +220,24 @@
       }
     }
 
-    else if (sub_100002298(v11, v19, 0))
+    else if (sub_100002298(nameCopy, v19, 0))
     {
 LABEL_25:
       v33 = +[PBPasteboardModel sharedModel];
-      v34 = [v19 bundleID];
+      bundleID3 = [v19 bundleID];
       [v19 teamID];
-      v35 = v39 = v9;
+      v35 = v39 = onlyCopy;
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_100009ACC;
       v46[3] = &unk_100031258;
       v46[4] = self;
       v47 = v19;
-      v48 = v11;
-      v49 = v12;
+      v48 = nameCopy;
+      v49 = blockCopy;
       v50 = spid;
-      LOBYTE(v38) = v8;
-      [v33 getPasteboardNamed:v48 bundleID:v34 teamID:v35 createIfNeeded:v40 localOnly:v39 processInfo:v47 deviceIsLocked:v38 completionBlock:v46];
+      LOBYTE(v38) = lockedCopy;
+      [v33 getPasteboardNamed:v48 bundleID:bundleID3 teamID:v35 createIfNeeded:neededCopy localOnly:v39 processInfo:v47 deviceIsLocked:v38 completionBlock:v46];
 
       v32 = v47;
       goto LABEL_34;
@@ -247,16 +247,16 @@ LABEL_25:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = nameCopy;
       *&buf[12] = 2112;
       *&buf[14] = v29;
       _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "...client not allowed to request pasteboard %@. Error: %@", buf, 0x16u);
     }
 
-    if (v12)
+    if (blockCopy)
     {
-      v45 = v12;
-      v44 = v11;
+      v45 = blockCopy;
+      v44 = nameCopy;
       PBDispatchAsyncCallback();
 
       v32 = v45;
@@ -270,15 +270,15 @@ LABEL_25:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = nameCopy;
       *&buf[12] = 2112;
       *&buf[14] = v29;
       _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "...pasteboard name %@ is not allowed. Error: %@", buf, 0x16u);
     }
 
-    if (v12)
+    if (blockCopy)
     {
-      v43 = v12;
+      v43 = blockCopy;
       v42 = v29;
       PBDispatchAsyncCallback();
 
@@ -290,50 +290,50 @@ LABEL_34:
 LABEL_35:
 }
 
-- (void)pasteboardWithName:(id)a3 createIfNeeded:(BOOL)a4 completionBlock:(id)a5
+- (void)pasteboardWithName:(id)name createIfNeeded:(BOOL)needed completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v13 = a3;
+  neededCopy = needed;
+  blockCopy = block;
+  nameCopy = name;
   v9 = PBIsPasteboardNameGeneralPasteboard();
   v10 = MKBGetDeviceLockState();
   v12 = v10 != 3 && v10 != 0;
-  [(PBPasteboardServerServicer *)self _pasteboardWithName:v13 localOnly:0 createIfNeeded:v9 | v5 deviceIsLocked:v12 completionBlock:v8];
+  [(PBPasteboardServerServicer *)self _pasteboardWithName:nameCopy localOnly:0 createIfNeeded:v9 | neededCopy deviceIsLocked:v12 completionBlock:blockCopy];
 }
 
-- (void)localGeneralPasteboardCompletionBlock:(id)a3
+- (void)localGeneralPasteboardCompletionBlock:(id)block
 {
   v4 = PBGeneralPasteboardName;
-  v8 = a3;
+  blockCopy = block;
   v5 = MKBGetDeviceLockState();
   v7 = v5 != 3 && v5 != 0;
-  [(PBPasteboardServerServicer *)self _pasteboardWithName:v4 localOnly:1 createIfNeeded:1 deviceIsLocked:v7 completionBlock:v8];
+  [(PBPasteboardServerServicer *)self _pasteboardWithName:v4 localOnly:1 createIfNeeded:1 deviceIsLocked:v7 completionBlock:blockCopy];
 }
 
-- (id)sanitizedDoNothingCopyOfPasteboard:(id)a3 destinationAuditTokenInfo:(id)a4
+- (id)sanitizedDoNothingCopyOfPasteboard:(id)pasteboard destinationAuditTokenInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 copyWithDoNothingLoaders];
-  v8 = [v5 UUID];
-  [v7 setUUID:v8];
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  copyWithDoNothingLoaders = [pasteboardCopy copyWithDoNothingLoaders];
+  uUID = [pasteboardCopy UUID];
+  [copyWithDoNothingLoaders setUUID:uUID];
 
-  if (([v6 isAllowedToQueryBundleID] & 1) == 0)
+  if (([infoCopy isAllowedToQueryBundleID] & 1) == 0)
   {
-    [v7 setSaveBootSession:0];
-    [v7 setSaveTimestamp:0];
-    [v7 setOriginatorPersistentID:0];
-    [v7 setOriginatorBundleID:0];
-    [v7 setOriginatorTeamID:0];
-    [v7 setOriginatorLocalizedName:0];
+    [copyWithDoNothingLoaders setSaveBootSession:0];
+    [copyWithDoNothingLoaders setSaveTimestamp:0];
+    [copyWithDoNothingLoaders setOriginatorPersistentID:0];
+    [copyWithDoNothingLoaders setOriginatorBundleID:0];
+    [copyWithDoNothingLoaders setOriginatorTeamID:0];
+    [copyWithDoNothingLoaders setOriginatorLocalizedName:0];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v7 items];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  items = [copyWithDoNothingLoaders items];
+  v10 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -344,28 +344,28 @@ LABEL_35:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 metadata];
-        if ([v15 count])
+        metadata = [v14 metadata];
+        if ([metadata count])
         {
           v16 = +[NSMutableDictionary dictionary];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_10000A164;
           v20[3] = &unk_100031280;
-          v21 = v6;
-          v22 = v5;
+          v21 = infoCopy;
+          v22 = pasteboardCopy;
           v23 = v16;
           v17 = v16;
-          [v15 enumerateKeysAndObjectsUsingBlock:v20];
+          [metadata enumerateKeysAndObjectsUsingBlock:v20];
           [v14 setMetadata:v17];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
@@ -374,18 +374,18 @@ LABEL_35:
   return v19;
 }
 
-- (void)savePasteboard:(id)a3 dataProviderEndpoint:(id)a4 completionBlock:(id)a5
+- (void)savePasteboard:(id)pasteboard dataProviderEndpoint:(id)endpoint completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pasteboardCopy = pasteboard;
+  endpointCopy = endpoint;
+  blockCopy = block;
   v11 = MKBGetDeviceLockState();
   v13 = v11 != 3 && v11 != 0;
   if (v11)
   {
     if (v11 != 3)
     {
-      v14 = [v8 name];
+      name = [pasteboardCopy name];
       v15 = PBIsPasteboardNameGeneralPasteboard();
 
       if ((v15 & 1) == 0)
@@ -393,13 +393,13 @@ LABEL_35:
         v47 = _PBLog();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v8 name];
+          name2 = [pasteboardCopy name];
           *buf = 138412290;
-          v64 = v48;
+          v64 = name2;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Access to pasteboard named %@ is not allowed while the device is locked.", buf, 0xCu);
         }
 
-        if (!v10)
+        if (!blockCopy)
         {
           v18 = 0;
           goto LABEL_40;
@@ -409,77 +409,77 @@ LABEL_35:
         v58 = 3221225472;
         v59 = sub_10000AA14;
         v60 = &unk_100030B50;
-        v62 = v10;
-        v61 = v8;
+        v62 = blockCopy;
+        v61 = pasteboardCopy;
         PBDispatchAsyncCallback();
 
         v44 = 0;
-        v19 = v62;
+        clientAuditTokenInfo = v62;
         goto LABEL_39;
       }
     }
   }
 
-  v16 = [v8 name];
+  name3 = [pasteboardCopy name];
   v56 = 0;
   v17 = PBIsPasteboardNameAllowed();
   v18 = 0;
 
   if (v17)
   {
-    v19 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
-    v20 = [v8 name];
-    v21 = sub_100002298(v20, v19, 0);
+    clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+    name4 = [pasteboardCopy name];
+    v21 = sub_100002298(name4, clientAuditTokenInfo, 0);
 
     if (v21)
     {
-      [v8 setDataProviderEndpoint:v9];
+      [pasteboardCopy setDataProviderEndpoint:endpointCopy];
       v22 = sub_100010628();
-      [v8 setSaveBootSession:v22];
+      [pasteboardCopy setSaveBootSession:v22];
 
-      [v8 setSaveTimestamp:mach_continuous_time()];
+      [pasteboardCopy setSaveTimestamp:mach_continuous_time()];
       v23 = objc_opt_new();
-      [v8 setSharingToken:v23];
+      [pasteboardCopy setSharingToken:v23];
 
-      v24 = [v19 persistentIdentifier];
-      [v8 setOriginatorPersistentID:v24];
+      persistentIdentifier = [clientAuditTokenInfo persistentIdentifier];
+      [pasteboardCopy setOriginatorPersistentID:persistentIdentifier];
 
-      v25 = [v19 bundleID];
-      [v8 setOriginatorBundleID:v25];
+      bundleID = [clientAuditTokenInfo bundleID];
+      [pasteboardCopy setOriginatorBundleID:bundleID];
 
-      v26 = [v19 teamID];
-      [v8 setOriginatorTeamID:v26];
+      teamID = [clientAuditTokenInfo teamID];
+      [pasteboardCopy setOriginatorTeamID:teamID];
 
-      v27 = [v19 localizedName];
-      [v8 setOriginatorLocalizedName:v27];
+      localizedName = [clientAuditTokenInfo localizedName];
+      [pasteboardCopy setOriginatorLocalizedName:localizedName];
 
-      [v8 setOriginatorAllowedToCopyOnPaste:{objc_msgSend(v19, "isAllowedToCopyOnPaste")}];
+      [pasteboardCopy setOriginatorAllowedToCopyOnPaste:{objc_msgSend(clientAuditTokenInfo, "isAllowedToCopyOnPaste")}];
       v28 = _PBLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v19 bundleID];
-        v30 = [v19 teamID];
-        v31 = [v8 name];
+        bundleID2 = [clientAuditTokenInfo bundleID];
+        teamID2 = [clientAuditTokenInfo teamID];
+        name5 = [pasteboardCopy name];
         *buf = 138412802;
-        v64 = v29;
+        v64 = bundleID2;
         v65 = 2112;
-        v66 = v30;
+        v66 = teamID2;
         v67 = 2112;
-        v68 = v31;
+        v68 = name5;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Bundle ID %@ from team %@ is saving pasteboard named %@", buf, 0x20u);
       }
 
       v32 = +[MCProfileConnection sharedConnection];
-      v33 = [v8 originatorBundleID];
-      v34 = [v32 dataOwnerForBundleID:v33 requestedDataOwner:{objc_msgSend(v8, "originatorDataOwner")}];
+      originatorBundleID = [pasteboardCopy originatorBundleID];
+      v34 = [v32 dataOwnerForBundleID:originatorBundleID requestedDataOwner:{objc_msgSend(pasteboardCopy, "originatorDataOwner")}];
 
-      [v8 setOriginatorDataOwner:v34];
+      [pasteboardCopy setOriginatorDataOwner:v34];
       if (([v32 isContinuityPasteboardWithManagedDataAllowed] & 1) == 0 && v34 == 2)
       {
-        [v8 setLocalOnly:1];
+        [pasteboardCopy setLocalOnly:1];
       }
 
-      v35 = [v8 name];
+      name6 = [pasteboardCopy name];
       v36 = PBIsPasteboardNameGeneralPasteboard();
 
       if (v36)
@@ -488,11 +488,11 @@ LABEL_35:
         if (v37 > 0.0)
         {
           v38 = [NSDate dateWithTimeIntervalSinceNow:?];
-          v39 = [v8 expirationDate];
-          v40 = v39;
-          if (!v39 || [v39 compare:v38] == 1)
+          expirationDate = [pasteboardCopy expirationDate];
+          v40 = expirationDate;
+          if (!expirationDate || [expirationDate compare:v38] == 1)
           {
-            [v8 setExpirationDate:v38];
+            [pasteboardCopy setExpirationDate:v38];
             v41 = _PBLog();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
             {
@@ -509,8 +509,8 @@ LABEL_35:
       v53[1] = 3221225472;
       v53[2] = sub_10000AA88;
       v53[3] = &unk_1000312A8;
-      v54 = v8;
-      v55 = v10;
+      v54 = pasteboardCopy;
+      v55 = blockCopy;
       [v42 savePasteboard:v54 deviceIslocked:v13 completionBlock:v53];
     }
 
@@ -519,21 +519,21 @@ LABEL_35:
       v45 = _PBLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
-        v50 = [v8 name];
+        name7 = [pasteboardCopy name];
         *buf = 138412290;
-        v64 = v50;
+        v64 = name7;
         _os_log_error_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "...client is not allowed to access pasteboard named %@", buf, 0xCu);
       }
 
-      v46 = [v8 name];
+      name8 = [pasteboardCopy name];
       v44 = PBPasteboardNameInvalidError();
 
-      if (!v10)
+      if (!blockCopy)
       {
         goto LABEL_39;
       }
 
-      v52 = v10;
+      v52 = blockCopy;
       v18 = v44;
       PBDispatchAsyncCallback();
 
@@ -550,32 +550,32 @@ LABEL_39:
   v43 = _PBLog();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
   {
-    v49 = [v8 name];
+    name9 = [pasteboardCopy name];
     *buf = 138412546;
-    v64 = v49;
+    v64 = name9;
     v65 = 2112;
     v66 = v18;
     _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "...pasteboard name %@ is not allowed. Error: %@", buf, 0x16u);
   }
 
-  if (v10)
+  if (blockCopy)
   {
-    v51 = v10;
+    v51 = blockCopy;
     v44 = v18;
     PBDispatchAsyncCallback();
 
-    v19 = v51;
+    clientAuditTokenInfo = v51;
     goto LABEL_39;
   }
 
 LABEL_40:
 }
 
-- (void)deletePersistentPasteboardWithName:(id)a3 completionBlock:(id)a4
+- (void)deletePersistentPasteboardWithName:(id)name completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+  nameCopy = name;
+  blockCopy = block;
+  clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
   v27 = 0;
   v9 = PBIsPasteboardNameAllowed();
   v10 = 0;
@@ -585,20 +585,20 @@ LABEL_40:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 bundleID];
-      v14 = [v8 teamID];
+      bundleID = [clientAuditTokenInfo bundleID];
+      teamID = [clientAuditTokenInfo teamID];
       *buf = 138412802;
-      v29 = v13;
+      v29 = bundleID;
       v30 = 2112;
-      v31 = v14;
+      v31 = teamID;
       v32 = 2112;
-      v33 = v6;
+      v33 = nameCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Bundle ID %@ from team %@ is deleting persistent pasteboard named %@", buf, 0x20u);
     }
 
     v15 = +[PBPasteboardModel sharedModel];
-    v16 = [v8 bundleID];
-    v17 = [v8 teamID];
+    bundleID2 = [clientAuditTokenInfo bundleID];
+    teamID2 = [clientAuditTokenInfo teamID];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10000AF10;
@@ -606,10 +606,10 @@ LABEL_40:
     v18 = &v24;
     v24 = v10;
     v19 = &v25;
-    v20 = v6;
+    v20 = nameCopy;
     v25 = v20;
-    v26 = v7;
-    [v15 deletePasteboardNamed:v20 bundleID:v16 teamID:v17 completionBlock:v23];
+    v26 = blockCopy;
+    [v15 deletePasteboardNamed:v20 bundleID:bundleID2 teamID:teamID2 completionBlock:v23];
 
     goto LABEL_9;
   }
@@ -617,16 +617,16 @@ LABEL_40:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v29 = v6;
+    v29 = nameCopy;
     v30 = 2112;
     v31 = v10;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "...pasteboard name %@ is not allowed. Error: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (blockCopy)
   {
     v18 = &v22;
-    v22 = v7;
+    v22 = blockCopy;
     v19 = &v21;
     v21 = v10;
     PBDispatchAsyncCallback();
@@ -634,10 +634,10 @@ LABEL_9:
   }
 }
 
-- (id)hangAssertionForAuditTokenInfo:(id)a3
+- (id)hangAssertionForAuditTokenInfo:(id)info
 {
-  v3 = a3;
-  v4 = +[RBSTarget targetWithPid:](RBSTarget, "targetWithPid:", [v3 pid]);
+  infoCopy = info;
+  v4 = +[RBSTarget targetWithPid:](RBSTarget, "targetWithPid:", [infoCopy pid]);
   v5 = [RBSDomainAttribute attributeWithDomain:@"com.apple.frontboard" name:@"DisableWatchdog"];
   v6 = [RBSAssertion alloc];
   v19 = v5;
@@ -652,7 +652,7 @@ LABEL_9:
     v11 = _PBLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v3 pid];
+      v13 = [infoCopy pid];
       *buf = 67109378;
       v16 = v13;
       v17 = 2112;
@@ -666,22 +666,22 @@ LABEL_9:
   return v8;
 }
 
-- (void)announcePasteForPasteboard:(id)a3 auditTokenInfo:(id)a4
+- (void)announcePasteForPasteboard:(id)pasteboard auditTokenInfo:(id)info
 {
-  v5 = [(PBPasteboardServerServicer *)self pasteAnnoucementForPasteboard:a3 auditTokenInfo:a4 loadContext:0 timeout:0.0];
+  v5 = [(PBPasteboardServerServicer *)self pasteAnnoucementForPasteboard:pasteboard auditTokenInfo:info loadContext:0 timeout:0.0];
   [(PBPasteNotifying *)self->_pasteNotifier notifyPaste:v5];
 }
 
-- (void)requestUserAuthorizationForPasteboard:(id)a3 auditTokenInfo:(id)a4 loadContext:(id)a5 completionHandler:(id)a6
+- (void)requestUserAuthorizationForPasteboard:(id)pasteboard auditTokenInfo:(id)info loadContext:(id)context completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  contextCopy = context;
+  handlerCopy = handler;
   v14 = 0.0;
-  if ([v12 isFromUIFramework] && objc_msgSend(v12, "isBlockingMainThread"))
+  if ([contextCopy isFromUIFramework] && objc_msgSend(contextCopy, "isBlockingMainThread"))
   {
-    v15 = [(PBPasteboardServerServicer *)self hangAssertionForAuditTokenInfo:v11];
+    v15 = [(PBPasteboardServerServicer *)self hangAssertionForAuditTokenInfo:infoCopy];
     if (v15)
     {
       v14 = 0.0;
@@ -698,27 +698,27 @@ LABEL_9:
     v15 = 0;
   }
 
-  v27 = v11;
-  v26 = [(PBPasteboardServerServicer *)self pasteAnnoucementForPasteboard:v10 auditTokenInfo:v11 loadContext:v12 timeout:v14];
-  v16 = [v10 UUID];
-  v17 = [(PBPasteboardServerServicer *)self activeAnnouncers];
-  v18 = [v17 objectForKeyedSubscript:v16];
+  v27 = infoCopy;
+  v26 = [(PBPasteboardServerServicer *)self pasteAnnoucementForPasteboard:pasteboardCopy auditTokenInfo:infoCopy loadContext:contextCopy timeout:v14];
+  uUID = [pasteboardCopy UUID];
+  activeAnnouncers = [(PBPasteboardServerServicer *)self activeAnnouncers];
+  v18 = [activeAnnouncers objectForKeyedSubscript:uUID];
 
-  v19 = [(PBPasteboardServerServicer *)self authorizationReplyBlocks];
-  v20 = [v19 objectForKeyedSubscript:v16];
+  authorizationReplyBlocks = [(PBPasteboardServerServicer *)self authorizationReplyBlocks];
+  v20 = [authorizationReplyBlocks objectForKeyedSubscript:uUID];
 
   if (!v20)
   {
     v20 = +[NSMutableArray array];
-    v21 = [(PBPasteboardServerServicer *)self authorizationReplyBlocks];
-    [v21 setObject:v20 forKeyedSubscript:v16];
+    authorizationReplyBlocks2 = [(PBPasteboardServerServicer *)self authorizationReplyBlocks];
+    [authorizationReplyBlocks2 setObject:v20 forKeyedSubscript:uUID];
   }
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10000B688;
   v38[3] = &unk_1000312F8;
-  v22 = v13;
+  v22 = handlerCopy;
   v40 = v22;
   v23 = v15;
   v39 = v23;
@@ -729,8 +729,8 @@ LABEL_9:
   if (!v18)
   {
     v18 = [[PBCFUserNotificationPasteAnnouncer alloc] initWithAuditTokenInfo:v27];
-    [(PBPasteboardServerServicer *)self setActiveAuthorizationAnnouncer:v18 collection:v10];
-    objc_initWeak(&location, v10);
+    [(PBPasteboardServerServicer *)self setActiveAuthorizationAnnouncer:v18 collection:pasteboardCopy];
+    objc_initWeak(&location, pasteboardCopy);
     objc_initWeak(&v36, v18);
     objc_initWeak(&from, self);
     [(PBPasteAuthority *)self->_pasteAuthority recordInteractivePasteAuthorizationPromptActivityForAuditTokenInfo:v27];
@@ -743,7 +743,7 @@ LABEL_9:
     objc_copyWeak(&v34, &location);
     v29 = v27;
     v30 = v20;
-    v31 = v16;
+    v31 = uUID;
     [(PBCFUserNotificationPasteAnnouncer *)v18 requestAuthorizationForPaste:v26 replyHandler:v28];
 
     objc_destroyWeak(&v34);
@@ -755,85 +755,85 @@ LABEL_9:
   }
 }
 
-- (void)didInvalidateItemCollectionWithUUID:(id)a3
+- (void)didInvalidateItemCollectionWithUUID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   PBDispatchAsyncCallback();
 }
 
-- (void)setActiveAuthorizationAnnouncer:(id)a3 collection:(id)a4
+- (void)setActiveAuthorizationAnnouncer:(id)announcer collection:(id)collection
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(PBPasteboardServerServicer *)self activeAnnouncers];
-  v8 = [v9 UUID];
-  [v7 setObject:v6 forKey:v8];
+  collectionCopy = collection;
+  announcerCopy = announcer;
+  activeAnnouncers = [(PBPasteboardServerServicer *)self activeAnnouncers];
+  uUID = [collectionCopy UUID];
+  [activeAnnouncers setObject:announcerCopy forKey:uUID];
 
-  [v9 addInvalidationDelegate:self];
+  [collectionCopy addInvalidationDelegate:self];
 }
 
-- (void)removeActiveAuthorizationAnnouncer:(id)a3 collection:(id)a4
+- (void)removeActiveAuthorizationAnnouncer:(id)announcer collection:(id)collection
 {
-  v7 = a4;
-  v5 = [(PBPasteboardServerServicer *)self activeAnnouncers];
-  v6 = [v7 UUID];
-  [v5 removeObjectForKey:v6];
+  collectionCopy = collection;
+  activeAnnouncers = [(PBPasteboardServerServicer *)self activeAnnouncers];
+  uUID = [collectionCopy UUID];
+  [activeAnnouncers removeObjectForKey:uUID];
 
-  [v7 removeInvalidationDelegate:self];
+  [collectionCopy removeInvalidationDelegate:self];
 }
 
-- (id)pasteAnnoucementForPasteboard:(id)a3 auditTokenInfo:(id)a4 loadContext:(id)a5 timeout:(double)a6
+- (id)pasteAnnoucementForPasteboard:(id)pasteboard auditTokenInfo:(id)info loadContext:(id)context timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 originatorPersistentID];
-  if (v10 && (v11 = [[LSBundleRecord alloc] initWithPersistentIdentifier:v10]) != 0)
+  pasteboardCopy = pasteboard;
+  infoCopy = info;
+  originatorPersistentID = [pasteboardCopy originatorPersistentID];
+  if (originatorPersistentID && (v11 = [[LSBundleRecord alloc] initWithPersistentIdentifier:originatorPersistentID]) != 0)
   {
     v12 = v11;
-    v13 = [v11 localizedName];
+    localizedName = [v11 localizedName];
   }
 
   else
   {
-    v14 = [v8 originatorBundleID];
-    v12 = [LSBundleRecord bundleRecordWithBundleIdentifier:v14 allowPlaceholder:0 error:0];
+    originatorBundleID = [pasteboardCopy originatorBundleID];
+    v12 = [LSBundleRecord bundleRecordWithBundleIdentifier:originatorBundleID allowPlaceholder:0 error:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v12 teamIdentifier];
-      v16 = [v8 originatorTeamID];
-      v17 = [v15 isEqualToString:v16];
+      teamIdentifier = [v12 teamIdentifier];
+      originatorTeamID = [pasteboardCopy originatorTeamID];
+      v17 = [teamIdentifier isEqualToString:originatorTeamID];
 
       if (v17)
       {
         v18 = +[NSLocale preferredLanguages];
         v19 = [v12 localizedNameWithPreferredLocalizations:v18];
 
-        v20 = [v12 persistentIdentifier];
+        persistentIdentifier = [v12 persistentIdentifier];
 
-        v10 = v20;
+        originatorPersistentID = persistentIdentifier;
         goto LABEL_9;
       }
     }
 
-    v13 = [v8 originatorLocalizedName];
+    localizedName = [pasteboardCopy originatorLocalizedName];
   }
 
-  v19 = v13;
+  v19 = localizedName;
 LABEL_9:
-  if ([v8 isOrWasRemote])
+  if ([pasteboardCopy isOrWasRemote])
   {
     v21 = [DRPasteAnnouncementContinuityEndpoint alloc];
-    v22 = [v8 remoteDeviceName];
-    v23 = [v21 initWithDeviceName:v22];
+    remoteDeviceName = [pasteboardCopy remoteDeviceName];
+    v23 = [v21 initWithDeviceName:remoteDeviceName];
   }
 
   else
   {
-    v24 = [v12 bundleIdentifier];
-    v25 = [v24 isEqualToString:@"com.apple.springboard"];
+    bundleIdentifier = [v12 bundleIdentifier];
+    v25 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
     if (v25)
     {
@@ -842,14 +842,14 @@ LABEL_9:
 
     else
     {
-      v26 = [[DRPasteAnnouncementApplicationEndpoint alloc] initWithLocalizedName:v19 persistentIdentifier:v10];
+      v26 = [[DRPasteAnnouncementApplicationEndpoint alloc] initWithLocalizedName:v19 persistentIdentifier:originatorPersistentID];
     }
 
     v23 = v26;
   }
 
-  v27 = [v9 bundleID];
-  v28 = [v27 isEqualToString:@"com.apple.springboard"];
+  bundleID = [infoCopy bundleID];
+  v28 = [bundleID isEqualToString:@"com.apple.springboard"];
 
   if (v28)
   {
@@ -859,38 +859,38 @@ LABEL_9:
   else
   {
     v30 = [DRPasteAnnouncementApplicationEndpoint alloc];
-    v31 = [v9 localizedName];
-    v32 = [v9 persistentIdentifier];
-    v29 = [v30 initWithLocalizedName:v31 persistentIdentifier:v32];
+    localizedName2 = [infoCopy localizedName];
+    persistentIdentifier2 = [infoCopy persistentIdentifier];
+    v29 = [v30 initWithLocalizedName:localizedName2 persistentIdentifier:persistentIdentifier2];
   }
 
   v33 = [DRPasteAnnouncement alloc];
-  v34 = [v8 UUID];
-  v35 = [v33 initWithSource:v23 destination:v29 pasteboardUUID:v34 timeout:a6];
+  uUID = [pasteboardCopy UUID];
+  v35 = [v33 initWithSource:v23 destination:v29 pasteboardUUID:uUID timeout:timeout];
 
   return v35;
 }
 
-- (void)requestFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 needData:(BOOL)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 errorBlock:(id)a10 pasteboardItemBlock:(id)a11
+- (void)requestFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index needData:(BOOL)data dataOwner:(int64_t)owner loadContext:(id)context errorBlock:(id)self0 pasteboardItemBlock:(id)self1
 {
-  v43 = a7;
-  v14 = a3;
-  v15 = a4;
-  v47 = a5;
-  v16 = a9;
-  v17 = a10;
-  v18 = a11;
+  dataCopy = data;
+  nameCopy = name;
+  dCopy = d;
+  messageCopy = message;
+  contextCopy = context;
+  blockCopy = block;
+  itemBlockCopy = itemBlock;
   v19 = MKBGetDeviceLockState();
   v80 = 0;
   v20 = PBIsPasteboardNameAllowed();
   v21 = 0;
   if (v20)
   {
-    v48 = v15;
+    v48 = dCopy;
     if (v19 && v19 != 3 && (PBIsPasteboardNameGeneralPasteboard() & 1) == 0)
     {
-      v34 = v47;
-      if (!v17)
+      v34 = messageCopy;
+      if (!blockCopy)
       {
         goto LABEL_24;
       }
@@ -899,54 +899,54 @@ LABEL_9:
       v69 = 3221225472;
       v70 = sub_10000C4D0;
       v71 = &unk_100030B50;
-      v73 = v17;
-      v72 = v14;
+      v73 = blockCopy;
+      v72 = nameCopy;
       PBDispatchAsyncCallback();
 
-      v22 = v73;
+      clientAuditTokenInfo = v73;
       goto LABEL_23;
     }
 
-    v22 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+    clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
     v67 = 0;
     v23 = _PBLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v22 bundleID];
-      [v22 teamID];
-      v25 = v17;
-      v26 = a8;
-      v27 = v18;
-      v29 = v28 = v16;
+      bundleID = [clientAuditTokenInfo bundleID];
+      [clientAuditTokenInfo teamID];
+      v25 = blockCopy;
+      ownerCopy = owner;
+      v27 = itemBlockCopy;
+      v29 = v28 = contextCopy;
       *buf = 138413314;
-      v82 = v24;
+      v82 = bundleID;
       v83 = 2112;
       v84 = v29;
       v85 = 1024;
-      v86 = a6;
+      indexCopy = index;
       v87 = 2112;
-      v88 = v14;
+      v88 = nameCopy;
       v89 = 2112;
       v90 = v48;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Bundle ID %@ from team %@ is requesting item %u from pasteboard named %@ with UUID %@", buf, 0x30u);
 
-      v16 = v28;
-      v18 = v27;
-      a8 = v26;
-      v17 = v25;
+      contextCopy = v28;
+      itemBlockCopy = v27;
+      owner = ownerCopy;
+      blockCopy = v25;
     }
 
-    if (sub_100002298(v14, v22, &v67))
+    if (sub_100002298(nameCopy, clientAuditTokenInfo, &v67))
     {
-      v42 = a8;
-      if (v43 && PBPreferencesBoolValue() && [v14 isEqualToString:PBGeneralPasteboardName] && v67 == 1)
+      ownerCopy2 = owner;
+      if (dataCopy && PBPreferencesBoolValue() && [nameCopy isEqualToString:PBGeneralPasteboardName] && v67 == 1)
       {
         v30 = sub_10000C598();
         dispatch_sync(v30, &stru_1000313A8);
       }
 
-      v31 = [v22 bundleID];
-      v32 = [v22 teamID];
+      bundleID2 = [clientAuditTokenInfo bundleID];
+      teamID = [clientAuditTokenInfo teamID];
       v41 = PBPasteboardPersistenceName();
 
       v33 = self->_pasteAuthority;
@@ -955,21 +955,21 @@ LABEL_9:
       v49[1] = 3221225472;
       v49[2] = sub_10000C6BC;
       v49[3] = &unk_100031488;
-      v56 = v17;
+      v56 = blockCopy;
       v50 = v48;
-      v58 = a6;
-      v57 = v18;
-      v60 = v43;
-      v51 = v22;
+      indexCopy2 = index;
+      v57 = itemBlockCopy;
+      v60 = dataCopy;
+      v51 = clientAuditTokenInfo;
       v52 = v33;
-      v34 = v47;
-      v53 = v47;
-      v59 = v42;
-      v54 = v16;
-      v55 = self;
+      v34 = messageCopy;
+      v53 = messageCopy;
+      v59 = ownerCopy2;
+      v54 = contextCopy;
+      selfCopy = self;
       v35 = v41;
       v46 = v33;
-      [v40 getExistingPasteboardWithPersistenceName:v41 name:v14 UUID:v50 processInfo:v51 completionBlock:v49];
+      [v40 getExistingPasteboardWithPersistenceName:v41 name:nameCopy UUID:v50 processInfo:v51 completionBlock:v49];
     }
 
     else
@@ -977,19 +977,19 @@ LABEL_9:
       v37 = _PBLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        [v22 bundleID];
-        v39 = v38 = v18;
+        [clientAuditTokenInfo bundleID];
+        v39 = v38 = itemBlockCopy;
         *buf = 138412546;
         v82 = v39;
         v83 = 2112;
         v84 = v21;
         _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "...bundle ID %@ is not allowed to access the pasteboard. Error: %@", buf, 0x16u);
 
-        v18 = v38;
+        itemBlockCopy = v38;
       }
 
-      v34 = v47;
-      if (!v17)
+      v34 = messageCopy;
+      if (!blockCopy)
       {
         goto LABEL_23;
       }
@@ -998,15 +998,15 @@ LABEL_9:
       v62 = 3221225472;
       v63 = sub_10000C534;
       v64 = &unk_100030B50;
-      v66 = v17;
-      v65 = v14;
+      v66 = blockCopy;
+      v65 = nameCopy;
       PBDispatchAsyncCallback();
 
       v35 = v66;
     }
 
 LABEL_23:
-    v15 = v48;
+    dCopy = v48;
     goto LABEL_24;
   }
 
@@ -1014,39 +1014,39 @@ LABEL_23:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v82 = v14;
+    v82 = nameCopy;
     v83 = 2112;
     v84 = v21;
     _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "...pasteboard name %@ is not allowed. Error: %@", buf, 0x16u);
   }
 
-  v34 = v47;
-  if (v17)
+  v34 = messageCopy;
+  if (blockCopy)
   {
-    v48 = v15;
+    v48 = dCopy;
     v74 = _NSConcreteStackBlock;
     v75 = 3221225472;
     v76 = sub_10000C4B8;
     v77 = &unk_100030B50;
-    v79 = v17;
+    v79 = blockCopy;
     v78 = v21;
     PBDispatchAsyncCallback();
 
-    v22 = v79;
+    clientAuditTokenInfo = v79;
     goto LABEL_23;
   }
 
 LABEL_24:
 }
 
-- (void)requestItemFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 typeIdentifier:(id)a7 dataOwner:(int64_t)a8 loadContext:(id)a9 completionBlock:(id)a10
+- (void)requestItemFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index typeIdentifier:(id)identifier dataOwner:(int64_t)owner loadContext:(id)context completionBlock:(id)self0
 {
-  v13 = a7;
-  v14 = a10;
-  v15 = a9;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  identifierCopy = identifier;
+  blockCopy = block;
+  contextCopy = context;
+  messageCopy = message;
+  dCopy = d;
+  nameCopy = name;
   v19 = _PBLog();
   v20 = os_signpost_id_generate(v19);
 
@@ -1058,7 +1058,7 @@ LABEL_24:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "RequestItem", &unk_10002C5F1, buf, 2u);
   }
 
-  if (v14)
+  if (blockCopy)
   {
     v23 = v37;
     v37[0] = _NSConcreteStackBlock;
@@ -1066,7 +1066,7 @@ LABEL_24:
     v37[2] = sub_10000D050;
     v37[3] = &unk_1000314B0;
     v28 = &v38;
-    v38 = v14;
+    v38 = blockCopy;
   }
 
   else
@@ -1079,27 +1079,27 @@ LABEL_24:
   v32[1] = 3221225472;
   v32[2] = sub_10000D070;
   v32[3] = &unk_100031500;
-  v25 = v13;
+  v25 = identifierCopy;
   v33 = v25;
   v34 = v24;
   v36 = v20;
-  v26 = v14;
+  v26 = blockCopy;
   v35 = v26;
   v27 = v24;
-  [(PBPasteboardServerServicer *)self requestFromPasteboardWithName:v18 UUID:v17 authenticationMessage:v16 itemIndex:a6 needData:1 dataOwner:a8 loadContext:v15 errorBlock:v27 pasteboardItemBlock:v32];
+  [(PBPasteboardServerServicer *)self requestFromPasteboardWithName:nameCopy UUID:dCopy authenticationMessage:messageCopy itemIndex:index needData:1 dataOwner:owner loadContext:contextCopy errorBlock:v27 pasteboardItemBlock:v32];
 
-  if (v14)
+  if (blockCopy)
   {
   }
 }
 
-- (void)requestPatternDetectionsFromPasteboardWithName:(id)a3 UUID:(id)a4 authenticationMessage:(id)a5 itemIndex:(unint64_t)a6 patterns:(id)a7 needValues:(BOOL)a8 dataOwner:(int64_t)a9 completionBlock:(id)a10
+- (void)requestPatternDetectionsFromPasteboardWithName:(id)name UUID:(id)d authenticationMessage:(id)message itemIndex:(unint64_t)index patterns:(id)patterns needValues:(BOOL)values dataOwner:(int64_t)owner completionBlock:(id)self0
 {
-  v29 = a8;
-  v27 = a7;
-  v14 = a10;
-  v15 = v14;
-  if (v14)
+  valuesCopy = values;
+  patternsCopy = patterns;
+  blockCopy = block;
+  v15 = blockCopy;
+  if (blockCopy)
   {
     v16 = v36;
     v36[0] = _NSConcreteStackBlock;
@@ -1107,7 +1107,7 @@ LABEL_24:
     v36[2] = sub_10000D724;
     v36[3] = &unk_1000314B0;
     v26 = &v37;
-    v37 = v14;
+    v37 = blockCopy;
   }
 
   else
@@ -1115,9 +1115,9 @@ LABEL_24:
     v16 = 0;
   }
 
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  messageCopy = message;
+  dCopy = d;
+  nameCopy = name;
   v20 = objc_retainBlock(v16);
   v21 = self->_detectiveAgency;
   v30[0] = _NSConcreteStackBlock;
@@ -1126,45 +1126,45 @@ LABEL_24:
   v30[3] = &unk_1000315D8;
   v22 = v15;
   v33 = v22;
-  v35 = v29;
-  v23 = v27;
+  v35 = valuesCopy;
+  v23 = patternsCopy;
   v34 = v20;
   v31 = v23;
   v32 = v21;
   v24 = v21;
   v25 = v20;
-  [(PBPasteboardServerServicer *)self requestFromPasteboardWithName:v19 UUID:v18 authenticationMessage:v17 itemIndex:a6 needData:v29 dataOwner:a9 loadContext:0 errorBlock:v25 pasteboardItemBlock:v30];
+  [(PBPasteboardServerServicer *)self requestFromPasteboardWithName:nameCopy UUID:dCopy authenticationMessage:messageCopy itemIndex:index needData:valuesCopy dataOwner:owner loadContext:0 errorBlock:v25 pasteboardItemBlock:v30];
 
   if (v15)
   {
   }
 }
 
-- (void)didPasteContentsFromPasteboardWithName:(id)a3 UUID:(id)a4 completionBlock:(id)a5
+- (void)didPasteContentsFromPasteboardWithName:(id)name UUID:(id)d completionBlock:(id)block
 {
-  if (a5)
+  if (block)
   {
     PBDispatchAsyncCallback();
   }
 }
 
-- (void)performJanitorialTasksCompletionBlock:(id)a3
+- (void)performJanitorialTasksCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
-  v6 = [v5 isAllowedToPerformJanitorialTasks];
+  blockCopy = block;
+  clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+  isAllowedToPerformJanitorialTasks = [clientAuditTokenInfo isAllowedToPerformJanitorialTasks];
   v7 = _PBLog();
   v8 = v7;
-  if (v6)
+  if (isAllowedToPerformJanitorialTasks)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 bundleID];
-      v10 = [v5 teamID];
+      bundleID = [clientAuditTokenInfo bundleID];
+      teamID = [clientAuditTokenInfo teamID];
       *buf = 138412546;
-      v17 = v9;
+      v17 = bundleID;
       v18 = 2112;
-      v19 = v10;
+      v19 = teamID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Bundle ID %@ from team %@ is requesting to perform janitorial tasks.", buf, 0x16u);
     }
 
@@ -1173,7 +1173,7 @@ LABEL_24:
     v14[1] = 3221225472;
     v14[2] = sub_10000E138;
     v14[3] = &unk_100031600;
-    v15 = v4;
+    v15 = blockCopy;
     [v11 deleteOrphanedPasteboardFilesCompletionBlock:v14];
   }
 
@@ -1181,39 +1181,39 @@ LABEL_24:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v5 bundleID];
-      v13 = [v5 teamID];
+      bundleID2 = [clientAuditTokenInfo bundleID];
+      teamID2 = [clientAuditTokenInfo teamID];
       *buf = 138412546;
-      v17 = v12;
+      v17 = bundleID2;
       v18 = 2112;
-      v19 = v13;
+      v19 = teamID2;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Bundle ID %@ from team %@ is not allowed to perform janitorial tasks.", buf, 0x16u);
     }
 
-    if (v4)
+    if (blockCopy)
     {
       PBDispatchAsyncCallback();
     }
   }
 }
 
-- (void)getAllPasteboardsCompletionBlock:(id)a3
+- (void)getAllPasteboardsCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
-  v6 = [v5 isAllowedToPerformJanitorialTasks];
+  blockCopy = block;
+  clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+  isAllowedToPerformJanitorialTasks = [clientAuditTokenInfo isAllowedToPerformJanitorialTasks];
   v7 = _PBLog();
   v8 = v7;
-  if (v6)
+  if (isAllowedToPerformJanitorialTasks)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 bundleID];
-      v10 = [v5 teamID];
+      bundleID = [clientAuditTokenInfo bundleID];
+      teamID = [clientAuditTokenInfo teamID];
       *buf = 138412546;
-      v19 = v9;
+      v19 = bundleID;
       v20 = 2112;
-      v21 = v10;
+      v21 = teamID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Bundle ID %@ from team %@ is enumerating all pasteboards", buf, 0x16u);
     }
 
@@ -1223,7 +1223,7 @@ LABEL_24:
     v16[2] = sub_10000E41C;
     v16[3] = &unk_100031628;
     v12 = &v17;
-    v17 = v4;
+    v17 = blockCopy;
     [v11 getAllPasteboardsCompletionBlock:v16];
 
     goto LABEL_9;
@@ -1231,30 +1231,30 @@ LABEL_24:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v5 bundleID];
-    v14 = [v5 teamID];
+    bundleID2 = [clientAuditTokenInfo bundleID];
+    teamID2 = [clientAuditTokenInfo teamID];
     *buf = 138412546;
-    v19 = v13;
+    v19 = bundleID2;
     v20 = 2112;
-    v21 = v14;
+    v21 = teamID2;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Bundle ID %@ from team %@ is not allowed to enumerate all pasteboards.", buf, 0x16u);
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v12 = &v15;
-    v15 = v4;
+    v15 = blockCopy;
     PBDispatchAsyncCallback();
 LABEL_9:
   }
 }
 
-- (void)getRemoteContentForLayerContextWithId:(unint64_t)a3 slotStyle:(id)a4 pasteButtonTag:(id)a5 completionBlock:(id)a6
+- (void)getRemoteContentForLayerContextWithId:(unint64_t)id slotStyle:(id)style pasteButtonTag:(id)tag completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!a3 || !v10 || !v11)
+  styleCopy = style;
+  tagCopy = tag;
+  blockCopy = block;
+  if (!id || !styleCopy || !tagCopy)
   {
     v15 = _PBLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1263,7 +1263,7 @@ LABEL_9:
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Remote contents missing parameters.", v17, 2u);
     }
 
-    if (!v12)
+    if (!blockCopy)
     {
       goto LABEL_11;
     }
@@ -1271,19 +1271,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [(UISSlotMachine *)self->_pasteButtonSlotMachine remoteContentForLayerContextWithId:a3 style:v10 tag:v11];
+  v13 = [(UISSlotMachine *)self->_pasteButtonSlotMachine remoteContentForLayerContextWithId:id style:styleCopy tag:tagCopy];
   v14 = v13;
-  if (v12)
+  if (blockCopy)
   {
     if (v13)
     {
-      v12[2](v12, v13, 0);
+      blockCopy[2](blockCopy, v13, 0);
       goto LABEL_12;
     }
 
 LABEL_10:
     v16 = PBNotAuthorizedError();
-    (v12)[2](v12, 0, v16);
+    (blockCopy)[2](blockCopy, 0, v16);
 
 LABEL_11:
     v14 = 0;
@@ -1292,16 +1292,16 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)a3 forClientVersionedPID:(int64_t)a4 completionBlock:(id)a5
+- (void)requestSecurePasteAuthenticationMessageWithContext:(unint64_t)context forClientVersionedPID:(int64_t)d completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
+  blockCopy = block;
+  clientAuditTokenInfo = [(PBPasteboardServerServicer *)self clientAuditTokenInfo];
   v10 = +[PBSecurePasteAuthenticationMessageGenerator sharedInstance];
   v13 = 0;
-  v11 = [v10 generateAuthenticationMessageWithContext:a3 forClientVersionedPID:a4 requesterAuditTokenInfo:v9 error:&v13];
+  v11 = [v10 generateAuthenticationMessageWithContext:context forClientVersionedPID:d requesterAuditTokenInfo:clientAuditTokenInfo error:&v13];
   v12 = v13;
 
-  v8[2](v8, v11, v12);
+  blockCopy[2](blockCopy, v11, v12);
 }
 
 @end

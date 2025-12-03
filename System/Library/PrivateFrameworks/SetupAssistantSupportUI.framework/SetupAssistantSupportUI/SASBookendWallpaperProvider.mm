@@ -1,28 +1,28 @@
 @interface SASBookendWallpaperProvider
 - (SASBookendWallpaperProviderDelegate)delegate;
-- (id)_initWithVariant:(int64_t)a3 delegate:(id)a4;
+- (id)_initWithVariant:(int64_t)variant delegate:(id)delegate;
 - (id)_makeSnapshotRequestFetcher;
 - (id)_makeWorkspaceSnapshotFetcher;
-- (void)_fetchWallpaperUsingFetcher:(id)a3;
+- (void)_fetchWallpaperUsingFetcher:(id)fetcher;
 - (void)fetchWallpapers;
-- (void)wallpaperFetcher:(id)a3 didFinishWithImage:(id)a4;
-- (void)wallpaperFetcher:(id)a3 didFinishWithTexture:(id)a4;
-- (void)wallpaperFetcher:(id)a3 failedToLoadWithError:(id)a4;
+- (void)wallpaperFetcher:(id)fetcher didFinishWithImage:(id)image;
+- (void)wallpaperFetcher:(id)fetcher didFinishWithTexture:(id)texture;
+- (void)wallpaperFetcher:(id)fetcher failedToLoadWithError:(id)error;
 @end
 
 @implementation SASBookendWallpaperProvider
 
-- (id)_initWithVariant:(int64_t)a3 delegate:(id)a4
+- (id)_initWithVariant:(int64_t)variant delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = SASBookendWallpaperProvider;
   v7 = [(SASBookendWallpaperProvider *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_variant = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_variant = variant;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -1);
     v10 = dispatch_queue_create("com.apple.setupassistantsupport.wallpaper", v9);
     queue = v8->_queue;
@@ -36,21 +36,21 @@
 
 - (void)fetchWallpapers
 {
-  v3 = [(SASBookendWallpaperProvider *)self delegate];
-  v4 = [v3 userInterfaceOrientation];
+  delegate = [(SASBookendWallpaperProvider *)self delegate];
+  userInterfaceOrientation = [delegate userInterfaceOrientation];
 
-  if ([(SASBookendWallpaperProvider *)self shouldRefetchWallPaperForOrientation:v4])
+  if ([(SASBookendWallpaperProvider *)self shouldRefetchWallPaperForOrientation:userInterfaceOrientation])
   {
-    [(SASBookendWallpaperProvider *)self setCurrentOrientation:v4];
+    [(SASBookendWallpaperProvider *)self setCurrentOrientation:userInterfaceOrientation];
     objc_initWeak(location, self);
-    v5 = [(SASBookendWallpaperProvider *)self queue];
+    queue = [(SASBookendWallpaperProvider *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__SASBookendWallpaperProvider_fetchWallpapers__block_invoke;
     v7[3] = &unk_279BB2A90;
     objc_copyWeak(&v8, location);
     v7[4] = self;
-    dispatch_async(v5, v7);
+    dispatch_async(queue, v7);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(location);
@@ -115,14 +115,14 @@ LABEL_10:
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_fetchWallpaperUsingFetcher:(id)a3
+- (void)_fetchWallpaperUsingFetcher:(id)fetcher
 {
-  v5 = a3;
-  [v5 setDelegate:self];
-  v4 = [(SASBookendWallpaperProvider *)self queue];
-  [v5 setQueue:v4];
+  fetcherCopy = fetcher;
+  [fetcherCopy setDelegate:self];
+  queue = [(SASBookendWallpaperProvider *)self queue];
+  [fetcherCopy setQueue:queue];
 
-  [v5 fetch];
+  [fetcherCopy fetch];
 }
 
 - (id)_makeWorkspaceSnapshotFetcher
@@ -137,41 +137,41 @@ LABEL_10:
   v3 = objc_alloc_init(SASWallpaperPosterSnapshotRequestFetcher);
   [(SASBookendWallpaperProvider *)self setWallpaperFetcher:v3];
   [(SASWallpaperPosterSnapshotRequestFetcher *)v3 setVariant:[(SASBookendWallpaperProvider *)self variant]];
-  v4 = [(SASBookendWallpaperProvider *)self delegate];
-  -[SASWallpaperPosterSnapshotRequestFetcher setInterfaceStyle:](v3, "setInterfaceStyle:", [v4 userInterfaceStyle]);
+  delegate = [(SASBookendWallpaperProvider *)self delegate];
+  -[SASWallpaperPosterSnapshotRequestFetcher setInterfaceStyle:](v3, "setInterfaceStyle:", [delegate userInterfaceStyle]);
 
   [(SASWallpaperPosterSnapshotRequestFetcher *)v3 setInterfaceOrientation:[(SASBookendWallpaperProvider *)self currentOrientation]];
 
   return v3;
 }
 
-- (void)wallpaperFetcher:(id)a3 didFinishWithTexture:(id)a4
+- (void)wallpaperFetcher:(id)fetcher didFinishWithTexture:(id)texture
 {
-  v5 = a4;
-  v6 = [(SASBookendWallpaperProvider *)self delegate];
-  [v6 wallpaperDidUpdateWithTexture:v5];
+  textureCopy = texture;
+  delegate = [(SASBookendWallpaperProvider *)self delegate];
+  [delegate wallpaperDidUpdateWithTexture:textureCopy];
 }
 
-- (void)wallpaperFetcher:(id)a3 didFinishWithImage:(id)a4
+- (void)wallpaperFetcher:(id)fetcher didFinishWithImage:(id)image
 {
-  v5 = a4;
-  v6 = [(SASBookendWallpaperProvider *)self delegate];
-  [v6 wallpaperDidUpdate:v5];
+  imageCopy = image;
+  delegate = [(SASBookendWallpaperProvider *)self delegate];
+  [delegate wallpaperDidUpdate:imageCopy];
 }
 
-- (void)wallpaperFetcher:(id)a3 failedToLoadWithError:(id)a4
+- (void)wallpaperFetcher:(id)fetcher failedToLoadWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  fetcherCopy = fetcher;
+  errorCopy = error;
   if ([(SASBookendWallpaperProvider *)self variant]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = [(SASBookendWallpaperProvider *)self delegate];
-    [v8 wallpaperFailedToLoadWithError:v6];
+    delegate = [(SASBookendWallpaperProvider *)self delegate];
+    [delegate wallpaperFailedToLoadWithError:errorCopy];
   }
 
   else
   {
-    v7 = [(SASBookendWallpaperProvider *)self _makeSnapshotRequestFetcher];
+    _makeSnapshotRequestFetcher = [(SASBookendWallpaperProvider *)self _makeSnapshotRequestFetcher];
   }
 }
 

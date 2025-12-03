@@ -1,29 +1,29 @@
 @interface CADStatsStores
 - (id)eventDictionaries;
-- (void)prepareWithContext:(id)a3;
-- (void)processStores:(id)a3;
+- (void)prepareWithContext:(id)context;
+- (void)processStores:(id)stores;
 @end
 
 @implementation CADStatsStores
 
-- (void)prepareWithContext:(id)a3
+- (void)prepareWithContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
   v5 = objc_opt_new();
   storeInfos = self->_storeInfos;
   self->_storeInfos = v5;
 }
 
-- (void)processStores:(id)a3
+- (void)processStores:(id)stores
 {
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  storesCopy = stores;
+  v5 = [storesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,7 +35,7 @@
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(storesCopy);
         }
 
         v9 = *(*(&v24 + 1) + 8 * v8);
@@ -65,14 +65,14 @@
         if (v15)
         {
           v16 = v15;
-          v17 = [(CADStatCollectionContext *)self->_context accountStore];
-          v18 = [v17 accountWithIdentifier:v16];
+          accountStore = [(CADStatCollectionContext *)self->_context accountStore];
+          v18 = [accountStore accountWithIdentifier:v16];
 
-          v19 = [v18 displayAccount];
-          v20 = [v19 accountType];
-          v21 = [v20 identifier];
+          displayAccount = [v18 displayAccount];
+          accountType = [displayAccount accountType];
+          identifier = [accountType identifier];
           v22 = *(v10 + 24);
-          *(v10 + 24) = v21;
+          *(v10 + 24) = identifier;
 
           if (*(v10 + 24))
           {
@@ -86,7 +86,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [storesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v6);

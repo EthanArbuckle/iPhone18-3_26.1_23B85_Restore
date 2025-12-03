@@ -1,38 +1,38 @@
 @interface TileDescriptorTileStateCollection
-+ (BOOL)insertStates:(id)a3 forDescriptor:(id)a4 inDatabase:(id)a5;
-+ (id)_predicateForDescriptorPID:(int64_t)a3;
-+ (void)deleteEntitiesForDescriptor:(id)a3 inDatabase:(id)a4;
++ (BOOL)insertStates:(id)states forDescriptor:(id)descriptor inDatabase:(id)database;
++ (id)_predicateForDescriptorPID:(int64_t)d;
++ (void)deleteEntitiesForDescriptor:(id)descriptor inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (TileDescriptorTileStateCollection)initWithState:(id)a3 identifier:(id)a4 forDescriptor:(id)a5 inDatabase:(id)a6;
+- (TileDescriptorTileStateCollection)initWithState:(id)state identifier:(id)identifier forDescriptor:(id)descriptor inDatabase:(id)database;
 - (id)tileState;
 @end
 
 @implementation TileDescriptorTileStateCollection
 
-- (TileDescriptorTileStateCollection)initWithState:(id)a3 identifier:(id)a4 forDescriptor:(id)a5 inDatabase:(id)a6
+- (TileDescriptorTileStateCollection)initWithState:(id)state identifier:(id)identifier forDescriptor:(id)descriptor inDatabase:(id)database
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  databaseCopy = database;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  stateCopy = state;
   v14 = objc_alloc_init(NSMutableDictionary);
-  [v14 setEntityPIDOrNull:v11 forKey:@"descriptor_pid"];
+  [v14 setEntityPIDOrNull:descriptorCopy forKey:@"descriptor_pid"];
 
-  [v14 setEntityPIDOrNull:v13 forKey:@"state_pid"];
-  [v14 setObjectOrNull:v12 forKey:@"state_identifier"];
+  [v14 setEntityPIDOrNull:stateCopy forKey:@"state_pid"];
+  [v14 setObjectOrNull:identifierCopy forKey:@"state_identifier"];
 
-  v15 = [(SQLiteEntity *)self initWithPropertyValues:v14 inDatabase:v10];
+  v15 = [(SQLiteEntity *)self initWithPropertyValues:v14 inDatabase:databaseCopy];
   return v15;
 }
 
-+ (BOOL)insertStates:(id)a3 forDescriptor:(id)a4 inDatabase:(id)a5
++ (BOOL)insertStates:(id)states forDescriptor:(id)descriptor inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  statesCopy = states;
+  descriptorCopy = descriptor;
+  databaseCopy = database;
+  if ([statesCopy count])
   {
-    if (v9)
+    if (descriptorCopy)
     {
       v19 = 0;
       v20 = &v19;
@@ -42,10 +42,10 @@
       v13[1] = 3221225472;
       v13[2] = sub_10001DAEC;
       v13[3] = &unk_10083C290;
-      v14 = v8;
-      v15 = v10;
-      v18 = a1;
-      v16 = v9;
+      v14 = statesCopy;
+      v15 = databaseCopy;
+      selfCopy = self;
+      v16 = descriptorCopy;
       v17 = &v19;
       sub_1005D4424(v15, v13);
       v11 = *(v20 + 24);
@@ -67,28 +67,28 @@
   return v11 & 1;
 }
 
-+ (void)deleteEntitiesForDescriptor:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForDescriptor:(id)descriptor inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForDescriptorPID:{objc_msgSend(a3, "persistentID")}];
-  v7 = [(SQLiteEntity *)TileDescriptorTileStateCollection queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForDescriptorPID:{objc_msgSend(descriptor, "persistentID")}];
+  v7 = [(SQLiteEntity *)TileDescriptorTileStateCollection queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(TileDescriptorTileStateCollection *)self tileState];
-  [v3 deleteFromDatabase];
+  tileState = [(TileDescriptorTileStateCollection *)self tileState];
+  [tileState deleteFromDatabase];
 
   v5.receiver = self;
   v5.super_class = TileDescriptorTileStateCollection;
   return [(SQLiteEntity *)&v5 deleteFromDatabase];
 }
 
-+ (id)_predicateForDescriptorPID:(int64_t)a3
++ (id)_predicateForDescriptorPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"descriptor_pid" equalToValue:v3];
 
   return v4;

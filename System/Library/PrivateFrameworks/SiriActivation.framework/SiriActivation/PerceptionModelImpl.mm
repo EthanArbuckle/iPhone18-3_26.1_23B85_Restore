@@ -1,17 +1,17 @@
 @interface PerceptionModelImpl
-- (void)performQuery:(int64_t)a3 completionHandler:(id)a4;
+- (void)performQuery:(int64_t)query completionHandler:(id)handler;
 @end
 
 @implementation PerceptionModelImpl
 
-- (void)performQuery:(int64_t)a3 completionHandler:(id)a4
+- (void)performQuery:(int64_t)query completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC2989A8, &qword_1C818FE08) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00]();
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = query;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1C81889FC();

@@ -1,34 +1,34 @@
 @interface SiriIntentsSnippetViewController
-- (BOOL)hasDefaultTapActionForTemplatedStackSnippetView:(id)a3;
-- (CGSize)maximumSizeForRemoteViewController:(id)a3;
-- (CGSize)minimumSizeForRemoteViewController:(id)a3;
-- (SiriIntentsSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)hasDefaultTapActionForTemplatedStackSnippetView:(id)view;
+- (CGSize)maximumSizeForRemoteViewController:(id)controller;
+- (CGSize)minimumSizeForRemoteViewController:(id)controller;
+- (SiriIntentsSnippetViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)defaultViewInsets;
 - (double)desiredHeight;
-- (void)_connectToWidgetForInteraction:(id)a3;
+- (void)_connectToWidgetForInteraction:(id)interaction;
 - (void)_finishLoadingViewIfNecessary;
-- (void)_redactTemplateViewControllersForRepresentedKeyPaths:(id)a3;
+- (void)_redactTemplateViewControllersForRepresentedKeyPaths:(id)paths;
 - (void)_updateTemplateViewControllerCompression;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)mapTemplateViewController:(id)a3 didModifyPlacemark:(id)a4;
-- (void)presentDetailsForTemplateViewController:(id)a3;
-- (void)remoteViewController:(id)a3 desiresConstrainedSize:(CGSize)a4;
-- (void)remoteViewControllerServiceDidTerminate:(id)a3;
-- (void)selectionTemplateViewControllerWasSelected:(id)a3;
-- (void)setSnippet:(id)a3;
+- (void)mapTemplateViewController:(id)controller didModifyPlacemark:(id)placemark;
+- (void)presentDetailsForTemplateViewController:(id)controller;
+- (void)remoteViewController:(id)controller desiresConstrainedSize:(CGSize)size;
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate;
+- (void)selectionTemplateViewControllerWasSelected:(id)selected;
+- (void)setSnippet:(id)snippet;
 - (void)siriDidDeactivate;
 - (void)viewDidLayoutSubviews;
-- (void)viewWantsDefaultTapAction:(id)a3;
+- (void)viewWantsDefaultTapAction:(id)action;
 @end
 
 @implementation SiriIntentsSnippetViewController
 
-- (SiriIntentsSnippetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriIntentsSnippetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v17.receiver = self;
   v17.super_class = SiriIntentsSnippetViewController;
-  v4 = [(SiriIntentsSnippetViewController *)&v17 initWithNibName:a3 bundle:a4];
+  v4 = [(SiriIntentsSnippetViewController *)&v17 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -65,13 +65,13 @@
   [(SiriIntentsSnippetViewController *)self setView:v3];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SiriIntentsSnippetViewController;
-  [(SiriIntentsSnippetViewController *)&v5 didMoveToParentViewController:a3];
-  v4 = [(SiriIntentsSnippetViewController *)self view];
-  [v4 setNeedsLayout];
+  [(SiriIntentsSnippetViewController *)&v5 didMoveToParentViewController:controller];
+  view = [(SiriIntentsSnippetViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -79,50 +79,50 @@
   v4.receiver = self;
   v4.super_class = SiriIntentsSnippetViewController;
   [(SiriIntentsSnippetViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(SiriIntentsSnippetViewController *)self delegate];
-  [v3 siriViewControllerHeightDidChange:self];
+  delegate = [(SiriIntentsSnippetViewController *)self delegate];
+  [delegate siriViewControllerHeightDidChange:self];
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
-  v5 = a3;
-  if (self->_snippet != v5)
+  snippetCopy = snippet;
+  if (self->_snippet != snippetCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_snippet, a3);
-      v6 = [(SAIntentGroupSnippet *)self->_snippet appId];
-      v7 = [LSApplicationProxy applicationProxyForIdentifier:v6];
+      objc_storeStrong(&self->_snippet, snippet);
+      appId = [(SAIntentGroupSnippet *)self->_snippet appId];
+      v7 = [LSApplicationProxy applicationProxyForIdentifier:appId];
 
       v8 = [UIImage _iconForResourceProxy:v7 format:5];
       appIconImage = self->_appIconImage;
       self->_appIconImage = v8;
 
       v49 = v7;
-      v10 = [v7 localizedName];
+      localizedName = [v7 localizedName];
       appName = self->_appName;
-      self->_appName = v10;
+      self->_appName = localizedName;
 
-      v12 = [(SAIntentGroupSnippet *)self->_snippet title];
-      v13 = [v12 length];
+      title = [(SAIntentGroupSnippet *)self->_snippet title];
+      v13 = [title length];
       if (v13)
       {
-        v14 = [(SAIntentGroupSnippet *)self->_snippet title];
+        title2 = [(SAIntentGroupSnippet *)self->_snippet title];
       }
 
       else
       {
-        v14 = 0;
+        title2 = 0;
       }
 
-      objc_storeStrong(&self->_navigationTitle, v14);
+      objc_storeStrong(&self->_navigationTitle, title2);
       if (v13)
       {
       }
 
-      v15 = [(SiriIntentsSnippetViewController *)self view];
-      [v15 reloadData];
+      view = [(SiriIntentsSnippetViewController *)self view];
+      [view reloadData];
 
       [(NSMutableDictionary *)self->_detailSnippetsForAceIds removeAllObjects];
       [(NSMutableDictionary *)self->_serverBoundCommandsForAceIds removeAllObjects];
@@ -154,9 +154,9 @@
             if ([v18 isActive])
             {
               [(SiriIntentsSnippetViewController *)self addChildViewController:v18];
-              v19 = [(SiriIntentsSnippetViewController *)self view];
-              v20 = [v18 view];
-              [v19 addTemplateSubview:v20];
+              view2 = [(SiriIntentsSnippetViewController *)self view];
+              view3 = [v18 view];
+              [view2 addTemplateSubview:view3];
 
               [v18 didMoveToParentViewController:self];
             }
@@ -166,8 +166,8 @@
             v61 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v21 = [v17 intentSlotKeyPaths];
-            v22 = [v21 countByEnumeratingWithState:&v58 objects:v66 count:16];
+            intentSlotKeyPaths = [v17 intentSlotKeyPaths];
+            v22 = [intentSlotKeyPaths countByEnumeratingWithState:&v58 objects:v66 count:16];
             if (v22)
             {
               v23 = v22;
@@ -178,7 +178,7 @@
                 {
                   if (*v59 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(intentSlotKeyPaths);
                   }
 
                   v26 = *(*(&v58 + 1) + 8 * i);
@@ -192,28 +192,28 @@
                   [v27 addObject:v18];
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v58 objects:v66 count:16];
+                v23 = [intentSlotKeyPaths countByEnumeratingWithState:&v58 objects:v66 count:16];
               }
 
               while (v23);
             }
 
-            v28 = [v17 detailSnippet];
-            v29 = v28;
-            if (v28)
+            detailSnippet = [v17 detailSnippet];
+            v29 = detailSnippet;
+            if (detailSnippet)
             {
               detailSnippetsForAceIds = self->_detailSnippetsForAceIds;
-              v31 = [v28 aceId];
-              [(NSMutableDictionary *)detailSnippetsForAceIds setObject:v29 forKey:v31];
+              aceId = [detailSnippet aceId];
+              [(NSMutableDictionary *)detailSnippetsForAceIds setObject:v29 forKey:aceId];
             }
 
-            v32 = [v17 intents_serverBoundCommand];
-            v33 = v32;
-            if (v32)
+            intents_serverBoundCommand = [v17 intents_serverBoundCommand];
+            v33 = intents_serverBoundCommand;
+            if (intents_serverBoundCommand)
             {
               serverBoundCommandsForAceIds = self->_serverBoundCommandsForAceIds;
-              v35 = [v32 aceId];
-              [(NSMutableDictionary *)serverBoundCommandsForAceIds setObject:v33 forKey:v35];
+              aceId2 = [intents_serverBoundCommand aceId];
+              [(NSMutableDictionary *)serverBoundCommandsForAceIds setObject:v33 forKey:aceId2];
             }
 
             v16 = v53 + 1;
@@ -228,17 +228,17 @@
 
       if ([(SAIntentGroupSnippet *)self->_snippet widgetAllowed])
       {
-        v36 = [(SAIntentGroupSnippet *)self->_snippet intent];
-        v37 = [v36 typeName];
-        v38 = [(SAIntentGroupSnippet *)self->_snippet intent];
-        v39 = [v38 data];
+        intent = [(SAIntentGroupSnippet *)self->_snippet intent];
+        typeName = [intent typeName];
+        intent2 = [(SAIntentGroupSnippet *)self->_snippet intent];
+        data = [intent2 data];
         v40 = INIntentCreate();
 
         v41 = [NSString alloc];
-        v42 = [v40 intentId];
-        v43 = [v40 typeName];
-        v44 = [v40 launchId];
-        v45 = [v41 initWithFormat:@"%@-%@-%@", v42, v43, v44];
+        intentId = [v40 intentId];
+        typeName2 = [v40 typeName];
+        launchId = [v40 launchId];
+        v45 = [v41 initWithFormat:@"%@-%@-%@", intentId, typeName2, launchId];
 
         v46 = [v45 dataUsingEncoding:4];
         if ([v46 length])
@@ -249,7 +249,7 @@
           v54[3] = &unk_C428;
           v55 = objc_alloc_init(AFSecurityConnection);
           v56 = v40;
-          v57 = self;
+          selfCopy = self;
           v47 = v55;
           [v47 processData:v46 usingProcedure:5 completion:v54];
         }
@@ -277,7 +277,7 @@
   v4.receiver = self;
   v4.super_class = SiriIntentsSnippetViewController;
   [(SiriIntentsSnippetViewController *)&v4 siriDidDeactivate];
-  v3 = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
+  disconnect = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
 }
 
 - (UIEdgeInsets)defaultViewInsets
@@ -295,22 +295,22 @@
 
 - (double)desiredHeight
 {
-  v2 = [(SiriIntentsSnippetViewController *)self view];
-  [v2 desiredHeight];
+  view = [(SiriIntentsSnippetViewController *)self view];
+  [view desiredHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_connectToWidgetForInteraction:(id)a3
+- (void)_connectToWidgetForInteraction:(id)interaction
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2EDC;
   v5[3] = &unk_C4A0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  interactionCopy = interaction;
+  selfCopy = self;
+  v4 = interactionCopy;
   [INUIRemoteViewController requestRemoteViewControllerForInteraction:v4 delegate:self connectionHandler:v5];
 }
 
@@ -320,8 +320,8 @@
   if ([(SiriIntentsSnippetViewController *)self isLoading])
   {
     [(SiriIntentsSnippetViewController *)self setLoading:0];
-    v3 = [(SiriIntentsSnippetViewController *)self delegate];
-    [v3 siriSnippetViewControllerViewDidLoad:self];
+    delegate = [(SiriIntentsSnippetViewController *)self delegate];
+    [delegate siriSnippetViewControllerViewDidLoad:self];
   }
 }
 
@@ -360,15 +360,15 @@
   }
 }
 
-- (void)_redactTemplateViewControllersForRepresentedKeyPaths:(id)a3
+- (void)_redactTemplateViewControllersForRepresentedKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = [(NSMutableSet *)self->_templateViewControllers mutableCopy];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = pathsCopy;
   v6 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v6)
   {
@@ -408,8 +408,8 @@
                 [v14 setActive:0];
                 [v5 removeObject:v14];
                 [v14 didMoveToParentViewController:0];
-                v15 = [v14 view];
-                [v15 removeFromTemplatedSuperview];
+                view = [v14 view];
+                [view removeFromTemplatedSuperview];
 
                 [v14 removeFromParentViewController];
               }
@@ -452,9 +452,9 @@
         {
           [v21 setActive:1];
           [(SiriIntentsSnippetViewController *)self addChildViewController:v21];
-          v22 = [(SiriIntentsSnippetViewController *)self view];
-          v23 = [v21 view];
-          [v22 addTemplateSubview:v23];
+          view2 = [(SiriIntentsSnippetViewController *)self view];
+          view3 = [v21 view];
+          [view2 addTemplateSubview:view3];
 
           [v21 didMoveToParentViewController:self];
         }
@@ -467,18 +467,18 @@
   }
 }
 
-- (BOOL)hasDefaultTapActionForTemplatedStackSnippetView:(id)a3
+- (BOOL)hasDefaultTapActionForTemplatedStackSnippetView:(id)view
 {
-  v3 = [(SAIntentGroupSnippet *)self->_snippet commands];
-  v4 = [v3 count] != 0;
+  commands = [(SAIntentGroupSnippet *)self->_snippet commands];
+  v4 = [commands count] != 0;
 
   return v4;
 }
 
-- (CGSize)minimumSizeForRemoteViewController:(id)a3
+- (CGSize)minimumSizeForRemoteViewController:(id)controller
 {
-  v4 = [(SiriIntentsSnippetViewController *)self delegate];
-  [v4 siriViewControllerVisibleContentArea:self];
+  delegate = [(SiriIntentsSnippetViewController *)self delegate];
+  [delegate siriViewControllerVisibleContentArea:self];
   v6 = v5;
 
   v7 = 120.0;
@@ -488,10 +488,10 @@
   return result;
 }
 
-- (CGSize)maximumSizeForRemoteViewController:(id)a3
+- (CGSize)maximumSizeForRemoteViewController:(id)controller
 {
-  v4 = [(SiriIntentsSnippetViewController *)self delegate];
-  [v4 siriViewControllerVisibleContentArea:self];
+  delegate = [(SiriIntentsSnippetViewController *)self delegate];
+  [delegate siriViewControllerVisibleContentArea:self];
   v6 = v5;
 
   v7 = 200.0;
@@ -501,68 +501,68 @@
   return result;
 }
 
-- (void)remoteViewController:(id)a3 desiresConstrainedSize:(CGSize)a4
+- (void)remoteViewController:(id)controller desiresConstrainedSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = [(SiriIntentsSnippetViewController *)self view:a3];
+  height = size.height;
+  v5 = [(SiriIntentsSnippetViewController *)self view:controller];
   [v5 adjustAuxiliaryViewHeight:1 animated:0 completion:height];
 }
 
-- (void)remoteViewControllerServiceDidTerminate:(id)a3
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate
 {
   [(SiriIntentsSnippetViewController *)self _finishLoadingViewIfNecessary];
-  v4 = [(SiriIntentsSnippetViewController *)self view];
-  v5 = [v4 auxiliaryView];
+  view = [(SiriIntentsSnippetViewController *)self view];
+  auxiliaryView = [view auxiliaryView];
 
-  if (v5)
+  if (auxiliaryView)
   {
-    v6 = [(SiriIntentsSnippetViewController *)self view];
-    [v6 setAuxiliaryView:0 atIndex:0 initialHeight:1 animated:0 completion:0.0];
+    view2 = [(SiriIntentsSnippetViewController *)self view];
+    [view2 setAuxiliaryView:0 atIndex:0 initialHeight:1 animated:0 completion:0.0];
   }
 }
 
-- (void)presentDetailsForTemplateViewController:(id)a3
+- (void)presentDetailsForTemplateViewController:(id)controller
 {
-  v4 = [a3 templateModelPrivate];
-  v5 = [v4 detailIdentifier];
+  templateModelPrivate = [controller templateModelPrivate];
+  detailIdentifier = [templateModelPrivate detailIdentifier];
 
-  if (v5)
+  if (detailIdentifier)
   {
-    v6 = [(NSMutableDictionary *)self->_detailSnippetsForAceIds objectForKey:v5];
+    v6 = [(NSMutableDictionary *)self->_detailSnippetsForAceIds objectForKey:detailIdentifier];
     if (v6)
     {
       v7 = v6;
-      v8 = [(SiriIntentsSnippetViewController *)self delegate];
+      delegate = [(SiriIntentsSnippetViewController *)self delegate];
       v10 = v7;
       v9 = [NSArray arrayWithObjects:&v10 count:1];
-      [v8 siriSnippetViewController:self pushSirilandSnippets:v9];
+      [delegate siriSnippetViewController:self pushSirilandSnippets:v9];
     }
   }
 }
 
-- (void)selectionTemplateViewControllerWasSelected:(id)a3
+- (void)selectionTemplateViewControllerWasSelected:(id)selected
 {
-  v4 = a3;
-  [v4 setSelected:1];
-  v5 = [v4 templateModelPrivate];
-  v6 = [v5 commandIdentifier];
+  selectedCopy = selected;
+  [selectedCopy setSelected:1];
+  templateModelPrivate = [selectedCopy templateModelPrivate];
+  commandIdentifier = [templateModelPrivate commandIdentifier];
 
-  if (v6)
+  if (commandIdentifier)
   {
-    v7 = [(NSMutableDictionary *)self->_serverBoundCommandsForAceIds objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_serverBoundCommandsForAceIds objectForKey:commandIdentifier];
     if (v7)
     {
       v8 = v7;
       pendingServerBoundCommandsForTemplateModelIdentifiers = self->_pendingServerBoundCommandsForTemplateModelIdentifiers;
-      v10 = [v4 templateModelPrivate];
-      v11 = [v10 modelIdentifier];
-      [(NSMutableDictionary *)pendingServerBoundCommandsForTemplateModelIdentifiers setObject:v8 forKey:v11];
+      templateModelPrivate2 = [selectedCopy templateModelPrivate];
+      modelIdentifier = [templateModelPrivate2 modelIdentifier];
+      [(NSMutableDictionary *)pendingServerBoundCommandsForTemplateModelIdentifiers setObject:v8 forKey:modelIdentifier];
     }
   }
 
-  v12 = [(SiriIntentsSnippetViewController *)self childViewControllers];
-  v13 = [v12 count];
-  v14 = [v12 indexOfObject:v4];
+  childViewControllers = [(SiriIntentsSnippetViewController *)self childViewControllers];
+  v13 = [childViewControllers count];
+  v14 = [childViewControllers indexOfObject:selectedCopy];
   v15 = [[NSIndexSet alloc] initWithIndexesInRange:{v14, v13 - v14}];
   v16 = [[NSIndexSet alloc] initWithIndexesInRange:{0, v14 + 1}];
   v18[0] = _NSConcreteStackBlock;
@@ -572,20 +572,20 @@
   v18[4] = self;
   v18[5] = v14;
   v17 = objc_retainBlock(v18);
-  [v12 enumerateObjectsAtIndexes:v15 options:0 usingBlock:v17];
-  [v12 enumerateObjectsAtIndexes:v16 options:2 usingBlock:v17];
+  [childViewControllers enumerateObjectsAtIndexes:v15 options:0 usingBlock:v17];
+  [childViewControllers enumerateObjectsAtIndexes:v16 options:2 usingBlock:v17];
 }
 
-- (void)mapTemplateViewController:(id)a3 didModifyPlacemark:(id)a4
+- (void)mapTemplateViewController:(id)controller didModifyPlacemark:(id)placemark
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 templateModelPrivate];
-  v8 = [v7 commandIdentifier];
+  controllerCopy = controller;
+  placemarkCopy = placemark;
+  templateModelPrivate = [controllerCopy templateModelPrivate];
+  commandIdentifier = [templateModelPrivate commandIdentifier];
 
-  if (v8)
+  if (commandIdentifier)
   {
-    v9 = [(NSMutableDictionary *)self->_serverBoundCommandsForAceIds objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_serverBoundCommandsForAceIds objectForKey:commandIdentifier];
     if (v9)
     {
       v10 = v9;
@@ -593,30 +593,30 @@
       {
         v11 = INIntentSlotValueTransformToLocation();
         v12 = objc_alloc_init(SAIntentGroupProtobufMessage);
-        v13 = [v11 data];
-        [v12 setData:v13];
+        data = [v11 data];
+        [v12 setData:data];
 
         [v10 setLocation:v12];
       }
 
       pendingServerBoundCommandsForTemplateModelIdentifiers = self->_pendingServerBoundCommandsForTemplateModelIdentifiers;
-      v15 = [v17 templateModelPrivate];
-      v16 = [v15 modelIdentifier];
-      [(NSMutableDictionary *)pendingServerBoundCommandsForTemplateModelIdentifiers setObject:v10 forKey:v16];
+      templateModelPrivate2 = [controllerCopy templateModelPrivate];
+      modelIdentifier = [templateModelPrivate2 modelIdentifier];
+      [(NSMutableDictionary *)pendingServerBoundCommandsForTemplateModelIdentifiers setObject:v10 forKey:modelIdentifier];
     }
   }
 }
 
-- (void)viewWantsDefaultTapAction:(id)a3
+- (void)viewWantsDefaultTapAction:(id)action
 {
-  v4 = [(SAIntentGroupSnippet *)self->_snippet commands];
-  v5 = [v4 count];
+  commands = [(SAIntentGroupSnippet *)self->_snippet commands];
+  v5 = [commands count];
 
   if (v5)
   {
-    v8 = [(SiriIntentsSnippetViewController *)self delegate];
-    v6 = [(SAIntentGroupSnippet *)self->_snippet commands];
-    [v8 siriViewController:self performAceCommands:v6];
+    delegate = [(SiriIntentsSnippetViewController *)self delegate];
+    commands2 = [(SAIntentGroupSnippet *)self->_snippet commands];
+    [delegate siriViewController:self performAceCommands:commands2];
   }
 
   else

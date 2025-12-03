@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorPredicateFilterTimeAtHome
 - (MOEventPatternDetectorPredicateFilterTimeAtHome)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorPredicateFilterTimeAtHome
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %lu", @"category", 1, @"placeUserType", 1];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [eventsCopy filteredArrayUsingPredicate:v5];
   v7 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v54 = v7;
   v8 = [NSArray arrayWithObjects:&v54 count:1];
@@ -49,7 +49,7 @@
     v39 = v7;
     v40 = v6;
     v41 = v5;
-    v42 = v4;
+    v42 = eventsCopy;
     v43 = objc_opt_new();
     v12 = objc_opt_new();
     v44 = 0u;
@@ -75,8 +75,8 @@
           v18 = *(*(&v44 + 1) + 8 * i);
           [v18 setTimeAtHomeSubType:1];
           cal = self->_cal;
-          v20 = [v18 startDate];
-          v21 = [v20 dateByAddingTimeInterval:-10800.0];
+          startDate = [v18 startDate];
+          v21 = [startDate dateByAddingTimeInterval:-10800.0];
           v22 = [(NSCalendar *)cal components:512 fromDate:v21];
 
           v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v22 weekday]);
@@ -101,7 +101,7 @@
     v27 = 1;
     v28 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v5 = v41;
-    v4 = v42;
+    eventsCopy = v42;
     v6 = v40;
     v29 = &GEOPOICategoryGasStation_ptr;
     do

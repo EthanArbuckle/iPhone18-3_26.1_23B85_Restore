@@ -1,47 +1,47 @@
 @interface IMDRelayAttachmentController
 - (BOOL)shouldSendLowResolutionOnly;
-- (IMDRelayAttachmentController)initWithSession:(id)a3;
-- (id)_existingStoredMessageWithCompletedTransfersForMessageGUID:(id)a3;
-- (id)_plainTextPartWithString:(id)a3 index:(int64_t)a4;
+- (IMDRelayAttachmentController)initWithSession:(id)session;
+- (id)_existingStoredMessageWithCompletedTransfersForMessageGUID:(id)d;
+- (id)_plainTextPartWithString:(id)string index:(int64_t)index;
 - (int64_t)transcodeTargetType;
-- (void)_sendFileURL:(id)a3 forMessageGUID:(id)a4 attachmentIndex:(int64_t)a5;
-- (void)_sizeLimitsForTransfer:(id)a3 bigSize:(unint64_t *)a4 smallSize:(unint64_t *)a5;
-- (void)processAttachmentsForMessage:(id)a3 generateTextParts:(BOOL)a4 lastAddressedHandle:(id)a5 lastAddressedSIMID:(id)a6 completionBlock:(id)a7;
-- (void)processAttachmentsForPeerRelayForMessage:(id)a3 lastAddressHandle:(id)a4 lastAddressedSIMID:(id)a5 completionBlock:(id)a6 uploadFailureBlock:(id)a7;
-- (void)remoteFileResponse:(id)a3;
-- (void)remotefileRequest:(id)a3 attempts:(int64_t)a4;
-- (void)retrieveAttachmentsForMessage:(id)a3 ignoreStoredTransfers:(BOOL)a4 displayID:(id)a5 token:(id)a6 completionBlock:(id)a7;
-- (void)retrieveLocalFileTransfer:(id)a3 attachmentIndex:(unint64_t)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 decryptionKey:(id)a9 requestedSize:(id)a10 fileSize:(unint64_t)a11 progressBlock:(id)a12 completionBlock:(id)a13;
+- (void)_sendFileURL:(id)l forMessageGUID:(id)d attachmentIndex:(int64_t)index;
+- (void)_sizeLimitsForTransfer:(id)transfer bigSize:(unint64_t *)size smallSize:(unint64_t *)smallSize;
+- (void)processAttachmentsForMessage:(id)message generateTextParts:(BOOL)parts lastAddressedHandle:(id)handle lastAddressedSIMID:(id)d completionBlock:(id)block;
+- (void)processAttachmentsForPeerRelayForMessage:(id)message lastAddressHandle:(id)handle lastAddressedSIMID:(id)d completionBlock:(id)block uploadFailureBlock:(id)failureBlock;
+- (void)remoteFileResponse:(id)response;
+- (void)remotefileRequest:(id)request attempts:(int64_t)attempts;
+- (void)retrieveAttachmentsForMessage:(id)message ignoreStoredTransfers:(BOOL)transfers displayID:(id)d token:(id)token completionBlock:(id)block;
+- (void)retrieveLocalFileTransfer:(id)transfer attachmentIndex:(unint64_t)index path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature decryptionKey:(id)key requestedSize:(id)self0 fileSize:(unint64_t)self1 progressBlock:(id)self2 completionBlock:(id)self3;
 @end
 
 @implementation IMDRelayAttachmentController
 
 - (int64_t)transcodeTargetType
 {
-  v2 = [(IMDRelayAttachmentController *)self session];
-  v3 = [v2 service];
-  v4 = [v3 transcodeTarget];
+  session = [(IMDRelayAttachmentController *)self session];
+  service = [session service];
+  transcodeTarget = [service transcodeTarget];
 
-  return v4;
+  return transcodeTarget;
 }
 
-- (void)processAttachmentsForMessage:(id)a3 generateTextParts:(BOOL)a4 lastAddressedHandle:(id)a5 lastAddressedSIMID:(id)a6 completionBlock:(id)a7
+- (void)processAttachmentsForMessage:(id)message generateTextParts:(BOOL)parts lastAddressedHandle:(id)handle lastAddressedSIMID:(id)d completionBlock:(id)block
 {
-  v87 = a4;
+  partsCopy = parts;
   v158 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v94 = a5;
-  v98 = a6;
-  v86 = a7;
+  messageCopy = message;
+  handleCopy = handle;
+  dCopy = d;
+  blockCopy = block;
   group = dispatch_group_create();
-  v106 = v10;
-  v11 = [v10 fileTransferGUIDs];
-  v12 = [v11 count];
+  v106 = messageCopy;
+  fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+  v12 = [fileTransferGUIDs count];
 
   if (v12)
   {
-    v13 = [(IMDRelayAttachmentController *)self session];
-    v92 = [v13 maxSizePerAttachmentWithCount:v12 lastAddressedHandle:v94 lastAddressedSIMID:v98];
+    session = [(IMDRelayAttachmentController *)self session];
+    v92 = [session maxSizePerAttachmentWithCount:v12 lastAddressedHandle:handleCopy lastAddressedSIMID:dCopy];
   }
 
   else
@@ -66,7 +66,7 @@
   v144 = sub_22B4D7640;
   v145 = sub_22B4D7878;
   v146 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [v10 body];
+  body = [messageCopy body];
   v16 = IMLogHandleForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -74,10 +74,10 @@
     _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Enumerating parts in body", v152, 2u);
   }
 
-  v17 = [v10 threadIdentifier];
-  if ([v17 length])
+  threadIdentifier = [messageCopy threadIdentifier];
+  if ([threadIdentifier length])
   {
-    v18 = v87;
+    v18 = partsCopy;
   }
 
   else
@@ -90,9 +90,9 @@
     v19 = IMLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v10 guid];
+      guid = [messageCopy guid];
       *v152 = 138412290;
-      v153 = v20;
+      v153 = guid;
       _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Prepending reply compatibility text message part for message %@", v152, 0xCu);
     }
 
@@ -116,13 +116,13 @@
   v25 = _Block_copy(aBlock);
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = [v15 length];
+  v28 = [body length];
   v29 = *MEMORY[0x277D19160];
   v132[0] = MEMORY[0x277D85DD0];
   v132[1] = 3221225472;
   v132[2] = sub_22B5166B4;
   v132[3] = &unk_2787033F0;
-  v133 = v15;
+  v133 = body;
   v137 = buf;
   v30 = v26;
   v134 = v30;
@@ -130,12 +130,12 @@
   v32 = v30;
   v95 = v31;
   v135 = v31;
-  v138 = v87;
+  v138 = partsCopy;
   v84 = v133;
   v85 = v25;
   v136 = v85;
   [v133 enumerateAttribute:v29 inRange:0 options:v28 usingBlock:{0, v132}];
-  if (!v87)
+  if (!partsCopy)
   {
     v128[0] = MEMORY[0x277D85DD0];
     v128[1] = 3221225472;
@@ -156,19 +156,19 @@
   while (v33 < [v32 count])
   {
     v35 = [v32 objectAtIndexedSubscript:v33];
-    v99 = [v35 integerValue];
+    integerValue = [v35 integerValue];
 
     v36 = [v95 objectAtIndexedSubscript:v33];
     v37 = +[IMDFileTransferCenter sharedInstance];
     v38 = [v37 transferForGUID:v36];
     [v37 startTransfer:v36];
     [v37 endTransfer:v36];
-    v39 = [v106 accountID];
-    v40 = [v106 handle];
-    if (v40)
+    accountID = [v106 accountID];
+    handle = [v106 handle];
+    if (handle)
     {
-      v102 = [v106 handle];
-      v41 = v102;
+      handle2 = [v106 handle];
+      v41 = handle2;
     }
 
     else
@@ -176,37 +176,37 @@
       v41 = 0;
     }
 
-    [v37 assignTransfer:v36 toAccount:v39 otherPerson:v41];
-    if (v40)
+    [v37 assignTransfer:v36 toAccount:accountID otherPerson:v41];
+    if (handle)
     {
     }
 
-    v108 = [v38 localPath];
-    v105 = [v38 type];
+    localPath = [v38 localPath];
+    type = [v38 type];
     v42 = IMLogHandleForCategory();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       *v152 = 138412290;
-      v153 = v108;
+      v153 = localPath;
       _os_log_impl(&dword_22B4CC000, v42, OS_LOG_TYPE_INFO, "Found path for attachment part: %@", v152, 0xCu);
     }
 
-    v103 = [v108 length];
+    v103 = [localPath length];
     if (v103)
     {
       dispatch_group_enter(group);
-      v109 = [MEMORY[0x277CBEBC0] fileURLWithPath:v108];
-      v43 = [v109 pathExtension];
-      if ([v43 length])
+      v109 = [MEMORY[0x277CBEBC0] fileURLWithPath:localPath];
+      pathExtension = [v109 pathExtension];
+      if ([pathExtension length])
       {
-        v97 = v43;
+        v97 = pathExtension;
       }
 
       else
       {
-        v45 = [MEMORY[0x277D19250] defaultHFSFileManager];
-        v46 = [v38 type];
-        v47 = [v45 pathExtensionForUTIType:v46];
+        defaultHFSFileManager = [MEMORY[0x277D19250] defaultHFSFileManager];
+        type2 = [v38 type];
+        v47 = [defaultHFSFileManager pathExtensionForUTIType:type2];
 
         if ([v47 length])
         {
@@ -215,9 +215,9 @@
 
         else
         {
-          v49 = [MEMORY[0x277D19250] defaultHFSFileManager];
-          v50 = [v38 mimeType];
-          v51 = [v49 pathExtensionForMIMEType:v50];
+          defaultHFSFileManager2 = [MEMORY[0x277D19250] defaultHFSFileManager];
+          mimeType = [v38 mimeType];
+          v51 = [defaultHFSFileManager2 pathExtensionForMIMEType:mimeType];
 
           v48 = v51;
         }
@@ -225,10 +225,10 @@
         v97 = v48;
         if ([v48 length])
         {
-          v52 = [v109 absoluteString];
-          v53 = [v52 stringByDeletingPathExtension];
+          absoluteString = [v109 absoluteString];
+          stringByDeletingPathExtension = [absoluteString stringByDeletingPathExtension];
 
-          v54 = [v53 stringByAppendingPathExtension:v97];
+          v54 = [stringByDeletingPathExtension stringByAppendingPathExtension:v97];
 
           if ([v54 length])
           {
@@ -241,8 +241,8 @@
 
       if (v109)
       {
-        v56 = [MEMORY[0x277CCAA00] defaultManager];
-        v57 = [v56 im_generateCopyForURL:v109];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v57 = [defaultManager im_generateCopyForURL:v109];
       }
 
       else
@@ -250,22 +250,22 @@
         v57 = 0;
       }
 
-      v58 = [v38 transcoderUserInfo];
-      theDict = [v58 mutableCopy];
+      transcoderUserInfo = [v38 transcoderUserInfo];
+      theDict = [transcoderUserInfo mutableCopy];
 
       if (!theDict)
       {
         theDict = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
       }
 
-      v59 = v94;
-      if (v94)
+      v59 = handleCopy;
+      if (handleCopy)
       {
         CFDictionarySetValue(theDict, key, v59);
       }
 
-      v60 = v98;
-      if (v98)
+      v60 = dCopy;
+      if (dCopy)
       {
         CFDictionarySetValue(theDict, v90, v60);
       }
@@ -289,10 +289,10 @@
       v151 = v63;
       v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v151 count:1];
 
-      v65 = [MEMORY[0x277D1ADE0] sharedInstance];
-      v66 = [v38 isSticker];
+      mEMORY[0x277D1ADE0] = [MEMORY[0x277D1ADE0] sharedInstance];
+      isSticker = [v38 isSticker];
       v67 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"public.3gpp", @"public.3gp", @"public.png", @"public.jpg", @"public.jpeg", 0}];
-      v68 = [(IMDRelayAttachmentController *)self transcodeTargetType];
+      transcodeTargetType = [(IMDRelayAttachmentController *)self transcodeTargetType];
       v115[0] = MEMORY[0x277D85DD0];
       v115[1] = 3221225472;
       v115[2] = sub_22B516C54;
@@ -303,10 +303,10 @@
       v117 = v70;
       v71 = v33;
       v72 = v32;
-      v73 = v105;
+      v73 = type;
       v118 = v73;
       v74 = v104;
-      v127 = v99;
+      v127 = integerValue;
       v119 = v74;
       v125 = buf;
       v120 = v100;
@@ -320,7 +320,7 @@
       v76 = v73;
       v32 = v72;
       v33 = v71;
-      [v65 transcodeFileTransferContents:v69 utiType:v76 isSticker:v66 allowUnfilteredUTIs:v67 target:v68 sizes:v70 commonCapabilities:0 maxDimension:-1 transcoderUserInfo:theDict representations:0 isLQMEnabled:v82 completionBlock:v115];
+      [mEMORY[0x277D1ADE0] transcodeFileTransferContents:v69 utiType:v76 isSticker:isSticker allowUnfilteredUTIs:v67 target:transcodeTargetType sizes:v70 commonCapabilities:0 maxDimension:-1 transcoderUserInfo:theDict representations:0 isLQMEnabled:v82 completionBlock:v115];
 
       v37 = v100;
       v36 = v101;
@@ -337,7 +337,7 @@
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
         *v152 = 138412802;
-        v153 = v108;
+        v153 = localPath;
         v154 = 2112;
         v155 = v38;
         v156 = 2112;
@@ -355,11 +355,11 @@
     }
   }
 
-  v77 = [v106 expressiveSendStyleID];
-  if ([v77 length] && objc_msgSend(*(v142 + 5), "count"))
+  expressiveSendStyleID = [v106 expressiveSendStyleID];
+  if ([expressiveSendStyleID length] && objc_msgSend(*(v142 + 5), "count"))
   {
 
-    if (!v87)
+    if (!partsCopy)
     {
       goto LABEL_66;
     }
@@ -367,14 +367,14 @@
     v78 = IMLogHandleForCategory();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
     {
-      v79 = [v106 guid];
+      guid2 = [v106 guid];
       *v152 = 138412290;
-      v153 = v79;
+      v153 = guid2;
       _os_log_impl(&dword_22B4CC000, v78, OS_LOG_TYPE_INFO, "Appending expressive send style message part for message %@", v152, 0xCu);
     }
 
-    v77 = [v106 _localizedBackwardsCompatibleExpressiveSendText];
-    v80 = -[IMDRelayAttachmentController _plainTextPartWithString:index:](self, "_plainTextPartWithString:index:", v77, [*(v142 + 5) count]);
+    expressiveSendStyleID = [v106 _localizedBackwardsCompatibleExpressiveSendText];
+    v80 = -[IMDRelayAttachmentController _plainTextPartWithString:index:](self, "_plainTextPartWithString:index:", expressiveSendStyleID, [*(v142 + 5) count]);
     if (v80)
     {
       [*(v142 + 5) addObject:v80];
@@ -390,14 +390,14 @@ LABEL_66:
     block[3] = &unk_278703468;
     v111 = v106;
     v113 = &v147;
-    v112 = v86;
+    v112 = blockCopy;
     v114 = buf;
     dispatch_group_notify(group, MEMORY[0x277D85CD0], block);
   }
 
-  else if (v86)
+  else if (blockCopy)
   {
-    (*(v86 + 2))(v86, v106, (v148[3] & 1) == 0, *(v142 + 5), 0);
+    (*(blockCopy + 2))(blockCopy, v106, (v148[3] & 1) == 0, *(v142 + 5), 0);
   }
 
 LABEL_70:
@@ -408,14 +408,14 @@ LABEL_70:
   v81 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_plainTextPartWithString:(id)a3 index:(int64_t)a4
+- (id)_plainTextPartWithString:(id)string index:(int64_t)index
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     CFDictionarySetValue(v6, @"Type", @"text/plain");
-    v7 = [v5 dataUsingEncoding:4];
+    v7 = [stringCopy dataUsingEncoding:4];
     if (v7)
     {
       CFDictionarySetValue(v6, @"Data", v7);
@@ -426,10 +426,10 @@ LABEL_70:
       CFDictionarySetValue(v6, @"Tag", @"text");
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"text_%d.txt", a4];
-    if (v8)
+    index = [MEMORY[0x277CCACA8] stringWithFormat:@"text_%d.txt", index];
+    if (index)
     {
-      CFDictionarySetValue(v6, @"Path", v8);
+      CFDictionarySetValue(v6, @"Path", index);
     }
   }
 
@@ -441,16 +441,16 @@ LABEL_70:
   return v6;
 }
 
-- (IMDRelayAttachmentController)initWithSession:(id)a3
+- (IMDRelayAttachmentController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = IMDRelayAttachmentController;
   v6 = [(IMDRelayAttachmentController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;
@@ -477,21 +477,21 @@ LABEL_70:
   }
 }
 
-- (void)_sizeLimitsForTransfer:(id)a3 bigSize:(unint64_t *)a4 smallSize:(unint64_t *)a5
+- (void)_sizeLimitsForTransfer:(id)transfer bigSize:(unint64_t *)size smallSize:(unint64_t *)smallSize
 {
-  v6 = [a3 type];
+  type = [transfer type];
   v5 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   IMiMessageSizeLimitsForTransferType();
 }
 
-- (void)processAttachmentsForPeerRelayForMessage:(id)a3 lastAddressHandle:(id)a4 lastAddressedSIMID:(id)a5 completionBlock:(id)a6 uploadFailureBlock:(id)a7
+- (void)processAttachmentsForPeerRelayForMessage:(id)message lastAddressHandle:(id)handle lastAddressedSIMID:(id)d completionBlock:(id)block uploadFailureBlock:(id)failureBlock
 {
   v88 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v36 = a4;
-  v37 = a5;
-  v38 = a6;
-  v43 = a7;
+  messageCopy = message;
+  handleCopy = handle;
+  dCopy = d;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -503,14 +503,14 @@ LABEL_70:
   }
 
   v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v39 = [v11 fileTransferGUIDs];
-  if ([v39 count])
+  fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+  if ([fileTransferGUIDs count])
   {
-    v13 = [v11 fileTransferGUIDs];
-    v14 = [v13 count];
+    fileTransferGUIDs2 = [messageCopy fileTransferGUIDs];
+    v14 = [fileTransferGUIDs2 count];
 
-    v15 = [(IMDRelayAttachmentController *)self session];
-    v41 = [v15 maxSizePerAttachmentWithCount:v14 lastAddressedHandle:v36 lastAddressedSIMID:v37];
+    session = [(IMDRelayAttachmentController *)self session];
+    v41 = [session maxSizePerAttachmentWithCount:v14 lastAddressedHandle:handleCopy lastAddressedSIMID:dCopy];
 
     v16 = +[IMDFileTransferCenter sharedInstance];
     v79 = 0;
@@ -527,7 +527,7 @@ LABEL_70:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obj = v39;
+    obj = fileTransferGUIDs;
     v17 = [obj countByEnumeratingWithState:&v71 objects:v87 count:16];
     if (v17)
     {
@@ -544,28 +544,28 @@ LABEL_70:
           }
 
           v20 = *(*(&v71 + 1) + 8 * i);
-          v21 = [v16 transferForGUID:{v20, v36}];
+          v21 = [v16 transferForGUID:{v20, handleCopy}];
           if (v21)
           {
             dispatch_group_enter(group);
             [v21 _setNeedsWrapper:0];
             [v16 startTransfer:v20];
             [v16 endTransfer:v20];
-            v22 = [v11 accountID];
-            v23 = [v11 handle];
-            if (v23)
+            accountID = [messageCopy accountID];
+            handle = [messageCopy handle];
+            if (handle)
             {
-              a4 = [v11 handle];
-              v24 = a4;
+              handle = [messageCopy handle];
+              handleCopy2 = handle;
             }
 
             else
             {
-              v24 = 0;
+              handleCopy2 = 0;
             }
 
-            [v16 assignTransfer:v20 toAccount:v22 otherPerson:v24];
-            if (v23)
+            [v16 assignTransfer:v20 toAccount:accountID otherPerson:handleCopy2];
+            if (handle)
             {
             }
 
@@ -588,20 +588,20 @@ LABEL_70:
             aBlock[3] = &unk_278703D20;
             v27 = v21;
             v58 = v27;
-            v59 = self;
+            selfCopy = self;
             v68 = v41;
             v60 = v16;
             v61 = v20;
             v66 = &v75;
             v67 = &v79;
             v62 = group;
-            v65 = v43;
-            v63 = v11;
+            v65 = failureBlockCopy;
+            v63 = messageCopy;
             v64 = v44;
             v28 = _Block_copy(aBlock);
-            v29 = [v27 localURL];
+            localURL = [v27 localURL];
             v56 = 0;
-            [v42 coordinateReadingItemAtURL:v29 options:0 error:&v56 byAccessor:v28];
+            [v42 coordinateReadingItemAtURL:localURL options:0 error:&v56 byAccessor:v28];
             v30 = v56;
 
             if (v30)
@@ -611,17 +611,17 @@ LABEL_70:
                 v31 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                 {
-                  v32 = [v27 localURL];
+                  localURL2 = [v27 localURL];
                   *buf = 138412546;
-                  *&buf[4] = v32;
+                  *&buf[4] = localURL2;
                   *&buf[12] = 2112;
                   *&buf[14] = v30;
                   _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "Failed coordinated read of: %@  (Error: %@)", buf, 0x16u);
                 }
               }
 
-              v33 = [v27 localURL];
-              v28[2](v28, v33);
+              localURL3 = [v27 localURL];
+              v28[2](v28, localURL3);
             }
 
             v18 = 1;
@@ -664,7 +664,7 @@ LABEL_70:
         block[3] = &unk_278703D48;
         v50 = obj;
         v53 = &v79;
-        v52 = v38;
+        v52 = blockCopy;
         v51 = v44;
         v54 = &v75;
         v55 = buf;
@@ -694,27 +694,27 @@ LABEL_70:
       }
     }
 
-    if (v38)
+    if (blockCopy)
     {
-      (*(v38 + 2))(v38, v44, 1, 0);
+      (*(blockCopy + 2))(blockCopy, v44, 1, 0);
     }
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveAttachmentsForMessage:(id)a3 ignoreStoredTransfers:(BOOL)a4 displayID:(id)a5 token:(id)a6 completionBlock:(id)a7
+- (void)retrieveAttachmentsForMessage:(id)message ignoreStoredTransfers:(BOOL)transfers displayID:(id)d token:(id)token completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 fileTransferGUIDs];
-  v17 = [v16 count];
+  messageCopy = message;
+  dCopy = d;
+  tokenCopy = token;
+  blockCopy = block;
+  fileTransferGUIDs = [messageCopy fileTransferGUIDs];
+  v17 = [fileTransferGUIDs count];
 
   if (v17)
   {
-    if (a4)
+    if (transfers)
     {
       v18 = IMAttachmentsLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -729,8 +729,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v20 = [v12 guid];
-    v21 = [(IMDRelayAttachmentController *)self _existingStoredMessageWithCompletedTransfersForMessageGUID:v20];
+    guid = [messageCopy guid];
+    v21 = [(IMDRelayAttachmentController *)self _existingStoredMessageWithCompletedTransfersForMessageGUID:guid];
 
     v18 = IMAttachmentsLogHandle();
     v22 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -755,8 +755,8 @@ LABEL_16:
         }
       }
 
-      v24 = [MEMORY[0x277D192A8] sharedInstance];
-      if ([v24 isScreenLit])
+      mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+      if ([mEMORY[0x277D192A8] isScreenLit])
       {
         v25 = 0;
       }
@@ -778,9 +778,9 @@ LABEL_16:
       v31 = sub_22B539164;
       v32 = &unk_278703DC0;
       v36 = buf;
-      v33 = v12;
-      v34 = v13;
-      v35 = v15;
+      v33 = messageCopy;
+      v34 = dCopy;
+      v35 = blockCopy;
       v27 = [v26 initWithFlags:3 options:v25 timeout:&v29 wifiTimeout:20.0 completionBlock:5.0];
       v28 = *(v38 + 5);
       *(v38 + 5) = v27;
@@ -797,30 +797,30 @@ LABEL_16:
       _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_DEFAULT, "   We already have all these transfers, just moving along as a success!", buf, 2u);
     }
 
-    if (v15)
+    if (blockCopy)
     {
-      (*(v15 + 2))(v15, v21, v13, 1, 0);
+      (*(blockCopy + 2))(blockCopy, v21, dCopy, 1, 0);
     }
   }
 
-  else if (v15)
+  else if (blockCopy)
   {
-    (*(v15 + 2))(v15, v12, v13, 1, 0);
+    (*(blockCopy + 2))(blockCopy, messageCopy, dCopy, 1, 0);
   }
 
 LABEL_24:
 }
 
-- (id)_existingStoredMessageWithCompletedTransfersForMessageGUID:(id)a3
+- (id)_existingStoredMessageWithCompletedTransfersForMessageGUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = +[IMDMessageStore sharedInstance];
-  v5 = [v4 messageWithGUID:v3];
+  v5 = [v4 messageWithGUID:dCopy];
 
   if (v5)
   {
-    v28 = v3;
+    v28 = dCopy;
     v6 = IMAttachmentsLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -829,8 +829,8 @@ LABEL_24:
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Found already stored message: %@", buf, 0xCu);
     }
 
-    v7 = [v5 fileTransferGUIDs];
-    v8 = [v7 count];
+    fileTransferGUIDs = [v5 fileTransferGUIDs];
+    v8 = [fileTransferGUIDs count];
     v9 = v8 != 0;
 
     v10 = IMAttachmentsLogHandle();
@@ -867,25 +867,25 @@ LABEL_24:
 
           if (!v17)
           {
-            v18 = IMAttachmentsLogHandle();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+            localURL = IMAttachmentsLogHandle();
+            if (os_log_type_enabled(localURL, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
               v36 = v15;
-              _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_DEFAULT, "   ==> Missing a transfer for guid: %@", buf, 0xCu);
+              _os_log_impl(&dword_22B4CC000, localURL, OS_LOG_TYPE_DEFAULT, "   ==> Missing a transfer for guid: %@", buf, 0xCu);
             }
 
             goto LABEL_19;
           }
 
-          v18 = [v17 localURL];
-          if (!v18 || ([MEMORY[0x277CCAA00] defaultManager], v19 = objc_claimAutoreleasedReturnValue(), -[NSObject path](v18, "path"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "fileExistsAtPath:", v20), v20, v19, (v21 & 1) == 0))
+          localURL = [v17 localURL];
+          if (!localURL || ([MEMORY[0x277CCAA00] defaultManager], v19 = objc_claimAutoreleasedReturnValue(), -[NSObject path](localURL, "path"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "fileExistsAtPath:", v20), v20, v19, (v21 & 1) == 0))
           {
             v22 = IMAttachmentsLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v36 = v18;
+              v36 = localURL;
               _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_DEFAULT, "   ==> Missing an attachment at path: %@", buf, 0xCu);
             }
 
@@ -912,7 +912,7 @@ LABEL_19:
     }
 
     v24 = v23;
-    v3 = v28;
+    dCopy = v28;
   }
 
   else
@@ -925,44 +925,44 @@ LABEL_19:
   return v24;
 }
 
-- (void)retrieveLocalFileTransfer:(id)a3 attachmentIndex:(unint64_t)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 decryptionKey:(id)a9 requestedSize:(id)a10 fileSize:(unint64_t)a11 progressBlock:(id)a12 completionBlock:(id)a13
+- (void)retrieveLocalFileTransfer:(id)transfer attachmentIndex:(unint64_t)index path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature decryptionKey:(id)key requestedSize:(id)self0 fileSize:(unint64_t)self1 progressBlock:(id)self2 completionBlock:(id)self3
 {
   v50 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v36 = a5;
-  v37 = a6;
-  v38 = a7;
-  v39 = a8;
-  v40 = a9;
-  v41 = a10;
-  v42 = a12;
-  v19 = a13;
+  transferCopy = transfer;
+  pathCopy = path;
+  stringCopy = string;
+  dCopy = d;
+  signatureCopy = signature;
+  keyCopy = key;
+  sizeCopy = size;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if (IMOSLoggingEnabled())
   {
     v20 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v18;
+      v49 = transferCopy;
       _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, " Requesting file attachments for transfer %@", buf, 0xCu);
     }
   }
 
-  v47[0] = v18;
+  v47[0] = transferCopy;
   v46[0] = IMDRelayLocalMessageDictionaryGUIDKey;
   v46[1] = IMDRelayLocalMessageDictionaryAttachmentIndexKey;
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v47[1] = v21;
   v46[2] = IMDRelayLocalMessageDictionarySupportsDirectMMCSDownloadKey;
   v47[2] = MEMORY[0x277CBEC38];
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:3];
 
   v23 = JWEncodeDictionary();
-  v24 = [v23 _FTCopyGzippedData];
+  _FTCopyGzippedData = [v23 _FTCopyGzippedData];
   v44[0] = IMDRelayLocalMessageDictionaryTypeKey;
   v44[1] = IMDRelayLocalMessageDictionaryDictKey;
   v45[0] = IMDRelayLocalMessageTypeRemoteFileRequest;
-  v45[1] = v24;
+  v45[1] = _FTCopyGzippedData;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
   v26 = +[IMDRelayServiceController sharedInstance];
   v27 = [v26 sendToLocalPeers:v25];
@@ -980,9 +980,9 @@ LABEL_19:
       peerCompletionBlocks = *p_peerCompletionBlocks;
     }
 
-    v32 = _Block_copy(v19);
-    v33 = [v18 stringByAppendingFormat:@"_%lu", a4];
-    [(NSMutableDictionary *)peerCompletionBlocks setObject:v32 forKey:v33];
+    v32 = _Block_copy(completionBlockCopy);
+    index = [transferCopy stringByAppendingFormat:@"_%lu", index];
+    [(NSMutableDictionary *)peerCompletionBlocks setObject:v32 forKey:index];
   }
 
   else
@@ -993,32 +993,32 @@ LABEL_19:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v49 = v18;
+        v49 = transferCopy;
         _os_log_impl(&dword_22B4CC000, v34, OS_LOG_TYPE_INFO, " Failed to send message to local device for Transfer %@, Failing", buf, 0xCu);
       }
     }
 
-    (*(v19 + 2))(v19, v18, a4, 0, 0, 0, 0);
+    (*(completionBlockCopy + 2))(completionBlockCopy, transferCopy, index, 0, 0, 0, 0);
   }
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendFileURL:(id)a3 forMessageGUID:(id)a4 attachmentIndex:(int64_t)a5
+- (void)_sendFileURL:(id)l forMessageGUID:(id)d attachmentIndex:(int64_t)index
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v7 path];
-  v11 = [v9 attributesOfItemAtPath:v10 error:0];
+  lCopy = l;
+  dCopy = d;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v11 = [defaultManager attributesOfItemAtPath:path error:0];
 
   v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA1C0]];
-  v13 = [v12 longValue];
+  longValue = [v12 longValue];
 
-  if (v13 <= 0x100000)
+  if (longValue <= 0x100000)
   {
-    [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7];
+    [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
   }
 
   else
@@ -1032,40 +1032,40 @@ LABEL_19:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v37 = v8;
+      v37 = dCopy;
       v38 = 2048;
-      v39 = a5;
+      indexCopy = index;
       v40 = 2112;
-      v41 = v7;
+      v41 = lCopy;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Forwarding Attachment (%@, %ld) to local peer. Filepath %@", buf, 0x20u);
     }
   }
 
-  v35[0] = v8;
+  v35[0] = dCopy;
   v34[0] = IMDRelayLocalMessageDictionaryGUIDKey;
   v34[1] = IMDRelayLocalMessageDictionaryAttachmentIndexKey;
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v35[1] = v16;
   v34[2] = IMDRelayLocalMessageDictionaryFileDataKey;
-  v17 = v14;
+  data = v14;
   if (!v14)
   {
-    v17 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  v35[2] = v17;
+  v35[2] = data;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
   if (!v14)
   {
   }
 
-  v19 = v13 > 0x100000;
+  v19 = longValue > 0x100000;
 
   v20 = JWEncodeDictionary();
-  v21 = [v20 _FTCopyGzippedData];
+  _FTCopyGzippedData = [v20 _FTCopyGzippedData];
   v32[0] = IMDRelayLocalMessageDictionaryDictKey;
   v32[1] = IMDRelayLocalMessageDictionaryTypeKey;
-  v33[0] = v21;
+  v33[0] = _FTCopyGzippedData;
   v33[1] = IMDRelayLocalMessageTypeRemoteFileResponse;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v23 = IMOSLoggingEnabled();
@@ -1082,7 +1082,7 @@ LABEL_19:
     }
 
     v25 = +[IMDRelayServiceController sharedInstance];
-    [v25 sendFileToLocalPeers:v7 metadata:v22];
+    [v25 sendFileToLocalPeers:lCopy metadata:v22];
   }
 
   else
@@ -1121,16 +1121,16 @@ LABEL_19:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remotefileRequest:(id)a3 attempts:(int64_t)a4
+- (void)remotefileRequest:(id)request attempts:(int64_t)attempts
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
-  v8 = [v6 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryAttachmentIndexKey];
-  v9 = [v8 unsignedIntegerValue];
+  requestCopy = request;
+  v7 = [requestCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
+  v8 = [requestCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryAttachmentIndexKey];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 objectForKeyedSubscript:IMDRelayLocalMessageDictionarySupportsDirectMMCSDownloadKey];
-  v11 = [v10 BOOLValue];
+  v10 = [requestCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionarySupportsDirectMMCSDownloadKey];
+  bOOLValue = [v10 BOOLValue];
 
   if (IMOSLoggingEnabled())
   {
@@ -1140,7 +1140,7 @@ LABEL_19:
       *buf = 138412546;
       *&buf[4] = v7;
       *&buf[12] = 2048;
-      *&buf[14] = v9;
+      *&buf[14] = unsignedIntegerValue;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Attempting to locate message with Message Guid %@ and index %lu", buf, 0x16u);
     }
   }
@@ -1178,11 +1178,11 @@ LABEL_19:
     }
   }
 
-  v17 = [(IMDRelayAttachmentController *)self pendingRemoteFileRequests];
-  [v17 removeObject:v6];
+  pendingRemoteFileRequests = [(IMDRelayAttachmentController *)self pendingRemoteFileRequests];
+  [pendingRemoteFileRequests removeObject:requestCopy];
 
-  v18 = [(IMDRelayAttachmentController *)self pendingRemoteFileRequests];
-  v19 = [v18 count] == 0;
+  pendingRemoteFileRequests2 = [(IMDRelayAttachmentController *)self pendingRemoteFileRequests];
+  v19 = [pendingRemoteFileRequests2 count] == 0;
 
   if (v19)
   {
@@ -1191,10 +1191,10 @@ LABEL_19:
 
   if ([v14 isFinished])
   {
-    v20 = [v14 fileTransferGUIDs];
+    fileTransferGUIDs = [v14 fileTransferGUIDs];
 
     v21 = IMOSLoggingEnabled();
-    if (v20)
+    if (fileTransferGUIDs)
     {
       if (v21)
       {
@@ -1207,13 +1207,13 @@ LABEL_19:
         }
       }
 
-      v23 = [v14 fileTransferGUIDs];
-      v24 = v9 < [v23 count];
+      fileTransferGUIDs2 = [v14 fileTransferGUIDs];
+      v24 = unsignedIntegerValue < [fileTransferGUIDs2 count];
 
       if (v24)
       {
-        v25 = [v14 fileTransferGUIDs];
-        v60 = [v25 objectAtIndex:v9];
+        fileTransferGUIDs3 = [v14 fileTransferGUIDs];
+        v60 = [fileTransferGUIDs3 objectAtIndex:unsignedIntegerValue];
 
         if (IMOSLoggingEnabled())
         {
@@ -1255,11 +1255,11 @@ LABEL_19:
               }
             }
 
-            if (v11)
+            if (bOOLValue)
             {
               v31 = MEMORY[0x277CE1CB8];
-              v32 = [v28 type];
-              v33 = [v31 typeWithIdentifier:v32];
+              type = [v28 type];
+              v33 = [v31 typeWithIdentifier:type];
 
               if ([v33 conformsToType:*MEMORY[0x277CE1DB0]] && (objc_msgSend(v28, "localURL"), v34 = objc_claimAutoreleasedReturnValue(), v35 = IMFileURLIsActuallyAnimated(), v34, (v35 & 1) == 0))
               {
@@ -1271,19 +1271,19 @@ LABEL_19:
                 LOBYTE(v79) = [v28 isSticker];
                 BYTE2(v79) = [v28 isAdaptiveImageGlyph];
                 BYTE1(v79) = 0;
-                v45 = [MEMORY[0x277D1ADE0] sharedInstance];
-                v46 = [v28 localURL];
+                mEMORY[0x277D1ADE0] = [MEMORY[0x277D1ADE0] sharedInstance];
+                localURL = [v28 localURL];
                 v68[0] = MEMORY[0x277D85DD0];
                 v68[1] = 3221225472;
                 v68[2] = sub_22B53BC0C;
                 v68[3] = &unk_278703E10;
                 v68[4] = self;
                 v69 = v14;
-                v70 = v9;
+                v70 = unsignedIntegerValue;
                 v66[0] = *buf;
                 v66[1] = *&buf[16];
                 v67 = v79;
-                [v45 generateSafeRender:v46 constraints:v66 completionBlock:v68];
+                [mEMORY[0x277D1ADE0] generateSafeRender:localURL constraints:v66 completionBlock:v68];
               }
 
               else
@@ -1299,9 +1299,9 @@ LABEL_19:
                   }
                 }
 
-                v37 = [v28 localURL];
-                v38 = [v14 guid];
-                [(IMDRelayAttachmentController *)self _sendFileURL:v37 forMessageGUID:v38 attachmentIndex:v9];
+                localURL2 = [v28 localURL];
+                guid = [v14 guid];
+                [(IMDRelayAttachmentController *)self _sendFileURL:localURL2 forMessageGUID:guid attachmentIndex:unsignedIntegerValue];
               }
             }
 
@@ -1317,12 +1317,12 @@ LABEL_19:
                 }
               }
 
-              v59 = [v28 transcoderUserInfo];
+              transcoderUserInfo = [v28 transcoderUserInfo];
               if ([v28 isAdaptiveImageGlyph])
               {
-                if (v59)
+                if (transcoderUserInfo)
                 {
-                  v48 = [v59 mutableCopy];
+                  v48 = [transcoderUserInfo mutableCopy];
                 }
 
                 else
@@ -1334,31 +1334,31 @@ LABEL_19:
                 [v48 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D19E80]];
                 v50 = [v49 copy];
 
-                v59 = v50;
+                transcoderUserInfo = v50;
               }
 
               v58 = +[IMDRelayTranscodeController sharedInstance];
-              v57 = [v28 localURL];
-              v56 = [v28 type];
-              v51 = [(IMDRelayAttachmentController *)self session];
-              v52 = [v51 service];
-              v53 = [v52 transcodeTarget];
-              v54 = [v28 isSticker];
+              localURL3 = [v28 localURL];
+              type2 = [v28 type];
+              session = [(IMDRelayAttachmentController *)self session];
+              service = [session service];
+              transcodeTarget = [service transcodeTarget];
+              isSticker = [v28 isSticker];
               v62[0] = MEMORY[0x277D85DD0];
               v62[1] = 3221225472;
               v62[2] = sub_22B53BDCC;
               v62[3] = &unk_278703E38;
               v63 = v60;
               v64 = v14;
-              v65 = v9;
-              [v58 transcodeFileTransferContents:v57 utiType:v56 target:v53 transcoderUserInfo:v59 isSticker:v54 highQualityMaxByteSize:0x80000 lowQualityMaxByteSize:0x80000 representations:0 completionBlock:v62];
+              v65 = unsignedIntegerValue;
+              [v58 transcodeFileTransferContents:localURL3 utiType:type2 target:transcodeTarget transcoderUserInfo:transcoderUserInfo isSticker:isSticker highQualityMaxByteSize:0x80000 lowQualityMaxByteSize:0x80000 representations:0 completionBlock:v62];
             }
           }
 
           else
           {
             v42 = IMOSLoggingEnabled();
-            if (a4 >= 40)
+            if (attempts >= 40)
             {
               if (v42)
               {
@@ -1389,7 +1389,7 @@ LABEL_19:
                 }
               }
 
-              v61 = v6;
+              v61 = requestCopy;
               im_dispatch_after();
             }
           }
@@ -1418,7 +1418,7 @@ LABEL_58:
   }
 
   v40 = IMOSLoggingEnabled();
-  if (a4 >= 40)
+  if (attempts >= 40)
   {
     if (!v40)
     {
@@ -1451,36 +1451,36 @@ LABEL_58:
   v72 = 3221225472;
   v73 = sub_22B53BBF8;
   v74 = &unk_278703DE8;
-  v75 = self;
-  v76 = v6;
-  v77 = a4;
+  selfCopy = self;
+  v76 = requestCopy;
+  attemptsCopy = attempts;
   im_dispatch_after();
 
 LABEL_82:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteFileResponse:(id)a3
+- (void)remoteFileResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = responseCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Received remote file response message %@", buf, 0xCu);
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
-  v7 = [v4 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryAttachmentIndexKey];
-  v8 = [v7 unsignedIntegerValue];
+  v6 = [responseCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
+  v7 = [responseCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryAttachmentIndexKey];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v4 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryFilePathKey];
-  v10 = [v4 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryFileDataKey];
+  v9 = [responseCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryFilePathKey];
+  v10 = [responseCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryFileDataKey];
   if ([v6 length])
   {
     if (IMOSLoggingEnabled())
@@ -1491,12 +1491,12 @@ LABEL_82:
         *buf = 138412546;
         v22 = v6;
         v23 = 2048;
-        v24 = v8;
+        v24 = unsignedIntegerValue;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, " Incomming response for message %@ attachment index %lu ", buf, 0x16u);
       }
     }
 
-    v12 = [v6 stringByAppendingFormat:@"_%lu", v8];
+    v12 = [v6 stringByAppendingFormat:@"_%lu", unsignedIntegerValue];
     v13 = [(NSMutableDictionary *)self->_peerCompletionBlocks objectForKey:v12];
     v14 = IMOSLoggingEnabled();
     if (v13)
@@ -1511,7 +1511,7 @@ LABEL_82:
         }
       }
 
-      (v13)[2](v13, v6, v8, v9, v10, 1, 0);
+      (v13)[2](v13, v6, unsignedIntegerValue, v9, v10, 1, 0);
       [(NSMutableDictionary *)self->_peerCompletionBlocks removeObjectForKey:v12];
     }
 
@@ -1533,9 +1533,9 @@ LABEL_82:
         v17 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [(NSMutableDictionary *)self->_peerCompletionBlocks allKeys];
+          allKeys = [(NSMutableDictionary *)self->_peerCompletionBlocks allKeys];
           *buf = 138412290;
-          v22 = v18;
+          v22 = allKeys;
           _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "     In list of blocks: %@", buf, 0xCu);
         }
       }

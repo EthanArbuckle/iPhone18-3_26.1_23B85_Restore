@@ -1,65 +1,65 @@
 @interface VCTransportSessionLegacy
-- (BOOL)createTCPTunnelForParticipantID:(id)a3 relayDictionary:(id)a4 didOriginateRequest:(BOOL)a5 relayType:(unsigned __int8)a6 error:(id *)a7;
-- (BOOL)getConnectionSetupData:(id *)a3 withOptions:(id)a4 error:(id *)a5;
-- (BOOL)handleExchangedKey:(id)a3 result:(int)a4;
+- (BOOL)createTCPTunnelForParticipantID:(id)d relayDictionary:(id)dictionary didOriginateRequest:(BOOL)request relayType:(unsigned __int8)type error:(id *)error;
+- (BOOL)getConnectionSetupData:(id *)data withOptions:(id)options error:(id *)error;
+- (BOOL)handleExchangedKey:(id)key result:(int)result;
 - (BOOL)isConnectedAndAllowAdditionalConnection;
 - (BOOL)isHandoverSupported;
-- (BOOL)startConnectionWithBlob:(id)a3 useRelay:(BOOL)a4 isInitialRelay:(BOOL)a5 error:(id *)a6;
-- (VCTransportSessionLegacy)initWithCallID:(unsigned int)a3 reportingAgent:(id)a4;
-- (double)iceTimeoutInSeconds:(BOOL)a3;
-- (id)connectionData:(char *)a3 connectionDataSizeInBytes:(int)a4 shouldUseRelay:(BOOL)a5;
-- (id)connectionDataUsingRelay:(BOOL)a3 isInitialRelay:(BOOL)a4 nonCellularCandidateTimeout:(double)a5 error:(id *)a6;
+- (BOOL)startConnectionWithBlob:(id)blob useRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay error:(id *)error;
+- (VCTransportSessionLegacy)initWithCallID:(unsigned int)d reportingAgent:(id)agent;
+- (double)iceTimeoutInSeconds:(BOOL)seconds;
+- (id)connectionData:(char *)data connectionDataSizeInBytes:(int)bytes shouldUseRelay:(BOOL)relay;
+- (id)connectionDataUsingRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay nonCellularCandidateTimeout:(double)timeout error:(id *)error;
 - (id)createInitiateRelayDictionary;
-- (id)createInitiateRelayDictionaryForCall:(unsigned int)a3 primaryConnection:(tagCONNRESULT *)a4;
-- (id)createRelayUpdateDictionary:(id)a3;
-- (int)flushBasebandQueueForConnection:(id)a3 payloadInfoList:(id)a4;
-- (int)generateConnectionData:(char *)a3 forCallID:(unsigned int)a4 connectionDataSize:(int *)a5 nonCellularCandidateTimeout:(double)a6;
-- (int)registerBasebandNotificationsForConnection:(id)a3;
-- (tagIPPORT)IPPortForPrimaryConnectionOnLocalInterface:(SEL)a3;
-- (unsigned)connectionTypeForConnectionResult:(tagCONNRESULT *)a3;
+- (id)createInitiateRelayDictionaryForCall:(unsigned int)call primaryConnection:(tagCONNRESULT *)connection;
+- (id)createRelayUpdateDictionary:(id)dictionary;
+- (int)flushBasebandQueueForConnection:(id)connection payloadInfoList:(id)list;
+- (int)generateConnectionData:(char *)data forCallID:(unsigned int)d connectionDataSize:(int *)size nonCellularCandidateTimeout:(double)timeout;
+- (int)registerBasebandNotificationsForConnection:(id)connection;
+- (tagIPPORT)IPPortForPrimaryConnectionOnLocalInterface:(SEL)interface;
+- (unsigned)connectionTypeForConnectionResult:(tagCONNRESULT *)result;
 - (unsigned)transportCallType;
-- (void)connectionCallback:(id)a3 isInitialConnection:(BOOL)a4;
-- (void)connectionResultCallback:(tagCONNRESULT *)a3 didReceiveICEPacket:(BOOL)a4 didUseRelay:(BOOL)a5 secretKey:(id)a6 skeResult:(int)a7;
-- (void)createSecondaryRelayDispatchTimer:(float)a3 callID:(unsigned int)a4 callerRequired:(BOOL)a5;
+- (void)connectionCallback:(id)callback isInitialConnection:(BOOL)connection;
+- (void)connectionResultCallback:(tagCONNRESULT *)callback didReceiveICEPacket:(BOOL)packet didUseRelay:(BOOL)relay secretKey:(id)key skeResult:(int)result;
+- (void)createSecondaryRelayDispatchTimer:(float)timer callID:(unsigned int)d callerRequired:(BOOL)required;
 - (void)dealloc;
 - (void)deleteTCPTunnel;
 - (void)deregisterBasebandNotifications;
 - (void)destroySecondaryRelayDispatchTimer;
-- (void)didEnableDuplication:(BOOL)a3 activeConnection:(id)a4;
-- (void)getConnectionDataUsingRelay:(BOOL)a3 isInitialRelay:(BOOL)a4 nonCellularCandidateTimeout:(double)a5 queue:(id)a6 completionHandler:(id)a7;
+- (void)didEnableDuplication:(BOOL)duplication activeConnection:(id)connection;
+- (void)getConnectionDataUsingRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay nonCellularCandidateTimeout:(double)timeout queue:(id)queue completionHandler:(id)handler;
 - (void)handleConnectionSetupDataChangeMessageDelivered;
-- (void)handleNewCandidates:(id)a3 version:(unsigned __int16)a4;
+- (void)handleNewCandidates:(id)candidates version:(unsigned __int16)version;
 - (void)initiateRelayRequest;
-- (void)loopbackSocketTunnel:(id)a3 receivedData:(id)a4 from:(tagIPPORT *)a5;
+- (void)loopbackSocketTunnel:(id)tunnel receivedData:(id)data from:(tagIPPORT *)from;
 - (void)networkStateDidChange;
 - (void)notifyDelegateToCancelRelay;
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4 activeConnection:(id)a5;
-- (void)processRelayRequestResponse:(id)a3 didOriginateRequest:(BOOL)a4;
-- (void)processRelayUpdate:(id)a3 didOriginateRequest:(BOOL)a4;
-- (void)processRemoteIPChange:(char *)a3 dataLength:(int)a4 remoteCandidateVersion:(unsigned __int16)a5;
-- (void)processRemoteIPChange:(id)a3;
-- (void)receivedRealTimeData:(id)a3 fromParticipantID:(id)a4;
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection activeConnection:(id)activeConnection;
+- (void)processRelayRequestResponse:(id)response didOriginateRequest:(BOOL)request;
+- (void)processRelayUpdate:(id)update didOriginateRequest:(BOOL)request;
+- (void)processRemoteIPChange:(char *)change dataLength:(int)length remoteCandidateVersion:(unsigned __int16)version;
+- (void)processRemoteIPChange:(id)change;
+- (void)receivedRealTimeData:(id)data fromParticipantID:(id)d;
 - (void)reportNetworkConditionsDegraded;
 - (void)resetICETimeoutToLongTimeout;
 - (void)resetLoopback;
 - (void)setForceRelay;
-- (void)setIdentity:(__SecIdentity *)a3;
-- (void)setupInitialSecondaryRelayWithCallbackRelayFlag:(BOOL)a3 callID:(unsigned int)a4 connectionId:(int)a5;
-- (void)setupLoopbackWithConnectionType:(unsigned int)a3;
-- (void)setupPendingSecondaryRelayWithNewPrimary:(id)a3;
-- (void)setupSecondaryRelayForCall:(unsigned int)a3 callerRequired:(BOOL)a4;
+- (void)setIdentity:(__SecIdentity *)identity;
+- (void)setupInitialSecondaryRelayWithCallbackRelayFlag:(BOOL)flag callID:(unsigned int)d connectionId:(int)id;
+- (void)setupLoopbackWithConnectionType:(unsigned int)type;
+- (void)setupPendingSecondaryRelayWithNewPrimary:(id)primary;
+- (void)setupSecondaryRelayForCall:(unsigned int)call callerRequired:(BOOL)required;
 - (void)setupTransport;
 - (void)start;
 - (void)stop;
 - (void)stopLoopback;
-- (void)stopLoopbackProc:(id)a3;
+- (void)stopLoopbackProc:(id)proc;
 @end
 
 @implementation VCTransportSessionLegacy
 
-- (VCTransportSessionLegacy)initWithCallID:(unsigned int)a3 reportingAgent:(id)a4
+- (VCTransportSessionLegacy)initWithCallID:(unsigned int)d reportingAgent:(id)agent
 {
-  v5 = *&a3;
+  v5 = *&d;
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VCTransportSessionLegacy;
@@ -87,8 +87,8 @@
     v11 = objc_alloc_init(VCConnectionManagerLegacy);
     v6->super._connectionManager = &v11->super;
     [(VCConnectionManager *)v11 setupConnectionHealthMonitor];
-    [(VCConnectionManager *)v6->super._connectionManager setReportingAgent:a4];
-    [(VCTransport *)v6->transport setReportingAgent:a4];
+    [(VCConnectionManager *)v6->super._connectionManager setReportingAgent:agent];
+    [(VCTransport *)v6->transport setReportingAgent:agent];
     [(VCConnectionManager *)v6->super._connectionManager setCallID:v5];
     [(VCConnectionManager *)v6->super._connectionManager setDelegate:v6];
     VTP_RegisterConnectionManagerWithCallID(v6->super._connectionManager, v5);
@@ -177,17 +177,17 @@ uint64_t __33__VCTransportSessionLegacy_start__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)startConnectionWithBlob:(id)a3 useRelay:(BOOL)a4 isInitialRelay:(BOOL)a5 error:(id *)a6
+- (BOOL)startConnectionWithBlob:(id)blob useRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  initialRelayCopy = initialRelay;
+  relayCopy = relay;
   v21 = *MEMORY[0x1E69E9840];
-  v20 = a4;
-  v11 = [self->super._connectionSetupPiggybackBlob pointerValue];
+  relayCopy2 = relay;
+  pointerValue = [self->super._connectionSetupPiggybackBlob pointerValue];
   [(TimingCollection *)self->super._perfTimings stopTimingForKey:12];
-  if (!v8 || v7)
+  if (!relayCopy || initialRelayCopy)
   {
-    if (v8 && v7)
+    if (relayCopy && initialRelayCopy)
     {
       v12 = 10;
     }
@@ -207,13 +207,13 @@ uint64_t __33__VCTransportSessionLegacy_start__block_invoke(uint64_t a1)
 
   transport = self->transport;
   callID = self->_callID;
-  v15 = [(VCTransportSessionLegacy *)self remoteRelayUpdate];
-  [(VCTransportSessionLegacy *)self iceTimeoutInSeconds:v8];
-  v16 = [(VCTransport *)transport startConnectionCheckForCallID:callID remoteConnectionDataBlob:a3 relayDictionary:v15 iceTimeout:self->_identity securityIdentity:v11 skeState:&v20 usedRelay:?];
+  remoteRelayUpdate = [(VCTransportSessionLegacy *)self remoteRelayUpdate];
+  [(VCTransportSessionLegacy *)self iceTimeoutInSeconds:relayCopy];
+  v16 = [(VCTransport *)transport startConnectionCheckForCallID:callID remoteConnectionDataBlob:blob relayDictionary:remoteRelayUpdate iceTimeout:self->_identity securityIdentity:pointerValue skeState:&relayCopy2 usedRelay:?];
   if (v16 < 0)
   {
     v17 = 207;
-    if (v8)
+    if (relayCopy)
     {
       v17 = 250;
     }
@@ -228,7 +228,7 @@ uint64_t __33__VCTransportSessionLegacy_start__block_invoke(uint64_t a1)
       v18 = v17;
     }
 
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a6, 32002, v18, v16, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 230], @"Could not connect", @"connection check returned error");
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, 32002, v18, v16, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 230], @"Could not connect", @"connection check returned error");
     if (VRTraceGetErrorLogLevelForModule() >= 2)
     {
       VRTraceErrorLogLevelToCSTR();
@@ -306,9 +306,9 @@ uint64_t __32__VCTransportSessionLegacy_stop__block_invoke(uint64_t a1)
   [(VCTransport *)self->transport setForceRelayForCallID:self->_callID];
 }
 
-- (void)processRelayRequestResponse:(id)a3 didOriginateRequest:(BOOL)a4
+- (void)processRelayRequestResponse:(id)response didOriginateRequest:(BOOL)request
 {
-  v4 = a4;
+  requestCopy = request;
   v26 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -316,9 +316,9 @@ uint64_t __32__VCTransportSessionLegacy_stop__block_invoke(uint64_t a1)
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (response)
       {
-        v9 = [objc_msgSend(a3 "description")];
+        v9 = [objc_msgSend(response "description")];
       }
 
       else
@@ -338,7 +338,7 @@ uint64_t __32__VCTransportSessionLegacy_stop__block_invoke(uint64_t a1)
       v22 = 1024;
       v23 = relayState;
       v24 = 1024;
-      v25 = v4;
+      v25 = requestCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Relay: processRelayRequestResponseDict:%s, %d, %d", buf, 0x32u);
     }
   }
@@ -348,9 +348,9 @@ uint64_t __32__VCTransportSessionLegacy_stop__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __76__VCTransportSessionLegacy_processRelayRequestResponse_didOriginateRequest___block_invoke;
   block[3] = &unk_1E85F37C8;
-  v13 = v4;
+  v13 = requestCopy;
   block[4] = self;
-  block[5] = a3;
+  block[5] = response;
   dispatch_async(stateQueue, block);
 }
 
@@ -697,9 +697,9 @@ uint64_t __76__VCTransportSessionLegacy_processRelayRequestResponse_didOriginate
   return [v2 transportSession:v3 sendRelayResponse:v4];
 }
 
-- (void)processRelayUpdate:(id)a3 didOriginateRequest:(BOOL)a4
+- (void)processRelayUpdate:(id)update didOriginateRequest:(BOOL)request
 {
-  v4 = a4;
+  requestCopy = request;
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -707,9 +707,9 @@ uint64_t __76__VCTransportSessionLegacy_processRelayRequestResponse_didOriginate
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (update)
       {
-        v9 = [objc_msgSend(a3 "description")];
+        v9 = [objc_msgSend(update "description")];
       }
 
       else
@@ -727,7 +727,7 @@ uint64_t __76__VCTransportSessionLegacy_processRelayRequestResponse_didOriginate
       v19 = 2080;
       v20 = v9;
       v21 = 1024;
-      v22 = v4;
+      v22 = requestCopy;
       v23 = 1024;
       v24 = relayState;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Relay: processRelayUpdateDict:%s, %d, %d", buf, 0x32u);
@@ -740,7 +740,7 @@ uint64_t __76__VCTransportSessionLegacy_processRelayRequestResponse_didOriginate
   v12[2] = __67__VCTransportSessionLegacy_processRelayUpdate_didOriginateRequest___block_invoke;
   v12[3] = &unk_1E85F37F0;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = update;
   dispatch_async(stateQueue, v12);
 }
 
@@ -917,7 +917,7 @@ LABEL_25:
   }
 }
 
-- (void)createSecondaryRelayDispatchTimer:(float)a3 callID:(unsigned int)a4 callerRequired:(BOOL)a5
+- (void)createSecondaryRelayDispatchTimer:(float)timer callID:(unsigned int)d callerRequired:(BOOL)required
 {
   v10 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -926,9 +926,9 @@ LABEL_25:
   v6[2] = __84__VCTransportSessionLegacy_createSecondaryRelayDispatchTimer_callID_callerRequired___block_invoke;
   v6[3] = &unk_1E85F4180;
   v6[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  timerCopy = timer;
+  dCopy = d;
+  requiredCopy = required;
   dispatch_async(stateQueue, v6);
 }
 
@@ -1016,7 +1016,7 @@ uint64_t __84__VCTransportSessionLegacy_createSecondaryRelayDispatchTimer_callID
   }
 }
 
-- (void)setupPendingSecondaryRelayWithNewPrimary:(id)a3
+- (void)setupPendingSecondaryRelayWithNewPrimary:(id)primary
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -1025,7 +1025,7 @@ uint64_t __84__VCTransportSessionLegacy_createSecondaryRelayDispatchTimer_callID
   block[2] = __69__VCTransportSessionLegacy_setupPendingSecondaryRelayWithNewPrimary___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = primary;
   dispatch_async(stateQueue, block);
 }
 
@@ -1100,14 +1100,14 @@ uint64_t __69__VCTransportSessionLegacy_setupPendingSecondaryRelayWithNewPrimary
     }
 
     self->relayState = 0;
-    v13 = [(VCTransportSessionLegacy *)self localRelayRequestResponse];
+    localRelayRequestResponse = [(VCTransportSessionLegacy *)self localRelayRequestResponse];
     notificationQueue = self->super._notificationQueue;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __55__VCTransportSessionLegacy_notifyDelegateToCancelRelay__block_invoke;
     v15[3] = &unk_1E85F37F0;
     v15[4] = self;
-    v15[5] = v13;
+    v15[5] = localRelayRequestResponse;
     dispatch_async(notificationQueue, v15);
     [(VCTransportSessionLegacy *)self setLocalRelayRequestResponse:0];
     [(VCTransportSessionLegacy *)self setLocalRelayUpdate:0];
@@ -1153,7 +1153,7 @@ uint64_t __70__VCTransportSessionLegacy_setupSecondaryRelayForCall_callerRequire
   return [v2 transportSession:v3 initiateRelayRequest:v4];
 }
 
-- (void)setupInitialSecondaryRelayWithCallbackRelayFlag:(BOOL)a3 callID:(unsigned int)a4 connectionId:(int)a5
+- (void)setupInitialSecondaryRelayWithCallbackRelayFlag:(BOOL)flag callID:(unsigned int)d connectionId:(int)id
 {
   v10 = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -1162,9 +1162,9 @@ uint64_t __70__VCTransportSessionLegacy_setupSecondaryRelayForCall_callerRequire
   v6[2] = __96__VCTransportSessionLegacy_setupInitialSecondaryRelayWithCallbackRelayFlag_callID_connectionId___block_invoke;
   v6[3] = &unk_1E85F4180;
   v6[4] = self;
-  v9 = a3;
-  v7 = a5;
-  v8 = a4;
+  flagCopy = flag;
+  idCopy = id;
+  dCopy = d;
   dispatch_async(stateQueue, v6);
 }
 
@@ -1500,19 +1500,19 @@ uint64_t __48__VCTransportSessionLegacy_initiateRelayRequest__block_invoke_41(ui
   return [v2 transportSession:v3 initiateRelayRequest:v4];
 }
 
-- (int)flushBasebandQueueForConnection:(id)a3 payloadInfoList:(id)a4
+- (int)flushBasebandQueueForConnection:(id)connection payloadInfoList:(id)list
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (!VCConnection_IsLocalOnCellular(a3))
+  if (!VCConnection_IsLocalOnCellular(connection))
   {
     return -2144665542;
   }
 
-  v31 = self;
-  v7 = [a3 connectionResult];
-  v8 = *(v7 + 64);
-  v9 = *(v7 + 184);
-  IsIPv6 = VCConnection_IsIPv6(a3);
+  selfCopy = self;
+  connectionResult = [connection connectionResult];
+  v8 = *(connectionResult + 64);
+  v9 = *(connectionResult + 184);
+  IsIPv6 = VCConnection_IsIPv6(connection);
   if (IsIPv6)
   {
     v11 = 2;
@@ -1534,7 +1534,7 @@ uint64_t __48__VCTransportSessionLegacy_initiateRelayRequest__block_invoke_41(ui
     v12 = 28;
   }
 
-  IsRelay = VCConnection_IsRelay(a3);
+  IsRelay = VCConnection_IsRelay(connection);
   v14 = v12 + 4;
   if (!IsRelay)
   {
@@ -1542,12 +1542,12 @@ uint64_t __48__VCTransportSessionLegacy_initiateRelayRequest__block_invoke_41(ui
   }
 
   v41 = v14;
-  v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a4, "count")}];
+  v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(list, "count")}];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v15 = [a4 countByEnumeratingWithState:&v53 objects:v52 count:16];
+  v15 = [list countByEnumeratingWithState:&v53 objects:v52 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1562,7 +1562,7 @@ uint64_t __48__VCTransportSessionLegacy_initiateRelayRequest__block_invoke_41(ui
     v17 = *MEMORY[0x1E6965360];
     v18 = *MEMORY[0x1E6965358];
     v19 = *MEMORY[0x1E6965308];
-    obj = a4;
+    obj = list;
     do
     {
       for (i = 0; i != v16; ++i)
@@ -1623,26 +1623,26 @@ uint64_t __48__VCTransportSessionLegacy_initiateRelayRequest__block_invoke_41(ui
     }
   }
 
-  return [(VCTransport *)v31->transport flushBasebandQueue:v43];
+  return [(VCTransport *)selfCopy->transport flushBasebandQueue:v43];
 }
 
-- (int)registerBasebandNotificationsForConnection:(id)a3
+- (int)registerBasebandNotificationsForConnection:(id)connection
 {
   transport = self->transport;
-  v5 = [a3 connectionResult];
+  connectionResult = [connection connectionResult];
   basebandNotificationRegistrationToken = self->super._basebandNotificationRegistrationToken;
-  v7 = [(VCTransportSessionLegacy *)self transportCallType];
+  transportCallType = [(VCTransportSessionLegacy *)self transportCallType];
 
-  return [(VCTransport *)transport updateBasebandForConnection:v5 notificationRegistrationToken:basebandNotificationRegistrationToken callType:v7];
+  return [(VCTransport *)transport updateBasebandForConnection:connectionResult notificationRegistrationToken:basebandNotificationRegistrationToken callType:transportCallType];
 }
 
 - (void)deregisterBasebandNotifications
 {
   transport = self->transport;
   basebandNotificationRegistrationToken = self->super._basebandNotificationRegistrationToken;
-  v4 = [(VCTransportSessionLegacy *)self transportCallType];
+  transportCallType = [(VCTransportSessionLegacy *)self transportCallType];
 
-  [(VCTransport *)transport updateBasebandForConnection:0 notificationRegistrationToken:basebandNotificationRegistrationToken callType:v4];
+  [(VCTransport *)transport updateBasebandForConnection:0 notificationRegistrationToken:basebandNotificationRegistrationToken callType:transportCallType];
 }
 
 - (unsigned)transportCallType
@@ -1890,10 +1890,10 @@ LABEL_19:
   }
 }
 
-- (void)handleNewCandidates:(id)a3 version:(unsigned __int16)a4
+- (void)handleNewCandidates:(id)candidates version:(unsigned __int16)version
 {
   v25 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  versionCopy = version;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -1901,9 +1901,9 @@ LABEL_19:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       relayState = self->relayState;
-      if (a3)
+      if (candidates)
       {
-        v9 = [objc_msgSend(a3 "description")];
+        v9 = [objc_msgSend(candidates "description")];
       }
 
       else
@@ -1927,8 +1927,8 @@ LABEL_19:
 
   *buf = 1;
   v10 = [MEMORY[0x1E695DF88] dataWithBytes:buf length:2];
-  [v10 appendData:{objc_msgSend(MEMORY[0x1E695DEF0], "dataWithBytes:length:", &v14, 2)}];
-  [v10 appendData:a3];
+  [v10 appendData:{objc_msgSend(MEMORY[0x1E695DEF0], "dataWithBytes:length:", &versionCopy, 2)}];
+  [v10 appendData:candidates];
   notificationQueue = self->super._notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1950,19 +1950,19 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
   return [v2 transportSession:v3 connectionSetupDataDidChange:v4];
 }
 
-- (void)processRemoteIPChange:(char *)a3 dataLength:(int)a4 remoteCandidateVersion:(unsigned __int16)a5
+- (void)processRemoteIPChange:(char *)change dataLength:(int)length remoteCandidateVersion:(unsigned __int16)version
 {
-  [(VCTransport *)self->transport processRemoteInterfaceChangeMessageWithLocalCallID:self->_callID remoteCallID:self->_remoteCallID remoteData:a3 remoteLen:*&a4 remoteCandidateVersion:a5];
+  [(VCTransport *)self->transport processRemoteInterfaceChangeMessageWithLocalCallID:self->_callID remoteCallID:self->_remoteCallID remoteData:change remoteLen:*&length remoteCandidateVersion:version];
 
   reportingLog();
 }
 
-- (void)processRemoteIPChange:(id)a3
+- (void)processRemoteIPChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a3 length];
+  v5 = [change length];
   v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
-  [a3 getBytes:v6 length:v5];
+  [change getBytes:v6 length:v5];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -2009,10 +2009,10 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
   }
 }
 
-- (void)connectionResultCallback:(tagCONNRESULT *)a3 didReceiveICEPacket:(BOOL)a4 didUseRelay:(BOOL)a5 secretKey:(id)a6 skeResult:(int)a7
+- (void)connectionResultCallback:(tagCONNRESULT *)callback didReceiveICEPacket:(BOOL)packet didUseRelay:(BOOL)relay secretKey:(id)key skeResult:(int)result
 {
-  v9 = a5;
-  v10 = a4;
+  relayCopy = relay;
+  packetCopy = packet;
   v32 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -2020,9 +2020,9 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
     v14 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (callback)
       {
-        iResultCount = a3->iResultCount;
+        iResultCount = callback->iResultCount;
       }
 
       else
@@ -2037,20 +2037,20 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
       *&buf[22] = 1024;
       *v23 = 929;
       *&v23[4] = 2048;
-      *&v23[6] = a3;
+      *&v23[6] = callback;
       v24 = 1024;
-      v25 = v10;
+      v25 = packetCopy;
       v26 = 1024;
       v27 = iResultCount;
       v28 = 2048;
-      v29 = a6;
+      keyCopy = key;
       v30 = 1024;
-      v31 = a7;
+      resultCopy = result;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d connectionResultCallback: pConnResult = %p, didReceiveICEPacket = %d resultCount = %d, secretKey = %p, skeResult = %d", buf, 0x42u);
     }
   }
 
-  if (v9)
+  if (relayCopy)
   {
     v16 = 10;
   }
@@ -2065,12 +2065,12 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   *v23 = 0;
-  if (a3)
+  if (callback)
   {
     v17 = malloc_type_malloc(0x140uLL, 0x1020040A6FBA1A4uLL);
     v18 = *&buf[8];
     *(*&buf[8] + 24) = v17;
-    memcpy(v17, a3, 0x140uLL);
+    memcpy(v17, callback, 0x140uLL);
     *(*(v18 + 24) + 304) = 0;
   }
 
@@ -2080,19 +2080,19 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
   v20[2] = __105__VCTransportSessionLegacy_connectionResultCallback_didReceiveICEPacket_didUseRelay_secretKey_skeResult___block_invoke;
   v20[3] = &unk_1E85F6180;
   v20[4] = self;
-  v20[5] = a6;
-  v21 = a7;
+  v20[5] = key;
+  resultCopy2 = result;
   v20[6] = buf;
   dispatch_async(stateQueue, v20);
   _Block_object_dispose(buf, 8);
 }
 
-- (BOOL)handleExchangedKey:(id)a3 result:(int)a4
+- (BOOL)handleExchangedKey:(id)key result:(int)result
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (!a3 || a4)
+  if (!key || result)
   {
-    if (a4)
+    if (result)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2104,7 +2104,7 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
       }
 
       v9[0] = 0;
-      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", v9, 32018, a4 + 700, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 982], @"Media Insecure", @"Optimized SKE failed");
+      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", v9, 32018, result + 700, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 982], @"Media Insecure", @"Optimized SKE failed");
       [(VCTransportSession *)self callEventHandlerWithEvent:7 info:v9[0]];
       v7 = 0;
     }
@@ -2121,14 +2121,14 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
     if (!self->_didReceivePiggybackBlob)
     {
       self->_didReceivePiggybackBlob = 1;
-      [(VCTransportSession *)self callEventHandlerWithEvent:5 info:a3];
+      [(VCTransportSession *)self callEventHandlerWithEvent:5 info:key];
     }
   }
 
   return v7;
 }
 
-- (void)primaryConnectionChanged:(id)a3 oldPrimaryConnection:(id)a4 activeConnection:(id)a5
+- (void)primaryConnectionChanged:(id)changed oldPrimaryConnection:(id)connection activeConnection:(id)activeConnection
 {
   v23 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2150,8 +2150,8 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
     }
   }
 
-  [(VCTransportSession *)self updateBasebandForConnection:a3];
-  if (VCConnection_IsRelay(a4) && [a3 isReplaceOnly])
+  [(VCTransportSession *)self updateBasebandForConnection:changed];
+  if (VCConnection_IsRelay(connection) && [changed isReplaceOnly])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -2169,28 +2169,28 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
       }
     }
 
-    -[VCTransport discardRelayBindingForCallID:withChannelNumber:](self->transport, "discardRelayBindingForCallID:withChannelNumber:", self->_callID, [a4 relayChannelNumber]);
+    -[VCTransport discardRelayBindingForCallID:withChannelNumber:](self->transport, "discardRelayBindingForCallID:withChannelNumber:", self->_callID, [connection relayChannelNumber]);
   }
 
-  [(VCTransportSessionLegacy *)self setupPendingSecondaryRelayWithNewPrimary:a3];
+  [(VCTransportSessionLegacy *)self setupPendingSecondaryRelayWithNewPrimary:changed];
   v13[0] = @"transportSessionEventInfoNewPrimary";
   v13[1] = @"transportSessionEventInfoOldPrimary";
-  v14[0] = a3;
-  v14[1] = a4;
+  v14[0] = changed;
+  v14[1] = connection;
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2]);
 }
 
-- (void)connectionCallback:(id)a3 isInitialConnection:(BOOL)a4
+- (void)connectionCallback:(id)callback isInitialConnection:(BOOL)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v19 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (connection)
   {
-    [(VCTransportSession *)self updateBasebandForConnection:a3];
+    [(VCTransportSession *)self updateBasebandForConnection:callback];
     [(TimingCollection *)self->super._perfTimings stopTimingForKey:14];
     if (self->rtChannel)
     {
-      if ((VCConnection_IsRelay(a3) & 1) == 0)
+      if ((VCConnection_IsRelay(callback) & 1) == 0)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 6)
         {
@@ -2221,33 +2221,33 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
 
   v11[0] = @"transportSessionEventInfoNewLink";
   v11[1] = @"transportSessionEventInfoIsFirstLink";
-  v12[0] = a3;
-  v12[1] = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v12[0] = callback;
+  v12[1] = [MEMORY[0x1E696AD98] numberWithBool:connectionCopy];
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 1, [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2]);
 }
 
-- (void)didEnableDuplication:(BOOL)a3 activeConnection:(id)a4
+- (void)didEnableDuplication:(BOOL)duplication activeConnection:(id)connection
 {
-  v5 = a3;
+  duplicationCopy = duplication;
   v8[2] = *MEMORY[0x1E69E9840];
-  [(VCTransportSession *)self updateBasebandForConnection:a4];
+  [(VCTransportSession *)self updateBasebandForConnection:connection];
   v7[0] = @"transportSessionEventInfoIsDuplicationEnabled";
   v7[1] = @"transportSessionEventInfoActiveConnection";
-  v8[0] = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v8[1] = a4;
+  v8[0] = [MEMORY[0x1E696AD98] numberWithBool:duplicationCopy];
+  v8[1] = connection;
   -[VCTransportSession callEventHandlerWithEvent:info:](self, "callEventHandlerWithEvent:info:", 4, [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2]);
 }
 
-- (BOOL)createTCPTunnelForParticipantID:(id)a3 relayDictionary:(id)a4 didOriginateRequest:(BOOL)a5 relayType:(unsigned __int8)a6 error:(id *)a7
+- (BOOL)createTCPTunnelForParticipantID:(id)d relayDictionary:(id)dictionary didOriginateRequest:(BOOL)request relayType:(unsigned __int8)type error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v22 = 0;
-  v10 = [[TCPTunnelClient alloc] initWithRelayRequestDictionary:a4 withCallID:self->_callID relayType:a6 errorCode:&v22];
+  v10 = [[TCPTunnelClient alloc] initWithRelayRequestDictionary:dictionary withCallID:self->_callID relayType:type errorCode:&v22];
   if (v10)
   {
     self->_tcpTunnelClient = v10;
     self->rtChannel = v10;
-    [(TCPTunnelClient *)self->_tcpTunnelClient setParticipantID:a3];
+    [(TCPTunnelClient *)self->_tcpTunnelClient setParticipantID:d];
     tcpTunnelClient = self->_tcpTunnelClient;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -2284,12 +2284,12 @@ uint64_t __56__VCTransportSessionLegacy_handleNewCandidates_version___block_invo
     v17[4] = self;
     [(TCPTunnelClient *)v15 setDestroyHandler:v17];
     [(TimingCollection *)self->super._perfTimings startTimingForKey:9];
-    return [(TCPTunnelClient *)self->_tcpTunnelClient sendAllocateMsg:a7];
+    return [(TCPTunnelClient *)self->_tcpTunnelClient sendAllocateMsg:error];
   }
 
   else
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a7, 32002, v22, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1089], @"Creating TCPTunnel Client failed.", @"Error was encountered");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32002, v22, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1089], @"Creating TCPTunnel Client failed.", @"Error was encountered");
     return 0;
   }
 }
@@ -2510,7 +2510,7 @@ void __112__VCTransportSessionLegacy_createTCPTunnelForParticipantID_relayDictio
   self->rtChannel = 0;
 }
 
-- (void)loopbackSocketTunnel:(id)a3 receivedData:(id)a4 from:(tagIPPORT *)a5
+- (void)loopbackSocketTunnel:(id)tunnel receivedData:(id)data from:(tagIPPORT *)from
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -2519,7 +2519,7 @@ void __112__VCTransportSessionLegacy_createTCPTunnelForParticipantID_relayDictio
   block[2] = __67__VCTransportSessionLegacy_loopbackSocketTunnel_receivedData_from___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = data;
   dispatch_sync(stateQueue, block);
 }
 
@@ -2578,9 +2578,9 @@ void __67__VCTransportSessionLegacy_loopbackSocketTunnel_receivedData_from___blo
   }
 }
 
-- (void)setupLoopbackWithConnectionType:(unsigned int)a3
+- (void)setupLoopbackWithConnectionType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v43 = *MEMORY[0x1E69E9840];
   v27 = 0;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2750,15 +2750,15 @@ void __67__VCTransportSessionLegacy_loopbackSocketTunnel_receivedData_from___blo
   }
 }
 
-- (void)receivedRealTimeData:(id)a3 fromParticipantID:(id)a4
+- (void)receivedRealTimeData:(id)data fromParticipantID:(id)d
 {
   v8[7] = *MEMORY[0x1E69E9840];
   if (self->_useLoopback)
   {
-    [(LoopbackSocketTunnel *)self->_tunnel setOptionalArg:a4];
+    [(LoopbackSocketTunnel *)self->_tunnel setOptionalArg:d];
     tunnel = self->_tunnel;
 
-    [(LoopbackSocketTunnel *)tunnel sendPacketToVTP:a3];
+    [(LoopbackSocketTunnel *)tunnel sendPacketToVTP:data];
   }
 
   else
@@ -2769,8 +2769,8 @@ void __67__VCTransportSessionLegacy_loopbackSocketTunnel_receivedData_from___blo
     v8[2] = __67__VCTransportSessionLegacy_receivedRealTimeData_fromParticipantID___block_invoke;
     v8[3] = &unk_1E85F3E30;
     v8[4] = self;
-    v8[5] = a4;
-    v8[6] = a3;
+    v8[5] = d;
+    v8[6] = data;
     dispatch_sync(stateQueue, v8);
   }
 }
@@ -2815,11 +2815,11 @@ _BYTE *__67__VCTransportSessionLegacy_receivedRealTimeData_fromParticipantID___b
   }
 }
 
-- (void)stopLoopbackProc:(id)a3
+- (void)stopLoopbackProc:(id)proc
 {
   block[5] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  [MEMORY[0x1E696AF00] sleepUntilDate:a3];
+  [MEMORY[0x1E696AF00] sleepUntilDate:proc];
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2898,7 +2898,7 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)createInitiateRelayDictionaryForCall:(unsigned int)a3 primaryConnection:(tagCONNRESULT *)a4
+- (id)createInitiateRelayDictionaryForCall:(unsigned int)call primaryConnection:(tagCONNRESULT *)connection
 {
   v55 = *MEMORY[0x1E69E9840];
   v54 = 0;
@@ -2921,14 +2921,14 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  if (a4->dwCallID != a3)
+  if (connection->dwCallID != call)
   {
     return 0;
   }
 
-  v5 = *&a3;
+  v5 = *&call;
   memset(v24, 170, sizeof(v24));
-  v7 = [(VCTransport *)self->transport getRemoteCIDForDstIPPort:&a4->mbDst callID:*&a3];
+  v7 = [(VCTransport *)self->transport getRemoteCIDForDstIPPort:&connection->mbDst callID:*&call];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (!v7)
   {
@@ -2951,8 +2951,8 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      dwIPv4 = a4->mbSrc.IP.dwIPv4;
-      v12 = a4->mbRemote.IP.dwIPv4;
+      dwIPv4 = connection->mbSrc.IP.dwIPv4;
+      v12 = connection->mbRemote.IP.dwIPv4;
       *buf = 136316162;
       v26 = v9;
       v27 = 2080;
@@ -2967,9 +2967,9 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
     }
   }
 
-  [(VCTransport *)self->transport getNextBestCandidate:&v45 callID:v5 isLocal:1 IPPortToExclude:&a4->mbSrc];
-  [(VCTransport *)self->transport getNextBestCandidate:&v35 callID:v5 isLocal:0 IPPortToExclude:&a4->mbRemote];
-  if (((a4->mbSrc.iFlags ^ DWORD2(v46)) & 4) == 0 && ((a4->mbRemote.iFlags ^ DWORD2(v36)) & 4) == 0)
+  [(VCTransport *)self->transport getNextBestCandidate:&v45 callID:v5 isLocal:1 IPPortToExclude:&connection->mbSrc];
+  [(VCTransport *)self->transport getNextBestCandidate:&v35 callID:v5 isLocal:0 IPPortToExclude:&connection->mbRemote];
+  if (((connection->mbSrc.iFlags ^ DWORD2(v46)) & 4) == 0 && ((connection->mbRemote.iFlags ^ DWORD2(v36)) & 4) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -3003,12 +3003,12 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
 
   if ((ICECompressCandidates() & 0x80000000) != 0)
   {
-    v19 = 0;
+    remoteConnectionData = 0;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E695DEF0] dataWithBytes:v24[1] length:SLODWORD(v24[0])];
+    remoteConnectionData = [MEMORY[0x1E695DEF0] dataWithBytes:v24[1] length:SLODWORD(v24[0])];
     free(v24[1]);
   }
 
@@ -3017,27 +3017,27 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   {
     *buf = bswap32(HIDWORD(v47));
     v20 = 1;
-    v21 = v15;
+    localConnectionData = v15;
   }
 
-  else if (v19)
+  else if (remoteConnectionData)
   {
     *buf = bswap32(HIDWORD(v37));
     v20 = 1;
-    v21 = v19;
+    localConnectionData = remoteConnectionData;
   }
 
   else
   {
-    v21 = [(VCTransportSessionLegacy *)self localConnectionData];
+    localConnectionData = [(VCTransportSessionLegacy *)self localConnectionData];
     *buf = 0;
     v20 = -1;
   }
 
   [v18 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithShort:", v20), @"GKSRelaySelfAddrPointer"}];
-  [v18 setObject:v21 forKeyedSubscript:@"GKSRelaySelfBlob"];
+  [v18 setObject:localConnectionData forKeyedSubscript:@"GKSRelaySelfBlob"];
   [v18 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", buf, 4), @"GKSRelaySelfExternalAddr"}];
-  if (v19)
+  if (remoteConnectionData)
   {
     *buf = bswap32(HIDWORD(v37));
     v22 = 1;
@@ -3047,18 +3047,18 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   {
     *buf = bswap32(HIDWORD(v47));
     v22 = 1;
-    v19 = v15;
+    remoteConnectionData = v15;
   }
 
   else
   {
-    v19 = [(VCTransportSessionLegacy *)self remoteConnectionData];
+    remoteConnectionData = [(VCTransportSessionLegacy *)self remoteConnectionData];
     *buf = 0;
     v22 = -1;
   }
 
   [v18 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithShort:", v22), @"GKSRelayPeerAddrPointer"}];
-  [v18 setObject:v19 forKeyedSubscript:@"GKSRelayPeerBlob"];
+  [v18 setObject:remoteConnectionData forKeyedSubscript:@"GKSRelayPeerBlob"];
   [v18 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", buf, 4), @"GKSRelayPeerExternalAddr"}];
   [v18 setObject:&unk_1F5799FF0 forKeyedSubscript:@"GKSRelaySelfNatType"];
   [v18 setObject:&unk_1F5799FF0 forKeyedSubscript:@"GKSRelayPeerNatType"];
@@ -3066,54 +3066,54 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   return v18;
 }
 
-- (id)createRelayUpdateDictionary:(id)a3
+- (id)createRelayUpdateDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:10];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"GKSRelayType", "intValue")), @"GKSRelayType"}];
-  v6 = [a3 objectForKeyedSubscript:@"GKSRelayConnectionID"];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"GKSRelayType", "intValue")), @"GKSRelayType"}];
+  v6 = [dictionary objectForKeyedSubscript:@"GKSRelayConnectionID"];
   if (v6)
   {
     [v5 setObject:v6 forKeyedSubscript:@"GKSRelayConnectionID"];
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"GKRelayTransactionID"];
+  v7 = [dictionary objectForKeyedSubscript:@"GKRelayTransactionID"];
   if (v7)
   {
     [v5 setObject:v7 forKeyedSubscript:@"GKRelayTransactionID"];
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"GKRelayToken"];
+  v8 = [dictionary objectForKeyedSubscript:@"GKRelayToken"];
   if (v8)
   {
     [v5 setObject:v8 forKeyedSubscript:@"GKRelayToken"];
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"GKSRelayPeerRelayPort"];
+  v9 = [dictionary objectForKeyedSubscript:@"GKSRelayPeerRelayPort"];
   if (v9)
   {
     [v5 setObject:v9 forKeyedSubscript:@"GKSRelayPeerRelayPort"];
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"GKSRelayPeerRelayIP"];
+  v10 = [dictionary objectForKeyedSubscript:@"GKSRelayPeerRelayIP"];
   if (v10)
   {
     [v5 setObject:v10 forKeyedSubscript:@"GKSRelayPeerRelayIP"];
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"GKSRelaySelfRelayIP"];
+  v11 = [dictionary objectForKeyedSubscript:@"GKSRelaySelfRelayIP"];
   if (v11)
   {
     [v5 setObject:v11 forKeyedSubscript:@"GKSRelaySelfRelayIP"];
   }
 
-  v12 = [a3 objectForKeyedSubscript:@"GKSRelaySelfRelayPort"];
+  v12 = [dictionary objectForKeyedSubscript:@"GKSRelaySelfRelayPort"];
   if (v12)
   {
     [v5 setObject:v12 forKeyedSubscript:@"GKSRelaySelfRelayPort"];
   }
 
-  v13 = [a3 objectForKeyedSubscript:@"GKSRelayRemotePrimaryIdentifier"];
+  v13 = [dictionary objectForKeyedSubscript:@"GKSRelayRemotePrimaryIdentifier"];
   if (v13)
   {
     [v5 setObject:v13 forKeyedSubscript:@"GKSRelayRemotePrimaryIdentifier"];
@@ -3131,7 +3131,7 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
       v15 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCTransportSessionLegacy *)v15 createRelayUpdateDictionary:a3];
+        [(VCTransportSessionLegacy *)v15 createRelayUpdateDictionary:dictionary];
       }
     }
   }
@@ -3185,33 +3185,33 @@ void __45__VCTransportSessionLegacy_stopLoopbackProc___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)getConnectionSetupData:(id *)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)getConnectionSetupData:(id *)data withOptions:(id)options error:(id *)error
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"transportSessionLegacyOptionNonCellularCandidateTimeout", "doubleValue"}];
-  v8 = [(VCTransportSessionLegacy *)self connectionDataUsingRelay:0 isInitialRelay:0 nonCellularCandidateTimeout:a5 error:?];
-  *a3 = v8;
+  [objc_msgSend(options objectForKeyedSubscript:{@"transportSessionLegacyOptionNonCellularCandidateTimeout", "doubleValue"}];
+  v8 = [(VCTransportSessionLegacy *)self connectionDataUsingRelay:0 isInitialRelay:0 nonCellularCandidateTimeout:error error:?];
+  *data = v8;
   return v8 != 0;
 }
 
-- (void)getConnectionDataUsingRelay:(BOOL)a3 isInitialRelay:(BOOL)a4 nonCellularCandidateTimeout:(double)a5 queue:(id)a6 completionHandler:(id)a7
+- (void)getConnectionDataUsingRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay nonCellularCandidateTimeout:(double)timeout queue:(id)queue completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v12 = [a7 copy];
+  v12 = [handler copy];
   global_queue = dispatch_get_global_queue(0, 0);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_nonCellularCandidateTimeout_queue_completionHandler___block_invoke;
   v14[3] = &unk_1E85F7560;
-  v15 = a3;
-  v16 = a4;
-  *&v14[7] = a5;
+  relayCopy = relay;
+  initialRelayCopy = initialRelay;
+  *&v14[7] = timeout;
   v14[4] = self;
-  v14[5] = a6;
+  v14[5] = queue;
   v14[6] = v12;
   dispatch_async(global_queue, v14);
 }
@@ -3239,12 +3239,12 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
   }
 }
 
-- (id)connectionData:(char *)a3 connectionDataSizeInBytes:(int)a4 shouldUseRelay:(BOOL)a5
+- (id)connectionData:(char *)data connectionDataSizeInBytes:(int)bytes shouldUseRelay:(BOOL)relay
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:a4];
-  free(a3);
-  if (a5)
+  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:data length:bytes];
+  free(data);
+  if (relay)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -3293,13 +3293,13 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
   return v8;
 }
 
-- (id)connectionDataUsingRelay:(BOOL)a3 isInitialRelay:(BOOL)a4 nonCellularCandidateTimeout:(double)a5 error:(id *)a6
+- (id)connectionDataUsingRelay:(BOOL)relay isInitialRelay:(BOOL)initialRelay nonCellularCandidateTimeout:(double)timeout error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
   callID = self->_callID;
-  if (!a3 || a4)
+  if (!relay || initialRelay)
   {
-    if (a3 && a4)
+    if (relay && initialRelay)
     {
       v10 = 9;
     }
@@ -3341,7 +3341,7 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
     v26 = 201;
   }
 
-  v15 = [(VCTransportSessionLegacy *)self generateConnectionData:&v27 forCallID:callID connectionDataSize:&v26 nonCellularCandidateTimeout:a5];
+  v15 = [(VCTransportSessionLegacy *)self generateConnectionData:&v27 forCallID:callID connectionDataSize:&v26 nonCellularCandidateTimeout:timeout];
   if (v15 == -2146107370)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -3386,7 +3386,7 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
       v17 = 210;
     }
 
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a6, v18, v17, v16, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1707], @"No local connection data", @"Check network settings.");
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, v18, v17, v16, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1707], @"No local connection data", @"Check network settings.");
     return 0;
   }
 
@@ -3419,18 +3419,18 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
   }
 
   reportingLog();
-  +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a6, 32013, 211, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1724], @"No local connection data", @"Check network settings.");
+  +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32013, 211, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTransportSessionLegacy.m", 1724], @"No local connection data", @"Check network settings.");
   return 0;
 }
 
-- (int)generateConnectionData:(char *)a3 forCallID:(unsigned int)a4 connectionDataSize:(int *)a5 nonCellularCandidateTimeout:(double)a6
+- (int)generateConnectionData:(char *)data forCallID:(unsigned int)d connectionDataSize:(int *)size nonCellularCandidateTimeout:(double)timeout
 {
-  v8 = *&a4;
+  v8 = *&d;
   v27 = *MEMORY[0x1E69E9840];
   v20 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceNow:10.0];
   [(NSCondition *)self->_connectionDataTimeoutCondVar lock];
   LOBYTE(v17) = 0;
-  v11 = [(VCTransport *)self->transport getConnectionDataForCallID:v8 version:self->_localU8Version useCompressedData:self->super._useCompressedConnectionData pConnectionData:a3 connectDataSizeInBytes:a5 relayDictionary:[(VCTransportSessionLegacy *)self localRelayRequestResponse] interfaceUpdate:a6 nonCellularCandidateTimeout:v17];
+  v11 = [(VCTransport *)self->transport getConnectionDataForCallID:v8 version:self->_localU8Version useCompressedData:self->super._useCompressedConnectionData pConnectionData:data connectDataSizeInBytes:size relayDictionary:[(VCTransportSessionLegacy *)self localRelayRequestResponse] interfaceUpdate:timeout nonCellularCandidateTimeout:v17];
   v19 = -2146107370;
   if (v11 == -2146107370)
   {
@@ -3458,7 +3458,7 @@ void __123__VCTransportSessionLegacy_getConnectionDataUsingRelay_isInitialRelay_
       }
 
       LOBYTE(v18) = 0;
-      v11 = [(VCTransport *)self->transport getConnectionDataForCallID:v8 version:self->_localU8Version useCompressedData:self->super._useCompressedConnectionData pConnectionData:a3 connectDataSizeInBytes:a5 relayDictionary:[(VCTransportSessionLegacy *)self localRelayRequestResponse] interfaceUpdate:a6 nonCellularCandidateTimeout:v18];
+      v11 = [(VCTransport *)self->transport getConnectionDataForCallID:v8 version:self->_localU8Version useCompressedData:self->super._useCompressedConnectionData pConnectionData:data connectDataSizeInBytes:size relayDictionary:[(VCTransportSessionLegacy *)self localRelayRequestResponse] interfaceUpdate:timeout nonCellularCandidateTimeout:v18];
       if (v11 != -2146107370)
       {
         goto LABEL_7;
@@ -3550,12 +3550,12 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
   _os_log_error_impl(v0, v1, v2, v3, v4, 0x22u);
 }
 
-- (double)iceTimeoutInSeconds:(BOOL)a3
+- (double)iceTimeoutInSeconds:(BOOL)seconds
 {
   if (self->allowsRelay)
   {
     result = 60.0;
-    if (self->_isCaller && !a3)
+    if (self->_isCaller && !seconds)
     {
       if (GKSConnectivitySettings_GetICETimeout() <= 0.0)
       {
@@ -3582,14 +3582,14 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
   return result;
 }
 
-- (unsigned)connectionTypeForConnectionResult:(tagCONNRESULT *)a3
+- (unsigned)connectionTypeForConnectionResult:(tagCONNRESULT *)result
 {
-  if (!a3)
+  if (!result)
   {
     return 0;
   }
 
-  if (a3->bIfRelay)
+  if (result->bIfRelay)
   {
     if (self->requestedTimeoutRelay)
     {
@@ -3602,7 +3602,7 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
     }
   }
 
-  else if (a3->bIfUpgrade)
+  else if (result->bIfUpgrade)
   {
     return 6;
   }
@@ -3616,7 +3616,7 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
 - (BOOL)isConnectedAndAllowAdditionalConnection
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(VCConnectionManager *)self->super._connectionManager connectionCount];
+  connectionCount = [(VCConnectionManager *)self->super._connectionManager connectionCount];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v3 = VRTraceErrorLogLevelToCSTR();
@@ -3630,12 +3630,12 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
       v10 = 1024;
       v11 = 1891;
       v12 = 1024;
-      v13 = v2;
+      v13 = connectionCount;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d number of connection is %d", &v6, 0x22u);
     }
   }
 
-  return (v2 - 1) < 2;
+  return (connectionCount - 1) < 2;
 }
 
 - (void)reportNetworkConditionsDegraded
@@ -3661,11 +3661,11 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
   VTP_SetNetworkLogLevel(&v3, 6);
 }
 
-- (void)setIdentity:(__SecIdentity *)a3
+- (void)setIdentity:(__SecIdentity *)identity
 {
-  if (a3)
+  if (identity)
   {
-    v4 = CFRetain(a3);
+    v4 = CFRetain(identity);
   }
 
   else
@@ -3676,16 +3676,16 @@ uint64_t __42__VCTransportSessionLegacy_setupTransport__block_invoke_4(uint64_t 
   self->_identity = v4;
 }
 
-- (void)setupSecondaryRelayForCall:(unsigned int)a3 callerRequired:(BOOL)a4
+- (void)setupSecondaryRelayForCall:(unsigned int)call callerRequired:(BOOL)required
 {
-  v4 = a4;
-  v5 = *&a3;
+  requiredCopy = required;
+  v5 = *&call;
   v25 = *MEMORY[0x1E69E9840];
   v7 = VCConnectionManager_CopyPrimaryConnection(self->super._connectionManager);
   if (v7)
   {
     v8 = v7;
-    if (!v4 || self->_isCaller)
+    if (!requiredCopy || self->_isCaller)
     {
       if (self->relayState || ![(VCTransportSessionLegacy *)self isConnectedAndAllowAdditionalConnection])
       {
@@ -3771,7 +3771,7 @@ void __105__VCTransportSessionLegacy_connectionResultCallback_didReceiveICEPacke
   free(v9);
 }
 
-- (tagIPPORT)IPPortForPrimaryConnectionOnLocalInterface:(SEL)a3
+- (tagIPPORT)IPPortForPrimaryConnectionOnLocalInterface:(SEL)interface
 {
   v4 = a4;
   *&retstr->IP.abIPv6[12] = 0;
@@ -3783,14 +3783,14 @@ void __105__VCTransportSessionLegacy_connectionResultCallback_didReceiveICEPacke
     v7 = result;
     if ([(tagIPPORT *)result connectionResult])
     {
-      v8 = [(tagIPPORT *)v7 connectionResult];
+      connectionResult = [(tagIPPORT *)v7 connectionResult];
       v9 = 148;
       if (v4)
       {
         v9 = 28;
       }
 
-      v10 = v8 + v9;
+      v10 = connectionResult + v9;
       v11 = *(v10 + 16);
       *&retstr->iFlags = *v10;
       *&retstr->szIfName[12] = v11;

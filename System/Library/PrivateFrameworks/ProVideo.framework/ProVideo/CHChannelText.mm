@@ -1,9 +1,9 @@
 @interface CHChannelText
 - (OZChannelText)ozChannel;
 - (id)string;
-- (void)setAttributedString:(id)a3;
-- (void)setString:(id)a3;
-- (void)setString:(id)a3 affectLayout:(BOOL)a4;
+- (void)setAttributedString:(id)string;
+- (void)setString:(id)string;
+- (void)setString:(id)string affectLayout:(BOOL)layout;
 @end
 
 @implementation CHChannelText
@@ -31,7 +31,7 @@
   return v3;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -44,14 +44,14 @@
   }
 
   v6.var0 = 0;
-  PCString::set(&v6, a3);
+  PCString::set(&v6, string);
   (*(*v5 + 864))(v5, &v6, 0, 0);
   PCString::~PCString(&v6);
 }
 
-- (void)setString:(id)a3 affectLayout:(BOOL)a4
+- (void)setString:(id)string affectLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
@@ -63,12 +63,12 @@
   }
 
   v8.var0 = 0;
-  PCString::set(&v8, a3);
-  (*(*v7 + 864))(v7, &v8, 0, v4);
+  PCString::set(&v8, string);
+  (*(*v7 + 864))(v7, &v8, 0, layoutCopy);
   PCString::~PCString(&v8);
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)

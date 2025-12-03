@@ -1,25 +1,25 @@
 @interface PGMemoryFeatureBlocking
-+ (id)_bestAddressNodeAsCollectionInMomentNodeAsCollection:(id)a3;
-+ (id)_momentNodesWithBlockedFeatureInGraph:(id)a3 areaNamesWithNegativeFeedback:(id)a4 holidayNamesWithNegativeFeedback:(id)a5 datesWithNegativeFeedback:(id)a6 personUUIDsWithNegativeFeedback:(id)a7 locationsWithNegativeFeedback:(id)a8 loggingConnection:(id)a9 progressReporter:(id)a10;
-+ (id)_prominentPersonNodeAsCollectionInMomentNodeAsCollection:(id)a3 withPersonNodes:(id)a4 maximumNumberOfPersonsAllowed:(unint64_t)a5 minimumPresenceThreshold:(double)a6 maximumOthersPresenceThreshold:(double)a7;
-+ (id)blockableFeaturesForFeatureNodes:(id)a3 momentNodes:(id)a4 memoryCategory:(unint64_t)a5;
-+ (id)momentNodesWithBlockedFeatureInGraph:(id)a3 userFeedbackCalculator:(id)a4 loggingConnection:(id)a5 progressReporter:(id)a6;
++ (id)_bestAddressNodeAsCollectionInMomentNodeAsCollection:(id)collection;
++ (id)_momentNodesWithBlockedFeatureInGraph:(id)graph areaNamesWithNegativeFeedback:(id)feedback holidayNamesWithNegativeFeedback:(id)negativeFeedback datesWithNegativeFeedback:(id)withNegativeFeedback personUUIDsWithNegativeFeedback:(id)dsWithNegativeFeedback locationsWithNegativeFeedback:(id)locationsWithNegativeFeedback loggingConnection:(id)connection progressReporter:(id)self0;
++ (id)_prominentPersonNodeAsCollectionInMomentNodeAsCollection:(id)collection withPersonNodes:(id)nodes maximumNumberOfPersonsAllowed:(unint64_t)allowed minimumPresenceThreshold:(double)threshold maximumOthersPresenceThreshold:(double)presenceThreshold;
++ (id)blockableFeaturesForFeatureNodes:(id)nodes momentNodes:(id)momentNodes memoryCategory:(unint64_t)category;
++ (id)momentNodesWithBlockedFeatureInGraph:(id)graph userFeedbackCalculator:(id)calculator loggingConnection:(id)connection progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryFeatureBlocking
 
-+ (id)_momentNodesWithBlockedFeatureInGraph:(id)a3 areaNamesWithNegativeFeedback:(id)a4 holidayNamesWithNegativeFeedback:(id)a5 datesWithNegativeFeedback:(id)a6 personUUIDsWithNegativeFeedback:(id)a7 locationsWithNegativeFeedback:(id)a8 loggingConnection:(id)a9 progressReporter:(id)a10
++ (id)_momentNodesWithBlockedFeatureInGraph:(id)graph areaNamesWithNegativeFeedback:(id)feedback holidayNamesWithNegativeFeedback:(id)negativeFeedback datesWithNegativeFeedback:(id)withNegativeFeedback personUUIDsWithNegativeFeedback:(id)dsWithNegativeFeedback locationsWithNegativeFeedback:(id)locationsWithNegativeFeedback loggingConnection:(id)connection progressReporter:(id)self0
 {
   v117 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v87 = a4;
-  v86 = a5;
-  v85 = a6;
-  v84 = a7;
-  v82 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = v16;
+  graphCopy = graph;
+  feedbackCopy = feedback;
+  negativeFeedbackCopy = negativeFeedback;
+  withNegativeFeedbackCopy = withNegativeFeedback;
+  dsWithNegativeFeedbackCopy = dsWithNegativeFeedback;
+  locationsWithNegativeFeedbackCopy = locationsWithNegativeFeedback;
+  connectionCopy = connection;
+  reporterCopy = reporter;
+  v18 = connectionCopy;
   v19 = os_signpost_id_generate(v18);
   v20 = v18;
   v21 = v20;
@@ -39,20 +39,20 @@
   v105 = 0x3032000000;
   v106 = __Block_byref_object_copy__49002;
   v107 = __Block_byref_object_dispose__49003;
-  v108 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithGraph:v15];
-  v22 = v17;
+  v108 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithGraph:graphCopy];
+  v22 = reporterCopy;
   v83 = *(v104 + 5);
   v99 = 0;
   v100 = &v99;
   v101 = 0x2020000000;
   v102 = 0;
-  if ([v87 count])
+  if ([feedbackCopy count])
   {
-    v23 = [PGGraphAreaNodeCollection areaNodesForNames:v87 inGraph:v15];
+    v23 = [PGGraphAreaNodeCollection areaNodesForNames:feedbackCopy inGraph:graphCopy];
     v24 = *(v104 + 5);
-    v25 = [v23 addressNodes];
-    v26 = [v25 momentNodes];
-    v27 = [v24 collectionByFormingUnionWith:v26];
+    addressNodes = [v23 addressNodes];
+    momentNodes = [addressNodes momentNodes];
+    v27 = [v24 collectionByFormingUnionWith:momentNodes];
     v28 = *(v104 + 5);
     *(v104 + 5) = v27;
   }
@@ -86,15 +86,15 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if ([v86 count])
+  if ([negativeFeedbackCopy count])
   {
-    v35 = [v86 allObjects];
-    v36 = [PGGraphHolidayNodeCollection holidayNodesWithNames:v35 inGraph:v15];
+    allObjects = [negativeFeedbackCopy allObjects];
+    v36 = [PGGraphHolidayNodeCollection holidayNodesWithNames:allObjects inGraph:graphCopy];
 
     v37 = *(v104 + 5);
-    v38 = [v36 dateNodes];
-    v39 = [v38 momentNodes];
-    v40 = [v37 collectionByFormingUnionWith:v39];
+    dateNodes = [v36 dateNodes];
+    momentNodes2 = [dateNodes momentNodes];
+    v40 = [v37 collectionByFormingUnionWith:momentNodes2];
     v41 = *(v104 + 5);
     *(v104 + 5) = v40;
   }
@@ -123,14 +123,14 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if ([v85 count])
+  if ([withNegativeFeedbackCopy count])
   {
-    v43 = [v85 allObjects];
-    v44 = [PGGraphDateNodeCollection dateNodesForLocalDates:v43 inGraph:v15];
+    allObjects2 = [withNegativeFeedbackCopy allObjects];
+    v44 = [PGGraphDateNodeCollection dateNodesForLocalDates:allObjects2 inGraph:graphCopy];
 
     v45 = *(v104 + 5);
-    v46 = [v44 momentNodes];
-    v47 = [v45 collectionByFormingUnionWith:v46];
+    momentNodes3 = [v44 momentNodes];
+    v47 = [v45 collectionByFormingUnionWith:momentNodes3];
     v48 = *(v104 + 5);
     *(v104 + 5) = v47;
   }
@@ -159,14 +159,14 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if ([v84 count])
+  if ([dsWithNegativeFeedbackCopy count])
   {
     v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v51 = v84;
+    v51 = dsWithNegativeFeedbackCopy;
     v52 = [v51 countByEnumeratingWithState:&v95 objects:v116 count:16];
     if (v52)
     {
@@ -190,8 +190,8 @@ LABEL_28:
       while (v52);
     }
 
-    v56 = [PGGraphPersonNodeCollection personNodesForArrayOfLocalIdentifiers:v50 inGraph:v15];
-    v57 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v15];
+    v56 = [PGGraphPersonNodeCollection personNodesForArrayOfLocalIdentifiers:v50 inGraph:graphCopy];
+    v57 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
     v58 = MEMORY[0x277D22BF8];
     v59 = +[PGGraphMomentNode personInMoment];
     v60 = [v58 adjacencyWithSources:v57 relation:v59 targetsClass:objc_opt_class()];
@@ -224,14 +224,14 @@ LABEL_44:
       goto LABEL_41;
     }
 
-    v63 = [v60 sourcesCount];
-    if (v63)
+    sourcesCount = [v60 sourcesCount];
+    if (sourcesCount)
     {
       *v114 = 0;
       *&v114[8] = v114;
       *&v114[16] = 0x2020000000;
       v115 = 0x3FE3333333333333;
-      v64 = 0.2 / v63;
+      v64 = 0.2 / sourcesCount;
       v88[0] = MEMORY[0x277D85DD0];
       v88[1] = 3221225472;
       v88[2] = __251__PGMemoryFeatureBlocking__momentNodesWithBlockedFeatureInGraph_areaNamesWithNegativeFeedback_holidayNamesWithNegativeFeedback_datesWithNegativeFeedback_personUUIDsWithNegativeFeedback_locationsWithNegativeFeedback_loggingConnection_progressReporter___block_invoke;
@@ -264,10 +264,10 @@ LABEL_44:
     }
   }
 
-  v66 = [PGGraphAddressNodeCollection addressNodesWithinDistance:v82 ofLocations:v15 inGraph:100.0];
+  v66 = [PGGraphAddressNodeCollection addressNodesWithinDistance:locationsWithNegativeFeedbackCopy ofLocations:graphCopy inGraph:100.0];
   v67 = *(v104 + 5);
-  v68 = [v66 momentNodes];
-  v69 = [v67 collectionByFormingUnionWith:v68];
+  momentNodes4 = [v66 momentNodes];
+  v69 = [v67 collectionByFormingUnionWith:momentNodes4];
   v70 = *(v104 + 5);
   *(v104 + 5) = v69;
 
@@ -364,29 +364,29 @@ void __251__PGMemoryFeatureBlocking__momentNodesWithBlockedFeatureInGraph_areaNa
   }
 }
 
-+ (id)momentNodesWithBlockedFeatureInGraph:(id)a3 userFeedbackCalculator:(id)a4 loggingConnection:(id)a5 progressReporter:(id)a6
++ (id)momentNodesWithBlockedFeatureInGraph:(id)graph userFeedbackCalculator:(id)calculator loggingConnection:(id)connection progressReporter:(id)reporter
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 dataCache];
-  v15 = [v14 areaNamesWithNegativeFeedback];
-  v16 = [v14 holidayNamesWithNegativeFeedback];
-  v17 = [v14 datesWithNegativeFeedback];
-  v18 = [v12 personUUIDsWithNegativeFeedback];
+  reporterCopy = reporter;
+  connectionCopy = connection;
+  calculatorCopy = calculator;
+  graphCopy = graph;
+  dataCache = [calculatorCopy dataCache];
+  areaNamesWithNegativeFeedback = [dataCache areaNamesWithNegativeFeedback];
+  holidayNamesWithNegativeFeedback = [dataCache holidayNamesWithNegativeFeedback];
+  datesWithNegativeFeedback = [dataCache datesWithNegativeFeedback];
+  personUUIDsWithNegativeFeedback = [calculatorCopy personUUIDsWithNegativeFeedback];
 
-  v19 = [v14 locationsWithNegativeFeedback];
-  v20 = [a1 _momentNodesWithBlockedFeatureInGraph:v13 areaNamesWithNegativeFeedback:v15 holidayNamesWithNegativeFeedback:v16 datesWithNegativeFeedback:v17 personUUIDsWithNegativeFeedback:v18 locationsWithNegativeFeedback:v19 loggingConnection:v11 progressReporter:v10];
+  locationsWithNegativeFeedback = [dataCache locationsWithNegativeFeedback];
+  v20 = [self _momentNodesWithBlockedFeatureInGraph:graphCopy areaNamesWithNegativeFeedback:areaNamesWithNegativeFeedback holidayNamesWithNegativeFeedback:holidayNamesWithNegativeFeedback datesWithNegativeFeedback:datesWithNegativeFeedback personUUIDsWithNegativeFeedback:personUUIDsWithNegativeFeedback locationsWithNegativeFeedback:locationsWithNegativeFeedback loggingConnection:connectionCopy progressReporter:reporterCopy];
 
   return v20;
 }
 
-+ (id)_prominentPersonNodeAsCollectionInMomentNodeAsCollection:(id)a3 withPersonNodes:(id)a4 maximumNumberOfPersonsAllowed:(unint64_t)a5 minimumPresenceThreshold:(double)a6 maximumOthersPresenceThreshold:(double)a7
++ (id)_prominentPersonNodeAsCollectionInMomentNodeAsCollection:(id)collection withPersonNodes:(id)nodes maximumNumberOfPersonsAllowed:(unint64_t)allowed minimumPresenceThreshold:(double)threshold maximumOthersPresenceThreshold:(double)presenceThreshold
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [v12 count];
+  collectionCopy = collection;
+  nodesCopy = nodes;
+  v13 = [nodesCopy count];
   if (v13)
   {
     v14 = 0;
@@ -396,19 +396,19 @@ void __251__PGMemoryFeatureBlocking__momentNodesWithBlockedFeatureInGraph_areaNa
     v27 = __Block_byref_object_copy__49002;
     v28 = __Block_byref_object_dispose__49003;
     v29 = 0;
-    if (v13 <= a5)
+    if (v13 <= allowed)
     {
-      v15 = [v11 numberOfAssets];
+      numberOfAssets = [collectionCopy numberOfAssets];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __186__PGMemoryFeatureBlocking__prominentPersonNodeAsCollectionInMomentNodeAsCollection_withPersonNodes_maximumNumberOfPersonsAllowed_minimumPresenceThreshold_maximumOthersPresenceThreshold___block_invoke;
       v18[3] = &unk_278885348;
-      v19 = v11;
+      v19 = collectionCopy;
       v20 = &v24;
-      v21 = v15;
-      v22 = a6;
-      v23 = a7;
-      [v12 enumerateIdentifiersAsCollectionsWithBlock:v18];
+      v21 = numberOfAssets;
+      thresholdCopy = threshold;
+      presenceThresholdCopy = presenceThreshold;
+      [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v18];
 
       v14 = v25[5];
     }
@@ -454,9 +454,9 @@ void __186__PGMemoryFeatureBlocking__prominentPersonNodeAsCollectionInMomentNode
   }
 }
 
-+ (id)_bestAddressNodeAsCollectionInMomentNodeAsCollection:(id)a3
++ (id)_bestAddressNodeAsCollectionInMomentNodeAsCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -467,16 +467,16 @@ void __186__PGMemoryFeatureBlocking__prominentPersonNodeAsCollectionInMomentNode
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v12[3] = 0;
-  v4 = [v3 preciseAddressNodes];
+  preciseAddressNodes = [collectionCopy preciseAddressNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__PGMemoryFeatureBlocking__bestAddressNodeAsCollectionInMomentNodeAsCollection___block_invoke;
   v8[3] = &unk_278885320;
-  v5 = v3;
+  v5 = collectionCopy;
   v9 = v5;
   v10 = v12;
   v11 = &v13;
-  [v4 enumerateIdentifiersAsCollectionsWithBlock:v8];
+  [preciseAddressNodes enumerateIdentifiersAsCollectionsWithBlock:v8];
   v6 = v14[5];
 
   _Block_object_dispose(v12, 8);
@@ -504,18 +504,18 @@ void __80__PGMemoryFeatureBlocking__bestAddressNodeAsCollectionInMomentNodeAsCol
   }
 }
 
-+ (id)blockableFeaturesForFeatureNodes:(id)a3 momentNodes:(id)a4 memoryCategory:(unint64_t)a5
++ (id)blockableFeaturesForFeatureNodes:(id)nodes momentNodes:(id)momentNodes memoryCategory:(unint64_t)category
 {
-  v8 = a3;
-  v9 = a4;
+  nodesCopy = nodes;
+  momentNodesCopy = momentNodes;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [a1 _blockableHolidayFeatureForFeatureNodes:v8 momentNodes:v9];
+  v11 = [self _blockableHolidayFeatureForFeatureNodes:nodesCopy momentNodes:momentNodesCopy];
   if (v11)
   {
     [v10 addObject:v11];
   }
 
-  v12 = [a1 _blockableDateFeatureForFeatureNodes:v8 momentNodes:v9];
+  v12 = [self _blockableDateFeatureForFeatureNodes:nodesCopy momentNodes:momentNodesCopy];
   if (v12)
   {
     [v10 addObject:v12];
@@ -523,20 +523,20 @@ void __80__PGMemoryFeatureBlocking__bestAddressNodeAsCollectionInMomentNodeAsCol
 
   else
   {
-    v13 = [a1 _blockableDateIntervalFeatureForFeatureNodes:v8 momentNodes:v9 memoryCategory:a5];
+    v13 = [self _blockableDateIntervalFeatureForFeatureNodes:nodesCopy momentNodes:momentNodesCopy memoryCategory:category];
     if (v13)
     {
       [v10 addObject:v13];
     }
   }
 
-  v14 = [a1 _blockableLocationFeatureForFeatureNodes:v8 momentNodes:v9];
+  v14 = [self _blockableLocationFeatureForFeatureNodes:nodesCopy momentNodes:momentNodesCopy];
   if (v14)
   {
     [v10 addObject:v14];
   }
 
-  v15 = [a1 _blockablePersonFeatureForFeatureNodes:v8 momentNodes:v9];
+  v15 = [self _blockablePersonFeatureForFeatureNodes:nodesCopy momentNodes:momentNodesCopy];
   if (v15)
   {
     [v10 addObject:v15];

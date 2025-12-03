@@ -1,61 +1,61 @@
 @interface ATXAnchorModelPhase1Trainer
-- (BOOL)candidateSatisfiesAllThresholds:(id)a3 trainingResult:(id)a4;
-- (BOOL)candidateUniqueAnchorOccurrencesIsAtLeastMinimum:(int64_t)a3 candidateId:(id)a4 trainingResult:(id)a5;
-- (BOOL)classConditionalProbabilityOfAnchorIsAtLeastMinimum:(double)a3 candidateId:(id)a4 trainingResult:(id)a5;
-- (BOOL)posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:(double)a3 candidateId:(id)a4 trainingResult:(id)a5;
-- (double)anchorPopularityForCandidate:(id)a3;
-- (double)classConditionalProbabilityOfAnchorForCandidate:(id)a3;
-- (double)globalPopularityForCandidate:(id)a3;
-- (double)posteriorProbabilityConditionedOnAnchorForCandidate:(id)a3;
-- (double)standardDeviationOfNumbers:(id)a3;
-- (double)standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:(id)a3;
-- (id)initForAnchor:(id)a3;
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4;
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4 hyperParameters:(id)a5 tracker:(id)a6;
+- (BOOL)candidateSatisfiesAllThresholds:(id)thresholds trainingResult:(id)result;
+- (BOOL)candidateUniqueAnchorOccurrencesIsAtLeastMinimum:(int64_t)minimum candidateId:(id)id trainingResult:(id)result;
+- (BOOL)classConditionalProbabilityOfAnchorIsAtLeastMinimum:(double)minimum candidateId:(id)id trainingResult:(id)result;
+- (BOOL)posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:(double)minimum candidateId:(id)id trainingResult:(id)result;
+- (double)anchorPopularityForCandidate:(id)candidate;
+- (double)classConditionalProbabilityOfAnchorForCandidate:(id)candidate;
+- (double)globalPopularityForCandidate:(id)candidate;
+- (double)posteriorProbabilityConditionedOnAnchorForCandidate:(id)candidate;
+- (double)standardDeviationOfNumbers:(id)numbers;
+- (double)standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:(id)id;
+- (id)initForAnchor:(id)anchor;
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper;
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper hyperParameters:(id)parameters tracker:(id)tracker;
 - (id)selectedPredictionCandidates;
 - (id)uniqueCandidateIdsThatOccurredAfterAnchor;
-- (void)_logPredictionsFilteredDuringPhase1WithCandidateIdsToConsider:(id)a3 selectedCandidates:(id)a4;
+- (void)_logPredictionsFilteredDuringPhase1WithCandidateIdsToConsider:(id)consider selectedCandidates:(id)candidates;
 - (void)uniqueCandidateIdsThatOccurredAfterAnchor;
 @end
 
 @implementation ATXAnchorModelPhase1Trainer
 
-- (id)initForAnchor:(id)a3
+- (id)initForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = objc_opt_new();
-  v6 = [(ATXAnchorModelPhase1Trainer *)self initForAnchor:v4 anchorModelDataStoreWrapper:v5];
+  v6 = [(ATXAnchorModelPhase1Trainer *)self initForAnchor:anchorCopy anchorModelDataStoreWrapper:v5];
 
   return v6;
 }
 
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper
 {
-  v6 = a4;
-  v7 = a3;
+  wrapperCopy = wrapper;
+  anchorCopy = anchor;
   v8 = +[ATXAnchorModelHyperParameters sharedInstance];
   v9 = objc_opt_new();
-  v10 = [(ATXAnchorModelPhase1Trainer *)self initForAnchor:v7 anchorModelDataStoreWrapper:v6 hyperParameters:v8 tracker:v9];
+  v10 = [(ATXAnchorModelPhase1Trainer *)self initForAnchor:anchorCopy anchorModelDataStoreWrapper:wrapperCopy hyperParameters:v8 tracker:v9];
 
   return v10;
 }
 
-- (id)initForAnchor:(id)a3 anchorModelDataStoreWrapper:(id)a4 hyperParameters:(id)a5 tracker:(id)a6
+- (id)initForAnchor:(id)anchor anchorModelDataStoreWrapper:(id)wrapper hyperParameters:(id)parameters tracker:(id)tracker
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  anchorCopy = anchor;
+  wrapperCopy = wrapper;
+  parametersCopy = parameters;
+  trackerCopy = tracker;
   v18.receiver = self;
   v18.super_class = ATXAnchorModelPhase1Trainer;
   v15 = [(ATXAnchorModelPhase1Trainer *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_anchor, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_anchor, anchor);
+    objc_storeStrong(p_isa + 2, wrapper);
+    objc_storeStrong(p_isa + 3, parameters);
+    objc_storeStrong(p_isa + 4, tracker);
   }
 
   return p_isa;
@@ -65,7 +65,7 @@
 {
   v78 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ATXAnchorModelPhase1Trainer *)self uniqueCandidateIdsThatOccurredAfterAnchor];
+  uniqueCandidateIdsThatOccurredAfterAnchor = [(ATXAnchorModelPhase1Trainer *)self uniqueCandidateIdsThatOccurredAfterAnchor];
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -77,7 +77,7 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v6 = v4;
+  v6 = uniqueCandidateIdsThatOccurredAfterAnchor;
   v68 = [v6 countByEnumeratingWithState:&v70 objects:v77 count:16];
   if (v68)
   {
@@ -115,10 +115,10 @@
         if ([(ATXAnchorModelPhase1Trainer *)self candidateSatisfiesAllThresholds:v10 trainingResult:v13])
         {
           v69 = v13;
-          v14 = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
+          didDefer = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
           v15 = __atxlog_handle_anchor();
           v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-          if (v14)
+          if (didDefer)
           {
             if (v16)
             {
@@ -161,14 +161,14 @@ LABEL_59:
             v23 = objc_opt_new();
             v24 = [v21 historyForAppLaunchDuetEvents:v22 anchorOccurrenceDate:v23];
             [v24 objectAtIndexedSubscript:0];
-            v25 = self;
+            selfCopy = self;
             v26 = v6;
             v28 = v27 = v3;
             [v69 setLaunchHistory:v28];
 
             v3 = v27;
             v6 = v26;
-            self = v25;
+            self = selfCopy;
 
             v29 = v65;
             goto LABEL_28;
@@ -198,10 +198,10 @@ LABEL_28:
 
               v11 = v67;
 LABEL_29:
-              v47 = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
+              didDefer2 = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
               v15 = __atxlog_handle_anchor();
               v48 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-              if (v47)
+              if (didDefer2)
               {
                 if (v48)
                 {
@@ -221,9 +221,9 @@ LABEL_29:
               v13 = v69;
               [v69 setCandidateId:v10];
               v49 = self->_storeWrapper;
-              v50 = [(ATXAnchor *)self->_anchor anchorTypeString];
-              v51 = [(ATXAnchor *)self->_anchor anchorEventIdentifier];
-              [(ATXAnchorModelDataStoreWrapperProtocol *)v49 assignMetricsForTrainingResult:v69 anchorType:v50 anchorEventIdentifier:v51 candidateId:v10];
+              anchorTypeString = [(ATXAnchor *)self->_anchor anchorTypeString];
+              anchorEventIdentifier = [(ATXAnchor *)self->_anchor anchorEventIdentifier];
+              [(ATXAnchorModelDataStoreWrapperProtocol *)v49 assignMetricsForTrainingResult:v69 anchorType:anchorTypeString anchorEventIdentifier:anchorEventIdentifier candidateId:v10];
 
               [v3 addObject:v69];
               v7 = v66;
@@ -372,15 +372,15 @@ LABEL_60:
   return v61;
 }
 
-- (BOOL)candidateSatisfiesAllThresholds:(id)a3 trainingResult:(id)a4
+- (BOOL)candidateSatisfiesAllThresholds:(id)thresholds trainingResult:(id)result
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesWithUniqueCandidateOccurrenceForCandidate:v6 anchor:self->_anchor];
+  thresholdsCopy = thresholds;
+  resultCopy = result;
+  v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesWithUniqueCandidateOccurrenceForCandidate:thresholdsCopy anchor:self->_anchor];
   if (![(ATXBackgroundActivityProtocol *)self->_runningTask didDefer])
   {
-    [v7 setNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence:v8];
+    [resultCopy setNumUniqueAnchorOccurrencesWithUniqueCandidateOccurrence:v8];
     v11 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -388,7 +388,7 @@ LABEL_60:
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "Phase 1: calculated unique anchor occurrences", &v47, 2u);
     }
 
-    if (![(ATXAnchorModelPhase1Trainer *)self candidateUniqueAnchorOccurrencesIsAtLeastMinimum:[(ATXAnchorModelHyperParameters *)self->_hyperParameters minUniqueAnchorOccurrencesForAnchorForPhase1] candidateId:v6 trainingResult:v7])
+    if (![(ATXAnchorModelPhase1Trainer *)self candidateUniqueAnchorOccurrencesIsAtLeastMinimum:[(ATXAnchorModelHyperParameters *)self->_hyperParameters minUniqueAnchorOccurrencesForAnchorForPhase1] candidateId:thresholdsCopy trainingResult:resultCopy])
     {
       goto LABEL_34;
     }
@@ -407,9 +407,9 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    [(ATXAnchorModelPhase1Trainer *)self classConditionalProbabilityOfAnchorForCandidate:v6];
+    [(ATXAnchorModelPhase1Trainer *)self classConditionalProbabilityOfAnchorForCandidate:thresholdsCopy];
     v14 = v13;
-    [v7 setClassConditionalProbability:?];
+    [resultCopy setClassConditionalProbability:?];
     v15 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -431,9 +431,9 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    [(ATXAnchorModelPhase1Trainer *)self posteriorProbabilityConditionedOnAnchorForCandidate:v6];
+    [(ATXAnchorModelPhase1Trainer *)self posteriorProbabilityConditionedOnAnchorForCandidate:thresholdsCopy];
     v18 = v17;
-    [v7 setPosteriorProbability:?];
+    [resultCopy setPosteriorProbability:?];
     v19 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -456,7 +456,7 @@ LABEL_60:
     }
 
     [(ATXAnchorModelHyperParameters *)self->_hyperParameters minClassConditionalProbabilityForCandidateForPhase1];
-    if (![(ATXAnchorModelPhase1Trainer *)self classConditionalProbabilityOfAnchorIsAtLeastMinimum:v6 candidateId:v7 trainingResult:?])
+    if (![(ATXAnchorModelPhase1Trainer *)self classConditionalProbabilityOfAnchorIsAtLeastMinimum:thresholdsCopy candidateId:resultCopy trainingResult:?])
     {
       [(ATXAnchorModelHyperParameters *)self->_hyperParameters minPosteriorProbabilityToIgnoreClassConditionalProbabilityForCandidateForPhase1];
       if (v18 <= v21)
@@ -469,7 +469,7 @@ LABEL_60:
       {
         [(ATXAnchorModelHyperParameters *)self->_hyperParameters minPosteriorProbabilityToIgnoreClassConditionalProbabilityForCandidateForPhase1];
         v47 = 138412802;
-        v48 = v6;
+        v48 = thresholdsCopy;
         v49 = 2048;
         v50 = v18;
         v51 = 2048;
@@ -493,7 +493,7 @@ LABEL_60:
     }
 
     [(ATXAnchorModelHyperParameters *)self->_hyperParameters minPosteriorProbabilityForCandidateForPhase1];
-    if (![(ATXAnchorModelPhase1Trainer *)self posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:v6 candidateId:v7 trainingResult:?])
+    if (![(ATXAnchorModelPhase1Trainer *)self posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:thresholdsCopy candidateId:resultCopy trainingResult:?])
     {
       goto LABEL_34;
     }
@@ -512,9 +512,9 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    [(ATXAnchorModelPhase1Trainer *)self standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:v6];
+    [(ATXAnchorModelPhase1Trainer *)self standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:thresholdsCopy];
     v30 = v29;
-    [v7 setStandardDeviationOfOffsetFromAnchor:?];
+    [resultCopy setStandardDeviationOfOffsetFromAnchor:?];
     v31 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
@@ -536,9 +536,9 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    [(ATXAnchorModelPhase1Trainer *)self anchorPopularityForCandidate:v6];
+    [(ATXAnchorModelPhase1Trainer *)self anchorPopularityForCandidate:thresholdsCopy];
     v34 = v33;
-    [v7 setAnchorPopularity:?];
+    [resultCopy setAnchorPopularity:?];
     v35 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
@@ -560,9 +560,9 @@ LABEL_60:
       goto LABEL_4;
     }
 
-    [(ATXAnchorModelPhase1Trainer *)self globalPopularityForCandidate:v6];
+    [(ATXAnchorModelPhase1Trainer *)self globalPopularityForCandidate:thresholdsCopy];
     v38 = v37;
-    [v7 setGlobalPopularity:?];
+    [resultCopy setGlobalPopularity:?];
     v39 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
@@ -570,10 +570,10 @@ LABEL_60:
       _os_log_impl(&dword_2263AA000, v39, OS_LOG_TYPE_DEFAULT, "Phase 1: calculated global popularity", &v47, 2u);
     }
 
-    v40 = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
+    didDefer = [(ATXBackgroundActivityProtocol *)self->_runningTask didDefer];
     v41 = __atxlog_handle_anchor();
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
-    if (v40)
+    if (didDefer)
     {
       if (v42)
       {
@@ -591,7 +591,7 @@ LABEL_53:
     else if (v42)
     {
       v47 = 138413826;
-      v48 = v6;
+      v48 = thresholdsCopy;
       v49 = 2048;
       v50 = *&v8;
       v51 = 2048;
@@ -610,7 +610,7 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    v26 = v40 ^ 1;
+    v26 = didDefer ^ 1;
     goto LABEL_35;
   }
 
@@ -634,48 +634,48 @@ LABEL_35:
   return v26;
 }
 
-- (BOOL)candidateUniqueAnchorOccurrencesIsAtLeastMinimum:(int64_t)a3 candidateId:(id)a4 trainingResult:(id)a5
+- (BOOL)candidateUniqueAnchorOccurrencesIsAtLeastMinimum:(int64_t)minimum candidateId:(id)id trainingResult:(id)result
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
-  if (v9 < a3)
+  idCopy = id;
+  resultCopy = result;
+  numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence = [resultCopy numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
+  if (numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence < minimum)
   {
     v10 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = v7;
+      v14 = idCopy;
       v15 = 2048;
-      v16 = a3;
+      minimumCopy = minimum;
       v17 = 2048;
-      v18 = [v8 numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
+      numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence2 = [resultCopy numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
       _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "Phase 1: Candidate %@ failed unique anchor occurrence count requirement. Req: %ld, Actual: %ld", &v13, 0x20u);
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9 >= a3;
+  return numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence >= minimum;
 }
 
-- (BOOL)classConditionalProbabilityOfAnchorIsAtLeastMinimum:(double)a3 candidateId:(id)a4 trainingResult:(id)a5
+- (BOOL)classConditionalProbabilityOfAnchorIsAtLeastMinimum:(double)minimum candidateId:(id)id trainingResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  [v8 classConditionalProbability];
+  idCopy = id;
+  resultCopy = result;
+  [resultCopy classConditionalProbability];
   v10 = v9;
-  if (v9 < a3)
+  if (v9 < minimum)
   {
     v11 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      [v8 classConditionalProbability];
+      [resultCopy classConditionalProbability];
       v15 = 138412802;
-      v16 = v7;
+      v16 = idCopy;
       v17 = 2048;
-      v18 = a3;
+      minimumCopy = minimum;
       v19 = 2048;
       v20 = v12;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "Phase 1: Candidate %@ failed class conditional probability requirement. Req: %.2f, Actual: %.2f", &v15, 0x20u);
@@ -683,15 +683,15 @@ LABEL_35:
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10 >= a3;
+  return v10 >= minimum;
 }
 
-- (double)classConditionalProbabilityOfAnchorForCandidate:(id)a3
+- (double)classConditionalProbabilityOfAnchorForCandidate:(id)candidate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAnchorContextForCandidate:v4 anchor:self->_anchor];
-  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAllContextsForCandidate:v4];
+  candidateCopy = candidate;
+  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAnchorContextForCandidate:candidateCopy anchor:self->_anchor];
+  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAllContextsForCandidate:candidateCopy];
   v7 = v6;
   if (v6)
   {
@@ -707,7 +707,7 @@ LABEL_35:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 138413058;
-    v13 = v4;
+    v13 = candidateCopy;
     v14 = 2048;
     v15 = v5;
     v16 = 2048;
@@ -721,23 +721,23 @@ LABEL_35:
   return v8;
 }
 
-- (BOOL)posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:(double)a3 candidateId:(id)a4 trainingResult:(id)a5
+- (BOOL)posteriorProbabilityConditionedOnAnchorIsAtLeastMinimum:(double)minimum candidateId:(id)id trainingResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  [v8 posteriorProbability];
+  idCopy = id;
+  resultCopy = result;
+  [resultCopy posteriorProbability];
   v10 = v9;
-  if (v9 < a3)
+  if (v9 < minimum)
   {
     v11 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      [v8 posteriorProbability];
+      [resultCopy posteriorProbability];
       v15 = 138412802;
-      v16 = v7;
+      v16 = idCopy;
       v17 = 2048;
-      v18 = a3;
+      minimumCopy = minimum;
       v19 = 2048;
       v20 = v12;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "Phase 1: Candidate %@ failed posterior probability requirement. Req: %.2f, Actual: %.2f", &v15, 0x20u);
@@ -745,15 +745,15 @@ LABEL_35:
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10 >= a3;
+  return v10 >= minimum;
 }
 
-- (double)posteriorProbabilityConditionedOnAnchorForCandidate:(id)a3
+- (double)posteriorProbabilityConditionedOnAnchorForCandidate:(id)candidate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesForCandidate:v4 anchor:self->_anchor];
-  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesForAnchor:self->_anchor candidateId:v4];
+  candidateCopy = candidate;
+  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesForCandidate:candidateCopy anchor:self->_anchor];
+  v6 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numUniqueAnchorOccurrencesForAnchor:self->_anchor candidateId:candidateCopy];
   v7 = v6;
   if (v6)
   {
@@ -769,7 +769,7 @@ LABEL_35:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 138413058;
-    v13 = v4;
+    v13 = candidateCopy;
     v14 = 2048;
     v15 = v5;
     v16 = 2048;
@@ -783,23 +783,23 @@ LABEL_35:
   return v8;
 }
 
-- (double)standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:(id)a3
+- (double)standardDeviationOfSecondsAfterAnchorForFirstOccurrenceOfCandidateId:(id)id
 {
-  v4 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:a3 onlyConsiderFirstOccurrencePerAnchor:1];
+  v4 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper secondsAfterAnchorWhenCandidateOccurredForAnchor:self->_anchor candidateId:id onlyConsiderFirstOccurrencePerAnchor:1];
   [(ATXAnchorModelPhase1Trainer *)self standardDeviationOfNumbers:v4];
   v6 = v5;
 
   return v6;
 }
 
-- (double)standardDeviationOfNumbers:(id)a3
+- (double)standardDeviationOfNumbers:(id)numbers
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  numbersCopy = numbers;
+  if ([numbersCopy count])
   {
     v4 = MEMORY[0x277CCA9C0];
-    v5 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v3];
+    v5 = [MEMORY[0x277CCA9C0] expressionForConstantValue:numbersCopy];
     v13[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v7 = [v4 expressionForFunction:@"stddev:" arguments:v6];
@@ -831,13 +831,13 @@ LABEL_35:
   return v3;
 }
 
-- (double)anchorPopularityForCandidate:(id)a3
+- (double)anchorPopularityForCandidate:(id)candidate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAnchorContextForCandidate:v4 anchor:self->_anchor];
+  candidateCopy = candidate;
+  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAnchorContextForCandidate:candidateCopy anchor:self->_anchor];
   storeWrapper = self->_storeWrapper;
-  v7 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper candidateTypeForCandidateId:v4];
+  v7 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper candidateTypeForCandidateId:candidateCopy];
   v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper numCandidateOccurrencesInAnchorContextForCandidateType:v7 anchor:self->_anchor];
 
   if (v8)
@@ -854,7 +854,7 @@ LABEL_35:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = 138413058;
-    v14 = v4;
+    v14 = candidateCopy;
     v15 = 2048;
     v16 = v5;
     v17 = 2048;
@@ -868,13 +868,13 @@ LABEL_35:
   return v9;
 }
 
-- (double)globalPopularityForCandidate:(id)a3
+- (double)globalPopularityForCandidate:(id)candidate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAllContextsForCandidate:v4];
+  candidateCopy = candidate;
+  v5 = [(ATXAnchorModelDataStoreWrapperProtocol *)self->_storeWrapper numCandidateOccurrencesInAllContextsForCandidate:candidateCopy];
   storeWrapper = self->_storeWrapper;
-  v7 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper candidateTypeForCandidateId:v4];
+  v7 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper candidateTypeForCandidateId:candidateCopy];
   v8 = [(ATXAnchorModelDataStoreWrapperProtocol *)storeWrapper numCandidateOccurrencesInAllContextsForCandidateType:v7];
 
   if (v8)
@@ -891,7 +891,7 @@ LABEL_35:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = 138413058;
-    v14 = v4;
+    v14 = candidateCopy;
     v15 = 2048;
     v16 = v5;
     v17 = 2048;
@@ -905,24 +905,24 @@ LABEL_35:
   return v9;
 }
 
-- (void)_logPredictionsFilteredDuringPhase1WithCandidateIdsToConsider:(id)a3 selectedCandidates:(id)a4
+- (void)_logPredictionsFilteredDuringPhase1WithCandidateIdsToConsider:(id)consider selectedCandidates:(id)candidates
 {
-  v6 = a4;
-  v7 = a3;
+  candidatesCopy = candidates;
+  considerCopy = consider;
   v8 = objc_opt_new();
   [v8 setPhaseDescription:1];
   [v8 setPhaseType:0];
-  v9 = [v7 count];
+  v9 = [considerCopy count];
 
   [v8 setNumStartingCandidates:v9];
-  v10 = [v6 count];
+  v10 = [candidatesCopy count];
 
   [v8 setNumEndingCandidates:v10];
-  v11 = [(ATXAnchor *)self->_anchor anchorTypeString];
-  [v8 setAnchorType:v11];
+  anchorTypeString = [(ATXAnchor *)self->_anchor anchorTypeString];
+  [v8 setAnchorType:anchorTypeString];
 
-  v12 = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
-  [v8 setAbGroup:v12];
+  abGroup = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
+  [v8 setAbGroup:abGroup];
 
   [(ATXPETEventTracker2Protocol *)self->_tracker logMessage:v8];
   v13 = __atxlog_handle_metrics();
@@ -935,7 +935,7 @@ LABEL_35:
 - (void)uniqueCandidateIdsThatOccurredAfterAnchor
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;

@@ -1,18 +1,18 @@
 @interface MRDTimingEvent
 - (BOOL)end;
-- (BOOL)endWithError:(id)a3;
+- (BOOL)endWithError:(id)error;
 - (BOOL)start;
 - (MRDTimingEvent)init;
 - (NSError)error;
 - (NSNumber)duration;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation MRDTimingEvent
 
 - (BOOL)start
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10003D7AC();
 
   return v3;
@@ -49,20 +49,20 @@
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v5 = OBJC_IVAR___MRDTimingEvent_error;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = self;
-  v8 = a3;
+  *(self + v5) = error;
+  selfCopy = self;
+  errorCopy = error;
 }
 
 - (NSNumber)duration
 {
   v2 = *((swift_isaMask & *self) + 0xB0);
-  v3 = self;
+  selfCopy = self;
   v2();
   if (v4)
   {
@@ -77,19 +77,19 @@
   return isa;
 }
 
-- (BOOL)endWithError:(id)a3
+- (BOOL)endWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  LOBYTE(a3) = sub_1002307A8(a3);
+  selfCopy = self;
+  errorCopy = error;
+  LOBYTE(error) = sub_1002307A8(error);
 
-  return a3 & 1;
+  return error & 1;
 }
 
 - (BOOL)end
 {
   v2 = *((swift_isaMask & *self) + 0xC8);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2(0);
 
   return v2 & 1;

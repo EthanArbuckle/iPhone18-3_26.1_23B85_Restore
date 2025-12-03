@@ -4,8 +4,8 @@
 - (id)_historyStrings;
 - (id)_runningLoggerStrings;
 - (id)_runningLoggers;
-- (void)_addRunningLogger:(id)a3;
-- (void)_removeRunningLogger:(id)a3;
+- (void)_addRunningLogger:(id)logger;
+- (void)_removeRunningLogger:(id)logger;
 @end
 
 @implementation HFUpdateLoggerDebuggingController
@@ -39,8 +39,8 @@ void __52__HFUpdateLoggerDebuggingController__sharedInstance__block_invoke()
     v3 = dispatch_queue_create("com.apple.Home.HFUpdateLoggerDebuggingController", 0);
     [(HFUpdateLoggerDebuggingController *)v2 setQueue:v3];
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HFUpdateLoggerDebuggingController *)v2 set_queue_runningLoggers:v4];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HFUpdateLoggerDebuggingController *)v2 set_queue_runningLoggers:weakObjectsHashTable];
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(HFUpdateLoggerDebuggingController *)v2 set_queue_historyStringsKeyedByLogger:v5];
@@ -79,23 +79,23 @@ id __41__HFUpdateLoggerDebuggingController_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_addRunningLogger:(id)a3
+- (void)_addRunningLogger:(id)logger
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v5 copy];
+  loggerCopy = logger;
+  startDate = [loggerCopy startDate];
+  v6 = [startDate copy];
 
-  v7 = [(HFUpdateLoggerDebuggingController *)self queue];
+  queue = [(HFUpdateLoggerDebuggingController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HFUpdateLoggerDebuggingController__addRunningLogger___block_invoke;
   block[3] = &unk_277DF32A8;
   block[4] = self;
-  v11 = v4;
+  v11 = loggerCopy;
   v12 = v6;
   v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, block);
+  v9 = loggerCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__HFUpdateLoggerDebuggingController__addRunningLogger___block_invoke(uint64_t a1)
@@ -110,26 +110,26 @@ void __55__HFUpdateLoggerDebuggingController__addRunningLogger___block_invoke(ui
   [v3 setObject:v5 forKeyedSubscript:v4];
 }
 
-- (void)_removeRunningLogger:(id)a3
+- (void)_removeRunningLogger:(id)logger
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [v5 copy];
+  loggerCopy = logger;
+  startDate = [loggerCopy startDate];
+  v6 = [startDate copy];
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [(HFUpdateLoggerDebuggingController *)self queue];
+  date = [MEMORY[0x277CBEAA8] date];
+  queue = [(HFUpdateLoggerDebuggingController *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__HFUpdateLoggerDebuggingController__removeRunningLogger___block_invoke;
   v12[3] = &unk_277DF3398;
   v12[4] = self;
-  v13 = v4;
-  v14 = v7;
+  v13 = loggerCopy;
+  v14 = date;
   v15 = v6;
   v9 = v6;
-  v10 = v7;
-  v11 = v4;
-  dispatch_async(v8, v12);
+  v10 = date;
+  v11 = loggerCopy;
+  dispatch_async(queue, v12);
 }
 
 void __58__HFUpdateLoggerDebuggingController__removeRunningLogger___block_invoke(uint64_t a1)
@@ -158,14 +158,14 @@ void __58__HFUpdateLoggerDebuggingController__removeRunningLogger___block_invoke
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  v3 = [(HFUpdateLoggerDebuggingController *)self queue];
+  queue = [(HFUpdateLoggerDebuggingController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__HFUpdateLoggerDebuggingController__runningLoggers__block_invoke;
   v6[3] = &unk_277DF5CA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -190,14 +190,14 @@ void __52__HFUpdateLoggerDebuggingController__runningLoggers__block_invoke(uint6
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  v3 = [(HFUpdateLoggerDebuggingController *)self queue];
+  queue = [(HFUpdateLoggerDebuggingController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__HFUpdateLoggerDebuggingController__runningLoggerStrings__block_invoke;
   v6[3] = &unk_277DFC3A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -233,14 +233,14 @@ void __58__HFUpdateLoggerDebuggingController__runningLoggerStrings__block_invoke
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  v3 = [(HFUpdateLoggerDebuggingController *)self queue];
+  queue = [(HFUpdateLoggerDebuggingController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__HFUpdateLoggerDebuggingController__historyStrings__block_invoke;
   v6[3] = &unk_277DF5CA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

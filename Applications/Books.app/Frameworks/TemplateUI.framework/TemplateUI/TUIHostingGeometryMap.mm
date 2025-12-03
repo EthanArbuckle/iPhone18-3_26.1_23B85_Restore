@@ -1,25 +1,25 @@
 @interface TUIHostingGeometryMap
-- (TUIHostingGeometryMap)initWithMap:(id)a3 identifiers:(id)a4;
-- (id)computeDifferencesWithMap:(id)a3;
+- (TUIHostingGeometryMap)initWithMap:(id)map identifiers:(id)identifiers;
+- (id)computeDifferencesWithMap:(id)map;
 - (id)description;
 @end
 
 @implementation TUIHostingGeometryMap
 
-- (TUIHostingGeometryMap)initWithMap:(id)a3 identifiers:(id)a4
+- (TUIHostingGeometryMap)initWithMap:(id)map identifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = TUIHostingGeometryMap;
   v8 = [(TUIHostingGeometryMap *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [mapCopy copy];
     map = v8->_map;
     v8->_map = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     identifiers = v8->_identifiers;
     v8->_identifiers = v11;
   }
@@ -27,28 +27,28 @@
   return v8;
 }
 
-- (id)computeDifferencesWithMap:(id)a3
+- (id)computeDifferencesWithMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_opt_new();
-  v6 = [v4 map];
-  v7 = [v6 allKeys];
-  v8 = [NSMutableSet setWithArray:v7];
+  v6 = [mapCopy map];
+  allKeys = [v6 allKeys];
+  v8 = [NSMutableSet setWithArray:allKeys];
 
   map = self->_map;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_D11BC;
   v17[3] = &unk_261628;
-  v18 = v4;
+  v18 = mapCopy;
   v19 = v8;
   v10 = v5;
   v20 = v10;
   v11 = v8;
-  v12 = v4;
+  v12 = mapCopy;
   [(NSDictionary *)map enumerateKeysAndObjectsUsingBlock:v17];
-  v13 = [v11 allObjects];
-  [v10 addObjectsFromArray:v13];
+  allObjects = [v11 allObjects];
+  [v10 addObjectsFromArray:allObjects];
 
   v14 = v20;
   v15 = v10;

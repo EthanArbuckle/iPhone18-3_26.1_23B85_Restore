@@ -2,10 +2,10 @@
 - (PUOneUpNavigationTitleSubtitleView)titleSubtitleView;
 - (PUOneUpNavigationTitleSubtitleViewDelegate)_viewDelegate;
 - (PUOneUpNavigationTitleSubtitleViewDelegate)viewDelegate;
-- (void)setInputAsset:(id)a3;
-- (void)setTitleContentMode:(int64_t)a3;
-- (void)setViewDelegate:(id)a3;
-- (void)set_viewDelegate:(id)a3;
+- (void)setInputAsset:(id)asset;
+- (void)setTitleContentMode:(int64_t)mode;
+- (void)setViewDelegate:(id)delegate;
+- (void)set_viewDelegate:(id)delegate;
 @end
 
 @implementation PUOneUpNavigationTitleSubtitleViewProvider
@@ -17,47 +17,47 @@
   return v2;
 }
 
-- (void)set_viewDelegate:(id)a3
+- (void)set_viewDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B383D4A4();
 }
 
 - (PUOneUpNavigationTitleSubtitleViewDelegate)viewDelegate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B383D6A0();
 
   return v3;
 }
 
-- (void)setViewDelegate:(id)a3
+- (void)setViewDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B383D7AC();
 }
 
-- (void)setTitleContentMode:(int64_t)a3
+- (void)setTitleContentMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1B383D888(a3);
+  selfCopy = self;
+  sub_1B383D888(mode);
 }
 
 - (PUOneUpNavigationTitleSubtitleView)titleSubtitleView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B383DA6C();
 
   return v3;
 }
 
-- (void)setInputAsset:(id)a3
+- (void)setInputAsset:(id)asset
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  OneUpNavigationTitleSubtitleViewProvider.setInputAsset(_:)(a3);
+  selfCopy = self;
+  OneUpNavigationTitleSubtitleViewProvider.setInputAsset(_:)(asset);
   swift_unknownObjectRelease();
 }
 

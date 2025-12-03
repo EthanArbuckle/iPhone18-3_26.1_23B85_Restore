@@ -1,13 +1,13 @@
 @interface WBSPasswordBreachConfigurationBagSnapshotTransformer
-- (id)objectFromData:(id)a3;
+- (id)objectFromData:(id)data;
 @end
 
 @implementation WBSPasswordBreachConfigurationBagSnapshotTransformer
 
-- (id)objectFromData:(id)a3
+- (id)objectFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[WBSPasswordBreachConfigurationBag alloc] initWithSnapshotData:v3 error:0];
+  dataCopy = data;
+  v4 = [[WBSPasswordBreachConfigurationBag alloc] initWithSnapshotData:dataCopy error:0];
 
   return v4;
 }

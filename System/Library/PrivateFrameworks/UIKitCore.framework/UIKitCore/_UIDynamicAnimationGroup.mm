@@ -1,13 +1,13 @@
 @interface _UIDynamicAnimationGroup
-- (BOOL)_animateForInterval:(double)a3;
-- (void)_appendSubclassDescription:(id)a3 atLevel:(int)a4;
+- (BOOL)_animateForInterval:(double)interval;
+- (void)_appendSubclassDescription:(id)description atLevel:(int)level;
 - (void)_stopAnimation;
-- (void)addAnimation:(id)a3;
+- (void)addAnimation:(id)animation;
 - (void)dealloc;
-- (void)removeAnimation:(id)a3;
-- (void)runWithCompletion:(id)a3;
-- (void)runWithGroupApplier:(id)a3 completion:(id)a4 forScreen:(id)a5 runLoopMode:(id)a6;
-- (void)setAnimations:(id)a3;
+- (void)removeAnimation:(id)animation;
+- (void)runWithCompletion:(id)completion;
+- (void)runWithGroupApplier:(id)applier completion:(id)completion forScreen:(id)screen runLoopMode:(id)mode;
+- (void)setAnimations:(id)animations;
 @end
 
 @implementation _UIDynamicAnimationGroup
@@ -29,7 +29,7 @@
   [(_UIDynamicAnimation *)&v3 _stopAnimation];
 }
 
-- (BOOL)_animateForInterval:(double)a3
+- (BOOL)_animateForInterval:(double)interval
 {
   v29 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -53,7 +53,7 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        if ([v11 _animateForInterval:a3])
+        if ([v11 _animateForInterval:interval])
         {
           if (!v8)
           {
@@ -113,11 +113,11 @@
   return v12 == 0;
 }
 
-- (void)setAnimations:(id)a3
+- (void)setAnimations:(id)animations
 {
   v27 = *MEMORY[0x1E69E9840];
   animations = self->_animations;
-  if (animations != a3)
+  if (animations != animations)
   {
     v23 = 0u;
     v24 = 0u;
@@ -150,7 +150,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v10 = [animations countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -162,7 +162,7 @@
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(animations);
           }
 
           v15 = *(*(&v17 + 1) + 8 * j);
@@ -180,23 +180,23 @@
           [v15 _setGrouped:1];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v11 = [animations countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v11);
     }
 
-    self->_animations = [a3 mutableCopy];
+    self->_animations = [animations mutableCopy];
   }
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
-  if (a3 && ([(NSMutableArray *)self->_animations containsObject:?]& 1) == 0)
+  if (animation && ([(NSMutableArray *)self->_animations containsObject:?]& 1) == 0)
   {
-    if ([a3 _isGrouped])
+    if ([animation _isGrouped])
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is already in a dynamic animation group. It must be removed before being added to another.", a3}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is already in a dynamic animation group. It must be removed before being added to another.", animation}];
     }
 
     v6[0] = MEMORY[0x1E69E9820];
@@ -204,7 +204,7 @@
     v6[2] = __41___UIDynamicAnimationGroup_addAnimation___block_invoke;
     v6[3] = &unk_1E70F5CA0;
     v6[4] = self;
-    [a3 _cancelWithAppliers:v6];
+    [animation _cancelWithAppliers:v6];
     animations = self->_animations;
     if (!animations)
     {
@@ -212,23 +212,23 @@
       self->_animations = animations;
     }
 
-    [(NSMutableArray *)animations addObject:a3];
-    [a3 _setGrouped:1];
+    [(NSMutableArray *)animations addObject:animation];
+    [animation _setGrouped:1];
     if ((*(&self->super + 20) & 2) != 0)
     {
-      [(NSMutableArray *)self->_runningAnimations addObject:a3];
+      [(NSMutableArray *)self->_runningAnimations addObject:animation];
     }
   }
 }
 
-- (void)removeAnimation:(id)a3
+- (void)removeAnimation:(id)animation
 {
   if ([(NSMutableArray *)self->_animations containsObject:?])
   {
-    [(NSMutableArray *)self->_animations removeObject:a3];
+    [(NSMutableArray *)self->_animations removeObject:animation];
     if ((*(&self->super + 20) & 2) != 0)
     {
-      [(NSMutableArray *)self->_runningAnimations removeObject:a3];
+      [(NSMutableArray *)self->_runningAnimations removeObject:animation];
     }
 
     if (![(NSMutableArray *)self->_animations count])
@@ -239,13 +239,13 @@
     {
     }
 
-    [a3 _setGrouped:0];
+    [animation _setGrouped:0];
   }
 }
 
-- (void)runWithGroupApplier:(id)a3 completion:(id)a4 forScreen:(id)a5 runLoopMode:(id)a6
+- (void)runWithGroupApplier:(id)applier completion:(id)completion forScreen:(id)screen runLoopMode:(id)mode
 {
-  if (!a3 && !self->_applier)
+  if (!applier && !self->_applier)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"groupApplier must be non-nil"];
   }
@@ -254,43 +254,43 @@
   {
     if ((*(&self->super + 20) & 2) == 0)
     {
-      if (a3)
+      if (applier)
       {
 
-        self->_applier = [a3 copy];
+        self->_applier = [applier copy];
       }
 
       self->_runningAnimations = [(NSMutableArray *)self->_animations mutableCopy];
       v12.receiver = self;
       v12.super_class = _UIDynamicAnimationGroup;
-      [(_UIDynamicAnimation *)&v12 runWithCompletion:a4 forScreen:a5 runLoopMode:a6];
+      [(_UIDynamicAnimation *)&v12 runWithCompletion:completion forScreen:screen runLoopMode:mode];
     }
   }
 
-  else if (a4)
+  else if (completion)
   {
-    v11 = *(a4 + 2);
+    v11 = *(completion + 2);
 
-    v11(a4, 1);
+    v11(completion, 1);
   }
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   if (!self->_applier)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Dynamic animations without pre-set appliers must be run with an explicit applier. Use runWithValueApplier:completion:"];
   }
 
-  [(_UIDynamicAnimationGroup *)self runWithGroupApplier:0 completion:a3];
+  [(_UIDynamicAnimationGroup *)self runWithGroupApplier:0 completion:completion];
 }
 
-- (void)_appendSubclassDescription:(id)a3 atLevel:(int)a4
+- (void)_appendSubclassDescription:(id)description atLevel:(int)level
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_animations count])
   {
-    [a3 appendString:@"; animations = {"];
+    [description appendString:@"; animations = {"];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -314,10 +314,10 @@
           v13 = *(*(&v15 + 1) + 8 * i);
           if ((v11 & 1) == 0)
           {
-            [a3 appendString:{@", "}];
+            [description appendString:{@", "}];
           }
 
-          [v13 _appendDescriptionToString:a3 atLevel:(a4 + 1)];
+          [v13 _appendDescriptionToString:description atLevel:(level + 1)];
           v11 = 0;
         }
 
@@ -328,20 +328,20 @@
       while (v9);
     }
 
-    [a3 appendString:@"\n"];
-    if (a4)
+    [description appendString:@"\n"];
+    if (level)
     {
       v14 = 1;
       do
       {
-        [a3 appendString:@"    "];
+        [description appendString:@"    "];
         ++v14;
       }
 
-      while (v14 <= a4);
+      while (v14 <= level);
     }
 
-    [a3 appendString:@"}"];
+    [description appendString:@"}"];
   }
 }
 

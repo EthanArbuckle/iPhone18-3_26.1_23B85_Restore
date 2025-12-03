@@ -1,5 +1,5 @@
 @interface NUSurfaceRenderJob
-- (id)imageAccumulationNodeWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5 format:(id)a6 colorSpace:(id)a7 headroom:(float)a8;
+- (id)imageAccumulationNodeWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize format:(id)format colorSpace:(id)space headroom:(float)headroom;
 - (id)result;
 @end
 
@@ -8,32 +8,32 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUSurfaceRenderResult);
-  v4 = [(NUImageRenderJob *)self renderedRegion];
-  [(_NUImageRenderResult *)v3 setRegion:v4];
+  renderedRegion = [(NUImageRenderJob *)self renderedRegion];
+  [(_NUImageRenderResult *)v3 setRegion:renderedRegion];
 
-  v5 = [(NUImageRenderJob *)self renderedImage];
-  [(_NUSurfaceRenderResult *)v3 setImage:v5];
+  renderedImage = [(NUImageRenderJob *)self renderedImage];
+  [(_NUSurfaceRenderResult *)v3 setImage:renderedImage];
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  [(_NUImageRenderResult *)v3 setGeometry:v6];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUImageRenderResult *)v3 setGeometry:outputGeometry];
 
   return v3;
 }
 
-- (id)imageAccumulationNodeWithImageSize:(id)a3 tileSize:(id)a4 borderSize:(id)a5 format:(id)a6 colorSpace:(id)a7 headroom:(float)a8
+- (id)imageAccumulationNodeWithImageSize:(id)size tileSize:(id)tileSize borderSize:(id)borderSize format:(id)format colorSpace:(id)space headroom:(float)headroom
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a4.var1;
-  v12 = a4.var0;
-  v13 = a3.var1;
-  v14 = a3.var0;
-  v16 = a7;
-  v17 = a6;
+  var1 = borderSize.var1;
+  var0 = borderSize.var0;
+  v11 = tileSize.var1;
+  v12 = tileSize.var0;
+  v13 = size.var1;
+  v14 = size.var0;
+  spaceCopy = space;
+  formatCopy = format;
   v18 = [NUSurfaceImageAccumulationNode alloc];
-  v19 = [(NURenderJob *)self renderNode];
-  *&v20 = a8;
-  v21 = [(NUImageAccumulationNode *)v18 initWithImageSize:v14 tileSize:v13 borderSize:v12 pixelFormat:v11 colorSpace:var0 headroom:var1 input:v20, v17, v16, v19];
+  renderNode = [(NURenderJob *)self renderNode];
+  *&v20 = headroom;
+  v21 = [(NUImageAccumulationNode *)v18 initWithImageSize:v14 tileSize:v13 borderSize:v12 pixelFormat:v11 colorSpace:var0 headroom:var1 input:v20, formatCopy, spaceCopy, renderNode];
 
   return v21;
 }

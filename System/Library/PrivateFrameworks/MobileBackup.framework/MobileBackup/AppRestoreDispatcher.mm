@@ -1,12 +1,12 @@
 @interface AppRestoreDispatcher
 + (_TtC7backupd20AppRestoreDispatcher)shared;
-- (id)appRestorerForAccount:(id)a3 stateQueue:(id)a4 delegate:(id)a5 error:(id *)a6;
+- (id)appRestorerForAccount:(id)account stateQueue:(id)queue delegate:(id)delegate error:(id *)error;
 - (void)cancelAndUninstallAllRestorers;
-- (void)cancelAndUninstallRestorerForAccount:(id)a3;
-- (void)cancelAndUninstallRestorerForPersonaIdentifier:(id)a3;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorShouldBeginRestoringUserData:(id)a3;
-- (void)retryAppDataDownloadsForAccount:(id)a3;
+- (void)cancelAndUninstallRestorerForAccount:(id)account;
+- (void)cancelAndUninstallRestorerForPersonaIdentifier:(id)identifier;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorShouldBeginRestoringUserData:(id)data;
+- (void)retryAppDataDownloadsForAccount:(id)account;
 @end
 
 @implementation AppRestoreDispatcher
@@ -23,13 +23,13 @@
   return v3;
 }
 
-- (id)appRestorerForAccount:(id)a3 stateQueue:(id)a4 delegate:(id)a5 error:(id *)a6
+- (id)appRestorerForAccount:(id)account stateQueue:(id)queue delegate:(id)delegate error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  queueCopy = queue;
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_10003BCB4(v9, v10, a5);
+  selfCopy = self;
+  sub_10003BCB4(accountCopy, queueCopy, delegate);
   v13 = v12;
 
   swift_unknownObjectRelease();
@@ -37,46 +37,46 @@
   return v13;
 }
 
-- (void)coordinatorShouldBeginRestoringUserData:(id)a3
+- (void)coordinatorShouldBeginRestoringUserData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003C210(v4);
+  dataCopy = data;
+  selfCopy = self;
+  sub_10003C210(dataCopy);
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v10 = a4;
-  v9 = self;
-  sub_10003C7FC(v8, v10, a5);
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_10003C7FC(coordinatorCopy, reasonCopy, client);
 }
 
-- (void)retryAppDataDownloadsForAccount:(id)a3
+- (void)retryAppDataDownloadsForAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003CE24(v4);
+  accountCopy = account;
+  selfCopy = self;
+  sub_10003CE24(accountCopy);
 }
 
 - (void)cancelAndUninstallAllRestorers
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003D278();
 }
 
-- (void)cancelAndUninstallRestorerForAccount:(id)a3
+- (void)cancelAndUninstallRestorerForAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003D424(v4);
+  accountCopy = account;
+  selfCopy = self;
+  sub_10003D424(accountCopy);
 }
 
-- (void)cancelAndUninstallRestorerForPersonaIdentifier:(id)a3
+- (void)cancelAndUninstallRestorerForPersonaIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10003D510(v4, v6);
 }
 

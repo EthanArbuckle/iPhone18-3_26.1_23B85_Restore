@@ -1,45 +1,45 @@
 @interface JindoActivitySceneDelegate
 - (_TtC14WidgetRenderer26JindoActivitySceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation JindoActivitySceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1DAE7DBFC(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1DAE7DBFC(sceneCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v8 = self;
+  foregroundCopy = foreground;
+  selfCopy = self;
   sub_1DAE7BB00();
-  v5 = *(&v8->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26JindoActivitySceneDelegate__systemApertureElementProvider);
+  v5 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26JindoActivitySceneDelegate__systemApertureElementProvider);
   if (v5)
   {
-    v4 = v4;
-    v6 = v8;
+    foregroundCopy = foregroundCopy;
+    v6 = selfCopy;
     v7 = v5;
-    sub_1DAE5C23C(v7, v6, v4);
+    sub_1DAE5C23C(v7, v6, foregroundCopy);
 
-    v8 = v4;
+    selfCopy = foregroundCopy;
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v7 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_1DAE7C210();
-  v5 = *(&v7->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26JindoActivitySceneDelegate__systemApertureElementProvider);
+  v5 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer26JindoActivitySceneDelegate__systemApertureElementProvider);
   if (v5)
   {
     v6 = v5;
@@ -47,13 +47,13 @@
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer25ActivitySceneDelegateBase__validated) == 1)
   {
-    v5 = a3;
-    v6 = self;
-    sub_1DAE79208(v5);
+    disconnectCopy = disconnect;
+    selfCopy = self;
+    sub_1DAE79208(disconnectCopy);
   }
 }
 

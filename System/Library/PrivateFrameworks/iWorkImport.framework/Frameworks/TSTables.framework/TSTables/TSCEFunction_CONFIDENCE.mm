@@ -1,21 +1,21 @@
 @interface TSCEFunction_CONFIDENCE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CONFIDENCE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v78 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v78);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v78);
   v11 = v78;
   objc_msgSend_doubleRepresentation(v10, v12, v13, v14, v15);
   v17 = v16;
 
   if (v11)
   {
-    v21 = objc_msgSend_raiseErrorOrConvert_(a3, v18, v11, v19, v20);
+    v21 = objc_msgSend_raiseErrorOrConvert_(context, v18, v11, v19, v20);
   }
 
   else
@@ -61,21 +61,21 @@
       while (v42 > 1.0e-16);
     }
 
-    v43 = *(*a5 + 8);
-    v44 = *(*a5 + 16);
+    v43 = *(*arguments + 8);
+    v44 = *(*arguments + 16);
     v77 = 0;
-    v46 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v43, v45, a3, a4, 1, &v77);
+    v46 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v43, v45, context, spec, 1, &v77);
     v47 = v77;
     objc_msgSend_doubleRepresentation(v46, v48, v49, v50, v51);
 
     v76 = v47;
-    v53 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v44, v52, a3, a4, 2, &v76);
+    v53 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v44, v52, context, spec, 2, &v76);
     v11 = v76;
 
     objc_msgSend_doubleRepresentation(v53, v54, v55, v56, v57);
     if (v11)
     {
-      v21 = objc_msgSend_raiseErrorOrConvert_(a3, v58, v11, v59, v60);
+      v21 = objc_msgSend_raiseErrorOrConvert_(context, v58, v11, v59, v60);
     }
 
     else
@@ -83,7 +83,7 @@
       sub_2212B7230(__p, 3uLL);
       if (v8)
       {
-        objc_msgSend_formatWithContext_(v8, v61, a3, v62, v63);
+        objc_msgSend_formatWithContext_(v8, v61, context, v62, v63);
       }
 
       else
@@ -94,7 +94,7 @@
       sub_22114F414(__p, &v74);
       if (v43)
       {
-        objc_msgSend_formatWithContext_(v43, v64, a3, v65, v66);
+        objc_msgSend_formatWithContext_(v43, v64, context, v65, v66);
       }
 
       else
@@ -105,7 +105,7 @@
       sub_22114F414(__p, &v74);
       if (v44)
       {
-        objc_msgSend_formatWithContext_(v44, v67, a3, v68, v69);
+        objc_msgSend_formatWithContext_(v44, v67, context, v68, v69);
       }
 
       else

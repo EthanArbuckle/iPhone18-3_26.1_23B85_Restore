@@ -1,24 +1,24 @@
 @interface BKUIFingerPrintPosedVideoPlayerView
-- (BKUIFingerPrintPosedVideoPlayerView)initWithAssetName:(id)a3 subdirectory:(id)a4;
+- (BKUIFingerPrintPosedVideoPlayerView)initWithAssetName:(id)name subdirectory:(id)subdirectory;
 - (id)_devicePrefix;
 - (id)_filters;
-- (void)_setFilters:(id)a3;
-- (void)_updateImageForOrientation:(int64_t)a3;
+- (void)_setFilters:(id)filters;
+- (void)_updateImageForOrientation:(int64_t)orientation;
 - (void)hideVideoPlayer;
-- (void)itemDidFinishPlaying:(id)a3;
+- (void)itemDidFinishPlaying:(id)playing;
 - (void)layoutSubviews;
 - (void)load;
 - (void)showVideoPlayer;
-- (void)transitionToOrientation:(int64_t)a3;
+- (void)transitionToOrientation:(int64_t)orientation;
 @end
 
 @implementation BKUIFingerPrintPosedVideoPlayerView
 
-- (BKUIFingerPrintPosedVideoPlayerView)initWithAssetName:(id)a3 subdirectory:(id)a4
+- (BKUIFingerPrintPosedVideoPlayerView)initWithAssetName:(id)name subdirectory:(id)subdirectory
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  subdirectoryCopy = subdirectory;
   v51.receiver = self;
   v51.super_class = BKUIFingerPrintPosedVideoPlayerView;
   v9 = *MEMORY[0x277CBF3A0];
@@ -29,10 +29,10 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_assetName, a3);
-    objc_storeStrong(&v14->_subDirectory, a4);
+    objc_storeStrong(&v13->_assetName, name);
+    objc_storeStrong(&v14->_subDirectory, subdirectory);
     v15 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v9, v10, v11, v12}];
-    v50 = v7;
+    v50 = nameCopy;
     portraitImageView = v14->_portraitImageView;
     v14->_portraitImageView = v15;
 
@@ -40,51 +40,51 @@
     [(UIImageView *)v14->_portraitImageView setAlpha:0.0];
     [(BKUIFingerPrintPosedVideoPlayerView *)v14 addSubview:v14->_portraitImageView];
     v44 = MEMORY[0x277CCAAD0];
-    v48 = [(UIImageView *)v14->_portraitImageView leadingAnchor];
-    v47 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    leadingAnchor = [(UIImageView *)v14->_portraitImageView leadingAnchor];
+    leadingAnchor2 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v46;
-    v45 = [(UIImageView *)v14->_portraitImageView trailingAnchor];
-    v17 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 trailingAnchor];
-    v18 = [v45 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIImageView *)v14->_portraitImageView trailingAnchor];
+    trailingAnchor2 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[1] = v18;
-    v19 = [(UIImageView *)v14->_portraitImageView topAnchor];
-    v20 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [(UIImageView *)v14->_portraitImageView topAnchor];
+    topAnchor2 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[2] = v21;
-    v22 = [(UIImageView *)v14->_portraitImageView bottomAnchor];
+    bottomAnchor = [(UIImageView *)v14->_portraitImageView bottomAnchor];
     [(BKUIFingerPrintPosedVideoPlayerView *)v14 bottomAnchor];
-    v23 = v49 = v8;
-    v24 = [v22 constraintEqualToAnchor:v23];
+    v23 = v49 = subdirectoryCopy;
+    v24 = [bottomAnchor constraintEqualToAnchor:v23];
     v52[3] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:4];
     [v44 activateConstraints:v25];
 
     v26 = MEMORY[0x277D755B8];
-    v27 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 _devicePrefix];
-    v28 = [v27 stringByAppendingString:@"_H"];
+    _devicePrefix = [(BKUIFingerPrintPosedVideoPlayerView *)v14 _devicePrefix];
+    v28 = [_devicePrefix stringByAppendingString:@"_H"];
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v30 = [v26 imageNamed:v28 inBundle:v29 withConfiguration:0];
     horizontalPosedImage = v14->_horizontalPosedImage;
     v14->_horizontalPosedImage = v30;
 
     v32 = MEMORY[0x277D755B8];
-    v33 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 _devicePrefix];
-    v34 = [v33 stringByAppendingString:@"_V"];
+    _devicePrefix2 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 _devicePrefix];
+    v34 = [_devicePrefix2 stringByAppendingString:@"_V"];
     v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v36 = [v32 imageNamed:v34 inBundle:v35 withConfiguration:0];
     verticalPosedImage = v14->_verticalPosedImage;
     v14->_verticalPosedImage = v36;
 
-    v8 = v49;
-    v7 = v50;
+    subdirectoryCopy = v49;
+    nameCopy = v50;
 
     v38 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:0];
     playerLayer = v14->_playerLayer;
     v14->_playerLayer = v38;
 
-    v40 = [(BKUIFingerPrintPosedVideoPlayerView *)v14 layer];
-    [v40 addSublayer:v14->_playerLayer];
+    layer = [(BKUIFingerPrintPosedVideoPlayerView *)v14 layer];
+    [layer addSublayer:v14->_playerLayer];
 
     assetnameForAssetLengthDict = v14->_assetnameForAssetLengthDict;
     v14->_assetnameForAssetLengthDict = &unk_2853CCBC0;
@@ -94,31 +94,31 @@
   return v14;
 }
 
-- (void)_setFilters:(id)a3
+- (void)_setFilters:(id)filters
 {
-  v4 = a3;
-  v5 = [(BKUIFingerPrintPosedVideoPlayerView *)self layer];
-  [v5 setFilters:v4];
+  filtersCopy = filters;
+  layer = [(BKUIFingerPrintPosedVideoPlayerView *)self layer];
+  [layer setFilters:filtersCopy];
 }
 
 - (void)load
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 assetName];
+  assetName = [self assetName];
   v5 = 138412290;
-  v6 = v3;
+  v6 = assetName;
   _os_log_fault_impl(&dword_241B0A000, a2, OS_LOG_TYPE_FAULT, "Defaulting to no tutorial video; unable to find one for %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)itemDidFinishPlaying:(id)a3
+- (void)itemDidFinishPlaying:(id)playing
 {
-  v4 = [(BKUIFingerPrintPosedVideoPlayerView *)self videoPlayer];
-  [v4 setActionAtItemEnd:1];
+  videoPlayer = [(BKUIFingerPrintPosedVideoPlayerView *)self videoPlayer];
+  [videoPlayer setActionAtItemEnd:1];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)layoutSubviews
@@ -131,21 +131,21 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKUIFingerPrintPosedVideoPlayerView *)self playerLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  playerLayer = [(BKUIFingerPrintPosedVideoPlayerView *)self playerLayer];
+  [playerLayer setFrame:{v4, v6, v8, v10}];
 
   v12 = *MEMORY[0x277CE5DD8];
-  v13 = [(BKUIFingerPrintPosedVideoPlayerView *)self playerLayer];
-  [v13 setVideoGravity:v12];
+  playerLayer2 = [(BKUIFingerPrintPosedVideoPlayerView *)self playerLayer];
+  [playerLayer2 setVideoGravity:v12];
 }
 
 - (id)_filters
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v2 = [(BKUIFingerPrintPosedVideoPlayerView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(BKUIFingerPrintPosedVideoPlayerView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     v4 = 0.9;
   }
@@ -199,8 +199,8 @@ void __54__BKUIFingerPrintPosedVideoPlayerView_showVideoPlayer__block_invoke(uin
 
 - (void)hideVideoPlayer
 {
-  v3 = [(BKUIFingerPrintPosedVideoPlayerView *)self portraitImageView];
-  [v3 setAlpha:0.0];
+  portraitImageView = [(BKUIFingerPrintPosedVideoPlayerView *)self portraitImageView];
+  [portraitImageView setAlpha:0.0];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -219,9 +219,9 @@ void __54__BKUIFingerPrintPosedVideoPlayerView_hideVideoPlayer__block_invoke(uin
   [v3 setOpacity:0.0];
 }
 
-- (void)_updateImageForOrientation:(int64_t)a3
+- (void)_updateImageForOrientation:(int64_t)orientation
 {
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     [(BKUIFingerPrintPosedVideoPlayerView *)self verticalPosedImage];
   }
@@ -231,34 +231,34 @@ void __54__BKUIFingerPrintPosedVideoPlayerView_hideVideoPlayer__block_invoke(uin
     [(BKUIFingerPrintPosedVideoPlayerView *)self horizontalPosedImage];
   }
   v5 = ;
-  v4 = [(BKUIFingerPrintPosedVideoPlayerView *)self portraitImageView];
-  [v4 setImage:v5];
+  portraitImageView = [(BKUIFingerPrintPosedVideoPlayerView *)self portraitImageView];
+  [portraitImageView setImage:v5];
 }
 
-- (void)transitionToOrientation:(int64_t)a3
+- (void)transitionToOrientation:(int64_t)orientation
 {
-  v5 = [(BKUIFingerPrintPosedVideoPlayerView *)self assetName];
-  v6 = [(BKUIFingerPrintPosedVideoPlayerView *)self _devicePrefix];
-  v7 = [v6 stringByAppendingString:@"_H"];
-  if ([v5 isEqualToString:v7])
+  assetName = [(BKUIFingerPrintPosedVideoPlayerView *)self assetName];
+  _devicePrefix = [(BKUIFingerPrintPosedVideoPlayerView *)self _devicePrefix];
+  v7 = [_devicePrefix stringByAppendingString:@"_H"];
+  if ([assetName isEqualToString:v7])
   {
 
 LABEL_4:
-    v12 = a3 - 1;
+    v12 = orientation - 1;
     goto LABEL_6;
   }
 
-  v8 = [(BKUIFingerPrintPosedVideoPlayerView *)self assetName];
-  v9 = [(BKUIFingerPrintPosedVideoPlayerView *)self _devicePrefix];
-  v10 = [v9 stringByAppendingString:@"_V_rotate"];
-  v11 = [v8 isEqualToString:v10];
+  assetName2 = [(BKUIFingerPrintPosedVideoPlayerView *)self assetName];
+  _devicePrefix2 = [(BKUIFingerPrintPosedVideoPlayerView *)self _devicePrefix];
+  v10 = [_devicePrefix2 stringByAppendingString:@"_V_rotate"];
+  v11 = [assetName2 isEqualToString:v10];
 
   if (v11)
   {
     goto LABEL_4;
   }
 
-  v12 = a3 - 3;
+  v12 = orientation - 3;
 LABEL_6:
   if (v12 > 1)
   {
@@ -268,7 +268,7 @@ LABEL_6:
 
   else
   {
-    [(BKUIFingerPrintPosedVideoPlayerView *)self _updateImageForOrientation:a3];
+    [(BKUIFingerPrintPosedVideoPlayerView *)self _updateImageForOrientation:orientation];
 
     [(BKUIFingerPrintPosedVideoPlayerView *)self hideVideoPlayer];
   }

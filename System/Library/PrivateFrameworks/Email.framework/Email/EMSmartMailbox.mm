@@ -4,34 +4,34 @@
 + (EMSmartMailbox)em_flaggedMailbox;
 + (EMSmartMailbox)em_followUpMailbox;
 + (EMSmartMailbox)em_readLaterMailbox;
-+ (id)blueMailboxWithMailboxScope:(id)a3;
-+ (id)coreSpotlightMailboxWithName:(id)a3 queryString:(id)a4;
-+ (id)em_scopedSendLaterMailboxWithMailboxURL:(id)a3;
-+ (id)flaggedMailboxWithMailboxScope:(id)a3;
-+ (id)followUpMailboxWithMailboxScope:(id)a3;
-+ (id)grayMailboxWithMailboxScope:(id)a3;
-+ (id)greenMailboxWithMailboxScope:(id)a3;
-+ (id)hasAttachmentsMailboxWithMailboxScope:(id)a3;
-+ (id)includesMeMailboxWithMailboxScope:(id)a3;
-+ (id)mailCleanupMailboxWithMailboxScope:(id)a3;
-+ (id)muteThreadsMailboxWithMailboxScope:(id)a3;
-+ (id)notifyThreadsMailboxWithMailboxScope:(id)a3;
-+ (id)orangeMailboxWithMailboxScope:(id)a3;
-+ (id)purpleMailboxWithMailboxScope:(id)a3;
-+ (id)readLaterMailboxWithMailboxScope:(id)a3;
-+ (id)redMailboxWithMailboxScope:(id)a3;
-+ (id)sendLaterMailboxWithMailboxScope:(id)a3;
-+ (id)todayMailboxWithMailboxScope:(id)a3;
-+ (id)unifiedMailboxOfType:(int64_t)a3 name:(id)a4;
-+ (id)unifiedMailboxOfType:(int64_t)a3 name:(id)a4 additionalPredicate:(id)a5;
-+ (id)unreadMailboxWithMailboxScope:(id)a3;
-+ (id)unsubscribeMailboxWithMailboxScope:(id)a3;
-+ (id)vipMailboxWithMailboxScope:(id)a3;
-+ (id)vipMailboxWithName:(id)a3 additionalPredicate:(id)a4;
-+ (id)yellowMailboxWithMailboxScope:(id)a3;
++ (id)blueMailboxWithMailboxScope:(id)scope;
++ (id)coreSpotlightMailboxWithName:(id)name queryString:(id)string;
++ (id)em_scopedSendLaterMailboxWithMailboxURL:(id)l;
++ (id)flaggedMailboxWithMailboxScope:(id)scope;
++ (id)followUpMailboxWithMailboxScope:(id)scope;
++ (id)grayMailboxWithMailboxScope:(id)scope;
++ (id)greenMailboxWithMailboxScope:(id)scope;
++ (id)hasAttachmentsMailboxWithMailboxScope:(id)scope;
++ (id)includesMeMailboxWithMailboxScope:(id)scope;
++ (id)mailCleanupMailboxWithMailboxScope:(id)scope;
++ (id)muteThreadsMailboxWithMailboxScope:(id)scope;
++ (id)notifyThreadsMailboxWithMailboxScope:(id)scope;
++ (id)orangeMailboxWithMailboxScope:(id)scope;
++ (id)purpleMailboxWithMailboxScope:(id)scope;
++ (id)readLaterMailboxWithMailboxScope:(id)scope;
++ (id)redMailboxWithMailboxScope:(id)scope;
++ (id)sendLaterMailboxWithMailboxScope:(id)scope;
++ (id)todayMailboxWithMailboxScope:(id)scope;
++ (id)unifiedMailboxOfType:(int64_t)type name:(id)name;
++ (id)unifiedMailboxOfType:(int64_t)type name:(id)name additionalPredicate:(id)predicate;
++ (id)unreadMailboxWithMailboxScope:(id)scope;
++ (id)unsubscribeMailboxWithMailboxScope:(id)scope;
++ (id)vipMailboxWithMailboxScope:(id)scope;
++ (id)vipMailboxWithName:(id)name additionalPredicate:(id)predicate;
++ (id)yellowMailboxWithMailboxScope:(id)scope;
 - (BOOL)_shouldArchiveByDefault;
-- (BOOL)isEqual:(id)a3;
-- (EMSmartMailbox)initWithType:(int64_t)a3 mailboxType:(int64_t)a4 name:(id)a5 mailboxScope:(id)a6 predicateGenerator:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (EMSmartMailbox)initWithType:(int64_t)type mailboxType:(int64_t)mailboxType name:(id)name mailboxScope:(id)scope predicateGenerator:(id)generator;
 - (id)ef_publicDescription;
 - (unint64_t)hash;
 @end
@@ -47,24 +47,24 @@
 
 + (EMSmartMailbox)em_VIPMailbox
 {
-  v2 = [a1 em_inboxMailboxScope];
-  v3 = [EMSmartMailbox vipMailboxWithMailboxScope:v2];
+  em_inboxMailboxScope = [self em_inboxMailboxScope];
+  v3 = [EMSmartMailbox vipMailboxWithMailboxScope:em_inboxMailboxScope];
 
   return v3;
 }
 
 + (EMSmartMailbox)em_flaggedMailbox
 {
-  v2 = [a1 em_defaultExcludedMailboxesScope];
-  v3 = [EMSmartMailbox flaggedMailboxWithMailboxScope:v2];
+  em_defaultExcludedMailboxesScope = [self em_defaultExcludedMailboxesScope];
+  v3 = [EMSmartMailbox flaggedMailboxWithMailboxScope:em_defaultExcludedMailboxesScope];
 
   return v3;
 }
 
 + (EMSmartMailbox)em_readLaterMailbox
 {
-  v2 = [a1 em_defaultExcludedMailboxesScope];
-  v3 = [EMSmartMailbox readLaterMailboxWithMailboxScope:v2];
+  em_defaultExcludedMailboxesScope = [self em_defaultExcludedMailboxesScope];
+  v3 = [EMSmartMailbox readLaterMailboxWithMailboxScope:em_defaultExcludedMailboxesScope];
 
   return v3;
 }
@@ -81,17 +81,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EMMailbox *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p> Name:%@", v4, self, v5];
+  name = [(EMMailbox *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p> Name:%@", v4, self, name];
 
   return v6;
 }
 
-+ (id)em_scopedSendLaterMailboxWithMailboxURL:(id)a3
++ (id)em_scopedSendLaterMailboxWithMailboxURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[EMMailboxObjectID alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[EMMailboxObjectID alloc] initWithURL:lCopy];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v6 = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v5 forExclusion:0];
@@ -103,21 +103,21 @@
   return v7;
 }
 
-- (EMSmartMailbox)initWithType:(int64_t)a3 mailboxType:(int64_t)a4 name:(id)a5 mailboxScope:(id)a6 predicateGenerator:(id)a7
+- (EMSmartMailbox)initWithType:(int64_t)type mailboxType:(int64_t)mailboxType name:(id)name mailboxScope:(id)scope predicateGenerator:(id)generator
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  scopeCopy = scope;
+  generatorCopy = generator;
   v15 = objc_alloc_init(EMMailboxObjectID);
   v21.receiver = self;
   v21.super_class = EMSmartMailbox;
-  v16 = [(EMMailbox *)&v21 initWithObjectID:v15 name:v12 accountIdentifier:0 type:a4 builder:&__block_literal_global_50];
+  v16 = [(EMMailbox *)&v21 initWithObjectID:v15 name:nameCopy accountIdentifier:0 type:mailboxType builder:&__block_literal_global_50];
   v17 = v16;
   if (v16)
   {
-    v16->_smartMailboxType = a3;
-    objc_storeStrong(&v16->_mailboxScope, a6);
-    v18 = [v14 copy];
+    v16->_smartMailboxType = type;
+    objc_storeStrong(&v16->_mailboxScope, scope);
+    v18 = [generatorCopy copy];
     predicateGenerator = v17->_predicateGenerator;
     v17->_predicateGenerator = v18;
   }
@@ -125,20 +125,20 @@
   return v17;
 }
 
-+ (id)vipMailboxWithMailboxScope:(id)a3
++ (id)vipMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -148,7 +148,7 @@
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:0 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:0 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -175,20 +175,20 @@ id __45__EMSmartMailbox_vipMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)flaggedMailboxWithMailboxScope:(id)a3
++ (id)flaggedMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -198,7 +198,7 @@ id __45__EMSmartMailbox_vipMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -225,20 +225,20 @@ id __49__EMSmartMailbox_flaggedMailboxWithMailboxScope___block_invoke(uint64_t a
   return v3;
 }
 
-+ (id)orangeMailboxWithMailboxScope:(id)a3
++ (id)orangeMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -248,7 +248,7 @@ id __49__EMSmartMailbox_flaggedMailboxWithMailboxScope___block_invoke(uint64_t a
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -275,20 +275,20 @@ id __48__EMSmartMailbox_orangeMailboxWithMailboxScope___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)redMailboxWithMailboxScope:(id)a3
++ (id)redMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -298,7 +298,7 @@ id __48__EMSmartMailbox_orangeMailboxWithMailboxScope___block_invoke(uint64_t a1
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -325,20 +325,20 @@ id __45__EMSmartMailbox_redMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)purpleMailboxWithMailboxScope:(id)a3
++ (id)purpleMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -348,7 +348,7 @@ id __45__EMSmartMailbox_redMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -375,20 +375,20 @@ id __48__EMSmartMailbox_purpleMailboxWithMailboxScope___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)blueMailboxWithMailboxScope:(id)a3
++ (id)blueMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -398,7 +398,7 @@ id __48__EMSmartMailbox_purpleMailboxWithMailboxScope___block_invoke(uint64_t a1
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -425,20 +425,20 @@ id __46__EMSmartMailbox_blueMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)yellowMailboxWithMailboxScope:(id)a3
++ (id)yellowMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -448,7 +448,7 @@ id __46__EMSmartMailbox_blueMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -475,20 +475,20 @@ id __48__EMSmartMailbox_yellowMailboxWithMailboxScope___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)greenMailboxWithMailboxScope:(id)a3
++ (id)greenMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -498,7 +498,7 @@ id __48__EMSmartMailbox_yellowMailboxWithMailboxScope___block_invoke(uint64_t a1
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -525,20 +525,20 @@ id __47__EMSmartMailbox_greenMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)grayMailboxWithMailboxScope:(id)a3
++ (id)grayMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -548,7 +548,7 @@ id __47__EMSmartMailbox_greenMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:1 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -575,20 +575,20 @@ id __46__EMSmartMailbox_grayMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)unreadMailboxWithMailboxScope:(id)a3
++ (id)unreadMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -598,7 +598,7 @@ id __46__EMSmartMailbox_grayMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:2 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:2 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -625,20 +625,20 @@ id __48__EMSmartMailbox_unreadMailboxWithMailboxScope___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)hasAttachmentsMailboxWithMailboxScope:(id)a3
++ (id)hasAttachmentsMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -648,7 +648,7 @@ id __48__EMSmartMailbox_unreadMailboxWithMailboxScope___block_invoke(uint64_t a1
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:4 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:4 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -675,20 +675,20 @@ id __56__EMSmartMailbox_hasAttachmentsMailboxWithMailboxScope___block_invoke(uin
   return v3;
 }
 
-+ (id)notifyThreadsMailboxWithMailboxScope:(id)a3
++ (id)notifyThreadsMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -698,7 +698,7 @@ id __56__EMSmartMailbox_hasAttachmentsMailboxWithMailboxScope___block_invoke(uin
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:5 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:5 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -725,20 +725,20 @@ id __55__EMSmartMailbox_notifyThreadsMailboxWithMailboxScope___block_invoke(uint
   return v3;
 }
 
-+ (id)todayMailboxWithMailboxScope:(id)a3
++ (id)todayMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -748,7 +748,7 @@ id __55__EMSmartMailbox_notifyThreadsMailboxWithMailboxScope___block_invoke(uint
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:6 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:6 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -775,20 +775,20 @@ id __47__EMSmartMailbox_todayMailboxWithMailboxScope___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)muteThreadsMailboxWithMailboxScope:(id)a3
++ (id)muteThreadsMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -798,7 +798,7 @@ id __47__EMSmartMailbox_todayMailboxWithMailboxScope___block_invoke(uint64_t a1)
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:7 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:7 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -825,20 +825,20 @@ id __53__EMSmartMailbox_muteThreadsMailboxWithMailboxScope___block_invoke(uint64
   return v3;
 }
 
-+ (id)includesMeMailboxWithMailboxScope:(id)a3
++ (id)includesMeMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -848,7 +848,7 @@ id __53__EMSmartMailbox_muteThreadsMailboxWithMailboxScope___block_invoke(uint64
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:3 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:3 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -875,20 +875,20 @@ id __52__EMSmartMailbox_includesMeMailboxWithMailboxScope___block_invoke(uint64_
   return v3;
 }
 
-+ (id)readLaterMailboxWithMailboxScope:(id)a3
++ (id)readLaterMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -898,7 +898,7 @@ id __52__EMSmartMailbox_includesMeMailboxWithMailboxScope___block_invoke(uint64_
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:9 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:9 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -925,20 +925,20 @@ id __51__EMSmartMailbox_readLaterMailboxWithMailboxScope___block_invoke(uint64_t
   return v3;
 }
 
-+ (id)followUpMailboxWithMailboxScope:(id)a3
++ (id)followUpMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -948,7 +948,7 @@ id __51__EMSmartMailbox_readLaterMailboxWithMailboxScope___block_invoke(uint64_t
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:10 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:10 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -975,20 +975,20 @@ id __50__EMSmartMailbox_followUpMailboxWithMailboxScope___block_invoke(uint64_t 
   return v3;
 }
 
-+ (id)sendLaterMailboxWithMailboxScope:(id)a3
++ (id)sendLaterMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -998,7 +998,7 @@ id __50__EMSmartMailbox_followUpMailboxWithMailboxScope___block_invoke(uint64_t 
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:11 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:11 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -1025,20 +1025,20 @@ id __51__EMSmartMailbox_sendLaterMailboxWithMailboxScope___block_invoke(uint64_t
   return v3;
 }
 
-+ (id)unsubscribeMailboxWithMailboxScope:(id)a3
++ (id)unsubscribeMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1048,7 +1048,7 @@ id __51__EMSmartMailbox_sendLaterMailboxWithMailboxScope___block_invoke(uint64_t
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:12 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:12 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -1075,20 +1075,20 @@ id __53__EMSmartMailbox_unsubscribeMailboxWithMailboxScope___block_invoke(uint64
   return v3;
 }
 
-+ (id)mailCleanupMailboxWithMailboxScope:(id)a3
++ (id)mailCleanupMailboxWithMailboxScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   v4 = _EFLocalizedString();
   v5 = +[EMMailboxScope allMailboxesScope];
 
-  if (v5 == v3)
+  if (v5 == scopeCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v3];
+    v6 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:scopeCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1098,7 +1098,7 @@ id __53__EMSmartMailbox_unsubscribeMailboxWithMailboxScope___block_invoke(uint64
   v7 = v6;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [[EMSmartMailbox alloc] initWithType:14 mailboxType:0 name:v4 mailboxScope:v3 predicateGenerator:v8];
+  v9 = [[EMSmartMailbox alloc] initWithType:14 mailboxType:0 name:v4 mailboxScope:scopeCopy predicateGenerator:v8];
 
   return v9;
 }
@@ -1125,28 +1125,28 @@ id __53__EMSmartMailbox_mailCleanupMailboxWithMailboxScope___block_invoke(uint64
   return v3;
 }
 
-+ (id)unifiedMailboxOfType:(int64_t)a3 name:(id)a4
++ (id)unifiedMailboxOfType:(int64_t)type name:(id)name
 {
-  v4 = [a1 unifiedMailboxOfType:a3 name:a4 additionalPredicate:0];
+  v4 = [self unifiedMailboxOfType:type name:name additionalPredicate:0];
 
   return v4;
 }
 
-+ (id)unifiedMailboxOfType:(int64_t)a3 name:(id)a4 additionalPredicate:(id)a5
++ (id)unifiedMailboxOfType:(int64_t)type name:(id)name additionalPredicate:(id)predicate
 {
-  v7 = a4;
-  v8 = a5;
-  if ((a3 - 1) < 5 || a3 == 7)
+  nameCopy = name;
+  predicateCopy = predicate;
+  if ((type - 1) < 5 || type == 7)
   {
-    v9 = [EMMailboxScope mailboxScopeForMailboxType:a3 forExclusion:0];
+    v9 = [EMMailboxScope mailboxScopeForMailboxType:type forExclusion:0];
     v10 = [EMSmartMailbox alloc];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __64__EMSmartMailbox_unifiedMailboxOfType_name_additionalPredicate___block_invoke;
     v13[3] = &unk_1E826FAD8;
-    v15 = a3;
-    v14 = v8;
-    v11 = [(EMSmartMailbox *)v10 initWithType:8 mailboxType:a3 name:v7 mailboxScope:v9 predicateGenerator:v13];
+    typeCopy = type;
+    v14 = predicateCopy;
+    v11 = [(EMSmartMailbox *)v10 initWithType:8 mailboxType:type name:nameCopy mailboxScope:v9 predicateGenerator:v13];
   }
 
   else
@@ -1179,19 +1179,19 @@ id __64__EMSmartMailbox_unifiedMailboxOfType_name_additionalPredicate___block_in
   return v3;
 }
 
-+ (id)vipMailboxWithName:(id)a3 additionalPredicate:(id)a4
++ (id)vipMailboxWithName:(id)name additionalPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  predicateCopy = predicate;
   v7 = [EMMailboxScope mailboxScopeForMailboxType:7 forExclusion:0];
   v8 = [EMSmartMailbox alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__EMSmartMailbox_vipMailboxWithName_additionalPredicate___block_invoke;
   v12[3] = &unk_1E826C7E8;
-  v9 = v6;
+  v9 = predicateCopy;
   v13 = v9;
-  v10 = [(EMSmartMailbox *)v8 initWithType:0 mailboxType:0 name:v5 mailboxScope:v7 predicateGenerator:v12];
+  v10 = [(EMSmartMailbox *)v8 initWithType:0 mailboxType:0 name:nameCopy mailboxScope:v7 predicateGenerator:v12];
 
   return v10;
 }
@@ -1218,43 +1218,43 @@ id __57__EMSmartMailbox_vipMailboxWithName_additionalPredicate___block_invoke(ui
   return v3;
 }
 
-+ (id)coreSpotlightMailboxWithName:(id)a3 queryString:(id)a4
++ (id)coreSpotlightMailboxWithName:(id)name queryString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  stringCopy = string;
   v7 = +[EMMailboxScope allMailboxesScope];
   v8 = [EMSmartMailbox alloc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__EMSmartMailbox_coreSpotlightMailboxWithName_queryString___block_invoke;
   v12[3] = &unk_1E826C7E8;
-  v9 = v6;
+  v9 = stringCopy;
   v13 = v9;
-  v10 = [(EMSmartMailbox *)v8 initWithType:13 mailboxType:0 name:v5 mailboxScope:v7 predicateGenerator:v12];
+  v10 = [(EMSmartMailbox *)v8 initWithType:13 mailboxType:0 name:nameCopy mailboxScope:v7 predicateGenerator:v12];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (([(EMSmartMailbox *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMSmartMailbox *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EMSmartMailbox *)self smartMailboxType];
-    if (v6 == [(EMSmartMailbox *)v5 smartMailboxType]&& (v7 = [(EMMailbox *)self type], v7 == [(EMMailbox *)v5 type]))
+    v5 = equalCopy;
+    smartMailboxType = [(EMSmartMailbox *)self smartMailboxType];
+    if (smartMailboxType == [(EMSmartMailbox *)v5 smartMailboxType]&& (v7 = [(EMMailbox *)self type], v7 == [(EMMailbox *)v5 type]))
     {
-      v8 = [(EMMailbox *)self name];
-      v9 = [(EMMailbox *)v5 name];
-      if ([v8 ef_caseInsensitiveIsEqualToString:v9])
+      name = [(EMMailbox *)self name];
+      name2 = [(EMMailbox *)v5 name];
+      if ([name ef_caseInsensitiveIsEqualToString:name2])
       {
-        v10 = [(EMSmartMailbox *)self mailboxScope];
-        v11 = [(EMSmartMailbox *)v5 mailboxScope];
+        mailboxScope = [(EMSmartMailbox *)self mailboxScope];
+        mailboxScope2 = [(EMSmartMailbox *)v5 mailboxScope];
         v12 = EFObjectsAreEqual();
       }
 
@@ -1280,24 +1280,24 @@ id __57__EMSmartMailbox_vipMailboxWithName_additionalPredicate___block_invoke(ui
 
 - (unint64_t)hash
 {
-  v3 = [(EMSmartMailbox *)self smartMailboxType];
-  v4 = [(EMMailbox *)self type];
-  v5 = [(EMMailbox *)self name];
-  v6 = [v5 lowercaseString];
-  v7 = 33 * (33 * v3 + v4);
-  v8 = [v6 hash] + 193376997;
+  smartMailboxType = [(EMSmartMailbox *)self smartMailboxType];
+  type = [(EMMailbox *)self type];
+  name = [(EMMailbox *)self name];
+  lowercaseString = [name lowercaseString];
+  v7 = 33 * (33 * smartMailboxType + type);
+  v8 = [lowercaseString hash] + 193376997;
 
   return v7 + v8;
 }
 
 - (BOOL)_shouldArchiveByDefault
 {
-  v2 = [(EMMailbox *)self repository];
-  v3 = [v2 accountRepository];
-  v4 = [v3 receivingAccounts];
+  repository = [(EMMailbox *)self repository];
+  accountRepository = [repository accountRepository];
+  receivingAccounts = [accountRepository receivingAccounts];
 
-  LOBYTE(v2) = [v4 ef_all:&__block_literal_global_105];
-  return v2;
+  LOBYTE(repository) = [receivingAccounts ef_all:&__block_literal_global_105];
+  return repository;
 }
 
 @end

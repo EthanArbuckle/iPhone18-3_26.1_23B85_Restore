@@ -1,30 +1,30 @@
 @interface TSBootstrapCrossPlatformTransferFlow
-- (TSBootstrapCrossPlatformTransferFlow)initWithRetainedObject:(id)a3 isSource:(BOOL)a4;
+- (TSBootstrapCrossPlatformTransferFlow)initWithRetainedObject:(id)object isSource:(BOOL)source;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)flowCompleted:(unint64_t)a3;
+- (void)firstViewController:(id)controller;
+- (void)flowCompleted:(unint64_t)completed;
 @end
 
 @implementation TSBootstrapCrossPlatformTransferFlow
 
-- (TSBootstrapCrossPlatformTransferFlow)initWithRetainedObject:(id)a3 isSource:(BOOL)a4
+- (TSBootstrapCrossPlatformTransferFlow)initWithRetainedObject:(id)object isSource:(BOOL)source
 {
-  v7 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = TSBootstrapCrossPlatformTransferFlow;
   v8 = [(TSSIMSetupFlow *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    v8->_isSource = a4;
+    v8->_isSource = source;
     v10 = objc_alloc(MEMORY[0x277CC37B0]);
     v11 = [v10 initWithQueue:MEMORY[0x277D85CD0]];
     client = v9->_client;
     v9->_client = v11;
 
-    objc_storeStrong(&v9->_retainedObject, a3);
+    objc_storeStrong(&v9->_retainedObject, object);
     v9->_preWarmOngoing = 1;
     objc_initWeak(&location, v9);
     v13 = v9->_client;
@@ -117,15 +117,15 @@ LABEL_11:
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
     if (self->_preWarmOngoing)
     {
-      v6 = MEMORY[0x2667315D0](v4);
+      v6 = MEMORY[0x2667315D0](controllerCopy);
       firstViewControllerCallback = self->_firstViewControllerCallback;
       self->_firstViewControllerCallback = v6;
     }
@@ -230,23 +230,23 @@ void __60__TSBootstrapCrossPlatformTransferFlow_firstViewController___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setSubFlow:0];
+    [fromCopy setSubFlow:0];
   }
 
   v7.receiver = self;
   v7.super_class = TSBootstrapCrossPlatformTransferFlow;
-  v5 = [(TSSIMSetupFlow *)&v7 nextViewControllerFrom:v4];
+  v5 = [(TSSIMSetupFlow *)&v7 nextViewControllerFrom:fromCopy];
 
   return v5;
 }
 
-- (void)flowCompleted:(unint64_t)a3
+- (void)flowCompleted:(unint64_t)completed
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -256,7 +256,7 @@ void __60__TSBootstrapCrossPlatformTransferFlow_firstViewController___block_invo
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v10 = a3;
+    completedCopy = completed;
     v11 = 2080;
     v12 = "[TSBootstrapCrossPlatformTransferFlow flowCompleted:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "FlowCompleted: %lu release retained mk object @%s", buf, 0x16u);

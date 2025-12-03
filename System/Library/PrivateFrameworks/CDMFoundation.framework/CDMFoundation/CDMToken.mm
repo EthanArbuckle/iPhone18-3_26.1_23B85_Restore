@@ -1,10 +1,10 @@
 @interface CDMToken
 - (BOOL)getHasCleanValues;
-- (BOOL)hasValue:(id)a3 from:(int64_t)a4 to:(int64_t)a5;
-- (CDMToken)initWithProtoToken:(id)a3;
-- (CDMToken)initWithValue:(id)a3;
-- (CDMToken)initWithValue:(id)a3 begin:(int64_t)a4 end:(int64_t)a5 significant:(BOOL)a6 whitespace:(BOOL)a7 cleanValue:(id)a8 tokenIndex:(int64_t)a9 nonWhitespaceTokenIndex:(int64_t)a10;
-- (CDMToken)initWithValue:(id)a3 begin:(int64_t)a4 end:(int64_t)a5 significant:(BOOL)a6 whitespace:(BOOL)a7 cleanValue:(id)a8 tokenIndex:(int64_t)a9 nonWhitespaceTokenIndex:(int64_t)a10 normalizedValues:(id)a11;
+- (BOOL)hasValue:(id)value from:(int64_t)from to:(int64_t)to;
+- (CDMToken)initWithProtoToken:(id)token;
+- (CDMToken)initWithValue:(id)value;
+- (CDMToken)initWithValue:(id)value begin:(int64_t)begin end:(int64_t)end significant:(BOOL)significant whitespace:(BOOL)whitespace cleanValue:(id)cleanValue tokenIndex:(int64_t)index nonWhitespaceTokenIndex:(int64_t)self0;
+- (CDMToken)initWithValue:(id)value begin:(int64_t)begin end:(int64_t)end significant:(BOOL)significant whitespace:(BOOL)whitespace cleanValue:(id)cleanValue tokenIndex:(int64_t)index nonWhitespaceTokenIndex:(int64_t)self0 normalizedValues:(id)self1;
 - (NSArray)cleanValues;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -19,8 +19,8 @@
     return 0;
   }
 
-  v2 = [(CDMToken *)self cleanValues];
-  v3 = [v2 count] != 0;
+  cleanValues = [(CDMToken *)self cleanValues];
+  v3 = [cleanValues count] != 0;
 
   return v3;
 }
@@ -100,13 +100,13 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"{ value: %@, begin: %td, end: %td, significant: %@, whitespace: %@, cleanValue: %@, normalizedValues: %@}", *&self->_value, self->_end, v3, v2, cleanValue, self->_normalizedValues];
 }
 
-- (BOOL)hasValue:(id)a3 from:(int64_t)a4 to:(int64_t)a5
+- (BOOL)hasValue:(id)value from:(int64_t)from to:(int64_t)to
 {
-  v8 = a3;
-  if ([(CDMToken *)self begin]<= a4 && [(CDMToken *)self end]>= a5)
+  valueCopy = value;
+  if ([(CDMToken *)self begin]<= from && [(CDMToken *)self end]>= to)
   {
-    v10 = [(CDMToken *)self value];
-    v9 = [v10 isEqualToString:v8];
+    value = [(CDMToken *)self value];
+    v9 = [value isEqualToString:valueCopy];
   }
 
   else
@@ -117,30 +117,30 @@
   return v9;
 }
 
-- (CDMToken)initWithProtoToken:(id)a3
+- (CDMToken)initWithProtoToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = CDMToken;
   v5 = [(CDMToken *)&v14 init];
   if (v5)
   {
-    v6 = [v4 value];
+    value = [tokenCopy value];
     value = v5->_value;
-    v5->_value = v6;
+    v5->_value = value;
 
-    v5->_begin = [v4 begin];
-    v5->_end = [v4 end];
-    v5->_isSignificant = [v4 isSignificant];
-    v5->_isWhiteSpace = [v4 isWhitespace];
-    v5->_tokenIndex = [v4 tokenIndex];
-    v5->_nonWhitespaceTokenIndex = [v4 nonWhitespaceTokenIndex];
-    v8 = [v4 cleanValue];
+    v5->_begin = [tokenCopy begin];
+    v5->_end = [tokenCopy end];
+    v5->_isSignificant = [tokenCopy isSignificant];
+    v5->_isWhiteSpace = [tokenCopy isWhitespace];
+    v5->_tokenIndex = [tokenCopy tokenIndex];
+    v5->_nonWhitespaceTokenIndex = [tokenCopy nonWhitespaceTokenIndex];
+    cleanValue = [tokenCopy cleanValue];
     cleanValue = v5->_cleanValue;
-    v5->_cleanValue = v8;
+    v5->_cleanValue = cleanValue;
 
-    v10 = [v4 normalizedValues];
-    v11 = [v10 copy];
+    normalizedValues = [tokenCopy normalizedValues];
+    v11 = [normalizedValues copy];
     normalizedValues = v5->_normalizedValues;
     v5->_normalizedValues = v11;
   }
@@ -148,49 +148,49 @@
   return v5;
 }
 
-- (CDMToken)initWithValue:(id)a3 begin:(int64_t)a4 end:(int64_t)a5 significant:(BOOL)a6 whitespace:(BOOL)a7 cleanValue:(id)a8 tokenIndex:(int64_t)a9 nonWhitespaceTokenIndex:(int64_t)a10 normalizedValues:(id)a11
+- (CDMToken)initWithValue:(id)value begin:(int64_t)begin end:(int64_t)end significant:(BOOL)significant whitespace:(BOOL)whitespace cleanValue:(id)cleanValue tokenIndex:(int64_t)index nonWhitespaceTokenIndex:(int64_t)self0 normalizedValues:(id)self1
 {
-  v18 = a3;
-  v19 = a8;
-  v23 = a11;
+  valueCopy = value;
+  cleanValueCopy = cleanValue;
+  valuesCopy = values;
   v24.receiver = self;
   v24.super_class = CDMToken;
   v20 = [(CDMToken *)&v24 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_value, a3);
-    v21->_begin = a4;
-    v21->_end = a5;
-    v21->_isSignificant = a6;
-    v21->_isWhiteSpace = a7;
-    v21->_tokenIndex = a9;
-    v21->_nonWhitespaceTokenIndex = a10;
-    objc_storeStrong(&v21->_cleanValue, a8);
-    objc_storeStrong(&v21->_normalizedValues, a11);
+    objc_storeStrong(&v20->_value, value);
+    v21->_begin = begin;
+    v21->_end = end;
+    v21->_isSignificant = significant;
+    v21->_isWhiteSpace = whitespace;
+    v21->_tokenIndex = index;
+    v21->_nonWhitespaceTokenIndex = tokenIndex;
+    objc_storeStrong(&v21->_cleanValue, cleanValue);
+    objc_storeStrong(&v21->_normalizedValues, values);
   }
 
   return v21;
 }
 
-- (CDMToken)initWithValue:(id)a3 begin:(int64_t)a4 end:(int64_t)a5 significant:(BOOL)a6 whitespace:(BOOL)a7 cleanValue:(id)a8 tokenIndex:(int64_t)a9 nonWhitespaceTokenIndex:(int64_t)a10
+- (CDMToken)initWithValue:(id)value begin:(int64_t)begin end:(int64_t)end significant:(BOOL)significant whitespace:(BOOL)whitespace cleanValue:(id)cleanValue tokenIndex:(int64_t)index nonWhitespaceTokenIndex:(int64_t)self0
 {
-  v17 = a3;
-  v18 = a8;
+  valueCopy = value;
+  cleanValueCopy = cleanValue;
   v24.receiver = self;
   v24.super_class = CDMToken;
   v19 = [(CDMToken *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_value, a3);
-    v20->_begin = a4;
-    v20->_end = a5;
-    v20->_isSignificant = a6;
-    v20->_isWhiteSpace = a7;
-    v20->_tokenIndex = a9;
-    v20->_nonWhitespaceTokenIndex = a10;
-    objc_storeStrong(&v20->_cleanValue, a8);
+    objc_storeStrong(&v19->_value, value);
+    v20->_begin = begin;
+    v20->_end = end;
+    v20->_isSignificant = significant;
+    v20->_isWhiteSpace = whitespace;
+    v20->_tokenIndex = index;
+    v20->_nonWhitespaceTokenIndex = tokenIndex;
+    objc_storeStrong(&v20->_cleanValue, cleanValue);
     v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
     normalizedValues = v20->_normalizedValues;
     v20->_normalizedValues = v21;
@@ -199,10 +199,10 @@
   return v20;
 }
 
-- (CDMToken)initWithValue:(id)a3
+- (CDMToken)initWithValue:(id)value
 {
-  v4 = a3;
-  v5 = -[CDMToken initWithValue:begin:end:significant:](self, "initWithValue:begin:end:significant:", v4, 0, [v4 length], 1);
+  valueCopy = value;
+  v5 = -[CDMToken initWithValue:begin:end:significant:](self, "initWithValue:begin:end:significant:", valueCopy, 0, [valueCopy length], 1);
 
   return v5;
 }

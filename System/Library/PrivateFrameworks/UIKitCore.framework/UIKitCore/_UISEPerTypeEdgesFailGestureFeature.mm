@@ -1,9 +1,9 @@
 @interface _UISEPerTypeEdgesFailGestureFeature
-- (_UISEPerTypeEdgesFailGestureFeature)initWithEdgeTypeSubfeatures:(id)a3;
+- (_UISEPerTypeEdgesFailGestureFeature)initWithEdgeTypeSubfeatures:(id)subfeatures;
 - (id)debugDictionary;
 - (unint64_t)touchedEdges;
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3;
-- (void)featureDidChangeState:(id)a3;
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample;
+- (void)featureDidChangeState:(id)state;
 @end
 
 @implementation _UISEPerTypeEdgesFailGestureFeature
@@ -49,7 +49,7 @@
   return v6;
 }
 
-- (_UISEPerTypeEdgesFailGestureFeature)initWithEdgeTypeSubfeatures:(id)a3
+- (_UISEPerTypeEdgesFailGestureFeature)initWithEdgeTypeSubfeatures:(id)subfeatures
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -58,13 +58,13 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_edgeTypeSubfeatures, a3);
+    objc_storeStrong(&v4->_edgeTypeSubfeatures, subfeatures);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = a3;
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    subfeaturesCopy = subfeatures;
+    v7 = [subfeaturesCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -76,17 +76,17 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subfeaturesCopy);
           }
 
-          v11 = [v6 objectForKeyedSubscript:{*(*(&v13 + 1) + 8 * v10), v13}];
+          v11 = [subfeaturesCopy objectForKeyedSubscript:{*(*(&v13 + 1) + 8 * v10), v13}];
           [v11 setDelegate:v5];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [subfeaturesCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -96,9 +96,9 @@
   return v5;
 }
 
-- (void)featureDidChangeState:(id)a3
+- (void)featureDidChangeState:(id)state
 {
-  if ([a3 state] == 2)
+  if ([state state] == 2)
   {
 
     [(_UISEGestureFeature *)self _setState:2];
@@ -130,8 +130,8 @@
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSDictionary *)self->_edgeTypeSubfeatures objectForKeyedSubscript:v9];
-        v11 = [v10 debugDictionary];
-        [v3 setObject:v11 forKeyedSubscript:v9];
+        debugDictionary = [v10 debugDictionary];
+        [v3 setObject:debugDictionary forKeyedSubscript:v9];
       }
 
       v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -142,22 +142,22 @@
 
   v15.receiver = self;
   v15.super_class = _UISEPerTypeEdgesFailGestureFeature;
-  v12 = [(_UISEGestureFeature *)&v15 debugDictionary];
-  v13 = [v12 mutableCopy];
+  debugDictionary2 = [(_UISEGestureFeature *)&v15 debugDictionary];
+  v13 = [debugDictionary2 mutableCopy];
 
   [v13 setObject:v3 forKeyedSubscript:@"edgeTypeSubfeatures"];
 
   return v13;
 }
 
-- (void)_incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)_incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
   if (![(_UISEGestureFeature *)self state])
   {
     edgeTypeSubfeatures = self->_edgeTypeSubfeatures;
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3->var3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:sample->var3];
     v6 = [(NSDictionary *)edgeTypeSubfeatures objectForKeyedSubscript:v7];
-    [v6 incorporateSample:a3];
+    [v6 incorporateSample:sample];
   }
 }
 

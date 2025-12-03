@@ -1,17 +1,17 @@
 @interface SFTransitionCoordinatorRetargetableAnimation
-- (void)invokeInContext:(id)a3;
+- (void)invokeInContext:(id)context;
 @end
 
 @implementation SFTransitionCoordinatorRetargetableAnimation
 
-- (void)invokeInContext:(id)a3
+- (void)invokeInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([MEMORY[0x1E69DD250] _isInRetargetableAnimationBlock])
   {
     v6.receiver = self;
     v6.super_class = SFTransitionCoordinatorRetargetableAnimation;
-    [(SFTransitionCoordinatorBasicAnimation *)&v6 invokeInContext:v4];
+    [(SFTransitionCoordinatorBasicAnimation *)&v6 invokeInContext:contextCopy];
   }
 
   else
@@ -21,8 +21,8 @@
     v7[1] = 3221225472;
     v7[2] = __64__SFTransitionCoordinatorRetargetableAnimation_invokeInContext___block_invoke;
     v7[3] = &unk_1E721B400;
-    v8 = v4;
-    v9 = self;
+    v8 = contextCopy;
+    selfCopy = self;
     [v5 _performWithoutRetargetingAnimations:v7];
   }
 }

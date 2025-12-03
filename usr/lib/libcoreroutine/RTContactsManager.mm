@@ -1,75 +1,75 @@
 @interface RTContactsManager
-+ (id)addressDictionaryFromMapItem:(id)a3;
-+ (id)addressLabelTypeToLabel:(unint64_t)a3;
-+ (id)addressLabelTypeToString:(unint64_t)a3;
-+ (id)formattedPostalAddressesForContact:(id)a3;
-+ (unint64_t)labelStringToAddressLabelType:(id)a3;
-- (BOOL)removeAddressOfContact:(id)a3 withAddressIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeAddressOfMeCardWithAddressIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)updateAddressLabelTypeOfContact:(id)a3 withAddressIdentifier:(id)a4 toAddressLabelType:(unint64_t)a5 error:(id *)a6;
-- (BOOL)updateAddressLabelTypeOfMeCardWithAddressIdentifier:(id)a3 toAddressLabelType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)updateAddressOfContact:(id)a3 withAddressIdentifier:(id)a4 toAddressFromMapItem:(id)a5 error:(id *)a6;
-- (BOOL)updateAddressOfMeCardWithAddressIdentifier:(id)a3 toAddressFromMapItem:(id)a4 error:(id *)a5;
-- (RTContactsManager)initWithDataProtectionManager:(id)a3 mapServiceManager:(id)a4 distanceCalculator:(id)a5;
++ (id)addressDictionaryFromMapItem:(id)item;
++ (id)addressLabelTypeToLabel:(unint64_t)label;
++ (id)addressLabelTypeToString:(unint64_t)string;
++ (id)formattedPostalAddressesForContact:(id)contact;
++ (unint64_t)labelStringToAddressLabelType:(id)type;
+- (BOOL)removeAddressOfContact:(id)contact withAddressIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeAddressOfMeCardWithAddressIdentifier:(id)identifier error:(id *)error;
+- (BOOL)updateAddressLabelTypeOfContact:(id)contact withAddressIdentifier:(id)identifier toAddressLabelType:(unint64_t)type error:(id *)error;
+- (BOOL)updateAddressLabelTypeOfMeCardWithAddressIdentifier:(id)identifier toAddressLabelType:(unint64_t)type error:(id *)error;
+- (BOOL)updateAddressOfContact:(id)contact withAddressIdentifier:(id)identifier toAddressFromMapItem:(id)item error:(id *)error;
+- (BOOL)updateAddressOfMeCardWithAddressIdentifier:(id)identifier toAddressFromMapItem:(id)item error:(id *)error;
+- (RTContactsManager)initWithDataProtectionManager:(id)manager mapServiceManager:(id)serviceManager distanceCalculator:(id)calculator;
 - (id)_contactColumnKeysToFetch;
 - (id)_favoriteEntries;
-- (id)_getEmailAddressStringsUsingCNContactEmailAddresses:(id)a3;
-- (id)_getMeCardWithError:(id *)a3;
-- (id)_getPhoneNumberStringsUsingCNContactPhoneNumbers:(id)a3;
-- (id)_getPostalAddressesUsingCNContactPostalAddresses:(id)a3;
-- (id)_getRTContactFromCNContact:(id)a3;
-- (id)_queryContactsForGivenName:(id)a3 error:(id *)a4;
-- (id)addAddressToContact:(id)a3 addressLabelType:(unint64_t)a4 addressFromMapItem:(id)a5 error:(id *)a6;
-- (id)addAddressToMeCardWithAddressLabelType:(unint64_t)a3 addressFromMapItem:(id)a4 error:(id *)a5;
-- (id)addressIdentifierOfContact:(id)a3 withAddressFromMapItem:(id)a4 error:(id *)a5;
-- (id)addressIdentifierOfMeCardWithAddressFromMapItem:(id)a3 error:(id *)a4;
-- (void)__donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 donationStore:(id)a5 handler:(id)a6;
-- (void)_donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 handler:(id)a5;
-- (void)_fetchContactsFromEmailOrPhoneNumberString:(id)a3 handler:(id)a4;
-- (void)_fetchContactsUsingContactIdentifiers:(id)a3 handler:(id)a4;
-- (void)_fetchFavoriteContactsWithHandler:(id)a3;
-- (void)_fetchFavoriteHandlesWithHandler:(id)a3;
-- (void)_fetchMeCardWithHandler:(id)a3;
-- (void)_fetchRelationshipContactsFromMeCardWithHandler:(id)a3;
-- (void)_onContactStoreNotification:(id)a3;
+- (id)_getEmailAddressStringsUsingCNContactEmailAddresses:(id)addresses;
+- (id)_getMeCardWithError:(id *)error;
+- (id)_getPhoneNumberStringsUsingCNContactPhoneNumbers:(id)numbers;
+- (id)_getPostalAddressesUsingCNContactPostalAddresses:(id)addresses;
+- (id)_getRTContactFromCNContact:(id)contact;
+- (id)_queryContactsForGivenName:(id)name error:(id *)error;
+- (id)addAddressToContact:(id)contact addressLabelType:(unint64_t)type addressFromMapItem:(id)item error:(id *)error;
+- (id)addAddressToMeCardWithAddressLabelType:(unint64_t)type addressFromMapItem:(id)item error:(id *)error;
+- (id)addressIdentifierOfContact:(id)contact withAddressFromMapItem:(id)item error:(id *)error;
+- (id)addressIdentifierOfMeCardWithAddressFromMapItem:(id)item error:(id *)error;
+- (void)__donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type donationStore:(id)store handler:(id)handler;
+- (void)_donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type handler:(id)handler;
+- (void)_fetchContactsFromEmailOrPhoneNumberString:(id)string handler:(id)handler;
+- (void)_fetchContactsUsingContactIdentifiers:(id)identifiers handler:(id)handler;
+- (void)_fetchFavoriteContactsWithHandler:(id)handler;
+- (void)_fetchFavoriteHandlesWithHandler:(id)handler;
+- (void)_fetchMeCardWithHandler:(id)handler;
+- (void)_fetchRelationshipContactsFromMeCardWithHandler:(id)handler;
+- (void)_onContactStoreNotification:(id)notification;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 handler:(id)a5;
-- (void)fetchContactsFromEmailOrPhoneNumberString:(id)a3 handler:(id)a4;
-- (void)fetchContactsUsingContactIdentifiers:(id)a3 handler:(id)a4;
-- (void)fetchFavoriteContactsWithHandler:(id)a3;
-- (void)fetchFavoriteHandlesWithHandler:(id)a3;
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3;
-- (void)fetchMeCardWithHandler:(id)a3;
-- (void)fetchRelationshipContactsFromMeCardWithHandler:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onContactStoreNotification:(id)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)setMeCard:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type handler:(id)handler;
+- (void)fetchContactsFromEmailOrPhoneNumberString:(id)string handler:(id)handler;
+- (void)fetchContactsUsingContactIdentifiers:(id)identifiers handler:(id)handler;
+- (void)fetchFavoriteContactsWithHandler:(id)handler;
+- (void)fetchFavoriteHandlesWithHandler:(id)handler;
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card;
+- (void)fetchMeCardWithHandler:(id)handler;
+- (void)fetchRelationshipContactsFromMeCardWithHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onContactStoreNotification:(id)notification;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)setMeCard:(id)card;
 @end
 
 @implementation RTContactsManager
 
-+ (unint64_t)labelStringToAddressLabelType:(id)a3
++ (unint64_t)labelStringToAddressLabelType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CBD8E8]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277CBD8E8]])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD8E0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CBD8E0]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD940]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CBD940]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CBD930]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x277CBD930]])
   {
     v4 = 3;
   }
@@ -82,15 +82,15 @@
   return v4;
 }
 
-- (RTContactsManager)initWithDataProtectionManager:(id)a3 mapServiceManager:(id)a4 distanceCalculator:(id)a5
+- (RTContactsManager)initWithDataProtectionManager:(id)manager mapServiceManager:(id)serviceManager distanceCalculator:(id)calculator
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  managerCopy = manager;
+  serviceManagerCopy = serviceManager;
+  calculatorCopy = calculator;
+  if (managerCopy)
   {
-    if (v10)
+    if (serviceManagerCopy)
     {
       goto LABEL_3;
     }
@@ -106,7 +106,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapServiceManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (calculatorCopy)
     {
       goto LABEL_4;
     }
@@ -124,17 +124,17 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dataProtectionManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!serviceManagerCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v11)
+  if (calculatorCopy)
   {
 LABEL_4:
-    v12 = 0;
-    if (v9 && v10)
+    selfCopy = 0;
+    if (managerCopy && serviceManagerCopy)
     {
       v19.receiver = self;
       v19.super_class = RTContactsManager;
@@ -142,14 +142,14 @@ LABEL_4:
       p_isa = &v13->super.super.super.isa;
       if (v13)
       {
-        objc_storeStrong(&v13->_dataProtectionManager, a3);
-        objc_storeStrong(p_isa + 6, a4);
-        objc_storeStrong(p_isa + 7, a5);
+        objc_storeStrong(&v13->_dataProtectionManager, manager);
+        objc_storeStrong(p_isa + 6, serviceManager);
+        objc_storeStrong(p_isa + 7, calculator);
         [p_isa setup];
       }
 
       self = p_isa;
-      v12 = self;
+      selfCopy = self;
     }
 
     goto LABEL_18;
@@ -166,36 +166,36 @@ LABEL_15:
     _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceCalculator (in %s:%d)", buf, 0x12u);
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)_setup
 {
-  v3 = [(RTContactsManager *)self dataProtectionManager];
+  dataProtectionManager = [(RTContactsManager *)self dataProtectionManager];
   v4 = +[(RTNotification *)RTDataProtectionManagerNotificationUnlockedSinceBoot];
-  [v3 addObserver:self selector:sel_onDataProtectionNotification_ name:v4];
+  [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v4];
 
   [(RTContactsManager *)self setAvailable:0];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(RTContactsManager *)self dataProtectionManager];
-  [v4 removeObserver:self];
+  handlerCopy = handler;
+  dataProtectionManager = [(RTContactsManager *)self dataProtectionManager];
+  [dataProtectionManager removeObserver:self];
 
   [(RTContactsManager *)self setAvailable:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v6 = handlerCopy;
   }
 }
 
@@ -216,21 +216,21 @@ LABEL_18:
   return v5;
 }
 
-- (id)_getMeCardWithError:(id *)a3
+- (id)_getMeCardWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(RTContactsManager *)self _contactColumnKeysToFetch];
+    _contactColumnKeysToFetch = [(RTContactsManager *)self _contactColumnKeysToFetch];
     v13 = 0;
-    v7 = [v5 _crossPlatformUnifiedMeContactWithKeysToFetch:v6 error:&v13];
+    v7 = [v5 _crossPlatformUnifiedMeContactWithKeysToFetch:_contactColumnKeysToFetch error:&v13];
     v8 = v13;
 
-    if (a3)
+    if (error)
     {
       v9 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
 LABEL_8:
@@ -238,16 +238,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3)
+  if (error)
   {
     v16 = *MEMORY[0x277CCA450];
     v17[0] = @"Unable to create a contact store to get the 'Me' card.";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v8];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v8];
     v10 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v12 = *a3;
+      v12 = *error;
       *buf = 138412290;
       v15 = v12;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -263,33 +263,33 @@ LABEL_9:
   return v7;
 }
 
-- (void)setMeCard:(id)a3
+- (void)setMeCard:(id)card
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  cardCopy = card;
   meCard = self->_meCard;
-  if (meCard != v5 && ([(CNContact *)meCard isEqual:v5]& 1) == 0)
+  if (meCard != cardCopy && ([(CNContact *)meCard isEqual:cardCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_meCard, a3);
+    objc_storeStrong(&self->_meCard, card);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(CNContact *)self->_meCard _rt_toString];
-        v9 = [(CNContact *)self->_meCard postalAddresses];
+        _rt_toString = [(CNContact *)self->_meCard _rt_toString];
+        postalAddresses = [(CNContact *)self->_meCard postalAddresses];
         v11 = 138412546;
-        v12 = v8;
+        v12 = _rt_toString;
         v13 = 2048;
-        v14 = [v9 count];
+        v14 = [postalAddresses count];
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "set meCard, %@, postal addresses, %lu", &v11, 0x16u);
       }
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v10 = [(CNContact *)self->_meCard postalAddresses];
-      [v10 enumerateObjectsUsingBlock:&__block_literal_global_102];
+      postalAddresses2 = [(CNContact *)self->_meCard postalAddresses];
+      [postalAddresses2 enumerateObjectsUsingBlock:&__block_literal_global_102];
     }
   }
 }
@@ -320,34 +320,34 @@ void __31__RTContactsManager_setMeCard___block_invoke(uint64_t a1, void *a2, uin
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([(RTNotifier *)self getNumberOfObservers:v8]== 1)
+  observerCopy = observer;
+  nameCopy = name;
+  if ([(RTNotifier *)self getNumberOfObservers:nameCopy]== 1)
   {
     v9 = +[(RTNotification *)RTContactsManagerContactStoreDidChangeNotification];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [nameCopy isEqualToString:v9];
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      v12 = v11;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v12 = defaultCenter;
       v13 = MEMORY[0x277CBD140];
 LABEL_6:
-      [v11 addObserver:self selector:sel_onContactStoreNotification_ name:*v13 object:0];
+      [defaultCenter addObserver:self selector:sel_onContactStoreNotification_ name:*v13 object:0];
 
       goto LABEL_7;
     }
 
     v14 = +[(RTNotification *)RTContactsManagerContactStoreMeContactDidChangeNotification];
-    v15 = [v8 isEqualToString:v14];
+    v15 = [nameCopy isEqualToString:v14];
 
     if (v15)
     {
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      v12 = v11;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v12 = defaultCenter;
       v13 = MEMORY[0x277CBD148];
       goto LABEL_6;
     }
@@ -363,7 +363,7 @@ LABEL_6:
         v20 = 138412802;
         v21 = v17;
         v22 = 2112;
-        v23 = v8;
+        v23 = nameCopy;
         v24 = 2112;
         v25 = v19;
         _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, unsupported notification, %@, observer, %@", &v20, 0x20u);
@@ -374,20 +374,20 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (![(RTNotifier *)self getNumberOfObservers:v8])
+  observerCopy = observer;
+  nameCopy = name;
+  if (![(RTNotifier *)self getNumberOfObservers:nameCopy])
   {
     v9 = +[(RTNotification *)RTContactsManagerContactStoreDidChangeNotification];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [nameCopy isEqualToString:v9];
 
-    if (v10 || (+[RTNotification notificationName](RTContactsManagerContactStoreMeContactDidChangeNotification, "notificationName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v8 isEqualToString:v11], v11, v12))
+    if (v10 || (+[RTNotification notificationName](RTContactsManagerContactStoreMeContactDidChangeNotification, "notificationName"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [nameCopy isEqualToString:v11], v11, v12))
     {
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 removeObserver:self name:*MEMORY[0x277CBD140] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CBD140] object:0];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -401,7 +401,7 @@ LABEL_7:
         v18 = 138412802;
         v19 = v15;
         v20 = 2112;
-        v21 = v8;
+        v21 = nameCopy;
         v22 = 2112;
         v23 = v17;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, unsupported notification, %@, observer, %@", &v18, 0x20u);
@@ -410,41 +410,41 @@ LABEL_7:
   }
 }
 
-- (void)onContactStoreNotification:(id)a3
+- (void)onContactStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__RTContactsManager_onContactStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onContactStoreNotification:(id)a3
+- (void)_onContactStoreNotification:(id)notification
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = NSStringFromSelector(a2);
-      v8 = [v5 name];
+      name = [notificationCopy name];
       *buf = 138412546;
       v32 = v7;
       v33 = 2112;
-      v34 = v8;
+      v34 = name;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", buf, 0x16u);
     }
   }
 
-  v9 = [v5 name];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CBD140]];
+  name2 = [notificationCopy name];
+  v10 = [name2 isEqualToString:*MEMORY[0x277CBD140]];
 
   if (v10)
   {
@@ -459,16 +459,16 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v25 = [(RTContactsManager *)self meCard];
-    v26 = v25;
-    if (v25 == v12)
+    meCard = [(RTContactsManager *)self meCard];
+    v26 = meCard;
+    if (meCard == v12)
     {
     }
 
     else
     {
-      v27 = [(RTContactsManager *)self meCard];
-      v28 = [v27 isEqual:v12];
+      meCard2 = [(RTContactsManager *)self meCard];
+      v28 = [meCard2 isEqual:v12];
 
       if (!v28)
       {
@@ -482,9 +482,9 @@ LABEL_7:
       v14 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v12 _rt_toString];
+        _rt_toString = [v12 _rt_toString];
         *buf = 138412546;
-        v32 = v15;
+        v32 = _rt_toString;
         v33 = 2112;
         v34 = v13;
 LABEL_27:
@@ -499,8 +499,8 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  v16 = [v5 name];
-  v17 = [v16 isEqualToString:*MEMORY[0x277CBD148]];
+  name3 = [notificationCopy name];
+  v17 = [name3 isEqualToString:*MEMORY[0x277CBD148]];
 
   if (v17)
   {
@@ -510,16 +510,16 @@ LABEL_27:
     v13 = v18;
     if (!v18 || [v18 code]== 200)
     {
-      v19 = [(RTContactsManager *)self meCard];
-      v20 = v19;
-      if (v19 == v12)
+      meCard3 = [(RTContactsManager *)self meCard];
+      v20 = meCard3;
+      if (meCard3 == v12)
       {
       }
 
       else
       {
-        v21 = [(RTContactsManager *)self meCard];
-        v22 = [v21 isEqual:v12];
+        meCard4 = [(RTContactsManager *)self meCard];
+        v22 = [meCard4 isEqual:v12];
 
         if (!v22)
         {
@@ -537,9 +537,9 @@ LABEL_21:
       v14 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v12 _rt_toString];
+        _rt_toString = [v12 _rt_toString];
         *buf = 138412546;
-        v32 = v15;
+        v32 = _rt_toString;
         v33 = 2112;
         v34 = v13;
         goto LABEL_27;
@@ -560,11 +560,11 @@ LABEL_30:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v23 = NSStringFromSelector(a2);
-      v24 = [v5 name];
+      name4 = [notificationCopy name];
       *buf = 138412546;
       v32 = v23;
       v33 = 2112;
-      v34 = v24;
+      v34 = name4;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%@, unsupported notification, %@", buf, 0x16u);
     }
 
@@ -574,11 +574,11 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_fetchMeCardWithHandler:(id)a3
+- (void)_fetchMeCardWithHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([(RTContactsManager *)self available])
     {
@@ -591,11 +591,11 @@ LABEL_31:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v9 = NSStringFromSelector(a2);
-          v10 = [v6 _rt_toString];
+          _rt_toString = [v6 _rt_toString];
           *buf = 138412802;
           v19 = v9;
           v20 = 2112;
-          v21 = v10;
+          v21 = _rt_toString;
           v22 = 2112;
           v23 = v7;
           _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, meCard, %@, error, %@", buf, 0x20u);
@@ -604,12 +604,12 @@ LABEL_31:
 
       [(RTContactsManager *)self setMeCard:v6];
 
-      v11 = [(RTContactsManager *)self meCard];
+      meCard = [(RTContactsManager *)self meCard];
 
-      if (v11)
+      if (meCard)
       {
-        v12 = [(RTContactsManager *)self meCard];
-        v13 = [(RTContactsManager *)self _getRTContactFromCNContact:v12];
+        meCard2 = [(RTContactsManager *)self meCard];
+        v13 = [(RTContactsManager *)self _getRTContactFromCNContact:meCard2];
       }
 
       else
@@ -617,7 +617,7 @@ LABEL_31:
         v13 = 0;
       }
 
-      v5[2](v5, v13, 0);
+      handlerCopy[2](handlerCopy, v13, 0);
     }
 
     else
@@ -628,24 +628,24 @@ LABEL_31:
       v25[0] = @"resource temporarily unavailable.";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v16 = [v14 errorWithDomain:v15 code:5 userInfo:v13];
-      (v5)[2](v5, 0, v16);
+      (handlerCopy)[2](handlerCopy, 0, v16);
     }
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RTContactsManager_onDataProtectionNotification___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
-  v10 = self;
+  v9 = notificationCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = notificationCopy;
+  dispatch_async(queue, block);
 }
 
 void __50__RTContactsManager_onDataProtectionNotification___block_invoke(uint64_t a1)
@@ -683,29 +683,29 @@ void __50__RTContactsManager_onDataProtectionNotification___block_invoke(uint64_
   }
 }
 
-- (void)fetchMeCardWithHandler:(id)a3
+- (void)fetchMeCardWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RTContactsManager_fetchMeCardWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)__donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 donationStore:(id)a5 handler:(id)a6
+- (void)__donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type donationStore:(id)store handler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  itemCopy = item;
+  storeCopy = store;
+  handlerCopy = handler;
+  if (itemCopy)
   {
-    if (v11)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -723,16 +723,16 @@ void __50__RTContactsManager_onDataProtectionNotification___block_invoke(uint64_
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapItem (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (storeCopy)
     {
 LABEL_3:
-      if (v10)
+      if (itemCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_13:
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_21;
       }
@@ -745,9 +745,9 @@ LABEL_13:
       v29 = &v42;
       v30 = &v41;
 LABEL_19:
-      v13 = [v28 dictionaryWithObjects:v29 forKeys:v30 count:1];
-      v21 = [v26 errorWithDomain:v27 code:7 userInfo:v13];
-      v12[2](v12, 0, v21);
+      date = [v28 dictionaryWithObjects:v29 forKeys:v30 count:1];
+      v21 = [v26 errorWithDomain:v27 code:7 userInfo:date];
+      handlerCopy[2](handlerCopy, 0, v21);
       goto LABEL_20;
     }
   }
@@ -762,15 +762,15 @@ LABEL_19:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: donationStore (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v10)
+  if (!itemCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  if (![(RTContactsManager *)self labelTypeValidForDonation:a4])
+  if (![(RTContactsManager *)self labelTypeValidForDonation:type])
   {
-    if (!v12)
+    if (!handlerCopy)
     {
       goto LABEL_21;
     }
@@ -785,37 +785,37 @@ LABEL_4:
     goto LABEL_19;
   }
 
-  if (v11)
+  if (storeCopy)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v14 = objc_alloc(MEMORY[0x277CFBCC0]);
-    v15 = [MEMORY[0x277CCAA00] defaultsDomain];
-    v16 = [objc_opt_class() labelTypeToString:a4];
-    v17 = [v13 dateByAddingTimeInterval:259200.0];
-    v31 = [v14 initWithBundleIdentifier:v15 donationIdentifier:v16 donationDate:v13 expirationDate:v17];
+    defaultsDomain = [MEMORY[0x277CCAA00] defaultsDomain];
+    v16 = [objc_opt_class() labelTypeToString:type];
+    v17 = [date dateByAddingTimeInterval:259200.0];
+    v31 = [v14 initWithBundleIdentifier:defaultsDomain donationIdentifier:v16 donationDate:date expirationDate:v17];
 
     v18 = objc_alloc(MEMORY[0x277D011B0]);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v18 initWithUseBackgroundTraits:1 analyticsIdentifier:v20];
 
-    v22 = [(RTContactsManager *)self mapServiceManager];
+    mapServiceManager = [(RTContactsManager *)self mapServiceManager];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donationStore_handler___block_invoke;
     v32[3] = &unk_2788CEF98;
-    v35 = v12;
-    v36 = a4;
+    v35 = handlerCopy;
+    typeCopy = type;
     v33 = v31;
-    v34 = v11;
+    v34 = storeCopy;
     v23 = v31;
-    [v22 fetchPostalAddressForMapItem:v10 options:v21 handler:v32];
+    [mapServiceManager fetchPostalAddressForMapItem:itemCopy options:v21 handler:v32];
 
 LABEL_20:
     goto LABEL_21;
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v26 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277D01448];
@@ -883,12 +883,12 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
   }
 }
 
-- (void)_donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 handler:(id)a5
+- (void)_donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!itemCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -902,112 +902,112 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
   }
 
   v11 = objc_opt_new();
-  [(RTContactsManager *)self __donateAddressFromMapItem:v8 addressLabelType:a4 donationStore:v11 handler:v9];
+  [(RTContactsManager *)self __donateAddressFromMapItem:itemCopy addressLabelType:type donationStore:v11 handler:handlerCopy];
 }
 
-- (void)donateAddressFromMapItem:(id)a3 addressLabelType:(unint64_t)a4 handler:(id)a5
+- (void)donateAddressFromMapItem:(id)item addressLabelType:(unint64_t)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  itemCopy = item;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__RTContactsManager_donateAddressFromMapItem_addressLabelType_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = itemCopy;
+  v15 = handlerCopy;
+  typeCopy = type;
+  v11 = handlerCopy;
+  v12 = itemCopy;
+  dispatch_async(queue, v13);
 }
 
-+ (id)addressLabelTypeToLabel:(unint64_t)a3
++ (id)addressLabelTypeToLabel:(unint64_t)label
 {
-  if (a3 > 3)
+  if (label > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_2788CF080 + a3);
+    v4 = **(&unk_2788CF080 + label);
   }
 
   return v4;
 }
 
-+ (id)addressLabelTypeToString:(unint64_t)a3
++ (id)addressLabelTypeToString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CF0A0[a3];
+    return off_2788CF0A0[string];
   }
 }
 
-+ (id)addressDictionaryFromMapItem:(id)a3
++ (id)addressDictionaryFromMapItem:(id)item
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 address];
-  v7 = [v6 mergedThoroughfare];
-  [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277CBD980]];
+  itemCopy = item;
+  dictionary = [v3 dictionary];
+  address = [itemCopy address];
+  mergedThoroughfare = [address mergedThoroughfare];
+  [dictionary setObject:mergedThoroughfare forKeyedSubscript:*MEMORY[0x277CBD980]];
 
-  v8 = [v4 address];
-  v9 = [v8 subLocality];
-  [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x277CBD990]];
+  address2 = [itemCopy address];
+  subLocality = [address2 subLocality];
+  [dictionary setObject:subLocality forKeyedSubscript:*MEMORY[0x277CBD990]];
 
-  v10 = [v4 address];
-  v11 = [v10 locality];
-  [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x277CBD948]];
+  address3 = [itemCopy address];
+  locality = [address3 locality];
+  [dictionary setObject:locality forKeyedSubscript:*MEMORY[0x277CBD948]];
 
-  v12 = [v4 address];
-  v13 = [v12 subAdministrativeArea];
-  [v5 setObject:v13 forKeyedSubscript:*MEMORY[0x277CBD988]];
+  address4 = [itemCopy address];
+  subAdministrativeArea = [address4 subAdministrativeArea];
+  [dictionary setObject:subAdministrativeArea forKeyedSubscript:*MEMORY[0x277CBD988]];
 
-  v14 = [v4 address];
-  v15 = [v14 administrativeArea];
-  [v5 setObject:v15 forKeyedSubscript:*MEMORY[0x277CBD978]];
+  address5 = [itemCopy address];
+  administrativeArea = [address5 administrativeArea];
+  [dictionary setObject:administrativeArea forKeyedSubscript:*MEMORY[0x277CBD978]];
 
-  v16 = [v4 address];
-  v17 = [v16 postalCode];
-  [v5 setObject:v17 forKeyedSubscript:*MEMORY[0x277CBD968]];
+  address6 = [itemCopy address];
+  postalCode = [address6 postalCode];
+  [dictionary setObject:postalCode forKeyedSubscript:*MEMORY[0x277CBD968]];
 
-  v18 = [v4 address];
-  v19 = [v18 country];
-  [v5 setObject:v19 forKeyedSubscript:*MEMORY[0x277CBD950]];
+  address7 = [itemCopy address];
+  country = [address7 country];
+  [dictionary setObject:country forKeyedSubscript:*MEMORY[0x277CBD950]];
 
-  v20 = [v4 address];
+  address8 = [itemCopy address];
 
-  v21 = [v20 countryCode];
-  [v5 setObject:v21 forKeyedSubscript:*MEMORY[0x277CBD958]];
+  countryCode = [address8 countryCode];
+  [dictionary setObject:countryCode forKeyedSubscript:*MEMORY[0x277CBD958]];
 
-  return v5;
+  return dictionary;
 }
 
-- (BOOL)removeAddressOfContact:(id)a3 withAddressIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeAddressOfContact:(id)contact withAddressIdentifier:(id)identifier error:(id *)error
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  contactCopy = contact;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (contactCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v36 = 0;
       v37 = &v36;
       v38 = 0x2020000000;
       v39 = 0;
-      v11 = [v7 postalAddresses];
+      postalAddresses = [contactCopy postalAddresses];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error___block_invoke;
@@ -1015,13 +1015,13 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
       v12 = v9;
       v33 = v12;
       v35 = &v36;
-      v13 = v10;
+      v13 = array;
       v34 = v13;
-      [v11 enumerateObjectsUsingBlock:v32];
+      [postalAddresses enumerateObjectsUsingBlock:v32];
 
       if (*(v37 + 24) == 1)
       {
-        v14 = [v7 mutableCopy];
+        v14 = [contactCopy mutableCopy];
         [v14 setPostalAddresses:v13];
         v15 = objc_opt_new();
         [v15 updateContact:v14];
@@ -1030,10 +1030,10 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
         v17 = [v16 executeSaveRequest:v15 error:&v31];
         v18 = v31;
         v19 = v18;
-        if (a5)
+        if (error)
         {
           v20 = v18;
-          *a5 = v19;
+          *error = v19;
         }
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1041,10 +1041,10 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
           v21 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            v22 = [v14 _rt_toString];
+            _rt_toString = [v14 _rt_toString];
             v23 = @"NO";
             *buf = 138413058;
-            v41 = v22;
+            v41 = _rt_toString;
             if (v17)
             {
               v23 = @"YES";
@@ -1056,7 +1056,7 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
             v45 = v23;
             v46 = 2112;
             v47 = v19;
-            v24 = v22;
+            v24 = _rt_toString;
             _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_INFO, "removed addess of contact, %@, with address identifier, %@, success, %@, error, %@", buf, 0x2Au);
           }
         }
@@ -1082,7 +1082,7 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
       }
     }
 
-    if (a5)
+    if (error)
     {
       v29 = MEMORY[0x277CCA9B8];
       v48 = *MEMORY[0x277CCA450];
@@ -1106,7 +1106,7 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
       }
     }
 
-    if (a5)
+    if (error)
     {
       v26 = MEMORY[0x277CCA9B8];
       v50 = *MEMORY[0x277CCA450];
@@ -1115,7 +1115,7 @@ void __87__RTContactsManager___donateAddressFromMapItem_addressLabelType_donatio
       v27 = [v26 errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v13];
 LABEL_25:
       LOBYTE(v17) = 0;
-      *a5 = v27;
+      *error = v27;
 LABEL_29:
 
       goto LABEL_30;
@@ -1145,16 +1145,16 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
   }
 }
 
-- (BOOL)removeAddressOfMeCardWithAddressIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAddressOfMeCardWithAddressIdentifier:(id)identifier error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTContactsManager *)self meCard];
+  identifierCopy = identifier;
+  meCard = [(RTContactsManager *)self meCard];
 
-  if (v7)
+  if (meCard)
   {
-    v8 = [(RTContactsManager *)self meCard];
-    LOBYTE(a4) = [(RTContactsManager *)self removeAddressOfContact:v8 withAddressIdentifier:v6 error:a4];
+    meCard2 = [(RTContactsManager *)self meCard];
+    LOBYTE(error) = [(RTContactsManager *)self removeAddressOfContact:meCard2 withAddressIdentifier:identifierCopy error:error];
   }
 
   else
@@ -1170,38 +1170,38 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
       }
     }
 
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA450];
       v14 = @"cannot remove address. meCard required";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [v10 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v11];
+      *error = [v10 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v11];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
-- (id)addressIdentifierOfMeCardWithAddressFromMapItem:(id)a3 error:(id *)a4
+- (id)addressIdentifierOfMeCardWithAddressFromMapItem:(id)item error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTContactsManager *)self meCard];
+  itemCopy = item;
+  meCard = [(RTContactsManager *)self meCard];
 
-  if (v7)
+  if (meCard)
   {
-    v8 = [(RTContactsManager *)self meCard];
-    v9 = [(RTContactsManager *)self addressIdentifierOfContact:v8 withAddressFromMapItem:v6 error:a4];
+    meCard2 = [(RTContactsManager *)self meCard];
+    v9 = [(RTContactsManager *)self addressIdentifierOfContact:meCard2 withAddressFromMapItem:itemCopy error:error];
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v6 address];
-    v12 = [v10 stringWithFormat:@"cannot get address identifier, %@. no meCard", v11];
+    address = [itemCopy address];
+    v12 = [v10 stringWithFormat:@"cannot get address identifier, %@. no meCard", address];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1214,13 +1214,13 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
       }
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA450];
       v18 = v12;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      *a4 = [v14 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v15];
+      *error = [v14 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v15];
     }
 
     v9 = 0;
@@ -1229,15 +1229,15 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
   return v9;
 }
 
-- (id)addressIdentifierOfContact:(id)a3 withAddressFromMapItem:(id)a4 error:(id *)a5
+- (id)addressIdentifierOfContact:(id)contact withAddressFromMapItem:(id)item error:(id *)error
 {
-  v72 = a5;
+  errorCopy = error;
   v119[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v73 = v6;
-  v85 = v7;
-  if (!v6)
+  contactCopy = contact;
+  itemCopy = item;
+  v73 = contactCopy;
+  v85 = itemCopy;
+  if (!contactCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1250,7 +1250,7 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
       }
     }
 
-    if (v72)
+    if (errorCopy)
     {
       v47 = MEMORY[0x277CCA9B8];
       v117 = *MEMORY[0x277CCA450];
@@ -1258,19 +1258,19 @@ void __72__RTContactsManager_removeAddressOfContact_withAddressIdentifier_error_
       v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
       v49 = [v47 errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v48];
 LABEL_43:
-      v10 = 0;
-      *v72 = v49;
+      postalAddresses = 0;
+      *errorCopy = v49;
 LABEL_73:
 
       goto LABEL_74;
     }
 
 LABEL_44:
-    v10 = 0;
+    postalAddresses = 0;
     goto LABEL_74;
   }
 
-  if (!v7)
+  if (!itemCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1283,7 +1283,7 @@ LABEL_44:
       }
     }
 
-    if (v72)
+    if (errorCopy)
     {
       v51 = MEMORY[0x277CCA9B8];
       v115 = *MEMORY[0x277CCA450];
@@ -1296,10 +1296,10 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v8 = [v7 extendedAttributes];
-  v9 = [v8 addressIdentifier];
+  extendedAttributes = [itemCopy extendedAttributes];
+  addressIdentifier = [extendedAttributes addressIdentifier];
 
-  if (!v9)
+  if (!addressIdentifier)
   {
     goto LABEL_14;
   }
@@ -1308,7 +1308,7 @@ LABEL_44:
   *(&v110 + 1) = &v110;
   v111 = 0x2020000000;
   LOBYTE(v112) = 0;
-  v10 = [v6 postalAddresses];
+  postalAddresses = [contactCopy postalAddresses];
   v100[0] = MEMORY[0x277D85DD0];
   v100[1] = 3221225472;
   v100[2] = __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_error___block_invoke;
@@ -1316,12 +1316,12 @@ LABEL_44:
   v11 = v85;
   v101 = v11;
   v102 = &v110;
-  [v10 enumerateObjectsUsingBlock:v100];
+  [postalAddresses enumerateObjectsUsingBlock:v100];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v10 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    postalAddresses = _rt_log_facility_get_os_log(RTLogFacilityContacts);
+    if (os_log_type_enabled(postalAddresses, OS_LOG_TYPE_INFO))
     {
       if (*(*(&v110 + 1) + 24))
       {
@@ -1335,15 +1335,15 @@ LABEL_44:
 
       *buf = 138412290;
       *&buf[4] = v12;
-      _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "addressIdentifier from mapItem's client attributes is still a valid handle to an address, %@", buf, 0xCu);
+      _os_log_impl(&dword_2304B3000, postalAddresses, OS_LOG_TYPE_INFO, "addressIdentifier from mapItem's client attributes is still a valid handle to an address, %@", buf, 0xCu);
     }
   }
 
   v13 = *(*(&v110 + 1) + 24);
   if (v13 == 1)
   {
-    v14 = [v11 extendedAttributes];
-    v10 = [v14 addressIdentifier];
+    extendedAttributes2 = [v11 extendedAttributes];
+    postalAddresses = [extendedAttributes2 addressIdentifier];
   }
 
   _Block_object_dispose(&v110, 8);
@@ -1362,9 +1362,9 @@ LABEL_14:
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v15 = [v6 postalAddresses];
-    v16 = [v15 countByEnumeratingWithState:&v96 objects:v109 count:16];
-    obj = v15;
+    postalAddresses2 = [contactCopy postalAddresses];
+    v16 = [postalAddresses2 countByEnumeratingWithState:&v96 objects:v109 count:16];
+    obj = postalAddresses2;
     if (v16)
     {
       v77 = v16;
@@ -1389,8 +1389,8 @@ LABEL_16:
         v23 = [v20 initWithUseBackgroundTraits:1 analyticsIdentifier:v22];
 
         mapServiceManager = self->_mapServiceManager;
-        v25 = [v19 value];
-        v26 = [v25 dictionaryRepresentation];
+        value = [v19 value];
+        dictionaryRepresentation = [value dictionaryRepresentation];
         v92[0] = MEMORY[0x277D85DD0];
         v92[1] = 3221225472;
         v92[2] = __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_error___block_invoke_114;
@@ -1399,7 +1399,7 @@ LABEL_16:
         v93 = v82;
         v27 = v81;
         v94 = v27;
-        [(RTMapServiceManager *)mapServiceManager fetchMapItemsFromAddressDictionary:v26 options:v23 handler:v92];
+        [(RTMapServiceManager *)mapServiceManager fetchMapItemsFromAddressDictionary:dictionaryRepresentation options:v23 handler:v92];
 
         v28 = v27;
         v29 = [MEMORY[0x277CBEAA8] now];
@@ -1414,11 +1414,11 @@ LABEL_16:
         v33 = v32;
         v34 = objc_opt_new();
         v35 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_269];
-        v36 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v37 = [v36 filteredArrayUsingPredicate:v35];
-        v38 = [v37 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v37 = [callStackSymbols filteredArrayUsingPredicate:v35];
+        firstObject = [v37 firstObject];
 
-        [v34 submitToCoreAnalytics:v38 type:1 duration:v33];
+        [v34 submitToCoreAnalytics:firstObject type:1 duration:v33];
         v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
         {
@@ -1485,15 +1485,15 @@ LABEL_24:
     if (v52)
     {
       v48 = 0;
-      if (*v72)
+      if (*errorCopy)
       {
-        *v72 = v52;
+        *errorCopy = v52;
       }
 
 LABEL_72:
 
       _Block_object_dispose(&v110, 8);
-      v10 = v48;
+      postalAddresses = v48;
       goto LABEL_73;
     }
 
@@ -1523,10 +1523,10 @@ LABEL_51:
 
       v58 = *(*(&v88 + 1) + 8 * v57);
       distanceCalculator = self->_distanceCalculator;
-      v60 = [v85 location];
-      v61 = [v58 location];
+      location = [v85 location];
+      location2 = [v58 location];
       v87 = 0;
-      [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v60 toLocation:v61 error:&v87];
+      [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location toLocation:location2 error:&v87];
       v63 = v62;
       v64 = v87;
 
@@ -1537,11 +1537,11 @@ LABEL_51:
 
       if (v63 < 200.0 && v63 < v56)
       {
-        v65 = [v58 extendedAttributes];
-        v70 = [v65 addressIdentifier];
+        extendedAttributes3 = [v58 extendedAttributes];
+        addressIdentifier2 = [extendedAttributes3 addressIdentifier];
 
         v56 = v63;
-        v84 = v70;
+        v84 = addressIdentifier2;
 LABEL_65:
 
         goto LABEL_66;
@@ -1549,20 +1549,20 @@ LABEL_65:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v65 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
-        if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
+        extendedAttributes3 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
+        if (os_log_type_enabled(extendedAttributes3, OS_LOG_TYPE_DEBUG))
         {
-          v67 = [v58 extendedAttributes];
-          v79 = [v67 addressIdentifier];
-          v68 = [v58 address];
-          v69 = [v85 address];
+          extendedAttributes4 = [v58 extendedAttributes];
+          addressIdentifier3 = [extendedAttributes4 addressIdentifier];
+          address = [v58 address];
+          address2 = [v85 address];
           *buf = 138412803;
-          *&buf[4] = v79;
+          *&buf[4] = addressIdentifier3;
           v104 = 2112;
-          v105 = v68;
+          v105 = address;
           v106 = 2117;
-          v107 = v69;
-          _os_log_debug_impl(&dword_2304B3000, v65, OS_LOG_TYPE_DEBUG, "contact's address identifier, %@, address, %@, too far from address of mapItem, %{sensitive}@", buf, 0x20u);
+          v107 = address2;
+          _os_log_debug_impl(&dword_2304B3000, extendedAttributes3, OS_LOG_TYPE_DEBUG, "contact's address identifier, %@, address, %@, too far from address of mapItem, %{sensitive}@", buf, 0x20u);
         }
 
         goto LABEL_65;
@@ -1585,14 +1585,14 @@ LABEL_71:
       }
     }
 
-    v65 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
-    if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
+    extendedAttributes3 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
+    if (os_log_type_enabled(extendedAttributes3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138740227;
       *&buf[4] = v85;
       v104 = 2112;
       v105 = v64;
-      _os_log_error_impl(&dword_2304B3000, v65, OS_LOG_TYPE_ERROR, "error determining distance for map item, %{sensitive}@, error, %@", buf, 0x16u);
+      _os_log_error_impl(&dword_2304B3000, extendedAttributes3, OS_LOG_TYPE_ERROR, "error determining distance for map item, %{sensitive}@, error, %@", buf, 0x16u);
     }
 
     goto LABEL_65;
@@ -1600,7 +1600,7 @@ LABEL_71:
 
 LABEL_74:
 
-  return v10;
+  return postalAddresses;
 }
 
 void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1627,35 +1627,35 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)addAddressToContact:(id)a3 addressLabelType:(unint64_t)a4 addressFromMapItem:(id)a5 error:(id *)a6
+- (id)addAddressToContact:(id)contact addressLabelType:(unint64_t)type addressFromMapItem:(id)item error:(id *)error
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  contactCopy = contact;
+  itemCopy = item;
+  v11 = itemCopy;
+  if (contactCopy)
   {
-    if (v10)
+    if (itemCopy)
     {
-      v41 = v10;
-      v12 = [objc_opt_class() addressDictionaryFromMapItem:v10];
-      v13 = [objc_opt_class() addressLabelTypeToLabel:a4];
+      v41 = itemCopy;
+      v12 = [objc_opt_class() addressDictionaryFromMapItem:itemCopy];
+      v13 = [objc_opt_class() addressLabelTypeToLabel:type];
       v14 = [MEMORY[0x277CBDB78] postalAddressWithDictionaryRepresentation:v12];
-      v42 = v9;
-      v15 = [v9 mutableCopy];
-      v16 = [MEMORY[0x277CBEB18] array];
+      v42 = contactCopy;
+      v15 = [contactCopy mutableCopy];
+      array = [MEMORY[0x277CBEB18] array];
       v40 = v13;
       v43 = v14;
       v17 = [MEMORY[0x277CBDB20] labeledValueWithLabel:v13 value:v14];
-      [v16 addObject:v17];
-      v18 = [v15 postalAddresses];
+      [array addObject:v17];
+      postalAddresses = [v15 postalAddresses];
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
       v45[2] = __83__RTContactsManager_addAddressToContact_addressLabelType_addressFromMapItem_error___block_invoke;
       v45[3] = &unk_2788CF010;
-      v19 = v16;
+      v19 = array;
       v46 = v19;
-      [v18 enumerateObjectsUsingBlock:v45];
+      [postalAddresses enumerateObjectsUsingBlock:v45];
 
       [v15 setPostalAddresses:v19];
       v20 = objc_opt_new();
@@ -1665,10 +1665,10 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
       v39 = [v21 executeSaveRequest:v20 error:&v44];
       v22 = v44;
       v23 = v22;
-      if (a6)
+      if (error)
       {
         v24 = v22;
-        *a6 = v23;
+        *error = v23;
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1676,20 +1676,20 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
         v25 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v36 = [v17 identifier];
-          v37 = [v15 _rt_toString];
-          v26 = [objc_opt_class() addressLabelTypeToString:a4];
+          identifier = [v17 identifier];
+          _rt_toString = [v15 _rt_toString];
+          v26 = [objc_opt_class() addressLabelTypeToString:type];
           v38 = v26;
           *buf = 138413570;
           v27 = @"NO";
-          v48 = v36;
+          v48 = identifier;
           v49 = 2112;
           if (v39)
           {
             v27 = @"YES";
           }
 
-          v50 = v37;
+          v50 = _rt_toString;
           v51 = 2112;
           v52 = v26;
           v53 = 2112;
@@ -1702,10 +1702,10 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
         }
       }
 
-      v28 = [v17 identifier];
+      identifier2 = [v17 identifier];
 
       v11 = v41;
-      v9 = v42;
+      contactCopy = v42;
       goto LABEL_25;
     }
 
@@ -1720,7 +1720,7 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
       }
     }
 
-    if (a6)
+    if (error)
     {
       v30 = MEMORY[0x277CCA9B8];
       v59 = *MEMORY[0x277CCA450];
@@ -1745,7 +1745,7 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
       }
     }
 
-    if (a6)
+    if (error)
     {
       v30 = MEMORY[0x277CCA9B8];
       v61 = *MEMORY[0x277CCA450];
@@ -1756,29 +1756,29 @@ void __77__RTContactsManager_addressIdentifierOfContact_withAddressFromMapItem_e
 LABEL_24:
       v12 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:1];
       [v30 errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v12];
-      *a6 = v28 = 0;
+      *error = identifier2 = 0;
 LABEL_25:
 
       goto LABEL_27;
     }
   }
 
-  v28 = 0;
+  identifier2 = 0;
 LABEL_27:
 
-  return v28;
+  return identifier2;
 }
 
-- (id)addAddressToMeCardWithAddressLabelType:(unint64_t)a3 addressFromMapItem:(id)a4 error:(id *)a5
+- (id)addAddressToMeCardWithAddressLabelType:(unint64_t)type addressFromMapItem:(id)item error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(RTContactsManager *)self meCard];
+  itemCopy = item;
+  meCard = [(RTContactsManager *)self meCard];
 
-  if (v9)
+  if (meCard)
   {
-    v10 = [(RTContactsManager *)self meCard];
-    a5 = [(RTContactsManager *)self addAddressToContact:v10 addressLabelType:a3 addressFromMapItem:v8 error:a5];
+    meCard2 = [(RTContactsManager *)self meCard];
+    error = [(RTContactsManager *)self addAddressToContact:meCard2 addressLabelType:type addressFromMapItem:itemCopy error:error];
   }
 
   else
@@ -1794,36 +1794,36 @@ LABEL_27:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA450];
       v16 = @"cannot add address. meCard required";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a5 = [v12 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v13];
+      *error = [v12 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v13];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)updateAddressOfContact:(id)a3 withAddressIdentifier:(id)a4 toAddressFromMapItem:(id)a5 error:(id *)a6
+- (BOOL)updateAddressOfContact:(id)contact withAddressIdentifier:(id)identifier toAddressFromMapItem:(id)item error:(id *)error
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  contactCopy = contact;
+  identifierCopy = identifier;
+  itemCopy = item;
+  v12 = itemCopy;
+  if (contactCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      if (v11)
+      if (itemCopy)
       {
-        v40 = v11;
-        v13 = [objc_opt_class() addressDictionaryFromMapItem:v11];
+        v40 = itemCopy;
+        v13 = [objc_opt_class() addressDictionaryFromMapItem:itemCopy];
         v47 = 0;
         v48 = &v47;
         v49 = 0x3032000000;
@@ -1831,21 +1831,21 @@ LABEL_27:
         v51 = __Block_byref_object_dispose__124;
         v52 = 0;
         v14 = [MEMORY[0x277CBDB78] postalAddressWithDictionaryRepresentation:v13];
-        v15 = [v9 mutableCopy];
-        v16 = [MEMORY[0x277CBEB18] array];
-        v17 = [v15 postalAddresses];
+        v15 = [contactCopy mutableCopy];
+        array = [MEMORY[0x277CBEB18] array];
+        postalAddresses = [v15 postalAddresses];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddressFromMapItem_error___block_invoke;
         v42[3] = &unk_2788CF038;
-        v37 = v10;
+        v37 = identifierCopy;
         v43 = v37;
         v46 = &v47;
-        v18 = v16;
+        v18 = array;
         v44 = v18;
         v39 = v14;
         v45 = v39;
-        [v17 enumerateObjectsUsingBlock:v42];
+        [postalAddresses enumerateObjectsUsingBlock:v42];
 
         [v15 setPostalAddresses:v18];
         v19 = objc_opt_new();
@@ -1855,10 +1855,10 @@ LABEL_27:
         v21 = [v20 executeSaveRequest:v19 error:&v41];
         v22 = v41;
         v23 = v22;
-        if (a6)
+        if (error)
         {
           v24 = v22;
-          *a6 = v23;
+          *error = v23;
         }
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1866,7 +1866,7 @@ LABEL_27:
           v25 = _rt_log_facility_get_os_log(RTLogFacilityContacts);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
-            v26 = [v15 _rt_toString];
+            _rt_toString = [v15 _rt_toString];
             v27 = v48[5];
             v28 = @"NO";
             *buf = 138413570;
@@ -1875,7 +1875,7 @@ LABEL_27:
               v28 = @"YES";
             }
 
-            v54 = v26;
+            v54 = _rt_toString;
             v55 = 2112;
             v56 = v37;
             v57 = 2112;
@@ -1886,7 +1886,7 @@ LABEL_27:
             v62 = v28;
             v63 = 2112;
             v64 = v23;
-            v38 = v26;
+            v38 = _rt_toString;
             _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "updated address of contact, %@, with address identifier, %@, from address, %@, to address, %@, success, %@, error, %@", buf, 0x3Eu);
           }
         }
@@ -1906,7 +1906,7 @@ LABEL_27:
         }
       }
 
-      if (a6)
+      if (error)
       {
         v40 = 0;
         v35 = MEMORY[0x277CCA9B8];
@@ -1933,7 +1933,7 @@ LABEL_33:
       }
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -1959,7 +1959,7 @@ LABEL_33:
       }
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -1974,7 +1974,7 @@ LABEL_33:
 
 LABEL_31:
   LOBYTE(v21) = 0;
-  *a6 = v31;
+  *error = v31;
 LABEL_32:
 
   v12 = v40;
@@ -2007,17 +2007,17 @@ void __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddr
   }
 }
 
-- (BOOL)updateAddressOfMeCardWithAddressIdentifier:(id)a3 toAddressFromMapItem:(id)a4 error:(id *)a5
+- (BOOL)updateAddressOfMeCardWithAddressIdentifier:(id)identifier toAddressFromMapItem:(id)item error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(RTContactsManager *)self meCard];
+  identifierCopy = identifier;
+  itemCopy = item;
+  meCard = [(RTContactsManager *)self meCard];
 
-  if (v10)
+  if (meCard)
   {
-    v11 = [(RTContactsManager *)self meCard];
-    LOBYTE(a5) = [(RTContactsManager *)self updateAddressOfContact:v11 withAddressIdentifier:v8 toAddressFromMapItem:v9 error:a5];
+    meCard2 = [(RTContactsManager *)self meCard];
+    LOBYTE(error) = [(RTContactsManager *)self updateAddressOfContact:meCard2 withAddressIdentifier:identifierCopy toAddressFromMapItem:itemCopy error:error];
   }
 
   else
@@ -2033,42 +2033,42 @@ void __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddr
       }
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA450];
       v17 = @"cannot set address label type. meCard required";
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-      *a5 = [v13 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v14];
+      *error = [v13 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v14];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-- (BOOL)updateAddressLabelTypeOfContact:(id)a3 withAddressIdentifier:(id)a4 toAddressLabelType:(unint64_t)a5 error:(id *)a6
+- (BOOL)updateAddressLabelTypeOfContact:(id)contact withAddressIdentifier:(id)identifier toAddressLabelType:(unint64_t)type error:(id *)error
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  contactCopy = contact;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (contactCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      v35 = v10;
-      v12 = [v9 mutableCopy];
-      v13 = [MEMORY[0x277CBEB18] array];
+      v35 = identifierCopy;
+      v12 = [contactCopy mutableCopy];
+      array = [MEMORY[0x277CBEB18] array];
       v42 = 0;
       v43 = &v42;
       v44 = 0x3032000000;
       v45 = __Block_byref_object_copy__124;
       v46 = __Block_byref_object_dispose__124;
       v47 = 0;
-      v14 = [objc_opt_class() addressLabelTypeToLabel:a5];
-      v15 = [(__CFString *)v12 postalAddresses];
+      v14 = [objc_opt_class() addressLabelTypeToLabel:type];
+      postalAddresses = [(__CFString *)v12 postalAddresses];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __100__RTContactsManager_updateAddressLabelTypeOfContact_withAddressIdentifier_toAddressLabelType_error___block_invoke;
@@ -2076,11 +2076,11 @@ void __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddr
       v16 = v35;
       v38 = v16;
       v41 = &v42;
-      v17 = v13;
+      v17 = array;
       v39 = v17;
       v18 = v14;
       v40 = v18;
-      [v15 enumerateObjectsUsingBlock:v37];
+      [postalAddresses enumerateObjectsUsingBlock:v37];
 
       [(__CFString *)v12 setPostalAddresses:v17];
       v19 = objc_opt_new();
@@ -2090,10 +2090,10 @@ void __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddr
       v21 = [v20 executeSaveRequest:v19 error:&v36];
       v22 = v36;
       v23 = v22;
-      if (a6)
+      if (error)
       {
         v24 = v22;
-        *a6 = v23;
+        *error = v23;
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2141,7 +2141,7 @@ void __93__RTContactsManager_updateAddressOfContact_withAddressIdentifier_toAddr
       v11 = 0;
     }
 
-    if (a6)
+    if (error)
     {
       v35 = v11;
       v33 = MEMORY[0x277CCA9B8];
@@ -2171,7 +2171,7 @@ LABEL_26:
     v11 = v28;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_26;
   }
@@ -2184,7 +2184,7 @@ LABEL_26:
   v31 = [v30 errorWithDomain:@"RTContactsManagerErrorDomain" code:0 userInfo:v12];
 LABEL_24:
   LOBYTE(v21) = 0;
-  *a6 = v31;
+  *error = v31;
 LABEL_25:
 
   v11 = v35;
@@ -2217,16 +2217,16 @@ void __100__RTContactsManager_updateAddressLabelTypeOfContact_withAddressIdentif
   }
 }
 
-- (BOOL)updateAddressLabelTypeOfMeCardWithAddressIdentifier:(id)a3 toAddressLabelType:(unint64_t)a4 error:(id *)a5
+- (BOOL)updateAddressLabelTypeOfMeCardWithAddressIdentifier:(id)identifier toAddressLabelType:(unint64_t)type error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(RTContactsManager *)self meCard];
+  identifierCopy = identifier;
+  meCard = [(RTContactsManager *)self meCard];
 
-  if (v9)
+  if (meCard)
   {
-    v10 = [(RTContactsManager *)self meCard];
-    LOBYTE(a5) = [(RTContactsManager *)self updateAddressLabelTypeOfContact:v10 withAddressIdentifier:v8 toAddressLabelType:a4 error:a5];
+    meCard2 = [(RTContactsManager *)self meCard];
+    LOBYTE(error) = [(RTContactsManager *)self updateAddressLabelTypeOfContact:meCard2 withAddressIdentifier:identifierCopy toAddressLabelType:type error:error];
   }
 
   else
@@ -2242,26 +2242,26 @@ void __100__RTContactsManager_updateAddressLabelTypeOfContact_withAddressIdentif
       }
     }
 
-    if (a5)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA450];
       v16 = @"cannot update address label type. meCard required";
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a5 = [v12 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v13];
+      *error = [v12 errorWithDomain:@"RTContactsManagerErrorDomain" code:1 userInfo:v13];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  cardCopy = card;
+  if (!cardCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2274,15 +2274,15 @@ void __100__RTContactsManager_updateAddressLabelTypeOfContact_withAddressIdentif
     }
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_invoke;
   v8[3] = &unk_2788C4938;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = cardCopy;
+  v7 = cardCopy;
+  dispatch_async(queue, v8);
 }
 
 void __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_invoke(uint64_t a1)
@@ -2303,23 +2303,23 @@ void __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_inv
   }
 }
 
-+ (id)formattedPostalAddressesForContact:(id)a3
++ (id)formattedPostalAddressesForContact:(id)contact
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v34 = a1;
+    selfCopy = self;
     v5 = objc_alloc(MEMORY[0x277CBEB38]);
-    v6 = [v4 postalAddresses];
-    v35 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    postalAddresses = [contactCopy postalAddresses];
+    v35 = [v5 initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v32 = v4;
-    obj = [v4 postalAddresses];
+    v32 = contactCopy;
+    obj = [contactCopy postalAddresses];
     v7 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (!v7)
     {
@@ -2344,15 +2344,15 @@ void __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_inv
         }
 
         v13 = *(*(&v39 + 1) + 8 * v12);
-        v14 = [v13 label];
-        if ([v14 isEqualToString:v10])
+        label = [v13 label];
+        if ([label isEqualToString:v10])
         {
         }
 
         else
         {
-          v15 = [v13 label];
-          v16 = [v15 isEqualToString:v37];
+          label2 = [v13 label];
+          v16 = [label2 isEqualToString:v37];
 
           if (!v16)
           {
@@ -2361,14 +2361,14 @@ void __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_inv
         }
 
         v17 = MEMORY[0x277CBDB80];
-        v18 = [v13 value];
-        v19 = [v17 stringFromPostalAddress:v18 style:0];
+        value = [v13 value];
+        v19 = [v17 stringFromPostalAddress:value style:0];
 
         if (v19)
         {
           v20 = *(v11 + 2992);
-          v21 = [v13 label];
-          v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(v34, "labelStringToAddressLabelType:", v21)}];
+          label3 = [v13 label];
+          v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(selfCopy, "labelStringToAddressLabelType:", label3)}];
           v23 = [v35 objectForKey:v22];
 
           if (v23)
@@ -2379,13 +2379,13 @@ void __61__RTContactsManager_fetchFormattedPostalAddressesFromMeCard___block_inv
           else
           {
             v24 = objc_alloc(MEMORY[0x277CBEB18]);
-            v25 = [v32 postalAddresses];
-            v26 = [v24 initWithCapacity:{objc_msgSend(v25, "count")}];
+            postalAddresses2 = [v32 postalAddresses];
+            v26 = [v24 initWithCapacity:{objc_msgSend(postalAddresses2, "count")}];
 
             [v26 addObject:v19];
             v27 = *(v11 + 2992);
-            v28 = [v13 label];
-            v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(v34, "labelStringToAddressLabelType:", v28)}];
+            label4 = [v13 label];
+            v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(selfCopy, "labelStringToAddressLabelType:", label4)}];
             [v35 setObject:v26 forKey:v29];
           }
 
@@ -2404,7 +2404,7 @@ LABEL_16:
       {
 LABEL_18:
 
-        v4 = v32;
+        contactCopy = v32;
         v30 = v35;
         goto LABEL_20;
       }
@@ -2417,26 +2417,26 @@ LABEL_20:
   return v30;
 }
 
-- (void)fetchContactsFromEmailOrPhoneNumberString:(id)a3 handler:(id)a4
+- (void)fetchContactsFromEmailOrPhoneNumberString:(id)string handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  stringCopy = string;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (stringCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_3:
-      v9 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__RTContactsManager_fetchContactsFromEmailOrPhoneNumberString_handler___block_invoke;
       block[3] = &unk_2788C4500;
       block[4] = self;
-      v13 = v6;
+      v13 = stringCopy;
       v14 = v8;
-      dispatch_async(v9, block);
+      dispatch_async(queue, block);
 
       goto LABEL_10;
     }
@@ -2473,18 +2473,18 @@ LABEL_3:
 LABEL_10:
 }
 
-- (void)_fetchContactsFromEmailOrPhoneNumberString:(id)a3 handler:(id)a4
+- (void)_fetchContactsFromEmailOrPhoneNumberString:(id)string handler:(id)handler
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  stringCopy = string;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (stringCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       IsEmail = IMStringIsEmail();
-      v11 = MEMORY[0x23191AAC0](v7);
+      v11 = MEMORY[0x23191AAC0](stringCopy);
       v12 = v11;
       if ((IsEmail & 1) == 0 && (v11 & 1) == 0)
       {
@@ -2501,7 +2501,7 @@ LABEL_10:
             v63 = 2112;
             v64 = v16;
             v65 = 2112;
-            v66 = v7;
+            v66 = stringCopy;
             _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%@, %@, invalid string passed, %@,", buf, 0x20u);
           }
         }
@@ -2511,7 +2511,7 @@ LABEL_12:
         goto LABEL_47;
       }
 
-      v19 = [(RTContactsManager *)self _contactColumnKeysToFetch];
+      _contactColumnKeysToFetch = [(RTContactsManager *)self _contactColumnKeysToFetch];
       v20 = objc_opt_new();
       if (!v20)
       {
@@ -2532,10 +2532,10 @@ LABEL_12:
       }
 
       aSelector = a2;
-      v21 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v19];
+      v21 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:_contactColumnKeysToFetch];
       if (IsEmail)
       {
-        v22 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v7];
+        v22 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:stringCopy];
         [v21 setPredicate:v22];
       }
 
@@ -2565,7 +2565,7 @@ LABEL_25:
               v63 = 2112;
               v64 = v30;
               v65 = 2117;
-              v66 = v7;
+              v66 = stringCopy;
               v67 = 2048;
               v68 = v32;
               v69 = 2112;
@@ -2586,7 +2586,7 @@ LABEL_25:
 
           else
           {
-            v47 = v19;
+            v47 = _contactColumnKeysToFetch;
             v54 = v21;
             v50 = v20;
             v33 = objc_opt_new();
@@ -2595,8 +2595,8 @@ LABEL_25:
             v57 = 0u;
             v58 = 0u;
             v52 = v26;
-            v34 = [v26 value];
-            v35 = [v34 countByEnumeratingWithState:&v55 objects:v60 count:16];
+            value = [v26 value];
+            v35 = [value countByEnumeratingWithState:&v55 objects:v60 count:16];
             if (v35)
             {
               v36 = v35;
@@ -2607,7 +2607,7 @@ LABEL_25:
                 {
                   if (*v56 != v37)
                   {
-                    objc_enumerationMutation(v34);
+                    objc_enumerationMutation(value);
                   }
 
                   v39 = *(*(&v55 + 1) + 8 * i);
@@ -2621,7 +2621,7 @@ LABEL_25:
                   objc_autoreleasePoolPop(v40);
                 }
 
-                v36 = [v34 countByEnumeratingWithState:&v55 objects:v60 count:16];
+                v36 = [value countByEnumeratingWithState:&v55 objects:v60 count:16];
               }
 
               while (v36);
@@ -2654,7 +2654,7 @@ LABEL_25:
 
             (v9)[2](v9, v33, 0);
 
-            v19 = v47;
+            _contactColumnKeysToFetch = v47;
             v26 = v52;
           }
 
@@ -2662,7 +2662,7 @@ LABEL_46:
           goto LABEL_47;
         }
 
-        v22 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v7];
+        v22 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:stringCopy];
         v25 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v22];
         [v21 setPredicate:v25];
       }
@@ -2702,13 +2702,13 @@ LABEL_46:
 LABEL_47:
 }
 
-- (void)fetchContactsUsingContactIdentifiers:(id)a3 handler:(id)a4
+- (void)fetchContactsUsingContactIdentifiers:(id)identifiers handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!identifiersCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2726,61 +2726,61 @@ LABEL_47:
     }
 
 LABEL_9:
-    v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v16 = "[RTContactsManager fetchContactsUsingContactIdentifiers:handler:]";
       v17 = 1024;
       v18 = 1294;
-      _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+      _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     goto LABEL_9;
   }
 
-  if (![v6 count])
+  if (![identifiersCopy count])
   {
 LABEL_8:
-    v11 = [MEMORY[0x277CBEA60] array];
-    (v8)[2](v8, v11, 0);
+    array = [MEMORY[0x277CBEA60] array];
+    (v8)[2](v8, array, 0);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTContactsManager_fetchContactsUsingContactIdentifiers_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
+  v13 = identifiersCopy;
   v14 = v8;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
 
 LABEL_12:
 }
 
-- (void)_fetchContactsUsingContactIdentifiers:(id)a3 handler:(id)a4
+- (void)_fetchContactsUsingContactIdentifiers:(id)identifiers handler:(id)handler
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (identifiersCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
-      if ([v7 count])
+      if ([identifiersCopy count])
       {
-        v10 = objc_opt_new();
-        if (v10)
+        array = objc_opt_new();
+        if (array)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -2795,20 +2795,20 @@ LABEL_12:
               v52 = 2112;
               v53 = v14;
               v54 = 2048;
-              v55 = [v7 count];
+              v55 = [identifiersCopy count];
               _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, %@, contact identifiers count, %lu,", buf, 0x20u);
             }
           }
 
           v15 = objc_alloc(MEMORY[0x277CBDA70]);
-          v16 = [(RTContactsManager *)self _contactColumnKeysToFetch];
-          v17 = [v15 initWithKeysToFetch:v16];
+          _contactColumnKeysToFetch = [(RTContactsManager *)self _contactColumnKeysToFetch];
+          v17 = [v15 initWithKeysToFetch:_contactColumnKeysToFetch];
 
-          v18 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v7];
+          v18 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:identifiersCopy];
           [v17 setPredicate:v18];
 
           v48 = 0;
-          v19 = [v10 executeFetchRequest:v17 error:&v48];
+          v19 = [array executeFetchRequest:v17 error:&v48];
           v20 = v48;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -2819,7 +2819,7 @@ LABEL_12:
               v23 = NSStringFromClass(v22);
               v24 = NSStringFromSelector(a2);
               v41 = v20;
-              v25 = [v7 count];
+              v25 = [identifiersCopy count];
               [v19 value];
               v26 = v42 = v17;
               v27 = [v26 count];
@@ -2848,15 +2848,15 @@ LABEL_12:
           else
           {
             v43 = v17;
-            v40 = v7;
+            v40 = identifiersCopy;
             v30 = objc_opt_new();
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
             v39 = v19;
-            v31 = [v19 value];
-            v32 = [v31 countByEnumeratingWithState:&v44 objects:v49 count:16];
+            value = [v19 value];
+            v32 = [value countByEnumeratingWithState:&v44 objects:v49 count:16];
             if (v32)
             {
               v33 = v32;
@@ -2867,7 +2867,7 @@ LABEL_12:
                 {
                   if (*v45 != v34)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(value);
                   }
 
                   v36 = *(*(&v44 + 1) + 8 * i);
@@ -2881,14 +2881,14 @@ LABEL_12:
                   objc_autoreleasePoolPop(v37);
                 }
 
-                v33 = [v31 countByEnumeratingWithState:&v44 objects:v49 count:16];
+                v33 = [value countByEnumeratingWithState:&v44 objects:v49 count:16];
               }
 
               while (v33);
             }
 
             (v9)[2](v9, v30, 0);
-            v7 = v40;
+            identifiersCopy = v40;
             v20 = 0;
             v17 = v43;
             v19 = v39;
@@ -2916,8 +2916,8 @@ LABEL_12:
       }
 
 LABEL_18:
-      v10 = [MEMORY[0x277CBEA60] array];
-      (v9)[2](v9, v10, 0);
+      array = [MEMORY[0x277CBEA60] array];
+      (v9)[2](v9, array, 0);
       goto LABEL_36;
     }
   }
@@ -2940,33 +2940,33 @@ LABEL_18:
     }
   }
 
-  v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v51 = "[RTContactsManager _fetchContactsUsingContactIdentifiers:handler:]";
     v52 = 1024;
     LODWORD(v53) = 1316;
-    _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+    _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
 LABEL_36:
 }
 
-- (void)fetchFavoriteHandlesWithHandler:(id)a3
+- (void)fetchFavoriteHandlesWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__RTContactsManager_fetchFavoriteHandlesWithHandler___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -2983,20 +2983,20 @@ LABEL_36:
   }
 }
 
-- (void)_fetchFavoriteHandlesWithHandler:(id)a3
+- (void)_fetchFavoriteHandlesWithHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aSelector = a2;
-    v6 = [(RTContactsManager *)self _favoriteEntries];
+    _favoriteEntries = [(RTContactsManager *)self _favoriteEntries];
     v7 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v6;
+    v8 = _favoriteEntries;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v9)
     {
@@ -3013,12 +3013,12 @@ LABEL_36:
 
           v13 = *(*(&v23 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 value];
+          value = [v13 value];
 
-          if (v15)
+          if (value)
           {
-            v16 = [v13 value];
-            [v7 addObject:v16];
+            value2 = [v13 value];
+            [v7 addObject:value2];
           }
 
           objc_autoreleasePoolPop(v14);
@@ -3049,7 +3049,7 @@ LABEL_36:
       }
     }
 
-    v5[2](v5, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
@@ -3066,20 +3066,20 @@ LABEL_36:
   }
 }
 
-- (void)fetchFavoriteContactsWithHandler:(id)a3
+- (void)fetchFavoriteContactsWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__RTContactsManager_fetchFavoriteContactsWithHandler___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -3096,19 +3096,19 @@ LABEL_36:
   }
 }
 
-- (void)_fetchFavoriteContactsWithHandler:(id)a3
+- (void)_fetchFavoriteContactsWithHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(RTContactsManager *)self _favoriteEntries];
+    _favoriteEntries = [(RTContactsManager *)self _favoriteEntries];
     v7 = objc_opt_new();
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v6;
+    v8 = _favoriteEntries;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (v9)
     {
@@ -3125,10 +3125,10 @@ LABEL_36:
 
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 contact];
-          if (v15)
+          contact = [v13 contact];
+          if (contact)
           {
-            [v7 addObject:v15];
+            [v7 addObject:contact];
           }
 
           objc_autoreleasePoolPop(v14);
@@ -3159,7 +3159,7 @@ LABEL_36:
       }
     }
 
-    v5[2](v5, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
@@ -3179,9 +3179,9 @@ LABEL_36:
 - (id)_favoriteEntries
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBDAF8] sharedInstance];
-  v5 = v4;
-  if (!v4)
+  mEMORY[0x277CBDAF8] = [MEMORY[0x277CBDAF8] sharedInstance];
+  v5 = mEMORY[0x277CBDAF8];
+  if (!mEMORY[0x277CBDAF8])
   {
     v40 = *MEMORY[0x277CCA450];
     v41[0] = @"Unable to create favorites store.";
@@ -3200,14 +3200,14 @@ LABEL_36:
   }
 
   aSelector = a2;
-  v27 = v4;
-  v6 = [v4 entries];
+  v27 = mEMORY[0x277CBDAF8];
+  entries = [mEMORY[0x277CBDAF8] entries];
   v7 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v6;
+  obj = entries;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v8)
   {
@@ -3223,13 +3223,13 @@ LABEL_36:
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 contactProperty];
-        v14 = [v13 contact];
+        contactProperty = [v12 contactProperty];
+        contact = [contactProperty contact];
 
-        v15 = [(RTContactsManager *)self _getRTContactFromCNContact:v14];
+        v15 = [(RTContactsManager *)self _getRTContactFromCNContact:contact];
         v16 = [RTFavoritesEntry alloc];
-        v17 = [v12 value];
-        v18 = [(RTFavoritesEntry *)v16 initWithContact:v15 value:v17];
+        value = [v12 value];
+        v18 = [(RTFavoritesEntry *)v16 initWithContact:v15 value:value];
 
         [v7 addObject:v18];
       }
@@ -3270,20 +3270,20 @@ LABEL_18:
   return v7;
 }
 
-- (void)fetchRelationshipContactsFromMeCardWithHandler:(id)a3
+- (void)fetchRelationshipContactsFromMeCardWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __68__RTContactsManager_fetchRelationshipContactsFromMeCardWithHandler___block_invoke;
     v7[3] = &unk_2788C4938;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -3300,19 +3300,19 @@ LABEL_18:
   }
 }
 
-- (void)_fetchRelationshipContactsFromMeCardWithHandler:(id)a3
+- (void)_fetchRelationshipContactsFromMeCardWithHandler:(id)handler
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
     if (v7)
     {
       aSelector = a2;
-      v8 = [(RTContactsManager *)self _contactColumnKeysToFetch];
-      v9 = [v8 arrayByAddingObject:*MEMORY[0x277CBD120]];
+      _contactColumnKeysToFetch = [(RTContactsManager *)self _contactColumnKeysToFetch];
+      v9 = [_contactColumnKeysToFetch arrayByAddingObject:*MEMORY[0x277CBD120]];
       v47 = 0;
       v10 = [v7 _crossPlatformUnifiedMeContactWithKeysToFetch:v9 error:&v47];
       v11 = v47;
@@ -3320,7 +3320,7 @@ LABEL_18:
       if (v10)
       {
         v34 = v7;
-        v35 = v5;
+        v35 = handlerCopy;
         v33 = v10;
         [v10 contactRelations];
         v43 = 0u;
@@ -3343,10 +3343,10 @@ LABEL_18:
                 objc_enumerationMutation(obj);
               }
 
-              v16 = [*(*(&v43 + 1) + 8 * v14) value];
-              v17 = [v16 name];
+              value = [*(*(&v43 + 1) + 8 * v14) value];
+              name = [value name];
               v42 = v15;
-              v18 = [(RTContactsManager *)self _queryContactsForGivenName:v17 error:&v42];
+              v18 = [(RTContactsManager *)self _queryContactsForGivenName:name error:&v42];
               v19 = v42;
 
               v40 = 0u;
@@ -3391,7 +3391,7 @@ LABEL_18:
         }
 
         v7 = v34;
-        v5 = v35;
+        handlerCopy = v35;
         v10 = v33;
       }
 
@@ -3414,7 +3414,7 @@ LABEL_18:
         }
       }
 
-      v5[2](v5, v6, 0);
+      handlerCopy[2](handlerCopy, v6, 0);
     }
 
     else
@@ -3431,7 +3431,7 @@ LABEL_18:
         _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      (v5)[2](v5, 0, v11);
+      (handlerCopy)[2](handlerCopy, 0, v11);
     }
   }
 
@@ -3449,25 +3449,25 @@ LABEL_18:
   }
 }
 
-- (id)_queryContactsForGivenName:(id)a3 error:(id *)a4
+- (id)_queryContactsForGivenName:(id)name error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  nameCopy = name;
+  if (nameCopy)
   {
     v7 = objc_opt_new();
     if (v7)
     {
-      v8 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v6];
-      v9 = [(RTContactsManager *)self _contactColumnKeysToFetch];
+      v8 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:nameCopy];
+      _contactColumnKeysToFetch = [(RTContactsManager *)self _contactColumnKeysToFetch];
       v17 = 0;
-      v10 = [v7 unifiedContactsMatchingPredicate:v8 keysToFetch:v9 error:&v17];
+      array = [v7 unifiedContactsMatchingPredicate:v8 keysToFetch:_contactColumnKeysToFetch error:&v17];
       v11 = v17;
 
-      if (a4)
+      if (error)
       {
         v12 = v11;
-        *a4 = v11;
+        *error = v11;
       }
     }
 
@@ -3485,13 +3485,13 @@ LABEL_18:
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v15 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
-      v10 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
   }
 
@@ -3504,26 +3504,26 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: name", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"name");
+      *error = _RTErrorInvalidParameterCreate(@"name");
     }
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v10;
+  return array;
 }
 
-- (id)_getRTContactFromCNContact:(id)a3
+- (id)_getRTContactFromCNContact:(id)contact
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  queue = [(RTNotifier *)self queue];
 
-  if (v5)
+  if (queue)
   {
-    if (v4)
+    if (contactCopy)
     {
       goto LABEL_3;
     }
@@ -3541,57 +3541,57 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", buf, 0x12u);
     }
 
-    if (v4)
+    if (contactCopy)
     {
 LABEL_3:
-      if ([v4 isKeyAvailable:*MEMORY[0x277CBD0C8]])
+      if ([contactCopy isKeyAvailable:*MEMORY[0x277CBD0C8]])
       {
-        v6 = [v4 postalAddresses];
-        v7 = [(RTContactsManager *)self _getPostalAddressesUsingCNContactPostalAddresses:v6];
+        postalAddresses = [contactCopy postalAddresses];
+        array = [(RTContactsManager *)self _getPostalAddressesUsingCNContactPostalAddresses:postalAddresses];
       }
 
       else
       {
-        v7 = [MEMORY[0x277CBEA60] array];
+        array = [MEMORY[0x277CBEA60] array];
       }
 
-      if ([v4 isKeyAvailable:*MEMORY[0x277CBD098]])
+      if ([contactCopy isKeyAvailable:*MEMORY[0x277CBD098]])
       {
-        v10 = [v4 phoneNumbers];
-        v11 = [(RTContactsManager *)self _getPhoneNumberStringsUsingCNContactPhoneNumbers:v10];
-      }
-
-      else
-      {
-        v11 = [MEMORY[0x277CBEA60] array];
-      }
-
-      if ([v4 isKeyAvailable:*MEMORY[0x277CBCFC0]])
-      {
-        v12 = [v4 emailAddresses];
-        v13 = [(RTContactsManager *)self _getEmailAddressStringsUsingCNContactEmailAddresses:v12];
+        phoneNumbers = [contactCopy phoneNumbers];
+        array2 = [(RTContactsManager *)self _getPhoneNumberStringsUsingCNContactPhoneNumbers:phoneNumbers];
       }
 
       else
       {
-        v13 = [MEMORY[0x277CBEA60] array];
+        array2 = [MEMORY[0x277CBEA60] array];
+      }
+
+      if ([contactCopy isKeyAvailable:*MEMORY[0x277CBCFC0]])
+      {
+        emailAddresses = [contactCopy emailAddresses];
+        array3 = [(RTContactsManager *)self _getEmailAddressStringsUsingCNContactEmailAddresses:emailAddresses];
+      }
+
+      else
+      {
+        array3 = [MEMORY[0x277CBEA60] array];
       }
 
       v14 = [RTContact alloc];
-      v23 = [v4 identifier];
-      v15 = [v4 givenName];
-      v16 = [v4 middleName];
-      v17 = [v4 familyName];
-      v18 = v7;
-      if (!v7)
+      identifier = [contactCopy identifier];
+      givenName = [contactCopy givenName];
+      middleName = [contactCopy middleName];
+      familyName = [contactCopy familyName];
+      array4 = array;
+      if (!array)
       {
-        v18 = [MEMORY[0x277CBEA60] array];
+        array4 = [MEMORY[0x277CBEA60] array];
       }
 
-      v19 = v11;
-      if (v11)
+      array5 = array2;
+      if (array2)
       {
-        if (v13)
+        if (array3)
         {
           goto LABEL_22;
         }
@@ -3599,15 +3599,15 @@ LABEL_3:
 
       else
       {
-        v19 = [MEMORY[0x277CBEA60] array];
-        if (v13)
+        array5 = [MEMORY[0x277CBEA60] array];
+        if (array3)
         {
 LABEL_22:
-          v9 = [(RTContact *)v14 initWithIdentifier:v23 givenName:v15 middleName:v16 familyName:v17 postalAddresses:v18 phoneNumbers:v19 emailAddresses:v13];
-          if (v11)
+          v9 = [(RTContact *)v14 initWithIdentifier:identifier givenName:givenName middleName:middleName familyName:familyName postalAddresses:array4 phoneNumbers:array5 emailAddresses:array3];
+          if (array2)
           {
 LABEL_24:
-            if (!v7)
+            if (!array)
             {
             }
 
@@ -3621,11 +3621,11 @@ LABEL_23:
       }
 
       [MEMORY[0x277CBEA60] array];
-      v21 = v22 = v13;
-      v9 = [(RTContact *)v14 initWithIdentifier:v23 givenName:v15 middleName:v16 familyName:v17 postalAddresses:v18 phoneNumbers:v19 emailAddresses:v21];
+      v21 = v22 = array3;
+      v9 = [(RTContact *)v14 initWithIdentifier:identifier givenName:givenName middleName:middleName familyName:familyName postalAddresses:array4 phoneNumbers:array5 emailAddresses:v21];
 
-      v13 = v22;
-      if (v11)
+      array3 = v22;
+      if (array2)
       {
         goto LABEL_24;
       }
@@ -3634,14 +3634,14 @@ LABEL_23:
     }
   }
 
-  v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v25 = "[RTContactsManager _getRTContactFromCNContact:]";
     v26 = 1024;
     v27 = 1594;
-    _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: contact (in %s:%d)", buf, 0x12u);
+    _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: contact (in %s:%d)", buf, 0x12u);
   }
 
   v9 = 0;
@@ -3650,25 +3650,25 @@ LABEL_27:
   return v9;
 }
 
-- (id)_getPostalAddressesUsingCNContactPostalAddresses:(id)a3
+- (id)_getPostalAddressesUsingCNContactPostalAddresses:(id)addresses
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 dateByAddingTimeInterval:4838400.0];
+  addressesCopy = addresses;
+  array = [v4 array];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:4838400.0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__RTContactsManager__getPostalAddressesUsingCNContactPostalAddresses___block_invoke;
   v15[3] = &unk_2788CF060;
   v15[4] = self;
-  v16 = v7;
+  v16 = date;
   v17 = v8;
-  v9 = v6;
+  v9 = array;
   v18 = v9;
   v10 = v8;
-  v11 = v7;
-  [v5 enumerateObjectsUsingBlock:v15];
+  v11 = date;
+  [addressesCopy enumerateObjectsUsingBlock:v15];
 
   v12 = v18;
   v13 = v9;
@@ -3693,9 +3693,9 @@ void __70__RTContactsManager__getPostalAddressesUsingCNContactPostalAddresses___
   }
 }
 
-- (id)_getPhoneNumberStringsUsingCNContactPhoneNumbers:(id)a3
+- (id)_getPhoneNumberStringsUsingCNContactPhoneNumbers:(id)numbers
 {
-  v3 = a3;
+  numbersCopy = numbers;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -3703,7 +3703,7 @@ void __70__RTContactsManager__getPostalAddressesUsingCNContactPostalAddresses___
   v7[3] = &unk_2788CF010;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [numbersCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -3721,9 +3721,9 @@ void __70__RTContactsManager__getPhoneNumberStringsUsingCNContactPhoneNumbers___
   }
 }
 
-- (id)_getEmailAddressStringsUsingCNContactEmailAddresses:(id)a3
+- (id)_getEmailAddressStringsUsingCNContactEmailAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -3731,7 +3731,7 @@ void __70__RTContactsManager__getPhoneNumberStringsUsingCNContactPhoneNumbers___
   v7[3] = &unk_2788CF010;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [addressesCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }

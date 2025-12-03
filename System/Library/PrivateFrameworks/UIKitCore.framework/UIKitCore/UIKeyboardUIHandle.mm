@@ -1,42 +1,42 @@
 @interface UIKeyboardUIHandle
-- (UIKeyboardUIHandle)initWithService:(id)a3 connection:(id)a4;
-- (id)snapshotForOptions:(id)a3;
-- (id)snapshotForView:(id)a3;
-- (void)setKeyboardAlpha:(id)a3 force:(id)a4 processId:(id)a5;
+- (UIKeyboardUIHandle)initWithService:(id)service connection:(id)connection;
+- (id)snapshotForOptions:(id)options;
+- (id)snapshotForView:(id)view;
+- (void)setKeyboardAlpha:(id)alpha force:(id)force processId:(id)id;
 @end
 
 @implementation UIKeyboardUIHandle
 
-- (UIKeyboardUIHandle)initWithService:(id)a3 connection:(id)a4
+- (UIKeyboardUIHandle)initWithService:(id)service connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = UIKeyboardUIHandle;
   v8 = [(UIKeyboardUIHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_service, v6);
-    objc_storeStrong(&v9->_connection, a4);
+    objc_storeWeak(&v8->_service, serviceCopy);
+    objc_storeStrong(&v9->_connection, connection);
   }
 
   return v9;
 }
 
-- (id)snapshotForView:(id)a3
+- (id)snapshotForView:(id)view
 {
   v44[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [v4 _window];
-  v6 = [v5 screen];
+  _window = [viewCopy _window];
+  screen = [_window screen];
 
-  if (v6)
+  if (screen)
   {
-    [v6 scale];
+    [screen scale];
     v8 = v7;
-    [v4 frame];
+    [viewCopy frame];
     v10 = v9;
     v12 = v11;
     v13 = objc_alloc_init(UIKeyboardUISnapshot);
@@ -49,20 +49,20 @@
     v16 = *MEMORY[0x1E6979F68];
     v43[0] = v15;
     v43[1] = v16;
-    v40 = v6;
-    v39 = [v6 displayConfiguration];
-    v38 = [v39 name];
-    v44[1] = v38;
+    v40 = screen;
+    displayConfiguration = [screen displayConfiguration];
+    name = [displayConfiguration name];
+    v44[1] = name;
     v43[2] = *MEMORY[0x1E6979F40];
     v17 = MEMORY[0x1E696AD98];
-    v37 = [v4 layer];
-    v18 = [v37 context];
-    v19 = [v17 numberWithUnsignedInt:{objc_msgSend(v18, "contextId")}];
+    layer = [viewCopy layer];
+    context = [layer context];
+    v19 = [v17 numberWithUnsignedInt:{objc_msgSend(context, "contextId")}];
     v44[2] = v19;
     v43[3] = *MEMORY[0x1E6979FA8];
     v20 = MEMORY[0x1E696AD98];
-    v21 = [v4 layer];
-    v22 = [v20 numberWithUnsignedLongLong:v21];
+    layer2 = [viewCopy layer];
+    v22 = [v20 numberWithUnsignedLongLong:layer2];
     v44[3] = v22;
     v43[4] = *MEMORY[0x1E6979F50];
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[UIKeyboardUISnapshot slotID](v13, "slotID")}];
@@ -91,7 +91,7 @@
     v43[7] = v31;
     v44[7] = MEMORY[0x1E695E118];
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:8];
-    v33 = [(UIView *)v4 _appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:v32];
+    v33 = [(UIView *)viewCopy _appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:v32];
 
     if (CARenderServerSnapshot())
     {
@@ -110,7 +110,7 @@
       v34 = 0;
     }
 
-    v6 = v40;
+    screen = v40;
   }
 
   else
@@ -128,11 +128,11 @@
   return v34;
 }
 
-- (id)snapshotForOptions:(id)a3
+- (id)snapshotForOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
-    v4 = [a3 unsignedIntegerValue];
+    unsignedIntegerValue = [options unsignedIntegerValue];
     v8 = 0;
     v9 = &v8;
     v10 = 0x3032000000;
@@ -144,7 +144,7 @@
     block[2] = __41__UIKeyboardUIHandle_snapshotForOptions___block_invoke;
     block[3] = &unk_1E711BF88;
     block[5] = &v8;
-    block[6] = v4;
+    block[6] = unsignedIntegerValue;
     block[4] = self;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
     v5 = v9[5];
@@ -216,24 +216,24 @@ LABEL_13:
   }
 }
 
-- (void)setKeyboardAlpha:(id)a3 force:(id)a4 processId:(id)a5
+- (void)setKeyboardAlpha:(id)alpha force:(id)force processId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BSServiceConnectionHost *)self->_connection remoteProcess];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 hasPrefix:@"com.apple."];
+  alphaCopy = alpha;
+  forceCopy = force;
+  idCopy = id;
+  remoteProcess = [(BSServiceConnectionHost *)self->_connection remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
+  v13 = [bundleIdentifier hasPrefix:@"com.apple."];
 
-  if (v8 && v13)
+  if (alphaCopy && v13)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__UIKeyboardUIHandle_setKeyboardAlpha_force_processId___block_invoke;
     block[3] = &unk_1E70F6228;
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
+    v15 = alphaCopy;
+    v16 = forceCopy;
+    v17 = idCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 }

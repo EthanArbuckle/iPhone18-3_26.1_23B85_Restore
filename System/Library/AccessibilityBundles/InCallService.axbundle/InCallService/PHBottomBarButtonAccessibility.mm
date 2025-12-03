@@ -8,13 +8,13 @@
 - (id)accessibilityLabel
 {
   v3 = [(PHBottomBarButtonAccessibility *)self safeValueForKey:@"action"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 > 19)
+  if (integerValue > 19)
   {
-    if (v4 <= 21)
+    if (integerValue <= 21)
     {
-      if (v4 == 20)
+      if (integerValue == 20)
       {
         v5 = @"camera.flip";
       }
@@ -27,22 +27,22 @@
       goto LABEL_19;
     }
 
-    if (v4 == 26)
+    if (integerValue == 26)
     {
       v5 = @"call.text";
       goto LABEL_19;
     }
 
-    if (v4 == 22)
+    if (integerValue == 22)
     {
       v5 = @"audio.route";
       goto LABEL_19;
     }
   }
 
-  else if (v4 > 14)
+  else if (integerValue > 14)
   {
-    if ((v4 - 15) < 2)
+    if ((integerValue - 15) < 2)
     {
       v5 = @"end.call";
       goto LABEL_19;
@@ -51,33 +51,33 @@
 
   else
   {
-    if ((v4 - 7) < 2)
+    if ((integerValue - 7) < 2)
     {
       v5 = @"decline.call";
       goto LABEL_19;
     }
 
-    if (v4 == 1)
+    if (integerValue == 1)
     {
       v5 = @"answer.call";
       goto LABEL_19;
     }
 
-    if (v4 == 3)
+    if (integerValue == 3)
     {
       v5 = @"answer.video.call";
 LABEL_19:
-      v6 = accessibilityMobilePhoneLocalizedString(v5);
+      accessibilityLabel = accessibilityMobilePhoneLocalizedString(v5);
       goto LABEL_20;
     }
   }
 
   v8.receiver = self;
   v8.super_class = PHBottomBarButtonAccessibility;
-  v6 = [(PHBottomBarButtonAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(PHBottomBarButtonAccessibility *)&v8 accessibilityLabel];
 LABEL_20:
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityUserInputLabels
@@ -85,13 +85,13 @@ LABEL_20:
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v9.receiver = self;
   v9.super_class = PHBottomBarButtonAccessibility;
-  v4 = [(PHBottomBarButtonAccessibility *)&v9 accessibilityUserInputLabels];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityUserInputLabels = [(PHBottomBarButtonAccessibility *)&v9 accessibilityUserInputLabels];
+  [v3 axSafelyAddObjectsFromArray:accessibilityUserInputLabels];
 
   v5 = [(PHBottomBarButtonAccessibility *)self safeValueForKey:@"action"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  if ((v6 | 2) == 3)
+  if ((integerValue | 2) == 3)
   {
     v7 = accessibilityMobilePhoneLocalizedString(@"accept");
     [v3 addObject:v7];

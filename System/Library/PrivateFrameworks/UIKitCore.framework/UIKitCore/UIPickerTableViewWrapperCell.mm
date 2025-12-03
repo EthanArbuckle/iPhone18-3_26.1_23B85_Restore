@@ -1,23 +1,23 @@
 @interface UIPickerTableViewWrapperCell
 - (UIEdgeInsets)wrappedViewInsets;
-- (UIPickerTableViewWrapperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (UIPickerTableViewWrapperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_anyDateLabel;
-- (void)_setIsCenterCell:(BOOL)a3 shouldModifyAlphaOfView:(BOOL)a4;
+- (void)_setIsCenterCell:(BOOL)cell shouldModifyAlphaOfView:(BOOL)view;
 - (void)_updateWrappedView;
 - (void)_updateWrappedViewFrame;
 - (void)prepareForReuse;
-- (void)resizeSubviewsWithOldSize:(CGSize)a3;
-- (void)setWrappedView:(id)a3;
-- (void)setWrappedViewInsets:(UIEdgeInsets)a3;
+- (void)resizeSubviewsWithOldSize:(CGSize)size;
+- (void)setWrappedView:(id)view;
+- (void)setWrappedViewInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation UIPickerTableViewWrapperCell
 
-- (UIPickerTableViewWrapperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIPickerTableViewWrapperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = UIPickerTableViewWrapperCell;
-  v4 = [(UIPickerTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UIPickerTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
@@ -37,13 +37,13 @@
   return v4;
 }
 
-- (void)_setIsCenterCell:(BOOL)a3 shouldModifyAlphaOfView:(BOOL)a4
+- (void)_setIsCenterCell:(BOOL)cell shouldModifyAlphaOfView:(BOOL)view
 {
-  if (a4)
+  if (view)
   {
     wrappedViewContainer = self->_wrappedViewContainer;
     v7 = 0.447;
-    if (a3)
+    if (cell)
     {
       v7 = 1.0;
     }
@@ -57,48 +57,48 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(UIView *)self->_wrappedView useDigitFont];
-      if (a3)
+      useDigitFont = [(UIView *)self->_wrappedView useDigitFont];
+      if (cell)
       {
-        if (v8)
+        if (useDigitFont)
         {
-          v9 = [(UIPickerTableViewCell *)self style];
-          v10 = [(UIView *)self traitCollection];
-          v11 = [v9 centerCellDigitFontWithTraitCollection:v10];
+          style = [(UIPickerTableViewCell *)self style];
+          traitCollection = [(UIView *)self traitCollection];
+          v11 = [style centerCellDigitFontWithTraitCollection:traitCollection];
           goto LABEL_17;
         }
 
         goto LABEL_12;
       }
 
-      if (v8)
+      if (useDigitFont)
       {
-        v9 = [(UIPickerTableViewCell *)self style];
-        v10 = [(UIView *)self traitCollection];
-        v11 = [v9 nonCenterCellDigitFontWithTraitCollection:v10];
+        style = [(UIPickerTableViewCell *)self style];
+        traitCollection = [(UIView *)self traitCollection];
+        v11 = [style nonCenterCellDigitFontWithTraitCollection:traitCollection];
         goto LABEL_17;
       }
     }
 
-    else if (a3)
+    else if (cell)
     {
 LABEL_12:
-      v9 = [(UIPickerTableViewCell *)self style];
-      v10 = [(UIView *)self traitCollection];
-      v11 = [v9 centerCellFontWithTraitCollection:v10];
+      style = [(UIPickerTableViewCell *)self style];
+      traitCollection = [(UIView *)self traitCollection];
+      v11 = [style centerCellFontWithTraitCollection:traitCollection];
       goto LABEL_17;
     }
 
-    v9 = [(UIPickerTableViewCell *)self style];
-    v10 = [(UIView *)self traitCollection];
-    v11 = [v9 nonCenterCellFontWithTraitCollection:v10];
+    style = [(UIPickerTableViewCell *)self style];
+    traitCollection = [(UIView *)self traitCollection];
+    v11 = [style nonCenterCellFontWithTraitCollection:traitCollection];
 LABEL_17:
     v17 = v11;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(UIView *)self->_wrappedView titleLabel];
+      titleLabel = [(UIView *)self->_wrappedView titleLabel];
     }
 
     else
@@ -113,14 +113,14 @@ LABEL_22:
         return;
       }
 
-      v15 = [(UIView *)self->_wrappedView dateLabel];
-      [v15 setFont:v17];
+      dateLabel = [(UIView *)self->_wrappedView dateLabel];
+      [dateLabel setFont:v17];
 
-      v12 = [(UIView *)self->_wrappedView weekdayLabel];
+      titleLabel = [(UIView *)self->_wrappedView weekdayLabel];
     }
 
-    v16 = v12;
-    [v12 setFont:v17];
+    v16 = titleLabel;
+    [titleLabel setFont:v17];
 
     v14 = v17;
     goto LABEL_22;
@@ -191,9 +191,9 @@ LABEL_22:
     *p_wrappedViewSize = *MEMORY[0x1E695F060];
   }
 
-  v7 = [(UIView *)self->_wrappedView backgroundColor];
+  backgroundColor = [(UIView *)self->_wrappedView backgroundColor];
 
-  if (!v7)
+  if (!backgroundColor)
   {
     v8 = +[UIColor clearColor];
     [(UIView *)self->_wrappedView setBackgroundColor:v8];
@@ -204,37 +204,37 @@ LABEL_22:
   [(UITableViewCell *)self setSelectionStyle:0];
 }
 
-- (void)setWrappedView:(id)a3
+- (void)setWrappedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   wrappedView = self->_wrappedView;
-  v7 = v5;
-  if (wrappedView != v5)
+  v7 = viewCopy;
+  if (wrappedView != viewCopy)
   {
     [(UIView *)wrappedView removeFromSuperview];
-    objc_storeStrong(&self->_wrappedView, a3);
+    objc_storeStrong(&self->_wrappedView, view);
     [(UIView *)self->_wrappedViewContainer addSubview:self->_wrappedView];
   }
 
   [(UIPickerTableViewWrapperCell *)self _updateWrappedView];
 }
 
-- (void)setWrappedViewInsets:(UIEdgeInsets)a3
+- (void)setWrappedViewInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_wrappedViewInsets.top, v3), vceqq_f64(*&self->_wrappedViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_wrappedViewInsets = a3;
+    self->_wrappedViewInsets = insets;
     [(UIPickerTableViewWrapperCell *)self _updateWrappedViewFrame];
   }
 }
 
-- (void)resizeSubviewsWithOldSize:(CGSize)a3
+- (void)resizeSubviewsWithOldSize:(CGSize)size
 {
-  [(UIPickerTableViewWrapperCell *)self _updateWrappedViewFrame:a3.width];
+  [(UIPickerTableViewWrapperCell *)self _updateWrappedViewFrame:size.width];
   wrappedView = self->_wrappedView;
   if (wrappedView)
   {
@@ -262,7 +262,7 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIView *)self->_wrappedView titleLabel];
+    titleLabel = [(UIView *)self->_wrappedView titleLabel];
   }
 
   else
@@ -270,16 +270,16 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [(UIView *)self->_wrappedView dateLabel];
+      titleLabel = [(UIView *)self->_wrappedView dateLabel];
     }
 
     else
     {
-      v3 = 0;
+      titleLabel = 0;
     }
   }
 
-  return v3;
+  return titleLabel;
 }
 
 - (UIEdgeInsets)wrappedViewInsets

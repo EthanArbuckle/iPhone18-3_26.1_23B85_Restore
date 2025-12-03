@@ -1,26 +1,26 @@
 @interface NTKPrideAnalogFaceBundle
 + (id)identifier;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKPrideAnalogFaceBundle
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 233;
@@ -31,12 +31,12 @@
     v4 = 33;
   }
 
-  v5 = [NTKPrideAnalogFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKPrideAnalogFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -51,7 +51,7 @@
   return v3;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_25848;
   v6 = &off_25860;
@@ -60,16 +60,16 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
-    v5 = [(NTKPrideAnalogFaceBundle *)self defaultFaceForDevice:v4];
-    v6 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:v4];
+    v5 = [(NTKPrideAnalogFaceBundle *)self defaultFaceForDevice:deviceCopy];
+    v6 = [NTKPrideStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
     [v5 selectOption:v6 forCustomEditMode:12 slot:0];
 
-    v7 = [NTKPrideAnalogShapeEditOption optionWithStyle:1 forDevice:v4];
+    v7 = [NTKPrideAnalogShapeEditOption optionWithStyle:1 forDevice:deviceCopy];
     [v5 selectOption:v7 forCustomEditMode:15 slot:0];
 
     v8 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:14 zOrder:4000];
@@ -87,7 +87,7 @@
   {
     v13.receiver = self;
     v13.super_class = NTKPrideAnalogFaceBundle;
-    v11 = [(NTKPrideAnalogFaceBundle *)&v13 galleryFacesForDevice:v4];
+    v11 = [(NTKPrideAnalogFaceBundle *)&v13 galleryFacesForDevice:deviceCopy];
   }
 
   return v11;

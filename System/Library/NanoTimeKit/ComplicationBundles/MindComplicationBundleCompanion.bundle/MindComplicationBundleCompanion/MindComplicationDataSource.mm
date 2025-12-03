@@ -1,26 +1,26 @@
 @interface MindComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 + (NSNumber)legacyNTKComplicationType;
 + (NSString)appIdentifier;
 + (NSString)localizedAppName;
 - (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)init;
-- (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation MindComplicationDataSource
 
-- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)descriptor family:(int64_t)family completion:(id)completion
 {
   v9 = (*(*(sub_33E0(&qword_10508, "<\v") - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = descriptor;
+  v13[3] = family;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_68BC();
@@ -35,25 +35,25 @@
   v16[3] = 0;
   v16[4] = &unk_6F10;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  descriptorCopy = descriptor;
+  selfCopy = self;
   sub_2784(0, 0, v11, &unk_6F20, v16);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v4 = a4;
-  v5 = sub_2E7C(v4);
+  deviceCopy = device;
+  v5 = sub_2E7C(deviceCopy);
 
   return v5 & 1;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  LOBYTE(a3) = sub_30AC(a3, v5);
+  deviceCopy = device;
+  LOBYTE(family) = sub_30AC(family, deviceCopy);
 
-  return a3 & 1;
+  return family & 1;
 }
 
 + (NSString)appIdentifier
@@ -87,21 +87,21 @@
   return v3;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_324C(v5, v4);
+  selfCopy = self;
+  sub_324C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for MindComplicationDataSource();
-  return [(MindComplicationDataSource *)&v9 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(MindComplicationDataSource *)&v9 initWithComplication:complication family:family forDevice:device];
 }
 
 - (_TtC31MindComplicationBundleCompanion26MindComplicationDataSource)init

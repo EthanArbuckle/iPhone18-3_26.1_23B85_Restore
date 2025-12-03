@@ -1,7 +1,7 @@
 @interface ICURLBagEnhancedAudioConfiguration
-- (ICURLBagEnhancedAudioConfiguration)initWithBagEnhancedAudioDictionary:(id)a3;
+- (ICURLBagEnhancedAudioConfiguration)initWithBagEnhancedAudioDictionary:(id)dictionary;
 - (NSArray)prefetchSKDs;
-- (id)_urlForBagEnhancedAudioKey:(id)a3;
+- (id)_urlForBagEnhancedAudioKey:(id)key;
 @end
 
 @implementation ICURLBagEnhancedAudioConfiguration
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (id)_urlForBagEnhancedAudioKey:(id)a3
+- (id)_urlForBagEnhancedAudioKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_bagEnhancedAudioDictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_bagEnhancedAudioDictionary objectForKey:key];
   if (_NSIsNSString())
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
@@ -38,16 +38,16 @@
   return v4;
 }
 
-- (ICURLBagEnhancedAudioConfiguration)initWithBagEnhancedAudioDictionary:(id)a3
+- (ICURLBagEnhancedAudioConfiguration)initWithBagEnhancedAudioDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICURLBagEnhancedAudioConfiguration;
   v6 = [(ICURLBagEnhancedAudioConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bagEnhancedAudioDictionary, a3);
+    objc_storeStrong(&v6->_bagEnhancedAudioDictionary, dictionary);
   }
 
   return v7;

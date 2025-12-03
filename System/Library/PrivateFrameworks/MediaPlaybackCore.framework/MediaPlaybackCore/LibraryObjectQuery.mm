@@ -1,10 +1,10 @@
 @interface LibraryObjectQuery
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3;
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database;
 - (MPIdentifierSet)inputIdentifiers;
 - (MPObjectDatabaseProgressiveResult)parentResult;
-- (void)setIdentifiers:(id)a3 forDatabase:(id)a4;
-- (void)setInputIdentifiers:(id)a3;
-- (void)setParentResult:(id)a3;
+- (void)setIdentifiers:(id)identifiers forDatabase:(id)database;
+- (void)setInputIdentifiers:(id)identifiers;
+- (void)setParentResult:(id)result;
 @end
 
 @implementation LibraryObjectQuery
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setInputIdentifiers:(id)a3
+- (void)setInputIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5CAFAE0(v4);
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  sub_1C5CAFAE0(identifiersCopy);
 }
 
 - (MPObjectDatabaseProgressiveResult)parentResult
@@ -30,24 +30,24 @@
   return v2;
 }
 
-- (void)setParentResult:(id)a3
+- (void)setParentResult:(id)result
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5CAFB98(a3);
+  selfCopy = self;
+  sub_1C5CAFB98(result);
 }
 
-- (void)setIdentifiers:(id)a3 forDatabase:(id)a4
+- (void)setIdentifiers:(id)identifiers forDatabase:(id)database
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1C5CAFBB0(a3);
+  selfCopy = self;
+  sub_1C5CAFBB0(identifiers);
 
   swift_unknownObjectRelease();
 }
 
-- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)a3
+- ($2F6F4602BBD9A38257A07259C79964DD)tokenForDatabase:(id)database
 {
   v3 = sub_1C5CAFC78();
   result.var1 = v4;

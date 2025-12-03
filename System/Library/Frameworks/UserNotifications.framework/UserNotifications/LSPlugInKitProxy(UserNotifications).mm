@@ -7,18 +7,18 @@
 
 - (id)un_applicationBundleIdentifier
 {
-  v1 = [a1 containingBundle];
-  v2 = [v1 bundleIdentifier];
+  containingBundle = [self containingBundle];
+  bundleIdentifier = [containingBundle bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 - (id)un_applicationBundleURL
 {
-  v1 = [a1 containingBundle];
-  v2 = [v1 bundleURL];
+  containingBundle = [self containingBundle];
+  bundleURL = [containingBundle bundleURL];
 
-  return v2;
+  return bundleURL;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface ATXSearchFeedbackListener
 - (ATXSearchFeedbackListener)init;
-- (ATXSearchFeedbackListener)initWithTarget:(id)a3 spotlightUIBiomeStream:(id)a4 engagementRecordManager:(id)a5 actionClient:(id)a6 appDirectoryClient:(id)a7 tracker:(id)a8;
-- (BOOL)_isDuplicateEventWithState:(id *)a3 timestamp:(unint64_t)a4 method:(SEL)a5;
-- (id)_suggestionSubTypeStringWithResultType:(int)a3;
-- (id)bundleIdentifierFromResult:(id)a3;
+- (ATXSearchFeedbackListener)initWithTarget:(id)target spotlightUIBiomeStream:(id)stream engagementRecordManager:(id)manager actionClient:(id)client appDirectoryClient:(id)directoryClient tracker:(id)tracker;
+- (BOOL)_isDuplicateEventWithState:(id *)state timestamp:(unint64_t)timestamp method:(SEL)method;
+- (id)_suggestionSubTypeStringWithResultType:(int)type;
+- (id)bundleIdentifierFromResult:(id)result;
 - (void)_logAppPredictionsShown;
-- (void)_logCAActionWithIdentifier:(id)a3 suggestion:(id)a4 eventType:(int64_t)a5;
-- (void)_logCAActionWithIdentifiers:(id)a3 eventType:(int64_t)a4;
+- (void)_logCAActionWithIdentifier:(id)identifier suggestion:(id)suggestion eventType:(int64_t)type;
+- (void)_logCAActionWithIdentifiers:(id)identifiers eventType:(int64_t)type;
 - (void)_resetState;
-- (void)_sendSpotlightUIEvent:(id)a3;
-- (void)_sendSpotlightUIStreamAppEngageWithFeedback:(id)a3;
-- (void)_sendSpotlightUIStreamEventType:(int64_t)a3 searchResult:(id)a4;
-- (void)_tryRemoveLockscreenActionPredictionMatchingSuggestion:(id)a3;
-- (void)cardViewDidDisappear:(id)a3;
-- (void)didEngageCardSection:(id)a3;
-- (void)didEngageResult:(id)a3;
-- (void)didPerformCommand:(id)a3;
-- (void)didStartSearch:(id)a3;
-- (void)logEngagedSpotlightActionSuggestion:(id)a3 contextActionIdentifier:(id)a4;
-- (void)resultsDidBecomeVisible:(id)a3;
-- (void)searchViewDidAppear:(id)a3;
-- (void)searchViewDidDisappear:(id)a3;
-- (void)writeSpotlightEvent:(id)a3 isViewAppearEvent:(BOOL)a4;
+- (void)_sendSpotlightUIEvent:(id)event;
+- (void)_sendSpotlightUIStreamAppEngageWithFeedback:(id)feedback;
+- (void)_sendSpotlightUIStreamEventType:(int64_t)type searchResult:(id)result;
+- (void)_tryRemoveLockscreenActionPredictionMatchingSuggestion:(id)suggestion;
+- (void)cardViewDidDisappear:(id)disappear;
+- (void)didEngageCardSection:(id)section;
+- (void)didEngageResult:(id)result;
+- (void)didPerformCommand:(id)command;
+- (void)didStartSearch:(id)search;
+- (void)logEngagedSpotlightActionSuggestion:(id)suggestion contextActionIdentifier:(id)identifier;
+- (void)resultsDidBecomeVisible:(id)visible;
+- (void)searchViewDidAppear:(id)appear;
+- (void)searchViewDidDisappear:(id)disappear;
+- (void)writeSpotlightEvent:(id)event isViewAppearEvent:(BOOL)appearEvent;
 @end
 
 @implementation ATXSearchFeedbackListener
@@ -39,14 +39,14 @@
   return v9;
 }
 
-- (ATXSearchFeedbackListener)initWithTarget:(id)a3 spotlightUIBiomeStream:(id)a4 engagementRecordManager:(id)a5 actionClient:(id)a6 appDirectoryClient:(id)a7 tracker:(id)a8
+- (ATXSearchFeedbackListener)initWithTarget:(id)target spotlightUIBiomeStream:(id)stream engagementRecordManager:(id)manager actionClient:(id)client appDirectoryClient:(id)directoryClient tracker:(id)tracker
 {
-  v37 = a3;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v15 = a7;
-  v16 = a8;
+  targetCopy = target;
+  streamCopy = stream;
+  managerCopy = manager;
+  clientCopy = client;
+  directoryClientCopy = directoryClient;
+  trackerCopy = tracker;
   v39.receiver = self;
   v39.super_class = ATXSearchFeedbackListener;
   v17 = [(ATXSearchFeedbackListener *)&v39 init];
@@ -59,12 +59,12 @@
       _os_log_impl(&dword_1BF549000, v18, OS_LOG_TYPE_DEFAULT, "ATXSFL SF: initializing ATXSearchFeedbackListener -- process likely just (re)started", buf, 2u);
     }
 
-    objc_storeStrong(&v17->_target, a3);
-    objc_storeStrong(&v17->_spotlightUIBiomeStream, a4);
-    objc_storeStrong(&v17->_engagementRecordManager, a5);
-    objc_storeStrong(&v17->_actionPredictionClient, a6);
-    objc_storeStrong(&v17->_appDirectoryClient, a7);
-    objc_storeStrong(&v17->_tracker, a8);
+    objc_storeStrong(&v17->_target, target);
+    objc_storeStrong(&v17->_spotlightUIBiomeStream, stream);
+    objc_storeStrong(&v17->_engagementRecordManager, manager);
+    objc_storeStrong(&v17->_actionPredictionClient, client);
+    objc_storeStrong(&v17->_appDirectoryClient, directoryClient);
+    objc_storeStrong(&v17->_tracker, tracker);
     currentQuery = v17->_currentQuery;
     v17->_currentQuery = 0;
 
@@ -95,7 +95,7 @@
     v17->_queuedEvents = v29;
 
     *&v17->_currentSessionHasEngagement = 0;
-    v31 = [objc_alloc(MEMORY[0x1E69C5B50]) initWithFeatureId:@"AppPredictions" opportunityEvent:@"spotlightZkwStart" conversionEvent:@"appPredictionsShown" registerProperties:{0, v34, v35, v36, v37}];
+    v31 = [objc_alloc(MEMORY[0x1E69C5B50]) initWithFeatureId:@"AppPredictions" opportunityEvent:@"spotlightZkwStart" conversionEvent:@"appPredictionsShown" registerProperties:{0, clientCopy, managerCopy, streamCopy, targetCopy}];
     apAppPredictionsShownTracker = v17->_apAppPredictionsShownTracker;
     v17->_apAppPredictionsShownTracker = v31;
   }
@@ -129,17 +129,17 @@
   [(NSMutableArray *)queuedEvents removeAllObjects];
 }
 
-- (BOOL)_isDuplicateEventWithState:(id *)a3 timestamp:(unint64_t)a4 method:(SEL)a5
+- (BOOL)_isDuplicateEventWithState:(id *)state timestamp:(unint64_t)timestamp method:(SEL)method
 {
   v17 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
-  a3->var0 = a4;
+  var0 = state->var0;
+  state->var0 = timestamp;
   if (!self->_shouldDebounce)
   {
     return 0;
   }
 
-  v7 = a4 - var0;
+  v7 = timestamp - var0;
   *v12 = 0;
   mach_timebase_info(v12);
   v8 = v7 * *v12 / *&v12[4];
@@ -151,7 +151,7 @@
   v9 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = NSStringFromSelector(a5);
+    v10 = NSStringFromSelector(method);
     *v12 = 138412802;
     *&v12[4] = v10;
     v13 = 2048;
@@ -172,68 +172,68 @@
   [(PETGoalConversionEventTracker *)apAppPredictionsShownTracker trackGoalOpportunityEventWithConversion:v3 propertyValues:0];
 }
 
-- (void)_tryRemoveLockscreenActionPredictionMatchingSuggestion:(id)a3
+- (void)_tryRemoveLockscreenActionPredictionMatchingSuggestion:(id)suggestion
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = suggestionCopy;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXSFL: attempting to remove engaged action suggestion from lockscreen %@", &v6, 0xCu);
   }
 
-  [(ATXActionPredictionClient *)self->_actionPredictionClient removeActionPredictionNotificationsMatchingSuggestion:v4 reply:0];
+  [(ATXActionPredictionClient *)self->_actionPredictionClient removeActionPredictionNotificationsMatchingSuggestion:suggestionCopy reply:0];
 }
 
-- (void)_logCAActionWithIdentifier:(id)a3 suggestion:(id)a4 eventType:(int64_t)a5
+- (void)_logCAActionWithIdentifier:(id)identifier suggestion:(id)suggestion eventType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  suggestionCopy = suggestion;
+  if (identifierCopy)
   {
     goto LABEL_4;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E69C5B70]) initWithProactiveSuggestion:v9];
+  v10 = [objc_alloc(MEMORY[0x1E69C5B70]) initWithProactiveSuggestion:suggestionCopy];
   if (v10)
   {
-    v8 = v10;
+    identifierCopy = v10;
 LABEL_4:
-    [(ATXSearchFeedbackListener *)self _logCAActionWithIdentifiers:v8 eventType:a5];
+    [(ATXSearchFeedbackListener *)self _logCAActionWithIdentifiers:identifierCopy eventType:type];
     goto LABEL_5;
   }
 
-  v8 = __atxlog_handle_blending();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  identifierCopy = __atxlog_handle_blending();
+  if (os_log_type_enabled(identifierCopy, OS_LOG_TYPE_ERROR))
   {
-    [ATXSearchFeedbackListener _logCAActionWithIdentifier:v9 suggestion:v8 eventType:?];
+    [ATXSearchFeedbackListener _logCAActionWithIdentifier:suggestionCopy suggestion:identifierCopy eventType:?];
   }
 
 LABEL_5:
 }
 
-- (void)_logCAActionWithIdentifiers:(id)a3 eventType:(int64_t)a4
+- (void)_logCAActionWithIdentifiers:(id)identifiers eventType:(int64_t)type
 {
   v6 = MEMORY[0x1E69C5C00];
-  v7 = a3;
+  identifiersCopy = identifiers;
   v8 = [v6 alloc];
-  v9 = [v7 uniqueIdentifier];
-  v10 = [v7 subtype];
-  v11 = [v7 context];
+  uniqueIdentifier = [identifiersCopy uniqueIdentifier];
+  subtype = [identifiersCopy subtype];
+  context = [identifiersCopy context];
 
-  v12 = [v8 initWithType:a4 suggestionUniqueId:v9 suggestionType:@"action" suggestionSubtype:v10 suggestionContext:v11];
+  v12 = [v8 initWithType:type suggestionUniqueId:uniqueIdentifier suggestionType:@"action" suggestionSubtype:subtype suggestionContext:context];
   [(ATXSearchFeedbackListener *)self _sendSpotlightUIEvent:v12];
 }
 
-- (void)writeSpotlightEvent:(id)a3 isViewAppearEvent:(BOOL)a4
+- (void)writeSpotlightEvent:(id)event isViewAppearEvent:(BOOL)appearEvent
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  eventCopy = event;
+  if (appearEvent)
   {
-    [(ATXSearchFeedbackListenerTarget *)self->_target writeSpotlightEvent:v6];
+    [(ATXSearchFeedbackListenerTarget *)self->_target writeSpotlightEvent:eventCopy];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -270,33 +270,33 @@ LABEL_5:
 
   else if (self->_hasSeenSearchViewDidAppear)
   {
-    [(ATXSearchFeedbackListenerTarget *)self->_target writeSpotlightEvent:v6];
+    [(ATXSearchFeedbackListenerTarget *)self->_target writeSpotlightEvent:eventCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_queuedEvents addObject:v6];
+    [(NSMutableArray *)self->_queuedEvents addObject:eventCopy];
   }
 }
 
-- (void)searchViewDidAppear:(id)a3
+- (void)searchViewDidAppear:(id)appear
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.searchViewDidAppear, [v5 timestamp], a2))
+  appearCopy = appear;
+  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.searchViewDidAppear, [appearCopy timestamp], a2))
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v5 viewAppearEvent];
-      v12 = [v5 isOnLockScreen];
-      v13 = [v5 isOverApp];
+      viewAppearEvent = [appearCopy viewAppearEvent];
+      isOnLockScreen = [appearCopy isOnLockScreen];
+      isOverApp = [appearCopy isOverApp];
       v14 = "NO";
       v16 = 134218754;
-      v17 = v11;
-      if (v12)
+      v17 = viewAppearEvent;
+      if (isOnLockScreen)
       {
         v15 = "YES";
       }
@@ -307,8 +307,8 @@ LABEL_5:
       }
 
       v18 = 2112;
-      v19 = v5;
-      if (v13)
+      v19 = appearCopy;
+      if (isOverApp)
       {
         v14 = "YES";
       }
@@ -320,109 +320,109 @@ LABEL_5:
       _os_log_debug_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEBUG, "ATXSFL SF: searchViewDidAppear, event:%lu, feedback:%@, isOnLockscreen:%s, isOverApp:%s", &v16, 0x2Au);
     }
 
-    v6->_viewAppearEvent = [v5 viewAppearEvent];
+    selfCopy->_viewAppearEvent = [appearCopy viewAppearEvent];
     v8 = objc_opt_new();
-    v9 = [ATXSpotlightEvent viewAppearedEventWithSFFeedback:v5 date:v8];
+    v9 = [ATXSpotlightEvent viewAppearedEventWithSFFeedback:appearCopy date:v8];
 
-    [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v9 isViewAppearEvent:1];
+    [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v9 isViewAppearEvent:1];
     v10 = [objc_alloc(MEMORY[0x1E69C5C00]) initWithType:6 suggestionUniqueId:0 suggestionType:0 suggestionSubtype:0 suggestionContext:0];
-    [(ATXSearchFeedbackListener *)v6 _sendSpotlightUIEvent:v10];
+    [(ATXSearchFeedbackListener *)selfCopy _sendSpotlightUIEvent:v10];
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)searchViewDidDisappear:(id)a3
+- (void)searchViewDidDisappear:(id)disappear
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.searchViewDidDisappear, [v5 timestamp], a2))
+  disappearCopy = disappear;
+  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.searchViewDidDisappear, [disappearCopy timestamp], a2))
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      -[ATXSearchFeedbackListener searchViewDidDisappear:].cold.1(v5, v11, [v5 viewDisappearEvent]);
+      -[ATXSearchFeedbackListener searchViewDidDisappear:].cold.1(disappearCopy, v11, [disappearCopy viewDisappearEvent]);
     }
 
-    didSearchDuringSession = v6->_didSearchDuringSession;
+    didSearchDuringSession = selfCopy->_didSearchDuringSession;
     v9 = objc_opt_new();
     v10 = [ATXSpotlightEvent viewDisappearedEventWithDidSearch:didSearchDuringSession date:v9];
 
-    [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v10 isViewAppearEvent:0];
-    [(ATXSearchFeedbackListener *)v6 sendUpdateNotification];
-    [(ATXSearchFeedbackListener *)v6 _logAppPredictionsShown];
-    [(ATXSearchFeedbackListener *)v6 _resetState];
-    v6->_previousSessionHadEngagement = v6->_currentSessionHasEngagement;
-    v6->_currentSessionHasEngagement = 0;
+    [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v10 isViewAppearEvent:0];
+    [(ATXSearchFeedbackListener *)selfCopy sendUpdateNotification];
+    [(ATXSearchFeedbackListener *)selfCopy _logAppPredictionsShown];
+    [(ATXSearchFeedbackListener *)selfCopy _resetState];
+    selfCopy->_previousSessionHadEngagement = selfCopy->_currentSessionHasEngagement;
+    selfCopy->_currentSessionHasEngagement = 0;
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)didStartSearch:(id)a3
+- (void)didStartSearch:(id)search
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didStartSearch, [v5 timestamp], a2))
+  searchCopy = search;
+  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didStartSearch, [searchCopy timestamp], a2))
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v5 triggerEvent];
-      v11 = [v5 input];
-      v12 = [v5 uuid];
+      triggerEvent = [searchCopy triggerEvent];
+      input = [searchCopy input];
+      uuid = [searchCopy uuid];
       v13 = 134218755;
-      v14 = v10;
+      v14 = triggerEvent;
       v15 = 2117;
-      v16 = v5;
+      v16 = searchCopy;
       v17 = 2117;
-      v18 = v11;
+      v18 = input;
       v19 = 2112;
-      v20 = v12;
+      v20 = uuid;
       _os_log_debug_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEBUG, "ATXSFL SF: didStartSearch, event:%lu, feedback:%{sensitive}@, input:%{sensitive}@, uuid:%@", &v13, 0x2Au);
     }
 
-    v8 = [v5 input];
-    currentQuery = v6->_currentQuery;
-    v6->_currentQuery = v8;
+    input2 = [searchCopy input];
+    currentQuery = selfCopy->_currentQuery;
+    selfCopy->_currentQuery = input2;
 
-    if ([(NSString *)v6->_currentQuery length])
+    if ([(NSString *)selfCopy->_currentQuery length])
     {
-      v6->_didSearchDuringSession = 1;
+      selfCopy->_didSearchDuringSession = 1;
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)resultsDidBecomeVisible:(id)a3
+- (void)resultsDidBecomeVisible:(id)visible
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(ATXSearchFeedbackListener *)self _isDuplicateEventWithState:&self->_debounce timestamp:[v5 timestamp] method:a2])
+  visibleCopy = visible;
+  if (![(ATXSearchFeedbackListener *)self _isDuplicateEventWithState:&self->_debounce timestamp:[visibleCopy timestamp] method:a2])
   {
-    v45 = v5;
-    v6 = self;
-    objc_sync_enter(v6);
+    v45 = visibleCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v42 = [v5 triggerEvent];
-      v43 = [v5 results];
+      triggerEvent = [visibleCopy triggerEvent];
+      results = [visibleCopy results];
       *info = 134218499;
-      *&info[4] = v42;
+      *&info[4] = triggerEvent;
       v60 = 2117;
       v61 = v45;
       v62 = 2117;
-      v63 = v43;
+      v63 = results;
       _os_log_debug_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEBUG, "ATXSFL SF: resultsDidBecomeVisible, event:%lu, feedback:%{sensitive}@, results:%{sensitive}@", info, 0x20u);
     }
 
-    if (v6->_previousSessionHadEngagement && (v8 = [v45 timestamp], lastEventTimestamp = v6->_debounce.searchViewDidDisappear.lastEventTimestamp, *info = 0, mach_timebase_info(info), (v8 - lastEventTimestamp) * *info / *&info[4] <= 0x2FAF07F))
+    if (selfCopy->_previousSessionHadEngagement && (v8 = [v45 timestamp], lastEventTimestamp = selfCopy->_debounce.searchViewDidDisappear.lastEventTimestamp, *info = 0, mach_timebase_info(info), (v8 - lastEventTimestamp) * *info / *&info[4] <= 0x2FAF07F))
     {
       v49 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -441,14 +441,14 @@ LABEL_5:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v10 = [v45 results];
-      v11 = [v10 countByEnumeratingWithState:&v52 objects:v58 count:16];
+      results2 = [v45 results];
+      v11 = [results2 countByEnumeratingWithState:&v52 objects:v58 count:16];
       if (v11)
       {
         v51 = *v53;
         *&v12 = 138412546;
         v44 = v12;
-        obj = v10;
+        obj = results2;
         do
         {
           for (i = 0; i != v11; ++i)
@@ -459,35 +459,35 @@ LABEL_5:
             }
 
             v14 = *(*(&v52 + 1) + 8 * i);
-            [(ATXSearchFeedbackListener *)v6 _sendSpotlightUIStreamEventType:3 searchResult:v14, v44];
+            [(ATXSearchFeedbackListener *)selfCopy _sendSpotlightUIStreamEventType:3 searchResult:v14, v44];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              v16 = [v15 proactiveSuggestion];
-              v17 = [v16 uuid];
-              v18 = [v17 UUIDString];
+              proactiveSuggestion = [v15 proactiveSuggestion];
+              uuid = [proactiveSuggestion uuid];
+              uUIDString = [uuid UUIDString];
 
-              v19 = [v15 proactiveSuggestion];
-              v20 = [v19 bundleIdExecutableObject];
+              proactiveSuggestion2 = [v15 proactiveSuggestion];
+              bundleIdExecutableObject = [proactiveSuggestion2 bundleIdExecutableObject];
 
-              if (!v6->_appBlendingCacheId)
+              if (!selfCopy->_appBlendingCacheId)
               {
-                v21 = [v15 response];
-                v22 = [v21 blendingModelUICacheUpdateUUID];
-                v23 = [v22 UUIDString];
-                appBlendingCacheId = v6->_appBlendingCacheId;
-                v6->_appBlendingCacheId = v23;
+                response = [v15 response];
+                blendingModelUICacheUpdateUUID = [response blendingModelUICacheUpdateUUID];
+                uUIDString2 = [blendingModelUICacheUpdateUUID UUIDString];
+                appBlendingCacheId = selfCopy->_appBlendingCacheId;
+                selfCopy->_appBlendingCacheId = uUIDString2;
               }
 
-              if (([(NSMutableSet *)v6->_visibleAppUUIDs containsObject:v18]& 1) == 0)
+              if (([(NSMutableSet *)selfCopy->_visibleAppUUIDs containsObject:uUIDString]& 1) == 0)
               {
-                [v49 addObject:v18];
+                [v49 addObject:uUIDString];
               }
 
-              if (([(NSMutableSet *)v6->_visibleAppBundleIds containsObject:v20]& 1) == 0)
+              if (([(NSMutableSet *)selfCopy->_visibleAppBundleIds containsObject:bundleIdExecutableObject]& 1) == 0)
               {
-                [v48 addObject:v20];
+                [v48 addObject:bundleIdExecutableObject];
               }
 
 LABEL_39:
@@ -498,35 +498,35 @@ LABEL_39:
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              v18 = [v15 proactiveSuggestion];
-              v25 = [v18 uuid];
-              v26 = [v25 UUIDString];
+              uUIDString = [v15 proactiveSuggestion];
+              uuid2 = [uUIDString uuid];
+              uUIDString3 = [uuid2 UUIDString];
 
-              v27 = [v15 contextActionIdentifier];
-              if (!v27)
+              contextActionIdentifier = [v15 contextActionIdentifier];
+              if (!contextActionIdentifier)
               {
-                v27 = [objc_alloc(MEMORY[0x1E69C5B70]) initWithProactiveSuggestion:v18];
+                contextActionIdentifier = [objc_alloc(MEMORY[0x1E69C5B70]) initWithProactiveSuggestion:uUIDString];
               }
 
-              if (!v6->_actionBlendingCacheId)
+              if (!selfCopy->_actionBlendingCacheId)
               {
-                v28 = [v15 blendingModelUICacheUpdateUUID];
-                v29 = [v28 UUIDString];
-                actionBlendingCacheId = v6->_actionBlendingCacheId;
-                v6->_actionBlendingCacheId = v29;
+                blendingModelUICacheUpdateUUID2 = [v15 blendingModelUICacheUpdateUUID];
+                uUIDString4 = [blendingModelUICacheUpdateUUID2 UUIDString];
+                actionBlendingCacheId = selfCopy->_actionBlendingCacheId;
+                selfCopy->_actionBlendingCacheId = uUIDString4;
               }
 
-              if (v26 && ([(NSMutableSet *)v6->_visibleActionUUIDs containsObject:v26]& 1) == 0)
+              if (uUIDString3 && ([(NSMutableSet *)selfCopy->_visibleActionUUIDs containsObject:uUIDString3]& 1) == 0)
               {
-                [v46 addObject:v26];
+                [v46 addObject:uUIDString3];
               }
 
-              if (v27)
+              if (contextActionIdentifier)
               {
-                if (([(NSMutableSet *)v6->_visibleActionContextIdentifiers containsObject:v27]& 1) == 0)
+                if (([(NSMutableSet *)selfCopy->_visibleActionContextIdentifiers containsObject:contextActionIdentifier]& 1) == 0)
                 {
-                  [v47 addObject:v27];
-                  [(ATXSearchFeedbackListener *)v6 _logCAActionWithIdentifiers:v27 eventType:3];
+                  [v47 addObject:contextActionIdentifier];
+                  [(ATXSearchFeedbackListener *)selfCopy _logCAActionWithIdentifiers:contextActionIdentifier eventType:3];
                 }
               }
 
@@ -535,12 +535,12 @@ LABEL_39:
                 v35 = __atxlog_handle_blending();
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
                 {
-                  v36 = [v18 executableSpecification];
-                  v37 = [v36 executableIdentifier];
+                  executableSpecification = [uUIDString executableSpecification];
+                  executableIdentifier = [executableSpecification executableIdentifier];
                   *info = v44;
-                  *&info[4] = v37;
+                  *&info[4] = executableIdentifier;
                   v60 = 2112;
-                  v61 = v18;
+                  v61 = uUIDString;
                   _os_log_error_impl(&dword_1BF549000, v35, OS_LOG_TYPE_ERROR, "ATXContextActionIdentifier: nil: %@, %@", info, 0x16u);
                 }
               }
@@ -549,145 +549,145 @@ LABEL_39:
             }
 
             v31 = objc_alloc(MEMORY[0x1E69C5B70]);
-            v32 = [v14 requestedTopic];
-            v33 = [v14 sectionBundleIdentifier];
-            v15 = [v31 initWithTopic:v32 sectionBundleIdentifier:v33];
+            requestedTopic = [v14 requestedTopic];
+            sectionBundleIdentifier = [v14 sectionBundleIdentifier];
+            v15 = [v31 initWithTopic:requestedTopic sectionBundleIdentifier:sectionBundleIdentifier];
 
             if (!v15)
             {
-              v18 = __atxlog_handle_blending();
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              uUIDString = __atxlog_handle_blending();
+              if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
               {
-                v34 = [v14 requestedTopic];
-                [(ATXSearchFeedbackListener *)v34 resultsDidBecomeVisible:buf, &v57, v18];
+                requestedTopic2 = [v14 requestedTopic];
+                [(ATXSearchFeedbackListener *)requestedTopic2 resultsDidBecomeVisible:buf, &v57, uUIDString];
               }
 
               goto LABEL_39;
             }
 
-            if (([(NSMutableSet *)v6->_visibleActionContextIdentifiers containsObject:v15]& 1) == 0)
+            if (([(NSMutableSet *)selfCopy->_visibleActionContextIdentifiers containsObject:v15]& 1) == 0)
             {
               [v47 addObject:v15];
-              [(ATXSearchFeedbackListener *)v6 _logCAActionWithIdentifiers:v15 eventType:3];
+              [(ATXSearchFeedbackListener *)selfCopy _logCAActionWithIdentifiers:v15 eventType:3];
             }
 
 LABEL_40:
           }
 
-          v10 = obj;
+          results2 = obj;
           v11 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
         }
 
         while (v11);
       }
 
-      if ((v6->_appBlendingCacheId || v6->_actionBlendingCacheId) && (-[NSObject count](v49, "count") || [v46 count]))
+      if ((selfCopy->_appBlendingCacheId || selfCopy->_actionBlendingCacheId) && (-[NSObject count](v49, "count") || [v46 count]))
       {
-        v38 = v6->_appBlendingCacheId;
-        v39 = v6->_actionBlendingCacheId;
+        v38 = selfCopy->_appBlendingCacheId;
+        v39 = selfCopy->_actionBlendingCacheId;
         v40 = objc_opt_new();
         v41 = [ATXSpotlightEvent suggestionsAppearedEventWithAppSuggestionIds:v49 actionSuggestionIds:v46 appBlendingCacheId:v38 actionBlendingCacheId:v39 date:v40];
 
-        [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v41 isViewAppearEvent:0];
-        [(NSMutableSet *)v6->_visibleAppUUIDs addObjectsFromArray:v49];
-        [(NSMutableSet *)v6->_visibleActionUUIDs addObjectsFromArray:v46];
-        [(NSMutableSet *)v6->_visibleAppBundleIds addObjectsFromArray:v48];
+        [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v41 isViewAppearEvent:0];
+        [(NSMutableSet *)selfCopy->_visibleAppUUIDs addObjectsFromArray:v49];
+        [(NSMutableSet *)selfCopy->_visibleActionUUIDs addObjectsFromArray:v46];
+        [(NSMutableSet *)selfCopy->_visibleAppBundleIds addObjectsFromArray:v48];
       }
     }
 
-    objc_sync_exit(v6);
-    v5 = v45;
+    objc_sync_exit(selfCopy);
+    visibleCopy = v45;
   }
 }
 
-- (void)logEngagedSpotlightActionSuggestion:(id)a3 contextActionIdentifier:(id)a4
+- (void)logEngagedSpotlightActionSuggestion:(id)suggestion contextActionIdentifier:(id)identifier
 {
   actionBlendingCacheId = self->_actionBlendingCacheId;
   currentQuery = self->_currentQuery;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  suggestionCopy = suggestion;
   v10 = objc_opt_new();
-  v11 = [ATXSpotlightEvent actionSuggestionTappedEventWithSuggestion:v9 actionBlendingCacheId:actionBlendingCacheId currentQuery:currentQuery date:v10];
+  v11 = [ATXSpotlightEvent actionSuggestionTappedEventWithSuggestion:suggestionCopy actionBlendingCacheId:actionBlendingCacheId currentQuery:currentQuery date:v10];
 
   [(ATXSearchFeedbackListener *)self writeSpotlightEvent:v11 isViewAppearEvent:0];
-  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedSuggestion:v9 engagementRecordType:1];
-  [(ATXSearchFeedbackListener *)self _tryRemoveLockscreenActionPredictionMatchingSuggestion:v9];
+  [(ATXEngagementRecordManager *)self->_engagementRecordManager addEngagedSuggestion:suggestionCopy engagementRecordType:1];
+  [(ATXSearchFeedbackListener *)self _tryRemoveLockscreenActionPredictionMatchingSuggestion:suggestionCopy];
   [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:0 consumerSubType:21 tracker:self->_tracker];
   [ATXBlendingCaptureRateTracker logSpotlightActionCaptureWithTracker:self->_tracker];
   [ATXBlendingCaptureRateTracker logSpotlightAppDiversionWithCaptureType:2000 tracker:self->_tracker];
-  [(ATXSearchFeedbackListener *)self _logCAActionWithIdentifier:v8 suggestion:v9 eventType:4];
+  [(ATXSearchFeedbackListener *)self _logCAActionWithIdentifier:identifierCopy suggestion:suggestionCopy eventType:4];
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
   v76 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didEngageResult, [v5 timestamp], a2))
+  resultCopy = result;
+  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didEngageResult, [resultCopy timestamp], a2))
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v45 = [v5 triggerEvent];
-      v46 = [v5 destination];
-      v47 = [v5 actionTarget];
-      v48 = [v5 actionEngaged];
-      v49 = [v5 matchesUnengagedSuggestion];
-      v50 = [v5 result];
+      triggerEvent = [resultCopy triggerEvent];
+      destination = [resultCopy destination];
+      actionTarget = [resultCopy actionTarget];
+      actionEngaged = [resultCopy actionEngaged];
+      matchesUnengagedSuggestion = [resultCopy matchesUnengagedSuggestion];
+      result = [resultCopy result];
       v62 = 134219522;
-      v63 = v45;
+      v63 = triggerEvent;
       v64 = 2048;
-      v65 = v46;
+      v65 = destination;
       v66 = 2048;
-      v67 = v47;
+      v67 = actionTarget;
       v68 = 1024;
-      v69 = v48;
+      v69 = actionEngaged;
       v70 = 1024;
-      v71 = v49;
+      v71 = matchesUnengagedSuggestion;
       v72 = 2112;
-      v73 = v5;
+      v73 = resultCopy;
       v74 = 2112;
-      v75 = v50;
+      v75 = result;
       _os_log_debug_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEBUG, "ATXSFL SF: didEngageResult, event:%lu, destination:%lu, actionTarget:%lu, actionEngaged:%{BOOL}d, matchedUnengagedSuggestion:%{BOOL}d, feedback:%@, result:%@", &v62, 0x40u);
     }
 
-    if ([v5 triggerEvent] == 2 && objc_msgSend(v5, "destination") == 2 && !objc_msgSend(v5, "actionTarget"))
+    if ([resultCopy triggerEvent] == 2 && objc_msgSend(resultCopy, "destination") == 2 && !objc_msgSend(resultCopy, "actionTarget"))
     {
-      v8 = [v5 result];
+      result2 = [resultCopy result];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [v5 result];
-        v11 = [v10 proactiveSuggestion];
+        result3 = [resultCopy result];
+        proactiveSuggestion = [result3 proactiveSuggestion];
 
-        v12 = [v11 uuid];
-        v13 = [v12 UUIDString];
+        uuid = [proactiveSuggestion uuid];
+        uUIDString = [uuid UUIDString];
 
         v14 = __atxlog_handle_feedback();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v11 bundleIdExecutableObject];
+          bundleIdExecutableObject = [proactiveSuggestion bundleIdExecutableObject];
           v62 = 138412290;
-          v63 = v15;
+          v63 = bundleIdExecutableObject;
           _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "ATXSFL: didEngageResult app bundle id: %@", &v62, 0xCu);
         }
 
-        appBlendingCacheId = v6->_appBlendingCacheId;
+        appBlendingCacheId = selfCopy->_appBlendingCacheId;
         if (appBlendingCacheId)
         {
-          currentQuery = v6->_currentQuery;
+          currentQuery = selfCopy->_currentQuery;
           v18 = objc_opt_new();
-          v19 = [ATXSpotlightEvent appSuggestionTappedEventWithSuggestion:v11 appBlendingCacheId:appBlendingCacheId currentQuery:currentQuery date:v18];
+          v19 = [ATXSpotlightEvent appSuggestionTappedEventWithSuggestion:proactiveSuggestion appBlendingCacheId:appBlendingCacheId currentQuery:currentQuery date:v18];
 
-          [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v19 isViewAppearEvent:0];
-          [(ATXEngagementRecordManager *)v6->_engagementRecordManager addEngagedSuggestion:v11 engagementRecordType:1];
+          [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v19 isViewAppearEvent:0];
+          [(ATXEngagementRecordManager *)selfCopy->_engagementRecordManager addEngagedSuggestion:proactiveSuggestion engagementRecordType:1];
         }
 
-        [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:0 consumerSubType:9 tracker:v6->_tracker];
-        [ATXBlendingCaptureRateTracker logSpotlightAppCaptureWithTracker:v6->_tracker];
+        [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:0 consumerSubType:9 tracker:selfCopy->_tracker];
+        [ATXBlendingCaptureRateTracker logSpotlightAppCaptureWithTracker:selfCopy->_tracker];
         v20 = __atxlog_handle_feedback();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
@@ -696,28 +696,28 @@ LABEL_40:
 
 LABEL_68:
 LABEL_69:
-        v6->_currentSessionHasEngagement = 1;
-        objc_sync_exit(v6);
+        selfCopy->_currentSessionHasEngagement = 1;
+        objc_sync_exit(selfCopy);
 
         goto LABEL_70;
       }
     }
 
-    if ([v5 triggerEvent] == 2 && objc_msgSend(v5, "destination") == 3 && !objc_msgSend(v5, "actionTarget"))
+    if ([resultCopy triggerEvent] == 2 && objc_msgSend(resultCopy, "destination") == 3 && !objc_msgSend(resultCopy, "actionTarget"))
     {
-      v21 = [v5 result];
+      result4 = [resultCopy result];
       objc_opt_class();
       v22 = objc_opt_isKindOfClass();
 
       if (v22)
       {
-        v11 = [v5 result];
-        v23 = [v11 proactiveSuggestion];
-        v24 = [v23 uuid];
-        v25 = [v24 UUIDString];
+        proactiveSuggestion = [resultCopy result];
+        v11ProactiveSuggestion = [proactiveSuggestion proactiveSuggestion];
+        uuid2 = [v11ProactiveSuggestion uuid];
+        uUIDString2 = [uuid2 UUIDString];
 
-        v26 = [v11 contextActionIdentifier];
-        [(ATXSearchFeedbackListener *)v6 logEngagedSpotlightActionSuggestion:v23 contextActionIdentifier:v26];
+        contextActionIdentifier = [proactiveSuggestion contextActionIdentifier];
+        [(ATXSearchFeedbackListener *)selfCopy logEngagedSpotlightActionSuggestion:v11ProactiveSuggestion contextActionIdentifier:contextActionIdentifier];
 
         v27 = __atxlog_handle_feedback();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -729,20 +729,20 @@ LABEL_69:
       }
     }
 
-    if ([v5 triggerEvent] == 2 && objc_msgSend(v5, "destination") == 2 && !objc_msgSend(v5, "actionTarget"))
+    if ([resultCopy triggerEvent] == 2 && objc_msgSend(resultCopy, "destination") == 2 && !objc_msgSend(resultCopy, "actionTarget"))
     {
-      v28 = [v5 result];
+      result5 = [resultCopy result];
       objc_opt_class();
       v29 = objc_opt_isKindOfClass();
 
       if (v29)
       {
-        v30 = [v5 result];
-        currentResultCard = v6->_currentResultCard;
-        v6->_currentResultCard = v30;
+        result6 = [resultCopy result];
+        currentResultCard = selfCopy->_currentResultCard;
+        selfCopy->_currentResultCard = result6;
 
-        v11 = __atxlog_handle_feedback();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+        proactiveSuggestion = __atxlog_handle_feedback();
+        if (os_log_type_enabled(proactiveSuggestion, OS_LOG_TYPE_DEBUG))
         {
           [ATXSearchFeedbackListener didEngageResult:];
         }
@@ -751,20 +751,20 @@ LABEL_69:
       }
     }
 
-    if ([v5 triggerEvent] == 5 && objc_msgSend(v5, "destination") == 1 && !objc_msgSend(v5, "actionTarget"))
+    if ([resultCopy triggerEvent] == 5 && objc_msgSend(resultCopy, "destination") == 1 && !objc_msgSend(resultCopy, "actionTarget"))
     {
-      v32 = [v5 result];
+      result7 = [resultCopy result];
       objc_opt_class();
       v33 = objc_opt_isKindOfClass();
 
       if (v33)
       {
-        v34 = [v5 result];
-        v35 = v6->_currentResultCard;
-        v6->_currentResultCard = v34;
+        result8 = [resultCopy result];
+        v35 = selfCopy->_currentResultCard;
+        selfCopy->_currentResultCard = result8;
 
-        v11 = __atxlog_handle_feedback();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+        proactiveSuggestion = __atxlog_handle_feedback();
+        if (os_log_type_enabled(proactiveSuggestion, OS_LOG_TYPE_DEBUG))
         {
           [ATXSearchFeedbackListener didEngageResult:];
         }
@@ -773,20 +773,20 @@ LABEL_69:
       }
     }
 
-    if ([v5 triggerEvent] == 2 && objc_msgSend(v5, "destination") == 1 && !objc_msgSend(v5, "actionTarget"))
+    if ([resultCopy triggerEvent] == 2 && objc_msgSend(resultCopy, "destination") == 1 && !objc_msgSend(resultCopy, "actionTarget"))
     {
-      v36 = [v5 result];
+      result9 = [resultCopy result];
       objc_opt_class();
       v37 = objc_opt_isKindOfClass();
 
       if (v37)
       {
-        v38 = [v5 result];
-        v39 = v6->_currentResultCard;
-        v6->_currentResultCard = v38;
+        result10 = [resultCopy result];
+        v39 = selfCopy->_currentResultCard;
+        selfCopy->_currentResultCard = result10;
 
-        v11 = __atxlog_handle_feedback();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+        proactiveSuggestion = __atxlog_handle_feedback();
+        if (os_log_type_enabled(proactiveSuggestion, OS_LOG_TYPE_DEBUG))
         {
           [ATXSearchFeedbackListener didEngageResult:];
         }
@@ -795,17 +795,17 @@ LABEL_69:
       }
     }
 
-    if ([v5 triggerEvent] != 2)
+    if ([resultCopy triggerEvent] != 2)
     {
       goto LABEL_69;
     }
 
-    if ([v5 actionTarget])
+    if ([resultCopy actionTarget])
     {
       goto LABEL_69;
     }
 
-    v40 = [v5 result];
+    result11 = [resultCopy result];
     getSFSearchResult_SpotlightExtrasClass();
     v41 = objc_opt_isKindOfClass();
 
@@ -814,18 +814,18 @@ LABEL_69:
       goto LABEL_69;
     }
 
-    v11 = [v5 result];
-    v42 = [v11 applicationBundleIdentifier];
-    if ([v11 predictionsFeedbackActionType]== 3)
+    proactiveSuggestion = [resultCopy result];
+    applicationBundleIdentifier = [proactiveSuggestion applicationBundleIdentifier];
+    if ([proactiveSuggestion predictionsFeedbackActionType]== 3)
     {
-      v43 = v42;
-      if ([(NSMutableSet *)v6->_visibleActionUUIDs count])
+      v43 = applicationBundleIdentifier;
+      if ([(NSMutableSet *)selfCopy->_visibleActionUUIDs count])
       {
-        [ATXBlendingCaptureRateTracker logSpotlightActionDiversionWithCaptureType:3001 tracker:v6->_tracker];
+        [ATXBlendingCaptureRateTracker logSpotlightActionDiversionWithCaptureType:3001 tracker:selfCopy->_tracker];
       }
 
       v44 = 3;
-      if (!v42)
+      if (!applicationBundleIdentifier)
       {
 LABEL_63:
         v54 = 0;
@@ -833,16 +833,16 @@ LABEL_63:
       }
     }
 
-    else if ([v11 predictionsFeedbackActionType]== 1)
+    else if ([proactiveSuggestion predictionsFeedbackActionType]== 1)
     {
-      v51 = v42;
-      if ([(NSMutableSet *)v6->_visibleActionUUIDs count])
+      v51 = applicationBundleIdentifier;
+      if ([(NSMutableSet *)selfCopy->_visibleActionUUIDs count])
       {
-        [ATXBlendingCaptureRateTracker logSpotlightActionDiversionWithCaptureType:3001 tracker:v6->_tracker];
+        [ATXBlendingCaptureRateTracker logSpotlightActionDiversionWithCaptureType:3001 tracker:selfCopy->_tracker];
       }
 
       v44 = 1;
-      if (!v42)
+      if (!applicationBundleIdentifier)
       {
         goto LABEL_63;
       }
@@ -850,17 +850,17 @@ LABEL_63:
 
     else
     {
-      if (![v42 length] || (objc_msgSend(v42, "hasPrefix:", @"com.apple.other") & 1) != 0 || objc_msgSend(v5, "destination") != 2 || (objc_msgSend(v5, "result"), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "sectionBundleIdentifier"), v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isEqualToString:", @"com.apple.application"), v56, v55, !v57))
+      if (![applicationBundleIdentifier length] || (objc_msgSend(applicationBundleIdentifier, "hasPrefix:", @"com.apple.other") & 1) != 0 || objc_msgSend(resultCopy, "destination") != 2 || (objc_msgSend(resultCopy, "result"), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "sectionBundleIdentifier"), v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isEqualToString:", @"com.apple.application"), v56, v55, !v57))
       {
         v54 = 0;
         v44 = 4;
         goto LABEL_65;
       }
 
-      v58 = v42;
-      if ([(NSMutableSet *)v6->_visibleAppBundleIds count])
+      v58 = applicationBundleIdentifier;
+      if ([(NSMutableSet *)selfCopy->_visibleAppBundleIds count])
       {
-        if ([(NSMutableSet *)v6->_visibleAppBundleIds containsObject:v58])
+        if ([(NSMutableSet *)selfCopy->_visibleAppBundleIds containsObject:v58])
         {
           v59 = 2002;
         }
@@ -870,21 +870,21 @@ LABEL_63:
           v59 = 2001;
         }
 
-        [ATXBlendingCaptureRateTracker logSpotlightAppDiversionWithCaptureType:v59 tracker:v6->_tracker];
+        [ATXBlendingCaptureRateTracker logSpotlightAppDiversionWithCaptureType:v59 tracker:selfCopy->_tracker];
       }
 
       v44 = 4;
-      if (!v42)
+      if (!applicationBundleIdentifier)
       {
         goto LABEL_63;
       }
     }
 
     v52 = objc_opt_new();
-    v53 = [ATXSpotlightEvent searchResultTappedWithEngagedBundleId:v42 searchedActionType:v44 date:v52];
+    v53 = [ATXSpotlightEvent searchResultTappedWithEngagedBundleId:applicationBundleIdentifier searchedActionType:v44 date:v52];
 
-    [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v53 isViewAppearEvent:0];
-    v54 = v42;
+    [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v53 isViewAppearEvent:0];
+    v54 = applicationBundleIdentifier;
 LABEL_65:
     v60 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -899,34 +899,34 @@ LABEL_65:
 LABEL_70:
 }
 
-- (void)cardViewDidDisappear:(id)a3
+- (void)cardViewDidDisappear:(id)disappear
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  disappearCopy = disappear;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    -[ATXSearchFeedbackListener cardViewDidDisappear:].cold.1(v4, v15, [v4 cardDisappearEvent]);
+    -[ATXSearchFeedbackListener cardViewDidDisappear:].cold.1(disappearCopy, v15, [disappearCopy cardDisappearEvent]);
   }
 
-  if (v5->_currentResultCard && v5->_appBlendingCacheId && v5->_actionBlendingCacheId)
+  if (selfCopy->_currentResultCard && selfCopy->_appBlendingCacheId && selfCopy->_actionBlendingCacheId)
   {
-    if ([v4 cardDisappearEvent] == 7)
+    if ([disappearCopy cardDisappearEvent] == 7)
     {
-      v7 = [(ATXSuggestionSearchResult *)v5->_currentResultCard proactiveSuggestion];
-      v8 = [v7 uuid];
-      v9 = [v8 UUIDString];
+      proactiveSuggestion = [(ATXSuggestionSearchResult *)selfCopy->_currentResultCard proactiveSuggestion];
+      uuid = [proactiveSuggestion uuid];
+      uUIDString = [uuid UUIDString];
 
-      actionBlendingCacheId = v5->_actionBlendingCacheId;
+      actionBlendingCacheId = selfCopy->_actionBlendingCacheId;
       v11 = objc_opt_new();
-      v12 = [ATXSpotlightEvent actionSuggestionDismissedEventWithSuggestionId:v9 actionBlendingCacheId:actionBlendingCacheId date:v11];
+      v12 = [ATXSpotlightEvent actionSuggestionDismissedEventWithSuggestionId:uUIDString actionBlendingCacheId:actionBlendingCacheId date:v11];
 
-      [(ATXSearchFeedbackListener *)v5 writeSpotlightEvent:v12 isViewAppearEvent:0];
-      [(ATXEngagementRecordManager *)v5->_engagementRecordManager addEngagedSuggestion:v7 engagementRecordType:1];
-      [(ATXSearchFeedbackListener *)v5 _tryRemoveLockscreenActionPredictionMatchingSuggestion:v7];
-      [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:1 consumerSubType:21 tracker:v5->_tracker];
+      [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v12 isViewAppearEvent:0];
+      [(ATXEngagementRecordManager *)selfCopy->_engagementRecordManager addEngagedSuggestion:proactiveSuggestion engagementRecordType:1];
+      [(ATXSearchFeedbackListener *)selfCopy _tryRemoveLockscreenActionPredictionMatchingSuggestion:proactiveSuggestion];
+      [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:1 consumerSubType:21 tracker:selfCopy->_tracker];
       v13 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -936,67 +936,67 @@ LABEL_70:
 
     else
     {
-      v7 = __atxlog_handle_feedback();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      proactiveSuggestion = __atxlog_handle_feedback();
+      if (os_log_type_enabled(proactiveSuggestion, OS_LOG_TYPE_DEBUG))
       {
         [ATXSearchFeedbackListener cardViewDidDisappear:];
       }
     }
 
-    currentResultCard = v5->_currentResultCard;
-    v5->_currentResultCard = 0;
+    currentResultCard = selfCopy->_currentResultCard;
+    selfCopy->_currentResultCard = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didEngageCardSection, [v5 timestamp], a2))
+  sectionCopy = section;
+  if (!-[ATXSearchFeedbackListener _isDuplicateEventWithState:timestamp:method:](self, "_isDuplicateEventWithState:timestamp:method:", &self->_debounce.didEngageCardSection, [sectionCopy timestamp], a2))
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v5 triggerEvent];
-      v26 = [v5 destination];
+      triggerEvent = [sectionCopy triggerEvent];
+      destination = [sectionCopy destination];
       v28 = 134219010;
-      v29 = v25;
+      v29 = triggerEvent;
       v30 = 2112;
-      v31 = v5;
+      v31 = sectionCopy;
       v32 = 2112;
-      v33 = v26;
+      v33 = destination;
       v34 = 2048;
-      v35 = [v5 actionCardType];
+      actionCardType = [sectionCopy actionCardType];
       v36 = 2048;
-      v37 = [v5 actionTarget];
+      actionTarget = [sectionCopy actionTarget];
       _os_log_debug_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEBUG, "ATXSFL SF: didEngageCardSection, event:%lu, feedback:%@, destination:%@, actionCardType:%lu, actionTarget:%lu", &v28, 0x34u);
     }
 
-    if ([v5 triggerEvent] == 2 && !objc_msgSend(v5, "actionCardType") && (objc_msgSend(v5, "destination"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = objc_msgSend(v5, "actionTarget") == 0, v14, v15))
+    if ([sectionCopy triggerEvent] == 2 && !objc_msgSend(sectionCopy, "actionCardType") && (objc_msgSend(sectionCopy, "destination"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = objc_msgSend(sectionCopy, "actionTarget") == 0, v14, v15))
     {
-      v8 = [(ATXSuggestionSearchResult *)v6->_currentResultCard proactiveSuggestion];
-      v16 = [v8 uuid];
-      v17 = [v16 UUIDString];
+      proactiveSuggestion = [(ATXSuggestionSearchResult *)selfCopy->_currentResultCard proactiveSuggestion];
+      uuid = [proactiveSuggestion uuid];
+      uUIDString = [uuid UUIDString];
 
-      currentResultCard = v6->_currentResultCard;
-      if (!currentResultCard || v6->_appBlendingCacheId && (actionBlendingCacheId = v6->_actionBlendingCacheId) != 0 && (currentQuery = v6->_currentQuery, v21 = objc_opt_new(), [ATXSpotlightEvent actionSuggestionTappedEventWithSuggestion:v8 actionBlendingCacheId:actionBlendingCacheId currentQuery:currentQuery date:v21], v22 = objc_claimAutoreleasedReturnValue(), v21, [(ATXSearchFeedbackListener *)v6 writeSpotlightEvent:v22 isViewAppearEvent:0], [(ATXEngagementRecordManager *)v6->_engagementRecordManager addEngagedSuggestion:v8 engagementRecordType:1], [(ATXSearchFeedbackListener *)v6 _tryRemoveLockscreenActionPredictionMatchingSuggestion:v8], [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:0 consumerSubType:21 tracker:v6->_tracker], [ATXBlendingCaptureRateTracker logSpotlightActionCaptureWithTracker:v6->_tracker], [ATXBlendingCaptureRateTracker logSpotlightAppDiversionWithCaptureType:2000 tracker:v6->_tracker], v22, (currentResultCard = v6->_currentResultCard) == 0))
+      currentResultCard = selfCopy->_currentResultCard;
+      if (!currentResultCard || selfCopy->_appBlendingCacheId && (actionBlendingCacheId = selfCopy->_actionBlendingCacheId) != 0 && (currentQuery = selfCopy->_currentQuery, v21 = objc_opt_new(), [ATXSpotlightEvent actionSuggestionTappedEventWithSuggestion:proactiveSuggestion actionBlendingCacheId:actionBlendingCacheId currentQuery:currentQuery date:v21], v22 = objc_claimAutoreleasedReturnValue(), v21, [(ATXSearchFeedbackListener *)selfCopy writeSpotlightEvent:v22 isViewAppearEvent:0], [(ATXEngagementRecordManager *)selfCopy->_engagementRecordManager addEngagedSuggestion:proactiveSuggestion engagementRecordType:1], [(ATXSearchFeedbackListener *)selfCopy _tryRemoveLockscreenActionPredictionMatchingSuggestion:proactiveSuggestion], [ATXMFeedbackConversionLogger logUserInteractionFeedbackWithEngagementType:0 consumerSubType:21 tracker:selfCopy->_tracker], [ATXBlendingCaptureRateTracker logSpotlightActionCaptureWithTracker:selfCopy->_tracker], [ATXBlendingCaptureRateTracker logSpotlightAppDiversionWithCaptureType:2000 tracker:selfCopy->_tracker], v22, (currentResultCard = selfCopy->_currentResultCard) == 0))
       {
         v24 = 0;
       }
 
       else
       {
-        v23 = [(ATXSuggestionSearchResult *)currentResultCard contextActionIdentifier];
-        [(ATXSearchFeedbackListener *)v6 _logCAActionWithIdentifier:v23 suggestion:v8 eventType:4];
+        contextActionIdentifier = [(ATXSuggestionSearchResult *)currentResultCard contextActionIdentifier];
+        [(ATXSearchFeedbackListener *)selfCopy _logCAActionWithIdentifier:contextActionIdentifier suggestion:proactiveSuggestion eventType:4];
 
-        v24 = v6->_currentResultCard;
+        v24 = selfCopy->_currentResultCard;
       }
 
-      v6->_currentResultCard = 0;
+      selfCopy->_currentResultCard = 0;
 
       v27 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -1007,39 +1007,39 @@ LABEL_70:
 
     else
     {
-      if ([v5 triggerEvent] != 2 || objc_msgSend(v5, "actionCardType") != 1)
+      if ([sectionCopy triggerEvent] != 2 || objc_msgSend(sectionCopy, "actionCardType") != 1)
       {
         goto LABEL_27;
       }
 
-      v8 = [v5 destination];
-      if (!v8)
+      proactiveSuggestion = [sectionCopy destination];
+      if (!proactiveSuggestion)
       {
-        if ([v5 actionTarget])
+        if ([sectionCopy actionTarget])
         {
 LABEL_27:
-          objc_sync_exit(v6);
+          objc_sync_exit(selfCopy);
 
           goto LABEL_28;
         }
 
-        v9 = v6->_currentResultCard;
+        v9 = selfCopy->_currentResultCard;
         if (v9)
         {
-          v10 = [(ATXSuggestionSearchResult *)v9 contextActionIdentifier];
-          [(ATXSearchFeedbackListener *)v6 _logCAActionWithIdentifier:v10 suggestion:0 eventType:4];
+          contextActionIdentifier2 = [(ATXSuggestionSearchResult *)v9 contextActionIdentifier];
+          [(ATXSearchFeedbackListener *)selfCopy _logCAActionWithIdentifier:contextActionIdentifier2 suggestion:0 eventType:4];
         }
 
         v11 = __atxlog_handle_feedback();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [(ATXSuggestionSearchResult *)v6->_currentResultCard contextActionIdentifier];
-          v13 = [v12 uniqueIdentifier];
-          [(ATXSearchFeedbackListener *)v13 didEngageCardSection:v11, v12];
+          contextActionIdentifier3 = [(ATXSuggestionSearchResult *)selfCopy->_currentResultCard contextActionIdentifier];
+          uniqueIdentifier = [contextActionIdentifier3 uniqueIdentifier];
+          [(ATXSearchFeedbackListener *)uniqueIdentifier didEngageCardSection:v11, contextActionIdentifier3];
         }
 
-        v8 = v6->_currentResultCard;
-        v6->_currentResultCard = 0;
+        proactiveSuggestion = selfCopy->_currentResultCard;
+        selfCopy->_currentResultCard = 0;
       }
     }
 
@@ -1049,14 +1049,14 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(ATXSearchFeedbackListener *)self _sendSpotlightUIStreamAppEngageWithFeedback:v4];
-  v5 = [(ATXSpotlightFeedbackManager *)v4 result];
-  [(ATXSearchFeedbackListener *)self _sendSpotlightUIStreamEventType:4 searchResult:v5];
-  v6 = [(ATXSpotlightFeedbackManager *)v4 command];
+  commandCopy = command;
+  [(ATXSearchFeedbackListener *)self _sendSpotlightUIStreamAppEngageWithFeedback:commandCopy];
+  result = [(ATXSpotlightFeedbackManager *)commandCopy result];
+  [(ATXSearchFeedbackListener *)self _sendSpotlightUIStreamEventType:4 searchResult:result];
+  command = [(ATXSpotlightFeedbackManager *)commandCopy command];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1065,8 +1065,8 @@ LABEL_28:
     goto LABEL_37;
   }
 
-  v8 = [(ATXSpotlightFeedbackManager *)v4 command];
-  v9 = [(ATXSearchFeedbackListener *)self bundleIdentifierFromResult:v5];
+  command2 = [(ATXSpotlightFeedbackManager *)commandCopy command];
+  v9 = [(ATXSearchFeedbackListener *)self bundleIdentifierFromResult:result];
   v10 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1078,55 +1078,55 @@ LABEL_28:
   v11 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v5 identifier];
+    identifier = [result identifier];
     v39 = 138412290;
-    v40 = v12;
+    v40 = identifier;
     _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "ATXSFL: searchResultIdentifier ---> %@", &v39, 0xCu);
   }
 
   v13 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 category];
+    category = [command2 category];
     v39 = 67109120;
-    LODWORD(v40) = v14;
+    LODWORD(v40) = category;
     _os_log_impl(&dword_1BF549000, v13, OS_LOG_TYPE_DEFAULT, "ATXSFL: category ---> %d", &v39, 8u);
   }
 
   v15 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v8 proactiveIdentifier];
+    proactiveIdentifier = [command2 proactiveIdentifier];
     v39 = 138412290;
-    v40 = v16;
+    v40 = proactiveIdentifier;
     _os_log_impl(&dword_1BF549000, v15, OS_LOG_TYPE_DEFAULT, "ATXSFL: proactiveIdentifier ---> %@", &v39, 0xCu);
   }
 
   v17 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v8 shouldClearWholeSection];
+    shouldClearWholeSection = [command2 shouldClearWholeSection];
     v39 = 67109120;
-    LODWORD(v40) = v18;
+    LODWORD(v40) = shouldClearWholeSection;
     _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, "ATXSFL: shouldClearWholeSection ---> %{BOOL}d", &v39, 8u);
   }
 
   v19 = objc_alloc_init(ATXSpotlightFeedbackManager);
-  v20 = [v8 category];
-  if (v20 > 2)
+  category2 = [command2 category];
+  if (category2 > 2)
   {
-    if (v20 == 6)
+    if (category2 == 6)
     {
       v28 = __atxlog_handle_zkw_hide();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v8 category];
+        category3 = [command2 category];
         v39 = 67109120;
-        LODWORD(v40) = v29;
+        LODWORD(v40) = category3;
         _os_log_impl(&dword_1BF549000, v28, OS_LOG_TYPE_DEFAULT, "ATXSFL: hiding app suggestion for category %d", &v39, 8u);
       }
 
-      if (![v5 isLocalApplicationResult])
+      if (![result isLocalApplicationResult])
       {
         goto LABEL_34;
       }
@@ -1137,35 +1137,35 @@ LABEL_28:
         goto LABEL_34;
       }
 
-      v24 = [v5 proactiveSuggestion];
-      [(ATXSpotlightFeedbackManager *)v19 addHiddenAppSuggestionBundleIdentifier:v24];
+      proactiveSuggestion = [result proactiveSuggestion];
+      [(ATXSpotlightFeedbackManager *)v19 addHiddenAppSuggestionBundleIdentifier:proactiveSuggestion];
       goto LABEL_33;
     }
 
-    if (v20 == 3)
+    if (category2 == 3)
     {
-      v24 = [v8 proactiveIdentifier];
-      [(ATXSpotlightFeedbackManager *)v19 addHiddenContextIdentifier:v24];
+      proactiveSuggestion = [command2 proactiveIdentifier];
+      [(ATXSpotlightFeedbackManager *)v19 addHiddenContextIdentifier:proactiveSuggestion];
       goto LABEL_33;
     }
 
 LABEL_32:
-    v24 = [v8 proactiveIdentifier];
-    [(ATXSpotlightFeedbackManager *)v19 addHiddenActionExecutableIdentifier:v24];
+    proactiveSuggestion = [command2 proactiveIdentifier];
+    [(ATXSpotlightFeedbackManager *)v19 addHiddenActionExecutableIdentifier:proactiveSuggestion];
     goto LABEL_33;
   }
 
-  if ((v20 - 1) >= 2)
+  if ((category2 - 1) >= 2)
   {
-    if (!v20)
+    if (!category2)
     {
-      v24 = __atxlog_handle_zkw_hide();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      proactiveSuggestion = __atxlog_handle_zkw_hide();
+      if (os_log_type_enabled(proactiveSuggestion, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v8 category];
+        category4 = [command2 category];
         v39 = 67109120;
-        LODWORD(v40) = v25;
-        _os_log_impl(&dword_1BF549000, v24, OS_LOG_TYPE_DEFAULT, "ATXSFL: no hiding action for category %d", &v39, 8u);
+        LODWORD(v40) = category4;
+        _os_log_impl(&dword_1BF549000, proactiveSuggestion, OS_LOG_TYPE_DEFAULT, "ATXSFL: no hiding action for category %d", &v39, 8u);
       }
 
       goto LABEL_33;
@@ -1174,10 +1174,10 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v21 = [v8 shouldClearWholeSection];
+  shouldClearWholeSection2 = [command2 shouldClearWholeSection];
   v22 = __atxlog_handle_zkw_hide();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-  if (v21)
+  if (shouldClearWholeSection2)
   {
     if (v23)
     {
@@ -1192,14 +1192,14 @@ LABEL_32:
 
   if (v23)
   {
-    v26 = [v5 identifier];
+    identifier2 = [result identifier];
     v39 = 138412290;
-    v40 = v26;
+    v40 = identifier2;
     _os_log_impl(&dword_1BF549000, v22, OS_LOG_TYPE_DEFAULT, "ATXSFL: User has hidden auto shortcut with signature: %@. Will not show this specific shortcut suggestion", &v39, 0xCu);
   }
 
-  v24 = [v5 identifier];
-  v27 = [(ATXSpotlightFeedbackManager *)v9 stringByAppendingString:v24];
+  proactiveSuggestion = [result identifier];
+  v27 = [(ATXSpotlightFeedbackManager *)v9 stringByAppendingString:proactiveSuggestion];
   [(ATXSpotlightFeedbackManager *)v19 addHiddenAutoShortcutIdentifier:v27];
 
 LABEL_33:
@@ -1207,34 +1207,34 @@ LABEL_34:
   v30 = __atxlog_handle_zkw_hide();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v8 proactiveIdentifier];
+    proactiveIdentifier2 = [command2 proactiveIdentifier];
     v39 = 138412546;
     v40 = v19;
     v41 = 2112;
-    v42 = v31;
+    v42 = proactiveIdentifier2;
     _os_log_impl(&dword_1BF549000, v30, OS_LOG_TYPE_DEFAULT, "ATXSFL: feedbackManager %@ addHiddenActionExecutableIdentifier %@", &v39, 0x16u);
   }
 
 LABEL_37:
-  v32 = [(ATXSpotlightFeedbackManager *)v4 result];
+  result2 = [(ATXSpotlightFeedbackManager *)commandCopy result];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = v32;
-    v34 = [v33 proactiveSuggestion];
+    v33 = result2;
+    proactiveSuggestion2 = [v33 proactiveSuggestion];
     v35 = __atxlog_handle_zkw_hide();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v34 uiSpecification];
-      v37 = [v36 title];
+      uiSpecification = [proactiveSuggestion2 uiSpecification];
+      title = [uiSpecification title];
       v39 = 138413058;
-      v40 = v4;
+      v40 = commandCopy;
       v41 = 2112;
       v42 = v33;
       v43 = 2112;
-      v44 = v37;
+      v44 = title;
       v45 = 2112;
-      v46 = v34;
+      v46 = proactiveSuggestion2;
       _os_log_impl(&dword_1BF549000, v35, OS_LOG_TYPE_DEFAULT, "didPerformCommand ---> %@ result = %@ suggestion (%@) = %@", &v39, 0x2Au);
     }
   }
@@ -1246,9 +1246,9 @@ LABEL_37:
     {
       v38 = objc_opt_class();
       v39 = 138412802;
-      v40 = v4;
+      v40 = commandCopy;
       v41 = 2112;
-      v42 = v32;
+      v42 = result2;
       v43 = 2112;
       v44 = v38;
       _os_log_impl(&dword_1BF549000, v33, OS_LOG_TYPE_DEFAULT, "didPerformCommand ---> %@ result = %@ class = %@", &v39, 0x20u);
@@ -1256,11 +1256,11 @@ LABEL_37:
   }
 }
 
-- (void)_sendSpotlightUIStreamAppEngageWithFeedback:(id)a3
+- (void)_sendSpotlightUIStreamAppEngageWithFeedback:(id)feedback
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 command];
+  feedbackCopy = feedback;
+  command = [feedbackCopy command];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1269,20 +1269,20 @@ LABEL_37:
     v7 = __atxlog_handle_zkw_hide();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 result];
-      v9 = [v8 sectionBundleIdentifier];
+      result = [feedbackCopy result];
+      sectionBundleIdentifier = [result sectionBundleIdentifier];
       v22 = 138412290;
-      v23 = v9;
+      v23 = sectionBundleIdentifier;
       _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "ATXSFL: sendSpotlightUIStreamAppEngageWithFeedback commandEngagementFeedback.result.sectionBundleIdentifier ='%@'", &v22, 0xCu);
     }
 
-    v10 = [v4 result];
-    v11 = [v10 sectionBundleIdentifier];
-    v12 = [v11 isEqualToString:@"com.apple.searchd.zkw.apps"];
+    result2 = [feedbackCopy result];
+    sectionBundleIdentifier2 = [result2 sectionBundleIdentifier];
+    v12 = [sectionBundleIdentifier2 isEqualToString:@"com.apple.searchd.zkw.apps"];
 
-    v13 = [v4 command];
-    v14 = [v13 applicationBundleIdentifier];
-    if ([v14 length])
+    command2 = [feedbackCopy command];
+    applicationBundleIdentifier = [command2 applicationBundleIdentifier];
+    if ([applicationBundleIdentifier length])
     {
       if (v12)
       {
@@ -1294,22 +1294,22 @@ LABEL_37:
         v15 = 5;
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E69C5C00]) initWithType:v15 suggestionUniqueId:v14 suggestionType:@"app" suggestionSubtype:0 suggestionContext:0];
+      v16 = [objc_alloc(MEMORY[0x1E69C5C00]) initWithType:v15 suggestionUniqueId:applicationBundleIdentifier suggestionType:@"app" suggestionSubtype:0 suggestionContext:0];
       v17 = __atxlog_handle_feedback();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v16 eventType];
-        v19 = [v16 suggestionType];
-        v20 = [v16 suggestionSubtype];
-        v21 = [v16 suggestionUniqueId];
+        eventType = [v16 eventType];
+        suggestionType = [v16 suggestionType];
+        suggestionSubtype = [v16 suggestionSubtype];
+        suggestionUniqueId = [v16 suggestionUniqueId];
         v22 = 134218754;
-        v23 = v18;
+        v23 = eventType;
         v24 = 2112;
-        v25 = v19;
+        v25 = suggestionType;
         v26 = 2112;
-        v27 = v20;
+        v27 = suggestionSubtype;
         v28 = 2112;
-        v29 = v21;
+        v29 = suggestionUniqueId;
         _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, "ATXSFL: uiEvent type%ld: %@ %@ %@", &v22, 0x2Au);
       }
 
@@ -1318,13 +1318,13 @@ LABEL_37:
   }
 }
 
-- (void)_sendSpotlightUIEvent:(id)a3
+- (void)_sendSpotlightUIEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   p_viewAppearEvent = &self->_viewAppearEvent;
   if ((self->_viewAppearEvent | 8) == 0x1E)
   {
-    [(ATXSpotlightUIBiomeStream *)self->_spotlightUIBiomeStream sendEvent:v4];
+    [(ATXSpotlightUIBiomeStream *)self->_spotlightUIBiomeStream sendEvent:eventCopy];
   }
 
   else
@@ -1332,41 +1332,41 @@ LABEL_37:
     v6 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXSearchFeedbackListener *)p_viewAppearEvent _sendSpotlightUIEvent:v4, v6];
+      [(ATXSearchFeedbackListener *)p_viewAppearEvent _sendSpotlightUIEvent:eventCopy, v6];
     }
   }
 }
 
-- (void)_sendSpotlightUIStreamEventType:(int64_t)a3 searchResult:(id)a4
+- (void)_sendSpotlightUIStreamEventType:(int64_t)type searchResult:(id)result
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 sectionBundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.spotlight.dec.zkw.recents"];
+  resultCopy = result;
+  sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+  v8 = [sectionBundleIdentifier isEqualToString:@"com.apple.spotlight.dec.zkw.recents"];
 
   if (v8)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v6 identifier];
-    v11 = [v9 stringWithFormat:@"%lu", objc_msgSend(v10, "hash")];
+    identifier = [resultCopy identifier];
+    v11 = [v9 stringWithFormat:@"%lu", objc_msgSend(identifier, "hash")];
 
-    v12 = -[ATXSearchFeedbackListener _suggestionSubTypeStringWithResultType:](self, "_suggestionSubTypeStringWithResultType:", [v6 type]);
-    v13 = [objc_alloc(MEMORY[0x1E69C5C00]) initWithType:a3 suggestionUniqueId:v11 suggestionType:@"recent" suggestionSubtype:v12 suggestionContext:0];
+    v12 = -[ATXSearchFeedbackListener _suggestionSubTypeStringWithResultType:](self, "_suggestionSubTypeStringWithResultType:", [resultCopy type]);
+    v13 = [objc_alloc(MEMORY[0x1E69C5C00]) initWithType:type suggestionUniqueId:v11 suggestionType:@"recent" suggestionSubtype:v12 suggestionContext:0];
     v14 = __atxlog_handle_feedback();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v13 eventType];
-      v16 = [v13 suggestionType];
-      v17 = [v13 suggestionSubtype];
-      v18 = [v13 suggestionUniqueId];
+      eventType = [v13 eventType];
+      suggestionType = [v13 suggestionType];
+      suggestionSubtype = [v13 suggestionSubtype];
+      suggestionUniqueId = [v13 suggestionUniqueId];
       *buf = 134218754;
-      v20 = v15;
+      v20 = eventType;
       v21 = 2112;
-      v22 = v16;
+      v22 = suggestionType;
       v23 = 2112;
-      v24 = v17;
+      v24 = suggestionSubtype;
       v25 = 2112;
-      v26 = v18;
+      v26 = suggestionUniqueId;
       _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "ATXSFL: uiEvent type%ld: %@ %@ %@", buf, 0x2Au);
     }
 
@@ -1374,31 +1374,31 @@ LABEL_37:
   }
 }
 
-- (id)_suggestionSubTypeStringWithResultType:(int)a3
+- (id)_suggestionSubTypeStringWithResultType:(int)type
 {
-  if ((a3 - 1) > 0x26)
+  if ((type - 1) > 0x26)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E80C5F08[a3 - 1];
+    return off_1E80C5F08[type - 1];
   }
 }
 
-- (id)bundleIdentifierFromResult:(id)a3
+- (id)bundleIdentifierFromResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   getSFSearchResult_SpotlightExtrasClass();
   if (objc_opt_isKindOfClass())
   {
-    [v3 relatedAppIdentifier];
+    [resultCopy relatedAppIdentifier];
   }
 
   else
   {
-    [v3 applicationBundleIdentifier];
+    [resultCopy applicationBundleIdentifier];
   }
   v4 = ;
 

@@ -1,24 +1,24 @@
 @interface VUIDebugMetricsDictionaryViewController
-- (VUIDebugMetricsDictionaryViewController)initWithDictionary:(id)a3;
+- (VUIDebugMetricsDictionaryViewController)initWithDictionary:(id)dictionary;
 - (id)sortedKeys;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation VUIDebugMetricsDictionaryViewController
 
-- (VUIDebugMetricsDictionaryViewController)initWithDictionary:(id)a3
+- (VUIDebugMetricsDictionaryViewController)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = VUIDebugMetricsDictionaryViewController;
   v6 = [(VUIDebugMetricsDictionaryViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
-    v8 = [(VUIDebugMetricsDictionaryViewController *)v7 tableView];
-    [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
+    objc_storeStrong(&v6->_dictionary, dictionary);
+    tableView = [(VUIDebugMetricsDictionaryViewController *)v7 tableView];
+    [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
   }
 
   return v7;
@@ -33,30 +33,30 @@
 
 - (id)sortedKeys
 {
-  v2 = [(NSDictionary *)self->_dictionary allKeys];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSDictionary *)self->_dictionary allKeys];
+  v3 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v6];
-  v8 = [(VUIDebugMetricsDictionaryViewController *)self sortedKeys];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
+  sortedKeys = [(VUIDebugMetricsDictionaryViewController *)self sortedKeys];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [sortedKeys objectAtIndexedSubscript:v9];
 
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(VUIDebugMetricsDictionaryViewController *)self dictionary];
-  v14 = [v13 objectForKeyedSubscript:v10];
+  dictionary = [(VUIDebugMetricsDictionaryViewController *)self dictionary];
+  v14 = [dictionary objectForKeyedSubscript:v10];
   v15 = [v12 stringWithFormat:@"%@", v14];
-  v16 = [v7 detailTextLabel];
-  [v16 setText:v15];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v15];
 
   return v7;
 }

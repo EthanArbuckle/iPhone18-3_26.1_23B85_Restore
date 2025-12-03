@@ -1,20 +1,20 @@
 @interface NTKFaceSnapshotCacheRequest
-- (NTKFaceSnapshotCacheRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5;
-- (NTKFaceSnapshotCacheRequest)initWithFace:(id)a3 options:(id)a4 resultHandler:(id)a5;
+- (NTKFaceSnapshotCacheRequest)initWithFace:(id)face options:(id)options completion:(id)completion;
+- (NTKFaceSnapshotCacheRequest)initWithFace:(id)face options:(id)options resultHandler:(id)handler;
 @end
 
 @implementation NTKFaceSnapshotCacheRequest
 
-- (NTKFaceSnapshotCacheRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5
+- (NTKFaceSnapshotCacheRequest)initWithFace:(id)face options:(id)options completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__NTKFaceSnapshotCacheRequest_initWithFace_options_completion___block_invoke;
   v12[3] = &unk_278784850;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(NTKFaceSnapshotCacheRequest *)self initWithFace:a3 options:a4 resultHandler:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [(NTKFaceSnapshotCacheRequest *)self initWithFace:face options:options resultHandler:v12];
 
   return v10;
 }
@@ -29,34 +29,34 @@ void __63__NTKFaceSnapshotCacheRequest_initWithFace_options_completion___block_i
   }
 }
 
-- (NTKFaceSnapshotCacheRequest)initWithFace:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (NTKFaceSnapshotCacheRequest)initWithFace:(id)face options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  faceCopy = face;
+  optionsCopy = options;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = NTKFaceSnapshotCacheRequest;
   v12 = [(NTKFaceSnapshotCacheRequest *)&v37 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v12->_creationDate;
-    v12->_creationDate = v13;
+    v12->_creationDate = date;
 
-    objc_storeStrong(&v12->_face, a3);
-    v15 = [v9 dailySnapshotKey];
-    v16 = [v15 copy];
+    objc_storeStrong(&v12->_face, face);
+    dailySnapshotKey = [faceCopy dailySnapshotKey];
+    v16 = [dailySnapshotKey copy];
     faceSnapshotKey = v12->_faceSnapshotKey;
     v12->_faceSnapshotKey = v16;
 
-    objc_storeStrong(&v12->_options, a4);
+    objc_storeStrong(&v12->_options, options);
     v35[0] = 0;
     v35[1] = v35;
     v35[2] = 0x2020000000;
     v36 = 0;
     objc_initWeak(&location, v12);
-    v18 = [v9 unsafeDailySnapshotKey];
-    v19 = [v18 copy];
+    unsafeDailySnapshotKey = [faceCopy unsafeDailySnapshotKey];
+    v19 = [unsafeDailySnapshotKey copy];
 
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
@@ -64,8 +64,8 @@ void __63__NTKFaceSnapshotCacheRequest_initWithFace_options_completion___block_i
     v28 = &unk_278784878;
     objc_copyWeak(&v33, &location);
     v32 = v35;
-    v31 = v11;
-    v29 = v9;
+    v31 = handlerCopy;
+    v29 = faceCopy;
     v20 = v19;
     v30 = v20;
     v21 = _Block_copy(&v25);

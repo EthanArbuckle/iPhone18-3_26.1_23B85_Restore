@@ -1,7 +1,7 @@
 @interface MBUserNotification
 + (id)notification;
 - (void)dealloc;
-- (void)setCFUserNotification:(__CFUserNotification *)a3;
+- (void)setCFUserNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation MBUserNotification
@@ -21,16 +21,16 @@
 
 + (id)notification
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)setCFUserNotification:(__CFUserNotification *)a3
+- (void)setCFUserNotification:(__CFUserNotification *)notification
 {
   cfUserNotification = self->_cfUserNotification;
-  self->_cfUserNotification = a3;
-  CFRetain(a3);
+  self->_cfUserNotification = notification;
+  CFRetain(notification);
   if (cfUserNotification)
   {
 

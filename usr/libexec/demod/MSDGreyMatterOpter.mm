@@ -8,9 +8,9 @@
 + (BOOL)isOptedIn
 {
   v2 = objc_alloc_init(CSFGMOptIn);
-  v3 = [v2 isOptedIn];
+  isOptedIn = [v2 isOptedIn];
 
-  return v3;
+  return isOptedIn;
 }
 
 + (void)migrateOptInValue
@@ -18,12 +18,12 @@
   v2 = CFPreferencesCopyValue(@"com.apple.csf.gm.toggle", @".GlobalPreferences", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 67109120;
-      LODWORD(v9) = v3;
+      LODWORD(v9) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Read a valid opt-in value from the global preferences domain: %d", &v8, 8u);
     }
 
@@ -31,7 +31,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (bOOLValue)
       {
         v6 = @"YES";
       }
@@ -41,7 +41,7 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Applying the opt-in value %@ to the device", &v8, 0xCu);
     }
 
-    [MSDGreyMatterOpter setIsOptedIn:v3];
+    [MSDGreyMatterOpter setIsOptedIn:bOOLValue];
     _CFPreferencesFlushCachesForIdentifier();
   }
 

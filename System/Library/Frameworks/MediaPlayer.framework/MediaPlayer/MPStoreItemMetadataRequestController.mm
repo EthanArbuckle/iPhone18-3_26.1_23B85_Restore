@@ -1,13 +1,13 @@
 @interface MPStoreItemMetadataRequestController
 + (MPStoreItemMetadataRequestController)sharedStoreItemMetadataRequestController;
 - (MPStoreItemMetadataRequestController)init;
-- (id)getStoreItemMetadataForRequest:(id)a3 includeBatchResponseError:(BOOL)a4 responseHandler:(id)a5;
+- (id)getStoreItemMetadataForRequest:(id)request includeBatchResponseError:(BOOL)error responseHandler:(id)handler;
 - (void)_removeExpiredItemsPeriodically;
-- (void)addStoreItemMetadata:(id)a3 forUserIdentity:(id)a4;
+- (void)addStoreItemMetadata:(id)metadata forUserIdentity:(id)identity;
 - (void)beginTransaction;
 - (void)endTransaction;
-- (void)requestStoreItemMetadataForReason:(unint64_t)a3 withItemIdentifiers:(id)a4 responseHandler:(id)a5;
-- (void)setCacheSize:(int64_t)a3;
+- (void)requestStoreItemMetadataForReason:(unint64_t)reason withItemIdentifiers:(id)identifiers responseHandler:(id)handler;
+- (void)setCacheSize:(int64_t)size;
 @end
 
 @implementation MPStoreItemMetadataRequestController
@@ -34,36 +34,36 @@
   }
 }
 
-- (id)getStoreItemMetadataForRequest:(id)a3 includeBatchResponseError:(BOOL)a4 responseHandler:(id)a5
+- (id)getStoreItemMetadataForRequest:(id)request includeBatchResponseError:(BOOL)error responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v11 = [v8 itemIdentifiers];
-  if ([v11 count])
+  itemIdentifiers = [requestCopy itemIdentifiers];
+  if ([itemIdentifiers count])
   {
     [v10 setCancellable:1];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __113__MPStoreItemMetadataRequestController_getStoreItemMetadataForRequest_includeBatchResponseError_responseHandler___block_invoke;
     v14[3] = &unk_1E767D728;
-    v14[4] = v11;
+    v14[4] = itemIdentifiers;
     v14[5] = self;
-    v15 = v8;
-    v17 = v9;
+    v15 = requestCopy;
+    v17 = handlerCopy;
     v16 = v10;
-    v18 = a4;
+    errorCopy = error;
     [MPStoreItemMetadataCacheKey getCacheKeyWithRequest:v15 completionHandler:v14];
   }
 
   else
   {
     [v10 setCompletedUnitCount:1];
-    if (v9)
+    if (handlerCopy)
     {
       v12 = objc_alloc_init(MPStoreItemMetadataResponse);
       [(MPStoreItemMetadataResponse *)v12 setFinalResponse:1];
-      (*(v9 + 2))(v9, v12, 0);
+      (*(handlerCopy + 2))(handlerCopy, v12, 0);
     }
   }
 
@@ -365,42 +365,42 @@ void __113__MPStoreItemMetadataRequestController_getStoreItemMetadataForRequest_
   }
 }
 
-- (void)requestStoreItemMetadataForReason:(unint64_t)a3 withItemIdentifiers:(id)a4 responseHandler:(id)a5
+- (void)requestStoreItemMetadataForReason:(unint64_t)reason withItemIdentifiers:(id)identifiers responseHandler:(id)handler
 {
-  v11 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v9 = objc_alloc_init(MPStoreItemMetadataRequest);
-  [(MPStoreItemMetadataRequest *)v9 setItemIdentifiers:v8];
+  [(MPStoreItemMetadataRequest *)v9 setItemIdentifiers:identifiersCopy];
 
-  [(MPStoreItemMetadataRequest *)v9 setReason:a3];
-  v10 = [(MPStoreItemMetadataRequestController *)self getStoreItemMetadataForRequest:v9 responseHandler:v11];
+  [(MPStoreItemMetadataRequest *)v9 setReason:reason];
+  v10 = [(MPStoreItemMetadataRequestController *)self getStoreItemMetadataForRequest:v9 responseHandler:handlerCopy];
 }
 
-- (void)addStoreItemMetadata:(id)a3 forUserIdentity:(id)a4
+- (void)addStoreItemMetadata:(id)metadata forUserIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  identityCopy = identity;
   if ((MSVDeviceIsAudioAccessory() & 1) == 0)
   {
-    v8 = [v6 cacheableItemIdentifier];
-    if ([v8 length])
+    cacheableItemIdentifier = [metadataCopy cacheableItemIdentifier];
+    if ([cacheableItemIdentifier length])
     {
       v9 = [MPAsyncBlockOperation alloc];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __77__MPStoreItemMetadataRequestController_addStoreItemMetadata_forUserIdentity___block_invoke;
       v13[3] = &unk_1E767D610;
-      v13[4] = v8;
+      v13[4] = cacheableItemIdentifier;
       v13[5] = self;
-      v14 = v6;
+      v14 = metadataCopy;
       v10 = [(MPAsyncBlockOperation *)v9 initWithStartHandler:v13];
       [(NSOperationQueue *)self->_operationQueue addOperation:v10];
     }
   }
 
   importWindow = self->_importWindow;
-  v12 = [v6 importableStorePlatformDictionary];
-  [(MPStoreItemMetadataImportWindow *)importWindow addPayload:v12 userIdentity:v7];
+  importableStorePlatformDictionary = [metadataCopy importableStorePlatformDictionary];
+  [(MPStoreItemMetadataImportWindow *)importWindow addPayload:importableStorePlatformDictionary userIdentity:identityCopy];
 }
 
 void __77__MPStoreItemMetadataRequestController_addStoreItemMetadata_forUserIdentity___block_invoke(void *a1, void *a2)
@@ -443,7 +443,7 @@ void __77__MPStoreItemMetadataRequestController_addStoreItemMetadata_forUserIden
   [*(a1 + 56) finishWithError:0];
 }
 
-- (void)setCacheSize:(int64_t)a3
+- (void)setCacheSize:(int64_t)size
 {
   v5 = [MPAsyncBlockOperation alloc];
   v7[0] = MEMORY[0x1E69E9820];
@@ -451,7 +451,7 @@ void __77__MPStoreItemMetadataRequestController_addStoreItemMetadata_forUserIden
   v7[2] = __53__MPStoreItemMetadataRequestController_setCacheSize___block_invoke;
   v7[3] = &unk_1E767D5C0;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = size;
   v6 = [(MPAsyncBlockOperation *)v5 initWithStartHandler:v7];
   [(NSOperationQueue *)self->_operationQueue addOperation:v6];
 }
@@ -481,8 +481,8 @@ void __53__MPStoreItemMetadataRequestController_setCacheSize___block_invoke(uint
   if (v5)
   {
     os_unfair_lock_unlock(&self->_transactionLock);
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPStoreItemMetadataRequestController.m" lineNumber:91 description:@"Attempting to end a transaction that never began"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPStoreItemMetadataRequestController.m" lineNumber:91 description:@"Attempting to end a transaction that never began"];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface AXSoundActionsController
 - (BOOL)_shouldEnableSoundSource;
-- (id)_keyForSoundAction:(id)a3;
-- (id)_stringForSoundAction:(id)a3;
-- (id)actionForActionPickerController:(id)a3;
-- (id)selectSpecifier:(id)a3;
-- (id)soundAction:(id)a3;
+- (id)_keyForSoundAction:(id)action;
+- (id)_stringForSoundAction:(id)action;
+- (id)actionForActionPickerController:(id)controller;
+- (id)selectSpecifier:(id)specifier;
+- (id)soundAction:(id)action;
 - (id)specifiers;
-- (void)actionPickerController:(id)a3 didSelectAction:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)actionPickerController:(id)controller didSelectAction:(id)action;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXSoundActionsController
@@ -100,53 +100,53 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXSoundActionsController;
-  v6 = a4;
-  [(AXSoundActionsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXSoundActionsController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(AXSoundActionsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXSoundActionsController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
-  v8 = [v7 identifier];
-  LODWORD(v6) = [v8 isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
+  identifier = [v7 identifier];
+  LODWORD(pathCopy) = [identifier isEqualToString:@"SOUND_ACTION_PRACTICE_ID"];
 
-  if (v6)
+  if (pathCopy)
   {
     v9 = [SoundActionsPracticeNavigationController alloc];
-    v10 = [(AXSoundActionsController *)self soundActionslocalURL];
-    v11 = [(SoundActionsPracticeNavigationController *)v9 initWithAssetURL:v10];
+    soundActionslocalURL = [(AXSoundActionsController *)self soundActionslocalURL];
+    v11 = [(SoundActionsPracticeNavigationController *)v9 initWithAssetURL:soundActionslocalURL];
 
     [(AXSoundActionsController *)self presentModalViewController:v11 withTransition:3];
   }
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = AXSoundActionsController;
-  v5 = [(AXSoundActionsController *)&v8 selectSpecifier:v4];
+  v5 = [(AXSoundActionsController *)&v8 selectSpecifier:specifierCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v5 setDelegate:self];
-    v6 = [v4 identifier];
-    [v5 setIdentifier:v6];
+    identifier = [specifierCopy identifier];
+    [v5 setIdentifier:identifier];
   }
 
   return v5;
 }
 
-- (id)soundAction:(id)a3
+- (id)soundAction:(id)action
 {
-  v4 = [a3 propertyForKey:@"AXSoundActionsInputEventUsage"];
-  v5 = [v4 integerValue];
+  v4 = [action propertyForKey:@"AXSoundActionsInputEventUsage"];
+  integerValue = [v4 integerValue];
 
-  v6 = [(AXSoundActionsController *)self actionsBySoundAction];
-  v7 = [NSNumber numberWithLong:v5];
-  v8 = [v7 stringValue];
-  v9 = [v6 objectForKey:v8];
+  actionsBySoundAction = [(AXSoundActionsController *)self actionsBySoundAction];
+  v7 = [NSNumber numberWithLong:integerValue];
+  stringValue = [v7 stringValue];
+  v9 = [actionsBySoundAction objectForKey:stringValue];
 
   if (v9)
   {
@@ -162,17 +162,17 @@
   return v10;
 }
 
-- (id)actionForActionPickerController:(id)a3
+- (id)actionForActionPickerController:(id)controller
 {
-  v4 = [a3 identifier];
-  v5 = [(AXSoundActionsController *)self specifierForID:v4];
+  identifier = [controller identifier];
+  v5 = [(AXSoundActionsController *)self specifierForID:identifier];
   v6 = [v5 propertyForKey:@"AXSoundActionsInputEventUsage"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  v8 = [(AXSoundActionsController *)self actionsBySoundAction];
-  v9 = [NSNumber numberWithLong:v7];
-  v10 = [v9 stringValue];
-  v11 = [v8 objectForKey:v10];
+  actionsBySoundAction = [(AXSoundActionsController *)self actionsBySoundAction];
+  v9 = [NSNumber numberWithLong:integerValue];
+  stringValue = [v9 stringValue];
+  v11 = [actionsBySoundAction objectForKey:stringValue];
   v12 = v11;
   if (v11)
   {
@@ -189,16 +189,16 @@
   return v13;
 }
 
-- (void)actionPickerController:(id)a3 didSelectAction:(id)a4
+- (void)actionPickerController:(id)controller didSelectAction:(id)action
 {
-  v19 = a4;
-  v6 = [a3 identifier];
-  v7 = [(AXSoundActionsController *)self specifierForID:v6];
+  actionCopy = action;
+  identifier = [controller identifier];
+  v7 = [(AXSoundActionsController *)self specifierForID:identifier];
   v8 = [v7 propertyForKey:@"AXSoundActionsInputEventUsage"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  v10 = [(AXSoundActionsController *)self actionsBySoundAction];
-  v11 = [v10 mutableCopy];
+  actionsBySoundAction = [(AXSoundActionsController *)self actionsBySoundAction];
+  v11 = [actionsBySoundAction mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -212,9 +212,9 @@
 
   v14 = v13;
 
-  v15 = [v19 isEqualToString:@"__NONE__"];
-  v16 = [NSNumber numberWithLong:v9];
-  v17 = [v16 stringValue];
+  v15 = [actionCopy isEqualToString:@"__NONE__"];
+  v16 = [NSNumber numberWithLong:integerValue];
+  stringValue = [v16 stringValue];
   if (v15)
   {
     v18 = 0;
@@ -222,16 +222,16 @@
 
   else
   {
-    v18 = v19;
+    v18 = actionCopy;
   }
 
-  [v14 setObject:v18 forKeyedSubscript:v17];
+  [v14 setObject:v18 forKeyedSubscript:stringValue];
 
   [(AXSoundActionsController *)self updateSoundActionsWithDictionary:v14];
   [(AXSoundActionsController *)self reloadSpecifiers];
 }
 
-- (id)_keyForSoundAction:(id)a3
+- (id)_keyForSoundAction:(id)action
 {
   v7[0] = &off_27A038;
   v7[1] = &off_27A050;
@@ -261,16 +261,16 @@
   v7[13] = &off_27A170;
   v8[12] = @"SOUND_ACTION_TT";
   v8[13] = @"SOUND_ACTION_UH";
-  v3 = a3;
+  actionCopy = action;
   v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:14];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:actionCopy];
 
   return v5;
 }
 
-- (id)_stringForSoundAction:(id)a3
+- (id)_stringForSoundAction:(id)action
 {
-  v3 = [(AXSoundActionsController *)self _keyForSoundAction:a3];
+  v3 = [(AXSoundActionsController *)self _keyForSoundAction:action];
   v4 = settingsLocString(v3, @"Accessibility");
 
   return v4;
@@ -278,8 +278,8 @@
 
 - (BOOL)_shouldEnableSoundSource
 {
-  v2 = [(AXSoundActionsController *)self soundActionslocalURL];
-  v3 = v2 != 0;
+  soundActionslocalURL = [(AXSoundActionsController *)self soundActionslocalURL];
+  v3 = soundActionslocalURL != 0;
 
   return v3;
 }

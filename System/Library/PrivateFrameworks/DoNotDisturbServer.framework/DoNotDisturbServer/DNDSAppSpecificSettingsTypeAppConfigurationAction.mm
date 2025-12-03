@@ -1,42 +1,42 @@
 @interface DNDSAppSpecificSettingsTypeAppConfigurationAction
-+ (id)appSpecificSettingsForManagedObject:(id)a3;
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4;
++ (id)appSpecificSettingsForManagedObject:(id)object;
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings;
 @end
 
 @implementation DNDSAppSpecificSettingsTypeAppConfigurationAction
 
-+ (id)appSpecificSettingsForManagedObject:(id)a3
++ (id)appSpecificSettingsForManagedObject:(id)object
 {
   v3 = MEMORY[0x277D05898];
-  v4 = a3;
+  objectCopy = object;
   v5 = [v3 alloc];
-  v6 = [v4 encodedAction];
-  v7 = [v4 identifier];
-  v8 = [v4 application];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v4 enabled];
+  encodedAction = [objectCopy encodedAction];
+  identifier = [objectCopy identifier];
+  application = [objectCopy application];
+  bundleIdentifier = [application bundleIdentifier];
+  enabled = [objectCopy enabled];
 
-  v11 = [v5 initWithEncodedAction:v6 actionIdentifier:v7 bundleIdentifier:v9 enabled:v10];
+  v11 = [v5 initWithEncodedAction:encodedAction actionIdentifier:identifier bundleIdentifier:bundleIdentifier enabled:enabled];
 
   return v11;
 }
 
-+ (void)completeManagedObject:(id)a3 forAppSpecificSettings:(id)a4
++ (void)completeManagedObject:(id)object forAppSpecificSettings:(id)settings
 {
-  v5 = a4;
-  v11 = a3;
-  v6 = [v11 application];
-  v7 = [v6 bundleIdentifier];
-  [v5 setBundleIdentifier:v7];
+  settingsCopy = settings;
+  objectCopy = object;
+  application = [objectCopy application];
+  bundleIdentifier = [application bundleIdentifier];
+  [settingsCopy setBundleIdentifier:bundleIdentifier];
 
-  v8 = [v11 identifier];
-  [v5 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [settingsCopy setIdentifier:identifier];
 
-  v9 = [v5 encodedAction];
-  [v11 setEncodedAction:v9];
+  encodedAction = [settingsCopy encodedAction];
+  [objectCopy setEncodedAction:encodedAction];
 
-  v10 = [v5 isEnabled];
-  [v11 setEnabled:v10];
+  isEnabled = [settingsCopy isEnabled];
+  [objectCopy setEnabled:isEnabled];
 }
 
 @end

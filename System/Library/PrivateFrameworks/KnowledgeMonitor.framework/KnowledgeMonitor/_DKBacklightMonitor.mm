@@ -1,5 +1,5 @@
 @interface _DKBacklightMonitor
-+ (id)_eventWithState:(id)a3;
++ (id)_eventWithState:(id)state;
 - (_DKBacklightMonitor)init;
 - (id)_lastAliveDate;
 - (id)_shutdownDateFromSpringBoard;
@@ -9,15 +9,15 @@
 - (id)lastBacklightEvent;
 - (id)shutdownDate;
 - (id)shutdownHandler;
-- (void)_setLastAliveDate:(id)a3;
+- (void)_setLastAliveDate:(id)date;
 - (void)_shutdownDateFromSysctl;
 - (void)deactivate;
 - (void)dealloc;
 - (void)donateRetroactiveShutdownBacklightOffEvent;
-- (void)donateToBiome:(unint64_t)a3 startDate:(id)a4;
+- (void)donateToBiome:(unint64_t)biome startDate:(id)date;
 - (void)handleShutdownNotification;
 - (void)obtainCurrentValue;
-- (void)setShutdownHandler:(id)a3;
+- (void)setShutdownHandler:(id)handler;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -25,15 +25,15 @@
 
 @implementation _DKBacklightMonitor
 
-- (void)setShutdownHandler:(id)a3
+- (void)setShutdownHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42___DKBacklightMonitor_setShutdownHandler___block_invoke;
   v8[3] = &unk_27856F1A0;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   v6 = [v8 copy];
@@ -67,12 +67,12 @@
     }
 
     v5 = BiomeLibrary();
-    v6 = [v5 Device];
-    v7 = [v6 Display];
-    v8 = [v7 Backlight];
-    v9 = [v8 source];
+    device = [v5 Device];
+    display = [device Display];
+    backlight = [display Backlight];
+    source = [backlight source];
     source = v3->_source;
-    v3->_source = v9;
+    v3->_source = source;
   }
 
   return v3;
@@ -86,10 +86,10 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)_eventWithState:(id)a3
++ (id)_eventWithState:(id)state
 {
-  v3 = a3;
-  v4 = [objc_opt_class() indicatesScreenOnWithNotificationState:v3];
+  stateCopy = state;
+  v4 = [objc_opt_class() indicatesScreenOnWithNotificationState:stateCopy];
 
   if (v4)
   {
@@ -103,34 +103,34 @@
   v5 = ;
   [_DKBacklightMonitor setIsBacklit:v4];
   v6 = MEMORY[0x277CFE1D8];
-  v7 = [MEMORY[0x277CFE298] displayIsBacklit];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
-  v10 = [v6 eventWithStream:v7 startDate:v8 endDate:v9 value:v5];
+  displayIsBacklit = [MEMORY[0x277CFE298] displayIsBacklit];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v10 = [v6 eventWithStream:displayIsBacklit startDate:date endDate:distantFuture value:v5];
 
   return v10;
 }
 
 - (void)obtainCurrentValue
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41___DKBacklightMonitor_obtainCurrentValue__block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)donateToBiome:(unint64_t)a3 startDate:(id)a4
+- (void)donateToBiome:(unint64_t)biome startDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   [(_DKBacklightMonitor *)self donateRetroactiveShutdownBacklightOffEvent];
   v7 = objc_alloc(MEMORY[0x277CF1098]);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v9 = [v7 initWithAbsoluteTimestamp:v6 backlightLevel:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:biome];
+  v9 = [v7 initWithAbsoluteTimestamp:dateCopy backlightLevel:v8];
 
-  [(BMSource *)self->_source sendEvent:v9 date:v6];
+  [(BMSource *)self->_source sendEvent:v9 date:dateCopy];
 }
 
 - (void)start
@@ -182,9 +182,9 @@
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v3)
+  if (!currentEvent)
   {
 
     [(_DKBacklightMonitor *)self obtainCurrentValue];
@@ -216,10 +216,10 @@
   v3 = NSStringFromSelector(a2);
   v4 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:1 lastN:0 reversed:1];
   v5 = BiomeLibrary();
-  v6 = [v5 Device];
-  v7 = [v6 Display];
-  v8 = [v7 Backlight];
-  v9 = [v8 publisherWithOptions:v4];
+  device = [v5 Device];
+  display = [device Display];
+  backlight = [display Backlight];
+  v9 = [backlight publisherWithOptions:v4];
 
   v17 = 0;
   v18 = &v17;
@@ -364,26 +364,26 @@ LABEL_11:
 - (id)shutdownDate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(_DKBacklightMonitor *)self _shutdownDateFromSysctl];
+  _shutdownDateFromSysctl = [(_DKBacklightMonitor *)self _shutdownDateFromSysctl];
   v4 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v22 = 138543362;
-    v23 = v3;
+    v23 = _shutdownDateFromSysctl;
     _os_log_impl(&dword_22595A000, v4, OS_LOG_TYPE_INFO, "Shutdown date from kern.shutdowntime is: %{public}@", &v22, 0xCu);
   }
 
-  v5 = [(_DKBacklightMonitor *)self _lastAliveDate];
+  _lastAliveDate = [(_DKBacklightMonitor *)self _lastAliveDate];
   v6 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v22 = 138543362;
-    v23 = v5;
+    v23 = _lastAliveDate;
     _os_log_impl(&dword_22595A000, v6, OS_LOG_TYPE_INFO, "Last alive date is: %{public}@", &v22, 0xCu);
   }
 
-  v7 = v3;
-  v8 = v5;
+  v7 = _shutdownDateFromSysctl;
+  v8 = _lastAliveDate;
   v9 = v8;
   if (v7)
   {
@@ -405,17 +405,17 @@ LABEL_11:
 
   v11 = v10;
 
-  v12 = [(_DKBacklightMonitor *)self _shutdownDateFromSpringBoard];
+  _shutdownDateFromSpringBoard = [(_DKBacklightMonitor *)self _shutdownDateFromSpringBoard];
   v13 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v22 = 138543362;
-    v23 = v12;
+    v23 = _shutdownDateFromSpringBoard;
     _os_log_impl(&dword_22595A000, v13, OS_LOG_TYPE_INFO, "Shutdown date from SpringBoard is: %{public}@", &v22, 0xCu);
   }
 
   v14 = v11;
-  v15 = v12;
+  v15 = _shutdownDateFromSpringBoard;
   v16 = v15;
   if (v14)
   {
@@ -446,59 +446,59 @@ LABEL_11:
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = NSStringFromSelector(a2);
-  v4 = [(_DKBacklightMonitor *)self bootDate];
+  bootDate = [(_DKBacklightMonitor *)self bootDate];
   v5 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
     v22 = v3;
     v23 = 2112;
-    v24 = v4;
+    v24 = bootDate;
     _os_log_impl(&dword_22595A000, v5, OS_LOG_TYPE_DEFAULT, "%@: bootDate: %@", &v21, 0x16u);
   }
 
-  v6 = [(_DKBacklightMonitor *)self shutdownDate];
+  shutdownDate = [(_DKBacklightMonitor *)self shutdownDate];
   v7 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
     v22 = v3;
     v23 = 2112;
-    v24 = v6;
+    v24 = shutdownDate;
     _os_log_impl(&dword_22595A000, v7, OS_LOG_TYPE_DEFAULT, "%@: shutdownDate is: %@", &v21, 0x16u);
   }
 
-  if (v6)
+  if (shutdownDate)
   {
-    [v6 timeIntervalSinceNow];
+    [shutdownDate timeIntervalSinceNow];
     if (v8 > 0.0)
     {
-      v9 = [(_DKMonitor *)self log];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      lastBacklightEvent = [(_DKMonitor *)self log];
+      if (os_log_type_enabled(lastBacklightEvent, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
         v22 = v3;
         v10 = "%@: Shutdown date is in the future";
 LABEL_11:
-        _os_log_impl(&dword_22595A000, v9, OS_LOG_TYPE_DEFAULT, v10, &v21, 0xCu);
+        _os_log_impl(&dword_22595A000, lastBacklightEvent, OS_LOG_TYPE_DEFAULT, v10, &v21, 0xCu);
         goto LABEL_29;
       }
 
       goto LABEL_29;
     }
 
-    v9 = [(_DKBacklightMonitor *)self lastBacklightEvent];
+    lastBacklightEvent = [(_DKBacklightMonitor *)self lastBacklightEvent];
     v11 = [(_DKMonitor *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
       v22 = v3;
       v23 = 2112;
-      v24 = v9;
+      v24 = lastBacklightEvent;
       _os_log_impl(&dword_22595A000, v11, OS_LOG_TYPE_DEFAULT, "%@: lastEvent: %@", &v21, 0x16u);
     }
 
-    if (!v9)
+    if (!lastBacklightEvent)
     {
       v14 = [(_DKMonitor *)self log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -511,14 +511,14 @@ LABEL_11:
 
 LABEL_22:
 
-      v17 = v6;
+      v17 = shutdownDate;
       goto LABEL_30;
     }
 
-    if ([v9 backlightLevel])
+    if ([lastBacklightEvent backlightLevel])
     {
-      v12 = [v9 absoluteTimestamp];
-      v13 = [v4 compare:v12];
+      absoluteTimestamp = [lastBacklightEvent absoluteTimestamp];
+      v13 = [bootDate compare:absoluteTimestamp];
 
       v14 = [(_DKMonitor *)self log];
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -562,8 +562,8 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  v9 = [(_DKMonitor *)self log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  lastBacklightEvent = [(_DKMonitor *)self log];
+  if (os_log_type_enabled(lastBacklightEvent, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
     v22 = v3;
@@ -582,26 +582,26 @@ LABEL_30:
 
 - (id)_lastAliveDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"LastAliveDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"LastAliveDate"];
 
   return v3;
 }
 
-- (void)_setLastAliveDate:(id)a3
+- (void)_setLastAliveDate:(id)date
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = [(_DKMonitor *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = dateCopy;
     _os_log_impl(&dword_22595A000, v5, OS_LOG_TYPE_DEFAULT, "Setting last alive date: %{public}@", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 setObject:v4 forKey:@"LastAliveDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:dateCopy forKey:@"LastAliveDate"];
 
   v7 = *MEMORY[0x277D85DE8];
 }

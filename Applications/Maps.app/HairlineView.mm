@@ -2,16 +2,16 @@
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (HairlineView)init;
-- (HairlineView)initWithCoder:(id)a3;
-- (HairlineView)initWithFrame:(CGRect)a3;
+- (HairlineView)initWithCoder:(id)coder;
+- (HairlineView)initWithFrame:(CGRect)frame;
 - (double)leadingMargin;
 - (double)trailingMargin;
 - (void)customInit;
 - (void)didMoveToWindow;
-- (void)setLeadingMargin:(double)a3;
-- (void)setTrailingMargin:(double)a3;
-- (void)setVertical:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setLeadingMargin:(double)margin;
+- (void)setTrailingMargin:(double)margin;
+- (void)setVertical:(BOOL)vertical;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HairlineView
@@ -32,21 +32,21 @@
 
 - (void)customInit
 {
-  v2 = self;
-  v3 = [(HairlineView *)v2 window];
-  v4 = [v3 screen];
-  if (v4)
+  selfCopy = self;
+  window = [(HairlineView *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v5 = [(HairlineView *)v2 window];
-    v6 = [v5 screen];
-    [v6 nativeScale];
+    window2 = [(HairlineView *)selfCopy window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v8 = v7;
   }
 
   else
   {
-    v5 = +[UIScreen mainScreen];
-    [v5 nativeScale];
+    window2 = +[UIScreen mainScreen];
+    [window2 nativeScale];
     v8 = v9;
   }
 
@@ -60,14 +60,14 @@
     v10 = 1.0 / v8;
   }
 
-  v2->_intrinsicThickness = v10;
+  selfCopy->_intrinsicThickness = v10;
   LODWORD(v11) = 1148846080;
-  [(HairlineView *)v2 setContentHuggingPriority:1 forAxis:v11];
+  [(HairlineView *)selfCopy setContentHuggingPriority:1 forAxis:v11];
   LODWORD(v12) = 1148846080;
-  [(HairlineView *)v2 setContentCompressionResistancePriority:1 forAxis:v12];
-  v2->_autoUpdateTheme = 1;
+  [(HairlineView *)selfCopy setContentCompressionResistancePriority:1 forAxis:v12];
+  selfCopy->_autoUpdateTheme = 1;
 
-  [(HairlineView *)v2 infoCardThemeChanged];
+  [(HairlineView *)selfCopy infoCardThemeChanged];
 }
 
 - (CGSize)intrinsicContentSize
@@ -95,35 +95,35 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v19.receiver = self;
   v19.super_class = HairlineView;
-  v4 = a3;
-  [(HairlineView *)&v19 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HairlineView *)&v19 traitCollectionDidChange:changeCopy];
   v5 = [(HairlineView *)self traitCollection:v19.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
   {
-    v10 = self;
-    v11 = [(HairlineView *)v10 window];
-    v12 = [v11 screen];
-    if (v12)
+    selfCopy = self;
+    window = [(HairlineView *)selfCopy window];
+    screen = [window screen];
+    if (screen)
     {
-      v13 = [(HairlineView *)v10 window];
-      v14 = [v13 screen];
-      [v14 nativeScale];
+      window2 = [(HairlineView *)selfCopy window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v16 = v15;
     }
 
     else
     {
-      v13 = +[UIScreen mainScreen];
-      [v13 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v16 = v17;
     }
 
@@ -137,8 +137,8 @@
       v18 = 1.0 / v16;
     }
 
-    v10->_intrinsicThickness = v18;
-    [(HairlineView *)v10 invalidateIntrinsicContentSize];
+    selfCopy->_intrinsicThickness = v18;
+    [(HairlineView *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
@@ -162,23 +162,23 @@
   v12.receiver = self;
   v12.super_class = HairlineView;
   [(HairlineView *)&v12 didMoveToWindow];
-  v3 = self;
-  v4 = [(HairlineView *)v3 window];
-  v5 = [v4 screen];
-  if (v5)
+  selfCopy = self;
+  window = [(HairlineView *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v6 = [(HairlineView *)v3 window];
+    window2 = [(HairlineView *)selfCopy window];
 
-    v7 = [v6 screen];
-    [v7 nativeScale];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
     v9 = v8;
   }
 
   else
   {
-    v6 = +[UIScreen mainScreen];
+    window2 = +[UIScreen mainScreen];
 
-    [v6 nativeScale];
+    [window2 nativeScale];
     v9 = v10;
   }
 
@@ -188,23 +188,23 @@
     v11 = 1.0 / v9;
   }
 
-  if (v11 != v3->_intrinsicThickness)
+  if (v11 != selfCopy->_intrinsicThickness)
   {
-    v3->_intrinsicThickness = v11;
-    [(HairlineView *)v3 invalidateIntrinsicContentSize];
+    selfCopy->_intrinsicThickness = v11;
+    [(HairlineView *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setVertical:(BOOL)a3
+- (void)setVertical:(BOOL)vertical
 {
-  if (self->_vertical != a3)
+  if (self->_vertical != vertical)
   {
     v19 = v10;
     v20 = v9;
     v21 = v8;
     v22 = v3;
-    self->_vertical = a3;
-    if (a3)
+    self->_vertical = vertical;
+    if (vertical)
     {
       *&v7 = 1000.0;
     }
@@ -214,7 +214,7 @@
       *&v7 = 250.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v13 = 250.0;
     }
@@ -224,7 +224,7 @@
       v13 = 1000.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v14 = 1000.0;
     }
@@ -234,7 +234,7 @@
       v14 = 750.0;
     }
 
-    if (a3)
+    if (vertical)
     {
       v15 = 750.0;
     }
@@ -257,39 +257,39 @@
 
 - (double)trailingMargin
 {
-  v2 = [(HairlineView *)self trailingMarginConstraint];
-  [v2 constant];
+  trailingMarginConstraint = [(HairlineView *)self trailingMarginConstraint];
+  [trailingMarginConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTrailingMargin:(double)a3
+- (void)setTrailingMargin:(double)margin
 {
-  v4 = [(HairlineView *)self trailingMarginConstraint];
-  [v4 setConstant:a3];
+  trailingMarginConstraint = [(HairlineView *)self trailingMarginConstraint];
+  [trailingMarginConstraint setConstant:margin];
 }
 
 - (double)leadingMargin
 {
-  v2 = [(HairlineView *)self leadingMarginConstraint];
-  [v2 constant];
+  leadingMarginConstraint = [(HairlineView *)self leadingMarginConstraint];
+  [leadingMarginConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLeadingMargin:(double)a3
+- (void)setLeadingMargin:(double)margin
 {
-  v4 = [(HairlineView *)self leadingMarginConstraint];
-  [v4 setConstant:a3];
+  leadingMarginConstraint = [(HairlineView *)self leadingMarginConstraint];
+  [leadingMarginConstraint setConstant:margin];
 }
 
-- (HairlineView)initWithCoder:(id)a3
+- (HairlineView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HairlineView;
-  v3 = [(HairlineView *)&v6 initWithCoder:a3];
+  v3 = [(HairlineView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -299,11 +299,11 @@
   return v4;
 }
 
-- (HairlineView)initWithFrame:(CGRect)a3
+- (HairlineView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HairlineView;
-  v3 = [(HairlineView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HairlineView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

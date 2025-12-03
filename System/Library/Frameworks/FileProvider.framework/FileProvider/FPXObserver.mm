@@ -1,9 +1,9 @@
 @interface FPXObserver
 - (FPXObserver)init;
-- (FPXObserver)initWithObservedItemID:(id)a3 domainContext:(id)a4 nsFileProviderRequest:(id)a5;
-- (id)updateForProviderItem:(id)a3;
-- (void)_fixupFavoriteRank:(id)a3;
-- (void)verifyVendorToken:(id)a3;
+- (FPXObserver)initWithObservedItemID:(id)d domainContext:(id)context nsFileProviderRequest:(id)request;
+- (id)updateForProviderItem:(id)item;
+- (void)_fixupFavoriteRank:(id)rank;
+- (void)verifyVendorToken:(id)token;
 @end
 
 @implementation FPXObserver
@@ -23,45 +23,45 @@
   __assert_rtn("-[FPXObserver init]", "/Library/Caches/com.apple.xbs/Sources/FileProvider/extension/FPXEnumerator.m", 52, [v2 UTF8String]);
 }
 
-- (FPXObserver)initWithObservedItemID:(id)a3 domainContext:(id)a4 nsFileProviderRequest:(id)a5
+- (FPXObserver)initWithObservedItemID:(id)d domainContext:(id)context nsFileProviderRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  contextCopy = context;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = FPXObserver;
   v11 = [(FPXObserver *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     observedItemID = v11->_observedItemID;
     v11->_observedItemID = v12;
 
-    objc_storeStrong(&v11->_domainContext, a4);
-    v14 = [(FPXDomainContext *)v11->_domainContext vendorInstance];
+    objc_storeStrong(&v11->_domainContext, context);
+    vendorInstance = [(FPXDomainContext *)v11->_domainContext vendorInstance];
     strongVendorInstance = v11->_strongVendorInstance;
-    v11->_strongVendorInstance = v14;
+    v11->_strongVendorInstance = vendorInstance;
 
-    v16 = [(FPXDomainContext *)v11->_domainContext extensionContext];
+    extensionContext = [(FPXDomainContext *)v11->_domainContext extensionContext];
     strongExtensionContext = v11->_strongExtensionContext;
-    v11->_strongExtensionContext = v16;
+    v11->_strongExtensionContext = extensionContext;
 
-    objc_storeStrong(&v11->_nsFileProviderRequest, a5);
+    objc_storeStrong(&v11->_nsFileProviderRequest, request);
   }
 
   return v11;
 }
 
-- (void)_fixupFavoriteRank:(id)a3
+- (void)_fixupFavoriteRank:(id)rank
 {
-  v4 = a3;
-  v5 = [v4 favoriteRank];
-  v6 = [v5 unsignedLongLongValue];
+  rankCopy = rank;
+  favoriteRank = [rankCopy favoriteRank];
+  unsignedLongLongValue = [favoriteRank unsignedLongLongValue];
 
-  if (v6 == 1)
+  if (unsignedLongLongValue == 1)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v9 = v8;
 
     v10 = (v9 * 1000.0);
@@ -69,14 +69,14 @@
     v12 = fp_current_or_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(FPXObserver *)v4 _fixupFavoriteRank:?];
+      [(FPXObserver *)rankCopy _fixupFavoriteRank:?];
     }
 
-    v13 = [v4 strippedCopy];
+    strippedCopy = [rankCopy strippedCopy];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v11 + v10];
-    [v13 setFavoriteRank:v14];
+    [strippedCopy setFavoriteRank:v14];
 
-    [(FPXExtensionContext *)self->_strongExtensionContext singleItemChange:v13 changedFields:32 bounce:0 completionHandler:&__block_literal_global_21];
+    [(FPXExtensionContext *)self->_strongExtensionContext singleItemChange:strippedCopy changedFields:32 bounce:0 completionHandler:&__block_literal_global_21];
   }
 }
 
@@ -94,20 +94,20 @@ void __34__FPXObserver__fixupFavoriteRank___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (id)updateForProviderItem:(id)a3
+- (id)updateForProviderItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [(FPXObserver *)a2 updateForProviderItem:?];
   }
 
-  v6 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:v5];
+  v6 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:itemCopy];
   if (v6 && [FPExtensionCollection item:v6 isValidForObservedItemID:self->_observedItemID])
   {
-    v7 = [(FPXDomainContext *)self->_domainContext extensionContext];
-    v8 = [v6 itemID];
-    v9 = [v7 alternateContentsURLWrapperForItemID:v8];
+    extensionContext = [(FPXDomainContext *)self->_domainContext extensionContext];
+    itemID = [v6 itemID];
+    v9 = [extensionContext alternateContentsURLWrapperForItemID:itemID];
     v10 = [v9 url];
 
     if (v10)
@@ -117,17 +117,17 @@ void __34__FPXObserver__fixupFavoriteRank___block_invoke(uint64_t a1, void *a2, 
       v12 = [(FPXDomainContext *)self->_domainContext itemFromVendorItem:v11];
 
       v6 = v12;
-      v5 = v11;
+      itemCopy = v11;
     }
 
-    v13 = [v6 favoriteRank];
-    if (v13)
+    favoriteRank = [v6 favoriteRank];
+    if (favoriteRank)
     {
-      v14 = v13;
-      v15 = [v6 favoriteRank];
-      v16 = [v15 unsignedLongLongValue];
+      v14 = favoriteRank;
+      favoriteRank2 = [v6 favoriteRank];
+      unsignedLongLongValue = [favoriteRank2 unsignedLongLongValue];
 
-      if (v16 == 1)
+      if (unsignedLongLongValue == 1)
       {
         [(FPXObserver *)self _fixupFavoriteRank:v6];
       }
@@ -151,13 +151,13 @@ void __34__FPXObserver__fixupFavoriteRank___block_invoke(uint64_t a1, void *a2, 
   return v17;
 }
 
-- (void)verifyVendorToken:(id)a3
+- (void)verifyVendorToken:(id)token
 {
-  v7 = a3;
-  v5 = [(FPItemID *)self->_observedItemID identifier];
-  v6 = [v5 isEqualToString:@"NSFileProviderWorkingSetContainerItemIdentifier"];
+  tokenCopy = token;
+  identifier = [(FPItemID *)self->_observedItemID identifier];
+  v6 = [identifier isEqualToString:@"NSFileProviderWorkingSetContainerItemIdentifier"];
 
-  if (v6 && [v7 length] > 0x1F4)
+  if (v6 && [tokenCopy length] > 0x1F4)
   {
     [(FPXObserver *)a2 verifyVendorToken:?];
   }

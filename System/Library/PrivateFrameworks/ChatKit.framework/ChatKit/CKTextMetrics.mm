@@ -1,6 +1,6 @@
 @interface CKTextMetrics
 - (CGSize)size;
-- (CKTextMetrics)initWithSize:(CGSize)a3 singleLine:(BOOL)a4 alignmentInset:(UIEdgeInsets)a5;
+- (CKTextMetrics)initWithSize:(CGSize)size singleLine:(BOOL)line alignmentInset:(UIEdgeInsets)inset;
 - (UIEdgeInsets)alignmentInset;
 @end
 
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (CKTextMetrics)initWithSize:(CGSize)a3 singleLine:(BOOL)a4 alignmentInset:(UIEdgeInsets)a5
+- (CKTextMetrics)initWithSize:(CGSize)size singleLine:(BOOL)line alignmentInset:(UIEdgeInsets)inset
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a3.height;
-  width = a3.width;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = CKTextMetrics;
   result = [(CKTextMetrics *)&v13 init];
@@ -43,7 +43,7 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_singleLine = a4;
+    result->_singleLine = line;
     result->_alignmentInset.top = top;
     result->_alignmentInset.left = left;
     result->_alignmentInset.bottom = bottom;

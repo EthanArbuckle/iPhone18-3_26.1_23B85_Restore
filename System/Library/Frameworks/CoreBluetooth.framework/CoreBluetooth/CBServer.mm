@@ -1,24 +1,24 @@
 @interface CBServer
 - (CBServer)init;
 - (NSString)description;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleConnectionInvalidated:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleConnectionInvalidated:(id)invalidated;
 - (void)_invalidate;
 - (void)_startIfNeeded;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)pairingGenerateOOBDataForPeer:(id)a3 completionHandler:(id)a4;
-- (void)pairingSetOOBEnabled:(BOOL)a3 peer:(id)a4 completionHandler:(id)a5;
-- (void)peripheralManager:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didPublishL2CAPChannel:(unsigned __int16)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didUnpublishL2CAPChannel:(unsigned __int16)a4 error:(id)a5;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)pairingGenerateOOBDataForPeer:(id)peer completionHandler:(id)handler;
+- (void)pairingSetOOBEnabled:(BOOL)enabled peer:(id)peer completionHandler:(id)handler;
+- (void)peripheralManager:(id)manager didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheralManager:(id)manager didPublishL2CAPChannel:(unsigned __int16)channel error:(id)error;
+- (void)peripheralManager:(id)manager didUnpublishL2CAPChannel:(unsigned __int16)channel error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CBServer
@@ -44,11 +44,11 @@
   ucat = self->_ucat;
   if (ucat && (ucat->var3 & 0x40000) != 0)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = self->_ucat;
     LogCategory_Remove();
-    self = v3;
-    v3->_ucat = 0;
+    self = selfCopy;
+    selfCopy->_ucat = 0;
   }
 
   v5.receiver = self;
@@ -63,32 +63,32 @@
   return NSPrintF_safe();
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CBServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E811E440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -101,7 +101,7 @@
   v17[3] = &unk_1E811D350;
   v19 = &v20;
   v17[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v18 = v5;
   v6 = MEMORY[0x1C68DF720](v17);
   if (self->_activateCalled || self->_invalidateCalled || (self->_activateCalled = 1, v7 = [[CBPeripheralManager alloc] initWithDelegate:self queue:self->_dispatchQueue], peripheralManager = self->_peripheralManager, self->_peripheralManager = v7, peripheralManager, !self->_peripheralManager))
@@ -225,11 +225,11 @@ LABEL_6:
 
         if (_os_feature_enabled_impl() && self->_bleListenPSM == CBAssignedL2CAPPSMForSoftwareUpdate && self->_tempLTK)
         {
-          v8 = [(CBManager *)self->_peripheralManager sharedPairingAgent];
-          v9 = v8;
-          if (v8)
+          sharedPairingAgent = [(CBManager *)self->_peripheralManager sharedPairingAgent];
+          v9 = sharedPairingAgent;
+          if (sharedPairingAgent)
           {
-            [v8 removeGlobalTemporaryLTK];
+            [sharedPairingAgent removeGlobalTemporaryLTK];
           }
         }
 
@@ -346,13 +346,13 @@ LABEL_5:
   {
     if (_os_feature_enabled_impl() && self->_bleListenPSM == CBAssignedL2CAPPSMForSoftwareUpdate && self->_tempLTK)
     {
-      v4 = [(CBManager *)self->_peripheralManager sharedPairingAgent];
-      v5 = v4;
-      if (v4)
+      sharedPairingAgent = [(CBManager *)self->_peripheralManager sharedPairingAgent];
+      v5 = sharedPairingAgent;
+      if (sharedPairingAgent)
       {
-        v6 = [v4 delegate];
+        delegate = [sharedPairingAgent delegate];
 
-        if (!v6)
+        if (!delegate)
         {
           [v5 setDelegate:self];
         }
@@ -368,19 +368,19 @@ LABEL_5:
   }
 }
 
-- (void)_handleConnectionInvalidated:(id)a3
+- (void)_handleConnectionInvalidated:(id)invalidated
 {
-  v12 = a3;
-  v4 = [v12 l2capChannel];
+  invalidatedCopy = invalidated;
+  l2capChannel = [invalidatedCopy l2capChannel];
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v6 = [v4 PSM];
-      v7 = [v4 peer];
-      [v7 identifier];
+      v6 = [l2capChannel PSM];
+      peer = [l2capChannel peer];
+      [peer identifier];
       v11 = v10 = v6;
       LogPrintF_safe();
 
@@ -396,13 +396,13 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(NSMutableSet *)self->_connections removeObject:v12, v10, v11];
+  [(NSMutableSet *)self->_connections removeObject:invalidatedCopy, v10, v11];
 }
 
-- (void)pairingGenerateOOBDataForPeer:(id)a3 completionHandler:(id)a4
+- (void)pairingGenerateOOBDataForPeer:(id)peer completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v47 = 0;
   v48 = &v47;
@@ -416,9 +416,9 @@ LABEL_5:
   v43[3] = &unk_1E8122320;
   v46 = &v47;
   v43[4] = self;
-  v8 = v6;
+  v8 = peerCopy;
   v44 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v45 = v9;
   v16 = MEMORY[0x1C68DF720](v43);
   if (self->_invalidateCalled)
@@ -429,9 +429,9 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v17 = [(CBManager *)self->_peripheralManager sharedPairingAgent];
-  v24 = v17;
-  if (!v17)
+  sharedPairingAgent = [(CBManager *)self->_peripheralManager sharedPairingAgent];
+  v24 = sharedPairingAgent;
+  if (!sharedPairingAgent)
   {
     v37 = CBErrorF(-6705, "No pairing agent", v18, v19, v20, v21, v22, v23, v41);
     v32 = v48[5];
@@ -439,9 +439,9 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v25 = [v17 delegate];
+  delegate = [sharedPairingAgent delegate];
 
-  if (!v25)
+  if (!delegate)
   {
     [v24 setDelegate:self];
   }
@@ -470,7 +470,7 @@ LABEL_5:
       v40 = self->_ucat;
     }
 
-    v34 = [v8 identifier];
+    identifier = [v8 identifier];
     v42 = CUPrintNSDataHex();
     LogPrintF_safe();
   }
@@ -520,10 +520,10 @@ LABEL_7:
   return v7();
 }
 
-- (void)pairingSetOOBEnabled:(BOOL)a3 peer:(id)a4 completionHandler:(id)a5
+- (void)pairingSetOOBEnabled:(BOOL)enabled peer:(id)peer completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  peerCopy = peer;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v41 = 0;
   v42 = &v41;
@@ -537,10 +537,10 @@ LABEL_7:
   v36[3] = &unk_1E8122348;
   v39 = &v41;
   v36[4] = self;
-  v40 = a3;
-  v10 = v8;
+  enabledCopy = enabled;
+  v10 = peerCopy;
   v37 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v38 = v11;
   v18 = MEMORY[0x1C68DF720](v36);
   if (self->_invalidateCalled)
@@ -551,9 +551,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v19 = [(CBManager *)self->_peripheralManager sharedPairingAgent];
-  v26 = v19;
-  if (!v19)
+  sharedPairingAgent = [(CBManager *)self->_peripheralManager sharedPairingAgent];
+  v26 = sharedPairingAgent;
+  if (!sharedPairingAgent)
   {
     v32 = CBErrorF(-6705, "No pairing agent", v20, v21, v22, v23, v24, v25, v35);
     v33 = v42[5];
@@ -562,9 +562,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v27 = [v19 delegate];
+  delegate = [sharedPairingAgent delegate];
 
-  if (!v27)
+  if (!delegate)
   {
     [v26 setDelegate:self];
   }
@@ -584,7 +584,7 @@ LABEL_7:
       v34 = self->_ucat;
     }
 
-    v29 = [v10 identifier];
+    identifier = [v10 identifier];
     LogPrintF_safe();
   }
 
@@ -632,15 +632,15 @@ LABEL_7:
   return v7();
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
   v37 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v9 = a4;
-  v29 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v30 = v9;
-  v10 = [v9 identifier];
+  v30 = pairingCopy;
+  identifier = [pairingCopy identifier];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -661,16 +661,16 @@ LABEL_7:
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        v17 = [v16 l2capChannel];
-        v18 = [v17 peer];
-        v19 = [v18 identifier];
+        l2capChannel = [v16 l2capChannel];
+        peer = [l2capChannel peer];
+        identifier2 = [peer identifier];
 
-        if ([v19 isEqual:v10])
+        if ([identifier2 isEqual:identifier])
         {
           v22 = v30;
-          v21 = v31;
-          v23 = v29;
-          [v16 pairingAgent:v31 peerDidRequestPairing:v30 type:a5 passkey:v29];
+          v21 = agentCopy;
+          v23 = passkeyCopy;
+          [v16 pairingAgent:agentCopy peerDidRequestPairing:v30 type:type passkey:passkeyCopy];
 
           goto LABEL_14;
         }
@@ -688,14 +688,14 @@ LABEL_7:
 
   var0 = self->_ucat->var0;
   v22 = v30;
-  v21 = v31;
-  v23 = v29;
+  v21 = agentCopy;
+  v23 = passkeyCopy;
   if (var0 <= 90)
   {
     if (var0 != -1)
     {
-      v24 = a5;
-      if (a5 > 5)
+      typeCopy2 = type;
+      if (type > 5)
       {
 LABEL_17:
         LogPrintF_safe();
@@ -703,15 +703,15 @@ LABEL_17:
       }
 
 LABEL_12:
-      v25 = off_1E8122368[v24];
+      v25 = off_1E8122368[typeCopy2];
       goto LABEL_17;
     }
 
     if (_LogCategory_Initialize())
     {
       ucat = self->_ucat;
-      v24 = a5;
-      if (a5 > 5)
+      typeCopy2 = type;
+      if (type > 5)
       {
         goto LABEL_17;
       }
@@ -725,14 +725,14 @@ LABEL_14:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
   v29 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  pairingCopy = pairing;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v22 = v6;
-  v7 = [v6 identifier];
+  v22 = pairingCopy;
+  identifier = [pairingCopy identifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -753,15 +753,15 @@ LABEL_14:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 l2capChannel];
-        v15 = [v14 peer];
-        v16 = [v15 identifier];
+        l2capChannel = [v13 l2capChannel];
+        peer = [l2capChannel peer];
+        identifier2 = [peer identifier];
 
-        if ([v16 isEqual:v7])
+        if ([identifier2 isEqual:identifier])
         {
           v19 = v22;
-          v18 = v23;
-          [v13 pairingAgent:v23 peerDidCompletePairing:v22];
+          v18 = agentCopy;
+          [v13 pairingAgent:agentCopy peerDidCompletePairing:v22];
 
           goto LABEL_13;
         }
@@ -779,7 +779,7 @@ LABEL_14:
 
   var0 = self->_ucat->var0;
   v19 = v22;
-  v18 = v23;
+  v18 = agentCopy;
   if (var0 <= 90)
   {
     if (var0 == -1)
@@ -800,15 +800,15 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v8 = a4;
-  v26 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v27 = v8;
-  v9 = [v8 identifier];
+  v27 = pairingCopy;
+  identifier = [pairingCopy identifier];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -829,17 +829,17 @@ LABEL_13:
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v15 l2capChannel];
-        v17 = [v16 peer];
-        v18 = [v17 identifier];
+        l2capChannel = [v15 l2capChannel];
+        peer = [l2capChannel peer];
+        identifier2 = [peer identifier];
 
-        if ([v18 isEqual:v9])
+        if ([identifier2 isEqual:identifier])
         {
           v21 = v27;
-          v20 = v28;
-          [v15 pairingAgent:v28 peerDidCompletePairing:v27];
+          v20 = agentCopy;
+          [v15 pairingAgent:agentCopy peerDidCompletePairing:v27];
 
-          v22 = v26;
+          v22 = errorCopy;
           goto LABEL_13;
         }
       }
@@ -856,8 +856,8 @@ LABEL_13:
 
   var0 = self->_ucat->var0;
   v21 = v27;
-  v20 = v28;
-  v22 = v26;
+  v20 = agentCopy;
+  v22 = errorCopy;
   if (var0 <= 90)
   {
     if (var0 == -1)
@@ -881,14 +881,14 @@ LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
   v29 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  unpairCopy = unpair;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v22 = v6;
-  v7 = [v6 identifier];
+  v22 = unpairCopy;
+  identifier = [unpairCopy identifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -909,15 +909,15 @@ LABEL_14:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 l2capChannel];
-        v15 = [v14 peer];
-        v16 = [v15 identifier];
+        l2capChannel = [v13 l2capChannel];
+        peer = [l2capChannel peer];
+        identifier2 = [peer identifier];
 
-        if ([v16 isEqual:v7])
+        if ([identifier2 isEqual:identifier])
         {
           v19 = v22;
-          v18 = v23;
-          [v13 pairingAgent:v23 peerDidUnpair:v22];
+          v18 = agentCopy;
+          [v13 pairingAgent:agentCopy peerDidUnpair:v22];
 
           goto LABEL_13;
         }
@@ -935,7 +935,7 @@ LABEL_14:
 
   var0 = self->_ucat->var0;
   v19 = v22;
-  v18 = v23;
+  v18 = agentCopy;
   if (var0 <= 90)
   {
     if (var0 == -1)
@@ -956,19 +956,19 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(dispatchQueue);
-  v6 = [v5 state];
+  state = [stateCopy state];
 
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
-      if (v6 > 0xA)
+      if (state > 0xA)
       {
         goto LABEL_12;
       }
@@ -979,11 +979,11 @@ LABEL_13:
     if (_LogCategory_Initialize())
     {
       ucat = self->_ucat;
-      if (v6 > 0xA)
+      if (state > 0xA)
       {
 LABEL_12:
         LogPrintF_safe();
-        if (v6 == 1)
+        if (state == 1)
         {
           goto LABEL_13;
         }
@@ -992,12 +992,12 @@ LABEL_12:
       }
 
 LABEL_4:
-      v8 = off_1E8122398[v6];
+      v8 = off_1E8122398[state];
       goto LABEL_12;
     }
   }
 
-  if (v6 == 1)
+  if (state == 1)
   {
 LABEL_13:
     self->_bleListeningPSM = 0;
@@ -1005,20 +1005,20 @@ LABEL_13:
   }
 
 LABEL_7:
-  if (v6 == 5)
+  if (state == 5)
   {
 
     [(CBServer *)self _startIfNeeded];
   }
 }
 
-- (void)peripheralManager:(id)a3 didPublishL2CAPChannel:(unsigned __int16)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didPublishL2CAPChannel:(unsigned __int16)channel error:(id)error
 {
-  v5 = a4;
-  v17 = a5;
+  channelCopy = channel;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   var0 = self->_ucat->var0;
-  if (!v17)
+  if (!errorCopy)
   {
     if (var0 > 30)
     {
@@ -1060,17 +1060,17 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_bleListeningPSM = v5;
+  self->_bleListeningPSM = channelCopy;
   v11 = MEMORY[0x1C68DF720](self->_activateCompletion);
   activateCompletion = self->_activateCompletion;
   self->_activateCompletion = 0;
 
   if (v11)
   {
-    (v11)[2](v11, v17);
+    (v11)[2](v11, errorCopy);
   }
 
-  else if (self->_bleListenPSM != v5)
+  else if (self->_bleListenPSM != channelCopy)
   {
     v13 = MEMORY[0x1C68DF720](self->_configChangedHandler);
     v14 = v13;
@@ -1081,9 +1081,9 @@ LABEL_11:
   }
 }
 
-- (void)peripheralManager:(id)a3 didUnpublishL2CAPChannel:(unsigned __int16)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didUnpublishL2CAPChannel:(unsigned __int16)channel error:(id)error
 {
-  v10 = a5;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   var0 = self->_ucat->var0;
   if (var0 <= 30)
@@ -1108,18 +1108,18 @@ LABEL_3:
 LABEL_5:
 }
 
-- (void)peripheralManager:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  channelCopy = channel;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v8)
+  if (errorCopy)
   {
     [CBServer peripheralManager:? didOpenL2CAPChannel:? error:?];
     goto LABEL_22;
   }
 
-  v9 = v7;
+  v9 = channelCopy;
   var0 = self->_ucat->var0;
   if (!v9)
   {
@@ -1132,12 +1132,12 @@ LABEL_5:
     if (var0 != -1)
     {
 LABEL_5:
-      v11 = [v9 peer];
-      v12 = [v11 identifier];
+      peer = [v9 peer];
+      identifier = [peer identifier];
       v13 = [v9 PSM];
       CUPrintNSError();
       v31 = v30 = v13;
-      v27 = v12;
+      v27 = identifier;
       LogPrintF_safe();
 
       goto LABEL_7;

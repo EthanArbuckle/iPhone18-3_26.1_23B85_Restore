@@ -1,75 +1,75 @@
 @interface HMIVideoAnalyzerDelegateAdapter
-- (void)analyzer:(id)a3 didAnalyzeFragmentWithResult:(id)a4;
-- (void)analyzer:(id)a3 didAnalyzeFrameWithResult:(id)a4;
-- (void)analyzer:(id)a3 didCreateTimelapseFragment:(id)a4;
-- (void)analyzer:(id)a3 didFailWithError:(id)a4;
-- (void)analyzer:(id)a3 didProduceAnalysisStateUpdate:(id)a4;
+- (void)analyzer:(id)analyzer didAnalyzeFragmentWithResult:(id)result;
+- (void)analyzer:(id)analyzer didAnalyzeFrameWithResult:(id)result;
+- (void)analyzer:(id)analyzer didCreateTimelapseFragment:(id)fragment;
+- (void)analyzer:(id)analyzer didFailWithError:(id)error;
+- (void)analyzer:(id)analyzer didProduceAnalysisStateUpdate:(id)update;
 @end
 
 @implementation HMIVideoAnalyzerDelegateAdapter
 
-- (void)analyzer:(id)a3 didAnalyzeFrameWithResult:(id)a4
+- (void)analyzer:(id)analyzer didAnalyzeFrameWithResult:(id)result
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFrameWithResult];
+  analyzerCopy = analyzer;
+  resultCopy = result;
+  analyzerDidAnalyzeFrameWithResult = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFrameWithResult];
 
-  if (v7)
+  if (analyzerDidAnalyzeFrameWithResult)
   {
-    v8 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFrameWithResult];
-    (v8)[2](v8, v9, v6);
+    analyzerDidAnalyzeFrameWithResult2 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFrameWithResult];
+    (analyzerDidAnalyzeFrameWithResult2)[2](analyzerDidAnalyzeFrameWithResult2, analyzerCopy, resultCopy);
   }
 }
 
-- (void)analyzer:(id)a3 didAnalyzeFragmentWithResult:(id)a4
+- (void)analyzer:(id)analyzer didAnalyzeFragmentWithResult:(id)result
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFragmentWithResult];
+  analyzerCopy = analyzer;
+  resultCopy = result;
+  analyzerDidAnalyzeFragmentWithResult = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFragmentWithResult];
 
-  if (v7)
+  if (analyzerDidAnalyzeFragmentWithResult)
   {
-    v8 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFragmentWithResult];
-    (v8)[2](v8, v9, v6);
+    analyzerDidAnalyzeFragmentWithResult2 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidAnalyzeFragmentWithResult];
+    (analyzerDidAnalyzeFragmentWithResult2)[2](analyzerDidAnalyzeFragmentWithResult2, analyzerCopy, resultCopy);
   }
 }
 
-- (void)analyzer:(id)a3 didFailWithError:(id)a4
+- (void)analyzer:(id)analyzer didFailWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidFailWithError];
+  analyzerCopy = analyzer;
+  errorCopy = error;
+  analyzerDidFailWithError = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidFailWithError];
 
-  if (v7)
+  if (analyzerDidFailWithError)
   {
-    v8 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidFailWithError];
-    (v8)[2](v8, v9, v6);
+    analyzerDidFailWithError2 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidFailWithError];
+    (analyzerDidFailWithError2)[2](analyzerDidFailWithError2, analyzerCopy, errorCopy);
   }
 }
 
-- (void)analyzer:(id)a3 didCreateTimelapseFragment:(id)a4
+- (void)analyzer:(id)analyzer didCreateTimelapseFragment:(id)fragment
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidCreateTimelapseFragment];
+  analyzerCopy = analyzer;
+  fragmentCopy = fragment;
+  analyzerDidCreateTimelapseFragment = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidCreateTimelapseFragment];
 
-  if (v7)
+  if (analyzerDidCreateTimelapseFragment)
   {
-    v8 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidCreateTimelapseFragment];
-    (v8)[2](v8, v9, v6);
+    analyzerDidCreateTimelapseFragment2 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidCreateTimelapseFragment];
+    (analyzerDidCreateTimelapseFragment2)[2](analyzerDidCreateTimelapseFragment2, analyzerCopy, fragmentCopy);
   }
 }
 
-- (void)analyzer:(id)a3 didProduceAnalysisStateUpdate:(id)a4
+- (void)analyzer:(id)analyzer didProduceAnalysisStateUpdate:(id)update
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidProduceAnalysisStateUpdate];
+  analyzerCopy = analyzer;
+  updateCopy = update;
+  analyzerDidProduceAnalysisStateUpdate = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidProduceAnalysisStateUpdate];
 
-  if (v7)
+  if (analyzerDidProduceAnalysisStateUpdate)
   {
-    v8 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidProduceAnalysisStateUpdate];
-    (v8)[2](v8, v9, v6);
+    analyzerDidProduceAnalysisStateUpdate2 = [(HMIVideoAnalyzerDelegateAdapter *)self analyzerDidProduceAnalysisStateUpdate];
+    (analyzerDidProduceAnalysisStateUpdate2)[2](analyzerDidProduceAnalysisStateUpdate2, analyzerCopy, updateCopy);
   }
 }
 

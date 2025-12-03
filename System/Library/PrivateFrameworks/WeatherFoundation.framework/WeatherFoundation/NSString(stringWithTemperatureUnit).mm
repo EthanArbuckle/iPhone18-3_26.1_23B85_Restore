@@ -22,7 +22,7 @@
     v4 = v3;
   }
 
-  v5 = [a1 stringByReplacingOccurrencesOfString:@"°" withString:v4];
+  v5 = [self stringByReplacingOccurrencesOfString:@"°" withString:v4];
 
   return v5;
 }

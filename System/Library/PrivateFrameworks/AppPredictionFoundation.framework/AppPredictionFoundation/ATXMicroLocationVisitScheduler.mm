@@ -3,14 +3,14 @@
 - (ATXMicroLocationVisitScheduler)init;
 - (BOOL)hasActiveSubscribers;
 - (BOOL)isSubscribed;
-- (id)subscribeWithCallback:(id)a3 onQueue:(id)a4;
-- (void)_handleCompletion:(id)a3;
-- (void)_handleMicroLocationEvent:(id)a3;
+- (id)subscribeWithCallback:(id)callback onQueue:(id)queue;
+- (void)_handleCompletion:(id)completion;
+- (void)_handleMicroLocationEvent:(id)event;
 - (void)_onStateQueue_cancelSubscription;
 - (void)_onStateQueue_setupSubscription;
 - (void)dealloc;
 - (void)removeAllSubscribers;
-- (void)unSubscribeWithToken:(id)a3;
+- (void)unSubscribeWithToken:(id)token;
 @end
 
 @implementation ATXMicroLocationVisitScheduler
@@ -67,46 +67,46 @@ uint64_t __48__ATXMicroLocationVisitScheduler_sharedInstance__block_invoke()
   [(ATXMicroLocationVisitScheduler *)&v3 dealloc];
 }
 
-- (id)subscribeWithCallback:(id)a3 onQueue:(id)a4
+- (id)subscribeWithCallback:(id)callback onQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  callbackCopy = callback;
+  queueCopy = queue;
+  if (!callbackCopy)
   {
     [ATXMicroLocationVisitScheduler subscribeWithCallback:a2 onQueue:self];
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CCAD78]);
   v10 = v9;
-  if (v8)
+  if (queueCopy)
   {
-    v11 = v8;
+    v11 = queueCopy;
   }
 
   else
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v9 UUIDString];
-    v14 = [v12 stringWithFormat:@"com.apple.duetexpertcenter.ATXMicroLocationVisitScheduler.Callback.%@", v13];
+    uUIDString = [v9 UUIDString];
+    v14 = [v12 stringWithFormat:@"com.apple.duetexpertcenter.ATXMicroLocationVisitScheduler.Callback.%@", uUIDString];
 
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v15, v16);
+    v11 = dispatch_queue_create(uTF8String, v16);
   }
 
-  v17 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__ATXMicroLocationVisitScheduler_subscribeWithCallback_onQueue___block_invoke;
   block[3] = &unk_278590858;
-  v28 = v7;
+  v28 = callbackCopy;
   v25 = v11;
-  v26 = self;
+  selfCopy = self;
   v18 = v10;
   v27 = v18;
   v19 = v11;
-  v20 = v7;
-  dispatch_sync(v17, block);
+  v20 = callbackCopy;
+  dispatch_sync(stateQueue, block);
 
   v21 = v27;
   v22 = v18;
@@ -146,19 +146,19 @@ void __64__ATXMicroLocationVisitScheduler_subscribeWithCallback_onQueue___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unSubscribeWithToken:(id)a3
+- (void)unSubscribeWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v5 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+    stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__ATXMicroLocationVisitScheduler_unSubscribeWithToken___block_invoke;
     v6[3] = &unk_278590880;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = tokenCopy;
+    dispatch_async(stateQueue, v6);
   }
 }
 
@@ -199,13 +199,13 @@ void __55__ATXMicroLocationVisitScheduler_unSubscribeWithToken___block_invoke(ui
 
 - (void)removeAllSubscribers
 {
-  v3 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ATXMicroLocationVisitScheduler_removeAllSubscribers__block_invoke;
   block[3] = &unk_2785908A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateQueue, block);
 }
 
 uint64_t __54__ATXMicroLocationVisitScheduler_removeAllSubscribers__block_invoke(uint64_t a1)
@@ -225,23 +225,23 @@ uint64_t __54__ATXMicroLocationVisitScheduler_removeAllSubscribers__block_invoke
 
 - (BOOL)isSubscribed
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__ATXMicroLocationVisitScheduler_isSubscribed__block_invoke;
   v5[3] = &unk_2785908D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(stateQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__ATXMicroLocationVisitScheduler_isSubscribed__block_invoke(uint64_t a1)
@@ -252,23 +252,23 @@ void __46__ATXMicroLocationVisitScheduler_isSubscribed__block_invoke(uint64_t a1
 
 - (BOOL)hasActiveSubscribers
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__ATXMicroLocationVisitScheduler_hasActiveSubscribers__block_invoke;
   v5[3] = &unk_2785908D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(stateQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __54__ATXMicroLocationVisitScheduler_hasActiveSubscribers__block_invoke(uint64_t a1)
@@ -279,12 +279,12 @@ void __54__ATXMicroLocationVisitScheduler_hasActiveSubscribers__block_invoke(uin
 
 - (void)_onStateQueue_setupSubscription
 {
-  v3 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
-  dispatch_assert_queue_V2(v3);
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
-  v4 = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
+  microLocationSink = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
 
-  if (!v4)
+  if (!microLocationSink)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -299,10 +299,10 @@ void __54__ATXMicroLocationVisitScheduler_hasActiveSubscribers__block_invoke(uin
 
     objc_initWeak(buf, self);
     v8 = BiomeLibrary();
-    v9 = [v8 Location];
-    v10 = [v9 MicroLocationVisit];
-    v11 = [v10 atx_DSLPublisher];
-    v12 = [v11 subscribeOn:self->_microLocationScheduler];
+    location = [v8 Location];
+    microLocationVisit = [location MicroLocationVisit];
+    atx_DSLPublisher = [microLocationVisit atx_DSLPublisher];
+    v12 = [atx_DSLPublisher subscribeOn:self->_microLocationScheduler];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __65__ATXMicroLocationVisitScheduler__onStateQueue_setupSubscription__block_invoke;
@@ -353,15 +353,15 @@ void __65__ATXMicroLocationVisitScheduler__onStateQueue_setupSubscription__block
 
 - (void)_onStateQueue_cancelSubscription
 {
-  v3 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
-  dispatch_assert_queue_V2(v3);
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
-  v4 = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
+  microLocationSink = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
 
-  if (v4)
+  if (microLocationSink)
   {
-    v5 = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
-    [v5 cancel];
+    microLocationSink2 = [(ATXMicroLocationVisitScheduler *)self microLocationSink];
+    [microLocationSink2 cancel];
 
     [(ATXMicroLocationVisitScheduler *)self setMicroLocationSink:0];
   }
@@ -375,17 +375,17 @@ void __65__ATXMicroLocationVisitScheduler__onStateQueue_setupSubscription__block
   }
 }
 
-- (void)_handleCompletion:(id)a3
+- (void)_handleCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [v3 state];
+  completionCopy = completion;
+  state = [completionCopy state];
   v5 = __atxlog_handle_default();
   v6 = v5;
-  if (v4)
+  if (state)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(ATXMicroLocationVisitScheduler *)v3 _handleCompletion:v6];
+      [(ATXMicroLocationVisitScheduler *)completionCopy _handleCompletion:v6];
     }
   }
 
@@ -396,27 +396,27 @@ void __65__ATXMicroLocationVisitScheduler__onStateQueue_setupSubscription__block
   }
 }
 
-- (void)_handleMicroLocationEvent:(id)a3
+- (void)_handleMicroLocationEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&dword_226368000, v5, OS_LOG_TYPE_DEFAULT, "ATXMicroLocationVisitScheduler: Received new micro-location event: %@", buf, 0xCu);
   }
 
-  v6 = [(ATXMicroLocationVisitScheduler *)self stateQueue];
+  stateQueue = [(ATXMicroLocationVisitScheduler *)self stateQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ATXMicroLocationVisitScheduler__handleMicroLocationEvent___block_invoke;
   v9[3] = &unk_278590880;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = eventCopy;
+  v7 = eventCopy;
+  dispatch_async(stateQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }

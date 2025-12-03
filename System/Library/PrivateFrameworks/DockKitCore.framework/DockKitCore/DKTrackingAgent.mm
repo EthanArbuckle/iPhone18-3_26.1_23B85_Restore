@@ -2,13 +2,13 @@
 - (BOOL)tracking;
 - (BOOL)trackingButtonEnabled;
 - (DKTrackingAgent)init;
-- (DKTrackingAgent)initWithClientApplicationID:(id)a3;
-- (DKTrackingAgent)initWithConfiguration:(id)a3;
-- (DKTrackingAgent)initWithTrackerConfiguration:(id)a3;
+- (DKTrackingAgent)initWithClientApplicationID:(id)d;
+- (DKTrackingAgent)initWithConfiguration:(id)configuration;
+- (DKTrackingAgent)initWithTrackerConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)trackWithDetectedObjectsInfo:(id)a3 image:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9;
-- (void)trackWithFocusObservations:(id)a3 detectedObjectsInfo:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9;
-- (void)trackWithMetadata:(id)a3 image:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9;
+- (void)trackWithDetectedObjectsInfo:(id)info image:(id)image cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler;
+- (void)trackWithFocusObservations:(id)observations detectedObjectsInfo:(id)info cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler;
+- (void)trackWithMetadata:(id)metadata image:(id)image cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler;
 @end
 
 @implementation DKTrackingAgent
@@ -67,15 +67,15 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
   return v2;
 }
 
-- (DKTrackingAgent)initWithClientApplicationID:(id)a3
+- (DKTrackingAgent)initWithClientApplicationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = DKTrackingAgent;
   v5 = [(DKTrackingAgent *)&v13 init];
   if (v5)
   {
-    v6 = [[ObjectTrackingAgent alloc] initWithAppID:v4];
+    v6 = [[ObjectTrackingAgent alloc] initWithAppID:dCopy];
     agent = v5->_agent;
     v5->_agent = v6;
 
@@ -94,15 +94,15 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
   return v5;
 }
 
-- (DKTrackingAgent)initWithConfiguration:(id)a3
+- (DKTrackingAgent)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = DKTrackingAgent;
   v5 = [(DKTrackingAgent *)&v13 init];
   if (v5)
   {
-    v6 = [[ObjectTrackingAgent alloc] initWithConfig:v4];
+    v6 = [[ObjectTrackingAgent alloc] initWithConfig:configurationCopy];
     agent = v5->_agent;
     v5->_agent = v6;
 
@@ -121,15 +121,15 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
   return v5;
 }
 
-- (DKTrackingAgent)initWithTrackerConfiguration:(id)a3
+- (DKTrackingAgent)initWithTrackerConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = DKTrackingAgent;
   v5 = [(DKTrackingAgent *)&v13 init];
   if (v5)
   {
-    v6 = [[ObjectTrackingAgent alloc] initWithTrackerConfig:v4];
+    v6 = [[ObjectTrackingAgent alloc] initWithTrackerConfig:configurationCopy];
     agent = v5->_agent;
     v5->_agent = v6;
 
@@ -160,20 +160,20 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
   [(DKTrackingAgent *)&v4 dealloc];
 }
 
-- (void)trackWithMetadata:(id)a3 image:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9
+- (void)trackWithMetadata:(id)metadata image:(id)image cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler
 {
-  v10 = *&a8;
-  height = a7.height;
-  width = a7.width;
-  v23 = a4;
+  v10 = *&orientation;
+  height = dimensions.height;
+  width = dimensions.width;
+  imageCopy = image;
   agent = self->_agent;
-  v18 = a9;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
+  handlerCopy = handler;
+  intrinsicsCopy = intrinsics;
+  typeCopy = type;
+  metadataCopy = metadata;
   if ([(ObjectTrackingAgent *)agent customInferenceEnabled])
   {
-    v22 = v23;
+    v22 = imageCopy;
   }
 
   else
@@ -181,42 +181,42 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
     v22 = 0;
   }
 
-  [(ObjectTrackingAgent *)self->_agent trackWithMetadata:v21 image:v22 cameraPortType:v20 cameraIntrinsics:v19 referenceDimensions:v10 orientation:v18 completionHandler:width, height];
+  [(ObjectTrackingAgent *)self->_agent trackWithMetadata:metadataCopy image:v22 cameraPortType:typeCopy cameraIntrinsics:intrinsicsCopy referenceDimensions:v10 orientation:handlerCopy completionHandler:width, height];
 }
 
-- (void)trackWithFocusObservations:(id)a3 detectedObjectsInfo:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9
+- (void)trackWithFocusObservations:(id)observations detectedObjectsInfo:(id)info cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler
 {
-  v10 = *&a8;
-  height = a7.height;
-  width = a7.width;
-  v23 = a5;
-  v17 = a6;
-  v18 = a9;
+  v10 = *&orientation;
+  height = dimensions.height;
+  width = dimensions.width;
+  typeCopy = type;
+  intrinsicsCopy = intrinsics;
+  handlerCopy = handler;
   agent = self->_agent;
-  v20 = a3;
-  v21 = [(ObjectTrackingAgent *)agent getDockCoreObservationsWithDetectedObjectsInfo:a4 cameraPort:v23];
-  v22 = [v20 firstObject];
+  observationsCopy = observations;
+  v21 = [(ObjectTrackingAgent *)agent getDockCoreObservationsWithDetectedObjectsInfo:info cameraPort:typeCopy];
+  firstObject = [observationsCopy firstObject];
 
-  if (v22 && ([v21 count] || objc_msgSend(v22, "focusStrong")))
+  if (firstObject && ([v21 count] || objc_msgSend(firstObject, "focusStrong")))
   {
-    [(ObjectTrackingAgent *)self->_agent trackWithFocusObservation:v22 metadata:MEMORY[0x277CBEBF8] image:0 cameraPortType:v23 cameraIntrinsics:v17 referenceDimensions:v10 orientation:width completionHandler:height, v18];
+    [(ObjectTrackingAgent *)self->_agent trackWithFocusObservation:firstObject metadata:MEMORY[0x277CBEBF8] image:0 cameraPortType:typeCopy cameraIntrinsics:intrinsicsCopy referenceDimensions:v10 orientation:width completionHandler:height, handlerCopy];
   }
 }
 
-- (void)trackWithDetectedObjectsInfo:(id)a3 image:(id)a4 cameraPortType:(id)a5 cameraIntrinsics:(id)a6 referenceDimensions:(CGSize)a7 orientation:(int)a8 completionHandler:(id)a9
+- (void)trackWithDetectedObjectsInfo:(id)info image:(id)image cameraPortType:(id)type cameraIntrinsics:(id)intrinsics referenceDimensions:(CGSize)dimensions orientation:(int)orientation completionHandler:(id)handler
 {
-  v10 = *&a8;
-  height = a7.height;
-  width = a7.width;
-  v23 = a4;
+  v10 = *&orientation;
+  height = dimensions.height;
+  width = dimensions.width;
+  imageCopy = image;
   agent = self->_agent;
-  v18 = a9;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
+  handlerCopy = handler;
+  intrinsicsCopy = intrinsics;
+  typeCopy = type;
+  infoCopy = info;
   if ([(ObjectTrackingAgent *)agent customInferenceEnabled])
   {
-    v22 = v23;
+    v22 = imageCopy;
   }
 
   else
@@ -224,7 +224,7 @@ intptr_t __27__DKTrackingAgent_tracking__block_invoke(uint64_t a1, char a2)
     v22 = 0;
   }
 
-  [(ObjectTrackingAgent *)self->_agent trackWithDetectedObjectsInfo:v21 image:v22 cameraPortType:v20 cameraIntrinsics:v19 referenceDimensions:v10 orientation:v18 completionHandler:width, height];
+  [(ObjectTrackingAgent *)self->_agent trackWithDetectedObjectsInfo:infoCopy image:v22 cameraPortType:typeCopy cameraIntrinsics:intrinsicsCopy referenceDimensions:v10 orientation:handlerCopy completionHandler:width, height];
 }
 
 - (BOOL)trackingButtonEnabled

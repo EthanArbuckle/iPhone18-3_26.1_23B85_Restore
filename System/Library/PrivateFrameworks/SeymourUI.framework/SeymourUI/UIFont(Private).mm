@@ -14,7 +14,7 @@
 {
   v6 = MEMORY[0x277D74300];
   v7 = a3;
-  v8 = [v6 _preferredFontForTextStyle:v7 variant:{objc_msgSend(a1, "_underlyingVariantForVariant:", a4)}];
+  v8 = [v6 _preferredFontForTextStyle:v7 variant:{objc_msgSend(self, "_underlyingVariantForVariant:", a4)}];
 
   return v8;
 }
@@ -23,8 +23,8 @@
 {
   v8 = MEMORY[0x277D74300];
   v9 = a3;
-  v10 = [a1 _stringForSystemDesign:a4];
-  v11 = [v8 _preferredFontForTextStyle:v9 design:v10 variant:{objc_msgSend(a1, "_underlyingVariantForVariant:", a5)}];
+  v10 = [self _stringForSystemDesign:a4];
+  v11 = [v8 _preferredFontForTextStyle:v9 design:v10 variant:{objc_msgSend(self, "_underlyingVariantForVariant:", a5)}];
 
   return v11;
 }
@@ -34,8 +34,8 @@
   v10 = MEMORY[0x277D74300];
   v11 = a6;
   v12 = a3;
-  v13 = [a1 _stringForSystemDesign:a4];
-  v14 = [v10 _preferredFontForTextStyle:v12 design:v13 variant:objc_msgSend(a1 compatibleWithTraitCollection:{"_underlyingVariantForVariant:", a5), v11}];
+  v13 = [self _stringForSystemDesign:a4];
+  v14 = [v10 _preferredFontForTextStyle:v12 design:v13 variant:objc_msgSend(self compatibleWithTraitCollection:{"_underlyingVariantForVariant:", a5), v11}];
 
   return v14;
 }
@@ -46,8 +46,8 @@
   v11 = a6;
   v12 = a5;
   v13 = a3;
-  v14 = [a1 _stringForSystemDesign:0];
-  v15 = [v10 _preferredFontForTextStyle:v13 design:v14 variant:objc_msgSend(a1 maximumContentSizeCategory:"_underlyingVariantForVariant:" compatibleWithTraitCollection:{a4), v12, v11}];
+  v14 = [self _stringForSystemDesign:0];
+  v15 = [v10 _preferredFontForTextStyle:v13 design:v14 variant:objc_msgSend(self maximumContentSizeCategory:"_underlyingVariantForVariant:" compatibleWithTraitCollection:{a4), v12, v11}];
 
   return v15;
 }
@@ -58,8 +58,8 @@
   v13 = a7;
   v14 = a6;
   v15 = a3;
-  v16 = [a1 _stringForSystemDesign:a4];
-  v17 = [v12 _preferredFontForTextStyle:v15 design:v16 variant:objc_msgSend(a1 maximumContentSizeCategory:"_underlyingVariantForVariant:" compatibleWithTraitCollection:{a5), v14, v13}];
+  v16 = [self _stringForSystemDesign:a4];
+  v17 = [v12 _preferredFontForTextStyle:v15 design:v16 variant:objc_msgSend(self maximumContentSizeCategory:"_underlyingVariantForVariant:" compatibleWithTraitCollection:{a5), v14, v13}];
 
   return v17;
 }
@@ -68,10 +68,10 @@
 {
   if (a3 <= 3)
   {
-    a1 = **(&unk_277D97D10 + a3);
+    self = **(&unk_277D97D10 + a3);
   }
 
-  return a1;
+  return self;
 }
 
 + (uint64_t)_underlyingVariantForVariant:()Private

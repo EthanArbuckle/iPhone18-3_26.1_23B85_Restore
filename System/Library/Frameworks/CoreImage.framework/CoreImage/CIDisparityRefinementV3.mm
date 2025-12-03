@@ -1,6 +1,6 @@
 @interface CIDisparityRefinementV3
 + (id)customAttributes;
-- (id)alphaImageForMainImage:(id)a3 disparity:(id)a4;
+- (id)alphaImageForMainImage:(id)image disparity:(id)disparity;
 - (id)outputImage;
 @end
 
@@ -30,26 +30,26 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 }
 
-- (id)alphaImageForMainImage:(id)a3 disparity:(id)a4
+- (id)alphaImageForMainImage:(id)image disparity:(id)disparity
 {
   inputMatteImage = self->inputMatteImage;
   if (inputMatteImage)
   {
-    [a4 extent];
+    [disparity extent];
     v8 = v7;
     v10 = v9;
-    [a3 extent];
+    [image extent];
     v12 = v11 * 0.5;
     if (v11 * 0.5 > v8)
     {
-      [a3 extent];
+      [image extent];
       v8 = v13 * 0.5;
     }
 
-    [a3 extent];
+    [image extent];
     if (v14 * 0.5 > v10)
     {
-      [a3 extent];
+      [image extent];
       v10 = v15 * 0.5;
     }
 
@@ -99,7 +99,7 @@
       [(CIFilter *)v10 setValue:v9 forKey:@"inputAlphaImage"];
     }
 
-    v12 = [(CIFilter *)v11 outputImage];
+    outputImage = [(CIFilter *)v11 outputImage];
     inputTuningParameters = self->inputTuningParameters;
     v24[0] = @"inputTuningParameters";
     v24[1] = @"inputScale";
@@ -109,7 +109,7 @@
     v22[0] = @"inputPreprocImage";
     v22[1] = @"inputTuningParameters";
     v15 = self->inputTuningParameters;
-    v23[0] = v12;
+    v23[0] = outputImage;
     v23[1] = v15;
     v22[2] = @"inputScale";
     v23[2] = [(CIDisparityRefinementV3 *)self inputScale];
@@ -118,7 +118,7 @@
     {
       v20[0] = @"inputPreprocImage";
       v20[1] = @"inputDisparityWeightImage";
-      v21[0] = v12;
+      v21[0] = outputImage;
       v21[1] = v14;
       v21[2] = self->inputTuningParameters;
       v20[2] = @"inputTuningParameters";

@@ -2,12 +2,12 @@
 + (id)allowedDecodableClasses;
 + (void)initialize;
 - (AXPTranslationObject)init;
-- (AXPTranslationObject)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXPTranslationObject)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)remoteDebugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXPTranslationObject
@@ -50,14 +50,14 @@ uint64_t __34__AXPTranslationObject_initialize__block_invoke()
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXPTranslationObject *)self objectID];
-    v6 = v5 == [v4 objectID];
+    objectID = [(AXPTranslationObject *)self objectID];
+    v6 = objectID == [equalCopy objectID];
   }
 
   else
@@ -92,18 +92,18 @@ uint64_t __34__AXPTranslationObject_initialize__block_invoke()
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[AXPTranslationObject allocWithZone:](AXPTranslationObject init];
   [(AXPTranslationObject *)v5 setObjectID:[(AXPTranslationObject *)self objectID]];
   [(AXPTranslationObject *)v5 setPid:[(AXPTranslationObject *)self pid]];
   [(AXPTranslationObject *)v5 setIsApplicationElement:[(AXPTranslationObject *)self isApplicationElement]];
-  v6 = [(AXPTranslationObject *)self bridgeDelegateToken];
-  v7 = [v6 copyWithZone:a3];
+  bridgeDelegateToken = [(AXPTranslationObject *)self bridgeDelegateToken];
+  v7 = [bridgeDelegateToken copyWithZone:zone];
   [(AXPTranslationObject *)v5 setBridgeDelegateToken:v7];
 
-  v8 = [(AXPTranslationObject *)self rawElementData];
-  v9 = [v8 copyWithZone:a3];
+  rawElementData = [(AXPTranslationObject *)self rawElementData];
+  v9 = [rawElementData copyWithZone:zone];
   [(AXPTranslationObject *)v5 setRawElementData:v9];
 
   [(AXPTranslationObject *)v5 setDidPopuldateAppInfo:[(AXPTranslationObject *)self didPopuldateAppInfo]];
@@ -116,7 +116,7 @@ uint64_t __34__AXPTranslationObject_initialize__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__AXPTranslationObject_allowedDecodableClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allowedDecodableClasses_onceToken != -1)
   {
     dispatch_once(&allowedDecodableClasses_onceToken, block);
@@ -142,38 +142,38 @@ uint64_t __47__AXPTranslationObject_allowedDecodableClasses__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AXPTranslationObject pid](self forKey:{"pid"), @"pid"}];
-  [v4 encodeBool:-[AXPTranslationObject isApplicationElement](self forKey:{"isApplicationElement"), @"isApplicationElement"}];
-  [v4 encodeBool:-[AXPTranslationObject didPopuldateAppInfo](self forKey:{"didPopuldateAppInfo"), @"didPopuldateAppInfo"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AXPTranslationObject pid](self forKey:{"pid"), @"pid"}];
+  [coderCopy encodeBool:-[AXPTranslationObject isApplicationElement](self forKey:{"isApplicationElement"), @"isApplicationElement"}];
+  [coderCopy encodeBool:-[AXPTranslationObject didPopuldateAppInfo](self forKey:{"didPopuldateAppInfo"), @"didPopuldateAppInfo"}];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[AXPTranslationObject objectID](self, "objectID")}];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  [coderCopy encodeObject:v5 forKey:@"objectID"];
 
-  v6 = [(AXPTranslationObject *)self bridgeDelegateToken];
-  [v4 encodeObject:v6 forKey:@"bridgeDelegateToken"];
+  bridgeDelegateToken = [(AXPTranslationObject *)self bridgeDelegateToken];
+  [coderCopy encodeObject:bridgeDelegateToken forKey:@"bridgeDelegateToken"];
 
-  v7 = [(AXPTranslationObject *)self rawElementData];
-  [v4 encodeObject:v7 forKey:@"rawElementData"];
+  rawElementData = [(AXPTranslationObject *)self rawElementData];
+  [coderCopy encodeObject:rawElementData forKey:@"rawElementData"];
 }
 
-- (AXPTranslationObject)initWithCoder:(id)a3
+- (AXPTranslationObject)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = AXPTranslationObject;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(AXPTranslationObject *)&v9 init];
-  -[AXPTranslationObject setPid:](v4, "setPid:", [v3 decodeIntForKey:{@"pid", v9.receiver, v9.super_class}]);
-  -[AXPTranslationObject setIsApplicationElement:](v4, "setIsApplicationElement:", [v3 decodeBoolForKey:@"isApplicationElement"]);
-  -[AXPTranslationObject setDidPopuldateAppInfo:](v4, "setDidPopuldateAppInfo:", [v3 decodeBoolForKey:@"didPopuldateAppInfo"]);
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  -[AXPTranslationObject setPid:](v4, "setPid:", [coderCopy decodeIntForKey:{@"pid", v9.receiver, v9.super_class}]);
+  -[AXPTranslationObject setIsApplicationElement:](v4, "setIsApplicationElement:", [coderCopy decodeBoolForKey:@"isApplicationElement"]);
+  -[AXPTranslationObject setDidPopuldateAppInfo:](v4, "setDidPopuldateAppInfo:", [coderCopy decodeBoolForKey:@"didPopuldateAppInfo"]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
   -[AXPTranslationObject setObjectID:](v4, "setObjectID:", [v5 unsignedLongLongValue]);
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"bridgeDelegateToken"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bridgeDelegateToken"];
   [(AXPTranslationObject *)v4 setBridgeDelegateToken:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"rawElementData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawElementData"];
 
   [(AXPTranslationObject *)v4 setRawElementData:v7];
   return v4;
@@ -185,9 +185,9 @@ uint64_t __47__AXPTranslationObject_allowedDecodableClasses__block_invoke(uint64
   v9.receiver = self;
   v9.super_class = AXPTranslationObject;
   v4 = [(AXPTranslationObject *)&v9 description];
-  v5 = [(AXPTranslationObject *)self objectID];
-  v6 = [(AXPTranslationObject *)self remoteDebugDescription];
-  v7 = [v3 stringWithFormat:@"%@[%llu]: %@", v4, v5, v6];
+  objectID = [(AXPTranslationObject *)self objectID];
+  remoteDebugDescription = [(AXPTranslationObject *)self remoteDebugDescription];
+  v7 = [v3 stringWithFormat:@"%@[%llu]: %@", v4, objectID, remoteDebugDescription];
 
   return v7;
 }

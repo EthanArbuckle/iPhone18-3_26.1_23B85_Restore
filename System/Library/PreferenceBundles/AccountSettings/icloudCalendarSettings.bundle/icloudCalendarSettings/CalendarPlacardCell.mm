@@ -1,13 +1,13 @@
 @interface CalendarPlacardCell
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithCoder:(id)a3;
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithCoder:(id)coder;
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CalendarPlacardCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4 = sub_A92C(&qword_1A258, "26");
   v5 = *(v4 - 8);
@@ -22,8 +22,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = self;
-  [(CalendarPlacardCell *)v9 setSelectionStyle:0];
+  selfCopy = self;
+  [(CalendarPlacardCell *)selfCopy setSelectionStyle:0];
   sub_A92C(&qword_1A260, &qword_E180);
   sub_A9BC(&qword_1A268, &qword_1A260, &qword_E180);
   sub_B5EC();
@@ -36,7 +36,7 @@
   sub_B6CC();
 }
 
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   sub_B6BC();
   sub_B6AC();
@@ -46,10 +46,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v8 = sub_B65C();
-    a4 = v9;
+    identifier = v9;
   }
 
   else
@@ -57,13 +57,13 @@
     v8 = 0;
   }
 
-  v10 = a5;
-  v11 = sub_A554(a3, v8, a4, a5);
+  specifierCopy = specifier;
+  v11 = sub_A554(style, v8, identifier, specifier);
 
   return v11;
 }
 
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   sub_B6BC();
@@ -74,20 +74,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     sub_B65C();
-    a4 = sub_B62C();
+    identifier = sub_B62C();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(CalendarPlacardCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(CalendarPlacardCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithCoder:(id)a3
+- (_TtC22icloudCalendarSettings19CalendarPlacardCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_B6BC();
@@ -100,8 +100,8 @@
 
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(CalendarPlacardCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(CalendarPlacardCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

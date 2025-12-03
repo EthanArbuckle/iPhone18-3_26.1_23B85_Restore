@@ -1,60 +1,60 @@
 @interface IATextInputActionsAnalytics
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3;
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3 withEventHandler:(id)a4;
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3 withServiceName:(id)a4;
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer;
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer withEventHandler:(id)handler;
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer withServiceName:(id)name;
 - (IATextInputActionsMetadataObserving)analyticsDelegate;
-- (id)_instanceOfActionClass:(Class)a3;
-- (void)_didDeleteBackwardAction:(id)a3;
-- (void)_didDeleteBackwardTextDetails:(id)a3 withType:(int64_t)a4 shouldOverrideInputActionCountToZero:(BOOL)a5 withInputMode:(id)a6 forceNotMarkedText:(BOOL)a7;
-- (void)_didDeletionKeyPressOfKey:(id)a3 withType:(int64_t)a4;
-- (void)_didInsertTextAction:(id)a3;
-- (void)_didInsertionKeyPressOfKey:(id)a3 withType:(int64_t)a4;
-- (void)_didReplacementForText:(id)a3 withText:(id)a4 allowNilText:(BOOL)a5 allowEmptyText:(BOOL)a6 allowNilReplacement:(BOOL)a7 withSource:(int64_t)a8 withType:(int64_t)a9 withInputActionCount:(int64_t)a10;
-- (void)didAutocorrectReplacementForText:(id)a3 withText:(id)a4;
-- (void)didAutocorrectTapOnCompletionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didCalloutBarReplacementForText:(id)a3 withText:(id)a4;
+- (id)_instanceOfActionClass:(Class)class;
+- (void)_didDeleteBackwardAction:(id)action;
+- (void)_didDeleteBackwardTextDetails:(id)details withType:(int64_t)type shouldOverrideInputActionCountToZero:(BOOL)zero withInputMode:(id)mode forceNotMarkedText:(BOOL)text;
+- (void)_didDeletionKeyPressOfKey:(id)key withType:(int64_t)type;
+- (void)_didInsertTextAction:(id)action;
+- (void)_didInsertionKeyPressOfKey:(id)key withType:(int64_t)type;
+- (void)_didReplacementForText:(id)text withText:(id)withText allowNilText:(BOOL)nilText allowEmptyText:(BOOL)emptyText allowNilReplacement:(BOOL)replacement withSource:(int64_t)source withType:(int64_t)type withInputActionCount:(int64_t)self0;
+- (void)didAutocorrectReplacementForText:(id)text withText:(id)withText;
+- (void)didAutocorrectTapOnCompletionReplacementForText:(id)text withText:(id)withText;
+- (void)didCalloutBarReplacementForText:(id)text withText:(id)withText;
 - (void)didCandidateBarAction;
-- (void)didCandidateBarReplacementForText:(id)a3 withText:(id)a4;
-- (void)didChangeToSelection:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4;
-- (void)didCommitText:(id)a3;
-- (void)didCompositionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didConversionForMarkedText:(id)a3 withText:(id)a4;
-- (void)didCopy:(id)a3;
-- (void)didCut:(id)a3;
-- (void)didDecompositionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didDeleteBackwardText:(id)a3;
-- (void)didDeleteBackwardText:(id)a3 withType:(int64_t)a4;
-- (void)didDeleteBackwardText:(id)a3 withType:(int64_t)a4 withInputMode:(id)a5;
+- (void)didCandidateBarReplacementForText:(id)text withText:(id)withText;
+- (void)didChangeToSelection:(_NSRange)selection relativeRangeBefore:(_NSRange)before;
+- (void)didCommitText:(id)text;
+- (void)didCompositionReplacementForText:(id)text withText:(id)withText;
+- (void)didConversionForMarkedText:(id)text withText:(id)withText;
+- (void)didCopy:(id)copy;
+- (void)didCut:(id)cut;
+- (void)didDecompositionReplacementForText:(id)text withText:(id)withText;
+- (void)didDeleteBackwardText:(id)text;
+- (void)didDeleteBackwardText:(id)text withType:(int64_t)type;
+- (void)didDeleteBackwardText:(id)text withType:(int64_t)type withInputMode:(id)mode;
 - (void)didDeletionKeyPress;
-- (void)didDeletionKeyPressOfKey:(id)a3 withType:(int64_t)a4;
-- (void)didDictationBegin:(BOOL)a3 usesMultiModalDictation:(BOOL)a4;
+- (void)didDeletionKeyPressOfKey:(id)key withType:(int64_t)type;
+- (void)didDictationBegin:(BOOL)begin usesMultiModalDictation:(BOOL)dictation;
 - (void)didDictationEnd;
-- (void)didGlomojiTap:(id)a3 newInputMode:(id)a4;
-- (void)didGlomojiTap:(unint64_t)a3 originalInputMode:(id)a4 newInputMode:(id)a5;
-- (void)didInlineCompletionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didInsertText:(id)a3 withType:(int64_t)a4 relativeRangeBefore:(_NSRange)a5 withNumAlternatives:(int64_t)a6 selectedTextBefore:(id)a7 withInputMode:(id)a8;
+- (void)didGlomojiTap:(id)tap newInputMode:(id)mode;
+- (void)didGlomojiTap:(unint64_t)tap originalInputMode:(id)mode newInputMode:(id)inputMode;
+- (void)didInlineCompletionReplacementForText:(id)text withText:(id)withText;
+- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)text withText:(id)withText;
+- (void)didInsertText:(id)text withType:(int64_t)type relativeRangeBefore:(_NSRange)before withNumAlternatives:(int64_t)alternatives selectedTextBefore:(id)textBefore withInputMode:(id)mode;
 - (void)didInsertionKeyPress;
-- (void)didInsertionKeyPressOfKey:(id)a3 withType:(int64_t)a4;
-- (void)didKBMenuAppear:(id)a3;
-- (void)didKBMenuAppear:(unint64_t)a3 originalInputMode:(id)a4;
-- (void)didKBMenuDismiss:(unint64_t)a3;
-- (void)didKBMenuInteraction:(unint64_t)a3 selectedAction:(unint64_t)a4 newInputMode:(id)a5;
-- (void)didKeyboardDockItemButtonPress:(unint64_t)a3 buttonType:(unint64_t)a4 buttonSize:(CGSize)a5 touchDown:(CGPoint)a6 touchUp:(CGPoint)a7 touchDuration:(double)a8 inputSource:(int64_t)a9 inputType:(int64_t)a10 uiInterfaceOrientation:(int64_t)a11;
+- (void)didInsertionKeyPressOfKey:(id)key withType:(int64_t)type;
+- (void)didKBMenuAppear:(id)appear;
+- (void)didKBMenuAppear:(unint64_t)appear originalInputMode:(id)mode;
+- (void)didKBMenuDismiss:(unint64_t)dismiss;
+- (void)didKBMenuInteraction:(unint64_t)interaction selectedAction:(unint64_t)action newInputMode:(id)mode;
+- (void)didKeyboardDockItemButtonPress:(unint64_t)press buttonType:(unint64_t)type buttonSize:(CGSize)size touchDown:(CGPoint)down touchUp:(CGPoint)up touchDuration:(double)duration inputSource:(int64_t)source inputType:(int64_t)self0 uiInterfaceOrientation:(int64_t)self1;
 - (void)didOther;
-- (void)didPaste:(id)a3;
+- (void)didPaste:(id)paste;
 - (void)didRedo;
-- (void)didReplaceWithCandidate:(int64_t)a3;
-- (void)didRevisionBubbleReplacementForText:(id)a3 withText:(id)a4;
+- (void)didReplaceWithCandidate:(int64_t)candidate;
+- (void)didRevisionBubbleReplacementForText:(id)text withText:(id)withText;
 - (void)didRevisionBubbleTap;
 - (void)didSessionBegin;
 - (void)didSessionEnd;
 - (void)didUndo;
-- (void)dispatchToAnalyticsQueue:(id)a3;
-- (void)flushAndSetLastAction:(id)a3;
+- (void)dispatchToAnalyticsQueue:(id)queue;
+- (void)flushAndSetLastAction:(id)action;
 - (void)invalidateConnection;
-- (void)mergeOrConsumeAction:(id)a3;
-- (void)populateActionInputMode:(id)a3 withInputMode:(id)a4;
+- (void)mergeOrConsumeAction:(id)action;
+- (void)populateActionInputMode:(id)mode withInputMode:(id)inputMode;
 @end
 
 @implementation IATextInputActionsAnalytics
@@ -89,9 +89,9 @@
   return WeakRetained;
 }
 
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7 = objc_msgSend_xpcEnabled(IAUtility, v5, v6);
   v8 = sub_1D461074C();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -103,7 +103,7 @@
       _os_log_impl(&dword_1D460F000, v8, OS_LOG_TYPE_INFO, "initWithAnalyticsMetadataObserver service", buf, 2u);
     }
 
-    v11 = objc_msgSend_initWithAnalyticsMetadataObserver_withServiceName_(self, v10, v4, @"com.apple.inputanalyticsd");
+    v11 = objc_msgSend_initWithAnalyticsMetadataObserver_withServiceName_(self, v10, observerCopy, @"com.apple.inputanalyticsd");
   }
 
   else
@@ -114,7 +114,7 @@
       _os_log_impl(&dword_1D460F000, v8, OS_LOG_TYPE_INFO, "initWithAnalyticsMetadataObserver in-process", v15, 2u);
     }
 
-    v11 = objc_msgSend_initWithAnalyticsMetadataObserver_withEventHandler_(self, v12, v4, &unk_1F4FDA350);
+    v11 = objc_msgSend_initWithAnalyticsMetadataObserver_withEventHandler_(self, v12, observerCopy, &unk_1F4FDA350);
   }
 
   v13 = v11;
@@ -143,9 +143,9 @@
   }
 }
 
-- (id)_instanceOfActionClass:(Class)a3
+- (id)_instanceOfActionClass:(Class)class
 {
-  v5 = objc_msgSend_analyticsDelegate(self, a2, a3);
+  v5 = objc_msgSend_analyticsDelegate(self, a2, class);
 
   if (!v5)
   {
@@ -157,9 +157,9 @@
   }
 
   v7 = objc_opt_class();
-  if (objc_msgSend_isSubclassOfClass_(a3, v8, v7))
+  if (objc_msgSend_isSubclassOfClass_(class, v8, v7))
   {
-    v9 = objc_alloc_init(a3);
+    v9 = objc_alloc_init(class);
     v12 = objc_msgSend_analyticsDelegate(self, v10, v11);
     v15 = objc_msgSend_sessionIdentifier(v12, v13, v14);
     objc_msgSend_setSessionIdentifier_(self, v16, v15);
@@ -199,9 +199,9 @@
   return v9;
 }
 
-- (void)flushAndSetLastAction:(id)a3
+- (void)flushAndSetLastAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   if (self->_lastAction)
   {
     if (self->_useAnalyticsDaemon)
@@ -213,7 +213,7 @@
         _os_log_impl(&dword_1D460F000, v6, OS_LOG_TYPE_INFO, "flushAndSetLastAction calling sendSignal:toChannel:withNullableSessionID:withPayload:", v15, 2u);
       }
 
-      v9 = objc_msgSend_textInputSessionId(v5, v7, v8);
+      v9 = objc_msgSend_textInputSessionId(actionCopy, v7, v8);
       v12 = objc_msgSend_toDictionary(self->_lastAction, v10, v11);
       objc_msgSend_sendSignal_toChannel_withNullableSessionID_withPayload_(IASignalAnalytics, v13, @"DidAction", @"LegacyTextInputActions", v9, v12);
     }
@@ -225,17 +225,17 @@
   }
 
   lastAction = self->_lastAction;
-  self->_lastAction = v5;
+  self->_lastAction = actionCopy;
 }
 
-- (void)mergeOrConsumeAction:(id)a3
+- (void)mergeOrConsumeAction:(id)action
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  actionCopy = action;
+  v8 = actionCopy;
+  if (actionCopy)
   {
-    if (objc_msgSend_flagOptions(v5, v6, v7) >= 9)
+    if (objc_msgSend_flagOptions(actionCopy, v6, v7) >= 9)
     {
       v11 = sub_1D461074C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -317,7 +317,7 @@
 
       else
       {
-        objc_storeStrong(&self->_lastAction, a3);
+        objc_storeStrong(&self->_lastAction, action);
       }
     }
   }
@@ -325,15 +325,15 @@
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateActionInputMode:(id)a3 withInputMode:(id)a4
+- (void)populateActionInputMode:(id)mode withInputMode:(id)inputMode
 {
-  v41 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (v6)
+  modeCopy = mode;
+  inputModeCopy = inputMode;
+  v9 = inputModeCopy;
+  if (inputModeCopy)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
-    objc_msgSend_setInputMode_(v41, v11, v10);
+    v10 = objc_msgSend_copy(inputModeCopy, v7, v8);
+    objc_msgSend_setInputMode_(modeCopy, v11, v10);
 
     v14 = objc_msgSend_analyticsDelegate(self, v12, v13);
     v17 = objc_msgSend_flagOptions(v14, v15, v16);
@@ -341,17 +341,17 @@
 
     if (v10)
     {
-      v21 = objc_msgSend_inputMode(v41, v19, v20);
+      v21 = objc_msgSend_inputMode(modeCopy, v19, v20);
       v24 = objc_msgSend_keyboardType(v21, v22, v23);
       v27 = objc_msgSend_length(v24, v25, v26);
 
-      v30 = objc_msgSend_inputMode(v41, v28, v29);
+      v30 = objc_msgSend_inputMode(modeCopy, v28, v29);
       v33 = v30;
       if (v27)
       {
         v34 = objc_msgSend_keyboardType(v30, v31, v32);
         v36 = objc_msgSend_stringByAppendingString_(v34, v35, @"Web");
-        v39 = objc_msgSend_inputMode(v41, v37, v38);
+        v39 = objc_msgSend_inputMode(modeCopy, v37, v38);
         objc_msgSend_setKeyboardType_(v39, v40, v36);
       }
 
@@ -399,47 +399,47 @@
   }
 }
 
-- (void)didInsertText:(id)a3 withType:(int64_t)a4 relativeRangeBefore:(_NSRange)a5 withNumAlternatives:(int64_t)a6 selectedTextBefore:(id)a7 withInputMode:(id)a8
+- (void)didInsertText:(id)text withType:(int64_t)type relativeRangeBefore:(_NSRange)before withNumAlternatives:(int64_t)alternatives selectedTextBefore:(id)textBefore withInputMode:(id)mode
 {
-  length = a5.length;
+  length = before.length;
   v56 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
+  textCopy = text;
+  textBeforeCopy = textBefore;
+  modeCopy = mode;
   v16 = sub_1D461074C();
   v17 = v16;
-  if (v13)
+  if (textCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v49 = objc_msgSend_description(v15, v18, v19);
+      v49 = objc_msgSend_description(modeCopy, v18, v19);
       v50 = 138478339;
-      v51 = v13;
+      v51 = textCopy;
       v52 = 2113;
-      v53 = v14;
+      v53 = textBeforeCopy;
       v54 = 2113;
       v55 = v49;
       _os_log_debug_impl(&dword_1D460F000, v17, OS_LOG_TYPE_DEBUG, "[IATextInputActionsAnalytics] didInsertText:%{private}@ selectedTextBefore:%{private}@ withInputMode:%{private}@", &v50, 0x20u);
     }
 
-    if (objc_msgSend_length(v14, v20, v21))
+    if (objc_msgSend_length(textBeforeCopy, v20, v21))
     {
-      objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v22, v14, a4, 1, v15, 1);
+      objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v22, textBeforeCopy, type, 1, modeCopy, 1);
     }
 
-    else if (!v14 && length)
+    else if (!textBeforeCopy && length)
     {
-      objc_msgSend__didDeleteBackwardCount_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v22, length, a4, 1, v15, 1);
+      objc_msgSend__didDeleteBackwardCount_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v22, length, type, 1, modeCopy, 1);
     }
 
     v23 = objc_opt_class();
     v25 = objc_msgSend__instanceOfActionClass_(self, v24, v23);
     v17 = objc_msgSend_asInsertion(v25, v26, v27);
 
-    objc_msgSend_setTextInputActionsType_(v17, v28, a4);
-    objc_msgSend_setWithAlternativesCount_(v17, v29, a6 > 0);
-    objc_msgSend_populateActionInputMode_withInputMode_(self, v30, v17, v15);
-    v32 = objc_msgSend_getDetailsForString_(IAStringDetails, v31, v13);
+    objc_msgSend_setTextInputActionsType_(v17, v28, type);
+    objc_msgSend_setWithAlternativesCount_(v17, v29, alternatives > 0);
+    objc_msgSend_populateActionInputMode_withInputMode_(self, v30, v17, modeCopy);
+    v32 = objc_msgSend_getDetailsForString_(IAStringDetails, v31, textCopy);
     v35 = objc_msgSend_characters(v32, v33, v34);
     objc_msgSend_setInsertedTextLength_(v17, v36, v35);
     v39 = objc_msgSend_emojiCharacters(v32, v37, v38);
@@ -461,18 +461,18 @@
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didInsertTextAction:(id)a3
+- (void)_didInsertTextAction:(id)action
 {
-  v4 = a3;
-  v7 = objc_msgSend_flagOptions(v4, v5, v6);
+  actionCopy = action;
+  v7 = objc_msgSend_flagOptions(actionCopy, v5, v6);
   if (objc_msgSend_isEmojiSearchSetInFlagOptions_(IATextInputActionsUtils, v8, v7))
   {
-    if (objc_msgSend_source(v4, v9, v10) == 5)
+    if (objc_msgSend_source(actionCopy, v9, v10) == 5)
     {
-      objc_msgSend_setSource_(v4, v11, 4);
-      if (objc_msgSend_insertedEmojiCount(v4, v12, v13) == 1 && objc_msgSend_insertedTextLength(v4, v14, v15) == 1)
+      objc_msgSend_setSource_(actionCopy, v11, 4);
+      if (objc_msgSend_insertedEmojiCount(actionCopy, v12, v13) == 1 && objc_msgSend_insertedTextLength(actionCopy, v14, v15) == 1)
       {
-        objc_msgSend_setInputActionCountFromMergedActions_(v4, v16, 1);
+        objc_msgSend_setInputActionCountFromMergedActions_(actionCopy, v16, 1);
       }
     }
   }
@@ -483,42 +483,42 @@
   v19[2] = sub_1D4613A08;
   v19[3] = &unk_1E84897C8;
   v19[4] = self;
-  v20 = v4;
-  v18 = v4;
+  v20 = actionCopy;
+  v18 = actionCopy;
   dispatch_async(queue, v19);
 }
 
-- (void)_didDeleteBackwardTextDetails:(id)a3 withType:(int64_t)a4 shouldOverrideInputActionCountToZero:(BOOL)a5 withInputMode:(id)a6 forceNotMarkedText:(BOOL)a7
+- (void)_didDeleteBackwardTextDetails:(id)details withType:(int64_t)type shouldOverrideInputActionCountToZero:(BOOL)zero withInputMode:(id)mode forceNotMarkedText:(BOOL)text
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a3;
-  v13 = a6;
-  if (v12)
+  textCopy = text;
+  zeroCopy = zero;
+  detailsCopy = details;
+  modeCopy = mode;
+  if (detailsCopy)
   {
     v14 = objc_opt_class();
     v16 = objc_msgSend__instanceOfActionClass_(self, v15, v14);
     v19 = objc_msgSend_asDeletion(v16, v17, v18);
 
-    objc_msgSend_setTextInputActionsType_(v19, v20, a4);
-    v23 = objc_msgSend_characters(v12, v21, v22);
+    objc_msgSend_setTextInputActionsType_(v19, v20, type);
+    v23 = objc_msgSend_characters(detailsCopy, v21, v22);
     objc_msgSend_setRemovedTextLength_(v19, v24, v23);
-    v27 = objc_msgSend_emojiCharacters(v12, v25, v26);
+    v27 = objc_msgSend_emojiCharacters(detailsCopy, v25, v26);
     objc_msgSend_setRemovedEmojiCount_(v19, v28, v27);
-    if (objc_msgSend_textIsTooLong(v12, v29, v30))
+    if (objc_msgSend_textIsTooLong(detailsCopy, v29, v30))
     {
       v33 = objc_msgSend_clientSideSessionErrors(v19, v31, v32);
       objc_msgSend_appendString_(v33, v34, @"T");
     }
 
-    objc_msgSend_populateActionInputMode_withInputMode_(self, v31, v19, v13);
-    if (v9)
+    objc_msgSend_populateActionInputMode_withInputMode_(self, v31, v19, modeCopy);
+    if (zeroCopy)
     {
       v37 = objc_msgSend_inputActionCount(v19, v35, v36);
       objc_msgSend_setInputActionCountFromMergedActions_(v19, v38, -v37);
     }
 
-    if (v7)
+    if (textCopy)
     {
       v39 = objc_msgSend_flagOptions(v19, v35, v36);
       objc_msgSend_setFlagOptions_(v19, v40, v39 & 0xFFFFFFFFFFFFFFFDLL);
@@ -537,42 +537,42 @@
   }
 }
 
-- (void)didDeleteBackwardText:(id)a3
+- (void)didDeleteBackwardText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = sub_1D461074C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462C5D8();
   }
 
-  objc_msgSend_didDeleteBackwardText_withType_(self, v6, v4, 1);
+  objc_msgSend_didDeleteBackwardText_withType_(self, v6, textCopy, 1);
 }
 
-- (void)didDeleteBackwardText:(id)a3 withType:(int64_t)a4
+- (void)didDeleteBackwardText:(id)text withType:(int64_t)type
 {
-  v6 = a3;
+  textCopy = text;
   v7 = sub_1D461074C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462C64C();
   }
 
-  objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v8, v6, a4, 0, 0, 0);
+  objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v8, textCopy, type, 0, 0, 0);
 }
 
-- (void)didDeleteBackwardText:(id)a3 withType:(int64_t)a4 withInputMode:(id)a5
+- (void)didDeleteBackwardText:(id)text withType:(int64_t)type withInputMode:(id)mode
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  textCopy = text;
+  modeCopy = mode;
   v10 = sub_1D461074C();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v14 = objc_msgSend_stringForType_(IATextInputActionsUtils, v11, a4);
-    v17 = objc_msgSend_description(v9, v15, v16);
+    v14 = objc_msgSend_stringForType_(IATextInputActionsUtils, v11, type);
+    v17 = objc_msgSend_description(modeCopy, v15, v16);
     v18 = 138740483;
-    v19 = v8;
+    v19 = textCopy;
     v20 = 2113;
     v21 = v14;
     v22 = 2113;
@@ -580,32 +580,32 @@
     _os_log_debug_impl(&dword_1D460F000, v10, OS_LOG_TYPE_DEBUG, "[IATextInputActionsAnalytics] didDeleteBackwardText:%{sensitive}@ withType:%{private}@ withInputMode:'%{private}@'", &v18, 0x20u);
   }
 
-  objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v12, v8, a4, 0, v9, 0);
+  objc_msgSend__didDeleteBackwardText_withType_shouldOverrideInputActionCountToZero_withInputMode_forceNotMarkedText_(self, v12, textCopy, type, 0, modeCopy, 0);
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didDeleteBackwardAction:(id)a3
+- (void)_didDeleteBackwardAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1D4613FC4;
   v7[3] = &unk_1E84897C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = actionCopy;
+  v6 = actionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)didChangeToSelection:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4
+- (void)didChangeToSelection:(_NSRange)selection relativeRangeBefore:(_NSRange)before
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
+  length = before.length;
+  location = before.location;
+  v6 = selection.length;
+  v7 = selection.location;
   v31 = *MEMORY[0x1E69E9840];
-  if (a3.length != a4.length || a3.location != a4.location)
+  if (selection.length != before.length || selection.location != before.location)
   {
     v9 = sub_1D461074C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -641,7 +641,7 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCopy:(id)a3
+- (void)didCopy:(id)copy
 {
   v4 = sub_1D461074C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -665,7 +665,7 @@
   dispatch_async(queue, v14);
 }
 
-- (void)didCut:(id)a3
+- (void)didCut:(id)cut
 {
   v4 = sub_1D461074C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -689,7 +689,7 @@
   dispatch_async(queue, v14);
 }
 
-- (void)didPaste:(id)a3
+- (void)didPaste:(id)paste
 {
   v4 = sub_1D461074C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -761,13 +761,13 @@
   dispatch_async(queue, v13);
 }
 
-- (void)_didReplacementForText:(id)a3 withText:(id)a4 allowNilText:(BOOL)a5 allowEmptyText:(BOOL)a6 allowNilReplacement:(BOOL)a7 withSource:(int64_t)a8 withType:(int64_t)a9 withInputActionCount:(int64_t)a10
+- (void)_didReplacementForText:(id)text withText:(id)withText allowNilText:(BOOL)nilText allowEmptyText:(BOOL)emptyText allowNilReplacement:(BOOL)replacement withSource:(int64_t)source withType:(int64_t)type withInputActionCount:(int64_t)self0
 {
-  v16 = a3;
-  v19 = a4;
-  if (v16)
+  textCopy = text;
+  withTextCopy = withText;
+  if (textCopy)
   {
-    v20 = v16;
+    v20 = textCopy;
   }
 
   else
@@ -775,13 +775,13 @@
     v20 = &stru_1F4FDAA18;
   }
 
-  if (v16 || a5)
+  if (textCopy || nilText)
   {
-    if (objc_msgSend_length(v20, v17, v18) || a6)
+    if (objc_msgSend_length(v20, v17, v18) || emptyText)
     {
-      if (v19)
+      if (withTextCopy)
       {
-        v21 = v19;
+        v21 = withTextCopy;
       }
 
       else
@@ -789,14 +789,14 @@
         v21 = &stru_1F4FDAA18;
       }
 
-      if (v19 || a7)
+      if (withTextCopy || replacement)
       {
         v23 = objc_opt_class();
         v25 = objc_msgSend__instanceOfActionClass_(self, v24, v23);
         v28 = objc_msgSend_asReplaceText(v25, v26, v27);
 
-        objc_msgSend_setSource_(v28, v29, a8);
-        objc_msgSend_setTextInputActionsType_(v28, v30, a9);
+        objc_msgSend_setSource_(v28, v29, source);
+        objc_msgSend_setTextInputActionsType_(v28, v30, type);
         v32 = objc_msgSend_getDetailsForString_(IAStringDetails, v31, v20);
         v35 = objc_msgSend_characters(v32, v33, v34);
         objc_msgSend_setRemovedTextLength_(v28, v36, v35);
@@ -820,7 +820,7 @@
         }
 
         v63 = objc_msgSend_inputActionCount(v28, v59, v60);
-        objc_msgSend_setInputActionCountFromMergedActions_(v28, v64, a10 - v63);
+        objc_msgSend_setInputActionCountFromMergedActions_(v28, v64, count - v63);
         queue = self->_queue;
         v67[0] = MEMORY[0x1E69E9820];
         v67[1] = 3221225472;
@@ -850,7 +850,7 @@
         sub_1D462C914();
       }
 
-      v21 = v19;
+      v21 = withTextCopy;
     }
   }
 
@@ -862,40 +862,40 @@
       sub_1D462C894();
     }
 
-    v20 = v19;
+    v20 = withTextCopy;
   }
 }
 
-- (void)didCandidateBarReplacementForText:(id)a3 withText:(id)a4
+- (void)didCandidateBarReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462C9F8();
   }
 
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, v6, v7, 1, 1, 0, 7, 1, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, textCopy, withTextCopy, 1, 1, 0, 7, 1, 1);
 }
 
-- (void)didCalloutBarReplacementForText:(id)a3 withText:(id)a4
+- (void)didCalloutBarReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462CA60();
   }
 
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, v6, v7, 0, 0, 0, 8, 1, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, textCopy, withTextCopy, 0, 0, 0, 8, 1, 1);
 }
 
-- (void)didAutocorrectReplacementForText:(id)a3 withText:(id)a4
+- (void)didAutocorrectReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -904,26 +904,26 @@
 
   v11 = objc_msgSend_analyticsDelegate(self, v9, v10);
   v14 = objc_msgSend_source(v11, v12, v13);
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, v6, v7, 0, 0, 1, v14, 6, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, textCopy, withTextCopy, 0, 0, 1, v14, 6, 1);
 }
 
-- (void)didAutocorrectTapOnCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didAutocorrectTapOnCompletionReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462CB30();
   }
 
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, v6, v7, 0, 0, 1, 12, 6, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, textCopy, withTextCopy, 0, 0, 1, 12, 6, 1);
 }
 
-- (void)didInlineCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didInlineCompletionReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -932,33 +932,33 @@
 
   v11 = objc_msgSend_analyticsDelegate(self, v9, v10);
   v14 = objc_msgSend_source(v11, v12, v13);
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, v6, v7, 1, 1, 0, v14, 15, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, textCopy, withTextCopy, 1, 1, 0, v14, 15, 1);
 }
 
-- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462CC00();
   }
 
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, v6, v7, 1, 1, 0, 12, 15, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, textCopy, withTextCopy, 1, 1, 0, 12, 15, 1);
 }
 
-- (void)didRevisionBubbleReplacementForText:(id)a3 withText:(id)a4
+- (void)didRevisionBubbleReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462CC68();
   }
 
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, v6, v7, 0, 0, 0, 11, 1, 0);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v9, textCopy, withTextCopy, 0, 0, 0, 11, 1, 0);
 }
 
 - (void)didRevisionBubbleTap
@@ -991,19 +991,19 @@
   dispatch_async(queue, v13);
 }
 
-- (void)didReplaceWithCandidate:(int64_t)a3
+- (void)didReplaceWithCandidate:(int64_t)candidate
 {
   v5 = sub_1D461074C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1D462CD04(a3, v5);
+    sub_1D462CD04(candidate, v5);
   }
 
   v6 = objc_opt_class();
   v8 = objc_msgSend__instanceOfActionClass_(self, v7, v6);
   v11 = objc_msgSend_asReplaceWithCandidate(v8, v9, v10);
 
-  objc_msgSend_setReplaceWithCandidateType_(v11, v12, a3);
+  objc_msgSend_setReplaceWithCandidateType_(v11, v12, candidate);
   v15 = objc_msgSend_inputActionCount(v11, v13, v14);
   objc_msgSend_setInputActionCountFromMergedActions_(v11, v16, -v15);
   queue = self->_queue;
@@ -1017,10 +1017,10 @@
   dispatch_async(queue, v19);
 }
 
-- (void)didCompositionReplacementForText:(id)a3 withText:(id)a4
+- (void)didCompositionReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1029,13 +1029,13 @@
 
   v11 = objc_msgSend_analyticsDelegate(self, v9, v10);
   v14 = objc_msgSend_source(v11, v12, v13);
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, v6, v7, 0, 0, 0, v14, 17, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, textCopy, withTextCopy, 0, 0, 0, v14, 17, 1);
 }
 
-- (void)didDecompositionReplacementForText:(id)a3 withText:(id)a4
+- (void)didDecompositionReplacementForText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = sub_1D461074C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1044,17 +1044,17 @@
 
   v11 = objc_msgSend_analyticsDelegate(self, v9, v10);
   v14 = objc_msgSend_source(v11, v12, v13);
-  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, v6, v7, 0, 0, 0, v14, 18, 1);
+  objc_msgSend__didReplacementForText_withText_allowNilText_allowEmptyText_allowNilReplacement_withSource_withType_withInputActionCount_(self, v15, textCopy, withTextCopy, 0, 0, 0, v14, 18, 1);
 }
 
-- (void)didConversionForMarkedText:(id)a3 withText:(id)a4
+- (void)didConversionForMarkedText:(id)text withText:(id)withText
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = v7;
-  if (v6 && v7)
+  textCopy = text;
+  withTextCopy = withText;
+  v10 = withTextCopy;
+  if (textCopy && withTextCopy)
   {
-    if (objc_msgSend_length(v6, v8, v9) && objc_msgSend_length(v10, v11, v12))
+    if (objc_msgSend_length(textCopy, v8, v9) && objc_msgSend_length(v10, v11, v12))
     {
       v15 = objc_msgSend_analyticsDelegate(self, v13, v14);
       v18 = objc_msgSend_source(v15, v16, v17);
@@ -1134,11 +1134,11 @@
 LABEL_18:
 }
 
-- (void)didCommitText:(id)a3
+- (void)didCommitText:(id)text
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && objc_msgSend_length(v4, v5, v6))
+  textCopy = text;
+  v7 = textCopy;
+  if (textCopy && objc_msgSend_length(textCopy, v5, v6))
   {
     v8 = sub_1D461074C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1182,20 +1182,20 @@ LABEL_18:
   }
 }
 
-- (void)didKeyboardDockItemButtonPress:(unint64_t)a3 buttonType:(unint64_t)a4 buttonSize:(CGSize)a5 touchDown:(CGPoint)a6 touchUp:(CGPoint)a7 touchDuration:(double)a8 inputSource:(int64_t)a9 inputType:(int64_t)a10 uiInterfaceOrientation:(int64_t)a11
+- (void)didKeyboardDockItemButtonPress:(unint64_t)press buttonType:(unint64_t)type buttonSize:(CGSize)size touchDown:(CGPoint)down touchUp:(CGPoint)up touchDuration:(double)duration inputSource:(int64_t)source inputType:(int64_t)self0 uiInterfaceOrientation:(int64_t)self1
 {
-  y = a7.y;
-  x = a7.x;
-  v18 = a6.y;
-  v19 = a6.x;
-  height = a5.height;
-  width = a5.width;
+  y = up.y;
+  x = up.x;
+  v18 = down.y;
+  v19 = down.x;
+  height = size.height;
+  width = size.width;
   v71 = *MEMORY[0x1E69E9840];
   v24 = sub_1D461074C();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    v48 = objc_msgSend_stringForKeyboardDockItemButtonPressResult_(IATextInputActionsUtils, v25, a3);
-    v50 = objc_msgSend_stringForKeyboardDockItemButtonType_(IATextInputActionsUtils, v49, a4);
+    v48 = objc_msgSend_stringForKeyboardDockItemButtonPressResult_(IATextInputActionsUtils, v25, press);
+    v50 = objc_msgSend_stringForKeyboardDockItemButtonType_(IATextInputActionsUtils, v49, type);
     *buf = 138479875;
     v54 = v48;
     v55 = 2113;
@@ -1213,7 +1213,7 @@ LABEL_18:
     v67 = 2048;
     v68 = y;
     v69 = 2048;
-    v70 = a8;
+    durationCopy = duration;
     _os_log_debug_impl(&dword_1D460F000, v24, OS_LOG_TYPE_DEBUG, "[IATextInputActionsAnalytics] didKeyboardDockItemButtonPress:%{private}@ buttonType:%{private}@ buttonSize:(%fw %fh) touchDown:(%f,%f) touchUp:(%f,%f) touchDuration:%f", buf, 0x5Cu);
   }
 
@@ -1221,15 +1221,15 @@ LABEL_18:
   v28 = objc_msgSend__instanceOfActionClass_(self, v27, v26);
   v31 = objc_msgSend_asKeyboardDockItemButtonPress(v28, v29, v30);
 
-  objc_msgSend_setSource_(v31, v32, a9);
-  objc_msgSend_setTextInputActionsType_(v31, v33, a10);
-  objc_msgSend_setButtonPressResult_(v31, v34, a3);
-  objc_msgSend_setButtonType_(v31, v35, a4);
-  objc_msgSend_setUiOrientation_(v31, v36, a11);
+  objc_msgSend_setSource_(v31, v32, source);
+  objc_msgSend_setTextInputActionsType_(v31, v33, inputType);
+  objc_msgSend_setButtonPressResult_(v31, v34, press);
+  objc_msgSend_setButtonType_(v31, v35, type);
+  objc_msgSend_setUiOrientation_(v31, v36, orientation);
   objc_msgSend_setButtonSize_(v31, v37, v38, width, height);
   objc_msgSend_setTouchDownPoint_(v31, v39, v40, v19, v18);
   objc_msgSend_setTouchUpPoint_(v31, v41, v42, x, y);
-  objc_msgSend_setTouchDuration_(v31, v43, v44, a8);
+  objc_msgSend_setTouchDuration_(v31, v43, v44, duration);
   queue = self->_queue;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -1243,10 +1243,10 @@ LABEL_18:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didGlomojiTap:(id)a3 newInputMode:(id)a4
+- (void)didGlomojiTap:(id)tap newInputMode:(id)mode
 {
-  v6 = a4;
-  v7 = a3;
+  modeCopy = mode;
+  tapCopy = tap;
   v8 = sub_1D4620EF8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1258,9 +1258,9 @@ LABEL_18:
   v14 = objc_msgSend_asGlomojiTap(v11, v12, v13);
 
   objc_msgSend_setGlomojiType_(v14, v15, 0);
-  objc_msgSend_setOriginalInputMode_(v14, v16, v7);
+  objc_msgSend_setOriginalInputMode_(v14, v16, tapCopy);
 
-  objc_msgSend_setUpdatedInputMode_(v14, v17, v6);
+  objc_msgSend_setUpdatedInputMode_(v14, v17, modeCopy);
   queue = self->_queue;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -1272,10 +1272,10 @@ LABEL_18:
   dispatch_async(queue, v20);
 }
 
-- (void)didGlomojiTap:(unint64_t)a3 originalInputMode:(id)a4 newInputMode:(id)a5
+- (void)didGlomojiTap:(unint64_t)tap originalInputMode:(id)mode newInputMode:(id)inputMode
 {
-  v8 = a5;
-  v9 = a4;
+  inputModeCopy = inputMode;
+  modeCopy = mode;
   v10 = sub_1D4620EF8();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1286,10 +1286,10 @@ LABEL_18:
   v13 = objc_msgSend__instanceOfActionClass_(self, v12, v11);
   v16 = objc_msgSend_asGlomojiTap(v13, v14, v15);
 
-  objc_msgSend_setGlomojiType_(v16, v17, a3);
-  objc_msgSend_setOriginalInputMode_(v16, v18, v9);
+  objc_msgSend_setGlomojiType_(v16, v17, tap);
+  objc_msgSend_setOriginalInputMode_(v16, v18, modeCopy);
 
-  objc_msgSend_setUpdatedInputMode_(v16, v19, v8);
+  objc_msgSend_setUpdatedInputMode_(v16, v19, inputModeCopy);
   queue = self->_queue;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -1301,9 +1301,9 @@ LABEL_18:
   dispatch_async(queue, v22);
 }
 
-- (void)didKBMenuAppear:(id)a3
+- (void)didKBMenuAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   v5 = sub_1D4620EF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1315,7 +1315,7 @@ LABEL_18:
   v11 = objc_msgSend_asKBMenuAppear(v8, v9, v10);
 
   objc_msgSend_setGlomojiType_(v11, v12, 0);
-  objc_msgSend_setOriginalInputMode_(v11, v13, v4);
+  objc_msgSend_setOriginalInputMode_(v11, v13, appearCopy);
 
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1328,9 +1328,9 @@ LABEL_18:
   dispatch_async(queue, v16);
 }
 
-- (void)didKBMenuAppear:(unint64_t)a3 originalInputMode:(id)a4
+- (void)didKBMenuAppear:(unint64_t)appear originalInputMode:(id)mode
 {
-  v6 = a4;
+  modeCopy = mode;
   v7 = sub_1D4620EF8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1341,8 +1341,8 @@ LABEL_18:
   v10 = objc_msgSend__instanceOfActionClass_(self, v9, v8);
   v13 = objc_msgSend_asKBMenuAppear(v10, v11, v12);
 
-  objc_msgSend_setGlomojiType_(v13, v14, a3);
-  objc_msgSend_setOriginalInputMode_(v13, v15, v6);
+  objc_msgSend_setGlomojiType_(v13, v14, appear);
+  objc_msgSend_setOriginalInputMode_(v13, v15, modeCopy);
 
   queue = self->_queue;
   v18[0] = MEMORY[0x1E69E9820];
@@ -1355,9 +1355,9 @@ LABEL_18:
   dispatch_async(queue, v18);
 }
 
-- (void)didKBMenuInteraction:(unint64_t)a3 selectedAction:(unint64_t)a4 newInputMode:(id)a5
+- (void)didKBMenuInteraction:(unint64_t)interaction selectedAction:(unint64_t)action newInputMode:(id)mode
 {
-  v8 = a5;
+  modeCopy = mode;
   v9 = sub_1D4620EF8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1368,9 +1368,9 @@ LABEL_18:
   v12 = objc_msgSend__instanceOfActionClass_(self, v11, v10);
   v15 = objc_msgSend_asKBMenuInteraction(v12, v13, v14);
 
-  objc_msgSend_setKBMenuInteractionSource_(v15, v16, a3);
-  objc_msgSend_setKBMenuSelectedAction_(v15, v17, a4);
-  objc_msgSend_setUpdatedInputMode_(v15, v18, v8);
+  objc_msgSend_setKBMenuInteractionSource_(v15, v16, interaction);
+  objc_msgSend_setKBMenuSelectedAction_(v15, v17, action);
+  objc_msgSend_setUpdatedInputMode_(v15, v18, modeCopy);
 
   queue = self->_queue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -1383,7 +1383,7 @@ LABEL_18:
   dispatch_async(queue, v21);
 }
 
-- (void)didKBMenuDismiss:(unint64_t)a3
+- (void)didKBMenuDismiss:(unint64_t)dismiss
 {
   v5 = sub_1D4620EF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1395,7 +1395,7 @@ LABEL_18:
   v8 = objc_msgSend__instanceOfActionClass_(self, v7, v6);
   v11 = objc_msgSend_asKBMenuDismiss(v8, v9, v10);
 
-  objc_msgSend_setKBMenuDismissSource_(v11, v12, a3);
+  objc_msgSend_setKBMenuDismissSource_(v11, v12, dismiss);
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1407,7 +1407,7 @@ LABEL_18:
   dispatch_async(queue, v15);
 }
 
-- (void)didDictationBegin:(BOOL)a3 usesMultiModalDictation:(BOOL)a4
+- (void)didDictationBegin:(BOOL)begin usesMultiModalDictation:(BOOL)dictation
 {
   v7 = sub_1D461074C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1425,10 +1425,10 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_1D4616220;
   block[3] = &unk_1E8489810;
-  v20 = a3;
-  v21 = a4;
+  beginCopy = begin;
+  dictationCopy = dictation;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v16 = v13;
   dispatch_async(queue, block);
 }
@@ -1456,13 +1456,13 @@ LABEL_18:
   dispatch_async(queue, v12);
 }
 
-- (void)_didInsertionKeyPressOfKey:(id)a3 withType:(int64_t)a4
+- (void)_didInsertionKeyPressOfKey:(id)key withType:(int64_t)type
 {
   v6 = objc_opt_class();
   v8 = objc_msgSend__instanceOfActionClass_(self, v7, v6);
   v19 = objc_msgSend_asInsertion(v8, v9, v10);
 
-  objc_msgSend_setTextInputActionsType_(v19, v11, a4);
+  objc_msgSend_setTextInputActionsType_(v19, v11, type);
   objc_msgSend_setInsertedTextLength_(v19, v12, 0);
   objc_msgSend_setInsertedEmojiCount_(v19, v13, 0);
   v16 = objc_msgSend_inputActionCount(v19, v14, v15);
@@ -1481,25 +1481,25 @@ LABEL_18:
   objc_msgSend__didInsertionKeyPressOfKey_withType_(self, v4, 0, 1);
 }
 
-- (void)didInsertionKeyPressOfKey:(id)a3 withType:(int64_t)a4
+- (void)didInsertionKeyPressOfKey:(id)key withType:(int64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1D461074C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462D1F8();
   }
 
-  objc_msgSend__didInsertionKeyPressOfKey_withType_(self, v8, v6, a4);
+  objc_msgSend__didInsertionKeyPressOfKey_withType_(self, v8, keyCopy, type);
 }
 
-- (void)_didDeletionKeyPressOfKey:(id)a3 withType:(int64_t)a4
+- (void)_didDeletionKeyPressOfKey:(id)key withType:(int64_t)type
 {
   v6 = objc_opt_class();
   v8 = objc_msgSend__instanceOfActionClass_(self, v7, v6);
   v19 = objc_msgSend_asDeletion(v8, v9, v10);
 
-  objc_msgSend_setTextInputActionsType_(v19, v11, a4);
+  objc_msgSend_setTextInputActionsType_(v19, v11, type);
   objc_msgSend_setRemovedTextLength_(v19, v12, 0);
   objc_msgSend_setRemovedEmojiCount_(v19, v13, 0);
   v16 = objc_msgSend_inputActionCount(v19, v14, v15);
@@ -1518,24 +1518,24 @@ LABEL_18:
   objc_msgSend__didDeletionKeyPressOfKey_withType_(self, v4, 0, 1);
 }
 
-- (void)didDeletionKeyPressOfKey:(id)a3 withType:(int64_t)a4
+- (void)didDeletionKeyPressOfKey:(id)key withType:(int64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1D461074C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1D462D2CC();
   }
 
-  objc_msgSend__didDeletionKeyPressOfKey_withType_(self, v8, v6, a4);
+  objc_msgSend__didDeletionKeyPressOfKey_withType_(self, v8, keyCopy, type);
 }
 
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3 withEventHandler:(id)a4
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer withEventHandler:(id)handler
 {
   v20.receiver = self;
   v20.super_class = IATextInputActionsAnalytics;
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  observerCopy = observer;
   v7 = [(IATextInputActionsAnalytics *)&v20 init];
   *&v7->_useAnalyticsDaemon = 256;
   v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
@@ -1546,10 +1546,10 @@ LABEL_18:
   lastAction = v7->_lastAction;
   v7->_lastAction = 0;
 
-  objc_storeWeak(&v7->_analyticsDelegate, v6);
+  objc_storeWeak(&v7->_analyticsDelegate, observerCopy);
   v12 = [IATextInputActionsServer alloc];
   v15 = objc_msgSend_queue(v7, v13, v14, v20.receiver, v20.super_class);
-  v17 = objc_msgSend_initWithQueue_eventHandler_(v12, v16, v15, v5);
+  v17 = objc_msgSend_initWithQueue_eventHandler_(v12, v16, v15, handlerCopy);
 
   localServer = v7->_localServer;
   v7->_localServer = v17;
@@ -1557,13 +1557,13 @@ LABEL_18:
   return v7;
 }
 
-- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)a3 withServiceName:(id)a4
+- (IATextInputActionsAnalytics)initWithAnalyticsMetadataObserver:(id)observer withServiceName:(id)name
 {
   v32 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = IATextInputActionsAnalytics;
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  observerCopy = observer;
   v7 = [(IATextInputActionsAnalytics *)&v25 init];
   *&v7->_useAnalyticsDaemon = 1;
   v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
@@ -1574,9 +1574,9 @@ LABEL_18:
   lastAction = v7->_lastAction;
   v7->_lastAction = 0;
 
-  objc_storeWeak(&v7->_analyticsDelegate, v6);
+  objc_storeWeak(&v7->_analyticsDelegate, observerCopy);
   v12 = [IAXPCClient alloc];
-  v14 = objc_msgSend_initWithServiceName_(v12, v13, v5, v25.receiver, v25.super_class);
+  v14 = objc_msgSend_initWithServiceName_(v12, v13, nameCopy, v25.receiver, v25.super_class);
 
   xpcClient = v7->_xpcClient;
   v7->_xpcClient = v14;
@@ -1601,16 +1601,16 @@ LABEL_18:
   return v7;
 }
 
-- (void)dispatchToAnalyticsQueue:(id)a3
+- (void)dispatchToAnalyticsQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1D4616AA4;
   block[3] = &unk_1E8489838;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(queue, block);
 }
 

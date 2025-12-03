@@ -1,10 +1,10 @@
 @interface NTKSnowglobeDigitController
-- (NTKSnowglobeDigitController)initWithDigit:(unint64_t)a3 scene:(id)a4 queue:(id)a5 group:(id)a6 configureNode:(id)a7;
+- (NTKSnowglobeDigitController)initWithDigit:(unint64_t)digit scene:(id)scene queue:(id)queue group:(id)group configureNode:(id)node;
 - (SCNVector3)_effectiveOrigin;
 - (SCNVector3)exitOrigin;
 - (SCNVector3)origin;
-- (double)_legMomentOfInertiaForNode:(void *)a3 body:(float32x4_t *)a4;
-- (void)_applyLegSpring:(id)a3;
+- (double)_legMomentOfInertiaForNode:(void *)node body:(float32x4_t *)body;
+- (void)_applyLegSpring:(id)spring;
 - (void)_applyMotionAcceleration;
 - (void)_queue_applyAcceleration;
 - (void)_queue_applyLinearSpring;
@@ -12,34 +12,34 @@
 - (void)_queue_applyRotationSprings;
 - (void)_queue_applyVelocity;
 - (void)_queue_didAddToWorld;
-- (void)_queue_setGrainIntensity:(float)a3 withCommit:(BOOL)a4;
-- (void)_setupWithNode:(id)a3 configureNode:(id)a4;
-- (void)applyTapAtLocalPosition:(SCNVector3)a3;
+- (void)_queue_setGrainIntensity:(float)intensity withCommit:(BOOL)commit;
+- (void)_setupWithNode:(id)node configureNode:(id)configureNode;
+- (void)applyTapAtLocalPosition:(SCNVector3)position;
 - (void)dealloc;
 - (void)destroy;
 - (void)didCollide;
 - (void)resetToOrigin;
-- (void)setNode:(id)a3;
-- (void)setPausePhysics:(BOOL)a3;
-- (void)updateAtTime:(double)a3;
+- (void)setNode:(id)node;
+- (void)setPausePhysics:(BOOL)physics;
+- (void)updateAtTime:(double)time;
 @end
 
 @implementation NTKSnowglobeDigitController
 
-- (NTKSnowglobeDigitController)initWithDigit:(unint64_t)a3 scene:(id)a4 queue:(id)a5 group:(id)a6 configureNode:(id)a7
+- (NTKSnowglobeDigitController)initWithDigit:(unint64_t)digit scene:(id)scene queue:(id)queue group:(id)group configureNode:(id)node
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sceneCopy = scene;
+  queueCopy = queue;
+  groupCopy = group;
+  nodeCopy = node;
   v31.receiver = self;
   v31.super_class = NTKSnowglobeDigitController;
   v17 = [(NTKSnowglobeDigitController *)&v31 init];
   if (v17)
   {
-    dispatch_assert_queue_V2(v14);
-    objc_storeStrong(&v17->_scene, a4);
+    dispatch_assert_queue_V2(queueCopy);
+    objc_storeStrong(&v17->_scene, scene);
     v18 = objc_opt_new();
     physicsBehaviors = v17->_physicsBehaviors;
     v17->_physicsBehaviors = v18;
@@ -52,14 +52,14 @@
     *&v17->_anon_70[16] = 0u;
     *&v17->_anon_70[48] = 0u;
     v17->_accumulatedKick = 0.0;
-    v17->_digit = a3;
-    v20 = [NTKSnowglobeDigitProfile profileForCharacter:a3];
+    v17->_digit = digit;
+    v20 = [NTKSnowglobeDigitProfile profileForCharacter:digit];
     profile = v17->_profile;
     v17->_profile = v20;
 
     v17->_destroyed = 0;
-    objc_storeStrong(&v17->_renderQueue, a5);
-    objc_storeStrong(&v17->_loadGroup, a6);
+    objc_storeStrong(&v17->_renderQueue, queue);
+    objc_storeStrong(&v17->_loadGroup, group);
     if (v17->_loadGroup)
     {
       v22 = _NTKLoggingObjectForDomain();
@@ -67,7 +67,7 @@
       {
         digit = v17->_digit;
         *buf = 134218242;
-        v33 = digit;
+        digitCopy = digit;
         v34 = 2112;
         v35 = v17;
         _os_log_impl(&dword_23C07F000, v22, OS_LOG_TYPE_DEFAULT, "Snowglobe enter group loading digit %lu for %@", buf, 0x16u);
@@ -83,73 +83,73 @@
     v28[2] = sub_23C083490;
     v28[3] = &unk_278BAC618;
     v29 = v17;
-    v30 = v16;
-    [v24 digitNodeForNumber:a3 queue:renderQueue withCompletion:v28];
+    v30 = nodeCopy;
+    [v24 digitNodeForNumber:digit queue:renderQueue withCompletion:v28];
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)_setupWithNode:(id)a3 configureNode:(id)a4
+- (void)_setupWithNode:(id)node configureNode:(id)configureNode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  configureNodeCopy = configureNode;
   dispatch_assert_queue_V2(self->_renderQueue);
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_destroyed)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_destroyed)
   {
     v9 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = selfCopy;
       _os_log_impl(&dword_23C07F000, v9, OS_LOG_TYPE_DEFAULT, "Snowglobe early bail loading %@", &v15, 0xCu);
     }
 
-    v7[2](v7, v8, 0);
-    objc_sync_exit(v8);
+    configureNodeCopy[2](configureNodeCopy, selfCopy, 0);
+    objc_sync_exit(selfCopy);
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  [(NTKSnowglobeDigitController *)v8 setNode:v6];
-  if (v7)
+  [(NTKSnowglobeDigitController *)selfCopy setNode:nodeCopy];
+  if (configureNodeCopy)
   {
-    (v7)[2](v7, v8, v6);
+    (configureNodeCopy)[2](configureNodeCopy, selfCopy, nodeCopy);
   }
 
-  v10 = [(SCNScene *)v8->_scene rootNode];
-  [v10 addChildNode:v6];
+  rootNode = [(SCNScene *)selfCopy->_scene rootNode];
+  [rootNode addChildNode:nodeCopy];
 
-  [(NTKSnowglobeDigitController *)v8 _queue_didAddToWorld];
+  [(NTKSnowglobeDigitController *)selfCopy _queue_didAddToWorld];
   v11 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = selfCopy;
     _os_log_impl(&dword_23C07F000, v11, OS_LOG_TYPE_DEFAULT, "Snowglobe loaded digit for %@", &v15, 0xCu);
   }
 
-  if (v8->_loadGroup)
+  if (selfCopy->_loadGroup)
   {
     v12 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = selfCopy;
       _os_log_impl(&dword_23C07F000, v12, OS_LOG_TYPE_DEFAULT, "Snowglobe leaving group for %@", &v15, 0xCu);
     }
 
-    dispatch_group_leave(v8->_loadGroup);
-    loadGroup = v8->_loadGroup;
-    v8->_loadGroup = 0;
-    v8 = loadGroup;
+    dispatch_group_leave(selfCopy->_loadGroup);
+    loadGroup = selfCopy->_loadGroup;
+    selfCopy->_loadGroup = 0;
+    selfCopy = loadGroup;
     goto LABEL_13;
   }
 
@@ -219,42 +219,42 @@ LABEL_14:
   [(NTKSnowglobeDigitController *)&v3 dealloc];
 }
 
-- (void)setNode:(id)a3
+- (void)setNode:(id)node
 {
-  v30 = a3;
+  nodeCopy = node;
   dispatch_assert_queue_V2(self->_renderQueue);
   node = self->_node;
-  if (node != v30)
+  if (node != nodeCopy)
   {
     p_node = &self->_node;
     if (node)
     {
       [(SCNNode *)node position];
-      [(SCNNode *)v30 setPosition:?];
+      [(SCNNode *)nodeCopy setPosition:?];
       [(SCNNode *)*p_node rotation];
-      [(SCNNode *)v30 setRotation:?];
+      [(SCNNode *)nodeCopy setRotation:?];
       [(SCNNode *)*p_node removeFromParentNode];
     }
 
-    objc_storeStrong(&self->_node, a3);
-    if (v30)
+    objc_storeStrong(&self->_node, node);
+    if (nodeCopy)
     {
-      v7 = [(SCNNode *)v30 childNodeWithName:@"LeftEye" recursively:1];
-      v8 = [(SCNNode *)v30 childNodeWithName:@"RightEye" recursively:1];
+      v7 = [(SCNNode *)nodeCopy childNodeWithName:@"LeftEye" recursively:1];
+      v8 = [(SCNNode *)nodeCopy childNodeWithName:@"RightEye" recursively:1];
       v9 = [[NTKSnowglobeEyeController alloc] initWithLeftNode:v7 rightNode:v8 digitProfile:self->_profile];
       eyeController = self->_eyeController;
       self->_eyeController = v9;
 
       [(NTKSnowglobeEyeController *)self->_eyeController setAnimationEnabled:!self->_pausePhysics];
-      v11 = [(SCNNode *)v30 childNodesPassingTest:&unk_284ED8BE0];
-      v12 = [v11 firstObject];
+      v11 = [(SCNNode *)nodeCopy childNodesPassingTest:&unk_284ED8BE0];
+      firstObject = [v11 firstObject];
       leg1 = self->_leg1;
-      self->_leg1 = v12;
+      self->_leg1 = firstObject;
 
-      v14 = [(SCNNode *)v30 childNodesPassingTest:&unk_284ED8C00];
-      v15 = [v14 firstObject];
+      v14 = [(SCNNode *)nodeCopy childNodesPassingTest:&unk_284ED8C00];
+      firstObject2 = [v14 firstObject];
       leg2 = self->_leg2;
-      self->_leg2 = v15;
+      self->_leg2 = firstObject2;
 
       [(SCNNode *)self->_leg1 setSimdEulerAngles:0.0];
       [(SCNNode *)self->_leg2 setSimdEulerAngles:0.0];
@@ -290,8 +290,8 @@ LABEL_14:
 {
   dispatch_assert_queue_V2(self->_renderQueue);
   v3 = MEMORY[0x277CDBAB8];
-  v4 = [(SCNNode *)self->_leg1 physicsBody];
-  v5 = [(SCNNode *)self->_node physicsBody];
+  physicsBody = [(SCNNode *)self->_leg1 physicsBody];
+  physicsBody2 = [(SCNNode *)self->_node physicsBody];
   leg1 = self->_leg1;
   if (leg1)
   {
@@ -313,17 +313,17 @@ LABEL_14:
   v23 = v7;
   v24 = v18;
   v25 = v16;
-  v8 = [v3 jointWithBodyA:v4 frameA:&v22 bodyB:v5 frameB:{&v26, v16, v18, v7, v22}];
+  v8 = [v3 jointWithBodyA:physicsBody frameA:&v22 bodyB:physicsBody2 frameB:{&v26, v16, v18, v7, v22}];
 
   [v8 setMaximumTwistAngle:1.57079633];
   [v8 setMaximumAngularLimit1:0.314159265];
   [v8 setMaximumAngularLimit2:0.0];
-  v9 = [(SCNScene *)self->_scene physicsWorld];
-  [v9 addBehavior:v8];
+  physicsWorld = [(SCNScene *)self->_scene physicsWorld];
+  [physicsWorld addBehavior:v8];
 
   v10 = MEMORY[0x277CDBAB8];
-  v11 = [(SCNNode *)self->_leg2 physicsBody];
-  v12 = [(SCNNode *)self->_node physicsBody];
+  physicsBody3 = [(SCNNode *)self->_leg2 physicsBody];
+  physicsBody4 = [(SCNNode *)self->_node physicsBody];
   leg2 = self->_leg2;
   if (leg2)
   {
@@ -342,23 +342,23 @@ LABEL_14:
   v23 = v20;
   v24 = v19;
   v25 = v17;
-  v14 = [v10 jointWithBodyA:v11 frameA:&v22 bodyB:v12 frameB:&v26];
+  v14 = [v10 jointWithBodyA:physicsBody3 frameA:&v22 bodyB:physicsBody4 frameB:&v26];
 
   [v14 setMaximumTwistAngle:1.57079633];
   [v14 setMaximumAngularLimit1:0.314159265];
   [v14 setMaximumAngularLimit2:0.0];
-  v15 = [(SCNScene *)self->_scene physicsWorld];
-  [v15 addBehavior:v14];
+  physicsWorld2 = [(SCNScene *)self->_scene physicsWorld];
+  [physicsWorld2 addBehavior:v14];
 
   [(NSMutableArray *)self->_physicsBehaviors addObject:v8];
   [(NSMutableArray *)self->_physicsBehaviors addObject:v14];
 }
 
-- (void)_queue_setGrainIntensity:(float)a3 withCommit:(BOOL)a4
+- (void)_queue_setGrainIntensity:(float)intensity withCommit:(BOOL)commit
 {
-  v4 = a4;
+  commitCopy = commit;
   dispatch_assert_queue_V2(self->_renderQueue);
-  if (v4)
+  if (commitCopy)
   {
     [MEMORY[0x277CDBB18] begin];
   }
@@ -368,9 +368,9 @@ LABEL_14:
   v8[1] = 3221225472;
   v8[2] = sub_23C0840DC;
   v8[3] = &unk_278BAC680;
-  v9 = a3;
+  intensityCopy = intensity;
   [(SCNNode *)node enumerateHierarchyUsingBlock:v8];
-  if (v4)
+  if (commitCopy)
   {
     [MEMORY[0x277CDBB18] commit];
   }
@@ -409,83 +409,83 @@ LABEL_14:
   v11 = *MEMORY[0x277CDBC28];
   v12 = *(MEMORY[0x277CDBC28] + 4);
   v13 = *(MEMORY[0x277CDBC28] + 8);
-  v14 = [(SCNNode *)self->_node physicsBody];
+  physicsBody = [(SCNNode *)self->_node physicsBody];
   LODWORD(v15) = v11;
   LODWORD(v16) = v12;
   LODWORD(v17) = v13;
-  [v14 setVelocity:{v15, v16, v17}];
+  [physicsBody setVelocity:{v15, v16, v17}];
 
-  v18 = [(SCNNode *)self->_node physicsBody];
+  physicsBody2 = [(SCNNode *)self->_node physicsBody];
   LODWORD(v19) = v3;
   LODWORD(v20) = v4;
   LODWORD(v21) = v5;
   LODWORD(v22) = v6;
-  [v18 setAngularVelocity:{v19, v20, v21, v22}];
+  [physicsBody2 setAngularVelocity:{v19, v20, v21, v22}];
 
-  v23 = [(SCNNode *)self->_node physicsBody];
-  [v23 resetTransform];
+  physicsBody3 = [(SCNNode *)self->_node physicsBody];
+  [physicsBody3 resetTransform];
 
-  v24 = [(SCNNode *)self->_leg1 physicsBody];
-  [v24 resetTransform];
+  physicsBody4 = [(SCNNode *)self->_leg1 physicsBody];
+  [physicsBody4 resetTransform];
 
-  v25 = [(SCNNode *)self->_leg2 physicsBody];
-  [v25 resetTransform];
+  physicsBody5 = [(SCNNode *)self->_leg2 physicsBody];
+  [physicsBody5 resetTransform];
 }
 
-- (void)setPausePhysics:(BOOL)a3
+- (void)setPausePhysics:(BOOL)physics
 {
-  if (self->_pausePhysics != a3)
+  if (self->_pausePhysics != physics)
   {
-    self->_pausePhysics = a3;
-    [(NTKSnowglobeEyeController *)self->_eyeController setAnimationEnabled:!a3];
+    self->_pausePhysics = physics;
+    [(NTKSnowglobeEyeController *)self->_eyeController setAnimationEnabled:!physics];
   }
 }
 
-- (void)updateAtTime:(double)a3
+- (void)updateAtTime:(double)time
 {
   dispatch_assert_queue_V2(self->_renderQueue);
   node = self->_node;
   if (node)
   {
-    v6 = [(SCNNode *)node presentationNode];
+    presentationNode = [(SCNNode *)node presentationNode];
 
-    if (v6)
+    if (presentationNode)
     {
-      [(NTKSnowglobeEyeController *)self->_eyeController updateAtTime:a3];
+      [(NTKSnowglobeEyeController *)self->_eyeController updateAtTime:time];
       if (!self->started)
       {
         self->started = 1;
-        self->startTime = a3;
+        self->startTime = time;
       }
 
-      v7 = [(SCNNode *)self->_node physicsBody];
-      v8 = [v7 collisionBitMask];
+      physicsBody = [(SCNNode *)self->_node physicsBody];
+      collisionBitMask = [physicsBody collisionBitMask];
 
-      if (v8 != -1)
+      if (collisionBitMask != -1)
       {
         [(NTKSnowglobeDigitController *)self _effectiveOrigin];
         v10.i32[1] = v9;
         v10.i32[2] = v11;
         v50 = v10;
-        v12 = [(SCNNode *)self->_node presentationNode];
-        [v12 simdPosition];
+        presentationNode2 = [(SCNNode *)self->_node presentationNode];
+        [presentationNode2 simdPosition];
         v51 = vsubq_f32(v50, v13);
 
         v14 = vmulq_f32(v51, v51);
         if ((v14.f32[2] + vaddv_f32(*v14.f32)) < 0.5)
         {
-          v15 = [(SCNNode *)self->_node physicsBody];
-          [v15 setCollisionBitMask:-1];
+          physicsBody2 = [(SCNNode *)self->_node physicsBody];
+          [physicsBody2 setCollisionBitMask:-1];
 
-          v16 = [(SCNNode *)self->_node physicsBody];
-          [v16 setContactTestBitMask:-1];
+          physicsBody3 = [(SCNNode *)self->_node physicsBody];
+          [physicsBody3 setContactTestBitMask:-1];
         }
       }
 
       if (!self->_pausePhysics)
       {
-        v17 = [(SCNNode *)self->_node physicsBody];
-        [v17 velocity];
+        physicsBody4 = [(SCNNode *)self->_node physicsBody];
+        [physicsBody4 velocity];
         v48 = v19;
         v49 = v18;
         v52 = v20;
@@ -503,30 +503,30 @@ LABEL_14:
         *&v26 = sin((self->_random2 * 2.0 + 1.0) * (v26 * -2.0)) * -3.14159265 / 3.0;
         [(NTKSnowglobeDigitController *)self _applyLegSpring:self->_leg1];
         [(NTKSnowglobeDigitController *)self _applyLegSpring:self->_leg2];
-        v28 = [(SCNNode *)self->_leg1 physicsBody];
-        v29 = [(SCNNode *)self->_leg1 physicsBody];
-        [v29 mass];
+        physicsBody5 = [(SCNNode *)self->_leg1 physicsBody];
+        physicsBody6 = [(SCNNode *)self->_leg1 physicsBody];
+        [physicsBody6 mass];
         v31 = v27 * 0.0333333333 * v30;
         *&v32 = v31;
         LODWORD(v31) = 1.0;
-        [v28 applyTorque:1 impulse:{v31, 0.0, 0.0, v32}];
+        [physicsBody5 applyTorque:1 impulse:{v31, 0.0, 0.0, v32}];
 
-        v33 = [(SCNNode *)self->_leg2 physicsBody];
-        v34 = [(SCNNode *)self->_leg2 physicsBody];
-        [v34 mass];
+        physicsBody7 = [(SCNNode *)self->_leg2 physicsBody];
+        physicsBody8 = [(SCNNode *)self->_leg2 physicsBody];
+        [physicsBody8 mass];
         v36 = *&v26 * 0.0333333333 * v35;
         *&v37 = v36;
         LODWORD(v36) = 1.0;
-        [v33 applyTorque:1 impulse:{v36, 0.0, 0.0, v37}];
+        [physicsBody7 applyTorque:1 impulse:{v36, 0.0, 0.0, v37}];
 
-        v38 = [(SCNNode *)self->_node physicsBody];
-        [v38 velocity];
+        physicsBody9 = [(SCNNode *)self->_node physicsBody];
+        [physicsBody9 velocity];
         DWORD1(v40) = v39;
         DWORD2(v40) = v41;
         *self->_anon_70 = v40;
 
-        v42 = [(SCNNode *)self->_node physicsBody];
-        [v42 angularVelocity];
+        physicsBody10 = [(SCNNode *)self->_node physicsBody];
+        [physicsBody10 angularVelocity];
         v44.i32[1] = v43;
         v44.i64[1] = __PAIR64__(v46, v45);
         NTKMakeEulerAnglesFromAxisAngle(v44);
@@ -549,10 +549,10 @@ LABEL_14:
 {
   dispatch_assert_queue_V2(self->_renderQueue);
   v16 = vmulq_f32(*&self->_anon_70[16], vdupq_n_s32(0x3D088889u));
-  v3 = [(SCNNode *)self->_node physicsBody];
+  physicsBody = [(SCNNode *)self->_node physicsBody];
   LODWORD(v5) = v16.i32[2];
   LODWORD(v4) = v16.i32[1];
-  [v3 applyForce:1 impulse:{*v16.i64, v4, v5}];
+  [physicsBody applyForce:1 impulse:{*v16.i64, v4, v5}];
 
   v6 = *&self->_anon_70[48];
   v7 = vmulq_f32(v6, v6);
@@ -561,25 +561,25 @@ LABEL_14:
     v17 = NTKMakeAxisAngleFromEulerAngles(v6);
     v9 = v8 * 0.0333333333;
     v11 = v10;
-    v15 = [(SCNNode *)self->_node physicsBody];
+    physicsBody2 = [(SCNNode *)self->_node physicsBody];
     LODWORD(v12) = HIDWORD(v17);
     LODWORD(v13) = v11;
     *&v14 = v9;
-    [v15 applyTorque:1 impulse:{v17, v12, v13, v14}];
+    [physicsBody2 applyTorque:1 impulse:{v17, v12, v13, v14}];
   }
 }
 
 - (void)_queue_applyVelocity
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(SCNNode *)self->_node physicsBody];
-  [v3 velocity];
+  physicsBody = [(SCNNode *)self->_node physicsBody];
+  [physicsBody velocity];
   DWORD1(v5) = v4;
   DWORD2(v5) = v6;
   *self->_anon_70 = v5;
 
-  v12 = [(SCNNode *)self->_node physicsBody];
-  [v12 angularVelocity];
+  physicsBody2 = [(SCNNode *)self->_node physicsBody];
+  [physicsBody2 angularVelocity];
   v8.i32[1] = v7;
   v8.i64[1] = __PAIR64__(v10, v9);
   NTKMakeEulerAnglesFromAxisAngle(v8);
@@ -611,8 +611,8 @@ LABEL_14:
 - (void)_queue_applyRotationSprings
 {
   dispatch_assert_queue_V2(self->_renderQueue);
-  v3 = [(SCNNode *)self->_node presentationNode];
-  [v3 simdOrientation];
+  presentationNode = [(SCNNode *)self->_node presentationNode];
+  [presentationNode simdOrientation];
   v23 = v4;
 
   v5 = vmulq_f32(v23, xmmword_23C090640);
@@ -637,11 +637,11 @@ LABEL_14:
   v16 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v10, v21, 3), v14, v21, 2), v13);
   v17 = (v15 + v15) * 0.0333333333;
   v24 = NTKMakeAxisAngleFromQuat(vmulq_n_f32(v16, v17), *v16.i64);
-  v22 = [(SCNNode *)self->_node physicsBody];
+  physicsBody = [(SCNNode *)self->_node physicsBody];
   LODWORD(v19) = v24.n128_u32[2];
   LODWORD(v18) = v24.n128_u32[1];
   LODWORD(v20) = v24.n128_u32[3];
-  [v22 applyTorque:1 impulse:{v24.n128_f64[0], v18, v19, v20}];
+  [physicsBody applyTorque:1 impulse:{v24.n128_f64[0], v18, v19, v20}];
 }
 
 - (void)_queue_applyLinearSpring
@@ -651,8 +651,8 @@ LABEL_14:
   v18 = v4;
   v19 = v3;
   v22 = v5;
-  v6 = [(SCNNode *)self->_node presentationNode];
-  [v6 simdPosition];
+  presentationNode = [(SCNNode *)self->_node presentationNode];
+  [presentationNode simdPosition];
   v7 = v19;
   v7.i32[1] = v18;
   v7.i32[2] = v22;
@@ -681,10 +681,10 @@ LABEL_14:
   *&self->_anon_70[16] = vaddq_f32(*&self->_anon_70[16], vmlsq_lane_f32(vmulq_f32(*self->_anon_70, xmmword_23C090680), v9, *v11.f32, 0));
 }
 
-- (double)_legMomentOfInertiaForNode:(void *)a3 body:(float32x4_t *)a4
+- (double)_legMomentOfInertiaForNode:(void *)node body:(float32x4_t *)body
 {
-  v11 = a4[4];
-  [a3 simdTransform];
+  v11 = body[4];
+  [node simdTransform];
   v8 = vaddq_f32(v7, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v4, v11.f32[0]), v5, *v11.f32, 1), v6, v11, 2));
   v9 = vmulq_f32(v8, v8);
   *v6.f32 = vmla_f32(vdup_laneq_s32(v9, 2), *v8.f32, *v8.f32);
@@ -695,11 +695,11 @@ LABEL_14:
   return result;
 }
 
-- (void)_applyLegSpring:(id)a3
+- (void)_applyLegSpring:(id)spring
 {
-  v3 = a3;
-  v4 = [v3 presentationNode];
-  [v4 simdOrientation];
+  springCopy = spring;
+  presentationNode = [springCopy presentationNode];
+  [presentationNode simdOrientation];
   *v23 = v5;
 
   v6 = vmulq_f32(*v23, xmmword_23C090640);
@@ -723,12 +723,12 @@ LABEL_14:
   v17 = vaddq_f32(v15, vmlaq_laneq_f32(vmulq_laneq_f32(v12, v8, 3), v16, v8, 2));
   v18 = vdupq_n_s32(0x3BF04C75u);
   v22 = NTKMakeAxisAngleFromQuat(vmulq_f32(v17, v18), *v18.i64);
-  v24 = [v3 physicsBody];
+  physicsBody = [springCopy physicsBody];
 
   LODWORD(v20) = v22.n128_u32[2];
   LODWORD(v19) = v22.n128_u32[1];
   LODWORD(v21) = v22.n128_u32[3];
-  [v24 applyTorque:1 impulse:{v22.n128_f64[0], v19, v20, v21}];
+  [physicsBody applyTorque:1 impulse:{v22.n128_f64[0], v19, v20, v21}];
 }
 
 - (SCNVector3)_effectiveOrigin
@@ -760,12 +760,12 @@ LABEL_14:
   return result;
 }
 
-- (void)applyTapAtLocalPosition:(SCNVector3)a3
+- (void)applyTapAtLocalPosition:(SCNVector3)position
 {
   if (!self->_pausePhysics)
   {
-    y = a3.y;
-    x = a3.x;
+    y = position.y;
+    x = position.x;
     v5 = NTKSnowglobeTunableFloat(@"tapAcceleration", 300.0);
     v6 = NTKSnowglobeTunableFloat(@"tapRotation", 100.0);
     v7 = v5;
@@ -828,8 +828,8 @@ LABEL_14:
     if (node)
     {
       v40 = v21;
-      v23 = [(SCNNode *)node presentationNode];
-      [v23 simdPosition];
+      presentationNode = [(SCNNode *)node presentationNode];
+      [presentationNode simdPosition];
       v36 = v24;
 
       v25 = v36;
@@ -875,8 +875,8 @@ LABEL_14:
   v6[3] = &unk_278BAC6A8;
   v6[4] = self;
   v4 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:0 repeats:v6 block:2.0];
-  v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v5 addTimer:v4 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:v4 forMode:*MEMORY[0x277CBE738]];
 
   objc_storeWeak(&self->_collisionAngerTimer, v4);
 }

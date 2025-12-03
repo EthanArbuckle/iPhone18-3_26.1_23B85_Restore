@@ -1,23 +1,23 @@
 @interface ICAttachmentAudioModel
 - (BOOL)isReadyToPresent;
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4;
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state;
 - (BOOL)needsTranscription;
-- (ICAttachmentAudioModel)initWithAttachment:(id)a3;
+- (ICAttachmentAudioModel)initWithAttachment:(id)attachment;
 - (ICTTAudioDocument)audioDocument;
 - (NSArray)composedAudioAssetURLs;
 - (id)asset;
-- (id)bitFlippeddUUIDWithUuid:(id)a3;
-- (id)createSubattachmentForRecordingAndReturnError:(id *)a3;
+- (id)bitFlippeddUUIDWithUuid:(id)uuid;
+- (id)createSubattachmentForRecordingAndReturnError:(id *)error;
 - (id)searchableTextContent;
 - (id)standaloneTitleForNote;
-- (void)assetWithCompletion:(id)a3;
-- (void)attachmentDidRefresh:(BOOL)a3;
-- (void)attachmentWillRefresh:(BOOL)a3;
+- (void)assetWithCompletion:(id)completion;
+- (void)attachmentDidRefresh:(BOOL)refresh;
+- (void)attachmentWillRefresh:(BOOL)refresh;
 - (void)attachmentWillTurnIntoFault;
 - (void)audioDocument;
 - (void)composedAudioAssetURLs;
 - (void)transformNewlyAddedMediaAttachment;
-- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)a3;
+- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)map;
 - (void)updateFileBasedAttributes;
 - (void)writeMergeableData;
 @end
@@ -26,25 +26,25 @@
 
 - (id)searchableTextContent
 {
-  v2 = [(ICAttachmentAudioModel *)self audioDocument];
-  v3 = [v2 transcriptAsPlainText];
+  audioDocument = [(ICAttachmentAudioModel *)self audioDocument];
+  transcriptAsPlainText = [audioDocument transcriptAsPlainText];
 
-  return v3;
+  return transcriptAsPlainText;
 }
 
-- (ICAttachmentAudioModel)initWithAttachment:(id)a3
+- (ICAttachmentAudioModel)initWithAttachment:(id)attachment
 {
   v4.receiver = self;
   v4.super_class = ICAttachmentAudioModel;
-  return [(ICAttachmentModel *)&v4 initWithAttachment:a3];
+  return [(ICAttachmentModel *)&v4 initWithAttachment:attachment];
 }
 
 - (BOOL)isReadyToPresent
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 isUnsupported];
+  attachment = [(ICAttachmentModel *)self attachment];
+  isUnsupported = [attachment isUnsupported];
 
-  return v3 ^ 1;
+  return isUnsupported ^ 1;
 }
 
 - (ICTTAudioDocument)audioDocument
@@ -57,13 +57,13 @@
 
   else
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 mergeableData];
+    attachment = [(ICAttachmentModel *)self attachment];
+    mergeableData = [attachment mergeableData];
 
-    v7 = [(ICAttachmentModel *)self currentReplicaID];
-    if (v6)
+    currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+    if (mergeableData)
     {
-      v8 = [ICTTAudioDocument unarchiveFromData:v6 replicaID:v7];
+      v8 = [ICTTAudioDocument unarchiveFromData:mergeableData replicaID:currentReplicaID];
       if (v8)
       {
         objc_storeStrong(&self->_audioDocument, v8);
@@ -82,9 +82,9 @@
     else
     {
       v9 = [ICTTAudioDocument alloc];
-      v10 = [(ICAttachmentModel *)self attachment];
-      v11 = [v10 currentReplicaID];
-      v12 = [(ICTTAudioDocument *)v9 initWithReplicaID:v11 compatibleDocument:0];
+      attachment2 = [(ICAttachmentModel *)self attachment];
+      currentReplicaID2 = [attachment2 currentReplicaID];
+      v12 = [(ICTTAudioDocument *)v9 initWithReplicaID:currentReplicaID2 compatibleDocument:0];
       v13 = self->_audioDocument;
       self->_audioDocument = v12;
     }
@@ -104,7 +104,7 @@
   }
 }
 
-- (void)attachmentWillRefresh:(BOOL)a3
+- (void)attachmentWillRefresh:(BOOL)refresh
 {
   if (![(ICAttachmentModel *)self isMergeableDataDirty])
   {
@@ -113,20 +113,20 @@
   }
 }
 
-- (void)attachmentDidRefresh:(BOOL)a3
+- (void)attachmentDidRefresh:(BOOL)refresh
 {
   if (self->_audioDocument)
   {
     if ([(ICAttachmentModel *)self isMergeableDataDirty])
     {
-      v4 = [(ICAttachmentModel *)self attachment];
-      v5 = [v4 mergeableData];
+      attachment = [(ICAttachmentModel *)self attachment];
+      mergeableData = [attachment mergeableData];
 
-      if (v5)
+      if (mergeableData)
       {
-        v7 = [(ICAttachmentModel *)self attachment];
-        v6 = [v7 mergeableData];
-        [(ICAttachmentModel *)self mergeWithMergeableData:v6];
+        attachment2 = [(ICAttachmentModel *)self attachment];
+        mergeableData2 = [attachment2 mergeableData];
+        [(ICAttachmentModel *)self mergeWithMergeableData:mergeableData2];
       }
     }
   }
@@ -134,16 +134,16 @@
 
 - (NSArray)composedAudioAssetURLs
 {
-  v3 = [(ICAttachmentAudioModel *)self audioDocument];
-  v4 = [v3 orderedFragmentUUIDs];
+  audioDocument = [(ICAttachmentAudioModel *)self audioDocument];
+  orderedFragmentUUIDs = [audioDocument orderedFragmentUUIDs];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__ICAttachmentAudioModel_composedAudioAssetURLs__block_invoke;
   v11[3] = &unk_27819A070;
   v11[4] = self;
-  v5 = [v4 ic_compactMap:v11];
+  v5 = [orderedFragmentUUIDs ic_compactMap:v11];
   v6 = [(NSArray *)v5 count];
-  if (v6 != [v4 count])
+  if (v6 != [orderedFragmentUUIDs count])
   {
     v7 = os_log_create("com.apple.notes", "AudioTranscription");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -247,65 +247,65 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)assetWithCompletion:(id)a3
+- (void)assetWithCompletion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v4 = [(ICAttachmentModel *)self attachment];
-  v5 = [v4 subAttachments];
-  v6 = [v5 count] == 0;
+  completionCopy = completion;
+  attachment = [(ICAttachmentModel *)self attachment];
+  subAttachments = [attachment subAttachments];
+  v6 = [subAttachments count] == 0;
 
-  v7 = [(ICAttachmentModel *)self attachment];
-  v8 = v7;
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  v8 = attachment2;
   if (v6)
   {
-    v18 = [v7 media];
-    v19 = [v18 isValid];
+    media = [attachment2 media];
+    isValid = [media isValid];
 
-    if (v19 && (-[ICAttachmentModel attachment](self, "attachment"), v20 = objc_claimAutoreleasedReturnValue(), [v20 typeUTI], v21 = objc_claimAutoreleasedReturnValue(), v22 = +[ICAttachment typeUTIIsPlayableAudio:](ICAttachment, "typeUTIIsPlayableAudio:", v21), v21, v20, v22))
+    if (isValid && (-[ICAttachmentModel attachment](self, "attachment"), v20 = objc_claimAutoreleasedReturnValue(), [v20 typeUTI], v21 = objc_claimAutoreleasedReturnValue(), v22 = +[ICAttachment typeUTIIsPlayableAudio:](ICAttachment, "typeUTIIsPlayableAudio:", v21), v21, v20, v22))
     {
       v23 = MEMORY[0x277CE6650];
-      v24 = [(ICAttachmentModel *)self attachment];
-      v25 = [v24 media];
-      v26 = [v25 mediaURL];
-      v27 = [v23 ic_safeURLAssetWithURL:v26];
+      attachment3 = [(ICAttachmentModel *)self attachment];
+      media2 = [attachment3 media];
+      mediaURL = [media2 mediaURL];
+      v27 = [v23 ic_safeURLAssetWithURL:mediaURL];
 
-      v28 = v43;
-      if (v43)
+      v28 = completionCopy;
+      if (completionCopy)
       {
-        (*(v43 + 2))(v43, v27);
+        (*(completionCopy + 2))(completionCopy, v27);
       }
     }
 
     else
     {
-      v28 = v43;
-      if (v43)
+      v28 = completionCopy;
+      if (completionCopy)
       {
-        (*(v43 + 2))(v43, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
   }
 
   else
   {
-    v9 = [v7 shortLoggingDescription];
+    shortLoggingDescription = [attachment2 shortLoggingDescription];
 
-    v10 = [(ICAttachmentAudioModel *)self composedAudioAssetURLs];
+    composedAudioAssetURLs = [(ICAttachmentAudioModel *)self composedAudioAssetURLs];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __46__ICAttachmentAudioModel_assetWithCompletion___block_invoke;
     v58[3] = &unk_27819A0C0;
-    v46 = v9;
+    v46 = shortLoggingDescription;
     v59 = v46;
-    v44 = [v10 ic_compactMap:v58];
+    v44 = [composedAudioAssetURLs ic_compactMap:v58];
 
     if ([v44 count])
     {
       v11 = [v44 count];
-      v12 = [(ICAttachmentModel *)self attachment];
-      v13 = [v12 subAttachments];
-      v14 = v11 == [v13 count];
+      attachment4 = [(ICAttachmentModel *)self attachment];
+      subAttachments2 = [attachment4 subAttachments];
+      v14 = v11 == [subAttachments2 count];
 
       if (!v14)
       {
@@ -313,9 +313,9 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v39 = [v44 count];
-          v40 = [(ICAttachmentModel *)self attachment];
-          v41 = [v40 subAttachments];
-          v42 = [v41 count];
+          attachment5 = [(ICAttachmentModel *)self attachment];
+          subAttachments3 = [attachment5 subAttachments];
+          v42 = [subAttachments3 count];
           *buf = 134218498;
           *&buf[4] = v39;
           *&buf[12] = 2048;
@@ -328,11 +328,11 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
 
       if ([v44 count] == 1)
       {
-        if (v43)
+        if (completionCopy)
         {
-          v16 = [v44 firstObject];
-          v17 = [v16 asset];
-          (*(v43 + 2))(v43, v17);
+          firstObject = [v44 firstObject];
+          asset = [firstObject asset];
+          (*(completionCopy + 2))(completionCopy, asset);
         }
       }
 
@@ -372,7 +372,7 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
 
               v35 = *(*(&v54 + 1) + 8 * v34);
               dispatch_group_enter(*(*&buf[8] + 40));
-              v36 = [v35 asset];
+              asset2 = [v35 asset];
               v51[0] = MEMORY[0x277D85DD0];
               v51[1] = 3221225472;
               v51[2] = __46__ICAttachmentAudioModel_assetWithCompletion___block_invoke_58;
@@ -380,7 +380,7 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
               v51[4] = v35;
               v52 = v46;
               v53 = buf;
-              [v36 loadTracksWithMediaType:v33 completionHandler:v51];
+              [asset2 loadTracksWithMediaType:v33 completionHandler:v51];
 
               ++v34;
             }
@@ -400,7 +400,7 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
         block[3] = &unk_278194E38;
         v48 = v46;
         v49 = obj;
-        v50 = v43;
+        v50 = completionCopy;
         dispatch_group_notify(v37, v38, block);
 
         _Block_object_dispose(buf, 8);
@@ -415,13 +415,13 @@ void __31__ICAttachmentAudioModel_asset__block_invoke(uint64_t a1, void *a2)
         [ICAttachmentAudioModel assetWithCompletion:];
       }
 
-      if (v43)
+      if (completionCopy)
       {
-        (*(v43 + 2))(v43, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
 
-    v28 = v43;
+    v28 = completionCopy;
   }
 }
 
@@ -617,18 +617,18 @@ void __46__ICAttachmentAudioModel_assetWithCompletion___block_invoke_60(uint64_t
 - (void)writeMergeableData
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 attachment];
-  v4 = [v3 ic_loggingIdentifier];
+  attachment = [self attachment];
+  ic_loggingIdentifier = [attachment ic_loggingIdentifier];
   OUTLINED_FUNCTION_2();
   _os_log_debug_impl(&dword_214D51000, a2, OS_LOG_TYPE_DEBUG, "Wrote mergeable data {attachment: %@}", v5, 0xCu);
 }
 
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state
 {
-  v5 = a3;
-  v6 = [(ICAttachmentAudioModel *)self audioDocument];
-  v7 = [(ICAttachmentModel *)self currentReplicaID];
-  v8 = [v6 mergeWithMergeableData:v5 replicaID:v7];
+  dataCopy = data;
+  audioDocument = [(ICAttachmentAudioModel *)self audioDocument];
+  currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+  v8 = [audioDocument mergeWithMergeableData:dataCopy replicaID:currentReplicaID];
 
   if (v8 == 2)
   {
@@ -644,15 +644,15 @@ void __46__ICAttachmentAudioModel_assetWithCompletion___block_invoke_60(uint64_t
   return v8 == 2;
 }
 
-- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)a3
+- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)map
 {
-  v4 = a3;
-  v5 = [(ICAttachmentAudioModel *)self audioDocument];
-  [v5 updateAfterLoadWithSubAttachmentIdentifierMap:v4];
+  mapCopy = map;
+  audioDocument = [(ICAttachmentAudioModel *)self audioDocument];
+  [audioDocument updateAfterLoadWithSubAttachmentIdentifierMap:mapCopy];
 
   [(ICAttachmentModel *)self setMergeableDataDirty:1];
-  v6 = [(ICAttachmentModel *)self attachment];
-  [v6 saveMergeableDataIfNeeded];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment saveMergeableDataIfNeeded];
 }
 
 - (void)updateFileBasedAttributes
@@ -660,19 +660,19 @@ void __46__ICAttachmentAudioModel_assetWithCompletion___block_invoke_60(uint64_t
   v11.receiver = self;
   v11.super_class = ICAttachmentAudioModel;
   [(ICAttachmentModel *)&v11 updateFileBasedAttributes];
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 attachmentModel];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  attachmentModel = [attachment2 attachmentModel];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke;
   v8[3] = &unk_27819A110;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  [v6 assetWithCompletion:v8];
+  v9 = managedObjectContext;
+  selfCopy = self;
+  v7 = managedObjectContext;
+  [attachmentModel assetWithCompletion:v8];
 }
 
 void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke(uint64_t a1, void *a2)
@@ -757,26 +757,26 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
 
 - (id)standaloneTitleForNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 userTitle];
-  v5 = v4;
-  if (v4)
+  attachment = [(ICAttachmentModel *)self attachment];
+  userTitle = [attachment userTitle];
+  v5 = userTitle;
+  if (userTitle)
   {
-    v6 = v4;
+    title = userTitle;
   }
 
   else
   {
-    v7 = [(ICAttachmentModel *)self attachment];
-    v6 = [v7 title];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    title = [attachment2 title];
   }
 
-  return v6;
+  return title;
 }
 
 - (BOOL)needsTranscription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICAttachmentAudioModel.needsTranscription.getter();
 
   return v3 & 1;
@@ -784,25 +784,25 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
 
 - (void)transformNewlyAddedMediaAttachment
 {
-  v2 = self;
+  selfCopy = self;
   ICAttachmentAudioModel.transformNewlyAddedMediaAttachment()();
 }
 
-- (id)createSubattachmentForRecordingAndReturnError:(id *)a3
+- (id)createSubattachmentForRecordingAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   ICAttachmentAudioModel.createSubattachmentForRecording()(v5);
   v8 = v7;
 
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v9 = sub_2150A35C0();
 
       v10 = v9;
       v11 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -820,7 +820,7 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
   return v11;
 }
 
-- (id)bitFlippeddUUIDWithUuid:(id)a3
+- (id)bitFlippeddUUIDWithUuid:(id)uuid
 {
   v4 = sub_2150A3A00();
   v5 = *(v4 - 8);
@@ -829,7 +829,7 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
   MEMORY[0x28223BE20](v6);
   v10 = &v15 - v9;
   sub_2150A39C0();
-  v11 = self;
+  selfCopy = self;
   sub_2150A39E0();
   sub_2150A39D0();
 
@@ -843,8 +843,8 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
 
 - (void)audioDocument
 {
-  v1 = [a1 attachment];
-  v2 = [v1 shortLoggingDescription];
+  attachment = [self attachment];
+  shortLoggingDescription = [attachment shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -852,8 +852,8 @@ void __51__ICAttachmentAudioModel_updateFileBasedAttributes__block_invoke_2(uint
 
 - (void)composedAudioAssetURLs
 {
-  v1 = [a1 attachment];
-  v2 = [v1 ic_loggingDescription];
+  attachment = [self attachment];
+  ic_loggingDescription = [attachment ic_loggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_4_1();
   OUTLINED_FUNCTION_1_0();

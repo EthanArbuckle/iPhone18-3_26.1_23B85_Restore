@@ -1,70 +1,70 @@
 @interface MsdosDirItem
-- (id)createDotEntriesWithAttrs:(id)a3;
-- (id)generateUniqueShortName:(char *)a3 offsetInDir:(unint64_t)a4;
-- (id)getAttributes:(id)a3;
-- (id)markDirEntriesAsDeleted:(id)a3;
-- (id)updateDotDirEntryTimes:(id)a3;
+- (id)createDotEntriesWithAttrs:(id)attrs;
+- (id)generateUniqueShortName:(char *)name offsetInDir:(unint64_t)dir;
+- (id)getAttributes:(id)attributes;
+- (id)markDirEntriesAsDeleted:(id)deleted;
+- (id)updateDotDirEntryTimes:(id)times;
 - (id)updateModificationTimeOnCreateRemove;
-- (id)verifyCookieOffset:(unsigned int)a3;
-- (id)writeDirEntryDataToDisk:(id)a3;
+- (id)verifyCookieOffset:(unsigned int)offset;
+- (id)writeDirEntryDataToDisk:(id)disk;
 - (unint64_t)getDirBlockSize;
 - (unint64_t)getDirSize;
 - (unint64_t)getFileID;
-- (unsigned)getGenerationNumberOfName:(unistr255 *)a3;
-- (void)isShortNameUniqueInDir:(char *)a3 replyHandler:(id)a4;
-- (void)iterateFromOffset:(unint64_t)a3 options:(unsigned int)a4 replyHandler:(id)a5;
+- (unsigned)getGenerationNumberOfName:(unistr255 *)name;
+- (void)isShortNameUniqueInDir:(char *)dir replyHandler:(id)handler;
+- (void)iterateFromOffset:(unint64_t)offset options:(unsigned int)options replyHandler:(id)handler;
 @end
 
 @implementation MsdosDirItem
 
 - (unint64_t)getDirBlockSize
 {
-  v3 = [(DirItem *)self isFat1216RootDir];
-  v4 = [(FATItem *)self volume];
-  v5 = [v4 systemInfo];
-  v6 = v5;
-  if (v3)
+  isFat1216RootDir = [(DirItem *)self isFat1216RootDir];
+  volume = [(FATItem *)self volume];
+  systemInfo = [volume systemInfo];
+  v6 = systemInfo;
+  if (isFat1216RootDir)
   {
-    v7 = [v5 rootDirSize];
-    v8 = [(FATItem *)self volume];
-    v9 = [v8 systemInfo];
-    v10 = [v9 bytesPerSector] * v7;
+    rootDirSize = [systemInfo rootDirSize];
+    volume2 = [(FATItem *)self volume];
+    systemInfo2 = [volume2 systemInfo];
+    dirBlockSize = [systemInfo2 bytesPerSector] * rootDirSize;
   }
 
   else
   {
-    v10 = [v5 dirBlockSize];
+    dirBlockSize = [systemInfo dirBlockSize];
   }
 
-  return v10;
+  return dirBlockSize;
 }
 
 - (unint64_t)getDirSize
 {
   if ([(DirItem *)self isFat1216RootDir])
   {
-    v3 = [(FATItem *)self volume];
-    v4 = [v3 systemInfo];
-    v5 = [v4 rootDirSize];
-    v6 = [(FATItem *)self volume];
-    v7 = [v6 systemInfo];
-    v8 = [v7 bytesPerSector] * v5;
+    volume = [(FATItem *)self volume];
+    systemInfo = [volume systemInfo];
+    rootDirSize = [systemInfo rootDirSize];
+    volume2 = [(FATItem *)self volume];
+    systemInfo2 = [volume2 systemInfo];
+    v8 = [systemInfo2 bytesPerSector] * rootDirSize;
   }
 
   else
   {
-    v9 = [(FATItem *)self numberOfClusters];
-    v3 = [(FATItem *)self volume];
-    v4 = [v3 systemInfo];
-    v8 = [v4 bytesPerCluster] * v9;
+    numberOfClusters = [(FATItem *)self numberOfClusters];
+    volume = [(FATItem *)self volume];
+    systemInfo = [volume systemInfo];
+    v8 = [systemInfo bytesPerCluster] * numberOfClusters;
   }
 
   return v8;
 }
 
-- (id)createDotEntriesWithAttrs:(id)a3
+- (id)createDotEntriesWithAttrs:(id)attrs
 {
-  v4 = a3;
+  attrsCopy = attrs;
   v19 = 0;
   v20[0] = &v19;
   v20[1] = 0x3032000000;
@@ -77,7 +77,7 @@
   v18[2] = sub_10002399C;
   v18[3] = &unk_100051350;
   v18[4] = &v19;
-  [(DirItem *)self createNewDirEntryNamed:v5 type:2 attributes:v4 firstDataCluster:[(FATItem *)self firstCluster] replyHandler:v18];
+  [(DirItem *)self createNewDirEntryNamed:v5 type:2 attributes:attrsCopy firstDataCluster:[(FATItem *)self firstCluster] replyHandler:v18];
 
   if (*(v20[0] + 40))
   {
@@ -91,23 +91,23 @@
 
   else
   {
-    v7 = [(FATItem *)self volume];
-    v8 = [v7 getAttrRequestForNewDirEntry];
+    volume = [(FATItem *)self volume];
+    getAttrRequestForNewDirEntry = [volume getAttrRequestForNewDirEntry];
 
-    v9 = [(FATItem *)self parentDir];
-    v10 = [v9 getAttributes:v8];
+    parentDir = [(FATItem *)self parentDir];
+    v10 = [parentDir getAttributes:getAttrRequestForNewDirEntry];
 
-    v11 = [(FATItem *)self parentDir];
-    v12 = [(FATItem *)DirItem dynamicCast:v11];
+    parentDir2 = [(FATItem *)self parentDir];
+    v12 = [(FATItem *)DirItem dynamicCast:parentDir2];
     if ([v12 isRoot])
     {
-      v13 = 0;
+      firstCluster = 0;
     }
 
     else
     {
-      v14 = [(FATItem *)self parentDir];
-      v13 = [v14 firstCluster];
+      parentDir3 = [(FATItem *)self parentDir];
+      firstCluster = [parentDir3 firstCluster];
     }
 
     v15 = [[FSFileName alloc] initWithCString:".."];
@@ -116,7 +116,7 @@
     v17[2] = sub_1000239FC;
     v17[3] = &unk_100051350;
     v17[4] = &v19;
-    [(DirItem *)self createNewDirEntryNamed:v15 type:2 attributes:v10 firstDataCluster:v13 replyHandler:v17];
+    [(DirItem *)self createNewDirEntryNamed:v15 type:2 attributes:v10 firstDataCluster:firstCluster replyHandler:v17];
 
     if (*(v20[0] + 40))
     {
@@ -141,9 +141,9 @@
 
 - (id)updateModificationTimeOnCreateRemove
 {
-  v3 = [(FATItem *)self volume];
-  v4 = [v3 systemInfo];
-  v5 = [v4 bytesPerSector];
+  volume = [(FATItem *)self volume];
+  systemInfo = [volume systemInfo];
+  bytesPerSector = [systemInfo bytesPerSector];
 
   v6 = [[DirBlock alloc] initInDir:self];
   v19[0] = 0;
@@ -176,7 +176,7 @@
     }
 
     [(MsdosDirEntryData *)v12 getModifyTime:v19];
-    if (v19[0] == v18.tv_sec || (-[MsdosDirEntryData setModifyTime:](v12, "setModifyTime:", &v18), -[DirEntryData data](v12, "data"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v6 setBytes:v13 atOffset:0], v13, objc_msgSend(v6, "writeToDiskFromOffset:length:", 0, v5), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (v19[0] == v18.tv_sec || (-[MsdosDirEntryData setModifyTime:](v12, "setModifyTime:", &v18), -[DirEntryData data](v12, "data"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v6 setBytes:v13 atOffset:0], v13, objc_msgSend(v6, "writeToDiskFromOffset:length:", 0, bytesPerSector), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_13:
       [v6 releaseBlock];
@@ -199,9 +199,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)updateDotDirEntryTimes:(id)a3
+- (id)updateDotDirEntryTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   v5 = [[DirBlock alloc] initInDir:self];
   v6 = [v5 readRelativeDirBlockNum:{0, 0, 0}];
   if (v6)
@@ -222,60 +222,60 @@ LABEL_13:
     v10 = +[NSMutableData dataWithBytes:length:](NSMutableData, "dataWithBytes:length:", [v5 getBytesAtOffset:0], 32);
     v11 = [(MsdosDirEntryData *)v9 initWithData:v10];
 
-    if ([v4 isValid:2048])
+    if ([timesCopy isValid:2048])
     {
-      v19 = [v4 modifyTime];
+      modifyTime = [timesCopy modifyTime];
       v20 = v12;
-      [(MsdosDirEntryData *)v11 setModifyTime:&v19];
+      [(MsdosDirEntryData *)v11 setModifyTime:&modifyTime];
     }
 
-    if ([v4 isValid:4096])
+    if ([timesCopy isValid:4096])
     {
-      v19 = [v4 changeTime];
+      modifyTime = [timesCopy changeTime];
       v20 = v13;
-      [(MsdosDirEntryData *)v11 setChangeTime:&v19];
+      [(MsdosDirEntryData *)v11 setChangeTime:&modifyTime];
     }
 
-    if ([v4 isValid:0x2000])
+    if ([timesCopy isValid:0x2000])
     {
-      v19 = [v4 birthTime];
+      modifyTime = [timesCopy birthTime];
       v20 = v14;
-      [(MsdosDirEntryData *)v11 setBirthTime:&v19];
+      [(MsdosDirEntryData *)v11 setBirthTime:&modifyTime];
     }
 
-    v15 = [(DirEntryData *)v11 data];
-    v16 = [v5 setBytes:v15 atOffset:0];
+    data = [(DirEntryData *)v11 data];
+    v16 = [v5 setBytes:data atOffset:0];
 
-    v17 = [v5 writeToDisk];
+    writeToDisk = [v5 writeToDisk];
     [v5 releaseBlock];
-    if (v17 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (writeToDisk && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100032DAC();
     }
 
-    v8 = v17;
+    v8 = writeToDisk;
   }
 
   return v8;
 }
 
-- (void)iterateFromOffset:(unint64_t)a3 options:(unsigned int)a4 replyHandler:(id)a5
+- (void)iterateFromOffset:(unint64_t)offset options:(unsigned int)options replyHandler:(id)handler
 {
-  v7 = a5;
-  if ([(MsdosDirItem *)self getDirSize]<= a3)
+  handlerCopy = handler;
+  if ([(MsdosDirItem *)self getDirSize]<= offset)
   {
     v16 = fs_errorForPOSIXError();
-    (*(v7 + 2))(v7, v16, 4, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v16, 4, 0, 0, 0);
   }
 
   else
   {
     v8 = [[DirBlock alloc] initInDir:self];
-    v9 = [(FATItem *)self volume];
-    v10 = [v9 systemInfo];
-    v11 = [v10 bytesPerCluster];
+    volume = [(FATItem *)self volume];
+    systemInfo = [volume systemInfo];
+    bytesPerCluster = [systemInfo bytesPerCluster];
 
-    v12 = [(MsdosDirItem *)self getDirBlockSize];
+    getDirBlockSize = [(MsdosDirItem *)self getDirBlockSize];
     v72[0] = 0;
     v72[1] = v72;
     v72[2] = 0x2020000000;
@@ -283,7 +283,7 @@ LABEL_13:
     v71[0] = 0;
     v71[1] = v71;
     v71[2] = 0x2020000000;
-    v71[3] = a3;
+    v71[3] = offset;
     v69[0] = 0;
     v69[1] = v69;
     v69[2] = 0x3032000000;
@@ -339,20 +339,20 @@ LABEL_13:
     v30[0] = 0;
     v30[1] = v30;
     v30[2] = 0x2020000000;
-    v31 = [(DirItem *)self isFat1216RootDir];
-    v13 = [(FATItem *)self volume];
-    v14 = [v13 fatManager];
+    isFat1216RootDir = [(DirItem *)self isFat1216RootDir];
+    volume2 = [(FATItem *)self volume];
+    fatManager = [volume2 fatManager];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100024280;
     v17[3] = &unk_100051378;
     v20 = v30;
     v21 = v72;
-    v19 = v7;
+    v19 = handlerCopy;
     v17[4] = self;
-    v28 = v11;
-    v29 = v12;
-    v27 = a3 / v11;
+    v28 = bytesPerCluster;
+    v29 = getDirBlockSize;
+    v27 = offset / bytesPerCluster;
     v22 = v71;
     v15 = v8;
     v18 = v15;
@@ -360,7 +360,7 @@ LABEL_13:
     v24 = v32;
     v25 = v67;
     v26 = v34;
-    [v14 iterateClusterChainOfItem:self replyHandler:v17];
+    [fatManager iterateClusterChainOfItem:self replyHandler:v17];
 
     [v15 releaseBlock];
     _Block_object_dispose(v30, 8);
@@ -374,9 +374,9 @@ LABEL_13:
   }
 }
 
-- (id)generateUniqueShortName:(char *)a3 offsetInDir:(unint64_t)a4
+- (id)generateUniqueShortName:(char *)name offsetInDir:(unint64_t)dir
 {
-  v6 = (a4 >> 5) % 0xF4240;
+  v6 = (dir >> 5) % 0xF4240;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -390,7 +390,7 @@ LABEL_13:
   v7 = v6 + 1000000;
   while (1)
   {
-    if (msdosfs_apply_generation_to_short_name(a3, v6 % 0xF4240))
+    if (msdosfs_apply_generation_to_short_name(name, v6 % 0xF4240))
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -406,7 +406,7 @@ LABEL_13:
     v12[3] = &unk_1000513A0;
     v12[4] = &v13;
     v12[5] = &v19;
-    [(MsdosDirItem *)self isShortNameUniqueInDir:a3 replyHandler:v12];
+    [(MsdosDirItem *)self isShortNameUniqueInDir:name replyHandler:v12];
     v8 = v14[5];
     if (v8)
     {
@@ -449,16 +449,16 @@ LABEL_16:
   return v10;
 }
 
-- (id)writeDirEntryDataToDisk:(id)a3
+- (id)writeDirEntryDataToDisk:(id)disk
 {
-  v4 = [MsdosDirEntryData dynamicCast:a3];
+  v4 = [MsdosDirEntryData dynamicCast:disk];
   v5 = [[DirBlock alloc] initInDir:self];
   if (v5)
   {
     v6 = [v5 readDirBlockNum:{objc_msgSend(v4, "dosDirEntryDirBlockNum")}];
     if (v6)
     {
-      v7 = v6;
+      writeToDisk = v6;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000331D0(v4);
@@ -468,13 +468,13 @@ LABEL_16:
     else
     {
       v8 = [v5 getBytesAtOffset:{objc_msgSend(v4, "dosDirEntryOffsetInDirBlock")}];
-      v9 = [v4 data];
-      v10 = [v9 bytes];
-      v11 = v10[1];
-      *v8 = *v10;
+      data = [v4 data];
+      bytes = [data bytes];
+      v11 = bytes[1];
+      *v8 = *bytes;
       v8[1] = v11;
 
-      v7 = [v5 writeToDisk];
+      writeToDisk = [v5 writeToDisk];
     }
 
     [v5 releaseBlock];
@@ -482,30 +482,30 @@ LABEL_16:
 
   else
   {
-    v7 = fs_errorForPOSIXError();
+    writeToDisk = fs_errorForPOSIXError();
   }
 
-  return v7;
+  return writeToDisk;
 }
 
-- (id)markDirEntriesAsDeleted:(id)a3
+- (id)markDirEntriesAsDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_100023984;
   v15 = sub_100023994;
   v16 = 0;
-  v5 = [v4 entryData];
-  v6 = [v5 firstEntryOffsetInDir];
-  v7 = [v4 entryData];
+  entryData = [deletedCopy entryData];
+  firstEntryOffsetInDir = [entryData firstEntryOffsetInDir];
+  entryData2 = [deletedCopy entryData];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000255B8;
   v10[3] = &unk_1000513F0;
   v10[4] = &v11;
-  -[DirItem iterateDirEntriesAtOffset:numEntries:shouldWriteToDisk:replyHandler:](self, "iterateDirEntriesAtOffset:numEntries:shouldWriteToDisk:replyHandler:", v6, [v7 numberOfDirEntries], 1, v10);
+  -[DirItem iterateDirEntriesAtOffset:numEntries:shouldWriteToDisk:replyHandler:](self, "iterateDirEntriesAtOffset:numEntries:shouldWriteToDisk:replyHandler:", firstEntryOffsetInDir, [entryData2 numberOfDirEntries], 1, v10);
 
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -513,7 +513,7 @@ LABEL_16:
   return v8;
 }
 
-- (id)verifyCookieOffset:(unsigned int)a3
+- (id)verifyCookieOffset:(unsigned int)offset
 {
   v7 = 0;
   v8 = &v7;
@@ -521,15 +521,15 @@ LABEL_16:
   v10 = sub_100023984;
   v11 = sub_100023994;
   v12 = 0;
-  if (a3)
+  if (offset)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100025758;
     v5[3] = &unk_100051418;
     v5[4] = &v7;
-    v6 = a3;
-    [(DirItem *)self iterateDirEntriesAtOffset:a3 numEntries:1 shouldWriteToDisk:0 replyHandler:v5];
+    offsetCopy = offset;
+    [(DirItem *)self iterateDirEntriesAtOffset:offset numEntries:1 shouldWriteToDisk:0 replyHandler:v5];
     v3 = v8[5];
   }
 
@@ -543,13 +543,13 @@ LABEL_16:
   return v3;
 }
 
-- (id)getAttributes:(id)a3
+- (id)getAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v19.receiver = self;
   v19.super_class = MsdosDirItem;
-  v5 = [(FATItem *)&v19 getAttributes:v4];
-  if ([v4 isAttributeWanted:1])
+  v5 = [(FATItem *)&v19 getAttributes:attributesCopy];
+  if ([attributesCopy isAttributeWanted:1])
   {
     [v5 setType:2];
   }
@@ -561,50 +561,50 @@ LABEL_16:
 
   if ([(DirItem *)self isFat1216RootDir])
   {
-    if ([v4 isAttributeWanted:128])
+    if ([attributesCopy isAttributeWanted:128])
     {
-      v6 = [(FATItem *)self volume];
-      v7 = [v6 systemInfo];
-      [v5 setAllocSize:{objc_msgSend(v7, "rootDirBytes")}];
+      volume = [(FATItem *)self volume];
+      systemInfo = [volume systemInfo];
+      [v5 setAllocSize:{objc_msgSend(systemInfo, "rootDirBytes")}];
     }
 
-    if ([v4 isAttributeWanted:512])
+    if ([attributesCopy isAttributeWanted:512])
     {
       [v5 setParentID:{-[MsdosDirItem getFileID](self, "getFileID")}];
     }
 
-    if ([v4 isAttributeWanted:64])
+    if ([attributesCopy isAttributeWanted:64])
     {
-      v8 = [(FATItem *)self volume];
-      v9 = [v8 systemInfo];
-      [v5 setSize:{objc_msgSend(v9, "rootDirBytes")}];
+      volume2 = [(FATItem *)self volume];
+      systemInfo2 = [volume2 systemInfo];
+      [v5 setSize:{objc_msgSend(systemInfo2, "rootDirBytes")}];
     }
 
-    if (([v4 isAttributeWanted:1024] & 1) != 0 || (objc_msgSend(v4, "isAttributeWanted:", 2048) & 1) != 0 || (objc_msgSend(v4, "isAttributeWanted:", 4096) & 1) != 0 || objc_msgSend(v4, "isAttributeWanted:", 0x2000))
+    if (([attributesCopy isAttributeWanted:1024] & 1) != 0 || (objc_msgSend(attributesCopy, "isAttributeWanted:", 2048) & 1) != 0 || (objc_msgSend(attributesCopy, "isAttributeWanted:", 4096) & 1) != 0 || objc_msgSend(attributesCopy, "isAttributeWanted:", 0x2000))
     {
-      v10 = [(FATItem *)self entryData];
+      entryData = [(FATItem *)self entryData];
 
-      if (!v10)
+      if (!entryData)
       {
         v17 = 0;
         v18 = 0;
         msdosfs_dos2unixtime(33, 0, 0, &v17);
-        if ([v4 isAttributeWanted:1024])
+        if ([attributesCopy isAttributeWanted:1024])
         {
           [v5 setAccessTime:{v17, v18}];
         }
 
-        if ([v4 isAttributeWanted:2048])
+        if ([attributesCopy isAttributeWanted:2048])
         {
           [v5 setModifyTime:{v17, v18}];
         }
 
-        if ([v4 isAttributeWanted:4096])
+        if ([attributesCopy isAttributeWanted:4096])
         {
           [v5 setChangeTime:{v17, v18}];
         }
 
-        if ([v4 isAttributeWanted:0x2000])
+        if ([attributesCopy isAttributeWanted:0x2000])
         {
           [v5 setBirthTime:{v17, v18}];
         }
@@ -622,25 +622,25 @@ LABEL_16:
 
     v17 = 0;
     v18 = 0;
-    if ([v4 isAttributeWanted:1024])
+    if ([attributesCopy isAttributeWanted:1024])
     {
       [(MsdosDirEntryData *)v15 getAccessTime:&v17];
       [v5 setAccessTime:{v17, v18}];
     }
 
-    if ([v4 isAttributeWanted:2048])
+    if ([attributesCopy isAttributeWanted:2048])
     {
       [(MsdosDirEntryData *)v15 getModifyTime:&v17];
       [v5 setModifyTime:{v17, v18}];
     }
 
-    if ([v4 isAttributeWanted:4096])
+    if ([attributesCopy isAttributeWanted:4096])
     {
       [(MsdosDirEntryData *)v15 getChangeTime:&v17];
       [v5 setChangeTime:{v17, v18}];
     }
 
-    if ([v4 isAttributeWanted:0x2000])
+    if ([attributesCopy isAttributeWanted:0x2000])
     {
       [(MsdosDirEntryData *)v15 getBirthTime:&v17];
       [v5 setBirthTime:{v17, v18}];
@@ -675,10 +675,10 @@ LABEL_16:
   }
 }
 
-- (unsigned)getGenerationNumberOfName:(unistr255 *)a3
+- (unsigned)getGenerationNumberOfName:(unistr255 *)name
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = name->var0;
+  if (!name->var0)
   {
     return 0;
   }
@@ -691,13 +691,13 @@ LABEL_16:
       break;
     }
 
-    v5 = *(&a3->var0 + var0--);
+    v5 = *(&name->var0 + var0--);
   }
 
   while (v5 != 126);
   if (v4)
   {
-    return strtol(a3->var1 + v4, 0, 10);
+    return strtol(name->var1 + v4, 0, 10);
   }
 
   else
@@ -706,7 +706,7 @@ LABEL_16:
   }
 }
 
-- (void)isShortNameUniqueInDir:(char *)a3 replyHandler:(id)a4
+- (void)isShortNameUniqueInDir:(char *)dir replyHandler:(id)handler
 {
   v24 = 0;
   v25[0] = &v24;
@@ -728,12 +728,12 @@ LABEL_16:
   v9 = &unk_100051440;
   v12 = &v24;
   v13 = &v16;
-  v10 = self;
+  selfCopy = self;
   v14 = &v20;
-  v15 = a3;
-  v5 = a4;
-  v11 = v5;
-  [(MsdosDirItem *)v10 iterateFromOffset:0 options:0 replyHandler:&v6];
+  dirCopy = dir;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  [(MsdosDirItem *)selfCopy iterateFromOffset:0 options:0 replyHandler:&v6];
   if (![(MsdosDirItem *)self maxShortNameIndex:v6])
   {
     [(MsdosDirItem *)self setMaxShortNameIndex:*(v17 + 6)];
@@ -746,10 +746,10 @@ LABEL_16:
       sub_100033410(v25);
     }
 
-    (*(v5 + 2))(v5, *(v25[0] + 40), 0);
+    (*(handlerCopy + 2))(handlerCopy, *(v25[0] + 40), 0);
   }
 
-  (*(v5 + 2))(v5, 0, (v21[3] & 1) == 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, (v21[3] & 1) == 0);
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v20, 8);

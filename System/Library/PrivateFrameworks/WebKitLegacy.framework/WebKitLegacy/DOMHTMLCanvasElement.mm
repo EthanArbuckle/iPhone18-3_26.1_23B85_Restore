@@ -1,9 +1,9 @@
 @interface DOMHTMLCanvasElement
-- (id)toDataURL:(id)a3;
+- (id)toDataURL:(id)l;
 - (int)height;
 - (int)width;
-- (void)setHeight:(int)a3;
-- (void)setWidth:(int)a3;
+- (void)setHeight:(int)height;
+- (void)setWidth:(int)width;
 @end
 
 @implementation DOMHTMLCanvasElement
@@ -16,7 +16,7 @@
   return self;
 }
 
-- (void)setWidth:(int)a3
+- (void)setWidth:(int)width
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   WebCore::HTMLCanvasElement::setWidth(self->super.super.super.super._internal);
@@ -36,7 +36,7 @@
   return self;
 }
 
-- (void)setHeight:(int)a3
+- (void)setHeight:(int)height
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   WebCore::HTMLCanvasElement::setHeight(self->super.super.super.super._internal);
@@ -48,11 +48,11 @@
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v7, v4);
 }
 
-- (id)toDataURL:(id)a3
+- (id)toDataURL:(id)l
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v21);
   internal = self->super.super.super.super._internal;
-  MEMORY[0x1CCA63A40](v17, a3);
+  MEMORY[0x1CCA63A40](v17, l);
   WebCore::HTMLCanvasElement::toDataURL(&v18, internal, v17);
   v7 = v17[0];
   v17[0] = 0;
